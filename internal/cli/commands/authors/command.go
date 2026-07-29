@@ -1,0 +1,140 @@
+// Package authors provides the authors resource command.
+package authors
+
+import (
+	"os"
+
+	"github.com/rs/zerolog"
+	"github.com/spf13/cobra"
+
+	"github.com/agentstation/starmap/internal/catalog/query"
+	"github.com/agentstation/starmap/internal/cli/constants"
+	"github.com/agentstation/starmap/internal/cli/format"
+	"github.com/agentstation/starmap/internal/cli/globals"
+	"github.com/agentstation/starmap/internal/cli/table"
+	"github.com/agentstation/starmap/pkg/catalogs"
+	"github.com/agentstation/starmap/pkg/errors"
+)
+
+// NewCommand creates the authors resource command.
+func NewCommand(app application) *cobra.Command {
+	cmd := &cobra.Command{
+		Use:     "authors [author-id]",
+		GroupID: "catalog",
+		Short:   "List AI model authors",
+		Long: `List AI model authors in the catalog.
+
+Show all authors or view detailed information about specific authors.`,
+		Args: cobra.MaximumNArgs(1),
+		Example: `  starmap authors                  # List all authors
+  starmap authors openai           # Show specific author details
+  starmap authors --search meta    # Search authors by name`,
+		RunE: func(cmd *cobra.Command, args []string) error {
+			logger := app.Logger()
+
+			// Single author detail view
+			if len(args) == 1 {
+				return showAuthorDetails(cmd, app, args[0])
+			}
+
+			// List view (default behavior)
+			resourceFlags := globals.ParseResources(cmd)
+			return listAuthors(cmd, app, logger, resourceFlags)
+		},
+	}
+
+	// Add resource-specific flags
+	globals.AddResourceFlags(cmd)
+
+	return cmd
+}
+
+// listAuthors lists all authors.
+func listAuthors(cmd *cobra.Command, app application, logger *zerolog.Logger, flags *globals.ResourceFlags) error {
+	// Get catalog from app
+	cat, err := app.Catalog()
+	if err != nil {
+		return err
+	}
+
+	// Get all authors
+	allAuthors := cat.Authors().List()
+
+	filtered := query.Authors(allAuthors, query.AuthorOptions{
+		Search: flags.Search,
+		Limit:  flags.Limit,
+	})
+
+	// Get global flags and format output
+	globalFlags, err := globals.Parse(cmd)
+	if err != nil {
+		return err
+	}
+	formatter := format.New(format.Kind(globalFlags.Output))
+
+	// Transform to output format
+	var outputData any
+	switch globalFlags.Output {
+	case constants.FormatTable, constants.FormatWide, "":
+		authorPointers := make([]*catalogs.Author, len(filtered))
+		for i := range filtered {
+			authorPointers[i] = &filtered[i]
+		}
+		modelCounts := make(map[catalogs.AuthorID]int, len(filtered))
+		for _, author := range filtered {
+			models, modelsErr := cat.AuthorModels(author.ID)
+			if modelsErr != nil {
+				return modelsErr
+			}
+			modelCounts[author.ID] = len(models)
+		}
+		tableData := table.AuthorsToTableData(authorPointers, modelCounts)
+		outputData = format.Data{
+			Headers:         tableData.Headers,
+			Rows:            tableData.Rows,
+			ColumnAlignment: tableData.ColumnAlignment,
+		}
+	default:
+		outputData = filtered
+	}
+
+	if !globalFlags.Quiet {
+		logger.Info().Msgf("Found %d authors", len(filtered))
+	}
+
+	return formatter.Format(os.Stdout, outputData)
+}
+
+// showAuthorDetails shows detailed information about a specific author.
+func showAuthorDetails(cmd *cobra.Command, app application, authorID string) error {
+	// Get catalog from app
+	cat, err := app.Catalog()
+	if err != nil {
+		return err
+	}
+
+	// Find specific author (supports aliases)
+	author, exists := cat.Authors().Resolve(catalogs.AuthorID(authorID))
+	if !exists {
+		cmd.SilenceUsage = true
+		return &errors.NotFoundError{
+			Resource: "author",
+			ID:       authorID,
+		}
+	}
+
+	globalFlags, err := globals.Parse(cmd)
+	if err != nil {
+		return err
+	}
+	formatter := format.New(format.Kind(globalFlags.Output))
+
+	// For table output, show detailed view
+	if globalFlags.Output == constants.FormatTable || globalFlags.Output == "" {
+		printAuthorDetails(author)
+		return nil
+	}
+
+	// For structured output, return the author
+	return formatter.Format(os.Stdout, author)
+}

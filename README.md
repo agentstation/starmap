@@ -233,7 +233,8 @@ Starmap uses a layered architecture with clean separation of concerns:
 - **User Interfaces**: CLI, Go package, and HTTP server (REST + SSE)
 - **Core System**: Catalog management, reconciliation engine, and event hooks
 - **Data Sources**: Provider APIs, models.dev, embedded catalog, and local files
-- **Generation Stores**: Memory, filesystem, SQLite, or conditional object storage
+- **Generation Stores**: Memory, filesystem, or conditional object storage;
+  embedding applications can inject their own store
 
 For detailed architecture diagrams, design principles, and implementation details, see **[ARCHITECTURE.md](docs/ARCHITECTURE.md)**.
 
@@ -245,7 +246,41 @@ Starmap's core abstractions provide a clean separation of concerns:
 The concrete immutable product for model data access. Advanced producers use a separate builder; ordinary consumers retain and share the catalog safely. See [Catalog Package Documentation](pkg/catalogs/README.md).
 
 ### 2. CatalogStore
-A generation-oriented commit/read/CAS boundary. The same conformance contract covers memory, filesystem, SQLite, and conditional object-storage adapters while retaining old immutable generations.
+A generation-oriented commit/read/CAS boundary. The same conformance contract
+covers Starmap's memory, filesystem, and conditional object-storage adapters
+while retaining old immutable generations. Embedding applications such as
+Starport may inject a database-backed implementation, but own its driver,
+schema, migrations, credentials, connection pool, backups, and lifecycle.
+The exact concurrency, idempotency, failure, rollback, ownership, and error
+requirements are defined in the
+[Catalog Store Contract](docs/CATALOG_STORE_CONTRACT.md).
+For servers without a durable filesystem, `pkg/catalogstore/s3` adapts a
+caller-owned AWS SDK v2 S3 client to the same object-generation contract:
+
+```go
+backend, err := s3store.New(callerOwnedS3Client, s3store.Config{
+    Bucket: "starmap-catalogs",
+})
+if err != nil {
+    return err
+}
+store, err := catalogstore.NewObject(backend, "production")
+```
+
+The caller configures and owns the client, endpoint, credentials, transport,
+retries, and lifecycle. Construction performs no network request, and every
+write requires an S3-compatible `If-None-Match` or `If-Match` conditional
+write; there is no last-writer-wins fallback.
+
+The standalone `starmap serve` command uses the CLI's filesystem generation
+store by default. An embedding server selects storage before it constructs the
+Starmap client: use `catalogstore.NewFilesystem` for a persistent local path, or
+compose `s3store.New` with `catalogstore.NewObject` for an S3-compatible bucket,
+then inject the selected store through `starmap.WithCatalogStore`. Storage mode,
+paths, bucket, prefix, client, credentials, and lifecycle remain deployment
+configuration; `server.New` receives the already-constructed client and does
+not open storage.
+
 When a client starts with a configured store, it validates and publishes that
 store's current generation before returning from `starmap.New`; an empty store
 uses either the exact configured human workspace or the verified embedded
@@ -266,7 +301,11 @@ endpoint behavior, lifecycle, modes, and request overrides.
 Abstraction for fetching data from external systems (provider APIs, models.dev, local files). Each implements a common interface for consistent data access.
 
 ### 5. Reconciliation
-Intelligent multi-source data merging with field-level authority, provenance tracking, and conflict resolution. See [Reconciliation Package Documentation](pkg/reconciler/README.md).
+The acquisition pipeline combines source observations with field-level
+authority, provenance tracking, and conflict resolution before publishing one
+validated generation. Consumers compose this through
+[`acquisition.Syncer`](acquisition/), while the reconciliation engine remains
+an internal implementation detail.
 
 ### 6. Model Definition
 
@@ -282,15 +321,15 @@ For detailed component design and interaction patterns, see **[ARCHITECTURE.md �
 
 Starmap follows Go best practices with clear package separation:
 
-- **`pkg/`** - Public API packages ([catalogs](pkg/catalogs/), [catalogstore](pkg/catalogstore/), [reconciler](pkg/reconciler/), [sources](pkg/sources/), [errors](pkg/errors/), etc.)
-- **`internal/`** - Internal implementations (providers, embedded data, transport)
+- **`pkg/`** - Focused public contracts ([catalogs](pkg/catalogs/), [catalogstore](pkg/catalogstore/), [sources](pkg/sources/), [errors](pkg/errors/), etc.)
+- **`internal/`** - Internal implementations (reconciliation, CLI, providers, embedded data, transport)
 - **`cmd/starmap/`** - CLI application
 
 See [CONTRIBUTING.md § Project Structure](CONTRIBUTING.md#project-structure) for detailed directory layout and dependency rules.
 
 ## Choosing Your Approach
 
-Starmap provides two levels of data management complexity:
+Starmap provides two composition levels:
 
 **Use [Catalog Package](pkg/catalogs/README.md) (Simple) When:**
 - ✅ Constructing or reading one provider-YAML catalog
@@ -298,14 +337,15 @@ Starmap provides two levels of data management complexity:
 - ✅ Testing with mock data
 - ✅ Building simple tools
 
-**Use [Reconciliation Package](pkg/reconciler/README.md) (Complex) When:**
+**Use [`acquisition.Syncer`](acquisition/) When:**
 - ✅ Syncing with multiple provider APIs
 - ✅ Integrating models.dev for pricing
 - ✅ Different sources own different fields
 - ✅ Need audit trail of data sources
 - ✅ Building production systems
 
-For architecture details and reconciliation strategies, see **[ARCHITECTURE.md § Reconciliation System](docs/ARCHITECTURE.md#reconciliation-system)**.
+For architecture details and the internal reconciliation algorithm, see
+**[ARCHITECTURE.md § Reconciliation System](docs/ARCHITECTURE.md#reconciliation-system)**.
 
 ## CLI Usage
 
@@ -469,7 +509,6 @@ export GOOGLE_VERTEX_LOCATION=us-central1
 import (
     "github.com/agentstation/starmap"
     "github.com/agentstation/starmap/pkg/catalogs"
-    "github.com/agentstation/starmap/pkg/reconciler"
 )
 ```
 
@@ -796,7 +835,7 @@ GET  /api/v1/providers/{id}/models  # Get provider's models
 # Remote generation consumption
 GET  /api/v1/catalog/manifest
 GET  /api/v1/catalog/generations/{generation_id}/manifest
-GET  /api/v1/catalog/generations/{generation_id}/snapshot
+GET  /api/v1/catalog/generations/{generation_id}/payload
 GET  /api/v1/updates/stream      # Heartbeat-enabled publication hints
 
 # Admin
@@ -988,7 +1027,7 @@ Local storage uses separate lifecycle roots:
 ```text
 ~/.starmap/
 ├── catalog/          # one human-editable provider-YAML workspace
-├── state/catalog/    # machine-owned immutable generation database
+├── state/catalog/    # machine-owned immutable generation store
 │   ├── current
 │   └── generations/
 ├── cache/

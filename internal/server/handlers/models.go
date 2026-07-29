@@ -42,7 +42,7 @@ import (
 func (h *Handlers) HandleListModels(w http.ResponseWriter, r *http.Request) {
 	state, err := h.app.CatalogState()
 	if err != nil {
-		response.InternalError(w, err)
+		response.InternalError(w, h.logger, err)
 		return
 	}
 	w.Header().Set("X-Starmap-Generation-ID", state.GenerationID)
@@ -59,14 +59,14 @@ func (h *Handlers) HandleListModels(w http.ResponseWriter, r *http.Request) {
 	// Parse filters
 	f, err := params.ParseModelFilterStrict(r)
 	if err != nil {
-		response.ErrorFromType(w, err)
+		response.ErrorFromType(w, h.logger, err)
 		return
 	}
 
 	// Get exact provider offerings before applying model field filters.
 	allModels, err := query.CatalogModels(cat, f.Provider)
 	if err != nil {
-		response.ErrorFromType(w, err)
+		response.ErrorFromType(w, h.logger, err)
 		return
 	}
 	filtered := f.ApplyRecords(allModels)
@@ -105,7 +105,7 @@ func (h *Handlers) HandleListModels(w http.ResponseWriter, r *http.Request) {
 func (h *Handlers) HandleGetModel(w http.ResponseWriter, _ *http.Request, modelID string) {
 	state, err := h.app.CatalogState()
 	if err != nil {
-		response.InternalError(w, err)
+		response.InternalError(w, h.logger, err)
 		return
 	}
 	w.Header().Set("X-Starmap-Generation-ID", state.GenerationID)
@@ -122,7 +122,7 @@ func (h *Handlers) HandleGetModel(w http.ResponseWriter, _ *http.Request, modelI
 	// Find model
 	model, err := cat.FindModel(modelID)
 	if err != nil {
-		response.ErrorFromType(w, err)
+		response.ErrorFromType(w, h.logger, err)
 		return
 	}
 
@@ -191,7 +191,7 @@ func (h *Handlers) HandleSearchModels(w http.ResponseWriter, r *http.Request) {
 	// Get catalog
 	cat, err := h.app.Catalog()
 	if err != nil {
-		response.InternalError(w, err)
+		response.InternalError(w, h.logger, err)
 		return
 	}
 
@@ -247,14 +247,14 @@ func (h *Handlers) HandleSearchModels(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 	if err := f.Validate(); err != nil {
-		response.ErrorFromType(w, err)
+		response.ErrorFromType(w, h.logger, err)
 		return
 	}
 
 	// Apply filters to exact provider offerings when a provider is selected.
 	allModels, err := query.CatalogModels(cat, f.Provider)
 	if err != nil {
-		response.ErrorFromType(w, err)
+		response.ErrorFromType(w, h.logger, err)
 		return
 	}
 	results := f.ApplyRecords(allModels)

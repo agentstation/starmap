@@ -10,12 +10,6 @@ import (
 	pkgerrors "github.com/agentstation/starmap/pkg/errors"
 )
 
-func TestNew(t *testing.T) {
-	err := pkgerrors.New("test error")
-	assert.NotNil(t, err)
-	assert.Equal(t, "test error", err.Error())
-}
-
 func TestNotFoundError(t *testing.T) {
 	t.Run("basic error", func(t *testing.T) {
 		err := &pkgerrors.NotFoundError{

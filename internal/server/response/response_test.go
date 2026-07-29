@@ -1,14 +1,24 @@
 package response
 
 import (
+	"bytes"
 	"encoding/json"
 	"errors"
+	"fmt"
 	"net/http"
 	"net/http/httptest"
+	"strings"
 	"testing"
+
+	"github.com/rs/zerolog"
 
 	starmapErrors "github.com/agentstation/starmap/pkg/errors"
 )
+
+func testLogger() *zerolog.Logger {
+	logger := zerolog.Nop()
+	return &logger
+}
 
 // TestSuccess tests the Success helper function.
 func TestSuccess(t *testing.T) {
@@ -158,7 +168,7 @@ func TestErrorHelpers(t *testing.T) {
 		{
 			name: "InternalError",
 			fn: func(w http.ResponseWriter) {
-				InternalError(w, errors.New("internal error"))
+				InternalError(w, testLogger(), errors.New("internal error"))
 			},
 			expectedStatus: http.StatusInternalServerError,
 			expectedCode:   "INTERNAL_ERROR",
@@ -200,6 +210,21 @@ func TestErrorHelpers(t *testing.T) {
 	}
 }
 
+func TestInternalErrorUsesInjectedLogger(t *testing.T) {
+	var output bytes.Buffer
+	logger := zerolog.New(&output)
+	writer := httptest.NewRecorder()
+
+	InternalError(writer, &logger, errors.New("private diagnostic"))
+
+	if !strings.Contains(output.String(), "private diagnostic") {
+		t.Fatalf("injected logger output = %q, want private diagnostic", output.String())
+	}
+	if strings.Contains(writer.Body.String(), "private diagnostic") {
+		t.Fatalf("response exposed private diagnostic: %s", writer.Body.String())
+	}
+}
+
 // TestErrorFromType tests typed error mapping.
 func TestErrorFromType(t *testing.T) {
 	tests := []struct {
@@ -211,6 +236,15 @@ func TestErrorFromType(t *testing.T) {
 		{
 			name:           "NotFoundError",
 			err:            &starmapErrors.NotFoundError{Resource: "model", ID: "gpt-4"},
+			expectedStatus: http.StatusNotFound,
+			expectedCode:   "NOT_FOUND",
+		},
+		{
+			name: "wrapped NotFoundError",
+			err: fmt.Errorf(
+				"resolve route: %w",
+				&starmapErrors.NotFoundError{Resource: "model", ID: "gpt-4"},
+			),
 			expectedStatus: http.StatusNotFound,
 			expectedCode:   "NOT_FOUND",
 		},
@@ -233,6 +267,15 @@ func TestErrorFromType(t *testing.T) {
 			expectedCode:   "BAD_REQUEST",
 		},
 		{
+			name: "wrapped APIError - 4xx",
+			err: fmt.Errorf(
+				"provider request: %w",
+				&starmapErrors.APIError{Provider: "openai", Endpoint: "/models", StatusCode: 400},
+			),
+			expectedStatus: http.StatusBadRequest,
+			expectedCode:   "BAD_REQUEST",
+		},
+		{
 			name:           "APIError - 5xx",
 			err:            &starmapErrors.APIError{Provider: "openai", Endpoint: "/models", StatusCode: 503},
 			expectedStatus: http.StatusInternalServerError,
@@ -249,7 +292,7 @@ func TestErrorFromType(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			w := httptest.NewRecorder()
-			ErrorFromType(w, tt.err)
+			ErrorFromType(w, testLogger(), tt.err)
 
 			if w.Code != tt.expectedStatus {
 				t.Errorf("expected status %d, got %d", tt.expectedStatus, w.Code)

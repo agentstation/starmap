@@ -2,8 +2,6 @@ package catalogstore
 
 import (
 	"context"
-	"database/sql"
-	"path/filepath"
 	"sync"
 	"testing"
 
@@ -30,7 +28,6 @@ func TestCatalogStoreConcurrentSameBaseCAS(t *testing.T) {
 			}
 			return first, second
 		},
-		"sql": newSQLStorePair,
 		"object": func(t *testing.T) (Store, Store) {
 			backend := NewMemoryObjectBackend()
 			first, err := NewObject(backend, "concurrent")
@@ -93,24 +90,4 @@ func TestCatalogStoreConcurrentSameBaseCAS(t *testing.T) {
 			}
 		})
 	}
-}
-
-func newSQLStorePair(t *testing.T) (Store, Store) {
-	t.Helper()
-	dsn := "file:" + filepath.Join(t.TempDir(), "concurrent.db") + "?_txlock=immediate&_pragma=busy_timeout(5000)"
-	db, err := sql.Open("sqlite", dsn)
-	if err != nil {
-		t.Fatalf("Open SQLite: %v", err)
-	}
-	db.SetMaxOpenConns(4)
-	t.Cleanup(func() { _ = db.Close() })
-	first, err := NewSQL(context.Background(), db)
-	if err != nil {
-		t.Fatalf("NewSQL first: %v", err)
-	}
-	second, err := NewSQL(context.Background(), db)
-	if err != nil {
-		t.Fatalf("NewSQL second: %v", err)
-	}
-	return first, second
 }

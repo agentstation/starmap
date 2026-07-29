@@ -4,93 +4,25 @@ import (
 	"context"
 	"testing"
 
-	"github.com/stretchr/testify/assert"
+	"github.com/rs/zerolog"
 
 	"github.com/agentstation/starmap/pkg/logging"
 )
 
-func TestContextFunctions(t *testing.T) {
-	t.Run("WithProvider adds provider to context", func(t *testing.T) {
-		ctx := context.Background()
-		ctx = logging.WithProvider(ctx, "openai")
+func TestContextLoggerAndCorrelation(t *testing.T) {
+	logger := zerolog.Nop()
+	ctx := logging.WithLogger(context.Background(), &logger)
+	ctx = logging.WithProvider(ctx, "openai")
+	ctx = logging.WithSource(ctx, "provider-api")
+	ctx = logging.WithRunID(ctx, "run-123")
 
-		// Extract logger and verify it has the provider field
-		logger := logging.FromContext(ctx)
-		assert.NotNil(t, logger)
-	})
-
-	t.Run("WithSource adds source to context", func(t *testing.T) {
-		ctx := context.Background()
-		ctx = logging.WithSource(ctx, "provider_api")
-
-		logger := logging.FromContext(ctx)
-		assert.NotNil(t, logger)
-	})
-
-	t.Run("WithRunID adds run correlation", func(t *testing.T) {
-		ctx := logging.WithRunID(context.Background(), "run-123")
-		if got := logging.RunID(ctx); got != "run-123" {
-			t.Fatalf("RunID = %q, want run-123", got)
-		}
-	})
-
-	t.Run("WithOperation adds operation to context", func(t *testing.T) {
-		ctx := context.Background()
-		ctx = logging.WithOperation(ctx, "fetch_models")
-
-		logger := logging.FromContext(ctx)
-		assert.NotNil(t, logger)
-	})
-
-	t.Run("WithModel adds model to context", func(t *testing.T) {
-		ctx := context.Background()
-		ctx = logging.WithModel(ctx, "gpt-4")
-
-		logger := logging.FromContext(ctx)
-		assert.NotNil(t, logger)
-	})
-
-	t.Run("WithFields adds custom fields to context", func(t *testing.T) {
-		ctx := context.Background()
-		fields := map[string]any{
-			"user_id":    "123",
-			"request_id": "abc-def",
-		}
-		ctx = logging.WithFields(ctx, fields)
-
-		logger := logging.FromContext(ctx)
-		assert.NotNil(t, logger)
-	})
-
-	t.Run("FromContext returns logger from context", func(t *testing.T) {
-		ctx := context.Background()
-
-		// First call should create a new logger
-		logger1 := logging.FromContext(ctx)
-		assert.NotNil(t, logger1)
-
-		// Add provider and get logger again
-		ctx = logging.WithProvider(ctx, "anthropic")
-		logger2 := logging.FromContext(ctx)
-		assert.NotNil(t, logger2)
-	})
-
-	t.Run("Ctx extracts logger from context", func(t *testing.T) {
-		ctx := context.Background()
-		ctx = logging.WithProvider(ctx, "groq")
-
-		logger := logging.Ctx(ctx)
-		assert.NotNil(t, logger)
-	})
-
-	t.Run("chaining context functions", func(t *testing.T) {
-		ctx := context.Background()
-		ctx = logging.WithProvider(ctx, "openai")
-		ctx = logging.WithSource(ctx, "api")
-		ctx = logging.WithOperation(ctx, "list_models")
-		ctx = logging.WithModel(ctx, "gpt-4o")
-
-		logger := logging.FromContext(ctx)
-		assert.NotNil(t, logger)
-	})
+	if logging.FromContext(ctx) == nil {
+		t.Fatal("FromContext returned nil")
+	}
+	if logging.Ctx(ctx) == nil {
+		t.Fatal("Ctx returned nil")
+	}
+	if got := logging.RunID(ctx); got != "run-123" {
+		t.Fatalf("RunID = %q, want run-123", got)
+	}
 }

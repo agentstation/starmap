@@ -14,16 +14,16 @@ Package catalogartifact defines the deterministic distribution format for immuta
 
 - [Constants](<#constants>)
 - [func Open\(archive, attestation \[\]byte\) \(catalogstore.Generation, error\)](<#Open>)
-- [type Artifact](<#Artifact>)
-  - [func Build\(generation catalogstore.Generation\) \(Artifact, error\)](<#Build>)
 - [type AttestationPredicate](<#AttestationPredicate>)
 - [type AttestationStatement](<#AttestationStatement>)
+- [type Bundle](<#Bundle>)
+  - [func Build\(generation catalogstore.Generation\) \(Bundle, error\)](<#Build>)
 - [type Descriptor](<#Descriptor>)
   - [func \(d Descriptor\) String\(\) string](<#Descriptor.String>)
 - [type DigestSet](<#DigestSet>)
 - [type FileDescriptor](<#FileDescriptor>)
 - [type ReleaseAssets](<#ReleaseAssets>)
-  - [func StageReleaseAssets\(root string, artifact Artifact\) \(ReleaseAssets, error\)](<#StageReleaseAssets>)
+  - [func StageReleaseAssets\(root string, artifact Bundle\) \(ReleaseAssets, error\)](<#StageReleaseAssets>)
 - [type Subject](<#Subject>)
 
 
@@ -68,7 +68,7 @@ const (
 ```
 
 <a name="Open"></a>
-## func [Open](<https://github.com/agentstation/starmap/blob/main/pkg/catalogartifact/artifact.go#L178>)
+## func [Open](<https://github.com/agentstation/starmap/blob/main/pkg/catalogartifact/bundle.go#L178>)
 
 ```go
 func Open(archive, attestation []byte) (catalogstore.Generation, error)
@@ -76,34 +76,8 @@ func Open(archive, attestation []byte) (catalogstore.Generation, error)
 
 Open verifies an archive and detached statement before returning its exact immutable catalog generation.
 
-<a name="Artifact"></a>
-## type [Artifact](<https://github.com/agentstation/starmap/blob/main/pkg/catalogartifact/artifact.go#L105-L113>)
-
-Artifact is one reproducible archive and its detached attestation statement.
-
-```go
-type Artifact struct {
-    GenerationID        string
-    Filename            string
-    MediaType           string
-    Data                []byte
-    Checksum            string
-    AttestationFilename string
-    Attestation         []byte
-}
-```
-
-<a name="Build"></a>
-### func [Build](<https://github.com/agentstation/starmap/blob/main/pkg/catalogartifact/artifact.go#L118>)
-
-```go
-func Build(generation catalogstore.Generation) (Artifact, error)
-```
-
-Build validates a generation and deterministically packages it for distribution. Rebuilding identical generation bytes produces identical archive and attestation bytes.
-
 <a name="AttestationPredicate"></a>
-## type [AttestationPredicate](<https://github.com/agentstation/starmap/blob/main/pkg/catalogartifact/artifact.go#L87-L92>)
+## type [AttestationPredicate](<https://github.com/agentstation/starmap/blob/main/pkg/catalogartifact/bundle.go#L87-L92>)
 
 AttestationPredicate records the catalog compatibility identity asserted by the detached statement. Signature and builder provenance are added and verified by the publication boundary.
 
@@ -117,7 +91,7 @@ type AttestationPredicate struct {
 ```
 
 <a name="AttestationStatement"></a>
-## type [AttestationStatement](<https://github.com/agentstation/starmap/blob/main/pkg/catalogartifact/artifact.go#L97-L102>)
+## type [AttestationStatement](<https://github.com/agentstation/starmap/blob/main/pkg/catalogartifact/bundle.go#L97-L102>)
 
 AttestationStatement is the deterministic in\-toto statement emitted beside an artifact. It is deliberately detached to avoid a self\-referential archive digest and to permit signing without changing reproducible artifact bytes.
 
@@ -130,8 +104,34 @@ type AttestationStatement struct {
 }
 ```
 
+<a name="Bundle"></a>
+## type [Bundle](<https://github.com/agentstation/starmap/blob/main/pkg/catalogartifact/bundle.go#L105-L113>)
+
+Bundle contains one reproducible archive and its detached attestation.
+
+```go
+type Bundle struct {
+    GenerationID        string
+    Filename            string
+    MediaType           string
+    Data                []byte
+    Checksum            string
+    AttestationFilename string
+    Attestation         []byte
+}
+```
+
+<a name="Build"></a>
+### func [Build](<https://github.com/agentstation/starmap/blob/main/pkg/catalogartifact/bundle.go#L118>)
+
+```go
+func Build(generation catalogstore.Generation) (Bundle, error)
+```
+
+Build validates a generation and deterministically packages it for distribution. Rebuilding identical generation bytes produces identical archive and attestation bytes.
+
 <a name="Descriptor"></a>
-## type [Descriptor](<https://github.com/agentstation/starmap/blob/main/pkg/catalogartifact/artifact.go#L62-L71>)
+## type [Descriptor](<https://github.com/agentstation/starmap/blob/main/pkg/catalogartifact/bundle.go#L62-L71>)
 
 Descriptor describes the complete logical generation carried by an archive.
 
@@ -149,7 +149,7 @@ type Descriptor struct {
 ```
 
 <a name="Descriptor.String"></a>
-### func \(Descriptor\) [String](<https://github.com/agentstation/starmap/blob/main/pkg/catalogartifact/artifact.go#L404>)
+### func \(Descriptor\) [String](<https://github.com/agentstation/starmap/blob/main/pkg/catalogartifact/bundle.go#L404>)
 
 ```go
 func (d Descriptor) String() string
@@ -158,7 +158,7 @@ func (d Descriptor) String() string
 String returns a concise descriptor useful in logs.
 
 <a name="DigestSet"></a>
-## type [DigestSet](<https://github.com/agentstation/starmap/blob/main/pkg/catalogartifact/artifact.go#L74-L76>)
+## type [DigestSet](<https://github.com/agentstation/starmap/blob/main/pkg/catalogartifact/bundle.go#L74-L76>)
 
 DigestSet is the SHA\-256 digest map used by an in\-toto subject.
 
@@ -169,7 +169,7 @@ type DigestSet struct {
 ```
 
 <a name="FileDescriptor"></a>
-## type [FileDescriptor](<https://github.com/agentstation/starmap/blob/main/pkg/catalogartifact/artifact.go#L54-L59>)
+## type [FileDescriptor](<https://github.com/agentstation/starmap/blob/main/pkg/catalogartifact/bundle.go#L54-L59>)
 
 FileDescriptor binds one named artifact member to exact bytes.
 
@@ -200,13 +200,13 @@ type ReleaseAssets struct {
 ### func [StageReleaseAssets](<https://github.com/agentstation/starmap/blob/main/pkg/catalogartifact/release.go#L32>)
 
 ```go
-func StageReleaseAssets(root string, artifact Artifact) (ReleaseAssets, error)
+func StageReleaseAssets(root string, artifact Bundle) (ReleaseAssets, error)
 ```
 
 StageReleaseAssets validates and atomically stages archive, attestation, and checksum assets. An exact retry is idempotent; rebinding the same generation ID to different bytes returns a typed conflict.
 
 <a name="Subject"></a>
-## type [Subject](<https://github.com/agentstation/starmap/blob/main/pkg/catalogartifact/artifact.go#L79-L82>)
+## type [Subject](<https://github.com/agentstation/starmap/blob/main/pkg/catalogartifact/bundle.go#L79-L82>)
 
 Subject is one byte object bound by the detached statement.
 

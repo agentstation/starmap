@@ -375,61 +375,7 @@ func validateObservationLinks(observations []SourceObservationLink) error {
 	seen := make(map[string]struct{}, len(observations))
 	for index, observation := range observations {
 		prefix := fmt.Sprintf("source_observations[%d]", index)
-		if strings.TrimSpace(observation.Source.String()) == "" {
-			return validationError(prefix+".source", observation.Source, "is required")
-		}
-		if strings.TrimSpace(observation.ObservationID) == "" {
-			return validationError(prefix+".observation_id", observation.ObservationID, "is required")
-		}
-		if err := validateUTCTime(prefix+".observed_at", observation.ObservedAt); err != nil {
-			return err
-		}
-		switch observation.Revision.Kind {
-		case catalogmeta.ObservationRevisionKindUnknown:
-			if strings.TrimSpace(observation.Revision.Value) != "" {
-				return validationError(prefix+".revision.value", observation.Revision.Value, "must be empty when revision kind is unknown")
-			}
-		case catalogmeta.ObservationRevisionKindGitCommit:
-			if strings.TrimSpace(observation.Revision.Value) == "" {
-				return validationError(prefix+".revision.value", observation.Revision.Value, "is required")
-			}
-			if (len(observation.Revision.Value) != 40 && len(observation.Revision.Value) != 64) || !isHexChecksumValue(observation.Revision.Value) {
-				return validationError(prefix+".revision.value", observation.Revision.Value, "must be an exact hexadecimal Git commit")
-			}
-			if observation.Revision.InputName == "" || observation.Revision.InputChecksum == "" {
-				return validationError(prefix+".revision.input", observation.Revision, "Git revisions require a lockfile name and checksum")
-			}
-		case catalogmeta.ObservationRevisionKindETag,
-			catalogmeta.ObservationRevisionKindLastModified,
-			catalogmeta.ObservationRevisionKindSourceVersion,
-			catalogmeta.ObservationRevisionKindContentDigest:
-			if strings.TrimSpace(observation.Revision.Value) == "" {
-				return validationError(prefix+".revision.value", observation.Revision.Value, "is required")
-			}
-		default:
-			return validationError(prefix+".revision.kind", observation.Revision.Kind, "is not supported")
-		}
-		if (observation.Revision.InputName == "") != (observation.Revision.InputChecksum == "") {
-			return validationError(prefix+".revision.input", observation.Revision, "name and checksum must be supplied together")
-		}
-		if observation.Revision.InputName != "" {
-			if observation.Revision.Kind != catalogmeta.ObservationRevisionKindGitCommit {
-				return validationError(prefix+".revision.input", observation.Revision, "content-addressed build input is only supported for Git revisions")
-			}
-			if err := validateChecksum(prefix+".revision.input_checksum", observation.Revision.InputChecksum); err != nil {
-				return err
-			}
-		}
-		if observation.Completeness != catalogmeta.ObservationCompletenessComplete && observation.Completeness != catalogmeta.ObservationCompletenessPartial {
-			return validationError(prefix+".completeness", observation.Completeness, "must be complete or partial")
-		}
-		if observation.Status != catalogmeta.ObservationStatusSucceeded && observation.Status != catalogmeta.ObservationStatusDegraded {
-			return validationError(prefix+".status", observation.Status, "must be succeeded or degraded")
-		}
-		if observation.Completeness == catalogmeta.ObservationCompletenessPartial && observation.Status != catalogmeta.ObservationStatusDegraded {
-			return validationError(prefix+".status", observation.Status, "partial observations must be degraded")
-		}
-		if err := validateChecksum(prefix+".evidence_checksum", observation.EvidenceChecksum); err != nil {
+		if err := validateObservationLink(prefix, observation); err != nil {
 			return err
 		}
 		key := observation.Source.String() + "\x00" + observation.ObservationID
@@ -439,6 +385,73 @@ func validateObservationLinks(observations []SourceObservationLink) error {
 		seen[key] = struct{}{}
 	}
 	return nil
+}
+
+func validateObservationLink(prefix string, observation SourceObservationLink) error {
+	if strings.TrimSpace(observation.Source.String()) == "" {
+		return validationError(prefix+".source", observation.Source, "is required")
+	}
+	if strings.TrimSpace(observation.ObservationID) == "" {
+		return validationError(prefix+".observation_id", observation.ObservationID, "is required")
+	}
+	if err := validateUTCTime(prefix+".observed_at", observation.ObservedAt); err != nil {
+		return err
+	}
+	if err := validateObservationRevision(prefix+".revision", observation.Revision); err != nil {
+		return err
+	}
+	if observation.Completeness != catalogmeta.ObservationCompletenessComplete &&
+		observation.Completeness != catalogmeta.ObservationCompletenessPartial {
+		return validationError(prefix+".completeness", observation.Completeness, "must be complete or partial")
+	}
+	if observation.Status != catalogmeta.ObservationStatusSucceeded &&
+		observation.Status != catalogmeta.ObservationStatusDegraded {
+		return validationError(prefix+".status", observation.Status, "must be succeeded or degraded")
+	}
+	if observation.Completeness == catalogmeta.ObservationCompletenessPartial &&
+		observation.Status != catalogmeta.ObservationStatusDegraded {
+		return validationError(prefix+".status", observation.Status, "partial observations must be degraded")
+	}
+	return validateChecksum(prefix+".evidence_checksum", observation.EvidenceChecksum)
+}
+
+func validateObservationRevision(prefix string, revision catalogmeta.ObservationRevision) error {
+	switch revision.Kind {
+	case catalogmeta.ObservationRevisionKindUnknown:
+		if strings.TrimSpace(revision.Value) != "" {
+			return validationError(prefix+".value", revision.Value, "must be empty when revision kind is unknown")
+		}
+	case catalogmeta.ObservationRevisionKindGitCommit:
+		if strings.TrimSpace(revision.Value) == "" {
+			return validationError(prefix+".value", revision.Value, "is required")
+		}
+		if (len(revision.Value) != 40 && len(revision.Value) != 64) ||
+			!isHexChecksumValue(revision.Value) {
+			return validationError(prefix+".value", revision.Value, "must be an exact hexadecimal Git commit")
+		}
+		if revision.InputName == "" || revision.InputChecksum == "" {
+			return validationError(prefix+".input", revision, "Git revisions require a lockfile name and checksum")
+		}
+	case catalogmeta.ObservationRevisionKindETag,
+		catalogmeta.ObservationRevisionKindLastModified,
+		catalogmeta.ObservationRevisionKindSourceVersion,
+		catalogmeta.ObservationRevisionKindContentDigest:
+		if strings.TrimSpace(revision.Value) == "" {
+			return validationError(prefix+".value", revision.Value, "is required")
+		}
+	default:
+		return validationError(prefix+".kind", revision.Kind, "is not supported")
+	}
+	if (revision.InputName == "") != (revision.InputChecksum == "") {
+		return validationError(prefix+".input", revision, "name and checksum must be supplied together")
+	}
+	if revision.InputName == "" {
+		return nil
+	}
+	if revision.Kind != catalogmeta.ObservationRevisionKindGitCommit {
+		return validationError(prefix+".input", revision, "content-addressed build input is only supported for Git revisions")
+	}
+	return validateChecksum(prefix+".input_checksum", revision.InputChecksum)
 }
 
 func isHexChecksumValue(value string) bool {

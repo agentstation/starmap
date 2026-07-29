@@ -163,11 +163,11 @@ func (n *Notifier) WithConfig(config Config) *Notifier {
 }
 
 // detectOutputFormat determines the output format from a string.
-func detectOutputFormat(formatStr string) format.Format {
+func detectOutputFormat(formatStr string) format.Kind {
 	if formatStr == "" || formatStr == "auto" {
 		return format.DetectFormat("")
 	}
-	return format.Format(strings.ToLower(formatStr))
+	return format.Kind(strings.ToLower(formatStr))
 }
 
 // isTerminal checks if the given writer is a terminal.
@@ -202,52 +202,4 @@ func isCI() bool {
 	}
 
 	return false
-}
-
-// Global notifier instance for convenience functions.
-var defaultNotifier *Notifier
-
-// SetDefault sets the default global notifier.
-func SetDefault(notifier *Notifier) {
-	defaultNotifier = notifier
-}
-
-// GetDefault returns the default global notifier, creating one if needed.
-func GetDefault() *Notifier {
-	if defaultNotifier == nil {
-		defaultNotifier = New(DefaultConfig())
-	}
-	return defaultNotifier
-}
-
-// Convenience functions using the default notifier
-
-// Success sends a success alert using the default notifier.
-func Success(message string, ctx hints.Context) error {
-	return GetDefault().Success(message, ctx)
-}
-
-// Error sends an error alert using the default notifier.
-func Error(message string, ctx hints.Context) error {
-	return GetDefault().Error(message, ctx)
-}
-
-// Warning sends a warning alert using the default notifier.
-func Warning(message string, ctx hints.Context) error {
-	return GetDefault().Warning(message, ctx)
-}
-
-// Info sends an info alert using the default notifier.
-func Info(message string, ctx hints.Context) error {
-	return GetDefault().Info(message, ctx)
-}
-
-// Alert sends an alert using the default notifier.
-func Alert(alert *alerts.Alert) error {
-	return GetDefault().Alert(alert)
-}
-
-// Hints displays hints using the default notifier.
-func Hints(ctx hints.Context) error {
-	return GetDefault().Hints(ctx)
 }

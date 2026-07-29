@@ -34,7 +34,7 @@ func TestF017CharacterizationRemoteClientIsOneShotManifestAndPayloadFetch(t *tes
 		case ManifestPath:
 			writer.Header().Set("Content-Type", ManifestMediaType)
 			_, _ = writer.Write(manifest)
-		case SnapshotPath(generation.Manifest.GenerationID):
+		case PayloadPath(generation.Manifest.GenerationID):
 			writer.Header().Set("Content-Type", catalogs.CatalogPayloadMediaType)
 			_, _ = writer.Write(generation.Payload)
 		default:
@@ -54,7 +54,7 @@ func TestF017CharacterizationRemoteClientIsOneShotManifestAndPayloadFetch(t *tes
 	mu.Lock()
 	got := append([]string(nil), paths...)
 	mu.Unlock()
-	want := []string{ManifestPath, SnapshotPath(generation.Manifest.GenerationID)}
+	want := []string{ManifestPath, PayloadPath(generation.Manifest.GenerationID)}
 	if len(got) != len(want) || got[0] != want[0] || got[1] != want[1] {
 		t.Fatalf("remote request flow = %#v, want %#v and no stream/reconnect request", got, want)
 	}

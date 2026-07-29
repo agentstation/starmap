@@ -15,7 +15,7 @@ import (
 // Formatter formats hints for different output types.
 type Formatter struct {
 	writer io.Writer
-	format format.Format
+	format format.Kind
 	config FormatterConfig
 }
 
@@ -27,7 +27,7 @@ type FormatterConfig struct {
 }
 
 // NewFormatter creates a new hint formatter.
-func NewFormatter(w io.Writer, format format.Format) *Formatter {
+func NewFormatter(w io.Writer, format format.Kind) *Formatter {
 	return &Formatter{
 		writer: w,
 		format: format,
@@ -193,12 +193,12 @@ func (f *Formatter) formatHintContent(hint *Hint) []string {
 }
 
 // Display is a convenience function to format and display hints.
-func Display(w io.Writer, format format.Format, hints []*Hint) error {
+func Display(w io.Writer, format format.Kind, hints []*Hint) error {
 	formatter := NewFormatter(w, format)
 	return formatter.FormatHints(hints)
 }
 
 // DisplayHint is a convenience function to format and display a single hint.
-func DisplayHint(w io.Writer, format format.Format, hint *Hint) error {
+func DisplayHint(w io.Writer, format format.Kind, hint *Hint) error {
 	return Display(w, format, []*Hint{hint})
 }

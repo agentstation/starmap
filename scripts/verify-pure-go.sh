@@ -11,6 +11,10 @@ if git -C "$ROOT" grep -n -E '^[[:space:]]*import[[:space:]]+"C"' -- '*.go'; the
 fi
 
 CGO_ENABLED=0 "$ROOT/scripts/verify-consumer-deps.sh"
+(
+	cd "$ROOT"
+	CGO_ENABLED=0 go test ./pkg/catalogstore/s3
+)
 
 CGO_ENABLED=0 go build -trimpath -o "$TMPDIR/starmap" "$ROOT/cmd/starmap"
 "$TMPDIR/starmap" version
@@ -52,4 +56,4 @@ darwin)
 	;;
 esac
 
-printf 'pure-Go verification passed: library, store, server, remote, and CLI execute with CGO_ENABLED=0\n'
+printf 'pure-Go verification passed: library, stores including S3, server, remote, and CLI execute with CGO_ENABLED=0\n'

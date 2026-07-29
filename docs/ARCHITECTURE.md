@@ -44,7 +44,7 @@ graph TB
 
     subgraph APP["Application Composition"]
         APPIF[Consumer-local Roles<br/>cmd/* + internal/server]
-        APPIMPL[App Implementation<br/>cmd/starmap/app/]
+        APPIMPL[App Implementation<br/>internal/cli/app/]
     end
 
     subgraph ROOT["Root Package - starmap.Client"]
@@ -104,7 +104,7 @@ graph TB
 ### 1. Interface Segregation
 - **Define interfaces where they're used** (Go proverb)
 - Command and server interfaces live in their consuming packages
-- Implementation in `cmd/starmap/app/` (concrete types)
+- Implementation in `internal/cli/app/` (concrete types)
 - Commands depend only on what they need
 
 ### 2. Dependency Injection
@@ -124,7 +124,7 @@ graph TB
 ### 4. Single Responsibility
 - Each package has one clear purpose
 - Catalog: storage abstraction
-- Reconciler: multi-source merging
+- Internal reconciler: multi-source merging
 - Authority: field-level priorities
 - Sources: data fetching
 
@@ -138,7 +138,7 @@ graph TB
 
 ### Layer Responsibilities
 
-1. **Application Composition** (`cmd/starmap/app/`, command packages, `internal/server/`)
+1. **Application Composition** (`internal/cli/app/`, command packages, `internal/server/`)
    - Dependency injection
    - Configuration management
    - Lifecycle control (startup/shutdown)
@@ -150,14 +150,16 @@ graph TB
    - Event hooks
    - Atomic immutable generation publication
 
-3. **Core Packages** (`pkg/`)
+3. **Public Contracts**
    - Catalog domain and immutable reads (`pkg/catalogs/`)
    - Transactional generation storage (`pkg/catalogstore/`)
-   - Multi-source reconciliation (`pkg/reconciler/`)
-   - Field-level authority (`pkg/authority/`)
    - Data source abstractions (`pkg/sources/`)
 
 4. **Internal Implementations** (`internal/`)
+   - Multi-source reconciliation
+   - Field-level authority policy
+   - CLI composition, commands, and presentation conversion
+   - Tolerant source-payload decoding
    - Embedded catalog data
    - Provider API clients
    - models.dev integration
@@ -168,7 +170,7 @@ graph TB
 
 ### Consumer-local application roles
 
-Locations: `cmd/starmap/cmd/*/application.go`, `internal/server/application.go`
+Locations: `internal/cli/commands/*/application.go`, `internal/server/application.go`
 
 **Design Philosophy:**
 - "Accept interfaces, return structs" (Go proverb)
@@ -202,8 +204,8 @@ Constructors return concrete types when a package owns one implementation.
 |---|---:|---|---|
 | `catalogs.Reader` | 2 | `*catalogs.Builder`, `*catalogs.Catalog` | Retained algorithm input; `TestSeamConformanceReaderHasBuilderAndCatalogAdapters` executes both |
 | Catalog collection readers | 2 each | Mutable `Providers`/`Authors`/`Endpoints`/`Models`/`Provenance` and immutable reader wrappers | Retained read-only collection boundaries with two implementations each |
-| `catalogstore.Store` | 4 | memory, filesystem, SQLite, conditional object storage | Retained generation-storage boundary; all adapters run the same `TestCatalogStoreConformance` suite |
-| `catalogstore.ObjectBackend` | 2 | memory reference backend, recording alternate backend | Retained cloud-object input; `TestSeamConformanceObjectStoreAcceptsAlternateBackend` executes replacement injection |
+| `catalogstore.Store` | 3+ | Starmap memory, filesystem, and conditional object storage; caller-owned injected adapters | Retained generation-storage boundary; the Starmap adapters run the same behavioral contract and external applications own database-specific implementations |
+| `catalogstore.ObjectBackend` | 3 | memory reference backend, S3-compatible production backend, recording alternate backend | Retained cloud-object input; the production S3 protocol matrix and `TestSeamConformanceObjectStoreAcceptsAlternateBackend` execute both replacement implementations |
 | `authority.Reader` | 2 | immutable default table, custom `seamAuthority` | Retained policy input; `TestSeamConformanceAuthorityAcceptsCustomAdapter` proves replacement policy |
 | Enhancer/reconciler provenance inputs | 2 | concrete `*provenance.Tracker`, custom `seamTracker` | Retained as consumer-local `Track` roles; the provenance package returns its concrete tracker |
 | `enhancer.Enhancer` | 4 | `ModelsDevEnhancer`, `MetadataEnhancer`, `ChainEnhancer`, test enhancer | Retained plugin boundary; compile assertions cover all built-ins and pipeline tests execute alternates |
@@ -240,8 +242,8 @@ candidate construction uses the context-aware callback passed directly to
 
 ```mermaid
 flowchart BT
-    APP[cmd/starmap/app/<br/>Concrete App]
-    CMD[cmd/starmap/cmd/*<br/>Consumer-local roles]
+    APP[internal/cli/app/<br/>Concrete App]
+    CMD[internal/cli/commands/*<br/>Consumer-local roles]
     SERVER[internal/server/<br/>Server role]
 
     APP -.structurally satisfies.-> CMD
@@ -260,7 +262,7 @@ flowchart BT
 
 ### App Implementation
 
-Location: `cmd/starmap/app/app.go`
+Location: `internal/cli/app/app.go`
 
 **Responsibilities:**
 - Implements `Application` interface
@@ -490,7 +492,7 @@ starmap update openai
 
 **Implementation:**
 ```go
-// Parent: cmd/starmap/app/commands.go
+// Parent: internal/cli/app/commands.go
 cmd.PersistentFlags().BoolP("help", "?", false, "help for embed commands")
 
 // Now subcommands can use -h
@@ -509,10 +511,10 @@ uses `--output`/`-o`, and update previews use `--dry-run`.
 **Framework**: [Cobra](https://github.com/spf13/cobra) - Industry-standard Go CLI library
 
 **Key Files:**
-- `cmd/starmap/app/execute.go` - Root command and global flags
-- `cmd/starmap/app/commands.go` - Command registration
+- `internal/cli/app/execute.go` - Root command and global flags
+- `internal/cli/app/commands.go` - Command registration
 - `internal/cli/globals/` - Shared flag utilities
-- `cmd/starmap/cmd/*/` - Individual command implementations
+- `internal/cli/commands/*/` - Individual command implementations
 
 **For comprehensive CLI reference and implementation guidelines**, see **[CLI.md](CLI.md)**.
 
@@ -584,7 +586,7 @@ overwrite flag.
 
 `pkg/catalogremote` owns the online Starmap-to-Starmap wire protocol. It reads
 the current strict manifest or a retained generation-addressed manifest, then
-fetches the exact generation-addressed canonical snapshot. Strict media type,
+fetches the exact generation-addressed canonical payload. Strict media type,
 body bounds, catalog-schema compatibility, size, and checksum validation all
 precede decode and compare-and-swap publication. The same module owns the sole
 `catalog.published` SSE event shape: generation ID plus matching positive
@@ -705,21 +707,59 @@ the store must still be empty. Implementations validate the manifest and payload
 before storage, retain old immutable generations, return caller-owned bytes, and
 make an identical retry idempotent.
 
+The normative caller and adapter obligations live in
+[CATALOG_STORE_CONTRACT.md](CATALOG_STORE_CONTRACT.md).
+
 | Adapter | Baseline P3.2 mechanism | Later hardening owner |
 |---|---|---|
 | Memory | Locked immutable map and current ID | Reference semantics/conformance |
 | Filesystem | Cross-instance advisory commit lock plus fsynced immutable directory/current rename | P3.3/P3.5 durability and same-base CAS complete |
-| SQLite | Serializable `database/sql` transaction over generation/current tables | P3.8 rollback, reactivation, deletion, CAS, reopen, and fault matrix complete |
-| Object | Immutable manifest/payload objects plus version-conditional current object | P3.9 upload/promotion faults, corruption, rollback, deletion, CAS, and reopen complete |
+| Object | Immutable manifest/payload objects plus version-conditional current object | P3.9 in-memory protocol faults plus P8.11 production S3-compatible ETag/CAS, corruption, rollback, concurrency, and reopen matrix |
 
 The shared conformance suite covers empty reads, commit/current/get, immutable
 ownership, durable reopen, retained history, idempotent retries, stale CAS,
 checksum rejection, generation-ID collisions, and cancellation. Passing the
 baseline suite does not substitute for the later adapter-specific fault gates.
 The concurrent same-base matrix opens independent adapters over one backend and
-requires exactly one success and one typed conflict. SQLite deployments use
-immediate transactions with bounded busy waiting; filesystem writers coordinate
-through a context-aware advisory lock shared across processes.
+requires exactly one success and one typed conflict. Filesystem writers
+coordinate through a context-aware advisory lock shared across processes.
+Starmap owns no relational adapter. An embedding application may implement
+`catalogstore.Store` using SQLite, MySQL, PostgreSQL, or another database, but
+owns the driver, schema, migrations, credentials, pool, backups, lifecycle, and
+dialect-specific transaction/CAS behavior before injecting the store through
+`starmap.WithCatalogStore`.
+
+For deployments without a persistent filesystem,
+`pkg/catalogstore/s3.Backend` adapts a caller-owned AWS SDK v2 S3 client to
+`catalogstore.ObjectBackend`. The caller owns endpoint selection, region,
+credentials, retry policy, HTTP transport, observability, and client lifecycle;
+the constructor is inert. The adapter requires a non-empty ETag on every
+successful read and write, translates immutable creation to
+`If-None-Match: *`, translates pointer promotion to `If-Match: <ETag>`, and
+rejects unconditional writes. An S3-compatible endpoint that rejects
+conditional writes fails explicitly; Starmap never falls back to
+last-writer-wins. The protocol-level test server exercises the complete store
+contract, concurrent same-base CAS, restart/reopen, retained rollback,
+digest-corruption rejection, and upload/promotion failure preservation through
+the real AWS SDK HTTP stack.
+
+Storage selection belongs to the server deployment, before `server.New`:
+
+- standalone `starmap serve` uses the CLI's filesystem store by default;
+- an embedding application explicitly selects filesystem or object mode,
+  validates that mode's path or client/bucket/prefix inputs, constructs the
+  store, and injects it through `starmap.WithCatalogStore`; and
+- `server.New` consumes the already-constructed `*starmap.Client`, so the
+  server package never discovers credentials, opens a database, creates an S3
+  client, or owns storage lifecycle.
+
+The isolated `testdata/consumers/server-storage` module makes both production
+compositions executable. For each mode it constructs the store without I/O,
+seeds a validated immutable generation, starts the public server, establishes a
+reactive SSE subscriber, publishes and pushes a new generation, shuts down,
+reopens the same store, and verifies the exact generation and catalog. The
+ordinary read-only, server, and remote consumer closures explicitly exclude
+AWS/Smithy; only the opt-in storage module imports the S3 adapter.
 
 `Builder.Save` and `Builder.SaveTo` materialize the human YAML workspace using
 replacement semantics for its managed author-model and provider-model trees,
@@ -827,9 +867,9 @@ was chosen. This storage-layout migration remains necessary for development
 installations and is distinct from catalog payload compatibility, which is not
 retained before launch.
 
-### Reconciler Package
+### Internal Reconciler
 
-Location: `pkg/reconciler/`
+Location: `internal/catalog/reconciler/`
 
 **Purpose:** Multi-source data reconciliation with conflict resolution
 
@@ -851,7 +891,7 @@ Location: `pkg/reconciler/`
 5. Return result
 
 **Field Policies:**
-`pkg/authority/authority.go` is the sole executable inventory for reconciled
+`internal/catalog/authority/authority.go` is the sole executable inventory for reconciled
 model, provider, and author fields. The merger iterates its immutable policies
 directly. Focused executors for structured fields accept the selected policy
 and contain no source-order table of their own. Tests verify schema coverage,
@@ -868,11 +908,13 @@ unknown, and `false`, `0`, or `""` are known values. Provider and models.dev
 decoders retain that wire-level distinction, and immutable JSON payloads,
 deep copies, reconciliation, and change detection preserve it.
 
-See [pkg/reconciler/README.md](../pkg/reconciler/README.md) for details.
+See [the internal reconciler documentation](../internal/catalog/reconciler/README.md)
+for implementation details. Consumers use `acquisition.Syncer`, not this
+package directly.
 
-### Authority Package
+### Internal Authority Policy
 
-Location: `pkg/authority/`
+Location: `internal/catalog/authority/`
 
 **Purpose:** Field-level source authority system
 
@@ -2014,11 +2056,11 @@ graph BT
     end
 
     subgraph "Layer 3: App Implementation"
-        APPIMPL[cmd/starmap/app/<br/>Concrete App]
+        APPIMPL[internal/cli/app/<br/>Concrete App]
     end
 
     subgraph "Layer 2: Commands"
-        CMDS[cmd/starmap/cmd/*<br/>list, update, serve commands]
+        CMDS[internal/cli/commands/*<br/>list, update, serve commands]
     end
 
     subgraph "Layer 1: Consumer Roles"
@@ -2047,7 +2089,7 @@ graph BT
 
 **Rules:**
 - Never import from higher layers
-- Commands declare local interfaces and do not import `cmd/starmap/app/`
+- Commands declare local interfaces and do not import `internal/cli/app/`
 - Root package imports pkg packages
 - Internal packages can import pkg packages
 - Pkg packages are fully independent
@@ -2112,7 +2154,7 @@ func TestListCommand(t *testing.T) {
 go test -tags=integration ./...
 
 # Run integration tests for specific package
-go test -tags=integration ./pkg/reconciler -v
+go test -tags=integration ./internal/catalog/reconciler -v
 ```
 
 **Example Integration Test:**
@@ -2207,20 +2249,23 @@ func TestListModels(t *testing.T) {
 | `acquisition/syncer.go` | Explicit provider/source acquisition adapter | ~200 |
 | `update.go` | Serialized durable publication and activation | ~150 |
 | `internal/catalog/pipeline/pipeline.go` | 13-stage catalog sync pipeline | ~150 |
-| `cmd/starmap/cmd/*/application.go` | Consumer-local command roles | <20 each |
+| `internal/cli/commands/*/application.go` | Consumer-local command roles | <20 each |
 | `internal/server/application.go` | HTTP server application role | <30 |
-| `cmd/starmap/app/app.go` | App implementation | ~200 |
-| `pkg/reconciler/reconciler.go` | Reconciliation engine | ~300 |
-| `pkg/authority/authority.go` | Field-level authorities | ~210 |
+| `internal/cli/app/app.go` | App implementation | ~200 |
+| `internal/catalog/reconciler/reconciler.go` | Reconciliation engine | ~300 |
+| `internal/catalog/authority/authority.go` | Field-level authorities | ~210 |
 
 ### Package Documentation
 
 - [pkg/catalogs/README.md](../pkg/catalogs/README.md) - Catalog storage
-- [pkg/reconciler/README.md](../pkg/reconciler/README.md) - Multi-source reconciliation
 - [pkg/sources/README.md](../pkg/sources/README.md) - Data source abstractions
-- [pkg/authority/](../pkg/authority/) - Field-level authority system
+- [internal/catalog/authority/](../internal/catalog/authority/) - Internal field-level authority policy
 - [pkg/errors/README.md](../pkg/errors/README.md) - Error types
 - [pkg/logging/README.md](../pkg/logging/README.md) - Logging utilities
+
+Internal implementation documentation:
+
+- [internal/catalog/reconciler/README.md](../internal/catalog/reconciler/README.md) - Multi-source reconciliation
 
 ### Related Documentation
 

@@ -74,7 +74,7 @@ func TestSubscriberReadersObserveCompleteGenerationsDuringActivation(t *testing.
 				case catalogremote.GenerationManifestPath(id):
 					writeSubscriberManifest(t, writer, generation)
 					return
-				case catalogremote.SnapshotPath(id):
+				case catalogremote.PayloadPath(id):
 					writer.Header().Set(
 						"Content-Type",
 						catalogs.CatalogPayloadMediaType,

@@ -7,11 +7,11 @@ import (
 	"io"
 	"sort"
 
+	"github.com/agentstation/starmap/internal/sourcepayload"
 	"github.com/agentstation/starmap/pkg/catalogs"
-	"github.com/agentstation/starmap/pkg/constants"
+	"github.com/agentstation/starmap/internal/constants"
 	"github.com/agentstation/starmap/pkg/errors"
 	"github.com/agentstation/starmap/pkg/provenance"
-	"github.com/agentstation/starmap/pkg/sourcepayload"
 )
 
 // EncodeCatalogPayload deterministically encodes a readable catalog.
@@ -144,84 +144,113 @@ func decodePayloadEnvelope(data []byte) (payloadEnvelope, error) {
 
 func buildDecodedCatalog(payload payloadEnvelope, build catalogBuilder) (*catalogs.Catalog, payloadDecodeReport, error) {
 	builder := catalogs.NewEmpty()
+	providerReport, err := decodePayloadProviders(builder, payload)
+	if err != nil {
+		return nil, payloadDecodeReport{}, err
+	}
+	authorReport, err := decodePayloadAuthors(builder, payload, providerReport)
+	if err != nil {
+		return nil, payloadDecodeReport{}, err
+	}
+	builder.SetProvenance(payload.Provenance)
+	catalog, err := build(builder)
+	return catalog, payloadDecodeReport{
+		ProviderModels: providerReport,
+		AuthorModels:   authorReport,
+	}, err
+}
+
+func decodePayloadProviders(
+	builder *catalogs.Builder,
+	payload payloadEnvelope,
+) (sourcepayload.RecordReport, error) {
 	providerIDs := make(map[string]struct{}, len(payload.Providers))
 	for _, provider := range payload.Providers {
 		if _, exists := providerIDs[string(provider.ID)]; exists {
-			return nil, payloadDecodeReport{}, &errors.ValidationError{
+			return sourcepayload.RecordReport{}, &errors.ValidationError{
 				Field: "providers.id", Value: provider.ID, Message: "must be unique",
 			}
 		}
 		provider.Models = nil
 		if err := builder.SetProvider(provider); err != nil {
-			return nil, payloadDecodeReport{}, errors.WrapResource("decode", "provider", string(provider.ID), err)
+			return sourcepayload.RecordReport{}, errors.WrapResource("decode", "provider", string(provider.ID), err)
 		}
 		providerIDs[string(provider.ID)] = struct{}{}
 	}
 	providerKeys := sortedRawKeys(payload.ProviderModels)
-	report := payloadDecodeReport{}
+	report := sourcepayload.RecordReport{}
 	for providerID := range providerIDs {
 		if _, found := payload.ProviderModels[providerID]; !found {
-			return nil, payloadDecodeReport{}, &errors.ValidationError{
+			return sourcepayload.RecordReport{}, &errors.ValidationError{
 				Field: "provider_models", Value: providerID, Message: "is required for every provider",
 			}
 		}
 	}
 	for _, providerID := range providerKeys {
 		if _, found := providerIDs[providerID]; !found {
-			return nil, payloadDecodeReport{}, &errors.ValidationError{
+			return sourcepayload.RecordReport{}, &errors.ValidationError{
 				Field: "provider_models", Value: providerID, Message: "references an unknown provider",
 			}
 		}
-		remaining := remainingRecordBudget(report.ProviderModels)
+		remaining := remainingRecordBudget(report)
 		models, recordReport, err := sourcepayload.DecodeJSONArray[catalogs.Model](
 			payload.ProviderModels[providerID],
 			"provider_models["+providerID+"]",
 			remaining,
 		)
 		if err != nil {
-			return nil, payloadDecodeReport{}, err
+			return sourcepayload.RecordReport{}, err
 		}
-		mergeRecordReport(&report.ProviderModels, recordReport)
+		mergeRecordReport(&report, recordReport)
 		for _, model := range models {
 			if err := builder.SetProviderModel(catalogs.ProviderID(providerID), model); err != nil {
-				report.ProviderModels.Accepted--
-				report.ProviderModels.Rejected++
-				report.ProviderModels.Issues = append(report.ProviderModels.Issues, sourcepayload.RecordIssue{
+				report.Accepted--
+				report.Rejected++
+				report.Issues = append(report.Issues, sourcepayload.RecordIssue{
 					Subject: "provider_models[" + providerID + "]/" + model.ID,
 					Err:     errors.WrapResource("decode", "provider model", providerID+"/"+model.ID, err),
 				})
 			}
 		}
 	}
+	return report, nil
+}
+
+func decodePayloadAuthors(
+	builder *catalogs.Builder,
+	payload payloadEnvelope,
+	providerReport sourcepayload.RecordReport,
+) (sourcepayload.RecordReport, error) {
 	authorIDs := make(map[string]struct{}, len(payload.Authors))
 	for _, author := range payload.Authors {
 		if _, exists := authorIDs[string(author.ID)]; exists {
-			return nil, payloadDecodeReport{}, &errors.ValidationError{
+			return sourcepayload.RecordReport{}, &errors.ValidationError{
 				Field: "authors.id", Value: author.ID, Message: "must be unique",
 			}
 		}
 		authorIDs[string(author.ID)] = struct{}{}
 		if err := builder.SetAuthor(author); err != nil {
-			return nil, payloadDecodeReport{}, errors.WrapResource("decode", "author", string(author.ID), err)
+			return sourcepayload.RecordReport{}, errors.WrapResource("decode", "author", string(author.ID), err)
 		}
 	}
 	authorKeys := sortedRawKeys(payload.AuthorModels)
 	for authorID := range authorIDs {
 		if _, found := payload.AuthorModels[authorID]; !found {
-			return nil, payloadDecodeReport{}, &errors.ValidationError{
+			return sourcepayload.RecordReport{}, &errors.ValidationError{
 				Field: "author_models", Value: authorID, Message: "is required for every author",
 			}
 		}
 	}
+	report := sourcepayload.RecordReport{}
 	for _, authorID := range authorKeys {
 		if _, found := authorIDs[authorID]; !found {
-			return nil, payloadDecodeReport{}, &errors.ValidationError{
+			return sourcepayload.RecordReport{}, &errors.ValidationError{
 				Field: "author_models", Value: authorID, Message: "references an unknown author",
 			}
 		}
 		remaining := constants.MaxCatalogModels -
-			report.ProviderModels.Accepted - report.ProviderModels.Rejected -
-			report.AuthorModels.Accepted - report.AuthorModels.Rejected
+			providerReport.Accepted - providerReport.Rejected -
+			report.Accepted - report.Rejected
 		if remaining < 0 {
 			remaining = 0
 		}
@@ -231,23 +260,21 @@ func buildDecodedCatalog(payload payloadEnvelope, build catalogBuilder) (*catalo
 			remaining,
 		)
 		if err != nil {
-			return nil, payloadDecodeReport{}, err
+			return sourcepayload.RecordReport{}, err
 		}
-		mergeRecordReport(&report.AuthorModels, recordReport)
+		mergeRecordReport(&report, recordReport)
 		for _, model := range models {
 			if err := builder.SetAuthorModel(catalogs.AuthorID(authorID), model); err != nil {
-				report.AuthorModels.Accepted--
-				report.AuthorModels.Rejected++
-				report.AuthorModels.Issues = append(report.AuthorModels.Issues, sourcepayload.RecordIssue{
+				report.Accepted--
+				report.Rejected++
+				report.Issues = append(report.Issues, sourcepayload.RecordIssue{
 					Subject: "author_models[" + authorID + "]/" + model.ID,
 					Err:     errors.WrapResource("decode", "authored model", authorID+"/"+model.ID, err),
 				})
 			}
 		}
 	}
-	builder.SetProvenance(payload.Provenance)
-	catalog, err := build(builder)
-	return catalog, report, err
+	return report, nil
 }
 
 func sortedRawKeys(values map[string]json.RawMessage) []string {

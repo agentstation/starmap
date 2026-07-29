@@ -27,8 +27,13 @@ type ObjectPutCondition struct {
 }
 
 // ObjectBackend is the minimum immutable-object and conditional-pointer API
-// required by Object. Cloud adapters should translate ETags or generations to
-// Version and conditional writes to ObjectPutCondition.
+// required by Object.
+//
+// Version must be a non-empty opaque token that identifies the exact returned
+// object version. Put must atomically honor IfAbsent or IfVersion and return a
+// typed conflict when its condition does not hold. Production adapters must
+// never weaken either condition to an unconditional last-writer-wins write.
+// Cloud adapters should translate ETags or object generations to Version.
 type ObjectBackend interface {
 	Get(context.Context, string) (ObjectValue, error)
 	Put(context.Context, string, []byte, ObjectPutCondition) (ObjectValue, error)

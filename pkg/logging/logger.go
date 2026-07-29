@@ -25,23 +25,17 @@ package logging
 import (
 	"io"
 	"os"
+	"sync/atomic"
 	"time"
 
 	"github.com/rs/zerolog"
-	"github.com/rs/zerolog/log"
 )
 
-var (
-	// defaultLogger is the global logger instance.
-	defaultLogger zerolog.Logger
-
-	// Nop logger for discarding output.
-	Nop = zerolog.Nop()
-)
+// defaultLogger holds the process default as an immutable logger value.
+var defaultLogger atomic.Pointer[zerolog.Logger]
 
 func init() {
-	// Initialize with sensible defaults
-	defaultLogger = createDefaultLogger()
+	SetDefault(createDefaultLogger())
 }
 
 // createDefaultLogger creates a logger with default settings.
@@ -60,9 +54,7 @@ func createDefaultLogger() zerolog.Logger {
 		}
 	}
 
-	// Set global log level
 	level := getLogLevel()
-	zerolog.SetGlobalLevel(level)
 
 	// Create logger with context
 	logger := zerolog.New(writer).
@@ -79,93 +71,39 @@ func createDefaultLogger() zerolog.Logger {
 	return logger
 }
 
-// Default returns the default global logger.
-func Default() *zerolog.Logger {
-	return &defaultLogger
+// Default returns a copy of the default logger.
+func Default() zerolog.Logger {
+	return *defaultLogger.Load()
 }
 
-// SetDefault sets the default global logger.
+// SetDefault atomically replaces the logger used by this package. It does not
+// mutate zerolog's separate process-global logger or global level.
 func SetDefault(logger zerolog.Logger) {
-	defaultLogger = logger
-	log.Logger = logger // Also update zerolog's global logger
-}
-
-// New creates a new logger with the given writer.
-func New(w io.Writer) zerolog.Logger {
-	return zerolog.New(w).
-		Level(zerolog.GlobalLevel()).
-		With().
-		Timestamp().
-		Logger()
-}
-
-// NewConsole creates a new console logger for human-readable output.
-func NewConsole() zerolog.Logger {
-	writer := zerolog.ConsoleWriter{
-		Out:        os.Stderr,
-		TimeFormat: time.Kitchen,
-		NoColor:    os.Getenv("NO_COLOR") != "",
-	}
-
-	return New(writer)
-}
-
-// NewJSON creates a new JSON logger for structured output.
-func NewJSON(w io.Writer) zerolog.Logger {
-	if w == nil {
-		w = os.Stderr
-	}
-	return New(w)
-}
-
-// With creates a child logger with additional context fields.
-func With() zerolog.Context {
-	return defaultLogger.With()
-}
-
-// Level creates a child logger with the specified log level.
-func Level(level zerolog.Level) zerolog.Logger {
-	return defaultLogger.Level(level)
+	defaultLogger.Store(&logger)
 }
 
 // Debug starts a new debug level log event.
 func Debug() *zerolog.Event {
-	return defaultLogger.Debug()
+	logger := Default()
+	return logger.Debug()
 }
 
 // Info starts a new info level log event.
 func Info() *zerolog.Event {
-	return defaultLogger.Info()
+	logger := Default()
+	return logger.Info()
 }
 
 // Warn starts a new warning level log event.
 func Warn() *zerolog.Event {
-	return defaultLogger.Warn()
+	logger := Default()
+	return logger.Warn()
 }
 
 // Error starts a new error level log event.
 func Error() *zerolog.Event {
-	return defaultLogger.Error()
-}
-
-// Fatal starts a new fatal level log event (will exit after logging).
-func Fatal() *zerolog.Event {
-	return defaultLogger.Fatal()
-}
-
-// Panic starts a new panic level log event (will panic after logging).
-func Panic() *zerolog.Event {
-	return defaultLogger.Panic()
-}
-
-// WithLevel starts a new log event with the given level.
-func WithLevel(level zerolog.Level) *zerolog.Event {
-	return defaultLogger.WithLevel(level)
-}
-
-// Err creates a new error log event with the given error.
-func Err(err error) *zerolog.Event {
-	return defaultLogger.Err(err)
+	logger := Default()
+	return logger.Error()
 }
 
 // isatty checks if stderr is a terminal.

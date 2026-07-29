@@ -9,7 +9,7 @@ import (
 	"time"
 
 	"github.com/agentstation/starmap/pkg/catalogmeta"
-	"github.com/agentstation/starmap/pkg/constants"
+	"github.com/agentstation/starmap/internal/constants"
 )
 
 func TestProviderFixtureFreshness(t *testing.T) {

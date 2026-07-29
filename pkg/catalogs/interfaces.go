@@ -43,10 +43,10 @@ type ModelsReader interface {
 type ProvenanceReader interface {
 	Map() provenance.Map
 	Len() int
-	FindByField(catalogmeta.ResourceType, string, string) []provenance.Provenance
-	FindByResource(catalogmeta.ResourceType, string) map[string][]provenance.Provenance
-	FindModelField(ProviderID, string, string) []provenance.Provenance
-	FindModel(ProviderID, string) map[string][]provenance.Provenance
+	FindByField(catalogmeta.ResourceType, string, string) []provenance.Entry
+	FindByResource(catalogmeta.ResourceType, string) map[string][]provenance.Entry
+	FindModelField(ProviderID, string, string) []provenance.Entry
+	FindModel(ProviderID, string) map[string][]provenance.Entry
 	FormatYAML() string
 }
 

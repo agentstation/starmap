@@ -2,6 +2,7 @@ package modelsdev
 
 import (
 	"encoding/json"
+	stderrors "errors"
 	"fmt"
 	"maps"
 	"os"
@@ -12,10 +13,10 @@ import (
 
 	"github.com/agentstation/utc"
 
+	"github.com/agentstation/starmap/internal/constants"
+	"github.com/agentstation/starmap/internal/sourcepayload"
 	"github.com/agentstation/starmap/pkg/catalogs"
-	"github.com/agentstation/starmap/pkg/constants"
 	"github.com/agentstation/starmap/pkg/errors"
-	"github.com/agentstation/starmap/pkg/sourcepayload"
 	"github.com/agentstation/starmap/pkg/sources"
 )
 
@@ -942,7 +943,7 @@ func parseDate(dateStr string) (*time.Time, error) {
 		}
 	}
 
-	return nil, errors.WrapParse("date", dateStr, errors.New("unsupported format"))
+	return nil, errors.WrapParse("date", dateStr, stderrors.New("unsupported format"))
 }
 
 // GetProvider returns a specific provider from the API data.

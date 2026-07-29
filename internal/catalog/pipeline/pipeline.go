@@ -8,13 +8,13 @@ import (
 
 	"github.com/google/uuid"
 
+	"github.com/agentstation/starmap/internal/catalog/reconciler"
 	"github.com/agentstation/starmap/internal/catalog/workspace"
 	"github.com/agentstation/starmap/pkg/catalogs"
-	"github.com/agentstation/starmap/pkg/constants"
+	"github.com/agentstation/starmap/internal/constants"
 	"github.com/agentstation/starmap/pkg/differ"
 	pkgerrors "github.com/agentstation/starmap/pkg/errors"
 	"github.com/agentstation/starmap/pkg/logging"
-	"github.com/agentstation/starmap/pkg/reconciler"
 	"github.com/agentstation/starmap/pkg/sources"
 	pkgsync "github.com/agentstation/starmap/pkg/sync"
 )

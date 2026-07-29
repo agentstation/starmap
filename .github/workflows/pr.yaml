@@ -77,7 +77,7 @@ jobs:
         run: |
           go test ./internal/sources/modelsdev -run '^$' -fuzz '^FuzzParseAPIDataNoPanic$' -fuzztime=10s
           go test ./pkg/catalogs -run '^$' -fuzz '^FuzzSourceExtensionNoPanic$' -fuzztime=10s
-          go test ./pkg/reconciler -run '^$' -fuzz '^FuzzReconciliationNoPanic$' -fuzztime=10s
+          go test ./internal/catalog/reconciler -run '^$' -fuzz '^FuzzReconciliationNoPanic$' -fuzztime=10s
 
       - name: Run migration and persistence fault fixtures
         run: |

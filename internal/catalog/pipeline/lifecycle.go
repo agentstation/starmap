@@ -16,99 +16,31 @@ import (
 )
 
 func observe(ctx context.Context, srcs []sources.Source, opts []sources.Option) ([]sources.Observation, error) {
-	logger := logging.FromContext(ctx)
 	if err := ctx.Err(); err != nil {
 		return nil, err
 	}
 
 	var wg sync.WaitGroup
-	var errs []error
-	var observations []sources.Observation
-	var errMutex sync.Mutex
-
+	results := make(chan sourceObservationResult, len(srcs))
 	for _, src := range srcs {
 		wg.Add(1)
 		go func(src sources.Source) {
 			defer wg.Done()
-
-			if ctx.Err() != nil {
-				logger.Debug().Str("source", string(src.ID())).Msg("Skipping observation - context cancelled")
-				return
-			}
-
-			logger.Info().Str("source", string(src.ID())).Msg("Observing")
-
-			observation, err := src.Observe(ctx, opts...)
-			if err != nil {
-				logger.Warn().Err(err).Str("source", string(src.ID())).Msg("Source observation had errors")
-
-				wrappedErr := pkgerrors.WrapResource("observe", "source", string(src.ID()), err)
-				errMutex.Lock()
-				errs = append(errs, wrappedErr)
-				errMutex.Unlock()
-
-				if observation.Catalog == nil {
-					failed, failedErr := failedSourceObservation(src.ID(), err)
-					if failedErr != nil {
-						errMutex.Lock()
-						errs = append(errs, failedErr)
-						errMutex.Unlock()
-						return
-					}
-					errMutex.Lock()
-					observations = append(observations, failed)
-					errMutex.Unlock()
-					return
-				}
-			}
-
-			if observation.Catalog == nil {
-				missingErr := &pkgerrors.ValidationError{
-					Field:   "observation.catalog",
-					Message: "source returned neither a catalog nor an error",
-				}
-				failed, failedErr := failedSourceObservation(src.ID(), missingErr)
-				errMutex.Lock()
-				errs = append(errs, pkgerrors.WrapResource("observe", "source", string(src.ID()), missingErr))
-				if failedErr != nil {
-					errs = append(errs, failedErr)
-				} else {
-					observations = append(observations, failed)
-				}
-				errMutex.Unlock()
-				return
-			}
-
-			if observation.Catalog != nil {
-				if validationErr := observation.Validate(); validationErr != nil {
-					errMutex.Lock()
-					errs = append(errs, pkgerrors.WrapResource("validate", "source observation", string(src.ID()), validationErr))
-					errMutex.Unlock()
-					return
-				}
-				if observation.SourceID != src.ID() {
-					errMutex.Lock()
-					errs = append(errs, &pkgerrors.ValidationError{
-						Field:   "observation.source",
-						Value:   observation.SourceID,
-						Message: "must match configured source " + src.ID().String(),
-					})
-					errMutex.Unlock()
-					return
-				}
-				errMutex.Lock()
-				observations = append(observations, observation)
-				errMutex.Unlock()
-				logger.Debug().
-					Str("source", string(src.ID())).
-					Int("providers", len(observation.Catalog.Providers().List())).
-					Int("models", len(observation.Catalog.Definitions())).
-					Msg("Added source catalog to reconciliation")
-			}
+			results <- observeSource(ctx, src, opts)
 		}(src)
 	}
-
 	wg.Wait()
+	close(results)
+
+	var errs []error
+	var observations []sources.Observation
+	for result := range results {
+		errs = append(errs, result.errs...)
+		if result.observation != nil {
+			observations = append(observations, *result.observation)
+		}
+	}
+
 	if err := ctx.Err(); err != nil {
 		errs = append(errs, err)
 	}
@@ -117,6 +49,83 @@ func observe(ctx context.Context, srcs []sources.Source, opts []sources.Option) 
 		return observations, errors.Join(errs...)
 	}
 	return observations, nil
+}
+
+type sourceObservationResult struct {
+	observation *sources.Observation
+	errs        []error
+}
+
+func observeSource(
+	ctx context.Context,
+	src sources.Source,
+	opts []sources.Option,
+) sourceObservationResult {
+	logger := logging.FromContext(ctx)
+	if ctx.Err() != nil {
+		logger.Debug().Str("source", string(src.ID())).Msg("Skipping observation - context cancelled")
+		return sourceObservationResult{}
+	}
+
+	logger.Info().Str("source", string(src.ID())).Msg("Observing")
+	observation, err := src.Observe(ctx, opts...)
+	result := sourceObservationResult{}
+	if err != nil {
+		logger.Warn().Err(err).Str("source", string(src.ID())).Msg("Source observation had errors")
+		result.errs = append(
+			result.errs,
+			pkgerrors.WrapResource("observe", "source", string(src.ID()), err),
+		)
+		if observation.Catalog == nil {
+			return failedObservationResult(src.ID(), err, result.errs)
+		}
+	}
+
+	if observation.Catalog == nil {
+		missingErr := &pkgerrors.ValidationError{
+			Field:   "observation.catalog",
+			Message: "source returned neither a catalog nor an error",
+		}
+		result.errs = append(
+			result.errs,
+			pkgerrors.WrapResource("observe", "source", string(src.ID()), missingErr),
+		)
+		return failedObservationResult(src.ID(), missingErr, result.errs)
+	}
+	if validationErr := observation.Validate(); validationErr != nil {
+		result.errs = append(result.errs, pkgerrors.WrapResource(
+			"validate", "source observation", string(src.ID()), validationErr,
+		))
+		return result
+	}
+	if observation.SourceID != src.ID() {
+		result.errs = append(result.errs, &pkgerrors.ValidationError{
+			Field:   "observation.source",
+			Value:   observation.SourceID,
+			Message: "must match configured source " + src.ID().String(),
+		})
+		return result
+	}
+
+	result.observation = &observation
+	logger.Debug().
+		Str("source", string(src.ID())).
+		Int("providers", len(observation.Catalog.Providers().List())).
+		Int("models", len(observation.Catalog.Definitions())).
+		Msg("Added source catalog to reconciliation")
+	return result
+}
+
+func failedObservationResult(
+	sourceID sources.ID,
+	cause error,
+	errs []error,
+) sourceObservationResult {
+	failed, err := failedSourceObservation(sourceID, cause)
+	if err != nil {
+		return sourceObservationResult{errs: append(errs, err)}
+	}
+	return sourceObservationResult{observation: &failed, errs: errs}
 }
 
 func failedSourceObservation(sourceID sources.ID, cause error) (sources.Observation, error) {

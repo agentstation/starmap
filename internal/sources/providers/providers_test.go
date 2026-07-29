@@ -10,11 +10,12 @@ import (
 	"testing"
 	"time"
 
+	"github.com/agentstation/starmap/internal/sourcepayload"
+	"github.com/agentstation/starmap/internal/testlogging"
 	"github.com/agentstation/starmap/pkg/catalogs"
-	"github.com/agentstation/starmap/pkg/constants"
+	"github.com/agentstation/starmap/internal/constants"
 	pkgerrors "github.com/agentstation/starmap/pkg/errors"
 	"github.com/agentstation/starmap/pkg/logging"
-	"github.com/agentstation/starmap/pkg/sourcepayload"
 	"github.com/agentstation/starmap/pkg/sources"
 )
 
@@ -289,7 +290,7 @@ func TestSourceObserveEmitsStructuredSourceProviderAndRunFields(t *testing.T) {
 	src := New(providerSet, WithClientFactory(func(*catalogs.Provider) (sources.ProviderClient, error) {
 		return fakeProviderClient{models: []catalogs.Model{{ID: "model-a"}}}, nil
 	}))
-	testLogger := logging.NewTestLogger(t)
+	testLogger := testlogging.New(t)
 	ctx := logging.WithLogger(context.Background(), testLogger.Logger)
 	ctx = logging.WithRunID(ctx, "provider-run-123")
 	if _, err := src.Observe(ctx); err != nil {

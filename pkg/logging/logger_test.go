@@ -3,15 +3,25 @@ package logging_test
 import (
 	"bytes"
 	"context"
+	"io"
+	"os"
+	"path/filepath"
 	"strings"
+	"sync"
 	"testing"
 
 	"github.com/rs/zerolog"
 
+	"github.com/agentstation/starmap/internal/testlogging"
 	"github.com/agentstation/starmap/pkg/logging"
 )
 
 func TestDefaultLogger(t *testing.T) {
+	original := logging.Default()
+	t.Cleanup(func() {
+		logging.SetDefault(original)
+	})
+
 	// Create a buffer to capture output
 	buf := &bytes.Buffer{}
 	logger := zerolog.New(buf).Level(zerolog.DebugLevel).With().Timestamp().Logger()
@@ -29,16 +39,41 @@ func TestDefaultLogger(t *testing.T) {
 	}
 }
 
+func TestDefaultLoggerConcurrentSwapAndRead(t *testing.T) {
+	original := logging.Default()
+	t.Cleanup(func() {
+		logging.SetDefault(original)
+	})
+
+	const (
+		workers    = 8
+		iterations = 100
+	)
+	var wg sync.WaitGroup
+	wg.Add(workers)
+	for range workers {
+		go func() {
+			defer wg.Done()
+			for range iterations {
+				logger := zerolog.New(io.Discard)
+				logging.SetDefault(logger)
+				logging.Info().Msg("concurrent logger read")
+				_ = logging.Default().GetLevel()
+			}
+		}()
+	}
+	wg.Wait()
+}
+
 func TestContextLogger(t *testing.T) {
 	// Create test logger
-	testLogger := logging.NewTestLogger(t)
+	testLogger := testlogging.New(t)
 
 	// Create context with logger
 	ctx := logging.WithLogger(context.Background(), testLogger.Logger)
 
 	// Add fields to context
 	ctx = logging.WithProvider(ctx, "test-provider")
-	ctx = logging.WithModel(ctx, "test-model")
 
 	// Get logger from context and log
 	logger := logging.FromContext(ctx)
@@ -46,7 +81,6 @@ func TestContextLogger(t *testing.T) {
 
 	// Verify output contains expected fields
 	testLogger.AssertContains(t, "test-provider")
-	testLogger.AssertContains(t, "test-model")
 	testLogger.AssertContains(t, "test message")
 }
 
@@ -86,7 +120,7 @@ func TestConfiguration(t *testing.T) {
 	for _, tc := range configs {
 		t.Run(tc.name, func(t *testing.T) {
 			buf := &bytes.Buffer{}
-			logger := logging.NewLoggerFromConfig(tc.config)
+			logger := logging.New(tc.config)
 			logger = logger.Output(buf)
 
 			logger.Debug().Msg("debug")
@@ -98,9 +132,38 @@ func TestConfiguration(t *testing.T) {
 	}
 }
 
+func TestNewOwnsNoProcessGlobalOrFileLifecycle(t *testing.T) {
+	originalLevel := zerolog.GlobalLevel()
+	t.Cleanup(func() {
+		zerolog.SetGlobalLevel(originalLevel)
+	})
+	zerolog.SetGlobalLevel(zerolog.ErrorLevel)
+
+	outputPath := filepath.Join(t.TempDir(), "starmap.log")
+	_ = logging.New(&logging.Config{
+		Level:  "debug",
+		Format: "json",
+		Output: outputPath,
+	})
+
+	if got := zerolog.GlobalLevel(); got != zerolog.ErrorLevel {
+		t.Fatalf("zerolog global level = %v, want %v", got, zerolog.ErrorLevel)
+	}
+	if _, err := os.Stat(outputPath); !os.IsNotExist(err) {
+		t.Fatalf("logger constructor created caller-unclosable file %q: %v", outputPath, err)
+	}
+
+	logger := logging.New(&logging.Config{
+		Level:  "info",
+		Format: "auto",
+		Output: "discard",
+	})
+	logger.Info().Msg("discarded")
+}
+
 func TestTestLogger(t *testing.T) {
 	// Test the test logger utility
-	tl := logging.NewTestLogger(t)
+	tl := testlogging.New(t)
 
 	tl.Logger.Info().Msg("message 1")
 	tl.Logger.Error().Err(nil).Msg("message 2")

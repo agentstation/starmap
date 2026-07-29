@@ -10,8 +10,8 @@ import (
 	"cloud.google.com/go/auth"
 	"google.golang.org/genai"
 
+	"github.com/agentstation/starmap/internal/sourcepayload"
 	"github.com/agentstation/starmap/pkg/catalogs"
-	"github.com/agentstation/starmap/pkg/sourcepayload"
 )
 
 type staticTokenProvider struct{}

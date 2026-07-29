@@ -9,12 +9,12 @@ import (
 
 func TestScheduledGenerationManifestChangesOnlyForCanonicalPayloadChange(t *testing.T) {
 	builder := catalogs.NewEmpty()
-	author := catalogs.TestAuthor(t)
+	author := testAuthor()
 	if err := builder.SetAuthor(*author); err != nil {
 		t.Fatalf("SetAuthor: %v", err)
 	}
-	provider := catalogs.TestProvider(t)
-	model := catalogs.TestModel(t)
+	provider := testProvider()
+	model := testModel()
 	model.ModelRef = catalogs.AuthoredModelID(author.ID, model.ID)
 	if err := builder.SetAuthorModel(author.ID, catalogs.Model{
 		ID:      model.ID,
@@ -61,5 +61,29 @@ func TestScheduledGenerationManifestChangesOnlyForCanonicalPayloadChange(t *test
 	if !changedReport.Changed || changed.GenerationID == first.GenerationID ||
 		changed.Payload.Checksum == first.Payload.Checksum || changed.GeneratedAt != firstTime.Add(24*time.Hour) {
 		t.Fatalf("changed report/manifest = %#v/%#v", changedReport, changed)
+	}
+}
+
+func testAuthor() *catalogs.Author {
+	return &catalogs.Author{ID: "test-author", Name: "Test Author"}
+}
+
+func testProvider() *catalogs.Provider {
+	required := true
+	return &catalogs.Provider{
+		ID:   "test-provider",
+		Name: "Test Provider",
+		Catalog: &catalogs.ProviderCatalog{
+			Endpoint: catalogs.ProviderEndpoint{AuthRequired: required},
+			Authors:  []catalogs.AuthorID{"test-author"},
+		},
+	}
+}
+
+func testModel() *catalogs.Model {
+	return &catalogs.Model{
+		ID:          "test-model",
+		Name:        "Test Model",
+		Description: "A test model for unit tests",
 	}
 }

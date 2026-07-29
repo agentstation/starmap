@@ -9,10 +9,6 @@ import (
 	"strings"
 )
 
-// New returns an error that formats as the given text.
-// It's an alias for the standard library errors.New for convenience.
-var New = errors.New
-
 // Common sentinel errors for the starmap system.
 var (
 	// ErrNotFound indicates that a requested resource was not found.
@@ -227,37 +223,6 @@ func NewConfigError(component, message string, err error) *ConfigError {
 		Component: component,
 		Message:   message,
 		Err:       err,
-	}
-}
-
-// MergeError represents an error during catalog merge operations.
-type MergeError struct {
-	Source      string
-	Target      string
-	ConflictIDs []string
-	Err         error
-}
-
-// Error implements the error interface.
-func (e *MergeError) Error() string {
-	if len(e.ConflictIDs) > 0 {
-		return fmt.Sprintf("merge conflict between %s and %s for IDs: %v", e.Source, e.Target, e.ConflictIDs)
-	}
-	return fmt.Sprintf("merge error between %s and %s: %v", e.Source, e.Target, e.Err)
-}
-
-// Unwrap implements errors.Unwrap.
-func (e *MergeError) Unwrap() error {
-	return e.Err
-}
-
-// NewMergeError creates a new MergeError.
-func NewMergeError(source, target string, conflictIDs []string, err error) *MergeError {
-	return &MergeError{
-		Source:      source,
-		Target:      target,
-		ConflictIDs: conflictIDs,
-		Err:         err,
 	}
 }
 

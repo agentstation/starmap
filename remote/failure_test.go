@@ -32,7 +32,7 @@ func TestSubscriberRejectsUnauthorizedStreamWithoutRetryOrPolling(t *testing.T) 
 			switch request.URL.Path[len("/api/v1"):] {
 			case catalogremote.ManifestPath:
 				writeSubscriberManifest(t, writer, generation)
-			case catalogremote.SnapshotPath(generation.Manifest.GenerationID):
+			case catalogremote.PayloadPath(generation.Manifest.GenerationID):
 				writer.Header().Set(
 					"Content-Type",
 					catalogs.CatalogPayloadMediaType,
@@ -95,7 +95,7 @@ func TestSubscriberStopsAfterUnauthorizedReconnectAndRejectsRestart(t *testing.T
 			switch request.URL.Path[len("/api/v1"):] {
 			case catalogremote.ManifestPath:
 				writeSubscriberManifest(t, writer, generation)
-			case catalogremote.SnapshotPath(generation.Manifest.GenerationID):
+			case catalogremote.PayloadPath(generation.Manifest.GenerationID):
 				writer.Header().Set(
 					"Content-Type",
 					catalogs.CatalogPayloadMediaType,
@@ -179,7 +179,7 @@ func TestSubscriberStopsWhenFallbackPollBecomesUnauthorized(t *testing.T) {
 					return
 				}
 				writeSubscriberManifest(t, writer, generation)
-			case catalogremote.SnapshotPath(generation.Manifest.GenerationID):
+			case catalogremote.PayloadPath(generation.Manifest.GenerationID):
 				writer.Header().Set(
 					"Content-Type",
 					catalogs.CatalogPayloadMediaType,
@@ -297,7 +297,7 @@ func TestSubscriberOutOfOrderEventsCannotRegressCatalog(t *testing.T) {
 				case catalogremote.GenerationManifestPath(id):
 					writeSubscriberManifest(t, writer, generation)
 					return
-				case catalogremote.SnapshotPath(id):
+				case catalogremote.PayloadPath(id):
 					writer.Header().Set(
 						"Content-Type",
 						catalogs.CatalogPayloadMediaType,

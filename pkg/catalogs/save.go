@@ -3,9 +3,8 @@ package catalogs
 import (
 	"os"
 	"path/filepath"
-	"strings"
 
-	"github.com/agentstation/starmap/pkg/constants"
+	"github.com/agentstation/starmap/internal/constants"
 	"github.com/agentstation/starmap/pkg/errors"
 	"github.com/agentstation/starmap/pkg/logging"
 )
@@ -54,10 +53,20 @@ func (cat *Builder) saveTo(basePath string) error {
 		return os.WriteFile(fullPath, data, constants.FilePermissions)
 	}
 
-	// Save providers.yaml
+	if err := cat.saveIndexFiles(writeFile); err != nil {
+		return err
+	}
+	if err := cat.saveProviderModels(writeFile); err != nil {
+		return err
+	}
+	return cat.saveAuthoredModels(writeFile)
+}
+
+type catalogFileWriter func(string, []byte) error
+
+func (cat *Builder) saveIndexFiles(writeFile catalogFileWriter) error {
 	providers := cat.providers.List()
 	if len(providers) > 0 {
-		// Use FormatYAML if available
 		yamlData, err := cat.providers.EncodeYAML()
 		if err != nil {
 			return err
@@ -67,10 +76,8 @@ func (cat *Builder) saveTo(basePath string) error {
 		}
 	}
 
-	// Save authors.yaml
 	authors := cat.authors.List()
 	if len(authors) > 0 {
-		// Use FormatYAML for nicely formatted output with comments and sections
 		yamlData, err := cat.authors.EncodeYAML()
 		if err != nil {
 			return err
@@ -80,7 +87,6 @@ func (cat *Builder) saveTo(basePath string) error {
 		}
 	}
 
-	// Save provenance.yaml
 	if cat.provenance.Len() > 0 {
 		yamlData, err := cat.provenance.EncodeYAML()
 		if err != nil {
@@ -90,39 +96,35 @@ func (cat *Builder) saveTo(basePath string) error {
 			return errors.WrapIO("write", "provenance.yaml", err)
 		}
 	}
+	return nil
+}
 
-	// Save model files to providers/<provider>/models/<model>.yaml or providers/<provider>/models/<org>/<model>.yaml
+func (cat *Builder) saveProviderModels(writeFile catalogFileWriter) error {
 	for _, provider := range cat.providers.List() {
-		if len(provider.Models) > 0 {
-			// Debug: log provider with models
-			logging.Debug().
-				Str("provider", string(provider.ID)).
-				Int("model_count", len(provider.Models)).
-				Msg("Saving provider models")
-
-			for _, model := range provider.Models {
-				var modelPath string
-				if strings.Contains(model.ID, "/") {
-					// Hierarchical ID like "meta-llama/llama-3" -> providers/groq/models/meta-llama/llama-3.yaml
-					modelPath = filepath.Join("providers", string(provider.ID), "models", model.ID+".yaml")
-				} else {
-					// Simple ID like "gpt-4" -> providers/openai/models/gpt-4.yaml
-					modelPath = filepath.Join("providers", string(provider.ID), "models", model.ID+".yaml")
-				}
-
-				// Use FormatYAML for nicely formatted output with comments
-				formatted, err := model.EncodeYAML()
-				if err != nil {
-					return err
-				}
-				data := []byte(formatted)
-				if err := writeFile(modelPath, data); err != nil {
-					return errors.WrapIO("write", "model "+model.ID, err)
-				}
+		if len(provider.Models) == 0 {
+			continue
+		}
+		logging.Debug().
+			Str("provider", string(provider.ID)).
+			Int("model_count", len(provider.Models)).
+			Msg("Saving provider models")
+		for _, model := range provider.Models {
+			modelPath := filepath.Join(
+				"providers", string(provider.ID), "models", model.ID+".yaml",
+			)
+			formatted, err := model.EncodeYAML()
+			if err != nil {
+				return err
+			}
+			if err := writeFile(modelPath, []byte(formatted)); err != nil {
+				return errors.WrapIO("write", "model "+model.ID, err)
 			}
 		}
 	}
+	return nil
+}
 
+func (cat *Builder) saveAuthoredModels(writeFile catalogFileWriter) error {
 	// Save provider-independent model records under their owning author. Unlike
 	// the removed denormalized view, these records never copy provider price,
 	// limits, status, modes, or provider extensions.
@@ -141,7 +143,6 @@ func (cat *Builder) saveTo(basePath string) error {
 			return errors.WrapIO("write", "authored model "+string(record.ID()), err)
 		}
 	}
-
 	return nil
 }
 

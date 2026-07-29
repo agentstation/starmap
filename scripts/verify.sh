@@ -74,10 +74,10 @@ check_critical_coverage() {
 	check_coverage ./internal/server/response 95
 	check_coverage ./internal/server/sse 90
 	check_coverage ./internal/transport 40
-	check_coverage ./pkg/authority 90
+	check_coverage ./internal/catalog/authority 90
 	check_coverage ./pkg/catalogs 55
 	check_coverage ./pkg/errors 80
-	check_coverage ./pkg/reconciler 75
+	check_coverage ./internal/catalog/reconciler 75
 	check_coverage ./pkg/sources 35
 }
 
@@ -89,6 +89,7 @@ fi
 
 run go test ./...
 run make test-pure-go
+run make test-file-sizes
 run env CGO_ENABLED=1 go test ./... -race -short -timeout=20m
 run go vet ./...
 run ./scripts/verify-catalog-performance.sh

@@ -8,13 +8,12 @@ import (
 
 	"github.com/agentstation/starmap"
 	"github.com/agentstation/starmap/pkg/catalogs"
-	"github.com/agentstation/starmap/pkg/catalogstore"
 )
 
 // Publish proves that a Go consumer can compose durable catalog mutation
 // without importing source acquisition, provider clients, or server code.
 func Publish(ctx context.Context) error {
-	store := catalogstore.NewMemory()
+	store := newStarportStore()
 	sm, err := starmap.NewContext(ctx, starmap.WithCatalogStore(store))
 	if err != nil {
 		return err

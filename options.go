@@ -36,7 +36,9 @@ func defaults() *options {
 
 // WithCatalogStore configures the writable generation store used by non-dry
 // sync, manual, remote, and scheduled catalog updates. Read-only access and dry
-// runs do not require a store.
+// runs do not require a store. Starmap provides memory, filesystem, and
+// conditional object-storage implementations; embedding applications own and
+// inject any database-backed implementation.
 func WithCatalogStore(store catalogstore.Store) Option {
 	return func(o *options) error {
 		if isNilCatalogStore(store) {

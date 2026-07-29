@@ -4,13 +4,10 @@ import (
 	"context"
 	"net/http"
 
+	"github.com/agentstation/starmap/internal/constants"
 	"github.com/agentstation/starmap/pkg/catalogs"
-	"github.com/agentstation/starmap/pkg/constants"
 	"github.com/agentstation/starmap/pkg/errors"
 )
-
-// DefaultHTTPTimeout is the default timeout for HTTP requests.
-var DefaultHTTPTimeout = constants.DefaultHTTPTimeout
 
 // Client provides HTTP client functionality with authentication.
 type Client struct {
@@ -21,7 +18,7 @@ type Client struct {
 // New creates a new transport client with the specified authenticator.
 func New(provider *catalogs.Provider) *Client {
 	return &Client{
-		http: &http.Client{Timeout: DefaultHTTPTimeout},
+		http: &http.Client{Timeout: constants.DefaultHTTPTimeout},
 		auth: newAuthenticator(provider),
 	}
 }

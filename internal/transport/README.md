@@ -14,7 +14,6 @@ import "github.com/agentstation/starmap/internal/transport"
 
 ## Index
 
-- [Variables](<#variables>)
 - [func DecodeResponse\(resp \*http.Response, target any\) error](<#DecodeResponse>)
 - [type Authenticator](<#Authenticator>)
 - [type BearerAuth](<#BearerAuth>)
@@ -38,14 +37,6 @@ import "github.com/agentstation/starmap/internal/transport"
   - [func \(rb \*RequestBuilder\) GetBaseURL\(\) string](<#RequestBuilder.GetBaseURL>)
   - [func \(rb \*RequestBuilder\) GetModelsURL\(defaultURL string\) string](<#RequestBuilder.GetModelsURL>)
 
-
-## Variables
-
-<a name="DefaultHTTPTimeout"></a>DefaultHTTPTimeout is the default timeout for HTTP requests.
-
-```go
-var DefaultHTTPTimeout = constants.DefaultHTTPTimeout
-```
 
 <a name="DecodeResponse"></a>
 ## func [DecodeResponse](<https://github.com/agentstation/starmap/blob/main/internal/transport/request.go#L54>)
@@ -86,7 +77,7 @@ func (a *BearerAuth) Apply(req *http.Request, apiKey string)
 Apply implements the Authenticator interface for BearerAuth.
 
 <a name="Client"></a>
-## type [Client](<https://github.com/agentstation/starmap/blob/main/internal/transport/client.go#L16-L19>)
+## type [Client](<https://github.com/agentstation/starmap/blob/main/internal/transport/client.go#L13-L16>)
 
 Client provides HTTP client functionality with authentication.
 
@@ -97,7 +88,7 @@ type Client struct {
 ```
 
 <a name="New"></a>
-### func [New](<https://github.com/agentstation/starmap/blob/main/internal/transport/client.go#L22>)
+### func [New](<https://github.com/agentstation/starmap/blob/main/internal/transport/client.go#L19>)
 
 ```go
 func New(provider *catalogs.Provider) *Client
@@ -106,7 +97,7 @@ func New(provider *catalogs.Provider) *Client
 New creates a new transport client with the specified authenticator.
 
 <a name="Client.Do"></a>
-### func \(\*Client\) [Do](<https://github.com/agentstation/starmap/blob/main/internal/transport/client.go#L30>)
+### func \(\*Client\) [Do](<https://github.com/agentstation/starmap/blob/main/internal/transport/client.go#L27>)
 
 ```go
 func (c *Client) Do(req *http.Request, provider *catalogs.Provider) (*http.Response, error)
@@ -115,7 +106,7 @@ func (c *Client) Do(req *http.Request, provider *catalogs.Provider) (*http.Respo
 Do performs an HTTP request with authentication applied.
 
 <a name="Client.DoWithContext"></a>
-### func \(\*Client\) [DoWithContext](<https://github.com/agentstation/starmap/blob/main/internal/transport/client.go#L36>)
+### func \(\*Client\) [DoWithContext](<https://github.com/agentstation/starmap/blob/main/internal/transport/client.go#L33>)
 
 ```go
 func (c *Client) DoWithContext(ctx context.Context, req *http.Request, provider *catalogs.Provider) (*http.Response, error)
@@ -124,7 +115,7 @@ func (c *Client) DoWithContext(ctx context.Context, req *http.Request, provider 
 DoWithContext performs an HTTP request with authentication applied and context support. The provided context will be used for the request, overriding any existing context in req.
 
 <a name="Client.Get"></a>
-### func \(\*Client\) [Get](<https://github.com/agentstation/starmap/blob/main/internal/transport/client.go#L70>)
+### func \(\*Client\) [Get](<https://github.com/agentstation/starmap/blob/main/internal/transport/client.go#L67>)
 
 ```go
 func (c *Client) Get(ctx context.Context, url string, provider *catalogs.Provider) (*http.Response, error)

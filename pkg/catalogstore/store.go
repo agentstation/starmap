@@ -42,6 +42,11 @@ func (g Generation) Validate() error {
 // empty expected ID means that no current generation may exist. Implementations
 // must validate and persist the complete generation before changing Current.
 // Repeating an already-successful identical commit is idempotent.
+//
+// Starmap provides memory, filesystem, and conditional object-storage
+// implementations. Embedding applications own and inject any database-backed
+// implementation, including its driver, schema, migrations, credentials,
+// connection pool, backups, and lifecycle.
 type Store interface {
 	Current(context.Context) (Generation, error)
 	Get(context.Context, string) (Generation, error)

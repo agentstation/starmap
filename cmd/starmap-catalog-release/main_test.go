@@ -9,7 +9,7 @@ import (
 	"testing"
 
 	"github.com/agentstation/starmap/pkg/catalogartifact"
-	"github.com/agentstation/starmap/pkg/constants"
+	"github.com/agentstation/starmap/internal/constants"
 )
 
 func TestArtifactReleaseCommandStagesImmutableEmbeddedGeneration(t *testing.T) {

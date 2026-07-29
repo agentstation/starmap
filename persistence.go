@@ -4,7 +4,7 @@ import (
 	"context"
 
 	"github.com/agentstation/starmap/internal/catalog/workspace"
-	"github.com/agentstation/starmap/pkg/constants"
+	"github.com/agentstation/starmap/internal/constants"
 	"github.com/agentstation/starmap/pkg/errors"
 )
 

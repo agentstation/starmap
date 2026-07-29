@@ -12,7 +12,7 @@ import (
 	"github.com/agentstation/starmap/internal/providers/google"
 	"github.com/agentstation/starmap/internal/providers/openai"
 	"github.com/agentstation/starmap/pkg/catalogs"
-	"github.com/agentstation/starmap/pkg/constants"
+	"github.com/agentstation/starmap/internal/constants"
 	pkgerrors "github.com/agentstation/starmap/pkg/errors"
 )
 

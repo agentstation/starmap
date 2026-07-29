@@ -4,10 +4,10 @@ import (
 	"context"
 	"testing"
 
+	"github.com/agentstation/starmap/internal/catalog/reconciler"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/differ"
 	"github.com/agentstation/starmap/pkg/provenance"
-	"github.com/agentstation/starmap/pkg/reconciler"
 	"github.com/agentstation/starmap/pkg/sources"
 )
 

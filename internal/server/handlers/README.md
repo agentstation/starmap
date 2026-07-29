@@ -39,7 +39,7 @@ Package handlers provides HTTP request handlers for the Starmap API.
   - [func New\(app application, cache \*cache.Cache, sseBroadcaster \*sse.Broadcaster, logger \*zerolog.Logger, startTime time.Time\) \*Handlers](<#New>)
   - [func \(h \*Handlers\) HandleCatalogGenerationManifest\(writer http.ResponseWriter, request \*http.Request, generationID string\)](<#Handlers.HandleCatalogGenerationManifest>)
   - [func \(h \*Handlers\) HandleCatalogManifest\(writer http.ResponseWriter, request \*http.Request\)](<#Handlers.HandleCatalogManifest>)
-  - [func \(h \*Handlers\) HandleCatalogSnapshot\(writer http.ResponseWriter, request \*http.Request, generationID string\)](<#Handlers.HandleCatalogSnapshot>)
+  - [func \(h \*Handlers\) HandleCatalogPayload\(writer http.ResponseWriter, request \*http.Request, generationID string\)](<#Handlers.HandleCatalogPayload>)
   - [func \(h \*Handlers\) HandleGetModel\(w http.ResponseWriter, \_ \*http.Request, modelID string\)](<#Handlers.HandleGetModel>)
   - [func \(h \*Handlers\) HandleGetProvider\(w http.ResponseWriter, \_ \*http.Request, providerID string\)](<#Handlers.HandleGetProvider>)
   - [func \(h \*Handlers\) HandleGetProviderModels\(w http.ResponseWriter, \_ \*http.Request, providerID string\)](<#Handlers.HandleGetProviderModels>)
@@ -110,14 +110,14 @@ func (h *Handlers) HandleCatalogManifest(writer http.ResponseWriter, request *ht
 
 HandleCatalogManifest serves the current strict generation manifest.
 
-<a name="Handlers.HandleCatalogSnapshot"></a>
-### func \(\*Handlers\) [HandleCatalogSnapshot](<https://github.com/agentstation/starmap/blob/main/internal/server/handlers/catalog.go#L81>)
+<a name="Handlers.HandleCatalogPayload"></a>
+### func \(\*Handlers\) [HandleCatalogPayload](<https://github.com/agentstation/starmap/blob/main/internal/server/handlers/catalog.go#L81>)
 
 ```go
-func (h *Handlers) HandleCatalogSnapshot(writer http.ResponseWriter, request *http.Request, generationID string)
+func (h *Handlers) HandleCatalogPayload(writer http.ResponseWriter, request *http.Request, generationID string)
 ```
 
-HandleCatalogSnapshot serves an immutable canonical payload by generation ID.
+HandleCatalogPayload serves an immutable canonical payload by generation ID.
 
 <a name="Handlers.HandleGetModel"></a>
 ### func \(\*Handlers\) [HandleGetModel](<https://github.com/agentstation/starmap/blob/main/internal/server/handlers/models.go#L105>)

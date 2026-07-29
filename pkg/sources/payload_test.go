@@ -4,7 +4,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/agentstation/starmap/pkg/constants"
+	"github.com/agentstation/starmap/internal/constants"
 )
 
 func TestPayloadLimitBytesAndNesting(t *testing.T) {
