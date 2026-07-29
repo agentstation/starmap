@@ -12,7 +12,7 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/agentstation/starmap/internal/application"
+	"github.com/agentstation/starmap/acquisition"
 	"github.com/agentstation/starmap/internal/cli/emoji"
 	"github.com/agentstation/starmap/internal/cli/format"
 	"github.com/agentstation/starmap/internal/cli/provider"
@@ -28,7 +28,7 @@ const (
 )
 
 // NewFetchCommand creates the fetch subcommand for fetching models from provider APIs.
-func NewFetchCommand(app application.Application) *cobra.Command {
+func NewFetchCommand(app application) *cobra.Command {
 	var (
 		timeoutFlag int
 		rawFlag     bool
@@ -73,7 +73,7 @@ func NewFetchCommand(app application.Application) *cobra.Command {
 }
 
 // fetchProviderModels fetches models from a specific provider using app context.
-func fetchProviderModels(cmd *cobra.Command, app application.Application, providerID string, timeout int, quiet bool, raw bool, stats bool) error {
+func fetchProviderModels(cmd *cobra.Command, app application, providerID string, timeout int, quiet bool, raw bool, stats bool) error {
 	// Get context from command
 	ctx := cmd.Context()
 	// Create context with timeout
@@ -95,7 +95,7 @@ func fetchProviderModels(cmd *cobra.Command, app application.Application, provid
 	}
 
 	// Use provider fetcher
-	fetcher := sources.NewProviderFetcher(cat.Providers())
+	fetcher := acquisition.NewProviderFetcher(cat.Providers())
 
 	// Handle raw response mode
 	if raw {
@@ -217,14 +217,14 @@ func fetchProviderModels(cmd *cobra.Command, app application.Application, provid
 }
 
 // fetchAllProviders fetches models from all configured providers concurrently using app context.
-func fetchAllProviders(ctx context.Context, app application.Application, timeout int, quiet bool, raw bool, stats bool) error {
+func fetchAllProviders(ctx context.Context, app application, timeout int, quiet bool, raw bool, stats bool) error {
 	cat, err := app.Catalog()
 	if err != nil {
 		return err
 	}
 
 	providers := cat.Providers().List()
-	fetcher := sources.NewProviderFetcher(cat.Providers())
+	fetcher := acquisition.NewProviderFetcher(cat.Providers())
 
 	// Filter to only providers with clients
 	// Convert to pointer slice for compatibility
@@ -342,7 +342,7 @@ func fetchAllProviders(ctx context.Context, app application.Application, timeout
 }
 
 // fetchAllProvidersRaw fetches raw responses from all configured providers concurrently.
-func fetchAllProvidersRaw(ctx context.Context, app application.Application, validProviders []*catalogs.Provider, fetcher *sources.ProviderFetcher, timeout int, quiet bool, stats bool) error {
+func fetchAllProvidersRaw(ctx context.Context, app application, validProviders []*catalogs.Provider, fetcher *sources.ProviderFetcher, timeout int, quiet bool, stats bool) error {
 	type rawResult struct {
 		provider string
 		rawData  json.RawMessage

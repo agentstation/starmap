@@ -38,7 +38,6 @@ catalog source.
 Provider credentials are injected only into the refresh step. The workflow uses
 noninteractive dependency policy, and any refresh, typed validation, budget,
 attestation, identity verification, or release command failure stops the run.
-Deployment-owned `pkg/catalogscheduler` adds a named publisher lease beyond the
-repository concurrency group. P9 later adds durable run records, retry
-classification, and per-source freshness policy; those concerns must not be
-inferred from this publication workflow alone.
+Deployments that invoke acquisition on their own cadence own any cross-process
+lease, retry policy, and durable run records above the explicit operation.
+Those concerns must not be inferred from this repository publication workflow.

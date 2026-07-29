@@ -1135,7 +1135,8 @@ components:
           description: Human-readable description
           type: string
         duration:
-          $ref: '#/components/schemas/time.Duration'
+          description: nil = forever, 0 = immediate deletion
+          type: integer
         type:
           $ref: '#/components/schemas/catalogs.ProviderRetentionType'
       type: object
@@ -1316,6 +1317,210 @@ components:
           type: array
           uniqueItems: false
       type: object
+    openrouter.Architecture:
+      properties:
+        input_modalities:
+          items:
+            type: string
+          type: array
+          uniqueItems: false
+        instruct_type:
+          type: string
+        modality:
+          type: string
+        output_modalities:
+          items:
+            type: string
+          type: array
+          uniqueItems: false
+        tokenizer:
+          type: string
+      type: object
+    openrouter.Endpoint:
+      properties:
+        context_length:
+          type: integer
+        latency_last_30m:
+          $ref: '#/components/schemas/openrouter.Percentiles'
+        max_completion_tokens:
+          type: integer
+        max_prompt_tokens:
+          type: integer
+        model_id:
+          type: string
+        model_name:
+          type: string
+        name:
+          type: string
+        pricing:
+          $ref: '#/components/schemas/openrouter.Pricing'
+        provider_name:
+          type: string
+        quantization:
+          type: string
+        status:
+          type: integer
+        supported_parameters:
+          items:
+            type: string
+          type: array
+          uniqueItems: false
+        supports_implicit_caching:
+          type: boolean
+        tag:
+          type: string
+        throughput_last_30m:
+          $ref: '#/components/schemas/openrouter.Percentiles'
+        uptime_last_1d:
+          type: number
+        uptime_last_5m:
+          type: number
+        uptime_last_30m:
+          type: number
+      type: object
+    openrouter.Endpoints:
+      properties:
+        architecture:
+          $ref: '#/components/schemas/openrouter.Architecture'
+        created:
+          type: integer
+        description:
+          type: string
+        endpoints:
+          items:
+            $ref: '#/components/schemas/openrouter.Endpoint'
+          type: array
+          uniqueItems: false
+        id:
+          type: string
+        name:
+          type: string
+      type: object
+    openrouter.EndpointsEnvelope:
+      properties:
+        data:
+          $ref: '#/components/schemas/openrouter.Endpoints'
+      type: object
+    openrouter.Error:
+      properties:
+        code:
+          type: integer
+        message:
+          type: string
+      type: object
+    openrouter.ErrorEnvelope:
+      properties:
+        error:
+          $ref: '#/components/schemas/openrouter.Error'
+      type: object
+    openrouter.Model:
+      properties:
+        architecture:
+          $ref: '#/components/schemas/openrouter.Architecture'
+        canonical_slug:
+          type: string
+        context_length:
+          type: integer
+        created:
+          type: integer
+        default_parameters:
+          additionalProperties: {}
+          type: object
+        description:
+          type: string
+        expiration_date:
+          type: string
+        id:
+          type: string
+        knowledge_cutoff:
+          type: string
+        links:
+          $ref: '#/components/schemas/openrouter.ModelLinks'
+        name:
+          type: string
+        per_request_limits:
+          additionalProperties: {}
+          type: object
+        pricing:
+          $ref: '#/components/schemas/openrouter.Pricing'
+        reasoning:
+          $ref: '#/components/schemas/openrouter.Reasoning'
+        supported_parameters:
+          items:
+            type: string
+          type: array
+          uniqueItems: false
+        supported_voices:
+          items:
+            type: string
+          type: array
+          uniqueItems: false
+        top_provider:
+          $ref: '#/components/schemas/openrouter.TopProvider'
+      type: object
+    openrouter.ModelEnvelope:
+      properties:
+        data:
+          $ref: '#/components/schemas/openrouter.Model'
+      type: object
+    openrouter.ModelLinks:
+      properties:
+        details:
+          type: string
+      type: object
+    openrouter.Percentiles:
+      properties:
+        p50:
+          type: number
+        p75:
+          type: number
+        p90:
+          type: number
+        p99:
+          type: number
+      type: object
+    openrouter.Pricing:
+      properties:
+        completion:
+          type: string
+        image:
+          type: string
+        input_cache_read:
+          type: string
+        input_cache_write:
+          type: string
+        internal_reasoning:
+          type: string
+        prompt:
+          type: string
+        request:
+          type: string
+        web_search:
+          type: string
+      type: object
+    openrouter.Reasoning:
+      properties:
+        default_effort:
+          type: string
+        default_enabled:
+          type: boolean
+        mandatory:
+          type: boolean
+        supported_efforts:
+          items:
+            type: string
+          type: array
+          uniqueItems: false
+      type: object
+    openrouter.TopProvider:
+      properties:
+        context_length:
+          type: integer
+        is_moderated:
+          type: boolean
+        max_completion_tokens:
+          type: integer
+      type: object
     response.Error:
       properties:
         code:
@@ -1334,18 +1539,6 @@ components:
         error:
           $ref: '#/components/schemas/response.Error'
       type: object
-    time.Duration:
-      description: nil = forever, 0 = immediate deletion
-      type: integer
-      x-enum-varnames:
-      - minDuration
-      - maxDuration
-      - Nanosecond
-      - Microsecond
-      - Millisecond
-      - Second
-      - Minute
-      - Hour
   securitySchemes:
     ApiKeyAuth:
       description: API key for authentication (optional, configurable)
@@ -1360,12 +1553,12 @@ info:
     name: Starmap Project
     url: https://github.com/agentstation/starmap
   description: |-
-    REST API for the Starmap AI model catalog with real-time updates via WebSocket and SSE.
+    REST API for the Starmap AI model catalog with reactive catalog publication updates over SSE.
 
     Features:
     - Comprehensive model and provider queries
     - Advanced filtering and search
-    - Real-time updates via WebSocket and Server-Sent Events
+    - Heartbeat-enabled catalog publication updates via Server-Sent Events
     - In-memory caching for performance
     - Rate limiting and authentication support
   license:
@@ -1400,6 +1593,52 @@ paths:
       summary: Health check
       tags:
       - health
+  /api/v1/model/{author}/{slug}:
+    get:
+      description: Resolve a canonical model, known alias, or configured variant
+      parameters:
+      - description: Canonical author ID or alias
+        in: path
+        name: author
+        required: true
+        schema:
+          type: string
+      - description: Model slug or configured variant
+        in: path
+        name: slug
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/openrouter.ModelEnvelope'
+          description: OK
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/openrouter.ErrorEnvelope'
+          description: Unauthorized
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/openrouter.ErrorEnvelope'
+          description: Not Found
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/openrouter.ErrorEnvelope'
+          description: Internal Server Error
+      security:
+      - ApiKeyAuth: []
+      summary: Get an OpenRouter-compatible model by author and slug
+      tags:
+      - openrouter
   /api/v1/models:
     get:
       description: List all models with optional filtering
@@ -1545,6 +1784,52 @@ paths:
       summary: List models
       tags:
       - models
+  /api/v1/models/{author}/{slug}/endpoints:
+    get:
+      description: Project every eligible exact provider offering for one model
+      parameters:
+      - description: Canonical author ID or alias
+        in: path
+        name: author
+        required: true
+        schema:
+          type: string
+      - description: Model slug or configured variant
+        in: path
+        name: slug
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/openrouter.EndpointsEnvelope'
+          description: OK
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/openrouter.ErrorEnvelope'
+          description: Unauthorized
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/openrouter.ErrorEnvelope'
+          description: Not Found
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/openrouter.ErrorEnvelope'
+          description: Internal Server Error
+      security:
+      - ApiKeyAuth: []
+      summary: List OpenRouter-compatible provider endpoints for a model
+      tags:
+      - openrouter
   /api/v1/models/{id}:
     get:
       description: Retrieve detailed information about a specific model
@@ -1689,42 +1974,6 @@ paths:
       summary: Get OpenAPI specification (YAML)
       tags:
       - meta
-  /api/v1/operations:
-    get:
-      description: Get current generation, source freshness, last synchronization,
-        degraded sources, and scheduler state
-      responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                allOf:
-                - $ref: '#/components/schemas/error'
-                properties:
-                  data:
-                    type: object
-                  error:
-                    $ref: '#/components/schemas/response.Error'
-                type: object
-          description: OK
-        "500":
-          content:
-            application/json:
-              schema:
-                allOf:
-                - $ref: '#/components/schemas/error'
-                properties:
-                  data:
-                    type: object
-                  error:
-                    $ref: '#/components/schemas/response.Error'
-                type: object
-          description: Internal Server Error
-      security:
-      - ApiKeyAuth: []
-      summary: Catalog operational state
-      tags:
-      - admin
   /api/v1/providers:
     get:
       description: List all providers
@@ -2017,7 +2266,7 @@ paths:
       - admin
   /api/v1/updates/stream:
     get:
-      description: Server-Sent Events stream for catalog change notifications
+      description: Heartbeat-enabled stream of post-commit catalog publication hints
       responses:
         "200":
           content:
@@ -2026,15 +2275,6 @@ paths:
                 type: string
           description: Event stream
       summary: SSE updates stream
-      tags:
-      - updates
-  /api/v1/updates/ws:
-    get:
-      description: WebSocket connection for real-time catalog updates
-      responses:
-        "101":
-          description: Switching Protocols
-      summary: WebSocket updates
       tags:
       - updates
 servers:

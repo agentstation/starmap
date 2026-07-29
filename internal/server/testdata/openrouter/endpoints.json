@@ -1,0 +1,34 @@
+{
+  "data": {
+    "architecture": {
+      "input_modalities": ["text"],
+      "instruct_type": null,
+      "modality": "text->text",
+      "output_modalities": ["text"],
+      "tokenizer": "Other"
+    },
+    "created": 0,
+    "description": "",
+    "endpoints": [
+      {
+        "context_length": null,
+        "max_completion_tokens": null,
+        "max_prompt_tokens": null,
+        "model_id": "provider/model-v1",
+        "model_name": "Model",
+        "name": "Provider | provider/model-v1",
+        "pricing": {
+          "prompt": "0.000001"
+        },
+        "provider_name": "Provider",
+        "quantization": "unknown",
+        "status": 0,
+        "supported_parameters": ["temperature"],
+        "supports_implicit_caching": false,
+        "tag": "provider"
+      }
+    ],
+    "id": "lab/model",
+    "name": "Model"
+  }
+}

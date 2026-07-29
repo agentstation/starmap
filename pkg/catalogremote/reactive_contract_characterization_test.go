@@ -11,10 +11,9 @@ import (
 )
 
 // TestF017CharacterizationRemoteClientIsOneShotManifestAndPayloadFetch pins the
-// current non-reactive contract. The client performs exactly one manifest GET
-// and one immutable payload GET; it opens no event stream and owns no reconnect
-// lifecycle. P7 must add an explicitly started, caller-context-owned
-// subscriber around this verified fetch primitive.
+// low-level verified fetch primitive. It performs exactly one manifest GET and
+// one immutable payload GET; the public remote package owns the explicitly
+// started event-stream and reconnect lifecycle around this primitive.
 func TestF017CharacterizationRemoteClientIsOneShotManifestAndPayloadFetch(t *testing.T) {
 	current := catalogs.CurrentCatalogSchemaVersion
 	generation := remoteTestGeneration(t, current, catalogs.ConsumerCompatibility{

@@ -2,150 +2,161 @@ package starmap
 
 import (
 	"context"
-	"net/http"
+	"time"
 
-	"github.com/agentstation/starmap/pkg/catalogremote"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/catalogstore"
-	"github.com/agentstation/starmap/pkg/constants"
 	"github.com/agentstation/starmap/pkg/errors"
-	"github.com/agentstation/starmap/pkg/logging"
-	"github.com/agentstation/starmap/pkg/sources"
-	"github.com/agentstation/starmap/pkg/sync"
 )
 
-// Update manually triggers a catalog update.
-func (c *Client) Update(ctx context.Context) error {
+// Candidate is a complete immutable catalog prepared off to the side for one
+// atomic publication. Source observations are immutable generation evidence;
+// they do not alter catalog facts.
+type Candidate struct {
+	catalog            *catalogs.Catalog
+	sourceObservations []catalogs.SourceObservationLink
+}
+
+// NewCandidate validates and returns a publication candidate. An empty
+// observation list is permitted for custom acquisition; Client.Update records
+// a deterministic custom-update observation in that case.
+func NewCandidate(
+	catalog *catalogs.Catalog,
+	observations ...catalogs.SourceObservationLink,
+) (*Candidate, error) {
+	if catalog == nil {
+		return nil, &errors.ValidationError{
+			Field:   "candidate.catalog",
+			Message: "is required",
+		}
+	}
+	for _, observation := range observations {
+		if err := observation.Validate(); err != nil {
+			return nil, errors.WrapResource(
+				"validate",
+				"candidate source observation",
+				observation.ObservationID,
+				err,
+			)
+		}
+	}
+	return &Candidate{
+		catalog:            catalog,
+		sourceObservations: append([]catalogs.SourceObservationLink(nil), observations...),
+	}, nil
+}
+
+// UpdateFunc builds and validates a complete candidate while Client.Update
+// holds the client's mutation transaction. Returning nil performs no
+// publication. The current catalog is immutable and safe to retain.
+type UpdateFunc func(context.Context, *catalogs.Catalog) (*Candidate, error)
+
+// Publication identifies the durable generation produced by a successful
+// update. Published is false when the update function intentionally returns no
+// candidate or an identical retained generation is activated again.
+type Publication struct {
+	Published       bool
+	GenerationID    string
+	PayloadChecksum string
+	SyncRunID       string
+}
+
+// Update serializes candidate construction, generation-store CAS, and atomic
+// in-memory publication. Acquisition and scheduling remain explicit caller
+// composition above Client.
+func (c *Client) Update(ctx context.Context, update UpdateFunc) (Publication, error) {
+	if c == nil {
+		return Publication{}, &errors.ValidationError{
+			Field:   "starmap.client",
+			Message: "is required",
+		}
+	}
+	if update == nil {
+		return Publication{}, &errors.ValidationError{
+			Field:   "starmap.update",
+			Message: "update function is required",
+		}
+	}
 	if err := c.requireWritableCatalogStore(); err != nil {
-		return err
+		return Publication{}, err
 	}
 	if ctx == nil {
 		ctx = context.Background()
 	}
-	if c.options.remoteServerOnly {
-		release, err := c.updates.acquire(ctx)
-		if err != nil {
-			return err
-		}
-		defer release()
-		return c.updateFromServer(ctx)
+	release, err := c.updates.acquire(ctx)
+	if err != nil {
+		return Publication{}, err
 	}
+	defer release()
 
-	if c.options.updateFunc != nil {
-		release, err := c.updates.acquire(ctx)
-		if err != nil {
-			return err
-		}
-		defer release()
-
-		currentCatalog, err := c.catalogCopy()
-		if err != nil {
-			return err
-		}
-
-		newCatalog, err := c.options.updateFunc(ctx, currentCatalog)
-		if err != nil {
-			return err
-		}
-		published, err := snapshotBuilder(newCatalog)
-		if err != nil {
-			return err
-		}
-		observation, err := c.catalogObservation(customUpdateSourceID, published, sources.Revision{Kind: sources.RevisionKindContentDigest})
-		if err != nil {
-			return err
-		}
-		if _, err := c.commitAndPublish(ctx, published, []sources.Observation{observation}); err != nil {
-			return err
-		}
-	} else {
-		// Use pipeline-based update as default
-		return c.updateWithPipeline(ctx)
+	candidate, err := update(ctx, c.Catalog())
+	if err != nil {
+		return Publication{}, err
 	}
-
-	return nil
+	if candidate == nil {
+		return Publication{}, nil
+	}
+	return c.commitAndPublish(ctx, candidate.catalog, candidate.sourceObservations)
 }
 
-// updateWithPipeline performs a pipeline-based update for all providers.
-func (c *Client) updateWithPipeline(ctx context.Context) error {
-	// Use default options for an explicit pipeline update.
-	opts := []sync.Option{
-		sync.WithDryRun(false),
-	}
-
-	// Perform a sync operation with default options
-	_, err := c.Sync(ctx, opts...)
-
-	return err
-}
-
-// updateFromServer fetches catalog updates from the remote server.
-func (c *Client) updateFromServer(ctx context.Context) error {
-	if c.options.remoteServerURL == nil {
-		return &errors.ConfigError{
-			Component: "starmap",
-			Message:   "remote server URL is not set",
+// Activate validates, durably commits, and atomically activates an immutable
+// generation obtained by an explicit trusted distribution adapter.
+func (c *Client) Activate(ctx context.Context, generation catalogstore.Generation) (Publication, error) {
+	if c == nil {
+		return Publication{}, &errors.ValidationError{
+			Field:   "starmap.client",
+			Message: "is required",
 		}
 	}
+	if err := c.requireWritableCatalogStore(); err != nil {
+		return Publication{}, err
+	}
+	if ctx == nil {
+		ctx = context.Background()
+	}
+	if generation.Manifest.SchemaVersion != catalogs.CurrentCatalogSchemaVersion ||
+		!generation.Manifest.ConsumerCompatibility.SupportsSchema(
+			catalogs.CurrentCatalogSchemaVersion,
+		) {
+		return Publication{}, &errors.ValidationError{
+			Field:   "catalog_generation.schema_version",
+			Value:   generation.Manifest.SchemaVersion,
+			Message: "is not compatible with this Starmap catalog schema",
+		}
+	}
+	release, err := c.updates.acquire(ctx)
+	if err != nil {
+		return Publication{}, err
+	}
+	defer release()
 
-	logger := logging.FromContext(ctx)
-	logger.Debug().Str("url", *c.options.remoteServerURL).Msg("Fetching remote catalog generation")
-	var httpClient *http.Client
-	if c.options.remoteServerAPIKey != nil {
-		httpClient = &http.Client{Transport: authorizationTransport{
-			base: http.DefaultTransport, token: *c.options.remoteServerAPIKey,
-		}, Timeout: constants.DefaultHTTPTimeout}
-	}
-	remote, err := catalogremote.NewClient(*c.options.remoteServerURL, httpClient, catalogs.CurrentCatalogSchemaVersion)
-	if err != nil {
-		return err
-	}
-	generation, err := remote.FetchCurrent(ctx)
-	if err != nil {
-		return err
-	}
 	published, err := catalogstore.DecodeCatalogPayload(generation.Payload)
 	if err != nil {
-		return errors.WrapResource("decode", "remote catalog generation", generation.Manifest.GenerationID, err)
+		return Publication{}, errors.WrapResource(
+			"decode",
+			"catalog generation",
+			generation.Manifest.GenerationID,
+			err,
+		)
 	}
-	if err := c.commitReceivedGeneration(ctx, published, generation); err != nil {
-		return err
-	}
-	logger.Info().Str("generation_id", generation.Manifest.GenerationID).
-		Str("sync_run_id", generation.Manifest.SyncRunID).
-		Msg("Successfully updated catalog from remote generation")
-	return nil
+	return c.commitReceivedGeneration(ctx, published, generation)
 }
 
-type authorizationTransport struct {
-	base  http.RoundTripper
-	token string
-}
-
-func (t authorizationTransport) RoundTrip(request *http.Request) (*http.Response, error) {
-	clone := request.Clone(request.Context())
-	clone.Header.Set("Authorization", "Bearer "+t.token)
-	return t.base.RoundTrip(clone)
-}
-
-func (c *Client) catalogObservation(sourceID sources.ID, catalog *catalogs.Catalog, revision sources.Revision) (sources.Observation, error) {
-	return sources.NewObservation(sourceID, catalog, sources.ObservationMetadata{
-		ObservedAt:   c.currentTime(),
-		Revision:     revision,
-		Completeness: sources.ObservationCompletenessComplete,
-		Status:       sources.ObservationStatusSucceeded,
-	})
-}
-
-func (c *Client) swapCatalogGeneration(published *catalogs.Catalog, generationID string) *catalogs.Catalog {
+func (c *Client) swapCatalogGeneration(
+	published *catalogs.Catalog,
+	generationID string,
+	generatedAt time.Time,
+) (*catalogs.Catalog, uint64) {
 	c.mu.Lock()
 	oldCatalog := c.catalog
 	c.catalog = published
 	c.usingEmbeddedBootstrap = false
 	c.generationSequence++
+	sequence := c.generationSequence
 	if generationID != "" {
 		c.generationID = generationID
 	}
+	c.generationGeneratedAt = generatedAt
 	c.mu.Unlock()
-	return oldCatalog
+	return oldCatalog, sequence
 }

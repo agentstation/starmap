@@ -8,31 +8,28 @@ import (
 	"io"
 	"net/http"
 	"net/http/httptest"
+	"strconv"
 	"strings"
 	"sync"
 	"testing"
 	"time"
 
-	"github.com/gorilla/websocket"
 	"github.com/rs/zerolog"
 
 	"github.com/agentstation/starmap"
-	"github.com/agentstation/starmap/internal/server/events"
+	"github.com/agentstation/starmap/internal/server/sse"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/catalogstore"
 )
 
-func TestPostCommitNotificationCorrespondsAcrossHTTPWebSocketSSEAndCacheDespiteHookFaults(t *testing.T) {
+func TestPostCommitNotificationCorrespondsAcrossHTTPSSEAndCacheDespiteHookFaults(t *testing.T) {
 	store := catalogstore.NewMemory()
-	client, err := starmap.New(
-		starmap.WithCatalogStore(store),
-		starmap.WithUpdateFunc(func(_ context.Context, candidate *catalogs.Builder) (*catalogs.Builder, error) {
-			if err := candidate.SetProvider(catalogs.Provider{ID: "correspondence", Name: "Correspondence"}); err != nil {
-				return nil, err
-			}
-			return candidate, nil
-		}),
-	)
+	update := serverCatalogUpdate(func(candidate *catalogs.Builder) error {
+		return candidate.SetProvider(catalogs.Provider{
+			ID: "correspondence", Name: "Correspondence",
+		})
+	})
+	client, err := starmap.New(starmap.WithCatalogStore(store))
 	if err != nil {
 		t.Fatalf("New: %v", err)
 	}
@@ -61,61 +58,9 @@ func TestPostCommitNotificationCorrespondsAcrossHTTPWebSocketSSEAndCacheDespiteH
 	}
 	server.Start()
 	t.Cleanup(func() { _ = server.Shutdown(context.Background()) })
-	httpServer := httptest.NewServer(server.Handler())
-	t.Cleanup(httpServer.Close)
+	stream := openPublicationStream(t, server)
 
-	streamCtx, cancelStream := context.WithCancel(context.Background())
-	t.Cleanup(cancelStream)
-	sseRequest, err := http.NewRequestWithContext(
-		streamCtx,
-		http.MethodGet,
-		httpServer.URL+"/api/v1/updates/stream",
-		nil,
-	)
-	if err != nil {
-		t.Fatalf("New SSE request: %v", err)
-	}
-	sseResponse, err := http.DefaultClient.Do(sseRequest)
-	if err != nil {
-		t.Fatalf("Connect SSE: %v", err)
-	}
-	t.Cleanup(func() { _ = sseResponse.Body.Close() })
-	sseEvents := make(chan map[string]any, 1)
-	sseErrors := make(chan error, 1)
-	go readPublicationSSE(sseResponse.Body, sseEvents, sseErrors)
-
-	wsURL := "ws" + strings.TrimPrefix(httpServer.URL, "http") + "/api/v1/updates/ws"
-	connectCtx, cancelConnect := context.WithTimeout(context.Background(), 5*time.Second)
-	wsConnection, wsResponse, err := websocket.DefaultDialer.DialContext(connectCtx, wsURL, nil)
-	cancelConnect()
-	if err != nil {
-		if wsResponse != nil {
-			body, _ := io.ReadAll(wsResponse.Body)
-			t.Fatalf("Connect WebSocket: %v, status=%d body=%s", err, wsResponse.StatusCode, body)
-		}
-		t.Fatalf("Connect WebSocket: %v", err)
-	}
-	t.Cleanup(func() { _ = wsConnection.Close() })
-
-	deadline := time.Now().Add(time.Second)
-	for (server.SSEBroadcaster().ClientCount() != 1 ||
-		server.WSHub().ClientCount() != 1 ||
-		server.broker.SubscriberCount() != 2) &&
-		time.Now().Before(deadline) {
-		time.Sleep(time.Millisecond)
-	}
-	if server.SSEBroadcaster().ClientCount() != 1 ||
-		server.WSHub().ClientCount() != 1 ||
-		server.broker.SubscriberCount() != 2 {
-		t.Fatalf(
-			"notification path not ready: sse=%d ws=%d broker=%d",
-			server.SSEBroadcaster().ClientCount(),
-			server.WSHub().ClientCount(),
-			server.broker.SubscriberCount(),
-		)
-	}
-
-	if err := client.Update(context.Background()); err != nil {
+	if _, err := client.Update(context.Background(), update); err != nil {
 		t.Fatalf("Update: %v", err)
 	}
 	select {
@@ -127,29 +72,9 @@ func TestPostCommitNotificationCorrespondsAcrossHTTPWebSocketSSEAndCacheDespiteH
 	if err != nil {
 		t.Fatalf("Current: %v", err)
 	}
+	event := stream.wait(t)
 
-	var websocketEvent struct {
-		Type string         `json:"type"`
-		Data map[string]any `json:"data"`
-	}
-	if err := wsConnection.SetReadDeadline(time.Now().Add(5 * time.Second)); err != nil {
-		t.Fatalf("SetReadDeadline: %v", err)
-	}
-	for websocketEvent.Type != string(events.CatalogPublished) {
-		if err := wsConnection.ReadJSON(&websocketEvent); err != nil {
-			t.Fatalf("Read WebSocket publication: %v", err)
-		}
-	}
-	var sseData map[string]any
-	select {
-	case sseData = <-sseEvents:
-	case err := <-sseErrors:
-		t.Fatalf("Read SSE publication: %v", err)
-	case <-time.After(2 * time.Second):
-		t.Fatal("SSE publication was blocked by an unrelated slow hook")
-	}
-
-	response, err := http.Get(httpServer.URL + "/api/v1/models?limit=1") //nolint:noctx
+	response, err := http.Get(stream.server.URL + "/api/v1/models?limit=1") //nolint:noctx
 	if err != nil {
 		t.Fatalf("GET models: %v", err)
 	}
@@ -158,18 +83,23 @@ func TestPostCommitNotificationCorrespondsAcrossHTTPWebSocketSSEAndCacheDespiteH
 		body, _ := io.ReadAll(response.Body)
 		t.Fatalf("GET models status = %d: %s", response.StatusCode, body)
 	}
+
 	wantGeneration := published.Manifest.GenerationID
-	wantSyncRun := published.Manifest.SyncRunID
-	assertPublicationIdentity(t, "websocket", websocketEvent.Data, wantGeneration, wantSyncRun)
-	assertPublicationIdentity(t, "sse", sseData, wantGeneration, wantSyncRun)
+	state := client.CurrentCatalogState()
+	if event.GenerationID != wantGeneration || event.Sequence != state.Sequence {
+		t.Fatalf("SSE publication = %#v, state = %#v", event, state)
+	}
+	if event.ID != strconv.FormatUint(event.Sequence, 10) {
+		t.Fatalf("SSE event ID = %q, sequence = %d", event.ID, event.Sequence)
+	}
 	if got := response.Header.Get("X-Starmap-Generation-ID"); got != wantGeneration {
 		t.Fatalf("HTTP generation = %q, want %q", got, wantGeneration)
 	}
 	cacheState := server.Cache().GetStats()
-	if cacheState.GenerationID != wantGeneration || cacheState.Sequence != client.CurrentCatalogState().Sequence {
-		t.Fatalf("cache state = %#v, client = %#v", cacheState, client.CurrentCatalogState())
+	if cacheState.GenerationID != wantGeneration || cacheState.Sequence != state.Sequence {
+		t.Fatalf("cache state = %#v, client = %#v", cacheState, state)
 	}
-	deadline = time.Now().Add(time.Second)
+	deadline := time.Now().Add(time.Second)
 	for client.HookStats().Panics < 1 || client.HookStats().Failures < 2 {
 		if time.Now().After(deadline) {
 			t.Fatalf("hook fault stats = %#v", client.HookStats())
@@ -179,41 +109,144 @@ func TestPostCommitNotificationCorrespondsAcrossHTTPWebSocketSSEAndCacheDespiteH
 	releaseOnce.Do(func() { close(releaseSlow) })
 }
 
-func readPublicationSSE(body io.Reader, eventsOut chan<- map[string]any, errorsOut chan<- error) {
+func TestWebSocketRouteIsAbsent(t *testing.T) {
+	client, err := starmap.New()
+	if err != nil {
+		t.Fatalf("New: %v", err)
+	}
+	logger := zerolog.Nop()
+	server, err := New(&mockApplication{logger: &logger, sm: client}, Config{
+		PathPrefix: "/api/v1", CacheTTL: time.Minute,
+	})
+	if err != nil {
+		t.Fatalf("New server: %v", err)
+	}
+	request := httptest.NewRequest(http.MethodGet, "/api/v1/updates/ws", nil)
+	recorder := httptest.NewRecorder()
+	server.Handler().ServeHTTP(recorder, request)
+	if recorder.Code != http.StatusNotFound {
+		t.Fatalf("WebSocket route status = %d, want %d", recorder.Code, http.StatusNotFound)
+	}
+}
+
+type publicationStream struct {
+	server       *httptest.Server
+	publications chan streamedPublication
+	errors       chan error
+}
+
+type streamedPublication struct {
+	sse.Publication
+	ID string
+}
+
+func openPublicationStream(t testing.TB, server *Server) *publicationStream {
+	t.Helper()
+	httpServer := httptest.NewServer(server.Handler())
+	ctx, cancel := context.WithCancel(context.Background())
+	request, err := http.NewRequestWithContext(
+		ctx,
+		http.MethodGet,
+		httpServer.URL+"/api/v1/updates/stream",
+		nil,
+	)
+	if err != nil {
+		cancel()
+		httpServer.Close()
+		t.Fatalf("New SSE request: %v", err)
+	}
+	response, err := http.DefaultClient.Do(request)
+	if err != nil {
+		cancel()
+		httpServer.Close()
+		t.Fatalf("Connect SSE: %v", err)
+	}
+	t.Cleanup(func() {
+		cancel()
+		_ = response.Body.Close()
+		httpServer.Close()
+	})
+	stream := &publicationStream{
+		server:       httpServer,
+		publications: make(chan streamedPublication, 16),
+		errors:       make(chan error, 1),
+	}
+	go readPublicationSSE(response.Body, stream.publications, stream.errors)
+	deadline := time.Now().Add(time.Second)
+	for server.SSEBroadcaster().ClientCount() != 1 && time.Now().Before(deadline) {
+		time.Sleep(time.Millisecond)
+	}
+	if server.SSEBroadcaster().ClientCount() != 1 {
+		t.Fatal("SSE connection did not register")
+	}
+	return stream
+}
+
+func (s *publicationStream) wait(t testing.TB) streamedPublication {
+	t.Helper()
+	select {
+	case publication := <-s.publications:
+		return publication
+	case err := <-s.errors:
+		t.Fatalf("read SSE publication: %v", err)
+	case <-time.After(2 * time.Second):
+		t.Fatal("timed out waiting for SSE publication")
+	}
+	return streamedPublication{}
+}
+
+func (s *publicationStream) assertNone(t testing.TB, duration time.Duration) {
+	t.Helper()
+	timer := time.NewTimer(duration)
+	defer timer.Stop()
+	select {
+	case publication := <-s.publications:
+		t.Fatalf("unexpected SSE publication: %#v", publication)
+	case err := <-s.errors:
+		t.Fatalf("SSE stream failed: %v", err)
+	case <-timer.C:
+	}
+}
+
+func readPublicationSSE(
+	body io.Reader,
+	publications chan<- streamedPublication,
+	errorsOut chan<- error,
+) {
 	reader := bufio.NewReader(body)
 	for {
 		eventType := ""
-		var data map[string]any
+		eventID := ""
+		var data []byte
 		for {
 			line, err := reader.ReadString('\n')
 			if err != nil {
 				errorsOut <- err
 				return
 			}
-			line = strings.TrimSpace(line)
+			line = strings.TrimSuffix(line, "\n")
+			line = strings.TrimSuffix(line, "\r")
 			if line == "" {
 				break
 			}
 			if after, ok := strings.CutPrefix(line, "event: "); ok {
 				eventType = after
 			}
+			if after, ok := strings.CutPrefix(line, "id: "); ok {
+				eventID = after
+			}
 			if after, ok := strings.CutPrefix(line, "data: "); ok {
-				if err := json.Unmarshal([]byte(after), &data); err != nil {
-					errorsOut <- err
-					return
-				}
+				data = append(data[:0], after...)
 			}
 		}
-		if eventType == string(events.CatalogPublished) {
-			eventsOut <- data
+		if eventType != sse.CatalogPublishedEvent {
+			continue
+		}
+		var publication sse.Publication
+		if err := json.Unmarshal(data, &publication); err != nil {
+			errorsOut <- err
 			return
 		}
-	}
-}
-
-func assertPublicationIdentity(t testing.TB, channel string, data map[string]any, generationID, syncRunID string) {
-	t.Helper()
-	if data["generation_id"] != generationID || data["sync_run_id"] != syncRunID {
-		t.Fatalf("%s publication = %#v, want generation=%q sync_run=%q", channel, data, generationID, syncRunID)
+		publications <- streamedPublication{Publication: publication, ID: eventID}
 	}
 }

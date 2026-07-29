@@ -194,7 +194,6 @@ func TestPartialSourcePolicyMatrix(t *testing.T) {
 }
 
 func (s directObservationSource) ID() ID                     { return "direct" }
-func (s directObservationSource) Name() string               { return "Direct" }
 func (s directObservationSource) Cleanup() error             { return nil }
 func (s directObservationSource) Dependencies() []Dependency { return nil }
 func (s directObservationSource) IsOptional() bool           { return false }

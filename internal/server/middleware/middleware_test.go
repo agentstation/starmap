@@ -1,11 +1,9 @@
 package middleware
 
 import (
-	"bufio"
 	"bytes"
 	"encoding/json"
 	"errors"
-	"net"
 	"net/http"
 	"net/http/httptest"
 	"strings"
@@ -19,20 +17,26 @@ type capabilityResponseWriter struct {
 	header  http.Header
 	flushed bool
 	pushed  string
-	conn    net.Conn
 }
 
 func (w *capabilityResponseWriter) Header() http.Header            { return w.header }
 func (w *capabilityResponseWriter) Write(data []byte) (int, error) { return len(data), nil }
 func (w *capabilityResponseWriter) WriteHeader(int)                {}
 func (w *capabilityResponseWriter) Flush()                         { w.flushed = true }
-func (w *capabilityResponseWriter) Hijack() (net.Conn, *bufio.ReadWriter, error) {
-	return w.conn, bufio.NewReadWriter(bufio.NewReader(w.conn), bufio.NewWriter(w.conn)), nil
-}
 func (w *capabilityResponseWriter) Push(target string, _ *http.PushOptions) error {
 	w.pushed = target
 	return nil
 }
+
+type flushErrorResponseWriter struct {
+	header   http.Header
+	flushErr error
+}
+
+func (w *flushErrorResponseWriter) Header() http.Header          { return w.header }
+func (*flushErrorResponseWriter) Write(data []byte) (int, error) { return len(data), nil }
+func (*flushErrorResponseWriter) WriteHeader(int)                {}
+func (w *flushErrorResponseWriter) FlushError() error            { return w.flushErr }
 
 type basicResponseWriter struct{ header http.Header }
 
@@ -594,13 +598,8 @@ func TestResponseWriter(t *testing.T) {
 	}
 }
 
-func TestResponseWriterPreservesStreamingAndUpgradeCapabilities(t *testing.T) {
-	client, peer := net.Pipe()
-	t.Cleanup(func() {
-		_ = client.Close()
-		_ = peer.Close()
-	})
-	underlying := &capabilityResponseWriter{header: make(http.Header), conn: client}
+func TestResponseWriterPreservesStreamingCapabilities(t *testing.T) {
+	underlying := &capabilityResponseWriter{header: make(http.Header)}
 	wrapped := &responseWriter{ResponseWriter: underlying, statusCode: http.StatusOK}
 	if wrapped.Unwrap() != underlying {
 		t.Fatal("Unwrap did not return the transport response writer")
@@ -609,20 +608,27 @@ func TestResponseWriterPreservesStreamingAndUpgradeCapabilities(t *testing.T) {
 	if !underlying.flushed {
 		t.Fatal("Flush was not delegated")
 	}
-	conn, readWriter, err := wrapped.Hijack()
-	if err != nil || conn != client || readWriter == nil {
-		t.Fatalf("Hijack = (%v, %v, %v)", conn, readWriter, err)
-	}
 	if err := wrapped.Push("/asset", nil); err != nil || underlying.pushed != "/asset" {
 		t.Fatalf("Push error = %v, target = %q", err, underlying.pushed)
 	}
 }
 
+func TestResponseWriterPreservesFlushErrors(t *testing.T) {
+	injected := errors.New("injected flush failure")
+	underlying := &flushErrorResponseWriter{
+		header:   make(http.Header),
+		flushErr: injected,
+	}
+	wrapped := &responseWriter{ResponseWriter: underlying, statusCode: http.StatusOK}
+	if err := wrapped.FlushError(); !errors.Is(err, injected) {
+		t.Fatalf("FlushError = %v, want %v", err, injected)
+	}
+}
+
 func TestResponseWriterReportsUnsupportedOptionalCapabilities(t *testing.T) {
 	wrapped := &responseWriter{ResponseWriter: &basicResponseWriter{header: make(http.Header)}}
-	wrapped.Flush()
-	if _, _, err := wrapped.Hijack(); err == nil {
-		t.Fatal("Hijack succeeded without transport support")
+	if err := wrapped.FlushError(); !errors.Is(err, http.ErrNotSupported) {
+		t.Fatalf("FlushError = %v, want http.ErrNotSupported", err)
 	}
 	if err := wrapped.Push("/asset", nil); !errors.Is(err, http.ErrNotSupported) {
 		t.Fatalf("Push error = %v, want http.ErrNotSupported", err)

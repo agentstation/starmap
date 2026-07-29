@@ -7,7 +7,6 @@ import (
 	"testing"
 
 	"github.com/agentstation/starmap/pkg/catalogs"
-	"github.com/agentstation/starmap/pkg/save"
 	"github.com/agentstation/starmap/pkg/sources"
 	pkgsync "github.com/agentstation/starmap/pkg/sync"
 )
@@ -39,7 +38,7 @@ func TestSyncDryRunDoesNotPublishFetchedCatalog(t *testing.T) {
 	if err := localCatalog.SetProvider(provider); err != nil {
 		t.Fatalf("Failed to seed local provider: %v", err)
 	}
-	if err := localCatalog.Save(save.WithPath(outputPath)); err != nil {
+	if err := localCatalog.SaveTo(outputPath); err != nil {
 		t.Fatalf("Failed to save local catalog: %v", err)
 	}
 

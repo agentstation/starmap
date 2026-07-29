@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"context"
 	"encoding/json"
 	"net/http"
 	"net/http/httptest"
@@ -11,20 +12,24 @@ import (
 	"github.com/agentstation/utc"
 
 	"github.com/agentstation/starmap"
-	"github.com/agentstation/starmap/internal/application"
 	"github.com/agentstation/starmap/internal/server/cache"
 	"github.com/agentstation/starmap/internal/server/response"
+	"github.com/agentstation/starmap/pkg/catalogremote"
 	"github.com/agentstation/starmap/pkg/catalogs"
+	pkgerrors "github.com/agentstation/starmap/pkg/errors"
+	pkgsync "github.com/agentstation/starmap/pkg/sync"
 )
 
-func TestHandleUpdateRequiresWritableStoreBeforeSync(t *testing.T) {
-	client, err := starmap.New()
-	if err != nil {
-		t.Fatalf("New: %v", err)
-	}
+func TestHandleUpdateReportsSyncFailure(t *testing.T) {
 	h := &Handlers{
-		app: &application.Mock{StarmapFunc: func(...starmap.Option) (*starmap.Client, error) {
-			return client, nil
+		app: &testApplication{SyncFunc: func(
+			context.Context,
+			...pkgsync.Option,
+		) (*pkgsync.Result, error) {
+			return nil, &pkgerrors.ConfigError{
+				Component: "catalog store",
+				Message:   "an explicit writable store is required",
+			}
 		}},
 	}
 	req := httptest.NewRequest(http.MethodPost, "/api/v1/update", nil)
@@ -41,6 +46,56 @@ func TestHandleUpdateRequiresWritableStoreBeforeSync(t *testing.T) {
 	}
 	if got.Error == nil || got.Error.Code != "INTERNAL_ERROR" {
 		t.Fatalf("response error = %#v, want INTERNAL_ERROR", got.Error)
+	}
+}
+
+func TestHandleCatalogManifestSupportsConditionalRequests(t *testing.T) {
+	client, err := starmap.New()
+	if err != nil {
+		t.Fatalf("New: %v", err)
+	}
+	h := &Handlers{app: &testApplication{
+		StarmapFunc: func(...starmap.Option) (*starmap.Client, error) {
+			return client, nil
+		},
+	}}
+
+	firstRequest := httptest.NewRequest(http.MethodGet, "/api/v1/catalog/manifest", nil)
+	firstResponse := httptest.NewRecorder()
+	h.HandleCatalogManifest(firstResponse, firstRequest)
+	if firstResponse.Code != http.StatusOK {
+		t.Fatalf("initial status = %d: %s", firstResponse.Code, firstResponse.Body.String())
+	}
+	etag := firstResponse.Header().Get("ETag")
+	if etag != catalogremote.ManifestETag(client.CurrentGenerationID()) {
+		t.Fatalf("ETag = %q, want current generation tag", etag)
+	}
+
+	for _, ifNoneMatch := range []string{
+		etag,
+		"W/" + etag,
+		`"unrelated", ` + etag,
+		"*",
+	} {
+		request := httptest.NewRequest(
+			http.MethodGet,
+			"/api/v1/catalog/manifest",
+			nil,
+		)
+		request.Header.Set("If-None-Match", ifNoneMatch)
+		recorder := httptest.NewRecorder()
+		h.HandleCatalogManifest(recorder, request)
+		if recorder.Code != http.StatusNotModified || recorder.Body.Len() != 0 {
+			t.Fatalf(
+				"If-None-Match %q response = %d/%q, want 304/empty",
+				ifNoneMatch,
+				recorder.Code,
+				recorder.Body.String(),
+			)
+		}
+		if recorder.Header().Get("ETag") != etag {
+			t.Fatalf("304 ETag = %q, want %q", recorder.Header().Get("ETag"), etag)
+		}
 	}
 }
 
@@ -306,7 +361,7 @@ func newTestHandlers(t testing.TB, cat *catalogs.Builder) *Handlers {
 		}
 	}
 	return &Handlers{
-		app: &application.Mock{
+		app: &testApplication{
 			CatalogFunc: func() (*catalogs.Catalog, error) {
 				return cat.Build()
 			},

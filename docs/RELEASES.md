@@ -27,13 +27,27 @@ Application releases use GoReleaser v2.17.0 and a tag of the form `vX.Y.Z` or
 workflow:
 
 1. runs repository and release verification with Go 1.26.5;
-2. builds Linux, macOS, and Windows archives for amd64 and arm64;
-3. publishes SBOMs, SHA-256 checksums, and a detached checksum signature;
-4. emits GitHub build-provenance attestations for every checksummed artifact;
-5. downloads and verifies the public assets, signature, checksums, repository,
+2. builds Linux, macOS, and Windows archives for amd64 and arm64 with
+   `CGO_ENABLED=0`;
+3. verifies cgo-disabled build metadata for all six binaries, static ELF
+   linkage on Linux, no Windows C/C++ runtime imports, and system-only dynamic
+   linkage on Darwin;
+4. publishes SBOMs, SHA-256 checksums, and a detached checksum signature;
+5. emits GitHub build-provenance attestations for every checksummed artifact;
+6. downloads and verifies the public assets, signature, checksums, repository,
    and publisher workflow;
-6. publishes the container from a digest-pinned base image; and
-7. updates and smoke-tests the public AgentStation Homebrew tap for stable tags.
+7. publishes the cgo-disabled container from a digest-pinned static base image;
+   and
+8. updates the public AgentStation Homebrew tap for stable tags, then verifies
+   the installed CLI version, cgo-disabled metadata, and system-only Darwin
+   linkage.
+
+Starmap does not require a C compiler. Repository verification runs the
+read-only, store-only, server-embed, remote-subscriber, and CLI compositions
+with `CGO_ENABLED=0`. The separate race suite explicitly uses
+`CGO_ENABLED=1`, because Go's race detector normally requires cgo. On macOS,
+pure-Go binaries still use Apple system ABI libraries from `/usr/lib` and
+`/System/Library`; the gate rejects any separately distributed C runtime.
 
 Release candidates never replace the stable Homebrew cask. Darwin binaries are
 signed and notarized when the five `MACOS_SIGN_*`/`MACOS_NOTARY_*` repository
@@ -55,6 +69,7 @@ Prepare a local, non-publishing release snapshot:
 
 ```bash
 GOTOOLCHAIN=go1.26.5 make release-snapshot
+./scripts/verify-release-binaries.sh dist
 ```
 
 The local snapshot intentionally skips checksum signing and the container image;

@@ -25,76 +25,11 @@ package sources
 
 import (
 	"context"
-	"sync"
 	"time"
 
 	"github.com/agentstation/starmap/pkg/catalogmeta"
 	"github.com/agentstation/starmap/pkg/catalogs"
 )
-
-// Sources is a thread-safe container for managing multiple data sources.
-type Sources struct {
-	mu      sync.RWMutex
-	sources map[ID]Source
-}
-
-// NewSources creates a new Sources instance.
-func NewSources() *Sources {
-	return &Sources{
-		sources: make(map[ID]Source),
-	}
-}
-
-// Get returns a source by ID.
-func (s *Sources) Get(id ID) (Source, bool) {
-	s.mu.RLock()
-	defer s.mu.RUnlock()
-	src, found := s.sources[id]
-	return src, found
-}
-
-// Set sets a source by ID.
-func (s *Sources) Set(id ID, src Source) {
-	s.mu.Lock()
-	defer s.mu.Unlock()
-	s.sources[id] = src
-}
-
-// Delete deletes a source by ID.
-func (s *Sources) Delete(id ID) {
-	s.mu.Lock()
-	defer s.mu.Unlock()
-	delete(s.sources, id)
-}
-
-// Len returns the number of sources.
-func (s *Sources) Len() int {
-	s.mu.RLock()
-	defer s.mu.RUnlock()
-	return len(s.sources)
-}
-
-// List returns a slice of all sources.
-func (s *Sources) List() []Source {
-	s.mu.RLock()
-	defer s.mu.RUnlock()
-	sources := make([]Source, 0, len(s.sources))
-	for _, src := range s.sources {
-		sources = append(sources, src)
-	}
-	return sources
-}
-
-// IDs returns a slice of all source IDs.
-func (s *Sources) IDs() []ID {
-	s.mu.RLock()
-	defer s.mu.RUnlock()
-	ids := make([]ID, 0, len(s.sources))
-	for id := range s.sources {
-		ids = append(ids, id)
-	}
-	return ids
-}
 
 // ID represents the identifier of a data source.
 // ID is a type alias for catalogmeta.SourceID to maintain backward compatibility.
@@ -125,9 +60,6 @@ func IDs() []ID {
 type Source interface {
 	// ID returns the stable identity of this source.
 	ID() ID
-
-	// Name returns a human-friendly name for this source
-	Name() string
 
 	// Observe retrieves and returns one immutable source result directly. Calls
 	// must not depend on prior Observe calls or publish result state on Source.

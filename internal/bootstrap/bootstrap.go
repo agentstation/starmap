@@ -3,10 +3,10 @@ package bootstrap
 
 import (
 	"github.com/agentstation/starmap/internal/embedded"
+	"github.com/agentstation/starmap/pkg/catalogmeta"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/catalogstore"
 	"github.com/agentstation/starmap/pkg/errors"
-	"github.com/agentstation/starmap/pkg/sources"
 )
 
 const manifestPath = "catalog/generation.json"
@@ -51,15 +51,6 @@ func Generation() (catalogstore.Generation, error) {
 	if err != nil {
 		return catalogstore.Generation{}, err
 	}
-	observation, err := sources.NewObservation(sources.LocalCatalogID, catalog, sources.ObservationMetadata{
-		ObservedAt:   bootstrapManifest.GeneratedAt,
-		Revision:     sources.Revision{Kind: sources.RevisionKindContentDigest},
-		Completeness: sources.ObservationCompletenessComplete,
-		Status:       sources.ObservationStatusSucceeded,
-	})
-	if err != nil {
-		return catalogstore.Generation{}, err
-	}
 	manifest := catalogs.GenerationManifest{
 		ManifestVersion: catalogs.CurrentGenerationManifestVersion,
 		SchemaVersion:   bootstrapManifest.SchemaVersion,
@@ -76,9 +67,16 @@ func Generation() (catalogstore.Generation, error) {
 		},
 		SyncRunID: "embedded-bootstrap-build",
 		SourceObservations: []catalogs.SourceObservationLink{{
-			Source: observation.SourceID, ObservationID: observation.ID, ObservedAt: observation.ObservedAt,
-			Revision: observation.Revision, Completeness: observation.Completeness,
-			Status: observation.Status, EvidenceChecksum: observation.EvidenceChecksum,
+			Source:        catalogmeta.EmbeddedCatalogID,
+			ObservationID: "embedded-bootstrap:" + bootstrapManifest.GenerationID,
+			ObservedAt:    bootstrapManifest.GeneratedAt,
+			Revision: catalogmeta.ObservationRevision{
+				Kind:  catalogmeta.ObservationRevisionKindContentDigest,
+				Value: bootstrapManifest.Payload.Checksum,
+			},
+			Completeness:     catalogmeta.ObservationCompletenessComplete,
+			Status:           catalogmeta.ObservationStatusSucceeded,
+			EvidenceChecksum: bootstrapManifest.Payload.Checksum,
 		}},
 		Completeness: catalogs.GenerationCompletenessComplete,
 		ConsumerCompatibility: catalogs.ConsumerCompatibility{

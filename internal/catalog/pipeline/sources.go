@@ -14,8 +14,13 @@ import (
 func filterSources(
 	options *pkgsync.Options,
 	inputs catalogInputs,
+	providerFactories ...sources.ProviderClientFactory,
 ) []sources.Source {
-	configuredSources := createSourcesWithConfig(options, inputs)
+	var providerFactory sources.ProviderClientFactory
+	if len(providerFactories) > 0 {
+		providerFactory = providerFactories[0]
+	}
+	configuredSources := createSourcesWithConfig(options, inputs, providerFactory)
 	if options.Fresh {
 		configuredSources = slices.DeleteFunc(configuredSources, func(src sources.Source) bool {
 			return src.ID() == sources.LocalCatalogID
@@ -38,10 +43,18 @@ func filterSources(
 func createSourcesWithConfig(
 	options *pkgsync.Options,
 	inputs catalogInputs,
+	providerFactories ...sources.ProviderClientFactory,
 ) []sources.Source {
+	var providerFactory sources.ProviderClientFactory
+	if len(providerFactories) > 0 {
+		providerFactory = providerFactories[0]
+	}
 	srcs := []sources.Source{
 		embeddedsrc.New(inputs.embedded),
-		providers.New(inputs.providerConfig.Providers()),
+		providers.New(
+			inputs.providerConfig.Providers(),
+			providers.WithClientFactory(providerFactory),
+		),
 	}
 	if inputs.workspaceInput.Exists {
 		srcs = append(

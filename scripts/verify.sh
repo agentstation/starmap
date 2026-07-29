@@ -68,12 +68,11 @@ check_critical_coverage() {
 	check_coverage ./internal/catalog/query 75
 	check_coverage ./internal/providers/clients 80
 	check_coverage ./internal/sources/providers 75
-	check_coverage ./internal/server/events 70
 	check_coverage ./internal/server/middleware 90
+	check_coverage ./internal/server/openrouter 85
 	check_coverage ./internal/server/params 95
 	check_coverage ./internal/server/response 95
 	check_coverage ./internal/server/sse 90
-	check_coverage ./internal/server/websocket 85
 	check_coverage ./internal/transport 40
 	check_coverage ./pkg/authority 90
 	check_coverage ./pkg/catalogs 55
@@ -89,7 +88,8 @@ if [ "${STARMAP_VERIFY_COVERAGE_ONLY:-}" = "1" ]; then
 fi
 
 run go test ./...
-run go test ./... -race -short -timeout=20m
+run make test-pure-go
+run env CGO_ENABLED=1 go test ./... -race -short -timeout=20m
 run go vet ./...
 run ./scripts/verify-catalog-performance.sh
 run_lint

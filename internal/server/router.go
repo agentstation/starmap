@@ -8,6 +8,7 @@ import (
 
 	"github.com/agentstation/starmap/internal/server/handlers"
 	"github.com/agentstation/starmap/internal/server/middleware"
+	"github.com/agentstation/starmap/internal/server/openrouter"
 )
 
 // setupRouter creates the HTTP handler with routes and middleware.
@@ -18,10 +19,7 @@ func (s *Server) setupRouter() http.Handler {
 	h := handlers.New(
 		s.app,
 		s.cache,
-		s.broker,
-		s.wsHub,
 		s.sseBroadcaster,
-		s.upgrader,
 		s.logger,
 		s.startTime,
 	)
@@ -49,36 +47,7 @@ func (s *Server) registerRoutes(mux *http.ServeMux, h *handlers.Handlers) {
 	mux.HandleFunc(prefix+"/health", h.HandleHealth)
 	mux.HandleFunc(prefix+"/ready", h.HandleReady)
 
-	// Models endpoints
-	mux.HandleFunc(prefix+"/models", func(w http.ResponseWriter, r *http.Request) {
-		if r.Method == http.MethodPost {
-			// POST /api/v1/models is treated as search
-			if r.URL.Path == prefix+"/models" || r.URL.Path == prefix+"/models/" {
-				h.HandleSearchModels(w, r)
-				return
-			}
-		}
-
-		if r.Method == http.MethodGet {
-			h.HandleListModels(w, r)
-			return
-		}
-
-		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
-	})
-
-	mux.HandleFunc(prefix+"/models/", func(w http.ResponseWriter, r *http.Request) {
-		modelID, err := extractPathParam(r, prefix+"/models/")
-		if err != nil {
-			http.Error(w, "Invalid model ID", http.StatusBadRequest)
-			return
-		}
-		if modelID != "" && r.Method == http.MethodGet {
-			h.HandleGetModel(w, r, modelID)
-			return
-		}
-		http.Error(w, "Not found", http.StatusNotFound)
-	})
+	s.registerModelRoutes(mux, h)
 
 	// Providers endpoints
 	mux.HandleFunc(prefix+"/providers", func(w http.ResponseWriter, r *http.Request) {
@@ -128,20 +97,28 @@ func (s *Server) registerRoutes(mux *http.ServeMux, h *handlers.Handlers) {
 	mux.HandleFunc(prefix+"/catalog/generations/", func(w http.ResponseWriter, r *http.Request) {
 		path := strings.TrimPrefix(r.URL.Path, prefix+"/catalog/generations/")
 		generationID, suffix, found := strings.Cut(path, "/")
-		if r.Method == http.MethodGet && found && suffix == "snapshot" && generationID != "" {
-			h.HandleCatalogSnapshot(w, r, generationID)
-			return
+		if r.Method == http.MethodGet && found && generationID != "" {
+			switch suffix {
+			case "manifest":
+				h.HandleCatalogGenerationManifest(w, r, generationID)
+				return
+			case "snapshot":
+				h.HandleCatalogSnapshot(w, r, generationID)
+				return
+			}
 		}
 		http.Error(w, "Not found", http.StatusNotFound)
 	})
 
-	mux.HandleFunc(prefix+"/update", func(w http.ResponseWriter, r *http.Request) {
-		if r.Method == http.MethodPost {
-			h.HandleUpdate(w, r)
-			return
-		}
-		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
-	})
+	if s.app.UpdatesEnabled() {
+		mux.HandleFunc(prefix+"/update", func(w http.ResponseWriter, r *http.Request) {
+			if r.Method == http.MethodPost {
+				h.HandleUpdate(w, r)
+				return
+			}
+			http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+		})
+	}
 
 	mux.HandleFunc(prefix+"/stats", func(w http.ResponseWriter, r *http.Request) {
 		if r.Method == http.MethodGet {
@@ -151,16 +128,7 @@ func (s *Server) registerRoutes(mux *http.ServeMux, h *handlers.Handlers) {
 		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
 	})
 
-	mux.HandleFunc(prefix+"/operations", func(w http.ResponseWriter, r *http.Request) {
-		if r.Method == http.MethodGet {
-			h.HandleOperations(w, r)
-			return
-		}
-		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
-	})
-
 	// Real-time endpoints
-	mux.HandleFunc(prefix+"/updates/ws", h.HandleWebSocket)
 	mux.HandleFunc(prefix+"/updates/stream", h.HandleSSE)
 
 	// OpenAPI specification endpoints
@@ -193,6 +161,20 @@ func (s *Server) applyMiddleware(handler http.Handler) http.Handler {
 		authConfig := middleware.DefaultAuthConfig()
 		authConfig.Enabled = true
 		authConfig.HeaderName = cfg.AuthHeader
+		authConfig.FailureOverride = func(
+			w http.ResponseWriter,
+			r *http.Request,
+		) bool {
+			if !openrouter.IsCompatibilityPath(r.URL.EscapedPath(), cfg.PathPrefix) {
+				return false
+			}
+			openrouter.WriteError(
+				w,
+				http.StatusUnauthorized,
+				"No auth credentials found",
+			)
+			return true
+		}
 		handler = middleware.Auth(authConfig, s.logger)(handler)
 	}
 
@@ -213,6 +195,35 @@ func (s *Server) applyMiddleware(handler http.Handler) http.Handler {
 	handler = middleware.Recovery(s.logger)(handler)
 
 	return handler
+}
+
+func extractExactPathSegments(
+	request *http.Request,
+	prefix string,
+	count int,
+) ([]string, error) {
+	escapedPath := request.URL.EscapedPath()
+	escapedPrefix := (&url.URL{Path: prefix}).EscapedPath()
+	if !strings.HasPrefix(escapedPath, escapedPrefix) {
+		return nil, nil
+	}
+	rawParts := strings.Split(strings.TrimPrefix(escapedPath, escapedPrefix), "/")
+	if len(rawParts) != count {
+		return nil, nil
+	}
+	parts := make([]string, len(rawParts))
+	for index, raw := range rawParts {
+		value, err := url.PathUnescape(raw)
+		if err != nil {
+			return nil, err
+		}
+		if value == "" || value == "." || value == ".." ||
+			strings.ContainsAny(value, `/\`) {
+			return nil, fmt.Errorf("invalid path segment")
+		}
+		parts[index] = value
+	}
+	return parts, nil
 }
 
 // extractPathParam extracts path parameter from URL.

@@ -16,15 +16,19 @@ func TestQueuedUpdateHonorsContextCancellation(t *testing.T) {
 	release := make(chan struct{})
 	entered := make(chan struct{}, 1)
 	var calls atomic.Int32
+	update := func(ctx context.Context, catalog *catalogs.Catalog) (*Candidate, error) {
+		calls.Add(1)
+		entered <- struct{}{}
+		select {
+		case <-release:
+			return NewCandidate(catalog)
+		case <-ctx.Done():
+			return nil, ctx.Err()
+		}
+	}
 	client := &Client{
 		options: &options{
 			catalogStore: catalogstore.NewMemory(),
-			updateFunc: func(_ context.Context, catalog *catalogs.Builder) (*catalogs.Builder, error) {
-				calls.Add(1)
-				entered <- struct{}{}
-				<-release
-				return catalog, nil
-			},
 		},
 		catalog: mustTestCatalog(t, catalogs.NewEmpty()),
 		hooks:   newHooks(),
@@ -32,7 +36,8 @@ func TestQueuedUpdateHonorsContextCancellation(t *testing.T) {
 
 	firstDone := make(chan error, 1)
 	go func() {
-		firstDone <- client.Update(context.Background())
+		_, err := client.Update(context.Background(), update)
+		firstDone <- err
 	}()
 	select {
 	case <-entered:
@@ -43,7 +48,8 @@ func TestQueuedUpdateHonorsContextCancellation(t *testing.T) {
 	ctx, cancel := context.WithCancel(context.Background())
 	secondDone := make(chan error, 1)
 	go func() {
-		secondDone <- client.Update(ctx)
+		_, err := client.Update(ctx, update)
+		secondDone <- err
 	}()
 	cancel()
 
@@ -70,23 +76,23 @@ func TestConcurrentUpdatesAreSerialized(t *testing.T) {
 	entered := make(chan struct{}, 2)
 	var active atomic.Int32
 	var maxActive atomic.Int32
+	update := func(_ context.Context, catalog *catalogs.Catalog) (*Candidate, error) {
+		current := active.Add(1)
+		defer active.Add(-1)
+		for {
+			maximum := maxActive.Load()
+			if current <= maximum || maxActive.CompareAndSwap(maximum, current) {
+				break
+			}
+		}
+		entered <- struct{}{}
+		<-release
+		return NewCandidate(catalog)
+	}
 
 	client := &Client{
 		options: &options{
 			catalogStore: catalogstore.NewMemory(),
-			updateFunc: func(_ context.Context, catalog *catalogs.Builder) (*catalogs.Builder, error) {
-				current := active.Add(1)
-				defer active.Add(-1)
-				for {
-					maximum := maxActive.Load()
-					if current <= maximum || maxActive.CompareAndSwap(maximum, current) {
-						break
-					}
-				}
-				entered <- struct{}{}
-				<-release
-				return catalog, nil
-			},
 		},
 		catalog: mustTestCatalog(t, catalogs.NewEmpty()),
 		hooks:   newHooks(),
@@ -98,7 +104,8 @@ func TestConcurrentUpdatesAreSerialized(t *testing.T) {
 	for range 2 {
 		wg.Go(func() {
 			<-start
-			errs <- client.Update(context.Background())
+			_, err := client.Update(context.Background(), update)
+			errs <- err
 		})
 	}
 	close(start)

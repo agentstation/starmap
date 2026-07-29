@@ -7,7 +7,6 @@ import (
 	"github.com/rs/zerolog"
 	"github.com/spf13/cobra"
 
-	"github.com/agentstation/starmap/internal/application"
 	"github.com/agentstation/starmap/internal/cli/emoji"
 	"github.com/agentstation/starmap/internal/cli/format"
 	"github.com/agentstation/starmap/internal/cli/notify"
@@ -22,7 +21,7 @@ type ValidationResult struct {
 }
 
 // NewCatalogCommand creates the validate catalog subcommand using app context.
-func NewCatalogCommand(app application.Application) *cobra.Command {
+func NewCatalogCommand(app application) *cobra.Command {
 	return &cobra.Command{
 		Use:   "catalog",
 		Short: "Validate entire embedded catalog",
@@ -40,7 +39,7 @@ This validates:
 }
 
 // runCatalog validates the entire embedded catalog.
-func runCatalog(cmd *cobra.Command, args []string, app application.Application) error {
+func runCatalog(cmd *cobra.Command, args []string, app application) error {
 	// This command doesn't take positional arguments
 	if len(args) > 0 {
 		return fmt.Errorf("unexpected argument: %s", args[0])
@@ -181,7 +180,7 @@ func runCatalog(cmd *cobra.Command, args []string, app application.Application) 
 	return notifier.Hints(ctx)
 }
 
-func validateCrossReferences(app application.Application, verbose bool) error {
+func validateCrossReferences(app application, verbose bool) error {
 	cat, err := app.Catalog()
 	if err != nil {
 		return fmt.Errorf("failed to load catalog: %w", err)

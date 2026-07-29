@@ -1,13 +1,11 @@
-// Package starmap provides the main entry point for the Starmap AI model catalog system.
-// It offers a high-level interface for managing AI model catalogs with explicit synchronization,
-// event hooks, and provider synchronization capabilities.
+// Package starmap provides the small, provider-independent entry point for the
+// Starmap AI model catalog system.
 //
 // Starmap wraps the underlying catalog system with additional features including:
-// - Explicit, idempotent synchronization with provider APIs
 // - Event hooks for model changes (added, updated, removed)
 // - Thread-safe access to an immutable canonical catalog
+// - Explicit, serialized publication of complete catalog generations
 // - Flexible configuration through functional options
-// - Support for multiple data sources and merge strategies
 //
 // Example usage:
 //
@@ -29,21 +27,18 @@
 //	    log.Fatal(err)
 //	}
 //
-//	// Manually trigger a dry run (read-only; no store required)
-//	result, err := sm.Sync(ctx, sync.WithProvider("openai"), sync.WithDryRun(true))
+//	// Provider acquisition is an explicit opt-in composition.
+//	syncer, err := acquisition.New(sm)
 //	if err != nil {
 //	    log.Fatal(err)
 //	}
-//
-//	// Configure mutation with an explicit writable generation store
-//	store, err := catalogstore.NewFilesystem("./state/catalog")
-//	if err != nil {
-//	    log.Fatal(err)
-//	}
-//	sm, err = starmap.New(
-//	    WithCatalogStore(store),
-//	    WithCatalogPath("./catalog"),
+//	result, err := syncer.Sync(ctx,
+//	    sync.WithProvider("openai"),
+//	    sync.WithDryRun(true),
 //	)
+//	if err != nil {
+//	    log.Fatal(err)
+//	}
 package starmap
 
 import (
@@ -62,8 +57,14 @@ import (
 	"github.com/agentstation/starmap/pkg/logging"
 )
 
-// Catalog returns the current immutable canonical catalog.
+// Catalog returns the current immutable canonical catalog. It returns nil when
+// called on a nil Client. After New or NewContext succeeds, Catalog is
+// non-failing, non-nil, O(1), allocation-free, and safe to retain across
+// goroutines.
 func (c *Client) Catalog() *catalogs.Catalog {
+	if c == nil {
+		return nil
+	}
 	c.mu.RLock()
 	catalog := c.catalog
 	c.mu.RUnlock()
@@ -71,10 +72,12 @@ func (c *Client) Catalog() *catalogs.Catalog {
 }
 
 // CatalogState atomically pairs the current immutable catalog with its logical
-// generation identity for generation-scoped caches and responses.
+// generation identity and generation timestamp for freshness, caches, and
+// responses.
 type CatalogState struct {
 	Catalog      *catalogs.Catalog
 	GenerationID string
+	GeneratedAt  time.Time
 	Sequence     uint64
 }
 
@@ -89,7 +92,12 @@ func (c *Client) CurrentCatalogState() CatalogState {
 	if id == "" && c.usingEmbeddedBootstrap {
 		id = c.embeddedBootstrap.GenerationID
 	}
-	return CatalogState{Catalog: c.catalog, GenerationID: id, Sequence: c.generationSequence}
+	return CatalogState{
+		Catalog:      c.catalog,
+		GenerationID: id,
+		GeneratedAt:  c.generationGeneratedAt,
+		Sequence:     c.generationSequence,
+	}
 }
 
 // CurrentGenerationID returns the logical identity of the currently published
@@ -109,8 +117,13 @@ func (c *Client) CurrentGenerationID() string {
 	return ""
 }
 
-func (c *Client) catalogCopy() (*catalogs.Builder, error) {
-	return catalogs.NewBuilderFrom(c.Catalog())
+// WorkspacePath returns the configured human-editable YAML workspace. An
+// empty path means this client has no filesystem projection.
+func (c *Client) WorkspacePath() string {
+	if c == nil || c.options == nil {
+		return ""
+	}
+	return c.options.catalogPath
 }
 
 func (c *Client) requireWritableCatalogStore() error {
@@ -123,22 +136,9 @@ func (c *Client) requireWritableCatalogStore() error {
 	return nil
 }
 
-func snapshotBuilder(builder *catalogs.Builder) (*catalogs.Catalog, error) {
-	if builder == nil {
-		return nil, &errors.ValidationError{
-			Field:   "catalog",
-			Message: "catalog builder cannot be nil",
-		}
-	}
-	snapshot, err := builder.Build()
-	if err != nil {
-		return nil, errors.WrapResource("publish", "catalog snapshot", "", err)
-	}
-	return snapshot, nil
-}
-
-// Client manages an immutable canonical catalog, explicit synchronization,
-// persistence, and event hooks. It owns no scheduling goroutine or cadence.
+// Client manages an immutable canonical catalog, explicit publication,
+// persistence, and event hooks. It owns no provider acquisition, scheduling
+// goroutine, or cadence.
 type Client struct {
 
 	// options are the configured options for the client
@@ -149,6 +149,7 @@ type Client struct {
 	catalog                *catalogs.Catalog
 	updates                updateCoordinator
 	generationID           string
+	generationGeneratedAt  time.Time
 	generationSequence     uint64
 	usingEmbeddedBootstrap bool
 	embeddedBootstrap      catalogs.BootstrapManifest
@@ -158,11 +159,24 @@ type Client struct {
 	hooks *hooks // Event hooks for catalog changes/updates
 }
 
-// New creates a new Client instance with the given options. When a durable
-// generation and a marker-backed unchanged YAML workspace are both configured,
-// construction repairs a stale or interrupted projection by digest. It never
-// overwrites an unrecognized semantic workspace change.
+// New creates a Client using a background context. Call NewContext when
+// construction may perform storage I/O that must be canceled by the caller.
 func New(opts ...Option) (*Client, error) {
+	return NewContext(context.Background(), opts...)
+}
+
+// NewContext creates a Client with the given options. The caller-owned context
+// bounds durable generation loading and workspace repair and must be non-nil.
+// When a durable generation and a marker-backed unchanged YAML workspace are
+// both configured, construction repairs a stale or interrupted projection by
+// digest. It never overwrites an unrecognized semantic workspace change.
+func NewContext(ctx context.Context, opts ...Option) (*Client, error) {
+	if ctx == nil {
+		return nil, &errors.ValidationError{Field: "context", Message: "is required"}
+	}
+	if err := constructionContextError(ctx); err != nil {
+		return nil, err
+	}
 
 	// apply options
 	options, err := defaults().apply(opts...)
@@ -194,16 +208,20 @@ func New(opts ...Option) (*Client, error) {
 	if err != nil {
 		return nil, errors.WrapResource("publish", "embedded bootstrap catalog", "", err)
 	}
+	if err := constructionContextError(ctx); err != nil {
+		return nil, err
+	}
 	bootstrapManifest, err := bootstraploader.Load(embeddedCatalog)
 	if err != nil {
 		return nil, err
 	}
 	initial := embeddedCatalog
 	generationID := ""
+	generationGeneratedAt := bootstrapManifest.GeneratedAt
 	usingEmbeddedBootstrap := true
 	var durableCurrent *catalogstore.Generation
 	if !isNilCatalogStore(sm.options.catalogStore) {
-		loadCtx, cancel := context.WithTimeout(context.Background(), constants.DefaultTimeout)
+		loadCtx, cancel := context.WithTimeout(ctx, constants.DefaultTimeout)
 		stored, currentErr := sm.options.catalogStore.Current(loadCtx)
 		cancel()
 		switch {
@@ -217,6 +235,7 @@ func New(opts ...Option) (*Client, error) {
 			}
 			durableCurrent = &stored
 			generationID = stored.Manifest.GenerationID
+			generationGeneratedAt = stored.Manifest.GeneratedAt
 			usingEmbeddedBootstrap = false
 		case stderrors.Is(currentErr, errors.ErrNotFound):
 			// A newly configured store has no durable generation yet; the verified
@@ -235,6 +254,7 @@ func New(opts ...Option) (*Client, error) {
 			if err != nil {
 				return nil, errors.WrapResource("publish", "initial human catalog", catalogPath, err)
 			}
+			generationGeneratedAt = time.Time{}
 			usingEmbeddedBootstrap = false
 		case stderrors.Is(humanErr, os.ErrNotExist):
 			// A missing workspace is seeded only by an explicit synchronization.
@@ -242,14 +262,18 @@ func New(opts ...Option) (*Client, error) {
 			return nil, errors.WrapResource("create", "human catalog workspace", catalogPath, humanErr)
 		}
 	}
+	if err := constructionContextError(ctx); err != nil {
+		return nil, err
+	}
 	sm.catalog = initial
 	sm.generationID = generationID
+	sm.generationGeneratedAt = generationGeneratedAt
 	sm.generationSequence = 1
 	sm.usingEmbeddedBootstrap = usingEmbeddedBootstrap
 	sm.embeddedBootstrap = bootstrapManifest
 
 	if durableCurrent != nil && catalogPath != "" {
-		repairCtx, cancel := context.WithTimeout(context.Background(), constants.DefaultCatalogProjectionTimeout)
+		repairCtx, cancel := context.WithTimeout(ctx, constants.DefaultCatalogProjectionTimeout)
 		repair, repairErr := workspace.Repair(
 			repairCtx,
 			catalogPath,
@@ -260,6 +284,9 @@ func New(opts ...Option) (*Client, error) {
 			},
 		)
 		cancel()
+		if err := constructionContextError(ctx); err != nil {
+			return nil, err
+		}
 		switch {
 		case repairErr != nil:
 			logging.Warn().
@@ -291,4 +318,11 @@ func New(opts ...Option) (*Client, error) {
 	log.Msg("Published initial catalog generation")
 
 	return sm, nil
+}
+
+func constructionContextError(ctx context.Context) error {
+	if err := ctx.Err(); err != nil {
+		return errors.WrapResource("construct", "starmap client", "", err)
+	}
+	return nil
 }

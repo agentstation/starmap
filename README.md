@@ -1,6 +1,6 @@
 # Starmap ⭐🗺️
 
-> An auto-updating AI Model Catalog available as a Golang Package, CLI Tool, or Server (RESTful, WebSockets, SSE).
+> An auto-updating AI Model Catalog available as a Go package, CLI tool, or HTTP server with REST and SSE.
 
 <div align="center">
 
@@ -78,7 +78,7 @@ Starmap provides:
 ✅ **Accurate Pricing**: Valid provider-offering prices first, with models.dev fallback
 ✅ **Real-time Synchronization**: Automatic updates from provider APIs
 ✅ **Flexible Architecture**: Simple merging or complex reconciliation
-✅ **Multiple Interfaces**: CLI, Go package, and HTTP Server (REST + WebSocket + SSE)
+✅ **Multiple Interfaces**: CLI, Go package, and HTTP server (REST + SSE)
 ✅ **Production Ready**: Thread-safe, well-tested, actively maintained  
 
 ## Installation
@@ -100,6 +100,8 @@ starmap version
 
 The library requires Go 1.25 or newer. Releases are built and verified with Go
 1.26.5, while required CI also tests the latest patched Go 1.25 toolchain.
+Supported library, CLI, server, and remote-consumer compositions require no C
+toolchain; release archives and containers are built with `CGO_ENABLED=0`.
 
 ```bash
 # Add to your project
@@ -228,7 +230,7 @@ starmap update openai -y
 
 Starmap uses a layered architecture with clean separation of concerns:
 
-- **User Interfaces**: CLI, Go package, and HTTP Server (REST + WebSocket + SSE)
+- **User Interfaces**: CLI, Go package, and HTTP server (REST + SSE)
 - **Core System**: Catalog management, reconciliation engine, and event hooks
 - **Data Sources**: Provider APIs, models.dev, embedded catalog, and local files
 - **Generation Stores**: Memory, filesystem, SQLite, or conditional object storage
@@ -503,6 +505,25 @@ for _, offering := range offerings {
 }
 ```
 
+`New` is the convenient read-only constructor and uses a background context.
+When construction reads a configured generation store, use `NewContext` so the
+caller owns cancellation and deadlines:
+
+```go
+sm, err := starmap.NewContext(ctx,
+    starmap.WithCatalogStore(store),
+    starmap.WithCatalogPath("./catalog"),
+)
+if err != nil {
+    return err
+}
+catalog := sm.Catalog() // non-nil after successful construction
+```
+
+Calling `Catalog` on a nil `*starmap.Client` returns nil. For every successfully
+constructed client the accessor is non-failing, non-nil, O(1), allocation-free,
+and safe to retain across goroutines.
+
 #### Event-Driven Updates
 ```go
 // React to catalog changes
@@ -522,8 +543,15 @@ sm.OnCatalogPublished(func(event starmap.CatalogPublishedEvent) error {
     return nil
 })
 
-stats := sm.HookStats() // failures, panics, drops, and callback latency
+stats := sm.HookStats() // failures, panics, coalesced generations, and callback latency
 ```
+
+Generation-store CAS is the durable commit point. The immutable catalog,
+generation identity, and sequence become visible atomically before callbacks
+begin. Callback delivery never lets a later generation overtake an earlier
+one. If callbacks lag, Starmap keeps the running generation plus the newest
+pending generation; skipped intermediate sequences are observable through the
+event sequence and `HookStats().Coalesced`.
 
 #### Advanced Catalog Construction
 ```go
@@ -572,17 +600,24 @@ projection, not an editable source of truth.
 #### Syncing with Provider APIs
 ```go
 // Non-dry mutation requires an explicit writable generation store.
-store, err := catalogstore.NewFilesystem("./catalog")
+store, err := catalogstore.NewFilesystem("./state/catalog")
 if err != nil {
     return err
 }
-sm, err := starmap.New(starmap.WithCatalogStore(store))
+sm, err := starmap.New(
+    starmap.WithCatalogStore(store),
+    starmap.WithCatalogPath("./catalog"),
+)
+if err != nil {
+    return err
+}
+syncer, err := acquisition.New(sm)
 if err != nil {
     return err
 }
 
 // Sync a selected provider API.
-result, err := sm.Sync(ctx,
+result, err := syncer.Sync(ctx,
     sync.WithProvider("openai"),
     sync.WithDryRun(false),
 )
@@ -600,20 +635,26 @@ fmt.Printf("Removed: %d models\n", result.Removed)
 
 #### Explicit Updates with Custom Logic
 ```go
-updateFunc := func(ctx context.Context, current *catalogs.Builder) (*catalogs.Builder, error) {
-    // Custom sync logic
-    // Honor ctx while calling providers or merging data.
-    return updatedCatalog, nil
-}
-
-sm, _ := starmap.New(
-    starmap.WithCatalogStore(store),
-    starmap.WithUpdateFunc(updateFunc),
-)
-
-// The deployment or Starport scheduler invokes this idempotent operation.
-if err := sm.Update(ctx); err != nil {
+publication, err := sm.Update(ctx, func(
+    ctx context.Context,
+    current *catalogs.Catalog,
+) (*starmap.Candidate, error) {
+    builder, err := catalogs.NewBuilderFrom(current)
+    if err != nil {
+        return nil, err
+    }
+    // Apply custom observations to builder while honoring ctx.
+    updated, err := builder.Build()
+    if err != nil {
+        return nil, err
+    }
+    return starmap.NewCandidate(updated)
+})
+if err != nil {
     return err
+}
+if publication.Published {
+    log.Printf("published catalog generation %s", publication.GenerationID)
 }
 ```
 
@@ -693,12 +734,46 @@ starmap serve --port 3000 --cors --auth --rate-limit 100
 starmap serve --cors-origins "https://example.com,https://app.example.com"
 ```
 
+Go programs can embed the same server directly. Construction starts no listener
+or background goroutine; `Serve` owns serving on the caller-provided listener,
+and `Shutdown` drains HTTP before stopping server services:
+
+```go
+sm, err := starmap.New()
+if err != nil {
+    return err
+}
+srv, err := server.New(sm, server.DefaultConfig())
+if err != nil {
+    return err
+}
+listener, err := net.Listen("tcp", "127.0.0.1:8080")
+if err != nil {
+    return err
+}
+go func() {
+    if err := srv.Serve(listener); err != nil {
+        log.Printf("starmap server: %v", err)
+    }
+}()
+defer srv.Shutdown(shutdownCtx)
+```
+
+The public server is read-only by default and does not import provider clients
+or acquisition implementations. To expose `POST /api/v1/update`, explicitly
+compose an `acquisition.Syncer` and pass `server.WithSyncer(syncer)`. This keeps
+ordinary server embedding independent from provider credentials and cloud SDKs.
+
 **Features:**
 - **RESTful API**: Models, providers, search endpoints with filtering
-- **Real-time Updates**: WebSocket (`/api/v1/updates/ws`) and SSE (`/api/v1/updates/stream`) carry the same post-commit generation/sync-run identity
+- **OpenRouter catalog compatibility**: Exact model-by-author/slug and
+  model-endpoints discovery routes over the same immutable catalog
+- **Reactive Updates**: SSE (`/api/v1/updates/stream`) emits heartbeat comments and one post-commit `catalog.published` hint containing generation ID and sequence
 - **Performance**: Generation-scoped in-memory caching, deterministic query sorting, rate limiting (per-IP)
 - **Security**: Optional API key authentication, CORS support
-- **Monitoring**: Health checks (`/health`, `/api/v1/ready`), metrics endpoint
+- **Monitoring**: Health checks (`/health`, `/api/v1/ready`), operational
+  catalog/publication/stream health (`/api/v1/stats` and `srv.Health()`), and
+  metrics endpoint
 - **Publication identity**: Catalog responses and real-time publication events carry the durable generation identity
 - **Documentation**: OpenAPI 3.1 specs at `/api/v1/openapi.json`
 
@@ -709,6 +784,10 @@ GET  /api/v1/models              # List with filtering
 GET  /api/v1/models/{id}         # Get specific model
 POST /api/v1/models/search       # Advanced search
 
+# OpenRouter-compatible catalog discovery
+GET  /api/v1/model/{author}/{slug}
+GET  /api/v1/models/{author}/{slug}/endpoints
+
 # Providers
 GET  /api/v1/providers           # List providers
 GET  /api/v1/providers/{id}      # Get specific provider
@@ -716,17 +795,107 @@ GET  /api/v1/providers/{id}/models  # Get provider's models
 
 # Remote generation consumption
 GET  /api/v1/catalog/manifest
+GET  /api/v1/catalog/generations/{generation_id}/manifest
 GET  /api/v1/catalog/generations/{generation_id}/snapshot
+GET  /api/v1/updates/stream      # Heartbeat-enabled publication hints
 
 # Admin
 POST /api/v1/update              # Trigger catalog sync
 GET  /api/v1/stats               # Catalog statistics
-GET  /api/v1/operations          # Generation, freshness, last sync, scheduler state
 
 # Health
 GET  /health                     # Liveness probe
 GET  /api/v1/ready               # Readiness check
 ```
+
+The OpenRouter-compatible adapter implements OpenRouter's documented
+[model-by-slug](https://openrouter.ai/docs/api/api-reference/models/get-a-model-by-its-slug)
+and
+[model-endpoints](https://openrouter.ai/docs/api/api-reference/endpoints/list-all-endpoints-for-a-model)
+contracts. It resolves canonical author IDs, author aliases, known catalog model
+aliases, and explicitly configured mode suffixes such as `:free`. It returns
+authored identity and intrinsic facts from the model definition, then joins
+every eligible provider offering at response time.
+Endpoint rows therefore retain the serving provider and its exact opaque model
+ID even when that provider serves models from unrelated labs. The model summary
+uses the least expensive eligible USD provider price deterministically; each
+endpoint retains its own provider price and limits in OpenRouter's documented
+string units.
+
+The adapter does not read generated `endpoints.yaml` and does not create another
+catalog authority. That file remains the digest-bound, human-inspectable
+projection of the same definition/offering join. Runtime latency, throughput,
+and uptime fields are omitted because Starmap does not currently compose a
+provider-performance telemetry producer; catalog freshness and SSE health are
+not substitutes for provider performance. Optional server authentication still
+governs these routes, with OpenRouter-shaped numeric `401` error envelopes.
+Model detail links honor the server's configured path prefix.
+
+Go consumers can opt into reactive remote catalogs without adding network
+behavior to the root package:
+
+```go
+subscriber, err := remote.New(remote.Config{
+    BaseURL: "https://starmap.example.com/api/v1",
+})
+if err != nil {
+    return err
+}
+if err := subscriber.Start(ctx); err != nil {
+    return err
+}
+defer subscriber.Close()
+
+catalog := subscriber.Catalog()
+model, err := catalog.FindModel("gpt-4o")
+
+health := subscriber.Health()
+log.Printf(
+    "stream=%s generation=%s age=%ds retries=%d",
+    health.StreamState,
+    health.ActiveGenerationID,
+    health.CatalogAgeSeconds,
+    health.Retries,
+)
+```
+
+The initial generation is verified before `Start` succeeds. SSE events are
+generation hints, not catalog payloads; reconnect always performs verified
+current-state catch-up, so dropped or replayed events cannot permanently stale
+or partially mutate the catalog. Comment heartbeats reset the stream-liveness
+deadline without triggering a fetch. The caller context owns initial fetch,
+streaming, retry, and activation; `Close` cancels and joins that lifecycle
+within a bounded timeout.
+
+Polling is disabled by default. Deployments that must tolerate an unavailable
+SSE route may opt into a bounded last-resort policy:
+
+```go
+PollingFallback: &remote.PollingFallbackPolicy{
+    AfterFailures: 3,
+    Interval:      30 * time.Second,
+},
+```
+
+The subscriber sends conditional current-manifest requests only after that
+stream-failure threshold. It never polls beside a healthy stream, consumes at
+a rate bounded by the configured interval, and exposes the current mode and
+cumulative counters through `PollingFallbackStatus()`. Authentication failures
+(HTTP 401 or 403) are terminal for the active lifecycle: they do not retry or
+enter polling fallback. Construct a new subscriber after credentials or access
+policy have been corrected.
+
+`subscriber.Health()` reports stream state, last heartbeat, last publication
+event, last successful catch-up, active generation age, retry count, fallback
+status, and a structured secret-free last error. Heartbeats establish transport
+liveness only; they never change the active generation timestamp or catalog
+age. The publisher exposes the matching server-side view through
+`srv.Health()` and `/api/v1/stats`, including callback coalescing and SSE
+backpressure/write termination counters.
+
+`BaseURL` is the trusted publisher origin. Non-loopback servers require HTTPS
+with a verified certificate chain, and redirects cannot change origin. Plain
+HTTP is accepted only for local loopback embedding and tests.
 
 **Configuration Flags:**
 - `--port`: Server port (default: 8080)
@@ -736,6 +905,8 @@ GET  /api/v1/ready               # Readiness check
 - `--auth`: Enable API key authentication
 - `--rate-limit`: Requests per minute per IP (default: 100)
 - `--cache-ttl`: Cache TTL in seconds (default: 300)
+- `--sse-heartbeat-interval`: Flushed comment heartbeat interval (default: 20s)
+- `--sse-write-timeout`: Per-frame SSE write and flush deadline (default: 10s)
 
 **Environment Variables:**
 ```bash
@@ -744,7 +915,7 @@ HTTP_HOST=0.0.0.0
 STARMAP_API_KEY=your-api-key  # If --auth enabled
 ```
 
-For full server documentation, see [internal/server/README.md](internal/server/README.md).
+For the embeddable API, see [server/README.md](server/README.md).
 
 ## Configuration
 

@@ -11,7 +11,6 @@ import (
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/constants"
 	"github.com/agentstation/starmap/pkg/errors"
-	"github.com/agentstation/starmap/pkg/save"
 )
 
 func TestProjectAtomicallyReplacesValidatedWorkspace(t *testing.T) {
@@ -496,7 +495,7 @@ func editWorkspaceModel(t *testing.T, path, modelID, modelName string) {
 	if err := builder.SetProviderModel("test-provider", model); err != nil {
 		t.Fatalf("SetProviderModel: %v", err)
 	}
-	if err := builder.Save(save.WithPath(path)); err != nil {
+	if err := builder.SaveTo(path); err != nil {
 		t.Fatalf("Save human edit: %v", err)
 	}
 }

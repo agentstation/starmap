@@ -13,7 +13,6 @@ import (
 
 	"github.com/agentstation/starmap/pkg/constants"
 	pkgerrors "github.com/agentstation/starmap/pkg/errors"
-	"github.com/agentstation/starmap/pkg/save"
 )
 
 func TestNewFromPathRejectsMissingAndQuarantinesCorruptRecords(t *testing.T) {
@@ -224,7 +223,7 @@ func TestCatalogWrite(t *testing.T) {
 
 	// Write to temporary directory
 	tmpDir := t.TempDir()
-	err = cat.Save(save.WithPath(tmpDir))
+	err = cat.SaveTo(tmpDir)
 	require.NoError(t, err)
 
 	// Verify files were written
@@ -260,7 +259,7 @@ func TestStaleCatalogRecordsDoNotReappearAfterSaveReload(t *testing.T) {
 	}); err != nil {
 		t.Fatalf("SetAuthor: %v", err)
 	}
-	if err := cat.Save(save.WithPath(tmpDir)); err != nil {
+	if err := cat.SaveTo(tmpDir); err != nil {
 		t.Fatalf("Save first generation: %v", err)
 	}
 	if err := os.WriteFile(filepath.Join(tmpDir, "notes.txt"), []byte("unmanaged"), constants.FilePermissions); err != nil {
@@ -291,7 +290,7 @@ func TestStaleCatalogRecordsDoNotReappearAfterSaveReload(t *testing.T) {
 	if err := cat.SetProviderModel(provider.ID, Model{ID: "current-provider-model", Name: "Current"}); err != nil {
 		t.Fatalf("SetProviderModel: %v", err)
 	}
-	if err := cat.Save(); err != nil {
+	if err := cat.SaveTo(tmpDir); err != nil {
 		t.Fatalf("Save replacement generation: %v", err)
 	}
 

@@ -4,44 +4,29 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/agentstation/starmap/pkg/catalogmeta"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/differ"
 	"github.com/agentstation/starmap/pkg/provenance"
 	"github.com/agentstation/starmap/pkg/sources"
 )
 
-// ProjectionStatus is the post-commit state of an optional human YAML
-// workspace projection.
-type ProjectionStatus string
+// ProjectionStatus is retained as the acquisition-result spelling of the
+// shared catalog lifecycle type.
+type ProjectionStatus = catalogmeta.ProjectionStatus
 
 const (
-	// ProjectionStatusApplied means the committed generation was materialized
-	// successfully to the requested human workspace.
-	ProjectionStatusApplied ProjectionStatus = "applied"
-	// ProjectionStatusPendingRepair means the generation remains durably active,
-	// but its optional human workspace projection must be repaired.
-	ProjectionStatusPendingRepair ProjectionStatus = "pending_repair"
-
-	// ProjectionIssueWorkspaceFailed identifies a committed generation whose
-	// optional workspace projection did not complete.
-	ProjectionIssueWorkspaceFailed = "workspace_projection_failed"
+	// ProjectionStatusApplied reports that the workspace projection was written.
+	ProjectionStatusApplied = catalogmeta.ProjectionStatusApplied
+	// ProjectionStatusPendingRepair reports that publication succeeded but the
+	// workspace projection needs repair.
+	ProjectionStatusPendingRepair = catalogmeta.ProjectionStatusPendingRepair
+	// ProjectionIssueWorkspaceFailed identifies a workspace projection failure.
+	ProjectionIssueWorkspaceFailed = catalogmeta.ProjectionIssueWorkspaceFailed
 )
 
-// ProjectionResult reports the post-commit state of an optional human YAML
-// workspace. It is nil on Result when no workspace was requested.
-type ProjectionResult struct {
-	// Path is the requested human workspace root.
-	Path string
-	// Status reports whether projection completed or requires repair.
-	Status ProjectionStatus
-	// IssueCode is empty after a successful projection.
-	IssueCode string
-	// GenerationID is the durable generation the workspace represents.
-	GenerationID string
-	// WorkspaceChecksum is present when the projected YAML became visible,
-	// including when only the repair marker remains pending.
-	WorkspaceChecksum string
-}
+// ProjectionResult is the optional post-commit workspace projection result.
+type ProjectionResult = catalogmeta.ProjectionResult
 
 var modelProvenanceFieldSuffixes = []string{
 	"limits.context_window",

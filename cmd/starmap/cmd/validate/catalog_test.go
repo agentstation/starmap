@@ -6,13 +6,12 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/agentstation/starmap/internal/application"
 	"github.com/agentstation/starmap/pkg/catalogs"
 )
 
 func TestValidateCatalogFormattedOutputReturnsErrorOnFailures(t *testing.T) {
 	cat := testCatalogWithModelAuthor(t, catalogs.AuthorID("missing-author"))
-	app := &application.Mock{
+	app := &testApplication{
 		CatalogFunc: func() (*catalogs.Catalog, error) {
 			return cat.Build()
 		},
@@ -40,7 +39,7 @@ func TestValidateCatalogResolvesAuthorAliases(t *testing.T) {
 		t.Fatalf("SetAuthor returned error: %v", err)
 	}
 
-	app := &application.Mock{
+	app := &testApplication{
 		CatalogFunc: func() (*catalogs.Catalog, error) {
 			return cat.Build()
 		},

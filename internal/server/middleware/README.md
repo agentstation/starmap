@@ -27,7 +27,7 @@ Package middleware provides HTTP middleware for the Starmap API server. It inclu
 
 
 <a name="Auth"></a>
-## func [Auth](<https://github.com/agentstation/starmap/blob/main/internal/server/middleware/auth.go#L34>)
+## func [Auth](<https://github.com/agentstation/starmap/blob/main/internal/server/middleware/auth.go#L35>)
 
 ```go
 func Auth(config AuthConfig, logger *zerolog.Logger) func(http.Handler) http.Handler
@@ -45,7 +45,7 @@ func CORS(config CORSConfig) func(http.Handler) http.Handler
 CORS middleware adds CORS headers to responses.
 
 <a name="Chain"></a>
-## func [Chain](<https://github.com/agentstation/starmap/blob/main/internal/server/middleware/middleware.go#L16>)
+## func [Chain](<https://github.com/agentstation/starmap/blob/main/internal/server/middleware/middleware.go#L13>)
 
 ```go
 func Chain(middlewares ...func(http.Handler) http.Handler) func(http.Handler) http.Handler
@@ -54,7 +54,7 @@ func Chain(middlewares ...func(http.Handler) http.Handler) func(http.Handler) ht
 Chain combines multiple middleware functions into a single middleware.
 
 <a name="Logger"></a>
-## func [Logger](<https://github.com/agentstation/starmap/blob/main/internal/server/middleware/middleware.go#L26>)
+## func [Logger](<https://github.com/agentstation/starmap/blob/main/internal/server/middleware/middleware.go#L23>)
 
 ```go
 func Logger(logger *zerolog.Logger) func(http.Handler) http.Handler
@@ -72,7 +72,7 @@ func RateLimit(rl *RateLimiter) func(http.Handler) http.Handler
 RateLimit middleware limits requests per IP address.
 
 <a name="Recovery"></a>
-## func [Recovery](<https://github.com/agentstation/starmap/blob/main/internal/server/middleware/middleware.go#L60>)
+## func [Recovery](<https://github.com/agentstation/starmap/blob/main/internal/server/middleware/middleware.go#L57>)
 
 ```go
 func Recovery(logger *zerolog.Logger) func(http.Handler) http.Handler
@@ -81,22 +81,23 @@ func Recovery(logger *zerolog.Logger) func(http.Handler) http.Handler
 Recovery recovers from panics and returns 500 error.
 
 <a name="AuthConfig"></a>
-## type [AuthConfig](<https://github.com/agentstation/starmap/blob/main/internal/server/middleware/auth.go#L14-L20>)
+## type [AuthConfig](<https://github.com/agentstation/starmap/blob/main/internal/server/middleware/auth.go#L14-L21>)
 
 AuthConfig holds authentication configuration.
 
 ```go
 type AuthConfig struct {
-    Enabled      bool
-    APIKey       string
-    HeaderName   string
-    PublicPaths  []string
-    BearerPrefix bool
+    Enabled         bool
+    APIKey          string
+    HeaderName      string
+    PublicPaths     []string
+    BearerPrefix    bool
+    FailureOverride func(http.ResponseWriter, *http.Request) bool
 }
 ```
 
 <a name="DefaultAuthConfig"></a>
-### func [DefaultAuthConfig](<https://github.com/agentstation/starmap/blob/main/internal/server/middleware/auth.go#L23>)
+### func [DefaultAuthConfig](<https://github.com/agentstation/starmap/blob/main/internal/server/middleware/auth.go#L24>)
 
 ```go
 func DefaultAuthConfig() AuthConfig

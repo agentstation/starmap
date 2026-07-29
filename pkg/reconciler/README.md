@@ -25,7 +25,6 @@ Package reconciler provides catalog synchronization and reconciliation capabilit
 - [type Option](<#Option>)
   - [func WithAuthorities\(authorities authority.Reader\) Option](<#WithAuthorities>)
   - [func WithBaseline\(catalog \*catalogs.Catalog\) Option](<#WithBaseline>)
-  - [func WithEnhancers\(enhancers ...enhancer.Enhancer\) Option](<#WithEnhancers>)
   - [func WithProvenance\(enabled bool\) Option](<#WithProvenance>)
   - [func WithStrategy\(strategy Strategy\) Option](<#WithStrategy>)
 - [type Reconciler](<#Reconciler>)
@@ -113,7 +112,7 @@ func (s *AuthorityStrategy) ResolveResourceConflict(resourceType sources.Resourc
 ResolveResourceConflict uses resource\-specific authorities to resolve conflicts.
 
 <a name="Option"></a>
-## type [Option](<https://github.com/agentstation/starmap/blob/main/pkg/reconciler/options.go#L30>)
+## type [Option](<https://github.com/agentstation/starmap/blob/main/pkg/reconciler/options.go#L27>)
 
 Option is a function that configures a Reconciler.
 
@@ -122,7 +121,7 @@ type Option func(*options) error
 ```
 
 <a name="WithAuthorities"></a>
-### func [WithAuthorities](<https://github.com/agentstation/starmap/blob/main/pkg/reconciler/options.go#L61>)
+### func [WithAuthorities](<https://github.com/agentstation/starmap/blob/main/pkg/reconciler/options.go#L58>)
 
 ```go
 func WithAuthorities(authorities authority.Reader) Option
@@ -131,7 +130,7 @@ func WithAuthorities(authorities authority.Reader) Option
 WithAuthorities sets the field authorities.
 
 <a name="WithBaseline"></a>
-### func [WithBaseline](<https://github.com/agentstation/starmap/blob/main/pkg/reconciler/options.go#L94>)
+### func [WithBaseline](<https://github.com/agentstation/starmap/blob/main/pkg/reconciler/options.go#L83>)
 
 ```go
 func WithBaseline(catalog *catalogs.Catalog) Option
@@ -139,17 +138,8 @@ func WithBaseline(catalog *catalogs.Catalog) Option
 
 WithBaseline sets an existing catalog to compare against for change detection.
 
-<a name="WithEnhancers"></a>
-### func [WithEnhancers](<https://github.com/agentstation/starmap/blob/main/pkg/reconciler/options.go#L86>)
-
-```go
-func WithEnhancers(enhancers ...enhancer.Enhancer) Option
-```
-
-WithEnhancers adds model enhancers to the pipeline.
-
 <a name="WithProvenance"></a>
-### func [WithProvenance](<https://github.com/agentstation/starmap/blob/main/pkg/reconciler/options.go#L78>)
+### func [WithProvenance](<https://github.com/agentstation/starmap/blob/main/pkg/reconciler/options.go#L75>)
 
 ```go
 func WithProvenance(enabled bool) Option
@@ -158,7 +148,7 @@ func WithProvenance(enabled bool) Option
 WithProvenance enables field\-level tracking.
 
 <a name="WithStrategy"></a>
-### func [WithStrategy](<https://github.com/agentstation/starmap/blob/main/pkg/reconciler/options.go#L47>)
+### func [WithStrategy](<https://github.com/agentstation/starmap/blob/main/pkg/reconciler/options.go#L44>)
 
 ```go
 func WithStrategy(strategy Strategy) Option
@@ -167,9 +157,9 @@ func WithStrategy(strategy Strategy) Option
 WithStrategy sets the merge strategy.
 
 <a name="Reconciler"></a>
-## type [Reconciler](<https://github.com/agentstation/starmap/blob/main/pkg/reconciler/reconciler.go#L28-L35>)
+## type [Reconciler](<https://github.com/agentstation/starmap/blob/main/pkg/reconciler/reconciler.go#L27-L33>)
 
-Reconciler combines data from multiple sources into a canonical catalog. It is concrete because this package has one reconciliation engine; extension points are accepted through the narrow Strategy, authority.Reader, Source, and Enhancer interfaces.
+Reconciler combines data from multiple sources into a canonical catalog. It is concrete because this package has one reconciliation engine; extension points are accepted through the narrow Strategy, authority.Reader, and Source interfaces.
 
 ```go
 type Reconciler struct {
@@ -178,7 +168,7 @@ type Reconciler struct {
 ```
 
 <a name="New"></a>
-### func [New](<https://github.com/agentstation/starmap/blob/main/pkg/reconciler/reconciler.go#L38>)
+### func [New](<https://github.com/agentstation/starmap/blob/main/pkg/reconciler/reconciler.go#L36>)
 
 ```go
 func New(opts ...Option) (*Reconciler, error)
@@ -187,7 +177,7 @@ func New(opts ...Option) (*Reconciler, error)
 New creates a new Reconciler with options.
 
 <a name="Reconciler.Sources"></a>
-### func \(\*Reconciler\) [Sources](<https://github.com/agentstation/starmap/blob/main/pkg/reconciler/reconciler.go#L76>)
+### func \(\*Reconciler\) [Sources](<https://github.com/agentstation/starmap/blob/main/pkg/reconciler/reconciler.go#L73>)
 
 ```go
 func (r *Reconciler) Sources(ctx context.Context, primary sources.ID, srcs []sources.Observation) (*Result, error)

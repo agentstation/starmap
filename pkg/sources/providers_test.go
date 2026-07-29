@@ -48,18 +48,18 @@ func TestProviderFetcherHasClientUsesInjectedFactory(t *testing.T) {
 	}
 }
 
-func TestProviderFetcherUsesDefaultProviderHooks(t *testing.T) {
+func TestProviderFetcherHasNoImplicitProviderHooks(t *testing.T) {
 	provider := providerForFetcherTest("supported")
 	fetcher := NewProviderFetcher(newFetcherProviderSet(provider))
 
-	if fetcher.options.clientFactory == nil {
-		t.Fatal("Expected default provider client factory")
+	if fetcher.options.clientFactory != nil {
+		t.Fatal("provider fetcher unexpectedly installed a concrete client factory")
 	}
-	if fetcher.options.rawFetcher == nil {
-		t.Fatal("Expected default provider raw fetcher")
+	if fetcher.options.rawFetcher != nil {
+		t.Fatal("provider fetcher unexpectedly installed a concrete raw fetcher")
 	}
-	if !fetcher.HasClient("supported") {
-		t.Fatal("Expected default provider factory to support OpenAI-compatible provider")
+	if fetcher.HasClient("supported") {
+		t.Fatal("provider support should require explicit acquisition composition")
 	}
 }
 

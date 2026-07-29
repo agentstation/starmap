@@ -11,7 +11,6 @@ import (
 	"github.com/goccy/go-yaml"
 
 	"github.com/agentstation/starmap/pkg/catalogs"
-	"github.com/agentstation/starmap/pkg/save"
 )
 
 func TestEndpointProjectionDeterministicallyJoinsCanonicalModelToOfferings(t *testing.T) {
@@ -85,7 +84,7 @@ func TestEndpointProjectionIsStableAcrossWorkspaceRoundTrip(t *testing.T) {
 	if err != nil {
 		t.Fatalf("NewBuilderFrom: %v", err)
 	}
-	if err := builder.Save(save.WithPath(path)); err != nil {
+	if err := builder.SaveTo(path); err != nil {
 		t.Fatalf("Save: %v", err)
 	}
 	reloadedBuilder, err := catalogs.NewFromPath(path)

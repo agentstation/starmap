@@ -10,7 +10,7 @@ import (
 	"github.com/mattn/go-isatty"
 	"github.com/spf13/cobra"
 
-	"github.com/agentstation/starmap/internal/application"
+	"github.com/agentstation/starmap/acquisition"
 	"github.com/agentstation/starmap/internal/auth"
 	"github.com/agentstation/starmap/internal/cli/emoji"
 	"github.com/agentstation/starmap/internal/cli/format"
@@ -29,7 +29,7 @@ type testResult struct {
 }
 
 // runTest executes the test command logic (called by providers --test flag).
-func runTest(cmd *cobra.Command, args []string, app application.Application) error {
+func runTest(cmd *cobra.Command, args []string, app application) error {
 	// Load catalog from app context
 	cat, err := app.Catalog()
 	if err != nil {
@@ -47,7 +47,7 @@ func runTest(cmd *cobra.Command, args []string, app application.Application) err
 }
 
 // testAllProviders tests all configured providers.
-func testAllProviders(cmd *cobra.Command, cat catalogs.Reader, app application.Application) error {
+func testAllProviders(cmd *cobra.Command, cat catalogs.Reader, app application) error {
 	verbose := mustGetBool(cmd, "verbose")
 	timeout := mustGetDuration(cmd, "timeout")
 
@@ -55,7 +55,7 @@ func testAllProviders(cmd *cobra.Command, cat catalogs.Reader, app application.A
 	outputFormat := app.OutputFormat()
 	detectedFormat := format.DetectFormat(outputFormat)
 
-	fetcher := sources.NewProviderFetcher(cat.Providers())
+	fetcher := acquisition.NewProviderFetcher(cat.Providers())
 	supportedProviders := fetcher.List()
 
 	// Create auth checker for credential validation
@@ -385,11 +385,11 @@ func testProvidersConcurrent(cmd *cobra.Command, cat catalogs.Reader, supportedP
 }
 
 // testSingleProvider tests a single provider.
-func testSingleProvider(cmd *cobra.Command, cat catalogs.Reader, providerID string, app application.Application) error {
+func testSingleProvider(cmd *cobra.Command, cat catalogs.Reader, providerID string, app application) error {
 	verbose := mustGetBool(cmd, "verbose")
 	timeout := mustGetDuration(cmd, "timeout")
 
-	fetcher := sources.NewProviderFetcher(cat.Providers())
+	fetcher := acquisition.NewProviderFetcher(cat.Providers())
 
 	// Convert string to ProviderID type
 	pid := catalogs.ProviderID(providerID)

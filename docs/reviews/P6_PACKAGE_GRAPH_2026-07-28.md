@@ -223,3 +223,18 @@ P6.2 must add a CI assertion that compiles an external
 `starmap.New().Catalog()` consumer and rejects a root closure above 160 or any
 GenAI, gRPC, OpenTelemetry, WebSocket, SQLite, Cobra, scheduler, or server
 implementation dependency.
+
+## Measurement correction
+
+The 160-package statement above is retained as the historical P6.1 measurement
+and decision. PR #55 later proved that a total-package ceiling includes
+platform-specific standard-library internals: the same consumer measured
+159 packages on Darwin and 163 on Linux with CGO, while its non-standard
+closure remained exactly 31 on Darwin, Linux, and Windows.
+
+The current prescriptive gate therefore enforces a ceiling of 32 non-standard
+packages and retains the complete dependency closure for the unchanged
+forbidden-family scan. See
+[`P7_CONSUMER_DEPENDENCY_BUDGET_CORRECTION_2026-07-29.md`](P7_CONSUMER_DEPENDENCY_BUDGET_CORRECTION_2026-07-29.md)
+for the exact failed hosted run, cross-target evidence, rationale, and
+structural regression gate.

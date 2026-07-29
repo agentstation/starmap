@@ -12,7 +12,7 @@ Package catalogs provides a unified catalog abstraction with pluggable storage b
 import "github.com/agentstation/starmap/pkg/catalogs"
 ```
 
-Package catalogs defines Starmap's provider\-oriented construction records and immutable canonical read model. Advanced producers use Builder to load or assemble provider models, then Build validates and derives definitions, provider offerings, and author membership into a concrete Catalog. Ordinary consumers retain and share that immutable Catalog.
+Package catalogs defines Starmap's authored\-model and provider\-serving construction records plus its immutable canonical read model. Advanced producers use Builder to load or assemble those records, then Build validates and derives definitions, provider offerings, and author membership into a concrete Catalog. Ordinary consumers retain and share that immutable Catalog.
 
 Example usage:
 
@@ -643,7 +643,8 @@ func main() {
   - [func \(cat \*Builder\) ProviderModels\(id ProviderID\) \(ModelsReader, error\)](<#Builder.ProviderModels>)
   - [func \(cat \*Builder\) Providers\(\) ProvidersReader](<#Builder.Providers>)
   - [func \(cat \*Builder\) ReplaceWith\(source Reader\) error](<#Builder.ReplaceWith>)
-  - [func \(cat \*Builder\) Save\(opts ...save.Option\) error](<#Builder.Save>)
+  - [func \(cat \*Builder\) Save\(\) error](<#Builder.Save>)
+  - [func \(cat \*Builder\) SaveTo\(path string\) error](<#Builder.SaveTo>)
   - [func \(cat \*Builder\) SetAuthor\(author Author\) error](<#Builder.SetAuthor>)
   - [func \(cat \*Builder\) SetAuthorModel\(authorID AuthorID, model Model\) error](<#Builder.SetAuthorModel>)
   - [func \(cat \*Builder\) SetMergeStrategy\(strategy MergeStrategy\)](<#Builder.SetMergeStrategy>)
@@ -1897,13 +1898,22 @@ func (cat *Builder) ReplaceWith(source Reader) error
 ReplaceWith replaces this catalog's contents with another.
 
 <a name="Builder.Save"></a>
-### func \(\*Builder\) [Save](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/save.go#L17>)
+### func \(\*Builder\) [Save](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/save.go#L16>)
 
 ```go
-func (cat *Builder) Save(opts ...save.Option) error
+func (cat *Builder) Save() error
 ```
 
-Save serializes a mutable builder into a caller\-owned construction path. It is intentionally not a publication primitive; committed catalogs are materialized atomically by the Starmap client.
+Save serializes a mutable builder to its configured construction path. It is intentionally not a publication primitive; committed catalogs are materialized atomically by the Starmap client.
+
+<a name="Builder.SaveTo"></a>
+### func \(\*Builder\) [SaveTo](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/save.go#L21>)
+
+```go
+func (cat *Builder) SaveTo(path string) error
+```
+
+SaveTo serializes a mutable builder to path.
 
 <a name="Builder.SetAuthor"></a>
 ### func \(\*Builder\) [SetAuthor](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/catalog.go#L269>)
@@ -4835,9 +4845,9 @@ ProviderRetentionPolicy represents how long data is kept and deletion practices.
 
 ```go
 type ProviderRetentionPolicy struct {
-    Type     ProviderRetentionType `json:"type" yaml:"type"`                             // Type of retention policy
-    Duration *time.Duration        `json:"duration,omitempty" yaml:"duration,omitempty"` // nil = forever, 0 = immediate deletion
-    Details  *string               `json:"details,omitempty" yaml:"details,omitempty"`   // Human-readable description
+    Type     ProviderRetentionType `json:"type" yaml:"type"`                                                   // Type of retention policy
+    Duration *time.Duration        `json:"duration,omitempty" yaml:"duration,omitempty" swaggertype:"integer"` // nil = forever, 0 = immediate deletion
+    Details  *string               `json:"details,omitempty" yaml:"details,omitempty"`                         // Human-readable description
 }
 ```
 

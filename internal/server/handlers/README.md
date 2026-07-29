@@ -16,7 +16,7 @@ Handlers are organized by domain for maintainability:
 - providers.go: Provider listing, retrieval, and models
 - admin.go: Administrative operations \(update, stats\)
 - health.go: Health and readiness checks
-- realtime.go: WebSocket and SSE real\-time updates
+- realtime.go: heartbeat\-enabled SSE publication updates
 - openapi.go: OpenAPI 3.1 specification endpoints
 
 All handlers follow a consistent pattern:
@@ -36,7 +36,8 @@ Package handlers provides HTTP request handlers for the Starmap API.
 
 - [type DateRange](<#DateRange>)
 - [type Handlers](<#Handlers>)
-  - [func New\(app application.Application, cache \*cache.Cache, broker \*events.Broker, wsHub \*ws.Hub, sseBroadcaster \*sse.Broadcaster, upgrader websocket.Upgrader, logger \*zerolog.Logger, startTime time.Time\) \*Handlers](<#New>)
+  - [func New\(app application, cache \*cache.Cache, sseBroadcaster \*sse.Broadcaster, logger \*zerolog.Logger, startTime time.Time\) \*Handlers](<#New>)
+  - [func \(h \*Handlers\) HandleCatalogGenerationManifest\(writer http.ResponseWriter, request \*http.Request, generationID string\)](<#Handlers.HandleCatalogGenerationManifest>)
   - [func \(h \*Handlers\) HandleCatalogManifest\(writer http.ResponseWriter, request \*http.Request\)](<#Handlers.HandleCatalogManifest>)
   - [func \(h \*Handlers\) HandleCatalogSnapshot\(writer http.ResponseWriter, request \*http.Request, generationID string\)](<#Handlers.HandleCatalogSnapshot>)
   - [func \(h \*Handlers\) HandleGetModel\(w http.ResponseWriter, \_ \*http.Request, modelID string\)](<#Handlers.HandleGetModel>)
@@ -47,13 +48,13 @@ Package handlers provides HTTP request handlers for the Starmap API.
   - [func \(h \*Handlers\) HandleListProviders\(w http.ResponseWriter, \_ \*http.Request\)](<#Handlers.HandleListProviders>)
   - [func \(h \*Handlers\) HandleOpenAPIJSON\(w http.ResponseWriter, \_ \*http.Request\)](<#Handlers.HandleOpenAPIJSON>)
   - [func \(h \*Handlers\) HandleOpenAPIYAML\(w http.ResponseWriter, \_ \*http.Request\)](<#Handlers.HandleOpenAPIYAML>)
-  - [func \(h \*Handlers\) HandleOperations\(w http.ResponseWriter, r \*http.Request\)](<#Handlers.HandleOperations>)
+  - [func \(h \*Handlers\) HandleOpenRouterEndpoints\(w http.ResponseWriter, \_ \*http.Request, authorID string, slug string\)](<#Handlers.HandleOpenRouterEndpoints>)
+  - [func \(h \*Handlers\) HandleOpenRouterModel\(w http.ResponseWriter, \_ \*http.Request, authorID string, slug string, pathPrefix string\)](<#Handlers.HandleOpenRouterModel>)
   - [func \(h \*Handlers\) HandleReady\(w http.ResponseWriter, \_ \*http.Request\)](<#Handlers.HandleReady>)
   - [func \(h \*Handlers\) HandleSSE\(w http.ResponseWriter, r \*http.Request\)](<#Handlers.HandleSSE>)
   - [func \(h \*Handlers\) HandleSearchModels\(w http.ResponseWriter, r \*http.Request\)](<#Handlers.HandleSearchModels>)
   - [func \(h \*Handlers\) HandleStats\(w http.ResponseWriter, \_ \*http.Request\)](<#Handlers.HandleStats>)
   - [func \(h \*Handlers\) HandleUpdate\(w http.ResponseWriter, r \*http.Request\)](<#Handlers.HandleUpdate>)
-  - [func \(h \*Handlers\) HandleWebSocket\(w http.ResponseWriter, r \*http.Request\)](<#Handlers.HandleWebSocket>)
 - [type IntRange](<#IntRange>)
 - [type SearchModalities](<#SearchModalities>)
 - [type SearchRequest](<#SearchRequest>)
@@ -72,7 +73,7 @@ type DateRange struct {
 ```
 
 <a name="Handlers"></a>
-## type [Handlers](<https://github.com/agentstation/starmap/blob/main/internal/server/handlers/handlers.go#L18-L27>)
+## type [Handlers](<https://github.com/agentstation/starmap/blob/main/internal/server/handlers/handlers.go#L14-L20>)
 
 Handlers provides access to all HTTP handlers.
 
@@ -83,16 +84,25 @@ type Handlers struct {
 ```
 
 <a name="New"></a>
-### func [New](<https://github.com/agentstation/starmap/blob/main/internal/server/handlers/handlers.go#L30-L39>)
+### func [New](<https://github.com/agentstation/starmap/blob/main/internal/server/handlers/handlers.go#L23-L29>)
 
 ```go
-func New(app application.Application, cache *cache.Cache, broker *events.Broker, wsHub *ws.Hub, sseBroadcaster *sse.Broadcaster, upgrader websocket.Upgrader, logger *zerolog.Logger, startTime time.Time) *Handlers
+func New(app application, cache *cache.Cache, sseBroadcaster *sse.Broadcaster, logger *zerolog.Logger, startTime time.Time) *Handlers
 ```
 
 New creates a new Handlers instance.
 
+<a name="Handlers.HandleCatalogGenerationManifest"></a>
+### func \(\*Handlers\) [HandleCatalogGenerationManifest](<https://github.com/agentstation/starmap/blob/main/internal/server/handlers/catalog.go#L29-L33>)
+
+```go
+func (h *Handlers) HandleCatalogGenerationManifest(writer http.ResponseWriter, request *http.Request, generationID string)
+```
+
+HandleCatalogGenerationManifest serves an immutable manifest by generation ID.
+
 <a name="Handlers.HandleCatalogManifest"></a>
-### func \(\*Handlers\) [HandleCatalogManifest](<https://github.com/agentstation/starmap/blob/main/internal/server/handlers/catalog.go#L12>)
+### func \(\*Handlers\) [HandleCatalogManifest](<https://github.com/agentstation/starmap/blob/main/internal/server/handlers/catalog.go#L14>)
 
 ```go
 func (h *Handlers) HandleCatalogManifest(writer http.ResponseWriter, request *http.Request)
@@ -101,7 +111,7 @@ func (h *Handlers) HandleCatalogManifest(writer http.ResponseWriter, request *ht
 HandleCatalogManifest serves the current strict generation manifest.
 
 <a name="Handlers.HandleCatalogSnapshot"></a>
-### func \(\*Handlers\) [HandleCatalogSnapshot](<https://github.com/agentstation/starmap/blob/main/internal/server/handlers/catalog.go#L35>)
+### func \(\*Handlers\) [HandleCatalogSnapshot](<https://github.com/agentstation/starmap/blob/main/internal/server/handlers/catalog.go#L81>)
 
 ```go
 func (h *Handlers) HandleCatalogSnapshot(writer http.ResponseWriter, request *http.Request, generationID string)
@@ -181,14 +191,23 @@ func (h *Handlers) HandleOpenAPIYAML(w http.ResponseWriter, _ *http.Request)
 
 HandleOpenAPIYAML serves the embedded OpenAPI 3.1 specification in YAML format. @Summary Get OpenAPI specification \(YAML\) @Description Returns the OpenAPI 3.1 specification for this API in YAML format @Tags meta @Produce application/x\-yaml @Success 200 \{string\} string "OpenAPI 3.1 specification" @Router /api/v1/openapi.yaml \[get\].
 
-<a name="Handlers.HandleOperations"></a>
-### func \(\*Handlers\) [HandleOperations](<https://github.com/agentstation/starmap/blob/main/internal/server/handlers/operations.go#L18>)
+<a name="Handlers.HandleOpenRouterEndpoints"></a>
+### func \(\*Handlers\) [HandleOpenRouterEndpoints](<https://github.com/agentstation/starmap/blob/main/internal/server/handlers/openrouter.go#L65-L70>)
 
 ```go
-func (h *Handlers) HandleOperations(w http.ResponseWriter, r *http.Request)
+func (h *Handlers) HandleOpenRouterEndpoints(w http.ResponseWriter, _ *http.Request, authorID string, slug string)
 ```
 
-HandleOperations handles GET /api/v1/operations. @Summary Catalog operational state @Description Get current generation, source freshness, last synchronization, degraded sources, and scheduler state @Tags admin @Produce json @Success 200 \{object\} response.Response\{data=object\} @Failure 500 \{object\} response.Response\{error=response.Error\} @Security ApiKeyAuth @Router /api/v1/operations \[get\].
+HandleOpenRouterEndpoints handles GET /api/v1/models/\{author\}/\{slug\}/endpoints. @Summary List OpenRouter\-compatible provider endpoints for a model @Description Project every eligible exact provider offering for one model @Tags openrouter @Produce json @Param author path string true "Canonical author ID or alias" @Param slug path string true "Model slug or configured variant" @Success 200 \{object\} openrouter.EndpointsEnvelope @Failure 401 \{object\} openrouter.ErrorEnvelope @Failure 404 \{object\} openrouter.ErrorEnvelope @Failure 500 \{object\} openrouter.ErrorEnvelope @Security ApiKeyAuth @Router /api/v1/models/\{author\}/\{slug\}/endpoints \[get\].
+
+<a name="Handlers.HandleOpenRouterModel"></a>
+### func \(\*Handlers\) [HandleOpenRouterModel](<https://github.com/agentstation/starmap/blob/main/internal/server/handlers/openrouter.go#L23-L29>)
+
+```go
+func (h *Handlers) HandleOpenRouterModel(w http.ResponseWriter, _ *http.Request, authorID string, slug string, pathPrefix string)
+```
+
+HandleOpenRouterModel handles GET /api/v1/model/\{author\}/\{slug\}. @Summary Get an OpenRouter\-compatible model by author and slug @Description Resolve a canonical model, known alias, or configured variant @Tags openrouter @Produce json @Param author path string true "Canonical author ID or alias" @Param slug path string true "Model slug or configured variant" @Success 200 \{object\} openrouter.ModelEnvelope @Failure 401 \{object\} openrouter.ErrorEnvelope @Failure 404 \{object\} openrouter.ErrorEnvelope @Failure 500 \{object\} openrouter.ErrorEnvelope @Security ApiKeyAuth @Router /api/v1/model/\{author\}/\{slug\} \[get\].
 
 <a name="Handlers.HandleReady"></a>
 ### func \(\*Handlers\) [HandleReady](<https://github.com/agentstation/starmap/blob/main/internal/server/handlers/health.go#L35>)
@@ -200,13 +219,13 @@ func (h *Handlers) HandleReady(w http.ResponseWriter, _ *http.Request)
 HandleReady handles GET /api/v1/ready. @Summary Readiness check @Description Readiness check including cache and data source status @Tags health @Accept json @Produce json @Success 200 \{object\} response.Response\{data=object\} @Failure 503 \{object\} response.Response\{error=response.Error\} @Router /api/v1/ready \[get\].
 
 <a name="Handlers.HandleSSE"></a>
-### func \(\*Handlers\) [HandleSSE](<https://github.com/agentstation/starmap/blob/main/internal/server/handlers/realtime.go#L43>)
+### func \(\*Handlers\) [HandleSSE](<https://github.com/agentstation/starmap/blob/main/internal/server/handlers/realtime.go#L14>)
 
 ```go
 func (h *Handlers) HandleSSE(w http.ResponseWriter, r *http.Request)
 ```
 
-HandleSSE handles Server\-Sent Events at /api/v1/updates/stream. @Summary SSE updates stream @Description Server\-Sent Events stream for catalog change notifications @Tags updates @Produce text/event\-stream @Success 200 "Event stream" @Router /api/v1/updates/stream \[get\].
+HandleSSE handles Server\-Sent Events at /api/v1/updates/stream. @Summary SSE updates stream @Description Heartbeat\-enabled stream of post\-commit catalog publication hints @Tags updates @Produce text/event\-stream @Success 200 "Event stream" @Router /api/v1/updates/stream \[get\].
 
 <a name="Handlers.HandleSearchModels"></a>
 ### func \(\*Handlers\) [HandleSearchModels](<https://github.com/agentstation/starmap/blob/main/internal/server/handlers/models.go#L184>)
@@ -218,7 +237,7 @@ func (h *Handlers) HandleSearchModels(w http.ResponseWriter, r *http.Request)
 HandleSearchModels handles POST /api/v1/models/search. @Summary Search models @Description Advanced search with multiple criteria @Tags models @Accept json @Produce json @Param search body SearchRequest true "Search criteria" @Success 200 \{object\} response.Response\{data=object\} @Failure 400 \{object\} response.Response\{error=response.Error\} @Failure 500 \{object\} response.Response\{error=response.Error\} @Security ApiKeyAuth @Router /api/v1/models/search \[post\].
 
 <a name="Handlers.HandleStats"></a>
-### func \(\*Handlers\) [HandleStats](<https://github.com/agentstation/starmap/blob/main/internal/server/handlers/admin.go#L81>)
+### func \(\*Handlers\) [HandleStats](<https://github.com/agentstation/starmap/blob/main/internal/server/handlers/admin.go#L66>)
 
 ```go
 func (h *Handlers) HandleStats(w http.ResponseWriter, _ *http.Request)
@@ -227,22 +246,13 @@ func (h *Handlers) HandleStats(w http.ResponseWriter, _ *http.Request)
 HandleStats handles GET /api/v1/stats. @Summary Catalog statistics @Description Get comprehensive server and catalog statistics @Tags admin @Accept json @Produce json @Success 200 \{object\} response.Response\{data=object\} @Failure 500 \{object\} response.Response\{error=response.Error\} @Security ApiKeyAuth @Router /api/v1/stats \[get\].
 
 <a name="Handlers.HandleUpdate"></a>
-### func \(\*Handlers\) [HandleUpdate](<https://github.com/agentstation/starmap/blob/main/internal/server/handlers/admin.go#L27>)
+### func \(\*Handlers\) [HandleUpdate](<https://github.com/agentstation/starmap/blob/main/internal/server/handlers/admin.go#L26>)
 
 ```go
 func (h *Handlers) HandleUpdate(w http.ResponseWriter, r *http.Request)
 ```
 
 HandleUpdate handles POST /api/v1/update. @Summary Trigger catalog update @Description Manually trigger catalog synchronization @Tags admin @Accept json @Produce json @Param provider query string false "Update specific provider only" @Param source query string false "Update one source only \(local\_catalog, providers, models\_dev\_http, or models\_dev\_git\)" @Success 200 \{object\} response.Response\{data=object\} @Failure 500 \{object\} response.Response\{error=response.Error\} @Security ApiKeyAuth @Router /api/v1/update \[post\].
-
-<a name="Handlers.HandleWebSocket"></a>
-### func \(\*Handlers\) [HandleWebSocket](<https://github.com/agentstation/starmap/blob/main/internal/server/handlers/realtime.go#L17>)
-
-```go
-func (h *Handlers) HandleWebSocket(w http.ResponseWriter, r *http.Request)
-```
-
-HandleWebSocket handles WebSocket connections at /api/v1/updates/ws. @Summary WebSocket updates @Description WebSocket connection for real\-time catalog updates @Tags updates @Success 101 "Switching Protocols" @Router /api/v1/updates/ws \[get\].
 
 <a name="IntRange"></a>
 ## type [IntRange](<https://github.com/agentstation/starmap/blob/main/internal/server/handlers/models.go#L161-L164>)

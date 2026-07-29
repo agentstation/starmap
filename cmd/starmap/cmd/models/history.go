@@ -8,7 +8,6 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/agentstation/starmap/internal/application"
 	"github.com/agentstation/starmap/internal/cli/constants"
 	"github.com/agentstation/starmap/internal/cli/format"
 	"github.com/agentstation/starmap/internal/cli/globals"
@@ -19,7 +18,7 @@ import (
 )
 
 // NewHistoryCommand creates the history subcommand for viewing model data sources.
-func NewHistoryCommand(app application.Application) *cobra.Command {
+func NewHistoryCommand(app application) *cobra.Command {
 	var fieldPatterns []string
 	var providerID string
 
@@ -60,7 +59,7 @@ Field matching is case-insensitive for convenience.`,
 // showModelHistory displays history data for a specific model.
 func showModelHistory(
 	cmd *cobra.Command,
-	app application.Application,
+	app application,
 	requestedProvider catalogs.ProviderID,
 	modelID string,
 	fieldPatterns []string,

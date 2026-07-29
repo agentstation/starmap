@@ -17,7 +17,6 @@ import (
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/constants"
 	"github.com/agentstation/starmap/pkg/errors"
-	"github.com/agentstation/starmap/pkg/save"
 )
 
 const (
@@ -530,7 +529,7 @@ func stageCatalog(
 	if err != nil {
 		return cleanup(errors.WrapResource("build", "workspace projection", target, err))
 	}
-	if err := builder.Save(save.WithPath(staged)); err != nil {
+	if err := builder.SaveTo(staged); err != nil {
 		return cleanup(errors.WrapIO("stage", staged, err))
 	}
 	if _, err := writeEndpointProjection(staged, catalog, identity); err != nil {
@@ -581,7 +580,7 @@ func validateStableProjection(
 	if err != nil {
 		return errors.WrapResource("build", "workspace verification", staged, err)
 	}
-	if err := verificationBuilder.Save(save.WithPath(verification)); err != nil {
+	if err := verificationBuilder.SaveTo(verification); err != nil {
 		return errors.WrapIO("verify", verification, err)
 	}
 	if _, err := writeEndpointProjection(verification, catalog, identity); err != nil {

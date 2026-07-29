@@ -55,9 +55,13 @@ func Check(ctx context.Context, dep sources.Dependency) sources.DependencyStatus
 	return status
 }
 
+type dependencySource interface {
+	Dependencies() []sources.Dependency
+}
+
 // CheckAll checks all dependencies for a source.
 // Returns a map of dependency name to status.
-func CheckAll(ctx context.Context, src sources.Source) map[string]sources.DependencyStatus {
+func CheckAll(ctx context.Context, src dependencySource) map[string]sources.DependencyStatus {
 	deps := src.Dependencies()
 	if len(deps) == 0 {
 		return nil

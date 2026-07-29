@@ -12,11 +12,12 @@ import (
 
 // AuthConfig holds authentication configuration.
 type AuthConfig struct {
-	Enabled      bool
-	APIKey       string
-	HeaderName   string
-	PublicPaths  []string
-	BearerPrefix bool
+	Enabled         bool
+	APIKey          string
+	HeaderName      string
+	PublicPaths     []string
+	BearerPrefix    bool
+	FailureOverride func(http.ResponseWriter, *http.Request) bool
 }
 
 // DefaultAuthConfig returns default authentication configuration.
@@ -57,17 +58,29 @@ func Auth(config AuthConfig, logger *zerolog.Logger) func(http.Handler) http.Han
 					Bool("key_provided", apiKey != "").
 					Msg("Authentication failed")
 
-				w.Header().Set("Content-Type", "application/json")
-				w.WriteHeader(http.StatusUnauthorized)
-				// Write error response; if this fails, connection is likely broken
-				if _, writeErr := w.Write([]byte(`{"data":null,"error":{"code":"UNAUTHORIZED","message":"Invalid or missing API key","details":"Provide a valid API key in the ` + config.HeaderName + ` header"}}`)); writeErr != nil {
-					logger.Error().Err(writeErr).Msg("Failed to write auth error response")
+				if config.FailureOverride != nil &&
+					config.FailureOverride(w, r) {
+					return
 				}
+				writeAuthFailure(w, config, logger)
 				return
 			}
 
 			next.ServeHTTP(w, r)
 		})
+	}
+}
+
+func writeAuthFailure(
+	w http.ResponseWriter,
+	config AuthConfig,
+	logger *zerolog.Logger,
+) {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusUnauthorized)
+	// Write error response; if this fails, connection is likely broken.
+	if _, writeErr := w.Write([]byte(`{"data":null,"error":{"code":"UNAUTHORIZED","message":"Invalid or missing API key","details":"Provide a valid API key in the ` + config.HeaderName + ` header"}}`)); writeErr != nil {
+		logger.Error().Err(writeErr).Msg("Failed to write auth error response")
 	}
 }
 

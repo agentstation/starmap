@@ -13,16 +13,11 @@ import (
 	"github.com/rs/zerolog"
 
 	"github.com/agentstation/starmap"
-	"github.com/agentstation/starmap/internal/application"
 	"github.com/agentstation/starmap/internal/catalog/workspace"
 	"github.com/agentstation/starmap/pkg/catalogs"
-	"github.com/agentstation/starmap/pkg/catalogscheduler"
 	"github.com/agentstation/starmap/pkg/catalogstore"
 	"github.com/agentstation/starmap/pkg/errors"
 )
-
-// Ensure App implements application.Application at compile time.
-var _ application.Application = (*App)(nil)
 
 // App represents the starmap application with all its dependencies.
 // It provides a centralized place for configuration, logging, and
@@ -41,25 +36,19 @@ type App struct {
 	logger *zerolog.Logger
 
 	// Starmap instance (lazy-initialized, singleton)
-	mu         sync.RWMutex
-	starmap    *starmap.Client
-	operations *catalogscheduler.Operations
+	mu      sync.RWMutex
+	starmap *starmap.Client
 }
 
 // New creates a new App instance with the given version information.
 // The app is initialized with default configuration that can be
 // customized using functional options.
 func New(version, commit, date, builtBy string, opts ...Option) (*App, error) {
-	operations, err := catalogscheduler.NewOperations()
-	if err != nil {
-		return nil, err
-	}
 	app := &App{
-		version:    version,
-		commit:     commit,
-		date:       date,
-		builtBy:    builtBy,
-		operations: operations,
+		version: version,
+		commit:  commit,
+		date:    date,
+		builtBy: builtBy,
 	}
 
 	// Load configuration
@@ -204,20 +193,6 @@ func (a *App) Readiness() (starmap.CatalogReadiness, error) {
 	return sm.Readiness(), nil
 }
 
-// OperationalState composes the current atomic catalog identity with all
-// deployment-owned scheduler telemetry configured at the composition root.
-func (a *App) OperationalState(ctx context.Context) (catalogscheduler.OperationalState, error) {
-	sm, err := a.Starmap()
-	if err != nil {
-		return catalogscheduler.OperationalState{}, err
-	}
-	state := sm.CurrentCatalogState()
-	return a.operations.State(ctx, catalogscheduler.CatalogIdentity{
-		GenerationID: state.GenerationID,
-		Sequence:     state.Sequence,
-	})
-}
-
 // Shutdown performs graceful shutdown of the application.
 // It stops any running background tasks and cleans up resources.
 // The context controls the shutdown timeout - shutdown will abort if context is cancelled.
@@ -249,21 +224,13 @@ func (a *App) buildStarmapOptions(storeOption starmap.Option) ([]starmap.Option,
 		opts = append(opts, starmap.WithEmbeddedBootstrapMaxSizeBytes(a.config.EmbeddedBootstrapMaxSizeBytes))
 	}
 
-	// Add remote server if configured
+	// Reactive remote composition is explicit and does not belong to the root
+	// read-only Client. P7 supplies the public remote subscriber.
 	if a.config.RemoteServerURL != "" {
-		var apiKey *string
-		if a.config.RemoteServerAPIKey != "" {
-			apiKey = &a.config.RemoteServerAPIKey
-		}
-
-		if a.config.RemoteServerOnly {
-			opts = append(opts, starmap.WithRemoteServerOnly(a.config.RemoteServerURL))
-		} else {
-			opts = append(opts, starmap.WithRemoteServerURL(a.config.RemoteServerURL))
-		}
-
-		if apiKey != nil {
-			opts = append(opts, starmap.WithRemoteServerAPIKey(*apiKey))
+		return nil, &errors.ConfigError{
+			Component: "remote catalog",
+			Message: "remote catalog configuration requires the explicit " +
+				"reactive subscriber composition",
 		}
 	}
 
@@ -341,17 +308,6 @@ func WithLogger(logger *zerolog.Logger) Option {
 func WithClient(sm *starmap.Client) Option {
 	return func(a *App) error {
 		a.starmap = sm
-		return nil
-	}
-}
-
-// WithOperations sets the deployment-owned operational-state composer.
-func WithOperations(operations *catalogscheduler.Operations) Option {
-	return func(a *App) error {
-		if operations == nil {
-			return &errors.ValidationError{Field: "application.operations", Message: "is required"}
-		}
-		a.operations = operations
 		return nil
 	}
 }

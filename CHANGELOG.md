@@ -9,6 +9,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **Pure-Go release contract**: required verification executes the external
+  library, store, server, remote, and CLI compositions with `CGO_ENABLED=0`;
+  race verification remains explicitly cgo-enabled. GoReleaser archives,
+  container images, and Homebrew installs now verify cgo-disabled metadata and
+  target-appropriate static/system-only linkage.
+- **Embeddable Go server**: the public `server` package accepts
+  `*starmap.Client`, returns a concrete server, and exposes caller-owned
+  `Serve`, `Handler`/`Start`, and draining `Shutdown` lifecycles. Read-only
+  serving does not import provider clients or acquisition implementations;
+  `server.WithSyncer` explicitly enables the update route when a deployment
+  wants live source acquisition. A real external `GOWORK=off` module constructs,
+  serves, reaches, drains, and stops it.
+- **Caller-owned construction lifecycle**: `starmap.NewContext` propagates the
+  caller's cancellation and deadline through storage-backed generation loading
+  and workspace repair. `starmap.New` remains the background-context
+  convenience constructor. `(*Client).Catalog()` now has explicit nil-receiver
+  semantics: it returns nil for a nil client while remaining non-failing,
+  non-nil, O(1), and allocation-free after successful construction.
 - **Explicit local layout migration**: `starmap migrate catalog` validates and
   locks the complete pre-plan generation store at `catalog_path`, moves it to
   the canonical machine state root, and projects the exact current generation
@@ -20,10 +38,42 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   survive process restart. Server updates may select a single source with the
   `source` query parameter; a configured `WithCatalogPath` is also the default
   sync workspace when `sync.WithCatalogPath` is omitted.
-- Catalog publication observers no longer head-of-line block one another, and
-  server logging middleware preserves SSE flushing and WebSocket hijacking.
-  HTTP catalog responses, SSE, WebSocket, and cache state now correlate the
-  same durable generation and sync-run identity after commit.
+- Catalog publication observers no longer head-of-line block one another.
+  Server logging middleware preserves error-reporting SSE flushes, while HTTP
+  catalog responses, SSE publication hints, and cache state correlate the same
+  durable generation identity after commit.
+- Catalog publication callbacks now begin in generation order and use a
+  bounded newest-pending coalescing policy instead of silently dropping a
+  complete generation when fixed delivery slots are saturated. Atomic catalog
+  state supplies the event sequence directly; sequence gaps and
+  `HookStats().Coalesced` expose overload without delaying the durable commit.
+- **One reactive transport**: SSE is the sole server-to-client publication
+  transport. Each connection has one serialized request-owned writer for
+  `catalog.published` hints and flushed comment heartbeats. The default
+  heartbeat interval is 20 seconds, every frame has a 10-second write deadline,
+  and a backpressured or failed connection is terminated so reconnect catch-up
+  can recover. The unused WebSocket, generic broker, model-event adapters, and
+  their public route were removed before launch.
+- **Verified remote publisher boundary**: reactive and low-level remote clients
+  require non-loopback publishers to use HTTPS, require every HTTPS response to
+  retain a standard verified certificate chain, and reject cross-origin
+  redirects. Manifest-declared media and body limits are checked before the
+  immutable payload is downloaded; any identity, size, digest, schema, or
+  stale-generation failure leaves the active catalog unchanged.
+- **Explicit polling fallback**: reactive subscribers never poll during a
+  healthy heartbeat/event stream and keep polling disabled by default.
+  `PollingFallbackPolicy` can opt into a consecutive-stream-failure threshold,
+  and a minimum request interval. Requests use `If-None-Match`,
+  current fallback state is observable, and verified reconnect catch-up stops
+  fallback before event consumption resumes.
+- **Terminal remote authentication failures**: HTTP 401 and 403 stop the
+  one-shot subscriber lifecycle across stream, catch-up, addressed fetch, and
+  conditional fallback paths. They never trigger hidden retry or polling;
+  callers construct a new subscriber after correcting credentials or policy.
+- **Distinct catalog and stream health**: Publishers and subscribers expose
+  active generation freshness independently from heartbeat/event liveness,
+  with retry/catch-up/error state plus observable hook coalescing and SSE
+  backpressure or write termination.
 
 ### BREAKING CHANGES
 - **One canonical human catalog workspace**: `catalog_path`,
@@ -41,16 +91,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   `WithAutoUpdateInterval`, `AutoUpdateFunc`, `AutoUpdateContextFunc`,
   `WithAutoUpdateFunc`, and `WithAutoUpdateContextFunc` were removed.
   Deployments and Starport own cadence, jitter, retry, leases, and startup
-  policy and invoke the idempotent `Client.Sync` or `Client.Update` operation.
-  Custom candidate construction migrates to the context-aware
-  `UpdateFunc`/`WithUpdateFunc` seam:
+  policy. Provider/source synchronization is the explicit opt-in
+  `acquisition.Syncer`; custom publication passes a context-aware callback
+  directly to `Client.Update`:
 
   ```go
-  sm, err := starmap.New(
-      starmap.WithCatalogStore(store),
-      starmap.WithUpdateFunc(updateFunc),
-  )
-  err = sm.Update(ctx)
+  publication, err := sm.Update(ctx, func(
+      ctx context.Context,
+      current *catalogs.Catalog,
+  ) (*starmap.Candidate, error) {
+      return starmap.NewCandidate(updatedCatalog)
+  })
   ```
 
 - **Canonical model-definition and offering lookup**:
@@ -59,7 +110,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   `catalog.Offering(providerID, providerModelID)`. The prelaunch flattened
   `Models`, `ProviderModel`, `ProviderModels`, and `LegacyV0` reads were deleted
   because they discard provider identity. Canonical catalogs are schema
-  version 2.
+  version 3.
   The duplicate nested `tokens.cache` representation and unused
   `architecture.precision` alias were also removed; cache pricing persists only
   as `cache_read`/`cache_write`, and quantization has one typed field.
@@ -109,9 +160,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     option had an implementation. Use `sync.WithFresh(true)` for an explicitly
     destructive replacement sync. Default reconciliation remains non-destructive
     according to source merge and field-authority policy.
-  - `WithRemoteServerURL` now configures a remote endpoint without silently
-    diverting `Client.Update`. Use `WithRemoteServerOnly` when updates must come
-    exclusively from the configured remote endpoint.
+  - Removed the implicit root remote options. Low-level protocol consumers may
+    construct `catalogremote.Client` explicitly and pass a verified generation
+    to `starmap.Client.Activate`; normal reactive consumers use the opt-in
+    public `remote` package.
   - Programmatic `sync.WithSources` now rejects unknown source IDs and copies
     caller input. A fresh sync rejects `local_catalog` because an existing local
     catalog cannot also be the input to a replacement generation.
@@ -122,12 +174,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     source-observation revision metadata.
 
 - **Remote catalog protocol is generation-based and versioned**: the ad-hoc
-  unversioned `GET /catalog` envelope was removed. Configure
-  `WithRemoteServerURL`/`WithRemoteServerOnly` with the versioned API base (for
-  example `https://catalog.example.com/api/v1`). Consumers now read
-  `GET /catalog/manifest` and then the immutable
+  unversioned `GET /catalog` envelope was removed. Construct
+  `catalogremote.Client` with the versioned API base (for example
+  `https://catalog.example.com/api/v1`). Consumers now read
+  `GET /catalog/manifest` or an immutable addressed manifest and then
   `GET /catalog/generations/{generation_id}/snapshot`; schema compatibility,
-  media type, size, and SHA-256 are verified before durable publication.
+  media type, size, and SHA-256 are verified before durable publication. The
+  public `remote` subscriber performs the verified initial fetch, listens for
+  the sole `catalog.published` SSE hint, deduplicates immutable generations,
+  and performs mandatory catch-up after every reconnect. Validated heartbeat
+  and liveness settings detect silent streams, while caller cancellation and a
+  bounded `Close` own and join initial fetch, stream reading, retry, and
+  activation lifecycles.
 
 - **Restructured Auth Commands**: Simplified authentication command structure
   - **Removed**: `starmap providers auth` (entire subcommand tree)

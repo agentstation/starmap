@@ -5,6 +5,7 @@ import (
 	"strings"
 	"sync"
 	"testing"
+	"time"
 
 	"github.com/agentstation/starmap/pkg/catalogs"
 	pkgerrors "github.com/agentstation/starmap/pkg/errors"
@@ -38,6 +39,13 @@ func TestConsumerCatalogReturnsConcreteImmutableCatalog(t *testing.T) {
 		Set(catalogs.ProviderID, *catalogs.Provider) error
 	}); ok {
 		t.Fatal("Client.Catalog provider collection exposes Set")
+	}
+}
+
+func TestNilClientCatalogReturnsNil(t *testing.T) {
+	var client *Client
+	if catalog := client.Catalog(); catalog != nil {
+		t.Fatalf("nil Client.Catalog() = %#v, want nil", catalog)
 	}
 }
 
@@ -167,10 +175,16 @@ func TestCatalogPublicationRejectsNilBuilder(t *testing.T) {
 }
 
 func publishTestCatalog(client *Client, builder *catalogs.Builder) error {
-	published, err := snapshotBuilder(builder)
+	if builder == nil {
+		return &pkgerrors.ValidationError{
+			Field:   "catalog",
+			Message: "catalog builder cannot be nil",
+		}
+	}
+	published, err := builder.Build()
 	if err != nil {
 		return err
 	}
-	client.swapCatalogGeneration(published, "")
+	client.swapCatalogGeneration(published, "", time.Time{})
 	return nil
 }

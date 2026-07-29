@@ -14,7 +14,6 @@ import (
 	"github.com/agentstation/starmap/pkg/authority"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/differ"
-	"github.com/agentstation/starmap/pkg/enhancer"
 	"github.com/agentstation/starmap/pkg/errors"
 	"github.com/agentstation/starmap/pkg/logging"
 	"github.com/agentstation/starmap/pkg/provenance"
@@ -23,14 +22,13 @@ import (
 
 // Reconciler combines data from multiple sources into a canonical catalog.
 // It is concrete because this package has one reconciliation engine; extension
-// points are accepted through the narrow Strategy, authority.Reader, Source,
-// and Enhancer interfaces.
+// points are accepted through the narrow Strategy, authority.Reader, and
+// Source interfaces.
 type Reconciler struct {
 	strategy    Strategy
 	authorities authority.Reader
-	provenance  provenance.Tracker
+	provenance  *provenance.Tracker
 	tracking    bool
-	enhancers   *enhancer.Pipeline
 	baseline    *catalogs.Catalog // Baseline catalog for comparison
 }
 
@@ -48,7 +46,6 @@ func New(opts ...Option) (*Reconciler, error) {
 		authorities: options.authorities,
 		provenance:  provenance.NewTracker(options.tracking),
 		tracking:    options.tracking,
-		enhancers:   enhancer.NewPipeline(options.enhancers...),
 		baseline:    options.baseline,
 	}
 
@@ -105,7 +102,7 @@ func (r *Reconciler) Sources(ctx context.Context, primary sources.ID, srcs []sou
 		Msg("Filtered providers by primary source")
 
 	// Step 4: Reconcile models for each provider
-	modelResults, err := r.reconcileAllModels(ctx, rctx, providers)
+	modelResults, err := r.reconcileAllModels(rctx, providers)
 	if err != nil {
 		return nil, err
 	}
@@ -170,7 +167,7 @@ func (r *Reconciler) reconcileProviders(rctx *reconcileContext) ([]*catalogs.Pro
 }
 
 // reconcileAllModels processes models for all providers.
-func (r *Reconciler) reconcileAllModels(ctx context.Context, rctx *reconcileContext, providers []*catalogs.Provider) (map[catalogs.ProviderID]modelResult, error) {
+func (r *Reconciler) reconcileAllModels(rctx *reconcileContext, providers []*catalogs.Provider) (map[catalogs.ProviderID]modelResult, error) {
 	results := make(map[catalogs.ProviderID]modelResult)
 
 	for _, provider := range providers {
@@ -178,7 +175,7 @@ func (r *Reconciler) reconcileAllModels(ctx context.Context, rctx *reconcileCont
 			Str("provider", string(provider.ID)).
 			Msg("Reconciling models for provider")
 
-		result, err := r.reconcileProviderModels(ctx, rctx, provider)
+		result, err := r.reconcileProviderModels(rctx, provider)
 		if err != nil {
 			// Log error but continue with other providers
 			rctx.logger.Error().
@@ -195,7 +192,7 @@ func (r *Reconciler) reconcileAllModels(ctx context.Context, rctx *reconcileCont
 }
 
 // reconcileProviderModels merges models for a single provider.
-func (r *Reconciler) reconcileProviderModels(ctx context.Context, rctx *reconcileContext, provider *catalogs.Provider) (modelResult, error) {
+func (r *Reconciler) reconcileProviderModels(rctx *reconcileContext, provider *catalogs.Provider) (modelResult, error) {
 	// Collect models for this provider from all sources
 	primaryCatalog := rctx.filter.primaryCatalog
 	if primaryCatalog == nil {
@@ -219,19 +216,6 @@ func (r *Reconciler) reconcileProviderModels(ctx context.Context, rctx *reconcil
 	models, prov, err := rctx.merger.ModelsForProvider(provider.ID, modelSources)
 	if err != nil {
 		return modelResult{}, err
-	}
-
-	// Apply enhancements if configured
-	if r.enhancers != nil {
-		enhanced, err := r.enhancers.Batch(ctx, models)
-		if err != nil {
-			rctx.logger.Warn().
-				Err(err).
-				Str("provider", string(provider.ID)).
-				Msg("Enhancement failed but continuing")
-		} else {
-			models = enhanced
-		}
 	}
 
 	return modelResult{

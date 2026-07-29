@@ -126,19 +126,23 @@ For detailed architecture, see [ARCHITECTURE.md](docs/ARCHITECTURE.md). Here's a
 ```
 User Interfaces (CLI, Go Package)
     ↓
-Application Layer (internal/application/ interface, cmd/starmap/app/ implementation)
+Application Composition (cmd/starmap/app concrete implementation)
     ↓
 Root Package (starmap.Client - public API)
     ↓
 Core Packages (catalogs, catalogstore, reconciler, authority, sources)
+    ↑
+Explicit Acquisition (acquisition.Syncer)
     ↓
 Internal Implementations (embedded, providers, modelsdev)
 ```
 
 **Key files:**
-- `starmap.go` - Public API
-- `sync.go` - 13-step sync pipeline
-- `internal/application/application.go` - Application interface
+- `client.go` / `update.go` - Small immutable root API and publication
+- `acquisition/syncer.go` - Explicit opt-in provider/source synchronization
+- `internal/catalog/pipeline/` - Prepare-only source pipeline
+- `cmd/starmap/cmd/*/application.go` - Consumer-local command roles
+- `internal/server/application.go` - HTTP server application role
 - `cmd/starmap/app/app.go` - App implementation
 
 ### Sync Pipeline (13 Steps)
@@ -189,7 +193,8 @@ See docs/ARCHITECTURE.md § Data Sources for authority hierarchy.
 
 See docs/ARCHITECTURE.md § Sync Pipeline for 12-step process.
 
-The sync pipeline is in `sync.go` with staged execution:
+The sync pipeline is in `internal/catalog/pipeline/` behind the explicit
+`acquisition.Syncer` composition:
 - Filter → Fetch (concurrent) → Reconcile → Save
 - Each stage has clear purpose and error handling
 
@@ -203,11 +208,15 @@ See docs/ARCHITECTURE.md § Reconciliation System for strategy details.
 
 ### Working with Commands
 
-Commands use dependency injection via `application.Application` interface:
+Commands define narrow dependency roles in the package that consumes them:
 
 ```go
-// Commands accept Application interface
-func NewCommand(app application.Application) *cobra.Command {
+type application interface {
+    Catalog() (*catalogs.Catalog, error)
+    Logger() *zerolog.Logger
+}
+
+func NewCommand(app application) *cobra.Command {
     return &cobra.Command{
         RunE: func(cmd *cobra.Command, args []string) error {
             catalog, err := app.Catalog()  // Atomic immutable generation
@@ -242,8 +251,8 @@ sm, _ := starmap.New(
     starmap.WithCatalogPath("./catalog"),
 )
 
-// Sync options
-result, _ := sm.Sync(ctx,
+syncer, _ := acquisition.New(sm)
+result, _ := syncer.Sync(ctx,
     sync.WithProvider("openai"),
     sync.WithDryRun(true),
 )
@@ -253,15 +262,13 @@ See examples: `starmap.New()`, `catalogs.New(catalogs.WithEmbedded())`, `catalog
 
 ### Dependency Injection
 
-See docs/ARCHITECTURE.md § Application Layer for interface pattern.
+See docs/ARCHITECTURE.md § Application Composition for interface pattern.
 
 ```go
-// Interface defined where it's used (internal/application/)
-type Application interface {
+// Interface defined in the command package where it is consumed.
+type application interface {
     Catalog() (*catalogs.Catalog, error)
-    Starmap(...starmap.Option) (starmap.Client, error)
     Logger() *zerolog.Logger
-    // ...
 }
 
 // Implementation in cmd/starmap/app/
@@ -295,7 +302,7 @@ for _, provider := range providers {
 
 **Internal**: embedded, server, server/handlers, sources/{providers,modelsdev,local}, providers/{clients,openai,anthropic,google}, transport
 
-**Application**: internal/application (interface), cmd/starmap/app (implementation)
+**Application**: consumer-local command/server roles, cmd/starmap/app (implementation)
 
 See [ARCHITECTURE.md § Package Organization](docs/ARCHITECTURE.md#package-organization) for full structure.
 
@@ -332,9 +339,11 @@ GOOGLE_APPLICATION_CREDENTIALS=/path/to/service-account.json
 
 | File | Purpose |
 |------|---------|
-| `starmap.go` | Public API interface |
-| `sync.go` | 12-step sync pipeline |
-| `internal/application/application.go` | Application interface (idiomatic location) |
+| `client.go` / `update.go` | Immutable root API and explicit publication |
+| `acquisition/syncer.go` | Opt-in provider/source synchronization |
+| `internal/catalog/pipeline/` | Prepare-only source pipeline |
+| `cmd/starmap/cmd/*/application.go` | Consumer-local command dependency roles |
+| `internal/server/application.go` | HTTP server application role |
 | `cmd/starmap/app/app.go` | App implementation |
 | `cmd/starmap/cmd/serve/command.go` | HTTP server CLI command |
 | `internal/server/server.go` | Server lifecycle & dependencies |
@@ -404,7 +413,7 @@ make docs-check     # Verify docs current (CI)
 **Import Cycles:**
 - Zero import cycles (validated)
 - Dependency flow is unidirectional (see docs/ARCHITECTURE.md)
-- Commands import `internal/application/` interface, NOT `cmd/starmap/app/`
+- Commands define the smallest interface they consume and do not import `cmd/starmap/app/`
 
 ## References
 

@@ -5,7 +5,6 @@ import (
 	"runtime"
 	"time"
 
-	"github.com/agentstation/starmap/internal/server/events"
 	"github.com/agentstation/starmap/internal/server/response"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/sources"
@@ -28,12 +27,6 @@ func (h *Handlers) HandleUpdate(w http.ResponseWriter, r *http.Request) {
 	providerFilter := r.URL.Query().Get("provider")
 	sourceFilter := r.URL.Query().Get("source")
 
-	sm, err := h.app.Starmap()
-	if err != nil {
-		response.InternalError(w, err)
-		return
-	}
-
 	// Build sync options
 	var opts []sync.Option
 	if providerFilter != "" {
@@ -43,20 +36,12 @@ func (h *Handlers) HandleUpdate(w http.ResponseWriter, r *http.Request) {
 		opts = append(opts, sync.WithSources(sources.ID(sourceFilter)))
 	}
 
-	// Run sync
-	result, err := sm.Sync(r.Context(), opts...)
+	// Run explicitly composed acquisition.
+	result, err := h.app.Sync(r.Context(), opts...)
 	if err != nil {
 		response.InternalError(w, err)
 		return
 	}
-
-	// Broadcast update event
-	h.broker.Publish(events.SyncCompleted, map[string]any{
-		"total_changes":     result.TotalChanges,
-		"providers_changed": result.ProvidersChanged,
-		"generation_id":     result.GenerationID,
-		"sync_run_id":       result.SyncRunID,
-	})
 
 	response.OK(w, map[string]any{
 		"status":            "completed",
@@ -87,6 +72,16 @@ func (h *Handlers) HandleStats(w http.ResponseWriter, _ *http.Request) {
 
 	models := cat.Definitions()
 	providers := cat.Providers().List()
+	state, err := h.app.CatalogState()
+	if err != nil {
+		response.InternalError(w, err)
+		return
+	}
+	sm, err := h.app.Starmap()
+	if err != nil {
+		response.InternalError(w, err)
+		return
+	}
 
 	// Get runtime stats
 	var memStats runtime.MemStats
@@ -107,32 +102,21 @@ func (h *Handlers) HandleStats(w http.ResponseWriter, _ *http.Request) {
 		"catalog": map[string]any{
 			"models_total":    len(models),
 			"providers_total": len(providers),
-		},
-		"events": map[string]any{
-			"published_total": h.broker.EventsPublished(),
-			"dropped_total":   h.broker.EventsDropped(),
-			"queue_depth":     h.broker.QueueDepth(),
-			"delivery":        deliveryStatsMap(h.broker.DeliveryStats()),
+			"generation_id":   state.GenerationID,
+			"generated_at":    state.GeneratedAt,
+			"age_seconds":     catalogAgeSeconds(state.GeneratedAt),
 		},
 		"realtime": map[string]any{
-			"websocket_clients": h.wsHub.ClientCount(),
-			"sse_clients":       h.sseBroadcaster.ClientCount(),
-			"websocket_delivery": deliveryStatsMap(
-				h.wsHub.DeliveryStats(),
-			),
-			"sse_delivery": deliveryStatsMap(
-				h.sseBroadcaster.DeliveryStats(),
-			),
+			"sse":         h.sseBroadcaster.Health(),
+			"publication": sm.HookStats(),
 		},
 		"cache": h.cache.GetStats(),
 	})
 }
 
-func deliveryStatsMap(stats events.DeliveryStats) map[string]uint64 {
-	return map[string]uint64{
-		"sent":         stats.Sent,
-		"skipped":      stats.Skipped,
-		"disconnected": stats.Disconnected,
-		"failed":       stats.Failed,
+func catalogAgeSeconds(generatedAt time.Time) int64 {
+	if generatedAt.IsZero() {
+		return 0
 	}
+	return int64(time.Since(generatedAt) / time.Second)
 }

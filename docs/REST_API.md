@@ -30,7 +30,7 @@ The Starmap HTTP API provides programmatic access to the unified AI model catalo
 
 - **RESTful endpoints** for querying models and providers
 - **Advanced filtering** with multiple criteria
-- **Real-time updates** via WebSocket and Server-Sent Events
+- **Reactive catalog publication updates** via Server-Sent Events
 - **In-memory caching** for performance
 - **Rate limiting** to prevent abuse
 - **Optional authentication** with API keys
@@ -521,8 +521,15 @@ Get catalog statistics.
       "item_count": 42
     },
     "realtime": {
-      "websocket_clients": 3,
-      "sse_clients": 1
+      "sse_clients": 1,
+      "sse_delivery": {
+        "published": 12,
+        "sent": 12,
+        "heartbeats": 304,
+        "disconnected": 2,
+        "backpressure_terminated": 0,
+        "failed": 0
+      }
     }
   },
   "error": null
@@ -570,7 +577,6 @@ Readiness check including cache and data source status.
     "cache": {
       "items": 42
     },
-    "websocket_clients": 3,
     "sse_clients": 1
   },
   "error": null
@@ -587,67 +593,45 @@ Prometheus-compatible metrics endpoint.
 
 ### Real-time Updates
 
-#### WebSocket
-
-```http
-WS /api/v1/updates/ws
-```
-
-WebSocket connection for real-time catalog updates.
-
-**Message Format:**
-
-```json
-{
-  "type": "sync.completed",
-  "timestamp": "2025-10-14T12:00:00Z",
-  "data": {
-    "total_changes": 5,
-    "providers_changed": 1
-  }
-}
-```
-
-**Event Types:**
-
-- `client.connected` - Client connected to stream
-- `sync.started` - Catalog sync initiated
-- `sync.completed` - Catalog sync finished
-- `model.created` - New model added
-- `model.updated` - Model modified
-- `model.deleted` - Model removed
-
-**Example (JavaScript):**
-
-```javascript
-const ws = new WebSocket('ws://localhost:8080/api/v1/updates/ws');
-
-ws.onmessage = (event) => {
-  const message = JSON.parse(event.data);
-  console.log('Event:', message.type, message.data);
-};
-```
-
-#### Server-Sent Events (SSE)
+SSE is the sole catalog-publication notification transport. Publication events
+are post-commit hints, not mutable catalog payloads. Consumers fetch and verify
+the named immutable generation before activation.
 
 ```http
 GET /api/v1/updates/stream
 ```
 
-Server-Sent Events stream for catalog change notifications.
+The server flushes an initial comment and periodic heartbeat comments:
+
+```text
+: connected
+
+: heartbeat
+
+```
+
+Heartbeats carry no event ID and do not advance publication sequence. The
+default interval is 20 seconds. Each frame has a default 10-second write and
+flush deadline; slow or failed connections are terminated so reconnect
+catch-up can run.
+
+The only event is `catalog.published`:
+
+```text
+id: 42
+event: catalog.published
+data: {"generation_id":"catalog-20260729T110518Z-fcbf48a7fd90","sequence":42}
+
+```
 
 **Example (JavaScript):**
 
 ```javascript
 const eventSource = new EventSource('http://localhost:8080/api/v1/updates/stream');
 
-eventSource.addEventListener('sync.completed', (event) => {
+eventSource.addEventListener('catalog.published', (event) => {
   const data = JSON.parse(event.data);
-  console.log('Sync completed:', data);
-});
-
-eventSource.addEventListener('connected', (event) => {
-  console.log('Connected to updates stream');
+  console.log('Catalog generation available:', data.generation_id, data.sequence);
 });
 ```
 
@@ -773,23 +757,11 @@ curl -H "X-API-Key: $API_KEY" \
 ### Real-time Updates
 
 ```javascript
-// WebSocket example
-const ws = new WebSocket('ws://localhost:8080/api/v1/updates/ws');
-
-ws.onopen = () => console.log('Connected');
-ws.onmessage = (event) => {
-  const msg = JSON.parse(event.data);
-  if (msg.type === 'sync.completed') {
-    console.log('Catalog updated:', msg.data.total_changes, 'changes');
-  }
-};
-
-// SSE example
 const eventSource = new EventSource('http://localhost:8080/api/v1/updates/stream');
-eventSource.onmessage = (event) => {
+eventSource.addEventListener('catalog.published', (event) => {
   const data = JSON.parse(event.data);
-  console.log('Update:', data);
-};
+  console.log('Verify generation:', data.generation_id);
+});
 ```
 
 ## Best Practices
@@ -799,7 +771,7 @@ eventSource.onmessage = (event) => {
 3. **Paginate**: Use `limit` and `offset` for large result sets
 4. **Handle Errors**: Always check the `error` field in responses
 5. **Rate Limits**: Implement client-side rate limiting
-6. **Real-time**: Use WebSocket/SSE for live updates instead of polling
+6. **Reactive updates**: Use SSE publication hints and verified generation fetches instead of normal polling
 7. **Authentication**: Keep API keys secure, never commit to version control
 
 ## Support

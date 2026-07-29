@@ -13,13 +13,13 @@ import (
 func TestCollectDependencyStatuses(t *testing.T) {
 	tests := []struct {
 		name                  string
-		sources               []sources.Source
+		sources               []dependencySource
 		wantSourcesCount      int
 		wantSourcesWithNoDeps int
 	}{
 		{
 			name: "git source with bun dependency",
-			sources: []sources.Source{
+			sources: []dependencySource{
 				modelsdev.NewGitSource(),
 			},
 			wantSourcesCount:      1,
@@ -27,7 +27,7 @@ func TestCollectDependencyStatuses(t *testing.T) {
 		},
 		{
 			name: "http source with no dependencies",
-			sources: []sources.Source{
+			sources: []dependencySource{
 				modelsdev.NewHTTPSource(),
 			},
 			wantSourcesCount:      1,
@@ -35,7 +35,7 @@ func TestCollectDependencyStatuses(t *testing.T) {
 		},
 		{
 			name: "providers source with no dependencies",
-			sources: []sources.Source{
+			sources: []dependencySource{
 				providers.New(catalogs.NewProviders()),
 			},
 			wantSourcesCount:      1,
@@ -43,7 +43,7 @@ func TestCollectDependencyStatuses(t *testing.T) {
 		},
 		{
 			name: "multiple sources",
-			sources: []sources.Source{
+			sources: []dependencySource{
 				providers.New(catalogs.NewProviders()),
 				modelsdev.NewGitSource(),
 				modelsdev.NewHTTPSource(),

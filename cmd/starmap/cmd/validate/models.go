@@ -6,12 +6,11 @@ import (
 	"github.com/rs/zerolog"
 	"github.com/spf13/cobra"
 
-	"github.com/agentstation/starmap/internal/application"
 	"github.com/agentstation/starmap/internal/cli/emoji"
 )
 
 // NewModelsCommand creates the validate models subcommand using app context.
-func NewModelsCommand(app application.Application) *cobra.Command {
+func NewModelsCommand(app application) *cobra.Command {
 	return &cobra.Command{
 		Use:   "models",
 		Short: "Validate model definitions",
@@ -35,7 +34,7 @@ This checks:
 	}
 }
 
-func validateModelConsistency(app application.Application, verbose bool) error {
+func validateModelConsistency(app application, verbose bool) error {
 	// Load catalog from app context
 	cat, err := app.Catalog()
 	if err != nil {

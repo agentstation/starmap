@@ -5,10 +5,8 @@ import (
 	"context"
 	"fmt"
 	"net/http"
-	"sync"
 	"time"
 
-	"github.com/agentstation/starmap/internal/providers/clients"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/errors"
 )
@@ -34,14 +32,9 @@ type RawFetchResult struct {
 // ProviderRawFetcher fetches a raw provider API response.
 type ProviderRawFetcher func(context.Context, *catalogs.Provider, string) (*RawFetchResult, error)
 
-var providerRegistry struct {
-	mu            sync.RWMutex
-	clientFactory ProviderClientFactory
-	rawFetcher    ProviderRawFetcher
-}
-
 // ProviderFetcher provides operations for fetching models from provider APIs.
-// This is the public API for external packages to interact with provider data.
+// Concrete provider clients are an explicit injected composition; use package
+// acquisition for Starmap's built-in provider implementations.
 type ProviderFetcher struct {
 	providers catalogs.ProvidersReader
 	options   *providerOptions
@@ -68,37 +61,13 @@ type ProviderOption func(*providerOptions)
 
 // providerDefaults returns options with sensible defaults.
 func providerDefaults() *providerOptions {
-	clientFactory, rawFetcher := registeredProviderHooks()
-	if clientFactory == nil {
-		clientFactory = defaultProviderClientFactory
-	}
-	if rawFetcher == nil {
-		rawFetcher = defaultProviderRawFetcher
-	}
 	return &providerOptions{
 		loadCredentials: true,  // Default: auto-load credentials
 		allowMissingKey: false, // Default: require API key
 		timeout:         0,     // Default: no timeout
-		clientFactory:   clientFactory,
-		rawFetcher:      rawFetcher,
+		clientFactory:   nil,   // Explicit acquisition composition is required
+		rawFetcher:      nil,   // Explicit acquisition composition is required
 	}
-}
-
-func defaultProviderClientFactory(provider *catalogs.Provider) (ProviderClient, error) {
-	return clients.NewProvider(provider)
-}
-
-func defaultProviderRawFetcher(ctx context.Context, provider *catalogs.Provider, endpoint string) (*RawFetchResult, error) {
-	result, err := clients.FetchRaw(ctx, provider, endpoint)
-	if err != nil {
-		return nil, err
-	}
-	return &RawFetchResult{
-		Data:       result.Data,
-		Response:   result.Response,
-		Latency:    result.Latency,
-		RequestURL: result.RequestURL,
-	}, nil
 }
 
 func (po *providerOptions) clone() *providerOptions {
@@ -107,42 +76,6 @@ func (po *providerOptions) clone() *providerOptions {
 	}
 	clone := *po
 	return &clone
-}
-
-// RegisterProviderClientFactory registers the default provider client factory.
-// It returns a restore function intended for tests and temporary integrations.
-func RegisterProviderClientFactory(factory ProviderClientFactory) func() {
-	providerRegistry.mu.Lock()
-	previous := providerRegistry.clientFactory
-	providerRegistry.clientFactory = factory
-	providerRegistry.mu.Unlock()
-
-	return func() {
-		providerRegistry.mu.Lock()
-		providerRegistry.clientFactory = previous
-		providerRegistry.mu.Unlock()
-	}
-}
-
-// RegisterProviderRawFetcher registers the default raw provider fetcher.
-// It returns a restore function intended for tests and temporary integrations.
-func RegisterProviderRawFetcher(fetcher ProviderRawFetcher) func() {
-	providerRegistry.mu.Lock()
-	previous := providerRegistry.rawFetcher
-	providerRegistry.rawFetcher = fetcher
-	providerRegistry.mu.Unlock()
-
-	return func() {
-		providerRegistry.mu.Lock()
-		providerRegistry.rawFetcher = previous
-		providerRegistry.mu.Unlock()
-	}
-}
-
-func registeredProviderHooks() (ProviderClientFactory, ProviderRawFetcher) {
-	providerRegistry.mu.RLock()
-	defer providerRegistry.mu.RUnlock()
-	return providerRegistry.clientFactory, providerRegistry.rawFetcher
 }
 
 // FetchStats contains metadata about a fetch operation.
@@ -216,9 +149,9 @@ func getAuthInfo(provider *catalogs.Provider) (method, location, scheme string) 
 	return "Header", header, authScheme
 }
 
-// NewProviderFetcher creates a new provider fetcher for interacting with provider APIs.
-// It provides a clean public interface for external packages.
-// The providers parameter should contain the catalog providers to create clients for.
+// NewProviderFetcher creates a provider fetcher over the supplied catalog
+// providers. Callers must inject the provider-client and raw-fetch roles they
+// use; the root library never selects concrete provider implementations.
 func NewProviderFetcher(providers catalogs.ProvidersReader, opts ...ProviderOption) *ProviderFetcher {
 	options := providerDefaults().apply(opts...)
 
@@ -317,12 +250,15 @@ func WithProviderRawFetcher(fetcher ProviderRawFetcher) ProviderOption {
 //
 // Example:
 //
-//	fetcher := NewProviderFetcher()
+//	fetcher := NewProviderFetcher(providers, WithProviderClientFactory(factory))
 //	models, err := fetcher.FetchModels(ctx, provider)
 //
 // With options:
 //
-//	fetcher := NewProviderFetcher(WithTimeout(30 * time.Second))
+//	fetcher := NewProviderFetcher(providers,
+//	    WithProviderClientFactory(factory),
+//	    WithTimeout(30*time.Second),
+//	)
 //	models, err := fetcher.FetchModels(ctx, provider, WithAllowMissingAPIKey())
 func (pf *ProviderFetcher) FetchModels(ctx context.Context, provider *catalogs.Provider, opts ...ProviderOption) ([]catalogs.Model, error) {
 	options := pf.options.clone().apply(opts...)

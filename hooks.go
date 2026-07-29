@@ -13,7 +13,9 @@ import (
 // Hook function types for model events.
 type (
 	// CatalogPublishedEvent identifies one durably committed immutable catalog.
-	// Catalog is safe to retain and share across goroutines.
+	// Sequence increases with each in-process activation; gaps tell observers
+	// that pending callback delivery coalesced to a newer generation. Catalog is
+	// safe to retain and share across goroutines.
 	CatalogPublishedEvent struct {
 		GenerationID string
 		SyncRunID    string
@@ -37,17 +39,25 @@ type (
 
 // HookDeliveryStats reports isolated callback delivery health.
 type HookDeliveryStats struct {
-	Completed   uint64
-	Failures    uint64
-	Panics      uint64
-	Dropped     uint64
+	// Completed is the number of callback invocations that returned or panicked.
+	Completed uint64
+	// Failures is the number of callbacks that returned an error or panicked.
+	Failures uint64
+	// Panics is the number of isolated callback panics.
+	Panics uint64
+	// Coalesced is the number of pending catalog generations superseded by a
+	// newer committed generation before callback delivery began.
+	Coalesced uint64
+	// LastLatency is the duration of the most recently completed callback.
 	LastLatency time.Duration
-	MaxLatency  time.Duration
+	// MaxLatency is the longest completed callback duration.
+	MaxLatency time.Duration
 }
 
-const defaultHookDeliveryConcurrency = 16
-
 // OnCatalogPublished registers a callback for durable catalog publication.
+// Generations begin callback delivery in sequence order. When callbacks lag,
+// delivery retains the running generation and coalesces pending work to the
+// newest committed generation.
 func (c *Client) OnCatalogPublished(fn CatalogPublishedHook) { c.hooks.OnCatalogPublished(fn) }
 
 // HookStats returns a lock-free snapshot of callback delivery health.
@@ -69,18 +79,20 @@ type hooks struct {
 	modelUpdated     []ModelUpdatedHook
 	modelRemoved     []ModelRemovedHook
 	catalogPublished []CatalogPublishedHook
-	deliverySlots    chan struct{}
+	dispatchMu       sync.Mutex
+	dispatching      bool
+	pending          *hookDispatch
 	completed        atomic.Uint64
 	failures         atomic.Uint64
 	panics           atomic.Uint64
-	dropped          atomic.Uint64
+	coalesced        atomic.Uint64
 	lastLatency      atomic.Int64
 	maxLatency       atomic.Int64
 }
 
 // newHooks creates a new hooks instance.
 func newHooks() *hooks {
-	return &hooks{deliverySlots: make(chan struct{}, defaultHookDeliveryConcurrency)}
+	return &hooks{}
 }
 
 // OnModelAdded is a hook that registers a callback for when models are added.
@@ -103,30 +115,60 @@ func (h *hooks) OnCatalogPublished(fn CatalogPublishedHook) {
 }
 
 func (h *hooks) dispatchUpdate(old, updated *catalogs.Catalog, event CatalogPublishedEvent) {
-	select {
-	case h.deliverySlots <- struct{}{}:
-	default:
-		h.dropped.Add(1)
+	dispatch := hookDispatch{old: old, updated: updated, event: event}
+	h.dispatchMu.Lock()
+	if h.dispatching {
+		if h.pending != nil {
+			dispatch.old = h.pending.old
+			h.coalesced.Add(1)
+		}
+		h.pending = &dispatch
+		h.dispatchMu.Unlock()
 		return
 	}
-	go func() {
-		defer func() { <-h.deliverySlots }()
-		h.mu.RLock()
-		publicationHooks := append([]CatalogPublishedHook(nil), h.catalogPublished...)
-		h.mu.RUnlock()
-		var publicationGroup sync.WaitGroup
-		publicationGroup.Add(len(publicationHooks))
-		for _, hook := range publicationHooks {
-			go func() {
-				defer publicationGroup.Done()
-				h.invoke(func() error { return hook(event) })
-			}()
+	h.dispatching = true
+	h.dispatchMu.Unlock()
+	go h.runDispatch(dispatch)
+}
+
+type hookDispatch struct {
+	old     *catalogs.Catalog
+	updated *catalogs.Catalog
+	event   CatalogPublishedEvent
+}
+
+func (h *hooks) runDispatch(dispatch hookDispatch) {
+	for {
+		h.deliverDispatch(dispatch)
+
+		h.dispatchMu.Lock()
+		if h.pending == nil {
+			h.dispatching = false
+			h.dispatchMu.Unlock()
+			return
 		}
-		// Model-diff callbacks retain publication ordering, but independent
-		// publication observers cannot head-of-line block one another.
-		publicationGroup.Wait()
-		h.triggerUpdate(old, updated)
-	}()
+		dispatch = *h.pending
+		h.pending = nil
+		h.dispatchMu.Unlock()
+	}
+}
+
+func (h *hooks) deliverDispatch(dispatch hookDispatch) {
+	h.mu.RLock()
+	publicationHooks := append([]CatalogPublishedHook(nil), h.catalogPublished...)
+	h.mu.RUnlock()
+	var publicationGroup sync.WaitGroup
+	publicationGroup.Add(len(publicationHooks))
+	for _, hook := range publicationHooks {
+		go func() {
+			defer publicationGroup.Done()
+			h.invoke(func() error { return hook(dispatch.event) })
+		}()
+	}
+	// Model-diff callbacks retain publication ordering, but independent
+	// publication observers cannot head-of-line block one another.
+	publicationGroup.Wait()
+	h.triggerUpdate(dispatch.old, dispatch.updated)
 }
 
 // onModelAdded registers a callback for when models are added.
@@ -294,7 +336,7 @@ func (h *hooks) statsSnapshot() HookDeliveryStats {
 		Completed:   h.completed.Load(),
 		Failures:    h.failures.Load(),
 		Panics:      h.panics.Load(),
-		Dropped:     h.dropped.Load(),
+		Coalesced:   h.coalesced.Load(),
 		LastLatency: time.Duration(h.lastLatency.Load()),
 		MaxLatency:  time.Duration(h.maxLatency.Load()),
 	}

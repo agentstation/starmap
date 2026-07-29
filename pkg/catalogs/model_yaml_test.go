@@ -12,7 +12,6 @@ import (
 	"github.com/goccy/go-yaml"
 
 	pkgerrors "github.com/agentstation/starmap/pkg/errors"
-	"github.com/agentstation/starmap/pkg/save"
 )
 
 func TestModelEncodeYAMLRoundTripsBackslashesWithoutSemanticDrift(t *testing.T) {
@@ -95,7 +94,7 @@ func TestNoPanicUnsupportedSerializationReturnsTypedError(t *testing.T) {
 	if err := builder.SetProvider(Provider{ID: "provider", Name: "Provider", Models: map[string]*Model{model.ID: model}}); err != nil {
 		t.Fatalf("SetProvider: %v", err)
 	}
-	if err := builder.Save(save.WithPath(t.TempDir())); !stderrors.As(err, &parseErr) {
+	if err := builder.SaveTo(t.TempDir()); !stderrors.As(err, &parseErr) {
 		t.Fatalf("Save error = %T %v, want *errors.ParseError", err, err)
 	}
 }

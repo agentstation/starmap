@@ -6,7 +6,6 @@ import (
 	"testing"
 
 	"github.com/agentstation/starmap/pkg/errors"
-	"github.com/agentstation/starmap/pkg/save"
 )
 
 func TestCatalogCopyOwnsSaveConfiguration(t *testing.T) {
@@ -16,7 +15,7 @@ func TestCatalogCopyOwnsSaveConfiguration(t *testing.T) {
 		t.Fatalf("Copy: %v", err)
 	}
 
-	if err := copied.Save(save.WithPath(t.TempDir())); err != nil {
+	if err := copied.SaveTo(t.TempDir()); err != nil {
 		t.Fatalf("Save copy: %v", err)
 	}
 

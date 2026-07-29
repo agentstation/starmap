@@ -12,13 +12,19 @@ import (
 	"github.com/rs/zerolog"
 	"github.com/spf13/cobra"
 
-	"github.com/agentstation/starmap/internal/application"
+	"github.com/agentstation/starmap"
+	"github.com/agentstation/starmap/acquisition"
 	"github.com/agentstation/starmap/internal/cli/emoji"
-	"github.com/agentstation/starmap/internal/server"
+	"github.com/agentstation/starmap/server"
 )
 
+type application interface {
+	Starmap(...starmap.Option) (*starmap.Client, error)
+	Logger() *zerolog.Logger
+}
+
 // NewCommand creates the serve command using app context.
-func NewCommand(app application.Application) *cobra.Command {
+func NewCommand(app application) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "serve",
 		GroupID: "server",
@@ -27,8 +33,7 @@ func NewCommand(app application.Application) *cobra.Command {
 
 Features:
   - RESTful endpoints for models, providers, and catalog management
-  - WebSocket support for real-time updates (/api/v1/updates/ws)
-  - Server-Sent Events (SSE) for streaming updates (/api/v1/updates/stream)
+  - Heartbeat-enabled Server-Sent Events for catalog publications (/api/v1/updates/stream)
   - In-memory caching with configurable TTL
   - Rate limiting (requests per minute per IP)
   - API key authentication (optional)
@@ -79,6 +84,8 @@ comprehensive filtering, search, and real-time notification capabilities.`,
 	cmd.Flags().Duration("read-timeout", 10*time.Second, "HTTP read timeout")
 	cmd.Flags().Duration("write-timeout", 10*time.Second, "HTTP write timeout")
 	cmd.Flags().Duration("idle-timeout", 120*time.Second, "HTTP idle timeout")
+	cmd.Flags().Duration("sse-heartbeat-interval", 20*time.Second, "SSE comment heartbeat interval")
+	cmd.Flags().Duration("sse-write-timeout", 10*time.Second, "per-frame SSE write and flush timeout")
 
 	// Features flags
 	cmd.Flags().Bool("metrics", true, "Enable metrics endpoint")
@@ -88,7 +95,7 @@ comprehensive filtering, search, and real-time notification capabilities.`,
 }
 
 // runServer starts the API server.
-func runServer(cmd *cobra.Command, _ []string, app application.Application) error {
+func runServer(cmd *cobra.Command, _ []string, app application) error {
 	// Parse flags into configuration
 	cfg := parseConfig(cmd)
 	logger := app.Logger()
@@ -107,16 +114,31 @@ func runServer(cmd *cobra.Command, _ []string, app application.Application) erro
 
 	// Create server
 	logger.Debug().Msg("Creating server instance")
-	srv, err := server.New(app, cfg)
+	sm, err := app.Starmap()
+	if err != nil {
+		return fmt.Errorf("loading starmap client: %w", err)
+	}
+	syncer, err := acquisition.New(sm)
+	if err != nil {
+		return fmt.Errorf("composing catalog acquisition: %w", err)
+	}
+	srv, err := server.New(
+		sm,
+		cfg,
+		server.WithLogger(logger),
+		server.WithSyncer(syncer),
+	)
 	if err != nil {
 		return fmt.Errorf("creating server: %w", err)
 	}
 	logger.Debug().Msg("Server instance created")
 
-	// Start background services (WebSocket hub, SSE broadcaster, event broker)
-	logger.Debug().Msg("Starting background services")
-	srv.Start()
-	logger.Debug().Msg("Background services started")
+	// Activate server-owned services. SSE connections remain request-owned.
+	logger.Debug().Msg("Activating server services")
+	if err := srv.Start(); err != nil {
+		return fmt.Errorf("starting server services: %w", err)
+	}
+	logger.Debug().Msg("Server services active")
 
 	// Log that server is starting (after background services initialize)
 	logger.Info().
@@ -160,6 +182,8 @@ func parseConfig(cmd *cobra.Command) server.Config {
 	readTimeout := mustGetDuration(cmd, "read-timeout")
 	writeTimeout := mustGetDuration(cmd, "write-timeout")
 	idleTimeout := mustGetDuration(cmd, "idle-timeout")
+	sseHeartbeatInterval := mustGetDuration(cmd, "sse-heartbeat-interval")
+	sseWriteTimeout := mustGetDuration(cmd, "sse-write-timeout")
 	metricsEnabled := mustGetBool(cmd, "metrics")
 	pathPrefix := mustGetString(cmd, "prefix")
 
@@ -174,19 +198,21 @@ func parseConfig(cmd *cobra.Command) server.Config {
 	}
 
 	return server.Config{
-		Host:           host,
-		Port:           port,
-		PathPrefix:     pathPrefix,
-		CORSEnabled:    corsEnabled,
-		CORSOrigins:    corsOrigins,
-		AuthEnabled:    authEnabled,
-		AuthHeader:     authHeader,
-		RateLimit:      rateLimit,
-		CacheTTL:       time.Duration(cacheTTL) * time.Second,
-		ReadTimeout:    readTimeout,
-		WriteTimeout:   writeTimeout,
-		IdleTimeout:    idleTimeout,
-		MetricsEnabled: metricsEnabled,
+		Host:                 host,
+		Port:                 port,
+		PathPrefix:           pathPrefix,
+		CORSEnabled:          corsEnabled,
+		CORSOrigins:          corsOrigins,
+		AuthEnabled:          authEnabled,
+		AuthHeader:           authHeader,
+		RateLimit:            rateLimit,
+		CacheTTL:             time.Duration(cacheTTL) * time.Second,
+		ReadTimeout:          readTimeout,
+		WriteTimeout:         writeTimeout,
+		IdleTimeout:          idleTimeout,
+		SSEHeartbeatInterval: sseHeartbeatInterval,
+		SSEWriteTimeout:      sseWriteTimeout,
+		MetricsEnabled:       metricsEnabled,
 	}
 }
 

@@ -27,6 +27,10 @@ type Config struct {
 	ReadTimeout  time.Duration
 	WriteTimeout time.Duration
 	IdleTimeout  time.Duration
+	// SSEHeartbeatInterval keeps otherwise-idle publication streams alive.
+	SSEHeartbeatInterval time.Duration
+	// SSEWriteTimeout bounds each publication or heartbeat write and flush.
+	SSEWriteTimeout time.Duration
 
 	// Shutdown settings
 	ShutdownGracePeriod time.Duration // Time to wait for background services to shutdown gracefully
@@ -38,19 +42,21 @@ type Config struct {
 // DefaultConfig returns a Config with sensible defaults.
 func DefaultConfig() Config {
 	return Config{
-		Host:                "localhost",
-		Port:                8080,
-		PathPrefix:          "/api/v1",
-		CORSEnabled:         false,
-		CORSOrigins:         []string{},
-		AuthEnabled:         false,
-		AuthHeader:          "X-API-Key",
-		RateLimit:           100,
-		CacheTTL:            5 * time.Minute,
-		ReadTimeout:         10 * time.Second,
-		WriteTimeout:        10 * time.Second,
-		IdleTimeout:         120 * time.Second,
-		ShutdownGracePeriod: 100 * time.Millisecond,
-		MetricsEnabled:      true,
+		Host:                 "localhost",
+		Port:                 8080,
+		PathPrefix:           "/api/v1",
+		CORSEnabled:          false,
+		CORSOrigins:          []string{},
+		AuthEnabled:          false,
+		AuthHeader:           "X-API-Key",
+		RateLimit:            100,
+		CacheTTL:             5 * time.Minute,
+		ReadTimeout:          10 * time.Second,
+		WriteTimeout:         10 * time.Second,
+		IdleTimeout:          120 * time.Second,
+		SSEHeartbeatInterval: 20 * time.Second,
+		SSEWriteTimeout:      10 * time.Second,
+		ShutdownGracePeriod:  100 * time.Millisecond,
+		MetricsEnabled:       true,
 	}
 }
