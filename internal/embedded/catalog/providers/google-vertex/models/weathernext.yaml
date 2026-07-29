@@ -1,5 +1,6 @@
 # weathernext - Google Vertex AI model: weathernext
 id: weathernext
+model: google/weathernext
 name: weathernext
 authors:
 - id: google

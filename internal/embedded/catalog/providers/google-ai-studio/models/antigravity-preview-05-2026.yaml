@@ -1,5 +1,6 @@
 # antigravity-preview-05-2026 - Preview release of Antigravity Agent (05-2026)
 id: antigravity-preview-05-2026
+model: google/antigravity-preview-05-2026
 name: Antigravity Agent Preview
 authors:
 - id: google

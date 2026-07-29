@@ -1,5 +1,6 @@
 # gpt-5.4 - Agent-ready GPT for coding and computer-use workflows at a l...
 id: gpt-5.4
+model: openai/gpt-5.4
 name: gpt-5.4
 authors:
 - id: openai

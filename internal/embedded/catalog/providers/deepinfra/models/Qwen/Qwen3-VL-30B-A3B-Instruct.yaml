@@ -1,5 +1,6 @@
 # Qwen/Qwen3-VL-30B-A3B-Instruct - Meet Qwen3-VL — the most powerful vision-language model in...
 id: Qwen/Qwen3-VL-30B-A3B-Instruct
+model: alibaba/qwen3-vl-30b-a3b-instruct
 name: Qwen/Qwen3-VL-30B-A3B-Instruct
 authors:
 - id: alibaba

@@ -1,5 +1,6 @@
 # lyria-3-clip-preview - Lyria 3 30s model Preview
 id: lyria-3-clip-preview
+model: google/lyria-3-clip-preview
 name: Lyria 3 Clip Preview
 authors:
 - id: google

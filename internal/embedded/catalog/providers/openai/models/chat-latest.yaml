@@ -1,5 +1,6 @@
 # chat-latest - AI model
 id: chat-latest
+model: openai/chat-latest
 name: chat-latest
 authors:
 - id: openai

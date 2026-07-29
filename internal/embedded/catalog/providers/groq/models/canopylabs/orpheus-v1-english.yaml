@@ -1,5 +1,6 @@
 # canopylabs/orpheus-v1-english - Speech generation model for controllable voice, narration, a...
 id: canopylabs/orpheus-v1-english
+model: alibaba/orpheus-v1-english
 name: Canopy Labs Orpheus V1 English
 authors:
 - id: alibaba

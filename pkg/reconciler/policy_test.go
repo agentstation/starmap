@@ -93,6 +93,7 @@ func TestFieldPolicyAuthorityResolution(t *testing.T) {
 		field    string
 		want     sources.ID
 	}{
+		{sources.ResourceTypeModel, "ModelRef", sources.ProvidersID},
 		{sources.ResourceTypeModel, "Name", sources.ProvidersID},
 		{sources.ResourceTypeModel, "Description", sources.ModelsDevHTTPID},
 		{sources.ResourceTypeProvider, "Catalog", sources.LocalCatalogID},
@@ -105,6 +106,33 @@ func TestFieldPolicyAuthorityResolution(t *testing.T) {
 		if got != test.want {
 			t.Errorf("ResolveResourceConflict(%s, %q) source = %q, want %q", test.resource, test.field, got, test.want)
 		}
+	}
+}
+
+func TestModelReferenceUsesExplicitAuthorityAndNeverProviderIdentity(t *testing.T) {
+	t.Parallel()
+
+	authorities := authority.New()
+	tracker := provenance.NewTracker(true)
+	merger := newMergerWithProvenance(
+		authorities,
+		NewAuthorityStrategy(authorities),
+		tracker,
+		nil,
+	)
+	models, _, err := merger.Models(map[sources.ID][]*catalogs.Model{
+		sources.LocalCatalogID: {{
+			ID: "kimi-k2.5", ModelRef: "local-fallback/kimi-k2.5", Name: "Kimi K2.5",
+		}},
+		sources.ProvidersID: {{
+			ID: "kimi-k2.5", ModelRef: "moonshot-ai/kimi-k2.5", Name: "Kimi K2.5",
+		}},
+	})
+	if err != nil {
+		t.Fatalf("MergeModels: %v", err)
+	}
+	if len(models) != 1 || models[0].ModelRef != "moonshot-ai/kimi-k2.5" {
+		t.Fatalf("merged model reference = %#v, want explicit Moonshot identity", models)
 	}
 }
 

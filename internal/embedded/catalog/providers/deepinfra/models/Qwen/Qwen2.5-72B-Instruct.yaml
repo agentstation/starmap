@@ -1,5 +1,6 @@
 # Qwen/Qwen2.5-72B-Instruct - Qwen2.5 is a model pretrained on a large-scale dataset of up...
 id: Qwen/Qwen2.5-72B-Instruct
+model: alibaba/qwen2.5-72b-instruct
 name: Qwen/Qwen2.5-72B-Instruct
 authors:
 - id: alibaba

@@ -1,5 +1,6 @@
 # gpt-realtime-translate - AI model
 id: gpt-realtime-translate
+model: openai/gpt-realtime-translate
 name: gpt-realtime-translate
 authors:
 - id: openai

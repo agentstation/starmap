@@ -1,5 +1,6 @@
 # google/gemini-3.1-flash-lite - Bring any idea to life with state-of-the-art reasoning to he...
 id: google/gemini-3.1-flash-lite
+model: google/gemini-3.1-flash-lite
 name: google/gemini-3.1-flash-lite
 authors:
 - id: google

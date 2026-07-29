@@ -1,5 +1,6 @@
 # tts-1-hd - AI model
 id: tts-1-hd
+model: openai/tts-1-hd
 name: tts-1-hd
 authors:
 - id: openai

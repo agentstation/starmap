@@ -1,5 +1,6 @@
 # ByteDance/Seed-2.0-pro - Built for the Agent era, it delivers stable performance in c...
 id: ByteDance/Seed-2.0-pro
+model: bytedance/seed-2.0-pro
 name: ByteDance/Seed-2.0-pro
 authors:
 - id: bytedance

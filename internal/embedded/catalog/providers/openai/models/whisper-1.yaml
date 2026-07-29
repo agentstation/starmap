@@ -1,5 +1,6 @@
 # whisper-1 - AI model
 id: whisper-1
+model: openai/whisper-1
 name: whisper-1
 authors:
 - id: openai

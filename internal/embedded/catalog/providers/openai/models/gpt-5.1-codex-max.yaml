@@ -1,5 +1,6 @@
 # gpt-5.1-codex-max - Coding-optimized GPT model for repository edits, reviews, an...
 id: gpt-5.1-codex-max
+model: openai/gpt-5.1-codex-max
 name: gpt-5.1-codex-max
 authors:
 - id: openai

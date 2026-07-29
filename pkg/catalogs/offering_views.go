@@ -20,7 +20,7 @@ func deriveProviderOffering(candidate providerModelCandidate) (ProviderOffering,
 	offering := ProviderOffering{
 		ProviderID:      candidate.providerID,
 		ProviderModelID: ProviderModelID(model.ID),
-		DefinitionID:    ModelDefinitionID(model.ID),
+		DefinitionID:    candidate.definitionID,
 		Pricing:         deepCopyModelPricing(model.Pricing),
 		Availability:    OfferingAvailabilityUnknown,
 		Endpoint:        candidate.endpoint,

@@ -1,5 +1,6 @@
 # sentence-transformers/all-mpnet-base-v2 - A sentence transformation model that has been trained on a w...
 id: sentence-transformers/all-mpnet-base-v2
+model: sentence-transformers/all-mpnet-base-v2
 name: sentence-transformers/all-mpnet-base-v2
 description: A sentence transformation model that has been trained on a wide range of datasets, including but not limited to S2ORC, WikiAnwers, PAQ, Stack Exchange, and Yahoo! Answers. Our model can be used for various NLP tasks such as clustering, sentiment analysis, and question answering.
 

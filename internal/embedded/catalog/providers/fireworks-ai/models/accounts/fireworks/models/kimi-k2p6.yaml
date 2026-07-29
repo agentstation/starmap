@@ -1,5 +1,6 @@
 # accounts/fireworks/models/kimi-k2p6 - Kimi reasoning model for long-horizon research, planning, an...
 id: accounts/fireworks/models/kimi-k2p6
+model: moonshot-ai/kimi-k2.6
 name: accounts/fireworks/models/kimi-k2p6
 authors:
 - id: moonshot-ai

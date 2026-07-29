@@ -1,5 +1,6 @@
 # accounts/fireworks/models/glm-5p1 - Flagship GLM model for hybrid reasoning, coding, and agentic...
 id: accounts/fireworks/models/glm-5p1
+model: zhipu-ai/glm-5.1
 name: accounts/fireworks/models/glm-5p1
 description: Flagship GLM model for hybrid reasoning, coding, and agentic engineering
 

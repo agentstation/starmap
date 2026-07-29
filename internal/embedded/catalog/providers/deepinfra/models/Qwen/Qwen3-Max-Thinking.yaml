@@ -1,5 +1,6 @@
 # Qwen/Qwen3-Max-Thinking - The latest flagship reasoning model in the Qwen3 family. Fur...
 id: Qwen/Qwen3-Max-Thinking
+model: alibaba/qwen3-max-thinking
 name: Qwen/Qwen3-Max-Thinking
 authors:
 - id: alibaba

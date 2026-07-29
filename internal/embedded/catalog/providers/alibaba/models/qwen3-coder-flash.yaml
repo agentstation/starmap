@@ -1,5 +1,6 @@
 # qwen3-coder-flash - Qwen coding model for software agents, repository edits, and...
 id: qwen3-coder-flash
+model: alibaba/qwen3-coder-flash
 name: qwen3-coder-flash
 authors:
 - id: alibaba

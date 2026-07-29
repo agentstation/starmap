@@ -1,5 +1,6 @@
 # openai/whisper-large-v3-turbo - Whisper is a state-of-the-art model for automatic speech rec...
 id: openai/whisper-large-v3-turbo
+model: openai/whisper-large-v3-turbo
 name: openai/whisper-large-v3-turbo
 authors:
 - id: openai

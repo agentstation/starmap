@@ -1,5 +1,6 @@
 # qwen-vl-ocr-2025-11-20 - AI model
 id: qwen-vl-ocr-2025-11-20
+model: alibaba/qwen-vl-ocr-2025-11-20
 name: qwen-vl-ocr-2025-11-20
 authors:
 - id: alibaba

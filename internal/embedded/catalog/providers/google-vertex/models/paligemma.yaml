@@ -1,5 +1,6 @@
 # paligemma - Google Vertex AI model: paligemma
 id: paligemma
+model: google/paligemma
 name: paligemma
 authors:
 - id: google

@@ -1,5 +1,6 @@
 # Wan-AI/Wan2.6-T2V - Turn any prompt into a smooth video. Intelligent shot schedu...
 id: Wan-AI/Wan2.6-T2V
+model: alibaba/wan2.6-t2v
 name: Wan-AI/Wan2.6-T2V
 description: Turn any prompt into a smooth video. Intelligent shot scheduling supports multi-shot storytelling, generating multi-shot narrative videos with consistent subjects, scenes, and atmosphere
 

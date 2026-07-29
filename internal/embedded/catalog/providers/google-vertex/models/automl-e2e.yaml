@@ -1,5 +1,6 @@
 # automl-e2e - Google Vertex AI model: automl-e2e
 id: automl-e2e
+model: google/automl-e2e
 name: automl-e2e
 authors:
 - id: google

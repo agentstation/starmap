@@ -1,5 +1,6 @@
 # gemini-flash-latest - Latest release of Gemini Flash
 id: gemini-flash-latest
+model: google/gemini-flash-latest
 name: Gemini Flash Latest
 authors:
 - id: google

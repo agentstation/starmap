@@ -1,5 +1,6 @@
 # imagewatermarkdetector - Google Vertex AI model: imagewatermarkdetector
 id: imagewatermarkdetector
+model: google/imagewatermarkdetector
 name: imagewatermarkdetector
 authors:
 - id: google

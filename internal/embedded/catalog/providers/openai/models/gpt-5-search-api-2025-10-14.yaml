@@ -1,5 +1,6 @@
 # gpt-5-search-api-2025-10-14 - AI model
 id: gpt-5-search-api-2025-10-14
+model: openai/gpt-5-search-api-2025-10-14
 name: gpt-5-search-api-2025-10-14
 authors:
 - id: openai

@@ -1,5 +1,6 @@
 # qwen-mt-plus - Translation model for multilingual conversion, localization,...
 id: qwen-mt-plus
+model: alibaba/qwen-mt-plus
 name: qwen-mt-plus
 authors:
 - id: alibaba

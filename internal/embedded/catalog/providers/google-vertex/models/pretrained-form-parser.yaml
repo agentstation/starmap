@@ -1,5 +1,6 @@
 # pretrained-form-parser - Google Vertex AI model: pretrained-form-parser
 id: pretrained-form-parser
+model: google/pretrained-form-parser
 name: pretrained-form-parser
 authors:
 - id: google

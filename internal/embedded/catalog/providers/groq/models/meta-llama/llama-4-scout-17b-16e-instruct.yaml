@@ -1,5 +1,6 @@
 # meta-llama/llama-4-scout-17b-16e-instruct - Open multimodal Llama model for long-context analysis and ef...
 id: meta-llama/llama-4-scout-17b-16e-instruct
+model: meta/llama-4-scout-17b-16e-instruct
 name: Llama 4 Scout 17B 16E
 authors:
 - id: meta

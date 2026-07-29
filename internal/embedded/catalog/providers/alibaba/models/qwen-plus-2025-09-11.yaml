@@ -1,5 +1,6 @@
 # qwen-plus-2025-09-11 - AI model
 id: qwen-plus-2025-09-11
+model: alibaba/qwen-plus-2025-09-11
 name: qwen-plus-2025-09-11
 authors:
 - id: alibaba

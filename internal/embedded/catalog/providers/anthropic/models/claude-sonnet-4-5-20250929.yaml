@@ -1,5 +1,6 @@
 # claude-sonnet-4-5-20250929 - Balanced Claude model for coding, analysis, agent workflows,...
 id: claude-sonnet-4-5-20250929
+model: anthropic/claude-sonnet-4-5-20250929
 name: Claude Sonnet 4.5
 authors:
 - id: anthropic

@@ -1,5 +1,6 @@
 # timesfm - Google Vertex AI model: timesfm
 id: timesfm
+model: google/timesfm
 name: timesfm
 authors:
 - id: google

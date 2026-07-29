@@ -21,7 +21,7 @@ import (
 )
 
 const (
-	markerVersion = 1
+	markerVersion = 2
 
 	// IssueDirty identifies a workspace whose semantic contents differ from the
 	// last successfully projected generation.
@@ -49,6 +49,7 @@ func (i Identity) Validate() error {
 type Receipt struct {
 	GenerationID      string
 	WorkspaceChecksum string
+	EndpointChecksum  string
 }
 
 // InputExpectation records workspace presence and, once loaded, its semantic
@@ -207,7 +208,7 @@ func (p projector) projectLocked(
 	if err := validateInputExpectation(target, input, expectation); err != nil {
 		return Receipt{}, err
 	}
-	staged, stagedState, err := stageCatalog(target, catalog)
+	staged, stagedState, err := stageCatalog(target, catalog, identity)
 	if err != nil {
 		return Receipt{}, err
 	}
@@ -244,6 +245,7 @@ func (p projector) projectLocked(
 	receipt := Receipt{
 		GenerationID:      identity.GenerationID,
 		WorkspaceChecksum: stagedState.checksum,
+		EndpointChecksum:  stagedState.endpointChecksum,
 	}
 	if p.beforeMarker != nil {
 		if err := p.beforeMarker(); err != nil {
@@ -255,6 +257,7 @@ func (p projector) projectLocked(
 		GenerationID:      identity.GenerationID,
 		PayloadChecksum:   identity.PayloadChecksum,
 		WorkspaceChecksum: stagedState.checksum,
+		EndpointChecksum:  stagedState.endpointChecksum,
 	}); err != nil {
 		return receipt, err
 	}
@@ -348,28 +351,32 @@ func (p projector) repair(ctx context.Context, path string, current *catalogs.Ca
 		if state.exists &&
 			marker.GenerationID == identity.GenerationID &&
 			marker.PayloadChecksum == identity.PayloadChecksum &&
-			marker.WorkspaceChecksum == state.checksum {
+			marker.WorkspaceChecksum == state.checksum &&
+			marker.EndpointChecksum == state.endpointChecksum {
 			return RepairResult{Status: RepairStatusCurrent}, nil
 		}
 	} else if !stderrors.Is(markerErr, fs.ErrNotExist) {
 		return RepairResult{}, markerErr
 	}
 
-	desiredPath, desired, err := stageCatalog(target, current)
+	desiredPath, desired, err := stageCatalog(target, current, identity)
 	if err != nil {
 		return RepairResult{}, err
 	}
 	defer func() { _ = os.RemoveAll(desiredPath) }()
-	if state.exists && state.checksum == desired.checksum {
+	if state.equal(desired) {
 		if err := writeProjectionMarker(target, projectionMarker{
 			Version: markerVersion, GenerationID: identity.GenerationID,
 			PayloadChecksum: identity.PayloadChecksum, WorkspaceChecksum: state.checksum,
+			EndpointChecksum: state.endpointChecksum,
 		}); err != nil {
 			return RepairResult{}, err
 		}
 		return RepairResult{Status: RepairStatusRepaired}, nil
 	}
-	if markerErr == nil && state.exists && state.checksum != marker.WorkspaceChecksum {
+	if markerErr == nil && state.exists &&
+		(state.checksum != marker.WorkspaceChecksum ||
+			state.endpointChecksum != marker.EndpointChecksum) {
 		return RepairResult{Status: RepairStatusSkippedDirty, IssueCode: IssueDirty}, nil
 	}
 	if stderrors.Is(markerErr, fs.ErrNotExist) && state.exists {
@@ -383,8 +390,9 @@ func (p projector) repair(ctx context.Context, path string, current *catalogs.Ca
 }
 
 type semanticState struct {
-	exists   bool
-	checksum string
+	exists           bool
+	checksum         string
+	endpointChecksum string
 }
 
 func validateCommittedCatalog(catalog *catalogs.Catalog, identity Identity) error {
@@ -403,14 +411,16 @@ func validateCommittedCatalog(catalog *catalogs.Catalog, identity Identity) erro
 }
 
 func (s semanticState) equal(other semanticState) bool {
-	return s.exists == other.exists && s.checksum == other.checksum
+	return s.exists == other.exists &&
+		s.checksum == other.checksum &&
+		s.endpointChecksum == other.endpointChecksum
 }
 
 func (s semanticState) describe() string {
 	if !s.exists {
 		return "absent"
 	}
-	return s.checksum
+	return s.checksum + " endpoints=" + s.endpointChecksum
 }
 
 func resolveTarget(path string) (string, error) {
@@ -460,10 +470,24 @@ func readSemanticState(path string) (semanticState, error) {
 	if err != nil {
 		return semanticState{}, errors.WrapResource("encode", "catalog workspace", path, err)
 	}
-	return semanticState{exists: true, checksum: catalogs.DescribeCatalogPayload(payload).Checksum}, nil
+	endpointChecksum, err := readEndpointProjectionChecksum(path)
+	if stderrors.Is(err, fs.ErrNotExist) {
+		endpointChecksum = ""
+	} else if err != nil {
+		return semanticState{}, errors.WrapIO("read", endpointProjectionFilename, err)
+	}
+	return semanticState{
+		exists:           true,
+		checksum:         catalogs.DescribeCatalogPayload(payload).Checksum,
+		endpointChecksum: endpointChecksum,
+	}, nil
 }
 
-func stageCatalog(target string, catalog *catalogs.Catalog) (string, semanticState, error) {
+func stageCatalog(
+	target string,
+	catalog *catalogs.Catalog,
+	identity Identity,
+) (string, semanticState, error) {
 	parent := filepath.Dir(target)
 	staged, err := os.MkdirTemp(parent, "."+filepath.Base(target)+".candidate-")
 	if err != nil {
@@ -490,11 +514,14 @@ func stageCatalog(target string, catalog *catalogs.Catalog) (string, semanticSta
 	if err := builder.Save(save.WithPath(staged)); err != nil {
 		return cleanup(errors.WrapIO("stage", staged, err))
 	}
+	if _, err := writeEndpointProjection(staged, catalog, identity); err != nil {
+		return cleanup(errors.WrapResource("stage", "endpoint projection", target, err))
+	}
 	state, err := readSemanticState(staged)
 	if err != nil {
 		return cleanup(err)
 	}
-	if err := validateStableProjection(staged, state, catalog); err != nil {
+	if err := validateStableProjection(staged, state, catalog, identity); err != nil {
 		return cleanup(err)
 	}
 	if err := syncTree(staged); err != nil {
@@ -503,7 +530,12 @@ func stageCatalog(target string, catalog *catalogs.Catalog) (string, semanticSta
 	return staged, state, nil
 }
 
-func validateStableProjection(staged string, state semanticState, source *catalogs.Catalog) error {
+func validateStableProjection(
+	staged string,
+	state semanticState,
+	source *catalogs.Catalog,
+	identity Identity,
+) error {
 	builder, err := catalogs.NewFromPath(staged)
 	if err != nil {
 		return errors.WrapResource("load", "staged workspace projection", staged, err)
@@ -532,6 +564,9 @@ func validateStableProjection(staged string, state semanticState, source *catalo
 	}
 	if err := verificationBuilder.Save(save.WithPath(verification)); err != nil {
 		return errors.WrapIO("verify", verification, err)
+	}
+	if _, err := writeEndpointProjection(verification, catalog, identity); err != nil {
+		return errors.WrapResource("verify", "endpoint projection", staged, err)
 	}
 	verified, err := readSemanticState(verification)
 	if err != nil {
@@ -687,6 +722,7 @@ type projectionMarker struct {
 	GenerationID      string `json:"generation_id"`
 	PayloadChecksum   string `json:"payload_checksum"`
 	WorkspaceChecksum string `json:"workspace_checksum"`
+	EndpointChecksum  string `json:"endpoint_checksum"`
 }
 
 func projectionMarkerPath(target string) string {
@@ -709,7 +745,8 @@ func readProjectionMarker(target string) (projectionMarker, error) {
 		return projectionMarker{}, &errors.ParseError{Format: "json", File: path, Message: "invalid trailing data", Err: err}
 	}
 	if marker.Version != markerVersion || marker.GenerationID == "" ||
-		marker.PayloadChecksum == "" || marker.WorkspaceChecksum == "" {
+		marker.PayloadChecksum == "" || marker.WorkspaceChecksum == "" ||
+		marker.EndpointChecksum == "" {
 		return projectionMarker{}, &errors.ValidationError{
 			Field: "workspace_projection.marker", Value: path, Message: "is incomplete or unsupported",
 		}

@@ -1,5 +1,6 @@
 # o3 - Deliberate o-series reasoner for hard math, coding, and mult...
 id: o3
+model: openai/o3
 name: o3
 authors:
 - id: openai

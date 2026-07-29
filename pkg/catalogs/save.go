@@ -120,11 +120,32 @@ func (cat *Builder) saveTo(basePath string) error {
 		}
 	}
 
+	// Save provider-independent model records under their owning author. Unlike
+	// the removed denormalized view, these records never copy provider price,
+	// limits, status, modes, or provider extensions.
+	for _, record := range cat.AuthoredModels() {
+		if err := validateAuthoredModel(record.AuthorID, record.Model); err != nil {
+			return err
+		}
+		modelPath := filepath.Join(
+			"authors", string(record.AuthorID), "models", record.Model.ID+".yaml",
+		)
+		formatted, err := record.Model.EncodeYAML()
+		if err != nil {
+			return err
+		}
+		if err := writeFile(modelPath, []byte(formatted)); err != nil {
+			return errors.WrapIO("write", "authored model "+string(record.ID()), err)
+		}
+	}
+
 	return nil
 }
 
 func removeManagedCatalogData(basePath string) error {
-	for _, filename := range []string{"providers.yaml", "authors.yaml", "provenance.yaml"} {
+	for _, filename := range []string{
+		"providers.yaml", "authors.yaml", "endpoints.yaml", "provenance.yaml",
+	} {
 		path := filepath.Join(basePath, filename)
 		if err := os.Remove(path); err != nil && !os.IsNotExist(err) {
 			return errors.WrapIO("remove", path, err)

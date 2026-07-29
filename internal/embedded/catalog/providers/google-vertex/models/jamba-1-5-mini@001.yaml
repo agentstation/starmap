@@ -1,5 +1,6 @@
 # jamba-1-5-mini@001 - Jamba 1.5 Mini model available through Vertex AI Model Garde...
 id: jamba-1-5-mini@001
+model: ai21/jamba-1-5-mini@001
 name: Jamba 1.5 Mini
 authors:
 - id: ai21

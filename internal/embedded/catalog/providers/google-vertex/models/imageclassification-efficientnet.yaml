@@ -1,5 +1,6 @@
 # imageclassification-efficientnet - Google Vertex AI model: imageclassification-efficientnet
 id: imageclassification-efficientnet
+model: google/imageclassification-efficientnet
 name: imageclassification-efficientnet
 authors:
 - id: google

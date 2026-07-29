@@ -1,5 +1,6 @@
 # gemini-3.1-flash-lite-preview - Legacy model retained for compatibility with older integrati...
 id: gemini-3.1-flash-lite-preview
+model: google/gemini-3.1-flash-lite-preview
 name: Gemini 3.1 Flash Lite Preview
 authors:
 - id: google

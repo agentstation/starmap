@@ -1,5 +1,6 @@
 # qwen3-max-2025-09-23 - AI model
 id: qwen3-max-2025-09-23
+model: alibaba/qwen3-max-2025-09-23
 name: qwen3-max-2025-09-23
 authors:
 - id: alibaba

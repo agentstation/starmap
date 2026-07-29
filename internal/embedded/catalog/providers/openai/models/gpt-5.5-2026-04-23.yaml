@@ -1,5 +1,6 @@
 # gpt-5.5-2026-04-23 - AI model
 id: gpt-5.5-2026-04-23
+model: openai/gpt-5.5-2026-04-23
 name: gpt-5.5-2026-04-23
 authors:
 - id: openai

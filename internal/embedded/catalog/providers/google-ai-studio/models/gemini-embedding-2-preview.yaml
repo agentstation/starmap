@@ -1,5 +1,6 @@
 # gemini-embedding-2-preview - Obtain a distributed representation of multimodal content.
 id: gemini-embedding-2-preview
+model: google/gemini-embedding-2-preview
 name: Gemini Embedding 2 Preview
 authors:
 - id: google

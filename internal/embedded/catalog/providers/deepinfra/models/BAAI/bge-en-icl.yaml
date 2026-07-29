@@ -1,5 +1,6 @@
 # BAAI/bge-en-icl - A LLM-based embedding model with in-context learning capabil...
 id: BAAI/bge-en-icl
+model: baai/bge-en-icl
 name: BAAI/bge-en-icl
 authors:
 - id: baai

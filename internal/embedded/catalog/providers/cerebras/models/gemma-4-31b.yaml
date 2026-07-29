@@ -1,5 +1,6 @@
 # gemma-4-31b - Largest Gemma 4 instruction model for open, self-hosted chat...
 id: gemma-4-31b
+model: google/gemma-4-31b
 name: gemma-4-31b
 description: Largest Gemma 4 instruction model for open, self-hosted chat and reasoning
 status: beta

@@ -1,5 +1,6 @@
 # gemini-2.5-pro - Stable release (June 17th, 2025) of Gemini 2.5 Pro
 id: gemini-2.5-pro
+model: google/gemini-2.5-pro
 name: Gemini 2.5 Pro
 authors:
 - id: google

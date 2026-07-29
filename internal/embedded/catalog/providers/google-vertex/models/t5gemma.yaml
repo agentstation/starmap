@@ -1,5 +1,6 @@
 # t5gemma - Google Vertex AI model: t5gemma
 id: t5gemma
+model: google/t5gemma
 name: t5gemma
 authors:
 - id: google

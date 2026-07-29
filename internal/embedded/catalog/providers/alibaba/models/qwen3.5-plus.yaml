@@ -1,5 +1,6 @@
 # qwen3.5-plus - Qwen vision-language model for visual reasoning, documents, ...
 id: qwen3.5-plus
+model: alibaba/qwen3.5-plus
 name: qwen3.5-plus
 authors:
 - id: alibaba

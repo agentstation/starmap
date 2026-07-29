@@ -1,5 +1,6 @@
 # lyria-3-clip-preview - Google model: lyria-3-clip-preview
 id: lyria-3-clip-preview
+model: google/lyria-3-clip-preview
 name: lyria-3-clip-preview
 authors:
 - id: google

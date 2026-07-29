@@ -1,5 +1,6 @@
 # claude-opus-4-7 - Stronger Opus tier for advanced software work and high-stake...
 id: claude-opus-4-7
+model: anthropic/claude-opus-4-7
 name: Claude Opus 4.7
 authors:
 - id: anthropic

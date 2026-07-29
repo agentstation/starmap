@@ -1,5 +1,6 @@
 # gpt-4o-mini-transcribe-2025-03-20 - AI model
 id: gpt-4o-mini-transcribe-2025-03-20
+model: openai/gpt-4o-mini-transcribe-2025-03-20
 name: gpt-4o-mini-transcribe-2025-03-20
 authors:
 - id: openai

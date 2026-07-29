@@ -1,5 +1,6 @@
 # canopylabs/orpheus-arabic-saudi - Speech generation model for controllable voice, narration, a...
 id: canopylabs/orpheus-arabic-saudi
+model: alibaba/orpheus-arabic-saudi
 name: Canopy Labs Orpheus Arabic Saudi
 authors:
 - id: alibaba

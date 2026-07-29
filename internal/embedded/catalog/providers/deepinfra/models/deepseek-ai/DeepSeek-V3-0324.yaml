@@ -1,5 +1,6 @@
 # deepseek-ai/DeepSeek-V3-0324 - DeepSeek-V3-0324, a strong Mixture-of-Experts (MoE) language...
 id: deepseek-ai/DeepSeek-V3-0324
+model: deepseek/deepseek-v3-0324
 name: deepseek-ai/DeepSeek-V3-0324
 authors:
 - id: deepseek

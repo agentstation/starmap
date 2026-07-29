@@ -1,5 +1,6 @@
 # video-text-detection - Google Vertex AI model: video-text-detection
 id: video-text-detection
+model: google/video-text-detection
 name: video-text-detection
 authors:
 - id: google

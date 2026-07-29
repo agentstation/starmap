@@ -1,5 +1,6 @@
 # textembedding-gecko - Google Vertex AI model: textembedding-gecko
 id: textembedding-gecko
+model: google/textembedding-gecko
 name: textembedding-gecko
 authors:
 - id: google

@@ -1,5 +1,6 @@
 # o3-mini-2025-01-31 - AI model
 id: o3-mini-2025-01-31
+model: openai/o3-mini-2025-01-31
 name: o3-mini-2025-01-31
 authors:
 - id: openai

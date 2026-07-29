@@ -1,5 +1,6 @@
 # google/gemini-3.5-flash - Gemini 3.5 Flash delivers near-Pro intelligence at Flash-tie...
 id: google/gemini-3.5-flash
+model: google/gemini-3.5-flash
 name: google/gemini-3.5-flash
 authors:
 - id: google

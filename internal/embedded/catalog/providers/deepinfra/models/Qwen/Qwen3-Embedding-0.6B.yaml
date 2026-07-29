@@ -1,5 +1,6 @@
 # Qwen/Qwen3-Embedding-0.6B - The Qwen3 Embedding model series is the latest proprietary m...
 id: Qwen/Qwen3-Embedding-0.6B
+model: alibaba/qwen3-embedding-0.6b
 name: Qwen/Qwen3-Embedding-0.6B
 authors:
 - id: alibaba

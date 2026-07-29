@@ -533,6 +533,32 @@ func TestModel_FormatYAML_MinimalModel(t *testing.T) {
 	}
 }
 
+func TestModel_FormatYAML_PreservesCanonicalModelReference(t *testing.T) {
+	t.Parallel()
+
+	model := Model{
+		ID:       "accounts/fireworks/models/kimi-k2p5",
+		ModelRef: "moonshot-ai/kimi-k2.5",
+		Name:     "Kimi K2.5",
+	}
+
+	encoded, err := model.EncodeYAML()
+	if err != nil {
+		t.Fatalf("EncodeYAML() error = %v", err)
+	}
+	if !strings.Contains(encoded, "model: moonshot-ai/kimi-k2.5\n") {
+		t.Fatalf("EncodeYAML() omitted canonical model reference:\n%s", encoded)
+	}
+
+	var decoded Model
+	if err := yaml.Unmarshal([]byte(encoded), &decoded); err != nil {
+		t.Fatalf("Unmarshal() error = %v", err)
+	}
+	if decoded.ModelRef != model.ModelRef {
+		t.Fatalf("round-trip ModelRef = %q, want %q", decoded.ModelRef, model.ModelRef)
+	}
+}
+
 // Helper functions for test data creation.
 func createTestModel() Model {
 	testTime := time.Date(2025, 8, 22, 4, 9, 45, 0, time.UTC)

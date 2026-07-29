@@ -1,5 +1,6 @@
 # mistralai/Mistral-Nemo-Instruct-2407 - 12B model trained jointly by Mistral AI and NVIDIA, it signi...
 id: mistralai/Mistral-Nemo-Instruct-2407
+model: mistral/mistral-nemo-instruct-2407
 name: mistralai/Mistral-Nemo-Instruct-2407
 authors:
 - id: mistral

@@ -1,5 +1,6 @@
 # imageclassification-proprietary-efficientnet - Google Vertex AI model: imageclassification-proprietary-effi...
 id: imageclassification-proprietary-efficientnet
+model: google/imageclassification-proprietary-efficientnet
 name: imageclassification-proprietary-efficientnet
 authors:
 - id: google

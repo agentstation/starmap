@@ -1,5 +1,6 @@
 # qwen3.6-flash-2026-04-16 - AI model
 id: qwen3.6-flash-2026-04-16
+model: alibaba/qwen3.6-flash-2026-04-16
 name: qwen3.6-flash-2026-04-16
 authors:
 - id: alibaba

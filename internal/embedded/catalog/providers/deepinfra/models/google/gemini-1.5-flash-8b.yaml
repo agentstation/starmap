@@ -1,5 +1,6 @@
 # google/gemini-1.5-flash-8b - AI model
 id: google/gemini-1.5-flash-8b
+model: google/gemini-1.5-flash-8b
 name: google/gemini-1.5-flash-8b
 authors:
 - id: google

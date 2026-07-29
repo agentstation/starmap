@@ -1,5 +1,6 @@
 # pretrained-ocr - Google Vertex AI model: pretrained-ocr
 id: pretrained-ocr
+model: google/pretrained-ocr
 name: pretrained-ocr
 authors:
 - id: google

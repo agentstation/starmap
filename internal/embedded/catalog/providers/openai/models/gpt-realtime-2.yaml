@@ -1,5 +1,6 @@
 # gpt-realtime-2 - AI model
 id: gpt-realtime-2
+model: openai/gpt-realtime-2
 name: gpt-realtime-2
 authors:
 - id: openai

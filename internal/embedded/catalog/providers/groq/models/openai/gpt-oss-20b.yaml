@@ -1,5 +1,6 @@
 # openai/gpt-oss-20b - Open-weight GPT model for self-hosted reasoning and instruct...
 id: openai/gpt-oss-20b
+model: openai/gpt-oss-20b
 name: GPT OSS 20B
 authors:
 - id: openai

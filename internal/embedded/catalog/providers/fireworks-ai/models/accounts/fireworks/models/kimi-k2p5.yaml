@@ -1,5 +1,6 @@
 # accounts/fireworks/models/kimi-k2p5 - AI model
 id: accounts/fireworks/models/kimi-k2p5
+model: moonshot-ai/kimi-k2.5
 name: accounts/fireworks/models/kimi-k2p5
 authors:
 - id: moonshot-ai

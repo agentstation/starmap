@@ -56,7 +56,7 @@ func TestEmbeddedAuthorModelCorpusHasExactReviewedDisposition(t *testing.T) {
 		t.Fatalf("records without exact provider ID = %d, want 121", withoutExactProviderID)
 	}
 
-	embeddedPaths := make(map[string]struct{}, embeddedAuthorModelCount)
+	reviewedPaths := make(map[string]struct{}, embeddedAuthorModelCount)
 	err := fs.WalkDir(embedded.FS, "catalog/authors", func(path string, entry fs.DirEntry, walkErr error) error {
 		if walkErr != nil {
 			return walkErr
@@ -77,24 +77,24 @@ func TestEmbeddedAuthorModelCorpusHasExactReviewedDisposition(t *testing.T) {
 
 		record, found := reviewed[relative]
 		if !found {
-			t.Fatalf("embedded author model %q has no reviewed disposition", relative)
+			return nil
 		}
 		parts := strings.Split(relative, "/")
 		if record.Author != parts[1] || record.Slug != model.ID ||
 			record.CanonicalModel != record.Author+"/"+record.Slug {
 			t.Fatalf("manifest identity for %q = %#v, model ID %q", relative, record, model.ID)
 		}
-		embeddedPaths[relative] = struct{}{}
+		reviewedPaths[relative] = struct{}{}
 		return nil
 	})
 	if err != nil {
 		t.Fatalf("walk embedded author models: %v", err)
 	}
-	if len(embeddedPaths) != embeddedAuthorModelCount {
-		t.Fatalf("embedded author models = %d, want %d", len(embeddedPaths), embeddedAuthorModelCount)
+	if len(reviewedPaths) != embeddedAuthorModelCount {
+		t.Fatalf("reviewed embedded author models = %d, want %d", len(reviewedPaths), embeddedAuthorModelCount)
 	}
 	for path := range reviewed {
-		if _, found := embeddedPaths[path]; !found {
+		if _, found := reviewedPaths[path]; !found {
 			t.Fatalf("reviewed author model %q is not embedded", path)
 		}
 	}

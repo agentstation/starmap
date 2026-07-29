@@ -7,11 +7,14 @@ import (
 // Model represents a model configuration.
 type Model struct {
 	// Core identity
-	ID          string      `json:"id" yaml:"id"`                                       // Unique model identifier
-	Name        string      `json:"name" yaml:"name"`                                   // Display name (must not be empty)
-	Authors     []Author    `json:"authors,omitempty" yaml:"authors,omitempty"`         // Authors/organizations of the model (if known)
-	Description string      `json:"description,omitempty" yaml:"description,omitempty"` // Description of the model and its use cases
-	Status      ModelStatus `json:"status,omitempty" yaml:"status,omitempty"`           // Lifecycle status such as active, beta, preview, or deprecated
+	ID string `json:"id" yaml:"id"` // Exact provider model ID or authored-model slug
+	// ModelRef links a provider serving record to its canonical author/slug
+	// model. It is empty on authored-model records.
+	ModelRef    ModelDefinitionID `json:"model,omitempty" yaml:"model,omitempty"`
+	Name        string            `json:"name" yaml:"name"`                                   // Display name (must not be empty)
+	Authors     []Author          `json:"authors,omitempty" yaml:"authors,omitempty"`         // Authors/organizations of the model (if known)
+	Description string            `json:"description,omitempty" yaml:"description,omitempty"` // Description of the model and its use cases
+	Status      ModelStatus       `json:"status,omitempty" yaml:"status,omitempty"`           // Lifecycle status such as active, beta, preview, or deprecated
 
 	// Metadata - version and timing information
 	Metadata *ModelMetadata `json:"metadata,omitempty" yaml:"metadata,omitempty"` // Metadata for the model

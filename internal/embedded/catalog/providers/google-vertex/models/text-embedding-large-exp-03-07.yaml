@@ -1,5 +1,6 @@
 # text-embedding-large-exp-03-07 - Google Vertex AI model: text-embedding-large-exp-03-07
 id: text-embedding-large-exp-03-07
+model: google/text-embedding-large-exp-03-07
 name: text-embedding-large-exp-03-07
 authors:
 - id: google

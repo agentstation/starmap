@@ -1,5 +1,6 @@
 # occupancy-analytics - Google Vertex AI model: occupancy-analytics
 id: occupancy-analytics
+model: google/occupancy-analytics
 name: occupancy-analytics
 authors:
 - id: google

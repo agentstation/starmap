@@ -1,5 +1,6 @@
 # qwen3-vl-8b-instruct - AI model
 id: qwen3-vl-8b-instruct
+model: alibaba/qwen3-vl-8b-instruct
 name: qwen3-vl-8b-instruct
 authors:
 - id: alibaba

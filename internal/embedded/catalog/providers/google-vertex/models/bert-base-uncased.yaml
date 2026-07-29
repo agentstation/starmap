@@ -1,5 +1,6 @@
 # bert-base-uncased - Google Vertex AI model: bert-base-uncased
 id: bert-base-uncased
+model: google/bert-base-uncased
 name: bert-base-uncased
 authors:
 - id: google

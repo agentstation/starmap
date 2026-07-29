@@ -1,5 +1,6 @@
 # qwen3-vl-32b-thinking - AI model
 id: qwen3-vl-32b-thinking
+model: alibaba/qwen3-vl-32b-thinking
 name: qwen3-vl-32b-thinking
 authors:
 - id: alibaba

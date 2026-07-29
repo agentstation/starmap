@@ -1,5 +1,6 @@
 # shieldgemma2 - Google Vertex AI model: shieldgemma2
 id: shieldgemma2
+model: google/shieldgemma2
 name: shieldgemma2
 authors:
 - id: google

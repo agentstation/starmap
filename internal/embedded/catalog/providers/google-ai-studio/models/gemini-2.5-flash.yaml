@@ -1,5 +1,6 @@
 # gemini-2.5-flash - Stable version of Gemini 2.5 Flash, our mid-size multimodal ...
 id: gemini-2.5-flash
+model: google/gemini-2.5-flash
 name: Gemini 2.5 Flash
 authors:
 - id: google

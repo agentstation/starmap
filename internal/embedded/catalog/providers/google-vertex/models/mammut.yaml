@@ -1,5 +1,6 @@
 # mammut - Google Vertex AI model: mammut
 id: mammut
+model: google/mammut
 name: mammut
 authors:
 - id: google

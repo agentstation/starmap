@@ -1,5 +1,6 @@
 # translategemma - Google model: translategemma
 id: translategemma
+model: google/translategemma
 name: translategemma
 authors:
 - id: google

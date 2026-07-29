@@ -1,5 +1,6 @@
 # glm-5.1 - AI model
 id: glm-5.1
+model: zhipu-ai/glm-5.1
 name: glm-5.1
 authors:
 - id: zhipu-ai

@@ -1,5 +1,6 @@
 # sesame/csm-1b - CSM (Conversational Speech Model) is a speech generation mod...
 id: sesame/csm-1b
+model: sesame/csm-1b
 name: sesame/csm-1b
 description: CSM (Conversational Speech Model) is a speech generation model from Sesame that generates RVQ audio codes from text and audio inputs. The model architecture employs a Llama backbone and a smaller audio decoder that produces Mimi audio codes.
 

@@ -1,5 +1,6 @@
 # path-foundation - Google Vertex AI model: path-foundation
 id: path-foundation
+model: google/path-foundation
 name: path-foundation
 authors:
 - id: google

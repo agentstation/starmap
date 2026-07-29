@@ -1,5 +1,6 @@
 # sora-2-pro - AI model
 id: sora-2-pro
+model: openai/sora-2-pro
 name: sora-2-pro
 authors:
 - id: openai

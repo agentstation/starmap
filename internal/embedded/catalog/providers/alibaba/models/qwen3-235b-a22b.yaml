@@ -1,5 +1,6 @@
 # qwen3-235b-a22b - Large open Qwen MoE for multilingual reasoning, coding, and ...
 id: qwen3-235b-a22b
+model: alibaba/qwen3-235b-a22b
 name: qwen3-235b-a22b
 authors:
 - id: alibaba

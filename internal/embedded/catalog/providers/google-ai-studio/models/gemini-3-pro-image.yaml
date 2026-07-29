@@ -1,5 +1,6 @@
 # gemini-3-pro-image - Gemini 3 Pro Image
 id: gemini-3-pro-image
+model: google/gemini-3-pro-image
 name: Nano Banana Pro
 authors:
 - id: google

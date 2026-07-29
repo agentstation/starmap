@@ -1,5 +1,6 @@
 # vit-jax - Google Vertex AI model: vit-jax
 id: vit-jax
+model: google/vit-jax
 name: vit-jax
 authors:
 - id: google

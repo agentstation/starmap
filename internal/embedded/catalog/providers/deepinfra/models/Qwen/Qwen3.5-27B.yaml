@@ -1,5 +1,6 @@
 # Qwen/Qwen3.5-27B - Qwen vision-language model for visual reasoning, documents, ...
 id: Qwen/Qwen3.5-27B
+model: alibaba/qwen3.5-27b
 name: Qwen/Qwen3.5-27B
 authors:
 - id: alibaba

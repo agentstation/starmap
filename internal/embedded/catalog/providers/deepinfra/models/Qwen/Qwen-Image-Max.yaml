@@ -1,5 +1,6 @@
 # Qwen/Qwen-Image-Max - Compared with the Plus series, it significantly reduces the ...
 id: Qwen/Qwen-Image-Max
+model: alibaba/qwen-image-max
 name: Qwen/Qwen-Image-Max
 authors:
 - id: alibaba

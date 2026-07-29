@@ -1,5 +1,6 @@
 # o4-mini - Fast o-series model for compact reasoning, coding, and tool ...
 id: o4-mini
+model: openai/o4-mini
 name: o4-mini
 authors:
 - id: openai

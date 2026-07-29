@@ -1,5 +1,6 @@
 # vehicle-detector - Google Vertex AI model: vehicle-detector
 id: vehicle-detector
+model: google/vehicle-detector
 name: vehicle-detector
 authors:
 - id: google

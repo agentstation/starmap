@@ -1,5 +1,6 @@
 # gemini-2.5-flash-image - Gemini 2.5 Flash Preview Image
 id: gemini-2.5-flash-image
+model: google/gemini-2.5-flash-image
 name: Nano Banana
 authors:
 - id: google

@@ -1,5 +1,6 @@
 # tfvision-yolov7 - Google Vertex AI model: tfvision-yolov7
 id: tfvision-yolov7
+model: google/tfvision-yolov7
 name: tfvision-yolov7
 authors:
 - id: google

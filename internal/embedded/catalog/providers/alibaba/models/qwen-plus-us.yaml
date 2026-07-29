@@ -1,5 +1,6 @@
 # qwen-plus-us - AI model
 id: qwen-plus-us
+model: alibaba/qwen-plus-us
 name: qwen-plus-us
 authors:
 - id: alibaba

@@ -1,5 +1,6 @@
 # black-forest-labs/FLUX-2-dev - Brand-new Flux2 Dev introduces a faster, more modular archit...
 id: black-forest-labs/FLUX-2-dev
+model: black-forest-labs/flux-2-dev
 name: black-forest-labs/FLUX-2-dev
 description: Brand-new Flux2 Dev introduces a faster, more modular architecture for next-generation image generation pipelines. It delivers improved performance, cleaner control APIs, and a significantly more flexible development workflow for custom inference setups.
 

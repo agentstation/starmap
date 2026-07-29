@@ -1,5 +1,6 @@
 # qwen3.7-plus - Multimodal Qwen workhorse for long-context agents, visual in...
 id: qwen3.7-plus
+model: alibaba/qwen3.7-plus
 name: qwen3.7-plus
 authors:
 - id: alibaba

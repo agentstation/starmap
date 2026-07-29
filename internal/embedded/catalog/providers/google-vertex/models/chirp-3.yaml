@@ -1,5 +1,6 @@
 # chirp-3 - Google model: chirp-3
 id: chirp-3
+model: google/chirp-3
 name: chirp-3
 authors:
 - id: google

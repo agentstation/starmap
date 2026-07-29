@@ -1,5 +1,6 @@
 # qwen3.7-max - Qwen frontier model tuned for agent frameworks, coding assis...
 id: qwen3.7-max
+model: alibaba/qwen3.7-max
 name: qwen3.7-max
 authors:
 - id: alibaba

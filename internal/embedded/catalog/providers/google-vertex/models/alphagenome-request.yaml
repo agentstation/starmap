@@ -1,5 +1,6 @@
 # alphagenome-request - Google model: alphagenome-request
 id: alphagenome-request
+model: google/alphagenome-request
 name: alphagenome-request
 authors:
 - id: google

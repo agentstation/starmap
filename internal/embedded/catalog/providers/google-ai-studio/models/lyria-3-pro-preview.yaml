@@ -1,5 +1,6 @@
 # lyria-3-pro-preview - Lyria 3 Pro Preview
 id: lyria-3-pro-preview
+model: google/lyria-3-pro-preview
 name: Lyria 3 Pro Preview
 authors:
 - id: google

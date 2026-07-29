@@ -1,5 +1,6 @@
 # google/embeddinggemma-300m - EmbeddingGemma is a 300M parameter multilingual open embeddi...
 id: google/embeddinggemma-300m
+model: google/embeddinggemma-300m
 name: google/embeddinggemma-300m
 authors:
 - id: google

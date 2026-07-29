@@ -1,5 +1,6 @@
 # qwen3-14b - Qwen instruction model for multilingual chat, reasoning, and...
 id: qwen3-14b
+model: alibaba/qwen3-14b
 name: qwen3-14b
 authors:
 - id: alibaba

@@ -1,5 +1,6 @@
 # sora-2 - AI model
 id: sora-2
+model: openai/sora-2
 name: sora-2
 authors:
 - id: openai

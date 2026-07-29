@@ -53,14 +53,6 @@ func TestAuthor(t testing.TB) *Author {
 	}
 }
 
-// TestEndpoint creates a test endpoint with sensible defaults.
-func TestEndpoint(t testing.TB) *Endpoint {
-	t.Helper()
-	return &Endpoint{
-		ID: "test-endpoint",
-	}
-}
-
 // TestCatalog creates a test catalog with sample data.
 func TestCatalog(t testing.TB) *Builder {
 	t.Helper()

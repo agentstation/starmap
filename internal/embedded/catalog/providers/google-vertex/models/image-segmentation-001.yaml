@@ -1,5 +1,6 @@
 # image-segmentation-001 - Google Vertex AI model: image-segmentation-001
 id: image-segmentation-001
+model: google/image-segmentation-001
 name: image-segmentation-001
 authors:
 - id: google

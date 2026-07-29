@@ -1,5 +1,6 @@
 # gemini-3-pro-image - Google model: gemini-3-pro-image
 id: gemini-3-pro-image
+model: google/gemini-3-pro-image
 name: gemini-3-pro-image
 authors:
 - id: google

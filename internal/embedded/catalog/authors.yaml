@@ -759,3 +759,105 @@
   website: https://zhipuai.cn
   huggingface: https://huggingface.co/THUDM
   github: https://github.com/THUDM
+
+# Additional model publishers found in provider catalogs
+- id: black-forest-labs
+  name: Black Forest Labs
+  website: https://blackforestlabs.ai
+  huggingface: https://huggingface.co/black-forest-labs
+
+- id: boson-ai
+  name: Boson AI
+  website: https://www.boson.ai
+  huggingface: https://huggingface.co/bosonai
+
+- id: bria
+  name: Bria
+  website: https://bria.ai
+  huggingface: https://huggingface.co/briaai
+
+- id: deepreinforce-ai
+  name: DeepReinforce
+  huggingface: https://huggingface.co/deepreinforce-ai
+
+- id: fastvideo
+  name: FastVideo
+  huggingface: https://huggingface.co/FastVideo
+  github: https://github.com/hao-ai-lab/FastVideo
+
+- id: gryphe
+  name: Gryphe
+  huggingface: https://huggingface.co/Gryphe
+
+- id: hexgrad
+  name: Hexgrad
+  huggingface: https://huggingface.co/hexgrad
+  github: https://github.com/hexgrad
+
+- id: intfloat
+  name: Intfloat
+  huggingface: https://huggingface.co/intfloat
+
+- id: inworld-ai
+  name: Inworld AI
+  website: https://inworld.ai
+  huggingface: https://huggingface.co/inworld-ai
+
+- id: lightricks
+  name: Lightricks
+  website: https://www.lightricks.com
+  huggingface: https://huggingface.co/Lightricks
+  github: https://github.com/Lightricks
+
+- id: pixverse
+  name: PixVerse
+  website: https://pixverse.ai
+  huggingface: https://huggingface.co/PixVerse
+
+- id: pruna-ai
+  name: Pruna AI
+  website: https://www.pruna.ai
+  huggingface: https://huggingface.co/PrunaAI
+  github: https://github.com/PrunaAI
+
+- id: resemble-ai
+  name: Resemble AI
+  website: https://www.resemble.ai
+  huggingface: https://huggingface.co/ResembleAI
+  github: https://github.com/resemble-ai
+
+- id: sao10k
+  name: Sao10K
+  huggingface: https://huggingface.co/Sao10K
+
+- id: sentence-transformers
+  name: Sentence Transformers
+  website: https://www.sbert.net
+  huggingface: https://huggingface.co/sentence-transformers
+  github: https://github.com/huggingface/sentence-transformers
+
+- id: sesame
+  name: Sesame
+  website: https://www.sesame.com
+  huggingface: https://huggingface.co/sesame
+
+- id: shibing624
+  name: Shibing624
+  huggingface: https://huggingface.co/shibing624
+  github: https://github.com/shibing624
+
+- id: stepfun
+  name: StepFun
+  website: https://www.stepfun.com
+  huggingface: https://huggingface.co/stepfun-ai
+  github: https://github.com/stepfun-ai
+
+- id: thenlper
+  name: The NLPER
+  huggingface: https://huggingface.co/thenlper
+
+- id: xiaomi
+  name: Xiaomi
+  website: https://www.mi.com
+  huggingface: https://huggingface.co/XiaomiMiMo
+  github: https://github.com/XiaomiMiMo

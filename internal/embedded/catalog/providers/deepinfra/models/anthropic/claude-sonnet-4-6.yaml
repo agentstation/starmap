@@ -1,5 +1,6 @@
 # anthropic/claude-sonnet-4-6 - Claude Sonnet 4.6 delivers frontier intelligence at scale—...
 id: anthropic/claude-sonnet-4-6
+model: anthropic/claude-sonnet-4-6
 name: anthropic/claude-sonnet-4-6
 description: Claude Sonnet 4.6 delivers frontier intelligence at scale—built for coding, agents, and enterprise workflows.
 

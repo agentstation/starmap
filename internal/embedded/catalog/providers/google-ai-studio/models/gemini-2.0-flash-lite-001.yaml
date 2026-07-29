@@ -1,5 +1,6 @@
 # gemini-2.0-flash-lite-001 - Stable version of Gemini 2.0 Flash-Lite
 id: gemini-2.0-flash-lite-001
+model: google/gemini-2.0-flash-lite-001
 name: Gemini 2.0 Flash-Lite 001
 authors:
 - id: google

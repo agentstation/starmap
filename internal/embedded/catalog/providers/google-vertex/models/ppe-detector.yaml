@@ -1,5 +1,6 @@
 # ppe-detector - Google Vertex AI model: ppe-detector
 id: ppe-detector
+model: google/ppe-detector
 name: ppe-detector
 authors:
 - id: google

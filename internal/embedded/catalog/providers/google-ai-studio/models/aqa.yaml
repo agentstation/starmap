@@ -1,5 +1,6 @@
 # aqa - Model trained to return answers to questions that are ground...
 id: aqa
+model: google/aqa
 name: Model that performs Attributed Question Answering.
 authors:
 - id: google

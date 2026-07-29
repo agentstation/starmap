@@ -175,6 +175,7 @@ func defaultPolicies() []Policy {
 
 	return []Policy{
 		// Provider-scoped model facts.
+		policy(catalogmeta.ResourceTypeModel, "ModelRef", "model", providerFirst, MergeReplace, EmptyAbsent, "A current explicit canonical author/model link leads curated local and embedded fallback; serving-provider identity is never substituted for authorship."),
 		policy(catalogmeta.ResourceTypeModel, "Name", "", providerFirst, MergeReplace, EmptyAbsent, "The provider observation supplies the current provider-facing model name."),
 		policy(catalogmeta.ResourceTypeModel, "Description", "", modelsDevFirst, MergeReplace, EmptyAuthoritative, "Current upstream descriptions lead; an explicitly present empty human value is distinct from an omitted fallback."),
 		policy(catalogmeta.ResourceTypeModel, "Status", "", modelsDevFirst, MergeReplace, EmptyAbsent, "Observed lifecycle data leads a manual fallback."),

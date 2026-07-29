@@ -1,5 +1,6 @@
 # content-moderation - Google Vertex AI model: content-moderation
 id: content-moderation
+model: google/content-moderation
 name: content-moderation
 authors:
 - id: google

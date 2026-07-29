@@ -1,5 +1,6 @@
 # deepseek-ai/DeepSeek-V3.1 - DeepSeek-V3.1 is post-trained on the top of DeepSeek-V3.1-Ba...
 id: deepseek-ai/DeepSeek-V3.1
+model: deepseek/deepseek-v3.1
 name: deepseek-ai/DeepSeek-V3.1
 authors:
 - id: deepseek

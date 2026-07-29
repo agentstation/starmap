@@ -1,5 +1,6 @@
 # kimi-k2.5 - Earlier Kimi frontier model for long-context agents, coding,...
 id: kimi-k2.5
+model: moonshot-ai/kimi-k2.5
 name: kimi-k2.5
 authors:
 - id: moonshot-ai

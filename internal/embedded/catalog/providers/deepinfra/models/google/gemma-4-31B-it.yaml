@@ -1,5 +1,6 @@
 # google/gemma-4-31B-it - Largest Gemma 4 instruction model for open, self-hosted chat...
 id: google/gemma-4-31B-it
+model: google/gemma-4-31b-it
 name: google/gemma-4-31B-it
 authors:
 - id: google

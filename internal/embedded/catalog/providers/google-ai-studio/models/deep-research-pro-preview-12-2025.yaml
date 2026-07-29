@@ -1,5 +1,6 @@
 # deep-research-pro-preview-12-2025 - Preview release (December 12th, 2025) of Deep Research Pro
 id: deep-research-pro-preview-12-2025
+model: google/deep-research-pro-preview-12-2025
 name: Deep Research Pro Preview (Dec-12-2025)
 authors:
 - id: google

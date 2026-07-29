@@ -1,5 +1,6 @@
 # gemma3 - Google Vertex AI model: gemma3
 id: gemma3
+model: google/gemma3
 name: gemma3
 authors:
 - id: google

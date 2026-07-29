@@ -1,5 +1,6 @@
 # gpt-4o-2024-05-13 - GPT model for general reasoning, writing, coding, and tool-a...
 id: gpt-4o-2024-05-13
+model: openai/gpt-4o-2024-05-13
 name: gpt-4o-2024-05-13
 authors:
 - id: openai

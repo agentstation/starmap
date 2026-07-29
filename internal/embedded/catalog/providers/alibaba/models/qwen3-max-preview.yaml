@@ -1,5 +1,6 @@
 # qwen3-max-preview - AI model
 id: qwen3-max-preview
+model: alibaba/qwen3-max-preview
 name: qwen3-max-preview
 authors:
 - id: alibaba

@@ -284,3 +284,36 @@ contract before P6 composition continues. P6.1 evidence remains valid. P6.2 is
 paused, not discarded, and resumes only after the core catalog success criteria
 above are green. P7 owns the HTTP compatibility adapters after the core read
 model is complete.
+
+## P5 implementation outcome
+
+P5 implemented the reviewed replacement without restoring the rejected
+`Author.Models` copy semantics:
+
+- 653 authored YAML records now produce 653 canonical definitions;
+- 610 retained provider YAML records each carry an explicit canonical link;
+- the one metadata-free `pre-zhongyun-test-chat` record was removed rather than
+  assigned an invented author;
+- all 610 offerings produce exactly 610 generated endpoint rows across 533
+  canonical models;
+- 120 authored-only definitions correctly produce no endpoint;
+- schema version 3 round-trips `author_models` and `provider_models`;
+- the immutable catalog precomputes canonical, alias, provider-offering, and
+  definition-offering indexes;
+- `FindModel("gpt-4o")`, canonical `author/slug`, exact provider IDs,
+  `AuthorModel`, and `DefinitionOfferings` use those immutable indexes;
+- every embedded lineage root and parent resolves; and
+- the generic unrelated `catalogs.Endpoint` collection and unused
+  models.dev-only catalog wrapper were deleted.
+
+Provider records can carry overlapping upstream observations, but linked
+authored records are the sole executable input to canonical definitions. This
+is the enforceable non-overlap: provider source evidence cannot override
+authored definition facts, while authored records are rejected if they contain
+provider status, price, limits, modes, or provider extensions.
+
+The exact corpus counts, mapping rationale, generated projection schema, and
+verification contract are recorded in
+`P5_PROVIDER_MODEL_IDENTITY_REVIEW_2026-07-28.md`. P7 still owns the two public
+HTTP compatibility routes and their server DTOs; P5 supplies their complete
+validated read model.

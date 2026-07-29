@@ -84,6 +84,7 @@ func TestFirstExplicitUpdateAtomicallySeedsAbsentWorkspaceFromEmbedded(t *testin
 	if got, want := len(projectedCatalog.Definitions()), len(client.Catalog().Definitions()); got != want {
 		t.Fatalf("projected definitions = %d, want %d", got, want)
 	}
+	assertEveryProviderModelJoinsAuthoredDefinition(t, projectedCatalog)
 	evidence := projectedCatalog.Provenance().Map()
 	if len(evidence) == 0 {
 		t.Fatal("first workspace omitted embedded source provenance")
@@ -160,4 +161,41 @@ func localEvidenceKeys(catalog *catalogs.Catalog) map[string]struct{} {
 		}
 	}
 	return keys
+}
+
+func assertEveryProviderModelJoinsAuthoredDefinition(t *testing.T, catalog *catalogs.Catalog) {
+	t.Helper()
+
+	authored := make(map[catalogs.ModelDefinitionID]struct{})
+	for _, record := range catalog.AuthoredModels() {
+		authored[record.ID()] = struct{}{}
+	}
+	if len(authored) == 0 {
+		t.Fatal("catalog has no authored canonical model definitions")
+	}
+
+	for _, provider := range catalog.Providers().List() {
+		offerings, err := catalog.ProviderOfferings(provider.ID)
+		if err != nil {
+			t.Fatalf("ProviderOfferings(%q): %v", provider.ID, err)
+		}
+		if len(offerings) != len(provider.Models) {
+			t.Fatalf(
+				"provider %q offerings = %d, want one for each of %d provider models",
+				provider.ID,
+				len(offerings),
+				len(provider.Models),
+			)
+		}
+		for _, offering := range offerings {
+			if _, found := authored[offering.DefinitionID]; !found {
+				t.Fatalf(
+					"provider offering %q/%q references missing authored definition %q",
+					offering.ProviderID,
+					offering.ProviderModelID,
+					offering.DefinitionID,
+				)
+			}
+		}
+	}
 }

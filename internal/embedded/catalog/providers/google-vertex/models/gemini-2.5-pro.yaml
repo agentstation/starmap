@@ -1,5 +1,6 @@
 # gemini-2.5-pro - Google Vertex AI model: gemini-2.5-pro
 id: gemini-2.5-pro
+model: google/gemini-2.5-pro
 name: gemini-2.5-pro
 authors:
 - id: google

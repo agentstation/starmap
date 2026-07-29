@@ -1,5 +1,6 @@
 # zai-org/GLM-4.7-Flash - Efficient GLM model for fast reasoning, coding, and agent wo...
 id: zai-org/GLM-4.7-Flash
+model: zhipu-ai/glm-4.7-flash
 name: zai-org/GLM-4.7-Flash
 authors:
 - id: zhipu-ai

@@ -1,5 +1,6 @@
 # Qwen/Qwen3-30B-A3B - Qwen3 is the latest generation of large language models in Q...
 id: Qwen/Qwen3-30B-A3B
+model: alibaba/qwen3-30b-a3b
 name: Qwen/Qwen3-30B-A3B
 authors:
 - id: alibaba

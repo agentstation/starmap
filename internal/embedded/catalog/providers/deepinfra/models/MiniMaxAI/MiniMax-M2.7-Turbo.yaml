@@ -1,5 +1,6 @@
 # MiniMaxAI/MiniMax-M2.7-Turbo - Speed-optimized MiniMax-M2.7
 id: MiniMaxAI/MiniMax-M2.7-Turbo
+model: minimax/minimax-m2.7-turbo
 name: MiniMaxAI/MiniMax-M2.7-Turbo
 authors:
 - id: minimax

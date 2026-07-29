@@ -1,5 +1,6 @@
 # gemini-omni-flash-preview - Google model: gemini-omni-flash-preview
 id: gemini-omni-flash-preview
+model: google/gemini-omni-flash-preview
 name: gemini-omni-flash-preview
 authors:
 - id: google

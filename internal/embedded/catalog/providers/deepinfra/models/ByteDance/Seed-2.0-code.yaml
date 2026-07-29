@@ -1,5 +1,6 @@
 # ByteDance/Seed-2.0-code - A coding model optimized for real-world development environm...
 id: ByteDance/Seed-2.0-code
+model: bytedance/seed-2.0-code
 name: ByteDance/Seed-2.0-code
 authors:
 - id: bytedance

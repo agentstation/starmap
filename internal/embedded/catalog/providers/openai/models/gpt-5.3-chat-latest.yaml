@@ -1,5 +1,6 @@
 # gpt-5.3-chat-latest - Chat-tuned GPT model for conversational assistance, writing,...
 id: gpt-5.3-chat-latest
+model: openai/gpt-5.3-chat-latest
 name: gpt-5.3-chat-latest
 authors:
 - id: openai

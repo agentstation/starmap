@@ -1,5 +1,6 @@
 # gemini-2.5-flash - Google Vertex AI model: gemini-2.5-flash
 id: gemini-2.5-flash
+model: google/gemini-2.5-flash
 name: gemini-2.5-flash
 authors:
 - id: google

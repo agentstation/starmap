@@ -1,5 +1,6 @@
 # anthropic/claude-opus-4-7 - Anthropic's most capable production model yet, advancing per...
 id: anthropic/claude-opus-4-7
+model: anthropic/claude-opus-4-7
 name: anthropic/claude-opus-4-7
 description: Anthropic's most capable production model yet, advancing performance across coding, enterprise workflows, and long-running agentic tasks.
 

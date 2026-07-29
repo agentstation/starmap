@@ -1,5 +1,6 @@
 # gpt-image-1 - OpenAI image model for production generation, edits, and bra...
 id: gpt-image-1
+model: openai/gpt-image-1
 name: gpt-image-1
 authors:
 - id: openai

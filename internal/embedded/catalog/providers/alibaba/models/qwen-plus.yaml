@@ -1,5 +1,6 @@
 # qwen-plus - Qwen instruction model for multilingual chat, reasoning, and...
 id: qwen-plus
+model: alibaba/qwen-plus
 name: qwen-plus
 authors:
 - id: alibaba

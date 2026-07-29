@@ -1,5 +1,6 @@
 # ByteDance/Seed-2.0-mini - Built for low-latency, high-concurrency, cost-sensitive use ...
 id: ByteDance/Seed-2.0-mini
+model: bytedance/seed-2.0-mini
 name: ByteDance/Seed-2.0-mini
 authors:
 - id: bytedance

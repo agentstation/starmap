@@ -1,5 +1,6 @@
 # deepseek-ai/DeepSeek-V3.1-Terminus - DeepSeek-V3.1 Terminus is an update to DeepSeek V3.1 that ma...
 id: deepseek-ai/DeepSeek-V3.1-Terminus
+model: deepseek/deepseek-v3.1-terminus
 name: deepseek-ai/DeepSeek-V3.1-Terminus
 authors:
 - id: deepseek

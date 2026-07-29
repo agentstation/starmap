@@ -1,5 +1,6 @@
 # Qwen/Qwen3-235B-A22B-Thinking-2507 - Qwen3-235B-A22B-Thinking-2507 is the Qwen3's new model with ...
 id: Qwen/Qwen3-235B-A22B-Thinking-2507
+model: alibaba/qwen3-235b-a22b-thinking-2507
 name: Qwen/Qwen3-235B-A22B-Thinking-2507
 authors:
 - id: alibaba

@@ -1,5 +1,6 @@
 # bert-base - Google Vertex AI model: bert-base
 id: bert-base
+model: google/bert-base
 name: bert-base
 authors:
 - id: google

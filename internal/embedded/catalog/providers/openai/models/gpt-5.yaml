@@ -1,5 +1,6 @@
 # gpt-5 - Original GPT-5 workhorse for reasoning, coding, writing, and...
 id: gpt-5
+model: openai/gpt-5
 name: gpt-5
 authors:
 - id: openai

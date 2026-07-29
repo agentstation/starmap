@@ -1,5 +1,6 @@
 # owlvit-base-patch32 - Google Vertex AI model: owlvit-base-patch32
 id: owlvit-base-patch32
+model: google/owlvit-base-patch32
 name: owlvit-base-patch32
 authors:
 - id: google

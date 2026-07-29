@@ -1,5 +1,6 @@
 # gpt-4o-mini-tts-2025-12-15 - AI model
 id: gpt-4o-mini-tts-2025-12-15
+model: openai/gpt-4o-mini-tts-2025-12-15
 name: gpt-4o-mini-tts-2025-12-15
 authors:
 - id: openai

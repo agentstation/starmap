@@ -1,5 +1,6 @@
 # f-vlm-jax - Google Vertex AI model: f-vlm-jax
 id: f-vlm-jax
+model: google/f-vlm-jax
 name: f-vlm-jax
 authors:
 - id: google

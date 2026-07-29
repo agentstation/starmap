@@ -1,5 +1,6 @@
 # text-detector - Google Vertex AI model: text-detector
 id: text-detector
+model: google/text-detector
 name: text-detector
 authors:
 - id: google

@@ -1,5 +1,6 @@
 # MiniMaxAI/MiniMax-M3 - MiniMax multimodal model for long-context coding, perception...
 id: MiniMaxAI/MiniMax-M3
+model: minimax/minimax-m3
 name: MiniMaxAI/MiniMax-M3
 authors:
 - id: minimax

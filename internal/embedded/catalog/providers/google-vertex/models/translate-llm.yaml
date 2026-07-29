@@ -1,5 +1,6 @@
 # translate-llm - Google Vertex AI model: translate-llm
 id: translate-llm
+model: google/translate-llm
 name: translate-llm
 authors:
 - id: google

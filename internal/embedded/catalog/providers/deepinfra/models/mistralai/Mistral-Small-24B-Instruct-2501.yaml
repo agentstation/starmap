@@ -1,5 +1,6 @@
 # mistralai/Mistral-Small-24B-Instruct-2501 - Mistral Small 3 is a 24B-parameter language model optimized ...
 id: mistralai/Mistral-Small-24B-Instruct-2501
+model: mistral/mistral-small-24b-instruct-2501
 name: mistralai/Mistral-Small-24B-Instruct-2501
 authors:
 - id: mistral

@@ -94,6 +94,7 @@ func TestProviderScopedDynamicFactsAndOperatorConfigurationHaveCanonicalOrder(t 
 		path     string
 		want     catalogmeta.SourceID
 	}{
+		{catalogmeta.ResourceTypeModel, "ModelRef", catalogmeta.ProvidersID},
 		{catalogmeta.ResourceTypeModel, "Pricing", catalogmeta.ProvidersID},
 		{catalogmeta.ResourceTypeModel, "Limits", catalogmeta.ProvidersID},
 		{catalogmeta.ResourceTypeModel, "Metadata", catalogmeta.ModelsDevHTTPID},

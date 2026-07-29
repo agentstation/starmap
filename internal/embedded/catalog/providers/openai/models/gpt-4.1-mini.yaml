@@ -1,5 +1,6 @@
 # gpt-4.1-mini - Affordable GPT-4.1 lane for fast coding help and structured ...
 id: gpt-4.1-mini
+model: openai/gpt-4.1-mini
 name: gpt-4.1-mini
 authors:
 - id: openai

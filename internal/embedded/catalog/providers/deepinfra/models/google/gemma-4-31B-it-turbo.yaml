@@ -1,5 +1,6 @@
 # google/gemma-4-31B-it-turbo - Gemma is a family of open models built by Google DeepMind. G...
 id: google/gemma-4-31B-it-turbo
+model: google/gemma-4-31b-it-turbo
 name: google/gemma-4-31B-it-turbo
 authors:
 - id: google

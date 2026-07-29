@@ -1,5 +1,6 @@
 # claude-opus-4-6 - High-end Claude for difficult coding, planning, and slower e...
 id: claude-opus-4-6
+model: anthropic/claude-opus-4-6
 name: Claude Opus 4.6
 authors:
 - id: anthropic

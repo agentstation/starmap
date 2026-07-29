@@ -1,5 +1,6 @@
 # stabilityai/sdxl-turbo - The SDXL Turbo model, developed by Stability AI, is an optim...
 id: stabilityai/sdxl-turbo
+model: stability/sdxl-turbo
 name: stabilityai/sdxl-turbo
 description: The SDXL Turbo model, developed by Stability AI, is an optimized, fast text-to-image generative model. It is a distilled version of SDXL 1.0, leveraging Adversarial Diffusion Distillation (ADD) to generate high-quality images in less steps.
 

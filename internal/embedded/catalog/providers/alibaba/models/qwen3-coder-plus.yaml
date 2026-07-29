@@ -1,5 +1,6 @@
 # qwen3-coder-plus - Hosted Qwen coder for software agents, repo edits, and long-...
 id: qwen3-coder-plus
+model: alibaba/qwen3-coder-plus
 name: qwen3-coder-plus
 authors:
 - id: alibaba

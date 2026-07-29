@@ -1,5 +1,6 @@
 # Qwen/Qwen3.5-9B - Qwen instruction model for multilingual chat, reasoning, and...
 id: Qwen/Qwen3.5-9B
+model: alibaba/qwen3.5-9b
 name: Qwen/Qwen3.5-9B
 authors:
 - id: alibaba

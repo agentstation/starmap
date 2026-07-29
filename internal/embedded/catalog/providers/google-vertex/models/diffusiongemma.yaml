@@ -1,5 +1,6 @@
 # diffusiongemma - Google model: diffusiongemma
 id: diffusiongemma
+model: google/diffusiongemma
 name: diffusiongemma
 authors:
 - id: google

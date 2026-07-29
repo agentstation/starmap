@@ -1,5 +1,6 @@
 # deepseek-ai/DeepSeek-V4-Flash - Fast DeepSeek V4 lane for economical reasoning, coding, and ...
 id: deepseek-ai/DeepSeek-V4-Flash
+model: deepseek/deepseek-v4-flash
 name: deepseek-ai/DeepSeek-V4-Flash
 authors:
 - id: deepseek

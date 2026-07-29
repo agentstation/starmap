@@ -1,5 +1,6 @@
 # openai/gpt-oss-safeguard-20b - Safety model for policy screening, moderation, and risk-awar...
 id: openai/gpt-oss-safeguard-20b
+model: alibaba/gpt-oss-safeguard-20b
 name: Safety GPT OSS 20B
 authors:
 - id: alibaba

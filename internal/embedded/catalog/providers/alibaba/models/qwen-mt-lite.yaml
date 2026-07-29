@@ -1,5 +1,6 @@
 # qwen-mt-lite - AI model
 id: qwen-mt-lite
+model: alibaba/qwen-mt-lite
 name: qwen-mt-lite
 authors:
 - id: alibaba

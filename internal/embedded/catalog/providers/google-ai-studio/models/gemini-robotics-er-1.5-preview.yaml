@@ -1,5 +1,6 @@
 # gemini-robotics-er-1.5-preview - Gemini Robotics-ER 1.5 Preview
 id: gemini-robotics-er-1.5-preview
+model: google/gemini-robotics-er-1.5-preview
 name: Gemini Robotics-ER 1.5 Preview
 authors:
 - id: google

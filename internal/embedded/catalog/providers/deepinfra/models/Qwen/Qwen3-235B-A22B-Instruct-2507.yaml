@@ -1,5 +1,6 @@
 # Qwen/Qwen3-235B-A22B-Instruct-2507 - Qwen3-235B-A22B-Instruct-2507 is the updated version of the ...
 id: Qwen/Qwen3-235B-A22B-Instruct-2507
+model: alibaba/qwen3-235b-a22b-instruct-2507
 name: Qwen/Qwen3-235B-A22B-Instruct-2507
 authors:
 - id: alibaba

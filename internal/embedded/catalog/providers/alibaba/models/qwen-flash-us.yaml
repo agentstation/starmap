@@ -1,5 +1,6 @@
 # qwen-flash-us - AI model
 id: qwen-flash-us
+model: alibaba/qwen-flash-us
 name: qwen-flash-us
 authors:
 - id: alibaba

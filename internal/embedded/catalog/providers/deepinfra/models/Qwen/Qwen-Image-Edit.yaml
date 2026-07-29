@@ -1,5 +1,6 @@
 # Qwen/Qwen-Image-Edit - Qwen-Image-Edit is a next-generation image editing model bui...
 id: Qwen/Qwen-Image-Edit
+model: alibaba/qwen-image-edit
 name: Qwen/Qwen-Image-Edit
 authors:
 - id: alibaba

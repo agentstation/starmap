@@ -1,11 +1,11 @@
 # Qwen/Qwen3-TTS-VoiceDesign - ● Qwen3-TTS-VoiceDesign is a voice design variant of Qwen3...
 id: Qwen/Qwen3-TTS-VoiceDesign
+model: alibaba/qwen3-tts-voicedesign
 name: Qwen/Qwen3-TTS-VoiceDesign
 authors:
 - id: alibaba
   name: alibaba
-description: |-
-  ● Qwen3-TTS-VoiceDesign is a voice design variant of Qwen3-TTS by Alibaba's Qwen team. Instead of selecting from preset voices, you describe the voice you want in natural language — and the model generates speech in that voice. Key capabilities: - Natural language voice control — describe any voice with free text (e.g. \\a deep male voice with a calm, authoritative presence\\, \\a young cheerful female with a warm and friendly tone\\) - 10 languages — English, Chinese, Japanese, Korean, German, French, Russian, Spanish, Italian, Portuguese - Streaming support — real-time PCM streaming - Multiple output formats — WAV, MP3, FLAC, PCM Built on the same 1.7B parameter architecture as Qwen3-TTS, using discrete multi-codebook language modeling and a custom 12Hz acoustic tokenizer for high-quality end-to-end speech synthesis.
+description: '● Qwen3-TTS-VoiceDesign is a voice design variant of Qwen3-TTS by Alibaba''s Qwen team. Instead of selecting from preset voices, you describe the voice you want in natural language — and the model generates speech in that voice. Key capabilities: - Natural language voice control — describe any voice with free text (e.g. \\a deep male voice with a calm, authoritative presence\\, \\a young cheerful female with a warm and friendly tone\\) - 10 languages — English, Chinese, Japanese, Korean, German, French, Russian, Spanish, Italian, Portuguese - Streaming support — real-time PCM streaming - Multiple output formats — WAV, MP3, FLAC, PCM Built on the same 1.7B parameter architecture as Qwen3-TTS, using discrete multi-codebook language modeling and a custom 12Hz acoustic tokenizer for high-quality end-to-end speech synthesis.'
 
 # Model metadata
 metadata:
@@ -62,7 +62,7 @@ features:
   logprobs: false
   top_logprobs: false
   echo: false
-  "n": false
+  'n': false
   best_of: false
   mirostat: false
   mirostat_tau: false
@@ -84,5 +84,5 @@ extensions:
           input_characters: 20
 
 # Timestamps
-created_at: 2026-07-11T20:15:13.089334Z
-updated_at: 2026-07-11T20:15:13.089334Z
+created_at: '2026-07-11T20:15:13.089334Z'
+updated_at: '2026-07-11T20:15:13.089334Z'

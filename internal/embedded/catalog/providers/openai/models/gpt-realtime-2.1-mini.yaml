@@ -1,5 +1,6 @@
 # gpt-realtime-2.1-mini - AI model
 id: gpt-realtime-2.1-mini
+model: openai/gpt-realtime-2.1-mini
 name: gpt-realtime-2.1-mini
 authors:
 - id: openai

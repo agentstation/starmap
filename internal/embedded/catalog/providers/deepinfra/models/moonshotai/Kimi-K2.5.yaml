@@ -1,5 +1,6 @@
 # moonshotai/Kimi-K2.5 - Kimi multimodal agent model for visual understanding, coding...
 id: moonshotai/Kimi-K2.5
+model: moonshot-ai/kimi-k2.5
 name: moonshotai/Kimi-K2.5
 authors:
 - id: moonshot-ai

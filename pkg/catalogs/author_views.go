@@ -14,6 +14,9 @@ func deriveDefinitionAuthors(reader Reader, candidates []providerModelCandidate)
 		for _, author := range candidate.model.Authors {
 			ids = append(ids, canonicalAuthorID(reader, author.ID))
 		}
+		if candidate.providerID == "" {
+			continue
+		}
 		attributed, err := attributedAuthorIDs(reader, candidate.providerID, candidate.model.ID)
 		if err != nil {
 			return nil, err

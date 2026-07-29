@@ -1,5 +1,6 @@
 # gpt-audio-1.5 - AI model
 id: gpt-audio-1.5
+model: openai/gpt-audio-1.5
 name: gpt-audio-1.5
 authors:
 - id: openai

@@ -1,5 +1,6 @@
 # gemini-3-pro-preview - Preview Gemini flagship for complex reasoning, coding, and r...
 id: gemini-3-pro-preview
+model: google/gemini-3-pro-preview
 name: Gemini 3 Pro Preview
 authors:
 - id: google

@@ -1,5 +1,6 @@
 # gemini-2.0-flash-lite - Gemini 2.0 Flash-Lite
 id: gemini-2.0-flash-lite
+model: google/gemini-2.0-flash-lite
 name: Gemini 2.0 Flash-Lite
 authors:
 - id: google

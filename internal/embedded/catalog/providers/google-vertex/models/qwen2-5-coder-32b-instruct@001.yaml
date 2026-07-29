@@ -1,5 +1,6 @@
 # qwen2-5-coder-32b-instruct@001 - Qwen 2.5 Coder 32B Instruct model available through Vertex A...
 id: qwen2-5-coder-32b-instruct@001
+model: qwen/qwen2-5-coder-32b-instruct@001
 name: Qwen 2.5 Coder 32B Instruct
 authors:
 - id: qwen

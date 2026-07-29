@@ -1,5 +1,6 @@
 # gemini-3.1-pro-preview - Reasoning-first Gemini preview for agentic coding and comple...
 id: gemini-3.1-pro-preview
+model: google/gemini-3.1-pro-preview
 name: gemini-3.1-pro-preview
 authors:
 - id: google

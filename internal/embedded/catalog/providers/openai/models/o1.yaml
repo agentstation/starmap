@@ -1,5 +1,6 @@
 # o1 - O-series reasoning model for hard analysis, math, coding, an...
 id: o1
+model: openai/o1
 name: o1
 authors:
 - id: openai

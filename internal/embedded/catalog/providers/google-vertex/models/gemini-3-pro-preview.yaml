@@ -1,5 +1,6 @@
 # gemini-3-pro-preview - Google model: gemini-3-pro-preview
 id: gemini-3-pro-preview
+model: google/gemini-3-pro-preview
 name: gemini-3-pro-preview
 authors:
 - id: google

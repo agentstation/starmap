@@ -1,5 +1,6 @@
 # gemini-omni-flash-preview - Video generation and editing model for fast, conversational ...
 id: gemini-omni-flash-preview
+model: google/gemini-omni-flash-preview
 name: Gemini Omni Flash Preview
 authors:
 - id: google

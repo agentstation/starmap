@@ -1,5 +1,6 @@
 # cloudnerf-pytorch-zipnerf - Google Vertex AI model: cloudnerf-pytorch-zipnerf
 id: cloudnerf-pytorch-zipnerf
+model: google/cloudnerf-pytorch-zipnerf
 name: cloudnerf-pytorch-zipnerf
 authors:
 - id: google

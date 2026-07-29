@@ -1,5 +1,6 @@
 # tfvision-movinet-var - Google Vertex AI model: tfvision-movinet-var
 id: tfvision-movinet-var
+model: google/tfvision-movinet-var
 name: tfvision-movinet-var
 authors:
 - id: google

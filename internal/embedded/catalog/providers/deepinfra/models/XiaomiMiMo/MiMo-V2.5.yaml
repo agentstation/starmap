@@ -1,5 +1,6 @@
 # XiaomiMiMo/MiMo-V2.5 - Open MiMo model for multimodal coding agents and long-contex...
 id: XiaomiMiMo/MiMo-V2.5
+model: xiaomi/mimo-v2.5
 name: XiaomiMiMo/MiMo-V2.5
 description: Open MiMo model for multimodal coding agents and long-context automation
 

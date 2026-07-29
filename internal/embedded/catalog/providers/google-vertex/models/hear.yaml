@@ -1,5 +1,6 @@
 # hear - Google Vertex AI model: hear
 id: hear
+model: google/hear
 name: hear
 authors:
 - id: google

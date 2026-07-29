@@ -1,5 +1,6 @@
 # medgemma - Google Vertex AI model: medgemma
 id: medgemma
+model: google/medgemma
 name: medgemma
 authors:
 - id: google

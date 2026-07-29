@@ -247,7 +247,8 @@ printf '\n' >> "$STARMAP_COMMAND_LOG"
 	if err != nil {
 		t.Fatalf("ReadFile manifest log: %v", err)
 	}
-	wantManifest := "--catalog-dir " + catalogPath + " --output " + manifestPath + "\n"
+	wantManifest := "--catalog-dir " + catalogPath + " --output " + manifestPath +
+		" --endpoints-output " + filepath.Join(catalogPath, "endpoints.yaml") + "\n"
 	if string(manifestInvocation) != wantManifest {
 		t.Fatalf("manifest command = %q, want %q", manifestInvocation, wantManifest)
 	}

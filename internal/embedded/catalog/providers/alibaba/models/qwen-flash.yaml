@@ -1,5 +1,6 @@
 # qwen-flash - Efficient Qwen model for fast chat, extraction, and high-vol...
 id: qwen-flash
+model: alibaba/qwen-flash
 name: qwen-flash
 authors:
 - id: alibaba

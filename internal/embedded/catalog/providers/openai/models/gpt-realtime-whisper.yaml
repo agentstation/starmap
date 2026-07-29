@@ -1,5 +1,6 @@
 # gpt-realtime-whisper - AI model
 id: gpt-realtime-whisper
+model: openai/gpt-realtime-whisper
 name: gpt-realtime-whisper
 authors:
 - id: openai

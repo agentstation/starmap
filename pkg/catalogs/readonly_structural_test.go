@@ -28,19 +28,16 @@ func TestCatalogDoesNotExposeMutationInterfaces(t *testing.T) {
 	}); ok {
 		t.Error("Read-only authors expose Delete")
 	}
-	if _, ok := any(catalog.Endpoints()).(interface{ Clear() }); ok {
-		t.Error("Read-only endpoints expose Clear")
-	}
 	if _, ok := any(catalog.Provenance()).(interface{ Clear() }); ok {
 		t.Error("Read-only provenance exposes Clear")
 	}
 
 	catalogType := reflect.TypeFor[*Catalog]()
 	for _, method := range []string{
-		"Build", "ClearProvenance", "Copy", "DeleteAuthor", "DeleteEndpoint",
+		"Build", "ClearProvenance", "Copy", "DeleteAuthor", "DeleteAuthorModel",
 		"DeleteProvider", "DeleteProviderModel", "MergeProvenance", "MergeWith",
 		"Models", "ProviderModel", "ProviderModels", "ReplaceWith", "Save",
-		"SetAuthor", "SetEndpoint", "SetMergeStrategy", "SetProvider",
+		"SetAuthor", "SetAuthorModel", "SetMergeStrategy", "SetProvider",
 		"SetProviderModel", "SetProvenance",
 	} {
 		if _, found := catalogType.MethodByName(method); found {
@@ -58,7 +55,7 @@ func TestBuilderRequiresProviderScopedModelReads(t *testing.T) {
 	}
 }
 
-func TestCanonicalSchemaHasNoDuplicateCompatibilityFields(t *testing.T) {
+func TestCanonicalSchemaHasNoRemovedCompatibilityFields(t *testing.T) {
 	for _, check := range []struct {
 		name      string
 		structure reflect.Type
@@ -68,11 +65,6 @@ func TestCanonicalSchemaHasNoDuplicateCompatibilityFields(t *testing.T) {
 			name:      "author",
 			structure: reflect.TypeFor[Author](),
 			forbidden: []string{"Models"},
-		},
-		{
-			name:      "catalog payload",
-			structure: reflect.TypeFor[CatalogPayload](),
-			forbidden: []string{"AuthorModels"},
 		},
 		{
 			name:      "model architecture",
@@ -92,6 +84,18 @@ func TestCanonicalSchemaHasNoDuplicateCompatibilityFields(t *testing.T) {
 				}
 			}
 		})
+	}
+}
+
+func TestCatalogPayloadCarriesDisjointAuthorAndProviderRecords(t *testing.T) {
+	payload := reflect.TypeFor[CatalogPayload]()
+	for _, field := range []string{"AuthorModels", "ProviderModels"} {
+		if _, found := payload.FieldByName(field); !found {
+			t.Errorf("catalog payload is missing required construction record field %s", field)
+		}
+	}
+	if _, found := reflect.TypeFor[Author]().FieldByName("Models"); found {
+		t.Error("Author metadata leaks the authored-model construction collection")
 	}
 }
 

@@ -1,5 +1,6 @@
 # qwen/qwen3-32b - Qwen instruction model for multilingual chat, reasoning, and...
 id: qwen/qwen3-32b
+model: alibaba/qwen3-32b
 name: Qwen3-32B
 authors:
 - id: alibaba

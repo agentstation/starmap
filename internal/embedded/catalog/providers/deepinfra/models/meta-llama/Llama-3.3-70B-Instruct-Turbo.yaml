@@ -1,5 +1,6 @@
 # meta-llama/Llama-3.3-70B-Instruct-Turbo - Compact Llama instruction model for fast chat and local depl...
 id: meta-llama/Llama-3.3-70B-Instruct-Turbo
+model: meta/llama-3.3-70b-instruct-turbo
 name: meta-llama/Llama-3.3-70B-Instruct-Turbo
 authors:
 - id: meta

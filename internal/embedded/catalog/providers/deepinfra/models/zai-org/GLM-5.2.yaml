@@ -1,5 +1,6 @@
 # zai-org/GLM-5.2 - Open flagship GLM for long-horizon coding agents and million...
 id: zai-org/GLM-5.2
+model: zhipu-ai/glm-5.2
 name: zai-org/GLM-5.2
 authors:
 - id: zhipu-ai

@@ -49,8 +49,8 @@ func TestConsumerFindModelReturnsCanonicalDefinition(t *testing.T) {
 	if err != nil {
 		t.Fatalf("FindModel: %v", err)
 	}
-	if model.ID != "gpt-4o" {
-		t.Fatalf("definition ID = %q, want gpt-4o", model.ID)
+	if model.ID != "openai/gpt-4o" {
+		t.Fatalf("definition ID = %q, want openai/gpt-4o", model.ID)
 	}
 }
 

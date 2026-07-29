@@ -1,5 +1,6 @@
 # qwen3.6-flash - Qwen vision-language model for visual reasoning, documents, ...
 id: qwen3.6-flash
+model: alibaba/qwen3.6-flash
 name: qwen3.6-flash
 authors:
 - id: alibaba

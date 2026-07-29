@@ -1,5 +1,6 @@
 # gpt-5.6-luna - Cost-efficient GPT-5.6 model for fast, high-volume workloads
 id: gpt-5.6-luna
+model: openai/gpt-5.6-luna
 name: gpt-5.6-luna
 authors:
 - id: openai

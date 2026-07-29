@@ -1,5 +1,6 @@
 # gpt-4o-mini-search-preview-2025-03-11 - AI model
 id: gpt-4o-mini-search-preview-2025-03-11
+model: openai/gpt-4o-mini-search-preview-2025-03-11
 name: gpt-4o-mini-search-preview-2025-03-11
 authors:
 - id: openai

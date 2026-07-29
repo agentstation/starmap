@@ -1,5 +1,6 @@
 # gemini-pro-latest - Latest release of Gemini Pro
 id: gemini-pro-latest
+model: google/gemini-pro-latest
 name: Gemini Pro Latest
 authors:
 - id: google

@@ -1,5 +1,6 @@
 # cxr-foundation - Google Vertex AI model: cxr-foundation
 id: cxr-foundation
+model: google/cxr-foundation
 name: cxr-foundation
 authors:
 - id: google

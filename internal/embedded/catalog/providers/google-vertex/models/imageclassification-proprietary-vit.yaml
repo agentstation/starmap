@@ -1,5 +1,6 @@
 # imageclassification-proprietary-vit - Google Vertex AI model: imageclassification-proprietary-vit
 id: imageclassification-proprietary-vit
+model: google/imageclassification-proprietary-vit
 name: imageclassification-proprietary-vit
 authors:
 - id: google

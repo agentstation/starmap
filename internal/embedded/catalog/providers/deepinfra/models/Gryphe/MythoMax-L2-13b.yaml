@@ -1,5 +1,6 @@
 # Gryphe/MythoMax-L2-13b - AI model
 id: Gryphe/MythoMax-L2-13b
+model: gryphe/mythomax-l2-13b
 name: Gryphe/MythoMax-L2-13b
 
 # Model metadata

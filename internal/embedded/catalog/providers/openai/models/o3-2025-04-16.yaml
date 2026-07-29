@@ -1,5 +1,6 @@
 # o3-2025-04-16 - AI model
 id: o3-2025-04-16
+model: openai/o3-2025-04-16
 name: o3-2025-04-16
 authors:
 - id: openai

@@ -1,5 +1,6 @@
 # google/gemini-2.5-pro - Gemini 2.5 Pro is Google's the most advanced thinking model,...
 id: google/gemini-2.5-pro
+model: google/gemini-2.5-pro
 name: google/gemini-2.5-pro
 authors:
 - id: google

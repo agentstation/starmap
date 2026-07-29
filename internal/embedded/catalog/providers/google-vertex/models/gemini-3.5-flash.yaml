@@ -1,5 +1,6 @@
 # gemini-3.5-flash - Fast Gemini model balancing multimodal reasoning, tool use, ...
 id: gemini-3.5-flash
+model: google/gemini-3.5-flash
 name: gemini-3.5-flash
 authors:
 - id: google

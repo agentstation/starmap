@@ -1,5 +1,6 @@
 # gemini-3-pro-image-preview - Nano Banana Pro for higher-fidelity image generation and des...
 id: gemini-3-pro-image-preview
+model: google/gemini-3-pro-image-preview
 name: Nano Banana Pro
 authors:
 - id: google

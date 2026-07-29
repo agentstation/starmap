@@ -1,5 +1,6 @@
 # earth-ai-imagery-mammut-eap-10-2025 - Google model: earth-ai-imagery-mammut-eap-10-2025
 id: earth-ai-imagery-mammut-eap-10-2025
+model: google/earth-ai-imagery-mammut-eap-10-2025
 name: earth-ai-imagery-mammut-eap-10-2025
 authors:
 - id: google

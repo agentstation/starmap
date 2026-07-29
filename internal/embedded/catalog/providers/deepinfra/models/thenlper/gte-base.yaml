@@ -1,5 +1,6 @@
 # thenlper/gte-base - The GTE models are trained by Alibaba DAMO Academy. They are...
 id: thenlper/gte-base
+model: thenlper/gte-base
 name: thenlper/gte-base
 description: The GTE models are trained by Alibaba DAMO Academy. They are mainly based on the BERT framework and currently offer three different sizes of models, including GTE-large, GTE-base, and GTE-small. The GTE models are trained on a large-scale corpus of relevance text pairs, covering a wide range of domains and scenarios. This enables the GTE models to be applied to various downstream tasks of text embeddings, including information retrieval, semantic textual similarity, text reranking, etc.
 

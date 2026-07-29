@@ -1,5 +1,6 @@
 # automl-vision-image-classification - Google Vertex AI model: automl-vision-image-classification
 id: automl-vision-image-classification
+model: google/automl-vision-image-classification
 name: automl-vision-image-classification
 authors:
 - id: google

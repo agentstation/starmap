@@ -1,5 +1,6 @@
 # deepseek-ai/DeepSeek-V3.2 - DeepSeek chat model for instruction following, coding, and a...
 id: deepseek-ai/DeepSeek-V3.2
+model: deepseek/deepseek-v3.2
 name: deepseek-ai/DeepSeek-V3.2
 authors:
 - id: deepseek

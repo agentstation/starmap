@@ -1,5 +1,6 @@
 # imageobjectdetection-proprietary-spinenet - Google Vertex AI model: imageobjectdetection-proprietary-spi...
 id: imageobjectdetection-proprietary-spinenet
+model: google/imageobjectdetection-proprietary-spinenet
 name: imageobjectdetection-proprietary-spinenet
 authors:
 - id: google

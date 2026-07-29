@@ -1,5 +1,6 @@
 # Qwen/Qwen3.5-397B-A17B - Qwen vision-language model for visual reasoning, documents, ...
 id: Qwen/Qwen3.5-397B-A17B
+model: alibaba/qwen3.5-397b-a17b
 name: Qwen/Qwen3.5-397B-A17B
 authors:
 - id: alibaba

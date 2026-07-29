@@ -1,5 +1,6 @@
 # Qwen/Qwen3-14B - Qwen3 is the latest generation of large language models in Q...
 id: Qwen/Qwen3-14B
+model: alibaba/qwen3-14b
 name: Qwen/Qwen3-14B
 authors:
 - id: alibaba

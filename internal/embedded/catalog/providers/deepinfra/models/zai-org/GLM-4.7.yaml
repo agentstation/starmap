@@ -1,5 +1,6 @@
 # zai-org/GLM-4.7 - Flagship GLM model for hybrid reasoning, coding, and agentic...
 id: zai-org/GLM-4.7
+model: zhipu-ai/glm-4.7
 name: zai-org/GLM-4.7
 authors:
 - id: zhipu-ai

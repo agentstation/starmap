@@ -1,5 +1,6 @@
 # XiaomiMiMo/MiMo-V2.5-Pro - Stronger MiMo Pro tier for multimodal reasoning and coding-a...
 id: XiaomiMiMo/MiMo-V2.5-Pro
+model: xiaomi/mimo-v2.5-pro
 name: XiaomiMiMo/MiMo-V2.5-Pro
 description: Stronger MiMo Pro tier for multimodal reasoning and coding-agent execution
 

@@ -232,7 +232,7 @@ func TestProjectRejectsConcurrentSemanticEdit(t *testing.T) {
 	assertWorkspaceModelMissing(t, path, "new")
 }
 
-func TestProjectSeparatesGenerationAndWorkspaceDigestsForNonPersistedViews(t *testing.T) {
+func TestProjectSeparatesCatalogAndGeneratedEndpointDigests(t *testing.T) {
 	t.Parallel()
 
 	builder := catalogs.NewEmpty()
@@ -250,9 +250,6 @@ func TestProjectSeparatesGenerationAndWorkspaceDigestsForNonPersistedViews(t *te
 		},
 	}); err != nil {
 		t.Fatalf("SetAuthor: %v", err)
-	}
-	if err := builder.SetEndpoint(catalogs.Endpoint{ID: "derived", Name: "Derived"}); err != nil {
-		t.Fatalf("SetEndpoint: %v", err)
 	}
 	catalog, err := builder.Build()
 	if err != nil {
@@ -272,8 +269,13 @@ func TestProjectSeparatesGenerationAndWorkspaceDigestsForNonPersistedViews(t *te
 	if err != nil {
 		t.Fatalf("Project: %v", err)
 	}
-	if receipt.WorkspaceChecksum == identity.PayloadChecksum {
-		t.Fatal("workspace digest unexpectedly includes non-persisted generation views")
+	if receipt.WorkspaceChecksum != identity.PayloadChecksum {
+		t.Fatalf("workspace checksum = %q, want committed payload %q",
+			receipt.WorkspaceChecksum, identity.PayloadChecksum)
+	}
+	if receipt.EndpointChecksum == "" || receipt.EndpointChecksum == receipt.WorkspaceChecksum {
+		t.Fatalf("endpoint checksum = %q, workspace checksum = %q; want distinct bound projections",
+			receipt.EndpointChecksum, receipt.WorkspaceChecksum)
 	}
 	projected, err := catalogs.NewFromPath(path)
 	if err != nil {
@@ -285,9 +287,6 @@ func TestProjectSeparatesGenerationAndWorkspaceDigestsForNonPersistedViews(t *te
 	}
 	if _, err := projectedCatalog.Offering("test-provider", catalogs.ProviderModelID(model.ID)); err != nil {
 		t.Fatalf("canonical provider model missing: %v", err)
-	}
-	if len(projectedCatalog.Endpoints().List()) != 0 {
-		t.Fatalf("projected endpoints = %#v, want none", projectedCatalog.Endpoints().List())
 	}
 	authorModels, err := projectedCatalog.AuthorModels("test-author")
 	if err != nil {

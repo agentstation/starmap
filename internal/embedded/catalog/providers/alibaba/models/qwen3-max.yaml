@@ -1,5 +1,6 @@
 # qwen3-max - Flagship Qwen3 model for coding agents, complex reasoning, a...
 id: qwen3-max
+model: alibaba/qwen3-max
 name: qwen3-max
 authors:
 - id: alibaba

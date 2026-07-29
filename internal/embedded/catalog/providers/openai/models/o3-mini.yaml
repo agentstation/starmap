@@ -1,5 +1,6 @@
 # o3-mini - Smaller o-series reasoner for economical coding, math, and p...
 id: o3-mini
+model: openai/o3-mini
 name: o3-mini
 authors:
 - id: openai

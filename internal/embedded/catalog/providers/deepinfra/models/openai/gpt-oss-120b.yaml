@@ -1,5 +1,6 @@
 # openai/gpt-oss-120b - Open-weight GPT model for self-hosted reasoning and instruct...
 id: openai/gpt-oss-120b
+model: openai/gpt-oss-120b
 name: openai/gpt-oss-120b
 authors:
 - id: openai

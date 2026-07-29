@@ -1,5 +1,6 @@
 # gpt-4o - Omni-era GPT for multimodal chat, practical coding, and gene...
 id: gpt-4o
+model: openai/gpt-4o
 name: gpt-4o
 authors:
 - id: openai

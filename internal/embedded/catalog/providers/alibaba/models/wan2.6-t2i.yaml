@@ -1,5 +1,6 @@
 # wan2.6-t2i - AI model
 id: wan2.6-t2i
+model: alibaba/wan2.6-t2i
 name: wan2.6-t2i
 authors:
 - id: alibaba

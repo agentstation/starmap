@@ -1,5 +1,6 @@
 # qwen3.5-122b-a10b - Qwen vision-language model for visual reasoning, documents, ...
 id: qwen3.5-122b-a10b
+model: alibaba/qwen3.5-122b-a10b
 name: qwen3.5-122b-a10b
 authors:
 - id: alibaba

@@ -1,5 +1,6 @@
 # Wan-AI/Wan2.6-T2I - Wan2.6 text to image, Upgraded visual quality, aesthetics, a...
 id: Wan-AI/Wan2.6-T2I
+model: alibaba/wan2.6-t2i
 name: Wan-AI/Wan2.6-T2I
 description: Wan2.6 text to image, Upgraded visual quality, aesthetics, and instruction-following deliver precise style control, realistic portraits, long-text understanding, and broad historical/cultural IP coverage, enabling high-quality, highly expressive visual generation.
 

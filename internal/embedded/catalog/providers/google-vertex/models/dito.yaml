@@ -1,5 +1,6 @@
 # dito - Google Vertex AI model: dito
 id: dito
+model: google/dito
 name: dito
 authors:
 - id: google

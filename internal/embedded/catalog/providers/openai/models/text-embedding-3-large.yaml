@@ -1,5 +1,6 @@
 # text-embedding-3-large - Embedding model for semantic search, retrieval, clustering, ...
 id: text-embedding-3-large
+model: openai/text-embedding-3-large
 name: text-embedding-3-large
 authors:
 - id: openai

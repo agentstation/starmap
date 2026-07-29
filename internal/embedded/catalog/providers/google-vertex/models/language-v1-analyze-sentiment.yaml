@@ -1,5 +1,6 @@
 # language-v1-analyze-sentiment - Google Vertex AI model: language-v1-analyze-sentiment
 id: language-v1-analyze-sentiment
+model: google/language-v1-analyze-sentiment
 name: language-v1-analyze-sentiment
 authors:
 - id: google

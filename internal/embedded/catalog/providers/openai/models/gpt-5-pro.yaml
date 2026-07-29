@@ -1,5 +1,6 @@
 # gpt-5-pro - Higher-accuracy GPT-5 tier for tough analysis, coding review...
 id: gpt-5-pro
+model: openai/gpt-5-pro
 name: gpt-5-pro
 authors:
 - id: openai
