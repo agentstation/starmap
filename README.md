@@ -233,7 +233,8 @@ Starmap uses a layered architecture with clean separation of concerns:
 - **User Interfaces**: CLI, Go package, and HTTP server (REST + SSE)
 - **Core System**: Catalog management, reconciliation engine, and event hooks
 - **Data Sources**: Provider APIs, models.dev, embedded catalog, and local files
-- **Generation Stores**: Memory, filesystem, SQLite, or conditional object storage
+- **Generation Stores**: Memory, filesystem, or conditional object storage;
+  embedding applications can inject their own store
 
 For detailed architecture diagrams, design principles, and implementation details, see **[ARCHITECTURE.md](docs/ARCHITECTURE.md)**.
 
@@ -245,7 +246,31 @@ Starmap's core abstractions provide a clean separation of concerns:
 The concrete immutable product for model data access. Advanced producers use a separate builder; ordinary consumers retain and share the catalog safely. See [Catalog Package Documentation](pkg/catalogs/README.md).
 
 ### 2. CatalogStore
-A generation-oriented commit/read/CAS boundary. The same conformance contract covers memory, filesystem, SQLite, and conditional object-storage adapters while retaining old immutable generations.
+A generation-oriented commit/read/CAS boundary. The same conformance contract
+covers Starmap's memory, filesystem, and conditional object-storage adapters
+while retaining old immutable generations. Embedding applications such as
+Starport may inject a database-backed implementation, but own its driver,
+schema, migrations, credentials, connection pool, backups, and lifecycle.
+The exact concurrency, idempotency, failure, rollback, ownership, and error
+requirements are defined in the
+[Catalog Store Contract](docs/CATALOG_STORE_CONTRACT.md).
+For servers without a durable filesystem, `pkg/catalogstore/s3` adapts a
+caller-owned AWS SDK v2 S3 client to the same object-generation contract:
+
+```go
+backend, err := s3store.New(callerOwnedS3Client, s3store.Config{
+    Bucket: "starmap-catalogs",
+})
+if err != nil {
+    return err
+}
+store, err := catalogstore.NewObject(backend, "production")
+```
+
+The caller configures and owns the client, endpoint, credentials, transport,
+retries, and lifecycle. Construction performs no network request, and every
+write requires an S3-compatible `If-None-Match` or `If-Match` conditional
+write; there is no last-writer-wins fallback.
 When a client starts with a configured store, it validates and publishes that
 store's current generation before returning from `starmap.New`; an empty store
 uses either the exact configured human workspace or the verified embedded

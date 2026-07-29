@@ -35,7 +35,6 @@ func catalogStoreFactories() map[string]storeFactory {
 			}
 			return store
 		},
-		"sql": newSQLConformanceStore,
 		"object": func(t *testing.T) Store {
 			store, err := NewObject(NewMemoryObjectBackend(), "conformance")
 			if err != nil {

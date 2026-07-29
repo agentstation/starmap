@@ -11,9 +11,10 @@ SERVER_MAX_PACKAGES=260
 REMOTE_MAX_PACKAGES=240
 DEPS="$(mktemp "${TMPDIR:-/tmp}/starmap-consumer-deps.XXXXXX")"
 NON_STANDARD_DEPS="$(mktemp "${TMPDIR:-/tmp}/starmap-consumer-non-standard-deps.XXXXXX")"
+STORE_DEPS="$(mktemp "${TMPDIR:-/tmp}/starmap-store-consumer-deps.XXXXXX")"
 SERVER_DEPS="$(mktemp "${TMPDIR:-/tmp}/starmap-server-consumer-deps.XXXXXX")"
 REMOTE_DEPS="$(mktemp "${TMPDIR:-/tmp}/starmap-remote-consumer-deps.XXXXXX")"
-trap 'rm -f "$DEPS" "$NON_STANDARD_DEPS" "$SERVER_DEPS" "$REMOTE_DEPS"' EXIT
+trap 'rm -f "$DEPS" "$NON_STANDARD_DEPS" "$STORE_DEPS" "$SERVER_DEPS" "$REMOTE_DEPS"' EXIT
 
 (
 	cd "$READ_ONLY_MODULE"
@@ -26,6 +27,7 @@ trap 'rm -f "$DEPS" "$NON_STANDARD_DEPS" "$SERVER_DEPS" "$REMOTE_DEPS"' EXIT
 (
 	cd "$STORE_ONLY_MODULE"
 	GOWORK=off go test ./...
+	GOWORK=off go list -deps -f '{{.ImportPath}}' . | LC_ALL=C sort -u >"$STORE_DEPS"
 )
 
 (
@@ -48,11 +50,19 @@ if [ "$non_standard_package_count" -gt "$MAX_NON_STANDARD_PACKAGES" ]; then
 	exit 1
 fi
 
-banned_pattern='^(github\.com/agentstation/starmap/(acquisition|internal/(catalog/pipeline|providers|server|sources)(/|$)|pkg/(catalogremote|catalogscheduler|sources|sync)(/|$))|cloud\.google\.com/go/|google\.golang\.org/(genai|grpc)(/|$)|go\.opentelemetry\.io/otel(/|$)|github\.com/gorilla/websocket(/|$)|github\.com/spf13/cobra(/|$)|modernc\.org/sqlite(/|$)|github\.com/(mattn|ncruces)/go-sqlite3(/|$))'
+banned_pattern='^(github\.com/agentstation/starmap/(acquisition|internal/(catalog/pipeline|providers|server|sources)(/|$)|pkg/(catalogremote|catalogscheduler|sources|sync)(/|$))|github\.com/aws/(aws-sdk-go-v2|smithy-go)(/|$)|cloud\.google\.com/go/|google\.golang\.org/(genai|grpc)(/|$)|go\.opentelemetry\.io/otel(/|$)|github\.com/gorilla/websocket(/|$)|github\.com/spf13/cobra(/|$)|modernc\.org/sqlite(/|$)|github\.com/(mattn|ncruces)/go-sqlite3(/|$))'
 banned="$(grep -E "$banned_pattern" "$DEPS" || true)"
 if [ -n "$banned" ]; then
 	printf 'read-only consumer imports forbidden implementation dependencies:\n%s\n' \
 		"$banned" >&2
+	exit 1
+fi
+
+store_banned_pattern='^(database/sql$|github\.com/agentstation/starmap/(acquisition|cmd|internal/(providers|server|sources)(/|$)|remote(/|$)|server(/|$)|pkg/(catalogremote|sources|sync)(/|$))|cloud\.google\.com/go/|google\.golang\.org/(genai|grpc)(/|$)|go\.opentelemetry\.io/otel(/|$)|github\.com/(mattn/go-sqlite3|ncruces/go-sqlite3|go-sql-driver/mysql|lib/pq|jackc/pgx)(/|$)|modernc\.org/sqlite(/|$))'
+store_banned="$(grep -E "$store_banned_pattern" "$STORE_DEPS" || true)"
+if [ -n "$store_banned" ]; then
+	printf 'store-only consumer imports forbidden application or database implementations:\n%s\n' \
+		"$store_banned" >&2
 	exit 1
 fi
 
@@ -62,7 +72,7 @@ if [ "$server_package_count" -gt "$SERVER_MAX_PACKAGES" ]; then
 		"$server_package_count" "$SERVER_MAX_PACKAGES" >&2
 	exit 1
 fi
-server_banned_pattern='^(github\.com/agentstation/starmap/(acquisition|internal/(catalog/pipeline|providers|sources)(/|$))|cloud\.google\.com/go/|google\.golang\.org/(genai|grpc)(/|$)|go\.opentelemetry\.io/otel(/|$))'
+server_banned_pattern='^(github\.com/agentstation/starmap/(acquisition|internal/(catalog/pipeline|providers|sources)(/|$))|github\.com/aws/(aws-sdk-go-v2|smithy-go)(/|$)|cloud\.google\.com/go/|google\.golang\.org/(genai|grpc)(/|$)|go\.opentelemetry\.io/otel(/|$))'
 server_banned="$(grep -E "$server_banned_pattern" "$SERVER_DEPS" || true)"
 if [ -n "$server_banned" ]; then
 	printf 'server-embed consumer imports forbidden acquisition dependencies:\n%s\n' \
@@ -76,7 +86,7 @@ if [ "$remote_package_count" -gt "$REMOTE_MAX_PACKAGES" ]; then
 		"$remote_package_count" "$REMOTE_MAX_PACKAGES" >&2
 	exit 1
 fi
-remote_banned_pattern='^(github\.com/agentstation/starmap/(acquisition|internal/(catalog/pipeline|providers|server|sources)(/|$)|server(/|$))|cloud\.google\.com/go/|google\.golang\.org/(genai|grpc)(/|$)|go\.opentelemetry\.io/otel(/|$)|github\.com/gorilla/websocket(/|$)|github\.com/spf13/cobra(/|$)|modernc\.org/sqlite(/|$)|github\.com/(mattn|ncruces)/go-sqlite3(/|$))'
+remote_banned_pattern='^(github\.com/agentstation/starmap/(acquisition|internal/(catalog/pipeline|providers|server|sources)(/|$)|server(/|$))|github\.com/aws/(aws-sdk-go-v2|smithy-go)(/|$)|cloud\.google\.com/go/|google\.golang\.org/(genai|grpc)(/|$)|go\.opentelemetry\.io/otel(/|$)|github\.com/gorilla/websocket(/|$)|github\.com/spf13/cobra(/|$)|modernc\.org/sqlite(/|$)|github\.com/(mattn|ncruces)/go-sqlite3(/|$))'
 remote_banned="$(grep -E "$remote_banned_pattern" "$REMOTE_DEPS" || true)"
 if [ -n "$remote_banned" ]; then
 	printf 'remote-subscriber consumer imports forbidden implementation dependencies:\n%s\n' \
@@ -86,7 +96,7 @@ fi
 
 printf 'read-only consumer dependency closure: %s/%s non-standard packages (%s total on this platform); forbidden families absent\n' \
 	"$non_standard_package_count" "$MAX_NON_STANDARD_PACKAGES" "$total_package_count"
-printf 'store-only consumer: external compile and publication test passed\n'
+printf 'store-only consumer: caller-owned adapter contract and publication passed; application/database implementations absent\n'
 printf 'server-embed consumer dependency closure: %s/%s packages; acquisition families absent\n' \
 	"$server_package_count" "$SERVER_MAX_PACKAGES"
 printf 'server-embed consumer: external compile and lifecycle test passed\n'

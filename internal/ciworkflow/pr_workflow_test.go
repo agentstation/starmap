@@ -152,6 +152,35 @@ func TestReadOnlyConsumerDependencyBudgetIsPlatformIndependent(t *testing.T) {
 	}
 }
 
+func TestExternalStoreConsumerUsesCallerOwnedAdapter(t *testing.T) {
+	consumer := readFixture(t, "../../testdata/consumers/store-only/consumer.go")
+	store := readFixture(t, "../../testdata/consumers/store-only/starport_store.go")
+	script := readFixture(t, "../../scripts/verify-consumer-deps.sh")
+
+	if !strings.Contains(consumer, "starmap.WithCatalogStore(store)") {
+		t.Fatal("external store consumer does not inject its caller-owned store")
+	}
+	if strings.Contains(consumer, "catalogstore.NewMemory") {
+		t.Fatal("external store consumer still delegates to a Starmap-owned adapter")
+	}
+	if !strings.Contains(store, "var _ catalogstore.Store = (*starportStore)(nil)") {
+		t.Fatal("external Starport-style adapter lacks a compile-time Store assertion")
+	}
+	for _, check := range []string{
+		`store_banned_pattern=`,
+		`database/sql`,
+		`go-sql-driver/mysql`,
+		`lib/pq`,
+		`jackc/pgx`,
+		`modernc\.org/sqlite`,
+		`github\.com/aws/(aws-sdk-go-v2|smithy-go)`,
+	} {
+		if !strings.Contains(script, check) {
+			t.Fatalf("store-only dependency verification is missing %q", check)
+		}
+	}
+}
+
 func TestPureGoAndRaceVerificationHaveSeparateCgoModes(t *testing.T) {
 	makefile := readFixture(t, "../../Makefile")
 	pureGoScript := readFixture(t, "../../scripts/verify-pure-go.sh")
@@ -163,6 +192,7 @@ func TestPureGoAndRaceVerificationHaveSeparateCgoModes(t *testing.T) {
 	for _, check := range []string{
 		`git -C "$ROOT" grep`,
 		`CGO_ENABLED=0 "$ROOT/scripts/verify-consumer-deps.sh"`,
+		`CGO_ENABLED=0 go test ./pkg/catalogstore/s3`,
 		`CGO_ENABLED=0 go build -trimpath`,
 		`CGO_ENABLED=0$`,
 		`import[[:space:]]+"C"`,

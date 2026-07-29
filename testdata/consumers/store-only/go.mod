@@ -2,7 +2,10 @@ module github.com/agentstation/starmap-test/store-only-consumer
 
 go 1.25.0
 
-require github.com/agentstation/starmap v0.0.0
+require (
+	github.com/agentstation/starmap v0.0.0
+	github.com/google/go-cmp v0.7.0
+)
 
 require (
 	github.com/agentstation/utc v0.2.0 // indirect

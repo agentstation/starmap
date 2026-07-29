@@ -202,8 +202,8 @@ Constructors return concrete types when a package owns one implementation.
 |---|---:|---|---|
 | `catalogs.Reader` | 2 | `*catalogs.Builder`, `*catalogs.Catalog` | Retained algorithm input; `TestSeamConformanceReaderHasBuilderAndCatalogAdapters` executes both |
 | Catalog collection readers | 2 each | Mutable `Providers`/`Authors`/`Endpoints`/`Models`/`Provenance` and immutable reader wrappers | Retained read-only collection boundaries with two implementations each |
-| `catalogstore.Store` | 4 | memory, filesystem, SQLite, conditional object storage | Retained generation-storage boundary; all adapters run the same `TestCatalogStoreConformance` suite |
-| `catalogstore.ObjectBackend` | 2 | memory reference backend, recording alternate backend | Retained cloud-object input; `TestSeamConformanceObjectStoreAcceptsAlternateBackend` executes replacement injection |
+| `catalogstore.Store` | 3+ | Starmap memory, filesystem, and conditional object storage; caller-owned injected adapters | Retained generation-storage boundary; the Starmap adapters run the same behavioral contract and external applications own database-specific implementations |
+| `catalogstore.ObjectBackend` | 3 | memory reference backend, S3-compatible production backend, recording alternate backend | Retained cloud-object input; the production S3 protocol matrix and `TestSeamConformanceObjectStoreAcceptsAlternateBackend` execute both replacement implementations |
 | `authority.Reader` | 2 | immutable default table, custom `seamAuthority` | Retained policy input; `TestSeamConformanceAuthorityAcceptsCustomAdapter` proves replacement policy |
 | Enhancer/reconciler provenance inputs | 2 | concrete `*provenance.Tracker`, custom `seamTracker` | Retained as consumer-local `Track` roles; the provenance package returns its concrete tracker |
 | `enhancer.Enhancer` | 4 | `ModelsDevEnhancer`, `MetadataEnhancer`, `ChainEnhancer`, test enhancer | Retained plugin boundary; compile assertions cover all built-ins and pipeline tests execute alternates |
@@ -705,21 +705,41 @@ the store must still be empty. Implementations validate the manifest and payload
 before storage, retain old immutable generations, return caller-owned bytes, and
 make an identical retry idempotent.
 
+The normative caller and adapter obligations live in
+[CATALOG_STORE_CONTRACT.md](CATALOG_STORE_CONTRACT.md).
+
 | Adapter | Baseline P3.2 mechanism | Later hardening owner |
 |---|---|---|
 | Memory | Locked immutable map and current ID | Reference semantics/conformance |
 | Filesystem | Cross-instance advisory commit lock plus fsynced immutable directory/current rename | P3.3/P3.5 durability and same-base CAS complete |
-| SQLite | Serializable `database/sql` transaction over generation/current tables | P3.8 rollback, reactivation, deletion, CAS, reopen, and fault matrix complete |
-| Object | Immutable manifest/payload objects plus version-conditional current object | P3.9 upload/promotion faults, corruption, rollback, deletion, CAS, and reopen complete |
+| Object | Immutable manifest/payload objects plus version-conditional current object | P3.9 in-memory protocol faults plus P8.11 production S3-compatible ETag/CAS, corruption, rollback, concurrency, and reopen matrix |
 
 The shared conformance suite covers empty reads, commit/current/get, immutable
 ownership, durable reopen, retained history, idempotent retries, stale CAS,
 checksum rejection, generation-ID collisions, and cancellation. Passing the
 baseline suite does not substitute for the later adapter-specific fault gates.
 The concurrent same-base matrix opens independent adapters over one backend and
-requires exactly one success and one typed conflict. SQLite deployments use
-immediate transactions with bounded busy waiting; filesystem writers coordinate
-through a context-aware advisory lock shared across processes.
+requires exactly one success and one typed conflict. Filesystem writers
+coordinate through a context-aware advisory lock shared across processes.
+Starmap owns no relational adapter. An embedding application may implement
+`catalogstore.Store` using SQLite, MySQL, PostgreSQL, or another database, but
+owns the driver, schema, migrations, credentials, pool, backups, lifecycle, and
+dialect-specific transaction/CAS behavior before injecting the store through
+`starmap.WithCatalogStore`.
+
+For deployments without a persistent filesystem,
+`pkg/catalogstore/s3.Backend` adapts a caller-owned AWS SDK v2 S3 client to
+`catalogstore.ObjectBackend`. The caller owns endpoint selection, region,
+credentials, retry policy, HTTP transport, observability, and client lifecycle;
+the constructor is inert. The adapter requires a non-empty ETag on every
+successful read and write, translates immutable creation to
+`If-None-Match: *`, translates pointer promotion to `If-Match: <ETag>`, and
+rejects unconditional writes. An S3-compatible endpoint that rejects
+conditional writes fails explicitly; Starmap never falls back to
+last-writer-wins. The protocol-level test server exercises the complete store
+contract, concurrent same-base CAS, restart/reopen, retained rollback,
+digest-corruption rejection, and upload/promotion failure preservation through
+the real AWS SDK HTTP stack.
 
 `Builder.Save` and `Builder.SaveTo` materialize the human YAML workspace using
 replacement semantics for its managed author-model and provider-model trees,
