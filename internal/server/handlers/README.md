@@ -37,6 +37,7 @@ Package handlers provides HTTP request handlers for the Starmap API.
 - [type DateRange](<#DateRange>)
 - [type Handlers](<#Handlers>)
   - [func New\(app application, cache \*cache.Cache, sseBroadcaster \*sse.Broadcaster, logger \*zerolog.Logger, startTime time.Time\) \*Handlers](<#New>)
+  - [func \(h \*Handlers\) HandleCatalogGenerationManifest\(writer http.ResponseWriter, request \*http.Request, generationID string\)](<#Handlers.HandleCatalogGenerationManifest>)
   - [func \(h \*Handlers\) HandleCatalogManifest\(writer http.ResponseWriter, request \*http.Request\)](<#Handlers.HandleCatalogManifest>)
   - [func \(h \*Handlers\) HandleCatalogSnapshot\(writer http.ResponseWriter, request \*http.Request, generationID string\)](<#Handlers.HandleCatalogSnapshot>)
   - [func \(h \*Handlers\) HandleGetModel\(w http.ResponseWriter, \_ \*http.Request, modelID string\)](<#Handlers.HandleGetModel>)
@@ -89,8 +90,17 @@ func New(app application, cache *cache.Cache, sseBroadcaster *sse.Broadcaster, l
 
 New creates a new Handlers instance.
 
+<a name="Handlers.HandleCatalogGenerationManifest"></a>
+### func \(\*Handlers\) [HandleCatalogGenerationManifest](<https://github.com/agentstation/starmap/blob/main/internal/server/handlers/catalog.go#L28-L32>)
+
+```go
+func (h *Handlers) HandleCatalogGenerationManifest(writer http.ResponseWriter, request *http.Request, generationID string)
+```
+
+HandleCatalogGenerationManifest serves an immutable manifest by generation ID.
+
 <a name="Handlers.HandleCatalogManifest"></a>
-### func \(\*Handlers\) [HandleCatalogManifest](<https://github.com/agentstation/starmap/blob/main/internal/server/handlers/catalog.go#L12>)
+### func \(\*Handlers\) [HandleCatalogManifest](<https://github.com/agentstation/starmap/blob/main/internal/server/handlers/catalog.go#L13>)
 
 ```go
 func (h *Handlers) HandleCatalogManifest(writer http.ResponseWriter, request *http.Request)
@@ -99,7 +109,7 @@ func (h *Handlers) HandleCatalogManifest(writer http.ResponseWriter, request *ht
 HandleCatalogManifest serves the current strict generation manifest.
 
 <a name="Handlers.HandleCatalogSnapshot"></a>
-### func \(\*Handlers\) [HandleCatalogSnapshot](<https://github.com/agentstation/starmap/blob/main/internal/server/handlers/catalog.go#L35>)
+### func \(\*Handlers\) [HandleCatalogSnapshot](<https://github.com/agentstation/starmap/blob/main/internal/server/handlers/catalog.go#L62>)
 
 ```go
 func (h *Handlers) HandleCatalogSnapshot(writer http.ResponseWriter, request *http.Request, generationID string)

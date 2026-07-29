@@ -785,6 +785,7 @@ GET  /api/v1/providers/{id}/models  # Get provider's models
 
 # Remote generation consumption
 GET  /api/v1/catalog/manifest
+GET  /api/v1/catalog/generations/{generation_id}/manifest
 GET  /api/v1/catalog/generations/{generation_id}/snapshot
 GET  /api/v1/updates/stream      # Heartbeat-enabled publication hints
 
@@ -796,6 +797,30 @@ GET  /api/v1/stats               # Catalog statistics
 GET  /health                     # Liveness probe
 GET  /api/v1/ready               # Readiness check
 ```
+
+Go consumers can opt into reactive remote catalogs without adding network
+behavior to the root package:
+
+```go
+subscriber, err := remote.New(remote.Config{
+    BaseURL: "https://starmap.example.com/api/v1",
+})
+if err != nil {
+    return err
+}
+if err := subscriber.Start(ctx); err != nil {
+    return err
+}
+defer subscriber.Close()
+
+catalog := subscriber.Catalog()
+model, err := catalog.FindModel("gpt-4o")
+```
+
+The initial generation is verified before `Start` succeeds. SSE events are
+generation hints, not catalog payloads; reconnect always performs verified
+current-state catch-up, so dropped or replayed events cannot permanently stale
+or partially mutate the catalog.
 
 **Configuration Flags:**
 - `--port`: Server port (default: 8080)

@@ -6,6 +6,7 @@ import (
 	"github.com/agentstation/starmap/internal/server/response"
 	"github.com/agentstation/starmap/pkg/catalogremote"
 	"github.com/agentstation/starmap/pkg/catalogs"
+	"github.com/agentstation/starmap/pkg/catalogstore"
 )
 
 // HandleCatalogManifest serves the current strict generation manifest.
@@ -20,6 +21,32 @@ func (h *Handlers) HandleCatalogManifest(writer http.ResponseWriter, request *ht
 		response.InternalError(writer, err)
 		return
 	}
+	h.writeCatalogManifest(writer, generation)
+}
+
+// HandleCatalogGenerationManifest serves an immutable manifest by generation ID.
+func (h *Handlers) HandleCatalogGenerationManifest(
+	writer http.ResponseWriter,
+	request *http.Request,
+	generationID string,
+) {
+	client, err := h.app.Starmap()
+	if err != nil {
+		response.InternalError(writer, err)
+		return
+	}
+	generation, err := client.Generation(request.Context(), generationID)
+	if err != nil {
+		http.NotFound(writer, request)
+		return
+	}
+	h.writeCatalogManifest(writer, generation)
+}
+
+func (h *Handlers) writeCatalogManifest(
+	writer http.ResponseWriter,
+	generation catalogstore.Generation,
+) {
 	data, err := catalogremote.MarshalManifest(generation.Manifest)
 	if err != nil {
 		response.InternalError(writer, err)

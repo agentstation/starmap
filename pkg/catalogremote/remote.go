@@ -26,10 +26,25 @@ const (
 	ManifestPath = CatalogPath + "/manifest"
 	// GenerationsPath prefixes immutable generation snapshot routes.
 	GenerationsPath = CatalogPath + "/generations"
+	// EventStreamPath returns post-commit catalog publication hints over SSE.
+	EventStreamPath = "/updates/stream"
+	// CatalogPublishedEvent is the sole catalog publication event name.
+	CatalogPublishedEvent = "catalog.published"
 	// ManifestMediaType identifies strict generation-manifest JSON.
 	ManifestMediaType = "application/vnd.agentstation.starmap.catalog-manifest+json"
 	maxBodyBytes      = 64 << 20
 )
+
+// Publication identifies one committed immutable catalog generation.
+type Publication struct {
+	GenerationID string `json:"generation_id"`
+	Sequence     uint64 `json:"sequence"`
+}
+
+// GenerationManifestPath returns the immutable manifest route for generationID.
+func GenerationManifestPath(generationID string) string {
+	return GenerationsPath + "/" + url.PathEscape(generationID) + "/manifest"
+}
 
 // SnapshotPath returns the immutable canonical payload route for generationID.
 func SnapshotPath(generationID string) string {
@@ -83,20 +98,70 @@ func sameOriginRedirectPolicy(origin *url.URL, previous func(*http.Request, []*h
 // FetchCurrent fetches the current manifest followed by its immutable,
 // generation-addressed snapshot and validates their binding and compatibility.
 func (c *Client) FetchCurrent(ctx context.Context) (catalogstore.Generation, error) {
-	manifestData, err := c.fetch(ctx, ManifestPath, ManifestMediaType)
+	manifest, err := c.fetchManifest(ctx, ManifestPath, "current")
 	if err != nil {
 		return catalogstore.Generation{}, err
 	}
+	return c.fetchGenerationPayload(ctx, manifest)
+}
+
+// FetchGeneration fetches and verifies one immutable generation by ID.
+func (c *Client) FetchGeneration(ctx context.Context, generationID string) (catalogstore.Generation, error) {
+	generationID = strings.TrimSpace(generationID)
+	if generationID == "" {
+		return catalogstore.Generation{}, &errors.ValidationError{
+			Field: "catalog_remote.generation_id", Message: "is required",
+		}
+	}
+	manifest, err := c.fetchManifest(
+		ctx,
+		GenerationManifestPath(generationID),
+		generationID,
+	)
+	if err != nil {
+		return catalogstore.Generation{}, err
+	}
+	if manifest.GenerationID != generationID {
+		return catalogstore.Generation{}, &errors.ValidationError{
+			Field:   "catalog_remote.generation_id",
+			Value:   manifest.GenerationID,
+			Message: "does not match requested generation " + generationID,
+		}
+	}
+	return c.fetchGenerationPayload(ctx, manifest)
+}
+
+func (c *Client) fetchManifest(
+	ctx context.Context,
+	resourcePath string,
+	resourceID string,
+) (catalogs.GenerationManifest, error) {
+	manifestData, err := c.fetch(ctx, resourcePath, ManifestMediaType)
+	if err != nil {
+		return catalogs.GenerationManifest{}, err
+	}
 	manifest, err := catalogs.ParseGenerationManifestJSON(manifestData)
 	if err != nil {
-		return catalogstore.Generation{}, errors.WrapResource("parse", "remote catalog manifest", "current", err)
+		return catalogs.GenerationManifest{}, errors.WrapResource(
+			"parse",
+			"remote catalog manifest",
+			resourceID,
+			err,
+		)
 	}
 	if !manifest.ConsumerCompatibility.SupportsSchema(c.schemaVersion) {
-		return catalogstore.Generation{}, &errors.ValidationError{
+		return catalogs.GenerationManifest{}, &errors.ValidationError{
 			Field: "catalog_remote.schema_version", Value: c.schemaVersion,
 			Message: fmt.Sprintf("is incompatible with remote range %d..%d", manifest.ConsumerCompatibility.MinSchemaVersion, manifest.ConsumerCompatibility.MaxSchemaVersion),
 		}
 	}
+	return manifest, nil
+}
+
+func (c *Client) fetchGenerationPayload(
+	ctx context.Context,
+	manifest catalogs.GenerationManifest,
+) (catalogstore.Generation, error) {
 	payload, err := c.fetch(ctx, SnapshotPath(manifest.GenerationID), catalogs.CatalogPayloadMediaType)
 	if err != nil {
 		return catalogstore.Generation{}, err

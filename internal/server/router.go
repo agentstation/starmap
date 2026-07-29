@@ -125,9 +125,15 @@ func (s *Server) registerRoutes(mux *http.ServeMux, h *handlers.Handlers) {
 	mux.HandleFunc(prefix+"/catalog/generations/", func(w http.ResponseWriter, r *http.Request) {
 		path := strings.TrimPrefix(r.URL.Path, prefix+"/catalog/generations/")
 		generationID, suffix, found := strings.Cut(path, "/")
-		if r.Method == http.MethodGet && found && suffix == "snapshot" && generationID != "" {
-			h.HandleCatalogSnapshot(w, r, generationID)
-			return
+		if r.Method == http.MethodGet && found && generationID != "" {
+			switch suffix {
+			case "manifest":
+				h.HandleCatalogGenerationManifest(w, r, generationID)
+				return
+			case "snapshot":
+				h.HandleCatalogSnapshot(w, r, generationID)
+				return
+			}
 		}
 		http.Error(w, "Not found", http.StatusNotFound)
 	})

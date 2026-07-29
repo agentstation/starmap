@@ -38,4 +38,16 @@ func TestRemoteCatalogClientAndServerShareVersionedManifestSnapshotContract(t *t
 		string(generation.Payload) != string(want.Payload) {
 		t.Fatalf("remote generation does not match server current generation")
 	}
+	addressed, err := client.FetchGeneration(
+		context.Background(),
+		want.Manifest.GenerationID,
+	)
+	if err != nil {
+		t.Fatalf("FetchGeneration: %v", err)
+	}
+	if addressed.Manifest.GenerationID != want.Manifest.GenerationID ||
+		addressed.Manifest.Payload != want.Manifest.Payload ||
+		string(addressed.Payload) != string(want.Payload) {
+		t.Fatal("addressed remote generation does not match retained server generation")
+	}
 }

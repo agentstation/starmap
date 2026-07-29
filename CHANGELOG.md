@@ -135,9 +135,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     option had an implementation. Use `sync.WithFresh(true)` for an explicitly
     destructive replacement sync. Default reconciliation remains non-destructive
     according to source merge and field-authority policy.
-  - Removed the implicit root remote options. Construct
-    `catalogremote.Client` explicitly, call `FetchCurrent`, and pass the
-    verified generation to `starmap.Client.Activate`.
+  - Removed the implicit root remote options. Low-level protocol consumers may
+    construct `catalogremote.Client` explicitly and pass a verified generation
+    to `starmap.Client.Activate`; normal reactive consumers use the opt-in
+    public `remote` package.
   - Programmatic `sync.WithSources` now rejects unknown source IDs and copies
     caller input. A fresh sync rejects `local_catalog` because an existing local
     catalog cannot also be the input to a replacement generation.
@@ -151,9 +152,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   unversioned `GET /catalog` envelope was removed. Construct
   `catalogremote.Client` with the versioned API base (for example
   `https://catalog.example.com/api/v1`). Consumers now read
-  `GET /catalog/manifest` and then the immutable
+  `GET /catalog/manifest` or an immutable addressed manifest and then
   `GET /catalog/generations/{generation_id}/snapshot`; schema compatibility,
-  media type, size, and SHA-256 are verified before durable publication.
+  media type, size, and SHA-256 are verified before durable publication. The
+  public `remote` subscriber performs the verified initial fetch, listens for
+  the sole `catalog.published` SSE hint, deduplicates immutable generations,
+  and performs mandatory catch-up after every reconnect.
 
 - **Restructured Auth Commands**: Simplified authentication command structure
   - **Removed**: `starmap providers auth` (entire subcommand tree)

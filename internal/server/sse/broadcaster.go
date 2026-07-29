@@ -13,12 +13,13 @@ import (
 
 	"github.com/rs/zerolog"
 
+	"github.com/agentstation/starmap/pkg/catalogremote"
 	"github.com/agentstation/starmap/pkg/errors"
 )
 
 const (
 	// CatalogPublishedEvent is the stable SSE event name.
-	CatalogPublishedEvent = "catalog.published"
+	CatalogPublishedEvent = catalogremote.CatalogPublishedEvent
 	// DefaultHeartbeatInterval keeps idle streams alive through common proxies.
 	DefaultHeartbeatInterval = 20 * time.Second
 	// DefaultWriteTimeout bounds each event or heartbeat write and flush.
@@ -34,10 +35,7 @@ type Config struct {
 }
 
 // Publication identifies one committed immutable catalog generation.
-type Publication struct {
-	GenerationID string `json:"generation_id"`
-	Sequence     uint64 `json:"sequence"`
-}
+type Publication = catalogremote.Publication
 
 // DeliveryStats is a lock-free snapshot of SSE delivery behavior.
 type DeliveryStats struct {

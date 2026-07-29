@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"net/http"
 	"net/http/httptest"
+	"slices"
 	"sync/atomic"
 	"testing"
 	"time"
@@ -46,6 +47,70 @@ func TestRemoteClientRejectsCrossOriginRedirect(t *testing.T) {
 	}
 	if got := redirectedRequests.Load(); got != 0 {
 		t.Fatalf("cross-origin requests = %d, want 0", got)
+	}
+}
+
+func TestFetchGenerationRequiresAddressedManifestAndPayload(t *testing.T) {
+	t.Parallel()
+
+	generation := remoteTestGeneration(
+		t,
+		catalogs.CurrentCatalogSchemaVersion,
+		catalogs.ConsumerCompatibility{
+			MinSchemaVersion: catalogs.CurrentCatalogSchemaVersion,
+			MaxSchemaVersion: catalogs.CurrentCatalogSchemaVersion,
+		},
+	)
+	manifest, err := MarshalManifest(generation.Manifest)
+	if err != nil {
+		t.Fatalf("MarshalManifest: %v", err)
+	}
+	var paths []string
+	server := httptest.NewServer(http.HandlerFunc(
+		func(writer http.ResponseWriter, request *http.Request) {
+			paths = append(paths, request.URL.Path)
+			switch request.URL.Path {
+			case GenerationManifestPath(generation.Manifest.GenerationID):
+				writer.Header().Set("Content-Type", ManifestMediaType)
+				_, _ = writer.Write(manifest)
+			case SnapshotPath(generation.Manifest.GenerationID):
+				writer.Header().Set("Content-Type", catalogs.CatalogPayloadMediaType)
+				_, _ = writer.Write(generation.Payload)
+			default:
+				http.NotFound(writer, request)
+			}
+		},
+	))
+	defer server.Close()
+
+	client, err := NewClient(
+		server.URL,
+		server.Client(),
+		catalogs.CurrentCatalogSchemaVersion,
+	)
+	if err != nil {
+		t.Fatalf("NewClient: %v", err)
+	}
+	got, err := client.FetchGeneration(
+		context.Background(),
+		generation.Manifest.GenerationID,
+	)
+	if err != nil {
+		t.Fatalf("FetchGeneration: %v", err)
+	}
+	if got.Manifest.GenerationID != generation.Manifest.GenerationID {
+		t.Fatalf(
+			"generation ID = %q, want %q",
+			got.Manifest.GenerationID,
+			generation.Manifest.GenerationID,
+		)
+	}
+	wantPaths := []string{
+		GenerationManifestPath(generation.Manifest.GenerationID),
+		SnapshotPath(generation.Manifest.GenerationID),
+	}
+	if !slices.Equal(paths, wantPaths) {
+		t.Fatalf("request paths = %#v, want %#v", paths, wantPaths)
 	}
 }
 

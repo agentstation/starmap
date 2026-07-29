@@ -32,7 +32,7 @@ Package sse provides the sole reactive catalog\-publication transport.
 ```go
 const (
     // CatalogPublishedEvent is the stable SSE event name.
-    CatalogPublishedEvent = "catalog.published"
+    CatalogPublishedEvent = catalogremote.CatalogPublishedEvent
     // DefaultHeartbeatInterval keeps idle streams alive through common proxies.
     DefaultHeartbeatInterval = 20 * time.Second
     // DefaultWriteTimeout bounds each event or heartbeat write and flush.
@@ -41,7 +41,7 @@ const (
 ```
 
 <a name="Broadcaster"></a>
-## type [Broadcaster](<https://github.com/agentstation/starmap/blob/main/internal/server/sse/broadcaster.go#L56-L69>)
+## type [Broadcaster](<https://github.com/agentstation/starmap/blob/main/internal/server/sse/broadcaster.go#L54-L67>)
 
 Broadcaster delivers publications to HTTP SSE connections. Each connection owns exactly one writer goroutine: its request handler. Publication overload terminates that connection so reconnect catch\-up can recover without a silently healthy stream.
 
@@ -52,7 +52,7 @@ type Broadcaster struct {
 ```
 
 <a name="NewBroadcaster"></a>
-### func [NewBroadcaster](<https://github.com/agentstation/starmap/blob/main/internal/server/sse/broadcaster.go#L105>)
+### func [NewBroadcaster](<https://github.com/agentstation/starmap/blob/main/internal/server/sse/broadcaster.go#L103>)
 
 ```go
 func NewBroadcaster(config Config, logger *zerolog.Logger) (*Broadcaster, error)
@@ -61,7 +61,7 @@ func NewBroadcaster(config Config, logger *zerolog.Logger) (*Broadcaster, error)
 NewBroadcaster constructs an idle broadcaster. It starts no goroutine.
 
 <a name="Broadcaster.ClientCount"></a>
-### func \(\*Broadcaster\) [ClientCount](<https://github.com/agentstation/starmap/blob/main/internal/server/sse/broadcaster.go#L179>)
+### func \(\*Broadcaster\) [ClientCount](<https://github.com/agentstation/starmap/blob/main/internal/server/sse/broadcaster.go#L177>)
 
 ```go
 func (b *Broadcaster) ClientCount() int
@@ -70,7 +70,7 @@ func (b *Broadcaster) ClientCount() int
 ClientCount returns the number of currently registered SSE connections.
 
 <a name="Broadcaster.Close"></a>
-### func \(\*Broadcaster\) [Close](<https://github.com/agentstation/starmap/blob/main/internal/server/sse/broadcaster.go#L198>)
+### func \(\*Broadcaster\) [Close](<https://github.com/agentstation/starmap/blob/main/internal/server/sse/broadcaster.go#L196>)
 
 ```go
 func (b *Broadcaster) Close()
@@ -79,7 +79,7 @@ func (b *Broadcaster) Close()
 Close terminates every active connection and rejects new ones.
 
 <a name="Broadcaster.Publish"></a>
-### func \(\*Broadcaster\) [Publish](<https://github.com/agentstation/starmap/blob/main/internal/server/sse/broadcaster.go#L139>)
+### func \(\*Broadcaster\) [Publish](<https://github.com/agentstation/starmap/blob/main/internal/server/sse/broadcaster.go#L137>)
 
 ```go
 func (b *Broadcaster) Publish(publication Publication) error
@@ -88,7 +88,7 @@ func (b *Broadcaster) Publish(publication Publication) error
 Publish offers one committed generation to every connected stream. It never blocks the catalog commit path. A connection that cannot accept the publication is terminated instead of silently losing it.
 
 <a name="Broadcaster.ServeHTTP"></a>
-### func \(\*Broadcaster\) [ServeHTTP](<https://github.com/agentstation/starmap/blob/main/internal/server/sse/broadcaster.go#L242>)
+### func \(\*Broadcaster\) [ServeHTTP](<https://github.com/agentstation/starmap/blob/main/internal/server/sse/broadcaster.go#L240>)
 
 ```go
 func (b *Broadcaster) ServeHTTP(writer http.ResponseWriter, request *http.Request)
@@ -97,7 +97,7 @@ func (b *Broadcaster) ServeHTTP(writer http.ResponseWriter, request *http.Reques
 ServeHTTP serves one heartbeat\-enabled SSE connection.
 
 <a name="Broadcaster.Stats"></a>
-### func \(\*Broadcaster\) [Stats](<https://github.com/agentstation/starmap/blob/main/internal/server/sse/broadcaster.go#L186>)
+### func \(\*Broadcaster\) [Stats](<https://github.com/agentstation/starmap/blob/main/internal/server/sse/broadcaster.go#L184>)
 
 ```go
 func (b *Broadcaster) Stats() DeliveryStats
@@ -106,7 +106,7 @@ func (b *Broadcaster) Stats() DeliveryStats
 Stats returns cumulative delivery counters.
 
 <a name="Config"></a>
-## type [Config](<https://github.com/agentstation/starmap/blob/main/internal/server/sse/broadcaster.go#L31-L34>)
+## type [Config](<https://github.com/agentstation/starmap/blob/main/internal/server/sse/broadcaster.go#L32-L35>)
 
 Config controls per\-connection SSE liveness and write behavior.
 
@@ -118,7 +118,7 @@ type Config struct {
 ```
 
 <a name="DeliveryStats"></a>
-## type [DeliveryStats](<https://github.com/agentstation/starmap/blob/main/internal/server/sse/broadcaster.go#L43-L50>)
+## type [DeliveryStats](<https://github.com/agentstation/starmap/blob/main/internal/server/sse/broadcaster.go#L41-L48>)
 
 DeliveryStats is a lock\-free snapshot of SSE delivery behavior.
 
@@ -134,15 +134,12 @@ type DeliveryStats struct {
 ```
 
 <a name="Publication"></a>
-## type [Publication](<https://github.com/agentstation/starmap/blob/main/internal/server/sse/broadcaster.go#L37-L40>)
+## type [Publication](<https://github.com/agentstation/starmap/blob/main/internal/server/sse/broadcaster.go#L38>)
 
 Publication identifies one committed immutable catalog generation.
 
 ```go
-type Publication struct {
-    GenerationID string `json:"generation_id"`
-    Sequence     uint64 `json:"sequence"`
-}
+type Publication = catalogremote.Publication
 ```
 
 Generated by [gomarkdoc](<https://github.com/princjef/gomarkdoc>)

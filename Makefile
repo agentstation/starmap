@@ -565,7 +565,7 @@ openapi-check: ## Check if embedded OpenAPI specifications match Go types
 docs-check: openapi-check ## Check if documentation is up to date (for CI)
 	@echo "$(BLUE)Checking if documentation is up to date...$(NC)"
 	@test -x "$(GOMARKDOC)" || (echo "$(RED)gomarkdoc not found. Install with: go install github.com/princjef/gomarkdoc/cmd/gomarkdoc@v1.1.0$(NC)" && exit 1)
-	@for pkg in $$(find ./pkg ./internal ./server -name "generate.go" -exec dirname {} \;); do \
+	@for pkg in $$(find ./pkg ./internal ./server ./remote -name "generate.go" -exec dirname {} \;); do \
 		echo "Checking $$pkg..."; \
 		cd $$pkg && "$(GOMARKDOC)" -c -e -o README.md . --repository.url https://github.com/agentstation/starmap --repository.default-branch main || exit 1; \
 		cd - > /dev/null; \

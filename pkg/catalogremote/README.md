@@ -13,11 +13,19 @@ Package catalogremote defines the versioned online Starmap\-to\-Starmap generati
 ## Index
 
 - [Constants](<#constants>)
+- [func GenerationManifestPath\(generationID string\) string](<#GenerationManifestPath>)
 - [func MarshalManifest\(manifest catalogs.GenerationManifest\) \(\[\]byte, error\)](<#MarshalManifest>)
 - [func SnapshotPath\(generationID string\) string](<#SnapshotPath>)
 - [type Client](<#Client>)
   - [func NewClient\(baseURL string, httpClient \*http.Client, schemaVersion uint64\) \(\*Client, error\)](<#NewClient>)
   - [func \(c \*Client\) FetchCurrent\(ctx context.Context\) \(catalogstore.Generation, error\)](<#Client.FetchCurrent>)
+  - [func \(c \*Client\) FetchGeneration\(ctx context.Context, generationID string\) \(catalogstore.Generation, error\)](<#Client.FetchGeneration>)
+  - [func \(c \*Client\) OpenEventStream\(ctx context.Context, lastEventID string\) \(\*EventStream, error\)](<#Client.OpenEventStream>)
+- [type EventStream](<#EventStream>)
+  - [func \(s \*EventStream\) Close\(\) error](<#EventStream.Close>)
+  - [func \(s \*EventStream\) Next\(\) \(StreamEvent, error\)](<#EventStream.Next>)
+- [type Publication](<#Publication>)
+- [type StreamEvent](<#StreamEvent>)
 
 
 ## Constants
@@ -32,13 +40,35 @@ const (
     ManifestPath = CatalogPath + "/manifest"
     // GenerationsPath prefixes immutable generation snapshot routes.
     GenerationsPath = CatalogPath + "/generations"
+    // EventStreamPath returns post-commit catalog publication hints over SSE.
+    EventStreamPath = "/updates/stream"
+    // CatalogPublishedEvent is the sole catalog publication event name.
+    CatalogPublishedEvent = "catalog.published"
     // ManifestMediaType identifies strict generation-manifest JSON.
     ManifestMediaType = "application/vnd.agentstation.starmap.catalog-manifest+json"
 )
 ```
 
+<a name="EventStreamMediaType"></a>
+
+```go
+const (
+    // EventStreamMediaType identifies the catalog publication SSE stream.
+    EventStreamMediaType = "text/event-stream"
+)
+```
+
+<a name="GenerationManifestPath"></a>
+## func [GenerationManifestPath](<https://github.com/agentstation/starmap/blob/main/pkg/catalogremote/remote.go#L45>)
+
+```go
+func GenerationManifestPath(generationID string) string
+```
+
+GenerationManifestPath returns the immutable manifest route for generationID.
+
 <a name="MarshalManifest"></a>
-## func [MarshalManifest](<https://github.com/agentstation/starmap/blob/main/pkg/catalogremote/remote.go#L147>)
+## func [MarshalManifest](<https://github.com/agentstation/starmap/blob/main/pkg/catalogremote/remote.go#L212>)
 
 ```go
 func MarshalManifest(manifest catalogs.GenerationManifest) ([]byte, error)
@@ -47,7 +77,7 @@ func MarshalManifest(manifest catalogs.GenerationManifest) ([]byte, error)
 MarshalManifest returns strict JSON bytes for the server route.
 
 <a name="SnapshotPath"></a>
-## func [SnapshotPath](<https://github.com/agentstation/starmap/blob/main/pkg/catalogremote/remote.go#L35>)
+## func [SnapshotPath](<https://github.com/agentstation/starmap/blob/main/pkg/catalogremote/remote.go#L50>)
 
 ```go
 func SnapshotPath(generationID string) string
@@ -56,7 +86,7 @@ func SnapshotPath(generationID string) string
 SnapshotPath returns the immutable canonical payload route for generationID.
 
 <a name="Client"></a>
-## type [Client](<https://github.com/agentstation/starmap/blob/main/pkg/catalogremote/remote.go#L40-L44>)
+## type [Client](<https://github.com/agentstation/starmap/blob/main/pkg/catalogremote/remote.go#L55-L59>)
 
 Client fetches one exact current generation from a versioned Starmap API.
 
@@ -67,7 +97,7 @@ type Client struct {
 ```
 
 <a name="NewClient"></a>
-### func [NewClient](<https://github.com/agentstation/starmap/blob/main/pkg/catalogremote/remote.go#L48>)
+### func [NewClient](<https://github.com/agentstation/starmap/blob/main/pkg/catalogremote/remote.go#L63>)
 
 ```go
 func NewClient(baseURL string, httpClient *http.Client, schemaVersion uint64) (*Client, error)
@@ -76,13 +106,85 @@ func NewClient(baseURL string, httpClient *http.Client, schemaVersion uint64) (*
 NewClient creates a remote generation client. baseURL is the versioned API root, for example https://starmap.example.com/api/v1.
 
 <a name="Client.FetchCurrent"></a>
-### func \(\*Client\) [FetchCurrent](<https://github.com/agentstation/starmap/blob/main/pkg/catalogremote/remote.go#L85>)
+### func \(\*Client\) [FetchCurrent](<https://github.com/agentstation/starmap/blob/main/pkg/catalogremote/remote.go#L100>)
 
 ```go
 func (c *Client) FetchCurrent(ctx context.Context) (catalogstore.Generation, error)
 ```
 
 FetchCurrent fetches the current manifest followed by its immutable, generation\-addressed snapshot and validates their binding and compatibility.
+
+<a name="Client.FetchGeneration"></a>
+### func \(\*Client\) [FetchGeneration](<https://github.com/agentstation/starmap/blob/main/pkg/catalogremote/remote.go#L109>)
+
+```go
+func (c *Client) FetchGeneration(ctx context.Context, generationID string) (catalogstore.Generation, error)
+```
+
+FetchGeneration fetches and verifies one immutable generation by ID.
+
+<a name="Client.OpenEventStream"></a>
+### func \(\*Client\) [OpenEventStream](<https://github.com/agentstation/starmap/blob/main/pkg/catalogremote/stream.go#L40-L43>)
+
+```go
+func (c *Client) OpenEventStream(ctx context.Context, lastEventID string) (*EventStream, error)
+```
+
+OpenEventStream opens the publication stream. lastEventID is sent as the standard Last\-Event\-ID request header when nonempty.
+
+<a name="EventStream"></a>
+## type [EventStream](<https://github.com/agentstation/starmap/blob/main/pkg/catalogremote/stream.go#L33-L36>)
+
+EventStream is one caller\-owned catalog publication stream.
+
+```go
+type EventStream struct {
+    // contains filtered or unexported fields
+}
+```
+
+<a name="EventStream.Close"></a>
+### func \(\*EventStream\) [Close](<https://github.com/agentstation/starmap/blob/main/pkg/catalogremote/stream.go#L168>)
+
+```go
+func (s *EventStream) Close() error
+```
+
+Close closes the underlying response body and unblocks Next.
+
+<a name="EventStream.Next"></a>
+### func \(\*EventStream\) [Next](<https://github.com/agentstation/starmap/blob/main/pkg/catalogremote/stream.go#L103>)
+
+```go
+func (s *EventStream) Next() (StreamEvent, error)
+```
+
+Next returns the next complete publication or comment activity frame.
+
+<a name="Publication"></a>
+## type [Publication](<https://github.com/agentstation/starmap/blob/main/pkg/catalogremote/remote.go#L39-L42>)
+
+Publication identifies one committed immutable catalog generation.
+
+```go
+type Publication struct {
+    GenerationID string `json:"generation_id"`
+    Sequence     uint64 `json:"sequence"`
+}
+```
+
+<a name="StreamEvent"></a>
+## type [StreamEvent](<https://github.com/agentstation/starmap/blob/main/pkg/catalogremote/stream.go#L26-L30>)
+
+StreamEvent is one parsed SSE publication or comment activity frame. Comments establish transport activity but never contain publication data.
+
+```go
+type StreamEvent struct {
+    Publication *Publication
+    Comment     string
+    EventID     string
+}
+```
 
 Generated by [gomarkdoc](<https://github.com/princjef/gomarkdoc>)
 

@@ -582,13 +582,23 @@ directory; exact retries are idempotent and same-generation byte changes are
 typed conflicts. The GitHub tag workflow uploads these assets without an
 overwrite flag.
 
-`pkg/catalogremote` owns the online Starmap-to-Starmap protocol. A client reads
-the current strict manifest from a versioned API base, then fetches the exact
-generation-addressed canonical snapshot. Strict media type, body bounds,
-catalog-schema compatibility, size, and checksum validation all precede decode
-and compare-and-swap publication. The server and root remote-update path share
-these route constants; the old ad-hoc unversioned catalog envelope is removed.
-See [Remote Catalog Protocol](REMOTE_CATALOG_PROTOCOL.md).
+`pkg/catalogremote` owns the online Starmap-to-Starmap wire protocol. It reads
+the current strict manifest or a retained generation-addressed manifest, then
+fetches the exact generation-addressed canonical snapshot. Strict media type,
+body bounds, catalog-schema compatibility, size, and checksum validation all
+precede decode and compare-and-swap publication. The same module owns the sole
+`catalog.published` SSE event shape: generation ID plus matching positive
+event-ID/sequence, with comment heartbeats carrying no publication identity.
+
+The opt-in public `remote` package composes that protocol into a reactive
+consumer. `remote.New` starts no goroutine or request. `Start(ctx)` verifies and
+activates current state, subscribes to SSE, closes the fetch/subscribe race with
+another verified current fetch, and owns reconnection under the caller context.
+Every reconnect uses `Last-Event-ID` when available and performs mandatory
+current-state catch-up, so replay is never required for correctness. Duplicate
+generation IDs, duplicate payload digests, and stale retained events do not
+republish or regress the immutable catalog. See
+[Remote Catalog Protocol](REMOTE_CATALOG_PROTOCOL.md).
 
 The online server and offline artifact are the only distribution
 representations. A deployment at `starmap.agentstation.ai` uses the same
