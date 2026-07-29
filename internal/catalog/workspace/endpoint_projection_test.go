@@ -62,6 +62,13 @@ func TestEndpointProjectionDeterministicallyJoinsCanonicalModelToOfferings(t *te
 		rows[1].Pricing.Tokens.Input.Per1M != 2 {
 		t.Fatalf("endpoint prices = %#v, want exact provider prices", rows)
 	}
+	var reasoning map[string]string
+	if err := json.Unmarshal(rows[0].Modes["pro"].Request.Body["reasoning"], &reasoning); err != nil {
+		t.Fatalf("decode nested reasoning request: %v", err)
+	}
+	if reasoning["mode"] != "pro" {
+		t.Fatalf("nested reasoning request = %#v, want mode pro", reasoning)
+	}
 }
 
 func TestEndpointProjectionDriftIsDetectedWithoutOverwrite(t *testing.T) {
@@ -167,6 +174,13 @@ func endpointProjectionProviderModel(id string, price float64) *catalogs.Model {
 				Provider: &catalogs.ModelProviderMode{
 					Body: map[string]any{
 						"service_tier": json.RawMessage(`"priority"`),
+					},
+				},
+			},
+			"pro": {
+				Provider: &catalogs.ModelProviderMode{
+					Body: map[string]any{
+						"reasoning": json.RawMessage(`{"mode":"pro"}`),
 					},
 				},
 			},

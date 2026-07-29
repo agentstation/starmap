@@ -140,6 +140,27 @@ func TestOfferingRequestBodyYAMLUsesNativeValuesNotRawBytes(t *testing.T) {
 	if strings.Contains(rendered, "[34,") || strings.Contains(rendered, "- 34") {
 		t.Fatalf("YAML encoded JSON string bytes:\n%s", rendered)
 	}
+	if !strings.Contains(rendered, "object:\n  mode: pro") {
+		t.Fatalf("nested object escaped its request-body field:\n%s", rendered)
+	}
+
+	var roundTrip OfferingRequestBody
+	if err := yaml.Unmarshal(data, &roundTrip); err != nil {
+		t.Fatalf("Unmarshal YAML: %v", err)
+	}
+	for field, want := range body {
+		var wantValue any
+		if err := json.Unmarshal(want, &wantValue); err != nil {
+			t.Fatalf("decode expected %s: %v", field, err)
+		}
+		var gotValue any
+		if err := json.Unmarshal(roundTrip[field], &gotValue); err != nil {
+			t.Fatalf("decode round-trip %s: %v", field, err)
+		}
+		if diff := cmp.Diff(wantValue, gotValue); diff != "" {
+			t.Fatalf("%s round trip (-want +got):\n%s\nYAML:\n%s", field, diff, rendered)
+		}
+	}
 }
 
 func assertOfferingRoundTrip(t testing.TB, want ProviderOffering) {

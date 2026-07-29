@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"maps"
+	"slices"
 	"strings"
 
 	"github.com/goccy/go-yaml"
@@ -71,13 +72,18 @@ type OfferingRequestBody map[string]json.RawMessage
 // scalar, sequence, mapping, or null instead of encoding RawMessage bytes as a
 // sequence of integers.
 func (b OfferingRequestBody) MarshalYAML() (any, error) {
-	values := make(map[string]yaml.RawMessage, len(b))
-	for field, value := range b {
+	values := make(yaml.MapSlice, 0, len(b))
+	for _, field := range slices.Sorted(maps.Keys(b)) {
+		value := b[field]
 		encoded, err := yaml.JSONToYAML(value)
 		if err != nil {
 			return nil, errors.WrapParse("json", "request.body."+field, err)
 		}
-		values[field] = yaml.RawMessage(encoded)
+		var native any
+		if err := yaml.Unmarshal(encoded, &native); err != nil {
+			return nil, errors.WrapParse("yaml", "request.body."+field, err)
+		}
+		values = append(values, yaml.MapItem{Key: field, Value: native})
 	}
 	return values, nil
 }
