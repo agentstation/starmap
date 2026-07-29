@@ -72,6 +72,16 @@ func (h *Handlers) HandleStats(w http.ResponseWriter, _ *http.Request) {
 
 	models := cat.Definitions()
 	providers := cat.Providers().List()
+	state, err := h.app.CatalogState()
+	if err != nil {
+		response.InternalError(w, err)
+		return
+	}
+	sm, err := h.app.Starmap()
+	if err != nil {
+		response.InternalError(w, err)
+		return
+	}
 
 	// Get runtime stats
 	var memStats runtime.MemStats
@@ -92,11 +102,21 @@ func (h *Handlers) HandleStats(w http.ResponseWriter, _ *http.Request) {
 		"catalog": map[string]any{
 			"models_total":    len(models),
 			"providers_total": len(providers),
+			"generation_id":   state.GenerationID,
+			"generated_at":    state.GeneratedAt,
+			"age_seconds":     catalogAgeSeconds(state.GeneratedAt),
 		},
 		"realtime": map[string]any{
-			"sse_clients":  h.sseBroadcaster.ClientCount(),
-			"sse_delivery": h.sseBroadcaster.Stats(),
+			"sse":         h.sseBroadcaster.Health(),
+			"publication": sm.HookStats(),
 		},
 		"cache": h.cache.GetStats(),
 	})
+}
+
+func catalogAgeSeconds(generatedAt time.Time) int64 {
+	if generatedAt.IsZero() {
+		return 0
+	}
+	return int64(time.Since(generatedAt) / time.Second)
 }

@@ -65,6 +65,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   one-shot subscriber lifecycle across stream, catch-up, addressed fetch, and
   conditional fallback paths. They never trigger hidden retry or polling;
   callers construct a new subscriber after correcting credentials or policy.
+- **Distinct catalog and stream health**: Publishers and subscribers expose
+  active generation freshness independently from heartbeat/event liveness,
+  with retry/catch-up/error state plus observable hook coalescing and SSE
+  backpressure or write termination.
 
 ### BREAKING CHANGES
 - **One canonical human catalog workspace**: `catalog_path`,

@@ -56,6 +56,23 @@ func TestServerInitialization(t *testing.T) {
 	}
 }
 
+func TestNewRejectsNilStarmapClient(t *testing.T) {
+	t.Parallel()
+
+	logger := zerolog.Nop()
+	server, err := New(
+		&mockApplication{logger: &logger},
+		DefaultConfig(),
+	)
+	if server != nil || err == nil {
+		t.Fatalf(
+			"New with nil Starmap client = (%#v, %v), want nil error result",
+			server,
+			err,
+		)
+	}
+}
+
 func TestServerStartDoesNotOwnAHiddenTransportLoop(t *testing.T) {
 	// Create mock app instance
 	testApp := newMockApplication()

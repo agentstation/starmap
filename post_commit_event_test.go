@@ -85,7 +85,8 @@ func TestPostCommitEventOrdering(t *testing.T) {
 		}
 		state := client.CurrentCatalogState()
 		if event.Sequence != state.Sequence || event.Catalog != state.Catalog ||
-			event.GenerationID != state.GenerationID {
+			event.GenerationID != state.GenerationID ||
+			!state.GeneratedAt.Equal(current.Manifest.GeneratedAt) {
 			t.Fatalf("event = %#v, atomic state = %#v", event, state)
 		}
 		retained, err := store.Get(context.Background(), event.GenerationID)

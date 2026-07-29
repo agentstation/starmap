@@ -4,6 +4,7 @@ package server
 import (
 	"context"
 	"net/http"
+	"sync/atomic"
 	"time"
 
 	"github.com/rs/zerolog"
@@ -17,11 +18,15 @@ import (
 // Server holds the HTTP server state and dependencies.
 type Server struct {
 	app            Application
+	client         *starmap.Client
 	cache          *cache.Cache
 	sseBroadcaster *sse.Broadcaster
 	logger         *zerolog.Logger
 	config         Config
 	startTime      time.Time
+	started        atomic.Bool
+	stopped        atomic.Bool
+	now            func() time.Time
 }
 
 // New creates a new server instance with the given configuration.
@@ -45,8 +50,18 @@ func New(app Application, cfg Config) (*Server, error) {
 	}
 	logger.Debug().Msg("SSE broadcaster created")
 
+	sm, err := app.Starmap()
+	if err != nil {
+		return nil, err
+	}
+	if sm == nil {
+		return nil, &errors.ValidationError{
+			Field: "server.starmap_client", Message: "is required",
+		}
+	}
 	server := &Server{
 		app:            app,
+		client:         sm,
 		cache:          cache.New(cfg.CacheTTL, cfg.CacheTTL*2),
 		sseBroadcaster: sseBroadcaster,
 		logger:         logger,
@@ -56,7 +71,7 @@ func New(app Application, cfg Config) (*Server, error) {
 
 	// Connect the sole post-commit publication event to SSE.
 	logger.Debug().Msg("Connecting Starmap publication hook to SSE")
-	if err := server.connectHooks(); err != nil {
+	if err := server.connectHooks(sm); err != nil {
 		return nil, err
 	}
 	logger.Debug().Msg("Starmap publication hook connected")
@@ -66,12 +81,7 @@ func New(app Application, cfg Config) (*Server, error) {
 }
 
 // connectHooks registers the one post-commit publication event.
-func (s *Server) connectHooks() error {
-	sm, err := s.app.Starmap()
-	if err != nil {
-		return err
-	}
-
+func (s *Server) connectHooks(sm *starmap.Client) error {
 	// Generation publication is the cache/event authority. Request-side cache
 	// keys also read the atomic catalog state, so hook scheduling cannot expose a
 	// stale namespace after publication.
@@ -91,6 +101,7 @@ func (s *Server) connectHooks() error {
 // Start activates server-owned services. SSE connections are request-owned, so
 // no background transport goroutine is needed.
 func (s *Server) Start() {
+	s.started.Store(true)
 	s.logger.Debug().Msg("Server services active")
 }
 
@@ -108,6 +119,7 @@ func (s *Server) Shutdown(ctx context.Context) error {
 		}
 	}
 	s.sseBroadcaster.Close()
+	s.stopped.Store(true)
 	if err := ctx.Err(); err != nil {
 		return err
 	}
@@ -128,4 +140,9 @@ func (s *Server) SSEBroadcaster() *sse.Broadcaster {
 // StartTime returns the server start time for uptime calculations.
 func (s *Server) StartTime() time.Time {
 	return s.startTime
+}
+
+// OperationalHealth returns server, publication, and stream health without I/O.
+func (s *Server) OperationalHealth() OperationalHealth {
+	return s.operationalHealth()
 }

@@ -614,7 +614,17 @@ catch-up disables fallback before event consumption resumes.
 without treating stream liveness as catalog freshness. HTTP 401 and 403 are
 terminal across stream open, addressed fetch, catch-up, and conditional
 fallback polling; the one-shot lifecycle stops instead of retrying credentials
-or access policy indefinitely. See
+or access policy indefinitely.
+
+Production health keeps publisher delivery, subscriber transport, and catalog
+freshness distinct. `server.Health()` reports the active generation timestamp,
+post-commit hook coalescing/failure counters, connected SSE state, last
+successful heartbeat/event delivery, and every backpressure or write
+termination. `remote.Subscriber.Health()` reports stream/retry/polling state,
+last received heartbeat/event, last successful catch-up, active generation
+age, retry count, and a structured secret-free last error. Heartbeats update
+only transport liveness; catalog age is always derived from the atomic active
+generation timestamp. See
 [Remote Catalog Protocol](REMOTE_CATALOG_PROTOCOL.md).
 
 The online server and offline artifact are the only distribution

@@ -5,6 +5,7 @@ import (
 	"strings"
 	"sync"
 	"testing"
+	"time"
 
 	"github.com/agentstation/starmap/pkg/catalogs"
 	pkgerrors "github.com/agentstation/starmap/pkg/errors"
@@ -184,6 +185,6 @@ func publishTestCatalog(client *Client, builder *catalogs.Builder) error {
 	if err != nil {
 		return err
 	}
-	client.swapCatalogGeneration(published, "")
+	client.swapCatalogGeneration(published, "", time.Time{})
 	return nil
 }

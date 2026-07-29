@@ -47,6 +47,37 @@ type DeliveryStats struct {
 	Failed                 uint64 `json:"failed"`
 }
 
+// StreamState is the server-side publication stream state.
+type StreamState string
+
+const (
+	// StreamStateIdle means the broadcaster accepts streams but has no clients.
+	StreamStateIdle StreamState = "idle"
+	// StreamStateStreaming means at least one SSE client is connected.
+	StreamStateStreaming StreamState = "streaming"
+	// StreamStateStopped means the broadcaster rejects new streams.
+	StreamStateStopped StreamState = "stopped"
+)
+
+// DeliveryError is a secret-free classification of the latest stream failure.
+type DeliveryError struct {
+	Kind       string    `json:"kind"`
+	OccurredAt time.Time `json:"occurred_at"`
+}
+
+// Health reports server-side SSE publication delivery without conflating
+// heartbeat liveness with catalog freshness.
+type Health struct {
+	State            StreamState    `json:"state"`
+	Clients          int            `json:"clients"`
+	LastHeartbeatAt  time.Time      `json:"last_heartbeat_at"`
+	LastEventAt      time.Time      `json:"last_event_at"`
+	LastGenerationID string         `json:"last_generation_id,omitempty"`
+	LastSequence     uint64         `json:"last_sequence"`
+	LastError        *DeliveryError `json:"last_error,omitempty"`
+	Delivery         DeliveryStats  `json:"delivery"`
+}
+
 // Broadcaster delivers publications to HTTP SSE connections. Each connection
 // owns exactly one writer goroutine: its request handler. Publication overload
 // terminates that connection so reconnect catch-up can recover without a
@@ -64,6 +95,14 @@ type Broadcaster struct {
 	disconnected           atomic.Uint64
 	backpressureTerminated atomic.Uint64
 	failed                 atomic.Uint64
+	lastHeartbeatAt        atomic.Int64
+	lastEventAt            atomic.Int64
+
+	healthMu         sync.Mutex
+	lastGenerationID string
+	lastSequence     uint64
+	lastError        *DeliveryError
+	now              func() time.Time
 }
 
 type client struct {
@@ -164,6 +203,7 @@ func (b *Broadcaster) Publish(publication Publication) error {
 		}
 		if b.disconnect(connection) {
 			b.backpressureTerminated.Add(1)
+			b.recordDeliveryError("backpressure")
 			b.logger.Warn().
 				Uint64("sequence", publication.Sequence).
 				Str("generation_id", publication.GenerationID).
@@ -190,6 +230,39 @@ func (b *Broadcaster) Stats() DeliveryStats {
 		BackpressureTerminated: b.backpressureTerminated.Load(),
 		Failed:                 b.failed.Load(),
 	}
+}
+
+// Health returns the current server-side stream delivery health.
+func (b *Broadcaster) Health() Health {
+	if b == nil {
+		return Health{State: StreamStateStopped}
+	}
+	b.mu.Lock()
+	state := StreamStateIdle
+	if b.closed {
+		state = StreamStateStopped
+	} else if len(b.clients) != 0 {
+		state = StreamStateStreaming
+	}
+	clients := len(b.clients)
+	b.mu.Unlock()
+
+	b.healthMu.Lock()
+	health := Health{
+		State:            state,
+		Clients:          clients,
+		LastGenerationID: b.lastGenerationID,
+		LastSequence:     b.lastSequence,
+		Delivery:         b.Stats(),
+	}
+	if b.lastError != nil {
+		lastError := *b.lastError
+		health.LastError = &lastError
+	}
+	b.healthMu.Unlock()
+	health.LastHeartbeatAt = timestamp(b.lastHeartbeatAt.Load())
+	health.LastEventAt = timestamp(b.lastEventAt.Load())
+	return health
 }
 
 // Close terminates every active connection and rejects new ones.
@@ -293,12 +366,14 @@ func (b *Broadcaster) ServeHTTP(writer http.ResponseWriter, request *http.Reques
 				return
 			}
 			b.sent.Add(1)
+			b.recordPublication(publication)
 		case <-heartbeat.C:
 			if err := b.writeFrame(writer, controller, []byte(": heartbeat\n\n")); err != nil {
 				b.recordWriteFailure(err)
 				return
 			}
 			b.heartbeats.Add(1)
+			b.lastHeartbeatAt.Store(b.currentTime().UnixNano())
 		}
 	}
 }
@@ -319,9 +394,44 @@ func (b *Broadcaster) writeFrame(
 
 func (b *Broadcaster) recordWriteFailure(err error) {
 	b.failed.Add(1)
+	b.recordDeliveryError("write_failed")
 	if !stderrors.Is(err, http.ErrServerClosed) {
 		b.logger.Warn().Err(err).Msg("SSE connection write failed")
 	}
+}
+
+func (b *Broadcaster) recordDeliveryError(kind string) {
+	b.healthMu.Lock()
+	b.lastError = &DeliveryError{
+		Kind:       kind,
+		OccurredAt: b.currentTime(),
+	}
+	b.healthMu.Unlock()
+}
+
+func (b *Broadcaster) recordPublication(publication Publication) {
+	now := b.currentTime()
+	b.lastEventAt.Store(now.UnixNano())
+	b.healthMu.Lock()
+	if publication.Sequence >= b.lastSequence {
+		b.lastSequence = publication.Sequence
+		b.lastGenerationID = publication.GenerationID
+	}
+	b.healthMu.Unlock()
+}
+
+func (b *Broadcaster) currentTime() time.Time {
+	if b.now != nil {
+		return b.now().UTC()
+	}
+	return time.Now().UTC()
+}
+
+func timestamp(unixNano int64) time.Time {
+	if unixNano == 0 {
+		return time.Time{}
+	}
+	return time.Unix(0, unixNano).UTC()
 }
 
 func encodePublication(publication Publication) ([]byte, error) {

@@ -350,9 +350,11 @@ func TestSubscriberHeartbeatsPreserveStreamLiveness(t *testing.T) {
 		status.Polls != 0 || status.Entries != 0 {
 		t.Fatalf("healthy stream fallback status = %#v", status)
 	}
+	generatedAt := assertHeartbeatStreamHealth(t, subscriber, generation)
 	if err := subscriber.Close(); err != nil {
 		t.Fatalf("Close: %v", err)
 	}
+	assertStoppedCatalogHealth(t, subscriber, generatedAt)
 }
 
 func TestSubscriberPollingFallbackIsExplicitBoundedAndConditional(t *testing.T) {
@@ -783,6 +785,7 @@ func TestSubscriberReconnectCatchesUpWithoutEventAndDeduplicatesReplay(t *testin
 			currentManifestGets,
 		)
 	}
+	assertRecoveredStreamHealth(t, subscriber, second, 3)
 }
 
 func TestSubscriberDeduplicatesNewIdentityWithSamePayload(t *testing.T) {

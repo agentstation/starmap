@@ -31,5 +31,12 @@ func VerifyRemoteCatalog(ctx context.Context, baseURL string) (err error) {
 	if _, err := catalog.FindModel("gpt-4o"); err != nil {
 		return fmt.Errorf("find remote model: %w", err)
 	}
+	health := subscriber.Health()
+	if health.StreamState != remote.StreamStateStreaming ||
+		health.ActiveGenerationID == "" ||
+		health.CatalogGeneratedAt.IsZero() ||
+		health.LastSuccessfulCatchUpAt.IsZero() {
+		return fmt.Errorf("unexpected subscriber health: %#v", health)
+	}
 	return nil
 }

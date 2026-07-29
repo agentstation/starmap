@@ -72,10 +72,12 @@ func (c *Client) Catalog() *catalogs.Catalog {
 }
 
 // CatalogState atomically pairs the current immutable catalog with its logical
-// generation identity for generation-scoped caches and responses.
+// generation identity and generation timestamp for freshness, caches, and
+// responses.
 type CatalogState struct {
 	Catalog      *catalogs.Catalog
 	GenerationID string
+	GeneratedAt  time.Time
 	Sequence     uint64
 }
 
@@ -90,7 +92,12 @@ func (c *Client) CurrentCatalogState() CatalogState {
 	if id == "" && c.usingEmbeddedBootstrap {
 		id = c.embeddedBootstrap.GenerationID
 	}
-	return CatalogState{Catalog: c.catalog, GenerationID: id, Sequence: c.generationSequence}
+	return CatalogState{
+		Catalog:      c.catalog,
+		GenerationID: id,
+		GeneratedAt:  c.generationGeneratedAt,
+		Sequence:     c.generationSequence,
+	}
 }
 
 // CurrentGenerationID returns the logical identity of the currently published
@@ -142,6 +149,7 @@ type Client struct {
 	catalog                *catalogs.Catalog
 	updates                updateCoordinator
 	generationID           string
+	generationGeneratedAt  time.Time
 	generationSequence     uint64
 	usingEmbeddedBootstrap bool
 	embeddedBootstrap      catalogs.BootstrapManifest
@@ -209,6 +217,7 @@ func NewContext(ctx context.Context, opts ...Option) (*Client, error) {
 	}
 	initial := embeddedCatalog
 	generationID := ""
+	generationGeneratedAt := bootstrapManifest.GeneratedAt
 	usingEmbeddedBootstrap := true
 	var durableCurrent *catalogstore.Generation
 	if !isNilCatalogStore(sm.options.catalogStore) {
@@ -226,6 +235,7 @@ func NewContext(ctx context.Context, opts ...Option) (*Client, error) {
 			}
 			durableCurrent = &stored
 			generationID = stored.Manifest.GenerationID
+			generationGeneratedAt = stored.Manifest.GeneratedAt
 			usingEmbeddedBootstrap = false
 		case stderrors.Is(currentErr, errors.ErrNotFound):
 			// A newly configured store has no durable generation yet; the verified
@@ -244,6 +254,7 @@ func NewContext(ctx context.Context, opts ...Option) (*Client, error) {
 			if err != nil {
 				return nil, errors.WrapResource("publish", "initial human catalog", catalogPath, err)
 			}
+			generationGeneratedAt = time.Time{}
 			usingEmbeddedBootstrap = false
 		case stderrors.Is(humanErr, os.ErrNotExist):
 			// A missing workspace is seeded only by an explicit synchronization.
@@ -256,6 +267,7 @@ func NewContext(ctx context.Context, opts ...Option) (*Client, error) {
 	}
 	sm.catalog = initial
 	sm.generationID = generationID
+	sm.generationGeneratedAt = generationGeneratedAt
 	sm.generationSequence = 1
 	sm.usingEmbeddedBootstrap = usingEmbeddedBootstrap
 	sm.embeddedBootstrap = bootstrapManifest

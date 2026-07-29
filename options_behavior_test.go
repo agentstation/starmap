@@ -99,7 +99,7 @@ func TestCurrentGenerationIDTracksBootstrapAndDurablePublication(t *testing.T) {
 	if bootstrapID == "" || client.CurrentGenerationID() != bootstrapID {
 		t.Fatalf("bootstrap generation ID = %q, readiness = %q", client.CurrentGenerationID(), bootstrapID)
 	}
-	client.swapCatalogGeneration(client.Catalog(), "durable-generation")
+	client.swapCatalogGeneration(client.Catalog(), "durable-generation", time.Time{})
 	if got := client.CurrentGenerationID(); got != "durable-generation" {
 		t.Fatalf("published generation ID = %q", got)
 	}
@@ -168,6 +168,13 @@ func TestActivateUsesExactImmutableGeneration(t *testing.T) {
 		t.Fatalf("remote generation ID = %q, want %q", got, generation.Manifest.GenerationID)
 	}
 	firstState := client.CurrentCatalogState()
+	if !firstState.GeneratedAt.Equal(generation.Manifest.GeneratedAt) {
+		t.Fatalf(
+			"remote generation time = %s, want %s",
+			firstState.GeneratedAt,
+			generation.Manifest.GeneratedAt,
+		)
+	}
 	select {
 	case <-events:
 	case <-time.After(time.Second):

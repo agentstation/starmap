@@ -32,17 +32,24 @@ type Subscriber struct {
 	protocol *catalogremote.Client
 	client   *starmap.Client
 
-	mu          sync.Mutex
-	state       lifecycleState
-	cancel      context.CancelFunc
-	done        chan struct{}
-	lastEventID string
-	fallback    PollingFallbackStatus
+	mu              sync.Mutex
+	state           lifecycleState
+	cancel          context.CancelFunc
+	done            chan struct{}
+	lastEventID     string
+	fallback        PollingFallbackStatus
+	streamState     StreamState
+	lastHeartbeatAt time.Time
+	lastEventAt     time.Time
+	lastCatchUpAt   time.Time
+	retries         uint64
+	lastError       *HealthError
 
 	activationMu sync.Mutex
 	active       generationIdentity
 
 	retryDelay func(int) time.Duration
+	now        func() time.Time
 }
 
 type generationIdentity struct {
@@ -94,10 +101,11 @@ func New(config Config) (*Subscriber, error) {
 		)
 	}
 	subscriber := &Subscriber{
-		config:   normalized,
-		protocol: protocol,
-		client:   client,
-		state:    stateIdle,
+		config:      normalized,
+		protocol:    protocol,
+		client:      client,
+		state:       stateIdle,
+		streamState: StreamStateIdle,
 		fallback: PollingFallbackStatus{
 			Enabled: normalized.PollingFallback != nil,
 		},
@@ -162,6 +170,7 @@ func (s *Subscriber) Start(ctx context.Context) error {
 		}
 	}
 	s.state = stateStarting
+	s.streamState = StreamStateStarting
 	s.cancel = cancel
 	s.done = make(chan struct{})
 	done := s.done
@@ -176,6 +185,7 @@ func (s *Subscriber) Start(ctx context.Context) error {
 		s.mu.Lock()
 		if s.state == stateStarting {
 			s.state = stateIdle
+			s.streamState = StreamStateIdle
 			s.cancel = nil
 			s.done = nil
 		}
@@ -185,14 +195,17 @@ func (s *Subscriber) Start(ctx context.Context) error {
 
 	initial, err := s.protocol.FetchCurrent(runCtx)
 	if err != nil {
+		s.recordHealthError("initial_fetch", err)
 		return err
 	}
 	if _, err := s.activate(runCtx, initial); err != nil {
+		s.recordHealthError("initial_activate", err)
 		return err
 	}
 
 	stream, err := s.protocol.OpenEventStream(runCtx, "")
 	if err != nil {
+		s.recordHealthError("stream_open", err)
 		if runErr := runCtx.Err(); runErr != nil {
 			return runErr
 		}
@@ -211,6 +224,7 @@ func (s *Subscriber) Start(ctx context.Context) error {
 			}
 		}
 		s.state = stateRunning
+		s.streamState = StreamStateRetrying
 		started = true
 		go s.run(runCtx, nil, done, 1)
 		s.mu.Unlock()
@@ -234,6 +248,7 @@ func (s *Subscriber) Start(ctx context.Context) error {
 		}
 	}
 	s.state = stateRunning
+	s.streamState = StreamStateStreaming
 	started = true
 	go s.run(runCtx, stream, done, 0)
 	s.mu.Unlock()
@@ -251,6 +266,7 @@ func (s *Subscriber) Close() error {
 	done := s.done
 	if s.state == stateIdle {
 		s.state = stateStopped
+		s.streamState = StreamStateStopped
 		s.mu.Unlock()
 		return nil
 	}
@@ -259,6 +275,7 @@ func (s *Subscriber) Close() error {
 		return nil
 	}
 	s.state = stateStopped
+	s.streamState = StreamStateStopped
 	s.mu.Unlock()
 	if cancel != nil {
 		cancel()
@@ -293,6 +310,7 @@ func (s *Subscriber) run(
 		}
 		s.mu.Lock()
 		s.state = stateStopped
+		s.streamState = StreamStateStopped
 		s.fallback.Active = false
 		s.mu.Unlock()
 		close(done)
@@ -311,10 +329,10 @@ func (s *Subscriber) run(
 			if err == nil {
 				err = io.EOF
 			}
+			s.recordHealthError("stream_read", err)
 			if isTerminalRemoteError(err) {
 				return
 			}
-			_ = err // P7.11 exposes terminal/retry health without changing recovery.
 			streamFailures++
 		}
 
@@ -326,6 +344,8 @@ func (s *Subscriber) run(
 			) {
 				return
 			}
+			s.setStreamState(StreamStateRetrying)
+			s.recordRetry()
 			if !waitRetry(ctx, s.retryDelay(attempt)) {
 				return
 			}
@@ -333,6 +353,7 @@ func (s *Subscriber) run(
 			lastEventID := s.currentLastEventID()
 			next, openErr := s.protocol.OpenEventStream(ctx, lastEventID)
 			if openErr != nil {
+				s.recordHealthError("stream_open", openErr)
 				if isTerminalRemoteError(openErr) {
 					return
 				}
@@ -353,6 +374,7 @@ func (s *Subscriber) run(
 				continue
 			}
 			s.finishPollingFallback()
+			s.setStreamState(StreamStateStreaming)
 			stream = next
 			attempt = 0
 			streamFailures = 0
@@ -379,12 +401,14 @@ func (s *Subscriber) pollFallbackIfDue(
 		return ctx.Err() == nil
 	}
 	s.startPollingFallback()
+	s.setStreamState(StreamStatePolling)
 	now := time.Now()
 	if !nextPoll.IsZero() && now.Before(*nextPoll) {
 		return ctx.Err() == nil
 	}
 
 	modified, err := s.pollCurrent(ctx)
+	s.recordHealthError("fallback_poll", err)
 	if ctx.Err() != nil {
 		return false
 	}
@@ -469,8 +493,12 @@ func (s *Subscriber) consume(
 			resetTimer(liveness, s.config.LivenessTimeout)
 			event := result.event
 			if event.Publication == nil {
+				if event.Comment == "heartbeat" {
+					s.recordHeartbeat()
+				}
 				continue
 			}
+			s.recordPublicationEvent()
 			if s.isActiveGeneration(event.Publication.GenerationID) {
 				s.recordEventID(event.EventID)
 				continue
@@ -528,10 +556,15 @@ func resetTimer(timer *time.Timer, duration time.Duration) {
 func (s *Subscriber) catchUp(ctx context.Context) error {
 	generation, err := s.protocol.FetchCurrent(ctx)
 	if err != nil {
+		s.recordHealthError("catch_up", err)
 		return err
 	}
-	_, err = s.activate(ctx, generation)
-	return err
+	if _, err = s.activate(ctx, generation); err != nil {
+		s.recordHealthError("catch_up", err)
+		return err
+	}
+	s.recordCatchUp()
+	return nil
 }
 
 func (s *Subscriber) activate(

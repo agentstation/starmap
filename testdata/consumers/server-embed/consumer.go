@@ -72,6 +72,11 @@ func ServeAndShutdown(ctx context.Context) error {
 	if response.StatusCode != http.StatusOK {
 		return fmt.Errorf("health status = %d, want %d", response.StatusCode, http.StatusOK)
 	}
+	health := srv.Health()
+	if health.State != server.StateServing || health.ActiveGenerationID == "" ||
+		health.CatalogGeneratedAt.IsZero() {
+		return fmt.Errorf("unexpected serving health: %#v", health)
+	}
 	updateRequest, err := http.NewRequestWithContext(
 		ctx,
 		http.MethodPost,
@@ -105,6 +110,10 @@ func ServeAndShutdown(ctx context.Context) error {
 	defer cancel()
 	if err := srv.Shutdown(shutdownCtx); err != nil {
 		return err
+	}
+	if health := srv.Health(); health.State != server.StateStopped ||
+		health.Stream.State != server.StreamStateStopped {
+		return fmt.Errorf("unexpected stopped health: %#v", health)
 	}
 	stopped = true
 	select {

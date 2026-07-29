@@ -767,7 +767,9 @@ ordinary server embedding independent from provider credentials and cloud SDKs.
 - **Reactive Updates**: SSE (`/api/v1/updates/stream`) emits heartbeat comments and one post-commit `catalog.published` hint containing generation ID and sequence
 - **Performance**: Generation-scoped in-memory caching, deterministic query sorting, rate limiting (per-IP)
 - **Security**: Optional API key authentication, CORS support
-- **Monitoring**: Health checks (`/health`, `/api/v1/ready`), metrics endpoint
+- **Monitoring**: Health checks (`/health`, `/api/v1/ready`), operational
+  catalog/publication/stream health (`/api/v1/stats` and `srv.Health()`), and
+  metrics endpoint
 - **Publication identity**: Catalog responses and real-time publication events carry the durable generation identity
 - **Documentation**: OpenAPI 3.1 specs at `/api/v1/openapi.json`
 
@@ -815,6 +817,15 @@ defer subscriber.Close()
 
 catalog := subscriber.Catalog()
 model, err := catalog.FindModel("gpt-4o")
+
+health := subscriber.Health()
+log.Printf(
+    "stream=%s generation=%s age=%ds retries=%d",
+    health.StreamState,
+    health.ActiveGenerationID,
+    health.CatalogAgeSeconds,
+    health.Retries,
+)
 ```
 
 The initial generation is verified before `Start` succeeds. SSE events are
@@ -842,6 +853,14 @@ cumulative counters through `PollingFallbackStatus()`. Authentication failures
 (HTTP 401 or 403) are terminal for the active lifecycle: they do not retry or
 enter polling fallback. Construct a new subscriber after credentials or access
 policy have been corrected.
+
+`subscriber.Health()` reports stream state, last heartbeat, last publication
+event, last successful catch-up, active generation age, retry count, fallback
+status, and a structured secret-free last error. Heartbeats establish transport
+liveness only; they never change the active generation timestamp or catalog
+age. The publisher exposes the matching server-side view through
+`srv.Health()` and `/api/v1/stats`, including callback coalescing and SSE
+backpressure/write termination counters.
 
 `BaseURL` is the trusted publisher origin. Non-loopback servers require HTTPS
 with a verified certificate chain, and redirects cannot change origin. Plain

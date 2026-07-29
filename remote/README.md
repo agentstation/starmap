@@ -14,12 +14,16 @@ Package remote provides a reactive Starmap catalog consumer.
 
 - [Constants](<#constants>)
 - [type Config](<#Config>)
+- [type Health](<#Health>)
+- [type HealthError](<#HealthError>)
 - [type PollingFallbackPolicy](<#PollingFallbackPolicy>)
 - [type PollingFallbackStatus](<#PollingFallbackStatus>)
+- [type StreamState](<#StreamState>)
 - [type Subscriber](<#Subscriber>)
   - [func New\(config Config\) \(\*Subscriber, error\)](<#New>)
   - [func \(s \*Subscriber\) Catalog\(\) \*catalogs.Catalog](<#Subscriber.Catalog>)
   - [func \(s \*Subscriber\) Close\(\) error](<#Subscriber.Close>)
+  - [func \(s \*Subscriber\) Health\(\) Health](<#Subscriber.Health>)
   - [func \(s \*Subscriber\) PollingFallbackStatus\(\) PollingFallbackStatus](<#Subscriber.PollingFallbackStatus>)
   - [func \(s \*Subscriber\) Start\(ctx context.Context\) error](<#Subscriber.Start>)
 
@@ -76,6 +80,41 @@ type Config struct {
 }
 ```
 
+<a name="Health"></a>
+## type [Health](<https://github.com/agentstation/starmap/blob/main/remote/health.go#L44-L55>)
+
+Health is an immutable snapshot of subscriber transport and catalog health. Stream activity and catalog freshness are independent: heartbeats never change CatalogGeneratedAt or CatalogAgeSeconds.
+
+```go
+type Health struct {
+    StreamState             StreamState           `json:"stream_state"`
+    ActiveGenerationID      string                `json:"active_generation_id,omitempty"`
+    CatalogGeneratedAt      time.Time             `json:"catalog_generated_at"`
+    CatalogAgeSeconds       int64                 `json:"catalog_age_seconds"`
+    LastHeartbeatAt         time.Time             `json:"last_heartbeat_at"`
+    LastEventAt             time.Time             `json:"last_event_at"`
+    LastSuccessfulCatchUpAt time.Time             `json:"last_successful_catch_up_at"`
+    Retries                 uint64                `json:"retries"`
+    LastError               *HealthError          `json:"last_error,omitempty"`
+    PollingFallback         PollingFallbackStatus `json:"polling_fallback"`
+}
+```
+
+<a name="HealthError"></a>
+## type [HealthError](<https://github.com/agentstation/starmap/blob/main/remote/health.go#L33-L39>)
+
+HealthError is a secret\-free classification of the latest subscriber error. It deliberately excludes endpoint URLs, response bodies, and wrapped error text because those values can contain credentials or publisher details.
+
+```go
+type HealthError struct {
+    Operation  string    `json:"operation"`
+    Kind       string    `json:"kind"`
+    StatusCode int       `json:"status_code,omitempty"`
+    Terminal   bool      `json:"terminal"`
+    OccurredAt time.Time `json:"occurred_at"`
+}
+```
+
 <a name="PollingFallbackPolicy"></a>
 ## type [PollingFallbackPolicy](<https://github.com/agentstation/starmap/blob/main/remote/config.go#L29-L35>)
 
@@ -92,7 +131,7 @@ type PollingFallbackPolicy struct {
 ```
 
 <a name="PollingFallbackStatus"></a>
-## type [PollingFallbackStatus](<https://github.com/agentstation/starmap/blob/main/remote/subscriber.go#L56-L68>)
+## type [PollingFallbackStatus](<https://github.com/agentstation/starmap/blob/main/remote/subscriber.go#L63-L75>)
 
 PollingFallbackStatus is an immutable snapshot of the subscriber's bounded polling fallback. Counters are cumulative for the subscriber lifetime.
 
@@ -112,8 +151,36 @@ type PollingFallbackStatus struct {
 }
 ```
 
+<a name="StreamState"></a>
+## type [StreamState](<https://github.com/agentstation/starmap/blob/main/remote/health.go#L13>)
+
+StreamState is the subscriber's current reactive transport state.
+
+```go
+type StreamState string
+```
+
+<a name="StreamStateIdle"></a>
+
+```go
+const (
+    // StreamStateIdle means Start has not established a lifecycle.
+    StreamStateIdle StreamState = "idle"
+    // StreamStateStarting means initial verification or stream setup is active.
+    StreamStateStarting StreamState = "starting"
+    // StreamStateStreaming means an SSE stream is established and caught up.
+    StreamStateStreaming StreamState = "streaming"
+    // StreamStateRetrying means the subscriber is recovering a failed stream.
+    StreamStateRetrying StreamState = "retrying"
+    // StreamStatePolling means explicit conditional fallback polling is active.
+    StreamStatePolling StreamState = "polling"
+    // StreamStateStopped means the one-shot lifecycle has ended.
+    StreamStateStopped StreamState = "stopped"
+)
+```
+
 <a name="Subscriber"></a>
-## type [Subscriber](<https://github.com/agentstation/starmap/blob/main/remote/subscriber.go#L30-L46>)
+## type [Subscriber](<https://github.com/agentstation/starmap/blob/main/remote/subscriber.go#L30-L53>)
 
 Subscriber owns one explicitly started remote catalog lifecycle.
 
@@ -124,7 +191,7 @@ type Subscriber struct {
 ```
 
 <a name="New"></a>
-### func [New](<https://github.com/agentstation/starmap/blob/main/remote/subscriber.go#L72>)
+### func [New](<https://github.com/agentstation/starmap/blob/main/remote/subscriber.go#L79>)
 
 ```go
 func New(config Config) (*Subscriber, error)
@@ -133,7 +200,7 @@ func New(config Config) (*Subscriber, error)
 New validates config and constructs an idle subscriber. It starts no goroutine and performs no remote request.
 
 <a name="Subscriber.Catalog"></a>
-### func \(\*Subscriber\) [Catalog](<https://github.com/agentstation/starmap/blob/main/remote/subscriber.go#L122>)
+### func \(\*Subscriber\) [Catalog](<https://github.com/agentstation/starmap/blob/main/remote/subscriber.go#L130>)
 
 ```go
 func (s *Subscriber) Catalog() *catalogs.Catalog
@@ -142,7 +209,7 @@ func (s *Subscriber) Catalog() *catalogs.Catalog
 Catalog returns the current immutable catalog. Before Start succeeds it is the verified embedded bootstrap; afterward it is the latest activated remote generation.
 
 <a name="Subscriber.Close"></a>
-### func \(\*Subscriber\) [Close](<https://github.com/agentstation/starmap/blob/main/remote/subscriber.go#L245>)
+### func \(\*Subscriber\) [Close](<https://github.com/agentstation/starmap/blob/main/remote/subscriber.go#L260>)
 
 ```go
 func (s *Subscriber) Close() error
@@ -150,8 +217,17 @@ func (s *Subscriber) Close() error
 
 Close cancels and joins the subscriber lifecycle within ShutdownTimeout. It is idempotent.
 
+<a name="Subscriber.Health"></a>
+### func \(\*Subscriber\) [Health](<https://github.com/agentstation/starmap/blob/main/remote/health.go#L58>)
+
+```go
+func (s *Subscriber) Health() Health
+```
+
+Health returns the current subscriber health without performing I/O.
+
 <a name="Subscriber.PollingFallbackStatus"></a>
-### func \(\*Subscriber\) [PollingFallbackStatus](<https://github.com/agentstation/starmap/blob/main/remote/subscriber.go#L110>)
+### func \(\*Subscriber\) [PollingFallbackStatus](<https://github.com/agentstation/starmap/blob/main/remote/subscriber.go#L118>)
 
 ```go
 func (s *Subscriber) PollingFallbackStatus() PollingFallbackStatus
@@ -160,7 +236,7 @@ func (s *Subscriber) PollingFallbackStatus() PollingFallbackStatus
 PollingFallbackStatus returns the current bounded polling fallback state.
 
 <a name="Subscriber.Start"></a>
-### func \(\*Subscriber\) [Start](<https://github.com/agentstation/starmap/blob/main/remote/subscriber.go#L136>)
+### func \(\*Subscriber\) [Start](<https://github.com/agentstation/starmap/blob/main/remote/subscriber.go#L144>)
 
 ```go
 func (s *Subscriber) Start(ctx context.Context) error

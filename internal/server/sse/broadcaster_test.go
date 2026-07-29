@@ -104,6 +104,11 @@ func TestPublicationBackpressureTerminatesConnection(t *testing.T) {
 		stats.Disconnected != 1 {
 		t.Fatalf("delivery stats = %#v", stats)
 	}
+	health := broadcaster.Health()
+	if health.State != StreamStateIdle || health.Clients != 0 ||
+		health.LastError == nil || health.LastError.Kind != "backpressure" {
+		t.Fatalf("backpressure health = %#v", health)
+	}
 }
 
 func TestStreamFlushesHeartbeatAndPublicationOnOneWriter(t *testing.T) {
@@ -171,6 +176,13 @@ func TestStreamFlushesHeartbeatAndPublicationOnOneWriter(t *testing.T) {
 	if stats.Sent != 1 || stats.Heartbeats == 0 || stats.Failed != 0 {
 		t.Fatalf("delivery stats = %#v", stats)
 	}
+	health := broadcaster.Health()
+	if health.State != StreamStateStreaming || health.Clients != 1 ||
+		health.LastHeartbeatAt.IsZero() || health.LastEventAt.IsZero() ||
+		health.LastGenerationID != "generation-7" ||
+		health.LastSequence != 7 || health.LastError != nil {
+		t.Fatalf("stream health = %#v", health)
+	}
 }
 
 func TestWriteFailureUsesDeadlineAndCleansUpConnection(t *testing.T) {
@@ -207,6 +219,10 @@ func TestWriteFailureUsesDeadlineAndCleansUpConnection(t *testing.T) {
 	}
 	if stats := broadcaster.Stats(); stats.Failed != 1 || stats.Sent != 0 {
 		t.Fatalf("delivery stats = %#v", stats)
+	}
+	if health := broadcaster.Health(); health.LastError == nil ||
+		health.LastError.Kind != "write_failed" {
+		t.Fatalf("write failure health = %#v", health)
 	}
 	if deadlines := writer.deadlineCount(); deadlines < 2 {
 		t.Fatalf("write deadlines = %d, want at least 2", deadlines)
@@ -325,6 +341,10 @@ func TestCloseTerminatesConnectionsAndRejectsNewOnes(t *testing.T) {
 		GenerationID: "generation-after-close", Sequence: 1,
 	}); err != nil {
 		t.Fatalf("Publish after close: %v", err)
+	}
+	if health := broadcaster.Health(); health.State != StreamStateStopped ||
+		health.Clients != 0 {
+		t.Fatalf("closed broadcaster health = %#v", health)
 	}
 }
 

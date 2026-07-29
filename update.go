@@ -2,6 +2,7 @@ package starmap
 
 import (
 	"context"
+	"time"
 
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/catalogstore"
@@ -144,6 +145,7 @@ func (c *Client) Activate(ctx context.Context, generation catalogstore.Generatio
 func (c *Client) swapCatalogGeneration(
 	published *catalogs.Catalog,
 	generationID string,
+	generatedAt time.Time,
 ) (*catalogs.Catalog, uint64) {
 	c.mu.Lock()
 	oldCatalog := c.catalog
@@ -154,6 +156,7 @@ func (c *Client) swapCatalogGeneration(
 	if generationID != "" {
 		c.generationID = generationID
 	}
+	c.generationGeneratedAt = generatedAt
 	c.mu.Unlock()
 	return oldCatalog, sequence
 }

@@ -14,15 +14,21 @@ Package server provides an embeddable HTTP server for a Starmap catalog.
 
 - [type Config](<#Config>)
   - [func DefaultConfig\(\) Config](<#DefaultConfig>)
+- [type Health](<#Health>)
 - [type Option](<#Option>)
   - [func WithLogger\(logger \*zerolog.Logger\) Option](<#WithLogger>)
   - [func WithSyncer\(syncer Syncer\) Option](<#WithSyncer>)
+- [type PublicationHealth](<#PublicationHealth>)
 - [type Server](<#Server>)
   - [func New\(client \*starmap.Client, config Config, serverOptions ...Option\) \(\*Server, error\)](<#New>)
   - [func \(s \*Server\) Handler\(\) http.Handler](<#Server.Handler>)
+  - [func \(s \*Server\) Health\(\) Health](<#Server.Health>)
   - [func \(s \*Server\) Serve\(listener net.Listener\) error](<#Server.Serve>)
   - [func \(s \*Server\) Shutdown\(ctx context.Context\) error](<#Server.Shutdown>)
   - [func \(s \*Server\) Start\(\) error](<#Server.Start>)
+- [type State](<#State>)
+- [type StreamHealth](<#StreamHealth>)
+- [type StreamState](<#StreamState>)
 - [type Syncer](<#Syncer>)
 
 
@@ -84,6 +90,22 @@ func DefaultConfig() Config
 
 DefaultConfig returns production\-oriented server defaults.
 
+<a name="Health"></a>
+## type [Health](<https://github.com/agentstation/starmap/blob/main/server/health.go#L32-L39>)
+
+Health is an immutable snapshot of publisher catalog, callback, and stream delivery health. Catalog freshness is derived only from the active generation timestamp; heartbeat activity cannot refresh it.
+
+```go
+type Health struct {
+    State              State             `json:"state"`
+    ActiveGenerationID string            `json:"active_generation_id,omitempty"`
+    CatalogGeneratedAt time.Time         `json:"catalog_generated_at"`
+    CatalogAgeSeconds  int64             `json:"catalog_age_seconds"`
+    Publication        PublicationHealth `json:"publication"`
+    Stream             StreamHealth      `json:"stream"`
+}
+```
+
 <a name="Option"></a>
 ## type [Option](<https://github.com/agentstation/starmap/blob/main/server/server.go#L27>)
 
@@ -110,6 +132,22 @@ func WithSyncer(syncer Syncer) Option
 ```
 
 WithSyncer enables explicit source acquisition through the update endpoint.
+
+<a name="PublicationHealth"></a>
+## type [PublicationHealth](<https://github.com/agentstation/starmap/blob/main/server/health.go#L43-L50>)
+
+PublicationHealth reports post\-commit callback delivery, including every pending generation coalesced by the bounded callback dispatcher.
+
+```go
+type PublicationHealth struct {
+    Completed   uint64        `json:"completed"`
+    Failures    uint64        `json:"failures"`
+    Panics      uint64        `json:"panics"`
+    Coalesced   uint64        `json:"coalesced"`
+    LastLatency time.Duration `json:"last_latency"`
+    MaxLatency  time.Duration `json:"max_latency"`
+}
+```
 
 <a name="Server"></a>
 ## type [Server](<https://github.com/agentstation/starmap/blob/main/server/server.go#L74-L78>)
@@ -142,6 +180,15 @@ func (s *Server) Handler() http.Handler
 
 Handler returns the configured HTTP handler. Call Start before serving this handler through a caller\-owned http.Server. The caller must drain that http.Server before calling Shutdown to stop Starmap's background services.
 
+<a name="Server.Health"></a>
+### func \(\*Server\) [Health](<https://github.com/agentstation/starmap/blob/main/server/health.go#L72>)
+
+```go
+func (s *Server) Health() Health
+```
+
+Health returns current server health without performing I/O.
+
 <a name="Server.Serve"></a>
 ### func \(\*Server\) [Serve](<https://github.com/agentstation/starmap/blob/main/server/server.go#L141>)
 
@@ -168,6 +215,74 @@ func (s *Server) Start() error
 ```
 
 Start starts server\-owned background services exactly once.
+
+<a name="State"></a>
+## type [State](<https://github.com/agentstation/starmap/blob/main/server/health.go#L6>)
+
+State is the embeddable server lifecycle state.
+
+```go
+type State string
+```
+
+<a name="StateIdle"></a>
+
+```go
+const (
+    // StateIdle means construction succeeded but Start or Serve has not run.
+    StateIdle State = "idle"
+    // StateServing means server-owned services are active.
+    StateServing State = "serving"
+    // StateStopped means Shutdown completed and streaming is unavailable.
+    StateStopped State = "stopped"
+)
+```
+
+<a name="StreamHealth"></a>
+## type [StreamHealth](<https://github.com/agentstation/starmap/blob/main/server/health.go#L54-L69>)
+
+StreamHealth reports SSE liveness and delivery. BackpressureTerminated and Failed make every forced connection recovery observable.
+
+```go
+type StreamHealth struct {
+    State                  StreamState `json:"state"`
+    Clients                int         `json:"clients"`
+    LastHeartbeatAt        time.Time   `json:"last_heartbeat_at"`
+    LastEventAt            time.Time   `json:"last_event_at"`
+    LastGenerationID       string      `json:"last_generation_id,omitempty"`
+    LastSequence           uint64      `json:"last_sequence"`
+    LastErrorKind          string      `json:"last_error_kind,omitempty"`
+    LastErrorAt            time.Time   `json:"last_error_at"`
+    Published              uint64      `json:"published"`
+    Sent                   uint64      `json:"sent"`
+    Heartbeats             uint64      `json:"heartbeats"`
+    Disconnected           uint64      `json:"disconnected"`
+    BackpressureTerminated uint64      `json:"backpressure_terminated"`
+    Failed                 uint64      `json:"failed"`
+}
+```
+
+<a name="StreamState"></a>
+## type [StreamState](<https://github.com/agentstation/starmap/blob/main/server/health.go#L18>)
+
+StreamState is the server\-side SSE publication stream state.
+
+```go
+type StreamState string
+```
+
+<a name="StreamStateIdle"></a>
+
+```go
+const (
+    // StreamStateIdle means the broadcaster accepts streams but has no clients.
+    StreamStateIdle StreamState = "idle"
+    // StreamStateStreaming means at least one SSE client is connected.
+    StreamStateStreaming StreamState = "streaming"
+    // StreamStateStopped means the broadcaster rejects new streams.
+    StreamStateStopped StreamState = "stopped"
+)
+```
 
 <a name="Syncer"></a>
 ## type [Syncer](<https://github.com/agentstation/starmap/blob/main/server/server.go#L22-L24>)
