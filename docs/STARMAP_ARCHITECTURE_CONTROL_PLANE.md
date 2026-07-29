@@ -2,10 +2,9 @@
 
 Last updated: 2026-07-29
 
-Status: `IN_PROGRESS` — P0–P5.12 and P6.1 are complete. P5.13 is the sole
-active task after user review reopened the author/model and endpoint identity
-contract. P6.2 is paused until the restored catalog DX and corpus completeness
-pass their outcome review and exact phase gate.
+Status: `IN_PROGRESS` — P0–P5 and P6.1 are complete. P6.2 is the sole active
+task after the restored author/model catalog and generated endpoint join passed
+their review, exact local gate, protected hosted gates, and merge lifecycle.
 
 ## Mission
 
@@ -523,16 +522,16 @@ Do not:
 ### Active phase worktree
 
 - Worktree:
-  `/Users/jack/src/github.com/agentstation/starmap-worktrees/catalog-author-endpoint-restoration`
+  `/Users/jack/src/github.com/agentstation/starmap-worktrees/starmap-library-composition`
 - Branch:
-  `codex/catalog-author-endpoint-restoration`
+  `codex/starmap-library-composition`
 - Base:
-  `origin/main@76dd317810815604b6c796814bce5b8887aaadd0`
+  `origin/main@6993b1e7c72b196508dc7321a20c5f277262afb2`
 
-This worktree contains the user-steered P5.9–P5.13 author/model and endpoint
-restoration. It was created from the exact protected main produced by merged
-PR #53. The prior P6.1 measurement remains committed evidence; P6.2 resumes
-only after this restoration lands.
+This fresh worktree starts P6.2 from the exact protected main produced by
+merged PR #54. The P6.1 package-graph and dependency-budget measurements remain
+committed evidence; P6.2 now establishes the small canonical read-only library
+composition without disturbing the completed catalog identity contract.
 
 ### Provider expansion worktree
 
@@ -594,7 +593,7 @@ PR updates this control plane and lands before the next dependent phase starts.
 
 ## Live Pull Request Ledger
 
-Live state inspected 2026-07-28.
+Live state inspected 2026-07-29.
 
 | PR | Head | Status | Disposition | Verifiable terminal criteria |
 | --- | --- | --- | --- | --- |
@@ -610,6 +609,7 @@ Live state inspected 2026-07-28.
 | [#51](https://github.com/agentstation/starmap/pull/51) | `codex/catalog-authority-resilience@7454e3b8` | `DONE` | P4 authority, provenance, presence, and source-resilience phase merged as `60f0cd3c` | Exact head passed local verification, current govulncheck, Verification Gate, Security & Reliability, strict protection readback, and zero review threads; protected squash merge completed; remote/local branch and worktree were removed before the remaining P3 lifecycle started |
 | [#52](https://github.com/agentstation/starmap/pull/52) | `codex/catalog-workspace-lifecycle@42295e4e` | `DONE` | P3 human-workspace lifecycle and explicit legacy-layout migration merged as `9609f4f4` | Exact final head passed uninterrupted local verification, Verification Gate, Security & Reliability, strict protection readback, and zero review threads; protected squash merge completed; remote/local branch and worktree removed safely |
 | [#53](https://github.com/agentstation/starmap/pull/53) | `codex/catalog-read-model-simplification@94157b42` | `DONE` | P5 single persisted model and derived immutable read views merged as `76dd3178` | Exact head passed local verification, current govulncheck, Verification Gate, Security & Reliability, strict protection readback, and zero review threads; protected squash merge completed; remote/local branch and worktree removed safely before P6 |
+| [#54](https://github.com/agentstation/starmap/pull/54) | `codex/catalog-author-endpoint-restoration@a55adb46` | `DONE` | Restored authored model identity and generated endpoint join merged as `6993b1e7` | Exact material commit passed uninterrupted local verification; exact PR head passed Verification Gate and Security & Reliability; protection remained strict with both contexts, admin enforcement, and conversation resolution; zero reviews and zero review threads; protected squash merge completed; remote/local branch and worktree removed safely before P6.2 |
 
 Current #44 failure is not caused by the action syntax itself. Both required
 jobs ran against `golang.org/x/text v0.38.0`; `govulncheck` reports
@@ -633,8 +633,8 @@ test "$(gh pr list --repo agentstation/starmap --state open --limit 100 \
 | P2 | `DONE` | Catalog contract and keep/delete decisions are characterized before structural change | Green characterization workflows pin current behavior and known defects |
 | P3 | `DONE` | One human provider-YAML workspace has deterministic lifecycle | P3.6a/P3.6b/P3.8 first establish one durable commit point, atomic repairable projection, and store-only operation |
 | P4 | `DONE` | One authority/provenance implementation is resilient to drift | Authority, presence, quarantine, degradation, and fuzz gates |
-| P5 | `IN_PROGRESS` | Linked authored models and provider serving records produce immutable read views and generated endpoints | Disjoint schema ownership; complete corpus disposition; identity, endpoint, DX, and benchmark gates green |
-| P6 | `PENDING` | Go library composition is small and canonical | Consumer compile and dependency-closure gates |
+| P5 | `DONE` | Linked authored models and provider serving records produce immutable read views and generated endpoints | Disjoint schema ownership; complete corpus disposition; identity, endpoint, DX, and benchmark gates green |
+| P6 | `IN_PROGRESS` | Go library composition is small and canonical | Consumer compile and dependency-closure gates |
 | P7 | `PENDING` | Embeddable server and reactive remote consumer are reliable | Real SSE end-to-end and recovery suite |
 | P8 | `PENDING` | Go modules have depth, locality, and compliant file sizes | No hard-limit file; every concern dispositioned |
 | P9 | `PENDING` | Distribution and embedded upgrade paths preserve exact evidence | Artifact/import/upgrade/reproducibility gates |
@@ -767,14 +767,14 @@ compile and performance baselines must also be green.
 | P5.10 | `DONE` | Separate author and provider record ownership | Author models are the sole executable authority for intrinsic definition facts; provider records own serving facts and may retain overlapping upstream observations only as non-overriding evidence; every provider serving record has an explicit `model: author/slug` reference; provider identity is never authorship evidence; load/save/projection/payload/provenance round-trip both roles without first-wins or duplicate-field authority |
 | P5.11 | `DONE` | Generate and validate endpoints.yaml | A versioned deterministic digest-bound endpoint projection joins each provider serving record to its author model; projection is built off-side and atomically written post-commit; drift is detected and never silently overwritten; no row exists without a valid provider/model link and provider price remains exact |
 | P5.12 | `DONE` | Build canonical identity and offering indexes | Immutable publication precomputes canonical author/slug, author alias, model alias, provider offering, and model-to-offerings indexes; cross-provider IDs for one model produce one definition with distinct exact offerings; ambiguity/collisions return typed errors and cannot replace the current generation |
-| P5.13 | `IN_PROGRESS` | Prove restored catalog DX and corpus completeness | Tests prove Alibaba-served Moonshot/Zhipu models resolve to their labs, author and provider edits round-trip independently, complete local authored edits/deletions and additive embedded authored definitions reconcile without provider-inferred authorship, all retained author records and provider links load, endpoint generation is deterministic and operation-aware, malformed siblings quarantine safely, unresolved acquisition candidates cannot activate, strict/release coverage has no unresolved public identity, docs explain the two source roles and generated projection, and an outcome autoreview plus exact phase gate pass |
+| P5.13 | `DONE` | Prove restored catalog DX and corpus completeness | Tests prove Alibaba-served Moonshot/Zhipu models resolve to their labs, author and provider edits round-trip independently, complete local authored edits/deletions and additive embedded authored definitions reconcile without provider-inferred authorship, all retained author records and provider links load, endpoint generation is deterministic and operation-aware, malformed siblings quarantine safely, unresolved acquisition candidates cannot activate, strict/release coverage has no unresolved public identity, docs explain the two source roles and generated projection, and an outcome autoreview plus exact phase gate pass |
 
 ## P6 — Deepen Go Library Composition
 
 | Task | Status | Work | Verifiable success criteria |
 | --- | --- | --- | --- |
 | P6.1 | `DONE` | Map the package graph | [`reviews/P6_PACKAGE_GRAPH_2026-07-28.md`](reviews/P6_PACKAGE_GRAPH_2026-07-28.md) names the role, production consumer, and disposition of every public/importable package; `go list` proves zero cycles; the 89→90 package change is exactly explained |
-| P6.2 | `PENDING` | Keep read-only consumption small | After P5.9–P5.13, invert the `pkg/sources` → internal provider-client edge behind an injected factory and remove all remaining pipeline, models.dev, remote HTTP, and concrete acquisition imports from the root package; a real external `starmap.New().Catalog()` consumer stays within the numeric P2.6 dependency budget and its compile closure contains no GenAI, gRPC, OpenTelemetry, WebSocket, SQLite, Cobra, scheduler, server, or acquisition implementation; a CI dependency-closure assertion enforces the budget so regression fails the verification gate |
+| P6.2 | `IN_PROGRESS` | Keep read-only consumption small | After P5.9–P5.13, invert the `pkg/sources` → internal provider-client edge behind an injected factory and remove all remaining pipeline, models.dev, remote HTTP, and concrete acquisition imports from the root package; a real external `starmap.New().Catalog()` consumer stays within the numeric P2.6 dependency budget and its compile closure contains no GenAI, gRPC, OpenTelemetry, WebSocket, SQLite, Cobra, scheduler, server, or acquisition implementation; a CI dependency-closure assertion enforces the budget so regression fails the verification gate |
 | P6.3 | `PENDING` | Move acquisition behind explicit composition | A named opt-in provider-client composition path serves CLI/server acquisition; read-only library behavior remains complete without importing it |
 | P6.4 | `PENDING` | Narrow interfaces at use sites | Command, source, storage, server, and remote consumers define the smallest real role interfaces; the broad `internal/application.Application` interface is split by consumer |
 | P6.5 | `PENDING` | Delete hypothetical seams after P2.8 | Unused enhancer wiring, `catalogdistribution`, `catalogscheduler` (including the inert operations projection), `sourceevidence`, registry, compatibility aliases, `internal/utils/ptr`, and pass-through save modules are removed; real operational health moves to the production-owned state named by P7.11 |
@@ -971,7 +971,8 @@ machine evidence and does not require a follow-up documentation commit.
 | `catalog-authority-resilience` on `codex/catalog-authority-resilience@7454e3b8` | `DONE` | PR #51 merged as `60f0cd3c`; remote branch absent; zero-diff squash evidence recorded; clean worktree removed before the local topic branch |
 | `catalog-workspace-lifecycle` on `codex/catalog-workspace-lifecycle@42295e4e` | `DONE` | PR #52 merged as `9609f4f4`; remote branch absent; zero-diff squash evidence recorded; clean worktree removed before the local topic branch |
 | `catalog-read-model-simplification` on `codex/catalog-read-model-simplification@94157b42` | `DONE` | PR #53 merged as `76dd3178`; remote branch absent; zero-diff squash evidence recorded; clean worktree removed before the local topic branch |
-| `catalog-author-endpoint-restoration` on `codex/catalog-author-endpoint-restoration@5e46a159` plus the pending evidence-only gate ledger | `IN_PROGRESS` | Complete P5.9–P5.13 on the user-steered successor branch, pass exact local/hosted gates, then remove the worktree/branch; P6.1 evidence remains committed and P6.2 resumes on a later fresh branch |
+| `catalog-author-endpoint-restoration` on `codex/catalog-author-endpoint-restoration@a55adb46` | `DONE` | PR #54 merged as `6993b1e7`; remote/local branch and clean worktree removed after the fresh P6.2 successor worktree was created |
+| `starmap-library-composition` on `codex/starmap-library-composition@6993b1e7` | `IN_PROGRESS` | Complete P6 composition on a protected phase PR, then remove the worktree/branch after its clean successor is created |
 
 ## Evidence Log
 
@@ -1114,6 +1115,7 @@ Append evidence; do not rewrite historical entries.
 | 2026-07-29 | P5.13 / F-069 / F-076–F-080 | Completed the post-review restoration candidate on base `413565d1`. The exact executable corpus map now has 322 records split into 258 retained identities and 64 explicit merges; the provider identity map has 610/610 linked records. The embedded catalog contains 589 authored definitions, 610 exact offerings, 507 served definitions, 82 authored-only definitions, 610 generated endpoint rows, 504 protocol routes, 61 operation-priced rows, and zero authored self-root claims. Generation `catalog-20260729T110518Z-fcbf48a7fd90` binds payload `sha256:fcbf48a7fd90ca1611dae832644a07de32d5d70640a3563d97ba5e3e9dd181bf` (2,603,614 bytes) and the deterministic endpoint projection. Source adapters/evidence replay retain unresolved observation candidates while final publication fails closed; authored reconciliation applies complete local edits, adds missing embedded definitions, permits local-only deletion, and excludes provider-inferred authorship. `go test ./... -count=1` passed every package (root `43.962s`, app `15.794s`, catalogs `19.138s`, bootstrap `12.914s`, server `17.025s`, models.dev `9.394s`). The exact affected race command passed catalogs `39.686s`, store `1.849s`, reconciler `1.809s`, bootstrap `49.305s`, manifest `2.304s`, pipeline `8.368s`, workspace `5.350s`, local `3.210s`, providers `3.545s`, models.dev `65.330s`, and evidence `2.644s`. `go vet ./...`, pinned golangci-lint v2.12.2 with zero issues, regenerated OpenAPI/GoDoc, `make HAS_DEVBOX= docs-check`, and `git diff --check` passed. One final exact-commit Codex autoreview and the uninterrupted phase verification gate remain required. |
 | 2026-07-29 | P5.13 / F-081–F-083 | The prescribed final branch autoreview prepared and validated the complete 2,697,516-byte review bundle but its helper correctly refused to launch a nested Codex session from inside the active Codex environment; no guard override or false second-model claim was made. The required exact-head repo-grounded manual audit then found three material boundary defects: embedded author metadata could overwrite durable/local metadata, `ProjectExpected` did not bind endpoint-projection drift, and mode request-body values could become YAML integer arrays after a workspace round trip. Embedded authors are now additive-only, local authors remain authoritative, endpoint checksums participate in both input conflict detection and stable-projection verification, JSON-compatible body values have an explicit YAML codec, and the canonical Moonshot constant matches `moonshot-ai` while provider-native `moonshotai/*` identities remain opaque. Focused ordinary tests passed for catalogs, workspace, and reconciler; their combined race suite passed in `37.871s`, `4.311s`, and `1.560s`. The uninterrupted exact-commit phase gate remains required before P5.13 can close. |
 | 2026-07-29 | P5.13 / F-081–F-083 | Exact material commit `5e46a159cf6950560f2e27d21dc76ec11e108496` passed uninterrupted `make HAS_DEVBOX= verify` after the shared golangci-lint cache was cleared of absolute-path diagnostics from the already-removed `catalog-read-model-simplification` worktree. The first attempt had already passed ordinary tests, the full race suite, vet, and performance before that external cache failure; no code or repository file changed before the clean rerun. The successful rerun passed ordinary root `43.008s`, app `13.565s`, catalogs `18.042s`, server `15.962s`, and models.dev `8.955s`; race root `264.988s`, app `74.025s`, catalogs `39.991s`, server `87.901s`, and models.dev `68.986s`; vet; golangci-lint v2.12.2 with zero issues; all coverage floors including catalogs `70.1%` and reconciler `80.7%`; generated GoDoc/OpenAPI checks; diff checks; build; 104-author/610-provider-model/cross-reference validation; and CLI smokes. `BenchmarkClientCatalog` measured `10.28–11.29 ns/op`, `0 B/op`, and `0 allocs/op`. The evidence-only ledger head still requires exact local documentation/diff proof and both hosted checks before P5.13 can close. |
+| 2026-07-29 | P5.13 / P6.2 | Evidence-only PR #54 head `a55adb4606965db7033d1b7aba72d5d5d3c74ecb` passed exact local `make HAS_DEVBOX= docs-check` and `git diff --check`, hosted [Verification Gate](https://github.com/agentstation/starmap/actions/runs/30448719041/job/90565332369) in `18m57s`, and hosted [Security & Reliability](https://github.com/agentstation/starmap/actions/runs/30448719041/job/90565332257) in `2m09s`. Branch protection required exactly both contexts with strict checking, admin enforcement, conversation resolution, zero required approvals, and no force-push/deletion; the PR was clean/mergeable with zero reviews and zero review threads. Under the user's standing merge approval it squash-merged as `6993b1e7c72b196508dc7321a20c5f277262afb2`; the remote branch was absent, and the clean restoration worktree/local branch were removed before creating fresh `/Users/jack/src/github.com/agentstation/starmap-worktrees/starmap-library-composition` on `codex/starmap-library-composition` from that exact protected-main SHA. P5 and P5.13 are DONE; P6.2 is the sole active task. |
 
 ## Final Definition of Done
 
