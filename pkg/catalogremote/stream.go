@@ -73,6 +73,10 @@ func (c *Client) OpenEventStream(
 			Err:      err,
 		}
 	}
+	if err := c.verifyPublisher(response); err != nil {
+		_ = response.Body.Close()
+		return nil, err
+	}
 	if response.StatusCode != http.StatusOK {
 		defer func() { _ = response.Body.Close() }()
 		_, _ = io.Copy(io.Discard, io.LimitReader(response.Body, 4096))
@@ -227,10 +231,8 @@ func (f streamFrame) event() (StreamEvent, error) {
 	if err := ensureJSONEOF(decoder); err != nil {
 		return StreamEvent{}, err
 	}
-	if strings.TrimSpace(publication.GenerationID) == "" {
-		return StreamEvent{}, streamParseError(
-			"publication generation_id is required",
-		)
+	if err := validateGenerationID(publication.GenerationID); err != nil {
+		return StreamEvent{}, err
 	}
 	if publication.Sequence != sequence {
 		return StreamEvent{}, streamParseError(

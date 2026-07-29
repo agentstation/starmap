@@ -516,6 +516,69 @@ func TestSubscriberDeduplicatesNewIdentityWithSamePayload(t *testing.T) {
 	}
 }
 
+func TestSubscriberRejectsStaleAndInvalidGenerationsBeforeActivation(t *testing.T) {
+	t.Parallel()
+
+	active := subscriberTestGeneration(
+		t,
+		"generation-active",
+		"provider-active",
+		time.Date(2026, time.July, 29, 18, 0, 0, 0, time.UTC),
+	)
+	stale := subscriberTestGeneration(
+		t,
+		"generation-stale",
+		"provider-stale",
+		active.Manifest.GeneratedAt.Add(-time.Minute),
+	)
+	server := httptest.NewServer(http.NotFoundHandler())
+	defer server.Close()
+	subscriber, err := New(Config{BaseURL: server.URL})
+	if err != nil {
+		t.Fatalf("New: %v", err)
+	}
+	if published, err := subscriber.activate(
+		context.Background(),
+		active,
+	); err != nil || !published {
+		t.Fatalf("activate current = %t/%v", published, err)
+	}
+	activeCatalog := subscriber.Catalog()
+	activeIdentity := subscriber.active
+
+	if published, err := subscriber.activate(
+		context.Background(),
+		stale,
+	); err != nil || published {
+		t.Fatalf("activate stale = %t/%v", published, err)
+	}
+	if subscriber.Catalog() != activeCatalog ||
+		subscriber.active != activeIdentity {
+		t.Fatal("stale generation changed active catalog or identity")
+	}
+	if _, err := subscriber.Catalog().Provider("provider-stale"); err == nil {
+		t.Fatal("stale provider became visible")
+	}
+
+	corrupt := subscriberTestGeneration(
+		t,
+		"generation-corrupt",
+		"provider-corrupt",
+		active.Manifest.GeneratedAt.Add(time.Minute),
+	)
+	corrupt.Payload[0] ^= 1
+	if published, err := subscriber.activate(
+		context.Background(),
+		corrupt,
+	); err == nil || published {
+		t.Fatalf("activate corrupt = %t/%v", published, err)
+	}
+	if subscriber.Catalog() != activeCatalog ||
+		subscriber.active != activeIdentity {
+		t.Fatal("invalid generation changed active catalog or identity")
+	}
+}
+
 func subscriberTestGeneration(
 	t testing.TB,
 	generationID string,

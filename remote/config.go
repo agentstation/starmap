@@ -26,7 +26,8 @@ const (
 // Config defines one remote Starmap catalog source. BaseURL is the versioned
 // API root, for example https://starmap.example.com/api/v1.
 type Config struct {
-	// BaseURL is the absolute HTTP(S) versioned Starmap API root.
+	// BaseURL is the trusted absolute HTTPS versioned Starmap API root.
+	// Plain HTTP is accepted only for a loopback publisher.
 	BaseURL string
 	// HTTPClient supplies transport, TLS, authentication, and fetch timeout
 	// policy. A private bounded client is used when nil.

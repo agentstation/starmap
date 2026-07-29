@@ -23,6 +23,10 @@ before atomic activation. Failure retains the last-known-good generation.
   layer bytes to equal the trusted GitHub Release archive checksum.
 - Connected deployments may follow a Starmap server, but activation is still
   checksum/compatibility gated and preserves last-known-good.
+- A configured Starmap server URL is an explicit publisher trust decision.
+  Non-loopback servers require HTTPS, the Go transport must produce a verified
+  certificate chain for that exact origin, and redirects cannot change origin.
+  Loopback HTTP exists only for local embedding and tests.
 - Starport policy decides whether to pin a generation or follow a configured
   server. Starmap supplies facts and verified generations; it does not silently
   choose risk.

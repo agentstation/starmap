@@ -2,10 +2,14 @@ package catalogremote
 
 import (
 	"context"
+	"crypto/tls"
+	"crypto/x509"
 	"fmt"
+	"io"
 	"net/http"
 	"net/http/httptest"
 	"slices"
+	"strings"
 	"sync/atomic"
 	"testing"
 	"time"
@@ -47,6 +51,125 @@ func TestRemoteClientRejectsCrossOriginRedirect(t *testing.T) {
 	}
 	if got := redirectedRequests.Load(); got != 0 {
 		t.Fatalf("cross-origin requests = %d, want 0", got)
+	}
+}
+
+func TestRemoteClientEnforcesConfiguredPublisherTrust(t *testing.T) {
+	t.Parallel()
+
+	for _, baseURL := range []string{
+		"http://catalog.example.com/api/v1",
+		"https://user:password@catalog.example.com/api/v1",
+		"https://catalog.example.com/api/v1?channel=stable",
+		"https://catalog.example.com/api/v1#current",
+	} {
+		if client, err := NewClient(
+			baseURL,
+			nil,
+			catalogs.CurrentCatalogSchemaVersion,
+		); err == nil {
+			t.Fatalf("NewClient(%q) accepted ambiguous publisher %#v", baseURL, client)
+		}
+	}
+
+	transport := roundTripperFunc(func(request *http.Request) (*http.Response, error) {
+		return &http.Response{
+			StatusCode: http.StatusOK,
+			Header: http.Header{
+				"Content-Type": []string{ManifestMediaType},
+			},
+			Body:    io.NopCloser(strings.NewReader("{}")),
+			Request: request,
+			// A custom transport cannot claim an HTTPS publisher without a
+			// completed, verified certificate chain.
+			TLS: nil,
+		}, nil
+	})
+	client, err := NewClient(
+		"https://catalog.example.com/api/v1",
+		&http.Client{Transport: transport},
+		catalogs.CurrentCatalogSchemaVersion,
+	)
+	if err != nil {
+		t.Fatalf("NewClient: %v", err)
+	}
+	if _, err := client.FetchCurrent(context.Background()); err == nil ||
+		!strings.Contains(err.Error(), "publisher") {
+		t.Fatalf("FetchCurrent publisher error = %v", err)
+	}
+}
+
+func TestRemoteClientRequiresVerifiedTLSPublisherChain(t *testing.T) {
+	t.Parallel()
+
+	generation := remoteTestGeneration(
+		t,
+		catalogs.CurrentCatalogSchemaVersion,
+		catalogs.ConsumerCompatibility{
+			MinSchemaVersion: catalogs.CurrentCatalogSchemaVersion,
+			MaxSchemaVersion: catalogs.CurrentCatalogSchemaVersion,
+		},
+	)
+	manifest, err := MarshalManifest(generation.Manifest)
+	if err != nil {
+		t.Fatalf("MarshalManifest: %v", err)
+	}
+	server := httptest.NewTLSServer(http.HandlerFunc(
+		func(writer http.ResponseWriter, request *http.Request) {
+			switch request.URL.Path {
+			case ManifestPath:
+				writer.Header().Set("Content-Type", ManifestMediaType)
+				_, _ = writer.Write(manifest)
+			case SnapshotPath(generation.Manifest.GenerationID):
+				writer.Header().Set(
+					"Content-Type",
+					catalogs.CatalogPayloadMediaType,
+				)
+				_, _ = writer.Write(generation.Payload)
+			default:
+				http.NotFound(writer, request)
+			}
+		},
+	))
+	defer server.Close()
+
+	roots := x509.NewCertPool()
+	roots.AddCert(server.Certificate())
+	verifiedHTTPClient := &http.Client{Transport: &http.Transport{
+		TLSClientConfig: &tls.Config{
+			RootCAs:    roots,
+			MinVersion: tls.VersionTLS12,
+		},
+	}}
+	verified, err := NewClient(
+		server.URL,
+		verifiedHTTPClient,
+		catalogs.CurrentCatalogSchemaVersion,
+	)
+	if err != nil {
+		t.Fatalf("NewClient verified: %v", err)
+	}
+	if _, err := verified.FetchCurrent(context.Background()); err != nil {
+		t.Fatalf("FetchCurrent verified publisher: %v", err)
+	}
+
+	unverifiedHTTPClient := &http.Client{Transport: &http.Transport{
+		TLSClientConfig: &tls.Config{
+			InsecureSkipVerify: true, //nolint:gosec // Negative publisher-trust fixture.
+			MinVersion:         tls.VersionTLS12,
+		},
+	}}
+	unverified, err := NewClient(
+		server.URL,
+		unverifiedHTTPClient,
+		catalogs.CurrentCatalogSchemaVersion,
+	)
+	if err != nil {
+		t.Fatalf("NewClient unverified: %v", err)
+	}
+	if _, err := unverified.FetchCurrent(context.Background()); err == nil ||
+		!strings.Contains(err.Error(), "publisher") {
+		t.Fatalf("FetchCurrent unverified publisher error = %v", err)
 	}
 }
 
@@ -114,20 +237,96 @@ func TestFetchGenerationRequiresAddressedManifestAndPayload(t *testing.T) {
 	}
 }
 
+func TestFetchGenerationRejectsAddressedManifestIdentityMismatch(t *testing.T) {
+	t.Parallel()
+
+	generation := remoteTestGeneration(
+		t,
+		catalogs.CurrentCatalogSchemaVersion,
+		catalogs.ConsumerCompatibility{
+			MinSchemaVersion: catalogs.CurrentCatalogSchemaVersion,
+			MaxSchemaVersion: catalogs.CurrentCatalogSchemaVersion,
+		},
+	)
+	manifest, err := MarshalManifest(generation.Manifest)
+	if err != nil {
+		t.Fatalf("MarshalManifest: %v", err)
+	}
+	var (
+		requests     atomic.Int32
+		snapshotGets atomic.Int32
+	)
+	server := httptest.NewServer(http.HandlerFunc(
+		func(writer http.ResponseWriter, request *http.Request) {
+			requests.Add(1)
+			switch request.URL.Path {
+			case GenerationManifestPath("requested-generation"):
+				writer.Header().Set("Content-Type", ManifestMediaType)
+				_, _ = writer.Write(manifest)
+			case SnapshotPath(generation.Manifest.GenerationID):
+				snapshotGets.Add(1)
+				http.Error(writer, "must not fetch", http.StatusInternalServerError)
+			default:
+				http.NotFound(writer, request)
+			}
+		},
+	))
+	defer server.Close()
+
+	client, err := NewClient(
+		server.URL,
+		server.Client(),
+		catalogs.CurrentCatalogSchemaVersion,
+	)
+	if err != nil {
+		t.Fatalf("NewClient: %v", err)
+	}
+	if _, err := client.FetchGeneration(
+		context.Background(),
+		"../other-generation",
+	); err == nil {
+		t.Fatal("FetchGeneration accepted a noncanonical path identity")
+	}
+	if got := requests.Load(); got != 0 {
+		t.Fatalf("requests after unsafe identity = %d, want 0", got)
+	}
+	if _, err := client.FetchGeneration(
+		context.Background(),
+		"requested-generation",
+	); err == nil {
+		t.Fatal("FetchGeneration accepted a manifest for another generation")
+	}
+	if got := snapshotGets.Load(); got != 0 {
+		t.Fatalf("snapshot GETs after identity mismatch = %d, want 0", got)
+	}
+}
+
 func TestRemoteCatalogFetchValidatesManifestSnapshotChecksumAndCompatibility(t *testing.T) {
 	current := catalogs.CurrentCatalogSchemaVersion
 	valid := remoteTestGeneration(t, current, catalogs.ConsumerCompatibility{
 		MinSchemaVersion: current,
 		MaxSchemaVersion: current,
 	})
+	wrongDescriptorMedia := valid.Copy()
+	wrongDescriptorMedia.Manifest.Payload.MediaType = "application/json"
+	oversizedDescriptor := valid.Copy()
+	oversizedDescriptor.Manifest.Payload.SizeBytes = maxBodyBytes + 1
+	wrongDescriptorSize := valid.Copy()
+	wrongDescriptorSize.Manifest.Payload.SizeBytes++
+	wrongDescriptorChecksum := valid.Copy()
+	wrongDescriptorChecksum.Manifest.Payload.Checksum =
+		"sha256:" + strings.Repeat("0", 64)
+	unsafeGenerationID := valid.Copy()
+	unsafeGenerationID.Manifest.GenerationID = ".."
 	for _, test := range []struct {
-		name            string
-		generation      catalogstore.Generation
-		mutateSnapshot  func([]byte) []byte
-		manifestType    string
-		snapshotType    string
-		wantError       bool
-		wantSnapshotGet bool
+		name                  string
+		generation            catalogstore.Generation
+		mutateSnapshot        func([]byte) []byte
+		manifestType          string
+		snapshotType          string
+		snapshotContentLength int64
+		wantError             bool
+		wantSnapshotGet       bool
 	}{
 		{name: "valid", generation: valid, manifestType: ManifestMediaType, snapshotType: catalogs.CatalogPayloadMediaType, wantSnapshotGet: true},
 		{name: "corrupt snapshot", generation: valid, mutateSnapshot: func(data []byte) []byte {
@@ -137,6 +336,20 @@ func TestRemoteCatalogFetchValidatesManifestSnapshotChecksumAndCompatibility(t *
 		}, manifestType: ManifestMediaType, snapshotType: catalogs.CatalogPayloadMediaType, wantError: true, wantSnapshotGet: true},
 		{name: "wrong manifest media type", generation: valid, manifestType: "application/json", snapshotType: catalogs.CatalogPayloadMediaType, wantError: true},
 		{name: "wrong snapshot media type", generation: valid, manifestType: ManifestMediaType, snapshotType: "application/json", wantError: true, wantSnapshotGet: true},
+		{name: "wrong descriptor media type before snapshot", generation: wrongDescriptorMedia, manifestType: ManifestMediaType, snapshotType: catalogs.CatalogPayloadMediaType, wantError: true},
+		{name: "oversized descriptor before snapshot", generation: oversizedDescriptor, manifestType: ManifestMediaType, snapshotType: catalogs.CatalogPayloadMediaType, wantError: true},
+		{name: "wrong descriptor size", generation: wrongDescriptorSize, manifestType: ManifestMediaType, snapshotType: catalogs.CatalogPayloadMediaType, wantError: true, wantSnapshotGet: true},
+		{name: "wrong descriptor checksum", generation: wrongDescriptorChecksum, manifestType: ManifestMediaType, snapshotType: catalogs.CatalogPayloadMediaType, wantError: true, wantSnapshotGet: true},
+		{name: "unsafe generation ID before snapshot", generation: unsafeGenerationID, manifestType: ManifestMediaType, snapshotType: catalogs.CatalogPayloadMediaType, wantError: true},
+		{
+			name:                  "oversized response before body read",
+			generation:            valid,
+			manifestType:          ManifestMediaType,
+			snapshotType:          catalogs.CatalogPayloadMediaType,
+			snapshotContentLength: maxBodyBytes + 1,
+			wantError:             true,
+			wantSnapshotGet:       true,
+		},
 		{
 			name: "incompatible before snapshot",
 			generation: remoteTestGeneration(t, current+1, catalogs.ConsumerCompatibility{
@@ -160,6 +373,14 @@ func TestRemoteCatalogFetchValidatesManifestSnapshotChecksumAndCompatibility(t *
 				case SnapshotPath(test.generation.Manifest.GenerationID):
 					snapshotGets.Add(1)
 					writer.Header().Set("Content-Type", test.snapshotType)
+					if test.snapshotContentLength > 0 {
+						writer.Header().Set(
+							"Content-Length",
+							fmt.Sprint(test.snapshotContentLength),
+						)
+						writer.WriteHeader(http.StatusOK)
+						return
+					}
 					payload := test.generation.Payload
 					if test.mutateSnapshot != nil {
 						payload = test.mutateSnapshot(payload)
@@ -186,6 +407,12 @@ func TestRemoteCatalogFetchValidatesManifestSnapshotChecksumAndCompatibility(t *
 			}
 		})
 	}
+}
+
+type roundTripperFunc func(*http.Request) (*http.Response, error)
+
+func (f roundTripperFunc) RoundTrip(request *http.Request) (*http.Response, error) {
+	return f(request)
 }
 
 func remoteTestGeneration(t *testing.T, schemaVersion uint64, compatibility catalogs.ConsumerCompatibility) catalogstore.Generation {

@@ -591,7 +591,10 @@ precede decode and compare-and-swap publication. The same module owns the sole
 event-ID/sequence, with comment heartbeats carrying no publication identity.
 
 The opt-in public `remote` package composes that protocol into a reactive
-consumer. `remote.New` starts no goroutine or request. `Start(ctx)` verifies and
+consumer. The configured origin is its publisher identity: production origins
+require HTTPS with a verified certificate chain, cross-origin redirects are
+rejected, and plain HTTP is limited to loopback. `remote.New` starts no
+goroutine or request. `Start(ctx)` verifies and
 activates current state, subscribes to SSE, closes the fetch/subscribe race with
 another verified current fetch, and owns reconnection under the caller context.
 Every reconnect uses `Last-Event-ID` when available and performs mandatory

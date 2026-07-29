@@ -59,7 +59,7 @@ const (
 ```
 
 <a name="GenerationManifestPath"></a>
-## func [GenerationManifestPath](<https://github.com/agentstation/starmap/blob/main/pkg/catalogremote/remote.go#L45>)
+## func [GenerationManifestPath](<https://github.com/agentstation/starmap/blob/main/pkg/catalogremote/remote.go#L47>)
 
 ```go
 func GenerationManifestPath(generationID string) string
@@ -68,7 +68,7 @@ func GenerationManifestPath(generationID string) string
 GenerationManifestPath returns the immutable manifest route for generationID.
 
 <a name="MarshalManifest"></a>
-## func [MarshalManifest](<https://github.com/agentstation/starmap/blob/main/pkg/catalogremote/remote.go#L212>)
+## func [MarshalManifest](<https://github.com/agentstation/starmap/blob/main/pkg/catalogremote/remote.go#L328>)
 
 ```go
 func MarshalManifest(manifest catalogs.GenerationManifest) ([]byte, error)
@@ -77,7 +77,7 @@ func MarshalManifest(manifest catalogs.GenerationManifest) ([]byte, error)
 MarshalManifest returns strict JSON bytes for the server route.
 
 <a name="SnapshotPath"></a>
-## func [SnapshotPath](<https://github.com/agentstation/starmap/blob/main/pkg/catalogremote/remote.go#L50>)
+## func [SnapshotPath](<https://github.com/agentstation/starmap/blob/main/pkg/catalogremote/remote.go#L52>)
 
 ```go
 func SnapshotPath(generationID string) string
@@ -86,7 +86,7 @@ func SnapshotPath(generationID string) string
 SnapshotPath returns the immutable canonical payload route for generationID.
 
 <a name="Client"></a>
-## type [Client](<https://github.com/agentstation/starmap/blob/main/pkg/catalogremote/remote.go#L55-L59>)
+## type [Client](<https://github.com/agentstation/starmap/blob/main/pkg/catalogremote/remote.go#L57-L61>)
 
 Client fetches one exact current generation from a versioned Starmap API.
 
@@ -97,16 +97,16 @@ type Client struct {
 ```
 
 <a name="NewClient"></a>
-### func [NewClient](<https://github.com/agentstation/starmap/blob/main/pkg/catalogremote/remote.go#L63>)
+### func [NewClient](<https://github.com/agentstation/starmap/blob/main/pkg/catalogremote/remote.go#L68>)
 
 ```go
 func NewClient(baseURL string, httpClient *http.Client, schemaVersion uint64) (*Client, error)
 ```
 
-NewClient creates a remote generation client. baseURL is the versioned API root, for example https://starmap.example.com/api/v1.
+NewClient creates a remote generation client. baseURL is the trusted, versioned HTTPS API root, for example https://starmap.example.com/api/v1. Plain HTTP is accepted only on loopback. The supplied HTTP client may add authentication or stricter TLS policy, but HTTPS responses must retain a standard verified certificate chain.
 
 <a name="Client.FetchCurrent"></a>
-### func \(\*Client\) [FetchCurrent](<https://github.com/agentstation/starmap/blob/main/pkg/catalogremote/remote.go#L100>)
+### func \(\*Client\) [FetchCurrent](<https://github.com/agentstation/starmap/blob/main/pkg/catalogremote/remote.go#L155>)
 
 ```go
 func (c *Client) FetchCurrent(ctx context.Context) (catalogstore.Generation, error)
@@ -115,7 +115,7 @@ func (c *Client) FetchCurrent(ctx context.Context) (catalogstore.Generation, err
 FetchCurrent fetches the current manifest followed by its immutable, generation\-addressed snapshot and validates their binding and compatibility.
 
 <a name="Client.FetchGeneration"></a>
-### func \(\*Client\) [FetchGeneration](<https://github.com/agentstation/starmap/blob/main/pkg/catalogremote/remote.go#L109>)
+### func \(\*Client\) [FetchGeneration](<https://github.com/agentstation/starmap/blob/main/pkg/catalogremote/remote.go#L164>)
 
 ```go
 func (c *Client) FetchGeneration(ctx context.Context, generationID string) (catalogstore.Generation, error)
@@ -144,7 +144,7 @@ type EventStream struct {
 ```
 
 <a name="EventStream.Close"></a>
-### func \(\*EventStream\) [Close](<https://github.com/agentstation/starmap/blob/main/pkg/catalogremote/stream.go#L168>)
+### func \(\*EventStream\) [Close](<https://github.com/agentstation/starmap/blob/main/pkg/catalogremote/stream.go#L172>)
 
 ```go
 func (s *EventStream) Close() error
@@ -153,7 +153,7 @@ func (s *EventStream) Close() error
 Close closes the underlying response body and unblocks Next.
 
 <a name="EventStream.Next"></a>
-### func \(\*EventStream\) [Next](<https://github.com/agentstation/starmap/blob/main/pkg/catalogremote/stream.go#L103>)
+### func \(\*EventStream\) [Next](<https://github.com/agentstation/starmap/blob/main/pkg/catalogremote/stream.go#L107>)
 
 ```go
 func (s *EventStream) Next() (StreamEvent, error)
@@ -162,7 +162,7 @@ func (s *EventStream) Next() (StreamEvent, error)
 Next returns the next complete publication or comment activity frame.
 
 <a name="Publication"></a>
-## type [Publication](<https://github.com/agentstation/starmap/blob/main/pkg/catalogremote/remote.go#L39-L42>)
+## type [Publication](<https://github.com/agentstation/starmap/blob/main/pkg/catalogremote/remote.go#L41-L44>)
 
 Publication identifies one committed immutable catalog generation.
 

@@ -89,3 +89,33 @@ func TestEventStreamRejectsSequenceMismatch(t *testing.T) {
 		t.Fatalf("sequence mismatch accepted: %#v", event)
 	}
 }
+
+func TestEventStreamRejectsUnsafeGenerationIdentity(t *testing.T) {
+	t.Parallel()
+
+	server := httptest.NewServer(http.HandlerFunc(
+		func(writer http.ResponseWriter, _ *http.Request) {
+			writer.Header().Set("Content-Type", EventStreamMediaType)
+			_, _ = fmt.Fprint(
+				writer,
+				"id: 7\n"+
+					"event: catalog.published\n"+
+					"data: {\"generation_id\":\"..\",\"sequence\":7}\n\n",
+			)
+		},
+	))
+	defer server.Close()
+
+	client, err := NewClient(server.URL, server.Client(), 1)
+	if err != nil {
+		t.Fatalf("NewClient: %v", err)
+	}
+	stream, err := client.OpenEventStream(context.Background(), "")
+	if err != nil {
+		t.Fatalf("OpenEventStream: %v", err)
+	}
+	defer func() { _ = stream.Close() }()
+	if event, err := stream.Next(); err == nil {
+		t.Fatalf("unsafe generation identity accepted: %#v", event)
+	}
+}

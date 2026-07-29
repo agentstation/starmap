@@ -825,6 +825,10 @@ deadline without triggering a fetch. The caller context owns initial fetch,
 streaming, retry, and activation; `Close` cancels and joins that lifecycle
 within a bounded timeout.
 
+`BaseURL` is the trusted publisher origin. Non-loopback servers require HTTPS
+with a verified certificate chain, and redirects cannot change origin. Plain
+HTTP is accepted only for local loopback embedding and tests.
+
 **Configuration Flags:**
 - `--port`: Server port (default: 8080)
 - `--host`: Bind address (default: localhost)

@@ -21,12 +21,18 @@ The verified catalog and reactive notification flow has four routes:
 
 The retained manifest and payload requests are generation-addressed so a
 concurrent server publication cannot mix bytes from different generations.
-The client bounds both bodies, requires exact media types, strictly parses and
-validates the manifest, rejects an incompatible catalog-schema range before
-downloading the snapshot, then verifies payload size and SHA-256 before decode
-or durable commit. An HTTP failure, malformed/unknown manifest member, wrong
-media type, incompatible schema, truncated/oversize body, corrupt checksum, or
-semantic decode error leaves the current catalog and durable store untouched.
+The configured API origin is the online publisher identity. Non-loopback
+publishers must use HTTPS; every HTTPS response must carry a completed,
+standard-library-verified certificate chain and remain on that exact origin.
+Loopback HTTP is retained only for local embedding and tests. The client bounds
+both bodies, requires exact response and descriptor media types, strictly
+parses and validates the manifest, and rejects an incompatible catalog-schema
+range or oversized descriptor before downloading the snapshot. It then
+requires a bounded canonical path-segment generation ID and verifies payload
+size and SHA-256 before decode or durable commit. An HTTP failure, unverified
+publisher, malformed/unknown manifest member, wrong media type, incompatible
+schema, unsafe identity, truncated/oversize body, corrupt checksum, or semantic
+decode error leaves the current catalog and durable store untouched.
 
 Remote updates preserve the received generation and sync-run identities rather
 than minting a second local identity. Commit remains compare-and-swap and the

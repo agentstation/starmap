@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"io"
 	"mime"
+	"net"
 	"net/http"
 	"net/url"
 	"path"
@@ -31,8 +32,9 @@ const (
 	// CatalogPublishedEvent is the sole catalog publication event name.
 	CatalogPublishedEvent = "catalog.published"
 	// ManifestMediaType identifies strict generation-manifest JSON.
-	ManifestMediaType = "application/vnd.agentstation.starmap.catalog-manifest+json"
-	maxBodyBytes      = 64 << 20
+	ManifestMediaType    = "application/vnd.agentstation.starmap.catalog-manifest+json"
+	maxBodyBytes         = 64 << 20
+	maxGenerationIDBytes = 256
 )
 
 // Publication identifies one committed immutable catalog generation.
@@ -58,8 +60,11 @@ type Client struct {
 	schemaVersion uint64
 }
 
-// NewClient creates a remote generation client. baseURL is the versioned API
-// root, for example https://starmap.example.com/api/v1.
+// NewClient creates a remote generation client. baseURL is the trusted,
+// versioned HTTPS API root, for example
+// https://starmap.example.com/api/v1. Plain HTTP is accepted only on loopback.
+// The supplied HTTP client may add authentication or stricter TLS policy, but
+// HTTPS responses must retain a standard verified certificate chain.
 func NewClient(baseURL string, httpClient *http.Client, schemaVersion uint64) (*Client, error) {
 	parsed, err := url.Parse(strings.TrimRight(baseURL, "/"))
 	if err != nil || parsed.Scheme == "" || parsed.Host == "" {
@@ -67,6 +72,20 @@ func NewClient(baseURL string, httpClient *http.Client, schemaVersion uint64) (*
 	}
 	if parsed.Scheme != "http" && parsed.Scheme != "https" {
 		return nil, &errors.ValidationError{Field: "catalog_remote.base_url", Value: baseURL, Message: "must use HTTP or HTTPS"}
+	}
+	if parsed.User != nil || parsed.RawQuery != "" || parsed.Fragment != "" {
+		return nil, &errors.ValidationError{
+			Field:   "catalog_remote.base_url",
+			Value:   baseURL,
+			Message: "must not contain credentials, a query, or a fragment",
+		}
+	}
+	if parsed.Scheme == "http" && !isLoopbackHost(parsed.Hostname()) {
+		return nil, &errors.ValidationError{
+			Field:   "catalog_remote.publisher",
+			Value:   parsed.Host,
+			Message: "non-loopback publishers must use HTTPS",
+		}
 	}
 	if schemaVersion == 0 {
 		return nil, &errors.ValidationError{Field: "catalog_remote.schema_version", Value: schemaVersion, Message: "must be positive"}
@@ -80,9 +99,17 @@ func NewClient(baseURL string, httpClient *http.Client, schemaVersion uint64) (*
 	return &Client{baseURL: parsed, httpClient: &client, schemaVersion: schemaVersion}, nil
 }
 
+func isLoopbackHost(host string) bool {
+	if strings.EqualFold(host, "localhost") {
+		return true
+	}
+	address := net.ParseIP(host)
+	return address != nil && address.IsLoopback()
+}
+
 func sameOriginRedirectPolicy(origin *url.URL, previous func(*http.Request, []*http.Request) error, field string) func(*http.Request, []*http.Request) error {
 	return func(request *http.Request, via []*http.Request) error {
-		if !strings.EqualFold(request.URL.Scheme, origin.Scheme) || !strings.EqualFold(request.URL.Host, origin.Host) {
+		if !sameOrigin(request.URL, origin) {
 			return &errors.ValidationError{Field: field, Value: request.URL.String(), Message: "must remain on the configured origin"}
 		}
 		if previous != nil {
@@ -93,6 +120,34 @@ func sameOriginRedirectPolicy(origin *url.URL, previous func(*http.Request, []*h
 		}
 		return nil
 	}
+}
+
+func sameOrigin(left, right *url.URL) bool {
+	return left != nil && right != nil &&
+		strings.EqualFold(left.Scheme, right.Scheme) &&
+		strings.EqualFold(left.Host, right.Host)
+}
+
+func (c *Client) verifyPublisher(response *http.Response) error {
+	if response == nil || response.Request == nil ||
+		!sameOrigin(response.Request.URL, c.baseURL) {
+		return &errors.ValidationError{
+			Field:   "catalog_remote.publisher",
+			Message: "response does not identify the configured origin",
+		}
+	}
+	if c.baseURL.Scheme == "http" {
+		return nil
+	}
+	if response.TLS == nil || !response.TLS.HandshakeComplete ||
+		len(response.TLS.VerifiedChains) == 0 {
+		return &errors.ValidationError{
+			Field:   "catalog_remote.publisher",
+			Value:   c.baseURL.Host,
+			Message: "HTTPS response has no verified publisher certificate chain",
+		}
+	}
+	return nil
 }
 
 // FetchCurrent fetches the current manifest followed by its immutable,
@@ -107,11 +162,8 @@ func (c *Client) FetchCurrent(ctx context.Context) (catalogstore.Generation, err
 
 // FetchGeneration fetches and verifies one immutable generation by ID.
 func (c *Client) FetchGeneration(ctx context.Context, generationID string) (catalogstore.Generation, error) {
-	generationID = strings.TrimSpace(generationID)
-	if generationID == "" {
-		return catalogstore.Generation{}, &errors.ValidationError{
-			Field: "catalog_remote.generation_id", Message: "is required",
-		}
+	if err := validateGenerationID(generationID); err != nil {
+		return catalogstore.Generation{}, err
 	}
 	manifest, err := c.fetchManifest(
 		ctx,
@@ -149,13 +201,67 @@ func (c *Client) fetchManifest(
 			err,
 		)
 	}
+	if err := validateGenerationID(manifest.GenerationID); err != nil {
+		return catalogs.GenerationManifest{}, err
+	}
 	if !manifest.ConsumerCompatibility.SupportsSchema(c.schemaVersion) {
 		return catalogs.GenerationManifest{}, &errors.ValidationError{
 			Field: "catalog_remote.schema_version", Value: c.schemaVersion,
 			Message: fmt.Sprintf("is incompatible with remote range %d..%d", manifest.ConsumerCompatibility.MinSchemaVersion, manifest.ConsumerCompatibility.MaxSchemaVersion),
 		}
 	}
+	if manifest.Payload.MediaType != catalogs.CatalogPayloadMediaType {
+		return catalogs.GenerationManifest{}, &errors.ValidationError{
+			Field:   "catalog_remote.payload.media_type",
+			Value:   manifest.Payload.MediaType,
+			Message: "does not match " + catalogs.CatalogPayloadMediaType,
+		}
+	}
+	if manifest.Payload.SizeBytes > maxBodyBytes {
+		return catalogs.GenerationManifest{}, &errors.ValidationError{
+			Field:   "catalog_remote.payload.size_bytes",
+			Value:   manifest.Payload.SizeBytes,
+			Message: "exceeds maximum size",
+		}
+	}
 	return manifest, nil
+}
+
+func validateGenerationID(generationID string) error {
+	if generationID == "" {
+		return &errors.ValidationError{
+			Field: "catalog_remote.generation_id", Message: "is required",
+		}
+	}
+	if len(generationID) > maxGenerationIDBytes {
+		return &errors.ValidationError{
+			Field:   "catalog_remote.generation_id",
+			Value:   len(generationID),
+			Message: "exceeds maximum length",
+		}
+	}
+	if generationID == "." || generationID == ".." ||
+		strings.TrimSpace(generationID) != generationID {
+		return &errors.ValidationError{
+			Field:   "catalog_remote.generation_id",
+			Value:   generationID,
+			Message: "must be a canonical URL path segment",
+		}
+	}
+	for _, character := range []byte(generationID) {
+		if character >= 'a' && character <= 'z' ||
+			character >= 'A' && character <= 'Z' ||
+			character >= '0' && character <= '9' ||
+			character == '-' || character == '_' || character == '.' {
+			continue
+		}
+		return &errors.ValidationError{
+			Field:   "catalog_remote.generation_id",
+			Value:   generationID,
+			Message: "must contain only ASCII letters, digits, dot, dash, or underscore",
+		}
+	}
+	return nil
 }
 
 func (c *Client) fetchGenerationPayload(
@@ -189,6 +295,9 @@ func (c *Client) fetch(ctx context.Context, resourcePath, mediaType string) ([]b
 		return nil, &errors.APIError{Provider: "starmap-server", Endpoint: target.String(), Message: "request failed", Err: err}
 	}
 	defer func() { _ = response.Body.Close() }()
+	if err := c.verifyPublisher(response); err != nil {
+		return nil, err
+	}
 	if response.StatusCode != http.StatusOK {
 		_, _ = io.Copy(io.Discard, io.LimitReader(response.Body, 4096))
 		return nil, &errors.APIError{Provider: "starmap-server", Endpoint: target.String(), StatusCode: response.StatusCode, Message: "unexpected response status"}
@@ -196,6 +305,13 @@ func (c *Client) fetch(ctx context.Context, resourcePath, mediaType string) ([]b
 	actualMediaType, _, err := mime.ParseMediaType(response.Header.Get("Content-Type"))
 	if err != nil || actualMediaType != mediaType {
 		return nil, &errors.ValidationError{Field: "catalog_remote.content_type", Value: response.Header.Get("Content-Type"), Message: "does not match " + mediaType}
+	}
+	if response.ContentLength > maxBodyBytes {
+		return nil, &errors.ValidationError{
+			Field:   "catalog_remote.body",
+			Value:   response.ContentLength,
+			Message: "exceeds maximum size",
+		}
 	}
 	limited := io.LimitReader(response.Body, maxBodyBytes+1)
 	data, err := io.ReadAll(limited)

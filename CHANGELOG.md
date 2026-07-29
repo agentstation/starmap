@@ -49,6 +49,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   and a backpressured or failed connection is terminated so reconnect catch-up
   can recover. The unused WebSocket, generic broker, model-event adapters, and
   their public route were removed before launch.
+- **Verified remote publisher boundary**: reactive and low-level remote clients
+  require non-loopback publishers to use HTTPS, require every HTTPS response to
+  retain a standard verified certificate chain, and reject cross-origin
+  redirects. Manifest-declared media and body limits are checked before the
+  immutable payload is downloaded; any identity, size, digest, schema, or
+  stale-generation failure leaves the active catalog unchanged.
 
 ### BREAKING CHANGES
 - **One canonical human catalog workspace**: `catalog_path`,
