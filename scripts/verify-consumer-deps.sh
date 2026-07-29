@@ -2,15 +2,21 @@
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-MODULE="$ROOT/testdata/consumers/read-only"
+READ_ONLY_MODULE="$ROOT/testdata/consumers/read-only"
+STORE_ONLY_MODULE="$ROOT/testdata/consumers/store-only"
 MAX_PACKAGES=160
 DEPS="$(mktemp "${TMPDIR:-/tmp}/starmap-consumer-deps.XXXXXX")"
 trap 'rm -f "$DEPS"' EXIT
 
 (
-	cd "$MODULE"
+	cd "$READ_ONLY_MODULE"
 	GOWORK=off go test ./...
 	GOWORK=off go list -deps -f '{{.ImportPath}}' . | LC_ALL=C sort -u >"$DEPS"
+)
+
+(
+	cd "$STORE_ONLY_MODULE"
+	GOWORK=off go test ./...
 )
 
 package_count="$(wc -l <"$DEPS" | tr -d '[:space:]')"
@@ -30,3 +36,4 @@ fi
 
 printf 'read-only consumer dependency closure: %s/%s packages; forbidden families absent\n' \
 	"$package_count" "$MAX_PACKAGES"
+printf 'store-only consumer: external compile and publication test passed\n'
