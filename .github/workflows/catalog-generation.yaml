@@ -39,47 +39,52 @@ jobs:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           STARMAP_GENERATION_NONINTERACTIVE: "1"
           STARMAP_GENERATION_REPORT_PATH: catalog-generation.json
+          STARMAP_GENERATION_STATE_PATH: ${{ runner.temp }}/starmap-catalog-generation
+          STARMAP_GENERATION_STORE_PATH: ${{ runner.temp }}/starmap-catalog-generation/update-home/.starmap/state/catalog
         run: ./scripts/generate-embedded-catalog.sh
 
-      - name: Classify canonical payload change
+      - name: Classify catalog semantic change
         id: change
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          CHANGED=$(jq -er .changed catalog-generation.json)
+          CHANGED=$(jq -r .changed catalog-generation.json)
           PAYLOAD_CHECKSUM=$(jq -er .payload_checksum catalog-generation.json)
-          PAYLOAD_DIGEST=${PAYLOAD_CHECKSUM#sha256:}
-          TAG=catalog-payload-${PAYLOAD_DIGEST}
+          SEMANTIC_CHECKSUM=$(jq -er .semantic_checksum catalog-generation.json)
+          SEMANTIC_DIGEST=${SEMANTIC_CHECKSUM#sha256:}
+          TAG=catalog-semantic-${SEMANTIC_DIGEST}
           GENERATION_ID=$(jq -er .generation_id catalog-generation.json)
           write_output() {
             printf '%s=%s\n' "$1" "$2" >> "$GITHUB_OUTPUT"
           }
           write_output changed "$CHANGED"
           write_output payload_checksum "$PAYLOAD_CHECKSUM"
+          write_output semantic_checksum "$SEMANTIC_CHECKSUM"
           write_output tag "$TAG"
           write_output generation_id "$GENERATION_ID"
           PREVIOUS_TAG=$(gh release list --limit 100 --json tagName,isPrerelease,isDraft,publishedAt | jq -r --arg tag "$TAG" \
-            '[.[] | select(.isPrerelease == true and .isDraft == false and (.tagName | startswith("catalog-payload-")) and .tagName != $tag)] | sort_by(.publishedAt) | last | .tagName // ""')
+            '[.[] | select(.isPrerelease == true and .isDraft == false and (.tagName | startswith("catalog-semantic-")) and .tagName != $tag)] | sort_by(.publishedAt) | last | .tagName // ""')
           write_output previous_tag "$PREVIOUS_TAG"
 
           if [[ "$CHANGED" != "true" ]]; then
             write_output publish false
-            write_output reason "canonical payload unchanged"
+            write_output reason "catalog semantics unchanged"
             exit 0
           fi
 
           if gh release view "$TAG" >/dev/null 2>&1; then
             EXISTING=$(mktemp -d)
-            gh release download "$TAG" --pattern starmap-catalog.tar.gz --dir "$EXISTING"
-            EXISTING_PAYLOAD_CHECKSUM=$(tar -xOzf "$EXISTING/starmap-catalog.tar.gz" manifest.json | jq -er .payload.checksum)
-            test "$EXISTING_PAYLOAD_CHECKSUM" = "$PAYLOAD_CHECKSUM"
+            gh release download "$TAG" --pattern 'starmap-catalog*' --dir "$EXISTING"
+            go run ./cmd/starmap-catalog-release \
+              --verify-dir "$EXISTING" > catalog-existing-verification.json
+            test "$(jq -er .semantic_checksum catalog-existing-verification.json)" = "$SEMANTIC_CHECKSUM"
             write_output publish false
-            write_output reason "canonical payload already published and verified"
+            write_output reason "catalog semantics already published and verified"
             exit 0
           fi
 
           write_output publish true
-          write_output reason "new canonical payload"
+          write_output reason "new catalog semantics"
 
       - name: Validate changed candidate
         if: ${{ steps.change.outputs.changed == 'true' }}
@@ -91,7 +96,9 @@ jobs:
         if: ${{ steps.change.outputs.publish == 'true' }}
         id: assets
         run: |
-          go run ./cmd/starmap-catalog-release --output-dir dist/catalog-generation > catalog-release.json
+          go run ./cmd/starmap-catalog-release \
+            --generation-store "${RUNNER_TEMP}/starmap-catalog-generation/update-home/.starmap/state/catalog" \
+            --output-dir dist/catalog-generation > catalog-release.json
           printf 'directory=%s\n' "$(jq -er .directory catalog-release.json)" >> "$GITHUB_OUTPUT"
 
       - name: Attest scheduled catalog generation
@@ -119,7 +126,7 @@ jobs:
           gh release create "${{ steps.change.outputs.tag }}" \
             --prerelease \
             --title "Catalog ${{ steps.change.outputs.generation_id }}" \
-            --notes "Immutable scheduled catalog payload ${{ steps.change.outputs.payload_checksum }}" \
+            --notes "Immutable catalog semantics ${{ steps.change.outputs.semantic_checksum }} with exact evidence payload ${{ steps.change.outputs.payload_checksum }}" \
             "${{ steps.assets.outputs.directory }}/starmap-catalog.tar.gz" \
             "${{ steps.assets.outputs.directory }}/starmap-catalog.tar.gz.sha256" \
             "${{ steps.assets.outputs.directory }}/starmap-catalog.intoto.json"

@@ -4,6 +4,7 @@ package main
 
 import (
 	"bytes"
+	"context"
 	"encoding/json"
 	"flag"
 	"fmt"
@@ -14,8 +15,9 @@ import (
 
 	"github.com/agentstation/starmap/internal/bootstrapmanifest"
 	"github.com/agentstation/starmap/internal/catalog/workspace"
-	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/internal/constants"
+	"github.com/agentstation/starmap/pkg/catalogs"
+	"github.com/agentstation/starmap/pkg/catalogstore"
 	"github.com/agentstation/starmap/pkg/errors"
 )
 
@@ -32,6 +34,11 @@ func run(args []string, output io.Writer, now time.Time) error {
 	catalogDir := flags.String("catalog-dir", "", "candidate embedded catalog directory")
 	manifestPath := flags.String("output", "", "bootstrap generation manifest path")
 	endpointsPath := flags.String("endpoints-output", "", "optional generated endpoint projection path")
+	generationStorePath := flags.String(
+		"generation-store",
+		"",
+		"optional filesystem store containing the exact committed generation",
+	)
 	if err := flags.Parse(args); err != nil {
 		return err
 	}
@@ -56,7 +63,41 @@ func run(args []string, output io.Writer, now time.Time) error {
 	if err != nil {
 		return err
 	}
-	manifest, report, err := bootstrapmanifest.Derive(catalog, current, now)
+	var manifest catalogs.BootstrapManifest
+	var report bootstrapmanifest.Report
+	if *generationStorePath == "" {
+		manifest, report, err = bootstrapmanifest.Derive(catalog, current, now)
+	} else {
+		store, storeErr := catalogstore.NewFilesystem(*generationStorePath)
+		if storeErr != nil {
+			return storeErr
+		}
+		generation, currentErr := store.Current(context.Background())
+		if currentErr != nil {
+			if !errors.IsNotFound(currentErr) {
+				return errors.WrapResource(
+					"read",
+					"committed catalog generation",
+					*generationStorePath,
+					currentErr,
+				)
+			}
+			manifest, report, err = bootstrapmanifest.Derive(catalog, current, now)
+			if err == nil && report.Changed {
+				return &errors.ValidationError{
+					Field:   "bootstrap_manifest.committed_generation",
+					Value:   *generationStorePath,
+					Message: "changed catalog has no committed generation",
+				}
+			}
+		} else {
+			manifest, report, err = bootstrapmanifest.DeriveCommitted(
+				catalog,
+				generation,
+				current,
+			)
+		}
+	}
 	if err != nil {
 		return err
 	}

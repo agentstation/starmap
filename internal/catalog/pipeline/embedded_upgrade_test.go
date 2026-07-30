@@ -12,8 +12,8 @@ import (
 
 	"github.com/agentstation/starmap/internal/catalog/reconciler"
 	"github.com/agentstation/starmap/internal/catalog/workspace"
-	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/internal/constants"
+	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/sources"
 	pkgsync "github.com/agentstation/starmap/pkg/sync"
 )
@@ -54,6 +54,7 @@ func TestEmbeddedRevisionUpdatesGeneratedFieldsAndPreservesHumanEdit(t *testing.
 	}
 
 	embeddedE2 := embeddedRevisionCatalog(t, "Embedded Name E2", "Embedded Description E2", 16384, 4096)
+	embeddedE2 = withEmbeddedUpgradeModel(t, embeddedE2, "model-b", "New E2 Model")
 	store := &pipelineTestStore{catalog: buildCatalog(t, e1Result.Catalog)}
 	runner := New(store)
 	runner.loadEmbedded = func() (*catalogs.Builder, error) {
@@ -101,6 +102,15 @@ func TestEmbeddedRevisionUpdatesGeneratedFieldsAndPreservesHumanEdit(t *testing.
 	assertUpgradeEvidenceSource(t, upgraded, "Description", sources.EmbeddedCatalogID)
 	assertUpgradeEvidenceSource(t, upgraded, "limits.context_window", sources.EmbeddedCatalogID)
 	assertUpgradeEvidenceSource(t, upgraded, "limits.output_tokens", sources.EmbeddedCatalogID)
+	if _, err := upgraded.Definition("test-author/provider-a--model-b"); err != nil {
+		t.Fatalf("new E2 authored definition: %v", err)
+	}
+	if _, err := upgraded.Offering("provider-a", "model-b"); err != nil {
+		t.Fatalf("new E2 provider offering: %v", err)
+	}
+	if _, err := upgraded.Author("provider-a"); err == nil {
+		t.Fatal("provider identity was inferred as model authorship")
+	}
 
 	payload, err := catalogs.EncodeCatalogPayload(upgraded)
 	if err != nil {
@@ -143,6 +153,34 @@ func TestEmbeddedRevisionUpdatesGeneratedFieldsAndPreservesHumanEdit(t *testing.
 	}
 	assertUpgradeEvidenceSource(t, reloadedCatalog, "Name", sources.LocalCatalogID)
 	assertUpgradeEvidenceSource(t, reloadedCatalog, "Description", sources.EmbeddedCatalogID)
+	if _, err := reloadedCatalog.Definition("test-author/provider-a--model-b"); err != nil {
+		t.Fatalf("reloaded E2 authored definition: %v", err)
+	}
+	if _, err := reloadedCatalog.Offering("provider-a", "model-b"); err != nil {
+		t.Fatalf("reloaded E2 provider offering: %v", err)
+	}
+}
+
+func withEmbeddedUpgradeModel(
+	t testing.TB,
+	source *catalogs.Catalog,
+	id string,
+	name string,
+) *catalogs.Catalog {
+	t.Helper()
+	builder, err := catalogs.NewBuilderFrom(source)
+	if err != nil {
+		t.Fatalf("NewBuilderFrom: %v", err)
+	}
+	provider, err := builder.Provider("provider-a")
+	if err != nil {
+		t.Fatalf("Provider: %v", err)
+	}
+	provider.Models[id] = &catalogs.Model{ID: id, Name: name}
+	if err := builder.SetProvider(provider); err != nil {
+		t.Fatalf("SetProvider: %v", err)
+	}
+	return buildCatalog(t, builder)
 }
 
 func TestEmbeddedRevisionLoadFailurePreservesExistingWorkspace(t *testing.T) {

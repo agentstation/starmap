@@ -113,6 +113,44 @@ func TestProviderScopedDynamicFactsAndOperatorConfigurationHaveCanonicalOrder(t 
 	}
 }
 
+func TestVerifiedReleaseIsAboveEmbeddedAndBelowHumanAuthority(t *testing.T) {
+	t.Parallel()
+
+	table := authority.New()
+	for _, resource := range []catalogmeta.ResourceType{
+		catalogmeta.ResourceTypeModel,
+		catalogmeta.ResourceTypeProvider,
+		catalogmeta.ResourceTypeAuthor,
+	} {
+		for _, policy := range table.Policies(resource) {
+			releaseIndex := -1
+			embeddedIndex := -1
+			localIndex := -1
+			for index, source := range policy.SourceOrder {
+				switch source {
+				case catalogmeta.ReleaseArtifactID:
+					releaseIndex = index
+				case catalogmeta.EmbeddedCatalogID:
+					embeddedIndex = index
+				case catalogmeta.LocalCatalogID:
+					localIndex = index
+				}
+			}
+			if releaseIndex < 0 || embeddedIndex < 0 || localIndex < 0 {
+				t.Fatalf("%s/%s source order = %v", resource, policy.Path, policy.SourceOrder)
+			}
+			if releaseIndex >= embeddedIndex || localIndex >= releaseIndex {
+				t.Fatalf(
+					"%s/%s source order = %v; want local above release above embedded",
+					resource,
+					policy.Path,
+					policy.SourceOrder,
+				)
+			}
+		}
+	}
+}
+
 func hasPolicyForField(policies []authority.Policy, field string) bool {
 	for _, policy := range policies {
 		if policy.Path == field || strings.HasPrefix(policy.Path, field+".") {

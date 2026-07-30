@@ -563,6 +563,7 @@ func main() {
 ## Index
 
 - [Constants](<#constants>)
+- [func CatalogSemanticChecksum\(reader Reader\) \(string, error\)](<#CatalogSemanticChecksum>)
 - [func DeepCopyProviderModels\(models map\[string\]\*Model\) map\[string\]\*Model](<#DeepCopyProviderModels>)
 - [func EncodeCatalogPayload\(reader Reader\) \(\[\]byte, error\)](<#EncodeCatalogPayload>)
 - [func NormalizeExtensionFields\(fields map\[string\]any\) map\[string\]any](<#NormalizeExtensionFields>)
@@ -941,8 +942,17 @@ const (
 <a name="CurrentBootstrapManifestVersion"></a>CurrentBootstrapManifestVersion is the embedded\-bootstrap metadata format.
 
 ```go
-const CurrentBootstrapManifestVersion uint64 = 1
+const CurrentBootstrapManifestVersion uint64 = 2
 ```
+
+<a name="CatalogSemanticChecksum"></a>
+## func [CatalogSemanticChecksum](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/payload.go#L41>)
+
+```go
+func CatalogSemanticChecksum(reader Reader) (string, error)
+```
+
+CatalogSemanticChecksum returns the stable SHA\-256 identity of catalog facts. It excludes provenance and observation evidence; EncodeCatalogPayload remains the exact integrity representation for storage, transport, and audit.
 
 <a name="DeepCopyProviderModels"></a>
 ## func [DeepCopyProviderModels](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/copy.go#L24>)
@@ -954,7 +964,7 @@ func DeepCopyProviderModels(models map[string]*Model) map[string]*Model
 DeepCopyProviderModels creates a deep copy of a provider's Models map. Returns nil if the input map is nil.
 
 <a name="EncodeCatalogPayload"></a>
-## func [EncodeCatalogPayload](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/payload.go#L25>)
+## func [EncodeCatalogPayload](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/payload.go#L26>)
 
 ```go
 func EncodeCatalogPayload(reader Reader) ([]byte, error)
@@ -1496,22 +1506,23 @@ type AuthorsReader interface {
 ```
 
 <a name="BootstrapManifest"></a>
-## type [BootstrapManifest](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/bootstrap_manifest.go#L18-L24>)
+## type [BootstrapManifest](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/bootstrap_manifest.go#L18-L25>)
 
 BootstrapManifest binds the offline embedded catalog to exact canonical catalog bytes and a generation time.
 
 ```go
 type BootstrapManifest struct {
-    ManifestVersion uint64            `json:"manifest_version" yaml:"manifest_version"`
-    GenerationID    string            `json:"generation_id" yaml:"generation_id"`
-    GeneratedAt     time.Time         `json:"generated_at" yaml:"generated_at"`
-    SchemaVersion   uint64            `json:"schema_version" yaml:"schema_version"`
-    Payload         PayloadDescriptor `json:"payload" yaml:"payload"`
+    ManifestVersion  uint64            `json:"manifest_version" yaml:"manifest_version"`
+    GenerationID     string            `json:"generation_id" yaml:"generation_id"`
+    GeneratedAt      time.Time         `json:"generated_at" yaml:"generated_at"`
+    SchemaVersion    uint64            `json:"schema_version" yaml:"schema_version"`
+    SemanticChecksum string            `json:"semantic_checksum" yaml:"semantic_checksum"`
+    Payload          PayloadDescriptor `json:"payload" yaml:"payload"`
 }
 ```
 
 <a name="ParseBootstrapManifestJSON"></a>
-### func [ParseBootstrapManifestJSON](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/bootstrap_manifest.go#L52>)
+### func [ParseBootstrapManifestJSON](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/bootstrap_manifest.go#L61>)
 
 ```go
 func ParseBootstrapManifestJSON(data []byte) (BootstrapManifest, error)
@@ -1520,7 +1531,7 @@ func ParseBootstrapManifestJSON(data []byte) (BootstrapManifest, error)
 ParseBootstrapManifestJSON strictly parses embedded\-bootstrap metadata.
 
 <a name="BootstrapManifest.Validate"></a>
-### func \(BootstrapManifest\) [Validate](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/bootstrap_manifest.go#L27>)
+### func \(BootstrapManifest\) [Validate](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/bootstrap_manifest.go#L28>)
 
 ```go
 func (m BootstrapManifest) Validate() error
@@ -2043,7 +2054,7 @@ func (r *Catalog) Providers() ProvidersReader
 Providers returns the immutable catalog's provider collection reader.
 
 <a name="CatalogPayload"></a>
-## type [CatalogPayload](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/payload.go#L15-L22>)
+## type [CatalogPayload](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/payload.go#L16-L23>)
 
 CatalogPayload is the canonical construction\-record JSON representation. Author models own provider\-independent facts; provider models own serving facts and link to author models through Model.ModelRef.
 

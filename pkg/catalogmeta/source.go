@@ -27,6 +27,10 @@ const (
 
 	// EmbeddedCatalogID identifies the verified catalog compiled into Starmap.
 	EmbeddedCatalogID SourceID = "embedded_catalog"
+
+	// ReleaseArtifactID identifies an explicitly imported and publisher-verified
+	// immutable catalog release.
+	ReleaseArtifactID SourceID = "release_artifact"
 )
 
 // SourceIDs returns all available source identifiers.
@@ -37,6 +41,7 @@ func SourceIDs() []SourceID {
 		ModelsDevGitID,
 		ModelsDevHTTPID,
 		LocalCatalogID,
+		ReleaseArtifactID,
 		EmbeddedCatalogID,
 	}
 }

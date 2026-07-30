@@ -1,8 +1,9 @@
 {
-  "manifest_version": 1,
-  "generation_id": "catalog-20260729T110518Z-fcbf48a7fd90",
-  "generated_at": "2026-07-29T11:05:18.175993Z",
+  "manifest_version": 2,
+  "generation_id": "catalog-20260729T231854Z-5e71f3232a46",
+  "generated_at": "2026-07-29T23:18:54.974632Z",
   "schema_version": 3,
+  "semantic_checksum": "sha256:5e71f3232a46d752b7277e32ec6b6fd79b7e3573ab1435aa8fef7ee8a41fbd1c",
   "payload": {
     "checksum": "sha256:fcbf48a7fd90ca1611dae832644a07de32d5d70640a3563d97ba5e3e9dd181bf",
     "size_bytes": 2603614,

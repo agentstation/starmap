@@ -2,6 +2,7 @@ package main
 
 import (
 	"bytes"
+	"context"
 	"encoding/json"
 	"os"
 	"path/filepath"
@@ -10,6 +11,9 @@ import (
 
 	"github.com/agentstation/starmap/internal/bootstrapmanifest"
 	"github.com/agentstation/starmap/internal/constants"
+	"github.com/agentstation/starmap/pkg/catalogmeta"
+	"github.com/agentstation/starmap/pkg/catalogs"
+	"github.com/agentstation/starmap/pkg/catalogstore"
 )
 
 func TestScheduledGenerationManifestCommandWritesChangedOnceAndPreservesUnchangedBytes(t *testing.T) {
@@ -67,5 +71,133 @@ func TestScheduledGenerationManifestCommandWritesChangedOnceAndPreservesUnchange
 	secondEndpoints, err := os.ReadFile(endpointsPath)
 	if err != nil || !bytes.Equal(secondEndpoints, firstEndpoints) {
 		t.Fatalf("unchanged endpoint bytes = %v, %v", bytes.Equal(secondEndpoints, firstEndpoints), err)
+	}
+}
+
+func TestScheduledGenerationManifestUsesExactCommittedIdentity(t *testing.T) {
+	catalogDir := filepath.Join("..", "..", "internal", "embedded", "catalog")
+	builder, err := catalogs.NewFromPath(catalogDir)
+	if err != nil {
+		t.Fatalf("NewFromPath: %v", err)
+	}
+	catalog, err := builder.Build()
+	if err != nil {
+		t.Fatalf("Build: %v", err)
+	}
+	payload, err := catalogs.EncodeCatalogPayload(catalog)
+	if err != nil {
+		t.Fatalf("EncodeCatalogPayload: %v", err)
+	}
+	descriptor := catalogs.DescribeCatalogPayload(payload)
+	generatedAt := time.Date(2026, time.July, 29, 21, 0, 0, 0, time.UTC)
+	generation := catalogstore.Generation{
+		Manifest: catalogs.GenerationManifest{
+			ManifestVersion: catalogs.CurrentGenerationManifestVersion,
+			SchemaVersion:   catalogs.CurrentCatalogSchemaVersion,
+			GenerationID:    "exact-committed-generation",
+			GeneratedAt:     generatedAt,
+			Payload:         descriptor,
+			Validation: catalogs.GenerationValidationReport{
+				ValidatorVersion: "test/v1",
+				ValidatedAt:      generatedAt,
+				Status:           catalogs.GenerationValidationPassed,
+				Checks: []catalogs.GenerationValidationCheck{{
+					Name: "catalog", Status: catalogs.GenerationValidationCheckPassed,
+				}},
+			},
+			SyncRunID: "sync-exact",
+			SourceObservations: []catalogs.SourceObservationLink{
+				{
+					Source:        catalogmeta.ProvidersID,
+					ObservationID: "providers-exact",
+					ObservedAt:    generatedAt,
+					Revision: catalogmeta.ObservationRevision{
+						Kind:  catalogmeta.ObservationRevisionKindContentDigest,
+						Value: descriptor.Checksum,
+					},
+					Completeness:     catalogmeta.ObservationCompletenessComplete,
+					Status:           catalogmeta.ObservationStatusSucceeded,
+					EvidenceChecksum: descriptor.Checksum,
+				},
+			},
+			Completeness: catalogs.GenerationCompletenessComplete,
+			ConsumerCompatibility: catalogs.ConsumerCompatibility{
+				MinSchemaVersion: catalogs.CurrentCatalogSchemaVersion,
+				MaxSchemaVersion: catalogs.CurrentCatalogSchemaVersion,
+			},
+		},
+		Payload: payload,
+	}
+	storePath := filepath.Join(t.TempDir(), "store")
+	store, err := catalogstore.NewFilesystem(storePath)
+	if err != nil {
+		t.Fatalf("NewFilesystem: %v", err)
+	}
+	if err := store.Commit(context.Background(), generation, ""); err != nil {
+		t.Fatalf("Commit: %v", err)
+	}
+	manifestPath := filepath.Join(t.TempDir(), "generation.json")
+	var output bytes.Buffer
+	if err := run([]string{
+		"--catalog-dir", catalogDir,
+		"--output", manifestPath,
+		"--generation-store", storePath,
+	}, &output, generatedAt.Add(time.Hour)); err != nil {
+		t.Fatalf("run: %v", err)
+	}
+	data, err := os.ReadFile(manifestPath)
+	if err != nil {
+		t.Fatalf("ReadFile manifest: %v", err)
+	}
+	manifest, err := catalogs.ParseBootstrapManifestJSON(data)
+	if err != nil {
+		t.Fatalf("ParseBootstrapManifestJSON: %v", err)
+	}
+	if manifest.GenerationID != generation.Manifest.GenerationID ||
+		manifest.GeneratedAt != generation.Manifest.GeneratedAt ||
+		manifest.Payload != generation.Manifest.Payload {
+		t.Fatalf("manifest = %#v, generation = %#v", manifest, generation.Manifest)
+	}
+}
+
+func TestScheduledGenerationManifestAllowsEmptyStoreOnlyWhenUnchanged(t *testing.T) {
+	catalogDir := filepath.Join("..", "..", "internal", "embedded", "catalog")
+	outputDir := t.TempDir()
+	manifestPath := filepath.Join(outputDir, "generation.json")
+	now := time.Date(2026, time.July, 29, 22, 0, 0, 0, time.UTC)
+
+	if err := run([]string{
+		"--catalog-dir", catalogDir,
+		"--output", manifestPath,
+	}, &bytes.Buffer{}, now); err != nil {
+		t.Fatalf("seed manifest: %v", err)
+	}
+
+	emptyStore := filepath.Join(t.TempDir(), "store")
+	var output bytes.Buffer
+	if err := run([]string{
+		"--catalog-dir", catalogDir,
+		"--output", manifestPath,
+		"--generation-store", emptyStore,
+	}, &output, now.Add(time.Hour)); err != nil {
+		t.Fatalf("unchanged run with empty store: %v", err)
+	}
+	var report bootstrapmanifest.Report
+	if err := json.Unmarshal(output.Bytes(), &report); err != nil {
+		t.Fatalf("Unmarshal report: %v", err)
+	}
+	if report.Changed {
+		t.Fatalf("report.Changed = true, want false: %#v", report)
+	}
+}
+
+func TestScheduledGenerationManifestRejectsChangedCatalogWithoutCommittedGeneration(t *testing.T) {
+	err := run([]string{
+		"--catalog-dir", filepath.Join("..", "..", "internal", "embedded", "catalog"),
+		"--output", filepath.Join(t.TempDir(), "generation.json"),
+		"--generation-store", filepath.Join(t.TempDir(), "store"),
+	}, &bytes.Buffer{}, time.Date(2026, time.July, 29, 23, 0, 0, 0, time.UTC))
+	if err == nil {
+		t.Fatal("run error = nil, want missing committed generation")
 	}
 }

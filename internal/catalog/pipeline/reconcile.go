@@ -46,6 +46,18 @@ func reconcile(ctx context.Context, baseline *catalogs.Catalog, srcs []sources.O
 	return result, nil
 }
 
+// ReconcileObservations applies the canonical authority and last-known-good
+// rules to an explicit set of already-verified observations. It is the internal
+// composition seam used by non-network acquisition adapters such as release
+// import.
+func ReconcileObservations(
+	ctx context.Context,
+	baseline *catalogs.Catalog,
+	observations []sources.Observation,
+) (*reconciler.Result, error) {
+	return reconcile(ctx, baseline, observations)
+}
+
 func reconciliationSources(baseline *catalogs.Catalog, srcs []sources.Observation, primary sources.ID) ([]sources.Observation, error) {
 	var err error
 	srcs, err = restrictModelsDevPrimaryToBaseline(baseline, srcs, primary)
@@ -166,7 +178,6 @@ func needsBaselineEnrichment(baseline *catalogs.Catalog, srcs []sources.Observat
 func reconciliationPrimary(srcs []sources.Observation) sources.ID {
 	for _, preferred := range []sources.ID{
 		sources.ProvidersID,
-		sources.LocalCatalogID,
 		sources.ModelsDevHTTPID,
 		sources.ModelsDevGitID,
 	} {

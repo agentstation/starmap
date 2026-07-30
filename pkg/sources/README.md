@@ -170,6 +170,7 @@ const (
     ModelsDevGitID    = catalogmeta.ModelsDevGitID
     ModelsDevHTTPID   = catalogmeta.ModelsDevHTTPID
     LocalCatalogID    = catalogmeta.LocalCatalogID
+    ReleaseArtifactID = catalogmeta.ReleaseArtifactID
     EmbeddedCatalogID = catalogmeta.EmbeddedCatalogID
 )
 ```
@@ -202,7 +203,7 @@ func ValidateJSONPayload(data []byte) error
 ValidateJSONPayload enforces source byte and nesting limits before decoding.
 
 <a name="Dependency"></a>
-## type [Dependency](<https://github.com/agentstation/starmap/blob/main/pkg/sources/source.go#L95-L113>)
+## type [Dependency](<https://github.com/agentstation/starmap/blob/main/pkg/sources/source.go#L96-L114>)
 
 Dependency represents an external tool or runtime required by a source.
 
@@ -229,7 +230,7 @@ type Dependency struct {
 ```
 
 <a name="DependencyStatus"></a>
-## type [DependencyStatus](<https://github.com/agentstation/starmap/blob/main/pkg/sources/source.go#L116-L121>)
+## type [DependencyStatus](<https://github.com/agentstation/starmap/blob/main/pkg/sources/source.go#L117-L122>)
 
 DependencyStatus represents the availability status of a dependency.
 
@@ -279,7 +280,7 @@ type ID = catalogmeta.SourceID
 ```
 
 <a name="IDs"></a>
-### func [IDs](<https://github.com/agentstation/starmap/blob/main/pkg/sources/source.go#L51>)
+### func [IDs](<https://github.com/agentstation/starmap/blob/main/pkg/sources/source.go#L52>)
 
 ```go
 func IDs() []ID
@@ -288,7 +289,7 @@ func IDs() []ID
 IDs returns all available source identifiers. Delegates to catalogmeta.SourceIDs\(\) to maintain consistency.
 
 <a name="Observation"></a>
-## type [Observation](<https://github.com/agentstation/starmap/blob/main/pkg/sources/source.go#L81-L92>)
+## type [Observation](<https://github.com/agentstation/starmap/blob/main/pkg/sources/source.go#L82-L93>)
 
 Observation is one immutable direct source result. EvidenceChecksum binds the normalized canonical catalog payload; raw upstream evidence retention is a separate storage policy.
 
@@ -658,7 +659,7 @@ type RawFetchResult struct {
 ```
 
 <a name="ResourceType"></a>
-## type [ResourceType](<https://github.com/agentstation/starmap/blob/main/pkg/sources/source.go#L126>)
+## type [ResourceType](<https://github.com/agentstation/starmap/blob/main/pkg/sources/source.go#L127>)
 
 ResourceType is a type alias for catalogmeta.ResourceType to maintain backward compatibility. This allows existing code to continue using sources.ResourceType while benefiting from the shared type definitions in pkg/catalogmeta.
 
@@ -789,7 +790,7 @@ const (
 ```
 
 <a name="Source"></a>
-## type [Source](<https://github.com/agentstation/starmap/blob/main/pkg/sources/source.go#L60-L76>)
+## type [Source](<https://github.com/agentstation/starmap/blob/main/pkg/sources/source.go#L61-L77>)
 
 Source observes catalog information from one configured upstream.
 

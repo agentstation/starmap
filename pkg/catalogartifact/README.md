@@ -14,6 +14,7 @@ Package catalogartifact defines the deterministic distribution format for immuta
 
 - [Constants](<#constants>)
 - [func Open\(archive, attestation \[\]byte\) \(catalogstore.Generation, error\)](<#Open>)
+- [func VerifyRelease\(ctx context.Context, release Release, verifier PublisherVerifier\) \(catalogstore.Generation, error\)](<#VerifyRelease>)
 - [type AttestationPredicate](<#AttestationPredicate>)
 - [type AttestationStatement](<#AttestationStatement>)
 - [type Bundle](<#Bundle>)
@@ -22,6 +23,8 @@ Package catalogartifact defines the deterministic distribution format for immuta
   - [func \(d Descriptor\) String\(\) string](<#Descriptor.String>)
 - [type DigestSet](<#DigestSet>)
 - [type FileDescriptor](<#FileDescriptor>)
+- [type PublisherVerifier](<#PublisherVerifier>)
+- [type Release](<#Release>)
 - [type ReleaseAssets](<#ReleaseAssets>)
   - [func StageReleaseAssets\(root string, artifact Bundle\) \(ReleaseAssets, error\)](<#StageReleaseAssets>)
 - [type Subject](<#Subject>)
@@ -75,6 +78,15 @@ func Open(archive, attestation []byte) (catalogstore.Generation, error)
 ```
 
 Open verifies an archive and detached statement before returning its exact immutable catalog generation.
+
+<a name="VerifyRelease"></a>
+## func [VerifyRelease](<https://github.com/agentstation/starmap/blob/main/pkg/catalogartifact/import.go#L37-L41>)
+
+```go
+func VerifyRelease(ctx context.Context, release Release, verifier PublisherVerifier) (catalogstore.Generation, error)
+```
+
+VerifyRelease checks the detached checksum, archive statement, generation compatibility, and channel\-specific publisher identity before returning the exact immutable generation. It performs no activation or persistence.
 
 <a name="AttestationPredicate"></a>
 ## type [AttestationPredicate](<https://github.com/agentstation/starmap/blob/main/pkg/catalogartifact/bundle.go#L87-L92>)
@@ -179,6 +191,32 @@ type FileDescriptor struct {
     MediaType string `json:"media_type"`
     Checksum  string `json:"checksum"`
     SizeBytes int64  `json:"size_bytes"`
+}
+```
+
+<a name="PublisherVerifier"></a>
+## type [PublisherVerifier](<https://github.com/agentstation/starmap/blob/main/pkg/catalogartifact/import.go#L30-L32>)
+
+PublisherVerifier authenticates exact archive bytes to the caller's expected publisher. A GitHub Release implementation, for example, should require the expected repository and signer workflow when verifying build provenance.
+
+VerifyPublisher must return nil only when data is authenticated as the exact contents of name. Implementations own credentials, clients, trust policy, network access, and lifecycle.
+
+```go
+type PublisherVerifier interface {
+    VerifyPublisher(ctx context.Context, name string, data []byte) error
+}
+```
+
+<a name="Release"></a>
+## type [Release](<https://github.com/agentstation/starmap/blob/main/pkg/catalogartifact/import.go#L17-L21>)
+
+Release contains the three immutable assets published for one catalog generation. Publisher provenance is channel\-specific and is therefore verified through PublisherVerifier rather than encoded as an unsigned field.
+
+```go
+type Release struct {
+    Archive     []byte
+    Checksum    []byte
+    Attestation []byte
 }
 ```
 

@@ -11,9 +11,9 @@ import (
 
 	"github.com/agentstation/starmap/internal/catalog/workspace"
 	"github.com/agentstation/starmap/internal/embedded"
+	"github.com/agentstation/starmap/internal/sourcepayload"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/catalogstore"
-	"github.com/agentstation/starmap/internal/sourcepayload"
 )
 
 func TestEmbeddedBootstrapManifestMatchesCanonicalCatalog(t *testing.T) {
@@ -76,8 +76,34 @@ func TestEmbeddedBootstrapManifestMatchesCanonicalCatalog(t *testing.T) {
 	if err != nil {
 		t.Fatalf("EncodeCatalogPayload: %v", err)
 	}
-	if _, err := Load(catalog); err != nil {
+	manifest, err := Load(catalog)
+	if err != nil {
 		t.Fatalf("Load: %v; actual descriptor: %#v", err, catalogs.DescribeCatalogPayload(payload))
+	}
+	semanticChecksum, err := catalogs.CatalogSemanticChecksum(catalog)
+	if err != nil {
+		t.Fatalf("CatalogSemanticChecksum: %v", err)
+	}
+	if manifest.SemanticChecksum != semanticChecksum ||
+		manifest.Payload != catalogs.DescribeCatalogPayload(payload) {
+		t.Fatalf(
+			"manifest identities = (%q, %#v), want (%q, %#v)",
+			manifest.SemanticChecksum,
+			manifest.Payload,
+			semanticChecksum,
+			catalogs.DescribeCatalogPayload(payload),
+		)
+	}
+	generation, err := Generation()
+	if err != nil {
+		t.Fatalf("Generation: %v", err)
+	}
+	if generation.Manifest.GenerationID != manifest.GenerationID ||
+		generation.Manifest.GeneratedAt != manifest.GeneratedAt ||
+		generation.Manifest.SchemaVersion != manifest.SchemaVersion ||
+		generation.Manifest.Payload != manifest.Payload ||
+		!bytes.Equal(generation.Payload, payload) {
+		t.Fatalf("generation = %#v, bootstrap manifest = %#v", generation.Manifest, manifest)
 	}
 }
 

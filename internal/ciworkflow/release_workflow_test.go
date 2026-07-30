@@ -59,7 +59,7 @@ func TestReleaseConfigurationPinsInputsAndBuildsSupportedTargets(t *testing.T) {
 	config := readFixture(t, "../../.goreleaser.yaml")
 	devbox := readFixture(t, "../../devbox.json")
 	for _, check := range []string{
-		"ignore_tags:\n    - \"catalog-payload-*\"",
+		"ignore_tags:\n    - \"catalog-payload-*\"\n    - \"catalog-semantic-*\"",
 		"goos:\n      - linux\n      - darwin\n      - windows",
 		"goarch:\n      - amd64\n      - arm64",
 		"env:\n      - CGO_ENABLED=0",

@@ -5,6 +5,7 @@ git:
   # never participate in application SemVer discovery or changelog boundaries.
   ignore_tags:
     - "catalog-payload-*"
+    - "catalog-semantic-*"
 
 before:
   hooks:

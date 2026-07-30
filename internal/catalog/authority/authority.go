@@ -149,6 +149,7 @@ func defaultPolicies() []Policy {
 		catalogmeta.ModelsDevHTTPID,
 		catalogmeta.ModelsDevGitID,
 		catalogmeta.LocalCatalogID,
+		catalogmeta.ReleaseArtifactID,
 		catalogmeta.EmbeddedCatalogID,
 	}
 	modelsDevFirst := []catalogmeta.SourceID{
@@ -156,6 +157,7 @@ func defaultPolicies() []Policy {
 		catalogmeta.ModelsDevGitID,
 		catalogmeta.ProvidersID,
 		catalogmeta.LocalCatalogID,
+		catalogmeta.ReleaseArtifactID,
 		catalogmeta.EmbeddedCatalogID,
 	}
 	localFirst := []catalogmeta.SourceID{
@@ -163,6 +165,7 @@ func defaultPolicies() []Policy {
 		catalogmeta.ProvidersID,
 		catalogmeta.ModelsDevHTTPID,
 		catalogmeta.ModelsDevGitID,
+		catalogmeta.ReleaseArtifactID,
 		catalogmeta.EmbeddedCatalogID,
 	}
 	localThenModelsDev := []catalogmeta.SourceID{
@@ -170,6 +173,7 @@ func defaultPolicies() []Policy {
 		catalogmeta.ModelsDevHTTPID,
 		catalogmeta.ModelsDevGitID,
 		catalogmeta.ProvidersID,
+		catalogmeta.ReleaseArtifactID,
 		catalogmeta.EmbeddedCatalogID,
 	}
 

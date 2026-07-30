@@ -8,6 +8,7 @@ REPORT_PATH="${STARMAP_GENERATION_REPORT_PATH:-${TMPDIR:-/tmp}/starmap-catalog-g
 REFRESH_BIN="${STARMAP_MODELSDEV_REFRESH_BIN:-${ROOT}/scripts/refresh-embedded-modelsdev.sh}"
 PROVIDER="${1:-}"
 GENERATION_STATE_ROOT="${STARMAP_GENERATION_STATE_PATH:-}"
+GENERATION_STORE_PATH="${STARMAP_GENERATION_STORE_PATH:-}"
 REMOVE_GENERATION_STATE=false
 
 if [[ -z "$GENERATION_STATE_ROOT" ]]; then
@@ -67,8 +68,13 @@ else
   HOME="$UPDATE_HOME" CATALOG_PATH="$CATALOG_DIR" run_starmap update "${UPDATE_ARGS[@]}"
 fi
 
-run_manifest \
-  --catalog-dir "$CATALOG_DIR" \
-  --output "$MANIFEST_PATH" \
-  --endpoints-output "$CATALOG_DIR/endpoints.yaml" > "$REPORT_PATH"
+MANIFEST_ARGS=(
+  --catalog-dir "$CATALOG_DIR"
+  --output "$MANIFEST_PATH"
+  --endpoints-output "$CATALOG_DIR/endpoints.yaml"
+)
+if [[ -n "$GENERATION_STORE_PATH" ]]; then
+  MANIFEST_ARGS+=(--generation-store "$GENERATION_STORE_PATH")
+fi
+run_manifest "${MANIFEST_ARGS[@]}" > "$REPORT_PATH"
 HOME="$VALIDATION_HOME" CATALOG_PATH="$CATALOG_DIR" run_starmap validate catalog

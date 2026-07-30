@@ -244,6 +244,45 @@ func TestExternalStoreConsumerUsesCallerOwnedAdapter(t *testing.T) {
 	}
 }
 
+func TestPinnedArtifactConsumerIsOfflineAndDependencyBounded(t *testing.T) {
+	consumer := readFixture(
+		t,
+		"../../testdata/consumers/pinned-artifact/consumer.go",
+	)
+	script := readFixture(t, "../../scripts/verify-consumer-deps.sh")
+	for _, check := range []string{
+		"catalogartifact.VerifyRelease",
+		"pinnedVerifier{digest:",
+		"client.Activate(ctx, verified)",
+	} {
+		if !strings.Contains(consumer, check) {
+			t.Fatalf("pinned-artifact consumer is missing %q", check)
+		}
+	}
+	for _, forbidden := range []string{
+		`"github.com/agentstation/starmap/acquisition"`,
+		`"github.com/agentstation/starmap/remote"`,
+		`"github.com/agentstation/starmap/server"`,
+		"http.",
+	} {
+		if strings.Contains(consumer, forbidden) {
+			t.Fatalf("pinned-artifact consumer contains online surface %q", forbidden)
+		}
+	}
+	for _, check := range []string{
+		`PINNED_ARTIFACT_MODULE=`,
+		`PINNED_MAX_NON_STANDARD_PACKAGES=32`,
+		`pinned_banned_pattern=`,
+		`starmap/pkg/catalogartifact`,
+		`starmap/pkg/catalogstore/s3`,
+		`google\.golang\.org/(genai|grpc)`,
+	} {
+		if !strings.Contains(script, check) {
+			t.Fatalf("pinned-artifact dependency verification is missing %q", check)
+		}
+	}
+}
+
 func TestExternalServerStorageMatrixStaysOptional(t *testing.T) {
 	storage := readFixture(t, "../../testdata/consumers/server-storage/storage.go")
 	script := readFixture(t, "../../scripts/verify-consumer-deps.sh")

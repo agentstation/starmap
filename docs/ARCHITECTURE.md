@@ -584,6 +584,16 @@ directory; exact retries are idempotent and same-generation byte changes are
 typed conflicts. The GitHub tag workflow uploads these assets without an
 overwrite flag.
 
+Portable import is explicit and opt-in. `catalogartifact.VerifyRelease`
+strictly verifies the checksum asset, archive, detached statement, schema
+compatibility, and a caller-owned `PublisherVerifier`; no Starmap constructor
+performs release I/O. `acquisition.Syncer.ImportRelease` then reconciles the
+verified generation as a `release_artifact` observation with the human
+workspace and last-known-good baseline. Release facts rank above the embedded
+fallback and below human evidence. Only the resulting validated candidate
+enters generation-store CAS and atomic publication, so failure retains current
+state and rollback can reactivate the exact prior retained generation.
+
 `pkg/catalogremote` owns the online Starmap-to-Starmap wire protocol. It reads
 the current strict manifest or a retained generation-addressed manifest, then
 fetches the exact generation-addressed canonical payload. Strict media type,
@@ -683,6 +693,14 @@ channel/promotion protocol. Channel-specific trust roots and
 availability/freshness tradeoffs are defined in
 [Catalog Distribution Trust Model](CATALOG_DISTRIBUTION_TRUST.md).
 
+The external pinned-artifact composition makes air-gap startup executable: it
+uses a compile-time archive digest as its trust root, blanks provider
+credentials, performs no HTTP operation, verifies the checksum/statement and
+pin, then activates the exact compatible generation in a caller-selected
+store. It imports neither acquisition nor online server/remote
+implementations. Embedded-only startup exercises the same no-network property
+without requiring any artifact.
+
 The embedded fallback has a separate checked-in budget gate for generation age,
 canonical uncompressed payload size, deterministic compressed archive size, and
 minimum provider/model coverage. Runtime readiness and hosted CI report distinct
@@ -690,8 +708,9 @@ evidence. See [Embedded Catalog Budgets](EMBEDDED_CATALOG_BUDGETS.md).
 
 Repository-owned [Scheduled Catalog Generation](SCHEDULED_CATALOG_GENERATION.md)
 runs daily or manually above the idempotent sync/generation boundary. It derives
-new manifest identity only when canonical payload bytes change, validates and
-attests before immutable payload-digest release publication, and never uses
+new release identity only when catalog facts change, while retaining the exact
+evidence-bearing payload checksum for integrity and audit. It validates and
+attests before immutable semantic-digest release publication and never uses
 Actions artifacts as runtime distribution.
 
 The core library owns no scheduler, retry loop, lease, or startup goroutine.
@@ -851,9 +870,10 @@ authoritative during construction; the workspace is reconciled by explicit
 reload or update rather than silently replacing the active generation.
 
 The embedded bootstrap has a strict embedded `generation.json` binding its
-generation ID, generation time, catalog schema version, canonical payload
-SHA-256, and byte size. `starmap.New` verifies that manifest entirely offline
-before publication. `Client.Readiness` reports the generation metadata and age;
+generation ID, generation time, catalog schema version, facts-only semantic
+SHA-256, and exact evidence-bearing payload SHA-256/byte size. `starmap.New`
+verifies both identities entirely offline before publication.
+`Client.Readiness` reports the generation metadata and age;
 `WithEmbeddedBootstrapMaxAge` and `WithEmbeddedBootstrapMaxSizeBytes` make the
 HTTP readiness endpoint fail with stable reason codes while an out-of-budget
 bootstrap remains active. A committed generation supersedes bootstrap budgets.
@@ -1067,6 +1087,9 @@ Observation outcomes use one explicit policy:
   transport; never runs alongside HTTP in one sync
 - **Local Catalog** (`sources.LocalCatalogID`) - Semantic values read from an
   existing human workspace
+- **Release Artifact** (`sources.ReleaseArtifactID`) - Explicitly imported,
+  checksum/statement/compatibility/publisher-verified facts; reconciled above
+  embedded fallback and below semantic human evidence
 - **Embedded** (`sources.EmbeddedCatalogID`) - Verified lowest-authority
   revision shipped with the binary; participates as a separate observation
   without external dependencies, seeds an absent workspace, advances unchanged
