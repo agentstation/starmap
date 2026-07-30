@@ -987,7 +987,7 @@ HTTP is accepted only for local loopback embedding and tests.
 ```bash
 HTTP_PORT=8080
 HTTP_HOST=0.0.0.0
-API_KEY=your-api-key  # If --auth enabled
+API_KEY=changeme  # If --auth enabled
 ```
 
 For the embeddable API, see [server/README.md](server/README.md).
@@ -1016,7 +1016,7 @@ ALIBABA_MODEL_STUDIO_BASE_URL=https://{WorkspaceId}.ap-southeast-1.maas.aliyuncs
 # Google Vertex (optional)
 GOOGLE_VERTEX_PROJECT=my-project
 GOOGLE_VERTEX_LOCATION=us-central1
-GOOGLE_APPLICATION_CREDENTIALS=/path/to/service-account.json
+GOOGLE_APPLICATION_CREDENTIALS=/absolute/path/to/service-account.json
 
 # Starmap logging
 LOG_LEVEL=info
