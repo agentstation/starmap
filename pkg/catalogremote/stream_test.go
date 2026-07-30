@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"net/http"
 	"net/http/httptest"
+	"strings"
 	"testing"
 )
 
@@ -117,5 +118,52 @@ func TestEventStreamRejectsUnsafeGenerationIdentity(t *testing.T) {
 	defer func() { _ = stream.Close() }()
 	if event, err := stream.Next(); err == nil {
 		t.Fatalf("unsafe generation identity accepted: %#v", event)
+	}
+}
+
+func TestEventStreamRejectsOversizedCumulativeFrame(t *testing.T) {
+	t.Parallel()
+
+	server := httptest.NewServer(http.HandlerFunc(
+		func(writer http.ResponseWriter, _ *http.Request) {
+			writer.Header().Set("Content-Type", EventStreamMediaType)
+			for range 40 {
+				_, _ = fmt.Fprintf(
+					writer,
+					"data: %s\n",
+					strings.Repeat("x", 8<<10),
+				)
+			}
+			_, _ = fmt.Fprint(writer, "\n")
+		},
+	))
+	defer server.Close()
+
+	client, err := NewClient(server.URL, server.Client(), 1)
+	if err != nil {
+		t.Fatalf("NewClient: %v", err)
+	}
+	stream, err := client.OpenEventStream(context.Background(), "")
+	if err != nil {
+		t.Fatalf("OpenEventStream: %v", err)
+	}
+	defer func() { _ = stream.Close() }()
+	if event, err := stream.Next(); err == nil {
+		t.Fatalf("oversized cumulative frame accepted: %#v", event)
+	}
+}
+
+func TestEventStreamRejectsInvalidLastEventIDBeforeNetwork(t *testing.T) {
+	t.Parallel()
+
+	client, err := NewClient("http://127.0.0.1:1", nil, 1)
+	if err != nil {
+		t.Fatalf("NewClient: %v", err)
+	}
+	if stream, err := client.OpenEventStream(
+		context.Background(),
+		"not-a-sequence",
+	); err == nil || stream != nil {
+		t.Fatalf("OpenEventStream = (%#v, %v), want validation failure", stream, err)
 	}
 }

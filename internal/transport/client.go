@@ -18,7 +18,15 @@ type Client struct {
 // New creates a new transport client with the specified authenticator.
 func New(provider *catalogs.Provider) *Client {
 	return &Client{
-		http: &http.Client{Timeout: constants.DefaultHTTPTimeout},
+		http: &http.Client{
+			Timeout: constants.DefaultHTTPTimeout,
+			// Provider credentials are scoped to the configured endpoint.
+			// Never replay them to a redirect target; callers must make an
+			// endpoint migration explicit in provider configuration.
+			CheckRedirect: func(*http.Request, []*http.Request) error {
+				return http.ErrUseLastResponse
+			},
+		},
 		auth: newAuthenticator(provider),
 	}
 }
@@ -60,7 +68,20 @@ func (c *Client) DoWithContext(ctx context.Context, req *http.Request, provider 
 		req.Header.Set("Content-Type", "application/json")
 	}
 
-	return c.http.Do(req) //nolint:gosec // Provider endpoints are trusted catalog configuration or caller-supplied integration points.
+	response, err := c.http.Do(req) //nolint:gosec // Provider endpoints are trusted catalog configuration or caller-supplied integration points.
+	if err != nil && providerUsesQueryAuthentication(provider) {
+		// net/http errors include the request URL. Query-authenticated URLs
+		// contain the credential, so retain cancellation semantics but never
+		// expose the transport error or URL through the returned error graph.
+		if ctxErr := ctx.Err(); ctxErr != nil {
+			return nil, ctxErr
+		}
+		return nil, &errors.APIError{
+			Provider: string(provider.ID),
+			Message:  "query-authenticated provider request failed",
+		}
+	}
+	return response, err
 }
 
 // Get performs a GET request.
@@ -80,4 +101,10 @@ func newAuthenticator(provider *catalogs.Provider) Authenticator {
 
 	// Use ProviderAuth to read authentication configuration from YAML
 	return &ProviderAuth{Provider: provider}
+}
+
+func providerUsesQueryAuthentication(provider *catalogs.Provider) bool {
+	return provider != nil &&
+		provider.APIKey != nil &&
+		provider.APIKey.QueryParam != ""
 }

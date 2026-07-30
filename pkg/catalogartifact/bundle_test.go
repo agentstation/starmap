@@ -8,6 +8,7 @@ import (
 	"path/filepath"
 	"testing"
 
+	"github.com/agentstation/starmap/internal/constants"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/catalogstore"
 	pkgerrors "github.com/agentstation/starmap/pkg/errors"
@@ -86,6 +87,48 @@ func TestArtifactReleasePublicationIsImmutableAndIdempotent(t *testing.T) {
 	if !stderrors.As(err, &conflictErr) {
 		t.Fatalf("tampered retry error = %T %v, want ConflictError", err, err)
 	}
+}
+
+func TestArtifactReleaseRejectsSymlinkedLifecyclePaths(t *testing.T) {
+	artifact, err := Build(artifactFixtureGeneration(t))
+	if err != nil {
+		t.Fatalf("Build: %v", err)
+	}
+
+	t.Run("root", func(t *testing.T) {
+		parent := t.TempDir()
+		root := filepath.Join(parent, "release-root")
+		if err := os.Symlink(t.TempDir(), root); err != nil {
+			t.Fatalf("Symlink root: %v", err)
+		}
+		if _, err := StageReleaseAssets(root, artifact); !stderrors.Is(
+			err,
+			pkgerrors.ErrInvalidInput,
+		) {
+			t.Fatalf("StageReleaseAssets error = %T %v", err, err)
+		}
+	})
+
+	t.Run("generation", func(t *testing.T) {
+		root := t.TempDir()
+		base := filepath.Join(root, releaseDirectory)
+		if err := os.Mkdir(base, constants.DirPermissions); err != nil {
+			t.Fatalf("Mkdir base: %v", err)
+		}
+		target := filepath.Join(
+			base,
+			releaseDirectoryName(artifact.GenerationID),
+		)
+		if err := os.Symlink(t.TempDir(), target); err != nil {
+			t.Fatalf("Symlink generation: %v", err)
+		}
+		if _, err := StageReleaseAssets(root, artifact); !stderrors.Is(
+			err,
+			pkgerrors.ErrInvalidInput,
+		) {
+			t.Fatalf("StageReleaseAssets error = %T %v", err, err)
+		}
+	})
 }
 
 func TestArtifactManifestPayloadCompatibilityAndAttestationRoundTrip(t *testing.T) {

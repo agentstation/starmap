@@ -1082,6 +1082,10 @@ workspace is the only human model representation and is both the local
 observation and the post-commit YAML projection. Starmap rejects overlapping
 workspace/state roots and rejects models.dev cache or checkout roots that
 contain, equal, or sit beneath the workspace before reading or writing it.
+Machine-store reads and commits reject symbolic-link substitutions for the
+store root and its owned lock, current pointer, generation, manifest, and
+payload entries. Deployments must protect the parent data path from a hostile
+same-UID actor.
 Atomic projection uses hidden sibling staging and a hidden sibling
 generation/digest marker; neither is loaded as provider configuration, and
 normal completion removes all staging. A sibling advisory writer lock

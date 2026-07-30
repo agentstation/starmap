@@ -601,6 +601,8 @@ body bounds, catalog-schema compatibility, size, and checksum validation all
 precede decode and compare-and-swap publication. The same module owns the sole
 `catalog.published` SSE event shape: generation ID plus matching positive
 event-ID/sequence, with comment heartbeats carrying no publication identity.
+The parser bounds individual lines to 64 KiB and cumulative frames to 256 KiB;
+resumption IDs must be positive integers before any request is sent.
 
 The opt-in public `remote` package composes that protocol into a reactive
 consumer. The configured origin is its publisher identity: production origins
@@ -742,6 +744,11 @@ baseline suite does not substitute for the later adapter-specific fault gates.
 The concurrent same-base matrix opens independent adapters over one backend and
 requires exactly one success and one typed conflict. Filesystem writers
 coordinate through a context-aware advisory lock shared across processes.
+The filesystem adapter rejects symbolic-link substitutions for its owned root,
+generation tree, lock/current entries, manifests, and payloads before reading
+or mutation. The release staging boundary applies the same rule to lifecycle
+roots, generation directories, and immutable assets. These checks assume the
+deployment protects the parent path from a hostile same-UID concurrent actor.
 Starmap owns no relational adapter. An embedding application may implement
 `catalogstore.Store` using SQLite, MySQL, PostgreSQL, or another database, but
 owns the driver, schema, migrations, credentials, pool, backups, lifecycle, and

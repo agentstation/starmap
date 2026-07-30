@@ -136,6 +136,11 @@ Before production use:
 - keep the root filesystem read-only while retaining writable `/tmp` and the
   mounted Starmap data root.
 
+The mounted state root and its owned catalog-store entries must be ordinary
+directories and regular files, not symbolic links. Starmap rejects symlink
+substitutions, but the deployment still owns parent-directory permissions and
+protection from a hostile same-UID process.
+
 ## Kubernetes
 
 The standalone CLI filesystem composition is a single-writer deployment.

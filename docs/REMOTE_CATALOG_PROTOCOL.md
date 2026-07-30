@@ -77,5 +77,11 @@ initial fetch, streaming, retries, activation, and termination. `Close` cancels
 that context and joins the owned lifecycle within a configurable five-second
 default, returning a typed timeout instead of waiting forever.
 
+Stream parsing rejects a line larger than 64 KiB or a cumulative event frame
+larger than 256 KiB. A supplied `Last-Event-ID` must be a positive unsigned
+integer and is rejected before network I/O otherwise. These fixed bounds keep
+an untrusted publisher from growing subscriber memory through one fragmented
+event.
+
 Importing the root `starmap` package never enables remote I/O or silently
 changes update behavior.

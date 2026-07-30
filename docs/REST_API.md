@@ -112,14 +112,20 @@ curl -H 'Authorization: Bearer ...' \
   http://localhost:8080/api/v1/models
 ```
 
-The health/readiness probes and default-prefix OpenAPI JSON route remain
-public. Authentication comparison is constant-time; logs record only whether a
-key was supplied, never the key. OpenRouter routes return the OpenRouter 401
-error dialect, while native routes return Starmap's native 401 envelope.
+The health/readiness probes and the OpenAPI JSON route under the configured
+prefix remain public. Superseded prefixes are not exempt from authentication.
+Authentication comparison is constant-time; logs record only whether a key was
+supplied, never the key. OpenRouter routes return the OpenRouter 401 error
+dialect, while native routes return Starmap's native 401 envelope.
 
 Enable CORS only with a deployment-owned origin policy. An explicit
 `--cors-origins` allowlist echoes only matched origins and adds `Vary: Origin`.
 Using `--cors` without an allowlist emits `Access-Control-Allow-Origin: *`.
+
+The model-search endpoint accepts one strict JSON object, rejects unknown
+fields or trailing values, and limits the decoded request body to 1 MiB.
+Provider endpoints and object-store clients are privileged operator
+configuration; HTTP request fields cannot select an arbitrary upstream URL.
 
 ## Immutable generation protocol
 
@@ -151,6 +157,10 @@ write-deadline-aware writer. Backpressure or write failure terminates the
 connection so the client reconnects and performs mandatory current-manifest
 catch-up; the server never silently drops a hint while reporting a healthy
 stream.
+
+The client rejects an SSE line larger than 64 KiB, a cumulative frame larger
+than 256 KiB, or a non-positive `Last-Event-ID`. These are protocol safety
+bounds, not catalog-size limits.
 
 Polling is not the normal path. The remote subscriber can enable a bounded,
 observable conditional-polling fallback only after an explicit number of

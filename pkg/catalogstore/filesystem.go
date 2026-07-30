@@ -11,8 +11,8 @@ import (
 
 	"github.com/gofrs/flock"
 
-	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/internal/constants"
+	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/errors"
 )
 
@@ -61,6 +61,9 @@ func (s *Filesystem) Current(ctx context.Context) (Generation, error) {
 	}
 	s.mu.RLock()
 	defer s.mu.RUnlock()
+	if err := validateFilesystemLayout(s.root); err != nil {
+		return Generation{}, err
+	}
 	id, err := s.currentID()
 	if err != nil {
 		return Generation{}, err
@@ -75,6 +78,9 @@ func (s *Filesystem) Get(ctx context.Context, id string) (Generation, error) {
 	}
 	s.mu.RLock()
 	defer s.mu.RUnlock()
+	if err := validateFilesystemLayout(s.root); err != nil {
+		return Generation{}, err
+	}
 	return s.readGeneration(ctx, id)
 }
 
@@ -83,8 +89,14 @@ func (s *Filesystem) Commit(ctx context.Context, generation Generation, expected
 	if err := validateCandidate(ctx, generation); err != nil {
 		return err
 	}
+	if err := validateFilesystemLayout(s.root); err != nil {
+		return err
+	}
 	if err := os.MkdirAll(filepath.Join(s.root, "generations"), constants.DirPermissions); err != nil {
 		return errors.WrapIO("create", s.root, err)
+	}
+	if err := validateFilesystemLayout(s.root); err != nil {
+		return err
 	}
 	candidate := generation.Copy()
 	id := candidate.Manifest.GenerationID
@@ -102,6 +114,9 @@ func (s *Filesystem) Commit(ctx context.Context, generation Generation, expected
 
 	s.mu.Lock()
 	defer s.mu.Unlock()
+	if err := validateFilesystemLayout(s.root); err != nil {
+		return err
+	}
 	if err := ctx.Err(); err != nil {
 		return err
 	}
@@ -150,12 +165,16 @@ func (s *Filesystem) currentID() (string, error) {
 }
 
 func (s *Filesystem) currentIDOrEmpty() (string, error) {
-	data, err := os.ReadFile(filepath.Join(s.root, currentFilename))
+	currentPath := filepath.Join(s.root, currentFilename)
+	if err := validateFilesystemEntry(currentPath, false); err != nil {
+		return "", err
+	}
+	data, err := os.ReadFile(currentPath)
 	if os.IsNotExist(err) {
 		return "", nil
 	}
 	if err != nil {
-		return "", errors.WrapIO("read", filepath.Join(s.root, currentFilename), err)
+		return "", errors.WrapIO("read", currentPath, err)
 	}
 	id := strings.TrimSpace(string(data))
 	if id == "" {
@@ -169,13 +188,26 @@ func (s *Filesystem) readGeneration(ctx context.Context, id string) (Generation,
 		return Generation{}, err
 	}
 	dir := s.generationDir(id)
+	if err := validateFilesystemEntry(dir, true); err != nil {
+		if os.IsNotExist(err) {
+			return Generation{}, generationNotFound(id)
+		}
+		return Generation{}, err
+	}
+	manifestPath := filepath.Join(dir, manifestFilename)
+	if err := validateFilesystemEntry(manifestPath, false); err != nil {
+		if os.IsNotExist(err) {
+			return Generation{}, generationNotFound(id)
+		}
+		return Generation{}, err
+	}
 	// dir is derived from a SHA-256 digest, not a caller-controlled path.
-	manifestData, err := os.ReadFile(filepath.Join(dir, manifestFilename)) //nolint:gosec
+	manifestData, err := os.ReadFile(manifestPath) //nolint:gosec
 	if os.IsNotExist(err) {
 		return Generation{}, generationNotFound(id)
 	}
 	if err != nil {
-		return Generation{}, errors.WrapIO("read", filepath.Join(dir, manifestFilename), err)
+		return Generation{}, errors.WrapIO("read", manifestPath, err)
 	}
 	manifest, err := catalogs.ParseGenerationManifestJSON(manifestData)
 	if err != nil {
@@ -188,10 +220,14 @@ func (s *Filesystem) readGeneration(ctx context.Context, id string) (Generation,
 			Message: "does not match requested generation",
 		}
 	}
+	payloadPath := filepath.Join(dir, payloadFilename)
+	if err := validateFilesystemEntry(payloadPath, false); err != nil {
+		return Generation{}, err
+	}
 	// dir is derived from a SHA-256 digest, not a caller-controlled path.
-	payload, err := os.ReadFile(filepath.Join(dir, payloadFilename)) //nolint:gosec
+	payload, err := os.ReadFile(payloadPath) //nolint:gosec
 	if err != nil {
-		return Generation{}, errors.WrapIO("read", filepath.Join(dir, payloadFilename), err)
+		return Generation{}, errors.WrapIO("read", payloadPath, err)
 	}
 	generation := Generation{Manifest: manifest, Payload: payload}
 	if err := generation.Validate(); err != nil {
@@ -233,6 +269,12 @@ func (s *Filesystem) writeGeneration(generation Generation) error {
 }
 
 func (s *Filesystem) writeCurrent(id string) error {
+	if err := validateFilesystemEntry(
+		filepath.Join(s.root, currentFilename),
+		false,
+	); err != nil {
+		return err
+	}
 	temp, err := os.CreateTemp(s.root, ".current-")
 	if err != nil {
 		return errors.WrapIO("create", currentFilename, err)
@@ -297,6 +339,55 @@ func syncDirectory(path string) error {
 	}
 	defer func() { _ = directory.Close() }()
 	return directory.Sync()
+}
+
+func validateFilesystemLayout(root string) error {
+	for _, entry := range []struct {
+		path      string
+		directory bool
+	}{
+		{path: root, directory: true},
+		{path: filepath.Join(root, "generations"), directory: true},
+		{path: filepath.Join(root, ".commit.lock")},
+		{path: filepath.Join(root, currentFilename)},
+	} {
+		if err := validateFilesystemEntry(entry.path, entry.directory); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+func validateFilesystemEntry(path string, directory bool) error {
+	info, err := os.Lstat(path)
+	if os.IsNotExist(err) {
+		return nil
+	}
+	if err != nil {
+		return errors.WrapIO("inspect", path, err)
+	}
+	if info.Mode()&os.ModeSymlink != 0 {
+		return &errors.ValidationError{
+			Field:   "catalog_store.path",
+			Value:   path,
+			Message: "symbolic links are not allowed in the machine store",
+		}
+	}
+	if directory && !info.IsDir() {
+		return &errors.ValidationError{
+			Field:   "catalog_store.path",
+			Value:   path,
+			Message: "must be a directory",
+		}
+	}
+	if !directory && !info.Mode().IsRegular() {
+		return &errors.ValidationError{
+			Field:   "catalog_store.path",
+			Value:   path,
+			Message: "must be a regular file",
+		}
+	}
+	return nil
 }
 
 var _ Store = (*Filesystem)(nil)

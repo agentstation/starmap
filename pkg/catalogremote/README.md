@@ -144,7 +144,7 @@ func (c *Client) FetchGeneration(ctx context.Context, generationID string) (cata
 FetchGeneration fetches and verifies one immutable generation by ID.
 
 <a name="Client.OpenEventStream"></a>
-### func \(\*Client\) [OpenEventStream](<https://github.com/agentstation/starmap/blob/main/pkg/catalogremote/stream.go#L40-L43>)
+### func \(\*Client\) [OpenEventStream](<https://github.com/agentstation/starmap/blob/main/pkg/catalogremote/stream.go#L41-L44>)
 
 ```go
 func (c *Client) OpenEventStream(ctx context.Context, lastEventID string) (*EventStream, error)
@@ -153,7 +153,7 @@ func (c *Client) OpenEventStream(ctx context.Context, lastEventID string) (*Even
 OpenEventStream opens the publication stream. lastEventID is sent as the standard Last\-Event\-ID request header when nonempty.
 
 <a name="EventStream"></a>
-## type [EventStream](<https://github.com/agentstation/starmap/blob/main/pkg/catalogremote/stream.go#L33-L36>)
+## type [EventStream](<https://github.com/agentstation/starmap/blob/main/pkg/catalogremote/stream.go#L34-L37>)
 
 EventStream is one caller\-owned catalog publication stream.
 
@@ -164,7 +164,7 @@ type EventStream struct {
 ```
 
 <a name="EventStream.Close"></a>
-### func \(\*EventStream\) [Close](<https://github.com/agentstation/starmap/blob/main/pkg/catalogremote/stream.go#L172>)
+### func \(\*EventStream\) [Close](<https://github.com/agentstation/starmap/blob/main/pkg/catalogremote/stream.go#L189>)
 
 ```go
 func (s *EventStream) Close() error
@@ -173,7 +173,7 @@ func (s *EventStream) Close() error
 Close closes the underlying response body and unblocks Next.
 
 <a name="EventStream.Next"></a>
-### func \(\*EventStream\) [Next](<https://github.com/agentstation/starmap/blob/main/pkg/catalogremote/stream.go#L107>)
+### func \(\*EventStream\) [Next](<https://github.com/agentstation/starmap/blob/main/pkg/catalogremote/stream.go#L118>)
 
 ```go
 func (s *EventStream) Next() (StreamEvent, error)
@@ -194,7 +194,7 @@ type Publication struct {
 ```
 
 <a name="StreamEvent"></a>
-## type [StreamEvent](<https://github.com/agentstation/starmap/blob/main/pkg/catalogremote/stream.go#L26-L30>)
+## type [StreamEvent](<https://github.com/agentstation/starmap/blob/main/pkg/catalogremote/stream.go#L27-L31>)
 
 StreamEvent is one parsed SSE publication or comment activity frame. Comments establish transport activity but never contain publication data.
 

@@ -61,6 +61,11 @@ const (
 
 	// MaxSourcePayloadBytes bounds one provider or catalog source JSON payload.
 	MaxSourcePayloadBytes = 16 << 20
+
+	// MaxServerRequestBodyBytes bounds one JSON request accepted by the HTTP
+	// server. Current request schemas are small query descriptions, not catalog
+	// payloads.
+	MaxServerRequestBodyBytes = 1 << 20
 )
 
 const (

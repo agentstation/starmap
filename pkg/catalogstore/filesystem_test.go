@@ -8,6 +8,9 @@ import (
 	"testing"
 
 	"github.com/google/go-cmp/cmp"
+
+	"github.com/agentstation/starmap/internal/constants"
+	pkgerrors "github.com/agentstation/starmap/pkg/errors"
 )
 
 func TestAtomicFilesystemCommitFailurePreservesCurrent(t *testing.T) {
@@ -105,5 +108,85 @@ func TestFilesystemCatalogStoreKeepsAndCleansMachineStagingUnderRoot(t *testing.
 		if len(matches) != 0 {
 			t.Fatalf("machine staging survived commit: %v", matches)
 		}
+	}
+}
+
+func TestFilesystemCatalogStoreRejectsSymlinkedMachineEntries(t *testing.T) {
+	t.Run("root", func(t *testing.T) {
+		parent := t.TempDir()
+		target := filepath.Join(parent, "target")
+		if err := os.Mkdir(target, constants.DirPermissions); err != nil {
+			t.Fatalf("Mkdir target: %v", err)
+		}
+		root := filepath.Join(parent, "store")
+		if err := os.Symlink(target, root); err != nil {
+			t.Fatalf("Symlink root: %v", err)
+		}
+		store, err := NewFilesystem(root)
+		if err != nil {
+			t.Fatalf("NewFilesystem: %v", err)
+		}
+		assertInvalidFilesystemCommit(t, store)
+	})
+
+	for _, entry := range []string{"generations", ".commit.lock", "current"} {
+		t.Run(entry, func(t *testing.T) {
+			root := t.TempDir()
+			target := filepath.Join(t.TempDir(), "operator-data")
+			if entry == "generations" {
+				if err := os.Mkdir(target, constants.DirPermissions); err != nil {
+					t.Fatalf("Mkdir target: %v", err)
+				}
+			} else if err := os.WriteFile(target, []byte("preserve\n"), constants.SecureFilePermissions); err != nil {
+				t.Fatalf("WriteFile target: %v", err)
+			}
+			if err := os.Symlink(target, filepath.Join(root, entry)); err != nil {
+				t.Fatalf("Symlink %s: %v", entry, err)
+			}
+			store, err := NewFilesystem(root)
+			if err != nil {
+				t.Fatalf("NewFilesystem: %v", err)
+			}
+			assertInvalidFilesystemCommit(t, store)
+			if entry != "generations" {
+				data, err := os.ReadFile(target)
+				if err != nil || string(data) != "preserve\n" {
+					t.Fatalf("operator file changed: %q, %v", data, err)
+				}
+			}
+		})
+	}
+}
+
+func TestFilesystemCatalogStoreRejectsSymlinkedGeneration(t *testing.T) {
+	root := t.TempDir()
+	store, err := NewFilesystem(root)
+	if err != nil {
+		t.Fatalf("NewFilesystem: %v", err)
+	}
+	if err := os.Mkdir(filepath.Join(root, "generations"), constants.DirPermissions); err != nil {
+		t.Fatalf("Mkdir generations: %v", err)
+	}
+	id := "symlinked-generation"
+	if err := os.Symlink(t.TempDir(), store.generationDir(id)); err != nil {
+		t.Fatalf("Symlink generation: %v", err)
+	}
+	if _, err := store.Get(context.Background(), id); !stderrors.Is(
+		err,
+		pkgerrors.ErrInvalidInput,
+	) {
+		t.Fatalf("Get error = %T %v, want invalid input", err, err)
+	}
+}
+
+func assertInvalidFilesystemCommit(t *testing.T, store *Filesystem) {
+	t.Helper()
+	err := store.Commit(
+		context.Background(),
+		testGeneration("symlink-layout", "payload"),
+		"",
+	)
+	if !stderrors.Is(err, pkgerrors.ErrInvalidInput) {
+		t.Fatalf("Commit error = %T %v, want invalid input", err, err)
 	}
 }

@@ -298,6 +298,37 @@ func TestHandleSearchModelsAppliesReleaseDateRange(t *testing.T) {
 	}
 }
 
+func TestHandleSearchModelsRejectsUnboundedOrAmbiguousBodies(t *testing.T) {
+	h := newTestHandlers(t, catalogs.NewEmpty())
+	tests := []struct {
+		name string
+		body string
+	}{
+		{name: "unknown field", body: `{"invented":true}`},
+		{name: "multiple values", body: `{} {}`},
+		{name: "oversized", body: `{"name_contains":"` + strings.Repeat("x", 1<<20) + `"}`},
+	}
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			request := httptest.NewRequest(
+				http.MethodPost,
+				"/api/v1/models/search",
+				strings.NewReader(test.body),
+			)
+			recorder := httptest.NewRecorder()
+			h.HandleSearchModels(recorder, request)
+			if recorder.Code != http.StatusBadRequest {
+				t.Fatalf(
+					"status = %d, want %d: %s",
+					recorder.Code,
+					http.StatusBadRequest,
+					recorder.Body.String(),
+				)
+			}
+		})
+	}
+}
+
 func TestHandleListProvidersUsesSharedProviderQuery(t *testing.T) {
 	cat := catalogs.NewEmpty()
 	if err := cat.SetProvider(catalogs.Provider{ID: "z-provider", Name: "Z Provider"}); err != nil {

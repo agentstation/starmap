@@ -19,6 +19,7 @@ const (
 	// EventStreamMediaType identifies the catalog publication SSE stream.
 	EventStreamMediaType = "text/event-stream"
 	maxEventLineBytes    = 64 << 10
+	maxEventFrameBytes   = 256 << 10
 )
 
 // StreamEvent is one parsed SSE publication or comment activity frame.
@@ -43,6 +44,16 @@ func (c *Client) OpenEventStream(
 ) (*EventStream, error) {
 	if ctx == nil {
 		ctx = context.Background()
+	}
+	if lastEventID != "" {
+		sequence, err := strconv.ParseUint(lastEventID, 10, 64)
+		if err != nil || sequence == 0 {
+			return nil, &errors.ValidationError{
+				Field:   "catalog_remote.last_event_id",
+				Value:   lastEventID,
+				Message: "must be a positive integer",
+			}
+		}
 	}
 	target := *c.baseURL
 	target.Path = path.Join(strings.TrimSuffix(c.baseURL.Path, "/"), EventStreamPath)
@@ -120,6 +131,12 @@ func (s *EventStream) Next() (StreamEvent, error) {
 			}
 			return frame.event()
 		}
+		frame.sizeBytes += len(line) + 1
+		if frame.sizeBytes > maxEventFrameBytes {
+			return StreamEvent{}, streamParseError(
+				"event frame exceeds maximum size",
+			)
+		}
 		if strings.HasPrefix(line, ":") {
 			if frame.hasFields() {
 				return StreamEvent{}, streamParseError(
@@ -181,6 +198,7 @@ type streamFrame struct {
 	eventID   string
 	data      []string
 	comment   string
+	sizeBytes int
 }
 
 func (f streamFrame) empty() bool {

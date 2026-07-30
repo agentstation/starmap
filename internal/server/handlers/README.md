@@ -61,7 +61,7 @@ Package handlers provides HTTP request handlers for the Starmap API.
 
 
 <a name="DateRange"></a>
-## type [DateRange](<https://github.com/agentstation/starmap/blob/main/internal/server/handlers/models.go#L167-L170>)
+## type [DateRange](<https://github.com/agentstation/starmap/blob/main/internal/server/handlers/models.go#L169-L172>)
 
 DateRange represents a date range filter.
 
@@ -120,7 +120,7 @@ func (h *Handlers) HandleCatalogPayload(writer http.ResponseWriter, request *htt
 HandleCatalogPayload serves an immutable canonical payload by generation ID.
 
 <a name="Handlers.HandleGetModel"></a>
-### func \(\*Handlers\) [HandleGetModel](<https://github.com/agentstation/starmap/blob/main/internal/server/handlers/models.go#L105>)
+### func \(\*Handlers\) [HandleGetModel](<https://github.com/agentstation/starmap/blob/main/internal/server/handlers/models.go#L107>)
 
 ```go
 func (h *Handlers) HandleGetModel(w http.ResponseWriter, _ *http.Request, modelID string)
@@ -156,7 +156,7 @@ func (h *Handlers) HandleHealth(w http.ResponseWriter, _ *http.Request)
 HandleHealth handles GET /api/v1/health. @Summary Health check @Description Health check endpoint \(liveness probe\) @Tags health @Accept json @Produce json @Success 200 \{object\} response.Response\{data=object\} @Router /api/v1/health \[get\].
 
 <a name="Handlers.HandleListModels"></a>
-### func \(\*Handlers\) [HandleListModels](<https://github.com/agentstation/starmap/blob/main/internal/server/handlers/models.go#L42>)
+### func \(\*Handlers\) [HandleListModels](<https://github.com/agentstation/starmap/blob/main/internal/server/handlers/models.go#L44>)
 
 ```go
 func (h *Handlers) HandleListModels(w http.ResponseWriter, r *http.Request)
@@ -228,7 +228,7 @@ func (h *Handlers) HandleSSE(w http.ResponseWriter, r *http.Request)
 HandleSSE handles Server\-Sent Events at /api/v1/updates/stream. @Summary SSE updates stream @Description Heartbeat\-enabled stream of post\-commit catalog publication hints @Tags updates @Produce text/event\-stream @Success 200 "Event stream" @Router /api/v1/updates/stream \[get\].
 
 <a name="Handlers.HandleSearchModels"></a>
-### func \(\*Handlers\) [HandleSearchModels](<https://github.com/agentstation/starmap/blob/main/internal/server/handlers/models.go#L184>)
+### func \(\*Handlers\) [HandleSearchModels](<https://github.com/agentstation/starmap/blob/main/internal/server/handlers/models.go#L186>)
 
 ```go
 func (h *Handlers) HandleSearchModels(w http.ResponseWriter, r *http.Request)
@@ -255,7 +255,7 @@ func (h *Handlers) HandleUpdate(w http.ResponseWriter, r *http.Request)
 HandleUpdate handles POST /api/v1/update. @Summary Trigger catalog update @Description Manually trigger catalog synchronization @Tags admin @Accept json @Produce json @Param provider query string false "Update specific provider only" @Param source query string false "Update one source only \(local\_catalog, providers, models\_dev\_http, or models\_dev\_git\)" @Success 200 \{object\} response.Response\{data=object\} @Failure 500 \{object\} response.Response\{error=response.Error\} @Security ApiKeyAuth @Router /api/v1/update \[post\].
 
 <a name="IntRange"></a>
-## type [IntRange](<https://github.com/agentstation/starmap/blob/main/internal/server/handlers/models.go#L161-L164>)
+## type [IntRange](<https://github.com/agentstation/starmap/blob/main/internal/server/handlers/models.go#L163-L166>)
 
 IntRange represents an integer range filter.
 
@@ -267,7 +267,7 @@ type IntRange struct {
 ```
 
 <a name="SearchModalities"></a>
-## type [SearchModalities](<https://github.com/agentstation/starmap/blob/main/internal/server/handlers/models.go#L155-L158>)
+## type [SearchModalities](<https://github.com/agentstation/starmap/blob/main/internal/server/handlers/models.go#L157-L160>)
 
 SearchModalities specifies modality requirements.
 
@@ -279,7 +279,7 @@ type SearchModalities struct {
 ```
 
 <a name="SearchRequest"></a>
-## type [SearchRequest](<https://github.com/agentstation/starmap/blob/main/internal/server/handlers/models.go#L136-L152>)
+## type [SearchRequest](<https://github.com/agentstation/starmap/blob/main/internal/server/handlers/models.go#L138-L154>)
 
 SearchRequest represents the POST /api/v1/models/search request body.
 
