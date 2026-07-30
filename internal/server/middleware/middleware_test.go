@@ -521,6 +521,10 @@ func TestRecoveryDoesNotLogPanicValue(t *testing.T) {
 	if !strings.Contains(output.String(), `"panic_type":"string"`) {
 		t.Fatalf("recovery log omitted safe panic classification: %s", output.String())
 	}
+	if !strings.Contains(output.String(), `"panic_trace":[`) ||
+		!strings.Contains(output.String(), "middleware_test.go:") {
+		t.Fatalf("recovery log omitted value-free call-site trace: %s", output.String())
+	}
 }
 
 // TestRecovery_OtherRequestsStillWork verifies other requests work after panic.
