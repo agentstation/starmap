@@ -67,7 +67,7 @@ func validateModelFactConsistency(model Model) error {
 					"image-generation models must declare image output",
 				)
 			}
-		case "video-gen":
+		case "video-gen", string(ModelTagTextToVideo):
 			if !slices.Contains(model.Features.Modalities.Output, ModelModalityVideo) {
 				return modelFactError(
 					"features.modalities.output",

@@ -717,6 +717,7 @@ components:
         ModelTagSummarization: Text summarization
         ModelTagTextToImage: Text-to-image generation
         ModelTagTextToSpeech: Text-to-speech synthesis
+        ModelTagTextToVideo: Text-to-video generation
         ModelTagTranslation: Language translation
         ModelTagVision: Computer vision
         ModelTagWriting: Creative and technical writing
@@ -739,6 +740,7 @@ components:
       - ModelTagMultimodal
       - ModelTagAudio
       - ModelTagTextToImage
+      - ModelTagTextToVideo
       - ModelTagTextToSpeech
       - ModelTagSpeechToText
       - ModelTagImageToText
@@ -2281,6 +2283,8 @@ paths:
               schema:
                 type: string
           description: Event stream
+      security:
+      - ApiKeyAuth: []
       summary: SSE updates stream
       tags:
       - updates

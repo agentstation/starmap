@@ -46,6 +46,16 @@ func TestValidateModelFactConsistencyRejectsContradictions(t *testing.T) {
 				}},
 			},
 		},
+		{
+			name: "canonical text to video tag without video output",
+			model: Model{
+				Metadata: &ModelMetadata{Tags: []ModelTag{ModelTagTextToVideo}},
+				Features: &ModelFeatures{Modalities: ModelModalities{
+					Input:  []ModelModality{ModelModalityText},
+					Output: []ModelModality{ModelModalityText},
+				}},
+			},
+		},
 	}
 	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {

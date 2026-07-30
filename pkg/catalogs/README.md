@@ -3669,6 +3669,7 @@ const (
     ModelTagMultimodal   ModelTag = "multimodal"     // Multiple input modalities
     ModelTagAudio        ModelTag = "audio"          // Audio processing
     ModelTagTextToImage  ModelTag = "text_to_image"  // Text-to-image generation
+    ModelTagTextToVideo  ModelTag = "text_to_video"  // Text-to-video generation
     ModelTagTextToSpeech ModelTag = "text_to_speech" // Text-to-speech synthesis
     ModelTagSpeechToText ModelTag = "speech_to_text" // Speech recognition
     ModelTagImageToText  ModelTag = "image_to_text"  // Image captioning/OCR

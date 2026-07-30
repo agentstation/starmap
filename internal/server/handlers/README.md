@@ -219,13 +219,13 @@ func (h *Handlers) HandleReady(w http.ResponseWriter, _ *http.Request)
 HandleReady handles GET /api/v1/ready. @Summary Readiness check @Description Readiness check including cache and data source status @Tags health @Accept json @Produce json @Success 200 \{object\} response.Response\{data=object\} @Failure 503 \{object\} response.Response\{error=response.Error\} @Router /api/v1/ready \[get\].
 
 <a name="Handlers.HandleSSE"></a>
-### func \(\*Handlers\) [HandleSSE](<https://github.com/agentstation/starmap/blob/main/internal/server/handlers/realtime.go#L14>)
+### func \(\*Handlers\) [HandleSSE](<https://github.com/agentstation/starmap/blob/main/internal/server/handlers/realtime.go#L15>)
 
 ```go
 func (h *Handlers) HandleSSE(w http.ResponseWriter, r *http.Request)
 ```
 
-HandleSSE handles Server\-Sent Events at /api/v1/updates/stream. @Summary SSE updates stream @Description Heartbeat\-enabled stream of post\-commit catalog publication hints @Tags updates @Produce text/event\-stream @Success 200 "Event stream" @Router /api/v1/updates/stream \[get\].
+HandleSSE handles Server\-Sent Events at /api/v1/updates/stream. @Summary SSE updates stream @Description Heartbeat\-enabled stream of post\-commit catalog publication hints @Tags updates @Produce text/event\-stream @Success 200 "Event stream" @Security ApiKeyAuth @Router /api/v1/updates/stream \[get\].
 
 <a name="Handlers.HandleSearchModels"></a>
 ### func \(\*Handlers\) [HandleSearchModels](<https://github.com/agentstation/starmap/blob/main/internal/server/handlers/models.go#L186>)

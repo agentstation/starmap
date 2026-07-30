@@ -75,8 +75,8 @@ The configured prefix replaces `/api/v1` in every versioned route.
 | `GET /api/v1/updates/stream` | Heartbeat-enabled catalog publication hints |
 | `GET /api/v1/model/{author}/{slug}` | OpenRouter-compatible model response |
 | `GET /api/v1/models/{author}/{slug}/endpoints` | OpenRouter-compatible provider endpoints |
-| `GET /api/v1/openapi.json` | Generated OpenAPI JSON; always public at the default prefix |
-| `GET /api/v1/openapi.yaml` | Generated OpenAPI YAML |
+| `GET /api/v1/openapi.json` | Generated OpenAPI JSON; always public under the configured prefix |
+| `GET /api/v1/openapi.yaml` | Generated OpenAPI YAML; always public under the configured prefix |
 | `GET /metrics` | Process metrics when enabled |
 
 Model/list responses carry `X-Starmap-Generation-ID`, so a caller can associate
@@ -112,8 +112,8 @@ curl -H 'Authorization: Bearer ...' \
   http://localhost:8080/api/v1/models
 ```
 
-The health/readiness probes and the OpenAPI JSON route under the configured
-prefix remain public. Superseded prefixes are not exempt from authentication.
+The health/readiness probes and both OpenAPI routes under the configured prefix
+remain public. Superseded prefixes are not exempt from authentication.
 Authentication comparison is constant-time; logs record only whether a key was
 supplied, never the key. OpenRouter routes return the OpenRouter 401 error
 dialect, while native routes return Starmap's native 401 envelope.
@@ -143,6 +143,8 @@ lifecycle. The exact wire contract is documented in
 ## Reactive updates
 
 `GET /api/v1/updates/stream` is the sole Starmap catalog-publication transport.
+It is protected when server authentication is enabled; remote consumers supply
+deployment-owned authentication through the caller-owned `http.Client`.
 The only data event is:
 
 ```text

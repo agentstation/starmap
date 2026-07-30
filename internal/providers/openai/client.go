@@ -198,11 +198,11 @@ func normalizeOperationalModalities(model *catalogs.Model) {
 	}
 	for _, tag := range model.Metadata.Tags {
 		switch strings.ToLower(string(tag)) {
-		case "embed", "embedding":
+		case "embed", string(catalogs.ModelTagEmbedding):
 			model.Features.Modalities.Output = []catalogs.ModelModality{
 				catalogs.ModelModalityEmbedding,
 			}
-		case "stt", "speech_to_text":
+		case "stt", string(catalogs.ModelTagSpeechToText):
 			model.Features.Modalities.Input = appendUniqueModality(
 				model.Features.Modalities.Input,
 				catalogs.ModelModalityAudio,
@@ -210,7 +210,7 @@ func normalizeOperationalModalities(model *catalogs.Model) {
 			model.Features.Modalities.Output = []catalogs.ModelModality{
 				catalogs.ModelModalityText,
 			}
-		case "tts", "text_to_speech":
+		case "tts", string(catalogs.ModelTagTextToSpeech):
 			model.Features.Modalities.Input = appendUniqueModality(
 				model.Features.Modalities.Input,
 				catalogs.ModelModalityText,
@@ -218,11 +218,11 @@ func normalizeOperationalModalities(model *catalogs.Model) {
 			model.Features.Modalities.Output = []catalogs.ModelModality{
 				catalogs.ModelModalityAudio,
 			}
-		case "image-gen", "text_to_image":
+		case "image-gen", string(catalogs.ModelTagTextToImage):
 			model.Features.Modalities.Output = []catalogs.ModelModality{
 				catalogs.ModelModalityImage,
 			}
-		case "video-gen", "text_to_video":
+		case "video-gen", string(catalogs.ModelTagTextToVideo):
 			model.Features.Modalities.Output = []catalogs.ModelModality{
 				catalogs.ModelModalityVideo,
 			}
