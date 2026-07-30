@@ -7,8 +7,30 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.2.0] - 2026-07-30
+
 ### Added
 
+- **Fresh reviewed embedded catalog**: refreshed provider and models.dev source
+  observations, added Moonshot AI's Kimi K3 authored definition and serving
+  record, and refreshed Google Vertex through local Application Default
+  Credentials. The immutable embedded generation contains reviewed canonical
+  author links for provider offerings and passes generation, schema, freshness,
+  size, and cross-reference validation.
+- **Human-editable capability checklist**: model YAML now renders every Boolean
+  capability, using conservative `false` defaults for missing observations
+  while preserving explicit `null`, `false`, and `true` distinctions in the
+  immutable catalog. Untouched projection defaults do not override later
+  authoritative source observations.
+- **Safer live-source admission**: live provider observations must join a
+  reviewed `author/model` definition before publication; unreviewed records are
+  quarantined with actionable observation evidence. Provider aliases are
+  resolved consistently when models.dev observations are reconciled.
+- **CLI and server reliability fixes**: structured provider-test output keeps
+  progress on stderr, first-run workspace parents are created safely, model
+  search uses its documented route, configured CORS origins enable CORS,
+  synchronous updates receive the full acquisition/projection deadline, and
+  provider-specific token price units are normalized explicitly.
 - **Pure-Go release contract**: required verification executes the external
   library, store, server, remote, and CLI compositions with `CGO_ENABLED=0`;
   race verification remains explicitly cgo-enabled. GoReleaser archives,
@@ -461,5 +483,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Initial public release. See Unreleased section for features.
 
-[Unreleased]: https://github.com/agentstation/starmap/compare/v0.1.0...HEAD
+[Unreleased]: https://github.com/agentstation/starmap/compare/v0.2.0...HEAD
+[0.2.0]: https://github.com/agentstation/starmap/compare/v0.1.2...v0.2.0
 [0.1.0]: https://github.com/agentstation/starmap/releases/tag/v0.1.0
