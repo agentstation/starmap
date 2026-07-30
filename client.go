@@ -50,9 +50,9 @@ import (
 
 	bootstraploader "github.com/agentstation/starmap/internal/bootstrap"
 	"github.com/agentstation/starmap/internal/catalog/workspace"
+	"github.com/agentstation/starmap/internal/constants"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/catalogstore"
-	"github.com/agentstation/starmap/internal/constants"
 	"github.com/agentstation/starmap/pkg/errors"
 	"github.com/agentstation/starmap/pkg/logging"
 )
@@ -200,19 +200,11 @@ func NewContext(ctx context.Context, opts ...Option) (*Client, error) {
 	log := logging.Debug()
 	log.Msg("Creating local catalog (embedded or file-based)")
 	catalogPath := sm.options.catalogPath
-	embeddedBuilder, err := catalogs.NewEmbedded()
+	embeddedCatalog, bootstrapManifest, err := bootstraploader.Embedded()
 	if err != nil {
-		return nil, errors.WrapResource("create", "embedded bootstrap catalog", "", err)
-	}
-	embeddedCatalog, err := embeddedBuilder.Build()
-	if err != nil {
-		return nil, errors.WrapResource("publish", "embedded bootstrap catalog", "", err)
-	}
-	if err := constructionContextError(ctx); err != nil {
 		return nil, err
 	}
-	bootstrapManifest, err := bootstraploader.Load(embeddedCatalog)
-	if err != nil {
+	if err := constructionContextError(ctx); err != nil {
 		return nil, err
 	}
 	initial := embeddedCatalog
