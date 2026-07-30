@@ -12,10 +12,8 @@ const (
 	DefaultTimeout = 10 * time.Second
 
 	// DefaultCatalogProjectionTimeout bounds full-catalog filesystem
-	// projection and startup repair. The human-readable workspace intentionally
-	// renders the complete capability surface and may contain hundreds of model
-	// files, so slow or instrumented filesystems receive a bounded margin.
-	DefaultCatalogProjectionTimeout = 3 * time.Minute
+	// projection and startup repair.
+	DefaultCatalogProjectionTimeout = time.Minute
 
 	// UpdateContextTimeout is the timeout for each catalog update operation.
 	UpdateContextTimeout = 5 * time.Minute
