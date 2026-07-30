@@ -42,7 +42,7 @@ func TestF009MalformedModelsDevSiblingIsQuarantined(t *testing.T) {
 	}
 
 	builder := catalogs.NewEmpty()
-	added, rejected, issues, err := processFetch(builder, api)
+	added, rejected, issues, err := processFetch(builder, api, nil)
 	if err != nil {
 		t.Fatalf("processFetch: %v", err)
 	}

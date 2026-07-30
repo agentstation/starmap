@@ -365,6 +365,20 @@ func TestGolangCILintVersionIsConsistentAcrossVerificationSurfaces(t *testing.T)
 	}
 }
 
+func TestLocalBuildVersionIgnoresCatalogGenerationTags(t *testing.T) {
+	makefile := readFixture(t, "../../Makefile")
+	if !strings.Contains(makefile, "git describe --tags --abbrev=0 --match 'v[0-9]*'") {
+		t.Fatal("local builds must derive application versions from v* tags only")
+	}
+
+	goreleaser := readFixture(t, "../../.goreleaser.yaml")
+	for _, catalogTag := range []string{"catalog-payload-*", "catalog-semantic-*"} {
+		if !strings.Contains(goreleaser, catalogTag) {
+			t.Fatalf("GoReleaser does not ignore catalog generation tag %q", catalogTag)
+		}
+	}
+}
+
 func TestOpenAPICheckPinsSelfContainedGenerator(t *testing.T) {
 	makefile := readFixture(t, "../../Makefile")
 	for _, check := range []string{

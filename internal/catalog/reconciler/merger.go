@@ -3,6 +3,7 @@ package reconciler
 import (
 	"fmt"
 	"reflect"
+	"sort"
 	"strings"
 	"time"
 
@@ -51,9 +52,17 @@ func (e sourceObservationEvidence) healthReason() string {
 		len(e.issues) == 0 {
 		return ""
 	}
-	issueCodes := make([]string, 0, len(e.issues))
+	issueCounts := make(map[string]int, len(e.issues))
 	for _, issue := range e.issues {
-		issueCodes = append(issueCodes, string(issue.Code))
+		issueCounts[string(issue.Code)]++
+	}
+	issueCodes := make([]string, 0, len(issueCounts))
+	for code := range issueCounts {
+		issueCodes = append(issueCodes, code)
+	}
+	sort.Strings(issueCodes)
+	for index, code := range issueCodes {
+		issueCodes[index] = fmt.Sprintf("%s:%d", code, issueCounts[code])
 	}
 	return fmt.Sprintf(
 		"observation health status=%s completeness=%s accepted=%d rejected=%d issues=%s",

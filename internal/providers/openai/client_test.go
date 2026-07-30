@@ -588,10 +588,13 @@ func TestConvertToModelPreservesOpenAICompatibleProviderFields(t *testing.T) {
 	active := true
 	contextWindow := int64(131072)
 	maxOutputLength := int64(32768)
-	// Groq's /models pricing block reports USD per 1M tokens.
+	// Groq's /models pricing block reports USD per token.
 	promptPrice := 0.59
 	completionPrice := 0.79
 	cacheReadPrice := 0.10
+	promptPricePerToken := promptPrice / 1_000_000
+	completionPricePerToken := completionPrice / 1_000_000
+	cacheReadPricePerToken := cacheReadPrice / 1_000_000
 	requestPrice := 0.0
 	imagePrice := 0.003
 
@@ -611,9 +614,9 @@ func TestConvertToModelPreservesOpenAICompatibleProviderFields(t *testing.T) {
 		SupportedSamplingParameters: []string{"temperature", "top_p", "stop", "seed"},
 		Pricing: &ModelPricing{
 			Request:        &requestPrice,
-			Prompt:         &promptPrice,
-			Completion:     &completionPrice,
-			InputCacheRead: &cacheReadPrice,
+			Prompt:         &promptPricePerToken,
+			Completion:     &completionPricePerToken,
+			InputCacheRead: &cacheReadPricePerToken,
 			Image:          &imagePrice,
 		},
 	})

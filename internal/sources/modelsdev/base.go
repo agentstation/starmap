@@ -6,16 +6,21 @@ import (
 	"strings"
 	"unicode"
 
-	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/internal/constants"
+	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/errors"
 	"github.com/agentstation/starmap/pkg/sources"
 )
 
 // processFetch handles the common logic for fetching models from models.dev API.
-func processFetch(catalog *catalogs.Builder, api *API, opts ...sources.Option) (int, int, []sources.ObservationIssue, error) {
+func processFetch(
+	catalog *catalogs.Builder,
+	api *API,
+	providers catalogs.ProvidersReader,
+	opts ...sources.Option,
+) (int, int, []sources.ObservationIssue, error) {
 	options := sources.Defaults().Apply(opts...)
-	candidateCount := modelsDevCandidateCount(api, options.ProviderID)
+	candidateCount := modelsDevCandidateCount(api, providers, options.ProviderID)
 
 	catalog.SetMergeStrategy(catalogs.MergeEnrichEmpty)
 
@@ -31,6 +36,7 @@ func processFetch(catalog *catalogs.Builder, api *API, opts ...sources.Option) (
 		providerAdded, providerIssues, limitExceeded, err := processModelsDevProvider(
 			catalog,
 			&mdProvider,
+			providers,
 			options.ProviderID,
 			constants.MaxCatalogModels-added,
 		)
@@ -50,10 +56,11 @@ func processFetch(catalog *catalogs.Builder, api *API, opts ...sources.Option) (
 func processModelsDevProvider(
 	catalog *catalogs.Builder,
 	mdProvider *Provider,
+	providers catalogs.ProvidersReader,
 	providerFilter *catalogs.ProviderID,
 	remaining int,
 ) (int, []sources.ObservationIssue, bool, error) {
-	providerID := catalogs.ProviderID(mdProvider.ID)
+	providerID := canonicalProviderID(providers, catalogs.ProviderID(mdProvider.ID))
 	if providerFilter != nil && providerID != *providerFilter {
 		return 0, nil, false, nil
 	}
@@ -146,13 +153,18 @@ func addModelsDevModels(
 	return added, issues, false
 }
 
-func modelsDevCandidateCount(api *API, providerFilter *catalogs.ProviderID) int {
+func modelsDevCandidateCount(
+	api *API,
+	providers catalogs.ProvidersReader,
+	providerFilter *catalogs.ProviderID,
+) int {
 	if api == nil {
 		return 0
 	}
 	count := 0
 	for _, provider := range *api {
-		if providerFilter != nil && catalogs.ProviderID(provider.ID) != *providerFilter {
+		providerID := canonicalProviderID(providers, catalogs.ProviderID(provider.ID))
+		if providerFilter != nil && providerID != *providerFilter {
 			continue
 		}
 		count += provider.RecordReport.Rejected
@@ -163,6 +175,17 @@ func modelsDevCandidateCount(api *API, providerFilter *catalogs.ProviderID) int 
 		}
 	}
 	return count
+}
+
+func canonicalProviderID(providers catalogs.ProvidersReader, id catalogs.ProviderID) catalogs.ProviderID {
+	if providers == nil {
+		return id
+	}
+	provider, found := providers.Resolve(id)
+	if !found || provider == nil {
+		return id
+	}
+	return provider.ID
 }
 
 func validateModelsDevModelIdentity(mapKey string, model *Model) error {

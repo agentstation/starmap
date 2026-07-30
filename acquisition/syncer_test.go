@@ -7,10 +7,10 @@ import (
 	"path/filepath"
 	"sync/atomic"
 	"testing"
-	"time"
 
 	"github.com/agentstation/starmap"
 	"github.com/agentstation/starmap/internal/catalog/workspace"
+	"github.com/agentstation/starmap/internal/constants"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/catalogstore"
 	pkgerrors "github.com/agentstation/starmap/pkg/errors"
@@ -239,7 +239,7 @@ func TestSyncTimeoutContextReachesDurableCommit(t *testing.T) {
 	}
 	_, err = syncer.Sync(
 		context.Background(),
-		pkgsync.WithTimeout(time.Minute),
+		pkgsync.WithTimeout(constants.UpdateContextTimeout),
 		pkgsync.WithSources(sources.EmbeddedCatalogID),
 		pkgsync.WithReformat(true),
 	)

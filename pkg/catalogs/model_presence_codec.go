@@ -7,8 +7,11 @@ import (
 	"github.com/goccy/go-yaml"
 )
 
-// MarshalYAML preserves explicit false and unknown capability claims while
-// omitting capabilities that were not observed.
+// MarshalYAML renders the complete Boolean capability surface for the
+// human-editable YAML workspace. Capabilities without an observed claim use
+// the conservative false default, while explicitly unknown claims remain
+// null. Immutable JSON generations retain the precise missing/unknown/known
+// distinction.
 func (f ModelFeatures) MarshalYAML() (any, error) {
 	entries := make(yaml.MapSlice, 0, len(modelFeatures())+1)
 	if f.Modalities.Input != nil || f.Modalities.Output != nil {
@@ -16,14 +19,14 @@ func (f ModelFeatures) MarshalYAML() (any, error) {
 	}
 	for _, feature := range modelFeatures() {
 		value, state := f.Support(feature)
-		if state == ValueMissing {
-			continue
-		}
-		if state == ValueUnknown {
+		switch state {
+		case ValueUnknown:
 			entries = append(entries, yaml.MapItem{Key: string(feature), Value: nil})
-			continue
+		case ValueKnown:
+			entries = append(entries, yaml.MapItem{Key: string(feature), Value: value})
+		default:
+			entries = append(entries, yaml.MapItem{Key: string(feature), Value: false})
 		}
-		entries = append(entries, yaml.MapItem{Key: string(feature), Value: value})
 	}
 	return entries, nil
 }

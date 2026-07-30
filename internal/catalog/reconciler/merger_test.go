@@ -285,11 +285,11 @@ func TestMergeComplexStructures(t *testing.T) {
 		t.Error("Expected streaming to be true from Provider API")
 	}
 
-	// Provider false values are explicit and cannot be promoted by models.dev.
-	if model.Features.ToolCalls || model.Features.WebSearch || model.Features.Tools ||
-		model.Features.ToolChoice || model.Features.Attachments || model.Features.Reasoning ||
-		model.Features.ReasoningEffort || model.Features.StructuredOutputs {
-		t.Fatalf("models.dev true overwrote known provider false: %#v", model.Features)
+	// Missing provider claims are filled by models.dev.
+	if !model.Features.ToolCalls || !model.Features.WebSearch || !model.Features.Tools ||
+		!model.Features.ToolChoice || !model.Features.Attachments || !model.Features.Reasoning ||
+		!model.Features.ReasoningEffort || !model.Features.StructuredOutputs {
+		t.Fatalf("models.dev did not fill missing provider capabilities: %#v", model.Features)
 	}
 	if !containsModality(model.Features.Modalities.Input, catalogs.ModelModalityText) ||
 		!containsModality(model.Features.Modalities.Input, catalogs.ModelModalityImage) ||
@@ -319,16 +319,19 @@ func TestKnownFalseAndAbsentCapabilityAuthority(t *testing.T) {
 		name             string
 		providerFeatures *catalogs.ModelFeatures
 		wantTools        bool
+		wantState        catalogs.ValuePresence
 	}{
 		{
 			name:             "known provider false remains authoritative",
-			providerFeatures: &catalogs.ModelFeatures{Tools: false},
+			providerFeatures: explicitlySupported(catalogs.ModelFeatureTools, false),
 			wantTools:        false,
+			wantState:        catalogs.ValueKnown,
 		},
 		{
-			name:             "absent provider capability permits fallback",
-			providerFeatures: nil,
+			name:             "missing field in provider capability record permits fallback",
+			providerFeatures: &catalogs.ModelFeatures{Streaming: true},
 			wantTools:        true,
+			wantState:        catalogs.ValueKnown,
 		},
 	}
 	for _, test := range tests {
@@ -350,8 +353,17 @@ func TestKnownFalseAndAbsentCapabilityAuthority(t *testing.T) {
 			if got := result[0].Features.Tools; got != test.wantTools {
 				t.Fatalf("Tools = %t, want %t", got, test.wantTools)
 			}
+			if _, state := result[0].Features.Support(catalogs.ModelFeatureTools); state != test.wantState {
+				t.Fatalf("Tools state = %v, want %v", state, test.wantState)
+			}
 		})
 	}
+}
+
+func explicitlySupported(feature catalogs.ModelFeature, supported bool) *catalogs.ModelFeatures {
+	features := &catalogs.ModelFeatures{}
+	features.SetSupport(feature, supported)
+	return features
 }
 
 func TestMergeMetadataPreservesOpenWeightsTrueFromSupplementalSources(t *testing.T) {

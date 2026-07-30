@@ -1082,6 +1082,12 @@ workspace is the only human model representation and is both the local
 observation and the post-commit YAML projection. Starmap rejects overlapping
 workspace/state roots and rejects models.dev cache or checkout roots that
 contain, equal, or sit beneath the workspace before reading or writing it.
+Every authored and provider model YAML exposes the same complete Boolean
+capability checklist: unobserved capabilities are displayed as `false`,
+explicit uncertainty remains `null`, and missing numeric limits are not
+invented as zero. This keeps hand editing discoverable while provenance and
+source authority still allow a later provider or upstream observation to
+replace untouched projection defaults.
 Machine-store reads and commits reject symbolic-link substitutions for the
 store root and its owned lock, current pointer, generation, manifest, and
 payload entries. Deployments must protect the parent data path from a hostile

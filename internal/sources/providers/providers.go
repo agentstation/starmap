@@ -10,9 +10,9 @@ import (
 	"time"
 	"unicode"
 
+	"github.com/agentstation/starmap/internal/constants"
 	"github.com/agentstation/starmap/internal/sourcepayload"
 	"github.com/agentstation/starmap/pkg/catalogs"
-	"github.com/agentstation/starmap/internal/constants"
 	pkgerrors "github.com/agentstation/starmap/pkg/errors"
 	"github.com/agentstation/starmap/pkg/logging"
 	"github.com/agentstation/starmap/pkg/sources"
@@ -25,15 +25,17 @@ type ClientFactory = sources.ProviderClientFactory
 type SourceOption func(*sourceOptions)
 
 type sourceOptions struct {
-	clientFactory  ClientFactory
-	maxConcurrency int
+	clientFactory         ClientFactory
+	maxConcurrency        int
+	requireCanonicalLinks bool
 }
 
 // Source fetches models from all provider APIs concurrently.
 type Source struct {
-	providers      catalogs.ProvidersReader // Provider configs injected during setup
-	fetcher        *sources.ProviderFetcher
-	maxConcurrency int
+	providers             catalogs.ProvidersReader // Provider configs injected during setup
+	fetcher               *sources.ProviderFetcher
+	maxConcurrency        int
+	requireCanonicalLinks bool
 }
 
 var _ sources.Source = (*Source)(nil)
@@ -41,7 +43,8 @@ var _ sources.Source = (*Source)(nil)
 // New creates a new provider API source with the given provider configurations.
 func New(providers catalogs.ProvidersReader, opts ...SourceOption) *Source {
 	options := sourceOptions{
-		maxConcurrency: constants.MaxConcurrentProviders,
+		maxConcurrency:        constants.MaxConcurrentProviders,
+		requireCanonicalLinks: true,
 	}
 	for _, opt := range opts {
 		opt(&options)
@@ -51,9 +54,10 @@ func New(providers catalogs.ProvidersReader, opts ...SourceOption) *Source {
 		fetcherOptions = append(fetcherOptions, sources.WithProviderClientFactory(options.clientFactory))
 	}
 	return &Source{
-		providers:      providers,
-		fetcher:        sources.NewProviderFetcher(providers, fetcherOptions...),
-		maxConcurrency: options.maxConcurrency,
+		providers:             providers,
+		fetcher:               sources.NewProviderFetcher(providers, fetcherOptions...),
+		maxConcurrency:        options.maxConcurrency,
+		requireCanonicalLinks: options.requireCanonicalLinks,
 	}
 }
 
@@ -169,6 +173,14 @@ func (s *Source) Observe(ctx context.Context, opts ...sources.Option) (sources.O
 				var quarantineErr *sourcepayload.QuarantineError
 				if errors.As(err, &quarantineErr) {
 					result.models, result.rejected, result.issues = quarantineProviderModels(p.ID, models)
+					if s.requireCanonicalLinks {
+						result.models, result.rejected, result.issues = linkReviewedProviderModels(
+							p,
+							result.models,
+							result.rejected,
+							result.issues,
+						)
+					}
 					result.rejected += quarantineErr.Report.Rejected
 					result.issues = append(result.issues, providerRecordIssues(p.ID, quarantineErr)...)
 					resultChan <- result
@@ -184,6 +196,14 @@ func (s *Source) Observe(ctx context.Context, opts ...sources.Option) (sources.O
 			}
 
 			result.models, result.rejected, result.issues = quarantineProviderModels(p.ID, models)
+			if s.requireCanonicalLinks {
+				result.models, result.rejected, result.issues = linkReviewedProviderModels(
+					p,
+					result.models,
+					result.rejected,
+					result.issues,
+				)
+			}
 			resultChan <- result
 
 			logging.Ctx(logger).Info().
@@ -247,6 +267,42 @@ func (s *Source) Observe(ctx context.Context, opts ...sources.Option) (sources.O
 	}
 
 	return s.observation(catalog, issues, records)
+}
+
+func linkReviewedProviderModels(
+	provider *catalogs.Provider,
+	models []*catalogs.Model,
+	rejected int,
+	issues []sources.ObservationIssue,
+) ([]*catalogs.Model, int, []sources.ObservationIssue) {
+	linked := make([]*catalogs.Model, 0, len(models))
+	for _, model := range models {
+		configured := provider.Models[model.ID]
+		if configured == nil || configured.ModelRef == "" {
+			rejected++
+			issues = append(issues, sources.ObservationIssue{
+				Scope:   sources.ObservationIssueScopeRecord,
+				Code:    sources.ObservationIssueCodeInvalidRecord,
+				Subject: string(provider.ID) + "/" + model.ID,
+				Message: "provider model has no reviewed canonical link; add model: author/slug to the provider YAML",
+			})
+			continue
+		}
+		if _, _, err := catalogs.ParseModelDefinitionID(configured.ModelRef); err != nil {
+			rejected++
+			issues = append(issues, sources.ObservationIssue{
+				Scope:   sources.ObservationIssueScopeRecord,
+				Code:    sources.ObservationIssueCodeInvalidRecord,
+				Subject: string(provider.ID) + "/" + model.ID,
+				Message: "configured canonical model link is invalid: " + err.Error(),
+			})
+			continue
+		}
+		linkedModel := catalogs.DeepCopyModel(*model)
+		linkedModel.ModelRef = configured.ModelRef
+		linked = append(linked, &linkedModel)
+	}
+	return linked, rejected, issues
 }
 
 func (s *Source) effectiveMaxConcurrency(providerCount int) int {

@@ -40,7 +40,8 @@ func Derive(reader catalogs.Reader, current *catalogs.BootstrapManifest, generat
 	}
 	if current != nil &&
 		current.SchemaVersion == catalogs.CurrentCatalogSchemaVersion &&
-		current.SemanticChecksum == semanticChecksum {
+		current.SemanticChecksum == semanticChecksum &&
+		current.Payload == descriptor {
 		return *current, Report{
 			Changed: false, PreviousGenerationID: current.GenerationID,
 			GenerationID: current.GenerationID, GeneratedAt: current.GeneratedAt,
@@ -119,7 +120,8 @@ func DeriveCommitted(
 	}
 	if current != nil &&
 		current.SchemaVersion == catalogs.CurrentCatalogSchemaVersion &&
-		current.SemanticChecksum == semanticChecksum {
+		current.SemanticChecksum == semanticChecksum &&
+		current.Payload == descriptor {
 		return *current, unchangedReport(*current), nil
 	}
 

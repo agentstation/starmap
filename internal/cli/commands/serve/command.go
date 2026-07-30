@@ -175,6 +175,9 @@ func parseConfig(cmd *cobra.Command) server.Config {
 	host := mustGetString(cmd, "host")
 	corsEnabled := mustGetBool(cmd, "cors")
 	corsOrigins := mustGetStringSlice(cmd, "cors-origins")
+	if len(corsOrigins) > 0 {
+		corsEnabled = true
+	}
 	authEnabled := mustGetBool(cmd, "auth")
 	authHeader := mustGetString(cmd, "auth-header")
 	rateLimit := mustGetInt(cmd, "rate-limit")

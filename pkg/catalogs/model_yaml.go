@@ -18,6 +18,16 @@ func (m *Model) FormatYAML() string {
 // EncodeYAML returns formatted YAML or a typed parse error when model values
 // cannot be represented safely.
 func (m *Model) EncodeYAML() (string, error) {
+	// Every human-editable model YAML exposes the complete Boolean capability
+	// surface, including models for which no source supplied feature claims.
+	// Use a shallow projection copy so formatting never mutates the model.
+	projected := m
+	if m.Features == nil {
+		projectedModel := *m
+		projectedModel.Features = &ModelFeatures{}
+		projected = &projectedModel
+	}
+
 	// Create comment map for proper sectioning and headers
 	commentMap := yaml.CommentMap{}
 
@@ -33,7 +43,7 @@ func (m *Model) EncodeYAML() (string, error) {
 		}
 	}
 
-	if m.Features != nil {
+	if projected.Features != nil {
 		commentMap["$.features"] = []*yaml.Comment{
 			yaml.HeadComment(" Model features"),
 		}
@@ -77,15 +87,15 @@ func (m *Model) EncodeYAML() (string, error) {
 		yamlData []byte
 		err      error
 	)
-	if strings.Contains(m.Description, `\`) {
-		yamlData, err = yaml.MarshalWithOptions(m,
+	if strings.Contains(projected.Description, `\`) {
+		yamlData, err = yaml.MarshalWithOptions(projected,
 			yaml.Indent(2),
 			yaml.IndentSequence(false),
 			yaml.UseSingleQuote(true),
 			yaml.WithComment(commentMap),
 		)
 	} else {
-		yamlData, err = yaml.MarshalWithOptions(m,
+		yamlData, err = yaml.MarshalWithOptions(projected,
 			yaml.Indent(2),
 			yaml.IndentSequence(false),
 			yaml.UseLiteralStyleIfMultiline(true),
@@ -94,7 +104,7 @@ func (m *Model) EncodeYAML() (string, error) {
 	}
 	if err != nil {
 		// Fallback to basic marshal if comment marshaling fails
-		yamlData, err = yaml.Marshal(m)
+		yamlData, err = yaml.Marshal(projected)
 		if err != nil {
 			return "", errors.WrapParse("yaml", "model "+m.ID, err)
 		}

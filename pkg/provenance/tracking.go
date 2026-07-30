@@ -2,6 +2,8 @@
 package provenance
 
 import (
+	"bytes"
+	"encoding/json"
 	"fmt"
 	"os"
 	"sort"
@@ -29,6 +31,58 @@ type Entry struct {
 	Confidence       float64                         // Confidence in the value (0.0 to 1.0)
 	Reason           string                          // Reason for selecting this value
 	PreviousValue    any                             // Previous value if updated
+}
+
+// MarshalJSON makes interface-valued evidence independent of the concrete Go
+// type used to construct it. This is required for immutable catalog payloads:
+// after a payload is decoded, Value and PreviousValue contain generic JSON
+// maps rather than the original source structs, but re-encoding must reproduce
+// the exact generation bytes.
+func (e Entry) MarshalJSON() ([]byte, error) {
+	value, err := canonicalDynamicJSON(e.Value)
+	if err != nil {
+		return nil, fmt.Errorf("encode provenance value: %w", err)
+	}
+	previousValue, err := canonicalDynamicJSON(e.PreviousValue)
+	if err != nil {
+		return nil, fmt.Errorf("encode provenance previous value: %w", err)
+	}
+	type canonicalEntry struct {
+		Source           catalogmeta.SourceID
+		Field            string
+		Value            json.RawMessage
+		Timestamp        time.Time
+		ObservationID    string
+		ObservedAt       time.Time
+		Revision         catalogmeta.ObservationRevision
+		EvidenceChecksum string
+		Rejections       []Rejection
+		Authority        float64
+		Confidence       float64
+		Reason           string
+		PreviousValue    json.RawMessage
+	}
+	return json.Marshal(canonicalEntry{
+		Source: e.Source, Field: e.Field, Value: value, Timestamp: e.Timestamp,
+		ObservationID: e.ObservationID, ObservedAt: e.ObservedAt, Revision: e.Revision,
+		EvidenceChecksum: e.EvidenceChecksum, Rejections: e.Rejections,
+		Authority: e.Authority, Confidence: e.Confidence, Reason: e.Reason,
+		PreviousValue: previousValue,
+	})
+}
+
+func canonicalDynamicJSON(value any) (json.RawMessage, error) {
+	encoded, err := json.Marshal(value)
+	if err != nil {
+		return nil, err
+	}
+	decoder := json.NewDecoder(bytes.NewReader(encoded))
+	decoder.UseNumber()
+	var normalized any
+	if err := decoder.Decode(&normalized); err != nil {
+		return nil, err
+	}
+	return json.Marshal(normalized)
 }
 
 // Rejection records why a higher-authority field observation did not win.

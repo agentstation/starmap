@@ -338,7 +338,7 @@ func (c *Client) applyProviderPricing(model *catalogs.Model, apiModel Model) {
 		return
 	}
 	ensureModelPricing(model)
-	applyOpenAICompatiblePricing(model.Pricing, apiModel.Pricing)
+	applyOpenAICompatiblePricing(model.Pricing, apiModel.Pricing, c.topLevelTokenPriceScale())
 	if apiModel.Metadata != nil {
 		applyOpenAICompatibleMetadataPricing(model.Pricing, apiModel.Metadata.Pricing)
 	}
@@ -360,23 +360,28 @@ func ensureModelPricing(model *catalogs.Model) {
 	}
 }
 
-func applyOpenAICompatiblePricing(pricing *catalogs.ModelPricing, source *ModelPricing) {
+func applyOpenAICompatiblePricing(pricing *catalogs.ModelPricing, source *ModelPricing, tokenPriceScale float64) {
 	if source == nil {
 		return
 	}
-	// Current OpenAI-compatible providers that expose this top-level block
-	// (notably Groq) report token prices in USD per 1M tokens, matching
-	// catalogs.ModelTokenCost.Per1M. Provider families with different units
-	// need an explicit provider-specific conversion before this mapping.
+	// OpenAI-compatible pricing blocks do not share a unit contract. Apply the
+	// provider-specific scale before storing the canonical USD-per-million
+	// value; never infer units from the price magnitude.
 	if source.Prompt != nil && pricing.Tokens.Input == nil {
-		pricing.Tokens.Input = &catalogs.ModelTokenCost{Per1M: normalizeProviderTokenPrice(*source.Prompt)}
+		pricing.Tokens.Input = &catalogs.ModelTokenCost{
+			Per1M: normalizeProviderTokenPrice(*source.Prompt * tokenPriceScale),
+		}
 	}
 	if source.Completion != nil && pricing.Tokens.Output == nil {
-		pricing.Tokens.Output = &catalogs.ModelTokenCost{Per1M: normalizeProviderTokenPrice(*source.Completion)}
+		pricing.Tokens.Output = &catalogs.ModelTokenCost{
+			Per1M: normalizeProviderTokenPrice(*source.Completion * tokenPriceScale),
+		}
 	}
 	if source.InputCacheRead != nil {
 		if pricing.Tokens.CacheRead == nil {
-			pricing.Tokens.CacheRead = &catalogs.ModelTokenCost{Per1M: normalizeProviderTokenPrice(*source.InputCacheRead)}
+			pricing.Tokens.CacheRead = &catalogs.ModelTokenCost{
+				Per1M: normalizeProviderTokenPrice(*source.InputCacheRead * tokenPriceScale),
+			}
 		}
 	}
 	if source.Request != nil || source.Image != nil {
@@ -388,6 +393,16 @@ func applyOpenAICompatiblePricing(pricing *catalogs.ModelPricing, source *ModelP
 			pricing.Operations.ImageGen = normalizeProviderOperationPrice(source.Image)
 		}
 	}
+}
+
+func (c *Client) topLevelTokenPriceScale() float64 {
+	c.mu.RLock()
+	defer c.mu.RUnlock()
+	if c.provider != nil && c.provider.ID == catalogs.ProviderIDGroq {
+		// Groq's /openai/v1/models pricing block reports USD per token.
+		return 1_000_000
+	}
+	return 1
 }
 
 func applyOpenAICompatibleMetadataPricing(pricing *catalogs.ModelPricing, source *ModelMetadataPricing) {

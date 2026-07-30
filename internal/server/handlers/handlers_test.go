@@ -49,6 +49,46 @@ func TestHandleUpdateReportsSyncFailure(t *testing.T) {
 	}
 }
 
+func TestHandleUpdateExtendsAndRestoresWriteDeadline(t *testing.T) {
+	recorder := &deadlineRecorder{ResponseRecorder: httptest.NewRecorder()}
+	h := &Handlers{
+		app: &testApplication{SyncFunc: func(
+			context.Context,
+			...pkgsync.Option,
+		) (*pkgsync.Result, error) {
+			if len(recorder.deadlines) != 1 {
+				t.Fatalf("deadlines during sync = %v, want one extended deadline", recorder.deadlines)
+			}
+			if time.Until(recorder.deadlines[0]) < 5*time.Minute {
+				t.Fatalf("update deadline = %v, want acquisition-sized budget", recorder.deadlines[0])
+			}
+			return &pkgsync.Result{}, nil
+		}},
+	}
+
+	h.HandleUpdate(
+		recorder,
+		httptest.NewRequest(http.MethodPost, "/api/v1/update", nil),
+	)
+
+	if recorder.Code != http.StatusOK {
+		t.Fatalf("status = %d, want %d: %s", recorder.Code, http.StatusOK, recorder.Body.String())
+	}
+	if len(recorder.deadlines) != 2 || !recorder.deadlines[1].IsZero() {
+		t.Fatalf("deadlines = %v, want extended deadline followed by reset", recorder.deadlines)
+	}
+}
+
+type deadlineRecorder struct {
+	*httptest.ResponseRecorder
+	deadlines []time.Time
+}
+
+func (r *deadlineRecorder) SetWriteDeadline(deadline time.Time) error {
+	r.deadlines = append(r.deadlines, deadline)
+	return nil
+}
+
 func TestHandleCatalogManifestSupportsConditionalRequests(t *testing.T) {
 	client, err := starmap.New()
 	if err != nil {

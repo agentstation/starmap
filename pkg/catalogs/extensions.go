@@ -1,6 +1,7 @@
 package catalogs
 
 import (
+	"bytes"
 	"encoding/json"
 	"fmt"
 	"math"
@@ -32,6 +33,28 @@ func (se SourceExtensions) Copy() SourceExtensions {
 // SourceExtension stores controlled non-canonical fields reported by one source.
 type SourceExtension struct {
 	Fields map[string]any `json:"fields,omitempty" yaml:"fields,omitempty"` // Preserved source-specific fields
+}
+
+// MarshalJSON canonicalizes source-defined dynamic values so immutable
+// catalog payload bytes do not depend on whether evidence is still represented
+// by a provider's concrete Go structs or has been decoded into generic maps.
+func (se SourceExtension) MarshalJSON() ([]byte, error) {
+	if len(se.Fields) == 0 {
+		return []byte("{}"), nil
+	}
+	encoded, err := json.Marshal(se.Fields)
+	if err != nil {
+		return nil, err
+	}
+	decoder := json.NewDecoder(bytes.NewReader(encoded))
+	decoder.UseNumber()
+	var normalized map[string]any
+	if err := decoder.Decode(&normalized); err != nil {
+		return nil, err
+	}
+	return json.Marshal(struct {
+		Fields map[string]any `json:"fields"`
+	}{Fields: normalized})
 }
 
 // NormalizeSourceExtensions returns a copy with JSON/YAML-stable dynamic value

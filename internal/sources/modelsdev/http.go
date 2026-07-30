@@ -4,8 +4,8 @@ import (
 	"context"
 	"time"
 
-	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/internal/constants"
+	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/errors"
 	"github.com/agentstation/starmap/pkg/logging"
 	"github.com/agentstation/starmap/pkg/sources"
@@ -13,7 +13,7 @@ import (
 
 // HTTPSource enhances models with models.dev data via HTTP.
 type HTTPSource struct {
-	providers  *catalogs.Providers
+	providers  catalogs.ProvidersReader
 	sourcesDir string
 	loadAPI    func(context.Context, string) (*API, error)
 	acquireAPI func(context.Context, string) (*API, HTTPAcquisitionResult, error)
@@ -40,6 +40,13 @@ func WithHTTPSourcesDir(dir string) HTTPSourceOption {
 	}
 }
 
+// WithHTTPProviders configures canonical provider IDs and aliases.
+func WithHTTPProviders(providers catalogs.ProvidersReader) HTTPSourceOption {
+	return func(s *HTTPSource) {
+		s.providers = providers
+	}
+}
+
 // ID returns the ID of this source.
 func (s *HTTPSource) ID() sources.ID {
 	return sources.ModelsDevHTTPID
@@ -59,12 +66,6 @@ func acquireHTTPAPI(ctx context.Context, outputDir string) (*API, HTTPAcquisitio
 	}
 	api, err := ParseAPI(client.GetAPIPath())
 	return api, acquisition, err
-}
-
-// Setup initializes the source with dependencies.
-func (s *HTTPSource) Setup(providers *catalogs.Providers) error {
-	s.providers = providers
-	return nil
 }
 
 // Observe returns a catalog with mapped models.dev data directly.
@@ -98,7 +99,7 @@ func (s *HTTPSource) Observe(ctx context.Context, opts ...sources.Option) (sourc
 	}
 
 	// Process the API data using shared logic
-	added, rejected, recordIssues, err := processFetch(builder, api, opts...)
+	added, rejected, recordIssues, err := processFetch(builder, api, s.providers, opts...)
 	if err != nil {
 		return sources.Observation{}, err
 	}

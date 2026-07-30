@@ -54,6 +54,7 @@ func TestEmbeddedRevisionUpdatesGeneratedFieldsAndPreservesHumanEdit(t *testing.
 	}
 
 	embeddedE2 := embeddedRevisionCatalog(t, "Embedded Name E2", "Embedded Description E2", 16384, 4096)
+	embeddedE2 = withEmbeddedFeature(t, embeddedE2, catalogs.ModelFeatureToolCalls, true)
 	embeddedE2 = withEmbeddedUpgradeModel(t, embeddedE2, "model-b", "New E2 Model")
 	store := &pipelineTestStore{catalog: buildCatalog(t, e1Result.Catalog)}
 	runner := New(store)
@@ -98,8 +99,12 @@ func TestEmbeddedRevisionUpdatesGeneratedFieldsAndPreservesHumanEdit(t *testing.
 		model.Limits.OutputTokens != 4096 {
 		t.Fatalf("limits = %#v, want E2 update and gap fill", model.Limits)
 	}
+	if supported, state := model.Features.Support(catalogs.ModelFeatureToolCalls); !supported || state != catalogs.ValueKnown {
+		t.Fatalf("tool_calls = %v/%v, want E2 known true", supported, state)
+	}
 	assertUpgradeEvidenceSource(t, upgraded, "Name", sources.LocalCatalogID)
 	assertUpgradeEvidenceSource(t, upgraded, "Description", sources.EmbeddedCatalogID)
+	assertUpgradeEvidenceSource(t, upgraded, "Features", sources.EmbeddedCatalogID)
 	assertUpgradeEvidenceSource(t, upgraded, "limits.context_window", sources.EmbeddedCatalogID)
 	assertUpgradeEvidenceSource(t, upgraded, "limits.output_tokens", sources.EmbeddedCatalogID)
 	if _, err := upgraded.Definition("test-author/provider-a--model-b"); err != nil {
@@ -148,7 +153,9 @@ func TestEmbeddedRevisionUpdatesGeneratedFieldsAndPreservesHumanEdit(t *testing.
 		reloadedModel.Description != "Embedded Description E2" ||
 		reloadedModel.Limits == nil ||
 		reloadedModel.Limits.ContextWindow != 16384 ||
-		reloadedModel.Limits.OutputTokens != 4096 {
+		reloadedModel.Limits.OutputTokens != 4096 ||
+		reloadedModel.Features == nil ||
+		!reloadedModel.Features.ToolCalls {
 		t.Fatalf("reloaded upgraded model = %#v", reloadedModel)
 	}
 	assertUpgradeEvidenceSource(t, reloadedCatalog, "Name", sources.LocalCatalogID)
@@ -159,6 +166,32 @@ func TestEmbeddedRevisionUpdatesGeneratedFieldsAndPreservesHumanEdit(t *testing.
 	if _, err := reloadedCatalog.Offering("provider-a", "model-b"); err != nil {
 		t.Fatalf("reloaded E2 provider offering: %v", err)
 	}
+}
+
+func withEmbeddedFeature(
+	t testing.TB,
+	source *catalogs.Catalog,
+	feature catalogs.ModelFeature,
+	supported bool,
+) *catalogs.Catalog {
+	t.Helper()
+	builder, err := catalogs.NewBuilderFrom(source)
+	if err != nil {
+		t.Fatalf("NewBuilderFrom: %v", err)
+	}
+	provider, err := builder.Provider("provider-a")
+	if err != nil {
+		t.Fatalf("Provider: %v", err)
+	}
+	model := provider.Models["model-a"]
+	if model.Features == nil {
+		model.Features = &catalogs.ModelFeatures{}
+	}
+	model.Features.SetSupport(feature, supported)
+	if err := builder.SetProvider(provider); err != nil {
+		t.Fatalf("SetProvider: %v", err)
+	}
+	return buildCatalog(t, builder)
 }
 
 func withEmbeddedUpgradeModel(
