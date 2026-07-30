@@ -26,13 +26,6 @@ func (s *Server) registerModelRoutes(
 	})
 
 	mux.HandleFunc(prefix+"/models", func(w http.ResponseWriter, r *http.Request) {
-		if r.Method == http.MethodPost {
-			// POST /api/v1/models is treated as search.
-			if r.URL.Path == prefix+"/models" || r.URL.Path == prefix+"/models/" {
-				h.HandleSearchModels(w, r)
-				return
-			}
-		}
 		if r.Method == http.MethodGet {
 			h.HandleListModels(w, r)
 			return
@@ -41,6 +34,15 @@ func (s *Server) registerModelRoutes(
 	})
 
 	mux.HandleFunc(prefix+"/models/", func(w http.ResponseWriter, r *http.Request) {
+		if r.URL.Path == prefix+"/models/search" {
+			if r.Method != http.MethodPost {
+				http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+				return
+			}
+			h.HandleSearchModels(w, r)
+			return
+		}
+
 		parts, pathErr := extractExactPathSegments(r, prefix+"/models/", 3)
 		if pathErr != nil &&
 			openrouter.IsCompatibilityPath(r.URL.EscapedPath(), prefix) {

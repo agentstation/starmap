@@ -793,9 +793,12 @@ so deleted records cannot survive a save/reload. Authored records live under
 `authors/{author}/models` and own canonical identity plus intrinsic facts.
 Provider records live under `providers/{provider}/models`, retain their exact
 opaque provider ID and serving facts, and link explicitly to one authored
-record through `model: author/slug`. It deliberately preserves unmanaged
-neighboring files such as logos and operator notes. Direct builder saves are
-construction tools; normal
+record through `model: author/slug`. Every model record exposes the same
+complete Boolean feature matrix for hand editing; `false` is the conservative
+projection default and `null` remains explicit uncertainty. Numeric limits are
+never fabricated as zero merely to complete the visual schema. It deliberately
+preserves unmanaged neighboring files such as logos and operator notes. Direct
+builder saves are construction tools; normal
 Starmap publication commits the immutable generation first and then atomically
 projects YAML plus a deterministic digest-bound `endpoints.yaml` join.
 `endpoints.yaml` is inspectable generated output, never an independent
@@ -930,10 +933,15 @@ Description, feature, limit, and open-weights records distinguish omitted,
 explicitly unknown, and known values. Normal readers keep scalar fields;
 algorithms and source adapters use `DescriptionValue`,
 `ModelFeatures.Support`, `ModelLimits.Value`, and `OpenWeightsValue` when the
-distinction matters. In the human YAML, omission means no claim, `null` means
-unknown, and `false`, `0`, or `""` are known values. Provider and models.dev
-decoders retain that wire-level distinction, and immutable JSON payloads,
-deep copies, reconciliation, and change detection preserve it.
+distinction matters. Human model YAML deliberately renders every Boolean
+capability as an editable checklist: an unobserved capability projects as the
+conservative `false` default and an explicitly unknown capability remains
+`null`. Untouched generated defaults are recognized as projection state rather
+than synthetic local evidence, so a later real source claim can replace them.
+For non-Boolean fields, omission still means no claim; `null` means unknown;
+and an explicit `0` or `""` is known. Provider and models.dev decoders retain
+the wire-level distinction, and immutable JSON payloads, deep copies,
+reconciliation, and change detection preserve it.
 
 See [the internal reconciler documentation](../internal/catalog/reconciler/README.md)
 for implementation details. Consumers use `acquisition.Syncer`, not this

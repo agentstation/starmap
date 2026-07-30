@@ -1,26 +1,35 @@
-# lyria-3-clip-preview - Lyria 3 30s model Preview
+# lyria-3-clip-preview - Music generation model for short 30-second clips, loops, and...
 id: lyria-3-clip-preview
 model: google/lyria-3-clip-preview
 name: Lyria 3 Clip Preview
 authors:
 - id: google
   name: Google
-description: Lyria 3 30s model Preview
+description: Music generation model for short 30-second clips, loops, and previews from text or image prompts
+
+# Model metadata
+metadata:
+  release_date: 2026-03-25
+  open_weights: false
+lineage:
+  family: lyria
 
 # Model features
 features:
   modalities:
     input:
     - text
+    - image
     output:
     - text
+    - audio
 
   # Core capabilities
   tool_calls: false
   tools: false
   tool_choice: false
   web_search: false
-  attachments: false
+  attachments: true
 
   # Reasoning & Verbosity
   reasoning: false
@@ -72,6 +81,17 @@ generation:
     min: 0.0
     max: 2.0
     default: 1.0
+  top_p:
+    min: 0.0
+    max: 1.0
+    default: 0.95
+
+# Model pricing
+pricing:
+  tokens:
+    input: {}
+    output: {}
+  currency: USD
 
 # Model limits
 limits:
@@ -91,4 +111,4 @@ extensions:
 
 # Timestamps
 created_at: 2026-07-11T20:15:12.209026Z
-updated_at: 2026-07-11T20:15:12.209026Z
+updated_at: 2026-07-30T16:49:34.743636Z

@@ -1,4 +1,4 @@
-# tfvision-movinet-var - Google Vertex AI model: tfvision-movinet-var
+# tfvision-movinet-var - Google model: tfvision-movinet-var
 id: tfvision-movinet-var
 model: google/tfvision-movinet-var
 name: tfvision-movinet-var
@@ -6,7 +6,7 @@ authors:
 - id: google
   name: Google
 description: |-
-  Google Vertex AI model: tfvision-movinet-var
+  Google model: tfvision-movinet-var
 
 # Model metadata
 metadata:
@@ -80,4 +80,4 @@ extensions:
 
 # Timestamps
 created_at: null
-updated_at: 2026-07-11T23:53:11.613301Z
+updated_at: 2026-07-30T18:59:51.744436Z

@@ -3,8 +3,26 @@ id: meta-llama/llama-prompt-guard-2-22m
 model: meta/llama-prompt-guard-2-22m
 name: Llama Prompt Guard 2 22M
 authors:
+- id: alibaba
+  name: alibaba
+- id: deepseek
+  name: deepseek
+- id: google
+  name: google
+- id: groq
+  name: groq
+- id: huggingfaceh4
+  name: huggingfaceh4
 - id: meta
-  name: Meta
+  name: meta
+- id: moonshot-ai
+  name: moonshot-ai
+- id: openai
+  name: openai
+- id: playai
+  name: playai
+- id: sdaia
+  name: sdaia
 description: Safety model for policy screening, moderation, and risk-aware routing workflows
 status: beta
 
@@ -98,4 +116,4 @@ limits:
 
 # Timestamps
 created_at: null
-updated_at: 2026-07-11T20:15:13.078994Z
+updated_at: 2026-07-30T17:11:22.651667Z

@@ -905,6 +905,7 @@ func main() {
 - [type RouteAliasResolution](<#RouteAliasResolution>)
 - [type SourceExtension](<#SourceExtension>)
   - [func \(se SourceExtension\) Copy\(\) SourceExtension](<#SourceExtension.Copy>)
+  - [func \(se SourceExtension\) MarshalJSON\(\) \(\[\]byte, error\)](<#SourceExtension.MarshalJSON>)
   - [func \(se \*SourceExtension\) UnmarshalJSON\(data \[\]byte\) error](<#SourceExtension.UnmarshalJSON>)
   - [func \(se \*SourceExtension\) UnmarshalYAML\(unmarshal func\(any\) error\) error](<#SourceExtension.UnmarshalYAML>)
 - [type SourceExtensions](<#SourceExtensions>)
@@ -973,7 +974,7 @@ func EncodeCatalogPayload(reader Reader) ([]byte, error)
 EncodeCatalogPayload deterministically encodes a readable catalog.
 
 <a name="NormalizeExtensionFields"></a>
-## func [NormalizeExtensionFields](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/extensions.go#L54>)
+## func [NormalizeExtensionFields](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/extensions.go#L77>)
 
 ```go
 func NormalizeExtensionFields(fields map[string]any) map[string]any
@@ -2535,7 +2536,7 @@ func (m *Model) FormatYAML() string
 FormatYAML returns a well\-formatted YAML representation with comments and proper structure.
 
 <a name="Model.FormatYAMLHeaderComment"></a>
-### func \(\*Model\) [FormatYAMLHeaderComment](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_yaml.go#L208>)
+### func \(\*Model\) [FormatYAMLHeaderComment](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_yaml.go#L218>)
 
 ```go
 func (m *Model) FormatYAMLHeaderComment() string
@@ -2544,7 +2545,7 @@ func (m *Model) FormatYAMLHeaderComment() string
 FormatYAMLHeaderComment returns a descriptive string for the model header comment.
 
 <a name="Model.MarshalJSON"></a>
-### func \(Model\) [MarshalJSON](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_presence_codec.go#L393>)
+### func \(Model\) [MarshalJSON](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_presence_codec.go#L396>)
 
 ```go
 func (m Model) MarshalJSON() ([]byte, error)
@@ -2553,7 +2554,7 @@ func (m Model) MarshalJSON() ([]byte, error)
 MarshalJSON preserves description presence in immutable catalog payloads.
 
 <a name="Model.MarshalYAML"></a>
-### func \(Model\) [MarshalYAML](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_presence_codec.go#L299>)
+### func \(Model\) [MarshalYAML](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_presence_codec.go#L302>)
 
 ```go
 func (m Model) MarshalYAML() (any, error)
@@ -2580,7 +2581,7 @@ func (m *Model) SetDescriptionUnknown()
 SetDescriptionUnknown records that the description is explicitly unknown.
 
 <a name="Model.UnmarshalJSON"></a>
-### func \(\*Model\) [UnmarshalJSON](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_presence_codec.go#L419>)
+### func \(\*Model\) [UnmarshalJSON](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_presence_codec.go#L422>)
 
 ```go
 func (m *Model) UnmarshalJSON(data []byte) error
@@ -2589,7 +2590,7 @@ func (m *Model) UnmarshalJSON(data []byte) error
 UnmarshalJSON restores description presence from immutable catalog payloads.
 
 <a name="Model.UnmarshalYAML"></a>
-### func \(\*Model\) [UnmarshalYAML](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_presence_codec.go#L372>)
+### func \(\*Model\) [UnmarshalYAML](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_presence_codec.go#L375>)
 
 ```go
 func (m *Model) UnmarshalYAML(unmarshal func(any) error) error
@@ -2945,7 +2946,7 @@ type ModelFeatures struct {
 ```
 
 <a name="ModelFeatures.MarshalJSON"></a>
-### func \(ModelFeatures\) [MarshalJSON](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_presence_codec.go#L60>)
+### func \(ModelFeatures\) [MarshalJSON](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_presence_codec.go#L63>)
 
 ```go
 func (f ModelFeatures) MarshalJSON() ([]byte, error)
@@ -2954,13 +2955,13 @@ func (f ModelFeatures) MarshalJSON() ([]byte, error)
 MarshalJSON preserves feature presence in immutable catalog payloads.
 
 <a name="ModelFeatures.MarshalYAML"></a>
-### func \(ModelFeatures\) [MarshalYAML](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_presence_codec.go#L12>)
+### func \(ModelFeatures\) [MarshalYAML](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_presence_codec.go#L15>)
 
 ```go
 func (f ModelFeatures) MarshalYAML() (any, error)
 ```
 
-MarshalYAML preserves explicit false and unknown capability claims while omitting capabilities that were not observed.
+MarshalYAML renders the complete Boolean capability surface for the human\-editable YAML workspace. Capabilities without an observed claim use the conservative false default, while explicitly unknown claims remain null. Immutable JSON generations retain the precise missing/unknown/known distinction.
 
 <a name="ModelFeatures.SetSupport"></a>
 ### func \(\*ModelFeatures\) [SetSupport](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_presence.go#L73>)
@@ -2990,7 +2991,7 @@ func (f *ModelFeatures) Support(feature ModelFeature) (bool, ValuePresence)
 Support returns the capability value and its presence state.
 
 <a name="ModelFeatures.UnmarshalJSON"></a>
-### func \(\*ModelFeatures\) [UnmarshalJSON](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_presence_codec.go#L78>)
+### func \(\*ModelFeatures\) [UnmarshalJSON](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_presence_codec.go#L81>)
 
 ```go
 func (f *ModelFeatures) UnmarshalJSON(data []byte) error
@@ -2999,7 +3000,7 @@ func (f *ModelFeatures) UnmarshalJSON(data []byte) error
 UnmarshalJSON restores feature presence from immutable catalog payloads.
 
 <a name="ModelFeatures.UnmarshalYAML"></a>
-### func \(\*ModelFeatures\) [UnmarshalYAML](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_presence_codec.go#L32>)
+### func \(\*ModelFeatures\) [UnmarshalYAML](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_presence_codec.go#L35>)
 
 ```go
 func (f *ModelFeatures) UnmarshalYAML(unmarshal func(any) error) error
@@ -3095,7 +3096,7 @@ type ModelLimits struct {
 ```
 
 <a name="ModelLimits.MarshalJSON"></a>
-### func \(ModelLimits\) [MarshalJSON](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_presence_codec.go#L158>)
+### func \(ModelLimits\) [MarshalJSON](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_presence_codec.go#L161>)
 
 ```go
 func (l ModelLimits) MarshalJSON() ([]byte, error)
@@ -3104,7 +3105,7 @@ func (l ModelLimits) MarshalJSON() ([]byte, error)
 MarshalJSON preserves limit presence in immutable catalog payloads.
 
 <a name="ModelLimits.MarshalYAML"></a>
-### func \(ModelLimits\) [MarshalYAML](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_presence_codec.go#L107>)
+### func \(ModelLimits\) [MarshalYAML](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_presence_codec.go#L110>)
 
 ```go
 func (l ModelLimits) MarshalYAML() (any, error)
@@ -3131,7 +3132,7 @@ func (l *ModelLimits) SetUnknown(limit ModelLimit) bool
 SetUnknown records that a model limit was explicitly reported as unknown.
 
 <a name="ModelLimits.UnmarshalJSON"></a>
-### func \(\*ModelLimits\) [UnmarshalJSON](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_presence_codec.go#L177>)
+### func \(\*ModelLimits\) [UnmarshalJSON](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_presence_codec.go#L180>)
 
 ```go
 func (l *ModelLimits) UnmarshalJSON(data []byte) error
@@ -3140,7 +3141,7 @@ func (l *ModelLimits) UnmarshalJSON(data []byte) error
 UnmarshalJSON restores limit presence from immutable catalog payloads.
 
 <a name="ModelLimits.UnmarshalYAML"></a>
-### func \(\*ModelLimits\) [UnmarshalYAML](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_presence_codec.go#L126>)
+### func \(\*ModelLimits\) [UnmarshalYAML](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_presence_codec.go#L129>)
 
 ```go
 func (l *ModelLimits) UnmarshalYAML(unmarshal func(any) error) error
@@ -3199,7 +3200,7 @@ type ModelMetadata struct {
 ```
 
 <a name="ModelMetadata.MarshalJSON"></a>
-### func \(ModelMetadata\) [MarshalJSON](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_presence_codec.go#L252>)
+### func \(ModelMetadata\) [MarshalJSON](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_presence_codec.go#L255>)
 
 ```go
 func (m ModelMetadata) MarshalJSON() ([]byte, error)
@@ -3208,7 +3209,7 @@ func (m ModelMetadata) MarshalJSON() ([]byte, error)
 MarshalJSON preserves open\-weights presence in immutable catalog payloads.
 
 <a name="ModelMetadata.MarshalYAML"></a>
-### func \(ModelMetadata\) [MarshalYAML](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_presence_codec.go#L209>)
+### func \(ModelMetadata\) [MarshalYAML](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_presence_codec.go#L212>)
 
 ```go
 func (m ModelMetadata) MarshalYAML() (any, error)
@@ -3244,7 +3245,7 @@ func (m *ModelMetadata) SetOpenWeightsUnknown()
 SetOpenWeightsUnknown records that open\-weights status is explicitly unknown.
 
 <a name="ModelMetadata.UnmarshalJSON"></a>
-### func \(\*ModelMetadata\) [UnmarshalJSON](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_presence_codec.go#L278>)
+### func \(\*ModelMetadata\) [UnmarshalJSON](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_presence_codec.go#L281>)
 
 ```go
 func (m *ModelMetadata) UnmarshalJSON(data []byte) error
@@ -3253,7 +3254,7 @@ func (m *ModelMetadata) UnmarshalJSON(data []byte) error
 UnmarshalJSON restores open\-weights presence from immutable catalog payloads.
 
 <a name="ModelMetadata.UnmarshalYAML"></a>
-### func \(\*ModelMetadata\) [UnmarshalYAML](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_presence_codec.go#L231>)
+### func \(\*ModelMetadata\) [UnmarshalYAML](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_presence_codec.go#L234>)
 
 ```go
 func (m *ModelMetadata) UnmarshalYAML(unmarshal func(any) error) error
@@ -5232,7 +5233,7 @@ type RouteAliasResolution struct {
 ```
 
 <a name="SourceExtension"></a>
-## type [SourceExtension](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/extensions.go#L33-L35>)
+## type [SourceExtension](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/extensions.go#L34-L36>)
 
 SourceExtension stores controlled non\-canonical fields reported by one source.
 
@@ -5243,7 +5244,7 @@ type SourceExtension struct {
 ```
 
 <a name="SourceExtension.Copy"></a>
-### func \(SourceExtension\) [Copy](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/extensions.go#L88>)
+### func \(SourceExtension\) [Copy](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/extensions.go#L111>)
 
 ```go
 func (se SourceExtension) Copy() SourceExtension
@@ -5251,8 +5252,17 @@ func (se SourceExtension) Copy() SourceExtension
 
 Copy returns a deep copy of the source extension.
 
+<a name="SourceExtension.MarshalJSON"></a>
+### func \(SourceExtension\) [MarshalJSON](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/extensions.go#L41>)
+
+```go
+func (se SourceExtension) MarshalJSON() ([]byte, error)
+```
+
+MarshalJSON canonicalizes source\-defined dynamic values so immutable catalog payload bytes do not depend on whether evidence is still represented by a provider's concrete Go structs or has been decoded into generic maps.
+
 <a name="SourceExtension.UnmarshalJSON"></a>
-### func \(\*SourceExtension\) [UnmarshalJSON](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/extensions.go#L66>)
+### func \(\*SourceExtension\) [UnmarshalJSON](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/extensions.go#L89>)
 
 ```go
 func (se *SourceExtension) UnmarshalJSON(data []byte) error
@@ -5261,7 +5271,7 @@ func (se *SourceExtension) UnmarshalJSON(data []byte) error
 UnmarshalJSON normalizes dynamic extension field types after JSON decoding.
 
 <a name="SourceExtension.UnmarshalYAML"></a>
-### func \(\*SourceExtension\) [UnmarshalYAML](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/extensions.go#L77>)
+### func \(\*SourceExtension\) [UnmarshalYAML](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/extensions.go#L100>)
 
 ```go
 func (se *SourceExtension) UnmarshalYAML(unmarshal func(any) error) error
@@ -5270,7 +5280,7 @@ func (se *SourceExtension) UnmarshalYAML(unmarshal func(any) error) error
 UnmarshalYAML normalizes dynamic extension field types after YAML decoding.
 
 <a name="SourceExtensions"></a>
-## type [SourceExtensions](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/extensions.go#L18>)
+## type [SourceExtensions](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/extensions.go#L19>)
 
 SourceExtensions stores source\-specific attributes that Starmap preserves without treating as canonical schema fields.
 
@@ -5279,7 +5289,7 @@ type SourceExtensions map[string]SourceExtension
 ```
 
 <a name="NormalizeSourceExtensions"></a>
-### func [NormalizeSourceExtensions](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/extensions.go#L39>)
+### func [NormalizeSourceExtensions](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/extensions.go#L62>)
 
 ```go
 func NormalizeSourceExtensions(extensions SourceExtensions) SourceExtensions
@@ -5288,7 +5298,7 @@ func NormalizeSourceExtensions(extensions SourceExtensions) SourceExtensions
 NormalizeSourceExtensions returns a copy with JSON/YAML\-stable dynamic value types for equality checks and sync idempotency.
 
 <a name="SourceExtensions.Copy"></a>
-### func \(SourceExtensions\) [Copy](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/extensions.go#L21>)
+### func \(SourceExtensions\) [Copy](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/extensions.go#L22>)
 
 ```go
 func (se SourceExtensions) Copy() SourceExtensions

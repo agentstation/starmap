@@ -1,4 +1,4 @@
-# bert-base-uncased - Google Vertex AI model: bert-base-uncased
+# bert-base-uncased - Google model: bert-base-uncased
 id: bert-base-uncased
 model: google/bert-base-uncased
 name: bert-base-uncased
@@ -6,7 +6,7 @@ authors:
 - id: google
   name: Google
 description: |-
-  Google Vertex AI model: bert-base-uncased
+  Google model: bert-base-uncased
 
 # Model metadata
 metadata:
@@ -80,4 +80,4 @@ extensions:
 
 # Timestamps
 created_at: null
-updated_at: 2026-07-11T23:53:11.611049Z
+updated_at: 2026-07-30T18:59:52.317848Z

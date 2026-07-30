@@ -1,4 +1,4 @@
-# t5-flan - Google Vertex AI model: t5-flan
+# t5-flan - Google model: t5-flan
 id: t5-flan
 model: google/t5-flan
 name: t5-flan
@@ -6,7 +6,7 @@ authors:
 - id: google
   name: Google
 description: |-
-  Google Vertex AI model: t5-flan
+  Google model: t5-flan
 
 # Model metadata
 metadata:
@@ -80,4 +80,4 @@ extensions:
 
 # Timestamps
 created_at: null
-updated_at: 2026-07-11T23:53:11.612524Z
+updated_at: 2026-07-30T18:59:52.053101Z

@@ -32,11 +32,11 @@ features:
     - text
 
   # Core capabilities
-  tool_calls: false
-  tools: false
-  tool_choice: false
+  tool_calls: true
+  tools: true
+  tool_choice: true
   web_search: false
-  attachments: false
+  attachments: true
 
   # Reasoning & Verbosity
   reasoning: true
@@ -99,8 +99,8 @@ pricing:
 limits:
   context_window: 524288
   input_tokens: 0
-  output_tokens: 128000
+  output_tokens: 524288
 
 # Timestamps
 created_at: 2026-06-01T00:00:00Z
-updated_at: 2026-07-11T20:15:13.085485Z
+updated_at: 2026-07-30T16:49:29.345098Z

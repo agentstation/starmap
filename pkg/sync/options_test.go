@@ -174,3 +174,15 @@ func TestOptionsValidateAcceptsSeparatedHumanAndMachineRoots(t *testing.T) {
 		t.Fatalf("Validate separated roots: %v", err)
 	}
 }
+
+func TestOptionsValidateAcceptsFirstRunWorkspaceWithMissingParent(t *testing.T) {
+	root := t.TempDir()
+	path := filepath.Join(root, "new", ".starmap", "catalog")
+	opts := Defaults().Apply(
+		WithCatalogPath(path),
+		WithSources(sources.ProvidersID),
+	)
+	if err := opts.Validate(catalogs.NewProviders()); err != nil {
+		t.Fatalf("Validate first-run workspace: %v", err)
+	}
+}

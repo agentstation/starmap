@@ -1,4 +1,4 @@
-# gemma - Google Vertex AI model: gemma
+# gemma - Google model: gemma
 id: gemma
 model: google/gemma
 name: gemma
@@ -6,7 +6,7 @@ authors:
 - id: google
   name: Google
 description: |-
-  Google Vertex AI model: gemma
+  Google model: gemma
 
 # Model metadata
 metadata:
@@ -80,4 +80,4 @@ extensions:
 
 # Timestamps
 created_at: null
-updated_at: 2026-07-11T23:53:11.610451Z
+updated_at: 2026-07-30T18:59:51.99089Z

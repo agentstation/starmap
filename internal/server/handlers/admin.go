@@ -5,6 +5,7 @@ import (
 	"runtime"
 	"time"
 
+	"github.com/agentstation/starmap/internal/constants"
 	"github.com/agentstation/starmap/internal/server/response"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/sources"
@@ -24,6 +25,18 @@ import (
 // @Security ApiKeyAuth
 // @Router /api/v1/update [post].
 func (h *Handlers) HandleUpdate(w http.ResponseWriter, r *http.Request) {
+	// A catalog update may legitimately run for the full acquisition timeout
+	// and then project a complete workspace. Extend the connection deadline for
+	// this synchronous admin operation without weakening the server-wide write
+	// timeout used by ordinary responses.
+	controller := http.NewResponseController(w)
+	_ = controller.SetWriteDeadline(time.Now().Add(
+		constants.UpdateContextTimeout + constants.DefaultCatalogProjectionTimeout,
+	))
+	defer func() {
+		_ = controller.SetWriteDeadline(time.Time{})
+	}()
+
 	providerFilter := r.URL.Query().Get("provider")
 	sourceFilter := r.URL.Query().Get("source")
 

@@ -1,4 +1,4 @@
-# t5gemma - Google Vertex AI model: t5gemma
+# t5gemma - Google model: t5gemma
 id: t5gemma
 model: google/t5gemma
 name: t5gemma
@@ -6,7 +6,7 @@ authors:
 - id: google
   name: Google
 description: |-
-  Google Vertex AI model: t5gemma
+  Google model: t5gemma
 
 # Model metadata
 metadata:
@@ -80,4 +80,4 @@ extensions:
 
 # Timestamps
 created_at: null
-updated_at: 2026-07-11T23:53:11.609687Z
+updated_at: 2026-07-30T18:59:51.654969Z

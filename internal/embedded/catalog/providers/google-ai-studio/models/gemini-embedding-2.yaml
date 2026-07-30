@@ -1,25 +1,38 @@
-# gemini-embedding-2 - Obtain a distributed representation of multimodal content.
+# gemini-embedding-2 - Multimodal embedding model mapping text, images, video, audi...
 id: gemini-embedding-2
 model: google/gemini-embedding-2
 name: Gemini Embedding 2
 authors:
 - id: google
   name: Google
-description: Obtain a distributed representation of multimodal content.
+description: Multimodal embedding model mapping text, images, video, audio, and PDFs into a unified embedding space
+
+# Model metadata
+metadata:
+  release_date: 2026-04-22
+  open_weights: false
+  knowledge_cutoff: 2025-11-01
+lineage:
+  family: gemini
 
 # Model features
 features:
   modalities:
     input:
     - text
-    output: []
+    - image
+    - audio
+    - video
+    - pdf
+    output:
+    - text
 
   # Core capabilities
   tool_calls: false
   tools: false
   tool_choice: false
   web_search: false
-  attachments: false
+  attachments: true
 
   # Reasoning & Verbosity
   reasoning: false
@@ -67,6 +80,16 @@ features:
   structured_outputs: false
   streaming: false
 
+# Model pricing
+pricing:
+  tokens:
+    input:
+      per_1m: 0.2
+    output: {}
+  operations:
+    audio_input: 6.5
+  currency: USD
+
 # Model limits
 limits:
   context_window: 8192
@@ -89,4 +112,4 @@ extensions:
 
 # Timestamps
 created_at: 2026-07-11T20:15:12.209081Z
-updated_at: 2026-07-11T20:15:12.209081Z
+updated_at: 2026-07-30T16:49:34.880802Z

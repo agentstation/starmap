@@ -3,6 +3,7 @@ package providers
 import (
 	"context"
 	"fmt"
+	"io"
 	"os"
 	"sync"
 	"time"
@@ -83,12 +84,20 @@ func testAllProviders(cmd *cobra.Command, cat catalogs.Reader, app application) 
 
 	// For TTY mode, show simple progress message
 	if isTTY {
-		fmt.Println()
-		fmt.Println("Testing provider credentials...")
+		if err := writeCommandLine(cmd.ErrOrStderr()); err != nil {
+			return err
+		}
+		if err := writeCommandLine(cmd.ErrOrStderr(), "Testing provider credentials..."); err != nil {
+			return err
+		}
 	} else {
-		// For non-TTY output, print traditional header
-		fmt.Println("Testing provider credentials...")
-		fmt.Println()
+		// Progress belongs on stderr so JSON/YAML stdout remains parseable.
+		if err := writeCommandLine(cmd.ErrOrStderr(), "Testing provider credentials..."); err != nil {
+			return err
+		}
+		if err := writeCommandLine(cmd.ErrOrStderr()); err != nil {
+			return err
+		}
 	}
 
 	if isTTY {
@@ -96,26 +105,37 @@ func testAllProviders(cmd *cobra.Command, cat catalogs.Reader, app application) 
 		testProvidersConcurrent(cmd, cat, supportedProviders, fetcher, checker, supportedMap, timeout, results, &verified, &failed, &skipped)
 	} else {
 		// Non-TTY mode: Keep sequential for clear line-by-line output
-		testProvidersSequential(cmd, cat, supportedProviders, fetcher, checker, supportedMap, timeout, results, &verified, &failed, &skipped)
+		if err := testProvidersSequential(
+			cmd, cat, supportedProviders, fetcher, checker, supportedMap,
+			timeout, results, &verified, &failed, &skipped,
+		); err != nil {
+			return err
+		}
 	}
 
 	// For TTY mode, clear the progress message and show final table
 	if isTTY {
 		// Move cursor up 1 line and clear from cursor to end of screen
-		fmt.Print("\033[A\r\033[J")
-		fmt.Println("Provider Test Results:")
+		if err := writeCommand(cmd.ErrOrStderr(), "\033[A\r\033[J"); err != nil {
+			return err
+		}
+		if err := writeCommandLine(cmd.OutOrStdout(), "Provider Test Results:"); err != nil {
+			return err
+		}
 		displayTestTableWithTitle(results, verbose, false)
 	}
 
 	// Display final results for non-TTY mode
 	if !isTTY {
-		fmt.Println()
 		if detectedFormat == format.FormatTable {
+			if err := writeCommandLine(cmd.OutOrStdout()); err != nil {
+				return err
+			}
 			displayTestTable(results, verbose)
 		} else {
 			// For non-table formats, output the raw results
 			formatter := format.New(detectedFormat)
-			return formatter.Format(os.Stdout, results)
+			return formatter.Format(cmd.OutOrStdout(), results)
 		}
 	}
 
@@ -169,7 +189,8 @@ type apiTestResult struct {
 // testProvidersSequential tests providers one at a time (for non-TTY output).
 func testProvidersSequential(cmd *cobra.Command, cat catalogs.Reader, supportedProviders []catalogs.ProviderID,
 	fetcher *sources.ProviderFetcher, checker *auth.Checker, supportedMap map[string]bool,
-	timeout time.Duration, results []testResult, verified, failed, skipped *int) {
+	timeout time.Duration, results []testResult, verified, failed, skipped *int,
+) error {
 
 	for i, providerID := range supportedProviders {
 		// Get provider from catalog
@@ -179,7 +200,9 @@ func testProvidersSequential(cmd *cobra.Command, cat catalogs.Reader, supportedP
 		}
 
 		// Show individual provider status
-		fmt.Printf("Testing %s... ", providerID)
+		if err := writeCommand(cmd.ErrOrStderr(), "Testing %s... ", providerID); err != nil {
+			return err
+		}
 
 		// Special handling for Google Cloud providers (use ADC)
 		if provider.Catalog != nil && provider.Catalog.Endpoint.Type == catalogs.EndpointTypeGoogleCloud {
@@ -190,13 +213,17 @@ func testProvidersSequential(cmd *cobra.Command, cat catalogs.Reader, supportedP
 				results[i].Status = emoji.Error + " Failed"
 				results[i].Error = "ADC not configured - run 'gcloud auth application-default login'"
 				*failed++
-				fmt.Printf("%s Failed\n", emoji.Error)
+				if err := writeCommand(cmd.ErrOrStderr(), "%s Failed\n", emoji.Error); err != nil {
+					return err
+				}
 				continue
 			} else if status.State == auth.StateInvalid {
 				results[i].Status = emoji.Error + " Failed"
 				results[i].Error = "ADC invalid - check 'gcloud auth application-default login'"
 				*failed++
-				fmt.Printf("%s Failed\n", emoji.Error)
+				if err := writeCommand(cmd.ErrOrStderr(), "%s Failed\n", emoji.Error); err != nil {
+					return err
+				}
 				continue
 			}
 
@@ -205,7 +232,9 @@ func testProvidersSequential(cmd *cobra.Command, cat catalogs.Reader, supportedP
 				results[i].Status = emoji.Warning + " Skipped"
 				results[i].Error = "No project configured - set GOOGLE_VERTEX_PROJECT or GOOGLE_CLOUD_PROJECT"
 				*skipped++
-				fmt.Printf("%s Skipped\n", emoji.Warning)
+				if err := writeCommand(cmd.ErrOrStderr(), "%s Skipped\n", emoji.Warning); err != nil {
+					return err
+				}
 				continue
 			}
 		} else {
@@ -214,7 +243,9 @@ func testProvidersSequential(cmd *cobra.Command, cat catalogs.Reader, supportedP
 				results[i].Status = emoji.Optional + " Skipped"
 				results[i].Error = "No credentials configured"
 				*skipped++
-				fmt.Printf("%s Skipped\n", emoji.Optional)
+				if err := writeCommand(cmd.ErrOrStderr(), "%s Skipped\n", emoji.Optional); err != nil {
+					return err
+				}
 				continue
 			}
 		}
@@ -236,15 +267,20 @@ func testProvidersSequential(cmd *cobra.Command, cat catalogs.Reader, supportedP
 			results[i].ResponseTime = duration.Truncate(time.Millisecond).String()
 			results[i].Error = fetchErr.Error()
 			*failed++
-			fmt.Printf("%s Failed\n", emoji.Error)
+			if err := writeCommand(cmd.ErrOrStderr(), "%s Failed\n", emoji.Error); err != nil {
+				return err
+			}
 		} else {
 			results[i].Status = emoji.Success + " Success"
 			results[i].ResponseTime = duration.Truncate(time.Millisecond).String()
 			results[i].ModelsFound = fmt.Sprintf("%d", len(models))
 			*verified++
-			fmt.Printf("%s Success\n", emoji.Success)
+			if err := writeCommand(cmd.ErrOrStderr(), "%s Success\n", emoji.Success); err != nil {
+				return err
+			}
 		}
 	}
+	return nil
 }
 
 // testProvidersConcurrent tests providers concurrently using a three-phase approach (for TTY output).
@@ -403,7 +439,9 @@ func testSingleProvider(cmd *cobra.Command, cat catalogs.Reader, providerID stri
 		return fmt.Errorf("provider %s has no credentials configured", providerID)
 	}
 
-	fmt.Printf("Testing %s credentials...\n", providerID)
+	if err := writeCommand(cmd.ErrOrStderr(), "Testing %s credentials...\n", providerID); err != nil {
+		return err
+	}
 
 	// Use cmd context for signal handling
 	ctx, cancel := context.WithTimeout(cmd.Context(), timeout)
@@ -420,7 +458,9 @@ func testSingleProvider(cmd *cobra.Command, cat catalogs.Reader, providerID stri
 	}
 
 	if err != nil {
-		fmt.Printf("%s Test failed\n", emoji.Error)
+		if writeErr := writeCommand(cmd.ErrOrStderr(), "%s Test failed\n", emoji.Error); writeErr != nil {
+			return writeErr
+		}
 		result.Status = emoji.Error + " Failed"
 		result.ModelsFound = "-"
 		result.Error = err.Error()
@@ -431,13 +471,17 @@ func testSingleProvider(cmd *cobra.Command, cat catalogs.Reader, providerID stri
 			displayTestTable([]testResult{result}, verbose)
 		} else {
 			formatter := format.New(outputFormat)
-			_ = formatter.Format(os.Stdout, []testResult{result})
+			if formatErr := formatter.Format(cmd.OutOrStdout(), []testResult{result}); formatErr != nil {
+				return formatErr
+			}
 		}
 
 		return fmt.Errorf("failed to test %s: %w", providerID, err)
 	}
 
-	fmt.Printf("%s Test successful\n", emoji.Success)
+	if err := writeCommand(cmd.ErrOrStderr(), "%s Test successful\n", emoji.Success); err != nil {
+		return err
+	}
 	result.Status = emoji.Success + " Success"
 	result.ModelsFound = fmt.Sprintf("%d", len(models))
 
@@ -447,10 +491,20 @@ func testSingleProvider(cmd *cobra.Command, cat catalogs.Reader, providerID stri
 		displayTestTable([]testResult{result}, verbose)
 	} else {
 		formatter := format.New(outputFormat)
-		return formatter.Format(os.Stdout, []testResult{result})
+		return formatter.Format(cmd.OutOrStdout(), []testResult{result})
 	}
 
 	return nil
+}
+
+func writeCommand(writer io.Writer, format string, args ...any) error {
+	_, err := fmt.Fprintf(writer, format, args...)
+	return err
+}
+
+func writeCommandLine(writer io.Writer, args ...any) error {
+	_, err := fmt.Fprintln(writer, args...)
+	return err
 }
 
 // displayTestTable shows test results in a table format.

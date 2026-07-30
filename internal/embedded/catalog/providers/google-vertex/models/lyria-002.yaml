@@ -1,4 +1,4 @@
-# lyria-002 - Google Vertex AI model: lyria-002
+# lyria-002 - Google model: lyria-002
 id: lyria-002
 model: google/lyria-002
 name: lyria-002
@@ -6,7 +6,7 @@ authors:
 - id: google
   name: Google
 description: |-
-  Google Vertex AI model: lyria-002
+  Google model: lyria-002
 
 # Model metadata
 metadata:
@@ -80,4 +80,4 @@ extensions:
 
 # Timestamps
 created_at: null
-updated_at: 2026-07-11T23:53:11.613435Z
+updated_at: 2026-07-30T18:59:51.970436Z

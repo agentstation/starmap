@@ -1,6 +1,6 @@
 schema_version: 1
-generation_id: catalog-20260730T021502Z-e2d069200db0
-catalog_digest: sha256:ffa21fc703df369b80f012353559f417aab7b6eb2147a2220b4aa266916ecf74
+generation_id: catalog-20260730T190002Z-adc8e35452ce
+catalog_digest: sha256:a09e5a0f4f765ae6f8ce67f534d921296100d76079a33513bafe8f16d1d5ddcb
 models:
   - model: ai21/jamba-1-5-large
     endpoints:
@@ -122,7 +122,7 @@ models:
         limits:
           context_window: 200000
           input_tokens: 0
-          output_tokens: 8192
+          output_tokens: 4096
         availability: unknown
         lifecycle: deprecated
         endpoint:
@@ -1012,7 +1012,7 @@ models:
         limits:
           context_window: 163840
           input_tokens: 0
-          output_tokens: 64000
+          output_tokens: 163840
         availability: unknown
         lifecycle: unknown
         endpoint:
@@ -1095,9 +1095,9 @@ models:
             cache_read:
               per_1m: 0.13
             input:
-              per_1m: 0.21
+              per_1m: 0.25
             output:
-              per_1m: 0.79
+              per_1m: 0.95
           currency: USD
         limits:
           context_window: 163840
@@ -1146,7 +1146,7 @@ models:
         limits:
           context_window: 163840
           input_tokens: 0
-          output_tokens: 64000
+          output_tokens: 163840
         availability: unknown
         lifecycle: unknown
         endpoint:
@@ -1182,7 +1182,7 @@ models:
         limits:
           context_window: 1048576
           input_tokens: 0
-          output_tokens: 16384
+          output_tokens: 1048576
         availability: unknown
         lifecycle: unknown
         endpoint:
@@ -1238,7 +1238,7 @@ models:
         limits:
           context_window: 1048576
           input_tokens: 0
-          output_tokens: 16384
+          output_tokens: 1048576
         availability: unknown
         lifecycle: unknown
         endpoint:
@@ -1276,7 +1276,7 @@ models:
               per_1m: 3.48
           currency: USD
         limits:
-          context_window: 1000000
+          context_window: 1048576
           input_tokens: 0
           output_tokens: 384000
         availability: unknown
@@ -1764,6 +1764,16 @@ models:
           url: https://generativelanguage.googleapis.com/v1beta/models
       - provider: google-vertex
         provider_model_id: gemini-2.5-flash-image
+        pricing:
+          tokens:
+            input:
+              per_1m: 0.3
+            output:
+              per_1m: 30.0
+          currency: USD
+        limits:
+          context_window: 32768
+          output_tokens: 32768
         availability: unknown
         lifecycle: unknown
         endpoint:
@@ -2032,6 +2042,13 @@ models:
         lifecycle: unknown
       - provider: google-ai-studio
         provider_model_id: gemini-3-pro-image
+        pricing:
+          tokens:
+            input:
+              per_1m: 2.0
+            output:
+              per_1m: 120.0
+          currency: USD
         limits:
           context_window: 131072
           input_tokens: 131072
@@ -2043,6 +2060,16 @@ models:
           url: https://generativelanguage.googleapis.com/v1beta/models
       - provider: google-vertex
         provider_model_id: gemini-3-pro-image
+        pricing:
+          tokens:
+            input:
+              per_1m: 2.0
+            output:
+              per_1m: 120.0
+          currency: USD
+        limits:
+          context_window: 65536
+          output_tokens: 32768
         availability: unknown
         lifecycle: unknown
         endpoint:
@@ -2110,6 +2137,13 @@ models:
     endpoints:
       - provider: google-ai-studio
         provider_model_id: gemini-3.1-flash-image
+        pricing:
+          tokens:
+            input:
+              per_1m: 0.5
+            output:
+              per_1m: 60.0
+          currency: USD
         limits:
           context_window: 65536
           input_tokens: 65536
@@ -2121,6 +2155,16 @@ models:
           url: https://generativelanguage.googleapis.com/v1beta/models
       - provider: google-vertex
         provider_model_id: gemini-3.1-flash-image
+        pricing:
+          tokens:
+            input:
+              per_1m: 0.5
+            output:
+              per_1m: 60.0
+          currency: USD
+        limits:
+          context_window: 131072
+          output_tokens: 32768
         availability: unknown
         lifecycle: unknown
         endpoint:
@@ -2215,6 +2259,13 @@ models:
     endpoints:
       - provider: google-ai-studio
         provider_model_id: gemini-3.1-flash-lite-image
+        pricing:
+          tokens:
+            input:
+              per_1m: 0.25
+            output:
+              per_1m: 30.0
+          currency: USD
         limits:
           context_window: 65536
           input_tokens: 65536
@@ -2275,19 +2326,33 @@ models:
     endpoints:
       - provider: google-ai-studio
         provider_model_id: gemini-3.1-flash-live-preview
+        pricing:
+          tokens:
+            input:
+              per_1m: 0.75
+            output:
+              per_1m: 4.5
+          operations:
+            audio_input: 3.0
+            audio_gen: 12.0
+          currency: USD
         limits:
           context_window: 131072
           input_tokens: 131072
           output_tokens: 65536
         availability: unknown
         lifecycle: unknown
-        endpoint:
-          type: google
-          url: https://generativelanguage.googleapis.com/v1beta/models
   - model: google/gemini-3.1-flash-tts-preview
     endpoints:
       - provider: google-ai-studio
         provider_model_id: gemini-3.1-flash-tts-preview
+        pricing:
+          tokens:
+            input:
+              per_1m: 1.0
+            output:
+              per_1m: 20.0
+          currency: USD
         limits:
           context_window: 8192
           input_tokens: 8192
@@ -2423,15 +2488,22 @@ models:
     endpoints:
       - provider: google-ai-studio
         provider_model_id: gemini-3.5-live-translate-preview
+        pricing:
+          tokens:
+            input:
+              per_1m: 3.5
+            output:
+              per_1m: 21.0
+          operations:
+            audio_input: 3.5
+            audio_gen: 21.0
+          currency: USD
         limits:
           context_window: 16384
           input_tokens: 16384
           output_tokens: 32768
         availability: unknown
         lifecycle: unknown
-        endpoint:
-          type: google
-          url: https://generativelanguage.googleapis.com/v1beta/models
   - model: google/gemini-embedding-001
     endpoints:
       - provider: google-ai-studio
@@ -2472,6 +2544,14 @@ models:
     endpoints:
       - provider: google-ai-studio
         provider_model_id: gemini-embedding-2
+        pricing:
+          tokens:
+            input:
+              per_1m: 0.2
+            output: {}
+          operations:
+            audio_input: 6.5
+          currency: USD
         limits:
           context_window: 8192
           input_tokens: 8192
@@ -2502,13 +2582,13 @@ models:
         pricing:
           tokens:
             cache_read:
-              per_1m: 0.075
+              per_1m: 0.15
             input:
-              per_1m: 0.3
+              per_1m: 1.5
             output:
-              per_1m: 2.5
+              per_1m: 9.0
           operations:
-            audio_input: 1.0
+            audio_input: 1.5
           currency: USD
         limits:
           context_window: 1048576
@@ -2525,9 +2605,11 @@ models:
             cache_read:
               per_1m: 0.025
             input:
-              per_1m: 0.1
+              per_1m: 0.25
             output:
-              per_1m: 0.4
+              per_1m: 1.5
+          operations:
+            audio_input: 0.5
           currency: USD
         limits:
           context_window: 1048576
@@ -2535,9 +2617,6 @@ models:
           output_tokens: 65536
         availability: unknown
         lifecycle: unknown
-        endpoint:
-          type: google
-          url: https://generativelanguage.googleapis.com/v1beta/models
   - model: google/gemini-live-2.5-flash-native-audio
     endpoints:
       - provider: google-vertex
@@ -2604,15 +2683,21 @@ models:
     endpoints:
       - provider: google-ai-studio
         provider_model_id: gemini-robotics-er-1.6-preview
+        pricing:
+          tokens:
+            input:
+              per_1m: 1.0
+            output:
+              per_1m: 5.0
+          operations:
+            audio_input: 2.0
+          currency: USD
         limits:
           context_window: 131072
           input_tokens: 131072
           output_tokens: 65536
         availability: unknown
         lifecycle: unknown
-        endpoint:
-          type: google
-          url: https://generativelanguage.googleapis.com/v1beta/models
   - model: google/gemma
     endpoints:
       - provider: google-vertex
@@ -2696,7 +2781,7 @@ models:
         limits:
           context_window: 262144
           input_tokens: 0
-          output_tokens: 32768
+          output_tokens: 262144
         availability: unknown
         lifecycle: unknown
         endpoint:
@@ -2754,7 +2839,7 @@ models:
         limits:
           context_window: 262144
           input_tokens: 0
-          output_tokens: 32768
+          output_tokens: 262144
         availability: unknown
         lifecycle: unknown
         endpoint:
@@ -2765,9 +2850,9 @@ models:
         pricing:
           tokens:
             input:
-              per_1m: 0.12
+              per_1m: 0.09
             output:
-              per_1m: 0.37
+              per_1m: 0.34
           currency: USD
         limits:
           context_window: 262144
@@ -3057,6 +3142,11 @@ models:
     endpoints:
       - provider: google-ai-studio
         provider_model_id: lyria-3-clip-preview
+        pricing:
+          tokens:
+            input: {}
+            output: {}
+          currency: USD
         limits:
           context_window: 1048576
           input_tokens: 1048576
@@ -3077,6 +3167,11 @@ models:
     endpoints:
       - provider: google-ai-studio
         provider_model_id: lyria-3-pro-preview
+        pricing:
+          tokens:
+            input: {}
+            output: {}
+          currency: USD
         limits:
           context_window: 1048576
           input_tokens: 1048576
@@ -3522,7 +3617,7 @@ models:
           input_tokens: 480
           output_tokens: 8192
         availability: unknown
-        lifecycle: unknown
+        lifecycle: preview
         endpoint:
           type: google
           url: https://generativelanguage.googleapis.com/v1beta/models
@@ -3807,7 +3902,7 @@ models:
             input:
               per_1m: 0.02
             output:
-              per_1m: 0.03
+              per_1m: 0.04
           currency: USD
         limits:
           context_window: 131072
@@ -3865,7 +3960,7 @@ models:
         limits:
           context_window: 131072
           input_tokens: 0
-          output_tokens: 16384
+          output_tokens: 131072
         availability: unknown
         lifecycle: unknown
         endpoint:
@@ -3898,14 +3993,14 @@ models:
         pricing:
           tokens:
             input:
-              per_1m: 0.15
+              per_1m: 0.2
             output:
-              per_1m: 0.6
+              per_1m: 0.8
           currency: USD
         limits:
           context_window: 1048576
           input_tokens: 0
-          output_tokens: 16384
+          output_tokens: 1048576
         availability: unknown
         lifecycle: unknown
         endpoint:
@@ -3925,7 +4020,7 @@ models:
         limits:
           context_window: 327680
           input_tokens: 0
-          output_tokens: 16384
+          output_tokens: 327680
         availability: unknown
         lifecycle: unknown
         endpoint:
@@ -4051,7 +4146,7 @@ models:
         limits:
           context_window: 196608
           input_tokens: 0
-          output_tokens: 131072
+          output_tokens: 196608
         availability: unknown
         lifecycle: unknown
         endpoint:
@@ -4061,10 +4156,12 @@ models:
         provider_model_id: MiniMaxAI/MiniMax-M2.7-Turbo
         pricing:
           tokens:
+            cache_read:
+              per_1m: 0.07
             input:
-              per_1m: 0.4
+              per_1m: 0.38
             output:
-              per_1m: 2.0
+              per_1m: 1.7
           currency: USD
         limits:
           context_window: 196608
@@ -4091,7 +4188,7 @@ models:
         limits:
           context_window: 524288
           input_tokens: 0
-          output_tokens: 128000
+          output_tokens: 524288
         availability: unknown
         lifecycle: unknown
         endpoint:
@@ -4104,9 +4201,9 @@ models:
         pricing:
           tokens:
             input:
-              per_1m: 0.02
+              per_1m: 0.019
             output:
-              per_1m: 0.04
+              per_1m: 0.03
           currency: USD
         limits:
           context_window: 131072
@@ -4200,7 +4297,7 @@ models:
         limits:
           context_window: 262144
           input_tokens: 0
-          output_tokens: 32768
+          output_tokens: 262144
         availability: unknown
         lifecycle: unknown
         endpoint:
@@ -4253,7 +4350,7 @@ models:
         limits:
           context_window: 262144
           input_tokens: 0
-          output_tokens: 16384
+          output_tokens: 262144
         availability: unknown
         lifecycle: unknown
         endpoint:
@@ -4271,7 +4368,7 @@ models:
               per_1m: 4.0
           currency: USD
         limits:
-          context_window: 262000
+          context_window: 262144
           input_tokens: 0
           output_tokens: 262000
         availability: unknown
@@ -4363,6 +4460,27 @@ models:
           context_window: 262144
           input_tokens: 0
           output_tokens: 262144
+        availability: unknown
+        lifecycle: unknown
+        endpoint:
+          type: openai
+          url: https://api.moonshot.ai/v1/chat/completions
+  - model: moonshot-ai/kimi-k3
+    endpoints:
+      - provider: moonshot-ai
+        provider_model_id: kimi-k3
+        pricing:
+          tokens:
+            cache_read:
+              per_1m: 0.3
+            input:
+              per_1m: 3.0
+            output:
+              per_1m: 15.0
+          currency: USD
+        limits:
+          context_window: 1048576
+          output_tokens: 131072
         availability: unknown
         lifecycle: unknown
         endpoint:
@@ -4532,6 +4650,8 @@ models:
         provider_model_id: nvidia/Nemotron-3-Nano-30B-A3B
         pricing:
           tokens:
+            cache_read:
+              per_1m: 0.025
             input:
               per_1m: 0.05
             output:
@@ -4640,6 +4760,10 @@ models:
     endpoints:
       - provider: openai
         provider_model_id: chatgpt-image-latest
+        limits:
+          context_window: 0
+          input_tokens: 0
+          output_tokens: 0
         availability: unknown
         lifecycle: unknown
         endpoint:
@@ -4671,7 +4795,7 @@ models:
           input_tokens: 0
           output_tokens: 4096
         availability: unknown
-        lifecycle: unknown
+        lifecycle: deprecated
         endpoint:
           type: openai
           url: https://api.openai.com/v1/chat/completions
@@ -4833,7 +4957,7 @@ models:
           input_tokens: 0
           output_tokens: 32768
         availability: unknown
-        lifecycle: unknown
+        lifecycle: deprecated
         endpoint:
           type: openai
           url: https://api.openai.com/v1/chat/completions
@@ -4884,7 +5008,7 @@ models:
           input_tokens: 0
           output_tokens: 4096
         availability: unknown
-        lifecycle: unknown
+        lifecycle: deprecated
         endpoint:
           type: openai
           url: https://api.openai.com/v1/chat/completions
@@ -6094,8 +6218,12 @@ models:
     endpoints:
       - provider: openai
         provider_model_id: gpt-image-1
+        limits:
+          context_window: 0
+          input_tokens: 0
+          output_tokens: 0
         availability: unknown
-        lifecycle: unknown
+        lifecycle: deprecated
         endpoint:
           type: openai
           url: https://api.openai.com/v1/chat/completions
@@ -6103,6 +6231,10 @@ models:
     endpoints:
       - provider: openai
         provider_model_id: gpt-image-1-mini
+        limits:
+          context_window: 0
+          input_tokens: 0
+          output_tokens: 0
         availability: unknown
         lifecycle: unknown
         endpoint:
@@ -6112,6 +6244,10 @@ models:
     endpoints:
       - provider: openai
         provider_model_id: gpt-image-1.5
+        limits:
+          context_window: 0
+          input_tokens: 0
+          output_tokens: 0
         availability: unknown
         lifecycle: unknown
         endpoint:
@@ -6130,6 +6266,10 @@ models:
             output:
               per_1m: 30.0
           currency: USD
+        limits:
+          context_window: 0
+          input_tokens: 0
+          output_tokens: 0
         availability: unknown
         lifecycle: unknown
         endpoint:
@@ -6176,7 +6316,7 @@ models:
         limits:
           context_window: 131072
           input_tokens: 0
-          output_tokens: 16384
+          output_tokens: 131072
         availability: unknown
         lifecycle: unknown
         endpoint:
@@ -6254,7 +6394,7 @@ models:
         limits:
           context_window: 131072
           input_tokens: 0
-          output_tokens: 16384
+          output_tokens: 131072
         availability: unknown
         lifecycle: unknown
         endpoint:
@@ -6432,7 +6572,7 @@ models:
           input_tokens: 0
           output_tokens: 100000
         availability: unknown
-        lifecycle: unknown
+        lifecycle: deprecated
         endpoint:
           type: openai
           url: https://api.openai.com/v1/chat/completions
@@ -6494,7 +6634,7 @@ models:
           input_tokens: 0
           output_tokens: 100000
         availability: unknown
-        lifecycle: unknown
+        lifecycle: deprecated
         endpoint:
           type: openai
           url: https://api.openai.com/v1/chat/completions
@@ -6525,7 +6665,7 @@ models:
           input_tokens: 0
           output_tokens: 100000
         availability: unknown
-        lifecycle: unknown
+        lifecycle: deprecated
         endpoint:
           type: openai
           url: https://api.openai.com/v1/chat/completions
@@ -7081,7 +7221,7 @@ models:
             input:
               per_1m: 0.09
             output:
-              per_1m: 0.1
+              per_1m: 0.55
           currency: USD
         limits:
           context_window: 262144
@@ -7200,7 +7340,7 @@ models:
         limits:
           context_window: 40960
           input_tokens: 0
-          output_tokens: 16384
+          output_tokens: 40960
         availability: unknown
         lifecycle: unknown
         endpoint:
@@ -7320,7 +7460,7 @@ models:
         limits:
           context_window: 262144
           input_tokens: 0
-          output_tokens: 66536
+          output_tokens: 262144
         availability: unknown
         lifecycle: unknown
         endpoint:
@@ -7472,7 +7612,7 @@ models:
         limits:
           context_window: 256000
           input_tokens: 0
-          output_tokens: 65536
+          output_tokens: 256000
         availability: unknown
         lifecycle: unknown
         endpoint:
@@ -7550,7 +7690,7 @@ models:
         limits:
           context_window: 262144
           input_tokens: 0
-          output_tokens: 32768
+          output_tokens: 262144
         availability: unknown
         lifecycle: unknown
         endpoint:
@@ -7818,7 +7958,7 @@ models:
         limits:
           context_window: 262144
           input_tokens: 0
-          output_tokens: 65536
+          output_tokens: 262144
         availability: unknown
         lifecycle: unknown
         endpoint:
@@ -7856,7 +7996,7 @@ models:
         limits:
           context_window: 262144
           input_tokens: 0
-          output_tokens: 65536
+          output_tokens: 262144
         availability: unknown
         lifecycle: unknown
         endpoint:
@@ -7896,7 +8036,7 @@ models:
         limits:
           context_window: 262144
           input_tokens: 0
-          output_tokens: 81920
+          output_tokens: 262144
         availability: unknown
         lifecycle: unknown
         endpoint:
@@ -7936,7 +8076,7 @@ models:
         limits:
           context_window: 262144
           input_tokens: 0
-          output_tokens: 81920
+          output_tokens: 262144
         availability: unknown
         lifecycle: unknown
         endpoint:
@@ -7956,7 +8096,7 @@ models:
         limits:
           context_window: 262144
           input_tokens: 0
-          output_tokens: 65536
+          output_tokens: 262144
         availability: unknown
         lifecycle: unknown
         endpoint:
@@ -8016,7 +8156,7 @@ models:
         limits:
           context_window: 262144
           input_tokens: 0
-          output_tokens: 65536
+          output_tokens: 262144
         availability: unknown
         lifecycle: unknown
         endpoint:
@@ -8039,7 +8179,7 @@ models:
         limits:
           context_window: 131072
           input_tokens: 0
-          output_tokens: 32768
+          output_tokens: 16384
         availability: unknown
         lifecycle: active
   - model: qwen/qwen3.6-35b-a3b
@@ -8067,14 +8207,14 @@ models:
         pricing:
           tokens:
             input:
-              per_1m: 0.15
+              per_1m: 0.1
             output:
               per_1m: 0.95
           currency: USD
         limits:
           context_window: 262144
           input_tokens: 0
-          output_tokens: 81920
+          output_tokens: 262144
         availability: unknown
         lifecycle: unknown
         endpoint:
@@ -8172,7 +8312,7 @@ models:
         limits:
           context_window: 256000
           input_tokens: 0
-          output_tokens: 65536
+          output_tokens: 256000
         availability: unknown
         lifecycle: unknown
         endpoint:
@@ -8499,7 +8639,7 @@ models:
         limits:
           context_window: 262144
           input_tokens: 0
-          output_tokens: 16384
+          output_tokens: 262144
         availability: unknown
         lifecycle: unknown
         endpoint:
@@ -8521,7 +8661,7 @@ models:
         limits:
           context_window: 1048576
           input_tokens: 0
-          output_tokens: 16384
+          output_tokens: 1048576
         availability: unknown
         lifecycle: unknown
         endpoint:
@@ -8546,16 +8686,16 @@ models:
         pricing:
           tokens:
             cache_read:
-              per_1m: 0.08
+              per_1m: 0.1
             input:
-              per_1m: 0.43
+              per_1m: 0.5
             output:
-              per_1m: 1.74
+              per_1m: 2.0
           currency: USD
         limits:
           context_window: 202752
           input_tokens: 0
-          output_tokens: 131072
+          output_tokens: 202752
         availability: unknown
         lifecycle: unknown
         endpoint:
@@ -8567,7 +8707,8 @@ models:
         provider_model_id: zai-glm-4.7
         pricing:
           tokens:
-            cache_read: {}
+            cache_read:
+              per_1m: 2.25
             cache_write: {}
             input:
               per_1m: 2.25
@@ -8597,7 +8738,7 @@ models:
         limits:
           context_window: 202752
           input_tokens: 0
-          output_tokens: 16384
+          output_tokens: 202752
         availability: unknown
         lifecycle: unknown
         endpoint:
@@ -8619,7 +8760,7 @@ models:
         limits:
           context_window: 202752
           input_tokens: 0
-          output_tokens: 16384
+          output_tokens: 202752
         availability: unknown
         lifecycle: unknown
         endpoint:
@@ -8641,7 +8782,7 @@ models:
         limits:
           context_window: 202752
           input_tokens: 0
-          output_tokens: 16384
+          output_tokens: 202752
         availability: unknown
         lifecycle: unknown
         endpoint:
@@ -8670,7 +8811,7 @@ models:
         limits:
           context_window: 202752
           input_tokens: 0
-          output_tokens: 16384
+          output_tokens: 202752
         availability: unknown
         lifecycle: unknown
         endpoint:
@@ -8710,16 +8851,16 @@ models:
         pricing:
           tokens:
             cache_read:
-              per_1m: 0.18
+              per_1m: 0.14
             input:
-              per_1m: 0.93
+              per_1m: 0.75
             output:
-              per_1m: 3.0
+              per_1m: 2.4
           currency: USD
         limits:
           context_window: 1048576
           input_tokens: 0
-          output_tokens: 32768
+          output_tokens: 1048576
         availability: unknown
         lifecycle: unknown
         endpoint:
@@ -8737,7 +8878,7 @@ models:
               per_1m: 4.4
           currency: USD
         limits:
-          context_window: 1048575
+          context_window: 1048576
           input_tokens: 0
           output_tokens: 131072
         availability: unknown

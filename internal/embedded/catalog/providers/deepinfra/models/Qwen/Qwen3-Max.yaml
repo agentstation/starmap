@@ -4,7 +4,7 @@ model: qwen/qwen3-max
 name: Qwen/Qwen3-Max
 authors:
 - id: qwen
-  name: Qwen Team
+  name: qwen
 description: Flagship Qwen3 model for coding agents, complex reasoning, and tool use
 
 # Model metadata
@@ -29,9 +29,9 @@ features:
     - text
 
   # Core capabilities
-  tool_calls: false
-  tools: false
-  tool_choice: false
+  tool_calls: true
+  tools: true
+  tool_choice: true
   web_search: false
   attachments: false
 
@@ -78,7 +78,7 @@ features:
 
   # Response delivery
   format_response: false
-  structured_outputs: false
+  structured_outputs: true
   streaming: true
 
 # Model pricing
@@ -89,15 +89,15 @@ pricing:
     input:
       per_1m: 1.2
     output:
-      per_1m: 6
+      per_1m: 6.0
   currency: USD
 
 # Model limits
 limits:
   context_window: 256000
   input_tokens: 0
-  output_tokens: 65536
+  output_tokens: 256000
 
 # Timestamps
 created_at: 2025-09-23T00:00:00Z
-updated_at: 2026-07-11T20:15:13.089206Z
+updated_at: 2026-07-30T16:49:30.853461Z

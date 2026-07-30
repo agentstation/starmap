@@ -1,4 +1,4 @@
-# bert-base - Google Vertex AI model: bert-base
+# bert-base - Google model: bert-base
 id: bert-base
 model: google/bert-base
 name: bert-base
@@ -6,7 +6,7 @@ authors:
 - id: google
   name: Google
 description: |-
-  Google Vertex AI model: bert-base
+  Google model: bert-base
 
 # Model metadata
 metadata:
@@ -80,4 +80,4 @@ extensions:
 
 # Timestamps
 created_at: null
-updated_at: 2026-07-11T23:53:11.612047Z
+updated_at: 2026-07-30T18:59:52.093865Z

@@ -60,6 +60,7 @@ desktop.ini
 *.swp
 *.swo
 *~
+.catalog.starmap-projection.json
 .#*
 \#*#
 

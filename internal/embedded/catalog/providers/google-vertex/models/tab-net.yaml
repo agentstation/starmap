@@ -1,4 +1,4 @@
-# tab-net - Google Vertex AI model: tab-net
+# tab-net - Google model: tab-net
 id: tab-net
 model: google/tab-net
 name: tab-net
@@ -6,7 +6,7 @@ authors:
 - id: google
   name: Google
 description: |-
-  Google Vertex AI model: tab-net
+  Google model: tab-net
 
 # Model metadata
 metadata:
@@ -80,4 +80,4 @@ extensions:
 
 # Timestamps
 created_at: null
-updated_at: 2026-07-11T23:53:11.611088Z
+updated_at: 2026-07-30T18:59:52.106321Z

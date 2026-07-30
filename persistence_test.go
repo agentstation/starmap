@@ -30,7 +30,12 @@ func TestSave(t *testing.T) {
 }
 
 func TestSaveReturnsNilAfterSuccessfulCatalogSave(t *testing.T) {
-	sm, err := New()
+	generation := rootRemoteGeneration(t)
+	store := catalogstore.NewMemory()
+	if err := store.Commit(context.Background(), generation, ""); err != nil {
+		t.Fatalf("Commit generation: %v", err)
+	}
+	sm, err := New(WithCatalogStore(store))
 	if err != nil {
 		t.Fatalf("Failed to create starmap: %v", err)
 	}

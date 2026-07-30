@@ -4,8 +4,8 @@ import (
 	"context"
 	"time"
 
-	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/internal/constants"
+	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/errors"
 	"github.com/agentstation/starmap/pkg/logging"
 	"github.com/agentstation/starmap/pkg/sources"
@@ -15,7 +15,7 @@ import (
 
 // GitSource enhances models with models.dev data.
 type GitSource struct {
-	providers  *catalogs.Providers
+	providers  catalogs.ProvidersReader
 	sourcesDir string
 	commit     string
 	loadAPI    func(context.Context, string) (*API, error)
@@ -46,6 +46,13 @@ type GitSourceOption func(*GitSource)
 func WithSourcesDir(dir string) GitSourceOption {
 	return func(s *GitSource) {
 		s.sourcesDir = dir
+	}
+}
+
+// WithGitProviders configures canonical provider IDs and aliases.
+func WithGitProviders(providers catalogs.ProvidersReader) GitSourceOption {
+	return func(s *GitSource) {
+		s.providers = providers
 	}
 }
 
@@ -92,12 +99,6 @@ func revisionForGitInputs(inputs GitInputs) sources.Revision {
 	}
 }
 
-// Setup initializes the source with dependencies.
-func (s *GitSource) Setup(providers *catalogs.Providers) error {
-	s.providers = providers
-	return nil
-}
-
 // Observe returns a catalog with mapped models.dev data directly.
 func (s *GitSource) Observe(ctx context.Context, opts ...sources.Option) (sources.Observation, error) {
 	ctx = logging.WithSource(ctx, s.ID().String())
@@ -124,7 +125,7 @@ func (s *GitSource) Observe(ctx context.Context, opts ...sources.Option) (source
 	}
 
 	// Process the API data using shared logic
-	added, rejected, recordIssues, err := processFetch(builder, api, opts...)
+	added, rejected, recordIssues, err := processFetch(builder, api, s.providers, opts...)
 	if err != nil {
 		return sources.Observation{}, err
 	}

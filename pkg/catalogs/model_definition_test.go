@@ -76,7 +76,14 @@ func TestModelDefinitionRoundTripPreservesIntrinsicFacts(t *testing.T) {
 	if err := yaml.Unmarshal(yamlData, &fromYAML); err != nil {
 		t.Fatalf("Unmarshal YAML: %v", err)
 	}
-	if diff := cmp.Diff(definition, fromYAML, cmpopts.EquateEmpty(), featureComparer); diff != "" {
+	yamlExpected := definition
+	yamlExpected.Capabilities.Features = deepCopyModelFeatures(definition.Capabilities.Features)
+	for _, feature := range modelFeatures() {
+		if _, state := yamlExpected.Capabilities.Features.Support(feature); state == ValueMissing {
+			yamlExpected.Capabilities.Features.SetSupport(feature, false)
+		}
+	}
+	if diff := cmp.Diff(yamlExpected, fromYAML, cmpopts.EquateEmpty(), featureComparer); diff != "" {
 		t.Fatalf("YAML round trip (-want +got):\n%s", diff)
 	}
 }

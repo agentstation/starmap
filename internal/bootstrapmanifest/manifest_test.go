@@ -67,7 +67,7 @@ func TestScheduledGenerationManifestChangesOnlyForCanonicalPayloadChange(t *test
 	}
 }
 
-func TestScheduledGenerationManifestIgnoresObservationTimestampChurn(t *testing.T) {
+func TestScheduledGenerationManifestRebindsChangedEvidencePayload(t *testing.T) {
 	builder := catalogs.NewEmpty()
 	if err := builder.SetProvider(*testProvider()); err != nil {
 		t.Fatalf("SetProvider: %v", err)
@@ -101,8 +101,14 @@ func TestScheduledGenerationManifestIgnoresObservationTimestampChurn(t *testing.
 	if err != nil {
 		t.Fatalf("Derive second: %v", err)
 	}
-	if report.Changed || second != first {
-		t.Fatalf("evidence-only refresh changed release identity: %#v / %#v", report, second)
+	if !report.Changed {
+		t.Fatalf("evidence-only payload change was not rebound: %#v / %#v", report, second)
+	}
+	if second.SemanticChecksum != first.SemanticChecksum {
+		t.Fatalf("semantic checksum changed for evidence-only update: %q != %q", second.SemanticChecksum, first.SemanticChecksum)
+	}
+	if second.Payload == first.Payload || second.GenerationID == first.GenerationID {
+		t.Fatalf("exact evidence payload retained stale identity: %#v / %#v", report, second)
 	}
 	secondPayload, err := catalogs.EncodeCatalogPayload(secondCatalog)
 	if err != nil {

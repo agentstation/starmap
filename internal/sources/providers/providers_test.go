@@ -10,10 +10,10 @@ import (
 	"testing"
 	"time"
 
+	"github.com/agentstation/starmap/internal/constants"
 	"github.com/agentstation/starmap/internal/sourcepayload"
 	"github.com/agentstation/starmap/internal/testlogging"
 	"github.com/agentstation/starmap/pkg/catalogs"
-	"github.com/agentstation/starmap/internal/constants"
 	pkgerrors "github.com/agentstation/starmap/pkg/errors"
 	"github.com/agentstation/starmap/pkg/logging"
 	"github.com/agentstation/starmap/pkg/sources"
@@ -86,7 +86,7 @@ func TestPublicInternalProviderFetchConformance(t *testing.T) {
 				t.Fatal("public fetch unexpectedly succeeded")
 			}
 
-			observation, err := New(providerSet, WithClientFactory(test.factory)).Observe(context.Background())
+			observation, err := newTestSource(providerSet, WithClientFactory(test.factory)).Observe(context.Background())
 			if err != nil {
 				t.Fatalf("internal observation returned source error: %v", err)
 			}
@@ -121,7 +121,7 @@ func (c fakeProviderClient) HasAPIKey() bool {
 
 func TestSourceObserveAddsFetchedModels(t *testing.T) {
 	providerSet := newProviderSet(providerForTest("provider-a"))
-	src := New(providerSet, WithClientFactory(func(provider *catalogs.Provider) (sources.ProviderClient, error) {
+	src := newTestSource(providerSet, WithClientFactory(func(provider *catalogs.Provider) (sources.ProviderClient, error) {
 		return fakeProviderClient{
 			models: []catalogs.Model{{ID: "model-a", Name: "Model A"}},
 		}, nil
@@ -148,9 +148,57 @@ func TestSourceObserveAddsFetchedModels(t *testing.T) {
 	}
 }
 
+func TestSourceObserveQuarantinesModelsWithoutReviewedCanonicalLinks(t *testing.T) {
+	provider := providerForTest("provider-a")
+	provider.Models = map[string]*catalogs.Model{
+		"reviewed": {
+			ID:       "reviewed",
+			Name:     "Configured Name",
+			ModelRef: "author-a/reviewed",
+		},
+	}
+	src := New(newProviderSet(provider), WithClientFactory(func(*catalogs.Provider) (sources.ProviderClient, error) {
+		return fakeProviderClient{models: []catalogs.Model{
+			{ID: "reviewed", Name: "Live Name"},
+			{ID: "new-unreviewed", Name: "New Unreviewed"},
+		}}, nil
+	}))
+
+	observation, err := src.Observe(context.Background())
+	if err != nil {
+		t.Fatalf("Observe: %v", err)
+	}
+	if observation.Status != sources.ObservationStatusDegraded ||
+		observation.Completeness != sources.ObservationCompletenessPartial {
+		t.Fatalf("observation health = %q/%q, want degraded/partial", observation.Status, observation.Completeness)
+	}
+	if observation.Records.Accepted != 1 || observation.Records.Rejected != 1 {
+		t.Fatalf("records = %#v, want accepted=1 rejected=1", observation.Records)
+	}
+	if len(observation.Issues) != 1 ||
+		observation.Issues[0].Scope != sources.ObservationIssueScopeRecord ||
+		observation.Issues[0].Code != sources.ObservationIssueCodeInvalidRecord ||
+		observation.Issues[0].Subject != "provider-a/new-unreviewed" {
+		t.Fatalf("issues = %#v", observation.Issues)
+	}
+	fetched, err := observation.Catalog.Provider("provider-a")
+	if err != nil {
+		t.Fatalf("Provider: %v", err)
+	}
+	if len(fetched.Models) != 1 ||
+		fetched.Models["reviewed"] == nil ||
+		fetched.Models["reviewed"].Name != "Live Name" ||
+		fetched.Models["reviewed"].ModelRef != "author-a/reviewed" {
+		t.Fatalf("linked live models = %#v", fetched.Models)
+	}
+	if provider.Models["reviewed"].Name != "Configured Name" {
+		t.Fatalf("source mutated configured provider: %#v", provider.Models["reviewed"])
+	}
+}
+
 func TestInvalidIdentityQuarantineMalformedProviderRecordsWithCounts(t *testing.T) {
 	providerSet := newProviderSet(providerForTest("provider-a"))
-	src := New(providerSet, WithClientFactory(func(*catalogs.Provider) (sources.ProviderClient, error) {
+	src := newTestSource(providerSet, WithClientFactory(func(*catalogs.Provider) (sources.ProviderClient, error) {
 		return fakeProviderClient{models: []catalogs.Model{
 			{ID: "valid-a", Name: "Valid A"},
 			{ID: "", Name: "Missing ID"},
@@ -206,7 +254,7 @@ func TestDecodeQuarantineRetainsProviderSiblingsAndDegradesObservation(t *testin
 			}},
 		},
 	}
-	src := New(providerSet, WithClientFactory(func(*catalogs.Provider) (sources.ProviderClient, error) {
+	src := newTestSource(providerSet, WithClientFactory(func(*catalogs.Provider) (sources.ProviderClient, error) {
 		return fakeProviderClient{
 			models: []catalogs.Model{{ID: "valid", Name: "Valid"}},
 			err:    recordErr,
@@ -239,7 +287,7 @@ func TestDecodeQuarantineRetainsProviderSiblingsAndDegradesObservation(t *testin
 
 func TestSchemaDriftProviderFailurePreservesValidProvider(t *testing.T) {
 	providerSet := newProviderSet(providerForTest("drifted"), providerForTest("valid"))
-	src := New(providerSet, WithClientFactory(func(provider *catalogs.Provider) (sources.ProviderClient, error) {
+	src := newTestSource(providerSet, WithClientFactory(func(provider *catalogs.Provider) (sources.ProviderClient, error) {
 		if provider.ID == "drifted" {
 			return fakeProviderClient{err: pkgerrors.NewParseError("json", "models response", "models changed from array to object", nil)}, nil
 		}
@@ -287,7 +335,7 @@ func TestPayloadLimitProviderModelCount(t *testing.T) {
 
 func TestSourceObserveEmitsStructuredSourceProviderAndRunFields(t *testing.T) {
 	providerSet := newProviderSet(providerForTest("provider-a"))
-	src := New(providerSet, WithClientFactory(func(*catalogs.Provider) (sources.ProviderClient, error) {
+	src := newTestSource(providerSet, WithClientFactory(func(*catalogs.Provider) (sources.ProviderClient, error) {
 		return fakeProviderClient{models: []catalogs.Model{{ID: "model-a"}}}, nil
 	}))
 	testLogger := testlogging.New(t)
@@ -325,7 +373,7 @@ func TestSourceObserveSeparatesBootstrapModelsWhenCredentialsAreMissing(t *testi
 	}
 
 	var factoryCalls int
-	src := New(newProviderSet(provider), WithClientFactory(func(provider *catalogs.Provider) (sources.ProviderClient, error) {
+	src := newTestSource(newProviderSet(provider), WithClientFactory(func(provider *catalogs.Provider) (sources.ProviderClient, error) {
 		factoryCalls++
 		return fakeProviderClient{}, nil
 	}))
@@ -359,7 +407,7 @@ func TestSourceObserveSuccessfulFetchReplacesBootstrapModelsWithLiveModels(t *te
 	provider.Models = map[string]*catalogs.Model{
 		"bootstrap-model": {ID: "bootstrap-model", Name: "Embedded Bootstrap Model"},
 	}
-	src := New(newProviderSet(provider), WithClientFactory(func(*catalogs.Provider) (sources.ProviderClient, error) {
+	src := newTestSource(newProviderSet(provider), WithClientFactory(func(*catalogs.Provider) (sources.ProviderClient, error) {
 		return fakeProviderClient{models: []catalogs.Model{{ID: "live-model", Name: "Live Model"}}}, nil
 	}))
 
@@ -387,7 +435,7 @@ func TestSourceObserveDoesNotSkipProviderWithMissingOptionalEnvVars(t *testing.T
 	}}
 
 	var factoryCalls int
-	src := New(newProviderSet(provider), WithClientFactory(func(provider *catalogs.Provider) (sources.ProviderClient, error) {
+	src := newTestSource(newProviderSet(provider), WithClientFactory(func(provider *catalogs.Provider) (sources.ProviderClient, error) {
 		factoryCalls++
 		return fakeProviderClient{
 			models: []catalogs.Model{{ID: "model-a", Name: "Model A"}},
@@ -412,7 +460,7 @@ func TestSourceObserveDoesNotSkipProviderWithMissingOptionalEnvVars(t *testing.T
 }
 
 func TestSourceObserveSkipsConfigurationErrors(t *testing.T) {
-	src := New(newProviderSet(providerForTest("bad-config")), WithClientFactory(func(provider *catalogs.Provider) (sources.ProviderClient, error) {
+	src := newTestSource(newProviderSet(providerForTest("bad-config")), WithClientFactory(func(provider *catalogs.Provider) (sources.ProviderClient, error) {
 		return nil, &pkgerrors.ConfigError{
 			Component: string(provider.ID),
 			Message:   "misconfigured test provider",
@@ -439,7 +487,7 @@ func TestSourceObserveSkipsConfigurationErrors(t *testing.T) {
 
 func TestSourceObserveReturnsPartialFailuresAndKeepsSuccessfulModels(t *testing.T) {
 	fetchErr := stderrors.New("provider api failed")
-	src := New(newProviderSet(
+	src := newTestSource(newProviderSet(
 		providerForTest("success"),
 		providerForTest("failure"),
 	), WithClientFactory(func(provider *catalogs.Provider) (sources.ProviderClient, error) {
@@ -484,7 +532,7 @@ func TestSourceObserveBoundsProviderConcurrency(t *testing.T) {
 	var inFlight int
 	var observedMax int
 
-	src := New(newProviderSet(
+	src := newTestSource(newProviderSet(
 		providerForTest("provider-a"),
 		providerForTest("provider-b"),
 		providerForTest("provider-c"),
@@ -541,7 +589,7 @@ func TestSourceObserveBoundsProviderConcurrency(t *testing.T) {
 }
 
 func TestSourceObserveIsConcurrentAndReturnsIndependentCatalogs(t *testing.T) {
-	src := New(newProviderSet(providerForTest("provider-a")), WithClientFactory(func(*catalogs.Provider) (sources.ProviderClient, error) {
+	src := newTestSource(newProviderSet(providerForTest("provider-a")), WithClientFactory(func(*catalogs.Provider) (sources.ProviderClient, error) {
 		return fakeProviderClient{
 			models: []catalogs.Model{{ID: "model-a", Name: "Model A"}},
 		}, nil
@@ -593,6 +641,13 @@ func newProviderSet(providers ...catalogs.Provider) *catalogs.Providers {
 		_ = result.Add(&provider)
 	}
 	return result
+}
+
+func newTestSource(providers catalogs.ProvidersReader, opts ...SourceOption) *Source {
+	opts = append(opts, func(options *sourceOptions) {
+		options.requireCanonicalLinks = false
+	})
+	return New(providers, opts...)
 }
 
 func providerForTest(id catalogs.ProviderID) catalogs.Provider {

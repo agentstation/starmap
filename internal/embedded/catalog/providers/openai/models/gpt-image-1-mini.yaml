@@ -4,7 +4,7 @@ model: openai/gpt-image-1-mini
 name: gpt-image-1-mini
 authors:
 - id: openai
-  name: OpenAI
+  name: openai
 description: Image model for prompt-driven generation, editing, and visual design workflows
 
 # Model metadata
@@ -29,7 +29,7 @@ features:
   tools: false
   tool_choice: false
   web_search: false
-  attachments: false
+  attachments: true
 
   # Reasoning & Verbosity
   reasoning: false
@@ -77,6 +77,12 @@ features:
   structured_outputs: false
   streaming: true
 
+# Model limits
+limits:
+  context_window: 0
+  input_tokens: 0
+  output_tokens: 0
+
 # Timestamps
 created_at: 2025-10-20T22:31:57Z
-updated_at: 2026-07-11T20:15:13.102814Z
+updated_at: 2026-07-30T16:49:34.129648Z

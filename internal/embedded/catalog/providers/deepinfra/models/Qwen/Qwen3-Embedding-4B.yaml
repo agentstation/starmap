@@ -4,7 +4,7 @@ model: qwen/qwen3-embedding-4b
 name: Qwen/Qwen3-Embedding-4B
 authors:
 - id: qwen
-  name: Qwen Team
+  name: qwen
 description: The Qwen3 Embedding model series is the latest proprietary model of the Qwen family, specifically designed for text embedding and ranking tasks. Building upon the dense foundational models of the Qwen3 series, it provides a comprehensive range of text embeddings and reranking models in various sizes (0.6B, 4B, and 8B).
 
 # Model metadata
@@ -92,4 +92,4 @@ limits:
 
 # Timestamps
 created_at: 2026-07-11T20:15:13.083303Z
-updated_at: 2026-07-11T20:15:13.083303Z
+updated_at: 2026-07-30T16:49:30.598685Z

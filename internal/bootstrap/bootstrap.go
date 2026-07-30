@@ -2,6 +2,8 @@
 package bootstrap
 
 import (
+	"sync"
+
 	"github.com/agentstation/starmap/internal/embedded"
 	"github.com/agentstation/starmap/pkg/catalogmeta"
 	"github.com/agentstation/starmap/pkg/catalogs"
@@ -10,6 +12,34 @@ import (
 )
 
 const manifestPath = "catalog/generation.json"
+
+var (
+	embeddedOnce     sync.Once
+	embeddedCatalog  *catalogs.Catalog
+	embeddedManifest catalogs.BootstrapManifest
+	embeddedErr      error
+)
+
+// Embedded returns the process-wide verified immutable bootstrap catalog and
+// its digest-bound manifest. The catalog is safe to retain across goroutines.
+// Verification and YAML decoding run once because the embedded filesystem
+// cannot change during a process lifetime.
+func Embedded() (*catalogs.Catalog, catalogs.BootstrapManifest, error) {
+	embeddedOnce.Do(func() {
+		builder, err := catalogs.NewEmbedded()
+		if err != nil {
+			embeddedErr = errors.WrapResource("load", "embedded bootstrap catalog", "", err)
+			return
+		}
+		embeddedCatalog, err = builder.Build()
+		if err != nil {
+			embeddedErr = errors.WrapResource("publish", "embedded bootstrap catalog", "", err)
+			return
+		}
+		embeddedManifest, embeddedErr = Load(embeddedCatalog)
+	})
+	return embeddedCatalog, embeddedManifest, embeddedErr
+}
 
 // Load parses embedded generation metadata and verifies it against the exact
 // canonical bytes produced by the embedded catalog.
@@ -51,15 +81,7 @@ func Load(reader catalogs.Reader) (catalogs.BootstrapManifest, error) {
 // Generation returns the embedded bootstrap as a complete validated immutable
 // generation suitable for deterministic release artifact publication.
 func Generation() (catalogstore.Generation, error) {
-	builder, err := catalogs.NewEmbedded()
-	if err != nil {
-		return catalogstore.Generation{}, errors.WrapResource("load", "embedded bootstrap catalog", "", err)
-	}
-	catalog, err := builder.Build()
-	if err != nil {
-		return catalogstore.Generation{}, errors.WrapResource("publish", "embedded bootstrap catalog", "", err)
-	}
-	bootstrapManifest, err := Load(catalog)
+	catalog, bootstrapManifest, err := Embedded()
 	if err != nil {
 		return catalogstore.Generation{}, err
 	}

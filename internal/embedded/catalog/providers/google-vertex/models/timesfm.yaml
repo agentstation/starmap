@@ -1,4 +1,4 @@
-# timesfm - Google Vertex AI model: timesfm
+# timesfm - Google model: timesfm
 id: timesfm
 model: google/timesfm
 name: timesfm
@@ -6,7 +6,7 @@ authors:
 - id: google
   name: Google
 description: |-
-  Google Vertex AI model: timesfm
+  Google model: timesfm
 
 # Model metadata
 metadata:
@@ -80,4 +80,4 @@ extensions:
 
 # Timestamps
 created_at: null
-updated_at: 2026-07-11T23:53:11.609539Z
+updated_at: 2026-07-30T18:59:51.951813Z

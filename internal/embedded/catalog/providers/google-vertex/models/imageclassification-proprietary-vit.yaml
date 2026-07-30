@@ -1,4 +1,4 @@
-# imageclassification-proprietary-vit - Google Vertex AI model: imageclassification-proprietary-vit
+# imageclassification-proprietary-vit - Google model: imageclassification-proprietary-vit
 id: imageclassification-proprietary-vit
 model: google/imageclassification-proprietary-vit
 name: imageclassification-proprietary-vit
@@ -6,7 +6,7 @@ authors:
 - id: google
   name: Google
 description: |-
-  Google Vertex AI model: imageclassification-proprietary-vit
+  Google model: imageclassification-proprietary-vit
 
 # Model metadata
 metadata:
@@ -80,4 +80,4 @@ extensions:
 
 # Timestamps
 created_at: null
-updated_at: 2026-07-11T23:53:11.611321Z
+updated_at: 2026-07-30T18:59:51.552947Z

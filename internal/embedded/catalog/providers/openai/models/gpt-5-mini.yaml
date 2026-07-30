@@ -4,7 +4,7 @@ model: openai/gpt-5-mini
 name: gpt-5-mini
 authors:
 - id: openai
-  name: OpenAI
+  name: openai
 description: Small GPT-5 for responsive agents, coding help, and everyday automation
 
 # Model metadata
@@ -25,15 +25,15 @@ features:
     - text
 
   # Core capabilities
-  tool_calls: false
-  tools: false
-  tool_choice: false
+  tool_calls: true
+  tools: true
+  tool_choice: true
   web_search: false
-  attachments: false
+  attachments: true
 
   # Reasoning & Verbosity
   reasoning: true
-  reasoning_effort: false
+  reasoning_effort: true
   reasoning_tokens: false
   include_reasoning: false
   verbosity: false
@@ -74,7 +74,7 @@ features:
 
   # Response delivery
   format_response: false
-  structured_outputs: false
+  structured_outputs: true
   streaming: true
 reasoning:
   levels:
@@ -103,4 +103,4 @@ limits:
 
 # Timestamps
 created_at: 2025-10-20T22:31:57Z
-updated_at: 2026-07-11T20:15:13.098126Z
+updated_at: 2026-07-30T16:49:33.983504Z

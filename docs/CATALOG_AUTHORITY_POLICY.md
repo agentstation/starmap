@@ -79,11 +79,19 @@ limits:
   input_tokens: null
 ```
 
-An omitted key is missing and makes no claim. `null` is explicitly unknown.
-`false`, `0`, and `""` are known values. Missing feature keys are omitted from
-generated YAML rather than expanded into misleading false claims. These states
-survive YAML, immutable catalog JSON, deep copy, merge, reconciliation,
-baseline comparison, and change reporting.
+Generated human YAML expands every Boolean capability into the same editable
+matrix. A capability with no observed claim is displayed as the conservative
+`false` default; `null` remains explicitly unknown. Provenance and the
+committed baseline prevent an untouched generated default from becoming
+synthetic local evidence on the next update. An actual source claim or
+semantic human edit remains known and participates at that source's authority
+position.
+
+For non-Boolean fields, an omitted key is missing and makes no claim. `null`
+is explicitly unknown; `0` and `""` are known values. Missing numeric limits
+remain omitted rather than being fabricated as zero. Precise presence survives
+immutable catalog JSON, deep copy, merge, reconciliation, baseline comparison,
+and change reporting.
 
 Provider and models.dev decoders mark presence from the upstream wire keys.
 Inferred positive capabilities remain known; an unreported false or zero does

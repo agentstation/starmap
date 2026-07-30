@@ -26,7 +26,7 @@ features:
     - text
 
   # Core capabilities
-  tool_calls: false
+  tool_calls: true
   tools: true
   tool_choice: true
   web_search: false
@@ -35,7 +35,7 @@ features:
   # Reasoning & Verbosity
   reasoning: true
   reasoning_effort: false
-  reasoning_tokens: false
+  reasoning_tokens: true
   include_reasoning: true
   verbosity: false
 
@@ -124,4 +124,4 @@ extensions:
 
 # Timestamps
 created_at: null
-updated_at: 2026-07-11T20:15:13.080554Z
+updated_at: 2026-07-30T16:49:34.569509Z

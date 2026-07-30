@@ -41,17 +41,20 @@ func TestF008PresenceRoundTripsThroughHumanYAMLAndCatalogJSON(t *testing.T) {
 			t.Fatalf("YAML missing %q:\n%s", expected, encoded)
 		}
 	}
-	for _, absent := range []string{"modalities:", "web_search:", "output_tokens:"} {
+	for _, absent := range []string{"modalities:", "\n  output_tokens:"} {
 		if strings.Contains(encoded, absent) {
 			t.Fatalf("YAML contains missing claim %q:\n%s", absent, encoded)
 		}
+	}
+	if !strings.Contains(encoded, "web_search: false") {
+		t.Fatalf("YAML does not render missing Boolean capability as false:\n%s", encoded)
 	}
 
 	var fromYAML Model
 	if err := yaml.Unmarshal([]byte(encoded), &fromYAML); err != nil {
 		t.Fatalf("Unmarshal YAML: %v", err)
 	}
-	assertF008Presence(t, &fromYAML)
+	assertF008Presence(t, &fromYAML, ValueKnown)
 
 	payload, err := json.Marshal(fromYAML)
 	if err != nil {
@@ -61,7 +64,7 @@ func TestF008PresenceRoundTripsThroughHumanYAMLAndCatalogJSON(t *testing.T) {
 	if err := json.Unmarshal(payload, &fromJSON); err != nil {
 		t.Fatalf("Unmarshal JSON: %v", err)
 	}
-	assertF008Presence(t, &fromJSON)
+	assertF008Presence(t, &fromJSON, ValueKnown)
 }
 
 func TestF008DirectNonZeroValuesAreKnownWithoutSetterBoilerplate(t *testing.T) {
@@ -143,11 +146,15 @@ func TestEveryModelFeaturePresenceStateRoundTrips(t *testing.T) {
 			t.Run(string(feature)+"/"+test.name, func(t *testing.T) {
 				model := Model{ID: "presence", Name: "Presence", Features: &ModelFeatures{}}
 				test.apply(model.Features, feature)
-				assertModelPresenceRoundTrips(t, model, func(t *testing.T, decoded *Model) {
+				assertModelPresenceRoundTrips(t, model, func(t *testing.T, decoded *Model, format string) {
 					t.Helper()
 					value, state := decoded.Features.Support(feature)
-					if value != test.wantValue || state != test.wantState {
-						t.Fatalf("Support(%q) = %v/%v, want %v/%v", feature, value, state, test.wantValue, test.wantState)
+					wantState := test.wantState
+					if format == "yaml" && wantState == ValueMissing {
+						wantState = ValueKnown
+					}
+					if value != test.wantValue || state != wantState {
+						t.Fatalf("Support(%q) after %s = %v/%v, want %v/%v", feature, format, value, state, test.wantValue, wantState)
 					}
 				})
 			})
@@ -190,7 +197,7 @@ func TestEveryModelLimitPresenceStateRoundTrips(t *testing.T) {
 			t.Run(string(limit)+"/"+test.name, func(t *testing.T) {
 				model := Model{ID: "presence", Name: "Presence", Limits: &ModelLimits{}}
 				test.apply(model.Limits, limit)
-				assertModelPresenceRoundTrips(t, model, func(t *testing.T, decoded *Model) {
+				assertModelPresenceRoundTrips(t, model, func(t *testing.T, decoded *Model, _ string) {
 					t.Helper()
 					value, state := decoded.Limits.Value(limit)
 					if value != test.wantValue || state != test.wantState {
@@ -205,13 +212,13 @@ func TestEveryModelLimitPresenceStateRoundTrips(t *testing.T) {
 func assertModelPresenceRoundTrips(
 	t *testing.T,
 	model Model,
-	assert func(*testing.T, *Model),
+	assert func(*testing.T, *Model, string),
 ) {
 	t.Helper()
-	assert(t, &model)
+	assert(t, &model, "memory")
 
 	copied := DeepCopyModel(model)
-	assert(t, &copied)
+	assert(t, &copied, "copy")
 
 	jsonData, err := json.Marshal(model)
 	if err != nil {
@@ -221,7 +228,7 @@ func assertModelPresenceRoundTrips(
 	if err := json.Unmarshal(jsonData, &fromJSON); err != nil {
 		t.Fatalf("Unmarshal JSON: %v", err)
 	}
-	assert(t, &fromJSON)
+	assert(t, &fromJSON, "json")
 
 	yamlData, err := model.EncodeYAML()
 	if err != nil {
@@ -231,7 +238,7 @@ func assertModelPresenceRoundTrips(
 	if err := yaml.Unmarshal([]byte(yamlData), &fromYAML); err != nil {
 		t.Fatalf("Unmarshal YAML: %v", err)
 	}
-	assert(t, &fromYAML)
+	assert(t, &fromYAML, "yaml")
 }
 
 func TestModelPresenceYAMLPreservesTypedCollectionShapes(t *testing.T) {
@@ -263,7 +270,7 @@ func TestModelPresenceYAMLPreservesTypedCollectionShapes(t *testing.T) {
 	}
 }
 
-func assertF008Presence(t *testing.T, model *Model) {
+func assertF008Presence(t *testing.T, model *Model, missingFeatureState ValuePresence) {
 	t.Helper()
 	if value, state := model.DescriptionValue(); value != "" || state != ValueKnown {
 		t.Fatalf("description = %q, %v; want empty, known", value, state)
@@ -280,8 +287,8 @@ func assertF008Presence(t *testing.T, model *Model) {
 	if _, state := model.Features.Support(ModelFeatureTools); state != ValueUnknown {
 		t.Fatalf("tools presence = %v, want unknown", state)
 	}
-	if _, state := model.Features.Support(ModelFeatureWebSearch); state != ValueMissing {
-		t.Fatalf("web_search presence = %v, want missing", state)
+	if _, state := model.Features.Support(ModelFeatureWebSearch); state != missingFeatureState {
+		t.Fatalf("web_search presence = %v, want %v", state, missingFeatureState)
 	}
 	if value, state := model.Limits.Value(ModelLimitContextWindow); value != 0 || state != ValueKnown {
 		t.Fatalf("context window = %d, %v; want 0, known", value, state)

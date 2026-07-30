@@ -2,6 +2,7 @@ package reconciler
 
 import (
 	"fmt"
+	"reflect"
 	"strings"
 	"time"
 
@@ -166,9 +167,23 @@ func (merger *merger) mergeModelFeatures(
 	models map[sources.ID]*catalogs.Model,
 	history *map[string]provenance.Field,
 ) {
+	models = merger.modelSourcesForValue(
+		identity.providerID,
+		identity.modelID,
+		policy,
+		models,
+		func(model *catalogs.Model) any {
+			if model == nil {
+				return nil
+			}
+			return model.Features
+		},
+	)
+	models = merger.suppressProjectedFeatureDefaults(identity, models)
+
 	var (
-		winner sources.ID
-		merged *catalogs.ModelFeatures
+		winner     sources.ID
+		modalities catalogs.ModelModalities
 	)
 	for _, source := range policy.SourceOrder {
 		model := models[source]
@@ -177,24 +192,74 @@ func (merger *merger) mergeModelFeatures(
 		}
 		if winner == "" {
 			winner = source
-			merged = copyModelFeatures(model.Features)
-			continue
 		}
-		merged.Modalities.Input = mergeModelModalities(merged.Modalities.Input, model.Features.Modalities.Input)
-		merged.Modalities.Output = mergeModelModalities(merged.Modalities.Output, model.Features.Modalities.Output)
+		modalities.Input = mergeModelModalities(modalities.Input, model.Features.Modalities.Input)
+		modalities.Output = mergeModelModalities(modalities.Output, model.Features.Modalities.Output)
 	}
-	if merged == nil {
+	if winner == "" {
 		return
 	}
-	target.Features = merged
+
+	// Merge from lowest to highest authority. MergeModels understands compact
+	// feature presence, so a higher source replaces explicit true/false claims
+	// while a missing claim permits a lower source to fill the gap.
+	merged := catalogs.Model{}
+	for index := len(policy.SourceOrder) - 1; index >= 0; index-- {
+		model := models[policy.SourceOrder[index]]
+		if model == nil || model.Features == nil {
+			continue
+		}
+		merged = catalogs.MergeModels(merged, catalogs.Model{
+			Features: copyModelFeatures(model.Features),
+		})
+	}
+	merged.Features.Modalities = modalities
+	target.Features = merged.Features
 	merger.recordModelHistory(
 		identity,
 		history,
 		policy,
 		winner,
-		merged,
-		fmt.Sprintf("selected complete capabilities from %s; merged documented modalities", winner),
+		merged.Features,
+		fmt.Sprintf("merged capabilities by field presence with %s authority; accumulated documented modalities", winner),
 	)
+}
+
+// suppressProjectedFeatureDefaults prevents the complete human YAML
+// capability checklist from becoming synthetic local evidence. When the
+// committed baseline had no feature record, an untouched all-false projection
+// is formatting—not an operator assertion—and a later real source claim must
+// be able to replace it.
+func (merger *merger) suppressProjectedFeatureDefaults(
+	identity modelIdentity,
+	models map[sources.ID]*catalogs.Model,
+) map[sources.ID]*catalogs.Model {
+	local := models[sources.LocalCatalogID]
+	if local == nil || !onlyConservativeFeatureDefaults(local.Features) {
+		return models
+	}
+	baseline := merger.baselineModel(identity.providerID, identity.modelID)
+	if baseline == nil || baseline.Features != nil {
+		return models
+	}
+	resolved := cloneModelSources(models)
+	delete(resolved, sources.LocalCatalogID)
+	return resolved
+}
+
+func onlyConservativeFeatureDefaults(features *catalogs.ModelFeatures) bool {
+	if features == nil ||
+		len(features.Modalities.Input) > 0 ||
+		len(features.Modalities.Output) > 0 {
+		return false
+	}
+	value := reflect.ValueOf(*features)
+	for index := 0; index < value.NumField(); index++ {
+		if value.Field(index).Kind() == reflect.Bool && value.Field(index).Bool() {
+			return false
+		}
+	}
+	return true
 }
 
 func copyModelFeatures(features *catalogs.ModelFeatures) *catalogs.ModelFeatures {

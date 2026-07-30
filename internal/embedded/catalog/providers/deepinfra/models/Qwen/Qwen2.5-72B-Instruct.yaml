@@ -4,7 +4,7 @@ model: qwen/qwen2.5-72b-instruct
 name: Qwen/Qwen2.5-72B-Instruct
 authors:
 - id: qwen
-  name: Qwen Team
+  name: qwen
 description: Qwen2.5 is a model pretrained on a large-scale dataset of up to 18 trillion tokens, offering significant improvements in knowledge, coding, mathematics, and instruction following compared to its predecessor Qwen2. The model also features enhanced capabilities in generating long texts, understanding structured data, and generating structured outputs, while supporting multilingual capabilities for over 29 languages.
 
 # Model metadata
@@ -94,4 +94,4 @@ limits:
 
 # Timestamps
 created_at: 2026-07-11T20:15:13.086328Z
-updated_at: 2026-07-11T20:15:13.086328Z
+updated_at: 2026-07-30T16:49:29.016282Z

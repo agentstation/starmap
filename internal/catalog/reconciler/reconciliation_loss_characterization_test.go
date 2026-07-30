@@ -53,7 +53,7 @@ func TestF005DegradedObservationPreservesBaselineModel(t *testing.T) {
 	if len(observedEvidence) != 1 ||
 		!strings.Contains(observedEvidence[0].Reason, "status=degraded") ||
 		!strings.Contains(observedEvidence[0].Reason, "rejected=1") ||
-		!strings.Contains(observedEvidence[0].Reason, "issues=invalid_record") {
+		!strings.Contains(observedEvidence[0].Reason, "issues=invalid_record:1") {
 		t.Fatalf("present degraded field lacks health evidence: %#v", observedEvidence)
 	}
 }

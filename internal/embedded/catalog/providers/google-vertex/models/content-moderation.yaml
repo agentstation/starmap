@@ -1,4 +1,4 @@
-# content-moderation - Google Vertex AI model: content-moderation
+# content-moderation - Google model: content-moderation
 id: content-moderation
 model: google/content-moderation
 name: content-moderation
@@ -6,7 +6,7 @@ authors:
 - id: google
   name: Google
 description: |-
-  Google Vertex AI model: content-moderation
+  Google model: content-moderation
 
 # Model metadata
 metadata:
@@ -80,4 +80,4 @@ extensions:
 
 # Timestamps
 created_at: null
-updated_at: 2026-07-11T23:53:11.611128Z
+updated_at: 2026-07-30T18:59:51.609976Z

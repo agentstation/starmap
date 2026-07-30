@@ -1,4 +1,4 @@
-# pic2word - Google Vertex AI model: pic2word
+# pic2word - Google model: pic2word
 id: pic2word
 model: google/pic2word
 name: pic2word
@@ -6,7 +6,7 @@ authors:
 - id: google
   name: Google
 description: |-
-  Google Vertex AI model: pic2word
+  Google model: pic2word
 
 # Model metadata
 metadata:
@@ -80,4 +80,4 @@ extensions:
 
 # Timestamps
 created_at: null
-updated_at: 2026-07-11T23:53:11.612114Z
+updated_at: 2026-07-30T18:59:52.022534Z

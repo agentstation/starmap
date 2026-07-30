@@ -553,8 +553,14 @@ func TestModel_FormatYAML_MinimalModel(t *testing.T) {
 		}
 	}
 
-	// Should not have sections that aren't present
-	unexpectedSections := []string{"# Model metadata", "# Model features", "# Model limits", "# Model pricing"}
+	// The human YAML schema always exposes the complete Boolean capability
+	// matrix, even when the in-memory model has no feature claims.
+	if !strings.Contains(yaml, "# Model features") || !strings.Contains(yaml, "tool_calls: false") {
+		t.Fatalf("Minimal model YAML should expose the Boolean capability matrix:\n%s", yaml)
+	}
+
+	// Other sections remain absent when they have no values.
+	unexpectedSections := []string{"# Model metadata", "# Model limits", "# Model pricing"}
 	for _, section := range unexpectedSections {
 		if strings.Contains(yaml, section) {
 			t.Errorf("Minimal model YAML should not contain: %s", section)

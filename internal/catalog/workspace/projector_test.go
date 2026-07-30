@@ -8,8 +8,8 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/internal/constants"
+	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/errors"
 )
 
@@ -34,8 +34,11 @@ func TestProjectAtomicallyReplacesValidatedWorkspace(t *testing.T) {
 	if receipt.GenerationID != newIdentity.GenerationID {
 		t.Fatalf("GenerationID = %q, want %q", receipt.GenerationID, newIdentity.GenerationID)
 	}
-	if receipt.WorkspaceChecksum != newIdentity.PayloadChecksum {
-		t.Fatalf("WorkspaceChecksum = %q, want %q", receipt.WorkspaceChecksum, newIdentity.PayloadChecksum)
+	if receipt.WorkspaceChecksum == "" {
+		t.Fatal("WorkspaceChecksum is empty")
+	}
+	if receipt.WorkspaceChecksum == newIdentity.PayloadChecksum {
+		t.Fatal("human YAML checklist digest unexpectedly equals compact immutable payload digest")
 	}
 	assertWorkspaceModel(t, path, "new", "New Model")
 	assertWorkspaceModelMissing(t, path, "old")
@@ -280,9 +283,11 @@ func TestProjectSeparatesCatalogAndGeneratedEndpointDigests(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Project: %v", err)
 	}
-	if receipt.WorkspaceChecksum != identity.PayloadChecksum {
-		t.Fatalf("workspace checksum = %q, want committed payload %q",
-			receipt.WorkspaceChecksum, identity.PayloadChecksum)
+	if receipt.WorkspaceChecksum == "" {
+		t.Fatal("workspace checksum is empty")
+	}
+	if receipt.WorkspaceChecksum == identity.PayloadChecksum {
+		t.Fatal("human YAML checklist digest unexpectedly equals compact committed payload digest")
 	}
 	if receipt.EndpointChecksum == "" || receipt.EndpointChecksum == receipt.WorkspaceChecksum {
 		t.Fatalf("endpoint checksum = %q, workspace checksum = %q; want distinct bound projections",

@@ -107,6 +107,26 @@ func TestEmbeddedBootstrapManifestMatchesCanonicalCatalog(t *testing.T) {
 	}
 }
 
+func TestEmbeddedReturnsOneVerifiedImmutableCatalog(t *testing.T) {
+	first, firstManifest, err := Embedded()
+	if err != nil {
+		t.Fatalf("Embedded first call: %v", err)
+	}
+	second, secondManifest, err := Embedded()
+	if err != nil {
+		t.Fatalf("Embedded second call: %v", err)
+	}
+	if first == nil || first != second {
+		t.Fatalf("Embedded catalogs = %p and %p, want one non-nil immutable instance", first, second)
+	}
+	if firstManifest != secondManifest {
+		t.Fatalf("Embedded manifests differ: %#v != %#v", firstManifest, secondManifest)
+	}
+	if firstManifest.GenerationID == "" || firstManifest.Payload.Checksum == "" {
+		t.Fatalf("Embedded manifest is not verified: %#v", firstManifest)
+	}
+}
+
 func TestEmbeddedBootstrapArtifactGenerationIsDeterministic(t *testing.T) {
 	first, err := Generation()
 	if err != nil {

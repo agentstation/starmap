@@ -1,4 +1,4 @@
-# pt-test - Google Vertex AI model: pt-test
+# pt-test - Google model: pt-test
 id: pt-test
 model: google/pt-test
 name: pt-test
@@ -6,7 +6,7 @@ authors:
 - id: google
   name: Google
 description: |-
-  Google Vertex AI model: pt-test
+  Google model: pt-test
 
 # Model metadata
 metadata:
@@ -80,4 +80,4 @@ extensions:
 
 # Timestamps
 created_at: null
-updated_at: 2026-07-11T23:53:11.613012Z
+updated_at: 2026-07-30T18:59:51.489411Z

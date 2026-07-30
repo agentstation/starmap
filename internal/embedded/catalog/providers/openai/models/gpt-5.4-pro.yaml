@@ -25,15 +25,15 @@ features:
     - text
 
   # Core capabilities
-  tool_calls: false
-  tools: false
-  tool_choice: false
+  tool_calls: true
+  tools: true
+  tool_choice: true
   web_search: false
-  attachments: false
+  attachments: true
 
   # Reasoning & Verbosity
   reasoning: true
-  reasoning_effort: false
+  reasoning_effort: true
   reasoning_tokens: false
   include_reasoning: false
   verbosity: false
@@ -122,4 +122,4 @@ extensions:
 
 # Timestamps
 created_at: 2026-03-04T21:26:41Z
-updated_at: 2026-03-05T00:00:00Z
+updated_at: 2026-07-30T16:49:33.809517Z

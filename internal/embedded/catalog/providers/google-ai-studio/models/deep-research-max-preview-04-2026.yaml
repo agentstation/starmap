@@ -1,26 +1,39 @@
-# deep-research-max-preview-04-2026 - Preview release (April 21st, 2026) of Deep Research Max
+# deep-research-max-preview-04-2026 - Maximum-comprehensiveness agentic researcher for multi-step ...
 id: deep-research-max-preview-04-2026
 model: google/deep-research-max-preview-04-2026
 name: Deep Research Max Preview (Apr-21-2026)
 authors:
 - id: google
   name: Google
-description: Preview release (April 21st, 2026) of Deep Research Max
+description: Maximum-comprehensiveness agentic researcher for multi-step investigation, synthesis, and cited reports
+
+# Model metadata
+metadata:
+  release_date: 2026-04-21
+  open_weights: false
+  knowledge_cutoff: 2025-01-01
+lineage:
+  family: gemini-pro
 
 # Model features
 features:
   modalities:
     input:
     - text
+    - image
+    - video
+    - audio
+    - pdf
     output:
     - text
+    - image
 
   # Core capabilities
-  tool_calls: false
-  tools: false
-  tool_choice: false
+  tool_calls: true
+  tools: true
+  tool_choice: true
   web_search: false
-  attachments: false
+  attachments: true
 
   # Reasoning & Verbosity
   reasoning: true
@@ -72,6 +85,10 @@ generation:
     min: 0.0
     max: 2.0
     default: 1.0
+  top_p:
+    min: 0.0
+    max: 1.0
+    default: 0.95
 
 # Model limits
 limits:
@@ -92,4 +109,4 @@ extensions:
 
 # Timestamps
 created_at: 2026-07-11T20:15:12.209063Z
-updated_at: 2026-07-11T20:15:12.209063Z
+updated_at: 2026-07-30T16:49:35.014364Z

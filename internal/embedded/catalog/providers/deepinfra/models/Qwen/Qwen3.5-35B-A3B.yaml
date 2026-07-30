@@ -4,7 +4,7 @@ model: qwen/qwen3.5-35b-a3b
 name: Qwen/Qwen3.5-35B-A3B
 authors:
 - id: qwen
-  name: Qwen Team
+  name: qwen
 description: Qwen vision-language model for visual reasoning, documents, and agent tasks
 
 # Model metadata
@@ -34,11 +34,11 @@ features:
     - text
 
   # Core capabilities
-  tool_calls: false
-  tools: false
-  tool_choice: false
+  tool_calls: true
+  tools: true
+  tool_choice: true
   web_search: false
-  attachments: false
+  attachments: true
 
   # Reasoning & Verbosity
   reasoning: true
@@ -83,7 +83,7 @@ features:
 
   # Response delivery
   format_response: false
-  structured_outputs: false
+  structured_outputs: true
   streaming: true
 
 # Model pricing
@@ -101,8 +101,8 @@ pricing:
 limits:
   context_window: 262144
   input_tokens: 0
-  output_tokens: 81920
+  output_tokens: 262144
 
 # Timestamps
 created_at: 2026-04-20T00:00:00Z
-updated_at: 2026-07-11T20:15:13.087731Z
+updated_at: 2026-07-30T16:49:31.561815Z

@@ -32,7 +32,7 @@ features:
 
   # Reasoning & Verbosity
   reasoning: true
-  reasoning_effort: false
+  reasoning_effort: true
   reasoning_tokens: false
   include_reasoning: false
   verbosity: false
@@ -73,7 +73,7 @@ features:
 
   # Response delivery
   format_response: false
-  structured_outputs: false
+  structured_outputs: true
   streaming: true
 reasoning:
   levels:
@@ -94,7 +94,7 @@ pricing:
 
 # Model limits
 limits:
-  context_window: 1000000
+  context_window: 1048576
   input_tokens: 0
   output_tokens: 384000
 extensions:
@@ -112,4 +112,4 @@ extensions:
 
 # Timestamps
 created_at: 2026-04-24T00:00:00Z
-updated_at: 2026-04-24T04:08:37Z
+updated_at: 2026-07-30T16:49:28.321254Z

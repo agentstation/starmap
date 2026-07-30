@@ -4,7 +4,7 @@ model: qwen/qwen-mt-plus
 name: qwen-mt-plus
 authors:
 - id: qwen
-  name: Qwen Team
+  name: qwen
 description: Translation model for multilingual conversion, localization, and cross-language workflows
 
 # Model metadata
@@ -103,4 +103,4 @@ extensions:
 
 # Timestamps
 created_at: 2025-01-01T00:00:00Z
-updated_at: 2025-12-30T06:04:47Z
+updated_at: 2026-07-30T16:49:27.603902Z

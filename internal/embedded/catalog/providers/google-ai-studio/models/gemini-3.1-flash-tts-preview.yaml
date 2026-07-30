@@ -1,11 +1,19 @@
-# gemini-3.1-flash-tts-preview - Gemini 3.1 Flash TTS Preview
+# gemini-3.1-flash-tts-preview - Low-latency speech generation with steerable prompts and exp...
 id: gemini-3.1-flash-tts-preview
 model: google/gemini-3.1-flash-tts-preview
 name: Gemini 3.1 Flash TTS Preview
 authors:
 - id: google
   name: Google
-description: Gemini 3.1 Flash TTS Preview
+description: Low-latency speech generation with steerable prompts and expressive audio tags
+
+# Model metadata
+metadata:
+  release_date: 2026-04-15
+  open_weights: false
+  knowledge_cutoff: 2025-01-01
+lineage:
+  family: gemini-flash
 
 # Model features
 features:
@@ -15,6 +23,7 @@ features:
     - image
     output:
     - text
+    - audio
 
   # Core capabilities
   tool_calls: true
@@ -73,6 +82,19 @@ generation:
     min: 0.0
     max: 2.0
     default: 1.0
+  top_p:
+    min: 0.0
+    max: 1.0
+    default: 0.95
+
+# Model pricing
+pricing:
+  tokens:
+    input:
+      per_1m: 1.0
+    output:
+      per_1m: 20.0
+  currency: USD
 
 # Model limits
 limits:
@@ -95,4 +117,4 @@ extensions:
 
 # Timestamps
 created_at: 2026-07-11T20:15:12.209034Z
-updated_at: 2026-07-11T20:15:12.209034Z
+updated_at: 2026-07-30T16:49:34.69264Z

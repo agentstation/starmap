@@ -45,7 +45,7 @@ func TestSchemaDriftMutationMatrix(t *testing.T) {
 				t.Fatalf("parseAPIData: %v", err)
 			}
 			builder := catalogs.NewEmpty()
-			added, _, issues, err := processFetch(builder, api)
+			added, _, issues, err := processFetch(builder, api, nil)
 			if err != nil {
 				t.Fatalf("processFetch: %v", err)
 			}
@@ -75,7 +75,7 @@ func TestPayloadLimitModelsDevModelCount(t *testing.T) {
 		models[id] = Model{ID: id, Name: "Model", Description: "catalog data"}
 	}
 	api := API{"provider": {ID: "provider", Name: "Provider", Models: models}}
-	added, rejected, issues, err := processFetch(catalogs.NewEmpty(), &api)
+	added, rejected, issues, err := processFetch(catalogs.NewEmpty(), &api, nil)
 	if err != nil {
 		t.Fatalf("processFetch: %v", err)
 	}
@@ -516,7 +516,7 @@ func TestProcessFetchIncludesModelsWithNonCoreCostData(t *testing.T) {
 	}
 	catalog := catalogs.NewEmpty()
 
-	added, _, issues, err := processFetch(catalog, &api)
+	added, _, issues, err := processFetch(catalog, &api, nil)
 	if err != nil {
 		t.Fatalf("processFetch returned error: %v", err)
 	}
@@ -597,7 +597,7 @@ func TestProcessFetchHonorsProviderFilter(t *testing.T) {
 	}
 	catalog := catalogs.NewEmpty()
 
-	added, _, issues, err := processFetch(catalog, &api, sources.WithProviderFilter("selected"))
+	added, _, issues, err := processFetch(catalog, &api, nil, sources.WithProviderFilter("selected"))
 	if err != nil {
 		t.Fatalf("processFetch returned error: %v", err)
 	}
@@ -612,6 +612,57 @@ func TestProcessFetchHonorsProviderFilter(t *testing.T) {
 	}
 	if _, err := catalog.Provider("skipped"); err == nil {
 		t.Fatal("skipped provider was included despite provider filter")
+	}
+}
+
+func TestProcessFetchResolvesConfiguredProviderAliasBeforeFiltering(t *testing.T) {
+	api := API{
+		"moonshotai": Provider{
+			ID:   "moonshotai",
+			Name: "Moonshot AI",
+			Models: map[string]Model{
+				"kimi-k3": {
+					ID:          "kimi-k3",
+					Name:        "Kimi K3",
+					Description: "models.dev enrichment",
+				},
+			},
+		},
+	}
+	providers := catalogs.NewProviders()
+	if err := providers.Set("moonshot-ai", &catalogs.Provider{
+		ID:      "moonshot-ai",
+		Aliases: []catalogs.ProviderID{"moonshotai"},
+		Name:    "Moonshot AI",
+	}); err != nil {
+		t.Fatalf("Set provider: %v", err)
+	}
+	catalog := catalogs.NewEmpty()
+
+	added, rejected, issues, err := processFetch(
+		catalog,
+		&api,
+		providers,
+		sources.WithProviderFilter("moonshot-ai"),
+	)
+	if err != nil {
+		t.Fatalf("processFetch returned error: %v", err)
+	}
+	if len(issues) != 0 {
+		t.Fatalf("processFetch issues: %#v", issues)
+	}
+	if added != 1 || rejected != 0 {
+		t.Fatalf("record counts = (%d, %d), want (1, 0)", added, rejected)
+	}
+	provider, err := catalog.Provider("moonshot-ai")
+	if err != nil {
+		t.Fatalf("canonical provider not found: %v", err)
+	}
+	if provider.Models["kimi-k3"] == nil {
+		t.Fatalf("canonical provider models = %#v, want kimi-k3", provider.Models)
+	}
+	if _, err := catalog.Provider("moonshotai"); err == nil {
+		t.Fatal("models.dev alias was published as a second provider")
 	}
 }
 

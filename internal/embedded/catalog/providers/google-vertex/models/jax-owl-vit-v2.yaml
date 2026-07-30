@@ -1,4 +1,4 @@
-# jax-owl-vit-v2 - Google Vertex AI model: jax-owl-vit-v2
+# jax-owl-vit-v2 - Google model: jax-owl-vit-v2
 id: jax-owl-vit-v2
 model: google/jax-owl-vit-v2
 name: jax-owl-vit-v2
@@ -6,7 +6,7 @@ authors:
 - id: google
   name: Google
 description: |-
-  Google Vertex AI model: jax-owl-vit-v2
+  Google model: jax-owl-vit-v2
 
 # Model metadata
 metadata:
@@ -80,4 +80,4 @@ extensions:
 
 # Timestamps
 created_at: null
-updated_at: 2026-07-11T23:53:11.611459Z
+updated_at: 2026-07-30T18:59:52.332898Z

@@ -1,4 +1,4 @@
-# embeddinggemma - Google Vertex AI model: embeddinggemma
+# embeddinggemma - Google model: embeddinggemma
 id: embeddinggemma
 model: google/embeddinggemma-300m
 name: embeddinggemma
@@ -6,7 +6,7 @@ authors:
 - id: google
   name: Google
 description: |-
-  Google Vertex AI model: embeddinggemma
+  Google model: embeddinggemma
 
 # Model metadata
 metadata:
@@ -80,4 +80,4 @@ extensions:
 
 # Timestamps
 created_at: null
-updated_at: 2026-07-11T23:53:11.613811Z
+updated_at: 2026-07-30T18:59:51.547353Z

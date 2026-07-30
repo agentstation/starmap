@@ -206,8 +206,11 @@ func TestStructuredModelPoliciesUseInjectedOrder(t *testing.T) {
 				Empty:       authority.EmptyAuthoritative,
 				Rationale:   "test local-first feature policy",
 			},
-			local: &catalogs.Model{ID: "model-1", Features: &catalogs.ModelFeatures{Tools: false}},
-			live:  &catalogs.Model{ID: "model-1", Features: &catalogs.ModelFeatures{Tools: true}},
+			local: &catalogs.Model{
+				ID:       "model-1",
+				Features: explicitlySupported(catalogs.ModelFeatureTools, false),
+			},
+			live: &catalogs.Model{ID: "model-1", Features: &catalogs.ModelFeatures{Tools: true}},
 			assert: func(t *testing.T, model *catalogs.Model) {
 				t.Helper()
 				if model.Features == nil || model.Features.Tools {

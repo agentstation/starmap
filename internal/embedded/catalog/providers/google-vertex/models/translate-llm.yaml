@@ -1,4 +1,4 @@
-# translate-llm - Google Vertex AI model: translate-llm
+# translate-llm - Google model: translate-llm
 id: translate-llm
 model: google/translate-llm
 name: translate-llm
@@ -6,7 +6,7 @@ authors:
 - id: google
   name: Google
 description: |-
-  Google Vertex AI model: translate-llm
+  Google model: translate-llm
 
 # Model metadata
 metadata:
@@ -80,4 +80,4 @@ extensions:
 
 # Timestamps
 created_at: null
-updated_at: 2026-07-11T23:53:11.609132Z
+updated_at: 2026-07-30T18:59:51.979503Z

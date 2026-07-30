@@ -4,6 +4,7 @@ import (
 	"io/fs"
 	"os"
 	"path/filepath"
+	"reflect"
 	"strings"
 	"testing"
 
@@ -32,8 +33,8 @@ func TestEmbeddedProviderModelsMatchReviewedIdentityMap(t *testing.T) {
 	if manifest.SchemaVersion != 1 {
 		t.Fatalf("manifest schema version = %d, want 1", manifest.SchemaVersion)
 	}
-	if len(manifest.Records) != 610 {
-		t.Fatalf("manifest records = %d, want 610", len(manifest.Records))
+	if len(manifest.Records) != 611 {
+		t.Fatalf("manifest records = %d, want 611", len(manifest.Records))
 	}
 
 	seen := make(map[string]struct{}, len(manifest.Records))
@@ -82,8 +83,8 @@ func TestEmbeddedProviderModelsMatchReviewedIdentityMap(t *testing.T) {
 			t.Fatalf("%s has unknown status %q", record.Path, record.Status)
 		}
 	}
-	if linked != 610 || unlinked != 0 {
-		t.Fatalf("identity disposition = %d linked, %d unlinked; want 610/0", linked, unlinked)
+	if linked != 611 || unlinked != 0 {
+		t.Fatalf("identity disposition = %d linked, %d unlinked; want 611/0", linked, unlinked)
 	}
 
 	providerFiles := 0
@@ -156,6 +157,68 @@ func TestEmbeddedAuthoredModelsAreCoveredByHistoricalOrServingIdentityReview(t *
 		if _, found := actual[path]; !found {
 			t.Fatalf("reviewed authored model %q is not embedded", path)
 		}
+	}
+}
+
+func TestEmbeddedModelYAMLExposesCompleteBooleanCapabilitySurface(t *testing.T) {
+	featureType := reflect.TypeFor[catalogs.ModelFeatures]()
+	required := make([]string, 0, featureType.NumField())
+	for index := 0; index < featureType.NumField(); index++ {
+		field := featureType.Field(index)
+		if field.Type.Kind() != reflect.Bool {
+			continue
+		}
+		name := strings.Split(field.Tag.Get("yaml"), ",")[0]
+		if name != "" && name != "-" {
+			required = append(required, name)
+		}
+	}
+	if len(required) == 0 {
+		t.Fatal("ModelFeatures exposes no YAML Boolean capabilities")
+	}
+
+	modelFiles := 0
+	for _, root := range []string{"catalog/authors", "catalog/providers"} {
+		err := fs.WalkDir(embedded.FS, root, func(path string, entry fs.DirEntry, err error) error {
+			if err != nil {
+				return err
+			}
+			if entry.IsDir() || !strings.Contains(path, "/models/") || !strings.HasSuffix(path, ".yaml") {
+				return nil
+			}
+			modelFiles++
+			data, readErr := fs.ReadFile(embedded.FS, path)
+			if readErr != nil {
+				return readErr
+			}
+			var record struct {
+				Features map[string]any `yaml:"features"`
+			}
+			if decodeErr := yaml.Unmarshal(data, &record); decodeErr != nil {
+				t.Fatalf("decode %s: %v", path, decodeErr)
+			}
+			if record.Features == nil {
+				t.Fatalf("%s has no editable features section", path)
+			}
+			for _, feature := range required {
+				value, exists := record.Features[feature]
+				if !exists {
+					t.Fatalf("%s is missing Boolean capability %q", path, feature)
+				}
+				if value != nil {
+					if _, ok := value.(bool); !ok {
+						t.Fatalf("%s capability %q has type %T, want bool or null", path, feature, value)
+					}
+				}
+			}
+			return nil
+		})
+		if err != nil {
+			t.Fatalf("walk %s: %v", root, err)
+		}
+	}
+	if modelFiles == 0 {
+		t.Fatal("embedded catalog contains no model YAML files")
 	}
 }
 

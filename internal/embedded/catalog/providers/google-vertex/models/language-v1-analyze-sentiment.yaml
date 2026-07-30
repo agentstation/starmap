@@ -1,4 +1,4 @@
-# language-v1-analyze-sentiment - Google Vertex AI model: language-v1-analyze-sentiment
+# language-v1-analyze-sentiment - Google model: language-v1-analyze-sentiment
 id: language-v1-analyze-sentiment
 model: google/language-v1-analyze-sentiment
 name: language-v1-analyze-sentiment
@@ -6,7 +6,7 @@ authors:
 - id: google
   name: Google
 description: |-
-  Google Vertex AI model: language-v1-analyze-sentiment
+  Google model: language-v1-analyze-sentiment
 
 # Model metadata
 metadata:
@@ -80,4 +80,4 @@ extensions:
 
 # Timestamps
 created_at: null
-updated_at: 2026-07-11T23:53:11.609912Z
+updated_at: 2026-07-30T18:59:52.083513Z

@@ -10,7 +10,7 @@ MAKEFLAGS += --no-print-directory
 BINARY_NAME=starmap
 MAIN_PATH=./cmd/starmap/main.go
 BUILD_DIR=./bin
-VERSION?=$(shell git describe --tags --abbrev=0 2>/dev/null || echo "dev")
+VERSION?=$(shell git describe --tags --abbrev=0 --match 'v[0-9]*' 2>/dev/null || echo "dev")
 COMMIT?=$(shell git rev-parse --short HEAD 2>/dev/null || echo "unknown")
 BUILD_TIME?=$(shell date -u +"%Y-%m-%dT%H:%M:%SZ")
 LDFLAGS=-ldflags "-X main.version=$(VERSION) -X main.commit=$(COMMIT) -X main.date=$(BUILD_TIME) -X main.builtBy=makefile"

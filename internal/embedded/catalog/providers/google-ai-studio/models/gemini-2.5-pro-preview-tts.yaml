@@ -1,11 +1,11 @@
-# gemini-2.5-pro-preview-tts - Gemini 2.5 Pro Preview TTS
+# gemini-2.5-pro-preview-tts - Speech generation model for controllable voice, narration, a...
 id: gemini-2.5-pro-preview-tts
 model: google/gemini-2.5-pro-preview-tts
 name: Gemini 2.5 Pro Preview TTS
 authors:
 - id: google
   name: Google
-description: Gemini 2.5 Pro Preview TTS
+description: Speech generation model for controllable voice, narration, and audio delivery
 
 # Model metadata
 metadata:
@@ -82,6 +82,10 @@ generation:
     min: 0.0
     max: 2.0
     default: 1.0
+  top_p:
+    min: 0.0
+    max: 1.0
+    default: 0.95
 
 # Model pricing
 pricing:
@@ -112,4 +116,4 @@ extensions:
 
 # Timestamps
 created_at: null
-updated_at: 2026-07-11T20:15:13.067505Z
+updated_at: 2026-07-30T16:49:35.300532Z

@@ -78,6 +78,10 @@ generation:
     min: 0.0
     max: 2.0
     default: 1.0
+  top_p:
+    min: 0.0
+    max: 1.0
+    default: 0.95
 
 # Model limits
 limits:
@@ -102,4 +106,4 @@ extensions:
 
 # Timestamps
 created_at: null
-updated_at: 2026-07-11T20:15:13.068812Z
+updated_at: 2026-07-30T16:49:35.183577Z

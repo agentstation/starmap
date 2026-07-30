@@ -4,7 +4,7 @@ model: qwen/qwen3.5-27b
 name: Qwen/Qwen3.5-27B
 authors:
 - id: qwen
-  name: Qwen Team
+  name: qwen
 description: Qwen vision-language model for visual reasoning, documents, and agent tasks
 
 # Model metadata
@@ -33,11 +33,11 @@ features:
     - text
 
   # Core capabilities
-  tool_calls: false
-  tools: false
-  tool_choice: false
+  tool_calls: true
+  tools: true
+  tool_choice: true
   web_search: false
-  attachments: false
+  attachments: true
 
   # Reasoning & Verbosity
   reasoning: true
@@ -82,7 +82,7 @@ features:
 
   # Response delivery
   format_response: false
-  structured_outputs: false
+  structured_outputs: true
   streaming: true
 
 # Model pricing
@@ -98,8 +98,8 @@ pricing:
 limits:
   context_window: 262144
   input_tokens: 0
-  output_tokens: 65536
+  output_tokens: 262144
 
 # Timestamps
 created_at: 2026-02-23T00:00:00Z
-updated_at: 2026-07-11T20:15:13.084982Z
+updated_at: 2026-07-30T16:49:28.698718Z

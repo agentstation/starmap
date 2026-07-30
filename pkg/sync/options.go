@@ -5,15 +5,13 @@ import (
 	"context"
 	"encoding/hex"
 	"fmt"
-	"os"
-	"path/filepath"
 	"slices"
 	"strings"
 	"time"
 
 	"github.com/agentstation/starmap/internal/catalog/workspace"
-	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/internal/constants"
+	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/errors"
 	"github.com/agentstation/starmap/pkg/sources"
 )
@@ -171,20 +169,6 @@ func (s *Options) Validate(providers catalogs.ProvidersReader) error {
 		return &errors.ValidationError{
 			Field: "ModelsDevGitCommit", Value: s.ModelsDevGitCommit,
 			Message: "requires models_dev_git as an explicitly selected source",
-		}
-	}
-
-	// Validate the workspace parent if specified.
-	if s.CatalogPath != "" {
-		dir := filepath.Dir(s.CatalogPath)
-		if dir != "." && dir != "/" {
-			if _, err := os.Stat(dir); os.IsNotExist(err) {
-				return &errors.ValidationError{
-					Field:   "CatalogPath",
-					Value:   s.CatalogPath,
-					Message: fmt.Sprintf("catalog workspace parent '%s' does not exist", dir),
-				}
-			}
 		}
 	}
 

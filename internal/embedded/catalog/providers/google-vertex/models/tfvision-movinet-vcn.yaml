@@ -1,4 +1,4 @@
-# tfvision-movinet-vcn - Google Vertex AI model: tfvision-movinet-vcn
+# tfvision-movinet-vcn - Google model: tfvision-movinet-vcn
 id: tfvision-movinet-vcn
 model: google/tfvision-movinet-vcn
 name: tfvision-movinet-vcn
@@ -6,7 +6,7 @@ authors:
 - id: google
   name: Google
 description: |-
-  Google Vertex AI model: tfvision-movinet-vcn
+  Google model: tfvision-movinet-vcn
 
 # Model metadata
 metadata:
@@ -80,4 +80,4 @@ extensions:
 
 # Timestamps
 created_at: null
-updated_at: 2026-07-11T23:53:11.612975Z
+updated_at: 2026-07-30T18:59:52.432938Z

@@ -32,17 +32,17 @@ features:
   tools: true
   tool_choice: true
   web_search: false
-  attachments: false
+  attachments: true
 
   # Reasoning & Verbosity
   reasoning: true
-  reasoning_effort: false
+  reasoning_effort: true
   reasoning_tokens: false
   include_reasoning: false
   verbosity: false
 
   # Generation control support flags
-  temperature: false
+  temperature: true
   top_p: false
   top_k: false
   top_a: false
@@ -77,7 +77,7 @@ features:
 
   # Response delivery
   format_response: false
-  structured_outputs: false
+  structured_outputs: true
   streaming: false
 reasoning:
   levels:
@@ -98,4 +98,4 @@ extensions:
 
 # Timestamps
 created_at: 2026-02-19T00:00:00Z
-updated_at: 2026-07-11T23:53:10.853275Z
+updated_at: 2026-07-30T18:59:52.046768Z

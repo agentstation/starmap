@@ -3,8 +3,26 @@ id: whisper-large-v3-turbo
 model: openai/whisper-large-v3-turbo
 name: Whisper Large V3 Turbo
 authors:
+- id: alibaba
+  name: alibaba
+- id: deepseek
+  name: deepseek
+- id: google
+  name: google
+- id: groq
+  name: groq
+- id: huggingfaceh4
+  name: huggingfaceh4
+- id: meta
+  name: meta
+- id: moonshot-ai
+  name: moonshot-ai
 - id: openai
-  name: OpenAI
+  name: openai
+- id: playai
+  name: playai
+- id: sdaia
+  name: sdaia
 description: Speech transcription model for accurate audio-to-text and captioning workflows
 status: active
 
@@ -81,9 +99,9 @@ features:
 pricing:
   tokens:
     input:
-      per_1m: 510
+      per_1m: 510.0
     output:
-      per_1m: 510
+      per_1m: 510.0
   currency: USD
 
 # Model limits
@@ -98,4 +116,4 @@ extensions:
 
 # Timestamps
 created_at: null
-updated_at: 2026-07-11T20:15:13.077751Z
+updated_at: 2026-07-30T16:49:28.219093Z

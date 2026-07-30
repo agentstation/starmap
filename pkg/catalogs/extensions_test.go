@@ -1,6 +1,7 @@
 package catalogs
 
 import (
+	"bytes"
 	"encoding/json"
 	"reflect"
 	"strings"
@@ -8,6 +9,35 @@ import (
 
 	"github.com/goccy/go-yaml"
 )
+
+func TestSourceExtensionJSONIsStableAcrossTypedEvidenceRoundTrip(t *testing.T) {
+	t.Parallel()
+
+	type evidence struct {
+		Path     string `json:"path"`
+		Checksum string `json:"checksum"`
+	}
+	extension := SourceExtension{Fields: map[string]any{
+		"unknown_fields": []evidence{{
+			Path: "data[].new_field", Checksum: "sha256:evidence",
+		}},
+	}}
+	first, err := json.Marshal(extension)
+	if err != nil {
+		t.Fatalf("Marshal typed extension: %v", err)
+	}
+	var decoded SourceExtension
+	if err := json.Unmarshal(first, &decoded); err != nil {
+		t.Fatalf("Unmarshal extension: %v", err)
+	}
+	second, err := json.Marshal(decoded)
+	if err != nil {
+		t.Fatalf("Marshal decoded extension: %v", err)
+	}
+	if !bytes.Equal(first, second) {
+		t.Fatalf("extension JSON changed across round trip:\nfirst:  %s\nsecond: %s", first, second)
+	}
+}
 
 func TestSourceExtensionsCopyDeepCopiesNestedFields(t *testing.T) {
 	extensions := SourceExtensions{

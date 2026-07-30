@@ -1,4 +1,4 @@
-# qwen2.5-coder-32b-instruct - Qwen 2.5 Coder 32B Instruct
+# qwen2.5-coder-32b-instruct - Qwen 2.5 Coder 32B instruction-tuned model
 id: qwen2.5-coder-32b-instruct
 name: Qwen 2.5 Coder 32B Instruct
 authors:
