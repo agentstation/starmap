@@ -3,7 +3,10 @@
 package middleware
 
 import (
+	"fmt"
 	"net/http"
+	"path/filepath"
+	"runtime"
 	"time"
 
 	"github.com/rs/zerolog"
@@ -58,9 +61,10 @@ func Recovery(logger *zerolog.Logger) func(http.Handler) http.Handler {
 	return func(next http.Handler) http.Handler {
 		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 			defer func() {
-				if err := recover(); err != nil {
+				if recovered := recover(); recovered != nil {
 					logger.Error().
-						Interface("panic", err).
+						Str("panic_type", fmt.Sprintf("%T", recovered)).
+						Strs("panic_trace", panicTrace()).
 						Str("method", r.Method).
 						Str("path", r.URL.Path).
 						Msg("Panic recovered")
@@ -76,6 +80,26 @@ func Recovery(logger *zerolog.Logger) func(http.Handler) http.Handler {
 
 			next.ServeHTTP(w, r)
 		})
+	}
+}
+
+func panicTrace() []string {
+	const maxFrames = 32
+	callers := make([]uintptr, maxFrames)
+	count := runtime.Callers(3, callers)
+	frames := runtime.CallersFrames(callers[:count])
+	trace := make([]string, 0, count)
+	for {
+		frame, more := frames.Next()
+		if frame.Function != "" {
+			trace = append(
+				trace,
+				fmt.Sprintf("%s %s:%d", frame.Function, filepath.Base(frame.File), frame.Line),
+			)
+		}
+		if !more {
+			return trace
+		}
 	}
 }
 

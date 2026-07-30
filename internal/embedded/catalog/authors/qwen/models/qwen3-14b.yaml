@@ -8,7 +8,7 @@ description: Qwen instruction model for multilingual chat, reasoning, and tool u
 
 # Model metadata
 metadata:
-  release_date: 2025-04-01
+  release_date: 2025-04-29
   open_weights: true
   knowledge_cutoff: 2025-04-01
 lineage:
@@ -30,7 +30,7 @@ features:
   attachments: false
 
   # Reasoning & Verbosity
-  reasoning: false
+  reasoning: true
   reasoning_effort: false
   reasoning_tokens: false
   include_reasoning: false
@@ -81,5 +81,5 @@ extensions:
       - type: toggle
 
 # Timestamps
-created_at: 2025-12-30T05:56:24Z
-updated_at: 2025-04-01T00:00:00Z
+created_at: 2025-04-01T00:00:00Z
+updated_at: 2025-12-30T05:56:24Z

@@ -64,7 +64,7 @@ payload-digest deduplication, and immutable release publication.
 ### [REMOTE_CATALOG_PROTOCOL.md](REMOTE_CATALOG_PROTOCOL.md)
 **Versioned Online Generation Protocol**
 
-Strict current-manifest and immutable generation-snapshot routes, client
+Strict current-manifest and immutable generation-payload routes, client
 compatibility/checksum verification, and atomic remote publication semantics.
 
 ### [CLI.md](CLI.md)
@@ -118,7 +118,8 @@ Located in the project root:
 
 Individual package READMEs provide implementation details:
 
-- [../pkg/catalogs/README.md](../pkg/catalogs/README.md) - Catalog storage abstraction
+- [../pkg/catalogs/README.md](../pkg/catalogs/README.md) - Catalog construction records and immutable reads
+- [CATALOG_STORE_CONTRACT.md](CATALOG_STORE_CONTRACT.md) - Durable generation-store contract
 - [../pkg/sources/README.md](../pkg/sources/README.md) - Data source abstractions
 - [../pkg/errors/README.md](../pkg/errors/README.md) - Typed errors
 - [../pkg/logging/README.md](../pkg/logging/README.md) - Logging utilities

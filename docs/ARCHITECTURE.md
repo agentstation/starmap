@@ -601,6 +601,8 @@ body bounds, catalog-schema compatibility, size, and checksum validation all
 precede decode and compare-and-swap publication. The same module owns the sole
 `catalog.published` SSE event shape: generation ID plus matching positive
 event-ID/sequence, with comment heartbeats carrying no publication identity.
+The parser bounds individual lines to 64 KiB and cumulative frames to 256 KiB;
+resumption IDs must be positive integers before any request is sent.
 
 The opt-in public `remote` package composes that protocol into a reactive
 consumer. The configured origin is its publisher identity: production origins
@@ -742,6 +744,11 @@ baseline suite does not substitute for the later adapter-specific fault gates.
 The concurrent same-base matrix opens independent adapters over one backend and
 requires exactly one success and one typed conflict. Filesystem writers
 coordinate through a context-aware advisory lock shared across processes.
+The filesystem adapter rejects symbolic-link substitutions for its owned root,
+generation tree, lock/current entries, manifests, and payloads before reading
+or mutation. The release staging boundary applies the same rule to lifecycle
+roots, generation directories, and immutable assets. These checks assume the
+deployment protects the parent path from a hostile same-UID concurrent actor.
 Starmap owns no relational adapter. An embedding application may implement
 `catalogstore.Store` using SQLite, MySQL, PostgreSQL, or another database, but
 owns the driver, schema, migrations, credentials, pool, backups, lifecycle, and
@@ -1402,32 +1409,30 @@ flowchart TD
 ### Stage-by-Stage Code
 
 ```go
-func (c *Client) Sync(ctx context.Context, opts ...sync.Option) (*sync.Result, error) {
-    return pipeline.New(pipelineStore{client: c}).Sync(ctx, opts...)
+syncer, err := acquisition.New(client)
+if err != nil {
+    return err
 }
-
-type pipelineStore struct {
-    client *Client
-}
-
-func (s pipelineStore) Catalog() (*catalogs.Catalog, error) {
-    return s.client.Catalog(), nil
-}
-
-func (s pipelineStore) Apply(ctx context.Context, catalog *catalogs.Builder, options *sync.Options, changeset *differ.Changeset, observations []sources.Observation) (pipeline.Publication, error) {
-    return s.client.save(ctx, catalog, options, changeset, observations)
+result, err := syncer.Sync(ctx,
+    sync.WithProvider("openai"),
+    sync.WithDryRun(true),
+)
+if err != nil {
+    return err
 }
 ```
 
 ### Key Pipeline Features
 
-- **Deep module boundary**: `internal/catalog/pipeline.Pipeline` owns orchestration; `client.Sync` remains a stable public adapter
+- **Deep module boundary**: `internal/catalog/pipeline.Pipeline` owns
+  orchestration behind the explicit public `acquisition.Syncer`
 - **Staged execution**: Each stage has clear purpose
 - **Error handling**: Fail fast with context
 - **Concurrent observation**: Reentrant sources return immutable observations in parallel
 - **Change detection**: Diff against baseline
 - **Dry-run support**: Preview without applying
-- **Force-save support**: `--fresh` and `--reformat` persist even when there are no detected changes
+- **Force-save support**: CLI `--force` selects a fresh baseline and
+  `--reformat` can project even when there are no detected fact changes
 - **Safe publication**: A validated generation commits through `CatalogStore`
   before the immutable catalog, generation ID, and monotonic sequence become
   visible as one atomic state; failed commits emit no callback
@@ -1644,16 +1649,17 @@ Starmap's catalog system is designed for thread-safe concurrent access. This sec
 
 ### Design Philosophy
 
-**Value Semantics Over Pointer Semantics**
+**Immutable Product, Caller-Owned Values**
 
 The catalog system uses value semantics to prevent race conditions:
 
 ```go
-// ✅ CORRECT: Returns values
-func (c *Catalog) Models() []Model
+// The retained pointer refers to an immutable catalog generation.
+catalog := client.Catalog()
 
-// ❌ WRONG: Returns pointers (race condition risk)
-func (c *Catalog) Models() []*Model
+// Materialized definitions and offerings are caller-owned values.
+definitions := catalog.Definitions()
+offerings, err := catalog.ProviderOfferings("openai")
 ```
 
 **Immutable Generation Publication**
@@ -1677,7 +1683,7 @@ func (c *Client) Catalog() *catalogs.Catalog {
 Used in `App.Starmap()` for optimal performance:
 
 ```go
-func (a *App) Starmap(opts ...starmap.Option) (starmap.Client, error) {
+func (a *App) Starmap(opts ...starmap.Option) (*starmap.Client, error) {
     // Fast path: read lock check (common case)
     a.mu.RLock()
     if a.starmap != nil && len(opts) == 0 {
@@ -1727,21 +1733,16 @@ for _, definition := range definitions {
 }
 ```
 
-#### 3. Deep Copy Helpers
+#### 3. Deep Copy Boundary
 
-Every type provides deep copy methods:
+Construction records with nested mutable state use centralized deep-copy
+helpers. `Builder.Build` validates and seals an independent immutable product;
+ordinary consumers do not copy the complete catalog:
 
 ```go
-func (m Model) DeepCopy() Model {
-    copy := m
-    // Deep copy nested pointers
-    if m.Pricing != nil {
-        pricingCopy := *m.Pricing
-        copy.Pricing = &pricingCopy
-    }
-    // ... copy other pointer fields
-    return copy
-}
+builder, err := catalogs.NewBuilderFrom(current)
+// mutate builder only
+next, err := builder.Build()
 ```
 
 ### Catalog Ownership Contract
@@ -1799,7 +1800,7 @@ if err != nil {
 publish(next)
 ```
 
-#### ❌ Avoid: Storing References Across Goroutines
+#### ✅ Retaining Caller-Owned Values
 
 ```go
 // No defensive full-catalog copy is needed before sharing.
@@ -1825,12 +1826,12 @@ graph LR
         style CRASH fill:#f44336,color:#fff
     end
 
-    subgraph "✅ SAFE: Value Semantics with Deep Copy"
+    subgraph "✅ SAFE: Immutable Generation + Owned Values"
         direction TB
-        G1B[Goroutine 1] -->|DeepCopy| SHARED2[(Shared<br/>Data<br/>+RWMutex)]
-        SHARED2 -->|independent copy| COPY1[Local<br/>Copy 1]
-        G2B[Goroutine 2] -->|DeepCopy| SHARED2
-        SHARED2 -->|independent copy| COPY2[Local<br/>Copy 2]
+        G1B[Goroutine 1] -->|O(1) catalog read| SHARED2[(Immutable<br/>Generation)]
+        SHARED2 -->|materialize values| COPY1[Owned<br/>Values 1]
+        G2B[Goroutine 2] -->|O(1) catalog read| SHARED2
+        SHARED2 -->|materialize values| COPY2[Owned<br/>Values 2]
         COPY1 & COPY2 -.->|No Sharing| SAFE[✅ Thread Safe<br/>No Data Races]
         style SHARED2 fill:#c8e6c9
         style COPY1 fill:#e8f5e9
@@ -1841,37 +1842,24 @@ graph LR
 
 **Key Differences:**
 - **Unsafe**: Direct access to shared mutable state causes race conditions
-- **Safe**: Deep copy creates independent instances, preventing data races
-- **Trade-off**: Safety vs. memory efficiency (copies allocate more memory)
-- **Starmap Choice**: Safety first with optimizations (e.g., single copy in App.Catalog)
+- **Safe**: readers retain one sealed generation and receive owned materialized
+  values from its collections
+- **Trade-off**: collection materialization allocates, while the full-catalog
+  accessor remains allocation-free
+- **Starmap choice**: deep-copy once at the mutable-builder boundary, then share
+  the immutable product
 
-### Thread Safety in Storage Layer
+### Mutable Builder Collections
 
-Collections use RWMutex for concurrent access:
+Builder collections own copies of caller input and return copies to callers.
+Their locks protect only advanced construction; ordinary reads use the sealed
+`Catalog`:
 
 ```go
-type ProviderCollection struct {
-    mu        sync.RWMutex
-    providers map[ProviderID]Provider
-}
-
-func (c *ProviderCollection) Get(id ProviderID) (Provider, error) {
-    c.mu.RLock()
-    defer c.mu.RUnlock()
-
-    p, exists := c.providers[id]
-    if !exists {
-        return Provider{}, &errors.NotFoundError{...}
-    }
-    return p.DeepCopy(), nil  // Return copy
-}
-
-func (c *ProviderCollection) Set(provider Provider) {
-    c.mu.Lock()
-    defer c.mu.Unlock()
-
-    c.providers[provider.ID] = provider.DeepCopy()
-}
+builder := catalogs.NewEmpty()
+_ = builder.SetProvider(provider) // stores an owned copy
+provider, found := builder.Providers().Get(providerID) // returns a copy
+catalog, err := builder.Build() // seals a separate immutable generation
 ```
 
 ### Performance Characteristics
@@ -1887,14 +1875,17 @@ headroom while still rejecting the former millisecond-scale full-catalog copy.
 race tests remain a separate gate because race instrumentation distorts
 allocation measurements.
 
-On 2026-07-09, `darwin/arm64` on an Apple M2 Max with Go 1.25.1 measured:
+On 2026-07-29, `darwin/arm64` on an Apple M2 Max with Go 1.26.5 measured:
 
 ```
-BenchmarkClientCatalog-12    11.09-11.32 ns/op    0 B/op    0 allocs/op
+BenchmarkClientCatalog-12    8.711-9.608 ns/op    0 B/op    0 allocs/op
 ```
 
-Bytes-per-operation in Go benchmark output can reflect amortized harness or
-initialization effects even when allocations round to zero. Reproduce with:
+Complete local publication and verified remote activation are separately
+measured off-request-path boundaries. Their current latency/allocation review
+budgets and reproduction commands are recorded in
+[P10 Production Budgets](reviews/P10_PRODUCTION_BUDGETS_2026-07-29.md).
+Reproduce the accessor with:
 
 ```bash
 go test . -run '^$' -bench BenchmarkClientCatalog -benchmem -count=3
@@ -1940,22 +1931,14 @@ func TestConcurrentCatalogAccess(t *testing.T) {
 }
 ```
 
-### Migration Notes
+### Current Ownership Invariants
 
-The codebase has been fully migrated to value semantics:
-
-**Completed Changes:**
-- ✅ Collections return values instead of pointers
-- ✅ Client interfaces return `[]Model` not `[]*Model`
-- ✅ Filters work with value types
-- ✅ Deep copy helpers for all types
-- ✅ Double-checked locking for singletons
-- ✅ Removed redundant double-copy in App.Catalog()
-
-**Performance Improvements:**
-- Catalog generation reads perform no full-catalog copy
-- The fast path is guarded at zero allocations with a 10 microsecond ceiling
-- Collection materialization retains caller-owned copies and is outside this budget
+- `Client.Catalog` returns the concrete immutable `*catalogs.Catalog`.
+- Mutable work is confined to `catalogs.Builder`.
+- `Builder.Build` validates and isolates the published generation.
+- Catalog generation reads perform no full-catalog copy.
+- The accessor fast path is guarded at zero allocations with a 10 microsecond
+  ceiling; collection materialization is deliberately outside that budget.
 
 #### 4. Serialized Streaming Writers
 
@@ -1974,14 +1957,13 @@ stream.
 
 When adding new code, ensure:
 
-- [ ] Collections return values, not pointers
-- [ ] Public methods that access shared state use locks
-- [ ] Deep copy methods handle all pointer fields
+- [ ] Mutable input is copied before it enters builder/store ownership
+- [ ] Public mutable-state methods synchronize access
+- [ ] Immutable catalog methods return immutable values or caller-owned copies
 - [ ] Tests include `-race` detector runs
-- [ ] Singletons use double-checked locking
-- [ ] No direct pointer returns from getters
-- [ ] Event-driven channels are buffered (registration/unregistration channels especially)
-- [ ] Initialization order tests verify Subscribe/Register work before Run()
+- [ ] Publication commits before the catalog pointer and event sequence advance
+- [ ] Event queues are bounded and overload is observable
+- [ ] Every owned goroutine has explicit start, cancellation, and join behavior
 
 ## Package Organization
 
@@ -2005,25 +1987,30 @@ starmap/
 ├── pkg/                      # Public packages
 │   ├── catalogs/             # Catalog domain, builder, and immutable reads
 │   ├── catalogstore/         # Generation commit/read/CAS adapters
-│   ├── reconciler/           # Multi-source reconciliation
-│   ├── authority/            # Field-level authority system
+│   │   └── s3/               # Optional caller-owned S3 client adapter
+│   ├── catalogartifact/      # Deterministic portable generation format
+│   ├── catalogmeta/          # Source/observation identity vocabulary
+│   ├── catalogremote/        # Versioned manifest/payload/SSE wire client
 │   ├── sources/              # Source interfaces
-│   ├── sync/                 # Sync options and results
+│   ├── sync/                 # Acquisition options and results
+│   ├── provenance/           # Durable field evidence
+│   ├── differ/               # Catalog changesets
 │   ├── errors/               # Typed errors
-│   ├── logging/              # Logging utilities
-│   ├── constants/            # Application constants
-│   └── convert/              # Format conversion
+│   └── logging/              # Caller-owned logging boundary
 │
 ├── internal/                 # Internal packages
-│   ├── application/          # Application interface used by CLI and server
 │   ├── cli/                  # CLI support helpers
+│   │   ├── app/              # Concrete CLI composition
+│   │   ├── commands/         # Command-local capability interfaces
 │   │   ├── format/           # Output formatting
 │   │   ├── table/            # Table rendering
-│   │   ├── globals/          # Shared flag utilities
 │   │   └── ...               # Command support packages
 │   ├── catalog/
-│   │   ├── query/           # Shared CLI/HTTP catalog query behavior
-│   │   └── pipeline/        # Prepare-only source orchestration
+│   │   ├── authority/        # One executable field-authority table
+│   │   ├── pipeline/         # Prepare-only source orchestration
+│   │   ├── query/            # Shared CLI/HTTP catalog queries
+│   │   ├── reconciler/       # Multi-source reconciliation
+│   │   └── workspace/        # Atomic human-YAML projection
 │   ├── providers/            # Provider API clients and registry
 │   │   ├── clients/          # Provider client registry and raw fetch
 │   │   ├── openai/           # OpenAI-compatible client
@@ -2049,15 +2036,17 @@ starmap/
 │   │   ├── providers/        # Provider-backed catalog source
 │   │   ├── modelsdev/        # models.dev integration
 │   │   └── local/            # Local file source
-│   ├── attribution/          # Model author attribution and matcher
 │   └── transport/            # HTTP client utilities
 │
 ├── acquisition/              # Opt-in provider/source synchronization
+├── server/                   # Public embeddable HTTP server
+├── remote/                   # Public reactive remote subscriber
 ├── client.go                 # Immutable client reads and initialization
 ├── update.go                 # Explicit candidate publication
+├── generation.go             # Retained generation access/commit
 ├── hooks.go                  # Event hooks
 ├── options.go                # Functional options
-└── persistence.go            # Save/load operations
+└── persistence.go            # Explicit YAML projection
 ```
 
 ### Import Cycle Prevention
@@ -2071,7 +2060,7 @@ graph BT
     end
 
     subgraph "Layer 5: Core Packages"
-        PKG[pkg/*<br/>catalogs, catalogstore, reconciler, sources, authority]
+        PKG[pkg/*<br/>catalogs, catalogstore, artifacts, wire, sources]
     end
 
     subgraph "Layer 4: Root Package"
@@ -2114,8 +2103,9 @@ graph BT
 - Never import from higher layers
 - Commands declare local interfaces and do not import `internal/cli/app/`
 - Root package imports pkg packages
-- Internal packages can import pkg packages
-- Pkg packages are fully independent
+- Internal packages can import public domain packages
+- Public packages remain acyclic and keep optional acquisition/server/remote/S3
+  compositions out of the root read-only closure
 
 ## Testing Strategy
 
@@ -2266,21 +2256,22 @@ func TestListModels(t *testing.T) {
 
 ### Key Files
 
-| File | Purpose | Lines |
-|------|---------|-------|
-| `client.go` | Concrete public Client API and immutable catalog publication | ~150 |
-| `acquisition/syncer.go` | Explicit provider/source acquisition adapter | ~200 |
-| `update.go` | Serialized durable publication and activation | ~150 |
-| `internal/catalog/pipeline/pipeline.go` | 13-stage catalog sync pipeline | ~150 |
-| `internal/cli/commands/*/application.go` | Consumer-local command roles | <20 each |
-| `internal/server/application.go` | HTTP server application role | <30 |
-| `internal/cli/app/app.go` | App implementation | ~200 |
-| `internal/catalog/reconciler/reconciler.go` | Reconciliation engine | ~300 |
-| `internal/catalog/authority/authority.go` | Field-level authorities | ~210 |
+| File | Purpose |
+|------|---------|
+| `client.go` | Concrete public Client API and immutable catalog access |
+| `acquisition/syncer.go` | Explicit provider/source acquisition adapter |
+| `update.go` | Serialized durable publication and activation |
+| `generation.go` | Generation encoding, CAS, retention, and activation |
+| `internal/catalog/pipeline/pipeline.go` | Source-acquisition orchestration |
+| `internal/cli/commands/*/application.go` | Consumer-local command roles |
+| `internal/server/application.go` | HTTP server application role |
+| `internal/catalog/reconciler/reconciler.go` | Reconciliation engine |
+| `internal/catalog/authority/authority.go` | Field-level authority table |
 
 ### Package Documentation
 
-- [pkg/catalogs/README.md](../pkg/catalogs/README.md) - Catalog storage
+- [pkg/catalogs/README.md](../pkg/catalogs/README.md) - Catalog construction and immutable reads
+- [CATALOG_STORE_CONTRACT.md](CATALOG_STORE_CONTRACT.md) - Generation-store contract
 - [pkg/sources/README.md](../pkg/sources/README.md) - Data source abstractions
 - [internal/catalog/authority/](../internal/catalog/authority/) - Internal field-level authority policy
 - [pkg/errors/README.md](../pkg/errors/README.md) - Error types

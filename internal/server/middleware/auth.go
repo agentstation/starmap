@@ -1,6 +1,7 @@
 package middleware
 
 import (
+	"crypto/sha256"
 	"crypto/subtle"
 	"net/http"
 	"os"
@@ -51,7 +52,7 @@ func Auth(config AuthConfig, logger *zerolog.Logger) func(http.Handler) http.Han
 			apiKey := extractAPIKey(r, config)
 
 			// Validate API key
-			if apiKey == "" || subtle.ConstantTimeCompare([]byte(apiKey), []byte(config.APIKey)) != 1 {
+			if !validAPIKey(apiKey, config.APIKey) {
 				logger.Warn().
 					Str("path", r.URL.Path).
 					Str("remote_addr", r.RemoteAddr).
@@ -69,6 +70,18 @@ func Auth(config AuthConfig, logger *zerolog.Logger) func(http.Handler) http.Han
 			next.ServeHTTP(w, r)
 		})
 	}
+}
+
+func validAPIKey(provided, expected string) bool {
+	if provided == "" {
+		return false
+	}
+	providedDigest := sha256.Sum256([]byte(provided))
+	expectedDigest := sha256.Sum256([]byte(expected))
+	return subtle.ConstantTimeCompare(
+		providedDigest[:],
+		expectedDigest[:],
+	) == 1
 }
 
 func writeAuthFailure(

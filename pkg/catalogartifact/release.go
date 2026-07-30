@@ -46,9 +46,21 @@ func StageReleaseAssets(root string, artifact Bundle) (ReleaseAssets, error) {
 	if err != nil {
 		return ReleaseAssets{}, errors.WrapIO("resolve", root, err)
 	}
+	if err := validateReleaseDirectory(absoluteRoot); err != nil {
+		return ReleaseAssets{}, err
+	}
 	base := filepath.Join(absoluteRoot, releaseDirectory)
+	if err := validateReleaseDirectory(base); err != nil {
+		return ReleaseAssets{}, err
+	}
 	if err := os.MkdirAll(base, constants.DirPermissions); err != nil {
 		return ReleaseAssets{}, errors.WrapIO("create", base, err)
+	}
+	if err := validateReleaseDirectory(absoluteRoot); err != nil {
+		return ReleaseAssets{}, err
+	}
+	if err := validateReleaseDirectory(base); err != nil {
+		return ReleaseAssets{}, err
 	}
 	target := filepath.Join(base, releaseDirectoryName(artifact.GenerationID))
 	assets := []releaseAsset{
@@ -96,9 +108,12 @@ type releaseAsset struct {
 }
 
 func verifyExistingRelease(target string, assets []releaseAsset) error {
-	info, err := os.Stat(target)
+	info, err := os.Lstat(target)
 	if err != nil {
 		return err
+	}
+	if info.Mode()&os.ModeSymlink != 0 {
+		return releasePathError(target, "symbolic links are not allowed")
 	}
 	if !info.IsDir() {
 		return &errors.ConflictError{Resource: "catalog release generation", Expected: target, Actual: "non-directory", Message: "immutable release path is occupied"}
@@ -111,12 +126,43 @@ func verifyExistingRelease(target string, assets []releaseAsset) error {
 		return releaseConflict(target)
 	}
 	for _, asset := range assets {
-		data, err := os.ReadFile(filepath.Join(target, asset.name)) //nolint:gosec // target is digest-derived beneath caller root.
+		assetPath := filepath.Join(target, asset.name)
+		assetInfo, err := os.Lstat(assetPath)
+		if err != nil || assetInfo.Mode()&os.ModeSymlink != 0 ||
+			!assetInfo.Mode().IsRegular() {
+			return releaseConflict(target)
+		}
+		data, err := os.ReadFile(assetPath) //nolint:gosec // target is digest-derived beneath caller root.
 		if err != nil || !bytes.Equal(data, asset.data) {
 			return releaseConflict(target)
 		}
 	}
 	return nil
+}
+
+func validateReleaseDirectory(path string) error {
+	info, err := os.Lstat(path)
+	if os.IsNotExist(err) {
+		return nil
+	}
+	if err != nil {
+		return errors.WrapIO("inspect", path, err)
+	}
+	if info.Mode()&os.ModeSymlink != 0 {
+		return releasePathError(path, "symbolic links are not allowed")
+	}
+	if !info.IsDir() {
+		return releasePathError(path, "must be a directory")
+	}
+	return nil
+}
+
+func releasePathError(path, message string) error {
+	return &errors.ValidationError{
+		Field:   "catalog_artifact.release_path",
+		Value:   path,
+		Message: message,
+	}
 }
 
 func releaseConflict(target string) error {

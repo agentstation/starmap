@@ -187,8 +187,47 @@ func (c *Client) applyProviderDefaults(model *catalogs.Model, apiModel Model) {
 	c.applyProviderLimits(model, apiModel)
 	c.applyProviderMetadata(model, apiModel)
 	c.applyProviderFeatures(model, apiModel)
+	normalizeOperationalModalities(model)
 	c.applyProviderPricing(model, apiModel)
 	c.applyProviderExtensions(model, apiModel)
+}
+
+func normalizeOperationalModalities(model *catalogs.Model) {
+	if model == nil || model.Metadata == nil || model.Features == nil {
+		return
+	}
+	for _, tag := range model.Metadata.Tags {
+		switch strings.ToLower(string(tag)) {
+		case "embed", string(catalogs.ModelTagEmbedding):
+			model.Features.Modalities.Output = []catalogs.ModelModality{
+				catalogs.ModelModalityEmbedding,
+			}
+		case "stt", string(catalogs.ModelTagSpeechToText):
+			model.Features.Modalities.Input = appendUniqueModality(
+				model.Features.Modalities.Input,
+				catalogs.ModelModalityAudio,
+			)
+			model.Features.Modalities.Output = []catalogs.ModelModality{
+				catalogs.ModelModalityText,
+			}
+		case "tts", string(catalogs.ModelTagTextToSpeech):
+			model.Features.Modalities.Input = appendUniqueModality(
+				model.Features.Modalities.Input,
+				catalogs.ModelModalityText,
+			)
+			model.Features.Modalities.Output = []catalogs.ModelModality{
+				catalogs.ModelModalityAudio,
+			}
+		case "image-gen", string(catalogs.ModelTagTextToImage):
+			model.Features.Modalities.Output = []catalogs.ModelModality{
+				catalogs.ModelModalityImage,
+			}
+		case "video-gen", string(catalogs.ModelTagTextToVideo):
+			model.Features.Modalities.Output = []catalogs.ModelModality{
+				catalogs.ModelModalityVideo,
+			}
+		}
+	}
 }
 
 func (c *Client) applyProviderLimits(model *catalogs.Model, apiModel Model) {

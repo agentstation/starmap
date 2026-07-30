@@ -350,6 +350,9 @@ func (merger *merger) model(providerID catalogs.ProviderID, modelID string, sour
 		if updatedAt.IsZero() {
 			updatedAt = createdAt
 		}
+		if createdAt.After(updatedAt) {
+			createdAt, updatedAt = updatedAt, createdAt
+		}
 		merged.CreatedAt = createdAt
 		merged.UpdatedAt = updatedAt
 	} else if hasContentChanged {

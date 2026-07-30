@@ -32,7 +32,7 @@ features:
   attachments: false
 
   # Reasoning & Verbosity
-  reasoning: false
+  reasoning: true
   reasoning_effort: false
   reasoning_tokens: false
   include_reasoning: false
@@ -108,5 +108,5 @@ extensions:
         - xhigh
 
 # Timestamps
-created_at: 2025-11-20T20:45:32Z
-updated_at: 2025-11-13T00:00:00Z
+created_at: 2025-11-13T00:00:00Z
+updated_at: 2025-11-20T20:45:32Z

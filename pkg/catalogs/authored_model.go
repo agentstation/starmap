@@ -121,6 +121,9 @@ func validateAuthoredModel(authorID AuthorID, model Model) error {
 	if err := validateModelGeneration(model.Generation); err != nil {
 		return err
 	}
+	if err := validateModelFactConsistency(model); err != nil {
+		return err
+	}
 	if len(model.Authors) == 0 || model.Authors[0].ID != authorID {
 		return &errors.ValidationError{
 			Field: "authored_model.authors", Value: model.Authors,

@@ -31,7 +31,7 @@ features:
   attachments: false
 
   # Reasoning & Verbosity
-  reasoning: false
+  reasoning: true
   reasoning_effort: false
   reasoning_tokens: false
   include_reasoning: false
@@ -108,5 +108,5 @@ extensions:
       - type: toggle
 
 # Timestamps
-created_at: 2025-12-30T05:54:59Z
-updated_at: 2025-09-11T00:00:00Z
+created_at: 2025-09-11T00:00:00Z
+updated_at: 2025-12-30T05:54:59Z

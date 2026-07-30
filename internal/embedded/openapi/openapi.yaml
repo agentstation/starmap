@@ -334,6 +334,9 @@ components:
         capabilities:
           $ref: '#/components/schemas/catalogs.ModelDefinitionCapabilities'
         created_at:
+          description: |-
+            CreatedAt and UpdatedAt bound the earliest and latest known lifecycle
+            evidence for this definition. Zero means unknown.
           type: string
         description:
           type: string
@@ -383,6 +386,10 @@ components:
         knowledge_cutoff:
           type: string
         release_date:
+          description: |-
+            ReleaseDate is the first known public release of this identity. A rolling
+            alias may later route to revisions with a newer KnowledgeCutoff. Zero
+            means unknown; missing day precision must not be fabricated.
           type: string
         tags:
           items:
@@ -710,6 +717,7 @@ components:
         ModelTagSummarization: Text summarization
         ModelTagTextToImage: Text-to-image generation
         ModelTagTextToSpeech: Text-to-speech synthesis
+        ModelTagTextToVideo: Text-to-video generation
         ModelTagTranslation: Language translation
         ModelTagVision: Computer vision
         ModelTagWriting: Creative and technical writing
@@ -732,6 +740,7 @@ components:
       - ModelTagMultimodal
       - ModelTagAudio
       - ModelTagTextToImage
+      - ModelTagTextToVideo
       - ModelTagTextToSpeech
       - ModelTagSpeechToText
       - ModelTagImageToText
@@ -2274,6 +2283,8 @@ paths:
               schema:
                 type: string
           description: Event stream
+      security:
+      - ApiKeyAuth: []
       summary: SSE updates stream
       tags:
       - updates

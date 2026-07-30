@@ -100,11 +100,19 @@ func TestMakeVerifyUsesCanonicalVerificationScript(t *testing.T) {
 	for _, check := range []string{
 		`VERIFY_CATALOG_PATH="$ROOT/internal/embedded/catalog"`,
 		`VERIFY_CATALOG_DATABASE_PATH="$TMPDIR/catalog"`,
+		`VERIFY_HOME="$TMPDIR/home"`,
+		`GOLANGCI_LINT_CACHE="$TMPDIR/golangci-lint-cache"`,
+		`export GOLANGCI_LINT_CACHE`,
 		`GOLANGCI_LINT_VERSION="2.12.2"`,
 		`run make test-pure-go`,
 		`run make test-file-sizes`,
 		`run env CGO_ENABLED=1 go test ./... -race -short -timeout=20m`,
 		`CATALOG_PATH="$VERIFY_CATALOG_DATABASE_PATH" CATALOG_EXPORT_PATH="$VERIFY_CATALOG_PATH"`,
+		`-u GOOGLE_APPLICATION_CREDENTIALS`,
+		`-u GOOGLE_VERTEX_PROJECT`,
+		`CLOUDSDK_CONFIG="$VERIFY_HOME/.config/gcloud"`,
+		`HOME="$VERIFY_HOME"`,
+		`XDG_CONFIG_HOME="$VERIFY_HOME/.config"`,
 	} {
 		if !strings.Contains(verifyScript, check) {
 			t.Fatalf("repository verification script is missing isolated catalog state %q", check)

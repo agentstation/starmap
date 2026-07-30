@@ -1,6 +1,6 @@
 # Starmap ⭐🗺️
 
-> An auto-updating AI Model Catalog available as a Go package, CLI tool, or HTTP server with REST and SSE.
+> A versioned AI model catalog available as a Go package, CLI tool, or HTTP server with REST and SSE.
 
 <div align="center">
 
@@ -59,7 +59,8 @@ Starmap provides:
 
 - **Unified Catalog**: Single interface for all AI model information
 - **Multi-Source Reconciliation**: Combines provider APIs with community data for completeness
-- **Automatic Synchronization**: Keep your catalog current with scheduled updates
+- **Explicit Synchronization**: Refresh from provider APIs and models.dev when
+  your application, CLI, or repository workflow chooses
 - **Flexible Storage**: From in-memory for testing to persistent for production
 - **Event-Driven Updates**: React to model changes in real-time
 - **Type-Safe Go API**: Strongly typed models with comprehensive metadata
@@ -76,7 +77,8 @@ Starmap provides:
 
 ✅ **Comprehensive Coverage**: 500+ models from 10+ providers
 ✅ **Accurate Pricing**: Valid provider-offering prices first, with models.dev fallback
-✅ **Real-time Synchronization**: Automatic updates from provider APIs
+✅ **Reactive Distribution**: Verified server generations activate from SSE
+publication hints; source acquisition remains an explicit operation
 ✅ **Flexible Architecture**: Simple merging or complex reconciliation
 ✅ **Multiple Interfaces**: CLI, Go package, and HTTP server (REST + SSE)
 ✅ **Production Ready**: Thread-safe, well-tested, actively maintained  
@@ -113,7 +115,9 @@ go get github.com/agentstation/starmap
 
 ### Docker
 
-Starmap provides production-ready container images built with [ko](https://ko.build) using Google's secure Chainguard base images (~2MB, zero CVEs).
+Starmap release images are built with [ko](https://ko.build), `CGO_ENABLED=0`,
+and a digest-pinned Chainguard static base. Verify and scan the exact image
+digest, SBOM, and release attestation under your deployment policy.
 
 **Quick Start:**
 
@@ -144,8 +148,8 @@ curl http://localhost:8080/api/v1/health
 **Available Images:**
 
 - `ghcr.io/agentstation/starmap:latest` - Latest stable release
-- `ghcr.io/agentstation/starmap:v0.0.17` - Specific version
-- `ghcr.io/agentstation/starmap:0.0.17` - Specific version (no v prefix)
+- `ghcr.io/agentstation/starmap:v<version>` - Pinned application version
+- `ghcr.io/agentstation/starmap@sha256:<digest>` - Immutable production pin
 
 **Supported Platforms:**
 - `linux/amd64` (x86_64)
@@ -417,9 +421,10 @@ starmap update --auto-install-deps
 ```
 
 The `starmap update` command owns the interactive prompt adapter. Go library,
-server, scheduler, and other non-CLI sync calls never read stdin: they skip an
-optional source with missing dependencies and return a typed error for a required
-source unless an explicit noninteractive dependency policy is configured.
+server, repository-job, and other non-CLI sync calls never read stdin: they skip
+an optional source with missing dependencies and return a typed error for a
+required source unless an explicit noninteractive dependency policy is
+configured.
 
 **Available Flags:**
 - `--auto-install-deps` - Automatically install missing dependencies
@@ -982,7 +987,7 @@ HTTP is accepted only for local loopback embedding and tests.
 ```bash
 HTTP_PORT=8080
 HTTP_HOST=0.0.0.0
-STARMAP_API_KEY=your-api-key  # If --auth enabled
+API_KEY=changeme  # If --auth enabled
 ```
 
 For the embeddable API, see [server/README.md](server/README.md).
@@ -1011,17 +1016,22 @@ ALIBABA_MODEL_STUDIO_BASE_URL=https://{WorkspaceId}.ap-southeast-1.maas.aliyuncs
 # Google Vertex (optional)
 GOOGLE_VERTEX_PROJECT=my-project
 GOOGLE_VERTEX_LOCATION=us-central1
-GOOGLE_APPLICATION_CREDENTIALS=/path/to/service-account.json
+GOOGLE_APPLICATION_CREDENTIALS=/absolute/path/to/service-account.json
 
-# Starmap Configuration
-STARMAP_CONFIG=/path/to/config.yaml
-STARMAP_CACHE_DIR=/var/cache/starmap
-STARMAP_LOG_LEVEL=info
+# Starmap logging
+LOG_LEVEL=info
+LOG_FORMAT=auto
+LOG_OUTPUT=stderr
 
 # Optional readiness budgets while the embedded offline bootstrap is active
 EMBEDDED_BOOTSTRAP_MAX_AGE=168h
 EMBEDDED_BOOTSTRAP_MAX_SIZE_BYTES=16777216
 ```
+
+Select a non-default configuration file with
+`starmap --config /path/to/config.yaml <command>`. Set `catalog_path` in that
+file or use `CATALOG_PATH` to select the human-editable provider YAML
+workspace.
 
 ### Authentication Management
 
@@ -1072,6 +1082,10 @@ workspace is the only human model representation and is both the local
 observation and the post-commit YAML projection. Starmap rejects overlapping
 workspace/state roots and rejects models.dev cache or checkout roots that
 contain, equal, or sit beneath the workspace before reading or writing it.
+Machine-store reads and commits reject symbolic-link substitutions for the
+store root and its owned lock, current pointer, generation, manifest, and
+payload entries. Deployments must protect the parent data path from a hostile
+same-UID actor.
 Atomic projection uses hidden sibling staging and a hidden sibling
 generation/digest marker; neither is loaded as provider configuration, and
 normal completion removes all staging. A sibling advisory writer lock
@@ -1142,25 +1156,15 @@ rollback to the current durable generation does not emit another publication.
 catalog_path: ~/.starmap/catalog
 embedded_bootstrap_max_age: 168h
 embedded_bootstrap_max_size_bytes: 16777216
-
-providers:
-  openai:
-    api_key: ${OPENAI_API_KEY}
-    rate_limit: 100
-  
-catalog:
-  type: embedded
-  
-sync:
-  sources:
-    - Provider APIs
-    - models.dev (git)
-  auto_approve: false
-  
-logging:
-  level: info
-  format: json
 ```
+
+Provider connection settings live with each human-readable provider record;
+credentials remain in environment variables such as `OPENAI_API_KEY`.
+Acquisition source selection and approval are operation inputs (`starmap
+update` flags or `sync.Option` values), not long-lived configuration that can
+silently start work.
+Logging uses the explicit `LOG_LEVEL`, `LOG_FORMAT`, and `LOG_OUTPUT`
+environment variables or the corresponding CLI flags where exposed.
 
 ## Development
 

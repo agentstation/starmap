@@ -500,6 +500,33 @@ func TestRecovery(t *testing.T) {
 	}
 }
 
+func TestRecoveryDoesNotLogPanicValue(t *testing.T) {
+	const secret = "panic-secret-do-not-log"
+	var output bytes.Buffer
+	logger := zerolog.New(&output)
+	handler := Recovery(&logger)(http.HandlerFunc(func(
+		http.ResponseWriter,
+		*http.Request,
+	) {
+		panic(secret)
+	}))
+
+	handler.ServeHTTP(
+		httptest.NewRecorder(),
+		httptest.NewRequest(http.MethodGet, "/test", nil),
+	)
+	if strings.Contains(output.String(), secret) {
+		t.Fatalf("recovery log exposed panic value: %s", output.String())
+	}
+	if !strings.Contains(output.String(), `"panic_type":"string"`) {
+		t.Fatalf("recovery log omitted safe panic classification: %s", output.String())
+	}
+	if !strings.Contains(output.String(), `"panic_trace":[`) ||
+		!strings.Contains(output.String(), "middleware_test.go:") {
+		t.Fatalf("recovery log omitted value-free call-site trace: %s", output.String())
+	}
+}
+
 // TestRecovery_OtherRequestsStillWork verifies other requests work after panic.
 func TestRecovery_OtherRequestsStillWork(t *testing.T) {
 	var buf bytes.Buffer

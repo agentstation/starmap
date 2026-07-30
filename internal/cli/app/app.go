@@ -30,7 +30,8 @@ type App struct {
 	builtBy string
 
 	// Configuration
-	config *Config
+	config       *Config
+	commandFlags commandFlags
 
 	// Logger
 	logger *zerolog.Logger

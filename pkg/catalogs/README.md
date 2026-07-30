@@ -2414,7 +2414,7 @@ const (
 ```
 
 <a name="Model"></a>
-## type [Model](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model.go#L16-L72>)
+## type [Model](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model.go#L16-L75>)
 
 Model represents a model configuration.
 
@@ -2470,9 +2470,12 @@ type Model struct {
     // Extensions - controlled source-specific fields that are not canonical schema
     Extensions SourceExtensions `json:"extensions,omitempty" yaml:"extensions,omitempty"`
 
-    // Timestamps for record keeping and auditing
-    CreatedAt utc.Time `json:"created_at" yaml:"created_at"` // Created date (YYYY-MM or YYYY-MM-DD format)
-    UpdatedAt utc.Time `json:"updated_at" yaml:"updated_at"` // Last updated date (YYYY-MM or YYYY-MM-DD format)
+    // Lifecycle evidence for record keeping and auditing. CreatedAt is the
+    // earliest known source or Starmap observation and UpdatedAt is the latest
+    // known source or Starmap change. When both are known, CreatedAt is never
+    // later than UpdatedAt. A zero value means unknown.
+    CreatedAt utc.Time `json:"created_at" yaml:"created_at"`
+    UpdatedAt utc.Time `json:"updated_at" yaml:"updated_at"`
     // contains filtered or unexported fields
 }
 ```
@@ -2621,7 +2624,7 @@ type ModelArchitecture struct {
 ```
 
 <a name="ModelAttachments"></a>
-## type [ModelAttachments](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model.go#L316-L320>)
+## type [ModelAttachments](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model.go#L322-L326>)
 
 ModelAttachments represents the attachment capabilities of a model.
 
@@ -2634,7 +2637,7 @@ type ModelAttachments struct {
 ```
 
 <a name="ModelControlLevel"></a>
-## type [ModelControlLevel](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model.go#L299>)
+## type [ModelControlLevel](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model.go#L305>)
 
 ModelControlLevel represents an effort/intensity level for model controls.
 
@@ -2655,7 +2658,7 @@ const (
 ```
 
 <a name="ModelControlLevel.String"></a>
-### func \(ModelControlLevel\) [String](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model.go#L302>)
+### func \(ModelControlLevel\) [String](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model.go#L308>)
 
 ```go
 func (mcl ModelControlLevel) String() string
@@ -2664,7 +2667,7 @@ func (mcl ModelControlLevel) String() string
 String returns the string representation of a ModelControlLevel.
 
 <a name="ModelControlLevels"></a>
-## type [ModelControlLevels](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model.go#L293-L296>)
+## type [ModelControlLevels](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model.go#L299-L302>)
 
 ModelControlLevels represents a set of effort/intensity levels for model controls.
 
@@ -2676,7 +2679,7 @@ type ModelControlLevels struct {
 ```
 
 <a name="ModelDefinition"></a>
-## type [ModelDefinition](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_definition.go#L14-L25>)
+## type [ModelDefinition](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_definition.go#L14-L27>)
 
 ModelDefinition is the canonical provider\-independent description of a model. Provider service facts belong to ProviderOffering, never this record.
 
@@ -2690,13 +2693,15 @@ type ModelDefinition struct {
     Lineage      ModelDefinitionLineage      `json:"lineage" yaml:"lineage"`
     Weights      ModelDefinitionWeights      `json:"weights" yaml:"weights"`
     Capabilities ModelDefinitionCapabilities `json:"capabilities" yaml:"capabilities"`
-    CreatedAt    utc.Time                    `json:"created_at" yaml:"created_at"`
-    UpdatedAt    utc.Time                    `json:"updated_at" yaml:"updated_at"`
+    // CreatedAt and UpdatedAt bound the earliest and latest known lifecycle
+    // evidence for this definition. Zero means unknown.
+    CreatedAt utc.Time `json:"created_at" yaml:"created_at"`
+    UpdatedAt utc.Time `json:"updated_at" yaml:"updated_at"`
 }
 ```
 
 <a name="ModelDefinition.Validate"></a>
-### func \(ModelDefinition\) [Validate](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_definition.go#L61>)
+### func \(ModelDefinition\) [Validate](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_definition.go#L66>)
 
 ```go
 func (d ModelDefinition) Validate() error
@@ -2705,7 +2710,7 @@ func (d ModelDefinition) Validate() error
 Validate verifies canonical identity and authorship invariants.
 
 <a name="ModelDefinitionCapabilities"></a>
-## type [ModelDefinitionCapabilities](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_definition.go#L49-L58>)
+## type [ModelDefinitionCapabilities](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_definition.go#L54-L63>)
 
 ModelDefinitionCapabilities groups intrinsic model behavior independently of any provider's service limits, price, endpoint, or availability.
 
@@ -2741,7 +2746,7 @@ func AuthoredModelID(authorID AuthorID, slug string) ModelDefinitionID
 AuthoredModelID returns the canonical author/slug identity for one authored model record.
 
 <a name="ModelDefinitionLineage"></a>
-## type [ModelDefinitionLineage](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_definition.go#L35-L39>)
+## type [ModelDefinitionLineage](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_definition.go#L40-L44>)
 
 ModelDefinitionLineage describes canonical model\-family relationships.
 
@@ -2754,12 +2759,15 @@ type ModelDefinitionLineage struct {
 ```
 
 <a name="ModelDefinitionMetadata"></a>
-## type [ModelDefinitionMetadata](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_definition.go#L28-L32>)
+## type [ModelDefinitionMetadata](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_definition.go#L30-L37>)
 
 ModelDefinitionMetadata contains provider\-independent release and discovery metadata.
 
 ```go
 type ModelDefinitionMetadata struct {
+    // ReleaseDate is the first known public release of this identity. A rolling
+    // alias may later route to revisions with a newer KnowledgeCutoff. Zero
+    // means unknown; missing day precision must not be fabricated.
     ReleaseDate     utc.Time   `json:"release_date" yaml:"release_date"`
     KnowledgeCutoff *utc.Time  `json:"knowledge_cutoff,omitempty" yaml:"knowledge_cutoff,omitempty"`
     Tags            []ModelTag `json:"tags,omitempty" yaml:"tags,omitempty"`
@@ -2767,7 +2775,7 @@ type ModelDefinitionMetadata struct {
 ```
 
 <a name="ModelDefinitionWeights"></a>
-## type [ModelDefinitionWeights](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_definition.go#L42-L45>)
+## type [ModelDefinitionWeights](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_definition.go#L47-L50>)
 
 ModelDefinitionWeights describes provider\-independent model weights and architecture.
 
@@ -2854,7 +2862,7 @@ const (
 ```
 
 <a name="ModelFeatures"></a>
-## type [ModelFeatures](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model.go#L156-L232>)
+## type [ModelFeatures](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model.go#L162-L238>)
 
 ModelFeatures represents a set of feature flags that describe what a model can do.
 
@@ -3073,7 +3081,7 @@ const (
 ```
 
 <a name="ModelLimits"></a>
-## type [ModelLimits](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model.go#L323-L330>)
+## type [ModelLimits](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model.go#L329-L336>)
 
 ModelLimits represents the limits for a model.
 
@@ -3159,7 +3167,7 @@ func (l *ModelLimits) Value(limit ModelLimit) (int64, ValuePresence)
 Value returns a model limit and its presence state.
 
 <a name="ModelLineage"></a>
-## type [ModelLineage](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model.go#L86-L90>)
+## type [ModelLineage](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model.go#L92-L96>)
 
 ModelLineage represents model family and derivation metadata.
 
@@ -3172,13 +3180,16 @@ type ModelLineage struct {
 ```
 
 <a name="ModelMetadata"></a>
-## type [ModelMetadata](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model.go#L75-L83>)
+## type [ModelMetadata](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model.go#L78-L89>)
 
 ModelMetadata represents the metadata for a model.
 
 ```go
 type ModelMetadata struct {
-    ReleaseDate     utc.Time           `json:"release_date" yaml:"release_date"`                             // Release date (YYYY-MM or YYYY-MM-DD format)
+    // ReleaseDate is the first known public release of this model identity. For
+    // a rolling alias, its KnowledgeCutoff may advance beyond that initial date.
+    // A zero value means unknown; Starmap does not invent missing day precision.
+    ReleaseDate     utc.Time           `json:"release_date" yaml:"release_date"`
     OpenWeights     bool               `json:"open_weights" yaml:"open_weights"`                             // Whether model weights are open
     KnowledgeCutoff *utc.Time          `json:"knowledge_cutoff,omitempty" yaml:"knowledge_cutoff,omitempty"` // Knowledge cutoff date (YYYY-MM or YYYY-MM-DD format)
     Tags            []ModelTag         `json:"tags,omitempty" yaml:"tags,omitempty"`                         // Use case tags for categorizing the model
@@ -3260,7 +3271,7 @@ func (m *ModelMetadata) UnsetOpenWeights()
 UnsetOpenWeights removes the open\-weights claim.
 
 <a name="ModelModalities"></a>
-## type [ModelModalities](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model.go#L252-L255>)
+## type [ModelModalities](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model.go#L258-L261>)
 
 ModelModalities represents the input/output modalities supported by a model.
 
@@ -3272,7 +3283,7 @@ type ModelModalities struct {
 ```
 
 <a name="ModelModality"></a>
-## type [ModelModality](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model.go#L258>)
+## type [ModelModality](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model.go#L264>)
 
 ModelModality represents a supported input or output modality for AI models.
 
@@ -3294,7 +3305,7 @@ const (
 ```
 
 <a name="ModelModality.String"></a>
-### func \(ModelModality\) [String](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model.go#L261>)
+### func \(ModelModality\) [String](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model.go#L267>)
 
 ```go
 func (m ModelModality) String() string
@@ -3303,7 +3314,7 @@ func (m ModelModality) String() string
 String returns the string representation of a ModelModality.
 
 <a name="ModelMode"></a>
-## type [ModelMode](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model.go#L93-L96>)
+## type [ModelMode](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model.go#L99-L102>)
 
 ModelMode represents an alternate provider service mode for a model.
 
@@ -3477,7 +3488,7 @@ func (m ModelPricingTierType) String() string
 String returns the string representation of a ModelPricingTierType.
 
 <a name="ModelProviderMode"></a>
-## type [ModelProviderMode](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model.go#L99-L102>)
+## type [ModelProviderMode](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model.go#L105-L108>)
 
 ModelProviderMode represents provider request overrides for a model mode.
 
@@ -3489,7 +3500,7 @@ type ModelProviderMode struct {
 ```
 
 <a name="ModelProviderMode.MarshalYAML"></a>
-### func \(ModelProviderMode\) [MarshalYAML](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model.go#L107>)
+### func \(ModelProviderMode\) [MarshalYAML](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model.go#L113>)
 
 ```go
 func (m ModelProviderMode) MarshalYAML() (any, error)
@@ -3498,7 +3509,7 @@ func (m ModelProviderMode) MarshalYAML() (any, error)
 MarshalYAML preserves request\-body values as native YAML scalars, sequences, mappings, and nulls. The body is a JSON request fragment, so values that cannot be represented by JSON are rejected.
 
 <a name="ModelProviderMode.UnmarshalYAML"></a>
-### func \(\*ModelProviderMode\) [UnmarshalYAML](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model.go#L141>)
+### func \(\*ModelProviderMode\) [UnmarshalYAML](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model.go#L147>)
 
 ```go
 func (m *ModelProviderMode) UnmarshalYAML(data []byte) error
@@ -3565,7 +3576,7 @@ const (
 ```
 
 <a name="ModelStatus"></a>
-## type [ModelStatus](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model.go#L235>)
+## type [ModelStatus](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model.go#L241>)
 
 ModelStatus represents a model lifecycle or availability state.
 
@@ -3586,7 +3597,7 @@ const (
 ```
 
 <a name="ModelStatus.String"></a>
-### func \(ModelStatus\) [String](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model.go#L238>)
+### func \(ModelStatus\) [String](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model.go#L244>)
 
 ```go
 func (ms ModelStatus) String() string
@@ -3658,6 +3669,7 @@ const (
     ModelTagMultimodal   ModelTag = "multimodal"     // Multiple input modalities
     ModelTagAudio        ModelTag = "audio"          // Audio processing
     ModelTagTextToImage  ModelTag = "text_to_image"  // Text-to-image generation
+    ModelTagTextToVideo  ModelTag = "text_to_video"  // Text-to-video generation
     ModelTagTextToSpeech ModelTag = "text_to_speech" // Text-to-speech synthesis
     ModelTagSpeechToText ModelTag = "speech_to_text" // Speech recognition
     ModelTagImageToText  ModelTag = "image_to_text"  // Image captioning/OCR
@@ -3729,7 +3741,7 @@ func (t *ModelTokenPricing) MarshalYAML() (any, error)
 MarshalYAML implements custom YAML marshaling for token pricing.
 
 <a name="ModelTools"></a>
-## type [ModelTools](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model.go#L333-L343>)
+## type [ModelTools](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model.go#L339-L349>)
 
 ModelTools represents external tool and capability integrations.
 
@@ -3748,7 +3760,7 @@ type ModelTools struct {
 ```
 
 <a name="ModelWebSearch"></a>
-## type [ModelWebSearch](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model.go#L346-L354>)
+## type [ModelWebSearch](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model.go#L352-L360>)
 
 ModelWebSearch represents web search configuration for search\-enabled models.
 
@@ -5352,7 +5364,7 @@ func (t Tokenizer) String() string
 String returns the string representation of a Tokenizer.
 
 <a name="ToolChoice"></a>
-## type [ToolChoice](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model.go#L277>)
+## type [ToolChoice](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model.go#L283>)
 
 ToolChoice represents the strategy for selecting tools. Used in API requests as the "tool\_choice" parameter value.
 
@@ -5372,7 +5384,7 @@ const (
 ```
 
 <a name="ToolChoice.String"></a>
-### func \(ToolChoice\) [String](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model.go#L280>)
+### func \(ToolChoice\) [String](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model.go#L286>)
 
 ```go
 func (tc ToolChoice) String() string

@@ -170,8 +170,9 @@ release:
 announce:
   skip: false
 
-# Ko configuration - secure, minimal container images
-# Uses cgr.dev/chainguard/static (~2MB, zero CVEs)
+# Ko configuration for minimal static container images.
+# The base is digest-pinned; vulnerability status is verified against the exact
+# released image rather than inferred from a mutable product claim.
 # No Dockerfile needed - builds directly from Go source
 kos:
   - id: starmap-server

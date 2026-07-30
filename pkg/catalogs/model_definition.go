@@ -20,12 +20,17 @@ type ModelDefinition struct {
 	Lineage      ModelDefinitionLineage      `json:"lineage" yaml:"lineage"`
 	Weights      ModelDefinitionWeights      `json:"weights" yaml:"weights"`
 	Capabilities ModelDefinitionCapabilities `json:"capabilities" yaml:"capabilities"`
-	CreatedAt    utc.Time                    `json:"created_at" yaml:"created_at"`
-	UpdatedAt    utc.Time                    `json:"updated_at" yaml:"updated_at"`
+	// CreatedAt and UpdatedAt bound the earliest and latest known lifecycle
+	// evidence for this definition. Zero means unknown.
+	CreatedAt utc.Time `json:"created_at" yaml:"created_at"`
+	UpdatedAt utc.Time `json:"updated_at" yaml:"updated_at"`
 }
 
 // ModelDefinitionMetadata contains provider-independent release and discovery metadata.
 type ModelDefinitionMetadata struct {
+	// ReleaseDate is the first known public release of this identity. A rolling
+	// alias may later route to revisions with a newer KnowledgeCutoff. Zero
+	// means unknown; missing day precision must not be fabricated.
 	ReleaseDate     utc.Time   `json:"release_date" yaml:"release_date"`
 	KnowledgeCutoff *utc.Time  `json:"knowledge_cutoff,omitempty" yaml:"knowledge_cutoff,omitempty"`
 	Tags            []ModelTag `json:"tags,omitempty" yaml:"tags,omitempty"`
@@ -81,7 +86,7 @@ func (d ModelDefinition) Validate() error {
 	if d.Lineage.Parent != nil && *d.Lineage.Parent == d.ID {
 		return definitionValidationError("lineage.parent", *d.Lineage.Parent, "must not reference the definition itself")
 	}
-	return nil
+	return validateDefinitionFactConsistency(d)
 }
 
 func definitionValidationError(field string, value any, message string) error {

@@ -129,5 +129,5 @@ extensions:
         path: $.last_id
 
 # Timestamps
-created_at: 2025-11-24T00:00:00Z
-updated_at: 2025-11-01T00:00:00Z
+created_at: 2025-11-01T00:00:00Z
+updated_at: 2025-11-24T00:00:00Z

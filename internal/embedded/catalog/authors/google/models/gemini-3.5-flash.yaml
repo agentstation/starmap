@@ -34,7 +34,7 @@ features:
   attachments: false
 
   # Reasoning & Verbosity
-  reasoning: false
+  reasoning: true
   reasoning_effort: false
   reasoning_tokens: false
   include_reasoning: false
@@ -87,5 +87,5 @@ reasoning:
   default: null
 
 # Timestamps
-created_at: 2026-07-11T23:53:10.909226Z
-updated_at: 2026-05-19T00:00:00Z
+created_at: 2026-05-19T00:00:00Z
+updated_at: 2026-07-11T23:53:10.909226Z

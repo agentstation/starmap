@@ -2,10 +2,12 @@ package handlers
 
 import (
 	"encoding/json"
+	"io"
 	"net/http"
 	"time"
 
 	"github.com/agentstation/starmap/internal/catalog/query"
+	"github.com/agentstation/starmap/internal/constants"
 	"github.com/agentstation/starmap/internal/server/params"
 	"github.com/agentstation/starmap/internal/server/response"
 )
@@ -183,8 +185,22 @@ type DateRange struct {
 // @Router /api/v1/models/search [post].
 func (h *Handlers) HandleSearchModels(w http.ResponseWriter, r *http.Request) {
 	var req SearchRequest
-	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+	decoder := json.NewDecoder(http.MaxBytesReader(
+		w,
+		r.Body,
+		constants.MaxServerRequestBodyBytes,
+	))
+	decoder.DisallowUnknownFields()
+	if err := decoder.Decode(&req); err != nil {
 		response.BadRequest(w, "Invalid JSON request body", err.Error())
+		return
+	}
+	if err := decoder.Decode(&struct{}{}); err != io.EOF {
+		response.BadRequest(
+			w,
+			"Invalid JSON request body",
+			"request body must contain exactly one JSON object",
+		)
 		return
 	}
 

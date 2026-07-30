@@ -161,6 +161,13 @@ func (s *Server) applyMiddleware(handler http.Handler) http.Handler {
 		authConfig := middleware.DefaultAuthConfig()
 		authConfig.Enabled = true
 		authConfig.HeaderName = cfg.AuthHeader
+		authConfig.PublicPaths = []string{
+			"/health",
+			cfg.PathPrefix + "/health",
+			cfg.PathPrefix + "/ready",
+			cfg.PathPrefix + "/openapi.json",
+			cfg.PathPrefix + "/openapi.yaml",
+		}
 		authConfig.FailureOverride = func(
 			w http.ResponseWriter,
 			r *http.Request,

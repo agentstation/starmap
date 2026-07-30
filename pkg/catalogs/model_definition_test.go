@@ -114,6 +114,14 @@ func TestModelDefinitionValidation(t *testing.T) {
 		{name: "name", mutate: func(d *ModelDefinition) { d.Name = "" }},
 		{name: "empty author", mutate: func(d *ModelDefinition) { d.AuthorIDs = []AuthorID{""} }},
 		{name: "duplicate author", mutate: func(d *ModelDefinition) { d.AuthorIDs = []AuthorID{"author", "author"} }},
+		{
+			name: "reasoning control without capability",
+			mutate: func(d *ModelDefinition) {
+				d.Capabilities.Reasoning = &ModelControlLevels{
+					Levels: []ModelControlLevel{ModelControlLevelLow},
+				}
+			},
+		},
 	}
 	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {

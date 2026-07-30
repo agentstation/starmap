@@ -445,6 +445,11 @@ func applyModelsDevFeatures(model *catalogs.Model, source *Model) {
 	apply(catalogs.ModelFeatureAttachments, "attachment")
 	apply(catalogs.ModelFeatureStructuredOutputs, "structured_output")
 
+	// A control surface is direct evidence that the model can reason even when
+	// the upstream summary boolean is stale or contradictory.
+	if len(source.ReasoningOptions) > 0 {
+		model.Features.SetSupport(catalogs.ModelFeatureReasoning, true)
+	}
 	if levels := convertReasoningLevels(source.ReasoningOptions); len(levels) > 0 {
 		model.Features.ReasoningEffort = true
 		model.Reasoning = &catalogs.ModelControlLevels{

@@ -6,11 +6,7 @@ on:
       - "v*"
 
 permissions:
-  attestations: write
-  contents: write
-  discussions: write
-  id-token: write
-  packages: write
+  contents: read
 
 concurrency:
   group: release-${{ github.ref }}
@@ -56,6 +52,12 @@ jobs:
     needs: test
     runs-on: ubuntu-latest
     timeout-minutes: 45
+    permissions:
+      attestations: write
+      contents: write
+      discussions: write
+      id-token: write
+      packages: write
     steps:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1

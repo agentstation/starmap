@@ -11,6 +11,8 @@ func TestReleaseWorkflowPinsToolchainPublisherAndVerification(t *testing.T) {
 		"name: Release",
 		"tags:\n      - \"v*\"",
 		"group: release-",
+		"permissions:\n  contents: read",
+		"    permissions:\n      attestations: write\n      contents: write\n      discussions: write\n      id-token: write\n      packages: write",
 		`go-version: "1.26.5"`,
 		"git merge-base --is-ancestor",
 		"golangci-lint@v2.12.2",
@@ -48,6 +50,7 @@ func TestReleaseWorkflowPinsToolchainPublisherAndVerification(t *testing.T) {
 		"check-homebrew-eligibility",
 		"starmap-catalog-release",
 		"STARMAP_CATALOG_OCI_MIRROR",
+		"permissions:\n  attestations: write",
 	} {
 		if strings.Contains(workflow, forbidden) {
 			t.Errorf("release workflow contains obsolete coupling %q", forbidden)
