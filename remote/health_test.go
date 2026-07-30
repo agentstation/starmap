@@ -85,16 +85,22 @@ func assertHeartbeatStreamHealth(
 	generation catalogstore.Generation,
 ) time.Time {
 	t.Helper()
-	health := subscriber.Health()
-	if health.StreamState != StreamStateStreaming ||
-		health.ActiveGenerationID != generation.Manifest.GenerationID ||
-		!health.CatalogGeneratedAt.Equal(generation.Manifest.GeneratedAt) ||
-		health.LastHeartbeatAt.IsZero() ||
-		!health.LastEventAt.IsZero() ||
-		health.LastSuccessfulCatchUpAt.IsZero() {
-		t.Fatalf("heartbeat stream health = %#v", health)
+	deadline := time.Now().Add(2 * time.Second)
+	for {
+		health := subscriber.Health()
+		if health.StreamState == StreamStateStreaming &&
+			health.ActiveGenerationID == generation.Manifest.GenerationID &&
+			health.CatalogGeneratedAt.Equal(generation.Manifest.GeneratedAt) &&
+			!health.LastHeartbeatAt.IsZero() &&
+			health.LastEventAt.IsZero() &&
+			!health.LastSuccessfulCatchUpAt.IsZero() {
+			return health.CatalogGeneratedAt
+		}
+		if time.Now().After(deadline) {
+			t.Fatalf("heartbeat stream health = %#v", health)
+		}
+		time.Sleep(5 * time.Millisecond)
 	}
-	return health.CatalogGeneratedAt
 }
 
 func assertStoppedCatalogHealth(
