@@ -4,7 +4,7 @@ model: qwen/qwen3-max-thinking
 name: Qwen/Qwen3-Max-Thinking
 authors:
 - id: qwen
-  name: Qwen Team
+  name: qwen
 description: The latest flagship reasoning model in the Qwen3 family. Further enhanced by multiple innovations like adaptive tool-use and advanced test-time scaling techniques
 
 # Model metadata
@@ -87,7 +87,7 @@ pricing:
     input:
       per_1m: 1.2
     output:
-      per_1m: 6
+      per_1m: 6.0
   currency: USD
 
 # Model limits
@@ -98,4 +98,4 @@ limits:
 
 # Timestamps
 created_at: 2026-07-11T20:15:13.094748Z
-updated_at: 2026-07-11T20:15:13.094748Z
+updated_at: 2026-07-30T16:49:30.519637Z

@@ -1,4 +1,4 @@
-# multimodalembedding - Google Vertex AI model: multimodalembedding
+# multimodalembedding - Google model: multimodalembedding
 id: multimodalembedding
 model: google/multimodalembedding
 name: multimodalembedding
@@ -6,7 +6,7 @@ authors:
 - id: google
   name: Google
 description: |-
-  Google Vertex AI model: multimodalembedding
+  Google model: multimodalembedding
 
 # Model metadata
 metadata:
@@ -80,4 +80,4 @@ extensions:
 
 # Timestamps
 created_at: null
-updated_at: 2026-07-11T23:53:11.61089Z
+updated_at: 2026-07-30T18:59:52.21738Z

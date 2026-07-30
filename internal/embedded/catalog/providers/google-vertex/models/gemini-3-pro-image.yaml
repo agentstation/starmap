@@ -1,12 +1,19 @@
-# gemini-3-pro-image - Google model: gemini-3-pro-image
+# gemini-3-pro-image - Nano Banana Pro for higher-fidelity image generation and des...
 id: gemini-3-pro-image
 model: google/gemini-3-pro-image
 name: gemini-3-pro-image
 authors:
 - id: google
   name: Google
-description: |-
-  Google model: gemini-3-pro-image
+description: Nano Banana Pro for higher-fidelity image generation and design-heavy edits
+
+# Model metadata
+metadata:
+  release_date: 2026-05-28
+  open_weights: false
+  knowledge_cutoff: 2025-01-01
+lineage:
+  family: gemini-pro
 
 # Model features
 features:
@@ -16,23 +23,24 @@ features:
     - image
     output:
     - text
+    - image
 
   # Core capabilities
   tool_calls: true
   tools: true
   tool_choice: true
   web_search: false
-  attachments: false
+  attachments: true
 
   # Reasoning & Verbosity
-  reasoning: false
+  reasoning: true
   reasoning_effort: false
   reasoning_tokens: false
   include_reasoning: false
   verbosity: false
 
   # Generation control support flags
-  temperature: false
+  temperature: true
   top_p: false
   top_k: false
   top_a: false
@@ -69,6 +77,20 @@ features:
   format_response: false
   structured_outputs: false
   streaming: false
+
+# Model pricing
+pricing:
+  tokens:
+    input:
+      per_1m: 2.0
+    output:
+      per_1m: 120.0
+  currency: USD
+
+# Model limits
+limits:
+  context_window: 65536
+  output_tokens: 32768
 extensions:
   google-vertex:
     fields:
@@ -76,4 +98,4 @@ extensions:
 
 # Timestamps
 created_at: 2026-07-11T23:53:11.11733Z
-updated_at: 2026-07-11T23:53:11.11733Z
+updated_at: 2026-07-30T18:59:52.238249Z

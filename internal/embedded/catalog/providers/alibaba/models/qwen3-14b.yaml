@@ -4,12 +4,12 @@ model: qwen/qwen3-14b
 name: qwen3-14b
 authors:
 - id: qwen
-  name: Qwen Team
+  name: qwen
 description: Qwen instruction model for multilingual chat, reasoning, and tool use
 
 # Model metadata
 metadata:
-  release_date: 2025-04-29
+  release_date: 2025-04-01
   open_weights: true
   knowledge_cutoff: 2025-04-01
 lineage:
@@ -24,9 +24,9 @@ features:
     - text
 
   # Core capabilities
-  tool_calls: false
-  tools: false
-  tool_choice: false
+  tool_calls: true
+  tools: true
+  tool_choice: true
   web_search: false
   attachments: false
 
@@ -109,4 +109,4 @@ extensions:
 
 # Timestamps
 created_at: 2025-04-01T00:00:00Z
-updated_at: 2025-12-30T05:56:24Z
+updated_at: 2026-07-30T16:49:27.64047Z

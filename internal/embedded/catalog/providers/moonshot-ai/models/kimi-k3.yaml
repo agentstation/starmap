@@ -1,19 +1,18 @@
-# gemini-flash-latest - Fast Gemini model balancing multimodal reasoning, tool use, ...
-id: gemini-flash-latest
-model: google/gemini-flash-latest
-name: Gemini Flash Latest
+# kimi-k3 - Multimodal Kimi model with 1M context and toggleable max-eff...
+id: kimi-k3
+model: moonshot-ai/kimi-k3
+name: kimi-k3
 authors:
-- id: google
-  name: Google
-description: Fast Gemini model balancing multimodal reasoning, tool use, and cost
+- id: moonshot-ai
+  name: moonshot-ai
+description: Multimodal Kimi model with 1M context and toggleable max-effort thinking for long-horizon agent work
 
 # Model metadata
 metadata:
-  release_date: 2026-05-19
-  open_weights: false
-  knowledge_cutoff: 2025-01-01
+  release_date: 2026-07-16
+  open_weights: true
 lineage:
-  family: gemini-flash
+  family: kimi-k3
 
 # Model features
 features:
@@ -22,8 +21,6 @@ features:
     - text
     - image
     - video
-    - audio
-    - pdf
     output:
     - text
 
@@ -44,14 +41,14 @@ features:
   # Generation control support flags
   temperature: true
   top_p: true
-  top_k: true
+  top_k: false
   top_a: false
   min_p: false
   typical_p: false
   tfs: false
   max_tokens: true
   max_output_tokens: false
-  stop: false
+  stop: true
   stop_token_ids: false
   frequency_penalty: false
   presence_penalty: false
@@ -78,66 +75,56 @@ features:
   # Response delivery
   format_response: false
   structured_outputs: true
-  streaming: false
-generation:
-  temperature:
-    min: 0.0
-    max: 2.0
-    default: 1.0
-  top_p:
-    min: 0.0
-    max: 1.0
-    default: 0.95
+  streaming: true
 reasoning:
   levels:
-  - minimum
   - low
-  - medium
   - high
+  - maximum
   default: null
-reasoning_tokens:
-  min: 0
-  max: 24576
-  default: 0
 
 # Model pricing
 pricing:
   tokens:
     cache_read:
-      per_1m: 0.15
+      per_1m: 0.3
     input:
-      per_1m: 1.5
+      per_1m: 3.0
     output:
-      per_1m: 9.0
-  operations:
-    audio_input: 1.5
+      per_1m: 15.0
   currency: USD
 
 # Model limits
 limits:
   context_window: 1048576
-  input_tokens: 1048576
-  output_tokens: 65536
+  output_tokens: 131072
 extensions:
-  google-ai-studio:
-    fields:
-      supported_actions:
-      - generateContent
-      - countTokens
-      - createCachedContent
-      - batchGenerateContent
-      supported_generation_methods:
-      - generateContent
-      - countTokens
-      - createCachedContent
-      - batchGenerateContent
-      thinking: true
-      version: Gemini Flash Latest
   models.dev:
     fields:
+      interleaved:
+        field: reasoning_content
       reasoning_options:
       - type: toggle
+      - type: effort
+        values:
+        - low
+        - high
+        - max
+  moonshot-ai:
+    fields:
+      permission:
+      - group: staff
+        organization: staff
+      unknown_fields:
+      - checksum: sha256:e9f48e5552177ba95d03b5b5e93a30ae1bcf7b00a3e6c18c89adae14f305edd9
+        path: data[].reasoning_efforts
+      - checksum: sha256:b5bea41b6c623f7c09f1bf24dcae58ebab3c0cdd90ad966bc43a45b44867e12b
+        path: data[].supports_dynamic_tools
+      - checksum: sha256:c67679b3d00124ec167588721929982d2111cad05b1352fdb833058e9559a175
+        path: data[].supports_thinking_type
+      - checksum: sha256:e9f48e5552177ba95d03b5b5e93a30ae1bcf7b00a3e6c18c89adae14f305edd9
+        path: data[].think_efforts
 
 # Timestamps
-created_at: null
-updated_at: 2026-07-30T16:49:35.410556Z
+created_at: 2026-07-16T00:00:00Z
+updated_at: 2026-07-30T06:04:50.010105Z

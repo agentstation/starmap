@@ -1,31 +1,36 @@
-# veo-3.1-fast-generate-preview - Veo 3.1 fast
+# veo-3.1-fast-generate-preview - Video model for prompt-guided generation, editing, and motio...
 id: veo-3.1-fast-generate-preview
 model: google/veo-3.1-fast-generate-preview
 name: Veo 3.1 fast
 authors:
 - id: google
   name: Google
-description: Veo 3.1 fast
+description: Video model for prompt-guided generation, editing, and motion workflows
 
 # Model metadata
 metadata:
-  release_date: "2025-10-19T18:13:08Z"
+  release_date: 2025-10-15
   open_weights: false
+lineage:
+  family: veo
 
 # Model features
 features:
   modalities:
     input:
     - text
+    - image
+    - video
     output:
     - text
+    - video
 
   # Core capabilities
   tool_calls: false
   tools: false
   tool_choice: false
   web_search: false
-  attachments: false
+  attachments: true
 
   # Reasoning & Verbosity
   reasoning: false
@@ -89,4 +94,4 @@ extensions:
 
 # Timestamps
 created_at: null
-updated_at: 2026-07-11T20:15:13.068326Z
+updated_at: 2026-07-30T16:49:35.023478Z

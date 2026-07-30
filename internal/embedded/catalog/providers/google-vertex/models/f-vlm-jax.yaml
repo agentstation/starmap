@@ -1,4 +1,4 @@
-# f-vlm-jax - Google Vertex AI model: f-vlm-jax
+# f-vlm-jax - Google model: f-vlm-jax
 id: f-vlm-jax
 model: google/f-vlm-jax
 name: f-vlm-jax
@@ -6,7 +6,7 @@ authors:
 - id: google
   name: Google
 description: |-
-  Google Vertex AI model: f-vlm-jax
+  Google model: f-vlm-jax
 
 # Model metadata
 metadata:
@@ -80,4 +80,4 @@ extensions:
 
 # Timestamps
 created_at: null
-updated_at: 2026-07-11T23:53:11.610846Z
+updated_at: 2026-07-30T18:59:51.769828Z

@@ -2916,6 +2916,12 @@ records:
     model: moonshot-ai/kimi-k2.7-code
     status: linked
     evidence: explicit provider-model author metadata
+  - path: providers/moonshot-ai/models/kimi-k3.yaml
+    provider: moonshot-ai
+    provider_model_id: kimi-k3
+    model: moonshot-ai/kimi-k3
+    status: linked
+    evidence: explicit Moonshot owned_by mapping and exact models.dev Moonshot model identity
   - path: providers/moonshot-ai/models/moonshot-v1-128k-vision-preview.yaml
     provider: moonshot-ai
     provider_model_id: moonshot-v1-128k-vision-preview

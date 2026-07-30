@@ -1,4 +1,4 @@
-# medsiglip - Google Vertex AI model: medsiglip
+# medsiglip - Google model: medsiglip
 id: medsiglip
 model: google/medsiglip
 name: medsiglip
@@ -6,7 +6,7 @@ authors:
 - id: google
   name: Google
 description: |-
-  Google Vertex AI model: medsiglip
+  Google model: medsiglip
 
 # Model metadata
 metadata:
@@ -80,4 +80,4 @@ extensions:
 
 # Timestamps
 created_at: null
-updated_at: 2026-07-11T23:53:11.608925Z
+updated_at: 2026-07-30T18:59:51.821188Z

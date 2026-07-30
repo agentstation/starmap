@@ -1,4 +1,4 @@
-# keras-yolov8 - Google Vertex AI model: keras-yolov8
+# keras-yolov8 - Google model: keras-yolov8
 id: keras-yolov8
 model: google/keras-yolov8
 name: keras-yolov8
@@ -6,7 +6,7 @@ authors:
 - id: google
   name: Google
 description: |-
-  Google Vertex AI model: keras-yolov8
+  Google model: keras-yolov8
 
 # Model metadata
 metadata:
@@ -80,4 +80,4 @@ extensions:
 
 # Timestamps
 created_at: null
-updated_at: 2026-07-11T23:53:11.609832Z
+updated_at: 2026-07-30T18:59:51.853965Z

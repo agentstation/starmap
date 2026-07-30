@@ -1,4 +1,4 @@
-# language-v1-moderate-text - Google Vertex AI model: language-v1-moderate-text
+# language-v1-moderate-text - Google model: language-v1-moderate-text
 id: language-v1-moderate-text
 model: google/language-v1-moderate-text
 name: language-v1-moderate-text
@@ -6,7 +6,7 @@ authors:
 - id: google
   name: Google
 description: |-
-  Google Vertex AI model: language-v1-moderate-text
+  Google model: language-v1-moderate-text
 
 # Model metadata
 metadata:
@@ -80,4 +80,4 @@ extensions:
 
 # Timestamps
 created_at: null
-updated_at: 2026-07-11T23:53:11.613565Z
+updated_at: 2026-07-30T18:59:52.159081Z

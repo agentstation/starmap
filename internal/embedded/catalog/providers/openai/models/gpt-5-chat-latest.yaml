@@ -4,7 +4,7 @@ model: openai/gpt-5-chat-latest
 name: gpt-5-chat-latest
 authors:
 - id: openai
-  name: OpenAI
+  name: openai
 description: Chat-tuned GPT model for conversational assistance, writing, and tool workflows
 
 # Model metadata
@@ -96,4 +96,4 @@ limits:
 
 # Timestamps
 created_at: 2025-10-20T22:31:57Z
-updated_at: 2026-07-11T20:15:13.100952Z
+updated_at: 2026-07-30T16:49:32.313769Z

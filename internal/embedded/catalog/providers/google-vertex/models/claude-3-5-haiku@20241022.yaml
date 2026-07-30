@@ -96,7 +96,7 @@ pricing:
 limits:
   context_window: 200000
   input_tokens: 0
-  output_tokens: 8192
+  output_tokens: 4096
 extensions:
   models.dev:
     fields:
@@ -105,4 +105,4 @@ extensions:
 
 # Timestamps
 created_at: null
-updated_at: 2026-07-11T23:53:11.610127Z
+updated_at: 2026-07-30T18:59:52.309399Z

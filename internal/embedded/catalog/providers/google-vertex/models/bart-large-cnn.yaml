@@ -1,12 +1,14 @@
-# bart-large-cnn - Google Vertex AI model: bart-large-cnn
+# bart-large-cnn - Google model: bart-large-cnn
 id: bart-large-cnn
 model: meta/bart-large-cnn
 name: bart-large-cnn
 authors:
+- id: google
+  name: Google
 - id: meta
   name: Meta
 description: |-
-  Google Vertex AI model: bart-large-cnn
+  Google model: bart-large-cnn
 
 # Model metadata
 metadata:
@@ -85,4 +87,4 @@ extensions:
 
 # Timestamps
 created_at: null
-updated_at: 2026-07-11T23:53:11.611934Z
+updated_at: 2026-07-30T18:59:51.845031Z

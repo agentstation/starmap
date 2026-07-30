@@ -1,4 +1,4 @@
-# text-translation - Google Vertex AI model: text-translation
+# text-translation - Google model: text-translation
 id: text-translation
 model: google/text-translation
 name: text-translation
@@ -6,7 +6,7 @@ authors:
 - id: google
   name: Google
 description: |-
-  Google Vertex AI model: text-translation
+  Google model: text-translation
 
 # Model metadata
 metadata:
@@ -80,4 +80,4 @@ extensions:
 
 # Timestamps
 created_at: null
-updated_at: 2026-07-11T23:53:11.609986Z
+updated_at: 2026-07-30T18:59:51.604388Z

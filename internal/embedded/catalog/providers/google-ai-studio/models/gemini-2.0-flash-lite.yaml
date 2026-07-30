@@ -1,11 +1,11 @@
-# gemini-2.0-flash-lite - Gemini 2.0 Flash-Lite
+# gemini-2.0-flash-lite - Legacy model retained for compatibility with older integrati...
 id: gemini-2.0-flash-lite
 model: google/gemini-2.0-flash-lite
 name: Gemini 2.0 Flash-Lite
 authors:
 - id: google
   name: Google
-description: Gemini 2.0 Flash-Lite
+description: Legacy model retained for compatibility with older integrations
 status: deprecated
 
 # Model metadata
@@ -33,7 +33,7 @@ features:
   tools: true
   tool_choice: true
   web_search: false
-  attachments: false
+  attachments: true
 
   # Reasoning & Verbosity
   reasoning: false
@@ -78,13 +78,17 @@ features:
 
   # Response delivery
   format_response: false
-  structured_outputs: false
+  structured_outputs: true
   streaming: false
 generation:
   temperature:
     min: 0.0
     max: 2.0
     default: 1.0
+  top_p:
+    min: 0.0
+    max: 1.0
+    default: 0.95
 
 # Model pricing
 pricing:
@@ -117,4 +121,4 @@ extensions:
 
 # Timestamps
 created_at: null
-updated_at: 2026-07-11T20:15:13.069836Z
+updated_at: 2026-07-30T16:49:35.549437Z

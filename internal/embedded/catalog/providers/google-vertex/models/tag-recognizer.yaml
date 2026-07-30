@@ -1,4 +1,4 @@
-# tag-recognizer - Google Vertex AI model: tag-recognizer
+# tag-recognizer - Google model: tag-recognizer
 id: tag-recognizer
 model: google/tag-recognizer
 name: tag-recognizer
@@ -6,7 +6,7 @@ authors:
 - id: google
   name: Google
 description: |-
-  Google Vertex AI model: tag-recognizer
+  Google model: tag-recognizer
 
 # Model metadata
 metadata:
@@ -80,4 +80,4 @@ extensions:
 
 # Timestamps
 created_at: null
-updated_at: 2026-07-11T23:53:11.61305Z
+updated_at: 2026-07-30T18:59:51.906584Z

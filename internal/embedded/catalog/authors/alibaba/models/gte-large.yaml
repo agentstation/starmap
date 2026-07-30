@@ -1,4 +1,4 @@
-# gte-large - GTE Large
+# gte-large - The GTE models are trained by Alibaba DAMO Academy. They are...
 id: gte-large
 name: GTE Large
 authors:
@@ -12,6 +12,7 @@ metadata:
   open_weights: false
   tags:
   - embed
+
 # Model features
 features:
   modalities:

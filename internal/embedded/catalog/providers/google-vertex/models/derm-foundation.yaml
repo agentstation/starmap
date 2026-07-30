@@ -1,4 +1,4 @@
-# derm-foundation - Google Vertex AI model: derm-foundation
+# derm-foundation - Google model: derm-foundation
 id: derm-foundation
 model: google/derm-foundation
 name: derm-foundation
@@ -6,7 +6,7 @@ authors:
 - id: google
   name: Google
 description: |-
-  Google Vertex AI model: derm-foundation
+  Google model: derm-foundation
 
 # Model metadata
 metadata:
@@ -80,4 +80,4 @@ extensions:
 
 # Timestamps
 created_at: null
-updated_at: 2026-07-11T23:53:11.613486Z
+updated_at: 2026-07-30T18:59:52.060246Z

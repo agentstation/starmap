@@ -1,4 +1,4 @@
-# dito - Google Vertex AI model: dito
+# dito - Google model: dito
 id: dito
 model: google/dito
 name: dito
@@ -6,7 +6,7 @@ authors:
 - id: google
   name: Google
 description: |-
-  Google Vertex AI model: dito
+  Google model: dito
 
 # Model metadata
 metadata:
@@ -80,4 +80,4 @@ extensions:
 
 # Timestamps
 created_at: null
-updated_at: 2026-07-11T23:53:11.61395Z
+updated_at: 2026-07-30T18:59:52.211874Z

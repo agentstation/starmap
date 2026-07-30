@@ -1,4 +1,4 @@
-# txgemma - Google Vertex AI model: txgemma
+# txgemma - Google model: txgemma
 id: txgemma
 model: google/txgemma
 name: txgemma
@@ -6,7 +6,7 @@ authors:
 - id: google
   name: Google
 description: |-
-  Google Vertex AI model: txgemma
+  Google model: txgemma
 
 # Model metadata
 metadata:
@@ -80,4 +80,4 @@ extensions:
 
 # Timestamps
 created_at: null
-updated_at: 2026-07-11T23:53:11.611496Z
+updated_at: 2026-07-30T18:59:51.839086Z

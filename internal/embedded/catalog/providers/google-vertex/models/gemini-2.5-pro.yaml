@@ -1,12 +1,11 @@
-# gemini-2.5-pro - Google Vertex AI model: gemini-2.5-pro
+# gemini-2.5-pro - Google's proven reasoning model for coding, math, and multim...
 id: gemini-2.5-pro
 model: google/gemini-2.5-pro
 name: gemini-2.5-pro
 authors:
 - id: google
   name: Google
-description: |-
-  Google Vertex AI model: gemini-2.5-pro
+description: Google's proven reasoning model for coding, math, and multimodal analysis
 
 # Model metadata
 metadata:
@@ -33,17 +32,17 @@ features:
   tools: true
   tool_choice: true
   web_search: false
-  attachments: false
+  attachments: true
 
   # Reasoning & Verbosity
   reasoning: true
   reasoning_effort: false
-  reasoning_tokens: false
+  reasoning_tokens: true
   include_reasoning: false
   verbosity: false
 
   # Generation control support flags
-  temperature: false
+  temperature: true
   top_p: false
   top_k: false
   top_a: false
@@ -119,4 +118,4 @@ extensions:
 
 # Timestamps
 created_at: null
-updated_at: 2026-07-11T23:53:11.613159Z
+updated_at: 2026-07-30T18:59:51.760711Z

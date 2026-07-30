@@ -4,7 +4,7 @@ model: qwen/qwen3-vl-plus-2025-09-23
 name: qwen3-vl-plus-2025-09-23
 authors:
 - id: qwen
-  name: Qwen Team
+  name: qwen
 
 # Model features
 features:
@@ -79,4 +79,4 @@ extensions:
 
 # Timestamps
 created_at: 2026-04-30T06:47:13Z
-updated_at: 2026-04-30T06:47:13Z
+updated_at: 2026-07-30T16:49:27.441782Z

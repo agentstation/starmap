@@ -351,6 +351,13 @@
     header: x-goog-api-key
     scheme: ""
     query_param: ""
+  env_vars:
+  - name: GOOGLE_API_KEY
+    required: false
+  - name: GOOGLE_GENERATIVE_AI_API_KEY
+    required: false
+  - name: GEMINI_API_KEY
+    required: false
   catalog:
     docs: https://ai.google.dev/gemini-api/docs/models
     endpoint:
@@ -373,6 +380,10 @@
     moderation_required: false
     moderated: true
     moderator: google-ai-studio
+  extensions:
+    models.dev:
+      fields:
+        npm: "@ai-sdk/google"
 
 # Google Vertex AI
 - id: google-vertex
@@ -500,6 +511,9 @@
     header: Authorization
     scheme: Bearer
     query_param: ""
+  env_vars:
+  - name: MOONSHOT_API_KEY
+    required: false
   catalog:
     docs: "https://platform.moonshot.ai/docs/api/chat#list-models"
     endpoint:
@@ -528,6 +542,11 @@
     moderation_required: false
     moderated: true
     moderator: moonshot-ai
+  extensions:
+    models.dev:
+      fields:
+        api: https://api.moonshot.ai/v1
+        npm: "@ai-sdk/openai-compatible"
 
 # OpenAI
 - id: openai

@@ -1,4 +1,4 @@
-# pretrained-ocr - Google Vertex AI model: pretrained-ocr
+# pretrained-ocr - Google model: pretrained-ocr
 id: pretrained-ocr
 model: google/pretrained-ocr
 name: pretrained-ocr
@@ -6,7 +6,7 @@ authors:
 - id: google
   name: Google
 description: |-
-  Google Vertex AI model: pretrained-ocr
+  Google model: pretrained-ocr
 
 # Model metadata
 metadata:
@@ -80,4 +80,4 @@ extensions:
 
 # Timestamps
 created_at: null
-updated_at: 2026-07-11T23:53:11.610557Z
+updated_at: 2026-07-30T18:59:51.996478Z

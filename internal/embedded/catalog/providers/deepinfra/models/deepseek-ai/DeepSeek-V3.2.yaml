@@ -27,9 +27,9 @@ features:
     - text
 
   # Core capabilities
-  tool_calls: false
-  tools: false
-  tool_choice: false
+  tool_calls: true
+  tools: true
+  tool_choice: true
   web_search: false
   attachments: false
 
@@ -76,7 +76,7 @@ features:
 
   # Response delivery
   format_response: false
-  structured_outputs: false
+  structured_outputs: true
   streaming: true
 
 # Model pricing
@@ -94,7 +94,7 @@ pricing:
 limits:
   context_window: 163840
   input_tokens: 0
-  output_tokens: 64000
+  output_tokens: 163840
 extensions:
   models.dev:
     fields:
@@ -106,4 +106,4 @@ extensions:
 
 # Timestamps
 created_at: 2025-12-02T00:00:00Z
-updated_at: 2026-07-11T20:15:13.096182Z
+updated_at: 2026-07-30T16:49:29.056891Z

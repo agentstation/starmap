@@ -1,11 +1,19 @@
-# gemini-3.1-flash-live-preview - Gemini 3.1 Flash Live Preview
+# gemini-3.1-flash-live-preview - High-quality, low-latency Live API model for real-time dialo...
 id: gemini-3.1-flash-live-preview
 model: google/gemini-3.1-flash-live-preview
 name: Gemini 3.1 Flash Live Preview
 authors:
 - id: google
   name: Google
-description: Gemini 3.1 Flash Live Preview
+description: High-quality, low-latency Live API model for real-time dialogue and voice-first AI applications
+
+# Model metadata
+metadata:
+  release_date: 2026-03-26
+  open_weights: false
+  knowledge_cutoff: 2025-01-01
+lineage:
+  family: gemini-flash
 
 # Model features
 features:
@@ -13,19 +21,22 @@ features:
     input:
     - text
     - image
+    - video
+    - audio
     output:
     - text
+    - audio
 
   # Core capabilities
   tool_calls: true
   tools: true
   tool_choice: true
   web_search: false
-  attachments: false
+  attachments: true
 
   # Reasoning & Verbosity
-  reasoning: false
-  reasoning_effort: false
+  reasoning: true
+  reasoning_effort: true
   reasoning_tokens: false
   include_reasoning: false
   verbosity: false
@@ -73,6 +84,29 @@ generation:
     min: 0.0
     max: 2.0
     default: 1.0
+  top_p:
+    min: 0.0
+    max: 1.0
+    default: 0.95
+reasoning:
+  levels:
+  - minimum
+  - low
+  - medium
+  - high
+  default: null
+
+# Model pricing
+pricing:
+  tokens:
+    input:
+      per_1m: 0.75
+    output:
+      per_1m: 4.5
+  operations:
+    audio_input: 3.0
+    audio_gen: 12.0
+  currency: USD
 
 # Model limits
 limits:
@@ -90,4 +124,4 @@ extensions:
 
 # Timestamps
 created_at: 2026-07-11T20:15:12.209375Z
-updated_at: 2026-07-11T20:15:12.209375Z
+updated_at: 2026-07-30T16:49:34.754598Z

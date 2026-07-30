@@ -1,12 +1,11 @@
-# imagen-4.0-generate-001 - Google Vertex AI model: imagen-4.0-generate-001
+# imagen-4.0-generate-001 - Vertex served Imagen 4.0 model
 id: imagen-4.0-generate-001
 model: google/imagen-4.0-generate-001
 name: Imagen 4
 authors:
 - id: google
   name: Google
-description: |-
-  Google Vertex AI model: imagen-4.0-generate-001
+description: Vertex served Imagen 4.0 model
 
 # Model metadata
 metadata:
@@ -90,4 +89,4 @@ extensions:
 
 # Timestamps
 created_at: null
-updated_at: 2026-07-11T20:15:13.068662Z
+updated_at: 2026-07-30T16:49:35.23247Z

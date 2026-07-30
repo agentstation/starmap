@@ -1,4 +1,4 @@
-# text-embedding-large-exp-03-07 - Google Vertex AI model: text-embedding-large-exp-03-07
+# text-embedding-large-exp-03-07 - Google model: text-embedding-large-exp-03-07
 id: text-embedding-large-exp-03-07
 model: google/text-embedding-large-exp-03-07
 name: text-embedding-large-exp-03-07
@@ -6,7 +6,7 @@ authors:
 - id: google
   name: Google
 description: |-
-  Google Vertex AI model: text-embedding-large-exp-03-07
+  Google model: text-embedding-large-exp-03-07
 
 # Model metadata
 metadata:
@@ -80,4 +80,4 @@ extensions:
 
 # Timestamps
 created_at: null
-updated_at: 2026-07-11T23:53:11.612561Z
+updated_at: 2026-07-30T18:59:52.385049Z

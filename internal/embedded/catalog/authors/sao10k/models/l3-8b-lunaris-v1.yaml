@@ -11,6 +11,7 @@ metadata:
   open_weights: false
   tags:
   - chat
+
 # Model features
 features:
   modalities:

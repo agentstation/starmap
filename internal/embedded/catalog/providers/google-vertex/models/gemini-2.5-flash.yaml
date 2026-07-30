@@ -1,12 +1,11 @@
-# gemini-2.5-flash - Google Vertex AI model: gemini-2.5-flash
+# gemini-2.5-flash - Fast Gemini model balancing multimodal reasoning, tool use, ...
 id: gemini-2.5-flash
 model: google/gemini-2.5-flash
 name: gemini-2.5-flash
 authors:
 - id: google
   name: Google
-description: |-
-  Google Vertex AI model: gemini-2.5-flash
+description: Fast Gemini model balancing multimodal reasoning, tool use, and cost
 
 # Model metadata
 metadata:
@@ -33,17 +32,17 @@ features:
   tools: true
   tool_choice: true
   web_search: false
-  attachments: false
+  attachments: true
 
   # Reasoning & Verbosity
   reasoning: true
   reasoning_effort: false
-  reasoning_tokens: false
+  reasoning_tokens: true
   include_reasoning: false
   verbosity: false
 
   # Generation control support flags
-  temperature: false
+  temperature: true
   top_p: false
   top_k: false
   top_a: false
@@ -127,4 +126,4 @@ extensions:
 
 # Timestamps
 created_at: null
-updated_at: 2026-07-11T23:53:11.611001Z
+updated_at: 2026-07-30T18:59:52.280711Z

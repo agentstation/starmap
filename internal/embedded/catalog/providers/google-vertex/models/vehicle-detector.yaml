@@ -1,4 +1,4 @@
-# vehicle-detector - Google Vertex AI model: vehicle-detector
+# vehicle-detector - Google model: vehicle-detector
 id: vehicle-detector
 model: google/vehicle-detector
 name: vehicle-detector
@@ -6,7 +6,7 @@ authors:
 - id: google
   name: Google
 description: |-
-  Google Vertex AI model: vehicle-detector
+  Google model: vehicle-detector
 
 # Model metadata
 metadata:
@@ -80,4 +80,4 @@ extensions:
 
 # Timestamps
 created_at: null
-updated_at: 2026-07-11T23:53:11.610272Z
+updated_at: 2026-07-30T18:59:52.00531Z

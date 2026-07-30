@@ -1,11 +1,11 @@
-# gemini-embedding-001 - Obtain a distributed representation of a text.
+# gemini-embedding-001 - Embedding model for semantic search, retrieval, clustering, ...
 id: gemini-embedding-001
 model: google/gemini-embedding-001
 name: Gemini Embedding 001
 authors:
 - id: google
   name: Google
-description: Obtain a distributed representation of a text.
+description: Embedding model for semantic search, retrieval, clustering, and ranking pipelines
 
 # Model metadata
 metadata:
@@ -106,4 +106,4 @@ extensions:
 
 # Timestamps
 created_at: null
-updated_at: 2026-07-11T20:15:13.070027Z
+updated_at: 2026-07-30T16:49:35.661103Z

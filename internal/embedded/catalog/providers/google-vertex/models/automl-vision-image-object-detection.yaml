@@ -1,4 +1,4 @@
-# automl-vision-image-object-detection - Google Vertex AI model: automl-vision-image-object-detection
+# automl-vision-image-object-detection - Google model: automl-vision-image-object-detection
 id: automl-vision-image-object-detection
 model: google/automl-vision-image-object-detection
 name: automl-vision-image-object-detection
@@ -6,7 +6,7 @@ authors:
 - id: google
   name: Google
 description: |-
-  Google Vertex AI model: automl-vision-image-object-detection
+  Google model: automl-vision-image-object-detection
 
 # Model metadata
 metadata:
@@ -80,4 +80,4 @@ extensions:
 
 # Timestamps
 created_at: null
-updated_at: 2026-07-11T23:53:11.609763Z
+updated_at: 2026-07-30T18:59:52.353413Z

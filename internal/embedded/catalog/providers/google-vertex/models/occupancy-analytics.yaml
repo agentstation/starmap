@@ -1,4 +1,4 @@
-# occupancy-analytics - Google Vertex AI model: occupancy-analytics
+# occupancy-analytics - Google model: occupancy-analytics
 id: occupancy-analytics
 model: google/occupancy-analytics
 name: occupancy-analytics
@@ -6,7 +6,7 @@ authors:
 - id: google
   name: Google
 description: |-
-  Google Vertex AI model: occupancy-analytics
+  Google model: occupancy-analytics
 
 # Model metadata
 metadata:
@@ -80,4 +80,4 @@ extensions:
 
 # Timestamps
 created_at: null
-updated_at: 2026-07-11T23:53:11.608691Z
+updated_at: 2026-07-30T18:59:51.687108Z

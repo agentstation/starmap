@@ -1,4 +1,4 @@
-# automl-vision-image-classification - Google Vertex AI model: automl-vision-image-classification
+# automl-vision-image-classification - Google model: automl-vision-image-classification
 id: automl-vision-image-classification
 model: google/automl-vision-image-classification
 name: automl-vision-image-classification
@@ -6,7 +6,7 @@ authors:
 - id: google
   name: Google
 description: |-
-  Google Vertex AI model: automl-vision-image-classification
+  Google model: automl-vision-image-classification
 
 # Model metadata
 metadata:
@@ -80,4 +80,4 @@ extensions:
 
 # Timestamps
 created_at: null
-updated_at: 2026-07-11T23:53:11.608521Z
+updated_at: 2026-07-30T18:59:52.244102Z

@@ -1,4 +1,4 @@
-# bart-large-cnn - BART Large CNN
+# bart-large-cnn - BART large model fine-tuned on CNN/DailyMail for abstractive...
 id: bart-large-cnn
 name: bart-large-cnn
 authors:

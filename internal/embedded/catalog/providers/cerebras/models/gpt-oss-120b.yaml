@@ -23,15 +23,15 @@ features:
     - text
 
   # Core capabilities
-  tool_calls: false
-  tools: false
-  tool_choice: false
+  tool_calls: true
+  tools: true
+  tool_choice: true
   web_search: false
   attachments: false
 
   # Reasoning & Verbosity
   reasoning: true
-  reasoning_effort: false
+  reasoning_effort: true
   reasoning_tokens: false
   include_reasoning: false
   verbosity: false
@@ -72,7 +72,7 @@ features:
 
   # Response delivery
   format_response: false
-  structured_outputs: false
+  structured_outputs: true
   streaming: true
 reasoning:
   levels:
@@ -98,4 +98,4 @@ limits:
 
 # Timestamps
 created_at: null
-updated_at: 2026-07-11T20:15:13.07698Z
+updated_at: 2026-07-30T16:49:34.635666Z

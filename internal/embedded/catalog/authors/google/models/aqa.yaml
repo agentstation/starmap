@@ -71,7 +71,6 @@ features:
   format_response: false
   structured_outputs: false
   streaming: false
-generation:
 
 # Timestamps
 created_at: null

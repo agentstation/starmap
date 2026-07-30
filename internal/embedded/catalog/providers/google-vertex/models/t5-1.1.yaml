@@ -1,4 +1,4 @@
-# t5-1.1 - Google Vertex AI model: t5-1.1
+# t5-1.1 - Google model: t5-1.1
 id: t5-1.1
 model: google/t5-1.1
 name: t5-1.1
@@ -6,7 +6,7 @@ authors:
 - id: google
   name: Google
 description: |-
-  Google Vertex AI model: t5-1.1
+  Google model: t5-1.1
 
 # Model metadata
 metadata:
@@ -80,4 +80,4 @@ extensions:
 
 # Timestamps
 created_at: null
-updated_at: 2026-07-11T23:53:11.608647Z
+updated_at: 2026-07-30T18:59:51.521624Z

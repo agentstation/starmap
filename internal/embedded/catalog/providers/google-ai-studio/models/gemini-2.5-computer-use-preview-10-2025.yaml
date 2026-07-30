@@ -1,16 +1,19 @@
-# gemini-2.5-computer-use-preview-10-2025 - Gemini 2.5 Computer Use Preview 10-2025
+# gemini-2.5-computer-use-preview-10-2025 - Specialized Gemini 2.5 model for browser-control agents that...
 id: gemini-2.5-computer-use-preview-10-2025
 model: google/gemini-2.5-computer-use-preview-10-2025
 name: Gemini 2.5 Computer Use Preview 10-2025
 authors:
 - id: google
   name: Google
-description: Gemini 2.5 Computer Use Preview 10-2025
+description: Specialized Gemini 2.5 model for browser-control agents that automate UI tasks
 
 # Model metadata
 metadata:
-  release_date: "2025-10-19T18:13:07Z"
+  release_date: 2025-10-07
   open_weights: false
+  knowledge_cutoff: 2025-01-01
+lineage:
+  family: gemini-pro
 
 # Model features
 features:
@@ -26,7 +29,7 @@ features:
   tools: true
   tool_choice: true
   web_search: false
-  attachments: false
+  attachments: true
 
   # Reasoning & Verbosity
   reasoning: true
@@ -78,6 +81,10 @@ generation:
     min: 0.0
     max: 2.0
     default: 1.0
+  top_p:
+    min: 0.0
+    max: 1.0
+    default: 0.95
 
 # Model limits
 limits:
@@ -98,4 +105,4 @@ extensions:
 
 # Timestamps
 created_at: null
-updated_at: 2026-07-11T20:15:13.069899Z
+updated_at: 2026-07-30T16:49:34.973159Z

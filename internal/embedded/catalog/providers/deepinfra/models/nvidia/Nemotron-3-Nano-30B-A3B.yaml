@@ -13,6 +13,7 @@ metadata:
   open_weights: true
   tags:
   - chat
+  - prompt_cache
   - reasoning
 lineage:
   family: nemotron
@@ -27,9 +28,9 @@ features:
     - text
 
   # Core capabilities
-  tool_calls: false
-  tools: false
-  tool_choice: false
+  tool_calls: true
+  tools: true
+  tool_choice: true
   web_search: false
   attachments: false
 
@@ -82,6 +83,8 @@ features:
 # Model pricing
 pricing:
   tokens:
+    cache_read:
+      per_1m: 0.025
     input:
       per_1m: 0.05
     output:
@@ -101,4 +104,4 @@ extensions:
 
 # Timestamps
 created_at: 2025-12-15T00:00:00Z
-updated_at: 2026-07-11T20:15:13.085236Z
+updated_at: 2026-07-30T16:49:32.047072Z

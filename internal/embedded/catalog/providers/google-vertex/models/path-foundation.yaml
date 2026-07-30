@@ -1,4 +1,4 @@
-# path-foundation - Google Vertex AI model: path-foundation
+# path-foundation - Google model: path-foundation
 id: path-foundation
 model: google/path-foundation
 name: path-foundation
@@ -6,7 +6,7 @@ authors:
 - id: google
   name: Google
 description: |-
-  Google Vertex AI model: path-foundation
+  Google model: path-foundation
 
 # Model metadata
 metadata:
@@ -80,4 +80,4 @@ extensions:
 
 # Timestamps
 created_at: null
-updated_at: 2026-07-11T23:53:11.612721Z
+updated_at: 2026-07-30T18:59:52.40518Z

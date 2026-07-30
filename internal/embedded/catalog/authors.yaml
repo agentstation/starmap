@@ -126,6 +126,24 @@
   huggingface: https://huggingface.co/bigscience
   github: https://github.com/bigscience-workshop
 
+# Black Forest Labs
+- id: black-forest-labs
+  name: Black Forest Labs
+  website: https://blackforestlabs.ai
+  huggingface: https://huggingface.co/black-forest-labs
+
+# Boson AI
+- id: boson-ai
+  name: Boson AI
+  website: https://www.boson.ai
+  huggingface: https://huggingface.co/bosonai
+
+# Bria
+- id: bria
+  name: Bria
+  website: https://bria.ai
+  huggingface: https://huggingface.co/briaai
+
 # ByteDance
 - id: bytedance
   name: ByteDance
@@ -134,16 +152,6 @@
   icon_url: https://bytedance.com/favicon.ico
   website: https://bytedance.com
   github: https://github.com/bytedance
-
-# Canopy Labs
-- id: canopy-labs
-  aliases:
-  - canopylabs
-  name: Canopy Labs
-  description: AI research company and creator of the Orpheus text-to-speech model family
-  website: https://canopylabs.ai
-  huggingface: https://huggingface.co/canopylabs
-  github: https://github.com/canopyai
 
 # California Institute of Technology
 - id: caltech
@@ -156,6 +164,16 @@
   name: University of Cambridge
   icon_url: https://cam.ac.uk/favicon.ico
   website: https://cam.ac.uk
+
+# Canopy Labs
+- id: canopy-labs
+  aliases:
+  - canopylabs
+  name: Canopy Labs
+  description: AI research company and creator of the Orpheus text-to-speech model family
+  website: https://canopylabs.ai
+  huggingface: https://huggingface.co/canopylabs
+  github: https://github.com/canopyai
 
 # Character.AI
 - id: character
@@ -221,6 +239,11 @@
   github: https://github.com/google-deepmind
   twitter: https://x.com/GoogleDeepMind
 
+# DeepReinforce
+- id: deepreinforce-ai
+  name: DeepReinforce
+  huggingface: https://huggingface.co/deepreinforce-ai
+
 # DeepSeek
 - id: deepseek
   name: DeepSeek
@@ -277,6 +300,12 @@
   huggingface: https://huggingface.co/lmsys
   github: https://github.com/lm-sys/FastChat
 
+# FastVideo
+- id: fastvideo
+  name: FastVideo
+  huggingface: https://huggingface.co/FastVideo
+  github: https://github.com/hao-ai-lab/FastVideo
+
 # Georgia Tech Research Institute
 - id: gatech
   name: Georgia Tech Research Institute
@@ -318,6 +347,11 @@
       - compound*
       - groq/*
 
+# Gryphe
+- id: gryphe
+  name: Gryphe
+  huggingface: https://huggingface.co/Gryphe
+
 # H2O.ai
 - id: h2o.ai
   name: H2O.ai
@@ -333,6 +367,12 @@
   name: Harvard University
   icon_url: https://harvard.edu/favicon.ico
   website: https://harvard.edu
+
+# Hexgrad
+- id: hexgrad
+  name: Hexgrad
+  huggingface: https://huggingface.co/hexgrad
+  github: https://github.com/hexgrad
 
 # Huawei
 - id: huawei
@@ -370,6 +410,17 @@
   website: https://inflection.ai
   twitter: https://x.com/InflectionAI
 
+# Intfloat
+- id: intfloat
+  name: Intfloat
+  huggingface: https://huggingface.co/intfloat
+
+# Inworld AI
+- id: inworld-ai
+  name: Inworld AI
+  website: https://inworld.ai
+  huggingface: https://huggingface.co/inworld-ai
+
 # jondurbin
 - id: jondurbin
   name: jondurbin
@@ -387,6 +438,13 @@
   huggingface: https://huggingface.co/laion
   github: https://github.com/LAION-AI
   twitter: https://x.com/laion_ai
+
+# Lightricks
+- id: lightricks
+  name: Lightricks
+  website: https://www.lightricks.com
+  huggingface: https://huggingface.co/Lightricks
+  github: https://github.com/Lightricks
 
 # LMSYS Org
 - id: lmsys
@@ -567,6 +625,12 @@
   website: https://phind.com
   huggingface: https://huggingface.co/Phind
 
+# PixVerse
+- id: pixverse
+  name: PixVerse
+  website: https://pixverse.ai
+  huggingface: https://huggingface.co/PixVerse
+
 # PlayAI
 - id: playai
   name: PlayAI
@@ -585,6 +649,13 @@
   icon_url: https://princeton.edu/favicon.ico
   website: https://princeton.edu
 
+# Pruna AI
+- id: pruna-ai
+  name: Pruna AI
+  website: https://www.pruna.ai
+  huggingface: https://huggingface.co/PrunaAI
+  github: https://github.com/PrunaAI
+
 # Qwen Team
 - id: qwen
   name: Qwen Team
@@ -593,6 +664,13 @@
   website: https://qwen.ai
   huggingface: https://huggingface.co/Qwen
   github: https://github.com/QwenLM
+
+# Resemble AI
+- id: resemble-ai
+  name: Resemble AI
+  website: https://www.resemble.ai
+  huggingface: https://huggingface.co/ResembleAI
+  github: https://github.com/resemble-ai
 
 # Runway ML
 - id: runway
@@ -610,6 +688,11 @@
   huggingface: https://huggingface.co/Salesforce
   github: https://github.com/salesforce
   twitter: https://x.com/salesforce
+
+# Sao10K
+- id: sao10k
+  name: Sao10K
+  huggingface: https://huggingface.co/Sao10K
 
 # SDAIA
 - id: sdaia
@@ -630,6 +713,19 @@
   website: https://sensetime.com
   huggingface: https://huggingface.co/sensetime
 
+# Sentence Transformers
+- id: sentence-transformers
+  name: Sentence Transformers
+  website: https://www.sbert.net
+  huggingface: https://huggingface.co/sentence-transformers
+  github: https://github.com/huggingface/sentence-transformers
+
+# Sesame
+- id: sesame
+  name: Sesame
+  website: https://www.sesame.com
+  huggingface: https://huggingface.co/sesame
+
 # Shanghai AI Laboratory
 - id: shanghai-ai-lab
   name: Shanghai AI Laboratory
@@ -638,6 +734,12 @@
   website: https://shlab.org.cn
   huggingface: https://huggingface.co/internlm
   github: https://github.com/InternLM
+
+# Shibing624
+- id: shibing624
+  name: Shibing624
+  huggingface: https://huggingface.co/shibing624
+  github: https://github.com/shibing624
 
 # Stability AI
 - id: stability
@@ -664,6 +766,13 @@
   huggingface: https://huggingface.co/tatsu-lab
   github: https://github.com/tatsu-lab/stanford_alpaca
 
+# StepFun
+- id: stepfun
+  name: StepFun
+  website: https://www.stepfun.com
+  huggingface: https://huggingface.co/stepfun-ai
+  github: https://github.com/stepfun-ai
+
 # teknium
 - id: teknium
   name: teknium
@@ -680,6 +789,11 @@
   icon_url: https://tencent.com/favicon.ico
   website: https://tencent.com
   github: https://github.com/Tencent
+
+# The NLPER
+- id: thenlper
+  name: The NLPER
+  huggingface: https://huggingface.co/thenlper
 
 # THUDM
 - id: thudm
@@ -753,6 +867,13 @@
   github: https://github.com/xai-org
   twitter: https://x.com/xAI
 
+# Xiaomi
+- id: xiaomi
+  name: Xiaomi
+  website: https://www.mi.com
+  huggingface: https://huggingface.co/XiaomiMiMo
+  github: https://github.com/XiaomiMiMo
+
 # Yale University
 - id: yale
   name: Yale University
@@ -769,105 +890,3 @@
   website: https://zhipuai.cn
   huggingface: https://huggingface.co/THUDM
   github: https://github.com/THUDM
-
-# Additional model publishers found in provider catalogs
-- id: black-forest-labs
-  name: Black Forest Labs
-  website: https://blackforestlabs.ai
-  huggingface: https://huggingface.co/black-forest-labs
-
-- id: boson-ai
-  name: Boson AI
-  website: https://www.boson.ai
-  huggingface: https://huggingface.co/bosonai
-
-- id: bria
-  name: Bria
-  website: https://bria.ai
-  huggingface: https://huggingface.co/briaai
-
-- id: deepreinforce-ai
-  name: DeepReinforce
-  huggingface: https://huggingface.co/deepreinforce-ai
-
-- id: fastvideo
-  name: FastVideo
-  huggingface: https://huggingface.co/FastVideo
-  github: https://github.com/hao-ai-lab/FastVideo
-
-- id: gryphe
-  name: Gryphe
-  huggingface: https://huggingface.co/Gryphe
-
-- id: hexgrad
-  name: Hexgrad
-  huggingface: https://huggingface.co/hexgrad
-  github: https://github.com/hexgrad
-
-- id: intfloat
-  name: Intfloat
-  huggingface: https://huggingface.co/intfloat
-
-- id: inworld-ai
-  name: Inworld AI
-  website: https://inworld.ai
-  huggingface: https://huggingface.co/inworld-ai
-
-- id: lightricks
-  name: Lightricks
-  website: https://www.lightricks.com
-  huggingface: https://huggingface.co/Lightricks
-  github: https://github.com/Lightricks
-
-- id: pixverse
-  name: PixVerse
-  website: https://pixverse.ai
-  huggingface: https://huggingface.co/PixVerse
-
-- id: pruna-ai
-  name: Pruna AI
-  website: https://www.pruna.ai
-  huggingface: https://huggingface.co/PrunaAI
-  github: https://github.com/PrunaAI
-
-- id: resemble-ai
-  name: Resemble AI
-  website: https://www.resemble.ai
-  huggingface: https://huggingface.co/ResembleAI
-  github: https://github.com/resemble-ai
-
-- id: sao10k
-  name: Sao10K
-  huggingface: https://huggingface.co/Sao10K
-
-- id: sentence-transformers
-  name: Sentence Transformers
-  website: https://www.sbert.net
-  huggingface: https://huggingface.co/sentence-transformers
-  github: https://github.com/huggingface/sentence-transformers
-
-- id: sesame
-  name: Sesame
-  website: https://www.sesame.com
-  huggingface: https://huggingface.co/sesame
-
-- id: shibing624
-  name: Shibing624
-  huggingface: https://huggingface.co/shibing624
-  github: https://github.com/shibing624
-
-- id: stepfun
-  name: StepFun
-  website: https://www.stepfun.com
-  huggingface: https://huggingface.co/stepfun-ai
-  github: https://github.com/stepfun-ai
-
-- id: thenlper
-  name: The NLPER
-  huggingface: https://huggingface.co/thenlper
-
-- id: xiaomi
-  name: Xiaomi
-  website: https://www.mi.com
-  huggingface: https://huggingface.co/XiaomiMiMo
-  github: https://github.com/XiaomiMiMo
