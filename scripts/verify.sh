@@ -6,7 +6,10 @@ TMPDIR="$(mktemp -d "${TMPDIR:-/tmp}/starmap-verify.XXXXXX")"
 trap 'rm -rf "$TMPDIR"' EXIT
 VERIFY_CATALOG_PATH="$ROOT/internal/embedded/catalog"
 VERIFY_CATALOG_DATABASE_PATH="$TMPDIR/catalog"
+VERIFY_HOME="$TMPDIR/home"
+GOLANGCI_LINT_CACHE="$TMPDIR/golangci-lint-cache"
 GOLANGCI_LINT_VERSION="2.12.2"
+export GOLANGCI_LINT_CACHE
 
 cd "$ROOT"
 
@@ -105,6 +108,7 @@ run "$TMPDIR/starmap" version
 run env CATALOG_PATH="$VERIFY_CATALOG_DATABASE_PATH" CATALOG_EXPORT_PATH="$VERIFY_CATALOG_PATH" \
 	"$TMPDIR/starmap" validate catalog
 printf '\n==> isolated credential-free provider listing\n'
+mkdir -p "$VERIFY_HOME"
 (
 	cd "$TMPDIR"
 	env \
@@ -115,12 +119,18 @@ printf '\n==> isolated credential-free provider listing\n'
 	-u DEEPINFRA_TOKEN \
 	-u DEEPSEEK_API_KEY \
 	-u FIREWORKS_API_KEY \
+	-u GOOGLE_APPLICATION_CREDENTIALS \
 	-u GOOGLE_API_KEY \
+	-u GOOGLE_VERTEX_LOCATION \
+	-u GOOGLE_VERTEX_PROJECT \
 	-u GROQ_API_KEY \
 	-u MOONSHOT_API_KEY \
 	-u OPENAI_API_KEY \
 	CATALOG_PATH="$VERIFY_CATALOG_DATABASE_PATH" \
 	CATALOG_EXPORT_PATH="$VERIFY_CATALOG_PATH" \
+	CLOUDSDK_CONFIG="$VERIFY_HOME/.config/gcloud" \
+	HOME="$VERIFY_HOME" \
+	XDG_CONFIG_HOME="$VERIFY_HOME/.config" \
 	"$TMPDIR/starmap" providers
 )
 run env CATALOG_PATH="$VERIFY_CATALOG_DATABASE_PATH" CATALOG_EXPORT_PATH="$VERIFY_CATALOG_PATH" \
