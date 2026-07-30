@@ -4,6 +4,8 @@ import (
 	"bytes"
 	"context"
 	stderrors "errors"
+	"os"
+	"path/filepath"
 	"strings"
 	"testing"
 
@@ -58,6 +60,46 @@ func TestVerifyReleaseRequiresChecksumStatementAndPublisher(t *testing.T) {
 	}
 	if !bytes.Equal(release.Archive, originalArchive) {
 		t.Fatal("publisher verifier could mutate caller-owned archive bytes")
+	}
+}
+
+func TestVerifyReleaseAcceptsExactlyStagedAssets(t *testing.T) {
+	t.Parallel()
+
+	generation := artifactFixtureGeneration(t)
+	bundle, err := Build(generation)
+	if err != nil {
+		t.Fatalf("Build: %v", err)
+	}
+	assets, err := StageReleaseAssets(t.TempDir(), bundle)
+	if err != nil {
+		t.Fatalf("StageReleaseAssets: %v", err)
+	}
+	readAsset := func(name string) []byte {
+		t.Helper()
+		data, readErr := os.ReadFile(filepath.Join(assets.Directory, name))
+		if readErr != nil {
+			t.Fatalf("Read staged %s: %v", name, readErr)
+		}
+		return data
+	}
+	release := Release{
+		Archive:     readAsset(Filename),
+		Checksum:    readAsset(ChecksumFilename),
+		Attestation: readAsset(AttestationFilename),
+	}
+
+	got, err := VerifyRelease(
+		context.Background(),
+		release,
+		&recordingPublisherVerifier{},
+	)
+	if err != nil {
+		t.Fatalf("VerifyRelease staged assets: %v", err)
+	}
+	if got.Manifest.GenerationID != generation.Manifest.GenerationID ||
+		!bytes.Equal(got.Payload, generation.Payload) {
+		t.Fatalf("verified staged generation = %#v, want exact input", got.Manifest)
 	}
 }
 

@@ -14,7 +14,7 @@ func TestScheduledGenerationWorkflowPublishesOnlyValidatedChangedPayload(t *test
 	workflow := string(data)
 	for _, required := range []string{
 		"schedule:", `cron: "17 3 * * *"`, "workflow_dispatch:", "cancel-in-progress: false",
-		"./scripts/generate-embedded-catalog.sh", "jq -er .changed catalog-generation.json",
+		"./scripts/generate-embedded-catalog.sh", "jq -r .changed catalog-generation.json",
 		"STARMAP_GENERATION_STATE_PATH:", "STARMAP_GENERATION_STORE_PATH:",
 		"TAG=catalog-semantic-${SEMANTIC_DIGEST}", `if [[ "$CHANGED" != "true" ]]`,
 		`select(.isPrerelease == true and .isDraft == false`, `write_output previous_tag "$PREVIOUS_TAG"`,
@@ -50,5 +50,8 @@ func TestScheduledGenerationWorkflowPublishesOnlyValidatedChangedPayload(t *test
 	}
 	if strings.Contains(workflow, "--clobber") {
 		t.Fatal("scheduled generation can overwrite an existing release asset")
+	}
+	if strings.Contains(workflow, "jq -er .changed catalog-generation.json") {
+		t.Fatal("scheduled generation treats the valid false boolean as a shell failure")
 	}
 }

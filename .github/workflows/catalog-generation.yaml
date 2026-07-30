@@ -48,7 +48,7 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          CHANGED=$(jq -er .changed catalog-generation.json)
+          CHANGED=$(jq -r .changed catalog-generation.json)
           PAYLOAD_CHECKSUM=$(jq -er .payload_checksum catalog-generation.json)
           SEMANTIC_CHECKSUM=$(jq -er .semantic_checksum catalog-generation.json)
           SEMANTIC_DIGEST=${SEMANTIC_CHECKSUM#sha256:}
