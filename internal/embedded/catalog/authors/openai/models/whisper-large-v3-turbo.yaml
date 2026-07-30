@@ -18,6 +18,7 @@ features:
   modalities:
     input:
     - text
+    - audio
     output:
     - text
 

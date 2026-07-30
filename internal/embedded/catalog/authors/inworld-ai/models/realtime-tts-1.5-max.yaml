@@ -19,7 +19,7 @@ features:
     input:
     - text
     output:
-    - text
+    - audio
 
   # Core capabilities
   tool_calls: false

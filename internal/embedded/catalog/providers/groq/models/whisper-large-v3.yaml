@@ -10,9 +10,8 @@ status: active
 
 # Model metadata
 metadata:
-  release_date: 2023-09-01
+  release_date: 2023-11-06
   open_weights: true
-  knowledge_cutoff: 2023-09-01
 lineage:
   family: whisper
 

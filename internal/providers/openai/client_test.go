@@ -782,6 +782,42 @@ func containsOpenAITestModality(modalities []catalogs.ModelModality, want catalo
 	return slices.Contains(modalities, want)
 }
 
+func TestNormalizeOperationalModalities(t *testing.T) {
+	tests := []struct {
+		name       string
+		tag        catalogs.ModelTag
+		wantInput  catalogs.ModelModality
+		wantOutput catalogs.ModelModality
+	}{
+		{name: "embedding", tag: "embed", wantInput: catalogs.ModelModalityText, wantOutput: catalogs.ModelModalityEmbedding},
+		{name: "speech to text", tag: "stt", wantInput: catalogs.ModelModalityAudio, wantOutput: catalogs.ModelModalityText},
+		{name: "text to speech", tag: "tts", wantInput: catalogs.ModelModalityText, wantOutput: catalogs.ModelModalityAudio},
+		{name: "image generation", tag: "image-gen", wantInput: catalogs.ModelModalityText, wantOutput: catalogs.ModelModalityImage},
+		{name: "video generation", tag: "video-gen", wantInput: catalogs.ModelModalityText, wantOutput: catalogs.ModelModalityVideo},
+	}
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			model := &catalogs.Model{
+				Metadata: &catalogs.ModelMetadata{Tags: []catalogs.ModelTag{test.tag}},
+				Features: &catalogs.ModelFeatures{Modalities: catalogs.ModelModalities{
+					Input:  []catalogs.ModelModality{catalogs.ModelModalityText},
+					Output: []catalogs.ModelModality{catalogs.ModelModalityText},
+				}},
+			}
+			normalizeOperationalModalities(model)
+			if !containsOpenAITestModality(model.Features.Modalities.Input, test.wantInput) {
+				t.Fatalf("input modalities = %v, want %q", model.Features.Modalities.Input, test.wantInput)
+			}
+			if !reflect.DeepEqual(
+				model.Features.Modalities.Output,
+				[]catalogs.ModelModality{test.wantOutput},
+			) {
+				t.Fatalf("output modalities = %v, want [%q]", model.Features.Modalities.Output, test.wantOutput)
+			}
+		})
+	}
+}
+
 func TestConvertToModelWithNilCatalogProvider(t *testing.T) {
 	client := newTestClient(t, &catalogs.Provider{
 		ID:   "minimal",

@@ -8,9 +8,9 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/agentstation/starmap/internal/constants"
 	"github.com/agentstation/starmap/internal/sourcepayload"
 	"github.com/agentstation/starmap/pkg/catalogs"
-	"github.com/agentstation/starmap/internal/constants"
 	"github.com/agentstation/starmap/pkg/sources"
 	"github.com/goccy/go-yaml"
 )
@@ -653,6 +653,27 @@ func TestModelToStarmapModelExtensionsRoundTripWithoutTypeChurn(t *testing.T) {
 	}
 	if !reflect.DeepEqual(model.Extensions, roundTrip.Extensions) {
 		t.Fatalf("extensions changed after YAML round trip:\n got %#v\nwant %#v", roundTrip.Extensions, model.Extensions)
+	}
+}
+
+func TestModelToStarmapModelReasoningOptionsOverrideContradictorySummary(t *testing.T) {
+	model, err := (&Model{
+		ID:        "reasoning-control",
+		Name:      "Reasoning Control",
+		Reasoning: false,
+		ReasoningOptions: []ReasoningOption{
+			{Type: "toggle"},
+		},
+	}).ToStarmapModel()
+	if err != nil {
+		t.Fatalf("ToStarmapModel returned error: %v", err)
+	}
+	if model.Features == nil || !model.Features.Reasoning {
+		t.Fatalf("reasoning = %#v, want true from reasoning control", model.Features)
+	}
+	if value, state := model.Features.Support(catalogs.ModelFeatureReasoning); !value ||
+		state != catalogs.ValueKnown {
+		t.Fatalf("reasoning presence = %v, %v; want true, known", value, state)
 	}
 }
 

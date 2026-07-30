@@ -22,7 +22,7 @@ features:
     input:
     - text
     output:
-    - text
+    - video
 
   # Core capabilities
   tool_calls: false

@@ -169,7 +169,7 @@ func (s *Filesystem) currentIDOrEmpty() (string, error) {
 	if err := validateFilesystemEntry(currentPath, false); err != nil {
 		return "", err
 	}
-	data, err := os.ReadFile(currentPath)
+	data, err := os.ReadFile(currentPath) //nolint:gosec // Fixed store-owned entry validated as a regular non-symlink file.
 	if os.IsNotExist(err) {
 		return "", nil
 	}

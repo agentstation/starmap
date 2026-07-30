@@ -848,6 +848,43 @@ func TestMergeModelsPreservesSourceTimestampsForNewModel(t *testing.T) {
 	}
 }
 
+func TestMergeModelsOrdersMixedSourceTimestamps(t *testing.T) {
+	authorities := authority.New()
+	strategy := NewAuthorityStrategy(authorities)
+	merger := newMerger(authorities, strategy, nil)
+	firstKnown := utc.New(time.Date(2025, 4, 29, 0, 0, 0, 0, time.UTC))
+	firstObserved := utc.New(time.Date(2026, 7, 29, 0, 0, 0, 0, time.UTC))
+
+	result, _, err := merger.Models(map[sources.ID][]*catalogs.Model{
+		sources.ProvidersID: {
+			{
+				ID:        "model-1",
+				Name:      "Provider Model",
+				CreatedAt: firstObserved,
+			},
+		},
+		sources.ModelsDevHTTPID: {
+			{
+				ID:        "model-1",
+				Name:      "ModelsDev Model",
+				UpdatedAt: firstKnown,
+			},
+		},
+	})
+	if err != nil {
+		t.Fatalf("MergeModels failed: %v", err)
+	}
+	if len(result) != 1 {
+		t.Fatalf("models = %d, want 1", len(result))
+	}
+	if !result[0].CreatedAt.Equal(firstKnown) {
+		t.Fatalf("CreatedAt = %v, want earliest %v", result[0].CreatedAt, firstKnown)
+	}
+	if !result[0].UpdatedAt.Equal(firstObserved) {
+		t.Fatalf("UpdatedAt = %v, want latest %v", result[0].UpdatedAt, firstObserved)
+	}
+}
+
 func TestMergeModelsDoesNotBumpUpdatedAtForExtensionDynamicTypeOnlyChanges(t *testing.T) {
 	authorities := authority.New()
 	strategy := NewAuthorityStrategy(authorities)

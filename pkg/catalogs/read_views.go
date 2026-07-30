@@ -168,6 +168,11 @@ func validatedProviderModelCandidate(
 			"validate", "provider model", string(provider.ID)+"/"+model.ID, err,
 		)
 	}
+	if err := validateModelFactConsistency(*model); err != nil {
+		return providerModelCandidate{}, errors.WrapResource(
+			"validate", "provider model", string(provider.ID)+"/"+model.ID, err,
+		)
+	}
 	candidate := providerModelCandidate{
 		providerID:   provider.ID,
 		definitionID: model.ModelRef,

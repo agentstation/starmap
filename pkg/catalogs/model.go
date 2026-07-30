@@ -64,16 +64,22 @@ type Model struct {
 	// Extensions - controlled source-specific fields that are not canonical schema
 	Extensions SourceExtensions `json:"extensions,omitempty" yaml:"extensions,omitempty"`
 
-	// Timestamps for record keeping and auditing
-	CreatedAt utc.Time `json:"created_at" yaml:"created_at"` // Created date (YYYY-MM or YYYY-MM-DD format)
-	UpdatedAt utc.Time `json:"updated_at" yaml:"updated_at"` // Last updated date (YYYY-MM or YYYY-MM-DD format)
+	// Lifecycle evidence for record keeping and auditing. CreatedAt is the
+	// earliest known source or Starmap observation and UpdatedAt is the latest
+	// known source or Starmap change. When both are known, CreatedAt is never
+	// later than UpdatedAt. A zero value means unknown.
+	CreatedAt utc.Time `json:"created_at" yaml:"created_at"`
+	UpdatedAt utc.Time `json:"updated_at" yaml:"updated_at"`
 
 	descriptionPresence ValuePresence
 }
 
 // ModelMetadata represents the metadata for a model.
 type ModelMetadata struct {
-	ReleaseDate     utc.Time           `json:"release_date" yaml:"release_date"`                             // Release date (YYYY-MM or YYYY-MM-DD format)
+	// ReleaseDate is the first known public release of this model identity. For
+	// a rolling alias, its KnowledgeCutoff may advance beyond that initial date.
+	// A zero value means unknown; Starmap does not invent missing day precision.
+	ReleaseDate     utc.Time           `json:"release_date" yaml:"release_date"`
 	OpenWeights     bool               `json:"open_weights" yaml:"open_weights"`                             // Whether model weights are open
 	KnowledgeCutoff *utc.Time          `json:"knowledge_cutoff,omitempty" yaml:"knowledge_cutoff,omitempty"` // Knowledge cutoff date (YYYY-MM or YYYY-MM-DD format)
 	Tags            []ModelTag         `json:"tags,omitempty" yaml:"tags,omitempty"`                         // Use case tags for categorizing the model
