@@ -21,7 +21,8 @@ is green. PR #57 passed both required hosted checks and merged as protected-main
 `c93a4bc6`. P10.1 made repository verification hermetic and is green; P10.2
 repeated the complete P3–P9 lifecycle matrix under race. P10.3 completed the
 required fuzz and fault campaigns without a crash or state corruption. P10.4
-production-budget measurement is the sole active task.
+records the complete production budgets and adds focused publication and remote
+activation benchmarks. P10.5 documentation alignment is the sole active task.
 P8.9 removed
 Starmap-owned relational storage, P8.10 made the external adapter contract
 executable, P8.11 made conditional S3-compatible storage production-real, and
@@ -135,6 +136,10 @@ This plan is the durable execution record.
   [`reviews/P9_DISTRIBUTION_CONVERGENCE_2026-07-29.md`](reviews/P9_DISTRIBUTION_CONVERGENCE_2026-07-29.md)
 - P9 distribution convergence review SHA-256:
   `ebfb498202d12d97545a64c277e6e5767cb2268d5422625ad13403d3071b0562`
+- P10 production budgets:
+  [`reviews/P10_PRODUCTION_BUDGETS_2026-07-29.md`](reviews/P10_PRODUCTION_BUDGETS_2026-07-29.md)
+- P10 production budgets SHA-256:
+  `ff1b14d5bfc3a0cdf47ef13d83c45acb1a1ee658af36313341347262ac06bb79`
 - Remote transport failure matrix:
   [`reviews/P7_REMOTE_FAILURE_MATRIX_2026-07-29.md`](reviews/P7_REMOTE_FAILURE_MATRIX_2026-07-29.md)
 - Remote transport failure matrix SHA-256:
@@ -972,8 +977,8 @@ not reviewed or preserved as if they were target architecture.
 | P10.1 | `DONE` | Run exact toolchain verification | `make verify`, race-short suite, vet, lint, actionlint, docs, and diff checks pass |
 | P10.2 | `DONE` | Run high-value integration suite | All P3–P9 end-to-end workflows pass repeatedly under race detection |
 | P10.3 | `DONE` | Run fuzz and fault campaigns | Required fuzz targets and every named failure injection complete with no crash or state corruption |
-| P10.4 | `IN_PROGRESS` | Re-measure budgets | Catalog access, publication, remote activation, dependency closure, binary, embedded size, packages, LOC, and file lengths are recorded |
-| P10.5 | `PENDING` | Align documentation | README, GoDoc, architecture, CLI/server/remote docs, examples, and control plane describe the same behavior |
+| P10.4 | `DONE` | Re-measure budgets | Catalog access, publication, remote activation, dependency closure, binary, embedded size, packages, LOC, and file lengths are recorded |
+| P10.5 | `IN_PROGRESS` | Align documentation | README, GoDoc, architecture, CLI/server/remote docs, examples, and control plane describe the same behavior |
 | P10.6 | `PENDING` | Run security review | Credentials, redirects, SSRF, auth, origins, body limits, decompression, symlinks, permissions, and supply chain pass |
 | P10.7 | `PENDING` | Run structured final review | Independent review has no unresolved P0/P1 finding; lower findings receive terminal disposition |
 | P10.8 | `PENDING` | Verify exact hosted PR head | Verification Gate and Security & Reliability pass; protection readback remains strict |
@@ -1142,7 +1147,7 @@ machine evidence and does not require a follow-up documentation commit.
 | `starmap-library-composition` on `codex/starmap-library-composition@6df1acee` | `DONE` | PR #55 merged as `5e0eb9bd`; exact-main P8 successor created first; remote/local branch and clean worktree removed |
 | `starmap-go-modularity` on `codex/starmap-go-modularity@38fa31fa` | `DONE` | PR #56 merged as `08f18cbe`; exact-main P9 successor created first; remote/local branch and clean worktree removed |
 | `starmap-distribution-upgrades` on `codex/starmap-distribution-upgrades@80ea97c9` | `DONE` | PR #57 merged as `c93a4bc6`; zero tree diff to the squash merge was proven; remote/local branch and clean worktree removed after creating the exact-main P10 successor |
-| `starmap-production-verification` on `codex/starmap-production-verification@01650a55` | `IN_PROGRESS` | P10.1–P10.3 are committed or verified; P10.4 production-budget measurement is active |
+| `starmap-production-verification` on `codex/starmap-production-verification@c74bf099` | `IN_PROGRESS` | P10.1–P10.4 are committed or verified; P10.5 documentation alignment is active |
 
 ## Evidence Log
 
@@ -1352,6 +1357,7 @@ Append evidence; do not rewrite historical entries.
 | 2026-07-29 | P10.1 / F-041 / F-121 | F-041’s long-recorded contamination was reproduced: the nominally credential-free provider smoke inherited the developer’s ADC and reported Vertex configured. The smoke now uses a private HOME/XDG/Cloud SDK root and unsets all Google credential/project/location variables; direct execution and the full gate report Vertex `Missing`. The first corrected exact run then reached lint after ordinary, pure-Go, file-size, race, vet, and performance gates passed, where the shared linter cache replayed absolute diagnostics from the removed P9 worktree. F-121 gives golangci-lint a private per-run cache. Ten race-enabled verification-contract repetitions and an isolated lint pass were green. The authoritative `actionlint` plus `./scripts/verify.sh` run passed ordinary root `49.411s`; all six cgo-off compositions at read-only `30/32` and pinned artifact `31/32`; cgo-enabled race root `292.733s`, internal server `141.617s`, CLI app `88.709s`, models.dev `71.984s`, acquisition `58.635s`, and catalogs `42.813s`; vet; private-cache lint with zero issues; catalog access `8.381–8.683 ns/op` at zero allocations; every coverage floor; docs/diff; build; all 610 models; and hermetic CLI smokes. Current govulncheck found zero reachable/imported-package vulnerabilities. P10.1, F-041, and F-121 are DONE; P10.2 is active. |
 | 2026-07-29 | P10.2 | Three race-enabled repetitions exercised the high-value P3–P9 workflows across root, acquisition, workspace, pipeline, memory/filesystem/object/S3 stores, portable artifacts, bootstrap/manifest, internal/public server, and reactive remote packages. The selection covered explicit migration and rollback, atomic projection and repair, E1→E2 embedded upgrade, exact release import, CAS/fault preservation, deterministic bootstrap/release staging, server publication ordering, OpenRouter routes, heartbeat reconnect/catch-up and activation, and production health separation. Every selected lifecycle passed: root `238.302s`, internal server `234.803s`, bootstrap `109.322s`, acquisition `59.705s`, remote `45.931s`, public server `35.853s`, workspace `3.881s`, pipeline `3.369s`, bootstrap manifest `3.261s`, S3 `2.928s`, store `2.773s`, and artifact `2.350s`. P10.2 is DONE and P10.3 is active. |
 | 2026-07-29 | P10.3 | Bounded 20-second native fuzz campaigns completed without a crash: models.dev untrusted API parsing executed `1,816,748` inputs and retained `327` interesting cases in `20.595s`; catalog source-extension decoding executed `1,929,337` inputs and retained `290` interesting cases in `20.383s`; reconciliation executed `1,544,300` inputs and retained `47` interesting cases in `21.226s`. The subsequent race-enabled named failure matrix covered migration, rollback, storage/projection faults, corruption/tampering, rejection, backpressure, deadlines, repair, and reopened-current behavior across root (`54.947s`), acquisition (`12.970s`), workspace (`2.309s`), pipeline (`2.304s`), catalogs (`2.179s`), memory/filesystem/object stores (`2.770s`), S3 (`2.584s`), release artifacts (`2.835s`), internal server (`9.453s`), and remote consumer (`9.705s`). Every package passed, no fuzz crash corpus was written, and the worktree remained clean. P10.3 is DONE and P10.4 is active. |
+| 2026-07-29 | P10.4 | Archived [`reviews/P10_PRODUCTION_BUDGETS_2026-07-29.md`](reviews/P10_PRODUCTION_BUDGETS_2026-07-29.md) at SHA-256 `ff1b14d5bfc3a0cdf47ef13d83c45acb1a1ee658af36313341347262ac06bb79`. Two benchmark-only tests close the previously unmeasured control-plane boundaries without changing product behavior. On Go 1.26.5/darwin-arm64/Apple M2 Max, five runs measured `Client.Catalog()` at `8.711–9.608 ns/op`, `0 B/op`, and `0 allocs/op`; complete 2.6 MB publication at `63.742–66.386 ms/op` and `37,802,096–41,656,008 B/op`; and complete verified remote activation at `178.135–180.575 ms/op` and `112,821,314–112,839,010 B/op`. The report establishes review thresholds while preserving the accessor's hard CI budget. Root/catalog/catalog+store/server/Google closures are `151/140/143/238/447`; real external consumers pass at read-only `30/32` non-standard (`152` total), pinned artifact `31/32`, server `240/260`, remote `224/240`, and server storage `332/340`. A forced pure-Go CLI build took `12.08s`; normal/stripped binaries are `39,741,538`/`29,523,698` bytes. The embedded generation is `2,603,614` exact and `121,547` compressed bytes with 11 providers and 589 canonical definitions. The repository has 85 packages, 532 Go files, and 99,683 lines (`51,995` production; `47,688` test); root plus `pkg/*` expose 693 documented declarations, or 724 including the public server/remote products. The largest production file is 982 lines; only two tests enter the review band at 1,446 and 1,036 lines, both with terminal dispositions. Consumer, embedded-budget, file-size, benchmark, docs, and diff gates pass. P10.4 is DONE and P10.5 is active. |
 
 ## Final Definition of Done
 
