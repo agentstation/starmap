@@ -309,7 +309,7 @@ starmap providers fetch --raw        # Long flag only (less common)
 # Models list command
 starmap models list               # List all
 starmap models list -o json       # Global output format flag
-starmap models list --provider openai --tag multimodal  # Filtering flags
+starmap models list --provider openai --capability vision  # Filtering flags
 
 # Models history command
 starmap models history gpt-4o                        # View all field history

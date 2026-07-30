@@ -45,6 +45,13 @@ type Config struct {
 // 4. Config file (~/.starmap/config.yaml)
 // 5. Defaults.
 func LoadConfig() (*Config, error) {
+	return loadConfig("")
+}
+
+// loadConfig loads configuration, using configFile when it is non-empty.
+// Explicit files are required to exist and parse successfully; the default
+// file remains optional.
+func loadConfig(configFile string) (*Config, error) {
 	// Load .env files first (before Viper env binding)
 	loadEnvFiles()
 	viper.Reset()
@@ -59,9 +66,13 @@ func LoadConfig() (*Config, error) {
 	bindAPIKeys()
 
 	// Try to read config file if it exists
-	configFile := viper.GetString("config")
-	if configFile != "" {
-		viper.SetConfigFile(configFile)
+	selectedFile := configFile
+	if selectedFile == "" {
+		selectedFile = viper.GetString("config")
+	}
+	explicitFile := selectedFile != ""
+	if explicitFile {
+		viper.SetConfigFile(selectedFile)
 	} else {
 		// Use the canonical namespaced configuration file.
 		home, err := os.UserHomeDir()
@@ -74,6 +85,8 @@ func LoadConfig() (*Config, error) {
 	configFileUsed := ""
 	if err := viper.ReadInConfig(); err == nil {
 		configFileUsed = viper.ConfigFileUsed()
+	} else if explicitFile {
+		return nil, fmt.Errorf("read config file %q: %w", selectedFile, err)
 	}
 
 	// Build config from viper
@@ -104,21 +117,6 @@ func LoadConfig() (*Config, error) {
 	}
 
 	return config, nil
-}
-
-// UpdateFromFlags updates config values from parsed command flags.
-// This should be called after cobra parses flags to ensure flag
-// values take precedence over config file and env vars.
-func (c *Config) UpdateFromFlags(verbose, quiet, noColor bool, output, logLevel string) {
-	c.Verbose = verbose
-	c.Quiet = quiet
-	c.NoColor = noColor
-	if output != "" {
-		c.Output = output
-	}
-	if logLevel != "" {
-		c.LogLevel = logLevel
-	}
 }
 
 // loadEnvFiles loads environment variables from .env files.

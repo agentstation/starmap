@@ -6,13 +6,12 @@ This document provides a complete API reference for Starmap's public interfaces.
 
 ## Quick Navigation
 
-- [Client Interface](#client) - Main entry point
-- [Catalog Operations](#catalog) - Catalog access
-- [Sync and Updates](#updater) - Data synchronization
-- [Event Hooks](#hooks) - Model change callbacks
-- [Auto Updates](#autoupdater) - Automatic catalog updates
-- [Configuration Options](#option) - Functional options
-- [Persistence](#persistence) - Catalog persistence
+- [Client](#client) - Immutable reads and explicit publication
+- [Candidate](#candidate) - Validated off-side update input
+- [Publication](#publication) - Durable generation result
+- [Event hooks](#catalogpublishedevent) - Post-commit notifications
+- [Options](#option) - Workspace, store, and bootstrap policy
+- [Persistence](#client-save) - Explicit YAML projection and rollback
 
 ---
 
@@ -65,7 +64,7 @@ if err != nil {
 }
 ```
 
-Package starmap provides a unified AI model catalog system with automatic updates, event hooks, and support for multiple storage backends.
+Package starmap provides immutable AI model catalog reads, explicit generation publication, event hooks, and caller\-selected generation storage.
 
 ## Index
 

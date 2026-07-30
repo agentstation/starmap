@@ -1,781 +1,170 @@
-# Starmap API Documentation
-
-> REST API documentation for the Starmap HTTP server
-
-**Version:** v1
-**Base URL:** `http://localhost:8080/api/v1`
-**Last Updated:** 2025-10-15
-
-## Table of Contents
-
-- [Overview](#overview)
-- [Getting Started](#getting-started)
-- [Authentication](#authentication)
-- [Response Format](#response-format)
-- [Error Handling](#error-handling)
-- [Endpoints](#endpoints)
-  - [Models](#models)
-  - [Providers](#providers)
-  - [Administration](#administration)
-  - [Health & Metrics](#health--metrics)
-  - [Real-time Updates](#real-time-updates)
-- [Filtering & Search](#filtering--search)
-- [Rate Limiting](#rate-limiting)
-- [CORS](#cors)
-- [Examples](#examples)
-
-## Overview
-
-The Starmap HTTP API provides programmatic access to the unified AI model catalog. It offers:
-
-- **RESTful endpoints** for querying models and providers
-- **Advanced filtering** with multiple criteria
-- **Reactive catalog publication updates** via Server-Sent Events
-- **In-memory caching** for performance
-- **Rate limiting** to prevent abuse
-- **Optional authentication** with API keys
-
-## Getting Started
-
-### Starting the Server
-
-```bash
-# Start with default settings (port 8080, no auth)
-starmap serve
-
-# Start with custom port
-starmap serve --port 3000
-
-# Enable authentication
-export API_KEY="your-secret-key"
-starmap serve --auth
-
-# Enable CORS for specific origins
-starmap serve --cors-origins "https://example.com,https://app.example.com"
-
-# Full configuration
-starmap serve \
-  --port 8080 \
-  --host localhost \
-  --cors \
-  --auth \
-  --rate-limit 100 \
-  --cache-ttl 300
-```
-
-### Configuration Options
-
-| Flag | Environment Variable | Default | Description |
-|------|---------------------|---------|-------------|
-| `--port` | `HTTP_PORT` | `8080` | Server port |
-| `--host` | `HTTP_HOST` | `localhost` | Bind address |
-| `--cors` | - | `false` | Enable CORS for all origins |
-| `--cors-origins` | `CORS_ORIGINS` | - | Allowed CORS origins (comma-separated) |
-| `--auth` | `ENABLE_AUTH` | `false` | Enable API key authentication |
-| `--auth-header` | - | `X-API-Key` | Authentication header name |
-| `--rate-limit` | `RATE_LIMIT_RPM` | `100` | Requests per minute per IP |
-| `--cache-ttl` | `CACHE_TTL` | `300` | Cache TTL in seconds |
-| `--read-timeout` | `READ_TIMEOUT` | `10s` | HTTP read timeout |
-| `--write-timeout` | `WRITE_TIMEOUT` | `10s` | HTTP write timeout |
-| `--idle-timeout` | `IDLE_TIMEOUT` | `120s` | HTTP idle timeout |
-
-## Authentication
-
-When authentication is enabled, all requests (except health endpoints) require an API key.
-
-### API Key Header
-
-```http
-X-API-Key: your-secret-key
-```
-
-Or using the Authorization header:
-
-```http
-Authorization: Bearer your-secret-key
-```
-
-### Public Endpoints
-
-The following endpoints are always publicly accessible:
-
-- `GET /health`
-- `GET /api/v1/health`
-- `GET /api/v1/ready`
-
-### Example
-
-```bash
-# With X-API-Key header
-curl -H "X-API-Key: your-secret-key" \
-  http://localhost:8080/api/v1/models
-
-# With Authorization header
-curl -H "Authorization: Bearer your-secret-key" \
-  http://localhost:8080/api/v1/models
-```
-
-## Response Format
-
-All API responses follow a consistent format:
-
-### Success Response
-
-```json
-{
-  "data": {
-    // Response data here
-  },
-  "error": null
-}
-```
-
-### Error Response
-
-```json
-{
-  "data": null,
-  "error": {
-    "code": "ERROR_CODE",
-    "message": "Human-readable error message",
-    "details": "Additional error details"
-  }
-}
-```
-
-## Error Handling
-
-### Error Codes
-
-| Code | HTTP Status | Description |
-|------|-------------|-------------|
-| `BAD_REQUEST` | 400 | Invalid request format or parameters |
-| `UNAUTHORIZED` | 401 | Invalid or missing API key |
-| `NOT_FOUND` | 404 | Resource not found |
-| `METHOD_NOT_ALLOWED` | 405 | HTTP method not supported |
-| `RATE_LIMITED` | 429 | Rate limit exceeded |
-| `INTERNAL_ERROR` | 500 | Internal server error |
-| `SERVICE_UNAVAILABLE` | 503 | Service temporarily unavailable |
-
-### Example Error Response
-
-```json
-{
-  "data": null,
-  "error": {
-    "code": "NOT_FOUND",
-    "message": "Model not found",
-    "details": "No model with ID 'gpt-5' exists"
-  }
-}
-```
-
-## Endpoints
-
-### Models
-
-#### List Models
-
-```http
-GET /api/v1/models
-```
-
-List all models with optional filtering.
-
-**Query Parameters:**
-
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `id` | string | Filter by exact model ID |
-| `name` | string | Filter by exact model name (case-insensitive) |
-| `name_contains` | string | Filter by partial model name match |
-| `provider` | string | Filter by provider ID |
-| `modality_input` | string | Filter by input modality (comma-separated) |
-| `modality_output` | string | Filter by output modality (comma-separated) |
-| `feature` | string | Filter by feature (streaming, tool_calls, etc.) |
-| `tag` | string | Filter by tag (comma-separated) |
-| `open_weights` | boolean | Filter by open weights status |
-| `min_context` | integer | Minimum context window size |
-| `max_context` | integer | Maximum context window size |
-| `sort` | string | Sort field (id, name, release_date, context_window) |
-| `order` | string | Sort order (asc, desc) |
-| `limit` | integer | Maximum results (default: 100, max: 1000) |
-| `offset` | integer | Result offset for pagination |
-
-**Example Request:**
-
-```bash
-curl "http://localhost:8080/api/v1/models?provider=openai&feature=tool_calls&limit=10"
-```
-
-**Example Response:**
-
-```json
-{
-  "data": {
-    "models": [
-      {
-        "id": "gpt-4",
-        "name": "GPT-4",
-        "description": "Large multimodal model",
-        "features": {
-          "modalities": {
-            "input": ["text", "image"],
-            "output": ["text"]
-          },
-          "tool_calls": true,
-          "streaming": true
-        },
-        "limits": {
-          "context_window": 128000,
-          "output_tokens": 16384
-        }
-      }
-    ],
-    "pagination": {
-      "total": 1,
-      "limit": 10,
-      "offset": 0,
-      "count": 1
-    }
-  },
-  "error": null
-}
-```
-
-#### Get Model by ID
-
-```http
-GET /api/v1/models/{id}
-```
-
-Retrieve detailed information about a specific model.
-
-**Path Parameters:**
-
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `id` | string | Model ID |
-
-**Example Request:**
-
-```bash
-curl http://localhost:8080/api/v1/models/gpt-4
-```
-
-**Example Response:**
-
-```json
-{
-  "data": {
-    "id": "gpt-4",
-    "name": "GPT-4",
-    "authors": [
-      {
-        "name": "OpenAI",
-        "url": "https://openai.com"
-      }
-    ],
-    "description": "Large multimodal model with advanced reasoning",
-    "metadata": {
-      "release_date": "2023-03-14T00:00:00Z",
-      "open_weights": false,
-      "tags": ["chat", "vision"]
-    },
-    "features": {
-      "modalities": {
-        "input": ["text", "image"],
-        "output": ["text"]
-      },
-      "tool_calls": true,
-      "tools": true,
-      "tool_choice": true,
-      "streaming": true
-    },
-    "limits": {
-      "context_window": 128000,
-      "output_tokens": 16384
-    },
-    "pricing": {
-      "tokens": {
-        "input": {
-          "per_1m": 30.0
-        },
-        "output": {
-          "per_1m": 60.0
-        }
-      }
-    }
-  },
-  "error": null
-}
-```
-
-#### Advanced Model Search
-
-```http
-POST /api/v1/models/search
-```
-
-Perform advanced search with multiple criteria.
-
-**Request Body:**
-
-```json
-{
-  "ids": ["gpt-4", "claude-3-opus"],
-  "name_contains": "gpt",
-  "provider": "openai",
-  "modalities": {
-    "input": ["text", "image"],
-    "output": ["text"]
-  },
-  "features": {
-    "streaming": true,
-    "tool_calls": true
-  },
-  "tags": ["chat", "vision"],
-  "open_weights": false,
-  "context_window": {
-    "min": 32000,
-    "max": 200000
-  },
-  "output_tokens": {
-    "min": 4000,
-    "max": 16000
-  },
-  "release_date": {
-    "after": "2024-01-01",
-    "before": "2025-01-01"
-  },
-  "sort": "release_date",
-  "order": "desc",
-  "max_results": 100
-}
-```
-
-**Example Request:**
-
-```bash
-curl -X POST http://localhost:8080/api/v1/models/search \
-  -H "Content-Type: application/json" \
-  -d '{
-    "provider": "openai",
-    "features": {"tool_calls": true},
-    "context_window": {"min": 32000}
-  }'
-```
-
-**Example Response:**
-
-```json
-{
-  "data": {
-    "models": [...],
-    "count": 5
-  },
-  "error": null
-}
-```
-
-### Providers
-
-#### List Providers
-
-```http
-GET /api/v1/providers
-```
-
-List all providers.
-
-**Example Request:**
-
-```bash
-curl http://localhost:8080/api/v1/providers
-```
-
-**Example Response:**
-
-```json
-{
-  "data": {
-    "providers": [
-      {
-        "id": "openai",
-        "name": "OpenAI",
-        "model_count": 42,
-        "headquarters": "San Francisco, CA",
-        "docs_url": "https://platform.openai.com/docs"
-      }
-    ],
-    "count": 1
-  },
-  "error": null
-}
-```
-
-#### Get Provider by ID
-
-```http
-GET /api/v1/providers/{id}
-```
-
-Retrieve detailed information about a specific provider.
-
-**Example Request:**
-
-```bash
-curl http://localhost:8080/api/v1/providers/openai
-```
-
-#### Get Provider Models
-
-```http
-GET /api/v1/providers/{id}/models
-```
-
-List all models for a specific provider.
-
-**Example Request:**
-
-```bash
-curl http://localhost:8080/api/v1/providers/openai/models
-```
-
-**Example Response:**
-
-```json
-{
-  "data": {
-    "provider": {
-      "id": "openai",
-      "name": "OpenAI"
-    },
-    "models": [...],
-    "count": 42
-  },
-  "error": null
-}
-```
-
-### Administration
-
-#### Trigger Catalog Update
-
-```http
-POST /api/v1/update
-```
-
-Manually trigger catalog synchronization.
-
-**Query Parameters:**
-
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `provider` | string | Update specific provider only |
-
-**Example Request:**
-
-```bash
-# Update all providers
-curl -X POST http://localhost:8080/api/v1/update
-
-# Update specific provider
-curl -X POST "http://localhost:8080/api/v1/update?provider=openai"
-```
-
-**Example Response:**
-
-```json
-{
-  "data": {
-    "status": "completed",
-    "total_changes": 5,
-    "providers_changed": 1,
-    "dry_run": false
-  },
-  "error": null
-}
-```
-
-#### Get Catalog Statistics
-
-```http
-GET /api/v1/stats
-```
-
-Get catalog statistics.
-
-**Example Response:**
-
-```json
-{
-  "data": {
-    "models": {
-      "total": 250
-    },
-    "providers": {
-      "total": 8
-    },
-    "cache": {
-      "item_count": 42
-    },
-    "realtime": {
-      "sse_clients": 1,
-      "sse_delivery": {
-        "published": 12,
-        "sent": 12,
-        "heartbeats": 304,
-        "disconnected": 2,
-        "backpressure_terminated": 0,
-        "failed": 0
-      }
-    }
-  },
-  "error": null
-}
-```
-
-### Health & Metrics
-
-#### Health Check
-
-```http
-GET /api/v1/health
-GET /health
-```
-
-Health check endpoint (liveness probe).
-
-**Example Response:**
-
-```json
-{
-  "data": {
-    "status": "healthy",
-    "service": "starmap-api",
-    "version": "v1"
-  },
-  "error": null
-}
-```
-
-#### Readiness Check
-
-```http
-GET /api/v1/ready
-```
-
-Readiness check including cache and data source status.
-
-**Example Response:**
-
-```json
-{
-  "data": {
-    "status": "ready",
-    "cache": {
-      "items": 42
-    },
-    "sse_clients": 1
-  },
-  "error": null
-}
-```
-
-#### Metrics
-
-```http
-GET /metrics
-```
-
-Prometheus-compatible metrics endpoint.
-
-### Real-time Updates
-
-SSE is the sole catalog-publication notification transport. Publication events
-are post-commit hints, not mutable catalog payloads. Consumers fetch and verify
-the named immutable generation before activation.
-
-```http
-GET /api/v1/updates/stream
-```
-
-The server flushes an initial comment and periodic heartbeat comments:
+# Starmap HTTP API
+
+The public [`server`](../server) package and `starmap serve` expose the same
+versioned HTTP API. The default base URL is `http://localhost:8080/api/v1`.
+The embedded, reproducibly generated OpenAPI documents are the normative schema
+for query parameters and native JSON response bodies:
 
 ```text
-: connected
-
-: heartbeat
-
+GET /api/v1/openapi.json
+GET /api/v1/openapi.yaml
 ```
 
-Heartbeats carry no event ID and do not advance publication sequence. The
-default interval is 20 seconds. Each frame has a default 10-second write and
-flush deadline; slow or failed connections are terminated so reconnect
-catch-up can run.
+This document owns the composition, security, immutable-generation, and
+reactive-delivery semantics that are not usefully duplicated from OpenAPI.
 
-The only event is `catalog.published`:
+## Start the standalone server
+
+```bash
+starmap serve
+starmap serve --host 0.0.0.0 --port 8080
+starmap serve --auth --cors-origins https://console.example.com
+```
+
+The CLI composes its filesystem generation store and explicit acquisition
+syncer before constructing the public server. An embedding Go application
+constructs its `*starmap.Client`, chooses a filesystem or conditional
+S3-compatible store, and passes the client to `server.New`. Server construction
+does not open storage, discover credentials, bind a listener, or start a
+goroutine.
+
+Current flags:
+
+| Flag | Default | Meaning |
+| --- | --- | --- |
+| `--host` | `localhost` | Bind address |
+| `--port` | `8080` | TCP port |
+| `--prefix` | `/api/v1` | Versioned API path prefix |
+| `--auth` | `false` | Require the `API_KEY` value on protected routes |
+| `--auth-header` | `X-API-Key` | Primary API-key header |
+| `--cors` | `false` | Enable CORS |
+| `--cors-origins` | empty | Explicit origin allowlist; empty with CORS enabled permits all |
+| `--rate-limit` | `100` | Requests per minute per client IP; zero disables |
+| `--cache-ttl` | `300` | Derived response-cache TTL in seconds |
+| `--read-timeout` | `10s` | HTTP read timeout |
+| `--write-timeout` | `10s` | HTTP write timeout |
+| `--idle-timeout` | `120s` | HTTP idle timeout |
+| `--sse-heartbeat-interval` | `20s` | Flushed SSE comment cadence |
+| `--sse-write-timeout` | `10s` | Per-frame SSE write and flush deadline |
+| `--metrics` | `true` | Expose `/metrics` |
+
+`HTTP_HOST` and `HTTP_PORT` override the corresponding CLI flags. `API_KEY`
+provides the expected authentication value. Provider API credentials are
+separate acquisition inputs and are never server API keys.
+
+## Routes
+
+The configured prefix replaces `/api/v1` in every versioned route.
+
+| Method and path | Contract |
+| --- | --- |
+| `GET /health` | Process liveness; always public |
+| `GET /api/v1/health` | Versioned process liveness; always public |
+| `GET /api/v1/ready` | Catalog readiness, including embedded-bootstrap policy; always public |
+| `GET /api/v1/models` | Paginated/filterable canonical model and offering rows |
+| `GET /api/v1/models/{id}` | Canonical model definition lookup |
+| `POST /api/v1/models/search` | Structured model search |
+| `GET /api/v1/providers` | Provider list |
+| `GET /api/v1/providers/{id}` | Provider detail |
+| `GET /api/v1/providers/{id}/models` | Exact provider offerings |
+| `POST /api/v1/update` | Explicit acquisition; present only when a syncer was composed |
+| `GET /api/v1/stats` | Catalog, cache, runtime, callback, and SSE health |
+| `GET /api/v1/catalog/manifest` | Strict current generation manifest |
+| `GET /api/v1/catalog/generations/{id}/manifest` | Retained immutable generation manifest |
+| `GET /api/v1/catalog/generations/{id}/payload` | Retained immutable canonical payload |
+| `GET /api/v1/updates/stream` | Heartbeat-enabled catalog publication hints |
+| `GET /api/v1/model/{author}/{slug}` | OpenRouter-compatible model response |
+| `GET /api/v1/models/{author}/{slug}/endpoints` | OpenRouter-compatible provider endpoints |
+| `GET /api/v1/openapi.json` | Generated OpenAPI JSON; always public at the default prefix |
+| `GET /api/v1/openapi.yaml` | Generated OpenAPI YAML |
+| `GET /metrics` | Process metrics when enabled |
+
+Model/list responses carry `X-Starmap-Generation-ID`, so a caller can associate
+derived results with the immutable catalog generation used to produce them.
+The OpenRouter routes are server-local projections over the same catalog. They
+do not read generated `endpoints.yaml`, persist another representation, or
+invent runtime provider telemetry.
+
+## Native response envelope
+
+Native JSON endpoints return:
+
+```json
+{
+  "data": {},
+  "error": null
+}
+```
+
+Failures set `data` to `null` and return an error with a stable code, safe
+message, and optional details. HTTP status remains authoritative. The
+OpenRouter-compatible routes intentionally use OpenRouter's response and
+numeric error dialect instead of the native envelope.
+
+## Authentication and CORS
+
+When `--auth` is enabled, send either the configured header or an Authorization
+value:
+
+```bash
+curl -H 'X-API-Key: ...' http://localhost:8080/api/v1/models
+curl -H 'Authorization: Bearer ...' \
+  http://localhost:8080/api/v1/models
+```
+
+The health/readiness probes and default-prefix OpenAPI JSON route remain
+public. Authentication comparison is constant-time; logs record only whether a
+key was supplied, never the key. OpenRouter routes return the OpenRouter 401
+error dialect, while native routes return Starmap's native 401 envelope.
+
+Enable CORS only with a deployment-owned origin policy. An explicit
+`--cors-origins` allowlist echoes only matched origins and adds `Vary: Origin`.
+Using `--cors` without an allowlist emits `Access-Control-Allow-Origin: *`.
+
+## Immutable generation protocol
+
+The current manifest is mutable discovery state and supports conditional
+requests with `ETag`. Addressed manifests and payloads are immutable retained
+objects. Payload responses use the catalog payload media type and immutable
+cache headers. A consumer must verify manifest schema compatibility, payload
+media type, size, digest, and identity before activation.
+
+Use the public [`remote`](../remote) package for the complete verified
+initial-fetch, SSE, reconnect/catch-up, durable activation, and shutdown
+lifecycle. The exact wire contract is documented in
+[REMOTE_CATALOG_PROTOCOL.md](REMOTE_CATALOG_PROTOCOL.md).
+
+## Reactive updates
+
+`GET /api/v1/updates/stream` is the sole Starmap catalog-publication transport.
+The only data event is:
 
 ```text
 id: 42
 event: catalog.published
-data: {"generation_id":"catalog-20260729T110518Z-fcbf48a7fd90","sequence":42}
-
+data: {"generation_id":"...","sequence":42}
 ```
 
-**Example (JavaScript):**
+`connected` and `heartbeat` comments carry no event ID or catalog bytes. An
+event is a fetch hint, not a catalog payload. Each connection has one
+write-deadline-aware writer. Backpressure or write failure terminates the
+connection so the client reconnects and performs mandatory current-manifest
+catch-up; the server never silently drops a hint while reporting a healthy
+stream.
 
-```javascript
-const eventSource = new EventSource('http://localhost:8080/api/v1/updates/stream');
+Polling is not the normal path. The remote subscriber can enable a bounded,
+observable conditional-polling fallback only after an explicit number of
+stream failures.
 
-eventSource.addEventListener('catalog.published', (event) => {
-  const data = JSON.parse(event.data);
-  console.log('Catalog generation available:', data.generation_id, data.sequence);
-});
-```
+## Health semantics
 
-## Filtering & Search
+Liveness, catalog readiness/freshness, callback delivery, and SSE delivery are
+separate surfaces:
 
-### Simple Filtering (GET)
+- `/health` answers whether the process and HTTP handler are alive.
+- `/ready` checks that a usable catalog satisfies configured bootstrap policy.
+- `/stats` exposes the active generation time, callback coalescing/failure, SSE
+  clients, backpressure termination, and cache/runtime data.
 
-Use query parameters for simple filtering:
-
-```bash
-# Filter by provider
-curl "http://localhost:8080/api/v1/models?provider=openai"
-
-# Multiple filters
-curl "http://localhost:8080/api/v1/models?provider=openai&feature=tool_calls&min_context=32000"
-
-# Modality filtering
-curl "http://localhost:8080/api/v1/models?modality_input=text,image&modality_output=text"
-
-# Tag filtering
-curl "http://localhost:8080/api/v1/models?tag=chat,vision"
-```
-
-### Advanced Search (POST)
-
-Use the search endpoint for complex queries:
-
-```bash
-curl -X POST http://localhost:8080/api/v1/models/search \
-  -H "Content-Type: application/json" \
-  -d '{
-    "provider": "openai",
-    "features": {
-      "tool_calls": true,
-      "streaming": true
-    },
-    "context_window": {
-      "min": 32000
-    },
-    "tags": ["chat"],
-    "sort": "release_date",
-    "order": "desc"
-  }'
-```
-
-## Rate Limiting
-
-The API enforces rate limiting per IP address.
-
-**Default:** 100 requests per minute
-**Header:** Rate limit info in response headers (future)
-
-When rate limited, you'll receive a `429` response:
-
-```json
-{
-  "data": null,
-  "error": {
-    "code": "RATE_LIMITED",
-    "message": "Rate limit exceeded",
-    "details": "Too many requests. Please try again later."
-  }
-}
-```
-
-## CORS
-
-CORS can be configured via command-line flags:
-
-```bash
-# Enable CORS for all origins
-starmap serve --cors
-
-# Enable CORS for specific origins
-starmap serve --cors-origins "https://example.com,https://app.example.com"
-```
-
-## Examples
-
-### Complete Workflow
-
-```bash
-# 1. Start server
-starmap serve --port 8080
-
-# 2. Check health
-curl http://localhost:8080/health
-
-# 3. List all models
-curl http://localhost:8080/api/v1/models
-
-# 4. Search for specific models
-curl -X POST http://localhost:8080/api/v1/models/search \
-  -H "Content-Type: application/json" \
-  -d '{"provider": "openai", "features": {"tool_calls": true}}'
-
-# 5. Get specific model
-curl http://localhost:8080/api/v1/models/gpt-4
-
-# 6. Get provider info
-curl http://localhost:8080/api/v1/providers/openai
-
-# 7. Trigger catalog update
-curl -X POST http://localhost:8080/api/v1/update
-
-# 8. Check statistics
-curl http://localhost:8080/api/v1/stats
-```
-
-### With Authentication
-
-```bash
-export API_KEY="your-secret-key"
-
-# Start server with auth
-starmap serve --auth
-
-# Make authenticated request
-curl -H "X-API-Key: $API_KEY" \
-  http://localhost:8080/api/v1/models
-```
-
-### Real-time Updates
-
-```javascript
-const eventSource = new EventSource('http://localhost:8080/api/v1/updates/stream');
-eventSource.addEventListener('catalog.published', (event) => {
-  const data = JSON.parse(event.data);
-  console.log('Verify generation:', data.generation_id);
-});
-```
-
-## Best Practices
-
-1. **Use Caching**: Results are cached by default (5 min TTL)
-2. **Filter Early**: Use query parameters to reduce response size
-3. **Paginate**: Use `limit` and `offset` for large result sets
-4. **Handle Errors**: Always check the `error` field in responses
-5. **Rate Limits**: Implement client-side rate limiting
-6. **Reactive updates**: Use SSE publication hints and verified generation fetches instead of normal polling
-7. **Authentication**: Keep API keys secure, never commit to version control
-
-## Support
-
-For issues, questions, or feature requests, please visit:
-- GitHub: https://github.com/agentstation/starmap
-- Documentation: https://docs.starmap.dev (future)
+A recent heartbeat proves stream transport activity only. It never changes the
+active catalog generation time or makes stale catalog data fresh.

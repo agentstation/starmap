@@ -6,8 +6,18 @@ import (
 
 	"github.com/spf13/cobra"
 
+	"github.com/agentstation/starmap/pkg/errors"
 	"github.com/agentstation/starmap/pkg/logging"
 )
+
+type commandFlags struct {
+	configFile string
+	verbose    bool
+	quiet      bool
+	noColor    bool
+	output     string
+	logLevel   string
+}
 
 // Execute runs the starmap CLI application with the given arguments.
 // This is the main entry point called from main.go.
@@ -61,13 +71,13 @@ when API keys are configured.`,
 	})
 
 	// Add global flags
-	rootCmd.PersistentFlags().StringVar(&a.config.ConfigFile, "config", "", "config file (default is $HOME/.starmap/config.yaml)")
-	rootCmd.PersistentFlags().BoolVarP(&a.config.Verbose, "verbose", "v", false, "verbose output (shortcut for --log-level=debug)")
-	rootCmd.PersistentFlags().BoolVarP(&a.config.Quiet, "quiet", "q", false, "minimal output (shortcut for --log-level=warn)")
-	rootCmd.PersistentFlags().BoolVar(&a.config.NoColor, "no-color", false, "disable colored output")
+	rootCmd.PersistentFlags().StringVar(&a.commandFlags.configFile, "config", "", "config file (default is $HOME/.starmap/config.yaml)")
+	rootCmd.PersistentFlags().BoolVarP(&a.commandFlags.verbose, "verbose", "v", a.config.Verbose, "verbose output (shortcut for --log-level=debug)")
+	rootCmd.PersistentFlags().BoolVarP(&a.commandFlags.quiet, "quiet", "q", a.config.Quiet, "minimal output (shortcut for --log-level=warn)")
+	rootCmd.PersistentFlags().BoolVar(&a.commandFlags.noColor, "no-color", a.config.NoColor, "disable colored output")
 	// Use -o for output (not -f) to avoid conflict with embed cat --filename
-	rootCmd.PersistentFlags().StringVarP(&a.config.Output, "output", "o", "", "output format: table, json, yaml, wide")
-	rootCmd.PersistentFlags().StringVar(&a.config.LogLevel, "log-level", "", "log level: trace, debug, info, warn, error (overrides -v/-q)")
+	rootCmd.PersistentFlags().StringVarP(&a.commandFlags.output, "output", "o", a.config.Output, "output format: table, json, yaml, wide")
+	rootCmd.PersistentFlags().StringVar(&a.commandFlags.logLevel, "log-level", a.config.LogLevel, "log level: trace, debug, info, warn, error (overrides -v/-q)")
 
 	// Customize version output to match version subcommand
 	rootCmd.SetVersionTemplate("starmap {{.Version}}\n")
@@ -80,15 +90,31 @@ when API keys are configured.`,
 
 // setupCommand is called before any command runs.
 func (a *App) setupCommand(cmd *cobra.Command, _ []string) error {
-	// Update config from parsed flags
-	// These flags are defined as persistent flags in createRootCommand, so errors indicate programming errors
-	verbose := mustGetBool(cmd, "verbose")
-	quiet := mustGetBool(cmd, "quiet")
-	noColor := mustGetBool(cmd, "no-color")
-	output := mustGetString(cmd, "output")
-	logLevel := mustGetString(cmd, "log-level")
+	if a.commandFlags.configFile != "" {
+		config, err := loadConfig(a.commandFlags.configFile)
+		if err != nil {
+			return errors.WrapResource("load", "config", a.commandFlags.configFile, err)
+		}
+		a.config = config
+	}
 
-	a.config.UpdateFromFlags(verbose, quiet, noColor, output, logLevel)
+	// Apply only explicitly provided flags. Values loaded from a config file or
+	// environment must survive command construction and parsing.
+	if cmd.Flags().Changed("verbose") {
+		a.config.Verbose = mustGetBool(cmd, "verbose")
+	}
+	if cmd.Flags().Changed("quiet") {
+		a.config.Quiet = mustGetBool(cmd, "quiet")
+	}
+	if cmd.Flags().Changed("no-color") {
+		a.config.NoColor = mustGetBool(cmd, "no-color")
+	}
+	if cmd.Flags().Changed("output") {
+		a.config.Output = mustGetString(cmd, "output")
+	}
+	if cmd.Flags().Changed("log-level") {
+		a.config.LogLevel = mustGetString(cmd, "log-level")
+	}
 
 	// Reinitialize logger with updated config
 	logger := NewLogger(a.config)

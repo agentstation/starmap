@@ -11,7 +11,7 @@ The verified catalog and reactive notification flow has four routes:
    `application/vnd.agentstation.starmap.catalog-manifest+json`.
 2. `GET /catalog/generations/{generation_id}/manifest` returns the retained
    immutable manifest for one publication event's generation ID.
-3. `GET /catalog/generations/{generation_id}/snapshot` returns the exact
+3. `GET /catalog/generations/{generation_id}/payload` returns the exact
    immutable canonical payload as
    `application/vnd.agentstation.starmap.catalog+json`.
 4. `GET /updates/stream` returns `text/event-stream`. Its sole data event is
@@ -27,7 +27,7 @@ standard-library-verified certificate chain and remain on that exact origin.
 Loopback HTTP is retained only for local embedding and tests. The client bounds
 both bodies, requires exact response and descriptor media types, strictly
 parses and validates the manifest, and rejects an incompatible catalog-schema
-range or oversized descriptor before downloading the snapshot. It then
+range or oversized descriptor before downloading the payload. It then
 requires a bounded canonical path-segment generation ID and verifies payload
 size and SHA-256 before decode or durable commit. An HTTP failure, unverified
 publisher, malformed/unknown manifest member, wrong media type, incompatible

@@ -43,7 +43,7 @@ Use focused packages while editing a module:
 go test ./internal/catalog/pipeline ./pkg/sync .
 go test ./internal/sources/providers ./internal/providers/clients ./pkg/sources
 go test ./internal/catalog/query ./internal/server/params ./internal/server/handlers
-go test ./pkg/authority ./pkg/reconciler
+go test ./internal/catalog/authority ./internal/catalog/reconciler
 go test ./internal/server/sse ./internal/server/middleware ./internal/server
 go test ./pkg/catalogs -race
 ```
@@ -59,14 +59,15 @@ Global coverage is intentionally not the primary trust metric. CLI command const
 | `internal/providers/clients` | 80% |
 | `internal/sources/providers` | 75% |
 | `internal/server/middleware` | 90% |
+| `internal/server/openrouter` | 85% |
 | `internal/server/params` | 95% |
 | `internal/server/response` | 95% |
 | `internal/server/sse` | 90% |
 | `internal/transport` | 40% |
-| `pkg/authority` | 90% |
+| `internal/catalog/authority` | 90% |
 | `pkg/catalogs` | 55% |
 | `pkg/errors` | 80% |
-| `pkg/reconciler` | 75% |
+| `internal/catalog/reconciler` | 75% |
 | `pkg/sources` | 35% |
 
 Author membership is derived while building the immutable catalog and is
@@ -99,7 +100,7 @@ Use these focused checks when changing provider clients, models.dev parsing, rec
 
 ```bash
 go test ./internal/sources/modelsdev ./internal/providers/...
-go test ./pkg/catalogs ./pkg/reconciler ./pkg/authority
+go test ./pkg/catalogs ./internal/catalog/reconciler ./internal/catalog/authority
 go test ./internal/catalog/query ./internal/server/params ./cmd/starmap/cmd/models
 ```
 
@@ -133,7 +134,7 @@ same checked workflow. The models.dev download uses curl's HTTP failure mode,
 is first written to a temporary sibling, and is never promoted merely because
 the response body is syntactically valid JSON.
 
-Run make embedded-catalog-budget-check to emit the exact embedded generation
+Run `make embedded-catalog-budget-check` to emit the exact embedded generation
 age, uncompressed payload bytes, compressed artifact bytes, and provider/model
 coverage. Threshold breach fixtures cover each stable failure code. Any CI
 threshold override must carry a review reason that is recorded in the report.
