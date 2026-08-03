@@ -18,11 +18,7 @@ func TestReleaseWorkflowPinsToolchainPublisherAndVerification(t *testing.T) {
 		"golangci-lint@v2.12.2",
 		"make verify",
 		"make release-check",
-		"goreleaser/goreleaser-action@f06c13b6b1a9625abc9e6e439d9c05a8f2190e94 # v7.2.3",
-		"docker/login-action@dbcb813823bdd20940b903addbd779551569679f # v4.6.0",
-		"anchore/sbom-action/download-syft@e22c389904149dbc22b58101806040fa8d37a610 # v0.24.0",
 		"syft-version: v1.46.0",
-		"actions/attest-build-provenance@0f67c3f4856b2e3261c31976d6725780e5e4c373 # v4.1.1",
 		"version: v2.17.0",
 		"Verify portable release binaries",
 		"./scripts/verify-release-binaries.sh dist",
@@ -45,6 +41,12 @@ func TestReleaseWorkflowPinsToolchainPublisherAndVerification(t *testing.T) {
 			t.Errorf("release workflow is missing %q", check)
 		}
 	}
+	requireSHAPinnedActions(t, workflow, "release",
+		"goreleaser/goreleaser-action",
+		"docker/login-action",
+		"anchore/sbom-action/download-syft",
+		"actions/attest-build-provenance",
+	)
 	for _, forbidden := range []string{
 		"go-version-file:",
 		"check-homebrew-eligibility",

@@ -35,6 +35,9 @@ func TestPullRequestWorkflowPinsToolchainActionsToolsAndRequiredJobs(t *testing.
 		"name: Run verification gate",
 		"  security-reliability:",
 		"name: Security & Reliability",
+		"  action-pins:",
+		"name: Action Pin Provenance",
+		"run: make verify-action-pins",
 		"name: Test minimum supported Go version",
 		"name: Test minimum supported external consumer",
 		"CGO_ENABLED: 0",
@@ -51,14 +54,16 @@ func TestPullRequestWorkflowPinsToolchainActionsToolsAndRequiredJobs(t *testing.
 		"FuzzSourceExtensionNoPanic",
 		"FuzzReconciliationNoPanic",
 		"Migration|Rollback|Fault|Corrupt|ReopensCurrent",
-		"actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
-		"actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e",
 	}
 	for _, check := range checks {
 		if !strings.Contains(workflow, check) {
 			t.Fatalf("pull request workflow is missing %q", check)
 		}
 	}
+	requireSHAPinnedActions(t, workflow, "pull request",
+		"actions/checkout",
+		"actions/setup-go",
+	)
 	if strings.Contains(workflow, "go-version-file:") {
 		t.Fatal("pull request workflow must pin the exact three-component Go version explicitly")
 	}
