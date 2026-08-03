@@ -53,3 +53,17 @@ func TestActiveWorkflowsUseReviewedCurrentActions(t *testing.T) {
 		}
 	}
 }
+
+// requireSHAPinnedActions fails when the workflow does not reach every named
+// action through a 40-character commit pin. Only
+// TestActiveWorkflowsUseReviewedCurrentActions holds the reviewed commit
+// values, so a version bump stays a single-file edit.
+func requireSHAPinnedActions(t *testing.T, workflow, name string, actions ...string) {
+	t.Helper()
+	for _, action := range actions {
+		pinned := regexp.MustCompile(`uses:\s+` + regexp.QuoteMeta(action) + `@[0-9a-f]{40}(?:\s|$)`)
+		if !pinned.MatchString(workflow) {
+			t.Errorf("%s workflow does not use %s through a 40-character commit pin", name, action)
+		}
+	}
+}

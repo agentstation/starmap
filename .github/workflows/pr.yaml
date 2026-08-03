@@ -82,3 +82,20 @@ jobs:
       - name: Run migration and persistence fault fixtures
         run: |
           go test ./pkg/catalogs ./pkg/catalogstore -race -run 'Migration|Rollback|Fault|Corrupt|ReopensCurrent' -count=1
+
+  # Additive supply-chain evidence. This job is deliberately not a required
+  # status check: it needs the GitHub API, so an upstream outage must not block
+  # merges, and the reviewed-pin allowlist in internal/ciworkflow remains the
+  # blocking control.
+  action-pins:
+    name: Action Pin Provenance
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Verify action pins resolve to their advertised releases
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: make verify-action-pins
