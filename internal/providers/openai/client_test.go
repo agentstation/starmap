@@ -218,10 +218,10 @@ func TestConvertToOpenAIModel(t *testing.T) {
 		ID:   catalogs.ProviderIDOpenAI,
 		Name: "OpenAI",
 		Catalog: &catalogs.ProviderCatalog{
+			Auth: catalogs.ProviderCatalogAuth{Method: catalogs.ProviderCatalogAuthAPIKey, Required: true},
 			Endpoint: catalogs.ProviderEndpoint{
-				Type:         catalogs.EndpointTypeOpenAI,
-				URL:          "https://api.openai.com/v1/models",
-				AuthRequired: true,
+				Type: catalogs.EndpointTypeOpenAI,
+				URL:  "https://api.openai.com/v1/models",
 				FeatureRules: []catalogs.FeatureRule{
 					{
 						Field:    "id",
@@ -912,10 +912,10 @@ func TestOpenAIClientListModels(t *testing.T) {
 			Scheme: catalogs.ProviderAPIKeySchemeBearer,
 		},
 		Catalog: &catalogs.ProviderCatalog{
+			Auth: catalogs.ProviderCatalogAuth{Method: catalogs.ProviderCatalogAuthAPIKey, Required: true},
 			Endpoint: catalogs.ProviderEndpoint{
-				Type:         catalogs.EndpointTypeOpenAI,
-				URL:          server.URL,
-				AuthRequired: true,
+				Type: catalogs.EndpointTypeOpenAI,
+				URL:  server.URL,
 				FeatureRules: []catalogs.FeatureRule{
 					{
 						Field:    "id",

@@ -12,10 +12,12 @@ import (
 // CheckProvider checks authentication status for a provider.
 // Performs local checks only - no network calls are made.
 //
-// Returns a Status with type-safe details:
-//   - Status.GoogleCloud for Google Cloud providers
-//   - Status.APIKey for API key providers
+// Resolver selection uses catalog authentication metadata. Endpoint protocols
+// do not select credentials.
 func (c *Checker) CheckProvider(provider *catalogs.Provider, supportedMap map[string]bool) *Status {
+	if provider == nil {
+		return &Status{State: StateInvalid, Summary: "Provider is required"}
+	}
 	// Check if provider is supported
 	if !supportedMap[string(provider.ID)] {
 		return &Status{
@@ -24,17 +26,28 @@ func (c *Checker) CheckProvider(provider *catalogs.Provider, supportedMap map[st
 		}
 	}
 
-	// Google Cloud providers (Vertex AI, etc.)
-	if provider.Catalog != nil && provider.Catalog.Endpoint.Type == catalogs.EndpointTypeGoogleCloud {
-		return c.checkGoogleCloud()
+	method := catalogs.ProviderCatalogAuthNone
+	if provider.Catalog != nil {
+		method = provider.Catalog.Auth.Method
+		if method == "" {
+			return &Status{
+				State:   StateInvalid,
+				Summary: "Catalog authentication method is required",
+			}
+		}
 	}
-
-	// API key providers
-	return c.checkAPIKey(provider)
+	resolver, found := c.resolvers[method]
+	if !found {
+		return &Status{
+			State:   StateUnsupported,
+			Summary: fmt.Sprintf("No credential resolver for catalog auth method %s", method),
+		}
+	}
+	return resolver.Check(provider)
 }
 
-// checkGoogleCloud checks Google Cloud authentication using ADC.
-func (c *Checker) checkGoogleCloud() *Status {
+// checkGoogleDefault checks Google default credentials using local evidence.
+func checkGoogleDefault(_ *catalogs.Provider) *Status {
 	details := adc.BuildDetails()
 
 	// Map adc.State to auth.State
@@ -51,14 +64,22 @@ func (c *Checker) checkGoogleCloud() *Status {
 	}
 
 	return &Status{
-		State:       state,
-		Summary:     adc.FormatBrief(details),
-		GoogleCloud: details,
+		State:   state,
+		Summary: adc.FormatBrief(details),
+		CredentialChain: &CredentialChainDetails{
+			Method:  catalogs.ProviderCatalogAuthGoogleDefault,
+			Source:  "application-default-credentials",
+			Details: details,
+		},
 	}
 }
 
-// checkAPIKey checks API key-based authentication.
-func (c *Checker) checkAPIKey(provider *catalogs.Provider) *Status {
+func checkNoCredentials(_ *catalogs.Provider) *Status {
+	return &Status{State: StateOptional, Summary: "No catalog credentials required"}
+}
+
+// checkAPIKey checks API key-based catalog authentication.
+func checkAPIKey(provider *catalogs.Provider) *Status {
 	// No API key configured
 	if provider.APIKey == nil {
 		return &Status{
@@ -71,7 +92,7 @@ func (c *Checker) checkAPIKey(provider *catalogs.Provider) *Status {
 
 	// API key not set
 	if envValue == "" {
-		if provider.Catalog != nil && provider.Catalog.Endpoint.AuthRequired {
+		if provider.IsCatalogAuthRequired() {
 			return &Status{
 				State:   StateMissing,
 				Summary: fmt.Sprintf("Set %s environment variable", provider.APIKey.Name),

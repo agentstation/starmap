@@ -212,7 +212,7 @@ func defaultPolicies() []Policy {
 		policy(catalogmeta.ResourceTypeProvider, "APIKey", "", localFirst, MergeReplace, EmptyAbsent, "Credential parameter configuration is operator-owned."),
 		policy(catalogmeta.ResourceTypeProvider, "EnvVars", "", localFirst, MergeReplace, EmptyAbsent, "Environment configuration is operator-owned."),
 		policy(catalogmeta.ResourceTypeProvider, "Catalog", "", localFirst, MergeReplace, EmptyAbsent, "Acquisition endpoint configuration is operator-owned."),
-		policy(catalogmeta.ResourceTypeProvider, "ChatCompletions", "", localFirst, MergeReplace, EmptyAbsent, "Inference endpoint configuration is operator-owned."),
+		policy(catalogmeta.ResourceTypeProvider, "Inference", "", localFirst, MergeReplace, EmptyAbsent, "Inference endpoint configuration is operator-owned."),
 		policy(catalogmeta.ResourceTypeProvider, "PrivacyPolicy", "", modelsDevFirst, MergeFillMissing, EmptyAbsent, "Observed policy data leads a human fallback."),
 		policy(catalogmeta.ResourceTypeProvider, "RetentionPolicy", "", modelsDevFirst, MergeFillMissing, EmptyAbsent, "Observed retention data leads a human fallback."),
 		policy(catalogmeta.ResourceTypeProvider, "GovernancePolicy", "", modelsDevFirst, MergeFillMissing, EmptyAbsent, "Observed governance data leads a human fallback."),

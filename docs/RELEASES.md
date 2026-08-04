@@ -58,10 +58,10 @@ Catalog generations are a separate product data channel. They are published by
 the scheduled catalog workflow under payload-digest prerelease tags and are
 never appended to an application release.
 
-The next release should be `v0.1.0-rc.1`. Promote to `v0.1.0` only after the RC
-installation, provenance, container, Homebrew, rollback, and upgrade drills are
-green. Reserve `v1.0.0` for an explicit public compatibility commitment across
-the Go API, CLI, configuration, and durable catalog formats.
+Use a minor version for a direct pre-v1 compatibility break and a patch version
+for a compatible correction. Reserve `v1.0.0` for an explicit public
+compatibility commitment across the Go API, CLI, configuration, and durable
+catalog formats.
 
 ## Operator commands
 

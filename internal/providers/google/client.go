@@ -7,7 +7,6 @@ import (
 	stderrors "errors"
 	"fmt"
 	"net/url"
-	"os"
 	"sync"
 	"time"
 
@@ -15,7 +14,6 @@ import (
 	"cloud.google.com/go/auth/credentials"
 	"google.golang.org/genai"
 
-	"github.com/agentstation/starmap/internal/auth/adc"
 	"github.com/agentstation/starmap/internal/constants"
 	"github.com/agentstation/starmap/internal/sourcepayload"
 	"github.com/agentstation/starmap/internal/transport"
@@ -400,50 +398,8 @@ func googleListURL(endpoint, pageToken string) (string, error) {
 	return parsed.String(), nil
 }
 
-// checkVertexPrerequisites performs pre-flight checks for Vertex AI.
-// This uses the same logic as `starmap providers auth test` to detect ADC configuration
-// locally without making network calls.
-func (c *Client) checkVertexPrerequisites() error {
-	// Check ADC status using the same logic as `starmap providers auth test`
-	details := adc.BuildDetails()
-
-	switch details.State {
-	case adc.StateMissing:
-		return &errors.ConfigError{
-			Component: "google-vertex",
-			Message:   "Application Default Credentials not configured - run 'gcloud auth application-default login'",
-		}
-	case adc.StateInvalid:
-		return &errors.ConfigError{
-			Component: "google-vertex",
-			Message:   "Application Default Credentials invalid - check 'gcloud auth application-default login'",
-		}
-	case adc.StateConfigured:
-		// ADC is configured, now check if project is set
-		if os.Getenv("GOOGLE_VERTEX_PROJECT") == "" && os.Getenv("GOOGLE_CLOUD_PROJECT") == "" {
-			return &errors.ConfigError{
-				Component: "google-vertex",
-				Message:   "No project configured - set GOOGLE_VERTEX_PROJECT or GOOGLE_CLOUD_PROJECT environment variable",
-			}
-		}
-		// All checks passed
-		return nil
-	default:
-		return &errors.ConfigError{
-			Component: "google-vertex",
-			Message:   "Unknown ADC state",
-		}
-	}
-}
-
 // listModelsVertex fetches models using Vertex AI API.
 func (c *Client) listModelsVertex(ctx context.Context) ([]catalogs.Model, error) {
-	// Pre-flight check: Verify ADC is available before attempting network calls
-	// This is the same check used by `starmap providers auth test`
-	if err := c.checkVertexPrerequisites(); err != nil {
-		return nil, err
-	}
-
 	// Bound the complete paginated operation while respecting any shorter caller
 	// deadline. Vertex model listings can span multiple requests, so a per-call
 	// latency assumption is not an appropriate operation deadline.

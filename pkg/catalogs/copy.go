@@ -93,7 +93,7 @@ func DeepCopyProvider(provider Provider) Provider {
 	providerCopy.Catalog = deepCopyProviderCatalog(provider.Catalog)
 	providerCopy.Models = DeepCopyProviderModels(provider.Models)
 	providerCopy.StatusPageURL = copyPtr(provider.StatusPageURL)
-	providerCopy.ChatCompletions = deepCopyProviderChatCompletions(provider.ChatCompletions)
+	providerCopy.Inference = deepCopyProviderInference(provider.Inference)
 	providerCopy.PrivacyPolicy = deepCopyProviderPrivacyPolicy(provider.PrivacyPolicy)
 	providerCopy.RetentionPolicy = deepCopyProviderRetentionPolicy(provider.RetentionPolicy)
 	providerCopy.GovernancePolicy = deepCopyProviderGovernancePolicy(provider.GovernancePolicy)
@@ -340,6 +340,7 @@ func deepCopyProviderCatalog(catalog *ProviderCatalog) *ProviderCatalog {
 	}
 	copied := *catalog
 	copied.Docs = copyPtr(catalog.Docs)
+	copied.Auth.Scopes = append([]string(nil), catalog.Auth.Scopes...)
 	copied.Endpoint.FieldMappings = append([]FieldMapping(nil), catalog.Endpoint.FieldMappings...)
 	copied.Endpoint.FeatureRules = deepCopyFeatureRules(catalog.Endpoint.FeatureRules)
 	copied.Endpoint.AuthorMapping = deepCopyAuthorMapping(catalog.Endpoint.AuthorMapping)
@@ -368,14 +369,19 @@ func deepCopyAuthorMapping(mapping *AuthorMapping) *AuthorMapping {
 	return &copied
 }
 
-func deepCopyProviderChatCompletions(chat *ProviderChatCompletions) *ProviderChatCompletions {
-	if chat == nil {
+func deepCopyProviderInference(inference *ProviderInference) *ProviderInference {
+	if inference == nil {
 		return nil
 	}
-	copied := *chat
-	copied.URL = copyPtr(chat.URL)
-	copied.HealthAPIURL = copyPtr(chat.HealthAPIURL)
-	copied.HealthComponents = append([]ProviderHealthComponent(nil), chat.HealthComponents...)
+	copied := *inference
+	copied.Endpoints = append([]ProviderInferenceEndpoint(nil), inference.Endpoints...)
+	for index := range copied.Endpoints {
+		copied.Endpoints[index].ProtocolsByAuthor = copyMap(inference.Endpoints[index].ProtocolsByAuthor)
+		copied.Endpoints[index].PathsByAuthor = copyMap(inference.Endpoints[index].PathsByAuthor)
+		copied.Endpoints[index].StreamPathsByAuthor = copyMap(inference.Endpoints[index].StreamPathsByAuthor)
+	}
+	copied.HealthAPIURL = copyPtr(inference.HealthAPIURL)
+	copied.HealthComponents = append([]ProviderHealthComponent(nil), inference.HealthComponents...)
 	return &copied
 }
 

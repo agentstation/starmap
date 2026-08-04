@@ -46,10 +46,10 @@ func TestClientErrors(t *testing.T) {
 				Scheme: "Bearer",
 			},
 			Catalog: &catalogs.ProviderCatalog{
+				Auth: catalogs.ProviderCatalogAuth{Method: catalogs.ProviderCatalogAuthAPIKey, Required: true},
 				Endpoint: catalogs.ProviderEndpoint{
-					Type:         catalogs.EndpointTypeOpenAI,
-					URL:          server.URL,
-					AuthRequired: true,
+					Type: catalogs.EndpointTypeOpenAI,
+					URL:  server.URL,
 				},
 			},
 		}
@@ -85,10 +85,10 @@ func TestClientErrors(t *testing.T) {
 				Scheme: "Bearer",
 			},
 			Catalog: &catalogs.ProviderCatalog{
+				Auth: catalogs.ProviderCatalogAuth{Method: catalogs.ProviderCatalogAuthAPIKey, Required: true},
 				Endpoint: catalogs.ProviderEndpoint{
-					Type:         catalogs.EndpointTypeOpenAI,
-					URL:          server.URL,
-					AuthRequired: true,
+					Type: catalogs.EndpointTypeOpenAI,
+					URL:  server.URL,
 				},
 			},
 		}
@@ -123,10 +123,10 @@ func TestClientErrors(t *testing.T) {
 				Scheme: "Bearer",
 			},
 			Catalog: &catalogs.ProviderCatalog{
+				Auth: catalogs.ProviderCatalogAuth{Method: catalogs.ProviderCatalogAuthAPIKey, Required: true},
 				Endpoint: catalogs.ProviderEndpoint{
-					Type:         catalogs.EndpointTypeOpenAI,
-					URL:          server.URL,
-					AuthRequired: true,
+					Type: catalogs.EndpointTypeOpenAI,
+					URL:  server.URL,
 				},
 			},
 		}
@@ -162,10 +162,10 @@ func TestClientErrors(t *testing.T) {
 				Scheme: "Bearer",
 			},
 			Catalog: &catalogs.ProviderCatalog{
+				Auth: catalogs.ProviderCatalogAuth{Method: catalogs.ProviderCatalogAuthAPIKey, Required: true},
 				Endpoint: catalogs.ProviderEndpoint{
-					Type:         catalogs.EndpointTypeOpenAI,
-					URL:          server.URL,
-					AuthRequired: true,
+					Type: catalogs.EndpointTypeOpenAI,
+					URL:  server.URL,
 				},
 			},
 		}
@@ -200,10 +200,10 @@ func TestClientErrors(t *testing.T) {
 				Scheme: "Bearer",
 			},
 			Catalog: &catalogs.ProviderCatalog{
+				Auth: catalogs.ProviderCatalogAuth{Method: catalogs.ProviderCatalogAuthAPIKey, Required: true},
 				Endpoint: catalogs.ProviderEndpoint{
-					Type:         catalogs.EndpointTypeOpenAI,
-					URL:          server.URL,
-					AuthRequired: true,
+					Type: catalogs.EndpointTypeOpenAI,
+					URL:  server.URL,
 				},
 			},
 		}
@@ -297,10 +297,10 @@ func TestClientModelConversion(t *testing.T) {
 			Scheme: "Bearer",
 		},
 		Catalog: &catalogs.ProviderCatalog{
+			Auth: catalogs.ProviderCatalogAuth{Method: catalogs.ProviderCatalogAuthAPIKey, Required: true},
 			Endpoint: catalogs.ProviderEndpoint{
-				Type:         catalogs.EndpointTypeOpenAI,
-				URL:          "https://api.openai.com/v1/models",
-				AuthRequired: true,
+				Type: catalogs.EndpointTypeOpenAI,
+				URL:  "https://api.openai.com/v1/models",
 				FeatureRules: []catalogs.FeatureRule{
 					{
 						Field:    "id",
@@ -425,10 +425,10 @@ func TestClientConcurrency(t *testing.T) {
 			Scheme: "Bearer",
 		},
 		Catalog: &catalogs.ProviderCatalog{
+			Auth: catalogs.ProviderCatalogAuth{Method: catalogs.ProviderCatalogAuthAPIKey, Required: true},
 			Endpoint: catalogs.ProviderEndpoint{
-				Type:         catalogs.EndpointTypeOpenAI,
-				URL:          server.URL,
-				AuthRequired: true,
+				Type: catalogs.EndpointTypeOpenAI,
+				URL:  server.URL,
 			},
 		},
 	}

@@ -23,7 +23,7 @@ type catalogReadViews struct {
 type providerModelCandidate struct {
 	providerID   ProviderID
 	definitionID ModelDefinitionID
-	endpoint     ProviderOfferingEndpoint
+	endpoints    []ProviderOfferingEndpoint
 	model        Model
 }
 
@@ -176,7 +176,7 @@ func validatedProviderModelCandidate(
 	candidate := providerModelCandidate{
 		providerID:   provider.ID,
 		definitionID: model.ModelRef,
-		endpoint:     deriveProviderOfferingEndpoint(provider, *model),
+		endpoints:    deriveProviderOfferingEndpoints(provider, model.ModelRef, model.ID, deriveOfferingCapabilities(*model)),
 		model:        DeepCopyModel(*model),
 	}
 	if candidate.definitionID == "" {

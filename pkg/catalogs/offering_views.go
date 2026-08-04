@@ -3,6 +3,7 @@ package catalogs
 import (
 	"encoding/json"
 	"slices"
+	"strings"
 
 	"github.com/agentstation/starmap/pkg/errors"
 )
@@ -24,9 +25,10 @@ func deriveProviderOffering(candidate providerModelCandidate) (ProviderOffering,
 		DefinitionID:    candidate.definitionID,
 		Pricing:         deepCopyModelPricing(model.Pricing),
 		Availability:    OfferingAvailabilityUnknown,
-		Endpoint:        candidate.endpoint,
+		Endpoints:       append([]ProviderOfferingEndpoint(nil), candidate.endpoints...),
 		Lifecycle:       lifecycle,
 	}
+	offering.Service = deriveOfferingCapabilities(model)
 	if model.Limits != nil {
 		limits := *model.Limits
 		offering.Limits = &limits
@@ -67,16 +69,84 @@ func deriveProviderOffering(candidate providerModelCandidate) (ProviderOffering,
 	return offering, nil
 }
 
-func deriveProviderOfferingEndpoint(provider Provider, model Model) ProviderOfferingEndpoint {
-	endpoint := ProviderOfferingEndpoint{}
-	if provider.ChatCompletions != nil && provider.ChatCompletions.URL != nil &&
-		isChatCompletionModel(model) {
-		if provider.Catalog != nil {
-			endpoint.Type = provider.Catalog.Endpoint.Type
-		}
-		endpoint.URL = *provider.ChatCompletions.URL
+func deriveProviderOfferingEndpoints(
+	provider Provider,
+	definitionID ModelDefinitionID,
+	providerModelID string,
+	capabilities ProviderOfferingServiceCapabilities,
+) []ProviderOfferingEndpoint {
+	if provider.Inference == nil {
+		return nil
 	}
-	return endpoint
+	endpoints := make([]ProviderOfferingEndpoint, 0, len(capabilities.Operations))
+	for _, operation := range capabilities.Operations {
+		inferenceEndpoint, found := provider.Inference.Endpoint(operation)
+		if !found {
+			continue
+		}
+		endpointType := inferenceEndpoint.Type
+		authorID, _, parseErr := ParseModelDefinitionID(definitionID)
+		if parseErr == nil {
+			if authorType, exists := inferenceEndpoint.ProtocolsByAuthor[authorID]; exists {
+				endpointType = authorType
+			}
+		}
+		endpointPath := inferenceEndpoint.Path
+		streamPath := inferenceEndpoint.StreamPath
+		if authorPath, exists := inferenceEndpoint.PathsByAuthor[authorID]; exists {
+			endpointPath = authorPath
+		}
+		if authorStreamPath, exists := inferenceEndpoint.StreamPathsByAuthor[authorID]; exists {
+			streamPath = authorStreamPath
+		}
+		resolvedEndpoint := inferenceEndpoint
+		resolvedEndpoint.Path = endpointPath
+		endpointURL := provider.Inference.EndpointURL(resolvedEndpoint, "")
+		endpointURL = strings.ReplaceAll(endpointURL, "{provider_model_id}", providerModelID)
+		endpointURL = strings.ReplaceAll(endpointURL, "{publisher}", string(authorID))
+		streamURL := ""
+		if streamPath != "" {
+			resolvedEndpoint.Path = streamPath
+			streamURL = provider.Inference.EndpointURL(resolvedEndpoint, "")
+			streamURL = strings.ReplaceAll(streamURL, "{provider_model_id}", providerModelID)
+			streamURL = strings.ReplaceAll(streamURL, "{publisher}", string(authorID))
+		}
+		endpoints = append(endpoints, ProviderOfferingEndpoint{
+			Operation: operation,
+			Type:      endpointType,
+			URL:       endpointURL,
+			StreamURL: streamURL,
+		})
+	}
+	return endpoints
+}
+
+func deriveOfferingCapabilities(model Model) ProviderOfferingServiceCapabilities {
+	capabilities := ProviderOfferingServiceCapabilities{}
+	if isEmbeddingModel(model) {
+		capabilities.Operations = []ProviderOperation{ProviderOperationEmbeddings}
+	}
+	if isChatCompletionModel(model) {
+		capabilities.Operations = append(capabilities.Operations, ProviderOperationChatCompletions)
+	}
+	if model.Pricing != nil && model.Pricing.Tokens != nil &&
+		(model.Pricing.Tokens.CacheRead != nil || model.Pricing.Tokens.CacheWrite != nil) {
+		supported := true
+		capabilities.PromptCache = &supported
+	}
+	return capabilities
+}
+
+func isEmbeddingModel(model Model) bool {
+	if model.Features != nil &&
+		slices.Contains(model.Features.Modalities.Output, ModelModalityEmbedding) {
+		return true
+	}
+	if model.Metadata == nil {
+		return false
+	}
+	return slices.Contains(model.Metadata.Tags, ModelTagEmbedding) ||
+		slices.Contains(model.Metadata.Tags, ModelTag("embed"))
 }
 
 func isChatCompletionModel(model Model) bool {
@@ -92,7 +162,8 @@ func isChatCompletionModel(model Model) bool {
 			}
 		}
 	}
-	return slices.Contains(model.Features.Modalities.Input, ModelModalityText) &&
+	return model.Features != nil &&
+		slices.Contains(model.Features.Modalities.Input, ModelModalityText) &&
 		slices.Contains(model.Features.Modalities.Output, ModelModalityText)
 }
 

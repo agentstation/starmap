@@ -21,10 +21,12 @@ func TestProviderOfferingRoundTripAndProviderScopedModes(t *testing.T) {
 			Limits:          &ModelLimits{ContextWindow: 128000},
 			Availability:    OfferingAvailabilityAvailable,
 			Regions:         []string{"us-east", "eu-west"},
-			Endpoint: ProviderOfferingEndpoint{
-				Type: EndpointTypeOpenAI,
-				URL:  "https://a.example/v1/chat/completions",
-			},
+			Service:         ProviderOfferingServiceCapabilities{Operations: []ProviderOperation{ProviderOperationChatCompletions}},
+			Endpoints: []ProviderOfferingEndpoint{{
+				Operation: ProviderOperationChatCompletions,
+				Type:      EndpointTypeOpenAI,
+				URL:       "https://a.example/v1/chat/completions",
+			}},
 			Lifecycle: OfferingLifecycleActive,
 			Modes: map[string]ProviderOfferingMode{
 				"fast": {
@@ -43,10 +45,12 @@ func TestProviderOfferingRoundTripAndProviderScopedModes(t *testing.T) {
 			Pricing:         testOfferingPricing(0.75),
 			Availability:    OfferingAvailabilityRestricted,
 			Regions:         []string{"us-central"},
-			Endpoint: ProviderOfferingEndpoint{
-				Type: EndpointTypeAnthropic,
-				URL:  "https://b.example/messages",
-			},
+			Service:         ProviderOfferingServiceCapabilities{Operations: []ProviderOperation{ProviderOperationChatCompletions}},
+			Endpoints: []ProviderOfferingEndpoint{{
+				Operation: ProviderOperationChatCompletions,
+				Type:      EndpointTypeAnthropic,
+				URL:       "https://b.example/messages",
+			}},
 			Lifecycle: OfferingLifecyclePreview,
 			Modes: map[string]ProviderOfferingMode{
 				"standard": {

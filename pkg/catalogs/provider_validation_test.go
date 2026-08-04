@@ -12,8 +12,6 @@ func TestValidateAllProviders(t *testing.T) {
 	cat := NewEmpty()
 
 	// Add test providers
-	trueVal := true
-
 	providers := []Provider{
 		{
 			ID:   "configured-provider",
@@ -23,9 +21,7 @@ func TestValidateAllProviders(t *testing.T) {
 				Pattern: ".*",
 			},
 			Catalog: &ProviderCatalog{
-				Endpoint: ProviderEndpoint{
-					AuthRequired: trueVal,
-				},
+				Auth: ProviderCatalogAuth{Method: ProviderCatalogAuthAPIKey, Required: true},
 			},
 		},
 		{
@@ -36,9 +32,7 @@ func TestValidateAllProviders(t *testing.T) {
 				Pattern: ".*",
 			},
 			Catalog: &ProviderCatalog{
-				Endpoint: ProviderEndpoint{
-					AuthRequired: trueVal,
-				},
+				Auth: ProviderCatalogAuth{Method: ProviderCatalogAuthAPIKey, Required: true},
 			},
 		},
 		{
@@ -152,10 +146,10 @@ func TestProviderValidateOptionalAPIKeyWithoutValue(t *testing.T) {
 			Scheme:  ProviderAPIKeySchemeBearer,
 		},
 		Catalog: &ProviderCatalog{
+			Auth: ProviderCatalogAuth{Method: ProviderCatalogAuthAPIKey},
 			Endpoint: ProviderEndpoint{
-				Type:         EndpointTypeOpenAI,
-				URL:          "https://api.example.com/v1/models",
-				AuthRequired: false,
+				Type: EndpointTypeOpenAI,
+				URL:  "https://api.example.com/v1/models",
 			},
 		},
 	}

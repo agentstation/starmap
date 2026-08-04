@@ -1035,7 +1035,12 @@ workspace.
 
 ### Authentication Management
 
-Check and verify your authentication setup:
+These commands check catalog-acquisition authentication. Starmap uses these
+credentials only to contact providers and build catalog observations. It does
+not publish the credentials in a catalog generation and it does not define how
+an inference gateway stores or applies inference credentials.
+
+Check and verify your acquisition authentication setup:
 
 ```bash
 # Check authentication status for all providers
@@ -1056,10 +1061,15 @@ starmap auth gcloud
 
 The `providers` command shows:
 - Which providers have configured credentials
-- Authentication method (API key, ADC, OAuth)
+- Acquisition authentication method (API key or cloud chain)
 - Credential source (environment variable, config file, application default)
 - Missing credentials with setup instructions
 - Provider details (name, ID, location, type, models count)
+
+Provider records separately contain inference service facts, such as base URLs,
+operation paths, offering capabilities, and status-page metadata. A consumer
+such as Starport owns gateway and provider inference authentication. It must not
+reuse Starmap's catalog-acquisition credentials for inference.
 
 ### Configuration File
 

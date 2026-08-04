@@ -717,11 +717,11 @@ func (diff *Differ) provider(existing, updated catalogs.Provider) *ProviderUpdat
 		})
 	}
 
-	if !reflect.DeepEqual(existing.ChatCompletions, updated.ChatCompletions) && !diff.ignoreFields["chat_completions"] {
+	if !reflect.DeepEqual(existing.Inference, updated.Inference) && !diff.ignoreFields["inference"] {
 		changes = append(changes, FieldChange{
-			Path:     "chat_completions",
-			OldValue: formatPresent(existing.ChatCompletions != nil),
-			NewValue: formatPresent(updated.ChatCompletions != nil),
+			Path:     "inference",
+			OldValue: formatPresent(existing.Inference != nil),
+			NewValue: formatPresent(updated.Inference != nil),
 			Type:     ChangeTypeUpdate,
 		})
 	}

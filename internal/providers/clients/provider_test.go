@@ -8,11 +8,11 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/agentstation/starmap/internal/constants"
 	"github.com/agentstation/starmap/internal/providers/anthropic"
 	"github.com/agentstation/starmap/internal/providers/google"
 	"github.com/agentstation/starmap/internal/providers/openai"
 	"github.com/agentstation/starmap/pkg/catalogs"
-	"github.com/agentstation/starmap/internal/constants"
 	pkgerrors "github.com/agentstation/starmap/pkg/errors"
 )
 
@@ -200,6 +200,6 @@ func testAuthenticatedProvider(endpoint string) *catalogs.Provider {
 		Scheme: catalogs.ProviderAPIKeySchemeDirect,
 	}
 	provider.Catalog.Endpoint.URL = endpoint
-	provider.Catalog.Endpoint.AuthRequired = true
+	provider.Catalog.Auth = catalogs.ProviderCatalogAuth{Method: catalogs.ProviderCatalogAuthAPIKey, Required: true}
 	return provider
 }

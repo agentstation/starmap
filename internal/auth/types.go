@@ -1,6 +1,8 @@
 // Package auth provides authentication checking for AI model providers.
 package auth
 
+import "github.com/agentstation/starmap/pkg/catalogs"
+
 // State represents the authentication state of a provider.
 type State int
 
@@ -17,16 +19,20 @@ const (
 	StateUnsupported
 )
 
-// Status represents authentication status with type-safe details.
-//
-// GoogleCloud field contains *adc.Details (from internal/auth/adc package).
-// It's defined as interface{} to avoid import cycles, but callers can safely
-// type assert to *adc.Details when needed.
+// Status represents catalog-acquisition authentication status.
 type Status struct {
-	State       State
-	Summary     string         // Brief one-line summary
-	APIKey      *APIKeyDetails // For API key providers (nil if not applicable)
-	GoogleCloud any            // For Google Cloud providers (*adc.Details, nil if not applicable)
+	State           State
+	Summary         string                  // Brief one-line summary
+	APIKey          *APIKeyDetails          // API key details, when applicable
+	CredentialChain *CredentialChainDetails // Cloud credential-chain details, when applicable
+}
+
+// CredentialChainDetails describes which catalog-acquisition chain was selected.
+// Details can contain provider-specific inspection data but never a credential value.
+type CredentialChainDetails struct {
+	Method  catalogs.ProviderCatalogAuthMethod
+	Source  string
+	Details any
 }
 
 // APIKeyDetails contains API key authentication details.
@@ -37,12 +43,46 @@ type APIKeyDetails struct {
 	Source  string // Where credentials come from (e.g., "env")
 }
 
+// CredentialResolver checks one catalog-acquisition credential method.
+type CredentialResolver interface {
+	Check(*catalogs.Provider) *Status
+}
+
+// CredentialResolverFunc adapts a function to CredentialResolver.
+type CredentialResolverFunc func(*catalogs.Provider) *Status
+
+// Check implements CredentialResolver.
+func (f CredentialResolverFunc) Check(provider *catalogs.Provider) *Status {
+	return f(provider)
+}
+
+// CheckerOption configures a Checker.
+type CheckerOption func(*Checker)
+
+// WithCredentialResolver registers or replaces a credential resolver.
+func WithCredentialResolver(
+	method catalogs.ProviderCatalogAuthMethod,
+	resolver CredentialResolver,
+) CheckerOption {
+	return func(checker *Checker) {
+		checker.resolvers[method] = resolver
+	}
+}
+
 // Checker checks authentication status for providers.
 type Checker struct {
-	// Add fields as needed for caching, etc.
+	resolvers map[catalogs.ProviderCatalogAuthMethod]CredentialResolver
 }
 
 // NewChecker creates a new authentication checker.
-func NewChecker() *Checker {
-	return &Checker{}
+func NewChecker(options ...CheckerOption) *Checker {
+	checker := &Checker{resolvers: map[catalogs.ProviderCatalogAuthMethod]CredentialResolver{
+		catalogs.ProviderCatalogAuthNone:          CredentialResolverFunc(checkNoCredentials),
+		catalogs.ProviderCatalogAuthAPIKey:        CredentialResolverFunc(checkAPIKey),
+		catalogs.ProviderCatalogAuthGoogleDefault: CredentialResolverFunc(checkGoogleDefault),
+	}}
+	for _, option := range options {
+		option(checker)
+	}
+	return checker
 }

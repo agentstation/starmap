@@ -21,8 +21,7 @@ const (
 
 // Details contains Google Cloud authentication details.
 //
-// This type is used in auth.Status.GoogleCloud field (stored as interface{}
-// to avoid import cycles).
+// This type is stored in auth.Status.CredentialChain.Details.
 type Details struct {
 	State          State
 	Type           string    // "User Credentials" | "Service Account"
@@ -91,10 +90,14 @@ func buildConfiguredDetails(file *File, adcPath string) *Details {
 
 // credentialType converts ADC type to human-readable string.
 func credentialType(adcType string) string {
-	if adcType == TypeServiceAccount {
+	switch adcType {
+	case TypeServiceAccount:
 		return "Service Account"
+	case TypeExternalAccount:
+		return "Workload Identity"
+	default:
+		return "User Credentials"
 	}
-	return "User Credentials"
 }
 
 // accountIdentifier extracts account identifier from ADC file.
@@ -105,6 +108,9 @@ func accountIdentifier(file *File) string {
 	}
 	if file.ClientID != "" {
 		return "(client ID: " + file.ClientID + ")"
+	}
+	if file.Audience != "" {
+		return "(federated workload)"
 	}
 	return ""
 }

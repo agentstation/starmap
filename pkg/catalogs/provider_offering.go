@@ -56,8 +56,10 @@ const (
 
 // ProviderOfferingEndpoint describes provider-specific inference endpoint behavior.
 type ProviderOfferingEndpoint struct {
-	Type EndpointType `json:"type,omitempty" yaml:"type,omitempty"`
-	URL  string       `json:"url,omitempty" yaml:"url,omitempty"`
+	Operation ProviderOperation `json:"operation" yaml:"operation"`
+	Type      EndpointType      `json:"type,omitempty" yaml:"type,omitempty"`
+	URL       string            `json:"url,omitempty" yaml:"url,omitempty"`
+	StreamURL string            `json:"stream_url,omitempty" yaml:"stream_url,omitempty"`
 }
 
 // OfferingRequestHeaders is a typed set of provider request header overrides.
@@ -114,25 +116,48 @@ type ProviderOfferingMode struct {
 	Request ProviderRequestOverrides `json:"request" yaml:"request,omitempty"`
 }
 
+// ProviderOfferingServiceCapabilities defines exact service behavior for one
+// provider model offering. A nil PromptCache value means unknown.
+type ProviderOfferingServiceCapabilities struct {
+	Operations  []ProviderOperation `json:"operations,omitempty" yaml:"operations,omitempty"`
+	PromptCache *bool               `json:"prompt_cache,omitempty" yaml:"prompt_cache,omitempty"`
+}
+
 // ProviderOffering is one provider's service contract for a model definition.
 // Provider-specific price, limits, availability, regions, lifecycle, endpoint,
 // modes, and request overrides live here rather than on the definition.
 type ProviderOffering struct {
-	ProviderID      ProviderID                      `json:"provider_id" yaml:"provider_id"`
-	ProviderModelID ProviderModelID                 `json:"provider_model_id" yaml:"provider_model_id"`
-	DefinitionID    ModelDefinitionID               `json:"definition_id" yaml:"definition_id"`
-	Pricing         *ModelPricing                   `json:"pricing,omitempty" yaml:"pricing,omitempty"`
-	Limits          *ModelLimits                    `json:"limits,omitempty" yaml:"limits,omitempty"`
-	Availability    OfferingAvailability            `json:"availability" yaml:"availability"`
-	Regions         []string                        `json:"regions,omitempty" yaml:"regions,omitempty"`
-	Endpoint        ProviderOfferingEndpoint        `json:"endpoint" yaml:"endpoint,omitempty"`
-	Lifecycle       OfferingLifecycle               `json:"lifecycle" yaml:"lifecycle"`
-	Modes           map[string]ProviderOfferingMode `json:"modes,omitempty" yaml:"modes,omitempty"`
+	ProviderID      ProviderID                          `json:"provider_id" yaml:"provider_id"`
+	ProviderModelID ProviderModelID                     `json:"provider_model_id" yaml:"provider_model_id"`
+	DefinitionID    ModelDefinitionID                   `json:"definition_id" yaml:"definition_id"`
+	Pricing         *ModelPricing                       `json:"pricing,omitempty" yaml:"pricing,omitempty"`
+	Limits          *ModelLimits                        `json:"limits,omitempty" yaml:"limits,omitempty"`
+	Availability    OfferingAvailability                `json:"availability" yaml:"availability"`
+	Regions         []string                            `json:"regions,omitempty" yaml:"regions,omitempty"`
+	Endpoints       []ProviderOfferingEndpoint          `json:"endpoints,omitempty" yaml:"endpoints,omitempty"`
+	Lifecycle       OfferingLifecycle                   `json:"lifecycle" yaml:"lifecycle"`
+	Service         ProviderOfferingServiceCapabilities `json:"service" yaml:"service"`
+	Modes           map[string]ProviderOfferingMode     `json:"modes,omitempty" yaml:"modes,omitempty"`
 }
 
 // Key returns the provider-scoped immutable offering identity.
 func (o ProviderOffering) Key() OfferingKey {
 	return OfferingKey{ProviderID: o.ProviderID, ProviderModelID: o.ProviderModelID}
+}
+
+// Supports reports whether this exact offering supports an operation.
+func (o ProviderOffering) Supports(operation ProviderOperation) bool {
+	return slices.Contains(o.Service.Operations, operation)
+}
+
+// Endpoint returns the endpoint for an exact supported operation.
+func (o ProviderOffering) Endpoint(operation ProviderOperation) (ProviderOfferingEndpoint, bool) {
+	for _, endpoint := range o.Endpoints {
+		if endpoint.Operation == operation {
+			return endpoint, true
+		}
+	}
+	return ProviderOfferingEndpoint{}, false
 }
 
 // Validate verifies required identity and provider-specific fields.
@@ -165,6 +190,42 @@ func (o ProviderOffering) Validate() error {
 		}
 		seenRegions[region] = struct{}{}
 	}
+	seenOperations := make(map[ProviderOperation]struct{}, len(o.Service.Operations))
+	for index, operation := range o.Service.Operations {
+		if !validProviderOperation(operation) {
+			return offeringValidationError(
+				fmt.Sprintf("capabilities.operations[%d]", index),
+				operation,
+				"must be chat-completions or embeddings",
+			)
+		}
+		if _, exists := seenOperations[operation]; exists {
+			return offeringValidationError(
+				fmt.Sprintf("capabilities.operations[%d]", index),
+				operation,
+				"must be unique",
+			)
+		}
+		seenOperations[operation] = struct{}{}
+	}
+	seenEndpoints := make(map[ProviderOperation]struct{}, len(o.Endpoints))
+	for index, endpoint := range o.Endpoints {
+		if !o.Supports(endpoint.Operation) {
+			return offeringValidationError(
+				fmt.Sprintf("endpoints[%d].operation", index),
+				endpoint.Operation,
+				"must name a supported operation",
+			)
+		}
+		if _, exists := seenEndpoints[endpoint.Operation]; exists {
+			return offeringValidationError(
+				fmt.Sprintf("endpoints[%d].operation", index),
+				endpoint.Operation,
+				"must be unique",
+			)
+		}
+		seenEndpoints[endpoint.Operation] = struct{}{}
+	}
 	for modeName, mode := range o.Modes {
 		if strings.TrimSpace(modeName) == "" {
 			return offeringValidationError("modes", modeName, "mode name must not be empty")
@@ -184,6 +245,15 @@ func (o ProviderOffering) Validate() error {
 		}
 	}
 	return nil
+}
+
+func validProviderOperation(value ProviderOperation) bool {
+	switch value {
+	case ProviderOperationChatCompletions, ProviderOperationEmbeddings:
+		return true
+	default:
+		return false
+	}
 }
 
 func validOfferingAvailability(value OfferingAvailability) bool {
@@ -216,6 +286,9 @@ func copyProviderOffering(offering ProviderOffering) ProviderOffering {
 		copyOffering.Limits = &limits
 	}
 	copyOffering.Regions = append([]string(nil), offering.Regions...)
+	copyOffering.Endpoints = append([]ProviderOfferingEndpoint(nil), offering.Endpoints...)
+	copyOffering.Service.Operations = append([]ProviderOperation(nil), offering.Service.Operations...)
+	copyOffering.Service.PromptCache = copyPtr(offering.Service.PromptCache)
 	if offering.Modes != nil {
 		copyOffering.Modes = make(map[string]ProviderOfferingMode, len(offering.Modes))
 		for name, mode := range offering.Modes {

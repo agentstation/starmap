@@ -7,6 +7,44 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.3.0] - 2026-08-03
+
+### Added
+
+- **Provider inference contracts** define base URLs, operation paths, stream
+  paths, author protocols, status sources, and offering capabilities. The
+  embedded provider catalog now includes Mistral, Azure OpenAI, and Ollama.
+- **Catalog-acquisition authentication contracts**: each provider declares a
+  typed acquisition method independently from its endpoint protocol. Supported
+  methods include API keys and cloud default credential chains. A provider can
+  also require no credentials.
+- **Cloud workload identity support**: Google catalog acquisition accepts
+  external-account credentials. It also accepts the SDK default credential
+  chain without a local credential file.
+- **Tenant observation inputs**: callers can add installation-specific provider
+  definitions and offerings to one immutable catalog generation. Examples
+  include Azure deployments and local Ollama models.
+
+### Changed
+
+- Endpoint projections use schema version 2 and preserve each offering's exact
+  operations, service endpoints, stream endpoints, and prompt-cache support.
+- Provider and offering read views, copies, validation, diffs, CLI output, and
+  generated OpenAPI documents include the new provider contracts.
+- Catalog authentication checks select a credential resolver from the typed
+  provider contract. Endpoint type no longer selects credentials.
+
+### BREAKING CHANGES
+
+- `ProviderCatalog` now owns a required `Auth` contract. This release removes
+  `ProviderEndpoint.AuthRequired`.
+- The operation-based `Provider.Inference` service contract replaces
+  `Provider.ChatCompletions`.
+- `ProviderOffering.Endpoints` replaces `ProviderOffering.Endpoint`. Offerings
+  now declare service capabilities.
+- The generated endpoint projection format changes from schema version 1 to
+  schema version 2.
+
 ## [0.2.0] - 2026-07-30
 
 ### Added
@@ -483,6 +521,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Initial public release. See Unreleased section for features.
 
-[Unreleased]: https://github.com/agentstation/starmap/compare/v0.2.0...HEAD
+[Unreleased]: https://github.com/agentstation/starmap/compare/v0.3.0...HEAD
+[0.3.0]: https://github.com/agentstation/starmap/compare/v0.2.0...v0.3.0
 [0.2.0]: https://github.com/agentstation/starmap/compare/v0.1.2...v0.2.0
 [0.1.0]: https://github.com/agentstation/starmap/releases/tag/v0.1.0

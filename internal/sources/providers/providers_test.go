@@ -42,7 +42,7 @@ func TestPublicInternalProviderFetchConformance(t *testing.T) {
 			name: "missing credentials",
 			provider: func() catalogs.Provider {
 				provider := providerForTest("missing")
-				provider.Catalog.Endpoint.AuthRequired = true
+				provider.Catalog.Auth = catalogs.ProviderCatalogAuth{Method: catalogs.ProviderCatalogAuthAPIKey, Required: true}
 				provider.APIKey = &catalogs.ProviderAPIKey{Name: "STARMAP_CONFORMANCE_MISSING_KEY"}
 				return provider
 			}(),
@@ -366,7 +366,7 @@ func TestSourceObserveEmitsStructuredSourceProviderAndRunFields(t *testing.T) {
 
 func TestSourceObserveSeparatesBootstrapModelsWhenCredentialsAreMissing(t *testing.T) {
 	provider := providerForTest("missing-key")
-	provider.Catalog.Endpoint.AuthRequired = true
+	provider.Catalog.Auth = catalogs.ProviderCatalogAuth{Method: catalogs.ProviderCatalogAuthAPIKey, Required: true}
 	provider.APIKey = &catalogs.ProviderAPIKey{Name: "STARMAP_PROVIDER_TEST_MISSING_KEY"}
 	provider.Models = map[string]*catalogs.Model{
 		"bootstrap-model": {ID: "bootstrap-model", Name: "Embedded Bootstrap Model"},
@@ -655,10 +655,10 @@ func providerForTest(id catalogs.ProviderID) catalogs.Provider {
 		ID:   id,
 		Name: string(id),
 		Catalog: &catalogs.ProviderCatalog{
+			Auth: catalogs.ProviderCatalogAuth{Method: catalogs.ProviderCatalogAuthNone},
 			Endpoint: catalogs.ProviderEndpoint{
-				Type:         catalogs.EndpointTypeOpenAI,
-				URL:          "https://example.test/models",
-				AuthRequired: false,
+				Type: catalogs.EndpointTypeOpenAI,
+				URL:  "https://example.test/models",
 			},
 		},
 	}

@@ -101,7 +101,6 @@ func TestProvidersDetectCanonicalProviderFieldChanges(t *testing.T) {
 	hq := "San Francisco, CA, USA"
 	iconURL := "https://example.com/icon.svg"
 	statusURL := "https://status.example.com"
-	chatURL := "https://api.example.com/v1/chat/completions"
 	privacyURL := "https://example.com/privacy"
 	retainsData := false
 	retentionDetails := "No retention"
@@ -123,8 +122,13 @@ func TestProvidersDetectCanonicalProviderFieldChanges(t *testing.T) {
 				Required: true,
 			}},
 			StatusPageURL: &statusURL,
-			ChatCompletions: &catalogs.ProviderChatCompletions{
-				URL: &chatURL,
+			Inference: &catalogs.ProviderInference{
+				BaseURL: "https://api.example.com",
+				Endpoints: []catalogs.ProviderInferenceEndpoint{{
+					Operation: catalogs.ProviderOperationChatCompletions,
+					Type:      catalogs.EndpointTypeOpenAI,
+					Path:      "/v1/chat/completions",
+				}},
 			},
 			PrivacyPolicy: &catalogs.ProviderPrivacyPolicy{
 				PrivacyPolicyURL: &privacyURL,
@@ -150,7 +154,7 @@ func TestProvidersDetectCanonicalProviderFieldChanges(t *testing.T) {
 		"icon_url",
 		"env_vars",
 		"status_page_url",
-		"chat_completions",
+		"inference",
 		"privacy_policy",
 		"retention_policy",
 		"governance_policy",
