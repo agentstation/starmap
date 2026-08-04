@@ -50,11 +50,13 @@ func TestProviderCredentialJSONKeepsProgressOnStderr(t *testing.T) {
 			Header: "Authorization",
 			Scheme: catalogs.ProviderAPIKeySchemeBearer,
 		},
-		Catalog: &catalogs.ProviderCatalog{Endpoint: catalogs.ProviderEndpoint{
-			Type:         catalogs.EndpointTypeOpenAI,
-			URL:          server.URL,
-			AuthRequired: true,
-		}},
+		Catalog: &catalogs.ProviderCatalog{
+			Auth: catalogs.ProviderCatalogAuth{Method: catalogs.ProviderCatalogAuthAPIKey, Required: true},
+			Endpoint: catalogs.ProviderEndpoint{
+				Type: catalogs.EndpointTypeOpenAI,
+				URL:  server.URL,
+			},
+		},
 	}); err != nil {
 		t.Fatalf("SetProvider: %v", err)
 	}

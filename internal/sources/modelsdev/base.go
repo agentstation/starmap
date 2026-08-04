@@ -251,7 +251,7 @@ func mergeModelsDevCatalogMetadata(provider, metadata *catalogs.Provider) {
 	}
 	if provider.Catalog.Endpoint.URL == "" {
 		provider.Catalog.Endpoint.URL = metadata.Catalog.Endpoint.URL
-		provider.Catalog.Endpoint.AuthRequired = metadata.Catalog.Endpoint.AuthRequired
+		provider.Catalog.Auth = metadata.Catalog.Auth
 	}
 }
 

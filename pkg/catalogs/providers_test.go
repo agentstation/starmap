@@ -22,14 +22,19 @@ func TestProvidersFormatYAML(t *testing.T) {
 			},
 			Catalog: &ProviderCatalog{
 				Docs: stringPtr("https://docs.anthropic.com/en/docs/about-claude/models/overview"),
+				Auth: ProviderCatalogAuth{Method: ProviderCatalogAuthAPIKey, Required: true},
 				Endpoint: ProviderEndpoint{
-					URL:          "https://api.anthropic.com/v1/models",
-					AuthRequired: true,
+					URL: "https://api.anthropic.com/v1/models",
 				},
 			},
 			StatusPageURL: stringPtr("https://status.anthropic.com"),
-			ChatCompletions: &ProviderChatCompletions{
-				URL: stringPtr("https://api.anthropic.com/v1/messages"),
+			Inference: &ProviderInference{
+				BaseURL: "https://api.anthropic.com",
+				Endpoints: []ProviderInferenceEndpoint{{
+					Operation: ProviderOperationChatCompletions,
+					Type:      EndpointTypeAnthropic,
+					Path:      "/v1/messages",
+				}},
 			},
 			PrivacyPolicy: &ProviderPrivacyPolicy{
 				PrivacyPolicyURL:  stringPtr("https://www.anthropic.com/privacy"),
@@ -68,9 +73,9 @@ func TestProvidersFormatYAML(t *testing.T) {
 			},
 			Catalog: &ProviderCatalog{
 				Docs: stringPtr("https://inference-docs.cerebras.ai/models/overview"),
+				Auth: ProviderCatalogAuth{Method: ProviderCatalogAuthAPIKey, Required: true},
 				Endpoint: ProviderEndpoint{
-					URL:          "https://api.cerebras.ai/v1/models",
-					AuthRequired: true,
+					URL: "https://api.cerebras.ai/v1/models",
 				},
 				Authors: []AuthorID{"alibaba", "meta", "openai"},
 			},

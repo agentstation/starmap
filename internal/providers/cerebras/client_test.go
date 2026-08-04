@@ -30,10 +30,10 @@ func TestCerebrasWithUnifiedClient(t *testing.T) {
 			Scheme: "Bearer",
 		},
 		Catalog: &catalogs.ProviderCatalog{
+			Auth: catalogs.ProviderCatalogAuth{Method: catalogs.ProviderCatalogAuthAPIKey, Required: true},
 			Endpoint: catalogs.ProviderEndpoint{
-				Type:         catalogs.EndpointTypeOpenAI,
-				URL:          "https://api.cerebras.ai/v1/models",
-				AuthRequired: true,
+				Type: catalogs.EndpointTypeOpenAI,
+				URL:  "https://api.cerebras.ai/v1/models",
 				// Cerebras might have different field mappings than Groq
 			},
 		},

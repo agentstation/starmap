@@ -30,10 +30,10 @@ func TestDeepSeekWithUnifiedClient(t *testing.T) {
 			Scheme: "Bearer",
 		},
 		Catalog: &catalogs.ProviderCatalog{
+			Auth: catalogs.ProviderCatalogAuth{Method: catalogs.ProviderCatalogAuthAPIKey, Required: true},
 			Endpoint: catalogs.ProviderEndpoint{
-				Type:         catalogs.EndpointTypeOpenAI,
-				URL:          "https://api.deepseek.com/v1/models",
-				AuthRequired: true,
+				Type: catalogs.EndpointTypeOpenAI,
+				URL:  "https://api.deepseek.com/v1/models",
 				// DeepSeek might have specific field mappings
 			},
 		},

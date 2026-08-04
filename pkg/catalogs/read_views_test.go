@@ -433,8 +433,15 @@ func TestProviderOfferingsPreserveProviderSpecificFacts(t *testing.T) {
 	for _, provider := range []Provider{
 		{
 			ID: "provider-a", Name: "Provider A",
-			ChatCompletions: &ProviderChatCompletions{URL: &url},
-			Models:          map[string]*Model{first.ID: first},
+			Inference: &ProviderInference{
+				BaseURL: "https://api.provider-a.example",
+				Endpoints: []ProviderInferenceEndpoint{{
+					Operation: ProviderOperationChatCompletions,
+					Type:      EndpointTypeOpenAI,
+					Path:      "/v1/chat/completions",
+				}},
+			},
+			Models: map[string]*Model{first.ID: first},
 		},
 		{
 			ID: "provider-b", Name: "Provider B",
@@ -469,8 +476,9 @@ func TestProviderOfferingsPreserveProviderSpecificFacts(t *testing.T) {
 		b.Lifecycle != OfferingLifecycleDeprecated {
 		t.Fatalf("lifecycle = (%q, %q)", a.Lifecycle, b.Lifecycle)
 	}
-	if a.Endpoint.URL != url {
-		t.Fatalf("endpoint = %#v, want URL %q", a.Endpoint, url)
+	chatEndpoint, found := a.Endpoint(ProviderOperationChatCompletions)
+	if !found || chatEndpoint.URL != url {
+		t.Fatalf("chat endpoint = %#v, found = %t, want URL %q", chatEndpoint, found, url)
 	}
 	if string(a.Modes["fast"].Request.Body["service_tier"]) != `"priority"` ||
 		string(b.Modes["fast"].Request.Body["service_tier"]) != `"standard"` {
@@ -494,11 +502,17 @@ func TestProviderOfferingOmitsChatURLForOperationPricedModel(t *testing.T) {
 
 	builder := NewEmpty()
 	setTestReadViewDefinition(t, builder, "image-model", "Image Model")
-	url := "https://api.example/v1/chat/completions"
 	perImage := 0.01
 	if err := builder.SetProvider(Provider{
 		ID: "provider", Name: "Provider",
-		ChatCompletions: &ProviderChatCompletions{URL: &url},
+		Inference: &ProviderInference{
+			BaseURL: "https://api.example",
+			Endpoints: []ProviderInferenceEndpoint{{
+				Operation: ProviderOperationChatCompletions,
+				Type:      EndpointTypeOpenAI,
+				Path:      "/v1/chat/completions",
+			}},
+		},
 		Models: map[string]*Model{
 			"image-model": {
 				ID: "image-model", ModelRef: "author/image-model", Name: "Image Model",
@@ -522,8 +536,8 @@ func TestProviderOfferingOmitsChatURLForOperationPricedModel(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Offering: %v", err)
 	}
-	if offering.Endpoint != (ProviderOfferingEndpoint{}) {
-		t.Fatalf("image offering endpoint = %#v, want omitted chat route", offering.Endpoint)
+	if len(offering.Endpoints) != 0 {
+		t.Fatalf("image offering endpoints = %#v, want omitted chat route", offering.Endpoints)
 	}
 }
 

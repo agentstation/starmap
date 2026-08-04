@@ -62,6 +62,10 @@ func validateProvidersStructure(app application, verbose bool) error {
 			validationErrors = append(validationErrors,
 				fmt.Sprintf("provider %s missing required field 'name'", provider.ID))
 		}
+		if err := provider.ValidateContract(); err != nil {
+			validationErrors = append(validationErrors,
+				fmt.Sprintf("provider %s contract: %v", provider.ID, err))
+		}
 
 		// Validate API key configuration if present
 		if provider.APIKey != nil {
@@ -121,9 +125,9 @@ func validateAPIKeyConfig(provider *catalogs.Provider) error {
 func validateCatalogConfig(provider *catalogs.Provider) error {
 	catalog := provider.Catalog
 
-	// Check API key requirement consistency
-	if catalog.Endpoint.AuthRequired && provider.APIKey == nil {
-		return fmt.Errorf("api_key_required is true but no api_key configuration")
+	// Check catalog authentication consistency.
+	if catalog.Auth.Method == catalogs.ProviderCatalogAuthAPIKey && provider.APIKey == nil {
+		return fmt.Errorf("api-key catalog auth requires api_key configuration")
 	}
 
 	// Validate URLs are present if specified

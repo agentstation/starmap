@@ -8,8 +8,8 @@ import (
 	"slices"
 	"time"
 
-	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/internal/constants"
+	"github.com/agentstation/starmap/pkg/catalogs"
 )
 
 // Example demonstrates advanced catalog construction and publication.
@@ -270,9 +270,12 @@ func Example_providerCapabilities() {
 		ID:   "openai",
 		Name: "OpenAI",
 		Catalog: &catalogs.ProviderCatalog{
+			Auth: catalogs.ProviderCatalogAuth{
+				Method:   catalogs.ProviderCatalogAuthAPIKey,
+				Required: true,
+			},
 			Endpoint: catalogs.ProviderEndpoint{
-				URL:          "https://api.openai.com/v1/models",
-				AuthRequired: true,
+				URL: "https://api.openai.com/v1/models",
 			},
 		},
 	}
@@ -283,7 +286,7 @@ func Example_providerCapabilities() {
 	if p.HasAPIKey() {
 		fmt.Println("Provider has API key configured")
 	}
-	if p.Catalog != nil && p.Catalog.Endpoint.AuthRequired {
+	if p.IsAPIKeyRequired() {
 		fmt.Println("Provider requires API key")
 	}
 }

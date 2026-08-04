@@ -30,8 +30,8 @@ type Provider struct {
 	Models  map[string]*Model `json:"-" yaml:"-"`                                 // Available models indexed by model ID - not serialized to YAML
 
 	// Status & Health
-	StatusPageURL   *string                  `json:"status_page_url,omitempty" yaml:"status_page_url,omitempty"`   // Link to service status page
-	ChatCompletions *ProviderChatCompletions `json:"chat_completions,omitempty" yaml:"chat_completions,omitempty"` // Chat completions API configuration
+	StatusPageURL *string            `json:"status_page_url,omitempty" yaml:"status_page_url,omitempty"` // Link to service status page
+	Inference     *ProviderInference `json:"inference,omitempty" yaml:"inference,omitempty"`             // Provider inference service contract
 
 	// Privacy, Retention, and Governance Policies
 	PrivacyPolicy    *ProviderPrivacyPolicy    `json:"privacy_policy,omitempty" yaml:"privacy_policy,omitempty"`       // Data collection and usage practices
@@ -58,6 +58,8 @@ const (
 	EndpointTypeGoogle EndpointType = "google"
 	// EndpointTypeGoogleCloud represents Google Vertex AI.
 	EndpointTypeGoogleCloud EndpointType = "google-cloud"
+	// EndpointTypeOllama represents the native Ollama API.
+	EndpointTypeOllama EndpointType = "ollama"
 )
 
 // FieldMapping defines how to map API response fields to model fields.
@@ -87,7 +89,6 @@ type ProviderEndpoint struct {
 	URL           string         `yaml:"url" json:"url"`                                               // Required: API endpoint
 	BaseURLEnvVar string         `yaml:"base_url_env_var,omitempty" json:"base_url_env_var,omitempty"` // Optional env var for overriding the endpoint base URL
 	Path          string         `yaml:"path,omitempty" json:"path,omitempty"`                         // Path appended when BaseURLEnvVar is set
-	AuthRequired  bool           `yaml:"auth_required" json:"auth_required"`                           // Required: Whether auth needed
 	FieldMappings []FieldMapping `yaml:"field_mappings,omitempty" json:"field_mappings,omitempty"`     // Field mappings
 	FeatureRules  []FeatureRule  `yaml:"feature_rules,omitempty" json:"feature_rules,omitempty"`       // Feature inference rules
 	AuthorMapping *AuthorMapping `yaml:"author_mapping,omitempty" json:"author_mapping,omitempty"`     // Author extraction
@@ -95,9 +96,35 @@ type ProviderEndpoint struct {
 
 // ProviderCatalog represents information about a provider's models.
 type ProviderCatalog struct {
-	Docs     *string          `yaml:"docs" json:"docs"`                           // Documentation URL
-	Endpoint ProviderEndpoint `yaml:"endpoint" json:"endpoint"`                   // API endpoint configuration
-	Authors  []AuthorID       `json:"authors,omitempty" yaml:"authors,omitempty"` // List of authors to fetch from (for providers like Google Vertex AI)
+	Docs     *string             `yaml:"docs" json:"docs"`                           // Documentation URL
+	Auth     ProviderCatalogAuth `yaml:"auth" json:"auth"`                           // Catalog-acquisition authentication contract
+	Endpoint ProviderEndpoint    `yaml:"endpoint" json:"endpoint"`                   // API endpoint configuration
+	Authors  []AuthorID          `json:"authors,omitempty" yaml:"authors,omitempty"` // List of authors to fetch from (for providers like Google Vertex AI)
+}
+
+// ProviderCatalogAuthMethod selects how Starmap acquires credentials for a
+// provider model catalog. It does not describe inference authentication.
+type ProviderCatalogAuthMethod string
+
+const (
+	// ProviderCatalogAuthNone means the catalog endpoint is public.
+	ProviderCatalogAuthNone ProviderCatalogAuthMethod = "none"
+	// ProviderCatalogAuthAPIKey uses Provider.APIKey for catalog acquisition.
+	ProviderCatalogAuthAPIKey ProviderCatalogAuthMethod = "api-key"
+	// ProviderCatalogAuthGoogleDefault uses Google's application default credential chain.
+	ProviderCatalogAuthGoogleDefault ProviderCatalogAuthMethod = "google-default"
+	// ProviderCatalogAuthAzureDefault uses Azure's default credential chain.
+	ProviderCatalogAuthAzureDefault ProviderCatalogAuthMethod = "azure-default"
+	// ProviderCatalogAuthAWSDefault uses AWS's default credential chain.
+	ProviderCatalogAuthAWSDefault ProviderCatalogAuthMethod = "aws-default"
+)
+
+// ProviderCatalogAuth defines catalog-acquisition authentication. Credential
+// values are runtime state and are never part of this serializable contract.
+type ProviderCatalogAuth struct {
+	Method   ProviderCatalogAuthMethod `json:"method" yaml:"method"`
+	Required bool                      `json:"required" yaml:"required"`
+	Scopes   []string                  `json:"scopes,omitempty" yaml:"scopes,omitempty"`
 }
 
 // ProviderAPIKey represents configuration for an API key to access a provider's catalog.
@@ -132,11 +159,117 @@ const (
 	ProviderAPIKeySchemeDirect ProviderAPIKeyScheme = ""       // Direct value (no scheme prefix)
 )
 
-// ProviderChatCompletions represents configuration for chat completions API.
-type ProviderChatCompletions struct {
-	URL              *string                   `json:"url,omitempty" yaml:"url,omitempty"`                             // Chat completions API endpoint URL
-	HealthAPIURL     *string                   `json:"health_api_url,omitempty" yaml:"health_api_url,omitempty"`       // URL to health/status API for this service
-	HealthComponents []ProviderHealthComponent `json:"health_components,omitempty" yaml:"health_components,omitempty"` // Specific components to monitor for chat completions
+// ProviderOperation identifies one provider inference operation.
+type ProviderOperation string
+
+const (
+	// ProviderOperationChatCompletions generates chat completions.
+	ProviderOperationChatCompletions ProviderOperation = "chat-completions"
+	// ProviderOperationEmbeddings generates vector embeddings.
+	ProviderOperationEmbeddings ProviderOperation = "embeddings"
+)
+
+// ProviderInference defines stable provider-level inference service facts.
+// Gateway consumers supply runtime endpoint overrides and inference credentials.
+type ProviderInference struct {
+	BaseURL          string                      `json:"base_url,omitempty" yaml:"base_url,omitempty"`
+	BaseURLEnvVar    string                      `json:"base_url_env_var,omitempty" yaml:"base_url_env_var,omitempty"`
+	Endpoints        []ProviderInferenceEndpoint `json:"endpoints" yaml:"endpoints"`
+	HealthAPIURL     *string                     `json:"health_api_url,omitempty" yaml:"health_api_url,omitempty"`
+	HealthComponents []ProviderHealthComponent   `json:"health_components,omitempty" yaml:"health_components,omitempty"`
+}
+
+// ProviderInferenceEndpoint defines one operation path and wire protocol.
+type ProviderInferenceEndpoint struct {
+	Operation           ProviderOperation         `json:"operation" yaml:"operation"`
+	Type                EndpointType              `json:"type" yaml:"type"`
+	Path                string                    `json:"path" yaml:"path"`
+	StreamPath          string                    `json:"stream_path,omitempty" yaml:"stream_path,omitempty"`
+	ProtocolsByAuthor   map[AuthorID]EndpointType `json:"protocols_by_author,omitempty" yaml:"protocols_by_author,omitempty"`
+	PathsByAuthor       map[AuthorID]string       `json:"paths_by_author,omitempty" yaml:"paths_by_author,omitempty"`
+	StreamPathsByAuthor map[AuthorID]string       `json:"stream_paths_by_author,omitempty" yaml:"stream_paths_by_author,omitempty"`
+}
+
+// Endpoint returns the endpoint for an exact inference operation.
+func (i *ProviderInference) Endpoint(operation ProviderOperation) (ProviderInferenceEndpoint, bool) {
+	if i == nil {
+		return ProviderInferenceEndpoint{}, false
+	}
+	for _, endpoint := range i.Endpoints {
+		if endpoint.Operation == operation {
+			return endpoint, true
+		}
+	}
+	return ProviderInferenceEndpoint{}, false
+}
+
+// EndpointURL resolves an endpoint against a runtime base URL override.
+func (i *ProviderInference) EndpointURL(endpoint ProviderInferenceEndpoint, baseURLOverride string) string {
+	if i == nil {
+		return ""
+	}
+	baseURL := strings.TrimSpace(baseURLOverride)
+	if baseURL == "" {
+		baseURL = i.BaseURL
+	}
+	return joinEndpointURL(baseURL, endpoint.Path)
+}
+
+var inferenceEndpointVariable = regexp.MustCompile(`\{[a-z][a-z0-9_]*\}`)
+
+// BindOfferingEndpoint applies runtime endpoint bindings to one immutable
+// offering endpoint. Catalog data owns URL templates. Consumers supply only
+// tenant-specific values and an optional base URL override.
+func (i *ProviderInference) BindOfferingEndpoint(
+	endpoint ProviderOfferingEndpoint,
+	baseURLOverride string,
+	bindings map[string]string,
+) (ProviderOfferingEndpoint, error) {
+	if i == nil {
+		return ProviderOfferingEndpoint{}, fmt.Errorf("provider inference service is required")
+	}
+	bound := endpoint
+	var err error
+	bound.URL, err = i.bindOfferingURL(endpoint.URL, baseURLOverride, bindings)
+	if err != nil {
+		return ProviderOfferingEndpoint{}, fmt.Errorf("bind %s endpoint: %w", endpoint.Operation, err)
+	}
+	if endpoint.StreamURL != "" {
+		bound.StreamURL, err = i.bindOfferingURL(endpoint.StreamURL, baseURLOverride, bindings)
+		if err != nil {
+			return ProviderOfferingEndpoint{}, fmt.Errorf("bind %s stream endpoint: %w", endpoint.Operation, err)
+		}
+	}
+	return bound, nil
+}
+
+func (i *ProviderInference) bindOfferingURL(
+	endpointURL string,
+	baseURLOverride string,
+	bindings map[string]string,
+) (string, error) {
+	resolved := strings.TrimSpace(endpointURL)
+	if resolved == "" {
+		return "", fmt.Errorf("endpoint URL is required")
+	}
+	if override := strings.TrimRight(strings.TrimSpace(baseURLOverride), "/"); override != "" {
+		catalogBase := strings.TrimRight(strings.TrimSpace(i.BaseURL), "/")
+		switch {
+		case catalogBase != "" && strings.HasPrefix(resolved, catalogBase):
+			resolved = override + strings.TrimPrefix(resolved, catalogBase)
+		case strings.HasPrefix(resolved, "/"):
+			resolved = override + resolved
+		default:
+			return "", fmt.Errorf("endpoint URL cannot use the base URL override")
+		}
+	}
+	for name, value := range bindings {
+		resolved = strings.ReplaceAll(resolved, "{"+name+"}", value)
+	}
+	if variable := inferenceEndpointVariable.FindString(resolved); variable != "" {
+		return "", fmt.Errorf("endpoint binding %s is required", variable)
+	}
+	return resolved, nil
 }
 
 // ProviderHealthComponent represents a specific component to monitor in a provider's health API.
@@ -175,6 +308,8 @@ const (
 	ProviderIDMeta           ProviderID = "meta"
 	ProviderIDMicrosoft      ProviderID = "microsoft"
 	ProviderIDMistralAI      ProviderID = "mistral"
+	ProviderIDAzureOpenAI    ProviderID = "azure-openai"
+	ProviderIDOllama         ProviderID = "ollama"
 	ProviderIDMoonshotAI     ProviderID = "moonshot-ai"
 	ProviderIDOpenAI         ProviderID = "openai"
 	ProviderIDOpenRouter     ProviderID = "openrouter"
@@ -264,7 +399,14 @@ const (
 
 // IsAPIKeyRequired checks if a provider requires an API key.
 func (p *Provider) IsAPIKeyRequired() bool {
-	return p.Catalog != nil && p.Catalog.Endpoint.AuthRequired
+	return p.Catalog != nil &&
+		p.Catalog.Auth.Method == ProviderCatalogAuthAPIKey &&
+		p.Catalog.Auth.Required
+}
+
+// IsCatalogAuthRequired reports whether catalog acquisition requires credentials.
+func (p *Provider) IsCatalogAuthRequired() bool {
+	return p.Catalog != nil && p.Catalog.Auth.Required
 }
 
 // ProviderValidationStatus represents the validation status of a provider.

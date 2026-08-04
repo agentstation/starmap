@@ -99,6 +99,23 @@ graph TB
 5. **Core Packages**: Reusable business logic for catalog management and reconciliation
 6. **Internal Implementations**: Provider-specific code and data sources
 
+### Provider authentication planes
+
+Starmap owns catalog-acquisition authentication. Each provider record declares
+one method. Methods include API keys, Google Application Default Credentials,
+Azure Default Credential, and AWS default credential chains.
+Starmap resolves that method only when it contacts a provider to build a new
+catalog observation. Credentials never enter a catalog payload or generation.
+
+The catalog also records provider inference service facts. These facts include
+the provider base URL, operation paths, offering capabilities, and status-page
+metadata. They do not include inference credentials or gateway policy.
+
+An LLM gateway such as Starport owns inference authentication. It stores and
+validates tenant or operator credentials and applies them to inference calls.
+This split prevents a catalog-acquisition credential from becoming an
+inference credential by accident.
+
 ## Design Principles
 
 ### 1. Interface Segregation

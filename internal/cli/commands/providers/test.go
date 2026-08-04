@@ -204,50 +204,24 @@ func testProvidersSequential(cmd *cobra.Command, cat catalogs.Reader, supportedP
 			return err
 		}
 
-		// Special handling for Google Cloud providers (use ADC)
-		if provider.Catalog != nil && provider.Catalog.Endpoint.Type == catalogs.EndpointTypeGoogleCloud {
-			status := checker.CheckProvider(&provider, supportedMap)
-
-			// Check if ADC is missing or invalid
-			if status.State == auth.StateMissing {
-				results[i].Status = emoji.Error + " Failed"
-				results[i].Error = "ADC not configured - run 'gcloud auth application-default login'"
-				*failed++
-				if err := writeCommand(cmd.ErrOrStderr(), "%s Failed\n", emoji.Error); err != nil {
-					return err
-				}
-				continue
-			} else if status.State == auth.StateInvalid {
-				results[i].Status = emoji.Error + " Failed"
-				results[i].Error = "ADC invalid - check 'gcloud auth application-default login'"
-				*failed++
-				if err := writeCommand(cmd.ErrOrStderr(), "%s Failed\n", emoji.Error); err != nil {
-					return err
-				}
-				continue
+		status := checker.CheckProvider(&provider, supportedMap)
+		if status.State == auth.StateMissing || status.State == auth.StateInvalid {
+			results[i].Status = emoji.Error + " Failed"
+			results[i].Error = status.Summary
+			*failed++
+			if err := writeCommand(cmd.ErrOrStderr(), "%s Failed\n", emoji.Error); err != nil {
+				return err
 			}
-
-			// Check if project is configured
-			if os.Getenv("GOOGLE_VERTEX_PROJECT") == "" && os.Getenv("GOOGLE_CLOUD_PROJECT") == "" {
-				results[i].Status = emoji.Warning + " Skipped"
-				results[i].Error = "No project configured - set GOOGLE_VERTEX_PROJECT or GOOGLE_CLOUD_PROJECT"
-				*skipped++
-				if err := writeCommand(cmd.ErrOrStderr(), "%s Skipped\n", emoji.Warning); err != nil {
-					return err
-				}
-				continue
+			continue
+		}
+		if status.State == auth.StateUnsupported {
+			results[i].Status = emoji.Warning + " Skipped"
+			results[i].Error = status.Summary
+			*skipped++
+			if err := writeCommand(cmd.ErrOrStderr(), "%s Skipped\n", emoji.Warning); err != nil {
+				return err
 			}
-		} else {
-			// Check if API key is configured for non-Google Cloud providers
-			if provider.APIKey == nil || os.Getenv(provider.APIKey.Name) == "" {
-				results[i].Status = emoji.Optional + " Skipped"
-				results[i].Error = "No credentials configured"
-				*skipped++
-				if err := writeCommand(cmd.ErrOrStderr(), "%s Skipped\n", emoji.Optional); err != nil {
-					return err
-				}
-				continue
-			}
+			continue
 		}
 
 		// Test the API with timeout (use cmd context for signal handling)
@@ -298,38 +272,18 @@ func testProvidersConcurrent(cmd *cobra.Command, cat catalogs.Reader, supportedP
 			continue
 		}
 
-		// Special handling for Google Cloud providers (use ADC)
-		if provider.Catalog != nil && provider.Catalog.Endpoint.Type == catalogs.EndpointTypeGoogleCloud {
-			status := checker.CheckProvider(&provider, supportedMap)
-
-			// Check if ADC is missing or invalid
-			if status.State == auth.StateMissing {
-				results[i].Status = emoji.Error + " Failed"
-				results[i].Error = "ADC not configured - run 'gcloud auth application-default login'"
-				*failed++
-				continue
-			} else if status.State == auth.StateInvalid {
-				results[i].Status = emoji.Error + " Failed"
-				results[i].Error = "ADC invalid - check 'gcloud auth application-default login'"
-				*failed++
-				continue
-			}
-
-			// Check if project is configured
-			if os.Getenv("GOOGLE_VERTEX_PROJECT") == "" && os.Getenv("GOOGLE_CLOUD_PROJECT") == "" {
-				results[i].Status = emoji.Warning + " Skipped"
-				results[i].Error = "No project configured - set GOOGLE_VERTEX_PROJECT or GOOGLE_CLOUD_PROJECT"
-				*skipped++
-				continue
-			}
-		} else {
-			// Check if API key is configured for non-Google Cloud providers
-			if provider.APIKey == nil || os.Getenv(provider.APIKey.Name) == "" {
-				results[i].Status = emoji.Optional + " Skipped"
-				results[i].Error = "No credentials configured"
-				*skipped++
-				continue
-			}
+		status := checker.CheckProvider(&provider, supportedMap)
+		if status.State == auth.StateMissing || status.State == auth.StateInvalid {
+			results[i].Status = emoji.Error + " Failed"
+			results[i].Error = status.Summary
+			*failed++
+			continue
+		}
+		if status.State == auth.StateUnsupported {
+			results[i].Status = emoji.Warning + " Skipped"
+			results[i].Error = status.Summary
+			*skipped++
+			continue
 		}
 
 		// Provider passed pre-flight checks, add to test queue
@@ -435,8 +389,9 @@ func testSingleProvider(cmd *cobra.Command, cat catalogs.Reader, providerID stri
 		return fmt.Errorf("provider %s not found or not supported", providerID)
 	}
 
-	if provider.APIKey == nil || os.Getenv(provider.APIKey.Name) == "" {
-		return fmt.Errorf("provider %s has no credentials configured", providerID)
+	status := auth.NewChecker().CheckProvider(&provider, map[string]bool{string(provider.ID): true})
+	if status.State != auth.StateConfigured && status.State != auth.StateOptional {
+		return fmt.Errorf("provider %s catalog credentials: %s", providerID, status.Summary)
 	}
 
 	if err := writeCommand(cmd.ErrOrStderr(), "Testing %s credentials...\n", providerID); err != nil {

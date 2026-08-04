@@ -285,8 +285,13 @@ func getStatusDisplay(state auth.State) (string, string) {
 
 // getKeyVariable returns the key variable name or special message for display.
 func getKeyVariable(provider *catalogs.Provider, status *auth.Status) string {
-	if provider.Catalog != nil && provider.Catalog.Endpoint.Type == catalogs.EndpointTypeGoogleCloud {
-		return "(gcloud auth)"
+	if provider.Catalog != nil {
+		switch provider.Catalog.Auth.Method {
+		case catalogs.ProviderCatalogAuthGoogleDefault,
+			catalogs.ProviderCatalogAuthAzureDefault,
+			catalogs.ProviderCatalogAuthAWSDefault:
+			return "(" + string(provider.Catalog.Auth.Method) + ")"
+		}
 	}
 
 	if provider.APIKey != nil {
@@ -303,9 +308,13 @@ func getKeyVariable(provider *catalogs.Provider, status *auth.Status) string {
 // getKeyPreview reports whether an API key is present without exposing any
 // reusable credential fingerprint.
 func getKeyPreview(provider *catalogs.Provider, status *auth.Status) string {
-	// Google Cloud providers use gcloud auth, not API keys
-	if provider.Catalog != nil && provider.Catalog.Endpoint.Type == catalogs.EndpointTypeGoogleCloud {
-		return "(gcloud auth)"
+	if provider.Catalog != nil {
+		switch provider.Catalog.Auth.Method {
+		case catalogs.ProviderCatalogAuthGoogleDefault,
+			catalogs.ProviderCatalogAuthAzureDefault,
+			catalogs.ProviderCatalogAuthAWSDefault:
+			return "(" + string(provider.Catalog.Auth.Method) + ")"
+		}
 	}
 
 	// Unsupported providers

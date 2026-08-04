@@ -183,8 +183,8 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/internal/constants"
+	"github.com/agentstation/starmap/pkg/catalogs"
 )
 
 func main() {
@@ -538,9 +538,12 @@ func main() {
 		ID:   "openai",
 		Name: "OpenAI",
 		Catalog: &catalogs.ProviderCatalog{
+			Auth: catalogs.ProviderCatalogAuth{
+				Method:   catalogs.ProviderCatalogAuthAPIKey,
+				Required: true,
+			},
 			Endpoint: catalogs.ProviderEndpoint{
-				URL:          "https://api.openai.com/v1/models",
-				AuthRequired: true,
+				URL: "https://api.openai.com/v1/models",
 			},
 		},
 	}
@@ -551,7 +554,7 @@ func main() {
 	if p.HasAPIKey() {
 		fmt.Println("Provider has API key configured")
 	}
-	if p.Catalog != nil && p.Catalog.Endpoint.AuthRequired {
+	if p.IsAPIKeyRequired() {
 		fmt.Println("Provider requires API key")
 	}
 }
@@ -834,30 +837,42 @@ func main() {
   - [func \(p \*Provider\) HasAPIKey\(\) bool](<#Provider.HasAPIKey>)
   - [func \(p \*Provider\) HasRequiredEnvVars\(\) bool](<#Provider.HasRequiredEnvVars>)
   - [func \(p \*Provider\) IsAPIKeyRequired\(\) bool](<#Provider.IsAPIKeyRequired>)
+  - [func \(p \*Provider\) IsCatalogAuthRequired\(\) bool](<#Provider.IsCatalogAuthRequired>)
   - [func \(p \*Provider\) LoadAPIKey\(\)](<#Provider.LoadAPIKey>)
   - [func \(p \*Provider\) LoadEnvVars\(\)](<#Provider.LoadEnvVars>)
   - [func \(p \*Provider\) MissingRequiredEnvVars\(\) \[\]string](<#Provider.MissingRequiredEnvVars>)
   - [func \(p \*Provider\) Model\(modelID string\) \(\*Model, error\)](<#Provider.Model>)
   - [func \(p \*Provider\) Validate\(supportedProviders map\[ProviderID\]bool\) ProviderValidationResult](<#Provider.Validate>)
+  - [func \(p Provider\) ValidateContract\(\) error](<#Provider.ValidateContract>)
 - [type ProviderAPIKey](<#ProviderAPIKey>)
 - [type ProviderAPIKeyScheme](<#ProviderAPIKeyScheme>)
   - [func \(paks ProviderAPIKeyScheme\) String\(\) string](<#ProviderAPIKeyScheme.String>)
 - [type ProviderCatalog](<#ProviderCatalog>)
-- [type ProviderChatCompletions](<#ProviderChatCompletions>)
+- [type ProviderCatalogAuth](<#ProviderCatalogAuth>)
+- [type ProviderCatalogAuthMethod](<#ProviderCatalogAuthMethod>)
 - [type ProviderEndpoint](<#ProviderEndpoint>)
 - [type ProviderEnvVar](<#ProviderEnvVar>)
 - [type ProviderGovernancePolicy](<#ProviderGovernancePolicy>)
 - [type ProviderHealthComponent](<#ProviderHealthComponent>)
 - [type ProviderID](<#ProviderID>)
   - [func \(pid ProviderID\) String\(\) string](<#ProviderID.String>)
+- [type ProviderInference](<#ProviderInference>)
+  - [func \(i \*ProviderInference\) BindOfferingEndpoint\(endpoint ProviderOfferingEndpoint, baseURLOverride string, bindings map\[string\]string\) \(ProviderOfferingEndpoint, error\)](<#ProviderInference.BindOfferingEndpoint>)
+  - [func \(i \*ProviderInference\) Endpoint\(operation ProviderOperation\) \(ProviderInferenceEndpoint, bool\)](<#ProviderInference.Endpoint>)
+  - [func \(i \*ProviderInference\) EndpointURL\(endpoint ProviderInferenceEndpoint, baseURLOverride string\) string](<#ProviderInference.EndpointURL>)
+- [type ProviderInferenceEndpoint](<#ProviderInferenceEndpoint>)
 - [type ProviderModelID](<#ProviderModelID>)
 - [type ProviderModerator](<#ProviderModerator>)
   - [func \(pm ProviderModerator\) String\(\) string](<#ProviderModerator.String>)
 - [type ProviderOffering](<#ProviderOffering>)
+  - [func \(o ProviderOffering\) Endpoint\(operation ProviderOperation\) \(ProviderOfferingEndpoint, bool\)](<#ProviderOffering.Endpoint>)
   - [func \(o ProviderOffering\) Key\(\) OfferingKey](<#ProviderOffering.Key>)
+  - [func \(o ProviderOffering\) Supports\(operation ProviderOperation\) bool](<#ProviderOffering.Supports>)
   - [func \(o ProviderOffering\) Validate\(\) error](<#ProviderOffering.Validate>)
 - [type ProviderOfferingEndpoint](<#ProviderOfferingEndpoint>)
 - [type ProviderOfferingMode](<#ProviderOfferingMode>)
+- [type ProviderOfferingServiceCapabilities](<#ProviderOfferingServiceCapabilities>)
+- [type ProviderOperation](<#ProviderOperation>)
 - [type ProviderPrivacyPolicy](<#ProviderPrivacyPolicy>)
 - [type ProviderRequestOverrides](<#ProviderRequestOverrides>)
 - [type ProviderRetentionPolicy](<#ProviderRetentionPolicy>)
@@ -992,7 +1007,7 @@ func PrintProviderValidationReport(report *ProviderValidationReport)
 PrintProviderValidationReport prints a formatted report of provider validation status This is a convenience function that calls the Print method on the report.
 
 <a name="ShallowCopyProviderModels"></a>
-## func [ShallowCopyProviderModels](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/copy.go#L437>)
+## func [ShallowCopyProviderModels](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/copy.go#L443>)
 
 ```go
 func ShallowCopyProviderModels(models map[string]*Model) map[string]*Model
@@ -1265,7 +1280,7 @@ func (id AuthorID) String() string
 String returns the string representation of an AuthorID.
 
 <a name="AuthorMapping"></a>
-## type [AuthorMapping](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L79-L82>)
+## type [AuthorMapping](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L81-L84>)
 
 AuthorMapping defines how to extract and normalize authors.
 
@@ -2112,11 +2127,13 @@ const (
     EndpointTypeGoogle EndpointType = "google"
     // EndpointTypeGoogleCloud represents Google Vertex AI.
     EndpointTypeGoogleCloud EndpointType = "google-cloud"
+    // EndpointTypeOllama represents the native Ollama API.
+    EndpointTypeOllama EndpointType = "ollama"
 )
 ```
 
 <a name="FeatureRule"></a>
-## type [FeatureRule](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L71-L76>)
+## type [FeatureRule](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L73-L78>)
 
 FeatureRule defines conditions for inferring model features.
 
@@ -2130,7 +2147,7 @@ type FeatureRule struct {
 ```
 
 <a name="FieldMapping"></a>
-## type [FieldMapping](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L65-L68>)
+## type [FieldMapping](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L67-L70>)
 
 FieldMapping defines how to map API response fields to model fields. Type conversion is automatic based on the destination field type.
 
@@ -3993,7 +4010,7 @@ const (
 ```
 
 <a name="OfferingRequestBody"></a>
-## type [OfferingRequestBody](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider_offering.go#L69>)
+## type [OfferingRequestBody](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider_offering.go#L71>)
 
 OfferingRequestBody is a typed set of exact JSON request\-body values. RawMessage preserves booleans, numbers, strings, arrays, objects, and null without routing values through map\[string\]any.
 
@@ -4002,7 +4019,7 @@ type OfferingRequestBody map[string]json.RawMessage
 ```
 
 <a name="OfferingRequestBody.MarshalYAML"></a>
-### func \(OfferingRequestBody\) [MarshalYAML](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider_offering.go#L74>)
+### func \(OfferingRequestBody\) [MarshalYAML](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider_offering.go#L76>)
 
 ```go
 func (b OfferingRequestBody) MarshalYAML() (any, error)
@@ -4011,7 +4028,7 @@ func (b OfferingRequestBody) MarshalYAML() (any, error)
 MarshalYAML preserves each exact JSON value as its equivalent native YAML scalar, sequence, mapping, or null instead of encoding RawMessage bytes as a sequence of integers.
 
 <a name="OfferingRequestBody.UnmarshalYAML"></a>
-### func \(\*OfferingRequestBody\) [UnmarshalYAML](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider_offering.go#L92>)
+### func \(\*OfferingRequestBody\) [UnmarshalYAML](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider_offering.go#L94>)
 
 ```go
 func (b *OfferingRequestBody) UnmarshalYAML(data []byte) error
@@ -4020,7 +4037,7 @@ func (b *OfferingRequestBody) UnmarshalYAML(data []byte) error
 UnmarshalYAML restores native YAML values as exact JSON values.
 
 <a name="OfferingRequestHeaders"></a>
-## type [OfferingRequestHeaders](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider_offering.go#L64>)
+## type [OfferingRequestHeaders](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider_offering.go#L66>)
 
 OfferingRequestHeaders is a typed set of provider request header overrides.
 
@@ -4283,8 +4300,8 @@ type Provider struct {
     Models  map[string]*Model `json:"-" yaml:"-"`                                 // Available models indexed by model ID - not serialized to YAML
 
     // Status & Health
-    StatusPageURL   *string                  `json:"status_page_url,omitempty" yaml:"status_page_url,omitempty"`   // Link to service status page
-    ChatCompletions *ProviderChatCompletions `json:"chat_completions,omitempty" yaml:"chat_completions,omitempty"` // Chat completions API configuration
+    StatusPageURL *string            `json:"status_page_url,omitempty" yaml:"status_page_url,omitempty"` // Link to service status page
+    Inference     *ProviderInference `json:"inference,omitempty" yaml:"inference,omitempty"`             // Provider inference service contract
 
     // Privacy, Retention, and Governance Policies
     PrivacyPolicy    *ProviderPrivacyPolicy    `json:"privacy_policy,omitempty" yaml:"privacy_policy,omitempty"`       // Data collection and usage practices
@@ -4309,7 +4326,7 @@ func DeepCopyProvider(provider Provider) Provider
 DeepCopyProvider creates a deep copy of a Provider including its Models map.
 
 <a name="Provider.APIKeyValue"></a>
-### func \(\*Provider\) [APIKeyValue](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L327>)
+### func \(\*Provider\) [APIKeyValue](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L469>)
 
 ```go
 func (p *Provider) APIKeyValue() (string, error)
@@ -4318,7 +4335,7 @@ func (p *Provider) APIKeyValue() (string, error)
 APIKeyValue retrieves and validates the API key for this provider. Uses the loaded apiKeyValue if available, otherwise falls back to environment.
 
 <a name="Provider.CatalogEndpointURL"></a>
-### func \(\*Provider\) [CatalogEndpointURL](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L378>)
+### func \(\*Provider\) [CatalogEndpointURL](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L520>)
 
 ```go
 func (p *Provider) CatalogEndpointURL() string
@@ -4327,7 +4344,7 @@ func (p *Provider) CatalogEndpointURL() string
 CatalogEndpointURL returns the resolved model catalog endpoint URL.
 
 <a name="Provider.EnvVar"></a>
-### func \(\*Provider\) [EnvVar](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L367>)
+### func \(\*Provider\) [EnvVar](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L509>)
 
 ```go
 func (p *Provider) EnvVar(name string) string
@@ -4336,7 +4353,7 @@ func (p *Provider) EnvVar(name string) string
 EnvVar returns the value of a specific environment variable.
 
 <a name="Provider.HasAPIKey"></a>
-### func \(\*Provider\) [HasAPIKey](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L448>)
+### func \(\*Provider\) [HasAPIKey](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L590>)
 
 ```go
 func (p *Provider) HasAPIKey() bool
@@ -4345,7 +4362,7 @@ func (p *Provider) HasAPIKey() bool
 HasAPIKey checks if the provider has a valid API key configured. This checks both existence and validation \(pattern matching\).
 
 <a name="Provider.HasRequiredEnvVars"></a>
-### func \(\*Provider\) [HasRequiredEnvVars](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L403>)
+### func \(\*Provider\) [HasRequiredEnvVars](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L545>)
 
 ```go
 func (p *Provider) HasRequiredEnvVars() bool
@@ -4354,7 +4371,7 @@ func (p *Provider) HasRequiredEnvVars() bool
 HasRequiredEnvVars checks if all required environment variables are set.
 
 <a name="Provider.IsAPIKeyRequired"></a>
-### func \(\*Provider\) [IsAPIKeyRequired](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L266>)
+### func \(\*Provider\) [IsAPIKeyRequired](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L401>)
 
 ```go
 func (p *Provider) IsAPIKeyRequired() bool
@@ -4362,8 +4379,17 @@ func (p *Provider) IsAPIKeyRequired() bool
 
 IsAPIKeyRequired checks if a provider requires an API key.
 
+<a name="Provider.IsCatalogAuthRequired"></a>
+### func \(\*Provider\) [IsCatalogAuthRequired](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L408>)
+
+```go
+func (p *Provider) IsCatalogAuthRequired() bool
+```
+
+IsCatalogAuthRequired reports whether catalog acquisition requires credentials.
+
 <a name="Provider.LoadAPIKey"></a>
-### func \(\*Provider\) [LoadAPIKey](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L303>)
+### func \(\*Provider\) [LoadAPIKey](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L445>)
 
 ```go
 func (p *Provider) LoadAPIKey()
@@ -4372,7 +4398,7 @@ func (p *Provider) LoadAPIKey()
 LoadAPIKey loads the API key value from environment into the provider. This should be called when the provider is loaded from the catalog.
 
 <a name="Provider.LoadEnvVars"></a>
-### func \(\*Provider\) [LoadEnvVars](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L311>)
+### func \(\*Provider\) [LoadEnvVars](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L453>)
 
 ```go
 func (p *Provider) LoadEnvVars()
@@ -4381,7 +4407,7 @@ func (p *Provider) LoadEnvVars()
 LoadEnvVars loads environment variable values from the system into the provider. This should be called when the provider is loaded from the catalog.
 
 <a name="Provider.MissingRequiredEnvVars"></a>
-### func \(\*Provider\) [MissingRequiredEnvVars](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L424>)
+### func \(\*Provider\) [MissingRequiredEnvVars](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L566>)
 
 ```go
 func (p *Provider) MissingRequiredEnvVars() []string
@@ -4390,7 +4416,7 @@ func (p *Provider) MissingRequiredEnvVars() []string
 MissingRequiredEnvVars returns a list of required environment variables that are not set.
 
 <a name="Provider.Model"></a>
-### func \(\*Provider\) [Model](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L517>)
+### func \(\*Provider\) [Model](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L659>)
 
 ```go
 func (p *Provider) Model(modelID string) (*Model, error)
@@ -4399,7 +4425,7 @@ func (p *Provider) Model(modelID string) (*Model, error)
 Model retrieves a specific model from the provider.
 
 <a name="Provider.Validate"></a>
-### func \(\*Provider\) [Validate](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L455>)
+### func \(\*Provider\) [Validate](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L597>)
 
 ```go
 func (p *Provider) Validate(supportedProviders map[ProviderID]bool) ProviderValidationResult
@@ -4407,8 +4433,17 @@ func (p *Provider) Validate(supportedProviders map[ProviderID]bool) ProviderVali
 
 Validate performs validation checks on this provider and returns the result. The supportedProviders parameter is a set of provider IDs that have client implementations.
 
+<a name="Provider.ValidateContract"></a>
+### func \(Provider\) [ValidateContract](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider_contract.go#L12>)
+
+```go
+func (p Provider) ValidateContract() error
+```
+
+ValidateContract validates serializable catalog\-acquisition and inference metadata. It does not inspect runtime credential values.
+
 <a name="ProviderAPIKey"></a>
-## type [ProviderAPIKey](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L104-L110>)
+## type [ProviderAPIKey](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L131-L137>)
 
 ProviderAPIKey represents configuration for an API key to access a provider's catalog.
 
@@ -4423,7 +4458,7 @@ type ProviderAPIKey struct {
 ```
 
 <a name="ProviderAPIKeyScheme"></a>
-## type [ProviderAPIKeyScheme](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L121>)
+## type [ProviderAPIKeyScheme](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L148>)
 
 ProviderAPIKeyScheme represents different authentication schemes for API keys.
 
@@ -4442,7 +4477,7 @@ const (
 ```
 
 <a name="ProviderAPIKeyScheme.String"></a>
-### func \(ProviderAPIKeyScheme\) [String](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L124>)
+### func \(ProviderAPIKeyScheme\) [String](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L151>)
 
 ```go
 func (paks ProviderAPIKeyScheme) String() string
@@ -4451,33 +4486,60 @@ func (paks ProviderAPIKeyScheme) String() string
 String returns the string representation of a ProviderAPIKeyScheme.
 
 <a name="ProviderCatalog"></a>
-## type [ProviderCatalog](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L97-L101>)
+## type [ProviderCatalog](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L98-L103>)
 
 ProviderCatalog represents information about a provider's models.
 
 ```go
 type ProviderCatalog struct {
-    Docs     *string          `yaml:"docs" json:"docs"`                           // Documentation URL
-    Endpoint ProviderEndpoint `yaml:"endpoint" json:"endpoint"`                   // API endpoint configuration
-    Authors  []AuthorID       `json:"authors,omitempty" yaml:"authors,omitempty"` // List of authors to fetch from (for providers like Google Vertex AI)
+    Docs     *string             `yaml:"docs" json:"docs"`                           // Documentation URL
+    Auth     ProviderCatalogAuth `yaml:"auth" json:"auth"`                           // Catalog-acquisition authentication contract
+    Endpoint ProviderEndpoint    `yaml:"endpoint" json:"endpoint"`                   // API endpoint configuration
+    Authors  []AuthorID          `json:"authors,omitempty" yaml:"authors,omitempty"` // List of authors to fetch from (for providers like Google Vertex AI)
 }
 ```
 
-<a name="ProviderChatCompletions"></a>
-## type [ProviderChatCompletions](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L136-L140>)
+<a name="ProviderCatalogAuth"></a>
+## type [ProviderCatalogAuth](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L124-L128>)
 
-ProviderChatCompletions represents configuration for chat completions API.
+ProviderCatalogAuth defines catalog\-acquisition authentication. Credential values are runtime state and are never part of this serializable contract.
 
 ```go
-type ProviderChatCompletions struct {
-    URL              *string                   `json:"url,omitempty" yaml:"url,omitempty"`                             // Chat completions API endpoint URL
-    HealthAPIURL     *string                   `json:"health_api_url,omitempty" yaml:"health_api_url,omitempty"`       // URL to health/status API for this service
-    HealthComponents []ProviderHealthComponent `json:"health_components,omitempty" yaml:"health_components,omitempty"` // Specific components to monitor for chat completions
+type ProviderCatalogAuth struct {
+    Method   ProviderCatalogAuthMethod `json:"method" yaml:"method"`
+    Required bool                      `json:"required" yaml:"required"`
+    Scopes   []string                  `json:"scopes,omitempty" yaml:"scopes,omitempty"`
 }
+```
+
+<a name="ProviderCatalogAuthMethod"></a>
+## type [ProviderCatalogAuthMethod](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L107>)
+
+ProviderCatalogAuthMethod selects how Starmap acquires credentials for a provider model catalog. It does not describe inference authentication.
+
+```go
+type ProviderCatalogAuthMethod string
+```
+
+<a name="ProviderCatalogAuthNone"></a>
+
+```go
+const (
+    // ProviderCatalogAuthNone means the catalog endpoint is public.
+    ProviderCatalogAuthNone ProviderCatalogAuthMethod = "none"
+    // ProviderCatalogAuthAPIKey uses Provider.APIKey for catalog acquisition.
+    ProviderCatalogAuthAPIKey ProviderCatalogAuthMethod = "api-key"
+    // ProviderCatalogAuthGoogleDefault uses Google's application default credential chain.
+    ProviderCatalogAuthGoogleDefault ProviderCatalogAuthMethod = "google-default"
+    // ProviderCatalogAuthAzureDefault uses Azure's default credential chain.
+    ProviderCatalogAuthAzureDefault ProviderCatalogAuthMethod = "azure-default"
+    // ProviderCatalogAuthAWSDefault uses AWS's default credential chain.
+    ProviderCatalogAuthAWSDefault ProviderCatalogAuthMethod = "aws-default"
+)
 ```
 
 <a name="ProviderEndpoint"></a>
-## type [ProviderEndpoint](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L85-L94>)
+## type [ProviderEndpoint](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L87-L95>)
 
 ProviderEndpoint configures how to access the provider's model catalog.
 
@@ -4487,7 +4549,6 @@ type ProviderEndpoint struct {
     URL           string         `yaml:"url" json:"url"`                                               // Required: API endpoint
     BaseURLEnvVar string         `yaml:"base_url_env_var,omitempty" json:"base_url_env_var,omitempty"` // Optional env var for overriding the endpoint base URL
     Path          string         `yaml:"path,omitempty" json:"path,omitempty"`                         // Path appended when BaseURLEnvVar is set
-    AuthRequired  bool           `yaml:"auth_required" json:"auth_required"`                           // Required: Whether auth needed
     FieldMappings []FieldMapping `yaml:"field_mappings,omitempty" json:"field_mappings,omitempty"`     // Field mappings
     FeatureRules  []FeatureRule  `yaml:"feature_rules,omitempty" json:"feature_rules,omitempty"`       // Feature inference rules
     AuthorMapping *AuthorMapping `yaml:"author_mapping,omitempty" json:"author_mapping,omitempty"`     // Author extraction
@@ -4495,7 +4556,7 @@ type ProviderEndpoint struct {
 ```
 
 <a name="ProviderEnvVar"></a>
-## type [ProviderEnvVar](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L113-L118>)
+## type [ProviderEnvVar](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L140-L145>)
 
 ProviderEnvVar represents an environment variable required by a provider.
 
@@ -4509,7 +4570,7 @@ type ProviderEnvVar struct {
 ```
 
 <a name="ProviderGovernancePolicy"></a>
-## type [ProviderGovernancePolicy](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L222-L226>)
+## type [ProviderGovernancePolicy](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L357-L361>)
 
 ProviderGovernancePolicy represents oversight and moderation practices.
 
@@ -4522,7 +4583,7 @@ type ProviderGovernancePolicy struct {
 ```
 
 <a name="ProviderHealthComponent"></a>
-## type [ProviderHealthComponent](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L143-L146>)
+## type [ProviderHealthComponent](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L276-L279>)
 
 ProviderHealthComponent represents a specific component to monitor in a provider's health API.
 
@@ -4534,7 +4595,7 @@ type ProviderHealthComponent struct {
 ```
 
 <a name="ProviderID"></a>
-## type [ProviderID](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L149>)
+## type [ProviderID](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L282>)
 
 ProviderID represents a provider identifier type for compile\-time safety.
 
@@ -4566,6 +4627,8 @@ const (
     ProviderIDMeta           ProviderID = "meta"
     ProviderIDMicrosoft      ProviderID = "microsoft"
     ProviderIDMistralAI      ProviderID = "mistral"
+    ProviderIDAzureOpenAI    ProviderID = "azure-openai"
+    ProviderIDOllama         ProviderID = "ollama"
     ProviderIDMoonshotAI     ProviderID = "moonshot-ai"
     ProviderIDOpenAI         ProviderID = "openai"
     ProviderIDOpenRouter     ProviderID = "openrouter"
@@ -4580,13 +4643,72 @@ const (
 ```
 
 <a name="ProviderID.String"></a>
-### func \(ProviderID\) [String](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L152>)
+### func \(ProviderID\) [String](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L285>)
 
 ```go
 func (pid ProviderID) String() string
 ```
 
 String returns the string representation of a ProviderID.
+
+<a name="ProviderInference"></a>
+## type [ProviderInference](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L174-L180>)
+
+ProviderInference defines stable provider\-level inference service facts. Gateway consumers supply runtime endpoint overrides and inference credentials.
+
+```go
+type ProviderInference struct {
+    BaseURL          string                      `json:"base_url,omitempty" yaml:"base_url,omitempty"`
+    BaseURLEnvVar    string                      `json:"base_url_env_var,omitempty" yaml:"base_url_env_var,omitempty"`
+    Endpoints        []ProviderInferenceEndpoint `json:"endpoints" yaml:"endpoints"`
+    HealthAPIURL     *string                     `json:"health_api_url,omitempty" yaml:"health_api_url,omitempty"`
+    HealthComponents []ProviderHealthComponent   `json:"health_components,omitempty" yaml:"health_components,omitempty"`
+}
+```
+
+<a name="ProviderInference.BindOfferingEndpoint"></a>
+### func \(\*ProviderInference\) [BindOfferingEndpoint](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L223-L227>)
+
+```go
+func (i *ProviderInference) BindOfferingEndpoint(endpoint ProviderOfferingEndpoint, baseURLOverride string, bindings map[string]string) (ProviderOfferingEndpoint, error)
+```
+
+BindOfferingEndpoint applies runtime endpoint bindings to one immutable offering endpoint. Catalog data owns URL templates. Consumers supply only tenant\-specific values and an optional base URL override.
+
+<a name="ProviderInference.Endpoint"></a>
+### func \(\*ProviderInference\) [Endpoint](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L194>)
+
+```go
+func (i *ProviderInference) Endpoint(operation ProviderOperation) (ProviderInferenceEndpoint, bool)
+```
+
+Endpoint returns the endpoint for an exact inference operation.
+
+<a name="ProviderInference.EndpointURL"></a>
+### func \(\*ProviderInference\) [EndpointURL](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L207>)
+
+```go
+func (i *ProviderInference) EndpointURL(endpoint ProviderInferenceEndpoint, baseURLOverride string) string
+```
+
+EndpointURL resolves an endpoint against a runtime base URL override.
+
+<a name="ProviderInferenceEndpoint"></a>
+## type [ProviderInferenceEndpoint](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L183-L191>)
+
+ProviderInferenceEndpoint defines one operation path and wire protocol.
+
+```go
+type ProviderInferenceEndpoint struct {
+    Operation           ProviderOperation         `json:"operation" yaml:"operation"`
+    Type                EndpointType              `json:"type" yaml:"type"`
+    Path                string                    `json:"path" yaml:"path"`
+    StreamPath          string                    `json:"stream_path,omitempty" yaml:"stream_path,omitempty"`
+    ProtocolsByAuthor   map[AuthorID]EndpointType `json:"protocols_by_author,omitempty" yaml:"protocols_by_author,omitempty"`
+    PathsByAuthor       map[AuthorID]string       `json:"paths_by_author,omitempty" yaml:"paths_by_author,omitempty"`
+    StreamPathsByAuthor map[AuthorID]string       `json:"stream_paths_by_author,omitempty" yaml:"stream_paths_by_author,omitempty"`
+}
+```
 
 <a name="ProviderModelID"></a>
 ## type [ProviderModelID](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider_offering.go#L19>)
@@ -4598,7 +4720,7 @@ type ProviderModelID string
 ```
 
 <a name="ProviderModerator"></a>
-## type [ProviderModerator](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L229>)
+## type [ProviderModerator](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L364>)
 
 ProviderModerator represents a moderator for a provider.
 
@@ -4639,7 +4761,7 @@ const (
 ```
 
 <a name="ProviderModerator.String"></a>
-### func \(ProviderModerator\) [String](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L232>)
+### func \(ProviderModerator\) [String](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L367>)
 
 ```go
 func (pm ProviderModerator) String() string
@@ -4648,27 +4770,37 @@ func (pm ProviderModerator) String() string
 String returns the string representation of a ProviderModerator.
 
 <a name="ProviderOffering"></a>
-## type [ProviderOffering](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider_offering.go#L120-L131>)
+## type [ProviderOffering](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider_offering.go#L129-L141>)
 
 ProviderOffering is one provider's service contract for a model definition. Provider\-specific price, limits, availability, regions, lifecycle, endpoint, modes, and request overrides live here rather than on the definition.
 
 ```go
 type ProviderOffering struct {
-    ProviderID      ProviderID                      `json:"provider_id" yaml:"provider_id"`
-    ProviderModelID ProviderModelID                 `json:"provider_model_id" yaml:"provider_model_id"`
-    DefinitionID    ModelDefinitionID               `json:"definition_id" yaml:"definition_id"`
-    Pricing         *ModelPricing                   `json:"pricing,omitempty" yaml:"pricing,omitempty"`
-    Limits          *ModelLimits                    `json:"limits,omitempty" yaml:"limits,omitempty"`
-    Availability    OfferingAvailability            `json:"availability" yaml:"availability"`
-    Regions         []string                        `json:"regions,omitempty" yaml:"regions,omitempty"`
-    Endpoint        ProviderOfferingEndpoint        `json:"endpoint" yaml:"endpoint,omitempty"`
-    Lifecycle       OfferingLifecycle               `json:"lifecycle" yaml:"lifecycle"`
-    Modes           map[string]ProviderOfferingMode `json:"modes,omitempty" yaml:"modes,omitempty"`
+    ProviderID      ProviderID                          `json:"provider_id" yaml:"provider_id"`
+    ProviderModelID ProviderModelID                     `json:"provider_model_id" yaml:"provider_model_id"`
+    DefinitionID    ModelDefinitionID                   `json:"definition_id" yaml:"definition_id"`
+    Pricing         *ModelPricing                       `json:"pricing,omitempty" yaml:"pricing,omitempty"`
+    Limits          *ModelLimits                        `json:"limits,omitempty" yaml:"limits,omitempty"`
+    Availability    OfferingAvailability                `json:"availability" yaml:"availability"`
+    Regions         []string                            `json:"regions,omitempty" yaml:"regions,omitempty"`
+    Endpoints       []ProviderOfferingEndpoint          `json:"endpoints,omitempty" yaml:"endpoints,omitempty"`
+    Lifecycle       OfferingLifecycle                   `json:"lifecycle" yaml:"lifecycle"`
+    Service         ProviderOfferingServiceCapabilities `json:"service" yaml:"service"`
+    Modes           map[string]ProviderOfferingMode     `json:"modes,omitempty" yaml:"modes,omitempty"`
 }
 ```
 
+<a name="ProviderOffering.Endpoint"></a>
+### func \(ProviderOffering\) [Endpoint](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider_offering.go#L154>)
+
+```go
+func (o ProviderOffering) Endpoint(operation ProviderOperation) (ProviderOfferingEndpoint, bool)
+```
+
+Endpoint returns the endpoint for an exact supported operation.
+
 <a name="ProviderOffering.Key"></a>
-### func \(ProviderOffering\) [Key](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider_offering.go#L134>)
+### func \(ProviderOffering\) [Key](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider_offering.go#L144>)
 
 ```go
 func (o ProviderOffering) Key() OfferingKey
@@ -4676,8 +4808,17 @@ func (o ProviderOffering) Key() OfferingKey
 
 Key returns the provider\-scoped immutable offering identity.
 
+<a name="ProviderOffering.Supports"></a>
+### func \(ProviderOffering\) [Supports](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider_offering.go#L149>)
+
+```go
+func (o ProviderOffering) Supports(operation ProviderOperation) bool
+```
+
+Supports reports whether this exact offering supports an operation.
+
 <a name="ProviderOffering.Validate"></a>
-### func \(ProviderOffering\) [Validate](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider_offering.go#L139>)
+### func \(ProviderOffering\) [Validate](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider_offering.go#L164>)
 
 ```go
 func (o ProviderOffering) Validate() error
@@ -4686,19 +4827,21 @@ func (o ProviderOffering) Validate() error
 Validate verifies required identity and provider\-specific fields.
 
 <a name="ProviderOfferingEndpoint"></a>
-## type [ProviderOfferingEndpoint](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider_offering.go#L58-L61>)
+## type [ProviderOfferingEndpoint](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider_offering.go#L58-L63>)
 
 ProviderOfferingEndpoint describes provider\-specific inference endpoint behavior.
 
 ```go
 type ProviderOfferingEndpoint struct {
-    Type EndpointType `json:"type,omitempty" yaml:"type,omitempty"`
-    URL  string       `json:"url,omitempty" yaml:"url,omitempty"`
+    Operation ProviderOperation `json:"operation" yaml:"operation"`
+    Type      EndpointType      `json:"type,omitempty" yaml:"type,omitempty"`
+    URL       string            `json:"url,omitempty" yaml:"url,omitempty"`
+    StreamURL string            `json:"stream_url,omitempty" yaml:"stream_url,omitempty"`
 }
 ```
 
 <a name="ProviderOfferingMode"></a>
-## type [ProviderOfferingMode](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider_offering.go#L112-L115>)
+## type [ProviderOfferingMode](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider_offering.go#L114-L117>)
 
 ProviderOfferingMode describes one named service mode for an offering.
 
@@ -4709,8 +4852,40 @@ type ProviderOfferingMode struct {
 }
 ```
 
+<a name="ProviderOfferingServiceCapabilities"></a>
+## type [ProviderOfferingServiceCapabilities](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider_offering.go#L121-L124>)
+
+ProviderOfferingServiceCapabilities defines exact service behavior for one provider model offering. A nil PromptCache value means unknown.
+
+```go
+type ProviderOfferingServiceCapabilities struct {
+    Operations  []ProviderOperation `json:"operations,omitempty" yaml:"operations,omitempty"`
+    PromptCache *bool               `json:"prompt_cache,omitempty" yaml:"prompt_cache,omitempty"`
+}
+```
+
+<a name="ProviderOperation"></a>
+## type [ProviderOperation](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L163>)
+
+ProviderOperation identifies one provider inference operation.
+
+```go
+type ProviderOperation string
+```
+
+<a name="ProviderOperationChatCompletions"></a>
+
+```go
+const (
+    // ProviderOperationChatCompletions generates chat completions.
+    ProviderOperationChatCompletions ProviderOperation = "chat-completions"
+    // ProviderOperationEmbeddings generates vector embeddings.
+    ProviderOperationEmbeddings ProviderOperation = "embeddings"
+)
+```
+
 <a name="ProviderPrivacyPolicy"></a>
-## type [ProviderPrivacyPolicy](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L207-L212>)
+## type [ProviderPrivacyPolicy](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L342-L347>)
 
 ProviderPrivacyPolicy represents data collection and usage practices.
 
@@ -4724,7 +4899,7 @@ type ProviderPrivacyPolicy struct {
 ```
 
 <a name="ProviderRequestOverrides"></a>
-## type [ProviderRequestOverrides](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider_offering.go#L106-L109>)
+## type [ProviderRequestOverrides](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider_offering.go#L108-L111>)
 
 ProviderRequestOverrides contains provider\-specific inference request changes.
 
@@ -4736,7 +4911,7 @@ type ProviderRequestOverrides struct {
 ```
 
 <a name="ProviderRetentionPolicy"></a>
-## type [ProviderRetentionPolicy](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L215-L219>)
+## type [ProviderRetentionPolicy](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L350-L354>)
 
 ProviderRetentionPolicy represents how long data is kept and deletion practices.
 
@@ -4749,7 +4924,7 @@ type ProviderRetentionPolicy struct {
 ```
 
 <a name="ProviderRetentionType"></a>
-## type [ProviderRetentionType](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L191>)
+## type [ProviderRetentionType](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L326>)
 
 ProviderRetentionType represents different types of data retention policies.
 
@@ -4769,7 +4944,7 @@ const (
 ```
 
 <a name="ProviderRetentionType.String"></a>
-### func \(ProviderRetentionType\) [String](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L194>)
+### func \(ProviderRetentionType\) [String](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L329>)
 
 ```go
 func (prt ProviderRetentionType) String() string
@@ -4825,7 +5000,7 @@ func (r *ProviderValidationReport) Print()
 Print outputs a formatted report of provider validation status.
 
 <a name="ProviderValidationResult"></a>
-## type [ProviderValidationResult](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L290-L299>)
+## type [ProviderValidationResult](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L432-L441>)
 
 ProviderValidationResult contains the result of validating a provider.
 
@@ -4843,7 +5018,7 @@ type ProviderValidationResult struct {
 ```
 
 <a name="ProviderValidationStatus"></a>
-## type [ProviderValidationStatus](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L271>)
+## type [ProviderValidationStatus](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L413>)
 
 ProviderValidationStatus represents the validation status of a provider.
 
@@ -4867,7 +5042,7 @@ const (
 ```
 
 <a name="ProviderValidationStatus.String"></a>
-### func \(ProviderValidationStatus\) [String](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L285>)
+### func \(ProviderValidationStatus\) [String](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L427>)
 
 ```go
 func (pvs ProviderValidationStatus) String() string

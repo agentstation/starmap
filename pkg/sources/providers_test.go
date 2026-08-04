@@ -129,7 +129,7 @@ func TestProviderFetcherFetchModelsRequiresFactory(t *testing.T) {
 
 func TestProviderFetcherCredentialPolicyConformsAcrossModelAndRawFetch(t *testing.T) {
 	provider := providerForFetcherTest("credential-policy")
-	provider.Catalog.Endpoint.AuthRequired = true
+	provider.Catalog.Auth = catalogs.ProviderCatalogAuth{Method: catalogs.ProviderCatalogAuthAPIKey, Required: true}
 	provider.APIKey = &catalogs.ProviderAPIKey{Name: "STARMAP_FETCHER_CONFORMANCE_KEY"}
 	t.Setenv("STARMAP_FETCHER_CONFORMANCE_KEY", "")
 	clientCalls := 0
@@ -267,10 +267,10 @@ func providerForFetcherTest(id catalogs.ProviderID) catalogs.Provider {
 		ID:   id,
 		Name: string(id),
 		Catalog: &catalogs.ProviderCatalog{
+			Auth: catalogs.ProviderCatalogAuth{Method: catalogs.ProviderCatalogAuthNone},
 			Endpoint: catalogs.ProviderEndpoint{
-				Type:         catalogs.EndpointTypeOpenAI,
-				URL:          "https://example.test/models",
-				AuthRequired: false,
+				Type: catalogs.EndpointTypeOpenAI,
+				URL:  "https://example.test/models",
 			},
 		},
 	}

@@ -405,12 +405,12 @@ func TestEmbeddedOfferingsDoNotPublishChatRoutesForNonChatOperations(t *testing.
 		if err != nil {
 			t.Fatalf("Offering(%s, %s): %v", test.providerID, test.modelID, err)
 		}
-		if offering.Endpoint != (catalogs.ProviderOfferingEndpoint{}) {
+		if len(offering.Endpoints) != 0 {
 			t.Fatalf(
-				"Offering(%s, %s) endpoint = %#v, want no chat route",
+				"Offering(%s, %s) endpoints = %#v, want no chat route",
 				test.providerID,
 				test.modelID,
-				offering.Endpoint,
+				offering.Endpoints,
 			)
 		}
 	}
@@ -419,8 +419,9 @@ func TestEmbeddedOfferingsDoNotPublishChatRoutesForNonChatOperations(t *testing.
 	if err != nil {
 		t.Fatalf("chat Offering: %v", err)
 	}
-	if chat.Endpoint.URL != "https://api.deepinfra.com/v1/openai/chat/completions" {
-		t.Fatalf("chat endpoint = %#v, want DeepInfra chat completions URL", chat.Endpoint)
+	chatEndpoint, found := chat.Endpoint(catalogs.ProviderOperationChatCompletions)
+	if !found || chatEndpoint.URL != "https://api.deepinfra.com/v1/openai/chat/completions" {
+		t.Fatalf("chat endpoint = %#v, found = %t, want DeepInfra chat completions URL", chatEndpoint, found)
 	}
 }
 

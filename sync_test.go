@@ -28,10 +28,10 @@ func TestSyncDryRunDoesNotPublishFetchedCatalog(t *testing.T) {
 		ID:   "dry-run-provider",
 		Name: "Dry Run Provider",
 		Catalog: &catalogs.ProviderCatalog{
+			Auth: catalogs.ProviderCatalogAuth{Method: catalogs.ProviderCatalogAuthNone},
 			Endpoint: catalogs.ProviderEndpoint{
-				Type:         catalogs.EndpointTypeOpenAI,
-				URL:          modelServer.URL,
-				AuthRequired: false,
+				Type: catalogs.EndpointTypeOpenAI,
+				URL:  modelServer.URL,
 			},
 		},
 	}

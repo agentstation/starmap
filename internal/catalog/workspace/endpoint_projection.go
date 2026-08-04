@@ -10,14 +10,14 @@ import (
 
 	"github.com/goccy/go-yaml"
 
-	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/internal/constants"
+	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/errors"
 )
 
 const (
 	endpointProjectionFilename      = "endpoints.yaml"
-	endpointProjectionSchemaVersion = 1
+	endpointProjectionSchemaVersion = 2
 )
 
 type endpointProjection struct {
@@ -33,14 +33,15 @@ type endpointProjectionModel struct {
 }
 
 type endpointProjectionRow struct {
-	ProviderID      catalogs.ProviderID                      `yaml:"provider"`
-	ProviderModelID catalogs.ProviderModelID                 `yaml:"provider_model_id"`
-	Pricing         *catalogs.ModelPricing                   `yaml:"pricing,omitempty"`
-	Limits          *catalogs.ModelLimits                    `yaml:"limits,omitempty"`
-	Availability    catalogs.OfferingAvailability            `yaml:"availability"`
-	Lifecycle       catalogs.OfferingLifecycle               `yaml:"lifecycle"`
-	Endpoint        catalogs.ProviderOfferingEndpoint        `yaml:"endpoint,omitempty"`
-	Modes           map[string]catalogs.ProviderOfferingMode `yaml:"modes,omitempty"`
+	ProviderID       catalogs.ProviderID                          `yaml:"provider"`
+	ProviderModelID  catalogs.ProviderModelID                     `yaml:"provider_model_id"`
+	Pricing          *catalogs.ModelPricing                       `yaml:"pricing,omitempty"`
+	Limits           *catalogs.ModelLimits                        `yaml:"limits,omitempty"`
+	Availability     catalogs.OfferingAvailability                `yaml:"availability"`
+	Lifecycle        catalogs.OfferingLifecycle                   `yaml:"lifecycle"`
+	Service          catalogs.ProviderOfferingServiceCapabilities `yaml:"service"`
+	ServiceEndpoints []catalogs.ProviderOfferingEndpoint          `yaml:"service_endpoints,omitempty"`
+	Modes            map[string]catalogs.ProviderOfferingMode     `yaml:"modes,omitempty"`
 }
 
 // EncodeEndpointProjection renders the deterministic, generation-bound
@@ -67,14 +68,15 @@ func EncodeEndpointProjection(catalog *catalogs.Catalog, identity Identity) ([]b
 			grouped[offering.DefinitionID] = append(
 				grouped[offering.DefinitionID],
 				endpointProjectionRow{
-					ProviderID:      offering.ProviderID,
-					ProviderModelID: offering.ProviderModelID,
-					Pricing:         offering.Pricing,
-					Limits:          offering.Limits,
-					Availability:    offering.Availability,
-					Lifecycle:       offering.Lifecycle,
-					Endpoint:        offering.Endpoint,
-					Modes:           offering.Modes,
+					ProviderID:       offering.ProviderID,
+					ProviderModelID:  offering.ProviderModelID,
+					Pricing:          offering.Pricing,
+					Limits:           offering.Limits,
+					Availability:     offering.Availability,
+					Lifecycle:        offering.Lifecycle,
+					Service:          offering.Service,
+					ServiceEndpoints: offering.Endpoints,
+					Modes:            offering.Modes,
 				},
 			)
 		}

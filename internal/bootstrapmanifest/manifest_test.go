@@ -235,8 +235,8 @@ func testProvider() *catalogs.Provider {
 		ID:   "test-provider",
 		Name: "Test Provider",
 		Catalog: &catalogs.ProviderCatalog{
-			Endpoint: catalogs.ProviderEndpoint{AuthRequired: required},
-			Authors:  []catalogs.AuthorID{"test-author"},
+			Auth:    catalogs.ProviderCatalogAuth{Method: catalogs.ProviderCatalogAuthAPIKey, Required: required},
+			Authors: []catalogs.AuthorID{"test-author"},
 		},
 	}
 }

@@ -20,12 +20,14 @@
     required: false
   catalog:
     docs: https://www.alibabacloud.com/help/en/model-studio/qwen-api-via-openai-chat-completions
+    auth:
+      method: api-key
+      required: true
     endpoint:
       type: openai
       url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/models
       base_url_env_var: ALIBABA_MODEL_STUDIO_BASE_URL
       path: /models
-      auth_required: true
       author_mapping:
         field: id
         normalized:
@@ -37,8 +39,12 @@
           qwen*: qwen
           qwq*: qwen
           wan*: alibaba
-  chat_completions:
-    url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
+  inference:
+    base_url: https://dashscope-us.aliyuncs.com/compatible-mode
+    endpoints:
+    - operation: chat-completions
+      type: openai
+      path: /v1/chat/completions
   extensions:
     models.dev:
       fields:
@@ -61,13 +67,19 @@
     required: false
   catalog:
     docs: https://docs.anthropic.com/en/docs/about-claude/models/overview
+    auth:
+      method: api-key
+      required: true
     endpoint:
       type: anthropic
       url: https://api.anthropic.com/v1/models
-      auth_required: true
   status_page_url: https://status.anthropic.com
-  chat_completions:
-    url: https://api.anthropic.com/v1/messages
+  inference:
+    base_url: https://api.anthropic.com
+    endpoints:
+    - operation: chat-completions
+      type: anthropic
+      path: /v1/messages
     health_api_url: https://status.anthropic.com/api/v2/summary.json
     health_components:
     - id: k8w3r06qmzrp
@@ -90,6 +102,43 @@
       fields:
         npm: "@ai-sdk/anthropic"
 
+# Azure OpenAI
+- id: azure-openai
+  aliases:
+  - azure
+  name: Azure OpenAI
+  headquarters: Redmond, WA, USA
+  icon_url: https://azure.microsoft.com/favicon.ico
+  env_vars:
+  - name: AZURE_OPENAI_ENDPOINT
+    required: true
+    description: Resource-specific Azure OpenAI endpoint
+  - name: AZURE_OPENAI_API_KEY
+    required: false
+    description: Optional data-plane API key; managed identity is preferred
+  catalog:
+    docs: https://learn.microsoft.com/azure/ai-services/openai/how-to/working-with-models
+    auth:
+      method: azure-default
+      required: true
+      scopes:
+      - https://cognitiveservices.azure.com/.default
+    endpoint:
+      type: openai
+      url: ""
+      base_url_env_var: AZURE_OPENAI_ENDPOINT
+      path: /openai/models
+  status_page_url: https://azure.status.microsoft/en-us/status
+  inference:
+    base_url_env_var: AZURE_OPENAI_ENDPOINT
+    endpoints:
+    - operation: chat-completions
+      type: openai
+      path: /openai/v1/chat/completions
+    - operation: embeddings
+      type: openai
+      path: /openai/v1/embeddings
+
 # Cerebras
 - id: cerebras
   name: Cerebras
@@ -106,10 +155,12 @@
     required: false
   catalog:
     docs: https://inference-docs.cerebras.ai/models/overview
+    auth:
+      method: api-key
+      required: true
     endpoint:
       type: openai
       url: https://api.cerebras.ai/v1/models
-      auth_required: true
       feature_rules:
       - field: id
         contains:
@@ -133,8 +184,12 @@
     - meta
     - openai
   status_page_url: https://status.cerebras.ai/
-  chat_completions:
-    url: https://api.cerebras.ai/v1/chat/completions
+  inference:
+    base_url: https://api.cerebras.ai
+    endpoints:
+    - operation: chat-completions
+      type: openai
+      path: /v1/chat/completions
     health_api_url: https://status.cerebras.ai/api/v2/summary.json
     health_components:
     - id: 7xvps6c9lqwc
@@ -191,10 +246,12 @@
     required: false
   catalog:
     docs: https://docs.deepinfra.com/chat/overview
+    auth:
+      method: none
+      required: false
     endpoint:
       type: openai
       url: https://api.deepinfra.com/v1/openai/models
-      auth_required: false
       field_mappings:
       - from: metadata.description
         to: description
@@ -227,8 +284,12 @@
           nvidia/*: nvidia
           openai/*: openai
           zai-org/*: zhipu-ai
-  chat_completions:
-    url: https://api.deepinfra.com/v1/openai/chat/completions
+  inference:
+    base_url: https://api.deepinfra.com/v1/openai
+    endpoints:
+    - operation: chat-completions
+      type: openai
+      path: /chat/completions
   extensions:
     models.dev:
       fields:
@@ -252,13 +313,19 @@
     required: false
   catalog:
     docs: https://api-docs.deepseek.com/quick_start/pricing
+    auth:
+      method: api-key
+      required: true
     endpoint:
       type: openai
       url: https://api.deepseek.com/models
-      auth_required: true
   status_page_url: https://status.deepseek.com
-  chat_completions:
-    url: https://api.deepseek.com/v1/chat/completions
+  inference:
+    base_url: https://api.deepseek.com
+    endpoints:
+    - operation: chat-completions
+      type: openai
+      path: /v1/chat/completions
     health_api_url: https://status.deepseek.com/api/v2/summary.json
     health_components:
     - id: j4n367d9mh3x
@@ -299,10 +366,12 @@
     required: false
   catalog:
     docs: https://docs.fireworks.ai/tools-sdks/openai-compatibility
+    auth:
+      method: api-key
+      required: true
     endpoint:
       type: openai
       url: https://api.fireworks.ai/inference/v1/models
-      auth_required: true
       feature_rules:
       - field: id
         contains:
@@ -330,8 +399,12 @@
           accounts/fireworks/routers/qwen*: qwen
           accounts/fireworks/routers/yi-*: 01.ai
   status_page_url: https://status.fireworks.ai
-  chat_completions:
-    url: https://api.fireworks.ai/inference/v1/chat/completions
+  inference:
+    base_url: https://api.fireworks.ai/inference
+    endpoints:
+    - operation: chat-completions
+      type: openai
+      path: /v1/chat/completions
   extensions:
     models.dev:
       fields:
@@ -360,13 +433,23 @@
     required: false
   catalog:
     docs: https://ai.google.dev/gemini-api/docs/models
+    auth:
+      method: api-key
+      required: true
     endpoint:
       type: google
       url: https://generativelanguage.googleapis.com/v1beta/models
-      auth_required: true
   status_page_url: https://status.cloud.google.com
-  chat_completions:
-    url: https://generativelanguage.googleapis.com/v1beta/models
+  inference:
+    base_url: https://generativelanguage.googleapis.com/v1beta/models
+    endpoints:
+    - operation: chat-completions
+      type: google
+      path: /{provider_model_id}:generateContent
+      stream_path: /{provider_model_id}:streamGenerateContent
+    - operation: embeddings
+      type: google
+      path: /{provider_model_id}:embedContent
   privacy_policy:
     privacy_policy_url: https://policies.google.com/privacy
     terms_of_service_url: https://policies.google.com/terms
@@ -402,10 +485,14 @@
     description: "Path to service account JSON file (optional - uses Application Default Credentials)"
   catalog:
     docs: https://cloud.google.com/vertex-ai/generative-ai/docs/model-reference/inference
+    auth:
+      method: google-default
+      required: true
+      scopes:
+      - https://www.googleapis.com/auth/cloud-platform
     endpoint:
       type: google-cloud
       url: https://us-central1-aiplatform.googleapis.com/v1/projects/{project}/locations/{location}/models
-      auth_required: false
     authors:
     - ai21
     - anthropic
@@ -416,8 +503,22 @@
     - openai
     - qwen
   status_page_url: https://status.cloud.google.com
-  chat_completions:
-    url: https://us-central1-aiplatform.googleapis.com/v1/projects
+  inference:
+    base_url: https://{location}-aiplatform.googleapis.com
+    endpoints:
+    - operation: chat-completions
+      type: google-cloud
+      path: /v1/projects/{project}/locations/{location}/publishers/{publisher}/models/{provider_model_id}:generateContent
+      stream_path: /v1/projects/{project}/locations/{location}/publishers/{publisher}/models/{provider_model_id}:streamGenerateContent
+      protocols_by_author:
+        anthropic: anthropic
+      paths_by_author:
+        anthropic: /v1/projects/{project}/locations/{location}/publishers/{publisher}/models/{provider_model_id}:rawPredict
+      stream_paths_by_author:
+        anthropic: /v1/projects/{project}/locations/{location}/publishers/{publisher}/models/{provider_model_id}:streamRawPredict
+    - operation: embeddings
+      type: google-cloud
+      path: /v1/projects/{project}/locations/{location}/publishers/{publisher}/models/{provider_model_id}:predict
   privacy_policy:
     privacy_policy_url: https://cloud.google.com/privacy
     terms_of_service_url: https://cloud.google.com/terms
@@ -452,10 +553,12 @@
     required: false
   catalog:
     docs: https://console.groq.com/docs/models
+    auth:
+      method: api-key
+      required: true
     endpoint:
       type: openai
       url: https://api.groq.com/openai/v1/models
-      auth_required: true
       field_mappings:
       - from: context_window
         to: limits.context_window
@@ -473,8 +576,12 @@
     - playai
     - sdaia
   status_page_url: https://status.groq.com
-  chat_completions:
-    url: https://api.groq.com/openai/v1/chat/completions
+  inference:
+    base_url: https://api.groq.com/openai
+    endpoints:
+    - operation: chat-completions
+      type: openai
+      path: /v1/chat/completions
     health_api_url: https://groqstatus.com/api/v2/summary.json
     health_components:
     - id: 01K053E2FAKWKEYHXEV7WAHJBM
@@ -497,6 +604,46 @@
       fields:
         npm: "@ai-sdk/groq"
 
+# Mistral AI
+- id: mistral
+  name: Mistral AI
+  headquarters: Paris, France
+  icon_url: https://mistral.ai/favicon.ico
+  api_key:
+    name: MISTRAL_API_KEY
+    pattern: .*
+    header: Authorization
+    scheme: Bearer
+    query_param: ""
+  env_vars:
+  - name: MISTRAL_API_KEY
+    required: false
+  catalog:
+    docs: https://docs.mistral.ai/api/#tag/models
+    auth:
+      method: api-key
+      required: true
+    endpoint:
+      type: openai
+      url: https://api.mistral.ai/v1/models
+      author_mapping:
+        field: owned_by
+        normalized:
+          mistralai: mistral
+    authors:
+    - mistral
+  status_page_url: https://status.mistral.ai/
+  inference:
+    base_url: https://api.mistral.ai
+    endpoints:
+    - operation: chat-completions
+      type: openai
+      path: /v1/chat/completions
+    - operation: embeddings
+      type: openai
+      path: /v1/embeddings
+    health_api_url: https://status.mistral.ai/api/v2/summary.json
+
 # Moonshot AI
 - id: moonshot-ai
   aliases:
@@ -516,10 +663,12 @@
     required: false
   catalog:
     docs: "https://platform.moonshot.ai/docs/api/chat#list-models"
+    auth:
+      method: api-key
+      required: true
     endpoint:
       type: openai
       url: https://api.moonshot.ai/v1/models
-      auth_required: true
       author_mapping:
         field: owned_by
         normalized:
@@ -527,8 +676,12 @@
     authors:
     - moonshot-ai
   status_page_url: https://status.moonshot.cn
-  chat_completions:
-    url: https://api.moonshot.ai/v1/chat/completions
+  inference:
+    base_url: https://api.moonshot.ai
+    endpoints:
+    - operation: chat-completions
+      type: openai
+      path: /v1/chat/completions
   privacy_policy:
     privacy_policy_url: https://platform.moonshot.ai/docs/agreement/userprivacy
     terms_of_service_url: https://platform.moonshot.ai/docs/agreement/modeluse
@@ -564,17 +717,26 @@
     required: false
   catalog:
     docs: https://platform.openai.com/docs/models
+    auth:
+      method: api-key
+      required: true
     endpoint:
       type: openai
       url: https://api.openai.com/v1/models
-      auth_required: true
       author_mapping:
         field: owned_by
         normalized:
           system: openai
   status_page_url: https://status.openai.com
-  chat_completions:
-    url: https://api.openai.com/v1/chat/completions
+  inference:
+    base_url: https://api.openai.com
+    endpoints:
+    - operation: chat-completions
+      type: openai
+      path: /v1/chat/completions
+    - operation: embeddings
+      type: openai
+      path: /v1/embeddings
     health_api_url: https://status.openai.com/api/v2/summary.json
     health_components:
     - id: 01JMXBRMFE6N2NNT7DG6XZQ6PW
@@ -596,3 +758,32 @@
     models.dev:
       fields:
         npm: "@ai-sdk/openai"
+
+# Ollama
+- id: ollama
+  name: Ollama
+  icon_url: https://ollama.com/public/ollama.png
+  env_vars:
+  - name: OLLAMA_BASE_URL
+    required: false
+    description: Local or remote Ollama server base URL
+  catalog:
+    docs: https://docs.ollama.com/api/tags
+    auth:
+      method: none
+      required: false
+    endpoint:
+      type: ollama
+      url: http://localhost:11434/api/tags
+      base_url_env_var: OLLAMA_BASE_URL
+      path: /api/tags
+  inference:
+    base_url: http://localhost:11434
+    base_url_env_var: OLLAMA_BASE_URL
+    endpoints:
+    - operation: chat-completions
+      type: ollama
+      path: /api/chat
+    - operation: embeddings
+      type: ollama
+      path: /api/embed

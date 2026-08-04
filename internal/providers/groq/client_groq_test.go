@@ -23,10 +23,10 @@ func TestGroqFieldMappings(t *testing.T) {
 			Scheme: "Bearer",
 		},
 		Catalog: &catalogs.ProviderCatalog{
+			Auth: catalogs.ProviderCatalogAuth{Method: catalogs.ProviderCatalogAuthAPIKey, Required: true},
 			Endpoint: catalogs.ProviderEndpoint{
-				Type:         catalogs.EndpointTypeOpenAI,
-				URL:          "https://api.groq.com/openai/v1/models",
-				AuthRequired: true,
+				Type: catalogs.EndpointTypeOpenAI,
+				URL:  "https://api.groq.com/openai/v1/models",
 				FieldMappings: []catalogs.FieldMapping{
 					{
 						From: "context_window",

@@ -209,6 +209,7 @@ components:
       - EndpointTypeAnthropic
       - EndpointTypeGoogle
       - EndpointTypeGoogleCloud
+      - EndpointTypeOllama
     catalogs.FeatureRule:
       properties:
         contains:
@@ -827,6 +828,8 @@ components:
             - ProviderIDMeta
             - ProviderIDMicrosoft
             - ProviderIDMistralAI
+            - ProviderIDAzureOpenAI
+            - ProviderIDOllama
             - ProviderIDMoonshotAI
             - ProviderIDOpenAI
             - ProviderIDOpenRouter
@@ -843,8 +846,6 @@ components:
           $ref: '#/components/schemas/catalogs.ProviderAPIKey'
         catalog:
           $ref: '#/components/schemas/catalogs.ProviderCatalog'
-        chat_completions:
-          $ref: '#/components/schemas/catalogs.ProviderChatCompletions'
         env_vars:
           description: Environment variables configuration
           items:
@@ -863,6 +864,8 @@ components:
           type: string
         id:
           $ref: '#/components/schemas/catalogs.ProviderID'
+        inference:
+          $ref: '#/components/schemas/catalogs.ProviderInference'
         name:
           description: Display name (must not be empty)
           type: string
@@ -907,6 +910,8 @@ components:
     catalogs.ProviderCatalog:
       description: Models
       properties:
+        auth:
+          $ref: '#/components/schemas/catalogs.ProviderCatalogAuth'
         authors:
           description: List of authors to fetch from (for providers like Google Vertex
             AI)
@@ -1002,28 +1007,30 @@ components:
         endpoint:
           $ref: '#/components/schemas/catalogs.ProviderEndpoint'
       type: object
-    catalogs.ProviderChatCompletions:
-      description: Chat completions API configuration
+    catalogs.ProviderCatalogAuth:
+      description: Catalog-acquisition authentication contract
       properties:
-        health_api_url:
-          description: URL to health/status API for this service
-          type: string
-        health_components:
-          description: Specific components to monitor for chat completions
+        method:
+          $ref: '#/components/schemas/catalogs.ProviderCatalogAuthMethod'
+        required:
+          type: boolean
+        scopes:
           items:
-            $ref: '#/components/schemas/catalogs.ProviderHealthComponent'
+            type: string
           type: array
           uniqueItems: false
-        url:
-          description: Chat completions API endpoint URL
-          type: string
       type: object
+    catalogs.ProviderCatalogAuthMethod:
+      type: string
+      x-enum-varnames:
+      - ProviderCatalogAuthNone
+      - ProviderCatalogAuthAPIKey
+      - ProviderCatalogAuthGoogleDefault
+      - ProviderCatalogAuthAzureDefault
+      - ProviderCatalogAuthAWSDefault
     catalogs.ProviderEndpoint:
       description: API endpoint configuration
       properties:
-        auth_required:
-          description: 'Required: Whether auth needed'
-          type: boolean
         author_mapping:
           $ref: '#/components/schemas/catalogs.AuthorMapping'
         base_url_env_var:
@@ -1111,6 +1118,8 @@ components:
       - ProviderIDMeta
       - ProviderIDMicrosoft
       - ProviderIDMistralAI
+      - ProviderIDAzureOpenAI
+      - ProviderIDOllama
       - ProviderIDMoonshotAI
       - ProviderIDOpenAI
       - ProviderIDOpenRouter
@@ -1121,6 +1130,68 @@ components:
       - ProviderIDVirtuousAI
       - ProviderIDWebPurify
       - ProviderIDXAI
+    catalogs.ProviderInference:
+      description: Provider inference service contract
+      properties:
+        base_url:
+          type: string
+        base_url_env_var:
+          type: string
+        endpoints:
+          items:
+            $ref: '#/components/schemas/catalogs.ProviderInferenceEndpoint'
+          type: array
+          uniqueItems: false
+        health_api_url:
+          type: string
+        health_components:
+          items:
+            $ref: '#/components/schemas/catalogs.ProviderHealthComponent'
+          type: array
+          uniqueItems: false
+      type: object
+    catalogs.ProviderInferenceEndpoint:
+      properties:
+        operation:
+          $ref: '#/components/schemas/catalogs.ProviderOperation'
+        path:
+          type: string
+        paths_by_author:
+          additionalProperties:
+            type: string
+          type: object
+        protocols_by_author:
+          additionalProperties:
+            description: 'Required: API style'
+            type: string
+            x-enum-varnames:
+            - EndpointTypeOpenAI
+            - EndpointTypeAnthropic
+            - EndpointTypeGoogle
+            - EndpointTypeGoogleCloud
+            - EndpointTypeOllama
+          type: object
+        stream_path:
+          type: string
+        stream_paths_by_author:
+          additionalProperties:
+            type: string
+          type: object
+        type:
+          description: 'Required: API style'
+          type: string
+          x-enum-varnames:
+          - EndpointTypeOpenAI
+          - EndpointTypeAnthropic
+          - EndpointTypeGoogle
+          - EndpointTypeGoogleCloud
+          - EndpointTypeOllama
+      type: object
+    catalogs.ProviderOperation:
+      type: string
+      x-enum-varnames:
+      - ProviderOperationChatCompletions
+      - ProviderOperationEmbeddings
     catalogs.ProviderPrivacyPolicy:
       description: Privacy, Retention, and Governance Policies
       properties:

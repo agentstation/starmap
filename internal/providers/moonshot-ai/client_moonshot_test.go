@@ -23,10 +23,10 @@ func TestMoonshotAuthorMapping(t *testing.T) {
 			Scheme: "Bearer",
 		},
 		Catalog: &catalogs.ProviderCatalog{
+			Auth: catalogs.ProviderCatalogAuth{Method: catalogs.ProviderCatalogAuthAPIKey, Required: true},
 			Endpoint: catalogs.ProviderEndpoint{
-				Type:         catalogs.EndpointTypeOpenAI,
-				URL:          "https://api.moonshot.ai/v1/models",
-				AuthRequired: true,
+				Type: catalogs.EndpointTypeOpenAI,
+				URL:  "https://api.moonshot.ai/v1/models",
 				AuthorMapping: &catalogs.AuthorMapping{
 					Field: "owned_by",
 					Normalized: map[string]catalogs.AuthorID{

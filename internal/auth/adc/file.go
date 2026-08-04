@@ -13,6 +13,8 @@ const (
 	TypeAuthorizedUser = "authorized_user"
 	// TypeServiceAccount represents service account credentials.
 	TypeServiceAccount = "service_account"
+	// TypeExternalAccount represents workload identity federation credentials.
+	TypeExternalAccount = "external_account"
 )
 
 // File represents an Application Default Credentials JSON file.
@@ -22,6 +24,7 @@ type File struct {
 	ProjectID      string `json:"project_id"`
 	Account        string `json:"account"`
 	ClientID       string `json:"client_id"`
+	Audience       string `json:"audience"`
 	UniverseDomain string `json:"universe_domain"`
 }
 
@@ -69,7 +72,9 @@ func ParseFile(path string) (*File, error) {
 	if file.Type == "" {
 		return nil, fmt.Errorf("missing 'type' field")
 	}
-	if file.Type != TypeAuthorizedUser && file.Type != TypeServiceAccount {
+	if file.Type != TypeAuthorizedUser &&
+		file.Type != TypeServiceAccount &&
+		file.Type != TypeExternalAccount {
 		return nil, fmt.Errorf("unknown type: %s", file.Type)
 	}
 
