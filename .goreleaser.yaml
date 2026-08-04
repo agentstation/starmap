@@ -218,7 +218,9 @@ homebrew_casks:
   - repository:
       owner: agentstation
       name: homebrew-tap
-      token: "{{ .Env.HOMEBREW_TAP_TOKEN }}"
+      git:
+        url: ssh://git@github.com/agentstation/homebrew-tap.git
+        private_key: "{{ .Env.HOMEBREW_TAP_DEPLOY_KEY }}"
 
     # Never replace the stable cask with a release candidate.
     skip_upload: auto

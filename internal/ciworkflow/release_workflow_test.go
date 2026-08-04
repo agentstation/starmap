@@ -10,7 +10,10 @@ func TestReleaseWorkflowPinsToolchainPublisherAndVerification(t *testing.T) {
 	checks := []string{
 		"name: Release",
 		"tags:\n      - \"v*\"",
-		"group: release-",
+		"workflow_dispatch:",
+		"Existing release tag to recover",
+		"Failed Release run that owns the exact dist artifact",
+		"group: release-${{ inputs.tag || github.ref_name }}",
 		"permissions:\n  contents: read",
 		"    permissions:\n      attestations: write\n      contents: write\n      discussions: write\n      id-token: write\n      packages: write",
 		`go-version: "1.26.5"`,
@@ -31,6 +34,26 @@ func TestReleaseWorkflowPinsToolchainPublisherAndVerification(t *testing.T) {
 		"sha256sum --check checksums.txt",
 		`--repo "$GITHUB_REPOSITORY"`,
 		`--signer-workflow "$GITHUB_REPOSITORY/.github/workflows/release.yaml"`,
+		"Validate the recovery source and release",
+		`test "$(jq -r .headSha <<<"$SOURCE_RUN")" = "$TAG_SHA"`,
+		`repos/$GITHUB_REPOSITORY/releases?per_page=100`,
+		`test "$LATEST_APPLICATION_TAG" = "$RELEASE_TAG"`,
+		`echo "RELEASE_ID=$(jq -r '.[0].id' <<<"$RELEASES")" >> "$GITHUB_ENV"`,
+		`echo "PUBLISH_RELEASE=$PUBLISH_RELEASE" >> "$GITHUB_ENV"`,
+		"if: env.PUBLISH_RELEASE == 'true'",
+		`gh run download "$SOURCE_RUN_ID" --name release-dist --dir dist`,
+		`test "$(jq -r .commit dist/metadata.json)" = "$(git rev-list -n 1 "$RELEASE_TAG")"`,
+		"Publish the generated Homebrew cask with a deploy key",
+		`git -C "$TAP_DIRECTORY" diff --cached --quiet -- Casks/starmap.rb`,
+		"Attest recovered archives and SBOMs",
+		"Verify exact release assets and provenance",
+		`repos/$GITHUB_REPOSITORY/releases/assets/$asset_id`,
+		"expected-release-assets.txt",
+		"actual-release-assets.txt",
+		"Publish the recovered immutable release",
+		`repos/$GITHUB_REPOSITORY/releases/$RELEASE_ID`,
+		"Verify recovered public assets and publisher identity",
+		"verify-homebrew-recovery:",
 		"brew install agentstation/tap/starmap",
 		`go version -m "$BINARY"`,
 		`grep -Ev '^(/usr/lib/|/System/Library/)'`,
@@ -53,10 +76,17 @@ func TestReleaseWorkflowPinsToolchainPublisherAndVerification(t *testing.T) {
 		"starmap-catalog-release",
 		"STARMAP_CATALOG_OCI_MIRROR",
 		"permissions:\n  attestations: write",
+		`RELEASE=$(gh api "repos/$GITHUB_REPOSITORY/releases/tags/$RELEASE_TAG")`,
+		"HEAD:master",
 	} {
 		if strings.Contains(workflow, forbidden) {
 			t.Errorf("release workflow contains obsolete coupling %q", forbidden)
 		}
+	}
+	publicVerification := strings.Index(workflow, "Verify recovered public assets and publisher identity")
+	homebrewPublication := strings.Index(workflow, "Publish the generated Homebrew cask with a deploy key")
+	if publicVerification < 0 || homebrewPublication < publicVerification {
+		t.Error("release recovery updates Homebrew before it verifies the public release")
 	}
 }
 
@@ -75,6 +105,8 @@ func TestReleaseConfigurationPinsInputsAndBuildsSupportedTargets(t *testing.T) {
 		"mode: keep-existing",
 		"homebrew_casks:",
 		"name: homebrew-tap",
+		"url: ssh://git@github.com/agentstation/homebrew-tap.git",
+		`private_key: "{{ .Env.HOMEBREW_TAP_DEPLOY_KEY }}"`,
 		"skip_upload: auto",
 		`enabled: '{{ isEnvSet "MACOS_SIGN_P12" }}'`,
 		"MACOS_NOTARY_ISSUER_ID",
@@ -86,6 +118,9 @@ func TestReleaseConfigurationPinsInputsAndBuildsSupportedTargets(t *testing.T) {
 	}
 	if strings.Contains(config, "static:latest") {
 		t.Error("container build uses a mutable base image tag")
+	}
+	if strings.Contains(config, "HOMEBREW_TAP_TOKEN") {
+		t.Error("Homebrew publication still uses the expired cross-repository token")
 	}
 	if got := strings.Count(config, "CGO_ENABLED=0"); got != 2 {
 		t.Errorf("GoReleaser cgo-disabled build declarations = %d, want 2", got)

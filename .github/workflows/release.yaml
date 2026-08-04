@@ -4,16 +4,27 @@ on:
   push:
     tags:
       - "v*"
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Existing release tag to recover"
+        required: true
+        type: string
+      source_run_id:
+        description: "Failed Release run that owns the exact dist artifact"
+        required: true
+        type: string
 
 permissions:
   contents: read
 
 concurrency:
-  group: release-${{ github.ref }}
+  group: release-${{ inputs.tag || github.ref_name }}
   cancel-in-progress: false
 
 jobs:
   test:
+    if: github.event_name == 'push'
     runs-on: ubuntu-latest
     timeout-minutes: 45
     steps:
@@ -49,6 +60,7 @@ jobs:
           make release-check
 
   release:
+    if: github.event_name == 'push'
     needs: test
     runs-on: ubuntu-latest
     timeout-minutes: 45
@@ -101,7 +113,7 @@ jobs:
           args: release --clean --parallelism 2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          HOMEBREW_TAP_TOKEN: ${{ secrets.HOMEBREW_TAP_TOKEN }}
+          HOMEBREW_TAP_DEPLOY_KEY: ${{ secrets.HOMEBREW_TAP_DEPLOY_KEY }}
           GPG_PASSPHRASE: ${{ secrets.ORG_GPG_PASSPHRASE }}
           MACOS_SIGN_P12: ${{ secrets.MACOS_SIGN_P12 }}
           MACOS_SIGN_PASSWORD: ${{ secrets.MACOS_SIGN_PASSWORD }}
@@ -182,9 +194,223 @@ jobs:
           name: release-dist
           path: dist/
 
+  recover:
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      attestations: write
+      actions: read
+      contents: write
+      id-token: write
+    env:
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      RELEASE_TAG: ${{ inputs.tag }}
+      SOURCE_RUN_ID: ${{ inputs.source_run_id }}
+    steps:
+      - name: Checkout the immutable release tag
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ inputs.tag }}
+          fetch-depth: 0
+
+      - name: Set up release Go toolchain
+        uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
+        with:
+          go-version: "1.26.5"
+          cache: false
+
+      - name: Validate the recovery source and release
+        run: |
+          if [[ ! "$RELEASE_TAG" =~ ^v[0-9]+\.[0-9]+\.[0-9]+(-rc\.[0-9]+)?$ ]]; then
+            echo "release tag is not an application semantic version" >&2
+            exit 1
+          fi
+          if [[ ! "$SOURCE_RUN_ID" =~ ^[0-9]+$ ]]; then
+            echo "source run ID is not numeric" >&2
+            exit 1
+          fi
+          TAG_SHA=$(git rev-list -n 1 "$RELEASE_TAG")
+          git fetch origin main
+          git merge-base --is-ancestor "$TAG_SHA" origin/main
+          SOURCE_RUN=$(gh run view "$SOURCE_RUN_ID" --json conclusion,event,headSha,workflowName)
+          test "$(jq -r .workflowName <<<"$SOURCE_RUN")" = "Release"
+          test "$(jq -r .event <<<"$SOURCE_RUN")" = "push"
+          test "$(jq -r .conclusion <<<"$SOURCE_RUN")" = "failure"
+          test "$(jq -r .headSha <<<"$SOURCE_RUN")" = "$TAG_SHA"
+          ALL_RELEASES=$(
+            gh api --paginate "repos/$GITHUB_REPOSITORY/releases?per_page=100" |
+              jq -s '[.[][]]'
+          )
+          RELEASES=$(jq --arg tag "$RELEASE_TAG" '[.[] | select(.tag_name == $tag)]' <<<"$ALL_RELEASES")
+          test "$(jq length <<<"$RELEASES")" = "1"
+          test "$(jq -r '.[0].tag_name' <<<"$RELEASES")" = "$RELEASE_TAG"
+          RELEASE_DRAFT=$(jq -r '.[0].draft' <<<"$RELEASES")
+          RELEASE_IMMUTABLE=$(jq -r '.[0].immutable' <<<"$RELEASES")
+          if [[ "$RELEASE_DRAFT" == true ]]; then
+            test "$RELEASE_IMMUTABLE" = "false"
+            PUBLISH_RELEASE=true
+          else
+            test "$RELEASE_DRAFT" = "false"
+            test "$RELEASE_IMMUTABLE" = "true"
+            PUBLISH_RELEASE=false
+          fi
+          LATEST_APPLICATION_TAG=$(
+            jq -r \
+              '[.[] | select(.tag_name | test("^v[0-9]+\\.[0-9]+\\.[0-9]+(-rc\\.[0-9]+)?$"))]
+              | sort_by(.created_at) | last | .tag_name' \
+              <<<"$ALL_RELEASES"
+          )
+          test "$LATEST_APPLICATION_TAG" = "$RELEASE_TAG"
+          echo "RELEASE_ID=$(jq -r '.[0].id' <<<"$RELEASES")" >> "$GITHUB_ENV"
+          echo "PUBLISH_RELEASE=$PUBLISH_RELEASE" >> "$GITHUB_ENV"
+
+      - name: Download the exact failed-run distribution
+        run: |
+          mkdir dist
+          gh run download "$SOURCE_RUN_ID" --name release-dist --dir dist
+          test "$(jq -r .tag dist/metadata.json)" = "$RELEASE_TAG"
+          test "$(jq -r .commit dist/metadata.json)" = "$(git rev-list -n 1 "$RELEASE_TAG")"
+
+      - name: Import release verification key
+        run: git show origin/main:.github/release-signing-key.asc | gpg --batch --import
+
+      - name: Verify recovered binaries and signatures
+        run: |
+          ./scripts/verify-release-binaries.sh dist
+          gpg --batch --verify dist/checksums.txt.sig dist/checksums.txt
+          (
+            cd dist
+            sha256sum --check checksums.txt
+          )
+
+      - name: Attest recovered archives and SBOMs
+        if: env.PUBLISH_RELEASE == 'true'
+        uses: actions/attest-build-provenance@0f67c3f4856b2e3261c31976d6725780e5e4c373 # v4.1.1
+        with:
+          subject-checksums: dist/checksums.txt
+
+      - name: Verify exact release assets and provenance
+        run: |
+          RELEASE_DIRECTORY=${RUNNER_TEMP}/release-assets
+          mkdir -p "$RELEASE_DIRECTORY"
+          gh api "repos/$GITHUB_REPOSITORY/releases/$RELEASE_ID" |
+            jq -r '.assets[] | [.id, .name] | @tsv' |
+            while IFS=$'\t' read -r asset_id asset_name; do
+              if [[ ! "$asset_name" =~ ^[A-Za-z0-9._+-]+$ ]]; then
+                echo "release asset has an unsafe name: $asset_name" >&2
+                exit 1
+              fi
+              gh api \
+                -H "Accept: application/octet-stream" \
+                "repos/$GITHUB_REPOSITORY/releases/assets/$asset_id" \
+                > "$RELEASE_DIRECTORY/$asset_name"
+            done
+          {
+            awk '{print $2}' dist/checksums.txt
+            printf '%s\n' checksums.txt checksums.txt.sig
+          } | sort > "$RUNNER_TEMP/expected-release-assets.txt"
+          gh api "repos/$GITHUB_REPOSITORY/releases/$RELEASE_ID" \
+            --jq '.assets[].name' |
+            sort > "$RUNNER_TEMP/actual-release-assets.txt"
+          diff \
+            "$RUNNER_TEMP/expected-release-assets.txt" \
+            "$RUNNER_TEMP/actual-release-assets.txt"
+          cmp dist/checksums.txt "$RELEASE_DIRECTORY/checksums.txt"
+          cmp dist/checksums.txt.sig "$RELEASE_DIRECTORY/checksums.txt.sig"
+          (
+            cd "$RELEASE_DIRECTORY"
+            gpg --batch --verify checksums.txt.sig checksums.txt
+            sha256sum --check checksums.txt
+          )
+          while read -r _ asset; do
+            gh attestation verify \
+              "dist/$asset" \
+              --repo "$GITHUB_REPOSITORY" \
+              --signer-workflow "$GITHUB_REPOSITORY/.github/workflows/release.yaml" \
+              --deny-self-hosted-runners
+          done < dist/checksums.txt
+
+      - name: Publish the recovered immutable release
+        if: env.PUBLISH_RELEASE == 'true'
+        run: |
+          if [[ "$RELEASE_TAG" == *-* ]]; then
+            gh api \
+              --method PATCH \
+              "repos/$GITHUB_REPOSITORY/releases/$RELEASE_ID" \
+              -F draft=false \
+              -f make_latest=false
+          else
+            gh api \
+              --method PATCH \
+              "repos/$GITHUB_REPOSITORY/releases/$RELEASE_ID" \
+              -F draft=false \
+              -f make_latest=true
+          fi
+          for _ in {1..10}; do
+            if [[ "$(gh api "repos/$GITHUB_REPOSITORY/releases/tags/$RELEASE_TAG" --jq .immutable)" == true ]]; then
+              exit 0
+            fi
+            sleep 1
+          done
+          echo "release did not become immutable after recovery" >&2
+          exit 1
+
+      - name: Verify recovered public assets and publisher identity
+        run: |
+          DOWNLOAD_DIRECTORY=${RUNNER_TEMP}/release-download
+          mkdir -p "$DOWNLOAD_DIRECTORY"
+          gh release download "$RELEASE_TAG" --dir "$DOWNLOAD_DIRECTORY"
+          cmp dist/checksums.txt "$DOWNLOAD_DIRECTORY/checksums.txt"
+          cmp dist/checksums.txt.sig "$DOWNLOAD_DIRECTORY/checksums.txt.sig"
+          (
+            cd "$DOWNLOAD_DIRECTORY"
+            gpg --batch --verify checksums.txt.sig checksums.txt
+            sha256sum --check checksums.txt
+          )
+          while read -r _ asset; do
+            gh attestation verify \
+              "$DOWNLOAD_DIRECTORY/$asset" \
+              --repo "$GITHUB_REPOSITORY" \
+              --signer-workflow "$GITHUB_REPOSITORY/.github/workflows/release.yaml" \
+              --deny-self-hosted-runners
+          done < "$DOWNLOAD_DIRECTORY/checksums.txt"
+          test "$(gh api "repos/$GITHUB_REPOSITORY/releases/tags/$RELEASE_TAG" --jq .immutable)" = true
+
+      - name: Publish the generated Homebrew cask with a deploy key
+        if: ${{ !contains(inputs.tag, '-') }}
+        env:
+          HOMEBREW_TAP_DEPLOY_KEY: ${{ secrets.HOMEBREW_TAP_DEPLOY_KEY }}
+        run: |
+          KEY_PATH=${RUNNER_TEMP}/homebrew-tap-deploy-key
+          TAP_DIRECTORY=${RUNNER_TEMP}/homebrew-tap
+          umask 077
+          printf '%s\n' "$HOMEBREW_TAP_DEPLOY_KEY" > "$KEY_PATH"
+          export GIT_SSH_COMMAND="ssh -i $KEY_PATH -o StrictHostKeyChecking=accept-new -F /dev/null"
+          git clone ssh://git@github.com/agentstation/homebrew-tap.git "$TAP_DIRECTORY"
+          TAP_BRANCH=$(git -C "$TAP_DIRECTORY" symbolic-ref --short HEAD)
+          cp dist/homebrew/Casks/starmap.rb "$TAP_DIRECTORY/Casks/starmap.rb"
+          git -C "$TAP_DIRECTORY" config user.name "GitHub Actions"
+          git -C "$TAP_DIRECTORY" config user.email "actions@github.com"
+          git -C "$TAP_DIRECTORY" add Casks/starmap.rb
+          if ! git -C "$TAP_DIRECTORY" diff --cached --quiet -- Casks/starmap.rb; then
+            git -C "$TAP_DIRECTORY" commit -m "Update starmap to $RELEASE_TAG"
+            git -C "$TAP_DIRECTORY" push origin "HEAD:$TAP_BRANCH"
+          fi
+          git -C "$TAP_DIRECTORY" fetch origin "$TAP_BRANCH"
+          git -C "$TAP_DIRECTORY" show "origin/$TAP_BRANCH:Casks/starmap.rb" |
+            cmp - dist/homebrew/Casks/starmap.rb
+
+      - name: Upload recovery diagnostics on failure
+        if: failure()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: release-recovery-dist
+          path: dist/
+
   verify-homebrew:
     needs: release
-    if: ${{ !contains(github.ref_name, '-') }}
+    if: ${{ github.event_name == 'push' && !contains(github.ref_name, '-') }}
     runs-on: macos-latest
     timeout-minutes: 15
     steps:
@@ -200,6 +426,31 @@ jobs:
       - name: Verify installed release
         run: |
           EXPECTED=${GITHUB_REF_NAME#v}
+          test "$(starmap version | awk '{print $2}')" = "$EXPECTED"
+          BINARY=$(command -v starmap)
+          go version -m "$BINARY" | grep -Eq '^[[:space:]]*build[[:space:]]+CGO_ENABLED=0$'
+          test -z "$(otool -L "$BINARY" | tail -n +2 | awk '{print $1}' | grep -Ev '^(/usr/lib/|/System/Library/)' || true)"
+
+  verify-homebrew-recovery:
+    needs: recover
+    if: ${{ github.event_name == 'workflow_dispatch' && !contains(inputs.tag, '-') }}
+    runs-on: macos-latest
+    timeout-minutes: 15
+    steps:
+      - name: Set up release Go toolchain
+        uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
+        with:
+          go-version: "1.26.5"
+          cache: false
+
+      - name: Install recovered release from AgentStation tap
+        run: brew install agentstation/tap/starmap
+
+      - name: Verify recovered installed release
+        env:
+          RELEASE_TAG: ${{ inputs.tag }}
+        run: |
+          EXPECTED=${RELEASE_TAG#v}
           test "$(starmap version | awk '{print $2}')" = "$EXPECTED"
           BINARY=$(command -v starmap)
           go version -m "$BINARY" | grep -Eq '^[[:space:]]*build[[:space:]]+CGO_ENABLED=0$'

@@ -54,6 +54,11 @@ signed and notarized when the five `MACOS_SIGN_*`/`MACOS_NOTARY_*` repository
 secrets are provisioned; stable launch must not rely on the quarantine-removal
 fallback.
 
+Stable Homebrew publication uses an SSH deploy key. Install its public key on
+only `agentstation/homebrew-tap` with write access. Store the private key in the
+Starmap repository secret named `HOMEBREW_TAP_DEPLOY_KEY`. Do not use a personal
+access token for this cross-repository write.
+
 Catalog generations are a separate product data channel. They are published by
 the scheduled catalog workflow under payload-digest prerelease tags and are
 never appended to an application release.
@@ -76,10 +81,43 @@ The local snapshot intentionally skips checksum signing and the container image;
 those require release secrets and a registry-capable Docker environment and are
 verified by the hosted tag workflow.
 
-After the exact commit is merged and the RC publication is authorized:
+After maintainers merge the exact commit and authorize publication:
 
 ```bash
-make release-tag VERSION=0.1.0-rc.1
+make release-tag VERSION=0.4.0
 ```
 
 Pushing the tag is the publication action. Do not reuse or move release tags.
+
+## Failed publication recovery
+
+A failed GoReleaser run can leave a draft release and a `release-dist` workflow
+artifact. A later recovery failure can leave the exact release published but its
+Homebrew update incomplete. Do not move or reuse the tag. Correct the failure
+cause first.
+
+Use the Release workflow's manual dispatch only when all these conditions are
+true:
+
+- The source run is a failed tag-triggered Release run.
+- The source run commit equals the immutable tag commit.
+- The GitHub release is a mutable draft or the exact published immutable release.
+- The tag is the most recently created application release or draft.
+- The source artifact contains matching GoReleaser tag and commit metadata.
+
+Start recovery with the exact tag and source run ID:
+
+```bash
+gh workflow run release.yaml \
+  --repo agentstation/starmap \
+  -f tag=v0.3.0 \
+  -f source_run_id=30875507565
+```
+
+The recovery job rechecks the source identity, binaries, checksums, signature,
+asset set, and provenance. For a draft, it emits provenance attestations through
+the Release workflow and publishes the immutable release. It then verifies the
+public downloads, publishes the generated stable Homebrew cask with the deploy
+key, and tests a fresh Homebrew installation. A retry against the exact published
+release can repair a tap-only failure. Recovery never rebuilds or replaces an
+artifact.
