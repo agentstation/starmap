@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"os"
 	"sort"
+	"strconv"
 	"strings"
 	"time"
 
@@ -62,13 +63,97 @@ func (e Entry) MarshalJSON() ([]byte, error) {
 		Reason           string
 		PreviousValue    json.RawMessage
 	}
+	rejections := make([]Rejection, 0, len(e.Rejections))
+	if len(e.Rejections) > 0 {
+		rejections = append(rejections, e.Rejections...)
+	}
 	return json.Marshal(canonicalEntry{
 		Source: e.Source, Field: e.Field, Value: value, Timestamp: e.Timestamp,
 		ObservationID: e.ObservationID, ObservedAt: e.ObservedAt, Revision: e.Revision,
-		EvidenceChecksum: e.EvidenceChecksum, Rejections: e.Rejections,
+		EvidenceChecksum: e.EvidenceChecksum, Rejections: rejections,
 		Authority: e.Authority, Confidence: e.Confidence, Reason: e.Reason,
 		PreviousValue: previousValue,
 	})
+}
+
+// MarshalYAML uses the same canonical dynamic-value shape as MarshalJSON so a
+// human workspace can reproduce the exact immutable catalog payload.
+func (e Entry) MarshalYAML() ([]byte, error) {
+	value, err := canonicalDynamicJSON(e.Value)
+	if err != nil {
+		return nil, fmt.Errorf("encode provenance value: %w", err)
+	}
+	previousValue, err := canonicalDynamicJSON(e.PreviousValue)
+	if err != nil {
+		return nil, fmt.Errorf("encode provenance previous value: %w", err)
+	}
+	type canonicalRejection struct {
+		Source catalogmeta.SourceID `json:"source"`
+		Reason string               `json:"reason"`
+	}
+	rejections := make([]canonicalRejection, 0, len(e.Rejections))
+	for _, rejection := range e.Rejections {
+		rejections = append(rejections, canonicalRejection(rejection))
+	}
+	type canonicalEntry struct {
+		Source           catalogmeta.SourceID            `json:"source"`
+		Field            string                          `json:"field"`
+		Value            json.RawMessage                 `json:"value"`
+		Timestamp        time.Time                       `json:"timestamp"`
+		ObservationID    string                          `json:"observationid"`
+		ObservedAt       time.Time                       `json:"observedat"`
+		Revision         catalogmeta.ObservationRevision `json:"revision"`
+		EvidenceChecksum string                          `json:"evidencechecksum"`
+		Rejections       []canonicalRejection            `json:"rejections"`
+		Authority        float64                         `json:"authority"`
+		Confidence       float64                         `json:"confidence"`
+		Reason           string                          `json:"reason"`
+		PreviousValue    json.RawMessage                 `json:"previousvalue"`
+	}
+	encoded, err := json.Marshal(canonicalEntry{
+		Source: e.Source, Field: e.Field, Value: value, Timestamp: e.Timestamp,
+		ObservationID: e.ObservationID, ObservedAt: e.ObservedAt, Revision: e.Revision,
+		EvidenceChecksum: e.EvidenceChecksum, Rejections: rejections,
+		Authority: e.Authority, Confidence: e.Confidence, Reason: e.Reason,
+		PreviousValue: previousValue,
+	})
+	if err != nil {
+		return nil, err
+	}
+	yamlData, err := yaml.JSONToYAML(encoded)
+	if err != nil {
+		return nil, err
+	}
+	return expandScientificYAMLNumbers(yamlData), nil
+}
+
+func expandScientificYAMLNumbers(data []byte) []byte {
+	lines := bytes.Split(data, []byte("\n"))
+	for index, line := range lines {
+		trimmed := bytes.TrimSpace(line)
+		scalarOffset := 0
+		switch {
+		case bytes.HasPrefix(trimmed, []byte("- ")):
+			scalarOffset = 2
+		case bytes.Contains(trimmed, []byte(": ")):
+			scalarOffset = bytes.Index(trimmed, []byte(": ")) + 2
+		}
+		scalar := trimmed[scalarOffset:]
+		if !bytes.ContainsAny(scalar, "eE") {
+			continue
+		}
+		value, err := strconv.ParseFloat(string(scalar), 64)
+		if err != nil {
+			continue
+		}
+		plain := strconv.FormatFloat(value, 'f', -1, 64)
+		start := len(line) - len(trimmed) + scalarOffset
+		rewritten := make([]byte, 0, start+len(plain))
+		rewritten = append(rewritten, line[:start]...)
+		rewritten = append(rewritten, plain...)
+		lines[index] = rewritten
+	}
+	return bytes.Join(lines, []byte("\n"))
 }
 
 func canonicalDynamicJSON(value any) (json.RawMessage, error) {

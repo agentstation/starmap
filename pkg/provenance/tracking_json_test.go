@@ -38,3 +38,19 @@ func TestEntryJSONIsStableAcrossDynamicValueRoundTrip(t *testing.T) {
 		t.Fatalf("provenance JSON changed across round trip:\nfirst:  %s\nsecond: %s", first, second)
 	}
 }
+
+func TestEntryJSONNormalizesEmptyRejections(t *testing.T) {
+	t.Parallel()
+
+	nilRejections, err := json.Marshal(Entry{})
+	if err != nil {
+		t.Fatalf("Marshal nil rejections: %v", err)
+	}
+	emptyRejections, err := json.Marshal(Entry{Rejections: []Rejection{}})
+	if err != nil {
+		t.Fatalf("Marshal empty rejections: %v", err)
+	}
+	if !bytes.Equal(nilRejections, emptyRejections) {
+		t.Fatalf("empty rejections changed canonical JSON:\nnil:   %s\nempty: %s", nilRejections, emptyRejections)
+	}
+}

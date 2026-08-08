@@ -45,6 +45,30 @@ func TestModelEncodeYAMLRoundTripsBackslashesWithoutSemanticDrift(t *testing.T) 
 	}
 }
 
+func TestModelEncodeYAMLRoundTripsQuotedDescriptionWithoutSemanticDrift(t *testing.T) {
+	t.Parallel()
+
+	original := Model{
+		ID:          "quoted-description",
+		Name:        "Quoted Description",
+		Description: `Key capabilities: instruction control (e.g. "speak slowly", "excited tone")`,
+	}
+	encoded, err := original.EncodeYAML()
+	if err != nil {
+		t.Fatalf("EncodeYAML: %v", err)
+	}
+	if !strings.Contains(encoded, "description: |-\n") {
+		t.Fatalf("description is not a literal block:\n%s", encoded)
+	}
+	var decoded Model
+	if err := yaml.Unmarshal([]byte(encoded), &decoded); err != nil {
+		t.Fatalf("Unmarshal encoded YAML: %v", err)
+	}
+	if decoded.Description != original.Description {
+		t.Fatalf("description = %q, want %q; YAML:\n%s", decoded.Description, original.Description, encoded)
+	}
+}
+
 func TestModelProviderModeYAMLRoundTripPreservesJSONValues(t *testing.T) {
 	t.Parallel()
 

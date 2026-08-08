@@ -10,6 +10,7 @@ import (
 
 	"github.com/agentstation/starmap/internal/catalog/reconciler"
 	"github.com/agentstation/starmap/internal/catalog/workspace"
+	"github.com/agentstation/starmap/pkg/catalogmeta"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/differ"
 	pkgerrors "github.com/agentstation/starmap/pkg/errors"
@@ -346,6 +347,38 @@ func TestPipelineFreshReconcilesAgainstEmptyBaseline(t *testing.T) {
 
 	if _, err := runner.Sync(context.Background(), pkgsync.WithFresh(true)); err != nil {
 		t.Fatalf("Fresh sync failed: %v", err)
+	}
+}
+
+func TestPipelineReturnsCallerOwnedReconciliationIssues(t *testing.T) {
+	t.Parallel()
+
+	issue := catalogmeta.ReconciliationIssue{
+		Code:            catalogmeta.ReconciliationIssueUnresolvedModelReference,
+		ProviderID:      "provider",
+		ProviderModelID: "new-model",
+		Message:         "quarantined",
+	}
+	reconcileResult := &reconciler.Result{
+		Catalog:              catalogs.NewEmpty(),
+		Changeset:            emptyChangeset(),
+		ProviderAPICounts:    map[catalogs.ProviderID]int{},
+		ModelProviderMap:     map[string]catalogs.ProviderID{},
+		ReconciliationIssues: []catalogmeta.ReconciliationIssue{issue},
+	}
+	store := &pipelineTestStore{catalog: asSnapshot(catalogs.NewEmpty())}
+	runner := newStubPipeline(store, reconcileResult)
+
+	result, err := runner.Sync(context.Background(), pkgsync.WithDryRun(true))
+	if err != nil {
+		t.Fatalf("Sync: %v", err)
+	}
+	if len(result.ReconciliationIssues) != 1 || result.ReconciliationIssues[0] != issue {
+		t.Fatalf("reconciliation issues = %#v, want %#v", result.ReconciliationIssues, issue)
+	}
+	result.ReconciliationIssues[0].Message = "caller mutation"
+	if reconcileResult.ReconciliationIssues[0].Message != issue.Message {
+		t.Fatal("sync result retained reconciliation issue storage")
 	}
 }
 

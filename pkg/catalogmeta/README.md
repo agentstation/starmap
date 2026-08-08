@@ -26,6 +26,8 @@ The package has zero dependencies and serves as a foundation for the type system
 - [type ObservationStatus](<#ObservationStatus>)
 - [type ProjectionResult](<#ProjectionResult>)
 - [type ProjectionStatus](<#ProjectionStatus>)
+- [type ReconciliationIssue](<#ReconciliationIssue>)
+- [type ReconciliationIssueCode](<#ReconciliationIssueCode>)
 - [type ResourceType](<#ResourceType>)
   - [func \(rt ResourceType\) String\(\) string](<#ResourceType.String>)
 - [type SourceID](<#SourceID>)
@@ -245,6 +247,39 @@ const (
     // ProjectionIssueWorkspaceFailed identifies a committed generation whose
     // optional workspace projection did not complete.
     ProjectionIssueWorkspaceFailed = "workspace_projection_failed"
+)
+```
+
+<a name="ReconciliationIssue"></a>
+## type [ReconciliationIssue](<https://github.com/agentstation/starmap/blob/main/pkg/catalogmeta/reconciliation.go#L14-L19>)
+
+ReconciliationIssue records one provider offering excluded from a canonical catalog generation. ProviderModelID remains the provider's exact opaque ID.
+
+```go
+type ReconciliationIssue struct {
+    Code            ReconciliationIssueCode `json:"code" yaml:"code"`
+    ProviderID      string                  `json:"provider_id" yaml:"provider_id"`
+    ProviderModelID string                  `json:"provider_model_id" yaml:"provider_model_id"`
+    Message         string                  `json:"message" yaml:"message"`
+}
+```
+
+<a name="ReconciliationIssueCode"></a>
+## type [ReconciliationIssueCode](<https://github.com/agentstation/starmap/blob/main/pkg/catalogmeta/reconciliation.go#L4>)
+
+ReconciliationIssueCode identifies a stable non\-fatal reconciliation result.
+
+```go
+type ReconciliationIssueCode string
+```
+
+<a name="ReconciliationIssueUnresolvedModelReference"></a>
+
+```go
+const (
+    // ReconciliationIssueUnresolvedModelReference means a provider offering
+    // could not resolve an explicit provider-independent model identity.
+    ReconciliationIssueUnresolvedModelReference ReconciliationIssueCode = "unresolved_model_reference"
 )
 ```
 
