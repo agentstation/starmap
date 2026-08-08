@@ -23,7 +23,8 @@ marked complete.
 2. `docs/STARMAP_ARCHITECTURE_CONTROL_PLANE.md`
 3. `docs/reviews/STARMAP_ARCHITECTURE_REVIEW_2026-07-27.html`
 4. `docs/ARCHITECTURE.md`
-5. `docs/STARPORT_CATALOG_CONTROL_PLANE.md`
+5. `docs/proof/starport-catalog-control-plane/README.md` (archived proof for
+   the completed catalog control plane)
 6. `README.md`
 7. `go.mod`
 

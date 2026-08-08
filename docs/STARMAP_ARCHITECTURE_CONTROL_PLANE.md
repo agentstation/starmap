@@ -182,8 +182,8 @@ This plan is the durable execution record.
   `9508ee7866e4683e001e7ad153319d348433045d`
 - Historical pre-control-plane comparison:
   `3787d7164433f2fcb713a2d81e0cb653f9df6be5`
-- Historical production catalog ledger:
-  [`STARPORT_CATALOG_CONTROL_PLANE.md`](STARPORT_CATALOG_CONTROL_PLANE.md)
+- Historical production catalog ledger proof:
+  [`proof/starport-catalog-control-plane/README.md`](proof/starport-catalog-control-plane/README.md)
 
 The historical production ledger remains evidence; this plan supersedes its
 prescriptive architecture where the new review found a conflict. Historical
