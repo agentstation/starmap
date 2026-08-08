@@ -201,17 +201,43 @@ func postProcessModelYAML(yamlContent string) string {
 		} else if strings.Contains(line, "per_1m: 10.0") && !strings.Contains(line, "per_1m: 10.00") {
 			// Format decimals to 2 places for pricing
 			processedLine = strings.Replace(line, "per_1m: 10.0", "per_1m: 10.00", 1)
-		} else if strings.Contains(line, "description: \"") &&
-			!strings.Contains(line, `description: ""`) {
-			// Convert quoted description to block scalar format
-			processedLine = strings.Replace(line, "description: \"", "description: |-\n  ", 1)
-			processedLine = strings.ReplaceAll(processedLine, "\"", "")
+		} else if literal, ok := quotedDescriptionLiteral(line); ok {
+			// Decode the YAML scalar before changing its style. Removing quote
+			// characters directly leaves escape backslashes in the value.
+			processedLine = literal
 		}
 
 		result = append(result, processedLine)
 	}
 
 	return strings.Join(result, "\n")
+}
+
+func quotedDescriptionLiteral(line string) (string, bool) {
+	trimmed := strings.TrimSpace(line)
+	if !strings.HasPrefix(trimmed, `description: "`) || trimmed == `description: ""` {
+		return "", false
+	}
+	var document struct {
+		Description string `yaml:"description"`
+	}
+	if err := yaml.Unmarshal([]byte(trimmed+"\n"), &document); err != nil {
+		return "", false
+	}
+	indent := line[:len(line)-len(strings.TrimLeft(line, " \t"))]
+	lines := strings.Split(document.Description, "\n")
+	var output strings.Builder
+	output.WriteString(indent)
+	output.WriteString("description: |-\n")
+	for index, descriptionLine := range lines {
+		if index > 0 {
+			output.WriteByte('\n')
+		}
+		output.WriteString(indent)
+		output.WriteString("  ")
+		output.WriteString(descriptionLine)
+	}
+	return output.String(), true
 }
 
 // FormatYAMLHeaderComment returns a descriptive string for the model header comment.

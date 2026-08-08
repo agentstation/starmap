@@ -12,6 +12,7 @@ import (
 	"github.com/rs/zerolog"
 
 	"github.com/agentstation/starmap/internal/catalog/authority"
+	"github.com/agentstation/starmap/pkg/catalogmeta"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/differ"
 	"github.com/agentstation/starmap/pkg/errors"
@@ -108,16 +109,23 @@ func (r *Reconciler) Sources(ctx context.Context, primary sources.ID, srcs []sou
 	}
 
 	// Step 5: Build catalog with providers and models
-	catalog, err := r.catalog(rctx, providers, modelResults)
+	catalog, reconciliationIssues, err := r.catalog(rctx, providers, modelResults)
 	if err != nil {
 		return nil, err
+	}
+	for _, issue := range reconciliationIssues {
+		rctx.logger.Warn().
+			Str("issue_code", string(issue.Code)).
+			Str("provider_id", issue.ProviderID).
+			Str("provider_model_id", issue.ProviderModelID).
+			Msg(issue.Message)
 	}
 
 	// Step 6: Compute changeset if we have a base catalog
 	changeset := r.changeset(rctx, catalog)
 
 	// Step 7: Build and return result
-	return r.result(rctx, catalog, changeset, modelResults), nil
+	return r.result(rctx, catalog, changeset, modelResults, reconciliationIssues), nil
 }
 
 // initialize sets up reconciliation context.
@@ -230,7 +238,7 @@ func (r *Reconciler) catalog(
 	rctx *reconcileContext,
 	providers []*catalogs.Provider,
 	modelResults map[catalogs.ProviderID]modelResult,
-) (*catalogs.Builder, error) {
+) (*catalogs.Builder, []catalogmeta.ReconciliationIssue, error) {
 	var catalog *catalogs.Builder
 	var err error
 
@@ -238,42 +246,34 @@ func (r *Reconciler) catalog(
 	if r.baseline != nil {
 		catalog, err = catalogs.NewBuilderFrom(r.baseline)
 		if err != nil {
-			return nil, errors.WrapResource("copy", "baseline catalog", "", err)
+			return nil, nil, errors.WrapResource("copy", "baseline catalog", "", err)
 		}
 	} else {
 		catalog = catalogs.NewEmpty()
 	}
 	if err := reconcileAuthoredCorpus(catalog, r.baseline, rctx.collector); err != nil {
-		return nil, err
+		return nil, nil, err
 	}
-
 	// Add/update providers with their reconciled models
 	for i := range providers {
 		provider := providers[i]
 
 		// Add models if we have results for this provider
 		if result, ok := modelResults[provider.ID]; ok && len(result.models) > 0 {
-			provider.Models = r.providerModels(result.models)
+			provider.Models = providerModelMap(result.models)
 		}
 
 		// Set provider in catalog (this will overwrite existing provider)
 		if err := catalog.SetProvider(*provider); err != nil {
-			return nil, errors.WrapResource("set", "provider", string(provider.ID), err)
+			return nil, nil, errors.WrapResource("set", "provider", string(provider.ID), err)
 		}
 	}
 
-	return catalog, nil
-}
-
-func (r *Reconciler) providerModels(models []*catalogs.Model) map[string]*catalogs.Model {
-	providerModels := make(map[string]*catalogs.Model)
-	for _, model := range models {
-		if model == nil {
-			continue
-		}
-		providerModels[model.ID] = model
+	reconciliationIssues, err := quarantineUnresolvedProviderOfferings(catalog, r.baseline)
+	if err != nil {
+		return nil, nil, err
 	}
-	return providerModels
+	return catalog, reconciliationIssues, nil
 }
 
 // changeset calculates differences between baseline and new catalog.
@@ -296,12 +296,22 @@ func (r *Reconciler) changeset(rctx *reconcileContext, catalog *catalogs.Builder
 }
 
 // result creates the final result.
-func (r *Reconciler) result(rctx *reconcileContext, catalog *catalogs.Builder, changeset *differ.Changeset, modelResults map[catalogs.ProviderID]modelResult) *Result {
+func (r *Reconciler) result(
+	rctx *reconcileContext,
+	catalog *catalogs.Builder,
+	changeset *differ.Changeset,
+	modelResults map[catalogs.ProviderID]modelResult,
+	reconciliationIssues []catalogmeta.ReconciliationIssue,
+) *Result {
 	result := NewResult()
 
 	// Set core data
 	result.Catalog = catalog
 	result.Changeset = changeset
+	result.ReconciliationIssues = append(
+		result.ReconciliationIssues,
+		reconciliationIssues...,
+	)
 
 	// Combine all provenance data (models only). Scope merge-local provenance
 	// keys by provider so shared model IDs from different providers cannot
@@ -319,6 +329,7 @@ func (r *Reconciler) result(rctx *reconcileContext, catalog *catalogs.Builder, c
 		for key, entries := range r.provenance.Map() {
 			combined[key] = entries
 		}
+		removeQuarantinedModelProvenance(combined, reconciliationIssues)
 		catalog.SetProvenance(combined)
 	}
 
@@ -344,6 +355,7 @@ func (r *Reconciler) result(rctx *reconcileContext, catalog *catalogs.Builder, c
 	result.Metadata.Sources = rctx.collector.sourceTypes()
 	// Calculate statistics
 	result.Metadata.Stats = r.calcStats(catalog, modelResults)
+	result.Metadata.Stats.ResourcesSkipped = len(reconciliationIssues)
 
 	// Finalize result
 	result.Finalize()

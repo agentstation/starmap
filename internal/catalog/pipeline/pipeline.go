@@ -10,8 +10,9 @@ import (
 
 	"github.com/agentstation/starmap/internal/catalog/reconciler"
 	"github.com/agentstation/starmap/internal/catalog/workspace"
-	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/internal/constants"
+	"github.com/agentstation/starmap/pkg/catalogmeta"
+	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/differ"
 	pkgerrors "github.com/agentstation/starmap/pkg/errors"
 	"github.com/agentstation/starmap/pkg/logging"
@@ -260,6 +261,10 @@ func (p *Pipeline) Prepare(
 	for _, observation := range observations {
 		syncResult.SourceObservations = append(syncResult.SourceObservations, observation.Link())
 	}
+	syncResult.ReconciliationIssues = append(
+		[]catalogmeta.ReconciliationIssue(nil),
+		result.ReconciliationIssues...,
+	)
 
 	if options.DryRun {
 		logging.Info().Bool("dry_run", true).Msg("Dry run completed - no changes applied")

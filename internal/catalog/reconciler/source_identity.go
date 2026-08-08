@@ -245,19 +245,19 @@ func matchingCurrentEvidence(entries []provenance.Entry, value any) (provenance.
 			current = entry
 		}
 	}
-	if current.Source == "" || !semanticValueEqual(current.Value, value) {
+	if current.Source == "" || !semanticValueEqual(current.Field, current.Value, value) {
 		return provenance.Entry{}, false
 	}
 	return current, true
 }
 
-func semanticValueEqual(left, right any) bool {
-	leftValue, leftErr := normalizedSemanticValue(left)
-	rightValue, rightErr := normalizedSemanticValue(right)
+func semanticValueEqual(field string, left, right any) bool {
+	leftValue, leftErr := normalizedSemanticValue(field, left)
+	rightValue, rightErr := normalizedSemanticValue(field, right)
 	return leftErr == nil && rightErr == nil && reflect.DeepEqual(leftValue, rightValue)
 }
 
-func normalizedSemanticValue(value any) (any, error) {
+func normalizedSemanticValue(field string, value any) (any, error) {
 	yamlData, err := yaml.Marshal(value)
 	if err != nil {
 		return nil, err
@@ -276,7 +276,53 @@ func normalizedSemanticValue(value any) (any, error) {
 	if err := decoder.Decode(&normalized); err != nil {
 		return nil, err
 	}
-	return normalized, nil
+	return normalizeSemanticAliases(field, normalized), nil
+}
+
+// normalizeSemanticAliases makes JSON and YAML spellings of the same catalog
+// field compare as one semantic value. Provenance stores dynamic values, so a
+// value can carry either representation without retaining its concrete Go
+// type across an immutable payload or human-workspace round trip.
+func normalizeSemanticAliases(field string, value any) any {
+	switch current := value.(type) {
+	case []any:
+		for index := range current {
+			current[index] = normalizeSemanticAliases(field, current[index])
+		}
+		return current
+	case map[string]any:
+		normalized := make(map[string]any, len(current))
+		for key, item := range current {
+			if field == modelProvenancePricing && key == "per_1m_tokens" {
+				key = "per_1m"
+			}
+			if field == modelProvenancePricing &&
+				(key == "per_token" || key == "per_1m") && semanticNumberIsZero(item) {
+				continue
+			}
+			if field == "Features" && semanticBoolIsFalse(item) {
+				continue
+			}
+			normalized[key] = normalizeSemanticAliases(field, item)
+		}
+		return normalized
+	default:
+		return value
+	}
+}
+
+func semanticBoolIsFalse(value any) bool {
+	boolean, ok := value.(bool)
+	return ok && !boolean
+}
+
+func semanticNumberIsZero(value any) bool {
+	number, ok := value.(json.Number)
+	if !ok {
+		return false
+	}
+	parsed, err := number.Float64()
+	return err == nil && parsed == 0
 }
 
 func modelIDIsUnique(catalog catalogs.Reader, modelID string) bool {

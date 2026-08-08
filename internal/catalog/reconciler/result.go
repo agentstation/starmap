@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/agentstation/starmap/pkg/catalogmeta"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/differ"
 	"github.com/agentstation/starmap/pkg/provenance"
@@ -28,8 +29,9 @@ type Result struct {
 	Provenance provenance.Map
 
 	// Issues
-	Errors   []error
-	Warnings []string
+	Errors               []error
+	Warnings             []string
+	ReconciliationIssues []catalogmeta.ReconciliationIssue
 }
 
 // ResultMetadata contains metadata about the reconciliation process.
@@ -104,11 +106,12 @@ func (r *Result) Summary() string {
 // NewResult creates a new result with defaults.
 func NewResult() *Result {
 	return &Result{
-		ProviderAPICounts: make(map[catalogs.ProviderID]int),
-		ModelProviderMap:  make(map[string]catalogs.ProviderID),
-		Provenance:        make(provenance.Map),
-		Errors:            []error{},
-		Warnings:          []string{},
+		ProviderAPICounts:    make(map[catalogs.ProviderID]int),
+		ModelProviderMap:     make(map[string]catalogs.ProviderID),
+		Provenance:           make(provenance.Map),
+		Errors:               []error{},
+		Warnings:             []string{},
+		ReconciliationIssues: []catalogmeta.ReconciliationIssue{},
 		Metadata: ResultMetadata{
 			StartTime: time.Now(),
 			Sources:   []sources.ID{},

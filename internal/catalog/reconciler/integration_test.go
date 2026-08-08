@@ -214,6 +214,7 @@ func TestIntegrationFullReconciliationFlow(t *testing.T) {
 	reconcile, err := reconciler.New(
 		reconciler.WithAuthorities(authorities),
 		reconciler.WithProvenance(true),
+		reconciler.WithBaseline(testDefinitionBaseline(t, "gpt-4", "gpt-4o", "claude-3")),
 	)
 	if err != nil {
 		t.Fatalf("Failed to create reconciler: %v", err)
@@ -587,7 +588,9 @@ func TestIntegrationUsesCanonicalAuthorityStrategy(t *testing.T) {
 	}
 	srcs := reconciler.ConvertCatalogsMapToSources(srcMap)
 
-	reconcile, err := reconciler.New()
+	reconcile, err := reconciler.New(
+		reconciler.WithBaseline(testDefinitionBaseline(t, "model-1")),
+	)
 	if err != nil {
 		t.Fatalf("Failed to create reconciler: %v", err)
 	}
@@ -671,7 +674,15 @@ func TestIntegrationChangeDetection(t *testing.T) {
 	}
 
 	// Use reconciler to detect changes
-	reconcile, err := reconciler.New()
+	reconcile, err := reconciler.New(
+		reconciler.WithBaseline(testDefinitionBaseline(
+			t,
+			"model-1",
+			"model-2",
+			"model-3",
+			"model-4",
+		)),
+	)
 	if err != nil {
 		t.Fatalf("Failed to create reconciler: %v", err)
 	}

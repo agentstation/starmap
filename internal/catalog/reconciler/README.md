@@ -139,7 +139,7 @@ func WithProvenance(enabled bool) Option
 WithProvenance enables field\-level tracking.
 
 <a name="Reconciler"></a>
-## type [Reconciler](<https://github.com/agentstation/starmap/blob/main/internal/catalog/reconciler/reconciler.go#L27-L33>)
+## type [Reconciler](<https://github.com/agentstation/starmap/blob/main/internal/catalog/reconciler/reconciler.go#L28-L34>)
 
 Reconciler combines data from multiple sources into a canonical catalog. It is concrete because this package has one reconciliation engine; extension points are accepted through the narrow authority.Reader and Source interfaces.
 
@@ -150,7 +150,7 @@ type Reconciler struct {
 ```
 
 <a name="New"></a>
-### func [New](<https://github.com/agentstation/starmap/blob/main/internal/catalog/reconciler/reconciler.go#L36>)
+### func [New](<https://github.com/agentstation/starmap/blob/main/internal/catalog/reconciler/reconciler.go#L37>)
 
 ```go
 func New(opts ...Option) (*Reconciler, error)
@@ -159,7 +159,7 @@ func New(opts ...Option) (*Reconciler, error)
 New creates a new Reconciler with options.
 
 <a name="Reconciler.Sources"></a>
-### func \(\*Reconciler\) [Sources](<https://github.com/agentstation/starmap/blob/main/internal/catalog/reconciler/reconciler.go#L73>)
+### func \(\*Reconciler\) [Sources](<https://github.com/agentstation/starmap/blob/main/internal/catalog/reconciler/reconciler.go#L74>)
 
 ```go
 func (r *Reconciler) Sources(ctx context.Context, primary sources.ID, srcs []sources.Observation) (*Result, error)
@@ -168,7 +168,7 @@ func (r *Reconciler) Sources(ctx context.Context, primary sources.ID, srcs []sou
 Sources performs reconciliation with clean step\-by\-step flow.
 
 <a name="Result"></a>
-## type [Result](<https://github.com/agentstation/starmap/blob/main/internal/catalog/reconciler/result.go#L14-L33>)
+## type [Result](<https://github.com/agentstation/starmap/blob/main/internal/catalog/reconciler/result.go#L15-L35>)
 
 Result represents the outcome of a reconciliation operation.
 
@@ -190,13 +190,14 @@ type Result struct {
     Provenance provenance.Map
 
     // Issues
-    Errors   []error
-    Warnings []string
+    Errors               []error
+    Warnings             []string
+    ReconciliationIssues []catalogmeta.ReconciliationIssue
 }
 ```
 
 <a name="NewResult"></a>
-### func [NewResult](<https://github.com/agentstation/starmap/blob/main/internal/catalog/reconciler/result.go#L105>)
+### func [NewResult](<https://github.com/agentstation/starmap/blob/main/internal/catalog/reconciler/result.go#L107>)
 
 ```go
 func NewResult() *Result
@@ -205,7 +206,7 @@ func NewResult() *Result
 NewResult creates a new result with defaults.
 
 <a name="Result.Finalize"></a>
-### func \(\*Result\) [Finalize](<https://github.com/agentstation/starmap/blob/main/internal/catalog/reconciler/result.go#L120>)
+### func \(\*Result\) [Finalize](<https://github.com/agentstation/starmap/blob/main/internal/catalog/reconciler/result.go#L123>)
 
 ```go
 func (r *Result) Finalize()
@@ -214,7 +215,7 @@ func (r *Result) Finalize()
 Finalize calculates duration and marks completion.
 
 <a name="Result.HasChanges"></a>
-### func \(\*Result\) [HasChanges](<https://github.com/agentstation/starmap/blob/main/internal/catalog/reconciler/result.go#L71>)
+### func \(\*Result\) [HasChanges](<https://github.com/agentstation/starmap/blob/main/internal/catalog/reconciler/result.go#L73>)
 
 ```go
 func (r *Result) HasChanges() bool
@@ -223,7 +224,7 @@ func (r *Result) HasChanges() bool
 HasChanges returns true if any changes were detected.
 
 <a name="Result.IsSuccess"></a>
-### func \(\*Result\) [IsSuccess](<https://github.com/agentstation/starmap/blob/main/internal/catalog/reconciler/result.go#L66>)
+### func \(\*Result\) [IsSuccess](<https://github.com/agentstation/starmap/blob/main/internal/catalog/reconciler/result.go#L68>)
 
 ```go
 func (r *Result) IsSuccess() bool
@@ -232,7 +233,7 @@ func (r *Result) IsSuccess() bool
 IsSuccess returns true if the reconciliation was successful.
 
 <a name="Result.Summary"></a>
-### func \(\*Result\) [Summary](<https://github.com/agentstation/starmap/blob/main/internal/catalog/reconciler/result.go#L81>)
+### func \(\*Result\) [Summary](<https://github.com/agentstation/starmap/blob/main/internal/catalog/reconciler/result.go#L83>)
 
 ```go
 func (r *Result) Summary() string
@@ -241,7 +242,7 @@ func (r *Result) Summary() string
 Summary returns a human\-readable summary of the result.
 
 <a name="Result.WasApplied"></a>
-### func \(\*Result\) [WasApplied](<https://github.com/agentstation/starmap/blob/main/internal/catalog/reconciler/result.go#L76>)
+### func \(\*Result\) [WasApplied](<https://github.com/agentstation/starmap/blob/main/internal/catalog/reconciler/result.go#L78>)
 
 ```go
 func (r *Result) WasApplied() bool
@@ -250,7 +251,7 @@ func (r *Result) WasApplied() bool
 WasApplied returns true if changes were applied.
 
 <a name="ResultMetadata"></a>
-## type [ResultMetadata](<https://github.com/agentstation/starmap/blob/main/internal/catalog/reconciler/result.go#L36-L54>)
+## type [ResultMetadata](<https://github.com/agentstation/starmap/blob/main/internal/catalog/reconciler/result.go#L38-L56>)
 
 ResultMetadata contains metadata about the reconciliation process.
 
@@ -277,7 +278,7 @@ type ResultMetadata struct {
 ```
 
 <a name="ResultStatistics"></a>
-## type [ResultStatistics](<https://github.com/agentstation/starmap/blob/main/internal/catalog/reconciler/result.go#L57-L63>)
+## type [ResultStatistics](<https://github.com/agentstation/starmap/blob/main/internal/catalog/reconciler/result.go#L59-L65>)
 
 ResultStatistics contains statistics about the reconciliation.
 

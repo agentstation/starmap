@@ -69,6 +69,9 @@ type Result struct {
 	GenerationID       string // Durable generation activated by a non-dry sync
 	SyncRunID          string // Correlation ID for the synchronization attempt
 	Projection         *ProjectionResult
+	// ReconciliationIssues contains deterministic non-fatal records excluded
+	// from the published canonical catalog after source authority resolution.
+	ReconciliationIssues []catalogmeta.ReconciliationIssue
 }
 
 // ProviderResult represents sync results for a single provider.

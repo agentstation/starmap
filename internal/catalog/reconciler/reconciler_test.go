@@ -45,6 +45,10 @@ func mustCatalogSnapshot(t testing.TB, reader catalogs.Reader) *catalogs.Catalog
 
 // Helper function to add models to a catalog through a provider.
 func addTestModels(cat *catalogs.Builder, providerID string, models []*catalogs.Model) error {
+	author := catalogs.Author{ID: "test-author", Name: "Test Author"}
+	if err := cat.SetAuthor(author); err != nil {
+		return err
+	}
 	provider, err := cat.Provider(catalogs.ProviderID(providerID))
 	if err != nil {
 		// Create provider if it doesn't exist
@@ -58,6 +62,16 @@ func addTestModels(cat *catalogs.Builder, providerID string, models []*catalogs.
 		provider.Models = make(map[string]*catalogs.Model)
 	}
 	for _, model := range models {
+		model.ModelRef = testDefinitionID(model.ID)
+		_, slug, err := catalogs.ParseModelDefinitionID(model.ModelRef)
+		if err != nil {
+			return err
+		}
+		if err := cat.SetAuthorModel(author.ID, catalogs.Model{
+			ID: slug, Name: model.Name, Authors: []catalogs.Author{author},
+		}); err != nil {
+			return err
+		}
 		provider.Models[model.ID] = model
 	}
 	return cat.SetProvider(provider)

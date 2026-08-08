@@ -234,16 +234,26 @@ func TestF007PersistedProvenanceIsProviderModelScoped(t *testing.T) {
 func characterizationCatalog(t testing.TB, providerID catalogs.ProviderID, modelIDs ...string) *catalogs.Catalog {
 	t.Helper()
 	builder := catalogs.NewEmpty()
+	author := catalogs.Author{ID: "test-author", Name: "Test Author"}
+	if err := builder.SetAuthor(author); err != nil {
+		t.Fatalf("SetAuthor: %v", err)
+	}
 	models := make(map[string]*catalogs.Model, len(modelIDs))
 	for _, modelID := range modelIDs {
 		model := catalogs.Model{
-			ID:   modelID,
-			Name: modelID,
+			ID:       modelID,
+			ModelRef: catalogs.ModelDefinitionID(string(author.ID) + "/" + modelID),
+			Name:     modelID,
 			Limits: &catalogs.ModelLimits{
 				ContextWindow: 8192,
 			},
 		}
 		models[modelID] = &model
+		if err := builder.SetAuthorModel(author.ID, catalogs.Model{
+			ID: modelID, Name: modelID, Authors: []catalogs.Author{author},
+		}); err != nil {
+			t.Fatalf("SetAuthorModel(%s): %v", modelID, err)
+		}
 	}
 	if err := builder.SetProvider(catalogs.Provider{
 		ID:     providerID,
