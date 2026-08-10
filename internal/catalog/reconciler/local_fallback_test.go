@@ -4,6 +4,7 @@ import (
 	"testing"
 
 	"github.com/agentstation/starmap/internal/catalog/authority"
+	"github.com/agentstation/starmap/internal/testcatalog"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/sources"
 )
@@ -168,23 +169,19 @@ func TestLocalOperatorConfigurationLeadsDiscoveredProviderMetadata(t *testing.T)
 
 	providers, err := merger.Providers(map[sources.ID][]*catalogs.Provider{
 		sources.ModelsDevHTTPID: {{
-			ID:   "openai",
-			Name: "Observed Provider",
-			APIKey: &catalogs.ProviderAPIKey{
-				Name:   "DISCOVERED_KEY",
-				Header: "X-API-Key",
-			},
+			ID: "openai", Name: "Observed Provider",
+			Credentials: testcatalog.APIKeyCredentials(
+				"DISCOVERED_KEY", "X-API-Key", catalogs.ProviderCredentialSchemeDirect,
+			),
 			Catalog: &catalogs.ProviderCatalog{
 				Endpoint: catalogs.ProviderEndpoint{URL: "https://discovered.example/models"},
 			},
 		}},
 		sources.LocalCatalogID: {{
-			ID:   "openai",
-			Name: "Manual Provider Name",
-			APIKey: &catalogs.ProviderAPIKey{
-				Name:   "OPERATOR_KEY",
-				Header: "Authorization",
-			},
+			ID: "openai", Name: "Manual Provider Name",
+			Credentials: testcatalog.APIKeyCredentials(
+				"OPERATOR_KEY", "Authorization", catalogs.ProviderCredentialSchemeBearer,
+			),
 			Catalog: &catalogs.ProviderCatalog{
 				Endpoint: catalogs.ProviderEndpoint{URL: localURL},
 			},
@@ -200,8 +197,9 @@ func TestLocalOperatorConfigurationLeadsDiscoveredProviderMetadata(t *testing.T)
 	if provider.Name != "Observed Provider" {
 		t.Fatalf("name = %q, want dynamic discovery fact", provider.Name)
 	}
-	if provider.APIKey == nil || provider.APIKey.Name != "OPERATOR_KEY" {
-		t.Fatalf("api key configuration = %#v, want operator value", provider.APIKey)
+	if provider.Credentials == nil ||
+		provider.Credentials.Fields[0].Environment[0] != "OPERATOR_KEY" {
+		t.Fatalf("credential configuration = %#v, want operator value", provider.Credentials)
 	}
 	if provider.Catalog == nil || provider.Catalog.Endpoint.URL != localURL {
 		t.Fatalf("catalog configuration = %#v, want operator endpoint", provider.Catalog)

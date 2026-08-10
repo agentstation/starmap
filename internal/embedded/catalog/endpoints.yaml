@@ -1,6 +1,6 @@
 schema_version: 2
-generation_id: catalog-20260810T204404Z-1d50db8dcd79
-catalog_digest: sha256:5a7f95a85b515a58e1ecf8183196b9e532b42d7dd415a4c713a7027cd671b41f
+generation_id: catalog-20260810T221739Z-ea42f3868179
+catalog_digest: sha256:0d7b6a52e2db3afd7149ed98da5fbfaf94862215eb20f15e70dda67df4d7bf5e
 models:
   - model: ai21/jamba-1-5-large
     endpoints:
@@ -97,7 +97,7 @@ models:
         service_endpoints:
           - operation: chat-completions
             type: openai
-            url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
+            url: "{base_url}/v1/chat/completions"
   - model: alibaba/wan2.6-t2i
     endpoints:
       - provider: alibaba
@@ -110,7 +110,7 @@ models:
         service_endpoints:
           - operation: chat-completions
             type: openai
-            url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
+            url: "{base_url}/v1/chat/completions"
       - provider: deepinfra
         provider_model_id: Wan-AI/Wan2.6-T2I
         pricing:
@@ -1390,7 +1390,7 @@ models:
         service_endpoints:
           - operation: chat-completions
             type: openai
-            url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
+            url: "{base_url}/v1/chat/completions"
       - provider: alibaba
         provider_model_id: deepseek-v4-flash-us
         availability: unknown
@@ -1401,7 +1401,7 @@ models:
         service_endpoints:
           - operation: chat-completions
             type: openai
-            url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
+            url: "{base_url}/v1/chat/completions"
       - provider: deepinfra
         provider_model_id: deepseek-ai/DeepSeek-V4-Flash
         pricing:
@@ -1464,7 +1464,7 @@ models:
         service_endpoints:
           - operation: chat-completions
             type: openai
-            url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
+            url: "{base_url}/v1/chat/completions"
       - provider: alibaba
         provider_model_id: deepseek-v4-pro-us
         availability: unknown
@@ -1475,7 +1475,7 @@ models:
         service_endpoints:
           - operation: chat-completions
             type: openai
-            url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
+            url: "{base_url}/v1/chat/completions"
       - provider: deepinfra
         provider_model_id: deepseek-ai/DeepSeek-V4-Pro
         pricing:
@@ -5560,7 +5560,7 @@ models:
         service_endpoints:
           - operation: chat-completions
             type: openai
-            url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
+            url: "{base_url}/v1/chat/completions"
       - provider: deepinfra
         provider_model_id: moonshotai/Kimi-K2.5
         pricing:
@@ -5715,7 +5715,7 @@ models:
         service_endpoints:
           - operation: chat-completions
             type: openai
-            url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
+            url: "{base_url}/v1/chat/completions"
       - provider: deepinfra
         provider_model_id: moonshotai/Kimi-K2.7-Code
         pricing:
@@ -8872,7 +8872,7 @@ models:
         service_endpoints:
           - operation: chat-completions
             type: openai
-            url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
+            url: "{base_url}/v1/chat/completions"
       - provider: alibaba
         provider_model_id: qwen-flash-us
         availability: unknown
@@ -8883,7 +8883,7 @@ models:
         service_endpoints:
           - operation: chat-completions
             type: openai
-            url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
+            url: "{base_url}/v1/chat/completions"
   - model: qwen/qwen-flash-2025-07-28
     endpoints:
       - provider: alibaba
@@ -8896,7 +8896,7 @@ models:
         service_endpoints:
           - operation: chat-completions
             type: openai
-            url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
+            url: "{base_url}/v1/chat/completions"
       - provider: alibaba
         provider_model_id: qwen-flash-2025-07-28-us
         availability: unknown
@@ -8907,7 +8907,7 @@ models:
         service_endpoints:
           - operation: chat-completions
             type: openai
-            url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
+            url: "{base_url}/v1/chat/completions"
   - model: qwen/qwen-image-edit
     endpoints:
       - provider: deepinfra
@@ -8942,7 +8942,7 @@ models:
         service_endpoints:
           - operation: chat-completions
             type: openai
-            url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
+            url: "{base_url}/v1/chat/completions"
   - model: qwen/qwen-mt-lite
     endpoints:
       - provider: alibaba
@@ -8955,7 +8955,7 @@ models:
         service_endpoints:
           - operation: chat-completions
             type: openai
-            url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
+            url: "{base_url}/v1/chat/completions"
       - provider: alibaba
         provider_model_id: qwen-mt-lite
         availability: unknown
@@ -8966,7 +8966,7 @@ models:
         service_endpoints:
           - operation: chat-completions
             type: openai
-            url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
+            url: "{base_url}/v1/chat/completions"
   - model: qwen/qwen-mt-plus
     endpoints:
       - provider: alibaba
@@ -8990,7 +8990,7 @@ models:
         service_endpoints:
           - operation: chat-completions
             type: openai
-            url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
+            url: "{base_url}/v1/chat/completions"
   - model: qwen/qwen-plus
     endpoints:
       - provider: alibaba
@@ -9016,7 +9016,7 @@ models:
         service_endpoints:
           - operation: chat-completions
             type: openai
-            url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
+            url: "{base_url}/v1/chat/completions"
       - provider: alibaba
         provider_model_id: qwen-plus-us
         availability: unknown
@@ -9027,7 +9027,7 @@ models:
         service_endpoints:
           - operation: chat-completions
             type: openai
-            url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
+            url: "{base_url}/v1/chat/completions"
   - model: qwen/qwen-plus-2025-07-28
     endpoints:
       - provider: alibaba
@@ -9040,7 +9040,7 @@ models:
         service_endpoints:
           - operation: chat-completions
             type: openai
-            url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
+            url: "{base_url}/v1/chat/completions"
   - model: qwen/qwen-plus-2025-09-11
     endpoints:
       - provider: alibaba
@@ -9053,7 +9053,7 @@ models:
         service_endpoints:
           - operation: chat-completions
             type: openai
-            url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
+            url: "{base_url}/v1/chat/completions"
   - model: qwen/qwen-plus-2025-12-01
     endpoints:
       - provider: alibaba
@@ -9066,7 +9066,7 @@ models:
         service_endpoints:
           - operation: chat-completions
             type: openai
-            url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
+            url: "{base_url}/v1/chat/completions"
       - provider: alibaba
         provider_model_id: qwen-plus-2025-12-01-us
         availability: unknown
@@ -9077,7 +9077,7 @@ models:
         service_endpoints:
           - operation: chat-completions
             type: openai
-            url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
+            url: "{base_url}/v1/chat/completions"
   - model: qwen/qwen-vl-ocr
     endpoints:
       - provider: alibaba
@@ -9101,7 +9101,7 @@ models:
         service_endpoints:
           - operation: chat-completions
             type: openai
-            url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
+            url: "{base_url}/v1/chat/completions"
   - model: qwen/qwen-vl-ocr-2025-11-20
     endpoints:
       - provider: alibaba
@@ -9114,7 +9114,7 @@ models:
         service_endpoints:
           - operation: chat-completions
             type: openai
-            url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
+            url: "{base_url}/v1/chat/completions"
   - model: qwen/qwen2.5-72b-instruct
     endpoints:
       - provider: deepinfra
@@ -9182,7 +9182,7 @@ models:
         service_endpoints:
           - operation: chat-completions
             type: openai
-            url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
+            url: "{base_url}/v1/chat/completions"
       - provider: deepinfra
         provider_model_id: Qwen/Qwen3-14B
         pricing:
@@ -9230,7 +9230,7 @@ models:
         service_endpoints:
           - operation: chat-completions
             type: openai
-            url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
+            url: "{base_url}/v1/chat/completions"
   - model: qwen/qwen3-235b-a22b-instruct-2507
     endpoints:
       - provider: alibaba
@@ -9243,7 +9243,7 @@ models:
         service_endpoints:
           - operation: chat-completions
             type: openai
-            url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
+            url: "{base_url}/v1/chat/completions"
       - provider: deepinfra
         provider_model_id: Qwen/Qwen3-235B-A22B-Instruct-2507
         pricing:
@@ -9278,7 +9278,7 @@ models:
         service_endpoints:
           - operation: chat-completions
             type: openai
-            url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
+            url: "{base_url}/v1/chat/completions"
       - provider: deepinfra
         provider_model_id: Qwen/Qwen3-235B-A22B-Thinking-2507
         pricing:
@@ -9316,7 +9316,7 @@ models:
         service_endpoints:
           - operation: chat-completions
             type: openai
-            url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
+            url: "{base_url}/v1/chat/completions"
       - provider: deepinfra
         provider_model_id: Qwen/Qwen3-30B-A3B
         pricing:
@@ -9351,7 +9351,7 @@ models:
         service_endpoints:
           - operation: chat-completions
             type: openai
-            url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
+            url: "{base_url}/v1/chat/completions"
   - model: qwen/qwen3-30b-a3b-thinking-2507
     endpoints:
       - provider: alibaba
@@ -9364,7 +9364,7 @@ models:
         service_endpoints:
           - operation: chat-completions
             type: openai
-            url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
+            url: "{base_url}/v1/chat/completions"
   - model: qwen/qwen3-32b
     endpoints:
       - provider: alibaba
@@ -9390,7 +9390,7 @@ models:
         service_endpoints:
           - operation: chat-completions
             type: openai
-            url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
+            url: "{base_url}/v1/chat/completions"
       - provider: deepinfra
         provider_model_id: Qwen/Qwen3-32B
         pricing:
@@ -9460,7 +9460,7 @@ models:
         service_endpoints:
           - operation: chat-completions
             type: openai
-            url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
+            url: "{base_url}/v1/chat/completions"
   - model: qwen/qwen3-asr-flash
     endpoints:
       - provider: alibaba
@@ -9473,7 +9473,7 @@ models:
         service_endpoints:
           - operation: chat-completions
             type: openai
-            url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
+            url: "{base_url}/v1/chat/completions"
   - model: qwen/qwen3-asr-flash-2025-09-08
     endpoints:
       - provider: alibaba
@@ -9486,7 +9486,7 @@ models:
         service_endpoints:
           - operation: chat-completions
             type: openai
-            url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
+            url: "{base_url}/v1/chat/completions"
   - model: qwen/qwen3-coder-30b-a3b-instruct
     endpoints:
       - provider: alibaba
@@ -9510,7 +9510,7 @@ models:
         service_endpoints:
           - operation: chat-completions
             type: openai
-            url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
+            url: "{base_url}/v1/chat/completions"
   - model: qwen/qwen3-coder-480b-a35b-instruct
     endpoints:
       - provider: alibaba
@@ -9534,7 +9534,7 @@ models:
         service_endpoints:
           - operation: chat-completions
             type: openai
-            url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
+            url: "{base_url}/v1/chat/completions"
       - provider: deepinfra
         provider_model_id: Qwen/Qwen3-Coder-480B-A35B-Instruct-Turbo
         pricing:
@@ -9583,7 +9583,7 @@ models:
         service_endpoints:
           - operation: chat-completions
             type: openai
-            url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
+            url: "{base_url}/v1/chat/completions"
   - model: qwen/qwen3-coder-flash-2025-07-28
     endpoints:
       - provider: alibaba
@@ -9596,7 +9596,7 @@ models:
         service_endpoints:
           - operation: chat-completions
             type: openai
-            url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
+            url: "{base_url}/v1/chat/completions"
   - model: qwen/qwen3-coder-plus
     endpoints:
       - provider: alibaba
@@ -9620,7 +9620,7 @@ models:
         service_endpoints:
           - operation: chat-completions
             type: openai
-            url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
+            url: "{base_url}/v1/chat/completions"
   - model: qwen/qwen3-coder-plus-2025-07-22
     endpoints:
       - provider: alibaba
@@ -9633,7 +9633,7 @@ models:
         service_endpoints:
           - operation: chat-completions
             type: openai
-            url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
+            url: "{base_url}/v1/chat/completions"
   - model: qwen/qwen3-coder-plus-2025-09-23
     endpoints:
       - provider: alibaba
@@ -9646,7 +9646,7 @@ models:
         service_endpoints:
           - operation: chat-completions
             type: openai
-            url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
+            url: "{base_url}/v1/chat/completions"
   - model: qwen/qwen3-embedding-0.6b
     endpoints:
       - provider: deepinfra
@@ -9724,7 +9724,7 @@ models:
         service_endpoints:
           - operation: chat-completions
             type: openai
-            url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
+            url: "{base_url}/v1/chat/completions"
       - provider: deepinfra
         provider_model_id: Qwen/Qwen3-Max
         pricing:
@@ -9762,7 +9762,7 @@ models:
         service_endpoints:
           - operation: chat-completions
             type: openai
-            url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
+            url: "{base_url}/v1/chat/completions"
   - model: qwen/qwen3-max-preview
     endpoints:
       - provider: alibaba
@@ -9775,7 +9775,7 @@ models:
         service_endpoints:
           - operation: chat-completions
             type: openai
-            url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
+            url: "{base_url}/v1/chat/completions"
   - model: qwen/qwen3-max-thinking
     endpoints:
       - provider: deepinfra
@@ -9826,7 +9826,7 @@ models:
         service_endpoints:
           - operation: chat-completions
             type: openai
-            url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
+            url: "{base_url}/v1/chat/completions"
       - provider: deepinfra
         provider_model_id: Qwen/Qwen3-Next-80B-A3B-Instruct
         pricing:
@@ -9872,7 +9872,7 @@ models:
         service_endpoints:
           - operation: chat-completions
             type: openai
-            url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
+            url: "{base_url}/v1/chat/completions"
   - model: qwen/qwen3-tts
     endpoints:
       - provider: deepinfra
@@ -9899,7 +9899,7 @@ models:
         service_endpoints:
           - operation: chat-completions
             type: openai
-            url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
+            url: "{base_url}/v1/chat/completions"
       - provider: deepinfra
         provider_model_id: Qwen/Qwen3-VL-235B-A22B-Instruct
         pricing:
@@ -9937,7 +9937,7 @@ models:
         service_endpoints:
           - operation: chat-completions
             type: openai
-            url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
+            url: "{base_url}/v1/chat/completions"
   - model: qwen/qwen3-vl-30b-a3b-instruct
     endpoints:
       - provider: alibaba
@@ -9950,7 +9950,7 @@ models:
         service_endpoints:
           - operation: chat-completions
             type: openai
-            url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
+            url: "{base_url}/v1/chat/completions"
       - provider: deepinfra
         provider_model_id: Qwen/Qwen3-VL-30B-A3B-Instruct
         pricing:
@@ -9985,7 +9985,7 @@ models:
         service_endpoints:
           - operation: chat-completions
             type: openai
-            url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
+            url: "{base_url}/v1/chat/completions"
   - model: qwen/qwen3-vl-32b-instruct
     endpoints:
       - provider: alibaba
@@ -9998,7 +9998,7 @@ models:
         service_endpoints:
           - operation: chat-completions
             type: openai
-            url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
+            url: "{base_url}/v1/chat/completions"
   - model: qwen/qwen3-vl-32b-thinking
     endpoints:
       - provider: alibaba
@@ -10011,7 +10011,7 @@ models:
         service_endpoints:
           - operation: chat-completions
             type: openai
-            url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
+            url: "{base_url}/v1/chat/completions"
   - model: qwen/qwen3-vl-8b-instruct
     endpoints:
       - provider: alibaba
@@ -10024,7 +10024,7 @@ models:
         service_endpoints:
           - operation: chat-completions
             type: openai
-            url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
+            url: "{base_url}/v1/chat/completions"
   - model: qwen/qwen3-vl-8b-thinking
     endpoints:
       - provider: alibaba
@@ -10037,7 +10037,7 @@ models:
         service_endpoints:
           - operation: chat-completions
             type: openai
-            url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
+            url: "{base_url}/v1/chat/completions"
   - model: qwen/qwen3-vl-flash
     endpoints:
       - provider: alibaba
@@ -10050,7 +10050,7 @@ models:
         service_endpoints:
           - operation: chat-completions
             type: openai
-            url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
+            url: "{base_url}/v1/chat/completions"
       - provider: alibaba
         provider_model_id: qwen3-vl-flash-us
         availability: unknown
@@ -10061,7 +10061,7 @@ models:
         service_endpoints:
           - operation: chat-completions
             type: openai
-            url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
+            url: "{base_url}/v1/chat/completions"
   - model: qwen/qwen3-vl-flash-2025-10-15
     endpoints:
       - provider: alibaba
@@ -10074,7 +10074,7 @@ models:
         service_endpoints:
           - operation: chat-completions
             type: openai
-            url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
+            url: "{base_url}/v1/chat/completions"
       - provider: alibaba
         provider_model_id: qwen3-vl-flash-2025-10-15-us
         availability: unknown
@@ -10085,7 +10085,7 @@ models:
         service_endpoints:
           - operation: chat-completions
             type: openai
-            url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
+            url: "{base_url}/v1/chat/completions"
   - model: qwen/qwen3-vl-flash-2026-01-22
     endpoints:
       - provider: alibaba
@@ -10098,7 +10098,7 @@ models:
         service_endpoints:
           - operation: chat-completions
             type: openai
-            url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
+            url: "{base_url}/v1/chat/completions"
   - model: qwen/qwen3-vl-plus
     endpoints:
       - provider: alibaba
@@ -10124,7 +10124,7 @@ models:
         service_endpoints:
           - operation: chat-completions
             type: openai
-            url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
+            url: "{base_url}/v1/chat/completions"
   - model: qwen/qwen3-vl-plus-2025-09-23
     endpoints:
       - provider: alibaba
@@ -10137,7 +10137,7 @@ models:
         service_endpoints:
           - operation: chat-completions
             type: openai
-            url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
+            url: "{base_url}/v1/chat/completions"
   - model: qwen/qwen3-vl-plus-2025-12-19
     endpoints:
       - provider: alibaba
@@ -10150,7 +10150,7 @@ models:
         service_endpoints:
           - operation: chat-completions
             type: openai
-            url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
+            url: "{base_url}/v1/chat/completions"
       - provider: alibaba
         provider_model_id: qwen3-vl-plus-2025-12-19-us
         availability: unknown
@@ -10161,7 +10161,7 @@ models:
         service_endpoints:
           - operation: chat-completions
             type: openai
-            url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
+            url: "{base_url}/v1/chat/completions"
   - model: qwen/qwen3.5-122b-a10b
     endpoints:
       - provider: alibaba
@@ -10185,7 +10185,7 @@ models:
         service_endpoints:
           - operation: chat-completions
             type: openai
-            url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
+            url: "{base_url}/v1/chat/completions"
       - provider: deepinfra
         provider_model_id: Qwen/Qwen3.5-122B-A10B
         pricing:
@@ -10231,7 +10231,7 @@ models:
         service_endpoints:
           - operation: chat-completions
             type: openai
-            url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
+            url: "{base_url}/v1/chat/completions"
       - provider: deepinfra
         provider_model_id: Qwen/Qwen3.5-27B
         pricing:
@@ -10277,7 +10277,7 @@ models:
         service_endpoints:
           - operation: chat-completions
             type: openai
-            url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
+            url: "{base_url}/v1/chat/completions"
       - provider: deepinfra
         provider_model_id: Qwen/Qwen3.5-35B-A3B
         pricing:
@@ -10326,7 +10326,7 @@ models:
         service_endpoints:
           - operation: chat-completions
             type: openai
-            url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
+            url: "{base_url}/v1/chat/completions"
       - provider: deepinfra
         provider_model_id: Qwen/Qwen3.5-397B-A17B
         pricing:
@@ -10388,7 +10388,7 @@ models:
         service_endpoints:
           - operation: chat-completions
             type: openai
-            url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
+            url: "{base_url}/v1/chat/completions"
   - model: qwen/qwen3.5-flash-2026-02-23
     endpoints:
       - provider: alibaba
@@ -10401,7 +10401,7 @@ models:
         service_endpoints:
           - operation: chat-completions
             type: openai
-            url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
+            url: "{base_url}/v1/chat/completions"
   - model: qwen/qwen3.5-plus
     endpoints:
       - provider: alibaba
@@ -10427,7 +10427,7 @@ models:
         service_endpoints:
           - operation: chat-completions
             type: openai
-            url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
+            url: "{base_url}/v1/chat/completions"
   - model: qwen/qwen3.6-27b
     endpoints:
       - provider: deepinfra
@@ -10497,7 +10497,7 @@ models:
         service_endpoints:
           - operation: chat-completions
             type: openai
-            url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
+            url: "{base_url}/v1/chat/completions"
       - provider: deepinfra
         provider_model_id: Qwen/Qwen3.6-35B-A3B
         pricing:
@@ -10546,7 +10546,7 @@ models:
         service_endpoints:
           - operation: chat-completions
             type: openai
-            url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
+            url: "{base_url}/v1/chat/completions"
       - provider: alibaba
         provider_model_id: qwen3.6-flash-us
         availability: unknown
@@ -10557,7 +10557,7 @@ models:
         service_endpoints:
           - operation: chat-completions
             type: openai
-            url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
+            url: "{base_url}/v1/chat/completions"
   - model: qwen/qwen3.6-flash-2026-04-16
     endpoints:
       - provider: alibaba
@@ -10570,7 +10570,7 @@ models:
         service_endpoints:
           - operation: chat-completions
             type: openai
-            url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
+            url: "{base_url}/v1/chat/completions"
   - model: qwen/qwen3.6-plus-2026-04-02
     endpoints:
       - provider: alibaba
@@ -10583,7 +10583,7 @@ models:
         service_endpoints:
           - operation: chat-completions
             type: openai
-            url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
+            url: "{base_url}/v1/chat/completions"
   - model: qwen/qwen3.7-max
     endpoints:
       - provider: alibaba
@@ -10612,7 +10612,7 @@ models:
         service_endpoints:
           - operation: chat-completions
             type: openai
-            url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
+            url: "{base_url}/v1/chat/completions"
       - provider: alibaba
         provider_model_id: qwen3.7-max-us
         availability: unknown
@@ -10623,7 +10623,7 @@ models:
         service_endpoints:
           - operation: chat-completions
             type: openai
-            url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
+            url: "{base_url}/v1/chat/completions"
       - provider: deepinfra
         provider_model_id: Qwen/Qwen3.7-Max
         pricing:
@@ -10661,7 +10661,7 @@ models:
         service_endpoints:
           - operation: chat-completions
             type: openai
-            url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
+            url: "{base_url}/v1/chat/completions"
   - model: qwen/qwen3.7-max-2026-06-08
     endpoints:
       - provider: alibaba
@@ -10674,7 +10674,7 @@ models:
         service_endpoints:
           - operation: chat-completions
             type: openai
-            url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
+            url: "{base_url}/v1/chat/completions"
   - model: qwen/qwen3.7-plus
     endpoints:
       - provider: alibaba
@@ -10727,7 +10727,7 @@ models:
         service_endpoints:
           - operation: chat-completions
             type: openai
-            url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
+            url: "{base_url}/v1/chat/completions"
       - provider: alibaba
         provider_model_id: qwen3.7-plus-us
         availability: unknown
@@ -10738,7 +10738,7 @@ models:
         service_endpoints:
           - operation: chat-completions
             type: openai
-            url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
+            url: "{base_url}/v1/chat/completions"
   - model: qwen/qwen3.7-plus-2026-05-26
     endpoints:
       - provider: alibaba
@@ -10751,7 +10751,7 @@ models:
         service_endpoints:
           - operation: chat-completions
             type: openai
-            url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
+            url: "{base_url}/v1/chat/completions"
   - model: resemble-ai/chatterbox-multilingual
     endpoints:
       - provider: deepinfra
@@ -11234,7 +11234,7 @@ models:
         service_endpoints:
           - operation: chat-completions
             type: openai
-            url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
+            url: "{base_url}/v1/chat/completions"
       - provider: deepinfra
         provider_model_id: zai-org/GLM-5.1
         pricing:
@@ -11297,7 +11297,7 @@ models:
         service_endpoints:
           - operation: chat-completions
             type: openai
-            url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions
+            url: "{base_url}/v1/chat/completions"
       - provider: deepinfra
         provider_model_id: zai-org/GLM-5.2
         pricing:

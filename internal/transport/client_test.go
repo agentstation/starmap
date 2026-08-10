@@ -12,6 +12,7 @@ import (
 
 	"github.com/agentstation/starmap/pkg/catalogs"
 	pkgerrors "github.com/agentstation/starmap/pkg/errors"
+	"github.com/agentstation/starmap/pkg/sources"
 )
 
 type contextKey string
@@ -37,7 +38,6 @@ func (rt contextCheckingRoundTripper) RoundTrip(req *http.Request) (*http.Respon
 func TestDoPreservesRequestContext(t *testing.T) {
 	client := &Client{
 		http: &http.Client{Transport: contextCheckingRoundTripper{t: t}},
-		auth: &NoAuth{},
 	}
 
 	ctx := context.WithValue(context.Background(), contextKey("request-id"), "expected")
@@ -46,7 +46,7 @@ func TestDoPreservesRequestContext(t *testing.T) {
 		t.Fatalf("Failed to create request: %v", err)
 	}
 
-	resp, err := client.Do(req, nil)
+	resp, err := client.Do(req, nil, sources.ProviderCredentialMaterial{})
 	if err != nil {
 		t.Fatalf("Do returned error: %v", err)
 	}
@@ -71,8 +71,10 @@ func TestProviderTransportNeverFollowsRedirects(t *testing.T) {
 	}))
 	defer origin.Close()
 
-	client := New(nil)
-	response, err := client.Get(context.Background(), origin.URL, nil)
+	client := New()
+	response, err := client.Get(
+		context.Background(), origin.URL, nil, sources.ProviderCredentialMaterial{},
+	)
 	if err != nil {
 		t.Fatalf("Get: %v", err)
 	}
@@ -93,17 +95,24 @@ func (secretErrorRoundTripper) RoundTrip(request *http.Request) (*http.Response,
 
 func TestQueryCredentialIsAbsentFromTransportErrorGraph(t *testing.T) {
 	const secret = "do-not-leak"
-	t.Setenv("QUERY_AUTH_KEY", secret)
 	provider := &catalogs.Provider{
 		ID: "query-auth",
-		APIKey: &catalogs.ProviderAPIKey{
-			Name:       "QUERY_AUTH_KEY",
-			QueryParam: "key",
-		},
 	}
+	profile := catalogs.ProviderCredentialProfile{
+		ID:        "api-key",
+		Primitive: catalogs.ProviderAuthenticationAPIKey,
+		Fields:    []catalogs.ProviderCredentialFieldID{"api-key"},
+		Placements: []catalogs.ProviderCredentialPlacement{{
+			Field: "api-key", Kind: catalogs.ProviderCredentialPlacementQuery,
+			Name: "key", Scheme: catalogs.ProviderCredentialSchemeDirect,
+		}},
+	}
+	material := sources.NewProviderCredentialMaterial(
+		profile,
+		map[catalogs.ProviderCredentialFieldID]string{"api-key": secret},
+	)
 	client := &Client{
 		http: &http.Client{Transport: secretErrorRoundTripper{}},
-		auth: newAuthenticator(provider),
 	}
 	request, err := http.NewRequest(
 		http.MethodGet,
@@ -114,7 +123,7 @@ func TestQueryCredentialIsAbsentFromTransportErrorGraph(t *testing.T) {
 		t.Fatalf("NewRequest: %v", err)
 	}
 
-	_, err = client.Do(request, provider)
+	_, err = client.Do(request, provider, material)
 	if err == nil {
 		t.Fatal("Do returned nil error")
 	}

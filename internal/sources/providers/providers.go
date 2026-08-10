@@ -10,6 +10,7 @@ import (
 	"time"
 	"unicode"
 
+	"github.com/agentstation/starmap/internal/auth"
 	"github.com/agentstation/starmap/internal/constants"
 	"github.com/agentstation/starmap/internal/sourcepayload"
 	"github.com/agentstation/starmap/pkg/catalogs"
@@ -49,7 +50,9 @@ func New(providers catalogs.ProvidersReader, opts ...SourceOption) *Source {
 	for _, opt := range opts {
 		opt(&options)
 	}
-	fetcherOptions := make([]sources.ProviderOption, 0, 1)
+	fetcherOptions := []sources.ProviderOption{
+		sources.WithProviderCredentialResolver(auth.NewResolver()),
+	}
 	if options.clientFactory != nil {
 		fetcherOptions = append(fetcherOptions, sources.WithProviderClientFactory(options.clientFactory))
 	}

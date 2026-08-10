@@ -8,6 +8,7 @@ import (
 
 	"github.com/agentstation/starmap/internal/providers/openai"
 	"github.com/agentstation/starmap/internal/providers/testhelper"
+	"github.com/agentstation/starmap/internal/testcatalog"
 	"github.com/agentstation/starmap/pkg/catalogs"
 )
 
@@ -15,18 +16,15 @@ import (
 func TestMoonshotAuthorMapping(t *testing.T) {
 	// Create Moonshot-configured provider
 	provider := &catalogs.Provider{
-		ID:   catalogs.ProviderIDMoonshotAI,
-		Name: "Moonshot AI",
-		APIKey: &catalogs.ProviderAPIKey{
-			Name:   "MOONSHOT_API_KEY",
-			Header: "Authorization",
-			Scheme: "Bearer",
-		},
+		ID: catalogs.ProviderIDMoonshotAI, Name: "Moonshot AI",
+		Credentials: testcatalog.APIKeyCredentials(
+			"MOONSHOT_API_KEY", "Authorization", catalogs.ProviderCredentialSchemeBearer,
+		),
 		Catalog: &catalogs.ProviderCatalog{
-			Auth: catalogs.ProviderCatalogAuth{Method: catalogs.ProviderCatalogAuthAPIKey, Required: true},
 			Endpoint: catalogs.ProviderEndpoint{
-				Type: catalogs.EndpointTypeOpenAI,
-				URL:  "https://api.moonshot.ai/v1/models",
+				Type:            catalogs.EndpointTypeOpenAI,
+				URL:             "https://api.moonshot.ai/v1/models",
+				ProtocolOptions: testcatalog.OpenAIProtocolOptions(),
 				AuthorMapping: &catalogs.AuthorMapping{
 					Field: "owned_by",
 					Normalized: map[string]catalogs.AuthorID{

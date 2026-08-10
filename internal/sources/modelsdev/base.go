@@ -228,7 +228,6 @@ func mergeModelsDevProviderMetadata(provider *catalogs.Provider, metadata *catal
 		provider.Name = metadata.Name
 	}
 	mergeModelsDevCatalogMetadata(provider, metadata)
-	mergeModelsDevEnvVars(provider, metadata)
 	mergeModelsDevExtensions(provider, metadata)
 }
 
@@ -248,26 +247,6 @@ func mergeModelsDevCatalogMetadata(provider, metadata *catalogs.Provider) {
 	if provider.Catalog.Docs == nil && metadata.Catalog.Docs != nil {
 		docs := *metadata.Catalog.Docs
 		provider.Catalog.Docs = &docs
-	}
-	if provider.Catalog.Endpoint.URL == "" {
-		provider.Catalog.Endpoint.URL = metadata.Catalog.Endpoint.URL
-		provider.Catalog.Auth = metadata.Catalog.Auth
-	}
-}
-
-func mergeModelsDevEnvVars(provider, metadata *catalogs.Provider) {
-	if len(metadata.EnvVars) == 0 {
-		return
-	}
-	existing := make(map[string]struct{}, len(provider.EnvVars))
-	for _, envVar := range provider.EnvVars {
-		existing[envVar.Name] = struct{}{}
-	}
-	for _, envVar := range metadata.EnvVars {
-		if _, found := existing[envVar.Name]; found {
-			continue
-		}
-		provider.EnvVars = append(provider.EnvVars, envVar)
 	}
 }
 

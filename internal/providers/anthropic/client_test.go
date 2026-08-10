@@ -12,7 +12,9 @@ import (
 	"time"
 
 	"github.com/agentstation/starmap/internal/sourcepayload"
+	"github.com/agentstation/starmap/internal/testcatalog"
 	"github.com/agentstation/starmap/pkg/catalogs"
+	"github.com/agentstation/starmap/pkg/sources"
 )
 
 func TestSchemaDriftMutationMatrix(t *testing.T) {
@@ -37,11 +39,11 @@ func TestSchemaDriftMutationMatrix(t *testing.T) {
 				_, _ = w.Write([]byte(test.payload))
 			}))
 			defer server.Close()
-			client := NewClient(&catalogs.Provider{
-				ID: catalogs.ProviderIDAnthropic, Name: "Anthropic",
-				Catalog: &catalogs.ProviderCatalog{Endpoint: catalogs.ProviderEndpoint{Type: catalogs.EndpointTypeAnthropic, URL: server.URL}},
-			})
-			models, err := client.ListModels(context.Background())
+			provider := testAnthropicProvider(server.URL)
+			client := NewClient(provider)
+			models, err := client.ListModels(
+				context.Background(), testAnthropicMaterial(provider),
+			)
 			if test.wantErr && err == nil {
 				t.Fatal("ListModels returned nil error")
 			}
@@ -59,6 +61,23 @@ func TestSchemaDriftMutationMatrix(t *testing.T) {
 			}
 		})
 	}
+}
+
+func testAnthropicProvider(endpoint string) *catalogs.Provider {
+	return &catalogs.Provider{
+		ID: catalogs.ProviderIDAnthropic, Name: "Anthropic",
+		Credentials: testcatalog.APIKeyCredentials(
+			"ANTHROPIC_API_KEY", "x-api-key", catalogs.ProviderCredentialSchemeDirect,
+		),
+		Catalog: &catalogs.ProviderCatalog{Endpoint: catalogs.ProviderEndpoint{
+			Type: catalogs.EndpointTypeAnthropic, URL: endpoint,
+			ProtocolOptions: testcatalog.AnthropicProtocolOptions(),
+		}},
+	}
+}
+
+func testAnthropicMaterial(provider *catalogs.Provider) sources.ProviderCredentialMaterial {
+	return testcatalog.APIKeyMaterial(provider.Credentials, "test-api-key")
 }
 
 func TestAnthropicParsing(t *testing.T) {

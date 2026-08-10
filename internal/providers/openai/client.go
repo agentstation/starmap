@@ -16,6 +16,7 @@ import (
 	"github.com/agentstation/starmap/internal/transport"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/errors"
+	"github.com/agentstation/starmap/pkg/sources"
 )
 
 // Client acquires and normalizes model metadata from an OpenAI-compatible API.
@@ -36,7 +37,7 @@ func NewClient(provider *catalogs.Provider) (*Client, error) {
 	if err := client.validateFieldMappings(provider); err != nil {
 		return nil, err
 	}
-	client.transport = transport.New(provider)
+	client.transport = transport.New()
 	return client, nil
 }
 
@@ -48,26 +49,15 @@ func (c *Client) Configure(provider *catalogs.Provider) error {
 	c.mu.Lock()
 	defer c.mu.Unlock()
 	c.provider = provider
-	c.transport = transport.New(provider)
+	c.transport = transport.New()
 	return nil
 }
 
-// IsAPIKeyRequired returns true if the client requires an API key.
-func (c *Client) IsAPIKeyRequired() bool {
-	c.mu.RLock()
-	defer c.mu.RUnlock()
-	return c.provider.IsAPIKeyRequired()
-}
-
-// HasAPIKey returns true if the client has an API key.
-func (c *Client) HasAPIKey() bool {
-	c.mu.RLock()
-	defer c.mu.RUnlock()
-	return c.provider.HasAPIKey()
-}
-
 // ListModels retrieves all available models using OpenAI-compatible API.
-func (c *Client) ListModels(ctx context.Context) ([]catalogs.Model, error) {
+func (c *Client) ListModels(
+	ctx context.Context,
+	material sources.ProviderCredentialMaterial,
+) ([]catalogs.Model, error) {
 	c.mu.RLock()
 	provider := c.provider
 	c.mu.RUnlock()
@@ -83,16 +73,13 @@ func (c *Client) ListModels(ctx context.Context) ([]catalogs.Model, error) {
 	}
 
 	// Build URL from provider configuration.
-	url := provider.CatalogEndpointURL()
-	if url == "" {
-		return nil, &errors.ValidationError{
-			Field:   "catalog.endpoint.url",
-			Message: "endpoint URL not configured",
-		}
+	url, err := provider.BindCatalogEndpoint(material.EndpointBindings())
+	if err != nil {
+		return nil, err
 	}
 
 	// Make the request
-	resp, err := c.transport.Get(ctx, url, provider)
+	resp, err := c.transport.Get(ctx, url, provider, material)
 	if err != nil {
 		return nil, &errors.APIError{
 			Provider:   provider.ID.String(),
@@ -398,8 +385,9 @@ func applyOpenAICompatiblePricing(pricing *catalogs.ModelPricing, source *ModelP
 func (c *Client) topLevelTokenPriceScale() float64 {
 	c.mu.RLock()
 	defer c.mu.RUnlock()
-	if c.provider != nil && c.provider.ID == catalogs.ProviderIDGroq {
-		// Groq's /openai/v1/models pricing block reports USD per token.
+	if c.provider != nil && c.provider.Catalog != nil &&
+		c.provider.Catalog.Endpoint.ProtocolOptions.OpenAI != nil &&
+		c.provider.Catalog.Endpoint.ProtocolOptions.OpenAI.TokenPriceUnit == catalogs.ProviderTokenPriceUnitPerToken {
 		return 1_000_000
 	}
 	return 1

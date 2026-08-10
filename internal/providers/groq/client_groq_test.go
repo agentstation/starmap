@@ -8,6 +8,7 @@ import (
 
 	"github.com/agentstation/starmap/internal/providers/openai"
 	"github.com/agentstation/starmap/internal/providers/testhelper"
+	"github.com/agentstation/starmap/internal/testcatalog"
 	"github.com/agentstation/starmap/pkg/catalogs"
 )
 
@@ -15,18 +16,15 @@ import (
 func TestGroqFieldMappings(t *testing.T) {
 	// Create Groq-configured provider
 	provider := &catalogs.Provider{
-		ID:   catalogs.ProviderIDGroq,
-		Name: "Groq",
-		APIKey: &catalogs.ProviderAPIKey{
-			Name:   "GROQ_API_KEY",
-			Header: "Authorization",
-			Scheme: "Bearer",
-		},
+		ID: catalogs.ProviderIDGroq, Name: "Groq",
+		Credentials: testcatalog.APIKeyCredentials(
+			"GROQ_API_KEY", "Authorization", catalogs.ProviderCredentialSchemeBearer,
+		),
 		Catalog: &catalogs.ProviderCatalog{
-			Auth: catalogs.ProviderCatalogAuth{Method: catalogs.ProviderCatalogAuthAPIKey, Required: true},
 			Endpoint: catalogs.ProviderEndpoint{
-				Type: catalogs.EndpointTypeOpenAI,
-				URL:  "https://api.groq.com/openai/v1/models",
+				Type:            catalogs.EndpointTypeOpenAI,
+				URL:             "https://api.groq.com/openai/v1/models",
+				ProtocolOptions: testcatalog.OpenAIProtocolOptions(),
 				FieldMappings: []catalogs.FieldMapping{
 					{
 						From: "context_window",

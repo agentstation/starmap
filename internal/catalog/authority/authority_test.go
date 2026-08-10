@@ -24,7 +24,7 @@ func TestPoliciesCoverReconciledCatalogFields(t *testing.T) {
 		{
 			resource: catalogmeta.ResourceTypeProvider,
 			typ:      reflect.TypeFor[catalogs.Provider](),
-			ignored:  map[string]bool{"ID": true, "EnvVarValues": true},
+			ignored:  map[string]bool{"ID": true},
 		},
 		{
 			resource: catalogmeta.ResourceTypeAuthor,
@@ -100,7 +100,6 @@ func TestProviderScopedDynamicFactsAndOperatorConfigurationHaveCanonicalOrder(t 
 		{catalogmeta.ResourceTypeModel, "Metadata", catalogmeta.ModelsDevHTTPID},
 		{catalogmeta.ResourceTypeProvider, "Name", catalogmeta.ProvidersID},
 		{catalogmeta.ResourceTypeProvider, "Catalog", catalogmeta.LocalCatalogID},
-		{catalogmeta.ResourceTypeProvider, "APIKey", catalogmeta.LocalCatalogID},
 		{catalogmeta.ResourceTypeProvider, "Credentials", catalogmeta.LocalCatalogID},
 	}
 	for _, test := range tests {

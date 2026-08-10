@@ -49,6 +49,7 @@ type ProviderCredentialField struct {
 	Kind        ProviderCredentialFieldKind `json:"kind" yaml:"kind"`
 	Required    bool                        `json:"required" yaml:"required"`
 	Environment []string                    `json:"environment,omitempty" yaml:"environment,omitempty"`
+	Default     string                      `json:"default,omitempty" yaml:"default,omitempty"`
 	Pattern     string                      `json:"pattern,omitempty" yaml:"pattern,omitempty"`
 	Description string                      `json:"description,omitempty" yaml:"description,omitempty"`
 }
@@ -121,9 +122,21 @@ type ProviderCredentialPlacement struct {
 // ProviderCredentialEndpointBinding binds one non-secret field to a named URL
 // template variable.
 type ProviderCredentialEndpointBinding struct {
-	Field    ProviderCredentialFieldID `json:"field" yaml:"field"`
-	Variable string                    `json:"variable" yaml:"variable"`
+	Field    ProviderCredentialFieldID               `json:"field" yaml:"field"`
+	Variable string                                  `json:"variable" yaml:"variable"`
+	Format   ProviderCredentialEndpointBindingFormat `json:"format" yaml:"format"`
 }
+
+// ProviderCredentialEndpointBindingFormat identifies how a value is encoded
+// before it replaces an endpoint template variable.
+type ProviderCredentialEndpointBindingFormat string
+
+const (
+	// ProviderCredentialEndpointBindingURL permits one absolute HTTP(S) base URL.
+	ProviderCredentialEndpointBindingURL ProviderCredentialEndpointBindingFormat = "url"
+	// ProviderCredentialEndpointBindingPathSegment percent-encodes one URL path segment.
+	ProviderCredentialEndpointBindingPathSegment ProviderCredentialEndpointBindingFormat = "path-segment"
+)
 
 // ProviderAuthenticationProtocolOptions is a typed union of primitive-owned
 // protocol settings. Provider membership does not belong in this union.
@@ -134,6 +147,7 @@ type ProviderAuthenticationProtocolOptions struct {
 
 // ProviderGoogleDefaultProtocolOptions configures Google token application.
 type ProviderGoogleDefaultProtocolOptions struct {
+	ProjectField      ProviderCredentialFieldID `json:"project_field,omitempty" yaml:"project_field,omitempty"`
 	QuotaProjectField ProviderCredentialFieldID `json:"quota_project_field,omitempty" yaml:"quota_project_field,omitempty"`
 }
 
@@ -217,6 +231,9 @@ func (credentials *ProviderCredentials) validate() error {
 		}
 		if field.Kind != ProviderCredentialFieldSecret && field.Kind != ProviderCredentialFieldParameter {
 			return credentialError(path+".kind", field.Kind, "must be secret or parameter")
+		}
+		if field.Kind == ProviderCredentialFieldSecret && field.Default != "" {
+			return credentialError(path+".default", nil, "secret fields cannot define a default")
 		}
 		if field.Pattern != "" {
 			if _, err := regexp.Compile(field.Pattern); err != nil {
@@ -327,6 +344,10 @@ func validateCredentialProfile(
 		if !endpointVariablePattern.MatchString(binding.Variable) {
 			return credentialError(bindingPath+".variable", binding.Variable, "must be a lowercase template variable")
 		}
+		if binding.Format != ProviderCredentialEndpointBindingURL &&
+			binding.Format != ProviderCredentialEndpointBindingPathSegment {
+			return credentialError(bindingPath+".format", binding.Format, "must be url or path-segment")
+		}
 		if _, exists := bindings[binding.Variable]; exists {
 			return credentialError(bindingPath+".variable", binding.Variable, "endpoint binding is ambiguous")
 		}
@@ -405,9 +426,14 @@ func validateAuthenticationProtocolOptions(
 		if profile.Primitive != ProviderAuthenticationGoogleDefault {
 			return credentialError(path+".protocol_options.google_default", nil, "requires the google-default primitive")
 		}
-		fieldID := profile.ProtocolOptions.GoogleDefault.QuotaProjectField
-		if fieldID != "" {
-			optionPath := path + ".protocol_options.google_default.quota_project_field"
+		for optionName, fieldID := range map[string]ProviderCredentialFieldID{
+			"project_field":       profile.ProtocolOptions.GoogleDefault.ProjectField,
+			"quota_project_field": profile.ProtocolOptions.GoogleDefault.QuotaProjectField,
+		} {
+			if fieldID == "" {
+				continue
+			}
+			optionPath := path + ".protocol_options.google_default." + optionName
 			if err := validateProfileFieldReference(optionPath, fieldID, fields, profileFields); err != nil {
 				return err
 			}
@@ -453,10 +479,15 @@ func validateAuthenticationPrimitiveContract(
 	}
 	switch profile.Primitive {
 	case ProviderAuthenticationNone:
-		if len(profile.Fields) != 0 || len(profile.Placements) != 0 || len(profile.Scopes) != 0 ||
-			len(profile.EndpointBindings) != 0 || profile.ProtocolOptions.GoogleDefault != nil ||
+		for _, fieldID := range profile.Fields {
+			if fields[fieldID].Kind != ProviderCredentialFieldParameter {
+				return credentialError(path+".fields", fieldID, "none authentication permits only parameter fields")
+			}
+		}
+		if len(profile.Placements) != 0 || len(profile.Scopes) != 0 ||
+			profile.ProtocolOptions.GoogleDefault != nil ||
 			profile.ProtocolOptions.AWSDefault != nil {
-			return credentialError(path, profile.ID, "none authentication cannot define credential behavior")
+			return credentialError(path, profile.ID, "none authentication cannot define secret placement or protocol options")
 		}
 	case ProviderAuthenticationAPIKey, ProviderAuthenticationBearerToken:
 		if !hasSecret {

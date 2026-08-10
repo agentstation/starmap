@@ -679,21 +679,11 @@ func (diff *Differ) provider(existing, updated catalogs.Provider) *ProviderUpdat
 		})
 	}
 
-	// Check API configuration changes
-	if !reflect.DeepEqual(existing.APIKey, updated.APIKey) && !diff.ignoreFields["api_key"] {
+	if !reflect.DeepEqual(existing.Credentials, updated.Credentials) && !diff.ignoreFields["credentials"] {
 		changes = append(changes, FieldChange{
-			Path:     "api_key",
+			Path:     "credentials",
 			OldValue: "config changed",
 			NewValue: "updated",
-			Type:     ChangeTypeUpdate,
-		})
-	}
-
-	if !reflect.DeepEqual(existing.EnvVars, updated.EnvVars) && !diff.ignoreFields["env_vars"] {
-		changes = append(changes, FieldChange{
-			Path:     "env_vars",
-			OldValue: fmt.Sprintf("%d env vars", len(existing.EnvVars)),
-			NewValue: fmt.Sprintf("%d env vars", len(updated.EnvVars)),
 			Type:     ChangeTypeUpdate,
 		})
 	}

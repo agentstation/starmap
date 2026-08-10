@@ -3,57 +3,43 @@ package catalogs
 import "testing"
 
 func TestProviderCatalogEndpointURLUsesConfiguredURL(t *testing.T) {
-	provider := &Provider{
-		Catalog: &ProviderCatalog{
-			Endpoint: ProviderEndpoint{
-				URL: "https://dashscope-us.aliyuncs.com/compatible-mode/v1/models",
-			},
-		},
-	}
+	provider := &Provider{Catalog: &ProviderCatalog{Endpoint: ProviderEndpoint{
+		URL: "https://api.example.test/v1/models",
+	}}}
 
-	got := provider.CatalogEndpointURL()
-	want := "https://dashscope-us.aliyuncs.com/compatible-mode/v1/models"
-	if got != want {
-		t.Fatalf("CatalogEndpointURL() = %q, want %q", got, want)
+	if got := provider.CatalogEndpointURL(); got != "https://api.example.test/v1/models" {
+		t.Fatalf("CatalogEndpointURL() = %q", got)
 	}
 }
 
-func TestProviderCatalogEndpointURLUsesBaseURLEnvVar(t *testing.T) {
-	provider := &Provider{
-		Catalog: &ProviderCatalog{
-			Endpoint: ProviderEndpoint{
-				URL:           "https://dashscope-us.aliyuncs.com/compatible-mode/v1/models",
-				BaseURLEnvVar: "ALIBABA_MODEL_STUDIO_BASE_URL",
-				Path:          "/models",
-			},
-		},
-	}
-	t.Setenv("ALIBABA_MODEL_STUDIO_BASE_URL", "https://example.ap-southeast-1.maas.aliyuncs.com/compatible-mode/v1/")
+func TestProviderBindCatalogEndpointUsesResolvedParameters(t *testing.T) {
+	provider := &Provider{Catalog: &ProviderCatalog{Endpoint: ProviderEndpoint{
+		URL: "{base_url}/v1/projects/{project}/models",
+	}}}
 
-	got := provider.CatalogEndpointURL()
-	want := "https://example.ap-southeast-1.maas.aliyuncs.com/compatible-mode/v1/models"
-	if got != want {
-		t.Fatalf("CatalogEndpointURL() = %q, want %q", got, want)
+	got, err := provider.BindCatalogEndpoint(map[string]string{
+		"base_url": "https://private.example.test",
+		"project":  "tenant-project",
+	})
+	if err != nil {
+		t.Fatalf("BindCatalogEndpoint: %v", err)
+	}
+	if want := "https://private.example.test/v1/projects/tenant-project/models"; got != want {
+		t.Fatalf("BindCatalogEndpoint() = %q, want %q", got, want)
 	}
 }
 
-func TestProviderCatalogEndpointURLUsesLoadedEnvVarValue(t *testing.T) {
-	provider := &Provider{
-		EnvVarValues: map[string]string{
-			"ALIBABA_MODEL_STUDIO_BASE_URL": "https://workspace.cn-beijing.maas.aliyuncs.com/compatible-mode/v1",
-		},
-		Catalog: &ProviderCatalog{
-			Endpoint: ProviderEndpoint{
-				URL:           "https://dashscope-us.aliyuncs.com/compatible-mode/v1/models",
-				BaseURLEnvVar: "ALIBABA_MODEL_STUDIO_BASE_URL",
-				Path:          "models",
-			},
-		},
-	}
+func TestProviderBindCatalogEndpointFailsClosed(t *testing.T) {
+	provider := &Provider{Catalog: &ProviderCatalog{Endpoint: ProviderEndpoint{
+		URL: "https://api.example.test/projects/{project}/models",
+	}}}
 
-	got := provider.CatalogEndpointURL()
-	want := "https://workspace.cn-beijing.maas.aliyuncs.com/compatible-mode/v1/models"
-	if got != want {
-		t.Fatalf("CatalogEndpointURL() = %q, want %q", got, want)
+	if _, err := provider.BindCatalogEndpoint(nil); err == nil {
+		t.Fatal("BindCatalogEndpoint accepted an unresolved variable")
+	}
+	if _, err := provider.BindCatalogEndpoint(map[string]string{
+		"project": "value@evil.example/path",
+	}); err != nil {
+		t.Fatalf("path parameter changed endpoint authority: %v", err)
 	}
 }

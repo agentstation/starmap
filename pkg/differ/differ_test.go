@@ -5,6 +5,7 @@ import (
 
 	"github.com/agentstation/utc"
 
+	"github.com/agentstation/starmap/internal/testcatalog"
 	"github.com/agentstation/starmap/pkg/catalogs"
 )
 
@@ -117,10 +118,9 @@ func TestProvidersDetectCanonicalProviderFieldChanges(t *testing.T) {
 			Name:         "Provider A",
 			Headquarters: &hq,
 			IconURL:      &iconURL,
-			EnvVars: []catalogs.ProviderEnvVar{{
-				Name:     "PROVIDER_API_KEY",
-				Required: true,
-			}},
+			Credentials: testcatalog.APIKeyCredentials(
+				"PROVIDER_API_KEY", "Authorization", catalogs.ProviderCredentialSchemeBearer,
+			),
 			StatusPageURL: &statusURL,
 			Inference: &catalogs.ProviderInference{
 				BaseURL: "https://api.example.com",
@@ -152,7 +152,7 @@ func TestProvidersDetectCanonicalProviderFieldChanges(t *testing.T) {
 		"aliases",
 		"headquarters",
 		"icon_url",
-		"env_vars",
+		"credentials",
 		"status_page_url",
 		"inference",
 		"privacy_policy",

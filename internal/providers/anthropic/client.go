@@ -11,11 +11,12 @@ import (
 
 	"github.com/agentstation/utc"
 
+	"github.com/agentstation/starmap/internal/constants"
 	"github.com/agentstation/starmap/internal/sourcepayload"
 	"github.com/agentstation/starmap/internal/transport"
 	"github.com/agentstation/starmap/pkg/catalogs"
-	"github.com/agentstation/starmap/internal/constants"
 	"github.com/agentstation/starmap/pkg/errors"
+	"github.com/agentstation/starmap/pkg/sources"
 )
 
 // Response structures for Anthropic API.
@@ -126,22 +127,12 @@ type Client struct {
 	mu        sync.RWMutex
 }
 
-// NewClient creates a new Anthropic client (kept for backward compatibility).
+// NewClient creates an Anthropic transport client.
 func NewClient(provider *catalogs.Provider) *Client {
 	return &Client{
 		provider:  provider,
-		transport: transport.New(provider),
+		transport: transport.New(),
 	}
-}
-
-// IsAPIKeyRequired returns true if the client requires an API key.
-func (c *Client) IsAPIKeyRequired() bool {
-	return c.provider.IsAPIKeyRequired()
-}
-
-// HasAPIKey returns true if the client has an API key.
-func (c *Client) HasAPIKey() bool {
-	return c.provider.HasAPIKey()
 }
 
 // Configure sets the provider for this client (used by registry pattern).
@@ -149,26 +140,28 @@ func (c *Client) Configure(provider *catalogs.Provider) {
 	c.mu.Lock()
 	defer c.mu.Unlock()
 	c.provider = provider
-	c.transport = transport.New(provider)
+	c.transport = transport.New()
 }
 
 // ListModels retrieves all available models from Anthropic.
-func (c *Client) ListModels(ctx context.Context) ([]catalogs.Model, error) {
+func (c *Client) ListModels(
+	ctx context.Context,
+	material sources.ProviderCredentialMaterial,
+) ([]catalogs.Model, error) {
 	c.mu.RLock()
 	provider := c.provider
 	c.mu.RUnlock()
 
 	if provider == nil {
 		return nil, &errors.ConfigError{
-			Component: "anthropic",
+			Component: "provider",
 			Message:   "provider not configured",
 		}
 	}
 
-	// Build URL - use provider's URL if available, otherwise use default
-	url := "https://api.anthropic.com/v1/models"
-	if rb := transport.NewRequestBuilder(provider); rb.GetBaseURL() != "" {
-		url = rb.GetBaseURL()
+	url, err := provider.BindCatalogEndpoint(material.EndpointBindings())
+	if err != nil {
+		return nil, err
 	}
 
 	// Create request
@@ -177,14 +170,11 @@ func (c *Client) ListModels(ctx context.Context) ([]catalogs.Model, error) {
 		return nil, errors.WrapResource("create", "request", url, err)
 	}
 
-	// Add Anthropic-specific headers
-	req.Header.Set("anthropic-version", "2023-06-01")
-
 	// Use transport layer for HTTP request with authentication
-	resp, err := c.transport.Do(req, provider)
+	resp, err := c.transport.Do(req, provider, material)
 	if err != nil {
 		return nil, &errors.APIError{
-			Provider: "anthropic",
+			Provider: string(provider.ID),
 			Endpoint: url,
 			Message:  "request failed",
 			Err:      err,

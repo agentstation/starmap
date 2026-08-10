@@ -42,8 +42,7 @@ func TestPublicInternalProviderFetchConformance(t *testing.T) {
 			name: "missing credentials",
 			provider: func() catalogs.Provider {
 				provider := providerForTest("missing")
-				provider.Catalog.Auth = catalogs.ProviderCatalogAuth{Method: catalogs.ProviderCatalogAuthAPIKey, Required: true}
-				provider.APIKey = &catalogs.ProviderAPIKey{Name: "STARMAP_CONFORMANCE_MISSING_KEY"}
+				provider.Credentials = requiredAPIKeyCredentials("STARMAP_CONFORMANCE_MISSING_KEY")
 				return provider
 			}(),
 			factory: func(*catalogs.Provider) (sources.ProviderClient, error) {
@@ -104,19 +103,14 @@ type fakeProviderClient struct {
 	onList func()
 }
 
-func (c fakeProviderClient) ListModels(context.Context) ([]catalogs.Model, error) {
+func (c fakeProviderClient) ListModels(
+	context.Context,
+	sources.ProviderCredentialMaterial,
+) ([]catalogs.Model, error) {
 	if c.onList != nil {
 		c.onList()
 	}
 	return c.models, c.err
-}
-
-func (c fakeProviderClient) IsAPIKeyRequired() bool {
-	return false
-}
-
-func (c fakeProviderClient) HasAPIKey() bool {
-	return true
 }
 
 func TestSourceObserveAddsFetchedModels(t *testing.T) {
@@ -366,8 +360,7 @@ func TestSourceObserveEmitsStructuredSourceProviderAndRunFields(t *testing.T) {
 
 func TestSourceObserveSeparatesBootstrapModelsWhenCredentialsAreMissing(t *testing.T) {
 	provider := providerForTest("missing-key")
-	provider.Catalog.Auth = catalogs.ProviderCatalogAuth{Method: catalogs.ProviderCatalogAuthAPIKey, Required: true}
-	provider.APIKey = &catalogs.ProviderAPIKey{Name: "STARMAP_PROVIDER_TEST_MISSING_KEY"}
+	provider.Credentials = requiredAPIKeyCredentials("STARMAP_PROVIDER_TEST_MISSING_KEY")
 	provider.Models = map[string]*catalogs.Model{
 		"bootstrap-model": {ID: "bootstrap-model", Name: "Embedded Bootstrap Model"},
 	}
@@ -429,10 +422,7 @@ func TestSourceObserveSuccessfulFetchReplacesBootstrapModelsWithLiveModels(t *te
 
 func TestSourceObserveDoesNotSkipProviderWithMissingOptionalEnvVars(t *testing.T) {
 	provider := providerForTest("optional-env")
-	provider.EnvVars = []catalogs.ProviderEnvVar{{
-		Name:     "STARMAP_PROVIDER_TEST_OPTIONAL_ENV",
-		Required: false,
-	}}
+	provider.Credentials = optionalParameterCredentials("STARMAP_PROVIDER_TEST_OPTIONAL_ENV")
 
 	var factoryCalls int
 	src := newTestSource(newProviderSet(provider), WithClientFactory(func(provider *catalogs.Provider) (sources.ProviderClient, error) {
@@ -655,11 +645,72 @@ func providerForTest(id catalogs.ProviderID) catalogs.Provider {
 		ID:   id,
 		Name: string(id),
 		Catalog: &catalogs.ProviderCatalog{
-			Auth: catalogs.ProviderCatalogAuth{Method: catalogs.ProviderCatalogAuthNone},
 			Endpoint: catalogs.ProviderEndpoint{
 				Type: catalogs.EndpointTypeOpenAI,
 				URL:  "https://example.test/models",
+				ProtocolOptions: catalogs.ProviderCatalogProtocolOptions{
+					OpenAI: &catalogs.ProviderOpenAICatalogProtocolOptions{
+						TokenPriceUnit: catalogs.ProviderTokenPriceUnitPerMillion,
+					},
+				},
 			},
+		},
+		Credentials: unauthenticatedCredentials(),
+	}
+}
+
+func unauthenticatedCredentials() *catalogs.ProviderCredentials {
+	return &catalogs.ProviderCredentials{
+		Profiles: []catalogs.ProviderCredentialProfile{{
+			ID: "unauthenticated", Primitive: catalogs.ProviderAuthenticationNone,
+		}},
+		CatalogAcquisition: catalogs.ProviderCredentialPlane{
+			Alternatives: []catalogs.ProviderCredentialProfileID{"unauthenticated"},
+		},
+		Inference: catalogs.ProviderCredentialPlane{
+			Alternatives: []catalogs.ProviderCredentialProfileID{"unauthenticated"},
+		},
+	}
+}
+
+func requiredAPIKeyCredentials(environment string) *catalogs.ProviderCredentials {
+	return &catalogs.ProviderCredentials{
+		Fields: []catalogs.ProviderCredentialField{{
+			ID: "api-key", Kind: catalogs.ProviderCredentialFieldSecret,
+			Required: true, Environment: []string{environment},
+		}},
+		Profiles: []catalogs.ProviderCredentialProfile{{
+			ID: "api-key", Primitive: catalogs.ProviderAuthenticationAPIKey,
+			Fields: []catalogs.ProviderCredentialFieldID{"api-key"},
+			Placements: []catalogs.ProviderCredentialPlacement{{
+				Field: "api-key", Kind: catalogs.ProviderCredentialPlacementHeader,
+				Name: "Authorization", Scheme: catalogs.ProviderCredentialSchemeBearer,
+			}},
+		}},
+		CatalogAcquisition: catalogs.ProviderCredentialPlane{
+			Required: true, Alternatives: []catalogs.ProviderCredentialProfileID{"api-key"},
+		},
+		Inference: catalogs.ProviderCredentialPlane{
+			Required: true, Alternatives: []catalogs.ProviderCredentialProfileID{"api-key"},
+		},
+	}
+}
+
+func optionalParameterCredentials(environment string) *catalogs.ProviderCredentials {
+	return &catalogs.ProviderCredentials{
+		Fields: []catalogs.ProviderCredentialField{{
+			ID: "parameter", Kind: catalogs.ProviderCredentialFieldParameter,
+			Environment: []string{environment},
+		}},
+		Profiles: []catalogs.ProviderCredentialProfile{{
+			ID: "unauthenticated", Primitive: catalogs.ProviderAuthenticationNone,
+			Fields: []catalogs.ProviderCredentialFieldID{"parameter"},
+		}},
+		CatalogAcquisition: catalogs.ProviderCredentialPlane{
+			Alternatives: []catalogs.ProviderCredentialProfileID{"unauthenticated"},
+		},
+		Inference: catalogs.ProviderCredentialPlane{
+			Alternatives: []catalogs.ProviderCredentialProfileID{"unauthenticated"},
 		},
 	}
 }

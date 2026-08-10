@@ -9,25 +9,50 @@
   name: Alibaba Cloud Model Studio
   headquarters: Hangzhou, China
   icon_url: https://www.alibabacloud.com/favicon.ico
-  api_key:
-    name: DASHSCOPE_API_KEY
-    pattern: .*
-    header: Authorization
-    scheme: Bearer
-    query_param: ""
-  env_vars:
-  - name: DASHSCOPE_API_KEY
-    required: false
+  credentials:
+    fields:
+    - id: api-key
+      kind: secret
+      required: true
+      environment:
+      - DASHSCOPE_API_KEY
+    - id: base-url
+      kind: parameter
+      required: true
+      environment:
+      - ALIBABA_MODEL_STUDIO_BASE_URL
+      default: https://dashscope-us.aliyuncs.com/compatible-mode
+    profiles:
+    - id: api-key
+      primitive: api-key
+      fields:
+      - api-key
+      - base-url
+      placements:
+      - field: api-key
+        kind: header
+        name: Authorization
+        scheme: bearer
+      endpoint_bindings:
+      - field: base-url
+        variable: base_url
+        format: url
+    catalog_acquisition:
+      required: true
+      alternatives:
+      - api-key
+    inference:
+      required: true
+      alternatives:
+      - api-key
   catalog:
     docs: https://www.alibabacloud.com/help/en/model-studio/qwen-api-via-openai-chat-completions
-    auth:
-      method: api-key
-      required: true
     endpoint:
       type: openai
-      url: https://dashscope-us.aliyuncs.com/compatible-mode/v1/models
-      base_url_env_var: ALIBABA_MODEL_STUDIO_BASE_URL
-      path: /models
+      url: "{base_url}/v1/models"
+      protocol_options:
+        openai:
+          token_price_unit: usd-per-million-tokens
       author_mapping:
         field: id
         normalized:
@@ -40,7 +65,7 @@
           qwq*: qwen
           wan*: alibaba
   inference:
-    base_url: https://dashscope-us.aliyuncs.com/compatible-mode
+    base_url: "{base_url}"
     endpoints:
     - operation: chat-completions
       type: openai
@@ -56,23 +81,39 @@
   name: Anthropic
   headquarters: San Francisco, CA, USA
   icon_url: https://www.anthropic.com/favicon.ico
-  api_key:
-    name: ANTHROPIC_API_KEY
-    pattern: .*
-    header: x-api-key
-    scheme: ""
-    query_param: ""
-  env_vars:
-  - name: ANTHROPIC_API_KEY
-    required: false
+  credentials:
+    fields:
+    - id: api-key
+      kind: secret
+      required: true
+      environment:
+      - ANTHROPIC_API_KEY
+    profiles:
+    - id: api-key
+      primitive: api-key
+      fields:
+      - api-key
+      placements:
+      - field: api-key
+        kind: header
+        name: x-api-key
+        scheme: direct
+    catalog_acquisition:
+      required: true
+      alternatives:
+      - api-key
+    inference:
+      required: true
+      alternatives:
+      - api-key
   catalog:
     docs: https://docs.anthropic.com/en/docs/about-claude/models/overview
-    auth:
-      method: api-key
-      required: true
     endpoint:
       type: anthropic
       url: https://api.anthropic.com/v1/models
+      protocol_options:
+        anthropic:
+          version: "2023-06-01"
   status_page_url: https://status.anthropic.com
   inference:
     base_url: https://api.anthropic.com
@@ -109,28 +150,74 @@
   name: Azure OpenAI
   headquarters: Redmond, WA, USA
   icon_url: https://azure.microsoft.com/favicon.ico
-  env_vars:
-  - name: AZURE_OPENAI_ENDPOINT
-    required: true
-    description: Resource-specific Azure OpenAI endpoint
-  - name: AZURE_OPENAI_API_KEY
-    required: false
-    description: Optional data-plane API key; managed identity is preferred
-  catalog:
-    docs: https://learn.microsoft.com/azure/ai-services/openai/how-to/working-with-models
-    auth:
-      method: azure-default
+  credentials:
+    fields:
+    - id: endpoint
+      kind: parameter
       required: true
+      environment:
+      - AZURE_OPENAI_ENDPOINT
+      description: Resource-specific Azure OpenAI endpoint
+    - id: api-key
+      kind: secret
+      required: true
+      environment:
+      - AZURE_OPENAI_API_KEY
+    - id: access-token
+      kind: secret
+      required: true
+    profiles:
+    - id: api-key
+      primitive: api-key
+      fields:
+      - endpoint
+      - api-key
+      placements:
+      - field: api-key
+        kind: header
+        name: api-key
+        scheme: direct
+      endpoint_bindings:
+      - field: endpoint
+        variable: endpoint
+        format: url
+    - id: workload-identity
+      primitive: azure-default
+      fields:
+      - endpoint
+      - access-token
+      placements:
+      - field: access-token
+        kind: header
+        name: Authorization
+        scheme: bearer
       scopes:
       - https://cognitiveservices.azure.com/.default
+      endpoint_bindings:
+      - field: endpoint
+        variable: endpoint
+        format: url
+    catalog_acquisition:
+      required: true
+      alternatives:
+      - api-key
+      - workload-identity
+    inference:
+      required: true
+      alternatives:
+      - api-key
+      - workload-identity
+  catalog:
+    docs: https://learn.microsoft.com/azure/ai-services/openai/how-to/working-with-models
     endpoint:
       type: openai
-      url: ""
-      base_url_env_var: AZURE_OPENAI_ENDPOINT
-      path: /openai/models
+      url: "{endpoint}/openai/models"
+      protocol_options:
+        openai:
+          token_price_unit: usd-per-million-tokens
   status_page_url: https://azure.status.microsoft/en-us/status
   inference:
-    base_url_env_var: AZURE_OPENAI_ENDPOINT
+    base_url: "{endpoint}"
     endpoints:
     - operation: chat-completions
       type: openai
@@ -144,23 +231,39 @@
   name: Cerebras
   headquarters: Sunnyvale, CA, USA
   icon_url: https://cerebras.ai/favicon.ico
-  api_key:
-    name: CEREBRAS_API_KEY
-    pattern: .*
-    header: Authorization
-    scheme: Bearer
-    query_param: ""
-  env_vars:
-  - name: CEREBRAS_API_KEY
-    required: false
+  credentials:
+    fields:
+    - id: api-key
+      kind: secret
+      required: true
+      environment:
+      - CEREBRAS_API_KEY
+    profiles:
+    - id: api-key
+      primitive: api-key
+      fields:
+      - api-key
+      placements:
+      - field: api-key
+        kind: header
+        name: Authorization
+        scheme: bearer
+    catalog_acquisition:
+      required: true
+      alternatives:
+      - api-key
+    inference:
+      required: true
+      alternatives:
+      - api-key
   catalog:
     docs: https://inference-docs.cerebras.ai/models/overview
-    auth:
-      method: api-key
-      required: true
     endpoint:
       type: openai
       url: https://api.cerebras.ai/v1/models
+      protocol_options:
+        openai:
+          token_price_unit: usd-per-million-tokens
       feature_rules:
       - field: id
         contains:
@@ -235,23 +338,42 @@
   name: DeepInfra
   headquarters: San Francisco, CA, USA
   icon_url: https://deepinfra.com/favicon.ico
-  api_key:
-    name: DEEPINFRA_TOKEN
-    pattern: .*
-    header: Authorization
-    scheme: Bearer
-    query_param: ""
-  env_vars:
-  - name: DEEPINFRA_API_KEY
-    required: false
+  credentials:
+    fields:
+    - id: api-key
+      kind: secret
+      required: true
+      environment:
+      - DEEPINFRA_API_KEY
+      - DEEPINFRA_TOKEN
+    profiles:
+    - id: public
+      primitive: none
+    - id: api-key
+      primitive: api-key
+      fields:
+      - api-key
+      placements:
+      - field: api-key
+        kind: header
+        name: Authorization
+        scheme: bearer
+    catalog_acquisition:
+      required: false
+      alternatives:
+      - public
+    inference:
+      required: true
+      alternatives:
+      - api-key
   catalog:
     docs: https://docs.deepinfra.com/chat/overview
-    auth:
-      method: none
-      required: false
     endpoint:
       type: openai
       url: https://api.deepinfra.com/v1/openai/models
+      protocol_options:
+        openai:
+          token_price_unit: usd-per-million-tokens
       field_mappings:
       - from: metadata.description
         to: description
@@ -302,23 +424,39 @@
   name: DeepSeek
   headquarters: Beijing, China
   icon_url: https://www.deepseek.com/favicon.ico
-  api_key:
-    name: DEEPSEEK_API_KEY
-    pattern: .*
-    header: Authorization
-    scheme: Bearer
-    query_param: ""
-  env_vars:
-  - name: DEEPSEEK_API_KEY
-    required: false
+  credentials:
+    fields:
+    - id: api-key
+      kind: secret
+      required: true
+      environment:
+      - DEEPSEEK_API_KEY
+    profiles:
+    - id: api-key
+      primitive: api-key
+      fields:
+      - api-key
+      placements:
+      - field: api-key
+        kind: header
+        name: Authorization
+        scheme: bearer
+    catalog_acquisition:
+      required: true
+      alternatives:
+      - api-key
+    inference:
+      required: true
+      alternatives:
+      - api-key
   catalog:
     docs: https://api-docs.deepseek.com/quick_start/pricing
-    auth:
-      method: api-key
-      required: true
     endpoint:
       type: openai
       url: https://api.deepseek.com/models
+      protocol_options:
+        openai:
+          token_price_unit: usd-per-million-tokens
   status_page_url: https://status.deepseek.com
   inference:
     base_url: https://api.deepseek.com
@@ -355,23 +493,39 @@
   name: Fireworks AI
   headquarters: Redwood City, CA, USA
   icon_url: https://fireworks.ai/favicon.ico
-  api_key:
-    name: FIREWORKS_API_KEY
-    pattern: .*
-    header: Authorization
-    scheme: Bearer
-    query_param: ""
-  env_vars:
-  - name: FIREWORKS_API_KEY
-    required: false
+  credentials:
+    fields:
+    - id: api-key
+      kind: secret
+      required: true
+      environment:
+      - FIREWORKS_API_KEY
+    profiles:
+    - id: api-key
+      primitive: api-key
+      fields:
+      - api-key
+      placements:
+      - field: api-key
+        kind: header
+        name: Authorization
+        scheme: bearer
+    catalog_acquisition:
+      required: true
+      alternatives:
+      - api-key
+    inference:
+      required: true
+      alternatives:
+      - api-key
   catalog:
     docs: https://docs.fireworks.ai/tools-sdks/openai-compatibility
-    auth:
-      method: api-key
-      required: true
     endpoint:
       type: openai
       url: https://api.fireworks.ai/inference/v1/models
+      protocol_options:
+        openai:
+          token_price_unit: usd-per-million-tokens
       feature_rules:
       - field: id
         contains:
@@ -418,24 +572,35 @@
   name: Google AI Studio
   headquarters: Mountain View, CA, USA
   icon_url: https://www.gstatic.com/aistudio/ai_studio_favicon_2_32x32.png
-  api_key:
-    name: GOOGLE_API_KEY
-    pattern: .*
-    header: x-goog-api-key
-    scheme: ""
-    query_param: ""
-  env_vars:
-  - name: GOOGLE_API_KEY
-    required: false
-  - name: GOOGLE_GENERATIVE_AI_API_KEY
-    required: false
-  - name: GEMINI_API_KEY
-    required: false
+  credentials:
+    fields:
+    - id: api-key
+      kind: secret
+      required: true
+      environment:
+      - GOOGLE_API_KEY
+      - GEMINI_API_KEY
+      - GOOGLE_GENERATIVE_AI_API_KEY
+    profiles:
+    - id: api-key
+      primitive: api-key
+      fields:
+      - api-key
+      placements:
+      - field: api-key
+        kind: header
+        name: x-goog-api-key
+        scheme: direct
+    catalog_acquisition:
+      required: true
+      alternatives:
+      - api-key
+    inference:
+      required: true
+      alternatives:
+      - api-key
   catalog:
     docs: https://ai.google.dev/gemini-api/docs/models
-    auth:
-      method: api-key
-      required: true
     endpoint:
       type: google
       url: https://generativelanguage.googleapis.com/v1beta/models
@@ -473,26 +638,63 @@
   name: Google Vertex AI
   headquarters: Mountain View, CA, USA
   icon_url: https://www.gstatic.com/marketing-cms/assets/images/29/8c/e1f2c0994e87b8d7edf2886f9c02/google-cloud.webp
-  env_vars:
-  - name: GOOGLE_VERTEX_PROJECT
-    required: false
-    description: "GCP project ID (optional - falls back to gcloud config)"
-  - name: GOOGLE_VERTEX_LOCATION
-    required: false
-    description: "GCP location/region (optional - falls back to gcloud config or us-central1)"
-  - name: GOOGLE_APPLICATION_CREDENTIALS
-    required: false
-    description: "Path to service account JSON file (optional - uses Application Default Credentials)"
-  catalog:
-    docs: https://cloud.google.com/vertex-ai/generative-ai/docs/model-reference/inference
-    auth:
-      method: google-default
+  credentials:
+    fields:
+    - id: access-token
+      kind: secret
       required: true
+    - id: project
+      kind: parameter
+      required: true
+      environment:
+      - GOOGLE_CLOUD_PROJECT
+      - GOOGLE_VERTEX_PROJECT
+      description: GCP project ID; default credentials can supply it
+    - id: location
+      kind: parameter
+      required: true
+      environment:
+      - GOOGLE_CLOUD_LOCATION
+      - GOOGLE_CLOUD_REGION
+      - GOOGLE_VERTEX_LOCATION
+      default: us-central1
+    profiles:
+    - id: workload-identity
+      primitive: google-default
+      fields:
+      - access-token
+      - project
+      - location
+      placements:
+      - field: access-token
+        kind: header
+        name: Authorization
+        scheme: bearer
       scopes:
       - https://www.googleapis.com/auth/cloud-platform
+      protocol_options:
+        google_default:
+          project_field: project
+      endpoint_bindings:
+      - field: project
+        variable: project
+        format: path-segment
+      - field: location
+        variable: location
+        format: path-segment
+    catalog_acquisition:
+      required: true
+      alternatives:
+      - workload-identity
+    inference:
+      required: true
+      alternatives:
+      - workload-identity
+  catalog:
+    docs: https://cloud.google.com/vertex-ai/generative-ai/docs/model-reference/inference
     endpoint:
       type: google-cloud
-      url: https://us-central1-aiplatform.googleapis.com/v1/projects/{project}/locations/{location}/models
+      url: https://{location}-aiplatform.googleapis.com/v1/projects/{project}/locations/{location}/models
     authors:
     - ai21
     - anthropic
@@ -542,23 +744,39 @@
   name: Groq
   headquarters: Mountain View, CA, USA
   icon_url: https://groq.com/favicon.ico
-  api_key:
-    name: GROQ_API_KEY
-    pattern: .*
-    header: Authorization
-    scheme: Bearer
-    query_param: ""
-  env_vars:
-  - name: GROQ_API_KEY
-    required: false
+  credentials:
+    fields:
+    - id: api-key
+      kind: secret
+      required: true
+      environment:
+      - GROQ_API_KEY
+    profiles:
+    - id: api-key
+      primitive: api-key
+      fields:
+      - api-key
+      placements:
+      - field: api-key
+        kind: header
+        name: Authorization
+        scheme: bearer
+    catalog_acquisition:
+      required: true
+      alternatives:
+      - api-key
+    inference:
+      required: true
+      alternatives:
+      - api-key
   catalog:
     docs: https://console.groq.com/docs/models
-    auth:
-      method: api-key
-      required: true
     endpoint:
       type: openai
       url: https://api.groq.com/openai/v1/models
+      protocol_options:
+        openai:
+          token_price_unit: usd-per-token
       field_mappings:
       - from: context_window
         to: limits.context_window
@@ -609,23 +827,39 @@
   name: Mistral AI
   headquarters: Paris, France
   icon_url: https://mistral.ai/favicon.ico
-  api_key:
-    name: MISTRAL_API_KEY
-    pattern: .*
-    header: Authorization
-    scheme: Bearer
-    query_param: ""
-  env_vars:
-  - name: MISTRAL_API_KEY
-    required: false
+  credentials:
+    fields:
+    - id: api-key
+      kind: secret
+      required: true
+      environment:
+      - MISTRAL_API_KEY
+    profiles:
+    - id: api-key
+      primitive: api-key
+      fields:
+      - api-key
+      placements:
+      - field: api-key
+        kind: header
+        name: Authorization
+        scheme: bearer
+    catalog_acquisition:
+      required: true
+      alternatives:
+      - api-key
+    inference:
+      required: true
+      alternatives:
+      - api-key
   catalog:
     docs: https://docs.mistral.ai/api/#tag/models
-    auth:
-      method: api-key
-      required: true
     endpoint:
       type: openai
       url: https://api.mistral.ai/v1/models
+      protocol_options:
+        openai:
+          token_price_unit: usd-per-million-tokens
       author_mapping:
         field: owned_by
         normalized:
@@ -652,23 +886,39 @@
   name: Moonshot AI
   headquarters: Beijing, China
   icon_url: https://www.moonshot.ai/favicon.ico
-  api_key:
-    name: MOONSHOT_API_KEY
-    pattern: .*
-    header: Authorization
-    scheme: Bearer
-    query_param: ""
-  env_vars:
-  - name: MOONSHOT_API_KEY
-    required: false
+  credentials:
+    fields:
+    - id: api-key
+      kind: secret
+      required: true
+      environment:
+      - MOONSHOT_API_KEY
+    profiles:
+    - id: api-key
+      primitive: api-key
+      fields:
+      - api-key
+      placements:
+      - field: api-key
+        kind: header
+        name: Authorization
+        scheme: bearer
+    catalog_acquisition:
+      required: true
+      alternatives:
+      - api-key
+    inference:
+      required: true
+      alternatives:
+      - api-key
   catalog:
     docs: "https://platform.moonshot.ai/docs/api/chat#list-models"
-    auth:
-      method: api-key
-      required: true
     endpoint:
       type: openai
       url: https://api.moonshot.ai/v1/models
+      protocol_options:
+        openai:
+          token_price_unit: usd-per-million-tokens
       author_mapping:
         field: owned_by
         normalized:
@@ -706,23 +956,50 @@
   name: OpenAI
   headquarters: San Francisco, CA, USA
   icon_url: https://cdn.openai.com/API/logo-openai.svg
-  api_key:
-    name: OPENAI_API_KEY
-    pattern: .*
-    header: Authorization
-    scheme: Bearer
-    query_param: ""
-  env_vars:
-  - name: OPENAI_API_KEY
-    required: false
+  credentials:
+    fields:
+    - id: api-key
+      kind: secret
+      required: true
+      environment:
+      - OPENAI_API_KEY
+    - id: organization
+      kind: parameter
+      required: false
+      environment:
+      - OPENAI_ORG_ID
+      - OPENAI_ORGANIZATION
+    profiles:
+    - id: api-key
+      primitive: api-key
+      fields:
+      - api-key
+      - organization
+      placements:
+      - field: api-key
+        kind: header
+        name: Authorization
+        scheme: bearer
+      - field: organization
+        kind: header
+        name: OpenAI-Organization
+        scheme: direct
+    catalog_acquisition:
+      required: true
+      alternatives:
+      - api-key
+    inference:
+      required: true
+      alternatives:
+      - api-key
   catalog:
     docs: https://platform.openai.com/docs/models
-    auth:
-      method: api-key
-      required: true
     endpoint:
       type: openai
       url: https://api.openai.com/v1/models
+      protocol_options:
+        openai:
+          token_price_unit: usd-per-million-tokens
       author_mapping:
         field: owned_by
         normalized:
@@ -763,23 +1040,39 @@
 - id: ollama
   name: Ollama
   icon_url: https://ollama.com/public/ollama.png
-  env_vars:
-  - name: OLLAMA_BASE_URL
-    required: false
-    description: Local or remote Ollama server base URL
+  credentials:
+    fields:
+    - id: base-url
+      kind: parameter
+      required: true
+      environment:
+      - OLLAMA_BASE_URL
+      default: http://localhost:11434
+      description: Local or remote Ollama server base URL
+    profiles:
+    - id: unauthenticated
+      primitive: none
+      fields:
+      - base-url
+      endpoint_bindings:
+      - field: base-url
+        variable: base_url
+        format: url
+    catalog_acquisition:
+      required: false
+      alternatives:
+      - unauthenticated
+    inference:
+      required: false
+      alternatives:
+      - unauthenticated
   catalog:
     docs: https://docs.ollama.com/api/tags
-    auth:
-      method: none
-      required: false
     endpoint:
       type: ollama
-      url: http://localhost:11434/api/tags
-      base_url_env_var: OLLAMA_BASE_URL
-      path: /api/tags
+      url: "{base_url}/api/tags"
   inference:
-    base_url: http://localhost:11434
-    base_url_env_var: OLLAMA_BASE_URL
+    base_url: "{base_url}"
     endpoints:
     - operation: chat-completions
       type: ollama

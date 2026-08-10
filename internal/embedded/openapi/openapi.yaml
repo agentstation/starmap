@@ -842,18 +842,10 @@ components:
             - ProviderIDXAI
           type: array
           uniqueItems: false
-        api_key:
-          $ref: '#/components/schemas/catalogs.ProviderAPIKey'
         catalog:
           $ref: '#/components/schemas/catalogs.ProviderCatalog'
         credentials:
           $ref: '#/components/schemas/catalogs.ProviderCredentials'
-        env_vars:
-          description: Environment variables configuration
-          items:
-            $ref: '#/components/schemas/catalogs.ProviderEnvVar'
-          type: array
-          uniqueItems: false
         extensions:
           $ref: '#/components/schemas/catalogs.SourceExtensions'
         governance_policy:
@@ -879,41 +871,16 @@ components:
           description: Status & Health
           type: string
       type: object
-    catalogs.ProviderAPIKey:
-      description: API key configuration
-      properties:
-        header:
-          description: Header name to send the API key in
-          type: string
-        name:
-          description: Name of the API key parameter
-          type: string
-        pattern:
-          description: Glob pattern to match the API key
-          type: string
-        query_param:
-          description: Query parameter name to send the API key in
-          type: string
-        scheme:
-          $ref: '#/components/schemas/catalogs.ProviderAPIKeyScheme'
-      type: object
-    catalogs.ProviderAPIKeyScheme:
-      description: Authentication scheme (e.g., "Bearer", "Basic", or empty for direct
-        value)
-      type: string
-      x-enum-comments:
-        ProviderAPIKeySchemeBasic: Basic authentication
-        ProviderAPIKeySchemeBearer: Bearer token authentication (OAuth 2.0 style)
-        ProviderAPIKeySchemeDirect: Direct value (no scheme prefix)
-      x-enum-varnames:
-      - ProviderAPIKeySchemeBearer
-      - ProviderAPIKeySchemeBasic
-      - ProviderAPIKeySchemeDirect
     catalogs.ProviderAWSDefaultProtocolOptions:
       properties:
         region_field:
           type: string
         service:
+          type: string
+      type: object
+    catalogs.ProviderAnthropicCatalogProtocolOptions:
+      properties:
+        version:
           type: string
       type: object
     catalogs.ProviderAuthenticationPrimitive:
@@ -935,8 +902,6 @@ components:
     catalogs.ProviderCatalog:
       description: Models
       properties:
-        auth:
-          $ref: '#/components/schemas/catalogs.ProviderCatalogAuth'
         authors:
           description: List of authors to fetch from (for providers like Google Vertex
             AI)
@@ -1032,36 +997,32 @@ components:
         endpoint:
           $ref: '#/components/schemas/catalogs.ProviderEndpoint'
       type: object
-    catalogs.ProviderCatalogAuth:
-      description: Catalog-acquisition authentication contract
+    catalogs.ProviderCatalogProtocolOptions:
+      description: Typed wire-protocol facts
       properties:
-        method:
-          $ref: '#/components/schemas/catalogs.ProviderCatalogAuthMethod'
-        required:
-          type: boolean
-        scopes:
-          items:
-            type: string
-          type: array
-          uniqueItems: false
+        anthropic:
+          $ref: '#/components/schemas/catalogs.ProviderAnthropicCatalogProtocolOptions'
+        openai:
+          $ref: '#/components/schemas/catalogs.ProviderOpenAICatalogProtocolOptions'
       type: object
-    catalogs.ProviderCatalogAuthMethod:
-      type: string
-      x-enum-varnames:
-      - ProviderCatalogAuthNone
-      - ProviderCatalogAuthAPIKey
-      - ProviderCatalogAuthGoogleDefault
-      - ProviderCatalogAuthAzureDefault
-      - ProviderCatalogAuthAWSDefault
     catalogs.ProviderCredentialEndpointBinding:
       properties:
         field:
           type: string
+        format:
+          $ref: '#/components/schemas/catalogs.ProviderCredentialEndpointBindingFormat'
         variable:
           type: string
       type: object
+    catalogs.ProviderCredentialEndpointBindingFormat:
+      type: string
+      x-enum-varnames:
+      - ProviderCredentialEndpointBindingURL
+      - ProviderCredentialEndpointBindingPathSegment
     catalogs.ProviderCredentialField:
       properties:
+        default:
+          type: string
         description:
           type: string
         environment:
@@ -1169,9 +1130,6 @@ components:
       properties:
         author_mapping:
           $ref: '#/components/schemas/catalogs.AuthorMapping'
-        base_url_env_var:
-          description: Optional env var for overriding the endpoint base URL
-          type: string
         feature_rules:
           description: Feature inference rules
           items:
@@ -1184,32 +1142,18 @@ components:
             $ref: '#/components/schemas/catalogs.FieldMapping'
           type: array
           uniqueItems: false
-        path:
-          description: Path appended when BaseURLEnvVar is set
-          type: string
+        protocol_options:
+          $ref: '#/components/schemas/catalogs.ProviderCatalogProtocolOptions'
         type:
           $ref: '#/components/schemas/catalogs.EndpointType'
         url:
           description: 'Required: API endpoint'
           type: string
       type: object
-    catalogs.ProviderEnvVar:
-      properties:
-        description:
-          description: Human-readable description
-          type: string
-        name:
-          description: Environment variable name
-          type: string
-        pattern:
-          description: Optional validation pattern
-          type: string
-        required:
-          description: Whether this env var is required
-          type: boolean
-      type: object
     catalogs.ProviderGoogleDefaultProtocolOptions:
       properties:
+        project_field:
+          type: string
         quota_project_field:
           type: string
       type: object
@@ -1276,8 +1220,6 @@ components:
       properties:
         base_url:
           type: string
-        base_url_env_var:
-          type: string
         endpoints:
           items:
             $ref: '#/components/schemas/catalogs.ProviderInferenceEndpoint'
@@ -1328,6 +1270,11 @@ components:
           - EndpointTypeGoogleCloud
           - EndpointTypeOllama
       type: object
+    catalogs.ProviderOpenAICatalogProtocolOptions:
+      properties:
+        token_price_unit:
+          $ref: '#/components/schemas/catalogs.ProviderTokenPriceUnit'
+      type: object
     catalogs.ProviderOperation:
       type: string
       x-enum-varnames:
@@ -1375,6 +1322,11 @@ components:
       - ProviderRetentionTypeNone
       - ProviderRetentionTypeIndefinite
       - ProviderRetentionTypeConditional
+    catalogs.ProviderTokenPriceUnit:
+      type: string
+      x-enum-varnames:
+      - ProviderTokenPriceUnitPerToken
+      - ProviderTokenPriceUnitPerMillion
     catalogs.Quantization:
       description: Quantization level used by the model
       type: string

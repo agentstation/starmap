@@ -2,7 +2,7 @@ package catalogs
 
 import (
 	"fmt"
-	"os"
+	"net/url"
 	"regexp"
 	"strings"
 	"time"
@@ -18,12 +18,6 @@ type Provider struct {
 	Name         string       `json:"name" yaml:"name"`                                     // Display name (must not be empty)
 	Headquarters *string      `json:"headquarters,omitempty" yaml:"headquarters,omitempty"` // Company headquarters location
 	IconURL      *string      `json:"icon_url,omitempty" yaml:"icon_url,omitempty"`         // Provider icon/logo URL
-
-	// API key configuration
-	APIKey *ProviderAPIKey `json:"api_key,omitempty" yaml:"api_key,omitempty"` // API key configuration
-
-	// Environment variables configuration
-	EnvVars []ProviderEnvVar `json:"env_vars,omitempty" yaml:"env_vars,omitempty"` // Required environment variables
 
 	// Secret-free credential metadata for catalog acquisition and inference.
 	Credentials *ProviderCredentials `json:"credentials,omitempty" yaml:"credentials,omitempty"`
@@ -43,10 +37,6 @@ type Provider struct {
 
 	// Extensions - controlled source-specific fields that are not canonical schema
 	Extensions SourceExtensions `json:"extensions,omitempty" yaml:"extensions,omitempty"`
-
-	// Runtime fields (not serialized)
-	apiKeyValue  string            `json:"-" yaml:"-"` // Actual API key value loaded from environment
-	EnvVarValues map[string]string `json:"-" yaml:"-"` // Actual environment variable values loaded at runtime
 }
 
 // EndpointType specifies the API style for model listing.
@@ -88,79 +78,48 @@ type AuthorMapping struct {
 
 // ProviderEndpoint configures how to access the provider's model catalog.
 type ProviderEndpoint struct {
-	Type          EndpointType   `yaml:"type" json:"type"`                                             // Required: API style
-	URL           string         `yaml:"url" json:"url"`                                               // Required: API endpoint
-	BaseURLEnvVar string         `yaml:"base_url_env_var,omitempty" json:"base_url_env_var,omitempty"` // Optional env var for overriding the endpoint base URL
-	Path          string         `yaml:"path,omitempty" json:"path,omitempty"`                         // Path appended when BaseURLEnvVar is set
-	FieldMappings []FieldMapping `yaml:"field_mappings,omitempty" json:"field_mappings,omitempty"`     // Field mappings
-	FeatureRules  []FeatureRule  `yaml:"feature_rules,omitempty" json:"feature_rules,omitempty"`       // Feature inference rules
-	AuthorMapping *AuthorMapping `yaml:"author_mapping,omitempty" json:"author_mapping,omitempty"`     // Author extraction
+	Type            EndpointType                   `yaml:"type" json:"type"`                                             // Required: API style
+	URL             string                         `yaml:"url" json:"url"`                                               // Required: API endpoint
+	ProtocolOptions ProviderCatalogProtocolOptions `yaml:"protocol_options,omitempty" json:"protocol_options,omitempty"` // Typed wire-protocol facts
+	FieldMappings   []FieldMapping                 `yaml:"field_mappings,omitempty" json:"field_mappings,omitempty"`     // Field mappings
+	FeatureRules    []FeatureRule                  `yaml:"feature_rules,omitempty" json:"feature_rules,omitempty"`       // Feature inference rules
+	AuthorMapping   *AuthorMapping                 `yaml:"author_mapping,omitempty" json:"author_mapping,omitempty"`     // Author extraction
+}
+
+// ProviderCatalogProtocolOptions is a typed union of catalog-transport facts.
+type ProviderCatalogProtocolOptions struct {
+	OpenAI    *ProviderOpenAICatalogProtocolOptions    `json:"openai,omitempty" yaml:"openai,omitempty"`
+	Anthropic *ProviderAnthropicCatalogProtocolOptions `json:"anthropic,omitempty" yaml:"anthropic,omitempty"`
+}
+
+// ProviderTokenPriceUnit identifies the unit used by one provider payload.
+type ProviderTokenPriceUnit string
+
+const (
+	// ProviderTokenPriceUnitPerToken means USD per token.
+	// #nosec G101 -- This value identifies a price unit, not authentication material.
+	ProviderTokenPriceUnitPerToken ProviderTokenPriceUnit = "usd-per-token"
+	// ProviderTokenPriceUnitPerMillion means USD per one million tokens.
+	// #nosec G101 -- This value identifies a price unit, not authentication material.
+	ProviderTokenPriceUnitPerMillion ProviderTokenPriceUnit = "usd-per-million-tokens"
+)
+
+// ProviderOpenAICatalogProtocolOptions defines OpenAI-compatible payload facts.
+type ProviderOpenAICatalogProtocolOptions struct {
+	TokenPriceUnit ProviderTokenPriceUnit `json:"token_price_unit" yaml:"token_price_unit"`
+}
+
+// ProviderAnthropicCatalogProtocolOptions defines Anthropic wire-version facts.
+type ProviderAnthropicCatalogProtocolOptions struct {
+	Version string `json:"version" yaml:"version"`
 }
 
 // ProviderCatalog represents information about a provider's models.
 type ProviderCatalog struct {
-	Docs     *string             `yaml:"docs" json:"docs"`                           // Documentation URL
-	Auth     ProviderCatalogAuth `yaml:"auth" json:"auth"`                           // Catalog-acquisition authentication contract
-	Endpoint ProviderEndpoint    `yaml:"endpoint" json:"endpoint"`                   // API endpoint configuration
-	Authors  []AuthorID          `json:"authors,omitempty" yaml:"authors,omitempty"` // List of authors to fetch from (for providers like Google Vertex AI)
+	Docs     *string          `yaml:"docs" json:"docs"`                           // Documentation URL
+	Endpoint ProviderEndpoint `yaml:"endpoint" json:"endpoint"`                   // API endpoint configuration
+	Authors  []AuthorID       `json:"authors,omitempty" yaml:"authors,omitempty"` // List of authors to fetch from (for providers like Google Vertex AI)
 }
-
-// ProviderCatalogAuthMethod selects how Starmap acquires credentials for a
-// provider model catalog. It does not describe inference authentication.
-type ProviderCatalogAuthMethod string
-
-const (
-	// ProviderCatalogAuthNone means the catalog endpoint is public.
-	ProviderCatalogAuthNone ProviderCatalogAuthMethod = "none"
-	// ProviderCatalogAuthAPIKey uses Provider.APIKey for catalog acquisition.
-	ProviderCatalogAuthAPIKey ProviderCatalogAuthMethod = "api-key"
-	// ProviderCatalogAuthGoogleDefault uses Google's application default credential chain.
-	ProviderCatalogAuthGoogleDefault ProviderCatalogAuthMethod = "google-default"
-	// ProviderCatalogAuthAzureDefault uses Azure's default credential chain.
-	ProviderCatalogAuthAzureDefault ProviderCatalogAuthMethod = "azure-default"
-	// ProviderCatalogAuthAWSDefault uses AWS's default credential chain.
-	ProviderCatalogAuthAWSDefault ProviderCatalogAuthMethod = "aws-default"
-)
-
-// ProviderCatalogAuth defines catalog-acquisition authentication. Credential
-// values are runtime state and are never part of this serializable contract.
-type ProviderCatalogAuth struct {
-	Method   ProviderCatalogAuthMethod `json:"method" yaml:"method"`
-	Required bool                      `json:"required" yaml:"required"`
-	Scopes   []string                  `json:"scopes,omitempty" yaml:"scopes,omitempty"`
-}
-
-// ProviderAPIKey represents configuration for an API key to access a provider's catalog.
-type ProviderAPIKey struct {
-	Name       string               `json:"name" yaml:"name"`               // Name of the API key parameter
-	Pattern    string               `json:"pattern" yaml:"pattern"`         // Glob pattern to match the API key
-	Header     string               `json:"header" yaml:"header"`           // Header name to send the API key in
-	Scheme     ProviderAPIKeyScheme `json:"scheme" yaml:"scheme"`           // Authentication scheme (e.g., "Bearer", "Basic", or empty for direct value)
-	QueryParam string               `json:"query_param" yaml:"query_param"` // Query parameter name to send the API key in
-}
-
-// ProviderEnvVar represents an environment variable required by a provider.
-type ProviderEnvVar struct {
-	Name        string `json:"name" yaml:"name"`                                   // Environment variable name
-	Required    bool   `json:"required" yaml:"required"`                           // Whether this env var is required
-	Description string `json:"description,omitempty" yaml:"description,omitempty"` // Human-readable description
-	Pattern     string `json:"pattern,omitempty" yaml:"pattern,omitempty"`         // Optional validation pattern
-}
-
-// ProviderAPIKeyScheme represents different authentication schemes for API keys.
-type ProviderAPIKeyScheme string
-
-// String returns the string representation of a ProviderAPIKeyScheme.
-func (paks ProviderAPIKeyScheme) String() string {
-	return string(paks)
-}
-
-// API key authentication schemes.
-const (
-	ProviderAPIKeySchemeBearer ProviderAPIKeyScheme = "Bearer" // Bearer token authentication (OAuth 2.0 style)
-	ProviderAPIKeySchemeBasic  ProviderAPIKeyScheme = "Basic"  // Basic authentication
-	ProviderAPIKeySchemeDirect ProviderAPIKeyScheme = ""       // Direct value (no scheme prefix)
-)
 
 // ProviderOperation identifies one provider inference operation.
 type ProviderOperation string
@@ -176,7 +135,6 @@ const (
 // Gateway consumers supply runtime endpoint overrides and inference credentials.
 type ProviderInference struct {
 	BaseURL          string                      `json:"base_url,omitempty" yaml:"base_url,omitempty"`
-	BaseURLEnvVar    string                      `json:"base_url_env_var,omitempty" yaml:"base_url_env_var,omitempty"`
 	Endpoints        []ProviderInferenceEndpoint `json:"endpoints" yaml:"endpoints"`
 	HealthAPIURL     *string                     `json:"health_api_url,omitempty" yaml:"health_api_url,omitempty"`
 	HealthComponents []ProviderHealthComponent   `json:"health_components,omitempty" yaml:"health_components,omitempty"`
@@ -400,123 +358,9 @@ const (
 	ProviderModeratorUnknown ProviderModerator = "unknown"
 )
 
-// IsAPIKeyRequired checks if a provider requires an API key.
-func (p *Provider) IsAPIKeyRequired() bool {
-	return p.Catalog != nil &&
-		p.Catalog.Auth.Method == ProviderCatalogAuthAPIKey &&
-		p.Catalog.Auth.Required
-}
-
 // IsCatalogAuthRequired reports whether catalog acquisition requires credentials.
 func (p *Provider) IsCatalogAuthRequired() bool {
-	return p.Catalog != nil && p.Catalog.Auth.Required
-}
-
-// ProviderValidationStatus represents the validation status of a provider.
-type ProviderValidationStatus string
-
-const (
-	// ProviderValidationStatusConfigured indicates the provider is properly configured and ready to use.
-	ProviderValidationStatusConfigured ProviderValidationStatus = "configured"
-	// ProviderValidationStatusMissing indicates the provider is missing required API key configuration.
-	ProviderValidationStatusMissing ProviderValidationStatus = "missing"
-	// ProviderValidationStatusOptional indicates the provider has optional API key that is not configured (still usable).
-	ProviderValidationStatusOptional ProviderValidationStatus = "optional"
-	// ProviderValidationStatusUnsupported indicates the provider doesn't have client implementation yet.
-	ProviderValidationStatusUnsupported ProviderValidationStatus = "unsupported"
-)
-
-// String returns the string representation of ProviderValidationStatus.
-func (pvs ProviderValidationStatus) String() string {
-	return string(pvs)
-}
-
-// ProviderValidationResult contains the result of validating a provider.
-type ProviderValidationResult struct {
-	Status             ProviderValidationStatus `json:"status"`
-	HasAPIKey          bool                     `json:"has_api_key"`
-	IsAPIKeyRequired   bool                     `json:"is_api_key_required"`
-	HasRequiredEnvVars bool                     `json:"has_required_env_vars"`
-	MissingEnvVars     []string                 `json:"missing_env_vars,omitempty"`
-	IsConfigured       bool                     `json:"is_configured"`
-	IsSupported        bool                     `json:"is_supported"`
-	Error              error                    `json:"error,omitempty"`
-}
-
-// LoadAPIKey loads the API key value from environment into the provider.
-// This should be called when the provider is loaded from the catalog.
-func (p *Provider) LoadAPIKey() {
-	if p.APIKey != nil {
-		p.apiKeyValue = os.Getenv(p.APIKey.Name)
-	}
-}
-
-// LoadEnvVars loads environment variable values from the system into the provider.
-// This should be called when the provider is loaded from the catalog.
-func (p *Provider) LoadEnvVars() {
-	if len(p.EnvVars) == 0 {
-		return
-	}
-
-	if p.EnvVarValues == nil {
-		p.EnvVarValues = make(map[string]string)
-	}
-
-	for _, envVar := range p.EnvVars {
-		p.EnvVarValues[envVar.Name] = os.Getenv(envVar.Name)
-	}
-}
-
-// APIKeyValue retrieves and validates the API key for this provider.
-// Uses the loaded apiKeyValue if available, otherwise falls back to environment.
-func (p *Provider) APIKeyValue() (string, error) {
-	if p.APIKey == nil {
-		return "", nil
-	}
-
-	// Use loaded value or get from environment
-	apiKey := p.apiKeyValue
-	if apiKey == "" {
-		apiKey = os.Getenv(p.APIKey.Name)
-	}
-
-	if apiKey == "" {
-		// Check if API key is required
-		if p.IsAPIKeyRequired() {
-			return "", &errors.ConfigError{
-				Component: string(p.ID),
-				Message:   fmt.Sprintf("environment variable %s not set", p.APIKey.Name),
-			}
-		}
-		return "", nil
-	}
-
-	// Validate against pattern if specified
-	if p.APIKey.Pattern != "" && p.APIKey.Pattern != ".*" {
-		matched, err := regexp.MatchString(p.APIKey.Pattern, apiKey)
-		if err != nil {
-			return "", errors.WrapParse("regex", p.APIKey.Pattern, err)
-		}
-		if !matched {
-			return "", &errors.ValidationError{
-				Field:   "api_key",
-				Message: fmt.Sprintf("API key does not match required pattern for provider %s", p.ID),
-			}
-		}
-	}
-
-	return apiKey, nil
-}
-
-// EnvVar returns the value of a specific environment variable.
-func (p *Provider) EnvVar(name string) string {
-	if p.EnvVarValues != nil {
-		if value, exists := p.EnvVarValues[name]; exists {
-			return value
-		}
-	}
-	// Fallback to direct environment lookup
-	return os.Getenv(name)
+	return p != nil && p.Credentials != nil && p.Credentials.CatalogAcquisition.Required
 }
 
 // CatalogEndpointURL returns the resolved model catalog endpoint URL.
@@ -524,15 +368,35 @@ func (p *Provider) CatalogEndpointURL() string {
 	if p == nil || p.Catalog == nil {
 		return ""
 	}
+	return p.Catalog.Endpoint.URL
+}
 
-	endpoint := p.Catalog.Endpoint
-	if endpoint.BaseURLEnvVar != "" {
-		if baseURL := strings.TrimSpace(p.EnvVar(endpoint.BaseURLEnvVar)); baseURL != "" {
-			return joinEndpointURL(baseURL, endpoint.Path)
+// BindCatalogEndpoint resolves catalog-declared endpoint variables.
+func (p *Provider) BindCatalogEndpoint(bindings map[string]string) (string, error) {
+	if p == nil || p.Catalog == nil {
+		return "", &errors.ValidationError{
+			Field: "provider.catalog.endpoint", Message: "is required",
 		}
 	}
-
-	return endpoint.URL
+	resolved := p.Catalog.Endpoint.URL
+	for name, value := range bindings {
+		resolved = strings.ReplaceAll(resolved, "{"+name+"}", value)
+	}
+	if variable := inferenceEndpointVariable.FindString(resolved); variable != "" {
+		return "", &errors.ValidationError{
+			Field: "provider.catalog.endpoint.url", Value: variable,
+			Message: "endpoint binding is required",
+		}
+	}
+	parsed, err := url.Parse(resolved)
+	if err != nil || (parsed.Scheme != "https" && parsed.Scheme != "http") ||
+		parsed.Host == "" || parsed.User != nil {
+		return "", &errors.ValidationError{
+			Field: "provider.catalog.endpoint.url", Value: resolved,
+			Message: "must resolve to an HTTP or HTTPS URL",
+		}
+	}
+	return resolved, nil
 }
 
 func joinEndpointURL(baseURL, endpointPath string) string {
@@ -542,120 +406,6 @@ func joinEndpointURL(baseURL, endpointPath string) string {
 		return baseURL
 	}
 	return baseURL + "/" + endpointPath
-}
-
-// HasRequiredEnvVars checks if all required environment variables are set.
-func (p *Provider) HasRequiredEnvVars() bool {
-	for _, envVar := range p.EnvVars {
-		if envVar.Required {
-			value := p.EnvVar(envVar.Name)
-			if value == "" {
-				return false
-			}
-
-			// Validate against pattern if specified
-			if envVar.Pattern != "" && envVar.Pattern != ".*" {
-				matched, err := regexp.MatchString(envVar.Pattern, value)
-				if err != nil || !matched {
-					return false
-				}
-			}
-		}
-	}
-	return true
-}
-
-// MissingRequiredEnvVars returns a list of required environment variables that are not set.
-func (p *Provider) MissingRequiredEnvVars() []string {
-	var missing []string
-	for _, envVar := range p.EnvVars {
-		if envVar.Required {
-			value := p.EnvVar(envVar.Name)
-			if value == "" {
-				missing = append(missing, envVar.Name)
-				continue
-			}
-
-			// Check pattern validation
-			if envVar.Pattern != "" && envVar.Pattern != ".*" {
-				matched, err := regexp.MatchString(envVar.Pattern, value)
-				if err != nil || !matched {
-					missing = append(missing, envVar.Name)
-				}
-			}
-		}
-	}
-	return missing
-}
-
-// HasAPIKey checks if the provider has a valid API key configured.
-// This checks both existence and validation (pattern matching).
-func (p *Provider) HasAPIKey() bool {
-	apiKey, err := p.APIKeyValue()
-	return err == nil && apiKey != ""
-}
-
-// Validate performs validation checks on this provider and returns the result.
-// The supportedProviders parameter is a set of provider IDs that have client implementations.
-func (p *Provider) Validate(supportedProviders map[ProviderID]bool) ProviderValidationResult {
-	result := ProviderValidationResult{
-		HasAPIKey:          p.HasAPIKey(),
-		IsAPIKeyRequired:   p.IsAPIKeyRequired(),
-		HasRequiredEnvVars: p.HasRequiredEnvVars(),
-		MissingEnvVars:     p.MissingRequiredEnvVars(),
-		IsSupported:        supportedProviders[p.ID],
-	}
-
-	// Provider is configured if it has all required auth (API key and/or env vars)
-	result.IsConfigured = true
-	if result.IsAPIKeyRequired && !result.HasAPIKey {
-		result.IsConfigured = false
-	}
-	if len(result.MissingEnvVars) > 0 {
-		result.IsConfigured = false
-	}
-
-	// Check if provider has client implementation
-	if !result.IsSupported {
-		result.Status = ProviderValidationStatusUnsupported
-		return result
-	}
-
-	// Determine status based on configuration
-	if result.IsConfigured {
-		// Validate API key format if present and required
-		if result.IsAPIKeyRequired && result.HasAPIKey {
-			_, err := p.APIKeyValue()
-			if err != nil {
-				result.Error = err
-				result.Status = ProviderValidationStatusMissing
-				return result
-			}
-		}
-		result.Status = ProviderValidationStatusConfigured
-	} else {
-		// Check what's missing
-		var missingParts []string
-		if result.IsAPIKeyRequired && !result.HasAPIKey {
-			missingParts = append(missingParts, fmt.Sprintf("API key %s", p.APIKey.Name))
-		}
-		if len(result.MissingEnvVars) > 0 {
-			missingParts = append(missingParts, fmt.Sprintf("environment variables: %v", result.MissingEnvVars))
-		}
-
-		if len(missingParts) > 0 {
-			result.Error = &errors.ConfigError{
-				Component: string(p.ID),
-				Message:   fmt.Sprintf("missing required configuration: %v", missingParts),
-			}
-			result.Status = ProviderValidationStatusMissing
-		} else {
-			// No auth required at all
-			result.Status = ProviderValidationStatusOptional
-		}
-	}
-
-	return result
 }
 
 // Model retrieves a specific model from the provider.

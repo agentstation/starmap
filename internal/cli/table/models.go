@@ -3,7 +3,6 @@ package table
 
 import (
 	"fmt"
-	"os"
 	"slices"
 	"strconv"
 	"strings"
@@ -285,47 +284,75 @@ func getStatusDisplay(state auth.State) (string, string) {
 
 // getKeyVariable returns the key variable name or special message for display.
 func getKeyVariable(provider *catalogs.Provider, status *auth.Status) string {
-	if provider.Catalog != nil {
-		switch provider.Catalog.Auth.Method {
-		case catalogs.ProviderCatalogAuthGoogleDefault,
-			catalogs.ProviderCatalogAuthAzureDefault,
-			catalogs.ProviderCatalogAuthAWSDefault:
-			return "(" + string(provider.Catalog.Auth.Method) + ")"
-		}
-	}
-
-	if provider.APIKey != nil {
-		return provider.APIKey.Name
-	}
-
 	if status.State == auth.StateUnsupported {
 		return "(no implementation)"
 	}
+	environment, primitive, declared := catalogCredentialDisplay(provider)
+	if !declared || primitive == catalogs.ProviderAuthenticationNone {
+		return "(no key required)"
+	}
+	if environment != "" {
+		return environment
+	}
+	if primitive != catalogs.ProviderAuthenticationAPIKey &&
+		primitive != catalogs.ProviderAuthenticationBearerToken {
+		return "(" + string(primitive) + ")"
+	}
+	return "(catalog credential)"
+}
 
-	return "(no key required)"
+// catalogCredentialDisplay returns the first catalog-acquisition credential
+// alternative in declaration order. It reports catalog metadata, not selected
+// runtime material.
+func catalogCredentialDisplay(
+	provider *catalogs.Provider,
+) (string, catalogs.ProviderAuthenticationPrimitive, bool) {
+	if provider == nil || provider.Credentials == nil {
+		return "", "", false
+	}
+	profiles := make(
+		map[catalogs.ProviderCredentialProfileID]catalogs.ProviderCredentialProfile,
+		len(provider.Credentials.Profiles),
+	)
+	for _, profile := range provider.Credentials.Profiles {
+		profiles[profile.ID] = profile
+	}
+	fields := make(
+		map[catalogs.ProviderCredentialFieldID]catalogs.ProviderCredentialField,
+		len(provider.Credentials.Fields),
+	)
+	for _, field := range provider.Credentials.Fields {
+		fields[field.ID] = field
+	}
+	for _, profileID := range provider.Credentials.CatalogAcquisition.Alternatives {
+		profile, exists := profiles[profileID]
+		if !exists {
+			continue
+		}
+		for _, fieldID := range profile.Fields {
+			field, exists := fields[fieldID]
+			if !exists || field.Kind != catalogs.ProviderCredentialFieldSecret {
+				continue
+			}
+			if len(field.Environment) > 0 {
+				return field.Environment[0], profile.Primitive, true
+			}
+			return "", profile.Primitive, true
+		}
+		return "", profile.Primitive, true
+	}
+	return "", "", false
 }
 
 // getKeyPreview reports whether an API key is present without exposing any
 // reusable credential fingerprint.
 func getKeyPreview(provider *catalogs.Provider, status *auth.Status) string {
-	if provider.Catalog != nil {
-		switch provider.Catalog.Auth.Method {
-		case catalogs.ProviderCatalogAuthGoogleDefault,
-			catalogs.ProviderCatalogAuthAzureDefault,
-			catalogs.ProviderCatalogAuthAWSDefault:
-			return "(" + string(provider.Catalog.Auth.Method) + ")"
-		}
-	}
-
-	// Unsupported providers
 	if status.State == auth.StateUnsupported {
 		return "(n/a)"
 	}
-
-	// API key providers
-	if provider.APIKey != nil {
-		envValue := os.Getenv(provider.APIKey.Name)
-		if envValue != "" {
+	_, primitive, declared := catalogCredentialDisplay(provider)
+	if declared && primitive != catalogs.ProviderAuthenticationNone {
+		if status.State == auth.StateConfigured {
 			return "(configured)"
 		}
 		return "(not set)"

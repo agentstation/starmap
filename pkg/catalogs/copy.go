@@ -88,8 +88,6 @@ func DeepCopyProvider(provider Provider) Provider {
 	providerCopy.Aliases = append([]ProviderID(nil), provider.Aliases...)
 	providerCopy.Headquarters = copyPtr(provider.Headquarters)
 	providerCopy.IconURL = copyPtr(provider.IconURL)
-	providerCopy.APIKey = copyPtr(provider.APIKey)
-	providerCopy.EnvVars = append([]ProviderEnvVar(nil), provider.EnvVars...)
 	providerCopy.Credentials = deepCopyProviderCredentials(provider.Credentials)
 	providerCopy.Catalog = deepCopyProviderCatalog(provider.Catalog)
 	providerCopy.Models = DeepCopyProviderModels(provider.Models)
@@ -99,7 +97,6 @@ func DeepCopyProvider(provider Provider) Provider {
 	providerCopy.RetentionPolicy = deepCopyProviderRetentionPolicy(provider.RetentionPolicy)
 	providerCopy.GovernancePolicy = deepCopyProviderGovernancePolicy(provider.GovernancePolicy)
 	providerCopy.Extensions = provider.Extensions.Copy()
-	providerCopy.EnvVarValues = copyMap(provider.EnvVarValues)
 	return providerCopy
 }
 
@@ -379,7 +376,8 @@ func deepCopyProviderCatalog(catalog *ProviderCatalog) *ProviderCatalog {
 	}
 	copied := *catalog
 	copied.Docs = copyPtr(catalog.Docs)
-	copied.Auth.Scopes = append([]string(nil), catalog.Auth.Scopes...)
+	copied.Endpoint.ProtocolOptions.OpenAI = copyPtr(catalog.Endpoint.ProtocolOptions.OpenAI)
+	copied.Endpoint.ProtocolOptions.Anthropic = copyPtr(catalog.Endpoint.ProtocolOptions.Anthropic)
 	copied.Endpoint.FieldMappings = append([]FieldMapping(nil), catalog.Endpoint.FieldMappings...)
 	copied.Endpoint.FeatureRules = deepCopyFeatureRules(catalog.Endpoint.FeatureRules)
 	copied.Endpoint.AuthorMapping = deepCopyAuthorMapping(catalog.Endpoint.AuthorMapping)

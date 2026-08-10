@@ -10,6 +10,7 @@ import (
 
 	"github.com/rs/zerolog"
 
+	"github.com/agentstation/starmap/internal/testcatalog"
 	"github.com/agentstation/starmap/pkg/catalogs"
 )
 
@@ -43,18 +44,15 @@ func TestProviderCredentialJSONKeepsProgressOnStderr(t *testing.T) {
 
 	builder := catalogs.NewEmpty()
 	if err := builder.SetProvider(catalogs.Provider{
-		ID:   "openai",
-		Name: "OpenAI",
-		APIKey: &catalogs.ProviderAPIKey{
-			Name:   apiKeyEnvironment,
-			Header: "Authorization",
-			Scheme: catalogs.ProviderAPIKeySchemeBearer,
-		},
+		ID: "openai", Name: "OpenAI",
+		Credentials: testcatalog.APIKeyCredentials(
+			apiKeyEnvironment, "Authorization", catalogs.ProviderCredentialSchemeBearer,
+		),
 		Catalog: &catalogs.ProviderCatalog{
-			Auth: catalogs.ProviderCatalogAuth{Method: catalogs.ProviderCatalogAuthAPIKey, Required: true},
 			Endpoint: catalogs.ProviderEndpoint{
-				Type: catalogs.EndpointTypeOpenAI,
-				URL:  server.URL,
+				Type:            catalogs.EndpointTypeOpenAI,
+				URL:             server.URL,
+				ProtocolOptions: testcatalog.OpenAIProtocolOptions(),
 			},
 		},
 	}); err != nil {

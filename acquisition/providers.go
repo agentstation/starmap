@@ -3,6 +3,7 @@ package acquisition
 import (
 	"context"
 
+	"github.com/agentstation/starmap/internal/auth"
 	"github.com/agentstation/starmap/internal/providers/clients"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/sources"
@@ -19,6 +20,7 @@ func NewProviderFetcher(
 		composed,
 		sources.WithProviderClientFactory(defaultProviderClientFactory),
 		sources.WithProviderRawFetcher(defaultRawFetcher),
+		sources.WithProviderCredentialResolver(auth.NewResolver()),
 	)
 	composed = append(composed, opts...)
 	return sources.NewProviderFetcher(providers, composed...)
@@ -27,9 +29,10 @@ func NewProviderFetcher(
 func defaultRawFetcher(
 	ctx context.Context,
 	provider *catalogs.Provider,
+	material sources.ProviderCredentialMaterial,
 	endpoint string,
 ) (*sources.RawFetchResult, error) {
-	result, err := clients.FetchRaw(ctx, provider, endpoint)
+	result, err := clients.FetchRaw(ctx, provider, material, endpoint)
 	if err != nil {
 		return nil, err
 	}

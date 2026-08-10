@@ -387,6 +387,11 @@ func TestDeepCopyProviderCopiesNestedMutableFields(t *testing.T) {
 		Catalog: &ProviderCatalog{
 			Docs: &docs,
 			Endpoint: ProviderEndpoint{
+				ProtocolOptions: ProviderCatalogProtocolOptions{
+					OpenAI: &ProviderOpenAICatalogProtocolOptions{
+						TokenPriceUnit: ProviderTokenPriceUnitPerMillion,
+					},
+				},
 				FeatureRules: []FeatureRule{{
 					Field:    "id",
 					Contains: []string{"reasoning"},
@@ -405,9 +410,6 @@ func TestDeepCopyProviderCopiesNestedMutableFields(t *testing.T) {
 		PrivacyPolicy: &ProviderPrivacyPolicy{
 			PrivacyPolicyURL: &privacyURL,
 		},
-		EnvVarValues: map[string]string{
-			"API_KEY": "secret",
-		},
 		Extensions: SourceExtensions{
 			"models.dev": {
 				Fields: map[string]any{
@@ -421,10 +423,10 @@ func TestDeepCopyProviderCopiesNestedMutableFields(t *testing.T) {
 	copied.Aliases[0] = "changed"
 	*copied.Catalog.Docs = "changed"
 	copied.Catalog.Endpoint.FeatureRules[0].Contains[0] = "changed"
+	copied.Catalog.Endpoint.ProtocolOptions.OpenAI.TokenPriceUnit = ProviderTokenPriceUnitPerToken
 	copied.Catalog.Endpoint.AuthorMapping.Normalized["openai"] = AuthorIDGoogle
 	copied.Catalog.Authors[0] = AuthorIDGoogle
 	*copied.PrivacyPolicy.PrivacyPolicyURL = "changed"
-	copied.EnvVarValues["API_KEY"] = "changed"
 	copied.Extensions["models.dev"].Fields["npm"] = "@changed/provider"
 
 	if original.Aliases[0] != "provider-alias" {
@@ -436,6 +438,9 @@ func TestDeepCopyProviderCopiesNestedMutableFields(t *testing.T) {
 	if original.Catalog.Endpoint.FeatureRules[0].Contains[0] != "reasoning" {
 		t.Fatal("feature rule contains slice was shared between original and copy")
 	}
+	if original.Catalog.Endpoint.ProtocolOptions.OpenAI.TokenPriceUnit != ProviderTokenPriceUnitPerMillion {
+		t.Fatal("provider protocol options pointer was shared between original and copy")
+	}
 	if original.Catalog.Endpoint.AuthorMapping.Normalized["openai"] != AuthorIDOpenAI {
 		t.Fatal("author mapping map was shared between original and copy")
 	}
@@ -444,9 +449,6 @@ func TestDeepCopyProviderCopiesNestedMutableFields(t *testing.T) {
 	}
 	if *original.PrivacyPolicy.PrivacyPolicyURL != "https://example.com/privacy" {
 		t.Fatal("provider privacy pointer was shared between original and copy")
-	}
-	if original.EnvVarValues["API_KEY"] != "secret" {
-		t.Fatal("provider environment values map was shared between original and copy")
 	}
 	if original.Extensions["models.dev"].Fields["npm"] != "@ai-sdk/anthropic" {
 		t.Fatal("provider extension fields map was shared between original and copy")

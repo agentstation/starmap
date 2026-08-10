@@ -77,24 +77,70 @@ func testFS() fs.FS {
 		"providers.yaml": &fstest.MapFile{
 			Data: []byte(`- id: openai
   name: OpenAI
-  api_key:
-    name: OPENAI_API_KEY
-    pattern: "sk-.*"
-    header: "Authorization"
-    scheme: "Bearer"
+  credentials:
+    fields:
+    - id: api-key
+      kind: secret
+      required: true
+      environment: [OPENAI_API_KEY]
+      pattern: "^sk-.*"
+    profiles:
+    - id: api-key
+      primitive: api-key
+      fields: [api-key]
+      placements:
+      - field: api-key
+        kind: header
+        name: Authorization
+        scheme: bearer
+    catalog_acquisition: {}
+    inference:
+      required: true
+      alternatives: [api-key]
 - id: anthropic
   name: Anthropic
-  api_key:
-    name: ANTHROPIC_API_KEY
-    pattern: "sk-ant-.*"
-    header: "x-api-key"
+  credentials:
+    fields:
+    - id: api-key
+      kind: secret
+      required: true
+      environment: [ANTHROPIC_API_KEY]
+      pattern: "^sk-ant-.*"
+    profiles:
+    - id: api-key
+      primitive: api-key
+      fields: [api-key]
+      placements:
+      - field: api-key
+        kind: header
+        name: x-api-key
+        scheme: direct
+    catalog_acquisition: {}
+    inference:
+      required: true
+      alternatives: [api-key]
 - id: groq
   name: Groq
-  api_key:
-    name: GROQ_API_KEY
-    pattern: "gsk_.*"
-    header: "Authorization"
-    scheme: "Bearer"
+  credentials:
+    fields:
+    - id: api-key
+      kind: secret
+      required: true
+      environment: [GROQ_API_KEY]
+      pattern: "^gsk_.*"
+    profiles:
+    - id: api-key
+      primitive: api-key
+      fields: [api-key]
+      placements:
+      - field: api-key
+        kind: header
+        name: Authorization
+        scheme: bearer
+    catalog_acquisition: {}
+    inference:
+      required: true
+      alternatives: [api-key]
 `),
 		},
 		"authors.yaml": &fstest.MapFile{

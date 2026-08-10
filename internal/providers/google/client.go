@@ -20,6 +20,7 @@ import (
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/errors"
 	"github.com/agentstation/starmap/pkg/logging"
+	"github.com/agentstation/starmap/pkg/sources"
 )
 
 // Client acquires and normalizes model metadata from Google AI Studio or Vertex AI.
@@ -76,22 +77,11 @@ func (c *Client) Close() error {
 	return nil
 }
 
-// IsAPIKeyRequired returns true if the client requires an API key.
-func (c *Client) IsAPIKeyRequired() bool {
-	c.mu.RLock()
-	defer c.mu.RUnlock()
-	return c.provider.IsAPIKeyRequired()
-}
-
-// HasAPIKey returns true if the client has an API key.
-func (c *Client) HasAPIKey() bool {
-	c.mu.RLock()
-	defer c.mu.RUnlock()
-	return c.provider.HasAPIKey()
-}
-
 // initCredentials initializes or returns cached credentials for Google Cloud authentication.
-func (c *Client) initCredentials(ctx context.Context) (*auth.Credentials, error) {
+func (c *Client) initCredentials(
+	ctx context.Context,
+	material sources.ProviderCredentialMaterial,
+) (*auth.Credentials, error) {
 	// Check if context is already cancelled
 	if err := ctx.Err(); err != nil {
 		return nil, err
@@ -114,10 +104,7 @@ func (c *Client) initCredentials(ctx context.Context) (*auth.Credentials, error)
 	resultChan := make(chan result, 1)
 	go func() {
 		creds, err := credentials.DetectDefault(&credentials.DetectOptions{
-			Scopes: []string{
-				"https://www.googleapis.com/auth/cloud-platform",
-				"https://www.googleapis.com/auth/generative-language",
-			},
+			Scopes: material.Profile().Scopes,
 		})
 		resultChan <- result{creds: creds, err: err}
 	}()
@@ -151,7 +138,10 @@ func (c *Client) initCredentials(ctx context.Context) (*auth.Credentials, error)
 }
 
 // ListModels retrieves all available models using the appropriate Google API.
-func (c *Client) ListModels(ctx context.Context) ([]catalogs.Model, error) {
+func (c *Client) ListModels(
+	ctx context.Context,
+	material sources.ProviderCredentialMaterial,
+) ([]catalogs.Model, error) {
 	c.mu.RLock()
 	provider := c.provider
 	c.mu.RUnlock()
@@ -167,18 +157,17 @@ func (c *Client) ListModels(ctx context.Context) ([]catalogs.Model, error) {
 	useVertex := c.shouldUseVertexBackend()
 
 	if useVertex {
-		return c.listModelsVertex(ctx)
+		return c.listModelsVertex(ctx, material)
 	}
 
-	// Check if AI Studio is configured
-	if !provider.HasAPIKey() {
+	if apiKeyFromMaterial(material) == "" {
 		return nil, &errors.ConfigError{
 			Component: string(provider.ID),
-			Message:   "no valid configuration found - set GOOGLE_API_KEY for AI Studio or GOOGLE_CLOUD_PROJECT for Vertex AI",
+			Message:   "catalog API key is not configured",
 		}
 	}
 
-	return c.listModelsAIStudio(ctx)
+	return c.listModelsAIStudio(ctx, material)
 }
 
 // shouldUseVertexBackend determines if we should use Vertex AI backend.
@@ -188,24 +177,15 @@ func (c *Client) shouldUseVertexBackend() bool {
 		return true
 	}
 
-	// Check for Vertex-specific configuration
-	if c.provider.EnvVar("GOOGLE_VERTEX_PROJECT") != "" ||
-		c.provider.EnvVar("GOOGLE_CLOUD_PROJECT") != "" {
-		return true
-	}
-
-	// If we have an API key, prefer AI Studio
-	if c.provider.HasAPIKey() {
-		return false
-	}
-
-	// Don't default to Vertex - it requires explicit configuration
-	// Without project ID or API key, we can't use either backend
 	return false
 }
 
 // getOrCreateGenAIClient gets or creates a GenAI client for the appropriate backend.
-func (c *Client) getOrCreateGenAIClient(ctx context.Context, forVertex bool) (*genai.Client, error) {
+func (c *Client) getOrCreateGenAIClient(
+	ctx context.Context,
+	forVertex bool,
+	material sources.ProviderCredentialMaterial,
+) (*genai.Client, error) {
 	c.mu.RLock()
 	if c.genaiClient != nil {
 		client := c.genaiClient
@@ -221,10 +201,10 @@ func (c *Client) getOrCreateGenAIClient(ctx context.Context, forVertex bool) (*g
 	if forVertex {
 		// Ensure we have project and location
 		if projectID == "" {
-			projectID = c.getProjectID(ctx)
+			projectID = c.getProjectID(ctx, material)
 		}
 		if location == "" {
-			location = c.getLocation(ctx)
+			location = c.getLocation(ctx, material)
 		}
 
 		if projectID == "" {
@@ -241,26 +221,18 @@ func (c *Client) getOrCreateGenAIClient(ctx context.Context, forVertex bool) (*g
 		}
 
 		// Check if API key is available for Vertex AI (optional)
-		if apiKey, err := c.provider.APIKeyValue(); err == nil && apiKey != "" {
-			// Use API key for Vertex AI if available
-			config.APIKey = apiKey
-		} else {
-			// Fall back to Application Default Credentials
-			creds, err := c.initCredentials(ctx)
-			if err != nil {
-				return nil, err
-			}
-			config.Credentials = creds
+		creds, err := c.initCredentials(ctx, material)
+		if err != nil {
+			return nil, err
 		}
+		config.Credentials = creds
 	} else {
-		// AI Studio configuration with API key
-		apiKey, err := c.provider.APIKeyValue()
-		if err != nil || apiKey == "" {
+		apiKey := apiKeyFromMaterial(material)
+		if apiKey == "" {
 			return nil, &errors.AuthenticationError{
-				Provider: "google-ai-studio",
+				Provider: string(c.provider.ID),
 				Method:   "api-key",
-				Message:  "API key required for Google AI Studio",
-				Err:      err,
+				Message:  "catalog API key is required",
 			}
 		}
 
@@ -287,8 +259,11 @@ func (c *Client) getOrCreateGenAIClient(ctx context.Context, forVertex bool) (*g
 }
 
 // listModelsAIStudio fetches models using Google AI Studio API via GenAI SDK.
-func (c *Client) listModelsAIStudio(ctx context.Context) ([]catalogs.Model, error) {
-	if models, err := c.listModelsAIStudioREST(ctx); err == nil {
+func (c *Client) listModelsAIStudio(
+	ctx context.Context,
+	material sources.ProviderCredentialMaterial,
+) ([]catalogs.Model, error) {
+	if models, err := c.listModelsAIStudioREST(ctx, material); err == nil {
 		if len(models) > 0 {
 			return models, nil
 		}
@@ -304,7 +279,7 @@ func (c *Client) listModelsAIStudio(ctx context.Context) ([]catalogs.Model, erro
 	}
 
 	// Use GenAI SDK only
-	client, err := c.getOrCreateGenAIClient(ctx, false)
+	client, err := c.getOrCreateGenAIClient(ctx, false, material)
 	if err != nil {
 		return nil, err
 	}
@@ -312,7 +287,10 @@ func (c *Client) listModelsAIStudio(ctx context.Context) ([]catalogs.Model, erro
 	return c.listModelsViaGenAI(ctx, client)
 }
 
-func (c *Client) listModelsAIStudioREST(ctx context.Context) ([]catalogs.Model, error) {
+func (c *Client) listModelsAIStudioREST(
+	ctx context.Context,
+	material sources.ProviderCredentialMaterial,
+) ([]catalogs.Model, error) {
 	c.mu.RLock()
 	provider := c.provider
 	c.mu.RUnlock()
@@ -323,17 +301,21 @@ func (c *Client) listModelsAIStudioREST(ctx context.Context) ([]catalogs.Model, 
 		}
 	}
 
-	httpClient := transport.New(provider)
+	endpoint, err := provider.BindCatalogEndpoint(material.EndpointBindings())
+	if err != nil {
+		return nil, err
+	}
+	httpClient := transport.New()
 	pageToken := ""
 	seenPageTokens := make(map[string]struct{})
 	models := make([]catalogs.Model, 0)
 	report := sourcepayload.RecordReport{}
 	for {
-		requestURL, err := googleListURL(provider.CatalogEndpointURL(), pageToken)
+		requestURL, err := googleListURL(endpoint, pageToken)
 		if err != nil {
 			return nil, err
 		}
-		resp, err := httpClient.Get(ctx, requestURL, provider)
+		resp, err := httpClient.Get(ctx, requestURL, provider, material)
 		if err != nil {
 			return nil, err
 		}
@@ -399,7 +381,10 @@ func googleListURL(endpoint, pageToken string) (string, error) {
 }
 
 // listModelsVertex fetches models using Vertex AI API.
-func (c *Client) listModelsVertex(ctx context.Context) ([]catalogs.Model, error) {
+func (c *Client) listModelsVertex(
+	ctx context.Context,
+	material sources.ProviderCredentialMaterial,
+) ([]catalogs.Model, error) {
 	// Bound the complete paginated operation while respecting any shorter caller
 	// deadline. Vertex model listings can span multiple requests, so a per-call
 	// latency assumption is not an appropriate operation deadline.
@@ -407,7 +392,7 @@ func (c *Client) listModelsVertex(ctx context.Context) ([]catalogs.Model, error)
 	defer cancel()
 
 	// Use GenAI SDK only
-	client, err := c.getOrCreateGenAIClient(vertexCtx, true)
+	client, err := c.getOrCreateGenAIClient(vertexCtx, true, material)
 	if err != nil {
 		return nil, err
 	}
@@ -477,17 +462,15 @@ func (c *Client) listModelsViaGenAI(ctx context.Context, client *genai.Client) (
 
 // extractModelID extracts the model ID from the full name.
 
-func (c *Client) getProjectID(ctx context.Context) string {
-	// 1. Check environment variables first (highest priority)
-	if projectID := c.provider.EnvVar("GOOGLE_CLOUD_PROJECT"); projectID != "" {
-		return projectID
-	}
-	if projectID := c.provider.EnvVar("GOOGLE_VERTEX_PROJECT"); projectID != "" {
+func (c *Client) getProjectID(
+	ctx context.Context,
+	material sources.ProviderCredentialMaterial,
+) string {
+	if projectID := material.EndpointBindings()["project"]; projectID != "" {
 		return projectID
 	}
 
-	// 2. Get from credentials (no gcloud fallback)
-	creds, err := c.initCredentials(ctx)
+	creds, err := c.initCredentials(ctx, material)
 	if err == nil {
 		// Try quota project ID first (for billing)
 		if projectID, err := creds.QuotaProjectID(ctx); err == nil && projectID != "" {
@@ -505,34 +488,29 @@ func (c *Client) getProjectID(ctx context.Context) string {
 
 // getLocation gets the location from environment variables with sensible defaults.
 // Returns empty string if context is cancelled.
-func (c *Client) getLocation(ctx context.Context) string {
+func (c *Client) getLocation(
+	ctx context.Context,
+	material sources.ProviderCredentialMaterial,
+) string {
 	// Check if context is already cancelled
 	if ctx.Err() != nil {
 		return ""
 	}
 
-	// Check environment variables
-	locations := []string{
-		c.provider.EnvVar("GOOGLE_CLOUD_LOCATION"),
-		c.provider.EnvVar("GOOGLE_CLOUD_REGION"),
-		c.provider.EnvVar("GOOGLE_VERTEX_LOCATION"),
+	if location := material.EndpointBindings()["location"]; location != "" {
+		return location
 	}
-
-	for _, loc := range locations {
-		if loc != "" {
-			return loc
-		}
-	}
-
-	// Default to us-central1 (most commonly available region)
-	return "us-central1"
+	return ""
 }
 
 // ValidateCredentials validates that the client can authenticate properly.
-func (c *Client) ValidateCredentials(ctx context.Context) error {
+func (c *Client) ValidateCredentials(
+	ctx context.Context,
+	material sources.ProviderCredentialMaterial,
+) error {
 	if c.shouldUseVertexBackend() {
 		// For Vertex, check that we can get credentials and project
-		creds, err := c.initCredentials(ctx)
+		creds, err := c.initCredentials(ctx, material)
 		if err != nil {
 			return err
 		}
@@ -549,7 +527,7 @@ func (c *Client) ValidateCredentials(ctx context.Context) error {
 		}
 
 		// Verify project ID is available
-		projectID := c.getProjectID(ctx)
+		projectID := c.getProjectID(ctx, material)
 		if projectID == "" {
 			return &errors.ConfigError{
 				Component: "google-vertex",
@@ -558,7 +536,7 @@ func (c *Client) ValidateCredentials(ctx context.Context) error {
 		}
 	} else {
 		// For AI Studio, just check API key
-		if !c.HasAPIKey() {
+		if apiKeyFromMaterial(material) == "" {
 			return &errors.AuthenticationError{
 				Provider: "google-ai-studio",
 				Method:   "api-key",
@@ -568,6 +546,15 @@ func (c *Client) ValidateCredentials(ctx context.Context) error {
 	}
 
 	return nil
+}
+
+func apiKeyFromMaterial(material sources.ProviderCredentialMaterial) string {
+	for _, placement := range material.Profile().Placements {
+		if value, exists := material.Value(placement.Field); exists && value != "" {
+			return value
+		}
+	}
+	return ""
 }
 
 // normalizePublisherToAuthorID maps Google Vertex publisher names to AuthorID.

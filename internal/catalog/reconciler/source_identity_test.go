@@ -9,6 +9,7 @@ import (
 	"time"
 
 	"github.com/agentstation/starmap/internal/constants"
+	"github.com/agentstation/starmap/internal/testcatalog"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/sources"
 )
@@ -225,8 +226,9 @@ func sourceIdentityCatalog(t testing.TB, catalogURL string, model catalogs.Model
 	if catalogURL != "" {
 		providerCatalog = &catalogs.ProviderCatalog{
 			Endpoint: catalogs.ProviderEndpoint{
-				Type: catalogs.EndpointTypeOpenAI,
-				URL:  catalogURL,
+				Type:            catalogs.EndpointTypeOpenAI,
+				URL:             catalogURL,
+				ProtocolOptions: testcatalog.OpenAIProtocolOptions(),
 			},
 		}
 	}
@@ -245,10 +247,11 @@ func sourceIdentityCatalog(t testing.TB, catalogURL string, model catalogs.Model
 		t.Fatalf("SetAuthorModel: %v", err)
 	}
 	if err := builder.SetProvider(catalogs.Provider{
-		ID:      "provider-a",
-		Name:    "Provider A",
-		Catalog: providerCatalog,
-		Models:  map[string]*catalogs.Model{model.ID: &model},
+		ID:          "provider-a",
+		Name:        "Provider A",
+		Credentials: testcatalog.UnauthenticatedCredentials(),
+		Catalog:     providerCatalog,
+		Models:      map[string]*catalogs.Model{model.ID: &model},
 	}); err != nil {
 		t.Fatalf("SetProvider: %v", err)
 	}

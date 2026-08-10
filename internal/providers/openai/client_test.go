@@ -218,7 +218,6 @@ func TestConvertToOpenAIModel(t *testing.T) {
 		ID:   catalogs.ProviderIDOpenAI,
 		Name: "OpenAI",
 		Catalog: &catalogs.ProviderCatalog{
-			Auth: catalogs.ProviderCatalogAuth{Method: catalogs.ProviderCatalogAuthAPIKey, Required: true},
 			Endpoint: catalogs.ProviderEndpoint{
 				Type: catalogs.EndpointTypeOpenAI,
 				URL:  "https://api.openai.com/v1/models",
@@ -581,6 +580,11 @@ func TestConvertToModelPreservesOpenAICompatibleProviderFields(t *testing.T) {
 		Catalog: &catalogs.ProviderCatalog{
 			Endpoint: catalogs.ProviderEndpoint{
 				Type: catalogs.EndpointTypeOpenAI,
+				ProtocolOptions: catalogs.ProviderCatalogProtocolOptions{
+					OpenAI: &catalogs.ProviderOpenAICatalogProtocolOptions{
+						TokenPriceUnit: catalogs.ProviderTokenPriceUnitPerToken,
+					},
+				},
 			},
 		},
 	}
@@ -903,28 +907,13 @@ func TestOpenAIClientListModels(t *testing.T) {
 	defer os.Unsetenv("OPENAI_API_KEY")
 
 	// Create an OpenAI client with mock provider
-	provider := &catalogs.Provider{
-		ID:   catalogs.ProviderIDOpenAI,
-		Name: "OpenAI",
-		APIKey: &catalogs.ProviderAPIKey{
-			Name:   "OPENAI_API_KEY",
-			Header: "Authorization",
-			Scheme: catalogs.ProviderAPIKeySchemeBearer,
-		},
-		Catalog: &catalogs.ProviderCatalog{
-			Auth: catalogs.ProviderCatalogAuth{Method: catalogs.ProviderCatalogAuthAPIKey, Required: true},
-			Endpoint: catalogs.ProviderEndpoint{
-				Type: catalogs.EndpointTypeOpenAI,
-				URL:  server.URL,
-				FeatureRules: []catalogs.FeatureRule{
-					{
-						Field:    "id",
-						Contains: []string{"gpt-4"},
-						Feature:  "tools",
-						Value:    true,
-					},
-				},
-			},
+	provider := testOpenAIProvider(server.URL)
+	provider.Catalog.Endpoint.FeatureRules = []catalogs.FeatureRule{
+		{
+			Field:    "id",
+			Contains: []string{"gpt-4"},
+			Feature:  "tools",
+			Value:    true,
 		},
 	}
 
@@ -932,7 +921,7 @@ func TestOpenAIClientListModels(t *testing.T) {
 
 	// Test ListModels
 	ctx := context.Background()
-	models, err := client.ListModels(ctx)
+	models, err := client.ListModels(ctx, testOpenAIMaterial(provider, "test-api-key"))
 	if err != nil {
 		t.Fatalf("ListModels failed: %v", err)
 	}
@@ -996,11 +985,13 @@ func TestSchemaDriftMutationMatrix(t *testing.T) {
 				_, _ = w.Write([]byte(test.payload))
 			}))
 			defer server.Close()
-			client := newTestClient(t, &catalogs.Provider{
-				ID: "test", Name: "Test",
-				Catalog: &catalogs.ProviderCatalog{Endpoint: catalogs.ProviderEndpoint{Type: catalogs.EndpointTypeOpenAI, URL: server.URL}},
-			})
-			models, err := client.ListModels(context.Background())
+			provider := testOpenAIProvider(server.URL)
+			provider.ID = "test"
+			provider.Name = "Test"
+			client := newTestClient(t, provider)
+			models, err := client.ListModels(
+				context.Background(), testOpenAIMaterial(provider, "test-api-key"),
+			)
 			if test.wantErr && err == nil {
 				t.Fatal("ListModels returned nil error")
 			}

@@ -11,7 +11,9 @@ import (
 	"google.golang.org/genai"
 
 	"github.com/agentstation/starmap/internal/sourcepayload"
+	"github.com/agentstation/starmap/internal/testcatalog"
 	"github.com/agentstation/starmap/pkg/catalogs"
+	"github.com/agentstation/starmap/pkg/sources"
 )
 
 type staticTokenProvider struct{}
@@ -33,7 +35,9 @@ func TestGetOrCreateVertexClientDoesNotDeadlockOnCachedCredentials(t *testing.T)
 
 	result := make(chan error, 1)
 	go func() {
-		_, err := client.getOrCreateGenAIClient(context.Background(), true)
+		_, err := client.getOrCreateGenAIClient(
+			context.Background(), true, sources.ProviderCredentialMaterial{},
+		)
 		result <- err
 	}()
 
@@ -109,18 +113,12 @@ func TestListModelsAIStudioFallsBackWhenRESTReturnsNoModels(t *testing.T) {
 	}))
 	defer server.Close()
 
-	client := NewClient(&catalogs.Provider{
-		ID:   catalogs.ProviderIDGoogleAIStudio,
-		Name: "Google AI Studio",
-		Catalog: &catalogs.ProviderCatalog{
-			Endpoint: catalogs.ProviderEndpoint{
-				Type: catalogs.EndpointTypeGoogle,
-				URL:  server.URL,
-			},
-		},
-	})
+	provider := testAIStudioProvider(server.URL)
+	client := NewClient(provider)
 
-	models, err := client.listModelsAIStudio(context.Background())
+	models, err := client.listModelsAIStudio(
+		context.Background(), testAIStudioMaterial(provider),
+	)
 	if err == nil {
 		t.Fatalf("expected SDK fallback error after empty REST response, got nil with %d models", len(models))
 	}
@@ -151,11 +149,11 @@ func TestSchemaDriftMutationMatrix(t *testing.T) {
 				_, _ = w.Write([]byte(test.payload))
 			}))
 			defer server.Close()
-			client := NewClient(&catalogs.Provider{
-				ID: catalogs.ProviderIDGoogleAIStudio, Name: "Google AI Studio",
-				Catalog: &catalogs.ProviderCatalog{Endpoint: catalogs.ProviderEndpoint{Type: catalogs.EndpointTypeGoogle, URL: server.URL}},
-			})
-			models, err := client.listModelsAIStudioREST(context.Background())
+			provider := testAIStudioProvider(server.URL)
+			client := NewClient(provider)
+			models, err := client.listModelsAIStudioREST(
+				context.Background(), testAIStudioMaterial(provider),
+			)
 			if test.wantErr && err == nil {
 				t.Fatal("listModelsAIStudioREST returned nil error")
 			}
@@ -173,6 +171,20 @@ func TestSchemaDriftMutationMatrix(t *testing.T) {
 			}
 		})
 	}
+}
+
+func testAIStudioProvider(endpoint string) *catalogs.Provider {
+	return &catalogs.Provider{
+		ID: catalogs.ProviderIDGoogleAIStudio, Name: "Google AI Studio",
+		Credentials: testcatalog.QueryAPIKeyCredentials("GOOGLE_API_KEY", "key"),
+		Catalog: &catalogs.ProviderCatalog{Endpoint: catalogs.ProviderEndpoint{
+			Type: catalogs.EndpointTypeGoogle, URL: endpoint,
+		}},
+	}
+}
+
+func testAIStudioMaterial(provider *catalogs.Provider) sources.ProviderCredentialMaterial {
+	return testcatalog.APIKeyMaterial(provider.Credentials, "test-api-key")
 }
 
 func TestConvertAIStudioModelPreservesRESTOnlyFields(t *testing.T) {

@@ -4,6 +4,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/agentstation/starmap/internal/testcatalog"
 	"github.com/agentstation/starmap/pkg/catalogmeta"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/catalogstore"
@@ -230,12 +231,13 @@ func testAuthor() *catalogs.Author {
 }
 
 func testProvider() *catalogs.Provider {
-	required := true
 	return &catalogs.Provider{
 		ID:   "test-provider",
 		Name: "Test Provider",
+		Credentials: testcatalog.APIKeyCredentials(
+			"TEST_PROVIDER_API_KEY", "Authorization", catalogs.ProviderCredentialSchemeBearer,
+		),
 		Catalog: &catalogs.ProviderCatalog{
-			Auth:    catalogs.ProviderCatalogAuth{Method: catalogs.ProviderCatalogAuthAPIKey, Required: required},
 			Authors: []catalogs.AuthorID{"test-author"},
 		},
 	}

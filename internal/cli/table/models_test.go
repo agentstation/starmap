@@ -5,6 +5,7 @@ import (
 	"testing"
 
 	"github.com/agentstation/starmap/internal/auth"
+	"github.com/agentstation/starmap/internal/testcatalog"
 	"github.com/agentstation/starmap/pkg/catalogs"
 )
 
@@ -16,7 +17,10 @@ func TestProviderTableDoesNotExposeCredentialFingerprint(t *testing.T) {
 	t.Setenv(envName, secret)
 
 	data := ProvidersToTableData([]*catalogs.Provider{{
-		ID: "test", Name: "Test", APIKey: &catalogs.ProviderAPIKey{Name: envName},
+		ID: "test", Name: "Test",
+		Credentials: testcatalog.APIKeyCredentials(
+			envName, "Authorization", catalogs.ProviderCredentialSchemeBearer,
+		),
 	}}, auth.NewChecker(), map[string]bool{"test": true})
 	if len(data.Rows) != 1 {
 		t.Fatalf("got %d rows, want 1", len(data.Rows))
@@ -29,5 +33,26 @@ func TestProviderTableDoesNotExposeCredentialFingerprint(t *testing.T) {
 		if strings.Contains(row, fragment) {
 			t.Fatalf("provider row exposed credential fragment %q: %q", fragment, row)
 		}
+	}
+}
+
+func TestProviderTableReportsMissingCatalogCredentialFromSchema(t *testing.T) {
+	const envName = "STARMAP_TABLE_MISSING_API_KEY"
+	t.Setenv(envName, "")
+
+	data := ProvidersToTableData([]*catalogs.Provider{{
+		ID: "test", Name: "Test",
+		Credentials: testcatalog.APIKeyCredentials(
+			envName, "Authorization", catalogs.ProviderCredentialSchemeBearer,
+		),
+	}}, auth.NewChecker(), map[string]bool{"test": true})
+	row := strings.Join(data.Rows[0], " ")
+	for _, want := range []string{envName, "(not set)", "Missing"} {
+		if !strings.Contains(row, want) {
+			t.Fatalf("provider row %q does not contain %q", row, want)
+		}
+	}
+	if strings.Contains(row, "no key required") {
+		t.Fatalf("provider row reports an absent required key as optional: %q", row)
 	}
 }

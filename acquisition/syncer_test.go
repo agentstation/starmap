@@ -20,13 +20,12 @@ import (
 
 type testProviderClient struct{}
 
-func (testProviderClient) ListModels(context.Context) ([]catalogs.Model, error) {
+func (testProviderClient) ListModels(
+	context.Context,
+	sources.ProviderCredentialMaterial,
+) ([]catalogs.Model, error) {
 	return nil, nil
 }
-
-func (testProviderClient) IsAPIKeyRequired() bool { return false }
-
-func (testProviderClient) HasAPIKey() bool { return true }
 
 func TestSyncDryRunNeedsNoWritableStore(t *testing.T) {
 	t.Parallel()

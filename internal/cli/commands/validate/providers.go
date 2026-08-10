@@ -20,7 +20,7 @@ func NewProvidersCommand(app application) *cobra.Command {
 
 This checks:
   - Required fields (id, name)
-  - API key configuration consistency
+  - Credential profile consistency
   - Catalog configuration validity
   - URL formats and patterns`,
 		RunE: func(_ *cobra.Command, args []string) error {
@@ -67,14 +67,6 @@ func validateProvidersStructure(app application, verbose bool) error {
 				fmt.Sprintf("provider %s contract: %v", provider.ID, err))
 		}
 
-		// Validate API key configuration if present
-		if provider.APIKey != nil {
-			if err := validateAPIKeyConfig(&provider); err != nil {
-				validationErrors = append(validationErrors,
-					fmt.Sprintf("provider %s API key config: %v", provider.ID, err))
-			}
-		}
-
 		// Validate catalog section
 		if provider.Catalog != nil {
 			if err := validateCatalogConfig(&provider); err != nil {
@@ -105,33 +97,11 @@ func validateProvidersStructure(app application, verbose bool) error {
 	return nil
 }
 
-func validateAPIKeyConfig(provider *catalogs.Provider) error {
-	if provider.APIKey.Name == "" {
-		return fmt.Errorf("missing 'name' field")
-	}
-
-	// Check that auth method is specified (header or query_param)
-	// Scheme is optional and works with header (e.g., "Authorization: Bearer token")
-	if provider.APIKey.Header == "" && provider.APIKey.QueryParam == "" {
-		return fmt.Errorf("no auth method specified (header or query_param)")
-	}
-	if provider.APIKey.Header != "" && provider.APIKey.QueryParam != "" {
-		return fmt.Errorf("cannot specify both header and query_param")
-	}
-
-	return nil
-}
-
 func validateCatalogConfig(provider *catalogs.Provider) error {
 	catalog := provider.Catalog
 
-	// Check catalog authentication consistency.
-	if catalog.Auth.Method == catalogs.ProviderCatalogAuthAPIKey && provider.APIKey == nil {
-		return fmt.Errorf("api-key catalog auth requires api_key configuration")
-	}
-
 	// Validate URLs are present if specified
-	if catalog.Endpoint.URL != "" && !isValidURL(catalog.Endpoint.URL) {
+	if catalog.Endpoint.URL != "" && !isValidURLTemplate(catalog.Endpoint.URL) {
 		return fmt.Errorf("invalid api_url format")
 	}
 
@@ -140,6 +110,13 @@ func validateCatalogConfig(provider *catalogs.Provider) error {
 	}
 
 	return nil
+}
+
+func isValidURLTemplate(value string) bool {
+	if isValidURL(value) {
+		return true
+	}
+	return len(value) > 2 && value[0] == '{' && value[1] != '}'
 }
 
 func validateProviderURLs(provider *catalogs.Provider) error {

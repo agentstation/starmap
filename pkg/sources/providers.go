@@ -13,9 +13,7 @@ import (
 
 // ProviderClient fetches model information from a provider API.
 type ProviderClient interface {
-	ListModels(ctx context.Context) ([]catalogs.Model, error)
-	IsAPIKeyRequired() bool
-	HasAPIKey() bool
+	ListModels(ctx context.Context, material ProviderCredentialMaterial) ([]catalogs.Model, error)
 }
 
 // ProviderClientFactory creates provider API clients.
@@ -30,7 +28,12 @@ type RawFetchResult struct {
 }
 
 // ProviderRawFetcher fetches a raw provider API response.
-type ProviderRawFetcher func(context.Context, *catalogs.Provider, string) (*RawFetchResult, error)
+type ProviderRawFetcher func(
+	context.Context,
+	*catalogs.Provider,
+	ProviderCredentialMaterial,
+	string,
+) (*RawFetchResult, error)
 
 // ProviderFetcher provides operations for fetching models from provider APIs.
 // Concrete provider clients are an explicit injected composition; use package
@@ -42,11 +45,10 @@ type ProviderFetcher struct {
 
 // providerOptions holds configuration for ProviderFetcher operations.
 type providerOptions struct {
-	loadCredentials bool          // Auto-load credentials from environment
-	allowMissingKey bool          // Allow operations without API key
-	timeout         time.Duration // Context timeout for operations
-	clientFactory   ProviderClientFactory
-	rawFetcher      ProviderRawFetcher
+	timeout            time.Duration // Context timeout for operations
+	clientFactory      ProviderClientFactory
+	rawFetcher         ProviderRawFetcher
+	credentialResolver ProviderCredentialResolver
 }
 
 func (po *providerOptions) apply(opts ...ProviderOption) *providerOptions {
@@ -62,11 +64,10 @@ type ProviderOption func(*providerOptions)
 // providerDefaults returns options with sensible defaults.
 func providerDefaults() *providerOptions {
 	return &providerOptions{
-		loadCredentials: true,  // Default: auto-load credentials
-		allowMissingKey: false, // Default: require API key
-		timeout:         0,     // Default: no timeout
-		clientFactory:   nil,   // Explicit acquisition composition is required
-		rawFetcher:      nil,   // Explicit acquisition composition is required
+		timeout:            0,   // Default: no timeout
+		clientFactory:      nil, // Explicit acquisition composition is required
+		rawFetcher:         nil, // Explicit acquisition composition is required
+		credentialResolver: nil, // Explicit acquisition composition is required
 	}
 }
 
@@ -114,39 +115,27 @@ func (s *FetchStats) HumanSize() string {
 
 // getAuthInfo extracts authentication configuration from a provider.
 // Returns method (Header/Query/None), location (header or query param name), and scheme (Bearer/Basic/Direct).
-func getAuthInfo(provider *catalogs.Provider) (method, location, scheme string) {
-	if provider == nil || provider.APIKey == nil {
+func getAuthInfo(material ProviderCredentialMaterial) (method, location, scheme string) {
+	profile := material.Profile()
+	if profile.ID == "" || len(profile.Placements) == 0 {
 		return "None", "", ""
 	}
-	if !provider.HasAPIKey() {
-		return "None", "", ""
+	placement := profile.Placements[0]
+	method = "Header"
+	if placement.Kind == catalogs.ProviderCredentialPlacementQuery {
+		method = "Query"
 	}
-
-	// Check for query parameter authentication
-	if provider.APIKey.QueryParam != "" {
-		return "Query", provider.APIKey.QueryParam, ""
-	}
-
-	// Header-based authentication
-	header := provider.APIKey.Header
-	if header == "" {
-		header = "Authorization"
-	}
-
-	// Determine auth scheme
-	var authScheme string
-	switch provider.APIKey.Scheme {
-	case catalogs.ProviderAPIKeySchemeBearer:
-		authScheme = "Bearer"
-	case catalogs.ProviderAPIKeySchemeBasic:
-		authScheme = "Basic"
-	case catalogs.ProviderAPIKeySchemeDirect:
-		authScheme = "Direct"
+	switch placement.Scheme {
+	case catalogs.ProviderCredentialSchemeBearer:
+		scheme = "Bearer"
+	case catalogs.ProviderCredentialSchemeBasic:
+		scheme = "Basic"
+	case catalogs.ProviderCredentialSchemeDirect:
+		scheme = "Direct"
 	default:
-		authScheme = "Direct"
+		scheme = "Direct"
 	}
-
-	return "Header", header, authScheme
+	return method, placement.Name, scheme
 }
 
 // NewProviderFetcher creates a provider fetcher over the supplied catalog
@@ -165,10 +154,10 @@ func NewProviderFetcher(providers catalogs.ProvidersReader, opts ...ProviderOpti
 func (pf *ProviderFetcher) Providers() *catalogs.Providers {
 	result := catalogs.NewProviders()
 	for _, provider := range pf.providers.List() {
-		if provider.IsAPIKeyRequired() && !provider.HasAPIKey() {
+		if pf.options.credentialResolver == nil {
 			continue
 		}
-		if !provider.HasRequiredEnvVars() {
+		if _, err := pf.options.credentialResolver.ResolveCatalog(context.Background(), &provider); err != nil {
 			continue
 		}
 		_ = result.Add(&provider) // Ignore error - provider is valid
@@ -204,22 +193,6 @@ func (pf *ProviderFetcher) HasClient(id catalogs.ProviderID) bool {
 	return err == nil
 }
 
-// WithoutCredentialLoading disables automatic credential loading from environment.
-// Use this when credentials are already loaded or when testing.
-func WithoutCredentialLoading() ProviderOption {
-	return func(o *providerOptions) {
-		o.loadCredentials = false
-	}
-}
-
-// WithAllowMissingAPIKey allows operations even when API key is not configured.
-// Useful for checking provider support without credentials.
-func WithAllowMissingAPIKey() ProviderOption {
-	return func(o *providerOptions) {
-		o.allowMissingKey = true
-	}
-}
-
 // WithTimeout sets a timeout for provider operations.
 // The timeout applies to the context passed to FetchModels.
 func WithTimeout(d time.Duration) ProviderOption {
@@ -242,8 +215,15 @@ func WithProviderRawFetcher(fetcher ProviderRawFetcher) ProviderOption {
 	}
 }
 
+// WithProviderCredentialResolver configures catalog credential resolution.
+func WithProviderCredentialResolver(resolver ProviderCredentialResolver) ProviderOption {
+	return func(o *providerOptions) {
+		o.credentialResolver = resolver
+	}
+}
+
 // FetchModels fetches available models from a single provider's API.
-// It handles credential loading, client creation, and API communication.
+// It handles credential resolution, client creation, and API communication.
 // When a provider quarantines malformed records, FetchModels returns the valid
 // siblings together with a non-nil *sourcepayload.QuarantineError wrapped in a
 // SyncError; callers may consume the partial result only as degraded evidence.
@@ -259,10 +239,10 @@ func WithProviderRawFetcher(fetcher ProviderRawFetcher) ProviderOption {
 //	    WithProviderClientFactory(factory),
 //	    WithTimeout(30*time.Second),
 //	)
-//	models, err := fetcher.FetchModels(ctx, provider, WithAllowMissingAPIKey())
+//	models, err := fetcher.FetchModels(ctx, provider)
 func (pf *ProviderFetcher) FetchModels(ctx context.Context, provider *catalogs.Provider, opts ...ProviderOption) ([]catalogs.Model, error) {
 	options := pf.options.clone().apply(opts...)
-	ctx, cancel, err := prepareProviderOperation(ctx, provider, options)
+	ctx, cancel, material, err := prepareProviderOperation(ctx, provider, options)
 	if err != nil {
 		cancel()
 		return nil, err
@@ -283,7 +263,7 @@ func (pf *ProviderFetcher) FetchModels(ctx context.Context, provider *catalogs.P
 	}
 
 	// Fetch models from API
-	models, err := client.ListModels(ctx)
+	models, err := client.ListModels(ctx, material)
 	if err != nil {
 		return models, &errors.SyncError{
 			Provider: string(provider.ID),
@@ -301,7 +281,7 @@ func (pf *ProviderFetcher) FetchModels(ctx context.Context, provider *catalogs.P
 // The response is returned as raw bytes (JSON) without any parsing, along with fetch statistics.
 func (pf *ProviderFetcher) FetchRawResponse(ctx context.Context, provider *catalogs.Provider, endpoint string, opts ...ProviderOption) ([]byte, *FetchStats, error) {
 	options := pf.options.clone().apply(opts...)
-	ctx, cancel, err := prepareProviderOperation(ctx, provider, options)
+	ctx, cancel, material, err := prepareProviderOperation(ctx, provider, options)
 	if err != nil {
 		cancel()
 		return nil, nil, err
@@ -315,7 +295,7 @@ func (pf *ProviderFetcher) FetchRawResponse(ctx context.Context, provider *catal
 		}
 	}
 
-	result, err := options.rawFetcher(ctx, provider, endpoint)
+	result, err := options.rawFetcher(ctx, provider, material, endpoint)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -334,7 +314,7 @@ func (pf *ProviderFetcher) FetchRawResponse(ctx context.Context, provider *catal
 	}
 
 	// Get authentication info from provider config
-	authMethod, authLocation, authScheme := getAuthInfo(provider)
+	authMethod, authLocation, authScheme := getAuthInfo(material)
 
 	stats := &FetchStats{
 		URL:          result.RequestURL,
@@ -354,9 +334,11 @@ func prepareProviderOperation(
 	ctx context.Context,
 	provider *catalogs.Provider,
 	options *providerOptions,
-) (context.Context, context.CancelFunc, error) {
+) (context.Context, context.CancelFunc, ProviderCredentialMaterial, error) {
 	if provider == nil {
-		return ctx, func() {}, &errors.ValidationError{Field: "provider", Message: "cannot be nil"}
+		return ctx, func() {}, ProviderCredentialMaterial{}, &errors.ValidationError{
+			Field: "provider", Message: "cannot be nil",
+		}
 	}
 	if ctx == nil {
 		ctx = context.Background()
@@ -365,25 +347,14 @@ func prepareProviderOperation(
 	if options.timeout > 0 {
 		ctx, cancel = context.WithTimeout(ctx, options.timeout)
 	}
-	if options.loadCredentials {
-		provider.LoadAPIKey()
-		provider.LoadEnvVars()
-	}
-	if options.allowMissingKey {
-		return ctx, cancel, nil
-	}
-	if provider.IsAPIKeyRequired() && !provider.HasAPIKey() {
-		return ctx, cancel, &errors.AuthenticationError{
-			Provider: string(provider.ID),
-			Method:   "api_key",
-			Message:  fmt.Sprintf("provider %s requires API key %s but it is not configured", provider.ID, provider.APIKey.Name),
+	if options.credentialResolver == nil {
+		return ctx, cancel, ProviderCredentialMaterial{}, &errors.ConfigError{
+			Component: string(provider.ID), Message: "provider credential resolver is not configured",
 		}
 	}
-	if missing := provider.MissingRequiredEnvVars(); len(missing) > 0 {
-		return ctx, cancel, &errors.ConfigError{
-			Component: string(provider.ID),
-			Message:   fmt.Sprintf("missing required environment variables: %v", missing),
-		}
+	material, err := options.credentialResolver.ResolveCatalog(ctx, provider)
+	if err != nil {
+		return ctx, cancel, ProviderCredentialMaterial{}, err
 	}
-	return ctx, cancel, nil
+	return ctx, cancel, material, nil
 }

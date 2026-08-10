@@ -225,8 +225,8 @@ func TestCatalogCredentialPlanesAreIsolated(t *testing.T) {
 
 func TestCatalogCredentialsNeverSerializeValues(t *testing.T) {
 	provider := credentialContractProvider()
-	provider.apiKeyValue = "catalog-credential-secret"
-	provider.EnvVarValues = map[string]string{"OPENAI_API_KEY": "environment-credential-secret"}
+	t.Setenv("OPENAI_API_KEY", "catalog-credential-secret")
+	t.Setenv("OPENAI_ORG_ID", "environment-credential-secret")
 
 	for name, marshal := range map[string]func(any) ([]byte, error){
 		"json": json.Marshal,
@@ -336,6 +336,13 @@ func TestCatalogCredentialValidationRejectsInvalidContracts(t *testing.T) {
 			field: "endpoint_bindings[0].field",
 		},
 		{
+			name: "missing endpoint binding format",
+			mutate: func(provider *Provider) {
+				provider.Credentials.Profiles[0].EndpointBindings[0].Format = ""
+			},
+			field: "endpoint_bindings[0].format",
+		},
+		{
 			name: "duplicate plane alternative",
 			mutate: func(provider *Provider) {
 				provider.Credentials.Inference.Alternatives = append(
@@ -391,6 +398,28 @@ func TestCatalogCredentialOptionalNoneProfile(t *testing.T) {
 	}
 }
 
+func TestCatalogCredentialProfilesCoverEndpointVariables(t *testing.T) {
+	provider := credentialContractProvider()
+	provider.Catalog = &ProviderCatalog{Endpoint: ProviderEndpoint{
+		Type: EndpointTypeOpenAI,
+		URL:  "https://api.example.test/organizations/{organization}/models",
+		ProtocolOptions: ProviderCatalogProtocolOptions{
+			OpenAI: &ProviderOpenAICatalogProtocolOptions{
+				TokenPriceUnit: ProviderTokenPriceUnitPerMillion,
+			},
+		},
+	}}
+	if err := provider.ValidateContract(); err != nil {
+		t.Fatalf("ValidateContract: %v", err)
+	}
+
+	provider.Credentials.Profiles[0].EndpointBindings = nil
+	err := provider.ValidateContract()
+	if err == nil || !strings.Contains(err.Error(), "does not bind endpoint variable") {
+		t.Fatalf("ValidateContract error = %v, want missing endpoint binding", err)
+	}
+}
+
 func TestProviderCredentialYAMLIsStrict(t *testing.T) {
 	t.Parallel()
 
@@ -437,6 +466,7 @@ func credentialContractProvider() Provider {
 				},
 				EndpointBindings: []ProviderCredentialEndpointBinding{{
 					Field: "organization", Variable: "organization",
+					Format: ProviderCredentialEndpointBindingPathSegment,
 				}},
 			}},
 			CatalogAcquisition: ProviderCredentialPlane{Required: true, Alternatives: []ProviderCredentialProfileID{"default"}},
@@ -463,6 +493,7 @@ func credentialRoundTripProvider() Provider {
 		Scopes: []string{"https://example.test/scope"},
 		EndpointBindings: []ProviderCredentialEndpointBinding{{
 			Field: "organization", Variable: "organization",
+			Format: ProviderCredentialEndpointBindingPathSegment,
 		}},
 		ProtocolOptions: ProviderAuthenticationProtocolOptions{
 			GoogleDefault: &ProviderGoogleDefaultProtocolOptions{QuotaProjectField: "organization"},
