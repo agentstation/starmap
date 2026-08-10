@@ -211,6 +211,7 @@ func defaultPolicies() []Policy {
 		policy(catalogmeta.ResourceTypeProvider, "Aliases", "", localThenModelsDev, MergeSetUnion, EmptyAbsent, "Human aliases lead and discovered aliases may add non-duplicate identifiers."),
 		policy(catalogmeta.ResourceTypeProvider, "APIKey", "", localFirst, MergeReplace, EmptyAbsent, "Credential parameter configuration is operator-owned."),
 		policy(catalogmeta.ResourceTypeProvider, "EnvVars", "", localFirst, MergeReplace, EmptyAbsent, "Environment configuration is operator-owned."),
+		policy(catalogmeta.ResourceTypeProvider, "Credentials", "", localFirst, MergeReplace, EmptyAbsent, "Secret-free credential metadata is catalog-owned operator configuration."),
 		policy(catalogmeta.ResourceTypeProvider, "Catalog", "", localFirst, MergeReplace, EmptyAbsent, "Acquisition endpoint configuration is operator-owned."),
 		policy(catalogmeta.ResourceTypeProvider, "Inference", "", localFirst, MergeReplace, EmptyAbsent, "Inference endpoint configuration is operator-owned."),
 		policy(catalogmeta.ResourceTypeProvider, "PrivacyPolicy", "", modelsDevFirst, MergeFillMissing, EmptyAbsent, "Observed policy data leads a human fallback."),

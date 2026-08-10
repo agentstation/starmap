@@ -10,11 +10,8 @@ import (
 // ValidateContract validates serializable catalog-acquisition and inference
 // metadata. It does not inspect runtime credential values.
 func (p Provider) ValidateContract() error {
-	if strings.TrimSpace(string(p.ID)) == "" {
-		return providerContractError("provider.id", p.ID, "is required")
-	}
-	if strings.TrimSpace(p.Name) == "" {
-		return providerContractError("provider.name", p.Name, "is required")
+	if err := p.validateIdentityAndCredentials(); err != nil {
+		return err
 	}
 	if p.Catalog != nil {
 		if !validProviderCatalogAuthMethod(p.Catalog.Auth.Method) {
@@ -133,6 +130,31 @@ func (p Provider) ValidateContract() error {
 			}
 		}
 		seen[endpoint.Operation] = struct{}{}
+	}
+	return nil
+}
+
+func (p Provider) validateIdentityAndCredentials() error {
+	if strings.TrimSpace(string(p.ID)) == "" {
+		return providerContractError("provider.id", p.ID, "is required")
+	}
+	if !validCredentialIdentifier(string(p.ID)) {
+		return providerContractError("provider.id", p.ID, "must be a lowercase kebab-case ID")
+	}
+	for index, alias := range p.Aliases {
+		if !validCredentialIdentifier(string(alias)) {
+			return providerContractError(
+				fmt.Sprintf("provider.aliases[%d]", index),
+				alias,
+				"must be a lowercase kebab-case ID",
+			)
+		}
+	}
+	if strings.TrimSpace(p.Name) == "" {
+		return providerContractError("provider.name", p.Name, "is required")
+	}
+	if err := p.Credentials.validate(); err != nil {
+		return err
 	}
 	return nil
 }

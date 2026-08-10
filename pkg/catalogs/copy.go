@@ -90,6 +90,7 @@ func DeepCopyProvider(provider Provider) Provider {
 	providerCopy.IconURL = copyPtr(provider.IconURL)
 	providerCopy.APIKey = copyPtr(provider.APIKey)
 	providerCopy.EnvVars = append([]ProviderEnvVar(nil), provider.EnvVars...)
+	providerCopy.Credentials = deepCopyProviderCredentials(provider.Credentials)
 	providerCopy.Catalog = deepCopyProviderCatalog(provider.Catalog)
 	providerCopy.Models = DeepCopyProviderModels(provider.Models)
 	providerCopy.StatusPageURL = copyPtr(provider.StatusPageURL)
@@ -100,6 +101,44 @@ func DeepCopyProvider(provider Provider) Provider {
 	providerCopy.Extensions = provider.Extensions.Copy()
 	providerCopy.EnvVarValues = copyMap(provider.EnvVarValues)
 	return providerCopy
+}
+
+func deepCopyProviderCredentials(credentials *ProviderCredentials) *ProviderCredentials {
+	if credentials == nil {
+		return nil
+	}
+	copied := *credentials
+	copied.Fields = make([]ProviderCredentialField, len(credentials.Fields))
+	for index, field := range credentials.Fields {
+		copied.Fields[index] = field
+		copied.Fields[index].Environment = append([]string(nil), field.Environment...)
+	}
+	copied.Profiles = make([]ProviderCredentialProfile, len(credentials.Profiles))
+	for index, profile := range credentials.Profiles {
+		copied.Profiles[index] = profile
+		copied.Profiles[index].Fields = append([]ProviderCredentialFieldID(nil), profile.Fields...)
+		copied.Profiles[index].Placements = append([]ProviderCredentialPlacement(nil), profile.Placements...)
+		copied.Profiles[index].Scopes = append([]string(nil), profile.Scopes...)
+		copied.Profiles[index].EndpointBindings = append(
+			[]ProviderCredentialEndpointBinding(nil),
+			profile.EndpointBindings...,
+		)
+		copied.Profiles[index].ProtocolOptions.GoogleDefault = copyPtr(
+			profile.ProtocolOptions.GoogleDefault,
+		)
+		copied.Profiles[index].ProtocolOptions.AWSDefault = copyPtr(
+			profile.ProtocolOptions.AWSDefault,
+		)
+	}
+	copied.CatalogAcquisition.Alternatives = append(
+		[]ProviderCredentialProfileID(nil),
+		credentials.CatalogAcquisition.Alternatives...,
+	)
+	copied.Inference.Alternatives = append(
+		[]ProviderCredentialProfileID(nil),
+		credentials.Inference.Alternatives...,
+	)
+	return &copied
 }
 
 // DeepCopyAuthor creates a deep copy of an Author.

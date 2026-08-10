@@ -105,7 +105,7 @@ func (cat *Builder) loadProvidersYAML() error {
 	}
 
 	var providers []Provider
-	if err := yaml.Unmarshal(data, &providers); err != nil {
+	if err := yaml.UnmarshalWithOptions(data, &providers, yaml.Strict()); err != nil {
 		return errors.WrapParse("yaml", "providers.yaml", err)
 	}
 

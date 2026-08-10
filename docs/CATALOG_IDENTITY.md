@@ -82,6 +82,6 @@ indexes.
 
 `endpoints.yaml` is a versioned, digest-bound generated projection of that
 join. It is inspectable output, not an editable source or a third authority.
-Catalog schema version 3 persists the two construction-record collections as
-`author_models` and `provider_models`; no prelaunch reader for schema version 2
-is retained.
+Catalog schema version 3 introduced the `author_models` and `provider_models`
+construction-record collections. Schema version 4 adds provider credential
+profiles and plane references. No reader for an earlier schema is retained.

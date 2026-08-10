@@ -101,6 +101,7 @@ func TestProviderScopedDynamicFactsAndOperatorConfigurationHaveCanonicalOrder(t 
 		{catalogmeta.ResourceTypeProvider, "Name", catalogmeta.ProvidersID},
 		{catalogmeta.ResourceTypeProvider, "Catalog", catalogmeta.LocalCatalogID},
 		{catalogmeta.ResourceTypeProvider, "APIKey", catalogmeta.LocalCatalogID},
+		{catalogmeta.ResourceTypeProvider, "Credentials", catalogmeta.LocalCatalogID},
 	}
 	for _, test := range tests {
 		policy, found := table.Find(test.resource, test.path)

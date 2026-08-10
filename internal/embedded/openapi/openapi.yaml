@@ -846,6 +846,8 @@ components:
           $ref: '#/components/schemas/catalogs.ProviderAPIKey'
         catalog:
           $ref: '#/components/schemas/catalogs.ProviderCatalog'
+        credentials:
+          $ref: '#/components/schemas/catalogs.ProviderCredentials'
         env_vars:
           description: Environment variables configuration
           items:
@@ -907,6 +909,29 @@ components:
       - ProviderAPIKeySchemeBearer
       - ProviderAPIKeySchemeBasic
       - ProviderAPIKeySchemeDirect
+    catalogs.ProviderAWSDefaultProtocolOptions:
+      properties:
+        region_field:
+          type: string
+        service:
+          type: string
+      type: object
+    catalogs.ProviderAuthenticationPrimitive:
+      type: string
+      x-enum-varnames:
+      - ProviderAuthenticationNone
+      - ProviderAuthenticationAPIKey
+      - ProviderAuthenticationBearerToken
+      - ProviderAuthenticationGoogleDefault
+      - ProviderAuthenticationAzureDefault
+      - ProviderAuthenticationAWSDefault
+    catalogs.ProviderAuthenticationProtocolOptions:
+      properties:
+        aws_default:
+          $ref: '#/components/schemas/catalogs.ProviderAWSDefaultProtocolOptions'
+        google_default:
+          $ref: '#/components/schemas/catalogs.ProviderGoogleDefaultProtocolOptions'
+      type: object
     catalogs.ProviderCatalog:
       description: Models
       properties:
@@ -1028,6 +1053,117 @@ components:
       - ProviderCatalogAuthGoogleDefault
       - ProviderCatalogAuthAzureDefault
       - ProviderCatalogAuthAWSDefault
+    catalogs.ProviderCredentialEndpointBinding:
+      properties:
+        field:
+          type: string
+        variable:
+          type: string
+      type: object
+    catalogs.ProviderCredentialField:
+      properties:
+        description:
+          type: string
+        environment:
+          items:
+            type: string
+          type: array
+          uniqueItems: false
+        id:
+          type: string
+        kind:
+          $ref: '#/components/schemas/catalogs.ProviderCredentialFieldKind'
+        pattern:
+          type: string
+        required:
+          type: boolean
+      type: object
+    catalogs.ProviderCredentialFieldKind:
+      type: string
+      x-enum-varnames:
+      - ProviderCredentialFieldSecret
+      - ProviderCredentialFieldParameter
+    catalogs.ProviderCredentialPlacement:
+      properties:
+        evidence_url:
+          type: string
+        field:
+          type: string
+        kind:
+          $ref: '#/components/schemas/catalogs.ProviderCredentialPlacementKind'
+        name:
+          type: string
+        scheme:
+          $ref: '#/components/schemas/catalogs.ProviderCredentialScheme'
+      type: object
+    catalogs.ProviderCredentialPlacementKind:
+      type: string
+      x-enum-varnames:
+      - ProviderCredentialPlacementHeader
+      - ProviderCredentialPlacementQuery
+    catalogs.ProviderCredentialPlane:
+      properties:
+        alternatives:
+          items:
+            type: string
+          type: array
+          uniqueItems: false
+        required:
+          type: boolean
+      type: object
+    catalogs.ProviderCredentialProfile:
+      properties:
+        endpoint_bindings:
+          items:
+            $ref: '#/components/schemas/catalogs.ProviderCredentialEndpointBinding'
+          type: array
+          uniqueItems: false
+        fields:
+          items:
+            type: string
+          type: array
+          uniqueItems: false
+        id:
+          type: string
+        placements:
+          items:
+            $ref: '#/components/schemas/catalogs.ProviderCredentialPlacement'
+          type: array
+          uniqueItems: false
+        primitive:
+          $ref: '#/components/schemas/catalogs.ProviderAuthenticationPrimitive'
+        protocol_options:
+          $ref: '#/components/schemas/catalogs.ProviderAuthenticationProtocolOptions'
+        scopes:
+          items:
+            type: string
+          type: array
+          uniqueItems: false
+      type: object
+    catalogs.ProviderCredentialScheme:
+      type: string
+      x-enum-varnames:
+      - ProviderCredentialSchemeDirect
+      - ProviderCredentialSchemeBearer
+      - ProviderCredentialSchemeBasic
+    catalogs.ProviderCredentials:
+      description: Secret-free credential metadata for catalog acquisition and inference.
+      properties:
+        catalog_acquisition:
+          $ref: '#/components/schemas/catalogs.ProviderCredentialPlane'
+        fields:
+          items:
+            $ref: '#/components/schemas/catalogs.ProviderCredentialField'
+          type: array
+          uniqueItems: false
+        inference:
+          $ref: '#/components/schemas/catalogs.ProviderCredentialPlane'
+        profiles:
+          items:
+            $ref: '#/components/schemas/catalogs.ProviderCredentialProfile'
+          type: array
+          uniqueItems: false
+      type: object
     catalogs.ProviderEndpoint:
       description: API endpoint configuration
       properties:
@@ -1071,6 +1207,11 @@ components:
         required:
           description: Whether this env var is required
           type: boolean
+      type: object
+    catalogs.ProviderGoogleDefaultProtocolOptions:
+      properties:
+        quota_project_field:
+          type: string
       type: object
     catalogs.ProviderGovernancePolicy:
       description: Oversight and moderation practices

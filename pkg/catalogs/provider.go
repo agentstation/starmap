@@ -25,6 +25,9 @@ type Provider struct {
 	// Environment variables configuration
 	EnvVars []ProviderEnvVar `json:"env_vars,omitempty" yaml:"env_vars,omitempty"` // Required environment variables
 
+	// Secret-free credential metadata for catalog acquisition and inference.
+	Credentials *ProviderCredentials `json:"credentials,omitempty" yaml:"credentials,omitempty"`
+
 	// Models
 	Catalog *ProviderCatalog  `json:"catalog,omitempty" yaml:"catalog,omitempty"` // Models catalog configuration
 	Models  map[string]*Model `json:"-" yaml:"-"`                                 // Available models indexed by model ID - not serialized to YAML

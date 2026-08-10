@@ -568,6 +568,7 @@ func main() {
 - [Constants](<#constants>)
 - [func CatalogSemanticChecksum\(reader Reader\) \(string, error\)](<#CatalogSemanticChecksum>)
 - [func DeepCopyProviderModels\(models map\[string\]\*Model\) map\[string\]\*Model](<#DeepCopyProviderModels>)
+- [func DerivedCredentialEnvironmentName\(product string, providerID ProviderID, fieldID ProviderCredentialFieldID\) \(string, error\)](<#DerivedCredentialEnvironmentName>)
 - [func EncodeCatalogPayload\(reader Reader\) \(\[\]byte, error\)](<#EncodeCatalogPayload>)
 - [func NormalizeExtensionFields\(fields map\[string\]any\) map\[string\]any](<#NormalizeExtensionFields>)
 - [func PrintProviderValidationReport\(report \*ProviderValidationReport\)](<#PrintProviderValidationReport>)
@@ -847,11 +848,26 @@ func main() {
 - [type ProviderAPIKey](<#ProviderAPIKey>)
 - [type ProviderAPIKeyScheme](<#ProviderAPIKeyScheme>)
   - [func \(paks ProviderAPIKeyScheme\) String\(\) string](<#ProviderAPIKeyScheme.String>)
+- [type ProviderAWSDefaultProtocolOptions](<#ProviderAWSDefaultProtocolOptions>)
+- [type ProviderAuthenticationPrimitive](<#ProviderAuthenticationPrimitive>)
+- [type ProviderAuthenticationProtocolOptions](<#ProviderAuthenticationProtocolOptions>)
 - [type ProviderCatalog](<#ProviderCatalog>)
 - [type ProviderCatalogAuth](<#ProviderCatalogAuth>)
 - [type ProviderCatalogAuthMethod](<#ProviderCatalogAuthMethod>)
+- [type ProviderCredentialEndpointBinding](<#ProviderCredentialEndpointBinding>)
+- [type ProviderCredentialField](<#ProviderCredentialField>)
+- [type ProviderCredentialFieldID](<#ProviderCredentialFieldID>)
+- [type ProviderCredentialFieldKind](<#ProviderCredentialFieldKind>)
+- [type ProviderCredentialPlacement](<#ProviderCredentialPlacement>)
+- [type ProviderCredentialPlacementKind](<#ProviderCredentialPlacementKind>)
+- [type ProviderCredentialPlane](<#ProviderCredentialPlane>)
+- [type ProviderCredentialProfile](<#ProviderCredentialProfile>)
+- [type ProviderCredentialProfileID](<#ProviderCredentialProfileID>)
+- [type ProviderCredentialScheme](<#ProviderCredentialScheme>)
+- [type ProviderCredentials](<#ProviderCredentials>)
 - [type ProviderEndpoint](<#ProviderEndpoint>)
 - [type ProviderEnvVar](<#ProviderEnvVar>)
+- [type ProviderGoogleDefaultProtocolOptions](<#ProviderGoogleDefaultProtocolOptions>)
 - [type ProviderGovernancePolicy](<#ProviderGovernancePolicy>)
 - [type ProviderHealthComponent](<#ProviderHealthComponent>)
 - [type ProviderID](<#ProviderID>)
@@ -948,7 +964,7 @@ const (
 
     // CurrentCatalogSchemaVersion identifies the canonical catalog payload
     // schema emitted by this release.
-    CurrentCatalogSchemaVersion uint64 = 3
+    CurrentCatalogSchemaVersion uint64 = 4
 
     // CatalogPayloadMediaType identifies the canonical JSON catalog payload.
     CatalogPayloadMediaType = "application/vnd.agentstation.starmap.catalog+json"
@@ -979,6 +995,15 @@ func DeepCopyProviderModels(models map[string]*Model) map[string]*Model
 
 DeepCopyProviderModels creates a deep copy of a provider's Models map. Returns nil if the input map is nil.
 
+<a name="DerivedCredentialEnvironmentName"></a>
+## func [DerivedCredentialEnvironmentName](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider_credentials.go#L174-L178>)
+
+```go
+func DerivedCredentialEnvironmentName(product string, providerID ProviderID, fieldID ProviderCredentialFieldID) (string, error)
+```
+
+DerivedCredentialEnvironmentName derives a product\-specific ambient name. It validates all components before it replaces ID separators with underscores.
+
 <a name="EncodeCatalogPayload"></a>
 ## func [EncodeCatalogPayload](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/payload.go#L26>)
 
@@ -1007,7 +1032,7 @@ func PrintProviderValidationReport(report *ProviderValidationReport)
 PrintProviderValidationReport prints a formatted report of provider validation status This is a convenience function that calls the Print method on the report.
 
 <a name="ShallowCopyProviderModels"></a>
-## func [ShallowCopyProviderModels](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/copy.go#L443>)
+## func [ShallowCopyProviderModels](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/copy.go#L482>)
 
 ```go
 func ShallowCopyProviderModels(models map[string]*Model) map[string]*Model
@@ -1082,7 +1107,7 @@ type Author struct {
 ```
 
 <a name="DeepCopyAuthor"></a>
-### func [DeepCopyAuthor](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/copy.go#L106>)
+### func [DeepCopyAuthor](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/copy.go#L145>)
 
 ```go
 func DeepCopyAuthor(author Author) Author
@@ -1280,7 +1305,7 @@ func (id AuthorID) String() string
 String returns the string representation of an AuthorID.
 
 <a name="AuthorMapping"></a>
-## type [AuthorMapping](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L81-L84>)
+## type [AuthorMapping](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L84-L87>)
 
 AuthorMapping defines how to extract and normalize authors.
 
@@ -2107,7 +2132,7 @@ func (c ConsumerCompatibility) SupportsSchema(schemaVersion uint64) bool
 SupportsSchema reports whether a consumer catalog schema is compatible.
 
 <a name="EndpointType"></a>
-## type [EndpointType](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L50>)
+## type [EndpointType](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L53>)
 
 EndpointType specifies the API style for model listing.
 
@@ -2133,7 +2158,7 @@ const (
 ```
 
 <a name="FeatureRule"></a>
-## type [FeatureRule](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L73-L78>)
+## type [FeatureRule](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L76-L81>)
 
 FeatureRule defines conditions for inferring model features.
 
@@ -2147,7 +2172,7 @@ type FeatureRule struct {
 ```
 
 <a name="FieldMapping"></a>
-## type [FieldMapping](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L67-L70>)
+## type [FieldMapping](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L70-L73>)
 
 FieldMapping defines how to map API response fields to model fields. Type conversion is automatic based on the destination field type.
 
@@ -4276,7 +4301,7 @@ type ProvenanceReader interface {
 ```
 
 <a name="Provider"></a>
-## type [Provider](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L14-L47>)
+## type [Provider](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L14-L50>)
 
 Provider represents a provider configuration.
 
@@ -4294,6 +4319,9 @@ type Provider struct {
 
     // Environment variables configuration
     EnvVars []ProviderEnvVar `json:"env_vars,omitempty" yaml:"env_vars,omitempty"` // Required environment variables
+
+    // Secret-free credential metadata for catalog acquisition and inference.
+    Credentials *ProviderCredentials `json:"credentials,omitempty" yaml:"credentials,omitempty"`
 
     // Models
     Catalog *ProviderCatalog  `json:"catalog,omitempty" yaml:"catalog,omitempty"` // Models catalog configuration
@@ -4326,7 +4354,7 @@ func DeepCopyProvider(provider Provider) Provider
 DeepCopyProvider creates a deep copy of a Provider including its Models map.
 
 <a name="Provider.APIKeyValue"></a>
-### func \(\*Provider\) [APIKeyValue](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L469>)
+### func \(\*Provider\) [APIKeyValue](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L472>)
 
 ```go
 func (p *Provider) APIKeyValue() (string, error)
@@ -4335,7 +4363,7 @@ func (p *Provider) APIKeyValue() (string, error)
 APIKeyValue retrieves and validates the API key for this provider. Uses the loaded apiKeyValue if available, otherwise falls back to environment.
 
 <a name="Provider.CatalogEndpointURL"></a>
-### func \(\*Provider\) [CatalogEndpointURL](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L520>)
+### func \(\*Provider\) [CatalogEndpointURL](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L523>)
 
 ```go
 func (p *Provider) CatalogEndpointURL() string
@@ -4344,7 +4372,7 @@ func (p *Provider) CatalogEndpointURL() string
 CatalogEndpointURL returns the resolved model catalog endpoint URL.
 
 <a name="Provider.EnvVar"></a>
-### func \(\*Provider\) [EnvVar](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L509>)
+### func \(\*Provider\) [EnvVar](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L512>)
 
 ```go
 func (p *Provider) EnvVar(name string) string
@@ -4353,7 +4381,7 @@ func (p *Provider) EnvVar(name string) string
 EnvVar returns the value of a specific environment variable.
 
 <a name="Provider.HasAPIKey"></a>
-### func \(\*Provider\) [HasAPIKey](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L590>)
+### func \(\*Provider\) [HasAPIKey](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L593>)
 
 ```go
 func (p *Provider) HasAPIKey() bool
@@ -4362,7 +4390,7 @@ func (p *Provider) HasAPIKey() bool
 HasAPIKey checks if the provider has a valid API key configured. This checks both existence and validation \(pattern matching\).
 
 <a name="Provider.HasRequiredEnvVars"></a>
-### func \(\*Provider\) [HasRequiredEnvVars](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L545>)
+### func \(\*Provider\) [HasRequiredEnvVars](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L548>)
 
 ```go
 func (p *Provider) HasRequiredEnvVars() bool
@@ -4371,7 +4399,7 @@ func (p *Provider) HasRequiredEnvVars() bool
 HasRequiredEnvVars checks if all required environment variables are set.
 
 <a name="Provider.IsAPIKeyRequired"></a>
-### func \(\*Provider\) [IsAPIKeyRequired](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L401>)
+### func \(\*Provider\) [IsAPIKeyRequired](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L404>)
 
 ```go
 func (p *Provider) IsAPIKeyRequired() bool
@@ -4380,7 +4408,7 @@ func (p *Provider) IsAPIKeyRequired() bool
 IsAPIKeyRequired checks if a provider requires an API key.
 
 <a name="Provider.IsCatalogAuthRequired"></a>
-### func \(\*Provider\) [IsCatalogAuthRequired](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L408>)
+### func \(\*Provider\) [IsCatalogAuthRequired](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L411>)
 
 ```go
 func (p *Provider) IsCatalogAuthRequired() bool
@@ -4389,7 +4417,7 @@ func (p *Provider) IsCatalogAuthRequired() bool
 IsCatalogAuthRequired reports whether catalog acquisition requires credentials.
 
 <a name="Provider.LoadAPIKey"></a>
-### func \(\*Provider\) [LoadAPIKey](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L445>)
+### func \(\*Provider\) [LoadAPIKey](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L448>)
 
 ```go
 func (p *Provider) LoadAPIKey()
@@ -4398,7 +4426,7 @@ func (p *Provider) LoadAPIKey()
 LoadAPIKey loads the API key value from environment into the provider. This should be called when the provider is loaded from the catalog.
 
 <a name="Provider.LoadEnvVars"></a>
-### func \(\*Provider\) [LoadEnvVars](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L453>)
+### func \(\*Provider\) [LoadEnvVars](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L456>)
 
 ```go
 func (p *Provider) LoadEnvVars()
@@ -4407,7 +4435,7 @@ func (p *Provider) LoadEnvVars()
 LoadEnvVars loads environment variable values from the system into the provider. This should be called when the provider is loaded from the catalog.
 
 <a name="Provider.MissingRequiredEnvVars"></a>
-### func \(\*Provider\) [MissingRequiredEnvVars](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L566>)
+### func \(\*Provider\) [MissingRequiredEnvVars](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L569>)
 
 ```go
 func (p *Provider) MissingRequiredEnvVars() []string
@@ -4416,7 +4444,7 @@ func (p *Provider) MissingRequiredEnvVars() []string
 MissingRequiredEnvVars returns a list of required environment variables that are not set.
 
 <a name="Provider.Model"></a>
-### func \(\*Provider\) [Model](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L659>)
+### func \(\*Provider\) [Model](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L662>)
 
 ```go
 func (p *Provider) Model(modelID string) (*Model, error)
@@ -4425,7 +4453,7 @@ func (p *Provider) Model(modelID string) (*Model, error)
 Model retrieves a specific model from the provider.
 
 <a name="Provider.Validate"></a>
-### func \(\*Provider\) [Validate](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L597>)
+### func \(\*Provider\) [Validate](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L600>)
 
 ```go
 func (p *Provider) Validate(supportedProviders map[ProviderID]bool) ProviderValidationResult
@@ -4443,7 +4471,7 @@ func (p Provider) ValidateContract() error
 ValidateContract validates serializable catalog\-acquisition and inference metadata. It does not inspect runtime credential values.
 
 <a name="ProviderAPIKey"></a>
-## type [ProviderAPIKey](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L131-L137>)
+## type [ProviderAPIKey](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L134-L140>)
 
 ProviderAPIKey represents configuration for an API key to access a provider's catalog.
 
@@ -4458,7 +4486,7 @@ type ProviderAPIKey struct {
 ```
 
 <a name="ProviderAPIKeyScheme"></a>
-## type [ProviderAPIKeyScheme](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L148>)
+## type [ProviderAPIKeyScheme](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L151>)
 
 ProviderAPIKeyScheme represents different authentication schemes for API keys.
 
@@ -4477,7 +4505,7 @@ const (
 ```
 
 <a name="ProviderAPIKeyScheme.String"></a>
-### func \(ProviderAPIKeyScheme\) [String](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L151>)
+### func \(ProviderAPIKeyScheme\) [String](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L154>)
 
 ```go
 func (paks ProviderAPIKeyScheme) String() string
@@ -4485,8 +4513,60 @@ func (paks ProviderAPIKeyScheme) String() string
 
 String returns the string representation of a ProviderAPIKeyScheme.
 
+<a name="ProviderAWSDefaultProtocolOptions"></a>
+## type [ProviderAWSDefaultProtocolOptions](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider_credentials.go#L141-L144>)
+
+ProviderAWSDefaultProtocolOptions configures AWS request signing.
+
+```go
+type ProviderAWSDefaultProtocolOptions struct {
+    RegionField ProviderCredentialFieldID `json:"region_field" yaml:"region_field"`
+    Service     string                    `json:"service" yaml:"service"`
+}
+```
+
+<a name="ProviderAuthenticationPrimitive"></a>
+## type [ProviderAuthenticationPrimitive](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider_credentials.go#L58>)
+
+ProviderAuthenticationPrimitive identifies compiled authentication behavior. It never identifies a provider.
+
+```go
+type ProviderAuthenticationPrimitive string
+```
+
+<a name="ProviderAuthenticationNone"></a>
+
+```go
+const (
+    // ProviderAuthenticationNone sends no authentication material.
+    ProviderAuthenticationNone ProviderAuthenticationPrimitive = "none"
+    // ProviderAuthenticationAPIKey places a static API key on a request.
+    ProviderAuthenticationAPIKey ProviderAuthenticationPrimitive = "api-key"
+    // ProviderAuthenticationBearerToken places a resolved bearer token.
+    ProviderAuthenticationBearerToken ProviderAuthenticationPrimitive = "bearer-token"
+    // ProviderAuthenticationGoogleDefault uses Google's default credential chain.
+    ProviderAuthenticationGoogleDefault ProviderAuthenticationPrimitive = "google-default"
+    // ProviderAuthenticationAzureDefault uses Azure's default credential chain.
+    ProviderAuthenticationAzureDefault ProviderAuthenticationPrimitive = "azure-default"
+    // ProviderAuthenticationAWSDefault uses AWS's default credential chain.
+    ProviderAuthenticationAWSDefault ProviderAuthenticationPrimitive = "aws-default"
+)
+```
+
+<a name="ProviderAuthenticationProtocolOptions"></a>
+## type [ProviderAuthenticationProtocolOptions](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider_credentials.go#L130-L133>)
+
+ProviderAuthenticationProtocolOptions is a typed union of primitive\-owned protocol settings. Provider membership does not belong in this union.
+
+```go
+type ProviderAuthenticationProtocolOptions struct {
+    GoogleDefault *ProviderGoogleDefaultProtocolOptions `json:"google_default,omitempty" yaml:"google_default,omitempty"`
+    AWSDefault    *ProviderAWSDefaultProtocolOptions    `json:"aws_default,omitempty" yaml:"aws_default,omitempty"`
+}
+```
+
 <a name="ProviderCatalog"></a>
-## type [ProviderCatalog](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L98-L103>)
+## type [ProviderCatalog](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L101-L106>)
 
 ProviderCatalog represents information about a provider's models.
 
@@ -4500,7 +4580,7 @@ type ProviderCatalog struct {
 ```
 
 <a name="ProviderCatalogAuth"></a>
-## type [ProviderCatalogAuth](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L124-L128>)
+## type [ProviderCatalogAuth](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L127-L131>)
 
 ProviderCatalogAuth defines catalog\-acquisition authentication. Credential values are runtime state and are never part of this serializable contract.
 
@@ -4513,7 +4593,7 @@ type ProviderCatalogAuth struct {
 ```
 
 <a name="ProviderCatalogAuthMethod"></a>
-## type [ProviderCatalogAuthMethod](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L107>)
+## type [ProviderCatalogAuthMethod](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L110>)
 
 ProviderCatalogAuthMethod selects how Starmap acquires credentials for a provider model catalog. It does not describe inference authentication.
 
@@ -4538,8 +4618,174 @@ const (
 )
 ```
 
+<a name="ProviderCredentialEndpointBinding"></a>
+## type [ProviderCredentialEndpointBinding](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider_credentials.go#L123-L126>)
+
+ProviderCredentialEndpointBinding binds one non\-secret field to a named URL template variable.
+
+```go
+type ProviderCredentialEndpointBinding struct {
+    Field    ProviderCredentialFieldID `json:"field" yaml:"field"`
+    Variable string                    `json:"variable" yaml:"variable"`
+}
+```
+
+<a name="ProviderCredentialField"></a>
+## type [ProviderCredentialField](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider_credentials.go#L47-L54>)
+
+ProviderCredentialField defines one named material field and its conventional ambient environment names. Product\-specific names are derived from its ID.
+
+```go
+type ProviderCredentialField struct {
+    ID          ProviderCredentialFieldID   `json:"id" yaml:"id"`
+    Kind        ProviderCredentialFieldKind `json:"kind" yaml:"kind"`
+    Required    bool                        `json:"required" yaml:"required"`
+    Environment []string                    `json:"environment,omitempty" yaml:"environment,omitempty"`
+    Pattern     string                      `json:"pattern,omitempty" yaml:"pattern,omitempty"`
+    Description string                      `json:"description,omitempty" yaml:"description,omitempty"`
+}
+```
+
+<a name="ProviderCredentialFieldID"></a>
+## type [ProviderCredentialFieldID](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider_credentials.go#L12>)
+
+ProviderCredentialFieldID identifies one secret or non\-secret credential field. Values are runtime state and are not part of the catalog.
+
+```go
+type ProviderCredentialFieldID string
+```
+
+<a name="ProviderCredentialFieldKind"></a>
+## type [ProviderCredentialFieldKind](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider_credentials.go#L36>)
+
+ProviderCredentialFieldKind distinguishes secret material from non\-secret endpoint and protocol parameters.
+
+```go
+type ProviderCredentialFieldKind string
+```
+
+<a name="ProviderCredentialFieldSecret"></a>
+
+```go
+const (
+    // ProviderCredentialFieldSecret is sensitive authentication material.
+    ProviderCredentialFieldSecret ProviderCredentialFieldKind = "secret"
+    // ProviderCredentialFieldParameter is non-secret runtime configuration.
+    ProviderCredentialFieldParameter ProviderCredentialFieldKind = "parameter"
+)
+```
+
+<a name="ProviderCredentialPlacement"></a>
+## type [ProviderCredentialPlacement](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider_credentials.go#L113-L119>)
+
+ProviderCredentialPlacement binds one resolved field to a request location. Query placement requires an HTTPS provider\-evidence URL.
+
+```go
+type ProviderCredentialPlacement struct {
+    Field       ProviderCredentialFieldID       `json:"field" yaml:"field"`
+    Kind        ProviderCredentialPlacementKind `json:"kind" yaml:"kind"`
+    Name        string                          `json:"name" yaml:"name"`
+    Scheme      ProviderCredentialScheme        `json:"scheme" yaml:"scheme"`
+    EvidenceURL string                          `json:"evidence_url,omitempty" yaml:"evidence_url,omitempty"`
+}
+```
+
+<a name="ProviderCredentialPlacementKind"></a>
+## type [ProviderCredentialPlacementKind](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider_credentials.go#L89>)
+
+ProviderCredentialPlacementKind identifies where one credential field is applied to an HTTP request.
+
+```go
+type ProviderCredentialPlacementKind string
+```
+
+<a name="ProviderCredentialPlacementHeader"></a>
+
+```go
+const (
+    // ProviderCredentialPlacementHeader applies material to an HTTP header.
+    ProviderCredentialPlacementHeader ProviderCredentialPlacementKind = "header"
+    // ProviderCredentialPlacementQuery applies material to a URL query value.
+    ProviderCredentialPlacementQuery ProviderCredentialPlacementKind = "query"
+)
+```
+
+<a name="ProviderCredentialPlane"></a>
+## type [ProviderCredentialPlane](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider_credentials.go#L29-L32>)
+
+ProviderCredentialPlane defines the ordered authentication profiles that one credential plane permits. Selecting a profile is terminal; the catalog does not define automatic fallback between profiles.
+
+```go
+type ProviderCredentialPlane struct {
+    Required     bool                          `json:"required" yaml:"required"`
+    Alternatives []ProviderCredentialProfileID `json:"alternatives" yaml:"alternatives"`
+}
+```
+
+<a name="ProviderCredentialProfile"></a>
+## type [ProviderCredentialProfile](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider_credentials.go#L77-L85>)
+
+ProviderCredentialProfile defines one complete authentication alternative. Field references share provider\-level definitions across alternatives.
+
+```go
+type ProviderCredentialProfile struct {
+    ID               ProviderCredentialProfileID           `json:"id" yaml:"id"`
+    Primitive        ProviderAuthenticationPrimitive       `json:"primitive" yaml:"primitive"`
+    Fields           []ProviderCredentialFieldID           `json:"fields,omitempty" yaml:"fields,omitempty"`
+    Placements       []ProviderCredentialPlacement         `json:"placements,omitempty" yaml:"placements,omitempty"`
+    Scopes           []string                              `json:"scopes,omitempty" yaml:"scopes,omitempty"`
+    EndpointBindings []ProviderCredentialEndpointBinding   `json:"endpoint_bindings,omitempty" yaml:"endpoint_bindings,omitempty"`
+    ProtocolOptions  ProviderAuthenticationProtocolOptions `json:"protocol_options,omitempty" yaml:"protocol_options,omitempty"`
+}
+```
+
+<a name="ProviderCredentialProfileID"></a>
+## type [ProviderCredentialProfileID](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider_credentials.go#L15>)
+
+ProviderCredentialProfileID identifies one authentication profile.
+
+```go
+type ProviderCredentialProfileID string
+```
+
+<a name="ProviderCredentialScheme"></a>
+## type [ProviderCredentialScheme](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider_credentials.go#L100>)
+
+ProviderCredentialScheme identifies the transformation applied before a credential field is placed on a request.
+
+```go
+type ProviderCredentialScheme string
+```
+
+<a name="ProviderCredentialSchemeDirect"></a>
+
+```go
+const (
+    // ProviderCredentialSchemeDirect places bytes without a prefix.
+    ProviderCredentialSchemeDirect ProviderCredentialScheme = "direct"
+    // ProviderCredentialSchemeBearer adds the Bearer authentication prefix.
+    ProviderCredentialSchemeBearer ProviderCredentialScheme = "bearer"
+    // ProviderCredentialSchemeBasic adds the Basic authentication prefix.
+    ProviderCredentialSchemeBasic ProviderCredentialScheme = "basic"
+)
+```
+
+<a name="ProviderCredentials"></a>
+## type [ProviderCredentials](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider_credentials.go#L19-L24>)
+
+ProviderCredentials defines credential fields once and composes them into named profiles. Each plane lists its permitted profiles in selection order.
+
+```go
+type ProviderCredentials struct {
+    Fields             []ProviderCredentialField   `json:"fields" yaml:"fields"`
+    Profiles           []ProviderCredentialProfile `json:"profiles" yaml:"profiles"`
+    CatalogAcquisition ProviderCredentialPlane     `json:"catalog_acquisition" yaml:"catalog_acquisition"`
+    Inference          ProviderCredentialPlane     `json:"inference" yaml:"inference"`
+}
+```
+
 <a name="ProviderEndpoint"></a>
-## type [ProviderEndpoint](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L87-L95>)
+## type [ProviderEndpoint](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L90-L98>)
 
 ProviderEndpoint configures how to access the provider's model catalog.
 
@@ -4556,7 +4802,7 @@ type ProviderEndpoint struct {
 ```
 
 <a name="ProviderEnvVar"></a>
-## type [ProviderEnvVar](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L140-L145>)
+## type [ProviderEnvVar](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L143-L148>)
 
 ProviderEnvVar represents an environment variable required by a provider.
 
@@ -4569,8 +4815,19 @@ type ProviderEnvVar struct {
 }
 ```
 
+<a name="ProviderGoogleDefaultProtocolOptions"></a>
+## type [ProviderGoogleDefaultProtocolOptions](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider_credentials.go#L136-L138>)
+
+ProviderGoogleDefaultProtocolOptions configures Google token application.
+
+```go
+type ProviderGoogleDefaultProtocolOptions struct {
+    QuotaProjectField ProviderCredentialFieldID `json:"quota_project_field,omitempty" yaml:"quota_project_field,omitempty"`
+}
+```
+
 <a name="ProviderGovernancePolicy"></a>
-## type [ProviderGovernancePolicy](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L357-L361>)
+## type [ProviderGovernancePolicy](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L360-L364>)
 
 ProviderGovernancePolicy represents oversight and moderation practices.
 
@@ -4583,7 +4840,7 @@ type ProviderGovernancePolicy struct {
 ```
 
 <a name="ProviderHealthComponent"></a>
-## type [ProviderHealthComponent](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L276-L279>)
+## type [ProviderHealthComponent](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L279-L282>)
 
 ProviderHealthComponent represents a specific component to monitor in a provider's health API.
 
@@ -4595,7 +4852,7 @@ type ProviderHealthComponent struct {
 ```
 
 <a name="ProviderID"></a>
-## type [ProviderID](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L282>)
+## type [ProviderID](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L285>)
 
 ProviderID represents a provider identifier type for compile\-time safety.
 
@@ -4643,7 +4900,7 @@ const (
 ```
 
 <a name="ProviderID.String"></a>
-### func \(ProviderID\) [String](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L285>)
+### func \(ProviderID\) [String](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L288>)
 
 ```go
 func (pid ProviderID) String() string
@@ -4652,7 +4909,7 @@ func (pid ProviderID) String() string
 String returns the string representation of a ProviderID.
 
 <a name="ProviderInference"></a>
-## type [ProviderInference](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L174-L180>)
+## type [ProviderInference](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L177-L183>)
 
 ProviderInference defines stable provider\-level inference service facts. Gateway consumers supply runtime endpoint overrides and inference credentials.
 
@@ -4667,7 +4924,7 @@ type ProviderInference struct {
 ```
 
 <a name="ProviderInference.BindOfferingEndpoint"></a>
-### func \(\*ProviderInference\) [BindOfferingEndpoint](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L223-L227>)
+### func \(\*ProviderInference\) [BindOfferingEndpoint](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L226-L230>)
 
 ```go
 func (i *ProviderInference) BindOfferingEndpoint(endpoint ProviderOfferingEndpoint, baseURLOverride string, bindings map[string]string) (ProviderOfferingEndpoint, error)
@@ -4676,7 +4933,7 @@ func (i *ProviderInference) BindOfferingEndpoint(endpoint ProviderOfferingEndpoi
 BindOfferingEndpoint applies runtime endpoint bindings to one immutable offering endpoint. Catalog data owns URL templates. Consumers supply only tenant\-specific values and an optional base URL override.
 
 <a name="ProviderInference.Endpoint"></a>
-### func \(\*ProviderInference\) [Endpoint](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L194>)
+### func \(\*ProviderInference\) [Endpoint](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L197>)
 
 ```go
 func (i *ProviderInference) Endpoint(operation ProviderOperation) (ProviderInferenceEndpoint, bool)
@@ -4685,7 +4942,7 @@ func (i *ProviderInference) Endpoint(operation ProviderOperation) (ProviderInfer
 Endpoint returns the endpoint for an exact inference operation.
 
 <a name="ProviderInference.EndpointURL"></a>
-### func \(\*ProviderInference\) [EndpointURL](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L207>)
+### func \(\*ProviderInference\) [EndpointURL](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L210>)
 
 ```go
 func (i *ProviderInference) EndpointURL(endpoint ProviderInferenceEndpoint, baseURLOverride string) string
@@ -4694,7 +4951,7 @@ func (i *ProviderInference) EndpointURL(endpoint ProviderInferenceEndpoint, base
 EndpointURL resolves an endpoint against a runtime base URL override.
 
 <a name="ProviderInferenceEndpoint"></a>
-## type [ProviderInferenceEndpoint](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L183-L191>)
+## type [ProviderInferenceEndpoint](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L186-L194>)
 
 ProviderInferenceEndpoint defines one operation path and wire protocol.
 
@@ -4720,7 +4977,7 @@ type ProviderModelID string
 ```
 
 <a name="ProviderModerator"></a>
-## type [ProviderModerator](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L364>)
+## type [ProviderModerator](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L367>)
 
 ProviderModerator represents a moderator for a provider.
 
@@ -4761,7 +5018,7 @@ const (
 ```
 
 <a name="ProviderModerator.String"></a>
-### func \(ProviderModerator\) [String](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L367>)
+### func \(ProviderModerator\) [String](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L370>)
 
 ```go
 func (pm ProviderModerator) String() string
@@ -4865,7 +5122,7 @@ type ProviderOfferingServiceCapabilities struct {
 ```
 
 <a name="ProviderOperation"></a>
-## type [ProviderOperation](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L163>)
+## type [ProviderOperation](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L166>)
 
 ProviderOperation identifies one provider inference operation.
 
@@ -4885,7 +5142,7 @@ const (
 ```
 
 <a name="ProviderPrivacyPolicy"></a>
-## type [ProviderPrivacyPolicy](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L342-L347>)
+## type [ProviderPrivacyPolicy](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L345-L350>)
 
 ProviderPrivacyPolicy represents data collection and usage practices.
 
@@ -4911,7 +5168,7 @@ type ProviderRequestOverrides struct {
 ```
 
 <a name="ProviderRetentionPolicy"></a>
-## type [ProviderRetentionPolicy](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L350-L354>)
+## type [ProviderRetentionPolicy](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L353-L357>)
 
 ProviderRetentionPolicy represents how long data is kept and deletion practices.
 
@@ -4924,7 +5181,7 @@ type ProviderRetentionPolicy struct {
 ```
 
 <a name="ProviderRetentionType"></a>
-## type [ProviderRetentionType](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L326>)
+## type [ProviderRetentionType](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L329>)
 
 ProviderRetentionType represents different types of data retention policies.
 
@@ -4944,7 +5201,7 @@ const (
 ```
 
 <a name="ProviderRetentionType.String"></a>
-### func \(ProviderRetentionType\) [String](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L329>)
+### func \(ProviderRetentionType\) [String](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L332>)
 
 ```go
 func (prt ProviderRetentionType) String() string
@@ -5000,7 +5257,7 @@ func (r *ProviderValidationReport) Print()
 Print outputs a formatted report of provider validation status.
 
 <a name="ProviderValidationResult"></a>
-## type [ProviderValidationResult](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L432-L441>)
+## type [ProviderValidationResult](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L435-L444>)
 
 ProviderValidationResult contains the result of validating a provider.
 
@@ -5018,7 +5275,7 @@ type ProviderValidationResult struct {
 ```
 
 <a name="ProviderValidationStatus"></a>
-## type [ProviderValidationStatus](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L413>)
+## type [ProviderValidationStatus](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L416>)
 
 ProviderValidationStatus represents the validation status of a provider.
 
@@ -5042,7 +5299,7 @@ const (
 ```
 
 <a name="ProviderValidationStatus.String"></a>
-### func \(ProviderValidationStatus\) [String](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L427>)
+### func \(ProviderValidationStatus\) [String](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L430>)
 
 ```go
 func (pvs ProviderValidationStatus) String() string

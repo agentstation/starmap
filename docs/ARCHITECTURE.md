@@ -1521,9 +1521,10 @@ weights or fallback policy in ingestion.
 Canonical `Catalog.FindModel` returns `ModelDefinition`; provider facts come
 from `Offering` or `DefinitionOfferings`. It accepts canonical `author/slug`
 identity plus unambiguous bare-slug and provider-ID aliases. Ambiguity returns a
-typed conflict. Because Starmap has not launched, schema version 3 makes a
-clean break from the provider-only schema version 2 and retains no compatibility
-reader.
+typed conflict. Schema version 3 made a clean break from the provider-only
+schema version 2. Schema version 4 adds provider credential profiles and plane
+references. Because Starmap has not launched, it retains no compatibility
+reader for an earlier schema.
 
 ### Authority-Based Strategy
 
