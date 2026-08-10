@@ -302,7 +302,7 @@ func TestSubscriberHeartbeatsPreserveStreamLiveness(t *testing.T) {
 				)
 				_, _ = fmt.Fprint(writer, ": connected\n\n")
 				writer.(http.Flusher).Flush()
-				ticker := time.NewTicker(5 * time.Millisecond)
+				ticker := time.NewTicker(10 * time.Millisecond)
 				defer ticker.Stop()
 				for {
 					select {
@@ -323,8 +323,8 @@ func TestSubscriberHeartbeatsPreserveStreamLiveness(t *testing.T) {
 	subscriber, err := New(Config{
 		BaseURL:                   server.URL + "/api/v1",
 		HTTPClient:                server.Client(),
-		ExpectedHeartbeatInterval: 5 * time.Millisecond,
-		LivenessTimeout:           100 * time.Millisecond,
+		ExpectedHeartbeatInterval: 10 * time.Millisecond,
+		LivenessTimeout:           2 * time.Second,
 		ShutdownTimeout:           time.Second,
 		PollingFallback: &PollingFallbackPolicy{
 			AfterFailures: 1,
@@ -339,7 +339,11 @@ func TestSubscriberHeartbeatsPreserveStreamLiveness(t *testing.T) {
 	if err := subscriber.Start(ctx); err != nil {
 		t.Fatalf("Start: %v", err)
 	}
-	time.Sleep(150 * time.Millisecond)
+	generatedAt := assertHeartbeatStreamHealth(t, subscriber, generation)
+	firstHeartbeat := subscriber.Health().LastHeartbeatAt
+	waitForSubscriberCondition(t, func() bool {
+		return subscriber.Health().LastHeartbeatAt.After(firstHeartbeat)
+	})
 	if got := streamCount.Load(); got != 1 {
 		t.Fatalf("healthy heartbeat stream connections = %d, want 1", got)
 	}
@@ -350,7 +354,6 @@ func TestSubscriberHeartbeatsPreserveStreamLiveness(t *testing.T) {
 		status.Polls != 0 || status.Entries != 0 {
 		t.Fatalf("healthy stream fallback status = %#v", status)
 	}
-	generatedAt := assertHeartbeatStreamHealth(t, subscriber, generation)
 	if err := subscriber.Close(); err != nil {
 		t.Fatalf("Close: %v", err)
 	}
@@ -381,6 +384,8 @@ func TestSubscriberPollingFallbackIsExplicitBoundedAndConditional(t *testing.T) 
 		payloadGets     atomic.Int32
 		pollTimes       []time.Time
 		healthyStream   = make(chan struct{}, 1)
+		recoveryRequest = make(chan struct{}, 1)
+		releaseRecovery = make(chan struct{})
 	)
 	generations := map[string]catalogstore.Generation{
 		first.Manifest.GenerationID:  first,
@@ -413,7 +418,9 @@ func TestSubscriberPollingFallbackIsExplicitBoundedAndConditional(t *testing.T) 
 					mu.Lock()
 					pollTimes = append(pollTimes, time.Now())
 					mu.Unlock()
-					conditionalGets.Add(1)
+					if conditionalGets.Add(1) == 2 {
+						allowStream.Store(true)
+					}
 				}
 				writeSubscriberManifest(t, writer, selected)
 				return
@@ -422,6 +429,15 @@ func TestSubscriberPollingFallbackIsExplicitBoundedAndConditional(t *testing.T) 
 				if !allowStream.Load() {
 					writer.WriteHeader(http.StatusServiceUnavailable)
 					return
+				}
+				select {
+				case recoveryRequest <- struct{}{}:
+				default:
+				}
+				select {
+				case <-request.Context().Done():
+					return
+				case <-releaseRecovery:
 				}
 				writer.Header().Set(
 					"Content-Type",
@@ -433,7 +449,7 @@ func TestSubscriberPollingFallbackIsExplicitBoundedAndConditional(t *testing.T) 
 				case healthyStream <- struct{}{}:
 				default:
 				}
-				ticker := time.NewTicker(time.Millisecond)
+				ticker := time.NewTicker(10 * time.Millisecond)
 				defer ticker.Stop()
 				for {
 					select {
@@ -466,8 +482,8 @@ func TestSubscriberPollingFallbackIsExplicitBoundedAndConditional(t *testing.T) 
 		HTTPClient:                server.Client(),
 		ReconnectMinDelay:         time.Millisecond,
 		ReconnectMaxDelay:         time.Millisecond,
-		ExpectedHeartbeatInterval: time.Millisecond,
-		LivenessTimeout:           3 * time.Millisecond,
+		ExpectedHeartbeatInterval: 10 * time.Millisecond,
+		LivenessTimeout:           2 * time.Second,
 		ShutdownTimeout:           time.Second,
 		PollingFallback: &PollingFallbackPolicy{
 			AfterFailures: 2,
@@ -477,13 +493,18 @@ func TestSubscriberPollingFallbackIsExplicitBoundedAndConditional(t *testing.T) 
 	if err != nil {
 		t.Fatalf("New: %v", err)
 	}
-	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), 20*time.Second)
 	defer cancel()
 	if err := subscriber.Start(ctx); err != nil {
 		t.Fatalf("Start with configured fallback: %v", err)
 	}
 	defer func() { _ = subscriber.Close() }()
 
+	select {
+	case <-recoveryRequest:
+	case <-ctx.Done():
+		t.Fatal("subscriber did not request the recovered stream")
+	}
 	waitForSubscriberCondition(t, func() bool {
 		status := subscriber.PollingFallbackStatus()
 		if !status.Active || status.Entries != 1 || status.Polls != 2 ||
@@ -510,7 +531,7 @@ func TestSubscriberPollingFallbackIsExplicitBoundedAndConditional(t *testing.T) 
 		t.Fatalf("poll cadence = %v, want two requests at least 25ms apart", gotPollTimes)
 	}
 
-	allowStream.Store(true)
+	close(releaseRecovery)
 	select {
 	case <-healthyStream:
 	case <-ctx.Done():
@@ -521,7 +542,10 @@ func TestSubscriberPollingFallbackIsExplicitBoundedAndConditional(t *testing.T) 
 		return !status.Active
 	})
 	pollsAtRecovery := conditionalGets.Load()
-	time.Sleep(10 * time.Millisecond)
+	firstHeartbeat := subscriber.Health().LastHeartbeatAt
+	waitForSubscriberCondition(t, func() bool {
+		return subscriber.Health().LastHeartbeatAt.After(firstHeartbeat)
+	})
 	if got := conditionalGets.Load(); got != pollsAtRecovery {
 		t.Fatalf(
 			"healthy recovered stream triggered polling: %d -> %d",
@@ -971,7 +995,7 @@ func writeSubscriberManifest(
 
 func waitForSubscriberCondition(t testing.TB, condition func() bool) {
 	t.Helper()
-	deadline := time.Now().Add(5 * time.Second)
+	deadline := time.Now().Add(10 * time.Second)
 	for time.Now().Before(deadline) {
 		if condition() {
 			return

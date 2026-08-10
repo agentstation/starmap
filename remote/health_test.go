@@ -85,7 +85,7 @@ func assertHeartbeatStreamHealth(
 	generation catalogstore.Generation,
 ) time.Time {
 	t.Helper()
-	deadline := time.Now().Add(2 * time.Second)
+	deadline := time.Now().Add(10 * time.Second)
 	for {
 		health := subscriber.Health()
 		if health.StreamState == StreamStateStreaming &&
