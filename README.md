@@ -314,6 +314,13 @@ validated generation. Consumers compose this through
 [`acquisition.Syncer`](acquisition/), while the reconciliation engine remains
 an internal implementation detail.
 
+Provider adapters project only directly observed model facts and catalog-
+declared mappings. They do not infer capabilities or authors from model-family
+names. An offering without a reviewed canonical model link stays out of the
+catalog and becomes a durable review candidate in the generation manifest.
+The candidate retains the exact provider model ID and its source revision and
+evidence checksum.
+
 ### 6. Model Definition
 
 The canonical provider-independent model record: authorship, lineage,
@@ -723,7 +730,7 @@ publication, err := sm.Update(ctx, func(
     if err != nil {
         return nil, err
     }
-    return starmap.NewCandidate(updated)
+    return starmap.NewCandidate(updated, starmap.CandidateEvidence{})
 })
 if err != nil {
     return err

@@ -392,12 +392,6 @@ func TestDeepCopyProviderCopiesNestedMutableFields(t *testing.T) {
 						TokenPriceUnit: ProviderTokenPriceUnitPerMillion,
 					},
 				},
-				FeatureRules: []FeatureRule{{
-					Field:    "id",
-					Contains: []string{"reasoning"},
-					Feature:  "reasoning",
-					Value:    true,
-				}},
 				AuthorMapping: &AuthorMapping{
 					Field: "owned_by",
 					Normalized: map[string]AuthorID{
@@ -422,7 +416,6 @@ func TestDeepCopyProviderCopiesNestedMutableFields(t *testing.T) {
 	copied := DeepCopyProvider(original)
 	copied.Aliases[0] = "changed"
 	*copied.Catalog.Docs = "changed"
-	copied.Catalog.Endpoint.FeatureRules[0].Contains[0] = "changed"
 	copied.Catalog.Endpoint.ProtocolOptions.OpenAI.TokenPriceUnit = ProviderTokenPriceUnitPerToken
 	copied.Catalog.Endpoint.AuthorMapping.Normalized["openai"] = AuthorIDGoogle
 	copied.Catalog.Authors[0] = AuthorIDGoogle
@@ -434,9 +427,6 @@ func TestDeepCopyProviderCopiesNestedMutableFields(t *testing.T) {
 	}
 	if *original.Catalog.Docs != "https://example.com/docs" {
 		t.Fatal("provider catalog docs pointer was shared between original and copy")
-	}
-	if original.Catalog.Endpoint.FeatureRules[0].Contains[0] != "reasoning" {
-		t.Fatal("feature rule contains slice was shared between original and copy")
 	}
 	if original.Catalog.Endpoint.ProtocolOptions.OpenAI.TokenPriceUnit != ProviderTokenPriceUnitPerMillion {
 		t.Fatal("provider protocol options pointer was shared between original and copy")

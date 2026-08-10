@@ -139,7 +139,10 @@ func (s *Syncer) Sync(
 		for _, observation := range prepared.Observations {
 			links = append(links, observation.Link())
 		}
-		return starmap.NewCandidate(catalog, links...)
+		return starmap.NewCandidate(catalog, starmap.CandidateEvidence{
+			SourceObservations: links,
+			ReviewCandidates:   prepared.Result.ReviewCandidates,
+		})
 	})
 	if err != nil {
 		return nil, err

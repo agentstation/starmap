@@ -965,7 +965,8 @@ func subscriberTestGeneration(
 				Status:           catalogmeta.ObservationStatusSucceeded,
 				EvidenceChecksum: descriptor.Checksum,
 			}},
-			Completeness: catalogs.GenerationCompletenessComplete,
+			ReviewCandidates: []catalogmeta.ReviewCandidate{},
+			Completeness:     catalogs.GenerationCompletenessComplete,
 			ConsumerCompatibility: catalogs.ConsumerCompatibility{
 				MinSchemaVersion: catalogs.CurrentCatalogSchemaVersion,
 				MaxSchemaVersion: catalogs.CurrentCatalogSchemaVersion,

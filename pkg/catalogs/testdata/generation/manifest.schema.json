@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://starmap.agentstation.ai/schemas/generation-manifest-v1.json",
+  "$id": "https://starmap.agentstation.ai/schemas/generation-manifest-v2.json",
   "title": "Starmap catalog generation manifest",
   "type": "object",
   "additionalProperties": false,
@@ -13,12 +13,13 @@
     "validation",
     "sync_run_id",
     "source_observations",
+    "review_candidates",
     "completeness",
     "degraded",
     "consumer_compatibility"
   ],
   "properties": {
-    "manifest_version": {"type": "integer", "const": 1},
+    "manifest_version": {"type": "integer", "const": 2},
     "schema_version": {"type": "integer", "minimum": 1},
     "generation_id": {"type": "string", "minLength": 1},
     "generated_at": {"type": "string", "format": "date-time"},
@@ -29,6 +30,10 @@
       "type": "array",
       "minItems": 1,
       "items": {"$ref": "#/$defs/source_observation"}
+    },
+    "review_candidates": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/review_candidate"}
     },
     "completeness": {"enum": ["complete", "partial"]},
     "degraded": {"type": "boolean"},
@@ -96,34 +101,61 @@
         "source": {"type": "string", "minLength": 1},
         "observation_id": {"type": "string", "minLength": 1},
         "observed_at": {"type": "string", "format": "date-time"},
-        "revision": {
-          "type": "object",
-          "additionalProperties": false,
-          "required": ["kind"],
-          "dependentRequired": {
-            "input_name": ["input_checksum"],
-            "input_checksum": ["input_name"]
-          },
-          "allOf": [
-            {
-              "if": {"properties": {"kind": {"const": "git_commit"}}},
-              "then": {"required": ["input_name", "input_checksum"]}
-            },
-            {
-              "if": {"required": ["input_name"]},
-              "then": {"properties": {"kind": {"const": "git_commit"}}}
-            }
-          ],
-          "properties": {
-            "kind": {"enum": ["unknown", "etag", "last_modified", "git_commit", "source_version", "content_digest"]},
-            "value": {"type": "string"},
-            "input_name": {"type": "string", "minLength": 1},
-            "input_checksum": {"$ref": "#/$defs/checksum"}
-          }
-        },
+        "revision": {"$ref": "#/$defs/revision"},
         "completeness": {"enum": ["complete", "partial"]},
         "status": {"enum": ["succeeded", "degraded"]},
         "evidence_checksum": {"$ref": "#/$defs/checksum"}
+      }
+    },
+    "revision": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind"],
+      "dependentRequired": {
+        "input_name": ["input_checksum"],
+        "input_checksum": ["input_name"]
+      },
+      "allOf": [
+        {
+          "if": {"properties": {"kind": {"const": "git_commit"}}},
+          "then": {"required": ["input_name", "input_checksum"]}
+        },
+        {
+          "if": {"required": ["input_name"]},
+          "then": {"properties": {"kind": {"const": "git_commit"}}}
+        }
+      ],
+      "properties": {
+        "kind": {"enum": ["unknown", "etag", "last_modified", "git_commit", "source_version", "content_digest"]},
+        "value": {"type": "string"},
+        "input_name": {"type": "string", "minLength": 1},
+        "input_checksum": {"$ref": "#/$defs/checksum"}
+      }
+    },
+    "review_candidate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "code",
+        "provider_id",
+        "provider_model_id",
+        "source",
+        "source_observation_id",
+        "source_revision",
+        "evidence_checksum",
+        "reason",
+        "prior_reviewed_model_link"
+      ],
+      "properties": {
+        "code": {"const": "unresolved_model_reference"},
+        "provider_id": {"type": "string", "minLength": 1},
+        "provider_model_id": {"type": "string", "minLength": 1},
+        "source": {"type": "string", "minLength": 1},
+        "source_observation_id": {"type": "string", "minLength": 1},
+        "source_revision": {"$ref": "#/$defs/revision"},
+        "evidence_checksum": {"$ref": "#/$defs/checksum"},
+        "reason": {"type": "string", "minLength": 1},
+        "prior_reviewed_model_link": {"type": "string"}
       }
     },
     "consumer_compatibility": {

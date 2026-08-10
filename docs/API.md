@@ -70,7 +70,8 @@ Package starmap provides immutable AI model catalog reads, explicit generation p
 
 - [Constants](<#constants>)
 - [type Candidate](<#Candidate>)
-  - [func NewCandidate\(catalog \*catalogs.Catalog, observations ...catalogs.SourceObservationLink\) \(\*Candidate, error\)](<#NewCandidate>)
+  - [func NewCandidate\(catalog \*catalogs.Catalog, evidence CandidateEvidence\) \(\*Candidate, error\)](<#NewCandidate>)
+- [type CandidateEvidence](<#CandidateEvidence>)
 - [type CatalogPublishedEvent](<#CatalogPublishedEvent>)
 - [type CatalogPublishedHook](<#CatalogPublishedHook>)
 - [type CatalogReadiness](<#CatalogReadiness>)
@@ -129,9 +130,9 @@ const (
 ```
 
 <a name="Candidate"></a>
-## type [Candidate](<https://github.com/agentstation/starmap/blob/main/update.go#L15-L18>)
+## type [Candidate](<https://github.com/agentstation/starmap/blob/main/update.go#L23-L26>)
 
-Candidate is a complete immutable catalog prepared off to the side for one atomic publication. Source observations are immutable generation evidence; they do not alter catalog facts.
+Candidate is a complete immutable catalog prepared off to the side for one atomic publication. Evidence does not alter catalog facts.
 
 ```go
 type Candidate struct {
@@ -140,13 +141,25 @@ type Candidate struct {
 ```
 
 <a name="NewCandidate"></a>
-### func [NewCandidate](<https://github.com/agentstation/starmap/blob/main/update.go#L23-L26>)
+### func [NewCandidate](<https://github.com/agentstation/starmap/blob/main/update.go#L31-L34>)
 
 ```go
-func NewCandidate(catalog *catalogs.Catalog, observations ...catalogs.SourceObservationLink) (*Candidate, error)
+func NewCandidate(catalog *catalogs.Catalog, evidence CandidateEvidence) (*Candidate, error)
 ```
 
-NewCandidate validates and returns a publication candidate. An empty observation list is permitted for custom acquisition; Client.Update records a deterministic custom\-update observation in that case.
+NewCandidate validates and returns a publication candidate. Empty evidence is permitted for custom acquisition. Client.Update records a deterministic custom\-update observation in that case.
+
+<a name="CandidateEvidence"></a>
+## type [CandidateEvidence](<https://github.com/agentstation/starmap/blob/main/update.go#L16-L19>)
+
+CandidateEvidence binds one publication candidate to its immutable source observations and excluded model review candidates.
+
+```go
+type CandidateEvidence struct {
+    SourceObservations []catalogs.SourceObservationLink
+    ReviewCandidates   []catalogmeta.ReviewCandidate
+}
+```
 
 <a name="CatalogPublishedEvent"></a>
 ## type [CatalogPublishedEvent](<https://github.com/agentstation/starmap/blob/main/hooks.go#L19-L24>)
@@ -228,7 +241,7 @@ func NewContext(ctx context.Context, opts ...Option) (*Client, error)
 NewContext creates a Client with the given options. The caller\-owned context bounds durable generation loading and workspace repair and must be non\-nil. When a durable generation and a marker\-backed unchanged YAML workspace are both configured, construction repairs a stale or interrupted projection by digest. It never overwrites an unrecognized semantic workspace change.
 
 <a name="Client.Activate"></a>
-### func \(\*Client\) [Activate](<https://github.com/agentstation/starmap/blob/main/update.go#L104>)
+### func \(\*Client\) [Activate](<https://github.com/agentstation/starmap/blob/main/update.go#L127>)
 
 ```go
 func (c *Client) Activate(ctx context.Context, generation catalogstore.Generation) (Publication, error)
@@ -363,7 +376,7 @@ func (c *Client) SaveTo(path string) error
 SaveTo atomically materializes the current committed generation into path. It never publishes a new generation.
 
 <a name="Client.Update"></a>
-### func \(\*Client\) [Update](<https://github.com/agentstation/starmap/blob/main/update.go#L67>)
+### func \(\*Client\) [Update](<https://github.com/agentstation/starmap/blob/main/update.go#L90>)
 
 ```go
 func (c *Client) Update(ctx context.Context, update UpdateFunc) (Publication, error)
@@ -496,7 +509,7 @@ func WithEmbeddedBootstrapMaxSizeBytes(maxSizeBytes int64) Option
 WithEmbeddedBootstrapMaxSizeBytes fails readiness while the active embedded bootstrap canonical payload exceeds maxSizeBytes.
 
 <a name="Publication"></a>
-## type [Publication](<https://github.com/agentstation/starmap/blob/main/update.go#L57-L62>)
+## type [Publication](<https://github.com/agentstation/starmap/blob/main/update.go#L80-L85>)
 
 Publication identifies the durable generation produced by a successful update. Published is false when the update function intentionally returns no candidate or an identical retained generation is activated again.
 
@@ -542,7 +555,7 @@ type RollbackResult struct {
 ```
 
 <a name="UpdateFunc"></a>
-## type [UpdateFunc](<https://github.com/agentstation/starmap/blob/main/update.go#L52>)
+## type [UpdateFunc](<https://github.com/agentstation/starmap/blob/main/update.go#L75>)
 
 UpdateFunc builds and validates a complete candidate while Client.Update holds the client's mutation transaction. Returning nil performs no publication. The current catalog is immutable and safe to retain.
 

@@ -60,7 +60,7 @@ func TestWritableStoreTriggerMatrixRejectsBeforeWork(t *testing.T) {
 			current *catalogs.Catalog,
 		) (*Candidate, error) {
 			calls.Add(1)
-			return NewCandidate(current)
+			return NewCandidate(current, CandidateEvidence{})
 		})
 		assertWritableStoreConfigError(t, err)
 		if got := calls.Load(); got != 0 {
@@ -113,7 +113,7 @@ func TestWritableStoreAllowsConfiguredMutationTriggers(t *testing.T) {
 			current *catalogs.Catalog,
 		) (*Candidate, error) {
 			calls.Add(1)
-			return NewCandidate(current)
+			return NewCandidate(current, CandidateEvidence{})
 		})
 		if err != nil {
 			t.Fatalf("Update: %v", err)

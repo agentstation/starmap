@@ -196,7 +196,8 @@ func testGeneration(id, value string) Generation {
 					EvidenceChecksum: evidence.Checksum,
 				},
 			},
-			Completeness: catalogs.GenerationCompletenessComplete,
+			ReviewCandidates: []catalogmeta.ReviewCandidate{},
+			Completeness:     catalogs.GenerationCompletenessComplete,
 			ConsumerCompatibility: catalogs.ConsumerCompatibility{
 				MinSchemaVersion: catalogs.CurrentCatalogSchemaVersion,
 				MaxSchemaVersion: catalogs.CurrentCatalogSchemaVersion,

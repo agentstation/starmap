@@ -18,25 +18,30 @@ var (
 	requiredManifestJSONFields = []string{
 		"manifest_version", "schema_version", "generation_id", "generated_at",
 		"payload", "validation", "sync_run_id", "source_observations",
-		"completeness", "degraded", "consumer_compatibility",
+		"review_candidates", "completeness", "degraded", "consumer_compatibility",
 	}
 	requiredPayloadJSONFields         = []string{"checksum", "size_bytes", "media_type"}
 	requiredValidationJSONFields      = []string{"validator_version", "validated_at", "status", "error_count", "warning_count", "checks"}
 	requiredValidationCheckJSONFields = []string{"name", "status"}
 	requiredObservationJSONFields     = []string{"source", "observation_id", "observed_at", "revision", "completeness", "status", "evidence_checksum"}
 	requiredObservationRevisionFields = []string{"kind"}
-	requiredCompatibilityJSONFields   = []string{"min_schema_version", "max_schema_version"}
+	requiredReviewCandidateJSONFields = []string{
+		"code", "provider_id", "provider_model_id", "source",
+		"source_observation_id", "source_revision", "evidence_checksum",
+		"reason", "prior_reviewed_model_link",
+	}
+	requiredCompatibilityJSONFields = []string{"min_schema_version", "max_schema_version"}
 )
 
 const (
 	// CurrentGenerationManifestVersion is the manifest envelope version emitted
 	// by this release. It is intentionally independent of the Starmap binary
 	// version and the catalog payload schema version.
-	CurrentGenerationManifestVersion uint64 = 1
+	CurrentGenerationManifestVersion uint64 = 2
 
 	// CurrentCatalogSchemaVersion identifies the canonical catalog payload
 	// schema emitted by this release.
-	CurrentCatalogSchemaVersion uint64 = 4
+	CurrentCatalogSchemaVersion uint64 = 5
 
 	// CatalogPayloadMediaType identifies the canonical JSON catalog payload.
 	CatalogPayloadMediaType = "application/vnd.agentstation.starmap.catalog+json"
@@ -169,18 +174,19 @@ func (c ConsumerCompatibility) SupportsSchema(schemaVersion uint64) bool {
 // It is shared by local stores and distribution transports; transport-specific
 // URLs, release tags, and binary versions do not belong in this domain record.
 type GenerationManifest struct {
-	ManifestVersion       uint64                     `json:"manifest_version" yaml:"manifest_version"`
-	SchemaVersion         uint64                     `json:"schema_version" yaml:"schema_version"`
-	GenerationID          string                     `json:"generation_id" yaml:"generation_id"`
-	GeneratedAt           time.Time                  `json:"generated_at" yaml:"generated_at"`
-	Payload               PayloadDescriptor          `json:"payload" yaml:"payload"`
-	Validation            GenerationValidationReport `json:"validation" yaml:"validation"`
-	SyncRunID             string                     `json:"sync_run_id" yaml:"sync_run_id"`
-	SourceObservations    []SourceObservationLink    `json:"source_observations" yaml:"source_observations"`
-	Completeness          GenerationCompleteness     `json:"completeness" yaml:"completeness"`
-	Degraded              bool                       `json:"degraded" yaml:"degraded"`
-	DegradationReasons    []string                   `json:"degradation_reasons,omitempty" yaml:"degradation_reasons,omitempty"`
-	ConsumerCompatibility ConsumerCompatibility      `json:"consumer_compatibility" yaml:"consumer_compatibility"`
+	ManifestVersion       uint64                        `json:"manifest_version" yaml:"manifest_version"`
+	SchemaVersion         uint64                        `json:"schema_version" yaml:"schema_version"`
+	GenerationID          string                        `json:"generation_id" yaml:"generation_id"`
+	GeneratedAt           time.Time                     `json:"generated_at" yaml:"generated_at"`
+	Payload               PayloadDescriptor             `json:"payload" yaml:"payload"`
+	Validation            GenerationValidationReport    `json:"validation" yaml:"validation"`
+	SyncRunID             string                        `json:"sync_run_id" yaml:"sync_run_id"`
+	SourceObservations    []SourceObservationLink       `json:"source_observations" yaml:"source_observations"`
+	ReviewCandidates      []catalogmeta.ReviewCandidate `json:"review_candidates" yaml:"review_candidates"`
+	Completeness          GenerationCompleteness        `json:"completeness" yaml:"completeness"`
+	Degraded              bool                          `json:"degraded" yaml:"degraded"`
+	DegradationReasons    []string                      `json:"degradation_reasons,omitempty" yaml:"degradation_reasons,omitempty"`
+	ConsumerCompatibility ConsumerCompatibility         `json:"consumer_compatibility" yaml:"consumer_compatibility"`
 }
 
 // ParseGenerationManifestJSON strictly parses and validates a JSON manifest.
@@ -217,6 +223,18 @@ func ParseGenerationManifestJSON(data []byte) (GenerationManifest, error) {
 			return GenerationManifest{}, err
 		}
 	}
+	if err := requireJSONArrayObjects(raw["review_candidates"], "review_candidates", requiredReviewCandidateJSONFields); err != nil {
+		return GenerationManifest{}, err
+	}
+	var reviewCandidateObjects []map[string]json.RawMessage
+	if err := json.Unmarshal(raw["review_candidates"], &reviewCandidateObjects); err != nil {
+		return GenerationManifest{}, validationError("review_candidates", nil, fmt.Sprintf("must be an array of objects: %v", err))
+	}
+	for index, candidate := range reviewCandidateObjects {
+		if _, err := requireJSONObject(candidate["source_revision"], fmt.Sprintf("review_candidates[%d].source_revision", index), requiredObservationRevisionFields); err != nil {
+			return GenerationManifest{}, err
+		}
+	}
 	if _, err := requireJSONObject(raw["consumer_compatibility"], "consumer_compatibility", requiredCompatibilityJSONFields); err != nil {
 		return GenerationManifest{}, err
 	}
@@ -243,6 +261,7 @@ func ParseGenerationManifestJSON(data []byte) (GenerationManifest, error) {
 func (m GenerationManifest) Copy() GenerationManifest {
 	copyManifest := m
 	copyManifest.SourceObservations = append([]SourceObservationLink(nil), m.SourceObservations...)
+	copyManifest.ReviewCandidates = append([]catalogmeta.ReviewCandidate{}, m.ReviewCandidates...)
 	copyManifest.DegradationReasons = append([]string(nil), m.DegradationReasons...)
 	copyManifest.Validation.Checks = append([]GenerationValidationCheck(nil), m.Validation.Checks...)
 	return copyManifest
@@ -280,6 +299,9 @@ func (m GenerationManifest) Validate() error {
 	if err := validateObservationLinks(m.SourceObservations); err != nil {
 		return err
 	}
+	if err := ValidateReviewCandidates(m.ReviewCandidates, m.SourceObservations); err != nil {
+		return err
+	}
 	for _, observation := range m.SourceObservations {
 		if observation.Completeness == catalogmeta.ObservationCompletenessPartial && m.Completeness != GenerationCompletenessPartial {
 			return validationError("completeness", m.Completeness, "must be partial when a linked observation is partial")
@@ -311,6 +333,75 @@ func (m GenerationManifest) Validate() error {
 	}
 	if !m.ConsumerCompatibility.SupportsSchema(m.SchemaVersion) {
 		return validationError("schema_version", m.SchemaVersion, "is outside the declared consumer compatibility range")
+	}
+	return nil
+}
+
+// ValidateReviewCandidates verifies durable review candidates against the
+// exact source observations that supplied their evidence.
+func ValidateReviewCandidates(
+	candidates []catalogmeta.ReviewCandidate,
+	observations []SourceObservationLink,
+) error {
+	if candidates == nil {
+		return validationError("review_candidates", candidates, "must be an array")
+	}
+	observationIndex := make(map[string]SourceObservationLink, len(observations))
+	for _, observation := range observations {
+		key := observation.Source.String() + "\x00" + observation.ObservationID
+		observationIndex[key] = observation
+	}
+	for index, candidate := range candidates {
+		prefix := fmt.Sprintf("review_candidates[%d]", index)
+		if candidate.Code != catalogmeta.ReviewCandidateUnresolvedModelReference {
+			return validationError(prefix+".code", candidate.Code, "is not supported")
+		}
+		if strings.TrimSpace(candidate.ProviderID) == "" {
+			return validationError(prefix+".provider_id", candidate.ProviderID, "is required")
+		}
+		if strings.TrimSpace(candidate.ProviderModelID) == "" {
+			return validationError(prefix+".provider_model_id", candidate.ProviderModelID, "is required")
+		}
+		if strings.TrimSpace(candidate.SourceID.String()) == "" {
+			return validationError(prefix+".source", candidate.SourceID, "is required")
+		}
+		if strings.TrimSpace(candidate.SourceObservationID) == "" {
+			return validationError(prefix+".source_observation_id", candidate.SourceObservationID, "is required")
+		}
+		if err := validateObservationRevision(prefix+".source_revision", candidate.SourceRevision); err != nil {
+			return err
+		}
+		if err := validateChecksum(prefix+".evidence_checksum", candidate.EvidenceChecksum); err != nil {
+			return err
+		}
+		if strings.TrimSpace(candidate.Reason) == "" {
+			return validationError(prefix+".reason", candidate.Reason, "is required")
+		}
+		if candidate.PriorReviewedModelLink != "" {
+			if _, _, err := ParseModelDefinitionID(ModelDefinitionID(candidate.PriorReviewedModelLink)); err != nil {
+				return validationError(prefix+".prior_reviewed_model_link", candidate.PriorReviewedModelLink, "must be a canonical model definition ID")
+			}
+		}
+		key := candidate.SourceID.String() + "\x00" + candidate.SourceObservationID
+		observation, found := observationIndex[key]
+		if !found {
+			return validationError(prefix+".source_observation_id", candidate.SourceObservationID, "must identify a linked source observation")
+		}
+		if candidate.SourceRevision != observation.Revision {
+			return validationError(prefix+".source_revision", candidate.SourceRevision, "must match the linked source observation")
+		}
+		if candidate.EvidenceChecksum != observation.EvidenceChecksum {
+			return validationError(prefix+".evidence_checksum", candidate.EvidenceChecksum, "must match the linked source observation")
+		}
+		if index > 0 {
+			order := catalogmeta.CompareReviewCandidates(candidates[index-1], candidate)
+			if order == 0 {
+				return validationError(prefix, candidate, "must be unique")
+			}
+			if order > 0 {
+				return validationError(prefix, candidate, "must use canonical order")
+			}
+		}
 	}
 	return nil
 }

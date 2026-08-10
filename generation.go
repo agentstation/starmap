@@ -71,12 +71,12 @@ const (
 func (c *Client) commitAndPublish(
 	ctx context.Context,
 	published *catalogs.Catalog,
-	observations []catalogs.SourceObservationLink,
+	evidence CandidateEvidence,
 ) (Publication, error) {
 	if err := c.requireWritableCatalogStore(); err != nil {
 		return Publication{}, err
 	}
-	generation, err := c.newGeneration(published, observations)
+	generation, err := c.newGeneration(published, evidence)
 	if err != nil {
 		return Publication{}, err
 	}
@@ -158,7 +158,7 @@ func (c *Client) publishCommittedGeneration(published *catalogs.Catalog, generat
 
 func (c *Client) newGeneration(
 	published *catalogs.Catalog,
-	sourceObservations []catalogs.SourceObservationLink,
+	evidence CandidateEvidence,
 ) (catalogstore.Generation, error) {
 	payload, err := catalogstore.EncodeCatalogPayload(published)
 	if err != nil {
@@ -174,7 +174,7 @@ func (c *Client) newGeneration(
 		return catalogstore.Generation{}, err
 	}
 	generatedAt := c.currentTime()
-	observations := append([]catalogs.SourceObservationLink(nil), sourceObservations...)
+	observations := append([]catalogs.SourceObservationLink(nil), evidence.SourceObservations...)
 	if len(observations) == 0 {
 		observations = append(observations, catalogs.SourceObservationLink{
 			Source:        customUpdateSourceID,
@@ -230,6 +230,7 @@ func (c *Client) newGeneration(
 			},
 			SyncRunID:          syncRunID,
 			SourceObservations: observations,
+			ReviewCandidates:   append([]catalogmeta.ReviewCandidate{}, evidence.ReviewCandidates...),
 			Completeness:       completeness,
 			Degraded:           degraded,
 			DegradationReasons: degradationReasons,

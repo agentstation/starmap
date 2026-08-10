@@ -133,9 +133,6 @@ func (c *Client) ConvertToModel(m Model) *catalogs.Model {
 	// Apply dynamic author extraction
 	model.Authors = c.extractAuthors(m.ID, m.OwnedBy)
 
-	// Apply dynamic feature rules
-	model.Features = c.applyFeatureRules(m)
-
 	c.applyProviderDefaults(model, m)
 
 	if m.Root != "" || m.Parent != nil {
@@ -180,37 +177,39 @@ func (c *Client) applyProviderDefaults(model *catalogs.Model, apiModel Model) {
 }
 
 func normalizeOperationalModalities(model *catalogs.Model) {
-	if model == nil || model.Metadata == nil || model.Features == nil {
+	if model == nil || model.Metadata == nil {
 		return
 	}
 	for _, tag := range model.Metadata.Tags {
 		switch strings.ToLower(string(tag)) {
 		case "embed", string(catalogs.ModelTagEmbedding):
-			model.Features.Modalities.Output = []catalogs.ModelModality{
+			ensureModelFeatures(model).Modalities.Output = []catalogs.ModelModality{
 				catalogs.ModelModalityEmbedding,
 			}
 		case "stt", string(catalogs.ModelTagSpeechToText):
-			model.Features.Modalities.Input = appendUniqueModality(
-				model.Features.Modalities.Input,
+			features := ensureModelFeatures(model)
+			features.Modalities.Input = appendUniqueModality(
+				features.Modalities.Input,
 				catalogs.ModelModalityAudio,
 			)
-			model.Features.Modalities.Output = []catalogs.ModelModality{
+			features.Modalities.Output = []catalogs.ModelModality{
 				catalogs.ModelModalityText,
 			}
 		case "tts", string(catalogs.ModelTagTextToSpeech):
-			model.Features.Modalities.Input = appendUniqueModality(
-				model.Features.Modalities.Input,
+			features := ensureModelFeatures(model)
+			features.Modalities.Input = appendUniqueModality(
+				features.Modalities.Input,
 				catalogs.ModelModalityText,
 			)
-			model.Features.Modalities.Output = []catalogs.ModelModality{
+			features.Modalities.Output = []catalogs.ModelModality{
 				catalogs.ModelModalityAudio,
 			}
 		case "image-gen", string(catalogs.ModelTagTextToImage):
-			model.Features.Modalities.Output = []catalogs.ModelModality{
+			ensureModelFeatures(model).Modalities.Output = []catalogs.ModelModality{
 				catalogs.ModelModalityImage,
 			}
 		case "video-gen", string(catalogs.ModelTagTextToVideo):
-			model.Features.Modalities.Output = []catalogs.ModelModality{
+			ensureModelFeatures(model).Modalities.Output = []catalogs.ModelModality{
 				catalogs.ModelModalityVideo,
 			}
 		}
@@ -261,7 +260,29 @@ func (c *Client) applyProviderMetadata(model *catalogs.Model, apiModel Model) {
 }
 
 func (c *Client) applyProviderFeatures(model *catalogs.Model, apiModel Model) {
+	if !hasProviderFeatureClaims(apiModel) {
+		return
+	}
 	features := ensureModelFeatures(model)
+	applyProviderModalities(features, apiModel)
+	applyProviderCapabilityFlags(features, apiModel)
+	applySupportedFeatures(features, apiModel.SupportedFeatures)
+	applySupportedSamplingParameters(features, apiModel.SupportedSamplingParameters)
+}
+
+func hasProviderFeatureClaims(apiModel Model) bool {
+	return len(apiModel.InputModalities) > 0 ||
+		len(apiModel.OutputModalities) > 0 ||
+		apiModel.SupportsImageInput != nil ||
+		apiModel.SupportsImageIn != nil ||
+		apiModel.SupportsVideoIn != nil ||
+		apiModel.SupportsTools != nil ||
+		apiModel.SupportsReasoning != nil ||
+		len(apiModel.SupportedFeatures) > 0 ||
+		len(apiModel.SupportedSamplingParameters) > 0
+}
+
+func applyProviderModalities(features *catalogs.ModelFeatures, apiModel Model) {
 	if len(apiModel.InputModalities) > 0 {
 		features.Modalities.Input = convertProviderModalities(apiModel.InputModalities)
 	}
@@ -274,6 +295,9 @@ func (c *Client) applyProviderFeatures(model *catalogs.Model, apiModel Model) {
 	if boolValue(apiModel.SupportsVideoIn) {
 		features.Modalities.Input = appendUniqueModality(features.Modalities.Input, catalogs.ModelModalityVideo)
 	}
+}
+
+func applyProviderCapabilityFlags(features *catalogs.ModelFeatures, apiModel Model) {
 	if apiModel.SupportsTools != nil {
 		features.SetSupport(catalogs.ModelFeatureTools, *apiModel.SupportsTools)
 		features.SetSupport(catalogs.ModelFeatureToolCalls, *apiModel.SupportsTools)
@@ -282,7 +306,10 @@ func (c *Client) applyProviderFeatures(model *catalogs.Model, apiModel Model) {
 	if apiModel.SupportsReasoning != nil {
 		features.SetSupport(catalogs.ModelFeatureReasoning, *apiModel.SupportsReasoning)
 	}
-	for _, feature := range apiModel.SupportedFeatures {
+}
+
+func applySupportedFeatures(features *catalogs.ModelFeatures, supported []string) {
+	for _, feature := range supported {
 		switch strings.ToLower(feature) {
 		case "tools", "tool_use", "tool_calls":
 			features.Tools = true
@@ -296,7 +323,10 @@ func (c *Client) applyProviderFeatures(model *catalogs.Model, apiModel Model) {
 			features.Reasoning = true
 		}
 	}
-	for _, parameter := range apiModel.SupportedSamplingParameters {
+}
+
+func applySupportedSamplingParameters(features *catalogs.ModelFeatures, supported []string) {
+	for _, parameter := range supported {
 		switch strings.ToLower(parameter) {
 		case "temperature":
 			features.Temperature = true

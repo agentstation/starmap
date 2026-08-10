@@ -84,12 +84,11 @@ func TestConvertGenAIModelPreservesProviderFields(t *testing.T) {
 		model.Limits.OutputTokens != 65536 {
 		t.Fatalf("limits = %#v", model.Limits)
 	}
-	if model.Features == nil ||
-		!model.Features.Temperature ||
-		!model.Features.TopP ||
-		!model.Features.MaxTokens ||
-		!model.Features.Streaming {
+	if model.Features == nil || !model.Features.Streaming {
 		t.Fatalf("features = %#v", model.Features)
+	}
+	if model.Features.Temperature || model.Features.TopP || model.Features.MaxTokens {
+		t.Fatalf("supported actions inferred parameter support: %#v", model.Features)
 	}
 	extension := model.Extensions["google-ai-studio"].Fields
 	if extension["version"] != "003" ||
@@ -103,6 +102,53 @@ func TestConvertGenAIModelPreservesProviderFields(t *testing.T) {
 	actions := extension["supported_actions"].([]any)
 	if len(actions) != 3 {
 		t.Fatalf("supported actions extension = %#v", actions)
+	}
+}
+
+func TestConvertGenAIModelDoesNotInferModelFacts(t *testing.T) {
+	client := NewClient(&catalogs.Provider{
+		ID:   catalogs.ProviderIDGoogleAIStudio,
+		Name: "Google AI Studio",
+	})
+
+	model := client.convertGenAIModel(&genai.Model{Name: "models/gemini-unknown"})
+
+	if model.ID != "gemini-unknown" || model.Name != "gemini-unknown" {
+		t.Fatalf("identity = %q/%q", model.ID, model.Name)
+	}
+	if model.Description != "" || !model.CreatedAt.IsZero() || !model.UpdatedAt.IsZero() {
+		t.Fatalf("invented metadata = description %q, created %v, updated %v", model.Description, model.CreatedAt, model.UpdatedAt)
+	}
+	if len(model.Authors) != 0 || model.Features != nil || model.Limits != nil {
+		t.Fatalf("invented facts = authors %#v, features %#v, limits %#v", model.Authors, model.Features, model.Limits)
+	}
+}
+
+func TestConvertGenAIModelUsesCatalogPublisherMapping(t *testing.T) {
+	client := NewClient(&catalogs.Provider{
+		ID:   catalogs.ProviderIDGoogleVertex,
+		Name: "Google Vertex AI",
+		Catalog: &catalogs.ProviderCatalog{Endpoint: catalogs.ProviderEndpoint{
+			AuthorMapping: &catalogs.AuthorMapping{
+				Field: "publisher",
+				Normalized: map[string]catalogs.AuthorID{
+					"anthropic": catalogs.AuthorIDAnthropic,
+				},
+			},
+		}},
+	})
+
+	for _, name := range []string{
+		"publishers/anthropic/models/claude-opus",
+		"projects/project/locations/us-central1/publishers/anthropic/models/claude-opus",
+	} {
+		model := client.convertGenAIModel(&genai.Model{Name: name})
+		if model.ID != "claude-opus" {
+			t.Fatalf("model ID for %q = %q", name, model.ID)
+		}
+		if len(model.Authors) != 1 || model.Authors[0].ID != catalogs.AuthorIDAnthropic {
+			t.Fatalf("authors for %q = %#v", name, model.Authors)
+		}
 	}
 }
 

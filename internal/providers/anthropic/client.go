@@ -215,14 +215,6 @@ func (c *Client) convertToModel(m modelResponse) *catalogs.Model {
 		model.UpdatedAt = model.CreatedAt
 	}
 
-	// Set Anthropic as the author
-	model.Authors = []catalogs.Author{
-		{ID: catalogs.AuthorIDAnthropic, Name: "Anthropic"},
-	}
-
-	// Set basic features based on model ID patterns
-	// Note: Detailed limits and pricing will be enhanced by models.dev integration
-	model.Features = c.inferFeatures(m.ID)
 	c.applyResponseFields(&model, m)
 	if len(m.UnknownFields) > 0 {
 		if model.Extensions == nil {
@@ -253,14 +245,14 @@ func (c *Client) applyResponseFields(model *catalogs.Model, response modelRespon
 	if response.Capabilities == nil {
 		return
 	}
-	features := model.Features
-	if features == nil {
-		features = &catalogs.ModelFeatures{
-			Modalities: catalogs.ModelModalities{
-				Input:  []catalogs.ModelModality{catalogs.ModelModalityText},
-				Output: []catalogs.ModelModality{catalogs.ModelModalityText},
-			},
-		}
+	canonicalCapabilities := response.Capabilities.ImageInput.Supported ||
+		response.Capabilities.PDFInput.Supported ||
+		response.Capabilities.StructuredOutputs.Supported ||
+		response.Capabilities.Thinking.Supported ||
+		response.Capabilities.Effort.Supported
+	var features *catalogs.ModelFeatures
+	if canonicalCapabilities {
+		features = &catalogs.ModelFeatures{}
 		model.Features = features
 	}
 	if response.Capabilities.ImageInput.Supported {
@@ -352,57 +344,4 @@ func (c *Client) extensionSource() string {
 		return c.provider.ID.String()
 	}
 	return catalogs.ProviderIDAnthropic.String()
-}
-
-// inferFeatures infers model features based on the model ID.
-func (c *Client) inferFeatures(modelID string) *catalogs.ModelFeatures {
-	features := &catalogs.ModelFeatures{
-		Modalities: catalogs.ModelModalities{
-			Input:  []catalogs.ModelModality{catalogs.ModelModalityText},
-			Output: []catalogs.ModelModality{catalogs.ModelModalityText},
-		},
-		Temperature:    true,
-		TopP:           true,
-		TopK:           true,
-		MaxTokens:      true,
-		Stop:           true,
-		Streaming:      true,
-		Tools:          true,
-		ToolChoice:     true,
-		FormatResponse: true,
-	}
-
-	// Check for specific Claude model capabilities
-	switch {
-	case contains(modelID, "claude-3"):
-		features.Modalities.Input = []catalogs.ModelModality{
-			catalogs.ModelModalityText,
-			catalogs.ModelModalityImage,
-		}
-		features.StructuredOutputs = true
-		features.WebSearch = false
-	case contains(modelID, "claude-opus-4"):
-		features.Modalities.Input = []catalogs.ModelModality{
-			catalogs.ModelModalityText,
-			catalogs.ModelModalityImage,
-		}
-		features.StructuredOutputs = true
-		features.Reasoning = true
-		features.IncludeReasoning = true
-	case contains(modelID, "claude-2"):
-		features.StructuredOutputs = false
-		features.WebSearch = false
-	}
-
-	return features
-}
-
-// contains checks if a string contains a substring.
-func contains(s, substr string) bool {
-	for i := 0; i <= len(s)-len(substr); i++ {
-		if s[i:i+len(substr)] == substr {
-			return true
-		}
-	}
-	return false
 }

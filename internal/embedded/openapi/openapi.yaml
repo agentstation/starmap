@@ -210,24 +210,6 @@ components:
       - EndpointTypeGoogle
       - EndpointTypeGoogleCloud
       - EndpointTypeOllama
-    catalogs.FeatureRule:
-      properties:
-        contains:
-          description: If field contains any of these strings
-          items:
-            type: string
-          type: array
-          uniqueItems: false
-        feature:
-          description: Feature to enable (e.g., "tools", "reasoning")
-          type: string
-        field:
-          description: Field to check (e.g., "id", "owned_by")
-          type: string
-        value:
-          description: Value to set for the feature
-          type: boolean
-      type: object
     catalogs.FieldMapping:
       properties:
         from:
@@ -1130,12 +1112,6 @@ components:
       properties:
         author_mapping:
           $ref: '#/components/schemas/catalogs.AuthorMapping'
-        feature_rules:
-          description: Feature inference rules
-          items:
-            $ref: '#/components/schemas/catalogs.FeatureRule'
-          type: array
-          uniqueItems: false
         field_mappings:
           description: Field mappings
           items:

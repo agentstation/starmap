@@ -10,10 +10,10 @@ import (
 	"testing"
 	"time"
 
+	"github.com/agentstation/starmap/internal/constants"
 	"github.com/agentstation/starmap/pkg/catalogmeta"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/catalogstore"
-	"github.com/agentstation/starmap/internal/constants"
 )
 
 func TestCatalogPathsFreshInstallAreCanonicalSeparatedAndPassive(t *testing.T) {
@@ -339,7 +339,8 @@ func validCatalogGeneration(t *testing.T, id string) catalogstore.Generation {
 					EvidenceChecksum: descriptor.Checksum,
 				},
 			},
-			Completeness: catalogs.GenerationCompletenessComplete,
+			ReviewCandidates: []catalogmeta.ReviewCandidate{},
+			Completeness:     catalogs.GenerationCompletenessComplete,
 			ConsumerCompatibility: catalogs.ConsumerCompatibility{
 				MinSchemaVersion: catalogs.CurrentCatalogSchemaVersion,
 				MaxSchemaVersion: catalogs.CurrentCatalogSchemaVersion,

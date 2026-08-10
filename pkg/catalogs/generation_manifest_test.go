@@ -168,6 +168,7 @@ func TestGenerationManifestRequiredFields(t *testing.T) {
 		{name: "validation status", field: "validation.status", mutate: func(m *GenerationManifest) { m.Validation.Status = "" }},
 		{name: "sync run ID", field: "sync_run_id", mutate: func(m *GenerationManifest) { m.SyncRunID = "" }},
 		{name: "source observations", field: "source_observations", mutate: func(m *GenerationManifest) { m.SourceObservations = nil }},
+		{name: "review candidates", field: "review_candidates", mutate: func(m *GenerationManifest) { m.ReviewCandidates = nil }},
 		{name: "observation source", field: "source_observations[0].source", mutate: func(m *GenerationManifest) { m.SourceObservations[0].Source = "" }},
 		{name: "observation ID", field: "source_observations[0].observation_id", mutate: func(m *GenerationManifest) { m.SourceObservations[0].ObservationID = "" }},
 		{name: "observation time", field: "source_observations[0].observed_at", mutate: func(m *GenerationManifest) { m.SourceObservations[0].ObservedAt = time.Time{} }},
@@ -253,6 +254,66 @@ func TestGenerationManifestCopyOwnership(t *testing.T) {
 	}
 }
 
+func TestGenerationManifestPersistsVerifiedReviewCandidate(t *testing.T) {
+	manifest := loadGenerationManifestFixture(t)
+	observation := manifest.SourceObservations[0]
+	manifest.ReviewCandidates = []catalogmeta.ReviewCandidate{{
+		Code:                   catalogmeta.ReviewCandidateUnresolvedModelReference,
+		ProviderID:             "provider",
+		ProviderModelID:        "opaque/model@2026",
+		SourceID:               observation.Source,
+		SourceObservationID:    observation.ObservationID,
+		SourceRevision:         observation.Revision,
+		EvidenceChecksum:       observation.EvidenceChecksum,
+		Reason:                 "provider offering needs a reviewed model link",
+		PriorReviewedModelLink: "author/prior-model",
+	}}
+
+	data, err := json.Marshal(manifest)
+	if err != nil {
+		t.Fatalf("Marshal: %v", err)
+	}
+	restored, err := ParseGenerationManifestJSON(data)
+	if err != nil {
+		t.Fatalf("ParseGenerationManifestJSON: %v", err)
+	}
+	if diff := cmp.Diff(manifest.ReviewCandidates, restored.ReviewCandidates); diff != "" {
+		t.Fatalf("review candidates mismatch (-want +got):\n%s", diff)
+	}
+
+	for _, test := range []struct {
+		name  string
+		field string
+		apply func(*catalogmeta.ReviewCandidate)
+	}{
+		{name: "source revision", field: "review_candidates[0].source_revision", apply: func(candidate *catalogmeta.ReviewCandidate) {
+			candidate.SourceRevision.Value = "other"
+		}},
+		{name: "evidence checksum", field: "review_candidates[0].evidence_checksum", apply: func(candidate *catalogmeta.ReviewCandidate) {
+			candidate.EvidenceChecksum = "sha256:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+		}},
+		{name: "reason", field: "review_candidates[0].reason", apply: func(candidate *catalogmeta.ReviewCandidate) {
+			candidate.Reason = ""
+		}},
+		{name: "prior link", field: "review_candidates[0].prior_reviewed_model_link", apply: func(candidate *catalogmeta.ReviewCandidate) {
+			candidate.PriorReviewedModelLink = "invalid"
+		}},
+	} {
+		t.Run(test.name, func(t *testing.T) {
+			invalid := manifest.Copy()
+			test.apply(&invalid.ReviewCandidates[0])
+			err := invalid.Validate()
+			var validationErr *pkgerrors.ValidationError
+			if !stderrors.As(err, &validationErr) {
+				t.Fatalf("error = %T %v, want ValidationError", err, err)
+			}
+			if validationErr.Field != test.field {
+				t.Fatalf("field = %q, want %q", validationErr.Field, test.field)
+			}
+		})
+	}
+}
+
 func TestGenerationManifestValidationReportConsistency(t *testing.T) {
 	tests := []struct {
 		name   string
@@ -334,7 +395,7 @@ func TestGenerationManifestJSONSchemaRequiredFields(t *testing.T) {
 	want := []string{
 		"manifest_version", "schema_version", "generation_id", "generated_at",
 		"payload", "validation", "sync_run_id", "source_observations",
-		"completeness", "degraded", "consumer_compatibility",
+		"review_candidates", "completeness", "degraded", "consumer_compatibility",
 	}
 	slices.Sort(schema.Required)
 	slices.Sort(want)
@@ -351,6 +412,7 @@ func TestGenerationManifestJSONSchemaRequiredFields(t *testing.T) {
 		"payload":                {"checksum", "size_bytes", "media_type"},
 		"validation":             {"validator_version", "validated_at", "status", "error_count", "warning_count", "checks"},
 		"source_observation":     {"source", "observation_id", "observed_at", "revision", "completeness", "status", "evidence_checksum"},
+		"review_candidate":       {"code", "provider_id", "provider_model_id", "source", "source_observation_id", "source_revision", "evidence_checksum", "reason", "prior_reviewed_model_link"},
 		"consumer_compatibility": {"min_schema_version", "max_schema_version"},
 	} {
 		data, found := schema.Definitions[definition]

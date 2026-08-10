@@ -564,7 +564,8 @@ func remoteTestGeneration(t *testing.T, schemaVersion uint64, compatibility cata
 				Completeness: catalogmeta.ObservationCompletenessComplete, Status: catalogmeta.ObservationStatusSucceeded,
 				EvidenceChecksum: descriptor.Checksum,
 			}},
-			Completeness: catalogs.GenerationCompletenessComplete, ConsumerCompatibility: compatibility,
+			ReviewCandidates: []catalogmeta.ReviewCandidate{},
+			Completeness:     catalogs.GenerationCompletenessComplete, ConsumerCompatibility: compatibility,
 		},
 		Payload: payload,
 	}

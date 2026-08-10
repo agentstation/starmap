@@ -57,7 +57,7 @@ func TestImportReleaseVerifiesReconcilesPublishesAndRollsBack(t *testing.T) {
 		context.Context,
 		*catalogs.Catalog,
 	) (*starmap.Candidate, error) {
-		return starmap.NewCandidate(baseline)
+		return starmap.NewCandidate(baseline, starmap.CandidateEvidence{})
 	})
 	if err != nil {
 		t.Fatalf("publish baseline: %v", err)
@@ -304,7 +304,7 @@ func importReleaseFixture(
 		context.Context,
 		*catalogs.Catalog,
 	) (*starmap.Candidate, error) {
-		return starmap.NewCandidate(catalog)
+		return starmap.NewCandidate(catalog, starmap.CandidateEvidence{})
 	}); err != nil {
 		t.Fatalf("producer Update: %v", err)
 	}

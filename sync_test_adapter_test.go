@@ -54,7 +54,7 @@ func (c *Client) Sync(
 		for _, observation := range prepared.Observations {
 			links = append(links, observation.Link())
 		}
-		return NewCandidate(catalog, links...)
+		return NewCandidate(catalog, CandidateEvidence{SourceObservations: links})
 	})
 	if err != nil {
 		return nil, err

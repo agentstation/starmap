@@ -2,27 +2,35 @@ package starmap
 
 import (
 	"context"
+	"slices"
 	"time"
 
+	"github.com/agentstation/starmap/pkg/catalogmeta"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/catalogstore"
 	"github.com/agentstation/starmap/pkg/errors"
 )
 
-// Candidate is a complete immutable catalog prepared off to the side for one
-// atomic publication. Source observations are immutable generation evidence;
-// they do not alter catalog facts.
-type Candidate struct {
-	catalog            *catalogs.Catalog
-	sourceObservations []catalogs.SourceObservationLink
+// CandidateEvidence binds one publication candidate to its immutable source
+// observations and excluded model review candidates.
+type CandidateEvidence struct {
+	SourceObservations []catalogs.SourceObservationLink
+	ReviewCandidates   []catalogmeta.ReviewCandidate
 }
 
-// NewCandidate validates and returns a publication candidate. An empty
-// observation list is permitted for custom acquisition; Client.Update records
-// a deterministic custom-update observation in that case.
+// Candidate is a complete immutable catalog prepared off to the side for one
+// atomic publication. Evidence does not alter catalog facts.
+type Candidate struct {
+	catalog  *catalogs.Catalog
+	evidence CandidateEvidence
+}
+
+// NewCandidate validates and returns a publication candidate. Empty evidence
+// is permitted for custom acquisition. Client.Update records a deterministic
+// custom-update observation in that case.
 func NewCandidate(
 	catalog *catalogs.Catalog,
-	observations ...catalogs.SourceObservationLink,
+	evidence CandidateEvidence,
 ) (*Candidate, error) {
 	if catalog == nil {
 		return nil, &errors.ValidationError{
@@ -30,7 +38,7 @@ func NewCandidate(
 			Message: "is required",
 		}
 	}
-	for _, observation := range observations {
+	for _, observation := range evidence.SourceObservations {
 		if err := observation.Validate(); err != nil {
 			return nil, errors.WrapResource(
 				"validate",
@@ -40,9 +48,24 @@ func NewCandidate(
 			)
 		}
 	}
+	reviewCandidates := append([]catalogmeta.ReviewCandidate(nil), evidence.ReviewCandidates...)
+	slices.SortFunc(reviewCandidates, catalogmeta.CompareReviewCandidates)
+	if len(reviewCandidates) > 0 {
+		if err := catalogs.ValidateReviewCandidates(reviewCandidates, evidence.SourceObservations); err != nil {
+			return nil, errors.WrapResource(
+				"validate",
+				"candidate review candidates",
+				"",
+				err,
+			)
+		}
+	}
 	return &Candidate{
-		catalog:            catalog,
-		sourceObservations: append([]catalogs.SourceObservationLink(nil), observations...),
+		catalog: catalog,
+		evidence: CandidateEvidence{
+			SourceObservations: append([]catalogs.SourceObservationLink(nil), evidence.SourceObservations...),
+			ReviewCandidates:   reviewCandidates,
+		},
 	}, nil
 }
 
@@ -96,7 +119,7 @@ func (c *Client) Update(ctx context.Context, update UpdateFunc) (Publication, er
 	if candidate == nil {
 		return Publication{}, nil
 	}
-	return c.commitAndPublish(ctx, candidate.catalog, candidate.sourceObservations)
+	return c.commitAndPublish(ctx, candidate.catalog, candidate.evidence)
 }
 
 // Activate validates, durably commits, and atomically activates an immutable

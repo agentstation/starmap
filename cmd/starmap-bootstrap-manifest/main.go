@@ -143,7 +143,7 @@ func readCurrentManifest(path string) (*catalogs.BootstrapManifest, error) {
 	if err != nil {
 		return nil, errors.WrapIO("read", path, err)
 	}
-	manifest, err := catalogs.ParseBootstrapManifestJSON(data)
+	manifest, err := catalogs.ParseBootstrapManifestEnvelopeJSON(data)
 	if err != nil {
 		return nil, err
 	}

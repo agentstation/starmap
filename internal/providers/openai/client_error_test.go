@@ -216,20 +216,6 @@ func TestListModelsMappingValidationSuppressesAdapterAfterConfigurationMutation(
 func TestClientModelConversion(t *testing.T) {
 	// No server needed for model conversion tests
 	provider := testOpenAIProvider("https://api.openai.com/v1/models")
-	provider.Catalog.Endpoint.FeatureRules = []catalogs.FeatureRule{
-		{
-			Field:    "id",
-			Contains: []string{"vision", "gpt-4"},
-			Feature:  "tools",
-			Value:    true,
-		},
-		{
-			Field:    "id",
-			Contains: []string{"vision", "gpt-4"},
-			Feature:  "tool_choice",
-			Value:    true,
-		},
-	}
 	os.Setenv("OPENAI_API_KEY", "test")
 	defer os.Unsetenv("OPENAI_API_KEY")
 
@@ -276,8 +262,7 @@ func TestClientModelConversion(t *testing.T) {
 		assert.Contains(t, model.ID, "davinci")
 	})
 
-	t.Run("model feature inference", func(t *testing.T) {
-		// Test vision model - should have tools enabled via feature rules
+	t.Run("model identifiers remain opaque", func(t *testing.T) {
 		visionModel := Model{
 			ID:      "gpt-4-vision-preview",
 			Created: 1234567890,
@@ -286,14 +271,8 @@ func TestClientModelConversion(t *testing.T) {
 		}
 
 		model := client.ConvertToModel(visionModel)
-		assert.NotNil(t, model.Features)
-		// Vision model should have tools enabled via feature rules (contains "vision" and "gpt-4")
-		assert.True(t, model.Features.Tools)
-		assert.True(t, model.Features.ToolChoice)
-		// Default modalities should be text
-		assert.Contains(t, model.Features.Modalities.Input, catalogs.ModelModalityText)
+		assert.Nil(t, model.Features)
 
-		// Test function calling model
 		functionModel := Model{
 			ID:      "gpt-4-turbo",
 			Created: 1234567890,
@@ -302,10 +281,7 @@ func TestClientModelConversion(t *testing.T) {
 		}
 
 		model = client.ConvertToModel(functionModel)
-		assert.NotNil(t, model.Features)
-		// Should have tools enabled via feature rules (contains "gpt-4")
-		assert.True(t, model.Features.Tools)
-		assert.True(t, model.Features.ToolChoice)
+		assert.Nil(t, model.Features)
 	})
 }
 

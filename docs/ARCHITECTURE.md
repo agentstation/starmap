@@ -575,14 +575,17 @@ store work is responsible for committing and activating it atomically.
 | `validation` | Validator version/time, overall status, counts, and named check results |
 | `sync_run_id` | Correlation ID for the synchronization attempt that built the candidate |
 | `source_observations` | Source/observation IDs and evidence checksums needed for audit and replay |
+| `review_candidates` | Ordered excluded offerings with a linked source observation |
 | `completeness`, `degraded`, `degradation_reasons` | Separate record-coverage and quality/fallback state |
-| `consumer_compatibility` | Inclusive catalog-schema range; never a Starmap or Starport binary range |
+| `consumer_compatibility` | Inclusive catalog-schema range, independent of binary versions |
 
-Publication eligibility requires a passed validation report, no failed checks,
-valid checksums, a non-empty observation set, internally consistent
-completeness/degradation state, and a schema version inside the declared
-consumer range. The checked-in JSON Schema, example manifest, and exact payload
-fixture live in `pkg/catalogs/testdata/generation/`.
+Publication requires a passed validation report, no failed checks, and valid
+checksums. It also requires a non-empty observation set and consistent quality
+state. Review candidates must use canonical order and match their source
+observations. The schema version must be in the declared consumer range.
+
+The JSON Schema, example manifest, and exact payload fixture are in
+`pkg/catalogs/testdata/generation/`.
 
 ### Catalog distribution artifact
 
@@ -1106,6 +1109,8 @@ Observation outcomes use one explicit policy:
 - source absence is never lifecycle evidence: complete omission, record
   quarantine, source failure, and a source-attributed model-count regression
   retain the exact baseline model and provenance;
+- an offering without a reviewed canonical model link stays unpublished. A
+  durable review candidate identifies its exact source observation.
 - a source-attributed count regression adds a provider-scoped
   `volume_collapse` issue and makes the observation partial/degraded; and
 - `Fresh` refuses an empty-baseline publication if any observation is
@@ -1518,13 +1523,16 @@ Route aliases remain caller-supplied policy-layer identities.
 catalog generation and reports ineligible targets without storing routing
 weights or fallback policy in ingestion.
 
-Canonical `Catalog.FindModel` returns `ModelDefinition`; provider facts come
-from `Offering` or `DefinitionOfferings`. It accepts canonical `author/slug`
-identity plus unambiguous bare-slug and provider-ID aliases. Ambiguity returns a
-typed conflict. Schema version 3 made a clean break from the provider-only
-schema version 2. Schema version 4 adds provider credential profiles and plane
-references. Because Starmap has not launched, it retains no compatibility
-reader for an earlier schema.
+Canonical `Catalog.FindModel` returns `ModelDefinition`. Provider facts come
+from `Offering` or `DefinitionOfferings`. The method accepts canonical
+`author/slug` identities. It also accepts unambiguous bare slugs and provider
+ID aliases. Ambiguity returns a typed conflict.
+
+Schema version 3 replaced provider-only schema version 2. Schema version 4
+added provider credential profiles and plane references. Schema version 5
+removes provider feature rules. Acquisition adapters use only direct response
+fields and catalog-declared author mappings. Starmap has no compatibility
+reader for an earlier schema because it has not launched.
 
 ### Authority-Based Strategy
 

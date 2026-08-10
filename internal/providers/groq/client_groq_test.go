@@ -35,6 +35,12 @@ func TestGroqFieldMappings(t *testing.T) {
 						To:   "limits.output_tokens",
 					},
 				},
+				AuthorMapping: &catalogs.AuthorMapping{
+					Field: "owned_by",
+					Normalized: map[string]catalogs.AuthorID{
+						"Meta": catalogs.AuthorIDMeta,
+					},
+				},
 			},
 		},
 	}

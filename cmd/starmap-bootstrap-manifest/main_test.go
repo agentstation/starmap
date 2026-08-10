@@ -74,6 +74,61 @@ func TestScheduledGenerationManifestCommandWritesChangedOnceAndPreservesUnchange
 	}
 }
 
+func TestScheduledGenerationManifestReplacesPriorSchemaManifest(t *testing.T) {
+	catalogDir := filepath.Join("..", "..", "internal", "embedded", "catalog")
+	manifestPath := filepath.Join(t.TempDir(), "generation.json")
+	now := time.Date(2026, time.July, 10, 17, 0, 0, 0, time.UTC)
+	if err := run([]string{
+		"--catalog-dir", catalogDir,
+		"--output", manifestPath,
+	}, &bytes.Buffer{}, now); err != nil {
+		t.Fatalf("seed manifest: %v", err)
+	}
+	data, err := os.ReadFile(manifestPath)
+	if err != nil {
+		t.Fatalf("ReadFile: %v", err)
+	}
+	var prior catalogs.BootstrapManifest
+	if err := json.Unmarshal(data, &prior); err != nil {
+		t.Fatalf("Unmarshal: %v", err)
+	}
+	prior.SchemaVersion = catalogs.CurrentCatalogSchemaVersion - 1
+	data, err = json.MarshalIndent(prior, "", "  ")
+	if err != nil {
+		t.Fatalf("MarshalIndent: %v", err)
+	}
+	data = append(data, '\n')
+	if err := os.WriteFile(manifestPath, data, constants.FilePermissions); err != nil {
+		t.Fatalf("WriteFile: %v", err)
+	}
+
+	var output bytes.Buffer
+	if err := run([]string{
+		"--catalog-dir", catalogDir,
+		"--output", manifestPath,
+	}, &output, now.Add(time.Hour)); err != nil {
+		t.Fatalf("replace prior schema: %v", err)
+	}
+	var report bootstrapmanifest.Report
+	if err := json.Unmarshal(output.Bytes(), &report); err != nil {
+		t.Fatalf("Unmarshal report: %v", err)
+	}
+	if !report.Changed {
+		t.Fatalf("report = %#v, want changed schema publication", report)
+	}
+	currentData, err := os.ReadFile(manifestPath)
+	if err != nil {
+		t.Fatalf("ReadFile current: %v", err)
+	}
+	current, err := catalogs.ParseBootstrapManifestJSON(currentData)
+	if err != nil {
+		t.Fatalf("ParseBootstrapManifestJSON: %v", err)
+	}
+	if current.SchemaVersion != catalogs.CurrentCatalogSchemaVersion {
+		t.Fatalf("schema version = %d", current.SchemaVersion)
+	}
+}
+
 func TestScheduledGenerationManifestUsesExactCommittedIdentity(t *testing.T) {
 	catalogDir := filepath.Join("..", "..", "internal", "embedded", "catalog")
 	builder, err := catalogs.NewFromPath(catalogDir)
@@ -120,7 +175,8 @@ func TestScheduledGenerationManifestUsesExactCommittedIdentity(t *testing.T) {
 					EvidenceChecksum: descriptor.Checksum,
 				},
 			},
-			Completeness: catalogs.GenerationCompletenessComplete,
+			ReviewCandidates: []catalogmeta.ReviewCandidate{},
+			Completeness:     catalogs.GenerationCompletenessComplete,
 			ConsumerCompatibility: catalogs.ConsumerCompatibility{
 				MinSchemaVersion: catalogs.CurrentCatalogSchemaVersion,
 				MaxSchemaVersion: catalogs.CurrentCatalogSchemaVersion,

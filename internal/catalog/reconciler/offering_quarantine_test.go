@@ -4,6 +4,7 @@ import (
 	"context"
 	stderrors "errors"
 	"testing"
+	"time"
 
 	"github.com/agentstation/starmap/pkg/catalogmeta"
 	"github.com/agentstation/starmap/pkg/catalogs"
@@ -24,9 +25,10 @@ func TestReconciliationQuarantinesOnlyUnresolvedProviderOfferings(t *testing.T) 
 	if err != nil {
 		t.Fatalf("New: %v", err)
 	}
+	providerEvidence := verifiedReviewObservation(t, sources.ProvidersID, providerObservation)
 	result, err := reconcile.Sources(context.Background(), sources.ProvidersID, []sources.Observation{
-		{SourceID: sources.ProvidersID, Catalog: providerObservation},
-		{SourceID: sources.EmbeddedCatalogID, Catalog: baseline},
+		providerEvidence,
+		verifiedReviewObservation(t, sources.EmbeddedCatalogID, baseline),
 	})
 	if err != nil {
 		t.Fatalf("Sources: %v", err)
@@ -57,26 +59,34 @@ func TestReconciliationQuarantinesOnlyUnresolvedProviderOfferings(t *testing.T) 
 		}
 	}
 
-	want := []catalogmeta.ReconciliationIssue{
+	want := []catalogmeta.ReviewCandidate{
 		{
-			Code:            catalogmeta.ReconciliationIssueUnresolvedModelReference,
-			ProviderID:      "alpha",
-			ProviderModelID: "unresolved-z",
-			Message:         unresolvedModelReferenceMessage,
+			Code:                catalogmeta.ReviewCandidateUnresolvedModelReference,
+			ProviderID:          "alpha",
+			ProviderModelID:     "unresolved-z",
+			SourceID:            providerEvidence.SourceID,
+			SourceObservationID: providerEvidence.ID,
+			SourceRevision:      providerEvidence.Revision,
+			EvidenceChecksum:    providerEvidence.EvidenceChecksum,
+			Reason:              unresolvedModelReferenceMessage,
 		},
 		{
-			Code:            catalogmeta.ReconciliationIssueUnresolvedModelReference,
-			ProviderID:      "zeta",
-			ProviderModelID: "unresolved-a",
-			Message:         unresolvedModelReferenceMessage,
+			Code:                catalogmeta.ReviewCandidateUnresolvedModelReference,
+			ProviderID:          "zeta",
+			ProviderModelID:     "unresolved-a",
+			SourceID:            providerEvidence.SourceID,
+			SourceObservationID: providerEvidence.ID,
+			SourceRevision:      providerEvidence.Revision,
+			EvidenceChecksum:    providerEvidence.EvidenceChecksum,
+			Reason:              unresolvedModelReferenceMessage,
 		},
 	}
-	if len(result.ReconciliationIssues) != len(want) {
-		t.Fatalf("reconciliation issues = %#v, want %#v", result.ReconciliationIssues, want)
+	if len(result.ReviewCandidates) != len(want) {
+		t.Fatalf("review candidates = %#v, want %#v", result.ReviewCandidates, want)
 	}
 	for index := range want {
-		if result.ReconciliationIssues[index] != want[index] {
-			t.Fatalf("reconciliation issue %d = %#v, want %#v", index, result.ReconciliationIssues[index], want[index])
+		if result.ReviewCandidates[index] != want[index] {
+			t.Fatalf("review candidate %d = %#v, want %#v", index, result.ReviewCandidates[index], want[index])
 		}
 	}
 	if result.Metadata.Stats.ResourcesSkipped != len(want) {
@@ -112,15 +122,15 @@ func TestReconciliationQuarantinesReferenceToMissingAuthoredModel(t *testing.T) 
 		t.Fatalf("New: %v", err)
 	}
 	result, err := reconcile.Sources(context.Background(), sources.ProvidersID, []sources.Observation{
-		{SourceID: sources.ProvidersID, Catalog: observation},
-		{SourceID: sources.EmbeddedCatalogID, Catalog: baseline},
+		verifiedReviewObservation(t, sources.ProvidersID, observation),
+		verifiedReviewObservation(t, sources.EmbeddedCatalogID, baseline),
 	})
 	if err != nil {
 		t.Fatalf("Sources: %v", err)
 	}
-	if len(result.ReconciliationIssues) != 1 ||
-		result.ReconciliationIssues[0].ProviderModelID != "missing" {
-		t.Fatalf("reconciliation issues = %#v", result.ReconciliationIssues)
+	if len(result.ReviewCandidates) != 1 ||
+		result.ReviewCandidates[0].ProviderModelID != "missing" {
+		t.Fatalf("review candidates = %#v", result.ReviewCandidates)
 	}
 	if _, err := result.Catalog.Build(); err != nil {
 		t.Fatalf("Build reconciled catalog: %v", err)
@@ -175,17 +185,17 @@ func TestReconciliationQuarantinesUnresolvedOfferingOutsideFilteredModelSet(t *t
 		t.Fatalf("New: %v", err)
 	}
 	result, err := reconcile.Sources(context.Background(), sources.ProvidersID, []sources.Observation{
-		{SourceID: sources.ProvidersID, Catalog: primary},
-		{SourceID: sources.ModelsDevHTTPID, Catalog: enrichment},
-		{SourceID: sources.EmbeddedCatalogID, Catalog: baseline},
+		verifiedReviewObservation(t, sources.ProvidersID, primary),
+		verifiedReviewObservation(t, sources.ModelsDevHTTPID, enrichment),
+		verifiedReviewObservation(t, sources.EmbeddedCatalogID, baseline),
 	})
 	if err != nil {
 		t.Fatalf("Sources: %v", err)
 	}
-	if len(result.ReconciliationIssues) != 1 ||
-		result.ReconciliationIssues[0].ProviderID != "alpha" ||
-		result.ReconciliationIssues[0].ProviderModelID != "new-model" {
-		t.Fatalf("reconciliation issues = %#v", result.ReconciliationIssues)
+	if len(result.ReviewCandidates) != 1 ||
+		result.ReviewCandidates[0].ProviderID != "alpha" ||
+		result.ReviewCandidates[0].ProviderModelID != "new-model" {
+		t.Fatalf("review candidates = %#v", result.ReviewCandidates)
 	}
 	if _, err := result.Catalog.ProviderModel("alpha", "new-model"); err == nil {
 		t.Fatal("unresolved offering outside the filtered model set was published")
@@ -217,6 +227,23 @@ func TestReconciliationCarriesLastKnownGoodModelReference(t *testing.T) {
 	}
 	if observation.ModelRef != "" {
 		t.Fatalf("observation model reference = %q, want unchanged", observation.ModelRef)
+	}
+}
+
+func TestReconciliationCandidateRecordsPriorReviewedModelLink(t *testing.T) {
+	_, candidates, err := resolvableProviderModels(
+		"provider",
+		[]*catalogs.Model{{ID: "renamed-model", Name: "Renamed Model"}},
+		map[catalogs.ModelDefinitionID]struct{}{},
+		map[string]*catalogs.Model{
+			"renamed-model": {ID: "renamed-model", ModelRef: "author/prior-model"},
+		},
+	)
+	if err != nil {
+		t.Fatalf("resolvableProviderModels: %v", err)
+	}
+	if len(candidates) != 1 || candidates[0].PriorReviewedModelLink != "author/prior-model" {
+		t.Fatalf("review candidates = %#v", candidates)
 	}
 }
 
@@ -286,6 +313,24 @@ func quarantineProviderObservation(
 	observation, err := catalogs.NewObservationCatalog(builder)
 	if err != nil {
 		t.Fatalf("NewObservationCatalog: %v", err)
+	}
+	return observation
+}
+
+func verifiedReviewObservation(
+	t testing.TB,
+	sourceID sources.ID,
+	catalog *catalogs.Catalog,
+) sources.Observation {
+	t.Helper()
+	observation, err := sources.NewObservation(sourceID, catalog, sources.ObservationMetadata{
+		ObservedAt:   time.Date(2026, time.August, 10, 12, 0, 0, 0, time.UTC),
+		Revision:     sources.Revision{Kind: sources.RevisionKindContentDigest},
+		Completeness: sources.ObservationCompletenessComplete,
+		Status:       sources.ObservationStatusSucceeded,
+	})
+	if err != nil {
+		t.Fatalf("NewObservation(%s): %v", sourceID, err)
 	}
 	return observation
 }

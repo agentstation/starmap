@@ -379,22 +379,9 @@ func deepCopyProviderCatalog(catalog *ProviderCatalog) *ProviderCatalog {
 	copied.Endpoint.ProtocolOptions.OpenAI = copyPtr(catalog.Endpoint.ProtocolOptions.OpenAI)
 	copied.Endpoint.ProtocolOptions.Anthropic = copyPtr(catalog.Endpoint.ProtocolOptions.Anthropic)
 	copied.Endpoint.FieldMappings = append([]FieldMapping(nil), catalog.Endpoint.FieldMappings...)
-	copied.Endpoint.FeatureRules = deepCopyFeatureRules(catalog.Endpoint.FeatureRules)
 	copied.Endpoint.AuthorMapping = deepCopyAuthorMapping(catalog.Endpoint.AuthorMapping)
 	copied.Authors = append([]AuthorID(nil), catalog.Authors...)
 	return &copied
-}
-
-func deepCopyFeatureRules(rules []FeatureRule) []FeatureRule {
-	if rules == nil {
-		return nil
-	}
-	copied := make([]FeatureRule, len(rules))
-	for i, rule := range rules {
-		copied[i] = rule
-		copied[i].Contains = append([]string(nil), rule.Contains...)
-	}
-	return copied
 }
 
 func deepCopyAuthorMapping(mapping *AuthorMapping) *AuthorMapping {

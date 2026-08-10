@@ -417,9 +417,7 @@ func (c *Client) listModelsVertex(
 		}
 	}
 
-	// Add Model Garden models from pre-defined list.
-	modelGardenModels := c.getModelGardenModels()
-	return c.mergeModels(models, modelGardenModels), nil
+	return models, nil
 }
 
 // listModelsViaGenAI uses the GenAI SDK to list models (works for both backends).
@@ -556,5 +554,3 @@ func apiKeyFromMaterial(material sources.ProviderCredentialMaterial) string {
 	}
 	return ""
 }
-
-// normalizePublisherToAuthorID maps Google Vertex publisher names to AuthorID.

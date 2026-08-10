@@ -264,17 +264,6 @@
       protocol_options:
         openai:
           token_price_unit: usd-per-million-tokens
-      feature_rules:
-      - field: id
-        contains:
-        - llama
-        feature: tools
-        value: true
-      - field: id
-        contains:
-        - r1
-        feature: reasoning
-        value: true
       author_mapping:
         field: owned_by
         normalized:
@@ -381,12 +370,6 @@
         to: limits.context_window
       - from: metadata.tags
         to: metadata.tags
-      feature_rules:
-      - field: metadata.tags
-        contains:
-        - reasoning
-        feature: reasoning
-        value: true
       author_mapping:
         field: id
         normalized:
@@ -526,13 +509,6 @@
       protocol_options:
         openai:
           token_price_unit: usd-per-million-tokens
-      feature_rules:
-      - field: id
-        contains:
-        - deepseek-r1
-        - qwen3
-        feature: reasoning
-        value: true
       author_mapping:
         field: id
         normalized:
@@ -695,13 +671,24 @@
     endpoint:
       type: google-cloud
       url: https://{location}-aiplatform.googleapis.com/v1/projects/{project}/locations/{location}/models
+      author_mapping:
+        field: publisher
+        normalized:
+          ai21: ai21
+          anthropic: anthropic
+          deepseek-ai: deepseek
+          google: google
+          meta: meta
+          mistralai: mistral
+          openai: openai
+          qwen: qwen
     authors:
     - ai21
     - anthropic
-    - deepseek-ai
+    - deepseek
     - google
     - meta
-    - mistralai
+    - mistral
     - openai
     - qwen
   status_page_url: https://status.cloud.google.com
@@ -782,6 +769,18 @@
         to: limits.context_window
       - from: max_completion_tokens
         to: limits.output_tokens
+      author_mapping:
+        field: owned_by
+        normalized:
+          Alibaba Cloud: alibaba
+          Google: google
+          Groq: groq
+          Hugging Face: huggingfaceh4
+          Meta: meta
+          Moonshot AI: moonshot-ai
+          OpenAI: openai
+          PlayAI: playai
+          SDAIA: sdaia
     authors:
     - alibaba
     - deepseek

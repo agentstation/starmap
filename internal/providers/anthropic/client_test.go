@@ -129,24 +129,11 @@ func TestAnthropicModelConversion(t *testing.T) {
 			t.Errorf("Model %s: Name mismatch, expected %s, got %s", apiModel.ID, apiModel.DisplayName, starmapModel.Name)
 		}
 
-		// Verify author is set to Anthropic
-		if len(starmapModel.Authors) == 0 {
-			t.Errorf("Model %s: missing authors", apiModel.ID)
-		} else if starmapModel.Authors[0].ID != catalogs.AuthorIDAnthropic {
-			t.Errorf("Model %s: expected Anthropic author, got %s", apiModel.ID, starmapModel.Authors[0].ID)
+		if len(starmapModel.Authors) != 0 {
+			t.Errorf("Model %s: authors = %#v, want no inferred author", apiModel.ID, starmapModel.Authors)
 		}
-
-		// Verify features are inferred
-		if starmapModel.Features == nil {
-			t.Errorf("Model %s: missing features", apiModel.ID)
-		} else {
-			// All Claude models should support basic text input/output
-			if len(starmapModel.Features.Modalities.Input) == 0 {
-				t.Errorf("Model %s: missing input modalities", apiModel.ID)
-			}
-			if len(starmapModel.Features.Modalities.Output) == 0 {
-				t.Errorf("Model %s: missing output modalities", apiModel.ID)
-			}
+		if starmapModel.Features != nil {
+			t.Errorf("Model %s: features = %#v, want no inferred features", apiModel.ID, starmapModel.Features)
 		}
 
 		t.Logf("✅ Model %s converted successfully: %s", starmapModel.ID, starmapModel.Name)

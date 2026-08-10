@@ -582,6 +582,7 @@ func main() {
 - [func EncodeCatalogPayload\(reader Reader\) \(\[\]byte, error\)](<#EncodeCatalogPayload>)
 - [func NormalizeExtensionFields\(fields map\[string\]any\) map\[string\]any](<#NormalizeExtensionFields>)
 - [func ShallowCopyProviderModels\(models map\[string\]\*Model\) map\[string\]\*Model](<#ShallowCopyProviderModels>)
+- [func ValidateReviewCandidates\(candidates \[\]catalogmeta.ReviewCandidate, observations \[\]SourceObservationLink\) error](<#ValidateReviewCandidates>)
 - [type ArchitectureType](<#ArchitectureType>)
   - [func \(at ArchitectureType\) String\(\) string](<#ArchitectureType.String>)
 - [type Author](<#Author>)
@@ -594,6 +595,7 @@ func main() {
   - [func ParseModelDefinitionID\(id ModelDefinitionID\) \(AuthorID, string, error\)](<#ParseModelDefinitionID>)
   - [func \(id AuthorID\) String\(\) string](<#AuthorID.String>)
 - [type AuthorMapping](<#AuthorMapping>)
+  - [func \(m AuthorMapping\) Resolve\(value string\) \(AuthorID, bool\)](<#AuthorMapping.Resolve>)
 - [type AuthoredModel](<#AuthoredModel>)
   - [func \(m AuthoredModel\) ID\(\) ModelDefinitionID](<#AuthoredModel.ID>)
 - [type Authors](<#Authors>)
@@ -619,8 +621,10 @@ func main() {
   - [func WithAuthorsMap\(authors map\[AuthorID\]\*Author\) AuthorsOption](<#WithAuthorsMap>)
 - [type AuthorsReader](<#AuthorsReader>)
 - [type BootstrapManifest](<#BootstrapManifest>)
+  - [func ParseBootstrapManifestEnvelopeJSON\(data \[\]byte\) \(BootstrapManifest, error\)](<#ParseBootstrapManifestEnvelopeJSON>)
   - [func ParseBootstrapManifestJSON\(data \[\]byte\) \(BootstrapManifest, error\)](<#ParseBootstrapManifestJSON>)
   - [func \(m BootstrapManifest\) Validate\(\) error](<#BootstrapManifest.Validate>)
+  - [func \(m BootstrapManifest\) ValidateEnvelope\(\) error](<#BootstrapManifest.ValidateEnvelope>)
 - [type Builder](<#Builder>)
   - [func New\(opt Option, opts ...Option\) \(\*Builder, error\)](<#New>)
   - [func NewBuilderFrom\(source Reader\) \(\*Builder, error\)](<#NewBuilderFrom>)
@@ -679,7 +683,6 @@ func main() {
 - [type ConsumerCompatibility](<#ConsumerCompatibility>)
   - [func \(c ConsumerCompatibility\) SupportsSchema\(schemaVersion uint64\) bool](<#ConsumerCompatibility.SupportsSchema>)
 - [type EndpointType](<#EndpointType>)
-- [type FeatureRule](<#FeatureRule>)
 - [type FieldMapping](<#FieldMapping>)
 - [type FloatRange](<#FloatRange>)
 - [type GenerationCompleteness](<#GenerationCompleteness>)
@@ -953,11 +956,11 @@ const (
     // CurrentGenerationManifestVersion is the manifest envelope version emitted
     // by this release. It is intentionally independent of the Starmap binary
     // version and the catalog payload schema version.
-    CurrentGenerationManifestVersion uint64 = 1
+    CurrentGenerationManifestVersion uint64 = 2
 
     // CurrentCatalogSchemaVersion identifies the canonical catalog payload
     // schema emitted by this release.
-    CurrentCatalogSchemaVersion uint64 = 4
+    CurrentCatalogSchemaVersion uint64 = 5
 
     // CatalogPayloadMediaType identifies the canonical JSON catalog payload.
     CatalogPayloadMediaType = "application/vnd.agentstation.starmap.catalog+json"
@@ -1016,13 +1019,22 @@ func NormalizeExtensionFields(fields map[string]any) map[string]any
 NormalizeExtensionFields returns a copy with maps, slices, and numbers normalized to stable dynamic types after JSON/YAML round trips.
 
 <a name="ShallowCopyProviderModels"></a>
-## func [ShallowCopyProviderModels](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/copy.go#L480>)
+## func [ShallowCopyProviderModels](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/copy.go#L467>)
 
 ```go
 func ShallowCopyProviderModels(models map[string]*Model) map[string]*Model
 ```
 
 ShallowCopyProviderModels creates a shallow copy of a provider's Models map. The map is copied but Model pointers are shared. Returns nil if the input map is nil.
+
+<a name="ValidateReviewCandidates"></a>
+## func [ValidateReviewCandidates](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/generation_manifest.go#L342-L345>)
+
+```go
+func ValidateReviewCandidates(candidates []catalogmeta.ReviewCandidate, observations []SourceObservationLink) error
+```
+
+ValidateReviewCandidates verifies durable review candidates against the exact source observations that supplied their evidence.
 
 <a name="ArchitectureType"></a>
 ## type [ArchitectureType](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_architecture.go#L15>)
@@ -1289,7 +1301,7 @@ func (id AuthorID) String() string
 String returns the string representation of an AuthorID.
 
 <a name="AuthorMapping"></a>
-## type [AuthorMapping](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L74-L77>)
+## type [AuthorMapping](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L66-L69>)
 
 AuthorMapping defines how to extract and normalize authors.
 
@@ -1299,6 +1311,15 @@ type AuthorMapping struct {
     Normalized map[string]AuthorID `yaml:"normalized" json:"normalized"` // Normalization map (e.g., "Meta" -> "meta")
 }
 ```
+
+<a name="AuthorMapping.Resolve"></a>
+### func \(AuthorMapping\) [Resolve](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider_author_mapping.go#L11>)
+
+```go
+func (m AuthorMapping) Resolve(value string) (AuthorID, bool)
+```
+
+Resolve returns the configured author for one exact provider field value. Exact and case\-insensitive matches precede the most\-specific glob pattern.
 
 <a name="AuthoredModel"></a>
 ## type [AuthoredModel](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/authored_model.go#L15-L18>)
@@ -1546,8 +1567,17 @@ type BootstrapManifest struct {
 }
 ```
 
+<a name="ParseBootstrapManifestEnvelopeJSON"></a>
+### func [ParseBootstrapManifestEnvelopeJSON](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/bootstrap_manifest.go#L80>)
+
+```go
+func ParseBootstrapManifestEnvelopeJSON(data []byte) (BootstrapManifest, error)
+```
+
+ParseBootstrapManifestEnvelopeJSON strictly parses bootstrap metadata without requiring the current catalog schema. Catalog refresh tooling uses it to replace a valid manifest from the previous schema.
+
 <a name="ParseBootstrapManifestJSON"></a>
-### func [ParseBootstrapManifestJSON](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/bootstrap_manifest.go#L61>)
+### func [ParseBootstrapManifestJSON](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/bootstrap_manifest.go#L73>)
 
 ```go
 func ParseBootstrapManifestJSON(data []byte) (BootstrapManifest, error)
@@ -1556,13 +1586,22 @@ func ParseBootstrapManifestJSON(data []byte) (BootstrapManifest, error)
 ParseBootstrapManifestJSON strictly parses embedded\-bootstrap metadata.
 
 <a name="BootstrapManifest.Validate"></a>
-### func \(BootstrapManifest\) [Validate](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/bootstrap_manifest.go#L28>)
+### func \(BootstrapManifest\) [Validate](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/bootstrap_manifest.go#L62>)
 
 ```go
 func (m BootstrapManifest) Validate() error
 ```
 
-Validate checks the embedded\-bootstrap metadata contract.
+Validate checks the embedded\-bootstrap metadata contract and requires the current catalog schema.
+
+<a name="BootstrapManifest.ValidateEnvelope"></a>
+### func \(BootstrapManifest\) [ValidateEnvelope](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/bootstrap_manifest.go#L28>)
+
+```go
+func (m BootstrapManifest) ValidateEnvelope() error
+```
+
+ValidateEnvelope checks schema\-independent embedded\-bootstrap metadata.
 
 <a name="Builder"></a>
 ## type [Builder](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/catalog.go#L66-L73>)
@@ -2095,7 +2134,7 @@ type CatalogPayload struct {
 ```
 
 <a name="ConsumerCompatibility"></a>
-## type [ConsumerCompatibility](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/generation_manifest.go#L158-L161>)
+## type [ConsumerCompatibility](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/generation_manifest.go#L163-L166>)
 
 ConsumerCompatibility declares the catalog schema versions that can consume this generation. It never refers to a Starmap or Starport binary version.
 
@@ -2107,7 +2146,7 @@ type ConsumerCompatibility struct {
 ```
 
 <a name="ConsumerCompatibility.SupportsSchema"></a>
-### func \(ConsumerCompatibility\) [SupportsSchema](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/generation_manifest.go#L164>)
+### func \(ConsumerCompatibility\) [SupportsSchema](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/generation_manifest.go#L169>)
 
 ```go
 func (c ConsumerCompatibility) SupportsSchema(schemaVersion uint64) bool
@@ -2141,20 +2180,6 @@ const (
 )
 ```
 
-<a name="FeatureRule"></a>
-## type [FeatureRule](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L66-L71>)
-
-FeatureRule defines conditions for inferring model features.
-
-```go
-type FeatureRule struct {
-    Field    string   `yaml:"field" json:"field"`       // Field to check (e.g., "id", "owned_by")
-    Contains []string `yaml:"contains" json:"contains"` // If field contains any of these strings
-    Feature  string   `yaml:"feature" json:"feature"`   // Feature to enable (e.g., "tools", "reasoning")
-    Value    bool     `yaml:"value" json:"value"`       // Value to set for the feature
-}
-```
-
 <a name="FieldMapping"></a>
 ## type [FieldMapping](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L60-L63>)
 
@@ -2181,7 +2206,7 @@ type FloatRange struct {
 ```
 
 <a name="GenerationCompleteness"></a>
-## type [GenerationCompleteness](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/generation_manifest.go#L49>)
+## type [GenerationCompleteness](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/generation_manifest.go#L54>)
 
 GenerationCompleteness describes whether a generation contains every record expected from the observations used to build it.
 
@@ -2203,29 +2228,30 @@ const (
 ```
 
 <a name="GenerationManifest"></a>
-## type [GenerationManifest](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/generation_manifest.go#L171-L184>)
+## type [GenerationManifest](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/generation_manifest.go#L176-L190>)
 
 GenerationManifest describes one immutable, validated catalog generation. It is shared by local stores and distribution transports; transport\-specific URLs, release tags, and binary versions do not belong in this domain record.
 
 ```go
 type GenerationManifest struct {
-    ManifestVersion       uint64                     `json:"manifest_version" yaml:"manifest_version"`
-    SchemaVersion         uint64                     `json:"schema_version" yaml:"schema_version"`
-    GenerationID          string                     `json:"generation_id" yaml:"generation_id"`
-    GeneratedAt           time.Time                  `json:"generated_at" yaml:"generated_at"`
-    Payload               PayloadDescriptor          `json:"payload" yaml:"payload"`
-    Validation            GenerationValidationReport `json:"validation" yaml:"validation"`
-    SyncRunID             string                     `json:"sync_run_id" yaml:"sync_run_id"`
-    SourceObservations    []SourceObservationLink    `json:"source_observations" yaml:"source_observations"`
-    Completeness          GenerationCompleteness     `json:"completeness" yaml:"completeness"`
-    Degraded              bool                       `json:"degraded" yaml:"degraded"`
-    DegradationReasons    []string                   `json:"degradation_reasons,omitempty" yaml:"degradation_reasons,omitempty"`
-    ConsumerCompatibility ConsumerCompatibility      `json:"consumer_compatibility" yaml:"consumer_compatibility"`
+    ManifestVersion       uint64                        `json:"manifest_version" yaml:"manifest_version"`
+    SchemaVersion         uint64                        `json:"schema_version" yaml:"schema_version"`
+    GenerationID          string                        `json:"generation_id" yaml:"generation_id"`
+    GeneratedAt           time.Time                     `json:"generated_at" yaml:"generated_at"`
+    Payload               PayloadDescriptor             `json:"payload" yaml:"payload"`
+    Validation            GenerationValidationReport    `json:"validation" yaml:"validation"`
+    SyncRunID             string                        `json:"sync_run_id" yaml:"sync_run_id"`
+    SourceObservations    []SourceObservationLink       `json:"source_observations" yaml:"source_observations"`
+    ReviewCandidates      []catalogmeta.ReviewCandidate `json:"review_candidates" yaml:"review_candidates"`
+    Completeness          GenerationCompleteness        `json:"completeness" yaml:"completeness"`
+    Degraded              bool                          `json:"degraded" yaml:"degraded"`
+    DegradationReasons    []string                      `json:"degradation_reasons,omitempty" yaml:"degradation_reasons,omitempty"`
+    ConsumerCompatibility ConsumerCompatibility         `json:"consumer_compatibility" yaml:"consumer_compatibility"`
 }
 ```
 
 <a name="ParseGenerationManifestJSON"></a>
-### func [ParseGenerationManifestJSON](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/generation_manifest.go#L190>)
+### func [ParseGenerationManifestJSON](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/generation_manifest.go#L196>)
 
 ```go
 func ParseGenerationManifestJSON(data []byte) (GenerationManifest, error)
@@ -2234,7 +2260,7 @@ func ParseGenerationManifestJSON(data []byte) (GenerationManifest, error)
 ParseGenerationManifestJSON strictly parses and validates a JSON manifest. Unknown members, missing required members \(including false/zero\-valued members\), malformed JSON, and trailing documents are rejected with typed validation errors.
 
 <a name="GenerationManifest.Copy"></a>
-### func \(GenerationManifest\) [Copy](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/generation_manifest.go#L243>)
+### func \(GenerationManifest\) [Copy](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/generation_manifest.go#L261>)
 
 ```go
 func (m GenerationManifest) Copy() GenerationManifest
@@ -2243,7 +2269,7 @@ func (m GenerationManifest) Copy() GenerationManifest
 Copy returns a value whose slices do not alias the original manifest.
 
 <a name="GenerationManifest.Validate"></a>
-### func \(GenerationManifest\) [Validate](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/generation_manifest.go#L252>)
+### func \(GenerationManifest\) [Validate](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/generation_manifest.go#L271>)
 
 ```go
 func (m GenerationManifest) Validate() error
@@ -2252,7 +2278,7 @@ func (m GenerationManifest) Validate() error
 Validate verifies that a manifest is complete and eligible for publication.
 
 <a name="GenerationValidationCheck"></a>
-## type [GenerationValidationCheck](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/generation_manifest.go#L121-L125>)
+## type [GenerationValidationCheck](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/generation_manifest.go#L126-L130>)
 
 GenerationValidationCheck records one deterministic validation decision.
 
@@ -2265,7 +2291,7 @@ type GenerationValidationCheck struct {
 ```
 
 <a name="GenerationValidationCheckStatus"></a>
-## type [GenerationValidationCheckStatus](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/generation_manifest.go#L72>)
+## type [GenerationValidationCheckStatus](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/generation_manifest.go#L77>)
 
 GenerationValidationCheckStatus is the result of one validation check.
 
@@ -2287,7 +2313,7 @@ const (
 ```
 
 <a name="GenerationValidationReport"></a>
-## type [GenerationValidationReport](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/generation_manifest.go#L129-L136>)
+## type [GenerationValidationReport](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/generation_manifest.go#L134-L141>)
 
 GenerationValidationReport records the validator identity and exact outcome that made a candidate eligible \(or ineligible\) for publication.
 
@@ -2303,7 +2329,7 @@ type GenerationValidationReport struct {
 ```
 
 <a name="GenerationValidationStatus"></a>
-## type [GenerationValidationStatus](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/generation_manifest.go#L61>)
+## type [GenerationValidationStatus](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/generation_manifest.go#L66>)
 
 GenerationValidationStatus is the overall result of generation validation.
 
@@ -4109,7 +4135,7 @@ func WithWritePath(path string) Option
 WithWritePath sets a specific path for writing catalog files.
 
 <a name="PayloadDescriptor"></a>
-## type [PayloadDescriptor](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/generation_manifest.go#L84-L88>)
+## type [PayloadDescriptor](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/generation_manifest.go#L89-L93>)
 
 PayloadDescriptor binds a generation manifest to exact immutable bytes.
 
@@ -4122,7 +4148,7 @@ type PayloadDescriptor struct {
 ```
 
 <a name="DescribeCatalogPayload"></a>
-### func [DescribeCatalogPayload](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/generation_manifest.go#L91>)
+### func [DescribeCatalogPayload](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/generation_manifest.go#L96>)
 
 ```go
 func DescribeCatalogPayload(payload []byte) PayloadDescriptor
@@ -4131,7 +4157,7 @@ func DescribeCatalogPayload(payload []byte) PayloadDescriptor
 DescribeCatalogPayload returns the descriptor for canonical catalog bytes.
 
 <a name="PayloadDescriptor.Verify"></a>
-### func \(PayloadDescriptor\) [Verify](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/generation_manifest.go#L101>)
+### func \(PayloadDescriptor\) [Verify](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/generation_manifest.go#L106>)
 
 ```go
 func (d PayloadDescriptor) Verify(payload []byte) error
@@ -4329,7 +4355,7 @@ func DeepCopyProvider(provider Provider) Provider
 DeepCopyProvider creates a deep copy of a Provider including its Models map.
 
 <a name="Provider.BindCatalogEndpoint"></a>
-### func \(\*Provider\) [BindCatalogEndpoint](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L375>)
+### func \(\*Provider\) [BindCatalogEndpoint](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L366>)
 
 ```go
 func (p *Provider) BindCatalogEndpoint(bindings map[string]string) (string, error)
@@ -4338,7 +4364,7 @@ func (p *Provider) BindCatalogEndpoint(bindings map[string]string) (string, erro
 BindCatalogEndpoint resolves catalog\-declared endpoint variables.
 
 <a name="Provider.CatalogEndpointURL"></a>
-### func \(\*Provider\) [CatalogEndpointURL](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L367>)
+### func \(\*Provider\) [CatalogEndpointURL](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L358>)
 
 ```go
 func (p *Provider) CatalogEndpointURL() string
@@ -4347,7 +4373,7 @@ func (p *Provider) CatalogEndpointURL() string
 CatalogEndpointURL returns the resolved model catalog endpoint URL.
 
 <a name="Provider.IsCatalogAuthRequired"></a>
-### func \(\*Provider\) [IsCatalogAuthRequired](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L362>)
+### func \(\*Provider\) [IsCatalogAuthRequired](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L353>)
 
 ```go
 func (p *Provider) IsCatalogAuthRequired() bool
@@ -4356,7 +4382,7 @@ func (p *Provider) IsCatalogAuthRequired() bool
 IsCatalogAuthRequired reports whether catalog acquisition requires credentials.
 
 <a name="Provider.Model"></a>
-### func \(\*Provider\) [Model](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L412>)
+### func \(\*Provider\) [Model](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L403>)
 
 ```go
 func (p *Provider) Model(modelID string) (*Model, error)
@@ -4386,7 +4412,7 @@ type ProviderAWSDefaultProtocolOptions struct {
 ```
 
 <a name="ProviderAnthropicCatalogProtocolOptions"></a>
-## type [ProviderAnthropicCatalogProtocolOptions](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L113-L115>)
+## type [ProviderAnthropicCatalogProtocolOptions](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L104-L106>)
 
 ProviderAnthropicCatalogProtocolOptions defines Anthropic wire\-version facts.
 
@@ -4437,7 +4463,7 @@ type ProviderAuthenticationProtocolOptions struct {
 ```
 
 <a name="ProviderCatalog"></a>
-## type [ProviderCatalog](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L118-L122>)
+## type [ProviderCatalog](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L109-L113>)
 
 ProviderCatalog represents information about a provider's models.
 
@@ -4450,7 +4476,7 @@ type ProviderCatalog struct {
 ```
 
 <a name="ProviderCatalogProtocolOptions"></a>
-## type [ProviderCatalogProtocolOptions](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L90-L93>)
+## type [ProviderCatalogProtocolOptions](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L81-L84>)
 
 ProviderCatalogProtocolOptions is a typed union of catalog\-transport facts.
 
@@ -4650,7 +4676,7 @@ type ProviderCredentials struct {
 ```
 
 <a name="ProviderEndpoint"></a>
-## type [ProviderEndpoint](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L80-L87>)
+## type [ProviderEndpoint](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L72-L78>)
 
 ProviderEndpoint configures how to access the provider's model catalog.
 
@@ -4660,7 +4686,6 @@ type ProviderEndpoint struct {
     URL             string                         `yaml:"url" json:"url"`                                               // Required: API endpoint
     ProtocolOptions ProviderCatalogProtocolOptions `yaml:"protocol_options,omitempty" json:"protocol_options,omitempty"` // Typed wire-protocol facts
     FieldMappings   []FieldMapping                 `yaml:"field_mappings,omitempty" json:"field_mappings,omitempty"`     // Field mappings
-    FeatureRules    []FeatureRule                  `yaml:"feature_rules,omitempty" json:"feature_rules,omitempty"`       // Feature inference rules
     AuthorMapping   *AuthorMapping                 `yaml:"author_mapping,omitempty" json:"author_mapping,omitempty"`     // Author extraction
 }
 ```
@@ -4678,7 +4703,7 @@ type ProviderGoogleDefaultProtocolOptions struct {
 ```
 
 <a name="ProviderGovernancePolicy"></a>
-## type [ProviderGovernancePolicy](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L318-L322>)
+## type [ProviderGovernancePolicy](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L309-L313>)
 
 ProviderGovernancePolicy represents oversight and moderation practices.
 
@@ -4691,7 +4716,7 @@ type ProviderGovernancePolicy struct {
 ```
 
 <a name="ProviderHealthComponent"></a>
-## type [ProviderHealthComponent](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L237-L240>)
+## type [ProviderHealthComponent](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L228-L231>)
 
 ProviderHealthComponent represents a specific component to monitor in a provider's health API.
 
@@ -4703,7 +4728,7 @@ type ProviderHealthComponent struct {
 ```
 
 <a name="ProviderID"></a>
-## type [ProviderID](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L243>)
+## type [ProviderID](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L234>)
 
 ProviderID represents a provider identifier type for compile\-time safety.
 
@@ -4751,7 +4776,7 @@ const (
 ```
 
 <a name="ProviderID.String"></a>
-### func \(ProviderID\) [String](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L246>)
+### func \(ProviderID\) [String](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L237>)
 
 ```go
 func (pid ProviderID) String() string
@@ -4760,7 +4785,7 @@ func (pid ProviderID) String() string
 String returns the string representation of a ProviderID.
 
 <a name="ProviderInference"></a>
-## type [ProviderInference](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L136-L141>)
+## type [ProviderInference](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L127-L132>)
 
 ProviderInference defines stable provider\-level inference service facts. Gateway consumers supply runtime endpoint overrides and inference credentials.
 
@@ -4774,7 +4799,7 @@ type ProviderInference struct {
 ```
 
 <a name="ProviderInference.BindOfferingEndpoint"></a>
-### func \(\*ProviderInference\) [BindOfferingEndpoint](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L184-L188>)
+### func \(\*ProviderInference\) [BindOfferingEndpoint](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L175-L179>)
 
 ```go
 func (i *ProviderInference) BindOfferingEndpoint(endpoint ProviderOfferingEndpoint, baseURLOverride string, bindings map[string]string) (ProviderOfferingEndpoint, error)
@@ -4783,7 +4808,7 @@ func (i *ProviderInference) BindOfferingEndpoint(endpoint ProviderOfferingEndpoi
 BindOfferingEndpoint applies runtime endpoint bindings to one immutable offering endpoint. Catalog data owns URL templates. Consumers supply only tenant\-specific values and an optional base URL override.
 
 <a name="ProviderInference.Endpoint"></a>
-### func \(\*ProviderInference\) [Endpoint](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L155>)
+### func \(\*ProviderInference\) [Endpoint](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L146>)
 
 ```go
 func (i *ProviderInference) Endpoint(operation ProviderOperation) (ProviderInferenceEndpoint, bool)
@@ -4792,7 +4817,7 @@ func (i *ProviderInference) Endpoint(operation ProviderOperation) (ProviderInfer
 Endpoint returns the endpoint for an exact inference operation.
 
 <a name="ProviderInference.EndpointURL"></a>
-### func \(\*ProviderInference\) [EndpointURL](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L168>)
+### func \(\*ProviderInference\) [EndpointURL](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L159>)
 
 ```go
 func (i *ProviderInference) EndpointURL(endpoint ProviderInferenceEndpoint, baseURLOverride string) string
@@ -4801,7 +4826,7 @@ func (i *ProviderInference) EndpointURL(endpoint ProviderInferenceEndpoint, base
 EndpointURL resolves an endpoint against a runtime base URL override.
 
 <a name="ProviderInferenceEndpoint"></a>
-## type [ProviderInferenceEndpoint](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L144-L152>)
+## type [ProviderInferenceEndpoint](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L135-L143>)
 
 ProviderInferenceEndpoint defines one operation path and wire protocol.
 
@@ -4827,7 +4852,7 @@ type ProviderModelID string
 ```
 
 <a name="ProviderModerator"></a>
-## type [ProviderModerator](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L325>)
+## type [ProviderModerator](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L316>)
 
 ProviderModerator represents a moderator for a provider.
 
@@ -4868,7 +4893,7 @@ const (
 ```
 
 <a name="ProviderModerator.String"></a>
-### func \(ProviderModerator\) [String](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L328>)
+### func \(ProviderModerator\) [String](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L319>)
 
 ```go
 func (pm ProviderModerator) String() string
@@ -4972,7 +4997,7 @@ type ProviderOfferingServiceCapabilities struct {
 ```
 
 <a name="ProviderOpenAICatalogProtocolOptions"></a>
-## type [ProviderOpenAICatalogProtocolOptions](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L108-L110>)
+## type [ProviderOpenAICatalogProtocolOptions](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L99-L101>)
 
 ProviderOpenAICatalogProtocolOptions defines OpenAI\-compatible payload facts.
 
@@ -4983,7 +5008,7 @@ type ProviderOpenAICatalogProtocolOptions struct {
 ```
 
 <a name="ProviderOperation"></a>
-## type [ProviderOperation](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L125>)
+## type [ProviderOperation](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L116>)
 
 ProviderOperation identifies one provider inference operation.
 
@@ -5003,7 +5028,7 @@ const (
 ```
 
 <a name="ProviderPrivacyPolicy"></a>
-## type [ProviderPrivacyPolicy](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L303-L308>)
+## type [ProviderPrivacyPolicy](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L294-L299>)
 
 ProviderPrivacyPolicy represents data collection and usage practices.
 
@@ -5029,7 +5054,7 @@ type ProviderRequestOverrides struct {
 ```
 
 <a name="ProviderRetentionPolicy"></a>
-## type [ProviderRetentionPolicy](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L311-L315>)
+## type [ProviderRetentionPolicy](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L302-L306>)
 
 ProviderRetentionPolicy represents how long data is kept and deletion practices.
 
@@ -5042,7 +5067,7 @@ type ProviderRetentionPolicy struct {
 ```
 
 <a name="ProviderRetentionType"></a>
-## type [ProviderRetentionType](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L287>)
+## type [ProviderRetentionType](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L278>)
 
 ProviderRetentionType represents different types of data retention policies.
 
@@ -5062,7 +5087,7 @@ const (
 ```
 
 <a name="ProviderRetentionType.String"></a>
-### func \(ProviderRetentionType\) [String](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L290>)
+### func \(ProviderRetentionType\) [String](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L281>)
 
 ```go
 func (prt ProviderRetentionType) String() string
@@ -5071,7 +5096,7 @@ func (prt ProviderRetentionType) String() string
 String returns the string representation of a ProviderRetentionType.
 
 <a name="ProviderTokenPriceUnit"></a>
-## type [ProviderTokenPriceUnit](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L96>)
+## type [ProviderTokenPriceUnit](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L87>)
 
 ProviderTokenPriceUnit identifies the unit used by one provider payload.
 
@@ -5524,7 +5549,7 @@ func (se SourceExtensions) Copy() SourceExtensions
 Copy returns a deep copy of the source extension map.
 
 <a name="SourceObservationLink"></a>
-## type [SourceObservationLink](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/generation_manifest.go#L141-L149>)
+## type [SourceObservationLink](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/generation_manifest.go#L146-L154>)
 
 SourceObservationLink binds a generation to one immutable source observation. The observation schema and retention policy are defined by the source pipeline; this link is deliberately small and replay\-oriented.
 
@@ -5541,7 +5566,7 @@ type SourceObservationLink struct {
 ```
 
 <a name="SourceObservationLink.Validate"></a>
-### func \(SourceObservationLink\) [Validate](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/generation_manifest.go#L152>)
+### func \(SourceObservationLink\) [Validate](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/generation_manifest.go#L157>)
 
 ```go
 func (o SourceObservationLink) Validate() error

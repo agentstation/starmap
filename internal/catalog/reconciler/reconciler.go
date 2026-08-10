@@ -109,23 +109,23 @@ func (r *Reconciler) Sources(ctx context.Context, primary sources.ID, srcs []sou
 	}
 
 	// Step 5: Build catalog with providers and models
-	catalog, reconciliationIssues, err := r.catalog(rctx, providers, modelResults)
+	catalog, reviewCandidates, err := r.catalog(rctx, providers, modelResults)
 	if err != nil {
 		return nil, err
 	}
-	for _, issue := range reconciliationIssues {
+	for _, issue := range reviewCandidates {
 		rctx.logger.Warn().
 			Str("issue_code", string(issue.Code)).
 			Str("provider_id", issue.ProviderID).
 			Str("provider_model_id", issue.ProviderModelID).
-			Msg(issue.Message)
+			Msg(issue.Reason)
 	}
 
 	// Step 6: Compute changeset if we have a base catalog
 	changeset := r.changeset(rctx, catalog)
 
 	// Step 7: Build and return result
-	return r.result(rctx, catalog, changeset, modelResults, reconciliationIssues), nil
+	return r.result(rctx, catalog, changeset, modelResults, reviewCandidates), nil
 }
 
 // initialize sets up reconciliation context.
@@ -238,7 +238,7 @@ func (r *Reconciler) catalog(
 	rctx *reconcileContext,
 	providers []*catalogs.Provider,
 	modelResults map[catalogs.ProviderID]modelResult,
-) (*catalogs.Builder, []catalogmeta.ReconciliationIssue, error) {
+) (*catalogs.Builder, []catalogmeta.ReviewCandidate, error) {
 	var catalog *catalogs.Builder
 	var err error
 
@@ -269,11 +269,11 @@ func (r *Reconciler) catalog(
 		}
 	}
 
-	reconciliationIssues, err := quarantineUnresolvedProviderOfferings(catalog, r.baseline)
+	reviewCandidates, err := quarantineUnresolvedProviderOfferings(catalog, r.baseline, rctx.collector)
 	if err != nil {
 		return nil, nil, err
 	}
-	return catalog, reconciliationIssues, nil
+	return catalog, reviewCandidates, nil
 }
 
 // changeset calculates differences between baseline and new catalog.
@@ -301,16 +301,16 @@ func (r *Reconciler) result(
 	catalog *catalogs.Builder,
 	changeset *differ.Changeset,
 	modelResults map[catalogs.ProviderID]modelResult,
-	reconciliationIssues []catalogmeta.ReconciliationIssue,
+	reviewCandidates []catalogmeta.ReviewCandidate,
 ) *Result {
 	result := NewResult()
 
 	// Set core data
 	result.Catalog = catalog
 	result.Changeset = changeset
-	result.ReconciliationIssues = append(
-		result.ReconciliationIssues,
-		reconciliationIssues...,
+	result.ReviewCandidates = append(
+		result.ReviewCandidates,
+		reviewCandidates...,
 	)
 
 	// Combine all provenance data (models only). Scope merge-local provenance
@@ -329,7 +329,7 @@ func (r *Reconciler) result(
 		for key, entries := range r.provenance.Map() {
 			combined[key] = entries
 		}
-		removeQuarantinedModelProvenance(combined, reconciliationIssues)
+		removeQuarantinedModelProvenance(combined, reviewCandidates)
 		catalog.SetProvenance(combined)
 	}
 
@@ -355,7 +355,7 @@ func (r *Reconciler) result(
 	result.Metadata.Sources = rctx.collector.sourceTypes()
 	// Calculate statistics
 	result.Metadata.Stats = r.calcStats(catalog, modelResults)
-	result.Metadata.Stats.ResourcesSkipped = len(reconciliationIssues)
+	result.Metadata.Stats.ResourcesSkipped = len(reviewCandidates)
 
 	// Finalize result
 	result.Finalize()

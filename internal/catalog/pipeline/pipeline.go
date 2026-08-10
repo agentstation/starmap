@@ -42,6 +42,7 @@ type Store interface {
 		*pkgsync.Options,
 		*differ.Changeset,
 		[]sources.Observation,
+		[]catalogmeta.ReviewCandidate,
 		workspace.InputExpectation,
 	) (Publication, error)
 }
@@ -137,6 +138,7 @@ func (p *Pipeline) Sync(ctx context.Context, opts ...pkgsync.Option) (*pkgsync.R
 		prepared.Options,
 		changeset,
 		prepared.Observations,
+		prepared.Result.ReviewCandidates,
 		prepared.WorkspaceInput,
 	)
 	if err != nil {
@@ -261,9 +263,9 @@ func (p *Pipeline) Prepare(
 	for _, observation := range observations {
 		syncResult.SourceObservations = append(syncResult.SourceObservations, observation.Link())
 	}
-	syncResult.ReconciliationIssues = append(
-		[]catalogmeta.ReconciliationIssue(nil),
-		result.ReconciliationIssues...,
+	syncResult.ReviewCandidates = append(
+		[]catalogmeta.ReviewCandidate(nil),
+		result.ReviewCandidates...,
 	)
 
 	if options.DryRun {
@@ -285,7 +287,12 @@ func (p *Pipeline) Prepare(
 		Observations:   observations,
 		Options:        options,
 		WorkspaceInput: inputs.workspaceInput,
-		Publish:        shouldSave(options, result.Changeset, inputs.workspaceInput.RequiresSeed()),
+		Publish: shouldPublish(
+			options,
+			result.Changeset,
+			result.ReviewCandidates,
+			inputs.workspaceInput.RequiresSeed(),
+		),
 	}, nil
 }
 
@@ -325,7 +332,12 @@ func activeSourceIDs(observations []sources.Observation) []sources.ID {
 	return ids
 }
 
-func shouldSave(options *pkgsync.Options, changeset *differ.Changeset, seedWorkspace bool) bool {
+func shouldPublish(
+	options *pkgsync.Options,
+	changeset *differ.Changeset,
+	reviewCandidates []catalogmeta.ReviewCandidate,
+	seedWorkspace bool,
+) bool {
 	if options.Reformat || options.Fresh || seedWorkspace {
 		if changeset == nil || !changeset.HasChanges() {
 			logging.Info().
@@ -334,6 +346,12 @@ func shouldSave(options *pkgsync.Options, changeset *differ.Changeset, seedWorks
 				Bool("seed_workspace", seedWorkspace).
 				Msg("Forcing save due to explicit materialization policy")
 		}
+		return true
+	}
+	if len(reviewCandidates) > 0 {
+		logging.Info().
+			Int("review_candidates", len(reviewCandidates)).
+			Msg("Publishing durable review candidates without catalog changes")
 		return true
 	}
 

@@ -239,7 +239,7 @@ func publishRollbackFixture(
 		context.Context,
 		*catalogs.Catalog,
 	) (*Candidate, error) {
-		return NewCandidate(published, observation.Link())
+		return NewCandidate(published, CandidateEvidence{SourceObservations: []catalogs.SourceObservationLink{observation.Link()}})
 	})
 	if err != nil {
 		t.Fatalf("publish rollback fixture: %v", err)

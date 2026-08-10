@@ -49,7 +49,8 @@ func (s *Syncer) PublishObservations(
 		if err != nil {
 			return nil, err
 		}
-		if result.Changeset == nil || !result.Changeset.HasChanges() {
+		if (result.Changeset == nil || !result.Changeset.HasChanges()) &&
+			len(result.ReviewCandidates) == 0 {
 			return nil, nil
 		}
 		catalog, err := result.Catalog.Build()
@@ -60,7 +61,10 @@ func (s *Syncer) PublishObservations(
 		for _, observation := range observations {
 			links = append(links, observation.Link())
 		}
-		return starmap.NewCandidate(catalog, links...)
+		return starmap.NewCandidate(catalog, starmap.CandidateEvidence{
+			SourceObservations: links,
+			ReviewCandidates:   result.ReviewCandidates,
+		})
 	})
 }
 

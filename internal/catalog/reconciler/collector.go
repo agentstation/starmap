@@ -1,6 +1,9 @@
 package reconciler
 
 import (
+	"slices"
+	"strings"
+
 	"github.com/rs/zerolog"
 
 	"github.com/agentstation/starmap/pkg/catalogs"
@@ -13,6 +16,48 @@ type collector struct {
 	sources []sources.Observation
 	primary sources.ID
 	logger  zerolog.Logger
+}
+
+func (c *collector) reviewCandidateObservation(
+	provider *catalogs.Provider,
+	providerModelID string,
+) (sources.Observation, bool) {
+	if provider == nil || providerModelID == "" {
+		return sources.Observation{}, false
+	}
+	candidates := make([]sources.Observation, 0)
+	for _, observation := range c.sources {
+		if observation.Catalog == nil {
+			continue
+		}
+		sourceProvider := c.findProvider(
+			observation.Catalog,
+			provider.ID,
+			provider.Aliases,
+		)
+		if sourceProvider == nil || sourceProvider.Models[providerModelID] == nil {
+			continue
+		}
+		candidates = append(candidates, observation)
+	}
+	slices.SortFunc(candidates, func(left, right sources.Observation) int {
+		leftPrimary := left.SourceID == c.primary
+		rightPrimary := right.SourceID == c.primary
+		if leftPrimary != rightPrimary {
+			if leftPrimary {
+				return -1
+			}
+			return 1
+		}
+		if result := strings.Compare(left.SourceID.String(), right.SourceID.String()); result != 0 {
+			return result
+		}
+		return strings.Compare(left.ID, right.ID)
+	})
+	if len(candidates) == 0 {
+		return sources.Observation{}, false
+	}
+	return candidates[0], true
 }
 
 // newCollector creates a new data collector.

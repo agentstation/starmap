@@ -138,7 +138,7 @@ func TestUpdateUsesExplicitCandidateFunction(t *testing.T) {
 		catalog *catalogs.Catalog,
 	) (*Candidate, error) {
 		called = true
-		return NewCandidate(catalog)
+		return NewCandidate(catalog, CandidateEvidence{})
 	}); err != nil {
 		t.Fatalf("Update: %v", err)
 	}

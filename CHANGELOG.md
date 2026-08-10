@@ -7,6 +7,30 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- **Durable model review candidates** preserve each excluded provider
+  offering. Each record contains the exact provider model ID, source
+  observation, revision, checksum, reason, and prior reviewed model link.
+  Evidence-only updates can publish a new immutable generation without a
+  canonical catalog change.
+
+### Changed
+
+- OpenAI-compatible, Anthropic, and Google acquisition adapters now project
+  only facts present in provider responses or provider YAML. Catalog author
+  mappings replace adapter-local author fallbacks. Google Vertex no longer
+  adds a compiled Model Garden roster.
+
+### BREAKING CHANGES
+
+- Catalog schema version 5 removes provider `feature_rules`. Model-family
+  strings no longer infer capabilities in acquisition code.
+- Generation manifest version 2 requires the ordered `review_candidates`
+  array. Each candidate must match a linked source observation.
+- `starmap.NewCandidate` now accepts `starmap.CandidateEvidence`. This change
+  removes the prior variadic source-observation argument.
+
 ## [0.3.0] - 2026-08-03
 
 ### Added
@@ -160,7 +184,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
       ctx context.Context,
       current *catalogs.Catalog,
   ) (*starmap.Candidate, error) {
-      return starmap.NewCandidate(updatedCatalog)
+      return starmap.NewCandidate(updatedCatalog, starmap.CandidateEvidence{})
   })
   ```
 

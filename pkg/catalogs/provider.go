@@ -62,14 +62,6 @@ type FieldMapping struct {
 	To   string `yaml:"to" json:"to"`     // Target field path in Model (e.g., "limits.context_window")
 }
 
-// FeatureRule defines conditions for inferring model features.
-type FeatureRule struct {
-	Field    string   `yaml:"field" json:"field"`       // Field to check (e.g., "id", "owned_by")
-	Contains []string `yaml:"contains" json:"contains"` // If field contains any of these strings
-	Feature  string   `yaml:"feature" json:"feature"`   // Feature to enable (e.g., "tools", "reasoning")
-	Value    bool     `yaml:"value" json:"value"`       // Value to set for the feature
-}
-
 // AuthorMapping defines how to extract and normalize authors.
 type AuthorMapping struct {
 	Field      string              `yaml:"field" json:"field"`           // Field to extract from (e.g., "owned_by")
@@ -82,7 +74,6 @@ type ProviderEndpoint struct {
 	URL             string                         `yaml:"url" json:"url"`                                               // Required: API endpoint
 	ProtocolOptions ProviderCatalogProtocolOptions `yaml:"protocol_options,omitempty" json:"protocol_options,omitempty"` // Typed wire-protocol facts
 	FieldMappings   []FieldMapping                 `yaml:"field_mappings,omitempty" json:"field_mappings,omitempty"`     // Field mappings
-	FeatureRules    []FeatureRule                  `yaml:"feature_rules,omitempty" json:"feature_rules,omitempty"`       // Feature inference rules
 	AuthorMapping   *AuthorMapping                 `yaml:"author_mapping,omitempty" json:"author_mapping,omitempty"`     // Author extraction
 }
 

@@ -280,7 +280,7 @@ func runStorageDrill(
 		if err != nil {
 			return nil, err
 		}
-		return starmap.NewCandidate(candidate)
+		return starmap.NewCandidate(candidate, starmap.CandidateEvidence{})
 	})
 	if err != nil {
 		t.Fatalf("Update: %v", err)

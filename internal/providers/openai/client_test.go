@@ -213,7 +213,7 @@ func TestOpenAISingleModelParsing(t *testing.T) {
 
 // TestConvertToOpenAIModel tests the conversion from OpenAIModelData to catalogs.Model.
 func TestConvertToOpenAIModel(t *testing.T) {
-	// Create a test provider with feature rules
+	// Create a provider without model-fact mappings.
 	provider := &catalogs.Provider{
 		ID:   catalogs.ProviderIDOpenAI,
 		Name: "OpenAI",
@@ -221,20 +221,6 @@ func TestConvertToOpenAIModel(t *testing.T) {
 			Endpoint: catalogs.ProviderEndpoint{
 				Type: catalogs.EndpointTypeOpenAI,
 				URL:  "https://api.openai.com/v1/models",
-				FeatureRules: []catalogs.FeatureRule{
-					{
-						Field:    "id",
-						Contains: []string{"gpt-4"},
-						Feature:  "tools",
-						Value:    true,
-					},
-					{
-						Field:    "id",
-						Contains: []string{"gpt-4"},
-						Feature:  "tool_choice",
-						Value:    true,
-					},
-				},
 			},
 		},
 	}
@@ -262,24 +248,8 @@ func TestConvertToOpenAIModel(t *testing.T) {
 		t.Errorf("Expected Name 'gpt-4o', got '%s'", model.Name)
 	}
 
-	// OpenAI models should have some basic features inferred
-	if model.Features == nil {
-		t.Fatal("Expected Features to be set")
-	}
-
-	// GPT-4o should support tools
-	if !model.Features.Tools {
-		t.Error("Expected Tools to be true for GPT-4o")
-	}
-
-	// GPT-4o should have basic text modalities
-	if len(model.Features.Modalities.Input) == 0 {
-		t.Fatal("Expected Modalities.Input to be set")
-	}
-
-	hasTextInput := slices.Contains(model.Features.Modalities.Input, catalogs.ModelModalityText)
-	if !hasTextInput {
-		t.Error("Expected GPT-4o to support text input")
+	if len(model.Authors) != 0 || model.Features != nil {
+		t.Fatalf("inferred model facts = authors %#v, features %#v", model.Authors, model.Features)
 	}
 }
 
@@ -294,14 +264,6 @@ func TestMappedZeroAndFalseValuesRemainExplicitSourceClaims(t *testing.T) {
 	}
 	if value, state := model.DescriptionValue(); value != "" || state != catalogs.ValueKnown {
 		t.Fatalf("description = %q, %v; want empty, known", value, state)
-	}
-
-	features := &catalogs.ModelFeatures{}
-	client.applyFeatureRule(features, Model{ID: "presence"}, catalogs.FeatureRule{
-		Field: "id", Contains: []string{"presence"}, Feature: "tools", Value: false,
-	})
-	if value, state := features.Support(catalogs.ModelFeatureTools); value || state != catalogs.ValueKnown {
-		t.Fatalf("tools = %v, %v; want false, known", value, state)
 	}
 
 	explicitFalse := false
@@ -436,14 +398,6 @@ func TestConvertToModelWithNestedProviderMetadata(t *testing.T) {
 					{From: "metadata.context_length", To: "limits.context_window"},
 					{From: "metadata.tags", To: "metadata.tags"},
 				},
-				FeatureRules: []catalogs.FeatureRule{
-					{
-						Field:    "metadata.tags",
-						Contains: []string{"reasoning"},
-						Feature:  "reasoning",
-						Value:    true,
-					},
-				},
 				AuthorMapping: &catalogs.AuthorMapping{
 					Field: "id",
 					Normalized: map[string]catalogs.AuthorID{
@@ -478,8 +432,8 @@ func TestConvertToModelWithNestedProviderMetadata(t *testing.T) {
 	if model.Metadata.Tags[0] != catalogs.ModelTagChat || model.Metadata.Tags[1] != catalogs.ModelTagReasoning {
 		t.Fatalf("Unexpected tags: %#v", model.Metadata.Tags)
 	}
-	if model.Features == nil || !model.Features.Reasoning {
-		t.Fatalf("Expected reasoning feature from metadata tags, got %#v", model.Features)
+	if model.Features != nil {
+		t.Fatalf("metadata tag inferred features: %#v", model.Features)
 	}
 	if len(model.Authors) != 1 || model.Authors[0].ID != catalogs.AuthorIDDeepSeek {
 		t.Fatalf("Expected DeepSeek author, got %#v", model.Authors)
@@ -837,8 +791,8 @@ func TestConvertToModelWithNilCatalogProvider(t *testing.T) {
 		OwnedBy: "openai",
 	})
 
-	if len(model.Authors) != 1 || model.Authors[0].ID != catalogs.AuthorIDOpenAI {
-		t.Fatalf("Expected OpenAI fallback author, got %#v", model.Authors)
+	if len(model.Authors) != 0 {
+		t.Fatalf("authors = %#v, want no fallback author", model.Authors)
 	}
 }
 
@@ -908,15 +862,6 @@ func TestOpenAIClientListModels(t *testing.T) {
 
 	// Create an OpenAI client with mock provider
 	provider := testOpenAIProvider(server.URL)
-	provider.Catalog.Endpoint.FeatureRules = []catalogs.FeatureRule{
-		{
-			Field:    "id",
-			Contains: []string{"gpt-4"},
-			Feature:  "tools",
-			Value:    true,
-		},
-	}
-
 	client := newTestClient(t, provider)
 
 	// Test ListModels
@@ -953,13 +898,8 @@ func TestOpenAIClientListModels(t *testing.T) {
 		t.Errorf("Expected test model Name to be 'gpt-4o', got '%s'", testModel.Name)
 	}
 
-	// Test that we have proper features for GPT-4o
-	if testModel.Features == nil {
-		t.Fatal("Expected test model to have Features")
-	}
-
-	if !testModel.Features.Tools {
-		t.Error("Expected gpt-4o to support tools")
+	if testModel.Features != nil {
+		t.Fatalf("model ID inferred features: %#v", testModel.Features)
 	}
 }
 

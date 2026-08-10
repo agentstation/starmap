@@ -24,8 +24,8 @@ type BootstrapManifest struct {
 	Payload          PayloadDescriptor `json:"payload" yaml:"payload"`
 }
 
-// Validate checks the embedded-bootstrap metadata contract.
-func (m BootstrapManifest) Validate() error {
+// ValidateEnvelope checks schema-independent embedded-bootstrap metadata.
+func (m BootstrapManifest) ValidateEnvelope() error {
 	if m.ManifestVersion != CurrentBootstrapManifestVersion {
 		return bootstrapValidation("manifest_version", m.ManifestVersion, "is not supported")
 	}
@@ -39,8 +39,8 @@ func (m BootstrapManifest) Validate() error {
 	if offset != 0 {
 		return bootstrapValidation("generated_at", m.GeneratedAt, "must be UTC")
 	}
-	if m.SchemaVersion != CurrentCatalogSchemaVersion {
-		return bootstrapValidation("schema_version", m.SchemaVersion, "does not match the current catalog schema")
+	if m.SchemaVersion == 0 {
+		return bootstrapValidation("schema_version", m.SchemaVersion, "must be greater than zero")
 	}
 	if !strings.HasPrefix(m.SemanticChecksum, checksumAlgorithmPrefix) ||
 		len(m.SemanticChecksum) != len(checksumAlgorithmPrefix)+64 {
@@ -57,8 +57,34 @@ func (m BootstrapManifest) Validate() error {
 	return nil
 }
 
+// Validate checks the embedded-bootstrap metadata contract and requires the
+// current catalog schema.
+func (m BootstrapManifest) Validate() error {
+	if err := m.ValidateEnvelope(); err != nil {
+		return err
+	}
+	if m.SchemaVersion != CurrentCatalogSchemaVersion {
+		return bootstrapValidation("schema_version", m.SchemaVersion, "does not match the current catalog schema")
+	}
+	return nil
+}
+
 // ParseBootstrapManifestJSON strictly parses embedded-bootstrap metadata.
 func ParseBootstrapManifestJSON(data []byte) (BootstrapManifest, error) {
+	return parseBootstrapManifestJSON(data, BootstrapManifest.Validate)
+}
+
+// ParseBootstrapManifestEnvelopeJSON strictly parses bootstrap metadata
+// without requiring the current catalog schema. Catalog refresh tooling uses
+// it to replace a valid manifest from the previous schema.
+func ParseBootstrapManifestEnvelopeJSON(data []byte) (BootstrapManifest, error) {
+	return parseBootstrapManifestJSON(data, BootstrapManifest.ValidateEnvelope)
+}
+
+func parseBootstrapManifestJSON(
+	data []byte,
+	validate func(BootstrapManifest) error,
+) (BootstrapManifest, error) {
 	var required map[string]json.RawMessage
 	if err := json.Unmarshal(data, &required); err != nil {
 		return BootstrapManifest{}, &errors.ParseError{Format: "json", File: "embedded bootstrap manifest", Message: err.Error(), Err: err}
@@ -80,7 +106,7 @@ func ParseBootstrapManifestJSON(data []byte) (BootstrapManifest, error) {
 	if err := decoder.Decode(&struct{}{}); err != io.EOF {
 		return BootstrapManifest{}, &errors.ParseError{Format: "json", File: "embedded bootstrap manifest", Message: "invalid trailing JSON", Err: err}
 	}
-	if err := manifest.Validate(); err != nil {
+	if err := validate(manifest); err != nil {
 		return BootstrapManifest{}, err
 	}
 	return manifest, nil

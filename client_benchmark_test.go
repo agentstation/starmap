@@ -32,7 +32,7 @@ func BenchmarkClientUpdatePublication(b *testing.B) {
 	if err != nil {
 		b.Fatalf("New: %v", err)
 	}
-	candidate, err := NewCandidate(client.Catalog())
+	candidate, err := NewCandidate(client.Catalog(), CandidateEvidence{})
 	if err != nil {
 		b.Fatalf("NewCandidate: %v", err)
 	}

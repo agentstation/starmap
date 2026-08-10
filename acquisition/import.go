@@ -87,7 +87,7 @@ func (s *Syncer) ImportRelease(
 			return nil, reconcileErr
 		}
 		if (result.Changeset == nil || !result.Changeset.HasChanges()) &&
-			!input.RequiresSeed() {
+			len(result.ReviewCandidates) == 0 && !input.RequiresSeed() {
 			return nil, nil
 		}
 		candidateCatalog, reconcileErr = result.Catalog.Build()
@@ -103,7 +103,10 @@ func (s *Syncer) ImportRelease(
 		for _, observation := range observations {
 			links = append(links, observation.Link())
 		}
-		return starmap.NewCandidate(candidateCatalog, links...)
+		return starmap.NewCandidate(candidateCatalog, starmap.CandidateEvidence{
+			SourceObservations: links,
+			ReviewCandidates:   result.ReviewCandidates,
+		})
 	})
 	if err != nil {
 		return nil, err

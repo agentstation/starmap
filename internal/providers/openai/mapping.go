@@ -1,9 +1,7 @@
 package openai
 
 import (
-	"path"
 	"reflect"
-	"sort"
 	"strconv"
 	"strings"
 
@@ -234,172 +232,23 @@ func (c *Client) extractAuthors(modelID, ownedBy string) []catalogs.Author {
 	provider := c.provider
 	c.mu.RUnlock()
 
-	if provider == nil {
-		return []catalogs.Author{{ID: catalogs.AuthorIDOpenAI, Name: "OpenAI"}}
-	}
-
-	// Use configured author mapping if available
-	if provider.Catalog != nil && provider.Catalog.Endpoint.AuthorMapping != nil {
-		mapping := provider.Catalog.Endpoint.AuthorMapping
-
-		// Get the field value to map from
-		var fieldValue string
-		switch mapping.Field {
-		case fieldOwnedBy:
-			fieldValue = ownedBy
-		case fieldID:
-			fieldValue = modelID
-		default:
-			fieldValue = ownedBy // default to owned_by
-		}
-
-		// Apply normalization if configured
-		if authorID, exists := resolveMappedAuthor(fieldValue, mapping.Normalized); exists {
-			return []catalogs.Author{{ID: authorID, Name: authorID.String()}}
-		}
-
-		// Explicit mappings are an allowlist. Unmatched model IDs are unknown,
-		// while owned_by often identifies the serving aggregator rather than the
-		// model author; neither may invent an author cross-reference.
+	if provider == nil || provider.Catalog == nil || provider.Catalog.Endpoint.AuthorMapping == nil {
 		return nil
 	}
-
-	// Fallback to provider's configured authors or infer from owned_by
-	if provider.Catalog != nil && len(provider.Catalog.Authors) > 0 {
-		authors := make([]catalogs.Author, len(provider.Catalog.Authors))
-		for i, authorID := range provider.Catalog.Authors {
-			authors[i] = catalogs.Author{ID: authorID, Name: authorID.String()}
-		}
-		return authors
+	mapping := provider.Catalog.Endpoint.AuthorMapping
+	var fieldValue string
+	switch mapping.Field {
+	case fieldOwnedBy:
+		fieldValue = ownedBy
+	case fieldID:
+		fieldValue = modelID
+	default:
+		return nil
 	}
-
-	// Final fallback - infer from owned_by
-	if authorID := catalogs.ParseAuthorID(ownedBy); authorID != catalogs.AuthorIDUnknown {
+	if authorID, found := mapping.Resolve(fieldValue); found {
 		return []catalogs.Author{{ID: authorID, Name: authorID.String()}}
 	}
-
-	return []catalogs.Author{{ID: catalogs.AuthorIDOpenAI, Name: "OpenAI"}}
-}
-
-func resolveMappedAuthor(value string, normalized map[string]catalogs.AuthorID) (catalogs.AuthorID, bool) {
-	if value == "" || len(normalized) == 0 {
-		return catalogs.AuthorIDUnknown, false
-	}
-
-	if authorID, exists := normalized[value]; exists {
-		return authorID, true
-	}
-
-	valueLower := strings.ToLower(value)
-	patterns := make([]string, 0, len(normalized))
-	for key := range normalized {
-		if strings.ToLower(key) == valueLower {
-			return normalized[key], true
-		}
-		if strings.ContainsAny(key, "*?[") {
-			patterns = append(patterns, key)
-		}
-	}
-
-	sort.Slice(patterns, func(i, j int) bool {
-		if len(patterns[i]) == len(patterns[j]) {
-			return patterns[i] < patterns[j]
-		}
-		return len(patterns[i]) > len(patterns[j])
-	})
-
-	for _, pattern := range patterns {
-		matched, err := path.Match(strings.ToLower(pattern), valueLower)
-		if err == nil && matched {
-			return normalized[pattern], true
-		}
-	}
-
-	return catalogs.AuthorIDUnknown, false
-}
-
-// applyFeatureRules applies configured feature rules to infer model features.
-func (c *Client) applyFeatureRules(apiModel Model) *catalogs.ModelFeatures {
-	c.mu.RLock()
-	provider := c.provider
-	c.mu.RUnlock()
-
-	// Start with base OpenAI features
-	features := &catalogs.ModelFeatures{
-		Modalities: catalogs.ModelModalities{
-			Input:  []catalogs.ModelModality{catalogs.ModelModalityText},
-			Output: []catalogs.ModelModality{catalogs.ModelModalityText},
-		},
-		Temperature: true,
-		TopP:        true,
-		MaxTokens:   true,
-		Stop:        true,
-		Streaming:   true,
-	}
-
-	if provider == nil || provider.Catalog == nil || provider.Catalog.Endpoint.FeatureRules == nil {
-		return features
-	}
-
-	// Apply configured feature rules
-	for _, rule := range provider.Catalog.Endpoint.FeatureRules {
-		c.applyFeatureRule(features, apiModel, rule)
-	}
-
-	return features
-}
-
-// applyFeatureRule applies a single feature rule to the model features.
-func (c *Client) applyFeatureRule(features *catalogs.ModelFeatures, apiModel Model, rule catalogs.FeatureRule) {
-	// Get field value to check
-	var fieldValues []string
-	switch rule.Field {
-	case fieldID:
-		fieldValues = []string{apiModel.ID}
-	case fieldOwnedBy:
-		fieldValues = []string{apiModel.OwnedBy}
-	case fieldMetadataTags:
-		if apiModel.Metadata != nil {
-			fieldValues = apiModel.Metadata.Tags
-		}
-	default:
-		return // Unknown field
-	}
-
-	// Check if any of the "contains" values match
-	matches := false
-	for _, fieldValue := range fieldValues {
-		fieldLower := strings.ToLower(fieldValue)
-		for _, contains := range rule.Contains {
-			if strings.Contains(fieldLower, strings.ToLower(contains)) {
-				matches = true
-				break
-			}
-		}
-		if matches {
-			break
-		}
-	}
-
-	if !matches {
-		return
-	}
-
-	// Apply the feature value
-	switch rule.Feature {
-	case "tools":
-		features.SetSupport(catalogs.ModelFeatureTools, rule.Value)
-	case "tool_choice":
-		features.SetSupport(catalogs.ModelFeatureToolChoice, rule.Value)
-	case "structured_outputs":
-		features.SetSupport(catalogs.ModelFeatureStructuredOutputs, rule.Value)
-	case "reasoning":
-		features.SetSupport(catalogs.ModelFeatureReasoning, rule.Value)
-	case "top_k":
-		features.SetSupport(catalogs.ModelFeatureTopK, rule.Value)
-	case "format_response":
-		features.SetSupport(catalogs.ModelFeatureFormatResponse, rule.Value)
-	}
+	return nil
 }
 
 // validateFieldMappings validates that all configured field mappings use valid paths.
