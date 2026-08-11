@@ -6,6 +6,7 @@ import (
 	"os"
 	"path/filepath"
 	"runtime"
+	"sort"
 	"strings"
 	"sync"
 	"sync/atomic"
@@ -128,6 +129,72 @@ func TestExpiredDefaultChainMaterialIsNotCachedPastExpiry(t *testing.T) {
 	}
 	if got := calls.Load(); got != 2 {
 		t.Fatalf("expired default-chain calls = %d, want 2", got)
+	}
+}
+
+func TestCredentialResolverWarmCacheHitLatencyAndConcurrency(t *testing.T) {
+	var backendCalls atomic.Int32
+	source := &testCredentialSource{backend: "test", resolve: func(context.Context, Reference) (sourceMaterial, error) {
+		backendCalls.Add(1)
+		return sourceMaterial{
+			values:  map[string]string{"value": "valid-cached"},
+			version: "cached-version",
+			lease: &sources.ProviderCredentialLease{
+				Renewable: true, RefreshAfter: time.Now().Add(time.Hour),
+			},
+		}, nil
+	}}
+	provider, resolver := testReferenceResolver(t, source)
+
+	if _, err := resolver.ResolveCatalog(context.Background(), &provider); err != nil {
+		t.Fatalf("warm ResolveCatalog: %v", err)
+	}
+	if got := backendCalls.Load(); got != 1 {
+		t.Fatalf("warm backend calls = %d, want 1", got)
+	}
+
+	const samples = 10_000
+	durations := make([]time.Duration, 0, samples)
+	for range samples {
+		started := time.Now()
+		if _, err := resolver.ResolveCatalog(context.Background(), &provider); err != nil {
+			t.Fatalf("cached ResolveCatalog: %v", err)
+		}
+		durations = append(durations, time.Since(started))
+	}
+	if got := backendCalls.Load(); got != 1 {
+		t.Fatalf("backend calls after %d cache hits = %d, want 1", samples, got)
+	}
+	sort.Slice(durations, func(i, j int) bool { return durations[i] < durations[j] })
+	p95 := durations[(samples*95)/100-1]
+	t.Logf("warm cache-hit samples = %d, p95 = %s", samples, p95)
+	if p95 > time.Millisecond {
+		t.Fatalf("warm cache-hit p95 = %s, limit = 1ms", p95)
+	}
+
+	const workers = 64
+	const hitsPerWorker = 100
+	errChannel := make(chan error, workers)
+	var wait sync.WaitGroup
+	for range workers {
+		wait.Add(1)
+		go func() {
+			defer wait.Done()
+			for range hitsPerWorker {
+				if _, err := resolver.ResolveCatalog(context.Background(), &provider); err != nil {
+					errChannel <- err
+					return
+				}
+			}
+		}()
+	}
+	wait.Wait()
+	close(errChannel)
+	for err := range errChannel {
+		t.Fatalf("concurrent cached ResolveCatalog: %v", err)
+	}
+	if got := backendCalls.Load(); got != 1 {
+		t.Fatalf("backend calls after concurrent cache hits = %d, want 1", got)
 	}
 }
 

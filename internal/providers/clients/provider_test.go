@@ -94,6 +94,23 @@ func TestNewProviderRejectsUnsupportedEndpointType(t *testing.T) {
 	}
 }
 
+func TestNewProviderRejectsOllamaCatalogAcquisitionBeforeAdapterCreation(t *testing.T) {
+	client, err := NewProvider(testProvider(catalogs.EndpointTypeOllama))
+	if err == nil {
+		t.Fatal("NewProvider accepted Ollama catalog acquisition without a compiled adapter")
+	}
+	if client != nil {
+		t.Fatalf("client = %#v, want nil", client)
+	}
+	var validationErr *pkgerrors.ValidationError
+	if !stderrors.As(err, &validationErr) {
+		t.Fatalf("error type = %T, want ValidationError", err)
+	}
+	if validationErr.Field != "provider.catalog.endpoint.type" {
+		t.Fatalf("validation field = %q", validationErr.Field)
+	}
+}
+
 func TestNewProviderMappingValidationReturnsTypedFailureBeforeAdapterCreation(t *testing.T) {
 	provider := testProvider(catalogs.EndpointTypeOpenAI)
 	provider.Catalog.Endpoint.FieldMappings = []catalogs.FieldMapping{{
@@ -187,18 +204,31 @@ func TestFetchRawRejectsOversizedResponse(t *testing.T) {
 }
 
 func testProvider(endpointType catalogs.EndpointType) *catalogs.Provider {
+	protocolOptions := catalogs.ProviderCatalogProtocolOptions{}
+	switch endpointType {
+	case catalogs.EndpointTypeOpenAI:
+		protocolOptions.OpenAI = &catalogs.ProviderOpenAICatalogProtocolOptions{
+			TokenPriceUnit: catalogs.ProviderTokenPriceUnitPerMillion,
+		}
+	case catalogs.EndpointTypeAnthropic:
+		protocolOptions.Anthropic = &catalogs.ProviderAnthropicCatalogProtocolOptions{Version: "2023-06-01"}
+	}
 	return &catalogs.Provider{
 		ID:   "test-provider",
 		Name: "Test Provider",
+		Credentials: &catalogs.ProviderCredentials{
+			Profiles: []catalogs.ProviderCredentialProfile{{
+				ID: "unauthenticated", Primitive: catalogs.ProviderAuthenticationNone,
+			}},
+			CatalogAcquisition: catalogs.ProviderCredentialPlane{
+				Alternatives: []catalogs.ProviderCredentialProfileID{"unauthenticated"},
+			},
+		},
 		Catalog: &catalogs.ProviderCatalog{
 			Endpoint: catalogs.ProviderEndpoint{
-				Type: endpointType,
-				URL:  "https://example.test/models",
-				ProtocolOptions: catalogs.ProviderCatalogProtocolOptions{
-					OpenAI: &catalogs.ProviderOpenAICatalogProtocolOptions{
-						TokenPriceUnit: catalogs.ProviderTokenPriceUnitPerMillion,
-					},
-				},
+				Type:            endpointType,
+				URL:             "https://example.test/models",
+				ProtocolOptions: protocolOptions,
 			},
 		},
 	}

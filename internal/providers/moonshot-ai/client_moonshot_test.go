@@ -49,7 +49,8 @@ func TestMoonshotAuthorMapping(t *testing.T) {
 	}
 
 	// Convert using the configured client
-	starmapModel := client.ConvertToModel(moonshotModel)
+	starmapModel, err := client.ConvertToModel(moonshotModel)
+	require.NoError(t, err)
 
 	// Verify author mapping worked correctly
 	require.Len(t, starmapModel.Authors, 1, "Should have exactly one author")
@@ -101,7 +102,8 @@ func TestMoonshotTestdataParsing(t *testing.T) {
 
 	foundModels := make(map[string]bool)
 	for _, modelData := range response.Data {
-		converted := client.ConvertToModel(modelData)
+		converted, err := client.ConvertToModel(modelData)
+		require.NoError(t, err)
 
 		// Basic validation
 		assert.NotEmpty(t, converted.ID, "Model ID should be set for model: %s", modelData.ID)
@@ -197,7 +199,8 @@ func TestMoonshotModelVariants(t *testing.T) {
 
 	for _, tc := range testCases {
 		t.Run(tc.name, func(t *testing.T) {
-			converted := client.ConvertToModel(tc.model)
+			converted, err := client.ConvertToModel(tc.model)
+			require.NoError(t, err)
 
 			assert.Equal(t, tc.expectedID, converted.ID, "ID should match")
 			require.Len(t, converted.Authors, 1, "Should have exactly one author")

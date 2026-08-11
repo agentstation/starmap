@@ -34,7 +34,7 @@ func NewClient(provider *catalogs.Provider) (*Client, error) {
 	client := &Client{
 		provider: provider,
 	}
-	if err := client.validateFieldMappings(provider); err != nil {
+	if err := ValidateCatalogEndpoint(provider); err != nil {
 		return nil, err
 	}
 	client.transport = transport.New()
@@ -43,7 +43,7 @@ func NewClient(provider *catalogs.Provider) (*Client, error) {
 
 // Configure sets the provider for this client.
 func (c *Client) Configure(provider *catalogs.Provider) error {
-	if err := c.validateFieldMappings(provider); err != nil {
+	if err := ValidateCatalogEndpoint(provider); err != nil {
 		return err
 	}
 	c.mu.Lock()
@@ -68,7 +68,7 @@ func (c *Client) ListModels(
 			Message: "provider not configured",
 		}
 	}
-	if err := c.validateFieldMappings(provider); err != nil {
+	if err := ValidateCatalogEndpoint(provider); err != nil {
 		return nil, err
 	}
 
@@ -111,7 +111,10 @@ func (c *Client) ListModels(
 	models := make([]catalogs.Model, 0, len(result.Data))
 	for _, m := range result.Data {
 		m.UnknownFields = append(m.UnknownFields, result.UnknownFields...)
-		model := c.ConvertToModel(m)
+		model, err := c.ConvertToModel(m)
+		if err != nil {
+			return nil, err
+		}
 		models = append(models, *model)
 	}
 
@@ -120,7 +123,7 @@ func (c *Client) ListModels(
 
 // ConvertToModel converts an OpenAI model response to a starmap Model using dynamic configuration.
 // This method is public for testing purposes.
-func (c *Client) ConvertToModel(m Model) *catalogs.Model {
+func (c *Client) ConvertToModel(m Model) (*catalogs.Model, error) {
 	model := &catalogs.Model{
 		ID:          m.ID,
 		Name:        m.ID, // Default to ID, may be overridden
@@ -132,6 +135,9 @@ func (c *Client) ConvertToModel(m Model) *catalogs.Model {
 
 	// Apply dynamic author extraction
 	model.Authors = c.extractAuthors(m.ID, m.OwnedBy)
+	if err := c.applyCapabilityMappings(model, m); err != nil {
+		return nil, err
+	}
 
 	c.applyProviderDefaults(model, m)
 
@@ -147,7 +153,7 @@ func (c *Client) ConvertToModel(m Model) *catalogs.Model {
 		}
 	}
 
-	return model
+	return model, nil
 }
 
 func (c *Client) applyProviderDefaults(model *catalogs.Model, apiModel Model) {
@@ -168,7 +174,6 @@ func (c *Client) applyProviderDefaults(model *catalogs.Model, apiModel Model) {
 			model.Status = catalogs.ModelStatusUnknown
 		}
 	}
-	c.applyProviderLimits(model, apiModel)
 	c.applyProviderMetadata(model, apiModel)
 	c.applyProviderFeatures(model, apiModel)
 	normalizeOperationalModalities(model)
@@ -216,32 +221,6 @@ func normalizeOperationalModalities(model *catalogs.Model) {
 	}
 }
 
-func (c *Client) applyProviderLimits(model *catalogs.Model, apiModel Model) {
-	contextWindow := firstInt64(apiModel.ContextWindow, apiModel.ContextLength, apiModel.MaxModelLen)
-	if apiModel.Metadata != nil && contextWindow == nil {
-		contextWindow = apiModel.Metadata.ContextLength
-	}
-	outputTokens := firstInt64(apiModel.MaxCompletionTokens, apiModel.OutputTokenLimit, apiModel.MaxOutputLength)
-	if apiModel.Metadata != nil && outputTokens == nil {
-		outputTokens = apiModel.Metadata.MaxTokens
-	}
-	if contextWindow == nil && apiModel.InputTokenLimit == nil && outputTokens == nil {
-		return
-	}
-	if model.Limits == nil {
-		model.Limits = &catalogs.ModelLimits{}
-	}
-	if _, state := model.Limits.Value(catalogs.ModelLimitContextWindow); contextWindow != nil && state != catalogs.ValueKnown {
-		model.Limits.Set(catalogs.ModelLimitContextWindow, *contextWindow)
-	}
-	if _, state := model.Limits.Value(catalogs.ModelLimitInputTokens); apiModel.InputTokenLimit != nil && state != catalogs.ValueKnown {
-		model.Limits.Set(catalogs.ModelLimitInputTokens, *apiModel.InputTokenLimit)
-	}
-	if _, state := model.Limits.Value(catalogs.ModelLimitOutputTokens); outputTokens != nil && state != catalogs.ValueKnown {
-		model.Limits.Set(catalogs.ModelLimitOutputTokens, *outputTokens)
-	}
-}
-
 func (c *Client) applyProviderMetadata(model *catalogs.Model, apiModel Model) {
 	if apiModel.Metadata == nil {
 		return
@@ -265,7 +244,6 @@ func (c *Client) applyProviderFeatures(model *catalogs.Model, apiModel Model) {
 	}
 	features := ensureModelFeatures(model)
 	applyProviderModalities(features, apiModel)
-	applyProviderCapabilityFlags(features, apiModel)
 	applySupportedFeatures(features, apiModel.SupportedFeatures)
 	applySupportedSamplingParameters(features, apiModel.SupportedSamplingParameters)
 }
@@ -276,8 +254,6 @@ func hasProviderFeatureClaims(apiModel Model) bool {
 		apiModel.SupportsImageInput != nil ||
 		apiModel.SupportsImageIn != nil ||
 		apiModel.SupportsVideoIn != nil ||
-		apiModel.SupportsTools != nil ||
-		apiModel.SupportsReasoning != nil ||
 		len(apiModel.SupportedFeatures) > 0 ||
 		len(apiModel.SupportedSamplingParameters) > 0
 }
@@ -294,17 +270,6 @@ func applyProviderModalities(features *catalogs.ModelFeatures, apiModel Model) {
 	}
 	if boolValue(apiModel.SupportsVideoIn) {
 		features.Modalities.Input = appendUniqueModality(features.Modalities.Input, catalogs.ModelModalityVideo)
-	}
-}
-
-func applyProviderCapabilityFlags(features *catalogs.ModelFeatures, apiModel Model) {
-	if apiModel.SupportsTools != nil {
-		features.SetSupport(catalogs.ModelFeatureTools, *apiModel.SupportsTools)
-		features.SetSupport(catalogs.ModelFeatureToolCalls, *apiModel.SupportsTools)
-		features.SetSupport(catalogs.ModelFeatureToolChoice, *apiModel.SupportsTools)
-	}
-	if apiModel.SupportsReasoning != nil {
-		features.SetSupport(catalogs.ModelFeatureReasoning, *apiModel.SupportsReasoning)
 	}
 }
 
@@ -533,15 +498,6 @@ func (c *Client) applyProviderExtensions(model *catalogs.Model, apiModel Model) 
 	model.Extensions[source] = catalogs.SourceExtension{
 		Fields: catalogs.NormalizeExtensionFields(fields),
 	}
-}
-
-func firstInt64(values ...*int64) *int64 {
-	for _, value := range values {
-		if value != nil {
-			return value
-		}
-	}
-	return nil
 }
 
 func ensureModelFeatures(model *catalogs.Model) *catalogs.ModelFeatures {

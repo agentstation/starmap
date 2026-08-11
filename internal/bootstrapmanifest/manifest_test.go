@@ -238,9 +238,7 @@ func testProvider() *catalogs.Provider {
 		Credentials: testcatalog.APIKeyCredentials(
 			"TEST_PROVIDER_API_KEY", "Authorization", catalogs.ProviderCredentialSchemeBearer,
 		),
-		Catalog: &catalogs.ProviderCatalog{
-			Authors: []catalogs.AuthorID{"test-author"},
-		},
+		Catalog: &catalogs.ProviderCatalog{},
 	}
 }
 

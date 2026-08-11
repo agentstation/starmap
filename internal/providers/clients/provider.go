@@ -31,6 +31,17 @@ type ProviderClient interface {
 
 // NewProvider creates a new provider client for the given provider.
 func NewProvider(provider *catalogs.Provider) (ProviderClient, error) {
+	if provider == nil {
+		return nil, &errors.ValidationError{Field: "provider", Message: "is required"}
+	}
+	if provider.Catalog == nil {
+		return nil, &errors.ValidationError{
+			Field: "provider.catalog", Value: provider.ID, Message: "catalog acquisition is not configured",
+		}
+	}
+	if err := provider.ValidateContract(); err != nil {
+		return nil, err
+	}
 	switch provider.Catalog.Endpoint.Type {
 	case catalogs.EndpointTypeOpenAI:
 		client, err := openai.NewClient(provider)
@@ -39,10 +50,19 @@ func NewProvider(provider *catalogs.Provider) (ProviderClient, error) {
 		}
 		return client, nil
 	case catalogs.EndpointTypeAnthropic:
+		if err := anthropic.ValidateCatalogEndpoint(provider); err != nil {
+			return nil, err
+		}
 		return anthropic.NewClient(provider), nil
 	case catalogs.EndpointTypeGoogle:
+		if err := google.ValidateCatalogEndpoint(provider); err != nil {
+			return nil, err
+		}
 		return google.NewClient(provider), nil
 	case catalogs.EndpointTypeGoogleCloud:
+		if err := google.ValidateCatalogEndpoint(provider); err != nil {
+			return nil, err
+		}
 		return google.NewClient(provider), nil
 	}
 	return nil, &errors.ValidationError{

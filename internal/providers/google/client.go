@@ -35,6 +35,39 @@ func NewClient(provider *catalogs.Provider) *Client {
 	}
 }
 
+// ValidateCatalogEndpoint validates the typed Google catalog-acquisition contract.
+func ValidateCatalogEndpoint(provider *catalogs.Provider) error {
+	if provider == nil || provider.Catalog == nil {
+		return nil
+	}
+	endpoint := provider.Catalog.Endpoint
+	if len(endpoint.FieldMappings) != 0 {
+		return &errors.ValidationError{
+			Field: "field_mappings", Value: endpoint.FieldMappings,
+			Message: "Google catalog acquisition does not expose configurable field mappings",
+		}
+	}
+	if len(endpoint.CapabilityMappings) != 0 {
+		return &errors.ValidationError{
+			Field: "capability_mappings", Value: endpoint.CapabilityMappings,
+			Message: "Google catalog acquisition does not expose configurable capability mappings",
+		}
+	}
+	if endpoint.AuthorMapping == nil {
+		return nil
+	}
+	if err := endpoint.AuthorMapping.Validate(); err != nil {
+		return err
+	}
+	if endpoint.Type != catalogs.EndpointTypeGoogleCloud || endpoint.AuthorMapping.Field != "publisher" {
+		return &errors.ValidationError{
+			Field: "author_mapping.field", Value: endpoint.AuthorMapping.Field,
+			Message: "only Google Cloud catalog acquisition supports the publisher author field",
+		}
+	}
+	return nil
+}
+
 // Configure sets the provider for this client.
 func (c *Client) Configure(provider *catalogs.Provider) {
 	c.mu.Lock()

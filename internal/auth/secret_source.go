@@ -18,6 +18,7 @@ func defaultDirectSecretSources() []credentialSource {
 		newAzureKeyVaultSource(),
 		newAWSSecretsManagerSource(),
 		newVaultSource(),
+		newOpenBaoSource(),
 	}
 }
 

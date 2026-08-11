@@ -4,6 +4,7 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 
 	"github.com/agentstation/starmap/internal/providers/openai"
 	"github.com/agentstation/starmap/internal/providers/testhelper"
@@ -44,7 +45,8 @@ func TestCerebrasWithUnifiedClient(t *testing.T) {
 
 	// Test conversion of all models in testdata
 	for _, modelData := range response.Data {
-		converted := client.ConvertToModel(modelData)
+		converted, err := client.ConvertToModel(modelData)
+		require.NoError(t, err)
 		assert.NotEmpty(t, converted.ID, "Model ID should be set for model: %s", modelData.ID)
 		assert.NotEmpty(t, converted.Name, "Model Name should be set for model: %s", modelData.ID)
 	}

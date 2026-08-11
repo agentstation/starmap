@@ -24,6 +24,11 @@ func (p Provider) ValidateContract() error {
 		if err := validateCatalogProtocolOptions(p.Catalog.Endpoint); err != nil {
 			return err
 		}
+		if p.Catalog.Endpoint.AuthorMapping != nil {
+			if err := p.Catalog.Endpoint.AuthorMapping.Validate(); err != nil {
+				return err
+			}
+		}
 		if p.Credentials == nil || len(p.Credentials.CatalogAcquisition.Alternatives) == 0 {
 			return providerContractError(
 				"provider.credentials.catalog_acquisition.alternatives",
@@ -231,6 +236,12 @@ func validateCatalogProtocolOptions(endpoint ProviderEndpoint) error {
 				"is required",
 			)
 		}
+	case EndpointTypeOllama:
+		return providerContractError(
+			"provider.catalog.endpoint.type",
+			endpoint.Type,
+			"has no compiled catalog-acquisition transport",
+		)
 	default:
 		if options.OpenAI != nil || options.Anthropic != nil {
 			return providerContractError(

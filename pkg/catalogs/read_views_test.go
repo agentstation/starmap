@@ -708,32 +708,6 @@ func TestAuthorMembershipUsesExplicitAuthoredCredits(t *testing.T) {
 	}
 }
 
-func TestProviderAuthorFetchScopeDoesNotInventAuthorship(t *testing.T) {
-	for _, authors := range [][]AuthorID{
-		{"author-a"},
-		{"author-a", "author-b"},
-	} {
-		builder := NewEmpty()
-		setTestReadViewDefinition(t, builder, "model", "Model")
-		if err := builder.SetProvider(Provider{
-			ID: "marketplace", Name: "Marketplace",
-			Catalog: &ProviderCatalog{Authors: authors},
-			Models: map[string]*Model{"model": {
-				ID: "model", ModelRef: "author/model", Name: "Model",
-			}},
-		}); err != nil {
-			t.Fatalf("SetProvider: %v", err)
-		}
-		definition, err := mustCatalog(t, builder).Definition("author/model")
-		if err != nil {
-			t.Fatalf("Definition: %v", err)
-		}
-		if !slices.Equal(definition.AuthorIDs, []AuthorID{"author"}) {
-			t.Fatalf("fetch-scope authors %v produced definition authors %#v", authors, definition.AuthorIDs)
-		}
-	}
-}
-
 func TestLegacyAuthorAttributionDoesNotOverrideExplicitAuthorship(t *testing.T) {
 	builder := NewEmpty()
 	if err := builder.SetAuthor(Author{

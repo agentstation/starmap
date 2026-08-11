@@ -163,6 +163,16 @@ func TestNewClientMappingValidationRejectsInvalidConfiguredPaths(t *testing.T) {
 				From: "context_window", To: "unknown.destination",
 			}, wantField: "field_mappings.to",
 		},
+		{
+			name: "noncanonical destination alias", mapping: catalogs.FieldMapping{
+				From: "context_window", To: "context_window",
+			}, wantField: "field_mappings.to",
+		},
+		{
+			name: "incompatible types", mapping: catalogs.FieldMapping{
+				From: "metadata.tags", To: "limits.context_window",
+			}, wantField: "field_mappings",
+		},
 	}
 	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {
@@ -183,6 +193,20 @@ func TestNewClientMappingValidationRejectsInvalidConfiguredPaths(t *testing.T) {
 			assert.Equal(t, test.wantField, validationErr.Field)
 		})
 	}
+}
+
+func TestNewClientRejectsUnsupportedAuthorSelector(t *testing.T) {
+	provider := testOpenAIProvider("https://example.test/models")
+	provider.Catalog.Endpoint.AuthorMapping = &catalogs.AuthorMapping{
+		Field: "publisher", Normalized: map[string]catalogs.AuthorID{"publisher": "author"},
+	}
+	client, err := NewClient(provider)
+	if client != nil {
+		t.Fatalf("client = %#v, want nil", client)
+	}
+	var validationErr *errors.ValidationError
+	require.ErrorAs(t, err, &validationErr)
+	assert.Equal(t, "author_mapping.field", validationErr.Field)
 }
 
 func TestListModelsMappingValidationSuppressesAdapterAfterConfigurationMutation(t *testing.T) {
@@ -229,7 +253,7 @@ func TestClientModelConversion(t *testing.T) {
 			OwnedBy: "openai",
 		}
 
-		model := client.ConvertToModel(minimalModel)
+		model := mustConvertModel(t, client, minimalModel)
 
 		assert.Equal(t, "test-model", model.ID)
 		assert.Equal(t, "test-model", model.Name)
@@ -244,7 +268,7 @@ func TestClientModelConversion(t *testing.T) {
 			OwnedBy: "openai",
 		}
 
-		model := client.ConvertToModel(modelData)
+		model := mustConvertModel(t, client, modelData)
 		assert.NotNil(t, model)
 		assert.Equal(t, "gpt-4", model.ID)
 	})
@@ -257,7 +281,7 @@ func TestClientModelConversion(t *testing.T) {
 			OwnedBy: "openai",
 		}
 
-		model := client.ConvertToModel(deprecatedModel)
+		model := mustConvertModel(t, client, deprecatedModel)
 		// OpenAI deprecated models like text-davinci-003 should be detected by name pattern
 		assert.Contains(t, model.ID, "davinci")
 	})
@@ -270,7 +294,7 @@ func TestClientModelConversion(t *testing.T) {
 			OwnedBy: "openai",
 		}
 
-		model := client.ConvertToModel(visionModel)
+		model := mustConvertModel(t, client, visionModel)
 		assert.Nil(t, model.Features)
 
 		functionModel := Model{
@@ -280,7 +304,7 @@ func TestClientModelConversion(t *testing.T) {
 			OwnedBy: "openai",
 		}
 
-		model = client.ConvertToModel(functionModel)
+		model = mustConvertModel(t, client, functionModel)
 		assert.Nil(t, model.Features)
 	})
 }

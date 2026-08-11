@@ -271,10 +271,6 @@
           DeepSeek: deepseek
           Meta: meta
           OpenAI: openai
-    authors:
-    - alibaba
-    - meta
-    - openai
   status_page_url: https://status.cerebras.ai/
   inference:
     base_url: https://api.cerebras.ai
@@ -509,6 +505,13 @@
       protocol_options:
         openai:
           token_price_unit: usd-per-million-tokens
+      capability_mappings:
+      - from: supports_tools
+        to:
+        - tools
+        - tool_calls
+        - tool_choice
+        evidence: https://docs.fireworks.ai/api-reference/get-model
       author_mapping:
         field: id
         normalized:
@@ -682,15 +685,6 @@
           mistralai: mistral
           openai: openai
           qwen: qwen
-    authors:
-    - ai21
-    - anthropic
-    - deepseek
-    - google
-    - meta
-    - mistral
-    - openai
-    - qwen
   status_page_url: https://status.cloud.google.com
   inference:
     base_url: https://{location}-aiplatform.googleapis.com
@@ -781,17 +775,6 @@
           OpenAI: openai
           PlayAI: playai
           SDAIA: sdaia
-    authors:
-    - alibaba
-    - deepseek
-    - google
-    - groq
-    - huggingfaceh4
-    - meta
-    - moonshot-ai
-    - openai
-    - playai
-    - sdaia
   status_page_url: https://status.groq.com
   inference:
     base_url: https://api.groq.com/openai
@@ -863,8 +846,6 @@
         field: owned_by
         normalized:
           mistralai: mistral
-    authors:
-    - mistral
   status_page_url: https://status.mistral.ai/
   inference:
     base_url: https://api.mistral.ai
@@ -922,8 +903,6 @@
         field: owned_by
         normalized:
           moonshot: moonshot-ai
-    authors:
-    - moonshot-ai
   status_page_url: https://status.moonshot.cn
   inference:
     base_url: https://api.moonshot.ai
@@ -1057,19 +1036,10 @@
       - field: base-url
         variable: base_url
         format: url
-    catalog_acquisition:
-      required: false
-      alternatives:
-      - unauthenticated
     inference:
       required: false
       alternatives:
       - unauthenticated
-  catalog:
-    docs: https://docs.ollama.com/api/tags
-    endpoint:
-      type: ollama
-      url: "{base_url}/api/tags"
   inference:
     base_url: "{base_url}"
     endpoints:

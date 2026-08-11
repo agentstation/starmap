@@ -201,6 +201,20 @@ components:
           description: Normalization map (e.g., "Meta" -> "meta")
           type: object
       type: object
+    catalogs.CapabilityMapping:
+      properties:
+        combine:
+          $ref: '#/components/schemas/catalogs.ProviderCapabilityCombination'
+        evidence:
+          type: string
+        from:
+          type: string
+        to:
+          items:
+            $ref: '#/components/schemas/catalogs.ModelFeature'
+          type: array
+          uniqueItems: false
+      type: object
     catalogs.EndpointType:
       description: 'Required: API style'
       type: string
@@ -408,6 +422,54 @@ components:
           type: array
           uniqueItems: false
       type: object
+    catalogs.ModelFeature:
+      type: string
+      x-enum-varnames:
+      - ModelFeatureToolCalls
+      - ModelFeatureTools
+      - ModelFeatureToolChoice
+      - ModelFeatureWebSearch
+      - ModelFeatureAttachments
+      - ModelFeatureReasoning
+      - ModelFeatureReasoningEffort
+      - ModelFeatureReasoningTokens
+      - ModelFeatureIncludeReasoning
+      - ModelFeatureVerbosity
+      - ModelFeatureTemperature
+      - ModelFeatureTopP
+      - ModelFeatureTopK
+      - ModelFeatureTopA
+      - ModelFeatureMinP
+      - ModelFeatureTypicalP
+      - ModelFeatureTFS
+      - ModelFeatureMaxTokens
+      - ModelFeatureMaxOutputTokens
+      - ModelFeatureStop
+      - ModelFeatureStopTokenIDs
+      - ModelFeatureFrequencyPenalty
+      - ModelFeaturePresencePenalty
+      - ModelFeatureRepetitionPenalty
+      - ModelFeatureNoRepeatNgramSize
+      - ModelFeatureLengthPenalty
+      - ModelFeatureLogitBias
+      - ModelFeatureBadWords
+      - ModelFeatureAllowedTokens
+      - ModelFeatureSeed
+      - ModelFeatureLogprobs
+      - ModelFeatureTopLogprobs
+      - ModelFeatureEcho
+      - ModelFeatureN
+      - ModelFeatureBestOf
+      - ModelFeatureMirostat
+      - ModelFeatureMirostatTau
+      - ModelFeatureMirostatEta
+      - ModelFeatureContrastiveSearchPenaltyAlpha
+      - ModelFeatureNumBeams
+      - ModelFeatureEarlyStopping
+      - ModelFeatureDiversityPenalty
+      - ModelFeatureFormatResponse
+      - ModelFeatureStructuredOutputs
+      - ModelFeatureStreaming
     catalogs.ModelFeatures:
       properties:
         allowed_tokens:
@@ -885,98 +947,16 @@ components:
         google_default:
           $ref: '#/components/schemas/catalogs.ProviderGoogleDefaultProtocolOptions'
       type: object
+    catalogs.ProviderCapabilityCombination:
+      type: string
+      x-enum-varnames:
+      - ProviderCapabilityConflict
+      - ProviderCapabilityFirstKnown
+      - ProviderCapabilityAny
+      - ProviderCapabilityAll
     catalogs.ProviderCatalog:
       description: Models
       properties:
-        authors:
-          description: List of authors to fetch from (for providers like Google Vertex
-            AI)
-          items:
-            type: string
-            x-enum-varnames:
-            - AuthorIDOpenAI
-            - AuthorIDAnthropic
-            - AuthorIDGoogle
-            - AuthorIDDeepMind
-            - AuthorIDMeta
-            - AuthorIDMicrosoft
-            - AuthorIDMistralAI
-            - AuthorIDCohere
-            - AuthorIDGroq
-            - AuthorIDQwen
-            - AuthorIDXAI
-            - AuthorIDStanford
-            - AuthorIDMIT
-            - AuthorIDCMU
-            - AuthorIDUCBerkeley
-            - AuthorIDCornell
-            - AuthorIDPrinceton
-            - AuthorIDHarvard
-            - AuthorIDOxford
-            - AuthorIDCambridge
-            - AuthorIDETHZurich
-            - AuthorIDUWashington
-            - AuthorIDUChicago
-            - AuthorIDYale
-            - AuthorIDDuke
-            - AuthorIDCaltech
-            - AuthorIDHuggingFace
-            - AuthorIDEleutherAI
-            - AuthorIDTogether
-            - AuthorIDMosaicML
-            - AuthorIDStabilityAI
-            - AuthorIDRunwayML
-            - AuthorIDMidjourney
-            - AuthorIDLAION
-            - AuthorIDBigScience
-            - AuthorIDAlignmentRC
-            - AuthorIDH2OAI
-            - AuthorIDMoxin
-            - AuthorIDBaidu
-            - AuthorIDTencent
-            - AuthorIDByteDance
-            - AuthorIDDeepSeek
-            - AuthorIDBAAI
-            - AuthorID01AI
-            - AuthorIDBaichuan
-            - AuthorIDMiniMax
-            - AuthorIDMoonshot
-            - AuthorIDShanghaiAI
-            - AuthorIDZhipuAI
-            - AuthorIDSenseTime
-            - AuthorIDHuawei
-            - AuthorIDTsinghua
-            - AuthorIDPeking
-            - AuthorIDNVIDIA
-            - AuthorIDSalesforce
-            - AuthorIDIBM
-            - AuthorIDApple
-            - AuthorIDAmazon
-            - AuthorIDAdept
-            - AuthorIDAI21
-            - AuthorIDInflection
-            - AuthorIDCharacter
-            - AuthorIDPerplexity
-            - AuthorIDAnysphere
-            - AuthorIDCursor
-            - AuthorIDCognitiveComputations
-            - AuthorIDEricHartford
-            - AuthorIDNousResearch
-            - AuthorIDTeknium
-            - AuthorIDJonDurbin
-            - AuthorIDLMSYS
-            - AuthorIDVicuna
-            - AuthorIDAlpacaTeam
-            - AuthorIDWizardLM
-            - AuthorIDOpenOrca
-            - AuthorIDPhind
-            - AuthorIDCodeFuse
-            - AuthorIDTHUDM
-            - AuthorIDGeorgiaTechRI
-            - AuthorIDFastChat
-            - AuthorIDUnknown
-          type: array
-          uniqueItems: false
         docs:
           description: Documentation URL
           type: string
@@ -1134,6 +1114,12 @@ components:
       properties:
         author_mapping:
           $ref: '#/components/schemas/catalogs.AuthorMapping'
+        capability_mappings:
+          description: Typed capability predicates
+          items:
+            $ref: '#/components/schemas/catalogs.CapabilityMapping'
+          type: array
+          uniqueItems: false
         field_mappings:
           description: Field mappings
           items:

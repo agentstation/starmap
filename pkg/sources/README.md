@@ -679,7 +679,7 @@ func NewProviderFetcher(providers catalogs.ProvidersReader, opts ...ProviderOpti
 NewProviderFetcher creates a provider fetcher over the supplied catalog providers. Callers must inject the provider\-client and raw\-fetch roles they use; the root library never selects concrete provider implementations.
 
 <a name="ProviderFetcher.FetchModels"></a>
-### func \(\*ProviderFetcher\) [FetchModels](<https://github.com/agentstation/starmap/blob/main/pkg/sources/providers.go#L243>)
+### func \(\*ProviderFetcher\) [FetchModels](<https://github.com/agentstation/starmap/blob/main/pkg/sources/providers.go#L246>)
 
 ```go
 func (pf *ProviderFetcher) FetchModels(ctx context.Context, provider *catalogs.Provider, opts ...ProviderOption) ([]catalogs.Model, error)
@@ -705,7 +705,7 @@ models, err := fetcher.FetchModels(ctx, provider)
 ```
 
 <a name="ProviderFetcher.FetchRawResponse"></a>
-### func \(\*ProviderFetcher\) [FetchRawResponse](<https://github.com/agentstation/starmap/blob/main/pkg/sources/providers.go#L282>)
+### func \(\*ProviderFetcher\) [FetchRawResponse](<https://github.com/agentstation/starmap/blob/main/pkg/sources/providers.go#L289>)
 
 ```go
 func (pf *ProviderFetcher) FetchRawResponse(ctx context.Context, provider *catalogs.Provider, endpoint string, opts ...ProviderOption) ([]byte, *FetchStats, error)
@@ -716,7 +716,7 @@ FetchRawResponse fetches the raw API response from a provider's endpoint. This i
 The endpoint parameter should be the full URL to the API endpoint. The response is returned as raw bytes \(JSON\) without any parsing, along with fetch statistics.
 
 <a name="ProviderFetcher.HasClient"></a>
-### func \(\*ProviderFetcher\) [HasClient](<https://github.com/agentstation/starmap/blob/main/pkg/sources/providers.go#L180>)
+### func \(\*ProviderFetcher\) [HasClient](<https://github.com/agentstation/starmap/blob/main/pkg/sources/providers.go#L183>)
 
 ```go
 func (pf *ProviderFetcher) HasClient(id catalogs.ProviderID) bool
@@ -725,7 +725,7 @@ func (pf *ProviderFetcher) HasClient(id catalogs.ProviderID) bool
 HasClient checks if a provider ID has a client implementation.
 
 <a name="ProviderFetcher.List"></a>
-### func \(\*ProviderFetcher\) [List](<https://github.com/agentstation/starmap/blob/main/pkg/sources/providers.go#L169>)
+### func \(\*ProviderFetcher\) [List](<https://github.com/agentstation/starmap/blob/main/pkg/sources/providers.go#L172>)
 
 ```go
 func (pf *ProviderFetcher) List() []catalogs.ProviderID
@@ -752,7 +752,7 @@ type ProviderOption func(*providerOptions)
 ```
 
 <a name="WithProviderClientFactory"></a>
-### func [WithProviderClientFactory](<https://github.com/agentstation/starmap/blob/main/pkg/sources/providers.go#L205>)
+### func [WithProviderClientFactory](<https://github.com/agentstation/starmap/blob/main/pkg/sources/providers.go#L208>)
 
 ```go
 func WithProviderClientFactory(factory ProviderClientFactory) ProviderOption
@@ -761,7 +761,7 @@ func WithProviderClientFactory(factory ProviderClientFactory) ProviderOption
 WithProviderClientFactory configures the factory used to create provider API clients.
 
 <a name="WithProviderCredentialResolver"></a>
-### func [WithProviderCredentialResolver](<https://github.com/agentstation/starmap/blob/main/pkg/sources/providers.go#L219>)
+### func [WithProviderCredentialResolver](<https://github.com/agentstation/starmap/blob/main/pkg/sources/providers.go#L222>)
 
 ```go
 func WithProviderCredentialResolver(resolver ProviderCredentialResolver) ProviderOption
@@ -770,7 +770,7 @@ func WithProviderCredentialResolver(resolver ProviderCredentialResolver) Provide
 WithProviderCredentialResolver configures catalog credential resolution.
 
 <a name="WithProviderRawFetcher"></a>
-### func [WithProviderRawFetcher](<https://github.com/agentstation/starmap/blob/main/pkg/sources/providers.go#L212>)
+### func [WithProviderRawFetcher](<https://github.com/agentstation/starmap/blob/main/pkg/sources/providers.go#L215>)
 
 ```go
 func WithProviderRawFetcher(fetcher ProviderRawFetcher) ProviderOption
@@ -779,7 +779,7 @@ func WithProviderRawFetcher(fetcher ProviderRawFetcher) ProviderOption
 WithProviderRawFetcher configures the raw provider response fetcher.
 
 <a name="WithTimeout"></a>
-### func [WithTimeout](<https://github.com/agentstation/starmap/blob/main/pkg/sources/providers.go#L198>)
+### func [WithTimeout](<https://github.com/agentstation/starmap/blob/main/pkg/sources/providers.go#L201>)
 
 ```go
 func WithTimeout(d time.Duration) ProviderOption

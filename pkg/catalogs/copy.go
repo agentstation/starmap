@@ -379,8 +379,12 @@ func deepCopyProviderCatalog(catalog *ProviderCatalog) *ProviderCatalog {
 	copied.Endpoint.ProtocolOptions.OpenAI = copyPtr(catalog.Endpoint.ProtocolOptions.OpenAI)
 	copied.Endpoint.ProtocolOptions.Anthropic = copyPtr(catalog.Endpoint.ProtocolOptions.Anthropic)
 	copied.Endpoint.FieldMappings = append([]FieldMapping(nil), catalog.Endpoint.FieldMappings...)
+	copied.Endpoint.CapabilityMappings = make([]CapabilityMapping, len(catalog.Endpoint.CapabilityMappings))
+	for index, mapping := range catalog.Endpoint.CapabilityMappings {
+		copied.Endpoint.CapabilityMappings[index] = mapping
+		copied.Endpoint.CapabilityMappings[index].To = append([]ModelFeature(nil), mapping.To...)
+	}
 	copied.Endpoint.AuthorMapping = deepCopyAuthorMapping(catalog.Endpoint.AuthorMapping)
-	copied.Authors = append([]AuthorID(nil), catalog.Authors...)
 	return &copied
 }
 

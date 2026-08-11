@@ -1327,6 +1327,30 @@ cache credential values. Public and internal conformance tests cover missing
 credentials, source precedence, rotation, cancellation, concurrent refresh,
 configuration errors, fetch failures, and adapter call suppression.
 
+The provider configuration is data-driven inside compiled typed primitives.
+Provider YAML selects the endpoint, credential metadata, field mappings,
+author mappings, capability mappings, exact offering IDs, and explicit model
+links. A provider needs no Go change when an existing transport and
+authentication primitive can represent these facts. A new transport,
+authentication primitive, or unsupported wire field requires Go.
+
+Each transport owns its typed wire schema, supported mapping sources,
+canonical target writers, and validation. OpenAI-compatible field mappings use
+the first present source for each destination in YAML order. Provider-specific
+extension meanings do not run as unconditional transport defaults.
+
+Capability mappings accept only typed provider predicates and documented
+semantic entailment. They preserve true, false, and unknown states. Explicit
+combination rules resolve multiple predicates without map-order behavior.
+Model IDs, author names, family names, and free text never create capability
+facts.
+
+The provider source retains a valid unknown offering with no canonical model
+link. Reconciliation excludes it from the catalog and emits a durable review
+candidate with the exact provider model ID and observation evidence. It never
+infers authorship from the provider or model name. A known offering publishes
+only through an explicit `model: author/slug` link to an authored model.
+
 Provider configuration and provider evidence are deliberately separated. The
 configuration catalog may contain embedded or last-known-good models needed by
 the baseline source, but `internal/sources/providers` removes those models from

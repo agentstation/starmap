@@ -62,6 +62,30 @@ type FieldMapping struct {
 	To   string `yaml:"to" json:"to"`     // Target field path in Model (e.g., "limits.context_window")
 }
 
+// ProviderCapabilityCombination defines how multiple source predicates prove
+// one canonical capability.
+type ProviderCapabilityCombination string
+
+const (
+	// ProviderCapabilityConflict accepts equal known values and rejects contradictions.
+	ProviderCapabilityConflict ProviderCapabilityCombination = "conflict"
+	// ProviderCapabilityFirstKnown selects the first present source in YAML order.
+	ProviderCapabilityFirstKnown ProviderCapabilityCombination = "first-known"
+	// ProviderCapabilityAny requires any known true, or all known false.
+	ProviderCapabilityAny ProviderCapabilityCombination = "any"
+	// ProviderCapabilityAll requires any known false, or all known true.
+	ProviderCapabilityAll ProviderCapabilityCombination = "all"
+)
+
+// CapabilityMapping maps one typed provider predicate to each canonical fact
+// that the cited provider contract entails.
+type CapabilityMapping struct {
+	From     string                        `yaml:"from" json:"from"`
+	To       []ModelFeature                `yaml:"to" json:"to"`
+	Combine  ProviderCapabilityCombination `yaml:"combine,omitempty" json:"combine,omitempty"`
+	Evidence string                        `yaml:"evidence" json:"evidence"`
+}
+
 // AuthorMapping defines how to extract and normalize authors.
 type AuthorMapping struct {
 	Field      string              `yaml:"field" json:"field"`           // Field to extract from (e.g., "owned_by")
@@ -70,11 +94,12 @@ type AuthorMapping struct {
 
 // ProviderEndpoint configures how to access the provider's model catalog.
 type ProviderEndpoint struct {
-	Type            EndpointType                   `yaml:"type" json:"type"`                                             // Required: API style
-	URL             string                         `yaml:"url" json:"url"`                                               // Required: API endpoint
-	ProtocolOptions ProviderCatalogProtocolOptions `yaml:"protocol_options,omitempty" json:"protocol_options,omitempty"` // Typed wire-protocol facts
-	FieldMappings   []FieldMapping                 `yaml:"field_mappings,omitempty" json:"field_mappings,omitempty"`     // Field mappings
-	AuthorMapping   *AuthorMapping                 `yaml:"author_mapping,omitempty" json:"author_mapping,omitempty"`     // Author extraction
+	Type               EndpointType                   `yaml:"type" json:"type"`                                                   // Required: API style
+	URL                string                         `yaml:"url" json:"url"`                                                     // Required: API endpoint
+	ProtocolOptions    ProviderCatalogProtocolOptions `yaml:"protocol_options,omitempty" json:"protocol_options,omitempty"`       // Typed wire-protocol facts
+	FieldMappings      []FieldMapping                 `yaml:"field_mappings,omitempty" json:"field_mappings,omitempty"`           // Field mappings
+	CapabilityMappings []CapabilityMapping            `yaml:"capability_mappings,omitempty" json:"capability_mappings,omitempty"` // Typed capability predicates
+	AuthorMapping      *AuthorMapping                 `yaml:"author_mapping,omitempty" json:"author_mapping,omitempty"`           // Author extraction
 }
 
 // ProviderCatalogProtocolOptions is a typed union of catalog-transport facts.
@@ -107,9 +132,8 @@ type ProviderAnthropicCatalogProtocolOptions struct {
 
 // ProviderCatalog represents information about a provider's models.
 type ProviderCatalog struct {
-	Docs     *string          `yaml:"docs" json:"docs"`                           // Documentation URL
-	Endpoint ProviderEndpoint `yaml:"endpoint" json:"endpoint"`                   // API endpoint configuration
-	Authors  []AuthorID       `json:"authors,omitempty" yaml:"authors,omitempty"` // List of authors to fetch from (for providers like Google Vertex AI)
+	Docs     *string          `yaml:"docs" json:"docs"`         // Documentation URL
+	Endpoint ProviderEndpoint `yaml:"endpoint" json:"endpoint"` // API endpoint configuration
 }
 
 // ProviderOperation identifies one provider inference operation.

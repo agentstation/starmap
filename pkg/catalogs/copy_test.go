@@ -398,8 +398,11 @@ func TestDeepCopyProviderCopiesNestedMutableFields(t *testing.T) {
 						"openai": AuthorIDOpenAI,
 					},
 				},
+				CapabilityMappings: []CapabilityMapping{{
+					From: "supports_tools",
+					To:   []ModelFeature{ModelFeatureTools, ModelFeatureToolCalls},
+				}},
 			},
-			Authors: []AuthorID{AuthorIDOpenAI},
 		},
 		PrivacyPolicy: &ProviderPrivacyPolicy{
 			PrivacyPolicyURL: &privacyURL,
@@ -418,7 +421,7 @@ func TestDeepCopyProviderCopiesNestedMutableFields(t *testing.T) {
 	*copied.Catalog.Docs = "changed"
 	copied.Catalog.Endpoint.ProtocolOptions.OpenAI.TokenPriceUnit = ProviderTokenPriceUnitPerToken
 	copied.Catalog.Endpoint.AuthorMapping.Normalized["openai"] = AuthorIDGoogle
-	copied.Catalog.Authors[0] = AuthorIDGoogle
+	copied.Catalog.Endpoint.CapabilityMappings[0].To[0] = ModelFeatureReasoning
 	*copied.PrivacyPolicy.PrivacyPolicyURL = "changed"
 	copied.Extensions["models.dev"].Fields["npm"] = "@changed/provider"
 
@@ -434,8 +437,8 @@ func TestDeepCopyProviderCopiesNestedMutableFields(t *testing.T) {
 	if original.Catalog.Endpoint.AuthorMapping.Normalized["openai"] != AuthorIDOpenAI {
 		t.Fatal("author mapping map was shared between original and copy")
 	}
-	if original.Catalog.Authors[0] != AuthorIDOpenAI {
-		t.Fatal("provider catalog authors slice was shared between original and copy")
+	if original.Catalog.Endpoint.CapabilityMappings[0].To[0] != ModelFeatureTools {
+		t.Fatal("capability mapping target slice was shared between original and copy")
 	}
 	if *original.PrivacyPolicy.PrivacyPolicyURL != "https://example.com/privacy" {
 		t.Fatal("provider privacy pointer was shared between original and copy")

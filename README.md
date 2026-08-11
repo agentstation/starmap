@@ -329,6 +329,48 @@ pricing, limits, availability, regions, lifecycle, modes, endpoints, and
 request behavior belong to provider offerings. See
 [pkg/catalogs/README.md](pkg/catalogs/README.md) for the schema reference.
 
+### Add a provider with YAML
+
+A provider needs no Go change when it uses a compiled catalog transport and
+authentication primitive. Its response fields must also fit that transport's
+typed source vocabulary.
+
+1. Add the canonical author to `internal/embedded/catalog/authors.yaml` when it
+   does not exist.
+2. Add intrinsic model facts to
+   `internal/embedded/catalog/authors/<author>/models/<slug>.yaml`.
+3. Add the provider record to `internal/embedded/catalog/providers.yaml`.
+   Declare credentials, the catalog endpoint, inference endpoints, and status
+   sources there.
+4. Add each reviewed offering below
+   `internal/embedded/catalog/providers/<provider>/models/`. Preserve the
+   provider's exact `id`. Set `model: <author>/<slug>` explicitly.
+5. Run `make validate`.
+6. Run `make update-catalog-provider PROVIDER=<provider>` when the provider
+   API is available.
+7. Run `make verify` before publication.
+
+`field_mappings` select typed wire fields and canonical destinations. The first
+present source for one destination wins in YAML order. OpenAI-compatible
+sources include `context_window` and `max_completion_tokens`. Their canonical
+destinations are `limits.context_window` and `limits.output_tokens`.
+
+`author_mapping` selects a transport-supported author field and maps exact,
+case-insensitive, or glob values to an existing canonical author. OpenAI-
+compatible acquisition supports `id` and `owned_by`. Google acquisition
+supports `publisher` where its transport contract declares it.
+
+`capability_mappings` use exact typed provider predicates. Each mapping cites
+an HTTPS provider contract and names each entailed canonical target. A mapping
+can use `conflict`, `first-known`, `any`, or `all` combination behavior. Model
+IDs, author names, family names, and free text cannot create capability facts.
+
+A known offering publishes only when its exact provider ID has an explicit
+canonical model link. An unknown discovered ID stays out of the catalog and
+becomes a durable review candidate. Add its authored model and offering record
+before the next publication. The generator derives the endpoint
+projections. Do not use them as an authoring source.
+
 For detailed component design and interaction patterns, see **[ARCHITECTURE.md § System Components](docs/ARCHITECTURE.md#system-components)**.
 
 ## Project Structure
@@ -1199,18 +1241,22 @@ Starmap also includes these direct read sources:
 | `azure-key-vault` | `https://VAULT_HOST/secrets/SECRET` | `DefaultAzureCredential` |
 | `aws-secrets-manager` | A secret name or ARN | The AWS default credential chain |
 | `vault` | `MOUNT/PATH` for a KV v2 secret | The Vault client environment |
+| `openbao` | `MOUNT/PATH` for a KV v2 secret | The OpenBao client environment |
 
 The optional `version` selects a provider version. Each source selects the
 latest version when `version` is absent. For Google Cloud, Azure, and AWS,
 `field` selects one exact top-level JSON string. Without `field`, these sources
-preserve the complete scalar payload. For Vault, `field` selects one exact
-string value. A Vault reference without `field` requires exactly one string
-value.
+preserve the complete scalar payload. For Vault and OpenBao, `field` selects
+one exact string value. A reference without `field` requires exactly one
+string value.
 
 Backend authentication values do not belong in a reference. Google Cloud uses
 Application Default Credentials. Azure uses `DefaultAzureCredential`. AWS uses
 its default configuration and credential chain. Vault uses its standard client
 environment, including `VAULT_ADDR`, `VAULT_TOKEN`, and `VAULT_NAMESPACE`.
+OpenBao uses its standard client environment, including `BAO_ADDR`,
+`BAO_TOKEN`, and `BAO_NAMESPACE`.
+
 Each direct source creates its official client on resolution and closes its
 owned network resources after the read.
 

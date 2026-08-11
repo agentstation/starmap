@@ -90,6 +90,26 @@ func composeProviderCatalog(
 				Message: "existing human workspace catalog is required",
 			}
 		}
+		for _, author := range human.Authors().List() {
+			if err := builder.SetAuthor(author); err != nil {
+				return nil, errors.WrapResource(
+					"set",
+					"provider configuration author",
+					author.ID.String(),
+					err,
+				)
+			}
+		}
+		for _, authoredModel := range human.AuthoredModels() {
+			if err := builder.SetAuthorModel(authoredModel.AuthorID, authoredModel.Model); err != nil {
+				return nil, errors.WrapResource(
+					"set",
+					"provider configuration authored model",
+					string(authoredModel.ID()),
+					err,
+				)
+			}
+		}
 		for _, provider := range human.Providers().List() {
 			if err := builder.SetProvider(provider); err != nil {
 				return nil, errors.WrapResource(

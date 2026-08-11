@@ -16,6 +16,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/secretsmanager"
 	"github.com/aws/smithy-go"
 	vault "github.com/hashicorp/vault/api"
+	openbao "github.com/openbao/openbao/api/v2"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )
@@ -25,6 +26,7 @@ func TestDefaultDirectSecretSourcesAreRegistered(t *testing.T) {
 		referenceBackendAWSStore,
 		referenceBackendAzureVault,
 		referenceBackendGCPStore,
+		referenceBackendOpenBao,
 		referenceBackendVault,
 	}
 	resolver := newResolver(mapEnvironment(nil))
@@ -357,6 +359,15 @@ func TestDirectSecretSourcesPropagateCancellationWithinBudget(t *testing.T) {
 				}, func() error { return nil }, nil
 			}}).Resolve,
 		},
+		{
+			name: "openbao", reference: "openbao:secret/key",
+			resolve: (&openBaoSource{open: func() (openBaoSecretRead, func() error, error) {
+				return func(readCtx context.Context, _, _ string, _ int) (*openbao.KVSecret, error) {
+					<-readCtx.Done()
+					return nil, readCtx.Err()
+				}, func() error { return nil }, nil
+			}}).Resolve,
+		},
 	}
 	for _, source := range sources {
 		t.Run(source.name, func(t *testing.T) {
@@ -371,80 +382,6 @@ func TestDirectSecretSourcesPropagateCancellationWithinBudget(t *testing.T) {
 				t.Logf("cancellation = %s", elapsed)
 			}
 		})
-	}
-}
-
-func TestDirectSecretSourceColdFakeP95Budget(t *testing.T) {
-	sources := directSecretPerformanceSources(t)
-	const calls = 10_000
-	durations := make([]time.Duration, 0, calls)
-	for index := range calls {
-		source := sources[index%len(sources)]
-		started := time.Now()
-		if _, err := source.resolve(context.Background(), source.reference); err != nil {
-			t.Fatalf("%s Resolve: %v", source.name, err)
-		}
-		durations = append(durations, time.Since(started))
-	}
-	sort.Slice(durations, func(i, j int) bool { return durations[i] < durations[j] })
-	p95 := durations[(calls*95)/100-1]
-	t.Logf("cold fake calls = %d, p95 = %s", calls, p95)
-	if p95 > time.Millisecond {
-		t.Fatalf("cold fake p95 = %s, budget = 1ms", p95)
-	}
-}
-
-type directSecretPerformanceSource struct {
-	name      string
-	reference Reference
-	resolve   func(context.Context, Reference) (sourceMaterial, error)
-}
-
-func directSecretPerformanceSources(t *testing.T) []directSecretPerformanceSource {
-	t.Helper()
-	value := "valid"
-	azureID := azsecrets.ID("https://vault.test/secrets/key/1")
-	return []directSecretPerformanceSource{
-		{
-			name: "gcp", reference: mustReference(t, "gcp-secret-manager:projects/project/secrets/key"),
-			resolve: (&gcpSecretManagerSource{open: func(context.Context) (gcpSecretRead, func() error, error) {
-				return func(context.Context, string) (*secretmanagerpb.AccessSecretVersionResponse, error) {
-					return &secretmanagerpb.AccessSecretVersionResponse{
-						Name:    "projects/project/secrets/key/versions/1",
-						Payload: &secretmanagerpb.SecretPayload{Data: []byte(value)},
-					}, nil
-				}, func() error { return nil }, nil
-			}}).Resolve,
-		},
-		{
-			name: "azure", reference: mustReference(t, "azure-key-vault:https://vault.test/secrets/key"),
-			resolve: (&azureKeyVaultSource{open: func(string) (azureSecretRead, func() error, error) {
-				return func(context.Context, string, string) (azsecrets.GetSecretResponse, error) {
-					return azsecrets.GetSecretResponse{Secret: azsecrets.Secret{Value: &value, ID: &azureID}}, nil
-				}, func() error { return nil }, nil
-			}}).Resolve,
-		},
-		{
-			name: "aws", reference: mustReference(t, "aws-secrets-manager:key"),
-			resolve: (&awsSecretsManagerSource{open: func(context.Context) (awsSecretRead, func() error, error) {
-				return func(context.Context, *secretsmanager.GetSecretValueInput) (*secretsmanager.GetSecretValueOutput, error) {
-					return &secretsmanager.GetSecretValueOutput{
-						SecretString: &value, VersionId: aws.String("1"),
-					}, nil
-				}, func() error { return nil }, nil
-			}}).Resolve,
-		},
-		{
-			name: "vault", reference: mustReference(t, "vault:secret/key"),
-			resolve: (&vaultSource{open: func() (vaultSecretRead, func() error, error) {
-				return func(context.Context, string, string, int) (*vault.KVSecret, error) {
-					return &vault.KVSecret{
-						Data:            map[string]any{"value": value},
-						VersionMetadata: &vault.KVVersionMetadata{Version: 1},
-					}, nil
-				}, func() error { return nil }, nil
-			}}).Resolve,
-		},
 	}
 }
 

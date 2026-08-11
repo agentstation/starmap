@@ -33,6 +33,11 @@ func validateCatalogIdentities(reader Reader) error {
 				return errors.WrapResource("validate", "provider credentials", string(provider.ID), err)
 			}
 		}
+		if provider.Catalog != nil && provider.Catalog.Endpoint.AuthorMapping != nil {
+			if err := provider.Catalog.Endpoint.AuthorMapping.Validate(); err != nil {
+				return errors.WrapResource("validate", "provider author mapping", string(provider.ID), err)
+			}
+		}
 		providerOwners[provider.ID] = provider.ID
 	}
 	for _, provider := range providers {
@@ -75,6 +80,28 @@ func validateCatalogIdentities(reader Reader) error {
 				return identityConflictError("author alias", string(alias), string(owner), string(author.ID))
 			}
 			authorOwners[alias] = author.ID
+		}
+	}
+	return nil
+}
+
+func validateProviderAuthorMappingTargets(reader Reader) error {
+	canonicalAuthors := make(map[AuthorID]struct{})
+	for _, author := range reader.Authors().List() {
+		canonicalAuthors[author.ID] = struct{}{}
+	}
+	for _, provider := range reader.Providers().List() {
+		if provider.Catalog == nil || provider.Catalog.Endpoint.AuthorMapping == nil {
+			continue
+		}
+		for source, target := range provider.Catalog.Endpoint.AuthorMapping.Normalized {
+			if _, found := canonicalAuthors[target]; !found {
+				return identityValidationError(
+					"provider["+provider.ID.String()+"].catalog.endpoint.author_mapping.normalized",
+					source,
+					"target "+target.String()+" is not a canonical catalog author ID",
+				)
+			}
 		}
 	}
 	return nil

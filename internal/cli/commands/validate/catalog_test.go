@@ -65,7 +65,6 @@ func testCatalogWithModelAuthor(t *testing.T, authorID catalogs.AuthorID) *catal
 	}
 
 	provider := testProvider()
-	provider.Catalog.Authors = []catalogs.AuthorID{authorID}
 	model := testModel()
 	model.ModelRef = catalogs.AuthoredModelID(author.ID, model.ID)
 	model.Authors = []catalogs.Author{{ID: authorID, Name: authorID.String()}}
@@ -97,7 +96,6 @@ func testProvider() *catalogs.Provider {
 			"TEST_PROVIDER_API_KEY", "Authorization", catalogs.ProviderCredentialSchemeBearer,
 		),
 		Catalog: &catalogs.ProviderCatalog{
-			Authors: []catalogs.AuthorID{"test-author"},
 			Endpoint: catalogs.ProviderEndpoint{
 				Type:            catalogs.EndpointTypeOpenAI,
 				URL:             "https://provider.example/models",

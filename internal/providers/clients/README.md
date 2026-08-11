@@ -19,7 +19,7 @@ Package clients provides provider client registry functions. This package is sep
 
 
 <a name="FetchRawResult"></a>
-## type [FetchRawResult](<https://github.com/agentstation/starmap/blob/main/internal/providers/clients/provider.go#L56-L61>)
+## type [FetchRawResult](<https://github.com/agentstation/starmap/blob/main/internal/providers/clients/provider.go#L76-L81>)
 
 FetchRawResult contains the result of a raw fetch operation.
 
@@ -33,7 +33,7 @@ type FetchRawResult struct {
 ```
 
 <a name="FetchRaw"></a>
-### func [FetchRaw](<https://github.com/agentstation/starmap/blob/main/internal/providers/clients/provider.go#L66-L71>)
+### func [FetchRaw](<https://github.com/agentstation/starmap/blob/main/internal/providers/clients/provider.go#L86-L91>)
 
 ```go
 func FetchRaw(ctx context.Context, provider *catalogs.Provider, material sources.ProviderCredentialMaterial, endpoint string) (*FetchRawResult, error)

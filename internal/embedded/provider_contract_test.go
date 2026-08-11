@@ -4,6 +4,7 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/agentstation/starmap/internal/providers/clients"
 	"github.com/agentstation/starmap/pkg/catalogs"
 )
 
@@ -18,6 +19,11 @@ func TestEmbeddedProviderContracts(t *testing.T) {
 	for _, provider := range providers {
 		if err := provider.ValidateContract(); err != nil {
 			t.Fatalf("provider %s contract: %v", provider.ID, err)
+		}
+		if provider.Catalog != nil {
+			if _, err := clients.NewProvider(&provider); err != nil {
+				t.Fatalf("provider %s acquisition transport contract: %v", provider.ID, err)
+			}
 		}
 	}
 
@@ -87,7 +93,7 @@ func TestEmbeddedProviderCredentialSchemaContract(t *testing.T) {
 		if provider.Credentials == nil {
 			t.Fatalf("provider %s has no credential schema", provider.ID)
 		}
-		if len(provider.Credentials.CatalogAcquisition.Alternatives) == 0 {
+		if provider.Catalog != nil && len(provider.Credentials.CatalogAcquisition.Alternatives) == 0 {
 			t.Fatalf("provider %s has no catalog-acquisition alternative", provider.ID)
 		}
 		if len(provider.Credentials.Inference.Alternatives) == 0 {
@@ -104,6 +110,10 @@ func TestEmbeddedProviderCredentialSchemaContract(t *testing.T) {
 				}
 			}
 		}
+	}
+	ollama, found := builder.Providers().Get(catalogs.ProviderIDOllama)
+	if !found || ollama.Catalog != nil {
+		t.Fatalf("Ollama catalog acquisition = %#v, want no compiled acquisition contract", ollama)
 	}
 }
 

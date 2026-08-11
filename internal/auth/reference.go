@@ -19,6 +19,7 @@ const (
 	referenceBackendAzureVault  ReferenceBackend = "azure-key-vault"
 	referenceBackendAWSStore    ReferenceBackend = "aws-secrets-manager"
 	referenceBackendVault       ReferenceBackend = "vault"
+	referenceBackendOpenBao     ReferenceBackend = "openbao"
 )
 
 var (

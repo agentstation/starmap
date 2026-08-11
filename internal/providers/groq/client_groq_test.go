@@ -63,7 +63,8 @@ func TestGroqFieldMappings(t *testing.T) {
 	}
 
 	// Convert using the configured client
-	starmapModel := client.ConvertToModel(groqModel)
+	starmapModel, err := client.ConvertToModel(groqModel)
+	require.NoError(t, err)
 
 	// Verify field mappings worked correctly
 	require.NotNil(t, starmapModel.Limits, "Limits should be set")
@@ -104,7 +105,8 @@ func TestGroqTestdataParsing(t *testing.T) {
 
 	// Test conversion of all models in testdata
 	for _, modelData := range response.Data {
-		converted := client.ConvertToModel(modelData)
+		converted, err := client.ConvertToModel(modelData)
+		require.NoError(t, err)
 
 		// Basic validation
 		assert.NotEmpty(t, converted.ID, "Model ID should be set for model: %s", modelData.ID)
@@ -158,7 +160,8 @@ func TestGroqSpecificFields(t *testing.T) {
 	if err != nil {
 		t.Fatalf("NewClient: %v", err)
 	}
-	converted := client.ConvertToModel(groqModel)
+	converted, err := client.ConvertToModel(groqModel)
+	require.NoError(t, err)
 
 	// Verify the model is processed correctly despite having Groq-specific fields
 	assert.Equal(t, "whisper-large-v3", converted.ID)

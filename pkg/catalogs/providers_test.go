@@ -73,7 +73,6 @@ func TestProvidersFormatYAML(t *testing.T) {
 						TokenPriceUnit: ProviderTokenPriceUnitPerMillion,
 					}},
 				},
-				Authors: []AuthorID{"alibaba", "meta", "openai"},
 			},
 			RetentionPolicy: &ProviderRetentionPolicy{
 				Type:     ProviderRetentionTypeNone,
@@ -113,10 +112,6 @@ func TestProvidersFormatYAML(t *testing.T) {
 		"# Cerebras",
 		"- id: cerebras",
 		"name: Cerebras",
-		"authors:",
-		"- alibaba",
-		"- meta",
-		"- openai",
 		"duration: 0s", // Zero duration
 	}
 

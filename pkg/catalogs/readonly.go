@@ -105,6 +105,9 @@ func buildCatalog(source Reader) (*Catalog, error) {
 	if err := validateCatalogIdentities(source); err != nil {
 		return nil, errors.WrapResource("validate", "catalog identities", "", err)
 	}
+	if err := validateProviderAuthorMappingTargets(source); err != nil {
+		return nil, errors.WrapResource("validate", "provider author mapping targets", "", err)
+	}
 	views, err := deriveReadViews(source)
 	if err != nil {
 		return nil, errors.WrapResource("index", "catalog read views", "", err)

@@ -5,38 +5,38 @@ import (
 	stderrors "errors"
 	"net/http"
 
-	vault "github.com/hashicorp/vault/api"
+	openbao "github.com/openbao/openbao/api/v2"
 )
 
-type vaultSecretRead = kvV2Read[vault.KVSecret]
+type openBaoSecretRead = kvV2Read[openbao.KVSecret]
 
-type vaultSecretOpen func() (vaultSecretRead, func() error, error)
+type openBaoSecretOpen func() (openBaoSecretRead, func() error, error)
 
-type vaultSource struct {
-	open vaultSecretOpen
+type openBaoSource struct {
+	open openBaoSecretOpen
 }
 
-func newVaultSource() *vaultSource {
-	return &vaultSource{open: func() (vaultSecretRead, func() error, error) {
-		return openKVV2Read(func() (kvV2MountReader[vault.KVSecret], *http.Client, error) {
-			config := vault.DefaultConfig()
+func newOpenBaoSource() *openBaoSource {
+	return &openBaoSource{open: func() (openBaoSecretRead, func() error, error) {
+		return openKVV2Read(func() (kvV2MountReader[openbao.KVSecret], *http.Client, error) {
+			config := openbao.DefaultConfig()
 			if config == nil || config.Error != nil {
 				return nil, nil, errInvalidSecretObject
 			}
-			client, err := vault.NewClient(config)
+			client, err := openbao.NewClient(config)
 			if err != nil {
 				return nil, nil, err
 			}
-			return func(mount string) kvV2SecretReader[vault.KVSecret] {
+			return func(mount string) kvV2SecretReader[openbao.KVSecret] {
 				return client.KVv2(mount)
 			}, config.HttpClient, nil
 		})
 	}}
 }
 
-func (*vaultSource) Backend() ReferenceBackend { return referenceBackendVault }
+func (*openBaoSource) Backend() ReferenceBackend { return referenceBackendOpenBao }
 
-func (s *vaultSource) Resolve(
+func (s *openBaoSource) Resolve(
 	ctx context.Context,
 	reference Reference,
 ) (material sourceMaterial, err error) {
@@ -58,25 +58,21 @@ func (s *vaultSource) Resolve(
 	}()
 	secret, readErr := read(ctx, mount, path, version)
 	if readErr != nil {
-		return sourceMaterial{}, sourceFailure(ctx, s.Backend(), readErr, classifyVaultSecretError)
+		return sourceMaterial{}, sourceFailure(ctx, s.Backend(), readErr, classifyOpenBaoSecretError)
 	}
-	return vaultSourceMaterial(s.Backend(), secret, reference.field)
+	if secret == nil || secret.VersionMetadata == nil {
+		return sourceMaterial{}, newSourceError(SourceErrorNotConfigured, s.Backend())
+	}
+	return kvV2SourceMaterial(
+		s.Backend(), secret.Data, secret.VersionMetadata.Version, reference.field,
+	)
 }
 
-func vaultSourceMaterial(
-	backend ReferenceBackend,
-	secret *vault.KVSecret,
-	field string,
-) (sourceMaterial, error) {
-	if secret == nil || secret.Data == nil || secret.VersionMetadata == nil ||
-		secret.VersionMetadata.Version < 1 {
-		return sourceMaterial{}, newSourceError(SourceErrorNotConfigured, backend)
+func classifyOpenBaoSecretError(err error) SourceErrorKind {
+	if stderrors.Is(err, openbao.ErrSecretNotFound) {
+		return SourceErrorNotConfigured
 	}
-	return kvV2SourceMaterial(backend, secret.Data, secret.VersionMetadata.Version, field)
-}
-
-func classifyVaultSecretError(err error) SourceErrorKind {
-	var responseErr *vault.ResponseError
+	var responseErr *openbao.ResponseError
 	if !stderrors.As(err, &responseErr) {
 		return SourceErrorUnavailable
 	}

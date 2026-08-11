@@ -142,7 +142,7 @@ func TestSourceObserveAddsFetchedModels(t *testing.T) {
 	}
 }
 
-func TestSourceObserveQuarantinesModelsWithoutReviewedCanonicalLinks(t *testing.T) {
+func TestSourceObserveRetainsModelsWithoutReviewedLinksForReconciliation(t *testing.T) {
 	provider := providerForTest("provider-a")
 	provider.Models = map[string]*catalogs.Model{
 		"reviewed": {
@@ -162,27 +162,26 @@ func TestSourceObserveQuarantinesModelsWithoutReviewedCanonicalLinks(t *testing.
 	if err != nil {
 		t.Fatalf("Observe: %v", err)
 	}
-	if observation.Status != sources.ObservationStatusDegraded ||
-		observation.Completeness != sources.ObservationCompletenessPartial {
-		t.Fatalf("observation health = %q/%q, want degraded/partial", observation.Status, observation.Completeness)
+	if observation.Status != sources.ObservationStatusSucceeded ||
+		observation.Completeness != sources.ObservationCompletenessComplete {
+		t.Fatalf("observation health = %q/%q, want succeeded/complete", observation.Status, observation.Completeness)
 	}
-	if observation.Records.Accepted != 1 || observation.Records.Rejected != 1 {
-		t.Fatalf("records = %#v, want accepted=1 rejected=1", observation.Records)
+	if observation.Records.Accepted != 2 || observation.Records.Rejected != 0 {
+		t.Fatalf("records = %#v, want accepted=2 rejected=0", observation.Records)
 	}
-	if len(observation.Issues) != 1 ||
-		observation.Issues[0].Scope != sources.ObservationIssueScopeRecord ||
-		observation.Issues[0].Code != sources.ObservationIssueCodeInvalidRecord ||
-		observation.Issues[0].Subject != "provider-a/new-unreviewed" {
+	if len(observation.Issues) != 0 {
 		t.Fatalf("issues = %#v", observation.Issues)
 	}
 	fetched, err := observation.Catalog.Provider("provider-a")
 	if err != nil {
 		t.Fatalf("Provider: %v", err)
 	}
-	if len(fetched.Models) != 1 ||
+	if len(fetched.Models) != 2 ||
 		fetched.Models["reviewed"] == nil ||
 		fetched.Models["reviewed"].Name != "Live Name" ||
-		fetched.Models["reviewed"].ModelRef != "author-a/reviewed" {
+		fetched.Models["reviewed"].ModelRef != "author-a/reviewed" ||
+		fetched.Models["new-unreviewed"] == nil ||
+		fetched.Models["new-unreviewed"].ModelRef != "" {
 		t.Fatalf("linked live models = %#v", fetched.Models)
 	}
 	if provider.Models["reviewed"].Name != "Configured Name" {
@@ -375,8 +374,8 @@ func TestSourceObserveSeparatesBootstrapModelsWhenCredentialsAreMissing(t *testi
 	if err != nil {
 		t.Fatalf("Fetch should skip missing credentials without failing: %v", err)
 	}
-	if factoryCalls != 0 {
-		t.Fatalf("Expected missing credentials to skip client creation, got %d factory calls", factoryCalls)
+	if factoryCalls != 1 {
+		t.Fatalf("client validation calls = %d, want 1 before credential resolution", factoryCalls)
 	}
 
 	fetchedProvider, err := observation.Catalog.Provider("missing-key")

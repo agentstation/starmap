@@ -129,6 +129,9 @@ func (s *Source) Observe(ctx context.Context, opts ...sources.Option) (sources.O
 	} else {
 		// Get all provider IDs from the providers collection
 		for _, p := range s.providers.List() {
+			if p.Catalog == nil {
+				continue
+			}
 			providerIDs = append(providerIDs, p.ID)
 		}
 	}
@@ -136,7 +139,7 @@ func (s *Source) Observe(ctx context.Context, opts ...sources.Option) (sources.O
 	// Get provider configs from injected providers
 	var providerConfigs []*catalogs.Provider
 	for _, id := range providerIDs {
-		if p, found := s.providers.Get(id); found {
+		if p, found := s.providers.Get(id); found && p.Catalog != nil {
 			providerConfigs = append(providerConfigs, p)
 		}
 	}
@@ -294,13 +297,9 @@ func linkReviewedProviderModels(
 	for _, model := range models {
 		configured := provider.Models[model.ID]
 		if configured == nil || configured.ModelRef == "" {
-			rejected++
-			issues = append(issues, sources.ObservationIssue{
-				Scope:   sources.ObservationIssueScopeRecord,
-				Code:    sources.ObservationIssueCodeInvalidRecord,
-				Subject: string(provider.ID) + "/" + model.ID,
-				Message: "provider model has no reviewed canonical link; add model: author/slug to the provider YAML",
-			})
+			unlinkedModel := catalogs.DeepCopyModel(*model)
+			unlinkedModel.ModelRef = ""
+			linked = append(linked, &unlinkedModel)
 			continue
 		}
 		if _, _, err := catalogs.ParseModelDefinitionID(configured.ModelRef); err != nil {

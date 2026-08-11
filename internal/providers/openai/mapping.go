@@ -15,6 +15,40 @@ const (
 	fieldMetadataTags = "metadata.tags"
 )
 
+type mappingValueKind uint8
+
+const (
+	mappingValueInteger mappingValueKind = iota + 1
+	mappingValueString
+	mappingValueTags
+)
+
+var fieldMappingSourceKinds = map[string]mappingValueKind{
+	"max_model_len":           mappingValueInteger,
+	"context_window":          mappingValueInteger,
+	"context_length":          mappingValueInteger,
+	"max_completion_tokens":   mappingValueInteger,
+	"max_output_length":       mappingValueInteger,
+	"input_token_limit":       mappingValueInteger,
+	"output_token_limit":      mappingValueInteger,
+	"metadata.context_length": mappingValueInteger,
+	"metadata.max_tokens":     mappingValueInteger,
+	"name":                    mappingValueString,
+	"metadata.description":    mappingValueString,
+	fieldID:                   mappingValueString,
+	fieldOwnedBy:              mappingValueString,
+	fieldMetadataTags:         mappingValueTags,
+}
+
+var fieldMappingDestinationKinds = map[string]mappingValueKind{
+	"limits.context_window": mappingValueInteger,
+	"limits.input_tokens":   mappingValueInteger,
+	"limits.output_tokens":  mappingValueInteger,
+	"name":                  mappingValueString,
+	"description":           mappingValueString,
+	fieldMetadataTags:       mappingValueTags,
+}
+
 func (c *Client) applyFieldMappings(model *catalogs.Model, apiModel Model) {
 	c.mu.RLock()
 	provider := c.provider
@@ -24,19 +58,27 @@ func (c *Client) applyFieldMappings(model *catalogs.Model, apiModel Model) {
 		return
 	}
 
-	// Apply field mappings using direct path matching
+	// The first configured mapping with a present source owns each destination.
+	// This makes fallback priority explicit and independent of later entries.
+	mappedDestinations := make(map[string]struct{}, len(provider.Catalog.Endpoint.FieldMappings))
 	for _, mapping := range provider.Catalog.Endpoint.FieldMappings {
-		c.setFieldByPath(model, mapping.From, mapping.To, apiModel)
+		if _, mapped := mappedDestinations[mapping.To]; mapped {
+			continue
+		}
+		if c.setFieldByPath(model, mapping.From, mapping.To, apiModel) {
+			mappedDestinations[mapping.To] = struct{}{}
+		}
 	}
 }
 
 // setFieldByPath directly sets model fields based on path strings with type-safe conversion.
-func (c *Client) setFieldByPath(model *catalogs.Model, fromPath, toPath string, apiModel Model) {
+func (c *Client) setFieldByPath(model *catalogs.Model, fromPath, toPath string, apiModel Model) bool {
 	sourceValue, ok := fieldMappingSourceValue(fromPath, apiModel)
 	if !ok || isNilFieldMappingValue(sourceValue) {
-		return
+		return false
 	}
 	c.applyMappedField(model, toPath, sourceValue)
+	return true
 }
 
 func isNilFieldMappingValue(value any) bool {
@@ -90,8 +132,6 @@ func fieldMappingSourceValue(fromPath string, apiModel Model) (any, bool) {
 		return apiModel.ID, true
 	case fieldOwnedBy:
 		return apiModel.OwnedBy, true
-	case "created":
-		return apiModel.Created, true
 	}
 	return nil, false
 }
@@ -115,18 +155,6 @@ func (c *Client) applyMappedField(model *catalogs.Model, toPath string, sourceVa
 		}
 		model.Limits.Set(catalogs.ModelLimitOutputTokens, c.toInt64(sourceValue))
 
-	// Direct model fields for backward compatibility
-	case "context_window":
-		if model.Limits == nil {
-			model.Limits = &catalogs.ModelLimits{}
-		}
-		model.Limits.Set(catalogs.ModelLimitContextWindow, c.toInt64(sourceValue))
-	case "max_completion_tokens":
-		if model.Limits == nil {
-			model.Limits = &catalogs.ModelLimits{}
-		}
-		model.Limits.Set(catalogs.ModelLimitOutputTokens, c.toInt64(sourceValue))
-
 	// Core model fields
 	case "name":
 		model.Name = c.toString(sourceValue)
@@ -139,15 +167,12 @@ func (c *Client) applyMappedField(model *catalogs.Model, toPath string, sourceVa
 		}
 		model.Metadata.Tags = c.toModelTags(sourceValue)
 
-	// Future extensibility - add more paths as needed:
-	// case "pricing.input.base":
-	//     if model.Pricing == nil { model.Pricing = &catalogs.ModelPricing{} }
-	//     if model.Pricing.Input == nil { model.Pricing.Input = &catalogs.ModelTokenPricing{} }
-	//     model.Pricing.Input.Base = c.toFloat64(sourceValue)
+		// Future extensibility - add more paths as needed:
+		// case "pricing.input.base":
+		//     if model.Pricing == nil { model.Pricing = &catalogs.ModelPricing{} }
+		//     if model.Pricing.Input == nil { model.Pricing.Input = &catalogs.ModelTokenPricing{} }
+		//     model.Pricing.Input.Base = c.toFloat64(sourceValue)
 
-	default:
-		// Unknown destination path - skip silently
-		return
 	}
 }
 
@@ -251,75 +276,49 @@ func (c *Client) extractAuthors(modelID, ownedBy string) []catalogs.Author {
 	return nil
 }
 
-// validateFieldMappings validates that all configured field mappings use valid paths.
-func (c *Client) validateFieldMappings(provider *catalogs.Provider) error {
-	if provider == nil || provider.Catalog == nil || provider.Catalog.Endpoint.FieldMappings == nil {
+// ValidateCatalogEndpoint validates the typed OpenAI-compatible mapping contract.
+func ValidateCatalogEndpoint(provider *catalogs.Provider) error {
+	if provider == nil || provider.Catalog == nil {
 		return nil
 	}
+	if err := validateCapabilityMappings(provider); err != nil {
+		return err
+	}
 
-	for _, mapping := range provider.Catalog.Endpoint.FieldMappings {
-		if !c.isValidSourceField(mapping.From) {
+	for index, mapping := range provider.Catalog.Endpoint.FieldMappings {
+		sourceKind, sourceFound := fieldMappingSourceKinds[mapping.From]
+		if !sourceFound {
 			return &errors.ValidationError{
 				Field: "field_mappings.from", Value: mapping.From,
 				Message: "invalid source field: " + mapping.From,
 			}
 		}
-		if !c.isValidDestinationPath(mapping.To) {
+		destinationKind, destinationFound := fieldMappingDestinationKinds[mapping.To]
+		if !destinationFound {
 			return &errors.ValidationError{
 				Field: "field_mappings.to", Value: mapping.To,
 				Message: "invalid destination path: " + mapping.To,
 			}
 		}
+		if sourceKind != destinationKind {
+			return &errors.ValidationError{
+				Field: "field_mappings", Value: index,
+				Message: "source and destination have incompatible types",
+			}
+		}
+	}
+	if mapping := provider.Catalog.Endpoint.AuthorMapping; mapping != nil {
+		if err := mapping.Validate(); err != nil {
+			return err
+		}
+		switch mapping.Field {
+		case fieldID, fieldOwnedBy:
+		default:
+			return &errors.ValidationError{
+				Field: "author_mapping.field", Value: mapping.Field,
+				Message: "OpenAI-compatible catalog acquisition supports only id or owned_by",
+			}
+		}
 	}
 	return nil
-}
-
-// isValidSourceField checks if a source field exists in the API model.
-func (c *Client) isValidSourceField(field string) bool {
-	validFields := map[string]bool{
-		"max_model_len":           true,
-		"context_window":          true,
-		"context_length":          true,
-		"max_completion_tokens":   true,
-		"max_output_length":       true,
-		"input_token_limit":       true,
-		"output_token_limit":      true,
-		"name":                    true,
-		"metadata.description":    true,
-		"metadata.context_length": true,
-		"metadata.max_tokens":     true,
-		fieldMetadataTags:         true,
-		fieldID:                   true,
-		fieldOwnedBy:              true,
-		"created":                 true,
-	}
-	return validFields[field]
-}
-
-// isValidDestinationPath checks if a destination path is valid in the Model struct.
-func (c *Client) isValidDestinationPath(path string) bool {
-	validPaths := map[string]bool{
-		// Limits fields
-		"limits.context_window": true,
-		"limits.input_tokens":   true,
-		"limits.output_tokens":  true,
-
-		// Direct model fields for backward compatibility
-		"context_window":        true,
-		"max_completion_tokens": true,
-
-		// Core model fields
-		"name":            true,
-		"description":     true,
-		fieldMetadataTags: true,
-
-		// Future paths can be added here as needed:
-		// "metadata.release_date":     true,
-		// "metadata.open_weights":     true,
-		// "features.tools":            true,
-		// "features.reasoning":        true,
-		// "pricing.input.base":        true,
-		// "pricing.output.base":       true,
-	}
-	return validPaths[path]
 }

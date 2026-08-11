@@ -158,8 +158,37 @@ func TestProviderFetcherCredentialPolicyConformsAcrossModelAndRawFetch(t *testin
 			t.Fatalf("%s error = %T, want AuthenticationError: %v", name, err, err)
 		}
 	}
-	if clientCalls != 0 || rawCalls != 0 {
-		t.Fatalf("credential preflight reached adapters: client=%d raw=%d", clientCalls, rawCalls)
+	if clientCalls != 1 || rawCalls != 0 {
+		t.Fatalf("credential failure calls: client validation=%d raw transport=%d", clientCalls, rawCalls)
+	}
+}
+
+func TestProviderFetcherRejectsInvalidAdapterConfigurationBeforeCredentialResolution(t *testing.T) {
+	provider := providerForFetcherTest("invalid-adapter-config")
+	resolverCalls := 0
+	fetcher := NewProviderFetcher(
+		newFetcherProviderSet(provider),
+		WithProviderCredentialResolver(ProviderCredentialResolverFunc(func(
+			context.Context,
+			*catalogs.Provider,
+		) (ProviderCredentialMaterial, error) {
+			resolverCalls++
+			return noAuthFetcherMaterial(), nil
+		})),
+		WithProviderClientFactory(func(*catalogs.Provider) (ProviderClient, error) {
+			return nil, &pkgerrors.ValidationError{
+				Field: "field_mappings.from", Value: "unsupported", Message: "unsupported mapping",
+			}
+		}),
+	)
+
+	_, err := fetcher.FetchModels(context.Background(), &provider)
+	var validationErr *pkgerrors.ValidationError
+	if !stderrors.As(err, &validationErr) {
+		t.Fatalf("error = %T: %v, want ValidationError", err, err)
+	}
+	if resolverCalls != 0 {
+		t.Fatalf("credential resolver calls = %d, want 0", resolverCalls)
 	}
 }
 

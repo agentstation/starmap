@@ -154,6 +154,9 @@ func NewProviderFetcher(providers catalogs.ProvidersReader, opts ...ProviderOpti
 func (pf *ProviderFetcher) Providers() *catalogs.Providers {
 	result := catalogs.NewProviders()
 	for _, provider := range pf.providers.List() {
+		if provider.Catalog == nil {
+			continue
+		}
 		if pf.options.credentialResolver == nil {
 			continue
 		}
@@ -184,7 +187,7 @@ func (pf *ProviderFetcher) HasClient(id catalogs.ProviderID) bool {
 
 	// Check if we have a provider configuration
 	provider, found := pf.providers.Get(id)
-	if !found {
+	if !found || provider.Catalog == nil {
 		return false
 	}
 
@@ -242,7 +245,7 @@ func WithProviderCredentialResolver(resolver ProviderCredentialResolver) Provide
 //	models, err := fetcher.FetchModels(ctx, provider)
 func (pf *ProviderFetcher) FetchModels(ctx context.Context, provider *catalogs.Provider, opts ...ProviderOption) ([]catalogs.Model, error) {
 	options := pf.options.clone().apply(opts...)
-	ctx, cancel, material, err := prepareProviderOperation(ctx, provider, options)
+	ctx, cancel, err := prepareProviderContext(ctx, provider, options)
 	if err != nil {
 		cancel()
 		return nil, err
@@ -260,6 +263,10 @@ func (pf *ProviderFetcher) FetchModels(ctx context.Context, provider *catalogs.P
 	client, err := options.clientFactory(provider)
 	if err != nil {
 		return nil, errors.WrapResource("get", "client", string(provider.ID), err)
+	}
+	material, err := resolveCatalogCredentials(ctx, provider, options)
+	if err != nil {
+		return nil, err
 	}
 
 	// Fetch models from API
@@ -281,7 +288,7 @@ func (pf *ProviderFetcher) FetchModels(ctx context.Context, provider *catalogs.P
 // The response is returned as raw bytes (JSON) without any parsing, along with fetch statistics.
 func (pf *ProviderFetcher) FetchRawResponse(ctx context.Context, provider *catalogs.Provider, endpoint string, opts ...ProviderOption) ([]byte, *FetchStats, error) {
 	options := pf.options.clone().apply(opts...)
-	ctx, cancel, material, err := prepareProviderOperation(ctx, provider, options)
+	ctx, cancel, err := prepareProviderContext(ctx, provider, options)
 	if err != nil {
 		cancel()
 		return nil, nil, err
@@ -293,6 +300,10 @@ func (pf *ProviderFetcher) FetchRawResponse(ctx context.Context, provider *catal
 			Component: string(provider.ID),
 			Message:   "provider raw fetcher is not configured",
 		}
+	}
+	material, err := resolveCatalogCredentials(ctx, provider, options)
+	if err != nil {
+		return nil, nil, err
 	}
 
 	result, err := options.rawFetcher(ctx, provider, material, endpoint)
@@ -330,13 +341,13 @@ func (pf *ProviderFetcher) FetchRawResponse(ctx context.Context, provider *catal
 	return result.Data, stats, nil
 }
 
-func prepareProviderOperation(
+func prepareProviderContext(
 	ctx context.Context,
 	provider *catalogs.Provider,
 	options *providerOptions,
-) (context.Context, context.CancelFunc, ProviderCredentialMaterial, error) {
+) (context.Context, context.CancelFunc, error) {
 	if provider == nil {
-		return ctx, func() {}, ProviderCredentialMaterial{}, &errors.ValidationError{
+		return ctx, func() {}, &errors.ValidationError{
 			Field: "provider", Message: "cannot be nil",
 		}
 	}
@@ -347,14 +358,22 @@ func prepareProviderOperation(
 	if options.timeout > 0 {
 		ctx, cancel = context.WithTimeout(ctx, options.timeout)
 	}
+	return ctx, cancel, nil
+}
+
+func resolveCatalogCredentials(
+	ctx context.Context,
+	provider *catalogs.Provider,
+	options *providerOptions,
+) (ProviderCredentialMaterial, error) {
 	if options.credentialResolver == nil {
-		return ctx, cancel, ProviderCredentialMaterial{}, &errors.ConfigError{
+		return ProviderCredentialMaterial{}, &errors.ConfigError{
 			Component: string(provider.ID), Message: "provider credential resolver is not configured",
 		}
 	}
 	material, err := options.credentialResolver.ResolveCatalog(ctx, provider)
 	if err != nil {
-		return ctx, cancel, ProviderCredentialMaterial{}, err
+		return ProviderCredentialMaterial{}, err
 	}
-	return ctx, cancel, material, nil
+	return material, nil
 }
