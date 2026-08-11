@@ -15,6 +15,10 @@ type ReferenceBackend string
 const (
 	referenceBackendEnvironment ReferenceBackend = "env"
 	referenceBackendFile        ReferenceBackend = "file"
+	referenceBackendGCPStore    ReferenceBackend = "gcp-secret-manager"
+	referenceBackendAzureVault  ReferenceBackend = "azure-key-vault"
+	referenceBackendAWSStore    ReferenceBackend = "aws-secrets-manager"
+	referenceBackendVault       ReferenceBackend = "vault"
 )
 
 var (

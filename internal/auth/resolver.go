@@ -74,6 +74,9 @@ func newResolver(lookup environmentLookup, options ...ResolverOption) *Resolver 
 	}
 	resolver.sources[referenceBackendEnvironment] = environmentSource{lookup: lookup}
 	resolver.sources[referenceBackendFile] = fileSource{}
+	for _, source := range defaultDirectSecretSources() {
+		resolver.sources[source.Backend()] = source
+	}
 	resolver.handlers = map[catalogs.ProviderAuthenticationPrimitive]profileResolver{
 		catalogs.ProviderAuthenticationNone:          resolver.resolveAmbientProfile,
 		catalogs.ProviderAuthenticationAPIKey:        resolver.resolveAmbientProfile,

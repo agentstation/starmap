@@ -1188,9 +1188,31 @@ explicit source reports `not_configured`. Invalid, denied, unavailable,
 timeout, and cancellation failures are terminal.
 
 Core references are `env:NAME` and `file:/absolute/path`. The complete grammar
-is `backend:resource?version=VERSION#field`. Source adapters can use `version`
-and `field` when they support these parts. The core environment and file
-sources reject these optional parts.
+is `backend:resource?version=VERSION#field`. The environment and file sources
+reject `version` and `field`.
+
+Starmap also includes these direct read sources:
+
+| Backend | Reference resource | Authentication |
+|---|---|---|
+| `gcp-secret-manager` | `projects/PROJECT/secrets/SECRET` or the regional form | Application Default Credentials |
+| `azure-key-vault` | `https://VAULT_HOST/secrets/SECRET` | `DefaultAzureCredential` |
+| `aws-secrets-manager` | A secret name or ARN | The AWS default credential chain |
+| `vault` | `MOUNT/PATH` for a KV v2 secret | The Vault client environment |
+
+The optional `version` selects a provider version. Each source selects the
+latest version when `version` is absent. For Google Cloud, Azure, and AWS,
+`field` selects one exact top-level JSON string. Without `field`, these sources
+preserve the complete scalar payload. For Vault, `field` selects one exact
+string value. A Vault reference without `field` requires exactly one string
+value.
+
+Backend authentication values do not belong in a reference. Google Cloud uses
+Application Default Credentials. Azure uses `DefaultAzureCredential`. AWS uses
+its default configuration and credential chain. Vault uses its standard client
+environment, including `VAULT_ADDR`, `VAULT_TOKEN`, and `VAULT_NAMESPACE`.
+Each direct source creates its official client on resolution and closes its
+owned network resources after the read.
 
 Use a regular, absolute credential file that is nonempty and no larger than
 1 MiB. Starmap preserves every byte. It does not trim a trailing newline. If
