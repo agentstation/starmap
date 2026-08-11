@@ -51,14 +51,20 @@ func TestHealthCatalogAgeIsIndependentOfTransportActivity(t *testing.T) {
 
 	generatedAt := time.Date(2026, time.July, 29, 18, 0, 0, 0, time.UTC)
 	now := generatedAt.Add(2 * time.Hour)
-	subscriber := &Subscriber{
-		streamState: StreamStateStreaming,
-		active: generationIdentity{
-			id:          "generation-health",
-			generatedAt: generatedAt,
-		},
-		now: func() time.Time { return now },
+	subscriber, err := New(Config{
+		BaseURL: "https://starmap.invalid", CatalogStore: catalogstore.NewMemory(),
+	})
+	if err != nil {
+		t.Fatalf("New: %v", err)
 	}
+	generation := subscriberTestGeneration(
+		t, "generation-health", "provider-health", generatedAt,
+	)
+	if _, err := subscriber.activate(t.Context(), generation); err != nil {
+		t.Fatalf("activate: %v", err)
+	}
+	subscriber.streamState = StreamStateStreaming
+	subscriber.now = func() time.Time { return now }
 	subscriber.recordHeartbeat()
 	first := subscriber.Health()
 	if first.CatalogAgeSeconds != int64((2*time.Hour)/time.Second) {

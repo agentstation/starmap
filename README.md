@@ -959,8 +959,13 @@ Go consumers can opt into reactive remote catalogs without adding network
 behavior to the root package:
 
 ```go
-subscriber, err := remote.New(remote.Config{
-    BaseURL: "https://starmap.example.com/api/v1",
+store, err := catalogstore.NewFilesystem("/var/lib/my-service/starmap")
+if err != nil {
+    return err
+}
+subscriber, err := remote.NewContext(ctx, remote.Config{
+    BaseURL:      "https://starmap.example.com/api/v1",
+    CatalogStore: store,
 })
 if err != nil {
     return err
@@ -970,8 +975,8 @@ if err := subscriber.Start(ctx); err != nil {
 }
 defer subscriber.Close()
 
-catalog := subscriber.Catalog()
-model, err := catalog.FindModel("gpt-4o")
+state := subscriber.State()
+model, err := state.Catalog.FindModel("gpt-4o")
 
 health := subscriber.Health()
 log.Printf(
@@ -983,16 +988,28 @@ log.Printf(
 )
 ```
 
-The initial generation is verified before `Start` succeeds. SSE events are
-generation hints, not catalog payloads; reconnect always performs verified
-current-state catch-up, so dropped or replayed events cannot permanently stale
-or partially mutate the catalog. Comment heartbeats reset the stream-liveness
-deadline without triggering a fetch. The caller context owns initial fetch,
-streaming, retry, and activation; `Close` cancels and joins that lifecycle
+Each subscriber requires a `CatalogStore` that the caller owns. Construction
+loads the verified current generation before remote work. An optional
+`PinnedBootstrap` seeds only an empty store. A valid durable current generation
+always wins. Corrupt or unavailable store state causes construction to fail.
+`State` returns one atomic catalog, generation ID, payload checksum, timestamp,
+and sequence.
+
+SSE events are generation hints, not catalog payloads. Reconnect always fetches
+and verifies current state. Thus, dropped or replayed events cannot permanently
+stale or partially mutate the catalog. A newer identity for the same payload
+advances the durable and atomic identity. It emits one generation event without
+replacing the catalog pointer or publishing model-change hooks. Comment
+heartbeats reset the stream-liveness deadline without triggering a fetch.
+
+If the initial remote fetch or stream has a nonterminal failure, `Start` keeps
+the verified local state. It then starts bounded streaming recovery.
+HTTP 401 and 403 remain terminal. The caller context owns initial fetch,
+streaming, retry, and activation. `Close` cancels and joins that lifecycle
 within a bounded timeout.
 
-Polling is disabled by default. Deployments that must tolerate an unavailable
-SSE route may opt into a bounded last-resort policy:
+Polling is off by default. Streaming reconnect remains active. Deployments can
+enable bounded conditional manifest polling during a long SSE outage:
 
 ```go
 PollingFallback: &remote.PollingFallbackPolicy{

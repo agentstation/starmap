@@ -71,14 +71,14 @@ func (c *Client) Catalog() *catalogs.Catalog {
 	return catalog
 }
 
-// CatalogState atomically pairs the current immutable catalog with its logical
-// generation identity and generation timestamp for freshness, caches, and
-// responses.
+// CatalogState holds one atomic snapshot. It pairs the current immutable
+// catalog with its generation identity, checksum, timestamp, and local sequence.
 type CatalogState struct {
-	Catalog      *catalogs.Catalog
-	GenerationID string
-	GeneratedAt  time.Time
-	Sequence     uint64
+	Catalog         *catalogs.Catalog
+	GenerationID    string
+	PayloadChecksum string
+	GeneratedAt     time.Time
+	Sequence        uint64
 }
 
 // CurrentCatalogState returns one atomic catalog/generation pair.
@@ -93,10 +93,11 @@ func (c *Client) CurrentCatalogState() CatalogState {
 		id = c.embeddedBootstrap.GenerationID
 	}
 	return CatalogState{
-		Catalog:      c.catalog,
-		GenerationID: id,
-		GeneratedAt:  c.generationGeneratedAt,
-		Sequence:     c.generationSequence,
+		Catalog:         c.catalog,
+		GenerationID:    id,
+		PayloadChecksum: c.generationPayloadChecksum,
+		GeneratedAt:     c.generationGeneratedAt,
+		Sequence:        c.generationSequence,
 	}
 }
 
@@ -145,16 +146,17 @@ type Client struct {
 	options *options
 
 	// catalog is the atomically published immutable generation.
-	mu                     sync.RWMutex
-	catalog                *catalogs.Catalog
-	updates                updateCoordinator
-	generationID           string
-	generationGeneratedAt  time.Time
-	generationSequence     uint64
-	usingEmbeddedBootstrap bool
-	embeddedBootstrap      catalogs.BootstrapManifest
-	now                    func() time.Time
-	newID                  func() (string, error)
+	mu                        sync.RWMutex
+	catalog                   *catalogs.Catalog
+	updates                   updateCoordinator
+	generationID              string
+	generationPayloadChecksum string
+	generationGeneratedAt     time.Time
+	generationSequence        uint64
+	usingEmbeddedBootstrap    bool
+	embeddedBootstrap         catalogs.BootstrapManifest
+	now                       func() time.Time
+	newID                     func() (string, error)
 
 	hooks *hooks // Event hooks for catalog changes/updates
 }
@@ -209,6 +211,7 @@ func NewContext(ctx context.Context, opts ...Option) (*Client, error) {
 	}
 	initial := embeddedCatalog
 	generationID := ""
+	generationPayloadChecksum := bootstrapManifest.Payload.Checksum
 	generationGeneratedAt := bootstrapManifest.GeneratedAt
 	usingEmbeddedBootstrap := true
 	var durableCurrent *catalogstore.Generation
@@ -227,6 +230,7 @@ func NewContext(ctx context.Context, opts ...Option) (*Client, error) {
 			}
 			durableCurrent = &stored
 			generationID = stored.Manifest.GenerationID
+			generationPayloadChecksum = stored.Manifest.Payload.Checksum
 			generationGeneratedAt = stored.Manifest.GeneratedAt
 			usingEmbeddedBootstrap = false
 		case stderrors.Is(currentErr, errors.ErrNotFound):
@@ -247,6 +251,11 @@ func NewContext(ctx context.Context, opts ...Option) (*Client, error) {
 				return nil, errors.WrapResource("publish", "initial human catalog", catalogPath, err)
 			}
 			generationGeneratedAt = time.Time{}
+			payload, encodeErr := catalogstore.EncodeCatalogPayload(initial)
+			if encodeErr != nil {
+				return nil, errors.WrapResource("encode", "initial human catalog", catalogPath, encodeErr)
+			}
+			generationPayloadChecksum = catalogs.DescribeCatalogPayload(payload).Checksum
 			usingEmbeddedBootstrap = false
 		case stderrors.Is(humanErr, os.ErrNotExist):
 			// A missing workspace is seeded only by an explicit synchronization.
@@ -259,6 +268,7 @@ func NewContext(ctx context.Context, opts ...Option) (*Client, error) {
 	}
 	sm.catalog = initial
 	sm.generationID = generationID
+	sm.generationPayloadChecksum = generationPayloadChecksum
 	sm.generationGeneratedAt = generationGeneratedAt
 	sm.generationSequence = 1
 	sm.usingEmbeddedBootstrap = usingEmbeddedBootstrap

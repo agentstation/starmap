@@ -118,6 +118,11 @@ func (c *Client) commitReceivedGeneration(
 	}
 	c.mu.RLock()
 	expectedGenerationID := c.generationID
+	currentGenerationID := c.generationID
+	if currentGenerationID == "" && c.usingEmbeddedBootstrap {
+		currentGenerationID = c.embeddedBootstrap.GenerationID
+	}
+	currentPayloadChecksum := c.generationPayloadChecksum
 	c.mu.RUnlock()
 	if err := c.options.catalogStore.Commit(ctx, generation, expectedGenerationID); err != nil {
 		return Publication{}, errors.WrapResource("commit", "catalog generation", generation.Manifest.GenerationID, err)
@@ -125,8 +130,20 @@ func (c *Client) commitReceivedGeneration(
 	// CatalogStore commits are idempotent so callers can safely retry an
 	// ambiguous response. Do not turn an identical retry into a second in-memory
 	// publication, sequence, or event.
-	if expectedGenerationID == generation.Manifest.GenerationID {
+	if currentGenerationID == generation.Manifest.GenerationID {
+		if expectedGenerationID == "" {
+			c.bindCommittedGenerationIdentity(generation)
+		}
 		return Publication{
+			GenerationID:    generation.Manifest.GenerationID,
+			PayloadChecksum: generation.Manifest.Payload.Checksum,
+			SyncRunID:       generation.Manifest.SyncRunID,
+		}, nil
+	}
+	if currentPayloadChecksum == generation.Manifest.Payload.Checksum {
+		c.publishCommittedGenerationIdentity(generation)
+		return Publication{
+			Published:       true,
 			GenerationID:    generation.Manifest.GenerationID,
 			PayloadChecksum: generation.Manifest.Payload.Checksum,
 			SyncRunID:       generation.Manifest.SyncRunID,
@@ -145,6 +162,7 @@ func (c *Client) publishCommittedGeneration(published *catalogs.Catalog, generat
 	oldCatalog, sequence := c.swapCatalogGeneration(
 		published,
 		generation.Manifest.GenerationID,
+		generation.Manifest.Payload.Checksum,
 		generation.Manifest.GeneratedAt,
 	)
 	event := CatalogPublishedEvent{
@@ -154,6 +172,37 @@ func (c *Client) publishCommittedGeneration(published *catalogs.Catalog, generat
 		Catalog:      published,
 	}
 	c.hooks.dispatchUpdate(oldCatalog, published, event)
+}
+
+// bindCommittedGenerationIdentity binds the active logical identity to the
+// caller store without changing the visible state or sequence.
+func (c *Client) bindCommittedGenerationIdentity(generation catalogstore.Generation) {
+	c.mu.Lock()
+	c.usingEmbeddedBootstrap = false
+	c.generationID = generation.Manifest.GenerationID
+	c.generationPayloadChecksum = generation.Manifest.Payload.Checksum
+	c.generationGeneratedAt = generation.Manifest.GeneratedAt
+	c.mu.Unlock()
+}
+
+// publishCommittedGenerationIdentity publishes a new durable identity for the
+// same catalog bytes. It retains the catalog pointer and emits no model changes.
+func (c *Client) publishCommittedGenerationIdentity(generation catalogstore.Generation) {
+	c.mu.Lock()
+	published := c.catalog
+	c.usingEmbeddedBootstrap = false
+	c.generationID = generation.Manifest.GenerationID
+	c.generationPayloadChecksum = generation.Manifest.Payload.Checksum
+	c.generationGeneratedAt = generation.Manifest.GeneratedAt
+	c.generationSequence++
+	sequence := c.generationSequence
+	c.mu.Unlock()
+	c.hooks.dispatchUpdate(published, published, CatalogPublishedEvent{
+		GenerationID: generation.Manifest.GenerationID,
+		SyncRunID:    generation.Manifest.SyncRunID,
+		Sequence:     sequence,
+		Catalog:      published,
+	})
 }
 
 func (c *Client) newGeneration(

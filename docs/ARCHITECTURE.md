@@ -644,30 +644,44 @@ The parser bounds individual lines to 64 KiB and cumulative frames to 256 KiB;
 resumption IDs must be positive integers before any request is sent.
 
 The opt-in public `remote` package composes that protocol into a reactive
-consumer. The configured origin is its publisher identity: production origins
-require HTTPS with a verified certificate chain, cross-origin redirects are
-rejected, and plain HTTP is limited to loopback. `remote.New` starts no
-goroutine or request. `Start(ctx)` verifies and
-activates current state, subscribes to SSE, closes the fetch/subscribe race with
-another verified current fetch, and owns reconnection under the caller context.
-Every reconnect uses `Last-Event-ID` when available and performs mandatory
-current-state catch-up, so replay is never required for correctness. Duplicate
-generation IDs, duplicate payload digests, and stale retained events do not
-republish or regress the immutable catalog. A per-stream reader is explicitly
-closed and joined. The validated 20-second expected-heartbeat and 60-second
-liveness defaults make a silent or half-open stream reconnect; caller
-cancellation and bounded `Close` own termination even while initial fetch is
-in progress. Normal operation performs no polling. An optional
-`PollingFallbackPolicy` activates only after its explicit consecutive-stream
-failure threshold and serializes conditional current-manifest requests inside
-the reconnect loop at a rate bounded by the configured interval, without
-creating a parallel scheduler. Successful stream establishment plus mandatory
-catch-up disables fallback before event consumption resumes.
-`PollingFallbackStatus` exposes the mode, entries, polls, and modified responses
-without treating stream liveness as catalog freshness. HTTP 401 and 403 are
-terminal across stream open, addressed fetch, catch-up, and conditional
-fallback polling; the one-shot lifecycle stops instead of retrying credentials
-or access policy indefinitely.
+consumer. The configured origin is its publisher identity. Production origins
+require HTTPS, and TLS must verify the certificate chain. The client rejects
+cross-origin redirects. It permits plain HTTP only for loopback addresses.
+
+The subscriber requires a `catalogstore.Store` that the caller owns.
+`remote.NewContext` loads its verified current generation under the caller
+context. It starts no goroutine or remote request. An optional pinned bootstrap
+commits only into an empty store. A durable current generation wins. Corrupt or
+unavailable durable state causes construction to fail. `State` returns one
+atomic catalog, generation identity, payload checksum, timestamp, and sequence.
+
+`Start(ctx)` verifies and activates current state. It subscribes to SSE and
+closes the fetch-to-subscribe race with another verified current fetch. The
+caller context owns reconnection. Each reconnect uses `Last-Event-ID` when it is
+available. It then fetches and verifies current state. Correctness does not
+depend on replay.
+
+A digest-equal new identity advances the durable and atomic identity. It emits
+one generation event. It does not replace the immutable catalog pointer or emit
+model changes. Duplicate generation IDs and stale retained events do not
+republish or regress the catalog. A nonterminal initial remote failure keeps the
+verified local state and starts streaming recovery.
+
+The subscriber closes and joins each stream reader. The validated 20-second
+heartbeat and 60-second liveness defaults reconnect a silent or half-open
+stream. Caller cancellation and bounded `Close` own termination during the
+initial fetch. Normally, the subscriber does not poll.
+
+An optional `PollingFallbackPolicy` activates after its configured stream
+failure threshold. It serializes conditional current-manifest requests in the
+reconnect loop at the configured rate. It does not create a parallel scheduler.
+A successful stream catch-up stops fallback before event consumption resumes.
+`PollingFallbackStatus` reports the mode, entries, polls, and modified
+responses. It does not treat stream liveness as catalog freshness.
+
+HTTP 401 and 403 are terminal for stream open, addressed fetch, catch-up, and
+conditional fallback polling. The one-shot lifecycle does not retry invalid
+credentials or access policy.
 
 Production health keeps publisher delivery, subscriber transport, and catalog
 freshness distinct. `server.Health()` reports the active generation timestamp,
@@ -1254,11 +1268,16 @@ Each catalog publication also advances a monotonic process-local sequence tied
 to the durable `generation_id`. Request handlers atomically read the immutable
 catalog, generation ID, and sequence together, set `X-Starmap-Generation-ID`,
 and use that pair as the cache namespace. Advancing a sequence flushes the old
-namespace; an in-flight request from an older sequence cannot reactivate or
-populate it. Only a successful durable commit swaps the catalog and emits the
-asynchronous `catalog.published` event containing the same generation,
-sync-run, and sequence identities. Failed commits change neither state nor
-events, and an identical remote-generation retry is not republished.
+namespace. An in-flight request from an older sequence cannot reactivate or
+populate that namespace.
+
+Only a successful durable commit changes atomic generation state.
+A changed payload swaps the catalog and emits the asynchronous
+`catalog.published` event with the same generation, sync-run, and sequence
+identities. A digest-equal new identity advances the identity and sequence
+without replacing the catalog or emitting a change event. Failed commits change
+neither state nor events, and an identical remote-generation retry is not
+republished.
 
 This keeps adapters thin without rebuilding a lossy cross-provider model map:
 

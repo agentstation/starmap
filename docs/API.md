@@ -198,21 +198,22 @@ type CatalogReadiness struct {
 ```
 
 <a name="CatalogState"></a>
-## type [CatalogState](<https://github.com/agentstation/starmap/blob/main/client.go#L77-L82>)
+## type [CatalogState](<https://github.com/agentstation/starmap/blob/main/client.go#L76-L82>)
 
-CatalogState atomically pairs the current immutable catalog with its logical generation identity and generation timestamp for freshness, caches, and responses.
+CatalogState holds one atomic snapshot. It pairs the current immutable catalog with its generation identity, checksum, timestamp, and local sequence.
 
 ```go
 type CatalogState struct {
-    Catalog      *catalogs.Catalog
-    GenerationID string
-    GeneratedAt  time.Time
-    Sequence     uint64
+    Catalog         *catalogs.Catalog
+    GenerationID    string
+    PayloadChecksum string
+    GeneratedAt     time.Time
+    Sequence        uint64
 }
 ```
 
 <a name="Client"></a>
-## type [Client](<https://github.com/agentstation/starmap/blob/main/client.go#L142-L160>)
+## type [Client](<https://github.com/agentstation/starmap/blob/main/client.go#L143-L162>)
 
 Client manages an immutable canonical catalog, explicit publication, persistence, and event hooks. It owns no provider acquisition, scheduling goroutine, or cadence.
 
@@ -223,7 +224,7 @@ type Client struct {
 ```
 
 <a name="New"></a>
-### func [New](<https://github.com/agentstation/starmap/blob/main/client.go#L164>)
+### func [New](<https://github.com/agentstation/starmap/blob/main/client.go#L166>)
 
 ```go
 func New(opts ...Option) (*Client, error)
@@ -232,7 +233,7 @@ func New(opts ...Option) (*Client, error)
 New creates a Client using a background context. Call NewContext when construction may perform storage I/O that must be canceled by the caller.
 
 <a name="NewContext"></a>
-### func [NewContext](<https://github.com/agentstation/starmap/blob/main/client.go#L173>)
+### func [NewContext](<https://github.com/agentstation/starmap/blob/main/client.go#L175>)
 
 ```go
 func NewContext(ctx context.Context, opts ...Option) (*Client, error)
@@ -277,7 +278,7 @@ func (c *Client) CurrentGeneration(ctx context.Context) (catalogstore.Generation
 CurrentGeneration returns the exact immutable generation currently published by this client. The embedded bootstrap is returned before durable mutation.
 
 <a name="Client.CurrentGenerationID"></a>
-### func \(\*Client\) [CurrentGenerationID](<https://github.com/agentstation/starmap/blob/main/client.go#L105>)
+### func \(\*Client\) [CurrentGenerationID](<https://github.com/agentstation/starmap/blob/main/client.go#L106>)
 
 ```go
 func (c *Client) CurrentGenerationID() string
@@ -385,7 +386,7 @@ func (c *Client) Update(ctx context.Context, update UpdateFunc) (Publication, er
 Update serializes candidate construction, generation\-store CAS, and atomic in\-memory publication. Acquisition and scheduling remain explicit caller composition above Client.
 
 <a name="Client.WorkspacePath"></a>
-### func \(\*Client\) [WorkspacePath](<https://github.com/agentstation/starmap/blob/main/client.go#L122>)
+### func \(\*Client\) [WorkspacePath](<https://github.com/agentstation/starmap/blob/main/client.go#L123>)
 
 ```go
 func (c *Client) WorkspacePath() string

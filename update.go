@@ -168,6 +168,7 @@ func (c *Client) Activate(ctx context.Context, generation catalogstore.Generatio
 func (c *Client) swapCatalogGeneration(
 	published *catalogs.Catalog,
 	generationID string,
+	payloadChecksum string,
 	generatedAt time.Time,
 ) (*catalogs.Catalog, uint64) {
 	c.mu.Lock()
@@ -179,6 +180,7 @@ func (c *Client) swapCatalogGeneration(
 	if generationID != "" {
 		c.generationID = generationID
 	}
+	c.generationPayloadChecksum = payloadChecksum
 	c.generationGeneratedAt = generatedAt
 	c.mu.Unlock()
 	return oldCatalog, sequence

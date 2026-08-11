@@ -37,16 +37,25 @@ decode error leaves the current catalog and durable store untouched.
 Remote updates preserve the received generation and sync-run identities rather
 than minting a second local identity. Commit remains compare-and-swap and the
 immutable catalog pointer changes only after the exact received generation is
-durable. An optional API key is applied to both requests by a request-cloning
-transport so caller requests are not mutated.
+durable. A newer identity for the same payload commits and advances the atomic
+identity. It emits one generation event without replacing the catalog pointer
+or publishing model-change hooks. A request-cloning transport applies an
+optional API key to both requests. It does not change the caller requests.
 
-The old unversioned `GET /catalog` ad-hoc envelope is removed. Protocol tooling
+Starmap no longer supports the old unversioned `GET /catalog` ad-hoc envelope.
+Protocol tooling
 may explicitly construct `catalogremote.Client`, fetch a current or addressed
 generation, and pass it to `starmap.Client.Activate`. Normal reactive consumers
 use the opt-in `github.com/agentstation/starmap/remote` package:
 
 ```go
-subscriber, err := remote.New(remote.Config{BaseURL: baseURL})
+store, err := catalogstore.NewFilesystem(statePath)
+if err != nil {
+	return err
+}
+subscriber, err := remote.NewContext(ctx, remote.Config{
+	BaseURL: baseURL, CatalogStore: store,
+})
 if err != nil {
 	return err
 }
@@ -55,17 +64,29 @@ if err := subscriber.Start(ctx); err != nil {
 }
 defer subscriber.Close()
 
-catalog := subscriber.Catalog()
+state := subscriber.State()
 ```
 
-`New` validates and starts no goroutine or network request. `Start` verifies and
-activates the initial current generation, establishes SSE, then immediately
-refetches current state to close the fetch-to-subscribe gap. Each reconnect
-sends the last accepted event ID but treats replay only as an optimization:
-successful connection establishment is always followed by another verified
-current-state catch-up. Duplicate generation IDs and identical payload digests
-do not republish the immutable catalog. An older retained event cannot regress
-the active generation.
+Each subscriber requires a `CatalogStore` that the caller owns. `NewContext`
+loads and verifies its current generation under the caller context. An optional
+`PinnedBootstrap` commits only when the store is empty. A durable current
+generation wins over the pin. Corrupt or unavailable durable state causes
+construction to fail.
+
+`New` is the background-context convenience wrapper. Both constructors start
+no goroutine or network request. `State` returns one atomic catalog, generation
+ID, payload checksum, generation timestamp, and process-local sequence.
+
+`Start` normally verifies and activates the remote current generation. It then
+establishes SSE and refetches current state to close the fetch-to-subscribe gap.
+A nonterminal initial fetch, stream-open, or catch-up failure keeps the verified
+local state and starts streaming recovery. HTTP 401 and 403 remain terminal.
+
+Each reconnect sends the last accepted event ID. Replay only improves
+efficiency. After each connection, the subscriber fetches and verifies current
+state again. Duplicate generation IDs do not republish. A digest-equal new
+identity publishes its generation without copying the catalog or emitting model
+changes. An older retained event cannot regress the active generation.
 
 The subscriber expects the server's 20-second default heartbeat and uses a
 60-second default liveness deadline. Both are configurable; configuration must

@@ -91,6 +91,7 @@ func TestSubscriberReadersObserveCompleteGenerationsDuringActivation(t *testing.
 	subscriber, err := New(Config{
 		BaseURL:         server.URL + "/api/v1",
 		HTTPClient:      server.Client(),
+		CatalogStore:    catalogstore.NewMemory(),
 		ShutdownTimeout: time.Second,
 	})
 	if err != nil {
@@ -121,18 +122,27 @@ func TestSubscriberReadersObserveCompleteGenerationsDuringActivation(t *testing.
 					return
 				default:
 				}
-				switch classifyConcurrentCatalog(
-					subscriber.Catalog(),
-					oldProviders,
-					newProviders,
-				) {
-				case "old":
+				state := subscriber.State()
+				kind := classifyConcurrentCatalog(
+					state.Catalog, oldProviders, newProviders,
+				)
+				switch {
+				case state.GenerationID == first.Manifest.GenerationID &&
+					state.PayloadChecksum == first.Manifest.Payload.Checksum &&
+					kind == "old":
 					oldReads.Add(1)
-				case "new":
+				case state.GenerationID == second.Manifest.GenerationID &&
+					state.PayloadChecksum == second.Manifest.Payload.Checksum &&
+					kind == "new":
 					newReads.Add(1)
 				default:
 					select {
-					case readErr <- "reader observed a partial or mixed generation":
+					case readErr <- fmt.Sprintf(
+						"reader observed a partial or mixed generation: id=%q checksum=%q kind=%q",
+						state.GenerationID,
+						state.PayloadChecksum,
+						kind,
+					):
 					default:
 					}
 					return

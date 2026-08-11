@@ -29,7 +29,9 @@ func TestNewStartsNoRemoteRequest(t *testing.T) {
 		},
 	))
 	defer server.Close()
-	subscriber, err := New(Config{BaseURL: server.URL})
+	subscriber, err := New(Config{
+		BaseURL: server.URL, CatalogStore: catalogstore.NewMemory(),
+	})
 	if err != nil {
 		t.Fatalf("New: %v", err)
 	}
@@ -46,7 +48,9 @@ func TestConfigDefaultsAndLivenessMargin(t *testing.T) {
 
 	server := httptest.NewServer(http.NotFoundHandler())
 	defer server.Close()
-	subscriber, err := New(Config{BaseURL: server.URL})
+	subscriber, err := New(Config{
+		BaseURL: server.URL, CatalogStore: catalogstore.NewMemory(),
+	})
 	if err != nil {
 		t.Fatalf("New defaults: %v", err)
 	}
@@ -62,6 +66,7 @@ func TestConfigDefaultsAndLivenessMargin(t *testing.T) {
 	}
 	withFallback, err := New(Config{
 		BaseURL:         server.URL,
+		CatalogStore:    catalogstore.NewMemory(),
 		PollingFallback: policy,
 	})
 	if err != nil {
@@ -83,32 +88,37 @@ func TestConfigDefaultsAndLivenessMargin(t *testing.T) {
 		{
 			name: "negative heartbeat",
 			config: Config{
-				BaseURL: server.URL, ExpectedHeartbeatInterval: -time.Second,
+				BaseURL: server.URL, CatalogStore: catalogstore.NewMemory(),
+				ExpectedHeartbeatInterval: -time.Second,
 			},
 		},
 		{
 			name: "insufficient liveness margin",
 			config: Config{
-				BaseURL: server.URL, ExpectedHeartbeatInterval: time.Second,
-				LivenessTimeout: time.Second,
+				BaseURL: server.URL, CatalogStore: catalogstore.NewMemory(),
+				ExpectedHeartbeatInterval: time.Second,
+				LivenessTimeout:           time.Second,
 			},
 		},
 		{
 			name: "negative liveness",
 			config: Config{
-				BaseURL: server.URL, LivenessTimeout: -time.Second,
+				BaseURL: server.URL, CatalogStore: catalogstore.NewMemory(),
+				LivenessTimeout: -time.Second,
 			},
 		},
 		{
 			name: "negative shutdown",
 			config: Config{
-				BaseURL: server.URL, ShutdownTimeout: -time.Second,
+				BaseURL: server.URL, CatalogStore: catalogstore.NewMemory(),
+				ShutdownTimeout: -time.Second,
 			},
 		},
 		{
 			name: "zero fallback threshold",
 			config: Config{
-				BaseURL: server.URL,
+				BaseURL:      server.URL,
+				CatalogStore: catalogstore.NewMemory(),
 				PollingFallback: &PollingFallbackPolicy{
 					Interval: time.Second,
 				},
@@ -117,7 +127,8 @@ func TestConfigDefaultsAndLivenessMargin(t *testing.T) {
 		{
 			name: "zero fallback interval",
 			config: Config{
-				BaseURL: server.URL,
+				BaseURL:      server.URL,
+				CatalogStore: catalogstore.NewMemory(),
 				PollingFallback: &PollingFallbackPolicy{
 					AfterFailures: 1,
 				},
@@ -231,6 +242,7 @@ func TestSubscriberMissingHeartbeatReconnectsAndCatchesUp(t *testing.T) {
 	subscriber, err := New(Config{
 		BaseURL:                   server.URL + "/api/v1",
 		HTTPClient:                server.Client(),
+		CatalogStore:              catalogstore.NewMemory(),
 		ReconnectMinDelay:         time.Millisecond,
 		ReconnectMaxDelay:         time.Millisecond,
 		ExpectedHeartbeatInterval: 10 * time.Millisecond,
@@ -323,6 +335,7 @@ func TestSubscriberHeartbeatsPreserveStreamLiveness(t *testing.T) {
 	subscriber, err := New(Config{
 		BaseURL:                   server.URL + "/api/v1",
 		HTTPClient:                server.Client(),
+		CatalogStore:              catalogstore.NewMemory(),
 		ExpectedHeartbeatInterval: 10 * time.Millisecond,
 		LivenessTimeout:           2 * time.Second,
 		ShutdownTimeout:           time.Second,
@@ -480,6 +493,7 @@ func TestSubscriberPollingFallbackIsExplicitBoundedAndConditional(t *testing.T) 
 	subscriber, err := New(Config{
 		BaseURL:                   server.URL + "/api/v1",
 		HTTPClient:                server.Client(),
+		CatalogStore:              catalogstore.NewMemory(),
 		ReconnectMinDelay:         time.Millisecond,
 		ReconnectMaxDelay:         time.Millisecond,
 		ExpectedHeartbeatInterval: 10 * time.Millisecond,
@@ -586,6 +600,7 @@ func TestCloseCancelsAndJoinsInitialFetch(t *testing.T) {
 	subscriber, err := New(Config{
 		BaseURL:         server.URL,
 		HTTPClient:      server.Client(),
+		CatalogStore:    catalogstore.NewMemory(),
 		ShutdownTimeout: time.Second,
 	})
 	if err != nil {
@@ -720,6 +735,7 @@ func TestSubscriberReconnectCatchesUpWithoutEventAndDeduplicatesReplay(t *testin
 	subscriber, err := New(Config{
 		BaseURL:           server.URL + "/api/v1",
 		HTTPClient:        server.Client(),
+		CatalogStore:      catalogstore.NewMemory(),
 		ReconnectMinDelay: time.Millisecond,
 		ReconnectMaxDelay: time.Millisecond,
 	})
@@ -812,7 +828,7 @@ func TestSubscriberReconnectCatchesUpWithoutEventAndDeduplicatesReplay(t *testin
 	assertRecoveredStreamHealth(t, subscriber, second, 3)
 }
 
-func TestSubscriberDeduplicatesNewIdentityWithSamePayload(t *testing.T) {
+func TestSubscriberPublishesNewIdentityWithoutCopyingSamePayload(t *testing.T) {
 	t.Parallel()
 
 	generation := subscriberTestGeneration(
@@ -823,7 +839,10 @@ func TestSubscriberDeduplicatesNewIdentityWithSamePayload(t *testing.T) {
 	)
 	server := httptest.NewServer(http.NotFoundHandler())
 	defer server.Close()
-	subscriber, err := New(Config{BaseURL: server.URL})
+	store := catalogstore.NewMemory()
+	subscriber, err := New(Config{
+		BaseURL: server.URL, CatalogStore: store,
+	})
 	if err != nil {
 		t.Fatalf("New: %v", err)
 	}
@@ -840,7 +859,7 @@ func TestSubscriberDeduplicatesNewIdentityWithSamePayload(t *testing.T) {
 		t.Fatalf("duplicate fixture: %v", err)
 	}
 	if published, err := subscriber.activate(context.Background(), duplicate); err != nil ||
-		published {
+		!published {
 		t.Fatalf("activate duplicate payload = %t/%v", published, err)
 	}
 	if subscriber.Catalog() != initialCatalog {
@@ -848,6 +867,24 @@ func TestSubscriberDeduplicatesNewIdentityWithSamePayload(t *testing.T) {
 	}
 	if !subscriber.isActiveGeneration(duplicate.Manifest.GenerationID) {
 		t.Fatal("deduplication state did not advance to the newer identity")
+	}
+	if state := subscriber.client.CurrentCatalogState(); state.GenerationID != duplicate.Manifest.GenerationID {
+		t.Fatalf(
+			"client generation = %q, want digest-equal identity %q",
+			state.GenerationID,
+			duplicate.Manifest.GenerationID,
+		)
+	}
+	durable, err := store.Current(context.Background())
+	if err != nil {
+		t.Fatalf("Current: %v", err)
+	}
+	if durable.Manifest.GenerationID != duplicate.Manifest.GenerationID {
+		t.Fatalf(
+			"durable generation = %q, want %q",
+			durable.Manifest.GenerationID,
+			duplicate.Manifest.GenerationID,
+		)
 	}
 }
 
@@ -868,7 +905,9 @@ func TestSubscriberRejectsStaleAndInvalidGenerationsBeforeActivation(t *testing.
 	)
 	server := httptest.NewServer(http.NotFoundHandler())
 	defer server.Close()
-	subscriber, err := New(Config{BaseURL: server.URL})
+	subscriber, err := New(Config{
+		BaseURL: server.URL, CatalogStore: catalogstore.NewMemory(),
+	})
 	if err != nil {
 		t.Fatalf("New: %v", err)
 	}
@@ -879,7 +918,7 @@ func TestSubscriberRejectsStaleAndInvalidGenerationsBeforeActivation(t *testing.
 		t.Fatalf("activate current = %t/%v", published, err)
 	}
 	activeCatalog := subscriber.Catalog()
-	activeIdentity := subscriber.active
+	activeState := subscriber.State()
 
 	if published, err := subscriber.activate(
 		context.Background(),
@@ -887,8 +926,7 @@ func TestSubscriberRejectsStaleAndInvalidGenerationsBeforeActivation(t *testing.
 	); err != nil || published {
 		t.Fatalf("activate stale = %t/%v", published, err)
 	}
-	if subscriber.Catalog() != activeCatalog ||
-		subscriber.active != activeIdentity {
+	if subscriber.Catalog() != activeCatalog || subscriber.State() != activeState {
 		t.Fatal("stale generation changed active catalog or identity")
 	}
 	if _, err := subscriber.Catalog().Provider("provider-stale"); err == nil {
@@ -908,8 +946,7 @@ func TestSubscriberRejectsStaleAndInvalidGenerationsBeforeActivation(t *testing.
 	); err == nil || published {
 		t.Fatalf("activate corrupt = %t/%v", published, err)
 	}
-	if subscriber.Catalog() != activeCatalog ||
-		subscriber.active != activeIdentity {
+	if subscriber.Catalog() != activeCatalog || subscriber.State() != activeState {
 		t.Fatal("invalid generation changed active catalog or identity")
 	}
 }

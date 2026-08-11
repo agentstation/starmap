@@ -49,17 +49,27 @@ func ActivatePinned(ctx context.Context) error {
 		return err
 	}
 
-	client, err := starmap.New(starmap.WithCatalogStore(catalogstore.NewMemory()))
+	store := catalogstore.NewMemory()
+	client, err := starmap.New(starmap.WithCatalogStore(store))
 	if err != nil {
 		return err
 	}
+	initial := client.CurrentCatalogState()
 	publication, err := client.Activate(ctx, verified)
 	if err != nil {
 		return err
 	}
-	if !publication.Published ||
+	state := client.CurrentCatalogState()
+	durable, err := store.Current(ctx)
+	if err != nil {
+		return err
+	}
+	if publication.Published ||
 		publication.GenerationID != generation.Manifest.GenerationID ||
-		client.CurrentGenerationID() != generation.Manifest.GenerationID {
+		state.GenerationID != generation.Manifest.GenerationID ||
+		state.PayloadChecksum != generation.Manifest.Payload.Checksum ||
+		state.Catalog != initial.Catalog ||
+		durable.Manifest.GenerationID != generation.Manifest.GenerationID {
 		return fmt.Errorf("unexpected pinned activation: %#v", publication)
 	}
 	if _, err := client.Catalog().FindModel("gpt-4o"); err != nil {

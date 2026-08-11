@@ -252,6 +252,7 @@ func runStorageDrill(
 
 	subscriber, err := remote.New(remote.Config{
 		BaseURL:                   publisher.URL + "/api/v1",
+		CatalogStore:              catalogstore.NewMemory(),
 		ExpectedHeartbeatInterval: 25 * time.Millisecond,
 		LivenessTimeout:           time.Second,
 	})
