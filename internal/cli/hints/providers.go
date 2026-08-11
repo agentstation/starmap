@@ -36,8 +36,8 @@ func authHintProvider(ctx Context) []*Hint {
 	if len(ctx.UserState.AuthProviders) == 0 {
 		if ctx.Command == authCommand && ctx.Subcommand == "status" {
 			hints = append(hints, NewCommand(
-				"Set up API keys to access AI models",
-				"export OPENAI_API_KEY=your-key-here",
+				"Use the credential environment names declared by each catalog provider",
+				"starmap providers",
 			).WithTags("setup", "auth"))
 		}
 	}
@@ -47,7 +47,7 @@ func authHintProvider(ctx Context) []*Hint {
 		if len(ctx.UserState.AuthProviders) > 0 {
 			hints = append(hints, NewCommand(
 				"Test that your credentials work",
-				"starmap providers auth test",
+				"starmap providers --test",
 			).WithTags("testing", "next-step"))
 		}
 	}
@@ -60,7 +60,7 @@ func authHintProvider(ctx Context) []*Hint {
 
 		hints = append(hints, NewCommand(
 			"View current authentication status",
-			"starmap providers auth status",
+			"starmap providers",
 		).WithTags("troubleshooting", "auth"))
 	}
 
@@ -91,7 +91,7 @@ func onboardingHintProvider(ctx Context) []*Hint {
 	if ctx.Command == "help" || ctx.Command == "version" || len(ctx.UserState.AuthProviders) == 0 {
 		hints = append(hints, NewCommand(
 			"Start by checking authentication status",
-			"starmap providers auth status",
+			"starmap providers",
 		).WithTags("onboarding", "getting-started"))
 	}
 
@@ -114,7 +114,7 @@ func commandHintProvider(ctx Context) []*Hint {
 		if ctx.Subcommand == "providers" && ctx.Succeeded {
 			hints = append(hints, NewCommand(
 				"View authentication status for providers",
-				"starmap providers auth status",
+				"starmap providers",
 			).WithTags("exploration", "auth"))
 		}
 
@@ -122,7 +122,7 @@ func commandHintProvider(ctx Context) []*Hint {
 		if ctx.Succeeded {
 			hints = append(hints, NewCommand(
 				"Test updated provider credentials",
-				"starmap providers auth test",
+				"starmap providers --test",
 			).WithTags("testing", "update"))
 		}
 
@@ -161,7 +161,7 @@ func errorRecoveryHintProvider(ctx Context) []*Hint {
 	case "auth_failed":
 		hints = append(hints, NewCommand(
 			"Check your API key configuration",
-			"starmap providers auth status",
+			"starmap providers",
 		).WithTags("recovery", "auth"))
 
 	case "network_error":

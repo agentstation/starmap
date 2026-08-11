@@ -1246,6 +1246,23 @@ discovery. `fallback_ambient: true` permits ambient discovery only when the
 explicit source reports `not_configured`. Invalid, denied, unavailable,
 timeout, and cancellation failures are terminal.
 
+Use `env:NAME` when one operator-selected environment variable must override
+the catalog's conventional names. This example selects
+`TEAM_OPENAI_API_KEY` even when `OPENAI_API_KEY` is also present:
+
+```yaml
+credential_sources:
+  openai:
+    api-key:
+      reference: env:TEAM_OPENAI_API_KEY
+      fallback_ambient: false
+```
+
+The selected value must satisfy the catalog field contract. Starmap does not
+continue to another environment name after it selects an invalid value. Set
+`fallback_ambient: true` only if an absent explicit environment value can use
+the conventional discovery order.
+
 Core references are `env:NAME` and `file:/absolute/path`. The complete grammar
 is `backend:resource?version=VERSION#field`. The environment and file sources
 reject `version` and `field`.
@@ -1287,6 +1304,28 @@ replacement, and agent rerender. Detection does not depend on modification
 time alone. The resolver caches renewable cloud material until its refresh
 time. Concurrent refreshes share one source operation. The resolver exposes
 opaque material versions that contain no secret digest or source path.
+
+External secret CLIs can inject the catalog-declared conventional environment
+names into one Starmap process. Authenticate and select the external project or
+environment first. Then use one of these forms:
+
+```bash
+# Doppler
+doppler run -- starmap update
+
+# 1Password: .env.starmap contains NAME=op://vault/item/field references
+op run --env-file="./.env.starmap" -- starmap update
+
+# Infisical
+infisical run -- starmap update
+```
+
+See the official command references for
+[Doppler](https://docs.doppler.com/docs/cli),
+[1Password](https://www.1password.dev/cli/reference/commands/run), and
+[Infisical](https://infisical.com/docs/cli/commands/run). Environment values
+belong to the child process. Start a new update process to receive a changed
+value.
 
 Provider connection and credential metadata live with each human-readable
 provider record. Credential values remain deployment state in environment
