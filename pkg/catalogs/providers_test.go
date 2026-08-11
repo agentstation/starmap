@@ -14,17 +14,15 @@ func TestProvidersFormatYAML(t *testing.T) {
 			Name:         "Anthropic",
 			Headquarters: stringPtr("San Francisco, CA, USA"),
 			IconURL:      stringPtr("https://www.anthropic.com/favicon.ico"),
-			APIKey: &ProviderAPIKey{
-				Name:    "ANTHROPIC_API_KEY",
-				Pattern: ".*",
-				Header:  "x-api-key",
-				Scheme:  "",
-			},
+			Credentials:  testAPIKeyCredentials("ANTHROPIC_API_KEY", "x-api-key", ProviderCredentialSchemeDirect),
 			Catalog: &ProviderCatalog{
 				Docs: stringPtr("https://docs.anthropic.com/en/docs/about-claude/models/overview"),
-				Auth: ProviderCatalogAuth{Method: ProviderCatalogAuthAPIKey, Required: true},
 				Endpoint: ProviderEndpoint{
-					URL: "https://api.anthropic.com/v1/models",
+					Type: EndpointTypeAnthropic,
+					URL:  "https://api.anthropic.com/v1/models",
+					ProtocolOptions: ProviderCatalogProtocolOptions{Anthropic: &ProviderAnthropicCatalogProtocolOptions{
+						Version: "2023-06-01",
+					}},
 				},
 			},
 			StatusPageURL: stringPtr("https://status.anthropic.com"),
@@ -65,19 +63,16 @@ func TestProvidersFormatYAML(t *testing.T) {
 			Name:         "Cerebras",
 			Headquarters: stringPtr("Sunnyvale, CA, USA"),
 			IconURL:      stringPtr("https://cerebras.ai/favicon.ico"),
-			APIKey: &ProviderAPIKey{
-				Name:    "CEREBRAS_API_KEY",
-				Pattern: ".*",
-				Header:  "Authorization",
-				Scheme:  "Bearer",
-			},
+			Credentials:  testAPIKeyCredentials("CEREBRAS_API_KEY", "Authorization", ProviderCredentialSchemeBearer),
 			Catalog: &ProviderCatalog{
 				Docs: stringPtr("https://inference-docs.cerebras.ai/models/overview"),
-				Auth: ProviderCatalogAuth{Method: ProviderCatalogAuthAPIKey, Required: true},
 				Endpoint: ProviderEndpoint{
-					URL: "https://api.cerebras.ai/v1/models",
+					Type: EndpointTypeOpenAI,
+					URL:  "https://api.cerebras.ai/v1/models",
+					ProtocolOptions: ProviderCatalogProtocolOptions{OpenAI: &ProviderOpenAICatalogProtocolOptions{
+						TokenPriceUnit: ProviderTokenPriceUnitPerMillion,
+					}},
 				},
-				Authors: []AuthorID{"alibaba", "meta", "openai"},
 			},
 			RetentionPolicy: &ProviderRetentionPolicy{
 				Type:     ProviderRetentionTypeNone,
@@ -105,10 +100,10 @@ func TestProvidersFormatYAML(t *testing.T) {
 		"name: Anthropic",
 		"headquarters: San Francisco, CA, USA",
 		"icon_url: https://www.anthropic.com/favicon.ico",
-		"api_key:",
-		"name: ANTHROPIC_API_KEY",
-		"pattern: .*",
-		"header: x-api-key",
+		"credentials:",
+		"- ANTHROPIC_API_KEY",
+		"name: x-api-key",
+		"primitive: api-key",
 		"duration: 720h0m0s #30 days", // Inline comment for duration
 		"extensions:",
 		"models.dev:",
@@ -117,10 +112,6 @@ func TestProvidersFormatYAML(t *testing.T) {
 		"# Cerebras",
 		"- id: cerebras",
 		"name: Cerebras",
-		"authors:",
-		"- alibaba",
-		"- meta",
-		"- openai",
 		"duration: 0s", // Zero duration
 	}
 
@@ -171,4 +162,31 @@ func boolPtr(b bool) *bool {
 
 func durationPtr(d time.Duration) *time.Duration {
 	return &d
+}
+
+func testAPIKeyCredentials(
+	environment string,
+	header string,
+	scheme ProviderCredentialScheme,
+) *ProviderCredentials {
+	return &ProviderCredentials{
+		Fields: []ProviderCredentialField{{
+			ID: "api-key", Kind: ProviderCredentialFieldSecret, Required: true,
+			Environment: []string{environment},
+		}},
+		Profiles: []ProviderCredentialProfile{{
+			ID: "api-key", Primitive: ProviderAuthenticationAPIKey,
+			Fields: []ProviderCredentialFieldID{"api-key"},
+			Placements: []ProviderCredentialPlacement{{
+				Field: "api-key", Kind: ProviderCredentialPlacementHeader,
+				Name: header, Scheme: scheme,
+			}},
+		}},
+		CatalogAcquisition: ProviderCredentialPlane{
+			Required: true, Alternatives: []ProviderCredentialProfileID{"api-key"},
+		},
+		Inference: ProviderCredentialPlane{
+			Required: true, Alternatives: []ProviderCredentialProfileID{"api-key"},
+		},
+	}
 }

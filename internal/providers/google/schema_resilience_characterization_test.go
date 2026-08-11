@@ -9,7 +9,6 @@ import (
 	"testing"
 
 	"github.com/agentstation/starmap/internal/sourcepayload"
-	"github.com/agentstation/starmap/pkg/catalogs"
 )
 
 // TestF009MalformedGooglePageRetainsValidRecords proves accepted records from
@@ -35,17 +34,11 @@ func TestF009MalformedGooglePageRetainsValidRecords(t *testing.T) {
 	}))
 	defer server.Close()
 
-	client := NewClient(&catalogs.Provider{
-		ID:   catalogs.ProviderIDGoogleAIStudio,
-		Name: "Google AI Studio",
-		Catalog: &catalogs.ProviderCatalog{
-			Endpoint: catalogs.ProviderEndpoint{
-				Type: catalogs.EndpointTypeGoogle,
-				URL:  server.URL,
-			},
-		},
-	})
-	models, err := client.listModelsAIStudioREST(context.Background())
+	provider := testAIStudioProvider(server.URL)
+	client := NewClient(provider)
+	models, err := client.listModelsAIStudioREST(
+		context.Background(), testAIStudioMaterial(provider),
+	)
 	var quarantineErr *sourcepayload.QuarantineError
 	if !errors.As(err, &quarantineErr) {
 		t.Fatalf("error = %T: %v, want *sourcepayload.QuarantineError", err, err)

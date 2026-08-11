@@ -12,7 +12,9 @@ import (
 	"time"
 
 	"github.com/agentstation/starmap/internal/sourcepayload"
+	"github.com/agentstation/starmap/internal/testcatalog"
 	"github.com/agentstation/starmap/pkg/catalogs"
+	"github.com/agentstation/starmap/pkg/sources"
 )
 
 func TestSchemaDriftMutationMatrix(t *testing.T) {
@@ -37,11 +39,11 @@ func TestSchemaDriftMutationMatrix(t *testing.T) {
 				_, _ = w.Write([]byte(test.payload))
 			}))
 			defer server.Close()
-			client := NewClient(&catalogs.Provider{
-				ID: catalogs.ProviderIDAnthropic, Name: "Anthropic",
-				Catalog: &catalogs.ProviderCatalog{Endpoint: catalogs.ProviderEndpoint{Type: catalogs.EndpointTypeAnthropic, URL: server.URL}},
-			})
-			models, err := client.ListModels(context.Background())
+			provider := testAnthropicProvider(server.URL)
+			client := NewClient(provider)
+			models, err := client.ListModels(
+				context.Background(), testAnthropicMaterial(provider),
+			)
 			if test.wantErr && err == nil {
 				t.Fatal("ListModels returned nil error")
 			}
@@ -59,6 +61,23 @@ func TestSchemaDriftMutationMatrix(t *testing.T) {
 			}
 		})
 	}
+}
+
+func testAnthropicProvider(endpoint string) *catalogs.Provider {
+	return &catalogs.Provider{
+		ID: catalogs.ProviderIDAnthropic, Name: "Anthropic",
+		Credentials: testcatalog.APIKeyCredentials(
+			"ANTHROPIC_API_KEY", "x-api-key", catalogs.ProviderCredentialSchemeDirect,
+		),
+		Catalog: &catalogs.ProviderCatalog{Endpoint: catalogs.ProviderEndpoint{
+			Type: catalogs.EndpointTypeAnthropic, URL: endpoint,
+			ProtocolOptions: testcatalog.AnthropicProtocolOptions(),
+		}},
+	}
+}
+
+func testAnthropicMaterial(provider *catalogs.Provider) sources.ProviderCredentialMaterial {
+	return testcatalog.APIKeyMaterial(provider.Credentials, "test-api-key")
 }
 
 func TestAnthropicParsing(t *testing.T) {
@@ -110,24 +129,11 @@ func TestAnthropicModelConversion(t *testing.T) {
 			t.Errorf("Model %s: Name mismatch, expected %s, got %s", apiModel.ID, apiModel.DisplayName, starmapModel.Name)
 		}
 
-		// Verify author is set to Anthropic
-		if len(starmapModel.Authors) == 0 {
-			t.Errorf("Model %s: missing authors", apiModel.ID)
-		} else if starmapModel.Authors[0].ID != catalogs.AuthorIDAnthropic {
-			t.Errorf("Model %s: expected Anthropic author, got %s", apiModel.ID, starmapModel.Authors[0].ID)
+		if len(starmapModel.Authors) != 0 {
+			t.Errorf("Model %s: authors = %#v, want no inferred author", apiModel.ID, starmapModel.Authors)
 		}
-
-		// Verify features are inferred
-		if starmapModel.Features == nil {
-			t.Errorf("Model %s: missing features", apiModel.ID)
-		} else {
-			// All Claude models should support basic text input/output
-			if len(starmapModel.Features.Modalities.Input) == 0 {
-				t.Errorf("Model %s: missing input modalities", apiModel.ID)
-			}
-			if len(starmapModel.Features.Modalities.Output) == 0 {
-				t.Errorf("Model %s: missing output modalities", apiModel.ID)
-			}
+		if starmapModel.Features != nil {
+			t.Errorf("Model %s: features = %#v, want no inferred features", apiModel.ID, starmapModel.Features)
 		}
 
 		t.Logf("✅ Model %s converted successfully: %s", starmapModel.ID, starmapModel.Name)

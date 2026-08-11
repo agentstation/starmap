@@ -13,10 +13,12 @@ import (
 	"github.com/rs/zerolog"
 
 	"github.com/agentstation/starmap"
+	"github.com/agentstation/starmap/internal/auth"
 	"github.com/agentstation/starmap/internal/catalog/workspace"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/catalogstore"
 	"github.com/agentstation/starmap/pkg/errors"
+	"github.com/agentstation/starmap/pkg/sources"
 )
 
 // App represents the starmap application with all its dependencies.
@@ -39,6 +41,9 @@ type App struct {
 	// Starmap instance (lazy-initialized, singleton)
 	mu      sync.RWMutex
 	starmap *starmap.Client
+
+	credentialMu       sync.Mutex
+	credentialResolver sources.ProviderCredentialResolver
 }
 
 // New creates a new App instance with the given version information.
@@ -96,6 +101,57 @@ func (a *App) BuiltBy() string {
 // Config returns the application configuration.
 func (a *App) Config() *Config {
 	return a.config
+}
+
+// CredentialResolver returns the process-owned catalog-acquisition resolver.
+// One resolver owns source caching and single-flight refresh for the process.
+func (a *App) CredentialResolver() (sources.ProviderCredentialResolver, error) {
+	a.credentialMu.Lock()
+	defer a.credentialMu.Unlock()
+	if a.credentialResolver != nil {
+		return a.credentialResolver, nil
+	}
+	catalog, err := a.Catalog()
+	if err != nil {
+		return nil, err
+	}
+	policies := make(map[auth.CredentialFieldKey]auth.ReferencePolicy)
+	for providerValue, fields := range a.config.CredentialSources {
+		providerID := catalogs.ProviderID(providerValue)
+		provider, providerErr := catalog.Provider(providerID)
+		if providerErr != nil || provider.ID != providerID {
+			return nil, &errors.ValidationError{
+				Field: "credential_sources.provider", Value: providerValue,
+				Message: "must identify one canonical catalog provider",
+			}
+		}
+		declaredFields := make(map[catalogs.ProviderCredentialFieldID]struct{})
+		if provider.Credentials != nil {
+			for _, field := range provider.Credentials.Fields {
+				declaredFields[field.ID] = struct{}{}
+			}
+		}
+		for fieldValue, config := range fields {
+			fieldID := catalogs.ProviderCredentialFieldID(fieldValue)
+			if _, exists := declaredFields[fieldID]; !exists {
+				return nil, &errors.ValidationError{
+					Field: "credential_sources.field", Value: fieldValue,
+					Message: "must identify one catalog-declared provider field",
+				}
+			}
+			reference, parseErr := auth.ParseReference(config.Reference)
+			if parseErr != nil {
+				return nil, errors.WrapResource(
+					"parse", "credential source", providerValue+"/"+fieldValue, parseErr,
+				)
+			}
+			policies[auth.CredentialFieldKey{ProviderID: providerID, FieldID: fieldID}] = auth.ReferencePolicy{
+				Reference: reference, FallbackAmbient: config.FallbackAmbient,
+			}
+		}
+	}
+	a.credentialResolver = auth.NewResolver(auth.WithReferencePolicies(policies))
+	return a.credentialResolver, nil
 }
 
 // Logger returns the application logger.

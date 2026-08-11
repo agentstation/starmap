@@ -7,43 +7,42 @@ import (
 	"testing"
 	"time"
 
-	"cloud.google.com/go/auth"
 	"google.golang.org/genai"
 
 	"github.com/agentstation/starmap/internal/sourcepayload"
+	"github.com/agentstation/starmap/internal/testcatalog"
 	"github.com/agentstation/starmap/pkg/catalogs"
+	"github.com/agentstation/starmap/pkg/sources"
 )
 
-type staticTokenProvider struct{}
-
-func (staticTokenProvider) Token(context.Context) (*auth.Token, error) {
-	return &auth.Token{Value: "test-token", Expiry: time.Now().Add(time.Hour)}, nil
-}
-
-func TestGetOrCreateVertexClientDoesNotDeadlockOnCachedCredentials(t *testing.T) {
+func TestGetOrCreateVertexClientUsesRequestMaterial(t *testing.T) {
 	client := NewClient(&catalogs.Provider{
 		ID:   catalogs.ProviderIDGoogleVertex,
 		Name: "Google Vertex AI",
 	})
-	client.projectID = "test-project"
-	client.location = "us-central1"
-	client.credentials = auth.NewCredentials(&auth.CredentialsOptions{
-		TokenProvider: staticTokenProvider{},
-	})
-
-	result := make(chan error, 1)
-	go func() {
-		_, err := client.getOrCreateGenAIClient(context.Background(), true)
-		result <- err
-	}()
-
-	select {
-	case err := <-result:
-		if err != nil {
-			t.Fatalf("getOrCreateGenAIClient: %v", err)
-		}
-	case <-time.After(time.Second):
-		t.Fatal("getOrCreateGenAIClient deadlocked while reusing cached credentials")
+	profile := catalogs.ProviderCredentialProfile{
+		ID: "workload-identity", Primitive: catalogs.ProviderAuthenticationGoogleDefault,
+		Fields: []catalogs.ProviderCredentialFieldID{"access-token", "project", "location"},
+		Placements: []catalogs.ProviderCredentialPlacement{{
+			Field: "access-token", Kind: catalogs.ProviderCredentialPlacementHeader,
+			Name: "Authorization", Scheme: catalogs.ProviderCredentialSchemeBearer,
+		}},
+		EndpointBindings: []catalogs.ProviderCredentialEndpointBinding{
+			{Field: "project", Variable: "project", Format: catalogs.ProviderCredentialEndpointBindingPathSegment},
+			{Field: "location", Variable: "location", Format: catalogs.ProviderCredentialEndpointBindingPathSegment},
+		},
+	}
+	material := sources.NewProviderCredentialMaterial(
+		profile,
+		map[catalogs.ProviderCredentialFieldID]string{
+			"access-token": "test-token", "project": "test-project", "location": "us-central1",
+		},
+		sources.ProviderCredentialMetadata{
+			Version: "test", ExpiresAt: time.Now().Add(time.Hour),
+		},
+	)
+	if _, err := client.newGenAIClient(context.Background(), true, material); err != nil {
+		t.Fatalf("newGenAIClient: %v", err)
 	}
 }
 
@@ -80,12 +79,11 @@ func TestConvertGenAIModelPreservesProviderFields(t *testing.T) {
 		model.Limits.OutputTokens != 65536 {
 		t.Fatalf("limits = %#v", model.Limits)
 	}
-	if model.Features == nil ||
-		!model.Features.Temperature ||
-		!model.Features.TopP ||
-		!model.Features.MaxTokens ||
-		!model.Features.Streaming {
+	if model.Features == nil || !model.Features.Streaming {
 		t.Fatalf("features = %#v", model.Features)
+	}
+	if model.Features.Temperature || model.Features.TopP || model.Features.MaxTokens {
+		t.Fatalf("supported actions inferred parameter support: %#v", model.Features)
 	}
 	extension := model.Extensions["google-ai-studio"].Fields
 	if extension["version"] != "003" ||
@@ -102,6 +100,53 @@ func TestConvertGenAIModelPreservesProviderFields(t *testing.T) {
 	}
 }
 
+func TestConvertGenAIModelDoesNotInferModelFacts(t *testing.T) {
+	client := NewClient(&catalogs.Provider{
+		ID:   catalogs.ProviderIDGoogleAIStudio,
+		Name: "Google AI Studio",
+	})
+
+	model := client.convertGenAIModel(&genai.Model{Name: "models/gemini-unknown"})
+
+	if model.ID != "gemini-unknown" || model.Name != "gemini-unknown" {
+		t.Fatalf("identity = %q/%q", model.ID, model.Name)
+	}
+	if model.Description != "" || !model.CreatedAt.IsZero() || !model.UpdatedAt.IsZero() {
+		t.Fatalf("invented metadata = description %q, created %v, updated %v", model.Description, model.CreatedAt, model.UpdatedAt)
+	}
+	if len(model.Authors) != 0 || model.Features != nil || model.Limits != nil {
+		t.Fatalf("invented facts = authors %#v, features %#v, limits %#v", model.Authors, model.Features, model.Limits)
+	}
+}
+
+func TestConvertGenAIModelUsesCatalogPublisherMapping(t *testing.T) {
+	client := NewClient(&catalogs.Provider{
+		ID:   catalogs.ProviderIDGoogleVertex,
+		Name: "Google Vertex AI",
+		Catalog: &catalogs.ProviderCatalog{Endpoint: catalogs.ProviderEndpoint{
+			AuthorMapping: &catalogs.AuthorMapping{
+				Field: "publisher",
+				Normalized: map[string]catalogs.AuthorID{
+					"anthropic": catalogs.AuthorIDAnthropic,
+				},
+			},
+		}},
+	})
+
+	for _, name := range []string{
+		"publishers/anthropic/models/claude-opus",
+		"projects/project/locations/us-central1/publishers/anthropic/models/claude-opus",
+	} {
+		model := client.convertGenAIModel(&genai.Model{Name: name})
+		if model.ID != "claude-opus" {
+			t.Fatalf("model ID for %q = %q", name, model.ID)
+		}
+		if len(model.Authors) != 1 || model.Authors[0].ID != catalogs.AuthorIDAnthropic {
+			t.Fatalf("authors for %q = %#v", name, model.Authors)
+		}
+	}
+}
+
 func TestListModelsAIStudioFallsBackWhenRESTReturnsNoModels(t *testing.T) {
 	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, _ *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
@@ -109,18 +154,12 @@ func TestListModelsAIStudioFallsBackWhenRESTReturnsNoModels(t *testing.T) {
 	}))
 	defer server.Close()
 
-	client := NewClient(&catalogs.Provider{
-		ID:   catalogs.ProviderIDGoogleAIStudio,
-		Name: "Google AI Studio",
-		Catalog: &catalogs.ProviderCatalog{
-			Endpoint: catalogs.ProviderEndpoint{
-				Type: catalogs.EndpointTypeGoogle,
-				URL:  server.URL,
-			},
-		},
-	})
+	provider := testAIStudioProvider(server.URL)
+	client := NewClient(provider)
 
-	models, err := client.listModelsAIStudio(context.Background())
+	models, err := client.listModelsAIStudio(
+		context.Background(), testAIStudioMaterial(provider),
+	)
 	if err == nil {
 		t.Fatalf("expected SDK fallback error after empty REST response, got nil with %d models", len(models))
 	}
@@ -151,11 +190,11 @@ func TestSchemaDriftMutationMatrix(t *testing.T) {
 				_, _ = w.Write([]byte(test.payload))
 			}))
 			defer server.Close()
-			client := NewClient(&catalogs.Provider{
-				ID: catalogs.ProviderIDGoogleAIStudio, Name: "Google AI Studio",
-				Catalog: &catalogs.ProviderCatalog{Endpoint: catalogs.ProviderEndpoint{Type: catalogs.EndpointTypeGoogle, URL: server.URL}},
-			})
-			models, err := client.listModelsAIStudioREST(context.Background())
+			provider := testAIStudioProvider(server.URL)
+			client := NewClient(provider)
+			models, err := client.listModelsAIStudioREST(
+				context.Background(), testAIStudioMaterial(provider),
+			)
 			if test.wantErr && err == nil {
 				t.Fatal("listModelsAIStudioREST returned nil error")
 			}
@@ -173,6 +212,20 @@ func TestSchemaDriftMutationMatrix(t *testing.T) {
 			}
 		})
 	}
+}
+
+func testAIStudioProvider(endpoint string) *catalogs.Provider {
+	return &catalogs.Provider{
+		ID: catalogs.ProviderIDGoogleAIStudio, Name: "Google AI Studio",
+		Credentials: testcatalog.QueryAPIKeyCredentials("GOOGLE_API_KEY", "key"),
+		Catalog: &catalogs.ProviderCatalog{Endpoint: catalogs.ProviderEndpoint{
+			Type: catalogs.EndpointTypeGoogle, URL: endpoint,
+		}},
+	}
+}
+
+func testAIStudioMaterial(provider *catalogs.Provider) sources.ProviderCredentialMaterial {
+	return testcatalog.APIKeyMaterial(provider.Credentials, "test-api-key")
 }
 
 func TestConvertAIStudioModelPreservesRESTOnlyFields(t *testing.T) {

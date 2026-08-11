@@ -14,12 +14,27 @@ func TestCatalogAcquisitionAuthContract(t *testing.T) {
 	provider := Provider{
 		ID:   ProviderIDGoogleVertex,
 		Name: "Google Vertex AI",
-		Catalog: &ProviderCatalog{
-			Auth: ProviderCatalogAuth{
-				Method:   ProviderCatalogAuthGoogleDefault,
-				Required: true,
-				Scopes:   []string{"https://www.googleapis.com/auth/cloud-platform"},
+		Credentials: &ProviderCredentials{
+			Fields: []ProviderCredentialField{
+				{ID: "access-token", Kind: ProviderCredentialFieldSecret, Required: true},
 			},
+			Profiles: []ProviderCredentialProfile{{
+				ID: "workload-identity", Primitive: ProviderAuthenticationGoogleDefault,
+				Fields: []ProviderCredentialFieldID{"access-token"},
+				Placements: []ProviderCredentialPlacement{{
+					Field: "access-token", Kind: ProviderCredentialPlacementHeader,
+					Name: "Authorization", Scheme: ProviderCredentialSchemeBearer,
+				}},
+				Scopes: []string{"https://www.googleapis.com/auth/cloud-platform"},
+			}},
+			CatalogAcquisition: ProviderCredentialPlane{
+				Required: true, Alternatives: []ProviderCredentialProfileID{"workload-identity"},
+			},
+			Inference: ProviderCredentialPlane{
+				Required: true, Alternatives: []ProviderCredentialProfileID{"workload-identity"},
+			},
+		},
+		Catalog: &ProviderCatalog{
 			Endpoint: ProviderEndpoint{
 				Type: EndpointTypeGoogleCloud,
 				URL:  "https://example.test/models",
@@ -27,19 +42,16 @@ func TestCatalogAcquisitionAuthContract(t *testing.T) {
 		},
 	}
 
-	if got := provider.Catalog.Auth.Method; got != ProviderCatalogAuthGoogleDefault {
-		t.Fatalf("catalog auth method = %q, want %q", got, ProviderCatalogAuthGoogleDefault)
-	}
-	if provider.IsAPIKeyRequired() {
-		t.Fatal("Google default credentials were classified as an API key")
+	if got := provider.Credentials.Profiles[0].Primitive; got != ProviderAuthenticationGoogleDefault {
+		t.Fatalf("catalog primitive = %q, want %q", got, ProviderAuthenticationGoogleDefault)
 	}
 	if !provider.IsCatalogAuthRequired() {
 		t.Fatal("required catalog authentication was classified as optional")
 	}
 
 	provider.Catalog.Endpoint.Type = EndpointTypeOpenAI
-	if got := provider.Catalog.Auth.Method; got != ProviderCatalogAuthGoogleDefault {
-		t.Fatalf("endpoint type changed catalog auth method to %q", got)
+	if got := provider.Credentials.Profiles[0].Primitive; got != ProviderAuthenticationGoogleDefault {
+		t.Fatalf("endpoint type changed catalog primitive to %q", got)
 	}
 }
 
@@ -47,21 +59,29 @@ func TestAcquisitionCredentialsNeverSerialize(t *testing.T) {
 	provider := Provider{
 		ID:   "secret-test",
 		Name: "Secret Test",
-		APIKey: &ProviderAPIKey{
-			Name:   "STARMAP_SECRET_TEST_KEY",
-			Header: "Authorization",
-			Scheme: ProviderAPIKeySchemeBearer,
+		Credentials: &ProviderCredentials{
+			Fields: []ProviderCredentialField{{
+				ID: "api-key", Kind: ProviderCredentialFieldSecret, Required: true,
+				Environment: []string{"STARMAP_SECRET_TEST_KEY"},
+			}},
+			Profiles: []ProviderCredentialProfile{{
+				ID: "api-key", Primitive: ProviderAuthenticationAPIKey,
+				Fields: []ProviderCredentialFieldID{"api-key"},
+				Placements: []ProviderCredentialPlacement{{
+					Field: "api-key", Kind: ProviderCredentialPlacementHeader,
+					Name: "Authorization", Scheme: ProviderCredentialSchemeBearer,
+				}},
+			}},
+			CatalogAcquisition: ProviderCredentialPlane{
+				Required: true, Alternatives: []ProviderCredentialProfileID{"api-key"},
+			},
+			Inference: ProviderCredentialPlane{
+				Required: true, Alternatives: []ProviderCredentialProfileID{"api-key"},
+			},
 		},
-		EnvVars: []ProviderEnvVar{{Name: "STARMAP_SECRET_TEST_TOKEN"}},
-		Catalog: &ProviderCatalog{Auth: ProviderCatalogAuth{
-			Method:   ProviderCatalogAuthAPIKey,
-			Required: true,
-		}},
 	}
 	t.Setenv("STARMAP_SECRET_TEST_KEY", "catalog-api-key-secret")
 	t.Setenv("STARMAP_SECRET_TEST_TOKEN", "workload-token-secret")
-	provider.LoadAPIKey()
-	provider.LoadEnvVars()
 
 	for name, marshal := range map[string]func(any) ([]byte, error){
 		"json": json.Marshal,

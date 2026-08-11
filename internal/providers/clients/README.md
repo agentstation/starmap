@@ -13,13 +13,13 @@ Package clients provides provider client registry functions. This package is sep
 ## Index
 
 - [type FetchRawResult](<#FetchRawResult>)
-  - [func FetchRaw\(ctx context.Context, provider \*catalogs.Provider, endpoint string\) \(\*FetchRawResult, error\)](<#FetchRaw>)
+  - [func FetchRaw\(ctx context.Context, provider \*catalogs.Provider, material sources.ProviderCredentialMaterial, endpoint string\) \(\*FetchRawResult, error\)](<#FetchRaw>)
 - [type ProviderClient](<#ProviderClient>)
   - [func NewProvider\(provider \*catalogs.Provider\) \(ProviderClient, error\)](<#NewProvider>)
 
 
 <a name="FetchRawResult"></a>
-## type [FetchRawResult](<https://github.com/agentstation/starmap/blob/main/internal/providers/clients/provider.go#L61-L66>)
+## type [FetchRawResult](<https://github.com/agentstation/starmap/blob/main/internal/providers/clients/provider.go#L76-L81>)
 
 FetchRawResult contains the result of a raw fetch operation.
 
@@ -33,34 +33,28 @@ type FetchRawResult struct {
 ```
 
 <a name="FetchRaw"></a>
-### func [FetchRaw](<https://github.com/agentstation/starmap/blob/main/internal/providers/clients/provider.go#L71>)
+### func [FetchRaw](<https://github.com/agentstation/starmap/blob/main/internal/providers/clients/provider.go#L86-L91>)
 
 ```go
-func FetchRaw(ctx context.Context, provider *catalogs.Provider, endpoint string) (*FetchRawResult, error)
+func FetchRaw(ctx context.Context, provider *catalogs.Provider, material sources.ProviderCredentialMaterial, endpoint string) (*FetchRawResult, error)
 ```
 
 FetchRaw fetches raw response data from a provider's API endpoint. This function is used for fetching raw API responses for testdata generation. Returns a FetchRawResult containing the data, response headers, latency, and URL.
 
 <a name="ProviderClient"></a>
-## type [ProviderClient](<https://github.com/agentstation/starmap/blob/main/internal/providers/clients/provider.go#L26-L35>)
+## type [ProviderClient](<https://github.com/agentstation/starmap/blob/main/internal/providers/clients/provider.go#L27-L30>)
 
 ProviderClient defines the interface for provider API clients. Each provider implementation must satisfy this interface to fetch model information.
 
 ```go
 type ProviderClient interface {
     // ListModels retrieves all available models from the provider.
-    ListModels(ctx context.Context) ([]catalogs.Model, error)
-
-    // isAPIKeyRequired returns true if the client requires an API key.
-    IsAPIKeyRequired() bool
-
-    // HasAPIKey returns true if the client has an API key.
-    HasAPIKey() bool
+    ListModels(context.Context, sources.ProviderCredentialMaterial) ([]catalogs.Model, error)
 }
 ```
 
 <a name="NewProvider"></a>
-### func [NewProvider](<https://github.com/agentstation/starmap/blob/main/internal/providers/clients/provider.go#L38>)
+### func [NewProvider](<https://github.com/agentstation/starmap/blob/main/internal/providers/clients/provider.go#L33>)
 
 ```go
 func NewProvider(provider *catalogs.Provider) (ProviderClient, error)

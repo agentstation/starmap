@@ -10,6 +10,7 @@ import (
 	"time"
 	"unicode"
 
+	"github.com/agentstation/starmap/internal/auth"
 	"github.com/agentstation/starmap/internal/constants"
 	"github.com/agentstation/starmap/internal/sourcepayload"
 	"github.com/agentstation/starmap/pkg/catalogs"
@@ -26,6 +27,7 @@ type SourceOption func(*sourceOptions)
 
 type sourceOptions struct {
 	clientFactory         ClientFactory
+	credentialResolver    sources.ProviderCredentialResolver
 	maxConcurrency        int
 	requireCanonicalLinks bool
 }
@@ -43,13 +45,16 @@ var _ sources.Source = (*Source)(nil)
 // New creates a new provider API source with the given provider configurations.
 func New(providers catalogs.ProvidersReader, opts ...SourceOption) *Source {
 	options := sourceOptions{
+		credentialResolver:    auth.NewResolver(),
 		maxConcurrency:        constants.MaxConcurrentProviders,
 		requireCanonicalLinks: true,
 	}
 	for _, opt := range opts {
 		opt(&options)
 	}
-	fetcherOptions := make([]sources.ProviderOption, 0, 1)
+	fetcherOptions := []sources.ProviderOption{
+		sources.WithProviderCredentialResolver(options.credentialResolver),
+	}
 	if options.clientFactory != nil {
 		fetcherOptions = append(fetcherOptions, sources.WithProviderClientFactory(options.clientFactory))
 	}
@@ -58,6 +63,16 @@ func New(providers catalogs.ProvidersReader, opts ...SourceOption) *Source {
 		fetcher:               sources.NewProviderFetcher(providers, fetcherOptions...),
 		maxConcurrency:        options.maxConcurrency,
 		requireCanonicalLinks: options.requireCanonicalLinks,
+	}
+}
+
+// WithCredentialResolver selects the deployment-owned catalog credential
+// resolver used for each provider observation.
+func WithCredentialResolver(resolver sources.ProviderCredentialResolver) SourceOption {
+	return func(options *sourceOptions) {
+		if resolver != nil {
+			options.credentialResolver = resolver
+		}
 	}
 }
 
@@ -114,6 +129,9 @@ func (s *Source) Observe(ctx context.Context, opts ...sources.Option) (sources.O
 	} else {
 		// Get all provider IDs from the providers collection
 		for _, p := range s.providers.List() {
+			if p.Catalog == nil {
+				continue
+			}
 			providerIDs = append(providerIDs, p.ID)
 		}
 	}
@@ -121,7 +139,7 @@ func (s *Source) Observe(ctx context.Context, opts ...sources.Option) (sources.O
 	// Get provider configs from injected providers
 	var providerConfigs []*catalogs.Provider
 	for _, id := range providerIDs {
-		if p, found := s.providers.Get(id); found {
+		if p, found := s.providers.Get(id); found && p.Catalog != nil {
 			providerConfigs = append(providerConfigs, p)
 		}
 	}
@@ -279,13 +297,9 @@ func linkReviewedProviderModels(
 	for _, model := range models {
 		configured := provider.Models[model.ID]
 		if configured == nil || configured.ModelRef == "" {
-			rejected++
-			issues = append(issues, sources.ObservationIssue{
-				Scope:   sources.ObservationIssueScopeRecord,
-				Code:    sources.ObservationIssueCodeInvalidRecord,
-				Subject: string(provider.ID) + "/" + model.ID,
-				Message: "provider model has no reviewed canonical link; add model: author/slug to the provider YAML",
-			})
+			unlinkedModel := catalogs.DeepCopyModel(*model)
+			unlinkedModel.ModelRef = ""
+			linked = append(linked, &unlinkedModel)
 			continue
 		}
 		if _, _, err := catalogs.ParseModelDefinitionID(configured.ModelRef); err != nil {

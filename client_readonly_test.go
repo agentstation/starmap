@@ -185,6 +185,6 @@ func publishTestCatalog(client *Client, builder *catalogs.Builder) error {
 	if err != nil {
 		return err
 	}
-	client.swapCatalogGeneration(published, "", time.Time{})
+	client.swapCatalogGeneration(published, "", "", time.Time{})
 	return nil
 }

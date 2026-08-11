@@ -10,34 +10,10 @@ import (
 // ValidateContract validates serializable catalog-acquisition and inference
 // metadata. It does not inspect runtime credential values.
 func (p Provider) ValidateContract() error {
-	if strings.TrimSpace(string(p.ID)) == "" {
-		return providerContractError("provider.id", p.ID, "is required")
-	}
-	if strings.TrimSpace(p.Name) == "" {
-		return providerContractError("provider.name", p.Name, "is required")
+	if err := p.validateIdentityAndCredentials(); err != nil {
+		return err
 	}
 	if p.Catalog != nil {
-		if !validProviderCatalogAuthMethod(p.Catalog.Auth.Method) {
-			return providerContractError(
-				"provider.catalog.auth.method",
-				p.Catalog.Auth.Method,
-				"must be none, api-key, google-default, azure-default, or aws-default",
-			)
-		}
-		if p.Catalog.Auth.Method == ProviderCatalogAuthNone && p.Catalog.Auth.Required {
-			return providerContractError(
-				"provider.catalog.auth.required",
-				true,
-				"cannot require the none authentication method",
-			)
-		}
-		if p.Catalog.Auth.Method == ProviderCatalogAuthAPIKey && p.APIKey == nil {
-			return providerContractError(
-				"provider.api_key",
-				nil,
-				"is required for api-key catalog authentication",
-			)
-		}
 		if !validEndpointType(p.Catalog.Endpoint.Type) {
 			return providerContractError(
 				"provider.catalog.endpoint.type",
@@ -45,18 +21,42 @@ func (p Provider) ValidateContract() error {
 				"is not supported",
 			)
 		}
-		for index, scope := range p.Catalog.Auth.Scopes {
-			if strings.TrimSpace(scope) == "" {
-				return providerContractError(
-					fmt.Sprintf("provider.catalog.auth.scopes[%d]", index),
-					scope,
-					"must not be empty",
-				)
+		if err := validateCatalogProtocolOptions(p.Catalog.Endpoint); err != nil {
+			return err
+		}
+		if p.Catalog.Endpoint.AuthorMapping != nil {
+			if err := p.Catalog.Endpoint.AuthorMapping.Validate(); err != nil {
+				return err
 			}
+		}
+		if p.Credentials == nil || len(p.Credentials.CatalogAcquisition.Alternatives) == 0 {
+			return providerContractError(
+				"provider.credentials.catalog_acquisition.alternatives",
+				nil,
+				"must declare catalog-acquisition authentication",
+			)
+		}
+		if err := validateEndpointBindingCoverage(
+			"provider.credentials.catalog_acquisition",
+			p.Catalog.Endpoint.URL,
+			p.Credentials.CatalogAcquisition,
+			p.Credentials.Profiles,
+		); err != nil {
+			return err
 		}
 	}
 	if p.Inference == nil {
 		return nil
+	}
+	if p.Credentials != nil {
+		if err := validateEndpointBindingCoverage(
+			"provider.credentials.inference",
+			p.Inference.BaseURL,
+			p.Credentials.Inference,
+			p.Credentials.Profiles,
+		); err != nil {
+			return err
+		}
 	}
 	seen := make(map[ProviderOperation]struct{}, len(p.Inference.Endpoints))
 	for index, endpoint := range p.Inference.Endpoints {
@@ -137,17 +137,121 @@ func (p Provider) ValidateContract() error {
 	return nil
 }
 
-func validProviderCatalogAuthMethod(method ProviderCatalogAuthMethod) bool {
-	switch method {
-	case ProviderCatalogAuthNone,
-		ProviderCatalogAuthAPIKey,
-		ProviderCatalogAuthGoogleDefault,
-		ProviderCatalogAuthAzureDefault,
-		ProviderCatalogAuthAWSDefault:
-		return true
-	default:
-		return false
+func validateEndpointBindingCoverage(
+	path string,
+	template string,
+	plane ProviderCredentialPlane,
+	profiles []ProviderCredentialProfile,
+) error {
+	matches := inferenceEndpointVariable.FindAllString(template, -1)
+	if len(matches) == 0 {
+		return nil
 	}
+	required := make(map[string]struct{}, len(matches))
+	for _, match := range matches {
+		required[strings.TrimSuffix(strings.TrimPrefix(match, "{"), "}")] = struct{}{}
+	}
+	indexed := make(map[ProviderCredentialProfileID]ProviderCredentialProfile, len(profiles))
+	for _, profile := range profiles {
+		indexed[profile.ID] = profile
+	}
+	for index, profileID := range plane.Alternatives {
+		profile, exists := indexed[profileID]
+		if !exists {
+			continue // The credential schema reports the unknown profile first.
+		}
+		bound := make(map[string]struct{}, len(profile.EndpointBindings))
+		for _, binding := range profile.EndpointBindings {
+			bound[binding.Variable] = struct{}{}
+		}
+		for variable := range required {
+			if _, exists := bound[variable]; !exists {
+				return providerContractError(
+					fmt.Sprintf("%s.alternatives[%d]", path, index),
+					profileID,
+					fmt.Sprintf("profile does not bind endpoint variable %q", variable),
+				)
+			}
+		}
+	}
+	return nil
+}
+
+func (p Provider) validateIdentityAndCredentials() error {
+	if strings.TrimSpace(string(p.ID)) == "" {
+		return providerContractError("provider.id", p.ID, "is required")
+	}
+	if !validCredentialIdentifier(string(p.ID)) {
+		return providerContractError("provider.id", p.ID, "must be a lowercase kebab-case ID")
+	}
+	for index, alias := range p.Aliases {
+		if !validCredentialIdentifier(string(alias)) {
+			return providerContractError(
+				fmt.Sprintf("provider.aliases[%d]", index),
+				alias,
+				"must be a lowercase kebab-case ID",
+			)
+		}
+	}
+	if strings.TrimSpace(p.Name) == "" {
+		return providerContractError("provider.name", p.Name, "is required")
+	}
+	if err := p.Credentials.validate(); err != nil {
+		return err
+	}
+	return nil
+}
+
+func validateCatalogProtocolOptions(endpoint ProviderEndpoint) error {
+	options := endpoint.ProtocolOptions
+	switch endpoint.Type {
+	case EndpointTypeOpenAI:
+		if options.OpenAI == nil || options.Anthropic != nil {
+			return providerContractError(
+				"provider.catalog.endpoint.protocol_options",
+				options,
+				"openai endpoints require only openai protocol options",
+			)
+		}
+		if options.OpenAI.TokenPriceUnit != ProviderTokenPriceUnitPerToken &&
+			options.OpenAI.TokenPriceUnit != ProviderTokenPriceUnitPerMillion {
+			return providerContractError(
+				"provider.catalog.endpoint.protocol_options.openai.token_price_unit",
+				options.OpenAI.TokenPriceUnit,
+				"must be usd-per-token or usd-per-million-tokens",
+			)
+		}
+	case EndpointTypeAnthropic:
+		if options.Anthropic == nil || options.OpenAI != nil {
+			return providerContractError(
+				"provider.catalog.endpoint.protocol_options",
+				options,
+				"anthropic endpoints require only anthropic protocol options",
+			)
+		}
+		if strings.TrimSpace(options.Anthropic.Version) == "" {
+			return providerContractError(
+				"provider.catalog.endpoint.protocol_options.anthropic.version",
+				options.Anthropic.Version,
+				"is required",
+			)
+		}
+	case EndpointTypeOllama:
+		return providerContractError(
+			"provider.catalog.endpoint.type",
+			endpoint.Type,
+			"has no compiled catalog-acquisition transport",
+		)
+	default:
+		if options.OpenAI != nil || options.Anthropic != nil {
+			return providerContractError(
+				"provider.catalog.endpoint.protocol_options",
+				options,
+				"must match the endpoint type",
+			)
+		}
+	}
+	return nil
 }
 
 func validEndpointType(endpointType EndpointType) bool {

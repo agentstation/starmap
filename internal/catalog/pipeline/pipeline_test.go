@@ -23,12 +23,13 @@ type pipelineTestStore struct {
 	catalog *catalogs.Catalog
 	err     error
 
-	applyCalls     int
-	appliedCatalog *catalogs.Builder
-	appliedOptions *pkgsync.Options
-	appliedChanges *differ.Changeset
-	observations   []sources.Observation
-	workspaceInput workspace.InputExpectation
+	applyCalls       int
+	appliedCatalog   *catalogs.Builder
+	appliedOptions   *pkgsync.Options
+	appliedChanges   *differ.Changeset
+	observations     []sources.Observation
+	reviewCandidates []catalogmeta.ReviewCandidate
+	workspaceInput   workspace.InputExpectation
 }
 
 func (s *pipelineTestStore) Catalog() (*catalogs.Catalog, error) {
@@ -44,6 +45,7 @@ func (s *pipelineTestStore) Apply(
 	options *pkgsync.Options,
 	changeset *differ.Changeset,
 	observations []sources.Observation,
+	reviewCandidates []catalogmeta.ReviewCandidate,
 	workspaceInput workspace.InputExpectation,
 ) (Publication, error) {
 	s.applyCalls++
@@ -51,6 +53,7 @@ func (s *pipelineTestStore) Apply(
 	s.appliedOptions = options
 	s.appliedChanges = changeset
 	s.observations = append([]sources.Observation(nil), observations...)
+	s.reviewCandidates = append([]catalogmeta.ReviewCandidate(nil), reviewCandidates...)
 	s.workspaceInput = workspaceInput
 	return Publication{}, nil
 }
@@ -269,6 +272,49 @@ func TestPipelineSkipsApplyWhenThereAreNoChanges(t *testing.T) {
 	}
 }
 
+func TestPipelinePublishesReviewCandidatesWithoutCatalogChanges(t *testing.T) {
+	store := &pipelineTestStore{catalog: asSnapshot(catalogs.NewEmpty())}
+	runner := newStubPipeline(store, nil)
+	runner.reconcile = func(
+		_ context.Context,
+		_ *catalogs.Catalog,
+		observations []sources.Observation,
+	) (*reconciler.Result, error) {
+		observation := observations[0]
+		return &reconciler.Result{
+			Catalog:           catalogs.NewEmpty(),
+			Changeset:         emptyChangeset(),
+			ProviderAPICounts: map[catalogs.ProviderID]int{},
+			ModelProviderMap:  map[string]catalogs.ProviderID{},
+			ReviewCandidates: []catalogmeta.ReviewCandidate{{
+				Code:                catalogmeta.ReviewCandidateUnresolvedModelReference,
+				ProviderID:          "provider",
+				ProviderModelID:     "opaque/model@2026",
+				SourceID:            observation.SourceID,
+				SourceObservationID: observation.ID,
+				SourceRevision:      observation.Revision,
+				EvidenceChecksum:    observation.EvidenceChecksum,
+				Reason:              "provider model has no reviewed canonical model link",
+			}},
+		}, nil
+	}
+
+	result, err := runner.Sync(context.Background())
+	if err != nil {
+		t.Fatalf("Sync: %v", err)
+	}
+	if result.HasChanges() {
+		t.Fatal("review-candidate publication reported a catalog change")
+	}
+	if store.applyCalls != 1 {
+		t.Fatalf("apply calls = %d, want one evidence publication", store.applyCalls)
+	}
+	if len(store.reviewCandidates) != 1 ||
+		store.reviewCandidates[0] != result.ReviewCandidates[0] {
+		t.Fatalf("applied review candidates = %#v, result = %#v", store.reviewCandidates, result.ReviewCandidates)
+	}
+}
+
 func TestPipelineForceSavesWhenReformatOrFreshIsSet(t *testing.T) {
 	for _, tc := range []struct {
 		name      string
@@ -350,21 +396,21 @@ func TestPipelineFreshReconcilesAgainstEmptyBaseline(t *testing.T) {
 	}
 }
 
-func TestPipelineReturnsCallerOwnedReconciliationIssues(t *testing.T) {
+func TestPipelineReturnsCallerOwnedReviewCandidates(t *testing.T) {
 	t.Parallel()
 
-	issue := catalogmeta.ReconciliationIssue{
-		Code:            catalogmeta.ReconciliationIssueUnresolvedModelReference,
+	issue := catalogmeta.ReviewCandidate{
+		Code:            catalogmeta.ReviewCandidateUnresolvedModelReference,
 		ProviderID:      "provider",
 		ProviderModelID: "new-model",
-		Message:         "quarantined",
+		Reason:          "quarantined",
 	}
 	reconcileResult := &reconciler.Result{
-		Catalog:              catalogs.NewEmpty(),
-		Changeset:            emptyChangeset(),
-		ProviderAPICounts:    map[catalogs.ProviderID]int{},
-		ModelProviderMap:     map[string]catalogs.ProviderID{},
-		ReconciliationIssues: []catalogmeta.ReconciliationIssue{issue},
+		Catalog:           catalogs.NewEmpty(),
+		Changeset:         emptyChangeset(),
+		ProviderAPICounts: map[catalogs.ProviderID]int{},
+		ModelProviderMap:  map[string]catalogs.ProviderID{},
+		ReviewCandidates:  []catalogmeta.ReviewCandidate{issue},
 	}
 	store := &pipelineTestStore{catalog: asSnapshot(catalogs.NewEmpty())}
 	runner := newStubPipeline(store, reconcileResult)
@@ -373,12 +419,12 @@ func TestPipelineReturnsCallerOwnedReconciliationIssues(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Sync: %v", err)
 	}
-	if len(result.ReconciliationIssues) != 1 || result.ReconciliationIssues[0] != issue {
-		t.Fatalf("reconciliation issues = %#v, want %#v", result.ReconciliationIssues, issue)
+	if len(result.ReviewCandidates) != 1 || result.ReviewCandidates[0] != issue {
+		t.Fatalf("review candidates = %#v, want %#v", result.ReviewCandidates, issue)
 	}
-	result.ReconciliationIssues[0].Message = "caller mutation"
-	if reconcileResult.ReconciliationIssues[0].Message != issue.Message {
-		t.Fatal("sync result retained reconciliation issue storage")
+	result.ReviewCandidates[0].Reason = "caller mutation"
+	if reconcileResult.ReviewCandidates[0].Reason != issue.Reason {
+		t.Fatal("sync result retained review-candidate storage")
 	}
 }
 

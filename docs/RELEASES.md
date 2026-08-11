@@ -47,12 +47,13 @@ read-only, store-only, server-embed, remote-subscriber, and CLI compositions
 with `CGO_ENABLED=0`. The separate race suite explicitly uses
 `CGO_ENABLED=1`, because Go's race detector normally requires cgo. On macOS,
 pure-Go binaries still use Apple system ABI libraries from `/usr/lib` and
-`/System/Library`; the gate rejects any separately distributed C runtime.
+`/System/Library`. The gate rejects any separately distributed C runtime.
 
-Release candidates never replace the stable Homebrew cask. Darwin binaries are
-signed and notarized when the five `MACOS_SIGN_*`/`MACOS_NOTARY_*` repository
-secrets are provisioned; stable launch must not rely on the quarantine-removal
-fallback.
+Release candidates never replace the stable Homebrew cask. GoReleaser signs
+and notarizes Darwin binaries when the repository has all five
+`MACOS_SIGN_*` and `MACOS_NOTARY_*` secrets. Without those optional
+credentials, the cask removes quarantine from only the staged `starmap`
+binary through its payload-scoped post-install hook.
 
 Stable Homebrew publication uses an SSH deploy key. Install its public key on
 only `agentstation/homebrew-tap` with write access. Store the private key in the

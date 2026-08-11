@@ -100,9 +100,8 @@ func detectEnvironment() hints.Environment {
 // detectUserState detects the current user configuration state.
 func detectUserState() hints.UserState {
 	state := hints.UserState{
-		AuthProviders: detectConfiguredProviders(),
-		HasConfig:     hasConfigFile(),
-		IsFirstRun:    isFirstRun(),
+		HasConfig:  hasConfigFile(),
+		IsFirstRun: isFirstRun(),
 	}
 
 	// Detect preferred output format from environment or config
@@ -111,29 +110,6 @@ func detectUserState() hints.UserState {
 	}
 
 	return state
-}
-
-// detectConfiguredProviders detects which authentication providers are configured.
-func detectConfiguredProviders() []string {
-	var providers []string
-
-	// Check common API key environment variables
-	apiKeys := map[string]string{
-		"OPENAI_API_KEY":    "openai",
-		"ANTHROPIC_API_KEY": "anthropic",
-		"GOOGLE_API_KEY":    "google-ai-studio",
-		"GROQ_API_KEY":      "groq",
-		"DEEPSEEK_API_KEY":  "deepseek",
-		"CEREBRAS_API_KEY":  "cerebras",
-	}
-
-	for envVar, provider := range apiKeys {
-		if os.Getenv(envVar) != "" {
-			providers = append(providers, provider)
-		}
-	}
-
-	return providers
 }
 
 // hasConfigFile checks if the user has a starmap configuration file.
@@ -198,29 +174,24 @@ func isGitRepository(dir string) bool {
 type CommonContexts struct{}
 
 // AuthStatus creates a context for auth status commands.
-func (CommonContexts) AuthStatus(succeeded bool, providersConfigured int) hints.Context {
+func (CommonContexts) AuthStatus(succeeded bool, providers []string) hints.Context {
 	ctx := NewContextBuilder().Build()
 	ctx.Command = "auth"
 	ctx.Subcommand = "status"
 	ctx.Succeeded = succeeded
 
-	// Update provider count
-	if providersConfigured == 0 {
-		ctx.UserState.AuthProviders = nil
-	} else {
-		// Populate with actual detected providers
-		ctx.UserState.AuthProviders = detectConfiguredProviders()
-	}
+	ctx.UserState.AuthProviders = append([]string(nil), providers...)
 
 	return ctx
 }
 
 // AuthTest creates a context for auth testing commands.
-func (CommonContexts) AuthTest(succeeded bool, errorType string) hints.Context {
+func (CommonContexts) AuthTest(succeeded bool, errorType string, providers []string) hints.Context {
 	ctx := NewContextBuilder().Build()
 	ctx.Command = "auth"
 	ctx.Subcommand = "test"
 	ctx.Succeeded = succeeded
+	ctx.UserState.AuthProviders = append([]string(nil), providers...)
 
 	if !succeeded && errorType != "" {
 		ctx.ErrorType = errorType

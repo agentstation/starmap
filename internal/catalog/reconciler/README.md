@@ -190,9 +190,9 @@ type Result struct {
     Provenance provenance.Map
 
     // Issues
-    Errors               []error
-    Warnings             []string
-    ReconciliationIssues []catalogmeta.ReconciliationIssue
+    Errors           []error
+    Warnings         []string
+    ReviewCandidates []catalogmeta.ReviewCandidate
 }
 ```
 

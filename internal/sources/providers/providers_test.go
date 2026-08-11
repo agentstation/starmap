@@ -42,8 +42,7 @@ func TestPublicInternalProviderFetchConformance(t *testing.T) {
 			name: "missing credentials",
 			provider: func() catalogs.Provider {
 				provider := providerForTest("missing")
-				provider.Catalog.Auth = catalogs.ProviderCatalogAuth{Method: catalogs.ProviderCatalogAuthAPIKey, Required: true}
-				provider.APIKey = &catalogs.ProviderAPIKey{Name: "STARMAP_CONFORMANCE_MISSING_KEY"}
+				provider.Credentials = requiredAPIKeyCredentials("STARMAP_CONFORMANCE_MISSING_KEY")
 				return provider
 			}(),
 			factory: func(*catalogs.Provider) (sources.ProviderClient, error) {
@@ -104,19 +103,14 @@ type fakeProviderClient struct {
 	onList func()
 }
 
-func (c fakeProviderClient) ListModels(context.Context) ([]catalogs.Model, error) {
+func (c fakeProviderClient) ListModels(
+	context.Context,
+	sources.ProviderCredentialMaterial,
+) ([]catalogs.Model, error) {
 	if c.onList != nil {
 		c.onList()
 	}
 	return c.models, c.err
-}
-
-func (c fakeProviderClient) IsAPIKeyRequired() bool {
-	return false
-}
-
-func (c fakeProviderClient) HasAPIKey() bool {
-	return true
 }
 
 func TestSourceObserveAddsFetchedModels(t *testing.T) {
@@ -148,7 +142,7 @@ func TestSourceObserveAddsFetchedModels(t *testing.T) {
 	}
 }
 
-func TestSourceObserveQuarantinesModelsWithoutReviewedCanonicalLinks(t *testing.T) {
+func TestSourceObserveRetainsModelsWithoutReviewedLinksForReconciliation(t *testing.T) {
 	provider := providerForTest("provider-a")
 	provider.Models = map[string]*catalogs.Model{
 		"reviewed": {
@@ -168,27 +162,26 @@ func TestSourceObserveQuarantinesModelsWithoutReviewedCanonicalLinks(t *testing.
 	if err != nil {
 		t.Fatalf("Observe: %v", err)
 	}
-	if observation.Status != sources.ObservationStatusDegraded ||
-		observation.Completeness != sources.ObservationCompletenessPartial {
-		t.Fatalf("observation health = %q/%q, want degraded/partial", observation.Status, observation.Completeness)
+	if observation.Status != sources.ObservationStatusSucceeded ||
+		observation.Completeness != sources.ObservationCompletenessComplete {
+		t.Fatalf("observation health = %q/%q, want succeeded/complete", observation.Status, observation.Completeness)
 	}
-	if observation.Records.Accepted != 1 || observation.Records.Rejected != 1 {
-		t.Fatalf("records = %#v, want accepted=1 rejected=1", observation.Records)
+	if observation.Records.Accepted != 2 || observation.Records.Rejected != 0 {
+		t.Fatalf("records = %#v, want accepted=2 rejected=0", observation.Records)
 	}
-	if len(observation.Issues) != 1 ||
-		observation.Issues[0].Scope != sources.ObservationIssueScopeRecord ||
-		observation.Issues[0].Code != sources.ObservationIssueCodeInvalidRecord ||
-		observation.Issues[0].Subject != "provider-a/new-unreviewed" {
+	if len(observation.Issues) != 0 {
 		t.Fatalf("issues = %#v", observation.Issues)
 	}
 	fetched, err := observation.Catalog.Provider("provider-a")
 	if err != nil {
 		t.Fatalf("Provider: %v", err)
 	}
-	if len(fetched.Models) != 1 ||
+	if len(fetched.Models) != 2 ||
 		fetched.Models["reviewed"] == nil ||
 		fetched.Models["reviewed"].Name != "Live Name" ||
-		fetched.Models["reviewed"].ModelRef != "author-a/reviewed" {
+		fetched.Models["reviewed"].ModelRef != "author-a/reviewed" ||
+		fetched.Models["new-unreviewed"] == nil ||
+		fetched.Models["new-unreviewed"].ModelRef != "" {
 		t.Fatalf("linked live models = %#v", fetched.Models)
 	}
 	if provider.Models["reviewed"].Name != "Configured Name" {
@@ -366,8 +359,7 @@ func TestSourceObserveEmitsStructuredSourceProviderAndRunFields(t *testing.T) {
 
 func TestSourceObserveSeparatesBootstrapModelsWhenCredentialsAreMissing(t *testing.T) {
 	provider := providerForTest("missing-key")
-	provider.Catalog.Auth = catalogs.ProviderCatalogAuth{Method: catalogs.ProviderCatalogAuthAPIKey, Required: true}
-	provider.APIKey = &catalogs.ProviderAPIKey{Name: "STARMAP_PROVIDER_TEST_MISSING_KEY"}
+	provider.Credentials = requiredAPIKeyCredentials("STARMAP_PROVIDER_TEST_MISSING_KEY")
 	provider.Models = map[string]*catalogs.Model{
 		"bootstrap-model": {ID: "bootstrap-model", Name: "Embedded Bootstrap Model"},
 	}
@@ -382,8 +374,8 @@ func TestSourceObserveSeparatesBootstrapModelsWhenCredentialsAreMissing(t *testi
 	if err != nil {
 		t.Fatalf("Fetch should skip missing credentials without failing: %v", err)
 	}
-	if factoryCalls != 0 {
-		t.Fatalf("Expected missing credentials to skip client creation, got %d factory calls", factoryCalls)
+	if factoryCalls != 1 {
+		t.Fatalf("client validation calls = %d, want 1 before credential resolution", factoryCalls)
 	}
 
 	fetchedProvider, err := observation.Catalog.Provider("missing-key")
@@ -429,10 +421,7 @@ func TestSourceObserveSuccessfulFetchReplacesBootstrapModelsWithLiveModels(t *te
 
 func TestSourceObserveDoesNotSkipProviderWithMissingOptionalEnvVars(t *testing.T) {
 	provider := providerForTest("optional-env")
-	provider.EnvVars = []catalogs.ProviderEnvVar{{
-		Name:     "STARMAP_PROVIDER_TEST_OPTIONAL_ENV",
-		Required: false,
-	}}
+	provider.Credentials = optionalParameterCredentials("STARMAP_PROVIDER_TEST_OPTIONAL_ENV")
 
 	var factoryCalls int
 	src := newTestSource(newProviderSet(provider), WithClientFactory(func(provider *catalogs.Provider) (sources.ProviderClient, error) {
@@ -655,11 +644,72 @@ func providerForTest(id catalogs.ProviderID) catalogs.Provider {
 		ID:   id,
 		Name: string(id),
 		Catalog: &catalogs.ProviderCatalog{
-			Auth: catalogs.ProviderCatalogAuth{Method: catalogs.ProviderCatalogAuthNone},
 			Endpoint: catalogs.ProviderEndpoint{
 				Type: catalogs.EndpointTypeOpenAI,
 				URL:  "https://example.test/models",
+				ProtocolOptions: catalogs.ProviderCatalogProtocolOptions{
+					OpenAI: &catalogs.ProviderOpenAICatalogProtocolOptions{
+						TokenPriceUnit: catalogs.ProviderTokenPriceUnitPerMillion,
+					},
+				},
 			},
+		},
+		Credentials: unauthenticatedCredentials(),
+	}
+}
+
+func unauthenticatedCredentials() *catalogs.ProviderCredentials {
+	return &catalogs.ProviderCredentials{
+		Profiles: []catalogs.ProviderCredentialProfile{{
+			ID: "unauthenticated", Primitive: catalogs.ProviderAuthenticationNone,
+		}},
+		CatalogAcquisition: catalogs.ProviderCredentialPlane{
+			Alternatives: []catalogs.ProviderCredentialProfileID{"unauthenticated"},
+		},
+		Inference: catalogs.ProviderCredentialPlane{
+			Alternatives: []catalogs.ProviderCredentialProfileID{"unauthenticated"},
+		},
+	}
+}
+
+func requiredAPIKeyCredentials(environment string) *catalogs.ProviderCredentials {
+	return &catalogs.ProviderCredentials{
+		Fields: []catalogs.ProviderCredentialField{{
+			ID: "api-key", Kind: catalogs.ProviderCredentialFieldSecret,
+			Required: true, Environment: []string{environment},
+		}},
+		Profiles: []catalogs.ProviderCredentialProfile{{
+			ID: "api-key", Primitive: catalogs.ProviderAuthenticationAPIKey,
+			Fields: []catalogs.ProviderCredentialFieldID{"api-key"},
+			Placements: []catalogs.ProviderCredentialPlacement{{
+				Field: "api-key", Kind: catalogs.ProviderCredentialPlacementHeader,
+				Name: "Authorization", Scheme: catalogs.ProviderCredentialSchemeBearer,
+			}},
+		}},
+		CatalogAcquisition: catalogs.ProviderCredentialPlane{
+			Required: true, Alternatives: []catalogs.ProviderCredentialProfileID{"api-key"},
+		},
+		Inference: catalogs.ProviderCredentialPlane{
+			Required: true, Alternatives: []catalogs.ProviderCredentialProfileID{"api-key"},
+		},
+	}
+}
+
+func optionalParameterCredentials(environment string) *catalogs.ProviderCredentials {
+	return &catalogs.ProviderCredentials{
+		Fields: []catalogs.ProviderCredentialField{{
+			ID: "parameter", Kind: catalogs.ProviderCredentialFieldParameter,
+			Environment: []string{environment},
+		}},
+		Profiles: []catalogs.ProviderCredentialProfile{{
+			ID: "unauthenticated", Primitive: catalogs.ProviderAuthenticationNone,
+			Fields: []catalogs.ProviderCredentialFieldID{"parameter"},
+		}},
+		CatalogAcquisition: catalogs.ProviderCredentialPlane{
+			Alternatives: []catalogs.ProviderCredentialProfileID{"unauthenticated"},
+		},
+		Inference: catalogs.ProviderCredentialPlane{
+			Alternatives: []catalogs.ProviderCredentialProfileID{"unauthenticated"},
 		},
 	}
 }

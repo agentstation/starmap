@@ -458,10 +458,8 @@ func TestProviderToStarmapProviderPreservesModelsDevMetadata(t *testing.T) {
 		provider.Catalog.Endpoint.Type != "" {
 		t.Fatalf("provider catalog = %#v", provider.Catalog)
 	}
-	if len(provider.EnvVars) != 1 ||
-		provider.EnvVars[0].Name != "EXAMPLE_API_KEY" ||
-		provider.EnvVars[0].Required {
-		t.Fatalf("provider env vars = %#v", provider.EnvVars)
+	if got := provider.Extensions["models.dev"].Fields["env"]; !reflect.DeepEqual(got, []any{"EXAMPLE_API_KEY"}) {
+		t.Fatalf("provider env extension = %#v", got)
 	}
 	if provider.Extensions["models.dev"].Fields["npm"] != "@ai-sdk/example" {
 		t.Fatalf("provider extensions = %#v", provider.Extensions)
@@ -541,10 +539,8 @@ func TestProcessFetchIncludesModelsWithNonCoreCostData(t *testing.T) {
 		provider.Catalog.Endpoint.Type != "" {
 		t.Fatalf("provider catalog = %#v", provider.Catalog)
 	}
-	if len(provider.EnvVars) != 1 ||
-		provider.EnvVars[0].Name != "PROVIDER_API_KEY" ||
-		provider.EnvVars[0].Required {
-		t.Fatalf("provider env vars = %#v", provider.EnvVars)
+	if got := provider.Extensions["models.dev"].Fields["env"]; !reflect.DeepEqual(got, []any{"PROVIDER_API_KEY"}) {
+		t.Fatalf("provider env extension = %#v", got)
 	}
 	if provider.Extensions["models.dev"].Fields["npm"] != "@ai-sdk/provider" {
 		t.Fatalf("provider extensions = %#v", provider.Extensions)

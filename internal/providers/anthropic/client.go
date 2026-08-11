@@ -11,11 +11,12 @@ import (
 
 	"github.com/agentstation/utc"
 
+	"github.com/agentstation/starmap/internal/constants"
 	"github.com/agentstation/starmap/internal/sourcepayload"
 	"github.com/agentstation/starmap/internal/transport"
 	"github.com/agentstation/starmap/pkg/catalogs"
-	"github.com/agentstation/starmap/internal/constants"
 	"github.com/agentstation/starmap/pkg/errors"
+	"github.com/agentstation/starmap/pkg/sources"
 )
 
 // Response structures for Anthropic API.
@@ -126,22 +127,39 @@ type Client struct {
 	mu        sync.RWMutex
 }
 
-// NewClient creates a new Anthropic client (kept for backward compatibility).
+// NewClient creates an Anthropic transport client.
 func NewClient(provider *catalogs.Provider) *Client {
 	return &Client{
 		provider:  provider,
-		transport: transport.New(provider),
+		transport: transport.New(),
 	}
 }
 
-// IsAPIKeyRequired returns true if the client requires an API key.
-func (c *Client) IsAPIKeyRequired() bool {
-	return c.provider.IsAPIKeyRequired()
-}
-
-// HasAPIKey returns true if the client has an API key.
-func (c *Client) HasAPIKey() bool {
-	return c.provider.HasAPIKey()
+// ValidateCatalogEndpoint validates the typed Anthropic catalog-acquisition contract.
+func ValidateCatalogEndpoint(provider *catalogs.Provider) error {
+	if provider == nil || provider.Catalog == nil {
+		return nil
+	}
+	endpoint := provider.Catalog.Endpoint
+	if len(endpoint.FieldMappings) != 0 {
+		return &errors.ValidationError{
+			Field: "field_mappings", Value: endpoint.FieldMappings,
+			Message: "Anthropic catalog acquisition does not expose configurable field mappings",
+		}
+	}
+	if len(endpoint.CapabilityMappings) != 0 {
+		return &errors.ValidationError{
+			Field: "capability_mappings", Value: endpoint.CapabilityMappings,
+			Message: "Anthropic catalog acquisition does not expose configurable capability mappings",
+		}
+	}
+	if endpoint.AuthorMapping != nil {
+		return &errors.ValidationError{
+			Field: "author_mapping", Value: endpoint.AuthorMapping,
+			Message: "Anthropic catalog acquisition does not expose configurable author mapping",
+		}
+	}
+	return nil
 }
 
 // Configure sets the provider for this client (used by registry pattern).
@@ -149,26 +167,28 @@ func (c *Client) Configure(provider *catalogs.Provider) {
 	c.mu.Lock()
 	defer c.mu.Unlock()
 	c.provider = provider
-	c.transport = transport.New(provider)
+	c.transport = transport.New()
 }
 
 // ListModels retrieves all available models from Anthropic.
-func (c *Client) ListModels(ctx context.Context) ([]catalogs.Model, error) {
+func (c *Client) ListModels(
+	ctx context.Context,
+	material sources.ProviderCredentialMaterial,
+) ([]catalogs.Model, error) {
 	c.mu.RLock()
 	provider := c.provider
 	c.mu.RUnlock()
 
 	if provider == nil {
 		return nil, &errors.ConfigError{
-			Component: "anthropic",
+			Component: "provider",
 			Message:   "provider not configured",
 		}
 	}
 
-	// Build URL - use provider's URL if available, otherwise use default
-	url := "https://api.anthropic.com/v1/models"
-	if rb := transport.NewRequestBuilder(provider); rb.GetBaseURL() != "" {
-		url = rb.GetBaseURL()
+	url, err := provider.BindCatalogEndpoint(material.EndpointBindings())
+	if err != nil {
+		return nil, err
 	}
 
 	// Create request
@@ -177,14 +197,11 @@ func (c *Client) ListModels(ctx context.Context) ([]catalogs.Model, error) {
 		return nil, errors.WrapResource("create", "request", url, err)
 	}
 
-	// Add Anthropic-specific headers
-	req.Header.Set("anthropic-version", "2023-06-01")
-
 	// Use transport layer for HTTP request with authentication
-	resp, err := c.transport.Do(req, provider)
+	resp, err := c.transport.Do(req, provider, material)
 	if err != nil {
 		return nil, &errors.APIError{
-			Provider: "anthropic",
+			Provider: string(provider.ID),
 			Endpoint: url,
 			Message:  "request failed",
 			Err:      err,
@@ -225,14 +242,6 @@ func (c *Client) convertToModel(m modelResponse) *catalogs.Model {
 		model.UpdatedAt = model.CreatedAt
 	}
 
-	// Set Anthropic as the author
-	model.Authors = []catalogs.Author{
-		{ID: catalogs.AuthorIDAnthropic, Name: "Anthropic"},
-	}
-
-	// Set basic features based on model ID patterns
-	// Note: Detailed limits and pricing will be enhanced by models.dev integration
-	model.Features = c.inferFeatures(m.ID)
 	c.applyResponseFields(&model, m)
 	if len(m.UnknownFields) > 0 {
 		if model.Extensions == nil {
@@ -263,14 +272,14 @@ func (c *Client) applyResponseFields(model *catalogs.Model, response modelRespon
 	if response.Capabilities == nil {
 		return
 	}
-	features := model.Features
-	if features == nil {
-		features = &catalogs.ModelFeatures{
-			Modalities: catalogs.ModelModalities{
-				Input:  []catalogs.ModelModality{catalogs.ModelModalityText},
-				Output: []catalogs.ModelModality{catalogs.ModelModalityText},
-			},
-		}
+	canonicalCapabilities := response.Capabilities.ImageInput.Supported ||
+		response.Capabilities.PDFInput.Supported ||
+		response.Capabilities.StructuredOutputs.Supported ||
+		response.Capabilities.Thinking.Supported ||
+		response.Capabilities.Effort.Supported
+	var features *catalogs.ModelFeatures
+	if canonicalCapabilities {
+		features = &catalogs.ModelFeatures{}
 		model.Features = features
 	}
 	if response.Capabilities.ImageInput.Supported {
@@ -362,57 +371,4 @@ func (c *Client) extensionSource() string {
 		return c.provider.ID.String()
 	}
 	return catalogs.ProviderIDAnthropic.String()
-}
-
-// inferFeatures infers model features based on the model ID.
-func (c *Client) inferFeatures(modelID string) *catalogs.ModelFeatures {
-	features := &catalogs.ModelFeatures{
-		Modalities: catalogs.ModelModalities{
-			Input:  []catalogs.ModelModality{catalogs.ModelModalityText},
-			Output: []catalogs.ModelModality{catalogs.ModelModalityText},
-		},
-		Temperature:    true,
-		TopP:           true,
-		TopK:           true,
-		MaxTokens:      true,
-		Stop:           true,
-		Streaming:      true,
-		Tools:          true,
-		ToolChoice:     true,
-		FormatResponse: true,
-	}
-
-	// Check for specific Claude model capabilities
-	switch {
-	case contains(modelID, "claude-3"):
-		features.Modalities.Input = []catalogs.ModelModality{
-			catalogs.ModelModalityText,
-			catalogs.ModelModalityImage,
-		}
-		features.StructuredOutputs = true
-		features.WebSearch = false
-	case contains(modelID, "claude-opus-4"):
-		features.Modalities.Input = []catalogs.ModelModality{
-			catalogs.ModelModalityText,
-			catalogs.ModelModalityImage,
-		}
-		features.StructuredOutputs = true
-		features.Reasoning = true
-		features.IncludeReasoning = true
-	case contains(modelID, "claude-2"):
-		features.StructuredOutputs = false
-		features.WebSearch = false
-	}
-
-	return features
-}
-
-// contains checks if a string contains a substring.
-func contains(s, substr string) bool {
-	for i := 0; i <= len(s)-len(substr); i++ {
-		if s[i:i+len(substr)] == substr {
-			return true
-		}
-	}
-	return false
 }

@@ -4,6 +4,7 @@ import (
 	"testing"
 
 	"github.com/agentstation/starmap/internal/catalog/authority"
+	"github.com/agentstation/starmap/internal/testcatalog"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/sources"
 )
@@ -113,12 +114,10 @@ func TestMergeProvidersUsesProviderAuthorities(t *testing.T) {
 	result, err := merger.Providers(map[sources.ID][]*catalogs.Provider{
 		sources.LocalCatalogID: {
 			{
-				ID:   "openai",
-				Name: "OpenAI Local",
-				APIKey: &catalogs.ProviderAPIKey{
-					Name:   "LOCAL_KEY",
-					Header: "Authorization",
-				},
+				ID: "openai", Name: "OpenAI Local",
+				Credentials: testcatalog.APIKeyCredentials(
+					"LOCAL_KEY", "Authorization", catalogs.ProviderCredentialSchemeBearer,
+				),
 				Catalog: &catalogs.ProviderCatalog{
 					Endpoint: catalogs.ProviderEndpoint{
 						Type: catalogs.EndpointTypeOpenAI,
@@ -129,12 +128,10 @@ func TestMergeProvidersUsesProviderAuthorities(t *testing.T) {
 		},
 		sources.ModelsDevHTTPID: {
 			{
-				ID:   "openai",
-				Name: "OpenAI models.dev",
-				APIKey: &catalogs.ProviderAPIKey{
-					Name:   "MODELS_DEV_KEY",
-					Header: "X-API-Key",
-				},
+				ID: "openai", Name: "OpenAI models.dev",
+				Credentials: testcatalog.APIKeyCredentials(
+					"MODELS_DEV_KEY", "X-API-Key", catalogs.ProviderCredentialSchemeDirect,
+				),
 				Catalog: &catalogs.ProviderCatalog{
 					Endpoint: catalogs.ProviderEndpoint{
 						Type: catalogs.EndpointTypeOpenAI,
@@ -155,8 +152,9 @@ func TestMergeProvidersUsesProviderAuthorities(t *testing.T) {
 	if provider.Name != "OpenAI models.dev" {
 		t.Fatalf("Expected observed provider name, got %q", provider.Name)
 	}
-	if provider.APIKey == nil || provider.APIKey.Name != "LOCAL_KEY" {
-		t.Fatalf("Expected local API key configuration, got %#v", provider.APIKey)
+	if provider.Credentials == nil ||
+		provider.Credentials.Fields[0].Environment[0] != "LOCAL_KEY" {
+		t.Fatalf("Expected local credential configuration, got %#v", provider.Credentials)
 	}
 	if provider.Catalog == nil || provider.Catalog.Endpoint.URL != localURL {
 		t.Fatalf("Expected local catalog endpoint, got %#v", provider.Catalog)

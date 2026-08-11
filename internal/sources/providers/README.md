@@ -27,11 +27,12 @@ Package providers implements the provider\-backed catalog source.
   - [func \(s \*Source\) Observe\(ctx context.Context, opts ...sources.Option\) \(sources.Observation, error\)](<#Source.Observe>)
 - [type SourceOption](<#SourceOption>)
   - [func WithClientFactory\(factory ClientFactory\) SourceOption](<#WithClientFactory>)
+  - [func WithCredentialResolver\(resolver sources.ProviderCredentialResolver\) SourceOption](<#WithCredentialResolver>)
   - [func WithMaxConcurrency\(maxConcurrency int\) SourceOption](<#WithMaxConcurrency>)
 
 
 <a name="ClientFactory"></a>
-## type [ClientFactory](<https://github.com/agentstation/starmap/blob/main/internal/sources/providers/providers.go#L22>)
+## type [ClientFactory](<https://github.com/agentstation/starmap/blob/main/internal/sources/providers/providers.go#L23>)
 
 ClientFactory creates a client for a provider.
 
@@ -40,7 +41,7 @@ type ClientFactory = sources.ProviderClientFactory
 ```
 
 <a name="Source"></a>
-## type [Source](<https://github.com/agentstation/starmap/blob/main/internal/sources/providers/providers.go#L34-L39>)
+## type [Source](<https://github.com/agentstation/starmap/blob/main/internal/sources/providers/providers.go#L36-L41>)
 
 Source fetches models from all provider APIs concurrently.
 
@@ -51,7 +52,7 @@ type Source struct {
 ```
 
 <a name="New"></a>
-### func [New](<https://github.com/agentstation/starmap/blob/main/internal/sources/providers/providers.go#L44>)
+### func [New](<https://github.com/agentstation/starmap/blob/main/internal/sources/providers/providers.go#L46>)
 
 ```go
 func New(providers catalogs.ProvidersReader, opts ...SourceOption) *Source
@@ -60,7 +61,7 @@ func New(providers catalogs.ProvidersReader, opts ...SourceOption) *Source
 New creates a new provider API source with the given provider configurations.
 
 <a name="Source.Cleanup"></a>
-### func \(\*Source\) [Cleanup](<https://github.com/agentstation/starmap/blob/main/internal/sources/providers/providers.go#L444>)
+### func \(\*Source\) [Cleanup](<https://github.com/agentstation/starmap/blob/main/internal/sources/providers/providers.go#L458>)
 
 ```go
 func (s *Source) Cleanup() error
@@ -69,7 +70,7 @@ func (s *Source) Cleanup() error
 Cleanup releases any resources.
 
 <a name="Source.Dependencies"></a>
-### func \(\*Source\) [Dependencies](<https://github.com/agentstation/starmap/blob/main/internal/sources/providers/providers.go#L451>)
+### func \(\*Source\) [Dependencies](<https://github.com/agentstation/starmap/blob/main/internal/sources/providers/providers.go#L465>)
 
 ```go
 func (s *Source) Dependencies() []sources.Dependency
@@ -78,7 +79,7 @@ func (s *Source) Dependencies() []sources.Dependency
 Dependencies returns the list of external dependencies. Provider source has no external dependencies.
 
 <a name="Source.ID"></a>
-### func \(\*Source\) [ID](<https://github.com/agentstation/starmap/blob/main/internal/sources/providers/providers.go#L79>)
+### func \(\*Source\) [ID](<https://github.com/agentstation/starmap/blob/main/internal/sources/providers/providers.go#L94>)
 
 ```go
 func (s *Source) ID() sources.ID
@@ -87,7 +88,7 @@ func (s *Source) ID() sources.ID
 ID returns the ID of this source.
 
 <a name="Source.IsOptional"></a>
-### func \(\*Source\) [IsOptional](<https://github.com/agentstation/starmap/blob/main/internal/sources/providers/providers.go#L457>)
+### func \(\*Source\) [IsOptional](<https://github.com/agentstation/starmap/blob/main/internal/sources/providers/providers.go#L471>)
 
 ```go
 func (s *Source) IsOptional() bool
@@ -96,7 +97,7 @@ func (s *Source) IsOptional() bool
 IsOptional returns whether this source is optional. Provider source is required \- it's the core data source.
 
 <a name="Source.Name"></a>
-### func \(\*Source\) [Name](<https://github.com/agentstation/starmap/blob/main/internal/sources/providers/providers.go#L82>)
+### func \(\*Source\) [Name](<https://github.com/agentstation/starmap/blob/main/internal/sources/providers/providers.go#L97>)
 
 ```go
 func (s *Source) Name() string
@@ -105,7 +106,7 @@ func (s *Source) Name() string
 Name returns the human\-friendly name of this source.
 
 <a name="Source.Observe"></a>
-### func \(\*Source\) [Observe](<https://github.com/agentstation/starmap/blob/main/internal/sources/providers/providers.go#L93>)
+### func \(\*Source\) [Observe](<https://github.com/agentstation/starmap/blob/main/internal/sources/providers/providers.go#L108>)
 
 ```go
 func (s *Source) Observe(ctx context.Context, opts ...sources.Option) (sources.Observation, error)
@@ -114,7 +115,7 @@ func (s *Source) Observe(ctx context.Context, opts ...sources.Option) (sources.O
 Observe returns a new immutable provider catalog without retaining result state.
 
 <a name="SourceOption"></a>
-## type [SourceOption](<https://github.com/agentstation/starmap/blob/main/internal/sources/providers/providers.go#L25>)
+## type [SourceOption](<https://github.com/agentstation/starmap/blob/main/internal/sources/providers/providers.go#L26>)
 
 SourceOption configures the provider source.
 
@@ -123,7 +124,7 @@ type SourceOption func(*sourceOptions)
 ```
 
 <a name="WithClientFactory"></a>
-### func [WithClientFactory](<https://github.com/agentstation/starmap/blob/main/internal/sources/providers/providers.go#L65>)
+### func [WithClientFactory](<https://github.com/agentstation/starmap/blob/main/internal/sources/providers/providers.go#L80>)
 
 ```go
 func WithClientFactory(factory ClientFactory) SourceOption
@@ -131,8 +132,17 @@ func WithClientFactory(factory ClientFactory) SourceOption
 
 WithClientFactory configures the factory used to create provider clients.
 
+<a name="WithCredentialResolver"></a>
+### func [WithCredentialResolver](<https://github.com/agentstation/starmap/blob/main/internal/sources/providers/providers.go#L71>)
+
+```go
+func WithCredentialResolver(resolver sources.ProviderCredentialResolver) SourceOption
+```
+
+WithCredentialResolver selects the deployment\-owned catalog credential resolver used for each provider observation.
+
 <a name="WithMaxConcurrency"></a>
-### func [WithMaxConcurrency](<https://github.com/agentstation/starmap/blob/main/internal/sources/providers/providers.go#L72>)
+### func [WithMaxConcurrency](<https://github.com/agentstation/starmap/blob/main/internal/sources/providers/providers.go#L87>)
 
 ```go
 func WithMaxConcurrency(maxConcurrency int) SourceOption

@@ -220,7 +220,9 @@ homebrew_casks:
       name: homebrew-tap
       git:
         url: ssh://git@github.com/agentstation/homebrew-tap.git
-        private_key: "{{ .Env.HOMEBREW_TAP_DEPLOY_KEY }}"
+        # Snapshot builds have no tap credentials. index returns an empty value
+        # for the missing key, while stable publication still supplies the key.
+        private_key: '{{ index .Env "HOMEBREW_TAP_DEPLOY_KEY" }}'
 
     # Never replace the stable cask with a release candidate.
     skip_upload: auto

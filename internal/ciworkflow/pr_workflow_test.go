@@ -113,8 +113,8 @@ func TestMakeVerifyUsesCanonicalVerificationScript(t *testing.T) {
 		`run make test-file-sizes`,
 		`run env CGO_ENABLED=1 go test ./... -race -short -timeout=20m`,
 		`CATALOG_PATH="$VERIFY_CATALOG_DATABASE_PATH" CATALOG_EXPORT_PATH="$VERIFY_CATALOG_PATH"`,
-		`-u GOOGLE_APPLICATION_CREDENTIALS`,
-		`-u GOOGLE_VERTEX_PROJECT`,
+		`env -i`,
+		`PATH="$PATH"`,
 		`CLOUDSDK_CONFIG="$VERIFY_HOME/.config/gcloud"`,
 		`HOME="$VERIFY_HOME"`,
 		`XDG_CONFIG_HOME="$VERIFY_HOME/.config"`,
@@ -125,6 +125,9 @@ func TestMakeVerifyUsesCanonicalVerificationScript(t *testing.T) {
 	}
 	if strings.Contains(verifyScript, "skipping golangci-lint") {
 		t.Fatal("repository verification must not silently skip its pinned linter")
+	}
+	if strings.Contains(verifyScript, "\n\t\t-u ") {
+		t.Fatal("credential-free verification must not maintain a provider environment roster")
 	}
 }
 

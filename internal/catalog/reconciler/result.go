@@ -29,9 +29,9 @@ type Result struct {
 	Provenance provenance.Map
 
 	// Issues
-	Errors               []error
-	Warnings             []string
-	ReconciliationIssues []catalogmeta.ReconciliationIssue
+	Errors           []error
+	Warnings         []string
+	ReviewCandidates []catalogmeta.ReviewCandidate
 }
 
 // ResultMetadata contains metadata about the reconciliation process.
@@ -106,12 +106,12 @@ func (r *Result) Summary() string {
 // NewResult creates a new result with defaults.
 func NewResult() *Result {
 	return &Result{
-		ProviderAPICounts:    make(map[catalogs.ProviderID]int),
-		ModelProviderMap:     make(map[string]catalogs.ProviderID),
-		Provenance:           make(provenance.Map),
-		Errors:               []error{},
-		Warnings:             []string{},
-		ReconciliationIssues: []catalogmeta.ReconciliationIssue{},
+		ProviderAPICounts: make(map[catalogs.ProviderID]int),
+		ModelProviderMap:  make(map[string]catalogs.ProviderID),
+		Provenance:        make(provenance.Map),
+		Errors:            []error{},
+		Warnings:          []string{},
+		ReviewCandidates:  []catalogmeta.ReviewCandidate{},
 		Metadata: ResultMetadata{
 			StartTime: time.Now(),
 			Sources:   []sources.ID{},

@@ -92,7 +92,7 @@ func TestHealthExposesCoalescedPublicationDelivery(t *testing.T) {
 				_ context.Context,
 				catalog *catalogs.Catalog,
 			) (*starmap.Candidate, error) {
-				return starmap.NewCandidate(catalog)
+				return starmap.NewCandidate(catalog, starmap.CandidateEvidence{})
 			},
 		); err != nil {
 			t.Fatalf("Update: %v", err)

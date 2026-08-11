@@ -11,16 +11,21 @@ import (
 	pkgsync "github.com/agentstation/starmap/pkg/sync"
 )
 
+type providerSourceComposition struct {
+	clientFactory      sources.ProviderClientFactory
+	credentialResolver sources.ProviderCredentialResolver
+}
+
 func filterSources(
 	options *pkgsync.Options,
 	inputs catalogInputs,
-	providerFactories ...sources.ProviderClientFactory,
+	composition providerSourceComposition,
 ) []sources.Source {
-	var providerFactory sources.ProviderClientFactory
-	if len(providerFactories) > 0 {
-		providerFactory = providerFactories[0]
-	}
-	configuredSources := createSourcesWithConfig(options, inputs, providerFactory)
+	configuredSources := createSourcesWithConfig(
+		options,
+		inputs,
+		composition,
+	)
 	if options.Fresh {
 		configuredSources = slices.DeleteFunc(configuredSources, func(src sources.Source) bool {
 			return src.ID() == sources.LocalCatalogID
@@ -43,18 +48,15 @@ func filterSources(
 func createSourcesWithConfig(
 	options *pkgsync.Options,
 	inputs catalogInputs,
-	providerFactories ...sources.ProviderClientFactory,
+	composition providerSourceComposition,
 ) []sources.Source {
-	var providerFactory sources.ProviderClientFactory
-	if len(providerFactories) > 0 {
-		providerFactory = providerFactories[0]
-	}
 	configuredProviders := inputs.providerConfig.Providers()
 	srcs := []sources.Source{
 		embeddedsrc.New(inputs.embedded),
 		providers.New(
 			configuredProviders,
-			providers.WithClientFactory(providerFactory),
+			providers.WithClientFactory(composition.clientFactory),
+			providers.WithCredentialResolver(composition.credentialResolver),
 		),
 	}
 	if inputs.workspaceInput.Exists {

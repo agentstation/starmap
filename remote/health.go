@@ -27,9 +27,9 @@ const (
 	StreamStateStopped StreamState = "stopped"
 )
 
-// HealthError is a secret-free classification of the latest subscriber error.
-// It deliberately excludes endpoint URLs, response bodies, and wrapped error
-// text because those values can contain credentials or publisher details.
+// HealthError describes the latest subscriber error without secrets. It
+// excludes endpoint URLs, response bodies, and wrapped error text. Those values
+// can contain credentials or publisher details.
 type HealthError struct {
 	Operation  string    `json:"operation"`
 	Kind       string    `json:"kind"`
@@ -60,12 +60,12 @@ func (s *Subscriber) Health() Health {
 		return Health{StreamState: StreamStateStopped}
 	}
 	now := s.currentTime()
-	s.activationMu.Lock()
+	state := s.State()
 	s.mu.Lock()
 	health := Health{
 		StreamState:             s.streamState,
-		ActiveGenerationID:      s.active.id,
-		CatalogGeneratedAt:      s.active.generatedAt,
+		ActiveGenerationID:      state.GenerationID,
+		CatalogGeneratedAt:      state.GeneratedAt,
 		LastHeartbeatAt:         s.lastHeartbeatAt,
 		LastEventAt:             s.lastEventAt,
 		LastSuccessfulCatchUpAt: s.lastCatchUpAt,
@@ -77,7 +77,6 @@ func (s *Subscriber) Health() Health {
 		health.LastError = &lastError
 	}
 	s.mu.Unlock()
-	s.activationMu.Unlock()
 	if !health.CatalogGeneratedAt.IsZero() {
 		health.CatalogAgeSeconds = int64(now.Sub(health.CatalogGeneratedAt) / time.Second)
 	}

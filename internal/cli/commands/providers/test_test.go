@@ -10,7 +10,10 @@ import (
 
 	"github.com/rs/zerolog"
 
+	"github.com/agentstation/starmap/internal/auth"
+	"github.com/agentstation/starmap/internal/testcatalog"
 	"github.com/agentstation/starmap/pkg/catalogs"
+	"github.com/agentstation/starmap/pkg/sources"
 )
 
 type testApplication struct {
@@ -31,7 +34,11 @@ func (app testApplication) OutputFormat() string {
 	return app.output
 }
 
-func TestProviderCredentialJSONKeepsProgressOnStderr(t *testing.T) {
+func (app testApplication) CredentialResolver() (sources.ProviderCredentialResolver, error) {
+	return auth.NewResolver(), nil
+}
+
+func TestYAMLOnlyProviderCredentialJSONKeepsProgressOnStderr(t *testing.T) {
 	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, _ *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
 		_, _ = w.Write([]byte(`{"data":[{"id":"test-model","object":"model","owned_by":"test"}]}`))
@@ -43,18 +50,15 @@ func TestProviderCredentialJSONKeepsProgressOnStderr(t *testing.T) {
 
 	builder := catalogs.NewEmpty()
 	if err := builder.SetProvider(catalogs.Provider{
-		ID:   "openai",
-		Name: "OpenAI",
-		APIKey: &catalogs.ProviderAPIKey{
-			Name:   apiKeyEnvironment,
-			Header: "Authorization",
-			Scheme: catalogs.ProviderAPIKeySchemeBearer,
-		},
+		ID: "yaml-only", Name: "YAML-only provider",
+		Credentials: testcatalog.APIKeyCredentials(
+			apiKeyEnvironment, "Authorization", catalogs.ProviderCredentialSchemeBearer,
+		),
 		Catalog: &catalogs.ProviderCatalog{
-			Auth: catalogs.ProviderCatalogAuth{Method: catalogs.ProviderCatalogAuthAPIKey, Required: true},
 			Endpoint: catalogs.ProviderEndpoint{
-				Type: catalogs.EndpointTypeOpenAI,
-				URL:  server.URL,
+				Type:            catalogs.EndpointTypeOpenAI,
+				URL:             server.URL,
+				ProtocolOptions: testcatalog.OpenAIProtocolOptions(),
 			},
 		},
 	}); err != nil {
@@ -75,7 +79,7 @@ func TestProviderCredentialJSONKeepsProgressOnStderr(t *testing.T) {
 	command.SetOut(&stdout)
 	command.SetErr(&stderr)
 	command.Flags().Bool("verbose", false, "test root verbose flag")
-	command.SetArgs([]string{"openai", "--test"})
+	command.SetArgs([]string{"yaml-only", "--test"})
 
 	if err := command.Execute(); err != nil {
 		t.Fatalf("Execute: %v\nstderr:\n%s", err, stderr.String())
@@ -86,7 +90,7 @@ func TestProviderCredentialJSONKeepsProgressOnStderr(t *testing.T) {
 	if strings.Contains(stdout.String(), "Testing") || strings.Contains(stdout.String(), "successful") {
 		t.Fatalf("stdout contains progress text:\n%s", stdout.String())
 	}
-	if !strings.Contains(stderr.String(), "Testing openai credentials") ||
+	if !strings.Contains(stderr.String(), "Testing yaml-only credentials") ||
 		!strings.Contains(stderr.String(), "Test successful") {
 		t.Fatalf("stderr lacks credential-test progress:\n%s", stderr.String())
 	}

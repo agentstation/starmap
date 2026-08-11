@@ -4,9 +4,11 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 
 	"github.com/agentstation/starmap/internal/providers/openai"
 	"github.com/agentstation/starmap/internal/providers/testhelper"
+	"github.com/agentstation/starmap/internal/testcatalog"
 	"github.com/agentstation/starmap/pkg/catalogs"
 )
 
@@ -22,18 +24,15 @@ func TestCerebrasWithUnifiedClient(t *testing.T) {
 
 	// Create Cerebras-configured provider (uses OpenAI-compatible API)
 	provider := &catalogs.Provider{
-		ID:   catalogs.ProviderIDCerebras,
-		Name: "Cerebras",
-		APIKey: &catalogs.ProviderAPIKey{
-			Name:   "CEREBRAS_API_KEY",
-			Header: "Authorization",
-			Scheme: "Bearer",
-		},
+		ID: catalogs.ProviderIDCerebras, Name: "Cerebras",
+		Credentials: testcatalog.APIKeyCredentials(
+			"CEREBRAS_API_KEY", "Authorization", catalogs.ProviderCredentialSchemeBearer,
+		),
 		Catalog: &catalogs.ProviderCatalog{
-			Auth: catalogs.ProviderCatalogAuth{Method: catalogs.ProviderCatalogAuthAPIKey, Required: true},
 			Endpoint: catalogs.ProviderEndpoint{
-				Type: catalogs.EndpointTypeOpenAI,
-				URL:  "https://api.cerebras.ai/v1/models",
+				Type:            catalogs.EndpointTypeOpenAI,
+				URL:             "https://api.cerebras.ai/v1/models",
+				ProtocolOptions: testcatalog.OpenAIProtocolOptions(),
 				// Cerebras might have different field mappings than Groq
 			},
 		},
@@ -46,7 +45,8 @@ func TestCerebrasWithUnifiedClient(t *testing.T) {
 
 	// Test conversion of all models in testdata
 	for _, modelData := range response.Data {
-		converted := client.ConvertToModel(modelData)
+		converted, err := client.ConvertToModel(modelData)
+		require.NoError(t, err)
 		assert.NotEmpty(t, converted.ID, "Model ID should be set for model: %s", modelData.ID)
 		assert.NotEmpty(t, converted.Name, "Model Name should be set for model: %s", modelData.ID)
 	}

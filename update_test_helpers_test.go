@@ -24,7 +24,7 @@ func catalogUpdate(
 		if err != nil {
 			return nil, err
 		}
-		return NewCandidate(catalog)
+		return NewCandidate(catalog, CandidateEvidence{})
 	}
 }
 

@@ -7,16 +7,16 @@ import (
 	"github.com/agentstation/starmap/internal/constants"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/errors"
+	"github.com/agentstation/starmap/pkg/sources"
 )
 
 // Client provides HTTP client functionality with authentication.
 type Client struct {
 	http *http.Client
-	auth Authenticator
 }
 
-// New creates a new transport client with the specified authenticator.
-func New(provider *catalogs.Provider) *Client {
+// New creates a provider HTTP client.
+func New() *Client {
 	return &Client{
 		http: &http.Client{
 			Timeout: constants.DefaultHTTPTimeout,
@@ -27,39 +27,33 @@ func New(provider *catalogs.Provider) *Client {
 				return http.ErrUseLastResponse
 			},
 		},
-		auth: newAuthenticator(provider),
 	}
 }
 
 // Do performs an HTTP request with authentication applied.
-func (c *Client) Do(req *http.Request, provider *catalogs.Provider) (*http.Response, error) {
-	return c.DoWithContext(req.Context(), req, provider)
+func (c *Client) Do(
+	req *http.Request,
+	provider *catalogs.Provider,
+	material sources.ProviderCredentialMaterial,
+) (*http.Response, error) {
+	return c.DoWithContext(req.Context(), req, provider, material)
 }
 
 // DoWithContext performs an HTTP request with authentication applied and context support.
 // The provided context will be used for the request, overriding any existing context in req.
-func (c *Client) DoWithContext(ctx context.Context, req *http.Request, provider *catalogs.Provider) (*http.Response, error) {
+func (c *Client) DoWithContext(
+	ctx context.Context,
+	req *http.Request,
+	provider *catalogs.Provider,
+	material sources.ProviderCredentialMaterial,
+) (*http.Response, error) {
 	// Clone the request with the provided context to ensure context is respected
 	req = req.Clone(ctx)
 
-	// Apply authentication if provider has API key
 	if provider != nil {
-		apiKey, err := provider.APIKeyValue()
-		if err != nil {
-			return nil, &errors.AuthenticationError{
-				Provider: string(provider.ID),
-				Method:   "api_key",
-				Message:  "failed to retrieve API key",
-				Err:      err,
-			}
-		}
-		if apiKey != "" {
-			c.auth.Apply(req, apiKey)
-		}
-
-		// Apply provider-specific headers
+		applyCredentialMaterial(req, material)
 		rb := NewRequestBuilder(provider)
-		rb.AddProviderHeaders(req)
+		rb.AddCatalogProtocolHeaders(req)
 	}
 
 	// Set common headers
@@ -69,7 +63,7 @@ func (c *Client) DoWithContext(ctx context.Context, req *http.Request, provider 
 	}
 
 	response, err := c.http.Do(req) //nolint:gosec // Provider endpoints are trusted catalog configuration or caller-supplied integration points.
-	if err != nil && providerUsesQueryAuthentication(provider) {
+	if err != nil && materialUsesQueryAuthentication(material) {
 		// net/http errors include the request URL. Query-authenticated URLs
 		// contain the credential, so retain cancellation semantics but never
 		// expose the transport error or URL through the returned error graph.
@@ -85,26 +79,24 @@ func (c *Client) DoWithContext(ctx context.Context, req *http.Request, provider 
 }
 
 // Get performs a GET request.
-func (c *Client) Get(ctx context.Context, url string, provider *catalogs.Provider) (*http.Response, error) {
+func (c *Client) Get(
+	ctx context.Context,
+	url string,
+	provider *catalogs.Provider,
+	material sources.ProviderCredentialMaterial,
+) (*http.Response, error) {
 	req, err := http.NewRequestWithContext(ctx, "GET", url, nil)
 	if err != nil {
 		return nil, errors.WrapResource("create", "request", "GET "+url, err)
 	}
-	return c.DoWithContext(ctx, req, provider)
+	return c.DoWithContext(ctx, req, provider, material)
 }
 
-// newAuthenticator returns the appropriate authenticator for a provider.
-func newAuthenticator(provider *catalogs.Provider) Authenticator {
-	if provider == nil {
-		return &NoAuth{}
+func materialUsesQueryAuthentication(material sources.ProviderCredentialMaterial) bool {
+	for _, placement := range material.Profile().Placements {
+		if placement.Kind == catalogs.ProviderCredentialPlacementQuery {
+			return true
+		}
 	}
-
-	// Use ProviderAuth to read authentication configuration from YAML
-	return &ProviderAuth{Provider: provider}
-}
-
-func providerUsesQueryAuthentication(provider *catalogs.Provider) bool {
-	return provider != nil &&
-		provider.APIKey != nil &&
-		provider.APIKey.QueryParam != ""
+	return false
 }

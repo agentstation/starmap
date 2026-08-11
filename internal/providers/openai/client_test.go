@@ -31,6 +31,15 @@ func newTestClient(t testing.TB, provider *catalogs.Provider) *Client {
 	return client
 }
 
+func mustConvertModel(t testing.TB, client *Client, model Model) *catalogs.Model {
+	t.Helper()
+	converted, err := client.ConvertToModel(model)
+	if err != nil {
+		t.Fatalf("ConvertToModel: %v", err)
+	}
+	return converted
+}
+
 // loadTestdataResponse loads an OpenAI API response from testdata.
 func loadTestdataResponse(t *testing.T, filename string) Response {
 	t.Helper()
@@ -213,29 +222,14 @@ func TestOpenAISingleModelParsing(t *testing.T) {
 
 // TestConvertToOpenAIModel tests the conversion from OpenAIModelData to catalogs.Model.
 func TestConvertToOpenAIModel(t *testing.T) {
-	// Create a test provider with feature rules
+	// Create a provider without model-fact mappings.
 	provider := &catalogs.Provider{
 		ID:   catalogs.ProviderIDOpenAI,
 		Name: "OpenAI",
 		Catalog: &catalogs.ProviderCatalog{
-			Auth: catalogs.ProviderCatalogAuth{Method: catalogs.ProviderCatalogAuthAPIKey, Required: true},
 			Endpoint: catalogs.ProviderEndpoint{
 				Type: catalogs.EndpointTypeOpenAI,
 				URL:  "https://api.openai.com/v1/models",
-				FeatureRules: []catalogs.FeatureRule{
-					{
-						Field:    "id",
-						Contains: []string{"gpt-4"},
-						Feature:  "tools",
-						Value:    true,
-					},
-					{
-						Field:    "id",
-						Contains: []string{"gpt-4"},
-						Feature:  "tool_choice",
-						Value:    true,
-					},
-				},
 			},
 		},
 	}
@@ -252,7 +246,7 @@ func TestConvertToOpenAIModel(t *testing.T) {
 	}
 
 	// Convert to starmap model
-	model := client.ConvertToModel(openaiModel)
+	model := mustConvertModel(t, client, openaiModel)
 
 	// Verify basic fields
 	if model.ID != "gpt-4o" {
@@ -263,28 +257,12 @@ func TestConvertToOpenAIModel(t *testing.T) {
 		t.Errorf("Expected Name 'gpt-4o', got '%s'", model.Name)
 	}
 
-	// OpenAI models should have some basic features inferred
-	if model.Features == nil {
-		t.Fatal("Expected Features to be set")
-	}
-
-	// GPT-4o should support tools
-	if !model.Features.Tools {
-		t.Error("Expected Tools to be true for GPT-4o")
-	}
-
-	// GPT-4o should have basic text modalities
-	if len(model.Features.Modalities.Input) == 0 {
-		t.Fatal("Expected Modalities.Input to be set")
-	}
-
-	hasTextInput := slices.Contains(model.Features.Modalities.Input, catalogs.ModelModalityText)
-	if !hasTextInput {
-		t.Error("Expected GPT-4o to support text input")
+	if len(model.Authors) != 0 || model.Features != nil {
+		t.Fatalf("inferred model facts = authors %#v, features %#v", model.Authors, model.Features)
 	}
 }
 
-func TestMappedZeroAndFalseValuesRemainExplicitSourceClaims(t *testing.T) {
+func TestMappedZeroValuesRemainExplicitSourceClaims(t *testing.T) {
 	client := &Client{}
 	model := &catalogs.Model{ID: "presence", Name: "Presence"}
 	client.applyMappedField(model, "limits.context_window", int64(0))
@@ -296,30 +274,47 @@ func TestMappedZeroAndFalseValuesRemainExplicitSourceClaims(t *testing.T) {
 	if value, state := model.DescriptionValue(); value != "" || state != catalogs.ValueKnown {
 		t.Fatalf("description = %q, %v; want empty, known", value, state)
 	}
+}
 
-	features := &catalogs.ModelFeatures{}
-	client.applyFeatureRule(features, Model{ID: "presence"}, catalogs.FeatureRule{
-		Field: "id", Contains: []string{"presence"}, Feature: "tools", Value: false,
-	})
-	if value, state := features.Support(catalogs.ModelFeatureTools); value || state != catalogs.ValueKnown {
-		t.Fatalf("tools = %v, %v; want false, known", value, state)
+func TestFieldMappingUsesFirstPresentSourceForEachDestination(t *testing.T) {
+	provider := &catalogs.Provider{
+		ID: "priority", Name: "Priority",
+		Catalog: &catalogs.ProviderCatalog{Endpoint: catalogs.ProviderEndpoint{
+			Type: catalogs.EndpointTypeOpenAI,
+			FieldMappings: []catalogs.FieldMapping{
+				{From: "context_window", To: "limits.context_window"},
+				{From: "context_length", To: "limits.context_window"},
+			},
+		}},
 	}
+	client := newTestClient(t, provider)
+	primary := int64(8192)
+	fallback := int64(4096)
+	model := mustConvertModel(t, client, Model{ID: "both", ContextWindow: &primary, ContextLength: &fallback})
+	if model.Limits == nil || model.Limits.ContextWindow != primary {
+		t.Fatalf("both limits = %#v, want first present %d", model.Limits, primary)
+	}
+	model = mustConvertModel(t, client, Model{ID: "fallback", ContextLength: &fallback})
+	if model.Limits == nil || model.Limits.ContextWindow != fallback {
+		t.Fatalf("fallback limits = %#v, want %d", model.Limits, fallback)
+	}
+}
 
-	explicitFalse := false
-	providerModel := &catalogs.Model{ID: "provider-presence", Name: "Provider Presence"}
-	client.applyProviderFeatures(providerModel, Model{
-		SupportsTools:     &explicitFalse,
-		SupportsReasoning: &explicitFalse,
+func TestUnmappedProviderLimitExtensionsRemainUnknown(t *testing.T) {
+	provider := &catalogs.Provider{
+		ID: "unmapped", Name: "Unmapped",
+		Catalog: &catalogs.ProviderCatalog{Endpoint: catalogs.ProviderEndpoint{
+			Type: catalogs.EndpointTypeOpenAI,
+		}},
+	}
+	client := newTestClient(t, provider)
+	contextWindow := int64(8192)
+	outputTokens := int64(1024)
+	model := mustConvertModel(t, client, Model{
+		ID: "unmapped", ContextWindow: &contextWindow, MaxCompletionTokens: &outputTokens,
 	})
-	for _, feature := range []catalogs.ModelFeature{
-		catalogs.ModelFeatureTools,
-		catalogs.ModelFeatureToolCalls,
-		catalogs.ModelFeatureToolChoice,
-		catalogs.ModelFeatureReasoning,
-	} {
-		if value, state := providerModel.Features.Support(feature); value || state != catalogs.ValueKnown {
-			t.Fatalf("%s = %v, %v; want false, known", feature, value, state)
-		}
+	if model.Limits != nil {
+		t.Fatalf("unmapped limits = %#v, want nil", model.Limits)
 	}
 }
 
@@ -379,7 +374,7 @@ func TestConvertToModelWithWildcardAuthorMapping(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			model := client.ConvertToModel(Model{
+			model := mustConvertModel(t, client, Model{
 				ID:      tt.id,
 				Object:  "model",
 				OwnedBy: "aggregator",
@@ -413,7 +408,7 @@ func TestConvertToModelPreservesUnknownAuthorshipWhenExplicitMappingMisses(t *te
 	}
 	client := newTestClient(t, provider)
 
-	model := client.ConvertToModel(Model{
+	model := mustConvertModel(t, client, Model{
 		ID:      "baichuan2-turbo",
 		Object:  "model",
 		OwnedBy: "system",
@@ -437,14 +432,6 @@ func TestConvertToModelWithNestedProviderMetadata(t *testing.T) {
 					{From: "metadata.context_length", To: "limits.context_window"},
 					{From: "metadata.tags", To: "metadata.tags"},
 				},
-				FeatureRules: []catalogs.FeatureRule{
-					{
-						Field:    "metadata.tags",
-						Contains: []string{"reasoning"},
-						Feature:  "reasoning",
-						Value:    true,
-					},
-				},
 				AuthorMapping: &catalogs.AuthorMapping{
 					Field: "id",
 					Normalized: map[string]catalogs.AuthorID{
@@ -456,7 +443,7 @@ func TestConvertToModelWithNestedProviderMetadata(t *testing.T) {
 	}
 	client := newTestClient(t, provider)
 
-	model := client.ConvertToModel(Model{
+	model := mustConvertModel(t, client, Model{
 		ID:      "deepseek-ai/DeepSeek-V3.2",
 		Object:  "model",
 		OwnedBy: "deepinfra",
@@ -479,8 +466,8 @@ func TestConvertToModelWithNestedProviderMetadata(t *testing.T) {
 	if model.Metadata.Tags[0] != catalogs.ModelTagChat || model.Metadata.Tags[1] != catalogs.ModelTagReasoning {
 		t.Fatalf("Unexpected tags: %#v", model.Metadata.Tags)
 	}
-	if model.Features == nil || !model.Features.Reasoning {
-		t.Fatalf("Expected reasoning feature from metadata tags, got %#v", model.Features)
+	if model.Features != nil {
+		t.Fatalf("metadata tag inferred features: %#v", model.Features)
 	}
 	if len(model.Authors) != 1 || model.Authors[0].ID != catalogs.AuthorIDDeepSeek {
 		t.Fatalf("Expected DeepSeek author, got %#v", model.Authors)
@@ -502,7 +489,7 @@ func TestConvertToModelSkipsNilMappedProviderMetadata(t *testing.T) {
 	}
 	client := newTestClient(t, provider)
 
-	model := client.ConvertToModel(Model{
+	model := mustConvertModel(t, client, Model{
 		ID:      "provider/model",
 		Object:  "model",
 		OwnedBy: "deepinfra",
@@ -532,7 +519,7 @@ func TestConvertToModelMapsInputTokenLimit(t *testing.T) {
 	}
 	client := newTestClient(t, provider)
 
-	model := client.ConvertToModel(Model{
+	model := mustConvertModel(t, client, Model{
 		ID:              "provider-model",
 		Object:          "model",
 		OwnedBy:         "provider",
@@ -557,7 +544,7 @@ func TestConvertToModelMapsLineage(t *testing.T) {
 	client := newTestClient(t, provider)
 	parent := "gpt-4o-base"
 
-	model := client.ConvertToModel(Model{
+	model := mustConvertModel(t, client, Model{
 		ID:      "gpt-4o-finetuned",
 		Object:  "model",
 		OwnedBy: "system",
@@ -581,6 +568,15 @@ func TestConvertToModelPreservesOpenAICompatibleProviderFields(t *testing.T) {
 		Catalog: &catalogs.ProviderCatalog{
 			Endpoint: catalogs.ProviderEndpoint{
 				Type: catalogs.EndpointTypeOpenAI,
+				FieldMappings: []catalogs.FieldMapping{
+					{From: "context_window", To: "limits.context_window"},
+					{From: "max_output_length", To: "limits.output_tokens"},
+				},
+				ProtocolOptions: catalogs.ProviderCatalogProtocolOptions{
+					OpenAI: &catalogs.ProviderOpenAICatalogProtocolOptions{
+						TokenPriceUnit: catalogs.ProviderTokenPriceUnitPerToken,
+					},
+				},
 			},
 		},
 	}
@@ -598,7 +594,7 @@ func TestConvertToModelPreservesOpenAICompatibleProviderFields(t *testing.T) {
 	requestPrice := 0.0
 	imagePrice := 0.003
 
-	model := client.ConvertToModel(Model{
+	model := mustConvertModel(t, client, Model{
 		ID:                          "llama-3.3-70b-versatile",
 		Object:                      "model",
 		Name:                        "Llama 3.3 70B Versatile",
@@ -671,6 +667,10 @@ func TestConvertToModelPreservesMetadataMediaDefaultsAndPermissions(t *testing.T
 		Catalog: &catalogs.ProviderCatalog{
 			Endpoint: catalogs.ProviderEndpoint{
 				Type: catalogs.EndpointTypeOpenAI,
+				FieldMappings: []catalogs.FieldMapping{
+					{From: "metadata.description", To: "description"},
+					{From: "metadata.context_length", To: "limits.context_window"},
+				},
 			},
 		},
 	}
@@ -692,7 +692,7 @@ func TestConvertToModelPreservesMetadataMediaDefaultsAndPermissions(t *testing.T
 	supportsReasoning := true
 	group := "public"
 
-	model := client.ConvertToModel(Model{
+	model := mustConvertModel(t, client, Model{
 		ID:                 "black-forest-labs/FLUX-1-schnell",
 		Object:             "model",
 		OwnedBy:            "black-forest-labs",
@@ -732,10 +732,14 @@ func TestConvertToModelPreservesMetadataMediaDefaultsAndPermissions(t *testing.T
 		t.Fatalf("limits = %#v", model.Limits)
 	}
 	if !containsOpenAITestModality(model.Features.Modalities.Input, catalogs.ModelModalityImage) ||
-		!containsOpenAITestModality(model.Features.Modalities.Input, catalogs.ModelModalityVideo) ||
-		!model.Features.Tools ||
-		!model.Features.Reasoning {
+		!containsOpenAITestModality(model.Features.Modalities.Input, catalogs.ModelModalityVideo) {
 		t.Fatalf("features = %#v", model.Features)
+	}
+	if _, state := model.Features.Support(catalogs.ModelFeatureTools); state != catalogs.ValueMissing {
+		t.Fatalf("unmapped supports_tools state = %v, want missing", state)
+	}
+	if _, state := model.Features.Support(catalogs.ModelFeatureReasoning); state != catalogs.ValueMissing {
+		t.Fatalf("unmapped supports_reasoning state = %v, want missing", state)
 	}
 	if model.Pricing == nil ||
 		model.Pricing.Tokens == nil ||
@@ -827,14 +831,14 @@ func TestConvertToModelWithNilCatalogProvider(t *testing.T) {
 		Name: "Minimal",
 	})
 
-	model := client.ConvertToModel(Model{
+	model := mustConvertModel(t, client, Model{
 		ID:      "gpt-4o",
 		Object:  "model",
 		OwnedBy: "openai",
 	})
 
-	if len(model.Authors) != 1 || model.Authors[0].ID != catalogs.AuthorIDOpenAI {
-		t.Fatalf("Expected OpenAI fallback author, got %#v", model.Authors)
+	if len(model.Authors) != 0 {
+		t.Fatalf("authors = %#v, want no fallback author", model.Authors)
 	}
 }
 
@@ -850,7 +854,7 @@ func TestConvertToModelMapsInactiveProviderFlagToUnknown(t *testing.T) {
 		},
 	})
 
-	model := client.ConvertToModel(Model{
+	model := mustConvertModel(t, client, Model{
 		ID:      "temporarily-inactive",
 		Object:  "model",
 		OwnedBy: "provider",
@@ -903,36 +907,12 @@ func TestOpenAIClientListModels(t *testing.T) {
 	defer os.Unsetenv("OPENAI_API_KEY")
 
 	// Create an OpenAI client with mock provider
-	provider := &catalogs.Provider{
-		ID:   catalogs.ProviderIDOpenAI,
-		Name: "OpenAI",
-		APIKey: &catalogs.ProviderAPIKey{
-			Name:   "OPENAI_API_KEY",
-			Header: "Authorization",
-			Scheme: catalogs.ProviderAPIKeySchemeBearer,
-		},
-		Catalog: &catalogs.ProviderCatalog{
-			Auth: catalogs.ProviderCatalogAuth{Method: catalogs.ProviderCatalogAuthAPIKey, Required: true},
-			Endpoint: catalogs.ProviderEndpoint{
-				Type: catalogs.EndpointTypeOpenAI,
-				URL:  server.URL,
-				FeatureRules: []catalogs.FeatureRule{
-					{
-						Field:    "id",
-						Contains: []string{"gpt-4"},
-						Feature:  "tools",
-						Value:    true,
-					},
-				},
-			},
-		},
-	}
-
+	provider := testOpenAIProvider(server.URL)
 	client := newTestClient(t, provider)
 
 	// Test ListModels
 	ctx := context.Background()
-	models, err := client.ListModels(ctx)
+	models, err := client.ListModels(ctx, testOpenAIMaterial(provider, "test-api-key"))
 	if err != nil {
 		t.Fatalf("ListModels failed: %v", err)
 	}
@@ -964,13 +944,8 @@ func TestOpenAIClientListModels(t *testing.T) {
 		t.Errorf("Expected test model Name to be 'gpt-4o', got '%s'", testModel.Name)
 	}
 
-	// Test that we have proper features for GPT-4o
-	if testModel.Features == nil {
-		t.Fatal("Expected test model to have Features")
-	}
-
-	if !testModel.Features.Tools {
-		t.Error("Expected gpt-4o to support tools")
+	if testModel.Features != nil {
+		t.Fatalf("model ID inferred features: %#v", testModel.Features)
 	}
 }
 
@@ -996,11 +971,13 @@ func TestSchemaDriftMutationMatrix(t *testing.T) {
 				_, _ = w.Write([]byte(test.payload))
 			}))
 			defer server.Close()
-			client := newTestClient(t, &catalogs.Provider{
-				ID: "test", Name: "Test",
-				Catalog: &catalogs.ProviderCatalog{Endpoint: catalogs.ProviderEndpoint{Type: catalogs.EndpointTypeOpenAI, URL: server.URL}},
-			})
-			models, err := client.ListModels(context.Background())
+			provider := testOpenAIProvider(server.URL)
+			provider.ID = "test"
+			provider.Name = "Test"
+			client := newTestClient(t, provider)
+			models, err := client.ListModels(
+				context.Background(), testOpenAIMaterial(provider, "test-api-key"),
+			)
 			if test.wantErr && err == nil {
 				t.Fatal("ListModels returned nil error")
 			}

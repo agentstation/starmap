@@ -5,9 +5,9 @@ import (
 	"io"
 	"net/http"
 
+	"github.com/agentstation/starmap/internal/constants"
 	"github.com/agentstation/starmap/internal/sourcepayload"
 	"github.com/agentstation/starmap/pkg/catalogs"
-	"github.com/agentstation/starmap/internal/constants"
 	"github.com/agentstation/starmap/pkg/errors"
 	"github.com/agentstation/starmap/pkg/logging"
 )
@@ -22,31 +22,17 @@ func NewRequestBuilder(provider *catalogs.Provider) *RequestBuilder {
 	return &RequestBuilder{provider: provider}
 }
 
-// GetBaseURL returns the base URL for API requests.
-func (rb *RequestBuilder) GetBaseURL() string {
-	if rb.provider != nil && rb.provider.Catalog != nil {
-		return rb.provider.CatalogEndpointURL()
-	}
-	return ""
-}
-
-// GetModelsURL returns the URL for listing models.
-func (rb *RequestBuilder) GetModelsURL(defaultURL string) string {
-	if baseURL := rb.GetBaseURL(); baseURL != "" {
-		return baseURL
-	}
-	return defaultURL
-}
-
-// AddProviderHeaders adds provider-specific headers to a request.
-func (rb *RequestBuilder) AddProviderHeaders(req *http.Request) {
-	if rb.provider == nil {
+// AddCatalogProtocolHeaders adds typed wire-protocol headers to a request.
+func (rb *RequestBuilder) AddCatalogProtocolHeaders(req *http.Request) {
+	if rb.provider == nil || rb.provider.Catalog == nil {
 		return
 	}
-
-	switch rb.provider.ID {
-	case catalogs.ProviderIDAnthropic:
-		req.Header.Set("anthropic-version", "2023-06-01")
+	endpoint := rb.provider.Catalog.Endpoint
+	switch endpoint.Type {
+	case catalogs.EndpointTypeAnthropic:
+		if options := endpoint.ProtocolOptions.Anthropic; options != nil {
+			req.Header.Set("anthropic-version", options.Version)
+		}
 	}
 }
 

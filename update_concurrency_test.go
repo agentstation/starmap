@@ -21,7 +21,7 @@ func TestQueuedUpdateHonorsContextCancellation(t *testing.T) {
 		entered <- struct{}{}
 		select {
 		case <-release:
-			return NewCandidate(catalog)
+			return NewCandidate(catalog, CandidateEvidence{})
 		case <-ctx.Done():
 			return nil, ctx.Err()
 		}
@@ -87,7 +87,7 @@ func TestConcurrentUpdatesAreSerialized(t *testing.T) {
 		}
 		entered <- struct{}{}
 		<-release
-		return NewCandidate(catalog)
+		return NewCandidate(catalog, CandidateEvidence{})
 	}
 
 	client := &Client{

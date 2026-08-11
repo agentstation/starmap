@@ -3,8 +3,10 @@ package remote
 
 import (
 	"net/http"
+	"reflect"
 	"time"
 
+	"github.com/agentstation/starmap/pkg/catalogstore"
 	"github.com/agentstation/starmap/pkg/errors"
 )
 
@@ -27,8 +29,8 @@ const (
 // repeated streaming failures. Polling remains disabled when this policy is
 // nil.
 type PollingFallbackPolicy struct {
-	// AfterFailures is the number of consecutive stream open, read, or catch-up
-	// failures required before fallback polling begins.
+	// AfterFailures sets how many consecutive stream open, read, or catch-up
+	// failures can occur before the subscriber runs fallback polling.
 	AfterFailures int
 	// Interval is the minimum time between fallback manifest polls.
 	Interval time.Duration
@@ -38,11 +40,17 @@ type PollingFallbackPolicy struct {
 // API root, for example https://starmap.example.com/api/v1.
 type Config struct {
 	// BaseURL is the trusted absolute HTTPS versioned Starmap API root.
-	// Plain HTTP is accepted only for a loopback publisher.
+	// Only a loopback publisher can use plain HTTP.
 	BaseURL string
 	// HTTPClient supplies transport, TLS, authentication, and fetch timeout
-	// policy. A private bounded client is used when nil.
+	// policy. If nil, Starmap creates a private client with bounded timeouts.
 	HTTPClient *http.Client
+	// CatalogStore holds verified generations in durable storage. The caller
+	// must supply it and owns its resources and lifecycle.
+	CatalogStore catalogstore.Store
+	// PinnedBootstrap supplies an optional verified offline generation.
+	// NewContext commits it only when CatalogStore has no current generation.
+	PinnedBootstrap *catalogstore.Generation
 	// ReconnectMinDelay is the first reconnect delay. Zero selects the default.
 	ReconnectMinDelay time.Duration
 	// ReconnectMaxDelay bounds exponential reconnect delay. Zero selects the
@@ -63,6 +71,24 @@ type Config struct {
 }
 
 func (c Config) normalized() (Config, error) {
+	if isNilStore(c.CatalogStore) {
+		return Config{}, &errors.ConfigError{
+			Component: "catalog store",
+			Message:   "an explicit caller-owned store is required",
+		}
+	}
+	if c.PinnedBootstrap != nil {
+		pinned := c.PinnedBootstrap.Copy()
+		if err := pinned.Validate(); err != nil {
+			return Config{}, errors.WrapResource(
+				"validate",
+				"pinned bootstrap generation",
+				pinned.Manifest.GenerationID,
+				err,
+			)
+		}
+		c.PinnedBootstrap = &pinned
+	}
 	if c.ReconnectMinDelay == 0 {
 		c.ReconnectMinDelay = DefaultReconnectMinDelay
 	}
@@ -147,4 +173,18 @@ func (c Config) normalized() (Config, error) {
 		}
 	}
 	return c, nil
+}
+
+func isNilStore(store catalogstore.Store) bool {
+	if store == nil {
+		return true
+	}
+	value := reflect.ValueOf(store)
+	switch value.Kind() {
+	case reflect.Chan, reflect.Func, reflect.Interface, reflect.Map,
+		reflect.Pointer, reflect.Slice:
+		return value.IsNil()
+	default:
+		return false
+	}
 }

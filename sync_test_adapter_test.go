@@ -3,6 +3,7 @@ package starmap
 import (
 	"context"
 
+	"github.com/agentstation/starmap/internal/auth"
 	"github.com/agentstation/starmap/internal/catalog/pipeline"
 	"github.com/agentstation/starmap/internal/catalog/workspace"
 	"github.com/agentstation/starmap/internal/providers/clients"
@@ -21,7 +22,7 @@ func (c *Client) Sync(
 	factory := func(provider *catalogs.Provider) (sources.ProviderClient, error) {
 		return clients.NewProvider(provider)
 	}
-	runner := pipeline.NewAcquisition(factory)
+	runner := pipeline.NewAcquisition(factory, auth.NewResolver())
 	parsed := pkgsync.Defaults().Apply(opts...)
 	effective := append([]pkgsync.Option(nil), opts...)
 	if parsed.CatalogPath == "" && c.WorkspacePath() != "" {
@@ -54,7 +55,7 @@ func (c *Client) Sync(
 		for _, observation := range prepared.Observations {
 			links = append(links, observation.Link())
 		}
-		return NewCandidate(catalog, links...)
+		return NewCandidate(catalog, CandidateEvidence{SourceObservations: links})
 	})
 	if err != nil {
 		return nil, err

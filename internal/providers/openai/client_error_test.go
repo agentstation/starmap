@@ -11,8 +11,10 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
+	"github.com/agentstation/starmap/internal/testcatalog"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/errors"
+	"github.com/agentstation/starmap/pkg/sources"
 )
 
 // TestClientErrors tests error handling in the OpenAI client.
@@ -37,25 +39,10 @@ func TestClientErrors(t *testing.T) {
 		os.Setenv("OPENAI_BASE_URL", server.URL)
 		defer os.Unsetenv("OPENAI_BASE_URL")
 
-		provider := &catalogs.Provider{
-			ID:   catalogs.ProviderIDOpenAI,
-			Name: "OpenAI",
-			APIKey: &catalogs.ProviderAPIKey{
-				Name:   "OPENAI_API_KEY",
-				Header: "Authorization",
-				Scheme: "Bearer",
-			},
-			Catalog: &catalogs.ProviderCatalog{
-				Auth: catalogs.ProviderCatalogAuth{Method: catalogs.ProviderCatalogAuthAPIKey, Required: true},
-				Endpoint: catalogs.ProviderEndpoint{
-					Type: catalogs.EndpointTypeOpenAI,
-					URL:  server.URL,
-				},
-			},
-		}
+		provider := testOpenAIProvider(server.URL)
 
 		client := newTestClient(t, provider)
-		_, err := client.ListModels(context.Background())
+		_, err := client.ListModels(context.Background(), testOpenAIMaterial(provider, "invalid"))
 
 		require.Error(t, err)
 		var apiErr *errors.APIError
@@ -76,25 +63,10 @@ func TestClientErrors(t *testing.T) {
 		os.Setenv("OPENAI_BASE_URL", server.URL)
 		defer os.Unsetenv("OPENAI_BASE_URL")
 
-		provider := &catalogs.Provider{
-			ID:   catalogs.ProviderIDOpenAI,
-			Name: "OpenAI",
-			APIKey: &catalogs.ProviderAPIKey{
-				Name:   "OPENAI_API_KEY",
-				Header: "Authorization",
-				Scheme: "Bearer",
-			},
-			Catalog: &catalogs.ProviderCatalog{
-				Auth: catalogs.ProviderCatalogAuth{Method: catalogs.ProviderCatalogAuthAPIKey, Required: true},
-				Endpoint: catalogs.ProviderEndpoint{
-					Type: catalogs.EndpointTypeOpenAI,
-					URL:  server.URL,
-				},
-			},
-		}
+		provider := testOpenAIProvider(server.URL)
 
 		client := newTestClient(t, provider)
-		_, err := client.ListModels(context.Background())
+		_, err := client.ListModels(context.Background(), testOpenAIMaterial(provider, "test"))
 
 		require.Error(t, err)
 		var apiErr *errors.APIError
@@ -114,25 +86,10 @@ func TestClientErrors(t *testing.T) {
 		os.Setenv("OPENAI_BASE_URL", server.URL)
 		defer os.Unsetenv("OPENAI_BASE_URL")
 
-		provider := &catalogs.Provider{
-			ID:   catalogs.ProviderIDOpenAI,
-			Name: "OpenAI",
-			APIKey: &catalogs.ProviderAPIKey{
-				Name:   "OPENAI_API_KEY",
-				Header: "Authorization",
-				Scheme: "Bearer",
-			},
-			Catalog: &catalogs.ProviderCatalog{
-				Auth: catalogs.ProviderCatalogAuth{Method: catalogs.ProviderCatalogAuthAPIKey, Required: true},
-				Endpoint: catalogs.ProviderEndpoint{
-					Type: catalogs.EndpointTypeOpenAI,
-					URL:  server.URL,
-				},
-			},
-		}
+		provider := testOpenAIProvider(server.URL)
 
 		client := newTestClient(t, provider)
-		_, err := client.ListModels(context.Background())
+		_, err := client.ListModels(context.Background(), testOpenAIMaterial(provider, "test"))
 
 		require.Error(t, err)
 		var apiErr *errors.APIError
@@ -153,25 +110,10 @@ func TestClientErrors(t *testing.T) {
 		os.Setenv("OPENAI_BASE_URL", server.URL)
 		defer os.Unsetenv("OPENAI_BASE_URL")
 
-		provider := &catalogs.Provider{
-			ID:   catalogs.ProviderIDOpenAI,
-			Name: "OpenAI",
-			APIKey: &catalogs.ProviderAPIKey{
-				Name:   "OPENAI_API_KEY",
-				Header: "Authorization",
-				Scheme: "Bearer",
-			},
-			Catalog: &catalogs.ProviderCatalog{
-				Auth: catalogs.ProviderCatalogAuth{Method: catalogs.ProviderCatalogAuthAPIKey, Required: true},
-				Endpoint: catalogs.ProviderEndpoint{
-					Type: catalogs.EndpointTypeOpenAI,
-					URL:  server.URL,
-				},
-			},
-		}
+		provider := testOpenAIProvider(server.URL)
 
 		client := newTestClient(t, provider)
-		_, err := client.ListModels(context.Background())
+		_, err := client.ListModels(context.Background(), testOpenAIMaterial(provider, "test"))
 
 		require.Error(t, err)
 		// Should be a decode error
@@ -191,22 +133,7 @@ func TestClientErrors(t *testing.T) {
 		os.Setenv("OPENAI_BASE_URL", server.URL)
 		defer os.Unsetenv("OPENAI_BASE_URL")
 
-		provider := &catalogs.Provider{
-			ID:   catalogs.ProviderIDOpenAI,
-			Name: "OpenAI",
-			APIKey: &catalogs.ProviderAPIKey{
-				Name:   "OPENAI_API_KEY",
-				Header: "Authorization",
-				Scheme: "Bearer",
-			},
-			Catalog: &catalogs.ProviderCatalog{
-				Auth: catalogs.ProviderCatalogAuth{Method: catalogs.ProviderCatalogAuthAPIKey, Required: true},
-				Endpoint: catalogs.ProviderEndpoint{
-					Type: catalogs.EndpointTypeOpenAI,
-					URL:  server.URL,
-				},
-			},
-		}
+		provider := testOpenAIProvider(server.URL)
 
 		client := newTestClient(t, provider)
 
@@ -214,7 +141,7 @@ func TestClientErrors(t *testing.T) {
 		ctx, cancel := context.WithTimeout(context.Background(), 1) // 1 nanosecond timeout
 		defer cancel()
 
-		_, err := client.ListModels(ctx)
+		_, err := client.ListModels(ctx, testOpenAIMaterial(provider, "test"))
 		require.Error(t, err)
 		assert.Contains(t, err.Error(), "request failed")
 	})
@@ -235,6 +162,16 @@ func TestNewClientMappingValidationRejectsInvalidConfiguredPaths(t *testing.T) {
 			name: "destination", mapping: catalogs.FieldMapping{
 				From: "context_window", To: "unknown.destination",
 			}, wantField: "field_mappings.to",
+		},
+		{
+			name: "noncanonical destination alias", mapping: catalogs.FieldMapping{
+				From: "context_window", To: "context_window",
+			}, wantField: "field_mappings.to",
+		},
+		{
+			name: "incompatible types", mapping: catalogs.FieldMapping{
+				From: "metadata.tags", To: "limits.context_window",
+			}, wantField: "field_mappings",
 		},
 	}
 	for _, test := range tests {
@@ -258,6 +195,20 @@ func TestNewClientMappingValidationRejectsInvalidConfiguredPaths(t *testing.T) {
 	}
 }
 
+func TestNewClientRejectsUnsupportedAuthorSelector(t *testing.T) {
+	provider := testOpenAIProvider("https://example.test/models")
+	provider.Catalog.Endpoint.AuthorMapping = &catalogs.AuthorMapping{
+		Field: "publisher", Normalized: map[string]catalogs.AuthorID{"publisher": "author"},
+	}
+	client, err := NewClient(provider)
+	if client != nil {
+		t.Fatalf("client = %#v, want nil", client)
+	}
+	var validationErr *errors.ValidationError
+	require.ErrorAs(t, err, &validationErr)
+	assert.Equal(t, "author_mapping.field", validationErr.Field)
+}
+
 func TestListModelsMappingValidationSuppressesAdapterAfterConfigurationMutation(t *testing.T) {
 	requestCount := 0
 	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, _ *http.Request) {
@@ -278,7 +229,7 @@ func TestListModelsMappingValidationSuppressesAdapterAfterConfigurationMutation(
 		From: "invalid_after_construction", To: "limits.context_window",
 	}}
 
-	_, err = client.ListModels(context.Background())
+	_, err = client.ListModels(context.Background(), testOpenAIMaterial(provider, ""))
 	var validationErr *errors.ValidationError
 	require.ErrorAs(t, err, &validationErr)
 	assert.Equal(t, "field_mappings.from", validationErr.Field)
@@ -288,36 +239,7 @@ func TestListModelsMappingValidationSuppressesAdapterAfterConfigurationMutation(
 // TestClientModelConversion tests model conversion with edge cases.
 func TestClientModelConversion(t *testing.T) {
 	// No server needed for model conversion tests
-	provider := &catalogs.Provider{
-		ID:   catalogs.ProviderIDOpenAI,
-		Name: "OpenAI",
-		APIKey: &catalogs.ProviderAPIKey{
-			Name:   "OPENAI_API_KEY",
-			Header: "Authorization",
-			Scheme: "Bearer",
-		},
-		Catalog: &catalogs.ProviderCatalog{
-			Auth: catalogs.ProviderCatalogAuth{Method: catalogs.ProviderCatalogAuthAPIKey, Required: true},
-			Endpoint: catalogs.ProviderEndpoint{
-				Type: catalogs.EndpointTypeOpenAI,
-				URL:  "https://api.openai.com/v1/models",
-				FeatureRules: []catalogs.FeatureRule{
-					{
-						Field:    "id",
-						Contains: []string{"vision", "gpt-4"},
-						Feature:  "tools",
-						Value:    true,
-					},
-					{
-						Field:    "id",
-						Contains: []string{"vision", "gpt-4"},
-						Feature:  "tool_choice",
-						Value:    true,
-					},
-				},
-			},
-		},
-	}
+	provider := testOpenAIProvider("https://api.openai.com/v1/models")
 	os.Setenv("OPENAI_API_KEY", "test")
 	defer os.Unsetenv("OPENAI_API_KEY")
 
@@ -331,7 +253,7 @@ func TestClientModelConversion(t *testing.T) {
 			OwnedBy: "openai",
 		}
 
-		model := client.ConvertToModel(minimalModel)
+		model := mustConvertModel(t, client, minimalModel)
 
 		assert.Equal(t, "test-model", model.ID)
 		assert.Equal(t, "test-model", model.Name)
@@ -346,7 +268,7 @@ func TestClientModelConversion(t *testing.T) {
 			OwnedBy: "openai",
 		}
 
-		model := client.ConvertToModel(modelData)
+		model := mustConvertModel(t, client, modelData)
 		assert.NotNil(t, model)
 		assert.Equal(t, "gpt-4", model.ID)
 	})
@@ -359,13 +281,12 @@ func TestClientModelConversion(t *testing.T) {
 			OwnedBy: "openai",
 		}
 
-		model := client.ConvertToModel(deprecatedModel)
+		model := mustConvertModel(t, client, deprecatedModel)
 		// OpenAI deprecated models like text-davinci-003 should be detected by name pattern
 		assert.Contains(t, model.ID, "davinci")
 	})
 
-	t.Run("model feature inference", func(t *testing.T) {
-		// Test vision model - should have tools enabled via feature rules
+	t.Run("model identifiers remain opaque", func(t *testing.T) {
 		visionModel := Model{
 			ID:      "gpt-4-vision-preview",
 			Created: 1234567890,
@@ -373,15 +294,9 @@ func TestClientModelConversion(t *testing.T) {
 			OwnedBy: "openai",
 		}
 
-		model := client.ConvertToModel(visionModel)
-		assert.NotNil(t, model.Features)
-		// Vision model should have tools enabled via feature rules (contains "vision" and "gpt-4")
-		assert.True(t, model.Features.Tools)
-		assert.True(t, model.Features.ToolChoice)
-		// Default modalities should be text
-		assert.Contains(t, model.Features.Modalities.Input, catalogs.ModelModalityText)
+		model := mustConvertModel(t, client, visionModel)
+		assert.Nil(t, model.Features)
 
-		// Test function calling model
 		functionModel := Model{
 			ID:      "gpt-4-turbo",
 			Created: 1234567890,
@@ -389,11 +304,8 @@ func TestClientModelConversion(t *testing.T) {
 			OwnedBy: "openai",
 		}
 
-		model = client.ConvertToModel(functionModel)
-		assert.NotNil(t, model.Features)
-		// Should have tools enabled via feature rules (contains "gpt-4")
-		assert.True(t, model.Features.Tools)
-		assert.True(t, model.Features.ToolChoice)
+		model = mustConvertModel(t, client, functionModel)
+		assert.Nil(t, model.Features)
 	})
 }
 
@@ -416,22 +328,7 @@ func TestClientConcurrency(t *testing.T) {
 	os.Setenv("OPENAI_BASE_URL", server.URL)
 	defer os.Unsetenv("OPENAI_BASE_URL")
 
-	provider := &catalogs.Provider{
-		ID:   catalogs.ProviderIDOpenAI,
-		Name: "OpenAI",
-		APIKey: &catalogs.ProviderAPIKey{
-			Name:   "OPENAI_API_KEY",
-			Header: "Authorization",
-			Scheme: "Bearer",
-		},
-		Catalog: &catalogs.ProviderCatalog{
-			Auth: catalogs.ProviderCatalogAuth{Method: catalogs.ProviderCatalogAuthAPIKey, Required: true},
-			Endpoint: catalogs.ProviderEndpoint{
-				Type: catalogs.EndpointTypeOpenAI,
-				URL:  server.URL,
-			},
-		},
-	}
+	provider := testOpenAIProvider(server.URL)
 
 	client := newTestClient(t, provider)
 
@@ -442,7 +339,9 @@ func TestClientConcurrency(t *testing.T) {
 
 	for range numGoroutines {
 		go func() {
-			models, err := client.ListModels(context.Background())
+			models, err := client.ListModels(
+				context.Background(), testOpenAIMaterial(provider, "test"),
+			)
 			if err != nil {
 				errorChan <- err
 			} else if len(models) == 0 {
@@ -464,4 +363,24 @@ func TestClientConcurrency(t *testing.T) {
 	}
 
 	assert.Equal(t, numGoroutines, callCount)
+}
+
+func testOpenAIProvider(endpoint string) *catalogs.Provider {
+	return &catalogs.Provider{
+		ID: catalogs.ProviderIDOpenAI, Name: "OpenAI",
+		Credentials: testcatalog.APIKeyCredentials(
+			"OPENAI_API_KEY", "Authorization", catalogs.ProviderCredentialSchemeBearer,
+		),
+		Catalog: &catalogs.ProviderCatalog{Endpoint: catalogs.ProviderEndpoint{
+			Type: catalogs.EndpointTypeOpenAI, URL: endpoint,
+			ProtocolOptions: testcatalog.OpenAIProtocolOptions(),
+		}},
+	}
+}
+
+func testOpenAIMaterial(provider *catalogs.Provider, value string) sources.ProviderCredentialMaterial {
+	if provider == nil {
+		return sources.ProviderCredentialMaterial{}
+	}
+	return testcatalog.APIKeyMaterial(provider.Credentials, value)
 }

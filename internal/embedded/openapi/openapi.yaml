@@ -201,6 +201,20 @@ components:
           description: Normalization map (e.g., "Meta" -> "meta")
           type: object
       type: object
+    catalogs.CapabilityMapping:
+      properties:
+        combine:
+          $ref: '#/components/schemas/catalogs.ProviderCapabilityCombination'
+        evidence:
+          type: string
+        from:
+          type: string
+        to:
+          items:
+            $ref: '#/components/schemas/catalogs.ModelFeature'
+          type: array
+          uniqueItems: false
+      type: object
     catalogs.EndpointType:
       description: 'Required: API style'
       type: string
@@ -210,24 +224,6 @@ components:
       - EndpointTypeGoogle
       - EndpointTypeGoogleCloud
       - EndpointTypeOllama
-    catalogs.FeatureRule:
-      properties:
-        contains:
-          description: If field contains any of these strings
-          items:
-            type: string
-          type: array
-          uniqueItems: false
-        feature:
-          description: Feature to enable (e.g., "tools", "reasoning")
-          type: string
-        field:
-          description: Field to check (e.g., "id", "owned_by")
-          type: string
-        value:
-          description: Value to set for the feature
-          type: boolean
-      type: object
     catalogs.FieldMapping:
       properties:
         from:
@@ -426,6 +422,54 @@ components:
           type: array
           uniqueItems: false
       type: object
+    catalogs.ModelFeature:
+      type: string
+      x-enum-varnames:
+      - ModelFeatureToolCalls
+      - ModelFeatureTools
+      - ModelFeatureToolChoice
+      - ModelFeatureWebSearch
+      - ModelFeatureAttachments
+      - ModelFeatureReasoning
+      - ModelFeatureReasoningEffort
+      - ModelFeatureReasoningTokens
+      - ModelFeatureIncludeReasoning
+      - ModelFeatureVerbosity
+      - ModelFeatureTemperature
+      - ModelFeatureTopP
+      - ModelFeatureTopK
+      - ModelFeatureTopA
+      - ModelFeatureMinP
+      - ModelFeatureTypicalP
+      - ModelFeatureTFS
+      - ModelFeatureMaxTokens
+      - ModelFeatureMaxOutputTokens
+      - ModelFeatureStop
+      - ModelFeatureStopTokenIDs
+      - ModelFeatureFrequencyPenalty
+      - ModelFeaturePresencePenalty
+      - ModelFeatureRepetitionPenalty
+      - ModelFeatureNoRepeatNgramSize
+      - ModelFeatureLengthPenalty
+      - ModelFeatureLogitBias
+      - ModelFeatureBadWords
+      - ModelFeatureAllowedTokens
+      - ModelFeatureSeed
+      - ModelFeatureLogprobs
+      - ModelFeatureTopLogprobs
+      - ModelFeatureEcho
+      - ModelFeatureN
+      - ModelFeatureBestOf
+      - ModelFeatureMirostat
+      - ModelFeatureMirostatTau
+      - ModelFeatureMirostatEta
+      - ModelFeatureContrastiveSearchPenaltyAlpha
+      - ModelFeatureNumBeams
+      - ModelFeatureEarlyStopping
+      - ModelFeatureDiversityPenalty
+      - ModelFeatureFormatResponse
+      - ModelFeatureStructuredOutputs
+      - ModelFeatureStreaming
     catalogs.ModelFeatures:
       properties:
         allowed_tokens:
@@ -842,16 +886,10 @@ components:
             - ProviderIDXAI
           type: array
           uniqueItems: false
-        api_key:
-          $ref: '#/components/schemas/catalogs.ProviderAPIKey'
         catalog:
           $ref: '#/components/schemas/catalogs.ProviderCatalog'
-        env_vars:
-          description: Environment variables configuration
-          items:
-            $ref: '#/components/schemas/catalogs.ProviderEnvVar'
-          type: array
-          uniqueItems: false
+        credentials:
+          $ref: '#/components/schemas/catalogs.ProviderCredentials'
         extensions:
           $ref: '#/components/schemas/catalogs.SourceExtensions'
         governance_policy:
@@ -877,169 +915,209 @@ components:
           description: Status & Health
           type: string
       type: object
-    catalogs.ProviderAPIKey:
-      description: API key configuration
+    catalogs.ProviderAWSDefaultProtocolOptions:
       properties:
-        header:
-          description: Header name to send the API key in
+        region_field:
           type: string
-        name:
-          description: Name of the API key parameter
+          x-enum-varnames:
+          - ProviderAWSCredentialAccessKeyID
+          - ProviderAWSCredentialSecretAccessKey
+          - ProviderAWSCredentialSessionToken
+        service:
           type: string
-        pattern:
-          description: Glob pattern to match the API key
-          type: string
-        query_param:
-          description: Query parameter name to send the API key in
-          type: string
-        scheme:
-          $ref: '#/components/schemas/catalogs.ProviderAPIKeyScheme'
       type: object
-    catalogs.ProviderAPIKeyScheme:
-      description: Authentication scheme (e.g., "Bearer", "Basic", or empty for direct
-        value)
+    catalogs.ProviderAnthropicCatalogProtocolOptions:
+      properties:
+        version:
+          type: string
+      type: object
+    catalogs.ProviderAuthenticationPrimitive:
       type: string
-      x-enum-comments:
-        ProviderAPIKeySchemeBasic: Basic authentication
-        ProviderAPIKeySchemeBearer: Bearer token authentication (OAuth 2.0 style)
-        ProviderAPIKeySchemeDirect: Direct value (no scheme prefix)
       x-enum-varnames:
-      - ProviderAPIKeySchemeBearer
-      - ProviderAPIKeySchemeBasic
-      - ProviderAPIKeySchemeDirect
+      - ProviderAuthenticationNone
+      - ProviderAuthenticationAPIKey
+      - ProviderAuthenticationBearerToken
+      - ProviderAuthenticationGoogleDefault
+      - ProviderAuthenticationAzureDefault
+      - ProviderAuthenticationAWSDefault
+    catalogs.ProviderAuthenticationProtocolOptions:
+      properties:
+        aws_default:
+          $ref: '#/components/schemas/catalogs.ProviderAWSDefaultProtocolOptions'
+        google_default:
+          $ref: '#/components/schemas/catalogs.ProviderGoogleDefaultProtocolOptions'
+      type: object
+    catalogs.ProviderCapabilityCombination:
+      type: string
+      x-enum-varnames:
+      - ProviderCapabilityConflict
+      - ProviderCapabilityFirstKnown
+      - ProviderCapabilityAny
+      - ProviderCapabilityAll
     catalogs.ProviderCatalog:
       description: Models
       properties:
-        auth:
-          $ref: '#/components/schemas/catalogs.ProviderCatalogAuth'
-        authors:
-          description: List of authors to fetch from (for providers like Google Vertex
-            AI)
-          items:
-            type: string
-            x-enum-varnames:
-            - AuthorIDOpenAI
-            - AuthorIDAnthropic
-            - AuthorIDGoogle
-            - AuthorIDDeepMind
-            - AuthorIDMeta
-            - AuthorIDMicrosoft
-            - AuthorIDMistralAI
-            - AuthorIDCohere
-            - AuthorIDGroq
-            - AuthorIDQwen
-            - AuthorIDXAI
-            - AuthorIDStanford
-            - AuthorIDMIT
-            - AuthorIDCMU
-            - AuthorIDUCBerkeley
-            - AuthorIDCornell
-            - AuthorIDPrinceton
-            - AuthorIDHarvard
-            - AuthorIDOxford
-            - AuthorIDCambridge
-            - AuthorIDETHZurich
-            - AuthorIDUWashington
-            - AuthorIDUChicago
-            - AuthorIDYale
-            - AuthorIDDuke
-            - AuthorIDCaltech
-            - AuthorIDHuggingFace
-            - AuthorIDEleutherAI
-            - AuthorIDTogether
-            - AuthorIDMosaicML
-            - AuthorIDStabilityAI
-            - AuthorIDRunwayML
-            - AuthorIDMidjourney
-            - AuthorIDLAION
-            - AuthorIDBigScience
-            - AuthorIDAlignmentRC
-            - AuthorIDH2OAI
-            - AuthorIDMoxin
-            - AuthorIDBaidu
-            - AuthorIDTencent
-            - AuthorIDByteDance
-            - AuthorIDDeepSeek
-            - AuthorIDBAAI
-            - AuthorID01AI
-            - AuthorIDBaichuan
-            - AuthorIDMiniMax
-            - AuthorIDMoonshot
-            - AuthorIDShanghaiAI
-            - AuthorIDZhipuAI
-            - AuthorIDSenseTime
-            - AuthorIDHuawei
-            - AuthorIDTsinghua
-            - AuthorIDPeking
-            - AuthorIDNVIDIA
-            - AuthorIDSalesforce
-            - AuthorIDIBM
-            - AuthorIDApple
-            - AuthorIDAmazon
-            - AuthorIDAdept
-            - AuthorIDAI21
-            - AuthorIDInflection
-            - AuthorIDCharacter
-            - AuthorIDPerplexity
-            - AuthorIDAnysphere
-            - AuthorIDCursor
-            - AuthorIDCognitiveComputations
-            - AuthorIDEricHartford
-            - AuthorIDNousResearch
-            - AuthorIDTeknium
-            - AuthorIDJonDurbin
-            - AuthorIDLMSYS
-            - AuthorIDVicuna
-            - AuthorIDAlpacaTeam
-            - AuthorIDWizardLM
-            - AuthorIDOpenOrca
-            - AuthorIDPhind
-            - AuthorIDCodeFuse
-            - AuthorIDTHUDM
-            - AuthorIDGeorgiaTechRI
-            - AuthorIDFastChat
-            - AuthorIDUnknown
-          type: array
-          uniqueItems: false
         docs:
           description: Documentation URL
           type: string
         endpoint:
           $ref: '#/components/schemas/catalogs.ProviderEndpoint'
       type: object
-    catalogs.ProviderCatalogAuth:
-      description: Catalog-acquisition authentication contract
+    catalogs.ProviderCatalogProtocolOptions:
+      description: Typed wire-protocol facts
       properties:
-        method:
-          $ref: '#/components/schemas/catalogs.ProviderCatalogAuthMethod'
+        anthropic:
+          $ref: '#/components/schemas/catalogs.ProviderAnthropicCatalogProtocolOptions'
+        openai:
+          $ref: '#/components/schemas/catalogs.ProviderOpenAICatalogProtocolOptions'
+      type: object
+    catalogs.ProviderCredentialEndpointBinding:
+      properties:
+        field:
+          type: string
+          x-enum-varnames:
+          - ProviderAWSCredentialAccessKeyID
+          - ProviderAWSCredentialSecretAccessKey
+          - ProviderAWSCredentialSessionToken
+        format:
+          $ref: '#/components/schemas/catalogs.ProviderCredentialEndpointBindingFormat'
+        variable:
+          type: string
+      type: object
+    catalogs.ProviderCredentialEndpointBindingFormat:
+      type: string
+      x-enum-varnames:
+      - ProviderCredentialEndpointBindingURL
+      - ProviderCredentialEndpointBindingPathSegment
+    catalogs.ProviderCredentialField:
+      properties:
+        default:
+          type: string
+        description:
+          type: string
+        environment:
+          items:
+            type: string
+          type: array
+          uniqueItems: false
+        id:
+          $ref: '#/components/schemas/catalogs.ProviderCredentialFieldID'
+        kind:
+          $ref: '#/components/schemas/catalogs.ProviderCredentialFieldKind'
+        pattern:
+          type: string
         required:
           type: boolean
+      type: object
+    catalogs.ProviderCredentialFieldID:
+      type: string
+      x-enum-varnames:
+      - ProviderAWSCredentialAccessKeyID
+      - ProviderAWSCredentialSecretAccessKey
+      - ProviderAWSCredentialSessionToken
+    catalogs.ProviderCredentialFieldKind:
+      type: string
+      x-enum-varnames:
+      - ProviderCredentialFieldSecret
+      - ProviderCredentialFieldParameter
+    catalogs.ProviderCredentialPlacement:
+      properties:
+        evidence_url:
+          type: string
+        field:
+          type: string
+          x-enum-varnames:
+          - ProviderAWSCredentialAccessKeyID
+          - ProviderAWSCredentialSecretAccessKey
+          - ProviderAWSCredentialSessionToken
+        kind:
+          $ref: '#/components/schemas/catalogs.ProviderCredentialPlacementKind'
+        name:
+          type: string
+        scheme:
+          $ref: '#/components/schemas/catalogs.ProviderCredentialScheme'
+      type: object
+    catalogs.ProviderCredentialPlacementKind:
+      type: string
+      x-enum-varnames:
+      - ProviderCredentialPlacementHeader
+      - ProviderCredentialPlacementQuery
+    catalogs.ProviderCredentialPlane:
+      properties:
+        alternatives:
+          items:
+            type: string
+          type: array
+          uniqueItems: false
+        required:
+          type: boolean
+      type: object
+    catalogs.ProviderCredentialProfile:
+      properties:
+        endpoint_bindings:
+          items:
+            $ref: '#/components/schemas/catalogs.ProviderCredentialEndpointBinding'
+          type: array
+          uniqueItems: false
+        fields:
+          items:
+            type: string
+            x-enum-varnames:
+            - ProviderAWSCredentialAccessKeyID
+            - ProviderAWSCredentialSecretAccessKey
+            - ProviderAWSCredentialSessionToken
+          type: array
+          uniqueItems: false
+        id:
+          type: string
+        placements:
+          items:
+            $ref: '#/components/schemas/catalogs.ProviderCredentialPlacement'
+          type: array
+          uniqueItems: false
+        primitive:
+          $ref: '#/components/schemas/catalogs.ProviderAuthenticationPrimitive'
+        protocol_options:
+          $ref: '#/components/schemas/catalogs.ProviderAuthenticationProtocolOptions'
         scopes:
           items:
             type: string
           type: array
           uniqueItems: false
       type: object
-    catalogs.ProviderCatalogAuthMethod:
+    catalogs.ProviderCredentialScheme:
       type: string
       x-enum-varnames:
-      - ProviderCatalogAuthNone
-      - ProviderCatalogAuthAPIKey
-      - ProviderCatalogAuthGoogleDefault
-      - ProviderCatalogAuthAzureDefault
-      - ProviderCatalogAuthAWSDefault
+      - ProviderCredentialSchemeDirect
+      - ProviderCredentialSchemeBearer
+      - ProviderCredentialSchemeBasic
+    catalogs.ProviderCredentials:
+      description: Secret-free credential metadata for catalog acquisition and inference.
+      properties:
+        catalog_acquisition:
+          $ref: '#/components/schemas/catalogs.ProviderCredentialPlane'
+        fields:
+          items:
+            $ref: '#/components/schemas/catalogs.ProviderCredentialField'
+          type: array
+          uniqueItems: false
+        inference:
+          $ref: '#/components/schemas/catalogs.ProviderCredentialPlane'
+        profiles:
+          items:
+            $ref: '#/components/schemas/catalogs.ProviderCredentialProfile'
+          type: array
+          uniqueItems: false
+      type: object
     catalogs.ProviderEndpoint:
       description: API endpoint configuration
       properties:
         author_mapping:
           $ref: '#/components/schemas/catalogs.AuthorMapping'
-        base_url_env_var:
-          description: Optional env var for overriding the endpoint base URL
-          type: string
-        feature_rules:
-          description: Feature inference rules
+        capability_mappings:
+          description: Typed capability predicates
           items:
-            $ref: '#/components/schemas/catalogs.FeatureRule'
+            $ref: '#/components/schemas/catalogs.CapabilityMapping'
           type: array
           uniqueItems: false
         field_mappings:
@@ -1048,29 +1126,28 @@ components:
             $ref: '#/components/schemas/catalogs.FieldMapping'
           type: array
           uniqueItems: false
-        path:
-          description: Path appended when BaseURLEnvVar is set
-          type: string
+        protocol_options:
+          $ref: '#/components/schemas/catalogs.ProviderCatalogProtocolOptions'
         type:
           $ref: '#/components/schemas/catalogs.EndpointType'
         url:
           description: 'Required: API endpoint'
           type: string
       type: object
-    catalogs.ProviderEnvVar:
+    catalogs.ProviderGoogleDefaultProtocolOptions:
       properties:
-        description:
-          description: Human-readable description
+        project_field:
           type: string
-        name:
-          description: Environment variable name
+          x-enum-varnames:
+          - ProviderAWSCredentialAccessKeyID
+          - ProviderAWSCredentialSecretAccessKey
+          - ProviderAWSCredentialSessionToken
+        quota_project_field:
           type: string
-        pattern:
-          description: Optional validation pattern
-          type: string
-        required:
-          description: Whether this env var is required
-          type: boolean
+          x-enum-varnames:
+          - ProviderAWSCredentialAccessKeyID
+          - ProviderAWSCredentialSecretAccessKey
+          - ProviderAWSCredentialSessionToken
       type: object
     catalogs.ProviderGovernancePolicy:
       description: Oversight and moderation practices
@@ -1135,8 +1212,6 @@ components:
       properties:
         base_url:
           type: string
-        base_url_env_var:
-          type: string
         endpoints:
           items:
             $ref: '#/components/schemas/catalogs.ProviderInferenceEndpoint'
@@ -1187,6 +1262,11 @@ components:
           - EndpointTypeGoogleCloud
           - EndpointTypeOllama
       type: object
+    catalogs.ProviderOpenAICatalogProtocolOptions:
+      properties:
+        token_price_unit:
+          $ref: '#/components/schemas/catalogs.ProviderTokenPriceUnit'
+      type: object
     catalogs.ProviderOperation:
       type: string
       x-enum-varnames:
@@ -1234,6 +1314,11 @@ components:
       - ProviderRetentionTypeNone
       - ProviderRetentionTypeIndefinite
       - ProviderRetentionTypeConditional
+    catalogs.ProviderTokenPriceUnit:
+      type: string
+      x-enum-varnames:
+      - ProviderTokenPriceUnitPerToken
+      - ProviderTokenPriceUnitPerMillion
     catalogs.Quantization:
       description: Quantization level used by the model
       type: string

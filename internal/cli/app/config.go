@@ -31,11 +31,18 @@ type Config struct {
 	RemoteServerURL               string
 	RemoteServerAPIKey            string
 	RemoteServerOnly              bool
+	CredentialSources             map[string]map[string]CredentialSourceConfig
 
 	// Logging configuration
 	LogLevel  string
 	LogFormat string
 	LogOutput string
+}
+
+// CredentialSourceConfig selects one explicit provider-field source.
+type CredentialSourceConfig struct {
+	Reference       string `mapstructure:"reference"`
+	FallbackAmbient bool   `mapstructure:"fallback_ambient"`
 }
 
 // LoadConfig loads configuration from all sources in order of precedence:
@@ -62,9 +69,6 @@ func loadConfig(configFile string) (*Config, error) {
 
 	_ = viper.BindEnv("output", "OUTPUT")
 
-	// Bind common API keys
-	bindAPIKeys()
-
 	// Try to read config file if it exists
 	selectedFile := configFile
 	if selectedFile == "" {
@@ -89,6 +93,11 @@ func loadConfig(configFile string) (*Config, error) {
 		return nil, fmt.Errorf("read config file %q: %w", selectedFile, err)
 	}
 
+	credentialSources := make(map[string]map[string]CredentialSourceConfig)
+	if err := viper.UnmarshalKey("credential_sources", &credentialSources); err != nil {
+		return nil, fmt.Errorf("decode credential source configuration: %w", err)
+	}
+
 	// Build config from viper
 	config := &Config{
 		// Global flags (may be overridden by cobra flags later)
@@ -107,6 +116,7 @@ func loadConfig(configFile string) (*Config, error) {
 		RemoteServerURL:               viper.GetString("remote_server_url"),
 		RemoteServerAPIKey:            viper.GetString("remote_server_api_key"),
 		RemoteServerOnly:              viper.GetBool("remote_server_only"),
+		CredentialSources:             credentialSources,
 
 		// Logging configuration
 		// LogLevel: empty string means "use precedence logic" (see logger.go)
@@ -130,35 +140,6 @@ func loadEnvFiles() {
 
 	for _, envFile := range envFiles {
 		_ = godotenv.Load(envFile)
-	}
-}
-
-// bindAPIKeys explicitly binds common API key environment variables to Viper.
-func bindAPIKeys() {
-	// Common API keys that might be in .env files
-	apiKeys := []string{
-		"OPENAI_API_KEY",
-		"ANTHROPIC_API_KEY",
-		"GOOGLE_API_KEY",
-		"GROQ_API_KEY",
-		"GEMINI_API_KEY",
-		"CLAUDE_API_KEY",
-		"AZURE_API_KEY",
-		"COHERE_API_KEY",
-		"HUGGINGFACE_API_KEY",
-		"REPLICATE_API_KEY",
-		"TOGETHER_API_KEY",
-		"PERPLEXITY_API_KEY",
-		"DEEPSEEK_API_KEY",
-		"CEREBRAS_API_KEY",
-		"MOONSHOT_API_KEY",
-	}
-
-	for _, key := range apiKeys {
-		if err := viper.BindEnv(key); err != nil {
-			// Log warning but continue - this isn't critical
-			fmt.Fprintf(os.Stderr, "Warning: failed to bind environment variable %s: %v\n", key, err)
-		}
 	}
 }
 

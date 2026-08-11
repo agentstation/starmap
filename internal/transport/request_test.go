@@ -8,8 +8,30 @@ import (
 	"testing"
 
 	"github.com/agentstation/starmap/internal/constants"
+	"github.com/agentstation/starmap/pkg/catalogs"
 	pkgerrors "github.com/agentstation/starmap/pkg/errors"
 )
+
+func TestCatalogProtocolHeadersUseEndpointOptions(t *testing.T) {
+	provider := &catalogs.Provider{Catalog: &catalogs.ProviderCatalog{
+		Endpoint: catalogs.ProviderEndpoint{
+			Type: catalogs.EndpointTypeAnthropic,
+			ProtocolOptions: catalogs.ProviderCatalogProtocolOptions{
+				Anthropic: &catalogs.ProviderAnthropicCatalogProtocolOptions{Version: "2024-01-01"},
+			},
+		},
+	}}
+	req, err := http.NewRequest(http.MethodGet, "https://provider.example/models", nil)
+	if err != nil {
+		t.Fatalf("NewRequest: %v", err)
+	}
+
+	NewRequestBuilder(provider).AddCatalogProtocolHeaders(req)
+
+	if got := req.Header.Get("anthropic-version"); got != "2024-01-01" {
+		t.Fatalf("anthropic-version = %q, want endpoint protocol option", got)
+	}
+}
 
 func TestSchemaDriftMutationMatrix(t *testing.T) {
 	tests := []struct {

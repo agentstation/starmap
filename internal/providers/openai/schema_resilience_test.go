@@ -8,7 +8,6 @@ import (
 	"testing"
 
 	"github.com/agentstation/starmap/internal/sourcepayload"
-	"github.com/agentstation/starmap/pkg/catalogs"
 )
 
 func TestListModelsQuarantinesMalformedSibling(t *testing.T) {
@@ -21,14 +20,14 @@ func TestListModelsQuarantinesMalformedSibling(t *testing.T) {
 	}))
 	defer server.Close()
 
-	client, err := NewClient(&catalogs.Provider{
-		ID: "openai", Name: "OpenAI",
-		Catalog: &catalogs.ProviderCatalog{Endpoint: catalogs.ProviderEndpoint{URL: server.URL}},
-	})
+	provider := testOpenAIProvider(server.URL)
+	client, err := NewClient(provider)
 	if err != nil {
 		t.Fatalf("NewClient: %v", err)
 	}
-	models, err := client.ListModels(context.Background())
+	models, err := client.ListModels(
+		context.Background(), testOpenAIMaterial(provider, "test-api-key"),
+	)
 	var quarantineErr *sourcepayload.QuarantineError
 	if !stderrors.As(err, &quarantineErr) {
 		t.Fatalf("error = %T: %v, want *sourcepayload.QuarantineError", err, err)

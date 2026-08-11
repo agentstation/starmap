@@ -6,6 +6,7 @@ import (
 
 	"github.com/spf13/cobra"
 
+	"github.com/agentstation/starmap/internal/testcatalog"
 	"github.com/agentstation/starmap/pkg/catalogs"
 )
 
@@ -64,7 +65,6 @@ func testCatalogWithModelAuthor(t *testing.T, authorID catalogs.AuthorID) *catal
 	}
 
 	provider := testProvider()
-	provider.Catalog.Authors = []catalogs.AuthorID{authorID}
 	model := testModel()
 	model.ModelRef = catalogs.AuthoredModelID(author.ID, model.ID)
 	model.Authors = []catalogs.Author{{ID: authorID, Name: authorID.String()}}
@@ -89,13 +89,18 @@ func testAuthor() *catalogs.Author {
 }
 
 func testProvider() *catalogs.Provider {
-	required := true
 	return &catalogs.Provider{
 		ID:   "test-provider",
 		Name: "Test Provider",
+		Credentials: testcatalog.APIKeyCredentials(
+			"TEST_PROVIDER_API_KEY", "Authorization", catalogs.ProviderCredentialSchemeBearer,
+		),
 		Catalog: &catalogs.ProviderCatalog{
-			Auth:    catalogs.ProviderCatalogAuth{Method: catalogs.ProviderCatalogAuthAPIKey, Required: required},
-			Authors: []catalogs.AuthorID{"test-author"},
+			Endpoint: catalogs.ProviderEndpoint{
+				Type:            catalogs.EndpointTypeOpenAI,
+				URL:             "https://provider.example/models",
+				ProtocolOptions: testcatalog.OpenAIProtocolOptions(),
+			},
 		},
 	}
 }

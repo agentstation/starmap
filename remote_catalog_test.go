@@ -7,9 +7,9 @@ import (
 	"testing"
 	"time"
 
+	"github.com/agentstation/starmap/internal/constants"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/catalogstore"
-	"github.com/agentstation/starmap/internal/constants"
 	pkgerrors "github.com/agentstation/starmap/pkg/errors"
 	"github.com/agentstation/starmap/pkg/sources"
 )
@@ -128,7 +128,7 @@ func rootRemoteGeneration(t *testing.T) catalogstore.Generation {
 	}
 	generation, err := generationTestClient(at).newGeneration(
 		catalog,
-		[]catalogs.SourceObservationLink{observation.Link()},
+		CandidateEvidence{SourceObservations: []catalogs.SourceObservationLink{observation.Link()}},
 	)
 	if err != nil {
 		t.Fatalf("newGeneration: %v", err)

@@ -16,7 +16,7 @@ func TestFilterSourcesHonorsExplicitSourceSelection(t *testing.T) {
 
 	filtered := filterSources(&pkgsync.Options{
 		Sources: []sources.ID{sources.LocalCatalogID, sources.ModelsDevHTTPID},
-	}, sourceTestInputs(asSnapshot(localCatalog), catalogs.LoadReport{}, existingWorkspaceInput()))
+	}, sourceTestInputs(asSnapshot(localCatalog), catalogs.LoadReport{}, existingWorkspaceInput()), providerSourceComposition{})
 
 	got := sourceIDs(filtered)
 	want := []sources.ID{
@@ -38,6 +38,7 @@ func TestFilterSourcesFreshExcludesLocalCatalog(t *testing.T) {
 	filtered := filterSources(
 		&pkgsync.Options{Fresh: true},
 		sourceTestInputs(asSnapshot(catalogs.NewEmpty()), catalogs.LoadReport{}, existingWorkspaceInput()),
+		providerSourceComposition{},
 	)
 
 	for _, id := range sourceIDs(filtered) {
@@ -52,7 +53,7 @@ func TestCreateSourcesWithConfigUsesModelsDevSourcesDir(t *testing.T) {
 
 	srcs := createSourcesWithConfig(&pkgsync.Options{
 		SourcesDir: t.TempDir(),
-	}, sourceTestInputs(asSnapshot(localCatalog), catalogs.LoadReport{}, existingWorkspaceInput()))
+	}, sourceTestInputs(asSnapshot(localCatalog), catalogs.LoadReport{}, existingWorkspaceInput()), providerSourceComposition{})
 
 	got := sourceIDs(srcs)
 	want := []sources.ID{
@@ -109,6 +110,7 @@ func TestModelsDevSourceSelectionFallbackMatrix(t *testing.T) {
 			got := sourceIDs(filterSources(
 				&pkgsync.Options{Sources: test.sources},
 				sourceTestInputs(localCatalog, catalogs.LoadReport{}, existingWorkspaceInput()),
+				providerSourceComposition{},
 			))
 			if len(got) != len(test.want) {
 				t.Fatalf("source IDs = %v, want %v", got, test.want)
@@ -143,6 +145,7 @@ func TestLocalLoadReportSurvivesPrebuiltPipelineCatalog(t *testing.T) {
 	srcs := filterSources(
 		&pkgsync.Options{Sources: []sources.ID{sources.LocalCatalogID}},
 		sourceTestInputs(asSnapshot(builder), report, existingWorkspaceInput()),
+		providerSourceComposition{},
 	)
 	if len(srcs) != 2 ||
 		srcs[0].ID() != sources.LocalCatalogID ||
@@ -169,6 +172,7 @@ func TestAbsentWorkspaceIsNotObservedAsLocalConfiguration(t *testing.T) {
 			catalogs.LoadReport{},
 			workspace.InputExpectation{Path: "/absent/catalog"},
 		),
+		providerSourceComposition{},
 	)
 	for _, source := range srcs {
 		if source.ID() == sources.LocalCatalogID {

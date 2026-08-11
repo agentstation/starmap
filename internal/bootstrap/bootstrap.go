@@ -116,7 +116,8 @@ func Generation() (catalogstore.Generation, error) {
 			Status:           catalogmeta.ObservationStatusSucceeded,
 			EvidenceChecksum: bootstrapManifest.Payload.Checksum,
 		}},
-		Completeness: catalogs.GenerationCompletenessComplete,
+		ReviewCandidates: []catalogmeta.ReviewCandidate{},
+		Completeness:     catalogs.GenerationCompletenessComplete,
 		ConsumerCompatibility: catalogs.ConsumerCompatibility{
 			MinSchemaVersion: bootstrapManifest.SchemaVersion,
 			MaxSchemaVersion: bootstrapManifest.SchemaVersion,

@@ -89,7 +89,7 @@ func TestProjectionFailureLeavesCommittedGenerationActiveAndReportsRepair(t *tes
 		context.Context,
 		*catalogs.Catalog,
 	) (*Candidate, error) {
-		return NewCandidate(published, observation.Link())
+		return NewCandidate(published, CandidateEvidence{SourceObservations: []catalogs.SourceObservationLink{observation.Link()}})
 	})
 	if err != nil {
 		t.Fatalf("Update: %v", err)
@@ -138,7 +138,7 @@ func TestSuccessfulProjectionReportsCommittedGenerationAndWorkspaceDigest(t *tes
 		context.Context,
 		*catalogs.Catalog,
 	) (*Candidate, error) {
-		return NewCandidate(published, observation.Link())
+		return NewCandidate(published, CandidateEvidence{SourceObservations: []catalogs.SourceObservationLink{observation.Link()}})
 	})
 	if err != nil {
 		t.Fatalf("Update: %v", err)
@@ -199,7 +199,7 @@ func TestStoreOnlyApplyCommitsWithoutWorkspaceAccess(t *testing.T) {
 		context.Context,
 		*catalogs.Catalog,
 	) (*Candidate, error) {
-		return NewCandidate(published, observation.Link())
+		return NewCandidate(published, CandidateEvidence{SourceObservations: []catalogs.SourceObservationLink{observation.Link()}})
 	})
 	if err != nil {
 		t.Fatalf("store-only Update: %v", err)

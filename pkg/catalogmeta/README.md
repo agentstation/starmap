@@ -16,6 +16,7 @@ The package has zero dependencies and serves as a foundation for the type system
 
 ## Index
 
+- [func CompareReviewCandidates\(left, right ReviewCandidate\) int](<#CompareReviewCandidates>)
 - [type ObservationCompleteness](<#ObservationCompleteness>)
 - [type ObservationIssue](<#ObservationIssue>)
 - [type ObservationIssueCode](<#ObservationIssueCode>)
@@ -26,15 +27,24 @@ The package has zero dependencies and serves as a foundation for the type system
 - [type ObservationStatus](<#ObservationStatus>)
 - [type ProjectionResult](<#ProjectionResult>)
 - [type ProjectionStatus](<#ProjectionStatus>)
-- [type ReconciliationIssue](<#ReconciliationIssue>)
-- [type ReconciliationIssueCode](<#ReconciliationIssueCode>)
 - [type ResourceType](<#ResourceType>)
   - [func \(rt ResourceType\) String\(\) string](<#ResourceType.String>)
+- [type ReviewCandidate](<#ReviewCandidate>)
+- [type ReviewCandidateCode](<#ReviewCandidateCode>)
 - [type SourceID](<#SourceID>)
   - [func SourceIDs\(\) \[\]SourceID](<#SourceIDs>)
   - [func \(id SourceID\) IsValid\(\) bool](<#SourceID.IsValid>)
   - [func \(id SourceID\) String\(\) string](<#SourceID.String>)
 
+
+<a name="CompareReviewCandidates"></a>
+## func [CompareReviewCandidates](<https://github.com/agentstation/starmap/blob/main/pkg/catalogmeta/review_candidate.go#L29>)
+
+```go
+func CompareReviewCandidates(left, right ReviewCandidate) int
+```
+
+CompareReviewCandidates returns a stable lexical order for review candidates.
 
 <a name="ObservationCompleteness"></a>
 ## type [ObservationCompleteness](<https://github.com/agentstation/starmap/blob/main/pkg/catalogmeta/source_observation.go#L30>)
@@ -250,39 +260,6 @@ const (
 )
 ```
 
-<a name="ReconciliationIssue"></a>
-## type [ReconciliationIssue](<https://github.com/agentstation/starmap/blob/main/pkg/catalogmeta/reconciliation.go#L14-L19>)
-
-ReconciliationIssue records one provider offering excluded from a canonical catalog generation. ProviderModelID remains the provider's exact opaque ID.
-
-```go
-type ReconciliationIssue struct {
-    Code            ReconciliationIssueCode `json:"code" yaml:"code"`
-    ProviderID      string                  `json:"provider_id" yaml:"provider_id"`
-    ProviderModelID string                  `json:"provider_model_id" yaml:"provider_model_id"`
-    Message         string                  `json:"message" yaml:"message"`
-}
-```
-
-<a name="ReconciliationIssueCode"></a>
-## type [ReconciliationIssueCode](<https://github.com/agentstation/starmap/blob/main/pkg/catalogmeta/reconciliation.go#L4>)
-
-ReconciliationIssueCode identifies a stable non\-fatal reconciliation result.
-
-```go
-type ReconciliationIssueCode string
-```
-
-<a name="ReconciliationIssueUnresolvedModelReference"></a>
-
-```go
-const (
-    // ReconciliationIssueUnresolvedModelReference means a provider offering
-    // could not resolve an explicit provider-independent model identity.
-    ReconciliationIssueUnresolvedModelReference ReconciliationIssueCode = "unresolved_model_reference"
-)
-```
-
 <a name="ResourceType"></a>
 ## type [ResourceType](<https://github.com/agentstation/starmap/blob/main/pkg/catalogmeta/resource.go#L6>)
 
@@ -321,6 +298,44 @@ func (rt ResourceType) String() string
 ```
 
 String returns the string representation of a resource type.
+
+<a name="ReviewCandidate"></a>
+## type [ReviewCandidate](<https://github.com/agentstation/starmap/blob/main/pkg/catalogmeta/review_candidate.go#L16-L26>)
+
+ReviewCandidate records one provider offering excluded from a canonical catalog generation. ProviderModelID remains the provider's exact opaque ID.
+
+```go
+type ReviewCandidate struct {
+    Code                   ReviewCandidateCode `json:"code" yaml:"code"`
+    ProviderID             string              `json:"provider_id" yaml:"provider_id"`
+    ProviderModelID        string              `json:"provider_model_id" yaml:"provider_model_id"`
+    SourceID               SourceID            `json:"source" yaml:"source"`
+    SourceObservationID    string              `json:"source_observation_id" yaml:"source_observation_id"`
+    SourceRevision         ObservationRevision `json:"source_revision" yaml:"source_revision"`
+    EvidenceChecksum       string              `json:"evidence_checksum" yaml:"evidence_checksum"`
+    Reason                 string              `json:"reason" yaml:"reason"`
+    PriorReviewedModelLink string              `json:"prior_reviewed_model_link" yaml:"prior_reviewed_model_link"`
+}
+```
+
+<a name="ReviewCandidateCode"></a>
+## type [ReviewCandidateCode](<https://github.com/agentstation/starmap/blob/main/pkg/catalogmeta/review_candidate.go#L6>)
+
+ReviewCandidateCode identifies a stable model\-review reason.
+
+```go
+type ReviewCandidateCode string
+```
+
+<a name="ReviewCandidateUnresolvedModelReference"></a>
+
+```go
+const (
+    // ReviewCandidateUnresolvedModelReference means a provider offering has no
+    // reviewed provider-independent model identity.
+    ReviewCandidateUnresolvedModelReference ReviewCandidateCode = "unresolved_model_reference"
+)
+```
 
 <a name="SourceID"></a>
 ## type [SourceID](<https://github.com/agentstation/starmap/blob/main/pkg/catalogmeta/source.go#L7>)

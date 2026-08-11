@@ -37,7 +37,7 @@ func Publish(ctx context.Context) error {
 		if err != nil {
 			return nil, err
 		}
-		return starmap.NewCandidate(catalog)
+		return starmap.NewCandidate(catalog, starmap.CandidateEvidence{})
 	})
 	if err != nil {
 		return err

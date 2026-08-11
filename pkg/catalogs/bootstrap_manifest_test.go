@@ -62,3 +62,41 @@ func TestBootstrapManifestRequiresSemanticAndExactPayloadIdentities(t *testing.T
 		t.Fatal("ParseBootstrapManifestJSON accepted malformed semantic checksum")
 	}
 }
+
+func TestParseBootstrapManifestEnvelopeJSONAcceptsPriorCatalogSchema(t *testing.T) {
+	catalog, err := NewEmpty().Build()
+	if err != nil {
+		t.Fatalf("Build: %v", err)
+	}
+	payload, err := EncodeCatalogPayload(catalog)
+	if err != nil {
+		t.Fatalf("EncodeCatalogPayload: %v", err)
+	}
+	semanticChecksum, err := CatalogSemanticChecksum(catalog)
+	if err != nil {
+		t.Fatalf("CatalogSemanticChecksum: %v", err)
+	}
+	manifest := BootstrapManifest{
+		ManifestVersion:  CurrentBootstrapManifestVersion,
+		GenerationID:     "prior-schema-generation",
+		GeneratedAt:      time.Date(2026, time.July, 29, 23, 0, 0, 0, time.UTC),
+		SchemaVersion:    CurrentCatalogSchemaVersion - 1,
+		SemanticChecksum: semanticChecksum,
+		Payload:          DescribeCatalogPayload(payload),
+	}
+	data, err := json.Marshal(manifest)
+	if err != nil {
+		t.Fatalf("Marshal: %v", err)
+	}
+
+	parsed, err := ParseBootstrapManifestEnvelopeJSON(data)
+	if err != nil {
+		t.Fatalf("ParseBootstrapManifestEnvelopeJSON: %v", err)
+	}
+	if parsed.SchemaVersion != CurrentCatalogSchemaVersion-1 {
+		t.Fatalf("schema version = %d", parsed.SchemaVersion)
+	}
+	if _, err := ParseBootstrapManifestJSON(data); err == nil {
+		t.Fatal("ParseBootstrapManifestJSON accepted a prior catalog schema")
+	}
+}

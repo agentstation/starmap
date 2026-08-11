@@ -9,10 +9,11 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/agentstation/starmap/internal/constants"
 	"github.com/agentstation/starmap/internal/transport"
 	"github.com/agentstation/starmap/pkg/catalogs"
-	"github.com/agentstation/starmap/internal/constants"
 	"github.com/agentstation/starmap/pkg/errors"
+	"github.com/agentstation/starmap/pkg/sources"
 
 	// Import provider implementations for clients.
 
@@ -25,17 +26,22 @@ import (
 // Each provider implementation must satisfy this interface to fetch model information.
 type ProviderClient interface {
 	// ListModels retrieves all available models from the provider.
-	ListModels(ctx context.Context) ([]catalogs.Model, error)
-
-	// isAPIKeyRequired returns true if the client requires an API key.
-	IsAPIKeyRequired() bool
-
-	// HasAPIKey returns true if the client has an API key.
-	HasAPIKey() bool
+	ListModels(context.Context, sources.ProviderCredentialMaterial) ([]catalogs.Model, error)
 }
 
 // NewProvider creates a new provider client for the given provider.
 func NewProvider(provider *catalogs.Provider) (ProviderClient, error) {
+	if provider == nil {
+		return nil, &errors.ValidationError{Field: "provider", Message: "is required"}
+	}
+	if provider.Catalog == nil {
+		return nil, &errors.ValidationError{
+			Field: "provider.catalog", Value: provider.ID, Message: "catalog acquisition is not configured",
+		}
+	}
+	if err := provider.ValidateContract(); err != nil {
+		return nil, err
+	}
 	switch provider.Catalog.Endpoint.Type {
 	case catalogs.EndpointTypeOpenAI:
 		client, err := openai.NewClient(provider)
@@ -44,10 +50,19 @@ func NewProvider(provider *catalogs.Provider) (ProviderClient, error) {
 		}
 		return client, nil
 	case catalogs.EndpointTypeAnthropic:
+		if err := anthropic.ValidateCatalogEndpoint(provider); err != nil {
+			return nil, err
+		}
 		return anthropic.NewClient(provider), nil
 	case catalogs.EndpointTypeGoogle:
+		if err := google.ValidateCatalogEndpoint(provider); err != nil {
+			return nil, err
+		}
 		return google.NewClient(provider), nil
 	case catalogs.EndpointTypeGoogleCloud:
+		if err := google.ValidateCatalogEndpoint(provider); err != nil {
+			return nil, err
+		}
 		return google.NewClient(provider), nil
 	}
 	return nil, &errors.ValidationError{
@@ -68,15 +83,27 @@ type FetchRawResult struct {
 // FetchRaw fetches raw response data from a provider's API endpoint.
 // This function is used for fetching raw API responses for testdata generation.
 // Returns a FetchRawResult containing the data, response headers, latency, and URL.
-func FetchRaw(ctx context.Context, provider *catalogs.Provider, endpoint string) (*FetchRawResult, error) {
+func FetchRaw(
+	ctx context.Context,
+	provider *catalogs.Provider,
+	material sources.ProviderCredentialMaterial,
+	endpoint string,
+) (*FetchRawResult, error) {
 	// Create transport client configured for this provider
-	transportClient := transport.New(provider)
+	transportClient := transport.New()
+	if endpoint == provider.CatalogEndpointURL() {
+		resolved, err := provider.BindCatalogEndpoint(material.EndpointBindings())
+		if err != nil {
+			return nil, err
+		}
+		endpoint = resolved
+	}
 
 	// Track start time for latency calculation
 	startTime := time.Now()
 
 	// Make the raw request
-	resp, err := transportClient.Get(ctx, endpoint, provider)
+	resp, err := transportClient.Get(ctx, endpoint, provider, material)
 	if err != nil {
 		return nil, &errors.APIError{
 			Provider: string(provider.ID),

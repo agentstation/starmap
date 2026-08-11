@@ -17,7 +17,7 @@ checks defined here.
 | Member | Role |
 | --- | --- |
 | `artifact.json` | Format version, generation identity, schema/consumer compatibility, and exact member descriptors |
-| `manifest.json` | Complete validated `catalogs.GenerationManifest` |
+| `manifest.json` | Validated generation manifest with source-bound review candidates |
 | `catalog.json` | Exact canonical catalog payload bound by the manifest |
 
 No other member, duplicate name, directory, link, or special file is accepted.

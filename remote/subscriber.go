@@ -45,17 +45,11 @@ type Subscriber struct {
 	retries         uint64
 	lastError       *HealthError
 
-	activationMu sync.Mutex
-	active       generationIdentity
+	activationMu        sync.Mutex
+	identityEstablished bool
 
 	retryDelay func(int) time.Duration
 	now        func() time.Time
-}
-
-type generationIdentity struct {
-	id          string
-	digest      string
-	generatedAt time.Time
 }
 
 // PollingFallbackStatus is an immutable snapshot of the subscriber's bounded
@@ -63,8 +57,8 @@ type generationIdentity struct {
 type PollingFallbackStatus struct {
 	// Enabled reports whether construction configured a polling fallback.
 	Enabled bool
-	// Active reports that the stream failure threshold has been reached and
-	// streaming has not yet recovered.
+	// Active reports that failures reached the threshold and the stream has not
+	// recovered.
 	Active bool
 	// Entries counts transitions into fallback mode.
 	Entries uint64
@@ -74,9 +68,25 @@ type PollingFallbackStatus struct {
 	Modified uint64
 }
 
-// New validates config and constructs an idle subscriber. It starts no
-// goroutine and performs no remote request.
+// New makes an idle subscriber and uses context.Background for store I/O. It
+// does not create a goroutine or send a remote request. Call NewContext to
+// cancel store I/O or set a deadline.
 func New(config Config) (*Subscriber, error) {
+	return NewContext(context.Background(), config)
+}
+
+// NewContext validates config and makes an idle subscriber. The context bounds
+// caller-store reads and an optional pinned-bootstrap commit. NewContext does
+// not create a goroutine or send a remote request.
+func NewContext(ctx context.Context, config Config) (*Subscriber, error) {
+	if ctx == nil {
+		return nil, &errors.ValidationError{
+			Field: "remote.context", Message: "is required",
+		}
+	}
+	if err := ctx.Err(); err != nil {
+		return nil, err
+	}
 	normalized, err := config.normalized()
 	if err != nil {
 		return nil, err
@@ -89,8 +99,36 @@ func New(config Config) (*Subscriber, error) {
 	if err != nil {
 		return nil, err
 	}
-	client, err := starmap.New(
-		starmap.WithCatalogStore(catalogstore.NewMemory()),
+	if normalized.PinnedBootstrap != nil {
+		_, currentErr := normalized.CatalogStore.Current(ctx)
+		switch {
+		case currentErr == nil:
+			// A durable current generation always wins over the offline pin.
+		case stderrors.Is(currentErr, errors.ErrNotFound):
+			if err := normalized.CatalogStore.Commit(
+				ctx,
+				*normalized.PinnedBootstrap,
+				"",
+			); err != nil {
+				return nil, errors.WrapResource(
+					"commit",
+					"pinned bootstrap generation",
+					normalized.PinnedBootstrap.Manifest.GenerationID,
+					err,
+				)
+			}
+		default:
+			return nil, errors.WrapResource(
+				"load",
+				"stored current catalog generation",
+				"current",
+				currentErr,
+			)
+		}
+	}
+	client, err := starmap.NewContext(
+		ctx,
+		starmap.WithCatalogStore(normalized.CatalogStore),
 	)
 	if err != nil {
 		return nil, errors.WrapResource(
@@ -109,6 +147,7 @@ func New(config Config) (*Subscriber, error) {
 		fallback: PollingFallbackStatus{
 			Enabled: normalized.PollingFallback != nil,
 		},
+		identityEstablished: !client.Readiness().Embedded.Active,
 	}
 	subscriber.retryDelay = subscriber.exponentialJitter
 	return subscriber, nil
@@ -124,23 +163,28 @@ func (s *Subscriber) PollingFallbackStatus() PollingFallbackStatus {
 	return s.fallback
 }
 
-// Catalog returns the current immutable catalog. Before Start succeeds it is
-// the verified embedded bootstrap; afterward it is the latest activated remote
-// generation.
+// Catalog returns the catalog from State. Construction selects the verified
+// durable current generation, the optional pinned bootstrap for an empty
+// store, or the embedded bootstrap in that order.
 func (s *Subscriber) Catalog() *catalogs.Catalog {
-	if s == nil || s.client == nil {
-		return nil
-	}
-	return s.client.Catalog()
+	return s.State().Catalog
 }
 
-// Start performs a verified initial fetch and starts the caller-context-owned
-// lifecycle. Normally it establishes the event stream and closes the
-// fetch-to-subscribe gap with a mandatory current-state catch-up before
-// returning. When an explicit PollingFallbackPolicy is configured, an initial
-// stream failure starts bounded fallback/reconnect recovery instead. HTTP 401
-// and 403 responses are terminal for the active lifecycle and never retry or
-// enter polling fallback.
+// State returns one atomic catalog, generation identity, payload checksum,
+// timestamp, and sequence snapshot without performing I/O.
+func (s *Subscriber) State() starmap.CatalogState {
+	if s == nil || s.client == nil {
+		return starmap.CatalogState{}
+	}
+	return s.client.CurrentCatalogState()
+}
+
+// Start runs the caller-context-owned remote lifecycle. It normally verifies
+// current state, establishes the event stream, and closes the fetch-to-subscribe
+// gap before it returns. A nonterminal initial transport failure keeps the
+// verified local state and runs streaming recovery. Polling runs only when
+// PollingFallbackPolicy enables it. HTTP 401 and 403 responses are terminal and
+// never retry or enter polling fallback.
 func (s *Subscriber) Start(ctx context.Context) error {
 	if s == nil {
 		return &errors.ValidationError{
@@ -196,7 +240,17 @@ func (s *Subscriber) Start(ctx context.Context) error {
 	initial, err := s.protocol.FetchCurrent(runCtx)
 	if err != nil {
 		s.recordHealthError("initial_fetch", err)
-		return err
+		if runErr := runCtx.Err(); runErr != nil {
+			return runErr
+		}
+		if isTerminalRemoteError(err) {
+			return err
+		}
+		if err := s.beginRun(runCtx, nil, done, 1, StreamStateRetrying); err != nil {
+			return err
+		}
+		started = true
+		return nil
 	}
 	if _, err := s.activate(runCtx, initial); err != nil {
 		s.recordHealthError("initial_activate", err)
@@ -209,49 +263,57 @@ func (s *Subscriber) Start(ctx context.Context) error {
 		if runErr := runCtx.Err(); runErr != nil {
 			return runErr
 		}
-		if s.config.PollingFallback == nil || isTerminalRemoteError(err) {
+		if isTerminalRemoteError(err) {
 			return err
 		}
-		s.mu.Lock()
-		if s.state != stateStarting {
-			actual := s.state.String()
-			s.mu.Unlock()
-			return &errors.ConflictError{
-				Resource: "remote catalog subscriber",
-				Expected: "starting",
-				Actual:   actual,
-				Message:  "subscriber lifecycle changed while Start was initializing",
-			}
+		if err := s.beginRun(runCtx, nil, done, 1, StreamStateRetrying); err != nil {
+			return err
 		}
-		s.state = stateRunning
-		s.streamState = StreamStateRetrying
 		started = true
-		go s.run(runCtx, nil, done, 1)
-		s.mu.Unlock()
 		return nil
 	}
 	if err := s.catchUp(runCtx); err != nil {
 		_ = stream.Close()
+		if runErr := runCtx.Err(); runErr != nil {
+			return runErr
+		}
+		if isTerminalRemoteError(err) {
+			return err
+		}
+		if err := s.beginRun(runCtx, nil, done, 1, StreamStateRetrying); err != nil {
+			return err
+		}
+		started = true
+		return nil
+	}
+	if err := s.beginRun(runCtx, stream, done, 0, StreamStateStreaming); err != nil {
+		_ = stream.Close()
 		return err
 	}
+	started = true
+	return nil
+}
 
+func (s *Subscriber) beginRun(
+	ctx context.Context,
+	stream *catalogremote.EventStream,
+	done chan struct{},
+	streamFailures int,
+	streamState StreamState,
+) error {
 	s.mu.Lock()
+	defer s.mu.Unlock()
 	if s.state != stateStarting {
-		actual := s.state.String()
-		s.mu.Unlock()
-		_ = stream.Close()
 		return &errors.ConflictError{
 			Resource: "remote catalog subscriber",
 			Expected: "starting",
-			Actual:   actual,
+			Actual:   s.state.String(),
 			Message:  "subscriber lifecycle changed while Start was initializing",
 		}
 	}
 	s.state = stateRunning
-	s.streamState = StreamStateStreaming
-	started = true
-	go s.run(runCtx, stream, done, 0)
-	s.mu.Unlock()
+	s.streamState = streamState
+	go s.run(ctx, stream, done, streamFailures)
 	return nil
 }
 
@@ -361,9 +423,8 @@ func (s *Subscriber) run(
 				streamFailures++
 				continue
 			}
-			// Replay is only an optimization. Every established connection
-			// performs a verified current-state fetch before event consumption
-			// resumes.
+			// Replay only improves efficiency. After each connection, the
+			// subscriber fetches and verifies current state before it reads events.
 			if catchUpErr := s.catchUp(ctx); catchUpErr != nil {
 				_ = next.Close()
 				if isTerminalRemoteError(catchUpErr) {
@@ -579,62 +640,56 @@ func (s *Subscriber) activate(
 			err,
 		)
 	}
-	candidate := generationIdentity{
-		id:          generation.Manifest.GenerationID,
-		digest:      generation.Manifest.Payload.Checksum,
-		generatedAt: generation.Manifest.GeneratedAt,
-	}
+	candidateID := generation.Manifest.GenerationID
+	candidateDigest := generation.Manifest.Payload.Checksum
+	candidateGeneratedAt := generation.Manifest.GeneratedAt
 
 	s.activationMu.Lock()
 	defer s.activationMu.Unlock()
+	active := s.State()
 	switch {
-	case s.active.id == "":
-	case candidate.id == s.active.id:
-		if candidate.digest != s.active.digest {
-			return false, &errors.ConflictError{
-				Resource: "remote catalog generation",
-				Expected: s.active.digest,
-				Actual:   candidate.digest,
-				Message:  "one generation ID cannot identify different payloads",
-			}
+	case candidateID == active.GenerationID &&
+		candidateDigest != active.PayloadChecksum:
+		return false, &errors.ConflictError{
+			Resource: "remote catalog generation",
+			Expected: active.PayloadChecksum,
+			Actual:   candidateDigest,
+			Message:  "one generation ID cannot identify different payloads",
 		}
+	case !s.identityEstablished:
+	case candidateID == active.GenerationID:
+		s.identityEstablished = true
 		return false, nil
-	case candidate.generatedAt.Before(s.active.generatedAt):
+	case candidateGeneratedAt.Before(active.GeneratedAt):
 		return false, nil
-	case candidate.generatedAt.Equal(s.active.generatedAt) &&
-		candidate.digest != s.active.digest:
+	case candidateGeneratedAt.Equal(active.GeneratedAt) &&
+		candidateDigest != active.PayloadChecksum:
 		return false, &errors.ConflictError{
 			Resource: "remote catalog generation order",
 			Expected: "a strictly newer generated_at value",
-			Actual:   candidate.generatedAt.Format(time.RFC3339Nano),
+			Actual:   candidateGeneratedAt.Format(time.RFC3339Nano),
 			Message:  "distinct payloads cannot share the active generation timestamp",
 		}
-	case candidate.digest == s.active.digest:
-		// The remote source published a newer identity for identical canonical
-		// bytes. Advance deduplication state without copying or republishing the
-		// unchanged immutable catalog.
-		s.active = candidate
-		return false, nil
 	}
 
 	publication, err := s.client.Activate(ctx, generation)
 	if err != nil {
 		return false, err
 	}
-	s.active = candidate
+	s.identityEstablished = true
 	return publication.Published, nil
 }
 
 func (s *Subscriber) isActiveGeneration(id string) bool {
 	s.activationMu.Lock()
 	defer s.activationMu.Unlock()
-	return id != "" && id == s.active.id
+	return id != "" && id == s.State().GenerationID
 }
 
 func (s *Subscriber) activeGenerationID() string {
 	s.activationMu.Lock()
 	defer s.activationMu.Unlock()
-	return s.active.id
+	return s.State().GenerationID
 }
 
 func (s *Subscriber) recordEventID(id string) {

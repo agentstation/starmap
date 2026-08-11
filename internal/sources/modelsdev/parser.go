@@ -359,19 +359,10 @@ func (p *Provider) toStarmapProviderMetadata() *catalogs.Provider {
 		doc := p.Doc
 		provider.Catalog.Docs = &doc
 	}
-	if len(p.Env) > 0 {
-		provider.EnvVars = make([]catalogs.ProviderEnvVar, 0, len(p.Env))
-		for _, envName := range p.Env {
-			if envName == "" {
-				continue
-			}
-			provider.EnvVars = append(provider.EnvVars, catalogs.ProviderEnvVar{
-				Name:     envName,
-				Required: false,
-			})
-		}
-	}
 	fields := make(map[string]any)
+	if len(p.Env) > 0 {
+		fields["env"] = append([]string(nil), p.Env...)
+	}
 	if p.NPM != "" || p.API != nil {
 		if p.NPM != "" {
 			fields["npm"] = p.NPM

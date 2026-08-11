@@ -314,6 +314,13 @@ validated generation. Consumers compose this through
 [`acquisition.Syncer`](acquisition/), while the reconciliation engine remains
 an internal implementation detail.
 
+Provider adapters project only directly observed model facts and catalog-
+declared mappings. They do not infer capabilities or authors from model-family
+names. An offering without a reviewed canonical model link stays out of the
+catalog and becomes a durable review candidate in the generation manifest.
+The candidate retains the exact provider model ID and its source revision and
+evidence checksum.
+
 ### 6. Model Definition
 
 The canonical provider-independent model record: authorship, lineage,
@@ -321,6 +328,48 @@ weights/architecture, release metadata, and intrinsic capabilities. Provider
 pricing, limits, availability, regions, lifecycle, modes, endpoints, and
 request behavior belong to provider offerings. See
 [pkg/catalogs/README.md](pkg/catalogs/README.md) for the schema reference.
+
+### Add a provider with YAML
+
+A provider needs no Go change when it uses a compiled catalog transport and
+authentication primitive. Its response fields must also fit that transport's
+typed source vocabulary.
+
+1. Add the canonical author to `internal/embedded/catalog/authors.yaml` when it
+   does not exist.
+2. Add intrinsic model facts to
+   `internal/embedded/catalog/authors/<author>/models/<slug>.yaml`.
+3. Add the provider record to `internal/embedded/catalog/providers.yaml`.
+   Declare credentials, the catalog endpoint, inference endpoints, and status
+   sources there.
+4. Add each reviewed offering below
+   `internal/embedded/catalog/providers/<provider>/models/`. Preserve the
+   provider's exact `id`. Set `model: <author>/<slug>` explicitly.
+5. Run `make validate`.
+6. Run `make update-catalog-provider PROVIDER=<provider>` when the provider
+   API is available.
+7. Run `make verify` before publication.
+
+`field_mappings` select typed wire fields and canonical destinations. The first
+present source for one destination wins in YAML order. OpenAI-compatible
+sources include `context_window` and `max_completion_tokens`. Their canonical
+destinations are `limits.context_window` and `limits.output_tokens`.
+
+`author_mapping` selects a transport-supported author field and maps exact,
+case-insensitive, or glob values to an existing canonical author. OpenAI-
+compatible acquisition supports `id` and `owned_by`. Google acquisition
+supports `publisher` where its transport contract declares it.
+
+`capability_mappings` use exact typed provider predicates. Each mapping cites
+an HTTPS provider contract and names each entailed canonical target. A mapping
+can use `conflict`, `first-known`, `any`, or `all` combination behavior. Model
+IDs, author names, family names, and free text cannot create capability facts.
+
+A known offering publishes only when its exact provider ID has an explicit
+canonical model link. An unknown discovered ID stays out of the catalog and
+becomes a durable review candidate. Add its authored model and offering record
+before the next publication. The generator derives the endpoint
+projections. Do not use them as an authoring source.
 
 For detailed component design and interaction patterns, see **[ARCHITECTURE.md § System Components](docs/ARCHITECTURE.md#system-components)**.
 
@@ -723,7 +772,7 @@ publication, err := sm.Update(ctx, func(
     if err != nil {
         return nil, err
     }
-    return starmap.NewCandidate(updated)
+    return starmap.NewCandidate(updated, starmap.CandidateEvidence{})
 })
 if err != nil {
     return err
@@ -910,8 +959,13 @@ Go consumers can opt into reactive remote catalogs without adding network
 behavior to the root package:
 
 ```go
-subscriber, err := remote.New(remote.Config{
-    BaseURL: "https://starmap.example.com/api/v1",
+store, err := catalogstore.NewFilesystem("/var/lib/my-service/starmap")
+if err != nil {
+    return err
+}
+subscriber, err := remote.NewContext(ctx, remote.Config{
+    BaseURL:      "https://starmap.example.com/api/v1",
+    CatalogStore: store,
 })
 if err != nil {
     return err
@@ -921,8 +975,8 @@ if err := subscriber.Start(ctx); err != nil {
 }
 defer subscriber.Close()
 
-catalog := subscriber.Catalog()
-model, err := catalog.FindModel("gpt-4o")
+state := subscriber.State()
+model, err := state.Catalog.FindModel("gpt-4o")
 
 health := subscriber.Health()
 log.Printf(
@@ -934,16 +988,28 @@ log.Printf(
 )
 ```
 
-The initial generation is verified before `Start` succeeds. SSE events are
-generation hints, not catalog payloads; reconnect always performs verified
-current-state catch-up, so dropped or replayed events cannot permanently stale
-or partially mutate the catalog. Comment heartbeats reset the stream-liveness
-deadline without triggering a fetch. The caller context owns initial fetch,
-streaming, retry, and activation; `Close` cancels and joins that lifecycle
+Each subscriber requires a `CatalogStore` that the caller owns. Construction
+loads the verified current generation before remote work. An optional
+`PinnedBootstrap` seeds only an empty store. A valid durable current generation
+always wins. Corrupt or unavailable store state causes construction to fail.
+`State` returns one atomic catalog, generation ID, payload checksum, timestamp,
+and sequence.
+
+SSE events are generation hints, not catalog payloads. Reconnect always fetches
+and verifies current state. Thus, dropped or replayed events cannot permanently
+stale or partially mutate the catalog. A newer identity for the same payload
+advances the durable and atomic identity. It emits one generation event without
+replacing the catalog pointer or publishing model-change hooks. Comment
+heartbeats reset the stream-liveness deadline without triggering a fetch.
+
+If the initial remote fetch or stream has a nonterminal failure, `Start` keeps
+the verified local state. It then starts bounded streaming recovery.
+HTTP 401 and 403 remain terminal. The caller context owns initial fetch,
+streaming, retry, and activation. `Close` cancels and joins that lifecycle
 within a bounded timeout.
 
-Polling is disabled by default. Deployments that must tolerate an unavailable
-SSE route may opt into a bounded last-resort policy:
+Polling is off by default. Streaming reconnect remains active. Deployments can
+enable bounded conditional manifest polling during a long SSE outage:
 
 ```go
 PollingFallback: &remote.PollingFallbackPolicy{
@@ -996,37 +1062,31 @@ For the embeddable API, see [server/README.md](server/README.md).
 
 ### Environment Variables
 
+Provider YAML declares the conventional environment names for each credential
+field. Starmap checks those names in their declared order. If no conventional
+name contains a value, Starmap checks the derived
+`STARMAP_<PROVIDER_ID>_<FIELD_ID>` name. For example:
+
 ```bash
-# Provider API Keys
-OPENAI_API_KEY=sk-...
-ANTHROPIC_API_KEY=sk-ant-...
-GOOGLE_API_KEY=...
-GROQ_API_KEY=...
-DEEPSEEK_API_KEY=...
-CEREBRAS_API_KEY=...
-DASHSCOPE_API_KEY=...
-FIREWORKS_API_KEY=...
+export OPENAI_API_KEY=sk-...
 
-# Optional for DeepInfra catalog fetch; required for inference calls
-DEEPINFRA_TOKEN=...
-
-# Alibaba Cloud Model Studio workspace domain override (optional)
-ALIBABA_MODEL_STUDIO_BASE_URL=https://{WorkspaceId}.ap-southeast-1.maas.aliyuncs.com/compatible-mode/v1
-
-# Google Vertex (optional)
-GOOGLE_VERTEX_PROJECT=my-project
-GOOGLE_VERTEX_LOCATION=us-central1
-GOOGLE_APPLICATION_CREDENTIALS=/absolute/path/to/service-account.json
+# Used only when OPENAI_API_KEY is not set.
+export STARMAP_OPENAI_API_KEY=sk-...
 
 # Starmap logging
-LOG_LEVEL=info
-LOG_FORMAT=auto
-LOG_OUTPUT=stderr
+export LOG_LEVEL=info
+export LOG_FORMAT=auto
+export LOG_OUTPUT=stderr
 
 # Optional readiness budgets while the embedded offline bootstrap is active
-EMBEDDED_BOOTSTRAP_MAX_AGE=168h
-EMBEDDED_BOOTSTRAP_MAX_SIZE_BYTES=16777216
+export EMBEDDED_BOOTSTRAP_MAX_AGE=168h
+export EMBEDDED_BOOTSTRAP_MAX_SIZE_BYTES=16777216
 ```
+
+Starmap selects the first nonempty environment value. Resolution fails if that
+value does not satisfy the catalog field contract. Starmap does not try a later
+name. The resolver can use a Google, Azure, or AWS default credential chain
+after catalog-declared ambient fields are absent.
 
 Select a non-default configuration file with
 `starmap --config /path/to/config.yaml <command>`. Set `catalog_path` in that
@@ -1060,9 +1120,9 @@ starmap auth gcloud
 ```
 
 The `providers` command shows:
-- Which providers have configured credentials
+
+- Configured providers
 - Acquisition authentication method (API key or cloud chain)
-- Credential source (environment variable, config file, application default)
 - Missing credentials with setup instructions
 - Provider details (name, ID, location, type, models count)
 
@@ -1172,10 +1232,67 @@ rollback to the current durable generation does not emit another publication.
 catalog_path: ~/.starmap/catalog
 embedded_bootstrap_max_age: 168h
 embedded_bootstrap_max_size_bytes: 16777216
+
+credential_sources:
+  openai:
+    api-key:
+      reference: file:/run/secrets/openai-api-key
+      fallback_ambient: false
 ```
 
-Provider connection settings live with each human-readable provider record;
-credentials remain in environment variables such as `OPENAI_API_KEY`.
+`credential_sources` keys must be canonical provider IDs and
+catalog-declared field IDs. An explicit reference runs before ambient
+discovery. `fallback_ambient: true` permits ambient discovery only when the
+explicit source reports `not_configured`. Invalid, denied, unavailable,
+timeout, and cancellation failures are terminal.
+
+Core references are `env:NAME` and `file:/absolute/path`. The complete grammar
+is `backend:resource?version=VERSION#field`. The environment and file sources
+reject `version` and `field`.
+
+Starmap also includes these direct read sources:
+
+| Backend | Reference resource | Authentication |
+|---|---|---|
+| `gcp-secret-manager` | `projects/PROJECT/secrets/SECRET` or the regional form | Application Default Credentials |
+| `azure-key-vault` | `https://VAULT_HOST/secrets/SECRET` | `DefaultAzureCredential` |
+| `aws-secrets-manager` | A secret name or ARN | The AWS default credential chain |
+| `vault` | `MOUNT/PATH` for a KV v2 secret | The Vault client environment |
+| `openbao` | `MOUNT/PATH` for a KV v2 secret | The OpenBao client environment |
+
+The optional `version` selects a provider version. Each source selects the
+latest version when `version` is absent. For Google Cloud, Azure, and AWS,
+`field` selects one exact top-level JSON string. Without `field`, these sources
+preserve the complete scalar payload. For Vault and OpenBao, `field` selects
+one exact string value. A reference without `field` requires exactly one
+string value.
+
+Backend authentication values do not belong in a reference. Google Cloud uses
+Application Default Credentials. Azure uses `DefaultAzureCredential`. AWS uses
+its default configuration and credential chain. Vault uses its standard client
+environment, including `VAULT_ADDR`, `VAULT_TOKEN`, and `VAULT_NAMESPACE`.
+OpenBao uses its standard client environment, including `BAO_ADDR`,
+`BAO_TOKEN`, and `BAO_NAMESPACE`.
+
+Each direct source creates its official client on resolution and closes its
+owned network resources after the read.
+
+Use a regular, absolute credential file that is nonempty and no larger than
+1 MiB. Starmap preserves every byte. It does not trim a trailing newline. If
+the provider rejects a newline, create the file without one.
+
+The process-owned resolver reads static files on each resolution and detects
+in-place writes, atomic replacement, symlink target swaps, projected-volume
+replacement, and agent rerender. Detection does not depend on modification
+time alone. The resolver caches renewable cloud material until its refresh
+time. Concurrent refreshes share one source operation. The resolver exposes
+opaque material versions that contain no secret digest or source path.
+
+Provider connection and credential metadata live with each human-readable
+provider record. Credential values remain deployment state in environment
+variables, explicit references, or cloud default chains. Embedding programs
+can inject a deployment-owned `sources.ProviderCredentialResolver` with
+`acquisition.WithCredentialResolver`.
 Acquisition source selection and approval are operation inputs (`starmap
 update` flags or `sync.Option` values), not long-lived configuration that can
 silently start work.

@@ -252,6 +252,7 @@ func runStorageDrill(
 
 	subscriber, err := remote.New(remote.Config{
 		BaseURL:                   publisher.URL + "/api/v1",
+		CatalogStore:              catalogstore.NewMemory(),
 		ExpectedHeartbeatInterval: 25 * time.Millisecond,
 		LivenessTimeout:           time.Second,
 	})
@@ -280,7 +281,7 @@ func runStorageDrill(
 		if err != nil {
 			return nil, err
 		}
-		return starmap.NewCandidate(candidate)
+		return starmap.NewCandidate(candidate, starmap.CandidateEvidence{})
 	})
 	if err != nil {
 		t.Fatalf("Update: %v", err)

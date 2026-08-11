@@ -9,6 +9,7 @@ import (
 	"github.com/google/uuid"
 
 	"github.com/agentstation/starmap"
+	"github.com/agentstation/starmap/internal/auth"
 	"github.com/agentstation/starmap/internal/catalog/pipeline"
 	"github.com/agentstation/starmap/internal/providers/clients"
 	"github.com/agentstation/starmap/pkg/catalogs"
@@ -23,10 +24,28 @@ type Option func(*options) error
 
 type options struct {
 	providerClientFactory sources.ProviderClientFactory
+	credentialResolver    sources.ProviderCredentialResolver
 }
 
 func defaults() options {
-	return options{providerClientFactory: defaultProviderClientFactory}
+	return options{
+		providerClientFactory: defaultProviderClientFactory,
+		credentialResolver:    auth.NewResolver(),
+	}
+}
+
+// WithCredentialResolver selects the deployment-owned catalog-acquisition
+// credential resolver.
+func WithCredentialResolver(resolver sources.ProviderCredentialResolver) Option {
+	return func(options *options) error {
+		if resolver == nil {
+			return &errors.ValidationError{
+				Field: "acquisition.credential_resolver", Message: "is required",
+			}
+		}
+		options.credentialResolver = resolver
+		return nil
+	}
 }
 
 func defaultProviderClientFactory(
@@ -80,8 +99,11 @@ func New(client *starmap.Client, opts ...Option) (*Syncer, error) {
 		}
 	}
 	return &Syncer{
-		client:   client,
-		pipeline: pipeline.NewAcquisition(config.providerClientFactory),
+		client: client,
+		pipeline: pipeline.NewAcquisition(
+			config.providerClientFactory,
+			config.credentialResolver,
+		),
 	}, nil
 }
 
@@ -139,7 +161,10 @@ func (s *Syncer) Sync(
 		for _, observation := range prepared.Observations {
 			links = append(links, observation.Link())
 		}
-		return starmap.NewCandidate(catalog, links...)
+		return starmap.NewCandidate(catalog, starmap.CandidateEvidence{
+			SourceObservations: links,
+			ReviewCandidates:   prepared.Result.ReviewCandidates,
+		})
 	})
 	if err != nil {
 		return nil, err

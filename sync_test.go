@@ -6,6 +6,7 @@ import (
 	"net/http/httptest"
 	"testing"
 
+	"github.com/agentstation/starmap/internal/testcatalog"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/sources"
 	pkgsync "github.com/agentstation/starmap/pkg/sync"
@@ -25,13 +26,14 @@ func TestSyncDryRunDoesNotPublishFetchedCatalog(t *testing.T) {
 	outputPath := t.TempDir()
 	localCatalog := catalogs.NewEmpty()
 	provider := catalogs.Provider{
-		ID:   "dry-run-provider",
-		Name: "Dry Run Provider",
+		ID:          "dry-run-provider",
+		Name:        "Dry Run Provider",
+		Credentials: testcatalog.UnauthenticatedCredentials(),
 		Catalog: &catalogs.ProviderCatalog{
-			Auth: catalogs.ProviderCatalogAuth{Method: catalogs.ProviderCatalogAuthNone},
 			Endpoint: catalogs.ProviderEndpoint{
-				Type: catalogs.EndpointTypeOpenAI,
-				URL:  modelServer.URL,
+				Type:            catalogs.EndpointTypeOpenAI,
+				URL:             modelServer.URL,
+				ProtocolOptions: testcatalog.OpenAIProtocolOptions(),
 			},
 		},
 	}

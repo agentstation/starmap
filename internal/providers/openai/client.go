@@ -16,6 +16,7 @@ import (
 	"github.com/agentstation/starmap/internal/transport"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/errors"
+	"github.com/agentstation/starmap/pkg/sources"
 )
 
 // Client acquires and normalizes model metadata from an OpenAI-compatible API.
@@ -33,41 +34,30 @@ func NewClient(provider *catalogs.Provider) (*Client, error) {
 	client := &Client{
 		provider: provider,
 	}
-	if err := client.validateFieldMappings(provider); err != nil {
+	if err := ValidateCatalogEndpoint(provider); err != nil {
 		return nil, err
 	}
-	client.transport = transport.New(provider)
+	client.transport = transport.New()
 	return client, nil
 }
 
 // Configure sets the provider for this client.
 func (c *Client) Configure(provider *catalogs.Provider) error {
-	if err := c.validateFieldMappings(provider); err != nil {
+	if err := ValidateCatalogEndpoint(provider); err != nil {
 		return err
 	}
 	c.mu.Lock()
 	defer c.mu.Unlock()
 	c.provider = provider
-	c.transport = transport.New(provider)
+	c.transport = transport.New()
 	return nil
 }
 
-// IsAPIKeyRequired returns true if the client requires an API key.
-func (c *Client) IsAPIKeyRequired() bool {
-	c.mu.RLock()
-	defer c.mu.RUnlock()
-	return c.provider.IsAPIKeyRequired()
-}
-
-// HasAPIKey returns true if the client has an API key.
-func (c *Client) HasAPIKey() bool {
-	c.mu.RLock()
-	defer c.mu.RUnlock()
-	return c.provider.HasAPIKey()
-}
-
 // ListModels retrieves all available models using OpenAI-compatible API.
-func (c *Client) ListModels(ctx context.Context) ([]catalogs.Model, error) {
+func (c *Client) ListModels(
+	ctx context.Context,
+	material sources.ProviderCredentialMaterial,
+) ([]catalogs.Model, error) {
 	c.mu.RLock()
 	provider := c.provider
 	c.mu.RUnlock()
@@ -78,21 +68,18 @@ func (c *Client) ListModels(ctx context.Context) ([]catalogs.Model, error) {
 			Message: "provider not configured",
 		}
 	}
-	if err := c.validateFieldMappings(provider); err != nil {
+	if err := ValidateCatalogEndpoint(provider); err != nil {
 		return nil, err
 	}
 
 	// Build URL from provider configuration.
-	url := provider.CatalogEndpointURL()
-	if url == "" {
-		return nil, &errors.ValidationError{
-			Field:   "catalog.endpoint.url",
-			Message: "endpoint URL not configured",
-		}
+	url, err := provider.BindCatalogEndpoint(material.EndpointBindings())
+	if err != nil {
+		return nil, err
 	}
 
 	// Make the request
-	resp, err := c.transport.Get(ctx, url, provider)
+	resp, err := c.transport.Get(ctx, url, provider, material)
 	if err != nil {
 		return nil, &errors.APIError{
 			Provider:   provider.ID.String(),
@@ -124,7 +111,10 @@ func (c *Client) ListModels(ctx context.Context) ([]catalogs.Model, error) {
 	models := make([]catalogs.Model, 0, len(result.Data))
 	for _, m := range result.Data {
 		m.UnknownFields = append(m.UnknownFields, result.UnknownFields...)
-		model := c.ConvertToModel(m)
+		model, err := c.ConvertToModel(m)
+		if err != nil {
+			return nil, err
+		}
 		models = append(models, *model)
 	}
 
@@ -133,7 +123,7 @@ func (c *Client) ListModels(ctx context.Context) ([]catalogs.Model, error) {
 
 // ConvertToModel converts an OpenAI model response to a starmap Model using dynamic configuration.
 // This method is public for testing purposes.
-func (c *Client) ConvertToModel(m Model) *catalogs.Model {
+func (c *Client) ConvertToModel(m Model) (*catalogs.Model, error) {
 	model := &catalogs.Model{
 		ID:          m.ID,
 		Name:        m.ID, // Default to ID, may be overridden
@@ -145,9 +135,9 @@ func (c *Client) ConvertToModel(m Model) *catalogs.Model {
 
 	// Apply dynamic author extraction
 	model.Authors = c.extractAuthors(m.ID, m.OwnedBy)
-
-	// Apply dynamic feature rules
-	model.Features = c.applyFeatureRules(m)
+	if err := c.applyCapabilityMappings(model, m); err != nil {
+		return nil, err
+	}
 
 	c.applyProviderDefaults(model, m)
 
@@ -163,7 +153,7 @@ func (c *Client) ConvertToModel(m Model) *catalogs.Model {
 		}
 	}
 
-	return model
+	return model, nil
 }
 
 func (c *Client) applyProviderDefaults(model *catalogs.Model, apiModel Model) {
@@ -184,7 +174,6 @@ func (c *Client) applyProviderDefaults(model *catalogs.Model, apiModel Model) {
 			model.Status = catalogs.ModelStatusUnknown
 		}
 	}
-	c.applyProviderLimits(model, apiModel)
 	c.applyProviderMetadata(model, apiModel)
 	c.applyProviderFeatures(model, apiModel)
 	normalizeOperationalModalities(model)
@@ -193,66 +182,42 @@ func (c *Client) applyProviderDefaults(model *catalogs.Model, apiModel Model) {
 }
 
 func normalizeOperationalModalities(model *catalogs.Model) {
-	if model == nil || model.Metadata == nil || model.Features == nil {
+	if model == nil || model.Metadata == nil {
 		return
 	}
 	for _, tag := range model.Metadata.Tags {
 		switch strings.ToLower(string(tag)) {
 		case "embed", string(catalogs.ModelTagEmbedding):
-			model.Features.Modalities.Output = []catalogs.ModelModality{
+			ensureModelFeatures(model).Modalities.Output = []catalogs.ModelModality{
 				catalogs.ModelModalityEmbedding,
 			}
 		case "stt", string(catalogs.ModelTagSpeechToText):
-			model.Features.Modalities.Input = appendUniqueModality(
-				model.Features.Modalities.Input,
+			features := ensureModelFeatures(model)
+			features.Modalities.Input = appendUniqueModality(
+				features.Modalities.Input,
 				catalogs.ModelModalityAudio,
 			)
-			model.Features.Modalities.Output = []catalogs.ModelModality{
+			features.Modalities.Output = []catalogs.ModelModality{
 				catalogs.ModelModalityText,
 			}
 		case "tts", string(catalogs.ModelTagTextToSpeech):
-			model.Features.Modalities.Input = appendUniqueModality(
-				model.Features.Modalities.Input,
+			features := ensureModelFeatures(model)
+			features.Modalities.Input = appendUniqueModality(
+				features.Modalities.Input,
 				catalogs.ModelModalityText,
 			)
-			model.Features.Modalities.Output = []catalogs.ModelModality{
+			features.Modalities.Output = []catalogs.ModelModality{
 				catalogs.ModelModalityAudio,
 			}
 		case "image-gen", string(catalogs.ModelTagTextToImage):
-			model.Features.Modalities.Output = []catalogs.ModelModality{
+			ensureModelFeatures(model).Modalities.Output = []catalogs.ModelModality{
 				catalogs.ModelModalityImage,
 			}
 		case "video-gen", string(catalogs.ModelTagTextToVideo):
-			model.Features.Modalities.Output = []catalogs.ModelModality{
+			ensureModelFeatures(model).Modalities.Output = []catalogs.ModelModality{
 				catalogs.ModelModalityVideo,
 			}
 		}
-	}
-}
-
-func (c *Client) applyProviderLimits(model *catalogs.Model, apiModel Model) {
-	contextWindow := firstInt64(apiModel.ContextWindow, apiModel.ContextLength, apiModel.MaxModelLen)
-	if apiModel.Metadata != nil && contextWindow == nil {
-		contextWindow = apiModel.Metadata.ContextLength
-	}
-	outputTokens := firstInt64(apiModel.MaxCompletionTokens, apiModel.OutputTokenLimit, apiModel.MaxOutputLength)
-	if apiModel.Metadata != nil && outputTokens == nil {
-		outputTokens = apiModel.Metadata.MaxTokens
-	}
-	if contextWindow == nil && apiModel.InputTokenLimit == nil && outputTokens == nil {
-		return
-	}
-	if model.Limits == nil {
-		model.Limits = &catalogs.ModelLimits{}
-	}
-	if _, state := model.Limits.Value(catalogs.ModelLimitContextWindow); contextWindow != nil && state != catalogs.ValueKnown {
-		model.Limits.Set(catalogs.ModelLimitContextWindow, *contextWindow)
-	}
-	if _, state := model.Limits.Value(catalogs.ModelLimitInputTokens); apiModel.InputTokenLimit != nil && state != catalogs.ValueKnown {
-		model.Limits.Set(catalogs.ModelLimitInputTokens, *apiModel.InputTokenLimit)
-	}
-	if _, state := model.Limits.Value(catalogs.ModelLimitOutputTokens); outputTokens != nil && state != catalogs.ValueKnown {
-		model.Limits.Set(catalogs.ModelLimitOutputTokens, *outputTokens)
 	}
 }
 
@@ -274,7 +239,26 @@ func (c *Client) applyProviderMetadata(model *catalogs.Model, apiModel Model) {
 }
 
 func (c *Client) applyProviderFeatures(model *catalogs.Model, apiModel Model) {
+	if !hasProviderFeatureClaims(apiModel) {
+		return
+	}
 	features := ensureModelFeatures(model)
+	applyProviderModalities(features, apiModel)
+	applySupportedFeatures(features, apiModel.SupportedFeatures)
+	applySupportedSamplingParameters(features, apiModel.SupportedSamplingParameters)
+}
+
+func hasProviderFeatureClaims(apiModel Model) bool {
+	return len(apiModel.InputModalities) > 0 ||
+		len(apiModel.OutputModalities) > 0 ||
+		apiModel.SupportsImageInput != nil ||
+		apiModel.SupportsImageIn != nil ||
+		apiModel.SupportsVideoIn != nil ||
+		len(apiModel.SupportedFeatures) > 0 ||
+		len(apiModel.SupportedSamplingParameters) > 0
+}
+
+func applyProviderModalities(features *catalogs.ModelFeatures, apiModel Model) {
 	if len(apiModel.InputModalities) > 0 {
 		features.Modalities.Input = convertProviderModalities(apiModel.InputModalities)
 	}
@@ -287,15 +271,10 @@ func (c *Client) applyProviderFeatures(model *catalogs.Model, apiModel Model) {
 	if boolValue(apiModel.SupportsVideoIn) {
 		features.Modalities.Input = appendUniqueModality(features.Modalities.Input, catalogs.ModelModalityVideo)
 	}
-	if apiModel.SupportsTools != nil {
-		features.SetSupport(catalogs.ModelFeatureTools, *apiModel.SupportsTools)
-		features.SetSupport(catalogs.ModelFeatureToolCalls, *apiModel.SupportsTools)
-		features.SetSupport(catalogs.ModelFeatureToolChoice, *apiModel.SupportsTools)
-	}
-	if apiModel.SupportsReasoning != nil {
-		features.SetSupport(catalogs.ModelFeatureReasoning, *apiModel.SupportsReasoning)
-	}
-	for _, feature := range apiModel.SupportedFeatures {
+}
+
+func applySupportedFeatures(features *catalogs.ModelFeatures, supported []string) {
+	for _, feature := range supported {
 		switch strings.ToLower(feature) {
 		case "tools", "tool_use", "tool_calls":
 			features.Tools = true
@@ -309,7 +288,10 @@ func (c *Client) applyProviderFeatures(model *catalogs.Model, apiModel Model) {
 			features.Reasoning = true
 		}
 	}
-	for _, parameter := range apiModel.SupportedSamplingParameters {
+}
+
+func applySupportedSamplingParameters(features *catalogs.ModelFeatures, supported []string) {
+	for _, parameter := range supported {
 		switch strings.ToLower(parameter) {
 		case "temperature":
 			features.Temperature = true
@@ -398,8 +380,9 @@ func applyOpenAICompatiblePricing(pricing *catalogs.ModelPricing, source *ModelP
 func (c *Client) topLevelTokenPriceScale() float64 {
 	c.mu.RLock()
 	defer c.mu.RUnlock()
-	if c.provider != nil && c.provider.ID == catalogs.ProviderIDGroq {
-		// Groq's /openai/v1/models pricing block reports USD per token.
+	if c.provider != nil && c.provider.Catalog != nil &&
+		c.provider.Catalog.Endpoint.ProtocolOptions.OpenAI != nil &&
+		c.provider.Catalog.Endpoint.ProtocolOptions.OpenAI.TokenPriceUnit == catalogs.ProviderTokenPriceUnitPerToken {
 		return 1_000_000
 	}
 	return 1
@@ -515,15 +498,6 @@ func (c *Client) applyProviderExtensions(model *catalogs.Model, apiModel Model) 
 	model.Extensions[source] = catalogs.SourceExtension{
 		Fields: catalogs.NormalizeExtensionFields(fields),
 	}
-}
-
-func firstInt64(values ...*int64) *int64 {
-	for _, value := range values {
-		if value != nil {
-			return value
-		}
-	}
-	return nil
 }
 
 func ensureModelFeatures(model *catalogs.Model) *catalogs.ModelFeatures {

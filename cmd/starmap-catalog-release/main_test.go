@@ -222,6 +222,7 @@ func releaseFixtureStore(
 			},
 			SyncRunID:          "sync-exact-release",
 			SourceObservations: links,
+			ReviewCandidates:   []catalogmeta.ReviewCandidate{},
 			Completeness:       catalogs.GenerationCompletenessComplete,
 			ConsumerCompatibility: catalogs.ConsumerCompatibility{
 				MinSchemaVersion: catalogs.CurrentCatalogSchemaVersion,

@@ -96,6 +96,9 @@ func (a *App) setupCommand(cmd *cobra.Command, _ []string) error {
 			return errors.WrapResource("load", "config", a.commandFlags.configFile, err)
 		}
 		a.config = config
+		a.credentialMu.Lock()
+		a.credentialResolver = nil
+		a.credentialMu.Unlock()
 	}
 
 	// Apply only explicitly provided flags. Values loaded from a config file or

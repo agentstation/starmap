@@ -96,7 +96,14 @@ func ExecuteUpdate(ctx context.Context, app application, flags *Flags, logger *z
 	if err != nil {
 		return err
 	}
-	syncer, err := acquisition.New(sm)
+	credentialResolver, err := app.CredentialResolver()
+	if err != nil {
+		return errors.WrapResource("load", "catalog credentials", "", err)
+	}
+	syncer, err := acquisition.New(
+		sm,
+		acquisition.WithCredentialResolver(credentialResolver),
+	)
 	if err != nil {
 		return errors.WrapResource("create", "catalog acquisition", "", err)
 	}

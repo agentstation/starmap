@@ -14,6 +14,7 @@ import (
 	"github.com/agentstation/starmap/internal/providers/openai"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	pkgerrors "github.com/agentstation/starmap/pkg/errors"
+	"github.com/agentstation/starmap/pkg/sources"
 )
 
 func TestNewProviderRoutesByEndpointType(t *testing.T) {
@@ -93,6 +94,23 @@ func TestNewProviderRejectsUnsupportedEndpointType(t *testing.T) {
 	}
 }
 
+func TestNewProviderRejectsOllamaCatalogAcquisitionBeforeAdapterCreation(t *testing.T) {
+	client, err := NewProvider(testProvider(catalogs.EndpointTypeOllama))
+	if err == nil {
+		t.Fatal("NewProvider accepted Ollama catalog acquisition without a compiled adapter")
+	}
+	if client != nil {
+		t.Fatalf("client = %#v, want nil", client)
+	}
+	var validationErr *pkgerrors.ValidationError
+	if !stderrors.As(err, &validationErr) {
+		t.Fatalf("error type = %T, want ValidationError", err)
+	}
+	if validationErr.Field != "provider.catalog.endpoint.type" {
+		t.Fatalf("validation field = %q", validationErr.Field)
+	}
+}
+
 func TestNewProviderMappingValidationReturnsTypedFailureBeforeAdapterCreation(t *testing.T) {
 	provider := testProvider(catalogs.EndpointTypeOpenAI)
 	provider.Catalog.Endpoint.FieldMappings = []catalogs.FieldMapping{{
@@ -117,8 +135,6 @@ func TestNewProviderMappingValidationReturnsTypedFailureBeforeAdapterCreation(t 
 }
 
 func TestFetchRawUsesTransportAuthenticationAndReturnsResponseMetadata(t *testing.T) {
-	t.Setenv("STARMAP_TEST_PROVIDER_API_KEY", "secret")
-
 	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		if got := r.Header.Get("X-Test-Key"); got != "secret" {
 			t.Fatalf("X-Test-Key = %q, want secret", got)
@@ -132,7 +148,9 @@ func TestFetchRawUsesTransportAuthenticationAndReturnsResponseMetadata(t *testin
 	defer server.Close()
 
 	endpoint := server.URL + "/models"
-	result, err := FetchRaw(context.Background(), testAuthenticatedProvider(endpoint), endpoint)
+	result, err := FetchRaw(
+		context.Background(), testAuthenticatedProvider(endpoint), testCredentialMaterial(), endpoint,
+	)
 	if err != nil {
 		t.Fatalf("FetchRaw returned error: %v", err)
 	}
@@ -148,7 +166,12 @@ func TestFetchRawUsesTransportAuthenticationAndReturnsResponseMetadata(t *testin
 }
 
 func TestFetchRawWrapsTransportFailuresAsAPIErrors(t *testing.T) {
-	_, err := FetchRaw(context.Background(), testAuthenticatedProvider("http://127.0.0.1"), "http://127.0.0.1")
+	_, err := FetchRaw(
+		context.Background(),
+		testAuthenticatedProvider("http://127.0.0.1"),
+		testCredentialMaterial(),
+		"http://127.0.0.1",
+	)
 	if err == nil {
 		t.Fatal("FetchRaw returned nil error")
 	}
@@ -163,13 +186,14 @@ func TestFetchRawWrapsTransportFailuresAsAPIErrors(t *testing.T) {
 }
 
 func TestFetchRawRejectsOversizedResponse(t *testing.T) {
-	t.Setenv("STARMAP_TEST_PROVIDER_API_KEY", "secret")
 	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, _ *http.Request) {
 		_, _ = w.Write([]byte(strings.Repeat("x", constants.MaxSourcePayloadBytes+1)))
 	}))
 	defer server.Close()
 
-	_, err := FetchRaw(context.Background(), testAuthenticatedProvider(server.URL), server.URL)
+	_, err := FetchRaw(
+		context.Background(), testAuthenticatedProvider(server.URL), testCredentialMaterial(), server.URL,
+	)
 	var validationErr *pkgerrors.ValidationError
 	if !stderrors.As(err, &validationErr) {
 		t.Fatalf("error = %T %v, want *errors.ValidationError", err, err)
@@ -180,13 +204,31 @@ func TestFetchRawRejectsOversizedResponse(t *testing.T) {
 }
 
 func testProvider(endpointType catalogs.EndpointType) *catalogs.Provider {
+	protocolOptions := catalogs.ProviderCatalogProtocolOptions{}
+	switch endpointType {
+	case catalogs.EndpointTypeOpenAI:
+		protocolOptions.OpenAI = &catalogs.ProviderOpenAICatalogProtocolOptions{
+			TokenPriceUnit: catalogs.ProviderTokenPriceUnitPerMillion,
+		}
+	case catalogs.EndpointTypeAnthropic:
+		protocolOptions.Anthropic = &catalogs.ProviderAnthropicCatalogProtocolOptions{Version: "2023-06-01"}
+	}
 	return &catalogs.Provider{
 		ID:   "test-provider",
 		Name: "Test Provider",
+		Credentials: &catalogs.ProviderCredentials{
+			Profiles: []catalogs.ProviderCredentialProfile{{
+				ID: "unauthenticated", Primitive: catalogs.ProviderAuthenticationNone,
+			}},
+			CatalogAcquisition: catalogs.ProviderCredentialPlane{
+				Alternatives: []catalogs.ProviderCredentialProfileID{"unauthenticated"},
+			},
+		},
 		Catalog: &catalogs.ProviderCatalog{
 			Endpoint: catalogs.ProviderEndpoint{
-				Type: endpointType,
-				URL:  "https://example.test/models",
+				Type:            endpointType,
+				URL:             "https://example.test/models",
+				ProtocolOptions: protocolOptions,
 			},
 		},
 	}
@@ -194,12 +236,23 @@ func testProvider(endpointType catalogs.EndpointType) *catalogs.Provider {
 
 func testAuthenticatedProvider(endpoint string) *catalogs.Provider {
 	provider := testProvider(catalogs.EndpointTypeOpenAI)
-	provider.APIKey = &catalogs.ProviderAPIKey{
-		Name:   "STARMAP_TEST_PROVIDER_API_KEY",
-		Header: "X-Test-Key",
-		Scheme: catalogs.ProviderAPIKeySchemeDirect,
-	}
 	provider.Catalog.Endpoint.URL = endpoint
-	provider.Catalog.Auth = catalogs.ProviderCatalogAuth{Method: catalogs.ProviderCatalogAuthAPIKey, Required: true}
 	return provider
+}
+
+func testCredentialMaterial() sources.ProviderCredentialMaterial {
+	profile := catalogs.ProviderCredentialProfile{
+		ID:        "api-key",
+		Primitive: catalogs.ProviderAuthenticationAPIKey,
+		Fields:    []catalogs.ProviderCredentialFieldID{"api-key"},
+		Placements: []catalogs.ProviderCredentialPlacement{{
+			Field: "api-key", Kind: catalogs.ProviderCredentialPlacementHeader,
+			Name: "X-Test-Key", Scheme: catalogs.ProviderCredentialSchemeDirect,
+		}},
+	}
+	return sources.NewProviderCredentialMaterial(
+		profile,
+		map[catalogs.ProviderCredentialFieldID]string{"api-key": "secret"},
+		sources.ProviderCredentialMetadata{Version: "test"},
+	)
 }

@@ -7,13 +7,16 @@ import (
 	"errors"
 	"fmt"
 
+	"github.com/agentstation/starmap/pkg/catalogstore"
 	"github.com/agentstation/starmap/remote"
 )
 
 // VerifyRemoteCatalog starts, reads, and joins one caller-owned reactive
 // subscriber lifecycle.
 func VerifyRemoteCatalog(ctx context.Context, baseURL string) (err error) {
-	subscriber, err := remote.New(remote.Config{BaseURL: baseURL})
+	subscriber, err := remote.New(remote.Config{
+		BaseURL: baseURL, CatalogStore: catalogstore.NewMemory(),
+	})
 	if err != nil {
 		return err
 	}

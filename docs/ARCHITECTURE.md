@@ -102,10 +102,29 @@ graph TB
 ### Provider authentication planes
 
 Starmap owns catalog-acquisition authentication. Each provider record declares
-one method. Methods include API keys, Google Application Default Credentials,
-Azure Default Credential, and AWS default credential chains.
-Starmap resolves that method only when it contacts a provider to build a new
-catalog observation. Credentials never enter a catalog payload or generation.
+credential fields, ordered profiles, and the permitted profiles for each
+authentication plane. Each profile declares placement, scopes, and endpoint
+bindings. Compiled primitives implement API keys, bearer tokens, and three
+cloud default chains. The cloud chains support Google, Azure, and AWS. The
+primitives do not contain provider membership rules.
+
+The process-owned acquisition resolver checks one operator-selected `env:` or
+`file:` reference before ambient discovery. Ambient discovery checks each
+catalog-declared conventional environment name and then the derived
+`STARMAP_<PROVIDER_ID>_<FIELD_ID>` name. An explicit source can fall back only
+after a typed `not_configured` result and only when operator configuration
+permits it. Invalid, denied, unavailable, timeout, and cancellation failures
+are terminal.
+
+Resolved material contains named values, one opaque version, and optional
+expiry and lease metadata. The material type keeps values private and preserves
+exact source bytes. Its generic formatter omits secret values.
+
+The resolver owns cache and single-flight state. It rereads static files and
+detects rotation without depending on modification time. The resolver reuses
+renewable cloud material only until its refresh time. Starmap resolves material
+only when it builds a provider observation. Credential values never enter a
+catalog payload or generation.
 
 The catalog also records provider inference service facts. These facts include
 the provider base URL, operation paths, offering capabilities, and status-page
@@ -575,14 +594,17 @@ store work is responsible for committing and activating it atomically.
 | `validation` | Validator version/time, overall status, counts, and named check results |
 | `sync_run_id` | Correlation ID for the synchronization attempt that built the candidate |
 | `source_observations` | Source/observation IDs and evidence checksums needed for audit and replay |
+| `review_candidates` | Ordered excluded offerings with a linked source observation |
 | `completeness`, `degraded`, `degradation_reasons` | Separate record-coverage and quality/fallback state |
-| `consumer_compatibility` | Inclusive catalog-schema range; never a Starmap or Starport binary range |
+| `consumer_compatibility` | Inclusive catalog-schema range, independent of binary versions |
 
-Publication eligibility requires a passed validation report, no failed checks,
-valid checksums, a non-empty observation set, internally consistent
-completeness/degradation state, and a schema version inside the declared
-consumer range. The checked-in JSON Schema, example manifest, and exact payload
-fixture live in `pkg/catalogs/testdata/generation/`.
+Publication requires a passed validation report, no failed checks, and valid
+checksums. It also requires a non-empty observation set and consistent quality
+state. Review candidates must use canonical order and match their source
+observations. The schema version must be in the declared consumer range.
+
+The JSON Schema, example manifest, and exact payload fixture are in
+`pkg/catalogs/testdata/generation/`.
 
 ### Catalog distribution artifact
 
@@ -622,30 +644,44 @@ The parser bounds individual lines to 64 KiB and cumulative frames to 256 KiB;
 resumption IDs must be positive integers before any request is sent.
 
 The opt-in public `remote` package composes that protocol into a reactive
-consumer. The configured origin is its publisher identity: production origins
-require HTTPS with a verified certificate chain, cross-origin redirects are
-rejected, and plain HTTP is limited to loopback. `remote.New` starts no
-goroutine or request. `Start(ctx)` verifies and
-activates current state, subscribes to SSE, closes the fetch/subscribe race with
-another verified current fetch, and owns reconnection under the caller context.
-Every reconnect uses `Last-Event-ID` when available and performs mandatory
-current-state catch-up, so replay is never required for correctness. Duplicate
-generation IDs, duplicate payload digests, and stale retained events do not
-republish or regress the immutable catalog. A per-stream reader is explicitly
-closed and joined. The validated 20-second expected-heartbeat and 60-second
-liveness defaults make a silent or half-open stream reconnect; caller
-cancellation and bounded `Close` own termination even while initial fetch is
-in progress. Normal operation performs no polling. An optional
-`PollingFallbackPolicy` activates only after its explicit consecutive-stream
-failure threshold and serializes conditional current-manifest requests inside
-the reconnect loop at a rate bounded by the configured interval, without
-creating a parallel scheduler. Successful stream establishment plus mandatory
-catch-up disables fallback before event consumption resumes.
-`PollingFallbackStatus` exposes the mode, entries, polls, and modified responses
-without treating stream liveness as catalog freshness. HTTP 401 and 403 are
-terminal across stream open, addressed fetch, catch-up, and conditional
-fallback polling; the one-shot lifecycle stops instead of retrying credentials
-or access policy indefinitely.
+consumer. The configured origin is its publisher identity. Production origins
+require HTTPS, and TLS must verify the certificate chain. The client rejects
+cross-origin redirects. It permits plain HTTP only for loopback addresses.
+
+The subscriber requires a `catalogstore.Store` that the caller owns.
+`remote.NewContext` loads its verified current generation under the caller
+context. It starts no goroutine or remote request. An optional pinned bootstrap
+commits only into an empty store. A durable current generation wins. Corrupt or
+unavailable durable state causes construction to fail. `State` returns one
+atomic catalog, generation identity, payload checksum, timestamp, and sequence.
+
+`Start(ctx)` verifies and activates current state. It subscribes to SSE and
+closes the fetch-to-subscribe race with another verified current fetch. The
+caller context owns reconnection. Each reconnect uses `Last-Event-ID` when it is
+available. It then fetches and verifies current state. Correctness does not
+depend on replay.
+
+A digest-equal new identity advances the durable and atomic identity. It emits
+one generation event. It does not replace the immutable catalog pointer or emit
+model changes. Duplicate generation IDs and stale retained events do not
+republish or regress the catalog. A nonterminal initial remote failure keeps the
+verified local state and starts streaming recovery.
+
+The subscriber closes and joins each stream reader. The validated 20-second
+heartbeat and 60-second liveness defaults reconnect a silent or half-open
+stream. Caller cancellation and bounded `Close` own termination during the
+initial fetch. Normally, the subscriber does not poll.
+
+An optional `PollingFallbackPolicy` activates after its configured stream
+failure threshold. It serializes conditional current-manifest requests in the
+reconnect loop at the configured rate. It does not create a parallel scheduler.
+A successful stream catch-up stops fallback before event consumption resumes.
+`PollingFallbackStatus` reports the mode, entries, polls, and modified
+responses. It does not treat stream liveness as catalog freshness.
+
+HTTP 401 and 403 are terminal for stream open, addressed fetch, catch-up, and
+conditional fallback polling. The one-shot lifecycle does not retry invalid
+credentials or access policy.
 
 Production health keeps publisher delivery, subscriber transport, and catalog
 freshness distinct. `server.Health()` reports the active generation timestamp,
@@ -1106,6 +1142,8 @@ Observation outcomes use one explicit policy:
 - source absence is never lifecycle evidence: complete omission, record
   quarantine, source failure, and a source-attributed model-count regression
   retain the exact baseline model and provenance;
+- an offering without a reviewed canonical model link stays unpublished. A
+  durable review candidate identifies its exact source observation.
 - a source-attributed count regression adds a provider-scoped
   `volume_collapse` issue and makes the observation partial/degraded; and
 - `Fresh` refuses an empty-baseline publication if any observation is
@@ -1230,11 +1268,16 @@ Each catalog publication also advances a monotonic process-local sequence tied
 to the durable `generation_id`. Request handlers atomically read the immutable
 catalog, generation ID, and sequence together, set `X-Starmap-Generation-ID`,
 and use that pair as the cache namespace. Advancing a sequence flushes the old
-namespace; an in-flight request from an older sequence cannot reactivate or
-populate it. Only a successful durable commit swaps the catalog and emits the
-asynchronous `catalog.published` event containing the same generation,
-sync-run, and sequence identities. Failed commits change neither state nor
-events, and an identical remote-generation retry is not republished.
+namespace. An in-flight request from an older sequence cannot reactivate or
+populate that namespace.
+
+Only a successful durable commit changes atomic generation state.
+A changed payload swaps the catalog and emits the asynchronous
+`catalog.published` event with the same generation, sync-run, and sequence
+identities. A digest-equal new identity advances the identity and sequence
+without replacing the catalog or emitting a change event. Failed commits change
+neither state nor events, and an identical remote-generation retry is not
+republished.
 
 This keeps adapters thin without rebuilding a lossy cross-provider model map:
 
@@ -1288,15 +1331,44 @@ graph TD
 - **Baseline Data**: Embedded catalog provides lowest-authority defaults when other sources are unavailable
 
 **Provider Fetching Seam:**
-Provider API acquisition has one implementation in the public
-`pkg/sources.ProviderFetcher`: context timeouts, credential loading/preflight,
-client construction, and `ListModels` execution. Model and raw fetches share the
-same credential preflight. `internal/sources/providers` composes that concrete
-fetcher to add bounded multi-provider concurrency, translate typed fetch errors
-into observation issues, and associate models with provider catalog entries; it
-does not own a second credential/client/fetch policy. Public/internal
-conformance tests cover missing credentials, configuration errors, fetch
-failures, and adapter call suppression.
+The public `pkg/sources.ProviderFetcher` owns provider API acquisition. It owns
+context timeouts, credential preflight, client construction, and `ListModels`
+execution. Model and raw fetches share the same credential preflight. They also
+share the same process-owned resolver.
+
+`internal/sources/providers` composes that concrete fetcher. It adds bounded
+provider concurrency. It translates typed fetch errors into observation
+issues. It also associates models with provider catalog entries. It does not
+own a second credential, client, or fetch policy.
+
+Provider clients receive resolved material for one invocation. They do not
+cache credential values. Public and internal conformance tests cover missing
+credentials, source precedence, rotation, cancellation, concurrent refresh,
+configuration errors, fetch failures, and adapter call suppression.
+
+The provider configuration is data-driven inside compiled typed primitives.
+Provider YAML selects the endpoint, credential metadata, field mappings,
+author mappings, capability mappings, exact offering IDs, and explicit model
+links. A provider needs no Go change when an existing transport and
+authentication primitive can represent these facts. A new transport,
+authentication primitive, or unsupported wire field requires Go.
+
+Each transport owns its typed wire schema, supported mapping sources,
+canonical target writers, and validation. OpenAI-compatible field mappings use
+the first present source for each destination in YAML order. Provider-specific
+extension meanings do not run as unconditional transport defaults.
+
+Capability mappings accept only typed provider predicates and documented
+semantic entailment. They preserve true, false, and unknown states. Explicit
+combination rules resolve multiple predicates without map-order behavior.
+Model IDs, author names, family names, and free text never create capability
+facts.
+
+The provider source retains a valid unknown offering with no canonical model
+link. Reconciliation excludes it from the catalog and emits a durable review
+candidate with the exact provider model ID and observation evidence. It never
+infers authorship from the provider or model name. A known offering publishes
+only through an explicit `model: author/slug` link to an authored model.
 
 Provider configuration and provider evidence are deliberately separated. The
 configuration catalog may contain embedded or last-known-good models needed by
@@ -1518,12 +1590,16 @@ Route aliases remain caller-supplied policy-layer identities.
 catalog generation and reports ineligible targets without storing routing
 weights or fallback policy in ingestion.
 
-Canonical `Catalog.FindModel` returns `ModelDefinition`; provider facts come
-from `Offering` or `DefinitionOfferings`. It accepts canonical `author/slug`
-identity plus unambiguous bare-slug and provider-ID aliases. Ambiguity returns a
-typed conflict. Because Starmap has not launched, schema version 3 makes a
-clean break from the provider-only schema version 2 and retains no compatibility
-reader.
+Canonical `Catalog.FindModel` returns `ModelDefinition`. Provider facts come
+from `Offering` or `DefinitionOfferings`. The method accepts canonical
+`author/slug` identities. It also accepts unambiguous bare slugs and provider
+ID aliases. Ambiguity returns a typed conflict.
+
+Schema version 3 replaced provider-only schema version 2. Schema version 4
+added provider credential profiles and plane references. Schema version 5
+removes provider feature rules. Acquisition adapters use only direct response
+fields and catalog-declared author mappings. Starmap has no compatibility
+reader for an earlier schema because it has not launched.
 
 ### Authority-Based Strategy
 

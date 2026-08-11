@@ -49,8 +49,9 @@ func TestSubscriberRejectsUnauthorizedStreamWithoutRetryOrPolling(t *testing.T) 
 	defer server.Close()
 
 	subscriber, err := New(Config{
-		BaseURL:    server.URL + "/api/v1",
-		HTTPClient: server.Client(),
+		BaseURL:      server.URL + "/api/v1",
+		HTTPClient:   server.Client(),
+		CatalogStore: catalogstore.NewMemory(),
 		PollingFallback: &PollingFallbackPolicy{
 			AfterFailures: 1,
 			Interval:      time.Millisecond,
@@ -126,6 +127,7 @@ func TestSubscriberStopsAfterUnauthorizedReconnectAndRejectsRestart(t *testing.T
 	subscriber, err := New(Config{
 		BaseURL:           server.URL + "/api/v1",
 		HTTPClient:        server.Client(),
+		CatalogStore:      catalogstore.NewMemory(),
 		ReconnectMinDelay: time.Millisecond,
 		ReconnectMaxDelay: time.Millisecond,
 	})
@@ -198,6 +200,7 @@ func TestSubscriberStopsWhenFallbackPollBecomesUnauthorized(t *testing.T) {
 	subscriber, err := New(Config{
 		BaseURL:           server.URL + "/api/v1",
 		HTTPClient:        server.Client(),
+		CatalogStore:      catalogstore.NewMemory(),
 		ReconnectMinDelay: time.Millisecond,
 		ReconnectMaxDelay: time.Millisecond,
 		PollingFallback: &PollingFallbackPolicy{
@@ -314,6 +317,7 @@ func TestSubscriberOutOfOrderEventsCannotRegressCatalog(t *testing.T) {
 	subscriber, err := New(Config{
 		BaseURL:         server.URL + "/api/v1",
 		HTTPClient:      server.Client(),
+		CatalogStore:    catalogstore.NewMemory(),
 		ShutdownTimeout: time.Second,
 	})
 	if err != nil {

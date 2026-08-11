@@ -8,6 +8,7 @@ import (
 
 	"github.com/agentstation/starmap/internal/providers/openai"
 	"github.com/agentstation/starmap/internal/providers/testhelper"
+	"github.com/agentstation/starmap/internal/testcatalog"
 	"github.com/agentstation/starmap/pkg/catalogs"
 )
 
@@ -15,18 +16,15 @@ import (
 func TestGroqFieldMappings(t *testing.T) {
 	// Create Groq-configured provider
 	provider := &catalogs.Provider{
-		ID:   catalogs.ProviderIDGroq,
-		Name: "Groq",
-		APIKey: &catalogs.ProviderAPIKey{
-			Name:   "GROQ_API_KEY",
-			Header: "Authorization",
-			Scheme: "Bearer",
-		},
+		ID: catalogs.ProviderIDGroq, Name: "Groq",
+		Credentials: testcatalog.APIKeyCredentials(
+			"GROQ_API_KEY", "Authorization", catalogs.ProviderCredentialSchemeBearer,
+		),
 		Catalog: &catalogs.ProviderCatalog{
-			Auth: catalogs.ProviderCatalogAuth{Method: catalogs.ProviderCatalogAuthAPIKey, Required: true},
 			Endpoint: catalogs.ProviderEndpoint{
-				Type: catalogs.EndpointTypeOpenAI,
-				URL:  "https://api.groq.com/openai/v1/models",
+				Type:            catalogs.EndpointTypeOpenAI,
+				URL:             "https://api.groq.com/openai/v1/models",
+				ProtocolOptions: testcatalog.OpenAIProtocolOptions(),
 				FieldMappings: []catalogs.FieldMapping{
 					{
 						From: "context_window",
@@ -35,6 +33,12 @@ func TestGroqFieldMappings(t *testing.T) {
 					{
 						From: "max_completion_tokens",
 						To:   "limits.output_tokens",
+					},
+				},
+				AuthorMapping: &catalogs.AuthorMapping{
+					Field: "owned_by",
+					Normalized: map[string]catalogs.AuthorID{
+						"Meta": catalogs.AuthorIDMeta,
 					},
 				},
 			},
@@ -59,7 +63,8 @@ func TestGroqFieldMappings(t *testing.T) {
 	}
 
 	// Convert using the configured client
-	starmapModel := client.ConvertToModel(groqModel)
+	starmapModel, err := client.ConvertToModel(groqModel)
+	require.NoError(t, err)
 
 	// Verify field mappings worked correctly
 	require.NotNil(t, starmapModel.Limits, "Limits should be set")
@@ -100,7 +105,8 @@ func TestGroqTestdataParsing(t *testing.T) {
 
 	// Test conversion of all models in testdata
 	for _, modelData := range response.Data {
-		converted := client.ConvertToModel(modelData)
+		converted, err := client.ConvertToModel(modelData)
+		require.NoError(t, err)
 
 		// Basic validation
 		assert.NotEmpty(t, converted.ID, "Model ID should be set for model: %s", modelData.ID)
@@ -154,7 +160,8 @@ func TestGroqSpecificFields(t *testing.T) {
 	if err != nil {
 		t.Fatalf("NewClient: %v", err)
 	}
-	converted := client.ConvertToModel(groqModel)
+	converted, err := client.ConvertToModel(groqModel)
+	require.NoError(t, err)
 
 	// Verify the model is processed correctly despite having Groq-specific fields
 	assert.Equal(t, "whisper-large-v3", converted.ID)

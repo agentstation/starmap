@@ -25,6 +25,6 @@ func serverCatalogUpdate(
 		if err != nil {
 			return nil, err
 		}
-		return starmap.NewCandidate(catalog)
+		return starmap.NewCandidate(catalog, starmap.CandidateEvidence{})
 	}
 }

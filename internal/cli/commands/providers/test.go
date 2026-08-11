@@ -11,7 +11,6 @@ import (
 	"github.com/mattn/go-isatty"
 	"github.com/spf13/cobra"
 
-	"github.com/agentstation/starmap/acquisition"
 	"github.com/agentstation/starmap/internal/auth"
 	"github.com/agentstation/starmap/internal/cli/emoji"
 	"github.com/agentstation/starmap/internal/cli/format"
@@ -56,11 +55,12 @@ func testAllProviders(cmd *cobra.Command, cat catalogs.Reader, app application) 
 	outputFormat := app.OutputFormat()
 	detectedFormat := format.DetectFormat(outputFormat)
 
-	fetcher := acquisition.NewProviderFetcher(cat.Providers())
+	fetcher, checker, err := providerCredentialComposition(app, cat.Providers())
+	if err != nil {
+		return err
+	}
 	supportedProviders := fetcher.List()
 
-	// Create auth checker for credential validation
-	checker := auth.NewChecker()
 	supportedMap := make(map[string]bool)
 	for _, pid := range supportedProviders {
 		supportedMap[string(pid)] = true
@@ -81,6 +81,7 @@ func testAllProviders(cmd *cobra.Command, cat catalogs.Reader, app application) 
 	}
 
 	var verified, failed, skipped int
+	configured := make(map[catalogs.ProviderID]struct{})
 
 	// For TTY mode, show simple progress message
 	if isTTY {
@@ -102,12 +103,13 @@ func testAllProviders(cmd *cobra.Command, cat catalogs.Reader, app application) 
 
 	if isTTY {
 		// TTY mode: Use concurrent testing for speed
-		testProvidersConcurrent(cmd, cat, supportedProviders, fetcher, checker, supportedMap, timeout, results, &verified, &failed, &skipped)
+		testProvidersConcurrent(cmd, cat, supportedProviders, fetcher, checker, supportedMap, timeout, results, configured, &verified, &failed, &skipped)
 	} else {
 		// Non-TTY mode: Keep sequential for clear line-by-line output
 		if err := testProvidersSequential(
 			cmd, cat, supportedProviders, fetcher, checker, supportedMap,
 			timeout, results, &verified, &failed, &skipped,
+			configured,
 		); err != nil {
 			return err
 		}
@@ -151,7 +153,11 @@ func testAllProviders(cmd *cobra.Command, cat catalogs.Reader, app application) 
 	if failed > 0 {
 		errorType = "auth_failed"
 	}
-	notifyCtx := notify.Contexts.AuthTest(succeeded, errorType)
+	notifyCtx := notify.Contexts.AuthTest(
+		succeeded,
+		errorType,
+		configuredProviderIDs(supportedProviders, configured),
+	)
 
 	// Send appropriate notification
 	if failed > 0 {
@@ -190,6 +196,7 @@ type apiTestResult struct {
 func testProvidersSequential(cmd *cobra.Command, cat catalogs.Reader, supportedProviders []catalogs.ProviderID,
 	fetcher *sources.ProviderFetcher, checker *auth.Checker, supportedMap map[string]bool,
 	timeout time.Duration, results []testResult, verified, failed, skipped *int,
+	configured map[catalogs.ProviderID]struct{},
 ) error {
 
 	for i, providerID := range supportedProviders {
@@ -223,6 +230,7 @@ func testProvidersSequential(cmd *cobra.Command, cat catalogs.Reader, supportedP
 			}
 			continue
 		}
+		configured[provider.ID] = struct{}{}
 
 		// Test the API with timeout (use cmd context for signal handling)
 		ctx, cancel := context.WithTimeout(cmd.Context(), timeout)
@@ -260,7 +268,8 @@ func testProvidersSequential(cmd *cobra.Command, cat catalogs.Reader, supportedP
 // testProvidersConcurrent tests providers concurrently using a three-phase approach (for TTY output).
 func testProvidersConcurrent(cmd *cobra.Command, cat catalogs.Reader, supportedProviders []catalogs.ProviderID,
 	fetcher *sources.ProviderFetcher, checker *auth.Checker, supportedMap map[string]bool,
-	timeout time.Duration, results []testResult, verified, failed, skipped *int) {
+	timeout time.Duration, results []testResult, configured map[catalogs.ProviderID]struct{},
+	verified, failed, skipped *int) {
 
 	// Phase 1: Pre-flight checks (sequential, fast)
 	// Check credentials and ADC status, build list of providers to actually test
@@ -285,6 +294,7 @@ func testProvidersConcurrent(cmd *cobra.Command, cat catalogs.Reader, supportedP
 			*skipped++
 			continue
 		}
+		configured[provider.ID] = struct{}{}
 
 		// Provider passed pre-flight checks, add to test queue
 		providersToTest = append(providersToTest, apiTestWork{
@@ -368,12 +378,28 @@ func testProvidersConcurrent(cmd *cobra.Command, cat catalogs.Reader, supportedP
 	}
 }
 
+func configuredProviderIDs(
+	ordered []catalogs.ProviderID,
+	configured map[catalogs.ProviderID]struct{},
+) []string {
+	ids := make([]string, 0, len(configured))
+	for _, providerID := range ordered {
+		if _, exists := configured[providerID]; exists {
+			ids = append(ids, string(providerID))
+		}
+	}
+	return ids
+}
+
 // testSingleProvider tests a single provider.
 func testSingleProvider(cmd *cobra.Command, cat catalogs.Reader, providerID string, app application) error {
 	verbose := mustGetBool(cmd, "verbose")
 	timeout := mustGetDuration(cmd, "timeout")
 
-	fetcher := acquisition.NewProviderFetcher(cat.Providers())
+	fetcher, checker, err := providerCredentialComposition(app, cat.Providers())
+	if err != nil {
+		return err
+	}
 
 	// Convert string to ProviderID type
 	pid := catalogs.ProviderID(providerID)
@@ -389,7 +415,7 @@ func testSingleProvider(cmd *cobra.Command, cat catalogs.Reader, providerID stri
 		return fmt.Errorf("provider %s not found or not supported", providerID)
 	}
 
-	status := auth.NewChecker().CheckProvider(&provider, map[string]bool{string(provider.ID): true})
+	status := checker.CheckProvider(&provider, map[string]bool{string(provider.ID): true})
 	if status.State != auth.StateConfigured && status.State != auth.StateOptional {
 		return fmt.Errorf("provider %s catalog credentials: %s", providerID, status.Summary)
 	}

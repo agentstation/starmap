@@ -14,7 +14,7 @@ import (
 	"github.com/agentstation/starmap/pkg/catalogstore"
 )
 
-const pinnedArchiveSHA256 = "c02f92dfa1edd05b15731a867fcfa4e3346f9439723f3f1064d20ddb09d34364"
+const pinnedArchiveSHA256 = "8c52cacc9bc675e076e7b04cdc3c25ff788221d37b36d653c5b72957bb53a648"
 
 // ActivatePinned builds a portable fixture from the embedded generation, pins
 // its exact archive digest as the offline trust root, and activates it in a
@@ -49,17 +49,27 @@ func ActivatePinned(ctx context.Context) error {
 		return err
 	}
 
-	client, err := starmap.New(starmap.WithCatalogStore(catalogstore.NewMemory()))
+	store := catalogstore.NewMemory()
+	client, err := starmap.New(starmap.WithCatalogStore(store))
 	if err != nil {
 		return err
 	}
+	initial := client.CurrentCatalogState()
 	publication, err := client.Activate(ctx, verified)
 	if err != nil {
 		return err
 	}
-	if !publication.Published ||
+	state := client.CurrentCatalogState()
+	durable, err := store.Current(ctx)
+	if err != nil {
+		return err
+	}
+	if publication.Published ||
 		publication.GenerationID != generation.Manifest.GenerationID ||
-		client.CurrentGenerationID() != generation.Manifest.GenerationID {
+		state.GenerationID != generation.Manifest.GenerationID ||
+		state.PayloadChecksum != generation.Manifest.Payload.Checksum ||
+		state.Catalog != initial.Catalog ||
+		durable.Manifest.GenerationID != generation.Manifest.GenerationID {
 		return fmt.Errorf("unexpected pinned activation: %#v", publication)
 	}
 	if _, err := client.Catalog().FindModel("gpt-4o"); err != nil {

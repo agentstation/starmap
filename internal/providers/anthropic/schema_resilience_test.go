@@ -8,7 +8,6 @@ import (
 	"testing"
 
 	"github.com/agentstation/starmap/internal/sourcepayload"
-	"github.com/agentstation/starmap/pkg/catalogs"
 )
 
 func TestListModelsQuarantinesMalformedSibling(t *testing.T) {
@@ -21,11 +20,9 @@ func TestListModelsQuarantinesMalformedSibling(t *testing.T) {
 	}))
 	defer server.Close()
 
-	client := NewClient(&catalogs.Provider{
-		ID: "anthropic", Name: "Anthropic",
-		Catalog: &catalogs.ProviderCatalog{Endpoint: catalogs.ProviderEndpoint{URL: server.URL}},
-	})
-	models, err := client.ListModels(context.Background())
+	provider := testAnthropicProvider(server.URL)
+	client := NewClient(provider)
+	models, err := client.ListModels(context.Background(), testAnthropicMaterial(provider))
 	var quarantineErr *sourcepayload.QuarantineError
 	if !stderrors.As(err, &quarantineErr) {
 		t.Fatalf("error = %T: %v, want *sourcepayload.QuarantineError", err, err)

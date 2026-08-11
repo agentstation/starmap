@@ -299,6 +299,75 @@ func TestApp_WithOptions(t *testing.T) {
 	}
 }
 
+func TestAppCredentialResolverUsesCatalogValidatedExplicitReference(t *testing.T) {
+	const environment = "STARMAP_TEST_EXPLICIT_OPENAI_KEY"
+	t.Setenv(environment, "exact-secret-value\n")
+	application, err := New("test", "test", "test", "test", WithConfig(&Config{
+		CredentialSources: map[string]map[string]CredentialSourceConfig{
+			"openai": {
+				"api-key": {Reference: "env:" + environment},
+			},
+		},
+	}))
+	if err != nil {
+		t.Fatalf("New: %v", err)
+	}
+	resolver, err := application.CredentialResolver()
+	if err != nil {
+		t.Fatalf("CredentialResolver: %v", err)
+	}
+	second, err := application.CredentialResolver()
+	if err != nil {
+		t.Fatalf("CredentialResolver second call: %v", err)
+	}
+	if resolver != second {
+		t.Fatal("CredentialResolver did not return the process-owned resolver")
+	}
+	catalog, err := application.Catalog()
+	if err != nil {
+		t.Fatalf("Catalog: %v", err)
+	}
+	provider, err := catalog.Provider("openai")
+	if err != nil {
+		t.Fatalf("Provider: %v", err)
+	}
+	material, err := resolver.ResolveCatalog(context.Background(), &provider)
+	if err != nil {
+		t.Fatalf("ResolveCatalog: %v", err)
+	}
+	if value, exists := material.Value("api-key"); !exists || value != "exact-secret-value\n" {
+		t.Fatalf("resolved exact value exists = %v, length = %d", exists, len(value))
+	}
+}
+
+func TestAppCredentialResolverRejectsNonCatalogConfiguration(t *testing.T) {
+	tests := []struct {
+		name     string
+		provider string
+		field    string
+	}{
+		{name: "unknown provider", provider: "yaml-only-missing", field: "api-key"},
+		{name: "unknown field", provider: "openai", field: "missing-field"},
+	}
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			application, err := New("test", "test", "test", "test", WithConfig(&Config{
+				CredentialSources: map[string]map[string]CredentialSourceConfig{
+					test.provider: {
+						test.field: {Reference: "env:SHOULD_NOT_BE_READ"},
+					},
+				},
+			}))
+			if err != nil {
+				t.Fatalf("New: %v", err)
+			}
+			if _, err := application.CredentialResolver(); err == nil {
+				t.Fatal("CredentialResolver accepted non-catalog configuration")
+			}
+		})
+	}
+}
+
 // TestApp_Shutdown verifies graceful shutdown.
 func TestApp_Shutdown(t *testing.T) {
 	app, err := New("1.0.0", "test", "2024-01-01", "test")

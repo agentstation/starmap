@@ -269,13 +269,26 @@ func Example_providerCapabilities() {
 	provider := catalogs.Provider{
 		ID:   "openai",
 		Name: "OpenAI",
-		Catalog: &catalogs.ProviderCatalog{
-			Auth: catalogs.ProviderCatalogAuth{
-				Method:   catalogs.ProviderCatalogAuthAPIKey,
-				Required: true,
+		Credentials: &catalogs.ProviderCredentials{
+			Fields: []catalogs.ProviderCredentialField{{
+				ID: "api-key", Kind: catalogs.ProviderCredentialFieldSecret, Required: true,
+				Environment: []string{"OPENAI_API_KEY"},
+			}},
+			Profiles: []catalogs.ProviderCredentialProfile{{
+				ID: "api-key", Primitive: catalogs.ProviderAuthenticationAPIKey,
+				Fields: []catalogs.ProviderCredentialFieldID{"api-key"},
+			}},
+			CatalogAcquisition: catalogs.ProviderCredentialPlane{
+				Required: true, Alternatives: []catalogs.ProviderCredentialProfileID{"api-key"},
 			},
+		},
+		Catalog: &catalogs.ProviderCatalog{
 			Endpoint: catalogs.ProviderEndpoint{
-				URL: "https://api.openai.com/v1/models",
+				Type: catalogs.EndpointTypeOpenAI,
+				URL:  "https://api.openai.com/v1/models",
+				ProtocolOptions: catalogs.ProviderCatalogProtocolOptions{OpenAI: &catalogs.ProviderOpenAICatalogProtocolOptions{
+					TokenPriceUnit: catalogs.ProviderTokenPriceUnitPerMillion,
+				}},
 			},
 		},
 	}
@@ -283,11 +296,8 @@ func Example_providerCapabilities() {
 
 	// Check capabilities
 	p, _ := catalog.Provider("openai")
-	if p.HasAPIKey() {
-		fmt.Println("Provider has API key configured")
-	}
-	if p.IsAPIKeyRequired() {
-		fmt.Println("Provider requires API key")
+	if p.IsCatalogAuthRequired() {
+		fmt.Println("Provider requires catalog credentials")
 	}
 }
 

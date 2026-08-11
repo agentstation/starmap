@@ -24,9 +24,10 @@ func authoredModelIdentities(reader catalogs.Reader) map[catalogs.ModelDefinitio
 func quarantineUnresolvedProviderOfferings(
 	catalog *catalogs.Builder,
 	baseline *catalogs.Catalog,
-) ([]catalogmeta.ReconciliationIssue, error) {
+	collector *collector,
+) ([]catalogmeta.ReviewCandidate, error) {
 	authored := authoredModelIdentities(catalog)
-	issues := make([]catalogmeta.ReconciliationIssue, 0)
+	issues := make([]catalogmeta.ReviewCandidate, 0)
 	for _, provider := range catalog.Providers().List() {
 		models := make([]*catalogs.Model, 0, len(provider.Models))
 		for _, model := range provider.Models {
@@ -48,13 +49,29 @@ func quarantineUnresolvedProviderOfferings(
 		if err != nil {
 			return nil, err
 		}
+		for index := range providerIssues {
+			observation, found := collector.reviewCandidateObservation(
+				&provider,
+				providerIssues[index].ProviderModelID,
+			)
+			if !found {
+				return nil, &errors.ValidationError{
+					Field: "review_candidate.source", Value: providerIssues[index].ProviderModelID,
+					Message: "no source observation contains the quarantined provider offering",
+				}
+			}
+			providerIssues[index].SourceID = observation.SourceID
+			providerIssues[index].SourceObservationID = observation.ID
+			providerIssues[index].SourceRevision = observation.Revision
+			providerIssues[index].EvidenceChecksum = observation.EvidenceChecksum
+		}
 		provider.Models = providerModelMap(resolved)
 		if err := catalog.SetProvider(provider); err != nil {
 			return nil, errors.WrapResource("set", "provider", string(provider.ID), err)
 		}
 		issues = append(issues, providerIssues...)
 	}
-	slices.SortFunc(issues, compareReconciliationIssue)
+	slices.SortFunc(issues, catalogmeta.CompareReviewCandidates)
 	return issues, nil
 }
 
@@ -63,9 +80,9 @@ func resolvableProviderModels(
 	models []*catalogs.Model,
 	authored map[catalogs.ModelDefinitionID]struct{},
 	baseline map[string]*catalogs.Model,
-) ([]*catalogs.Model, []catalogmeta.ReconciliationIssue, error) {
+) ([]*catalogs.Model, []catalogmeta.ReviewCandidate, error) {
 	resolved := make([]*catalogs.Model, 0, len(models))
-	issues := make([]catalogmeta.ReconciliationIssue, 0)
+	issues := make([]catalogmeta.ReviewCandidate, 0)
 	for _, model := range models {
 		if model == nil {
 			continue
@@ -84,7 +101,9 @@ func resolvableProviderModels(
 				continue
 			}
 		}
+		priorReviewedModelLink := ""
 		if baselineModel := baseline[model.ID]; baselineModel != nil {
+			priorReviewedModelLink = string(baselineModel.ModelRef)
 			if _, found := authored[baselineModel.ModelRef]; found {
 				carried := *model
 				carried.ModelRef = baselineModel.ModelRef
@@ -92,24 +111,15 @@ func resolvableProviderModels(
 				continue
 			}
 		}
-		issues = append(issues, catalogmeta.ReconciliationIssue{
-			Code:            catalogmeta.ReconciliationIssueUnresolvedModelReference,
-			ProviderID:      string(providerID),
-			ProviderModelID: model.ID,
-			Message:         unresolvedModelReferenceMessage,
+		issues = append(issues, catalogmeta.ReviewCandidate{
+			Code:                   catalogmeta.ReviewCandidateUnresolvedModelReference,
+			ProviderID:             string(providerID),
+			ProviderModelID:        model.ID,
+			Reason:                 unresolvedModelReferenceMessage,
+			PriorReviewedModelLink: priorReviewedModelLink,
 		})
 	}
 	return resolved, issues, nil
-}
-
-func compareReconciliationIssue(left, right catalogmeta.ReconciliationIssue) int {
-	if result := strings.Compare(left.ProviderID, right.ProviderID); result != 0 {
-		return result
-	}
-	if result := strings.Compare(left.ProviderModelID, right.ProviderModelID); result != 0 {
-		return result
-	}
-	return strings.Compare(string(left.Code), string(right.Code))
 }
 
 func providerModelMap(models []*catalogs.Model) map[string]*catalogs.Model {
@@ -124,10 +134,10 @@ func providerModelMap(models []*catalogs.Model) map[string]*catalogs.Model {
 
 func removeQuarantinedModelProvenance(
 	entries provenance.Map,
-	issues []catalogmeta.ReconciliationIssue,
+	issues []catalogmeta.ReviewCandidate,
 ) {
 	for _, issue := range issues {
-		if issue.Code != catalogmeta.ReconciliationIssueUnresolvedModelReference {
+		if issue.Code != catalogmeta.ReviewCandidateUnresolvedModelReference {
 			continue
 		}
 		prefix := string(catalogmeta.ResourceTypeModel) + ":" + provenance.ModelResourceID(
