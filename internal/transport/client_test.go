@@ -110,6 +110,7 @@ func TestQueryCredentialIsAbsentFromTransportErrorGraph(t *testing.T) {
 	material := sources.NewProviderCredentialMaterial(
 		profile,
 		map[catalogs.ProviderCredentialFieldID]string{"api-key": secret},
+		sources.ProviderCredentialMetadata{Version: "test"},
 	)
 	client := &Client{
 		http: &http.Client{Transport: secretErrorRoundTripper{}},

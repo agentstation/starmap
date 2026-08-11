@@ -108,6 +108,28 @@ func TestConfigFileUsesOnlyCanonicalLocation(t *testing.T) {
 	}
 }
 
+func TestConfigParsesCredentialSourceReferences(t *testing.T) {
+	configPath := filepath.Join(t.TempDir(), "config.yaml")
+	contents := []byte(`credential_sources:
+  openai:
+    api-key:
+      reference: file:/run/secrets/openai-api-key
+      fallback_ambient: true
+`)
+	if err := os.WriteFile(configPath, contents, constants.FilePermissions); err != nil {
+		t.Fatalf("WriteFile: %v", err)
+	}
+
+	config, err := loadConfig(configPath)
+	if err != nil {
+		t.Fatalf("loadConfig: %v", err)
+	}
+	got := config.CredentialSources["openai"]["api-key"]
+	if got.Reference != "file:/run/secrets/openai-api-key" || !got.FallbackAmbient {
+		t.Fatalf("credential source = %#v", got)
+	}
+}
+
 // TestConfig_EnvironmentVariables verifies environment variable loading.
 func TestConfig_EnvironmentVariables(t *testing.T) {
 	// Save original env

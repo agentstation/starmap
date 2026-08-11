@@ -204,6 +204,60 @@ func TestSyncerProviderFactoriesAreInstanceLocal(t *testing.T) {
 	}
 }
 
+func TestSyncerUsesInjectedCredentialResolver(t *testing.T) {
+	t.Setenv("OPENAI_API_KEY", "")
+	client, err := starmap.New()
+	if err != nil {
+		t.Fatalf("New client: %v", err)
+	}
+	var resolverCalls atomic.Int32
+	resolver := sources.ProviderCredentialResolverFunc(func(
+		_ context.Context,
+		provider *catalogs.Provider,
+	) (sources.ProviderCredentialMaterial, error) {
+		resolverCalls.Add(1)
+		if provider == nil || provider.ID != "openai" || provider.Credentials == nil {
+			t.Fatalf("resolver provider = %#v", provider)
+		}
+		return sources.NewProviderCredentialMaterial(
+			provider.Credentials.Profiles[0],
+			map[catalogs.ProviderCredentialFieldID]string{"api-key": "injected-key"},
+			sources.ProviderCredentialMetadata{Version: "test"},
+		), nil
+	})
+	syncer, err := New(
+		client,
+		WithCredentialResolver(resolver),
+		WithProviderClientFactory(func(*catalogs.Provider) (sources.ProviderClient, error) {
+			return testProviderClient{}, nil
+		}),
+	)
+	if err != nil {
+		t.Fatalf("New syncer: %v", err)
+	}
+	if _, err := syncer.Sync(
+		context.Background(),
+		pkgsync.WithDryRun(true),
+		pkgsync.WithSources(sources.ProvidersID),
+		pkgsync.WithProvider("openai"),
+	); err != nil {
+		t.Fatalf("Sync: %v", err)
+	}
+	if got := resolverCalls.Load(); got != 1 {
+		t.Fatalf("resolver calls = %d, want 1", got)
+	}
+}
+
+func TestWithCredentialResolverRejectsNil(t *testing.T) {
+	client, err := starmap.New()
+	if err != nil {
+		t.Fatalf("New client: %v", err)
+	}
+	if _, err := New(client, WithCredentialResolver(nil)); err == nil {
+		t.Fatal("New accepted a nil credential resolver")
+	}
+}
+
 type deadlineRecordingStore struct {
 	*catalogstore.Memory
 	sawDeadline atomic.Bool

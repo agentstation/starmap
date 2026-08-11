@@ -27,6 +27,7 @@ type SourceOption func(*sourceOptions)
 
 type sourceOptions struct {
 	clientFactory         ClientFactory
+	credentialResolver    sources.ProviderCredentialResolver
 	maxConcurrency        int
 	requireCanonicalLinks bool
 }
@@ -44,6 +45,7 @@ var _ sources.Source = (*Source)(nil)
 // New creates a new provider API source with the given provider configurations.
 func New(providers catalogs.ProvidersReader, opts ...SourceOption) *Source {
 	options := sourceOptions{
+		credentialResolver:    auth.NewResolver(),
 		maxConcurrency:        constants.MaxConcurrentProviders,
 		requireCanonicalLinks: true,
 	}
@@ -51,7 +53,7 @@ func New(providers catalogs.ProvidersReader, opts ...SourceOption) *Source {
 		opt(&options)
 	}
 	fetcherOptions := []sources.ProviderOption{
-		sources.WithProviderCredentialResolver(auth.NewResolver()),
+		sources.WithProviderCredentialResolver(options.credentialResolver),
 	}
 	if options.clientFactory != nil {
 		fetcherOptions = append(fetcherOptions, sources.WithProviderClientFactory(options.clientFactory))
@@ -61,6 +63,16 @@ func New(providers catalogs.ProvidersReader, opts ...SourceOption) *Source {
 		fetcher:               sources.NewProviderFetcher(providers, fetcherOptions...),
 		maxConcurrency:        options.maxConcurrency,
 		requireCanonicalLinks: options.requireCanonicalLinks,
+	}
+}
+
+// WithCredentialResolver selects the deployment-owned catalog credential
+// resolver used for each provider observation.
+func WithCredentialResolver(resolver sources.ProviderCredentialResolver) SourceOption {
+	return func(options *sourceOptions) {
+		if resolver != nil {
+			options.credentialResolver = resolver
+		}
 	}
 }
 

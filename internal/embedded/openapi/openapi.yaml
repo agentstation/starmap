@@ -857,6 +857,10 @@ components:
       properties:
         region_field:
           type: string
+          x-enum-varnames:
+          - ProviderAWSCredentialAccessKeyID
+          - ProviderAWSCredentialSecretAccessKey
+          - ProviderAWSCredentialSessionToken
         service:
           type: string
       type: object
@@ -991,6 +995,10 @@ components:
       properties:
         field:
           type: string
+          x-enum-varnames:
+          - ProviderAWSCredentialAccessKeyID
+          - ProviderAWSCredentialSecretAccessKey
+          - ProviderAWSCredentialSessionToken
         format:
           $ref: '#/components/schemas/catalogs.ProviderCredentialEndpointBindingFormat'
         variable:
@@ -1013,7 +1021,7 @@ components:
           type: array
           uniqueItems: false
         id:
-          type: string
+          $ref: '#/components/schemas/catalogs.ProviderCredentialFieldID'
         kind:
           $ref: '#/components/schemas/catalogs.ProviderCredentialFieldKind'
         pattern:
@@ -1021,6 +1029,12 @@ components:
         required:
           type: boolean
       type: object
+    catalogs.ProviderCredentialFieldID:
+      type: string
+      x-enum-varnames:
+      - ProviderAWSCredentialAccessKeyID
+      - ProviderAWSCredentialSecretAccessKey
+      - ProviderAWSCredentialSessionToken
     catalogs.ProviderCredentialFieldKind:
       type: string
       x-enum-varnames:
@@ -1032,6 +1046,10 @@ components:
           type: string
         field:
           type: string
+          x-enum-varnames:
+          - ProviderAWSCredentialAccessKeyID
+          - ProviderAWSCredentialSecretAccessKey
+          - ProviderAWSCredentialSessionToken
         kind:
           $ref: '#/components/schemas/catalogs.ProviderCredentialPlacementKind'
         name:
@@ -1064,6 +1082,10 @@ components:
         fields:
           items:
             type: string
+            x-enum-varnames:
+            - ProviderAWSCredentialAccessKeyID
+            - ProviderAWSCredentialSecretAccessKey
+            - ProviderAWSCredentialSessionToken
           type: array
           uniqueItems: false
         id:
@@ -1130,8 +1152,16 @@ components:
       properties:
         project_field:
           type: string
+          x-enum-varnames:
+          - ProviderAWSCredentialAccessKeyID
+          - ProviderAWSCredentialSecretAccessKey
+          - ProviderAWSCredentialSessionToken
         quota_project_field:
           type: string
+          x-enum-varnames:
+          - ProviderAWSCredentialAccessKeyID
+          - ProviderAWSCredentialSecretAccessKey
+          - ProviderAWSCredentialSessionToken
       type: object
     catalogs.ProviderGovernancePolicy:
       description: Oversight and moderation practices

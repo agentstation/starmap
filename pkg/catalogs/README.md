@@ -992,7 +992,7 @@ func DeepCopyProviderModels(models map[string]*Model) map[string]*Model
 DeepCopyProviderModels creates a deep copy of a provider's Models map. Returns nil if the input map is nil.
 
 <a name="DerivedCredentialEnvironmentName"></a>
-## func [DerivedCredentialEnvironmentName](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider_credentials.go#L188-L192>)
+## func [DerivedCredentialEnvironmentName](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider_credentials.go#L197-L201>)
 
 ```go
 func DerivedCredentialEnvironmentName(product string, providerID ProviderID, fieldID ProviderCredentialFieldID) (string, error)
@@ -4400,7 +4400,7 @@ func (p Provider) ValidateContract() error
 ValidateContract validates serializable catalog\-acquisition and inference metadata. It does not inspect runtime credential values.
 
 <a name="ProviderAWSDefaultProtocolOptions"></a>
-## type [ProviderAWSDefaultProtocolOptions](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider_credentials.go#L155-L158>)
+## type [ProviderAWSDefaultProtocolOptions](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider_credentials.go#L164-L167>)
 
 ProviderAWSDefaultProtocolOptions configures AWS request signing.
 
@@ -4451,7 +4451,7 @@ const (
 ```
 
 <a name="ProviderAuthenticationProtocolOptions"></a>
-## type [ProviderAuthenticationProtocolOptions](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider_credentials.go#L143-L146>)
+## type [ProviderAuthenticationProtocolOptions](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider_credentials.go#L152-L155>)
 
 ProviderAuthenticationProtocolOptions is a typed union of primitive\-owned protocol settings. Provider membership does not belong in this union.
 
@@ -4488,7 +4488,7 @@ type ProviderCatalogProtocolOptions struct {
 ```
 
 <a name="ProviderCredentialEndpointBinding"></a>
-## type [ProviderCredentialEndpointBinding](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider_credentials.go#L124-L128>)
+## type [ProviderCredentialEndpointBinding](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider_credentials.go#L133-L137>)
 
 ProviderCredentialEndpointBinding binds one non\-secret field to a named URL template variable.
 
@@ -4501,7 +4501,7 @@ type ProviderCredentialEndpointBinding struct {
 ```
 
 <a name="ProviderCredentialEndpointBindingFormat"></a>
-## type [ProviderCredentialEndpointBindingFormat](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider_credentials.go#L132>)
+## type [ProviderCredentialEndpointBindingFormat](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider_credentials.go#L141>)
 
 ProviderCredentialEndpointBindingFormat identifies how a value is encoded before it replaces an endpoint template variable.
 
@@ -4546,6 +4546,19 @@ ProviderCredentialFieldID identifies one secret or non\-secret credential field.
 type ProviderCredentialFieldID string
 ```
 
+<a name="ProviderAWSCredentialAccessKeyID"></a>
+
+```go
+const (
+    // ProviderAWSCredentialAccessKeyID is the primitive-owned AWS access-key field.
+    ProviderAWSCredentialAccessKeyID ProviderCredentialFieldID = "access-key-id"
+    // ProviderAWSCredentialSecretAccessKey is the primitive-owned AWS secret-key field.
+    ProviderAWSCredentialSecretAccessKey ProviderCredentialFieldID = "secret-access-key"
+    // ProviderAWSCredentialSessionToken is the primitive-owned AWS session-token field.
+    ProviderAWSCredentialSessionToken ProviderCredentialFieldID = "session-token"
+)
+```
+
 <a name="ProviderCredentialFieldKind"></a>
 ## type [ProviderCredentialFieldKind](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider_credentials.go#L36>)
 
@@ -4567,7 +4580,7 @@ const (
 ```
 
 <a name="ProviderCredentialPlacement"></a>
-## type [ProviderCredentialPlacement](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider_credentials.go#L114-L120>)
+## type [ProviderCredentialPlacement](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider_credentials.go#L123-L129>)
 
 ProviderCredentialPlacement binds one resolved field to a request location. Query placement requires an HTTPS provider\-evidence URL.
 
@@ -4582,7 +4595,7 @@ type ProviderCredentialPlacement struct {
 ```
 
 <a name="ProviderCredentialPlacementKind"></a>
-## type [ProviderCredentialPlacementKind](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider_credentials.go#L90>)
+## type [ProviderCredentialPlacementKind](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider_credentials.go#L99>)
 
 ProviderCredentialPlacementKind identifies where one credential field is applied to an HTTP request.
 
@@ -4614,7 +4627,7 @@ type ProviderCredentialPlane struct {
 ```
 
 <a name="ProviderCredentialProfile"></a>
-## type [ProviderCredentialProfile](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider_credentials.go#L78-L86>)
+## type [ProviderCredentialProfile](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider_credentials.go#L87-L95>)
 
 ProviderCredentialProfile defines one complete authentication alternative. Field references share provider\-level definitions across alternatives.
 
@@ -4640,7 +4653,7 @@ type ProviderCredentialProfileID string
 ```
 
 <a name="ProviderCredentialScheme"></a>
-## type [ProviderCredentialScheme](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider_credentials.go#L101>)
+## type [ProviderCredentialScheme](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider_credentials.go#L110>)
 
 ProviderCredentialScheme identifies the transformation applied before a credential field is placed on a request.
 
@@ -4691,7 +4704,7 @@ type ProviderEndpoint struct {
 ```
 
 <a name="ProviderGoogleDefaultProtocolOptions"></a>
-## type [ProviderGoogleDefaultProtocolOptions](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider_credentials.go#L149-L152>)
+## type [ProviderGoogleDefaultProtocolOptions](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider_credentials.go#L158-L161>)
 
 ProviderGoogleDefaultProtocolOptions configures Google token application.
 

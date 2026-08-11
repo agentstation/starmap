@@ -223,5 +223,6 @@ func testCredentialMaterial() sources.ProviderCredentialMaterial {
 	return sources.NewProviderCredentialMaterial(
 		profile,
 		map[catalogs.ProviderCredentialFieldID]string{"api-key": "secret"},
+		sources.ProviderCredentialMetadata{Version: "test"},
 	)
 }

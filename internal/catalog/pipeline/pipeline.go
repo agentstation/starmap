@@ -77,23 +77,32 @@ type Pipeline struct {
 
 // New creates the internal Store-backed adapter used by pipeline tests.
 func New(store Store) *Pipeline {
-	pipeline := newPipeline(nil)
+	pipeline := newPipeline(nil, nil)
 	pipeline.store = store
 	return pipeline
 }
 
 // NewAcquisition creates a prepare-only pipeline with the provider factory
 // injected by the opt-in acquisition composition.
-func NewAcquisition(providerFactory sources.ProviderClientFactory) *Pipeline {
-	return newPipeline(providerFactory)
+func NewAcquisition(
+	providerFactory sources.ProviderClientFactory,
+	credentialResolver sources.ProviderCredentialResolver,
+) *Pipeline {
+	return newPipeline(providerFactory, credentialResolver)
 }
 
-func newPipeline(providerFactory sources.ProviderClientFactory) *Pipeline {
+func newPipeline(
+	providerFactory sources.ProviderClientFactory,
+	credentialResolver sources.ProviderCredentialResolver,
+) *Pipeline {
 	return &Pipeline{
 		loadWorkspace: loadHumanWorkspace,
 		loadEmbedded:  catalogs.NewEmbedded,
 		createSources: func(options *pkgsync.Options, inputs catalogInputs) []sources.Source {
-			return filterSources(options, inputs, providerFactory)
+			return filterSources(options, inputs, providerSourceComposition{
+				clientFactory:      providerFactory,
+				credentialResolver: credentialResolver,
+			})
 		},
 		resolveDependencies: resolveDependencies,
 		cleanup:             cleanup,

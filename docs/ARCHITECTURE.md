@@ -102,10 +102,29 @@ graph TB
 ### Provider authentication planes
 
 Starmap owns catalog-acquisition authentication. Each provider record declares
-one method. Methods include API keys, Google Application Default Credentials,
-Azure Default Credential, and AWS default credential chains.
-Starmap resolves that method only when it contacts a provider to build a new
-catalog observation. Credentials never enter a catalog payload or generation.
+credential fields, ordered profiles, and the permitted profiles for each
+authentication plane. Each profile declares placement, scopes, and endpoint
+bindings. Compiled primitives implement API keys, bearer tokens, and three
+cloud default chains. The cloud chains support Google, Azure, and AWS. The
+primitives do not contain provider membership rules.
+
+The process-owned acquisition resolver checks one operator-selected `env:` or
+`file:` reference before ambient discovery. Ambient discovery checks each
+catalog-declared conventional environment name and then the derived
+`STARMAP_<PROVIDER_ID>_<FIELD_ID>` name. An explicit source can fall back only
+after a typed `not_configured` result and only when operator configuration
+permits it. Invalid, denied, unavailable, timeout, and cancellation failures
+are terminal.
+
+Resolved material contains named values, one opaque version, and optional
+expiry and lease metadata. The material type keeps values private and preserves
+exact source bytes. Its generic formatter omits secret values.
+
+The resolver owns cache and single-flight state. It rereads static files and
+detects rotation without depending on modification time. The resolver reuses
+renewable cloud material only until its refresh time. Starmap resolves material
+only when it builds a provider observation. Credential values never enter a
+catalog payload or generation.
 
 The catalog also records provider inference service facts. These facts include
 the provider base URL, operation paths, offering capabilities, and status-page
@@ -1293,15 +1312,20 @@ graph TD
 - **Baseline Data**: Embedded catalog provides lowest-authority defaults when other sources are unavailable
 
 **Provider Fetching Seam:**
-Provider API acquisition has one implementation in the public
-`pkg/sources.ProviderFetcher`: context timeouts, credential loading/preflight,
-client construction, and `ListModels` execution. Model and raw fetches share the
-same credential preflight. `internal/sources/providers` composes that concrete
-fetcher to add bounded multi-provider concurrency, translate typed fetch errors
-into observation issues, and associate models with provider catalog entries; it
-does not own a second credential/client/fetch policy. Public/internal
-conformance tests cover missing credentials, configuration errors, fetch
-failures, and adapter call suppression.
+The public `pkg/sources.ProviderFetcher` owns provider API acquisition. It owns
+context timeouts, credential preflight, client construction, and `ListModels`
+execution. Model and raw fetches share the same credential preflight. They also
+share the same process-owned resolver.
+
+`internal/sources/providers` composes that concrete fetcher. It adds bounded
+provider concurrency. It translates typed fetch errors into observation
+issues. It also associates models with provider catalog entries. It does not
+own a second credential, client, or fetch policy.
+
+Provider clients receive resolved material for one invocation. They do not
+cache credential values. Public and internal conformance tests cover missing
+credentials, source precedence, rotation, cancellation, concurrent refresh,
+configuration errors, fetch failures, and adapter call suppression.
 
 Provider configuration and provider evidence are deliberately separated. The
 configuration catalog may contain embedded or last-known-good models needed by

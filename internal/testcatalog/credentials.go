@@ -76,6 +76,7 @@ func APIKeyMaterial(
 	return sources.NewProviderCredentialMaterial(
 		credentials.Profiles[0],
 		map[catalogs.ProviderCredentialFieldID]string{"api-key": value},
+		sources.ProviderCredentialMetadata{Version: "test"},
 	)
 }
 

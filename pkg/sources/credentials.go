@@ -2,7 +2,9 @@ package sources
 
 import (
 	"context"
+	"fmt"
 	"net/url"
+	"time"
 
 	"github.com/agentstation/starmap/pkg/catalogs"
 )
@@ -11,18 +13,35 @@ import (
 // and its resolved values. Values are private so generic serializers and
 // formatters cannot expose them.
 type ProviderCredentialMaterial struct {
-	profile catalogs.ProviderCredentialProfile
-	values  map[catalogs.ProviderCredentialFieldID]string
+	profile  catalogs.ProviderCredentialProfile
+	values   map[catalogs.ProviderCredentialFieldID]string
+	metadata ProviderCredentialMetadata
+}
+
+// ProviderCredentialMetadata describes one resolved material lifecycle.
+// Version is opaque and contains no source path or secret digest.
+type ProviderCredentialMetadata struct {
+	Version   string
+	ExpiresAt time.Time
+	Lease     *ProviderCredentialLease
+}
+
+// ProviderCredentialLease describes renewable credential material.
+type ProviderCredentialLease struct {
+	Renewable    bool
+	RefreshAfter time.Time
 }
 
 // NewProviderCredentialMaterial creates caller-owned credential material.
 func NewProviderCredentialMaterial(
 	profile catalogs.ProviderCredentialProfile,
 	values map[catalogs.ProviderCredentialFieldID]string,
+	metadata ProviderCredentialMetadata,
 ) ProviderCredentialMaterial {
 	return ProviderCredentialMaterial{
-		profile: copyCredentialProfile(profile),
-		values:  copyCredentialValues(values),
+		profile:  copyCredentialProfile(profile),
+		values:   copyCredentialValues(values),
+		metadata: copyCredentialMetadata(metadata),
 	}
 }
 
@@ -38,6 +57,33 @@ func (m ProviderCredentialMaterial) Value(
 	value, exists := m.values[fieldID]
 	return value, exists
 }
+
+// Version returns the resolver-owned opaque material version.
+func (m ProviderCredentialMaterial) Version() string { return m.metadata.Version }
+
+// ExpiresAt returns the material expiry when the selected source supplied one.
+func (m ProviderCredentialMaterial) ExpiresAt() (time.Time, bool) {
+	if m.metadata.ExpiresAt.IsZero() {
+		return time.Time{}, false
+	}
+	return m.metadata.ExpiresAt, true
+}
+
+// Lease returns caller-owned renewable-material metadata when present.
+func (m ProviderCredentialMaterial) Lease() (ProviderCredentialLease, bool) {
+	if m.metadata.Lease == nil {
+		return ProviderCredentialLease{}, false
+	}
+	return *m.metadata.Lease, true
+}
+
+// String returns a secret-free material summary.
+func (m ProviderCredentialMaterial) String() string {
+	return fmt.Sprintf("provider credential material (profile=%s, version=%t)", m.profile.ID, m.metadata.Version != "")
+}
+
+// GoString returns a secret-free Go-syntax material summary.
+func (m ProviderCredentialMaterial) GoString() string { return m.String() }
 
 // EndpointBindings returns resolved URL-template bindings for the profile.
 func (m ProviderCredentialMaterial) EndpointBindings() map[string]string {
@@ -87,6 +133,15 @@ func copyCredentialValues(
 	copied := make(map[catalogs.ProviderCredentialFieldID]string, len(values))
 	for fieldID, value := range values {
 		copied[fieldID] = value
+	}
+	return copied
+}
+
+func copyCredentialMetadata(metadata ProviderCredentialMetadata) ProviderCredentialMetadata {
+	copied := metadata
+	if metadata.Lease != nil {
+		lease := *metadata.Lease
+		copied.Lease = &lease
 	}
 	return copied
 }

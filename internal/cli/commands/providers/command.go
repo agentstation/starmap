@@ -8,8 +8,6 @@ import (
 	"github.com/rs/zerolog"
 	"github.com/spf13/cobra"
 
-	"github.com/agentstation/starmap/acquisition"
-	"github.com/agentstation/starmap/internal/auth"
 	"github.com/agentstation/starmap/internal/catalog/query"
 	"github.com/agentstation/starmap/internal/cli/constants"
 	"github.com/agentstation/starmap/internal/cli/format"
@@ -89,8 +87,10 @@ func listProviders(cmd *cobra.Command, app application, logger *zerolog.Logger, 
 	})
 
 	// Create auth checker and get supported providers
-	checker := auth.NewChecker()
-	fetcher := acquisition.NewProviderFetcher(cat.Providers())
+	fetcher, checker, err := providerCredentialComposition(app, cat.Providers())
+	if err != nil {
+		return err
+	}
 	supportedProviders := fetcher.List()
 	supportedMap := make(map[string]bool)
 	for _, pid := range supportedProviders {

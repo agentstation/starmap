@@ -73,6 +73,15 @@ const (
 	ProviderAuthenticationAWSDefault ProviderAuthenticationPrimitive = "aws-default"
 )
 
+const (
+	// ProviderAWSCredentialAccessKeyID is the primitive-owned AWS access-key field.
+	ProviderAWSCredentialAccessKeyID ProviderCredentialFieldID = "access-key-id"
+	// ProviderAWSCredentialSecretAccessKey is the primitive-owned AWS secret-key field.
+	ProviderAWSCredentialSecretAccessKey ProviderCredentialFieldID = "secret-access-key"
+	// ProviderAWSCredentialSessionToken is the primitive-owned AWS session-token field.
+	ProviderAWSCredentialSessionToken ProviderCredentialFieldID = "session-token"
+)
+
 // ProviderCredentialProfile defines one complete authentication alternative.
 // Field references share provider-level definitions across alternatives.
 type ProviderCredentialProfile struct {

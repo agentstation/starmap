@@ -61,7 +61,16 @@ func TestCatalogCredentialEnvironmentPrecedence(t *testing.T) {
 
 func TestCloudCredentialChainSelection(t *testing.T) {
 	provider := defaultChainCredentialProvider()
-	material, err := newResolver(mapEnvironment(nil)).ResolveCatalog(
+	material, err := newResolver(mapEnvironment(nil), withCloudChain(
+		catalogs.ProviderAuthenticationGoogleDefault,
+		&fakeCloudChain{material: sourceMaterial{
+			values: map[string]string{
+				"access-token": "token",
+				"project":      "project",
+			},
+			version: "test-chain",
+		}},
+	)).ResolveCatalog(
 		context.Background(),
 		&provider,
 	)
@@ -78,14 +87,14 @@ func TestCloudCredentialChainSelection(t *testing.T) {
 	}
 }
 
-func TestUnadmittedDefaultChainsFailClosed(t *testing.T) {
+func TestUnsupportedAuthenticationPrimitiveFailsClosed(t *testing.T) {
 	provider := defaultChainCredentialProvider()
-	provider.Credentials.Profiles[0].Primitive = catalogs.ProviderAuthenticationAzureDefault
+	provider.Credentials.Profiles[0].Primitive = "future-default"
 	provider.Credentials.Profiles[0].ProtocolOptions = catalogs.ProviderAuthenticationProtocolOptions{}
 
 	_, err := newResolver(mapEnvironment(nil)).ResolveCatalog(context.Background(), &provider)
-	if err == nil || !strings.Contains(err.Error(), "no catalog-acquisition credential profile") {
-		t.Fatalf("ResolveCatalog error = %v, want unavailable chain failure", err)
+	if err == nil || !strings.Contains(err.Error(), "is not supported") {
+		t.Fatalf("ResolveCatalog error = %v, want unsupported primitive failure", err)
 	}
 }
 

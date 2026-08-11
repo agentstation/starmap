@@ -1003,37 +1003,31 @@ For the embeddable API, see [server/README.md](server/README.md).
 
 ### Environment Variables
 
+Provider YAML declares the conventional environment names for each credential
+field. Starmap checks those names in their declared order. If no conventional
+name contains a value, Starmap checks the derived
+`STARMAP_<PROVIDER_ID>_<FIELD_ID>` name. For example:
+
 ```bash
-# Provider API Keys
-OPENAI_API_KEY=sk-...
-ANTHROPIC_API_KEY=sk-ant-...
-GOOGLE_API_KEY=...
-GROQ_API_KEY=...
-DEEPSEEK_API_KEY=...
-CEREBRAS_API_KEY=...
-DASHSCOPE_API_KEY=...
-FIREWORKS_API_KEY=...
+export OPENAI_API_KEY=sk-...
 
-# Optional for DeepInfra catalog fetch; required for inference calls
-DEEPINFRA_TOKEN=...
-
-# Alibaba Cloud Model Studio workspace domain override (optional)
-ALIBABA_MODEL_STUDIO_BASE_URL=https://{WorkspaceId}.ap-southeast-1.maas.aliyuncs.com/compatible-mode/v1
-
-# Google Vertex (optional)
-GOOGLE_VERTEX_PROJECT=my-project
-GOOGLE_VERTEX_LOCATION=us-central1
-GOOGLE_APPLICATION_CREDENTIALS=/absolute/path/to/service-account.json
+# Used only when OPENAI_API_KEY is not set.
+export STARMAP_OPENAI_API_KEY=sk-...
 
 # Starmap logging
-LOG_LEVEL=info
-LOG_FORMAT=auto
-LOG_OUTPUT=stderr
+export LOG_LEVEL=info
+export LOG_FORMAT=auto
+export LOG_OUTPUT=stderr
 
 # Optional readiness budgets while the embedded offline bootstrap is active
-EMBEDDED_BOOTSTRAP_MAX_AGE=168h
-EMBEDDED_BOOTSTRAP_MAX_SIZE_BYTES=16777216
+export EMBEDDED_BOOTSTRAP_MAX_AGE=168h
+export EMBEDDED_BOOTSTRAP_MAX_SIZE_BYTES=16777216
 ```
+
+Starmap selects the first nonempty environment value. Resolution fails if that
+value does not satisfy the catalog field contract. Starmap does not try a later
+name. The resolver can use a Google, Azure, or AWS default credential chain
+after catalog-declared ambient fields are absent.
 
 Select a non-default configuration file with
 `starmap --config /path/to/config.yaml <command>`. Set `catalog_path` in that
@@ -1067,9 +1061,9 @@ starmap auth gcloud
 ```
 
 The `providers` command shows:
-- Which providers have configured credentials
+
+- Configured providers
 - Acquisition authentication method (API key or cloud chain)
-- Credential source (environment variable, config file, application default)
 - Missing credentials with setup instructions
 - Provider details (name, ID, location, type, models count)
 
@@ -1179,10 +1173,41 @@ rollback to the current durable generation does not emit another publication.
 catalog_path: ~/.starmap/catalog
 embedded_bootstrap_max_age: 168h
 embedded_bootstrap_max_size_bytes: 16777216
+
+credential_sources:
+  openai:
+    api-key:
+      reference: file:/run/secrets/openai-api-key
+      fallback_ambient: false
 ```
 
-Provider connection settings live with each human-readable provider record;
-credentials remain in environment variables such as `OPENAI_API_KEY`.
+`credential_sources` keys must be canonical provider IDs and
+catalog-declared field IDs. An explicit reference runs before ambient
+discovery. `fallback_ambient: true` permits ambient discovery only when the
+explicit source reports `not_configured`. Invalid, denied, unavailable,
+timeout, and cancellation failures are terminal.
+
+Core references are `env:NAME` and `file:/absolute/path`. The complete grammar
+is `backend:resource?version=VERSION#field`. Source adapters can use `version`
+and `field` when they support these parts. The core environment and file
+sources reject these optional parts.
+
+Use a regular, absolute credential file that is nonempty and no larger than
+1 MiB. Starmap preserves every byte. It does not trim a trailing newline. If
+the provider rejects a newline, create the file without one.
+
+The process-owned resolver reads static files on each resolution and detects
+in-place writes, atomic replacement, symlink target swaps, projected-volume
+replacement, and agent rerender. Detection does not depend on modification
+time alone. The resolver caches renewable cloud material until its refresh
+time. Concurrent refreshes share one source operation. The resolver exposes
+opaque material versions that contain no secret digest or source path.
+
+Provider connection and credential metadata live with each human-readable
+provider record. Credential values remain deployment state in environment
+variables, explicit references, or cloud default chains. Embedding programs
+can inject a deployment-owned `sources.ProviderCredentialResolver` with
+`acquisition.WithCredentialResolver`.
 Acquisition source selection and approval are operation inputs (`starmap
 update` flags or `sync.Option` values), not long-lived configuration that can
 silently start work.

@@ -7,7 +7,6 @@ import (
 	"testing"
 	"time"
 
-	"cloud.google.com/go/auth"
 	"google.golang.org/genai"
 
 	"github.com/agentstation/starmap/internal/sourcepayload"
@@ -16,38 +15,34 @@ import (
 	"github.com/agentstation/starmap/pkg/sources"
 )
 
-type staticTokenProvider struct{}
-
-func (staticTokenProvider) Token(context.Context) (*auth.Token, error) {
-	return &auth.Token{Value: "test-token", Expiry: time.Now().Add(time.Hour)}, nil
-}
-
-func TestGetOrCreateVertexClientDoesNotDeadlockOnCachedCredentials(t *testing.T) {
+func TestGetOrCreateVertexClientUsesRequestMaterial(t *testing.T) {
 	client := NewClient(&catalogs.Provider{
 		ID:   catalogs.ProviderIDGoogleVertex,
 		Name: "Google Vertex AI",
 	})
-	client.projectID = "test-project"
-	client.location = "us-central1"
-	client.credentials = auth.NewCredentials(&auth.CredentialsOptions{
-		TokenProvider: staticTokenProvider{},
-	})
-
-	result := make(chan error, 1)
-	go func() {
-		_, err := client.getOrCreateGenAIClient(
-			context.Background(), true, sources.ProviderCredentialMaterial{},
-		)
-		result <- err
-	}()
-
-	select {
-	case err := <-result:
-		if err != nil {
-			t.Fatalf("getOrCreateGenAIClient: %v", err)
-		}
-	case <-time.After(time.Second):
-		t.Fatal("getOrCreateGenAIClient deadlocked while reusing cached credentials")
+	profile := catalogs.ProviderCredentialProfile{
+		ID: "workload-identity", Primitive: catalogs.ProviderAuthenticationGoogleDefault,
+		Fields: []catalogs.ProviderCredentialFieldID{"access-token", "project", "location"},
+		Placements: []catalogs.ProviderCredentialPlacement{{
+			Field: "access-token", Kind: catalogs.ProviderCredentialPlacementHeader,
+			Name: "Authorization", Scheme: catalogs.ProviderCredentialSchemeBearer,
+		}},
+		EndpointBindings: []catalogs.ProviderCredentialEndpointBinding{
+			{Field: "project", Variable: "project", Format: catalogs.ProviderCredentialEndpointBindingPathSegment},
+			{Field: "location", Variable: "location", Format: catalogs.ProviderCredentialEndpointBindingPathSegment},
+		},
+	}
+	material := sources.NewProviderCredentialMaterial(
+		profile,
+		map[catalogs.ProviderCredentialFieldID]string{
+			"access-token": "test-token", "project": "test-project", "location": "us-central1",
+		},
+		sources.ProviderCredentialMetadata{
+			Version: "test", ExpiresAt: time.Now().Add(time.Hour),
+		},
+	)
+	if _, err := client.newGenAIClient(context.Background(), true, material); err != nil {
+		t.Fatalf("newGenAIClient: %v", err)
 	}
 }
 

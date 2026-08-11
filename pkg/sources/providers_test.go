@@ -276,7 +276,7 @@ func staticFetcherResolver(
 func noAuthFetcherMaterial() ProviderCredentialMaterial {
 	return NewProviderCredentialMaterial(catalogs.ProviderCredentialProfile{
 		ID: "unauthenticated", Primitive: catalogs.ProviderAuthenticationNone,
-	}, nil)
+	}, nil, ProviderCredentialMetadata{Version: "test"})
 }
 
 func apiKeyFetcherMaterial(value string) ProviderCredentialMaterial {
@@ -291,5 +291,6 @@ func apiKeyFetcherMaterial(value string) ProviderCredentialMaterial {
 	return NewProviderCredentialMaterial(
 		profile,
 		map[catalogs.ProviderCredentialFieldID]string{"api-key": value},
+		ProviderCredentialMetadata{Version: "test"},
 	)
 }

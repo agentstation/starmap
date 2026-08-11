@@ -52,6 +52,7 @@ func TestApplyCredentialMaterialUsesCatalogPlacements(t *testing.T) {
 	material := sources.NewProviderCredentialMaterial(
 		profile,
 		map[catalogs.ProviderCredentialFieldID]string{"api-key": secret},
+		sources.ProviderCredentialMetadata{Version: "test"},
 	)
 	req := &http.Request{
 		URL:    mustParseURL(t, "https://provider.example/models?existing=value"),
@@ -80,7 +81,11 @@ func TestApplyCredentialMaterialSkipsMissingValues(t *testing.T) {
 	}
 	req := &http.Request{Header: make(http.Header)}
 
-	applyCredentialMaterial(req, sources.NewProviderCredentialMaterial(profile, nil))
+	applyCredentialMaterial(req, sources.NewProviderCredentialMaterial(
+		profile,
+		nil,
+		sources.ProviderCredentialMetadata{Version: "test"},
+	))
 
 	if len(req.Header) != 0 {
 		t.Fatalf("headers = %v, want no placement for missing value", req.Header)
