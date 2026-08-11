@@ -90,6 +90,12 @@ Repository verification guidance covering:
 - Race detection and docs checks
 - Live provider verification with credentials
 
+### [MIGRATING_TO_V0.4.md](MIGRATING_TO_V0.4.md)
+**Starmap v0.4.0 Migration Guide**
+
+Required provider YAML, durable generation, provider acquisition, and remote
+subscriber changes for the direct pre-v1 compatibility break.
+
 ### [REST_API.md](REST_API.md)
 **HTTP Server API Reference**
 
@@ -112,6 +118,7 @@ Located in the project root:
 - [../CONTRIBUTING.md](../CONTRIBUTING.md) - Contribution guidelines and development setup
 - [../CHANGELOG.md](../CHANGELOG.md) - Version history and release notes
 - [RELEASES.md](RELEASES.md) - Go compatibility and application release policy
+- [MIGRATING_TO_V0.4.md](MIGRATING_TO_V0.4.md) - v0.4.0 migration procedure
 - [../LICENSE](../LICENSE) - AGPL 3.0 license
 
 ## Package Documentation

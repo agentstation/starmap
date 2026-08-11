@@ -1,19 +1,36 @@
 # Changelog
 
-All notable changes to Starmap will be documented in this file.
+Starmap records all notable changes in this file.
 
-The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
-and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+This file follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
+and [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+## [0.4.0] - 2026-08-11
+
 ### Added
 
+- **Catalog-owned credential contracts** define credential fields, profiles,
+  request placement, endpoint bindings, and separate credential planes.
+  Provider records declare conventional environment names. Starmap derives
+  its product-specific names from the same field IDs.
+- **Credential source lifecycle** resolves ambient environment values and
+  `env:` and `file:` references. It also resolves default cloud chains and
+  direct reads from the five supported secret stores. Values remain outside
+  catalog generations.
 - **Durable model review candidates** preserve each excluded provider
   offering. Each record contains the exact provider model ID, source
   observation, revision, checksum, reason, and prior reviewed model link.
   Evidence-only updates can publish a new immutable generation without a
   canonical catalog change.
+- **Typed provider acquisition mappings** let provider YAML select fields,
+  authors, and documented capability predicates from a compiled transport
+  vocabulary. Unknown provider model IDs remain review candidates until an
+  offering links them to an authored model.
+- **Durable remote subscriber state** uses a caller-owned catalog store and an
+  optional pinned bootstrap. A context-aware constructor loads one atomic
+  catalog identity that includes its payload checksum.
 
 ### Changed
 
@@ -21,15 +38,39 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   only facts present in provider responses or provider YAML. Catalog author
   mappings replace adapter-local author fallbacks. Google Vertex no longer
   adds a compiled Model Garden roster.
+- Provider acquisition resolves credentials from catalog metadata instead of
+  provider-specific switches. The public source interfaces now receive
+  request-scoped credential material.
+- Remote subscribers retain a verified durable or pinned catalog during
+  nonterminal startup failures and recover through the normal stream lifecycle.
+  HTTP 401 and 403 responses remain terminal.
+- Shared dependency minima now cover every newer version in the Starport
+  consumer graph. These include Google, file notification, and telemetry
+  modules.
 
 ### BREAKING CHANGES
 
+- Follow the [v0.4.0 migration guide](docs/MIGRATING_TO_V0.4.md). Complete it
+  before you reuse custom YAML, durable data, fetchers, or remote subscribers.
+- Catalog schema version 5 replaces provider `api_key`, `env_vars`, and
+  `catalog.auth` fields with `credentials`. It removes endpoint
+  `base_url_env_var`, `path`, and provider `catalog.authors` fields. Endpoint
+  URL templates and credential endpoint bindings now own variable expansion.
 - Catalog schema version 5 removes provider `feature_rules`. Model-family
   strings no longer infer capabilities in acquisition code.
 - Generation manifest version 2 requires the ordered `review_candidates`
   array. Each candidate must match a linked source observation.
 - `starmap.NewCandidate` now accepts `starmap.CandidateEvidence`. This change
   removes the prior variadic source-observation argument.
+- `remote.Config` now requires a caller-owned `CatalogStore`. Use
+  `remote.NewContext` when store I/O needs cancellation or a deadline.
+- `sources.ProviderClient.ListModels` and `sources.ProviderRawFetcher` now
+  receive `sources.ProviderCredentialMaterial`. Inject a
+  `sources.ProviderCredentialResolver`. This release removes the old
+  credential-loading and missing-key options.
+- This release removes the provider API-key and environment-value types. It
+  also removes the provider validation report functions. Read the typed
+  `Provider.Credentials` contract or use the provider CLI for readiness.
 
 ## [0.3.0] - 2026-08-03
 
@@ -545,7 +586,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Initial public release. See Unreleased section for features.
 
-[Unreleased]: https://github.com/agentstation/starmap/compare/v0.3.0...HEAD
+[Unreleased]: https://github.com/agentstation/starmap/compare/v0.4.0...HEAD
+[0.4.0]: https://github.com/agentstation/starmap/compare/v0.3.0...v0.4.0
 [0.3.0]: https://github.com/agentstation/starmap/compare/v0.2.0...v0.3.0
 [0.2.0]: https://github.com/agentstation/starmap/compare/v0.1.2...v0.2.0
 [0.1.0]: https://github.com/agentstation/starmap/releases/tag/v0.1.0
