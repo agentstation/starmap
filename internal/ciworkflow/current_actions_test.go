@@ -12,7 +12,7 @@ func TestActiveWorkflowsUseReviewedCurrentActions(t *testing.T) {
 	approved := map[string]string{
 		"actions/checkout":                  "3d3c42e5aac5ba805825da76410c181273ba90b1", // v7.0.1
 		"actions/setup-go":                  "b7ad1dad31e06c5925ef5d2fc7ad053ef454303e", // v7.0.0
-		"actions/attest-build-provenance":   "0f67c3f4856b2e3261c31976d6725780e5e4c373", // v4.1.1
+		"actions/attest-build-provenance":   "4d101475d8b20a2381f78447822ac1eab6504dd8", // v4.2.2
 		"actions/upload-artifact":           "043fb46d1a93c77aae656e7c1c64a875d1fc6a0a", // v7.0.1
 		"anchore/sbom-action/download-syft": "e22c389904149dbc22b58101806040fa8d37a610", // v0.24.0
 		"docker/login-action":               "dbcb813823bdd20940b903addbd779551569679f", // v4.6.0
