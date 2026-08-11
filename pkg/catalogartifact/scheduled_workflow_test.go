@@ -22,7 +22,7 @@ func TestScheduledGenerationWorkflowPublishesOnlyValidatedChangedPayload(t *test
 		`jq -er .semantic_checksum catalog-existing-verification.json`,
 		"Validate changed candidate", "make catalog-generation-check", "make embedded-catalog-budget-check",
 		"go run ./cmd/starmap-catalog-release", `--generation-store "${RUNNER_TEMP}/starmap-catalog-generation/update-home/.starmap/state/catalog"`,
-		"actions/attest-build-provenance@0f67c3f4856b2e3261c31976d6725780e5e4c373 # v4.1.1",
+		"actions/attest-build-provenance@4d101475d8b20a2381f78447822ac1eab6504dd8 # v4.2.2",
 		"gh attestation verify", "--signer-workflow \"$GITHUB_REPOSITORY/.github/workflows/catalog-generation.yaml\"",
 		"Publish changed validated catalog generation", `if: ${{ steps.change.outputs.publish == 'true' }}`,
 		`gh release create "${{ steps.change.outputs.tag }}"`, "--prerelease",

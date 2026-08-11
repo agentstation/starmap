@@ -43,7 +43,7 @@ func TestArtifactAttestationWorkflowPinsRepositoryAndSignerWorkflow(t *testing.T
 	}
 	workflow := string(data)
 	for _, required := range []string{
-		"attestations: write", "id-token: write", "actions/attest-build-provenance@0f67c3f4856b2e3261c31976d6725780e5e4c373 # v4.1.1",
+		"attestations: write", "id-token: write", "actions/attest-build-provenance@4d101475d8b20a2381f78447822ac1eab6504dd8 # v4.2.2",
 		"subject-checksums: dist/checksums.txt", "gh attestation verify", `--repo "$GITHUB_REPOSITORY"`,
 		`--signer-workflow "$GITHUB_REPOSITORY/.github/workflows/release.yaml"`,
 		"--deny-self-hosted-runners",
