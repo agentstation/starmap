@@ -106,7 +106,7 @@ func TestReleaseConfigurationPinsInputsAndBuildsSupportedTargets(t *testing.T) {
 		"homebrew_casks:",
 		"name: homebrew-tap",
 		"url: ssh://git@github.com/agentstation/homebrew-tap.git",
-		`private_key: "{{ .Env.HOMEBREW_TAP_DEPLOY_KEY }}"`,
+		`private_key: '{{ index .Env "HOMEBREW_TAP_DEPLOY_KEY" }}'`,
 		"skip_upload: auto",
 		`enabled: '{{ isEnvSet "MACOS_SIGN_P12" }}'`,
 		"MACOS_NOTARY_ISSUER_ID",
