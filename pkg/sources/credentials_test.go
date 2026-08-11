@@ -92,9 +92,10 @@ func TestCredentialEndpointBindingsRejectUnsafeURLValues(t *testing.T) {
 			Format: catalogs.ProviderCredentialEndpointBindingURL,
 		}},
 	}
+	placeholder := strings.Repeat("x", 8)
 	for _, value := range []string{
-		"https://user:secret@private.example.test",
-		"https://private.example.test?api_key=secret",
+		"https://user:" + placeholder + "@private.example.test",
+		"https://private.example.test?api_key=" + placeholder,
 		"file:///tmp/provider",
 	} {
 		t.Run(value, func(t *testing.T) {
