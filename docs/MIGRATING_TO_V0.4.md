@@ -21,7 +21,7 @@ The default CLI paths are `~/.starmap/catalog` for provider YAML and
 different paths. Confirm its configuration before you move data.
 
 The `starmap migrate catalog` command migrates the older directory layout. It
-does not convert a schema-v4 catalog to schema v5.
+does not convert a pre-v5 catalog to schema v5.
 
 ## Migrate provider YAML
 
@@ -91,6 +91,19 @@ A remote deployment can seed an empty store with a verified v0.4.0
 over the pin.
 
 Do not point a v0.3 process at the new workspace or store after migration.
+
+## Reset the catalog publication rollback boundary
+
+The first schema-v5 catalog prerelease has no compatible pre-v5 rollback
+target. The publication workflow verifies each earlier release's checksum,
+artifact envelope, detached statement, and GitHub Actions provenance before it
+reads the declared consumer compatibility. It does not decode an incompatible
+payload or add a runtime compatibility path.
+
+After one schema-v5 catalog exists, each new catalog publication selects and
+verifies the newest prior prerelease that supports schema v5. An older
+pre-v5 prerelease remains immutable evidence, but it is not a v0.4 rollback
+target.
 
 ## Update publication candidates
 

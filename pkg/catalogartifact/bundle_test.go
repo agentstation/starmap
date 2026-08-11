@@ -153,6 +153,23 @@ func TestArtifactManifestPayloadCompatibilityAndAttestationRoundTrip(t *testing.
 	}
 }
 
+func TestInspectReportsPriorSchemaWithoutEnablingPayloadCompatibility(t *testing.T) {
+	archive, attestation := priorSchemaEnvelope(t)
+	descriptor, err := Inspect(archive, attestation)
+	if err != nil {
+		t.Fatalf("Inspect: %v", err)
+	}
+	if descriptor.SchemaVersion != 4 ||
+		descriptor.ConsumerCompatibility.MinSchemaVersion != 2 ||
+		descriptor.ConsumerCompatibility.MaxSchemaVersion != 4 ||
+		descriptor.ConsumerCompatibility.SupportsSchema(catalogs.CurrentCatalogSchemaVersion) {
+		t.Fatalf("descriptor compatibility = %#v", descriptor)
+	}
+	if _, err := Open(archive, attestation); err == nil {
+		t.Fatal("Open accepted a prior-schema manifest")
+	}
+}
+
 func TestArtifactRejectsArchiveOrAttestationTampering(t *testing.T) {
 	artifact, err := Build(artifactFixtureGeneration(t))
 	if err != nil {
@@ -163,6 +180,9 @@ func TestArtifactRejectsArchiveOrAttestationTampering(t *testing.T) {
 	tamperedArchive[len(tamperedArchive)/2] ^= 0xff
 	if _, err := Open(tamperedArchive, artifact.Attestation); err == nil {
 		t.Fatal("Open accepted a tampered archive")
+	}
+	if _, err := Inspect(tamperedArchive, artifact.Attestation); err == nil {
+		t.Fatal("Inspect accepted a tampered archive")
 	}
 
 	var statement AttestationStatement
@@ -176,6 +196,9 @@ func TestArtifactRejectsArchiveOrAttestationTampering(t *testing.T) {
 	}
 	if _, err := Open(artifact.Data, tamperedAttestation); err == nil {
 		t.Fatal("Open accepted a tampered attestation")
+	}
+	if _, err := Inspect(artifact.Data, tamperedAttestation); err == nil {
+		t.Fatal("Inspect accepted a tampered attestation")
 	}
 }
 
@@ -217,4 +240,66 @@ func artifactFixtureGeneration(t *testing.T) catalogstore.Generation {
 		t.Fatalf("Validate generation fixture: %v", err)
 	}
 	return generation
+}
+
+func priorSchemaEnvelope(t *testing.T) ([]byte, []byte) {
+	t.Helper()
+	generation := artifactFixtureGeneration(t)
+	manifestData, err := json.Marshal(generation.Manifest)
+	if err != nil {
+		t.Fatalf("Marshal manifest: %v", err)
+	}
+	var manifest map[string]any
+	if err := json.Unmarshal(manifestData, &manifest); err != nil {
+		t.Fatalf("Unmarshal manifest: %v", err)
+	}
+	delete(manifest, "review_candidates")
+	manifest["manifest_version"] = float64(1)
+	manifest["schema_version"] = float64(4)
+	manifest["consumer_compatibility"] = map[string]any{
+		"min_schema_version": float64(2),
+		"max_schema_version": float64(4),
+	}
+	manifestData, err = json.Marshal(manifest)
+	if err != nil {
+		t.Fatalf("Marshal prior manifest: %v", err)
+	}
+	descriptor := Descriptor{
+		FormatVersion: FormatVersion, MediaType: MediaType,
+		GenerationID: generation.Manifest.GenerationID, ManifestVersion: 1, SchemaVersion: 4,
+		ConsumerCompatibility: catalogs.ConsumerCompatibility{MinSchemaVersion: 2, MaxSchemaVersion: 4},
+		Manifest:              describeFile(manifestFilename, "application/json", manifestData),
+		Payload:               describeFile(payloadFilename, catalogs.CatalogPayloadMediaType, generation.Payload),
+	}
+	descriptorData, err := json.Marshal(descriptor)
+	if err != nil {
+		t.Fatalf("Marshal descriptor: %v", err)
+	}
+	archive, err := encodeArchive([]archiveMember{
+		{name: descriptorFilename, data: descriptorData},
+		{name: manifestFilename, data: manifestData},
+		{name: payloadFilename, data: generation.Payload},
+	})
+	if err != nil {
+		t.Fatalf("encodeArchive: %v", err)
+	}
+	statement := AttestationStatement{
+		Type: AttestationStatementType,
+		Subject: []Subject{
+			{Name: Filename, Digest: digestSet(checksum(archive))},
+			{Name: descriptorFilename, Digest: digestSet(checksum(descriptorData))},
+			{Name: manifestFilename, Digest: digestSet(descriptor.Manifest.Checksum)},
+			{Name: payloadFilename, Digest: digestSet(descriptor.Payload.Checksum)},
+		},
+		PredicateType: AttestationPredicateType,
+		Predicate: AttestationPredicate{
+			GenerationID: descriptor.GenerationID, ManifestVersion: descriptor.ManifestVersion,
+			SchemaVersion: descriptor.SchemaVersion, ConsumerCompatibility: descriptor.ConsumerCompatibility,
+		},
+	}
+	attestation, err := json.Marshal(statement)
+	if err != nil {
+		t.Fatalf("Marshal attestation: %v", err)
+	}
+	return archive, attestation
 }

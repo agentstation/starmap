@@ -12,6 +12,7 @@ import (
 	"fmt"
 	"io"
 	"sort"
+	"strings"
 	"time"
 
 	"github.com/agentstation/starmap/pkg/catalogs"
@@ -176,33 +177,13 @@ func Build(generation catalogstore.Generation) (Bundle, error) {
 // Open verifies an archive and detached statement before returning its exact
 // immutable catalog generation.
 func Open(archive, attestation []byte) (catalogstore.Generation, error) {
-	if len(archive) > maxArtifactBytes {
-		return catalogstore.Generation{}, artifactValidation("archive", len(archive), "exceeds maximum artifact size")
-	}
-	members, err := decodeArchive(archive)
+	descriptor, members, err := inspect(archive, attestation)
 	if err != nil {
 		return catalogstore.Generation{}, err
 	}
-	descriptorData, ok := members[descriptorFilename]
-	if !ok {
-		return catalogstore.Generation{}, artifactValidation("archive", descriptorFilename, "required member is missing")
-	}
-	manifestData, ok := members[manifestFilename]
-	if !ok {
-		return catalogstore.Generation{}, artifactValidation("archive", manifestFilename, "required member is missing")
-	}
-	payload, ok := members[payloadFilename]
-	if !ok {
-		return catalogstore.Generation{}, artifactValidation("archive", payloadFilename, "required member is missing")
-	}
-	if len(members) != 3 {
-		return catalogstore.Generation{}, artifactValidation("archive", len(members), "contains unsupported members")
-	}
+	manifestData := members[manifestFilename]
+	payload := members[payloadFilename]
 
-	var descriptor Descriptor
-	if err := decodeStrictJSON(descriptorData, &descriptor); err != nil {
-		return catalogstore.Generation{}, errors.WrapResource("parse", "catalog artifact descriptor", descriptorFilename, err)
-	}
 	manifest, err := catalogs.ParseGenerationManifestJSON(manifestData)
 	if err != nil {
 		return catalogstore.Generation{}, err
@@ -214,13 +195,55 @@ func Open(archive, attestation []byte) (catalogstore.Generation, error) {
 	if err := validateCanonicalPayload(generation.Payload); err != nil {
 		return catalogstore.Generation{}, errors.WrapResource("validate", "canonical catalog artifact payload", manifest.GenerationID, err)
 	}
-	if err := validateDescriptor(descriptor, generation, manifestData); err != nil {
-		return catalogstore.Generation{}, err
-	}
-	if err := verifyAttestation(attestation, archive, descriptor, descriptorData); err != nil {
+	if err := validateDescriptorGeneration(descriptor, generation); err != nil {
 		return catalogstore.Generation{}, err
 	}
 	return generation, nil
+}
+
+// Inspect verifies the schema-independent artifact envelope and detached
+// statement. It returns compatibility metadata without decoding the catalog
+// payload through the current schema.
+func Inspect(archive, attestation []byte) (Descriptor, error) {
+	descriptor, _, err := inspect(archive, attestation)
+	return descriptor, err
+}
+
+func inspect(archive, attestation []byte) (Descriptor, map[string][]byte, error) {
+	if len(archive) > maxArtifactBytes {
+		return Descriptor{}, nil, artifactValidation("archive", len(archive), "exceeds maximum artifact size")
+	}
+	members, err := decodeArchive(archive)
+	if err != nil {
+		return Descriptor{}, nil, err
+	}
+	descriptorData, ok := members[descriptorFilename]
+	if !ok {
+		return Descriptor{}, nil, artifactValidation("archive", descriptorFilename, "required member is missing")
+	}
+	manifestData, ok := members[manifestFilename]
+	if !ok {
+		return Descriptor{}, nil, artifactValidation("archive", manifestFilename, "required member is missing")
+	}
+	payload, ok := members[payloadFilename]
+	if !ok {
+		return Descriptor{}, nil, artifactValidation("archive", payloadFilename, "required member is missing")
+	}
+	if len(members) != 3 {
+		return Descriptor{}, nil, artifactValidation("archive", len(members), "contains unsupported members")
+	}
+
+	var descriptor Descriptor
+	if err := decodeStrictJSON(descriptorData, &descriptor); err != nil {
+		return Descriptor{}, nil, errors.WrapResource("parse", "catalog artifact descriptor", descriptorFilename, err)
+	}
+	if err := validateDescriptorEnvelope(descriptor, manifestData, payload); err != nil {
+		return Descriptor{}, nil, err
+	}
+	if err := verifyAttestation(attestation, archive, descriptor, descriptorData); err != nil {
+		return Descriptor{}, nil, err
+	}
+	return descriptor, members, nil
 }
 
 type archiveMember struct {
@@ -303,21 +326,41 @@ func decodeArchive(data []byte) (map[string][]byte, error) {
 	return members, nil
 }
 
-func validateDescriptor(descriptor Descriptor, generation catalogstore.Generation, manifestData []byte) error {
-	manifest := generation.Manifest
+func validateDescriptorEnvelope(descriptor Descriptor, manifestData, payload []byte) error {
 	if descriptor.FormatVersion != FormatVersion || descriptor.MediaType != MediaType {
 		return artifactValidation("descriptor.format", descriptor.FormatVersion, "is not supported")
 	}
+	if strings.TrimSpace(descriptor.GenerationID) == "" {
+		return artifactValidation("descriptor.generation_id", descriptor.GenerationID, "is required")
+	}
+	if descriptor.ManifestVersion == 0 {
+		return artifactValidation("descriptor.manifest_version", descriptor.ManifestVersion, "must be greater than zero")
+	}
+	if descriptor.SchemaVersion == 0 {
+		return artifactValidation("descriptor.schema_version", descriptor.SchemaVersion, "must be greater than zero")
+	}
+	compatibility := descriptor.ConsumerCompatibility
+	if compatibility.MinSchemaVersion == 0 || compatibility.MaxSchemaVersion < compatibility.MinSchemaVersion {
+		return artifactValidation("descriptor.consumer_compatibility", compatibility, "is invalid")
+	}
+	if !compatibility.SupportsSchema(descriptor.SchemaVersion) {
+		return artifactValidation("descriptor.schema_version", descriptor.SchemaVersion, "is outside the declared consumer compatibility range")
+	}
+	wantManifest := describeFile(manifestFilename, "application/json", manifestData)
+	wantPayload := describeFile(payloadFilename, catalogs.CatalogPayloadMediaType, payload)
+	if descriptor.Manifest != wantManifest || descriptor.Payload != wantPayload {
+		return artifactValidation("descriptor.files", descriptor.GenerationID, "does not match archive member bytes")
+	}
+	return nil
+}
+
+func validateDescriptorGeneration(descriptor Descriptor, generation catalogstore.Generation) error {
+	manifest := generation.Manifest
 	if descriptor.GenerationID != manifest.GenerationID ||
 		descriptor.ManifestVersion != manifest.ManifestVersion ||
 		descriptor.SchemaVersion != manifest.SchemaVersion ||
 		descriptor.ConsumerCompatibility != manifest.ConsumerCompatibility {
 		return artifactValidation("descriptor.generation", descriptor.GenerationID, "does not match manifest identity or compatibility")
-	}
-	wantManifest := describeFile(manifestFilename, "application/json", manifestData)
-	wantPayload := describeFile(payloadFilename, catalogs.CatalogPayloadMediaType, generation.Payload)
-	if descriptor.Manifest != wantManifest || descriptor.Payload != wantPayload {
-		return artifactValidation("descriptor.files", descriptor.GenerationID, "does not match archive member bytes")
 	}
 	return nil
 }

@@ -108,6 +108,23 @@ func TestArtifactReleaseCommandVerifiesDownloadedReleaseSet(t *testing.T) {
 		len(verified.Files) != 3 {
 		t.Fatalf("verified report = %#v, staged = %#v", verified, staged)
 	}
+
+	var inspectedOutput bytes.Buffer
+	if err := run([]string{"--inspect-dir", staged.Directory}, &inspectedOutput); err != nil {
+		t.Fatalf("inspect release: %v", err)
+	}
+	var inspected inspectionReport
+	if err := json.Unmarshal(inspectedOutput.Bytes(), &inspected); err != nil {
+		t.Fatalf("Unmarshal inspected report: %v", err)
+	}
+	if inspected.GenerationID != staged.GenerationID ||
+		inspected.SchemaVersion != catalogs.CurrentCatalogSchemaVersion ||
+		inspected.CurrentSchemaVersion != catalogs.CurrentCatalogSchemaVersion ||
+		!inspected.SupportsCurrentSchema ||
+		inspected.ArchiveChecksum != staged.ArchiveChecksum ||
+		len(inspected.Files) != 3 {
+		t.Fatalf("inspected report = %#v, staged = %#v", inspected, staged)
+	}
 }
 
 func TestArtifactReleaseCommandRejectsTamperedReleaseSet(t *testing.T) {
@@ -174,6 +191,12 @@ func TestArtifactReleaseCommandRequiresCommittedGenerationStore(t *testing.T) {
 		"--generation-store", storePath,
 	}, io.Discard); err == nil {
 		t.Fatal("verification accepted a staging-only generation store")
+	}
+	if err := run([]string{
+		"--inspect-dir", t.TempDir(),
+		"--verify-dir", t.TempDir(),
+	}, io.Discard); err == nil {
+		t.Fatal("inspection accepted verify-dir")
 	}
 }
 
