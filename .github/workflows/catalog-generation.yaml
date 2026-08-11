@@ -62,9 +62,6 @@ jobs:
           write_output semantic_checksum "$SEMANTIC_CHECKSUM"
           write_output tag "$TAG"
           write_output generation_id "$GENERATION_ID"
-          PREVIOUS_TAG=$(gh release list --limit 100 --json tagName,isPrerelease,isDraft,publishedAt | jq -r --arg tag "$TAG" \
-            '[.[] | select(.isPrerelease == true and .isDraft == false and (.tagName | startswith("catalog-semantic-")) and .tagName != $tag)] | sort_by(.publishedAt) | last | .tagName // ""')
-          write_output previous_tag "$PREVIOUS_TAG"
 
           if [[ "$CHANGED" != "true" ]]; then
             write_output publish false
@@ -75,6 +72,11 @@ jobs:
           if gh release view "$TAG" >/dev/null 2>&1; then
             EXISTING=$(mktemp -d)
             gh release download "$TAG" --pattern 'starmap-catalog*' --dir "$EXISTING"
+            gh attestation verify \
+              "$EXISTING/starmap-catalog.tar.gz" \
+              --repo "$GITHUB_REPOSITORY" \
+              --signer-workflow "$GITHUB_REPOSITORY/.github/workflows/catalog-generation.yaml" \
+              --deny-self-hosted-runners
             go run ./cmd/starmap-catalog-release \
               --verify-dir "$EXISTING" > catalog-existing-verification.json
             test "$(jq -er .semantic_checksum catalog-existing-verification.json)" = "$SEMANTIC_CHECKSUM"
@@ -82,6 +84,26 @@ jobs:
             write_output reason "catalog semantics already published and verified"
             exit 0
           fi
+
+          PREVIOUS_TAG=""
+          while IFS= read -r CANDIDATE_TAG; do
+            CANDIDATE_DIRECTORY=$(mktemp -d)
+            CANDIDATE_REPORT=${RUNNER_TEMP}/catalog-compatibility-${CANDIDATE_TAG}.json
+            gh release download "$CANDIDATE_TAG" --pattern 'starmap-catalog*' --dir "$CANDIDATE_DIRECTORY"
+            gh attestation verify \
+              "$CANDIDATE_DIRECTORY/starmap-catalog.tar.gz" \
+              --repo "$GITHUB_REPOSITORY" \
+              --signer-workflow "$GITHUB_REPOSITORY/.github/workflows/catalog-generation.yaml" \
+              --deny-self-hosted-runners
+            go run ./cmd/starmap-catalog-release \
+              --inspect-dir "$CANDIDATE_DIRECTORY" > "$CANDIDATE_REPORT"
+            if jq -e '.supports_current_schema == true' "$CANDIDATE_REPORT" >/dev/null; then
+              PREVIOUS_TAG="$CANDIDATE_TAG"
+              break
+            fi
+          done < <(gh release list --limit 100 --json tagName,isPrerelease,isDraft,publishedAt | jq -r --arg tag "$TAG" \
+            '[.[] | select(.isPrerelease == true and .isDraft == false and (.tagName | startswith("catalog-semantic-")) and .tagName != $tag)] | sort_by(.publishedAt) | reverse | .[].tagName')
+          write_output previous_tag "$PREVIOUS_TAG"
 
           write_output publish true
           write_output reason "new catalog semantics"

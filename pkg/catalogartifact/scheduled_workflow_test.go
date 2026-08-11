@@ -17,8 +17,11 @@ func TestScheduledGenerationWorkflowPublishesOnlyValidatedChangedPayload(t *test
 		"./scripts/generate-embedded-catalog.sh", "jq -r .changed catalog-generation.json",
 		"STARMAP_GENERATION_STATE_PATH:", "STARMAP_GENERATION_STORE_PATH:",
 		"TAG=catalog-semantic-${SEMANTIC_DIGEST}", `if [[ "$CHANGED" != "true" ]]`,
-		`select(.isPrerelease == true and .isDraft == false`, `write_output previous_tag "$PREVIOUS_TAG"`,
-		`gh release view "$TAG"`, `--verify-dir "$EXISTING"`,
+		`select(.isPrerelease == true and .isDraft == false`, `PREVIOUS_TAG=""`,
+		`--inspect-dir "$CANDIDATE_DIRECTORY"`, `.supports_current_schema == true`,
+		`--signer-workflow "$GITHUB_REPOSITORY/.github/workflows/catalog-generation.yaml"`,
+		`write_output previous_tag "$PREVIOUS_TAG"`,
+		`gh release view "$TAG"`, `"$EXISTING/starmap-catalog.tar.gz"`, `--verify-dir "$EXISTING"`,
 		`jq -er .semantic_checksum catalog-existing-verification.json`,
 		"Validate changed candidate", "make catalog-generation-check", "make embedded-catalog-budget-check",
 		"go run ./cmd/starmap-catalog-release", `--generation-store "${RUNNER_TEMP}/starmap-catalog-generation/update-home/.starmap/state/catalog"`,
@@ -45,6 +48,19 @@ func TestScheduledGenerationWorkflowPublishesOnlyValidatedChangedPayload(t *test
 	if refresh < 0 || !(refresh < classify && classify < validate && validate < stage && stage < publish && publish < verify && verify < rollback) {
 		t.Fatalf("workflow order refresh/classify/validate/stage/publish/verify/rollback = %d/%d/%d/%d/%d/%d/%d", refresh, classify, validate, stage, publish, verify, rollback)
 	}
+	existing := strings.Index(workflow, `if gh release view "$TAG"`)
+	selectPrevious := strings.Index(workflow, `PREVIOUS_TAG=""`)
+	inspectPrevious := strings.Index(workflow, `--inspect-dir "$CANDIDATE_DIRECTORY"`)
+	acceptPrevious := strings.Index(workflow, `PREVIOUS_TAG="$CANDIDATE_TAG"`)
+	if existing < 0 || !(existing < selectPrevious && selectPrevious < inspectPrevious && inspectPrevious < acceptPrevious) {
+		t.Fatalf(
+			"workflow order existing/select/inspect/accept = %d/%d/%d/%d",
+			existing,
+			selectPrevious,
+			inspectPrevious,
+			acceptPrevious,
+		)
+	}
 	if strings.Contains(workflow, "actions/upload-artifact") {
 		t.Fatal("scheduled generation uses expiring Actions artifacts as runtime publication")
 	}
@@ -53,5 +69,8 @@ func TestScheduledGenerationWorkflowPublishesOnlyValidatedChangedPayload(t *test
 	}
 	if strings.Contains(workflow, "jq -er .changed catalog-generation.json") {
 		t.Fatal("scheduled generation treats the valid false boolean as a shell failure")
+	}
+	if strings.Contains(workflow, `last | .tagName`) {
+		t.Fatal("scheduled generation selects a rollback candidate without compatibility inspection")
 	}
 }

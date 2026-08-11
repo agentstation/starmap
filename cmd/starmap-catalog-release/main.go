@@ -28,6 +28,18 @@ type releaseReport struct {
 	Files            []string `json:"files"`
 }
 
+type inspectionReport struct {
+	GenerationID          string                         `json:"generation_id"`
+	ManifestVersion       uint64                         `json:"manifest_version"`
+	SchemaVersion         uint64                         `json:"schema_version"`
+	ConsumerCompatibility catalogs.ConsumerCompatibility `json:"consumer_compatibility"`
+	CurrentSchemaVersion  uint64                         `json:"current_schema_version"`
+	SupportsCurrentSchema bool                           `json:"supports_current_schema"`
+	ArchiveChecksum       string                         `json:"archive_checksum"`
+	Directory             string                         `json:"directory"`
+	Files                 []string                       `json:"files"`
+}
+
 func main() {
 	if err := run(os.Args[1:], os.Stdout); err != nil {
 		_, _ = fmt.Fprintln(os.Stderr, err)
@@ -40,6 +52,11 @@ func run(args []string, output io.Writer) error {
 	flags.SetOutput(io.Discard)
 	outputDir := flags.String("output-dir", "dist/catalog-release", "immutable catalog release staging root")
 	verifyDir := flags.String("verify-dir", "", "verify an existing catalog release asset directory")
+	inspectDir := flags.String(
+		"inspect-dir",
+		"",
+		"verify a release envelope and report schema compatibility without decoding its payload",
+	)
 	generationStore := flags.String(
 		"generation-store",
 		"",
@@ -57,6 +74,19 @@ func run(args []string, output io.Writer) error {
 			outputDirExplicit = true
 		}
 	})
+	if strings.TrimSpace(*inspectDir) != "" {
+		if outputDirExplicit || strings.TrimSpace(*generationStore) != "" || strings.TrimSpace(*verifyDir) != "" {
+			return &pkgerrors.ValidationError{
+				Field:   "catalog_release.mode",
+				Message: "inspect-dir cannot be combined with output-dir, generation-store, or verify-dir",
+			}
+		}
+		report, err := inspectReleaseDirectory(strings.TrimSpace(*inspectDir))
+		if err != nil {
+			return err
+		}
+		return json.NewEncoder(output).Encode(report)
+	}
 	if strings.TrimSpace(*verifyDir) != "" {
 		if outputDirExplicit || strings.TrimSpace(*generationStore) != "" {
 			return &pkgerrors.ValidationError{
@@ -111,16 +141,69 @@ func run(args []string, output io.Writer) error {
 }
 
 func verifyReleaseDirectory(directory string) (releaseReport, error) {
+	release, err := readReleaseDirectory(directory)
+	if err != nil {
+		return releaseReport{}, err
+	}
+	generation, err := catalogartifact.Open(release.archive, release.statement)
+	if err != nil {
+		return releaseReport{}, pkgerrors.WrapResource("verify", "catalog release", release.directory, err)
+	}
+	semanticChecksum, err := generationSemanticChecksum(generation)
+	if err != nil {
+		return releaseReport{}, err
+	}
+	return releaseReport{
+		GenerationID:     generation.Manifest.GenerationID,
+		SemanticChecksum: semanticChecksum,
+		PayloadChecksum:  generation.Manifest.Payload.Checksum,
+		ArchiveChecksum:  release.archiveChecksum,
+		Directory:        release.directory,
+		Files:            release.files,
+	}, nil
+}
+
+func inspectReleaseDirectory(directory string) (inspectionReport, error) {
+	release, err := readReleaseDirectory(directory)
+	if err != nil {
+		return inspectionReport{}, err
+	}
+	descriptor, err := catalogartifact.Inspect(release.archive, release.statement)
+	if err != nil {
+		return inspectionReport{}, pkgerrors.WrapResource("inspect", "catalog release", release.directory, err)
+	}
+	return inspectionReport{
+		GenerationID:          descriptor.GenerationID,
+		ManifestVersion:       descriptor.ManifestVersion,
+		SchemaVersion:         descriptor.SchemaVersion,
+		ConsumerCompatibility: descriptor.ConsumerCompatibility,
+		CurrentSchemaVersion:  catalogs.CurrentCatalogSchemaVersion,
+		SupportsCurrentSchema: descriptor.ConsumerCompatibility.SupportsSchema(catalogs.CurrentCatalogSchemaVersion),
+		ArchiveChecksum:       release.archiveChecksum,
+		Directory:             release.directory,
+		Files:                 release.files,
+	}, nil
+}
+
+type releaseDirectory struct {
+	directory       string
+	archive         []byte
+	statement       []byte
+	archiveChecksum string
+	files           []string
+}
+
+func readReleaseDirectory(directory string) (releaseDirectory, error) {
 	absolute, err := filepath.Abs(directory)
 	if err != nil {
-		return releaseReport{}, pkgerrors.WrapIO("resolve", directory, err)
+		return releaseDirectory{}, pkgerrors.WrapIO("resolve", directory, err)
 	}
 	entries, err := os.ReadDir(absolute)
 	if err != nil {
-		return releaseReport{}, pkgerrors.WrapIO("read", absolute, err)
+		return releaseDirectory{}, pkgerrors.WrapIO("read", absolute, err)
 	}
 	if len(entries) != 3 {
-		return releaseReport{}, &pkgerrors.ValidationError{
+		return releaseDirectory{}, &pkgerrors.ValidationError{
 			Field: "catalog_release.files", Value: len(entries), Message: "release directory must contain exactly three assets",
 		}
 	}
@@ -132,40 +215,28 @@ func verifyReleaseDirectory(directory string) (releaseReport, error) {
 	}
 	archive, err := readReleaseAsset(files[0])
 	if err != nil {
-		return releaseReport{}, err
+		return releaseDirectory{}, err
 	}
 	statement, err := readReleaseAsset(files[1])
 	if err != nil {
-		return releaseReport{}, err
+		return releaseDirectory{}, err
 	}
 	checksumFile, err := readReleaseAsset(files[2])
 	if err != nil {
-		return releaseReport{}, err
+		return releaseDirectory{}, err
 	}
 
 	digest := sha256.Sum256(archive)
 	digestHex := fmt.Sprintf("%x", digest)
 	wantChecksumFile := digestHex + "  " + catalogartifact.Filename + "\n"
 	if string(checksumFile) != wantChecksumFile {
-		return releaseReport{}, &pkgerrors.ValidationError{
+		return releaseDirectory{}, &pkgerrors.ValidationError{
 			Field: "catalog_release.checksum", Value: strings.TrimSpace(string(checksumFile)), Message: "does not match archive bytes",
 		}
 	}
-	generation, err := catalogartifact.Open(archive, statement)
-	if err != nil {
-		return releaseReport{}, pkgerrors.WrapResource("verify", "catalog release", absolute, err)
-	}
-	semanticChecksum, err := generationSemanticChecksum(generation)
-	if err != nil {
-		return releaseReport{}, err
-	}
-	return releaseReport{
-		GenerationID:     generation.Manifest.GenerationID,
-		SemanticChecksum: semanticChecksum,
-		PayloadChecksum:  generation.Manifest.Payload.Checksum,
-		ArchiveChecksum:  "sha256:" + digestHex,
-		Directory:        absolute,
-		Files:            files,
+	return releaseDirectory{
+		directory: absolute, archive: archive, statement: statement,
+		archiveChecksum: "sha256:" + digestHex, files: files,
 	}, nil
 }
 
