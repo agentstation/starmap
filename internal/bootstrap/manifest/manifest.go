@@ -1,6 +1,6 @@
-// Package bootstrapmanifest derives embedded generation identity from canonical
+// Package manifest derives embedded generation identity from canonical
 // catalog bytes without rewriting unchanged generations.
-package bootstrapmanifest
+package manifest
 
 import (
 	"fmt"

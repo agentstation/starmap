@@ -11,8 +11,8 @@ import (
 	"time"
 
 	"github.com/agentstation/starmap/internal/constants"
-	"github.com/agentstation/starmap/internal/sourcepayload"
-	"github.com/agentstation/starmap/internal/testlogging"
+	sourcepayload "github.com/agentstation/starmap/internal/sources/payload"
+	testlogging "github.com/agentstation/starmap/internal/test/logging"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	pkgerrors "github.com/agentstation/starmap/pkg/errors"
 	"github.com/agentstation/starmap/pkg/logging"

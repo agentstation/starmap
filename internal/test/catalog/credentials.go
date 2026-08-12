@@ -1,5 +1,5 @@
-// Package testcatalog provides canonical catalog fixtures for cross-package tests.
-package testcatalog
+// Package catalog provides canonical catalog fixtures for cross-package tests.
+package catalog
 
 import (
 	"github.com/agentstation/starmap/pkg/catalogs"

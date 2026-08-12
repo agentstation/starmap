@@ -11,7 +11,7 @@ import (
 	"slices"
 	"testing"
 
-	"github.com/agentstation/starmap/internal/providers/testhelper"
+	"github.com/agentstation/starmap/internal/test/providerfixture"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/goccy/go-yaml"
 )
@@ -44,7 +44,7 @@ func mustConvertModel(t testing.TB, client *Client, model Model) *catalogs.Model
 func loadTestdataResponse(t *testing.T, filename string) Response {
 	t.Helper()
 	var response Response
-	testhelper.LoadJSON(t, filename, &response)
+	providerfixture.LoadJSON(t, filename, &response)
 	return response
 }
 
@@ -891,7 +891,7 @@ func TestOpenAIClientListModels(t *testing.T) {
 		switch {
 		case r.URL.Path == "/v1/models" || r.URL.Path == "/":
 			// Return list response
-			w.Write(testhelper.LoadTestdata(t, "models_list.json"))
+			w.Write(providerfixture.LoadTestdata(t, "models_list.json"))
 			return
 
 		default:

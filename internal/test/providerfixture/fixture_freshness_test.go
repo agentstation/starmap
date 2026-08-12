@@ -1,4 +1,4 @@
-package testhelper
+package providerfixture
 
 import (
 	"encoding/json"
@@ -8,12 +8,12 @@ import (
 	"testing"
 	"time"
 
-	"github.com/agentstation/starmap/pkg/catalogmeta"
 	"github.com/agentstation/starmap/internal/constants"
+	"github.com/agentstation/starmap/pkg/catalogmeta"
 )
 
 func TestProviderFixtureFreshness(t *testing.T) {
-	fixtures, err := filepath.Glob(filepath.Join("..", "*", "testdata", "models_list.json"))
+	fixtures, err := filepath.Glob(filepath.Join("..", "..", "providers", "*", "testdata", "models_list.json"))
 	if err != nil {
 		t.Fatalf("Glob: %v", err)
 	}

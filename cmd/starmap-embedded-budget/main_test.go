@@ -9,7 +9,7 @@ import (
 	"time"
 
 	"github.com/agentstation/starmap/internal/bootstrap"
-	"github.com/agentstation/starmap/internal/embeddedbudget"
+	"github.com/agentstation/starmap/internal/bootstrap/budget"
 )
 
 func TestEmbeddedBudgetCommandEmitsPassingMachineReadableReport(t *testing.T) {
@@ -21,7 +21,7 @@ func TestEmbeddedBudgetCommandEmitsPassingMachineReadableReport(t *testing.T) {
 	if err := run(nil, &output, func(string) string { return "" }, generation.Manifest.GeneratedAt.Add(time.Hour)); err != nil {
 		t.Fatalf("run: %v", err)
 	}
-	var report embeddedbudget.Report
+	var report budget.Report
 	if err := json.Unmarshal(output.Bytes(), &report); err != nil {
 		t.Fatalf("Unmarshal report: %v", err)
 	}

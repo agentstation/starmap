@@ -474,8 +474,8 @@ validate: ## Validate entire embedded catalog structure
 catalog-generation-check: ## Verify safe catalog download, promotion, CLI, and refresh tooling
 	@bash -n scripts/refresh-embedded-modelsdev.sh scripts/generate-embedded-catalog.sh scripts/refresh-provider-testdata.sh
 	@$(GOCMD) test ./internal/sources/modelsdev ./cmd/starmap-modelsdev-promote -run CatalogGenerationTooling -count=1
-	@$(GOCMD) test ./internal/bootstrapmanifest ./cmd/starmap-bootstrap-manifest -run ScheduledGeneration -count=1
-	@$(GOCMD) test ./internal/providers/testhelper -run ProviderFixtureRefreshFailure -count=1
+	@$(GOCMD) test ./internal/bootstrap/manifest ./cmd/starmap-bootstrap-manifest -run ScheduledGeneration -count=1
+	@$(GOCMD) test ./internal/test/providerfixture -run ProviderFixtureRefreshFailure -count=1
 
 embedded-catalog-budget-check: ## Enforce embedded catalog age, size, and coverage budgets
 	@$(GOCMD) run ./cmd/starmap-embedded-budget

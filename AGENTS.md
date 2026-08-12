@@ -300,7 +300,7 @@ for _, provider := range providers {
 
 **Public contracts**: catalogs, catalogstore, sources, errors, logging, constants
 
-**Internal**: catalog/{authority,reconciler}, cli/{app,commands,convert}, embedded, server, server/handlers, sources/{providers,modelsdev,local}, providers/{clients,openai,anthropic,google}, sourcepayload, transport
+**Internal**: bootstrap/{manifest,budget}, catalog/{authority,reconciler}, cli/{app,commands,convert}, embedded, server, server/handlers, sources/{providers,modelsdev,local,payload}, providers/{clients,openai,anthropic,google}, test/{catalog,logging,providerfixture}, transport
 
 **Application**: consumer-local command/server roles, internal/cli/app (implementation)
 

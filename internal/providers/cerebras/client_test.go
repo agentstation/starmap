@@ -7,8 +7,8 @@ import (
 	"github.com/stretchr/testify/require"
 
 	"github.com/agentstation/starmap/internal/providers/openai"
-	"github.com/agentstation/starmap/internal/providers/testhelper"
-	"github.com/agentstation/starmap/internal/testcatalog"
+	testcatalog "github.com/agentstation/starmap/internal/test/catalog"
+	"github.com/agentstation/starmap/internal/test/providerfixture"
 	"github.com/agentstation/starmap/pkg/catalogs"
 )
 
@@ -16,7 +16,7 @@ import (
 func TestCerebrasWithUnifiedClient(t *testing.T) {
 	// Load testdata
 	var response openai.Response
-	testhelper.LoadJSON(t, "models_list.json", &response)
+	providerfixture.LoadJSON(t, "models_list.json", &response)
 
 	// Verify testdata structure
 	assert.Equal(t, "list", response.Object)

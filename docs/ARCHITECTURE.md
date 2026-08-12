@@ -1405,7 +1405,7 @@ Source-shape tests in `internal/sources/modelsdev` and `internal/providers/*` cl
 Every checked-in provider response fixture has an adjacent versioned metadata
 record containing provider, capture time, content-digest source revision,
 payload path/SHA-256, and an explicit maximum age (currently 365 days for the
-legacy capture set). `internal/providers/testhelper` rejects missing, future,
+legacy capture set). `internal/test/providerfixture` rejects missing, future,
 stale, provider-mismatched, or checksum-mismatched metadata. Refresh helpers
 write payload and metadata together; the Make target propagates test/fetch
 failures and also fails when an alleged refresh changes neither file, preventing
@@ -2100,6 +2100,9 @@ starmap/
 │   └── logging/              # Caller-owned logging boundary
 │
 ├── internal/                 # Internal packages
+│   ├── bootstrap/            # Embedded catalog startup and release checks
+│   │   ├── manifest/         # Canonical embedded generation identity
+│   │   └── budget/           # Embedded catalog release budgets
 │   ├── cli/                  # CLI support helpers
 │   │   ├── app/              # Concrete CLI composition
 │   │   ├── commands/         # Command-local capability interfaces
@@ -2136,7 +2139,12 @@ starmap/
 │   ├── sources/              # Source implementations
 │   │   ├── providers/        # Provider-backed catalog source
 │   │   ├── modelsdev/        # models.dev integration
-│   │   └── local/            # Local file source
+│   │   ├── local/            # Local file source
+│   │   └── payload/          # Bounded source-payload decoding
+│   ├── test/                 # Shared internal test support
+│   │   ├── catalog/          # Canonical catalog fixtures
+│   │   ├── logging/          # Structured logging fixtures
+│   │   └── providerfixture/  # Provider response fixture lifecycle
 │   └── transport/            # HTTP client utilities
 │
 ├── acquisition/              # Opt-in provider/source synchronization

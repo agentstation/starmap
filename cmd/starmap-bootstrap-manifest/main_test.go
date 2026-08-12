@@ -9,7 +9,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/agentstation/starmap/internal/bootstrapmanifest"
+	"github.com/agentstation/starmap/internal/bootstrap/manifest"
 	"github.com/agentstation/starmap/internal/constants"
 	"github.com/agentstation/starmap/pkg/catalogmeta"
 	"github.com/agentstation/starmap/pkg/catalogs"
@@ -30,7 +30,7 @@ func TestScheduledGenerationManifestCommandWritesChangedOnceAndPreservesUnchange
 	}, &firstOutput, now); err != nil {
 		t.Fatalf("run first: %v", err)
 	}
-	var first bootstrapmanifest.Report
+	var first manifest.Report
 	if err := json.Unmarshal(firstOutput.Bytes(), &first); err != nil {
 		t.Fatalf("Unmarshal first: %v", err)
 	}
@@ -57,7 +57,7 @@ func TestScheduledGenerationManifestCommandWritesChangedOnceAndPreservesUnchange
 	}, &secondOutput, now.Add(24*time.Hour)); err != nil {
 		t.Fatalf("run second: %v", err)
 	}
-	var second bootstrapmanifest.Report
+	var second manifest.Report
 	if err := json.Unmarshal(secondOutput.Bytes(), &second); err != nil {
 		t.Fatalf("Unmarshal second: %v", err)
 	}
@@ -109,7 +109,7 @@ func TestScheduledGenerationManifestReplacesPriorSchemaManifest(t *testing.T) {
 	}, &output, now.Add(time.Hour)); err != nil {
 		t.Fatalf("replace prior schema: %v", err)
 	}
-	var report bootstrapmanifest.Report
+	var report manifest.Report
 	if err := json.Unmarshal(output.Bytes(), &report); err != nil {
 		t.Fatalf("Unmarshal report: %v", err)
 	}
@@ -238,7 +238,7 @@ func TestScheduledGenerationManifestAllowsEmptyStoreOnlyWhenUnchanged(t *testing
 	}, &output, now.Add(time.Hour)); err != nil {
 		t.Fatalf("unchanged run with empty store: %v", err)
 	}
-	var report bootstrapmanifest.Report
+	var report manifest.Report
 	if err := json.Unmarshal(output.Bytes(), &report); err != nil {
 		t.Fatalf("Unmarshal report: %v", err)
 	}

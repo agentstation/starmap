@@ -1,6 +1,6 @@
 package sources
 
-import "github.com/agentstation/starmap/internal/sourcepayload"
+import sourcepayload "github.com/agentstation/starmap/internal/sources/payload"
 
 // MaxJSONNestingDepth bounds object/array nesting before JSON decode.
 const MaxJSONNestingDepth = sourcepayload.MaxJSONNestingDepth

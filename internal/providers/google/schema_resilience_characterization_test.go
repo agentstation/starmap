@@ -8,7 +8,7 @@ import (
 	"sync/atomic"
 	"testing"
 
-	"github.com/agentstation/starmap/internal/sourcepayload"
+	sourcepayload "github.com/agentstation/starmap/internal/sources/payload"
 )
 
 // TestF009MalformedGooglePageRetainsValidRecords proves accepted records from

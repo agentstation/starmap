@@ -11,7 +11,7 @@ import (
 
 	"github.com/agentstation/starmap/internal/catalog/workspace"
 	"github.com/agentstation/starmap/internal/embedded"
-	"github.com/agentstation/starmap/internal/sourcepayload"
+	sourcepayload "github.com/agentstation/starmap/internal/sources/payload"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/catalogstore"
 )

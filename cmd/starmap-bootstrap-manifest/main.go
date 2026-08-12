@@ -13,7 +13,7 @@ import (
 	"path/filepath"
 	"time"
 
-	"github.com/agentstation/starmap/internal/bootstrapmanifest"
+	"github.com/agentstation/starmap/internal/bootstrap/manifest"
 	"github.com/agentstation/starmap/internal/catalog/workspace"
 	"github.com/agentstation/starmap/internal/constants"
 	"github.com/agentstation/starmap/pkg/catalogs"
@@ -63,10 +63,10 @@ func run(args []string, output io.Writer, now time.Time) error {
 	if err != nil {
 		return err
 	}
-	var manifest catalogs.BootstrapManifest
-	var report bootstrapmanifest.Report
+	var bootstrapManifest catalogs.BootstrapManifest
+	var report manifest.Report
 	if *generationStorePath == "" {
-		manifest, report, err = bootstrapmanifest.Derive(catalog, current, now)
+		bootstrapManifest, report, err = manifest.Derive(catalog, current, now)
 	} else {
 		store, storeErr := catalogstore.NewFilesystem(*generationStorePath)
 		if storeErr != nil {
@@ -82,7 +82,7 @@ func run(args []string, output io.Writer, now time.Time) error {
 					currentErr,
 				)
 			}
-			manifest, report, err = bootstrapmanifest.Derive(catalog, current, now)
+			bootstrapManifest, report, err = manifest.Derive(catalog, current, now)
 			if err == nil && report.Changed {
 				return &errors.ValidationError{
 					Field:   "bootstrap_manifest.committed_generation",
@@ -91,7 +91,7 @@ func run(args []string, output io.Writer, now time.Time) error {
 				}
 			}
 		} else {
-			manifest, report, err = bootstrapmanifest.DeriveCommitted(
+			bootstrapManifest, report, err = manifest.DeriveCommitted(
 				catalog,
 				generation,
 				current,
@@ -104,15 +104,15 @@ func run(args []string, output io.Writer, now time.Time) error {
 	var endpointData []byte
 	if *endpointsPath != "" {
 		endpointData, err = workspace.EncodeEndpointProjection(catalog, workspace.Identity{
-			GenerationID:    manifest.GenerationID,
-			PayloadChecksum: manifest.Payload.Checksum,
+			GenerationID:    bootstrapManifest.GenerationID,
+			PayloadChecksum: bootstrapManifest.Payload.Checksum,
 		})
 		if err != nil {
 			return err
 		}
 	}
 	if report.Changed {
-		data, marshalErr := json.MarshalIndent(manifest, "", "  ")
+		data, marshalErr := json.MarshalIndent(bootstrapManifest, "", "  ")
 		if marshalErr != nil {
 			return &errors.ValidationError{Field: "bootstrap_manifest", Message: marshalErr.Error()}
 		}

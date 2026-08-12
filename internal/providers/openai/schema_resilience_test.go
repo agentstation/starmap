@@ -7,7 +7,7 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"github.com/agentstation/starmap/internal/sourcepayload"
+	sourcepayload "github.com/agentstation/starmap/internal/sources/payload"
 )
 
 func TestListModelsQuarantinesMalformedSibling(t *testing.T) {

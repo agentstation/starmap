@@ -1,5 +1,5 @@
-// Package embeddedbudget measures and enforces checked-in catalog budgets.
-package embeddedbudget
+// Package budget measures and enforces checked-in catalog budgets.
+package budget
 
 import (
 	"encoding/json"

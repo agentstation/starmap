@@ -12,7 +12,7 @@ import (
 	"time"
 
 	"github.com/agentstation/starmap/internal/bootstrap"
-	"github.com/agentstation/starmap/internal/embeddedbudget"
+	"github.com/agentstation/starmap/internal/bootstrap/budget"
 	"github.com/agentstation/starmap/pkg/errors"
 )
 
@@ -46,20 +46,20 @@ func run(args []string, output io.Writer, getenv getenvFunc, now time.Time) erro
 	if err != nil {
 		return err
 	}
-	report, checkErr := embeddedbudget.Check(generation, now, limits, reason)
+	report, checkErr := budget.Check(generation, now, limits, reason)
 	if err := json.NewEncoder(output).Encode(report); err != nil {
 		return errors.WrapIO("write", "embedded catalog budget report", err)
 	}
 	return checkErr
 }
 
-func limitsFromEnvironment(getenv getenvFunc) (embeddedbudget.Limits, string, error) {
-	limits := embeddedbudget.DefaultLimits()
+func limitsFromEnvironment(getenv getenvFunc) (budget.Limits, string, error) {
+	limits := budget.DefaultLimits()
 	overridden := false
 	if value := strings.TrimSpace(getenv(envMaxAge)); value != "" {
 		parsed, err := time.ParseDuration(value)
 		if err != nil {
-			return embeddedbudget.Limits{}, "", &errors.ValidationError{Field: envMaxAge, Value: value, Message: err.Error()}
+			return budget.Limits{}, "", &errors.ValidationError{Field: envMaxAge, Value: value, Message: err.Error()}
 		}
 		limits.MaxAge, overridden = parsed, true
 	}
@@ -79,17 +79,17 @@ func limitsFromEnvironment(getenv getenvFunc) (embeddedbudget.Limits, string, er
 		}
 		parsed, err := strconv.ParseInt(value, 10, 64)
 		if err != nil || parsed <= 0 {
-			return embeddedbudget.Limits{}, "", &errors.ValidationError{Field: override.name, Value: value, Message: "must be a positive base-10 integer"}
+			return budget.Limits{}, "", &errors.ValidationError{Field: override.name, Value: value, Message: "must be a positive base-10 integer"}
 		}
 		override.set(parsed)
 		overridden = true
 	}
 	if err := limits.Validate(); err != nil {
-		return embeddedbudget.Limits{}, "", err
+		return budget.Limits{}, "", err
 	}
 	reason := strings.TrimSpace(getenv(envOverrideReason))
 	if overridden && reason == "" {
-		return embeddedbudget.Limits{}, "", &errors.ValidationError{Field: envOverrideReason, Message: "is required whenever a checked-in threshold is overridden"}
+		return budget.Limits{}, "", &errors.ValidationError{Field: envOverrideReason, Message: "is required whenever a checked-in threshold is overridden"}
 	}
 	return limits, reason, nil
 }

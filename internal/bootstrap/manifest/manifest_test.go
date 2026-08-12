@@ -1,10 +1,10 @@
-package bootstrapmanifest
+package manifest
 
 import (
 	"testing"
 	"time"
 
-	"github.com/agentstation/starmap/internal/testcatalog"
+	testcatalog "github.com/agentstation/starmap/internal/test/catalog"
 	"github.com/agentstation/starmap/pkg/catalogmeta"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/catalogstore"

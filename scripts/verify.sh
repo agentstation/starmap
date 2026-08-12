@@ -93,6 +93,8 @@ fi
 run go test ./...
 run make test-pure-go
 run make test-file-sizes
+run ./scripts/verify-package-layout.sh
+run ./scripts/test-package-layout-verifier.sh
 run env CGO_ENABLED=1 go test ./... -race -short -timeout=20m
 run go vet ./...
 run ./scripts/verify-catalog-performance.sh

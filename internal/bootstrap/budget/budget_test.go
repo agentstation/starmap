@@ -1,4 +1,4 @@
-package embeddedbudget
+package budget
 
 import (
 	stderrors "errors"
