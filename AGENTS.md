@@ -33,7 +33,7 @@ Starmap is a unified AI model catalog system that combines data from provider AP
 make all                                # Clean, format, lint, test, build
 starmap update                          # Update local catalog
 starmap update openai                   # Update specific provider
-make testdata PROVIDER=openai           # Update testdata
+make testdata PROVIDER=openai           # Refresh one governed provider fixture
 ```
 
 ## Tech Stack
@@ -109,13 +109,17 @@ Most providers use unified OpenAI client (`internal/providers/openai/client.go`)
 3. If no: create custom client in `internal/providers/<provider>/`
 4. Register in `internal/providers/clients/provider.go`
 
-### Testdata Updates
+### Provider Fixture Refresh
 
 After making changes to provider code:
 
 ```bash
-go test ./internal/providers/<provider> -update
+make testdata PROVIDER=<provider-id>
 ```
+
+This opt-in command uses the selected provider's embedded YAML record and
+catalog-acquisition credentials. Ordinary tests replay checked-in fixtures and
+never call provider APIs.
 
 ## Architecture Quick Reference
 
@@ -187,7 +191,8 @@ See docs/ARCHITECTURE.md § Data Sources for authority hierarchy.
 4. Check if OpenAI-compatible (most are: OpenAI, Groq, DeepSeek, Cerebras, Alibaba Cloud, Fireworks AI, DeepInfra)
 5. If compatible: Configure in YAML. If not: Create custom client
 6. Register in `internal/providers/clients/provider.go`
-7. Update testdata: `go test ./internal/providers/<provider> -update`
+7. Add or refresh a governed fixture only when it proves a current wire or
+   mapping contract: `make testdata PROVIDER=<provider-id>`
 
 ### Modify Sync Logic
 
@@ -384,8 +389,8 @@ go test ./... -race -short                 # All packages with race detector
 make update-catalog                         # Update embedded catalog (all providers)
 make update-catalog-provider PROVIDER=openai  # Update specific provider
 make catalog-generation-check               # Verify safe download/promotion/CLI tooling
-make testdata                               # Update all testdata
-make testdata PROVIDER=openai               # Update specific provider testdata
+make testdata                               # Refresh all governed fixtures
+make testdata PROVIDER=openai               # Refresh one provider fixture
 ```
 
 ### Documentation

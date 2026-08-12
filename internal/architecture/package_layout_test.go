@@ -34,6 +34,10 @@ func TestApprovedInternalPackageLayout(t *testing.T) {
 		filepath.Join("internal", "test"+"catalog"),
 		filepath.Join("internal", "test"+"logging"),
 		filepath.Join("internal", "providers", "test"+"helper"),
+		filepath.Join("internal", "providers", "cere"+"bras"),
+		filepath.Join("internal", "providers", "deep"+"seek"),
+		filepath.Join("internal", "providers", "gr"+"oq"),
+		filepath.Join("internal", "providers", "moonshot"+"-ai"),
 	}
 
 	for _, path := range removed {

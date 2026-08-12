@@ -60,6 +60,18 @@ done < <(
 )
 
 failures=0
+removed_provider_packages=(
+	"internal/providers/cere""bras"
+	"internal/providers/deep""seek"
+	"internal/providers/gr""oq"
+	"internal/providers/moonshot""-ai"
+)
+for removed in "${removed_provider_packages[@]}"; do
+	if [[ -e "$ROOT/$removed" ]]; then
+		printf 'removed provider-specific test package still exists: %s\n' "$removed" >&2
+		failures=$((failures + 1))
+	fi
+done
 if ((${#files[@]} != 0)); then
 	for forbidden in "${forbidden_paths[@]}"; do
 		if matches="$(grep -IFnH -- "$forbidden" "${files[@]}")"; then

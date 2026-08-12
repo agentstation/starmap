@@ -116,7 +116,13 @@ nanosecond-scale result so it is portable across CI hosts while still detecting
 a regression to full-catalog copying. Run race tests separately; race
 instrumentation is not valid allocation-budget evidence.
 
-Live shape refreshes are opt-in. Store raw provider or models.dev payloads under `/tmp`, load credentials without printing them, and commit only minimized fixtures or normalized path classifications after deciding each field outcome.
+Live shape investigation and governed fixture refresh are separate opt-in
+workflows. Store exploratory provider or models.dev payloads under `/tmp` and
+commit only reviewed field classifications. Use
+`make testdata PROVIDER=<provider-id>` only when the full response must remain
+as governed replay evidence for a current wire or mapping contract. The command
+loads the selected provider record and catalog-acquisition credential metadata
+from embedded YAML. Ordinary tests never call provider APIs.
 
 ## Catalog generation safety
 
@@ -127,17 +133,20 @@ validation before an atomic file promotion, and command-spies the public CLI.
 The only supported update shape is a positional provider plus `--catalog-path`;
 the generation workflow must finish with the actual `validate catalog`
 subcommand. Provider fixture refresh failures and successful no-op refreshes
-must both propagate non-zero.
+must both propagate nonzero. The refresh contract also proves that a selected
+provider update does not change sibling fixtures.
 
 `make update-catalog` and `make update-catalog-provider PROVIDER=<id>` use the
 same checked workflow. The models.dev download uses curl's HTTP failure mode,
 is first written to a temporary sibling, and is never promoted merely because
 the response body is syntactically valid JSON.
 
-Run `make embedded-catalog-budget-check` to emit the exact embedded generation
-age, uncompressed payload bytes, compressed artifact bytes, and provider/model
-coverage. Threshold breach fixtures cover each stable failure code. Any CI
-threshold override must carry a review reason that is recorded in the report.
+Run `make embedded-catalog-budget-check` to emit the versioned embedded-catalog
+release policy and current measurements. The command reports generation age,
+canonical payload bytes, compressed artifact bytes, provider count, and model
+count. It rejects a future generation as a hard correctness failure. It reports
+age and size review thresholds without rejecting the release. The command has
+no environment override.
 
 ## Live Provider Verification
 
@@ -151,7 +160,11 @@ make testdata PROVIDER=openai
 make update PROVIDER=openai
 ```
 
-Use live checks when changing provider clients, authentication, transport behavior, or embedded catalog update workflows. Treat generated testdata diffs as review artifacts.
+Use live checks when changing provider clients, authentication, transport
+behavior, or embedded catalog update workflows. Treat fixture payload and
+metadata diffs as review artifacts. Do not accept a fixture diff until each
+source field has a canonical, controlled-extension, or intentional-ignore
+disposition.
 
 ## Release Readiness
 

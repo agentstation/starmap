@@ -472,12 +472,12 @@ validate: ## Validate entire embedded catalog structure
 	@$(GOCMD) run $(MAIN_PATH) validate catalog
 
 catalog-generation-check: ## Verify safe catalog download, promotion, CLI, and refresh tooling
-	@bash -n scripts/refresh-embedded-modelsdev.sh scripts/generate-embedded-catalog.sh scripts/refresh-provider-testdata.sh
+	@bash -n scripts/refresh-embedded-modelsdev.sh scripts/generate-embedded-catalog.sh scripts/refresh-provider-testdata.sh scripts/test-provider-testdata-refresh.sh
 	@$(GOCMD) test ./internal/sources/modelsdev ./cmd/starmap-modelsdev-promote -run CatalogGenerationTooling -count=1
 	@$(GOCMD) test ./internal/bootstrap/manifest ./cmd/starmap-bootstrap-manifest -run ScheduledGeneration -count=1
-	@$(GOCMD) test ./internal/test/providerfixture -run ProviderFixtureRefreshFailure -count=1
+	@bash scripts/test-provider-testdata-refresh.sh
 
-embedded-catalog-budget-check: ## Enforce embedded catalog age, size, and coverage budgets
+embedded-catalog-budget-check: ## Report the embedded catalog release policy and measurements
 	@$(GOCMD) run ./cmd/starmap-embedded-budget
 
 validate-providers: ## Validate providers.yaml only
@@ -515,21 +515,19 @@ check-apis: ## Check API connectivity for all providers
 
 # Testdata management targets
 # Examples:
-#   make testdata              # Update all provider testdata (requires API keys)
-#   make testdata PROVIDER=groq  # Update specific provider testdata
-testdata: ## Update testdata for all providers (use PROVIDER=name for specific provider)
-	@echo "$(BLUE)Updating testdata for $(if $(PROVIDER),$(PROVIDER),all providers)...$(NC)"
-	@echo "$(YELLOW)This will make actual API calls and update testdata files$(NC)"
+#   make testdata                # Refresh all governed OpenAI-compatible fixtures
+#   make testdata PROVIDER=groq  # Refresh one governed provider fixture
+testdata: ## Refresh governed OpenAI-compatible fixtures (use PROVIDER=id to select one)
+	@echo "$(BLUE)Refreshing fixtures for $(if $(PROVIDER),$(PROVIDER),all governed OpenAI-compatible providers)...$(NC)"
+	@echo "$(YELLOW)This opt-in command makes live provider API calls and updates reviewed fixture files.$(NC)"
 	@if [ -n "$(PROVIDER)" ]; then \
 		./scripts/refresh-provider-testdata.sh "$(PROVIDER)"; \
 	else \
 		status=0; \
-		for dir in internal/providers/*/; do \
+		for dir in internal/providers/openai/testdata/providers/*/; do \
 			provider=$$(basename $$dir); \
-			if [ -f "$$dir/testdata/models_list.json" ]; then \
-				echo "$(BLUE)Updating $$provider testdata...$(NC)"; \
-				./scripts/refresh-provider-testdata.sh "$$provider" || status=$$?; \
-			fi; \
+			echo "$(BLUE)Refreshing $$provider fixture...$(NC)"; \
+			./scripts/refresh-provider-testdata.sh "$$provider" || status=1; \
 		done; \
 		exit $$status; \
 	fi

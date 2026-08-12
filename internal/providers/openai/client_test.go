@@ -16,6 +16,8 @@ import (
 	"github.com/goccy/go-yaml"
 )
 
+const openAIFixtureRoot = "testdata/providers"
+
 // TestMain handles flag parsing for the -update flag.
 func TestMain(m *testing.M) {
 	flag.Parse()
@@ -40,18 +42,37 @@ func mustConvertModel(t testing.TB, client *Client, model Model) *catalogs.Model
 	return converted
 }
 
-// loadTestdataResponse loads an OpenAI API response from testdata.
-func loadTestdataResponse(t *testing.T, filename string) Response {
+// loadTestdataResponse loads the governed OpenAI response fixture.
+func loadTestdataResponse(t *testing.T) Response {
 	t.Helper()
 	var response Response
-	providerfixture.LoadJSON(t, filename, &response)
+	fixture, err := providerfixture.Find(openAIFixtureRoot, "openai")
+	if err != nil {
+		t.Fatalf("find OpenAI fixture: %v", err)
+	}
+	if err := fixture.Decode(&response); err != nil {
+		t.Fatalf("decode OpenAI fixture: %v", err)
+	}
 	return response
+}
+
+func loadTestdataPayload(t *testing.T) []byte {
+	t.Helper()
+	fixture, err := providerfixture.Find(openAIFixtureRoot, "openai")
+	if err != nil {
+		t.Fatalf("find OpenAI fixture: %v", err)
+	}
+	payload, err := fixture.Read()
+	if err != nil {
+		t.Fatalf("read OpenAI fixture: %v", err)
+	}
+	return payload
 }
 
 // loadTestdataModel loads a single OpenAI model from testdata by finding it in the models list.
 func loadTestdataModel(t *testing.T, modelID string) Model {
 	t.Helper()
-	response := loadTestdataResponse(t, "models_list.json")
+	response := loadTestdataResponse(t)
 
 	for _, model := range response.Data {
 		if model.ID == modelID {
@@ -129,7 +150,7 @@ func TestProviderPricingNormalizationRemovesOnlyFloatRepresentationNoise(t *test
 // TestOpenAIModelDataParsing tests that we can properly parse OpenAI API responses.
 func TestOpenAIModelDataParsing(t *testing.T) {
 	// Test parsing the models list response
-	response := loadTestdataResponse(t, "models_list.json")
+	response := loadTestdataResponse(t)
 
 	// Verify response structure
 	if response.Object != "list" {
@@ -891,7 +912,7 @@ func TestOpenAIClientListModels(t *testing.T) {
 		switch {
 		case r.URL.Path == "/v1/models" || r.URL.Path == "/":
 			// Return list response
-			w.Write(providerfixture.LoadTestdata(t, "models_list.json"))
+			_, _ = w.Write(loadTestdataPayload(t))
 			return
 
 		default:
@@ -1000,7 +1021,7 @@ func TestSchemaDriftMutationMatrix(t *testing.T) {
 // TestAPIFormatChanges tests that our parsing would catch provider API format changes.
 // This is the kind of meaningful test the user requested.
 func TestAPIFormatChanges(t *testing.T) {
-	response := loadTestdataResponse(t, "models_list.json")
+	response := loadTestdataResponse(t)
 
 	// These tests ensure we catch API changes that could break our parsing
 	t.Run("Required fields present", func(t *testing.T) {
