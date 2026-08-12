@@ -1,34 +1,53 @@
-# Embedded Catalog Budgets
+# Embedded Catalog Release Policy
 
-The checked-in offline catalog is a reliability fallback, not an unbounded copy
-of every upstream response. Run make embedded-catalog-budget-check to rebuild
-the verified embedded generation and deterministic distribution artifact, print
-a JSON report, and fail when any reviewed threshold is exceeded.
+The checked-in catalog is an offline reliability fallback. The release policy
+measures its exact generation and separates correctness failures from signals
+that need review.
 
-| Measurement | Default gate |
-| --- | --- |
-| Generation age | At most 30 days and never future-dated |
-| Canonical uncompressed payload | At most 16 MiB |
-| Deterministic compressed archive | At most 8 MiB |
-| Provider coverage | At least 5 providers |
-| Canonical model coverage | At least 100 models |
+Run `make embedded-catalog-budget-check`.
 
-The report records generation identity/time, measurement time and age, payload
-checksum, both byte sizes, provider/model counts, applied limits, violations,
-and pass/fail state. The release CI job runs the same Make target so these
-values remain visible in hosted logs. Required PR CI adopts the target in P11
-rather than treating release-only execution as branch protection evidence.
+The command rebuilds the verified embedded generation and deterministic
+distribution artifact. It writes one versioned JSON report.
 
-Threshold changes use the following environment variables:
+## Policy classification
 
-- STARMAP_EMBEDDED_BUDGET_MAX_AGE;
-- STARMAP_EMBEDDED_BUDGET_MAX_UNCOMPRESSED_BYTES;
-- STARMAP_EMBEDDED_BUDGET_MAX_COMPRESSED_BYTES;
-- STARMAP_EMBEDDED_BUDGET_MIN_PROVIDERS;
-- STARMAP_EMBEDDED_BUDGET_MIN_MODELS.
+| Measurement | Classification | Boundary | Consequence |
+| --- | --- | --- | --- |
+| Future generation time | Hard correctness gate | `generated_at` must not be after `measured_at` | Block the release and regenerate the catalog |
+| Generation age | Review threshold | Review after 30 days | Record a finding without rejecting the release |
+| Canonical payload size | Review threshold | Review above 16 MiB | Record a finding without rejecting the release |
+| Compressed artifact size | Review threshold | Review above 8 MiB | Record a finding without rejecting the release |
+| Provider count | Measurement only | None | Keep the count visible in the report |
+| Model count | Measurement only | None | Keep the count visible in the report |
 
-Any override requires a non-empty
-STARMAP_EMBEDDED_BUDGET_OVERRIDE_REASON. The reason is emitted in the report so
-a temporary exception cannot be indistinguishable from the checked-in policy.
-CI configuration changes and override reasons require ordinary code review; a
-missing reason is a typed validation failure before measurement.
+The old provider and model minimums did not represent an approved availability
+or catalog-coverage objective. The release policy does not use them as gates.
+A lower count remains visible for release review and catalog validation still
+checks structural correctness.
+
+The age and size values are review triggers. They are not hard product budgets.
+Crossing one of these values cannot reject a release by itself. A future change
+can make one a hard budget only when an approved operational requirement exists.
+The hard budget must define its objective, method, unit, limit, consequence,
+owner, exception path, and reopen condition.
+
+## Report contract
+
+The report contains:
+
+- the report schema and policy versions.
+- every classified rule and its policy fields.
+- generation identity and time.
+- measurement time and age.
+- payload checksum.
+- canonical and compressed byte counts.
+- provider and model counts.
+- classified findings.
+- the hard-gate pass state.
+
+The release workflow runs the same Make target. Hosted logs therefore preserve
+the policy and exact measurements used for the release decision.
+
+The repository stores and reviews the policy as code. The command does not accept
+environment overrides. To change a review threshold or hard gate, change its
+policy and tests in one pull request.

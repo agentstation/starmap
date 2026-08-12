@@ -1,8 +1,7 @@
-// Package budget measures and enforces checked-in catalog budgets.
+// Package budget measures the checked-in catalog and applies release policy.
 package budget
 
 import (
-	"encoding/json"
 	"fmt"
 	"time"
 
@@ -12,83 +11,155 @@ import (
 )
 
 const (
-	// DefaultMaxAge is the checked-in catalog freshness budget.
-	DefaultMaxAge = 30 * 24 * time.Hour
-	// DefaultMaxUncompressedBytes is the canonical payload size budget.
-	DefaultMaxUncompressedBytes int64 = 16 << 20
-	// DefaultMaxCompressedBytes is the deterministic archive size budget.
-	DefaultMaxCompressedBytes int64 = 8 << 20
-	// DefaultMinProviders is the minimum embedded provider coverage.
-	DefaultMinProviders = 5
-	// DefaultMinModels is the minimum embedded canonical model coverage.
-	DefaultMinModels = 100
+	// CurrentPolicyVersion identifies the machine-readable release policy shape.
+	CurrentPolicyVersion uint64 = 1
+
+	reviewMaxAge               = 30 * 24 * time.Hour
+	reviewMaxUncompressedBytes = int64(16 << 20)
+	reviewMaxCompressedBytes   = int64(8 << 20)
 )
 
-// Limits are the reviewed age, size, and coverage thresholds.
-type Limits struct {
-	MaxAge               time.Duration `json:"-"`
-	MaxUncompressedBytes int64         `json:"max_uncompressed_bytes"`
-	MaxCompressedBytes   int64         `json:"max_compressed_bytes"`
-	MinProviders         int           `json:"min_providers"`
-	MinModels            int           `json:"min_models"`
+// Classification controls whether a policy finding blocks a release.
+type Classification string
+
+const (
+	// ClassificationHardGate blocks a release when a correctness invariant fails.
+	ClassificationHardGate Classification = "hard_gate"
+	// ClassificationReviewThreshold records a review trigger without rejecting a release.
+	ClassificationReviewThreshold Classification = "review_threshold"
+)
+
+const (
+	ruleGenerationFuture     = "generation_future"
+	ruleGenerationStale      = "generation_stale"
+	ruleUncompressedOversize = "uncompressed_oversize"
+	ruleCompressedOversize   = "compressed_oversize"
+)
+
+// Rule defines one classified release-policy decision.
+type Rule struct {
+	Code              string         `json:"code"`
+	Classification    Classification `json:"classification"`
+	Objective         string         `json:"objective"`
+	MeasurementMethod string         `json:"measurement_method"`
+	Unit              string         `json:"unit"`
+	ApprovedLimit     string         `json:"approved_limit"`
+	Consequence       string         `json:"consequence"`
+	Owner             string         `json:"owner"`
+	ExceptionPath     string         `json:"exception_path"`
+	ReopenCondition   string         `json:"reopen_condition"`
 }
 
-// MarshalJSON emits the age limit in seconds so CI reports have an explicit,
-// language-independent unit rather than time.Duration nanoseconds.
-func (l Limits) MarshalJSON() ([]byte, error) {
-	return json.Marshal(map[string]any{
-		"max_age_seconds":        int64(l.MaxAge / time.Second),
-		"max_uncompressed_bytes": l.MaxUncompressedBytes,
-		"max_compressed_bytes":   l.MaxCompressedBytes,
-		"min_providers":          l.MinProviders,
-		"min_models":             l.MinModels,
-	})
+// Policy is the versioned catalog release policy applied to one measurement.
+type Policy struct {
+	Version uint64 `json:"version"`
+	Rules   []Rule `json:"rules"`
 }
 
-// DefaultLimits returns the checked-in production budget policy.
-func DefaultLimits() Limits {
-	return Limits{
-		MaxAge: DefaultMaxAge, MaxUncompressedBytes: DefaultMaxUncompressedBytes,
-		MaxCompressedBytes: DefaultMaxCompressedBytes, MinProviders: DefaultMinProviders,
-		MinModels: DefaultMinModels,
+// DefaultPolicy returns the reviewed catalog release policy.
+func DefaultPolicy() Policy {
+	return Policy{
+		Version: CurrentPolicyVersion,
+		Rules: []Rule{
+			{
+				Code: ruleGenerationFuture, Classification: ClassificationHardGate,
+				Objective:         "preserve valid generation chronology",
+				MeasurementMethod: "compare the manifest generated_at value with the UTC measurement time",
+				Unit:              "UTC timestamp", ApprovedLimit: "generated_at must not be after measured_at",
+				Consequence: "block the release because future dating invalidates freshness evidence",
+				Owner:       "Starmap release engineering", ExceptionPath: "correct and regenerate the catalog; no runtime bypass",
+				ReopenCondition: "an approved release policy defines a bounded clock-skew tolerance",
+			},
+			{
+				Code: ruleGenerationStale, Classification: ClassificationReviewThreshold,
+				Objective:         "make catalog freshness drift visible before release",
+				MeasurementMethod: "subtract manifest generated_at from the UTC measurement time",
+				Unit:              "seconds", ApprovedLimit: fmt.Sprintf("review when age exceeds %d seconds", int64(reviewMaxAge/time.Second)),
+				Consequence: "record a review finding; do not reject the release without a separate approved hard budget",
+				Owner:       "Starmap catalog maintainers", ExceptionPath: "record the freshness disposition in release review",
+				ReopenCondition: "an approved availability or freshness objective establishes a hard maximum age",
+			},
+			{
+				Code: ruleUncompressedOversize, Classification: ClassificationReviewThreshold,
+				Objective:         "make canonical payload growth visible before release",
+				MeasurementMethod: "count bytes in the verified canonical catalog payload",
+				Unit:              "bytes", ApprovedLimit: fmt.Sprintf("review when size exceeds %d bytes", reviewMaxUncompressedBytes),
+				Consequence: "record a review finding; do not reject the release without a separate approved hard budget",
+				Owner:       "Starmap release engineering", ExceptionPath: "record the payload-growth disposition in release review",
+				ReopenCondition: "an approved startup, memory, or distribution objective establishes a hard payload limit",
+			},
+			{
+				Code: ruleCompressedOversize, Classification: ClassificationReviewThreshold,
+				Objective:         "make distribution artifact growth visible before release",
+				MeasurementMethod: "count bytes in the deterministic compressed catalog artifact",
+				Unit:              "bytes", ApprovedLimit: fmt.Sprintf("review when size exceeds %d bytes", reviewMaxCompressedBytes),
+				Consequence: "record a review finding; do not reject the release without a separate approved hard budget",
+				Owner:       "Starmap release engineering", ExceptionPath: "record the archive-growth disposition in release review",
+				ReopenCondition: "an approved download, storage, or distribution objective establishes a hard archive limit",
+			},
+		},
 	}
 }
 
-// Validate verifies that every threshold is positive.
-func (l Limits) Validate() error {
-	if l.MaxAge <= 0 || l.MaxUncompressedBytes <= 0 || l.MaxCompressedBytes <= 0 || l.MinProviders <= 0 || l.MinModels <= 0 {
-		return &errors.ValidationError{Field: "embedded_catalog_budget.limits", Value: l, Message: "every threshold must be positive"}
+// Validate rejects an incomplete or unsupported policy before measurement.
+func (p Policy) Validate() error {
+	if p.Version != CurrentPolicyVersion {
+		return &errors.ValidationError{Field: "embedded_catalog_policy.version", Value: p.Version, Message: "is not supported"}
+	}
+	expected := map[string]Classification{
+		ruleGenerationFuture:     ClassificationHardGate,
+		ruleGenerationStale:      ClassificationReviewThreshold,
+		ruleUncompressedOversize: ClassificationReviewThreshold,
+		ruleCompressedOversize:   ClassificationReviewThreshold,
+	}
+	if len(p.Rules) != len(expected) {
+		return &errors.ValidationError{Field: "embedded_catalog_policy.rules", Value: len(p.Rules), Message: "must contain each supported rule exactly once"}
+	}
+	seen := make(map[string]struct{}, len(p.Rules))
+	for index, rule := range p.Rules {
+		classification, ok := expected[rule.Code]
+		if !ok || rule.Classification != classification {
+			return &errors.ValidationError{Field: fmt.Sprintf("embedded_catalog_policy.rules[%d].classification", index), Value: rule, Message: "does not match the supported rule classification"}
+		}
+		if _, duplicate := seen[rule.Code]; duplicate {
+			return &errors.ValidationError{Field: fmt.Sprintf("embedded_catalog_policy.rules[%d].code", index), Value: rule.Code, Message: "is duplicated"}
+		}
+		seen[rule.Code] = struct{}{}
+		if rule.Objective == "" || rule.MeasurementMethod == "" || rule.Unit == "" || rule.ApprovedLimit == "" ||
+			rule.Consequence == "" || rule.Owner == "" || rule.ExceptionPath == "" || rule.ReopenCondition == "" {
+			return &errors.ValidationError{Field: fmt.Sprintf("embedded_catalog_policy.rules[%d]", index), Value: rule, Message: "must define all policy fields"}
+		}
 	}
 	return nil
 }
 
-// Violation is one stable machine-readable budget failure.
-type Violation struct {
-	Code    string `json:"code"`
-	Message string `json:"message"`
+// Finding records one measurement that crossed a classified policy boundary.
+type Finding struct {
+	Code           string         `json:"code"`
+	Classification Classification `json:"classification"`
+	Message        string         `json:"message"`
 }
 
-// Report records exact embedded catalog measurements and applied limits.
+// Report records exact catalog measurements and the policy applied to them.
 type Report struct {
-	GenerationID      string      `json:"generation_id"`
-	GeneratedAt       time.Time   `json:"generated_at"`
-	MeasuredAt        time.Time   `json:"measured_at"`
-	AgeSeconds        int64       `json:"age_seconds"`
-	PayloadChecksum   string      `json:"payload_checksum"`
-	UncompressedBytes int64       `json:"uncompressed_bytes"`
-	CompressedBytes   int64       `json:"compressed_bytes"`
-	ProviderCount     int         `json:"provider_count"`
-	ModelCount        int         `json:"model_count"`
-	Limits            Limits      `json:"limits"`
-	OverrideReason    string      `json:"override_reason,omitempty"`
-	Passed            bool        `json:"passed"`
-	Violations        []Violation `json:"violations,omitempty"`
+	SchemaVersion     uint64    `json:"schema_version"`
+	GenerationID      string    `json:"generation_id"`
+	GeneratedAt       time.Time `json:"generated_at"`
+	MeasuredAt        time.Time `json:"measured_at"`
+	AgeSeconds        int64     `json:"age_seconds"`
+	PayloadChecksum   string    `json:"payload_checksum"`
+	UncompressedBytes int64     `json:"uncompressed_bytes"`
+	CompressedBytes   int64     `json:"compressed_bytes"`
+	ProviderCount     int       `json:"provider_count"`
+	ModelCount        int       `json:"model_count"`
+	Policy            Policy    `json:"policy"`
+	Passed            bool      `json:"passed"`
+	Findings          []Finding `json:"findings,omitempty"`
 }
 
-// Check measures one validated generation and applies age, compressed and
-// uncompressed size, provider, and model budgets.
-func Check(generation catalogstore.Generation, measuredAt time.Time, limits Limits, overrideReason string) (Report, error) {
-	if err := limits.Validate(); err != nil {
+// Check measures one validated generation and applies the supplied policy.
+func Check(generation catalogstore.Generation, measuredAt time.Time, policy Policy) (Report, error) {
+	if err := policy.Validate(); err != nil {
 		return Report{}, err
 	}
 	if err := generation.Validate(); err != nil {
@@ -108,36 +179,41 @@ func Check(generation catalogstore.Generation, measuredAt time.Time, limits Limi
 	}
 	age := measuredAt.Sub(generation.Manifest.GeneratedAt)
 	report := Report{
-		GenerationID: generation.Manifest.GenerationID, GeneratedAt: generation.Manifest.GeneratedAt,
-		MeasuredAt: measuredAt, AgeSeconds: int64(age / time.Second),
-		PayloadChecksum:   generation.Manifest.Payload.Checksum,
+		SchemaVersion: CurrentPolicyVersion, GenerationID: generation.Manifest.GenerationID,
+		GeneratedAt: generation.Manifest.GeneratedAt, MeasuredAt: measuredAt,
+		AgeSeconds: int64(age / time.Second), PayloadChecksum: generation.Manifest.Payload.Checksum,
 		UncompressedBytes: int64(len(generation.Payload)), CompressedBytes: int64(len(artifact.Data)),
-		ProviderCount: len(catalog.Providers().List()), ModelCount: len(catalog.Definitions()),
-		Limits: limits, OverrideReason: overrideReason,
+		ProviderCount: len(catalog.Providers().List()), ModelCount: len(catalog.Definitions()), Policy: policy,
 	}
 	if age < 0 {
-		report.Violations = append(report.Violations, Violation{Code: "generation_future", Message: "embedded generation time is in the future"})
-	} else if age > limits.MaxAge {
-		report.Violations = append(report.Violations, Violation{Code: "generation_stale", Message: fmt.Sprintf("age %s exceeds %s", age.Round(time.Second), limits.MaxAge)})
+		report.Findings = append(report.Findings, finding(policy, ruleGenerationFuture, "embedded generation time is in the future"))
+	} else if age > reviewMaxAge {
+		report.Findings = append(report.Findings, finding(policy, ruleGenerationStale, fmt.Sprintf("age %s exceeds review threshold %s", age.Round(time.Second), reviewMaxAge)))
 	}
-	if report.UncompressedBytes > limits.MaxUncompressedBytes {
-		report.Violations = append(report.Violations, Violation{Code: "uncompressed_oversize", Message: fmt.Sprintf("%d bytes exceeds %d", report.UncompressedBytes, limits.MaxUncompressedBytes)})
+	if report.UncompressedBytes > reviewMaxUncompressedBytes {
+		report.Findings = append(report.Findings, finding(policy, ruleUncompressedOversize, fmt.Sprintf("%d bytes exceeds review threshold %d", report.UncompressedBytes, reviewMaxUncompressedBytes)))
 	}
-	if report.CompressedBytes > limits.MaxCompressedBytes {
-		report.Violations = append(report.Violations, Violation{Code: "compressed_oversize", Message: fmt.Sprintf("%d bytes exceeds %d", report.CompressedBytes, limits.MaxCompressedBytes)})
+	if report.CompressedBytes > reviewMaxCompressedBytes {
+		report.Findings = append(report.Findings, finding(policy, ruleCompressedOversize, fmt.Sprintf("%d bytes exceeds review threshold %d", report.CompressedBytes, reviewMaxCompressedBytes)))
 	}
-	if report.ProviderCount < limits.MinProviders {
-		report.Violations = append(report.Violations, Violation{Code: "provider_coverage", Message: fmt.Sprintf("%d providers is below %d", report.ProviderCount, limits.MinProviders)})
-	}
-	if report.ModelCount < limits.MinModels {
-		report.Violations = append(report.Violations, Violation{Code: "model_coverage", Message: fmt.Sprintf("%d models is below %d", report.ModelCount, limits.MinModels)})
-	}
-	report.Passed = len(report.Violations) == 0
-	if !report.Passed {
-		return report, &errors.ValidationError{
-			Field: "embedded_catalog_budget", Value: report.Violations,
-			Message: fmt.Sprintf("%d threshold(s) failed", len(report.Violations)),
+	report.Passed = true
+	for _, assessment := range report.Findings {
+		if assessment.Classification == ClassificationHardGate {
+			report.Passed = false
+			return report, &errors.ValidationError{
+				Field: "embedded_catalog_budget", Value: report.Findings,
+				Message: "hard catalog release gate failed",
+			}
 		}
 	}
 	return report, nil
+}
+
+func finding(policy Policy, code, message string) Finding {
+	for _, rule := range policy.Rules {
+		if rule.Code == code {
+			return Finding{Code: code, Classification: rule.Classification, Message: message}
+		}
+	}
+	panic("validated catalog policy is missing rule " + code)
 }
