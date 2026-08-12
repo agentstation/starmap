@@ -220,7 +220,8 @@ func TestReadOnlyConsumerDependencyBudgetIsPlatformIndependent(t *testing.T) {
 		"MAX_NON_STANDARD_PACKAGES=32",
 		"{{if not .Standard}}{{.ImportPath}}{{end}}",
 		`"$non_standard_package_count" -gt "$MAX_NON_STANDARD_PACKAGES"`,
-		`banned="$(grep -E "$banned_pattern" "$DEPS" || true)"`,
+		`banned="$(find_banned_dependencies "$banned_pattern" "$DEPS")"`,
+		`grep -Fvx 'github.com/agentstation/starmap/internal/sources/payload'`,
 	} {
 		if !strings.Contains(script, check) {
 			t.Fatalf("consumer dependency verification is missing %q", check)

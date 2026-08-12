@@ -1,5 +1,5 @@
-// Package sourcepayload enforces bounded resource use before source decoding.
-package sourcepayload
+// Package payload enforces bounded resource use before source decoding.
+package payload
 
 import (
 	"crypto/sha256"

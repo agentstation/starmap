@@ -15,7 +15,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/agentstation/starmap/internal/testlogging"
+	testlogging "github.com/agentstation/starmap/internal/test/logging"
 	"github.com/agentstation/starmap/pkg/logging"
 )
 

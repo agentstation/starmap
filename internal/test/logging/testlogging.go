@@ -1,5 +1,5 @@
-// Package testlogging provides repository-internal structured logging test helpers.
-package testlogging
+// Package logging provides repository-internal structured logging test helpers.
+package logging
 
 import (
 	"bytes"

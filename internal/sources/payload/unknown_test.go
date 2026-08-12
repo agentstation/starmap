@@ -1,4 +1,4 @@
-package sourcepayload
+package payload
 
 import (
 	"encoding/json"

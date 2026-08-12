@@ -1,5 +1,5 @@
-// Package testhelper provides utilities for managing testdata files in provider tests.
-package testhelper
+// Package providerfixture provides utilities for managing testdata files in provider tests.
+package providerfixture
 
 import (
 	"crypto/sha256"
@@ -12,8 +12,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/agentstation/starmap/pkg/catalogmeta"
 	"github.com/agentstation/starmap/internal/constants"
+	"github.com/agentstation/starmap/pkg/catalogmeta"
 	"github.com/agentstation/starmap/pkg/errors"
 )
 

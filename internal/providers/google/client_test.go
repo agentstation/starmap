@@ -9,8 +9,8 @@ import (
 
 	"google.golang.org/genai"
 
-	"github.com/agentstation/starmap/internal/sourcepayload"
-	"github.com/agentstation/starmap/internal/testcatalog"
+	sourcepayload "github.com/agentstation/starmap/internal/sources/payload"
+	testcatalog "github.com/agentstation/starmap/internal/test/catalog"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/sources"
 )

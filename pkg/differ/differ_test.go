@@ -5,7 +5,7 @@ import (
 
 	"github.com/agentstation/utc"
 
-	"github.com/agentstation/starmap/internal/testcatalog"
+	testcatalog "github.com/agentstation/starmap/internal/test/catalog"
 	"github.com/agentstation/starmap/pkg/catalogs"
 )
 

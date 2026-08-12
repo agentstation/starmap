@@ -4,8 +4,8 @@ import (
 	"encoding/json"
 	"testing"
 
-	"github.com/agentstation/starmap/internal/sourcepayload"
 	"github.com/agentstation/starmap/internal/constants"
+	sourcepayload "github.com/agentstation/starmap/internal/sources/payload"
 )
 
 type recordAwareResponse struct {

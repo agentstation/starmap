@@ -14,8 +14,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/agentstation/starmap/internal/embedded"
 	"github.com/agentstation/starmap/internal/constants"
+	"github.com/agentstation/starmap/internal/embedded"
 	"github.com/agentstation/starmap/pkg/errors"
 	"github.com/agentstation/starmap/pkg/logging"
 	"github.com/agentstation/starmap/pkg/sources"
