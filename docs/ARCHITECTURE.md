@@ -1400,16 +1400,28 @@ Starmap treats source fields as an explicit contract. Every attribute from model
 
 Canonical fields cover lifecycle status, lineage, context/input/output limits, generation controls, reasoning controls, tiered pricing, mode-specific pricing/request overrides, and provider/model metadata. Controlled extensions preserve source-specific details without letting them participate in field-authority decisions. Reconciliation merges extension buckets additively by source while the field-rule catalog continues to own canonical precedence.
 
-Source-shape tests in `internal/sources/modelsdev` and `internal/providers/*` classify representative response paths so upstream schema drift fails deterministically. Live refreshes are opt-in and must write raw payloads outside the repository, print only normalized path summaries, and never persist secrets.
+Source-shape tests in `internal/sources/modelsdev` and the compiled provider
+transport packages classify representative response paths so upstream schema
+drift fails deterministically. Exploratory live captures are opt-in and must
+write raw payloads outside the repository, print only normalized path
+summaries, and never persist secrets. A separate reviewed workflow can refresh
+governed replay fixtures when a full response proves a current transport or
+mapping contract.
+
+The OpenAI-compatible transport owns its provider captures below
+`internal/providers/openai/testdata/providers/{provider}`. One discovered
+contract test loads each provider's real embedded YAML record and proves its
+endpoint, credential metadata, field mappings, author mapping, and exact opaque
+model IDs. No provider-specific Go test package repeats those facts.
 
 Every checked-in provider response fixture has an adjacent versioned metadata
-record containing provider, capture time, content-digest source revision,
-payload path/SHA-256, and an explicit maximum age (currently 365 days for the
-legacy capture set). `internal/test/providerfixture` rejects missing, future,
-stale, provider-mismatched, or checksum-mismatched metadata. Refresh helpers
-write payload and metadata together; the Make target propagates test/fetch
-failures and also fails when an alleged refresh changes neither file, preventing
-`-update` no-ops from silently reporting success.
+record containing explicit provider identity, capture time, content-digest
+source revision, payload path/SHA-256, and a reviewed maximum age.
+`internal/test/providerfixture` rejects missing, future, stale,
+provider-mismatched, or checksum-mismatched metadata. The opt-in refresh helper
+selects one discovered provider, fetches through the catalog-driven acquisition
+composition, and writes payload and metadata together. It propagates fetch
+failures, rejects no-op refreshes, and does not change sibling fixtures.
 
 ### Concurrent Fetching
 
@@ -2115,12 +2127,11 @@ starmap/
 │   │   ├── query/            # Shared CLI/HTTP catalog queries
 │   │   ├── reconciler/       # Multi-source reconciliation
 │   │   └── workspace/        # Atomic human-YAML projection
-│   ├── providers/            # Provider API clients and registry
+│   ├── providers/            # Provider acquisition transports and registry
 │   │   ├── clients/          # Provider client registry and raw fetch
-│   │   ├── openai/           # OpenAI-compatible client
+│   │   ├── openai/           # OpenAI-compatible client and provider fixtures
 │   │   ├── anthropic/        # Anthropic client
 │   │   ├── google/           # Google AI Studio and Vertex client
-│   │   └── ...               # Provider-specific test wrappers
 │   ├── embedded/             # Embedded catalog data
 │   │   ├── catalog/          # Embedded YAML files
 │   │   └── openapi/          # OpenAPI 3.1 specs (JSON/YAML)
@@ -2328,38 +2339,23 @@ go test -coverprofile=coverage.out ./pkg/catalogs
 go tool cover -func=coverage.out
 ```
 
-### Testdata Management
+### Provider Fixture Management
 
-Provider API responses are captured as testdata:
+The OpenAI-compatible transport replays governed provider captures in ordinary
+tests. Refresh them only through the catalog-driven opt-in command:
 
 ```bash
-# Update testdata for all providers
+# Refresh all governed OpenAI-compatible fixtures
 make testdata
 
-# Update specific provider
+# Refresh one provider fixture
 make testdata PROVIDER=openai
-
-# Or directly
-go test ./internal/providers/openai -update
 ```
 
-**Testdata Pattern:**
-
-```go
-var updateFlag = flag.Bool("update", false, "update testdata files")
-
-func TestListModels(t *testing.T) {
-    if *updateFlag {
-        // Fetch from real API and save
-        models, _ := client.ListModels(ctx)
-        saveTestdata(models)
-    } else {
-        // Load from testdata
-        models := loadTestdata()
-        // Test with loaded data
-    }
-}
-```
+The command discovers only existing governed fixtures, loads provider and
+credential facts from embedded YAML, refreshes payload and metadata together,
+and fails on a fetch error or a no-op update. Store exploratory captures under
+`/tmp`; do not add them to the governed fixture set before field review.
 
 ## References
 
