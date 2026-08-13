@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Starmap catalog package ownership refactor</title>
+<style>
+  :root { --ink:#1a1e24; --muted:#5c6570; --line:#d8dde3; --soft:#f4f6f8; --page:#fff; --accent:#2563eb; --todo:#6b7280; --active:#2563eb; --blocked:#dc2626; --deferred:#a16207; --done:#16a34a; }
+  @media (prefers-color-scheme:dark) { :root { --ink:#e5e9ee; --muted:#9aa4af; --line:#333a43; --soft:#1b2027; --page:#11151a; --accent:#60a5fa; --todo:#9aa4af; --active:#60a5fa; --blocked:#f87171; --deferred:#facc15; --done:#4ade80; } }
+  * { box-sizing:border-box; } body { margin:0 auto; padding:2rem 1.25rem 4rem; max-width:1120px; background:var(--page); color:var(--ink); font:16px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif; }
+  h1 { font-size:1.6rem; margin:0 0 .25rem; } h2 { font-size:1.15rem; margin:2rem 0 .5rem; border-bottom:1px solid var(--line); padding-bottom:.25rem; }
+  h3 { font-size:1rem; margin:1.25rem 0 .4rem; } code { background:var(--soft); border:1px solid var(--line); border-radius:4px; padding:.05rem .35rem; font-size:.85em; }
+  pre { background:var(--soft); border:1px solid var(--line); border-radius:6px; padding:.9rem 1rem; overflow-x:auto; line-height:1.45; white-space:pre-wrap; }
+  pre code { background:none; border:0; padding:0; } blockquote { margin:.75rem 0; padding:.6rem 1rem; border-left:3px solid var(--accent); background:var(--soft); }
+  table { border-collapse:collapse; width:100%; margin:.75rem 0; font-size:.9rem; } th,td { border:1px solid var(--line); padding:.35rem .5rem; text-align:left; vertical-align:top; }
+  th { background:var(--soft); } #status-line,.counts,.legend { color:var(--muted); font-size:.92rem; } .bar { height:.75rem; border:1px solid var(--line); border-radius:999px; overflow:hidden; background:var(--soft); }
+  .bar .fill { height:100%; width:0; background:var(--done); } .pair { display:grid; grid-template-columns:repeat(auto-fit,minmax(340px,1fr)); gap:1rem; }
+  figure { margin:0; border:1px solid var(--line); border-radius:8px; padding:.75rem; background:var(--soft); } figcaption { font-weight:600; margin-bottom:.5rem; }
+  figure svg { max-width:100%; height:auto; } tr[data-status="todo"] td:nth-child(5) code { color:var(--todo); }
+  tr[data-status="in_progress"] td:nth-child(5) code { color:var(--active); } tr[data-status="blocked"] td:nth-child(5) code { color:var(--blocked); }
+  tr[data-status="deferred"] td:nth-child(5) code { color:var(--deferred); } tr[data-status="done"] td:nth-child(5) code,
+  tr[data-status="no-action"] td:nth-child(5) code,tr[data-status="rejected"] td:nth-child(5) code { color:var(--done); }
+  @media print { body { max-width:none; padding:0; } }
+</style>
+<script>
+  document.addEventListener("DOMContentLoaded",function(){var rows=document.querySelectorAll("#ledger tbody tr"),terminal={"done":1,"no-action":1,"rejected":1},closed=0,current="";
+    rows.forEach(function(row){var status=(row.getAttribute("data-status")||"").split("(")[0].trim();if(terminal[status]){closed+=1;}if(status==="in_progress"&&!current){current=row.id;}});
+    var pct=rows.length?Math.round(closed/rows.length*100):0;document.querySelector("#progress .fill").style.width=pct+"%";
+    document.querySelector("#progress .counts").textContent=closed+" of "+rows.length+" tasks terminal ("+pct+"%)."+(current?" In progress: "+current:"");});
+</script>
+</head>
+<body>
+<header id="overview">
+  <h1>Starmap catalog package ownership refactor</h1>
+  <div id="status-line">
+    <div>Status: <code data-plan-status="proposed">proposed</code> · Owner: this plan · Created: 2026-08-12</div>
+    <div>Starmap baseline: <code>main@3a029796f223db224e6147003c044f99a2f3f2bf</code></div>
+    <div>Proof root: <code>docs/plans/proof/catalog-package-ownership/</code></div>
+    <div>Next action: open and merge the plan-only pull request to <code>main</code>.</div>
+  </div>
+  <section id="outcome"><h2>Outcome</h2>
+    <blockquote>Starmap exposes one coherent catalog package tree. <code>pkg/catalogs</code> owns catalog values, immutable generations, and catalog codecs. Its <code>evidence</code> and <code>projection</code> leaves own neutral data contracts. Its <code>storage</code>, <code>artifact</code>, and <code>remote</code> children own separate behaviors. Starport consumes one immutable Starmap release. No old-path wrapper, duplicate codec, or vague metadata package remains.</blockquote>
+  </section>
+  <section id="progress"><h2>Progress</h2><div class="bar"><div class="fill"></div></div><p class="counts">The status ledger is the progress source of truth.</p></section>
+  <section id="architecture"><h2>Architecture</h2>
+    <p class="legend"><code>A → B</code> means that package A imports package B. Component names stay stable across both views.</p>
+    <div class="pair">
+      <figure><figcaption>Before: ownership crosses flat packages</figcaption>
+        <svg viewBox="0 0 500 250" role="img" aria-label="Current catalog package dependencies">
+          <defs><marker id="before-arrow" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="currentColor"/></marker></defs>
+          <g fill="none" stroke="currentColor"><rect x="180" y="10" width="140" height="42" rx="6"/><rect x="10" y="102" width="140" height="42" rx="6"/><rect x="180" y="102" width="140" height="42" rx="6"/><rect x="350" y="102" width="140" height="42" rx="6"/><rect x="95" y="198" width="140" height="42" rx="6"/><rect x="265" y="198" width="140" height="42" rx="6"/></g>
+          <g fill="currentColor" text-anchor="middle"><text x="250" y="27">Catalog values</text><text x="250" y="44" font-size="11">pkg/catalogs</text><text x="80" y="119">Evidence</text><text x="80" y="136" font-size="11">pkg/catalogmeta</text><text x="250" y="119">Storage</text><text x="250" y="136" font-size="11">pkg/catalogstore</text><text x="420" y="119">Projection</text><text x="420" y="136" font-size="11">pkg/catalogmeta</text><text x="165" y="215">Artifact</text><text x="165" y="232" font-size="11">pkg/catalogartifact</text><text x="335" y="215">Remote</text><text x="335" y="232" font-size="11">pkg/catalogremote</text></g>
+          <g stroke="currentColor" marker-end="url(#before-arrow)"><line x1="215" y1="52" x2="105" y2="101"/><line x1="250" y1="102" x2="250" y2="54"/><line x1="165" y1="198" x2="225" y2="145"/><line x1="335" y1="198" x2="275" y2="145"/></g>
+        </svg>
+      </figure>
+      <figure><figcaption>After: catalog concepts have one owner</figcaption>
+        <svg viewBox="0 0 500 250" role="img" aria-label="Target catalog package dependencies">
+          <defs><marker id="after-arrow" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="currentColor"/></marker></defs>
+          <g fill="none" stroke="currentColor"><rect x="180" y="10" width="140" height="42" rx="6"/><rect x="10" y="102" width="140" height="42" rx="6"/><rect x="180" y="102" width="140" height="42" rx="6"/><rect x="350" y="102" width="140" height="42" rx="6"/><rect x="95" y="198" width="140" height="42" rx="6"/><rect x="265" y="198" width="140" height="42" rx="6"/></g>
+          <g fill="currentColor" text-anchor="middle"><text x="250" y="27">Catalog values</text><text x="250" y="44" font-size="11">catalogs + Generation + codecs</text><text x="80" y="119">Evidence</text><text x="80" y="136" font-size="11">catalogs/evidence</text><text x="250" y="119">Storage</text><text x="250" y="136" font-size="11">catalogs/storage</text><text x="420" y="119">Projection</text><text x="420" y="136" font-size="11">catalogs/projection</text><text x="165" y="215">Artifact</text><text x="165" y="232" font-size="11">catalogs/artifact</text><text x="335" y="215">Remote</text><text x="335" y="232" font-size="11">catalogs/remote</text></g>
+          <g stroke="currentColor" marker-end="url(#after-arrow)"><line x1="215" y1="52" x2="105" y2="101"/><line x1="250" y1="102" x2="250" y2="54"/><line x1="165" y1="198" x2="225" y2="54"/><line x1="335" y1="198" x2="275" y2="54"/></g>
+        </svg>
+      </figure>
+    </div>
+  </section>
+</header>
+<main>
+  <section id="scope"><h2>Scope</h2>
+    <p><strong>Owns:</strong> the five target child packages, required type moves, and current Starmap callers. It also owns generated API docs, migration guidance, consumer fixtures, two migrations, and their releases.</p>
+
+    <p><strong>Does not own:</strong> a <code>pkg/catalogs</code> rename or removal of <code>pkg</code>. A future Starmap public-API plan owns those changes. Embedding applications own new storage adapters. A future schema plan owns wire or persisted schema changes. A future provider-catalog plan owns provider and model behavior. A separate approved package plan owns unrelated cleanup.</p>
+
+    <p><strong>Non-goals:</strong> old-path wrappers, removed-path aliases, duplicate codecs, new dependencies, new protocols, model behavior changes, or edits to historical evidence.</p>
+  </section>
+  <section id="ledger"><h2>Status ledger</h2>
+    <table><thead><tr><th>ID</th><th>Phase</th><th>Depends on</th><th>Task</th><th>Status</th><th>Evidence</th></tr></thead><tbody>
+      <tr id="CPO0" data-status="todo"><td>CPO0</td><td>0 Baseline</td><td>activation</td><td>Pin baselines, create proofs, and add the red structural verifier.</td><td><code>todo</code></td><td></td></tr>
+      <tr id="CPO1" data-status="todo"><td>CPO1</td><td>1 Contracts</td><td>CPO0</td><td>Replace catalogmeta with evidence and neutral projection contracts.</td><td><code>todo</code></td><td></td></tr>
+      <tr id="CPO2" data-status="todo"><td>CPO2</td><td>1 Contracts</td><td>CPO1</td><td>Move immutable generation and both codec directions into catalogs.</td><td><code>todo</code></td><td></td></tr>
+      <tr id="CPO3" data-status="todo"><td>CPO3</td><td>2 Behaviors</td><td>CPO2</td><td>Move catalogstore and S3 to catalogs/storage.</td><td><code>todo</code></td><td></td></tr>
+      <tr id="CPO4" data-status="todo"><td>CPO4</td><td>2 Behaviors</td><td>CPO3</td><td>Move catalogartifact to catalogs/artifact.</td><td><code>todo</code></td><td></td></tr>
+      <tr id="CPO5" data-status="todo"><td>CPO5</td><td>2 Behaviors</td><td>CPO4</td><td>Move catalogremote to catalogs/remote.</td><td><code>todo</code></td><td></td></tr>
+      <tr id="CPO6" data-status="todo"><td>CPO6</td><td>3 Starmap</td><td>CPO5</td><td>Update authority, run all gates, review, and merge the Starmap implementation PR.</td><td><code>todo</code></td><td></td></tr>
+      <tr id="CPO7" data-status="todo"><td>CPO7</td><td>3 Starmap</td><td>CPO6</td><td>Publish and verify immutable Starmap v0.5.0.</td><td><code>todo</code></td><td></td></tr>
+      <tr id="CPO8" data-status="todo"><td>CPO8</td><td>4 Starport</td><td>CPO7</td><td>Pin Starport to v0.5.0, verify the module, review, and merge its PR.</td><td><code>todo</code></td><td></td></tr>
+      <tr id="CPO8.1" data-status="todo"><td>CPO8.1</td><td>4 Starport</td><td>CPO8</td><td>Publish and verify immutable Starport v1.0.4.</td><td><code>todo</code></td><td></td></tr>
+      <tr id="CPO9" data-status="todo"><td>CPO9</td><td>5 Cleanup</td><td>CPO8.1</td><td>Delete this control plane through a cleanup PR.</td><td><code>todo</code></td><td></td></tr>
+    </tbody></table>
+  </section>
+  <section id="audit-evidence"><h2>Audit evidence</h2>
+    <ul>
+      <li>The baseline has 31 direct Starmap import relationships across the four old packages. Starport has eight affected imports.</li>
+
+      <li><code>catalogstore.Generation</code> appears in 37 files. Artifact and remote depend on storage only to exchange that value.</li>
+
+      <li>The storage encoder delegates to <code>catalogs.EncodeCatalogPayload</code>. The storage package owns the inverse decoder.</li>
+
+      <li>Projection results have three public consumers: synchronization, release import, and rollback.</li>
+
+      <li>The six focused package suites passed on 2026-08-12. <code>pkg/catalogmeta</code> reported no test files.</li>
+
+      <li>GitHub reported no open Starmap or Starport pull request. The release queries found no Starmap <code>v0.5.0</code> or Starport <code>v1.0.4</code> tag.</li>
+
+      <li>The design uses client-readable selectors and hierarchical packages from <a href="https://go.dev/blog/package-names">Go package naming</a> and <a href="https://go.dev/doc/modules/layout">Go module layout</a>.</li>
+    </ul>
+  </section>
+  <section id="promotion-gate"><h2>Promotion gate</h2>
+    <p>Promote this plan to <code>active</code> when all conditions hold:</p>
+    <ol>
+      <li>The owner approves D1 through D10.</li>
+
+      <li>The plan-only pull request merges to Starmap <code>main</code>.</li>
+
+      <li>GitHub has no overlapping Starmap or Starport pull request.</li>
+
+      <li>GitHub has no <code>v0.5.0</code> Starmap tag and no <code>v1.0.4</code> Starport tag.</li>
+    </ol>
+    <p>If a version becomes unavailable, update D7 or D9 to the next policy-compliant version before activation. CPO0 runs only after activation.</p>
+  </section>
+  <section id="decisions"><h2>Decisions</h2>
+    <table><thead><tr><th>ID and date</th><th>Decision and evidence</th><th>Consequence</th><th>Reopen condition</th></tr></thead><tbody>
+      <tr><td>D1 · 2026-08-12</td><td>Keep <code>pkg/catalogs</code>. It owns a coherent domain and has more than 100 first-party imports.</td><td>No singular rename.</td><td>An approved public-API redesign replaces the root.</td></tr>
+
+      <tr><td>D2 · 2026-08-12</td><td>Use <code>catalogs/storage</code>, <code>catalogs/artifact</code>, and <code>catalogs/remote</code>. Their behaviors and dependencies differ.</td><td>Selectors become <code>storage.Store</code>, <code>artifact.Build</code>, and <code>remote.Client</code>.</td><td>Measured coupling shows that a child lacks an independent contract.</td></tr>
+
+      <tr><td>D3 · 2026-08-12</td><td>Put <code>Generation</code> and both payload codec directions in catalogs. They define immutable catalog identity.</td><td>Storage owns persistence and compare-and-swap only.</td><td>A new neutral domain package owns all catalog generation semantics.</td></tr>
+
+      <tr><td>D4 · 2026-08-12</td><td>Replace catalogmeta with <code>catalogs/evidence</code> and <code>catalogs/projection</code>. Projection has three non-sync consumers.</td><td>Both leaves use only the standard library.</td><td>One consuming concept becomes the sole owner.</td></tr>
+
+      <tr><td>D5 · 2026-08-12</td><td>Keep source-owned aliases for IDs, revisions, and observation facts. Remove legacy wording and every <code>ResourceType</code> alias.</td><td>The Source API stays readable without old-package compatibility.</td><td>A public source-contract review removes or replaces those names.</td></tr>
+
+      <tr><td>D6 · 2026-08-12</td><td>Preserve bytes, schemas, checksums, errors, copies, cancellation, security, storage, and race behavior.</td><td>This task changes ownership only.</td><td>A separately approved schema or behavior plan changes a contract.</td></tr>
+
+      <tr><td>D7 · 2026-08-12</td><td>Publish Starmap <code>v0.5.0</code>. The release policy requires a pre-v1 minor for a direct public break.</td><td>Removed paths do not exist in the release.</td><td>The tag becomes unavailable before activation.</td></tr>
+
+      <tr><td>D8 · 2026-08-12</td><td>Make Starport verify the exact downloaded module. Its local verifier defaults to a mutable sibling checkout.</td><td>Local and hosted checks use the pinned module directory.</td><td>The verifier removes its sibling fallback and binds itself to <code>go.mod</code>.</td></tr>
+
+      <tr><td>D9 · 2026-08-12</td><td>Publish Starport <code>v1.0.4</code> after migration. The change is compatible for Starport users.</td><td>The first-party released gateway consumes Starmap v0.5.0.</td><td>The tag becomes unavailable or the migration changes Starport behavior.</td></tr>
+
+      <tr><td>D10 · 2026-08-12</td><td>Keep structural verification separate from full repository gates.</td><td>The CPO verifier cannot call <code>make verify</code> or recurse.</td><td>The repository adds one documented non-recursive verification orchestrator.</td></tr>
+    </tbody></table>
+  </section>
+  <section id="rejected-designs"><h2>Rejected designs</h2>
+    <ul>
+      <li><strong>Rename catalogs to catalog:</strong> it adds broad churn without an ownership repair. Reopen under D1.</li>
+
+      <li><strong>Keep old-path wrappers:</strong> they preserve duplicate public authority before launch. Reopen only after a public compatibility commitment.</li>
+
+      <li><strong>Use catalogs/metadata:</strong> metadata does not name one contract. Reopen if a typed, bounded metadata concept emerges.</li>
+
+      <li><strong>Put projection in pkg/sync:</strong> import, rollback, and synchronization share the result. Reopen under D4.</li>
+
+      <li><strong>Move directories only:</strong> storage would still own Generation and decode. Reopen only if D3 changes.</li>
+    </ul>
+  </section>
+  <section id="invariants"><h2>Invariants</h2>
+    <ol>
+      <li>Current source, generated docs, examples, and normative docs contain no old import path.</li>
+
+      <li><code>docs/MIGRATING_TO_V0.5.md</code>, <code>CHANGELOG.md</code>, reviews, and archived evidence may name old paths as history.</li>
+
+      <li>Artifact and remote import catalog values. They never import storage.</li>
+
+      <li>The low-level catalogs/remote protocol and the top-level reactive <code>remote</code> package remain separate.</li>
+
+      <li>Fixed generation inputs keep identical payload, manifest, archive, statement, and checksum bytes.</li>
+
+      <li>This refactor adds no module, provider behavior, schema, protocol, or arbitrary budget.</li>
+
+      <li>All branches and pull requests target <code>main</code>. No task uses <code>master</code>.</li>
+
+      <li>All Go checks use normal scheduling. No task sets <code>GOFLAGS=-p</code>.</li>
+    </ol>
+  </section>
+  <section id="verifier"><h2>Verifier contract</h2>
+    <p>CPO0 creates <code>scripts/verify-catalog-package-ownership.sh</code> and <code>scripts/test-catalog-package-ownership-verifier.sh</code>. The structural verifier reports CPO-V01 through CPO-V13 independently. It ends with <code>Summary: 13 passed, 0 failed</code>. It never invokes <code>make verify</code>, a full test suite, a release command, or itself.</p>
+    <ol>
+      <li><strong>CPO-V01:</strong> the five approved child directories and package declarations exist.</li>
+
+      <li><strong>CPO-V02:</strong> removed directories and package declarations are absent.</li>
+
+      <li><strong>CPO-V03:</strong> <code>catalogs.Generation</code> owns validation and copying.</li>
+
+      <li><strong>CPO-V04:</strong> catalogs owns the canonical encode and decode entry points.</li>
+
+      <li><strong>CPO-V05:</strong> evidence uses only the standard library and contains no projection type.</li>
+
+      <li><strong>CPO-V06:</strong> projection uses only the standard library and has no old-package alias.</li>
+
+      <li><strong>CPO-V07:</strong> storage accepts catalog generations and keeps every current adapter.</li>
+
+      <li><strong>CPO-V08:</strong> artifact has no storage dependency and keeps its byte contract.</li>
+
+      <li><strong>CPO-V09:</strong> remote has no storage dependency and keeps its protocol contract.</li>
+
+      <li><strong>CPO-V10:</strong> all nested external consumer modules compile with <code>GOWORK=off</code>.</li>
+
+      <li><strong>CPO-V11:</strong> current docs use approved paths and the migration guide maps every removed path.</li>
+
+      <li><strong>CPO-V12:</strong> current source, fixtures, and generated files pass the documented historical allowlist scan.</li>
+
+      <li><strong>CPO-V13:</strong> the package graph has no cycle and <code>go.mod</code> adds no module.</li>
+
+      <li><strong>CPO-V14:</strong> outer Starmap and Starport repository, race, release, and hosted gates pass.</li>
+    </ol>
+    <table><thead><tr><th>Phase</th><th>Expected result</th></tr></thead><tbody>
+      <tr><td>0</td><td>The script reports 13 conditions and at least one failure. CPO0 records the exact red count.</td></tr>
+
+      <tr><td>1 and 2</td><td>Each task closes its named conditions. Intermediate totals can stay red.</td></tr>
+
+      <tr><td>3</td><td><code>Summary: 13 passed, 0 failed</code> and CPO-V14 pass for Starmap.</td></tr>
+
+      <tr><td>4</td><td>CPO-V14 passes against exact published Starmap and Starport releases.</td></tr>
+    </tbody></table>
+  </section>
+  <section id="test-matrix"><h2>Test matrix</h2>
+    <table><thead><tr><th>Dimension</th><th>Required cases</th></tr></thead><tbody>
+      <tr><td>Identity</td><td>Generation copy, validation, checksum binding, corrupt payload, and wrong generation ID.</td></tr>
+
+      <tr><td>Codec</td><td>Exact bytes, strict fields, tolerant record quarantine, source observation decode, and schema rejection.</td></tr>
+
+      <tr><td>Storage</td><td>Memory, filesystem, object, S3, CAS, idempotency, history, cancellation, faults, and races.</td></tr>
+
+      <tr><td>Distribution</td><td>Artifact bytes, publisher checks, remote TLS, redirects, bounds, SSE, catch-up, cancellation, and races.</td></tr>
+
+      <tr><td>Consumers</td><td>Six nested Starmap modules, exact Starport module, no replace directive, and Modelwiki no-action scan.</td></tr>
+
+      <tr><td>Documentation</td><td>Generated API docs, architecture, store, artifact, remote, migration, changelog, and links.</td></tr>
+    </tbody></table>
+  </section>
+  <section id="tasks"><h2>Tasks</h2>
+    <h3 id="task-CPO0">CPO0 Baseline and red verifier</h3>
+    <ul>
+      <li><strong>Problem:</strong> the public move needs reproducible before and after evidence.</li>
+
+      <li><strong>Owning seam and paths:</strong> this plan, its proof root, both verifier scripts, Starmap, Starport, and Modelwiki baselines.</li>
+
+      <li><strong>Steps:</strong><ol><li>Create the Starmap control worktree from current <code>main</code>.</li><li>Pin all three repository SHAs and current release tags.</li><li>Record imports, APIs, graph edges, formats, tests, and open pull requests.</li><li>Add CPO-V01 through CPO-V13 and its fixture test.</li><li>Run the structural verifier red without a production Go change.</li></ol></li>
+
+      <li><strong>Acceptance:</strong> the proof records all 13 results and the exact red summary. CPO-V14 stays outside the script.</li>
+
+      <li><strong>Fail-before:</strong> approved directories are absent and removed paths exist.</li>
+
+      <li><strong>Verification:</strong><ol>
+        <li><code>bash scripts/verify-catalog-package-ownership.sh</code></li>
+        <li><code>bash scripts/test-catalog-package-ownership-verifier.sh</code></li>
+        <li><code>go test -count=1 ./pkg/catalogs ./pkg/catalogartifact ./pkg/catalogmeta ./pkg/catalogremote ./pkg/catalogstore ./pkg/catalogstore/s3</code></li>
+        <li><code>git diff --check</code></li>
+      </ol></li>
+    </ul>
+    <h3 id="task-CPO1">CPO1 Evidence and projection contracts</h3>
+    <ul>
+      <li><strong>Problem:</strong> catalogmeta mixes source evidence, provenance identity, review records, and workspace projection state.</li>
+
+      <li><strong>Owning seam and paths:</strong> <code>pkg/catalogs/evidence</code>, <code>pkg/catalogs/projection</code>, sources, sync, provenance, acquisition, rollback, and reconciliation.</li>
+
+      <li><strong>Steps:</strong><ol><li>Move source, observation, resource, and review types to evidence.</li><li>Move workspace result and status types to projection.</li><li>Keep intentional source-owned aliases and remove every ResourceType alias.</li><li>Remove legacy comments and delete catalogmeta.</li><li>Add direct leaf and consumer contract tests.</li></ol></li>
+
+      <li><strong>Acceptance:</strong> CPO-V02, V05, and V06 pass. JSON and YAML values, ordering, source identity, and projection outcomes match baseline.</li>
+
+      <li><strong>Fail-before:</strong> catalogmeta exists, projection lacks a neutral owner, and both new leaves are absent.</li>
+
+      <li><strong>Verification:</strong><ol>
+        <li><code>go test -race -count=1 ./pkg/catalogs/evidence ./pkg/catalogs/projection ./pkg/sources ./pkg/sync ./pkg/provenance ./internal/catalog/authority ./internal/catalog/reconciler ./acquisition .</code></li>
+        <li><code>bash scripts/verify-catalog-package-ownership.sh</code></li>
+      </ol></li>
+    </ul>
+    <h3 id="task-CPO2">CPO2 Generation and codec ownership</h3>
+    <ul>
+      <li><strong>Problem:</strong> persistence owns one domain value and half of one codec.</li>
+
+      <li><strong>Owning seam and paths:</strong> catalogs, existing storage, root client, bootstrap, workspace, artifact, remote, acquisition, and fixtures.</li>
+
+      <li><strong>Steps:</strong><ol><li>Define <code>catalogs.Generation</code> with Copy and Validate.</li><li>Move catalog and source-observation decoders beside the encoder.</li><li>Delete storage codec delegates.</li><li>Update every signature directly.</li><li>Add byte, error, quarantine, and isolation tests.</li></ol></li>
+
+      <li><strong>Acceptance:</strong> CPO-V03 and V04 pass. Fixed payloads and manifests keep the same bytes and failures.</li>
+
+      <li><strong>Fail-before:</strong> a fixture using <code>catalogs.Generation</code> fails to compile. Artifact and remote import storage.</li>
+
+      <li><strong>Verification:</strong><ol>
+        <li><code>go test -race -count=1 ./pkg/catalogs . ./acquisition ./internal/bootstrap/...</code></li>
+        <li><code>make test-consumer-deps</code></li>
+        <li><code>bash scripts/verify-catalog-package-ownership.sh</code></li>
+      </ol></li>
+    </ul>
+    <h3 id="task-CPO3">CPO3 Storage package</h3>
+    <ul>
+      <li><strong>Problem:</strong> catalogstore repeats the parent concept and owns unrelated domain contracts.</li>
+
+      <li><strong>Owning seam and paths:</strong> <code>pkg/catalogs/storage</code>, <code>pkg/catalogs/storage/s3</code>, all adapters, options, server docs, and nested consumers.</li>
+
+      <li><strong>Steps:</strong><ol><li>Move Store and all current adapters.</li><li>Use <code>catalogs.Generation</code> throughout.</li><li>Update imports, selectors, docs, and fixtures.</li><li>Delete the old directory without a wrapper.</li><li>Extend layout and dependency guards.</li></ol></li>
+
+      <li><strong>Acceptance:</strong> CPO-V01, V02, and V07 pass. All storage contract and caller-owned adapter cases pass.</li>
+
+      <li><strong>Fail-before:</strong> the approved path is absent and the layout verifier reports the old path.</li>
+
+      <li><strong>Verification:</strong><ol>
+        <li><code>go test -race -count=1 ./pkg/catalogs/storage/...</code></li>
+        <li><code>make test-consumer-deps</code></li>
+        <li><code>make test-pure-go</code></li>
+        <li><code>bash scripts/verify-catalog-package-ownership.sh</code></li>
+      </ol></li>
+    </ul>
+    <h3 id="task-CPO4">CPO4 Artifact package</h3>
+    <ul>
+      <li><strong>Problem:</strong> catalogartifact hides a public child concept and imports storage for Generation.</li>
+
+      <li><strong>Owning seam and paths:</strong> <code>pkg/catalogs/artifact</code>, acquisition, release command, bootstrap budget, and pinned-artifact consumer.</li>
+
+      <li><strong>Steps:</strong><ol><li>Move the package and generated docs.</li><li>Replace the storage dependency with catalogs.</li><li>Update go-generate paths and all consumers.</li><li>Delete the old path.</li><li>Compare fixed release assets with baseline bytes.</li></ol></li>
+
+      <li><strong>Acceptance:</strong> CPO-V08 passes. Archives, statements, checksums, staging, selection, and import failures match baseline.</li>
+
+      <li><strong>Fail-before:</strong> the approved package is absent and artifact imports storage.</li>
+
+      <li><strong>Verification:</strong><ol>
+        <li><code>go test -race -count=1 ./pkg/catalogs/artifact ./acquisition ./cmd/starmap-catalog-release ./internal/bootstrap/budget</code></li>
+        <li><code>(cd testdata/consumers/pinned-artifact &amp;&amp; GOWORK=off go test ./...)</code></li>
+        <li><code>make test-consumer-deps</code></li>
+        <li><code>bash scripts/verify-catalog-package-ownership.sh</code></li>
+      </ol></li>
+    </ul>
+    <h3 id="task-CPO5">CPO5 Remote protocol package</h3>
+    <ul>
+      <li><strong>Problem:</strong> catalogremote hides a public child concept and imports storage for Generation.</li>
+
+      <li><strong>Owning seam and paths:</strong> <code>pkg/catalogs/remote</code>, top-level remote subscriber, server handlers, SSE, and remote consumer.</li>
+
+      <li><strong>Steps:</strong><ol><li>Move the protocol client and stream.</li><li>Replace the storage dependency with catalogs.</li><li>Update imports and use local aliases only for clarity.</li><li>Keep the reactive subscriber separate.</li><li>Delete the old path and extend protocol tests.</li></ol></li>
+
+      <li><strong>Acceptance:</strong> CPO-V09 passes. TLS, redirects, bounds, exact generations, cancellation, SSE, catch-up, fallback, and races match baseline.</li>
+
+      <li><strong>Fail-before:</strong> the approved package is absent and remote imports storage.</li>
+
+      <li><strong>Verification:</strong><ol>
+        <li><code>go test -race -count=1 ./pkg/catalogs/remote ./remote ./internal/server ./internal/server/sse</code></li>
+        <li><code>(cd testdata/consumers/remote-subscriber &amp;&amp; GOWORK=off go test ./...)</code></li>
+        <li><code>make test-consumer-deps</code></li>
+        <li><code>bash scripts/verify-catalog-package-ownership.sh</code></li>
+      </ol></li>
+    </ul>
+    <h3 id="task-CPO6">CPO6 Starmap integration and pull request</h3>
+    <ul>
+      <li><strong>Problem:</strong> a public path change fails when current authority retains mixed ownership.</li>
+
+      <li><strong>Owning seam and paths:</strong> all current Starmap source, generated API docs, architecture, package docs, scripts, fixtures, changelog, and <code>docs/MIGRATING_TO_V0.5.md</code>.</li>
+
+      <li><strong>Steps:</strong><ol><li>Update current authority, package comments, examples, links, and generated docs.</li><li>Document every old-to-new import and selector mapping.</li><li>Run the allowlisted stale-path scan and all local gates.</li><li>Commit the exact candidate.</li><li>Run pre-PR autoreview and fix verified findings.</li><li>Open and merge one implementation pull request to <code>main</code>.</li></ol></li>
+
+      <li><strong>Acceptance:</strong> CPO-V01 through V14 pass for Starmap. The resulting module graph matches baseline. Hosted checks pass.</li>
+
+      <li><strong>Fail-before:</strong> current docs, scripts, generated docs, and fixtures name removed authority.</li>
+
+      <li><strong>Verification:</strong><ol>
+        <li><code>bash scripts/verify-catalog-package-ownership.sh</code></li>
+        <li><code>make verify</code></li>
+        <li><code>make release-check</code></li>
+        <li><code>make release-snapshot</code></li>
+        <li><code>make catalog-generation-check</code></li>
+        <li><code>make embedded-catalog-budget-check</code></li>
+        <li><code>make verify-action-pins</code></li>
+        <li><code>git diff --exit-code</code></li>
+        <li><code>export AUTOREVIEW="${AGENTS_HOME:-$HOME/.agents}/skills/autoreview/scripts/autoreview" &amp;&amp; "$AUTOREVIEW" --gate pre-pr --mode auto</code></li>
+      </ol></li>
+    </ul>
+    <h3 id="task-CPO7">CPO7 Starmap v0.5.0 release</h3>
+    <ul>
+      <li><strong>Problem:</strong> Starport cannot consume the direct break from a branch or mutable checkout.</li>
+
+      <li><strong>Owning seam and paths:</strong> Starmap <code>main</code>, tag, release workflow, assets, Go proxy, container, and Homebrew cask.</li>
+
+      <li><strong>Steps:</strong><ol><li>Confirm the implementation merge and unused tag.</li><li>Run <code>make release-tag VERSION=0.5.0</code> from clean, current <code>main</code>.</li><li>Watch the exact workflow run to completion.</li><li>Verify immutable assets, checksums, signatures, SBOMs, attestations, container, module resolution, and Homebrew installation.</li></ol></li>
+
+      <li><strong>Acceptance:</strong> the immutable release resolves from <code>GOWORK=off</code>. It exports only approved package paths.</li>
+
+      <li><strong>Fail-before:</strong> the Go proxy cannot resolve the new package paths at <code>v0.5.0</code>.</li>
+
+      <li><strong>Verification:</strong><ol>
+        <li><code>git fetch origin main --tags</code></li>
+        <li><code>git merge-base --is-ancestor "$(git rev-list -n 1 v0.5.0)" origin/main</code></li>
+        <li><code>gh run watch "$RELEASE_RUN_ID" --repo agentstation/starmap --exit-status</code></li>
+        <li><code>gh release view v0.5.0 --repo agentstation/starmap --json tagName,isDraft,isImmutable,isPrerelease</code></li>
+        <li><code>GOWORK=off go mod download -json github.com/agentstation/starmap@v0.5.0</code></li>
+        <li>Record the hosted release-asset checks and macOS Homebrew exact-install job.</li>
+      </ol></li>
+    </ul>
+    <h3 id="task-CPO8">CPO8 Starport migration</h3>
+    <ul>
+      <li><strong>Problem:</strong> Starport imports three paths removed by Starmap v0.5.0.</li>
+
+      <li><strong>Owning seam and paths:</strong> the named Starport worktree, go.mod, go.sum, catalog runtime, diagnosis, tests, architecture guards, and current docs.</li>
+
+      <li><strong>Steps:</strong><ol>
+        <li>Create the Starport worktree from current <code>main</code>.</li>
+        <li>Update to exact Starmap <code>v0.5.0</code> without a replace directive.</li>
+        <li>Migrate imports, selectors, and Generation.</li>
+        <li>Resolve the downloaded module directory from <code>go.mod</code>.</li>
+
+        <li>Run every Starmap ownership check against that directory.</li>
+        <li>Record Modelwiki as no-action after its current-authority scan.</li>
+        <li>Run all Starport gates, autoreview, and hosted checks.</li>
+        <li>Open and merge one pull request to <code>main</code>.</li>
+      </ol></li>
+
+      <li><strong>Acceptance:</strong> Starport contains no removed path or replace directive. Its runtime, storage, diagnosis, refresh, and OpenRouter contracts pass against the published module.</li>
+
+      <li><strong>Fail-before:</strong> Starport fails to compile after only the isolated <code>v0.5.0</code> dependency update.</li>
+
+      <li><strong>Verification:</strong><ol>
+        <li><code>go mod verify</code></li>
+        <li><code>STARMAP_VERSION=$(go list -m -f '{{.Version}}' github.com/agentstation/starmap) &amp;&amp; STARMAP_ROOT=$(go mod download -json "github.com/agentstation/starmap@$STARMAP_VERSION" | jq -r .Dir) &amp;&amp; STARMAP_OWNERSHIP_STARMAP_ROOT="$STARMAP_ROOT" bash scripts/verify-starmap-ownership.sh</code></li>
+        <li><code>bash scripts/verify-v1-architecture.sh</code></li>
+        <li><code>go test ./...</code></li>
+        <li><code>go test -race ./...</code></li>
+        <li><code>go vet ./...</code></li>
+        <li><code>make lint</code></li>
+        <li><code>make build</code></li>
+        <li><code>bash scripts/smoke-openrouter-sdks.sh</code></li>
+        <li><code>make release-check</code></li>
+        <li><code>make release-snapshot</code></li>
+        <li><code>export AUTOREVIEW="${AGENTS_HOME:-$HOME/.agents}/skills/autoreview/scripts/autoreview" &amp;&amp; "$AUTOREVIEW" --gate pre-pr --mode auto</code></li>
+      </ol></li>
+    </ul>
+    <h3 id="task-CPO8.1">CPO8.1 Starport v1.0.4 release</h3>
+    <ul>
+      <li><strong>Problem:</strong> the released first-party gateway must consume the released Starmap contract.</li>
+
+      <li><strong>Owning seam and paths:</strong> Starport <code>main</code>, tag, release workflow, assets, container, and Homebrew cask.</li>
+
+      <li><strong>Steps:</strong><ol><li>Confirm the migration merge and unused tag.</li><li>Create and push annotated tag <code>v1.0.4</code>.</li><li>Watch the exact release run.</li><li>Verify immutable assets, checksums, SBOMs, attestations, container, and exact Homebrew installation.</li></ol></li>
+
+      <li><strong>Acceptance:</strong> Starport <code>v1.0.4</code> is immutable. Its module metadata resolves Starmap <code>v0.5.0</code>.</li>
+
+      <li><strong>Fail-before:</strong> no public Starport release consumes Starmap v0.5.0.</li>
+
+      <li><strong>Verification:</strong><ol>
+        <li><code>git fetch origin main --tags</code></li>
+        <li><code>test "$(git rev-parse HEAD)" = "$(git rev-parse origin/main)"</code></li>
+        <li><code>git tag -a v1.0.4 -m "Starport v1.0.4"</code></li>
+        <li><code>git push origin refs/tags/v1.0.4</code></li>
+        <li><code>gh run watch "$RELEASE_RUN_ID" --repo agentstation/starport --exit-status</code></li>
+        <li><code>gh release view v1.0.4 --repo agentstation/starport --json tagName,isDraft,isImmutable,isPrerelease</code></li>
+        <li>Record hosted macOS and Linux exact-install jobs.</li>
+      </ol></li>
+    </ul>
+    <h3 id="task-CPO9">CPO9 Cleanup</h3>
+    <ul>
+      <li><strong>Problem:</strong> a completed plan must not remain current operational authority.</li>
+
+      <li><strong>Owning seam and paths:</strong> this file, its proof root, and <code>docs/plans/README.md</code>.</li>
+
+      <li><strong>Steps:</strong><ol><li>Confirm CPO6, CPO7, CPO8, and CPO8.1 evidence.</li><li>Preserve durable migration and architecture docs.</li><li>Delete the plan, proof root, and index entry on a cleanup branch.</li><li>Open the cleanup pull request to <code>main</code>.</li></ol></li>
+
+      <li><strong>Acceptance:</strong> the cleanup pull request contains only control-plane removal. Its later merge and Git history are final evidence.</li>
+
+      <li><strong>Fail-before:</strong> not applicable. Merged implementation and release records supply the trigger.</li>
+
+      <li><strong>Verification:</strong><ol>
+        <li><code>rg -n "catalog-package-ownership" docs/plans</code> returns no match after deletion.</li>
+        <li><code>git diff --check</code></li>
+        <li><code>git status --short</code></li>
+        <li>Do not require the deleted plan to record its own merge.</li>
+      </ol></li>
+    </ul>
+  </section>
+  <section id="goal"><h2>Goal</h2>
+    <pre><code>Execute docs/plans/catalog-package-ownership-plan.html to completion. This is a
+whole-plan goal. Read the complete plan, both repositories' nearest AGENTS.md
+files, Starmap docs/ARCHITECTURE.md, Starmap docs/TESTING.md, Starport
+docs/ARCHITECTURE.md, Starport docs/TASKS.md, and the plans skill. Use
+/Users/jack/src/github.com/agentstation/starmap-catalog-package-ownership-control
+on branch codex/catalog-package-ownership-control for CPO0 through CPO7 and CPO9.
+Use /Users/jack/src/github.com/agentstation/starport-catalog-package-ownership-control
+on branch codex/catalog-package-ownership-control for CPO8 and CPO8.1. Create each
+worktree from the current main named by CPO0. Chat history is not progress state.
+Resume from the status ledger, execution log, proof root, and git state. If
+compaction happens, continue from those records. Respect phase dependencies and
+keep exactly one task in_progress. For each task, capture fail-before evidence,
+change the owning seam, run every exact verification command with normal Go
+scheduling, commit the task scope, write its proof file, update the ledger and
+log with the work commit, commit the control update, and advance. CPO0 through
+CPO6 form one atomic Starmap implementation pull request with task commits. CPO7
+publishes Starmap v0.5.0. CPO8 uses a separate Starport pull request and verifies
+the exact downloaded Starmap module. CPO8.1 publishes Starport v1.0.4. Target main
+in both repositories. Do not use master. Keep removed paths deleted. Do not add
+compatibility wrappers, aliases for removed packages, dependencies, schemas,
+protocols, provider behavior, or GOFLAGS scheduler caps. Preserve D6. Run each
+pre-PR autoreview only after the exact candidate is committed and all local gates
+pass. Mark a wrong or satisfied task no-action with evidence. Record a real
+blocker and continue only with a task whose dependencies are terminal. Stop only
+at a plans-skill stop state. Before a stop, update the ledger, log, and next
+action. The goal is complete when CPO-V01 through CPO-V14 pass, both implementation
+pull requests are merged, Starmap v0.5.0 and Starport v1.0.4 are immutable and
+verified, all current first-party authority uses approved imports, and the CPO9
+cleanup pull request removes this control plane.</code></pre>
+  </section>
+  <section id="execution-log"><h2>Execution log</h2>
+    <!-- Append-only. Keep this section last. -->
+    <table><thead><tr><th>Date</th><th>Item</th><th>Action</th><th>Evidence</th></tr></thead><tbody>
+      <tr><td>2026-08-12</td><td>meta</td><td>authored</td><td>Audited four public packages, their callers, first-party consumers, releases, worktrees, focused tests, history, architecture records, and official Go guidance. No implementation started.</td></tr>
+
+      <tr><td>2026-08-12</td><td>meta</td><td>reviewed and revised</td><td>Verified the target dependency graph and release policy. Corrected projection ownership, activation, scan scope, exact-module verification, phases, verifier recursion, cleanup, diagrams, commands, decisions, migration docs, and Starport release delivery. Strict technical review follows this edit.</td></tr>
+
+      <tr><td>2026-08-12</td><td>meta</td><td>audit completed</td><td>Strict writing passed with no diagnostic. Ledger and task counts both equal 11. The plan defines 14 unique verifier conditions and balanced HTML structures. Local audits found all named packages, six consumer modules, and all repository targets. The six focused package checks passed; catalogmeta had no test files. GitHub showed no open pull request, both proposed tags available, both default branches set to main, Starmap latest at v0.4.1, and Starport latest at v1.0.3.</td></tr>
+
+      <tr><td>2026-08-12</td><td>meta</td><td>approved</td><td>The owner approved D1 through D10 and requested whole-plan execution. The plan-only pull request remains the last promotion condition.</td></tr>
+    </tbody></table>
+  </section>
+</main>
+</body>
+</html>
