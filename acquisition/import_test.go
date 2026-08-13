@@ -92,7 +92,7 @@ func TestImportReleaseVerifiesReconcilesPublishesAndRollsBack(t *testing.T) {
 		t.Fatalf("import result = %#v", result)
 	}
 	if result.Projection == nil ||
-		result.Projection.Status != projection.ProjectionStatusApplied {
+		result.Projection.Status != projection.StatusApplied {
 		t.Fatalf("workspace projection = %#v, want applied", result.Projection)
 	}
 

@@ -551,7 +551,7 @@ type RollbackResult struct {
     // Sequence is the in-process publication sequence after rollback.
     Sequence uint64
     // Projection reports exact workspace restoration or pending repair.
-    Projection *projection.ProjectionResult
+    Projection *projection.Result
 }
 ```
 

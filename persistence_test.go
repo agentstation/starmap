@@ -104,8 +104,8 @@ func TestProjectionFailureLeavesCommittedGenerationActiveAndReportsRepair(t *tes
 		},
 		workspace.InputExpectation{},
 	)
-	if projection.Status != catalogprojection.ProjectionStatusPendingRepair ||
-		projection.IssueCode != catalogprojection.ProjectionIssueWorkspaceFailed {
+	if projection.Status != catalogprojection.StatusPendingRepair ||
+		projection.IssueCode != catalogprojection.IssueWorkspaceFailed {
 		t.Fatalf("projection = %#v, want pending repair", projection)
 	}
 	current, err := store.Current(context.Background())
@@ -153,7 +153,7 @@ func TestSuccessfulProjectionReportsCommittedGenerationAndWorkspaceDigest(t *tes
 		},
 		workspace.InputExpectation{},
 	)
-	if projection.Status != catalogprojection.ProjectionStatusApplied {
+	if projection.Status != catalogprojection.StatusApplied {
 		t.Fatalf("projection = %#v, want applied", projection)
 	}
 	if projection.GenerationID != publication.GenerationID {

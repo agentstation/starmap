@@ -254,7 +254,7 @@ func publishRollbackFixture(
 		},
 		input,
 	)
-	if projection.Status != catalogprojection.ProjectionStatusApplied {
+	if projection.Status != catalogprojection.StatusApplied {
 		t.Fatalf("fixture projection = %#v, want applied", projection)
 	}
 	generation, err := client.CurrentGeneration(context.Background())

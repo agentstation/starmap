@@ -24,7 +24,7 @@ type ImportResult struct {
 	// Publication identifies the locally committed reconciled generation.
 	Publication starmap.Publication
 	// Projection reports the post-commit human-workspace projection.
-	Projection *projection.ProjectionResult
+	Projection *projection.Result
 }
 
 // ImportRelease verifies a portable catalog release, reconciles it as a trusted

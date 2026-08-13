@@ -1,29 +1,28 @@
 package projection
 
-// ProjectionStatus is the post-commit state of an optional human YAML
-// workspace projection.
-type ProjectionStatus string
+// Status is the post-commit state of an optional human YAML workspace
+// projection.
+type Status string
 
 const (
-	// ProjectionStatusApplied means the committed generation was materialized
+	// StatusApplied means the committed generation was materialized
 	// successfully to the requested human workspace.
-	ProjectionStatusApplied ProjectionStatus = "applied"
-	// ProjectionStatusPendingRepair means the generation remains durably active,
+	StatusApplied Status = "applied"
+	// StatusPendingRepair means the generation remains durably active,
 	// but its optional human workspace projection must be repaired.
-	ProjectionStatusPendingRepair ProjectionStatus = "pending_repair"
+	StatusPendingRepair Status = "pending_repair"
 
-	// ProjectionIssueWorkspaceFailed identifies a committed generation whose
+	// IssueWorkspaceFailed identifies a committed generation whose
 	// optional workspace projection did not complete.
-	ProjectionIssueWorkspaceFailed = "workspace_projection_failed"
+	IssueWorkspaceFailed = "workspace_projection_failed"
 )
 
-// ProjectionResult reports the post-commit state of an optional human YAML
-// workspace.
-type ProjectionResult struct {
+// Result reports the post-commit state of an optional human YAML workspace.
+type Result struct {
 	// Path is the requested human workspace root.
 	Path string
 	// Status reports whether projection completed or requires repair.
-	Status ProjectionStatus
+	Status Status
 	// IssueCode is empty after a successful projection.
 	IssueCode string
 	// GenerationID is the durable generation the workspace represents.

@@ -14,20 +14,20 @@ import (
 
 // ProjectionStatus is the synchronization spelling of the shared projection
 // lifecycle type.
-type ProjectionStatus = projection.ProjectionStatus
+type ProjectionStatus = projection.Status
 
 const (
 	// ProjectionStatusApplied reports that the workspace projection was written.
-	ProjectionStatusApplied = projection.ProjectionStatusApplied
+	ProjectionStatusApplied = projection.StatusApplied
 	// ProjectionStatusPendingRepair reports that publication succeeded but the
 	// workspace projection needs repair.
-	ProjectionStatusPendingRepair = projection.ProjectionStatusPendingRepair
+	ProjectionStatusPendingRepair = projection.StatusPendingRepair
 	// ProjectionIssueWorkspaceFailed identifies a workspace projection failure.
-	ProjectionIssueWorkspaceFailed = projection.ProjectionIssueWorkspaceFailed
+	ProjectionIssueWorkspaceFailed = projection.IssueWorkspaceFailed
 )
 
 // ProjectionResult is the optional post-commit workspace projection result.
-type ProjectionResult = projection.ProjectionResult
+type ProjectionResult = projection.Result
 
 var modelProvenanceFieldSuffixes = []string{
 	"limits.context_window",

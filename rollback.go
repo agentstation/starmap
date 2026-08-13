@@ -21,7 +21,7 @@ type RollbackResult struct {
 	// Sequence is the in-process publication sequence after rollback.
 	Sequence uint64
 	// Projection reports exact workspace restoration or pending repair.
-	Projection *projection.ProjectionResult
+	Projection *projection.Result
 }
 
 // Rollback atomically makes a retained generation current and projects its
@@ -123,19 +123,19 @@ func projectRollbackCatalog(
 	path string,
 	identity workspace.Identity,
 	input workspace.InputExpectation,
-) *projection.ProjectionResult {
-	result := &projection.ProjectionResult{
+) *projection.Result {
+	result := &projection.Result{
 		Path:         path,
-		Status:       projection.ProjectionStatusPendingRepair,
+		Status:       projection.StatusPendingRepair,
 		GenerationID: identity.GenerationID,
 	}
 	receipt, err := workspace.ProjectExpected(ctx, path, catalog, identity, input)
 	result.WorkspaceChecksum = receipt.WorkspaceChecksum
 	if err != nil {
-		result.IssueCode = projection.ProjectionIssueWorkspaceFailed
+		result.IssueCode = projection.IssueWorkspaceFailed
 		return result
 	}
-	result.Status = projection.ProjectionStatusApplied
+	result.Status = projection.StatusApplied
 	return result
 }
 

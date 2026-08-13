@@ -12,21 +12,21 @@ Package projection defines post\-commit workspace projection results.
 
 ## Index
 
-- [type ProjectionResult](<#ProjectionResult>)
-- [type ProjectionStatus](<#ProjectionStatus>)
+- [type Result](<#Result>)
+- [type Status](<#Status>)
 
 
-<a name="ProjectionResult"></a>
-## type [ProjectionResult](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/projection/projection.go#L22-L34>)
+<a name="Result"></a>
+## type [Result](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/projection/projection.go#L21-L33>)
 
-ProjectionResult reports the post\-commit state of an optional human YAML workspace.
+Result reports the post\-commit state of an optional human YAML workspace.
 
 ```go
-type ProjectionResult struct {
+type Result struct {
     // Path is the requested human workspace root.
     Path string
     // Status reports whether projection completed or requires repair.
-    Status ProjectionStatus
+    Status Status
     // IssueCode is empty after a successful projection.
     IssueCode string
     // GenerationID is the durable generation the workspace represents.
@@ -37,29 +37,29 @@ type ProjectionResult struct {
 }
 ```
 
-<a name="ProjectionStatus"></a>
-## type [ProjectionStatus](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/projection/projection.go#L5>)
+<a name="Status"></a>
+## type [Status](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/projection/projection.go#L5>)
 
-ProjectionStatus is the post\-commit state of an optional human YAML workspace projection.
+Status is the post\-commit state of an optional human YAML workspace projection.
 
 ```go
-type ProjectionStatus string
+type Status string
 ```
 
-<a name="ProjectionStatusApplied"></a>
+<a name="StatusApplied"></a>
 
 ```go
 const (
-    // ProjectionStatusApplied means the committed generation was materialized
+    // StatusApplied means the committed generation was materialized
     // successfully to the requested human workspace.
-    ProjectionStatusApplied ProjectionStatus = "applied"
-    // ProjectionStatusPendingRepair means the generation remains durably active,
+    StatusApplied Status = "applied"
+    // StatusPendingRepair means the generation remains durably active,
     // but its optional human workspace projection must be repaired.
-    ProjectionStatusPendingRepair ProjectionStatus = "pending_repair"
+    StatusPendingRepair Status = "pending_repair"
 
-    // ProjectionIssueWorkspaceFailed identifies a committed generation whose
+    // IssueWorkspaceFailed identifies a committed generation whose
     // optional workspace projection did not complete.
-    ProjectionIssueWorkspaceFailed = "workspace_projection_failed"
+    IssueWorkspaceFailed = "workspace_projection_failed"
 )
 ```
 

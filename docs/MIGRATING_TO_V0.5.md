@@ -90,11 +90,11 @@ Import `pkg/catalogs/projection` as `projection`. Change the qualifier from
 `catalogmeta` to `projection` for these names:
 
 ```text
-ProjectionStatus
-ProjectionStatusApplied
-ProjectionStatusPendingRepair
-ProjectionIssueWorkspaceFailed
-ProjectionResult
+ProjectionStatus -> Status
+ProjectionStatusApplied -> StatusApplied
+ProjectionStatusPendingRepair -> StatusPendingRepair
+ProjectionIssueWorkspaceFailed -> IssueWorkspaceFailed
+ProjectionResult -> Result
 ```
 
 The types and values keep their v0.4 wire representation. The move gives
