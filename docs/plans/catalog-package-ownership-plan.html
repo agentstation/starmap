@@ -36,7 +36,7 @@
     <div>Status: <code data-plan-status="active">active</code> · Owner: this plan · Created: 2026-08-12</div>
     <div>Starmap baseline: <code>main@42f1b4c6763084cc0ae7b2ced413de4d765cd9ef</code></div>
     <div>Proof root: <code>docs/plans/proof/catalog-package-ownership/</code></div>
-    <div>Next action: execute CPO2 by moving immutable generation and payload codecs into catalogs.</div>
+    <div>Next action: execute CPO3 by moving storage and S3 to catalogs/storage.</div>
   </div>
   <section id="outcome"><h2>Outcome</h2>
     <blockquote>Starmap exposes one coherent catalog package tree. <code>pkg/catalogs</code> owns catalog values, immutable generations, and catalog codecs. Its <code>evidence</code> and <code>projection</code> leaves own neutral data contracts. Its <code>storage</code>, <code>artifact</code>, and <code>remote</code> children own separate behaviors. Starport consumes one immutable Starmap release. No old-path wrapper, duplicate codec, or vague metadata package remains.</blockquote>
@@ -76,8 +76,8 @@
     <table><thead><tr><th>ID</th><th>Phase</th><th>Depends on</th><th>Task</th><th>Status</th><th>Evidence</th></tr></thead><tbody>
       <tr id="CPO0" data-status="done"><td>CPO0</td><td>0 Baseline</td><td>activation</td><td>Pin baselines, create proofs, and add the red structural verifier.</td><td><code>done</code></td><td><a href="proof/catalog-package-ownership/cpo0.md">Proof</a>: work commit <code>1136ce63</code>; 13 conditions reported; expected baseline summary 2 passed and 11 failed; verifier regression and focused package tests passed.</td></tr>
       <tr id="CPO1" data-status="done"><td>CPO1</td><td>1 Contracts</td><td>CPO0</td><td>Replace catalogmeta with evidence and neutral projection contracts.</td><td><code>done</code></td><td><a href="proof/catalog-package-ownership/cpo1.md">Proof</a>: work commit <code>a3df5076</code>; CPO-V05 and V06 passed; V02 no longer reports catalogmeta; race and main-module suites passed.</td></tr>
-      <tr id="CPO2" data-status="in_progress"><td>CPO2</td><td>1 Contracts</td><td>CPO1</td><td>Move immutable generation and both codec directions into catalogs.</td><td><code>in_progress</code></td><td>Fail-before: <code>catalogstore</code> owns Generation and both decoders.</td></tr>
-      <tr id="CPO3" data-status="todo"><td>CPO3</td><td>2 Behaviors</td><td>CPO2</td><td>Move catalogstore and S3 to catalogs/storage.</td><td><code>todo</code></td><td></td></tr>
+      <tr id="CPO2" data-status="done"><td>CPO2</td><td>1 Contracts</td><td>CPO1</td><td>Move immutable generation and both codec directions into catalogs.</td><td><code>done</code></td><td><a href="proof/catalog-package-ownership/cpo2.md">Proof</a>: work commit <code>51b9ebfd</code>; CPO-V03 and V04 passed; exact race, consumer, vet, and docs gates passed.</td></tr>
+      <tr id="CPO3" data-status="in_progress"><td>CPO3</td><td>2 Behaviors</td><td>CPO2</td><td>Move catalogstore and S3 to catalogs/storage.</td><td><code>in_progress</code></td><td>Fail-before: storage still uses the flat <code>pkg/catalogstore</code> path.</td></tr>
       <tr id="CPO4" data-status="todo"><td>CPO4</td><td>2 Behaviors</td><td>CPO3</td><td>Move catalogartifact to catalogs/artifact.</td><td><code>todo</code></td><td></td></tr>
       <tr id="CPO5" data-status="todo"><td>CPO5</td><td>2 Behaviors</td><td>CPO4</td><td>Move catalogremote to catalogs/remote.</td><td><code>todo</code></td><td></td></tr>
       <tr id="CPO6" data-status="todo"><td>CPO6</td><td>3 Starmap</td><td>CPO5</td><td>Update authority, run all gates, review, and merge the Starmap implementation PR.</td><td><code>todo</code></td><td></td></tr>
@@ -511,6 +511,8 @@ cleanup pull request removes this control plane.</code></pre>
       <tr><td>2026-08-13</td><td>CPO0</td><td>done; CPO1 started</td><td>Work commit 1136ce63 added the 13-condition structural verifier, its fixture test, and repository-gate integration. The expected baseline was 2 passed and 11 failed. Verifier regression tests, six focused package checks, and diff validation passed. The proof pins all three repositories, import edges, public contracts, formats, and test counts.</td></tr>
 
       <tr><td>2026-08-13</td><td>CPO1</td><td>done; CPO2 started</td><td>Work commit a3df5076 replaced catalogmeta with standard-library-only evidence and projection leaves, removed the ResourceType source alias, updated all current callers and generated docs, and added direct contract tests. The exact race gate, main-module suite, focused vet, diff check, and module checksum check passed. The verifier advanced to 4 passed and 9 failed. Corrected CPO1 acceptance because aggregate CPO-V02 also covers three package trees owned by later tasks.</td></tr>
+
+      <tr><td>2026-08-13</td><td>CPO2</td><td>done; CPO3 started</td><td>Work commit 51b9ebfd moved Generation, Copy, Validate, and both payload decoders into catalogs, deleted the storage codec delegate, updated every Starmap signature and nested consumer, and removed storage dependencies from artifact and remote. The exact race, consumer, focused vet, generated-doc, diff, and module-checksum gates passed. The verifier advanced to 6 passed and 7 failed.</td></tr>
     </tbody></table>
   </section>
 </main>
