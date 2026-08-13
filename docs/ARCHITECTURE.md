@@ -2099,10 +2099,11 @@ starmap/
 │
 ├── pkg/                      # Public packages
 │   ├── catalogs/             # Catalog domain, builder, and immutable reads
+│   │   ├── evidence/         # Source observation and review contracts
+│   │   └── projection/       # Post-commit workspace projection results
 │   ├── catalogstore/         # Generation commit/read/CAS adapters
 │   │   └── s3/               # Optional caller-owned S3 client adapter
 │   ├── catalogartifact/      # Deterministic portable generation format
-│   ├── catalogmeta/          # Source/observation identity vocabulary
 │   ├── catalogremote/        # Versioned manifest/payload/SSE wire client
 │   ├── sources/              # Source interfaces
 │   ├── sync/                 # Acquisition options and results

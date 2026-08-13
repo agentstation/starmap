@@ -3,7 +3,7 @@ package catalogs
 import (
 	"testing"
 
-	"github.com/agentstation/starmap/pkg/catalogmeta"
+	"github.com/agentstation/starmap/pkg/catalogs/evidence"
 	"github.com/agentstation/starmap/pkg/provenance"
 )
 
@@ -22,7 +22,7 @@ func TestProvenanceFindModelScopesSharedIDsByProvider(t *testing.T) {
 	if got := container.FindModelField("provider-b", "shared", "pricing"); len(got) != 1 || got[0].Value != "b" {
 		t.Fatalf("provider-b/shared pricing = %#v", got)
 	}
-	if got := container.FindByResource(catalogmeta.ResourceTypeModel, "shared"); len(got) != 0 {
+	if got := container.FindByResource(evidence.ResourceTypeModel, "shared"); len(got) != 0 {
 		t.Fatalf("bare shared model lookup combined scoped evidence: %#v", got)
 	}
 }

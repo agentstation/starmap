@@ -14,7 +14,7 @@ import (
 	"time"
 
 	"github.com/agentstation/starmap/internal/constants"
-	"github.com/agentstation/starmap/pkg/catalogmeta"
+	"github.com/agentstation/starmap/pkg/catalogs/evidence"
 	"github.com/agentstation/starmap/pkg/errors"
 )
 
@@ -37,12 +37,12 @@ type Fixture struct {
 // FixtureMetadata binds a provider fixture to its source revision and
 // freshness policy.
 type FixtureMetadata struct {
-	Version        uint64                          `json:"version"`
-	Provider       string                          `json:"provider"`
-	FetchedAt      time.Time                       `json:"fetched_at"`
-	SourceRevision catalogmeta.ObservationRevision `json:"source_revision"`
-	Payload        FixturePayload                  `json:"payload"`
-	MaxAge         string                          `json:"max_age"`
+	Version        uint64                       `json:"version"`
+	Provider       string                       `json:"provider"`
+	FetchedAt      time.Time                    `json:"fetched_at"`
+	SourceRevision evidence.ObservationRevision `json:"source_revision"`
+	Payload        FixturePayload               `json:"payload"`
+	MaxAge         string                       `json:"max_age"`
 }
 
 // FixturePayload identifies the exact fixture bytes governed by metadata.
@@ -151,7 +151,7 @@ func (f Fixture) Verify(now time.Time) error {
 			Message: "does not match fixture bytes",
 		}
 	}
-	if metadata.SourceRevision.Kind != catalogmeta.ObservationRevisionKindContentDigest ||
+	if metadata.SourceRevision.Kind != evidence.ObservationRevisionKindContentDigest ||
 		metadata.SourceRevision.Value != checksum {
 		return &errors.ValidationError{
 			Field: "fixture.source_revision", Value: metadata.SourceRevision,
@@ -192,8 +192,8 @@ func (f Fixture) Capture(payload []byte, capturedAt time.Time) error {
 	}
 	checksum := fixtureChecksum(canonical)
 	metadata.FetchedAt = capturedAt.UTC()
-	metadata.SourceRevision = catalogmeta.ObservationRevision{
-		Kind: catalogmeta.ObservationRevisionKindContentDigest, Value: checksum,
+	metadata.SourceRevision = evidence.ObservationRevision{
+		Kind: evidence.ObservationRevisionKindContentDigest, Value: checksum,
 	}
 	metadata.Payload.Checksum = checksum
 	metadataData, err := json.MarshalIndent(metadata, "", "  ")

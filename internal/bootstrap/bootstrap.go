@@ -5,8 +5,8 @@ import (
 	"sync"
 
 	"github.com/agentstation/starmap/internal/embedded"
-	"github.com/agentstation/starmap/pkg/catalogmeta"
 	"github.com/agentstation/starmap/pkg/catalogs"
+	"github.com/agentstation/starmap/pkg/catalogs/evidence"
 	"github.com/agentstation/starmap/pkg/catalogstore"
 	"github.com/agentstation/starmap/pkg/errors"
 )
@@ -105,18 +105,18 @@ func Generation() (catalogstore.Generation, error) {
 		},
 		SyncRunID: "embedded-bootstrap-build",
 		SourceObservations: []catalogs.SourceObservationLink{{
-			Source:        catalogmeta.EmbeddedCatalogID,
+			Source:        evidence.EmbeddedCatalogID,
 			ObservationID: "embedded-bootstrap:" + bootstrapManifest.GenerationID,
 			ObservedAt:    bootstrapManifest.GeneratedAt,
-			Revision: catalogmeta.ObservationRevision{
-				Kind:  catalogmeta.ObservationRevisionKindContentDigest,
+			Revision: evidence.ObservationRevision{
+				Kind:  evidence.ObservationRevisionKindContentDigest,
 				Value: bootstrapManifest.Payload.Checksum,
 			},
-			Completeness:     catalogmeta.ObservationCompletenessComplete,
-			Status:           catalogmeta.ObservationStatusSucceeded,
+			Completeness:     evidence.ObservationCompletenessComplete,
+			Status:           evidence.ObservationStatusSucceeded,
 			EvidenceChecksum: bootstrapManifest.Payload.Checksum,
 		}},
-		ReviewCandidates: []catalogmeta.ReviewCandidate{},
+		ReviewCandidates: []evidence.ReviewCandidate{},
 		Completeness:     catalogs.GenerationCompletenessComplete,
 		ConsumerCompatibility: catalogs.ConsumerCompatibility{
 			MinSchemaVersion: bootstrapManifest.SchemaVersion,

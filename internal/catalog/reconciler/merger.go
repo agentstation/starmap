@@ -10,15 +10,15 @@ import (
 	"github.com/agentstation/utc"
 
 	"github.com/agentstation/starmap/internal/catalog/authority"
-	"github.com/agentstation/starmap/pkg/catalogmeta"
 	"github.com/agentstation/starmap/pkg/catalogs"
+	"github.com/agentstation/starmap/pkg/catalogs/evidence"
 	"github.com/agentstation/starmap/pkg/logging"
 	"github.com/agentstation/starmap/pkg/provenance"
 	"github.com/agentstation/starmap/pkg/sources"
 )
 
 type provenanceTracker interface {
-	Track(catalogmeta.ResourceType, string, string, provenance.Entry)
+	Track(evidence.ResourceType, string, string, provenance.Entry)
 }
 
 // merger implements strategic three-way merge.
@@ -171,7 +171,7 @@ func copyBaselineModel(model *catalogs.Model, ok bool) *catalogs.Model {
 	return &modelCopy
 }
 
-func (merger *merger) calculateAuthorityScore(resourceType sources.ResourceType, fieldPath string, source sources.ID) float64 {
+func (merger *merger) calculateAuthorityScore(resourceType evidence.ResourceType, fieldPath string, source sources.ID) float64 {
 	policy, found := merger.authorities.Find(resourceType, fieldPath)
 	if !found {
 		return 0.0
@@ -239,7 +239,7 @@ func (merger *merger) ModelsForProvider(providerID catalogs.ProviderID, srcs map
 				provInfos[0] = fieldProv.Current
 				provInfos = append(provInfos, fieldProv.History...)
 				allProvenance[key] = provInfos
-				merger.tracker.Track(sources.ResourceTypeModel, modelResourceID, field, fieldProv.Current)
+				merger.tracker.Track(evidence.ResourceTypeModel, modelResourceID, field, fieldProv.Current)
 			}
 		}
 	}
@@ -283,7 +283,7 @@ func (merger *merger) Providers(srcs map[sources.ID][]*catalogs.Provider) ([]*ca
 					continue
 				}
 				merger.tracker.Track(
-					sources.ResourceTypeProvider,
+					evidence.ResourceTypeProvider,
 					string(providerID),
 					field,
 					fieldProvenance.Current,
@@ -317,7 +317,7 @@ func (merger *merger) model(providerID catalogs.ProviderID, modelID string, sour
 	history := make(map[string]provenance.Field)
 	identity := modelIdentity{providerID: providerID, modelID: modelID}
 
-	for _, policy := range merger.authorities.Policies(sources.ResourceTypeModel) {
+	for _, policy := range merger.authorities.Policies(evidence.ResourceTypeModel) {
 		policySources := sourceModels
 		if policy.Path != "Limits" {
 			policySources = merger.modelSourcesForPolicy(providerID, modelID, policy, sourceModels)
@@ -375,7 +375,7 @@ func (merger *merger) model(providerID catalogs.ProviderID, modelID string, sour
 }
 
 func (merger *merger) sourceTime(identity modelIdentity, path string, sourceModels map[sources.ID]*catalogs.Model) utc.Time {
-	policy, found := merger.authorities.Find(sources.ResourceTypeModel, path)
+	policy, found := merger.authorities.Find(evidence.ResourceTypeModel, path)
 	if !found {
 		return utc.Time{}
 	}
@@ -409,7 +409,7 @@ func (merger *merger) provider(providerID catalogs.ProviderID, sourceProviders m
 	history := make(map[string]provenance.Field)
 
 	// Merge each field
-	for _, policy := range merger.authorities.Policies(sources.ResourceTypeProvider) {
+	for _, policy := range merger.authorities.Policies(evidence.ResourceTypeProvider) {
 		policySources := merger.providerSourcesForPolicy(providerID, policy, sourceProviders)
 		merger.applyProviderPolicy(providerID, &merged, policy, policySources, &history)
 	}
@@ -458,7 +458,7 @@ func (merger *merger) providerField(policy authority.Policy, sourceProviders map
 	return nil, ""
 }
 
-func (merger *merger) resolveConflict(resourceType sources.ResourceType, fieldPath string, values map[sources.ID]any) (any, sources.ID, string) {
+func (merger *merger) resolveConflict(resourceType evidence.ResourceType, fieldPath string, values map[sources.ID]any) (any, sources.ID, string) {
 	return merger.strategy.ResolveResourceConflict(resourceType, fieldPath, values)
 }
 
@@ -476,7 +476,7 @@ func (merger *merger) recordModelHistory(
 
 	provenancePath := policy.Evidence()
 	if carried, ok := merger.carried(
-		sources.ResourceTypeModel,
+		evidence.ResourceTypeModel,
 		identity.resourceID(),
 		provenancePath,
 		source,

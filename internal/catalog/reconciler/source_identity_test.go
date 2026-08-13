@@ -11,6 +11,7 @@ import (
 	"github.com/agentstation/starmap/internal/constants"
 	testcatalog "github.com/agentstation/starmap/internal/test/catalog"
 	"github.com/agentstation/starmap/pkg/catalogs"
+	"github.com/agentstation/starmap/pkg/catalogs/evidence"
 	"github.com/agentstation/starmap/pkg/sources"
 )
 
@@ -364,7 +365,7 @@ func assertProviderEvidenceSource(
 ) {
 	t.Helper()
 
-	entries := catalog.Provenance().FindByField(sources.ResourceTypeProvider, "provider-a", field)
+	entries := catalog.Provenance().FindByField(evidence.ResourceTypeProvider, "provider-a", field)
 	if len(entries) != 1 || entries[0].Source != source || entries[0].ObservationID != observationID {
 		t.Fatalf("provider %s evidence = %#v, want %s/%s", field, entries, source, observationID)
 	}

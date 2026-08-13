@@ -1,4 +1,4 @@
-package catalogmeta
+package evidence
 
 // ResourceType identifies the type of resource being tracked or merged in the catalog system.
 // This allows provenance tracking and reconciliation to handle different resource types

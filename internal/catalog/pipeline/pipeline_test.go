@@ -10,8 +10,8 @@ import (
 
 	"github.com/agentstation/starmap/internal/catalog/reconciler"
 	"github.com/agentstation/starmap/internal/catalog/workspace"
-	"github.com/agentstation/starmap/pkg/catalogmeta"
 	"github.com/agentstation/starmap/pkg/catalogs"
+	"github.com/agentstation/starmap/pkg/catalogs/evidence"
 	"github.com/agentstation/starmap/pkg/differ"
 	pkgerrors "github.com/agentstation/starmap/pkg/errors"
 	"github.com/agentstation/starmap/pkg/logging"
@@ -28,7 +28,7 @@ type pipelineTestStore struct {
 	appliedOptions   *pkgsync.Options
 	appliedChanges   *differ.Changeset
 	observations     []sources.Observation
-	reviewCandidates []catalogmeta.ReviewCandidate
+	reviewCandidates []evidence.ReviewCandidate
 	workspaceInput   workspace.InputExpectation
 }
 
@@ -45,7 +45,7 @@ func (s *pipelineTestStore) Apply(
 	options *pkgsync.Options,
 	changeset *differ.Changeset,
 	observations []sources.Observation,
-	reviewCandidates []catalogmeta.ReviewCandidate,
+	reviewCandidates []evidence.ReviewCandidate,
 	workspaceInput workspace.InputExpectation,
 ) (Publication, error) {
 	s.applyCalls++
@@ -53,7 +53,7 @@ func (s *pipelineTestStore) Apply(
 	s.appliedOptions = options
 	s.appliedChanges = changeset
 	s.observations = append([]sources.Observation(nil), observations...)
-	s.reviewCandidates = append([]catalogmeta.ReviewCandidate(nil), reviewCandidates...)
+	s.reviewCandidates = append([]evidence.ReviewCandidate(nil), reviewCandidates...)
 	s.workspaceInput = workspaceInput
 	return Publication{}, nil
 }
@@ -286,8 +286,8 @@ func TestPipelinePublishesReviewCandidatesWithoutCatalogChanges(t *testing.T) {
 			Changeset:         emptyChangeset(),
 			ProviderAPICounts: map[catalogs.ProviderID]int{},
 			ModelProviderMap:  map[string]catalogs.ProviderID{},
-			ReviewCandidates: []catalogmeta.ReviewCandidate{{
-				Code:                catalogmeta.ReviewCandidateUnresolvedModelReference,
+			ReviewCandidates: []evidence.ReviewCandidate{{
+				Code:                evidence.ReviewCandidateUnresolvedModelReference,
 				ProviderID:          "provider",
 				ProviderModelID:     "opaque/model@2026",
 				SourceID:            observation.SourceID,
@@ -399,8 +399,8 @@ func TestPipelineFreshReconcilesAgainstEmptyBaseline(t *testing.T) {
 func TestPipelineReturnsCallerOwnedReviewCandidates(t *testing.T) {
 	t.Parallel()
 
-	issue := catalogmeta.ReviewCandidate{
-		Code:            catalogmeta.ReviewCandidateUnresolvedModelReference,
+	issue := evidence.ReviewCandidate{
+		Code:            evidence.ReviewCandidateUnresolvedModelReference,
 		ProviderID:      "provider",
 		ProviderModelID: "new-model",
 		Reason:          "quarantined",
@@ -410,7 +410,7 @@ func TestPipelineReturnsCallerOwnedReviewCandidates(t *testing.T) {
 		Changeset:         emptyChangeset(),
 		ProviderAPICounts: map[catalogs.ProviderID]int{},
 		ModelProviderMap:  map[string]catalogs.ProviderID{},
-		ReviewCandidates:  []catalogmeta.ReviewCandidate{issue},
+		ReviewCandidates:  []evidence.ReviewCandidate{issue},
 	}
 	store := &pipelineTestStore{catalog: asSnapshot(catalogs.NewEmpty())}
 	runner := newStubPipeline(store, reconcileResult)

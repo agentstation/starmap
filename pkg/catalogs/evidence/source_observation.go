@@ -1,4 +1,4 @@
-package catalogmeta
+package evidence
 
 // ObservationRevisionKind identifies how an upstream revision was obtained.
 type ObservationRevisionKind string

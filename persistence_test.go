@@ -8,8 +8,8 @@ import (
 	"time"
 
 	"github.com/agentstation/starmap/internal/catalog/workspace"
-	"github.com/agentstation/starmap/pkg/catalogmeta"
 	"github.com/agentstation/starmap/pkg/catalogs"
+	catalogprojection "github.com/agentstation/starmap/pkg/catalogs/projection"
 	"github.com/agentstation/starmap/pkg/catalogstore"
 	"github.com/agentstation/starmap/pkg/sources"
 )
@@ -104,8 +104,8 @@ func TestProjectionFailureLeavesCommittedGenerationActiveAndReportsRepair(t *tes
 		},
 		workspace.InputExpectation{},
 	)
-	if projection.Status != catalogmeta.ProjectionStatusPendingRepair ||
-		projection.IssueCode != catalogmeta.ProjectionIssueWorkspaceFailed {
+	if projection.Status != catalogprojection.ProjectionStatusPendingRepair ||
+		projection.IssueCode != catalogprojection.ProjectionIssueWorkspaceFailed {
 		t.Fatalf("projection = %#v, want pending repair", projection)
 	}
 	current, err := store.Current(context.Background())
@@ -153,7 +153,7 @@ func TestSuccessfulProjectionReportsCommittedGenerationAndWorkspaceDigest(t *tes
 		},
 		workspace.InputExpectation{},
 	)
-	if projection.Status != catalogmeta.ProjectionStatusApplied {
+	if projection.Status != catalogprojection.ProjectionStatusApplied {
 		t.Fatalf("projection = %#v, want applied", projection)
 	}
 	if projection.GenerationID != publication.GenerationID {

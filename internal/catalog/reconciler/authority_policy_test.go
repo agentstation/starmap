@@ -4,16 +4,17 @@ import (
 	"testing"
 
 	"github.com/agentstation/starmap/internal/catalog/authority"
+	"github.com/agentstation/starmap/pkg/catalogs/evidence"
 	"github.com/agentstation/starmap/pkg/sources"
 )
 
 func TestAuthorityStrategySelectsEveryPolicyRankDeterministically(t *testing.T) {
 	table := authority.New()
 	strategy := NewAuthorityStrategy(table)
-	for _, resource := range []sources.ResourceType{
-		sources.ResourceTypeModel,
-		sources.ResourceTypeProvider,
-		sources.ResourceTypeAuthor,
+	for _, resource := range []evidence.ResourceType{
+		evidence.ResourceTypeModel,
+		evidence.ResourceTypeProvider,
+		evidence.ResourceTypeAuthor,
 	} {
 		for _, policy := range table.Policies(resource) {
 			t.Run(resource.String()+"/"+policy.Path, func(t *testing.T) {
@@ -44,10 +45,10 @@ func TestAuthorityStrategySelectsEveryPolicyRankDeterministically(t *testing.T) 
 func TestAuthorityStrategyAppliesEveryPolicyEmptyContract(t *testing.T) {
 	table := authority.New()
 	strategy := NewAuthorityStrategy(table)
-	for _, resource := range []sources.ResourceType{
-		sources.ResourceTypeModel,
-		sources.ResourceTypeProvider,
-		sources.ResourceTypeAuthor,
+	for _, resource := range []evidence.ResourceType{
+		evidence.ResourceTypeModel,
+		evidence.ResourceTypeProvider,
+		evidence.ResourceTypeAuthor,
 	} {
 		for _, policy := range table.Policies(resource) {
 			t.Run(resource.String()+"/"+policy.Path, func(t *testing.T) {

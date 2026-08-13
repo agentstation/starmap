@@ -7,7 +7,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/agentstation/starmap/pkg/catalogmeta"
+	"github.com/agentstation/starmap/pkg/catalogs/evidence"
 	"github.com/agentstation/starmap/pkg/provenance"
 )
 
@@ -106,7 +106,7 @@ func TestCatalogSemanticChecksumSeparatesFactsFromObservationEvidence(t *testing
 	setEvidence := func(observedAt time.Time, observationID string) {
 		builder.SetProvenance(provenance.Map{
 			"providers.provider.Name": {{
-				Source: catalogmeta.ProvidersID, Field: "Name", Value: "Provider",
+				Source: evidence.ProvidersID, Field: "Name", Value: "Provider",
 				Timestamp: observedAt, ObservedAt: observedAt,
 				ObservationID:    observationID,
 				EvidenceChecksum: "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",

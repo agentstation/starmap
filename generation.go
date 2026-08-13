@@ -8,8 +8,8 @@ import (
 	"time"
 
 	bootstraploader "github.com/agentstation/starmap/internal/bootstrap"
-	"github.com/agentstation/starmap/pkg/catalogmeta"
 	"github.com/agentstation/starmap/pkg/catalogs"
+	catalogevidence "github.com/agentstation/starmap/pkg/catalogs/evidence"
 	"github.com/agentstation/starmap/pkg/catalogstore"
 	"github.com/agentstation/starmap/pkg/errors"
 )
@@ -65,7 +65,7 @@ func (c *Client) Generation(ctx context.Context, id string) (catalogstore.Genera
 const (
 	generationValidatorVersion = "starmap-v1"
 	generationValidationCheck  = "catalog_publication"
-	customUpdateSourceID       = catalogmeta.SourceID("custom_update")
+	customUpdateSourceID       = catalogevidence.SourceID("custom_update")
 )
 
 func (c *Client) commitAndPublish(
@@ -229,12 +229,12 @@ func (c *Client) newGeneration(
 			Source:        customUpdateSourceID,
 			ObservationID: "observation:" + syncRunID,
 			ObservedAt:    generatedAt,
-			Revision: catalogmeta.ObservationRevision{
-				Kind:  catalogmeta.ObservationRevisionKindContentDigest,
+			Revision: catalogevidence.ObservationRevision{
+				Kind:  catalogevidence.ObservationRevisionKindContentDigest,
 				Value: descriptor.Checksum,
 			},
-			Completeness:     catalogmeta.ObservationCompletenessComplete,
-			Status:           catalogmeta.ObservationStatusSucceeded,
+			Completeness:     catalogevidence.ObservationCompletenessComplete,
+			Status:           catalogevidence.ObservationStatusSucceeded,
 			EvidenceChecksum: descriptor.Checksum,
 		})
 	}
@@ -250,10 +250,10 @@ func (c *Client) newGeneration(
 				err,
 			)
 		}
-		if observation.Completeness == catalogmeta.ObservationCompletenessPartial {
+		if observation.Completeness == catalogevidence.ObservationCompletenessPartial {
 			completeness = catalogs.GenerationCompletenessPartial
 		}
-		if observation.Status == catalogmeta.ObservationStatusDegraded {
+		if observation.Status == catalogevidence.ObservationStatusDegraded {
 			degraded = true
 			degradationReasons = append(
 				degradationReasons,
@@ -279,7 +279,7 @@ func (c *Client) newGeneration(
 			},
 			SyncRunID:          syncRunID,
 			SourceObservations: observations,
-			ReviewCandidates:   append([]catalogmeta.ReviewCandidate{}, evidence.ReviewCandidates...),
+			ReviewCandidates:   append([]catalogevidence.ReviewCandidate{}, evidence.ReviewCandidates...),
 			Completeness:       completeness,
 			Degraded:           degraded,
 			DegradationReasons: degradationReasons,

@@ -5,8 +5,8 @@ import (
 	"strings"
 
 	"github.com/agentstation/starmap/internal/catalog/workspace"
-	"github.com/agentstation/starmap/pkg/catalogmeta"
 	"github.com/agentstation/starmap/pkg/catalogs"
+	"github.com/agentstation/starmap/pkg/catalogs/projection"
 	"github.com/agentstation/starmap/pkg/catalogstore"
 	"github.com/agentstation/starmap/pkg/errors"
 )
@@ -22,7 +22,7 @@ type RollbackResult struct {
 	// Sequence is the in-process publication sequence after rollback.
 	Sequence uint64
 	// Projection reports exact workspace restoration or pending repair.
-	Projection *catalogmeta.ProjectionResult
+	Projection *projection.ProjectionResult
 }
 
 // Rollback atomically makes a retained generation current and projects its
@@ -124,19 +124,19 @@ func projectRollbackCatalog(
 	path string,
 	identity workspace.Identity,
 	input workspace.InputExpectation,
-) *catalogmeta.ProjectionResult {
-	result := &catalogmeta.ProjectionResult{
+) *projection.ProjectionResult {
+	result := &projection.ProjectionResult{
 		Path:         path,
-		Status:       catalogmeta.ProjectionStatusPendingRepair,
+		Status:       projection.ProjectionStatusPendingRepair,
 		GenerationID: identity.GenerationID,
 	}
 	receipt, err := workspace.ProjectExpected(ctx, path, catalog, identity, input)
 	result.WorkspaceChecksum = receipt.WorkspaceChecksum
 	if err != nil {
-		result.IssueCode = catalogmeta.ProjectionIssueWorkspaceFailed
+		result.IssueCode = projection.ProjectionIssueWorkspaceFailed
 		return result
 	}
-	result.Status = catalogmeta.ProjectionStatusApplied
+	result.Status = projection.ProjectionStatusApplied
 	return result
 }
 

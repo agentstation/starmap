@@ -1,4 +1,4 @@
-package catalogmeta
+package evidence
 
 import "slices"
 

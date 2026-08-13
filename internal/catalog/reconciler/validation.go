@@ -3,7 +3,7 @@ package reconciler
 import (
 	"fmt"
 
-	"github.com/agentstation/starmap/pkg/sources"
+	"github.com/agentstation/starmap/pkg/catalogs/evidence"
 )
 
 // ValidationResult represents the result of validating a catalog or changeset.
@@ -15,7 +15,7 @@ type ValidationResult struct {
 
 // ValidationError represents a validation error.
 type ValidationError struct {
-	ResourceType sources.ResourceType
+	ResourceType evidence.ResourceType
 	ResourceID   string
 	Field        string
 	Message      string
@@ -23,7 +23,7 @@ type ValidationError struct {
 
 // ValidationWarning represents a validation warning.
 type ValidationWarning struct {
-	ResourceType sources.ResourceType
+	ResourceType evidence.ResourceType
 	ResourceID   string
 	Field        string
 	Message      string

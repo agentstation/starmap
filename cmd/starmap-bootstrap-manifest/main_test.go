@@ -11,8 +11,8 @@ import (
 
 	"github.com/agentstation/starmap/internal/bootstrap/manifest"
 	"github.com/agentstation/starmap/internal/constants"
-	"github.com/agentstation/starmap/pkg/catalogmeta"
 	"github.com/agentstation/starmap/pkg/catalogs"
+	"github.com/agentstation/starmap/pkg/catalogs/evidence"
 	"github.com/agentstation/starmap/pkg/catalogstore"
 )
 
@@ -163,19 +163,19 @@ func TestScheduledGenerationManifestUsesExactCommittedIdentity(t *testing.T) {
 			SyncRunID: "sync-exact",
 			SourceObservations: []catalogs.SourceObservationLink{
 				{
-					Source:        catalogmeta.ProvidersID,
+					Source:        evidence.ProvidersID,
 					ObservationID: "providers-exact",
 					ObservedAt:    generatedAt,
-					Revision: catalogmeta.ObservationRevision{
-						Kind:  catalogmeta.ObservationRevisionKindContentDigest,
+					Revision: evidence.ObservationRevision{
+						Kind:  evidence.ObservationRevisionKindContentDigest,
 						Value: descriptor.Checksum,
 					},
-					Completeness:     catalogmeta.ObservationCompletenessComplete,
-					Status:           catalogmeta.ObservationStatusSucceeded,
+					Completeness:     evidence.ObservationCompletenessComplete,
+					Status:           evidence.ObservationStatusSucceeded,
 					EvidenceChecksum: descriptor.Checksum,
 				},
 			},
-			ReviewCandidates: []catalogmeta.ReviewCandidate{},
+			ReviewCandidates: []evidence.ReviewCandidate{},
 			Completeness:     catalogs.GenerationCompletenessComplete,
 			ConsumerCompatibility: catalogs.ConsumerCompatibility{
 				MinSchemaVersion: catalogs.CurrentCatalogSchemaVersion,

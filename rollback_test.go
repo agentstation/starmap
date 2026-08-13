@@ -9,8 +9,8 @@ import (
 	"time"
 
 	"github.com/agentstation/starmap/internal/catalog/workspace"
-	"github.com/agentstation/starmap/pkg/catalogmeta"
 	"github.com/agentstation/starmap/pkg/catalogs"
+	catalogprojection "github.com/agentstation/starmap/pkg/catalogs/projection"
 	"github.com/agentstation/starmap/pkg/catalogstore"
 	pkgerrors "github.com/agentstation/starmap/pkg/errors"
 	"github.com/agentstation/starmap/pkg/provenance"
@@ -254,7 +254,7 @@ func publishRollbackFixture(
 		},
 		input,
 	)
-	if projection.Status != catalogmeta.ProjectionStatusApplied {
+	if projection.Status != catalogprojection.ProjectionStatusApplied {
 		t.Fatalf("fixture projection = %#v, want applied", projection)
 	}
 	generation, err := client.CurrentGeneration(context.Background())

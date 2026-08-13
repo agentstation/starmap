@@ -13,25 +13,25 @@ import (
 
 	"github.com/goccy/go-yaml"
 
-	"github.com/agentstation/starmap/pkg/catalogmeta"
+	"github.com/agentstation/starmap/pkg/catalogs/evidence"
 	"github.com/agentstation/starmap/pkg/errors"
 )
 
 // Entry records the origin and history of one field value.
 type Entry struct {
-	Source           catalogmeta.SourceID            // Source that provided the value (e.g., "providers", "models_dev_git")
-	Field            string                          // Field path
-	Value            any                             // The actual value
-	Timestamp        time.Time                       // When the value was set
-	ObservationID    string                          // Stable identity of the winning source observation
-	ObservedAt       time.Time                       // When the winning source was observed
-	Revision         catalogmeta.ObservationRevision // Exact revision of the winning observation
-	EvidenceChecksum string                          // Digest binding the winning normalized evidence
-	Rejections       []Rejection                     // Higher-authority observations rejected before selection
-	Authority        float64                         // Authority score (0.0 to 1.0)
-	Confidence       float64                         // Confidence in the value (0.0 to 1.0)
-	Reason           string                          // Reason for selecting this value
-	PreviousValue    any                             // Previous value if updated
+	Source           evidence.SourceID            // Source that provided the value (e.g., "providers", "models_dev_git")
+	Field            string                       // Field path
+	Value            any                          // The actual value
+	Timestamp        time.Time                    // When the value was set
+	ObservationID    string                       // Stable identity of the winning source observation
+	ObservedAt       time.Time                    // When the winning source was observed
+	Revision         evidence.ObservationRevision // Exact revision of the winning observation
+	EvidenceChecksum string                       // Digest binding the winning normalized evidence
+	Rejections       []Rejection                  // Higher-authority observations rejected before selection
+	Authority        float64                      // Authority score (0.0 to 1.0)
+	Confidence       float64                      // Confidence in the value (0.0 to 1.0)
+	Reason           string                       // Reason for selecting this value
+	PreviousValue    any                          // Previous value if updated
 }
 
 // MarshalJSON makes interface-valued evidence independent of the concrete Go
@@ -49,13 +49,13 @@ func (e Entry) MarshalJSON() ([]byte, error) {
 		return nil, fmt.Errorf("encode provenance previous value: %w", err)
 	}
 	type canonicalEntry struct {
-		Source           catalogmeta.SourceID
+		Source           evidence.SourceID
 		Field            string
 		Value            json.RawMessage
 		Timestamp        time.Time
 		ObservationID    string
 		ObservedAt       time.Time
-		Revision         catalogmeta.ObservationRevision
+		Revision         evidence.ObservationRevision
 		EvidenceChecksum string
 		Rejections       []Rejection
 		Authority        float64
@@ -88,27 +88,27 @@ func (e Entry) MarshalYAML() ([]byte, error) {
 		return nil, fmt.Errorf("encode provenance previous value: %w", err)
 	}
 	type canonicalRejection struct {
-		Source catalogmeta.SourceID `json:"source"`
-		Reason string               `json:"reason"`
+		Source evidence.SourceID `json:"source"`
+		Reason string            `json:"reason"`
 	}
 	rejections := make([]canonicalRejection, 0, len(e.Rejections))
 	for _, rejection := range e.Rejections {
 		rejections = append(rejections, canonicalRejection(rejection))
 	}
 	type canonicalEntry struct {
-		Source           catalogmeta.SourceID            `json:"source"`
-		Field            string                          `json:"field"`
-		Value            json.RawMessage                 `json:"value"`
-		Timestamp        time.Time                       `json:"timestamp"`
-		ObservationID    string                          `json:"observationid"`
-		ObservedAt       time.Time                       `json:"observedat"`
-		Revision         catalogmeta.ObservationRevision `json:"revision"`
-		EvidenceChecksum string                          `json:"evidencechecksum"`
-		Rejections       []canonicalRejection            `json:"rejections"`
-		Authority        float64                         `json:"authority"`
-		Confidence       float64                         `json:"confidence"`
-		Reason           string                          `json:"reason"`
-		PreviousValue    json.RawMessage                 `json:"previousvalue"`
+		Source           evidence.SourceID            `json:"source"`
+		Field            string                       `json:"field"`
+		Value            json.RawMessage              `json:"value"`
+		Timestamp        time.Time                    `json:"timestamp"`
+		ObservationID    string                       `json:"observationid"`
+		ObservedAt       time.Time                    `json:"observedat"`
+		Revision         evidence.ObservationRevision `json:"revision"`
+		EvidenceChecksum string                       `json:"evidencechecksum"`
+		Rejections       []canonicalRejection         `json:"rejections"`
+		Authority        float64                      `json:"authority"`
+		Confidence       float64                      `json:"confidence"`
+		Reason           string                       `json:"reason"`
+		PreviousValue    json.RawMessage              `json:"previousvalue"`
 	}
 	encoded, err := json.Marshal(canonicalEntry{
 		Source: e.Source, Field: e.Field, Value: value, Timestamp: e.Timestamp,
@@ -172,8 +172,8 @@ func canonicalDynamicJSON(value any) (json.RawMessage, error) {
 
 // Rejection records why a higher-authority field observation did not win.
 type Rejection struct {
-	Source catalogmeta.SourceID // Source whose field observation was rejected
-	Reason string               // Stable human-readable validation or applicability reason
+	Source evidence.SourceID // Source whose field observation was rejected
+	Reason string            // Stable human-readable validation or applicability reason
 }
 
 // Map tracks provenance for multiple resources.
@@ -194,7 +194,7 @@ func NewTracker(enabled bool) *Tracker {
 }
 
 // Track records provenance for a field.
-func (p *Tracker) Track(resourceType catalogmeta.ResourceType, resourceID string, field string, history Entry) {
+func (p *Tracker) Track(resourceType evidence.ResourceType, resourceID string, field string, history Entry) {
 	if !p.enabled {
 		return
 	}
@@ -210,7 +210,7 @@ func (p *Tracker) Track(resourceType catalogmeta.ResourceType, resourceID string
 }
 
 // FindByField retrieves provenance for a specific field.
-func (p *Tracker) FindByField(resourceType catalogmeta.ResourceType, resourceID string, field string) []Entry {
+func (p *Tracker) FindByField(resourceType evidence.ResourceType, resourceID string, field string) []Entry {
 	if !p.enabled {
 		return nil
 	}
@@ -220,7 +220,7 @@ func (p *Tracker) FindByField(resourceType catalogmeta.ResourceType, resourceID 
 }
 
 // FindByResource retrieves all provenance for a resource.
-func (p *Tracker) FindByResource(resourceType catalogmeta.ResourceType, resourceID string) map[string][]Entry {
+func (p *Tracker) FindByResource(resourceType evidence.ResourceType, resourceID string) map[string][]Entry {
 	if !p.enabled {
 		return nil
 	}
@@ -277,7 +277,7 @@ type Report struct {
 
 // ResourceProvenance contains provenance for a single resource.
 type ResourceProvenance struct {
-	Type   catalogmeta.ResourceType // Resource type (e.g., "model", "provider", "author")
+	Type   evidence.ResourceType // Resource type (e.g., "model", "provider", "author")
 	ID     string
 	Fields map[string]Field
 }
@@ -291,10 +291,10 @@ type Field struct {
 
 // ConflictInfo describes a conflict that was resolved.
 type ConflictInfo struct {
-	Sources        []catalogmeta.SourceID // Sources that had conflicting values
-	Values         []any                  // The conflicting values
-	Resolution     string                 // How the conflict was resolved
-	SelectedSource catalogmeta.SourceID   // Which source was selected
+	Sources        []evidence.SourceID // Sources that had conflicting values
+	Values         []any               // The conflicting values
+	Resolution     string              // How the conflict was resolved
+	SelectedSource evidence.SourceID   // Which source was selected
 }
 
 // GenerateReport creates a provenance report from a Map.
@@ -320,7 +320,7 @@ func GenerateReport(provenance Map) *Report {
 		resource, exists := report.Resources[resourceKey]
 		if !exists {
 			resource = ResourceProvenance{
-				Type:   catalogmeta.ResourceType(resourceType),
+				Type:   evidence.ResourceType(resourceType),
 				ID:     resourceID,
 				Fields: make(map[string]Field),
 			}
@@ -365,7 +365,7 @@ func detectConflicts(infos []Entry) []ConflictInfo {
 	for _, group := range byTime {
 		if len(group) > 1 {
 			conflict := ConflictInfo{
-				Sources: []catalogmeta.SourceID{},
+				Sources: []evidence.SourceID{},
 				Values:  []any{},
 			}
 

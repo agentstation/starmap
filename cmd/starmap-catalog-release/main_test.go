@@ -13,8 +13,8 @@ import (
 
 	"github.com/agentstation/starmap/internal/constants"
 	"github.com/agentstation/starmap/pkg/catalogartifact"
-	"github.com/agentstation/starmap/pkg/catalogmeta"
 	"github.com/agentstation/starmap/pkg/catalogs"
+	"github.com/agentstation/starmap/pkg/catalogs/evidence"
 	"github.com/agentstation/starmap/pkg/catalogstore"
 )
 
@@ -216,13 +216,13 @@ func releaseFixtureStore(
 	generatedAt := time.Date(2026, time.July, 29, 22, 0, 0, 0, time.UTC)
 	links := []catalogs.SourceObservationLink{
 		releaseObservation(
-			catalogmeta.ProvidersID,
+			evidence.ProvidersID,
 			"providers-observation",
 			descriptor.Checksum,
 			generatedAt,
 		),
 		releaseObservation(
-			catalogmeta.ModelsDevGitID,
+			evidence.ModelsDevGitID,
 			"modelsdev-observation",
 			descriptor.Checksum,
 			generatedAt,
@@ -245,7 +245,7 @@ func releaseFixtureStore(
 			},
 			SyncRunID:          "sync-exact-release",
 			SourceObservations: links,
-			ReviewCandidates:   []catalogmeta.ReviewCandidate{},
+			ReviewCandidates:   []evidence.ReviewCandidate{},
 			Completeness:       catalogs.GenerationCompletenessComplete,
 			ConsumerCompatibility: catalogs.ConsumerCompatibility{
 				MinSchemaVersion: catalogs.CurrentCatalogSchemaVersion,
@@ -266,7 +266,7 @@ func releaseFixtureStore(
 }
 
 func releaseObservation(
-	source catalogmeta.SourceID,
+	source evidence.SourceID,
 	id string,
 	checksum string,
 	observedAt time.Time,
@@ -275,12 +275,12 @@ func releaseObservation(
 		Source:        source,
 		ObservationID: id,
 		ObservedAt:    observedAt,
-		Revision: catalogmeta.ObservationRevision{
-			Kind:  catalogmeta.ObservationRevisionKindContentDigest,
+		Revision: evidence.ObservationRevision{
+			Kind:  evidence.ObservationRevisionKindContentDigest,
 			Value: checksum,
 		},
-		Completeness:     catalogmeta.ObservationCompletenessComplete,
-		Status:           catalogmeta.ObservationStatusSucceeded,
+		Completeness:     evidence.ObservationCompletenessComplete,
+		Status:           evidence.ObservationStatusSucceeded,
 		EvidenceChecksum: checksum,
 	}
 }

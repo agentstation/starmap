@@ -9,8 +9,8 @@ import (
 
 	"github.com/google/go-cmp/cmp"
 
-	"github.com/agentstation/starmap/pkg/catalogmeta"
 	"github.com/agentstation/starmap/pkg/catalogs"
+	"github.com/agentstation/starmap/pkg/catalogs/evidence"
 	"github.com/agentstation/starmap/pkg/catalogstore"
 	"github.com/agentstation/starmap/pkg/errors"
 )
@@ -102,7 +102,7 @@ func assertExternalGeneration(
 
 func externalGeneration(id, value string) catalogstore.Generation {
 	payload := fmt.Appendf(nil, `{"value":%q}`, value)
-	evidence := catalogs.DescribeCatalogPayload([]byte("evidence:" + value))
+	evidenceDescriptor := catalogs.DescribeCatalogPayload([]byte("evidence:" + value))
 	generatedAt := time.Date(2026, time.July, 29, 19, 30, 0, 0, time.UTC)
 	return catalogstore.Generation{
 		Manifest: catalogs.GenerationManifest{
@@ -122,19 +122,19 @@ func externalGeneration(id, value string) catalogstore.Generation {
 			SyncRunID: "sync-" + id,
 			SourceObservations: []catalogs.SourceObservationLink{
 				{
-					Source:        catalogmeta.LocalCatalogID,
+					Source:        evidence.LocalCatalogID,
 					ObservationID: "observation-" + id,
 					ObservedAt:    generatedAt,
-					Revision: catalogmeta.ObservationRevision{
-						Kind:  catalogmeta.ObservationRevisionKindContentDigest,
-						Value: evidence.Checksum,
+					Revision: evidence.ObservationRevision{
+						Kind:  evidence.ObservationRevisionKindContentDigest,
+						Value: evidenceDescriptor.Checksum,
 					},
-					Completeness:     catalogmeta.ObservationCompletenessComplete,
-					Status:           catalogmeta.ObservationStatusSucceeded,
-					EvidenceChecksum: evidence.Checksum,
+					Completeness:     evidence.ObservationCompletenessComplete,
+					Status:           evidence.ObservationStatusSucceeded,
+					EvidenceChecksum: evidenceDescriptor.Checksum,
 				},
 			},
-			ReviewCandidates: []catalogmeta.ReviewCandidate{},
+			ReviewCandidates: []evidence.ReviewCandidate{},
 			Completeness:     catalogs.GenerationCompletenessComplete,
 			ConsumerCompatibility: catalogs.ConsumerCompatibility{
 				MinSchemaVersion: catalogs.CurrentCatalogSchemaVersion,

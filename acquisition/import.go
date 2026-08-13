@@ -10,8 +10,8 @@ import (
 	"github.com/agentstation/starmap/internal/catalog/workspace"
 	"github.com/agentstation/starmap/internal/sources/local"
 	"github.com/agentstation/starmap/pkg/catalogartifact"
-	"github.com/agentstation/starmap/pkg/catalogmeta"
 	"github.com/agentstation/starmap/pkg/catalogs"
+	"github.com/agentstation/starmap/pkg/catalogs/projection"
 	"github.com/agentstation/starmap/pkg/catalogstore"
 	"github.com/agentstation/starmap/pkg/errors"
 	"github.com/agentstation/starmap/pkg/sources"
@@ -25,7 +25,7 @@ type ImportResult struct {
 	// Publication identifies the locally committed reconciled generation.
 	Publication starmap.Publication
 	// Projection reports the post-commit human-workspace projection.
-	Projection *catalogmeta.ProjectionResult
+	Projection *projection.ProjectionResult
 }
 
 // ImportRelease verifies a portable catalog release, reconciles it as a trusted

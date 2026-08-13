@@ -11,6 +11,7 @@ import (
 	"github.com/agentstation/starmap/internal/catalog/authority"
 	"github.com/agentstation/starmap/internal/catalog/reconciler"
 	"github.com/agentstation/starmap/pkg/catalogs"
+	"github.com/agentstation/starmap/pkg/catalogs/evidence"
 	"github.com/agentstation/starmap/pkg/differ"
 	"github.com/agentstation/starmap/pkg/provenance"
 	"github.com/agentstation/starmap/pkg/sources"
@@ -256,7 +257,7 @@ func TestProvenanceTracking(t *testing.T) {
 
 	// Track some field changes
 	tracker.Track(
-		sources.ResourceTypeModel,
+		evidence.ResourceTypeModel,
 		"gpt-4",
 		"pricing.input",
 		provenance.Entry{
@@ -268,7 +269,7 @@ func TestProvenanceTracking(t *testing.T) {
 	)
 
 	// Retrieve provenance
-	provenance := tracker.FindByField(sources.ResourceTypeModel, "gpt-4", "pricing.input")
+	provenance := tracker.FindByField(evidence.ResourceTypeModel, "gpt-4", "pricing.input")
 
 	if len(provenance) == 0 {
 		t.Error("Expected provenance to be tracked")

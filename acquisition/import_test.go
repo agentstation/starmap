@@ -9,8 +9,9 @@ import (
 
 	"github.com/agentstation/starmap"
 	"github.com/agentstation/starmap/pkg/catalogartifact"
-	"github.com/agentstation/starmap/pkg/catalogmeta"
 	"github.com/agentstation/starmap/pkg/catalogs"
+	"github.com/agentstation/starmap/pkg/catalogs/evidence"
+	"github.com/agentstation/starmap/pkg/catalogs/projection"
 	"github.com/agentstation/starmap/pkg/catalogstore"
 	pkgerrors "github.com/agentstation/starmap/pkg/errors"
 )
@@ -91,7 +92,7 @@ func TestImportReleaseVerifiesReconcilesPublishesAndRollsBack(t *testing.T) {
 		t.Fatalf("import result = %#v", result)
 	}
 	if result.Projection == nil ||
-		result.Projection.Status != catalogmeta.ProjectionStatusApplied {
+		result.Projection.Status != projection.ProjectionStatusApplied {
 		t.Fatalf("workspace projection = %#v, want applied", result.Projection)
 	}
 
@@ -122,7 +123,7 @@ func TestImportReleaseVerifiesReconcilesPublishesAndRollsBack(t *testing.T) {
 	}
 	var releaseLinkFound bool
 	for _, observation := range current.Manifest.SourceObservations {
-		if observation.Source == catalogmeta.ReleaseArtifactID {
+		if observation.Source == evidence.ReleaseArtifactID {
 			releaseLinkFound = true
 			if observation.Revision.Value != result.SourceGenerationID {
 				t.Fatalf("release revision = %#v", observation.Revision)

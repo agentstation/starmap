@@ -10,8 +10,8 @@ import (
 
 	"github.com/agentstation/starmap/internal/providers/clients"
 	testcatalog "github.com/agentstation/starmap/internal/test/catalog"
-	"github.com/agentstation/starmap/pkg/catalogmeta"
 	"github.com/agentstation/starmap/pkg/catalogs"
+	"github.com/agentstation/starmap/pkg/catalogs/evidence"
 	"github.com/agentstation/starmap/pkg/sources"
 	pkgsync "github.com/agentstation/starmap/pkg/sync"
 )
@@ -172,10 +172,10 @@ func TestYAMLOnlyProviderAcquisitionPublishesReviewedOfferingAndQuarantinesUnkno
 		t.Fatalf("review candidates = %#v, want one", prepared.Result.ReviewCandidates)
 	}
 	candidate := prepared.Result.ReviewCandidates[0]
-	if candidate.Code != catalogmeta.ReviewCandidateUnresolvedModelReference ||
+	if candidate.Code != evidence.ReviewCandidateUnresolvedModelReference ||
 		candidate.ProviderID != string(providerID) ||
 		candidate.ProviderModelID != unknownModelID ||
-		candidate.SourceID != catalogmeta.ProvidersID ||
+		candidate.SourceID != evidence.ProvidersID ||
 		candidate.SourceObservationID == "" || candidate.SourceRevision.Kind == "" ||
 		candidate.EvidenceChecksum == "" {
 		t.Fatalf("review candidate = %#v", candidate)

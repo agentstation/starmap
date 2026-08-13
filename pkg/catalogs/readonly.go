@@ -4,7 +4,7 @@ import (
 	"slices"
 	"strings"
 
-	"github.com/agentstation/starmap/pkg/catalogmeta"
+	"github.com/agentstation/starmap/pkg/catalogs/evidence"
 	"github.com/agentstation/starmap/pkg/errors"
 	"github.com/agentstation/starmap/pkg/provenance"
 )
@@ -395,10 +395,10 @@ type provenanceReader struct{ source ProvenanceReader }
 
 func (r provenanceReader) Map() provenance.Map { return r.source.Map() }
 func (r provenanceReader) Len() int            { return r.source.Len() }
-func (r provenanceReader) FindByField(resourceType catalogmeta.ResourceType, resourceID, field string) []provenance.Entry {
+func (r provenanceReader) FindByField(resourceType evidence.ResourceType, resourceID, field string) []provenance.Entry {
 	return r.source.FindByField(resourceType, resourceID, field)
 }
-func (r provenanceReader) FindByResource(resourceType catalogmeta.ResourceType, resourceID string) map[string][]provenance.Entry {
+func (r provenanceReader) FindByResource(resourceType evidence.ResourceType, resourceID string) map[string][]provenance.Entry {
 	return r.source.FindByResource(resourceType, resourceID)
 }
 func (r provenanceReader) FindModelField(providerID ProviderID, modelID, field string) []provenance.Entry {

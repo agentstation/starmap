@@ -1,4 +1,4 @@
-package catalogmeta
+package projection
 
 // ProjectionStatus is the post-commit state of an optional human YAML
 // workspace projection.

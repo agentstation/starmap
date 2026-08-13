@@ -5,8 +5,8 @@ import (
 	"slices"
 	"time"
 
-	"github.com/agentstation/starmap/pkg/catalogmeta"
 	"github.com/agentstation/starmap/pkg/catalogs"
+	catalogevidence "github.com/agentstation/starmap/pkg/catalogs/evidence"
 	"github.com/agentstation/starmap/pkg/catalogstore"
 	"github.com/agentstation/starmap/pkg/errors"
 )
@@ -15,7 +15,7 @@ import (
 // observations and excluded model review candidates.
 type CandidateEvidence struct {
 	SourceObservations []catalogs.SourceObservationLink
-	ReviewCandidates   []catalogmeta.ReviewCandidate
+	ReviewCandidates   []catalogevidence.ReviewCandidate
 }
 
 // Candidate is a complete immutable catalog prepared off to the side for one
@@ -48,8 +48,8 @@ func NewCandidate(
 			)
 		}
 	}
-	reviewCandidates := append([]catalogmeta.ReviewCandidate(nil), evidence.ReviewCandidates...)
-	slices.SortFunc(reviewCandidates, catalogmeta.CompareReviewCandidates)
+	reviewCandidates := append([]catalogevidence.ReviewCandidate(nil), evidence.ReviewCandidates...)
+	slices.SortFunc(reviewCandidates, catalogevidence.CompareReviewCandidates)
 	if len(reviewCandidates) > 0 {
 		if err := catalogs.ValidateReviewCandidates(reviewCandidates, evidence.SourceObservations); err != nil {
 			return nil, errors.WrapResource(

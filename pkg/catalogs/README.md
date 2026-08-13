@@ -582,7 +582,7 @@ func main() {
 - [func EncodeCatalogPayload\(reader Reader\) \(\[\]byte, error\)](<#EncodeCatalogPayload>)
 - [func NormalizeExtensionFields\(fields map\[string\]any\) map\[string\]any](<#NormalizeExtensionFields>)
 - [func ShallowCopyProviderModels\(models map\[string\]\*Model\) map\[string\]\*Model](<#ShallowCopyProviderModels>)
-- [func ValidateReviewCandidates\(candidates \[\]catalogmeta.ReviewCandidate, observations \[\]SourceObservationLink\) error](<#ValidateReviewCandidates>)
+- [func ValidateReviewCandidates\(candidates \[\]evidence.ReviewCandidate, observations \[\]SourceObservationLink\) error](<#ValidateReviewCandidates>)
 - [type ArchitectureType](<#ArchitectureType>)
   - [func \(at ArchitectureType\) String\(\) string](<#ArchitectureType.String>)
 - [type Author](<#Author>)
@@ -833,8 +833,8 @@ func main() {
   - [func NewProvenance\(opts ...ProvenanceOption\) \*Provenance](<#NewProvenance>)
   - [func \(p \*Provenance\) Clear\(\)](<#Provenance.Clear>)
   - [func \(p \*Provenance\) EncodeYAML\(\) \(string, error\)](<#Provenance.EncodeYAML>)
-  - [func \(p \*Provenance\) FindByField\(resourceType catalogmeta.ResourceType, resourceID string, field string\) \[\]provenance.Entry](<#Provenance.FindByField>)
-  - [func \(p \*Provenance\) FindByResource\(resourceType catalogmeta.ResourceType, resourceID string\) map\[string\]\[\]provenance.Entry](<#Provenance.FindByResource>)
+  - [func \(p \*Provenance\) FindByField\(resourceType evidence.ResourceType, resourceID string, field string\) \[\]provenance.Entry](<#Provenance.FindByField>)
+  - [func \(p \*Provenance\) FindByResource\(resourceType evidence.ResourceType, resourceID string\) map\[string\]\[\]provenance.Entry](<#Provenance.FindByResource>)
   - [func \(p \*Provenance\) FindModel\(providerID ProviderID, modelID string\) map\[string\]\[\]provenance.Entry](<#Provenance.FindModel>)
   - [func \(p \*Provenance\) FindModelField\(providerID ProviderID, modelID, field string\) \[\]provenance.Entry](<#Provenance.FindModelField>)
   - [func \(p \*Provenance\) FormatYAML\(\) string](<#Provenance.FormatYAML>)
@@ -1034,7 +1034,7 @@ ShallowCopyProviderModels creates a shallow copy of a provider's Models map. The
 ## func [ValidateReviewCandidates](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/generation_manifest.go#L342-L345>)
 
 ```go
-func ValidateReviewCandidates(candidates []catalogmeta.ReviewCandidate, observations []SourceObservationLink) error
+func ValidateReviewCandidates(candidates []evidence.ReviewCandidate, observations []SourceObservationLink) error
 ```
 
 ValidateReviewCandidates verifies durable review candidates against the exact source observations that supplied their evidence.
@@ -2260,19 +2260,19 @@ GenerationManifest describes one immutable, validated catalog generation. It is 
 
 ```go
 type GenerationManifest struct {
-    ManifestVersion       uint64                        `json:"manifest_version" yaml:"manifest_version"`
-    SchemaVersion         uint64                        `json:"schema_version" yaml:"schema_version"`
-    GenerationID          string                        `json:"generation_id" yaml:"generation_id"`
-    GeneratedAt           time.Time                     `json:"generated_at" yaml:"generated_at"`
-    Payload               PayloadDescriptor             `json:"payload" yaml:"payload"`
-    Validation            GenerationValidationReport    `json:"validation" yaml:"validation"`
-    SyncRunID             string                        `json:"sync_run_id" yaml:"sync_run_id"`
-    SourceObservations    []SourceObservationLink       `json:"source_observations" yaml:"source_observations"`
-    ReviewCandidates      []catalogmeta.ReviewCandidate `json:"review_candidates" yaml:"review_candidates"`
-    Completeness          GenerationCompleteness        `json:"completeness" yaml:"completeness"`
-    Degraded              bool                          `json:"degraded" yaml:"degraded"`
-    DegradationReasons    []string                      `json:"degradation_reasons,omitempty" yaml:"degradation_reasons,omitempty"`
-    ConsumerCompatibility ConsumerCompatibility         `json:"consumer_compatibility" yaml:"consumer_compatibility"`
+    ManifestVersion       uint64                     `json:"manifest_version" yaml:"manifest_version"`
+    SchemaVersion         uint64                     `json:"schema_version" yaml:"schema_version"`
+    GenerationID          string                     `json:"generation_id" yaml:"generation_id"`
+    GeneratedAt           time.Time                  `json:"generated_at" yaml:"generated_at"`
+    Payload               PayloadDescriptor          `json:"payload" yaml:"payload"`
+    Validation            GenerationValidationReport `json:"validation" yaml:"validation"`
+    SyncRunID             string                     `json:"sync_run_id" yaml:"sync_run_id"`
+    SourceObservations    []SourceObservationLink    `json:"source_observations" yaml:"source_observations"`
+    ReviewCandidates      []evidence.ReviewCandidate `json:"review_candidates" yaml:"review_candidates"`
+    Completeness          GenerationCompleteness     `json:"completeness" yaml:"completeness"`
+    Degraded              bool                       `json:"degraded" yaml:"degraded"`
+    DegradationReasons    []string                   `json:"degradation_reasons,omitempty" yaml:"degradation_reasons,omitempty"`
+    ConsumerCompatibility ConsumerCompatibility      `json:"consumer_compatibility" yaml:"consumer_compatibility"`
 }
 ```
 
@@ -4233,7 +4233,7 @@ EncodeYAML returns provenance YAML or a typed parse error when evidence values c
 ### func \(\*Provenance\) [FindByField](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provenance.go#L99>)
 
 ```go
-func (p *Provenance) FindByField(resourceType catalogmeta.ResourceType, resourceID string, field string) []provenance.Entry
+func (p *Provenance) FindByField(resourceType evidence.ResourceType, resourceID string, field string) []provenance.Entry
 ```
 
 FindByField retrieves provenance for a specific field of a resource. Returns nil if no provenance is found.
@@ -4242,7 +4242,7 @@ FindByField retrieves provenance for a specific field of a resource. Returns nil
 ### func \(\*Provenance\) [FindByResource](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provenance.go#L113>)
 
 ```go
-func (p *Provenance) FindByResource(resourceType catalogmeta.ResourceType, resourceID string) map[string][]provenance.Entry
+func (p *Provenance) FindByResource(resourceType evidence.ResourceType, resourceID string) map[string][]provenance.Entry
 ```
 
 FindByResource retrieves all provenance for a resource. Returns a map of field names to their provenance entries.
@@ -4328,8 +4328,8 @@ ProvenanceReader exposes provenance reads without mutation methods.
 type ProvenanceReader interface {
     Map() provenance.Map
     Len() int
-    FindByField(catalogmeta.ResourceType, string, string) []provenance.Entry
-    FindByResource(catalogmeta.ResourceType, string) map[string][]provenance.Entry
+    FindByField(evidence.ResourceType, string, string) []provenance.Entry
+    FindByResource(evidence.ResourceType, string) map[string][]provenance.Entry
     FindModelField(ProviderID, string, string) []provenance.Entry
     FindModel(ProviderID, string) map[string][]provenance.Entry
     FormatYAML() string
@@ -5618,13 +5618,13 @@ SourceObservationLink binds a generation to one immutable source observation. Th
 
 ```go
 type SourceObservationLink struct {
-    Source           catalogmeta.SourceID                `json:"source" yaml:"source"`
-    ObservationID    string                              `json:"observation_id" yaml:"observation_id"`
-    ObservedAt       time.Time                           `json:"observed_at" yaml:"observed_at"`
-    Revision         catalogmeta.ObservationRevision     `json:"revision" yaml:"revision"`
-    Completeness     catalogmeta.ObservationCompleteness `json:"completeness" yaml:"completeness"`
-    Status           catalogmeta.ObservationStatus       `json:"status" yaml:"status"`
-    EvidenceChecksum string                              `json:"evidence_checksum" yaml:"evidence_checksum"`
+    Source           evidence.SourceID                `json:"source" yaml:"source"`
+    ObservationID    string                           `json:"observation_id" yaml:"observation_id"`
+    ObservedAt       time.Time                        `json:"observed_at" yaml:"observed_at"`
+    Revision         evidence.ObservationRevision     `json:"revision" yaml:"revision"`
+    Completeness     evidence.ObservationCompleteness `json:"completeness" yaml:"completeness"`
+    Status           evidence.ObservationStatus       `json:"status" yaml:"status"`
+    EvidenceChecksum string                           `json:"evidence_checksum" yaml:"evidence_checksum"`
 }
 ```
 

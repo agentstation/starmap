@@ -10,8 +10,8 @@ import (
 
 	"github.com/google/go-cmp/cmp"
 
-	"github.com/agentstation/starmap/pkg/catalogmeta"
 	"github.com/agentstation/starmap/pkg/catalogs"
+	"github.com/agentstation/starmap/pkg/catalogs/evidence"
 	pkgerrors "github.com/agentstation/starmap/pkg/errors"
 )
 
@@ -164,7 +164,7 @@ func assertStoredGeneration(t *testing.T, store Store, want Generation) {
 
 func testGeneration(id, value string) Generation {
 	payload := fmt.Appendf(nil, `{"value":%q}`, value)
-	evidence := catalogs.DescribeCatalogPayload([]byte("evidence:" + value))
+	evidenceDescriptor := catalogs.DescribeCatalogPayload([]byte("evidence:" + value))
 	generatedAt := time.Date(2026, time.July, 9, 18, 0, 0, 0, time.UTC)
 	return Generation{
 		Manifest: catalogs.GenerationManifest{
@@ -184,19 +184,19 @@ func testGeneration(id, value string) Generation {
 			SyncRunID: "sync-" + id,
 			SourceObservations: []catalogs.SourceObservationLink{
 				{
-					Source:        catalogmeta.ProvidersID,
+					Source:        evidence.ProvidersID,
 					ObservationID: "observation-" + id,
 					ObservedAt:    generatedAt,
-					Revision: catalogmeta.ObservationRevision{
-						Kind:  catalogmeta.ObservationRevisionKindContentDigest,
-						Value: evidence.Checksum,
+					Revision: evidence.ObservationRevision{
+						Kind:  evidence.ObservationRevisionKindContentDigest,
+						Value: evidenceDescriptor.Checksum,
 					},
-					Completeness:     catalogmeta.ObservationCompletenessComplete,
-					Status:           catalogmeta.ObservationStatusSucceeded,
-					EvidenceChecksum: evidence.Checksum,
+					Completeness:     evidence.ObservationCompletenessComplete,
+					Status:           evidence.ObservationStatusSucceeded,
+					EvidenceChecksum: evidenceDescriptor.Checksum,
 				},
 			},
-			ReviewCandidates: []catalogmeta.ReviewCandidate{},
+			ReviewCandidates: []evidence.ReviewCandidate{},
 			Completeness:     catalogs.GenerationCompletenessComplete,
 			ConsumerCompatibility: catalogs.ConsumerCompatibility{
 				MinSchemaVersion: catalogs.CurrentCatalogSchemaVersion,

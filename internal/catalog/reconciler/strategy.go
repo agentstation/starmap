@@ -6,6 +6,7 @@ import (
 	"sort"
 
 	"github.com/agentstation/starmap/internal/catalog/authority"
+	"github.com/agentstation/starmap/pkg/catalogs/evidence"
 	"github.com/agentstation/starmap/pkg/sources"
 )
 
@@ -25,12 +26,12 @@ func (s *AuthorityStrategy) ResolveConflict(
 	field string,
 	values map[sources.ID]any,
 ) (any, sources.ID, string) {
-	return s.ResolveResourceConflict(sources.ResourceTypeModel, field, values)
+	return s.ResolveResourceConflict(evidence.ResourceTypeModel, field, values)
 }
 
 // ResolveResourceConflict resolves a resource field conflict.
 func (s *AuthorityStrategy) ResolveResourceConflict(
-	resourceType sources.ResourceType,
+	resourceType evidence.ResourceType,
 	field string,
 	values map[sources.ID]any,
 ) (any, sources.ID, string) {

@@ -9,7 +9,7 @@ import (
 	"github.com/agentstation/utc"
 
 	"github.com/agentstation/starmap/internal/catalog/authority"
-	"github.com/agentstation/starmap/pkg/catalogmeta"
+	"github.com/agentstation/starmap/pkg/catalogs/evidence"
 	"github.com/agentstation/starmap/pkg/errors"
 	"github.com/agentstation/starmap/pkg/provenance"
 )
@@ -737,7 +737,7 @@ func selectDefinitionValue[T any](
 	extract func(Model) (T, bool),
 ) (T, bool, error) {
 	var zero T
-	policy, found := policies.Find(catalogmeta.ResourceTypeModel, field)
+	policy, found := policies.Find(evidence.ResourceTypeModel, field)
 	if !found {
 		return zero, false, &errors.ValidationError{
 			Field:   "authority." + field,
@@ -821,7 +821,7 @@ func currentDefinitionEvidence(
 ) (provenance.Entry, bool) {
 	entries := matchingProvenanceValues(reader.Provenance().FindModelField(providerID, model.ID, field), matches)
 	if len(entries) == 0 {
-		bareEntries := reader.Provenance().FindByField(catalogmeta.ResourceTypeModel, model.ID, field)
+		bareEntries := reader.Provenance().FindByField(evidence.ResourceTypeModel, model.ID, field)
 		entries = matchingProvenanceValues(bareEntries, matches)
 	}
 	if len(entries) == 0 {

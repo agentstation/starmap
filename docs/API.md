@@ -157,7 +157,7 @@ CandidateEvidence binds one publication candidate to its immutable source observ
 ```go
 type CandidateEvidence struct {
     SourceObservations []catalogs.SourceObservationLink
-    ReviewCandidates   []catalogmeta.ReviewCandidate
+    ReviewCandidates   []catalogevidence.ReviewCandidate
 }
 ```
 
@@ -551,7 +551,7 @@ type RollbackResult struct {
     // Sequence is the in-process publication sequence after rollback.
     Sequence uint64
     // Projection reports exact workspace restoration or pending repair.
-    Projection *catalogmeta.ProjectionResult
+    Projection *projection.ProjectionResult
 }
 ```
 

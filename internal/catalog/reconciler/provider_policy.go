@@ -6,6 +6,7 @@ import (
 
 	"github.com/agentstation/starmap/internal/catalog/authority"
 	"github.com/agentstation/starmap/pkg/catalogs"
+	"github.com/agentstation/starmap/pkg/catalogs/evidence"
 	"github.com/agentstation/starmap/pkg/provenance"
 	"github.com/agentstation/starmap/pkg/sources"
 )
@@ -243,7 +244,7 @@ func (merger *merger) recordProviderHistory(
 	}
 	path := policy.Evidence()
 	if carried, ok := merger.carried(
-		sources.ResourceTypeProvider,
+		evidence.ResourceTypeProvider,
 		string(providerID),
 		path,
 		source,
