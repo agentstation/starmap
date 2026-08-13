@@ -1,7 +1,7 @@
 # CPO2 generation and codec ownership proof
 
 Date: 2026-08-13 UTC  
-Work commit: [`51b9ebfd`](https://github.com/agentstation/starmap/commit/51b9ebfd)
+Work commit: [`9b1be16f`](https://github.com/agentstation/starmap/commit/9b1be16f)
 
 ## Fail-before
 

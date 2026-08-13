@@ -1,7 +1,7 @@
 # CPO4 artifact package proof
 
 Date: 2026-08-13 UTC  
-Work commit: [`95122f78`](https://github.com/agentstation/starmap/commit/95122f78)
+Work commit: [`6698ce5f`](https://github.com/agentstation/starmap/commit/6698ce5f)
 
 ## Fail-before
 

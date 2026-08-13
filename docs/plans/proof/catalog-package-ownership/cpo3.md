@@ -1,7 +1,7 @@
 # CPO3 storage package proof
 
 Date: 2026-08-13 UTC  
-Work commit: [`55de2a75`](https://github.com/agentstation/starmap/commit/55de2a75)
+Work commit: [`c0d3fef9`](https://github.com/agentstation/starmap/commit/c0d3fef9)
 
 ## Fail-before
 

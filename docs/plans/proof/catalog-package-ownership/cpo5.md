@@ -1,7 +1,7 @@
 # CPO5 remote protocol package proof
 
 Date: 2026-08-13 UTC  
-Work commit: [`cfad0530`](https://github.com/agentstation/starmap/commit/cfad0530)
+Work commit: [`0cabaab2`](https://github.com/agentstation/starmap/commit/0cabaab2)
 
 ## Fail-before
 

@@ -1,7 +1,7 @@
 # CPO1 evidence and projection contract proof
 
 Date: 2026-08-13 UTC  
-Work commit: [`a3df5076`](https://github.com/agentstation/starmap/commit/a3df5076)
+Work commit: [`782668fb`](https://github.com/agentstation/starmap/commit/782668fb)
 
 ## Fail-before
 

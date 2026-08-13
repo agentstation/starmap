@@ -1,7 +1,7 @@
 # CPO0 baseline and red verifier proof
 
 Date: 2026-08-13 UTC  
-Work commit: [`1136ce63`](https://github.com/agentstation/starmap/commit/1136ce63e9120d868ff8d3ad76a6e7c5edaf7f94)
+Work commit: [`44d860fd`](https://github.com/agentstation/starmap/commit/44d860fd)
 
 ## Repository baselines
 
