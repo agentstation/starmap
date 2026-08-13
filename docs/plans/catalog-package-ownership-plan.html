@@ -33,10 +33,11 @@
 <header id="overview">
   <h1>Starmap catalog package ownership refactor</h1>
   <div id="status-line">
-    <div>Status: <code data-plan-status="active">active</code> · Owner: this plan · Created: 2026-08-12</div>
+    <div>Status: <code data-plan-status="active">active</code></div>
+    <div>Owner: this plan · Created: 2026-08-12</div>
     <div>Starmap baseline: <code>main@42f1b4c6763084cc0ae7b2ced413de4d765cd9ef</code></div>
     <div>Proof root: <code>docs/plans/proof/catalog-package-ownership/</code></div>
-    <div>Next action: execute CPO7. Publish and verify immutable Starmap v0.5.0 from current <code>main</code>.</div>
+    <div>Next action: execute CPO8. Migrate Starport to exact Starmap v0.5.0 and merge its verified pull request.</div>
   </div>
   <section id="outcome"><h2>Outcome</h2>
     <blockquote>Starmap exposes one coherent catalog package tree. <code>pkg/catalogs</code> owns catalog values, immutable generations, and catalog codecs. Its <code>evidence</code> and <code>projection</code> leaves own neutral data contracts. Its <code>storage</code>, <code>artifact</code>, and <code>remote</code> children own separate behaviors. Starport consumes one immutable Starmap release. No old-path wrapper, duplicate codec, or vague metadata package remains.</blockquote>
@@ -81,8 +82,8 @@
       <tr id="CPO4" data-status="done"><td>CPO4</td><td>2 Behaviors</td><td>CPO3</td><td>Move catalogartifact to catalogs/artifact.</td><td><code>done</code></td><td><a href="proof/catalog-package-ownership/cpo4.md">Proof</a>: work commit <code>6698ce5f</code>; CPO-V08 passed; exact race, pinned-consumer, full-module, vet, and docs gates passed with unchanged fixture hashes.</td></tr>
       <tr id="CPO5" data-status="done"><td>CPO5</td><td>2 Behaviors</td><td>CPO4</td><td>Move catalogremote to catalogs/remote.</td><td><code>done</code></td><td><a href="proof/catalog-package-ownership/cpo5.md">Proof</a>: work commit <code>0cabaab2</code>; CPO-V01, V02, and V09 passed; exact race, consumer, full-module, vet, and docs gates passed.</td></tr>
       <tr id="CPO6" data-status="done"><td>CPO6</td><td>3 Starmap</td><td>CPO5</td><td>Update authority, run all gates, review, and merge the Starmap implementation PR.</td><td><code>done</code></td><td><a href="proof/catalog-package-ownership/cpo6.md">Proof</a>: candidate <code>22a18951</code>; structural summary 13/0; all local, race, release, review, and hosted gates passed; PR #79 merged at <code>2daa219d</code>.</td></tr>
-      <tr id="CPO7" data-status="in_progress"><td>CPO7</td><td>3 Starmap</td><td>CPO6</td><td>Publish and verify immutable Starmap v0.5.0.</td><td><code>in_progress</code></td><td>Implementation merge <code>2daa219d</code> is current <code>main</code>; release evidence pending.</td></tr>
-      <tr id="CPO8" data-status="todo"><td>CPO8</td><td>4 Starport</td><td>CPO7</td><td>Pin Starport to v0.5.0, verify the module, review, and merge its PR.</td><td><code>todo</code></td><td></td></tr>
+      <tr id="CPO7" data-status="done"><td>CPO7</td><td>3 Starmap</td><td>CPO6</td><td>Publish and verify immutable Starmap v0.5.0.</td><td><code>done</code></td><td><a href="proof/catalog-package-ownership/cpo7.md">Proof</a>: tag commit <code>64f23c41</code>; immutable release; 14 assets, 12 attestations, six binaries and SBOMs, Go proxy, container, and Homebrew verified.</td></tr>
+      <tr id="CPO8" data-status="in_progress"><td>CPO8</td><td>4 Starport</td><td>CPO7</td><td>Pin Starport to v0.5.0, verify the module, review, and merge its PR.</td><td><code>in_progress</code></td><td>Published Starmap v0.5.0 package surface verified; Starport fail-before pending.</td></tr>
       <tr id="CPO8.1" data-status="todo"><td>CPO8.1</td><td>4 Starport</td><td>CPO8</td><td>Publish and verify immutable Starport v1.0.4.</td><td><code>todo</code></td><td></td></tr>
       <tr id="CPO9" data-status="todo"><td>CPO9</td><td>5 Cleanup</td><td>CPO8.1</td><td>Delete this control plane through a cleanup PR.</td><td><code>todo</code></td><td></td></tr>
     </tbody></table>
@@ -521,6 +522,7 @@ cleanup pull request removes this control plane.</code></pre>
       <tr><td>2026-08-13</td><td>CPO5</td><td>done; CPO6 started</td><td>Work commit 0cabaab2 moved the versioned wire client under catalogs, retained the separate reactive remote package, and used a local protocol alias at that naming boundary. It updated server consumers, reactive lifecycle tests, dependency guards, generated docs, and current authority. Exact race, remote-consumer, dependency, full-module, focused vet, generated-doc, stale-path, script, diff, and module-checksum gates passed. The verifier advanced to 12 passed and 1 failed. Review also restored three typed validation fields that an over-broad selector rename changed before verification.</td></tr>
       <tr><td>2026-08-13</td><td>CPO6</td><td>prerequisite merged</td><td>Autoreview's deleted-byte credential scan found the baseline's synthetic credential-bearing URI in the remote client test. Test-only PR #78 replaced the literal with standard URL construction without changing the rejection contract. Local package, race, lint, and diff checks passed. Hosted Verification Gate, Security and Reliability, and Action Pin Provenance passed. PR #78 merged at 6c4f6193. The unpublished implementation branch rebased cleanly onto that commit, and this control plane now records the rebased task commit IDs.</td></tr>
       <tr><td>2026-08-13</td><td>CPO6</td><td>done; CPO7 started</td><td>The final candidate at 22a18951 passed the 13/0 verifier, full ordinary and uncapped race verification, vet, lint, performance, coverage, documentation, release, snapshot, catalog, and action-pin gates. The clean credential scan and two-pass autoreview reported zero findings. PR #79 passed Verification Gate, Security and Reliability, and Action Pin Provenance, then merged to main at 2daa219d. CPO7 now owns the v0.5.0 release.</td></tr>
+      <tr><td>2026-08-13</td><td>CPO7</td><td>done; CPO8 started</td><td>Annotated tag v0.5.0 points to exact current main at 64f23c41. Release run 31666668460 passed its test, release, and macOS Homebrew jobs. Independent checks verified immutable metadata, all 14 asset digests, the GPG signature, 12 checksums and attestations, six SPDX SBOMs and portable binaries, the fresh Go proxy module surface, OCI digest b979568d with both Linux architectures, and the main-branch Homebrew cask. CPO8 now owns the Starport migration.</td></tr>
     </tbody></table>
   </section>
 </main>
