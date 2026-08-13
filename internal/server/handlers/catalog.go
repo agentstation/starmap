@@ -7,7 +7,6 @@ import (
 	"github.com/agentstation/starmap/internal/server/response"
 	"github.com/agentstation/starmap/pkg/catalogremote"
 	"github.com/agentstation/starmap/pkg/catalogs"
-	"github.com/agentstation/starmap/pkg/catalogstore"
 )
 
 // HandleCatalogManifest serves the current strict generation manifest.
@@ -47,7 +46,7 @@ func (h *Handlers) HandleCatalogGenerationManifest(
 func (h *Handlers) writeCatalogManifest(
 	writer http.ResponseWriter,
 	request *http.Request,
-	generation catalogstore.Generation,
+	generation catalogs.Generation,
 ) {
 	data, err := catalogremote.MarshalManifest(generation.Manifest)
 	if err != nil {

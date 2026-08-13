@@ -261,7 +261,7 @@ func migrationGeneration(
 	generationID string,
 	modelID string,
 	modelName string,
-) catalogstore.Generation {
+) catalogs.Generation {
 	t.Helper()
 	catalog, _ := testCatalog(t, modelID, modelName)
 	payload, err := catalogs.EncodeCatalogPayload(catalog)
@@ -270,7 +270,7 @@ func migrationGeneration(
 	}
 	descriptor := catalogs.DescribeCatalogPayload(payload)
 	generatedAt := time.Date(2026, time.July, 28, 12, 0, 0, 0, time.UTC)
-	return catalogstore.Generation{
+	return catalogs.Generation{
 		Manifest: catalogs.GenerationManifest{
 			ManifestVersion: catalogs.CurrentGenerationManifestVersion,
 			SchemaVersion:   catalogs.CurrentCatalogSchemaVersion,

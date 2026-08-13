@@ -16,7 +16,6 @@ import (
 	"time"
 
 	"github.com/agentstation/starmap/pkg/catalogs"
-	"github.com/agentstation/starmap/pkg/catalogstore"
 	"github.com/agentstation/starmap/pkg/errors"
 )
 
@@ -116,7 +115,7 @@ type Bundle struct {
 // Build validates a generation and deterministically packages it for
 // distribution. Rebuilding identical generation bytes produces identical
 // archive and attestation bytes.
-func Build(generation catalogstore.Generation) (Bundle, error) {
+func Build(generation catalogs.Generation) (Bundle, error) {
 	if err := generation.Validate(); err != nil {
 		return Bundle{}, errors.WrapResource("validate", "catalog artifact generation", generation.Manifest.GenerationID, err)
 	}
@@ -176,27 +175,27 @@ func Build(generation catalogstore.Generation) (Bundle, error) {
 
 // Open verifies an archive and detached statement before returning its exact
 // immutable catalog generation.
-func Open(archive, attestation []byte) (catalogstore.Generation, error) {
+func Open(archive, attestation []byte) (catalogs.Generation, error) {
 	descriptor, members, err := inspect(archive, attestation)
 	if err != nil {
-		return catalogstore.Generation{}, err
+		return catalogs.Generation{}, err
 	}
 	manifestData := members[manifestFilename]
 	payload := members[payloadFilename]
 
 	manifest, err := catalogs.ParseGenerationManifestJSON(manifestData)
 	if err != nil {
-		return catalogstore.Generation{}, err
+		return catalogs.Generation{}, err
 	}
-	generation := catalogstore.Generation{Manifest: manifest, Payload: append([]byte(nil), payload...)}
+	generation := catalogs.Generation{Manifest: manifest, Payload: append([]byte(nil), payload...)}
 	if err := generation.Validate(); err != nil {
-		return catalogstore.Generation{}, err
+		return catalogs.Generation{}, err
 	}
 	if err := validateCanonicalPayload(generation.Payload); err != nil {
-		return catalogstore.Generation{}, errors.WrapResource("validate", "canonical catalog artifact payload", manifest.GenerationID, err)
+		return catalogs.Generation{}, errors.WrapResource("validate", "canonical catalog artifact payload", manifest.GenerationID, err)
 	}
 	if err := validateDescriptorGeneration(descriptor, generation); err != nil {
-		return catalogstore.Generation{}, err
+		return catalogs.Generation{}, err
 	}
 	return generation, nil
 }
@@ -354,7 +353,7 @@ func validateDescriptorEnvelope(descriptor Descriptor, manifestData, payload []b
 	return nil
 }
 
-func validateDescriptorGeneration(descriptor Descriptor, generation catalogstore.Generation) error {
+func validateDescriptorGeneration(descriptor Descriptor, generation catalogs.Generation) error {
 	manifest := generation.Manifest
 	if descriptor.GenerationID != manifest.GenerationID ||
 		descriptor.ManifestVersion != manifest.ManifestVersion ||
@@ -404,11 +403,11 @@ func describeFile(name, mediaType string, data []byte) FileDescriptor {
 }
 
 func validateCanonicalPayload(data []byte) error {
-	catalog, err := catalogstore.DecodeCatalogPayload(data)
+	catalog, err := catalogs.DecodeCatalogPayload(data)
 	if err != nil {
 		return err
 	}
-	canonical, err := catalogstore.EncodeCatalogPayload(catalog)
+	canonical, err := catalogs.EncodeCatalogPayload(catalog)
 	if err != nil {
 		return err
 	}

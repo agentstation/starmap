@@ -188,7 +188,7 @@ func newRollbackClient(t testing.TB, store catalogstore.Store, path string) *Cli
 
 func (s *rollbackTestStore) Commit(
 	ctx context.Context,
-	generation catalogstore.Generation,
+	generation catalogs.Generation,
 	expected string,
 ) error {
 	s.mu.Lock()
@@ -269,7 +269,7 @@ func publishRollbackFixture(
 }
 
 type rollbackFixture struct {
-	generation        catalogstore.Generation
+	generation        catalogs.Generation
 	workspaceChecksum string
 	workspacePayload  []byte
 }

@@ -199,7 +199,7 @@ func TestSubscriberMissingHeartbeatReconnectsAndCatchesUp(t *testing.T) {
 		current     = first
 		streamCount atomic.Int32
 	)
-	generations := map[string]catalogstore.Generation{
+	generations := map[string]catalogs.Generation{
 		first.Manifest.GenerationID:  first,
 		second.Manifest.GenerationID: second,
 	}
@@ -400,7 +400,7 @@ func TestSubscriberPollingFallbackIsExplicitBoundedAndConditional(t *testing.T) 
 		recoveryRequest = make(chan struct{}, 1)
 		releaseRecovery = make(chan struct{})
 	)
-	generations := map[string]catalogstore.Generation{
+	generations := map[string]catalogs.Generation{
 		first.Manifest.GenerationID:  first,
 		second.Manifest.GenerationID: second,
 	}
@@ -656,7 +656,7 @@ func TestSubscriberReconnectCatchesUpWithoutEventAndDeduplicatesReplay(t *testin
 		reconnectIDs    []string
 		retryAttempts   []int
 	)
-	generations := map[string]catalogstore.Generation{
+	generations := map[string]catalogs.Generation{
 		first.Manifest.GenerationID:  first,
 		second.Manifest.GenerationID: second,
 	}
@@ -956,7 +956,7 @@ func subscriberTestGeneration(
 	generationID string,
 	providerID catalogs.ProviderID,
 	generatedAt time.Time,
-) catalogstore.Generation {
+) catalogs.Generation {
 	t.Helper()
 	builder := catalogs.NewEmpty()
 	if err := builder.SetProvider(catalogs.Provider{
@@ -968,12 +968,12 @@ func subscriberTestGeneration(
 	if err != nil {
 		t.Fatalf("Build: %v", err)
 	}
-	payload, err := catalogstore.EncodeCatalogPayload(catalog)
+	payload, err := catalogs.EncodeCatalogPayload(catalog)
 	if err != nil {
 		t.Fatalf("EncodeCatalogPayload: %v", err)
 	}
 	descriptor := catalogs.DescribeCatalogPayload(payload)
-	generation := catalogstore.Generation{
+	generation := catalogs.Generation{
 		Manifest: catalogs.GenerationManifest{
 			ManifestVersion: catalogs.CurrentGenerationManifestVersion,
 			SchemaVersion:   catalogs.CurrentCatalogSchemaVersion,
@@ -1020,7 +1020,7 @@ func subscriberTestGeneration(
 func writeSubscriberManifest(
 	t testing.TB,
 	writer http.ResponseWriter,
-	generation catalogstore.Generation,
+	generation catalogs.Generation,
 ) {
 	t.Helper()
 	data, err := catalogremote.MarshalManifest(generation.Manifest)

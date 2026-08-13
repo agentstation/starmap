@@ -11,31 +11,6 @@ import (
 	"github.com/agentstation/starmap/pkg/errors"
 )
 
-// Generation is an immutable manifest and its exact catalog payload bytes.
-type Generation struct {
-	Manifest catalogs.GenerationManifest
-	Payload  []byte
-}
-
-// Copy returns a generation that does not share mutable slices with g.
-func (g Generation) Copy() Generation {
-	return Generation{
-		Manifest: g.Manifest.Copy(),
-		Payload:  append([]byte(nil), g.Payload...),
-	}
-}
-
-// Validate verifies the manifest and its binding to the payload.
-func (g Generation) Validate() error {
-	if err := g.Manifest.Validate(); err != nil {
-		return err
-	}
-	if err := g.Manifest.Payload.Verify(g.Payload); err != nil {
-		return err
-	}
-	return nil
-}
-
 // Store commits and reads immutable catalog generations.
 //
 // Commit always performs compare-and-swap against expectedGenerationID. An
@@ -48,19 +23,19 @@ func (g Generation) Validate() error {
 // implementation, including its driver, schema, migrations, credentials,
 // connection pool, backups, and lifecycle.
 type Store interface {
-	Current(context.Context) (Generation, error)
-	Get(context.Context, string) (Generation, error)
-	Commit(context.Context, Generation, string) error
+	Current(context.Context) (catalogs.Generation, error)
+	Get(context.Context, string) (catalogs.Generation, error)
+	Commit(context.Context, catalogs.Generation, string) error
 }
 
-func validateCandidate(ctx context.Context, generation Generation) error {
+func validateCandidate(ctx context.Context, generation catalogs.Generation) error {
 	if err := ctx.Err(); err != nil {
 		return err
 	}
 	return generation.Validate()
 }
 
-func sameGeneration(left, right Generation) bool {
+func sameGeneration(left, right catalogs.Generation) bool {
 	if !bytes.Equal(left.Payload, right.Payload) {
 		return false
 	}

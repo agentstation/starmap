@@ -240,8 +240,8 @@ func readReleaseDirectory(directory string) (releaseDirectory, error) {
 	}, nil
 }
 
-func generationSemanticChecksum(generation catalogstore.Generation) (string, error) {
-	catalog, err := catalogstore.DecodeCatalogPayload(generation.Payload)
+func generationSemanticChecksum(generation catalogs.Generation) (string, error) {
+	catalog, err := catalogs.DecodeCatalogPayload(generation.Payload)
 	if err != nil {
 		return "", pkgerrors.WrapResource(
 			"decode",

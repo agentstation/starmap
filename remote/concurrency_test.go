@@ -38,7 +38,7 @@ func TestSubscriberReadersObserveCompleteGenerationsDuringActivation(t *testing.
 		current  = first
 		events   = make(chan string, 1)
 	)
-	generations := map[string]catalogstore.Generation{
+	generations := map[string]catalogs.Generation{
 		first.Manifest.GenerationID:  first,
 		second.Manifest.GenerationID: second,
 	}
@@ -203,7 +203,7 @@ func concurrentSubscriberGeneration(
 	generationID string,
 	providerIDs []catalogs.ProviderID,
 	generatedAt time.Time,
-) catalogstore.Generation {
+) catalogs.Generation {
 	t.Helper()
 	generation := subscriberTestGeneration(
 		t,
@@ -211,7 +211,7 @@ func concurrentSubscriberGeneration(
 		providerIDs[0],
 		generatedAt,
 	)
-	catalog, err := catalogstore.DecodeCatalogPayload(generation.Payload)
+	catalog, err := catalogs.DecodeCatalogPayload(generation.Payload)
 	if err != nil {
 		t.Fatalf("DecodeCatalogPayload: %v", err)
 	}
@@ -230,7 +230,7 @@ func concurrentSubscriberGeneration(
 	if err != nil {
 		t.Fatalf("Build: %v", err)
 	}
-	generation.Payload, err = catalogstore.EncodeCatalogPayload(catalog)
+	generation.Payload, err = catalogs.EncodeCatalogPayload(catalog)
 	if err != nil {
 		t.Fatalf("EncodeCatalogPayload: %v", err)
 	}

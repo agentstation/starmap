@@ -11,7 +11,6 @@ import (
 	"github.com/agentstation/starmap/internal/catalog/authority"
 	"github.com/agentstation/starmap/internal/catalog/reconciler"
 	"github.com/agentstation/starmap/pkg/catalogs"
-	"github.com/agentstation/starmap/pkg/catalogstore"
 	"github.com/agentstation/starmap/pkg/differ"
 	"github.com/agentstation/starmap/pkg/sources"
 )
@@ -515,11 +514,11 @@ func TestFieldEvidenceAllPricingRejectionsSurviveCatalogPayload(t *testing.T) {
 	if err != nil {
 		t.Fatalf("reconcile: %v", err)
 	}
-	payload, err := catalogstore.EncodeCatalogPayload(result.Catalog)
+	payload, err := catalogs.EncodeCatalogPayload(result.Catalog)
 	if err != nil {
 		t.Fatalf("encode payload: %v", err)
 	}
-	decoded, err := catalogstore.DecodeCatalogPayload(payload)
+	decoded, err := catalogs.DecodeCatalogPayload(payload)
 	if err != nil {
 		t.Fatalf("decode payload: %v", err)
 	}

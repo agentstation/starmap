@@ -7,7 +7,6 @@ import (
 	"github.com/agentstation/starmap/internal/embedded"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/catalogs/evidence"
-	"github.com/agentstation/starmap/pkg/catalogstore"
 	"github.com/agentstation/starmap/pkg/errors"
 )
 
@@ -80,14 +79,14 @@ func Load(reader catalogs.Reader) (catalogs.BootstrapManifest, error) {
 
 // Generation returns the embedded bootstrap as a complete validated immutable
 // generation suitable for deterministic release artifact publication.
-func Generation() (catalogstore.Generation, error) {
+func Generation() (catalogs.Generation, error) {
 	catalog, bootstrapManifest, err := Embedded()
 	if err != nil {
-		return catalogstore.Generation{}, err
+		return catalogs.Generation{}, err
 	}
 	payload, err := catalogs.EncodeCatalogPayload(catalog)
 	if err != nil {
-		return catalogstore.Generation{}, err
+		return catalogs.Generation{}, err
 	}
 	manifest := catalogs.GenerationManifest{
 		ManifestVersion: catalogs.CurrentGenerationManifestVersion,
@@ -123,9 +122,9 @@ func Generation() (catalogstore.Generation, error) {
 			MaxSchemaVersion: bootstrapManifest.SchemaVersion,
 		},
 	}
-	generation := catalogstore.Generation{Manifest: manifest, Payload: payload}
+	generation := catalogs.Generation{Manifest: manifest, Payload: payload}
 	if err := generation.Validate(); err != nil {
-		return catalogstore.Generation{}, err
+		return catalogs.Generation{}, err
 	}
 	return generation, nil
 }

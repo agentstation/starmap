@@ -1,4 +1,4 @@
-package catalogstore
+package catalogs
 
 import (
 	"bytes"
@@ -9,15 +9,9 @@ import (
 
 	"github.com/agentstation/starmap/internal/constants"
 	sourcepayload "github.com/agentstation/starmap/internal/sources/payload"
-	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/errors"
 	"github.com/agentstation/starmap/pkg/provenance"
 )
-
-// EncodeCatalogPayload deterministically encodes a readable catalog.
-func EncodeCatalogPayload(reader catalogs.Reader) ([]byte, error) {
-	return catalogs.EncodeCatalogPayload(reader)
-}
 
 type payloadDecodeReport struct {
 	ProviderModels sourcepayload.RecordReport
@@ -26,8 +20,8 @@ type payloadDecodeReport struct {
 
 type payloadEnvelope struct {
 	SchemaVersion  uint64                     `json:"schema_version"`
-	Providers      []catalogs.Provider        `json:"providers"`
-	Authors        []catalogs.Author          `json:"authors"`
+	Providers      []Provider                 `json:"providers"`
+	Authors        []Author                   `json:"authors"`
 	ProviderModels map[string]json.RawMessage `json:"provider_models"`
 	AuthorModels   map[string]json.RawMessage `json:"author_models"`
 	Provenance     provenance.Map             `json:"provenance"`
@@ -42,8 +36,8 @@ func (r payloadDecodeReport) err() error {
 // DecodeCatalogPayload decodes the current catalog payload. A non-nil catalog together
 // with *sourcepayload.QuarantineError is a partial diagnostic result and must
 // not be activated as the manifest-bound generation.
-func DecodeCatalogPayload(data []byte) (*catalogs.Catalog, error) {
-	catalog, report, err := decodeCatalogPayload(data, (*catalogs.Builder).Build)
+func DecodeCatalogPayload(data []byte) (*Catalog, error) {
+	catalog, report, err := decodeCatalogPayload(data, (*Builder).Build)
 	if err != nil {
 		return nil, err
 	}
@@ -54,9 +48,9 @@ func DecodeCatalogPayload(data []byte) (*catalogs.Catalog, error) {
 // every provider record to have resolved canonical authorship. The returned
 // catalog is suitable only for reconciliation; durable generation activation
 // must use DecodeCatalogPayload.
-func DecodeSourceObservationPayload(data []byte) (*catalogs.Catalog, error) {
-	catalog, report, err := decodeCatalogPayload(data, func(builder *catalogs.Builder) (*catalogs.Catalog, error) {
-		return catalogs.NewObservationCatalog(builder)
+func DecodeSourceObservationPayload(data []byte) (*Catalog, error) {
+	catalog, report, err := decodeCatalogPayload(data, func(builder *Builder) (*Catalog, error) {
+		return NewObservationCatalog(builder)
 	})
 	if err != nil {
 		return nil, err
@@ -64,9 +58,9 @@ func DecodeSourceObservationPayload(data []byte) (*catalogs.Catalog, error) {
 	return catalog, report.err()
 }
 
-type catalogBuilder func(*catalogs.Builder) (*catalogs.Catalog, error)
+type catalogBuilder func(*Builder) (*Catalog, error)
 
-func decodeCatalogPayload(data []byte, build catalogBuilder) (*catalogs.Catalog, payloadDecodeReport, error) {
+func decodeCatalogPayload(data []byte, build catalogBuilder) (*Catalog, payloadDecodeReport, error) {
 	payload, err := decodePayloadEnvelope(data)
 	if err != nil {
 		return nil, payloadDecodeReport{}, err
@@ -106,11 +100,11 @@ func decodePayloadEnvelope(data []byte) (payloadEnvelope, error) {
 			Format: "json", File: "catalog payload", Message: "invalid trailing JSON", Err: err,
 		}
 	}
-	if payload.SchemaVersion != catalogs.CurrentCatalogSchemaVersion {
+	if payload.SchemaVersion != CurrentCatalogSchemaVersion {
 		return payloadEnvelope{}, &errors.ValidationError{
 			Field:   "schema_version",
 			Value:   payload.SchemaVersion,
-			Message: fmt.Sprintf("must be %d", catalogs.CurrentCatalogSchemaVersion),
+			Message: fmt.Sprintf("must be %d", CurrentCatalogSchemaVersion),
 		}
 	}
 	for _, field := range []struct {
@@ -142,8 +136,8 @@ func decodePayloadEnvelope(data []byte) (payloadEnvelope, error) {
 	return payload, nil
 }
 
-func buildDecodedCatalog(payload payloadEnvelope, build catalogBuilder) (*catalogs.Catalog, payloadDecodeReport, error) {
-	builder := catalogs.NewEmpty()
+func buildDecodedCatalog(payload payloadEnvelope, build catalogBuilder) (*Catalog, payloadDecodeReport, error) {
+	builder := NewEmpty()
 	providerReport, err := decodePayloadProviders(builder, payload)
 	if err != nil {
 		return nil, payloadDecodeReport{}, err
@@ -161,7 +155,7 @@ func buildDecodedCatalog(payload payloadEnvelope, build catalogBuilder) (*catalo
 }
 
 func decodePayloadProviders(
-	builder *catalogs.Builder,
+	builder *Builder,
 	payload payloadEnvelope,
 ) (sourcepayload.RecordReport, error) {
 	providerIDs := make(map[string]struct{}, len(payload.Providers))
@@ -193,7 +187,7 @@ func decodePayloadProviders(
 			}
 		}
 		remaining := remainingRecordBudget(report)
-		models, recordReport, err := sourcepayload.DecodeJSONArray[catalogs.Model](
+		models, recordReport, err := sourcepayload.DecodeJSONArray[Model](
 			payload.ProviderModels[providerID],
 			"provider_models["+providerID+"]",
 			remaining,
@@ -203,7 +197,7 @@ func decodePayloadProviders(
 		}
 		mergeRecordReport(&report, recordReport)
 		for _, model := range models {
-			if err := builder.SetProviderModel(catalogs.ProviderID(providerID), model); err != nil {
+			if err := builder.SetProviderModel(ProviderID(providerID), model); err != nil {
 				report.Accepted--
 				report.Rejected++
 				report.Issues = append(report.Issues, sourcepayload.RecordIssue{
@@ -217,7 +211,7 @@ func decodePayloadProviders(
 }
 
 func decodePayloadAuthors(
-	builder *catalogs.Builder,
+	builder *Builder,
 	payload payloadEnvelope,
 	providerReport sourcepayload.RecordReport,
 ) (sourcepayload.RecordReport, error) {
@@ -254,7 +248,7 @@ func decodePayloadAuthors(
 		if remaining < 0 {
 			remaining = 0
 		}
-		models, recordReport, err := sourcepayload.DecodeJSONArray[catalogs.Model](
+		models, recordReport, err := sourcepayload.DecodeJSONArray[Model](
 			payload.AuthorModels[authorID],
 			"author_models["+authorID+"]",
 			remaining,
@@ -264,7 +258,7 @@ func decodePayloadAuthors(
 		}
 		mergeRecordReport(&report, recordReport)
 		for _, model := range models {
-			if err := builder.SetAuthorModel(catalogs.AuthorID(authorID), model); err != nil {
+			if err := builder.SetAuthorModel(AuthorID(authorID), model); err != nil {
 				report.Accepted--
 				report.Rejected++
 				report.Issues = append(report.Issues, sourcepayload.RecordIssue{

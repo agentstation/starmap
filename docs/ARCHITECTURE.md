@@ -608,7 +608,7 @@ The JSON Schema, example manifest, and exact payload fixture are in
 
 ### Catalog distribution artifact
 
-`pkg/catalogartifact` packages one validated `catalogstore.Generation` as a
+`pkg/catalogartifact` packages one validated `catalogs.Generation` as a
 deterministic archive plus detached in-toto statement. The archive contains a
 strict descriptor, the complete generation manifest, and the exact canonical
 payload. Rebuilds of identical inputs are byte-identical; opening revalidates
@@ -1185,7 +1185,7 @@ type Client struct {
 func New(opts ...Option) (*Client, error)
 func (c *Client) Catalog() *catalogs.Catalog
 func (c *Client) Update(ctx context.Context, update UpdateFunc) (Publication, error)
-func (c *Client) Activate(ctx context.Context, generation catalogstore.Generation) (Publication, error)
+func (c *Client) Activate(ctx context.Context, generation catalogs.Generation) (Publication, error)
 ```
 
 The root package returns concrete `*Client`; consumers that need substitution

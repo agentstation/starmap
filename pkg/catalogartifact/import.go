@@ -7,7 +7,6 @@ import (
 	"strings"
 
 	"github.com/agentstation/starmap/pkg/catalogs"
-	"github.com/agentstation/starmap/pkg/catalogstore"
 	"github.com/agentstation/starmap/pkg/errors"
 )
 
@@ -38,15 +37,15 @@ func VerifyRelease(
 	ctx context.Context,
 	release Release,
 	verifier PublisherVerifier,
-) (catalogstore.Generation, error) {
+) (catalogs.Generation, error) {
 	if ctx == nil {
 		ctx = context.Background()
 	}
 	if err := ctx.Err(); err != nil {
-		return catalogstore.Generation{}, err
+		return catalogs.Generation{}, err
 	}
 	if verifier == nil || isNilPublisherVerifier(verifier) {
-		return catalogstore.Generation{}, &errors.ValidationError{
+		return catalogs.Generation{}, &errors.ValidationError{
 			Field:   "catalog_artifact.publisher_verifier",
 			Message: "is required",
 		}
@@ -55,7 +54,7 @@ func VerifyRelease(
 	wantChecksum := strings.TrimPrefix(checksum(release.Archive), "sha256:") +
 		"  " + Filename + "\n"
 	if !bytes.Equal(release.Checksum, []byte(wantChecksum)) {
-		return catalogstore.Generation{}, artifactValidation(
+		return catalogs.Generation{}, artifactValidation(
 			"release.checksum",
 			strings.TrimSpace(string(release.Checksum)),
 			"does not match archive bytes",
@@ -63,13 +62,13 @@ func VerifyRelease(
 	}
 	generation, err := Open(release.Archive, release.Attestation)
 	if err != nil {
-		return catalogstore.Generation{}, err
+		return catalogs.Generation{}, err
 	}
 	if generation.Manifest.SchemaVersion != catalogs.CurrentCatalogSchemaVersion ||
 		!generation.Manifest.ConsumerCompatibility.SupportsSchema(
 			catalogs.CurrentCatalogSchemaVersion,
 		) {
-		return catalogstore.Generation{}, artifactValidation(
+		return catalogs.Generation{}, artifactValidation(
 			"release.compatibility",
 			generation.Manifest.SchemaVersion,
 			"is not compatible with this Starmap catalog schema",
@@ -80,7 +79,7 @@ func VerifyRelease(
 		Filename,
 		append([]byte(nil), release.Archive...),
 	); err != nil {
-		return catalogstore.Generation{}, errors.WrapResource(
+		return catalogs.Generation{}, errors.WrapResource(
 			"verify",
 			"catalog artifact publisher",
 			generation.Manifest.GenerationID,
@@ -88,7 +87,7 @@ func VerifyRelease(
 		)
 	}
 	if err := ctx.Err(); err != nil {
-		return catalogstore.Generation{}, err
+		return catalogs.Generation{}, err
 	}
 	return generation, nil
 }

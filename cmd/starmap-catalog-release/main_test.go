@@ -202,7 +202,7 @@ func TestArtifactReleaseCommandRequiresCommittedGenerationStore(t *testing.T) {
 
 func releaseFixtureStore(
 	t *testing.T,
-) (string, catalogstore.Generation) {
+) (string, catalogs.Generation) {
 	t.Helper()
 	catalog, err := catalogs.NewEmpty().Build()
 	if err != nil {
@@ -228,7 +228,7 @@ func releaseFixtureStore(
 			generatedAt,
 		),
 	}
-	generation := catalogstore.Generation{
+	generation := catalogs.Generation{
 		Manifest: catalogs.GenerationManifest{
 			ManifestVersion: catalogs.CurrentGenerationManifestVersion,
 			SchemaVersion:   catalogs.CurrentCatalogSchemaVersion,

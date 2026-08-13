@@ -24,7 +24,7 @@ type publicationFaultStore struct {
 
 func (s *publicationFaultStore) Commit(
 	ctx context.Context,
-	generation catalogstore.Generation,
+	generation catalogs.Generation,
 	expected string,
 ) error {
 	if s.fail.Load() {

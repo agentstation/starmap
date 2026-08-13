@@ -6,9 +6,9 @@ application's database, credentials, migrations, or lifecycle.
 
 ```go
 type Store interface {
-    Current(context.Context) (catalogstore.Generation, error)
-    Get(context.Context, string) (catalogstore.Generation, error)
-    Commit(context.Context, catalogstore.Generation, string) error
+    Current(context.Context) (catalogs.Generation, error)
+    Get(context.Context, string) (catalogs.Generation, error)
+    Commit(context.Context, catalogs.Generation, string) error
 }
 ```
 

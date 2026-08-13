@@ -12,7 +12,6 @@ import (
 	"github.com/agentstation/starmap/pkg/catalogartifact"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/catalogs/projection"
-	"github.com/agentstation/starmap/pkg/catalogstore"
 	"github.com/agentstation/starmap/pkg/errors"
 	"github.com/agentstation/starmap/pkg/sources"
 )
@@ -47,7 +46,7 @@ func (s *Syncer) ImportRelease(
 	if err != nil {
 		return nil, err
 	}
-	releaseCatalog, err := catalogstore.DecodeCatalogPayload(generation.Payload)
+	releaseCatalog, err := catalogs.DecodeCatalogPayload(generation.Payload)
 	if err != nil {
 		return nil, errors.WrapResource(
 			"decode",
@@ -129,7 +128,7 @@ func (s *Syncer) ImportRelease(
 }
 
 func releaseObservation(
-	generation catalogstore.Generation,
+	generation catalogs.Generation,
 	catalog *catalogs.Catalog,
 ) (sources.Observation, error) {
 	accepted := len(catalog.Providers().List()) +

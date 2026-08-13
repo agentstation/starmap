@@ -6,7 +6,7 @@ import (
 	"time"
 
 	"github.com/agentstation/starmap/pkg/catalogartifact"
-	"github.com/agentstation/starmap/pkg/catalogstore"
+	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/errors"
 )
 
@@ -158,7 +158,7 @@ type Report struct {
 }
 
 // Check measures one validated generation and applies the supplied policy.
-func Check(generation catalogstore.Generation, measuredAt time.Time, policy Policy) (Report, error) {
+func Check(generation catalogs.Generation, measuredAt time.Time, policy Policy) (Report, error) {
 	if err := policy.Validate(); err != nil {
 		return Report{}, err
 	}
@@ -173,7 +173,7 @@ func Check(generation catalogstore.Generation, measuredAt time.Time, policy Poli
 	if err != nil {
 		return Report{}, err
 	}
-	catalog, err := catalogstore.DecodeCatalogPayload(generation.Payload)
+	catalog, err := catalogs.DecodeCatalogPayload(generation.Payload)
 	if err != nil {
 		return Report{}, err
 	}

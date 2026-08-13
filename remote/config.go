@@ -6,6 +6,7 @@ import (
 	"reflect"
 	"time"
 
+	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/catalogstore"
 	"github.com/agentstation/starmap/pkg/errors"
 )
@@ -50,7 +51,7 @@ type Config struct {
 	CatalogStore catalogstore.Store
 	// PinnedBootstrap supplies an optional verified offline generation.
 	// NewContext commits it only when CatalogStore has no current generation.
-	PinnedBootstrap *catalogstore.Generation
+	PinnedBootstrap *catalogs.Generation
 	// ReconnectMinDelay is the first reconnect delay. Zero selects the default.
 	ReconnectMinDelay time.Duration
 	// ReconnectMaxDelay bounds exponential reconnect delay. Zero selects the

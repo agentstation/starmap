@@ -263,7 +263,7 @@ func TestSubscriberOutOfOrderEventsCannotRegressCatalog(t *testing.T) {
 		current   = first
 		events    = make(chan string, 2)
 	)
-	generations := map[string]catalogstore.Generation{
+	generations := map[string]catalogs.Generation{
 		first.Manifest.GenerationID:  first,
 		second.Manifest.GenerationID: second,
 		third.Manifest.GenerationID:  third,

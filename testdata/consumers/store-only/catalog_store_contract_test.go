@@ -88,7 +88,7 @@ func TestStarportOwnedStoreBehavioralContract(t *testing.T) {
 func assertExternalGeneration(
 	t *testing.T,
 	store catalogstore.Store,
-	want catalogstore.Generation,
+	want catalogs.Generation,
 ) {
 	t.Helper()
 	got, err := store.Current(context.Background())
@@ -100,11 +100,11 @@ func assertExternalGeneration(
 	}
 }
 
-func externalGeneration(id, value string) catalogstore.Generation {
+func externalGeneration(id, value string) catalogs.Generation {
 	payload := fmt.Appendf(nil, `{"value":%q}`, value)
 	evidenceDescriptor := catalogs.DescribeCatalogPayload([]byte("evidence:" + value))
 	generatedAt := time.Date(2026, time.July, 29, 19, 30, 0, 0, time.UTC)
-	return catalogstore.Generation{
+	return catalogs.Generation{
 		Manifest: catalogs.GenerationManifest{
 			ManifestVersion: catalogs.CurrentGenerationManifestVersion,
 			SchemaVersion:   catalogs.CurrentCatalogSchemaVersion,

@@ -13,12 +13,12 @@ Package catalogartifact defines the deterministic distribution format for immuta
 ## Index
 
 - [Constants](<#constants>)
-- [func Open\(archive, attestation \[\]byte\) \(catalogstore.Generation, error\)](<#Open>)
-- [func VerifyRelease\(ctx context.Context, release Release, verifier PublisherVerifier\) \(catalogstore.Generation, error\)](<#VerifyRelease>)
+- [func Open\(archive, attestation \[\]byte\) \(catalogs.Generation, error\)](<#Open>)
+- [func VerifyRelease\(ctx context.Context, release Release, verifier PublisherVerifier\) \(catalogs.Generation, error\)](<#VerifyRelease>)
 - [type AttestationPredicate](<#AttestationPredicate>)
 - [type AttestationStatement](<#AttestationStatement>)
 - [type Bundle](<#Bundle>)
-  - [func Build\(generation catalogstore.Generation\) \(Bundle, error\)](<#Build>)
+  - [func Build\(generation catalogs.Generation\) \(Bundle, error\)](<#Build>)
 - [type Descriptor](<#Descriptor>)
   - [func Inspect\(archive, attestation \[\]byte\) \(Descriptor, error\)](<#Inspect>)
   - [func \(d Descriptor\) String\(\) string](<#Descriptor.String>)
@@ -72,25 +72,25 @@ const (
 ```
 
 <a name="Open"></a>
-## func [Open](<https://github.com/agentstation/starmap/blob/main/pkg/catalogartifact/bundle.go#L179>)
+## func [Open](<https://github.com/agentstation/starmap/blob/main/pkg/catalogartifact/bundle.go#L178>)
 
 ```go
-func Open(archive, attestation []byte) (catalogstore.Generation, error)
+func Open(archive, attestation []byte) (catalogs.Generation, error)
 ```
 
 Open verifies an archive and detached statement before returning its exact immutable catalog generation.
 
 <a name="VerifyRelease"></a>
-## func [VerifyRelease](<https://github.com/agentstation/starmap/blob/main/pkg/catalogartifact/import.go#L37-L41>)
+## func [VerifyRelease](<https://github.com/agentstation/starmap/blob/main/pkg/catalogartifact/import.go#L36-L40>)
 
 ```go
-func VerifyRelease(ctx context.Context, release Release, verifier PublisherVerifier) (catalogstore.Generation, error)
+func VerifyRelease(ctx context.Context, release Release, verifier PublisherVerifier) (catalogs.Generation, error)
 ```
 
 VerifyRelease checks the detached checksum, archive statement, generation compatibility, and channel\-specific publisher identity before returning the exact immutable generation. It performs no activation or persistence.
 
 <a name="AttestationPredicate"></a>
-## type [AttestationPredicate](<https://github.com/agentstation/starmap/blob/main/pkg/catalogartifact/bundle.go#L88-L93>)
+## type [AttestationPredicate](<https://github.com/agentstation/starmap/blob/main/pkg/catalogartifact/bundle.go#L87-L92>)
 
 AttestationPredicate records the catalog compatibility identity asserted by the detached statement. Signature and builder provenance are added and verified by the publication boundary.
 
@@ -104,7 +104,7 @@ type AttestationPredicate struct {
 ```
 
 <a name="AttestationStatement"></a>
-## type [AttestationStatement](<https://github.com/agentstation/starmap/blob/main/pkg/catalogartifact/bundle.go#L98-L103>)
+## type [AttestationStatement](<https://github.com/agentstation/starmap/blob/main/pkg/catalogartifact/bundle.go#L97-L102>)
 
 AttestationStatement is the deterministic in\-toto statement emitted beside an artifact. It is deliberately detached to avoid a self\-referential archive digest and to permit signing without changing reproducible artifact bytes.
 
@@ -118,7 +118,7 @@ type AttestationStatement struct {
 ```
 
 <a name="Bundle"></a>
-## type [Bundle](<https://github.com/agentstation/starmap/blob/main/pkg/catalogartifact/bundle.go#L106-L114>)
+## type [Bundle](<https://github.com/agentstation/starmap/blob/main/pkg/catalogartifact/bundle.go#L105-L113>)
 
 Bundle contains one reproducible archive and its detached attestation.
 
@@ -135,16 +135,16 @@ type Bundle struct {
 ```
 
 <a name="Build"></a>
-### func [Build](<https://github.com/agentstation/starmap/blob/main/pkg/catalogartifact/bundle.go#L119>)
+### func [Build](<https://github.com/agentstation/starmap/blob/main/pkg/catalogartifact/bundle.go#L118>)
 
 ```go
-func Build(generation catalogstore.Generation) (Bundle, error)
+func Build(generation catalogs.Generation) (Bundle, error)
 ```
 
 Build validates a generation and deterministically packages it for distribution. Rebuilding identical generation bytes produces identical archive and attestation bytes.
 
 <a name="Descriptor"></a>
-## type [Descriptor](<https://github.com/agentstation/starmap/blob/main/pkg/catalogartifact/bundle.go#L63-L72>)
+## type [Descriptor](<https://github.com/agentstation/starmap/blob/main/pkg/catalogartifact/bundle.go#L62-L71>)
 
 Descriptor describes the complete logical generation carried by an archive.
 
@@ -162,7 +162,7 @@ type Descriptor struct {
 ```
 
 <a name="Inspect"></a>
-### func [Inspect](<https://github.com/agentstation/starmap/blob/main/pkg/catalogartifact/bundle.go#L207>)
+### func [Inspect](<https://github.com/agentstation/starmap/blob/main/pkg/catalogartifact/bundle.go#L206>)
 
 ```go
 func Inspect(archive, attestation []byte) (Descriptor, error)
@@ -171,7 +171,7 @@ func Inspect(archive, attestation []byte) (Descriptor, error)
 Inspect verifies the schema\-independent artifact envelope and detached statement. It returns compatibility metadata without decoding the catalog payload through the current schema.
 
 <a name="Descriptor.String"></a>
-### func \(Descriptor\) [String](<https://github.com/agentstation/starmap/blob/main/pkg/catalogartifact/bundle.go#L447>)
+### func \(Descriptor\) [String](<https://github.com/agentstation/starmap/blob/main/pkg/catalogartifact/bundle.go#L446>)
 
 ```go
 func (d Descriptor) String() string
@@ -180,7 +180,7 @@ func (d Descriptor) String() string
 String returns a concise descriptor useful in logs.
 
 <a name="DigestSet"></a>
-## type [DigestSet](<https://github.com/agentstation/starmap/blob/main/pkg/catalogartifact/bundle.go#L75-L77>)
+## type [DigestSet](<https://github.com/agentstation/starmap/blob/main/pkg/catalogartifact/bundle.go#L74-L76>)
 
 DigestSet is the SHA\-256 digest map used by an in\-toto subject.
 
@@ -191,7 +191,7 @@ type DigestSet struct {
 ```
 
 <a name="FileDescriptor"></a>
-## type [FileDescriptor](<https://github.com/agentstation/starmap/blob/main/pkg/catalogartifact/bundle.go#L55-L60>)
+## type [FileDescriptor](<https://github.com/agentstation/starmap/blob/main/pkg/catalogartifact/bundle.go#L54-L59>)
 
 FileDescriptor binds one named artifact member to exact bytes.
 
@@ -205,7 +205,7 @@ type FileDescriptor struct {
 ```
 
 <a name="PublisherVerifier"></a>
-## type [PublisherVerifier](<https://github.com/agentstation/starmap/blob/main/pkg/catalogartifact/import.go#L30-L32>)
+## type [PublisherVerifier](<https://github.com/agentstation/starmap/blob/main/pkg/catalogartifact/import.go#L29-L31>)
 
 PublisherVerifier authenticates exact archive bytes to the caller's expected publisher. A GitHub Release implementation, for example, should require the expected repository and signer workflow when verifying build provenance.
 
@@ -218,7 +218,7 @@ type PublisherVerifier interface {
 ```
 
 <a name="Release"></a>
-## type [Release](<https://github.com/agentstation/starmap/blob/main/pkg/catalogartifact/import.go#L17-L21>)
+## type [Release](<https://github.com/agentstation/starmap/blob/main/pkg/catalogartifact/import.go#L16-L20>)
 
 Release contains the three immutable assets published for one catalog generation. Publisher provenance is channel\-specific and is therefore verified through PublisherVerifier rather than encoded as an unsigned field.
 
@@ -254,7 +254,7 @@ func StageReleaseAssets(root string, artifact Bundle) (ReleaseAssets, error)
 StageReleaseAssets validates and atomically stages archive, attestation, and checksum assets. An exact retry is idempotent; rebinding the same generation ID to different bytes returns a typed conflict.
 
 <a name="Subject"></a>
-## type [Subject](<https://github.com/agentstation/starmap/blob/main/pkg/catalogartifact/bundle.go#L80-L83>)
+## type [Subject](<https://github.com/agentstation/starmap/blob/main/pkg/catalogartifact/bundle.go#L79-L82>)
 
 Subject is one byte object bound by the detached statement.
 

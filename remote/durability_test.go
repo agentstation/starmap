@@ -387,31 +387,31 @@ type faultStore struct {
 	err error
 }
 
-func (s faultStore) Current(context.Context) (catalogstore.Generation, error) {
-	return catalogstore.Generation{}, s.err
+func (s faultStore) Current(context.Context) (catalogs.Generation, error) {
+	return catalogs.Generation{}, s.err
 }
 
-func (s faultStore) Get(context.Context, string) (catalogstore.Generation, error) {
-	return catalogstore.Generation{}, s.err
+func (s faultStore) Get(context.Context, string) (catalogs.Generation, error) {
+	return catalogs.Generation{}, s.err
 }
 
-func (s faultStore) Commit(context.Context, catalogstore.Generation, string) error {
+func (s faultStore) Commit(context.Context, catalogs.Generation, string) error {
 	return s.err
 }
 
 type blockingStore struct{}
 
-func (blockingStore) Current(ctx context.Context) (catalogstore.Generation, error) {
+func (blockingStore) Current(ctx context.Context) (catalogs.Generation, error) {
 	<-ctx.Done()
-	return catalogstore.Generation{}, ctx.Err()
+	return catalogs.Generation{}, ctx.Err()
 }
 
-func (blockingStore) Get(ctx context.Context, _ string) (catalogstore.Generation, error) {
+func (blockingStore) Get(ctx context.Context, _ string) (catalogs.Generation, error) {
 	<-ctx.Done()
-	return catalogstore.Generation{}, ctx.Err()
+	return catalogs.Generation{}, ctx.Err()
 }
 
-func (blockingStore) Commit(ctx context.Context, _ catalogstore.Generation, _ string) error {
+func (blockingStore) Commit(ctx context.Context, _ catalogs.Generation, _ string) error {
 	<-ctx.Done()
 	return ctx.Err()
 }

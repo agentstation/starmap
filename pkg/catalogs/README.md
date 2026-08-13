@@ -664,6 +664,8 @@ func main() {
   - [func \(cat \*Builder\) SetProviderModel\(providerID ProviderID, model Model\) error](<#Builder.SetProviderModel>)
 - [type CapabilityMapping](<#CapabilityMapping>)
 - [type Catalog](<#Catalog>)
+  - [func DecodeCatalogPayload\(data \[\]byte\) \(\*Catalog, error\)](<#DecodeCatalogPayload>)
+  - [func DecodeSourceObservationPayload\(data \[\]byte\) \(\*Catalog, error\)](<#DecodeSourceObservationPayload>)
   - [func NewCatalog\(source Reader\) \(\*Catalog, error\)](<#NewCatalog>)
   - [func NewObservationCatalog\(source Reader\) \(\*Catalog, error\)](<#NewObservationCatalog>)
   - [func \(r \*Catalog\) Author\(id AuthorID\) \(Author, error\)](<#Catalog.Author>)
@@ -687,6 +689,9 @@ func main() {
 - [type EndpointType](<#EndpointType>)
 - [type FieldMapping](<#FieldMapping>)
 - [type FloatRange](<#FloatRange>)
+- [type Generation](<#Generation>)
+  - [func \(g Generation\) Copy\(\) Generation](<#Generation.Copy>)
+  - [func \(g Generation\) Validate\(\) error](<#Generation.Validate>)
 - [type GenerationCompleteness](<#GenerationCompleteness>)
 - [type GenerationManifest](<#GenerationManifest>)
   - [func ParseGenerationManifestJSON\(data \[\]byte\) \(GenerationManifest, error\)](<#ParseGenerationManifestJSON>)
@@ -1990,6 +1995,24 @@ type Catalog struct {
 }
 ```
 
+<a name="DecodeCatalogPayload"></a>
+### func [DecodeCatalogPayload](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/payload_decode.go#L39>)
+
+```go
+func DecodeCatalogPayload(data []byte) (*Catalog, error)
+```
+
+DecodeCatalogPayload decodes the current catalog payload. A non\-nil catalog together with \*sourcepayload.QuarantineError is a partial diagnostic result and must not be activated as the manifest\-bound generation.
+
+<a name="DecodeSourceObservationPayload"></a>
+### func [DecodeSourceObservationPayload](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/payload_decode.go#L51>)
+
+```go
+func DecodeSourceObservationPayload(data []byte) (*Catalog, error)
+```
+
+DecodeSourceObservationPayload decodes a source candidate without requiring every provider record to have resolved canonical authorship. The returned catalog is suitable only for reconciliation; durable generation activation must use DecodeCatalogPayload.
+
 <a name="NewCatalog"></a>
 ### func [NewCatalog](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/readonly.go#L13>)
 
@@ -2230,6 +2253,36 @@ type FloatRange struct {
     Default float64 `json:"default" yaml:"default"` // Default value
 }
 ```
+
+<a name="Generation"></a>
+## type [Generation](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/generation.go#L4-L7>)
+
+Generation is an immutable manifest and its exact catalog payload bytes.
+
+```go
+type Generation struct {
+    Manifest GenerationManifest
+    Payload  []byte
+}
+```
+
+<a name="Generation.Copy"></a>
+### func \(Generation\) [Copy](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/generation.go#L10>)
+
+```go
+func (g Generation) Copy() Generation
+```
+
+Copy returns a generation that does not share mutable slices with g.
+
+<a name="Generation.Validate"></a>
+### func \(Generation\) [Validate](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/generation.go#L18>)
+
+```go
+func (g Generation) Validate() error
+```
+
+Validate verifies the manifest and its binding to the payload.
 
 <a name="GenerationCompleteness"></a>
 ## type [GenerationCompleteness](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/generation_manifest.go#L54>)

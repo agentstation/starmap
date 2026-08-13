@@ -1,0 +1,48 @@
+package catalogs
+
+import (
+	"os"
+	"testing"
+)
+
+func TestGenerationCopyOwnsManifestAndPayload(t *testing.T) {
+	t.Parallel()
+
+	generation := loadGenerationFixture(t)
+	copy := generation.Copy()
+	copy.Payload[0] ^= 0xff
+	copy.Manifest.Validation.Checks[0].Name = "changed"
+	copy.Manifest.SourceObservations[0].ObservationID = "changed"
+
+	if string(generation.Payload) == string(copy.Payload) {
+		t.Fatal("payload mutation did not change the copy")
+	}
+	if generation.Manifest.Validation.Checks[0].Name == "changed" {
+		t.Fatal("validation-check mutation reached the original")
+	}
+	if generation.Manifest.SourceObservations[0].ObservationID == "changed" {
+		t.Fatal("observation mutation reached the original")
+	}
+}
+
+func TestGenerationValidateBindsManifestToPayload(t *testing.T) {
+	t.Parallel()
+
+	generation := loadGenerationFixture(t)
+	if err := generation.Validate(); err != nil {
+		t.Fatalf("Validate fixture: %v", err)
+	}
+	generation.Payload = append(generation.Payload, 'x')
+	if err := generation.Validate(); err == nil {
+		t.Fatal("Validate accepted payload bytes that do not match the manifest")
+	}
+}
+
+func loadGenerationFixture(t *testing.T) Generation {
+	t.Helper()
+	payload, err := os.ReadFile("testdata/generation/catalog.json")
+	if err != nil {
+		t.Fatalf("Read payload fixture: %v", err)
+	}
+	return Generation{Manifest: loadGenerationManifestFixture(t), Payload: payload}
+}

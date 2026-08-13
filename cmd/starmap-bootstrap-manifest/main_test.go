@@ -145,7 +145,7 @@ func TestScheduledGenerationManifestUsesExactCommittedIdentity(t *testing.T) {
 	}
 	descriptor := catalogs.DescribeCatalogPayload(payload)
 	generatedAt := time.Date(2026, time.July, 29, 21, 0, 0, 0, time.UTC)
-	generation := catalogstore.Generation{
+	generation := catalogs.Generation{
 		Manifest: catalogs.GenerationManifest{
 			ManifestVersion: catalogs.CurrentGenerationManifestVersion,
 			SchemaVersion:   catalogs.CurrentCatalogSchemaVersion,

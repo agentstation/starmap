@@ -7,7 +7,6 @@ import (
 	testcatalog "github.com/agentstation/starmap/internal/test/catalog"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/catalogs/evidence"
-	"github.com/agentstation/starmap/pkg/catalogstore"
 	"github.com/agentstation/starmap/pkg/provenance"
 )
 
@@ -162,7 +161,7 @@ func TestDeriveCommittedRejectsCatalogDifferentFromCommittedPayload(t *testing.T
 	if _, _, err := DeriveCommitted(different, generation, nil); err == nil {
 		t.Fatal("DeriveCommitted accepted catalog bytes different from the commit")
 	}
-	if _, _, err := DeriveCommitted(catalog, catalogstore.Generation{}, nil); err == nil {
+	if _, _, err := DeriveCommitted(catalog, catalogs.Generation{}, nil); err == nil {
 		t.Fatal("DeriveCommitted accepted an invalid committed generation")
 	}
 }
@@ -170,7 +169,7 @@ func TestDeriveCommittedRejectsCatalogDifferentFromCommittedPayload(t *testing.T
 func committedFixture(
 	t *testing.T,
 	id string,
-) (*catalogs.Catalog, catalogstore.Generation) {
+) (*catalogs.Catalog, catalogs.Generation) {
 	t.Helper()
 	catalog, err := catalogs.NewEmpty().Build()
 	if err != nil {
@@ -182,7 +181,7 @@ func committedFixture(
 	}
 	generatedAt := time.Date(2026, time.July, 29, 20, 0, 0, 0, time.UTC)
 	descriptor := catalogs.DescribeCatalogPayload(payload)
-	generation := catalogstore.Generation{
+	generation := catalogs.Generation{
 		Manifest: catalogs.GenerationManifest{
 			ManifestVersion: catalogs.CurrentGenerationManifestVersion,
 			SchemaVersion:   catalogs.CurrentCatalogSchemaVersion,

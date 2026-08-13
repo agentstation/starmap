@@ -10,15 +10,14 @@ import (
 	bootstraploader "github.com/agentstation/starmap/internal/bootstrap"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	catalogevidence "github.com/agentstation/starmap/pkg/catalogs/evidence"
-	"github.com/agentstation/starmap/pkg/catalogstore"
 	"github.com/agentstation/starmap/pkg/errors"
 )
 
 // CurrentGeneration returns the exact immutable generation currently published
 // by this client. The embedded bootstrap is returned before durable mutation.
-func (c *Client) CurrentGeneration(ctx context.Context) (catalogstore.Generation, error) {
+func (c *Client) CurrentGeneration(ctx context.Context) (catalogs.Generation, error) {
 	if c == nil {
-		return catalogstore.Generation{}, &errors.ValidationError{Field: "starmap.client", Message: "is required"}
+		return catalogs.Generation{}, &errors.ValidationError{Field: "starmap.client", Message: "is required"}
 	}
 	if ctx == nil {
 		ctx = context.Background()
@@ -29,20 +28,20 @@ func (c *Client) CurrentGeneration(ctx context.Context) (catalogstore.Generation
 	c.mu.RUnlock()
 	if id != "" {
 		if err := c.requireWritableCatalogStore(); err != nil {
-			return catalogstore.Generation{}, err
+			return catalogs.Generation{}, err
 		}
 		return c.options.catalogStore.Get(ctx, id)
 	}
 	if embedded {
 		return bootstraploader.Generation()
 	}
-	return catalogstore.Generation{}, &errors.NotFoundError{Resource: "current catalog generation", ID: "current"}
+	return catalogs.Generation{}, &errors.NotFoundError{Resource: "current catalog generation", ID: "current"}
 }
 
 // Generation returns one retained immutable generation by ID.
-func (c *Client) Generation(ctx context.Context, id string) (catalogstore.Generation, error) {
+func (c *Client) Generation(ctx context.Context, id string) (catalogs.Generation, error) {
 	if c == nil {
-		return catalogstore.Generation{}, &errors.ValidationError{Field: "starmap.client", Message: "is required"}
+		return catalogs.Generation{}, &errors.ValidationError{Field: "starmap.client", Message: "is required"}
 	}
 	if ctx == nil {
 		ctx = context.Background()
@@ -59,7 +58,7 @@ func (c *Client) Generation(ctx context.Context, id string) (catalogstore.Genera
 	if id == embeddedID {
 		return bootstraploader.Generation()
 	}
-	return catalogstore.Generation{}, &errors.NotFoundError{Resource: "catalog generation", ID: id}
+	return catalogs.Generation{}, &errors.NotFoundError{Resource: "catalog generation", ID: id}
 }
 
 const (
@@ -105,7 +104,7 @@ func (c *Client) commitAndPublish(
 func (c *Client) commitReceivedGeneration(
 	ctx context.Context,
 	published *catalogs.Catalog,
-	generation catalogstore.Generation,
+	generation catalogs.Generation,
 ) (Publication, error) {
 	if err := c.requireWritableCatalogStore(); err != nil {
 		return Publication{}, err
@@ -158,7 +157,7 @@ func (c *Client) commitReceivedGeneration(
 	}, nil
 }
 
-func (c *Client) publishCommittedGeneration(published *catalogs.Catalog, generation catalogstore.Generation) {
+func (c *Client) publishCommittedGeneration(published *catalogs.Catalog, generation catalogs.Generation) {
 	oldCatalog, sequence := c.swapCatalogGeneration(
 		published,
 		generation.Manifest.GenerationID,
@@ -176,7 +175,7 @@ func (c *Client) publishCommittedGeneration(published *catalogs.Catalog, generat
 
 // bindCommittedGenerationIdentity binds the active logical identity to the
 // caller store without changing the visible state or sequence.
-func (c *Client) bindCommittedGenerationIdentity(generation catalogstore.Generation) {
+func (c *Client) bindCommittedGenerationIdentity(generation catalogs.Generation) {
 	c.mu.Lock()
 	c.usingEmbeddedBootstrap = false
 	c.generationID = generation.Manifest.GenerationID
@@ -187,7 +186,7 @@ func (c *Client) bindCommittedGenerationIdentity(generation catalogstore.Generat
 
 // publishCommittedGenerationIdentity publishes a new durable identity for the
 // same catalog bytes. It retains the catalog pointer and emits no model changes.
-func (c *Client) publishCommittedGenerationIdentity(generation catalogstore.Generation) {
+func (c *Client) publishCommittedGenerationIdentity(generation catalogs.Generation) {
 	c.mu.Lock()
 	published := c.catalog
 	c.usingEmbeddedBootstrap = false
@@ -208,19 +207,19 @@ func (c *Client) publishCommittedGenerationIdentity(generation catalogstore.Gene
 func (c *Client) newGeneration(
 	published *catalogs.Catalog,
 	evidence CandidateEvidence,
-) (catalogstore.Generation, error) {
-	payload, err := catalogstore.EncodeCatalogPayload(published)
+) (catalogs.Generation, error) {
+	payload, err := catalogs.EncodeCatalogPayload(published)
 	if err != nil {
-		return catalogstore.Generation{}, err
+		return catalogs.Generation{}, err
 	}
 	descriptor := catalogs.DescribeCatalogPayload(payload)
 	generationID, err := c.nextID()
 	if err != nil {
-		return catalogstore.Generation{}, err
+		return catalogs.Generation{}, err
 	}
 	syncRunID, err := c.nextID()
 	if err != nil {
-		return catalogstore.Generation{}, err
+		return catalogs.Generation{}, err
 	}
 	generatedAt := c.currentTime()
 	observations := append([]catalogs.SourceObservationLink(nil), evidence.SourceObservations...)
@@ -243,7 +242,7 @@ func (c *Client) newGeneration(
 	degradationReasons := make([]string, 0)
 	for _, observation := range observations {
 		if err := observation.Validate(); err != nil {
-			return catalogstore.Generation{}, errors.WrapResource(
+			return catalogs.Generation{}, errors.WrapResource(
 				"validate",
 				"source observation",
 				observation.ObservationID,
@@ -261,7 +260,7 @@ func (c *Client) newGeneration(
 			)
 		}
 	}
-	generation := catalogstore.Generation{
+	generation := catalogs.Generation{
 		Manifest: catalogs.GenerationManifest{
 			ManifestVersion: catalogs.CurrentGenerationManifestVersion,
 			SchemaVersion:   catalogs.CurrentCatalogSchemaVersion,
@@ -291,7 +290,7 @@ func (c *Client) newGeneration(
 		Payload: payload,
 	}
 	if err := generation.Validate(); err != nil {
-		return catalogstore.Generation{}, err
+		return catalogs.Generation{}, err
 	}
 	return generation, nil
 }

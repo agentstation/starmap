@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/agentstation/starmap"
+	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/catalogstore"
 )
 
@@ -95,16 +96,16 @@ type blockingStore struct {
 	started chan struct{}
 }
 
-func (s *blockingStore) Current(ctx context.Context) (catalogstore.Generation, error) {
+func (s *blockingStore) Current(ctx context.Context) (catalogs.Generation, error) {
 	close(s.started)
 	<-ctx.Done()
-	return catalogstore.Generation{}, ctx.Err()
+	return catalogs.Generation{}, ctx.Err()
 }
 
-func (*blockingStore) Get(context.Context, string) (catalogstore.Generation, error) {
-	return catalogstore.Generation{}, errors.New("unexpected Get call")
+func (*blockingStore) Get(context.Context, string) (catalogs.Generation, error) {
+	return catalogs.Generation{}, errors.New("unexpected Get call")
 }
 
-func (*blockingStore) Commit(context.Context, catalogstore.Generation, string) error {
+func (*blockingStore) Commit(context.Context, catalogs.Generation, string) error {
 	return errors.New("unexpected Commit call")
 }

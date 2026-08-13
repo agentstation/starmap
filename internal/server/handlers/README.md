@@ -93,7 +93,7 @@ func New(app application, cache *cache.Cache, sseBroadcaster *sse.Broadcaster, l
 New creates a new Handlers instance.
 
 <a name="Handlers.HandleCatalogGenerationManifest"></a>
-### func \(\*Handlers\) [HandleCatalogGenerationManifest](<https://github.com/agentstation/starmap/blob/main/internal/server/handlers/catalog.go#L29-L33>)
+### func \(\*Handlers\) [HandleCatalogGenerationManifest](<https://github.com/agentstation/starmap/blob/main/internal/server/handlers/catalog.go#L28-L32>)
 
 ```go
 func (h *Handlers) HandleCatalogGenerationManifest(writer http.ResponseWriter, request *http.Request, generationID string)
@@ -102,7 +102,7 @@ func (h *Handlers) HandleCatalogGenerationManifest(writer http.ResponseWriter, r
 HandleCatalogGenerationManifest serves an immutable manifest by generation ID.
 
 <a name="Handlers.HandleCatalogManifest"></a>
-### func \(\*Handlers\) [HandleCatalogManifest](<https://github.com/agentstation/starmap/blob/main/internal/server/handlers/catalog.go#L14>)
+### func \(\*Handlers\) [HandleCatalogManifest](<https://github.com/agentstation/starmap/blob/main/internal/server/handlers/catalog.go#L13>)
 
 ```go
 func (h *Handlers) HandleCatalogManifest(writer http.ResponseWriter, request *http.Request)
@@ -111,7 +111,7 @@ func (h *Handlers) HandleCatalogManifest(writer http.ResponseWriter, request *ht
 HandleCatalogManifest serves the current strict generation manifest.
 
 <a name="Handlers.HandleCatalogPayload"></a>
-### func \(\*Handlers\) [HandleCatalogPayload](<https://github.com/agentstation/starmap/blob/main/internal/server/handlers/catalog.go#L81>)
+### func \(\*Handlers\) [HandleCatalogPayload](<https://github.com/agentstation/starmap/blob/main/internal/server/handlers/catalog.go#L80>)
 
 ```go
 func (h *Handlers) HandleCatalogPayload(writer http.ResponseWriter, request *http.Request, generationID string)

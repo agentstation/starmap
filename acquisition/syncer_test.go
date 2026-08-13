@@ -266,7 +266,7 @@ type deadlineRecordingStore struct {
 
 func (s *deadlineRecordingStore) Commit(
 	ctx context.Context,
-	_ catalogstore.Generation,
+	_ catalogs.Generation,
 	_ string,
 ) error {
 	_, ok := ctx.Deadline()

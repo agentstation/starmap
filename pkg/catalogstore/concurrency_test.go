@@ -5,6 +5,7 @@ import (
 	"sync"
 	"testing"
 
+	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/errors"
 )
 
@@ -49,7 +50,7 @@ func TestCatalogStoreConcurrentSameBaseCAS(t *testing.T) {
 			if err := firstStore.Commit(context.Background(), base, ""); err != nil {
 				t.Fatalf("Commit base: %v", err)
 			}
-			candidates := []Generation{
+			candidates := []catalogs.Generation{
 				testGeneration("cas-left", "left"),
 				testGeneration("cas-right", "right"),
 			}

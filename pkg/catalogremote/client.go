@@ -16,7 +16,6 @@ import (
 
 	"github.com/agentstation/starmap/internal/constants"
 	"github.com/agentstation/starmap/pkg/catalogs"
-	"github.com/agentstation/starmap/pkg/catalogstore"
 	"github.com/agentstation/starmap/pkg/errors"
 )
 
@@ -152,10 +151,10 @@ func (c *Client) verifyPublisher(response *http.Response) error {
 
 // FetchCurrent fetches the current manifest followed by its immutable,
 // generation-addressed payload and validates their binding and compatibility.
-func (c *Client) FetchCurrent(ctx context.Context) (catalogstore.Generation, error) {
+func (c *Client) FetchCurrent(ctx context.Context) (catalogs.Generation, error) {
 	manifest, _, err := c.fetchManifest(ctx, ManifestPath, "current", "")
 	if err != nil {
-		return catalogstore.Generation{}, err
+		return catalogs.Generation{}, err
 	}
 	return c.fetchGenerationPayload(ctx, manifest)
 }
@@ -166,9 +165,9 @@ func (c *Client) FetchCurrent(ctx context.Context) (catalogstore.Generation, err
 func (c *Client) FetchCurrentIfChanged(
 	ctx context.Context,
 	generationID string,
-) (generation catalogstore.Generation, changed bool, err error) {
+) (generation catalogs.Generation, changed bool, err error) {
 	if err := validateGenerationID(generationID); err != nil {
-		return catalogstore.Generation{}, false, err
+		return catalogs.Generation{}, false, err
 	}
 	manifest, notModified, err := c.fetchManifest(
 		ctx,
@@ -177,22 +176,22 @@ func (c *Client) FetchCurrentIfChanged(
 		ManifestETag(generationID),
 	)
 	if err != nil {
-		return catalogstore.Generation{}, false, err
+		return catalogs.Generation{}, false, err
 	}
 	if notModified {
-		return catalogstore.Generation{}, false, nil
+		return catalogs.Generation{}, false, nil
 	}
 	generation, err = c.fetchGenerationPayload(ctx, manifest)
 	if err != nil {
-		return catalogstore.Generation{}, false, err
+		return catalogs.Generation{}, false, err
 	}
 	return generation, true, nil
 }
 
 // FetchGeneration fetches and verifies one immutable generation by ID.
-func (c *Client) FetchGeneration(ctx context.Context, generationID string) (catalogstore.Generation, error) {
+func (c *Client) FetchGeneration(ctx context.Context, generationID string) (catalogs.Generation, error) {
 	if err := validateGenerationID(generationID); err != nil {
-		return catalogstore.Generation{}, err
+		return catalogs.Generation{}, err
 	}
 	manifest, _, err := c.fetchManifest(
 		ctx,
@@ -201,10 +200,10 @@ func (c *Client) FetchGeneration(ctx context.Context, generationID string) (cata
 		"",
 	)
 	if err != nil {
-		return catalogstore.Generation{}, err
+		return catalogs.Generation{}, err
 	}
 	if manifest.GenerationID != generationID {
-		return catalogstore.Generation{}, &errors.ValidationError{
+		return catalogs.Generation{}, &errors.ValidationError{
 			Field:   "catalog_remote.generation_id",
 			Value:   manifest.GenerationID,
 			Message: "does not match requested generation " + generationID,
@@ -306,14 +305,14 @@ func validateGenerationID(generationID string) error {
 func (c *Client) fetchGenerationPayload(
 	ctx context.Context,
 	manifest catalogs.GenerationManifest,
-) (catalogstore.Generation, error) {
+) (catalogs.Generation, error) {
 	payload, err := c.fetch(ctx, PayloadPath(manifest.GenerationID), catalogs.CatalogPayloadMediaType)
 	if err != nil {
-		return catalogstore.Generation{}, err
+		return catalogs.Generation{}, err
 	}
-	generation := catalogstore.Generation{Manifest: manifest, Payload: payload}
+	generation := catalogs.Generation{Manifest: manifest, Payload: payload}
 	if err := generation.Validate(); err != nil {
-		return catalogstore.Generation{}, errors.WrapResource("verify", "remote catalog generation", manifest.GenerationID, err)
+		return catalogs.Generation{}, errors.WrapResource("verify", "remote catalog generation", manifest.GenerationID, err)
 	}
 	return generation, nil
 }

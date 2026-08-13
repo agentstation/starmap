@@ -236,7 +236,7 @@ func TestRestartCompletesProjectionAfterMigrationMove(t *testing.T) {
 
 func assertCatalogPayload(t *testing.T, catalog *catalogs.Catalog, want []byte) {
 	t.Helper()
-	got, err := catalogstore.EncodeCatalogPayload(catalog)
+	got, err := catalogs.EncodeCatalogPayload(catalog)
 	if err != nil {
 		t.Fatalf("EncodeCatalogPayload: %v", err)
 	}
@@ -272,7 +272,7 @@ func appCatalogTree(t *testing.T, root string) map[string]string {
 	return contents
 }
 
-func validCatalogGeneration(t *testing.T, id string) catalogstore.Generation {
+func validCatalogGeneration(t *testing.T, id string) catalogs.Generation {
 	t.Helper()
 	builder := catalogs.NewEmpty()
 	author := catalogs.Author{ID: "test-author", Name: "Test Author"}
@@ -303,13 +303,13 @@ func validCatalogGeneration(t *testing.T, id string) catalogstore.Generation {
 	if err != nil {
 		t.Fatalf("Build: %v", err)
 	}
-	payload, err := catalogstore.EncodeCatalogPayload(catalog)
+	payload, err := catalogs.EncodeCatalogPayload(catalog)
 	if err != nil {
 		t.Fatalf("EncodeCatalogPayload: %v", err)
 	}
 	generatedAt := time.Date(2026, time.July, 10, 0, 0, 0, 0, time.UTC)
 	descriptor := catalogs.DescribeCatalogPayload(payload)
-	return catalogstore.Generation{
+	return catalogs.Generation{
 		Manifest: catalogs.GenerationManifest{
 			ManifestVersion: catalogs.CurrentGenerationManifestVersion,
 			SchemaVersion:   catalogs.CurrentCatalogSchemaVersion,

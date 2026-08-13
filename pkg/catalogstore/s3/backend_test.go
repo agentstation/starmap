@@ -385,7 +385,7 @@ func TestS3CatalogStoreConcurrentCAS(t *testing.T) {
 		t.Fatalf("Commit base: %v", err)
 	}
 	stores := []*catalogstore.Object{firstStore, secondStore}
-	candidates := []catalogstore.Generation{
+	candidates := []catalogs.Generation{
 		testGeneration("cas-left", "left"),
 		testGeneration("cas-right", "right"),
 	}
@@ -474,7 +474,7 @@ func newObjectStore(t *testing.T, backend catalogstore.ObjectBackend, prefix str
 	return store
 }
 
-func assertCurrent(t *testing.T, store catalogstore.Store, want catalogstore.Generation) {
+func assertCurrent(t *testing.T, store catalogstore.Store, want catalogs.Generation) {
 	t.Helper()
 	got, err := store.Current(context.Background())
 	if err != nil {
@@ -485,11 +485,11 @@ func assertCurrent(t *testing.T, store catalogstore.Store, want catalogstore.Gen
 	}
 }
 
-func testGeneration(id, value string) catalogstore.Generation {
+func testGeneration(id, value string) catalogs.Generation {
 	payload := fmt.Appendf(nil, `{"value":%q}`, value)
 	evidenceDescriptor := catalogs.DescribeCatalogPayload([]byte("evidence:" + value))
 	generatedAt := time.Date(2026, time.July, 29, 12, 0, 0, 0, time.UTC)
-	return catalogstore.Generation{
+	return catalogs.Generation{
 		Manifest: catalogs.GenerationManifest{
 			ManifestVersion: catalogs.CurrentGenerationManifestVersion,
 			SchemaVersion:   catalogs.CurrentCatalogSchemaVersion,

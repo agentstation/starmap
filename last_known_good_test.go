@@ -23,7 +23,7 @@ type lastKnownGoodFaultStore struct {
 	once    sync.Once
 }
 
-func (s *lastKnownGoodFaultStore) Commit(ctx context.Context, generation catalogstore.Generation, expected string) error {
+func (s *lastKnownGoodFaultStore) Commit(ctx context.Context, generation catalogs.Generation, expected string) error {
 	if !s.fail.Load() {
 		return s.Memory.Commit(ctx, generation, expected)
 	}

@@ -121,7 +121,7 @@ func newCommitGateStore(fail bool) *commitGateStore {
 	}
 }
 
-func (s *commitGateStore) Commit(ctx context.Context, generation catalogstore.Generation, expected string) error {
+func (s *commitGateStore) Commit(ctx context.Context, generation catalogs.Generation, expected string) error {
 	s.once.Do(func() { close(s.entered) })
 	select {
 	case <-s.release:

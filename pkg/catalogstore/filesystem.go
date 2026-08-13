@@ -55,37 +55,37 @@ func (s *Filesystem) Root() string {
 }
 
 // Current returns the currently active generation.
-func (s *Filesystem) Current(ctx context.Context) (Generation, error) {
+func (s *Filesystem) Current(ctx context.Context) (catalogs.Generation, error) {
 	if err := ctx.Err(); err != nil {
-		return Generation{}, err
+		return catalogs.Generation{}, err
 	}
 	s.mu.RLock()
 	defer s.mu.RUnlock()
 	if err := validateFilesystemLayout(s.root); err != nil {
-		return Generation{}, err
+		return catalogs.Generation{}, err
 	}
 	id, err := s.currentID()
 	if err != nil {
-		return Generation{}, err
+		return catalogs.Generation{}, err
 	}
 	return s.readGeneration(ctx, id)
 }
 
 // Get returns an immutable generation by ID.
-func (s *Filesystem) Get(ctx context.Context, id string) (Generation, error) {
+func (s *Filesystem) Get(ctx context.Context, id string) (catalogs.Generation, error) {
 	if err := ctx.Err(); err != nil {
-		return Generation{}, err
+		return catalogs.Generation{}, err
 	}
 	s.mu.RLock()
 	defer s.mu.RUnlock()
 	if err := validateFilesystemLayout(s.root); err != nil {
-		return Generation{}, err
+		return catalogs.Generation{}, err
 	}
 	return s.readGeneration(ctx, id)
 }
 
 // Commit writes an immutable generation before atomically replacing current.
-func (s *Filesystem) Commit(ctx context.Context, generation Generation, expectedGenerationID string) error {
+func (s *Filesystem) Commit(ctx context.Context, generation catalogs.Generation, expectedGenerationID string) error {
 	if err := validateCandidate(ctx, generation); err != nil {
 		return err
 	}
@@ -183,38 +183,38 @@ func (s *Filesystem) currentIDOrEmpty() (string, error) {
 	return id, nil
 }
 
-func (s *Filesystem) readGeneration(ctx context.Context, id string) (Generation, error) {
+func (s *Filesystem) readGeneration(ctx context.Context, id string) (catalogs.Generation, error) {
 	if err := ctx.Err(); err != nil {
-		return Generation{}, err
+		return catalogs.Generation{}, err
 	}
 	dir := s.generationDir(id)
 	if err := validateFilesystemEntry(dir, true); err != nil {
 		if os.IsNotExist(err) {
-			return Generation{}, generationNotFound(id)
+			return catalogs.Generation{}, generationNotFound(id)
 		}
-		return Generation{}, err
+		return catalogs.Generation{}, err
 	}
 	manifestPath := filepath.Join(dir, manifestFilename)
 	if err := validateFilesystemEntry(manifestPath, false); err != nil {
 		if os.IsNotExist(err) {
-			return Generation{}, generationNotFound(id)
+			return catalogs.Generation{}, generationNotFound(id)
 		}
-		return Generation{}, err
+		return catalogs.Generation{}, err
 	}
 	// dir is derived from a SHA-256 digest, not a caller-controlled path.
 	manifestData, err := os.ReadFile(manifestPath) //nolint:gosec
 	if os.IsNotExist(err) {
-		return Generation{}, generationNotFound(id)
+		return catalogs.Generation{}, generationNotFound(id)
 	}
 	if err != nil {
-		return Generation{}, errors.WrapIO("read", manifestPath, err)
+		return catalogs.Generation{}, errors.WrapIO("read", manifestPath, err)
 	}
 	manifest, err := catalogs.ParseGenerationManifestJSON(manifestData)
 	if err != nil {
-		return Generation{}, err
+		return catalogs.Generation{}, err
 	}
 	if manifest.GenerationID != id {
-		return Generation{}, &errors.ValidationError{
+		return catalogs.Generation{}, &errors.ValidationError{
 			Field:   "generation_id",
 			Value:   manifest.GenerationID,
 			Message: "does not match requested generation",
@@ -222,21 +222,21 @@ func (s *Filesystem) readGeneration(ctx context.Context, id string) (Generation,
 	}
 	payloadPath := filepath.Join(dir, payloadFilename)
 	if err := validateFilesystemEntry(payloadPath, false); err != nil {
-		return Generation{}, err
+		return catalogs.Generation{}, err
 	}
 	// dir is derived from a SHA-256 digest, not a caller-controlled path.
 	payload, err := os.ReadFile(payloadPath) //nolint:gosec
 	if err != nil {
-		return Generation{}, errors.WrapIO("read", payloadPath, err)
+		return catalogs.Generation{}, errors.WrapIO("read", payloadPath, err)
 	}
-	generation := Generation{Manifest: manifest, Payload: payload}
+	generation := catalogs.Generation{Manifest: manifest, Payload: payload}
 	if err := generation.Validate(); err != nil {
-		return Generation{}, err
+		return catalogs.Generation{}, err
 	}
 	return generation, nil
 }
 
-func (s *Filesystem) writeGeneration(generation Generation) error {
+func (s *Filesystem) writeGeneration(generation catalogs.Generation) error {
 	manifest, err := marshalManifest(generation.Manifest)
 	if err != nil {
 		return err

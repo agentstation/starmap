@@ -7,7 +7,6 @@ import (
 
 	"github.com/agentstation/starmap/pkg/catalogs"
 	catalogevidence "github.com/agentstation/starmap/pkg/catalogs/evidence"
-	"github.com/agentstation/starmap/pkg/catalogstore"
 	"github.com/agentstation/starmap/pkg/errors"
 )
 
@@ -124,7 +123,7 @@ func (c *Client) Update(ctx context.Context, update UpdateFunc) (Publication, er
 
 // Activate validates, durably commits, and atomically activates an immutable
 // generation obtained by an explicit trusted distribution adapter.
-func (c *Client) Activate(ctx context.Context, generation catalogstore.Generation) (Publication, error) {
+func (c *Client) Activate(ctx context.Context, generation catalogs.Generation) (Publication, error) {
 	if c == nil {
 		return Publication{}, &errors.ValidationError{
 			Field:   "starmap.client",
@@ -153,7 +152,7 @@ func (c *Client) Activate(ctx context.Context, generation catalogstore.Generatio
 	}
 	defer release()
 
-	published, err := catalogstore.DecodeCatalogPayload(generation.Payload)
+	published, err := catalogs.DecodeCatalogPayload(generation.Payload)
 	if err != nil {
 		return Publication{}, errors.WrapResource(
 			"decode",

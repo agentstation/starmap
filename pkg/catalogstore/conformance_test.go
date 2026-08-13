@@ -151,7 +151,7 @@ func runCatalogStoreConformance(t *testing.T, store Store) {
 	assertStoredGeneration(t, store, second)
 }
 
-func assertStoredGeneration(t *testing.T, store Store, want Generation) {
+func assertStoredGeneration(t *testing.T, store Store, want catalogs.Generation) {
 	t.Helper()
 	got, err := store.Current(context.Background())
 	if err != nil {
@@ -162,11 +162,11 @@ func assertStoredGeneration(t *testing.T, store Store, want Generation) {
 	}
 }
 
-func testGeneration(id, value string) Generation {
+func testGeneration(id, value string) catalogs.Generation {
 	payload := fmt.Appendf(nil, `{"value":%q}`, value)
 	evidenceDescriptor := catalogs.DescribeCatalogPayload([]byte("evidence:" + value))
 	generatedAt := time.Date(2026, time.July, 9, 18, 0, 0, 0, time.UTC)
-	return Generation{
+	return catalogs.Generation{
 		Manifest: catalogs.GenerationManifest{
 			ManifestVersion: catalogs.CurrentGenerationManifestVersion,
 			SchemaVersion:   catalogs.CurrentCatalogSchemaVersion,

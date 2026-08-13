@@ -13,7 +13,6 @@ import (
 	"github.com/agentstation/starmap"
 	"github.com/agentstation/starmap/pkg/catalogremote"
 	"github.com/agentstation/starmap/pkg/catalogs"
-	"github.com/agentstation/starmap/pkg/catalogstore"
 	"github.com/agentstation/starmap/pkg/errors"
 )
 
@@ -630,7 +629,7 @@ func (s *Subscriber) catchUp(ctx context.Context) error {
 
 func (s *Subscriber) activate(
 	ctx context.Context,
-	generation catalogstore.Generation,
+	generation catalogs.Generation,
 ) (bool, error) {
 	if err := generation.Validate(); err != nil {
 		return false, errors.WrapResource(

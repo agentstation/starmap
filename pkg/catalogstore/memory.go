@@ -3,50 +3,52 @@ package catalogstore
 import (
 	"context"
 	"sync"
+
+	"github.com/agentstation/starmap/pkg/catalogs"
 )
 
 // Memory is an in-process reference implementation of Store.
 type Memory struct {
 	mu          sync.RWMutex
 	currentID   string
-	generations map[string]Generation
+	generations map[string]catalogs.Generation
 }
 
 // NewMemory creates an empty in-memory catalog store.
 func NewMemory() *Memory {
-	return &Memory{generations: make(map[string]Generation)}
+	return &Memory{generations: make(map[string]catalogs.Generation)}
 }
 
 // Current returns the currently active generation.
-func (s *Memory) Current(ctx context.Context) (Generation, error) {
+func (s *Memory) Current(ctx context.Context) (catalogs.Generation, error) {
 	if err := ctx.Err(); err != nil {
-		return Generation{}, err
+		return catalogs.Generation{}, err
 	}
 	s.mu.RLock()
 	defer s.mu.RUnlock()
 	if s.currentID == "" {
-		return Generation{}, currentNotFound()
+		return catalogs.Generation{}, currentNotFound()
 	}
 	return s.generations[s.currentID].Copy(), nil
 }
 
 // Get returns an immutable generation by ID.
-func (s *Memory) Get(ctx context.Context, id string) (Generation, error) {
+func (s *Memory) Get(ctx context.Context, id string) (catalogs.Generation, error) {
 	if err := ctx.Err(); err != nil {
-		return Generation{}, err
+		return catalogs.Generation{}, err
 	}
 	s.mu.RLock()
 	defer s.mu.RUnlock()
 	generation, found := s.generations[id]
 	if !found {
-		return Generation{}, generationNotFound(id)
+		return catalogs.Generation{}, generationNotFound(id)
 	}
 	return generation.Copy(), nil
 }
 
 // Commit validates and atomically activates generation when current matches
 // expectedGenerationID.
-func (s *Memory) Commit(ctx context.Context, generation Generation, expectedGenerationID string) error {
+func (s *Memory) Commit(ctx context.Context, generation catalogs.Generation, expectedGenerationID string) error {
 	if err := validateCandidate(ctx, generation); err != nil {
 		return err
 	}

@@ -117,47 +117,47 @@ func NewObject(backend ObjectBackend, prefix string) (*Object, error) {
 }
 
 // Current returns the currently active generation.
-func (s *Object) Current(ctx context.Context) (Generation, error) {
+func (s *Object) Current(ctx context.Context) (catalogs.Generation, error) {
 	state, err := s.current(ctx)
 	if err != nil {
-		return Generation{}, err
+		return catalogs.Generation{}, err
 	}
 	if !state.exists {
-		return Generation{}, currentNotFound()
+		return catalogs.Generation{}, currentNotFound()
 	}
 	return s.Get(ctx, state.id)
 }
 
 // Get returns an immutable generation by ID.
-func (s *Object) Get(ctx context.Context, id string) (Generation, error) {
+func (s *Object) Get(ctx context.Context, id string) (catalogs.Generation, error) {
 	manifestValue, err := s.backend.Get(ctx, s.generationKey(id, manifestFilename))
 	if errors.IsNotFound(err) {
-		return Generation{}, generationNotFound(id)
+		return catalogs.Generation{}, generationNotFound(id)
 	}
 	if err != nil {
-		return Generation{}, err
+		return catalogs.Generation{}, err
 	}
 	manifest, err := catalogs.ParseGenerationManifestJSON(manifestValue.Data)
 	if err != nil {
-		return Generation{}, err
+		return catalogs.Generation{}, err
 	}
 	if manifest.GenerationID != id {
-		return Generation{}, &errors.ValidationError{Field: "generation_id", Value: manifest.GenerationID, Message: "does not match requested generation"}
+		return catalogs.Generation{}, &errors.ValidationError{Field: "generation_id", Value: manifest.GenerationID, Message: "does not match requested generation"}
 	}
 	payloadValue, err := s.backend.Get(ctx, s.generationKey(id, payloadFilename))
 	if err != nil {
-		return Generation{}, err
+		return catalogs.Generation{}, err
 	}
-	generation := Generation{Manifest: manifest, Payload: append([]byte(nil), payloadValue.Data...)}
+	generation := catalogs.Generation{Manifest: manifest, Payload: append([]byte(nil), payloadValue.Data...)}
 	if err := generation.Validate(); err != nil {
-		return Generation{}, err
+		return catalogs.Generation{}, err
 	}
 	return generation, nil
 }
 
 // Commit uploads immutable generation objects before conditionally promoting
 // the current pointer.
-func (s *Object) Commit(ctx context.Context, generation Generation, expectedGenerationID string) error {
+func (s *Object) Commit(ctx context.Context, generation catalogs.Generation, expectedGenerationID string) error {
 	if err := validateCandidate(ctx, generation); err != nil {
 		return err
 	}

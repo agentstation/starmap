@@ -10,7 +10,6 @@ import (
 
 	"github.com/agentstation/starmap/internal/constants"
 	"github.com/agentstation/starmap/pkg/catalogs"
-	"github.com/agentstation/starmap/pkg/catalogstore"
 	pkgerrors "github.com/agentstation/starmap/pkg/errors"
 )
 
@@ -215,7 +214,7 @@ func TestArtifactRejectsValidButNonCanonicalCatalogPayload(t *testing.T) {
 	}
 }
 
-func artifactFixtureGeneration(t *testing.T) catalogstore.Generation {
+func artifactFixtureGeneration(t *testing.T) catalogs.Generation {
 	t.Helper()
 	manifestData, err := os.ReadFile("../catalogs/testdata/generation/manifest.json")
 	if err != nil {
@@ -229,13 +228,13 @@ func artifactFixtureGeneration(t *testing.T) catalogstore.Generation {
 	if err != nil {
 		t.Fatalf("Build empty catalog: %v", err)
 	}
-	payload, err := catalogstore.EncodeCatalogPayload(catalog)
+	payload, err := catalogs.EncodeCatalogPayload(catalog)
 	if err != nil {
 		t.Fatalf("Encode canonical payload: %v", err)
 	}
 	manifest.GenerationID = "artifact-fixture-generation-v1"
 	manifest.Payload = catalogs.DescribeCatalogPayload(payload)
-	generation := catalogstore.Generation{Manifest: manifest, Payload: payload}
+	generation := catalogs.Generation{Manifest: manifest, Payload: payload}
 	if err := generation.Validate(); err != nil {
 		t.Fatalf("Validate generation fixture: %v", err)
 	}

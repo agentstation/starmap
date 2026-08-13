@@ -19,7 +19,6 @@ import (
 	"github.com/agentstation/starmap/internal/constants"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/catalogs/evidence"
-	"github.com/agentstation/starmap/pkg/catalogstore"
 )
 
 func TestClientDefaultHTTPTimeout(t *testing.T) {
@@ -444,7 +443,7 @@ func TestRemoteCatalogFetchValidatesManifestPayloadChecksumAndCompatibility(t *t
 	unsafeGenerationID.Manifest.GenerationID = ".."
 	for _, test := range []struct {
 		name                 string
-		generation           catalogstore.Generation
+		generation           catalogs.Generation
 		mutatePayload        func([]byte) []byte
 		manifestType         string
 		payloadType          string
@@ -539,7 +538,7 @@ func (f roundTripperFunc) RoundTrip(request *http.Request) (*http.Response, erro
 	return f(request)
 }
 
-func remoteTestGeneration(t *testing.T, schemaVersion uint64, compatibility catalogs.ConsumerCompatibility) catalogstore.Generation {
+func remoteTestGeneration(t *testing.T, schemaVersion uint64, compatibility catalogs.ConsumerCompatibility) catalogs.Generation {
 	t.Helper()
 	builder := catalogs.NewEmpty()
 	if err := builder.SetProvider(catalogs.Provider{ID: "remote-test", Name: "Remote Test"}); err != nil {
@@ -549,13 +548,13 @@ func remoteTestGeneration(t *testing.T, schemaVersion uint64, compatibility cata
 	if err != nil {
 		t.Fatalf("Build: %v", err)
 	}
-	payload, err := catalogstore.EncodeCatalogPayload(catalog)
+	payload, err := catalogs.EncodeCatalogPayload(catalog)
 	if err != nil {
 		t.Fatalf("EncodeCatalogPayload: %v", err)
 	}
 	descriptor := catalogs.DescribeCatalogPayload(payload)
 	generatedAt := time.Date(2026, time.July, 11, 3, 0, 0, 0, time.UTC)
-	generation := catalogstore.Generation{
+	generation := catalogs.Generation{
 		Manifest: catalogs.GenerationManifest{
 			ManifestVersion: catalogs.CurrentGenerationManifestVersion,
 			SchemaVersion:   schemaVersion, GenerationID: fmt.Sprintf("remote-generation-%d", schemaVersion),

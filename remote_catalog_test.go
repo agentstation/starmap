@@ -77,7 +77,7 @@ func TestRemoteCatalogCorruptOrIncompatibleGenerationCannotReplaceCurrent(t *tes
 	valid := rootRemoteGeneration(t)
 	for _, test := range []struct {
 		name       string
-		generation catalogstore.Generation
+		generation catalogs.Generation
 		corrupt    bool
 	}{
 		{name: "corrupt payload", generation: valid, corrupt: true},
@@ -108,7 +108,7 @@ func TestRemoteCatalogCorruptOrIncompatibleGenerationCannotReplaceCurrent(t *tes
 	}
 }
 
-func rootRemoteGeneration(t *testing.T) catalogstore.Generation {
+func rootRemoteGeneration(t *testing.T) catalogs.Generation {
 	t.Helper()
 	builder := catalogs.NewEmpty()
 	if err := builder.SetProvider(catalogs.Provider{ID: "remote-root", Name: "Remote Root"}); err != nil {
@@ -136,7 +136,7 @@ func rootRemoteGeneration(t *testing.T) catalogstore.Generation {
 	return generation
 }
 
-func incompatibleRemoteGeneration(t *testing.T, generation catalogstore.Generation) catalogstore.Generation {
+func incompatibleRemoteGeneration(t *testing.T, generation catalogs.Generation) catalogs.Generation {
 	t.Helper()
 	incompatible := generation.Copy()
 	future := catalogs.CurrentCatalogSchemaVersion + 1
