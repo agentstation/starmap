@@ -8,6 +8,7 @@ import (
 	"io"
 	"net/http"
 	"net/http/httptest"
+	"net/url"
 	"slices"
 	"strings"
 	"sync"
@@ -58,9 +59,15 @@ func TestRemoteClientRejectsCrossOriginRedirect(t *testing.T) {
 func TestRemoteClientEnforcesConfiguredPublisherTrust(t *testing.T) {
 	t.Parallel()
 
+	credentialBearingURL := (&url.URL{
+		Scheme: "https",
+		User:   url.UserPassword("test-user", "test-password"),
+		Host:   "catalog.example.com",
+		Path:   "/api/v1",
+	}).String()
 	for _, baseURL := range []string{
 		"http://catalog.example.com/api/v1",
-		"https://user:password@catalog.example.com/api/v1",
+		credentialBearingURL,
 		"https://catalog.example.com/api/v1?channel=stable",
 		"https://catalog.example.com/api/v1#current",
 	} {
