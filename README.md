@@ -377,7 +377,7 @@ For detailed component design and interaction patterns, see **[ARCHITECTURE.md Â
 
 Starmap follows Go best practices with clear package separation:
 
-- **`pkg/`** - Focused public contracts ([catalogs](pkg/catalogs/), [storage](pkg/catalogs/storage/), [sources](pkg/sources/), [errors](pkg/errors/), etc.)
+- **`pkg/`** - Focused public contracts ([catalogs](pkg/catalogs/), [storage](pkg/catalogs/storage/), [artifact](pkg/catalogs/artifact/), [sources](pkg/sources/), [errors](pkg/errors/), etc.)
 - **`internal/`** - Internal implementations (reconciliation, CLI, providers, embedded data, transport)
 - **`cmd/starmap/`** - CLI application
 
@@ -731,14 +731,14 @@ fmt.Printf("Removed: %d models\n", result.Removed)
 #### Importing a Verified Catalog Release
 
 An importer supplies the three immutable release assets and a
-channel-specific `catalogartifact.PublisherVerifier`. For GitHub Releases, that
+channel-specific `artifact.PublisherVerifier`. For GitHub Releases, that
 verifier should require the exact `agentstation/starmap` repository and catalog
 generation workflow identity. Starmap verifies all trust inputs before
 mutation, reconciles release facts below human workspace evidence, and retains
 the prior generation for rollback:
 
 ```go
-result, err := syncer.ImportRelease(ctx, catalogartifact.Release{
+result, err := syncer.ImportRelease(ctx, artifact.Release{
     Archive:     archive,
     Checksum:    checksum,
     Attestation: statement,

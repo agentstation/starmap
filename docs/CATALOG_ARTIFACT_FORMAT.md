@@ -33,7 +33,7 @@ Starport binary/release version.
 
 ## Reproducibility
 
-For identical validated generation inputs, `catalogartifact.Build` emits
+For identical validated generation inputs, `artifact.Build` emits
 byte-identical archive and detached-statement output. The archive fixes:
 
 - member order: descriptor, manifest, payload;
@@ -60,8 +60,8 @@ Consumers:
 7. at the publication boundary, verify the signed repository/workflow
    attestation before atomic activation.
 
-Steps 1-6 are implemented by `catalogartifact.Open`.
-`catalogartifact.VerifyRelease` additionally verifies the exact detached
+Steps 1-6 are implemented by `artifact.Open`.
+`artifact.VerifyRelease` additionally verifies the exact detached
 checksum and requires a caller-supplied `PublisherVerifier` to authenticate the
 archive bytes to the expected channel publisher. The verifier owns channel
 credentials, clients, trust policy, network access, and lifecycle; the
@@ -79,7 +79,7 @@ the prior retained generation remains available through `Client.Rollback`.
 
 ## Immutable release publication
 
-`catalogartifact.StageReleaseAssets` verifies the archive and statement, then
+`artifact.StageReleaseAssets` verifies the archive and statement, then
 fsyncs archive, statement, and GNU-compatible SHA-256 file into a temporary
 directory and atomically publishes one generation-keyed immutable directory.
 An exact retry is idempotent. Existing partial, tampered, or different bytes for

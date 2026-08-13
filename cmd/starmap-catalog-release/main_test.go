@@ -12,8 +12,8 @@ import (
 	"time"
 
 	"github.com/agentstation/starmap/internal/constants"
-	"github.com/agentstation/starmap/pkg/catalogartifact"
 	"github.com/agentstation/starmap/pkg/catalogs"
+	"github.com/agentstation/starmap/pkg/catalogs/artifact"
 	"github.com/agentstation/starmap/pkg/catalogs/evidence"
 	"github.com/agentstation/starmap/pkg/catalogs/storage"
 )
@@ -44,17 +44,17 @@ func TestArtifactReleaseCommandStagesExactCommittedGeneration(t *testing.T) {
 			t.Fatalf("release asset %q: %v", path, err)
 		}
 	}
-	archive, err := os.ReadFile(filepath.Join(first.Directory, catalogartifact.Filename))
+	archive, err := os.ReadFile(filepath.Join(first.Directory, artifact.Filename))
 	if err != nil {
 		t.Fatalf("ReadFile archive: %v", err)
 	}
 	statement, err := os.ReadFile(
-		filepath.Join(first.Directory, catalogartifact.AttestationFilename),
+		filepath.Join(first.Directory, artifact.AttestationFilename),
 	)
 	if err != nil {
 		t.Fatalf("ReadFile statement: %v", err)
 	}
-	staged, err := catalogartifact.Open(archive, statement)
+	staged, err := artifact.Open(archive, statement)
 	if err != nil {
 		t.Fatalf("Open staged artifact: %v", err)
 	}
@@ -141,7 +141,7 @@ func TestArtifactReleaseCommandRejectsTamperedReleaseSet(t *testing.T) {
 	if err := json.Unmarshal(output.Bytes(), &staged); err != nil {
 		t.Fatalf("Unmarshal staged report: %v", err)
 	}
-	archivePath := filepath.Join(staged.Directory, catalogartifact.Filename)
+	archivePath := filepath.Join(staged.Directory, artifact.Filename)
 	archive, err := os.ReadFile(archivePath)
 	if err != nil {
 		t.Fatalf("Read archive: %v", err)
@@ -168,7 +168,7 @@ func TestArtifactReleaseCommandRejectsTamperedDetachedStatement(t *testing.T) {
 	if err := json.Unmarshal(output.Bytes(), &staged); err != nil {
 		t.Fatalf("Unmarshal staged report: %v", err)
 	}
-	statementPath := filepath.Join(staged.Directory, catalogartifact.AttestationFilename)
+	statementPath := filepath.Join(staged.Directory, artifact.AttestationFilename)
 	statement, err := os.ReadFile(statementPath)
 	if err != nil {
 		t.Fatalf("Read detached statement: %v", err)

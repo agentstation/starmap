@@ -8,8 +8,8 @@ import (
 	"testing"
 
 	"github.com/agentstation/starmap"
-	"github.com/agentstation/starmap/pkg/catalogartifact"
 	"github.com/agentstation/starmap/pkg/catalogs"
+	"github.com/agentstation/starmap/pkg/catalogs/artifact"
 	"github.com/agentstation/starmap/pkg/catalogs/evidence"
 	"github.com/agentstation/starmap/pkg/catalogs/projection"
 	"github.com/agentstation/starmap/pkg/catalogs/storage"
@@ -28,7 +28,7 @@ func (v *importPublisherVerifier) VerifyPublisher(
 	data []byte,
 ) error {
 	v.calls++
-	if name != catalogartifact.Filename || len(data) == 0 ||
+	if name != artifact.Filename || len(data) == 0 ||
 		(v.want != nil && !bytes.Equal(data, v.want)) {
 		return stderrors.New("unexpected publisher subject")
 	}
@@ -140,7 +140,7 @@ func TestImportReleaseVerifiesReconcilesPublishesAndRollsBack(t *testing.T) {
 		t.Fatalf("EncodeCatalogPayload before failure: %v", err)
 	}
 	tampered := release
-	tampered.Checksum = []byte("0  " + catalogartifact.Filename + "\n")
+	tampered.Checksum = []byte("0  " + artifact.Filename + "\n")
 	if _, err := syncer.ImportRelease(ctx, tampered, verifier); err == nil {
 		t.Fatal("tampered release import succeeded")
 	}
@@ -294,7 +294,7 @@ func buildImportCatalog(t testing.TB, builder *catalogs.Builder) *catalogs.Catal
 func importReleaseFixture(
 	t testing.TB,
 	catalog *catalogs.Catalog,
-) catalogartifact.Release {
+) artifact.Release {
 	t.Helper()
 	producerStore := storage.NewMemory()
 	producer, err := starmap.New(starmap.WithCatalogStore(producerStore))
@@ -313,13 +313,13 @@ func importReleaseFixture(
 	if err != nil {
 		t.Fatalf("producer CurrentGeneration: %v", err)
 	}
-	bundle, err := catalogartifact.Build(generation)
+	bundle, err := artifact.Build(generation)
 	if err != nil {
 		t.Fatalf("Build artifact: %v", err)
 	}
-	return catalogartifact.Release{
+	return artifact.Release{
 		Archive:     bundle.Data,
-		Checksum:    []byte(strings.TrimPrefix(bundle.Checksum, "sha256:") + "  " + catalogartifact.Filename + "\n"),
+		Checksum:    []byte(strings.TrimPrefix(bundle.Checksum, "sha256:") + "  " + artifact.Filename + "\n"),
 		Attestation: bundle.Attestation,
 	}
 }

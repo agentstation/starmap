@@ -13,8 +13,8 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/agentstation/starmap/pkg/catalogartifact"
 	"github.com/agentstation/starmap/pkg/catalogs"
+	"github.com/agentstation/starmap/pkg/catalogs/artifact"
 	"github.com/agentstation/starmap/pkg/catalogs/storage"
 	pkgerrors "github.com/agentstation/starmap/pkg/errors"
 )
@@ -123,11 +123,11 @@ func run(args []string, output io.Writer) error {
 	if err != nil {
 		return err
 	}
-	artifact, err := catalogartifact.Build(generation)
+	bundle, err := artifact.Build(generation)
 	if err != nil {
 		return err
 	}
-	assets, err := catalogartifact.StageReleaseAssets(*outputDir, artifact)
+	assets, err := artifact.StageReleaseAssets(*outputDir, bundle)
 	if err != nil {
 		return err
 	}
@@ -145,7 +145,7 @@ func verifyReleaseDirectory(directory string) (releaseReport, error) {
 	if err != nil {
 		return releaseReport{}, err
 	}
-	generation, err := catalogartifact.Open(release.archive, release.statement)
+	generation, err := artifact.Open(release.archive, release.statement)
 	if err != nil {
 		return releaseReport{}, pkgerrors.WrapResource("verify", "catalog release", release.directory, err)
 	}
@@ -168,7 +168,7 @@ func inspectReleaseDirectory(directory string) (inspectionReport, error) {
 	if err != nil {
 		return inspectionReport{}, err
 	}
-	descriptor, err := catalogartifact.Inspect(release.archive, release.statement)
+	descriptor, err := artifact.Inspect(release.archive, release.statement)
 	if err != nil {
 		return inspectionReport{}, pkgerrors.WrapResource("inspect", "catalog release", release.directory, err)
 	}
@@ -209,9 +209,9 @@ func readReleaseDirectory(directory string) (releaseDirectory, error) {
 	}
 
 	files := []string{
-		filepath.Join(absolute, catalogartifact.Filename),
-		filepath.Join(absolute, catalogartifact.AttestationFilename),
-		filepath.Join(absolute, catalogartifact.ChecksumFilename),
+		filepath.Join(absolute, artifact.Filename),
+		filepath.Join(absolute, artifact.AttestationFilename),
+		filepath.Join(absolute, artifact.ChecksumFilename),
 	}
 	archive, err := readReleaseAsset(files[0])
 	if err != nil {
@@ -228,7 +228,7 @@ func readReleaseDirectory(directory string) (releaseDirectory, error) {
 
 	digest := sha256.Sum256(archive)
 	digestHex := fmt.Sprintf("%x", digest)
-	wantChecksumFile := digestHex + "  " + catalogartifact.Filename + "\n"
+	wantChecksumFile := digestHex + "  " + artifact.Filename + "\n"
 	if string(checksumFile) != wantChecksumFile {
 		return releaseDirectory{}, &pkgerrors.ValidationError{
 			Field: "catalog_release.checksum", Value: strings.TrimSpace(string(checksumFile)), Message: "does not match archive bytes",

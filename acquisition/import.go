@@ -9,8 +9,8 @@ import (
 	"github.com/agentstation/starmap/internal/catalog/pipeline"
 	"github.com/agentstation/starmap/internal/catalog/workspace"
 	"github.com/agentstation/starmap/internal/sources/local"
-	"github.com/agentstation/starmap/pkg/catalogartifact"
 	"github.com/agentstation/starmap/pkg/catalogs"
+	"github.com/agentstation/starmap/pkg/catalogs/artifact"
 	"github.com/agentstation/starmap/pkg/catalogs/projection"
 	"github.com/agentstation/starmap/pkg/errors"
 	"github.com/agentstation/starmap/pkg/sources"
@@ -33,8 +33,8 @@ type ImportResult struct {
 // client. The release generation itself is never activated wholesale.
 func (s *Syncer) ImportRelease(
 	ctx context.Context,
-	release catalogartifact.Release,
-	verifier catalogartifact.PublisherVerifier,
+	release artifact.Release,
+	verifier artifact.PublisherVerifier,
 ) (*ImportResult, error) {
 	if s == nil || s.client == nil {
 		return nil, &errors.ValidationError{
@@ -42,7 +42,7 @@ func (s *Syncer) ImportRelease(
 			Message: "is required",
 		}
 	}
-	generation, err := catalogartifact.VerifyRelease(ctx, release, verifier)
+	generation, err := artifact.VerifyRelease(ctx, release, verifier)
 	if err != nil {
 		return nil, err
 	}

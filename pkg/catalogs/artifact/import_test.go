@@ -1,4 +1,4 @@
-package catalogartifact
+package artifact
 
 import (
 	"bytes"

@@ -1,4 +1,4 @@
-package catalogartifact
+package artifact
 
 import (
 	"bytes"
@@ -216,7 +216,7 @@ func TestArtifactRejectsValidButNonCanonicalCatalogPayload(t *testing.T) {
 
 func artifactFixtureGeneration(t *testing.T) catalogs.Generation {
 	t.Helper()
-	manifestData, err := os.ReadFile("../catalogs/testdata/generation/manifest.json")
+	manifestData, err := os.ReadFile("../testdata/generation/manifest.json")
 	if err != nil {
 		t.Fatalf("Read manifest fixture: %v", err)
 	}

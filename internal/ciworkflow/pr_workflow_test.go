@@ -268,7 +268,7 @@ func TestPinnedArtifactConsumerIsOfflineAndDependencyBounded(t *testing.T) {
 	)
 	script := readFixture(t, "../../scripts/verify-consumer-deps.sh")
 	for _, check := range []string{
-		"catalogartifact.VerifyRelease",
+		"artifact.VerifyRelease",
 		"pinnedVerifier{digest:",
 		"client.Activate(ctx, verified)",
 	} {
@@ -290,7 +290,7 @@ func TestPinnedArtifactConsumerIsOfflineAndDependencyBounded(t *testing.T) {
 		`PINNED_ARTIFACT_MODULE=`,
 		`PINNED_MAX_NON_STANDARD_PACKAGES=32`,
 		`pinned_banned_pattern=`,
-		`starmap/pkg/catalogartifact`,
+		`starmap/pkg/catalogs/artifact`,
 		`starmap/pkg/catalogs/storage/s3`,
 		`google\.golang\.org/(genai|grpc)`,
 	} {

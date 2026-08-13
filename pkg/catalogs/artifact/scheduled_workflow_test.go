@@ -1,4 +1,4 @@
-package catalogartifact
+package artifact
 
 import (
 	"os"
@@ -7,7 +7,7 @@ import (
 )
 
 func TestScheduledGenerationWorkflowPublishesOnlyValidatedChangedPayload(t *testing.T) {
-	data, err := os.ReadFile("../../.github/workflows/catalog-generation.yaml")
+	data, err := os.ReadFile("../../../.github/workflows/catalog-generation.yaml")
 	if err != nil {
 		t.Fatalf("Read catalog generation workflow: %v", err)
 	}

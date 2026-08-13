@@ -189,6 +189,7 @@ inference credential by accident.
 3. **Public Contracts**
    - Catalog domain and immutable reads (`pkg/catalogs/`)
    - Transactional generation storage (`pkg/catalogs/storage/`)
+   - Deterministic portable generations (`pkg/catalogs/artifact/`)
    - Data source abstractions (`pkg/sources/`)
 
 4. **Internal Implementations** (`internal/`)
@@ -608,7 +609,7 @@ The JSON Schema, example manifest, and exact payload fixture are in
 
 ### Catalog distribution artifact
 
-`pkg/catalogartifact` packages one validated `catalogs.Generation` as a
+`pkg/catalogs/artifact` packages one validated `catalogs.Generation` as a
 deterministic archive plus detached in-toto statement. The archive contains a
 strict descriptor, the complete generation manifest, and the exact canonical
 payload. Rebuilds of identical inputs are byte-identical; opening revalidates
@@ -623,7 +624,7 @@ directory; exact retries are idempotent and same-generation byte changes are
 typed conflicts. The GitHub tag workflow uploads these assets without an
 overwrite flag.
 
-Portable import is explicit and opt-in. `catalogartifact.VerifyRelease`
+Portable import is explicit and opt-in. `artifact.VerifyRelease`
 strictly verifies the checksum asset, archive, detached statement, schema
 compatibility, and a caller-owned `PublisherVerifier`; no Starmap constructor
 performs release I/O. `acquisition.Syncer.ImportRelease` then reconciles the
@@ -2100,10 +2101,10 @@ starmap/
 ├── pkg/                      # Public packages
 │   ├── catalogs/             # Catalog domain, builder, and immutable reads
 │   │   ├── evidence/         # Source observation and review contracts
-│   │   └── projection/       # Post-commit workspace projection results
-│   ├── storage/         # Generation commit/read/CAS adapters
-│   │   └── s3/               # Optional caller-owned S3 client adapter
-│   ├── catalogartifact/      # Deterministic portable generation format
+│   │   ├── projection/       # Post-commit workspace projection results
+│   │   ├── storage/          # Generation commit/read/CAS adapters
+│   │   │   └── s3/           # Optional caller-owned S3 client adapter
+│   │   └── artifact/         # Deterministic portable generation format
 │   ├── catalogremote/        # Versioned manifest/payload/SSE wire client
 │   ├── sources/              # Source interfaces
 │   ├── sync/                 # Acquisition options and results

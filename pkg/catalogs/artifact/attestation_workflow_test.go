@@ -1,4 +1,4 @@
-package catalogartifact
+package artifact
 
 import (
 	"bufio"
@@ -11,8 +11,8 @@ import (
 func TestPublicationWorkflowsPinEveryExternalActionByCommit(t *testing.T) {
 	pinned := regexp.MustCompile(`^\s*(?:-\s*)?uses:\s+[^@\s]+@[0-9a-f]{40}(?:\s+#.*)?$`)
 	for _, path := range []string{
-		"../../.github/workflows/release.yaml",
-		"../../.github/workflows/catalog-generation.yaml",
+		"../../../.github/workflows/release.yaml",
+		"../../../.github/workflows/catalog-generation.yaml",
 	} {
 		file, err := os.Open(path) //nolint:gosec // fixed repository fixtures
 		if err != nil {
@@ -37,7 +37,7 @@ func TestPublicationWorkflowsPinEveryExternalActionByCommit(t *testing.T) {
 }
 
 func TestArtifactAttestationWorkflowPinsRepositoryAndSignerWorkflow(t *testing.T) {
-	data, err := os.ReadFile("../../.github/workflows/release.yaml")
+	data, err := os.ReadFile("../../../.github/workflows/release.yaml")
 	if err != nil {
 		t.Fatalf("Read release workflow: %v", err)
 	}
@@ -58,7 +58,7 @@ func TestArtifactAttestationWorkflowPinsRepositoryAndSignerWorkflow(t *testing.T
 }
 
 func TestArtifactOCIMirrorWorkflowRequiresIdenticalArchiveDigest(t *testing.T) {
-	data, err := os.ReadFile("../../.github/workflows/catalog-generation.yaml")
+	data, err := os.ReadFile("../../../.github/workflows/catalog-generation.yaml")
 	if err != nil {
 		t.Fatalf("Read release workflow: %v", err)
 	}

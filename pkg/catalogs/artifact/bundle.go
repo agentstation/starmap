@@ -1,6 +1,6 @@
-// Package catalogartifact defines the deterministic distribution format for
+// Package artifact defines the deterministic distribution format for
 // immutable Starmap catalog generations.
-package catalogartifact
+package artifact
 
 import (
 	"archive/tar"

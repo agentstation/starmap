@@ -116,7 +116,7 @@ if [ -n "$pinned_banned" ]; then
 fi
 for required in \
 	github.com/agentstation/starmap \
-	github.com/agentstation/starmap/pkg/catalogartifact \
+	github.com/agentstation/starmap/pkg/catalogs/artifact \
 	github.com/agentstation/starmap/pkg/catalogs/storage; do
 	if ! grep -Fxq "$required" "$PINNED_DEPS"; then
 		printf 'pinned-artifact consumer does not exercise required package %s\n' \
