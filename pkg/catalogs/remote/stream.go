@@ -1,4 +1,4 @@
-package catalogremote
+package remote
 
 import (
 	"bufio"

@@ -12,9 +12,9 @@ import (
 	"testing"
 	"time"
 
-	"github.com/agentstation/starmap/pkg/catalogremote"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/catalogs/evidence"
+	protocol "github.com/agentstation/starmap/pkg/catalogs/remote"
 	"github.com/agentstation/starmap/pkg/catalogs/storage"
 	pkgerrors "github.com/agentstation/starmap/pkg/errors"
 )
@@ -210,14 +210,14 @@ func TestSubscriberMissingHeartbeatReconnectsAndCatchesUp(t *testing.T) {
 			selected := current
 			mu.RUnlock()
 			switch resourcePath {
-			case catalogremote.ManifestPath:
+			case protocol.ManifestPath:
 				writeSubscriberManifest(t, writer, selected)
 				return
-			case catalogremote.EventStreamPath:
+			case protocol.EventStreamPath:
 				streamCount.Add(1)
 				writer.Header().Set(
 					"Content-Type",
-					catalogremote.EventStreamMediaType,
+					protocol.EventStreamMediaType,
 				)
 				_, _ = fmt.Fprint(writer, ": connected\n\n")
 				writer.(http.Flusher).Flush()
@@ -225,7 +225,7 @@ func TestSubscriberMissingHeartbeatReconnectsAndCatchesUp(t *testing.T) {
 				return
 			}
 			for id, generation := range generations {
-				if resourcePath == catalogremote.PayloadPath(id) {
+				if resourcePath == protocol.PayloadPath(id) {
 					writer.Header().Set(
 						"Content-Type",
 						catalogs.CatalogPayloadMediaType,
@@ -295,22 +295,22 @@ func TestSubscriberHeartbeatsPreserveStreamLiveness(t *testing.T) {
 		func(writer http.ResponseWriter, request *http.Request) {
 			resourcePath := request.URL.Path[len("/api/v1"):]
 			switch resourcePath {
-			case catalogremote.ManifestPath:
+			case protocol.ManifestPath:
 				if request.Header.Get("If-None-Match") != "" {
 					conditionalManifestGets.Add(1)
 				}
 				writeSubscriberManifest(t, writer, generation)
-			case catalogremote.PayloadPath(generation.Manifest.GenerationID):
+			case protocol.PayloadPath(generation.Manifest.GenerationID):
 				writer.Header().Set(
 					"Content-Type",
 					catalogs.CatalogPayloadMediaType,
 				)
 				_, _ = writer.Write(generation.Payload)
-			case catalogremote.EventStreamPath:
+			case protocol.EventStreamPath:
 				streamCount.Add(1)
 				writer.Header().Set(
 					"Content-Type",
-					catalogremote.EventStreamMediaType,
+					protocol.EventStreamMediaType,
 				)
 				_, _ = fmt.Fprint(writer, ": connected\n\n")
 				writer.(http.Flusher).Flush()
@@ -408,11 +408,11 @@ func TestSubscriberPollingFallbackIsExplicitBoundedAndConditional(t *testing.T) 
 		func(writer http.ResponseWriter, request *http.Request) {
 			resourcePath := request.URL.Path[len("/api/v1"):]
 			switch resourcePath {
-			case catalogremote.ManifestPath:
+			case protocol.ManifestPath:
 				mu.RLock()
 				selected := current
 				mu.RUnlock()
-				etag := catalogremote.ManifestETag(selected.Manifest.GenerationID)
+				etag := protocol.ManifestETag(selected.Manifest.GenerationID)
 				writer.Header().Set("ETag", etag)
 				ifNoneMatch := request.Header.Get("If-None-Match")
 				if ifNoneMatch == etag {
@@ -437,7 +437,7 @@ func TestSubscriberPollingFallbackIsExplicitBoundedAndConditional(t *testing.T) 
 				}
 				writeSubscriberManifest(t, writer, selected)
 				return
-			case catalogremote.EventStreamPath:
+			case protocol.EventStreamPath:
 				streamRequests.Add(1)
 				if !allowStream.Load() {
 					writer.WriteHeader(http.StatusServiceUnavailable)
@@ -454,7 +454,7 @@ func TestSubscriberPollingFallbackIsExplicitBoundedAndConditional(t *testing.T) 
 				}
 				writer.Header().Set(
 					"Content-Type",
-					catalogremote.EventStreamMediaType,
+					protocol.EventStreamMediaType,
 				)
 				_, _ = fmt.Fprint(writer, ": connected\n\n")
 				writer.(http.Flusher).Flush()
@@ -475,7 +475,7 @@ func TestSubscriberPollingFallbackIsExplicitBoundedAndConditional(t *testing.T) 
 				}
 			}
 			for id, generation := range generations {
-				if resourcePath == catalogremote.PayloadPath(id) {
+				if resourcePath == protocol.PayloadPath(id) {
 					payloadGets.Add(1)
 					writer.Header().Set(
 						"Content-Type",
@@ -669,10 +669,10 @@ func TestSubscriberReconnectCatchesUpWithoutEventAndDeduplicatesReplay(t *testin
 			mu.Unlock()
 
 			switch resourcePath {
-			case catalogremote.ManifestPath:
+			case protocol.ManifestPath:
 				writeSubscriberManifest(t, writer, selected)
 				return
-			case catalogremote.EventStreamPath:
+			case protocol.EventStreamPath:
 				connection := streamCount.Add(1)
 				if connection > 1 {
 					mu.Lock()
@@ -688,7 +688,7 @@ func TestSubscriberReconnectCatchesUpWithoutEventAndDeduplicatesReplay(t *testin
 				}
 				writer.Header().Set(
 					"Content-Type",
-					catalogremote.EventStreamMediaType,
+					protocol.EventStreamMediaType,
 				)
 				_, _ = fmt.Fprint(writer, ": connected\n\n")
 				writer.(http.Flusher).Flush()
@@ -715,10 +715,10 @@ func TestSubscriberReconnectCatchesUpWithoutEventAndDeduplicatesReplay(t *testin
 
 			for id, generation := range generations {
 				switch resourcePath {
-				case catalogremote.GenerationManifestPath(id):
+				case protocol.GenerationManifestPath(id):
 					writeSubscriberManifest(t, writer, generation)
 					return
-				case catalogremote.PayloadPath(id):
+				case protocol.PayloadPath(id):
 					writer.Header().Set(
 						"Content-Type",
 						catalogs.CatalogPayloadMediaType,
@@ -771,7 +771,7 @@ func TestSubscriberReconnectCatchesUpWithoutEventAndDeduplicatesReplay(t *testin
 	}
 	mu.RLock()
 	addressedDuplicateGets :=
-		requestCounts[catalogremote.GenerationManifestPath(
+		requestCounts[protocol.GenerationManifestPath(
 			first.Manifest.GenerationID,
 		)]
 	mu.RUnlock()
@@ -805,7 +805,7 @@ func TestSubscriberReconnectCatchesUpWithoutEventAndDeduplicatesReplay(t *testin
 	mu.RLock()
 	gotRetryAttempts := append([]int(nil), retryAttempts...)
 	gotReconnectIDs := append([]string(nil), reconnectIDs...)
-	currentManifestGets := requestCounts[catalogremote.ManifestPath]
+	currentManifestGets := requestCounts[protocol.ManifestPath]
 	mu.RUnlock()
 	if !slices.Equal(gotRetryAttempts, []int{0, 1, 2}) {
 		t.Fatalf(
@@ -1023,11 +1023,11 @@ func writeSubscriberManifest(
 	generation catalogs.Generation,
 ) {
 	t.Helper()
-	data, err := catalogremote.MarshalManifest(generation.Manifest)
+	data, err := protocol.MarshalManifest(generation.Manifest)
 	if err != nil {
 		t.Fatalf("MarshalManifest: %v", err)
 	}
-	writer.Header().Set("Content-Type", catalogremote.ManifestMediaType)
+	writer.Header().Set("Content-Type", protocol.ManifestMediaType)
 	_, _ = writer.Write(data)
 }
 

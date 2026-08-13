@@ -190,6 +190,7 @@ inference credential by accident.
    - Catalog domain and immutable reads (`pkg/catalogs/`)
    - Transactional generation storage (`pkg/catalogs/storage/`)
    - Deterministic portable generations (`pkg/catalogs/artifact/`)
+   - Versioned remote catalog protocol (`pkg/catalogs/remote/`)
    - Data source abstractions (`pkg/sources/`)
 
 4. **Internal Implementations** (`internal/`)
@@ -634,7 +635,7 @@ fallback and below human evidence. Only the resulting validated candidate
 enters generation-store CAS and atomic publication, so failure retains current
 state and rollback can reactivate the exact prior retained generation.
 
-`pkg/catalogremote` owns the online Starmap-to-Starmap wire protocol. It reads
+`pkg/catalogs/remote` owns the online Starmap-to-Starmap wire protocol. It reads
 the current strict manifest or a retained generation-addressed manifest, then
 fetches the exact generation-addressed canonical payload. Strict media type,
 body bounds, catalog-schema compatibility, size, and checksum validation all
@@ -2104,8 +2105,8 @@ starmap/
 │   │   ├── projection/       # Post-commit workspace projection results
 │   │   ├── storage/          # Generation commit/read/CAS adapters
 │   │   │   └── s3/           # Optional caller-owned S3 client adapter
-│   │   └── artifact/         # Deterministic portable generation format
-│   ├── catalogremote/        # Versioned manifest/payload/SSE wire client
+│   │   ├── artifact/         # Deterministic portable generation format
+│   │   └── remote/           # Versioned manifest/payload/SSE wire client
 │   ├── sources/              # Source interfaces
 │   ├── sync/                 # Acquisition options and results
 │   ├── provenance/           # Durable field evidence

@@ -81,7 +81,7 @@ if [ "$non_standard_package_count" -gt "$MAX_NON_STANDARD_PACKAGES" ]; then
 	exit 1
 fi
 
-banned_pattern='^(github\.com/agentstation/starmap/(acquisition|internal/(catalog/pipeline|providers|server|sources)(/|$)|pkg/(catalogremote|catalogscheduler|sources|sync)(/|$))|github\.com/aws/(aws-sdk-go-v2|smithy-go)(/|$)|cloud\.google\.com/go/|google\.golang\.org/(genai|grpc)(/|$)|go\.opentelemetry\.io/otel(/|$)|github\.com/gorilla/websocket(/|$)|github\.com/spf13/cobra(/|$)|modernc\.org/sqlite(/|$)|github\.com/(mattn|ncruces)/go-sqlite3(/|$))'
+banned_pattern='^(github\.com/agentstation/starmap/(acquisition|internal/(catalog/pipeline|providers|server|sources)(/|$)|pkg/(catalogs/remote|catalogscheduler|sources|sync)(/|$))|github\.com/aws/(aws-sdk-go-v2|smithy-go)(/|$)|cloud\.google\.com/go/|google\.golang\.org/(genai|grpc)(/|$)|go\.opentelemetry\.io/otel(/|$)|github\.com/gorilla/websocket(/|$)|github\.com/spf13/cobra(/|$)|modernc\.org/sqlite(/|$)|github\.com/(mattn|ncruces)/go-sqlite3(/|$))'
 banned="$(find_banned_dependencies "$banned_pattern" "$DEPS")"
 if [ -n "$banned" ]; then
 	printf 'read-only consumer imports forbidden implementation dependencies:\n%s\n' \
@@ -89,7 +89,7 @@ if [ -n "$banned" ]; then
 	exit 1
 fi
 
-store_banned_pattern='^(database/sql$|github\.com/agentstation/starmap/(acquisition|cmd|internal/(providers|server|sources)(/|$)|remote(/|$)|server(/|$)|pkg/(catalogremote|sources|sync)(/|$))|cloud\.google\.com/go/|google\.golang\.org/(genai|grpc)(/|$)|go\.opentelemetry\.io/otel(/|$)|github\.com/(mattn/go-sqlite3|ncruces/go-sqlite3|go-sql-driver/mysql|lib/pq|jackc/pgx)(/|$)|modernc\.org/sqlite(/|$))'
+store_banned_pattern='^(database/sql$|github\.com/agentstation/starmap/(acquisition|cmd|internal/(providers|server|sources)(/|$)|remote(/|$)|server(/|$)|pkg/(catalogs/remote|sources|sync)(/|$))|cloud\.google\.com/go/|google\.golang\.org/(genai|grpc)(/|$)|go\.opentelemetry\.io/otel(/|$)|github\.com/(mattn/go-sqlite3|ncruces/go-sqlite3|go-sql-driver/mysql|lib/pq|jackc/pgx)(/|$)|modernc\.org/sqlite(/|$))'
 store_banned="$(find_banned_dependencies "$store_banned_pattern" "$STORE_DEPS")"
 if [ -n "$store_banned" ]; then
 	printf 'store-only consumer imports forbidden application or database implementations:\n%s\n' \
@@ -105,7 +105,7 @@ if [ "$pinned_non_standard_package_count" -gt "$PINNED_MAX_NON_STANDARD_PACKAGES
 		"$pinned_non_standard_package_count" "$PINNED_MAX_NON_STANDARD_PACKAGES" >&2
 	exit 1
 fi
-pinned_banned_pattern='^(github\.com/agentstation/starmap/(acquisition|cmd|remote(/|$)|server(/|$)|internal/(catalog/pipeline|providers|server|sources)(/|$)|pkg/(catalogremote|sources|sync|catalogs/storage/s3)(/|$))|github\.com/aws/(aws-sdk-go-v2|smithy-go)(/|$)|cloud\.google\.com/go/|google\.golang\.org/(genai|grpc)(/|$)|go\.opentelemetry\.io/otel(/|$)|github\.com/gorilla/websocket(/|$)|github\.com/spf13/cobra(/|$)|modernc\.org/sqlite(/|$)|github\.com/(mattn|ncruces)/go-sqlite3(/|$))'
+pinned_banned_pattern='^(github\.com/agentstation/starmap/(acquisition|cmd|remote(/|$)|server(/|$)|internal/(catalog/pipeline|providers|server|sources)(/|$)|pkg/(catalogs/remote|sources|sync|catalogs/storage/s3)(/|$))|github\.com/aws/(aws-sdk-go-v2|smithy-go)(/|$)|cloud\.google\.com/go/|google\.golang\.org/(genai|grpc)(/|$)|go\.opentelemetry\.io/otel(/|$)|github\.com/gorilla/websocket(/|$)|github\.com/spf13/cobra(/|$)|modernc\.org/sqlite(/|$)|github\.com/(mattn|ncruces)/go-sqlite3(/|$))'
 pinned_banned="$(
 	find_banned_dependencies "$pinned_banned_pattern" "$PINNED_DEPS"
 )"

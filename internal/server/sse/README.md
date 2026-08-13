@@ -36,7 +36,7 @@ Package sse provides the sole reactive catalog\-publication transport.
 ```go
 const (
     // CatalogPublishedEvent is the stable SSE event name.
-    CatalogPublishedEvent = catalogremote.CatalogPublishedEvent
+    CatalogPublishedEvent = remote.CatalogPublishedEvent
     // DefaultHeartbeatInterval keeps idle streams alive through common proxies.
     DefaultHeartbeatInterval = 20 * time.Second
     // DefaultWriteTimeout bounds each event or heartbeat write and flush.
@@ -182,7 +182,7 @@ type Health struct {
 Publication identifies one committed immutable catalog generation.
 
 ```go
-type Publication = catalogremote.Publication
+type Publication = remote.Publication
 ```
 
 <a name="StreamState"></a>

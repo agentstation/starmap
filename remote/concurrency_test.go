@@ -10,8 +10,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/agentstation/starmap/pkg/catalogremote"
 	"github.com/agentstation/starmap/pkg/catalogs"
+	protocol "github.com/agentstation/starmap/pkg/catalogs/remote"
 	"github.com/agentstation/starmap/pkg/catalogs/storage"
 )
 
@@ -49,13 +49,13 @@ func TestSubscriberReadersObserveCompleteGenerationsDuringActivation(t *testing.
 			selected := current
 			serverMu.RUnlock()
 			switch resourcePath {
-			case catalogremote.ManifestPath:
+			case protocol.ManifestPath:
 				writeSubscriberManifest(t, writer, selected)
 				return
-			case catalogremote.EventStreamPath:
+			case protocol.EventStreamPath:
 				writer.Header().Set(
 					"Content-Type",
-					catalogremote.EventStreamMediaType,
+					protocol.EventStreamMediaType,
 				)
 				_, _ = fmt.Fprint(writer, ": connected\n\n")
 				writer.(http.Flusher).Flush()
@@ -71,10 +71,10 @@ func TestSubscriberReadersObserveCompleteGenerationsDuringActivation(t *testing.
 			}
 			for id, generation := range generations {
 				switch resourcePath {
-				case catalogremote.GenerationManifestPath(id):
+				case protocol.GenerationManifestPath(id):
 					writeSubscriberManifest(t, writer, generation)
 					return
-				case catalogremote.PayloadPath(id):
+				case protocol.PayloadPath(id):
 					writer.Header().Set(
 						"Content-Type",
 						catalogs.CatalogPayloadMediaType,

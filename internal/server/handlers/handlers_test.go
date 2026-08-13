@@ -14,8 +14,8 @@ import (
 	"github.com/agentstation/starmap"
 	"github.com/agentstation/starmap/internal/server/cache"
 	"github.com/agentstation/starmap/internal/server/response"
-	"github.com/agentstation/starmap/pkg/catalogremote"
 	"github.com/agentstation/starmap/pkg/catalogs"
+	"github.com/agentstation/starmap/pkg/catalogs/remote"
 	pkgerrors "github.com/agentstation/starmap/pkg/errors"
 	pkgsync "github.com/agentstation/starmap/pkg/sync"
 )
@@ -107,7 +107,7 @@ func TestHandleCatalogManifestSupportsConditionalRequests(t *testing.T) {
 		t.Fatalf("initial status = %d: %s", firstResponse.Code, firstResponse.Body.String())
 	}
 	etag := firstResponse.Header().Get("ETag")
-	if etag != catalogremote.ManifestETag(client.CurrentGenerationID()) {
+	if etag != remote.ManifestETag(client.CurrentGenerationID()) {
 		t.Fatalf("ETag = %q, want current generation tag", etag)
 	}
 

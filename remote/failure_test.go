@@ -11,8 +11,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/agentstation/starmap/pkg/catalogremote"
 	"github.com/agentstation/starmap/pkg/catalogs"
+	protocol "github.com/agentstation/starmap/pkg/catalogs/remote"
 	"github.com/agentstation/starmap/pkg/catalogs/storage"
 	pkgerrors "github.com/agentstation/starmap/pkg/errors"
 )
@@ -30,15 +30,15 @@ func TestSubscriberRejectsUnauthorizedStreamWithoutRetryOrPolling(t *testing.T) 
 	server := httptest.NewServer(http.HandlerFunc(
 		func(writer http.ResponseWriter, request *http.Request) {
 			switch request.URL.Path[len("/api/v1"):] {
-			case catalogremote.ManifestPath:
+			case protocol.ManifestPath:
 				writeSubscriberManifest(t, writer, generation)
-			case catalogremote.PayloadPath(generation.Manifest.GenerationID):
+			case protocol.PayloadPath(generation.Manifest.GenerationID):
 				writer.Header().Set(
 					"Content-Type",
 					catalogs.CatalogPayloadMediaType,
 				)
 				_, _ = writer.Write(generation.Payload)
-			case catalogremote.EventStreamPath:
+			case protocol.EventStreamPath:
 				streamRequests.Add(1)
 				writer.WriteHeader(http.StatusForbidden)
 			default:
@@ -94,22 +94,22 @@ func TestSubscriberStopsAfterUnauthorizedReconnectAndRejectsRestart(t *testing.T
 	server := httptest.NewServer(http.HandlerFunc(
 		func(writer http.ResponseWriter, request *http.Request) {
 			switch request.URL.Path[len("/api/v1"):] {
-			case catalogremote.ManifestPath:
+			case protocol.ManifestPath:
 				writeSubscriberManifest(t, writer, generation)
-			case catalogremote.PayloadPath(generation.Manifest.GenerationID):
+			case protocol.PayloadPath(generation.Manifest.GenerationID):
 				writer.Header().Set(
 					"Content-Type",
 					catalogs.CatalogPayloadMediaType,
 				)
 				_, _ = writer.Write(generation.Payload)
-			case catalogremote.EventStreamPath:
+			case protocol.EventStreamPath:
 				if streamRequests.Add(1) > 1 {
 					writer.WriteHeader(http.StatusUnauthorized)
 					return
 				}
 				writer.Header().Set(
 					"Content-Type",
-					catalogremote.EventStreamMediaType,
+					protocol.EventStreamMediaType,
 				)
 				_, _ = fmt.Fprint(writer, ": connected\n\n")
 				writer.(http.Flusher).Flush()
@@ -175,19 +175,19 @@ func TestSubscriberStopsWhenFallbackPollBecomesUnauthorized(t *testing.T) {
 	server := httptest.NewServer(http.HandlerFunc(
 		func(writer http.ResponseWriter, request *http.Request) {
 			switch request.URL.Path[len("/api/v1"):] {
-			case catalogremote.ManifestPath:
+			case protocol.ManifestPath:
 				if manifestRequests.Add(1) > 1 {
 					writer.WriteHeader(http.StatusUnauthorized)
 					return
 				}
 				writeSubscriberManifest(t, writer, generation)
-			case catalogremote.PayloadPath(generation.Manifest.GenerationID):
+			case protocol.PayloadPath(generation.Manifest.GenerationID):
 				writer.Header().Set(
 					"Content-Type",
 					catalogs.CatalogPayloadMediaType,
 				)
 				_, _ = writer.Write(generation.Payload)
-			case catalogremote.EventStreamPath:
+			case protocol.EventStreamPath:
 				streamRequests.Add(1)
 				writer.WriteHeader(http.StatusServiceUnavailable)
 			default:
@@ -275,13 +275,13 @@ func TestSubscriberOutOfOrderEventsCannotRegressCatalog(t *testing.T) {
 			selected := current
 			currentMu.RUnlock()
 			switch resourcePath {
-			case catalogremote.ManifestPath:
+			case protocol.ManifestPath:
 				writeSubscriberManifest(t, writer, selected)
 				return
-			case catalogremote.EventStreamPath:
+			case protocol.EventStreamPath:
 				writer.Header().Set(
 					"Content-Type",
-					catalogremote.EventStreamMediaType,
+					protocol.EventStreamMediaType,
 				)
 				_, _ = fmt.Fprint(writer, ": connected\n\n")
 				writer.(http.Flusher).Flush()
@@ -297,10 +297,10 @@ func TestSubscriberOutOfOrderEventsCannotRegressCatalog(t *testing.T) {
 			}
 			for id, generation := range generations {
 				switch resourcePath {
-				case catalogremote.GenerationManifestPath(id):
+				case protocol.GenerationManifestPath(id):
 					writeSubscriberManifest(t, writer, generation)
 					return
-				case catalogremote.PayloadPath(id):
+				case protocol.PayloadPath(id):
 					writer.Header().Set(
 						"Content-Type",
 						catalogs.CatalogPayloadMediaType,

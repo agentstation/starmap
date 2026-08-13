@@ -11,8 +11,8 @@ import (
 	"time"
 
 	"github.com/agentstation/starmap"
-	"github.com/agentstation/starmap/pkg/catalogremote"
 	"github.com/agentstation/starmap/pkg/catalogs"
+	protocol "github.com/agentstation/starmap/pkg/catalogs/remote"
 	"github.com/agentstation/starmap/pkg/catalogs/storage"
 	pkgerrors "github.com/agentstation/starmap/pkg/errors"
 )
@@ -242,17 +242,17 @@ func TestInitialRemoteFailureRecoversWithoutPollingFallback(t *testing.T) {
 	server := httptest.NewServer(http.HandlerFunc(
 		func(writer http.ResponseWriter, request *http.Request) {
 			switch request.URL.Path {
-			case catalogremote.ManifestPath:
+			case protocol.ManifestPath:
 				if manifestRequests.Add(1) == 1 {
 					writer.WriteHeader(http.StatusServiceUnavailable)
 					return
 				}
 				writeSubscriberManifest(t, writer, generation)
-			case catalogremote.PayloadPath(generation.Manifest.GenerationID):
+			case protocol.PayloadPath(generation.Manifest.GenerationID):
 				writer.Header().Set("Content-Type", catalogs.CatalogPayloadMediaType)
 				_, _ = writer.Write(generation.Payload)
-			case catalogremote.EventStreamPath:
-				writer.Header().Set("Content-Type", catalogremote.EventStreamMediaType)
+			case protocol.EventStreamPath:
+				writer.Header().Set("Content-Type", protocol.EventStreamMediaType)
 				_, _ = writer.Write([]byte(": connected\n\n"))
 				writer.(http.Flusher).Flush()
 				<-request.Context().Done()

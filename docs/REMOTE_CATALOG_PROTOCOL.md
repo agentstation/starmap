@@ -43,8 +43,8 @@ or publishing model-change hooks. A request-cloning transport applies an
 optional API key to both requests. It does not change the caller requests.
 
 Starmap no longer supports the old unversioned `GET /catalog` ad-hoc envelope.
-Protocol tooling
-may explicitly construct `catalogremote.Client`, fetch a current or addressed
+Protocol tooling can import `github.com/agentstation/starmap/pkg/catalogs/remote`
+as `protocol`. It can construct `protocol.Client`, fetch a current or addressed
 generation, and pass it to `starmap.Client.Activate`. Normal reactive consumers
 use the opt-in `github.com/agentstation/starmap/remote` package:
 

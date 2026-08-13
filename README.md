@@ -377,7 +377,7 @@ For detailed component design and interaction patterns, see **[ARCHITECTURE.md Â
 
 Starmap follows Go best practices with clear package separation:
 
-- **`pkg/`** - Focused public contracts ([catalogs](pkg/catalogs/), [storage](pkg/catalogs/storage/), [artifact](pkg/catalogs/artifact/), [sources](pkg/sources/), [errors](pkg/errors/), etc.)
+- **`pkg/`** - Focused public contracts ([catalogs](pkg/catalogs/), [storage](pkg/catalogs/storage/), [artifact](pkg/catalogs/artifact/), [remote protocol](pkg/catalogs/remote/), [sources](pkg/sources/), [errors](pkg/errors/), etc.)
 - **`internal/`** - Internal implementations (reconciliation, CLI, providers, embedded data, transport)
 - **`cmd/starmap/`** - CLI application
 

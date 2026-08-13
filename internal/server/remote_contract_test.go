@@ -6,8 +6,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/agentstation/starmap/pkg/catalogremote"
 	"github.com/agentstation/starmap/pkg/catalogs"
+	"github.com/agentstation/starmap/pkg/catalogs/remote"
 )
 
 func TestRemoteCatalogClientAndServerShareVersionedManifestPayloadContract(t *testing.T) {
@@ -19,7 +19,7 @@ func TestRemoteCatalogClientAndServerShareVersionedManifestPayloadContract(t *te
 	httpServer := httptest.NewServer(server.setupRouter())
 	defer httpServer.Close()
 
-	client, err := catalogremote.NewClient(
+	client, err := remote.NewClient(
 		httpServer.URL+"/api/v1", httpServer.Client(), catalogs.CurrentCatalogSchemaVersion,
 	)
 	if err != nil {
