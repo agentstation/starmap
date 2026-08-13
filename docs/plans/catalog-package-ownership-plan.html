@@ -36,7 +36,7 @@
     <div>Status: <code data-plan-status="active">active</code> · Owner: this plan · Created: 2026-08-12</div>
     <div>Starmap baseline: <code>main@42f1b4c6763084cc0ae7b2ced413de4d765cd9ef</code></div>
     <div>Proof root: <code>docs/plans/proof/catalog-package-ownership/</code></div>
-    <div>Next action: execute CPO4 by moving the deterministic artifact format to catalogs/artifact.</div>
+    <div>Next action: execute CPO5 by moving the versioned remote protocol to catalogs/remote.</div>
   </div>
   <section id="outcome"><h2>Outcome</h2>
     <blockquote>Starmap exposes one coherent catalog package tree. <code>pkg/catalogs</code> owns catalog values, immutable generations, and catalog codecs. Its <code>evidence</code> and <code>projection</code> leaves own neutral data contracts. Its <code>storage</code>, <code>artifact</code>, and <code>remote</code> children own separate behaviors. Starport consumes one immutable Starmap release. No old-path wrapper, duplicate codec, or vague metadata package remains.</blockquote>
@@ -78,8 +78,8 @@
       <tr id="CPO1" data-status="done"><td>CPO1</td><td>1 Contracts</td><td>CPO0</td><td>Replace catalogmeta with evidence and neutral projection contracts.</td><td><code>done</code></td><td><a href="proof/catalog-package-ownership/cpo1.md">Proof</a>: work commit <code>a3df5076</code>; CPO-V05 and V06 passed; V02 no longer reports catalogmeta; race and main-module suites passed.</td></tr>
       <tr id="CPO2" data-status="done"><td>CPO2</td><td>1 Contracts</td><td>CPO1</td><td>Move immutable generation and both codec directions into catalogs.</td><td><code>done</code></td><td><a href="proof/catalog-package-ownership/cpo2.md">Proof</a>: work commit <code>51b9ebfd</code>; CPO-V03 and V04 passed; exact race, consumer, vet, and docs gates passed.</td></tr>
       <tr id="CPO3" data-status="done"><td>CPO3</td><td>2 Behaviors</td><td>CPO2</td><td>Move catalogstore and S3 to catalogs/storage.</td><td><code>done</code></td><td><a href="proof/catalog-package-ownership/cpo3.md">Proof</a>: work commit <code>55de2a75</code>; CPO-V07 passed; exact race, pure-Go, consumer, vet, and docs gates passed.</td></tr>
-      <tr id="CPO4" data-status="in_progress"><td>CPO4</td><td>2 Behaviors</td><td>CPO3</td><td>Move catalogartifact to catalogs/artifact.</td><td><code>in_progress</code></td><td>Fail-before: the artifact format still uses the flat <code>pkg/catalogartifact</code> path.</td></tr>
-      <tr id="CPO5" data-status="todo"><td>CPO5</td><td>2 Behaviors</td><td>CPO4</td><td>Move catalogremote to catalogs/remote.</td><td><code>todo</code></td><td></td></tr>
+      <tr id="CPO4" data-status="done"><td>CPO4</td><td>2 Behaviors</td><td>CPO3</td><td>Move catalogartifact to catalogs/artifact.</td><td><code>done</code></td><td><a href="proof/catalog-package-ownership/cpo4.md">Proof</a>: work commit <code>95122f78</code>; CPO-V08 passed; exact race, pinned-consumer, full-module, vet, and docs gates passed with unchanged fixture hashes.</td></tr>
+      <tr id="CPO5" data-status="in_progress"><td>CPO5</td><td>2 Behaviors</td><td>CPO4</td><td>Move catalogremote to catalogs/remote.</td><td><code>in_progress</code></td><td>Fail-before: the protocol still uses the flat <code>pkg/catalogremote</code> path.</td></tr>
       <tr id="CPO6" data-status="todo"><td>CPO6</td><td>3 Starmap</td><td>CPO5</td><td>Update authority, run all gates, review, and merge the Starmap implementation PR.</td><td><code>todo</code></td><td></td></tr>
       <tr id="CPO7" data-status="todo"><td>CPO7</td><td>3 Starmap</td><td>CPO6</td><td>Publish and verify immutable Starmap v0.5.0.</td><td><code>todo</code></td><td></td></tr>
       <tr id="CPO8" data-status="todo"><td>CPO8</td><td>4 Starport</td><td>CPO7</td><td>Pin Starport to v0.5.0, verify the module, review, and merge its PR.</td><td><code>todo</code></td><td></td></tr>
@@ -304,15 +304,15 @@
     </ul>
     <h3 id="task-CPO4">CPO4 Artifact package</h3>
     <ul>
-      <li><strong>Problem:</strong> catalogartifact hides a public child concept and imports storage for Generation.</li>
+      <li><strong>Problem:</strong> catalogartifact hides a public child concept behind a flat combined name. CPO2 already removed its storage dependency.</li>
 
       <li><strong>Owning seam and paths:</strong> <code>pkg/catalogs/artifact</code>, acquisition, release command, bootstrap budget, and pinned-artifact consumer.</li>
 
-      <li><strong>Steps:</strong><ol><li>Move the package and generated docs.</li><li>Replace the storage dependency with catalogs.</li><li>Update go-generate paths and all consumers.</li><li>Delete the old path.</li><li>Compare fixed release assets with baseline bytes.</li></ol></li>
+      <li><strong>Steps:</strong><ol><li>Move the package and generated docs.</li><li>Keep the direct catalogs dependency created by CPO2.</li><li>Update go-generate paths and all consumers.</li><li>Delete the old path.</li><li>Compare fixed release assets with baseline bytes.</li></ol></li>
 
       <li><strong>Acceptance:</strong> CPO-V08 passes. Archives, statements, checksums, staging, selection, and import failures match baseline.</li>
 
-      <li><strong>Fail-before:</strong> the approved package is absent and artifact imports storage.</li>
+      <li><strong>Fail-before:</strong> the approved package is absent and the old flat package remains. CPO2 recorded and resolved the storage dependency as its own fail-before evidence.</li>
 
       <li><strong>Verification:</strong><ol>
         <li><code>go test -race -count=1 ./pkg/catalogs/artifact ./acquisition ./cmd/starmap-catalog-release ./internal/bootstrap/budget</code></li>
@@ -323,15 +323,15 @@
     </ul>
     <h3 id="task-CPO5">CPO5 Remote protocol package</h3>
     <ul>
-      <li><strong>Problem:</strong> catalogremote hides a public child concept and imports storage for Generation.</li>
+      <li><strong>Problem:</strong> catalogremote hides a public child concept behind a flat combined name. CPO2 already removed its storage dependency.</li>
 
       <li><strong>Owning seam and paths:</strong> <code>pkg/catalogs/remote</code>, top-level remote subscriber, server handlers, SSE, and remote consumer.</li>
 
-      <li><strong>Steps:</strong><ol><li>Move the protocol client and stream.</li><li>Replace the storage dependency with catalogs.</li><li>Update imports and use local aliases only for clarity.</li><li>Keep the reactive subscriber separate.</li><li>Delete the old path and extend protocol tests.</li></ol></li>
+      <li><strong>Steps:</strong><ol><li>Move the protocol client and stream.</li><li>Keep the direct catalogs dependency created by CPO2.</li><li>Update imports and use local aliases only for clarity.</li><li>Keep the reactive subscriber separate.</li><li>Delete the old path and extend protocol tests.</li></ol></li>
 
       <li><strong>Acceptance:</strong> CPO-V09 passes. TLS, redirects, bounds, exact generations, cancellation, SSE, catch-up, fallback, and races match baseline.</li>
 
-      <li><strong>Fail-before:</strong> the approved package is absent and remote imports storage.</li>
+      <li><strong>Fail-before:</strong> the approved package is absent and the old flat package remains. CPO2 recorded and resolved the storage dependency as its own fail-before evidence.</li>
 
       <li><strong>Verification:</strong><ol>
         <li><code>go test -race -count=1 ./pkg/catalogs/remote ./remote ./internal/server ./internal/server/sse</code></li>
@@ -515,6 +515,8 @@ cleanup pull request removes this control plane.</code></pre>
       <tr><td>2026-08-13</td><td>CPO2</td><td>done; CPO3 started</td><td>Work commit 51b9ebfd moved Generation, Copy, Validate, and both payload decoders into catalogs, deleted the storage codec delegate, updated every Starmap signature and nested consumer, and removed storage dependencies from artifact and remote. The exact race, consumer, focused vet, generated-doc, diff, and module-checksum gates passed. The verifier advanced to 6 passed and 7 failed.</td></tr>
 
       <tr><td>2026-08-13</td><td>CPO3</td><td>done; CPO4 started</td><td>Work commit 55de2a75 moved storage and S3 under catalogs, updated all current authority and six consumer modules, and kept every adapter contract green. The exact race, pure-Go, consumer, full-module, repetition-race, focused vet, docs, shell, diff, and checksum gates passed. The verifier advanced to 7 passed and 6 failed. Narrowed its historical allowlist to the exact archived control-plane file and corrected the premature CPO3 aggregate acceptance text.</td></tr>
+
+      <tr><td>2026-08-13</td><td>CPO4</td><td>done; CPO5 started</td><td>Work commit 95122f78 moved the deterministic artifact package under catalogs, changed the package name to artifact, updated every current consumer and document, and corrected only the relocation-coupled fixture paths. The fixed archive and statement hashes remained unchanged. Exact race, pinned-consumer, dependency, full-module, focused vet, generated-doc, stale-path, diff, and module-checksum gates passed. The verifier advanced to 8 passed and 5 failed. Corrected CPO4 and CPO5 task text because CPO2 had already removed both storage dependencies.</td></tr>
     </tbody></table>
   </section>
 </main>
