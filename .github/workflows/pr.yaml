@@ -81,7 +81,7 @@ jobs:
 
       - name: Run migration and persistence fault fixtures
         run: |
-          go test ./pkg/catalogs ./pkg/catalogstore -race -run 'Migration|Rollback|Fault|Corrupt|ReopensCurrent' -count=1
+          go test ./pkg/catalogs ./pkg/catalogs/storage -race -run 'Migration|Rollback|Fault|Corrupt|ReopensCurrent' -count=1
 
   # Additive supply-chain evidence. This job is deliberately not a required
   # status check: it needs the GitHub API, so an upstream outage must not block

@@ -15,7 +15,7 @@ import (
 
 	"github.com/agentstation/starmap/internal/constants"
 	"github.com/agentstation/starmap/pkg/catalogs"
-	"github.com/agentstation/starmap/pkg/catalogstore"
+	"github.com/agentstation/starmap/pkg/catalogs/storage"
 	"github.com/agentstation/starmap/pkg/errors"
 )
 
@@ -146,7 +146,7 @@ func (m legacyLayoutMigrator) migrate(
 		}
 	}
 
-	relocated, err := catalogstore.NewFilesystem(state)
+	relocated, err := storage.NewFilesystem(state)
 	if err != nil {
 		return rollback(err, "")
 	}
@@ -262,7 +262,7 @@ func inspectLegacyStore(
 	ctx context.Context,
 	path string,
 ) (catalogs.Generation, *catalogs.Catalog, int, error) {
-	store, err := catalogstore.NewFilesystem(path)
+	store, err := storage.NewFilesystem(path)
 	if err != nil {
 		return catalogs.Generation{}, nil, 0, err
 	}

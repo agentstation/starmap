@@ -11,7 +11,7 @@ import (
 	"github.com/agentstation/starmap/internal/catalog/workspace"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	catalogprojection "github.com/agentstation/starmap/pkg/catalogs/projection"
-	"github.com/agentstation/starmap/pkg/catalogstore"
+	"github.com/agentstation/starmap/pkg/catalogs/storage"
 	pkgerrors "github.com/agentstation/starmap/pkg/errors"
 	"github.com/agentstation/starmap/pkg/provenance"
 	"github.com/agentstation/starmap/pkg/sources"
@@ -167,17 +167,17 @@ func TestRollbackProjectionConflictKeepsCommittedGenerationAndHumanEdit(t *testi
 }
 
 type rollbackTestStore struct {
-	*catalogstore.Memory
+	*storage.Memory
 	mu          sync.Mutex
 	nextFailure error
 	afterCommit func()
 }
 
 func newRollbackTestStore() *rollbackTestStore {
-	return &rollbackTestStore{Memory: catalogstore.NewMemory()}
+	return &rollbackTestStore{Memory: storage.NewMemory()}
 }
 
-func newRollbackClient(t testing.TB, store catalogstore.Store, path string) *Client {
+func newRollbackClient(t testing.TB, store storage.Store, path string) *Client {
 	t.Helper()
 	opts, err := defaults().apply(WithCatalogStore(store), WithCatalogPath(path))
 	if err != nil {

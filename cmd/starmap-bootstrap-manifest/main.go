@@ -17,7 +17,7 @@ import (
 	"github.com/agentstation/starmap/internal/catalog/workspace"
 	"github.com/agentstation/starmap/internal/constants"
 	"github.com/agentstation/starmap/pkg/catalogs"
-	"github.com/agentstation/starmap/pkg/catalogstore"
+	"github.com/agentstation/starmap/pkg/catalogs/storage"
 	"github.com/agentstation/starmap/pkg/errors"
 )
 
@@ -68,7 +68,7 @@ func run(args []string, output io.Writer, now time.Time) error {
 	if *generationStorePath == "" {
 		bootstrapManifest, report, err = manifest.Derive(catalog, current, now)
 	} else {
-		store, storeErr := catalogstore.NewFilesystem(*generationStorePath)
+		store, storeErr := storage.NewFilesystem(*generationStorePath)
 		if storeErr != nil {
 			return storeErr
 		}

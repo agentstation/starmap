@@ -4,7 +4,7 @@ import (
 	"reflect"
 	"time"
 
-	"github.com/agentstation/starmap/pkg/catalogstore"
+	"github.com/agentstation/starmap/pkg/catalogs/storage"
 	"github.com/agentstation/starmap/pkg/errors"
 )
 
@@ -18,7 +18,7 @@ type options struct {
 	catalogPath string
 
 	// durable generation store required by every non-dry mutation path
-	catalogStore catalogstore.Store
+	catalogStore storage.Store
 
 	// embedded bootstrap policy
 	embeddedBootstrapMaxAge       time.Duration
@@ -39,7 +39,7 @@ func defaults() *options {
 // runs do not require a store. Starmap provides memory, filesystem, and
 // conditional object-storage implementations; embedding applications own and
 // inject any database-backed implementation.
-func WithCatalogStore(store catalogstore.Store) Option {
+func WithCatalogStore(store storage.Store) Option {
 	return func(o *options) error {
 		if isNilCatalogStore(store) {
 			return &errors.ConfigError{
@@ -52,7 +52,7 @@ func WithCatalogStore(store catalogstore.Store) Option {
 	}
 }
 
-func isNilCatalogStore(store catalogstore.Store) bool {
+func isNilCatalogStore(store storage.Store) bool {
 	if store == nil {
 		return true
 	}

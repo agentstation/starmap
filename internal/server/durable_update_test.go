@@ -13,7 +13,7 @@ import (
 
 	"github.com/agentstation/starmap"
 	"github.com/agentstation/starmap/pkg/catalogs"
-	"github.com/agentstation/starmap/pkg/catalogstore"
+	"github.com/agentstation/starmap/pkg/catalogs/storage"
 )
 
 func TestDurableServerUpdatePublishesSameGenerationAfterProcessRestart(t *testing.T) {
@@ -26,7 +26,7 @@ func TestDurableServerUpdatePublishesSameGenerationAfterProcessRestart(t *testin
 	if err := local.SaveTo(catalogPath); err != nil {
 		t.Fatalf("Save initial catalog: %v", err)
 	}
-	store, err := catalogstore.NewFilesystem(storePath)
+	store, err := storage.NewFilesystem(storePath)
 	if err != nil {
 		t.Fatalf("NewFilesystem: %v", err)
 	}
@@ -61,7 +61,7 @@ func TestDurableServerUpdatePublishesSameGenerationAfterProcessRestart(t *testin
 		t.Fatalf("client generation = %q, store = %q", client.CurrentGenerationID(), published.Manifest.GenerationID)
 	}
 
-	reopened, err := catalogstore.NewFilesystem(storePath)
+	reopened, err := storage.NewFilesystem(storePath)
 	if err != nil {
 		t.Fatalf("Reopen filesystem store: %v", err)
 	}

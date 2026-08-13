@@ -1,5 +1,5 @@
 // Package s3 provides an S3-compatible implementation of
-// catalogstore.ObjectBackend.
+// storage.ObjectBackend.
 //
 // The caller owns the S3 client, including endpoint selection, credentials,
 // retries, transport, and lifecycle. Backend construction performs no network
@@ -21,7 +21,7 @@ import (
 	"github.com/aws/smithy-go"
 
 	"github.com/agentstation/starmap/internal/constants"
-	"github.com/agentstation/starmap/pkg/catalogstore"
+	"github.com/agentstation/starmap/pkg/catalogs/storage"
 	"github.com/agentstation/starmap/pkg/errors"
 )
 
@@ -71,44 +71,44 @@ func New(client *awss3.Client, config Config) (*Backend, error) {
 }
 
 // Get fetches one object and returns its opaque ETag as Version.
-func (b *Backend) Get(ctx context.Context, key string) (catalogstore.ObjectValue, error) {
+func (b *Backend) Get(ctx context.Context, key string) (storage.ObjectValue, error) {
 	if err := validateKey(key); err != nil {
-		return catalogstore.ObjectValue{}, err
+		return storage.ObjectValue{}, err
 	}
 	if err := ctx.Err(); err != nil {
-		return catalogstore.ObjectValue{}, err
+		return storage.ObjectValue{}, err
 	}
 	output, err := b.client.GetObject(ctx, &awss3.GetObjectInput{
 		Bucket: aws.String(b.bucket),
 		Key:    aws.String(key),
 	})
 	if err != nil {
-		return catalogstore.ObjectValue{}, b.classifyError("fetch", key, "", err)
+		return storage.ObjectValue{}, b.classifyError("fetch", key, "", err)
 	}
 	if output == nil || output.Body == nil {
-		return catalogstore.ObjectValue{}, invalidResponse("get", "response body is required")
+		return storage.ObjectValue{}, invalidResponse("get", "response body is required")
 	}
 	version, err := requireETag(output.ETag, "get")
 	if err != nil {
 		_ = output.Body.Close()
-		return catalogstore.ObjectValue{}, err
+		return storage.ObjectValue{}, err
 	}
 	if output.ContentLength != nil && *output.ContentLength > b.maxObjectBytes {
 		_ = output.Body.Close()
-		return catalogstore.ObjectValue{}, objectTooLarge(*output.ContentLength, b.maxObjectBytes)
+		return storage.ObjectValue{}, objectTooLarge(*output.ContentLength, b.maxObjectBytes)
 	}
 	data, readErr := io.ReadAll(io.LimitReader(output.Body, b.maxObjectBytes+1))
 	closeErr := output.Body.Close()
 	if readErr != nil {
-		return catalogstore.ObjectValue{}, resourceError("read", key, readErr)
+		return storage.ObjectValue{}, resourceError("read", key, readErr)
 	}
 	if closeErr != nil {
-		return catalogstore.ObjectValue{}, resourceError("close", key, closeErr)
+		return storage.ObjectValue{}, resourceError("close", key, closeErr)
 	}
 	if int64(len(data)) > b.maxObjectBytes {
-		return catalogstore.ObjectValue{}, objectTooLarge(int64(len(data)), b.maxObjectBytes)
+		return storage.ObjectValue{}, objectTooLarge(int64(len(data)), b.maxObjectBytes)
 	}
-	return catalogstore.ObjectValue{Data: data, Version: version}, nil
+	return storage.ObjectValue{Data: data, Version: version}, nil
 }
 
 // Put conditionally writes one object and returns its opaque ETag as Version.
@@ -119,19 +119,19 @@ func (b *Backend) Put(
 	ctx context.Context,
 	key string,
 	data []byte,
-	condition catalogstore.ObjectPutCondition,
-) (catalogstore.ObjectValue, error) {
+	condition storage.ObjectPutCondition,
+) (storage.ObjectValue, error) {
 	if err := validateKey(key); err != nil {
-		return catalogstore.ObjectValue{}, err
+		return storage.ObjectValue{}, err
 	}
 	if err := validateCondition(condition); err != nil {
-		return catalogstore.ObjectValue{}, err
+		return storage.ObjectValue{}, err
 	}
 	if int64(len(data)) > b.maxObjectBytes {
-		return catalogstore.ObjectValue{}, objectTooLarge(int64(len(data)), b.maxObjectBytes)
+		return storage.ObjectValue{}, objectTooLarge(int64(len(data)), b.maxObjectBytes)
 	}
 	if err := ctx.Err(); err != nil {
-		return catalogstore.ObjectValue{}, err
+		return storage.ObjectValue{}, err
 	}
 
 	input := &awss3.PutObjectInput{
@@ -149,16 +149,16 @@ func (b *Backend) Put(
 	}
 	output, err := b.client.PutObject(ctx, input)
 	if err != nil {
-		return catalogstore.ObjectValue{}, b.classifyError("write", key, expected, err)
+		return storage.ObjectValue{}, b.classifyError("write", key, expected, err)
 	}
 	if output == nil {
-		return catalogstore.ObjectValue{}, invalidResponse("put", "response is required")
+		return storage.ObjectValue{}, invalidResponse("put", "response is required")
 	}
 	version, err := requireETag(output.ETag, "put")
 	if err != nil {
-		return catalogstore.ObjectValue{}, err
+		return storage.ObjectValue{}, err
 	}
-	return catalogstore.ObjectValue{
+	return storage.ObjectValue{
 		Data:    append([]byte(nil), data...),
 		Version: version,
 	}, nil
@@ -171,7 +171,7 @@ func validateKey(key string) error {
 	return nil
 }
 
-func validateCondition(condition catalogstore.ObjectPutCondition) error {
+func validateCondition(condition storage.ObjectPutCondition) error {
 	switch {
 	case condition.IfAbsent && condition.IfVersion != "":
 		return &errors.ValidationError{
@@ -250,4 +250,4 @@ func (b *Backend) classifyError(operation, key, expected string, err error) erro
 	}
 }
 
-var _ catalogstore.ObjectBackend = (*Backend)(nil)
+var _ storage.ObjectBackend = (*Backend)(nil)

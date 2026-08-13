@@ -105,7 +105,7 @@ if [ "$pinned_non_standard_package_count" -gt "$PINNED_MAX_NON_STANDARD_PACKAGES
 		"$pinned_non_standard_package_count" "$PINNED_MAX_NON_STANDARD_PACKAGES" >&2
 	exit 1
 fi
-pinned_banned_pattern='^(github\.com/agentstation/starmap/(acquisition|cmd|remote(/|$)|server(/|$)|internal/(catalog/pipeline|providers|server|sources)(/|$)|pkg/(catalogremote|sources|sync|catalogstore/s3)(/|$))|github\.com/aws/(aws-sdk-go-v2|smithy-go)(/|$)|cloud\.google\.com/go/|google\.golang\.org/(genai|grpc)(/|$)|go\.opentelemetry\.io/otel(/|$)|github\.com/gorilla/websocket(/|$)|github\.com/spf13/cobra(/|$)|modernc\.org/sqlite(/|$)|github\.com/(mattn|ncruces)/go-sqlite3(/|$))'
+pinned_banned_pattern='^(github\.com/agentstation/starmap/(acquisition|cmd|remote(/|$)|server(/|$)|internal/(catalog/pipeline|providers|server|sources)(/|$)|pkg/(catalogremote|sources|sync|catalogs/storage/s3)(/|$))|github\.com/aws/(aws-sdk-go-v2|smithy-go)(/|$)|cloud\.google\.com/go/|google\.golang\.org/(genai|grpc)(/|$)|go\.opentelemetry\.io/otel(/|$)|github\.com/gorilla/websocket(/|$)|github\.com/spf13/cobra(/|$)|modernc\.org/sqlite(/|$)|github\.com/(mattn|ncruces)/go-sqlite3(/|$))'
 pinned_banned="$(
 	find_banned_dependencies "$pinned_banned_pattern" "$PINNED_DEPS"
 )"
@@ -117,7 +117,7 @@ fi
 for required in \
 	github.com/agentstation/starmap \
 	github.com/agentstation/starmap/pkg/catalogartifact \
-	github.com/agentstation/starmap/pkg/catalogstore; do
+	github.com/agentstation/starmap/pkg/catalogs/storage; do
 	if ! grep -Fxq "$required" "$PINNED_DEPS"; then
 		printf 'pinned-artifact consumer does not exercise required package %s\n' \
 			"$required" >&2
@@ -171,7 +171,7 @@ if [ -n "$server_storage_banned" ]; then
 	exit 1
 fi
 for required in \
-	github.com/agentstation/starmap/pkg/catalogstore/s3 \
+	github.com/agentstation/starmap/pkg/catalogs/storage/s3 \
 	github.com/agentstation/starmap/remote \
 	github.com/agentstation/starmap/server \
 	github.com/aws/aws-sdk-go-v2/service/s3; do

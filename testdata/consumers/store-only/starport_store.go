@@ -7,7 +7,7 @@ import (
 	"sync"
 
 	"github.com/agentstation/starmap/pkg/catalogs"
-	"github.com/agentstation/starmap/pkg/catalogstore"
+	"github.com/agentstation/starmap/pkg/catalogs/storage"
 	"github.com/agentstation/starmap/pkg/errors"
 )
 
@@ -108,4 +108,4 @@ func sameExternalGeneration(left, right catalogs.Generation) bool {
 	return leftErr == nil && rightErr == nil && bytes.Equal(leftManifest, rightManifest)
 }
 
-var _ catalogstore.Store = (*starportStore)(nil)
+var _ storage.Store = (*starportStore)(nil)

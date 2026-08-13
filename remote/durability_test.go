@@ -13,7 +13,7 @@ import (
 	"github.com/agentstation/starmap"
 	"github.com/agentstation/starmap/pkg/catalogremote"
 	"github.com/agentstation/starmap/pkg/catalogs"
-	"github.com/agentstation/starmap/pkg/catalogstore"
+	"github.com/agentstation/starmap/pkg/catalogs/storage"
 	pkgerrors "github.com/agentstation/starmap/pkg/errors"
 )
 
@@ -26,8 +26,8 @@ func TestNewRequiresCallerOwnedStoreBeforeRemoteWork(t *testing.T) {
 	}))
 	defer server.Close()
 
-	var typedNil *catalogstore.Memory
-	for name, store := range map[string]catalogstore.Store{
+	var typedNil *storage.Memory
+	for name, store := range map[string]storage.Store{
 		"nil interface": nil,
 		"typed nil":     typedNil,
 	} {
@@ -56,7 +56,7 @@ func TestPinnedBootstrapSeedsOnlyAnEmptyCallerStore(t *testing.T) {
 		"provider-pinned",
 		time.Date(2026, time.August, 1, 12, 0, 0, 0, time.UTC),
 	)
-	store := catalogstore.NewMemory()
+	store := storage.NewMemory()
 	subscriber, err := New(Config{
 		BaseURL:         "https://starmap.invalid",
 		CatalogStore:    store,
@@ -94,7 +94,7 @@ func TestEmbeddedEquivalentRemoteGenerationBecomesDurable(t *testing.T) {
 	if err != nil {
 		t.Fatalf("CurrentGeneration: %v", err)
 	}
-	store := catalogstore.NewMemory()
+	store := storage.NewMemory()
 	subscriber, err := New(Config{
 		BaseURL: "https://starmap.invalid", CatalogStore: store,
 	})
@@ -139,7 +139,7 @@ func TestDurableCurrentWinsOverPinnedBootstrap(t *testing.T) {
 		"provider-pin-not-selected",
 		durable.Manifest.GeneratedAt.Add(time.Minute),
 	)
-	store := catalogstore.NewMemory()
+	store := storage.NewMemory()
 	if err := store.Commit(t.Context(), durable, ""); err != nil {
 		t.Fatalf("Commit durable current: %v", err)
 	}
@@ -168,7 +168,7 @@ func TestRestartServesDurableGenerationDuringRemoteRecovery(t *testing.T) {
 	t.Parallel()
 
 	root := filepath.Join(t.TempDir(), "catalog-store")
-	store, err := catalogstore.NewFilesystem(root)
+	store, err := storage.NewFilesystem(root)
 	if err != nil {
 		t.Fatalf("NewFilesystem: %v", err)
 	}
@@ -191,7 +191,7 @@ func TestRestartServesDurableGenerationDuringRemoteRecovery(t *testing.T) {
 		t.Fatalf("Close seed subscriber: %v", err)
 	}
 
-	reopened, err := catalogstore.NewFilesystem(root)
+	reopened, err := storage.NewFilesystem(root)
 	if err != nil {
 		t.Fatalf("reopen filesystem store: %v", err)
 	}
@@ -265,7 +265,7 @@ func TestInitialRemoteFailureRecoversWithoutPollingFallback(t *testing.T) {
 	subscriber, err := New(Config{
 		BaseURL:           server.URL,
 		HTTPClient:        server.Client(),
-		CatalogStore:      catalogstore.NewMemory(),
+		CatalogStore:      storage.NewMemory(),
 		ReconnectMinDelay: time.Millisecond,
 		ReconnectMaxDelay: time.Millisecond,
 		ShutdownTimeout:   time.Second,
@@ -305,7 +305,7 @@ func TestDurableCatalogDoesNotMaskTerminalRemoteAuthentication(t *testing.T) {
 		"provider-auth-durable",
 		time.Date(2026, time.August, 1, 15, 0, 0, 0, time.UTC),
 	)
-	store := catalogstore.NewMemory()
+	store := storage.NewMemory()
 	if err := store.Commit(t.Context(), generation, ""); err != nil {
 		t.Fatalf("Commit: %v", err)
 	}
@@ -373,7 +373,7 @@ func TestNewRejectsInvalidPinnedBootstrapBeforeRemoteWork(t *testing.T) {
 	}))
 	defer server.Close()
 	subscriber, err := New(Config{
-		BaseURL: server.URL, CatalogStore: catalogstore.NewMemory(), PinnedBootstrap: &invalid,
+		BaseURL: server.URL, CatalogStore: storage.NewMemory(), PinnedBootstrap: &invalid,
 	})
 	if subscriber != nil || err == nil {
 		t.Fatalf("New invalid pin = (%v, %v), want nil and validation error", subscriber, err)

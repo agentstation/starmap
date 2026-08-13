@@ -11,7 +11,7 @@ import (
 
 	"github.com/agentstation/starmap"
 	"github.com/agentstation/starmap/pkg/catalogartifact"
-	"github.com/agentstation/starmap/pkg/catalogstore"
+	"github.com/agentstation/starmap/pkg/catalogs/storage"
 )
 
 const pinnedArchiveSHA256 = "8c52cacc9bc675e076e7b04cdc3c25ff788221d37b36d653c5b72957bb53a648"
@@ -49,7 +49,7 @@ func ActivatePinned(ctx context.Context) error {
 		return err
 	}
 
-	store := catalogstore.NewMemory()
+	store := storage.NewMemory()
 	client, err := starmap.New(starmap.WithCatalogStore(store))
 	if err != nil {
 		return err

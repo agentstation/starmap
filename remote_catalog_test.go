@@ -9,13 +9,13 @@ import (
 
 	"github.com/agentstation/starmap/internal/constants"
 	"github.com/agentstation/starmap/pkg/catalogs"
-	"github.com/agentstation/starmap/pkg/catalogstore"
+	"github.com/agentstation/starmap/pkg/catalogs/storage"
 	pkgerrors "github.com/agentstation/starmap/pkg/errors"
 	"github.com/agentstation/starmap/pkg/sources"
 )
 
 func TestNewPrefersDurableCurrentOverCorruptLocalCompatibilityView(t *testing.T) {
-	store := catalogstore.NewMemory()
+	store := storage.NewMemory()
 	generation := rootRemoteGeneration(t)
 	if err := store.Commit(context.Background(), generation, ""); err != nil {
 		t.Fatalf("Commit: %v", err)
@@ -43,7 +43,7 @@ func TestNewPrefersDurableCurrentOverCorruptLocalCompatibilityView(t *testing.T)
 // it must not silently ignore a valid human workspace merely because a durable
 // generation exists.
 func TestF001CharacterizationNewPrefersDurableCurrentOverValidLocalWorkspace(t *testing.T) {
-	store := catalogstore.NewMemory()
+	store := storage.NewMemory()
 	generation := rootRemoteGeneration(t)
 	if err := store.Commit(context.Background(), generation, ""); err != nil {
 		t.Fatalf("Commit: %v", err)
@@ -84,7 +84,7 @@ func TestRemoteCatalogCorruptOrIncompatibleGenerationCannotReplaceCurrent(t *tes
 		{name: "incompatible manifest", generation: incompatibleRemoteGeneration(t, valid)},
 	} {
 		t.Run(test.name, func(t *testing.T) {
-			store := catalogstore.NewMemory()
+			store := storage.NewMemory()
 			client, err := New(WithCatalogStore(store))
 			if err != nil {
 				t.Fatalf("New: %v", err)

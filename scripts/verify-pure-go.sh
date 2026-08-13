@@ -13,7 +13,7 @@ fi
 CGO_ENABLED=0 "$ROOT/scripts/verify-consumer-deps.sh"
 (
 	cd "$ROOT"
-	CGO_ENABLED=0 go test ./pkg/catalogstore/s3
+	CGO_ENABLED=0 go test ./pkg/catalogs/storage/s3
 )
 
 CGO_ENABLED=0 go build -trimpath -o "$TMPDIR/starmap" "$ROOT/cmd/starmap"

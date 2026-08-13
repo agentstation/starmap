@@ -9,7 +9,7 @@ import (
 	"time"
 
 	"github.com/agentstation/starmap/pkg/catalogs"
-	"github.com/agentstation/starmap/pkg/catalogstore"
+	"github.com/agentstation/starmap/pkg/catalogs/storage"
 )
 
 func TestQueuedUpdateHonorsContextCancellation(t *testing.T) {
@@ -28,7 +28,7 @@ func TestQueuedUpdateHonorsContextCancellation(t *testing.T) {
 	}
 	client := &Client{
 		options: &options{
-			catalogStore: catalogstore.NewMemory(),
+			catalogStore: storage.NewMemory(),
 		},
 		catalog: mustTestCatalog(t, catalogs.NewEmpty()),
 		hooks:   newHooks(),
@@ -92,7 +92,7 @@ func TestConcurrentUpdatesAreSerialized(t *testing.T) {
 
 	client := &Client{
 		options: &options{
-			catalogStore: catalogstore.NewMemory(),
+			catalogStore: storage.NewMemory(),
 		},
 		catalog: mustTestCatalog(t, catalogs.NewEmpty()),
 		hooks:   newHooks(),

@@ -103,7 +103,7 @@ Package starmap provides immutable AI model catalog reads, explicit generation p
 - [type ModelUpdatedHook](<#ModelUpdatedHook>)
 - [type Option](<#Option>)
   - [func WithCatalogPath\(path string\) Option](<#WithCatalogPath>)
-  - [func WithCatalogStore\(store catalogstore.Store\) Option](<#WithCatalogStore>)
+  - [func WithCatalogStore\(store storage.Store\) Option](<#WithCatalogStore>)
   - [func WithEmbeddedBootstrapMaxAge\(maxAge time.Duration\) Option](<#WithEmbeddedBootstrapMaxAge>)
   - [func WithEmbeddedBootstrapMaxSizeBytes\(maxSizeBytes int64\) Option](<#WithEmbeddedBootstrapMaxSizeBytes>)
 - [type Publication](<#Publication>)
@@ -486,7 +486,7 @@ WithCatalogPath configures the human\-editable provider YAML workspace used for 
 ### func [WithCatalogStore](<https://github.com/agentstation/starmap/blob/main/options.go#L42>)
 
 ```go
-func WithCatalogStore(store catalogstore.Store) Option
+func WithCatalogStore(store storage.Store) Option
 ```
 
 WithCatalogStore configures the writable generation store used by non\-dry sync, manual, remote, and scheduled catalog updates. Read\-only access and dry runs do not require a store. Starmap provides memory, filesystem, and conditional object\-storage implementations; embedding applications own and inject any database\-backed implementation.

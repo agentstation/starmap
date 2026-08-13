@@ -211,12 +211,12 @@ allow only required provider endpoints and the chosen ingress.
 
 For horizontally scaled or filesystem-less Starmap servers, build a small
 embedding application that supplies the public `server` package with a
-`*starmap.Client` configured through `pkg/catalogstore/s3`. That optional
+`*starmap.Client` configured through `pkg/catalogs/storage/s3`. That optional
 adapter accepts a caller-owned S3-compatible client and requires conditional
 ETag writes; it never falls back to last-writer-wins. The embedding application
 owns credentials, client transport/retries, update coordination, and shutdown.
 
-Starport may instead implement `catalogstore.Store` with its own relational
+Starport may instead implement `storage.Store` with its own relational
 database. Starport—not Starmap—owns the driver, connection pool, schema,
 migrations, backups, transactions, CAS semantics, and lifecycle.
 

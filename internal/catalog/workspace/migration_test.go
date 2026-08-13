@@ -16,7 +16,7 @@ import (
 	"github.com/agentstation/starmap/internal/constants"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/catalogs/evidence"
-	"github.com/agentstation/starmap/pkg/catalogstore"
+	"github.com/agentstation/starmap/pkg/catalogs/storage"
 	pkgerrors "github.com/agentstation/starmap/pkg/errors"
 )
 
@@ -247,9 +247,9 @@ func TestOlderBinaryRejectsNewerSchemaBeforeMigrationMutation(t *testing.T) {
 	}
 }
 
-func migrationStore(t *testing.T, path string) *catalogstore.Filesystem {
+func migrationStore(t *testing.T, path string) *storage.Filesystem {
 	t.Helper()
-	store, err := catalogstore.NewFilesystem(path)
+	store, err := storage.NewFilesystem(path)
 	if err != nil {
 		t.Fatalf("NewFilesystem: %v", err)
 	}

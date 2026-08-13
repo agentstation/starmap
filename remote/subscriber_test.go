@@ -15,7 +15,7 @@ import (
 	"github.com/agentstation/starmap/pkg/catalogremote"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/catalogs/evidence"
-	"github.com/agentstation/starmap/pkg/catalogstore"
+	"github.com/agentstation/starmap/pkg/catalogs/storage"
 	pkgerrors "github.com/agentstation/starmap/pkg/errors"
 )
 
@@ -30,7 +30,7 @@ func TestNewStartsNoRemoteRequest(t *testing.T) {
 	))
 	defer server.Close()
 	subscriber, err := New(Config{
-		BaseURL: server.URL, CatalogStore: catalogstore.NewMemory(),
+		BaseURL: server.URL, CatalogStore: storage.NewMemory(),
 	})
 	if err != nil {
 		t.Fatalf("New: %v", err)
@@ -49,7 +49,7 @@ func TestConfigDefaultsAndLivenessMargin(t *testing.T) {
 	server := httptest.NewServer(http.NotFoundHandler())
 	defer server.Close()
 	subscriber, err := New(Config{
-		BaseURL: server.URL, CatalogStore: catalogstore.NewMemory(),
+		BaseURL: server.URL, CatalogStore: storage.NewMemory(),
 	})
 	if err != nil {
 		t.Fatalf("New defaults: %v", err)
@@ -66,7 +66,7 @@ func TestConfigDefaultsAndLivenessMargin(t *testing.T) {
 	}
 	withFallback, err := New(Config{
 		BaseURL:         server.URL,
-		CatalogStore:    catalogstore.NewMemory(),
+		CatalogStore:    storage.NewMemory(),
 		PollingFallback: policy,
 	})
 	if err != nil {
@@ -88,14 +88,14 @@ func TestConfigDefaultsAndLivenessMargin(t *testing.T) {
 		{
 			name: "negative heartbeat",
 			config: Config{
-				BaseURL: server.URL, CatalogStore: catalogstore.NewMemory(),
+				BaseURL: server.URL, CatalogStore: storage.NewMemory(),
 				ExpectedHeartbeatInterval: -time.Second,
 			},
 		},
 		{
 			name: "insufficient liveness margin",
 			config: Config{
-				BaseURL: server.URL, CatalogStore: catalogstore.NewMemory(),
+				BaseURL: server.URL, CatalogStore: storage.NewMemory(),
 				ExpectedHeartbeatInterval: time.Second,
 				LivenessTimeout:           time.Second,
 			},
@@ -103,14 +103,14 @@ func TestConfigDefaultsAndLivenessMargin(t *testing.T) {
 		{
 			name: "negative liveness",
 			config: Config{
-				BaseURL: server.URL, CatalogStore: catalogstore.NewMemory(),
+				BaseURL: server.URL, CatalogStore: storage.NewMemory(),
 				LivenessTimeout: -time.Second,
 			},
 		},
 		{
 			name: "negative shutdown",
 			config: Config{
-				BaseURL: server.URL, CatalogStore: catalogstore.NewMemory(),
+				BaseURL: server.URL, CatalogStore: storage.NewMemory(),
 				ShutdownTimeout: -time.Second,
 			},
 		},
@@ -118,7 +118,7 @@ func TestConfigDefaultsAndLivenessMargin(t *testing.T) {
 			name: "zero fallback threshold",
 			config: Config{
 				BaseURL:      server.URL,
-				CatalogStore: catalogstore.NewMemory(),
+				CatalogStore: storage.NewMemory(),
 				PollingFallback: &PollingFallbackPolicy{
 					Interval: time.Second,
 				},
@@ -128,7 +128,7 @@ func TestConfigDefaultsAndLivenessMargin(t *testing.T) {
 			name: "zero fallback interval",
 			config: Config{
 				BaseURL:      server.URL,
-				CatalogStore: catalogstore.NewMemory(),
+				CatalogStore: storage.NewMemory(),
 				PollingFallback: &PollingFallbackPolicy{
 					AfterFailures: 1,
 				},
@@ -242,7 +242,7 @@ func TestSubscriberMissingHeartbeatReconnectsAndCatchesUp(t *testing.T) {
 	subscriber, err := New(Config{
 		BaseURL:                   server.URL + "/api/v1",
 		HTTPClient:                server.Client(),
-		CatalogStore:              catalogstore.NewMemory(),
+		CatalogStore:              storage.NewMemory(),
 		ReconnectMinDelay:         time.Millisecond,
 		ReconnectMaxDelay:         time.Millisecond,
 		ExpectedHeartbeatInterval: 10 * time.Millisecond,
@@ -335,7 +335,7 @@ func TestSubscriberHeartbeatsPreserveStreamLiveness(t *testing.T) {
 	subscriber, err := New(Config{
 		BaseURL:                   server.URL + "/api/v1",
 		HTTPClient:                server.Client(),
-		CatalogStore:              catalogstore.NewMemory(),
+		CatalogStore:              storage.NewMemory(),
 		ExpectedHeartbeatInterval: 10 * time.Millisecond,
 		LivenessTimeout:           2 * time.Second,
 		ShutdownTimeout:           time.Second,
@@ -493,7 +493,7 @@ func TestSubscriberPollingFallbackIsExplicitBoundedAndConditional(t *testing.T) 
 	subscriber, err := New(Config{
 		BaseURL:                   server.URL + "/api/v1",
 		HTTPClient:                server.Client(),
-		CatalogStore:              catalogstore.NewMemory(),
+		CatalogStore:              storage.NewMemory(),
 		ReconnectMinDelay:         time.Millisecond,
 		ReconnectMaxDelay:         time.Millisecond,
 		ExpectedHeartbeatInterval: 10 * time.Millisecond,
@@ -600,7 +600,7 @@ func TestCloseCancelsAndJoinsInitialFetch(t *testing.T) {
 	subscriber, err := New(Config{
 		BaseURL:         server.URL,
 		HTTPClient:      server.Client(),
-		CatalogStore:    catalogstore.NewMemory(),
+		CatalogStore:    storage.NewMemory(),
 		ShutdownTimeout: time.Second,
 	})
 	if err != nil {
@@ -735,7 +735,7 @@ func TestSubscriberReconnectCatchesUpWithoutEventAndDeduplicatesReplay(t *testin
 	subscriber, err := New(Config{
 		BaseURL:           server.URL + "/api/v1",
 		HTTPClient:        server.Client(),
-		CatalogStore:      catalogstore.NewMemory(),
+		CatalogStore:      storage.NewMemory(),
 		ReconnectMinDelay: time.Millisecond,
 		ReconnectMaxDelay: time.Millisecond,
 	})
@@ -839,7 +839,7 @@ func TestSubscriberPublishesNewIdentityWithoutCopyingSamePayload(t *testing.T) {
 	)
 	server := httptest.NewServer(http.NotFoundHandler())
 	defer server.Close()
-	store := catalogstore.NewMemory()
+	store := storage.NewMemory()
 	subscriber, err := New(Config{
 		BaseURL: server.URL, CatalogStore: store,
 	})
@@ -906,7 +906,7 @@ func TestSubscriberRejectsStaleAndInvalidGenerationsBeforeActivation(t *testing.
 	server := httptest.NewServer(http.NotFoundHandler())
 	defer server.Close()
 	subscriber, err := New(Config{
-		BaseURL: server.URL, CatalogStore: catalogstore.NewMemory(),
+		BaseURL: server.URL, CatalogStore: storage.NewMemory(),
 	})
 	if err != nil {
 		t.Fatalf("New: %v", err)

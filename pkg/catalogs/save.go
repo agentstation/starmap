@@ -38,7 +38,7 @@ func (cat *Builder) saveTo(basePath string) error {
 	// A save is a replacement of Starmap-managed records. Remove the prior
 	// managed indexes/model trees first so deleted records cannot survive and be
 	// loaded into the next catalog. Transactional callers should publish through
-	// pkg/catalogstore, which preserves the previous generation on failure.
+	// pkg/catalogs/storage, which preserves the previous generation on failure.
 	if err := removeManagedCatalogData(basePath); err != nil {
 		return err
 	}

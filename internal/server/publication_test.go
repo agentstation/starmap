@@ -13,12 +13,12 @@ import (
 
 	"github.com/agentstation/starmap"
 	"github.com/agentstation/starmap/pkg/catalogs"
-	"github.com/agentstation/starmap/pkg/catalogstore"
+	"github.com/agentstation/starmap/pkg/catalogs/storage"
 	pkgerrors "github.com/agentstation/starmap/pkg/errors"
 )
 
 type publicationFaultStore struct {
-	*catalogstore.Memory
+	*storage.Memory
 	fail atomic.Bool
 }
 
@@ -36,7 +36,7 @@ func (s *publicationFaultStore) Commit(
 }
 
 func TestCacheGenerationEventMatchesAtomicPublicationAndFailedCommitChangesNeither(t *testing.T) {
-	store := &publicationFaultStore{Memory: catalogstore.NewMemory()}
+	store := &publicationFaultStore{Memory: storage.NewMemory()}
 	var phase atomic.Int32
 	update := serverCatalogUpdate(func(candidate *catalogs.Builder) error {
 		id := catalogs.ProviderID("published-one")
@@ -101,7 +101,7 @@ func TestCacheGenerationEventMatchesAtomicPublicationAndFailedCommitChangesNeith
 }
 
 func TestCatalogPublicationEventsAndCacheCannotReorder(t *testing.T) {
-	store := catalogstore.NewMemory()
+	store := storage.NewMemory()
 	var phase atomic.Int32
 	update := serverCatalogUpdate(func(candidate *catalogs.Builder) error {
 		index := phase.Add(1)

@@ -12,7 +12,7 @@ import (
 
 	"github.com/agentstation/starmap/pkg/catalogremote"
 	"github.com/agentstation/starmap/pkg/catalogs"
-	"github.com/agentstation/starmap/pkg/catalogstore"
+	"github.com/agentstation/starmap/pkg/catalogs/storage"
 )
 
 func TestSubscriberReadersObserveCompleteGenerationsDuringActivation(t *testing.T) {
@@ -91,7 +91,7 @@ func TestSubscriberReadersObserveCompleteGenerationsDuringActivation(t *testing.
 	subscriber, err := New(Config{
 		BaseURL:         server.URL + "/api/v1",
 		HTTPClient:      server.Client(),
-		CatalogStore:    catalogstore.NewMemory(),
+		CatalogStore:    storage.NewMemory(),
 		ShutdownTimeout: time.Second,
 	})
 	if err != nil {

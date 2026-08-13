@@ -261,7 +261,7 @@ schema, migrations, credentials, connection pool, backups, and lifecycle.
 The exact concurrency, idempotency, failure, rollback, ownership, and error
 requirements are defined in the
 [Catalog Store Contract](docs/CATALOG_STORE_CONTRACT.md).
-For servers without a durable filesystem, `pkg/catalogstore/s3` adapts a
+For servers without a durable filesystem, `pkg/catalogs/storage/s3` adapts a
 caller-owned AWS SDK v2 S3 client to the same object-generation contract:
 
 ```go
@@ -271,7 +271,7 @@ backend, err := s3store.New(callerOwnedS3Client, s3store.Config{
 if err != nil {
     return err
 }
-store, err := catalogstore.NewObject(backend, "production")
+store, err := storage.NewObject(backend, "production")
 ```
 
 The caller configures and owns the client, endpoint, credentials, transport,
@@ -281,8 +281,8 @@ write; there is no last-writer-wins fallback.
 
 The standalone `starmap serve` command uses the CLI's filesystem generation
 store by default. An embedding server selects storage before it constructs the
-Starmap client: use `catalogstore.NewFilesystem` for a persistent local path, or
-compose `s3store.New` with `catalogstore.NewObject` for an S3-compatible bucket,
+Starmap client: use `storage.NewFilesystem` for a persistent local path, or
+compose `s3store.New` with `storage.NewObject` for an S3-compatible bucket,
 then inject the selected store through `starmap.WithCatalogStore`. Storage mode,
 paths, bucket, prefix, client, credentials, and lifecycle remain deployment
 configuration; `server.New` receives the already-constructed client and does
@@ -377,7 +377,7 @@ For detailed component design and interaction patterns, see **[ARCHITECTURE.md Â
 
 Starmap follows Go best practices with clear package separation:
 
-- **`pkg/`** - Focused public contracts ([catalogs](pkg/catalogs/), [catalogstore](pkg/catalogstore/), [sources](pkg/sources/), [errors](pkg/errors/), etc.)
+- **`pkg/`** - Focused public contracts ([catalogs](pkg/catalogs/), [storage](pkg/catalogs/storage/), [sources](pkg/sources/), [errors](pkg/errors/), etc.)
 - **`internal/`** - Internal implementations (reconciliation, CLI, providers, embedded data, transport)
 - **`cmd/starmap/`** - CLI application
 
@@ -697,7 +697,7 @@ projection, not an editable source of truth.
 #### Syncing with Provider APIs
 ```go
 // Non-dry mutation requires an explicit writable generation store.
-store, err := catalogstore.NewFilesystem("./state/catalog")
+store, err := storage.NewFilesystem("./state/catalog")
 if err != nil {
     return err
 }
@@ -959,7 +959,7 @@ Go consumers can opt into reactive remote catalogs without adding network
 behavior to the root package:
 
 ```go
-store, err := catalogstore.NewFilesystem("/var/lib/my-service/starmap")
+store, err := storage.NewFilesystem("/var/lib/my-service/starmap")
 if err != nil {
     return err
 }

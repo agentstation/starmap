@@ -13,7 +13,7 @@ import (
 
 	"github.com/agentstation/starmap/pkg/catalogremote"
 	"github.com/agentstation/starmap/pkg/catalogs"
-	"github.com/agentstation/starmap/pkg/catalogstore"
+	"github.com/agentstation/starmap/pkg/catalogs/storage"
 	pkgerrors "github.com/agentstation/starmap/pkg/errors"
 )
 
@@ -51,7 +51,7 @@ func TestSubscriberRejectsUnauthorizedStreamWithoutRetryOrPolling(t *testing.T) 
 	subscriber, err := New(Config{
 		BaseURL:      server.URL + "/api/v1",
 		HTTPClient:   server.Client(),
-		CatalogStore: catalogstore.NewMemory(),
+		CatalogStore: storage.NewMemory(),
 		PollingFallback: &PollingFallbackPolicy{
 			AfterFailures: 1,
 			Interval:      time.Millisecond,
@@ -127,7 +127,7 @@ func TestSubscriberStopsAfterUnauthorizedReconnectAndRejectsRestart(t *testing.T
 	subscriber, err := New(Config{
 		BaseURL:           server.URL + "/api/v1",
 		HTTPClient:        server.Client(),
-		CatalogStore:      catalogstore.NewMemory(),
+		CatalogStore:      storage.NewMemory(),
 		ReconnectMinDelay: time.Millisecond,
 		ReconnectMaxDelay: time.Millisecond,
 	})
@@ -200,7 +200,7 @@ func TestSubscriberStopsWhenFallbackPollBecomesUnauthorized(t *testing.T) {
 	subscriber, err := New(Config{
 		BaseURL:           server.URL + "/api/v1",
 		HTTPClient:        server.Client(),
-		CatalogStore:      catalogstore.NewMemory(),
+		CatalogStore:      storage.NewMemory(),
 		ReconnectMinDelay: time.Millisecond,
 		ReconnectMaxDelay: time.Millisecond,
 		PollingFallback: &PollingFallbackPolicy{
@@ -317,7 +317,7 @@ func TestSubscriberOutOfOrderEventsCannotRegressCatalog(t *testing.T) {
 	subscriber, err := New(Config{
 		BaseURL:         server.URL + "/api/v1",
 		HTTPClient:      server.Client(),
-		CatalogStore:    catalogstore.NewMemory(),
+		CatalogStore:    storage.NewMemory(),
 		ShutdownTimeout: time.Second,
 	})
 	if err != nil {

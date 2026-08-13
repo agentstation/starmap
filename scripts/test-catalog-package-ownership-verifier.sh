@@ -26,6 +26,14 @@ assert_complete_report() {
 mkdir -p "$FIXTURE/docs/reviews"
 printf '%s\n' 'Historical import: github.com/agentstation/starmap/pkg/catalog'"meta" \
 	>"$FIXTURE/docs/reviews/history.md"
+printf '%s\n' 'Archived import: github.com/agentstation/starmap/pkg/catalog'"store" \
+	>"$FIXTURE/docs/STARMAP_ARCHITECTURE_CONTROL_PLANE.md"
+printf '%s\n' \
+	'pkg/catalog'"meta"' -> pkg/catalogs/evidence and pkg/catalogs/projection' \
+	'pkg/catalog'"store"' -> pkg/catalogs/storage' \
+	'pkg/catalog'"artifact"' -> pkg/catalogs/artifact' \
+	'pkg/catalog'"remote"' -> pkg/catalogs/remote' \
+	>"$FIXTURE/docs/MIGRATING_TO_V0.5.md"
 
 historical_report="$FIXTURE/historical.txt"
 if STARMAP_CATALOG_PACKAGE_ROOT="$FIXTURE" bash "$VERIFIER" >"$historical_report" 2>&1; then
@@ -33,6 +41,10 @@ if STARMAP_CATALOG_PACKAGE_ROOT="$FIXTURE" bash "$VERIFIER" >"$historical_report
 	exit 1
 fi
 assert_complete_report "$historical_report"
+grep -Fq 'CPO-V11 PASS:' "$historical_report" || {
+	printf 'verifier rejected allowlisted historical documentation\n' >&2
+	exit 1
+}
 grep -Fq 'CPO-V12 PASS:' "$historical_report" || {
 	printf 'verifier rejected an allowlisted historical path\n' >&2
 	exit 1

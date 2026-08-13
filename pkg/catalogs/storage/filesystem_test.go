@@ -1,4 +1,4 @@
-package catalogstore
+package storage
 
 import (
 	"context"

@@ -8,7 +8,7 @@ import (
 
 	"github.com/agentstation/starmap"
 	"github.com/agentstation/starmap/pkg/catalogs"
-	"github.com/agentstation/starmap/pkg/catalogstore"
+	"github.com/agentstation/starmap/pkg/catalogs/storage"
 )
 
 func TestPublish(t *testing.T) {
@@ -20,7 +20,7 @@ func TestPublish(t *testing.T) {
 func TestNewContextConstructsStorageBackedClient(t *testing.T) {
 	client, err := starmap.NewContext(
 		context.Background(),
-		starmap.WithCatalogStore(catalogstore.NewMemory()),
+		starmap.WithCatalogStore(storage.NewMemory()),
 	)
 	if err != nil {
 		t.Fatalf("NewContext: %v", err)
@@ -62,7 +62,7 @@ func TestNewContextHonorsExpiredDeadline(t *testing.T) {
 
 	client, err := starmap.NewContext(
 		ctx,
-		starmap.WithCatalogStore(catalogstore.NewMemory()),
+		starmap.WithCatalogStore(storage.NewMemory()),
 	)
 	if client != nil {
 		t.Fatal("NewContext returned a client after its deadline")
@@ -75,7 +75,7 @@ func TestNewContextHonorsExpiredDeadline(t *testing.T) {
 func TestNewContextRejectsNilContext(t *testing.T) {
 	client, err := starmap.NewContext(
 		nil,
-		starmap.WithCatalogStore(catalogstore.NewMemory()),
+		starmap.WithCatalogStore(storage.NewMemory()),
 	)
 	if client != nil {
 		t.Fatal("NewContext returned a client for a nil context")

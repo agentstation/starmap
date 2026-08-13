@@ -7,7 +7,7 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/agentstation/starmap/pkg/catalogstore"
+	"github.com/agentstation/starmap/pkg/catalogs/storage"
 	"github.com/agentstation/starmap/remote"
 )
 
@@ -15,7 +15,7 @@ import (
 // subscriber lifecycle.
 func VerifyRemoteCatalog(ctx context.Context, baseURL string) (err error) {
 	subscriber, err := remote.New(remote.Config{
-		BaseURL: baseURL, CatalogStore: catalogstore.NewMemory(),
+		BaseURL: baseURL, CatalogStore: storage.NewMemory(),
 	})
 	if err != nil {
 		return err

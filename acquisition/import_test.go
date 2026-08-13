@@ -12,7 +12,7 @@ import (
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/catalogs/evidence"
 	"github.com/agentstation/starmap/pkg/catalogs/projection"
-	"github.com/agentstation/starmap/pkg/catalogstore"
+	"github.com/agentstation/starmap/pkg/catalogs/storage"
 	pkgerrors "github.com/agentstation/starmap/pkg/errors"
 )
 
@@ -46,7 +46,7 @@ func TestImportReleaseVerifiesReconcilesPublishesAndRollsBack(t *testing.T) {
 	}
 	baseline := buildImportCatalog(t, baselineBuilder)
 
-	store := catalogstore.NewMemory()
+	store := storage.NewMemory()
 	client, err := starmap.New(
 		starmap.WithCatalogStore(store),
 		starmap.WithCatalogPath(workspacePath),
@@ -176,7 +176,7 @@ func TestImportReleasePublisherFailureCannotMutateClient(t *testing.T) {
 	t.Parallel()
 
 	ctx := context.Background()
-	store := catalogstore.NewMemory()
+	store := storage.NewMemory()
 	client, err := starmap.New(starmap.WithCatalogStore(store))
 	if err != nil {
 		t.Fatalf("New client: %v", err)
@@ -296,7 +296,7 @@ func importReleaseFixture(
 	catalog *catalogs.Catalog,
 ) catalogartifact.Release {
 	t.Helper()
-	producerStore := catalogstore.NewMemory()
+	producerStore := storage.NewMemory()
 	producer, err := starmap.New(starmap.WithCatalogStore(producerStore))
 	if err != nil {
 		t.Fatalf("New producer: %v", err)

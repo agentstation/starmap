@@ -16,7 +16,7 @@ import (
 	"github.com/agentstation/starmap/internal/auth"
 	"github.com/agentstation/starmap/internal/catalog/workspace"
 	"github.com/agentstation/starmap/pkg/catalogs"
-	"github.com/agentstation/starmap/pkg/catalogstore"
+	"github.com/agentstation/starmap/pkg/catalogs/storage"
 	"github.com/agentstation/starmap/pkg/errors"
 	"github.com/agentstation/starmap/pkg/sources"
 )
@@ -299,7 +299,7 @@ func (a *App) catalogStoreOption() (starmap.Option, error) {
 	if err != nil {
 		return nil, err
 	}
-	store, err := catalogstore.NewFilesystem(path)
+	store, err := storage.NewFilesystem(path)
 	if err != nil {
 		return nil, errors.WrapResource("create", "catalog store", path, err)
 	}

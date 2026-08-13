@@ -188,7 +188,7 @@ inference credential by accident.
 
 3. **Public Contracts**
    - Catalog domain and immutable reads (`pkg/catalogs/`)
-   - Transactional generation storage (`pkg/catalogstore/`)
+   - Transactional generation storage (`pkg/catalogs/storage/`)
    - Data source abstractions (`pkg/sources/`)
 
 4. **Internal Implementations** (`internal/`)
@@ -240,8 +240,8 @@ Constructors return concrete types when a package owns one implementation.
 |---|---:|---|---|
 | `catalogs.Reader` | 2 | `*catalogs.Builder`, `*catalogs.Catalog` | Retained algorithm input; `TestSeamConformanceReaderHasBuilderAndCatalogAdapters` executes both |
 | Catalog collection readers | 2 each | Mutable `Providers`/`Authors`/`Endpoints`/`Models`/`Provenance` and immutable reader wrappers | Retained read-only collection boundaries with two implementations each |
-| `catalogstore.Store` | 3+ | Starmap memory, filesystem, and conditional object storage; caller-owned injected adapters | Retained generation-storage boundary; the Starmap adapters run the same behavioral contract and external applications own database-specific implementations |
-| `catalogstore.ObjectBackend` | 3 | memory reference backend, S3-compatible production backend, recording alternate backend | Retained cloud-object input; the production S3 protocol matrix and `TestSeamConformanceObjectStoreAcceptsAlternateBackend` execute both replacement implementations |
+| `storage.Store` | 3+ | Starmap memory, filesystem, and conditional object storage; caller-owned injected adapters | Retained generation-storage boundary; the Starmap adapters run the same behavioral contract and external applications own database-specific implementations |
+| `storage.ObjectBackend` | 3 | memory reference backend, S3-compatible production backend, recording alternate backend | Retained cloud-object input; the production S3 protocol matrix and `TestSeamConformanceObjectStoreAcceptsAlternateBackend` execute both replacement implementations |
 | `authority.Reader` | 2 | immutable default table, custom `seamAuthority` | Retained policy input; `TestSeamConformanceAuthorityAcceptsCustomAdapter` proves replacement policy |
 | Enhancer/reconciler provenance inputs | 2 | concrete `*provenance.Tracker`, custom `seamTracker` | Retained as consumer-local `Track` roles; the provenance package returns its concrete tracker |
 | `enhancer.Enhancer` | 4 | `ModelsDevEnhancer`, `MetadataEnhancer`, `ChainEnhancer`, test enhancer | Retained plugin boundary; compile assertions cover all built-ins and pipeline tests execute alternates |
@@ -648,7 +648,7 @@ consumer. The configured origin is its publisher identity. Production origins
 require HTTPS, and TLS must verify the certificate chain. The client rejects
 cross-origin redirects. It permits plain HTTP only for loopback addresses.
 
-The subscriber requires a `catalogstore.Store` that the caller owns.
+The subscriber requires a `storage.Store` that the caller owns.
 `remote.NewContext` loads its verified current generation under the caller
 context. It starts no goroutine or remote request. An optional pinned bootstrap
 commits only into an empty store. A durable current generation wins. Corrupt or
@@ -774,7 +774,7 @@ supervision and coordination policy.
 
 ### CatalogStore contract
 
-`pkg/catalogstore.Store` persists a `Generation` (manifest plus exact payload)
+`pkg/catalogs/storage.Store` persists a `Generation` (manifest plus exact payload)
 and exposes `Current`, `Get`, and `Commit`. Every commit is compare-and-swap:
 the caller supplies the expected current generation ID, with an empty ID meaning
 the store must still be empty. Implementations validate the manifest and payload
@@ -803,14 +803,14 @@ or mutation. The release staging boundary applies the same rule to lifecycle
 roots, generation directories, and immutable assets. These checks assume the
 deployment protects the parent path from a hostile same-UID concurrent actor.
 Starmap owns no relational adapter. An embedding application may implement
-`catalogstore.Store` using SQLite, MySQL, PostgreSQL, or another database, but
+`storage.Store` using SQLite, MySQL, PostgreSQL, or another database, but
 owns the driver, schema, migrations, credentials, pool, backups, lifecycle, and
 dialect-specific transaction/CAS behavior before injecting the store through
 `starmap.WithCatalogStore`.
 
 For deployments without a persistent filesystem,
-`pkg/catalogstore/s3.Backend` adapts a caller-owned AWS SDK v2 S3 client to
-`catalogstore.ObjectBackend`. The caller owns endpoint selection, region,
+`pkg/catalogs/storage/s3.Backend` adapts a caller-owned AWS SDK v2 S3 client to
+`storage.ObjectBackend`. The caller owns endpoint selection, region,
 credentials, retry policy, HTTP transport, observability, and client lifecycle;
 the constructor is inert. The adapter requires a non-empty ETag on every
 successful read and write, translates immutable creation to
@@ -1229,7 +1229,7 @@ Used throughout for configuration:
 
 ```go
 // Creating with options
-store, err := catalogstore.NewFilesystem("./state/catalog")
+store, err := storage.NewFilesystem("./state/catalog")
 if err != nil {
     return err
 }
@@ -2101,7 +2101,7 @@ starmap/
 │   ├── catalogs/             # Catalog domain, builder, and immutable reads
 │   │   ├── evidence/         # Source observation and review contracts
 │   │   └── projection/       # Post-commit workspace projection results
-│   ├── catalogstore/         # Generation commit/read/CAS adapters
+│   ├── storage/         # Generation commit/read/CAS adapters
 │   │   └── s3/               # Optional caller-owned S3 client adapter
 │   ├── catalogartifact/      # Deterministic portable generation format
 │   ├── catalogremote/        # Versioned manifest/payload/SSE wire client
@@ -2181,7 +2181,7 @@ graph BT
     end
 
     subgraph "Layer 5: Core Packages"
-        PKG[pkg/*<br/>catalogs, catalogstore, artifacts, wire, sources]
+        PKG[pkg/*<br/>catalogs, storage, artifacts, wire, sources]
     end
 
     subgraph "Layer 4: Root Package"

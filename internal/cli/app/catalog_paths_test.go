@@ -13,7 +13,7 @@ import (
 	"github.com/agentstation/starmap/internal/constants"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/catalogs/evidence"
-	"github.com/agentstation/starmap/pkg/catalogstore"
+	"github.com/agentstation/starmap/pkg/catalogs/storage"
 )
 
 func TestCatalogPathsFreshInstallAreCanonicalSeparatedAndPassive(t *testing.T) {
@@ -48,7 +48,7 @@ func TestCatalogPathsFreshInstallAreCanonicalSeparatedAndPassive(t *testing.T) {
 	if _, err := os.Stat(wantState); !os.IsNotExist(err) {
 		t.Fatalf("passive construction created %q: %v", wantState, err)
 	}
-	store, err := catalogstore.NewFilesystem(wantState)
+	store, err := storage.NewFilesystem(wantState)
 	if err != nil {
 		t.Fatalf("NewFilesystem: %v", err)
 	}
@@ -137,7 +137,7 @@ func TestCatalogWorkspaceMigrationAndRestartPreserveExactGeneration(t *testing.T
 	t.Setenv("HOME", home)
 	workspace := filepath.Join(home, ".starmap", "catalog")
 	state := filepath.Join(home, ".starmap", "state", "catalog")
-	store, err := catalogstore.NewFilesystem(workspace)
+	store, err := storage.NewFilesystem(workspace)
 	if err != nil {
 		t.Fatalf("NewFilesystem legacy: %v", err)
 	}
@@ -185,7 +185,7 @@ func TestCatalogWorkspaceMigrationAndRestartPreserveExactGeneration(t *testing.T
 	if after := appCatalogTree(t, workspace); !reflect.DeepEqual(after, beforeRestart) {
 		t.Fatalf("second restart changed workspace:\nbefore=%v\nafter=%v", beforeRestart, after)
 	}
-	relocated, err := catalogstore.NewFilesystem(state)
+	relocated, err := storage.NewFilesystem(state)
 	if err != nil {
 		t.Fatalf("NewFilesystem relocated: %v", err)
 	}
@@ -199,7 +199,7 @@ func TestRestartCompletesProjectionAfterMigrationMove(t *testing.T) {
 	t.Setenv("HOME", home)
 	workspace := filepath.Join(home, ".starmap", "catalog")
 	state := filepath.Join(home, ".starmap", "state", "catalog")
-	store, err := catalogstore.NewFilesystem(workspace)
+	store, err := storage.NewFilesystem(workspace)
 	if err != nil {
 		t.Fatalf("NewFilesystem legacy: %v", err)
 	}

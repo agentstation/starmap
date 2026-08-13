@@ -1,5 +1,4 @@
-// Package catalogstore provides durable generation-oriented catalog storage.
-package catalogstore
+package storage
 
 import (
 	"bytes"

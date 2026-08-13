@@ -15,7 +15,7 @@ import (
 
 	"github.com/agentstation/starmap/pkg/catalogartifact"
 	"github.com/agentstation/starmap/pkg/catalogs"
-	"github.com/agentstation/starmap/pkg/catalogstore"
+	"github.com/agentstation/starmap/pkg/catalogs/storage"
 	pkgerrors "github.com/agentstation/starmap/pkg/errors"
 )
 
@@ -106,7 +106,7 @@ func run(args []string, output io.Writer) error {
 			Message: "is required when staging release assets",
 		}
 	}
-	store, err := catalogstore.NewFilesystem(strings.TrimSpace(*generationStore))
+	store, err := storage.NewFilesystem(strings.TrimSpace(*generationStore))
 	if err != nil {
 		return err
 	}

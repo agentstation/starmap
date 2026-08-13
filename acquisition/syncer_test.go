@@ -12,7 +12,7 @@ import (
 	"github.com/agentstation/starmap/internal/catalog/workspace"
 	"github.com/agentstation/starmap/internal/constants"
 	"github.com/agentstation/starmap/pkg/catalogs"
-	"github.com/agentstation/starmap/pkg/catalogstore"
+	"github.com/agentstation/starmap/pkg/catalogs/storage"
 	pkgerrors "github.com/agentstation/starmap/pkg/errors"
 	"github.com/agentstation/starmap/pkg/sources"
 	pkgsync "github.com/agentstation/starmap/pkg/sync"
@@ -89,7 +89,7 @@ func TestSyncRequiresWritableStoreBeforeProviderAcquisition(t *testing.T) {
 func TestSyncPublishesStoreOnlyWithoutWorkspaceProjection(t *testing.T) {
 	t.Parallel()
 
-	store := catalogstore.NewMemory()
+	store := storage.NewMemory()
 	client, err := starmap.New(starmap.WithCatalogStore(store))
 	if err != nil {
 		t.Fatalf("New client: %v", err)
@@ -259,7 +259,7 @@ func TestWithCredentialResolverRejectsNil(t *testing.T) {
 }
 
 type deadlineRecordingStore struct {
-	*catalogstore.Memory
+	*storage.Memory
 	sawDeadline atomic.Bool
 	err         error
 }
@@ -279,7 +279,7 @@ func TestSyncTimeoutContextReachesDurableCommit(t *testing.T) {
 
 	injected := stderrors.New("injected commit failure")
 	store := &deadlineRecordingStore{
-		Memory: catalogstore.NewMemory(),
+		Memory: storage.NewMemory(),
 		err:    injected,
 	}
 	client, err := starmap.New(starmap.WithCatalogStore(store))

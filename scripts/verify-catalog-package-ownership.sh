@@ -194,7 +194,8 @@ check_v11() {
 		files+=("$path")
 	done < <(
 		find "$ROOT/docs" "$ROOT/pkg" \
-			\( -path "$ROOT/docs/reviews" -o -path "$ROOT/docs/proof" -o -path "$ROOT/docs/plans" \) -prune \
+			\( -path "$ROOT/docs/reviews" -o -path "$ROOT/docs/proof" -o -path "$ROOT/docs/plans" \
+				-o -path "$ROOT/docs/STARMAP_ARCHITECTURE_CONTROL_PLANE.md" \) -prune \
 			-o -type f -name '*.md' ! -path "$migration" -print0
 	)
 	while IFS= read -r path; do

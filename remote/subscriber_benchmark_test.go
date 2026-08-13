@@ -5,7 +5,7 @@ import (
 	"testing"
 
 	"github.com/agentstation/starmap"
-	"github.com/agentstation/starmap/pkg/catalogstore"
+	"github.com/agentstation/starmap/pkg/catalogs/storage"
 )
 
 // BenchmarkSubscriberActivation measures verification, decoding, durable
@@ -27,7 +27,7 @@ func BenchmarkSubscriberActivation(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		b.StopTimer()
 		subscriber, newErr := New(Config{
-			BaseURL: "https://starmap.invalid", CatalogStore: catalogstore.NewMemory(),
+			BaseURL: "https://starmap.invalid", CatalogStore: storage.NewMemory(),
 		})
 		if newErr != nil {
 			b.Fatalf("New subscriber: %v", newErr)

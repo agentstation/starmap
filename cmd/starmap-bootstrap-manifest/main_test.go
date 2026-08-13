@@ -13,7 +13,7 @@ import (
 	"github.com/agentstation/starmap/internal/constants"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/catalogs/evidence"
-	"github.com/agentstation/starmap/pkg/catalogstore"
+	"github.com/agentstation/starmap/pkg/catalogs/storage"
 )
 
 func TestScheduledGenerationManifestCommandWritesChangedOnceAndPreservesUnchangedBytes(t *testing.T) {
@@ -185,7 +185,7 @@ func TestScheduledGenerationManifestUsesExactCommittedIdentity(t *testing.T) {
 		Payload: payload,
 	}
 	storePath := filepath.Join(t.TempDir(), "store")
-	store, err := catalogstore.NewFilesystem(storePath)
+	store, err := storage.NewFilesystem(storePath)
 	if err != nil {
 		t.Fatalf("NewFilesystem: %v", err)
 	}

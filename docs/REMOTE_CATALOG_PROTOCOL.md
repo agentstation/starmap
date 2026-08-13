@@ -49,7 +49,7 @@ generation, and pass it to `starmap.Client.Activate`. Normal reactive consumers
 use the opt-in `github.com/agentstation/starmap/remote` package:
 
 ```go
-store, err := catalogstore.NewFilesystem(statePath)
+store, err := storage.NewFilesystem(statePath)
 if err != nil {
 	return err
 }

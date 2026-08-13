@@ -11,7 +11,7 @@ import (
 
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/catalogs/evidence"
-	"github.com/agentstation/starmap/pkg/catalogstore"
+	"github.com/agentstation/starmap/pkg/catalogs/storage"
 	"github.com/agentstation/starmap/pkg/errors"
 )
 
@@ -87,7 +87,7 @@ func TestStarportOwnedStoreBehavioralContract(t *testing.T) {
 
 func assertExternalGeneration(
 	t *testing.T,
-	store catalogstore.Store,
+	store storage.Store,
 	want catalogs.Generation,
 ) {
 	t.Helper()

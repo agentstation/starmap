@@ -64,7 +64,7 @@ type Config struct {
     HTTPClient *http.Client
     // CatalogStore holds verified generations in durable storage. The caller
     // must supply it and owns its resources and lifecycle.
-    CatalogStore catalogstore.Store
+    CatalogStore storage.Store
     // PinnedBootstrap supplies an optional verified offline generation.
     // NewContext commits it only when CatalogStore has no current generation.
     PinnedBootstrap *catalogs.Generation

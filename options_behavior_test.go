@@ -11,7 +11,7 @@ import (
 
 	"github.com/agentstation/starmap/internal/constants"
 	"github.com/agentstation/starmap/pkg/catalogs"
-	"github.com/agentstation/starmap/pkg/catalogstore"
+	"github.com/agentstation/starmap/pkg/catalogs/storage"
 	pkgerrors "github.com/agentstation/starmap/pkg/errors"
 )
 
@@ -127,7 +127,7 @@ func TestConfiguredLocalCatalogHasNoInventedGenerationID(t *testing.T) {
 func TestUpdateUsesExplicitCandidateFunction(t *testing.T) {
 	called := false
 	opts, err := defaults().apply(
-		WithCatalogStore(catalogstore.NewMemory()),
+		WithCatalogStore(storage.NewMemory()),
 	)
 	if err != nil {
 		t.Fatalf("Apply options: %v", err)
@@ -150,7 +150,7 @@ func TestUpdateUsesExplicitCandidateFunction(t *testing.T) {
 
 func TestActivateUsesExactImmutableGeneration(t *testing.T) {
 	generation := rootRemoteGeneration(t)
-	client, err := New(WithCatalogStore(catalogstore.NewMemory()))
+	client, err := New(WithCatalogStore(storage.NewMemory()))
 	if err != nil {
 		t.Fatalf("New: %v", err)
 	}
@@ -194,7 +194,7 @@ func TestActivateUsesExactImmutableGeneration(t *testing.T) {
 
 func TestActivatePublishesDigestEqualIdentityWithoutReplacingCatalog(t *testing.T) {
 	generation := rootRemoteGeneration(t)
-	store := catalogstore.NewMemory()
+	store := storage.NewMemory()
 	client, err := New(WithCatalogStore(store))
 	if err != nil {
 		t.Fatalf("New: %v", err)

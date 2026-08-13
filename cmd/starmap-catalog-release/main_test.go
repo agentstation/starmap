@@ -15,7 +15,7 @@ import (
 	"github.com/agentstation/starmap/pkg/catalogartifact"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/catalogs/evidence"
-	"github.com/agentstation/starmap/pkg/catalogstore"
+	"github.com/agentstation/starmap/pkg/catalogs/storage"
 )
 
 func TestArtifactReleaseCommandStagesExactCommittedGeneration(t *testing.T) {
@@ -255,7 +255,7 @@ func releaseFixtureStore(
 		Payload: payload,
 	}
 	storePath := filepath.Join(t.TempDir(), "store")
-	store, err := catalogstore.NewFilesystem(storePath)
+	store, err := storage.NewFilesystem(storePath)
 	if err != nil {
 		t.Fatalf("NewFilesystem: %v", err)
 	}

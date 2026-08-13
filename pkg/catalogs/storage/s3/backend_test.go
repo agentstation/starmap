@@ -22,7 +22,7 @@ import (
 
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/catalogs/evidence"
-	"github.com/agentstation/starmap/pkg/catalogstore"
+	"github.com/agentstation/starmap/pkg/catalogs/storage"
 	pkgerrors "github.com/agentstation/starmap/pkg/errors"
 )
 
@@ -232,7 +232,7 @@ func TestBackendRequiresConditionalWritesAndBoundedObjects(t *testing.T) {
 	service := newProtocolServer()
 	backend, _ := newTestBackend(t, service)
 	if _, err := backend.Put(
-		context.Background(), "unconditional", []byte("data"), catalogstore.ObjectPutCondition{},
+		context.Background(), "unconditional", []byte("data"), storage.ObjectPutCondition{},
 	); !pkgerrors.IsValidationError(err) {
 		t.Fatalf("unconditional Put error = %v, want validation error", err)
 	}
@@ -241,14 +241,14 @@ func TestBackendRequiresConditionalWritesAndBoundedObjects(t *testing.T) {
 		t.Fatalf("New small: %v", err)
 	}
 	if _, err := small.Put(
-		context.Background(), "oversized", []byte("four"), catalogstore.ObjectPutCondition{IfAbsent: true},
+		context.Background(), "oversized", []byte("four"), storage.ObjectPutCondition{IfAbsent: true},
 	); !pkgerrors.IsValidationError(err) {
 		t.Fatalf("oversized Put error = %v, want validation error", err)
 	}
 
 	service.rejectCondition = true
 	_, err = backend.Put(
-		context.Background(), "unsupported", []byte("data"), catalogstore.ObjectPutCondition{IfAbsent: true},
+		context.Background(), "unsupported", []byte("data"), storage.ObjectPutCondition{IfAbsent: true},
 	)
 	var resourceError *pkgerrors.ResourceError
 	if !stderrors.As(err, &resourceError) {
@@ -261,25 +261,25 @@ func TestBackendUsesExactS3ConditionalHeadersAndTypedErrors(t *testing.T) {
 	backend, _ := newTestBackend(t, service)
 	ctx := context.Background()
 
-	first, err := backend.Put(ctx, "pointer", []byte("first"), catalogstore.ObjectPutCondition{IfAbsent: true})
+	first, err := backend.Put(ctx, "pointer", []byte("first"), storage.ObjectPutCondition{IfAbsent: true})
 	if err != nil {
 		t.Fatalf("Put absent: %v", err)
 	}
 	if first.Version == "" {
 		t.Fatal("Put version is empty")
 	}
-	_, err = backend.Put(ctx, "pointer", []byte("duplicate"), catalogstore.ObjectPutCondition{IfAbsent: true})
+	_, err = backend.Put(ctx, "pointer", []byte("duplicate"), storage.ObjectPutCondition{IfAbsent: true})
 	if !pkgerrors.IsConflict(err) {
 		t.Fatalf("duplicate Put error = %v, want typed conflict", err)
 	}
 	second, err := backend.Put(
-		ctx, "pointer", []byte("second"), catalogstore.ObjectPutCondition{IfVersion: first.Version},
+		ctx, "pointer", []byte("second"), storage.ObjectPutCondition{IfVersion: first.Version},
 	)
 	if err != nil {
 		t.Fatalf("Put version: %v", err)
 	}
 	_, err = backend.Put(
-		ctx, "pointer", []byte("stale"), catalogstore.ObjectPutCondition{IfVersion: first.Version},
+		ctx, "pointer", []byte("stale"), storage.ObjectPutCondition{IfVersion: first.Version},
 	)
 	if !pkgerrors.IsConflict(err) {
 		t.Fatalf("stale Put error = %v, want typed conflict", err)
@@ -384,7 +384,7 @@ func TestS3CatalogStoreConcurrentCAS(t *testing.T) {
 	if err := firstStore.Commit(context.Background(), base, ""); err != nil {
 		t.Fatalf("Commit base: %v", err)
 	}
-	stores := []*catalogstore.Object{firstStore, secondStore}
+	stores := []*storage.Object{firstStore, secondStore}
 	candidates := []catalogs.Generation{
 		testGeneration("cas-left", "left"),
 		testGeneration("cas-right", "right"),
@@ -465,16 +465,16 @@ func TestS3CatalogStoreUploadAndPromotionFaultsPreserveCurrent(t *testing.T) {
 	}
 }
 
-func newObjectStore(t *testing.T, backend catalogstore.ObjectBackend, prefix string) *catalogstore.Object {
+func newObjectStore(t *testing.T, backend storage.ObjectBackend, prefix string) *storage.Object {
 	t.Helper()
-	store, err := catalogstore.NewObject(backend, prefix)
+	store, err := storage.NewObject(backend, prefix)
 	if err != nil {
 		t.Fatalf("NewObject: %v", err)
 	}
 	return store
 }
 
-func assertCurrent(t *testing.T, store catalogstore.Store, want catalogs.Generation) {
+func assertCurrent(t *testing.T, store storage.Store, want catalogs.Generation) {
 	t.Helper()
 	got, err := store.Current(context.Background())
 	if err != nil {
