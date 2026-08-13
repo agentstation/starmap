@@ -36,7 +36,7 @@
     <div>Status: <code data-plan-status="active">active</code> · Owner: this plan · Created: 2026-08-12</div>
     <div>Starmap baseline: <code>main@42f1b4c6763084cc0ae7b2ced413de4d765cd9ef</code></div>
     <div>Proof root: <code>docs/plans/proof/catalog-package-ownership/</code></div>
-    <div>Next action: capture CPO0 baselines and author the red structural verifier.</div>
+    <div>Next action: execute CPO1 by moving evidence and projection contracts to their approved catalog leaves.</div>
   </div>
   <section id="outcome"><h2>Outcome</h2>
     <blockquote>Starmap exposes one coherent catalog package tree. <code>pkg/catalogs</code> owns catalog values, immutable generations, and catalog codecs. Its <code>evidence</code> and <code>projection</code> leaves own neutral data contracts. Its <code>storage</code>, <code>artifact</code>, and <code>remote</code> children own separate behaviors. Starport consumes one immutable Starmap release. No old-path wrapper, duplicate codec, or vague metadata package remains.</blockquote>
@@ -74,8 +74,8 @@
   </section>
   <section id="ledger"><h2>Status ledger</h2>
     <table><thead><tr><th>ID</th><th>Phase</th><th>Depends on</th><th>Task</th><th>Status</th><th>Evidence</th></tr></thead><tbody>
-      <tr id="CPO0" data-status="in_progress"><td>CPO0</td><td>0 Baseline</td><td>activation</td><td>Pin baselines, create proofs, and add the red structural verifier.</td><td><code>in_progress</code></td><td>Plan PR <a href="https://github.com/agentstation/starmap/pull/77">#77</a> merged at <code>42f1b4c6</code>.</td></tr>
-      <tr id="CPO1" data-status="todo"><td>CPO1</td><td>1 Contracts</td><td>CPO0</td><td>Replace catalogmeta with evidence and neutral projection contracts.</td><td><code>todo</code></td><td></td></tr>
+      <tr id="CPO0" data-status="done"><td>CPO0</td><td>0 Baseline</td><td>activation</td><td>Pin baselines, create proofs, and add the red structural verifier.</td><td><code>done</code></td><td><a href="proof/catalog-package-ownership/cpo0.md">Proof</a>: work commit <code>1136ce63</code>; 13 conditions reported; expected baseline summary 2 passed and 11 failed; verifier regression and focused package tests passed.</td></tr>
+      <tr id="CPO1" data-status="in_progress"><td>CPO1</td><td>1 Contracts</td><td>CPO0</td><td>Replace catalogmeta with evidence and neutral projection contracts.</td><td><code>in_progress</code></td><td>Fail-before: <code>pkg/catalogmeta</code> exists and the two approved leaves do not.</td></tr>
       <tr id="CPO2" data-status="todo"><td>CPO2</td><td>1 Contracts</td><td>CPO1</td><td>Move immutable generation and both codec directions into catalogs.</td><td><code>todo</code></td><td></td></tr>
       <tr id="CPO3" data-status="todo"><td>CPO3</td><td>2 Behaviors</td><td>CPO2</td><td>Move catalogstore and S3 to catalogs/storage.</td><td><code>todo</code></td><td></td></tr>
       <tr id="CPO4" data-status="todo"><td>CPO4</td><td>2 Behaviors</td><td>CPO3</td><td>Move catalogartifact to catalogs/artifact.</td><td><code>todo</code></td><td></td></tr>
@@ -507,6 +507,8 @@ cleanup pull request removes this control plane.</code></pre>
       <tr><td>2026-08-12</td><td>meta</td><td>approved</td><td>The owner approved D1 through D10 and requested whole-plan execution. The plan-only pull request remains the last promotion condition.</td></tr>
 
       <tr><td>2026-08-13</td><td>CPO0</td><td>activated</td><td>Plan PR #77 merged at 42f1b4c6. Verification Gate, Security and Reliability, and Action Pin Provenance passed. Created the named Starmap worktree and set CPO0 in progress.</td></tr>
+
+      <tr><td>2026-08-13</td><td>CPO0</td><td>done; CPO1 started</td><td>Work commit 1136ce63 added the 13-condition structural verifier, its fixture test, and repository-gate integration. The expected baseline was 2 passed and 11 failed. Verifier regression tests, six focused package checks, and diff validation passed. The proof pins all three repositories, import edges, public contracts, formats, and test counts.</td></tr>
     </tbody></table>
   </section>
 </main>
