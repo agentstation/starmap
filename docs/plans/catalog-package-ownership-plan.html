@@ -33,10 +33,10 @@
 <header id="overview">
   <h1>Starmap catalog package ownership refactor</h1>
   <div id="status-line">
-    <div>Status: <code data-plan-status="proposed">proposed</code> · Owner: this plan · Created: 2026-08-12</div>
-    <div>Starmap baseline: <code>main@3a029796f223db224e6147003c044f99a2f3f2bf</code></div>
+    <div>Status: <code data-plan-status="active">active</code> · Owner: this plan · Created: 2026-08-12</div>
+    <div>Starmap baseline: <code>main@42f1b4c6763084cc0ae7b2ced413de4d765cd9ef</code></div>
     <div>Proof root: <code>docs/plans/proof/catalog-package-ownership/</code></div>
-    <div>Next action: open and merge the plan-only pull request to <code>main</code>.</div>
+    <div>Next action: capture CPO0 baselines and author the red structural verifier.</div>
   </div>
   <section id="outcome"><h2>Outcome</h2>
     <blockquote>Starmap exposes one coherent catalog package tree. <code>pkg/catalogs</code> owns catalog values, immutable generations, and catalog codecs. Its <code>evidence</code> and <code>projection</code> leaves own neutral data contracts. Its <code>storage</code>, <code>artifact</code>, and <code>remote</code> children own separate behaviors. Starport consumes one immutable Starmap release. No old-path wrapper, duplicate codec, or vague metadata package remains.</blockquote>
@@ -74,7 +74,7 @@
   </section>
   <section id="ledger"><h2>Status ledger</h2>
     <table><thead><tr><th>ID</th><th>Phase</th><th>Depends on</th><th>Task</th><th>Status</th><th>Evidence</th></tr></thead><tbody>
-      <tr id="CPO0" data-status="todo"><td>CPO0</td><td>0 Baseline</td><td>activation</td><td>Pin baselines, create proofs, and add the red structural verifier.</td><td><code>todo</code></td><td></td></tr>
+      <tr id="CPO0" data-status="in_progress"><td>CPO0</td><td>0 Baseline</td><td>activation</td><td>Pin baselines, create proofs, and add the red structural verifier.</td><td><code>in_progress</code></td><td>Plan PR <a href="https://github.com/agentstation/starmap/pull/77">#77</a> merged at <code>42f1b4c6</code>.</td></tr>
       <tr id="CPO1" data-status="todo"><td>CPO1</td><td>1 Contracts</td><td>CPO0</td><td>Replace catalogmeta with evidence and neutral projection contracts.</td><td><code>todo</code></td><td></td></tr>
       <tr id="CPO2" data-status="todo"><td>CPO2</td><td>1 Contracts</td><td>CPO1</td><td>Move immutable generation and both codec directions into catalogs.</td><td><code>todo</code></td><td></td></tr>
       <tr id="CPO3" data-status="todo"><td>CPO3</td><td>2 Behaviors</td><td>CPO2</td><td>Move catalogstore and S3 to catalogs/storage.</td><td><code>todo</code></td><td></td></tr>
@@ -505,6 +505,8 @@ cleanup pull request removes this control plane.</code></pre>
       <tr><td>2026-08-12</td><td>meta</td><td>audit completed</td><td>Strict writing passed with no diagnostic. Ledger and task counts both equal 11. The plan defines 14 unique verifier conditions and balanced HTML structures. Local audits found all named packages, six consumer modules, and all repository targets. The six focused package checks passed; catalogmeta had no test files. GitHub showed no open pull request, both proposed tags available, both default branches set to main, Starmap latest at v0.4.1, and Starport latest at v1.0.3.</td></tr>
 
       <tr><td>2026-08-12</td><td>meta</td><td>approved</td><td>The owner approved D1 through D10 and requested whole-plan execution. The plan-only pull request remains the last promotion condition.</td></tr>
+
+      <tr><td>2026-08-13</td><td>CPO0</td><td>activated</td><td>Plan PR #77 merged at 42f1b4c6. Verification Gate, Security and Reliability, and Action Pin Provenance passed. Created the named Starmap worktree and set CPO0 in progress.</td></tr>
     </tbody></table>
   </section>
 </main>

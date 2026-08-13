@@ -1,5 +1,5 @@
 # Plans
 
-## Proposed
+## Active
 
-- [Catalog package ownership refactor](catalog-package-ownership-plan.html): proposed
+- [Catalog package ownership refactor](catalog-package-ownership-plan.html): active
