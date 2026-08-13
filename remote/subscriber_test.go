@@ -12,10 +12,10 @@ import (
 	"testing"
 	"time"
 
-	"github.com/agentstation/starmap/pkg/catalogmeta"
-	"github.com/agentstation/starmap/pkg/catalogremote"
 	"github.com/agentstation/starmap/pkg/catalogs"
-	"github.com/agentstation/starmap/pkg/catalogstore"
+	"github.com/agentstation/starmap/pkg/catalogs/evidence"
+	protocol "github.com/agentstation/starmap/pkg/catalogs/remote"
+	"github.com/agentstation/starmap/pkg/catalogs/storage"
 	pkgerrors "github.com/agentstation/starmap/pkg/errors"
 )
 
@@ -30,7 +30,7 @@ func TestNewStartsNoRemoteRequest(t *testing.T) {
 	))
 	defer server.Close()
 	subscriber, err := New(Config{
-		BaseURL: server.URL, CatalogStore: catalogstore.NewMemory(),
+		BaseURL: server.URL, CatalogStore: storage.NewMemory(),
 	})
 	if err != nil {
 		t.Fatalf("New: %v", err)
@@ -49,7 +49,7 @@ func TestConfigDefaultsAndLivenessMargin(t *testing.T) {
 	server := httptest.NewServer(http.NotFoundHandler())
 	defer server.Close()
 	subscriber, err := New(Config{
-		BaseURL: server.URL, CatalogStore: catalogstore.NewMemory(),
+		BaseURL: server.URL, CatalogStore: storage.NewMemory(),
 	})
 	if err != nil {
 		t.Fatalf("New defaults: %v", err)
@@ -66,7 +66,7 @@ func TestConfigDefaultsAndLivenessMargin(t *testing.T) {
 	}
 	withFallback, err := New(Config{
 		BaseURL:         server.URL,
-		CatalogStore:    catalogstore.NewMemory(),
+		CatalogStore:    storage.NewMemory(),
 		PollingFallback: policy,
 	})
 	if err != nil {
@@ -88,14 +88,14 @@ func TestConfigDefaultsAndLivenessMargin(t *testing.T) {
 		{
 			name: "negative heartbeat",
 			config: Config{
-				BaseURL: server.URL, CatalogStore: catalogstore.NewMemory(),
+				BaseURL: server.URL, CatalogStore: storage.NewMemory(),
 				ExpectedHeartbeatInterval: -time.Second,
 			},
 		},
 		{
 			name: "insufficient liveness margin",
 			config: Config{
-				BaseURL: server.URL, CatalogStore: catalogstore.NewMemory(),
+				BaseURL: server.URL, CatalogStore: storage.NewMemory(),
 				ExpectedHeartbeatInterval: time.Second,
 				LivenessTimeout:           time.Second,
 			},
@@ -103,14 +103,14 @@ func TestConfigDefaultsAndLivenessMargin(t *testing.T) {
 		{
 			name: "negative liveness",
 			config: Config{
-				BaseURL: server.URL, CatalogStore: catalogstore.NewMemory(),
+				BaseURL: server.URL, CatalogStore: storage.NewMemory(),
 				LivenessTimeout: -time.Second,
 			},
 		},
 		{
 			name: "negative shutdown",
 			config: Config{
-				BaseURL: server.URL, CatalogStore: catalogstore.NewMemory(),
+				BaseURL: server.URL, CatalogStore: storage.NewMemory(),
 				ShutdownTimeout: -time.Second,
 			},
 		},
@@ -118,7 +118,7 @@ func TestConfigDefaultsAndLivenessMargin(t *testing.T) {
 			name: "zero fallback threshold",
 			config: Config{
 				BaseURL:      server.URL,
-				CatalogStore: catalogstore.NewMemory(),
+				CatalogStore: storage.NewMemory(),
 				PollingFallback: &PollingFallbackPolicy{
 					Interval: time.Second,
 				},
@@ -128,7 +128,7 @@ func TestConfigDefaultsAndLivenessMargin(t *testing.T) {
 			name: "zero fallback interval",
 			config: Config{
 				BaseURL:      server.URL,
-				CatalogStore: catalogstore.NewMemory(),
+				CatalogStore: storage.NewMemory(),
 				PollingFallback: &PollingFallbackPolicy{
 					AfterFailures: 1,
 				},
@@ -199,7 +199,7 @@ func TestSubscriberMissingHeartbeatReconnectsAndCatchesUp(t *testing.T) {
 		current     = first
 		streamCount atomic.Int32
 	)
-	generations := map[string]catalogstore.Generation{
+	generations := map[string]catalogs.Generation{
 		first.Manifest.GenerationID:  first,
 		second.Manifest.GenerationID: second,
 	}
@@ -210,14 +210,14 @@ func TestSubscriberMissingHeartbeatReconnectsAndCatchesUp(t *testing.T) {
 			selected := current
 			mu.RUnlock()
 			switch resourcePath {
-			case catalogremote.ManifestPath:
+			case protocol.ManifestPath:
 				writeSubscriberManifest(t, writer, selected)
 				return
-			case catalogremote.EventStreamPath:
+			case protocol.EventStreamPath:
 				streamCount.Add(1)
 				writer.Header().Set(
 					"Content-Type",
-					catalogremote.EventStreamMediaType,
+					protocol.EventStreamMediaType,
 				)
 				_, _ = fmt.Fprint(writer, ": connected\n\n")
 				writer.(http.Flusher).Flush()
@@ -225,7 +225,7 @@ func TestSubscriberMissingHeartbeatReconnectsAndCatchesUp(t *testing.T) {
 				return
 			}
 			for id, generation := range generations {
-				if resourcePath == catalogremote.PayloadPath(id) {
+				if resourcePath == protocol.PayloadPath(id) {
 					writer.Header().Set(
 						"Content-Type",
 						catalogs.CatalogPayloadMediaType,
@@ -242,7 +242,7 @@ func TestSubscriberMissingHeartbeatReconnectsAndCatchesUp(t *testing.T) {
 	subscriber, err := New(Config{
 		BaseURL:                   server.URL + "/api/v1",
 		HTTPClient:                server.Client(),
-		CatalogStore:              catalogstore.NewMemory(),
+		CatalogStore:              storage.NewMemory(),
 		ReconnectMinDelay:         time.Millisecond,
 		ReconnectMaxDelay:         time.Millisecond,
 		ExpectedHeartbeatInterval: 10 * time.Millisecond,
@@ -295,22 +295,22 @@ func TestSubscriberHeartbeatsPreserveStreamLiveness(t *testing.T) {
 		func(writer http.ResponseWriter, request *http.Request) {
 			resourcePath := request.URL.Path[len("/api/v1"):]
 			switch resourcePath {
-			case catalogremote.ManifestPath:
+			case protocol.ManifestPath:
 				if request.Header.Get("If-None-Match") != "" {
 					conditionalManifestGets.Add(1)
 				}
 				writeSubscriberManifest(t, writer, generation)
-			case catalogremote.PayloadPath(generation.Manifest.GenerationID):
+			case protocol.PayloadPath(generation.Manifest.GenerationID):
 				writer.Header().Set(
 					"Content-Type",
 					catalogs.CatalogPayloadMediaType,
 				)
 				_, _ = writer.Write(generation.Payload)
-			case catalogremote.EventStreamPath:
+			case protocol.EventStreamPath:
 				streamCount.Add(1)
 				writer.Header().Set(
 					"Content-Type",
-					catalogremote.EventStreamMediaType,
+					protocol.EventStreamMediaType,
 				)
 				_, _ = fmt.Fprint(writer, ": connected\n\n")
 				writer.(http.Flusher).Flush()
@@ -335,7 +335,7 @@ func TestSubscriberHeartbeatsPreserveStreamLiveness(t *testing.T) {
 	subscriber, err := New(Config{
 		BaseURL:                   server.URL + "/api/v1",
 		HTTPClient:                server.Client(),
-		CatalogStore:              catalogstore.NewMemory(),
+		CatalogStore:              storage.NewMemory(),
 		ExpectedHeartbeatInterval: 10 * time.Millisecond,
 		LivenessTimeout:           2 * time.Second,
 		ShutdownTimeout:           time.Second,
@@ -400,7 +400,7 @@ func TestSubscriberPollingFallbackIsExplicitBoundedAndConditional(t *testing.T) 
 		recoveryRequest = make(chan struct{}, 1)
 		releaseRecovery = make(chan struct{})
 	)
-	generations := map[string]catalogstore.Generation{
+	generations := map[string]catalogs.Generation{
 		first.Manifest.GenerationID:  first,
 		second.Manifest.GenerationID: second,
 	}
@@ -408,11 +408,11 @@ func TestSubscriberPollingFallbackIsExplicitBoundedAndConditional(t *testing.T) 
 		func(writer http.ResponseWriter, request *http.Request) {
 			resourcePath := request.URL.Path[len("/api/v1"):]
 			switch resourcePath {
-			case catalogremote.ManifestPath:
+			case protocol.ManifestPath:
 				mu.RLock()
 				selected := current
 				mu.RUnlock()
-				etag := catalogremote.ManifestETag(selected.Manifest.GenerationID)
+				etag := protocol.ManifestETag(selected.Manifest.GenerationID)
 				writer.Header().Set("ETag", etag)
 				ifNoneMatch := request.Header.Get("If-None-Match")
 				if ifNoneMatch == etag {
@@ -437,7 +437,7 @@ func TestSubscriberPollingFallbackIsExplicitBoundedAndConditional(t *testing.T) 
 				}
 				writeSubscriberManifest(t, writer, selected)
 				return
-			case catalogremote.EventStreamPath:
+			case protocol.EventStreamPath:
 				streamRequests.Add(1)
 				if !allowStream.Load() {
 					writer.WriteHeader(http.StatusServiceUnavailable)
@@ -454,7 +454,7 @@ func TestSubscriberPollingFallbackIsExplicitBoundedAndConditional(t *testing.T) 
 				}
 				writer.Header().Set(
 					"Content-Type",
-					catalogremote.EventStreamMediaType,
+					protocol.EventStreamMediaType,
 				)
 				_, _ = fmt.Fprint(writer, ": connected\n\n")
 				writer.(http.Flusher).Flush()
@@ -475,7 +475,7 @@ func TestSubscriberPollingFallbackIsExplicitBoundedAndConditional(t *testing.T) 
 				}
 			}
 			for id, generation := range generations {
-				if resourcePath == catalogremote.PayloadPath(id) {
+				if resourcePath == protocol.PayloadPath(id) {
 					payloadGets.Add(1)
 					writer.Header().Set(
 						"Content-Type",
@@ -493,7 +493,7 @@ func TestSubscriberPollingFallbackIsExplicitBoundedAndConditional(t *testing.T) 
 	subscriber, err := New(Config{
 		BaseURL:                   server.URL + "/api/v1",
 		HTTPClient:                server.Client(),
-		CatalogStore:              catalogstore.NewMemory(),
+		CatalogStore:              storage.NewMemory(),
 		ReconnectMinDelay:         time.Millisecond,
 		ReconnectMaxDelay:         time.Millisecond,
 		ExpectedHeartbeatInterval: 10 * time.Millisecond,
@@ -600,7 +600,7 @@ func TestCloseCancelsAndJoinsInitialFetch(t *testing.T) {
 	subscriber, err := New(Config{
 		BaseURL:         server.URL,
 		HTTPClient:      server.Client(),
-		CatalogStore:    catalogstore.NewMemory(),
+		CatalogStore:    storage.NewMemory(),
 		ShutdownTimeout: time.Second,
 	})
 	if err != nil {
@@ -656,7 +656,7 @@ func TestSubscriberReconnectCatchesUpWithoutEventAndDeduplicatesReplay(t *testin
 		reconnectIDs    []string
 		retryAttempts   []int
 	)
-	generations := map[string]catalogstore.Generation{
+	generations := map[string]catalogs.Generation{
 		first.Manifest.GenerationID:  first,
 		second.Manifest.GenerationID: second,
 	}
@@ -669,10 +669,10 @@ func TestSubscriberReconnectCatchesUpWithoutEventAndDeduplicatesReplay(t *testin
 			mu.Unlock()
 
 			switch resourcePath {
-			case catalogremote.ManifestPath:
+			case protocol.ManifestPath:
 				writeSubscriberManifest(t, writer, selected)
 				return
-			case catalogremote.EventStreamPath:
+			case protocol.EventStreamPath:
 				connection := streamCount.Add(1)
 				if connection > 1 {
 					mu.Lock()
@@ -688,7 +688,7 @@ func TestSubscriberReconnectCatchesUpWithoutEventAndDeduplicatesReplay(t *testin
 				}
 				writer.Header().Set(
 					"Content-Type",
-					catalogremote.EventStreamMediaType,
+					protocol.EventStreamMediaType,
 				)
 				_, _ = fmt.Fprint(writer, ": connected\n\n")
 				writer.(http.Flusher).Flush()
@@ -715,10 +715,10 @@ func TestSubscriberReconnectCatchesUpWithoutEventAndDeduplicatesReplay(t *testin
 
 			for id, generation := range generations {
 				switch resourcePath {
-				case catalogremote.GenerationManifestPath(id):
+				case protocol.GenerationManifestPath(id):
 					writeSubscriberManifest(t, writer, generation)
 					return
-				case catalogremote.PayloadPath(id):
+				case protocol.PayloadPath(id):
 					writer.Header().Set(
 						"Content-Type",
 						catalogs.CatalogPayloadMediaType,
@@ -735,7 +735,7 @@ func TestSubscriberReconnectCatchesUpWithoutEventAndDeduplicatesReplay(t *testin
 	subscriber, err := New(Config{
 		BaseURL:           server.URL + "/api/v1",
 		HTTPClient:        server.Client(),
-		CatalogStore:      catalogstore.NewMemory(),
+		CatalogStore:      storage.NewMemory(),
 		ReconnectMinDelay: time.Millisecond,
 		ReconnectMaxDelay: time.Millisecond,
 	})
@@ -771,7 +771,7 @@ func TestSubscriberReconnectCatchesUpWithoutEventAndDeduplicatesReplay(t *testin
 	}
 	mu.RLock()
 	addressedDuplicateGets :=
-		requestCounts[catalogremote.GenerationManifestPath(
+		requestCounts[protocol.GenerationManifestPath(
 			first.Manifest.GenerationID,
 		)]
 	mu.RUnlock()
@@ -805,7 +805,7 @@ func TestSubscriberReconnectCatchesUpWithoutEventAndDeduplicatesReplay(t *testin
 	mu.RLock()
 	gotRetryAttempts := append([]int(nil), retryAttempts...)
 	gotReconnectIDs := append([]string(nil), reconnectIDs...)
-	currentManifestGets := requestCounts[catalogremote.ManifestPath]
+	currentManifestGets := requestCounts[protocol.ManifestPath]
 	mu.RUnlock()
 	if !slices.Equal(gotRetryAttempts, []int{0, 1, 2}) {
 		t.Fatalf(
@@ -839,7 +839,7 @@ func TestSubscriberPublishesNewIdentityWithoutCopyingSamePayload(t *testing.T) {
 	)
 	server := httptest.NewServer(http.NotFoundHandler())
 	defer server.Close()
-	store := catalogstore.NewMemory()
+	store := storage.NewMemory()
 	subscriber, err := New(Config{
 		BaseURL: server.URL, CatalogStore: store,
 	})
@@ -906,7 +906,7 @@ func TestSubscriberRejectsStaleAndInvalidGenerationsBeforeActivation(t *testing.
 	server := httptest.NewServer(http.NotFoundHandler())
 	defer server.Close()
 	subscriber, err := New(Config{
-		BaseURL: server.URL, CatalogStore: catalogstore.NewMemory(),
+		BaseURL: server.URL, CatalogStore: storage.NewMemory(),
 	})
 	if err != nil {
 		t.Fatalf("New: %v", err)
@@ -956,7 +956,7 @@ func subscriberTestGeneration(
 	generationID string,
 	providerID catalogs.ProviderID,
 	generatedAt time.Time,
-) catalogstore.Generation {
+) catalogs.Generation {
 	t.Helper()
 	builder := catalogs.NewEmpty()
 	if err := builder.SetProvider(catalogs.Provider{
@@ -968,12 +968,12 @@ func subscriberTestGeneration(
 	if err != nil {
 		t.Fatalf("Build: %v", err)
 	}
-	payload, err := catalogstore.EncodeCatalogPayload(catalog)
+	payload, err := catalogs.EncodeCatalogPayload(catalog)
 	if err != nil {
 		t.Fatalf("EncodeCatalogPayload: %v", err)
 	}
 	descriptor := catalogs.DescribeCatalogPayload(payload)
-	generation := catalogstore.Generation{
+	generation := catalogs.Generation{
 		Manifest: catalogs.GenerationManifest{
 			ManifestVersion: catalogs.CurrentGenerationManifestVersion,
 			SchemaVersion:   catalogs.CurrentCatalogSchemaVersion,
@@ -991,18 +991,18 @@ func subscriberTestGeneration(
 			},
 			SyncRunID: "sync-" + generationID,
 			SourceObservations: []catalogs.SourceObservationLink{{
-				Source:        catalogmeta.LocalCatalogID,
+				Source:        evidence.LocalCatalogID,
 				ObservationID: "observation-" + generationID,
 				ObservedAt:    generatedAt,
-				Revision: catalogmeta.ObservationRevision{
-					Kind:  catalogmeta.ObservationRevisionKindContentDigest,
+				Revision: evidence.ObservationRevision{
+					Kind:  evidence.ObservationRevisionKindContentDigest,
 					Value: descriptor.Checksum,
 				},
-				Completeness:     catalogmeta.ObservationCompletenessComplete,
-				Status:           catalogmeta.ObservationStatusSucceeded,
+				Completeness:     evidence.ObservationCompletenessComplete,
+				Status:           evidence.ObservationStatusSucceeded,
 				EvidenceChecksum: descriptor.Checksum,
 			}},
-			ReviewCandidates: []catalogmeta.ReviewCandidate{},
+			ReviewCandidates: []evidence.ReviewCandidate{},
 			Completeness:     catalogs.GenerationCompletenessComplete,
 			ConsumerCompatibility: catalogs.ConsumerCompatibility{
 				MinSchemaVersion: catalogs.CurrentCatalogSchemaVersion,
@@ -1020,14 +1020,14 @@ func subscriberTestGeneration(
 func writeSubscriberManifest(
 	t testing.TB,
 	writer http.ResponseWriter,
-	generation catalogstore.Generation,
+	generation catalogs.Generation,
 ) {
 	t.Helper()
-	data, err := catalogremote.MarshalManifest(generation.Manifest)
+	data, err := protocol.MarshalManifest(generation.Manifest)
 	if err != nil {
 		t.Fatalf("MarshalManifest: %v", err)
 	}
-	writer.Header().Set("Content-Type", catalogremote.ManifestMediaType)
+	writer.Header().Set("Content-Type", protocol.ManifestMediaType)
 	_, _ = writer.Write(data)
 }
 

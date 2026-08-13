@@ -5,9 +5,8 @@ import (
 	"strings"
 
 	"github.com/agentstation/starmap/internal/catalog/workspace"
-	"github.com/agentstation/starmap/pkg/catalogmeta"
 	"github.com/agentstation/starmap/pkg/catalogs"
-	"github.com/agentstation/starmap/pkg/catalogstore"
+	"github.com/agentstation/starmap/pkg/catalogs/projection"
 	"github.com/agentstation/starmap/pkg/errors"
 )
 
@@ -22,7 +21,7 @@ type RollbackResult struct {
 	// Sequence is the in-process publication sequence after rollback.
 	Sequence uint64
 	// Projection reports exact workspace restoration or pending repair.
-	Projection *catalogmeta.ProjectionResult
+	Projection *projection.Result
 }
 
 // Rollback atomically makes a retained generation current and projects its
@@ -67,7 +66,7 @@ func (c *Client) Rollback(ctx context.Context, generationID string) (*RollbackRe
 			Message: "does not match the requested retained generation",
 		}
 	}
-	published, err := catalogstore.DecodeCatalogPayload(target.Payload)
+	published, err := catalogs.DecodeCatalogPayload(target.Payload)
 	if err != nil {
 		return nil, errors.WrapResource("decode", "rollback generation", generationID, err)
 	}
@@ -124,19 +123,19 @@ func projectRollbackCatalog(
 	path string,
 	identity workspace.Identity,
 	input workspace.InputExpectation,
-) *catalogmeta.ProjectionResult {
-	result := &catalogmeta.ProjectionResult{
+) *projection.Result {
+	result := &projection.Result{
 		Path:         path,
-		Status:       catalogmeta.ProjectionStatusPendingRepair,
+		Status:       projection.StatusPendingRepair,
 		GenerationID: identity.GenerationID,
 	}
 	receipt, err := workspace.ProjectExpected(ctx, path, catalog, identity, input)
 	result.WorkspaceChecksum = receipt.WorkspaceChecksum
 	if err != nil {
-		result.IssueCode = catalogmeta.ProjectionIssueWorkspaceFailed
+		result.IssueCode = projection.IssueWorkspaceFailed
 		return result
 	}
-	result.Status = catalogmeta.ProjectionStatusApplied
+	result.Status = projection.StatusApplied
 	return result
 }
 

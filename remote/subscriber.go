@@ -11,9 +11,8 @@ import (
 	"time"
 
 	"github.com/agentstation/starmap"
-	"github.com/agentstation/starmap/pkg/catalogremote"
 	"github.com/agentstation/starmap/pkg/catalogs"
-	"github.com/agentstation/starmap/pkg/catalogstore"
+	protocol "github.com/agentstation/starmap/pkg/catalogs/remote"
 	"github.com/agentstation/starmap/pkg/errors"
 )
 
@@ -29,7 +28,7 @@ const (
 // Subscriber owns one explicitly started remote catalog lifecycle.
 type Subscriber struct {
 	config   Config
-	protocol *catalogremote.Client
+	protocol *protocol.Client
 	client   *starmap.Client
 
 	mu              sync.Mutex
@@ -91,7 +90,7 @@ func NewContext(ctx context.Context, config Config) (*Subscriber, error) {
 	if err != nil {
 		return nil, err
 	}
-	protocol, err := catalogremote.NewClient(
+	protocol, err := protocol.NewClient(
 		normalized.BaseURL,
 		normalized.HTTPClient,
 		catalogs.CurrentCatalogSchemaVersion,
@@ -296,7 +295,7 @@ func (s *Subscriber) Start(ctx context.Context) error {
 
 func (s *Subscriber) beginRun(
 	ctx context.Context,
-	stream *catalogremote.EventStream,
+	stream *protocol.EventStream,
 	done chan struct{},
 	streamFailures int,
 	streamState StreamState,
@@ -362,7 +361,7 @@ func (s *Subscriber) Close() error {
 
 func (s *Subscriber) run(
 	ctx context.Context,
-	stream *catalogremote.EventStream,
+	stream *protocol.EventStream,
 	done chan struct{},
 	streamFailures int,
 ) {
@@ -523,7 +522,7 @@ func (s *Subscriber) finishPollingFallback() {
 
 func (s *Subscriber) consume(
 	ctx context.Context,
-	stream *catalogremote.EventStream,
+	stream *protocol.EventStream,
 ) error {
 	readerCtx, cancelReader := context.WithCancel(ctx)
 	results := make(chan streamReadResult, 1)
@@ -580,13 +579,13 @@ func (s *Subscriber) consume(
 }
 
 type streamReadResult struct {
-	event catalogremote.StreamEvent
+	event protocol.StreamEvent
 	err   error
 }
 
 func readEventStream(
 	ctx context.Context,
-	stream *catalogremote.EventStream,
+	stream *protocol.EventStream,
 	results chan<- streamReadResult,
 	done chan<- struct{},
 ) {
@@ -630,7 +629,7 @@ func (s *Subscriber) catchUp(ctx context.Context) error {
 
 func (s *Subscriber) activate(
 	ctx context.Context,
-	generation catalogstore.Generation,
+	generation catalogs.Generation,
 ) (bool, error) {
 	if err := generation.Validate(); err != nil {
 		return false, errors.WrapResource(

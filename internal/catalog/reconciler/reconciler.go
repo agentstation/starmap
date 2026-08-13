@@ -12,8 +12,8 @@ import (
 	"github.com/rs/zerolog"
 
 	"github.com/agentstation/starmap/internal/catalog/authority"
-	"github.com/agentstation/starmap/pkg/catalogmeta"
 	"github.com/agentstation/starmap/pkg/catalogs"
+	"github.com/agentstation/starmap/pkg/catalogs/evidence"
 	"github.com/agentstation/starmap/pkg/differ"
 	"github.com/agentstation/starmap/pkg/errors"
 	"github.com/agentstation/starmap/pkg/logging"
@@ -238,7 +238,7 @@ func (r *Reconciler) catalog(
 	rctx *reconcileContext,
 	providers []*catalogs.Provider,
 	modelResults map[catalogs.ProviderID]modelResult,
-) (*catalogs.Builder, []catalogmeta.ReviewCandidate, error) {
+) (*catalogs.Builder, []evidence.ReviewCandidate, error) {
 	var catalog *catalogs.Builder
 	var err error
 
@@ -301,7 +301,7 @@ func (r *Reconciler) result(
 	catalog *catalogs.Builder,
 	changeset *differ.Changeset,
 	modelResults map[catalogs.ProviderID]modelResult,
-	reviewCandidates []catalogmeta.ReviewCandidate,
+	reviewCandidates []evidence.ReviewCandidate,
 ) *Result {
 	result := NewResult()
 

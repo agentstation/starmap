@@ -9,13 +9,13 @@ import (
 
 	"github.com/agentstation/starmap/internal/constants"
 	"github.com/agentstation/starmap/pkg/catalogs"
-	"github.com/agentstation/starmap/pkg/catalogstore"
+	"github.com/agentstation/starmap/pkg/catalogs/storage"
 	pkgerrors "github.com/agentstation/starmap/pkg/errors"
 	"github.com/agentstation/starmap/pkg/sources"
 )
 
 func TestNewPrefersDurableCurrentOverCorruptLocalCompatibilityView(t *testing.T) {
-	store := catalogstore.NewMemory()
+	store := storage.NewMemory()
 	generation := rootRemoteGeneration(t)
 	if err := store.Commit(context.Background(), generation, ""); err != nil {
 		t.Fatalf("Commit: %v", err)
@@ -43,7 +43,7 @@ func TestNewPrefersDurableCurrentOverCorruptLocalCompatibilityView(t *testing.T)
 // it must not silently ignore a valid human workspace merely because a durable
 // generation exists.
 func TestF001CharacterizationNewPrefersDurableCurrentOverValidLocalWorkspace(t *testing.T) {
-	store := catalogstore.NewMemory()
+	store := storage.NewMemory()
 	generation := rootRemoteGeneration(t)
 	if err := store.Commit(context.Background(), generation, ""); err != nil {
 		t.Fatalf("Commit: %v", err)
@@ -77,14 +77,14 @@ func TestRemoteCatalogCorruptOrIncompatibleGenerationCannotReplaceCurrent(t *tes
 	valid := rootRemoteGeneration(t)
 	for _, test := range []struct {
 		name       string
-		generation catalogstore.Generation
+		generation catalogs.Generation
 		corrupt    bool
 	}{
 		{name: "corrupt payload", generation: valid, corrupt: true},
 		{name: "incompatible manifest", generation: incompatibleRemoteGeneration(t, valid)},
 	} {
 		t.Run(test.name, func(t *testing.T) {
-			store := catalogstore.NewMemory()
+			store := storage.NewMemory()
 			client, err := New(WithCatalogStore(store))
 			if err != nil {
 				t.Fatalf("New: %v", err)
@@ -108,7 +108,7 @@ func TestRemoteCatalogCorruptOrIncompatibleGenerationCannotReplaceCurrent(t *tes
 	}
 }
 
-func rootRemoteGeneration(t *testing.T) catalogstore.Generation {
+func rootRemoteGeneration(t *testing.T) catalogs.Generation {
 	t.Helper()
 	builder := catalogs.NewEmpty()
 	if err := builder.SetProvider(catalogs.Provider{ID: "remote-root", Name: "Remote Root"}); err != nil {
@@ -136,7 +136,7 @@ func rootRemoteGeneration(t *testing.T) catalogstore.Generation {
 	return generation
 }
 
-func incompatibleRemoteGeneration(t *testing.T, generation catalogstore.Generation) catalogstore.Generation {
+func incompatibleRemoteGeneration(t *testing.T, generation catalogs.Generation) catalogs.Generation {
 	t.Helper()
 	incompatible := generation.Copy()
 	future := catalogs.CurrentCatalogSchemaVersion + 1

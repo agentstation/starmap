@@ -20,7 +20,7 @@ before atomic activation. Failure retains the last-known-good generation.
   compile-time archive digest, blank provider credentials, no HTTP operation,
   and no acquisition/server/remote dependency; verification precedes exact
   activation in a caller-selected generation store.
-- Portable release import uses `catalogartifact.VerifyRelease` followed by
+- Portable release import uses `artifact.VerifyRelease` followed by
   `acquisition.Syncer.ImportRelease`: checksum, detached statement,
   compatibility, and caller-owned publisher verification all complete before
   mutation. The verified release is a low-authority observation above the

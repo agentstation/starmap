@@ -13,7 +13,7 @@ import (
 	"github.com/goccy/go-yaml"
 	"github.com/google/go-cmp/cmp"
 
-	"github.com/agentstation/starmap/pkg/catalogmeta"
+	"github.com/agentstation/starmap/pkg/catalogs/evidence"
 	pkgerrors "github.com/agentstation/starmap/pkg/errors"
 )
 
@@ -57,8 +57,8 @@ func TestGenerationManifestFixtureRoundTrip(t *testing.T) {
 
 func TestGenerationManifestRetainsPinnedGitLockfileInput(t *testing.T) {
 	manifest := loadGenerationManifestFixture(t)
-	manifest.SourceObservations[0].Revision = catalogmeta.ObservationRevision{
-		Kind: catalogmeta.ObservationRevisionKindGitCommit, Value: strings.Repeat("a", 40),
+	manifest.SourceObservations[0].Revision = evidence.ObservationRevision{
+		Kind: evidence.ObservationRevisionKindGitCommit, Value: strings.Repeat("a", 40),
 		InputName: "bun.lock", InputChecksum: "sha256:" + strings.Repeat("b", 64),
 	}
 	if err := manifest.Validate(); err != nil {
@@ -257,8 +257,8 @@ func TestGenerationManifestCopyOwnership(t *testing.T) {
 func TestGenerationManifestPersistsVerifiedReviewCandidate(t *testing.T) {
 	manifest := loadGenerationManifestFixture(t)
 	observation := manifest.SourceObservations[0]
-	manifest.ReviewCandidates = []catalogmeta.ReviewCandidate{{
-		Code:                   catalogmeta.ReviewCandidateUnresolvedModelReference,
+	manifest.ReviewCandidates = []evidence.ReviewCandidate{{
+		Code:                   evidence.ReviewCandidateUnresolvedModelReference,
 		ProviderID:             "provider",
 		ProviderModelID:        "opaque/model@2026",
 		SourceID:               observation.Source,
@@ -284,18 +284,18 @@ func TestGenerationManifestPersistsVerifiedReviewCandidate(t *testing.T) {
 	for _, test := range []struct {
 		name  string
 		field string
-		apply func(*catalogmeta.ReviewCandidate)
+		apply func(*evidence.ReviewCandidate)
 	}{
-		{name: "source revision", field: "review_candidates[0].source_revision", apply: func(candidate *catalogmeta.ReviewCandidate) {
+		{name: "source revision", field: "review_candidates[0].source_revision", apply: func(candidate *evidence.ReviewCandidate) {
 			candidate.SourceRevision.Value = "other"
 		}},
-		{name: "evidence checksum", field: "review_candidates[0].evidence_checksum", apply: func(candidate *catalogmeta.ReviewCandidate) {
+		{name: "evidence checksum", field: "review_candidates[0].evidence_checksum", apply: func(candidate *evidence.ReviewCandidate) {
 			candidate.EvidenceChecksum = "sha256:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
 		}},
-		{name: "reason", field: "review_candidates[0].reason", apply: func(candidate *catalogmeta.ReviewCandidate) {
+		{name: "reason", field: "review_candidates[0].reason", apply: func(candidate *evidence.ReviewCandidate) {
 			candidate.Reason = ""
 		}},
-		{name: "prior link", field: "review_candidates[0].prior_reviewed_model_link", apply: func(candidate *catalogmeta.ReviewCandidate) {
+		{name: "prior link", field: "review_candidates[0].prior_reviewed_model_link", apply: func(candidate *evidence.ReviewCandidate) {
 			candidate.PriorReviewedModelLink = "invalid"
 		}},
 	} {

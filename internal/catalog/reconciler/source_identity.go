@@ -9,14 +9,14 @@ import (
 	"github.com/goccy/go-yaml"
 
 	"github.com/agentstation/starmap/internal/catalog/authority"
-	"github.com/agentstation/starmap/pkg/catalogmeta"
 	"github.com/agentstation/starmap/pkg/catalogs"
+	catalogevidence "github.com/agentstation/starmap/pkg/catalogs/evidence"
 	"github.com/agentstation/starmap/pkg/provenance"
 	"github.com/agentstation/starmap/pkg/sources"
 )
 
 type evidenceLocator struct {
-	resource catalogmeta.ResourceType
+	resource catalogevidence.ResourceType
 	id       string
 	field    string
 	source   sources.ID
@@ -72,7 +72,7 @@ func (merger *merger) modelSourcesForValue(
 	resolved := cloneModelSources(sourceModels)
 	if evidence.Source == sources.LocalCatalogID {
 		merger.rememberCarriedEvidence(
-			catalogmeta.ResourceTypeModel,
+			catalogevidence.ResourceTypeModel,
 			provenance.ModelResourceID(string(providerID), modelID),
 			policy.Evidence(),
 			evidence,
@@ -87,7 +87,7 @@ func (merger *merger) modelSourcesForValue(
 	delete(resolved, sources.LocalCatalogID)
 	resolved[evidence.Source] = localModel
 	merger.rememberCarriedEvidence(
-		catalogmeta.ResourceTypeModel,
+		catalogevidence.ResourceTypeModel,
 		provenance.ModelResourceID(string(providerID), modelID),
 		policy.Evidence(),
 		evidence,
@@ -140,7 +140,7 @@ func (merger *merger) providerSourcesForPolicy(
 	resolved := cloneProviderSources(sourceProviders)
 	if evidence.Source == sources.LocalCatalogID {
 		merger.rememberCarriedEvidence(
-			catalogmeta.ResourceTypeProvider,
+			catalogevidence.ResourceTypeProvider,
 			string(providerID),
 			policy.Evidence(),
 			evidence,
@@ -156,7 +156,7 @@ func (merger *merger) providerSourcesForPolicy(
 	delete(resolved, sources.LocalCatalogID)
 	resolved[evidence.Source] = localProvider
 	merger.rememberCarriedEvidence(
-		catalogmeta.ResourceTypeProvider,
+		catalogevidence.ResourceTypeProvider,
 		string(providerID),
 		policy.Evidence(),
 		evidence,
@@ -215,7 +215,7 @@ func (merger *merger) projectedModelEvidence(
 	}
 	entries := catalog.Provenance().FindModelField(providerID, modelID, field)
 	if len(entries) == 0 && modelIDIsUnique(catalog, modelID) {
-		entries = catalog.Provenance().FindByField(catalogmeta.ResourceTypeModel, modelID, field)
+		entries = catalog.Provenance().FindByField(catalogevidence.ResourceTypeModel, modelID, field)
 	}
 	return matchingCurrentEvidence(entries, value)
 }
@@ -230,7 +230,7 @@ func (merger *merger) projectedProviderEvidence(
 		return provenance.Entry{}, false
 	}
 	return matchingCurrentEvidence(
-		catalog.Provenance().FindByField(catalogmeta.ResourceTypeProvider, string(providerID), field),
+		catalog.Provenance().FindByField(catalogevidence.ResourceTypeProvider, string(providerID), field),
 		value,
 	)
 }
@@ -340,7 +340,7 @@ func modelIDIsUnique(catalog catalogs.Reader, modelID string) bool {
 }
 
 func (merger *merger) rememberCarriedEvidence(
-	resource catalogmeta.ResourceType,
+	resource catalogevidence.ResourceType,
 	resourceID, field string,
 	evidence provenance.Entry,
 ) {
@@ -357,7 +357,7 @@ func (merger *merger) rememberCarriedEvidence(
 }
 
 func (merger *merger) carried(
-	resource catalogmeta.ResourceType,
+	resource catalogevidence.ResourceType,
 	resourceID, field string,
 	source sources.ID,
 ) (provenance.Entry, bool) {

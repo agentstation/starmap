@@ -11,9 +11,9 @@ import (
 
 	"github.com/agentstation/starmap/internal/bootstrap/manifest"
 	"github.com/agentstation/starmap/internal/constants"
-	"github.com/agentstation/starmap/pkg/catalogmeta"
 	"github.com/agentstation/starmap/pkg/catalogs"
-	"github.com/agentstation/starmap/pkg/catalogstore"
+	"github.com/agentstation/starmap/pkg/catalogs/evidence"
+	"github.com/agentstation/starmap/pkg/catalogs/storage"
 )
 
 func TestScheduledGenerationManifestCommandWritesChangedOnceAndPreservesUnchangedBytes(t *testing.T) {
@@ -145,7 +145,7 @@ func TestScheduledGenerationManifestUsesExactCommittedIdentity(t *testing.T) {
 	}
 	descriptor := catalogs.DescribeCatalogPayload(payload)
 	generatedAt := time.Date(2026, time.July, 29, 21, 0, 0, 0, time.UTC)
-	generation := catalogstore.Generation{
+	generation := catalogs.Generation{
 		Manifest: catalogs.GenerationManifest{
 			ManifestVersion: catalogs.CurrentGenerationManifestVersion,
 			SchemaVersion:   catalogs.CurrentCatalogSchemaVersion,
@@ -163,19 +163,19 @@ func TestScheduledGenerationManifestUsesExactCommittedIdentity(t *testing.T) {
 			SyncRunID: "sync-exact",
 			SourceObservations: []catalogs.SourceObservationLink{
 				{
-					Source:        catalogmeta.ProvidersID,
+					Source:        evidence.ProvidersID,
 					ObservationID: "providers-exact",
 					ObservedAt:    generatedAt,
-					Revision: catalogmeta.ObservationRevision{
-						Kind:  catalogmeta.ObservationRevisionKindContentDigest,
+					Revision: evidence.ObservationRevision{
+						Kind:  evidence.ObservationRevisionKindContentDigest,
 						Value: descriptor.Checksum,
 					},
-					Completeness:     catalogmeta.ObservationCompletenessComplete,
-					Status:           catalogmeta.ObservationStatusSucceeded,
+					Completeness:     evidence.ObservationCompletenessComplete,
+					Status:           evidence.ObservationStatusSucceeded,
 					EvidenceChecksum: descriptor.Checksum,
 				},
 			},
-			ReviewCandidates: []catalogmeta.ReviewCandidate{},
+			ReviewCandidates: []evidence.ReviewCandidate{},
 			Completeness:     catalogs.GenerationCompletenessComplete,
 			ConsumerCompatibility: catalogs.ConsumerCompatibility{
 				MinSchemaVersion: catalogs.CurrentCatalogSchemaVersion,
@@ -185,7 +185,7 @@ func TestScheduledGenerationManifestUsesExactCommittedIdentity(t *testing.T) {
 		Payload: payload,
 	}
 	storePath := filepath.Join(t.TempDir(), "store")
-	store, err := catalogstore.NewFilesystem(storePath)
+	store, err := storage.NewFilesystem(storePath)
 	if err != nil {
 		t.Fatalf("NewFilesystem: %v", err)
 	}

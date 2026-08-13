@@ -11,8 +11,8 @@ import (
 	"github.com/agentstation/starmap/internal/catalog/reconciler"
 	"github.com/agentstation/starmap/internal/catalog/workspace"
 	"github.com/agentstation/starmap/internal/constants"
-	"github.com/agentstation/starmap/pkg/catalogmeta"
 	"github.com/agentstation/starmap/pkg/catalogs"
+	"github.com/agentstation/starmap/pkg/catalogs/evidence"
 	"github.com/agentstation/starmap/pkg/differ"
 	pkgerrors "github.com/agentstation/starmap/pkg/errors"
 	"github.com/agentstation/starmap/pkg/logging"
@@ -42,7 +42,7 @@ type Store interface {
 		*pkgsync.Options,
 		*differ.Changeset,
 		[]sources.Observation,
-		[]catalogmeta.ReviewCandidate,
+		[]evidence.ReviewCandidate,
 		workspace.InputExpectation,
 	) (Publication, error)
 }
@@ -273,7 +273,7 @@ func (p *Pipeline) Prepare(
 		syncResult.SourceObservations = append(syncResult.SourceObservations, observation.Link())
 	}
 	syncResult.ReviewCandidates = append(
-		[]catalogmeta.ReviewCandidate(nil),
+		[]evidence.ReviewCandidate(nil),
 		result.ReviewCandidates...,
 	)
 
@@ -344,7 +344,7 @@ func activeSourceIDs(observations []sources.Observation) []sources.ID {
 func shouldPublish(
 	options *pkgsync.Options,
 	changeset *differ.Changeset,
-	reviewCandidates []catalogmeta.ReviewCandidate,
+	reviewCandidates []evidence.ReviewCandidate,
 	seedWorkspace bool,
 ) bool {
 	if options.Reformat || options.Fresh || seedWorkspace {

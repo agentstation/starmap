@@ -7,6 +7,27 @@ and [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+### Changed
+
+- Public catalog concepts now use one concept-owned package tree under
+  `pkg/catalogs`. Evidence, projection, storage, artifact, and remote protocol
+  behavior have separate child packages.
+- Immutable `Generation` values and canonical catalog payload codecs now
+  belong to the `catalogs` root. Artifact and remote protocol packages no
+  longer depend on storage to exchange a catalog generation.
+
+### BREAKING CHANGES
+
+- Follow the [v0.5.0 migration guide](docs/MIGRATING_TO_V0.5.md). The release
+  removes `pkg/catalogmeta`, `pkg/catalogstore`, `pkg/catalogartifact`, and
+  `pkg/catalogremote` without wrappers or compatibility aliases.
+- Generation stores move to `pkg/catalogs/storage`. The S3 adapter moves to
+  `pkg/catalogs/storage/s3`.
+- Portable artifact and versioned wire clients move to
+  `pkg/catalogs/artifact` and `pkg/catalogs/remote`.
+- This release does not change catalog schema 5, generation manifest 2,
+  artifact bytes, stored generations, or the remote wire protocol.
+
 ## [0.4.0] - 2026-08-11
 
 ### Added

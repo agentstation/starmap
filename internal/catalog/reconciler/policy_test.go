@@ -7,6 +7,7 @@ import (
 
 	"github.com/agentstation/starmap/internal/catalog/authority"
 	"github.com/agentstation/starmap/pkg/catalogs"
+	"github.com/agentstation/starmap/pkg/catalogs/evidence"
 	"github.com/agentstation/starmap/pkg/provenance"
 	"github.com/agentstation/starmap/pkg/sources"
 )
@@ -15,14 +16,14 @@ type seamAuthority struct {
 	policy authority.Policy
 }
 
-func (a seamAuthority) Find(resource sources.ResourceType, path string) (authority.Policy, bool) {
+func (a seamAuthority) Find(resource evidence.ResourceType, path string) (authority.Policy, bool) {
 	if resource != a.policy.Resource || path != a.policy.Path {
 		return authority.Policy{}, false
 	}
 	return a.policy, true
 }
 
-func (a seamAuthority) Policies(resource sources.ResourceType) []authority.Policy {
+func (a seamAuthority) Policies(resource evidence.ResourceType) []authority.Policy {
 	if resource != a.policy.Resource {
 		return nil
 	}
@@ -31,7 +32,7 @@ func (a seamAuthority) Policies(resource sources.ResourceType) []authority.Polic
 
 func TestSeamConformanceAuthorityAcceptsCustomAdapter(t *testing.T) {
 	auth := seamAuthority{policy: authority.Policy{
-		Resource:    sources.ResourceTypeModel,
+		Resource:    evidence.ResourceTypeModel,
 		Path:        "Pricing",
 		SourceOrder: []sources.ID{sources.LocalCatalogID, sources.ModelsDevHTTPID},
 		Merge:       authority.MergeReplace,
@@ -41,7 +42,7 @@ func TestSeamConformanceAuthorityAcceptsCustomAdapter(t *testing.T) {
 	strategy := NewAuthorityStrategy(auth)
 
 	_, source, _ := strategy.ResolveResourceConflict(
-		sources.ResourceTypeModel,
+		evidence.ResourceTypeModel,
 		"Pricing",
 		map[sources.ID]any{
 			sources.LocalCatalogID:  "curated",
@@ -55,12 +56,12 @@ func TestSeamConformanceAuthorityAcceptsCustomAdapter(t *testing.T) {
 
 func TestExecutablePolicyPathsReferenceCatalogFields(t *testing.T) {
 	tests := []struct {
-		resource sources.ResourceType
+		resource evidence.ResourceType
 		typ      reflect.Type
 	}{
-		{resource: sources.ResourceTypeModel, typ: reflect.TypeFor[catalogs.Model]()},
-		{resource: sources.ResourceTypeProvider, typ: reflect.TypeFor[catalogs.Provider]()},
-		{resource: sources.ResourceTypeAuthor, typ: reflect.TypeFor[catalogs.Author]()},
+		{resource: evidence.ResourceTypeModel, typ: reflect.TypeFor[catalogs.Model]()},
+		{resource: evidence.ResourceTypeProvider, typ: reflect.TypeFor[catalogs.Provider]()},
+		{resource: evidence.ResourceTypeAuthor, typ: reflect.TypeFor[catalogs.Author]()},
 	}
 	table := authority.New()
 	for _, test := range tests {
@@ -89,17 +90,17 @@ func TestFieldPolicyAuthorityResolution(t *testing.T) {
 		sources.ProvidersID:     "provider",
 	}
 	tests := []struct {
-		resource sources.ResourceType
+		resource evidence.ResourceType
 		field    string
 		want     sources.ID
 	}{
-		{sources.ResourceTypeModel, "ModelRef", sources.ProvidersID},
-		{sources.ResourceTypeModel, "Name", sources.ProvidersID},
-		{sources.ResourceTypeModel, "Description", sources.ModelsDevHTTPID},
-		{sources.ResourceTypeProvider, "Catalog", sources.LocalCatalogID},
-		{sources.ResourceTypeProvider, "Name", sources.ProvidersID},
-		{sources.ResourceTypeProvider, "Models", sources.ProvidersID},
-		{sources.ResourceTypeAuthor, "Website", sources.ModelsDevHTTPID},
+		{evidence.ResourceTypeModel, "ModelRef", sources.ProvidersID},
+		{evidence.ResourceTypeModel, "Name", sources.ProvidersID},
+		{evidence.ResourceTypeModel, "Description", sources.ModelsDevHTTPID},
+		{evidence.ResourceTypeProvider, "Catalog", sources.LocalCatalogID},
+		{evidence.ResourceTypeProvider, "Name", sources.ProvidersID},
+		{evidence.ResourceTypeProvider, "Models", sources.ProvidersID},
+		{evidence.ResourceTypeAuthor, "Website", sources.ModelsDevHTTPID},
 	}
 	for _, test := range tests {
 		_, got, _ := resolver.ResolveResourceConflict(test.resource, test.field, values)
@@ -180,7 +181,7 @@ func TestStructuredModelPoliciesUseInjectedOrder(t *testing.T) {
 		{
 			name: "limits",
 			policy: authority.Policy{
-				Resource:    sources.ResourceTypeModel,
+				Resource:    evidence.ResourceTypeModel,
 				Path:        "Limits",
 				SourceOrder: []sources.ID{sources.LocalCatalogID, sources.ProvidersID},
 				Merge:       authority.MergeFillMissing,
@@ -199,7 +200,7 @@ func TestStructuredModelPoliciesUseInjectedOrder(t *testing.T) {
 		{
 			name: "features",
 			policy: authority.Policy{
-				Resource:    sources.ResourceTypeModel,
+				Resource:    evidence.ResourceTypeModel,
 				Path:        "Features",
 				SourceOrder: []sources.ID{sources.LocalCatalogID, sources.ProvidersID},
 				Merge:       authority.MergeDeep,

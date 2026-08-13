@@ -6,7 +6,8 @@ import (
 	"encoding/json"
 	"sync"
 
-	"github.com/agentstation/starmap/pkg/catalogstore"
+	"github.com/agentstation/starmap/pkg/catalogs"
+	"github.com/agentstation/starmap/pkg/catalogs/storage"
 	"github.com/agentstation/starmap/pkg/errors"
 )
 
@@ -16,21 +17,21 @@ import (
 type starportStore struct {
 	mu          sync.RWMutex
 	current     string
-	generations map[string]catalogstore.Generation
+	generations map[string]catalogs.Generation
 }
 
 func newStarportStore() *starportStore {
-	return &starportStore{generations: make(map[string]catalogstore.Generation)}
+	return &starportStore{generations: make(map[string]catalogs.Generation)}
 }
 
-func (s *starportStore) Current(ctx context.Context) (catalogstore.Generation, error) {
+func (s *starportStore) Current(ctx context.Context) (catalogs.Generation, error) {
 	if err := ctx.Err(); err != nil {
-		return catalogstore.Generation{}, err
+		return catalogs.Generation{}, err
 	}
 	s.mu.RLock()
 	defer s.mu.RUnlock()
 	if s.current == "" {
-		return catalogstore.Generation{}, &errors.NotFoundError{
+		return catalogs.Generation{}, &errors.NotFoundError{
 			Resource: "catalog generation",
 			ID:       "current",
 		}
@@ -41,15 +42,15 @@ func (s *starportStore) Current(ctx context.Context) (catalogstore.Generation, e
 func (s *starportStore) Get(
 	ctx context.Context,
 	id string,
-) (catalogstore.Generation, error) {
+) (catalogs.Generation, error) {
 	if err := ctx.Err(); err != nil {
-		return catalogstore.Generation{}, err
+		return catalogs.Generation{}, err
 	}
 	s.mu.RLock()
 	defer s.mu.RUnlock()
 	generation, found := s.generations[id]
 	if !found {
-		return catalogstore.Generation{}, &errors.NotFoundError{
+		return catalogs.Generation{}, &errors.NotFoundError{
 			Resource: "catalog generation",
 			ID:       id,
 		}
@@ -59,7 +60,7 @@ func (s *starportStore) Get(
 
 func (s *starportStore) Commit(
 	ctx context.Context,
-	generation catalogstore.Generation,
+	generation catalogs.Generation,
 	expectedGenerationID string,
 ) error {
 	if err := ctx.Err(); err != nil {
@@ -98,7 +99,7 @@ func (s *starportStore) Commit(
 	return nil
 }
 
-func sameExternalGeneration(left, right catalogstore.Generation) bool {
+func sameExternalGeneration(left, right catalogs.Generation) bool {
 	if !bytes.Equal(left.Payload, right.Payload) {
 		return false
 	}
@@ -107,4 +108,4 @@ func sameExternalGeneration(left, right catalogstore.Generation) bool {
 	return leftErr == nil && rightErr == nil && bytes.Equal(leftManifest, rightManifest)
 }
 
-var _ catalogstore.Store = (*starportStore)(nil)
+var _ storage.Store = (*starportStore)(nil)

@@ -6,28 +6,28 @@ import (
 	"testing"
 
 	"github.com/agentstation/starmap/internal/catalog/authority"
-	"github.com/agentstation/starmap/pkg/catalogmeta"
 	"github.com/agentstation/starmap/pkg/catalogs"
+	"github.com/agentstation/starmap/pkg/catalogs/evidence"
 )
 
 func TestPoliciesCoverReconciledCatalogFields(t *testing.T) {
 	tests := []struct {
-		resource catalogmeta.ResourceType
+		resource evidence.ResourceType
 		typ      reflect.Type
 		ignored  map[string]bool
 	}{
 		{
-			resource: catalogmeta.ResourceTypeModel,
+			resource: evidence.ResourceTypeModel,
 			typ:      reflect.TypeFor[catalogs.Model](),
 			ignored:  map[string]bool{"ID": true, "CreatedAt": true, "UpdatedAt": true},
 		},
 		{
-			resource: catalogmeta.ResourceTypeProvider,
+			resource: evidence.ResourceTypeProvider,
 			typ:      reflect.TypeFor[catalogs.Provider](),
 			ignored:  map[string]bool{"ID": true},
 		},
 		{
-			resource: catalogmeta.ResourceTypeAuthor,
+			resource: evidence.ResourceTypeAuthor,
 			typ:      reflect.TypeFor[catalogs.Author](),
 			ignored:  map[string]bool{"ID": true, "CreatedAt": true, "UpdatedAt": true},
 		},
@@ -50,10 +50,10 @@ func TestPoliciesCoverReconciledCatalogFields(t *testing.T) {
 
 func TestPoliciesAreCompleteUniqueAndCallerOwned(t *testing.T) {
 	table := authority.New()
-	for _, resource := range []catalogmeta.ResourceType{
-		catalogmeta.ResourceTypeModel,
-		catalogmeta.ResourceTypeProvider,
-		catalogmeta.ResourceTypeAuthor,
+	for _, resource := range []evidence.ResourceType{
+		evidence.ResourceTypeModel,
+		evidence.ResourceTypeProvider,
+		evidence.ResourceTypeAuthor,
 	} {
 		policies := table.Policies(resource)
 		if len(policies) == 0 {
@@ -90,17 +90,17 @@ func TestPoliciesAreCompleteUniqueAndCallerOwned(t *testing.T) {
 func TestProviderScopedDynamicFactsAndOperatorConfigurationHaveCanonicalOrder(t *testing.T) {
 	table := authority.New()
 	tests := []struct {
-		resource catalogmeta.ResourceType
+		resource evidence.ResourceType
 		path     string
-		want     catalogmeta.SourceID
+		want     evidence.SourceID
 	}{
-		{catalogmeta.ResourceTypeModel, "ModelRef", catalogmeta.ProvidersID},
-		{catalogmeta.ResourceTypeModel, "Pricing", catalogmeta.ProvidersID},
-		{catalogmeta.ResourceTypeModel, "Limits", catalogmeta.ProvidersID},
-		{catalogmeta.ResourceTypeModel, "Metadata", catalogmeta.ModelsDevHTTPID},
-		{catalogmeta.ResourceTypeProvider, "Name", catalogmeta.ProvidersID},
-		{catalogmeta.ResourceTypeProvider, "Catalog", catalogmeta.LocalCatalogID},
-		{catalogmeta.ResourceTypeProvider, "Credentials", catalogmeta.LocalCatalogID},
+		{evidence.ResourceTypeModel, "ModelRef", evidence.ProvidersID},
+		{evidence.ResourceTypeModel, "Pricing", evidence.ProvidersID},
+		{evidence.ResourceTypeModel, "Limits", evidence.ProvidersID},
+		{evidence.ResourceTypeModel, "Metadata", evidence.ModelsDevHTTPID},
+		{evidence.ResourceTypeProvider, "Name", evidence.ProvidersID},
+		{evidence.ResourceTypeProvider, "Catalog", evidence.LocalCatalogID},
+		{evidence.ResourceTypeProvider, "Credentials", evidence.LocalCatalogID},
 	}
 	for _, test := range tests {
 		policy, found := table.Find(test.resource, test.path)
@@ -117,10 +117,10 @@ func TestVerifiedReleaseIsAboveEmbeddedAndBelowHumanAuthority(t *testing.T) {
 	t.Parallel()
 
 	table := authority.New()
-	for _, resource := range []catalogmeta.ResourceType{
-		catalogmeta.ResourceTypeModel,
-		catalogmeta.ResourceTypeProvider,
-		catalogmeta.ResourceTypeAuthor,
+	for _, resource := range []evidence.ResourceType{
+		evidence.ResourceTypeModel,
+		evidence.ResourceTypeProvider,
+		evidence.ResourceTypeAuthor,
 	} {
 		for _, policy := range table.Policies(resource) {
 			releaseIndex := -1
@@ -128,11 +128,11 @@ func TestVerifiedReleaseIsAboveEmbeddedAndBelowHumanAuthority(t *testing.T) {
 			localIndex := -1
 			for index, source := range policy.SourceOrder {
 				switch source {
-				case catalogmeta.ReleaseArtifactID:
+				case evidence.ReleaseArtifactID:
 					releaseIndex = index
-				case catalogmeta.EmbeddedCatalogID:
+				case evidence.EmbeddedCatalogID:
 					embeddedIndex = index
-				case catalogmeta.LocalCatalogID:
+				case evidence.LocalCatalogID:
 					localIndex = index
 				}
 			}
@@ -161,11 +161,11 @@ func hasPolicyForField(policies []authority.Policy, field string) bool {
 }
 
 func TestAuthorityScoreDerivesFromSourceOrder(t *testing.T) {
-	policy, found := authority.New().Find(catalogmeta.ResourceTypeModel, "Pricing")
+	policy, found := authority.New().Find(evidence.ResourceTypeModel, "Pricing")
 	if !found {
 		t.Fatal("pricing policy not found")
 	}
-	if got := policy.Authority(catalogmeta.ProvidersID); got != 1 {
+	if got := policy.Authority(evidence.ProvidersID); got != 1 {
 		t.Fatalf("provider authority = %v, want 1", got)
 	}
 	if got := policy.Authority("unknown"); got != 0 {
@@ -175,14 +175,14 @@ func TestAuthorityScoreDerivesFromSourceOrder(t *testing.T) {
 
 func TestEveryPolicyAuthorityRankIsUniqueAndStrictlyDescending(t *testing.T) {
 	table := authority.New()
-	for _, resource := range []catalogmeta.ResourceType{
-		catalogmeta.ResourceTypeModel,
-		catalogmeta.ResourceTypeProvider,
-		catalogmeta.ResourceTypeAuthor,
+	for _, resource := range []evidence.ResourceType{
+		evidence.ResourceTypeModel,
+		evidence.ResourceTypeProvider,
+		evidence.ResourceTypeAuthor,
 	} {
 		for _, policy := range table.Policies(resource) {
 			t.Run(resource.String()+"/"+policy.Path, func(t *testing.T) {
-				seen := make(map[catalogmeta.SourceID]struct{}, len(policy.SourceOrder))
+				seen := make(map[evidence.SourceID]struct{}, len(policy.SourceOrder))
 				previous := 2.0
 				for _, source := range policy.SourceOrder {
 					if _, duplicate := seen[source]; duplicate {

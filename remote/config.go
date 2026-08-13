@@ -6,7 +6,8 @@ import (
 	"reflect"
 	"time"
 
-	"github.com/agentstation/starmap/pkg/catalogstore"
+	"github.com/agentstation/starmap/pkg/catalogs"
+	"github.com/agentstation/starmap/pkg/catalogs/storage"
 	"github.com/agentstation/starmap/pkg/errors"
 )
 
@@ -47,10 +48,10 @@ type Config struct {
 	HTTPClient *http.Client
 	// CatalogStore holds verified generations in durable storage. The caller
 	// must supply it and owns its resources and lifecycle.
-	CatalogStore catalogstore.Store
+	CatalogStore storage.Store
 	// PinnedBootstrap supplies an optional verified offline generation.
 	// NewContext commits it only when CatalogStore has no current generation.
-	PinnedBootstrap *catalogstore.Generation
+	PinnedBootstrap *catalogs.Generation
 	// ReconnectMinDelay is the first reconnect delay. Zero selects the default.
 	ReconnectMinDelay time.Duration
 	// ReconnectMaxDelay bounds exponential reconnect delay. Zero selects the
@@ -175,7 +176,7 @@ func (c Config) normalized() (Config, error) {
 	return c, nil
 }
 
-func isNilStore(store catalogstore.Store) bool {
+func isNilStore(store storage.Store) bool {
 	if store == nil {
 		return true
 	}

@@ -5,9 +5,8 @@ import (
 	"sync"
 
 	"github.com/agentstation/starmap/internal/embedded"
-	"github.com/agentstation/starmap/pkg/catalogmeta"
 	"github.com/agentstation/starmap/pkg/catalogs"
-	"github.com/agentstation/starmap/pkg/catalogstore"
+	"github.com/agentstation/starmap/pkg/catalogs/evidence"
 	"github.com/agentstation/starmap/pkg/errors"
 )
 
@@ -80,14 +79,14 @@ func Load(reader catalogs.Reader) (catalogs.BootstrapManifest, error) {
 
 // Generation returns the embedded bootstrap as a complete validated immutable
 // generation suitable for deterministic release artifact publication.
-func Generation() (catalogstore.Generation, error) {
+func Generation() (catalogs.Generation, error) {
 	catalog, bootstrapManifest, err := Embedded()
 	if err != nil {
-		return catalogstore.Generation{}, err
+		return catalogs.Generation{}, err
 	}
 	payload, err := catalogs.EncodeCatalogPayload(catalog)
 	if err != nil {
-		return catalogstore.Generation{}, err
+		return catalogs.Generation{}, err
 	}
 	manifest := catalogs.GenerationManifest{
 		ManifestVersion: catalogs.CurrentGenerationManifestVersion,
@@ -105,27 +104,27 @@ func Generation() (catalogstore.Generation, error) {
 		},
 		SyncRunID: "embedded-bootstrap-build",
 		SourceObservations: []catalogs.SourceObservationLink{{
-			Source:        catalogmeta.EmbeddedCatalogID,
+			Source:        evidence.EmbeddedCatalogID,
 			ObservationID: "embedded-bootstrap:" + bootstrapManifest.GenerationID,
 			ObservedAt:    bootstrapManifest.GeneratedAt,
-			Revision: catalogmeta.ObservationRevision{
-				Kind:  catalogmeta.ObservationRevisionKindContentDigest,
+			Revision: evidence.ObservationRevision{
+				Kind:  evidence.ObservationRevisionKindContentDigest,
 				Value: bootstrapManifest.Payload.Checksum,
 			},
-			Completeness:     catalogmeta.ObservationCompletenessComplete,
-			Status:           catalogmeta.ObservationStatusSucceeded,
+			Completeness:     evidence.ObservationCompletenessComplete,
+			Status:           evidence.ObservationStatusSucceeded,
 			EvidenceChecksum: bootstrapManifest.Payload.Checksum,
 		}},
-		ReviewCandidates: []catalogmeta.ReviewCandidate{},
+		ReviewCandidates: []evidence.ReviewCandidate{},
 		Completeness:     catalogs.GenerationCompletenessComplete,
 		ConsumerCompatibility: catalogs.ConsumerCompatibility{
 			MinSchemaVersion: bootstrapManifest.SchemaVersion,
 			MaxSchemaVersion: bootstrapManifest.SchemaVersion,
 		},
 	}
-	generation := catalogstore.Generation{Manifest: manifest, Payload: payload}
+	generation := catalogs.Generation{Manifest: manifest, Payload: payload}
 	if err := generation.Validate(); err != nil {
-		return catalogstore.Generation{}, err
+		return catalogs.Generation{}, err
 	}
 	return generation, nil
 }

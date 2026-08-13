@@ -10,9 +10,9 @@ import (
 	"testing"
 	"time"
 
-	"github.com/agentstation/starmap/pkg/catalogremote"
 	"github.com/agentstation/starmap/pkg/catalogs"
-	"github.com/agentstation/starmap/pkg/catalogstore"
+	protocol "github.com/agentstation/starmap/pkg/catalogs/remote"
+	"github.com/agentstation/starmap/pkg/catalogs/storage"
 )
 
 func TestSubscriberReadersObserveCompleteGenerationsDuringActivation(t *testing.T) {
@@ -38,7 +38,7 @@ func TestSubscriberReadersObserveCompleteGenerationsDuringActivation(t *testing.
 		current  = first
 		events   = make(chan string, 1)
 	)
-	generations := map[string]catalogstore.Generation{
+	generations := map[string]catalogs.Generation{
 		first.Manifest.GenerationID:  first,
 		second.Manifest.GenerationID: second,
 	}
@@ -49,13 +49,13 @@ func TestSubscriberReadersObserveCompleteGenerationsDuringActivation(t *testing.
 			selected := current
 			serverMu.RUnlock()
 			switch resourcePath {
-			case catalogremote.ManifestPath:
+			case protocol.ManifestPath:
 				writeSubscriberManifest(t, writer, selected)
 				return
-			case catalogremote.EventStreamPath:
+			case protocol.EventStreamPath:
 				writer.Header().Set(
 					"Content-Type",
-					catalogremote.EventStreamMediaType,
+					protocol.EventStreamMediaType,
 				)
 				_, _ = fmt.Fprint(writer, ": connected\n\n")
 				writer.(http.Flusher).Flush()
@@ -71,10 +71,10 @@ func TestSubscriberReadersObserveCompleteGenerationsDuringActivation(t *testing.
 			}
 			for id, generation := range generations {
 				switch resourcePath {
-				case catalogremote.GenerationManifestPath(id):
+				case protocol.GenerationManifestPath(id):
 					writeSubscriberManifest(t, writer, generation)
 					return
-				case catalogremote.PayloadPath(id):
+				case protocol.PayloadPath(id):
 					writer.Header().Set(
 						"Content-Type",
 						catalogs.CatalogPayloadMediaType,
@@ -91,7 +91,7 @@ func TestSubscriberReadersObserveCompleteGenerationsDuringActivation(t *testing.
 	subscriber, err := New(Config{
 		BaseURL:         server.URL + "/api/v1",
 		HTTPClient:      server.Client(),
-		CatalogStore:    catalogstore.NewMemory(),
+		CatalogStore:    storage.NewMemory(),
 		ShutdownTimeout: time.Second,
 	})
 	if err != nil {
@@ -203,7 +203,7 @@ func concurrentSubscriberGeneration(
 	generationID string,
 	providerIDs []catalogs.ProviderID,
 	generatedAt time.Time,
-) catalogstore.Generation {
+) catalogs.Generation {
 	t.Helper()
 	generation := subscriberTestGeneration(
 		t,
@@ -211,7 +211,7 @@ func concurrentSubscriberGeneration(
 		providerIDs[0],
 		generatedAt,
 	)
-	catalog, err := catalogstore.DecodeCatalogPayload(generation.Payload)
+	catalog, err := catalogs.DecodeCatalogPayload(generation.Payload)
 	if err != nil {
 		t.Fatalf("DecodeCatalogPayload: %v", err)
 	}
@@ -230,7 +230,7 @@ func concurrentSubscriberGeneration(
 	if err != nil {
 		t.Fatalf("Build: %v", err)
 	}
-	generation.Payload, err = catalogstore.EncodeCatalogPayload(catalog)
+	generation.Payload, err = catalogs.EncodeCatalogPayload(catalog)
 	if err != nil {
 		t.Fatalf("EncodeCatalogPayload: %v", err)
 	}

@@ -11,9 +11,9 @@ import (
 	"testing"
 	"time"
 
-	"github.com/agentstation/starmap/pkg/catalogremote"
 	"github.com/agentstation/starmap/pkg/catalogs"
-	"github.com/agentstation/starmap/pkg/catalogstore"
+	protocol "github.com/agentstation/starmap/pkg/catalogs/remote"
+	"github.com/agentstation/starmap/pkg/catalogs/storage"
 	pkgerrors "github.com/agentstation/starmap/pkg/errors"
 )
 
@@ -30,15 +30,15 @@ func TestSubscriberRejectsUnauthorizedStreamWithoutRetryOrPolling(t *testing.T) 
 	server := httptest.NewServer(http.HandlerFunc(
 		func(writer http.ResponseWriter, request *http.Request) {
 			switch request.URL.Path[len("/api/v1"):] {
-			case catalogremote.ManifestPath:
+			case protocol.ManifestPath:
 				writeSubscriberManifest(t, writer, generation)
-			case catalogremote.PayloadPath(generation.Manifest.GenerationID):
+			case protocol.PayloadPath(generation.Manifest.GenerationID):
 				writer.Header().Set(
 					"Content-Type",
 					catalogs.CatalogPayloadMediaType,
 				)
 				_, _ = writer.Write(generation.Payload)
-			case catalogremote.EventStreamPath:
+			case protocol.EventStreamPath:
 				streamRequests.Add(1)
 				writer.WriteHeader(http.StatusForbidden)
 			default:
@@ -51,7 +51,7 @@ func TestSubscriberRejectsUnauthorizedStreamWithoutRetryOrPolling(t *testing.T) 
 	subscriber, err := New(Config{
 		BaseURL:      server.URL + "/api/v1",
 		HTTPClient:   server.Client(),
-		CatalogStore: catalogstore.NewMemory(),
+		CatalogStore: storage.NewMemory(),
 		PollingFallback: &PollingFallbackPolicy{
 			AfterFailures: 1,
 			Interval:      time.Millisecond,
@@ -94,22 +94,22 @@ func TestSubscriberStopsAfterUnauthorizedReconnectAndRejectsRestart(t *testing.T
 	server := httptest.NewServer(http.HandlerFunc(
 		func(writer http.ResponseWriter, request *http.Request) {
 			switch request.URL.Path[len("/api/v1"):] {
-			case catalogremote.ManifestPath:
+			case protocol.ManifestPath:
 				writeSubscriberManifest(t, writer, generation)
-			case catalogremote.PayloadPath(generation.Manifest.GenerationID):
+			case protocol.PayloadPath(generation.Manifest.GenerationID):
 				writer.Header().Set(
 					"Content-Type",
 					catalogs.CatalogPayloadMediaType,
 				)
 				_, _ = writer.Write(generation.Payload)
-			case catalogremote.EventStreamPath:
+			case protocol.EventStreamPath:
 				if streamRequests.Add(1) > 1 {
 					writer.WriteHeader(http.StatusUnauthorized)
 					return
 				}
 				writer.Header().Set(
 					"Content-Type",
-					catalogremote.EventStreamMediaType,
+					protocol.EventStreamMediaType,
 				)
 				_, _ = fmt.Fprint(writer, ": connected\n\n")
 				writer.(http.Flusher).Flush()
@@ -127,7 +127,7 @@ func TestSubscriberStopsAfterUnauthorizedReconnectAndRejectsRestart(t *testing.T
 	subscriber, err := New(Config{
 		BaseURL:           server.URL + "/api/v1",
 		HTTPClient:        server.Client(),
-		CatalogStore:      catalogstore.NewMemory(),
+		CatalogStore:      storage.NewMemory(),
 		ReconnectMinDelay: time.Millisecond,
 		ReconnectMaxDelay: time.Millisecond,
 	})
@@ -175,19 +175,19 @@ func TestSubscriberStopsWhenFallbackPollBecomesUnauthorized(t *testing.T) {
 	server := httptest.NewServer(http.HandlerFunc(
 		func(writer http.ResponseWriter, request *http.Request) {
 			switch request.URL.Path[len("/api/v1"):] {
-			case catalogremote.ManifestPath:
+			case protocol.ManifestPath:
 				if manifestRequests.Add(1) > 1 {
 					writer.WriteHeader(http.StatusUnauthorized)
 					return
 				}
 				writeSubscriberManifest(t, writer, generation)
-			case catalogremote.PayloadPath(generation.Manifest.GenerationID):
+			case protocol.PayloadPath(generation.Manifest.GenerationID):
 				writer.Header().Set(
 					"Content-Type",
 					catalogs.CatalogPayloadMediaType,
 				)
 				_, _ = writer.Write(generation.Payload)
-			case catalogremote.EventStreamPath:
+			case protocol.EventStreamPath:
 				streamRequests.Add(1)
 				writer.WriteHeader(http.StatusServiceUnavailable)
 			default:
@@ -200,7 +200,7 @@ func TestSubscriberStopsWhenFallbackPollBecomesUnauthorized(t *testing.T) {
 	subscriber, err := New(Config{
 		BaseURL:           server.URL + "/api/v1",
 		HTTPClient:        server.Client(),
-		CatalogStore:      catalogstore.NewMemory(),
+		CatalogStore:      storage.NewMemory(),
 		ReconnectMinDelay: time.Millisecond,
 		ReconnectMaxDelay: time.Millisecond,
 		PollingFallback: &PollingFallbackPolicy{
@@ -263,7 +263,7 @@ func TestSubscriberOutOfOrderEventsCannotRegressCatalog(t *testing.T) {
 		current   = first
 		events    = make(chan string, 2)
 	)
-	generations := map[string]catalogstore.Generation{
+	generations := map[string]catalogs.Generation{
 		first.Manifest.GenerationID:  first,
 		second.Manifest.GenerationID: second,
 		third.Manifest.GenerationID:  third,
@@ -275,13 +275,13 @@ func TestSubscriberOutOfOrderEventsCannotRegressCatalog(t *testing.T) {
 			selected := current
 			currentMu.RUnlock()
 			switch resourcePath {
-			case catalogremote.ManifestPath:
+			case protocol.ManifestPath:
 				writeSubscriberManifest(t, writer, selected)
 				return
-			case catalogremote.EventStreamPath:
+			case protocol.EventStreamPath:
 				writer.Header().Set(
 					"Content-Type",
-					catalogremote.EventStreamMediaType,
+					protocol.EventStreamMediaType,
 				)
 				_, _ = fmt.Fprint(writer, ": connected\n\n")
 				writer.(http.Flusher).Flush()
@@ -297,10 +297,10 @@ func TestSubscriberOutOfOrderEventsCannotRegressCatalog(t *testing.T) {
 			}
 			for id, generation := range generations {
 				switch resourcePath {
-				case catalogremote.GenerationManifestPath(id):
+				case protocol.GenerationManifestPath(id):
 					writeSubscriberManifest(t, writer, generation)
 					return
-				case catalogremote.PayloadPath(id):
+				case protocol.PayloadPath(id):
 					writer.Header().Set(
 						"Content-Type",
 						catalogs.CatalogPayloadMediaType,
@@ -317,7 +317,7 @@ func TestSubscriberOutOfOrderEventsCannotRegressCatalog(t *testing.T) {
 	subscriber, err := New(Config{
 		BaseURL:         server.URL + "/api/v1",
 		HTTPClient:      server.Client(),
-		CatalogStore:    catalogstore.NewMemory(),
+		CatalogStore:    storage.NewMemory(),
 		ShutdownTimeout: time.Second,
 	})
 	if err != nil {

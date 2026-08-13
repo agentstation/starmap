@@ -8,7 +8,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/agentstation/starmap/pkg/catalogstore"
+	"github.com/agentstation/starmap/pkg/catalogs"
+	"github.com/agentstation/starmap/pkg/catalogs/storage"
 	pkgerrors "github.com/agentstation/starmap/pkg/errors"
 )
 
@@ -52,7 +53,7 @@ func TestHealthCatalogAgeIsIndependentOfTransportActivity(t *testing.T) {
 	generatedAt := time.Date(2026, time.July, 29, 18, 0, 0, 0, time.UTC)
 	now := generatedAt.Add(2 * time.Hour)
 	subscriber, err := New(Config{
-		BaseURL: "https://starmap.invalid", CatalogStore: catalogstore.NewMemory(),
+		BaseURL: "https://starmap.invalid", CatalogStore: storage.NewMemory(),
 	})
 	if err != nil {
 		t.Fatalf("New: %v", err)
@@ -88,7 +89,7 @@ func TestHealthCatalogAgeIsIndependentOfTransportActivity(t *testing.T) {
 func assertHeartbeatStreamHealth(
 	t testing.TB,
 	subscriber *Subscriber,
-	generation catalogstore.Generation,
+	generation catalogs.Generation,
 ) time.Time {
 	t.Helper()
 	deadline := time.Now().Add(10 * time.Second)
@@ -125,7 +126,7 @@ func assertStoppedCatalogHealth(
 func assertRecoveredStreamHealth(
 	t testing.TB,
 	subscriber *Subscriber,
-	generation catalogstore.Generation,
+	generation catalogs.Generation,
 	retries uint64,
 ) {
 	t.Helper()

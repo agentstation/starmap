@@ -8,84 +8,84 @@ import (
 	"strings"
 	"time"
 
-	"github.com/agentstation/starmap/pkg/catalogmeta"
 	"github.com/agentstation/starmap/pkg/catalogs"
+	"github.com/agentstation/starmap/pkg/catalogs/evidence"
 	"github.com/agentstation/starmap/pkg/errors"
 )
 
 // RevisionKind identifies how an upstream observation revision was obtained.
-type RevisionKind = catalogmeta.ObservationRevisionKind
+type RevisionKind = evidence.ObservationRevisionKind
 
 const (
 	// RevisionKindUnknown means the upstream exposes no stable revision.
-	RevisionKindUnknown = catalogmeta.ObservationRevisionKindUnknown
+	RevisionKindUnknown = evidence.ObservationRevisionKindUnknown
 	// RevisionKindETag identifies an HTTP entity-tag revision.
-	RevisionKindETag = catalogmeta.ObservationRevisionKindETag
+	RevisionKindETag = evidence.ObservationRevisionKindETag
 	// RevisionKindLastModified identifies an HTTP Last-Modified validator.
-	RevisionKindLastModified = catalogmeta.ObservationRevisionKindLastModified
+	RevisionKindLastModified = evidence.ObservationRevisionKindLastModified
 	// RevisionKindGitCommit identifies an exact Git commit.
-	RevisionKindGitCommit = catalogmeta.ObservationRevisionKindGitCommit
+	RevisionKindGitCommit = evidence.ObservationRevisionKindGitCommit
 	// RevisionKindSourceVersion identifies an upstream-declared version.
-	RevisionKindSourceVersion = catalogmeta.ObservationRevisionKindSourceVersion
+	RevisionKindSourceVersion = evidence.ObservationRevisionKindSourceVersion
 	// RevisionKindContentDigest identifies the normalized observation content.
-	RevisionKindContentDigest = catalogmeta.ObservationRevisionKindContentDigest
+	RevisionKindContentDigest = evidence.ObservationRevisionKindContentDigest
 )
 
 // Revision identifies the exact upstream or normalized content revision.
-type Revision = catalogmeta.ObservationRevision
+type Revision = evidence.ObservationRevision
 
 // ObservationCompleteness states whether all expected records were observed.
-type ObservationCompleteness = catalogmeta.ObservationCompleteness
+type ObservationCompleteness = evidence.ObservationCompleteness
 
 const (
 	// ObservationCompletenessComplete means every expected record was observed.
-	ObservationCompletenessComplete = catalogmeta.ObservationCompletenessComplete
+	ObservationCompletenessComplete = evidence.ObservationCompletenessComplete
 	// ObservationCompletenessPartial means at least one expected record is absent.
-	ObservationCompletenessPartial = catalogmeta.ObservationCompletenessPartial
+	ObservationCompletenessPartial = evidence.ObservationCompletenessPartial
 )
 
 // ObservationStatus is the typed outcome of a source observation.
-type ObservationStatus = catalogmeta.ObservationStatus
+type ObservationStatus = evidence.ObservationStatus
 
 const (
 	// ObservationStatusSucceeded means the observation completed without known degradation.
-	ObservationStatusSucceeded = catalogmeta.ObservationStatusSucceeded
+	ObservationStatusSucceeded = evidence.ObservationStatusSucceeded
 	// ObservationStatusDegraded means usable catalog data was returned with a known limitation.
-	ObservationStatusDegraded = catalogmeta.ObservationStatusDegraded
+	ObservationStatusDegraded = evidence.ObservationStatusDegraded
 )
 
 // ObservationRecordCounts reports accepted and rejected source records.
-type ObservationRecordCounts = catalogmeta.ObservationRecordCounts
+type ObservationRecordCounts = evidence.ObservationRecordCounts
 
 // ObservationIssueScope identifies the level at which degradation occurred.
-type ObservationIssueScope = catalogmeta.ObservationIssueScope
+type ObservationIssueScope = evidence.ObservationIssueScope
 
 // Observation issue scope values.
 const (
-	ObservationIssueScopeRecord        = catalogmeta.ObservationIssueScopeRecord
-	ObservationIssueScopeProvider      = catalogmeta.ObservationIssueScopeProvider
-	ObservationIssueScopeSource        = catalogmeta.ObservationIssueScopeSource
-	ObservationIssueScopeStaleFallback = catalogmeta.ObservationIssueScopeStaleFallback
+	ObservationIssueScopeRecord        = evidence.ObservationIssueScopeRecord
+	ObservationIssueScopeProvider      = evidence.ObservationIssueScopeProvider
+	ObservationIssueScopeSource        = evidence.ObservationIssueScopeSource
+	ObservationIssueScopeStaleFallback = evidence.ObservationIssueScopeStaleFallback
 )
 
 // ObservationIssueCode is a stable machine-readable degradation reason.
-type ObservationIssueCode = catalogmeta.ObservationIssueCode
+type ObservationIssueCode = evidence.ObservationIssueCode
 
 // Observation issue code values.
 const (
-	ObservationIssueCodeInvalidRecord      = catalogmeta.ObservationIssueCodeInvalidRecord
-	ObservationIssueCodeSchemaDrift        = catalogmeta.ObservationIssueCodeSchemaDrift
-	ObservationIssueCodePayloadLimit       = catalogmeta.ObservationIssueCodePayloadLimit
-	ObservationIssueCodeMissingCredentials = catalogmeta.ObservationIssueCodeMissingCredentials
-	ObservationIssueCodeConfiguration      = catalogmeta.ObservationIssueCodeConfiguration
-	ObservationIssueCodeFetchFailed        = catalogmeta.ObservationIssueCodeFetchFailed
-	ObservationIssueCodeStaleFallback      = catalogmeta.ObservationIssueCodeStaleFallback
-	ObservationIssueCodeBootstrapFallback  = catalogmeta.ObservationIssueCodeBootstrapFallback
-	ObservationIssueCodeVolumeCollapse     = catalogmeta.ObservationIssueCodeVolumeCollapse
+	ObservationIssueCodeInvalidRecord      = evidence.ObservationIssueCodeInvalidRecord
+	ObservationIssueCodeSchemaDrift        = evidence.ObservationIssueCodeSchemaDrift
+	ObservationIssueCodePayloadLimit       = evidence.ObservationIssueCodePayloadLimit
+	ObservationIssueCodeMissingCredentials = evidence.ObservationIssueCodeMissingCredentials
+	ObservationIssueCodeConfiguration      = evidence.ObservationIssueCodeConfiguration
+	ObservationIssueCodeFetchFailed        = evidence.ObservationIssueCodeFetchFailed
+	ObservationIssueCodeStaleFallback      = evidence.ObservationIssueCodeStaleFallback
+	ObservationIssueCodeBootstrapFallback  = evidence.ObservationIssueCodeBootstrapFallback
+	ObservationIssueCodeVolumeCollapse     = evidence.ObservationIssueCodeVolumeCollapse
 )
 
 // ObservationIssue records one classified, non-fatal degradation.
-type ObservationIssue = catalogmeta.ObservationIssue
+type ObservationIssue = evidence.ObservationIssue
 
 // ObservationMetadata supplies source-owned metadata used to construct an observation.
 type ObservationMetadata struct {

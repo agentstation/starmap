@@ -7,9 +7,9 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/agentstation/starmap/pkg/catalogs"
-	"github.com/agentstation/starmap/pkg/catalogstore"
 	"github.com/agentstation/starmap/internal/constants"
+	"github.com/agentstation/starmap/pkg/catalogs"
+	"github.com/agentstation/starmap/pkg/catalogs/storage"
 	starmaperrors "github.com/agentstation/starmap/pkg/errors"
 )
 
@@ -112,7 +112,7 @@ func TestHumanWorkspaceLoadCannotTraverseSiblingMachineLifecycleRoots(t *testing
 
 func TestClientRejectsCatalogStateAndWorkspaceOverlap(t *testing.T) {
 	root := t.TempDir()
-	store, err := catalogstore.NewFilesystem(filepath.Join(root, "catalog"))
+	store, err := storage.NewFilesystem(filepath.Join(root, "catalog"))
 	if err != nil {
 		t.Fatalf("NewFilesystem: %v", err)
 	}
@@ -130,7 +130,7 @@ func TestClientRejectsSymlinkedCatalogStateAndWorkspaceOverlap(t *testing.T) {
 	if err := os.Symlink(database, alias); err != nil {
 		t.Fatalf("Symlink: %v", err)
 	}
-	store, err := catalogstore.NewFilesystem(database)
+	store, err := storage.NewFilesystem(database)
 	if err != nil {
 		t.Fatalf("NewFilesystem: %v", err)
 	}
@@ -141,7 +141,7 @@ func TestClientRejectsSymlinkedCatalogStateAndWorkspaceOverlap(t *testing.T) {
 func TestClientSaveRejectsDurableStateTargets(t *testing.T) {
 	root := t.TempDir()
 	database := filepath.Join(root, "catalog")
-	store, err := catalogstore.NewFilesystem(database)
+	store, err := storage.NewFilesystem(database)
 	if err != nil {
 		t.Fatalf("NewFilesystem: %v", err)
 	}
@@ -152,9 +152,9 @@ func TestClientSaveRejectsDurableStateTargets(t *testing.T) {
 	assertCatalogLayoutError(t, client.SaveTo(filepath.Join(database, "exports")))
 }
 
-func mustFilesystemStore(t *testing.T, path string) *catalogstore.Filesystem {
+func mustFilesystemStore(t *testing.T, path string) *storage.Filesystem {
 	t.Helper()
-	store, err := catalogstore.NewFilesystem(path)
+	store, err := storage.NewFilesystem(path)
 	if err != nil {
 		t.Fatalf("NewFilesystem: %v", err)
 	}

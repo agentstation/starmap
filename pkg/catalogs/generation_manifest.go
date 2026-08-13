@@ -10,7 +10,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/agentstation/starmap/pkg/catalogmeta"
+	"github.com/agentstation/starmap/pkg/catalogs/evidence"
 	"github.com/agentstation/starmap/pkg/errors"
 )
 
@@ -144,13 +144,13 @@ type GenerationValidationReport struct {
 // observation. The observation schema and retention policy are defined by the
 // source pipeline; this link is deliberately small and replay-oriented.
 type SourceObservationLink struct {
-	Source           catalogmeta.SourceID                `json:"source" yaml:"source"`
-	ObservationID    string                              `json:"observation_id" yaml:"observation_id"`
-	ObservedAt       time.Time                           `json:"observed_at" yaml:"observed_at"`
-	Revision         catalogmeta.ObservationRevision     `json:"revision" yaml:"revision"`
-	Completeness     catalogmeta.ObservationCompleteness `json:"completeness" yaml:"completeness"`
-	Status           catalogmeta.ObservationStatus       `json:"status" yaml:"status"`
-	EvidenceChecksum string                              `json:"evidence_checksum" yaml:"evidence_checksum"`
+	Source           evidence.SourceID                `json:"source" yaml:"source"`
+	ObservationID    string                           `json:"observation_id" yaml:"observation_id"`
+	ObservedAt       time.Time                        `json:"observed_at" yaml:"observed_at"`
+	Revision         evidence.ObservationRevision     `json:"revision" yaml:"revision"`
+	Completeness     evidence.ObservationCompleteness `json:"completeness" yaml:"completeness"`
+	Status           evidence.ObservationStatus       `json:"status" yaml:"status"`
+	EvidenceChecksum string                           `json:"evidence_checksum" yaml:"evidence_checksum"`
 }
 
 // Validate verifies one complete source-observation link.
@@ -174,19 +174,19 @@ func (c ConsumerCompatibility) SupportsSchema(schemaVersion uint64) bool {
 // It is shared by local stores and distribution transports; transport-specific
 // URLs, release tags, and binary versions do not belong in this domain record.
 type GenerationManifest struct {
-	ManifestVersion       uint64                        `json:"manifest_version" yaml:"manifest_version"`
-	SchemaVersion         uint64                        `json:"schema_version" yaml:"schema_version"`
-	GenerationID          string                        `json:"generation_id" yaml:"generation_id"`
-	GeneratedAt           time.Time                     `json:"generated_at" yaml:"generated_at"`
-	Payload               PayloadDescriptor             `json:"payload" yaml:"payload"`
-	Validation            GenerationValidationReport    `json:"validation" yaml:"validation"`
-	SyncRunID             string                        `json:"sync_run_id" yaml:"sync_run_id"`
-	SourceObservations    []SourceObservationLink       `json:"source_observations" yaml:"source_observations"`
-	ReviewCandidates      []catalogmeta.ReviewCandidate `json:"review_candidates" yaml:"review_candidates"`
-	Completeness          GenerationCompleteness        `json:"completeness" yaml:"completeness"`
-	Degraded              bool                          `json:"degraded" yaml:"degraded"`
-	DegradationReasons    []string                      `json:"degradation_reasons,omitempty" yaml:"degradation_reasons,omitempty"`
-	ConsumerCompatibility ConsumerCompatibility         `json:"consumer_compatibility" yaml:"consumer_compatibility"`
+	ManifestVersion       uint64                     `json:"manifest_version" yaml:"manifest_version"`
+	SchemaVersion         uint64                     `json:"schema_version" yaml:"schema_version"`
+	GenerationID          string                     `json:"generation_id" yaml:"generation_id"`
+	GeneratedAt           time.Time                  `json:"generated_at" yaml:"generated_at"`
+	Payload               PayloadDescriptor          `json:"payload" yaml:"payload"`
+	Validation            GenerationValidationReport `json:"validation" yaml:"validation"`
+	SyncRunID             string                     `json:"sync_run_id" yaml:"sync_run_id"`
+	SourceObservations    []SourceObservationLink    `json:"source_observations" yaml:"source_observations"`
+	ReviewCandidates      []evidence.ReviewCandidate `json:"review_candidates" yaml:"review_candidates"`
+	Completeness          GenerationCompleteness     `json:"completeness" yaml:"completeness"`
+	Degraded              bool                       `json:"degraded" yaml:"degraded"`
+	DegradationReasons    []string                   `json:"degradation_reasons,omitempty" yaml:"degradation_reasons,omitempty"`
+	ConsumerCompatibility ConsumerCompatibility      `json:"consumer_compatibility" yaml:"consumer_compatibility"`
 }
 
 // ParseGenerationManifestJSON strictly parses and validates a JSON manifest.
@@ -261,7 +261,7 @@ func ParseGenerationManifestJSON(data []byte) (GenerationManifest, error) {
 func (m GenerationManifest) Copy() GenerationManifest {
 	copyManifest := m
 	copyManifest.SourceObservations = append([]SourceObservationLink(nil), m.SourceObservations...)
-	copyManifest.ReviewCandidates = append([]catalogmeta.ReviewCandidate{}, m.ReviewCandidates...)
+	copyManifest.ReviewCandidates = append([]evidence.ReviewCandidate{}, m.ReviewCandidates...)
 	copyManifest.DegradationReasons = append([]string(nil), m.DegradationReasons...)
 	copyManifest.Validation.Checks = append([]GenerationValidationCheck(nil), m.Validation.Checks...)
 	return copyManifest
@@ -303,10 +303,10 @@ func (m GenerationManifest) Validate() error {
 		return err
 	}
 	for _, observation := range m.SourceObservations {
-		if observation.Completeness == catalogmeta.ObservationCompletenessPartial && m.Completeness != GenerationCompletenessPartial {
+		if observation.Completeness == evidence.ObservationCompletenessPartial && m.Completeness != GenerationCompletenessPartial {
 			return validationError("completeness", m.Completeness, "must be partial when a linked observation is partial")
 		}
-		if observation.Status == catalogmeta.ObservationStatusDegraded && !m.Degraded {
+		if observation.Status == evidence.ObservationStatusDegraded && !m.Degraded {
 			return validationError("degraded", m.Degraded, "must be true when a linked observation is degraded")
 		}
 	}
@@ -340,7 +340,7 @@ func (m GenerationManifest) Validate() error {
 // ValidateReviewCandidates verifies durable review candidates against the
 // exact source observations that supplied their evidence.
 func ValidateReviewCandidates(
-	candidates []catalogmeta.ReviewCandidate,
+	candidates []evidence.ReviewCandidate,
 	observations []SourceObservationLink,
 ) error {
 	if candidates == nil {
@@ -353,7 +353,7 @@ func ValidateReviewCandidates(
 	}
 	for index, candidate := range candidates {
 		prefix := fmt.Sprintf("review_candidates[%d]", index)
-		if candidate.Code != catalogmeta.ReviewCandidateUnresolvedModelReference {
+		if candidate.Code != evidence.ReviewCandidateUnresolvedModelReference {
 			return validationError(prefix+".code", candidate.Code, "is not supported")
 		}
 		if strings.TrimSpace(candidate.ProviderID) == "" {
@@ -394,7 +394,7 @@ func ValidateReviewCandidates(
 			return validationError(prefix+".evidence_checksum", candidate.EvidenceChecksum, "must match the linked source observation")
 		}
 		if index > 0 {
-			order := catalogmeta.CompareReviewCandidates(candidates[index-1], candidate)
+			order := evidence.CompareReviewCandidates(candidates[index-1], candidate)
 			if order == 0 {
 				return validationError(prefix, candidate, "must be unique")
 			}
@@ -491,28 +491,28 @@ func validateObservationLink(prefix string, observation SourceObservationLink) e
 	if err := validateObservationRevision(prefix+".revision", observation.Revision); err != nil {
 		return err
 	}
-	if observation.Completeness != catalogmeta.ObservationCompletenessComplete &&
-		observation.Completeness != catalogmeta.ObservationCompletenessPartial {
+	if observation.Completeness != evidence.ObservationCompletenessComplete &&
+		observation.Completeness != evidence.ObservationCompletenessPartial {
 		return validationError(prefix+".completeness", observation.Completeness, "must be complete or partial")
 	}
-	if observation.Status != catalogmeta.ObservationStatusSucceeded &&
-		observation.Status != catalogmeta.ObservationStatusDegraded {
+	if observation.Status != evidence.ObservationStatusSucceeded &&
+		observation.Status != evidence.ObservationStatusDegraded {
 		return validationError(prefix+".status", observation.Status, "must be succeeded or degraded")
 	}
-	if observation.Completeness == catalogmeta.ObservationCompletenessPartial &&
-		observation.Status != catalogmeta.ObservationStatusDegraded {
+	if observation.Completeness == evidence.ObservationCompletenessPartial &&
+		observation.Status != evidence.ObservationStatusDegraded {
 		return validationError(prefix+".status", observation.Status, "partial observations must be degraded")
 	}
 	return validateChecksum(prefix+".evidence_checksum", observation.EvidenceChecksum)
 }
 
-func validateObservationRevision(prefix string, revision catalogmeta.ObservationRevision) error {
+func validateObservationRevision(prefix string, revision evidence.ObservationRevision) error {
 	switch revision.Kind {
-	case catalogmeta.ObservationRevisionKindUnknown:
+	case evidence.ObservationRevisionKindUnknown:
 		if strings.TrimSpace(revision.Value) != "" {
 			return validationError(prefix+".value", revision.Value, "must be empty when revision kind is unknown")
 		}
-	case catalogmeta.ObservationRevisionKindGitCommit:
+	case evidence.ObservationRevisionKindGitCommit:
 		if strings.TrimSpace(revision.Value) == "" {
 			return validationError(prefix+".value", revision.Value, "is required")
 		}
@@ -523,10 +523,10 @@ func validateObservationRevision(prefix string, revision catalogmeta.Observation
 		if revision.InputName == "" || revision.InputChecksum == "" {
 			return validationError(prefix+".input", revision, "Git revisions require a lockfile name and checksum")
 		}
-	case catalogmeta.ObservationRevisionKindETag,
-		catalogmeta.ObservationRevisionKindLastModified,
-		catalogmeta.ObservationRevisionKindSourceVersion,
-		catalogmeta.ObservationRevisionKindContentDigest:
+	case evidence.ObservationRevisionKindETag,
+		evidence.ObservationRevisionKindLastModified,
+		evidence.ObservationRevisionKindSourceVersion,
+		evidence.ObservationRevisionKindContentDigest:
 		if strings.TrimSpace(revision.Value) == "" {
 			return validationError(prefix+".value", revision.Value, "is required")
 		}
@@ -539,7 +539,7 @@ func validateObservationRevision(prefix string, revision catalogmeta.Observation
 	if revision.InputName == "" {
 		return nil
 	}
-	if revision.Kind != catalogmeta.ObservationRevisionKindGitCommit {
+	if revision.Kind != evidence.ObservationRevisionKindGitCommit {
 		return validationError(prefix+".input", revision, "content-addressed build input is only supported for Git revisions")
 	}
 	return validateChecksum(prefix+".input_checksum", revision.InputChecksum)

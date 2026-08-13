@@ -8,7 +8,7 @@ import (
 
 	"github.com/agentstation/starmap"
 	"github.com/agentstation/starmap/pkg/catalogs"
-	"github.com/agentstation/starmap/pkg/catalogstore"
+	"github.com/agentstation/starmap/pkg/catalogs/storage"
 )
 
 func TestHealthSeparatesCatalogFreshnessFromStreamLifecycle(t *testing.T) {
@@ -65,7 +65,7 @@ func TestHealthExposesCoalescedPublicationDelivery(t *testing.T) {
 	t.Parallel()
 
 	client, err := starmap.New(
-		starmap.WithCatalogStore(catalogstore.NewMemory()),
+		starmap.WithCatalogStore(storage.NewMemory()),
 	)
 	if err != nil {
 		t.Fatalf("starmap.New: %v", err)

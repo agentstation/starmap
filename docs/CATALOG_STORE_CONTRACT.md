@@ -1,14 +1,14 @@
 # Catalog Store Contract
 
-`catalogstore.Store` is Starmap's narrow durable-generation seam. It lets an
+`storage.Store` is Starmap's narrow durable-generation seam. It lets an
 embedding application own persistence without teaching Starmap about that
 application's database, credentials, migrations, or lifecycle.
 
 ```go
 type Store interface {
-    Current(context.Context) (catalogstore.Generation, error)
-    Get(context.Context, string) (catalogstore.Generation, error)
-    Commit(context.Context, catalogstore.Generation, string) error
+    Current(context.Context) (catalogs.Generation, error)
+    Get(context.Context, string) (catalogs.Generation, error)
+    Commit(context.Context, catalogs.Generation, string) error
 }
 ```
 
@@ -133,8 +133,8 @@ expressed through this behavioral contract.
 
 ## S3-compatible object storage
 
-`pkg/catalogstore/s3` is Starmap's optional production
-`catalogstore.ObjectBackend`. It accepts an already-configured, caller-owned AWS
+`pkg/catalogs/storage/s3` is Starmap's optional production
+`storage.ObjectBackend`. It accepts an already-configured, caller-owned AWS
 SDK v2 S3 client and performs no network request during construction. Compose
 it with the generation store:
 
@@ -145,7 +145,7 @@ backend, err := s3store.New(callerOwnedS3Client, s3store.Config{
 if err != nil {
     return err
 }
-store, err := catalogstore.NewObject(backend, "production")
+store, err := storage.NewObject(backend, "production")
 ```
 
 The selected S3-compatible service must implement conditional `PutObject`

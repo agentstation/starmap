@@ -52,7 +52,6 @@ import (
 	"github.com/agentstation/starmap/internal/catalog/workspace"
 	"github.com/agentstation/starmap/internal/constants"
 	"github.com/agentstation/starmap/pkg/catalogs"
-	"github.com/agentstation/starmap/pkg/catalogstore"
 	"github.com/agentstation/starmap/pkg/errors"
 	"github.com/agentstation/starmap/pkg/logging"
 )
@@ -214,7 +213,7 @@ func NewContext(ctx context.Context, opts ...Option) (*Client, error) {
 	generationPayloadChecksum := bootstrapManifest.Payload.Checksum
 	generationGeneratedAt := bootstrapManifest.GeneratedAt
 	usingEmbeddedBootstrap := true
-	var durableCurrent *catalogstore.Generation
+	var durableCurrent *catalogs.Generation
 	if !isNilCatalogStore(sm.options.catalogStore) {
 		loadCtx, cancel := context.WithTimeout(ctx, constants.DefaultTimeout)
 		stored, currentErr := sm.options.catalogStore.Current(loadCtx)
@@ -224,7 +223,7 @@ func NewContext(ctx context.Context, opts ...Option) (*Client, error) {
 			if err := stored.Validate(); err != nil {
 				return nil, errors.WrapResource("validate", "stored current catalog generation", stored.Manifest.GenerationID, err)
 			}
-			initial, err = catalogstore.DecodeCatalogPayload(stored.Payload)
+			initial, err = catalogs.DecodeCatalogPayload(stored.Payload)
 			if err != nil {
 				return nil, errors.WrapResource("decode", "stored current catalog generation", stored.Manifest.GenerationID, err)
 			}
@@ -251,7 +250,7 @@ func NewContext(ctx context.Context, opts ...Option) (*Client, error) {
 				return nil, errors.WrapResource("publish", "initial human catalog", catalogPath, err)
 			}
 			generationGeneratedAt = time.Time{}
-			payload, encodeErr := catalogstore.EncodeCatalogPayload(initial)
+			payload, encodeErr := catalogs.EncodeCatalogPayload(initial)
 			if encodeErr != nil {
 				return nil, errors.WrapResource("encode", "initial human catalog", catalogPath, encodeErr)
 			}

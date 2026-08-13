@@ -7,8 +7,8 @@ import (
 
 	awss3 "github.com/aws/aws-sdk-go-v2/service/s3"
 
-	"github.com/agentstation/starmap/pkg/catalogstore"
-	s3store "github.com/agentstation/starmap/pkg/catalogstore/s3"
+	"github.com/agentstation/starmap/pkg/catalogs/storage"
+	s3store "github.com/agentstation/starmap/pkg/catalogs/storage/s3"
 	"github.com/agentstation/starmap/pkg/errors"
 )
 
@@ -37,7 +37,7 @@ type StorageConfig struct {
 // Open validates the selected mode and constructs an inert store. Filesystem
 // directories and object-network requests begin only when the returned store is
 // used.
-func (c StorageConfig) Open() (catalogstore.Store, error) {
+func (c StorageConfig) Open() (storage.Store, error) {
 	switch c.Mode {
 	case StorageFilesystem:
 		if c.S3Client != nil || strings.TrimSpace(c.S3Bucket) != "" ||
@@ -47,7 +47,7 @@ func (c StorageConfig) Open() (catalogstore.Store, error) {
 				Message:   "object fields are invalid in filesystem mode",
 			}
 		}
-		return catalogstore.NewFilesystem(c.FilesystemPath)
+		return storage.NewFilesystem(c.FilesystemPath)
 	case StorageObject:
 		if strings.TrimSpace(c.FilesystemPath) != "" {
 			return nil, &errors.ConfigError{
@@ -59,7 +59,7 @@ func (c StorageConfig) Open() (catalogstore.Store, error) {
 		if err != nil {
 			return nil, err
 		}
-		return catalogstore.NewObject(backend, c.ObjectPrefix)
+		return storage.NewObject(backend, c.ObjectPrefix)
 	default:
 		return nil, &errors.ConfigError{
 			Component: "server catalog storage",

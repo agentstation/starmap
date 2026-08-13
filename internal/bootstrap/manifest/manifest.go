@@ -8,7 +8,6 @@ import (
 	"time"
 
 	"github.com/agentstation/starmap/pkg/catalogs"
-	"github.com/agentstation/starmap/pkg/catalogstore"
 	"github.com/agentstation/starmap/pkg/errors"
 )
 
@@ -86,7 +85,7 @@ func Derive(reader catalogs.Reader, current *catalogs.BootstrapManifest, generat
 // observations; release staging reads the same generation from its store.
 func DeriveCommitted(
 	reader catalogs.Reader,
-	generation catalogstore.Generation,
+	generation catalogs.Generation,
 	current *catalogs.BootstrapManifest,
 ) (catalogs.BootstrapManifest, Report, error) {
 	if reader == nil {

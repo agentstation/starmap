@@ -6,8 +6,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/agentstation/starmap/pkg/catalogmeta"
 	"github.com/agentstation/starmap/pkg/catalogs"
+	"github.com/agentstation/starmap/pkg/catalogs/evidence"
 	"github.com/agentstation/starmap/pkg/errors"
 	"github.com/agentstation/starmap/pkg/sources"
 )
@@ -59,9 +59,9 @@ func TestReconciliationQuarantinesOnlyUnresolvedProviderOfferings(t *testing.T) 
 		}
 	}
 
-	want := []catalogmeta.ReviewCandidate{
+	want := []evidence.ReviewCandidate{
 		{
-			Code:                catalogmeta.ReviewCandidateUnresolvedModelReference,
+			Code:                evidence.ReviewCandidateUnresolvedModelReference,
 			ProviderID:          "alpha",
 			ProviderModelID:     "unresolved-z",
 			SourceID:            providerEvidence.SourceID,
@@ -71,7 +71,7 @@ func TestReconciliationQuarantinesOnlyUnresolvedProviderOfferings(t *testing.T) 
 			Reason:              unresolvedModelReferenceMessage,
 		},
 		{
-			Code:                catalogmeta.ReviewCandidateUnresolvedModelReference,
+			Code:                evidence.ReviewCandidateUnresolvedModelReference,
 			ProviderID:          "zeta",
 			ProviderModelID:     "unresolved-a",
 			SourceID:            providerEvidence.SourceID,

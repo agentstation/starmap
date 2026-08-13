@@ -15,7 +15,7 @@ import (
 
 	"github.com/agentstation/starmap/internal/constants"
 	"github.com/agentstation/starmap/pkg/catalogs"
-	"github.com/agentstation/starmap/pkg/catalogstore"
+	"github.com/agentstation/starmap/pkg/catalogs/storage"
 	"github.com/agentstation/starmap/pkg/errors"
 )
 
@@ -146,7 +146,7 @@ func (m legacyLayoutMigrator) migrate(
 		}
 	}
 
-	relocated, err := catalogstore.NewFilesystem(state)
+	relocated, err := storage.NewFilesystem(state)
 	if err != nil {
 		return rollback(err, "")
 	}
@@ -261,36 +261,36 @@ func requireLegacyStoreShape(path string) error {
 func inspectLegacyStore(
 	ctx context.Context,
 	path string,
-) (catalogstore.Generation, *catalogs.Catalog, int, error) {
-	store, err := catalogstore.NewFilesystem(path)
+) (catalogs.Generation, *catalogs.Catalog, int, error) {
+	store, err := storage.NewFilesystem(path)
 	if err != nil {
-		return catalogstore.Generation{}, nil, 0, err
+		return catalogs.Generation{}, nil, 0, err
 	}
 	current, err := store.Current(ctx)
 	if err != nil {
-		return catalogstore.Generation{}, nil, 0, errors.WrapResource(
+		return catalogs.Generation{}, nil, 0, errors.WrapResource(
 			"validate", "legacy catalog generation", "current", err,
 		)
 	}
 	catalog, err := validateMigrationGeneration(current)
 	if err != nil {
-		return catalogstore.Generation{}, nil, 0, err
+		return catalogs.Generation{}, nil, 0, err
 	}
 
 	entries, err := os.ReadDir(filepath.Join(path, "generations"))
 	if err != nil {
-		return catalogstore.Generation{}, nil, 0, errors.WrapIO(
+		return catalogs.Generation{}, nil, 0, errors.WrapIO(
 			"read", filepath.Join(path, "generations"), err,
 		)
 	}
 	if len(entries) == 0 {
-		return catalogstore.Generation{}, nil, 0, &errors.ValidationError{
+		return catalogs.Generation{}, nil, 0, &errors.ValidationError{
 			Field: "legacy_catalog_layout.generations", Message: "must not be empty",
 		}
 	}
 	for _, entry := range entries {
 		if entry.Type()&os.ModeSymlink != 0 || !entry.IsDir() {
-			return catalogstore.Generation{}, nil, 0, &errors.ValidationError{
+			return catalogs.Generation{}, nil, 0, &errors.ValidationError{
 				Field: "legacy_catalog_layout.generation", Value: entry.Name(),
 				Message: "must be a real directory",
 			}
@@ -298,47 +298,47 @@ func inspectLegacyStore(
 		dir := filepath.Join(path, "generations", entry.Name())
 		children, err := os.ReadDir(dir)
 		if err != nil {
-			return catalogstore.Generation{}, nil, 0, errors.WrapIO("read", dir, err)
+			return catalogs.Generation{}, nil, 0, errors.WrapIO("read", dir, err)
 		}
 		if len(children) != 2 ||
 			children[0].Name() != "catalog.json" ||
 			children[1].Name() != "manifest.json" {
-			return catalogstore.Generation{}, nil, 0, &errors.ValidationError{
+			return catalogs.Generation{}, nil, 0, &errors.ValidationError{
 				Field: "legacy_catalog_layout.generation", Value: entry.Name(),
 				Message: "must contain exactly catalog.json and manifest.json",
 			}
 		}
 		manifestData, err := os.ReadFile(filepath.Join(dir, "manifest.json")) //nolint:gosec
 		if err != nil {
-			return catalogstore.Generation{}, nil, 0, errors.WrapIO(
+			return catalogs.Generation{}, nil, 0, errors.WrapIO(
 				"read", filepath.Join(dir, "manifest.json"), err,
 			)
 		}
 		manifest, err := catalogs.ParseGenerationManifestJSON(manifestData)
 		if err != nil {
-			return catalogstore.Generation{}, nil, 0, err
+			return catalogs.Generation{}, nil, 0, err
 		}
 		digest := sha256.Sum256([]byte(manifest.GenerationID))
 		if entry.Name() != hex.EncodeToString(digest[:]) {
-			return catalogstore.Generation{}, nil, 0, &errors.ValidationError{
+			return catalogs.Generation{}, nil, 0, &errors.ValidationError{
 				Field: "legacy_catalog_layout.generation", Value: entry.Name(),
 				Message: "directory does not match the generation identity",
 			}
 		}
 		generation, err := store.Get(ctx, manifest.GenerationID)
 		if err != nil {
-			return catalogstore.Generation{}, nil, 0, errors.WrapResource(
+			return catalogs.Generation{}, nil, 0, errors.WrapResource(
 				"validate", "retained catalog generation", manifest.GenerationID, err,
 			)
 		}
 		if _, err := validateMigrationGeneration(generation); err != nil {
-			return catalogstore.Generation{}, nil, 0, err
+			return catalogs.Generation{}, nil, 0, err
 		}
 	}
 	return current, catalog, len(entries), nil
 }
 
-func validateMigrationGeneration(generation catalogstore.Generation) (*catalogs.Catalog, error) {
+func validateMigrationGeneration(generation catalogs.Generation) (*catalogs.Catalog, error) {
 	if generation.Manifest.SchemaVersion != catalogs.CurrentCatalogSchemaVersion ||
 		!generation.Manifest.ConsumerCompatibility.SupportsSchema(catalogs.CurrentCatalogSchemaVersion) {
 		return nil, &errors.ValidationError{
@@ -346,7 +346,7 @@ func validateMigrationGeneration(generation catalogstore.Generation) (*catalogs.
 			Message: "generation is not compatible with this Starmap binary",
 		}
 	}
-	catalog, err := catalogstore.DecodeCatalogPayload(generation.Payload)
+	catalog, err := catalogs.DecodeCatalogPayload(generation.Payload)
 	if err != nil {
 		return nil, errors.WrapResource(
 			"decode", "catalog generation", generation.Manifest.GenerationID, err,
@@ -355,7 +355,7 @@ func validateMigrationGeneration(generation catalogstore.Generation) (*catalogs.
 	return catalog, nil
 }
 
-func sameMigrationGeneration(left, right catalogstore.Generation) bool {
+func sameMigrationGeneration(left, right catalogs.Generation) bool {
 	leftManifest, leftErr := json.Marshal(left.Manifest)
 	rightManifest, rightErr := json.Marshal(right.Manifest)
 	return leftErr == nil &&

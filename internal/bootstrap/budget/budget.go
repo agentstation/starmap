@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/agentstation/starmap/pkg/catalogartifact"
-	"github.com/agentstation/starmap/pkg/catalogstore"
+	"github.com/agentstation/starmap/pkg/catalogs"
+	"github.com/agentstation/starmap/pkg/catalogs/artifact"
 	"github.com/agentstation/starmap/pkg/errors"
 )
 
@@ -158,7 +158,7 @@ type Report struct {
 }
 
 // Check measures one validated generation and applies the supplied policy.
-func Check(generation catalogstore.Generation, measuredAt time.Time, policy Policy) (Report, error) {
+func Check(generation catalogs.Generation, measuredAt time.Time, policy Policy) (Report, error) {
 	if err := policy.Validate(); err != nil {
 		return Report{}, err
 	}
@@ -169,11 +169,11 @@ func Check(generation catalogstore.Generation, measuredAt time.Time, policy Poli
 		return Report{}, &errors.ValidationError{Field: "embedded_catalog_budget.measured_at", Message: "is required"}
 	}
 	measuredAt = measuredAt.UTC()
-	artifact, err := catalogartifact.Build(generation)
+	bundle, err := artifact.Build(generation)
 	if err != nil {
 		return Report{}, err
 	}
-	catalog, err := catalogstore.DecodeCatalogPayload(generation.Payload)
+	catalog, err := catalogs.DecodeCatalogPayload(generation.Payload)
 	if err != nil {
 		return Report{}, err
 	}
@@ -182,7 +182,7 @@ func Check(generation catalogstore.Generation, measuredAt time.Time, policy Poli
 		SchemaVersion: CurrentPolicyVersion, GenerationID: generation.Manifest.GenerationID,
 		GeneratedAt: generation.Manifest.GeneratedAt, MeasuredAt: measuredAt,
 		AgeSeconds: int64(age / time.Second), PayloadChecksum: generation.Manifest.Payload.Checksum,
-		UncompressedBytes: int64(len(generation.Payload)), CompressedBytes: int64(len(artifact.Data)),
+		UncompressedBytes: int64(len(generation.Payload)), CompressedBytes: int64(len(bundle.Data)),
 		ProviderCount: len(catalog.Providers().List()), ModelCount: len(catalog.Definitions()), Policy: policy,
 	}
 	if age < 0 {

@@ -11,19 +11,19 @@ import (
 	"github.com/google/go-cmp/cmp"
 
 	"github.com/agentstation/starmap/pkg/catalogs"
-	"github.com/agentstation/starmap/pkg/catalogstore"
+	"github.com/agentstation/starmap/pkg/catalogs/storage"
 	pkgerrors "github.com/agentstation/starmap/pkg/errors"
 )
 
 type lastKnownGoodFaultStore struct {
-	*catalogstore.Memory
+	*storage.Memory
 	fail    atomic.Bool
 	entered chan struct{}
 	release chan struct{}
 	once    sync.Once
 }
 
-func (s *lastKnownGoodFaultStore) Commit(ctx context.Context, generation catalogstore.Generation, expected string) error {
+func (s *lastKnownGoodFaultStore) Commit(ctx context.Context, generation catalogs.Generation, expected string) error {
 	if !s.fail.Load() {
 		return s.Memory.Commit(ctx, generation, expected)
 	}
@@ -43,7 +43,7 @@ const lastKnownGoodCommitGateTimeout = 30 * time.Second
 
 func TestLastKnownGoodSurvivesFailedUpdateAndPublishesRetry(t *testing.T) {
 	store := &lastKnownGoodFaultStore{
-		Memory: catalogstore.NewMemory(), entered: make(chan struct{}), release: make(chan struct{}),
+		Memory: storage.NewMemory(), entered: make(chan struct{}), release: make(chan struct{}),
 	}
 	var updateCalls atomic.Int32
 	update := catalogUpdate(func(candidate *catalogs.Builder) error {

@@ -134,7 +134,7 @@ Application Composition (internal/cli/app concrete implementation)
     ↓
 Root Package (starmap.Client - public API)
     ↓
-Public Contracts (catalogs, catalogstore, sources)
+Public Contracts (catalogs, storage, sources)
     ↑
 Explicit Acquisition (acquisition.Syncer)
     ↓
@@ -303,7 +303,7 @@ for _, provider := range providers {
 
 ## Package Map
 
-**Public contracts**: catalogs, catalogstore, sources, errors, logging, constants
+**Public contracts**: catalogs, storage, sources, errors, logging, constants
 
 **Internal**: bootstrap/{manifest,budget}, catalog/{authority,reconciler}, cli/{app,commands,convert}, embedded, server, server/handlers, sources/{providers,modelsdev,local,payload}, providers/{clients,openai,anthropic,google}, test/{catalog,logging,providerfixture}, transport
 

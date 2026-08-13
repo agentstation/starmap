@@ -240,10 +240,10 @@ func TestExternalStoreConsumerUsesCallerOwnedAdapter(t *testing.T) {
 	if !strings.Contains(consumer, "starmap.WithCatalogStore(store)") {
 		t.Fatal("external store consumer does not inject its caller-owned store")
 	}
-	if strings.Contains(consumer, "catalogstore.NewMemory") {
+	if strings.Contains(consumer, "storage.NewMemory") {
 		t.Fatal("external store consumer still delegates to a Starmap-owned adapter")
 	}
-	if !strings.Contains(store, "var _ catalogstore.Store = (*starportStore)(nil)") {
+	if !strings.Contains(store, "var _ storage.Store = (*starportStore)(nil)") {
 		t.Fatal("external Starport-style adapter lacks a compile-time Store assertion")
 	}
 	for _, check := range []string{
@@ -268,7 +268,7 @@ func TestPinnedArtifactConsumerIsOfflineAndDependencyBounded(t *testing.T) {
 	)
 	script := readFixture(t, "../../scripts/verify-consumer-deps.sh")
 	for _, check := range []string{
-		"catalogartifact.VerifyRelease",
+		"artifact.VerifyRelease",
 		"pinnedVerifier{digest:",
 		"client.Activate(ctx, verified)",
 	} {
@@ -290,8 +290,8 @@ func TestPinnedArtifactConsumerIsOfflineAndDependencyBounded(t *testing.T) {
 		`PINNED_ARTIFACT_MODULE=`,
 		`PINNED_MAX_NON_STANDARD_PACKAGES=32`,
 		`pinned_banned_pattern=`,
-		`starmap/pkg/catalogartifact`,
-		`starmap/pkg/catalogstore/s3`,
+		`starmap/pkg/catalogs/artifact`,
+		`starmap/pkg/catalogs/storage/s3`,
 		`google\.golang\.org/(genai|grpc)`,
 	} {
 		if !strings.Contains(script, check) {
@@ -307,7 +307,7 @@ func TestExternalServerStorageMatrixStaysOptional(t *testing.T) {
 		"StorageFilesystem StorageMode",
 		"StorageObject StorageMode",
 		"s3store.New(c.S3Client",
-		"catalogstore.NewObject(backend, c.ObjectPrefix)",
+		"storage.NewObject(backend, c.ObjectPrefix)",
 	} {
 		if !strings.Contains(storage, check) {
 			t.Fatalf("external server storage composition is missing %q", check)
@@ -317,7 +317,7 @@ func TestExternalServerStorageMatrixStaysOptional(t *testing.T) {
 		`SERVER_STORAGE_MODULE=`,
 		`SERVER_STORAGE_MAX_PACKAGES=340`,
 		`go list -deps -test`,
-		`starmap/pkg/catalogstore/s3`,
+		`starmap/pkg/catalogs/storage/s3`,
 		`starmap/remote`,
 		`starmap/server`,
 	} {
@@ -338,7 +338,7 @@ func TestPureGoAndRaceVerificationHaveSeparateCgoModes(t *testing.T) {
 	for _, check := range []string{
 		`git -C "$ROOT" grep`,
 		`CGO_ENABLED=0 "$ROOT/scripts/verify-consumer-deps.sh"`,
-		`CGO_ENABLED=0 go test ./pkg/catalogstore/s3`,
+		`CGO_ENABLED=0 go test ./pkg/catalogs/storage/s3`,
 		`CGO_ENABLED=0 go build -trimpath`,
 		`CGO_ENABLED=0$`,
 		`import[[:space:]]+"C"`,

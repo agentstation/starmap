@@ -7,7 +7,7 @@ import (
 
 	"github.com/goccy/go-yaml"
 
-	"github.com/agentstation/starmap/pkg/catalogmeta"
+	"github.com/agentstation/starmap/pkg/catalogs/evidence"
 	"github.com/agentstation/starmap/pkg/errors"
 	"github.com/agentstation/starmap/pkg/provenance"
 )
@@ -96,7 +96,7 @@ func (p *Provenance) Len() int {
 
 // FindByField retrieves provenance for a specific field of a resource.
 // Returns nil if no provenance is found.
-func (p *Provenance) FindByField(resourceType catalogmeta.ResourceType, resourceID string, field string) []provenance.Entry {
+func (p *Provenance) FindByField(resourceType evidence.ResourceType, resourceID string, field string) []provenance.Entry {
 	p.mu.RLock()
 	defer p.mu.RUnlock()
 
@@ -110,7 +110,7 @@ func (p *Provenance) FindByField(resourceType catalogmeta.ResourceType, resource
 
 // FindByResource retrieves all provenance for a resource.
 // Returns a map of field names to their provenance entries.
-func (p *Provenance) FindByResource(resourceType catalogmeta.ResourceType, resourceID string) map[string][]provenance.Entry {
+func (p *Provenance) FindByResource(resourceType evidence.ResourceType, resourceID string) map[string][]provenance.Entry {
 	p.mu.RLock()
 	defer p.mu.RUnlock()
 
@@ -130,7 +130,7 @@ func (p *Provenance) FindByResource(resourceType catalogmeta.ResourceType, resou
 // FindModelField retrieves provenance for one field of one provider model.
 func (p *Provenance) FindModelField(providerID ProviderID, modelID, field string) []provenance.Entry {
 	return p.FindByField(
-		catalogmeta.ResourceTypeModel,
+		evidence.ResourceTypeModel,
 		provenance.ModelResourceID(string(providerID), modelID),
 		field,
 	)
@@ -139,7 +139,7 @@ func (p *Provenance) FindModelField(providerID ProviderID, modelID, field string
 // FindModel retrieves all provenance for one provider model.
 func (p *Provenance) FindModel(providerID ProviderID, modelID string) map[string][]provenance.Entry {
 	return p.FindByResource(
-		catalogmeta.ResourceTypeModel,
+		evidence.ResourceTypeModel,
 		provenance.ModelResourceID(string(providerID), modelID),
 	)
 }
@@ -172,6 +172,6 @@ func (p *Provenance) EncodeYAML() (string, error) {
 
 // newKey returns a unique key for provenance tracking.
 // Format: "resourceType:resourceID:field".
-func newKey(resourceType catalogmeta.ResourceType, resourceID string, field string) string {
+func newKey(resourceType evidence.ResourceType, resourceID string, field string) string {
 	return fmt.Sprintf("%s:%s:%s", resourceType, resourceID, field)
 }

@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"testing"
 
-	"github.com/agentstation/starmap/pkg/catalogmeta"
+	"github.com/agentstation/starmap/pkg/catalogs/evidence"
 	"github.com/agentstation/starmap/pkg/provenance"
 )
 
@@ -42,13 +42,13 @@ func TestCatalogPayloadSurvivesHumanWorkspaceRoundTrip(t *testing.T) {
 	}
 	builder.SetProvenance(provenance.Map{
 		"model:deepinfra/Qwen%2FQwen3-TTS:Description": {{
-			Source: catalogmeta.ProvidersID, Field: "Description", Value: model.Description,
+			Source: evidence.ProvidersID, Field: "Description", Value: model.Description,
 		}},
 		"model:deepinfra/Qwen%2FQwen3-TTS:Authors": {{
-			Source: catalogmeta.ProvidersID, Field: "Authors", Value: []Author{author},
+			Source: evidence.ProvidersID, Field: "Authors", Value: []Author{author},
 		}},
 		"model:deepinfra/Qwen%2FQwen3-TTS:pricing": {{
-			Source: catalogmeta.ProvidersID, Field: "pricing", Value: ModelPricing{
+			Source: evidence.ProvidersID, Field: "pricing", Value: ModelPricing{
 				Currency: ModelPricingCurrencyUSD,
 				Operations: &ModelOperationPricing{
 					AudioInput: &audioInputPrice,

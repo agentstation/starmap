@@ -50,7 +50,7 @@ const (
 ```
 
 <a name="Config"></a>
-## type [Config](<https://github.com/agentstation/starmap/blob/main/remote/config.go#L41-L71>)
+## type [Config](<https://github.com/agentstation/starmap/blob/main/remote/config.go#L42-L72>)
 
 Config defines one remote Starmap catalog source. BaseURL is the versioned API root, for example https://starmap.example.com/api/v1.
 
@@ -64,10 +64,10 @@ type Config struct {
     HTTPClient *http.Client
     // CatalogStore holds verified generations in durable storage. The caller
     // must supply it and owns its resources and lifecycle.
-    CatalogStore catalogstore.Store
+    CatalogStore storage.Store
     // PinnedBootstrap supplies an optional verified offline generation.
     // NewContext commits it only when CatalogStore has no current generation.
-    PinnedBootstrap *catalogstore.Generation
+    PinnedBootstrap *catalogs.Generation
     // ReconnectMinDelay is the first reconnect delay. Zero selects the default.
     ReconnectMinDelay time.Duration
     // ReconnectMaxDelay bounds exponential reconnect delay. Zero selects the
@@ -124,7 +124,7 @@ type HealthError struct {
 ```
 
 <a name="PollingFallbackPolicy"></a>
-## type [PollingFallbackPolicy](<https://github.com/agentstation/starmap/blob/main/remote/config.go#L31-L37>)
+## type [PollingFallbackPolicy](<https://github.com/agentstation/starmap/blob/main/remote/config.go#L32-L38>)
 
 PollingFallbackPolicy explicitly enables bounded conditional polling after repeated streaming failures. Polling remains disabled when this policy is nil.
 
@@ -139,7 +139,7 @@ type PollingFallbackPolicy struct {
 ```
 
 <a name="PollingFallbackStatus"></a>
-## type [PollingFallbackStatus](<https://github.com/agentstation/starmap/blob/main/remote/subscriber.go#L57-L69>)
+## type [PollingFallbackStatus](<https://github.com/agentstation/starmap/blob/main/remote/subscriber.go#L56-L68>)
 
 PollingFallbackStatus is an immutable snapshot of the subscriber's bounded polling fallback. Counters are cumulative for the subscriber lifetime.
 
@@ -188,7 +188,7 @@ const (
 ```
 
 <a name="Subscriber"></a>
-## type [Subscriber](<https://github.com/agentstation/starmap/blob/main/remote/subscriber.go#L30-L53>)
+## type [Subscriber](<https://github.com/agentstation/starmap/blob/main/remote/subscriber.go#L29-L52>)
 
 Subscriber owns one explicitly started remote catalog lifecycle.
 
@@ -199,7 +199,7 @@ type Subscriber struct {
 ```
 
 <a name="New"></a>
-### func [New](<https://github.com/agentstation/starmap/blob/main/remote/subscriber.go#L74>)
+### func [New](<https://github.com/agentstation/starmap/blob/main/remote/subscriber.go#L73>)
 
 ```go
 func New(config Config) (*Subscriber, error)
@@ -208,7 +208,7 @@ func New(config Config) (*Subscriber, error)
 New makes an idle subscriber and uses context.Background for store I/O. It does not create a goroutine or send a remote request. Call NewContext to cancel store I/O or set a deadline.
 
 <a name="NewContext"></a>
-### func [NewContext](<https://github.com/agentstation/starmap/blob/main/remote/subscriber.go#L81>)
+### func [NewContext](<https://github.com/agentstation/starmap/blob/main/remote/subscriber.go#L80>)
 
 ```go
 func NewContext(ctx context.Context, config Config) (*Subscriber, error)
@@ -217,7 +217,7 @@ func NewContext(ctx context.Context, config Config) (*Subscriber, error)
 NewContext validates config and makes an idle subscriber. The context bounds caller\-store reads and an optional pinned\-bootstrap commit. NewContext does not create a goroutine or send a remote request.
 
 <a name="Subscriber.Catalog"></a>
-### func \(\*Subscriber\) [Catalog](<https://github.com/agentstation/starmap/blob/main/remote/subscriber.go#L169>)
+### func \(\*Subscriber\) [Catalog](<https://github.com/agentstation/starmap/blob/main/remote/subscriber.go#L168>)
 
 ```go
 func (s *Subscriber) Catalog() *catalogs.Catalog
@@ -226,7 +226,7 @@ func (s *Subscriber) Catalog() *catalogs.Catalog
 Catalog returns the catalog from State. Construction selects the verified durable current generation, the optional pinned bootstrap for an empty store, or the embedded bootstrap in that order.
 
 <a name="Subscriber.Close"></a>
-### func \(\*Subscriber\) [Close](<https://github.com/agentstation/starmap/blob/main/remote/subscriber.go#L322>)
+### func \(\*Subscriber\) [Close](<https://github.com/agentstation/starmap/blob/main/remote/subscriber.go#L321>)
 
 ```go
 func (s *Subscriber) Close() error
@@ -244,7 +244,7 @@ func (s *Subscriber) Health() Health
 Health returns the current subscriber health without performing I/O.
 
 <a name="Subscriber.PollingFallbackStatus"></a>
-### func \(\*Subscriber\) [PollingFallbackStatus](<https://github.com/agentstation/starmap/blob/main/remote/subscriber.go#L157>)
+### func \(\*Subscriber\) [PollingFallbackStatus](<https://github.com/agentstation/starmap/blob/main/remote/subscriber.go#L156>)
 
 ```go
 func (s *Subscriber) PollingFallbackStatus() PollingFallbackStatus
@@ -253,7 +253,7 @@ func (s *Subscriber) PollingFallbackStatus() PollingFallbackStatus
 PollingFallbackStatus returns the current bounded polling fallback state.
 
 <a name="Subscriber.Start"></a>
-### func \(\*Subscriber\) [Start](<https://github.com/agentstation/starmap/blob/main/remote/subscriber.go#L188>)
+### func \(\*Subscriber\) [Start](<https://github.com/agentstation/starmap/blob/main/remote/subscriber.go#L187>)
 
 ```go
 func (s *Subscriber) Start(ctx context.Context) error
@@ -262,7 +262,7 @@ func (s *Subscriber) Start(ctx context.Context) error
 Start runs the caller\-context\-owned remote lifecycle. It normally verifies current state, establishes the event stream, and closes the fetch\-to\-subscribe gap before it returns. A nonterminal initial transport failure keeps the verified local state and runs streaming recovery. Polling runs only when PollingFallbackPolicy enables it. HTTP 401 and 403 responses are terminal and never retry or enter polling fallback.
 
 <a name="Subscriber.State"></a>
-### func \(\*Subscriber\) [State](<https://github.com/agentstation/starmap/blob/main/remote/subscriber.go#L175>)
+### func \(\*Subscriber\) [State](<https://github.com/agentstation/starmap/blob/main/remote/subscriber.go#L174>)
 
 ```go
 func (s *Subscriber) State() starmap.CatalogState

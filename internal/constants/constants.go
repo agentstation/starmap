@@ -79,7 +79,7 @@ const (
 	DefaultCatalogPath = "~/.starmap/catalog"
 
 	// DefaultCatalogStatePath is the CLI's machine-owned immutable generation
-	// database. Go consumers normally provide their own catalogstore.Store.
+	// database. Go consumers normally provide their own storage.Store.
 	DefaultCatalogStatePath = "~/.starmap/state/catalog"
 
 	// DefaultCachePath is the default path for cache files.

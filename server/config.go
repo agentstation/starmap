@@ -8,10 +8,10 @@
 // persisted catalog or make generated endpoints.yaml authoritative.
 //
 // Storage is explicit caller composition before New. Standalone CLI serving
-// uses catalogstore.NewFilesystem by default. Embedding deployments without a
+// uses storage.NewFilesystem by default. Embedding deployments without a
 // persistent filesystem can pass a caller-owned AWS SDK v2 client to New in
-// package github.com/agentstation/starmap/pkg/catalogstore/s3, wrap that backend
-// with catalogstore.NewObject, and inject the resulting store through
+// package github.com/agentstation/starmap/pkg/catalogs/storage/s3, wrap that backend
+// with storage.NewObject, and inject the resulting store through
 // starmap.WithCatalogStore when constructing the client. Server construction
 // never discovers credentials, creates a storage client, or owns its lifecycle.
 package server

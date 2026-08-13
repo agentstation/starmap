@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/agentstation/starmap/pkg/catalogmeta"
 	"github.com/agentstation/starmap/pkg/catalogs"
+	"github.com/agentstation/starmap/pkg/catalogs/evidence"
 	"github.com/agentstation/starmap/pkg/differ"
 	"github.com/agentstation/starmap/pkg/provenance"
 	"github.com/agentstation/starmap/pkg/sources"
@@ -31,7 +31,7 @@ type Result struct {
 	// Issues
 	Errors           []error
 	Warnings         []string
-	ReviewCandidates []catalogmeta.ReviewCandidate
+	ReviewCandidates []evidence.ReviewCandidate
 }
 
 // ResultMetadata contains metadata about the reconciliation process.
@@ -111,7 +111,7 @@ func NewResult() *Result {
 		Provenance:        make(provenance.Map),
 		Errors:            []error{},
 		Warnings:          []string{},
-		ReviewCandidates:  []catalogmeta.ReviewCandidate{},
+		ReviewCandidates:  []evidence.ReviewCandidate{},
 		Metadata: ResultMetadata{
 			StartTime: time.Now(),
 			Sources:   []sources.ID{},

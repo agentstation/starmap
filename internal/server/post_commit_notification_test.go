@@ -19,11 +19,11 @@ import (
 	"github.com/agentstation/starmap"
 	"github.com/agentstation/starmap/internal/server/sse"
 	"github.com/agentstation/starmap/pkg/catalogs"
-	"github.com/agentstation/starmap/pkg/catalogstore"
+	"github.com/agentstation/starmap/pkg/catalogs/storage"
 )
 
 func TestPostCommitNotificationCorrespondsAcrossHTTPSSEAndCacheDespiteHookFaults(t *testing.T) {
-	store := catalogstore.NewMemory()
+	store := storage.NewMemory()
 	update := serverCatalogUpdate(func(candidate *catalogs.Builder) error {
 		return candidate.SetProvider(catalogs.Provider{
 			ID: "correspondence", Name: "Correspondence",

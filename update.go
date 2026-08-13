@@ -5,9 +5,8 @@ import (
 	"slices"
 	"time"
 
-	"github.com/agentstation/starmap/pkg/catalogmeta"
 	"github.com/agentstation/starmap/pkg/catalogs"
-	"github.com/agentstation/starmap/pkg/catalogstore"
+	catalogevidence "github.com/agentstation/starmap/pkg/catalogs/evidence"
 	"github.com/agentstation/starmap/pkg/errors"
 )
 
@@ -15,7 +14,7 @@ import (
 // observations and excluded model review candidates.
 type CandidateEvidence struct {
 	SourceObservations []catalogs.SourceObservationLink
-	ReviewCandidates   []catalogmeta.ReviewCandidate
+	ReviewCandidates   []catalogevidence.ReviewCandidate
 }
 
 // Candidate is a complete immutable catalog prepared off to the side for one
@@ -48,8 +47,8 @@ func NewCandidate(
 			)
 		}
 	}
-	reviewCandidates := append([]catalogmeta.ReviewCandidate(nil), evidence.ReviewCandidates...)
-	slices.SortFunc(reviewCandidates, catalogmeta.CompareReviewCandidates)
+	reviewCandidates := append([]catalogevidence.ReviewCandidate(nil), evidence.ReviewCandidates...)
+	slices.SortFunc(reviewCandidates, catalogevidence.CompareReviewCandidates)
 	if len(reviewCandidates) > 0 {
 		if err := catalogs.ValidateReviewCandidates(reviewCandidates, evidence.SourceObservations); err != nil {
 			return nil, errors.WrapResource(
@@ -124,7 +123,7 @@ func (c *Client) Update(ctx context.Context, update UpdateFunc) (Publication, er
 
 // Activate validates, durably commits, and atomically activates an immutable
 // generation obtained by an explicit trusted distribution adapter.
-func (c *Client) Activate(ctx context.Context, generation catalogstore.Generation) (Publication, error) {
+func (c *Client) Activate(ctx context.Context, generation catalogs.Generation) (Publication, error) {
 	if c == nil {
 		return Publication{}, &errors.ValidationError{
 			Field:   "starmap.client",
@@ -153,7 +152,7 @@ func (c *Client) Activate(ctx context.Context, generation catalogstore.Generatio
 	}
 	defer release()
 
-	published, err := catalogstore.DecodeCatalogPayload(generation.Payload)
+	published, err := catalogs.DecodeCatalogPayload(generation.Payload)
 	if err != nil {
 		return Publication{}, errors.WrapResource(
 			"decode",

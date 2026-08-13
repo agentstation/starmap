@@ -11,9 +11,9 @@ import (
 	"time"
 
 	"github.com/agentstation/starmap/internal/constants"
-	"github.com/agentstation/starmap/pkg/catalogmeta"
 	"github.com/agentstation/starmap/pkg/catalogs"
-	"github.com/agentstation/starmap/pkg/catalogstore"
+	"github.com/agentstation/starmap/pkg/catalogs/evidence"
+	"github.com/agentstation/starmap/pkg/catalogs/storage"
 )
 
 func TestCatalogPathsFreshInstallAreCanonicalSeparatedAndPassive(t *testing.T) {
@@ -48,7 +48,7 @@ func TestCatalogPathsFreshInstallAreCanonicalSeparatedAndPassive(t *testing.T) {
 	if _, err := os.Stat(wantState); !os.IsNotExist(err) {
 		t.Fatalf("passive construction created %q: %v", wantState, err)
 	}
-	store, err := catalogstore.NewFilesystem(wantState)
+	store, err := storage.NewFilesystem(wantState)
 	if err != nil {
 		t.Fatalf("NewFilesystem: %v", err)
 	}
@@ -137,7 +137,7 @@ func TestCatalogWorkspaceMigrationAndRestartPreserveExactGeneration(t *testing.T
 	t.Setenv("HOME", home)
 	workspace := filepath.Join(home, ".starmap", "catalog")
 	state := filepath.Join(home, ".starmap", "state", "catalog")
-	store, err := catalogstore.NewFilesystem(workspace)
+	store, err := storage.NewFilesystem(workspace)
 	if err != nil {
 		t.Fatalf("NewFilesystem legacy: %v", err)
 	}
@@ -185,7 +185,7 @@ func TestCatalogWorkspaceMigrationAndRestartPreserveExactGeneration(t *testing.T
 	if after := appCatalogTree(t, workspace); !reflect.DeepEqual(after, beforeRestart) {
 		t.Fatalf("second restart changed workspace:\nbefore=%v\nafter=%v", beforeRestart, after)
 	}
-	relocated, err := catalogstore.NewFilesystem(state)
+	relocated, err := storage.NewFilesystem(state)
 	if err != nil {
 		t.Fatalf("NewFilesystem relocated: %v", err)
 	}
@@ -199,7 +199,7 @@ func TestRestartCompletesProjectionAfterMigrationMove(t *testing.T) {
 	t.Setenv("HOME", home)
 	workspace := filepath.Join(home, ".starmap", "catalog")
 	state := filepath.Join(home, ".starmap", "state", "catalog")
-	store, err := catalogstore.NewFilesystem(workspace)
+	store, err := storage.NewFilesystem(workspace)
 	if err != nil {
 		t.Fatalf("NewFilesystem legacy: %v", err)
 	}
@@ -236,7 +236,7 @@ func TestRestartCompletesProjectionAfterMigrationMove(t *testing.T) {
 
 func assertCatalogPayload(t *testing.T, catalog *catalogs.Catalog, want []byte) {
 	t.Helper()
-	got, err := catalogstore.EncodeCatalogPayload(catalog)
+	got, err := catalogs.EncodeCatalogPayload(catalog)
 	if err != nil {
 		t.Fatalf("EncodeCatalogPayload: %v", err)
 	}
@@ -272,7 +272,7 @@ func appCatalogTree(t *testing.T, root string) map[string]string {
 	return contents
 }
 
-func validCatalogGeneration(t *testing.T, id string) catalogstore.Generation {
+func validCatalogGeneration(t *testing.T, id string) catalogs.Generation {
 	t.Helper()
 	builder := catalogs.NewEmpty()
 	author := catalogs.Author{ID: "test-author", Name: "Test Author"}
@@ -303,13 +303,13 @@ func validCatalogGeneration(t *testing.T, id string) catalogstore.Generation {
 	if err != nil {
 		t.Fatalf("Build: %v", err)
 	}
-	payload, err := catalogstore.EncodeCatalogPayload(catalog)
+	payload, err := catalogs.EncodeCatalogPayload(catalog)
 	if err != nil {
 		t.Fatalf("EncodeCatalogPayload: %v", err)
 	}
 	generatedAt := time.Date(2026, time.July, 10, 0, 0, 0, 0, time.UTC)
 	descriptor := catalogs.DescribeCatalogPayload(payload)
-	return catalogstore.Generation{
+	return catalogs.Generation{
 		Manifest: catalogs.GenerationManifest{
 			ManifestVersion: catalogs.CurrentGenerationManifestVersion,
 			SchemaVersion:   catalogs.CurrentCatalogSchemaVersion,
@@ -327,19 +327,19 @@ func validCatalogGeneration(t *testing.T, id string) catalogstore.Generation {
 			SyncRunID: "sync-" + id,
 			SourceObservations: []catalogs.SourceObservationLink{
 				{
-					Source:        catalogmeta.LocalCatalogID,
+					Source:        evidence.LocalCatalogID,
 					ObservationID: "observation-" + id,
 					ObservedAt:    generatedAt,
-					Revision: catalogmeta.ObservationRevision{
-						Kind:  catalogmeta.ObservationRevisionKindContentDigest,
+					Revision: evidence.ObservationRevision{
+						Kind:  evidence.ObservationRevisionKindContentDigest,
 						Value: descriptor.Checksum,
 					},
-					Completeness:     catalogmeta.ObservationCompletenessComplete,
-					Status:           catalogmeta.ObservationStatusSucceeded,
+					Completeness:     evidence.ObservationCompletenessComplete,
+					Status:           evidence.ObservationStatusSucceeded,
 					EvidenceChecksum: descriptor.Checksum,
 				},
 			},
-			ReviewCandidates: []catalogmeta.ReviewCandidate{},
+			ReviewCandidates: []evidence.ReviewCandidate{},
 			Completeness:     catalogs.GenerationCompletenessComplete,
 			ConsumerCompatibility: catalogs.ConsumerCompatibility{
 				MinSchemaVersion: catalogs.CurrentCatalogSchemaVersion,

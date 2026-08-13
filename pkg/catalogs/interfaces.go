@@ -1,7 +1,7 @@
 package catalogs
 
 import (
-	"github.com/agentstation/starmap/pkg/catalogmeta"
+	"github.com/agentstation/starmap/pkg/catalogs/evidence"
 	"github.com/agentstation/starmap/pkg/provenance"
 )
 
@@ -43,8 +43,8 @@ type ModelsReader interface {
 type ProvenanceReader interface {
 	Map() provenance.Map
 	Len() int
-	FindByField(catalogmeta.ResourceType, string, string) []provenance.Entry
-	FindByResource(catalogmeta.ResourceType, string) map[string][]provenance.Entry
+	FindByField(evidence.ResourceType, string, string) []provenance.Entry
+	FindByResource(evidence.ResourceType, string) map[string][]provenance.Entry
 	FindModelField(ProviderID, string, string) []provenance.Entry
 	FindModel(ProviderID, string) map[string][]provenance.Entry
 	FormatYAML() string

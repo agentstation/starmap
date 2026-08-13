@@ -7,7 +7,6 @@ import (
 	"time"
 
 	"github.com/agentstation/starmap/pkg/catalogs"
-	"github.com/agentstation/starmap/pkg/catalogstore"
 	"github.com/agentstation/starmap/pkg/provenance"
 	"github.com/agentstation/starmap/pkg/sources"
 )
@@ -216,11 +215,11 @@ func TestF007PersistedProvenanceIsProviderModelScoped(t *testing.T) {
 		}
 	}
 
-	payload, err := catalogstore.EncodeCatalogPayload(result.Catalog)
+	payload, err := catalogs.EncodeCatalogPayload(result.Catalog)
 	if err != nil {
 		t.Fatalf("EncodeCatalogPayload: %v", err)
 	}
-	decoded, err := catalogstore.DecodeCatalogPayload(payload)
+	decoded, err := catalogs.DecodeCatalogPayload(payload)
 	if err != nil {
 		t.Fatalf("DecodeCatalogPayload: %v", err)
 	}

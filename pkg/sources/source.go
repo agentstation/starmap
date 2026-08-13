@@ -27,30 +27,26 @@ import (
 	"context"
 	"time"
 
-	"github.com/agentstation/starmap/pkg/catalogmeta"
 	"github.com/agentstation/starmap/pkg/catalogs"
+	"github.com/agentstation/starmap/pkg/catalogs/evidence"
 )
 
-// ID represents the identifier of a data source.
-// ID is a type alias for catalogmeta.SourceID to maintain backward compatibility.
-// This allows existing code to continue using sources.ID while benefiting from
-// the shared type definitions in pkg/catalogmeta.
-type ID = catalogmeta.SourceID
+// ID is the source-owned spelling of the shared evidence source identity.
+type ID = evidence.SourceID
 
-// Common source identifiers - exported as package-level constants for convenience.
+// Source identifiers use names that read clearly at the Source API.
 const (
-	ProvidersID       = catalogmeta.ProvidersID
-	ModelsDevGitID    = catalogmeta.ModelsDevGitID
-	ModelsDevHTTPID   = catalogmeta.ModelsDevHTTPID
-	LocalCatalogID    = catalogmeta.LocalCatalogID
-	ReleaseArtifactID = catalogmeta.ReleaseArtifactID
-	EmbeddedCatalogID = catalogmeta.EmbeddedCatalogID
+	ProvidersID       = evidence.ProvidersID
+	ModelsDevGitID    = evidence.ModelsDevGitID
+	ModelsDevHTTPID   = evidence.ModelsDevHTTPID
+	LocalCatalogID    = evidence.LocalCatalogID
+	ReleaseArtifactID = evidence.ReleaseArtifactID
+	EmbeddedCatalogID = evidence.EmbeddedCatalogID
 )
 
 // IDs returns all available source identifiers.
-// Delegates to catalogmeta.SourceIDs() to maintain consistency.
 func IDs() []ID {
-	return catalogmeta.SourceIDs()
+	return evidence.SourceIDs()
 }
 
 // Source observes catalog information from one configured upstream.
@@ -120,17 +116,3 @@ type DependencyStatus struct {
 	Path       string // Full path to executable if found
 	CheckError error  // Error from check command if not available
 }
-
-// ResourceType is a type alias for catalogmeta.ResourceType to maintain backward compatibility.
-// This allows existing code to continue using sources.ResourceType while benefiting from
-// the shared type definitions in pkg/catalogmeta.
-type ResourceType = catalogmeta.ResourceType
-
-// Common resource type identifiers - exported as package-level constants for convenience.
-const (
-	ResourceTypeModel            = catalogmeta.ResourceTypeModel
-	ResourceTypeProvider         = catalogmeta.ResourceTypeProvider
-	ResourceTypeAuthor           = catalogmeta.ResourceTypeAuthor
-	ResourceTypeModelDefinition  = catalogmeta.ResourceTypeModelDefinition
-	ResourceTypeProviderOffering = catalogmeta.ResourceTypeProviderOffering
-)

@@ -19,7 +19,7 @@ import (
 
 	"github.com/agentstation/starmap"
 	"github.com/agentstation/starmap/pkg/catalogs"
-	"github.com/agentstation/starmap/pkg/catalogstore"
+	"github.com/agentstation/starmap/pkg/catalogs/storage"
 	"github.com/agentstation/starmap/remote"
 	"github.com/agentstation/starmap/server"
 )
@@ -201,7 +201,7 @@ func TestFilesystemAndObjectServerStorageAreReactiveAndRestartable(t *testing.T)
 func runStorageDrill(
 	t *testing.T,
 	storageConfig StorageConfig,
-	store catalogstore.Store,
+	store storage.Store,
 	networkCalls func() int64,
 ) {
 	t.Helper()
@@ -252,7 +252,7 @@ func runStorageDrill(
 
 	subscriber, err := remote.New(remote.Config{
 		BaseURL:                   publisher.URL + "/api/v1",
-		CatalogStore:              catalogstore.NewMemory(),
+		CatalogStore:              storage.NewMemory(),
 		ExpectedHeartbeatInterval: 25 * time.Millisecond,
 		LivenessTimeout:           time.Second,
 	})

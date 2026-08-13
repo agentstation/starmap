@@ -7,7 +7,8 @@ import (
 	"time"
 
 	"github.com/agentstation/starmap"
-	"github.com/agentstation/starmap/pkg/catalogstore"
+	"github.com/agentstation/starmap/pkg/catalogs"
+	"github.com/agentstation/starmap/pkg/catalogs/storage"
 )
 
 func TestPublish(t *testing.T) {
@@ -19,7 +20,7 @@ func TestPublish(t *testing.T) {
 func TestNewContextConstructsStorageBackedClient(t *testing.T) {
 	client, err := starmap.NewContext(
 		context.Background(),
-		starmap.WithCatalogStore(catalogstore.NewMemory()),
+		starmap.WithCatalogStore(storage.NewMemory()),
 	)
 	if err != nil {
 		t.Fatalf("NewContext: %v", err)
@@ -61,7 +62,7 @@ func TestNewContextHonorsExpiredDeadline(t *testing.T) {
 
 	client, err := starmap.NewContext(
 		ctx,
-		starmap.WithCatalogStore(catalogstore.NewMemory()),
+		starmap.WithCatalogStore(storage.NewMemory()),
 	)
 	if client != nil {
 		t.Fatal("NewContext returned a client after its deadline")
@@ -74,7 +75,7 @@ func TestNewContextHonorsExpiredDeadline(t *testing.T) {
 func TestNewContextRejectsNilContext(t *testing.T) {
 	client, err := starmap.NewContext(
 		nil,
-		starmap.WithCatalogStore(catalogstore.NewMemory()),
+		starmap.WithCatalogStore(storage.NewMemory()),
 	)
 	if client != nil {
 		t.Fatal("NewContext returned a client for a nil context")
@@ -95,16 +96,16 @@ type blockingStore struct {
 	started chan struct{}
 }
 
-func (s *blockingStore) Current(ctx context.Context) (catalogstore.Generation, error) {
+func (s *blockingStore) Current(ctx context.Context) (catalogs.Generation, error) {
 	close(s.started)
 	<-ctx.Done()
-	return catalogstore.Generation{}, ctx.Err()
+	return catalogs.Generation{}, ctx.Err()
 }
 
-func (*blockingStore) Get(context.Context, string) (catalogstore.Generation, error) {
-	return catalogstore.Generation{}, errors.New("unexpected Get call")
+func (*blockingStore) Get(context.Context, string) (catalogs.Generation, error) {
+	return catalogs.Generation{}, errors.New("unexpected Get call")
 }
 
-func (*blockingStore) Commit(context.Context, catalogstore.Generation, string) error {
+func (*blockingStore) Commit(context.Context, catalogs.Generation, string) error {
 	return errors.New("unexpected Commit call")
 }

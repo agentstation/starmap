@@ -8,7 +8,7 @@ import (
 	"time"
 
 	"github.com/agentstation/starmap/internal/constants"
-	"github.com/agentstation/starmap/pkg/catalogmeta"
+	"github.com/agentstation/starmap/pkg/catalogs/evidence"
 )
 
 func TestProviderFixtureDiscoveryAndVerification(t *testing.T) {
@@ -166,8 +166,8 @@ func writeFixture(
 	checksum := fixtureChecksum(canonical)
 	writeFixtureMetadata(t, fixture.MetadataPath, FixtureMetadata{
 		Version: fixtureMetadataVersion, Provider: provider, FetchedAt: fetchedAt,
-		SourceRevision: catalogmeta.ObservationRevision{
-			Kind: catalogmeta.ObservationRevisionKindContentDigest, Value: checksum,
+		SourceRevision: evidence.ObservationRevision{
+			Kind: evidence.ObservationRevisionKindContentDigest, Value: checksum,
 		},
 		Payload: FixturePayload{Path: fixturePayloadName, Checksum: checksum},
 		MaxAge:  maxAge.String(),

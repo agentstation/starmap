@@ -10,8 +10,8 @@ import (
 	"strings"
 
 	"github.com/agentstation/starmap"
-	"github.com/agentstation/starmap/pkg/catalogartifact"
-	"github.com/agentstation/starmap/pkg/catalogstore"
+	"github.com/agentstation/starmap/pkg/catalogs/artifact"
+	"github.com/agentstation/starmap/pkg/catalogs/storage"
 )
 
 const pinnedArchiveSHA256 = "8c52cacc9bc675e076e7b04cdc3c25ff788221d37b36d653c5b72957bb53a648"
@@ -28,19 +28,19 @@ func ActivatePinned(ctx context.Context) error {
 	if err != nil {
 		return err
 	}
-	bundle, err := catalogartifact.Build(generation)
+	bundle, err := artifact.Build(generation)
 	if err != nil {
 		return err
 	}
-	release := catalogartifact.Release{
+	release := artifact.Release{
 		Archive: bundle.Data,
 		Checksum: []byte(
 			strings.TrimPrefix(bundle.Checksum, "sha256:") +
-				"  " + catalogartifact.Filename + "\n",
+				"  " + artifact.Filename + "\n",
 		),
 		Attestation: bundle.Attestation,
 	}
-	verified, err := catalogartifact.VerifyRelease(
+	verified, err := artifact.VerifyRelease(
 		ctx,
 		release,
 		pinnedVerifier{digest: pinnedArchiveSHA256},
@@ -49,7 +49,7 @@ func ActivatePinned(ctx context.Context) error {
 		return err
 	}
 
-	store := catalogstore.NewMemory()
+	store := storage.NewMemory()
 	client, err := starmap.New(starmap.WithCatalogStore(store))
 	if err != nil {
 		return err
@@ -90,7 +90,7 @@ func (v pinnedVerifier) VerifyPublisher(
 	if err := ctx.Err(); err != nil {
 		return err
 	}
-	if name != catalogartifact.Filename {
+	if name != artifact.Filename {
 		return fmt.Errorf("unexpected pinned asset %q", name)
 	}
 	actual := sha256.Sum256(data)

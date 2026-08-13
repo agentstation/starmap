@@ -13,7 +13,6 @@ import (
 	"github.com/agentstation/starmap/internal/embedded"
 	sourcepayload "github.com/agentstation/starmap/internal/sources/payload"
 	"github.com/agentstation/starmap/pkg/catalogs"
-	"github.com/agentstation/starmap/pkg/catalogstore"
 )
 
 func TestEmbeddedBootstrapManifestMatchesCanonicalCatalog(t *testing.T) {
@@ -147,7 +146,7 @@ func TestEmbeddedGenerationPayloadRoundTripsWithoutQuarantine(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Generation: %v", err)
 	}
-	catalog, err := catalogstore.DecodeCatalogPayload(generation.Payload)
+	catalog, err := catalogs.DecodeCatalogPayload(generation.Payload)
 	if err != nil {
 		var quarantine *sourcepayload.QuarantineError
 		if stderrors.As(err, &quarantine) {

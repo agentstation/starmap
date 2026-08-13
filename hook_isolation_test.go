@@ -6,11 +6,11 @@ import (
 	"testing"
 	"time"
 
-	"github.com/agentstation/starmap/pkg/catalogstore"
+	"github.com/agentstation/starmap/pkg/catalogs/storage"
 )
 
 func TestHookIsolation(t *testing.T) {
-	store := catalogstore.NewMemory()
+	store := storage.NewMemory()
 	client := newPostCommitEventClient(t, store)
 
 	blocked := make(chan struct{})

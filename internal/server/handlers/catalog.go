@@ -5,9 +5,8 @@ import (
 	"strings"
 
 	"github.com/agentstation/starmap/internal/server/response"
-	"github.com/agentstation/starmap/pkg/catalogremote"
 	"github.com/agentstation/starmap/pkg/catalogs"
-	"github.com/agentstation/starmap/pkg/catalogstore"
+	"github.com/agentstation/starmap/pkg/catalogs/remote"
 )
 
 // HandleCatalogManifest serves the current strict generation manifest.
@@ -47,17 +46,17 @@ func (h *Handlers) HandleCatalogGenerationManifest(
 func (h *Handlers) writeCatalogManifest(
 	writer http.ResponseWriter,
 	request *http.Request,
-	generation catalogstore.Generation,
+	generation catalogs.Generation,
 ) {
-	data, err := catalogremote.MarshalManifest(generation.Manifest)
+	data, err := remote.MarshalManifest(generation.Manifest)
 	if err != nil {
 		response.InternalError(writer, h.logger, err)
 		return
 	}
-	writer.Header().Set("Content-Type", catalogremote.ManifestMediaType)
+	writer.Header().Set("Content-Type", remote.ManifestMediaType)
 	writer.Header().Set("Cache-Control", "no-cache")
 	writer.Header().Set("X-Starmap-Generation-ID", generation.Manifest.GenerationID)
-	etag := catalogremote.ManifestETag(generation.Manifest.GenerationID)
+	etag := remote.ManifestETag(generation.Manifest.GenerationID)
 	writer.Header().Set("ETag", etag)
 	if headerETagMatches(request.Header.Get("If-None-Match"), etag) {
 		writer.WriteHeader(http.StatusNotModified)

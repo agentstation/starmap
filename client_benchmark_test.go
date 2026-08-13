@@ -5,7 +5,7 @@ import (
 	"testing"
 
 	"github.com/agentstation/starmap/pkg/catalogs"
-	"github.com/agentstation/starmap/pkg/catalogstore"
+	"github.com/agentstation/starmap/pkg/catalogs/storage"
 )
 
 // BenchmarkClientCatalog measures the public O(1) immutable catalog accessor.
@@ -28,7 +28,7 @@ func BenchmarkClientCatalog(b *testing.B) {
 // of the production embedded catalog through generation encoding, validation,
 // durable in-memory CAS, and atomic client activation.
 func BenchmarkClientUpdatePublication(b *testing.B) {
-	client, err := New(WithCatalogStore(catalogstore.NewMemory()))
+	client, err := New(WithCatalogStore(storage.NewMemory()))
 	if err != nil {
 		b.Fatalf("New: %v", err)
 	}

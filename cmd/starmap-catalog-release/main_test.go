@@ -12,10 +12,10 @@ import (
 	"time"
 
 	"github.com/agentstation/starmap/internal/constants"
-	"github.com/agentstation/starmap/pkg/catalogartifact"
-	"github.com/agentstation/starmap/pkg/catalogmeta"
 	"github.com/agentstation/starmap/pkg/catalogs"
-	"github.com/agentstation/starmap/pkg/catalogstore"
+	"github.com/agentstation/starmap/pkg/catalogs/artifact"
+	"github.com/agentstation/starmap/pkg/catalogs/evidence"
+	"github.com/agentstation/starmap/pkg/catalogs/storage"
 )
 
 func TestArtifactReleaseCommandStagesExactCommittedGeneration(t *testing.T) {
@@ -44,17 +44,17 @@ func TestArtifactReleaseCommandStagesExactCommittedGeneration(t *testing.T) {
 			t.Fatalf("release asset %q: %v", path, err)
 		}
 	}
-	archive, err := os.ReadFile(filepath.Join(first.Directory, catalogartifact.Filename))
+	archive, err := os.ReadFile(filepath.Join(first.Directory, artifact.Filename))
 	if err != nil {
 		t.Fatalf("ReadFile archive: %v", err)
 	}
 	statement, err := os.ReadFile(
-		filepath.Join(first.Directory, catalogartifact.AttestationFilename),
+		filepath.Join(first.Directory, artifact.AttestationFilename),
 	)
 	if err != nil {
 		t.Fatalf("ReadFile statement: %v", err)
 	}
-	staged, err := catalogartifact.Open(archive, statement)
+	staged, err := artifact.Open(archive, statement)
 	if err != nil {
 		t.Fatalf("Open staged artifact: %v", err)
 	}
@@ -141,7 +141,7 @@ func TestArtifactReleaseCommandRejectsTamperedReleaseSet(t *testing.T) {
 	if err := json.Unmarshal(output.Bytes(), &staged); err != nil {
 		t.Fatalf("Unmarshal staged report: %v", err)
 	}
-	archivePath := filepath.Join(staged.Directory, catalogartifact.Filename)
+	archivePath := filepath.Join(staged.Directory, artifact.Filename)
 	archive, err := os.ReadFile(archivePath)
 	if err != nil {
 		t.Fatalf("Read archive: %v", err)
@@ -168,7 +168,7 @@ func TestArtifactReleaseCommandRejectsTamperedDetachedStatement(t *testing.T) {
 	if err := json.Unmarshal(output.Bytes(), &staged); err != nil {
 		t.Fatalf("Unmarshal staged report: %v", err)
 	}
-	statementPath := filepath.Join(staged.Directory, catalogartifact.AttestationFilename)
+	statementPath := filepath.Join(staged.Directory, artifact.AttestationFilename)
 	statement, err := os.ReadFile(statementPath)
 	if err != nil {
 		t.Fatalf("Read detached statement: %v", err)
@@ -202,7 +202,7 @@ func TestArtifactReleaseCommandRequiresCommittedGenerationStore(t *testing.T) {
 
 func releaseFixtureStore(
 	t *testing.T,
-) (string, catalogstore.Generation) {
+) (string, catalogs.Generation) {
 	t.Helper()
 	catalog, err := catalogs.NewEmpty().Build()
 	if err != nil {
@@ -216,19 +216,19 @@ func releaseFixtureStore(
 	generatedAt := time.Date(2026, time.July, 29, 22, 0, 0, 0, time.UTC)
 	links := []catalogs.SourceObservationLink{
 		releaseObservation(
-			catalogmeta.ProvidersID,
+			evidence.ProvidersID,
 			"providers-observation",
 			descriptor.Checksum,
 			generatedAt,
 		),
 		releaseObservation(
-			catalogmeta.ModelsDevGitID,
+			evidence.ModelsDevGitID,
 			"modelsdev-observation",
 			descriptor.Checksum,
 			generatedAt,
 		),
 	}
-	generation := catalogstore.Generation{
+	generation := catalogs.Generation{
 		Manifest: catalogs.GenerationManifest{
 			ManifestVersion: catalogs.CurrentGenerationManifestVersion,
 			SchemaVersion:   catalogs.CurrentCatalogSchemaVersion,
@@ -245,7 +245,7 @@ func releaseFixtureStore(
 			},
 			SyncRunID:          "sync-exact-release",
 			SourceObservations: links,
-			ReviewCandidates:   []catalogmeta.ReviewCandidate{},
+			ReviewCandidates:   []evidence.ReviewCandidate{},
 			Completeness:       catalogs.GenerationCompletenessComplete,
 			ConsumerCompatibility: catalogs.ConsumerCompatibility{
 				MinSchemaVersion: catalogs.CurrentCatalogSchemaVersion,
@@ -255,7 +255,7 @@ func releaseFixtureStore(
 		Payload: payload,
 	}
 	storePath := filepath.Join(t.TempDir(), "store")
-	store, err := catalogstore.NewFilesystem(storePath)
+	store, err := storage.NewFilesystem(storePath)
 	if err != nil {
 		t.Fatalf("NewFilesystem: %v", err)
 	}
@@ -266,7 +266,7 @@ func releaseFixtureStore(
 }
 
 func releaseObservation(
-	source catalogmeta.SourceID,
+	source evidence.SourceID,
 	id string,
 	checksum string,
 	observedAt time.Time,
@@ -275,12 +275,12 @@ func releaseObservation(
 		Source:        source,
 		ObservationID: id,
 		ObservedAt:    observedAt,
-		Revision: catalogmeta.ObservationRevision{
-			Kind:  catalogmeta.ObservationRevisionKindContentDigest,
+		Revision: evidence.ObservationRevision{
+			Kind:  evidence.ObservationRevisionKindContentDigest,
 			Value: checksum,
 		},
-		Completeness:     catalogmeta.ObservationCompletenessComplete,
-		Status:           catalogmeta.ObservationStatusSucceeded,
+		Completeness:     evidence.ObservationCompletenessComplete,
+		Status:           evidence.ObservationStatusSucceeded,
 		EvidenceChecksum: checksum,
 	}
 }

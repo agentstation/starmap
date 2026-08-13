@@ -4,8 +4,8 @@ import (
 	"slices"
 	"strings"
 
-	"github.com/agentstation/starmap/pkg/catalogmeta"
 	"github.com/agentstation/starmap/pkg/catalogs"
+	"github.com/agentstation/starmap/pkg/catalogs/evidence"
 	"github.com/agentstation/starmap/pkg/errors"
 	"github.com/agentstation/starmap/pkg/provenance"
 )
@@ -25,9 +25,9 @@ func quarantineUnresolvedProviderOfferings(
 	catalog *catalogs.Builder,
 	baseline *catalogs.Catalog,
 	collector *collector,
-) ([]catalogmeta.ReviewCandidate, error) {
+) ([]evidence.ReviewCandidate, error) {
 	authored := authoredModelIdentities(catalog)
-	issues := make([]catalogmeta.ReviewCandidate, 0)
+	issues := make([]evidence.ReviewCandidate, 0)
 	for _, provider := range catalog.Providers().List() {
 		models := make([]*catalogs.Model, 0, len(provider.Models))
 		for _, model := range provider.Models {
@@ -71,7 +71,7 @@ func quarantineUnresolvedProviderOfferings(
 		}
 		issues = append(issues, providerIssues...)
 	}
-	slices.SortFunc(issues, catalogmeta.CompareReviewCandidates)
+	slices.SortFunc(issues, evidence.CompareReviewCandidates)
 	return issues, nil
 }
 
@@ -80,9 +80,9 @@ func resolvableProviderModels(
 	models []*catalogs.Model,
 	authored map[catalogs.ModelDefinitionID]struct{},
 	baseline map[string]*catalogs.Model,
-) ([]*catalogs.Model, []catalogmeta.ReviewCandidate, error) {
+) ([]*catalogs.Model, []evidence.ReviewCandidate, error) {
 	resolved := make([]*catalogs.Model, 0, len(models))
-	issues := make([]catalogmeta.ReviewCandidate, 0)
+	issues := make([]evidence.ReviewCandidate, 0)
 	for _, model := range models {
 		if model == nil {
 			continue
@@ -111,8 +111,8 @@ func resolvableProviderModels(
 				continue
 			}
 		}
-		issues = append(issues, catalogmeta.ReviewCandidate{
-			Code:                   catalogmeta.ReviewCandidateUnresolvedModelReference,
+		issues = append(issues, evidence.ReviewCandidate{
+			Code:                   evidence.ReviewCandidateUnresolvedModelReference,
 			ProviderID:             string(providerID),
 			ProviderModelID:        model.ID,
 			Reason:                 unresolvedModelReferenceMessage,
@@ -134,13 +134,13 @@ func providerModelMap(models []*catalogs.Model) map[string]*catalogs.Model {
 
 func removeQuarantinedModelProvenance(
 	entries provenance.Map,
-	issues []catalogmeta.ReviewCandidate,
+	issues []evidence.ReviewCandidate,
 ) {
 	for _, issue := range issues {
-		if issue.Code != catalogmeta.ReviewCandidateUnresolvedModelReference {
+		if issue.Code != evidence.ReviewCandidateUnresolvedModelReference {
 			continue
 		}
-		prefix := string(catalogmeta.ResourceTypeModel) + ":" + provenance.ModelResourceID(
+		prefix := string(evidence.ResourceTypeModel) + ":" + provenance.ModelResourceID(
 			issue.ProviderID,
 			issue.ProviderModelID,
 		) + ":"

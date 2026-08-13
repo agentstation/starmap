@@ -9,8 +9,8 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/agentstation/starmap/pkg/catalogstore"
 	"github.com/agentstation/starmap/internal/constants"
+	"github.com/agentstation/starmap/pkg/catalogs/storage"
 	pkgerrors "github.com/agentstation/starmap/pkg/errors"
 	pkgsync "github.com/agentstation/starmap/pkg/sync"
 )
@@ -36,7 +36,7 @@ func TestNewRejectsLegacyGenerationLayoutBeforeAnyMutation(t *testing.T) {
 	}
 	before := filesystemContents(t, workspace)
 	statePath := filepath.Join(root, "state", "catalog")
-	store, err := catalogstore.NewFilesystem(statePath)
+	store, err := storage.NewFilesystem(statePath)
 	if err != nil {
 		t.Fatalf("NewFilesystem: %v", err)
 	}
@@ -75,7 +75,7 @@ func TestSyncRejectsExplicitLegacyWorkspaceBeforeGenerationCommit(t *testing.T) 
 		t.Fatalf("Write current: %v", err)
 	}
 	before := filesystemContents(t, workspace)
-	store := catalogstore.NewMemory()
+	store := storage.NewMemory()
 	opts, err := defaults().apply(WithCatalogStore(store))
 	if err != nil {
 		t.Fatalf("apply options: %v", err)

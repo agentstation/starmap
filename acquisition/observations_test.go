@@ -7,12 +7,12 @@ import (
 
 	"github.com/agentstation/starmap"
 	"github.com/agentstation/starmap/pkg/catalogs"
-	"github.com/agentstation/starmap/pkg/catalogstore"
+	"github.com/agentstation/starmap/pkg/catalogs/storage"
 	"github.com/agentstation/starmap/pkg/sources"
 )
 
 func TestPublishObservationsCommitsTenantOfferingGeneration(t *testing.T) {
-	client, err := starmap.New(starmap.WithCatalogStore(catalogstore.NewMemory()))
+	client, err := starmap.New(starmap.WithCatalogStore(storage.NewMemory()))
 	if err != nil {
 		t.Fatalf("New: %v", err)
 	}
@@ -113,7 +113,7 @@ func TestPublishObservationsCommitsTenantOfferingGeneration(t *testing.T) {
 }
 
 func TestPublishObservationsPersistsReviewCandidateWithoutCatalogChange(t *testing.T) {
-	client, err := starmap.New(starmap.WithCatalogStore(catalogstore.NewMemory()))
+	client, err := starmap.New(starmap.WithCatalogStore(storage.NewMemory()))
 	if err != nil {
 		t.Fatalf("New: %v", err)
 	}

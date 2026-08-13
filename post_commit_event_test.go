@@ -8,7 +8,7 @@ import (
 	"time"
 
 	"github.com/agentstation/starmap/pkg/catalogs"
-	"github.com/agentstation/starmap/pkg/catalogstore"
+	"github.com/agentstation/starmap/pkg/catalogs/storage"
 	pkgerrors "github.com/agentstation/starmap/pkg/errors"
 )
 
@@ -105,7 +105,7 @@ func TestPostCommitEventOrdering(t *testing.T) {
 }
 
 type commitGateStore struct {
-	*catalogstore.Memory
+	*storage.Memory
 	entered chan struct{}
 	release chan struct{}
 	fail    bool
@@ -114,14 +114,14 @@ type commitGateStore struct {
 
 func newCommitGateStore(fail bool) *commitGateStore {
 	return &commitGateStore{
-		Memory:  catalogstore.NewMemory(),
+		Memory:  storage.NewMemory(),
 		entered: make(chan struct{}),
 		release: make(chan struct{}),
 		fail:    fail,
 	}
 }
 
-func (s *commitGateStore) Commit(ctx context.Context, generation catalogstore.Generation, expected string) error {
+func (s *commitGateStore) Commit(ctx context.Context, generation catalogs.Generation, expected string) error {
 	s.once.Do(func() { close(s.entered) })
 	select {
 	case <-s.release:
@@ -134,7 +134,7 @@ func (s *commitGateStore) Commit(ctx context.Context, generation catalogstore.Ge
 	return s.Memory.Commit(ctx, generation, expected)
 }
 
-func newPostCommitEventClient(t testing.TB, store catalogstore.Store) *Client {
+func newPostCommitEventClient(t testing.TB, store storage.Store) *Client {
 	t.Helper()
 	client, err := New(
 		WithCatalogStore(store),

@@ -8,10 +8,11 @@ import (
 	"testing"
 
 	"github.com/agentstation/starmap"
-	"github.com/agentstation/starmap/pkg/catalogartifact"
-	"github.com/agentstation/starmap/pkg/catalogmeta"
 	"github.com/agentstation/starmap/pkg/catalogs"
-	"github.com/agentstation/starmap/pkg/catalogstore"
+	"github.com/agentstation/starmap/pkg/catalogs/artifact"
+	"github.com/agentstation/starmap/pkg/catalogs/evidence"
+	"github.com/agentstation/starmap/pkg/catalogs/projection"
+	"github.com/agentstation/starmap/pkg/catalogs/storage"
 	pkgerrors "github.com/agentstation/starmap/pkg/errors"
 )
 
@@ -27,7 +28,7 @@ func (v *importPublisherVerifier) VerifyPublisher(
 	data []byte,
 ) error {
 	v.calls++
-	if name != catalogartifact.Filename || len(data) == 0 ||
+	if name != artifact.Filename || len(data) == 0 ||
 		(v.want != nil && !bytes.Equal(data, v.want)) {
 		return stderrors.New("unexpected publisher subject")
 	}
@@ -45,7 +46,7 @@ func TestImportReleaseVerifiesReconcilesPublishesAndRollsBack(t *testing.T) {
 	}
 	baseline := buildImportCatalog(t, baselineBuilder)
 
-	store := catalogstore.NewMemory()
+	store := storage.NewMemory()
 	client, err := starmap.New(
 		starmap.WithCatalogStore(store),
 		starmap.WithCatalogPath(workspacePath),
@@ -91,7 +92,7 @@ func TestImportReleaseVerifiesReconcilesPublishesAndRollsBack(t *testing.T) {
 		t.Fatalf("import result = %#v", result)
 	}
 	if result.Projection == nil ||
-		result.Projection.Status != catalogmeta.ProjectionStatusApplied {
+		result.Projection.Status != projection.StatusApplied {
 		t.Fatalf("workspace projection = %#v, want applied", result.Projection)
 	}
 
@@ -122,7 +123,7 @@ func TestImportReleaseVerifiesReconcilesPublishesAndRollsBack(t *testing.T) {
 	}
 	var releaseLinkFound bool
 	for _, observation := range current.Manifest.SourceObservations {
-		if observation.Source == catalogmeta.ReleaseArtifactID {
+		if observation.Source == evidence.ReleaseArtifactID {
 			releaseLinkFound = true
 			if observation.Revision.Value != result.SourceGenerationID {
 				t.Fatalf("release revision = %#v", observation.Revision)
@@ -139,7 +140,7 @@ func TestImportReleaseVerifiesReconcilesPublishesAndRollsBack(t *testing.T) {
 		t.Fatalf("EncodeCatalogPayload before failure: %v", err)
 	}
 	tampered := release
-	tampered.Checksum = []byte("0  " + catalogartifact.Filename + "\n")
+	tampered.Checksum = []byte("0  " + artifact.Filename + "\n")
 	if _, err := syncer.ImportRelease(ctx, tampered, verifier); err == nil {
 		t.Fatal("tampered release import succeeded")
 	}
@@ -175,7 +176,7 @@ func TestImportReleasePublisherFailureCannotMutateClient(t *testing.T) {
 	t.Parallel()
 
 	ctx := context.Background()
-	store := catalogstore.NewMemory()
+	store := storage.NewMemory()
 	client, err := starmap.New(starmap.WithCatalogStore(store))
 	if err != nil {
 		t.Fatalf("New client: %v", err)
@@ -293,9 +294,9 @@ func buildImportCatalog(t testing.TB, builder *catalogs.Builder) *catalogs.Catal
 func importReleaseFixture(
 	t testing.TB,
 	catalog *catalogs.Catalog,
-) catalogartifact.Release {
+) artifact.Release {
 	t.Helper()
-	producerStore := catalogstore.NewMemory()
+	producerStore := storage.NewMemory()
 	producer, err := starmap.New(starmap.WithCatalogStore(producerStore))
 	if err != nil {
 		t.Fatalf("New producer: %v", err)
@@ -312,13 +313,13 @@ func importReleaseFixture(
 	if err != nil {
 		t.Fatalf("producer CurrentGeneration: %v", err)
 	}
-	bundle, err := catalogartifact.Build(generation)
+	bundle, err := artifact.Build(generation)
 	if err != nil {
 		t.Fatalf("Build artifact: %v", err)
 	}
-	return catalogartifact.Release{
+	return artifact.Release{
 		Archive:     bundle.Data,
-		Checksum:    []byte(strings.TrimPrefix(bundle.Checksum, "sha256:") + "  " + catalogartifact.Filename + "\n"),
+		Checksum:    []byte(strings.TrimPrefix(bundle.Checksum, "sha256:") + "  " + artifact.Filename + "\n"),
 		Attestation: bundle.Attestation,
 	}
 }

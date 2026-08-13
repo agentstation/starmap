@@ -8,7 +8,7 @@ import (
 	"testing"
 
 	"github.com/agentstation/starmap/pkg/catalogs"
-	"github.com/agentstation/starmap/pkg/catalogstore"
+	"github.com/agentstation/starmap/pkg/catalogs/storage"
 	starmaperrors "github.com/agentstation/starmap/pkg/errors"
 	"github.com/agentstation/starmap/pkg/sources"
 	pkgsync "github.com/agentstation/starmap/pkg/sync"
@@ -17,7 +17,7 @@ import (
 func TestFirstExplicitUpdateAtomicallySeedsAbsentWorkspaceFromEmbedded(t *testing.T) {
 	root := t.TempDir()
 	path := filepath.Join(root, "catalog")
-	store := catalogstore.NewMemory()
+	store := storage.NewMemory()
 	client, err := New(
 		WithCatalogStore(store),
 		WithCatalogPath(path),

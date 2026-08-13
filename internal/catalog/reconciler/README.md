@@ -21,7 +21,7 @@ Package reconciler provides catalog synchronization and reconciliation capabilit
 - [type AuthorityStrategy](<#AuthorityStrategy>)
   - [func NewAuthorityStrategy\(authorities authority.Reader\) \*AuthorityStrategy](<#NewAuthorityStrategy>)
   - [func \(s \*AuthorityStrategy\) ResolveConflict\(field string, values map\[sources.ID\]any\) \(any, sources.ID, string\)](<#AuthorityStrategy.ResolveConflict>)
-  - [func \(s \*AuthorityStrategy\) ResolveResourceConflict\(resourceType sources.ResourceType, field string, values map\[sources.ID\]any\) \(any, sources.ID, string\)](<#AuthorityStrategy.ResolveResourceConflict>)
+  - [func \(s \*AuthorityStrategy\) ResolveResourceConflict\(resourceType evidence.ResourceType, field string, values map\[sources.ID\]any\) \(any, sources.ID, string\)](<#AuthorityStrategy.ResolveResourceConflict>)
 - [type Option](<#Option>)
   - [func WithAuthorities\(authorities authority.Reader\) Option](<#WithAuthorities>)
   - [func WithBaseline\(catalog \*catalogs.Catalog\) Option](<#WithBaseline>)
@@ -65,7 +65,7 @@ func NewMockSource(sourceType sources.ID, catalog *catalogs.Builder) sources.Obs
 NewMockSource creates a direct observation for testing.
 
 <a name="AuthorityStrategy"></a>
-## type [AuthorityStrategy](<https://github.com/agentstation/starmap/blob/main/internal/catalog/reconciler/strategy.go#L14-L16>)
+## type [AuthorityStrategy](<https://github.com/agentstation/starmap/blob/main/internal/catalog/reconciler/strategy.go#L15-L17>)
 
 AuthorityStrategy resolves every conflict through the canonical field authority table and deterministic fallbacks.
 
@@ -76,7 +76,7 @@ type AuthorityStrategy struct {
 ```
 
 <a name="NewAuthorityStrategy"></a>
-### func [NewAuthorityStrategy](<https://github.com/agentstation/starmap/blob/main/internal/catalog/reconciler/strategy.go#L19>)
+### func [NewAuthorityStrategy](<https://github.com/agentstation/starmap/blob/main/internal/catalog/reconciler/strategy.go#L20>)
 
 ```go
 func NewAuthorityStrategy(authorities authority.Reader) *AuthorityStrategy
@@ -85,7 +85,7 @@ func NewAuthorityStrategy(authorities authority.Reader) *AuthorityStrategy
 NewAuthorityStrategy creates the canonical authority strategy.
 
 <a name="AuthorityStrategy.ResolveConflict"></a>
-### func \(\*AuthorityStrategy\) [ResolveConflict](<https://github.com/agentstation/starmap/blob/main/internal/catalog/reconciler/strategy.go#L24-L27>)
+### func \(\*AuthorityStrategy\) [ResolveConflict](<https://github.com/agentstation/starmap/blob/main/internal/catalog/reconciler/strategy.go#L25-L28>)
 
 ```go
 func (s *AuthorityStrategy) ResolveConflict(field string, values map[sources.ID]any) (any, sources.ID, string)
@@ -94,10 +94,10 @@ func (s *AuthorityStrategy) ResolveConflict(field string, values map[sources.ID]
 ResolveConflict resolves a model field conflict.
 
 <a name="AuthorityStrategy.ResolveResourceConflict"></a>
-### func \(\*AuthorityStrategy\) [ResolveResourceConflict](<https://github.com/agentstation/starmap/blob/main/internal/catalog/reconciler/strategy.go#L32-L36>)
+### func \(\*AuthorityStrategy\) [ResolveResourceConflict](<https://github.com/agentstation/starmap/blob/main/internal/catalog/reconciler/strategy.go#L33-L37>)
 
 ```go
-func (s *AuthorityStrategy) ResolveResourceConflict(resourceType sources.ResourceType, field string, values map[sources.ID]any) (any, sources.ID, string)
+func (s *AuthorityStrategy) ResolveResourceConflict(resourceType evidence.ResourceType, field string, values map[sources.ID]any) (any, sources.ID, string)
 ```
 
 ResolveResourceConflict resolves a resource field conflict.
@@ -192,7 +192,7 @@ type Result struct {
     // Issues
     Errors           []error
     Warnings         []string
-    ReviewCandidates []catalogmeta.ReviewCandidate
+    ReviewCandidates []evidence.ReviewCandidate
 }
 ```
 
@@ -299,7 +299,7 @@ ValidationError represents a validation error.
 
 ```go
 type ValidationError struct {
-    ResourceType sources.ResourceType
+    ResourceType evidence.ResourceType
     ResourceID   string
     Field        string
     Message      string
@@ -353,7 +353,7 @@ ValidationWarning represents a validation warning.
 
 ```go
 type ValidationWarning struct {
-    ResourceType sources.ResourceType
+    ResourceType evidence.ResourceType
     ResourceID   string
     Field        string
     Message      string

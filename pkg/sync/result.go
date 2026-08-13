@@ -4,29 +4,30 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/agentstation/starmap/pkg/catalogmeta"
 	"github.com/agentstation/starmap/pkg/catalogs"
+	"github.com/agentstation/starmap/pkg/catalogs/evidence"
+	"github.com/agentstation/starmap/pkg/catalogs/projection"
 	"github.com/agentstation/starmap/pkg/differ"
 	"github.com/agentstation/starmap/pkg/provenance"
 	"github.com/agentstation/starmap/pkg/sources"
 )
 
-// ProjectionStatus is retained as the acquisition-result spelling of the
-// shared catalog lifecycle type.
-type ProjectionStatus = catalogmeta.ProjectionStatus
+// ProjectionStatus is the synchronization spelling of the shared projection
+// lifecycle type.
+type ProjectionStatus = projection.Status
 
 const (
 	// ProjectionStatusApplied reports that the workspace projection was written.
-	ProjectionStatusApplied = catalogmeta.ProjectionStatusApplied
+	ProjectionStatusApplied = projection.StatusApplied
 	// ProjectionStatusPendingRepair reports that publication succeeded but the
 	// workspace projection needs repair.
-	ProjectionStatusPendingRepair = catalogmeta.ProjectionStatusPendingRepair
+	ProjectionStatusPendingRepair = projection.StatusPendingRepair
 	// ProjectionIssueWorkspaceFailed identifies a workspace projection failure.
-	ProjectionIssueWorkspaceFailed = catalogmeta.ProjectionIssueWorkspaceFailed
+	ProjectionIssueWorkspaceFailed = projection.IssueWorkspaceFailed
 )
 
 // ProjectionResult is the optional post-commit workspace projection result.
-type ProjectionResult = catalogmeta.ProjectionResult
+type ProjectionResult = projection.Result
 
 var modelProvenanceFieldSuffixes = []string{
 	"limits.context_window",
@@ -71,7 +72,7 @@ type Result struct {
 	Projection         *ProjectionResult
 	// ReviewCandidates contains deterministic non-fatal records excluded
 	// from the published canonical catalog after source authority resolution.
-	ReviewCandidates []catalogmeta.ReviewCandidate
+	ReviewCandidates []evidence.ReviewCandidate
 }
 
 // ProviderResult represents sync results for a single provider.

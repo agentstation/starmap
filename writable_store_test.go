@@ -9,7 +9,7 @@ import (
 	"testing"
 
 	"github.com/agentstation/starmap/pkg/catalogs"
-	"github.com/agentstation/starmap/pkg/catalogstore"
+	"github.com/agentstation/starmap/pkg/catalogs/storage"
 	pkgerrors "github.com/agentstation/starmap/pkg/errors"
 	"github.com/agentstation/starmap/pkg/sources"
 	pkgsync "github.com/agentstation/starmap/pkg/sync"
@@ -87,7 +87,7 @@ func TestWritableStoreAllowsConfiguredMutationTriggers(t *testing.T) {
 		}
 
 		opts := defaults()
-		opts.catalogStore = catalogstore.NewMemory()
+		opts.catalogStore = storage.NewMemory()
 		client := newWritableStoreTestClient(t, opts)
 		result, err := client.Sync(
 			context.Background(),
@@ -106,7 +106,7 @@ func TestWritableStoreAllowsConfiguredMutationTriggers(t *testing.T) {
 	t.Run("custom update", func(t *testing.T) {
 		var calls atomic.Int32
 		opts := defaults()
-		opts.catalogStore = catalogstore.NewMemory()
+		opts.catalogStore = storage.NewMemory()
 		client := newWritableStoreTestClient(t, opts)
 		publication, err := client.Update(context.Background(), func(
 			_ context.Context,
@@ -128,7 +128,7 @@ func TestWritableStoreAllowsConfiguredMutationTriggers(t *testing.T) {
 
 	t.Run("generation activation", func(t *testing.T) {
 		opts := defaults()
-		opts.catalogStore = catalogstore.NewMemory()
+		opts.catalogStore = storage.NewMemory()
 		client := newWritableStoreTestClient(t, opts)
 		publication, err := client.Activate(context.Background(), rootRemoteGeneration(t))
 		if err != nil {
@@ -141,8 +141,8 @@ func TestWritableStoreAllowsConfiguredMutationTriggers(t *testing.T) {
 }
 
 func TestWithCatalogStoreRejectsNilImplementations(t *testing.T) {
-	var typedNil *catalogstore.Memory
-	for name, store := range map[string]catalogstore.Store{
+	var typedNil *storage.Memory
+	for name, store := range map[string]storage.Store{
 		"nil interface": nil,
 		"typed nil":     typedNil,
 	} {

@@ -8,9 +8,9 @@ import (
 	"time"
 
 	"github.com/agentstation/starmap/internal/catalog/workspace"
-	"github.com/agentstation/starmap/pkg/catalogmeta"
 	"github.com/agentstation/starmap/pkg/catalogs"
-	"github.com/agentstation/starmap/pkg/catalogstore"
+	catalogprojection "github.com/agentstation/starmap/pkg/catalogs/projection"
+	"github.com/agentstation/starmap/pkg/catalogs/storage"
 	"github.com/agentstation/starmap/pkg/sources"
 )
 
@@ -31,7 +31,7 @@ func TestSave(t *testing.T) {
 
 func TestSaveReturnsNilAfterSuccessfulCatalogSave(t *testing.T) {
 	generation := rootRemoteGeneration(t)
-	store := catalogstore.NewMemory()
+	store := storage.NewMemory()
 	if err := store.Commit(context.Background(), generation, ""); err != nil {
 		t.Fatalf("Commit generation: %v", err)
 	}
@@ -78,7 +78,7 @@ func TestProjectionFailureLeavesCommittedGenerationActiveAndReportsRepair(t *tes
 		t.Fatalf("Failed to create blocking file: %v", err)
 	}
 
-	store := catalogstore.NewMemory()
+	store := storage.NewMemory()
 	opts := defaults()
 	opts.catalogStore = store
 	c := newWritableStoreTestClient(t, opts)
@@ -104,8 +104,8 @@ func TestProjectionFailureLeavesCommittedGenerationActiveAndReportsRepair(t *tes
 		},
 		workspace.InputExpectation{},
 	)
-	if projection.Status != catalogmeta.ProjectionStatusPendingRepair ||
-		projection.IssueCode != catalogmeta.ProjectionIssueWorkspaceFailed {
+	if projection.Status != catalogprojection.StatusPendingRepair ||
+		projection.IssueCode != catalogprojection.IssueWorkspaceFailed {
 		t.Fatalf("projection = %#v, want pending repair", projection)
 	}
 	current, err := store.Current(context.Background())
@@ -126,7 +126,7 @@ func TestSuccessfulProjectionReportsCommittedGenerationAndWorkspaceDigest(t *tes
 	if err := candidate.SetProvider(catalogs.Provider{ID: "projected", Name: "Projected Provider"}); err != nil {
 		t.Fatalf("SetProvider: %v", err)
 	}
-	store := catalogstore.NewMemory()
+	store := storage.NewMemory()
 	opts := defaults()
 	opts.catalogStore = store
 	client := newWritableStoreTestClient(t, opts)
@@ -153,7 +153,7 @@ func TestSuccessfulProjectionReportsCommittedGenerationAndWorkspaceDigest(t *tes
 		},
 		workspace.InputExpectation{},
 	)
-	if projection.Status != catalogmeta.ProjectionStatusApplied {
+	if projection.Status != catalogprojection.StatusApplied {
 		t.Fatalf("projection = %#v, want applied", projection)
 	}
 	if projection.GenerationID != publication.GenerationID {
@@ -183,7 +183,7 @@ func TestSuccessfulProjectionReportsCommittedGenerationAndWorkspaceDigest(t *tes
 }
 
 func TestStoreOnlyApplyCommitsWithoutWorkspaceAccess(t *testing.T) {
-	store := catalogstore.NewMemory()
+	store := storage.NewMemory()
 	opts := defaults()
 	opts.catalogStore = store
 	client := newWritableStoreTestClient(t, opts)
@@ -242,7 +242,7 @@ func TestNewRepairsStaleProjectionFromDurableCurrentWithoutRepublishing(t *testi
 		t.Fatalf("Project old workspace: %v", err)
 	}
 
-	store := catalogstore.NewMemory()
+	store := storage.NewMemory()
 	current := rootRemoteGeneration(t)
 	if err := store.Commit(context.Background(), current, ""); err != nil {
 		t.Fatalf("Commit durable current: %v", err)
