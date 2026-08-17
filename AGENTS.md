@@ -386,15 +386,29 @@ go test ./... -race -short                 # All packages with race detector
 ### Verification gates
 
 ```bash
-make verify                                 # scripts/verify.sh runs every automated gate
-bash scripts/verify-live-providers.sh       # Manual only: calls live provider APIs
+make verify                                     # scripts/verify.sh runs every automated gate
+bash scripts/verify-live-providers.sh           # Manual only: calls live provider APIs
+bash scripts/verify-provider-fixture-drift.sh   # Manual only: calls live provider APIs
 ```
 
-`make verify` owns every `scripts/verify-*.sh` gate except
-`verify-live-providers.sh`, which needs real provider credentials and cannot run
-in CI. Run it by hand before a provider client change. A gate that no workflow
-runs cannot report a regression, so add each new gate to `scripts/verify.sh` or
-name it here.
+`make verify` owns every `scripts/verify-*.sh` gate except the two gates above.
+Both need real catalog-acquisition credentials, which no workflow holds today, so
+run them by hand before a provider client change. A gate that no workflow runs
+cannot report a regression, so add each new gate to `scripts/verify.sh` or name
+it here.
+
+`verify-provider-fixture-drift.sh` owns the fixture maximum-age and wire-drift
+policy. Offline tests stay hermetic: `Fixture.Verify` checks identity, bytes, and
+the content digest, and never consults the calendar. `Fixture.VerifyFreshness`
+enforces `max_age`, and only this credentialed gate calls it, because only a live
+capture can clear a stale or drifted fixture. Clear a reported fixture with
+`make testdata PROVIDER=<provider-id>`.
+
+The Anthropic client uses a custom protocol, so its fixture lives at
+`internal/providers/anthropic/testdata/`. Its tests verify the same hermetic
+contract, but `make testdata` and the drift gate cover OpenAI-compatible
+providers only, so refresh that fixture by hand until an Anthropic capture path
+exists.
 
 ### Catalog Management
 

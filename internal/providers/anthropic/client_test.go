@@ -2,10 +2,8 @@ package anthropic
 
 import (
 	"context"
-	"encoding/json"
 	"net/http"
 	"net/http/httptest"
-	"os"
 	"path/filepath"
 	"slices"
 	"testing"
@@ -13,6 +11,7 @@ import (
 
 	sourcepayload "github.com/agentstation/starmap/internal/sources/payload"
 	testcatalog "github.com/agentstation/starmap/internal/test/catalog"
+	"github.com/agentstation/starmap/internal/test/providerfixture"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/sources"
 )
@@ -82,7 +81,7 @@ func testAnthropicMaterial(provider *catalogs.Provider) sources.ProviderCredenti
 
 func TestAnthropicParsing(t *testing.T) {
 	// Load testdata response
-	response := loadTestdataResponse(t, "models_list.json")
+	response := loadTestdataResponse(t)
 
 	// Verify we can parse the raw response
 	if len(response.Data) == 0 {
@@ -112,7 +111,7 @@ func TestAnthropicParsing(t *testing.T) {
 
 func TestAnthropicModelConversion(t *testing.T) {
 	// Load testdata and convert to starmap models
-	response := loadTestdataResponse(t, "models_list.json")
+	response := loadTestdataResponse(t)
 
 	// Create a client to test conversion
 	client := &Client{}
@@ -223,7 +222,7 @@ func TestAnthropicModelConversionPreservesCapabilityFields(t *testing.T) {
 
 func TestAnthropicAPIFormatChanges(t *testing.T) {
 	// This test helps detect if Anthropic changes their API format
-	response := loadTestdataResponse(t, "models_list.json")
+	response := loadTestdataResponse(t)
 
 	// Check for expected structure
 	if response.Data == nil {
@@ -272,17 +271,25 @@ func mustParseAnthropicTime(t *testing.T, value string) time.Time {
 	return parsed
 }
 
-// Helper function to load testdata response.
-func loadTestdataResponse(t *testing.T, filename string) modelsResponse {
-	testdataPath := filepath.Join("testdata", filename)
-	data, err := os.ReadFile(testdataPath)
-	if err != nil {
-		t.Fatalf("Failed to read testdata file %s: %v", testdataPath, err)
+// loadTestdataResponse replays the governed Anthropic fixture. It verifies the
+// fixture identity, payload bytes, and content digest before it decodes, so a
+// hand-edited payload cannot become the contract under test. Verification is
+// hermetic: scripts/verify-provider-fixture-drift.sh owns the maximum-age
+// policy.
+func loadTestdataResponse(t *testing.T) modelsResponse {
+	t.Helper()
+	fixture := providerfixture.Fixture{
+		Provider:     string(catalogs.ProviderIDAnthropic),
+		PayloadPath:  filepath.Join("testdata", "models_list.json"),
+		MetadataPath: filepath.Join("testdata", "models_list.metadata.json"),
+	}
+	if err := fixture.Verify(time.Now().UTC()); err != nil {
+		t.Fatalf("verify governed Anthropic fixture: %v", err)
 	}
 
 	var response modelsResponse
-	if err := json.Unmarshal(data, &response); err != nil {
-		t.Fatalf("Failed to parse testdata JSON from %s: %v", testdataPath, err)
+	if err := fixture.Decode(&response); err != nil {
+		t.Fatalf("decode governed Anthropic fixture: %v", err)
 	}
 
 	return response

@@ -1,8 +1,10 @@
 package openai_test
 
 import (
+	"encoding/json"
 	"os"
 	"reflect"
+	"sort"
 	"testing"
 	"time"
 
@@ -13,6 +15,10 @@ import (
 )
 
 const providerFixtureRoot = "testdata/providers"
+
+// fixtureCurrencyVariable selects the live fixture currency comparison. The
+// offline test path never sets it.
+const fixtureCurrencyVariable = "STARMAP_PROVIDER_FIXTURE_CURRENCY"
 
 func TestOpenAICompatibleProviderCatalogContracts(t *testing.T) {
 	fixtures, err := providerfixture.Discover(providerFixtureRoot)
@@ -158,6 +164,111 @@ func TestRefreshOpenAICompatibleProviderFixture(t *testing.T) {
 	if err := fixture.Capture(payload, capturedAt); err != nil {
 		t.Fatalf("capture provider fixture: %v", err)
 	}
+}
+
+// TestOpenAICompatibleProviderFixtureCurrency enforces the reviewed
+// maximum-age policy and compares every fixture against the live provider wire
+// shape. Only a live capture can clear a stale or drifted fixture, so this test
+// needs catalog-acquisition credentials and stays outside the offline test path.
+// scripts/verify-provider-fixture-drift.sh owns it.
+func TestOpenAICompatibleProviderFixtureCurrency(t *testing.T) {
+	if os.Getenv(fixtureCurrencyVariable) != "1" {
+		t.Skipf("set %s=1 to compare fixtures against live provider responses", fixtureCurrencyVariable)
+	}
+	fixtures, err := providerfixture.Discover(providerFixtureRoot)
+	if err != nil {
+		t.Fatalf("discover provider fixtures: %v", err)
+	}
+	builder, err := catalogs.NewEmbedded()
+	if err != nil {
+		t.Fatalf("load embedded catalog: %v", err)
+	}
+
+	for _, fixture := range fixtures {
+		fixture := fixture
+		t.Run(fixture.Provider, func(t *testing.T) {
+			t.Parallel()
+			now := time.Now().UTC()
+			age, maxAge, err := fixture.Freshness(now)
+			if err != nil {
+				t.Fatalf("read fixture freshness: %v", err)
+			}
+			t.Logf("fixture age %s of reviewed maximum %s", age.Round(time.Hour), maxAge)
+			if err := fixture.VerifyFreshness(now); err != nil {
+				t.Errorf("fixture needs a live refresh: %v", err)
+			}
+			provider, found := builder.Providers().Get(catalogs.ProviderID(fixture.Provider))
+			if !found {
+				t.Fatalf("embedded provider %q is missing", fixture.Provider)
+			}
+			recorded, err := fixture.Read()
+			if err != nil {
+				t.Fatalf("read fixture payload: %v", err)
+			}
+			fetcher := acquisition.NewProviderFetcher(builder.Providers())
+			live, _, err := fetcher.FetchRawResponse(t.Context(), provider, provider.CatalogEndpointURL())
+			if err != nil {
+				t.Fatalf("fetch live provider catalog: %v", err)
+			}
+			assertNoWireDrift(t, recorded, live)
+		})
+	}
+}
+
+// assertNoWireDrift reports provider fields that the fixture and the live
+// response do not share. Either direction means the fixture no longer mirrors
+// the provider, so the mapping contract it proves is no longer current.
+func assertNoWireDrift(t *testing.T, recorded, live []byte) {
+	t.Helper()
+	recordedFields := wireModelFields(t, "fixture", recorded)
+	liveFields := wireModelFields(t, "live response", live)
+	if absent := missingFields(recordedFields, liveFields); len(absent) > 0 {
+		t.Errorf("fixture exercises provider fields the live response no longer returns: %v", absent)
+	}
+	if added := missingFields(liveFields, recordedFields); len(added) > 0 {
+		t.Errorf("live response returns provider fields the fixture does not record: %v", added)
+	}
+}
+
+// wireModelFields returns the sorted union of member names across every model
+// object in an OpenAI-compatible list response.
+func wireModelFields(t *testing.T, label string, payload []byte) []string {
+	t.Helper()
+	var response struct {
+		Data []map[string]json.RawMessage `json:"data"`
+	}
+	if err := json.Unmarshal(payload, &response); err != nil {
+		t.Fatalf("decode %s: %v", label, err)
+	}
+	if response.Data == nil {
+		t.Fatalf("%s has a missing or null data array", label)
+	}
+	present := make(map[string]struct{})
+	for _, model := range response.Data {
+		for field := range model {
+			present[field] = struct{}{}
+		}
+	}
+	fields := make([]string, 0, len(present))
+	for field := range present {
+		fields = append(fields, field)
+	}
+	sort.Strings(fields)
+	return fields
+}
+
+func missingFields(want, have []string) []string {
+	present := make(map[string]struct{}, len(have))
+	for _, field := range have {
+		present[field] = struct{}{}
+	}
+	var absent []string
+	for _, field := range want {
+		if _, found := present[field]; !found {
+			absent = append(absent, field)
+		}
+	}
+	return absent
 }
 
 func assertProviderCatalogContract(t *testing.T, provider *catalogs.Provider) {
