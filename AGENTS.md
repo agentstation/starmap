@@ -383,6 +383,19 @@ go test ./pkg/catalogs -race -v            # Race detection
 go test ./... -race -short                 # All packages with race detector
 ```
 
+### Verification gates
+
+```bash
+make verify                                 # scripts/verify.sh runs every automated gate
+bash scripts/verify-live-providers.sh       # Manual only: calls live provider APIs
+```
+
+`make verify` owns every `scripts/verify-*.sh` gate except
+`verify-live-providers.sh`, which needs real provider credentials and cannot run
+in CI. Run it by hand before a provider client change. A gate that no workflow
+runs cannot report a regression, so add each new gate to `scripts/verify.sh` or
+name it here.
+
 ### Catalog Management
 
 ```bash
