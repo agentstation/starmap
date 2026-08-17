@@ -1,14 +1,14 @@
 cloud.google.com/go/auth
 cloud.google.com/go/secretmanager
+github.com/Azure/azure-sdk-for-go/sdk/azcore
+github.com/Azure/azure-sdk-for-go/sdk/azidentity
+github.com/Azure/azure-sdk-for-go/sdk/security/keyvault/azsecrets
 github.com/agentstation/utc
 github.com/aws/aws-sdk-go-v2
 github.com/aws/aws-sdk-go-v2/config
 github.com/aws/aws-sdk-go-v2/service/s3
 github.com/aws/aws-sdk-go-v2/service/secretsmanager
 github.com/aws/smithy-go
-github.com/Azure/azure-sdk-for-go/sdk/azcore
-github.com/Azure/azure-sdk-for-go/sdk/azidentity
-github.com/Azure/azure-sdk-for-go/sdk/security/keyvault/azsecrets
 github.com/goccy/go-yaml
 github.com/gofrs/flock
 github.com/google/go-cmp

@@ -76,6 +76,8 @@ catalogs_root_has() {
 
 # Print the sorted direct requirements of a go.mod, without their versions.
 # This reads the file itself, so it needs no module downloads and no network.
+# The sort uses the C collation, because a locale-dependent order puts mixed
+# case module paths in a different sequence on Linux and macOS.
 direct_module_paths() {
 	local file="$1"
 
@@ -93,7 +95,7 @@ direct_module_paths() {
 			if ($0 ~ /\/\/[[:space:]]*indirect/) next
 			print $2
 		}
-	' "$file" | sort
+	' "$file" | LC_ALL=C sort
 }
 
 old_paths() {

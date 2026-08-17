@@ -74,7 +74,10 @@ fi
 # update, which is what the earlier whole-file checksum did.
 MODULE_FIXTURE="$FIXTURE/module"
 mkdir -p "$MODULE_FIXTURE"
-printf '%s\n' 'example.com/kept' >"$MODULE_FIXTURE/approved.txt"
+# Upper.case sorts before lower case only in the C collation, so this pair also
+# proves the comparison does not depend on the runner's locale.
+printf '%s\n' 'example.com/Upstream' 'example.com/kept' \
+	>"$MODULE_FIXTURE/approved.txt"
 
 write_module_fixture() {
 	local version="$1"
@@ -83,6 +86,7 @@ write_module_fixture() {
 	{
 		printf 'module example.com/fixture\n\ngo 1.25.0\n\nrequire (\n'
 		printf '\texample.com/kept %s\n' "$version"
+		printf '\texample.com/Upstream v1.0.0\n'
 		printf '\texample.com/carried v0.1.0 // indirect\n'
 		if [[ -n "$extra" ]]; then
 			printf '\t%s v1.0.0\n' "$extra"
@@ -93,8 +97,10 @@ write_module_fixture() {
 
 run_module_fixture() {
 	local report="$1"
+	local locale="${2:-C}"
 
-	STARMAP_CATALOG_PACKAGE_ROOT="$MODULE_FIXTURE" \
+	LC_ALL="$locale" \
+		STARMAP_CATALOG_PACKAGE_ROOT="$MODULE_FIXTURE" \
 		STARMAP_CATALOG_DIRECT_MODULES="$MODULE_FIXTURE/approved.txt" \
 		bash "$VERIFIER" >"$report" 2>&1 || true
 }
@@ -126,6 +132,7 @@ grep -Fq 'example.com/unapproved' "$dependency_report" || {
 {
 	printf 'module example.com/fixture\n\ngo 1.25.0\n\nrequire (\n'
 	printf '\texample.com/kept v1.2.3\n'
+	printf '\texample.com/Upstream v1.0.0\n'
 	printf '\texample.com/carried v0.1.0 // indirect\n'
 	printf '\texample.com/hidden v1.0.0 // indirect\n'
 	printf ')\n'
@@ -136,5 +143,26 @@ grep -Fq 'CPO-V13 PASS:' "$indirect_report" || {
 	printf 'verifier reported an indirect requirement as a dependency change\n' >&2
 	exit 1
 }
+
+# The approved list is compared line by line, so a locale-dependent sort makes
+# the gate pass on one platform and fail on another. Assert the pin, then prove
+# it under a locale that collates differently when one is installed.
+grep -Fq 'LC_ALL=C sort' "$VERIFIER" || {
+	printf 'verifier sorts module paths without pinning the collation\n' >&2
+	exit 1
+}
+
+for locale in en_US.UTF-8 C.UTF-8; do
+	if ! locale -a 2>/dev/null | grep -Fqx "$locale"; then
+		continue
+	fi
+	write_module_fixture v1.2.3
+	locale_report="$MODULE_FIXTURE/locale.txt"
+	run_module_fixture "$locale_report" "$locale"
+	grep -Fq 'CPO-V13 PASS:' "$locale_report" || {
+		printf 'verifier module order depends on the %s locale\n' "$locale" >&2
+		exit 1
+	}
+done
 
 printf 'catalog package ownership verifier regression tests passed\n'
