@@ -2,10 +2,13 @@
 set -euo pipefail
 
 # Enforces the reviewed fixture maximum-age policy and compares every governed
-# OpenAI-compatible fixture against the live provider wire shape. Only a live
-# capture clears a stale or drifted fixture, so this gate needs
-# catalog-acquisition credentials and never runs in the offline pull-request
-# path. The scheduled catalog generation workflow owns it.
+# fixture against the live provider wire shape. Only a live capture clears a
+# stale or drifted fixture, so this gate needs catalog-acquisition credentials
+# and never runs in the offline pull-request path.
+#
+# Each provider fixture belongs to the client that proves its wire contract, so
+# this gate covers both the OpenAI-compatible clients and every custom protocol
+# client.
 #
 # Clear a reported fixture with: make testdata PROVIDER=<provider-id>
 
@@ -18,8 +21,9 @@ cd "$ROOT"
 status=0
 STARMAP_PROVIDER_FIXTURE_CURRENCY=1 \
 	GOTOOLCHAIN="${GOTOOLCHAIN:-go1.26.5}" \
-	go test ./internal/providers/openai -count=1 -v \
-	-run '^TestOpenAICompatibleProviderFixtureCurrency$' >"$OUTPUT" 2>&1 || status=$?
+	go test ./internal/providers/openai ./internal/providers/anthropic -count=1 -v \
+	-run '^(TestOpenAICompatibleProviderFixtureCurrency|TestAnthropicProviderFixtureCurrency)$' \
+	>"$OUTPUT" 2>&1 || status=$?
 
 credential_names=(
 	ALIBABA_MODEL_STUDIO_API_KEY

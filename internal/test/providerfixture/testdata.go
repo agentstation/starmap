@@ -55,6 +55,15 @@ type FixturePayload struct {
 // refresh with the test binary's -update flag.
 func UpdateRequested() bool { return *updateRequested }
 
+// CurrencyVariable selects the live fixture currency comparison. The offline
+// test path never sets it, because only catalog-acquisition credentials can
+// clear a stale or drifted fixture.
+const CurrencyVariable = "STARMAP_PROVIDER_FIXTURE_CURRENCY"
+
+// CurrencyRequested reports whether the caller explicitly selected the live
+// fixture currency comparison. scripts/verify-provider-fixture-drift.sh owns it.
+func CurrencyRequested() bool { return os.Getenv(CurrencyVariable) == "1" }
+
 // Discover returns every complete provider fixture below root in provider-ID
 // order.
 func Discover(root string) ([]Fixture, error) {

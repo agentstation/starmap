@@ -4,7 +4,6 @@ import (
 	"context"
 	"net/http"
 	"net/http/httptest"
-	"path/filepath"
 	"slices"
 	"testing"
 	"time"
@@ -278,10 +277,9 @@ func mustParseAnthropicTime(t *testing.T, value string) time.Time {
 // policy.
 func loadTestdataResponse(t *testing.T) modelsResponse {
 	t.Helper()
-	fixture := providerfixture.Fixture{
-		Provider:     string(catalogs.ProviderIDAnthropic),
-		PayloadPath:  filepath.Join("testdata", "models_list.json"),
-		MetadataPath: filepath.Join("testdata", "models_list.metadata.json"),
+	fixture, err := providerfixture.Find("testdata/providers", string(catalogs.ProviderIDAnthropic))
+	if err != nil {
+		t.Fatalf("select governed Anthropic fixture: %v", err)
 	}
 	if err := fixture.Verify(time.Now().UTC()); err != nil {
 		t.Fatalf("verify governed Anthropic fixture: %v", err)

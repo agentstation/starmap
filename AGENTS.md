@@ -404,11 +404,11 @@ enforces `max_age`, and only this credentialed gate calls it, because only a liv
 capture can clear a stale or drifted fixture. Clear a reported fixture with
 `make testdata PROVIDER=<provider-id>`.
 
-The Anthropic client uses a custom protocol, so its fixture lives at
-`internal/providers/anthropic/testdata/`. Its tests verify the same hermetic
-contract, but `make testdata` and the drift gate cover OpenAI-compatible
-providers only, so refresh that fixture by hand until an Anthropic capture path
-exists.
+Each governed fixture belongs to the client that proves its wire contract, so a
+custom protocol client owns its own capture path under
+`internal/providers/<client>/testdata/providers/<provider-id>/`. Anthropic is the
+current example. `make testdata PROVIDER=<provider-id>` selects the right capture
+path for you, and the drift gate covers every client.
 
 ### Catalog Management
 

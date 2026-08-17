@@ -1,10 +1,8 @@
 package openai_test
 
 import (
-	"encoding/json"
 	"os"
 	"reflect"
-	"sort"
 	"testing"
 	"time"
 
@@ -15,10 +13,6 @@ import (
 )
 
 const providerFixtureRoot = "testdata/providers"
-
-// fixtureCurrencyVariable selects the live fixture currency comparison. The
-// offline test path never sets it.
-const fixtureCurrencyVariable = "STARMAP_PROVIDER_FIXTURE_CURRENCY"
 
 func TestOpenAICompatibleProviderCatalogContracts(t *testing.T) {
 	fixtures, err := providerfixture.Discover(providerFixtureRoot)
@@ -172,8 +166,9 @@ func TestRefreshOpenAICompatibleProviderFixture(t *testing.T) {
 // needs catalog-acquisition credentials and stays outside the offline test path.
 // scripts/verify-provider-fixture-drift.sh owns it.
 func TestOpenAICompatibleProviderFixtureCurrency(t *testing.T) {
-	if os.Getenv(fixtureCurrencyVariable) != "1" {
-		t.Skipf("set %s=1 to compare fixtures against live provider responses", fixtureCurrencyVariable)
+	if !providerfixture.CurrencyRequested() {
+		t.Skipf("set %s=1 to compare fixtures against live provider responses",
+			providerfixture.CurrencyVariable)
 	}
 	fixtures, err := providerfixture.Discover(providerFixtureRoot)
 	if err != nil {
@@ -220,55 +215,16 @@ func TestOpenAICompatibleProviderFixtureCurrency(t *testing.T) {
 // the provider, so the mapping contract it proves is no longer current.
 func assertNoWireDrift(t *testing.T, recorded, live []byte) {
 	t.Helper()
-	recordedFields := wireModelFields(t, "fixture", recorded)
-	liveFields := wireModelFields(t, "live response", live)
-	if absent := missingFields(recordedFields, liveFields); len(absent) > 0 {
+	absent, added, err := providerfixture.WireDrift(recorded, live)
+	if err != nil {
+		t.Fatalf("compare fixture against live response: %v", err)
+	}
+	if len(absent) > 0 {
 		t.Errorf("fixture exercises provider fields the live response no longer returns: %v", absent)
 	}
-	if added := missingFields(liveFields, recordedFields); len(added) > 0 {
+	if len(added) > 0 {
 		t.Errorf("live response returns provider fields the fixture does not record: %v", added)
 	}
-}
-
-// wireModelFields returns the sorted union of member names across every model
-// object in an OpenAI-compatible list response.
-func wireModelFields(t *testing.T, label string, payload []byte) []string {
-	t.Helper()
-	var response struct {
-		Data []map[string]json.RawMessage `json:"data"`
-	}
-	if err := json.Unmarshal(payload, &response); err != nil {
-		t.Fatalf("decode %s: %v", label, err)
-	}
-	if response.Data == nil {
-		t.Fatalf("%s has a missing or null data array", label)
-	}
-	present := make(map[string]struct{})
-	for _, model := range response.Data {
-		for field := range model {
-			present[field] = struct{}{}
-		}
-	}
-	fields := make([]string, 0, len(present))
-	for field := range present {
-		fields = append(fields, field)
-	}
-	sort.Strings(fields)
-	return fields
-}
-
-func missingFields(want, have []string) []string {
-	present := make(map[string]struct{}, len(have))
-	for _, field := range have {
-		present[field] = struct{}{}
-	}
-	var absent []string
-	for _, field := range want {
-		if _, found := present[field]; !found {
-			absent = append(absent, field)
-		}
-	}
-	return absent
 }
 
 func assertProviderCatalogContract(t *testing.T, provider *catalogs.Provider) {
