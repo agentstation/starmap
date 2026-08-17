@@ -55,6 +55,15 @@ type FixturePayload struct {
 // refresh with the test binary's -update flag.
 func UpdateRequested() bool { return *updateRequested }
 
+// CurrencyVariable selects the live fixture currency comparison. The offline
+// test path never sets it, because only catalog-acquisition credentials can
+// clear a stale or drifted fixture.
+const CurrencyVariable = "STARMAP_PROVIDER_FIXTURE_CURRENCY"
+
+// CurrencyRequested reports whether the caller explicitly selected the live
+// fixture currency comparison. scripts/verify-provider-fixture-drift.sh owns it.
+func CurrencyRequested() bool { return os.Getenv(CurrencyVariable) == "1" }
+
 // Discover returns every complete provider fixture below root in provider-ID
 // order.
 func Discover(root string) ([]Fixture, error) {
@@ -127,7 +136,9 @@ func (f Fixture) Decode(destination any) error {
 	return nil
 }
 
-// Verify validates fixture identity, bytes, source revision, and freshness.
+// Verify validates fixture identity, bytes, source revision, and capture time.
+// It is hermetic and never consults the fixture's maximum-age policy, so
+// offline tests stay deterministic. Use VerifyFreshness for the age policy.
 func (f Fixture) Verify(now time.Time) error {
 	if now.IsZero() {
 		return &errors.ValidationError{Field: "fixture.now", Message: "must be set"}
@@ -140,8 +151,7 @@ func (f Fixture) Verify(now time.Time) error {
 	if err != nil {
 		return err
 	}
-	maxAge, err := f.validateMetadataIdentity(metadata)
-	if err != nil {
+	if _, err := f.validateMetadataIdentity(metadata); err != nil {
 		return err
 	}
 	checksum := fixtureChecksum(payload)
@@ -164,13 +174,41 @@ func (f Fixture) Verify(now time.Time) error {
 			Message: "must be a non-future capture time",
 		}
 	}
-	if now.Sub(metadata.FetchedAt) > maxAge {
+	return nil
+}
+
+// VerifyFreshness enforces the fixture's reviewed maximum-age policy. Only a
+// live capture can clear a stale fixture, so this belongs to a gate that holds
+// catalog-acquisition credentials, never to the offline test path.
+func (f Fixture) VerifyFreshness(now time.Time) error {
+	age, maxAge, err := f.Freshness(now)
+	if err != nil {
+		return err
+	}
+	if age > maxAge {
 		return &errors.ValidationError{
-			Field: "fixture.fetched_at", Value: metadata.FetchedAt,
+			Field: "fixture.fetched_at", Value: age.Round(time.Hour).String(),
 			Message: "provider fixture is stale",
 		}
 	}
 	return nil
+}
+
+// Freshness reports the fixture's age and its reviewed maximum age. Callers use
+// the remaining margin to report an approaching expiry before it blocks work.
+func (f Fixture) Freshness(now time.Time) (age, maxAge time.Duration, err error) {
+	if now.IsZero() {
+		return 0, 0, &errors.ValidationError{Field: "fixture.now", Message: "must be set"}
+	}
+	metadata, err := f.readMetadata()
+	if err != nil {
+		return 0, 0, err
+	}
+	maxAge, err = f.validateMetadataIdentity(metadata)
+	if err != nil {
+		return 0, 0, err
+	}
+	return now.Sub(metadata.FetchedAt), maxAge, nil
 }
 
 // Capture replaces the payload and metadata after an explicit live refresh.
@@ -218,7 +256,12 @@ func (f Fixture) Capture(payload []byte, capturedAt time.Time) error {
 	if err := os.Rename(metadataStage, f.MetadataPath); err != nil {
 		return errors.WrapIO("rename", f.MetadataPath, err)
 	}
-	return f.Verify(capturedAt.UTC())
+	// A capture must satisfy both the hermetic contract and the age policy it
+	// exists to clear.
+	if err := f.Verify(capturedAt.UTC()); err != nil {
+		return err
+	}
+	return f.VerifyFreshness(capturedAt.UTC())
 }
 
 func (f Fixture) readMetadata() (FixtureMetadata, error) {

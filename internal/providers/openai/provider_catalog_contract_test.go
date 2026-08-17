@@ -160,6 +160,73 @@ func TestRefreshOpenAICompatibleProviderFixture(t *testing.T) {
 	}
 }
 
+// TestOpenAICompatibleProviderFixtureCurrency enforces the reviewed
+// maximum-age policy and compares every fixture against the live provider wire
+// shape. Only a live capture can clear a stale or drifted fixture, so this test
+// needs catalog-acquisition credentials and stays outside the offline test path.
+// scripts/verify-provider-fixture-drift.sh owns it.
+func TestOpenAICompatibleProviderFixtureCurrency(t *testing.T) {
+	if !providerfixture.CurrencyRequested() {
+		t.Skipf("set %s=1 to compare fixtures against live provider responses",
+			providerfixture.CurrencyVariable)
+	}
+	fixtures, err := providerfixture.Discover(providerFixtureRoot)
+	if err != nil {
+		t.Fatalf("discover provider fixtures: %v", err)
+	}
+	builder, err := catalogs.NewEmbedded()
+	if err != nil {
+		t.Fatalf("load embedded catalog: %v", err)
+	}
+
+	for _, fixture := range fixtures {
+		fixture := fixture
+		t.Run(fixture.Provider, func(t *testing.T) {
+			t.Parallel()
+			now := time.Now().UTC()
+			age, maxAge, err := fixture.Freshness(now)
+			if err != nil {
+				t.Fatalf("read fixture freshness: %v", err)
+			}
+			t.Logf("fixture age %s of reviewed maximum %s", age.Round(time.Hour), maxAge)
+			if err := fixture.VerifyFreshness(now); err != nil {
+				t.Errorf("fixture needs a live refresh: %v", err)
+			}
+			provider, found := builder.Providers().Get(catalogs.ProviderID(fixture.Provider))
+			if !found {
+				t.Fatalf("embedded provider %q is missing", fixture.Provider)
+			}
+			recorded, err := fixture.Read()
+			if err != nil {
+				t.Fatalf("read fixture payload: %v", err)
+			}
+			fetcher := acquisition.NewProviderFetcher(builder.Providers())
+			live, _, err := fetcher.FetchRawResponse(t.Context(), provider, provider.CatalogEndpointURL())
+			if err != nil {
+				t.Fatalf("fetch live provider catalog: %v", err)
+			}
+			assertNoWireDrift(t, recorded, live)
+		})
+	}
+}
+
+// assertNoWireDrift reports provider fields that the fixture and the live
+// response do not share. Either direction means the fixture no longer mirrors
+// the provider, so the mapping contract it proves is no longer current.
+func assertNoWireDrift(t *testing.T, recorded, live []byte) {
+	t.Helper()
+	absent, added, err := providerfixture.WireDrift(recorded, live)
+	if err != nil {
+		t.Fatalf("compare fixture against live response: %v", err)
+	}
+	if len(absent) > 0 {
+		t.Errorf("fixture exercises provider fields the live response no longer returns: %v", absent)
+	}
+	if len(added) > 0 {
+		t.Errorf("live response returns provider fields the fixture does not record: %v", added)
+	}
+}
+
 func assertProviderCatalogContract(t *testing.T, provider *catalogs.Provider) {
 	t.Helper()
 	if provider == nil || provider.Catalog == nil {

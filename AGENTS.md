@@ -8,7 +8,7 @@ This file provides Codex with project-specific guidance for working in this repo
 
 ## Go Development Standards
 
-**Starmap supports Go 1.25 and uses Go 1.26.5 for development and releases.** Write idiomatic, thread-safe, production-ready code:
+**Starmap supports Go 1.25 and uses Go 1.26.6 for development and releases.** Write idiomatic, thread-safe, production-ready code:
 
 - **Simplicity over cleverness** - Follow Effective Go, prioritize readability
 - **Thread safety first** - Deep copies for shared data, proper RWMutex usage
@@ -39,7 +39,7 @@ make testdata PROVIDER=openai           # Refresh one governed provider fixture
 ## Tech Stack
 
 - **Language floor**: Go 1.25.0 (tested with Go 1.25.12)
-- **Development/release toolchain**: Go 1.26.5
+- **Development/release toolchain**: Go 1.26.6
 - **Build System**: Make (see Makefile)
 - **Key Dependencies**: zerolog (logging), cobra (CLI), goccy/go-yaml (YAML)
 - **Testing**: Go testing, testdata pattern with `-update` flag
@@ -382,6 +382,33 @@ make test                                   # Run all tests
 go test ./pkg/catalogs -race -v            # Race detection
 go test ./... -race -short                 # All packages with race detector
 ```
+
+### Verification gates
+
+```bash
+make verify                                     # scripts/verify.sh runs every automated gate
+bash scripts/verify-live-providers.sh           # Manual only: calls live provider APIs
+bash scripts/verify-provider-fixture-drift.sh   # Manual only: calls live provider APIs
+```
+
+`make verify` owns every `scripts/verify-*.sh` gate except the two gates above.
+Both need real catalog-acquisition credentials, which no workflow holds today, so
+run them by hand before a provider client change. A gate that no workflow runs
+cannot report a regression, so add each new gate to `scripts/verify.sh` or name
+it here.
+
+`verify-provider-fixture-drift.sh` owns the fixture maximum-age and wire-drift
+policy. Offline tests stay hermetic: `Fixture.Verify` checks identity, bytes, and
+the content digest, and never consults the calendar. `Fixture.VerifyFreshness`
+enforces `max_age`, and only this credentialed gate calls it, because only a live
+capture can clear a stale or drifted fixture. Clear a reported fixture with
+`make testdata PROVIDER=<provider-id>`.
+
+Each governed fixture belongs to the client that proves its wire contract, so a
+custom protocol client owns its own capture path under
+`internal/providers/<client>/testdata/providers/<provider-id>/`. Anthropic is the
+current example. `make testdata PROVIDER=<provider-id>` selects the right capture
+path for you, and the drift gate covers every client.
 
 ### Catalog Management
 

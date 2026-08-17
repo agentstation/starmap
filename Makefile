@@ -515,16 +515,16 @@ check-apis: ## Check API connectivity for all providers
 
 # Testdata management targets
 # Examples:
-#   make testdata                # Refresh all governed OpenAI-compatible fixtures
+#   make testdata                # Refresh every governed provider fixture
 #   make testdata PROVIDER=groq  # Refresh one governed provider fixture
-testdata: ## Refresh governed OpenAI-compatible fixtures (use PROVIDER=id to select one)
-	@echo "$(BLUE)Refreshing fixtures for $(if $(PROVIDER),$(PROVIDER),all governed OpenAI-compatible providers)...$(NC)"
+testdata: ## Refresh governed provider fixtures (use PROVIDER=id to select one)
+	@echo "$(BLUE)Refreshing fixtures for $(if $(PROVIDER),$(PROVIDER),all governed providers)...$(NC)"
 	@echo "$(YELLOW)This opt-in command makes live provider API calls and updates reviewed fixture files.$(NC)"
 	@if [ -n "$(PROVIDER)" ]; then \
 		./scripts/refresh-provider-testdata.sh "$(PROVIDER)"; \
 	else \
 		status=0; \
-		for dir in internal/providers/openai/testdata/providers/*/; do \
+		for dir in internal/providers/*/testdata/providers/*/; do \
 			provider=$$(basename $$dir); \
 			echo "$(BLUE)Refreshing $$provider fixture...$(NC)"; \
 			./scripts/refresh-provider-testdata.sh "$$provider" || status=1; \

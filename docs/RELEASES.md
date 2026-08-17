@@ -7,15 +7,20 @@ toolchain:
 
 - `go 1.25.0` is the module language and library compatibility floor.
 - Go 1.25.12 is the patched 1.25 release exercised by required PR checks.
-- `toolchain go1.26.5` is the preferred development toolchain.
-- Go 1.26.5 is the exact toolchain used by verification, catalog generation,
+- `toolchain go1.26.6` is the preferred development toolchain.
+- Go 1.26.6 is the exact toolchain used by verification, catalog generation,
   and application releases.
+
+Devbox pins `go@1.26.5` because the Devbox package index does not yet publish
+the 1.26.6 package. That pin only bootstraps the `go` command: the `toolchain
+go1.26.6` directive makes it select Go 1.26.6, so a Devbox shell compiles with
+the exact release toolchain. Raise the Devbox pin when the index publishes it.
 
 The floor cannot currently be lower without downgrading security-sensitive
 runtime dependencies that require Go 1.25. When Go stops supporting the 1.25
 family, Starmap will raise the floor to the oldest upstream-supported family.
 
-`go fix ./...` is run with Go 1.26.5 after a toolchain upgrade. Because the
+`go fix ./...` is run with Go 1.26.6 after a toolchain upgrade. Because the
 module language version remains 1.25, fixes may use APIs available in Go 1.25
 but must not introduce Go 1.26-only syntax. Both version lanes must pass before
 the migration is accepted.
@@ -26,7 +31,7 @@ Application releases use GoReleaser v2.17.0 and a tag of the form `vX.Y.Z` or
 `vX.Y.Z-rc.N`. The tag commit must already be reachable from `main`. The release
 workflow:
 
-1. runs repository and release verification with Go 1.26.5;
+1. runs repository and release verification with Go 1.26.6;
 2. builds Linux, macOS, and Windows archives for amd64 and arm64 with
    `CGO_ENABLED=0`;
 3. verifies cgo-disabled build metadata for all six binaries, static ELF
@@ -74,7 +79,7 @@ catalog formats.
 Prepare a local, non-publishing release snapshot:
 
 ```bash
-GOTOOLCHAIN=go1.26.5 make release-snapshot
+GOTOOLCHAIN=go1.26.6 make release-snapshot
 ./scripts/verify-release-binaries.sh dist
 ```
 

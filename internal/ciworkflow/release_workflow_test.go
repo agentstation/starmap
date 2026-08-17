@@ -16,7 +16,7 @@ func TestReleaseWorkflowPinsToolchainPublisherAndVerification(t *testing.T) {
 		"group: release-${{ inputs.tag || github.ref_name }}",
 		"permissions:\n  contents: read",
 		"    permissions:\n      attestations: write\n      contents: write\n      discussions: write\n      id-token: write\n      packages: write",
-		`go-version: "1.26.5"`,
+		`go-version: "1.26.6"`,
 		"git merge-base --is-ancestor",
 		"golangci-lint@v2.12.2",
 		"make verify",

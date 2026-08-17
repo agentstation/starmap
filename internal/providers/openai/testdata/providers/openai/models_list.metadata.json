@@ -1,8 +1,14 @@
 {
   "version": 1,
   "provider": "openai",
-  "fetched_at": "2025-08-16T22:10:58Z",
-  "source_revision": {"kind": "content_digest", "value": "sha256:5733a220b5aa834f6258646c4be869c0bb3699bb4e29a4fcc58e2c59f459dc39"},
-  "payload": {"path": "models_list.json", "checksum": "sha256:5733a220b5aa834f6258646c4be869c0bb3699bb4e29a4fcc58e2c59f459dc39"},
+  "fetched_at": "2026-08-17T16:28:35.810476Z",
+  "source_revision": {
+    "kind": "content_digest",
+    "value": "sha256:5a6a248e95961897b199eeddd5a5b6d0c123b83a13d0a21b678b37861332276f"
+  },
+  "payload": {
+    "path": "models_list.json",
+    "checksum": "sha256:5a6a248e95961897b199eeddd5a5b6d0c123b83a13d0a21b678b37861332276f"
+  },
   "max_age": "8760h0m0s"
 }

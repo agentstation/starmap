@@ -73,8 +73,28 @@ func TestProviderFixtureRejectsInvalidIdentityFreshnessAndBytes(t *testing.T) {
 	t.Run("stale", func(t *testing.T) {
 		root := t.TempDir()
 		fixture := writeFixture(t, root, "alpha", now.Add(-2*time.Hour), time.Hour, []byte(`{"data":[]}`))
-		if err := fixture.Verify(now); err == nil {
-			t.Fatal("Verify accepted a stale fixture")
+		if err := fixture.VerifyFreshness(now); err == nil {
+			t.Fatal("VerifyFreshness accepted a stale fixture")
+		}
+		// Verify stays hermetic so an offline test never fails on the calendar.
+		// Only the credentialed currency gate enforces the age policy.
+		if err := fixture.Verify(now); err != nil {
+			t.Fatalf("Verify rejected an age-expired fixture: %v", err)
+		}
+	})
+
+	t.Run("fresh", func(t *testing.T) {
+		root := t.TempDir()
+		fixture := writeFixture(t, root, "alpha", now.Add(-30*time.Minute), time.Hour, []byte(`{"data":[]}`))
+		if err := fixture.VerifyFreshness(now); err != nil {
+			t.Fatalf("VerifyFreshness rejected a fresh fixture: %v", err)
+		}
+		age, maxAge, err := fixture.Freshness(now)
+		if err != nil {
+			t.Fatalf("Freshness: %v", err)
+		}
+		if age != 30*time.Minute || maxAge != time.Hour {
+			t.Fatalf("age = %s, maxAge = %s, want 30m0s and 1h0m0s", age, maxAge)
 		}
 	})
 

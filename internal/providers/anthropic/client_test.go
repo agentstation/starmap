@@ -2,17 +2,15 @@ package anthropic
 
 import (
 	"context"
-	"encoding/json"
 	"net/http"
 	"net/http/httptest"
-	"os"
-	"path/filepath"
 	"slices"
 	"testing"
 	"time"
 
 	sourcepayload "github.com/agentstation/starmap/internal/sources/payload"
 	testcatalog "github.com/agentstation/starmap/internal/test/catalog"
+	"github.com/agentstation/starmap/internal/test/providerfixture"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/sources"
 )
@@ -82,7 +80,7 @@ func testAnthropicMaterial(provider *catalogs.Provider) sources.ProviderCredenti
 
 func TestAnthropicParsing(t *testing.T) {
 	// Load testdata response
-	response := loadTestdataResponse(t, "models_list.json")
+	response := loadTestdataResponse(t)
 
 	// Verify we can parse the raw response
 	if len(response.Data) == 0 {
@@ -112,7 +110,7 @@ func TestAnthropicParsing(t *testing.T) {
 
 func TestAnthropicModelConversion(t *testing.T) {
 	// Load testdata and convert to starmap models
-	response := loadTestdataResponse(t, "models_list.json")
+	response := loadTestdataResponse(t)
 
 	// Create a client to test conversion
 	client := &Client{}
@@ -132,11 +130,41 @@ func TestAnthropicModelConversion(t *testing.T) {
 		if len(starmapModel.Authors) != 0 {
 			t.Errorf("Model %s: authors = %#v, want no inferred author", apiModel.ID, starmapModel.Authors)
 		}
-		if starmapModel.Features != nil {
+		// Features must come from declared capabilities only. A model that
+		// declares none must not acquire invented features.
+		if apiModel.Capabilities == nil && starmapModel.Features != nil {
 			t.Errorf("Model %s: features = %#v, want no inferred features", apiModel.ID, starmapModel.Features)
+		}
+		if apiModel.Capabilities != nil && starmapModel.Features == nil {
+			t.Errorf("Model %s: declared capabilities produced no features", apiModel.ID)
 		}
 
 		t.Logf("✅ Model %s converted successfully: %s", starmapModel.ID, starmapModel.Name)
+	}
+}
+
+// TestAnthropicModelConversionInfersNothingWithoutCapabilities keeps the
+// anti-inference guarantee testable. Every model in the current governed
+// fixture declares capabilities, so the fixture alone can no longer prove that
+// the client refuses to invent facts from a model ID or display name.
+func TestAnthropicModelConversionInfersNothingWithoutCapabilities(t *testing.T) {
+	client := &Client{
+		provider: &catalogs.Provider{ID: catalogs.ProviderIDAnthropic, Name: "Anthropic"},
+	}
+	converted := client.convertToModel(modelResponse{
+		Type:        "model",
+		ID:          "claude-opus-5",
+		DisplayName: "Claude Opus 5",
+		CreatedAt:   mustParseAnthropicTime(t, "2026-07-24T00:00:00Z"),
+	})
+	if converted.Features != nil {
+		t.Errorf("features = %#v, want none without declared capabilities", converted.Features)
+	}
+	if len(converted.Authors) != 0 {
+		t.Errorf("authors = %#v, want none without declared authorship", converted.Authors)
+	}
+	if converted.Limits != nil {
+		t.Errorf("limits = %#v, want none without declared token limits", converted.Limits)
 	}
 }
 
@@ -223,40 +251,40 @@ func TestAnthropicModelConversionPreservesCapabilityFields(t *testing.T) {
 
 func TestAnthropicAPIFormatChanges(t *testing.T) {
 	// This test helps detect if Anthropic changes their API format
-	response := loadTestdataResponse(t, "models_list.json")
+	response := loadTestdataResponse(t)
 
 	// Check for expected structure
 	if response.Data == nil {
 		t.Fatal("Expected 'data' field in response")
 	}
 
-	// Verify we have recent Claude models
-	foundOpus4 := false
-	foundSonnet3_7 := false
+	if len(response.Data) == 0 {
+		t.Fatal("Expected at least one model in the response")
+	}
 
+	// Assert the record shape the client depends on, not which models the roster
+	// serves. Anthropic retires and adds models continuously, so a named-model
+	// assertion fails on ordinary product changes while a format change slips
+	// through. An unmodelled field is the format change worth reporting.
 	for _, model := range response.Data {
-		switch {
-		case model.ID == "claude-opus-4-1-20250805":
-			foundOpus4 = true
-			if model.DisplayName != "Claude Opus 4.1" {
-				t.Errorf("Unexpected display name for Opus 4.1: %s", model.DisplayName)
-			}
-		case model.ID == "claude-3-7-sonnet-20250219":
-			foundSonnet3_7 = true
-			if model.DisplayName != "Claude Sonnet 3.7" {
-				t.Errorf("Unexpected display name for Sonnet 3.7: %s", model.DisplayName)
-			}
+		if model.Type != "model" {
+			t.Errorf("Model %s: type = %q, want %q", model.ID, model.Type, "model")
+		}
+		if model.ID == "" {
+			t.Error("Model has an empty id")
+		}
+		if model.DisplayName == "" {
+			t.Errorf("Model %s: empty display_name", model.ID)
+		}
+		if model.CreatedAt.IsZero() {
+			t.Errorf("Model %s: missing or unparseable created_at", model.ID)
+		}
+		if len(model.UnknownFields) != 0 {
+			t.Errorf("Model %s: Anthropic added unmodelled fields: %#v", model.ID, model.UnknownFields)
 		}
 	}
 
-	if !foundOpus4 {
-		t.Error("Expected to find Claude Opus 4.1 in API response")
-	}
-	if !foundSonnet3_7 {
-		t.Error("Expected to find Claude Sonnet 3.7 in API response")
-	}
-
-	t.Logf("✅ Found expected Claude models: Opus 4.1=%v, Sonnet 3.7=%v", foundOpus4, foundSonnet3_7)
+	t.Logf("✅ %d models match the recorded Anthropic wire format", len(response.Data))
 }
 
 func containsAnthropicTestModality(modalities []catalogs.ModelModality, want catalogs.ModelModality) bool {
@@ -272,17 +300,24 @@ func mustParseAnthropicTime(t *testing.T, value string) time.Time {
 	return parsed
 }
 
-// Helper function to load testdata response.
-func loadTestdataResponse(t *testing.T, filename string) modelsResponse {
-	testdataPath := filepath.Join("testdata", filename)
-	data, err := os.ReadFile(testdataPath)
+// loadTestdataResponse replays the governed Anthropic fixture. It verifies the
+// fixture identity, payload bytes, and content digest before it decodes, so a
+// hand-edited payload cannot become the contract under test. Verification is
+// hermetic: scripts/verify-provider-fixture-drift.sh owns the maximum-age
+// policy.
+func loadTestdataResponse(t *testing.T) modelsResponse {
+	t.Helper()
+	fixture, err := providerfixture.Find("testdata/providers", string(catalogs.ProviderIDAnthropic))
 	if err != nil {
-		t.Fatalf("Failed to read testdata file %s: %v", testdataPath, err)
+		t.Fatalf("select governed Anthropic fixture: %v", err)
+	}
+	if err := fixture.Verify(time.Now().UTC()); err != nil {
+		t.Fatalf("verify governed Anthropic fixture: %v", err)
 	}
 
 	var response modelsResponse
-	if err := json.Unmarshal(data, &response); err != nil {
-		t.Fatalf("Failed to parse testdata JSON from %s: %v", testdataPath, err)
+	if err := fixture.Decode(&response); err != nil {
+		t.Fatalf("decode governed Anthropic fixture: %v", err)
 	}
 
 	return response
