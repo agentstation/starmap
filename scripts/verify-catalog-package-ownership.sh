@@ -4,8 +4,8 @@ set -uo pipefail
 ROOT="${STARMAP_CATALOG_PACKAGE_ROOT:-$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)}"
 MODULE="github.com/agentstation/starmap"
 # Re-baseline this only for a reviewed module change. The current value covers
-# the Go 1.26.6 toolchain directive and the reviewed go-modules group bump.
-BASELINE_GO_MOD_SHA256="8422cf90a1de46af27843eb6bc97b65edeee625c109bd749e334c22aaaccfa31"
+# the Go 1.26.6 toolchain directive and the reviewed AWS SDK patch bump.
+BASELINE_GO_MOD_SHA256="fe1c7cbb6c9946c4bdf4b7cd0607d0aad36e020aa4f92c5b4700a6b39545285d"
 RESULTS="$(mktemp -d "${TMPDIR:-/tmp}/starmap-catalog-package-ownership.XXXXXX")"
 trap 'rm -rf "$RESULTS"' EXIT
 
