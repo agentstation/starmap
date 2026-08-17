@@ -69,4 +69,72 @@ if grep -Eq 'make[[:space:]]+verify|scripts/verify\.sh' "$VERIFIER"; then
 	exit 1
 fi
 
+# CPO-V13 must report a dependency change and ignore a version change. A gate
+# that also reported version changes would fail every routine dependency
+# update, which is what the earlier whole-file checksum did.
+MODULE_FIXTURE="$FIXTURE/module"
+mkdir -p "$MODULE_FIXTURE"
+printf '%s\n' 'example.com/kept' >"$MODULE_FIXTURE/approved.txt"
+
+write_module_fixture() {
+	local version="$1"
+	local extra="${2:-}"
+
+	{
+		printf 'module example.com/fixture\n\ngo 1.25.0\n\nrequire (\n'
+		printf '\texample.com/kept %s\n' "$version"
+		printf '\texample.com/carried v0.1.0 // indirect\n'
+		if [[ -n "$extra" ]]; then
+			printf '\t%s v1.0.0\n' "$extra"
+		fi
+		printf ')\n'
+	} >"$MODULE_FIXTURE/go.mod"
+}
+
+run_module_fixture() {
+	local report="$1"
+
+	STARMAP_CATALOG_PACKAGE_ROOT="$MODULE_FIXTURE" \
+		STARMAP_CATALOG_DIRECT_MODULES="$MODULE_FIXTURE/approved.txt" \
+		bash "$VERIFIER" >"$report" 2>&1 || true
+}
+
+for version in v1.2.3 v1.9.9; do
+	write_module_fixture "$version"
+	version_report="$MODULE_FIXTURE/version-$version.txt"
+	run_module_fixture "$version_report"
+	assert_complete_report "$version_report"
+	grep -Fq 'CPO-V13 PASS:' "$version_report" || {
+		printf 'verifier rejected a version-only module change at %s\n' "$version" >&2
+		exit 1
+	}
+done
+
+write_module_fixture v1.2.3 example.com/unapproved
+dependency_report="$MODULE_FIXTURE/dependency.txt"
+run_module_fixture "$dependency_report"
+assert_complete_report "$dependency_report"
+grep -Fq 'CPO-V13 FAIL:' "$dependency_report" || {
+	printf 'verifier accepted an unapproved direct dependency\n' >&2
+	exit 1
+}
+grep -Fq 'example.com/unapproved' "$dependency_report" || {
+	printf 'verifier did not name the unapproved dependency\n' >&2
+	exit 1
+}
+
+{
+	printf 'module example.com/fixture\n\ngo 1.25.0\n\nrequire (\n'
+	printf '\texample.com/kept v1.2.3\n'
+	printf '\texample.com/carried v0.1.0 // indirect\n'
+	printf '\texample.com/hidden v1.0.0 // indirect\n'
+	printf ')\n'
+} >"$MODULE_FIXTURE/go.mod"
+indirect_report="$MODULE_FIXTURE/indirect.txt"
+run_module_fixture "$indirect_report"
+grep -Fq 'CPO-V13 PASS:' "$indirect_report" || {
+	printf 'verifier reported an indirect requirement as a dependency change\n' >&2
+	exit 1
+}
+
 printf 'catalog package ownership verifier regression tests passed\n'

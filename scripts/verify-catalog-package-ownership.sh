@@ -3,9 +3,10 @@ set -uo pipefail
 
 ROOT="${STARMAP_CATALOG_PACKAGE_ROOT:-$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)}"
 MODULE="github.com/agentstation/starmap"
-# Re-baseline this only for a reviewed module change. The current value covers
-# the Go 1.26.6 toolchain directive and the reviewed AWS SDK patch bump.
-BASELINE_GO_MOD_SHA256="fe1c7cbb6c9946c4bdf4b7cd0607d0aad36e020aa4f92c5b4700a6b39545285d"
+# The approved direct dependency set, one module path per line and sorted.
+# Update it only for a reviewed change to what the module depends on. A version
+# change is not a dependency change and must not appear here.
+DIRECT_MODULES="${STARMAP_CATALOG_DIRECT_MODULES:-$ROOT/scripts/testdata/direct-modules.txt}"
 RESULTS="$(mktemp -d "${TMPDIR:-/tmp}/starmap-catalog-package-ownership.XXXXXX")"
 trap 'rm -rf "$RESULTS"' EXIT
 
@@ -73,14 +74,26 @@ catalogs_root_has() {
 	return 1
 }
 
-sha256_file() {
+# Print the sorted direct requirements of a go.mod, without their versions.
+# This reads the file itself, so it needs no module downloads and no network.
+direct_module_paths() {
 	local file="$1"
 
-	if command -v sha256sum >/dev/null 2>&1; then
-		sha256sum "$file" | awk '{print $1}'
-		return
-	fi
-	shasum -a 256 "$file" | awk '{print $1}'
+	awk '
+		/^[[:space:]]*require[[:space:]]*\(/ { block = 1; next }
+		block && /^[[:space:]]*\)/ { block = 0; next }
+		block && /^[[:space:]]*\/\// { next }
+		block {
+			if ($1 == "") next
+			if ($0 ~ /\/\/[[:space:]]*indirect/) next
+			print $1
+			next
+		}
+		/^[[:space:]]*require[[:space:]]+[^(]/ {
+			if ($0 ~ /\/\/[[:space:]]*indirect/) next
+			print $2
+		}
+	' "$file" | sort
 }
 
 old_paths() {
@@ -239,14 +252,19 @@ check_v12() {
 }
 
 check_v13() {
-	local checksum
+	local observed
 	test -f "$ROOT/go.mod" || {
 		printf 'missing go.mod\n'
 		return 1
 	}
-	checksum="$(sha256_file "$ROOT/go.mod")" || return 1
-	if [[ "$checksum" != "$BASELINE_GO_MOD_SHA256" ]]; then
-		printf 'go.mod checksum changed: got %s, want %s\n' "$checksum" "$BASELINE_GO_MOD_SHA256"
+	test -f "$DIRECT_MODULES" || {
+		printf 'missing approved module list: %s\n' "$DIRECT_MODULES"
+		return 1
+	}
+	observed="$(direct_module_paths "$ROOT/go.mod")" || return 1
+	if ! diff -u "$DIRECT_MODULES" - <<<"$observed"; then
+		printf 'direct dependency set changed; review the change and update %s\n' \
+			"$DIRECT_MODULES"
 		return 1
 	fi
 	(cd "$ROOT" && go list ./... >/dev/null)
@@ -264,7 +282,7 @@ run_condition CPO-V09 "remote is storage-independent and retains protocol tests"
 run_condition CPO-V10 "all six external consumer modules compile" check_v10
 run_condition CPO-V11 "current docs and the migration guide use approved paths" check_v11
 run_condition CPO-V12 "current authority passes the historical allowlist scan" check_v12
-run_condition CPO-V13 "the package graph resolves without a module change" check_v13
+run_condition CPO-V13 "the package graph resolves without a dependency change" check_v13
 
 printf 'Summary: %d passed, %d failed\n' "$passed" "$failed"
 ((failed == 0))
