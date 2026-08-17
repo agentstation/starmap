@@ -3,7 +3,9 @@ set -uo pipefail
 
 ROOT="${STARMAP_CATALOG_PACKAGE_ROOT:-$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)}"
 MODULE="github.com/agentstation/starmap"
-BASELINE_GO_MOD_SHA256="563a7e3779efe55001ab43d0a42c53154a14b470bbeecb59464972c48c1d493c"
+# Re-baseline this only for a reviewed module change. The current value covers
+# the Go 1.26.6 toolchain directive; the dependency set is unchanged.
+BASELINE_GO_MOD_SHA256="eedd8ba6a4a66c48290405f16831ec3e826f4288a09f0db0e77a7a2109d84eaa"
 RESULTS="$(mktemp -d "${TMPDIR:-/tmp}/starmap-catalog-package-ownership.XXXXXX")"
 trap 'rm -rf "$RESULTS"' EXIT
 
