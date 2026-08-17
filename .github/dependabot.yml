@@ -13,8 +13,14 @@ updates:
         patterns:
           - "*"
 
+  # The consumer modules under testdata are separate modules that reach the
+  # root through a replace directive, so their requirements must move with the
+  # root's. A root-only update leaves them stale and fails make test-pure-go.
+  # Only the plural directories key supports a glob.
   - package-ecosystem: gomod
-    directory: /
+    directories:
+      - /
+      - /testdata/consumers/*
     schedule:
       interval: weekly
       day: monday
@@ -24,3 +30,8 @@ updates:
       go-modules:
         patterns:
           - "*"
+        # Without this, Dependabot opens one pull request per directory, and a
+        # root-only pull request cannot pass. This makes a pull request span
+        # every directory that shares the dependency, so each one is internally
+        # consistent.
+        group-by: dependency-name
