@@ -12,8 +12,16 @@
 - Current documentation names two definitive models:
   `Qwen/Qwen3.6-35B-A3B-FP8` and `Qwen3.8-27B`. Both have a 262,144-token
   context and accept text and image input.
-- Live authenticated contract: blocked until the user confirms the final
-  persistent-token creation action.
+- Created one token named `starmap-catalog`. Saved the 32-character value only
+  as `HETZNER_API_KEY` in Starmap's ignored `.env`. Starport has no Hetzner
+  token.
+- Authenticated `GET https://inference.hetzner.com/api/v1/models` returned
+  HTTP success and the OpenAI list envelope. Each record has `object: model`,
+  `owned_by: hetzner`, `root: /model`, `parent: null`, and
+  `max_model_len: 262144`.
+- Exact live provider model IDs:
+  - `Qwen/Qwen3.6-35B-A3B-FP8`
+  - `Qwen3.8-27B`
 - Branch cleanup: removed 23 remote branches tied to merged pull requests and
   four integrated local branches. Preserved five remote branches with unique
   commits and no pull request. Also preserved seven local branches with unique
