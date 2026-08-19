@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hetzner provider and Starport release plan</title>
+<style>
+  :root { --ink:#1a1e24; --muted:#5c6570; --line:#d8dde3; --soft:#f4f6f8;
+    --page:#fff; --accent:#2563eb; --done:#16a34a; }
+  @media (prefers-color-scheme:dark) { :root { --ink:#e5e9ee;
+    --muted:#9aa4af; --line:#333a43; --soft:#1b2027; --page:#11151a;
+    --accent:#60a5fa; --done:#4ade80; } }
+  * { box-sizing:border-box; } body { margin:0 auto; padding:2rem 1.25rem 4rem;
+    max-width:1080px; background:var(--page); color:var(--ink);
+    font:16px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif; }
+  h1 { font-size:1.6rem; margin:0 0 .25rem; } h2 { font-size:1.15rem;
+    margin:2rem 0 .5rem; border-bottom:1px solid var(--line);
+    padding-bottom:.25rem; } h3 { font-size:1rem; margin:1.25rem 0 .4rem; }
+  code,pre { background:var(--soft); border:1px solid var(--line); }
+  code { border-radius:4px; padding:.05rem .35rem; font-size:.85em; }
+  pre { border-radius:6px; padding:.9rem 1rem; overflow-x:auto; }
+  pre code { border:0; padding:0; } blockquote { margin:.75rem 0;
+    padding:.6rem 1rem; border-left:3px solid var(--accent); background:var(--soft); }
+  table { border-collapse:collapse; width:100%; margin:.75rem 0; font-size:.92rem; }
+  th,td { border:1px solid var(--line); padding:.35rem .55rem;
+    text-align:left; vertical-align:top; } th { background:var(--soft); }
+  #status-line,.counts { color:var(--muted); font-size:.92rem; }
+  .bar { height:.75rem; border:1px solid var(--line); border-radius:999px;
+    overflow:hidden; background:var(--soft); } .fill { height:100%; width:0;
+    background:var(--done); } .pair { display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:1rem; }
+  figure { margin:0; border:1px solid var(--line); border-radius:8px;
+    padding:.75rem; background:var(--soft); } figcaption { font-weight:600; }
+</style>
+<script>
+document.addEventListener("DOMContentLoaded",function(){var rows=document.querySelectorAll("#ledger tbody tr");var terminal={done:1,"no-action":1,rejected:1};var closed=0,current="";rows.forEach(function(row){var status=(row.getAttribute("data-status")||"").split("(")[0];if(terminal[status])closed++;if(status==="in_progress"&&!current)current=row.id+" "+row.cells[1].textContent.trim();});var pct=rows.length?Math.round(closed/rows.length*100):0;document.querySelector("#progress .fill").style.width=pct+"%";document.querySelector("#progress .counts").textContent=closed+" of "+rows.length+" tasks terminal ("+pct+"%)."+(current?" In progress: "+current:"");});
+</script>
+</head>
+<body>
+<header id="overview">
+<h1>Hetzner provider and Starport release</h1>
+<p id="status-line">Status: <code data-plan-status="active">active</code>.
+Owner: this plan. Created: 2026-08-19.<br>
+Baseline: Starmap main @ b24d6589 and Starport main @ 9f3888f.<br>
+Proof root: <code>docs/proof/hetzner-provider-release/</code>.<br>
+Next action: confirm creation of one Hetzner API token, then capture the live
+model-list contract.</p>
+<section id="outcome"><h2>Outcome</h2><blockquote>Starmap publishes
+Hetzner as a catalog-driven OpenAI-compatible provider from current API facts.
+Starport v1.0.5 consumes that Starmap release. It routes authenticated
+inference to each cataloged Hetzner offering without a local provider switch.
+</blockquote></section>
+<section id="progress"><h2>Progress</h2><div class="bar"><div class="fill"></div></div><p class="counts">The ledger is the source of truth.</p></section>
+
+<section id="architecture"><h2>Architecture</h2><div class="pair">
+<figure><figcaption>Before</figcaption><svg viewBox="0 0 360 160" role="img" aria-label="Before architecture"><rect x="10" y="20" width="100" height="80" rx="8" fill="none" stroke="currentColor"/><text x="60" y="55" text-anchor="middle" fill="currentColor">Hetzner</text><text x="60" y="76" text-anchor="middle" fill="currentColor">API</text><rect x="135" y="20" width="100" height="80" rx="8" fill="none" stroke="currentColor"/><text x="185" y="55" text-anchor="middle" fill="currentColor">Starmap</text><text x="185" y="76" text-anchor="middle" fill="currentColor">no record</text><rect x="260" y="20" width="90" height="80" rx="8" fill="none" stroke="currentColor"/><text x="305" y="55" text-anchor="middle" fill="currentColor">Starport</text><text x="305" y="76" text-anchor="middle" fill="currentColor">v1.0.4</text></svg></figure>
+<figure><figcaption>After</figcaption><svg viewBox="0 0 360 160" role="img" aria-label="After architecture"><defs><marker id="arrow" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="currentColor"/></marker></defs><rect x="10" y="20" width="100" height="80" rx="8" fill="none" stroke="currentColor"/><text x="60" y="55" text-anchor="middle" fill="currentColor">Hetzner</text><text x="60" y="76" text-anchor="middle" fill="currentColor">API</text><rect x="135" y="20" width="100" height="80" rx="8" fill="none" stroke="currentColor"/><text x="185" y="55" text-anchor="middle" fill="currentColor">Starmap</text><text x="185" y="76" text-anchor="middle" fill="currentColor">provider facts</text><rect x="260" y="20" width="90" height="80" rx="8" fill="none" stroke="currentColor"/><text x="305" y="55" text-anchor="middle" fill="currentColor">Starport</text><text x="305" y="76" text-anchor="middle" fill="currentColor">v1.0.5</text><line x1="110" y1="60" x2="131" y2="60" stroke="currentColor" marker-end="url(#arrow)"/><line x1="235" y1="60" x2="256" y2="60" stroke="currentColor" marker-end="url(#arrow)"/></svg></figure>
+</div></section>
+</header>
+<main>
+<section id="scope"><h2>Scope</h2>
+<p><strong>Owns:</strong> current Hetzner API research, one local token,
+catalog records, contract tests, and a Starmap module release. It also owns a
+Starport dependency update, release checks, a patch release, and safe branch
+cleanup.</p>
+
+<p><strong>Does not own:</strong> Hetzner product stability, unpublished
+prices, or changes to Starport transport primitives.</p>
+
+<p><strong>Non-goals:</strong> no local Starport provider roster. Do not guess
+prices or add compatibility aliases. Do not delete branches with unique
+unmerged work.</p></section>
+
+<section id="promotion-gate"><h2>Promotion gate</h2><p>Passed on
+2026-08-19. The user authorized the provider, catalog, releases, local token,
+environment update, and repository cleanup. Baselines, scope, checks, paths,
+and the goal block are complete.</p></section>
+
+<section id="invariants"><h2>Invariants</h2><ol>
+<li>Starmap owns provider IDs, endpoint facts, credentials, exact model IDs,
+and offerings.</li>
+
+<li>The catalog uses the live authenticated model response. It does not invent
+unavailable price data.</li>
+
+<li>Catalog material stays local and separate from Starport inference
+material.</li>
+
+<li>Starport gains Hetzner only through a published Starmap module.</li>
+
+<li>Branches with unique unmerged work remain intact.</li>
+</ol></section>
+
+<section id="ledger"><h2>Status ledger</h2><table><thead><tr><th>ID</th><th>Task</th><th>Status</th><th>Evidence</th></tr></thead><tbody>
+<tr id="HZR0" data-status="blocked"><td>HZR0</td><td>Baseline, live API contract, token, and cleanup inventory</td><td><code>blocked(action-time confirmation)</code></td><td><a href="../proof/hetzner-provider-release/hzr0.md">HZR0 proof</a></td></tr>
+<tr id="HZR1" data-status="todo"><td>HZR1</td><td>Add and verify the Hetzner provider in Starmap</td><td><code>todo</code></td><td></td></tr>
+<tr id="HZR2" data-status="todo"><td>HZR2</td><td>Merge and publish the Starmap module release</td><td><code>todo</code></td><td></td></tr>
+<tr id="HZR3" data-status="todo"><td>HZR3</td><td>Update and verify Starport against released Starmap</td><td><code>todo</code></td><td></td></tr>
+<tr id="HZR4" data-status="todo"><td>HZR4</td><td>Merge and publish Starport v1.0.5</td><td><code>todo</code></td><td></td></tr>
+<tr id="HZR5" data-status="todo"><td>HZR5</td><td>Clean up the merged plan, proof, work branches, and stale integrated branches</td><td><code>todo</code></td><td></td></tr>
+</tbody></table></section>
+<section id="tasks"><h2>Tasks</h2>
+<h3 id="task-HZR0">HZR0 Baseline and live contract</h3><ul>
+<li><strong>Problem:</strong> Hetzner is absent. Its experimental model roster
+can change.</li>
+
+<li><strong>Owning seam and paths:</strong> Hetzner console, live
+<code>/models</code>, local ignored <code>.env</code>, this plan, and HZR0
+proof.</li>
+
+<li><strong>Steps:</strong> record clean baselines and inventory branches.
+Create a narrow token after action-time confirmation. Save it as
+<code>HETZNER_API_KEY</code>. Capture the model response and documentation
+facts.</li>
+
+<li><strong>Acceptance:</strong> one local token works. The proof records exact
+model IDs and fields without the secret. Safe branch cleanup is complete.</li>
+
+<li><strong>Fail-before:</strong> <code>rg -n 'id: hetzner'
+internal/embedded/catalog/providers.yaml</code> finds no provider.</li>
+
+<li><strong>Verification:</strong> query <code>GET
+https://inference.hetzner.com/api/v1/models</code> with the local token. Validate
+the JSON.</li></ul>
+
+<h3 id="task-HZR1">HZR1 Starmap provider</h3><ul>
+<li><strong>Problem:</strong> Starmap cannot fetch or publish Hetzner
+offerings.</li>
+
+<li><strong>Owning seam and paths:</strong>
+<code>internal/embedded/catalog</code>, OpenAI-compatible acquisition, embedded
+tests, and a provider fixture if needed.</li>
+
+<li><strong>Steps:</strong> add credential, catalog, inference, author, and
+serving records. Generate projections and add contract tests. Refresh the
+provider fixture if required.</li>
+
+<li><strong>Acceptance:</strong> exact live IDs map to canonical models. Chat
+and supported modalities are correct. Missing price stays unknown. Starport
+derives the provider through existing primitives.</li>
+
+<li><strong>Fail-before:</strong> the HZR0 search and a focused assertion
+fail.</li>
+
+<li><strong>Verification:</strong> run <code>make testdata
+PROVIDER=hetzner</code>, focused race tests, <code>make verify</code>,
+<code>make lint</code>, and <code>make build</code>.</li></ul>
+
+<h3 id="task-HZR2">HZR2 Starmap release</h3><ul>
+<li><strong>Problem:</strong> Starport cannot use an unpublished Starmap
+change.</li>
+
+<li><strong>Owning seam and paths:</strong> the Starmap pull request and
+<code>.github/workflows/release.yaml</code>.</li>
+
+<li><strong>Steps:</strong> commit and run the required review. Open and merge
+the PR after checks. Tag the next compatible version from <code>main</code>.
+Verify immutable release assets.</li>
+
+<li><strong>Acceptance:</strong> the release is public and immutable. It
+resolves through the Go proxy.</li>
+
+<li><strong>Fail-before:</strong> the target module tag does not exist.</li>
+
+<li><strong>Verification:</strong> check GitHub jobs, release readback,
+attestations, and <code>go list -m</code> resolution.</li></ul>
+
+<h3 id="task-HZR3">HZR3 Starport catalog update</h3><ul>
+<li><strong>Problem:</strong> Starport v1.0.4 uses Starmap v0.5.0 without
+Hetzner.</li>
+
+<li><strong>Owning seam and paths:</strong> Starport <code>go.mod</code>,
+<code>go.sum</code>, catalog tests, and release checks.</li>
+
+<li><strong>Steps:</strong> create <code>codex/hetzner-catalog-release</code>
+from current <code>main</code>. Update to the released Starmap version. Prove
+automatic provider activation and exact offerings.</li>
+
+<li><strong>Acceptance:</strong> Starport lists and routes Hetzner from catalog
+data. It adds no provider switch or endpoint table.</li>
+
+<li><strong>Fail-before:</strong> the current dependency lacks provider
+<code>hetzner</code>.</li>
+
+<li><strong>Verification:</strong> run all required scripts,
+<code>go test ./...</code>, <code>go vet ./...</code>, <code>make lint</code>,
+<code>make build</code>, and the SDK smoke check.</li></ul>
+
+<h3 id="task-HZR4">HZR4 Starport release</h3><ul>
+<li><strong>Problem:</strong> users need a published Starport binary with the
+Hetzner catalog.</li>
+
+<li><strong>Owning seam and paths:</strong> the Starport pull request and
+release workflow.</li>
+
+<li><strong>Steps:</strong> commit and run pre-PR autoreview. Open and merge
+the PR after checks. Tag <code>v1.0.5</code> from <code>main</code>. Verify all
+release outputs.</li>
+
+<li><strong>Acceptance:</strong> public immutable Starport v1.0.5 contains the
+released Starmap version and verified artifacts.</li>
+
+<li><strong>Fail-before:</strong> <code>v1.0.5</code> does not exist.</li>
+
+<li><strong>Verification:</strong> all release jobs and independent release
+readback pass.</li></ul>
+
+<h3 id="task-HZR5">HZR5 Cleanup</h3><ul>
+<li><strong>Problem:</strong> merged branches and a completed plan must not
+remain as stale control state.</li>
+
+<li><strong>Owning seam and paths:</strong> both repositories, this plan, its
+proof root, and this plans index.</li>
+
+<li><strong>Steps:</strong> confirm both final merges. Remove only integrated
+branches. Delete this plan, proof root, and index entry.</li>
+
+<li><strong>Acceptance:</strong> each repository has one primary worktree. New
+merged branches are gone. Unique unmerged branches remain. No plan reference
+remains.</li>
+
+<li><strong>Fail-before:</strong> not applicable. Merge state is the deletion
+gate.</li>
+
+<li><strong>Verification:</strong> inspect worktrees, branches, status, and
+repository references to the plan slug.</li></ul>
+</section>
+<section id="goal"><h2>Goal</h2><pre><code>Execute docs/plans/hetzner-provider-release-plan.html to completion.
+This is a whole-plan goal, not a single-task goal.
+Read the plan fully.
+Then read these files:
+/Users/jack/src/github.com/agentstation/starmap/AGENTS.md
+/Users/jack/src/github.com/agentstation/starmap/docs/ARCHITECTURE.md
+
+/Users/jack/src/github.com/agentstation/starport/AGENTS.md
+/Users/jack/src/github.com/agentstation/starport/docs/TASKS.md
+/Users/jack/src/github.com/agentstation/starport/docs/ARCHITECTURE.md
+Use the Starmap worktree on branch codex/hetzner-provider.
+Use the Starport worktree on branch codex/hetzner-catalog-release.
+
+Chat history is not progress state.
+Resume from the ledger, execution log, and git state.
+After compaction, continue from the plan and git state.
+Keep one task in_progress.
+Implement at the owning seam and capture fail-before evidence.
+Run the verification commands and commit the work.
+
+Write the proof file and append the execution log with the work commit.
+Mark the task terminal with evidence and commit the plan update.
+Then advance to the next task.
+Decide rather than ask.
+Ask only for the action-time browser confirmation for a persistent token.
+Mark a wrong or satisfied task no-action with a short reason.
+
+Record a blocker and continue with the next eligible task.
+Starmap owns all provider facts.
+Secrets stay local and separate by plane.
+Do not invent price data.
+Starport adds no provider roster.
+Preserve unique unmerged branches.
+
+Make focused signed commits and use pull requests.
+Run configured pre-PR autoreview after final checks and commit.
+Stop only at a valid stop state from the plans skill.
+Before stopping, update the ledger, log, and next action.
+The goal needs immutable public Starmap and Starport releases.
+All required checks and safe cleanup must pass.
+Delete this plan and proof root after the final merge.</code></pre></section>
+<section id="execution-log"><h2>Execution log</h2><table><thead><tr><th>Date</th><th>Item</th><th>Action</th><th>Evidence</th></tr></thead><tbody>
+<tr><td>2026-08-19</td><td>meta</td><td>activated</td><td>User authorization; clean baselines b24d6589 and 9f3888f; no prior active plan.</td></tr>
+<tr><td>2026-08-19</td><td>cleanup</td><td>removed integrated branches</td><td>Starport: 23 merged remote branches and four integrated local branches removed. Five unmerged remote and seven unique local branches preserved. Starmap had no stale branch or extra worktree.</td></tr>
+<tr><td>2026-08-19</td><td>HZR0</td><td>blocked</td><td>The
+signed-in token page has no token. The Create API Token button is ready. The
+browser skill requires action-time confirmation before persistent access is
+created.</td></tr>
+</tbody></table></section>
+</main>
+</body>
+</html>
