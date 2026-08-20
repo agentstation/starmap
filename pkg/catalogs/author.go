@@ -170,14 +170,36 @@ const (
 	AuthorIDUnknown AuthorID = "unknown"
 )
 
-// ParseAuthorID normalizes a string into an AuthorID without consulting catalog
+// ParseAuthorID normalizes stable author aliases without consulting catalog
 // state. Use Authors.Resolve when alias resolution needs a specific catalog.
 func ParseAuthorID(s string) AuthorID {
 	if s == "" {
 		return AuthorIDUnknown
 	}
+	if canonical, found := canonicalAuthorAlias(AuthorID(s)); found {
+		return canonical
+	}
 	normalized := normalizeAuthorString(s)
 	return AuthorID(normalized)
+}
+
+func canonicalAuthorAlias(id AuthorID) (AuthorID, bool) {
+	switch id {
+	case "canopylabs":
+		return "canopy-labs", true
+	case "huggingfaceh4":
+		return AuthorIDHuggingFace, true
+	case "llama":
+		return AuthorIDMeta, true
+	case "moonshot", "moonshotai":
+		return AuthorIDMoonshot, true
+	case "togetherai":
+		return AuthorIDTogether, true
+	case "zhipuai":
+		return AuthorIDZhipuAI, true
+	default:
+		return "", false
+	}
 }
 
 // normalizeAuthorString normalizes a string for use as an AuthorID.

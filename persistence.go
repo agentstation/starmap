@@ -4,7 +4,6 @@ import (
 	"context"
 
 	"github.com/agentstation/starmap/internal/catalog/workspace"
-	"github.com/agentstation/starmap/internal/constants"
 	"github.com/agentstation/starmap/pkg/errors"
 )
 
@@ -30,7 +29,7 @@ func (c *Client) saveTo(writePath string) error {
 		}
 	}
 
-	ctx, cancel := context.WithTimeout(context.Background(), constants.DefaultCatalogProjectionTimeout)
+	ctx, cancel := context.WithTimeout(context.Background(), catalogProjectionTimeout)
 	defer cancel()
 	release, err := c.updates.acquire(ctx)
 	if err != nil {

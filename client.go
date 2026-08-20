@@ -50,7 +50,6 @@ import (
 
 	bootstraploader "github.com/agentstation/starmap/internal/bootstrap"
 	"github.com/agentstation/starmap/internal/catalog/workspace"
-	"github.com/agentstation/starmap/internal/constants"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/errors"
 	"github.com/agentstation/starmap/pkg/logging"
@@ -215,7 +214,7 @@ func NewContext(ctx context.Context, opts ...Option) (*Client, error) {
 	usingEmbeddedBootstrap := true
 	var durableCurrent *catalogs.Generation
 	if !isNilCatalogStore(sm.options.catalogStore) {
-		loadCtx, cancel := context.WithTimeout(ctx, constants.DefaultTimeout)
+		loadCtx, cancel := context.WithTimeout(ctx, catalogLoadTimeout)
 		stored, currentErr := sm.options.catalogStore.Current(loadCtx)
 		cancel()
 		switch {
@@ -274,7 +273,7 @@ func NewContext(ctx context.Context, opts ...Option) (*Client, error) {
 	sm.embeddedBootstrap = bootstrapManifest
 
 	if durableCurrent != nil && catalogPath != "" {
-		repairCtx, cancel := context.WithTimeout(ctx, constants.DefaultCatalogProjectionTimeout)
+		repairCtx, cancel := context.WithTimeout(ctx, catalogProjectionTimeout)
 		repair, repairErr := workspace.Repair(
 			repairCtx,
 			catalogPath,
