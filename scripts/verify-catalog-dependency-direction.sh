@@ -32,7 +32,7 @@ check_edge() {
 	local forbidden="$2"
 	local imports
 
-	imports="$(cd "$ROOT" && go list -f '{{range .Imports}}{{println .}}{{end}}' "./$importer")" || return 1
+	imports="$(cd "$ROOT" && go list -f '{{range .Imports}}{{println .}}{{end}}{{range .TestImports}}{{println .}}{{end}}{{range .XTestImports}}{{println .}}{{end}}' "./$importer")" || return 1
 	if grep -Fxq "$MODULE/$forbidden" <<<"$imports"; then
 		printf '%s imports forbidden private package %s\n' "$importer" "$forbidden"
 		return 1

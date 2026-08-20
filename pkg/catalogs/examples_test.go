@@ -4,13 +4,18 @@ import (
 	"context"
 	"fmt"
 	"log"
+	"os"
 	"path/filepath"
 	"slices"
 	"time"
 
-	"github.com/agentstation/starmap/internal/constants"
 	"github.com/agentstation/starmap/pkg/catalogs"
+	"github.com/agentstation/starmap/pkg/catalogs/internal/resourcepolicy"
 )
+
+func embeddedBuilder() (*catalogs.Builder, error) {
+	return catalogs.New(catalogs.WithFS(os.DirFS("../../internal/embedded/catalog")))
+}
 
 // Example demonstrates advanced catalog construction and publication.
 func Example() {
@@ -58,7 +63,7 @@ func Example() {
 // Example_embeddedCatalog demonstrates using the embedded catalog.
 func Example_embeddedCatalog() {
 	// Load embedded data into a builder, then publish it.
-	builder, err := catalogs.New(catalogs.WithEmbedded())
+	builder, err := embeddedBuilder()
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -213,7 +218,7 @@ func Example_mergeStrategies() {
 // Example_concurrentAccess demonstrates thread-safe concurrent usage.
 func Example_concurrentAccess() {
 	catalog := catalogs.NewEmpty()
-	ctx, cancel := context.WithTimeout(context.Background(), constants.DefaultHTTPTimeout)
+	ctx, cancel := context.WithTimeout(context.Background(), resourcepolicy.DefaultHTTPTimeout)
 	defer cancel()
 
 	// Safe for concurrent reads and writes
@@ -303,7 +308,7 @@ func Example_providerCapabilities() {
 
 // Example_modelFiltering demonstrates filtering models.
 func Example_modelFiltering() {
-	builder, _ := catalogs.New(catalogs.WithEmbedded())
+	builder, _ := embeddedBuilder()
 	catalog, _ := builder.Build()
 
 	// Filter immutable provider-independent definitions.

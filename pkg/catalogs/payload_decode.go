@@ -7,7 +7,7 @@ import (
 	"io"
 	"sort"
 
-	"github.com/agentstation/starmap/internal/constants"
+	"github.com/agentstation/starmap/pkg/catalogs/internal/resourcepolicy"
 	"github.com/agentstation/starmap/pkg/errors"
 	"github.com/agentstation/starmap/pkg/provenance"
 	sourcepayload "github.com/agentstation/starmap/pkg/sources/payload"
@@ -123,12 +123,12 @@ func decodePayloadEnvelope(data []byte) (payloadEnvelope, error) {
 			}
 		}
 	}
-	if len(payload.Providers) > constants.MaxProviders || len(payload.ProviderModels) > constants.MaxProviders {
+	if len(payload.Providers) > resourcepolicy.MaxProviders || len(payload.ProviderModels) > resourcepolicy.MaxProviders {
 		return payloadEnvelope{}, &errors.ValidationError{
 			Field: "providers", Value: len(payload.Providers), Message: "exceeds maximum provider count",
 		}
 	}
-	if len(payload.Authors) > constants.MaxCatalogModels {
+	if len(payload.Authors) > resourcepolicy.MaxModels {
 		return payloadEnvelope{}, &errors.ValidationError{
 			Field: "catalog", Message: "author count exceeds maximum",
 		}
@@ -242,7 +242,7 @@ func decodePayloadAuthors(
 				Field: "author_models", Value: authorID, Message: "references an unknown author",
 			}
 		}
-		remaining := constants.MaxCatalogModels -
+		remaining := resourcepolicy.MaxModels -
 			providerReport.Accepted - providerReport.Rejected -
 			report.Accepted - report.Rejected
 		if remaining < 0 {
@@ -289,8 +289,8 @@ func mergeRecordReport(target *sourcepayload.RecordReport, addition sourcepayloa
 
 func remainingRecordBudget(report sourcepayload.RecordReport) int {
 	used := report.Accepted + report.Rejected
-	if used >= constants.MaxCatalogModels {
+	if used >= resourcepolicy.MaxModels {
 		return 0
 	}
-	return constants.MaxCatalogModels - used
+	return resourcepolicy.MaxModels - used
 }

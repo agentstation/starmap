@@ -6,13 +6,14 @@ import (
 	"testing"
 
 	"github.com/agentstation/starmap/internal/providers/clients"
+	testcatalog "github.com/agentstation/starmap/internal/test/catalog"
 	"github.com/agentstation/starmap/pkg/catalogs"
 )
 
 func TestEmbeddedProviderContracts(t *testing.T) {
 	t.Parallel()
 
-	builder, err := catalogs.NewEmbedded()
+	builder, err := testcatalog.EmbeddedBuilder()
 	if err != nil {
 		t.Fatalf("load embedded catalog: %v", err)
 	}
@@ -82,7 +83,7 @@ func TestEmbeddedProviderContracts(t *testing.T) {
 func TestEmbeddedHetznerProviderContract(t *testing.T) {
 	t.Parallel()
 
-	builder, err := catalogs.NewEmbedded()
+	builder, err := testcatalog.EmbeddedBuilder()
 	if err != nil {
 		t.Fatalf("load embedded catalog: %v", err)
 	}
@@ -170,7 +171,7 @@ func containsModalities(have []catalogs.ModelModality, wants ...catalogs.ModelMo
 func TestEmbeddedProviderCredentialSchemaContract(t *testing.T) {
 	t.Parallel()
 
-	builder, err := catalogs.NewEmbedded()
+	builder, err := testcatalog.EmbeddedBuilder()
 	if err != nil {
 		t.Fatalf("load embedded catalog: %v", err)
 	}

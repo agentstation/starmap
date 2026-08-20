@@ -16,7 +16,7 @@ import (
 )
 
 func TestEmbeddedBootstrapManifestMatchesCanonicalCatalog(t *testing.T) {
-	builder, err := catalogs.NewEmbedded()
+	builder, err := NewEmbeddedBuilder()
 	if err != nil {
 		t.Fatalf("NewEmbedded: %v", err)
 	}
@@ -165,7 +165,7 @@ func TestEmbeddedGenerationPayloadRoundTripsWithoutQuarantine(t *testing.T) {
 }
 
 func TestEmbeddedCatalogIdentityGraphAndEndpointProjectionAreComplete(t *testing.T) {
-	builder, err := catalogs.NewEmbedded()
+	builder, err := NewEmbeddedBuilder()
 	if err != nil {
 		t.Fatalf("NewEmbedded: %v", err)
 	}
@@ -242,7 +242,7 @@ func TestEmbeddedCatalogIdentityGraphAndEndpointProjectionAreComplete(t *testing
 }
 
 func TestEmbeddedProviderIdentityIsIndependentFromModelAuthorship(t *testing.T) {
-	builder, err := catalogs.NewEmbedded()
+	builder, err := NewEmbeddedBuilder()
 	if err != nil {
 		t.Fatalf("NewEmbedded: %v", err)
 	}
@@ -383,7 +383,7 @@ func TestEmbeddedProviderIdentityIsIndependentFromModelAuthorship(t *testing.T) 
 }
 
 func TestEmbeddedOfferingsDoNotPublishChatRoutesForNonChatOperations(t *testing.T) {
-	builder, err := catalogs.NewEmbedded()
+	builder, err := NewEmbeddedBuilder()
 	if err != nil {
 		t.Fatalf("NewEmbedded: %v", err)
 	}

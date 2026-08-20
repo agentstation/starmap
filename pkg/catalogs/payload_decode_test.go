@@ -5,7 +5,7 @@ import (
 	stderrors "errors"
 	"testing"
 
-	"github.com/agentstation/starmap/internal/constants"
+	"github.com/agentstation/starmap/pkg/catalogs/internal/resourcepolicy"
 	pkgerrors "github.com/agentstation/starmap/pkg/errors"
 	sourcepayload "github.com/agentstation/starmap/pkg/sources/payload"
 )
@@ -171,7 +171,7 @@ func TestPrelaunchSchemaVersionFourIsRejected(t *testing.T) {
 }
 
 func TestCatalogPayloadDecodeIsSizeBounded(t *testing.T) {
-	catalog, err := DecodeCatalogPayload(bytes.Repeat([]byte(" "), constants.MaxSourcePayloadBytes+1))
+	catalog, err := DecodeCatalogPayload(bytes.Repeat([]byte(" "), resourcepolicy.MaxPayloadBytes+1))
 	if err == nil || catalog != nil {
 		t.Fatalf("DecodeCatalogPayload = %#v, %v; want bounded failure", catalog, err)
 	}

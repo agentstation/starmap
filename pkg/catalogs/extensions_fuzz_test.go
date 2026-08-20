@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"testing"
 
-	"github.com/agentstation/starmap/internal/constants"
+	"github.com/agentstation/starmap/pkg/catalogs/internal/resourcepolicy"
 )
 
 func FuzzSourceExtensionNoPanic(f *testing.F) {
@@ -12,7 +12,7 @@ func FuzzSourceExtensionNoPanic(f *testing.F) {
 	f.Add([]byte(`{"fields":null}`))
 	f.Add([]byte(`{"fields":{"number":1e100}}`))
 	f.Fuzz(func(t *testing.T, data []byte) {
-		if len(data) > constants.MaxSourcePayloadBytes {
+		if len(data) > resourcepolicy.MaxPayloadBytes {
 			t.Skip()
 		}
 		var extension SourceExtension

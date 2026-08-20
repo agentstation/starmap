@@ -173,7 +173,7 @@ func anthropicFixture(t *testing.T) (providerfixture.Fixture, *catalogs.Provider
 	if err != nil {
 		t.Fatalf("select fixture: %v", err)
 	}
-	builder, err := catalogs.NewEmbedded()
+	builder, err := testcatalog.EmbeddedBuilder()
 	if err != nil {
 		t.Fatalf("load embedded catalog: %v", err)
 	}
@@ -187,7 +187,7 @@ func anthropicFixture(t *testing.T) (providerfixture.Fixture, *catalogs.Provider
 
 func fetchLiveAnthropicCatalog(t *testing.T, provider *catalogs.Provider) []byte {
 	t.Helper()
-	builder, err := catalogs.NewEmbedded()
+	builder, err := testcatalog.EmbeddedBuilder()
 	if err != nil {
 		t.Fatalf("load embedded catalog: %v", err)
 	}

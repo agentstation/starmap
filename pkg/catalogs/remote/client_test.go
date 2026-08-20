@@ -16,9 +16,9 @@ import (
 	"testing"
 	"time"
 
-	"github.com/agentstation/starmap/internal/constants"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/catalogs/evidence"
+	"github.com/agentstation/starmap/pkg/catalogs/internal/resourcepolicy"
 )
 
 func TestClientDefaultHTTPTimeout(t *testing.T) {
@@ -26,8 +26,8 @@ func TestClientDefaultHTTPTimeout(t *testing.T) {
 	if err != nil {
 		t.Fatalf("NewClient: %v", err)
 	}
-	if client.httpClient == http.DefaultClient || client.httpClient.Timeout != constants.DefaultHTTPTimeout {
-		t.Fatalf("default HTTP client = %#v, want isolated timeout %s", client.httpClient, constants.DefaultHTTPTimeout)
+	if client.httpClient == http.DefaultClient || client.httpClient.Timeout != resourcepolicy.DefaultHTTPTimeout {
+		t.Fatalf("default HTTP client = %#v, want isolated timeout %s", client.httpClient, resourcepolicy.DefaultHTTPTimeout)
 	}
 }
 
