@@ -97,6 +97,8 @@ run ./scripts/verify-package-layout.sh
 run ./scripts/test-package-layout-verifier.sh
 run ./scripts/verify-catalog-package-ownership.sh
 run ./scripts/test-catalog-package-ownership-verifier.sh
+run ./scripts/verify-catalog-dependency-direction.sh
+run ./scripts/test-catalog-dependency-direction-verifier.sh
 run env CGO_ENABLED=1 go test ./... -race -short -timeout=20m
 run go vet ./...
 run ./scripts/verify-catalog-performance.sh
