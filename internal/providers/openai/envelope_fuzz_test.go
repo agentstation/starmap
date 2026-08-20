@@ -5,7 +5,7 @@ import (
 	"testing"
 
 	"github.com/agentstation/starmap/internal/constants"
-	sourcepayload "github.com/agentstation/starmap/internal/sources/payload"
+	sourcepayload "github.com/agentstation/starmap/pkg/sources/payload"
 )
 
 func FuzzModelsEnvelopeNoPanic(f *testing.F) {

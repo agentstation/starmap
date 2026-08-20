@@ -28,7 +28,7 @@ find_banned_dependencies() {
 	local dependencies="$2"
 
 	grep -E "$pattern" "$dependencies" |
-		grep -Fvx 'github.com/agentstation/starmap/internal/sources/payload' || true
+		grep -Fvx 'github.com/agentstation/starmap/pkg/sources/payload' || true
 }
 
 (

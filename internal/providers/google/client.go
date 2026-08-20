@@ -13,12 +13,12 @@ import (
 	"google.golang.org/genai"
 
 	"github.com/agentstation/starmap/internal/constants"
-	sourcepayload "github.com/agentstation/starmap/internal/sources/payload"
 	"github.com/agentstation/starmap/internal/transport"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/errors"
 	"github.com/agentstation/starmap/pkg/logging"
 	"github.com/agentstation/starmap/pkg/sources"
+	sourcepayload "github.com/agentstation/starmap/pkg/sources/payload"
 )
 
 // Client acquires and normalizes model metadata from Google AI Studio or Vertex AI.

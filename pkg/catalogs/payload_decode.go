@@ -8,9 +8,9 @@ import (
 	"sort"
 
 	"github.com/agentstation/starmap/internal/constants"
-	sourcepayload "github.com/agentstation/starmap/internal/sources/payload"
 	"github.com/agentstation/starmap/pkg/errors"
 	"github.com/agentstation/starmap/pkg/provenance"
+	sourcepayload "github.com/agentstation/starmap/pkg/sources/payload"
 )
 
 type payloadDecodeReport struct {

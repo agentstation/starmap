@@ -9,9 +9,9 @@ import (
 	"testing"
 
 	"github.com/agentstation/starmap/internal/constants"
-	sourcepayload "github.com/agentstation/starmap/internal/sources/payload"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/sources"
+	sourcepayload "github.com/agentstation/starmap/pkg/sources/payload"
 	"github.com/goccy/go-yaml"
 )
 

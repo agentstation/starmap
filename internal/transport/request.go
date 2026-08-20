@@ -6,10 +6,10 @@ import (
 	"net/http"
 
 	"github.com/agentstation/starmap/internal/constants"
-	sourcepayload "github.com/agentstation/starmap/internal/sources/payload"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/errors"
 	"github.com/agentstation/starmap/pkg/logging"
+	sourcepayload "github.com/agentstation/starmap/pkg/sources/payload"
 )
 
 // RequestBuilder helps build HTTP requests with provider-specific configurations.

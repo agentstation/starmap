@@ -4,8 +4,8 @@ import (
 	"context"
 	"testing"
 
-	"github.com/agentstation/starmap/internal/catalog/authority"
 	"github.com/agentstation/starmap/pkg/catalogs"
+	"github.com/agentstation/starmap/pkg/catalogs/authority"
 	"github.com/agentstation/starmap/pkg/sources"
 )
 

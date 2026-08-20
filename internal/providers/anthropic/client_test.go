@@ -8,11 +8,11 @@ import (
 	"testing"
 	"time"
 
-	sourcepayload "github.com/agentstation/starmap/internal/sources/payload"
 	testcatalog "github.com/agentstation/starmap/internal/test/catalog"
 	"github.com/agentstation/starmap/internal/test/providerfixture"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/sources"
+	sourcepayload "github.com/agentstation/starmap/pkg/sources/payload"
 )
 
 func TestSchemaDriftMutationMatrix(t *testing.T) {

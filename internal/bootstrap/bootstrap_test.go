@@ -11,8 +11,8 @@ import (
 
 	"github.com/agentstation/starmap/internal/catalog/workspace"
 	"github.com/agentstation/starmap/internal/embedded"
-	sourcepayload "github.com/agentstation/starmap/internal/sources/payload"
 	"github.com/agentstation/starmap/pkg/catalogs"
+	sourcepayload "github.com/agentstation/starmap/pkg/sources/payload"
 )
 
 func TestEmbeddedBootstrapManifestMatchesCanonicalCatalog(t *testing.T) {

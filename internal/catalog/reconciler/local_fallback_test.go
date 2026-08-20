@@ -3,9 +3,9 @@ package reconciler
 import (
 	"testing"
 
-	"github.com/agentstation/starmap/internal/catalog/authority"
 	testcatalog "github.com/agentstation/starmap/internal/test/catalog"
 	"github.com/agentstation/starmap/pkg/catalogs"
+	"github.com/agentstation/starmap/pkg/catalogs/authority"
 	"github.com/agentstation/starmap/pkg/sources"
 )
 

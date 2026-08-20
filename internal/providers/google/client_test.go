@@ -9,10 +9,10 @@ import (
 
 	"google.golang.org/genai"
 
-	sourcepayload "github.com/agentstation/starmap/internal/sources/payload"
 	testcatalog "github.com/agentstation/starmap/internal/test/catalog"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/sources"
+	sourcepayload "github.com/agentstation/starmap/pkg/sources/payload"
 )
 
 func TestGetOrCreateVertexClientUsesRequestMaterial(t *testing.T) {

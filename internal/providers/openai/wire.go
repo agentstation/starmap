@@ -7,7 +7,7 @@ import (
 	"strings"
 
 	"github.com/agentstation/starmap/internal/constants"
-	sourcepayload "github.com/agentstation/starmap/internal/sources/payload"
+	sourcepayload "github.com/agentstation/starmap/pkg/sources/payload"
 )
 
 // Response is the bounded wire representation of an OpenAI-compatible model list.
