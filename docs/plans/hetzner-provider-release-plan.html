@@ -43,7 +43,7 @@ document.addEventListener("DOMContentLoaded",function(){var rows=document.queryS
 Owner: this plan. Created: 2026-08-19.<br>
 Baseline: Starmap main @ b24d6589 and Starport main @ 9f3888f.<br>
 Proof root: <code>docs/proof/hetzner-provider-release/</code>.<br>
-Next action: HZR1 add the Hetzner provider, models, and contract tests.</p>
+Next action: HZR2 review, merge, and publish the Starmap release.</p>
 <section id="outcome"><h2>Outcome</h2><blockquote>Starmap publishes
 Hetzner as a catalog-driven OpenAI-compatible provider from current API facts.
 Starport v1.0.5 consumes that Starmap release. It routes authenticated
@@ -92,8 +92,8 @@ material.</li>
 
 <section id="ledger"><h2>Status ledger</h2><table><thead><tr><th>ID</th><th>Task</th><th>Status</th><th>Evidence</th></tr></thead><tbody>
 <tr id="HZR0" data-status="done"><td>HZR0</td><td>Baseline, live API contract, token, and cleanup inventory</td><td><code>done</code></td><td>2026-08-19. Two live model records. Local token verified. Safe cleanup complete. <a href="../proof/hetzner-provider-release/hzr0.md">HZR0 proof</a>.</td></tr>
-<tr id="HZR1" data-status="in_progress"><td>HZR1</td><td>Add and verify the Hetzner provider in Starmap</td><td><code>in_progress</code></td><td></td></tr>
-<tr id="HZR2" data-status="todo"><td>HZR2</td><td>Merge and publish the Starmap module release</td><td><code>todo</code></td><td></td></tr>
+<tr id="HZR1" data-status="done"><td>HZR1</td><td>Add and verify the Hetzner provider in Starmap</td><td><code>done</code></td><td>2026-08-19. Work commit <code>28ce574d</code>. Full automated gate passed. Live listing, chat, and Hetzner fixture drift passed. <a href="../proof/hetzner-provider-release/hzr1.md">HZR1 proof</a>.</td></tr>
+<tr id="HZR2" data-status="in_progress"><td>HZR2</td><td>Merge and publish the Starmap module release</td><td><code>in_progress</code></td><td></td></tr>
 <tr id="HZR3" data-status="todo"><td>HZR3</td><td>Update and verify Starport against released Starmap</td><td><code>todo</code></td><td></td></tr>
 <tr id="HZR4" data-status="todo"><td>HZR4</td><td>Merge and publish Starport v1.0.5</td><td><code>todo</code></td><td></td></tr>
 <tr id="HZR5" data-status="todo"><td>HZR5</td><td>Clean up the merged plan, proof, work branches, and stale integrated branches</td><td><code>todo</code></td><td></td></tr>
@@ -276,6 +276,10 @@ created.</td></tr>
 <code>starmap-catalog</code> token. Saved it only in the ignored Starmap
 <code>.env</code>. The live authenticated endpoint returned two model records.
 Advanced HZR1.</td></tr>
+<tr><td>2026-08-19</td><td>HZR1</td><td>done</td><td>Added the
+catalog-driven Hetzner contract and two reviewed Qwen offerings in
+<code>28ce574d</code>. The full automated gate, live listing, both chat requests,
+and the Hetzner fixture-drift subtest passed. Advanced HZR2.</td></tr>
 </tbody></table></section>
 </main>
 </body>
