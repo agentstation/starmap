@@ -207,7 +207,7 @@ The sync pipeline is in `internal/catalog/pipeline/` behind the explicit
 
 See docs/ARCHITECTURE.md § Reconciliation System for strategy details.
 
-- Modify authorities: `internal/catalog/authority/authority.go`
+- Modify authorities: `pkg/catalogs/authority/authority.go`
 - Strategies: `internal/catalog/reconciler/strategy.go`
 - Field patterns support wildcards: "Pricing.*"
 
@@ -263,7 +263,7 @@ result, _ := syncer.Sync(ctx,
 )
 ```
 
-See examples: `starmap.New()`, `catalogs.New(catalogs.WithEmbedded())`, `catalogs.Empty()`, `sync.WithProvider()`
+See examples: `starmap.New()`, `catalogs.New(catalogs.WithFS(catalogFS))`, `catalogs.NewEmpty()`, `sync.WithProvider()`
 
 ### Dependency Injection
 
@@ -356,7 +356,7 @@ GOOGLE_APPLICATION_CREDENTIALS=/path/to/service-account.json
 | `internal/server/router.go` | Route registration & middleware |
 | `internal/server/handlers/handlers.go` | Handler base structure |
 | `internal/catalog/reconciler/reconciler.go` | Multi-source reconciliation |
-| `internal/catalog/authority/authority.go` | Field-level authorities |
+| `pkg/catalogs/authority/authority.go` | Field-level authorities |
 | `internal/sources/providers/providers.go` | Concurrent provider fetching |
 | `internal/providers/clients/provider.go` | Provider client registry |
 | `internal/embedded/catalog/providers.yaml` | Provider configurations |

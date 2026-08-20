@@ -976,7 +976,7 @@ Location: `internal/catalog/reconciler/`
 5. Return result
 
 **Field Policies:**
-`internal/catalog/authority/authority.go` is the sole executable inventory for reconciled
+`pkg/catalogs/authority/authority.go` is the sole executable inventory for reconciled
 model, provider, and author fields. The merger iterates its immutable policies
 directly. Focused executors for structured fields accept the selected policy
 and contain no source-order table of their own. Tests verify schema coverage,
@@ -1002,11 +1002,12 @@ See [the internal reconciler documentation](../internal/catalog/reconciler/READM
 for implementation details. Consumers use `acquisition.Syncer`, not this
 package directly.
 
-### Internal Authority Policy
+### Catalog Authority Policy
 
-Location: `internal/catalog/authority/`
+Location: `pkg/catalogs/authority/`
 
-**Purpose:** Field-level source authority system
+**Purpose:** Shared field-level source authority policy for immutable catalog
+read views and reconciliation
 
 **How It Works:**
 - Each field family has one `Policy`
@@ -1043,6 +1044,23 @@ unknown additive members are preserved inside extensions or classified as
 reviewable evidence before promotion. The executable inventory and rationale
 are documented in [SCHEMA_DRIFT_POLICY.md](SCHEMA_DRIFT_POLICY.md) and exposed
 by `pkg/sources.SchemaDriftPolicies`.
+
+### Catalog Dependency Direction
+
+The `pkg/catalogs` tree does not import a package from the repository-wide
+`internal` tree. Stable policy contracts live in public concept packages.
+Catalog-only implementation policy lives below `pkg/catalogs/internal`.
+
+- `pkg/catalogs/authority` owns the one field-authority table.
+- `pkg/sources/payload` owns bounded source decoding and partial-result errors.
+- `pkg/catalogs/internal/resourcepolicy` owns catalog limits, file modes, the
+  store lock delay, and the remote client timeout.
+- `internal/bootstrap` composes `embedded.FS` with `catalogs.WithFS`. The
+  catalog package does not select a repository-owned filesystem or write path.
+
+`scripts/verify-catalog-dependency-direction.sh` enforces conditions `SM-D01`
+through `SM-D08`. Its mutation test proves that each prohibited edge fails
+independently. Both commands run in the standard repository verification gate.
 
 ### Sources Package
 
@@ -2374,14 +2392,15 @@ and fails on a fetch error or a no-op update. Store exploratory captures under
 | `internal/cli/commands/*/application.go` | Consumer-local command roles |
 | `internal/server/application.go` | HTTP server application role |
 | `internal/catalog/reconciler/reconciler.go` | Reconciliation engine |
-| `internal/catalog/authority/authority.go` | Field-level authority table |
+| `pkg/catalogs/authority/authority.go` | Field-level authority table |
 
 ### Package Documentation
 
 - [pkg/catalogs/README.md](../pkg/catalogs/README.md) - Catalog construction and immutable reads
 - [CATALOG_STORE_CONTRACT.md](CATALOG_STORE_CONTRACT.md) - Generation-store contract
 - [pkg/sources/README.md](../pkg/sources/README.md) - Data source abstractions
-- [internal/catalog/authority/](../internal/catalog/authority/) - Internal field-level authority policy
+- [pkg/catalogs/authority/](../pkg/catalogs/authority/) - Shared field-level authority policy
+- [pkg/sources/payload/](../pkg/sources/payload/) - Bounded source payload contracts
 - [pkg/errors/README.md](../pkg/errors/README.md) - Error types
 - [pkg/logging/README.md](../pkg/logging/README.md) - Logging utilities
 
