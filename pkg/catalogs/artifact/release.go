@@ -8,7 +8,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/agentstation/starmap/internal/constants"
+	"github.com/agentstation/starmap/pkg/catalogs/internal/resourcepolicy"
 	"github.com/agentstation/starmap/pkg/errors"
 )
 
@@ -53,7 +53,7 @@ func StageReleaseAssets(root string, artifact Bundle) (ReleaseAssets, error) {
 	if err := validateReleaseDirectory(base); err != nil {
 		return ReleaseAssets{}, err
 	}
-	if err := os.MkdirAll(base, constants.DirPermissions); err != nil {
+	if err := os.MkdirAll(base, resourcepolicy.DirMode); err != nil {
 		return ReleaseAssets{}, errors.WrapIO("create", base, err)
 	}
 	if err := validateReleaseDirectory(absoluteRoot); err != nil {
@@ -79,7 +79,7 @@ func StageReleaseAssets(root string, artifact Bundle) (ReleaseAssets, error) {
 		return ReleaseAssets{}, errors.WrapIO("create", base, err)
 	}
 	defer func() { _ = os.RemoveAll(temporary) }()
-	if err := os.Chmod(temporary, constants.DirPermissions); err != nil {
+	if err := os.Chmod(temporary, resourcepolicy.DirMode); err != nil {
 		return ReleaseAssets{}, errors.WrapIO("chmod", temporary, err)
 	}
 	for _, asset := range assets {
@@ -178,7 +178,7 @@ func releaseDirectoryName(generationID string) string {
 }
 
 func writeReleaseFile(path string, data []byte) error {
-	file, err := os.OpenFile(path, os.O_WRONLY|os.O_CREATE|os.O_EXCL, constants.FilePermissions) //nolint:gosec // path is fixed beneath a private staging directory.
+	file, err := os.OpenFile(path, os.O_WRONLY|os.O_CREATE|os.O_EXCL, resourcepolicy.FileMode) //nolint:gosec // path is fixed beneath a private staging directory.
 	if err != nil {
 		return errors.WrapIO("create", path, err)
 	}

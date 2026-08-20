@@ -8,7 +8,7 @@ import (
 
 	"github.com/goccy/go-yaml"
 
-	"github.com/agentstation/starmap/internal/constants"
+	"github.com/agentstation/starmap/pkg/catalogs/internal/resourcepolicy"
 	"github.com/agentstation/starmap/pkg/errors"
 	"github.com/agentstation/starmap/pkg/provenance"
 )
@@ -215,7 +215,7 @@ func (cat *Builder) loadModelRecord(path string, data []byte) {
 }
 
 func (cat *Builder) modelLoadLimitReached(path string) bool {
-	if cat.loadReport.Accepted+cat.loadReport.Rejected < constants.MaxCatalogModels {
+	if cat.loadReport.Accepted+cat.loadReport.Rejected < resourcepolicy.MaxModels {
 		return false
 	}
 	if !cat.loadReport.Truncated {
@@ -225,7 +225,7 @@ func (cat *Builder) modelLoadLimitReached(path string) bool {
 			Path:  path,
 			Limit: true,
 			Err: &errors.ValidationError{
-				Field: "catalog.models", Value: constants.MaxCatalogModels,
+				Field: "catalog.models", Value: resourcepolicy.MaxModels,
 				Message: "model file count exceeds maximum; excess records quarantined",
 			},
 		})

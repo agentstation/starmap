@@ -2,9 +2,29 @@
 package catalog
 
 import (
+	"io/fs"
+
+	"github.com/agentstation/starmap/internal/embedded"
 	"github.com/agentstation/starmap/pkg/catalogs"
+	"github.com/agentstation/starmap/pkg/errors"
 	"github.com/agentstation/starmap/pkg/sources"
 )
+
+// EmbeddedBuilder loads the repository's embedded catalog for cross-package tests.
+func EmbeddedBuilder() (*catalogs.Builder, error) {
+	catalogFS, err := fs.Sub(embedded.FS, "catalog")
+	if err != nil {
+		return nil, errors.WrapIO("sub", "embedded test catalog", err)
+	}
+	builder, err := catalogs.New(catalogs.WithFS(catalogFS))
+	if err != nil {
+		return nil, err
+	}
+	if err := builder.LoadReport().Err(); err != nil {
+		return nil, errors.WrapResource("load", "embedded test catalog model", "", err)
+	}
+	return builder, nil
+}
 
 // UnauthenticatedCredentials returns an optional, no-authentication contract.
 func UnauthenticatedCredentials() *catalogs.ProviderCredentials {

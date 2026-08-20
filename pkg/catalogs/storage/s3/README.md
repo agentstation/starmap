@@ -75,7 +75,7 @@ type Config struct {
     // Bucket is the S3-compatible bucket that contains catalog objects.
     Bucket string
     // MaxObjectBytes bounds each object read and write. Zero uses
-    // constants.MaxSourcePayloadBytes.
+    // resourcepolicy.MaxPayloadBytes.
     MaxObjectBytes int64
 }
 ```

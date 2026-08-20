@@ -1,7 +1,11 @@
 // Package constants defines shared implementation limits and defaults.
 package constants
 
-import "time"
+import (
+	"time"
+
+	sourcepayload "github.com/agentstation/starmap/pkg/sources/payload"
+)
 
 // Timeout constants define various timeout durations used in the application.
 const (
@@ -59,8 +63,8 @@ const (
 	// canonical Starmap providers.
 	MaxSourceProviders = 512
 
-	// MaxSourcePayloadBytes bounds one provider or catalog source JSON payload.
-	MaxSourcePayloadBytes = 16 << 20
+	// MaxSourcePayloadBytes is the source payload package's public byte limit.
+	MaxSourcePayloadBytes = sourcepayload.MaxBytes
 
 	// MaxServerRequestBodyBytes bounds one JSON request accepted by the HTTP
 	// server. Current request schemas are small query descriptions, not catalog

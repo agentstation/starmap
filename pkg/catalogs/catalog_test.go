@@ -37,7 +37,7 @@ func TestCatalogModes(t *testing.T) {
 
 	t.Run("EmbeddedCatalog", func(t *testing.T) {
 		// Create embedded catalog
-		cat, err := New(WithEmbedded())
+		cat, err := newEmbeddedTestBuilder()
 		if err != nil {
 			t.Fatalf("Failed to create embedded catalog: %v", err)
 		}
@@ -77,7 +77,7 @@ func TestCatalogModes(t *testing.T) {
 
 	t.Run("CatalogComparison", func(t *testing.T) {
 		// Create both catalogs
-		embCat, err := New(WithEmbedded())
+		embCat, err := newEmbeddedTestBuilder()
 		if err != nil {
 			t.Fatalf("Failed to create embedded catalog: %v", err)
 		}
@@ -106,7 +106,7 @@ func TestCatalogModes(t *testing.T) {
 
 	t.Run("ProvenanceMerge", func(t *testing.T) {
 		// Create embedded catalog (should include provenance.yaml)
-		embCat, err := New(WithEmbedded())
+		embCat, err := newEmbeddedTestBuilder()
 		if err != nil {
 			t.Fatalf("Failed to create embedded catalog: %v", err)
 		}

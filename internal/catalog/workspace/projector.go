@@ -14,7 +14,6 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/agentstation/starmap/internal/constants"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/errors"
 )
@@ -190,7 +189,7 @@ func (p projector) project(
 	if err := ValidateHumanLayout(target, ""); err != nil {
 		return Receipt{}, err
 	}
-	if err := os.MkdirAll(filepath.Dir(target), constants.DirPermissions); err != nil {
+	if err := os.MkdirAll(filepath.Dir(target), directoryMode); err != nil {
 		return Receipt{}, errors.WrapIO("create", filepath.Dir(target), err)
 	}
 	release, err := acquireWriterLock(target)
@@ -352,7 +351,7 @@ func (p projector) repair(ctx context.Context, path string, current *catalogs.Ca
 	if err := ValidateHumanLayout(target, ""); err != nil {
 		return RepairResult{}, err
 	}
-	if err := os.MkdirAll(filepath.Dir(target), constants.DirPermissions); err != nil {
+	if err := os.MkdirAll(filepath.Dir(target), directoryMode); err != nil {
 		return RepairResult{}, errors.WrapIO("create", filepath.Dir(target), err)
 	}
 	release, err := acquireWriterLock(target)
@@ -515,7 +514,7 @@ func stageCatalog(
 		_ = os.RemoveAll(staged)
 		return "", semanticState{}, err
 	}
-	if err := os.Chmod(staged, constants.DirPermissions); err != nil {
+	if err := os.Chmod(staged, directoryMode); err != nil {
 		return cleanup(errors.WrapIO("chmod", staged, err))
 	}
 	if info, statErr := os.Lstat(target); statErr == nil && info.IsDir() {
@@ -573,7 +572,7 @@ func validateStableProjection(
 		return errors.WrapIO("create", filepath.Dir(staged), err)
 	}
 	defer func() { _ = os.RemoveAll(verification) }()
-	if err := os.Chmod(verification, constants.DirPermissions); err != nil {
+	if err := os.Chmod(verification, directoryMode); err != nil {
 		return errors.WrapIO("chmod", verification, err)
 	}
 	verificationBuilder, err := catalogs.NewBuilderFrom(catalog)
@@ -792,7 +791,7 @@ func writeProjectionMarker(target string, marker projectionMarker) error {
 	}
 	tempPath := temp.Name()
 	defer func() { _ = os.Remove(tempPath) }()
-	if err := temp.Chmod(constants.FilePermissions); err != nil {
+	if err := temp.Chmod(fileMode); err != nil {
 		_ = temp.Close()
 		return errors.WrapIO("chmod", tempPath, err)
 	}

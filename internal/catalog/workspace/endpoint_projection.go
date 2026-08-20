@@ -10,7 +10,6 @@ import (
 
 	"github.com/goccy/go-yaml"
 
-	"github.com/agentstation/starmap/internal/constants"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/errors"
 )
@@ -119,7 +118,7 @@ func writeEndpointProjection(path string, catalog *catalogs.Catalog, identity Id
 		return "", err
 	}
 	target := filepath.Join(path, endpointProjectionFilename)
-	if err := os.WriteFile(target, data, constants.FilePermissions); err != nil {
+	if err := os.WriteFile(target, data, fileMode); err != nil {
 		return "", errors.WrapIO("write", target, err)
 	}
 	return endpointProjectionChecksum(data), nil

@@ -11,7 +11,7 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"github.com/agentstation/starmap/internal/constants"
+	"github.com/agentstation/starmap/pkg/catalogs/internal/resourcepolicy"
 	pkgerrors "github.com/agentstation/starmap/pkg/errors"
 )
 
@@ -22,13 +22,13 @@ func TestNewFromPathRejectsMissingAndQuarantinesCorruptRecords(t *testing.T) {
 	}
 
 	corrupt := filepath.Join(t.TempDir(), "corrupt")
-	if err := os.MkdirAll(corrupt, constants.DirPermissions); err != nil {
+	if err := os.MkdirAll(corrupt, resourcepolicy.DirMode); err != nil {
 		t.Fatalf("Mkdir corrupt: %v", err)
 	}
 	if err := os.WriteFile(
 		filepath.Join(corrupt, "providers.yaml"),
 		[]byte("- id: invalid\n  name: [unterminated\n"),
-		constants.FilePermissions,
+		resourcepolicy.FileMode,
 	); err != nil {
 		t.Fatalf("Write corrupt catalog: %v", err)
 	}
@@ -43,20 +43,20 @@ func TestNewFromPathRejectsMissingAndQuarantinesCorruptRecords(t *testing.T) {
 
 	corruptModel := filepath.Join(t.TempDir(), "corrupt-model")
 	modelDir := filepath.Join(corruptModel, "providers", "test-provider", "models")
-	if err := os.MkdirAll(modelDir, constants.DirPermissions); err != nil {
+	if err := os.MkdirAll(modelDir, resourcepolicy.DirMode); err != nil {
 		t.Fatalf("Mkdir corrupt model: %v", err)
 	}
 	if err := os.WriteFile(
 		filepath.Join(corruptModel, "providers.yaml"),
 		[]byte("- id: test-provider\n  name: Test Provider\n"),
-		constants.FilePermissions,
+		resourcepolicy.FileMode,
 	); err != nil {
 		t.Fatalf("Write provider index: %v", err)
 	}
 	if err := os.WriteFile(
 		filepath.Join(modelDir, "broken.yaml"),
 		[]byte("id: broken\nname: [unterminated\n"),
-		constants.FilePermissions,
+		resourcepolicy.FileMode,
 	); err != nil {
 		t.Fatalf("Write corrupt model: %v", err)
 	}
@@ -234,14 +234,14 @@ func TestCatalogWithPath(t *testing.T) {
 		filepath.Join(tmpDir, "providers.yaml"),
 		[]byte(`- id: test-provider
   name: Test Provider
-`), constants.FilePermissions))
+`), resourcepolicy.FileMode))
 
-	require.NoError(t, os.MkdirAll(filepath.Join(tmpDir, "providers", "test-provider", "models"), constants.DirPermissions))
+	require.NoError(t, os.MkdirAll(filepath.Join(tmpDir, "providers", "test-provider", "models"), resourcepolicy.DirMode))
 	require.NoError(t, os.WriteFile(
 		filepath.Join(tmpDir, "providers", "test-provider", "models", "test-model.yaml"),
 		[]byte(`id: test-model
 name: Test Model
-`), constants.FilePermissions))
+`), resourcepolicy.FileMode))
 
 	// Create catalog from path
 	cat, err := New(WithPath(tmpDir))
@@ -308,24 +308,24 @@ func TestStaleCatalogRecordsDoNotReappearAfterSaveReload(t *testing.T) {
 	if err := cat.SaveTo(tmpDir); err != nil {
 		t.Fatalf("Save first generation: %v", err)
 	}
-	if err := os.WriteFile(filepath.Join(tmpDir, "notes.txt"), []byte("unmanaged"), constants.FilePermissions); err != nil {
+	if err := os.WriteFile(filepath.Join(tmpDir, "notes.txt"), []byte("unmanaged"), resourcepolicy.FileMode); err != nil {
 		t.Fatalf("Write unmanaged root file: %v", err)
 	}
 	if err := os.WriteFile(
 		filepath.Join(tmpDir, "providers", "replacement-provider", "logo.svg"),
 		[]byte("<svg/>"),
-		constants.FilePermissions,
+		resourcepolicy.FileMode,
 	); err != nil {
 		t.Fatalf("Write unmanaged provider file: %v", err)
 	}
 	staleAuthorModels := filepath.Join(tmpDir, "authors", "replacement-author", "models")
-	if err := os.MkdirAll(staleAuthorModels, constants.DirPermissions); err != nil {
+	if err := os.MkdirAll(staleAuthorModels, resourcepolicy.DirMode); err != nil {
 		t.Fatalf("Create obsolete author model tree: %v", err)
 	}
 	if err := os.WriteFile(
 		filepath.Join(staleAuthorModels, "stale.yaml"),
 		[]byte("id: stale\nname: Stale\n"),
-		constants.FilePermissions,
+		resourcepolicy.FileMode,
 	); err != nil {
 		t.Fatalf("Write obsolete author model: %v", err)
 	}

@@ -4,8 +4,6 @@ import (
 	"io/fs"
 	"os"
 	"sync"
-
-	"github.com/agentstation/starmap/internal/embedded"
 )
 
 // options is a struct that contains the options for the catalog.
@@ -86,21 +84,6 @@ func WithPath(path string) Option {
 	return func(c *options) {
 		c.readFS = os.DirFS(path)
 		c.writePath = path // Also set as write path
-	}
-}
-
-// WithEmbedded configures the catalog to use embedded files.
-func WithEmbedded() Option {
-	return func(c *options) {
-		// Use fs.Sub to get the catalog subdirectory
-		catalogFS, err := fs.Sub(embedded.FS, "catalog")
-		if err != nil {
-			// Fall back to using the full embedded FS
-			c.readFS = embedded.FS
-		} else {
-			c.readFS = catalogFS
-		}
-		c.writePath = "internal/embedded/catalog"
 	}
 }
 

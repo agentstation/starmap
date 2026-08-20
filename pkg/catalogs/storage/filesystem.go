@@ -11,8 +11,8 @@ import (
 
 	"github.com/gofrs/flock"
 
-	"github.com/agentstation/starmap/internal/constants"
 	"github.com/agentstation/starmap/pkg/catalogs"
+	"github.com/agentstation/starmap/pkg/catalogs/internal/resourcepolicy"
 	"github.com/agentstation/starmap/pkg/errors"
 )
 
@@ -92,7 +92,7 @@ func (s *Filesystem) Commit(ctx context.Context, generation catalogs.Generation,
 	if err := validateFilesystemLayout(s.root); err != nil {
 		return err
 	}
-	if err := os.MkdirAll(filepath.Join(s.root, "generations"), constants.DirPermissions); err != nil {
+	if err := os.MkdirAll(filepath.Join(s.root, "generations"), resourcepolicy.DirMode); err != nil {
 		return errors.WrapIO("create", s.root, err)
 	}
 	if err := validateFilesystemLayout(s.root); err != nil {
@@ -100,7 +100,7 @@ func (s *Filesystem) Commit(ctx context.Context, generation catalogs.Generation,
 	}
 	candidate := generation.Copy()
 	id := candidate.Manifest.GenerationID
-	locked, err := s.commitLock.TryLockContext(ctx, constants.CatalogStoreLockRetryDelay)
+	locked, err := s.commitLock.TryLockContext(ctx, resourcepolicy.StoreLockRetryDelay)
 	if err != nil {
 		return errors.WrapIO("lock", s.root, err)
 	}
@@ -247,7 +247,7 @@ func (s *Filesystem) writeGeneration(generation catalogs.Generation) error {
 		return errors.WrapIO("create", base, err)
 	}
 	defer func() { _ = os.RemoveAll(temp) }()
-	if err := os.Chmod(temp, constants.DirPermissions); err != nil {
+	if err := os.Chmod(temp, resourcepolicy.DirMode); err != nil {
 		return errors.WrapIO("chmod", temp, err)
 	}
 	if err := writeSyncedFile(filepath.Join(temp, manifestFilename), manifest); err != nil {
@@ -281,7 +281,7 @@ func (s *Filesystem) writeCurrent(id string) error {
 	}
 	tempPath := temp.Name()
 	defer func() { _ = os.Remove(tempPath) }()
-	if err := temp.Chmod(constants.FilePermissions); err != nil {
+	if err := temp.Chmod(resourcepolicy.FileMode); err != nil {
 		_ = temp.Close()
 		return errors.WrapIO("chmod", tempPath, err)
 	}
@@ -317,7 +317,7 @@ func (s *Filesystem) generationDir(id string) string {
 
 func writeSyncedFile(path string, data []byte) error {
 	// path is constructed beneath a store-owned temporary generation directory.
-	file, err := os.OpenFile(path, os.O_WRONLY|os.O_CREATE|os.O_EXCL, constants.FilePermissions) //nolint:gosec
+	file, err := os.OpenFile(path, os.O_WRONLY|os.O_CREATE|os.O_EXCL, resourcepolicy.FileMode) //nolint:gosec
 	if err != nil {
 		return err
 	}

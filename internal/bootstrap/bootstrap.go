@@ -2,6 +2,7 @@
 package bootstrap
 
 import (
+	"io/fs"
 	"sync"
 
 	"github.com/agentstation/starmap/internal/embedded"
@@ -25,7 +26,7 @@ var (
 // cannot change during a process lifetime.
 func Embedded() (*catalogs.Catalog, catalogs.BootstrapManifest, error) {
 	embeddedOnce.Do(func() {
-		builder, err := catalogs.NewEmbedded()
+		builder, err := NewEmbeddedBuilder()
 		if err != nil {
 			embeddedErr = errors.WrapResource("load", "embedded bootstrap catalog", "", err)
 			return
@@ -38,6 +39,24 @@ func Embedded() (*catalogs.Catalog, catalogs.BootstrapManifest, error) {
 		embeddedManifest, embeddedErr = Load(embeddedCatalog)
 	})
 	return embeddedCatalog, embeddedManifest, embeddedErr
+}
+
+// NewEmbeddedBuilder composes the repository-owned embedded filesystem with a
+// catalog builder. Callers that only need the verified immutable generation
+// should use Embedded.
+func NewEmbeddedBuilder() (*catalogs.Builder, error) {
+	catalogFS, err := fs.Sub(embedded.FS, "catalog")
+	if err != nil {
+		return nil, errors.WrapIO("sub", "embedded catalog", err)
+	}
+	builder, err := catalogs.New(catalogs.WithFS(catalogFS))
+	if err != nil {
+		return nil, err
+	}
+	if err := builder.LoadReport().Err(); err != nil {
+		return nil, errors.WrapResource("load", "embedded catalog model", "", err)
+	}
+	return builder, nil
 }
 
 // Load parses embedded generation metadata and verifies it against the exact

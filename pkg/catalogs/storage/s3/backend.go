@@ -20,7 +20,7 @@ import (
 	awss3 "github.com/aws/aws-sdk-go-v2/service/s3"
 	"github.com/aws/smithy-go"
 
-	"github.com/agentstation/starmap/internal/constants"
+	"github.com/agentstation/starmap/pkg/catalogs/internal/resourcepolicy"
 	"github.com/agentstation/starmap/pkg/catalogs/storage"
 	"github.com/agentstation/starmap/pkg/errors"
 )
@@ -30,7 +30,7 @@ type Config struct {
 	// Bucket is the S3-compatible bucket that contains catalog objects.
 	Bucket string
 	// MaxObjectBytes bounds each object read and write. Zero uses
-	// constants.MaxSourcePayloadBytes.
+	// resourcepolicy.MaxPayloadBytes.
 	MaxObjectBytes int64
 }
 
@@ -58,7 +58,7 @@ func New(client *awss3.Client, config Config) (*Backend, error) {
 	}
 	maxObjectBytes := config.MaxObjectBytes
 	if maxObjectBytes == 0 {
-		maxObjectBytes = constants.MaxSourcePayloadBytes
+		maxObjectBytes = resourcepolicy.MaxPayloadBytes
 	}
 	if maxObjectBytes < 0 {
 		return nil, &errors.ConfigError{Component: "S3 catalog backend", Message: "maximum object bytes must be positive"}

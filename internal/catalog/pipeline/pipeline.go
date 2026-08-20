@@ -8,6 +8,7 @@ import (
 
 	"github.com/google/uuid"
 
+	"github.com/agentstation/starmap/internal/bootstrap"
 	"github.com/agentstation/starmap/internal/catalog/reconciler"
 	"github.com/agentstation/starmap/internal/catalog/workspace"
 	"github.com/agentstation/starmap/internal/constants"
@@ -97,7 +98,7 @@ func newPipeline(
 ) *Pipeline {
 	return &Pipeline{
 		loadWorkspace: loadHumanWorkspace,
-		loadEmbedded:  catalogs.NewEmbedded,
+		loadEmbedded:  bootstrap.NewEmbeddedBuilder,
 		createSources: func(options *pkgsync.Options, inputs catalogInputs) []sources.Source {
 			return filterSources(options, inputs, providerSourceComposition{
 				clientFactory:      providerFactory,

@@ -1,8 +1,8 @@
 package reconciler
 
 import (
-	"github.com/agentstation/starmap/internal/catalog/authority"
 	"github.com/agentstation/starmap/pkg/catalogs"
+	"github.com/agentstation/starmap/pkg/catalogs/authority"
 	"github.com/agentstation/starmap/pkg/errors"
 )
 

@@ -22,7 +22,6 @@ func TestApprovedInternalPackageLayout(t *testing.T) {
 	approved := []approvedPackage{
 		{path: "internal/bootstrap/manifest", name: "manifest"},
 		{path: "internal/bootstrap/budget", name: "budget"},
-		{path: "internal/sources/payload", name: "payload"},
 		{path: "internal/test/catalog", name: "catalog"},
 		{path: "internal/test/logging", name: "logging"},
 		{path: "internal/test/providerfixture", name: "providerfixture"},
@@ -31,6 +30,7 @@ func TestApprovedInternalPackageLayout(t *testing.T) {
 		filepath.Join("internal", "bootstrap"+"manifest"),
 		filepath.Join("internal", "embedded"+"budget"),
 		filepath.Join("internal", "source"+"payload"),
+		filepath.Join("internal", "sources", "payload"),
 		filepath.Join("internal", "test"+"catalog"),
 		filepath.Join("internal", "test"+"logging"),
 		filepath.Join("internal", "providers", "test"+"helper"),

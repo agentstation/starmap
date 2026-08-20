@@ -3,9 +3,9 @@ package pipeline
 import (
 	"context"
 
-	"github.com/agentstation/starmap/internal/catalog/authority"
 	"github.com/agentstation/starmap/internal/catalog/reconciler"
 	"github.com/agentstation/starmap/pkg/catalogs"
+	"github.com/agentstation/starmap/pkg/catalogs/authority"
 	pkgerrors "github.com/agentstation/starmap/pkg/errors"
 	"github.com/agentstation/starmap/pkg/sources"
 )

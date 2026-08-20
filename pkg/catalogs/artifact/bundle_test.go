@@ -8,8 +8,8 @@ import (
 	"path/filepath"
 	"testing"
 
-	"github.com/agentstation/starmap/internal/constants"
 	"github.com/agentstation/starmap/pkg/catalogs"
+	"github.com/agentstation/starmap/pkg/catalogs/internal/resourcepolicy"
 	pkgerrors "github.com/agentstation/starmap/pkg/errors"
 )
 
@@ -111,7 +111,7 @@ func TestArtifactReleaseRejectsSymlinkedLifecyclePaths(t *testing.T) {
 	t.Run("generation", func(t *testing.T) {
 		root := t.TempDir()
 		base := filepath.Join(root, releaseDirectory)
-		if err := os.Mkdir(base, constants.DirPermissions); err != nil {
+		if err := os.Mkdir(base, resourcepolicy.DirMode); err != nil {
 			t.Fatalf("Mkdir base: %v", err)
 		}
 		target := filepath.Join(

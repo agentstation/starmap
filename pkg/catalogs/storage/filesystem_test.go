@@ -9,7 +9,7 @@ import (
 
 	"github.com/google/go-cmp/cmp"
 
-	"github.com/agentstation/starmap/internal/constants"
+	"github.com/agentstation/starmap/pkg/catalogs/internal/resourcepolicy"
 	pkgerrors "github.com/agentstation/starmap/pkg/errors"
 )
 
@@ -115,7 +115,7 @@ func TestFilesystemCatalogStoreRejectsSymlinkedMachineEntries(t *testing.T) {
 	t.Run("root", func(t *testing.T) {
 		parent := t.TempDir()
 		target := filepath.Join(parent, "target")
-		if err := os.Mkdir(target, constants.DirPermissions); err != nil {
+		if err := os.Mkdir(target, resourcepolicy.DirMode); err != nil {
 			t.Fatalf("Mkdir target: %v", err)
 		}
 		root := filepath.Join(parent, "store")
@@ -134,10 +134,10 @@ func TestFilesystemCatalogStoreRejectsSymlinkedMachineEntries(t *testing.T) {
 			root := t.TempDir()
 			target := filepath.Join(t.TempDir(), "operator-data")
 			if entry == "generations" {
-				if err := os.Mkdir(target, constants.DirPermissions); err != nil {
+				if err := os.Mkdir(target, resourcepolicy.DirMode); err != nil {
 					t.Fatalf("Mkdir target: %v", err)
 				}
-			} else if err := os.WriteFile(target, []byte("preserve\n"), constants.SecureFilePermissions); err != nil {
+			} else if err := os.WriteFile(target, []byte("preserve\n"), resourcepolicy.SecureFileMode); err != nil {
 				t.Fatalf("WriteFile target: %v", err)
 			}
 			if err := os.Symlink(target, filepath.Join(root, entry)); err != nil {
@@ -164,7 +164,7 @@ func TestFilesystemCatalogStoreRejectsSymlinkedGeneration(t *testing.T) {
 	if err != nil {
 		t.Fatalf("NewFilesystem: %v", err)
 	}
-	if err := os.Mkdir(filepath.Join(root, "generations"), constants.DirPermissions); err != nil {
+	if err := os.Mkdir(filepath.Join(root, "generations"), resourcepolicy.DirMode); err != nil {
 		t.Fatalf("Mkdir generations: %v", err)
 	}
 	id := "symlinked-generation"

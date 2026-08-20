@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 
 	"github.com/agentstation/starmap/internal/constants"
-	sourcepayload "github.com/agentstation/starmap/internal/sources/payload"
+	sourcepayload "github.com/agentstation/starmap/pkg/sources/payload"
 )
 
 type aiStudioModelsResponse struct {

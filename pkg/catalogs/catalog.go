@@ -7,7 +7,7 @@
 // Example usage:
 //
 //	// Advanced producers construct a draft, then publish an immutable catalog.
-//	builder, err := New(WithEmbedded())
+//	builder, err := New(WithFS(os.DirFS("./catalog")))
 //	if err != nil {
 //	    log.Fatal(err)
 //	}
@@ -72,9 +72,8 @@ type Builder struct {
 	loadReport     LoadReport
 }
 
-// New creates a new builder with the given options
-// WithEmbedded() = embedded catalog with auto-load
-// WithFiles(path) = files catalog with auto-load.
+// New creates a new builder with the given options.
+// WithFS(fsys) and WithPath(path) load the configured files automatically.
 func New(opt Option, opts ...Option) (*Builder, error) {
 	cat := &Builder{
 		providers:      NewProviders(),
@@ -92,20 +91,6 @@ func New(opt Option, opts ...Option) (*Builder, error) {
 	}
 
 	return cat, nil
-}
-
-// NewEmbedded creates a catalog backed by embedded files.
-// This is the recommended catalog for production use as it includes
-// all model data compiled into the binary.
-func NewEmbedded() (*Builder, error) {
-	builder, err := New(WithEmbedded())
-	if err != nil {
-		return nil, err
-	}
-	if err := builder.LoadReport().Err(); err != nil {
-		return nil, errors.WrapResource("load", "embedded catalog model", "", err)
-	}
-	return builder, nil
 }
 
 // NewFromPath creates a catalog backed by files on disk.

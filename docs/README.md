@@ -131,7 +131,8 @@ Individual package READMEs provide implementation details:
 - [../pkg/errors/README.md](../pkg/errors/README.md) - Typed errors
 - [../pkg/logging/README.md](../pkg/logging/README.md) - Logging utilities
 - [../internal/server/README.md](../internal/server/README.md) - HTTP server implementation
-- [../internal/catalog/authority/](../internal/catalog/authority/) - Internal field-level authority policy
+- [../pkg/catalogs/authority/](../pkg/catalogs/authority/) - Shared field-level authority policy
+- [../pkg/sources/payload/](../pkg/sources/payload/) - Bounded source payload contracts
 - [../internal/catalog/reconciler/README.md](../internal/catalog/reconciler/README.md) - Internal multi-source reconciliation
 
 ## Quick Links

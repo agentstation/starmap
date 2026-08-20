@@ -8,6 +8,7 @@ import (
 
 	"github.com/agentstation/starmap/acquisition"
 	"github.com/agentstation/starmap/internal/providers/openai"
+	testcatalog "github.com/agentstation/starmap/internal/test/catalog"
 	"github.com/agentstation/starmap/internal/test/providerfixture"
 	"github.com/agentstation/starmap/pkg/catalogs"
 )
@@ -19,7 +20,7 @@ func TestOpenAICompatibleProviderCatalogContracts(t *testing.T) {
 	if err != nil {
 		t.Fatalf("discover provider fixtures: %v", err)
 	}
-	builder, err := catalogs.NewEmbedded()
+	builder, err := testcatalog.EmbeddedBuilder()
 	if err != nil {
 		t.Fatalf("load embedded catalog: %v", err)
 	}
@@ -132,7 +133,7 @@ func TestRefreshOpenAICompatibleProviderFixture(t *testing.T) {
 	if err != nil {
 		t.Fatalf("select fixture: %v", err)
 	}
-	builder, err := catalogs.NewEmbedded()
+	builder, err := testcatalog.EmbeddedBuilder()
 	if err != nil {
 		t.Fatalf("load embedded catalog: %v", err)
 	}
@@ -174,7 +175,7 @@ func TestOpenAICompatibleProviderFixtureCurrency(t *testing.T) {
 	if err != nil {
 		t.Fatalf("discover provider fixtures: %v", err)
 	}
-	builder, err := catalogs.NewEmbedded()
+	builder, err := testcatalog.EmbeddedBuilder()
 	if err != nil {
 		t.Fatalf("load embedded catalog: %v", err)
 	}

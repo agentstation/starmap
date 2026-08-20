@@ -8,8 +8,8 @@ import (
 	"github.com/agentstation/utc"
 	"github.com/google/go-cmp/cmp"
 
-	"github.com/agentstation/starmap/internal/catalog/authority"
 	"github.com/agentstation/starmap/pkg/catalogs"
+	"github.com/agentstation/starmap/pkg/catalogs/authority"
 	"github.com/agentstation/starmap/pkg/provenance"
 	"github.com/agentstation/starmap/pkg/sources"
 )

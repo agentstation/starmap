@@ -43,7 +43,7 @@ Use focused packages while editing a module:
 go test ./internal/catalog/pipeline ./pkg/sync .
 go test ./internal/sources/providers ./internal/providers/clients ./pkg/sources
 go test ./internal/catalog/query ./internal/server/params ./internal/server/handlers
-go test ./internal/catalog/authority ./internal/catalog/reconciler
+go test ./pkg/catalogs/authority ./internal/catalog/reconciler
 go test ./internal/server/sse ./internal/server/middleware ./internal/server
 go test ./pkg/catalogs -race
 ```
@@ -64,7 +64,7 @@ Global coverage is intentionally not the primary trust metric. CLI command const
 | `internal/server/response` | 95% |
 | `internal/server/sse` | 90% |
 | `internal/transport` | 40% |
-| `internal/catalog/authority` | 90% |
+| `pkg/catalogs/authority` | 90% |
 | `pkg/catalogs` | 55% |
 | `pkg/errors` | 80% |
 | `internal/catalog/reconciler` | 75% |
@@ -100,7 +100,7 @@ Use these focused checks when changing provider clients, models.dev parsing, rec
 
 ```bash
 go test ./internal/sources/modelsdev ./internal/providers/...
-go test ./pkg/catalogs ./internal/catalog/reconciler ./internal/catalog/authority
+go test ./pkg/catalogs ./internal/catalog/reconciler ./pkg/catalogs/authority
 go test ./internal/catalog/query ./internal/server/params ./cmd/starmap/cmd/models
 ```
 

@@ -18,7 +18,7 @@ Example usage:
 
 ```
 // Advanced producers construct a draft, then publish an immutable catalog.
-builder, err := New(WithEmbedded())
+builder, err := New(WithFS(os.DirFS("./catalog")))
 if err != nil {
     log.Fatal(err)
 }
@@ -183,13 +183,13 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/agentstation/starmap/internal/constants"
 	"github.com/agentstation/starmap/pkg/catalogs"
+	"github.com/agentstation/starmap/pkg/catalogs/internal/resourcepolicy"
 )
 
 func main() {
 	catalog := catalogs.NewEmpty()
-	ctx, cancel := context.WithTimeout(context.Background(), constants.DefaultHTTPTimeout)
+	ctx, cancel := context.WithTimeout(context.Background(), resourcepolicy.DefaultHTTPTimeout)
 	defer cancel()
 
 	// Safe for concurrent reads and writes
@@ -252,13 +252,18 @@ package main
 import (
 	"fmt"
 	"log"
+	"os"
 
 	"github.com/agentstation/starmap/pkg/catalogs"
 )
 
+func embeddedBuilder() (*catalogs.Builder, error) {
+	return catalogs.New(catalogs.WithFS(os.DirFS("../../internal/embedded/catalog")))
+}
+
 func main() {
 	// Load embedded data into a builder, then publish it.
-	builder, err := catalogs.New(catalogs.WithEmbedded())
+	builder, err := embeddedBuilder()
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -483,13 +488,18 @@ package main
 
 import (
 	"fmt"
+	"os"
 	"slices"
 
 	"github.com/agentstation/starmap/pkg/catalogs"
 )
 
+func embeddedBuilder() (*catalogs.Builder, error) {
+	return catalogs.New(catalogs.WithFS(os.DirFS("../../internal/embedded/catalog")))
+}
+
 func main() {
-	builder, _ := catalogs.New(catalogs.WithEmbedded())
+	builder, _ := embeddedBuilder()
 	catalog, _ := builder.Build()
 
 	// Filter immutable provider-independent definitions.
@@ -629,7 +639,6 @@ func main() {
 - [type Builder](<#Builder>)
   - [func New\(opt Option, opts ...Option\) \(\*Builder, error\)](<#New>)
   - [func NewBuilderFrom\(source Reader\) \(\*Builder, error\)](<#NewBuilderFrom>)
-  - [func NewEmbedded\(\) \(\*Builder, error\)](<#NewEmbedded>)
   - [func NewEmpty\(\) \*Builder](<#NewEmpty>)
   - [func NewFromFS\(fsys fs.FS, root string\) \(\*Builder, error\)](<#NewFromFS>)
   - [func NewFromPath\(path string\) \(\*Builder, error\)](<#NewFromPath>)
@@ -826,7 +835,6 @@ func main() {
   - [func \(b \*OfferingRequestBody\) UnmarshalYAML\(data \[\]byte\) error](<#OfferingRequestBody.UnmarshalYAML>)
 - [type OfferingRequestHeaders](<#OfferingRequestHeaders>)
 - [type Option](<#Option>)
-  - [func WithEmbedded\(\) Option](<#WithEmbedded>)
   - [func WithFS\(fsys fs.FS\) Option](<#WithFS>)
   - [func WithMergeStrategy\(strategy MergeStrategy\) Option](<#WithMergeStrategy>)
   - [func WithPath\(path string\) Option](<#WithPath>)
@@ -1079,7 +1087,7 @@ func (at ArchitectureType) String() string
 String returns the string representation of an ArchitectureType.
 
 <a name="Author"></a>
-## type [Author](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/author.go#L11-L34>)
+## type [Author](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/author.go#L10-L33>)
 
 Author represents a known model author or organization.
 
@@ -1129,7 +1137,7 @@ func DeepCopyAuthors(authors []Author) []Author
 DeepCopyAuthors creates a deep copy of an Author slice.
 
 <a name="AuthorAttribution"></a>
-## type [AuthorAttribution](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/author.go#L62-L65>)
+## type [AuthorAttribution](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/author.go#L61-L64>)
 
 AuthorAttribution defines how to identify an author's models across providers. Uses standard Go glob pattern syntax for case\-insensitive model ID matching.
 
@@ -1159,7 +1167,7 @@ type AuthorAttribution struct {
 ```
 
 <a name="AuthorCatalog"></a>
-## type [AuthorCatalog](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/author.go#L38-L41>)
+## type [AuthorCatalog](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/author.go#L37-L40>)
 
 AuthorCatalog represents the relationship between an author and their authoritative provider catalog. This contains the attribution configuration for identifying the author's models across providers.
 
@@ -1171,7 +1179,7 @@ type AuthorCatalog struct {
 ```
 
 <a name="AuthorID"></a>
-## type [AuthorID](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/author.go#L68>)
+## type [AuthorID](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/author.go#L67>)
 
 AuthorID is a unique identifier for an author.
 
@@ -1282,13 +1290,13 @@ const (
 ```
 
 <a name="ParseAuthorID"></a>
-### func [ParseAuthorID](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/author.go#L177>)
+### func [ParseAuthorID](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/author.go#L175>)
 
 ```go
 func ParseAuthorID(s string) AuthorID
 ```
 
-ParseAuthorID attempts to parse a string into an AuthorID. It first tries to find the author by exact ID match, then by aliases, and finally normalizes the string if no match is found.
+ParseAuthorID normalizes stable author aliases without consulting catalog state. Use Authors.Resolve when alias resolution needs a specific catalog.
 
 <a name="ParseModelDefinitionID"></a>
 ### func [ParseModelDefinitionID](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/authored_model.go#L85>)
@@ -1300,7 +1308,7 @@ func ParseModelDefinitionID(id ModelDefinitionID) (AuthorID, string, error)
 ParseModelDefinitionID validates and splits one canonical author/slug ID.
 
 <a name="AuthorID.String"></a>
-### func \(AuthorID\) [String](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/author.go#L71>)
+### func \(AuthorID\) [String](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/author.go#L70>)
 
 ```go
 func (id AuthorID) String() string
@@ -1632,16 +1640,16 @@ type Builder struct {
 ```
 
 <a name="New"></a>
-### func [New](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/catalog.go#L78>)
+### func [New](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/catalog.go#L77>)
 
 ```go
 func New(opt Option, opts ...Option) (*Builder, error)
 ```
 
-New creates a new builder with the given options WithEmbedded\(\) = embedded catalog with auto\-load WithFiles\(path\) = files catalog with auto\-load.
+New creates a new builder with the given options. WithFS\(fsys\) and WithPath\(path\) load the configured files automatically.
 
 <a name="NewBuilderFrom"></a>
-### func [NewBuilderFrom](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/catalog.go#L149>)
+### func [NewBuilderFrom](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/catalog.go#L134>)
 
 ```go
 func NewBuilderFrom(source Reader) (*Builder, error)
@@ -1649,17 +1657,8 @@ func NewBuilderFrom(source Reader) (*Builder, error)
 
 NewBuilderFrom copies source into a new independent builder.
 
-<a name="NewEmbedded"></a>
-### func [NewEmbedded](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/catalog.go#L100>)
-
-```go
-func NewEmbedded() (*Builder, error)
-```
-
-NewEmbedded creates a catalog backed by embedded files. This is the recommended catalog for production use as it includes all model data compiled into the binary.
-
 <a name="NewEmpty"></a>
-### func [NewEmpty](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/catalog.go#L138>)
+### func [NewEmpty](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/catalog.go#L123>)
 
 ```go
 func NewEmpty() *Builder
@@ -1676,7 +1675,7 @@ catalog.SetProvider(provider)
 ```
 
 <a name="NewFromFS"></a>
-### func [NewFromFS](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/catalog.go#L171>)
+### func [NewFromFS](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/catalog.go#L156>)
 
 ```go
 func NewFromFS(fsys fs.FS, root string) (*Builder, error)
@@ -1692,7 +1691,7 @@ catalog, err := NewFromFS(myFS, "catalog")
 ```
 
 <a name="NewFromPath"></a>
-### func [NewFromPath](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/catalog.go#L121>)
+### func [NewFromPath](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/catalog.go#L106>)
 
 ```go
 func NewFromPath(path string) (*Builder, error)
@@ -1710,7 +1709,7 @@ if err != nil {
 ```
 
 <a name="Builder.Author"></a>
-### func \(\*Builder\) [Author](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/catalog.go#L215>)
+### func \(\*Builder\) [Author](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/catalog.go#L200>)
 
 ```go
 func (cat *Builder) Author(id AuthorID) (Author, error)
@@ -1719,7 +1718,7 @@ func (cat *Builder) Author(id AuthorID) (Author, error)
 Author returns an author by ID or alias. Silently resolves aliases to canonical author IDs.
 
 <a name="Builder.AuthoredModels"></a>
-### func \(\*Builder\) [AuthoredModels](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/catalog.go#L191>)
+### func \(\*Builder\) [AuthoredModels](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/catalog.go#L176>)
 
 ```go
 func (cat *Builder) AuthoredModels() []AuthoredModel
@@ -1728,7 +1727,7 @@ func (cat *Builder) AuthoredModels() []AuthoredModel
 AuthoredModels returns caller\-owned provider\-independent construction records in canonical author/slug order.
 
 <a name="Builder.Authors"></a>
-### func \(\*Builder\) [Authors](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/catalog.go#L185>)
+### func \(\*Builder\) [Authors](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/catalog.go#L170>)
 
 ```go
 func (cat *Builder) Authors() AuthorsReader
@@ -1737,7 +1736,7 @@ func (cat *Builder) Authors() AuthorsReader
 Authors returns the authors collection.
 
 <a name="Builder.Build"></a>
-### func \(\*Builder\) [Build](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/catalog.go#L540>)
+### func \(\*Builder\) [Build](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/catalog.go#L525>)
 
 ```go
 func (cat *Builder) Build() (*Catalog, error)
@@ -1746,7 +1745,7 @@ func (cat *Builder) Build() (*Catalog, error)
 Build publishes an immutable deep copy of the builder's current state.
 
 <a name="Builder.ClearProvenance"></a>
-### func \(\*Builder\) [ClearProvenance](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/catalog.go#L331>)
+### func \(\*Builder\) [ClearProvenance](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/catalog.go#L316>)
 
 ```go
 func (cat *Builder) ClearProvenance()
@@ -1755,7 +1754,7 @@ func (cat *Builder) ClearProvenance()
 ClearProvenance removes catalog provenance.
 
 <a name="Builder.Copy"></a>
-### func \(\*Builder\) [Copy](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/catalog.go#L524>)
+### func \(\*Builder\) [Copy](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/catalog.go#L509>)
 
 ```go
 func (cat *Builder) Copy() (*Builder, error)
@@ -1764,7 +1763,7 @@ func (cat *Builder) Copy() (*Builder, error)
 Copy creates a deep copy of the catalog.
 
 <a name="Builder.DeleteAuthor"></a>
-### func \(\*Builder\) [DeleteAuthor](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/catalog.go#L341>)
+### func \(\*Builder\) [DeleteAuthor](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/catalog.go#L326>)
 
 ```go
 func (cat *Builder) DeleteAuthor(id AuthorID) error
@@ -1773,7 +1772,7 @@ func (cat *Builder) DeleteAuthor(id AuthorID) error
 DeleteAuthor deletes an author.
 
 <a name="Builder.DeleteAuthorModel"></a>
-### func \(\*Builder\) [DeleteAuthorModel](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/catalog.go#L382>)
+### func \(\*Builder\) [DeleteAuthorModel](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/catalog.go#L367>)
 
 ```go
 func (cat *Builder) DeleteAuthorModel(authorID AuthorID, slug string) error
@@ -1782,7 +1781,7 @@ func (cat *Builder) DeleteAuthorModel(authorID AuthorID, slug string) error
 DeleteAuthorModel deletes one provider\-independent model from an author.
 
 <a name="Builder.DeleteProvider"></a>
-### func \(\*Builder\) [DeleteProvider](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/catalog.go#L336>)
+### func \(\*Builder\) [DeleteProvider](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/catalog.go#L321>)
 
 ```go
 func (cat *Builder) DeleteProvider(id ProviderID) error
@@ -1791,7 +1790,7 @@ func (cat *Builder) DeleteProvider(id ProviderID) error
 DeleteProvider deletes a provider.
 
 <a name="Builder.DeleteProviderModel"></a>
-### func \(\*Builder\) [DeleteProviderModel](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/catalog.go#L377>)
+### func \(\*Builder\) [DeleteProviderModel](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/catalog.go#L362>)
 
 ```go
 func (cat *Builder) DeleteProviderModel(providerID ProviderID, modelID string) error
@@ -1818,7 +1817,7 @@ func (cat *Builder) LoadReport() LoadReport
 LoadReport returns a caller\-owned copy of the builder's load diagnostics.
 
 <a name="Builder.MergeProvenance"></a>
-### func \(\*Builder\) [MergeProvenance](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/catalog.go#L326>)
+### func \(\*Builder\) [MergeProvenance](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/catalog.go#L311>)
 
 ```go
 func (cat *Builder) MergeProvenance(value provenance.Map)
@@ -1827,7 +1826,7 @@ func (cat *Builder) MergeProvenance(value provenance.Map)
 MergeProvenance appends catalog provenance.
 
 <a name="Builder.MergeStrategy"></a>
-### func \(\*Builder\) [MergeStrategy](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/catalog.go#L545>)
+### func \(\*Builder\) [MergeStrategy](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/catalog.go#L530>)
 
 ```go
 func (cat *Builder) MergeStrategy() MergeStrategy
@@ -1836,7 +1835,7 @@ func (cat *Builder) MergeStrategy() MergeStrategy
 MergeStrategy returns the default merge strategy.
 
 <a name="Builder.MergeWith"></a>
-### func \(\*Builder\) [MergeWith](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/catalog.go#L427>)
+### func \(\*Builder\) [MergeWith](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/catalog.go#L412>)
 
 ```go
 func (cat *Builder) MergeWith(source Reader, opts ...MergeOption) error
@@ -1845,7 +1844,7 @@ func (cat *Builder) MergeWith(source Reader, opts ...MergeOption) error
 MergeWith merges another catalog into this one.
 
 <a name="Builder.Provenance"></a>
-### func \(\*Builder\) [Provenance](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/catalog.go#L196>)
+### func \(\*Builder\) [Provenance](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/catalog.go#L181>)
 
 ```go
 func (cat *Builder) Provenance() ProvenanceReader
@@ -1854,7 +1853,7 @@ func (cat *Builder) Provenance() ProvenanceReader
 Provenance returns the provenance collection.
 
 <a name="Builder.Provider"></a>
-### func \(\*Builder\) [Provider](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/catalog.go#L202>)
+### func \(\*Builder\) [Provider](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/catalog.go#L187>)
 
 ```go
 func (cat *Builder) Provider(id ProviderID) (Provider, error)
@@ -1863,7 +1862,7 @@ func (cat *Builder) Provider(id ProviderID) (Provider, error)
 Provider returns a provider by ID or alias. Silently resolves aliases to canonical provider IDs.
 
 <a name="Builder.ProviderModel"></a>
-### func \(\*Builder\) [ProviderModel](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/catalog.go#L246>)
+### func \(\*Builder\) [ProviderModel](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/catalog.go#L231>)
 
 ```go
 func (cat *Builder) ProviderModel(providerID ProviderID, modelID string) (Model, error)
@@ -1872,7 +1871,7 @@ func (cat *Builder) ProviderModel(providerID ProviderID, modelID string) (Model,
 ProviderModel returns one provider\-specific model offering without flattening equal model IDs from other providers.
 
 <a name="Builder.ProviderModels"></a>
-### func \(\*Builder\) [ProviderModels](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/catalog.go#L227>)
+### func \(\*Builder\) [ProviderModels](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/catalog.go#L212>)
 
 ```go
 func (cat *Builder) ProviderModels(id ProviderID) (ModelsReader, error)
@@ -1881,7 +1880,7 @@ func (cat *Builder) ProviderModels(id ProviderID) (ModelsReader, error)
 ProviderModels returns the models served by a provider or one of its aliases.
 
 <a name="Builder.Providers"></a>
-### func \(\*Builder\) [Providers](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/catalog.go#L180>)
+### func \(\*Builder\) [Providers](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/catalog.go#L165>)
 
 ```go
 func (cat *Builder) Providers() ProvidersReader
@@ -1890,7 +1889,7 @@ func (cat *Builder) Providers() ProvidersReader
 Providers returns the providers collection.
 
 <a name="Builder.ReplaceWith"></a>
-### func \(\*Builder\) [ReplaceWith](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/catalog.go#L391>)
+### func \(\*Builder\) [ReplaceWith](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/catalog.go#L376>)
 
 ```go
 func (cat *Builder) ReplaceWith(source Reader) error
@@ -1917,7 +1916,7 @@ func (cat *Builder) SaveTo(path string) error
 SaveTo serializes a mutable builder to path.
 
 <a name="Builder.SetAuthor"></a>
-### func \(\*Builder\) [SetAuthor](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/catalog.go#L269>)
+### func \(\*Builder\) [SetAuthor](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/catalog.go#L254>)
 
 ```go
 func (cat *Builder) SetAuthor(author Author) error
@@ -1926,7 +1925,7 @@ func (cat *Builder) SetAuthor(author Author) error
 SetAuthor sets an author \(upsert\).
 
 <a name="Builder.SetAuthorModel"></a>
-### func \(\*Builder\) [SetAuthorModel](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/catalog.go#L292>)
+### func \(\*Builder\) [SetAuthorModel](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/catalog.go#L277>)
 
 ```go
 func (cat *Builder) SetAuthorModel(authorID AuthorID, model Model) error
@@ -1935,7 +1934,7 @@ func (cat *Builder) SetAuthorModel(authorID AuthorID, model Model) error
 SetAuthorModel sets one provider\-independent model on its owning author.
 
 <a name="Builder.SetMergeStrategy"></a>
-### func \(\*Builder\) [SetMergeStrategy](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/catalog.go#L550>)
+### func \(\*Builder\) [SetMergeStrategy](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/catalog.go#L535>)
 
 ```go
 func (cat *Builder) SetMergeStrategy(strategy MergeStrategy)
@@ -1944,7 +1943,7 @@ func (cat *Builder) SetMergeStrategy(strategy MergeStrategy)
 SetMergeStrategy sets the default merge strategy.
 
 <a name="Builder.SetProvenance"></a>
-### func \(\*Builder\) [SetProvenance](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/catalog.go#L321>)
+### func \(\*Builder\) [SetProvenance](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/catalog.go#L306>)
 
 ```go
 func (cat *Builder) SetProvenance(value provenance.Map)
@@ -1953,7 +1952,7 @@ func (cat *Builder) SetProvenance(value provenance.Map)
 SetProvenance replaces catalog provenance.
 
 <a name="Builder.SetProvider"></a>
-### func \(\*Builder\) [SetProvider](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/catalog.go#L262>)
+### func \(\*Builder\) [SetProvider](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/catalog.go#L247>)
 
 ```go
 func (cat *Builder) SetProvider(provider Provider) error
@@ -1962,7 +1961,7 @@ func (cat *Builder) SetProvider(provider Provider) error
 SetProvider sets a provider \(upsert\).
 
 <a name="Builder.SetProviderModel"></a>
-### func \(\*Builder\) [SetProviderModel](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/catalog.go#L276>)
+### func \(\*Builder\) [SetProviderModel](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/catalog.go#L261>)
 
 ```go
 func (cat *Builder) SetProviderModel(providerID ProviderID, model Model) error
@@ -4160,7 +4159,7 @@ type OfferingRequestHeaders map[string]string
 ```
 
 <a name="Option"></a>
-## type [Option](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/catalog_options.go#L74>)
+## type [Option](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/catalog_options.go#L72>)
 
 Option configures a catalog.
 
@@ -4168,17 +4167,8 @@ Option configures a catalog.
 type Option func(*options)
 ```
 
-<a name="WithEmbedded"></a>
-### func [WithEmbedded](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/catalog_options.go#L93>)
-
-```go
-func WithEmbedded() Option
-```
-
-WithEmbedded configures the catalog to use embedded files.
-
 <a name="WithFS"></a>
-### func [WithFS](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/catalog_options.go#L77>)
+### func [WithFS](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/catalog_options.go#L75>)
 
 ```go
 func WithFS(fsys fs.FS) Option
@@ -4187,7 +4177,7 @@ func WithFS(fsys fs.FS) Option
 WithFS configures the catalog to use a custom fs.FS for reading.
 
 <a name="WithMergeStrategy"></a>
-### func [WithMergeStrategy](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/catalog_options.go#L115>)
+### func [WithMergeStrategy](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/catalog_options.go#L98>)
 
 ```go
 func WithMergeStrategy(strategy MergeStrategy) Option
@@ -4196,7 +4186,7 @@ func WithMergeStrategy(strategy MergeStrategy) Option
 WithMergeStrategy sets the default merge strategy.
 
 <a name="WithPath"></a>
-### func [WithPath](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/catalog_options.go#L85>)
+### func [WithPath](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/catalog_options.go#L83>)
 
 ```go
 func WithPath(path string) Option
@@ -4205,7 +4195,7 @@ func WithPath(path string) Option
 WithPath configures the catalog to use a directory path for reading This creates an os.DirFS under the hood.
 
 <a name="WithWritePath"></a>
-### func [WithWritePath](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/catalog_options.go#L108>)
+### func [WithWritePath](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/catalog_options.go#L91>)
 
 ```go
 func WithWritePath(path string) Option

@@ -13,7 +13,6 @@ import (
 
 	"github.com/gofrs/flock"
 
-	"github.com/agentstation/starmap/internal/constants"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/catalogs/storage"
 	"github.com/agentstation/starmap/pkg/errors"
@@ -75,7 +74,7 @@ func (m legacyLayoutMigrator) migrate(
 	}
 
 	storeLock := flock.New(filepath.Join(legacy, ".commit.lock"))
-	locked, err := storeLock.TryLockContext(ctx, constants.CatalogStoreLockRetryDelay)
+	locked, err := storeLock.TryLockContext(ctx, lockRetryDelay)
 	if err != nil {
 		return LegacyLayoutMigrationResult{}, errors.WrapIO("lock", legacy, err)
 	}
@@ -120,7 +119,7 @@ func (m legacyLayoutMigrator) migrate(
 		}
 	}()
 
-	if err := os.MkdirAll(filepath.Dir(state), constants.DirPermissions); err != nil {
+	if err := os.MkdirAll(filepath.Dir(state), directoryMode); err != nil {
 		return LegacyLayoutMigrationResult{}, errors.WrapIO("create", filepath.Dir(state), err)
 	}
 	if err := os.Rename(legacy, state); err != nil {

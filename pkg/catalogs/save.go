@@ -4,7 +4,7 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/agentstation/starmap/internal/constants"
+	"github.com/agentstation/starmap/pkg/catalogs/internal/resourcepolicy"
 	"github.com/agentstation/starmap/pkg/errors"
 	"github.com/agentstation/starmap/pkg/logging"
 )
@@ -47,10 +47,10 @@ func (cat *Builder) saveTo(basePath string) error {
 	writeFile := func(path string, data []byte) error {
 		fullPath := filepath.Join(basePath, path)
 		dir := filepath.Dir(fullPath)
-		if err := os.MkdirAll(dir, constants.DirPermissions); err != nil {
+		if err := os.MkdirAll(dir, resourcepolicy.DirMode); err != nil {
 			return errors.WrapIO("create", dir, err)
 		}
-		return os.WriteFile(fullPath, data, constants.FilePermissions)
+		return os.WriteFile(fullPath, data, resourcepolicy.FileMode)
 	}
 
 	if err := cat.saveIndexFiles(writeFile); err != nil {

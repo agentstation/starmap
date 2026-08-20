@@ -12,11 +12,11 @@ import (
 
 	"github.com/agentstation/starmap/internal/auth"
 	"github.com/agentstation/starmap/internal/constants"
-	sourcepayload "github.com/agentstation/starmap/internal/sources/payload"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	pkgerrors "github.com/agentstation/starmap/pkg/errors"
 	"github.com/agentstation/starmap/pkg/logging"
 	"github.com/agentstation/starmap/pkg/sources"
+	sourcepayload "github.com/agentstation/starmap/pkg/sources/payload"
 )
 
 // ClientFactory creates a client for a provider.

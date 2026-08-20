@@ -77,7 +77,7 @@ check_critical_coverage() {
 	check_coverage ./internal/server/response 95
 	check_coverage ./internal/server/sse 90
 	check_coverage ./internal/transport 40
-	check_coverage ./internal/catalog/authority 90
+	check_coverage ./pkg/catalogs/authority 90
 	check_coverage ./pkg/catalogs 55
 	check_coverage ./pkg/errors 80
 	check_coverage ./internal/catalog/reconciler 75
@@ -97,6 +97,8 @@ run ./scripts/verify-package-layout.sh
 run ./scripts/test-package-layout-verifier.sh
 run ./scripts/verify-catalog-package-ownership.sh
 run ./scripts/test-catalog-package-ownership-verifier.sh
+run ./scripts/verify-catalog-dependency-direction.sh
+run ./scripts/test-catalog-dependency-direction-verifier.sh
 run env CGO_ENABLED=1 go test ./... -race -short -timeout=20m
 run go vet ./...
 run ./scripts/verify-catalog-performance.sh

@@ -2,7 +2,6 @@ package catalogs
 
 import (
 	"strings"
-	"sync"
 
 	"github.com/agentstation/utc"
 )
@@ -171,42 +170,36 @@ const (
 	AuthorIDUnknown AuthorID = "unknown"
 )
 
-// ParseAuthorID attempts to parse a string into an AuthorID.
-// It first tries to find the author by exact ID match, then by aliases,
-// and finally normalizes the string if no match is found.
+// ParseAuthorID normalizes stable author aliases without consulting catalog
+// state. Use Authors.Resolve when alias resolution needs a specific catalog.
 func ParseAuthorID(s string) AuthorID {
 	if s == "" {
 		return AuthorIDUnknown
 	}
-
-	// Try to get embedded catalog for lookup
-	catalog := getEmbeddedCatalogSingleton()
-	if catalog != nil {
-		// First try exact ID match
-		if author, found := catalog.Authors().Get(AuthorID(s)); found {
-			return author.ID
-		}
-
-		// Then try aliases
-		var foundAuthor *Author
-		catalog.Authors().ForEach(func(_ AuthorID, author *Author) bool {
-			for _, alias := range author.Aliases {
-				if string(alias) == s {
-					foundAuthor = author
-					return false // Stop iteration
-				}
-			}
-			return true // Continue iteration
-		})
-
-		if foundAuthor != nil {
-			return foundAuthor.ID
-		}
+	if canonical, found := canonicalAuthorAlias(AuthorID(s)); found {
+		return canonical
 	}
-
-	// If not found, normalize the string and return as AuthorID
 	normalized := normalizeAuthorString(s)
 	return AuthorID(normalized)
+}
+
+func canonicalAuthorAlias(id AuthorID) (AuthorID, bool) {
+	switch id {
+	case "canopylabs":
+		return "canopy-labs", true
+	case "huggingfaceh4":
+		return AuthorIDHuggingFace, true
+	case "llama":
+		return AuthorIDMeta, true
+	case "moonshot", "moonshotai":
+		return AuthorIDMoonshot, true
+	case "togetherai":
+		return AuthorIDTogether, true
+	case "zhipuai":
+		return AuthorIDZhipuAI, true
+	default:
+		return "", false
+	}
 }
 
 // normalizeAuthorString normalizes a string for use as an AuthorID.
@@ -219,22 +212,4 @@ func normalizeAuthorString(s string) string {
 	normalized = strings.ReplaceAll(normalized, " ", "-")
 
 	return normalized
-}
-
-// Singleton for embedded catalog to avoid repeated loading.
-var (
-	embeddedCatalogOnce sync.Once
-	embeddedCatalog     *Catalog
-)
-
-// getEmbeddedCatalogSingleton returns a singleton instance of the embedded catalog.
-// Returns nil if the catalog cannot be loaded.
-func getEmbeddedCatalogSingleton() *Catalog {
-	embeddedCatalogOnce.Do(func() {
-		if builder, err := NewEmbedded(); err == nil {
-			embeddedCatalog, _ = builder.Build()
-		}
-		// If error, embeddedCatalog remains nil
-	})
-	return embeddedCatalog
 }

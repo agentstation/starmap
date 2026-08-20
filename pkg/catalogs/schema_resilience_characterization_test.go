@@ -7,7 +7,7 @@ import (
 	"testing"
 	"testing/fstest"
 
-	"github.com/agentstation/starmap/internal/constants"
+	"github.com/agentstation/starmap/pkg/catalogs/internal/resourcepolicy"
 	pkgerrors "github.com/agentstation/starmap/pkg/errors"
 )
 
@@ -54,7 +54,7 @@ func TestF009InvalidLocalWorkspaceFailsClosed(t *testing.T) {
 	if err := os.WriteFile(
 		filepath.Join(path, "providers.yaml"),
 		[]byte("- id: provider\n  name: [unterminated\n"),
-		constants.FilePermissions,
+		resourcepolicy.FileMode,
 	); err != nil {
 		t.Fatalf("WriteFile: %v", err)
 	}
@@ -74,7 +74,7 @@ func TestF009InvalidLocalWorkspaceFailsClosed(t *testing.T) {
 
 func TestLocalModelWalkStopsAtRecordBudget(t *testing.T) {
 	builder := NewEmpty()
-	builder.loadReport.Accepted = constants.MaxCatalogModels
+	builder.loadReport.Accepted = resourcepolicy.MaxModels
 	if !builder.modelLoadLimitReached("providers/provider/models/excess.yaml") {
 		t.Fatal("model load did not stop at the record budget")
 	}

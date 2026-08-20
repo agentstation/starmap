@@ -9,7 +9,6 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/agentstation/starmap/internal/constants"
 	"github.com/agentstation/starmap/pkg/errors"
 )
 
@@ -20,12 +19,16 @@ type UnknownJSONField struct {
 	Checksum string `json:"checksum" yaml:"checksum"`
 }
 
-// MaxJSONNestingDepth bounds object/array nesting before JSON decode.
-const MaxJSONNestingDepth = 64
+const (
+	// MaxBytes bounds one provider or catalog source JSON payload.
+	MaxBytes = 16 << 20
+	// MaxJSONNestingDepth bounds object/array nesting before JSON decode.
+	MaxJSONNestingDepth = 64
+)
 
 // ValidateJSON enforces source byte and nesting limits before decoding.
 func ValidateJSON(data []byte) error {
-	if len(data) > constants.MaxSourcePayloadBytes {
+	if len(data) > MaxBytes {
 		return &errors.ValidationError{Field: "payload", Value: len(data), Message: "exceeds maximum source payload size"}
 	}
 	depth := 0
