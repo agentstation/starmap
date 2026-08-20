@@ -198,7 +198,7 @@ type CatalogReadiness struct {
 ```
 
 <a name="CatalogState"></a>
-## type [CatalogState](<https://github.com/agentstation/starmap/blob/main/client.go#L75-L81>)
+## type [CatalogState](<https://github.com/agentstation/starmap/blob/main/client.go#L74-L80>)
 
 CatalogState holds one atomic snapshot. It pairs the current immutable catalog with its generation identity, checksum, timestamp, and local sequence.
 
@@ -213,7 +213,7 @@ type CatalogState struct {
 ```
 
 <a name="Client"></a>
-## type [Client](<https://github.com/agentstation/starmap/blob/main/client.go#L142-L161>)
+## type [Client](<https://github.com/agentstation/starmap/blob/main/client.go#L141-L160>)
 
 Client manages an immutable canonical catalog, explicit publication, persistence, and event hooks. It owns no provider acquisition, scheduling goroutine, or cadence.
 
@@ -224,7 +224,7 @@ type Client struct {
 ```
 
 <a name="New"></a>
-### func [New](<https://github.com/agentstation/starmap/blob/main/client.go#L165>)
+### func [New](<https://github.com/agentstation/starmap/blob/main/client.go#L164>)
 
 ```go
 func New(opts ...Option) (*Client, error)
@@ -233,7 +233,7 @@ func New(opts ...Option) (*Client, error)
 New creates a Client using a background context. Call NewContext when construction may perform storage I/O that must be canceled by the caller.
 
 <a name="NewContext"></a>
-### func [NewContext](<https://github.com/agentstation/starmap/blob/main/client.go#L174>)
+### func [NewContext](<https://github.com/agentstation/starmap/blob/main/client.go#L173>)
 
 ```go
 func NewContext(ctx context.Context, opts ...Option) (*Client, error)
@@ -251,7 +251,7 @@ func (c *Client) Activate(ctx context.Context, generation catalogs.Generation) (
 Activate validates, durably commits, and atomically activates an immutable generation obtained by an explicit trusted distribution adapter.
 
 <a name="Client.Catalog"></a>
-### func \(\*Client\) [Catalog](<https://github.com/agentstation/starmap/blob/main/client.go#L63>)
+### func \(\*Client\) [Catalog](<https://github.com/agentstation/starmap/blob/main/client.go#L62>)
 
 ```go
 func (c *Client) Catalog() *catalogs.Catalog
@@ -260,7 +260,7 @@ func (c *Client) Catalog() *catalogs.Catalog
 Catalog returns the current immutable canonical catalog. It returns nil when called on a nil Client. After New or NewContext succeeds, Catalog is non\-failing, non\-nil, O\(1\), allocation\-free, and safe to retain across goroutines.
 
 <a name="Client.CurrentCatalogState"></a>
-### func \(\*Client\) [CurrentCatalogState](<https://github.com/agentstation/starmap/blob/main/client.go#L84>)
+### func \(\*Client\) [CurrentCatalogState](<https://github.com/agentstation/starmap/blob/main/client.go#L83>)
 
 ```go
 func (c *Client) CurrentCatalogState() CatalogState
@@ -278,7 +278,7 @@ func (c *Client) CurrentGeneration(ctx context.Context) (catalogs.Generation, er
 CurrentGeneration returns the exact immutable generation currently published by this client. The embedded bootstrap is returned before durable mutation.
 
 <a name="Client.CurrentGenerationID"></a>
-### func \(\*Client\) [CurrentGenerationID](<https://github.com/agentstation/starmap/blob/main/client.go#L105>)
+### func \(\*Client\) [CurrentGenerationID](<https://github.com/agentstation/starmap/blob/main/client.go#L104>)
 
 ```go
 func (c *Client) CurrentGenerationID() string
@@ -359,7 +359,7 @@ func (c *Client) Rollback(ctx context.Context, generationID string) (*RollbackRe
 Rollback atomically makes a retained generation current and projects its exact catalog semantics and provenance into the configured human workspace. Repeating a rollback to the current durable generation is idempotent.
 
 <a name="Client.Save"></a>
-### func \(\*Client\) [Save](<https://github.com/agentstation/starmap/blob/main/persistence.go#L13>)
+### func \(\*Client\) [Save](<https://github.com/agentstation/starmap/blob/main/persistence.go#L12>)
 
 ```go
 func (c *Client) Save() error
@@ -368,7 +368,7 @@ func (c *Client) Save() error
 Save atomically materializes the current committed generation into a YAML workspace configured at construction. It never publishes a new generation.
 
 <a name="Client.SaveTo"></a>
-### func \(\*Client\) [SaveTo](<https://github.com/agentstation/starmap/blob/main/persistence.go#L19>)
+### func \(\*Client\) [SaveTo](<https://github.com/agentstation/starmap/blob/main/persistence.go#L18>)
 
 ```go
 func (c *Client) SaveTo(path string) error
@@ -386,7 +386,7 @@ func (c *Client) Update(ctx context.Context, update UpdateFunc) (Publication, er
 Update serializes candidate construction, generation\-store CAS, and atomic in\-memory publication. Acquisition and scheduling remain explicit caller composition above Client.
 
 <a name="Client.WorkspacePath"></a>
-### func \(\*Client\) [WorkspacePath](<https://github.com/agentstation/starmap/blob/main/client.go#L122>)
+### func \(\*Client\) [WorkspacePath](<https://github.com/agentstation/starmap/blob/main/client.go#L121>)
 
 ```go
 func (c *Client) WorkspacePath() string
