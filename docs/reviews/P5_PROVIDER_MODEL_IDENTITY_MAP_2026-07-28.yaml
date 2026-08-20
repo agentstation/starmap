@@ -2892,6 +2892,18 @@ records:
     model: openai/whisper-large-v3
     status: linked
     evidence: explicit provider-model author metadata
+  - path: providers/hetzner/models/Qwen/Qwen3.6-35B-A3B-FP8.yaml
+    provider: hetzner
+    provider_model_id: Qwen/Qwen3.6-35B-A3B-FP8
+    model: qwen/qwen3.6-35b-a3b
+    status: linked
+    evidence: exact Hetzner model-list ID identifies the FP8 serving form of the canonical Qwen3.6-35B-A3B model
+  - path: providers/hetzner/models/Qwen3.8-27B.yaml
+    provider: hetzner
+    provider_model_id: Qwen3.8-27B
+    model: qwen/qwen3.8-27b
+    status: linked
+    evidence: exact Hetzner model-list ID and Hetzner documentation identify the Qwen3.8-27B model
   - path: providers/moonshot-ai/models/kimi-k2.5.yaml
     provider: moonshot-ai
     provider_model_id: kimi-k2.5

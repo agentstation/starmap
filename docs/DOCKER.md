@@ -87,6 +87,7 @@ Common variables include:
 | Groq | `GROQ_API_KEY` |
 | DeepSeek | `DEEPSEEK_API_KEY` |
 | Cerebras | `CEREBRAS_API_KEY` |
+| Hetzner | `HETZNER_API_KEY` |
 | Alibaba Cloud Model Studio | `DASHSCOPE_API_KEY` and optional workspace base URL |
 | Fireworks AI | `FIREWORKS_API_KEY` |
 | DeepInfra | `DEEPINFRA_TOKEN` |

@@ -280,6 +280,7 @@ const (
 	ProviderIDGoogleAIStudio ProviderID = "google-ai-studio"
 	ProviderIDGoogleVertex   ProviderID = "google-vertex"
 	ProviderIDGroq           ProviderID = "groq"
+	ProviderIDHetzner        ProviderID = "hetzner"
 	ProviderIDHuggingFace    ProviderID = "huggingface"
 	ProviderIDMeta           ProviderID = "meta"
 	ProviderIDMicrosoft      ProviderID = "microsoft"

@@ -868,6 +868,7 @@ components:
             - ProviderIDGoogleAIStudio
             - ProviderIDGoogleVertex
             - ProviderIDGroq
+            - ProviderIDHetzner
             - ProviderIDHuggingFace
             - ProviderIDMeta
             - ProviderIDMicrosoft
@@ -1191,6 +1192,7 @@ components:
       - ProviderIDGoogleAIStudio
       - ProviderIDGoogleVertex
       - ProviderIDGroq
+      - ProviderIDHetzner
       - ProviderIDHuggingFace
       - ProviderIDMeta
       - ProviderIDMicrosoft

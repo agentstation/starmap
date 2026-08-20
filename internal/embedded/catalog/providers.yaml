@@ -804,6 +804,57 @@
       fields:
         npm: "@ai-sdk/groq"
 
+# Hetzner
+- id: hetzner
+  name: Hetzner
+  credentials:
+    fields:
+    - id: api-key
+      kind: secret
+      required: true
+      environment:
+      - HETZNER_API_KEY
+    profiles:
+    - id: api-key
+      primitive: api-key
+      fields:
+      - api-key
+      placements:
+      - field: api-key
+        kind: header
+        name: Authorization
+        scheme: bearer
+    catalog_acquisition:
+      required: true
+      alternatives:
+      - api-key
+    inference:
+      required: true
+      alternatives:
+      - api-key
+  catalog:
+    docs: https://experiments.hetzner.com/docs/inference
+    endpoint:
+      type: openai
+      url: https://inference.hetzner.com/api/v1/models
+      protocol_options:
+        openai:
+          token_price_unit: usd-per-million-tokens
+      field_mappings:
+      - from: max_model_len
+        to: limits.context_window
+      author_mapping:
+        field: id
+        normalized:
+          Qwen/Qwen3.6-35B-A3B-FP8: qwen
+          Qwen3.8-27B: qwen
+  inference:
+    base_url: https://inference.hetzner.com/api/v1
+    endpoints:
+    - operation: chat-completions
+      type: openai
+      path: /chat/completions
+
 # Mistral AI
 - id: mistral
   name: Mistral AI

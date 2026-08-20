@@ -1,6 +1,6 @@
 schema_version: 2
-generation_id: catalog-20260811T031305Z-e9ff340d7b9f
-catalog_digest: sha256:4681b6c753a04e6c50d978448e48eb326a8d6284e637f6a0e23fdd6aca312dc0
+generation_id: catalog-20260819T233823Z-4b9bfb67cb93
+catalog_digest: sha256:31fbf5e526e72bba1ec9597c5234ecbb7618a05968892eb0ffbd8e842e477eff
 models:
   - model: ai21/jamba-1-5-large
     endpoints:
@@ -10520,6 +10520,19 @@ models:
           - operation: chat-completions
             type: openai
             url: https://api.deepinfra.com/v1/openai/chat/completions
+      - provider: hetzner
+        provider_model_id: Qwen/Qwen3.6-35B-A3B-FP8
+        limits:
+          context_window: 262144
+        availability: unknown
+        lifecycle: preview
+        service:
+          operations:
+            - chat-completions
+        service_endpoints:
+          - operation: chat-completions
+            type: openai
+            url: https://inference.hetzner.com/api/v1/chat/completions
   - model: qwen/qwen3.6-flash
     endpoints:
       - provider: alibaba
@@ -10752,6 +10765,21 @@ models:
           - operation: chat-completions
             type: openai
             url: "{base_url}/v1/chat/completions"
+  - model: qwen/qwen3.8-27b
+    endpoints:
+      - provider: hetzner
+        provider_model_id: Qwen3.8-27B
+        limits:
+          context_window: 262144
+        availability: unknown
+        lifecycle: preview
+        service:
+          operations:
+            - chat-completions
+        service_endpoints:
+          - operation: chat-completions
+            type: openai
+            url: https://inference.hetzner.com/api/v1/chat/completions
   - model: resemble-ai/chatterbox-multilingual
     endpoints:
       - provider: deepinfra

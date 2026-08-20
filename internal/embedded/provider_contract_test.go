@@ -1,6 +1,7 @@
 package embedded_test
 
 import (
+	"reflect"
 	"strings"
 	"testing"
 
@@ -76,6 +77,94 @@ func TestEmbeddedProviderContracts(t *testing.T) {
 		!strings.HasSuffix(claudeEndpoint.StreamURL, ":streamRawPredict") {
 		t.Fatalf("Vertex Anthropic endpoint = %#v", claudeEndpoint)
 	}
+}
+
+func TestEmbeddedHetznerProviderContract(t *testing.T) {
+	t.Parallel()
+
+	builder, err := catalogs.NewEmbedded()
+	if err != nil {
+		t.Fatalf("load embedded catalog: %v", err)
+	}
+	provider, found := builder.Providers().Get(catalogs.ProviderIDHetzner)
+	if !found {
+		t.Fatal("Hetzner provider is missing")
+	}
+	if provider.Catalog == nil ||
+		provider.Catalog.Endpoint.URL != "https://inference.hetzner.com/api/v1/models" {
+		t.Fatalf("Hetzner catalog endpoint = %#v", provider.Catalog)
+	}
+	if provider.Inference == nil ||
+		provider.Inference.BaseURL != "https://inference.hetzner.com/api/v1" {
+		t.Fatalf("Hetzner inference = %#v", provider.Inference)
+	}
+	chat, found := provider.Inference.Endpoint(catalogs.ProviderOperationChatCompletions)
+	if !found || chat.Type != catalogs.EndpointTypeOpenAI || chat.Path != "/chat/completions" {
+		t.Fatalf("Hetzner chat endpoint = %#v", chat)
+	}
+	if provider.Credentials == nil || len(provider.Credentials.Fields) != 1 ||
+		!reflect.DeepEqual(provider.Credentials.Fields[0].Environment, []string{"HETZNER_API_KEY"}) {
+		t.Fatalf("Hetzner credential fields = %#v", provider.Credentials)
+	}
+
+	catalog, err := builder.Build()
+	if err != nil {
+		t.Fatalf("build embedded catalog: %v", err)
+	}
+	wants := map[catalogs.ProviderModelID]catalogs.ModelDefinitionID{
+		"Qwen/Qwen3.6-35B-A3B-FP8": "qwen/qwen3.6-35b-a3b",
+		"Qwen3.8-27B":              "qwen/qwen3.8-27b",
+	}
+	for providerModelID, definitionID := range wants {
+		offering, err := catalog.Offering(catalogs.ProviderIDHetzner, providerModelID)
+		if err != nil {
+			t.Fatalf("Hetzner offering %q: %v", providerModelID, err)
+		}
+		if offering.DefinitionID != definitionID {
+			t.Errorf("Hetzner offering %q definition = %q, want %q",
+				providerModelID, offering.DefinitionID, definitionID)
+		}
+		if offering.Pricing != nil {
+			t.Errorf("Hetzner offering %q has unpublished pricing: %#v",
+				providerModelID, offering.Pricing)
+		}
+		if offering.Limits == nil || offering.Limits.ContextWindow != 262144 {
+			t.Errorf("Hetzner offering %q limits = %#v", providerModelID, offering.Limits)
+		}
+		if !offering.Supports(catalogs.ProviderOperationChatCompletions) {
+			t.Errorf("Hetzner offering %q does not support chat completions", providerModelID)
+		}
+		endpoint, found := offering.Endpoint(catalogs.ProviderOperationChatCompletions)
+		if !found || endpoint.URL != "https://inference.hetzner.com/api/v1/chat/completions" {
+			t.Errorf("Hetzner offering %q endpoint = %#v", providerModelID, endpoint)
+		}
+		definition, err := catalog.Definition(definitionID)
+		if err != nil {
+			t.Fatalf("Hetzner definition %q: %v", definitionID, err)
+		}
+		if definition.Capabilities.Features == nil ||
+			!containsModalities(definition.Capabilities.Features.Modalities.Input,
+				catalogs.ModelModalityText, catalogs.ModelModalityImage) {
+			t.Errorf("Hetzner definition %q input modalities = %v",
+				definitionID, definition.Capabilities.Features)
+		}
+	}
+}
+
+func containsModalities(have []catalogs.ModelModality, wants ...catalogs.ModelModality) bool {
+	for _, want := range wants {
+		found := false
+		for _, modality := range have {
+			if modality == want {
+				found = true
+				break
+			}
+		}
+		if !found {
+			return false
+		}
+	}
+	return true
 }
 
 func TestEmbeddedProviderCredentialSchemaContract(t *testing.T) {

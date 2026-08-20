@@ -4434,7 +4434,7 @@ func DeepCopyProvider(provider Provider) Provider
 DeepCopyProvider creates a deep copy of a Provider including its Models map.
 
 <a name="Provider.BindCatalogEndpoint"></a>
-### func \(\*Provider\) [BindCatalogEndpoint](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L390>)
+### func \(\*Provider\) [BindCatalogEndpoint](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L391>)
 
 ```go
 func (p *Provider) BindCatalogEndpoint(bindings map[string]string) (string, error)
@@ -4443,7 +4443,7 @@ func (p *Provider) BindCatalogEndpoint(bindings map[string]string) (string, erro
 BindCatalogEndpoint resolves catalog\-declared endpoint variables.
 
 <a name="Provider.CatalogEndpointURL"></a>
-### func \(\*Provider\) [CatalogEndpointURL](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L382>)
+### func \(\*Provider\) [CatalogEndpointURL](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L383>)
 
 ```go
 func (p *Provider) CatalogEndpointURL() string
@@ -4452,7 +4452,7 @@ func (p *Provider) CatalogEndpointURL() string
 CatalogEndpointURL returns the resolved model catalog endpoint URL.
 
 <a name="Provider.IsCatalogAuthRequired"></a>
-### func \(\*Provider\) [IsCatalogAuthRequired](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L377>)
+### func \(\*Provider\) [IsCatalogAuthRequired](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L378>)
 
 ```go
 func (p *Provider) IsCatalogAuthRequired() bool
@@ -4461,7 +4461,7 @@ func (p *Provider) IsCatalogAuthRequired() bool
 IsCatalogAuthRequired reports whether catalog acquisition requires credentials.
 
 <a name="Provider.Model"></a>
-### func \(\*Provider\) [Model](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L427>)
+### func \(\*Provider\) [Model](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L428>)
 
 ```go
 func (p *Provider) Model(modelID string) (*Model, error)
@@ -4819,7 +4819,7 @@ type ProviderGoogleDefaultProtocolOptions struct {
 ```
 
 <a name="ProviderGovernancePolicy"></a>
-## type [ProviderGovernancePolicy](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L333-L337>)
+## type [ProviderGovernancePolicy](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L334-L338>)
 
 ProviderGovernancePolicy represents oversight and moderation practices.
 
@@ -4872,6 +4872,7 @@ const (
     ProviderIDGoogleAIStudio ProviderID = "google-ai-studio"
     ProviderIDGoogleVertex   ProviderID = "google-vertex"
     ProviderIDGroq           ProviderID = "groq"
+    ProviderIDHetzner        ProviderID = "hetzner"
     ProviderIDHuggingFace    ProviderID = "huggingface"
     ProviderIDMeta           ProviderID = "meta"
     ProviderIDMicrosoft      ProviderID = "microsoft"
@@ -4968,7 +4969,7 @@ type ProviderModelID string
 ```
 
 <a name="ProviderModerator"></a>
-## type [ProviderModerator](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L340>)
+## type [ProviderModerator](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L341>)
 
 ProviderModerator represents a moderator for a provider.
 
@@ -5009,7 +5010,7 @@ const (
 ```
 
 <a name="ProviderModerator.String"></a>
-### func \(ProviderModerator\) [String](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L343>)
+### func \(ProviderModerator\) [String](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L344>)
 
 ```go
 func (pm ProviderModerator) String() string
@@ -5144,7 +5145,7 @@ const (
 ```
 
 <a name="ProviderPrivacyPolicy"></a>
-## type [ProviderPrivacyPolicy](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L318-L323>)
+## type [ProviderPrivacyPolicy](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L319-L324>)
 
 ProviderPrivacyPolicy represents data collection and usage practices.
 
@@ -5170,7 +5171,7 @@ type ProviderRequestOverrides struct {
 ```
 
 <a name="ProviderRetentionPolicy"></a>
-## type [ProviderRetentionPolicy](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L326-L330>)
+## type [ProviderRetentionPolicy](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L327-L331>)
 
 ProviderRetentionPolicy represents how long data is kept and deletion practices.
 
@@ -5183,7 +5184,7 @@ type ProviderRetentionPolicy struct {
 ```
 
 <a name="ProviderRetentionType"></a>
-## type [ProviderRetentionType](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L302>)
+## type [ProviderRetentionType](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L303>)
 
 ProviderRetentionType represents different types of data retention policies.
 
@@ -5203,7 +5204,7 @@ const (
 ```
 
 <a name="ProviderRetentionType.String"></a>
-### func \(ProviderRetentionType\) [String](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L305>)
+### func \(ProviderRetentionType\) [String](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L306>)
 
 ```go
 func (prt ProviderRetentionType) String() string
