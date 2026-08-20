@@ -1,0 +1,68 @@
+# Qwen3.8-27B - Dense multimodal Qwen model for text and image chat.
+id: qwen3.8-27b
+name: Qwen3.8-27B
+authors:
+- id: qwen
+  name: Qwen Team
+description: Dense multimodal Qwen model for text and image chat
+
+metadata:
+  open_weights: true
+lineage:
+  family: qwen
+
+features:
+  modalities:
+    input:
+    - text
+    - image
+    output:
+    - text
+  tool_calls: null
+  tools: null
+  tool_choice: null
+  web_search: null
+  attachments: null
+  reasoning: null
+  reasoning_effort: null
+  reasoning_tokens: null
+  include_reasoning: null
+  verbosity: null
+  temperature: null
+  top_p: null
+  top_k: null
+  top_a: null
+  min_p: null
+  typical_p: null
+  tfs: null
+  max_tokens: null
+  max_output_tokens: null
+  stop: null
+  stop_token_ids: null
+  frequency_penalty: null
+  presence_penalty: null
+  repetition_penalty: null
+  no_repeat_ngram_size: null
+  length_penalty: null
+  logit_bias: null
+  bad_words: null
+  allowed_tokens: null
+  seed: null
+  logprobs: null
+  top_logprobs: null
+  echo: null
+  "n": null
+  best_of: null
+  mirostat: null
+  mirostat_tau: null
+  mirostat_eta: null
+  contrastive_search_penalty_alpha: null
+  num_beams: null
+  early_stopping: null
+  diversity_penalty: null
+  format_response: null
+  structured_outputs: null
+  streaming: null
+
+created_at: 2026-08-19T23:27:49Z
+updated_at: 2026-08-19T23:27:49Z

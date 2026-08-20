@@ -33,8 +33,8 @@ func TestEmbeddedProviderModelsMatchReviewedIdentityMap(t *testing.T) {
 	if manifest.SchemaVersion != 1 {
 		t.Fatalf("manifest schema version = %d, want 1", manifest.SchemaVersion)
 	}
-	if len(manifest.Records) != 611 {
-		t.Fatalf("manifest records = %d, want 611", len(manifest.Records))
+	if len(manifest.Records) != 613 {
+		t.Fatalf("manifest records = %d, want 613", len(manifest.Records))
 	}
 
 	seen := make(map[string]struct{}, len(manifest.Records))
@@ -83,8 +83,8 @@ func TestEmbeddedProviderModelsMatchReviewedIdentityMap(t *testing.T) {
 			t.Fatalf("%s has unknown status %q", record.Path, record.Status)
 		}
 	}
-	if linked != 611 || unlinked != 0 {
-		t.Fatalf("identity disposition = %d linked, %d unlinked; want 611/0", linked, unlinked)
+	if linked != 613 || unlinked != 0 {
+		t.Fatalf("identity disposition = %d linked, %d unlinked; want 613/0", linked, unlinked)
 	}
 
 	providerFiles := 0

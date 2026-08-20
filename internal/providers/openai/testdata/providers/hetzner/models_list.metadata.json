@@ -1,0 +1,14 @@
+{
+  "version": 1,
+  "provider": "hetzner",
+  "fetched_at": "2026-08-19T23:34:33.821439Z",
+  "source_revision": {
+    "kind": "content_digest",
+    "value": "sha256:4bb8e57b286d1425035a4750ac7ec135750408cee3476c05c70cebbeb3effdc4"
+  },
+  "payload": {
+    "path": "models_list.json",
+    "checksum": "sha256:4bb8e57b286d1425035a4750ac7ec135750408cee3476c05c70cebbeb3effdc4"
+  },
+  "max_age": "8760h0m0s"
+}
