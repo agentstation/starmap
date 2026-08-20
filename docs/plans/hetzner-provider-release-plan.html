@@ -43,7 +43,7 @@ document.addEventListener("DOMContentLoaded",function(){var rows=document.queryS
 Owner: this plan. Created: 2026-08-19.<br>
 Baseline: Starmap main @ b24d6589 and Starport main @ 9f3888f.<br>
 Proof root: <code>docs/proof/hetzner-provider-release/</code>.<br>
-Next action: HZR3 update and verify Starport against Starmap v0.6.0.</p>
+Next action: HZR4 merge Starport PR 116 and publish v1.0.5.</p>
 <section id="outcome"><h2>Outcome</h2><blockquote>Starmap publishes
 Hetzner as a catalog-driven OpenAI-compatible provider from current API facts.
 Starport v1.0.5 consumes that Starmap release. It routes authenticated
@@ -94,8 +94,8 @@ material.</li>
 <tr id="HZR0" data-status="done"><td>HZR0</td><td>Baseline, live API contract, token, and cleanup inventory</td><td><code>done</code></td><td>2026-08-19. Two live model records. Local token verified. Safe cleanup complete. <a href="../proof/hetzner-provider-release/hzr0.md">HZR0 proof</a>.</td></tr>
 <tr id="HZR1" data-status="done"><td>HZR1</td><td>Add and verify the Hetzner provider in Starmap</td><td><code>done</code></td><td>2026-08-19. Work commit <code>28ce574d</code>. Full automated gate passed. Live listing, chat, and Hetzner fixture drift passed. <a href="../proof/hetzner-provider-release/hzr1.md">HZR1 proof</a>.</td></tr>
 <tr id="HZR2" data-status="done"><td>HZR2</td><td>Merge and publish the Starmap module release</td><td><code>done</code></td><td>2026-08-19. PR 92 merged as <code>45bcd370</code>. The public immutable <code>v0.6.0</code> release, Go module resolution, attestations, asset readback, and Homebrew install passed. <a href="../proof/hetzner-provider-release/hzr2.md">HZR2 proof</a>.</td></tr>
-<tr id="HZR3" data-status="in_progress"><td>HZR3</td><td>Update and verify Starport against released Starmap</td><td><code>in_progress</code></td><td></td></tr>
-<tr id="HZR4" data-status="todo"><td>HZR4</td><td>Merge and publish Starport v1.0.5</td><td><code>todo</code></td><td></td></tr>
+<tr id="HZR3" data-status="done"><td>HZR3</td><td>Update and verify Starport against released Starmap</td><td><code>done</code></td><td>2026-08-19. Starport commit <code>269a70b</code> updates to Starmap v0.6.0. All required checks and pre-PR autoreview passed. PR 116 is open. <a href="../proof/hetzner-provider-release/hzr3.md">HZR3 proof</a>.</td></tr>
+<tr id="HZR4" data-status="in_progress"><td>HZR4</td><td>Merge and publish Starport v1.0.5</td><td><code>in_progress</code></td><td></td></tr>
 <tr id="HZR5" data-status="todo"><td>HZR5</td><td>Clean up the merged plan, proof, work branches, and stale integrated branches</td><td><code>todo</code></td><td></td></tr>
 </tbody></table></section>
 <section id="tasks"><h2>Tasks</h2>
@@ -284,6 +284,11 @@ and the Hetzner fixture-drift subtest passed. Advanced HZR2.</td></tr>
 as <code>45bcd370</code>. Published public immutable Starmap <code>v0.6.0</code>
 with 14 release assets. The full release workflow, downloaded-asset identity
 check, Go module resolution, and Homebrew install passed. Advanced HZR3.</td></tr>
+<tr><td>2026-08-19</td><td>HZR3</td><td>done</td><td>Updated
+Starport to Starmap <code>v0.6.0</code> in signed commit
+<code>269a70b</code>. Added exact route and inference-credential proofs. All
+required local gates and pre-PR autoreview passed. Opened PR 116 and advanced
+HZR4.</td></tr>
 </tbody></table></section>
 </main>
 </body>
