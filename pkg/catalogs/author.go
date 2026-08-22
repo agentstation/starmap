@@ -17,6 +17,11 @@ type Author struct {
 	Headquarters *string `json:"headquarters,omitempty" yaml:"headquarters,omitempty"` // Company headquarters location
 	IconURL      *string `json:"icon_url,omitempty" yaml:"icon_url,omitempty"`         // Author icon/logo URL
 
+	// Logo holds the author's SVG brand mark. The bytes travel in the JSON
+	// catalog payload but stay out of authors.yaml; on a filesystem catalog
+	// they live in the authors/<id>/logo.svg sidecar file.
+	Logo []byte `json:"logo_svg,omitempty" yaml:"-"`
+
 	// Website, social links, and other relevant URLs
 	Website     *string `json:"website,omitempty" yaml:"website,omitempty"`         // Official website URL
 	HuggingFace *string `json:"huggingface,omitempty" yaml:"huggingface,omitempty"` // Hugging Face profile/organization URL

@@ -15,7 +15,7 @@ import (
 // partial catalog from being activated as a manifest-bound generation.
 func TestF009MalformedPayloadSiblingReturnsPartialDiagnostic(t *testing.T) {
 	payload := []byte(`{
-		"schema_version": 5,
+		"schema_version": 6,
 		"providers": [{"id":"provider","name":"Provider"}],
 		"authors": [{"id":"author","name":"Author"}],
 		"provider_models": {
@@ -57,7 +57,7 @@ func TestF009MalformedPayloadSiblingReturnsPartialDiagnostic(t *testing.T) {
 
 func TestMalformedAuthoredModelSiblingReturnsPartialDiagnostic(t *testing.T) {
 	payload := []byte(`{
-		"schema_version": 5,
+		"schema_version": 6,
 		"providers": [],
 		"authors": [{"id":"author","name":"Author"}],
 		"provider_models": {},
@@ -93,7 +93,7 @@ func TestMalformedAuthoredModelSiblingReturnsPartialDiagnostic(t *testing.T) {
 
 func TestMalformedProviderAndAuthorModelsReturnOneCompleteQuarantineReport(t *testing.T) {
 	payload := []byte(`{
-		"schema_version": 5,
+		"schema_version": 6,
 		"providers": [{"id":"provider","name":"Provider"}],
 		"authors": [{"id":"author","name":"Author"}],
 		"provider_models": {
@@ -124,7 +124,7 @@ func TestMalformedProviderAndAuthorModelsReturnOneCompleteQuarantineReport(t *te
 
 func TestSourceObservationPayloadMayRemainUnresolvedButCannotActivate(t *testing.T) {
 	payload := []byte(`{
-		"schema_version": 5,
+		"schema_version": 6,
 		"providers": [{"id":"provider","name":"Provider"}],
 		"authors": [],
 		"provider_models": {
@@ -189,7 +189,7 @@ func TestCatalogPayloadCollectionIdentityRemainsFailClosed(t *testing.T) {
 		{
 			name: "null provider model collection",
 			payload: `{
-				"schema_version":5,
+				"schema_version":6,
 				"providers":[{"id":"provider","name":"Provider"}],
 				"authors":[],
 				"provider_models":{"provider":null},
@@ -200,7 +200,7 @@ func TestCatalogPayloadCollectionIdentityRemainsFailClosed(t *testing.T) {
 		{
 			name: "missing provider model identity",
 			payload: `{
-				"schema_version":5,
+				"schema_version":6,
 				"providers":[{"id":"provider","name":"Provider"}],
 				"authors":[],
 				"provider_models":{},
@@ -211,7 +211,7 @@ func TestCatalogPayloadCollectionIdentityRemainsFailClosed(t *testing.T) {
 		{
 			name: "missing author model identity",
 			payload: `{
-				"schema_version":5,
+				"schema_version":6,
 				"providers":[],
 				"authors":[{"id":"author","name":"Author"}],
 				"provider_models":{},
@@ -222,7 +222,7 @@ func TestCatalogPayloadCollectionIdentityRemainsFailClosed(t *testing.T) {
 		{
 			name: "author model identity references unknown author",
 			payload: `{
-				"schema_version":5,
+				"schema_version":6,
 				"providers":[],
 				"authors":[],
 				"provider_models":{},

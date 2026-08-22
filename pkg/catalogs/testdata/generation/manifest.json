@@ -1,6 +1,6 @@
 {
   "manifest_version": 2,
-  "schema_version": 5,
+  "schema_version": 6,
   "generation_id": "gen-20260709T170000Z-36e9ea9d8eef",
   "generated_at": "2026-07-09T17:00:00Z",
   "payload": {
@@ -45,7 +45,7 @@
   "completeness": "complete",
   "degraded": false,
   "consumer_compatibility": {
-    "min_schema_version": 5,
-    "max_schema_version": 5
+    "min_schema_version": 6,
+    "max_schema_version": 6
   }
 }

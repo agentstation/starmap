@@ -27,6 +27,8 @@ func deriveProviderOffering(candidate providerModelCandidate) (ProviderOffering,
 		Availability:    OfferingAvailabilityUnknown,
 		Endpoints:       append([]ProviderOfferingEndpoint(nil), candidate.endpoints...),
 		Lifecycle:       lifecycle,
+		DeprecatedAt:    copyPtr(model.DeprecatedAt),
+		RetiresAt:       copyPtr(model.RetiresAt),
 	}
 	offering.Service = deriveOfferingCapabilities(model)
 	if model.Limits != nil {

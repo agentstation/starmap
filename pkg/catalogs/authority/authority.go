@@ -183,6 +183,8 @@ func defaultPolicies() []Policy {
 		policy(evidence.ResourceTypeModel, "Name", "", providerFirst, MergeReplace, EmptyAbsent, "The provider observation supplies the current provider-facing model name."),
 		policy(evidence.ResourceTypeModel, "Description", "", modelsDevFirst, MergeReplace, EmptyAuthoritative, "Current upstream descriptions lead; an explicitly present empty human value is distinct from an omitted fallback."),
 		policy(evidence.ResourceTypeModel, "Status", "", modelsDevFirst, MergeReplace, EmptyAbsent, "Observed lifecycle data leads a manual fallback."),
+		policy(evidence.ResourceTypeModel, "DeprecatedAt", "", providerFirst, MergeReplace, EmptyAbsent, "Provider-announced deprecation dates lead upstream and human fallback."),
+		policy(evidence.ResourceTypeModel, "RetiresAt", "", providerFirst, MergeReplace, EmptyAbsent, "Provider-announced retirement dates lead upstream and human fallback."),
 		policy(evidence.ResourceTypeModel, "Authors", "", modelsDevFirst, MergeSetUnion, EmptyAbsent, "Observed authorship leads and non-duplicate lower-authority authors may fill gaps."),
 		policy(evidence.ResourceTypeModel, "Lineage.Family", "lineage.family", modelsDevFirst, MergeReplace, EmptyAbsent, "Community model metadata leads provider and local fallback for canonical family."),
 		policy(evidence.ResourceTypeModel, "Lineage.Root", "lineage.root", providerFirst, MergeReplace, EmptyAbsent, "Provider lineage identifiers lead upstream and local fallback."),
@@ -205,6 +207,9 @@ func defaultPolicies() []Policy {
 
 		// Provider discovery facts and operator configuration.
 		policy(evidence.ResourceTypeProvider, "Name", "", providerFirst, MergeReplace, EmptyAbsent, "Observed provider identity leads upstream and human fallback."),
+		policy(evidence.ResourceTypeProvider, "Description", "", localFirst, MergeReplace, EmptyAbsent, "Provider descriptions are human-curated catalog metadata."),
+		policy(evidence.ResourceTypeProvider, "DocsURL", "", localFirst, MergeReplace, EmptyAbsent, "Documentation links are human-curated catalog metadata."),
+		policy(evidence.ResourceTypeProvider, "Logo", "", localFirst, MergeReplace, EmptyAbsent, "Brand marks are human-curated catalog assets."),
 		policy(evidence.ResourceTypeProvider, "Headquarters", "", providerFirst, MergeReplace, EmptyAbsent, "Observed organization metadata leads upstream and human fallback."),
 		policy(evidence.ResourceTypeProvider, "IconURL", "", providerFirst, MergeReplace, EmptyAbsent, "Observed provider branding leads upstream and human fallback."),
 		policy(evidence.ResourceTypeProvider, "StatusPageURL", "", providerFirst, MergeReplace, EmptyAbsent, "Observed provider status metadata leads upstream and human fallback."),
@@ -225,6 +230,7 @@ func defaultPolicies() []Policy {
 		policy(evidence.ResourceTypeAuthor, "Description", "", modelsDevFirst, MergeReplace, EmptyAbsent, "Observed author metadata leads a human fallback."),
 		policy(evidence.ResourceTypeAuthor, "Headquarters", "", modelsDevFirst, MergeReplace, EmptyAbsent, "Observed author metadata leads a human fallback."),
 		policy(evidence.ResourceTypeAuthor, "IconURL", "", modelsDevFirst, MergeReplace, EmptyAbsent, "Observed author metadata leads a human fallback."),
+		policy(evidence.ResourceTypeAuthor, "Logo", "", localFirst, MergeReplace, EmptyAbsent, "Brand marks are human-curated catalog assets."),
 		policy(evidence.ResourceTypeAuthor, "Website", "", modelsDevFirst, MergeReplace, EmptyAbsent, "Observed author metadata leads a human fallback."),
 		policy(evidence.ResourceTypeAuthor, "HuggingFace", "", modelsDevFirst, MergeReplace, EmptyAbsent, "Observed author metadata leads a human fallback."),
 		policy(evidence.ResourceTypeAuthor, "GitHub", "", modelsDevFirst, MergeReplace, EmptyAbsent, "Observed author metadata leads a human fallback."),

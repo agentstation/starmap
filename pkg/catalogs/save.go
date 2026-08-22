@@ -87,6 +87,27 @@ func (cat *Builder) saveIndexFiles(writeFile catalogFileWriter) error {
 		}
 	}
 
+	// Logo bytes stay out of the YAML indexes; persist them as the
+	// providers/<id>/logo.svg and authors/<id>/logo.svg sidecar files.
+	for _, provider := range providers {
+		if len(provider.Logo) == 0 {
+			continue
+		}
+		path := filepath.Join("providers", string(provider.ID), "logo.svg")
+		if err := writeFile(path, provider.Logo); err != nil {
+			return errors.WrapIO("write", path, err)
+		}
+	}
+	for _, author := range authors {
+		if len(author.Logo) == 0 {
+			continue
+		}
+		path := filepath.Join("authors", string(author.ID), "logo.svg")
+		if err := writeFile(path, author.Logo); err != nil {
+			return errors.WrapIO("write", path, err)
+		}
+	}
+
 	if cat.provenance.Len() > 0 {
 		yamlData, err := cat.provenance.EncodeYAML()
 		if err != nil {

@@ -3,8 +3,9 @@ package provenance
 import (
 	"testing"
 
-	"github.com/agentstation/starmap/internal/constants"
 	"github.com/goccy/go-yaml"
+
+	"github.com/agentstation/starmap/internal/constants"
 )
 
 func FuzzFileYAMLDecodeNoPanic(f *testing.F) {

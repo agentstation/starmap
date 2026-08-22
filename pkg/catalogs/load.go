@@ -76,6 +76,11 @@ func (cat *Builder) Load() error {
 		return err
 	}
 
+	// Attach logo.svg sidecar bytes to their owning provider and author records.
+	if err := cat.loadLogos(); err != nil {
+		return err
+	}
+
 	// Load provenance.yaml
 	if err := cat.loadProvenanceYAML(); err != nil {
 		return err
@@ -138,6 +143,50 @@ func (cat *Builder) loadAuthorsYAML() error {
 		}
 	}
 	return nil
+}
+
+// loadLogos reads each entity's logo.svg sidecar file into its record. A
+// missing sidecar leaves the record's Logo nil.
+func (cat *Builder) loadLogos() error {
+	for _, provider := range cat.providers.List() {
+		logo, err := cat.readLogoSidecar("providers/" + string(provider.ID) + "/logo.svg")
+		if err != nil {
+			return err
+		}
+		if logo == nil {
+			continue
+		}
+		provider.Logo = logo
+		if err := cat.SetProvider(provider); err != nil {
+			return errors.WrapResource("load", "provider logo", string(provider.ID), err)
+		}
+	}
+	for _, author := range cat.authors.List() {
+		logo, err := cat.readLogoSidecar("authors/" + string(author.ID) + "/logo.svg")
+		if err != nil {
+			return err
+		}
+		if logo == nil {
+			continue
+		}
+		author.Logo = logo
+		if err := cat.SetAuthor(author); err != nil {
+			return errors.WrapResource("load", "author logo", string(author.ID), err)
+		}
+	}
+	return nil
+}
+
+// readLogoSidecar reads one logo.svg file; a missing file is not an error.
+func (cat *Builder) readLogoSidecar(path string) ([]byte, error) {
+	data, err := fs.ReadFile(cat.config.readFilesystem(), path)
+	if err != nil {
+		if stderrors.Is(err, fs.ErrNotExist) {
+			return nil, nil
+		}
+		return nil, errors.WrapIO("read", path, err)
+	}
+	return data, nil
 }
 
 // loadProvenanceYAML loads provenance from provenance.yaml file.

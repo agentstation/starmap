@@ -16,8 +16,15 @@ type Provider struct {
 	ID           ProviderID   `json:"id" yaml:"id"`                                         // Unique provider identifier
 	Aliases      []ProviderID `json:"aliases,omitempty" yaml:"aliases,omitempty"`           // Alternative IDs this provider is known by (e.g., in models.dev)
 	Name         string       `json:"name" yaml:"name"`                                     // Display name (must not be empty)
+	Description  *string      `json:"description,omitempty" yaml:"description,omitempty"`   // Short description of the provider's inference service
+	DocsURL      *string      `json:"docs_url,omitempty" yaml:"docs_url,omitempty"`         // Link to the provider's API documentation
 	Headquarters *string      `json:"headquarters,omitempty" yaml:"headquarters,omitempty"` // Company headquarters location
 	IconURL      *string      `json:"icon_url,omitempty" yaml:"icon_url,omitempty"`         // Provider icon/logo URL
+
+	// Logo holds the provider's SVG brand mark. The bytes travel in the JSON
+	// catalog payload but stay out of providers.yaml; on a filesystem catalog
+	// they live in the providers/<id>/logo.svg sidecar file.
+	Logo []byte `json:"logo_svg,omitempty" yaml:"-"`
 
 	// Secret-free credential metadata for catalog acquisition and inference.
 	Credentials *ProviderCredentials `json:"credentials,omitempty" yaml:"credentials,omitempty"`

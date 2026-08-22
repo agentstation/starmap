@@ -8,11 +8,12 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/goccy/go-yaml"
+
 	"github.com/agentstation/starmap/internal/constants"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/sources"
 	sourcepayload "github.com/agentstation/starmap/pkg/sources/payload"
-	"github.com/goccy/go-yaml"
 )
 
 func TestSchemaDriftMutationMatrix(t *testing.T) {
