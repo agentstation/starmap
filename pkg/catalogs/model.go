@@ -24,6 +24,11 @@ type Model struct {
 	Description string            `json:"description,omitempty" yaml:"description,omitempty"` // Description of the model and its use cases
 	Status      ModelStatus       `json:"status,omitempty" yaml:"status,omitempty"`           // Lifecycle status such as active, beta, preview, or deprecated
 
+	// Provider-announced lifecycle dates for this serving record. A nil value
+	// means the provider has not announced the date.
+	DeprecatedAt *utc.Time `json:"deprecated_at,omitempty" yaml:"deprecated_at,omitempty"` // When the provider deprecated this model
+	RetiresAt    *utc.Time `json:"retires_at,omitempty" yaml:"retires_at,omitempty"`       // When the provider retires this model and stops serving requests
+
 	// Metadata - version and timing information
 	Metadata *ModelMetadata `json:"metadata,omitempty" yaml:"metadata,omitempty"` // Metadata for the model
 

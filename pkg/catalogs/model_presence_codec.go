@@ -320,6 +320,12 @@ func (m Model) MarshalYAML() (any, error) {
 	if m.Status != "" {
 		entries = append(entries, yaml.MapItem{Key: "status", Value: m.Status})
 	}
+	if m.DeprecatedAt != nil {
+		entries = append(entries, yaml.MapItem{Key: "deprecated_at", Value: m.DeprecatedAt})
+	}
+	if m.RetiresAt != nil {
+		entries = append(entries, yaml.MapItem{Key: "retires_at", Value: m.RetiresAt})
+	}
 	for _, field := range []struct {
 		key   string
 		value any

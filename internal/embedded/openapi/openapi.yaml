@@ -891,6 +891,12 @@ components:
           $ref: '#/components/schemas/catalogs.ProviderCatalog'
         credentials:
           $ref: '#/components/schemas/catalogs.ProviderCredentials'
+        description:
+          description: Short description of the provider's inference service
+          type: string
+        docs_url:
+          description: Link to the provider's API documentation
+          type: string
         extensions:
           $ref: '#/components/schemas/catalogs.SourceExtensions'
         governance_policy:
@@ -905,6 +911,15 @@ components:
           $ref: '#/components/schemas/catalogs.ProviderID'
         inference:
           $ref: '#/components/schemas/catalogs.ProviderInference'
+        logo_svg:
+          description: |-
+            Logo holds the provider's SVG brand mark. The bytes travel in the JSON
+            catalog payload but stay out of providers.yaml; on a filesystem catalog
+            they live in the providers/<id>/logo.svg sidecar file.
+          items:
+            type: integer
+          type: array
+          uniqueItems: false
         name:
           description: Display name (must not be empty)
           type: string

@@ -7,6 +7,8 @@
   - model-studio
   - qwen
   name: Alibaba Cloud Model Studio
+  description: Alibaba Cloud Model Studio serves the Qwen model family and partner models over an OpenAI-compatible API.
+  docs_url: https://www.alibabacloud.com/help/en/model-studio/
   headquarters: Hangzhou, China
   icon_url: https://www.alibabacloud.com/favicon.ico
   credentials:
@@ -79,6 +81,8 @@
 # Anthropic
 - id: anthropic
   name: Anthropic
+  description: Anthropic serves the Claude model family with first-party APIs for messages, tools, and batch processing.
+  docs_url: https://docs.anthropic.com/
   headquarters: San Francisco, CA, USA
   icon_url: https://www.anthropic.com/favicon.ico
   credentials:
@@ -148,6 +152,8 @@
   aliases:
   - azure
   name: Azure OpenAI
+  description: Microsoft Azure hosts OpenAI models with enterprise controls, regional deployments, and Azure identity.
+  docs_url: https://learn.microsoft.com/azure/ai-services/openai/
   headquarters: Redmond, WA, USA
   icon_url: https://azure.microsoft.com/favicon.ico
   credentials:
@@ -229,6 +235,8 @@
 # Cerebras
 - id: cerebras
   name: Cerebras
+  description: Cerebras serves open-weight models on wafer-scale hardware with high-throughput inference.
+  docs_url: https://inference-docs.cerebras.ai/
   headquarters: Sunnyvale, CA, USA
   icon_url: https://cerebras.ai/favicon.ico
   credentials:
@@ -321,6 +329,8 @@
 # DeepInfra
 - id: deepinfra
   name: DeepInfra
+  description: DeepInfra serves open-weight models over an OpenAI-compatible API with per-token pricing.
+  docs_url: https://deepinfra.com/docs
   headquarters: San Francisco, CA, USA
   icon_url: https://deepinfra.com/favicon.ico
   credentials:
@@ -401,6 +411,8 @@
   aliases:
   - deepseek-ai
   name: DeepSeek
+  description: DeepSeek serves its first-party reasoning and chat models over an OpenAI-compatible API.
+  docs_url: https://api-docs.deepseek.com/
   headquarters: Beijing, China
   icon_url: https://www.deepseek.com/favicon.ico
   credentials:
@@ -470,6 +482,8 @@
   aliases:
   - fireworks
   name: Fireworks AI
+  description: Fireworks AI serves open-weight and fine-tuned models with fast inference and an OpenAI-compatible API.
+  docs_url: https://docs.fireworks.ai/
   headquarters: Redwood City, CA, USA
   icon_url: https://fireworks.ai/favicon.ico
   credentials:
@@ -549,6 +563,8 @@
   aliases:
   - google
   name: Google AI Studio
+  description: Google AI Studio serves the Gemini model family through the Gemini API.
+  docs_url: https://ai.google.dev/gemini-api/docs
   headquarters: Mountain View, CA, USA
   icon_url: https://www.gstatic.com/aistudio/ai_studio_favicon_2_32x32.png
   credentials:
@@ -615,6 +631,8 @@
 # Google Vertex AI
 - id: google-vertex
   name: Google Vertex AI
+  description: Google Vertex AI hosts Gemini and partner models with enterprise controls on Google Cloud.
+  docs_url: https://cloud.google.com/vertex-ai/docs
   headquarters: Mountain View, CA, USA
   icon_url: https://www.gstatic.com/marketing-cms/assets/images/29/8c/e1f2c0994e87b8d7edf2886f9c02/google-cloud.webp
   credentials:
@@ -723,6 +741,8 @@
 # Groq
 - id: groq
   name: Groq
+  description: Groq serves open-weight models on custom LPU hardware with very low latency.
+  docs_url: https://console.groq.com/docs
   headquarters: Mountain View, CA, USA
   icon_url: https://groq.com/favicon.ico
   credentials:
@@ -807,6 +827,8 @@
 # Hetzner
 - id: hetzner
   name: Hetzner
+  description: Hetzner serves open-weight models from EU data centers over an OpenAI-compatible API.
+  docs_url: https://docs.hetzner.cloud/
   credentials:
     fields:
     - id: api-key
@@ -858,6 +880,8 @@
 # Mistral AI
 - id: mistral
   name: Mistral AI
+  description: Mistral AI serves its first-party open and premier models through La Plateforme.
+  docs_url: https://docs.mistral.ai/
   headquarters: Paris, France
   icon_url: https://mistral.ai/favicon.ico
   credentials:
@@ -915,6 +939,8 @@
   - moonshotai
   - moonshot
   name: Moonshot AI
+  description: Moonshot AI serves the Kimi model family over an OpenAI-compatible API.
+  docs_url: https://platform.moonshot.ai/docs
   headquarters: Beijing, China
   icon_url: https://www.moonshot.ai/favicon.ico
   credentials:
@@ -983,6 +1009,8 @@
 # OpenAI
 - id: openai
   name: OpenAI
+  description: OpenAI serves the GPT, o-series, and multimodal model families with first-party APIs.
+  docs_url: https://platform.openai.com/docs
   headquarters: San Francisco, CA, USA
   icon_url: https://cdn.openai.com/API/logo-openai.svg
   credentials:
@@ -1068,6 +1096,8 @@
 # Ollama
 - id: ollama
   name: Ollama
+  description: Ollama runs open-weight models locally and exposes an OpenAI-compatible API.
+  docs_url: https://docs.ollama.com/
   icon_url: https://ollama.com/public/ollama.png
   credentials:
     fields:

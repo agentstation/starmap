@@ -69,6 +69,7 @@ Package starmap provides immutable AI model catalog reads, explicit generation p
 ## Index
 
 - [Constants](<#constants>)
+- [func EmbeddedBuilder\(\) \(\*catalogs.Builder, error\)](<#EmbeddedBuilder>)
 - [type Candidate](<#Candidate>)
   - [func NewCandidate\(catalog \*catalogs.Catalog, evidence CandidateEvidence\) \(\*Candidate, error\)](<#NewCandidate>)
 - [type CandidateEvidence](<#CandidateEvidence>)
@@ -128,6 +129,15 @@ const (
     ReadinessIssueEmbeddedBootstrapOversize = "embedded_bootstrap_oversize"
 )
 ```
+
+<a name="EmbeddedBuilder"></a>
+## func [EmbeddedBuilder](<https://github.com/agentstation/starmap/blob/main/embedded.go#L12>)
+
+```go
+func EmbeddedBuilder() (*catalogs.Builder, error)
+```
+
+EmbeddedBuilder returns a catalog builder loaded from the generation embedded in this module. Consumers use it to construct catalog fixtures without provisioning client storage. Callers that need the verified immutable generation with durable storage should construct a Client.
 
 <a name="Candidate"></a>
 ## type [Candidate](<https://github.com/agentstation/starmap/blob/main/update.go#L22-L25>)

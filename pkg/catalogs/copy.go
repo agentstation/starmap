@@ -1,6 +1,9 @@
 package catalogs
 
-import "maps"
+import (
+	"bytes"
+	"maps"
+)
 
 func copyPtr[T any](value *T) *T {
 	if value == nil {
@@ -41,6 +44,8 @@ func DeepCopyProviderModels(models map[string]*Model) map[string]*Model {
 // DeepCopyModel creates a deep copy of a Model.
 func DeepCopyModel(model Model) Model {
 	modelCopy := model
+	modelCopy.DeprecatedAt = copyPtr(model.DeprecatedAt)
+	modelCopy.RetiresAt = copyPtr(model.RetiresAt)
 	modelCopy.Authors = deepCopyModelAuthors(model.Authors)
 	modelCopy.Metadata = deepCopyModelMetadata(model.Metadata)
 	modelCopy.Lineage = deepCopyModelLineage(model.Lineage)
@@ -86,8 +91,11 @@ func deepCopyModelAuthors(authors []Author) []Author {
 func DeepCopyProvider(provider Provider) Provider {
 	providerCopy := provider
 	providerCopy.Aliases = append([]ProviderID(nil), provider.Aliases...)
+	providerCopy.Description = copyPtr(provider.Description)
+	providerCopy.DocsURL = copyPtr(provider.DocsURL)
 	providerCopy.Headquarters = copyPtr(provider.Headquarters)
 	providerCopy.IconURL = copyPtr(provider.IconURL)
+	providerCopy.Logo = bytes.Clone(provider.Logo)
 	providerCopy.Credentials = deepCopyProviderCredentials(provider.Credentials)
 	providerCopy.Catalog = deepCopyProviderCatalog(provider.Catalog)
 	providerCopy.Models = DeepCopyProviderModels(provider.Models)
@@ -149,6 +157,7 @@ func deepCopyAuthorMetadata(author Author) Author {
 	authorCopy.Description = copyPtr(author.Description)
 	authorCopy.Headquarters = copyPtr(author.Headquarters)
 	authorCopy.IconURL = copyPtr(author.IconURL)
+	authorCopy.Logo = bytes.Clone(author.Logo)
 	authorCopy.Website = copyPtr(author.Website)
 	authorCopy.HuggingFace = copyPtr(author.HuggingFace)
 	authorCopy.GitHub = copyPtr(author.GitHub)

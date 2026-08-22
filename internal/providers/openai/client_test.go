@@ -11,9 +11,10 @@ import (
 	"slices"
 	"testing"
 
+	"github.com/goccy/go-yaml"
+
 	"github.com/agentstation/starmap/internal/test/providerfixture"
 	"github.com/agentstation/starmap/pkg/catalogs"
-	"github.com/goccy/go-yaml"
 )
 
 const openAIFixtureRoot = "testdata/providers"

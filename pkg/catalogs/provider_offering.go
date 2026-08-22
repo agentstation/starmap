@@ -9,6 +9,8 @@ import (
 
 	"github.com/goccy/go-yaml"
 
+	"github.com/agentstation/utc"
+
 	"github.com/agentstation/starmap/pkg/errors"
 )
 
@@ -136,6 +138,8 @@ type ProviderOffering struct {
 	Regions         []string                            `json:"regions,omitempty" yaml:"regions,omitempty"`
 	Endpoints       []ProviderOfferingEndpoint          `json:"endpoints,omitempty" yaml:"endpoints,omitempty"`
 	Lifecycle       OfferingLifecycle                   `json:"lifecycle" yaml:"lifecycle"`
+	DeprecatedAt    *utc.Time                           `json:"deprecated_at,omitempty" yaml:"deprecated_at,omitempty"`
+	RetiresAt       *utc.Time                           `json:"retires_at,omitempty" yaml:"retires_at,omitempty"`
 	Service         ProviderOfferingServiceCapabilities `json:"service" yaml:"service"`
 	Modes           map[string]ProviderOfferingMode     `json:"modes,omitempty" yaml:"modes,omitempty"`
 }
@@ -287,6 +291,8 @@ func copyProviderOffering(offering ProviderOffering) ProviderOffering {
 	}
 	copyOffering.Regions = append([]string(nil), offering.Regions...)
 	copyOffering.Endpoints = append([]ProviderOfferingEndpoint(nil), offering.Endpoints...)
+	copyOffering.DeprecatedAt = copyPtr(offering.DeprecatedAt)
+	copyOffering.RetiresAt = copyPtr(offering.RetiresAt)
 	copyOffering.Service.Operations = append([]ProviderOperation(nil), offering.Service.Operations...)
 	copyOffering.Service.PromptCache = copyPtr(offering.Service.PromptCache)
 	if offering.Modes != nil {

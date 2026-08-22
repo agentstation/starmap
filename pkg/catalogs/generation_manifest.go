@@ -41,7 +41,7 @@ const (
 
 	// CurrentCatalogSchemaVersion identifies the canonical catalog payload
 	// schema emitted by this release.
-	CurrentCatalogSchemaVersion uint64 = 5
+	CurrentCatalogSchemaVersion uint64 = 6
 
 	// CatalogPayloadMediaType identifies the canonical JSON catalog payload.
 	CatalogPayloadMediaType = "application/vnd.agentstation.starmap.catalog+json"
