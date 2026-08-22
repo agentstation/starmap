@@ -17,7 +17,7 @@ features:
   tool_calls: false
   tools: false
   tool_choice: false
-  web_search: false
+  web_search: true
   attachments: false
 
   # Reasoning & Verbosity

@@ -5,6 +5,7 @@ import (
 	"errors"
 	"net/http"
 	"net/http/httptest"
+	"slices"
 	"strings"
 	"testing"
 	"time"
@@ -352,6 +353,48 @@ func TestEmbeddedCatalogProjectsEveryCanonicalDefinition(t *testing.T) {
 		if _, err := json.Marshal(EndpointsEnvelope{Data: endpoints}); err != nil {
 			t.Fatalf("Marshal endpoints %s: %v", definition.ID, err)
 		}
+	}
+}
+
+// web_search_options names a search the provider runs inside the completion.
+// A client-executed tool cannot substitute for it, so a consumer that reads
+// supported_parameters to decide whether provider-side search is reachable
+// loses the feature entirely when the catalog claims no model has it.
+func TestEmbeddedCatalogAdvertisesProviderExecutedWebSearch(t *testing.T) {
+	t.Parallel()
+
+	client, err := starmap.New()
+	if err != nil {
+		t.Fatalf("New: %v", err)
+	}
+	catalog := client.Catalog()
+
+	for _, slug := range []string{"gpt-5-search-api", "gpt-5-search-api-2025-10-14"} {
+		model, err := ProjectModel(catalog, "openai", slug, "/api/v1")
+		if err != nil {
+			t.Fatalf("ProjectModel(%s): %v", slug, err)
+		}
+		if !slices.Contains(model.SupportedParameters, "web_search_options") {
+			t.Fatalf(
+				"%s supported parameters = %#v, want web_search_options",
+				slug,
+				model.SupportedParameters,
+			)
+		}
+	}
+
+	// The claim has to stay specific. A model without provider-executed search
+	// that advertised the parameter would send callers into a request the
+	// provider rejects.
+	model, err := ProjectModel(catalog, "openai", "gpt-5.1", "/api/v1")
+	if err != nil {
+		t.Fatalf("ProjectModel(gpt-5.1): %v", err)
+	}
+	if slices.Contains(model.SupportedParameters, "web_search_options") {
+		t.Fatalf(
+			"gpt-5.1 supported parameters = %#v, want no web_search_options",
+			model.SupportedParameters,
+		)
 	}
 }
 
