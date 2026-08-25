@@ -8,13 +8,18 @@ authors:
 description: |-
   Google model: text-embedding-005
 
+# Model metadata
+metadata:
+  tags:
+  - embed
+
 # Model features
 features:
   modalities:
     input:
     - text
     output:
-    - text
+    - embedding
 
   # Core capabilities
   tool_calls: false

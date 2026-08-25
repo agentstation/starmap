@@ -1,6 +1,6 @@
 schema_version: 2
-generation_id: catalog-20260822T191218Z-c14690afd1ec
-catalog_digest: sha256:1cc1c3fb041e4ccf24c402116cd35d178ad7ddcee2dc384909b1f6d6385615db
+generation_id: catalog-20260825T231829Z-4436329f38ed
+catalog_digest: sha256:9c59402fa6ba0fc8b28ee0d028a4caca8e5efc760669db14fe384632e59dcb3a
 models:
   - model: ai21/jamba-1-5-large
     endpoints:
@@ -800,13 +800,7 @@ models:
         provider_model_id: accounts/fireworks/models/flux-1-schnell-fp8
         availability: unknown
         lifecycle: unknown
-        service:
-          operations:
-            - chat-completions
-        service_endpoints:
-          - operation: chat-completions
-            type: openai
-            url: https://api.fireworks.ai/inference/v1/chat/completions
+        service: {}
   - model: black-forest-labs/flux-1.1-pro
     endpoints:
       - provider: deepinfra
@@ -1903,12 +1897,11 @@ models:
         lifecycle: unknown
         service:
           operations:
-            - chat-completions
+            - embeddings
         service_endpoints:
-          - operation: chat-completions
+          - operation: embeddings
             type: google-cloud
-            url: https://{location}-aiplatform.googleapis.com/v1/projects/{project}/locations/{location}/publishers/google/models/embeddinggemma:generateContent
-            stream_url: https://{location}-aiplatform.googleapis.com/v1/projects/{project}/locations/{location}/publishers/google/models/embeddinggemma:streamGenerateContent
+            url: https://{location}-aiplatform.googleapis.com/v1/projects/{project}/locations/{location}/publishers/google/models/embeddinggemma:predict
   - model: google/f-vlm-jax
     endpoints:
       - provider: google-vertex
@@ -2162,7 +2155,14 @@ models:
         availability: unknown
         lifecycle: unknown
         service:
+          operations:
+            - chat-completions
           prompt_cache: true
+        service_endpoints:
+          - operation: chat-completions
+            type: google
+            url: https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent
+            stream_url: https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:streamGenerateContent
       - provider: google-vertex
         provider_model_id: gemini-2.5-flash
         pricing:
@@ -2263,7 +2263,14 @@ models:
         availability: unknown
         lifecycle: unknown
         service:
+          operations:
+            - chat-completions
           prompt_cache: true
+        service_endpoints:
+          - operation: chat-completions
+            type: google
+            url: https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-lite:generateContent
+            stream_url: https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-lite:streamGenerateContent
       - provider: google-vertex
         provider_model_id: gemini-2.5-flash-lite
         pricing:
@@ -2284,7 +2291,14 @@ models:
         availability: unknown
         lifecycle: unknown
         service:
+          operations:
+            - chat-completions
           prompt_cache: true
+        service_endpoints:
+          - operation: chat-completions
+            type: google-cloud
+            url: https://{location}-aiplatform.googleapis.com/v1/projects/{project}/locations/{location}/publishers/google/models/gemini-2.5-flash-lite:generateContent
+            stream_url: https://{location}-aiplatform.googleapis.com/v1/projects/{project}/locations/{location}/publishers/google/models/gemini-2.5-flash-lite:streamGenerateContent
   - model: google/gemini-2.5-flash-native-audio-latest
     endpoints:
       - provider: google-ai-studio
@@ -2531,7 +2545,14 @@ models:
         availability: unknown
         lifecycle: unknown
         service:
+          operations:
+            - chat-completions
           prompt_cache: true
+        service_endpoints:
+          - operation: chat-completions
+            type: google
+            url: https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent
+            stream_url: https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:streamGenerateContent
       - provider: google-vertex
         provider_model_id: gemini-3-flash-preview
         pricing:
@@ -2552,7 +2573,14 @@ models:
         availability: unknown
         lifecycle: unknown
         service:
+          operations:
+            - chat-completions
           prompt_cache: true
+        service_endpoints:
+          - operation: chat-completions
+            type: google-cloud
+            url: https://{location}-aiplatform.googleapis.com/v1/projects/{project}/locations/{location}/publishers/google/models/gemini-3-flash-preview:generateContent
+            stream_url: https://{location}-aiplatform.googleapis.com/v1/projects/{project}/locations/{location}/publishers/google/models/gemini-3-flash-preview:streamGenerateContent
   - model: google/gemini-3-pro-image
     endpoints:
       - provider: deepinfra
@@ -2816,7 +2844,14 @@ models:
         availability: unknown
         lifecycle: unknown
         service:
+          operations:
+            - chat-completions
           prompt_cache: true
+        service_endpoints:
+          - operation: chat-completions
+            type: google
+            url: https://generativelanguage.googleapis.com/v1beta/models/gemini-3.1-flash-lite:generateContent
+            stream_url: https://generativelanguage.googleapis.com/v1beta/models/gemini-3.1-flash-lite:streamGenerateContent
       - provider: google-vertex
         provider_model_id: gemini-3.1-flash-lite
         pricing:
@@ -2837,7 +2872,14 @@ models:
         availability: unknown
         lifecycle: unknown
         service:
+          operations:
+            - chat-completions
           prompt_cache: true
+        service_endpoints:
+          - operation: chat-completions
+            type: google-cloud
+            url: https://{location}-aiplatform.googleapis.com/v1/projects/{project}/locations/{location}/publishers/google/models/gemini-3.1-flash-lite:generateContent
+            stream_url: https://{location}-aiplatform.googleapis.com/v1/projects/{project}/locations/{location}/publishers/google/models/gemini-3.1-flash-lite:streamGenerateContent
   - model: google/gemini-3.1-flash-lite-image
     endpoints:
       - provider: google-ai-studio
@@ -2897,7 +2939,14 @@ models:
         availability: unknown
         lifecycle: deprecated
         service:
+          operations:
+            - chat-completions
           prompt_cache: true
+        service_endpoints:
+          - operation: chat-completions
+            type: google
+            url: https://generativelanguage.googleapis.com/v1beta/models/gemini-3.1-flash-lite-preview:generateContent
+            stream_url: https://generativelanguage.googleapis.com/v1beta/models/gemini-3.1-flash-lite-preview:streamGenerateContent
       - provider: google-vertex
         provider_model_id: gemini-3.1-flash-lite-preview
         pricing:
@@ -2918,7 +2967,14 @@ models:
         availability: unknown
         lifecycle: deprecated
         service:
+          operations:
+            - chat-completions
           prompt_cache: true
+        service_endpoints:
+          - operation: chat-completions
+            type: google-cloud
+            url: https://{location}-aiplatform.googleapis.com/v1/projects/{project}/locations/{location}/publishers/google/models/gemini-3.1-flash-lite-preview:generateContent
+            stream_url: https://{location}-aiplatform.googleapis.com/v1/projects/{project}/locations/{location}/publishers/google/models/gemini-3.1-flash-lite-preview:streamGenerateContent
   - model: google/gemini-3.1-flash-live-preview
     endpoints:
       - provider: google-ai-studio
@@ -3097,7 +3153,14 @@ models:
         availability: unknown
         lifecycle: unknown
         service:
+          operations:
+            - chat-completions
           prompt_cache: true
+        service_endpoints:
+          - operation: chat-completions
+            type: google
+            url: https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash:generateContent
+            stream_url: https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash:streamGenerateContent
       - provider: google-vertex
         provider_model_id: gemini-3.5-flash
         pricing:
@@ -3118,7 +3181,14 @@ models:
         availability: unknown
         lifecycle: unknown
         service:
+          operations:
+            - chat-completions
           prompt_cache: true
+        service_endpoints:
+          - operation: chat-completions
+            type: google-cloud
+            url: https://{location}-aiplatform.googleapis.com/v1/projects/{project}/locations/{location}/publishers/google/models/gemini-3.5-flash:generateContent
+            stream_url: https://{location}-aiplatform.googleapis.com/v1/projects/{project}/locations/{location}/publishers/google/models/gemini-3.5-flash:streamGenerateContent
   - model: google/gemini-3.5-live-translate-preview
     endpoints:
       - provider: google-ai-studio
@@ -3158,12 +3228,11 @@ models:
         lifecycle: unknown
         service:
           operations:
-            - chat-completions
+            - embeddings
         service_endpoints:
-          - operation: chat-completions
+          - operation: embeddings
             type: google
-            url: https://generativelanguage.googleapis.com/v1beta/models/gemini-embedding-001:generateContent
-            stream_url: https://generativelanguage.googleapis.com/v1beta/models/gemini-embedding-001:streamGenerateContent
+            url: https://generativelanguage.googleapis.com/v1beta/models/gemini-embedding-001:embedContent
       - provider: google-vertex
         provider_model_id: gemini-embedding-001
         pricing:
@@ -3180,12 +3249,11 @@ models:
         lifecycle: unknown
         service:
           operations:
-            - chat-completions
+            - embeddings
         service_endpoints:
-          - operation: chat-completions
+          - operation: embeddings
             type: google-cloud
-            url: https://{location}-aiplatform.googleapis.com/v1/projects/{project}/locations/{location}/publishers/google/models/gemini-embedding-001:generateContent
-            stream_url: https://{location}-aiplatform.googleapis.com/v1/projects/{project}/locations/{location}/publishers/google/models/gemini-embedding-001:streamGenerateContent
+            url: https://{location}-aiplatform.googleapis.com/v1/projects/{project}/locations/{location}/publishers/google/models/gemini-embedding-001:predict
   - model: google/gemini-embedding-2
     endpoints:
       - provider: google-ai-studio
@@ -3204,19 +3272,24 @@ models:
           output_tokens: 1
         availability: unknown
         lifecycle: unknown
-        service: {}
+        service:
+          operations:
+            - embeddings
+        service_endpoints:
+          - operation: embeddings
+            type: google
+            url: https://generativelanguage.googleapis.com/v1beta/models/gemini-embedding-2:embedContent
       - provider: google-vertex
         provider_model_id: gemini-embedding-2
         availability: unknown
         lifecycle: unknown
         service:
           operations:
-            - chat-completions
+            - embeddings
         service_endpoints:
-          - operation: chat-completions
+          - operation: embeddings
             type: google-cloud
-            url: https://{location}-aiplatform.googleapis.com/v1/projects/{project}/locations/{location}/publishers/google/models/gemini-embedding-2:generateContent
-            stream_url: https://{location}-aiplatform.googleapis.com/v1/projects/{project}/locations/{location}/publishers/google/models/gemini-embedding-2:streamGenerateContent
+            url: https://{location}-aiplatform.googleapis.com/v1/projects/{project}/locations/{location}/publishers/google/models/gemini-embedding-2:predict
   - model: google/gemini-embedding-2-preview
     endpoints:
       - provider: google-ai-studio
@@ -3227,7 +3300,13 @@ models:
           output_tokens: 1
         availability: unknown
         lifecycle: unknown
-        service: {}
+        service:
+          operations:
+            - embeddings
+        service_endpoints:
+          - operation: embeddings
+            type: google
+            url: https://generativelanguage.googleapis.com/v1beta/models/gemini-embedding-2-preview:embedContent
   - model: google/gemini-flash-latest
     endpoints:
       - provider: google-ai-studio
@@ -3250,7 +3329,14 @@ models:
         availability: unknown
         lifecycle: unknown
         service:
+          operations:
+            - chat-completions
           prompt_cache: true
+        service_endpoints:
+          - operation: chat-completions
+            type: google
+            url: https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent
+            stream_url: https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:streamGenerateContent
   - model: google/gemini-flash-lite-latest
     endpoints:
       - provider: google-ai-studio
@@ -3273,7 +3359,14 @@ models:
         availability: unknown
         lifecycle: unknown
         service:
+          operations:
+            - chat-completions
           prompt_cache: true
+        service_endpoints:
+          - operation: chat-completions
+            type: google
+            url: https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-lite-latest:generateContent
+            stream_url: https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-lite-latest:streamGenerateContent
   - model: google/gemini-live-2.5-flash-native-audio
     endpoints:
       - provider: google-vertex
@@ -3380,7 +3473,14 @@ models:
           output_tokens: 65536
         availability: unknown
         lifecycle: unknown
-        service: {}
+        service:
+          operations:
+            - chat-completions
+        service_endpoints:
+          - operation: chat-completions
+            type: google
+            url: https://generativelanguage.googleapis.com/v1beta/models/gemini-robotics-er-1.6-preview:generateContent
+            stream_url: https://generativelanguage.googleapis.com/v1beta/models/gemini-robotics-er-1.6-preview:streamGenerateContent
   - model: google/gemma
     endpoints:
       - provider: google-vertex
@@ -4143,12 +4243,11 @@ models:
         lifecycle: unknown
         service:
           operations:
-            - chat-completions
+            - embeddings
         service_endpoints:
-          - operation: chat-completions
+          - operation: embeddings
             type: google-cloud
-            url: https://{location}-aiplatform.googleapis.com/v1/projects/{project}/locations/{location}/publishers/google/models/multimodalembedding:generateContent
-            stream_url: https://{location}-aiplatform.googleapis.com/v1/projects/{project}/locations/{location}/publishers/google/models/multimodalembedding:streamGenerateContent
+            url: https://{location}-aiplatform.googleapis.com/v1/projects/{project}/locations/{location}/publishers/google/models/multimodalembedding:predict
   - model: google/object-detector
     endpoints:
       - provider: google-vertex
@@ -4437,12 +4536,11 @@ models:
         lifecycle: unknown
         service:
           operations:
-            - chat-completions
+            - embeddings
         service_endpoints:
-          - operation: chat-completions
+          - operation: embeddings
             type: google-cloud
-            url: https://{location}-aiplatform.googleapis.com/v1/projects/{project}/locations/{location}/publishers/google/models/text-embedding-005:generateContent
-            stream_url: https://{location}-aiplatform.googleapis.com/v1/projects/{project}/locations/{location}/publishers/google/models/text-embedding-005:streamGenerateContent
+            url: https://{location}-aiplatform.googleapis.com/v1/projects/{project}/locations/{location}/publishers/google/models/text-embedding-005:predict
   - model: google/text-embedding-large-exp-03-07
     endpoints:
       - provider: google-vertex
@@ -4451,12 +4549,11 @@ models:
         lifecycle: unknown
         service:
           operations:
-            - chat-completions
+            - embeddings
         service_endpoints:
-          - operation: chat-completions
+          - operation: embeddings
             type: google-cloud
-            url: https://{location}-aiplatform.googleapis.com/v1/projects/{project}/locations/{location}/publishers/google/models/text-embedding-large-exp-03-07:generateContent
-            stream_url: https://{location}-aiplatform.googleapis.com/v1/projects/{project}/locations/{location}/publishers/google/models/text-embedding-large-exp-03-07:streamGenerateContent
+            url: https://{location}-aiplatform.googleapis.com/v1/projects/{project}/locations/{location}/publishers/google/models/text-embedding-large-exp-03-07:predict
   - model: google/text-multilingual-embedding-002
     endpoints:
       - provider: google-vertex
@@ -4465,12 +4562,11 @@ models:
         lifecycle: unknown
         service:
           operations:
-            - chat-completions
+            - embeddings
         service_endpoints:
-          - operation: chat-completions
+          - operation: embeddings
             type: google-cloud
-            url: https://{location}-aiplatform.googleapis.com/v1/projects/{project}/locations/{location}/publishers/google/models/text-multilingual-embedding-002:generateContent
-            stream_url: https://{location}-aiplatform.googleapis.com/v1/projects/{project}/locations/{location}/publishers/google/models/text-multilingual-embedding-002:streamGenerateContent
+            url: https://{location}-aiplatform.googleapis.com/v1/projects/{project}/locations/{location}/publishers/google/models/text-multilingual-embedding-002:predict
   - model: google/text-translation
     endpoints:
       - provider: google-vertex
@@ -4493,12 +4589,11 @@ models:
         lifecycle: unknown
         service:
           operations:
-            - chat-completions
+            - embeddings
         service_endpoints:
-          - operation: chat-completions
+          - operation: embeddings
             type: google-cloud
-            url: https://{location}-aiplatform.googleapis.com/v1/projects/{project}/locations/{location}/publishers/google/models/textembedding-gecko:generateContent
-            stream_url: https://{location}-aiplatform.googleapis.com/v1/projects/{project}/locations/{location}/publishers/google/models/textembedding-gecko:streamGenerateContent
+            url: https://{location}-aiplatform.googleapis.com/v1/projects/{project}/locations/{location}/publishers/google/models/textembedding-gecko:predict
   - model: google/tfvision-movinet-var
     endpoints:
       - provider: google-vertex
@@ -5144,7 +5239,13 @@ models:
         availability: unknown
         lifecycle: active
         service:
+          operations:
+            - chat-completions
           prompt_cache: true
+        service_endpoints:
+          - operation: chat-completions
+            type: openai
+            url: https://api.groq.com/openai/v1/chat/completions
   - model: meta/llama-3.2-90b-vision-instruct
     endpoints:
       - provider: google-vertex
@@ -5208,7 +5309,13 @@ models:
         availability: unknown
         lifecycle: active
         service:
+          operations:
+            - chat-completions
           prompt_cache: true
+        service_endpoints:
+          - operation: chat-completions
+            type: openai
+            url: https://api.groq.com/openai/v1/chat/completions
   - model: meta/llama-4-maverick-17b-128e-instruct
     endpoints:
       - provider: deepinfra
@@ -5278,7 +5385,13 @@ models:
         availability: unknown
         lifecycle: preview
         service:
+          operations:
+            - chat-completions
           prompt_cache: true
+        service_endpoints:
+          - operation: chat-completions
+            type: openai
+            url: https://api.groq.com/openai/v1/chat/completions
   - model: meta/llama-guard-4-12b
     endpoints:
       - provider: deepinfra
@@ -5326,7 +5439,13 @@ models:
         availability: unknown
         lifecycle: preview
         service:
+          operations:
+            - chat-completions
           prompt_cache: true
+        service_endpoints:
+          - operation: chat-completions
+            type: openai
+            url: https://api.groq.com/openai/v1/chat/completions
   - model: meta/llama-prompt-guard-2-86m
     endpoints:
       - provider: groq
@@ -5350,7 +5469,13 @@ models:
         availability: unknown
         lifecycle: preview
         service:
+          operations:
+            - chat-completions
           prompt_cache: true
+        service_endpoints:
+          - operation: chat-completions
+            type: openai
+            url: https://api.groq.com/openai/v1/chat/completions
   - model: microsoft/phi-4
     endpoints:
       - provider: deepinfra
@@ -8169,7 +8294,13 @@ models:
         availability: unknown
         lifecycle: active
         service:
+          operations:
+            - chat-completions
           prompt_cache: true
+        service_endpoints:
+          - operation: chat-completions
+            type: openai
+            url: https://api.groq.com/openai/v1/chat/completions
   - model: openai/gpt-oss-20b
     endpoints:
       - provider: deepinfra
@@ -8215,7 +8346,13 @@ models:
         availability: unknown
         lifecycle: active
         service:
+          operations:
+            - chat-completions
           prompt_cache: true
+        service_endpoints:
+          - operation: chat-completions
+            type: openai
+            url: https://api.groq.com/openai/v1/chat/completions
   - model: openai/gpt-oss-safeguard-20b
     endpoints:
       - provider: groq
@@ -8239,7 +8376,13 @@ models:
         availability: unknown
         lifecycle: preview
         service:
+          operations:
+            - chat-completions
           prompt_cache: true
+        service_endpoints:
+          - operation: chat-completions
+            type: openai
+            url: https://api.groq.com/openai/v1/chat/completions
   - model: openai/gpt-realtime
     endpoints:
       - provider: openai
@@ -8624,11 +8767,11 @@ models:
         lifecycle: unknown
         service:
           operations:
-            - chat-completions
+            - embeddings
         service_endpoints:
-          - operation: chat-completions
+          - operation: embeddings
             type: openai
-            url: https://api.openai.com/v1/chat/completions
+            url: https://api.openai.com/v1/embeddings
   - model: openai/text-embedding-3-small
     endpoints:
       - provider: openai
@@ -8647,11 +8790,11 @@ models:
         lifecycle: unknown
         service:
           operations:
-            - chat-completions
+            - embeddings
         service_endpoints:
-          - operation: chat-completions
+          - operation: embeddings
             type: openai
-            url: https://api.openai.com/v1/chat/completions
+            url: https://api.openai.com/v1/embeddings
   - model: openai/text-embedding-ada-002
     endpoints:
       - provider: openai
@@ -8670,11 +8813,11 @@ models:
         lifecycle: unknown
         service:
           operations:
-            - chat-completions
+            - embeddings
         service_endpoints:
-          - operation: chat-completions
+          - operation: embeddings
             type: openai
-            url: https://api.openai.com/v1/chat/completions
+            url: https://api.openai.com/v1/embeddings
   - model: openai/tts-1
     endpoints:
       - provider: openai
@@ -8762,13 +8905,7 @@ models:
           output_tokens: 448
         availability: unknown
         lifecycle: active
-        service:
-          operations:
-            - chat-completions
-        service_endpoints:
-          - operation: chat-completions
-            type: openai
-            url: https://api.groq.com/openai/v1/chat/completions
+        service: {}
   - model: openai/whisper-large-v3-turbo
     endpoints:
       - provider: deepinfra
@@ -8795,13 +8932,7 @@ models:
           output_tokens: 448
         availability: unknown
         lifecycle: active
-        service:
-          operations:
-            - chat-completions
-        service_endpoints:
-          - operation: chat-completions
-            type: openai
-            url: https://api.groq.com/openai/v1/chat/completions
+        service: {}
   - model: pixverse/pixverse-6-t2v
     endpoints:
       - provider: deepinfra
@@ -9434,7 +9565,13 @@ models:
         availability: unknown
         lifecycle: preview
         service:
+          operations:
+            - chat-completions
           prompt_cache: true
+        service_endpoints:
+          - operation: chat-completions
+            type: openai
+            url: https://api.groq.com/openai/v1/chat/completions
   - model: qwen/qwen3-8b
     endpoints:
       - provider: alibaba
@@ -10473,7 +10610,13 @@ models:
         availability: unknown
         lifecycle: active
         service:
+          operations:
+            - chat-completions
           prompt_cache: true
+        service_endpoints:
+          - operation: chat-completions
+            type: openai
+            url: https://api.groq.com/openai/v1/chat/completions
   - model: qwen/qwen3.6-35b-a3b
     endpoints:
       - provider: alibaba

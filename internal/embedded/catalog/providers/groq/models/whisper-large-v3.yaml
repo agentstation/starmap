@@ -30,6 +30,8 @@ status: active
 metadata:
   release_date: 2023-09-01
   open_weights: true
+  tags:
+  - stt
 lineage:
   family: whisper
 

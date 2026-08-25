@@ -3,13 +3,18 @@ id: accounts/fireworks/models/flux-1-schnell-fp8
 model: black-forest-labs/flux-1-schnell
 name: accounts/fireworks/models/flux-1-schnell-fp8
 
+# Model metadata
+metadata:
+  tags:
+  - image-gen
+
 # Model features
 features:
   modalities:
     input:
     - text
     output:
-    - text
+    - image
 
   # Core capabilities
   tool_calls: false

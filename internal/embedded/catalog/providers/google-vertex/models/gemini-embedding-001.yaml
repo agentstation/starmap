@@ -12,6 +12,8 @@ metadata:
   release_date: 2025-05-20
   open_weights: false
   knowledge_cutoff: 2025-05-01
+  tags:
+  - embed
 lineage:
   family: gemini
 
@@ -21,7 +23,7 @@ features:
     input:
     - text
     output:
-    - text
+    - embedding
 
   # Core capabilities
   tool_calls: false

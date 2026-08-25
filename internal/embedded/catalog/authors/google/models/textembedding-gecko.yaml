@@ -11,6 +11,8 @@ description: |-
 metadata:
   release_date: "2025-09-10T03:09:35Z"
   open_weights: false
+  tags:
+  - embed
 
 # Model features
 features:
@@ -18,7 +20,7 @@ features:
     input:
     - text
     output:
-    - text
+    - embedding
 
   # Core capabilities
   tool_calls: false

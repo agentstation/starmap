@@ -7,13 +7,18 @@ authors:
 description: |-
   Google model: gemini-embedding-2
 
+# Model metadata
+metadata:
+  tags:
+  - embed
+
 # Model features
 features:
   modalities:
     input:
     - text
     output:
-    - text
+    - embedding
 
   # Core capabilities
   tool_calls: false
