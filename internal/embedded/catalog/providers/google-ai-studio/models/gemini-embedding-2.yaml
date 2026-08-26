@@ -12,6 +12,8 @@ metadata:
   release_date: 2026-04-22
   open_weights: false
   knowledge_cutoff: 2025-11-01
+  tags:
+  - embed
 lineage:
   family: gemini
 
@@ -25,7 +27,7 @@ features:
     - video
     - pdf
     output:
-    - text
+    - embedding
 
   # Core capabilities
   tool_calls: false

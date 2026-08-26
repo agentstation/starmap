@@ -7,12 +7,18 @@ authors:
   name: Google
 description: Obtain a distributed representation of multimodal content.
 
+# Model metadata
+metadata:
+  tags:
+  - embed
+
 # Model features
 features:
   modalities:
     input:
     - text
-    output: []
+    output:
+    - embedding
 
   # Core capabilities
   tool_calls: false

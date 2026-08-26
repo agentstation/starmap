@@ -12,6 +12,8 @@ metadata:
   release_date: 2022-12-15
   open_weights: false
   knowledge_cutoff: 2022-12-01
+  tags:
+  - embed
 lineage:
   family: text-embedding
 
@@ -21,7 +23,7 @@ features:
     input:
     - text
     output:
-    - text
+    - embedding
 
   # Core capabilities
   tool_calls: false
