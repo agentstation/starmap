@@ -1289,6 +1289,11 @@ components:
       x-enum-varnames:
       - ProviderOperationChatCompletions
       - ProviderOperationEmbeddings
+      - ProviderOperationImagesGenerations
+      - ProviderOperationImagesEdits
+      - ProviderOperationAudioSpeech
+      - ProviderOperationAudioTranscriptions
+      - ProviderOperationAudioTranslations
     catalogs.ProviderPrivacyPolicy:
       description: Privacy, Retention, and Governance Policies
       properties:

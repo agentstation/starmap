@@ -401,6 +401,24 @@
     - operation: chat-completions
       type: openai
       path: /chat/completions
+    - operation: embeddings
+      type: openai
+      path: /embeddings
+    - operation: images-generations
+      type: openai
+      path: /images/generations
+    - operation: images-edits
+      type: openai
+      path: /images/edits
+    - operation: audio-speech
+      type: openai
+      path: /audio/speech
+    - operation: audio-transcriptions
+      type: openai
+      path: /audio/transcriptions
+    - operation: audio-translations
+      type: openai
+      path: /audio/translations
   extensions:
     models.dev:
       fields:
@@ -802,6 +820,15 @@
     - operation: chat-completions
       type: openai
       path: /v1/chat/completions
+    - operation: audio-speech
+      type: openai
+      path: /v1/audio/speech
+    - operation: audio-transcriptions
+      type: openai
+      path: /v1/audio/transcriptions
+    - operation: audio-translations
+      type: openai
+      path: /v1/audio/translations
     health_api_url: https://groqstatus.com/api/v2/summary.json
     health_components:
     - id: 01K053E2FAKWKEYHXEV7WAHJBM
@@ -1071,6 +1098,21 @@
     - operation: embeddings
       type: openai
       path: /v1/embeddings
+    - operation: images-generations
+      type: openai
+      path: /v1/images/generations
+    - operation: images-edits
+      type: openai
+      path: /v1/images/edits
+    - operation: audio-speech
+      type: openai
+      path: /v1/audio/speech
+    - operation: audio-transcriptions
+      type: openai
+      path: /v1/audio/transcriptions
+    - operation: audio-translations
+      type: openai
+      path: /v1/audio/translations
     health_api_url: https://status.openai.com/api/v2/summary.json
     health_components:
     - id: 01JMXBRMFE6N2NNT7DG6XZQ6PW

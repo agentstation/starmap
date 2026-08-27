@@ -131,6 +131,7 @@ func deriveOfferingCapabilities(model Model) ProviderOfferingServiceCapabilities
 	if isChatCompletionModel(model) {
 		capabilities.Operations = append(capabilities.Operations, ProviderOperationChatCompletions)
 	}
+	capabilities.Operations = append(capabilities.Operations, mediaOperations(model)...)
 	if model.Pricing != nil && model.Pricing.Tokens != nil &&
 		(model.Pricing.Tokens.CacheRead != nil || model.Pricing.Tokens.CacheWrite != nil) {
 		supported := true

@@ -200,7 +200,7 @@ func (o ProviderOffering) Validate() error {
 			return offeringValidationError(
 				fmt.Sprintf("capabilities.operations[%d]", index),
 				operation,
-				"must be chat-completions or embeddings",
+				providerOperationMessage(),
 			)
 		}
 		if _, exists := seenOperations[operation]; exists {
@@ -256,8 +256,23 @@ func validProviderOperation(value ProviderOperation) bool {
 	case ProviderOperationChatCompletions, ProviderOperationEmbeddings:
 		return true
 	default:
-		return false
+		return IsMediaOperation(value)
 	}
+}
+
+// providerOperationMessage names every operation a catalog may publish. The
+// list reads from the media table, so a new operation reaches this message
+// without an edit here.
+func providerOperationMessage() string {
+	names := make([]string, 0, 2+len(mediaOperationFacts))
+	names = append(names,
+		string(ProviderOperationChatCompletions),
+		string(ProviderOperationEmbeddings),
+	)
+	for _, facts := range mediaOperationFacts {
+		names = append(names, string(facts.Operation))
+	}
+	return "must be one of " + strings.Join(names, ", ")
 }
 
 func validOfferingAvailability(value OfferingAvailability) bool {
