@@ -77,7 +77,7 @@ features:
 # Model pricing
 pricing:
   operations:
-    audio_gen: 0.035
+    video_gen: 0.035
   currency: USD
 
 # Timestamps

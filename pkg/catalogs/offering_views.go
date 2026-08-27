@@ -163,7 +163,8 @@ func isChatCompletionModel(model Model) bool {
 		for _, tag := range model.Metadata.Tags {
 			switch tag {
 			case "embed", ModelTagEmbedding, "image-gen", "video-gen", "tts", "stt",
-				"rerank", ModelTagTextToImage, ModelTagTextToSpeech, ModelTagSpeechToText:
+				"rerank", ModelTagTextToImage, ModelTagTextToSpeech, ModelTagSpeechToText,
+				ModelTagTextToVideo:
 				return false
 			}
 		}

@@ -60,6 +60,12 @@ var mediaOperationFacts = []MediaOperationFacts{
 		Input:       []ModelModality{ModelModalityAudio},
 		Output:      []ModelModality{ModelModalityText},
 	},
+	{
+		Operation: ProviderOperationVideosGenerations,
+		Tags:      []ModelTag{"video-gen", ModelTagTextToVideo},
+		Input:     []ModelModality{ModelModalityText},
+		Output:    []ModelModality{ModelModalityVideo},
+	},
 }
 
 // MediaOperationDefinitions returns the canonical facts for every dedicated

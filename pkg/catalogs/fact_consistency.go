@@ -41,14 +41,6 @@ func validateModelFactConsistency(model Model) error {
 					"embedding models must declare embedding output",
 				)
 			}
-		case "video-gen", string(ModelTagTextToVideo):
-			if !slices.Contains(model.Features.Modalities.Output, ModelModalityVideo) {
-				return modelFactError(
-					"features.modalities.output",
-					model.Features.Modalities.Output,
-					"video-generation models must declare video output",
-				)
-			}
 		}
 	}
 	return validateMediaOperationFacts(model)

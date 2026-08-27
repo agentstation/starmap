@@ -77,6 +77,7 @@ func TestEveryPublishedMediaOperationMatchesItsDefinition(t *testing.T) {
 		catalogs.ProviderOperationAudioSpeech:         14,
 		catalogs.ProviderOperationAudioTranscriptions: 7,
 		catalogs.ProviderOperationAudioTranslations:   7,
+		catalogs.ProviderOperationVideosGenerations:   13,
 	}
 	for operation, wantCount := range want {
 		if counts[operation] != wantCount {
@@ -91,11 +92,12 @@ func TestEveryPublishedMediaOperationMatchesItsDefinition(t *testing.T) {
 	}
 }
 
-// TestTheResidualOfferingsAreVideoAndRealtime names every offering the shipped
-// catalog still leaves without an operation. MOD0 counted 63 of them. The
-// sixteen that remain are the two shapes no operation in this plan describes,
-// and holding the number here is what makes a new residual visible.
-func TestTheResidualOfferingsAreVideoAndRealtime(t *testing.T) {
+// TestTheResidualOfferingsAreRealtimeAlone names every offering the shipped
+// catalog still leaves without an operation. MOD0 counted 63 of them, and MOD12
+// left 16: 13 that generate video and 3 that serve a realtime session. AMJ3
+// gave the video ones an operation, so only the realtime shape remains, and
+// holding the number here is what makes a new residual visible.
+func TestTheResidualOfferingsAreRealtimeAlone(t *testing.T) {
 	builder, err := NewEmbeddedBuilder()
 	if err != nil {
 		t.Fatalf("NewEmbedded: %v", err)
@@ -139,9 +141,9 @@ func TestTheResidualOfferingsAreVideoAndRealtime(t *testing.T) {
 		}
 	}
 
-	if video != 13 || realtime != 3 || other != 0 {
+	if video != 0 || realtime != 3 || other != 0 {
 		t.Fatalf(
-			"residual offerings: video = %d want 13, realtime = %d want 3, unexplained = %d want 0",
+			"residual offerings: video = %d want 0, realtime = %d want 3, unexplained = %d want 0",
 			video,
 			realtime,
 			other,

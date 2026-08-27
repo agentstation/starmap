@@ -322,7 +322,7 @@ func (c *Client) applyProviderPricing(model *catalogs.Model, apiModel Model) {
 	ensureModelPricing(model)
 	applyOpenAICompatiblePricing(model.Pricing, apiModel.Pricing, c.topLevelTokenPriceScale())
 	if apiModel.Metadata != nil {
-		applyOpenAICompatibleMetadataPricing(model.Pricing, apiModel.Metadata.Pricing)
+		applyOpenAICompatibleMetadataPricing(model, model.Pricing, apiModel.Metadata.Pricing)
 	}
 	if model.Pricing.Tokens.Input == nil && model.Pricing.Tokens.Output == nil &&
 		model.Pricing.Tokens.CacheRead == nil && model.Pricing.Tokens.CacheWrite == nil {
@@ -388,7 +388,11 @@ func (c *Client) topLevelTokenPriceScale() float64 {
 	return 1
 }
 
-func applyOpenAICompatibleMetadataPricing(pricing *catalogs.ModelPricing, source *ModelMetadataPricing) {
+func applyOpenAICompatibleMetadataPricing(
+	model *catalogs.Model,
+	pricing *catalogs.ModelPricing,
+	source *ModelMetadataPricing,
+) {
 	if source == nil {
 		return
 	}
@@ -413,9 +417,32 @@ func applyOpenAICompatibleMetadataPricing(pricing *catalogs.ModelPricing, source
 		if source.InputSeconds != nil && pricing.Operations.AudioInput == nil {
 			pricing.Operations.AudioInput = normalizeProviderOperationPrice(source.InputSeconds)
 		}
-		if source.OutputSeconds != nil && pricing.Operations.AudioGen == nil {
-			pricing.Operations.AudioGen = normalizeProviderOperationPrice(source.OutputSeconds)
+		if source.OutputSeconds != nil {
+			applyGeneratedSecondPrice(model, pricing, source.OutputSeconds)
 		}
+	}
+}
+
+// applyGeneratedSecondPrice records a per-second price of generated media under
+// the operation the model's declared output names. One reported field carries
+// both, because a provider that bills by the second reports seconds whatever it
+// produced. A video model whose price landed in audio_gen would answer a
+// consumer that read the audio field and hide from one that read the video
+// field, and the modalities are already normalized when this runs.
+func applyGeneratedSecondPrice(
+	model *catalogs.Model,
+	pricing *catalogs.ModelPricing,
+	price *float64,
+) {
+	if model != nil && model.Features != nil &&
+		slices.Contains(model.Features.Modalities.Output, catalogs.ModelModalityVideo) {
+		if pricing.Operations.VideoGen == nil {
+			pricing.Operations.VideoGen = normalizeProviderOperationPrice(price)
+		}
+		return
+	}
+	if pricing.Operations.AudioGen == nil {
+		pricing.Operations.AudioGen = normalizeProviderOperationPrice(price)
 	}
 }
 
