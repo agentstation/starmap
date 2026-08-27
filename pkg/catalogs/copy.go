@@ -358,6 +358,8 @@ func deepCopyModelTokenPricing(pricing *ModelTokenPricing) *ModelTokenPricing {
 	copied.Reasoning = copyPtr(pricing.Reasoning)
 	copied.CacheRead = copyPtr(pricing.CacheRead)
 	copied.CacheWrite = copyPtr(pricing.CacheWrite)
+	copied.AudioInput = copyPtr(pricing.AudioInput)
+	copied.AudioOutput = copyPtr(pricing.AudioOutput)
 	return &copied
 }
 

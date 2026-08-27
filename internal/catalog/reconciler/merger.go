@@ -694,6 +694,8 @@ func copyModelTokenPricing(source *catalogs.ModelTokenPricing) *catalogs.ModelTo
 	copied.Reasoning = copyModelTokenCost(source.Reasoning)
 	copied.CacheRead = copyModelTokenCost(source.CacheRead)
 	copied.CacheWrite = copyModelTokenCost(source.CacheWrite)
+	copied.AudioInput = copyModelTokenCost(source.AudioInput)
+	copied.AudioOutput = copyModelTokenCost(source.AudioOutput)
 	return &copied
 }
 

@@ -124,6 +124,13 @@ type ModelTokenPricing struct {
 	Reasoning  *ModelTokenCost `json:"reasoning,omitempty" yaml:"reasoning,omitempty"`     // Internal reasoning tokens
 	CacheRead  *ModelTokenCost `json:"cache_read,omitempty" yaml:"cache_read,omitempty"`   // Cache read costs (flat structure)
 	CacheWrite *ModelTokenCost `json:"cache_write,omitempty" yaml:"cache_write,omitempty"` // Cache write costs (flat structure)
+
+	// Media token types. A provider that meters audio bills it at its own
+	// rate, so an audio turn cannot be priced from Input and Output alone.
+	// These are per-token prices, unlike ModelOperationPricing.AudioInput,
+	// which is a flat price for one audio input.
+	AudioInput  *ModelTokenCost `json:"audio_input,omitempty" yaml:"audio_input,omitempty"`   // Audio input tokens
+	AudioOutput *ModelTokenCost `json:"audio_output,omitempty" yaml:"audio_output,omitempty"` // Audio output tokens
 }
 
 // MarshalYAML implements custom YAML marshaling for token pricing.
@@ -148,6 +155,14 @@ func (t *ModelTokenPricing) MarshalYAML() (any, error) {
 
 	if t.CacheWrite != nil {
 		result["cache_write"] = t.CacheWrite
+	}
+
+	if t.AudioInput != nil {
+		result["audio_input"] = t.AudioInput
+	}
+
+	if t.AudioOutput != nil {
+		result["audio_output"] = t.AudioOutput
 	}
 
 	return result, nil

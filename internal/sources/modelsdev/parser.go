@@ -485,23 +485,11 @@ func convertModelPricing(cost *Cost) *catalogs.ModelPricing {
 		return nil
 	}
 
-	pricing := &catalogs.ModelPricing{
+	return &catalogs.ModelPricing{
 		Currency: catalogs.ModelPricingCurrencyUSD, // models.dev uses USD
 		Tokens:   convertModelTokenPricing(cost),
 		Tiers:    convertPricingTiers(cost),
 	}
-
-	if cost.InputAudio != nil || cost.OutputAudio != nil {
-		pricing.Operations = &catalogs.ModelOperationPricing{}
-		if cost.InputAudio != nil {
-			pricing.Operations.AudioInput = cost.InputAudio
-		}
-		if cost.OutputAudio != nil {
-			pricing.Operations.AudioGen = cost.OutputAudio
-		}
-	}
-
-	return pricing
 }
 
 func convertModelTokenPricing(cost *Cost) *catalogs.ModelTokenPricing {
@@ -530,6 +518,19 @@ func convertModelTokenPricing(cost *Cost) *catalogs.ModelTokenPricing {
 	if cost.CacheWrite != nil {
 		tokenPricing.CacheWrite = &catalogs.ModelTokenCost{
 			Per1M: *cost.CacheWrite,
+		}
+	}
+	// models.dev quotes input_audio and output_audio per million tokens, in
+	// the same units as input and output. They are token prices, not the flat
+	// per-file price ModelOperationPricing.AudioInput records.
+	if cost.InputAudio != nil {
+		tokenPricing.AudioInput = &catalogs.ModelTokenCost{
+			Per1M: *cost.InputAudio,
+		}
+	}
+	if cost.OutputAudio != nil {
+		tokenPricing.AudioOutput = &catalogs.ModelTokenCost{
+			Per1M: *cost.OutputAudio,
 		}
 	}
 	// models.dev's generic cache price means cache writes when neither
@@ -696,17 +697,11 @@ func convertPricingTiers(cost *Cost) []catalogs.ModelPricingTier {
 	}
 	tiers := make([]catalogs.ModelPricingTier, 0, len(cost.Tiers)+1)
 	for _, sourceTier := range cost.Tiers {
-		tier := catalogs.ModelPricingTier{
+		tiers = append(tiers, catalogs.ModelPricingTier{
 			Type:   catalogs.ModelPricingTierType(sourceTier.Tier.Type),
 			Size:   sourceTier.Tier.Size,
 			Tokens: tierTokenPricing(sourceTier.TierPrices),
-		}
-		if sourceTier.InputAudio != nil {
-			tier.Operations = &catalogs.ModelOperationPricing{
-				AudioInput: sourceTier.InputAudio,
-			}
-		}
-		tiers = append(tiers, tier)
+		})
 	}
 	if cost.ContextOver200K != nil {
 		tiers = append(tiers, catalogs.ModelPricingTier{
@@ -727,16 +722,18 @@ func tierTokenPricing(prices TierPrices) *catalogs.ModelTokenPricing {
 	if prices.Output != nil {
 		pricing.Output = &catalogs.ModelTokenCost{Per1M: *prices.Output}
 	}
-	if prices.CacheRead != nil || prices.CacheWrite != nil {
-		if prices.CacheRead != nil {
-			pricing.CacheRead = &catalogs.ModelTokenCost{Per1M: *prices.CacheRead}
-		}
-		if prices.CacheWrite != nil {
-			pricing.CacheWrite = &catalogs.ModelTokenCost{Per1M: *prices.CacheWrite}
-		}
+	if prices.CacheRead != nil {
+		pricing.CacheRead = &catalogs.ModelTokenCost{Per1M: *prices.CacheRead}
+	}
+	if prices.CacheWrite != nil {
+		pricing.CacheWrite = &catalogs.ModelTokenCost{Per1M: *prices.CacheWrite}
+	}
+	if prices.InputAudio != nil {
+		pricing.AudioInput = &catalogs.ModelTokenCost{Per1M: *prices.InputAudio}
 	}
 	if pricing.Input == nil && pricing.Output == nil &&
-		pricing.CacheRead == nil && pricing.CacheWrite == nil {
+		pricing.CacheRead == nil && pricing.CacheWrite == nil &&
+		pricing.AudioInput == nil {
 		return nil
 	}
 	return pricing
