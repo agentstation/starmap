@@ -161,6 +161,10 @@ const (
 	ProviderOperationAudioTranscriptions ProviderOperation = "audio-transcriptions"
 	// ProviderOperationAudioTranslations transcribes speech into English.
 	ProviderOperationAudioTranslations ProviderOperation = "audio-translations"
+	// ProviderOperationVideosGenerations generates a video from a prompt. The
+	// provider answers with a job rather than a video, so a consumer submits,
+	// polls, and collects.
+	ProviderOperationVideosGenerations ProviderOperation = "videos-generations"
 )
 
 // ProviderInference defines stable provider-level inference service facts.

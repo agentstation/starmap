@@ -80,9 +80,18 @@ func TestMediaOperationsFollowModalityAndTag(t *testing.T) {
 			want: nil,
 		},
 		{
-			name:  "video output names no operation this plan defines",
+			name:  "text in and video out is video generation",
 			model: mediaModel(text, []ModelModality{ModelModalityVideo}, "video-gen"),
-			want:  nil,
+			want:  []ProviderOperation{ProviderOperationVideosGenerations},
+		},
+		{
+			name: "a model that also writes text serves no video path",
+			model: mediaModel(
+				text,
+				[]ModelModality{ModelModalityText, ModelModalityVideo},
+				"video-gen",
+			),
+			want: nil,
 		},
 	} {
 		t.Run(test.name, func(t *testing.T) {

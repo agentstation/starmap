@@ -1,6 +1,6 @@
 schema_version: 2
-generation_id: catalog-20260827T064147Z-937f0bf70acd
-catalog_digest: sha256:ad4d551ab06f727fece75c9d5af48130ccd6ab93d26ce6bbd030c83718e566b9
+generation_id: catalog-20260827T133810Z-db0fc1bbb83f
+catalog_digest: sha256:5b8d53006638d0a08ef9db7a11d25f6dde02c91ba0811a6128478362cafea2b0
 models:
   - model: ai21/jamba-1-5-large
     endpoints:
@@ -88,11 +88,17 @@ models:
         provider_model_id: Wan-AI/Wan2.2-T2V-A14B
         pricing:
           operations:
-            audio_gen: 0.036
+            video_gen: 0.036
           currency: USD
         availability: unknown
         lifecycle: unknown
-        service: {}
+        service:
+          operations:
+            - videos-generations
+        service_endpoints:
+          - operation: videos-generations
+            type: openai
+            url: https://api.deepinfra.com/v1/openai/videos
   - model: alibaba/wan2.6-image
     endpoints:
       - provider: alibaba
@@ -140,11 +146,17 @@ models:
         provider_model_id: Wan-AI/Wan2.6-T2V
         pricing:
           operations:
-            audio_gen: 0.1
+            video_gen: 0.1
           currency: USD
         availability: unknown
         lifecycle: unknown
-        service: {}
+        service:
+          operations:
+            - videos-generations
+        service_endpoints:
+          - operation: videos-generations
+            type: openai
+            url: https://api.deepinfra.com/v1/openai/videos
   - model: anthropic/claude-3-5-haiku-20241022
     endpoints:
       - provider: google-vertex
@@ -1237,14 +1249,26 @@ models:
         provider_model_id: ByteDance/Seedance-1.5-Pro
         availability: unknown
         lifecycle: unknown
-        service: {}
+        service:
+          operations:
+            - videos-generations
+        service_endpoints:
+          - operation: videos-generations
+            type: openai
+            url: https://api.deepinfra.com/v1/openai/videos
   - model: bytedance/seedance-2.0
     endpoints:
       - provider: deepinfra
         provider_model_id: ByteDance/Seedance-2.0
         availability: unknown
         lifecycle: unknown
-        service: {}
+        service:
+          operations:
+            - videos-generations
+        service_endpoints:
+          - operation: videos-generations
+            type: openai
+            url: https://api.deepinfra.com/v1/openai/videos
   - model: bytedance/seedream-4
     endpoints:
       - provider: deepinfra
@@ -4932,22 +4956,34 @@ models:
         provider_model_id: google/veo-3.1
         pricing:
           operations:
-            audio_gen: 0.4
+            video_gen: 0.4
           currency: USD
         availability: unknown
         lifecycle: unknown
-        service: {}
+        service:
+          operations:
+            - videos-generations
+        service_endpoints:
+          - operation: videos-generations
+            type: openai
+            url: https://api.deepinfra.com/v1/openai/videos
   - model: google/veo-3.1-fast
     endpoints:
       - provider: deepinfra
         provider_model_id: google/veo-3.1-fast
         pricing:
           operations:
-            audio_gen: 0.15
+            video_gen: 0.15
           currency: USD
         availability: unknown
         lifecycle: unknown
-        service: {}
+        service:
+          operations:
+            - videos-generations
+        service_endpoints:
+          - operation: videos-generations
+            type: openai
+            url: https://api.deepinfra.com/v1/openai/videos
   - model: google/veo-3.1-fast-generate-001
     endpoints:
       - provider: google-vertex
@@ -5332,11 +5368,17 @@ models:
         provider_model_id: FastVideo/LTX-2.3-Distilled-Diffusers
         pricing:
           operations:
-            audio_gen: 0.035
+            video_gen: 0.035
           currency: USD
         availability: unknown
         lifecycle: unknown
-        service: {}
+        service:
+          operations:
+            - videos-generations
+        service_endpoints:
+          - operation: videos-generations
+            type: openai
+            url: https://api.deepinfra.com/v1/openai/videos
   - model: meta/bart-large-cnn
     endpoints:
       - provider: google-vertex
@@ -6353,14 +6395,26 @@ models:
         provider_model_id: nvidia/Cosmos3-Nano
         availability: unknown
         lifecycle: unknown
-        service: {}
+        service:
+          operations:
+            - videos-generations
+        service_endpoints:
+          - operation: videos-generations
+            type: openai
+            url: https://api.deepinfra.com/v1/openai/videos
   - model: nvidia/cosmos3-super
     endpoints:
       - provider: deepinfra
         provider_model_id: nvidia/Cosmos3-Super
         availability: unknown
         lifecycle: unknown
-        service: {}
+        service:
+          operations:
+            - videos-generations
+        service_endpoints:
+          - operation: videos-generations
+            type: openai
+            url: https://api.deepinfra.com/v1/openai/videos
   - model: nvidia/llama-nemotron-embed-vl-1b-v2
     endpoints:
       - provider: deepinfra
@@ -9231,25 +9285,43 @@ models:
         provider_model_id: Pixverse/Pixverse-6-T2V
         pricing:
           operations:
-            audio_gen: 0.045
+            video_gen: 0.045
           currency: USD
         availability: unknown
         lifecycle: unknown
-        service: {}
+        service:
+          operations:
+            - videos-generations
+        service_endpoints:
+          - operation: videos-generations
+            type: openai
+            url: https://api.deepinfra.com/v1/openai/videos
   - model: pixverse/pixverse-t2v
     endpoints:
       - provider: deepinfra
         provider_model_id: Pixverse/Pixverse-T2V
         availability: unknown
         lifecycle: unknown
-        service: {}
+        service:
+          operations:
+            - videos-generations
+        service_endpoints:
+          - operation: videos-generations
+            type: openai
+            url: https://api.deepinfra.com/v1/openai/videos
   - model: pixverse/pixverse-t2v-hd
     endpoints:
       - provider: deepinfra
         provider_model_id: Pixverse/Pixverse-T2V-HD
         availability: unknown
         lifecycle: unknown
-        service: {}
+        service:
+          operations:
+            - videos-generations
+        service_endpoints:
+          - operation: videos-generations
+            type: openai
+            url: https://api.deepinfra.com/v1/openai/videos
   - model: pruna-ai/p-image
     endpoints:
       - provider: deepinfra
@@ -9273,11 +9345,17 @@ models:
         provider_model_id: PrunaAI/p-video
         pricing:
           operations:
-            audio_gen: 0.02
+            video_gen: 0.02
           currency: USD
         availability: unknown
         lifecycle: unknown
-        service: {}
+        service:
+          operations:
+            - videos-generations
+        service_endpoints:
+          - operation: videos-generations
+            type: openai
+            url: https://api.deepinfra.com/v1/openai/videos
   - model: qwen/qwen-flash
     endpoints:
       - provider: alibaba

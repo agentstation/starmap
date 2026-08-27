@@ -419,6 +419,9 @@
     - operation: audio-translations
       type: openai
       path: /audio/translations
+    - operation: videos-generations
+      type: openai
+      path: /videos
   extensions:
     models.dev:
       fields:

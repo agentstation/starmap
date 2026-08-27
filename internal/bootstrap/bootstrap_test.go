@@ -392,10 +392,9 @@ func TestEmbeddedOfferingsDoNotPublishChatRoutesForNonChatOperations(t *testing.
 		t.Fatalf("Build: %v", err)
 	}
 
-	// Each model below serves something other than chat. The embedding model
-	// and the image model each publish their own route, and the video model
-	// publishes none, because no operation names video generation. None of the
-	// three may publish a chat route.
+	// Each model below serves something other than chat, and each publishes the
+	// one route its own operation names. None of the three may publish a chat
+	// route.
 	for _, test := range []struct {
 		providerID catalogs.ProviderID
 		modelID    catalogs.ProviderModelID
@@ -411,6 +410,8 @@ func TestEmbeddedOfferingsDoNotPublishChatRoutesForNonChatOperations(t *testing.
 		{
 			providerID: "deepinfra",
 			modelID:    "FastVideo/LTX-2.3-Distilled-Diffusers",
+			want:       catalogs.ProviderOperationVideosGenerations,
+			wantURL:    "https://api.deepinfra.com/v1/openai/videos",
 		},
 		{
 			providerID: "deepinfra",
