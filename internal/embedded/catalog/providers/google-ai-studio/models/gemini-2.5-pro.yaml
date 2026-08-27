@@ -12,6 +12,8 @@ metadata:
   release_date: 2025-06-17
   open_weights: false
   knowledge_cutoff: 2025-01-01
+  tags:
+  - ocr
 lineage:
   family: gemini-pro
 
@@ -100,6 +102,8 @@ pricing:
       per_1m: 1.25
     output:
       per_1m: 10.00
+  operations:
+    page_input: 0.0003225
   currency: USD
 
 # Model limits
@@ -107,6 +111,7 @@ limits:
   context_window: 1048576
   input_tokens: 1048576
   output_tokens: 65536
+  document_pages: 1000
 extensions:
   google-ai-studio:
     fields:

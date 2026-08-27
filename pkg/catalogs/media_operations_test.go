@@ -85,6 +85,23 @@ func TestMediaOperationsFollowModalityAndTag(t *testing.T) {
 			want:  []ProviderOperation{ProviderOperationVideosGenerations},
 		},
 		{
+			name: "a tagged pdf reader serves recognition",
+			model: mediaModel(
+				[]ModelModality{ModelModalityText, ModelModalityImage, ModelModalityPDF},
+				text,
+				"ocr",
+			),
+			want: []ProviderOperation{ProviderOperationDocumentsRecognition},
+		},
+		{
+			name: "an untagged pdf reader is a chat model, not a recognizer",
+			model: mediaModel(
+				[]ModelModality{ModelModalityText, ModelModalityPDF},
+				text,
+			),
+			want: nil,
+		},
+		{
 			name: "a model that also writes text serves no video path",
 			model: mediaModel(
 				text,
@@ -164,6 +181,14 @@ func TestMediaFactsRefuseAContradictoryTag(t *testing.T) {
 			),
 		},
 		{
+			name: "a recognizer that reads no document",
+			model: mediaModel(
+				[]ModelModality{ModelModalityText, ModelModalityImage},
+				[]ModelModality{ModelModalityText},
+				"ocr",
+			),
+		},
+		{
 			name: "a transcriber that reads no audio",
 			model: mediaModel(
 				[]ModelModality{ModelModalityText},
@@ -198,5 +223,74 @@ func TestEveryMediaOperationIsAValidCatalogOperation(t *testing.T) {
 		if len(facts.Output) == 0 {
 			t.Fatalf("%s names no output modality", facts.Operation)
 		}
+	}
+}
+
+// TestTheRecognitionOperationDecodesFromItsWireValue holds the name a catalog
+// writes and a consumer reads.
+//
+// The constant and the wire value are two different things, and only the wire
+// value crosses a process boundary. A rename of the constant is a compile
+// error. A change to the string it carries is a silent one that leaves every
+// shipped catalog naming an operation the reader no longer resolves.
+func TestTheRecognitionOperationDecodesFromItsWireValue(t *testing.T) {
+	const wire = "documents-recognition"
+
+	if string(ProviderOperationDocumentsRecognition) != wire {
+		t.Fatalf("wire value = %q, want %q", ProviderOperationDocumentsRecognition, wire)
+	}
+	decoded := ProviderOperation(wire)
+	if !validProviderOperation(decoded) {
+		t.Fatalf("%q is not a valid provider operation", wire)
+	}
+	facts, found := MediaOperationDefinition(decoded)
+	if !found {
+		t.Fatalf("%q resolves to no media operation definition", wire)
+	}
+	if !slices.Contains(facts.Input, ModelModalityPDF) {
+		t.Fatalf("recognition reads %v, want it to read a document", facts.Input)
+	}
+	if !slices.Equal(facts.Output, []ModelModality{ModelModalityText}) {
+		t.Fatalf("recognition writes %v, want text alone", facts.Output)
+	}
+	if !facts.TagRequired {
+		t.Fatal("recognition must require a tag: a chat model that reads a document has the same modalities")
+	}
+}
+
+// TestAPagePriceIsAValidatedPriceOfItsOwn covers the unit a recognition
+// provider bills.
+//
+// A page is not a token. A provider that reads a document charges the same for
+// a page of dense text and a page of white space, so a catalog that carried
+// only token prices could state no recognition cost at all. This asserts the
+// page price counts as a price, survives a round trip, and is refused when it
+// is not a price a caller can be charged.
+func TestAPagePriceIsAValidatedPriceOfItsOwn(t *testing.T) {
+	pricing := &ModelPricing{
+		Operations: &ModelOperationPricing{PageInput: price(0.001)},
+		Currency:   "USD",
+	}
+	if err := pricing.Validate(); err != nil {
+		t.Fatalf("a page price alone is not a price: %v", err)
+	}
+
+	copied := deepCopyModelPricing(pricing)
+	if copied.Operations.PageInput == nil {
+		t.Fatal("the page price did not survive a copy")
+	}
+	if *copied.Operations.PageInput != 0.001 {
+		t.Fatalf("copied page price = %v, want 0.001", *copied.Operations.PageInput)
+	}
+	if copied.Operations.PageInput == pricing.Operations.PageInput {
+		t.Fatal("the copy shares the original's pointer")
+	}
+
+	negative := &ModelPricing{
+		Operations: &ModelOperationPricing{PageInput: price(-0.001)},
+		Currency:   "USD",
+	}
+	if err := negative.Validate(); err == nil {
+		t.Fatal("a negative page price was accepted")
 	}
 }

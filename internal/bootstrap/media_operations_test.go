@@ -1,6 +1,7 @@
 package bootstrap
 
 import (
+	"math"
 	"slices"
 	"testing"
 
@@ -55,6 +56,9 @@ func TestEveryPublishedMediaOperationMatchesItsDefinition(t *testing.T) {
 						model.Features.Modalities.Output,
 					)
 				}
+				if servedThroughChat(operation) {
+					continue
+				}
 				if slices.Contains(offering.Service.Operations, catalogs.ProviderOperationChatCompletions) {
 					t.Fatalf(
 						"%s/%s publishes both %s and chat completions",
@@ -73,11 +77,12 @@ func TestEveryPublishedMediaOperationMatchesItsDefinition(t *testing.T) {
 	// The census MOD12 records. A change here is a real catalog change, and the
 	// proof file states what each number means.
 	want := map[catalogs.ProviderOperation]int{
-		catalogs.ProviderOperationImagesGenerations:   26,
-		catalogs.ProviderOperationAudioSpeech:         14,
-		catalogs.ProviderOperationAudioTranscriptions: 7,
-		catalogs.ProviderOperationAudioTranslations:   7,
-		catalogs.ProviderOperationVideosGenerations:   13,
+		catalogs.ProviderOperationImagesGenerations:    26,
+		catalogs.ProviderOperationAudioSpeech:          14,
+		catalogs.ProviderOperationAudioTranscriptions:  7,
+		catalogs.ProviderOperationAudioTranslations:    7,
+		catalogs.ProviderOperationVideosGenerations:    13,
+		catalogs.ProviderOperationDocumentsRecognition: 11,
 	}
 	for operation, wantCount := range want {
 		if counts[operation] != wantCount {
@@ -90,6 +95,19 @@ func TestEveryPublishedMediaOperationMatchesItsDefinition(t *testing.T) {
 			counts[catalogs.ProviderOperationImagesEdits],
 		)
 	}
+}
+
+// servedThroughChat reports whether a provider serves a media operation on the
+// same path it serves chat.
+//
+// Every other media operation reaches its own path, so an offering that named
+// one of them beside chat completions had a fact wrong. Document recognition
+// broke that shape rather than an invariant: a provider that reads a scanned
+// page reads it with the same model and the same request a chat turn uses, and
+// the endpoint table says so. The operation stays its own because a consumer
+// asks for it by name and pays for it by the page.
+func servedThroughChat(operation catalogs.ProviderOperation) bool {
+	return operation == catalogs.ProviderOperationDocumentsRecognition
 }
 
 // TestTheResidualOfferingsAreRealtimeAlone names every offering the shipped
@@ -148,5 +166,85 @@ func TestTheResidualOfferingsAreRealtimeAlone(t *testing.T) {
 			realtime,
 			other,
 		)
+	}
+}
+
+// geminiTokensPerPage is the number of input tokens Google bills for one page
+// of a document. Google publishes it at
+// https://ai.google.dev/gemini-api/docs/document-processing.
+const geminiTokensPerPage = 258
+
+// TestEveryRecognitionOfferingCanBeBilledByThePage names the failure a refresh
+// would otherwise ship silently.
+//
+// Starport refuses to route a recognition request to an offering it cannot
+// bill, so an offering that names the operation and carries no page price is
+// an offering no consumer reaches. Google does not publish a price per page.
+// It bills a page as a fixed number of input tokens, so the catalog derives the
+// page price from the model's own input token price. That derivation is the
+// part a refresh breaks: a new input price lands from the provider and the page
+// price beside it keeps the old number. This recomputes it.
+func TestEveryRecognitionOfferingCanBeBilledByThePage(t *testing.T) {
+	builder, err := NewEmbeddedBuilder()
+	if err != nil {
+		t.Fatalf("NewEmbedded: %v", err)
+	}
+	catalog, err := builder.Build()
+	if err != nil {
+		t.Fatalf("Build: %v", err)
+	}
+
+	checked := 0
+	for _, provider := range catalog.Providers().List() {
+		offerings, err := catalog.ProviderOfferings(provider.ID)
+		if err != nil {
+			t.Fatalf("ProviderOfferings(%s): %v", provider.ID, err)
+		}
+		for _, offering := range offerings {
+			if !slices.Contains(offering.Service.Operations, catalogs.ProviderOperationDocumentsRecognition) {
+				continue
+			}
+			checked++
+			name := string(provider.ID) + "/" + string(offering.ProviderModelID)
+
+			if offering.Pricing == nil || offering.Pricing.Operations == nil ||
+				offering.Pricing.Operations.PageInput == nil {
+				t.Fatalf("%s serves recognition with no page price", name)
+			}
+			page := *offering.Pricing.Operations.PageInput
+			if page <= 0 {
+				t.Fatalf("%s prices a page at %v", name, page)
+			}
+			if offering.Limits == nil || offering.Limits.DocumentPages <= 0 {
+				t.Fatalf("%s serves recognition and states no page limit", name)
+			}
+			if _, found := offering.Endpoint(catalogs.ProviderOperationDocumentsRecognition); !found {
+				t.Fatalf("%s serves recognition and resolves to no endpoint", name)
+			}
+
+			if provider.ID != "google-ai-studio" {
+				continue
+			}
+			if offering.Pricing.Tokens == nil || offering.Pricing.Tokens.Input == nil {
+				t.Fatalf("%s derives a page price from an input price it does not carry", name)
+			}
+			want := geminiTokensPerPage * offering.Pricing.Tokens.Input.Per1M / 1_000_000
+			if math.Abs(page-want) > 1e-12 {
+				t.Fatalf(
+					"%s prices a page at %v; %d tokens at %v per million is %v",
+					name,
+					page,
+					geminiTokensPerPage,
+					offering.Pricing.Tokens.Input.Per1M,
+					want,
+				)
+			}
+		}
+	}
+
+	// The census PLG3 records. Three Gemini models read a document and carry no
+	// input price at all, so the catalog does not offer what it cannot bill.
+	if checked != 11 {
+		t.Fatalf("recognition offerings = %d, want 11", checked)
 	}
 }

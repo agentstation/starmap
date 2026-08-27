@@ -67,7 +67,20 @@ const (
 	ModelLimitContextWindow ModelLimit = "context_window"
 	ModelLimitInputTokens   ModelLimit = "input_tokens"
 	ModelLimitOutputTokens  ModelLimit = "output_tokens"
+	ModelLimitDocumentPages ModelLimit = "document_pages"
 )
+
+// modelLimitOrder is every model limit in published order.
+//
+// One list, because a limit that is added to the struct and forgotten in a
+// codec is a limit that survives a round trip in one format and vanishes in
+// another. Every place that walks the limits walks this.
+var modelLimitOrder = []ModelLimit{
+	ModelLimitContextWindow,
+	ModelLimitInputTokens,
+	ModelLimitOutputTokens,
+	ModelLimitDocumentPages,
+}
 
 // SetSupport records an explicit supported or unsupported capability.
 func (f *ModelFeatures) SetSupport(feature ModelFeature, supported bool) bool {
@@ -270,6 +283,8 @@ func modelLimitMask(limit ModelLimit) uint8 {
 		return 1 << 1
 	case ModelLimitOutputTokens:
 		return 1 << 2
+	case ModelLimitDocumentPages:
+		return 1 << 3
 	default:
 		return 0
 	}
@@ -283,6 +298,8 @@ func (l *ModelLimits) limitValue(limit ModelLimit) (int64, bool) {
 		return l.InputTokens, true
 	case ModelLimitOutputTokens:
 		return l.OutputTokens, true
+	case ModelLimitDocumentPages:
+		return l.DocumentPages, true
 	default:
 		return 0, false
 	}
@@ -296,6 +313,8 @@ func (l *ModelLimits) setLimitValue(limit ModelLimit, value int64) bool {
 		l.InputTokens = value
 	case ModelLimitOutputTokens:
 		l.OutputTokens = value
+	case ModelLimitDocumentPages:
+		l.DocumentPages = value
 	default:
 		return false
 	}

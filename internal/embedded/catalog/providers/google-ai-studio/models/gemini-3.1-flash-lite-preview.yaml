@@ -13,6 +13,8 @@ metadata:
   release_date: 2026-03-03
   open_weights: false
   knowledge_cutoff: 2025-01-01
+  tags:
+  - ocr
 lineage:
   family: gemini-flash-lite
 
@@ -107,6 +109,7 @@ pricing:
     output:
       per_1m: 1.5
   operations:
+    page_input: 6.45e-05
     audio_input: 0.5
   currency: USD
 
@@ -115,6 +118,7 @@ limits:
   context_window: 1048576
   input_tokens: 1048576
   output_tokens: 65536
+  document_pages: 1000
 extensions:
   google-ai-studio:
     fields:

@@ -1,6 +1,6 @@
 schema_version: 2
-generation_id: catalog-20260827T133810Z-db0fc1bbb83f
-catalog_digest: sha256:5b8d53006638d0a08ef9db7a11d25f6dde02c91ba0811a6128478362cafea2b0
+generation_id: catalog-20260827T193235Z-f8b47313e980
+catalog_digest: sha256:3a455b6a860492b7bd445f759c80db97ddc2ae85b3e5b2268ec6af3a5deebc26
 models:
   - model: ai21/jamba-1-5-large
     endpoints:
@@ -2200,22 +2200,29 @@ models:
               per_1m: 0.1
             output:
               per_1m: 0.4
+          operations:
+            page_input: 2.58e-05
           currency: USD
         limits:
           context_window: 1048576
           input_tokens: 1048576
           output_tokens: 8192
+          document_pages: 1000
         availability: unknown
         lifecycle: deprecated
         service:
           operations:
             - chat-completions
+            - documents-recognition
           prompt_cache: true
         service_endpoints:
           - operation: chat-completions
             type: google
             url: https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent
             stream_url: https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:streamGenerateContent
+          - operation: documents-recognition
+            type: google
+            url: https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent
   - model: google/gemini-2.0-flash-001
     endpoints:
       - provider: google-ai-studio
@@ -2244,21 +2251,28 @@ models:
               per_1m: 0.075
             output:
               per_1m: 0.3
+          operations:
+            page_input: 1.935e-05
           currency: USD
         limits:
           context_window: 1048576
           input_tokens: 1048576
           output_tokens: 8192
+          document_pages: 1000
         availability: unknown
         lifecycle: deprecated
         service:
           operations:
             - chat-completions
+            - documents-recognition
         service_endpoints:
           - operation: chat-completions
             type: google
             url: https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-lite:generateContent
             stream_url: https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-lite:streamGenerateContent
+          - operation: documents-recognition
+            type: google
+            url: https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-lite:generateContent
   - model: google/gemini-2.0-flash-lite-001
     endpoints:
       - provider: google-ai-studio
@@ -2342,23 +2356,29 @@ models:
             output:
               per_1m: 2.5
           operations:
+            page_input: 7.74e-05
             audio_input: 1.0
           currency: USD
         limits:
           context_window: 1048576
           input_tokens: 1048576
           output_tokens: 65536
+          document_pages: 1000
         availability: unknown
         lifecycle: unknown
         service:
           operations:
             - chat-completions
+            - documents-recognition
           prompt_cache: true
         service_endpoints:
           - operation: chat-completions
             type: google
             url: https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent
             stream_url: https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:streamGenerateContent
+          - operation: documents-recognition
+            type: google
+            url: https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent
       - provider: google-vertex
         provider_model_id: gemini-2.5-flash
         pricing:
@@ -2450,23 +2470,29 @@ models:
             output:
               per_1m: 0.4
           operations:
+            page_input: 2.58e-05
             audio_input: 0.3
           currency: USD
         limits:
           context_window: 1048576
           input_tokens: 1048576
           output_tokens: 65536
+          document_pages: 1000
         availability: unknown
         lifecycle: unknown
         service:
           operations:
             - chat-completions
+            - documents-recognition
           prompt_cache: true
         service_endpoints:
           - operation: chat-completions
             type: google
             url: https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-lite:generateContent
             stream_url: https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-lite:streamGenerateContent
+          - operation: documents-recognition
+            type: google
+            url: https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-lite:generateContent
       - provider: google-vertex
         provider_model_id: gemini-2.5-flash-lite
         pricing:
@@ -2631,21 +2657,28 @@ models:
               per_1m: 1.25
             output:
               per_1m: 10.0
+          operations:
+            page_input: 0.0003225
           currency: USD
         limits:
           context_window: 1048576
           input_tokens: 1048576
           output_tokens: 65536
+          document_pages: 1000
         availability: unknown
         lifecycle: unknown
         service:
           operations:
             - chat-completions
+            - documents-recognition
         service_endpoints:
           - operation: chat-completions
             type: google
             url: https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-pro:generateContent
             stream_url: https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-pro:streamGenerateContent
+          - operation: documents-recognition
+            type: google
+            url: https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-pro:generateContent
       - provider: google-vertex
         provider_model_id: gemini-2.5-pro
         pricing:
@@ -2732,23 +2765,29 @@ models:
             output:
               per_1m: 3.0
           operations:
+            page_input: 0.000129
             audio_input: 1.0
           currency: USD
         limits:
           context_window: 1048576
           input_tokens: 1048576
           output_tokens: 65536
+          document_pages: 1000
         availability: unknown
         lifecycle: unknown
         service:
           operations:
             - chat-completions
+            - documents-recognition
           prompt_cache: true
         service_endpoints:
           - operation: chat-completions
             type: google
             url: https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent
             stream_url: https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:streamGenerateContent
+          - operation: documents-recognition
+            type: google
+            url: https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent
       - provider: google-vertex
         provider_model_id: gemini-3-flash-preview
         pricing:
@@ -3037,23 +3076,29 @@ models:
             output:
               per_1m: 1.5
           operations:
+            page_input: 6.45e-05
             audio_input: 0.5
           currency: USD
         limits:
           context_window: 1048576
           input_tokens: 1048576
           output_tokens: 65536
+          document_pages: 1000
         availability: unknown
         lifecycle: unknown
         service:
           operations:
             - chat-completions
+            - documents-recognition
           prompt_cache: true
         service_endpoints:
           - operation: chat-completions
             type: google
             url: https://generativelanguage.googleapis.com/v1beta/models/gemini-3.1-flash-lite:generateContent
             stream_url: https://generativelanguage.googleapis.com/v1beta/models/gemini-3.1-flash-lite:streamGenerateContent
+          - operation: documents-recognition
+            type: google
+            url: https://generativelanguage.googleapis.com/v1beta/models/gemini-3.1-flash-lite:generateContent
       - provider: google-vertex
         provider_model_id: gemini-3.1-flash-lite
         pricing:
@@ -3132,23 +3177,29 @@ models:
             output:
               per_1m: 1.5
           operations:
+            page_input: 6.45e-05
             audio_input: 0.5
           currency: USD
         limits:
           context_window: 1048576
           input_tokens: 1048576
           output_tokens: 65536
+          document_pages: 1000
         availability: unknown
         lifecycle: deprecated
         service:
           operations:
             - chat-completions
+            - documents-recognition
           prompt_cache: true
         service_endpoints:
           - operation: chat-completions
             type: google
             url: https://generativelanguage.googleapis.com/v1beta/models/gemini-3.1-flash-lite-preview:generateContent
             stream_url: https://generativelanguage.googleapis.com/v1beta/models/gemini-3.1-flash-lite-preview:streamGenerateContent
+          - operation: documents-recognition
+            type: google
+            url: https://generativelanguage.googleapis.com/v1beta/models/gemini-3.1-flash-lite-preview:generateContent
       - provider: google-vertex
         provider_model_id: gemini-3.1-flash-lite-preview
         pricing:
@@ -3346,23 +3397,29 @@ models:
             output:
               per_1m: 9.0
           operations:
+            page_input: 0.000387
             audio_input: 1.5
           currency: USD
         limits:
           context_window: 1048576
           input_tokens: 1048576
           output_tokens: 65536
+          document_pages: 1000
         availability: unknown
         lifecycle: unknown
         service:
           operations:
             - chat-completions
+            - documents-recognition
           prompt_cache: true
         service_endpoints:
           - operation: chat-completions
             type: google
             url: https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash:generateContent
             stream_url: https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash:streamGenerateContent
+          - operation: documents-recognition
+            type: google
+            url: https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash:generateContent
       - provider: google-vertex
         provider_model_id: gemini-3.5-flash
         pricing:
@@ -3522,23 +3579,29 @@ models:
             output:
               per_1m: 9.0
           operations:
+            page_input: 0.000387
             audio_input: 1.5
           currency: USD
         limits:
           context_window: 1048576
           input_tokens: 1048576
           output_tokens: 65536
+          document_pages: 1000
         availability: unknown
         lifecycle: unknown
         service:
           operations:
             - chat-completions
+            - documents-recognition
           prompt_cache: true
         service_endpoints:
           - operation: chat-completions
             type: google
             url: https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent
             stream_url: https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:streamGenerateContent
+          - operation: documents-recognition
+            type: google
+            url: https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent
   - model: google/gemini-flash-lite-latest
     endpoints:
       - provider: google-ai-studio
@@ -3552,23 +3615,29 @@ models:
             output:
               per_1m: 1.5
           operations:
+            page_input: 6.45e-05
             audio_input: 0.5
           currency: USD
         limits:
           context_window: 1048576
           input_tokens: 1048576
           output_tokens: 65536
+          document_pages: 1000
         availability: unknown
         lifecycle: unknown
         service:
           operations:
             - chat-completions
+            - documents-recognition
           prompt_cache: true
         service_endpoints:
           - operation: chat-completions
             type: google
             url: https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-lite-latest:generateContent
             stream_url: https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-lite-latest:streamGenerateContent
+          - operation: documents-recognition
+            type: google
+            url: https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-lite-latest:generateContent
   - model: google/gemini-live-2.5-flash-native-audio
     endpoints:
       - provider: google-vertex

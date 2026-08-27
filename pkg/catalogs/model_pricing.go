@@ -196,6 +196,10 @@ type ModelOperationPricing struct {
 
 	// Media operations
 	ImageInput *float64 `json:"image_input,omitempty" yaml:"image_input,omitempty"` // Cost per image processed
+	// PageInput is the cost of one document page the provider reads. A page is
+	// the unit a document recognition provider bills, and it is not a token: a
+	// page of dense text and a page of white space cost the same.
+	PageInput  *float64 `json:"page_input,omitempty" yaml:"page_input,omitempty"`
 	AudioInput *float64 `json:"audio_input,omitempty" yaml:"audio_input,omitempty"` // Cost per audio input
 	VideoInput *float64 `json:"video_input,omitempty" yaml:"video_input,omitempty"` // Cost per video input
 

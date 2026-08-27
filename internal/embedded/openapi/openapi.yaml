@@ -1295,6 +1295,7 @@ components:
       - ProviderOperationAudioTranscriptions
       - ProviderOperationAudioTranslations
       - ProviderOperationVideosGenerations
+      - ProviderOperationDocumentsRecognition
     catalogs.ProviderPrivacyPolicy:
       description: Privacy, Retention, and Governance Policies
       properties:

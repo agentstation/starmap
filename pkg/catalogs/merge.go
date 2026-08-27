@@ -136,11 +136,7 @@ func mergeModelLimitsByPresence(result, updated *Model) {
 	if result.Limits == nil {
 		result.Limits = &ModelLimits{}
 	}
-	for _, limit := range []ModelLimit{
-		ModelLimitContextWindow,
-		ModelLimitInputTokens,
-		ModelLimitOutputTokens,
-	} {
+	for _, limit := range modelLimitOrder {
 		value, state := updated.Limits.Value(limit)
 		switch state {
 		case ValueKnown:
