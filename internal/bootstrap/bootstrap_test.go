@@ -392,24 +392,66 @@ func TestEmbeddedOfferingsDoNotPublishChatRoutesForNonChatOperations(t *testing.
 		t.Fatalf("Build: %v", err)
 	}
 
+	// Each model below serves something other than chat. The embedding model
+	// and the image model each publish their own route, and the video model
+	// publishes none, because no operation names video generation. None of the
+	// three may publish a chat route.
 	for _, test := range []struct {
 		providerID catalogs.ProviderID
 		modelID    catalogs.ProviderModelID
+		want       catalogs.ProviderOperation
+		wantURL    string
 	}{
-		{providerID: "deepinfra", modelID: "BAAI/bge-m3-multi"},
-		{providerID: "deepinfra", modelID: "FastVideo/LTX-2.3-Distilled-Diffusers"},
-		{providerID: "deepinfra", modelID: "black-forest-labs/FLUX-1-dev"},
+		{
+			providerID: "deepinfra",
+			modelID:    "BAAI/bge-m3-multi",
+			want:       catalogs.ProviderOperationEmbeddings,
+			wantURL:    "https://api.deepinfra.com/v1/openai/embeddings",
+		},
+		{
+			providerID: "deepinfra",
+			modelID:    "FastVideo/LTX-2.3-Distilled-Diffusers",
+		},
+		{
+			providerID: "deepinfra",
+			modelID:    "black-forest-labs/FLUX-1-dev",
+			want:       catalogs.ProviderOperationImagesGenerations,
+			wantURL:    "https://api.deepinfra.com/v1/openai/images/generations",
+		},
 	} {
 		offering, err := catalog.Offering(test.providerID, test.modelID)
 		if err != nil {
 			t.Fatalf("Offering(%s, %s): %v", test.providerID, test.modelID, err)
 		}
-		if len(offering.Endpoints) != 0 {
+		if _, found := offering.Endpoint(catalogs.ProviderOperationChatCompletions); found {
 			t.Fatalf(
 				"Offering(%s, %s) endpoints = %#v, want no chat route",
 				test.providerID,
 				test.modelID,
 				offering.Endpoints,
+			)
+		}
+		if test.want == "" {
+			if len(offering.Endpoints) != 0 {
+				t.Fatalf(
+					"Offering(%s, %s) endpoints = %#v, want none",
+					test.providerID,
+					test.modelID,
+					offering.Endpoints,
+				)
+			}
+			continue
+		}
+		endpoint, found := offering.Endpoint(test.want)
+		if !found || endpoint.URL != test.wantURL {
+			t.Fatalf(
+				"Offering(%s, %s) %s endpoint = %#v, found = %t, want %s",
+				test.providerID,
+				test.modelID,
+				test.want,
+				endpoint,
+				found,
+				test.wantURL,
 			)
 		}
 	}

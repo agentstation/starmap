@@ -151,6 +151,16 @@ const (
 	ProviderOperationChatCompletions ProviderOperation = "chat-completions"
 	// ProviderOperationEmbeddings generates vector embeddings.
 	ProviderOperationEmbeddings ProviderOperation = "embeddings"
+	// ProviderOperationImagesGenerations generates an image from a prompt.
+	ProviderOperationImagesGenerations ProviderOperation = "images-generations"
+	// ProviderOperationImagesEdits generates an image from a prompt and an image.
+	ProviderOperationImagesEdits ProviderOperation = "images-edits"
+	// ProviderOperationAudioSpeech generates speech from text.
+	ProviderOperationAudioSpeech ProviderOperation = "audio-speech"
+	// ProviderOperationAudioTranscriptions transcribes speech in its own language.
+	ProviderOperationAudioTranscriptions ProviderOperation = "audio-transcriptions"
+	// ProviderOperationAudioTranslations transcribes speech into English.
+	ProviderOperationAudioTranslations ProviderOperation = "audio-translations"
 )
 
 // ProviderInference defines stable provider-level inference service facts.

@@ -64,7 +64,7 @@ func (p Provider) ValidateContract() error {
 			return providerContractError(
 				fmt.Sprintf("provider.inference.endpoints[%d].operation", index),
 				endpoint.Operation,
-				"must be chat-completions or embeddings",
+				providerOperationMessage(),
 			)
 		}
 		if !validEndpointType(endpoint.Type) {

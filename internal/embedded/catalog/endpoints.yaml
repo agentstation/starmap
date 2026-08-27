@@ -1,6 +1,6 @@
 schema_version: 2
-generation_id: catalog-20260825T231829Z-4436329f38ed
-catalog_digest: sha256:9c59402fa6ba0fc8b28ee0d028a4caca8e5efc760669db14fe384632e59dcb3a
+generation_id: catalog-20260827T064147Z-937f0bf70acd
+catalog_digest: sha256:ad4d551ab06f727fece75c9d5af48130ccd6ab93d26ce6bbd030c83718e566b9
 models:
   - model: ai21/jamba-1-5-large
     endpoints:
@@ -56,6 +56,10 @@ models:
         service:
           operations:
             - embeddings
+        service_endpoints:
+          - operation: embeddings
+            type: openai
+            url: https://api.deepinfra.com/v1/openai/embeddings
   - model: alibaba/gte-large
     endpoints:
       - provider: deepinfra
@@ -74,6 +78,10 @@ models:
         service:
           operations:
             - embeddings
+        service_endpoints:
+          - operation: embeddings
+            type: openai
+            url: https://api.deepinfra.com/v1/openai/embeddings
   - model: alibaba/wan2.2-t2v-a14b
     endpoints:
       - provider: deepinfra
@@ -119,7 +127,13 @@ models:
           currency: USD
         availability: unknown
         lifecycle: unknown
-        service: {}
+        service:
+          operations:
+            - images-generations
+        service_endpoints:
+          - operation: images-generations
+            type: openai
+            url: https://api.deepinfra.com/v1/openai/images/generations
   - model: alibaba/wan2.6-t2v
     endpoints:
       - provider: deepinfra
@@ -693,6 +707,10 @@ models:
         service:
           operations:
             - embeddings
+        service_endpoints:
+          - operation: embeddings
+            type: openai
+            url: https://api.deepinfra.com/v1/openai/embeddings
   - model: baai/bge-en-icl
     endpoints:
       - provider: deepinfra
@@ -711,6 +729,10 @@ models:
         service:
           operations:
             - embeddings
+        service_endpoints:
+          - operation: embeddings
+            type: openai
+            url: https://api.deepinfra.com/v1/openai/embeddings
   - model: baai/bge-large-en-v1.5
     endpoints:
       - provider: deepinfra
@@ -729,6 +751,10 @@ models:
         service:
           operations:
             - embeddings
+        service_endpoints:
+          - operation: embeddings
+            type: openai
+            url: https://api.deepinfra.com/v1/openai/embeddings
   - model: baai/bge-m3
     endpoints:
       - provider: deepinfra
@@ -747,6 +773,10 @@ models:
         service:
           operations:
             - embeddings
+        service_endpoints:
+          - operation: embeddings
+            type: openai
+            url: https://api.deepinfra.com/v1/openai/embeddings
       - provider: deepinfra
         provider_model_id: BAAI/bge-m3-multi
         pricing:
@@ -763,6 +793,10 @@ models:
         service:
           operations:
             - embeddings
+        service_endpoints:
+          - operation: embeddings
+            type: openai
+            url: https://api.deepinfra.com/v1/openai/embeddings
   - model: black-forest-labs/flux-1-dev
     endpoints:
       - provider: deepinfra
@@ -773,7 +807,13 @@ models:
           currency: USD
         availability: unknown
         lifecycle: unknown
-        service: {}
+        service:
+          operations:
+            - images-generations
+        service_endpoints:
+          - operation: images-generations
+            type: openai
+            url: https://api.deepinfra.com/v1/openai/images/generations
   - model: black-forest-labs/flux-1-redux-dev
     endpoints:
       - provider: deepinfra
@@ -784,7 +824,13 @@ models:
           currency: USD
         availability: unknown
         lifecycle: unknown
-        service: {}
+        service:
+          operations:
+            - images-generations
+        service_endpoints:
+          - operation: images-generations
+            type: openai
+            url: https://api.deepinfra.com/v1/openai/images/generations
   - model: black-forest-labs/flux-1-schnell
     endpoints:
       - provider: deepinfra
@@ -795,12 +841,20 @@ models:
           currency: USD
         availability: unknown
         lifecycle: unknown
-        service: {}
+        service:
+          operations:
+            - images-generations
+        service_endpoints:
+          - operation: images-generations
+            type: openai
+            url: https://api.deepinfra.com/v1/openai/images/generations
       - provider: fireworks-ai
         provider_model_id: accounts/fireworks/models/flux-1-schnell-fp8
         availability: unknown
         lifecycle: unknown
-        service: {}
+        service:
+          operations:
+            - images-generations
   - model: black-forest-labs/flux-1.1-pro
     endpoints:
       - provider: deepinfra
@@ -811,7 +865,13 @@ models:
           currency: USD
         availability: unknown
         lifecycle: unknown
-        service: {}
+        service:
+          operations:
+            - images-generations
+        service_endpoints:
+          - operation: images-generations
+            type: openai
+            url: https://api.deepinfra.com/v1/openai/images/generations
   - model: black-forest-labs/flux-2-dev
     endpoints:
       - provider: deepinfra
@@ -822,7 +882,13 @@ models:
           currency: USD
         availability: unknown
         lifecycle: unknown
-        service: {}
+        service:
+          operations:
+            - images-generations
+        service_endpoints:
+          - operation: images-generations
+            type: openai
+            url: https://api.deepinfra.com/v1/openai/images/generations
   - model: black-forest-labs/flux-2-klein-4b
     endpoints:
       - provider: deepinfra
@@ -833,7 +899,13 @@ models:
           currency: USD
         availability: unknown
         lifecycle: unknown
-        service: {}
+        service:
+          operations:
+            - images-generations
+        service_endpoints:
+          - operation: images-generations
+            type: openai
+            url: https://api.deepinfra.com/v1/openai/images/generations
   - model: black-forest-labs/flux-2-klein-9b
     endpoints:
       - provider: deepinfra
@@ -844,7 +916,13 @@ models:
           currency: USD
         availability: unknown
         lifecycle: unknown
-        service: {}
+        service:
+          operations:
+            - images-generations
+        service_endpoints:
+          - operation: images-generations
+            type: openai
+            url: https://api.deepinfra.com/v1/openai/images/generations
   - model: black-forest-labs/flux-2-max
     endpoints:
       - provider: deepinfra
@@ -855,7 +933,13 @@ models:
           currency: USD
         availability: unknown
         lifecycle: unknown
-        service: {}
+        service:
+          operations:
+            - images-generations
+        service_endpoints:
+          - operation: images-generations
+            type: openai
+            url: https://api.deepinfra.com/v1/openai/images/generations
   - model: black-forest-labs/flux-2-pro
     endpoints:
       - provider: deepinfra
@@ -866,7 +950,13 @@ models:
           currency: USD
         availability: unknown
         lifecycle: unknown
-        service: {}
+        service:
+          operations:
+            - images-generations
+        service_endpoints:
+          - operation: images-generations
+            type: openai
+            url: https://api.deepinfra.com/v1/openai/images/generations
   - model: black-forest-labs/flux.1-kontext-dev
     endpoints:
       - provider: deepinfra
@@ -877,14 +967,26 @@ models:
           currency: USD
         availability: unknown
         lifecycle: unknown
-        service: {}
+        service:
+          operations:
+            - images-generations
+        service_endpoints:
+          - operation: images-generations
+            type: openai
+            url: https://api.deepinfra.com/v1/openai/images/generations
   - model: boson-ai/higgsaudiov2.5
     endpoints:
       - provider: deepinfra
         provider_model_id: bosonai/HiggsAudioV2.5
         availability: unknown
         lifecycle: unknown
-        service: {}
+        service:
+          operations:
+            - audio-speech
+        service_endpoints:
+          - operation: audio-speech
+            type: openai
+            url: https://api.deepinfra.com/v1/openai/audio/speech
   - model: bria/blur_background
     endpoints:
       - provider: deepinfra
@@ -895,7 +997,13 @@ models:
           currency: USD
         availability: unknown
         lifecycle: unknown
-        service: {}
+        service:
+          operations:
+            - images-generations
+        service_endpoints:
+          - operation: images-generations
+            type: openai
+            url: https://api.deepinfra.com/v1/openai/images/generations
   - model: bria/bria-3.2
     endpoints:
       - provider: deepinfra
@@ -906,7 +1014,13 @@ models:
           currency: USD
         availability: unknown
         lifecycle: unknown
-        service: {}
+        service:
+          operations:
+            - images-generations
+        service_endpoints:
+          - operation: images-generations
+            type: openai
+            url: https://api.deepinfra.com/v1/openai/images/generations
   - model: bria/bria-3.2-vector
     endpoints:
       - provider: deepinfra
@@ -917,7 +1031,13 @@ models:
           currency: USD
         availability: unknown
         lifecycle: unknown
-        service: {}
+        service:
+          operations:
+            - images-generations
+        service_endpoints:
+          - operation: images-generations
+            type: openai
+            url: https://api.deepinfra.com/v1/openai/images/generations
   - model: bria/erase_foreground
     endpoints:
       - provider: deepinfra
@@ -928,7 +1048,13 @@ models:
           currency: USD
         availability: unknown
         lifecycle: unknown
-        service: {}
+        service:
+          operations:
+            - images-generations
+        service_endpoints:
+          - operation: images-generations
+            type: openai
+            url: https://api.deepinfra.com/v1/openai/images/generations
   - model: bria/expand
     endpoints:
       - provider: deepinfra
@@ -939,7 +1065,13 @@ models:
           currency: USD
         availability: unknown
         lifecycle: unknown
-        service: {}
+        service:
+          operations:
+            - images-generations
+        service_endpoints:
+          - operation: images-generations
+            type: openai
+            url: https://api.deepinfra.com/v1/openai/images/generations
   - model: bria/fibo
     endpoints:
       - provider: deepinfra
@@ -950,7 +1082,13 @@ models:
           currency: USD
         availability: unknown
         lifecycle: unknown
-        service: {}
+        service:
+          operations:
+            - images-generations
+        service_endpoints:
+          - operation: images-generations
+            type: openai
+            url: https://api.deepinfra.com/v1/openai/images/generations
   - model: bria/fibo_edit
     endpoints:
       - provider: deepinfra
@@ -961,7 +1099,13 @@ models:
           currency: USD
         availability: unknown
         lifecycle: unknown
-        service: {}
+        service:
+          operations:
+            - images-generations
+        service_endpoints:
+          - operation: images-generations
+            type: openai
+            url: https://api.deepinfra.com/v1/openai/images/generations
   - model: bria/remove_background
     endpoints:
       - provider: deepinfra
@@ -972,7 +1116,13 @@ models:
           currency: USD
         availability: unknown
         lifecycle: unknown
-        service: {}
+        service:
+          operations:
+            - images-generations
+        service_endpoints:
+          - operation: images-generations
+            type: openai
+            url: https://api.deepinfra.com/v1/openai/images/generations
   - model: bytedance/seed-1.8
     endpoints:
       - provider: deepinfra
@@ -1105,7 +1255,13 @@ models:
           currency: USD
         availability: unknown
         lifecycle: unknown
-        service: {}
+        service:
+          operations:
+            - images-generations
+        service_endpoints:
+          - operation: images-generations
+            type: openai
+            url: https://api.deepinfra.com/v1/openai/images/generations
   - model: canopy-labs/orpheus-arabic-saudi
     endpoints:
       - provider: groq
@@ -1127,7 +1283,13 @@ models:
         availability: unknown
         lifecycle: preview
         service:
+          operations:
+            - audio-speech
           prompt_cache: true
+        service_endpoints:
+          - operation: audio-speech
+            type: openai
+            url: https://api.groq.com/openai/v1/audio/speech
   - model: canopy-labs/orpheus-v1-english
     endpoints:
       - provider: groq
@@ -1149,7 +1311,13 @@ models:
         availability: unknown
         lifecycle: preview
         service:
+          operations:
+            - audio-speech
           prompt_cache: true
+        service_endpoints:
+          - operation: audio-speech
+            type: openai
+            url: https://api.groq.com/openai/v1/audio/speech
   - model: deepreinforce-ai/ornith-1.0-35b
     endpoints:
       - provider: deepinfra
@@ -1891,6 +2059,10 @@ models:
         service:
           operations:
             - embeddings
+        service_endpoints:
+          - operation: embeddings
+            type: openai
+            url: https://api.deepinfra.com/v1/openai/embeddings
       - provider: google-vertex
         provider_model_id: embeddinggemma
         availability: unknown
@@ -2587,7 +2759,13 @@ models:
         provider_model_id: google/gemini-3-pro-image
         availability: unknown
         lifecycle: unknown
-        service: {}
+        service:
+          operations:
+            - images-generations
+        service_endpoints:
+          - operation: images-generations
+            type: openai
+            url: https://api.deepinfra.com/v1/openai/images/generations
       - provider: google-ai-studio
         provider_model_id: gemini-3-pro-image
         pricing:
@@ -5014,7 +5192,13 @@ models:
         provider_model_id: hexgrad/Kokoro-82M
         availability: unknown
         lifecycle: unknown
-        service: {}
+        service:
+          operations:
+            - audio-speech
+        service_endpoints:
+          - operation: audio-speech
+            type: openai
+            url: https://api.deepinfra.com/v1/openai/audio/speech
   - model: intfloat/e5-base-v2
     endpoints:
       - provider: deepinfra
@@ -5033,6 +5217,10 @@ models:
         service:
           operations:
             - embeddings
+        service_endpoints:
+          - operation: embeddings
+            type: openai
+            url: https://api.deepinfra.com/v1/openai/embeddings
   - model: intfloat/e5-large-v2
     endpoints:
       - provider: deepinfra
@@ -5051,6 +5239,10 @@ models:
         service:
           operations:
             - embeddings
+        service_endpoints:
+          - operation: embeddings
+            type: openai
+            url: https://api.deepinfra.com/v1/openai/embeddings
   - model: intfloat/multilingual-e5-large
     endpoints:
       - provider: deepinfra
@@ -5069,6 +5261,10 @@ models:
         service:
           operations:
             - embeddings
+        service_endpoints:
+          - operation: embeddings
+            type: openai
+            url: https://api.deepinfra.com/v1/openai/embeddings
   - model: intfloat/multilingual-e5-large-instruct
     endpoints:
       - provider: deepinfra
@@ -5087,27 +5283,49 @@ models:
         service:
           operations:
             - embeddings
+        service_endpoints:
+          - operation: embeddings
+            type: openai
+            url: https://api.deepinfra.com/v1/openai/embeddings
   - model: inworld-ai/realtime-tts-1.5-max
     endpoints:
       - provider: deepinfra
         provider_model_id: inworld-ai/realtime-tts-1.5-max
         availability: unknown
         lifecycle: unknown
-        service: {}
+        service:
+          operations:
+            - audio-speech
+        service_endpoints:
+          - operation: audio-speech
+            type: openai
+            url: https://api.deepinfra.com/v1/openai/audio/speech
   - model: inworld-ai/realtime-tts-1.5-mini
     endpoints:
       - provider: deepinfra
         provider_model_id: inworld-ai/realtime-tts-1.5-mini
         availability: unknown
         lifecycle: unknown
-        service: {}
+        service:
+          operations:
+            - audio-speech
+        service_endpoints:
+          - operation: audio-speech
+            type: openai
+            url: https://api.deepinfra.com/v1/openai/audio/speech
   - model: inworld-ai/realtime-tts-2
     endpoints:
       - provider: deepinfra
         provider_model_id: inworld-ai/realtime-tts-2
         availability: unknown
         lifecycle: unknown
-        service: {}
+        service:
+          operations:
+            - audio-speech
+        service_endpoints:
+          - operation: audio-speech
+            type: openai
+            url: https://api.deepinfra.com/v1/openai/audio/speech
   - model: lightricks/ltx-2.3-distilled-diffusers
     endpoints:
       - provider: deepinfra
@@ -5661,7 +5879,17 @@ models:
           currency: USD
         availability: unknown
         lifecycle: unknown
-        service: {}
+        service:
+          operations:
+            - audio-transcriptions
+            - audio-translations
+        service_endpoints:
+          - operation: audio-transcriptions
+            type: openai
+            url: https://api.deepinfra.com/v1/openai/audio/transcriptions
+          - operation: audio-translations
+            type: openai
+            url: https://api.deepinfra.com/v1/openai/audio/translations
   - model: mistral/voxtral-small-24b-2507
     endpoints:
       - provider: deepinfra
@@ -5672,7 +5900,17 @@ models:
           currency: USD
         availability: unknown
         lifecycle: unknown
-        service: {}
+        service:
+          operations:
+            - audio-transcriptions
+            - audio-translations
+        service_endpoints:
+          - operation: audio-transcriptions
+            type: openai
+            url: https://api.deepinfra.com/v1/openai/audio/transcriptions
+          - operation: audio-translations
+            type: openai
+            url: https://api.deepinfra.com/v1/openai/audio/translations
   - model: moonshot-ai/kimi-k2.5
     endpoints:
       - provider: alibaba
@@ -6141,6 +6379,10 @@ models:
         service:
           operations:
             - embeddings
+        service_endpoints:
+          - operation: embeddings
+            type: openai
+            url: https://api.deepinfra.com/v1/openai/embeddings
   - model: nvidia/nemotron-3-nano-30b-a3b
     endpoints:
       - provider: deepinfra
@@ -6178,7 +6420,17 @@ models:
           currency: USD
         availability: unknown
         lifecycle: unknown
-        service: {}
+        service:
+          operations:
+            - audio-transcriptions
+            - audio-translations
+        service_endpoints:
+          - operation: audio-transcriptions
+            type: openai
+            url: https://api.deepinfra.com/v1/openai/audio/transcriptions
+          - operation: audio-translations
+            type: openai
+            url: https://api.deepinfra.com/v1/openai/audio/translations
   - model: nvidia/nemotron-content-safety-3.5
     endpoints:
       - provider: deepinfra
@@ -8893,7 +9145,17 @@ models:
           currency: USD
         availability: unknown
         lifecycle: unknown
-        service: {}
+        service:
+          operations:
+            - audio-transcriptions
+            - audio-translations
+        service_endpoints:
+          - operation: audio-transcriptions
+            type: openai
+            url: https://api.deepinfra.com/v1/openai/audio/transcriptions
+          - operation: audio-translations
+            type: openai
+            url: https://api.deepinfra.com/v1/openai/audio/translations
       - provider: groq
         provider_model_id: whisper-large-v3
         pricing:
@@ -8905,7 +9167,17 @@ models:
           output_tokens: 448
         availability: unknown
         lifecycle: active
-        service: {}
+        service:
+          operations:
+            - audio-transcriptions
+            - audio-translations
+        service_endpoints:
+          - operation: audio-transcriptions
+            type: openai
+            url: https://api.groq.com/openai/v1/audio/transcriptions
+          - operation: audio-translations
+            type: openai
+            url: https://api.groq.com/openai/v1/audio/translations
   - model: openai/whisper-large-v3-turbo
     endpoints:
       - provider: deepinfra
@@ -8916,7 +9188,17 @@ models:
           currency: USD
         availability: unknown
         lifecycle: unknown
-        service: {}
+        service:
+          operations:
+            - audio-transcriptions
+            - audio-translations
+        service_endpoints:
+          - operation: audio-transcriptions
+            type: openai
+            url: https://api.deepinfra.com/v1/openai/audio/transcriptions
+          - operation: audio-translations
+            type: openai
+            url: https://api.deepinfra.com/v1/openai/audio/translations
       - provider: groq
         provider_model_id: whisper-large-v3-turbo
         pricing:
@@ -8932,7 +9214,17 @@ models:
           output_tokens: 448
         availability: unknown
         lifecycle: active
-        service: {}
+        service:
+          operations:
+            - audio-transcriptions
+            - audio-translations
+        service_endpoints:
+          - operation: audio-transcriptions
+            type: openai
+            url: https://api.groq.com/openai/v1/audio/transcriptions
+          - operation: audio-translations
+            type: openai
+            url: https://api.groq.com/openai/v1/audio/translations
   - model: pixverse/pixverse-6-t2v
     endpoints:
       - provider: deepinfra
@@ -8968,7 +9260,13 @@ models:
           currency: USD
         availability: unknown
         lifecycle: unknown
-        service: {}
+        service:
+          operations:
+            - images-generations
+        service_endpoints:
+          - operation: images-generations
+            type: openai
+            url: https://api.deepinfra.com/v1/openai/images/generations
   - model: pruna-ai/p-video
     endpoints:
       - provider: deepinfra
@@ -9049,7 +9347,13 @@ models:
           currency: USD
         availability: unknown
         lifecycle: unknown
-        service: {}
+        service:
+          operations:
+            - images-generations
+        service_endpoints:
+          - operation: images-generations
+            type: openai
+            url: https://api.deepinfra.com/v1/openai/images/generations
   - model: qwen/qwen-image-max
     endpoints:
       - provider: deepinfra
@@ -9060,7 +9364,13 @@ models:
           currency: USD
         availability: unknown
         lifecycle: unknown
-        service: {}
+        service:
+          operations:
+            - images-generations
+        service_endpoints:
+          - operation: images-generations
+            type: openai
+            url: https://api.deepinfra.com/v1/openai/images/generations
   - model: qwen/qwen-mt-flash
     endpoints:
       - provider: alibaba
@@ -9802,6 +10112,10 @@ models:
         service:
           operations:
             - embeddings
+        service_endpoints:
+          - operation: embeddings
+            type: openai
+            url: https://api.deepinfra.com/v1/openai/embeddings
   - model: qwen/qwen3-embedding-4b
     endpoints:
       - provider: deepinfra
@@ -9820,6 +10134,10 @@ models:
         service:
           operations:
             - embeddings
+        service_endpoints:
+          - operation: embeddings
+            type: openai
+            url: https://api.deepinfra.com/v1/openai/embeddings
   - model: qwen/qwen3-embedding-8b
     endpoints:
       - provider: deepinfra
@@ -9838,6 +10156,10 @@ models:
         service:
           operations:
             - embeddings
+        service_endpoints:
+          - operation: embeddings
+            type: openai
+            url: https://api.deepinfra.com/v1/openai/embeddings
   - model: qwen/qwen3-max
     endpoints:
       - provider: alibaba
@@ -10016,14 +10338,26 @@ models:
         provider_model_id: Qwen/Qwen3-TTS
         availability: unknown
         lifecycle: unknown
-        service: {}
+        service:
+          operations:
+            - audio-speech
+        service_endpoints:
+          - operation: audio-speech
+            type: openai
+            url: https://api.deepinfra.com/v1/openai/audio/speech
   - model: qwen/qwen3-tts-voicedesign
     endpoints:
       - provider: deepinfra
         provider_model_id: Qwen/Qwen3-TTS-VoiceDesign
         availability: unknown
         lifecycle: unknown
-        service: {}
+        service:
+          operations:
+            - audio-speech
+        service_endpoints:
+          - operation: audio-speech
+            type: openai
+            url: https://api.deepinfra.com/v1/openai/audio/speech
   - model: qwen/qwen3-vl-235b-a22b-instruct
     endpoints:
       - provider: alibaba
@@ -10929,14 +11263,26 @@ models:
         provider_model_id: ResembleAI/chatterbox-multilingual
         availability: unknown
         lifecycle: unknown
-        service: {}
+        service:
+          operations:
+            - audio-speech
+        service_endpoints:
+          - operation: audio-speech
+            type: openai
+            url: https://api.deepinfra.com/v1/openai/audio/speech
   - model: resemble-ai/chatterbox-turbo
     endpoints:
       - provider: deepinfra
         provider_model_id: ResembleAI/chatterbox-turbo
         availability: unknown
         lifecycle: unknown
-        service: {}
+        service:
+          operations:
+            - audio-speech
+        service_endpoints:
+          - operation: audio-speech
+            type: openai
+            url: https://api.deepinfra.com/v1/openai/audio/speech
   - model: sao10k/l3-8b-lunaris-v1
     endpoints:
       - provider: deepinfra
@@ -11020,6 +11366,10 @@ models:
         service:
           operations:
             - embeddings
+        service_endpoints:
+          - operation: embeddings
+            type: openai
+            url: https://api.deepinfra.com/v1/openai/embeddings
   - model: sentence-transformers/all-minilm-l6-v2
     endpoints:
       - provider: deepinfra
@@ -11038,6 +11388,10 @@ models:
         service:
           operations:
             - embeddings
+        service_endpoints:
+          - operation: embeddings
+            type: openai
+            url: https://api.deepinfra.com/v1/openai/embeddings
   - model: sentence-transformers/all-mpnet-base-v2
     endpoints:
       - provider: deepinfra
@@ -11056,6 +11410,10 @@ models:
         service:
           operations:
             - embeddings
+        service_endpoints:
+          - operation: embeddings
+            type: openai
+            url: https://api.deepinfra.com/v1/openai/embeddings
   - model: sentence-transformers/clip-vit-b-32
     endpoints:
       - provider: deepinfra
@@ -11074,6 +11432,10 @@ models:
         service:
           operations:
             - embeddings
+        service_endpoints:
+          - operation: embeddings
+            type: openai
+            url: https://api.deepinfra.com/v1/openai/embeddings
   - model: sentence-transformers/clip-vit-b-32-multilingual-v1
     endpoints:
       - provider: deepinfra
@@ -11092,6 +11454,10 @@ models:
         service:
           operations:
             - embeddings
+        service_endpoints:
+          - operation: embeddings
+            type: openai
+            url: https://api.deepinfra.com/v1/openai/embeddings
   - model: sentence-transformers/multi-qa-mpnet-base-dot-v1
     endpoints:
       - provider: deepinfra
@@ -11110,6 +11476,10 @@ models:
         service:
           operations:
             - embeddings
+        service_endpoints:
+          - operation: embeddings
+            type: openai
+            url: https://api.deepinfra.com/v1/openai/embeddings
   - model: sentence-transformers/paraphrase-minilm-l6-v2
     endpoints:
       - provider: deepinfra
@@ -11128,13 +11498,23 @@ models:
         service:
           operations:
             - embeddings
+        service_endpoints:
+          - operation: embeddings
+            type: openai
+            url: https://api.deepinfra.com/v1/openai/embeddings
   - model: sesame/csm-1b
     endpoints:
       - provider: deepinfra
         provider_model_id: sesame/csm-1b
         availability: unknown
         lifecycle: unknown
-        service: {}
+        service:
+          operations:
+            - audio-speech
+        service_endpoints:
+          - operation: audio-speech
+            type: openai
+            url: https://api.deepinfra.com/v1/openai/audio/speech
   - model: shibing624/text2vec-base-chinese
     endpoints:
       - provider: deepinfra
@@ -11153,6 +11533,10 @@ models:
         service:
           operations:
             - embeddings
+        service_endpoints:
+          - operation: embeddings
+            type: openai
+            url: https://api.deepinfra.com/v1/openai/embeddings
   - model: stability/sdxl-turbo
     endpoints:
       - provider: deepinfra
@@ -11163,7 +11547,13 @@ models:
           currency: USD
         availability: unknown
         lifecycle: unknown
-        service: {}
+        service:
+          operations:
+            - images-generations
+        service_endpoints:
+          - operation: images-generations
+            type: openai
+            url: https://api.deepinfra.com/v1/openai/images/generations
   - model: stepfun/step-3.7-flash
     endpoints:
       - provider: deepinfra
@@ -11251,14 +11641,26 @@ models:
         provider_model_id: XiaomiMiMo/MiMo-V2.5-tts
         availability: unknown
         lifecycle: unknown
-        service: {}
+        service:
+          operations:
+            - audio-speech
+        service_endpoints:
+          - operation: audio-speech
+            type: openai
+            url: https://api.deepinfra.com/v1/openai/audio/speech
   - model: xiaomi/mimo-v2.5-tts-voicedesign
     endpoints:
       - provider: deepinfra
         provider_model_id: XiaomiMiMo/MiMo-V2.5-tts-voicedesign
         availability: unknown
         lifecycle: unknown
-        service: {}
+        service:
+          operations:
+            - audio-speech
+        service_endpoints:
+          - operation: audio-speech
+            type: openai
+            url: https://api.deepinfra.com/v1/openai/audio/speech
   - model: zhipu-ai/glm-4.6
     endpoints:
       - provider: deepinfra
