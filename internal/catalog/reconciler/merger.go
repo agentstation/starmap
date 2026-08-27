@@ -324,6 +324,7 @@ func (merger *merger) model(providerID catalogs.ProviderID, modelID string, sour
 		}
 		merger.applyModelPolicy(identity, merged, policy, policySources, &history)
 	}
+	dropOrphanedReasoningFacts(merged)
 
 	// Handle timestamps with change detection
 	// Store baseline model for comparison (before it gets overwritten)
@@ -372,6 +373,30 @@ func (merger *merger) model(providerID catalogs.ProviderID, modelID string, sour
 	// (timestamps already copied from baseline at line 178)
 
 	return merged, history
+}
+
+// dropOrphanedReasoningFacts clears reasoning controls and subordinate
+// reasoning capabilities on a model whose merged features deny reasoning.
+//
+// Each policy resolves its own field. Features merges under
+// authority.EmptyAuthoritative, so a provider record that denies reasoning
+// wins even when it says nothing else. Reasoning and ReasoningTokens merge
+// under authority.EmptyAbsent, so another source fills the gap that provider
+// record left. The two rules together can produce a model that carries effort
+// levels while declaring no reasoning support, which catalog validation
+// rejects. Drop the orphaned facts rather than invent the support they need:
+// the merger reads sources, and no source claimed that support.
+func dropOrphanedReasoningFacts(model *catalogs.Model) {
+	if model == nil || (model.Features != nil && model.Features.Reasoning) {
+		return
+	}
+	model.Reasoning = nil
+	model.ReasoningTokens = nil
+	if model.Features != nil {
+		model.Features.ReasoningEffort = false
+		model.Features.ReasoningTokens = false
+		model.Features.IncludeReasoning = false
+	}
 }
 
 func (merger *merger) sourceTime(identity modelIdentity, path string, sourceModels map[sources.ID]*catalogs.Model) utc.Time {
@@ -694,6 +719,8 @@ func copyModelTokenPricing(source *catalogs.ModelTokenPricing) *catalogs.ModelTo
 	copied.Reasoning = copyModelTokenCost(source.Reasoning)
 	copied.CacheRead = copyModelTokenCost(source.CacheRead)
 	copied.CacheWrite = copyModelTokenCost(source.CacheWrite)
+	copied.AudioInput = copyModelTokenCost(source.AudioInput)
+	copied.AudioOutput = copyModelTokenCost(source.AudioOutput)
 	return &copied
 }
 

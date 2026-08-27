@@ -354,12 +354,17 @@ func TestModelToStarmapModelPreservesCurrentModelsDevFields(t *testing.T) {
 		model.Pricing.Tokens.CacheWrite.Per1M != cacheWriteCost {
 		t.Fatalf("cache pricing = %#v", model.Pricing.Tokens)
 	}
-	if model.Pricing.Operations == nil ||
-		model.Pricing.Operations.AudioInput == nil ||
-		*model.Pricing.Operations.AudioInput != inputAudioCost ||
-		model.Pricing.Operations.AudioGen == nil ||
-		*model.Pricing.Operations.AudioGen != outputAudioCost {
-		t.Fatalf("audio operation pricing = %#v", model.Pricing.Operations)
+	// models.dev quotes input_audio and output_audio per million tokens, so
+	// they belong beside input and output, not under Operations, where a
+	// value means a flat price for one audio file.
+	if model.Pricing.Tokens.AudioInput == nil ||
+		model.Pricing.Tokens.AudioInput.Per1M != inputAudioCost ||
+		model.Pricing.Tokens.AudioOutput == nil ||
+		model.Pricing.Tokens.AudioOutput.Per1M != outputAudioCost {
+		t.Fatalf("audio token pricing = %#v", model.Pricing.Tokens)
+	}
+	if model.Pricing.Operations != nil {
+		t.Fatalf("operations pricing = %#v, want nil; models.dev quotes no per-operation price", model.Pricing.Operations)
 	}
 	if len(model.Pricing.Tiers) != 2 {
 		t.Fatalf("pricing tiers = %#v, want 2 tiers", model.Pricing.Tiers)
@@ -369,9 +374,8 @@ func TestModelToStarmapModelPreservesCurrentModelsDevFields(t *testing.T) {
 		model.Pricing.Tiers[0].Tokens == nil ||
 		model.Pricing.Tiers[0].Tokens.Input == nil ||
 		model.Pricing.Tiers[0].Tokens.Input.Per1M != tierInputCost ||
-		model.Pricing.Tiers[0].Operations == nil ||
-		model.Pricing.Tiers[0].Operations.AudioInput == nil ||
-		*model.Pricing.Tiers[0].Operations.AudioInput != tierInputAudioCost {
+		model.Pricing.Tiers[0].Tokens.AudioInput == nil ||
+		model.Pricing.Tiers[0].Tokens.AudioInput.Per1M != tierInputAudioCost {
 		t.Fatalf("first pricing tier = %#v", model.Pricing.Tiers[0])
 	}
 	if model.Pricing.Tiers[1].Name != "context_over_200k" ||

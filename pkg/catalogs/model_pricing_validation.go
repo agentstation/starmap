@@ -87,6 +87,8 @@ func validatePricingComponents(path string, tokens *ModelTokenPricing, operation
 			{"reasoning", tokens.Reasoning},
 			{"cache_read", tokens.CacheRead},
 			{"cache_write", tokens.CacheWrite},
+			{"audio_input", tokens.AudioInput},
+			{"audio_output", tokens.AudioOutput},
 		}
 		for _, item := range costs {
 			if item.cost == nil {
