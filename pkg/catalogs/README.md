@@ -1035,7 +1035,7 @@ func NormalizeExtensionFields(fields map[string]any) map[string]any
 NormalizeExtensionFields returns a copy with maps, slices, and numbers normalized to stable dynamic types after JSON/YAML round trips.
 
 <a name="ShallowCopyProviderModels"></a>
-## func [ShallowCopyProviderModels](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/copy.go#L480>)
+## func [ShallowCopyProviderModels](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/copy.go#L482>)
 
 ```go
 func ShallowCopyProviderModels(models map[string]*Model) map[string]*Model
@@ -3467,7 +3467,7 @@ type ModelMode struct {
 ```
 
 <a name="ModelOperationPricing"></a>
-## type [ModelOperationPricing](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_pricing.go#L178-L196>)
+## type [ModelOperationPricing](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_pricing.go#L193-L211>)
 
 ModelOperationPricing represents fixed costs for operations.
 
@@ -3834,7 +3834,7 @@ func (tag ModelTag) String() string
 String returns the string representation of a ModelTag.
 
 <a name="ModelTokenCost"></a>
-## type [ModelTokenCost](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_pricing.go#L157-L160>)
+## type [ModelTokenCost](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_pricing.go#L172-L175>)
 
 ModelTokenCost represents cost per token with flexible units.
 
@@ -3846,7 +3846,7 @@ type ModelTokenCost struct {
 ```
 
 <a name="ModelTokenCost.MarshalYAML"></a>
-### func \(\*ModelTokenCost\) [MarshalYAML](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_pricing.go#L163>)
+### func \(\*ModelTokenCost\) [MarshalYAML](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_pricing.go#L178>)
 
 ```go
 func (t *ModelTokenCost) MarshalYAML() (any, error)
@@ -3855,7 +3855,7 @@ func (t *ModelTokenCost) MarshalYAML() (any, error)
 MarshalYAML implements custom YAML marshaling for TokenCost to format decimals consistently.
 
 <a name="ModelTokenPricing"></a>
-## type [ModelTokenPricing](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_pricing.go#L118-L127>)
+## type [ModelTokenPricing](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_pricing.go#L118-L134>)
 
 ModelTokenPricing represents all token\-based costs.
 
@@ -3869,11 +3869,18 @@ type ModelTokenPricing struct {
     Reasoning  *ModelTokenCost `json:"reasoning,omitempty" yaml:"reasoning,omitempty"`     // Internal reasoning tokens
     CacheRead  *ModelTokenCost `json:"cache_read,omitempty" yaml:"cache_read,omitempty"`   // Cache read costs (flat structure)
     CacheWrite *ModelTokenCost `json:"cache_write,omitempty" yaml:"cache_write,omitempty"` // Cache write costs (flat structure)
+
+    // Media token types. A provider that meters audio bills it at its own
+    // rate, so an audio turn cannot be priced from Input and Output alone.
+    // These are per-token prices, unlike ModelOperationPricing.AudioInput,
+    // which is a flat price for one audio input.
+    AudioInput  *ModelTokenCost `json:"audio_input,omitempty" yaml:"audio_input,omitempty"`   // Audio input tokens
+    AudioOutput *ModelTokenCost `json:"audio_output,omitempty" yaml:"audio_output,omitempty"` // Audio output tokens
 }
 ```
 
 <a name="ModelTokenPricing.MarshalYAML"></a>
-### func \(\*ModelTokenPricing\) [MarshalYAML](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_pricing.go#L130>)
+### func \(\*ModelTokenPricing\) [MarshalYAML](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_pricing.go#L137>)
 
 ```go
 func (t *ModelTokenPricing) MarshalYAML() (any, error)
