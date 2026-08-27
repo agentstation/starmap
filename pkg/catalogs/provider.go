@@ -165,6 +165,10 @@ const (
 	// provider answers with a job rather than a video, so a consumer submits,
 	// polls, and collects.
 	ProviderOperationVideosGenerations ProviderOperation = "videos-generations"
+	// ProviderOperationDocumentsRecognition reads the text off a document that
+	// carries none. A document with a text layer needs no model at all, so this
+	// operation names the case a reader cannot answer on its own.
+	ProviderOperationDocumentsRecognition ProviderOperation = "documents-recognition"
 )
 
 // ProviderInference defines stable provider-level inference service facts.

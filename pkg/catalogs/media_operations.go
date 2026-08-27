@@ -3,9 +3,14 @@ package catalogs
 import "slices"
 
 // MediaOperationFacts states the exact model facts one dedicated media
-// operation requires. A dedicated media operation is one a provider serves on
-// its own path rather than inside a chat answer, so a chat model that returns a
-// picture is not one of these.
+// operation requires. A dedicated media operation is one a consumer names for
+// itself rather than one it discovers inside a chat answer, so a chat model
+// that returns a picture is not one of these.
+//
+// Naming it is not the same as reaching a separate path. A provider that reads
+// a document serves the read through its chat path, and the endpoint table says
+// so. What makes the operation its own is that a consumer asks for it and pays
+// for it in the operation's own unit.
 //
 // The derivation reads this table, and the fact-consistency rule enforces it.
 // One statement therefore decides both what Starmap publishes and what Starmap
@@ -65,6 +70,13 @@ var mediaOperationFacts = []MediaOperationFacts{
 		Tags:      []ModelTag{"video-gen", ModelTagTextToVideo},
 		Input:     []ModelModality{ModelModalityText},
 		Output:    []ModelModality{ModelModalityVideo},
+	},
+	{
+		Operation:   ProviderOperationDocumentsRecognition,
+		Tags:        []ModelTag{"ocr", ModelTagImageToText},
+		TagRequired: true,
+		Input:       []ModelModality{ModelModalityPDF},
+		Output:      []ModelModality{ModelModalityText},
 	},
 }
 

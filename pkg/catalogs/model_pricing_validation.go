@@ -108,6 +108,7 @@ func validatePricingComponents(path string, tokens *ModelTokenPricing, operation
 		}{
 			{"request", operations.Request},
 			{"image_input", operations.ImageInput},
+			{"page_input", operations.PageInput},
 			{"audio_input", operations.AudioInput},
 			{"video_input", operations.VideoInput},
 			{"image_gen", operations.ImageGen},

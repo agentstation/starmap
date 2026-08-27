@@ -109,11 +109,7 @@ func (f *ModelFeatures) UnmarshalJSON(data []byte) error {
 // unobserved limits.
 func (l ModelLimits) MarshalYAML() (any, error) {
 	entries := make(yaml.MapSlice, 0, 3)
-	for _, limit := range []ModelLimit{
-		ModelLimitContextWindow,
-		ModelLimitInputTokens,
-		ModelLimitOutputTokens,
-	} {
+	for _, limit := range modelLimitOrder {
 		value, state := l.Value(limit)
 		switch state {
 		case ValueKnown:
@@ -139,11 +135,7 @@ func (l *ModelLimits) UnmarshalYAML(unmarshal func(any) error) error {
 	*l = ModelLimits(decoded)
 	l.limitPresence = 0
 	l.limitKnown = 0
-	for _, limit := range []ModelLimit{
-		ModelLimitContextWindow,
-		ModelLimitInputTokens,
-		ModelLimitOutputTokens,
-	} {
+	for _, limit := range modelLimitOrder {
 		value, present := raw[string(limit)]
 		if !present {
 			continue
@@ -160,11 +152,7 @@ func (l *ModelLimits) UnmarshalYAML(unmarshal func(any) error) error {
 // MarshalJSON preserves limit presence in immutable catalog payloads.
 func (l ModelLimits) MarshalJSON() ([]byte, error) {
 	values := make(map[string]any, 3)
-	for _, limit := range []ModelLimit{
-		ModelLimitContextWindow,
-		ModelLimitInputTokens,
-		ModelLimitOutputTokens,
-	} {
+	for _, limit := range modelLimitOrder {
 		value, state := l.Value(limit)
 		switch state {
 		case ValueKnown:
@@ -190,11 +178,7 @@ func (l *ModelLimits) UnmarshalJSON(data []byte) error {
 	*l = ModelLimits(decoded)
 	l.limitPresence = 0
 	l.limitKnown = 0
-	for _, limit := range []ModelLimit{
-		ModelLimitContextWindow,
-		ModelLimitInputTokens,
-		ModelLimitOutputTokens,
-	} {
+	for _, limit := range modelLimitOrder {
 		value, present := raw[string(limit)]
 		if !present {
 			continue

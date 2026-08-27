@@ -335,6 +335,10 @@ type ModelLimits struct {
 	ContextWindow int64 `json:"context_window" yaml:"context_window"` // Context window size in tokens
 	InputTokens   int64 `json:"input_tokens" yaml:"input_tokens"`     // Maximum input tokens
 	OutputTokens  int64 `json:"output_tokens" yaml:"output_tokens"`   // Maximum output tokens
+	// DocumentPages is the largest document the provider reads in one call,
+	// counted in pages. A provider states this bound in pages rather than in
+	// tokens, because it refuses the document before it reads a token of it.
+	DocumentPages int64 `json:"document_pages,omitempty" yaml:"document_pages,omitempty"`
 
 	limitPresence uint8
 	limitKnown    uint8
