@@ -212,4 +212,34 @@ type ModelOperationPricing struct {
 	WebSearch    *float64 `json:"web_search,omitempty" yaml:"web_search,omitempty"`       // Cost per web search
 	FunctionCall *float64 `json:"function_call,omitempty" yaml:"function_call,omitempty"` // Cost per function call
 	ToolUse      *float64 `json:"tool_use,omitempty" yaml:"tool_use,omitempty"`           // Cost per tool usage
+
+	// Rerank operations
+	//
+	// SearchUnit is the cost of one search unit, which is one query measured
+	// against a bounded number of documents. A provider that exceeds the bound
+	// splits the call and charges a unit for each part, so the unit is not the
+	// same as the request.
+	SearchUnit *float64 `json:"search_unit,omitempty" yaml:"search_unit,omitempty"`
+	// RerankBasis names which recorded price a rerank turn draws from.
+	// Providers disagree: some bill a search unit and some bill the tokens they
+	// read. A consumer reads this field rather than guessing from which price
+	// happens to be present.
+	RerankBasis ModelRerankBasis `json:"rerank_basis,omitempty" yaml:"rerank_basis,omitempty"`
+}
+
+// ModelRerankBasis names the unit a provider bills one rerank call in.
+type ModelRerankBasis string
+
+const (
+	// ModelRerankBasisSearchUnit bills one query against a bounded document
+	// count. Cohere and OpenRouter bill this way.
+	ModelRerankBasisSearchUnit ModelRerankBasis = "search-unit"
+	// ModelRerankBasisToken bills the tokens the provider reads across the
+	// query and the documents. Jina and Voyage bill this way.
+	ModelRerankBasisToken ModelRerankBasis = "token"
+)
+
+// String returns the string representation of a ModelRerankBasis.
+func (m ModelRerankBasis) String() string {
+	return string(m)
 }

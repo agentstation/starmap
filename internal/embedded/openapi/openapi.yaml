@@ -755,6 +755,7 @@ components:
         ModelTagMultimodal: Multiple input modalities
         ModelTagQA: Question answering
         ModelTagReasoning: Logical reasoning and problem solving
+        ModelTagRerank: Relevance ranking of documents
         ModelTagResearch: Research and analysis
         ModelTagRoleplay: Character roleplay and simulation
         ModelTagScience: Scientific applications
@@ -778,6 +779,7 @@ components:
       - ModelTagRoleplay
       - ModelTagFunctionCalling
       - ModelTagEmbedding
+      - ModelTagRerank
       - ModelTagSummarization
       - ModelTagTranslation
       - ModelTagQA
@@ -1296,6 +1298,7 @@ components:
       - ProviderOperationAudioTranslations
       - ProviderOperationVideosGenerations
       - ProviderOperationDocumentsRecognition
+      - ProviderOperationRerank
     catalogs.ProviderPrivacyPolicy:
       description: Privacy, Retention, and Governance Policies
       properties:

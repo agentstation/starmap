@@ -16,7 +16,7 @@ var nonChatTags = []catalogs.ModelTag{
 	"video-gen",
 	"tts",
 	"stt",
-	"rerank",
+	catalogs.ModelTagRerank,
 	catalogs.ModelTagTextToImage,
 	catalogs.ModelTagTextToSpeech,
 	catalogs.ModelTagSpeechToText,

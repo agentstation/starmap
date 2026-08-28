@@ -117,6 +117,7 @@ func validatePricingComponents(path string, tokens *ModelTokenPricing, operation
 			{"web_search", operations.WebSearch},
 			{"function_call", operations.FunctionCall},
 			{"tool_use", operations.ToolUse},
+			{"search_unit", operations.SearchUnit},
 		}
 		for _, item := range prices {
 			if item.price == nil {
@@ -127,8 +128,44 @@ func validatePricingComponents(path string, tokens *ModelTokenPricing, operation
 			}
 			count++
 		}
+		if err := validateRerankBasis(path, tokens, operations); err != nil {
+			return 0, err
+		}
 	}
 	return count, nil
+}
+
+// validateRerankBasis holds the recorded basis to the price beside it. A basis
+// without its price leaves a consumer with nothing to charge, and a search unit
+// price without the basis leaves the same consumer guessing which unit the
+// provider counts.
+func validateRerankBasis(path string, tokens *ModelTokenPricing, operations *ModelOperationPricing) error {
+	basisPath := path + ".operations.rerank_basis"
+	switch operations.RerankBasis {
+	case "":
+		if operations.SearchUnit != nil {
+			return pricingValidationError(
+				basisPath,
+				"",
+				"must be "+string(ModelRerankBasisSearchUnit)+" when search_unit is priced",
+			)
+		}
+	case ModelRerankBasisSearchUnit:
+		if operations.SearchUnit == nil {
+			return pricingValidationError(basisPath, string(operations.RerankBasis), "requires a search_unit price")
+		}
+	case ModelRerankBasisToken:
+		if tokens == nil || tokens.Input == nil {
+			return pricingValidationError(basisPath, string(operations.RerankBasis), "requires an input token price")
+		}
+	default:
+		return pricingValidationError(
+			basisPath,
+			string(operations.RerankBasis),
+			"must be one of "+string(ModelRerankBasisSearchUnit)+", "+string(ModelRerankBasisToken),
+		)
+	}
+	return nil
 }
 
 func validateTokenCost(path string, cost *ModelTokenCost) error {

@@ -379,6 +379,7 @@ func deepCopyModelOperationPricing(pricing *ModelOperationPricing) *ModelOperati
 	copied.WebSearch = copyPtr(pricing.WebSearch)
 	copied.FunctionCall = copyPtr(pricing.FunctionCall)
 	copied.ToolUse = copyPtr(pricing.ToolUse)
+	copied.SearchUnit = copyPtr(pricing.SearchUnit)
 	return &copied
 }
 

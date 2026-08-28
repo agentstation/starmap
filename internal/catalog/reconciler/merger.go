@@ -744,6 +744,7 @@ func copyModelOperationPricing(source *catalogs.ModelOperationPricing) *catalogs
 	copied.WebSearch = copyValuePtr(source.WebSearch)
 	copied.FunctionCall = copyValuePtr(source.FunctionCall)
 	copied.ToolUse = copyValuePtr(source.ToolUse)
+	copied.SearchUnit = copyValuePtr(source.SearchUnit)
 	return &copied
 }
 
