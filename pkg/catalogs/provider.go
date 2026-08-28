@@ -60,6 +60,13 @@ const (
 	EndpointTypeGoogleCloud EndpointType = "google-cloud"
 	// EndpointTypeOllama represents the native Ollama API.
 	EndpointTypeOllama EndpointType = "ollama"
+	// EndpointTypeCohere represents the Cohere API. Reranking has no OpenAI
+	// standard, so Cohere's request shape is the one other services copied.
+	EndpointTypeCohere EndpointType = "cohere"
+	// EndpointTypeVoyage represents the Voyage AI API. Its reranker names the
+	// result count and the response envelope differently from Cohere's, so it
+	// cannot share that style.
+	EndpointTypeVoyage EndpointType = "voyage"
 )
 
 // FieldMapping defines how to map API response fields to model fields.
@@ -324,6 +331,7 @@ const (
 	ProviderIDSafetyKit      ProviderID = "safetykit"
 	ProviderIDTogetherAI     ProviderID = "together"
 	ProviderIDVirtuousAI     ProviderID = "virtuousai"
+	ProviderIDVoyageAI       ProviderID = "voyage"
 	ProviderIDWebPurify      ProviderID = "webpurify"
 	ProviderIDXAI            ProviderID = "xai"
 )

@@ -224,6 +224,8 @@ components:
       - EndpointTypeGoogle
       - EndpointTypeGoogleCloud
       - EndpointTypeOllama
+      - EndpointTypeCohere
+      - EndpointTypeVoyage
     catalogs.FieldMapping:
       properties:
         from:
@@ -885,6 +887,7 @@ components:
             - ProviderIDSafetyKit
             - ProviderIDTogetherAI
             - ProviderIDVirtuousAI
+            - ProviderIDVoyageAI
             - ProviderIDWebPurify
             - ProviderIDXAI
           type: array
@@ -1224,6 +1227,7 @@ components:
       - ProviderIDSafetyKit
       - ProviderIDTogetherAI
       - ProviderIDVirtuousAI
+      - ProviderIDVoyageAI
       - ProviderIDWebPurify
       - ProviderIDXAI
     catalogs.ProviderInference:
@@ -1264,6 +1268,8 @@ components:
             - EndpointTypeGoogle
             - EndpointTypeGoogleCloud
             - EndpointTypeOllama
+            - EndpointTypeCohere
+            - EndpointTypeVoyage
           type: object
         stream_path:
           type: string
@@ -1280,6 +1286,8 @@ components:
           - EndpointTypeGoogle
           - EndpointTypeGoogleCloud
           - EndpointTypeOllama
+          - EndpointTypeCohere
+          - EndpointTypeVoyage
       type: object
     catalogs.ProviderOpenAICatalogProtocolOptions:
       properties:
