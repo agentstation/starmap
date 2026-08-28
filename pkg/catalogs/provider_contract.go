@@ -236,7 +236,7 @@ func validateCatalogProtocolOptions(endpoint ProviderEndpoint) error {
 				"is required",
 			)
 		}
-	case EndpointTypeOllama:
+	case EndpointTypeOllama, EndpointTypeCohere, EndpointTypeVoyage:
 		return providerContractError(
 			"provider.catalog.endpoint.type",
 			endpoint.Type,
@@ -260,7 +260,9 @@ func validEndpointType(endpointType EndpointType) bool {
 		EndpointTypeAnthropic,
 		EndpointTypeGoogle,
 		EndpointTypeGoogleCloud,
-		EndpointTypeOllama:
+		EndpointTypeOllama,
+		EndpointTypeCohere,
+		EndpointTypeVoyage:
 		return true
 	default:
 		return false

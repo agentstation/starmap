@@ -326,6 +326,47 @@
       fields:
         npm: "@ai-sdk/cerebras"
 
+# Cohere
+- id: cohere
+  name: Cohere
+  description: Cohere serves retrieval models, including the rerank models other services copied.
+  docs_url: https://docs.cohere.com/
+  headquarters: Toronto, Canada
+  icon_url: https://cohere.com/favicon.ico
+  credentials:
+    fields:
+    - id: api-key
+      kind: secret
+      required: true
+      environment:
+      - COHERE_API_KEY
+    profiles:
+    - id: api-key
+      primitive: api-key
+      fields:
+      - api-key
+      placements:
+      - field: api-key
+        kind: header
+        name: Authorization
+        scheme: bearer
+    inference:
+      required: true
+      alternatives:
+      - api-key
+  status_page_url: https://status.cohere.com
+  inference:
+    base_url: https://api.cohere.com
+    endpoints:
+    - operation: rerank
+      type: cohere
+      path: /v2/rerank
+  privacy_policy:
+    privacy_policy_url: https://cohere.com/privacy
+    terms_of_service_url: https://cohere.com/terms-of-use
+    retains_data: false
+    trains_on_data: false
+
 # DeepInfra
 - id: deepinfra
   name: DeepInfra
@@ -1178,3 +1219,46 @@
     - operation: embeddings
       type: ollama
       path: /api/embed
+
+# Voyage AI
+- id: voyage
+  aliases:
+  - voyage-ai
+  - voyageai
+  name: Voyage AI
+  description: Voyage AI serves embedding and reranking models for retrieval, and bills them by the token.
+  docs_url: https://docs.voyageai.com/
+  headquarters: Palo Alto, CA, USA
+  icon_url: https://www.voyageai.com/favicon.ico
+  credentials:
+    fields:
+    - id: api-key
+      kind: secret
+      required: true
+      environment:
+      - VOYAGE_API_KEY
+    profiles:
+    - id: api-key
+      primitive: api-key
+      fields:
+      - api-key
+      placements:
+      - field: api-key
+        kind: header
+        name: Authorization
+        scheme: bearer
+    inference:
+      required: true
+      alternatives:
+      - api-key
+  inference:
+    base_url: https://api.voyageai.com
+    endpoints:
+    - operation: rerank
+      type: voyage
+      path: /v1/rerank
+  privacy_policy:
+    privacy_policy_url: https://www.voyageai.com/privacy
+    terms_of_service_url: https://www.voyageai.com/terms
+    retains_data: false
+    trains_on_data: false

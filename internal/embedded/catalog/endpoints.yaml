@@ -1,6 +1,6 @@
 schema_version: 2
-generation_id: catalog-20260827T193235Z-f8b47313e980
-catalog_digest: sha256:3a455b6a860492b7bd445f759c80db97ddc2ae85b3e5b2268ec6af3a5deebc26
+generation_id: catalog-20260828T012801Z-e80d96f3d560
+catalog_digest: sha256:7867d069adc2fc10aa23a88e5a47414affe2e303fe163055be9f3e50748e98f5
 models:
   - model: ai21/jamba-1-5-large
     endpoints:
@@ -1342,6 +1342,70 @@ models:
           - operation: audio-speech
             type: openai
             url: https://api.groq.com/openai/v1/audio/speech
+  - model: cohere/rerank-v3.5
+    endpoints:
+      - provider: cohere
+        provider_model_id: rerank-v3.5
+        pricing:
+          operations:
+            search_unit: 0.001
+            rerank_basis: search-unit
+          currency: USD
+        limits:
+          context_window: 4096
+          max_documents: 1000
+          document_tokens: 4096
+        availability: unknown
+        lifecycle: unknown
+        service:
+          operations:
+            - rerank
+        service_endpoints:
+          - operation: rerank
+            type: cohere
+            url: https://api.cohere.com/v2/rerank
+  - model: cohere/rerank-v4.0-fast
+    endpoints:
+      - provider: cohere
+        provider_model_id: rerank-v4.0-fast
+        pricing:
+          operations:
+            search_unit: 0.002
+            rerank_basis: search-unit
+          currency: USD
+        limits:
+          max_documents: 1000
+          document_tokens: 4096
+        availability: unknown
+        lifecycle: unknown
+        service:
+          operations:
+            - rerank
+        service_endpoints:
+          - operation: rerank
+            type: cohere
+            url: https://api.cohere.com/v2/rerank
+  - model: cohere/rerank-v4.0-pro
+    endpoints:
+      - provider: cohere
+        provider_model_id: rerank-v4.0-pro
+        pricing:
+          operations:
+            search_unit: 0.0025
+            rerank_basis: search-unit
+          currency: USD
+        limits:
+          max_documents: 1000
+          document_tokens: 4096
+        availability: unknown
+        lifecycle: unknown
+        service:
+          operations:
+            - rerank
+        service_endpoints:
+          - operation: rerank
+            type: cohere
+            url: https://api.cohere.com/v2/rerank
   - model: deepreinforce-ai/ornith-1.0-35b
     endpoints:
       - provider: deepinfra
@@ -11728,6 +11792,52 @@ models:
           - operation: chat-completions
             type: openai
             url: https://api.deepinfra.com/v1/openai/chat/completions
+  - model: voyage-ai/rerank-2.5
+    endpoints:
+      - provider: voyage
+        provider_model_id: rerank-2.5
+        pricing:
+          tokens:
+            input:
+              per_1m: 0.05
+          operations:
+            rerank_basis: token
+          currency: USD
+        limits:
+          context_window: 32000
+          max_documents: 1000
+        availability: unknown
+        lifecycle: unknown
+        service:
+          operations:
+            - rerank
+        service_endpoints:
+          - operation: rerank
+            type: voyage
+            url: https://api.voyageai.com/v1/rerank
+  - model: voyage-ai/rerank-2.5-lite
+    endpoints:
+      - provider: voyage
+        provider_model_id: rerank-2.5-lite
+        pricing:
+          tokens:
+            input:
+              per_1m: 0.02
+          operations:
+            rerank_basis: token
+          currency: USD
+        limits:
+          context_window: 32000
+          max_documents: 1000
+        availability: unknown
+        lifecycle: unknown
+        service:
+          operations:
+            - rerank
+        service_endpoints:
+          - operation: rerank
+            type: voyage
+            url: https://api.voyageai.com/v1/rerank
   - model: xiaomi/mimo-v2.5
     endpoints:
       - provider: deepinfra

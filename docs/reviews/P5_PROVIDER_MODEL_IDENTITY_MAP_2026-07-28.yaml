@@ -588,6 +588,24 @@ records:
     model: zhipu-ai/glm-4.7
     status: linked
     evidence: reviewed explicit identity mapping
+  - path: providers/cohere/models/rerank-v3.5.yaml
+    provider: cohere
+    provider_model_id: rerank-v3.5
+    model: cohere/rerank-v3.5
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/cohere/models/rerank-v4.0-fast.yaml
+    provider: cohere
+    provider_model_id: rerank-v4.0-fast
+    model: cohere/rerank-v4.0-fast
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/cohere/models/rerank-v4.0-pro.yaml
+    provider: cohere
+    provider_model_id: rerank-v4.0-pro
+    model: cohere/rerank-v4.0-pro
+    status: linked
+    evidence: explicit provider-model author metadata
   - path: providers/deepinfra/models/BAAI/bge-base-en-v1.5.yaml
     provider: deepinfra
     provider_model_id: BAAI/bge-base-en-v1.5
@@ -3676,5 +3694,17 @@ records:
     provider: openai
     provider_model_id: whisper-1
     model: openai/whisper-1
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/voyage/models/rerank-2.5-lite.yaml
+    provider: voyage
+    provider_model_id: rerank-2.5-lite
+    model: voyage-ai/rerank-2.5-lite
+    status: linked
+    evidence: explicit provider-model author metadata
+  - path: providers/voyage/models/rerank-2.5.yaml
+    provider: voyage
+    provider_model_id: rerank-2.5
+    model: voyage-ai/rerank-2.5
     status: linked
     evidence: explicit provider-model author metadata

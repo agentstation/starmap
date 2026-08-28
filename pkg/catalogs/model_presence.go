@@ -64,10 +64,12 @@ type ModelLimit string
 
 // Model limit identifiers.
 const (
-	ModelLimitContextWindow ModelLimit = "context_window"
-	ModelLimitInputTokens   ModelLimit = "input_tokens"
-	ModelLimitOutputTokens  ModelLimit = "output_tokens"
-	ModelLimitDocumentPages ModelLimit = "document_pages"
+	ModelLimitContextWindow  ModelLimit = "context_window"
+	ModelLimitInputTokens    ModelLimit = "input_tokens"
+	ModelLimitOutputTokens   ModelLimit = "output_tokens"
+	ModelLimitDocumentPages  ModelLimit = "document_pages"
+	ModelLimitMaxDocuments   ModelLimit = "max_documents"
+	ModelLimitDocumentTokens ModelLimit = "document_tokens"
 )
 
 // modelLimitOrder is every model limit in published order.
@@ -80,6 +82,15 @@ var modelLimitOrder = []ModelLimit{
 	ModelLimitInputTokens,
 	ModelLimitOutputTokens,
 	ModelLimitDocumentPages,
+	ModelLimitMaxDocuments,
+	ModelLimitDocumentTokens,
+}
+
+// PublishedModelLimits returns every model limit in published order. A caller
+// outside this package that walks the limits walks this, so a limit added to
+// the struct cannot be reported by one consumer and missed by another.
+func PublishedModelLimits() []ModelLimit {
+	return append([]ModelLimit(nil), modelLimitOrder...)
 }
 
 // SetSupport records an explicit supported or unsupported capability.
@@ -285,6 +296,10 @@ func modelLimitMask(limit ModelLimit) uint8 {
 		return 1 << 2
 	case ModelLimitDocumentPages:
 		return 1 << 3
+	case ModelLimitMaxDocuments:
+		return 1 << 4
+	case ModelLimitDocumentTokens:
+		return 1 << 5
 	default:
 		return 0
 	}
@@ -300,6 +315,10 @@ func (l *ModelLimits) limitValue(limit ModelLimit) (int64, bool) {
 		return l.OutputTokens, true
 	case ModelLimitDocumentPages:
 		return l.DocumentPages, true
+	case ModelLimitMaxDocuments:
+		return l.MaxDocuments, true
+	case ModelLimitDocumentTokens:
+		return l.DocumentTokens, true
 	default:
 		return 0, false
 	}
@@ -315,6 +334,10 @@ func (l *ModelLimits) setLimitValue(limit ModelLimit, value int64) bool {
 		l.OutputTokens = value
 	case ModelLimitDocumentPages:
 		l.DocumentPages = value
+	case ModelLimitMaxDocuments:
+		l.MaxDocuments = value
+	case ModelLimitDocumentTokens:
+		l.DocumentTokens = value
 	default:
 		return false
 	}

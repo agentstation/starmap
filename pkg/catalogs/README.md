@@ -765,6 +765,7 @@ func main() {
   - [func \(f \*ModelFeatures\) UnsetSupport\(feature ModelFeature\) bool](<#ModelFeatures.UnsetSupport>)
 - [type ModelGeneration](<#ModelGeneration>)
 - [type ModelLimit](<#ModelLimit>)
+  - [func PublishedModelLimits\(\) \[\]ModelLimit](<#PublishedModelLimits>)
 - [type ModelLimits](<#ModelLimits>)
   - [func \(l ModelLimits\) MarshalJSON\(\) \(\[\]byte, error\)](<#ModelLimits.MarshalJSON>)
   - [func \(l ModelLimits\) MarshalYAML\(\) \(any, error\)](<#ModelLimits.MarshalYAML>)
@@ -1338,7 +1339,7 @@ func (id AuthorID) String() string
 String returns the string representation of an AuthorID.
 
 <a name="AuthorMapping"></a>
-## type [AuthorMapping](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L97-L100>)
+## type [AuthorMapping](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L104-L107>)
 
 AuthorMapping defines how to extract and normalize authors.
 
@@ -1991,7 +1992,7 @@ func (cat *Builder) SetProviderModel(providerID ProviderID, model Model) error
 SetProviderModel sets a model on a provider atomically.
 
 <a name="CapabilityMapping"></a>
-## type [CapabilityMapping](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L89-L94>)
+## type [CapabilityMapping](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L96-L101>)
 
 CapabilityMapping maps one typed provider predicate to each canonical fact that the cited provider contract entails.
 
@@ -2246,11 +2247,18 @@ const (
     EndpointTypeGoogleCloud EndpointType = "google-cloud"
     // EndpointTypeOllama represents the native Ollama API.
     EndpointTypeOllama EndpointType = "ollama"
+    // EndpointTypeCohere represents the Cohere API. Reranking has no OpenAI
+    // standard, so Cohere's request shape is the one other services copied.
+    EndpointTypeCohere EndpointType = "cohere"
+    // EndpointTypeVoyage represents the Voyage AI API. Its reranker names the
+    // result count and the response envelope differently from Cohere's, so it
+    // cannot share that style.
+    EndpointTypeVoyage EndpointType = "voyage"
 )
 ```
 
 <a name="FieldMapping"></a>
-## type [FieldMapping](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L67-L70>)
+## type [FieldMapping](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L74-L77>)
 
 FieldMapping defines how to map API response fields to model fields. Type conversion is automatic based on the destination field type.
 
@@ -2711,7 +2719,7 @@ func MergeModels(existing, updated Model) Model
 MergeModels performs a smart merge of two models, keeping existing values where the updated model has empty/nil values.
 
 <a name="Model.DescriptionValue"></a>
-### func \(\*Model\) [DescriptionValue](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_presence.go#L344>)
+### func \(\*Model\) [DescriptionValue](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_presence.go#L367>)
 
 ```go
 func (m *Model) DescriptionValue() (string, ValuePresence)
@@ -2729,7 +2737,7 @@ func (m *Model) EncodeYAML() (string, error)
 EncodeYAML returns formatted YAML or a typed parse error when model values cannot be represented safely.
 
 <a name="Model.Equal"></a>
-### func \(Model\) [Equal](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_presence.go#L396>)
+### func \(Model\) [Equal](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_presence.go#L419>)
 
 ```go
 func (m Model) Equal(other Model) bool
@@ -2774,7 +2782,7 @@ func (m Model) MarshalYAML() (any, error)
 MarshalYAML preserves an explicit empty or unknown description.
 
 <a name="Model.SetDescription"></a>
-### func \(\*Model\) [SetDescription](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_presence.go#L326>)
+### func \(\*Model\) [SetDescription](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_presence.go#L349>)
 
 ```go
 func (m *Model) SetDescription(description string)
@@ -2783,7 +2791,7 @@ func (m *Model) SetDescription(description string)
 SetDescription records an explicit model description, including an empty description.
 
 <a name="Model.SetDescriptionUnknown"></a>
-### func \(\*Model\) [SetDescriptionUnknown](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_presence.go#L332>)
+### func \(\*Model\) [SetDescriptionUnknown](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_presence.go#L355>)
 
 ```go
 func (m *Model) SetDescriptionUnknown()
@@ -2810,7 +2818,7 @@ func (m *Model) UnmarshalYAML(unmarshal func(any) error) error
 UnmarshalYAML restores description presence from the human YAML record.
 
 <a name="Model.UnsetDescription"></a>
-### func \(\*Model\) [UnsetDescription](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_presence.go#L338>)
+### func \(\*Model\) [UnsetDescription](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_presence.go#L361>)
 
 ```go
 func (m *Model) UnsetDescription()
@@ -3175,7 +3183,7 @@ func (f ModelFeatures) MarshalYAML() (any, error)
 MarshalYAML renders the complete Boolean capability surface for the human\-editable YAML workspace. Capabilities without an observed claim use the conservative false default, while explicitly unknown claims remain null. Immutable JSON generations retain the precise missing/unknown/known distinction.
 
 <a name="ModelFeatures.SetSupport"></a>
-### func \(\*ModelFeatures\) [SetSupport](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_presence.go#L86>)
+### func \(\*ModelFeatures\) [SetSupport](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_presence.go#L97>)
 
 ```go
 func (f *ModelFeatures) SetSupport(feature ModelFeature, supported bool) bool
@@ -3184,7 +3192,7 @@ func (f *ModelFeatures) SetSupport(feature ModelFeature, supported bool) bool
 SetSupport records an explicit supported or unsupported capability.
 
 <a name="ModelFeatures.SetSupportUnknown"></a>
-### func \(\*ModelFeatures\) [SetSupportUnknown](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_presence.go#L101>)
+### func \(\*ModelFeatures\) [SetSupportUnknown](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_presence.go#L112>)
 
 ```go
 func (f *ModelFeatures) SetSupportUnknown(feature ModelFeature) bool
@@ -3193,7 +3201,7 @@ func (f *ModelFeatures) SetSupportUnknown(feature ModelFeature) bool
 SetSupportUnknown records that a capability was explicitly reported as unknown.
 
 <a name="ModelFeatures.Support"></a>
-### func \(\*ModelFeatures\) [Support](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_presence.go#L132>)
+### func \(\*ModelFeatures\) [Support](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_presence.go#L143>)
 
 ```go
 func (f *ModelFeatures) Support(feature ModelFeature) (bool, ValuePresence)
@@ -3220,7 +3228,7 @@ func (f *ModelFeatures) UnmarshalYAML(unmarshal func(any) error) error
 UnmarshalYAML restores per\-capability presence from the human YAML record.
 
 <a name="ModelFeatures.UnsetSupport"></a>
-### func \(\*ModelFeatures\) [UnsetSupport](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_presence.go#L115>)
+### func \(\*ModelFeatures\) [UnsetSupport](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_presence.go#L126>)
 
 ```go
 func (f *ModelFeatures) UnsetSupport(feature ModelFeature) bool
@@ -3286,15 +3294,26 @@ type ModelLimit string
 
 ```go
 const (
-    ModelLimitContextWindow ModelLimit = "context_window"
-    ModelLimitInputTokens   ModelLimit = "input_tokens"
-    ModelLimitOutputTokens  ModelLimit = "output_tokens"
-    ModelLimitDocumentPages ModelLimit = "document_pages"
+    ModelLimitContextWindow  ModelLimit = "context_window"
+    ModelLimitInputTokens    ModelLimit = "input_tokens"
+    ModelLimitOutputTokens   ModelLimit = "output_tokens"
+    ModelLimitDocumentPages  ModelLimit = "document_pages"
+    ModelLimitMaxDocuments   ModelLimit = "max_documents"
+    ModelLimitDocumentTokens ModelLimit = "document_tokens"
 )
 ```
 
+<a name="PublishedModelLimits"></a>
+### func [PublishedModelLimits](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_presence.go#L92>)
+
+```go
+func PublishedModelLimits() []ModelLimit
+```
+
+PublishedModelLimits returns every model limit in published order. A caller outside this package that walks the limits walks this, so a limit added to the struct cannot be reported by one consumer and missed by another.
+
 <a name="ModelLimits"></a>
-## type [ModelLimits](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model.go#L334-L345>)
+## type [ModelLimits](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model.go#L334-L354>)
 
 ModelLimits represents the limits for a model.
 
@@ -3307,6 +3326,15 @@ type ModelLimits struct {
     // counted in pages. A provider states this bound in pages rather than in
     // tokens, because it refuses the document before it reads a token of it.
     DocumentPages int64 `json:"document_pages,omitempty" yaml:"document_pages,omitempty"`
+    // MaxDocuments is the longest document list the provider ranks in one
+    // call. A reranker refuses a longer list rather than truncating it, and a
+    // caller that does not read this bound sends a request that cannot succeed.
+    MaxDocuments int64 `json:"max_documents,omitempty" yaml:"max_documents,omitempty"`
+    // DocumentTokens is the largest single document the provider reads in a
+    // rerank call, counted in tokens. A provider that exceeds this bound either
+    // truncates the document or splits it into chunks it bills separately, so
+    // the bound is a cost fact as well as a size fact.
+    DocumentTokens int64 `json:"document_tokens,omitempty" yaml:"document_tokens,omitempty"`
     // contains filtered or unexported fields
 }
 ```
@@ -3330,7 +3358,7 @@ func (l ModelLimits) MarshalYAML() (any, error)
 MarshalYAML preserves explicit zero and unknown limits while omitting unobserved limits.
 
 <a name="ModelLimits.Set"></a>
-### func \(\*ModelLimits\) [Set](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_presence.go#L206>)
+### func \(\*ModelLimits\) [Set](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_presence.go#L217>)
 
 ```go
 func (l *ModelLimits) Set(limit ModelLimit, value int64) bool
@@ -3339,7 +3367,7 @@ func (l *ModelLimits) Set(limit ModelLimit, value int64) bool
 Set records an explicit model limit, including zero.
 
 <a name="ModelLimits.SetUnknown"></a>
-### func \(\*ModelLimits\) [SetUnknown](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_presence.go#L218>)
+### func \(\*ModelLimits\) [SetUnknown](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_presence.go#L229>)
 
 ```go
 func (l *ModelLimits) SetUnknown(limit ModelLimit) bool
@@ -3366,7 +3394,7 @@ func (l *ModelLimits) UnmarshalYAML(unmarshal func(any) error) error
 UnmarshalYAML restores per\-limit presence from the human YAML record.
 
 <a name="ModelLimits.Unset"></a>
-### func \(\*ModelLimits\) [Unset](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_presence.go#L230>)
+### func \(\*ModelLimits\) [Unset](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_presence.go#L241>)
 
 ```go
 func (l *ModelLimits) Unset(limit ModelLimit) bool
@@ -3375,7 +3403,7 @@ func (l *ModelLimits) Unset(limit ModelLimit) bool
 Unset removes a model limit claim.
 
 <a name="ModelLimits.Value"></a>
-### func \(\*ModelLimits\) [Value](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_presence.go#L244>)
+### func \(\*ModelLimits\) [Value](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_presence.go#L255>)
 
 ```go
 func (l *ModelLimits) Value(limit ModelLimit) (int64, ValuePresence)
@@ -3434,7 +3462,7 @@ func (m ModelMetadata) MarshalYAML() (any, error)
 MarshalYAML preserves explicit false and unknown open\-weights claims.
 
 <a name="ModelMetadata.OpenWeightsValue"></a>
-### func \(\*ModelMetadata\) [OpenWeightsValue](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_presence.go#L377>)
+### func \(\*ModelMetadata\) [OpenWeightsValue](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_presence.go#L400>)
 
 ```go
 func (m *ModelMetadata) OpenWeightsValue() (bool, ValuePresence)
@@ -3443,7 +3471,7 @@ func (m *ModelMetadata) OpenWeightsValue() (bool, ValuePresence)
 OpenWeightsValue returns open\-weights support and its presence state.
 
 <a name="ModelMetadata.SetOpenWeights"></a>
-### func \(\*ModelMetadata\) [SetOpenWeights](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_presence.go#L358>)
+### func \(\*ModelMetadata\) [SetOpenWeights](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_presence.go#L381>)
 
 ```go
 func (m *ModelMetadata) SetOpenWeights(open bool)
@@ -3452,7 +3480,7 @@ func (m *ModelMetadata) SetOpenWeights(open bool)
 SetOpenWeights records an explicit open\-weights value.
 
 <a name="ModelMetadata.SetOpenWeightsUnknown"></a>
-### func \(\*ModelMetadata\) [SetOpenWeightsUnknown](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_presence.go#L365>)
+### func \(\*ModelMetadata\) [SetOpenWeightsUnknown](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_presence.go#L388>)
 
 ```go
 func (m *ModelMetadata) SetOpenWeightsUnknown()
@@ -3479,7 +3507,7 @@ func (m *ModelMetadata) UnmarshalYAML(unmarshal func(any) error) error
 UnmarshalYAML restores open\-weights presence from the human YAML record.
 
 <a name="ModelMetadata.UnsetOpenWeights"></a>
-### func \(\*ModelMetadata\) [UnsetOpenWeights](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_presence.go#L371>)
+### func \(\*ModelMetadata\) [UnsetOpenWeights](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_presence.go#L394>)
 
 ```go
 func (m *ModelMetadata) UnsetOpenWeights()
@@ -4014,7 +4042,7 @@ func (t *ModelTokenPricing) MarshalYAML() (any, error)
 MarshalYAML implements custom YAML marshaling for token pricing.
 
 <a name="ModelTools"></a>
-## type [ModelTools](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model.go#L348-L358>)
+## type [ModelTools](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model.go#L357-L367>)
 
 ModelTools represents external tool and capability integrations.
 
@@ -4033,7 +4061,7 @@ type ModelTools struct {
 ```
 
 <a name="ModelWebSearch"></a>
-## type [ModelWebSearch](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model.go#L361-L369>)
+## type [ModelWebSearch](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model.go#L370-L378>)
 
 ModelWebSearch represents web search configuration for search\-enabled models.
 
@@ -4573,7 +4601,7 @@ func DeepCopyProvider(provider Provider) Provider
 DeepCopyProvider creates a deep copy of a Provider including its Models map.
 
 <a name="Provider.BindCatalogEndpoint"></a>
-### func \(\*Provider\) [BindCatalogEndpoint](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L420>)
+### func \(\*Provider\) [BindCatalogEndpoint](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L428>)
 
 ```go
 func (p *Provider) BindCatalogEndpoint(bindings map[string]string) (string, error)
@@ -4582,7 +4610,7 @@ func (p *Provider) BindCatalogEndpoint(bindings map[string]string) (string, erro
 BindCatalogEndpoint resolves catalog\-declared endpoint variables.
 
 <a name="Provider.CatalogEndpointURL"></a>
-### func \(\*Provider\) [CatalogEndpointURL](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L412>)
+### func \(\*Provider\) [CatalogEndpointURL](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L420>)
 
 ```go
 func (p *Provider) CatalogEndpointURL() string
@@ -4591,7 +4619,7 @@ func (p *Provider) CatalogEndpointURL() string
 CatalogEndpointURL returns the resolved model catalog endpoint URL.
 
 <a name="Provider.IsCatalogAuthRequired"></a>
-### func \(\*Provider\) [IsCatalogAuthRequired](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L407>)
+### func \(\*Provider\) [IsCatalogAuthRequired](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L415>)
 
 ```go
 func (p *Provider) IsCatalogAuthRequired() bool
@@ -4600,7 +4628,7 @@ func (p *Provider) IsCatalogAuthRequired() bool
 IsCatalogAuthRequired reports whether catalog acquisition requires credentials.
 
 <a name="Provider.Model"></a>
-### func \(\*Provider\) [Model](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L457>)
+### func \(\*Provider\) [Model](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L465>)
 
 ```go
 func (p *Provider) Model(modelID string) (*Model, error)
@@ -4630,7 +4658,7 @@ type ProviderAWSDefaultProtocolOptions struct {
 ```
 
 <a name="ProviderAnthropicCatalogProtocolOptions"></a>
-## type [ProviderAnthropicCatalogProtocolOptions](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L136-L138>)
+## type [ProviderAnthropicCatalogProtocolOptions](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L143-L145>)
 
 ProviderAnthropicCatalogProtocolOptions defines Anthropic wire\-version facts.
 
@@ -4681,7 +4709,7 @@ type ProviderAuthenticationProtocolOptions struct {
 ```
 
 <a name="ProviderCapabilityCombination"></a>
-## type [ProviderCapabilityCombination](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L74>)
+## type [ProviderCapabilityCombination](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L81>)
 
 ProviderCapabilityCombination defines how multiple source predicates prove one canonical capability.
 
@@ -4705,7 +4733,7 @@ const (
 ```
 
 <a name="ProviderCatalog"></a>
-## type [ProviderCatalog](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L141-L144>)
+## type [ProviderCatalog](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L148-L151>)
 
 ProviderCatalog represents information about a provider's models.
 
@@ -4717,7 +4745,7 @@ type ProviderCatalog struct {
 ```
 
 <a name="ProviderCatalogProtocolOptions"></a>
-## type [ProviderCatalogProtocolOptions](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L113-L116>)
+## type [ProviderCatalogProtocolOptions](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L120-L123>)
 
 ProviderCatalogProtocolOptions is a typed union of catalog\-transport facts.
 
@@ -4930,7 +4958,7 @@ type ProviderCredentials struct {
 ```
 
 <a name="ProviderEndpoint"></a>
-## type [ProviderEndpoint](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L103-L110>)
+## type [ProviderEndpoint](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L110-L117>)
 
 ProviderEndpoint configures how to access the provider's model catalog.
 
@@ -4958,7 +4986,7 @@ type ProviderGoogleDefaultProtocolOptions struct {
 ```
 
 <a name="ProviderGovernancePolicy"></a>
-## type [ProviderGovernancePolicy](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L363-L367>)
+## type [ProviderGovernancePolicy](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L371-L375>)
 
 ProviderGovernancePolicy represents oversight and moderation practices.
 
@@ -4971,7 +4999,7 @@ type ProviderGovernancePolicy struct {
 ```
 
 <a name="ProviderHealthComponent"></a>
-## type [ProviderHealthComponent](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L281-L284>)
+## type [ProviderHealthComponent](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L288-L291>)
 
 ProviderHealthComponent represents a specific component to monitor in a provider's health API.
 
@@ -4983,7 +5011,7 @@ type ProviderHealthComponent struct {
 ```
 
 <a name="ProviderID"></a>
-## type [ProviderID](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L287>)
+## type [ProviderID](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L294>)
 
 ProviderID represents a provider identifier type for compile\-time safety.
 
@@ -5026,13 +5054,14 @@ const (
     ProviderIDSafetyKit      ProviderID = "safetykit"
     ProviderIDTogetherAI     ProviderID = "together"
     ProviderIDVirtuousAI     ProviderID = "virtuousai"
+    ProviderIDVoyageAI       ProviderID = "voyage"
     ProviderIDWebPurify      ProviderID = "webpurify"
     ProviderIDXAI            ProviderID = "xai"
 )
 ```
 
 <a name="ProviderID.String"></a>
-### func \(ProviderID\) [String](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L290>)
+### func \(ProviderID\) [String](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L297>)
 
 ```go
 func (pid ProviderID) String() string
@@ -5041,7 +5070,7 @@ func (pid ProviderID) String() string
 String returns the string representation of a ProviderID.
 
 <a name="ProviderInference"></a>
-## type [ProviderInference](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L180-L185>)
+## type [ProviderInference](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L187-L192>)
 
 ProviderInference defines stable provider\-level inference service facts. Gateway consumers supply runtime endpoint overrides and inference credentials.
 
@@ -5055,7 +5084,7 @@ type ProviderInference struct {
 ```
 
 <a name="ProviderInference.BindOfferingEndpoint"></a>
-### func \(\*ProviderInference\) [BindOfferingEndpoint](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L228-L232>)
+### func \(\*ProviderInference\) [BindOfferingEndpoint](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L235-L239>)
 
 ```go
 func (i *ProviderInference) BindOfferingEndpoint(endpoint ProviderOfferingEndpoint, baseURLOverride string, bindings map[string]string) (ProviderOfferingEndpoint, error)
@@ -5064,7 +5093,7 @@ func (i *ProviderInference) BindOfferingEndpoint(endpoint ProviderOfferingEndpoi
 BindOfferingEndpoint applies runtime endpoint bindings to one immutable offering endpoint. Catalog data owns URL templates. Consumers supply only tenant\-specific values and an optional base URL override.
 
 <a name="ProviderInference.Endpoint"></a>
-### func \(\*ProviderInference\) [Endpoint](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L199>)
+### func \(\*ProviderInference\) [Endpoint](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L206>)
 
 ```go
 func (i *ProviderInference) Endpoint(operation ProviderOperation) (ProviderInferenceEndpoint, bool)
@@ -5073,7 +5102,7 @@ func (i *ProviderInference) Endpoint(operation ProviderOperation) (ProviderInfer
 Endpoint returns the endpoint for an exact inference operation.
 
 <a name="ProviderInference.EndpointURL"></a>
-### func \(\*ProviderInference\) [EndpointURL](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L212>)
+### func \(\*ProviderInference\) [EndpointURL](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L219>)
 
 ```go
 func (i *ProviderInference) EndpointURL(endpoint ProviderInferenceEndpoint, baseURLOverride string) string
@@ -5082,7 +5111,7 @@ func (i *ProviderInference) EndpointURL(endpoint ProviderInferenceEndpoint, base
 EndpointURL resolves an endpoint against a runtime base URL override.
 
 <a name="ProviderInferenceEndpoint"></a>
-## type [ProviderInferenceEndpoint](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L188-L196>)
+## type [ProviderInferenceEndpoint](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L195-L203>)
 
 ProviderInferenceEndpoint defines one operation path and wire protocol.
 
@@ -5108,7 +5137,7 @@ type ProviderModelID string
 ```
 
 <a name="ProviderModerator"></a>
-## type [ProviderModerator](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L370>)
+## type [ProviderModerator](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L378>)
 
 ProviderModerator represents a moderator for a provider.
 
@@ -5149,7 +5178,7 @@ const (
 ```
 
 <a name="ProviderModerator.String"></a>
-### func \(ProviderModerator\) [String](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L373>)
+### func \(ProviderModerator\) [String](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L381>)
 
 ```go
 func (pm ProviderModerator) String() string
@@ -5255,7 +5284,7 @@ type ProviderOfferingServiceCapabilities struct {
 ```
 
 <a name="ProviderOpenAICatalogProtocolOptions"></a>
-## type [ProviderOpenAICatalogProtocolOptions](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L131-L133>)
+## type [ProviderOpenAICatalogProtocolOptions](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L138-L140>)
 
 ProviderOpenAICatalogProtocolOptions defines OpenAI\-compatible payload facts.
 
@@ -5266,7 +5295,7 @@ type ProviderOpenAICatalogProtocolOptions struct {
 ```
 
 <a name="ProviderOperation"></a>
-## type [ProviderOperation](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L147>)
+## type [ProviderOperation](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L154>)
 
 ProviderOperation identifies one provider inference operation.
 
@@ -5308,7 +5337,7 @@ const (
 ```
 
 <a name="ProviderPrivacyPolicy"></a>
-## type [ProviderPrivacyPolicy](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L348-L353>)
+## type [ProviderPrivacyPolicy](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L356-L361>)
 
 ProviderPrivacyPolicy represents data collection and usage practices.
 
@@ -5334,7 +5363,7 @@ type ProviderRequestOverrides struct {
 ```
 
 <a name="ProviderRetentionPolicy"></a>
-## type [ProviderRetentionPolicy](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L356-L360>)
+## type [ProviderRetentionPolicy](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L364-L368>)
 
 ProviderRetentionPolicy represents how long data is kept and deletion practices.
 
@@ -5347,7 +5376,7 @@ type ProviderRetentionPolicy struct {
 ```
 
 <a name="ProviderRetentionType"></a>
-## type [ProviderRetentionType](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L332>)
+## type [ProviderRetentionType](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L340>)
 
 ProviderRetentionType represents different types of data retention policies.
 
@@ -5367,7 +5396,7 @@ const (
 ```
 
 <a name="ProviderRetentionType.String"></a>
-### func \(ProviderRetentionType\) [String](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L335>)
+### func \(ProviderRetentionType\) [String](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L343>)
 
 ```go
 func (prt ProviderRetentionType) String() string
@@ -5376,7 +5405,7 @@ func (prt ProviderRetentionType) String() string
 String returns the string representation of a ProviderRetentionType.
 
 <a name="ProviderTokenPriceUnit"></a>
-## type [ProviderTokenPriceUnit](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L119>)
+## type [ProviderTokenPriceUnit](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L126>)
 
 ProviderTokenPriceUnit identifies the unit used by one provider payload.
 

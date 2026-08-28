@@ -551,11 +551,9 @@ func diffModelLimits(existing, updated *catalogs.ModelLimits) []FieldChange {
 		return changes
 	}
 
-	for _, limit := range []catalogs.ModelLimit{
-		catalogs.ModelLimitContextWindow,
-		catalogs.ModelLimitInputTokens,
-		catalogs.ModelLimitOutputTokens,
-	} {
+	// PublishedModelLimits is the one published order. Walking a local list
+	// instead lets a new limit change without the diff reporting it.
+	for _, limit := range catalogs.PublishedModelLimits() {
 		existingValue, existingPresence := existing.Value(limit)
 		updatedValue, updatedPresence := updated.Value(limit)
 		if existingValue != updatedValue || existingPresence != updatedPresence {

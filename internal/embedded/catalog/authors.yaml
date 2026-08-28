@@ -849,6 +849,16 @@
   huggingface: https://huggingface.co/lmsys
   github: https://github.com/lm-sys/FastChat
 
+# Voyage AI
+- id: voyage-ai
+  aliases:
+  - voyageai
+  name: Voyage AI
+  description: Embedding and reranking models for retrieval, now part of MongoDB
+  icon_url: https://www.voyageai.com/favicon.ico
+  website: https://www.voyageai.com
+  huggingface: https://huggingface.co/voyageai
+
 # WizardLM Team
 - id: wizardlm
   name: WizardLM Team

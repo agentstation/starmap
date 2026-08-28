@@ -339,6 +339,15 @@ type ModelLimits struct {
 	// counted in pages. A provider states this bound in pages rather than in
 	// tokens, because it refuses the document before it reads a token of it.
 	DocumentPages int64 `json:"document_pages,omitempty" yaml:"document_pages,omitempty"`
+	// MaxDocuments is the longest document list the provider ranks in one
+	// call. A reranker refuses a longer list rather than truncating it, and a
+	// caller that does not read this bound sends a request that cannot succeed.
+	MaxDocuments int64 `json:"max_documents,omitempty" yaml:"max_documents,omitempty"`
+	// DocumentTokens is the largest single document the provider reads in a
+	// rerank call, counted in tokens. A provider that exceeds this bound either
+	// truncates the document or splits it into chunks it bills separately, so
+	// the bound is a cost fact as well as a size fact.
+	DocumentTokens int64 `json:"document_tokens,omitempty" yaml:"document_tokens,omitempty"`
 
 	limitPresence uint8
 	limitKnown    uint8
