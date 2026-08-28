@@ -253,7 +253,7 @@ func (o ProviderOffering) Validate() error {
 
 func validProviderOperation(value ProviderOperation) bool {
 	switch value {
-	case ProviderOperationChatCompletions, ProviderOperationEmbeddings:
+	case ProviderOperationChatCompletions, ProviderOperationEmbeddings, ProviderOperationRerank:
 		return true
 	default:
 		return IsMediaOperation(value)
@@ -264,10 +264,11 @@ func validProviderOperation(value ProviderOperation) bool {
 // list reads from the media table, so a new operation reaches this message
 // without an edit here.
 func providerOperationMessage() string {
-	names := make([]string, 0, 2+len(mediaOperationFacts))
+	names := make([]string, 0, 3+len(mediaOperationFacts))
 	names = append(names,
 		string(ProviderOperationChatCompletions),
 		string(ProviderOperationEmbeddings),
+		string(ProviderOperationRerank),
 	)
 	for _, facts := range mediaOperationFacts {
 		names = append(names, string(facts.Operation))

@@ -128,6 +128,9 @@ func deriveOfferingCapabilities(model Model) ProviderOfferingServiceCapabilities
 	if isEmbeddingModel(model) {
 		capabilities.Operations = []ProviderOperation{ProviderOperationEmbeddings}
 	}
+	if isRerankModel(model) {
+		capabilities.Operations = append(capabilities.Operations, ProviderOperationRerank)
+	}
 	if isChatCompletionModel(model) {
 		capabilities.Operations = append(capabilities.Operations, ProviderOperationChatCompletions)
 	}
@@ -152,6 +155,17 @@ func isEmbeddingModel(model Model) bool {
 		slices.Contains(model.Metadata.Tags, ModelTag("embed"))
 }
 
+// isRerankModel reports whether the model orders documents by relevance. A
+// reranker reads text and writes text, which is also the shape of a chat
+// model, so the tag is the only fact that separates the two. The media
+// operation table keys on modalities and therefore cannot name this one.
+func isRerankModel(model Model) bool {
+	if model.Metadata == nil {
+		return false
+	}
+	return slices.Contains(model.Metadata.Tags, ModelTagRerank)
+}
+
 func isChatCompletionModel(model Model) bool {
 	if isEmbeddingModel(model) {
 		return false
@@ -163,7 +177,7 @@ func isChatCompletionModel(model Model) bool {
 		for _, tag := range model.Metadata.Tags {
 			switch tag {
 			case "embed", ModelTagEmbedding, "image-gen", "video-gen", "tts", "stt",
-				"rerank", ModelTagTextToImage, ModelTagTextToSpeech, ModelTagSpeechToText,
+				ModelTagRerank, ModelTagTextToImage, ModelTagTextToSpeech, ModelTagSpeechToText,
 				ModelTagTextToVideo:
 				return false
 			}

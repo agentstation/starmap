@@ -169,6 +169,10 @@ const (
 	// carries none. A document with a text layer needs no model at all, so this
 	// operation names the case a reader cannot answer on its own.
 	ProviderOperationDocumentsRecognition ProviderOperation = "documents-recognition"
+	// ProviderOperationRerank orders a document list by its relevance to one
+	// query. The provider answers with a score for each document rather than
+	// with generated text, and it bills the call in its own unit.
+	ProviderOperationRerank ProviderOperation = "rerank"
 )
 
 // ProviderInference defines stable provider-level inference service facts.
