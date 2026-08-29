@@ -711,6 +711,7 @@ func main() {
 - [type GenerationValidationCheckStatus](<#GenerationValidationCheckStatus>)
 - [type GenerationValidationReport](<#GenerationValidationReport>)
 - [type GenerationValidationStatus](<#GenerationValidationStatus>)
+- [type HealthAPIKind](<#HealthAPIKind>)
 - [type IntRange](<#IntRange>)
 - [type LoadIssue](<#LoadIssue>)
 - [type LoadReport](<#LoadReport>)
@@ -1052,7 +1053,7 @@ func NormalizeExtensionFields(fields map[string]any) map[string]any
 NormalizeExtensionFields returns a copy with maps, slices, and numbers normalized to stable dynamic types after JSON/YAML round trips.
 
 <a name="ShallowCopyProviderModels"></a>
-## func [ShallowCopyProviderModels](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/copy.go#L484>)
+## func [ShallowCopyProviderModels](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/copy.go#L485>)
 
 ```go
 func ShallowCopyProviderModels(models map[string]*Model) map[string]*Model
@@ -1141,7 +1142,7 @@ type Author struct {
 ```
 
 <a name="DeepCopyAuthor"></a>
-### func [DeepCopyAuthor](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/copy.go#L150>)
+### func [DeepCopyAuthor](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/copy.go#L151>)
 
 ```go
 func DeepCopyAuthor(author Author) Author
@@ -1339,7 +1340,7 @@ func (id AuthorID) String() string
 String returns the string representation of an AuthorID.
 
 <a name="AuthorMapping"></a>
-## type [AuthorMapping](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L104-L107>)
+## type [AuthorMapping](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L105-L108>)
 
 AuthorMapping defines how to extract and normalize authors.
 
@@ -1992,7 +1993,7 @@ func (cat *Builder) SetProviderModel(providerID ProviderID, model Model) error
 SetProviderModel sets a model on a provider atomically.
 
 <a name="CapabilityMapping"></a>
-## type [CapabilityMapping](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L96-L101>)
+## type [CapabilityMapping](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L97-L102>)
 
 CapabilityMapping maps one typed provider predicate to each canonical fact that the cited provider contract entails.
 
@@ -2225,7 +2226,7 @@ func (c ConsumerCompatibility) SupportsSchema(schemaVersion uint64) bool
 SupportsSchema reports whether a consumer catalog schema is compatible.
 
 <a name="EndpointType"></a>
-## type [EndpointType](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L50>)
+## type [EndpointType](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L51>)
 
 EndpointType specifies the API style for model listing.
 
@@ -2258,7 +2259,7 @@ const (
 ```
 
 <a name="FieldMapping"></a>
-## type [FieldMapping](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L74-L77>)
+## type [FieldMapping](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L75-L78>)
 
 FieldMapping defines how to map API response fields to model fields. Type conversion is automatic based on the destination field type.
 
@@ -2453,6 +2454,34 @@ const (
     // GenerationValidationFailed means at least one required check failed. A
     // failed generation is evidence, but is not eligible for publication.
     GenerationValidationFailed GenerationValidationStatus = "failed"
+)
+```
+
+<a name="HealthAPIKind"></a>
+## type [HealthAPIKind](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L199>)
+
+HealthAPIKind names the wire convention a provider's health API speaks. An empty kind means HealthAPIKindStatuspage, the convention every entry used before the kind existed.
+
+```go
+type HealthAPIKind string
+```
+
+<a name="HealthAPIKindStatuspage"></a>
+
+```go
+const (
+    // HealthAPIKindStatuspage is the Atlassian Statuspage JSON API
+    // (/api/v2/summary.json and /api/v2/components.json).
+    HealthAPIKindStatuspage HealthAPIKind = "statuspage"
+    // HealthAPIKindHyperping is the Hyperping status JSON document
+    // (schemaVersion 1 with overallStatus and per-service statuses).
+    HealthAPIKindHyperping HealthAPIKind = "hyperping"
+    // HealthAPIKindRSS is an incident feed (RSS or Atom) with one item
+    // per incident and no structured component status.
+    HealthAPIKindRSS HealthAPIKind = "rss"
+    // HealthAPIKindGoogleCloud is the Google Cloud service health JSON
+    // (incidents.json filtered by the product names in HealthComponents).
+    HealthAPIKindGoogleCloud HealthAPIKind = "google-cloud"
 )
 ```
 
@@ -4550,7 +4579,7 @@ type ProvenanceReader interface {
 ```
 
 <a name="Provider"></a>
-## type [Provider](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L14-L47>)
+## type [Provider](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L14-L48>)
 
 Provider represents a provider configuration.
 
@@ -4561,6 +4590,7 @@ type Provider struct {
     Aliases      []ProviderID `json:"aliases,omitempty" yaml:"aliases,omitempty"`           // Alternative IDs this provider is known by (e.g., in models.dev)
     Name         string       `json:"name" yaml:"name"`                                     // Display name (must not be empty)
     Description  *string      `json:"description,omitempty" yaml:"description,omitempty"`   // Short description of the provider's inference service
+    Website      *string      `json:"website,omitempty" yaml:"website,omitempty"`           // Official website URL
     DocsURL      *string      `json:"docs_url,omitempty" yaml:"docs_url,omitempty"`         // Link to the provider's API documentation
     Headquarters *string      `json:"headquarters,omitempty" yaml:"headquarters,omitempty"` // Company headquarters location
     IconURL      *string      `json:"icon_url,omitempty" yaml:"icon_url,omitempty"`         // Provider icon/logo URL
@@ -4601,7 +4631,7 @@ func DeepCopyProvider(provider Provider) Provider
 DeepCopyProvider creates a deep copy of a Provider including its Models map.
 
 <a name="Provider.BindCatalogEndpoint"></a>
-### func \(\*Provider\) [BindCatalogEndpoint](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L428>)
+### func \(\*Provider\) [BindCatalogEndpoint](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L453>)
 
 ```go
 func (p *Provider) BindCatalogEndpoint(bindings map[string]string) (string, error)
@@ -4610,7 +4640,7 @@ func (p *Provider) BindCatalogEndpoint(bindings map[string]string) (string, erro
 BindCatalogEndpoint resolves catalog\-declared endpoint variables.
 
 <a name="Provider.CatalogEndpointURL"></a>
-### func \(\*Provider\) [CatalogEndpointURL](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L420>)
+### func \(\*Provider\) [CatalogEndpointURL](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L445>)
 
 ```go
 func (p *Provider) CatalogEndpointURL() string
@@ -4619,7 +4649,7 @@ func (p *Provider) CatalogEndpointURL() string
 CatalogEndpointURL returns the resolved model catalog endpoint URL.
 
 <a name="Provider.IsCatalogAuthRequired"></a>
-### func \(\*Provider\) [IsCatalogAuthRequired](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L415>)
+### func \(\*Provider\) [IsCatalogAuthRequired](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L440>)
 
 ```go
 func (p *Provider) IsCatalogAuthRequired() bool
@@ -4628,7 +4658,7 @@ func (p *Provider) IsCatalogAuthRequired() bool
 IsCatalogAuthRequired reports whether catalog acquisition requires credentials.
 
 <a name="Provider.Model"></a>
-### func \(\*Provider\) [Model](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L465>)
+### func \(\*Provider\) [Model](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L490>)
 
 ```go
 func (p *Provider) Model(modelID string) (*Model, error)
@@ -4658,7 +4688,7 @@ type ProviderAWSDefaultProtocolOptions struct {
 ```
 
 <a name="ProviderAnthropicCatalogProtocolOptions"></a>
-## type [ProviderAnthropicCatalogProtocolOptions](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L143-L145>)
+## type [ProviderAnthropicCatalogProtocolOptions](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L144-L146>)
 
 ProviderAnthropicCatalogProtocolOptions defines Anthropic wire\-version facts.
 
@@ -4709,7 +4739,7 @@ type ProviderAuthenticationProtocolOptions struct {
 ```
 
 <a name="ProviderCapabilityCombination"></a>
-## type [ProviderCapabilityCombination](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L81>)
+## type [ProviderCapabilityCombination](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L82>)
 
 ProviderCapabilityCombination defines how multiple source predicates prove one canonical capability.
 
@@ -4733,7 +4763,7 @@ const (
 ```
 
 <a name="ProviderCatalog"></a>
-## type [ProviderCatalog](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L148-L151>)
+## type [ProviderCatalog](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L149-L152>)
 
 ProviderCatalog represents information about a provider's models.
 
@@ -4745,7 +4775,7 @@ type ProviderCatalog struct {
 ```
 
 <a name="ProviderCatalogProtocolOptions"></a>
-## type [ProviderCatalogProtocolOptions](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L120-L123>)
+## type [ProviderCatalogProtocolOptions](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L121-L124>)
 
 ProviderCatalogProtocolOptions is a typed union of catalog\-transport facts.
 
@@ -4958,7 +4988,7 @@ type ProviderCredentials struct {
 ```
 
 <a name="ProviderEndpoint"></a>
-## type [ProviderEndpoint](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L110-L117>)
+## type [ProviderEndpoint](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L111-L118>)
 
 ProviderEndpoint configures how to access the provider's model catalog.
 
@@ -4986,7 +5016,7 @@ type ProviderGoogleDefaultProtocolOptions struct {
 ```
 
 <a name="ProviderGovernancePolicy"></a>
-## type [ProviderGovernancePolicy](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L371-L375>)
+## type [ProviderGovernancePolicy](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L396-L400>)
 
 ProviderGovernancePolicy represents oversight and moderation practices.
 
@@ -4999,9 +5029,9 @@ type ProviderGovernancePolicy struct {
 ```
 
 <a name="ProviderHealthComponent"></a>
-## type [ProviderHealthComponent](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L288-L291>)
+## type [ProviderHealthComponent](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L313-L316>)
 
-ProviderHealthComponent represents a specific component to monitor in a provider's health API.
+ProviderHealthComponent represents a specific component to monitor in a provider's health API. The ID is the identifier the health API uses for the component: a Statuspage component id, a Hyperping service publicId, or a Google Cloud product id.
 
 ```go
 type ProviderHealthComponent struct {
@@ -5011,7 +5041,7 @@ type ProviderHealthComponent struct {
 ```
 
 <a name="ProviderID"></a>
-## type [ProviderID](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L294>)
+## type [ProviderID](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L319>)
 
 ProviderID represents a provider identifier type for compile\-time safety.
 
@@ -5061,7 +5091,7 @@ const (
 ```
 
 <a name="ProviderID.String"></a>
-### func \(ProviderID\) [String](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L297>)
+### func \(ProviderID\) [String](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L322>)
 
 ```go
 func (pid ProviderID) String() string
@@ -5070,7 +5100,7 @@ func (pid ProviderID) String() string
 String returns the string representation of a ProviderID.
 
 <a name="ProviderInference"></a>
-## type [ProviderInference](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L187-L192>)
+## type [ProviderInference](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L188-L194>)
 
 ProviderInference defines stable provider\-level inference service facts. Gateway consumers supply runtime endpoint overrides and inference credentials.
 
@@ -5079,12 +5109,13 @@ type ProviderInference struct {
     BaseURL          string                      `json:"base_url,omitempty" yaml:"base_url,omitempty"`
     Endpoints        []ProviderInferenceEndpoint `json:"endpoints" yaml:"endpoints"`
     HealthAPIURL     *string                     `json:"health_api_url,omitempty" yaml:"health_api_url,omitempty"`
+    HealthAPIKind    HealthAPIKind               `json:"health_api_kind,omitempty" yaml:"health_api_kind,omitempty"`
     HealthComponents []ProviderHealthComponent   `json:"health_components,omitempty" yaml:"health_components,omitempty"`
 }
 ```
 
 <a name="ProviderInference.BindOfferingEndpoint"></a>
-### func \(\*ProviderInference\) [BindOfferingEndpoint](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L235-L239>)
+### func \(\*ProviderInference\) [BindOfferingEndpoint](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L257-L261>)
 
 ```go
 func (i *ProviderInference) BindOfferingEndpoint(endpoint ProviderOfferingEndpoint, baseURLOverride string, bindings map[string]string) (ProviderOfferingEndpoint, error)
@@ -5093,7 +5124,7 @@ func (i *ProviderInference) BindOfferingEndpoint(endpoint ProviderOfferingEndpoi
 BindOfferingEndpoint applies runtime endpoint bindings to one immutable offering endpoint. Catalog data owns URL templates. Consumers supply only tenant\-specific values and an optional base URL override.
 
 <a name="ProviderInference.Endpoint"></a>
-### func \(\*ProviderInference\) [Endpoint](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L206>)
+### func \(\*ProviderInference\) [Endpoint](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L228>)
 
 ```go
 func (i *ProviderInference) Endpoint(operation ProviderOperation) (ProviderInferenceEndpoint, bool)
@@ -5102,7 +5133,7 @@ func (i *ProviderInference) Endpoint(operation ProviderOperation) (ProviderInfer
 Endpoint returns the endpoint for an exact inference operation.
 
 <a name="ProviderInference.EndpointURL"></a>
-### func \(\*ProviderInference\) [EndpointURL](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L219>)
+### func \(\*ProviderInference\) [EndpointURL](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L241>)
 
 ```go
 func (i *ProviderInference) EndpointURL(endpoint ProviderInferenceEndpoint, baseURLOverride string) string
@@ -5111,7 +5142,7 @@ func (i *ProviderInference) EndpointURL(endpoint ProviderInferenceEndpoint, base
 EndpointURL resolves an endpoint against a runtime base URL override.
 
 <a name="ProviderInferenceEndpoint"></a>
-## type [ProviderInferenceEndpoint](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L195-L203>)
+## type [ProviderInferenceEndpoint](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L217-L225>)
 
 ProviderInferenceEndpoint defines one operation path and wire protocol.
 
@@ -5137,7 +5168,7 @@ type ProviderModelID string
 ```
 
 <a name="ProviderModerator"></a>
-## type [ProviderModerator](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L378>)
+## type [ProviderModerator](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L403>)
 
 ProviderModerator represents a moderator for a provider.
 
@@ -5178,7 +5209,7 @@ const (
 ```
 
 <a name="ProviderModerator.String"></a>
-### func \(ProviderModerator\) [String](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L381>)
+### func \(ProviderModerator\) [String](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L406>)
 
 ```go
 func (pm ProviderModerator) String() string
@@ -5284,7 +5315,7 @@ type ProviderOfferingServiceCapabilities struct {
 ```
 
 <a name="ProviderOpenAICatalogProtocolOptions"></a>
-## type [ProviderOpenAICatalogProtocolOptions](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L138-L140>)
+## type [ProviderOpenAICatalogProtocolOptions](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L139-L141>)
 
 ProviderOpenAICatalogProtocolOptions defines OpenAI\-compatible payload facts.
 
@@ -5295,7 +5326,7 @@ type ProviderOpenAICatalogProtocolOptions struct {
 ```
 
 <a name="ProviderOperation"></a>
-## type [ProviderOperation](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L154>)
+## type [ProviderOperation](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L155>)
 
 ProviderOperation identifies one provider inference operation.
 
@@ -5337,7 +5368,7 @@ const (
 ```
 
 <a name="ProviderPrivacyPolicy"></a>
-## type [ProviderPrivacyPolicy](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L356-L361>)
+## type [ProviderPrivacyPolicy](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L381-L386>)
 
 ProviderPrivacyPolicy represents data collection and usage practices.
 
@@ -5363,7 +5394,7 @@ type ProviderRequestOverrides struct {
 ```
 
 <a name="ProviderRetentionPolicy"></a>
-## type [ProviderRetentionPolicy](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L364-L368>)
+## type [ProviderRetentionPolicy](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L389-L393>)
 
 ProviderRetentionPolicy represents how long data is kept and deletion practices.
 
@@ -5376,7 +5407,7 @@ type ProviderRetentionPolicy struct {
 ```
 
 <a name="ProviderRetentionType"></a>
-## type [ProviderRetentionType](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L340>)
+## type [ProviderRetentionType](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L365>)
 
 ProviderRetentionType represents different types of data retention policies.
 
@@ -5396,7 +5427,7 @@ const (
 ```
 
 <a name="ProviderRetentionType.String"></a>
-### func \(ProviderRetentionType\) [String](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L343>)
+### func \(ProviderRetentionType\) [String](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L368>)
 
 ```go
 func (prt ProviderRetentionType) String() string
@@ -5405,7 +5436,7 @@ func (prt ProviderRetentionType) String() string
 String returns the string representation of a ProviderRetentionType.
 
 <a name="ProviderTokenPriceUnit"></a>
-## type [ProviderTokenPriceUnit](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L126>)
+## type [ProviderTokenPriceUnit](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L127>)
 
 ProviderTokenPriceUnit identifies the unit used by one provider payload.
 

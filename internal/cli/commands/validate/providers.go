@@ -125,6 +125,10 @@ func validateProviderURLs(provider *catalogs.Provider) error {
 		return fmt.Errorf("invalid icon_url")
 	}
 
+	if provider.Website != nil && *provider.Website != "" && !isValidURL(*provider.Website) {
+		return fmt.Errorf("invalid website")
+	}
+
 	if provider.StatusPageURL != nil && *provider.StatusPageURL != "" && !isValidURL(*provider.StatusPageURL) {
 		return fmt.Errorf("invalid status_page_url")
 	}

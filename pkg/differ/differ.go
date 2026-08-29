@@ -696,6 +696,15 @@ func (diff *Differ) provider(existing, updated catalogs.Provider) *ProviderUpdat
 		})
 	}
 
+	if !equalOptionalString(existing.Website, updated.Website) && !diff.ignoreFields["website"] {
+		changes = append(changes, FieldChange{
+			Path:     "website",
+			OldValue: optionalStringValue(existing.Website),
+			NewValue: optionalStringValue(updated.Website),
+			Type:     ChangeTypeUpdate,
+		})
+	}
+
 	if !equalOptionalString(existing.StatusPageURL, updated.StatusPageURL) && !diff.ignoreFields["status_page_url"] {
 		changes = append(changes, FieldChange{
 			Path:     "status_page_url",

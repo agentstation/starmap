@@ -17,6 +17,7 @@ type Provider struct {
 	Aliases      []ProviderID `json:"aliases,omitempty" yaml:"aliases,omitempty"`           // Alternative IDs this provider is known by (e.g., in models.dev)
 	Name         string       `json:"name" yaml:"name"`                                     // Display name (must not be empty)
 	Description  *string      `json:"description,omitempty" yaml:"description,omitempty"`   // Short description of the provider's inference service
+	Website      *string      `json:"website,omitempty" yaml:"website,omitempty"`           // Official website URL
 	DocsURL      *string      `json:"docs_url,omitempty" yaml:"docs_url,omitempty"`         // Link to the provider's API documentation
 	Headquarters *string      `json:"headquarters,omitempty" yaml:"headquarters,omitempty"` // Company headquarters location
 	IconURL      *string      `json:"icon_url,omitempty" yaml:"icon_url,omitempty"`         // Provider icon/logo URL
@@ -188,8 +189,29 @@ type ProviderInference struct {
 	BaseURL          string                      `json:"base_url,omitempty" yaml:"base_url,omitempty"`
 	Endpoints        []ProviderInferenceEndpoint `json:"endpoints" yaml:"endpoints"`
 	HealthAPIURL     *string                     `json:"health_api_url,omitempty" yaml:"health_api_url,omitempty"`
+	HealthAPIKind    HealthAPIKind               `json:"health_api_kind,omitempty" yaml:"health_api_kind,omitempty"`
 	HealthComponents []ProviderHealthComponent   `json:"health_components,omitempty" yaml:"health_components,omitempty"`
 }
+
+// HealthAPIKind names the wire convention a provider's health API speaks.
+// An empty kind means HealthAPIKindStatuspage, the convention every entry
+// used before the kind existed.
+type HealthAPIKind string
+
+const (
+	// HealthAPIKindStatuspage is the Atlassian Statuspage JSON API
+	// (/api/v2/summary.json and /api/v2/components.json).
+	HealthAPIKindStatuspage HealthAPIKind = "statuspage"
+	// HealthAPIKindHyperping is the Hyperping status JSON document
+	// (schemaVersion 1 with overallStatus and per-service statuses).
+	HealthAPIKindHyperping HealthAPIKind = "hyperping"
+	// HealthAPIKindRSS is an incident feed (RSS or Atom) with one item
+	// per incident and no structured component status.
+	HealthAPIKindRSS HealthAPIKind = "rss"
+	// HealthAPIKindGoogleCloud is the Google Cloud service health JSON
+	// (incidents.json filtered by the product names in HealthComponents).
+	HealthAPIKindGoogleCloud HealthAPIKind = "google-cloud"
+)
 
 // ProviderInferenceEndpoint defines one operation path and wire protocol.
 type ProviderInferenceEndpoint struct {
@@ -284,7 +306,10 @@ func (i *ProviderInference) bindOfferingURL(
 	return resolved, nil
 }
 
-// ProviderHealthComponent represents a specific component to monitor in a provider's health API.
+// ProviderHealthComponent represents a specific component to monitor in a
+// provider's health API. The ID is the identifier the health API uses for
+// the component: a Statuspage component id, a Hyperping service publicId,
+// or a Google Cloud product id.
 type ProviderHealthComponent struct {
 	ID   string `json:"id" yaml:"id"`                         // Component ID from the health API
 	Name string `json:"name,omitempty" yaml:"name,omitempty"` // Human-readable component name

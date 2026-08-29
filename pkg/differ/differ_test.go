@@ -101,6 +101,7 @@ func TestCatalogsDiffScopesAddedAndRemovedModelsByProvider(t *testing.T) {
 func TestProvidersDetectCanonicalProviderFieldChanges(t *testing.T) {
 	hq := "San Francisco, CA, USA"
 	iconURL := "https://example.com/icon.svg"
+	website := "https://example.com"
 	statusURL := "https://status.example.com"
 	privacyURL := "https://example.com/privacy"
 	retainsData := false
@@ -118,6 +119,7 @@ func TestProvidersDetectCanonicalProviderFieldChanges(t *testing.T) {
 			Name:         "Provider A",
 			Headquarters: &hq,
 			IconURL:      &iconURL,
+			Website:      &website,
 			Credentials: testcatalog.APIKeyCredentials(
 				"PROVIDER_API_KEY", "Authorization", catalogs.ProviderCredentialSchemeBearer,
 			),
@@ -152,6 +154,7 @@ func TestProvidersDetectCanonicalProviderFieldChanges(t *testing.T) {
 		"aliases",
 		"headquarters",
 		"icon_url",
+		"website",
 		"credentials",
 		"status_page_url",
 		"inference",

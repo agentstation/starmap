@@ -134,6 +134,41 @@ func (p Provider) ValidateContract() error {
 		}
 		seen[endpoint.Operation] = struct{}{}
 	}
+	if err := validateHealthAPI(p.Inference); err != nil {
+		return err
+	}
+	return nil
+}
+
+// validateHealthAPI checks that a declared health API names a known wire
+// convention and that a declared kind or component list has a URL to act on.
+func validateHealthAPI(inference *ProviderInference) error {
+	hasURL := inference.HealthAPIURL != nil && strings.TrimSpace(*inference.HealthAPIURL) != ""
+	switch inference.HealthAPIKind {
+	case "", HealthAPIKindStatuspage, HealthAPIKindHyperping, HealthAPIKindRSS, HealthAPIKindGoogleCloud:
+	default:
+		return providerContractError(
+			"provider.inference.health_api_kind",
+			inference.HealthAPIKind,
+			"is not supported",
+		)
+	}
+	if !hasURL {
+		if inference.HealthAPIKind != "" {
+			return providerContractError(
+				"provider.inference.health_api_kind",
+				inference.HealthAPIKind,
+				"requires health_api_url",
+			)
+		}
+		if len(inference.HealthComponents) > 0 {
+			return providerContractError(
+				"provider.inference.health_components",
+				len(inference.HealthComponents),
+				"require health_api_url",
+			)
+		}
+	}
 	return nil
 }
 

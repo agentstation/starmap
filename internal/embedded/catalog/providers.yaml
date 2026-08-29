@@ -8,6 +8,7 @@
   - qwen
   name: Alibaba Cloud Model Studio
   description: Alibaba Cloud Model Studio serves the Qwen model family and partner models over an OpenAI-compatible API.
+  website: https://www.alibabacloud.com
   docs_url: https://www.alibabacloud.com/help/en/model-studio/
   headquarters: Hangzhou, China
   icon_url: https://www.alibabacloud.com/favicon.ico
@@ -66,6 +67,7 @@
           qwen*: qwen
           qwq*: qwen
           wan*: alibaba
+  status_page_url: https://status.alibabacloud.com
   inference:
     base_url: "{base_url}"
     endpoints:
@@ -82,6 +84,7 @@
 - id: anthropic
   name: Anthropic
   description: Anthropic serves the Claude model family with first-party APIs for messages, tools, and batch processing.
+  website: https://www.anthropic.com
   docs_url: https://docs.anthropic.com/
   headquarters: San Francisco, CA, USA
   icon_url: https://www.anthropic.com/favicon.ico
@@ -126,6 +129,7 @@
       type: anthropic
       path: /v1/messages
     health_api_url: https://status.anthropic.com/api/v2/summary.json
+    health_api_kind: statuspage
     health_components:
     - id: k8w3r06qmzrp
       name: api.anthropic.com
@@ -153,6 +157,7 @@
   - azure
   name: Azure OpenAI
   description: Microsoft Azure hosts OpenAI models with enterprise controls, regional deployments, and Azure identity.
+  website: https://azure.microsoft.com
   docs_url: https://learn.microsoft.com/azure/ai-services/openai/
   headquarters: Redmond, WA, USA
   icon_url: https://azure.microsoft.com/favicon.ico
@@ -231,14 +236,17 @@
     - operation: embeddings
       type: openai
       path: /openai/v1/embeddings
+    health_api_url: https://azure.status.microsoft/en-us/status/feed/
+    health_api_kind: rss
 
 # Cerebras
 - id: cerebras
   name: Cerebras
   description: Cerebras serves open-weight models on wafer-scale hardware with high-throughput inference.
+  website: https://www.cerebras.ai
   docs_url: https://inference-docs.cerebras.ai/
   headquarters: Sunnyvale, CA, USA
-  icon_url: https://cerebras.ai/favicon.ico
+  icon_url: "https://cdn.sanity.io/images/e4qjo92p/production/e7a55ae5ab7e2c4fdfd4e66a51f628d1f2f44207-967x967.png?w=512&h=512&fit=max&auto=format"
   credentials:
     fields:
     - id: api-key
@@ -279,7 +287,7 @@
           DeepSeek: deepseek
           Meta: meta
           OpenAI: openai
-  status_page_url: https://status.cerebras.ai/
+  status_page_url: https://status.cerebras.ai
   inference:
     base_url: https://api.cerebras.ai
     endpoints:
@@ -287,6 +295,7 @@
       type: openai
       path: /v1/chat/completions
     health_api_url: https://status.cerebras.ai/api/v2/summary.json
+    health_api_kind: statuspage
     health_components:
     - id: 7xvps6c9lqwc
       name: Llama3.1-8B
@@ -330,6 +339,7 @@
 - id: cohere
   name: Cohere
   description: Cohere serves retrieval models, including the rerank models other services copied.
+  website: https://cohere.com
   docs_url: https://docs.cohere.com/
   headquarters: Toronto, Canada
   icon_url: https://cohere.com/favicon.ico
@@ -361,6 +371,8 @@
     - operation: rerank
       type: cohere
       path: /v2/rerank
+    health_api_url: https://status.cohere.com/api/v2/summary.json
+    health_api_kind: statuspage
   privacy_policy:
     privacy_policy_url: https://cohere.com/privacy
     terms_of_service_url: https://cohere.com/terms-of-use
@@ -371,6 +383,7 @@
 - id: deepinfra
   name: DeepInfra
   description: DeepInfra serves open-weight models over an OpenAI-compatible API with per-token pricing.
+  website: https://deepinfra.com
   docs_url: https://deepinfra.com/docs
   headquarters: San Francisco, CA, USA
   icon_url: https://deepinfra.com/favicon.ico
@@ -436,6 +449,7 @@
           nvidia/*: nvidia
           openai/*: openai
           zai-org/*: zhipu-ai
+  status_page_url: https://status.deepinfra.com
   inference:
     base_url: https://api.deepinfra.com/v1/openai
     endpoints:
@@ -463,6 +477,11 @@
     - operation: videos-generations
       type: openai
       path: /videos
+    health_api_url: https://status.deepinfra.com/status.json
+    health_api_kind: hyperping
+    health_components:
+    - id: api
+      name: API
   extensions:
     models.dev:
       fields:
@@ -474,6 +493,7 @@
   - deepseek-ai
   name: DeepSeek
   description: DeepSeek serves its first-party reasoning and chat models over an OpenAI-compatible API.
+  website: https://www.deepseek.com
   docs_url: https://api-docs.deepseek.com/
   headquarters: Beijing, China
   icon_url: https://www.deepseek.com/favicon.ico
@@ -517,10 +537,8 @@
     - operation: chat-completions
       type: openai
       path: /v1/chat/completions
-    health_api_url: https://status.deepseek.com/api/v2/summary.json
-    health_components:
-    - id: j4n367d9mh3x
-      name: API 服务 (API Service)
+    health_api_url: https://status.deepseek.com/history.rss
+    health_api_kind: rss
   privacy_policy:
     privacy_policy_url: https://cdn.deepseek.com/policies/en-US/deepseek-privacy-policy.html
     terms_of_service_url: https://cdn.deepseek.com/policies/en-US/deepseek-open-platform-terms-of-service.html
@@ -545,6 +563,7 @@
   - fireworks
   name: Fireworks AI
   description: Fireworks AI serves open-weight and fine-tuned models with fast inference and an OpenAI-compatible API.
+  website: https://fireworks.ai
   docs_url: https://docs.fireworks.ai/
   headquarters: Redwood City, CA, USA
   icon_url: https://fireworks.ai/favicon.ico
@@ -614,6 +633,8 @@
     - operation: chat-completions
       type: openai
       path: /v1/chat/completions
+    health_api_url: https://status.fireworks.ai/api/v2/summary.json
+    health_api_kind: statuspage
   extensions:
     models.dev:
       fields:
@@ -626,6 +647,7 @@
   - google
   name: Google AI Studio
   description: Google AI Studio serves the Gemini model family through the Gemini API.
+  website: https://aistudio.google.com
   docs_url: https://ai.google.dev/gemini-api/docs
   headquarters: Mountain View, CA, USA
   icon_url: https://www.gstatic.com/aistudio/ai_studio_favicon_2_32x32.png
@@ -675,6 +697,11 @@
     - operation: documents-recognition
       type: google
       path: /{provider_model_id}:generateContent
+    health_api_url: https://status.cloud.google.com/incidents.json
+    health_api_kind: google-cloud
+    health_components:
+    - id: Z0FZJAMvEB4j3NbCJs6B
+      name: Vertex Gemini API
   privacy_policy:
     privacy_policy_url: https://policies.google.com/privacy
     terms_of_service_url: https://policies.google.com/terms
@@ -697,6 +724,7 @@
 - id: google-vertex
   name: Google Vertex AI
   description: Google Vertex AI hosts Gemini and partner models with enterprise controls on Google Cloud.
+  website: https://cloud.google.com/vertex-ai
   docs_url: https://cloud.google.com/vertex-ai/docs
   headquarters: Mountain View, CA, USA
   icon_url: https://www.gstatic.com/marketing-cms/assets/images/29/8c/e1f2c0994e87b8d7edf2886f9c02/google-cloud.webp
@@ -785,6 +813,13 @@
     - operation: embeddings
       type: google-cloud
       path: /v1/projects/{project}/locations/{location}/publishers/{publisher}/models/{provider_model_id}:predict
+    health_api_url: https://status.cloud.google.com/incidents.json
+    health_api_kind: google-cloud
+    health_components:
+    - id: sdXM79fz1FS6ekNpu37K
+      name: Vertex AI Online Prediction
+    - id: Z0FZJAMvEB4j3NbCJs6B
+      name: Vertex Gemini API
   privacy_policy:
     privacy_policy_url: https://cloud.google.com/privacy
     terms_of_service_url: https://cloud.google.com/terms
@@ -807,6 +842,7 @@
 - id: groq
   name: Groq
   description: Groq serves open-weight models on custom LPU hardware with very low latency.
+  website: https://groq.com
   docs_url: https://console.groq.com/docs
   headquarters: Mountain View, CA, USA
   icon_url: https://groq.com/favicon.ico
@@ -860,7 +896,7 @@
           OpenAI: openai
           PlayAI: playai
           SDAIA: sdaia
-  status_page_url: https://status.groq.com
+  status_page_url: https://groqstatus.com
   inference:
     base_url: https://api.groq.com/openai
     endpoints:
@@ -877,6 +913,7 @@
       type: openai
       path: /v1/audio/translations
     health_api_url: https://groqstatus.com/api/v2/summary.json
+    health_api_kind: statuspage
     health_components:
     - id: 01K053E2FAKWKEYHXEV7WAHJBM
       name: API
@@ -902,6 +939,7 @@
 - id: hetzner
   name: Hetzner
   description: Hetzner serves open-weight models from EU data centers over an OpenAI-compatible API.
+  website: https://www.hetzner.com
   docs_url: https://docs.hetzner.cloud/
   credentials:
     fields:
@@ -944,6 +982,7 @@
         normalized:
           Qwen/Qwen3.6-35B-A3B-FP8: qwen
           Qwen3.8-27B: qwen
+  status_page_url: https://status.hetzner.com
   inference:
     base_url: https://inference.hetzner.com/api/v1
     endpoints:
@@ -955,6 +994,7 @@
 - id: mistral
   name: Mistral AI
   description: Mistral AI serves its first-party open and premier models through La Plateforme.
+  website: https://mistral.ai
   docs_url: https://docs.mistral.ai/
   headquarters: Paris, France
   icon_url: https://mistral.ai/favicon.ico
@@ -995,7 +1035,7 @@
         field: owned_by
         normalized:
           mistralai: mistral
-  status_page_url: https://status.mistral.ai/
+  status_page_url: https://status.mistral.ai
   inference:
     base_url: https://api.mistral.ai
     endpoints:
@@ -1005,7 +1045,8 @@
     - operation: embeddings
       type: openai
       path: /v1/embeddings
-    health_api_url: https://status.mistral.ai/api/v2/summary.json
+    health_api_url: https://status.mistral.ai/feed.rss
+    health_api_kind: rss
 
 # Moonshot AI
 - id: moonshot-ai
@@ -1014,6 +1055,7 @@
   - moonshot
   name: Moonshot AI
   description: Moonshot AI serves the Kimi model family over an OpenAI-compatible API.
+  website: https://www.moonshot.ai
   docs_url: https://platform.moonshot.ai/docs
   headquarters: Beijing, China
   icon_url: https://www.moonshot.ai/favicon.ico
@@ -1061,6 +1103,13 @@
     - operation: chat-completions
       type: openai
       path: /v1/chat/completions
+    health_api_url: https://status.moonshot.cn/api/v2/summary.json
+    health_api_kind: statuspage
+    health_components:
+    - id: rf64wcbxt3r2
+      name: API Service
+    - id: 8psr5dfdld0s
+      name: Open API
   privacy_policy:
     privacy_policy_url: https://platform.moonshot.ai/docs/agreement/userprivacy
     terms_of_service_url: https://platform.moonshot.ai/docs/agreement/modeluse
@@ -1084,9 +1133,10 @@
 - id: openai
   name: OpenAI
   description: OpenAI serves the GPT, o-series, and multimodal model families with first-party APIs.
+  website: https://openai.com
   docs_url: https://platform.openai.com/docs
   headquarters: San Francisco, CA, USA
-  icon_url: https://cdn.openai.com/API/logo-openai.svg
+  icon_url: https://openai.com/favicon.svg
   credentials:
     fields:
     - id: api-key
@@ -1161,12 +1211,19 @@
       type: openai
       path: /v1/audio/translations
     health_api_url: https://status.openai.com/api/v2/summary.json
+    health_api_kind: statuspage
     health_components:
     - id: 01JMXBRMFE6N2NNT7DG6XZQ6PW
-      name: Chat
+      name: Chat Completions
+    - id: 01JMXBRMFEV0AJ0VVS68N9CD6R
+      name: Embeddings
+    - id: 01JMXBRMFE4MAP2BHSJNZ787WX
+      name: Images
+    - id: 01JMXBRMFEKVBWKK82B44QFMCE
+      name: Audio
   privacy_policy:
-    privacy_policy_url: https://openai.com/privacy
-    terms_of_service_url: https://openai.com/terms
+    privacy_policy_url: https://openai.com/policies/privacy-policy/
+    terms_of_service_url: https://openai.com/policies/terms-of-use/
     retains_data: true
     trains_on_data: false
   retention_policy:
@@ -1186,6 +1243,7 @@
 - id: ollama
   name: Ollama
   description: Ollama runs open-weight models locally and exposes an OpenAI-compatible API.
+  website: https://ollama.com
   docs_url: https://docs.ollama.com/
   icon_url: https://ollama.com/public/ollama.png
   credentials:
@@ -1227,6 +1285,7 @@
   - voyageai
   name: Voyage AI
   description: Voyage AI serves embedding and reranking models for retrieval, and bills them by the token.
+  website: https://www.voyageai.com
   docs_url: https://docs.voyageai.com/
   headquarters: Palo Alto, CA, USA
   icon_url: https://www.voyageai.com/favicon.ico
@@ -1251,14 +1310,20 @@
       required: true
       alternatives:
       - api-key
+  status_page_url: https://status.voyageai.com
   inference:
     base_url: https://api.voyageai.com
     endpoints:
     - operation: rerank
       type: voyage
       path: /v1/rerank
+    health_api_url: https://voyageai-status.statuspage.io/api/v2/summary.json
+    health_api_kind: statuspage
+    health_components:
+    - id: g74wmxgm0zxr
+      name: API
   privacy_policy:
     privacy_policy_url: https://www.voyageai.com/privacy
-    terms_of_service_url: https://www.voyageai.com/terms
+    terms_of_service_url: https://www.voyageai.com/tos
     retains_data: false
     trains_on_data: false
