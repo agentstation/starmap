@@ -92,6 +92,7 @@ func DeepCopyProvider(provider Provider) Provider {
 	providerCopy := provider
 	providerCopy.Aliases = append([]ProviderID(nil), provider.Aliases...)
 	providerCopy.Description = copyPtr(provider.Description)
+	providerCopy.Website = copyPtr(provider.Website)
 	providerCopy.DocsURL = copyPtr(provider.DocsURL)
 	providerCopy.Headquarters = copyPtr(provider.Headquarters)
 	providerCopy.IconURL = copyPtr(provider.IconURL)

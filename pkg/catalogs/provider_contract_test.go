@@ -259,3 +259,81 @@ func TestProviderOfferingServiceCapabilities(t *testing.T) {
 		t.Fatal("offering capability copy shares mutable state")
 	}
 }
+
+func TestProviderHealthAPIContract(t *testing.T) {
+	t.Parallel()
+
+	healthURL := "https://status.example.com/api/v2/summary.json"
+	tests := []struct {
+		name      string
+		inference *ProviderInference
+		wantError string
+	}{
+		{
+			name:      "no health declaration is valid",
+			inference: &ProviderInference{BaseURL: "https://api.example.com"},
+		},
+		{
+			name: "url without kind defaults to statuspage",
+			inference: &ProviderInference{
+				BaseURL:      "https://api.example.com",
+				HealthAPIURL: &healthURL,
+			},
+		},
+		{
+			name: "every supported kind is accepted",
+			inference: &ProviderInference{
+				BaseURL:       "https://api.example.com",
+				HealthAPIURL:  &healthURL,
+				HealthAPIKind: HealthAPIKindGoogleCloud,
+				HealthComponents: []ProviderHealthComponent{
+					{ID: "product-id", Name: "Product"},
+				},
+			},
+		},
+		{
+			name: "unknown kind is rejected",
+			inference: &ProviderInference{
+				BaseURL:       "https://api.example.com",
+				HealthAPIURL:  &healthURL,
+				HealthAPIKind: HealthAPIKind("pagerduty"),
+			},
+			wantError: "health_api_kind",
+		},
+		{
+			name: "kind without url is rejected",
+			inference: &ProviderInference{
+				BaseURL:       "https://api.example.com",
+				HealthAPIKind: HealthAPIKindRSS,
+			},
+			wantError: "requires health_api_url",
+		},
+		{
+			name: "components without url are rejected",
+			inference: &ProviderInference{
+				BaseURL: "https://api.example.com",
+				HealthComponents: []ProviderHealthComponent{
+					{ID: "component-id", Name: "API"},
+				},
+			},
+			wantError: "require health_api_url",
+		},
+	}
+
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			t.Parallel()
+			provider := Provider{ID: "health-test", Name: "Health Test", Inference: test.inference}
+			err := provider.ValidateContract()
+			if test.wantError == "" {
+				if err != nil {
+					t.Fatalf("ValidateContract() = %v, want nil", err)
+				}
+				return
+			}
+			if err == nil || !strings.Contains(err.Error(), test.wantError) {
+				t.Fatalf("ValidateContract() = %v, want error containing %q", err, test.wantError)
+			}
+		})
+	}
+}

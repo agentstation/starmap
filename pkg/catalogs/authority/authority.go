@@ -208,6 +208,7 @@ func defaultPolicies() []Policy {
 		// Provider discovery facts and operator configuration.
 		policy(evidence.ResourceTypeProvider, "Name", "", providerFirst, MergeReplace, EmptyAbsent, "Observed provider identity leads upstream and human fallback."),
 		policy(evidence.ResourceTypeProvider, "Description", "", localFirst, MergeReplace, EmptyAbsent, "Provider descriptions are human-curated catalog metadata."),
+		policy(evidence.ResourceTypeProvider, "Website", "", localFirst, MergeReplace, EmptyAbsent, "Homepage links are human-curated catalog metadata."),
 		policy(evidence.ResourceTypeProvider, "DocsURL", "", localFirst, MergeReplace, EmptyAbsent, "Documentation links are human-curated catalog metadata."),
 		policy(evidence.ResourceTypeProvider, "Logo", "", localFirst, MergeReplace, EmptyAbsent, "Brand marks are human-curated catalog assets."),
 		policy(evidence.ResourceTypeProvider, "Headquarters", "", providerFirst, MergeReplace, EmptyAbsent, "Observed organization metadata leads upstream and human fallback."),

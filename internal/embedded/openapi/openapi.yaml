@@ -248,6 +248,13 @@ components:
           description: Minimum value
           type: number
       type: object
+    catalogs.HealthAPIKind:
+      type: string
+      x-enum-varnames:
+      - HealthAPIKindStatuspage
+      - HealthAPIKindHyperping
+      - HealthAPIKindRSS
+      - HealthAPIKindGoogleCloud
     catalogs.IntRange:
       description: Beam search (niche)
       properties:
@@ -935,6 +942,9 @@ components:
         status_page_url:
           description: Status & Health
           type: string
+        website:
+          description: Official website URL
+          type: string
       type: object
     catalogs.ProviderAWSDefaultProtocolOptions:
       properties:
@@ -1240,6 +1250,8 @@ components:
             $ref: '#/components/schemas/catalogs.ProviderInferenceEndpoint'
           type: array
           uniqueItems: false
+        health_api_kind:
+          $ref: '#/components/schemas/catalogs.HealthAPIKind'
         health_api_url:
           type: string
         health_components:
