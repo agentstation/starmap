@@ -20,7 +20,7 @@ func displayResultsSummary(result *sync.Result) {
 			if providerResult.APIModelsCount > 0 {
 				fmt.Fprintf(os.Stderr, "  📡 Provider API: %d models found\n", providerResult.APIModelsCount)
 			} else {
-				// When no models from API but we have updates, it's from enrichment
+				// When no models from API but we have updates, it is from enrichment
 				if providerResult.UpdatedCount > 0 {
 					fmt.Fprintf(os.Stderr, "  ⏭️  Provider API: Skipped (using cached models)\n")
 				} else {

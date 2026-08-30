@@ -17,7 +17,7 @@ type options struct {
 	// optional human-editable provider YAML workspace
 	catalogPath string
 
-	// durable generation store required by every non-dry mutation path
+	// durable catalog store required by every non-dry mutation path
 	catalogStore storage.Store
 
 	// embedded bootstrap policy
@@ -34,10 +34,10 @@ func defaults() *options {
 	}
 }
 
-// WithCatalogStore configures the writable generation store used by non-dry
+// WithCatalogStore configures the writable catalog store used by non-dry
 // sync, manual, remote, and scheduled catalog updates. Read-only access and dry
 // runs do not require a store. Starmap provides memory, filesystem, and
-// conditional object-storage implementations; embedding applications own and
+// conditional object-storage implementations. Embedding applications own and
 // inject any database-backed implementation.
 func WithCatalogStore(store storage.Store) Option {
 	return func(o *options) error {

@@ -10,7 +10,7 @@ package server
 // @description REST API for the Starmap AI model catalog with reactive catalog publication updates over SSE.
 // @description
 // @description Features:
-// @description - Comprehensive model and provider queries
+// @description - Complete model and provider queries
 // @description - Advanced filtering and search
 // @description - Heartbeat-enabled catalog publication updates via Server-Sent Events
 // @description - In-memory caching for performance

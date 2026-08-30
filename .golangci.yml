@@ -12,7 +12,7 @@ issues:
 
 linters:
   exclusions:
-    # Which file paths to exclude: they will be analyzed, but issues from them won't be reported
+    # Analyze these paths but do not report their findings.
     paths:
       - "vendor/"
       - "scripts/"
@@ -34,7 +34,7 @@ linters:
     - revive       # Fast, configurable linter
     
     # Best practices
-    - bodyclose    # Checks HTTP response body is closed
+    - bodyclose    # Checks that code closes HTTP response bodies
     - noctx        # Finds sending HTTP request without context
     - unconvert    # Removes unnecessary type conversions
     - godot        # Checks comment punctuation
@@ -43,9 +43,9 @@ linters:
     - prealloc     # Suggests slice pre-allocation
 
   disable:
-    - depguard     # Too restrictive for general use
-    - gochecknoglobals # We use some globals
-    - gochecknoinits   # Init functions are sometimes needed
-    - goconst          # Mechanical string constants often reduce local readability
-    - mnd          # Magic numbers are sometimes clear in context
-    - wsl          # Too opinionated about whitespace
+    - depguard     # Restricts general use too much.
+    - gochecknoglobals # The project uses some globals.
+    - gochecknoinits   # The project needs some init functions.
+    - goconst          # Mechanical string constants can reduce local readability.
+    - mnd          # Some numeric values are clear in context.
+    - wsl          # Enforces excessive whitespace rules.

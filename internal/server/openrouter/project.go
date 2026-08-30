@@ -51,7 +51,7 @@ func ProjectModel(
 }
 
 // ProjectEndpoints resolves and projects every eligible provider offering for
-// one canonical model. Catalog ordering is preserved.
+// one canonical model. It preserves catalog order.
 func ProjectEndpoints(
 	catalog *catalogs.Catalog,
 	authorID catalogs.AuthorID,

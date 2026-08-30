@@ -20,7 +20,6 @@ var (
 	// ErrInvalidInput indicates that provided input was invalid.
 	ErrInvalidInput = errors.New("invalid input")
 
-	// ErrAPIKeyRequired indicates that an API key is required but not provided.
 	ErrAPIKeyRequired = errors.New("API key required")
 
 	// ErrAPIKeyInvalid indicates that the provided API key is invalid.
@@ -29,13 +28,11 @@ var (
 	// ErrProviderUnavailable indicates that a provider is temporarily unavailable.
 	ErrProviderUnavailable = errors.New("provider unavailable")
 
-	// ErrRateLimited indicates that the API rate limit has been exceeded.
 	ErrRateLimited = errors.New("rate limited")
 
 	// ErrTimeout indicates that an operation timed out.
 	ErrTimeout = errors.New("operation timed out")
 
-	// ErrCanceled indicates that an operation was canceled.
 	ErrCanceled = errors.New("operation canceled")
 
 	// ErrNotImplemented indicates that a feature is not yet implemented.
@@ -48,8 +45,8 @@ var (
 	ErrConflict = errors.New("conflict")
 )
 
-// ConflictError reports that state did not match an expected version or that
-// an immutable identity was reused for different content.
+// ConflictError reports a version mismatch or immutable identity reuse with
+// different content.
 type ConflictError struct {
 	Resource string
 	Expected string
@@ -193,7 +190,7 @@ func (e *LegacyCatalogLayoutError) Error() string {
 	)
 }
 
-// DependencyError indicates a required external dependency is missing.
+// DependencyError reports a missing external dependency.
 type DependencyError struct {
 	Dependency string
 	Message    string
@@ -277,7 +274,7 @@ func IsValidationError(err error) bool {
 	return errors.Is(err, ErrInvalidInput)
 }
 
-// IsAPIKeyError checks if an error is related to API keys.
+// IsAPIKeyError reports whether an error concerns an API key.
 func IsAPIKeyError(err error) bool {
 	return errors.Is(err, ErrAPIKeyRequired) || errors.Is(err, ErrAPIKeyInvalid)
 }
@@ -477,8 +474,8 @@ func NewTimeoutError(operation, duration, message string) *TimeoutError {
 
 // ProcessError represents an error from an external process or command.
 type ProcessError struct {
-	Operation string // What operation was being performed
-	Command   string // The command that was executed
+	Operation string
+	Command   string
 	Output    string // Stdout/stderr output from the process
 	ExitCode  int    // Exit code if available
 	Err       error  // Underlying error

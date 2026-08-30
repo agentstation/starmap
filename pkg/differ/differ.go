@@ -62,7 +62,6 @@ func (diff *Differ) Models(existing, updated []*catalogs.Model) *ModelChangeset 
 	// Find added and updated models
 	for _, newModel := range updated {
 		if existingModel, exists := existingMap[newModel.ID]; exists {
-			// Check if model has been updated
 			if update := diff.model(*existingModel, *newModel); update != nil {
 				changeset.Updated = append(changeset.Updated, *update)
 			}
@@ -109,7 +108,6 @@ func (diff *Differ) Providers(existing, updated []catalogs.Provider) *ProviderCh
 	// Find added and updated providers
 	for _, newProvider := range updated {
 		if existingProvider, exists := existingMap[newProvider.ID]; exists {
-			// Check if provider has been updated
 			if update := diff.provider(existingProvider, newProvider); update != nil {
 				changeset.Updated = append(changeset.Updated, *update)
 			}
@@ -156,7 +154,6 @@ func (diff *Differ) Authors(existing, updated []catalogs.Author) *AuthorChangese
 	// Find added and updated authors
 	for _, newAuthor := range updated {
 		if existingAuthor, exists := existingMap[newAuthor.ID]; exists {
-			// Check if author has been updated
 			if update := diff.author(existingAuthor, newAuthor); update != nil {
 				changeset.Updated = append(changeset.Updated, *update)
 			}

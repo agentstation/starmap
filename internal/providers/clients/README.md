@@ -33,13 +33,13 @@ type FetchRawResult struct {
 ```
 
 <a name="FetchRaw"></a>
-### func [FetchRaw](<https://github.com/agentstation/starmap/blob/main/internal/providers/clients/provider.go#L86-L91>)
+### func [FetchRaw](<https://github.com/agentstation/starmap/blob/main/internal/providers/clients/provider.go#L85-L90>)
 
 ```go
 func FetchRaw(ctx context.Context, provider *catalogs.Provider, material sources.ProviderCredentialMaterial, endpoint string) (*FetchRawResult, error)
 ```
 
-FetchRaw fetches raw response data from a provider's API endpoint. This function is used for fetching raw API responses for testdata generation. Returns a FetchRawResult containing the data, response headers, latency, and URL.
+FetchRaw gets an unparsed provider API response for test data generation. Its result contains the data, response headers, latency, and URL.
 
 <a name="ProviderClient"></a>
 ## type [ProviderClient](<https://github.com/agentstation/starmap/blob/main/internal/providers/clients/provider.go#L27-L30>)

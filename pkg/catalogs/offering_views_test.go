@@ -23,11 +23,6 @@ func textModel(pricing *ModelPricing, tags ...ModelTag) Model {
 	return model
 }
 
-// TestOfferingOperationsFollowServedOperationNotOperationPricing pins the rule
-// that decides whether an offering is routable at all: only a price for
-// generated media proves a model serves something other than chat. A flat
-// request fee, an input surcharge, and a declared price of zero each describe
-// cost or accepted input, so none of them may suppress chat-completions.
 func TestOfferingOperationsFollowServedOperationNotOperationPricing(t *testing.T) {
 	for _, testCase := range []struct {
 		name  string
@@ -102,9 +97,9 @@ func TestOfferingOperationsFollowServedOperationNotOperationPricing(t *testing.T
 	}
 }
 
-// TestEmbeddingModelsServeEmbeddingsInsteadOfChatCompletions guards the other
-// direction: a model that returns vectors must never be offered as a chat
-// route, whatever its pricing says.
+// TestEmbeddingModelsServeEmbeddingsInsteadOfChatCompletions guards the reverse
+// direction. A model that returns vectors must never offer a chat route,
+// regardless of its pricing.
 func TestEmbeddingModelsServeEmbeddingsInsteadOfChatCompletions(t *testing.T) {
 	embedding := Model{
 		Features: &ModelFeatures{

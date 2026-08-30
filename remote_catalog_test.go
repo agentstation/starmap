@@ -39,9 +39,8 @@ func TestNewPrefersDurableCurrentOverCorruptLocalCompatibilityView(t *testing.T)
 
 // TestF001CharacterizationNewPrefersDurableCurrentOverValidLocalWorkspace pins
 // the current restart precedence. The P3 workspace lifecycle must invert this
-// behavior through explicit edit detection/reconciliation and digest repair;
-// it must not silently ignore a valid human workspace merely because a durable
-// generation exists.
+// behavior through explicit edit detection, reconciliation, and digest repair.
+// It must not ignore a valid human catalog workspace because a durable generation exists.
 func TestF001CharacterizationNewPrefersDurableCurrentOverValidLocalWorkspace(t *testing.T) {
 	store := storage.NewMemory()
 	generation := rootRemoteGeneration(t)

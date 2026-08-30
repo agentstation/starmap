@@ -149,7 +149,6 @@ func runServer(cmd *cobra.Command, _ []string, app application) error {
 	}
 	logger.Debug().Msg("Server services active")
 
-	// Log that server is starting (after background services initialize)
 	logger.Info().
 		Str("addr", fmt.Sprintf("%s:%d", cfg.Host, cfg.Port)).
 		Str("service", "API").
@@ -179,7 +178,6 @@ func runServer(cmd *cobra.Command, _ []string, app application) error {
 
 // parseConfig parses command flags into server configuration.
 func parseConfig(cmd *cobra.Command) server.Config {
-	// Get flags with error checking - these should never fail since flags are defined in this package
 	port := mustGetInt(cmd, "port")
 	host := mustGetString(cmd, "host")
 	corsEnabled := mustGetBool(cmd, "cors")
@@ -241,7 +239,7 @@ func parsePort(portStr string) (int, error) {
 }
 
 // startWithGracefulShutdown starts the HTTP server with graceful shutdown.
-// The context is used to detect shutdown signals - when cancelled, server will shutdown gracefully.
+// Cancel the context to stop the server gracefully.
 func startWithGracefulShutdown(ctx context.Context, httpServer *http.Server, srv *server.Server, logger *zerolog.Logger) error {
 	// Server errors channel
 	serverErr := make(chan error, 1)
@@ -291,8 +289,8 @@ func startWithGracefulShutdown(ctx context.Context, httpServer *http.Server, srv
 	}
 }
 
-// mustGetInt retrieves an integer flag value or panics if the flag doesn't exist.
-// This should only be used for flags defined in this package.
+// mustGetInt retrieves an integer flag value or panics if the flag does not exist.
+// Use it only for flags that this package defines.
 func mustGetInt(cmd *cobra.Command, name string) int {
 	val, err := cmd.Flags().GetInt(name)
 	if err != nil {
@@ -301,8 +299,8 @@ func mustGetInt(cmd *cobra.Command, name string) int {
 	return val
 }
 
-// mustGetString retrieves a string flag value or panics if the flag doesn't exist.
-// This should only be used for flags defined in this package.
+// mustGetString retrieves a string flag value or panics if the flag does not exist.
+// Use it only for flags that this package defines.
 func mustGetString(cmd *cobra.Command, name string) string {
 	val, err := cmd.Flags().GetString(name)
 	if err != nil {
@@ -311,8 +309,8 @@ func mustGetString(cmd *cobra.Command, name string) string {
 	return val
 }
 
-// mustGetBool retrieves a boolean flag value or panics if the flag doesn't exist.
-// This should only be used for flags defined in this package.
+// mustGetBool retrieves a boolean flag value or panics if the flag does not exist.
+// Use it only for flags that this package defines.
 func mustGetBool(cmd *cobra.Command, name string) bool {
 	val, err := cmd.Flags().GetBool(name)
 	if err != nil {
@@ -321,8 +319,8 @@ func mustGetBool(cmd *cobra.Command, name string) bool {
 	return val
 }
 
-// mustGetStringSlice retrieves a string slice flag value or panics if the flag doesn't exist.
-// This should only be used for flags defined in this package.
+// mustGetStringSlice retrieves a string slice flag value or panics if the flag does not exist.
+// Use it only for flags that this package defines.
 func mustGetStringSlice(cmd *cobra.Command, name string) []string {
 	val, err := cmd.Flags().GetStringSlice(name)
 	if err != nil {
@@ -331,8 +329,8 @@ func mustGetStringSlice(cmd *cobra.Command, name string) []string {
 	return val
 }
 
-// mustGetDuration retrieves a duration flag value or panics if the flag doesn't exist.
-// This should only be used for flags defined in this package.
+// mustGetDuration retrieves a duration flag value or panics if the flag does not exist.
+// Use it only for flags that this package defines.
 func mustGetDuration(cmd *cobra.Command, name string) time.Duration {
 	val, err := cmd.Flags().GetDuration(name)
 	if err != nil {

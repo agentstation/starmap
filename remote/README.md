@@ -176,13 +176,13 @@ const (
     StreamStateIdle StreamState = "idle"
     // StreamStateStarting means initial verification or stream setup is active.
     StreamStateStarting StreamState = "starting"
-    // StreamStateStreaming means an SSE stream is established and caught up.
+    // StreamStateStreaming means the subscriber receives publication events.
     StreamStateStreaming StreamState = "streaming"
-    // StreamStateRetrying means the subscriber is recovering a failed stream.
+    // StreamStateRetrying means the subscriber waits before another connection attempt.
     StreamStateRetrying StreamState = "retrying"
     // StreamStatePolling means explicit conditional fallback polling is active.
     StreamStatePolling StreamState = "polling"
-    // StreamStateStopped means the one-shot lifecycle has ended.
+    // StreamStateStopped means the subscriber lifecycle ended.
     StreamStateStopped StreamState = "stopped"
 )
 ```

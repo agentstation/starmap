@@ -147,7 +147,7 @@ func (p *Providers) Add(provider *Provider) error {
 	return nil
 }
 
-// Delete removes a provider by id. Returns an error if the provider doesn't exist.
+// Delete removes a provider by id. Returns an error if the provider does not exist.
 func (p *Providers) Delete(id ProviderID) error {
 	p.mu.Lock()
 	defer p.mu.Unlock()
@@ -257,7 +257,7 @@ func (p *Providers) SetModel(providerID ProviderID, model Model) error {
 		}
 	}
 
-	// Ensure model has a name - use ID as fallback
+	// Verify model has a name - use ID as fallback
 	if model.Name == "" {
 		model.Name = model.ID
 	}
@@ -317,7 +317,7 @@ func (p *Providers) DeleteModel(providerID ProviderID, modelID string) error {
 }
 
 // AddBatch adds multiple providers in a single operation.
-// Only adds providers that don't already exist - fails if a provider ID already exists.
+// Only adds providers that do not already exist - fails if a provider ID already exists.
 // Returns a map of provider IDs to errors for any failed additions.
 func (p *Providers) AddBatch(providers []*Provider) map[ProviderID]error {
 	if len(providers) == 0 {
@@ -389,8 +389,8 @@ func (p *Providers) SetBatch(providers map[ProviderID]*Provider) error {
 	return nil
 }
 
-// DeleteBatch removes multiple providers by their IDs.
-// Returns a map of errors for providers that couldn't be deleted (not found).
+// DeleteBatch removes multiple providers by ID. The returned map identifies IDs
+// that DeleteBatch did not find.
 func (p *Providers) DeleteBatch(ids []ProviderID) map[ProviderID]error {
 	if len(ids) == 0 {
 		return nil
@@ -423,8 +423,8 @@ func (p *Providers) FormatYAML() string {
 	return formatted
 }
 
-// EncodeYAML returns formatted provider YAML or a typed parse error when a
-// provider value cannot be represented safely.
+// EncodeYAML returns formatted provider YAML. It returns a typed parse error for
+// values that YAML cannot represent safely.
 func (p *Providers) EncodeYAML() (string, error) {
 	p.mu.RLock()
 	defer p.mu.RUnlock()

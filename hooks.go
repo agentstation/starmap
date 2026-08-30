@@ -13,7 +13,7 @@ import (
 // Hook function types for model events.
 type (
 	// CatalogPublishedEvent identifies one durably committed immutable catalog.
-	// Sequence increases with each in-process activation; gaps tell observers
+	// Sequence increases with each in-process activation. Gaps tell observers
 	// that pending callback delivery coalesced to a newer generation. Catalog is
 	// safe to retain and share across goroutines.
 	CatalogPublishedEvent struct {
@@ -23,17 +23,17 @@ type (
 		Catalog      *catalogs.Catalog
 	}
 
-	// CatalogPublishedHook is called after a catalog generation is durably
-	// committed and atomically published.
+	// CatalogPublishedHook runs after Starmap durably commits and atomically
+	// publishes a catalog generation.
 	CatalogPublishedHook func(CatalogPublishedEvent) error
 
-	// ModelAddedHook is called when a model is added to the catalog.
+	// ModelAddedHook runs when the catalog gains a model.
 	ModelAddedHook func(model catalogs.Model)
 
-	// ModelUpdatedHook is called when a model is updated in the catalog.
+	// ModelUpdatedHook runs when the catalog changes a model.
 	ModelUpdatedHook func(old, updated catalogs.Model)
 
-	// ModelRemovedHook is called when a model is removed from the catalog.
+	// ModelRemovedHook runs when the catalog loses a model.
 	ModelRemovedHook func(model catalogs.Model)
 )
 
@@ -48,14 +48,14 @@ type HookDeliveryStats struct {
 	// Coalesced is the number of pending catalog generations superseded by a
 	// newer committed generation before callback delivery began.
 	Coalesced uint64
-	// LastLatency is the duration of the most recently completed callback.
+	// LastLatency records how long the most recent callback took.
 	LastLatency time.Duration
 	// MaxLatency is the longest completed callback duration.
 	MaxLatency time.Duration
 }
 
 // OnCatalogPublished registers a callback for durable catalog publication.
-// Generations begin callback delivery in sequence order. When callbacks lag,
+// Generations start callback delivery in sequence order. When callbacks lag,
 // delivery retains the running generation and coalesces pending work to the
 // newest committed generation.
 func (c *Client) OnCatalogPublished(fn CatalogPublishedHook) { c.hooks.OnCatalogPublished(fn) }
@@ -63,13 +63,13 @@ func (c *Client) OnCatalogPublished(fn CatalogPublishedHook) { c.hooks.OnCatalog
 // HookStats returns a lock-free snapshot of callback delivery health.
 func (c *Client) HookStats() HookDeliveryStats { return c.hooks.statsSnapshot() }
 
-// OnModelAdded registers a callback for when models are added.
+// OnModelAdded registers a callback that receives added models.
 func (c *Client) OnModelAdded(fn ModelAddedHook) { c.hooks.OnModelAdded(fn) }
 
-// OnModelUpdated registers a callback for when models are updated.
+// OnModelUpdated registers a callback that receives changed models.
 func (c *Client) OnModelUpdated(fn ModelUpdatedHook) { c.hooks.OnModelUpdated(fn) }
 
-// OnModelRemoved registers a callback for when models are removed.
+// OnModelRemoved registers a callback that receives removed models.
 func (c *Client) OnModelRemoved(fn ModelRemovedHook) { c.hooks.OnModelRemoved(fn) }
 
 // hooks manages event callbacks for catalog changes.
@@ -95,13 +95,13 @@ func newHooks() *hooks {
 	return &hooks{}
 }
 
-// OnModelAdded is a hook that registers a callback for when models are added.
+// OnModelAdded registers a hook that receives added models.
 func (h *hooks) OnModelAdded(fn ModelAddedHook) { h.onModelAdded(fn) }
 
-// OnModelUpdated is a hook that registers a callback for when models are updated.
+// OnModelUpdated registers a hook that receives changed models.
 func (h *hooks) OnModelUpdated(fn ModelUpdatedHook) { h.onModelUpdated(fn) }
 
-// OnModelRemoved is a hook that registers a callback for when models are removed.
+// OnModelRemoved registers a hook that receives removed models.
 func (h *hooks) OnModelRemoved(fn ModelRemovedHook) { h.onModelRemoved(fn) }
 
 // OnCatalogPublished registers a durable publication callback.
@@ -158,12 +158,10 @@ func (h *hooks) deliverDispatch(dispatch hookDispatch) {
 	publicationHooks := append([]CatalogPublishedHook(nil), h.catalogPublished...)
 	h.mu.RUnlock()
 	var publicationGroup sync.WaitGroup
-	publicationGroup.Add(len(publicationHooks))
 	for _, hook := range publicationHooks {
-		go func() {
-			defer publicationGroup.Done()
+		publicationGroup.Go(func() {
 			h.invoke(func() error { return hook(dispatch.event) })
-		}()
+		})
 	}
 	// Model-diff callbacks retain publication ordering, but independent
 	// publication observers cannot head-of-line block one another.
@@ -171,7 +169,7 @@ func (h *hooks) deliverDispatch(dispatch hookDispatch) {
 	h.triggerUpdate(dispatch.old, dispatch.updated)
 }
 
-// onModelAdded registers a callback for when models are added.
+// onModelAdded registers a callback that receives added models.
 func (h *hooks) onModelAdded(fn ModelAddedHook) {
 	if fn == nil {
 		return
@@ -181,7 +179,7 @@ func (h *hooks) onModelAdded(fn ModelAddedHook) {
 	h.mu.Unlock()
 }
 
-// onModelUpdated registers a callback for when models are updated.
+// onModelUpdated registers a callback that receives changed models.
 func (h *hooks) onModelUpdated(fn ModelUpdatedHook) {
 	if fn == nil {
 		return
@@ -191,7 +189,7 @@ func (h *hooks) onModelUpdated(fn ModelUpdatedHook) {
 	h.mu.Unlock()
 }
 
-// onModelRemoved registers a callback for when models are removed.
+// onModelRemoved registers a callback that receives removed models.
 func (h *hooks) onModelRemoved(fn ModelRemovedHook) {
 	if fn == nil {
 		return
@@ -228,7 +226,7 @@ func (h *hooks) triggerUpdate(old, updated catalogs.Reader) {
 	// Detect changes and trigger hooks
 	for _, newModel := range newModels {
 		if oldModel, exists := oldModelMap[newModel.key]; exists {
-			// Check if model was updated
+			// Check whether the model changed.
 			if !reflect.DeepEqual(oldModel, newModel.model) {
 				for _, hook := range modelUpdated {
 					h.invoke(func() error {
@@ -238,7 +236,7 @@ func (h *hooks) triggerUpdate(old, updated catalogs.Reader) {
 				}
 			}
 		} else {
-			// Model was added
+			// The catalog gained this model.
 			for _, hook := range modelAdded {
 				h.invoke(func() error {
 					hook(newModel.model)

@@ -6,7 +6,7 @@ import "slices"
 // It uniquely identifies where catalog data originates from (providers, models.dev, local files, etc.).
 type SourceID string
 
-// String returns the string representation of a source ID.
+// String returns text for source ID.
 func (id SourceID) String() string {
 	return string(id)
 }
@@ -47,7 +47,7 @@ func SourceIDs() []SourceID {
 }
 
 // IsValid returns true if the SourceID is one of the defined constants.
-// Uses SourceIDs() to ensure consistency with the authoritative list.
+// Uses SourceIDs() to verify consistency with the authoritative list.
 func (id SourceID) IsValid() bool {
 	return slices.Contains(SourceIDs(), id)
 }

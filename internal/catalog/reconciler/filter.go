@@ -19,7 +19,7 @@ func newFilter(primary sources.ID, catalog *catalogs.Catalog) *filter {
 	}
 }
 
-// isEnabled returns true if filtering is enabled.
+// isEnabled reports whether filtering is active.
 func (f *filter) isEnabled() bool {
 	return f.primary != "" && f.primaryCatalog != nil
 }

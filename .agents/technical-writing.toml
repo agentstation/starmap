@@ -1,0 +1,80 @@
+version = 1
+mode = "strict"
+
+[limits]
+instruction_words = 20
+descriptive_words = 25
+paragraph_sentences = 6
+max_warnings_per_100_words = 0
+
+[rules]
+long_sentence = "error"
+semicolon = "error"
+contraction = "error"
+passive_voice = "warning"
+complex_verb = "warning"
+ing_main_verb = "warning"
+nominalization = "warning"
+phrasal_verb = "warning"
+banned_word = "error"
+marketing_adjective = "error"
+modal_hedge = "error"
+formulaic_phrase = "warning"
+negative_parallelism = "warning"
+assistant_scaffold = "warning"
+restricted_vocabulary = "warning"
+long_paragraph = "error"
+em_dash = "error"
+glossary_term = "error"
+
+[files]
+# Historical reviews preserve their accepted wording and evidence.
+# Catalog YAML contains structured product data instead of developer prose.
+exclude = [
+  "docs/reviews/**",
+  "internal/embedded/catalog/**",
+]
+exceptions = []
+
+[terms]
+additional_banned = []
+allowed = []
+
+[restricted_vocabulary]
+additional = []
+exceptions = []
+
+[glossary]
+path = "GLOSSARY.md"
+required = true
+require_approved_definitions = true
+candidate_min_occurrences = 10
+ignored_candidates = [
+  "api-key",
+  "ARCHITECTURE",
+  "Builder",
+  "Client",
+  "Consumer-local",
+  "CONTRIBUTING",
+  "Generation",
+  "gpt-4o",
+  "Model",
+  "Multi-source",
+  "New",
+  "NewContext",
+  "ROOT",
+  "Start",
+]
+scan = [
+  "AGENTS.md",
+  "README.md",
+  "CONTRIBUTING.md",
+  "docs/*.md",
+]
+exclude = [
+  "docs/reviews/**",
+  "docs/*CONTROL_PLANE.md",
+  "docs/API.md",
+  "docs/plans/**",
+  "internal/embedded/catalog/**",
+]

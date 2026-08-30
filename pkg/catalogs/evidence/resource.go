@@ -1,8 +1,7 @@
 package evidence
 
-// ResourceType identifies the type of resource being tracked or merged in the catalog system.
-// This allows provenance tracking and reconciliation to handle different resource types
-// (models, providers, authors) with appropriate logic.
+// ResourceType identifies a catalog resource category. Provenance and
+// reconciliation use it to select logic for models, providers, and authors.
 type ResourceType string
 
 const (
@@ -22,7 +21,7 @@ const (
 	ResourceTypeProviderOffering ResourceType = "provider_offering"
 )
 
-// String returns the string representation of a resource type.
+// String returns text for resource type.
 func (rt ResourceType) String() string {
 	return string(rt)
 }

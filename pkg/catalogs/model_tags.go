@@ -3,7 +3,7 @@ package catalogs
 // ModelTag represents a use case or category tag for models.
 type ModelTag string
 
-// String returns the string representation of a ModelTag.
+// String returns text for ModelTag.
 func (tag ModelTag) String() string {
 	return string(tag)
 }
@@ -11,15 +11,15 @@ func (tag ModelTag) String() string {
 // Model tags for categorizing models by use case and capabilities.
 const (
 	// Core Use Cases.
-	ModelTagCoding    ModelTag = "coding"    // Programming and code generation
-	ModelTagWriting   ModelTag = "writing"   // Creative and technical writing
-	ModelTagReasoning ModelTag = "reasoning" // Logical reasoning and problem solving
-	ModelTagMath      ModelTag = "math"      // Mathematical problem solving
-	ModelTagChat      ModelTag = "chat"      // Conversational AI
-	ModelTagInstruct  ModelTag = "instruct"  // Instruction following
-	ModelTagResearch  ModelTag = "research"  // Research and analysis
-	ModelTagCreative  ModelTag = "creative"  // Creative content generation
-	ModelTagRoleplay  ModelTag = "roleplay"  // Character roleplay and simulation
+	ModelTagCoding    ModelTag = "coding"
+	ModelTagWriting   ModelTag = "writing"
+	ModelTagReasoning ModelTag = "reasoning"
+	ModelTagMath      ModelTag = "math"
+	ModelTagChat      ModelTag = "chat"
+	ModelTagInstruct  ModelTag = "instruct"
+	ModelTagResearch  ModelTag = "research"
+	ModelTagCreative  ModelTag = "creative"
+	ModelTagRoleplay  ModelTag = "roleplay"
 
 	// Technical Capabilities.
 	ModelTagFunctionCalling ModelTag = "function_calling"   // Tool/function calling

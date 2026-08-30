@@ -46,9 +46,8 @@ type App struct {
 	credentialResolver sources.ProviderCredentialResolver
 }
 
-// New creates a new App instance with the given version information.
-// The app is initialized with default configuration that can be
-// customized using functional options.
+// New creates an App with the given version information. It applies functional
+// options to the default configuration.
 func New(version, commit, date, builtBy string, opts ...Option) (*App, error) {
 	app := &App{
 		version: version,
@@ -250,9 +249,8 @@ func (a *App) Readiness() (starmap.CatalogReadiness, error) {
 	return sm.Readiness(), nil
 }
 
-// Shutdown performs graceful shutdown of the application.
-// It stops any running background tasks and cleans up resources.
-// The context controls the shutdown timeout - shutdown will abort if context is cancelled.
+// Shutdown gracefully stops background tasks and releases resources.
+// The context sets the timeout and can abort the shutdown.
 func (a *App) Shutdown(ctx context.Context) error {
 	// Check if context is already cancelled
 	if err := ctx.Err(); err != nil {
@@ -306,8 +304,8 @@ func (a *App) catalogStoreOption() (starmap.Option, error) {
 	return starmap.WithCatalogStore(store), nil
 }
 
-// MigrateCatalogWorkspace explicitly relocates the pre-plan generation store
-// from the configured human workspace path into the CLI's machine state root.
+// MigrateCatalogWorkspace explicitly relocates the pre-plan catalog store
+// from the configured human catalog workspace path into the CLI's machine state root.
 func (a *App) MigrateCatalogWorkspace(ctx context.Context) (workspace.LegacyLayoutMigrationResult, error) {
 	a.mu.Lock()
 	defer a.mu.Unlock()

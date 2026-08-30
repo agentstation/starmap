@@ -24,7 +24,7 @@ const (
 type SchemaFieldClass string
 
 const (
-	// SchemaFieldIdentity is required identity whose absence or type drift rejects the record.
+	// SchemaFieldIdentity is an identity field whose drift rejects its scope.
 	SchemaFieldIdentity SchemaFieldClass = "strict_identity"
 	// SchemaFieldContainer is an object/array boundary whose type drift rejects its scope.
 	SchemaFieldContainer SchemaFieldClass = "strict_container"
@@ -34,7 +34,7 @@ const (
 	SchemaFieldExtension SchemaFieldClass = "tolerant_extension"
 )
 
-// SchemaDriftDisposition defines how a mismatch or unknown member is handled.
+// SchemaDriftDisposition defines the response to a mismatch or unknown member.
 type SchemaDriftDisposition string
 
 const (

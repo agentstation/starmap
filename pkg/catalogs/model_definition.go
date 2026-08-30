@@ -9,7 +9,7 @@ import (
 	"github.com/agentstation/starmap/pkg/errors"
 )
 
-// ModelDefinition is the canonical provider-independent description of a model.
+// ModelDefinition describes a canonical, provider-independent model.
 // Provider service facts belong to ProviderOffering, never this record.
 type ModelDefinition struct {
 	ID           ModelDefinitionID           `json:"id" yaml:"id"`
@@ -30,7 +30,7 @@ type ModelDefinition struct {
 type ModelDefinitionMetadata struct {
 	// ReleaseDate is the first known public release of this identity. A rolling
 	// alias may later route to revisions with a newer KnowledgeCutoff. Zero
-	// means unknown; missing day precision must not be fabricated.
+	// means unknown. Do not invent missing day precision.
 	ReleaseDate     utc.Time   `json:"release_date" yaml:"release_date"`
 	KnowledgeCutoff *utc.Time  `json:"knowledge_cutoff,omitempty" yaml:"knowledge_cutoff,omitempty"`
 	Tags            []ModelTag `json:"tags,omitempty" yaml:"tags,omitempty"`

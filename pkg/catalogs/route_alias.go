@@ -25,7 +25,7 @@ const (
 	RouteAliasRejectedMissing RouteAliasRejectionReason = "missing"
 	// RouteAliasRejectedUnavailable means the provider marks the offering unavailable.
 	RouteAliasRejectedUnavailable RouteAliasRejectionReason = "unavailable"
-	// RouteAliasRejectedRetired means the provider has retired the offering.
+	// RouteAliasRejectedRetired means the provider retired the offering.
 	RouteAliasRejectedRetired RouteAliasRejectionReason = "retired"
 )
 

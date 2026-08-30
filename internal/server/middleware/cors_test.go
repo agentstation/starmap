@@ -207,7 +207,7 @@ func TestIsOriginAllowed(t *testing.T) {
 	}
 }
 
-// TestCORS_PreflightShortCircuit tests that preflight requests don't call the next handler.
+// TestCORS_PreflightShortCircuit tests that preflight requests do not call the next handler.
 func TestCORS_PreflightShortCircuit(t *testing.T) {
 	config := CORSConfig{
 		AllowAll:       true,
@@ -231,7 +231,6 @@ func TestCORS_PreflightShortCircuit(t *testing.T) {
 
 	handler.ServeHTTP(w, req)
 
-	// Handler should NOT be called for preflight
 	if handlerCalled {
 		t.Error("expected handler to not be called for preflight request")
 	}
@@ -266,7 +265,6 @@ func TestCORS_ActualRequestPassthrough(t *testing.T) {
 
 	handler.ServeHTTP(w, req)
 
-	// Handler SHOULD be called for actual request
 	if !handlerCalled {
 		t.Error("expected handler to be called for actual request")
 	}
@@ -358,7 +356,6 @@ func TestCORS_ConcurrentRequests(t *testing.T) {
 
 			handler.ServeHTTP(w, req)
 
-			// Verify CORS header is set correctly
 			allowedOrigin := w.Header().Get("Access-Control-Allow-Origin")
 			if allowedOrigin != origin {
 				t.Errorf("request %d: expected origin %s, got %s", id, origin, allowedOrigin)

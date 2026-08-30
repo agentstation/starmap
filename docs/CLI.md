@@ -18,7 +18,7 @@ Starmap's CLI follows industry best practices with a focus on:
 
 ## Global Flags (Reserved)
 
-These short flags are **RESERVED** globally and must not be used for command-specific purposes:
+The CLI reserves these short flags globally. Do not use them for a command-specific purpose:
 
 | Short | Long         | Purpose                    | Notes                           |
 |-------|--------------|----------------------------|---------------------------------|
@@ -37,7 +37,7 @@ We use `-o` for output format to:
 
 ## Command-Specific Short Flags
 
-Commands may define their own short flags that don't conflict with global flags:
+Commands may define their own short flags that do not conflict with global flags:
 
 ### Update Command
 
@@ -53,7 +53,7 @@ starmap migrate catalog
 ```
 
 This is the only command that opts into changing a detected pre-plan local
-storage layout. It moves the validated immutable generation store from the
+storage layout. It moves the validated immutable catalog store from the
 configured `catalog_path` to `~/.starmap/state/catalog`, then materializes the
 current generation at `catalog_path` as editable provider YAML. It accepts no
 path arguments: `catalog_path` follows normal configuration precedence and the
@@ -63,12 +63,12 @@ Stop all older Starmap processes that use `catalog_path` before running the
 command, and do not restart those binaries afterward. They do not understand
 the path's new human-workspace meaning and can recreate machine state there.
 
-Every retained generation, the current pointer, payload binding, and schema
-compatibility are checked before the first rename. A normal failure restores
+The command checks every retained generation, the current pointer, payload
+binding, and schema compatibility before the first rename. A normal failure restores
 the old store. If another actor recreates the vacated path, rollback preserves
 that data and the relocated store and returns a typed conflict instead of
-deleting either. An interrupted process after the atomic move is completed by
-normal startup projection repair; no new catalog generation is published.
+deleting either. Normal startup projection repair completes an interrupted
+process after the atomic move. The repair publishes no new catalog generation.
 
 ### Serve Command
 
@@ -286,9 +286,10 @@ The table output shows:
 - **When**: Timestamp of last update
 - **Reason**: Explanation for why this source was chosen
 
-History is scoped to one provider model. When a model ID is unique, Starmap
+Scope history to one provider model. When a model ID is unique, Starmap
 infers its provider. When multiple providers expose the same ID, `--provider`
-is required so pricing, limits, and lifecycle evidence cannot be confused.
+must identify the provider. This prevents confusion between pricing, limits,
+and lifecycle evidence.
 
 ## Examples by Command
 
@@ -377,7 +378,7 @@ When Starmap reaches 1.0, we may need:
 
 ### Command Names
 
-Each command has one canonical public spelling. Prelaunch aliases are omitted
+Each command has one canonical public spelling. The CLI omits prelaunch aliases
 so scripts, documentation, telemetry, and support guidance share one vocabulary.
 
 ---

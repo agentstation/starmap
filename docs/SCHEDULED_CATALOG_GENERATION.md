@@ -2,43 +2,43 @@
 
 The repository-owned Catalog Generation workflow is a distribution producer,
 not a scheduler embedded in ordinary Starmap consumers. It runs every day at
-03:17 UTC and supports an identical manual dispatch. One non-cancelling
+03:17 UTC and supports the same manual dispatch. One non-cancelling
 concurrency group serializes publisher runs.
 
-The workflow performs these gates in order:
+The workflow runs these gates in order:
 
-1. refresh source and catalog candidates through the checked generation script;
+1. refresh source and catalog candidates through the checked generation script.
 2. canonicalize the catalog and calculate separate facts-only semantic and
-   exact evidence-payload checksums;
-3. derive a new logical generation only when catalog facts change;
-4. run catalog-generation and embedded age/size/coverage gates;
-5. stage the validated deterministic archive and checksum assets;
-6. create and verify repository/workflow-bound provenance;
+   exact evidence-payload checksums.
+3. derive a new logical generation only when catalog facts change.
+4. run catalog-generation and embedded age/size/coverage gates.
+5. stage the validated deterministic archive and checksum assets.
+6. create and verify repository/workflow-bound provenance.
 7. publish an immutable GitHub prerelease keyed by semantic digest while the
-   artifact remains bound to its exact evidence payload;
-8. download the three public assets, reopen the archive and detached statement,
-   verify the checksum and exact repository/workflow provenance, and compare the
-   downloaded bytes with the staged publication set;
+   artifact remains bound to its exact evidence payload.
+8. download the three public assets and reopen the archive and detached
+   statement. Verify the checksum and exact repository and workflow provenance.
+   Compare the downloaded bytes with the staged publication set.
 9. when a prior catalog prerelease exists, download and reopen it with the same
-   checksum, detached-statement, repository, and workflow identity checks so a
-   rollback target remains demonstrably readable.
+   identity checks. Verify its checksum, detached statement, repository, and
+   workflow so the rollback target remains readable.
 
 Manual execution cannot force an unchanged publication. If a semantic-digest
 release already exists, the workflow downloads all three assets, verifies the
-archive, checksum, detached statement, and facts-only digest, then exits without
-publishing. Exact payload checksums remain the integrity and evidence identity
-inside each generation; observation times can therefore change audit evidence
+archive, checksum, detached statement, and facts-only digest. It then exits
+without publishing. Exact payload checksums remain the integrity and evidence
+identity inside each generation. Observation times can therefore change audit evidence
 without manufacturing a second release for identical catalog facts.
 
-The scheduled prerelease tag is `catalog-semantic-` followed by the full
+The scheduled prerelease tag uses `catalog-semantic-` followed by the full
 facts-only SHA-256 hex digest. It is a distribution identity, not a Starmap
 binary version and not a mutable latest pointer. Runtime channel promotion
 remains a separate hosted control-plane action. Expiring Actions artifacts are
 never used as the runtime catalog source.
 
-Provider credentials are injected only into the refresh step. The workflow uses
+The workflow injects provider credentials only into the refresh step. It uses
 noninteractive dependency policy, and any refresh, typed validation, budget,
 attestation, identity verification, or release command failure stops the run.
 Deployments that invoke acquisition on their own cadence own any cross-process
 lease, retry policy, and durable run records above the explicit operation.
-Those concerns must not be inferred from this repository publication workflow.
+This repository publication workflow does not define those concerns.

@@ -8,17 +8,17 @@ import (
 
 // Author represents a known model author or organization.
 type Author struct {
-	ID          AuthorID   `json:"id" yaml:"id"`                                       // Unique identifier for the author
-	Aliases     []AuthorID `json:"aliases,omitempty" yaml:"aliases,omitempty"`         // Alternative IDs this author is known by (e.g., in provider catalogs)
-	Name        string     `json:"name" yaml:"name"`                                   // Display name of the author
-	Description *string    `json:"description,omitempty" yaml:"description,omitempty"` // Description of what the author is known for
+	ID          AuthorID   `json:"id" yaml:"id"`
+	Aliases     []AuthorID `json:"aliases,omitempty" yaml:"aliases,omitempty"`
+	Name        string     `json:"name" yaml:"name"` // Display name of the author
+	Description *string    `json:"description,omitempty" yaml:"description,omitempty"`
 
 	// Company/organization info
 	Headquarters *string `json:"headquarters,omitempty" yaml:"headquarters,omitempty"` // Company headquarters location
 	IconURL      *string `json:"icon_url,omitempty" yaml:"icon_url,omitempty"`         // Author icon/logo URL
 
 	// Logo holds the author's SVG brand mark. The bytes travel in the JSON
-	// catalog payload but stay out of authors.yaml; on a filesystem catalog
+	// catalog payload but stay out of authors.yaml. On a filesystem catalog
 	// they live in the authors/<id>/logo.svg sidecar file.
 	Logo []byte `json:"logo_svg,omitempty" yaml:"-"`
 
@@ -40,7 +40,7 @@ type Author struct {
 // AuthorCatalog represents the relationship between an author and their authoritative provider catalog.
 // This contains the attribution configuration for identifying the author's models across providers.
 type AuthorCatalog struct {
-	Description *string            `json:"description,omitempty" yaml:"description,omitempty"` // Optional description of this mapping relationship
+	Description *string            `json:"description,omitempty" yaml:"description,omitempty"`
 	Attribution *AuthorAttribution `json:"attribution,omitempty" yaml:"attribution,omitempty"` // Model attribution configuration for multi-provider inference
 }
 
@@ -52,11 +52,11 @@ type AuthorCatalog struct {
 //  2. Provider + patterns: provider_id + patterns - only matching models from that provider, then cross-provider attribution
 //  3. Global patterns: patterns only - direct case-insensitive pattern matching across all providers
 //
-// Glob Pattern Syntax (case-insensitive):
-//   - matches any sequence of characters (except path separators)
-//     ? matches any single character
-//     [abc] matches any character in the set
-//     [a-z] matches any character in the range
+// Glob pattern syntax is case-insensitive:
+//   - "*" matches any character sequence except path separators.
+//   - "?" matches one character.
+//   - "[abc]" matches one listed character.
+//   - "[a-z]" matches one character in the range.
 //
 // Examples:
 //
@@ -71,7 +71,7 @@ type AuthorAttribution struct {
 // AuthorID is a unique identifier for an author.
 type AuthorID string
 
-// String returns the string representation of an AuthorID.
+// String returns text for AuthorID.
 func (id AuthorID) String() string {
 	return string(id)
 }

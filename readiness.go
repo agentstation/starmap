@@ -8,11 +8,11 @@ import (
 const (
 	// ReadinessIssueCatalogUnavailable means no active immutable catalog exists.
 	ReadinessIssueCatalogUnavailable = "catalog_unavailable"
-	// ReadinessIssueEmbeddedBootstrapFuture means embedded metadata is dated in the future.
+	// ReadinessIssueEmbeddedBootstrapFuture means bootstrap metadata has a future date.
 	ReadinessIssueEmbeddedBootstrapFuture = "embedded_bootstrap_future"
-	// ReadinessIssueEmbeddedBootstrapStale means the configured age budget was exceeded.
+	// ReadinessIssueEmbeddedBootstrapStale means bootstrap age exceeds its budget.
 	ReadinessIssueEmbeddedBootstrapStale = "embedded_bootstrap_stale"
-	// ReadinessIssueEmbeddedBootstrapOversize means the configured size budget was exceeded.
+	// ReadinessIssueEmbeddedBootstrapOversize means bootstrap size exceeds its budget.
 	ReadinessIssueEmbeddedBootstrapOversize = "embedded_bootstrap_oversize"
 )
 

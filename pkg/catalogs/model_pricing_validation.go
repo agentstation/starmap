@@ -135,10 +135,9 @@ func validatePricingComponents(path string, tokens *ModelTokenPricing, operation
 	return count, nil
 }
 
-// validateRerankBasis holds the recorded basis to the price beside it. A basis
-// without its price leaves a consumer with nothing to charge, and a search unit
-// price without the basis leaves the same consumer guessing which unit the
-// provider counts.
+// validateRerankBasis requires a price and its recorded basis to appear together.
+// A basis without a price leaves nothing to charge. A price without its basis
+// leaves consumers unable to identify the provider's billing unit.
 func validateRerankBasis(path string, tokens *ModelTokenPricing, operations *ModelOperationPricing) error {
 	basisPath := path + ".operations.rerank_basis"
 	switch operations.RerankBasis {

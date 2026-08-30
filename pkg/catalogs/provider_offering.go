@@ -26,7 +26,7 @@ type OfferingKey struct {
 	ProviderModelID ProviderModelID `json:"provider_model_id" yaml:"provider_model_id"`
 }
 
-// OfferingAvailability describes whether an offering can currently be used.
+// OfferingAvailability describes an offering's current availability.
 type OfferingAvailability string
 
 const (
@@ -46,7 +46,7 @@ type OfferingLifecycle string
 const (
 	// OfferingLifecycleUnknown means no source supplied a lifecycle state.
 	OfferingLifecycleUnknown OfferingLifecycle = "unknown"
-	// OfferingLifecycleActive means the offering is supported for production use.
+	// OfferingLifecycleActive means the provider supports new requests.
 	OfferingLifecycleActive OfferingLifecycle = "active"
 	// OfferingLifecyclePreview means the offering is preview or beta quality.
 	OfferingLifecyclePreview OfferingLifecycle = "preview"
@@ -72,9 +72,8 @@ type OfferingRequestHeaders map[string]string
 // without routing values through map[string]any.
 type OfferingRequestBody map[string]json.RawMessage
 
-// MarshalYAML preserves each exact JSON value as its equivalent native YAML
-// scalar, sequence, mapping, or null instead of encoding RawMessage bytes as a
-// sequence of integers.
+// MarshalYAML converts each exact JSON value to a native YAML scalar, sequence,
+// mapping, or null. This prevents RawMessage bytes from becoming integers.
 func (b OfferingRequestBody) MarshalYAML() (any, error) {
 	values := make(yaml.MapSlice, 0, len(b))
 	for _, field := range slices.Sorted(maps.Keys(b)) {

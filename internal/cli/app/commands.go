@@ -60,8 +60,6 @@ func (a *App) NewEmbedCommand() *cobra.Command {
 		},
 	}
 
-	// Define custom help flag for ALL embed subcommands to free up -h and -f
-	// This allows embed subcommands to use -h (ls: human-readable) and -f (cat: filename)
 	cmd.PersistentFlags().BoolP("help", "?", false, "help for embed commands")
 
 	// Add existing subcommands

@@ -71,7 +71,7 @@ func (m *Models) Add(model *Model) error {
 	return nil
 }
 
-// Delete removes a model by id. Returns an error if the model doesn't exist.
+// Delete removes a model by id. Returns an error if the model does not exist.
 func (m *Models) Delete(id string) error {
 	m.mu.Lock()
 	defer m.mu.Unlock()
@@ -171,7 +171,7 @@ func (m *Models) Clear() {
 }
 
 // AddBatch adds multiple models in a single operation.
-// Only adds models that don't already exist - fails if a model ID already exists.
+// Only adds models that do not already exist - fails if a model ID already exists.
 // Returns a map of model IDs to errors for any failed additions.
 func (m *Models) AddBatch(models []*Model) map[string]error {
 	if len(models) == 0 {
@@ -243,8 +243,8 @@ func (m *Models) SetBatch(models map[string]*Model) error {
 	return nil
 }
 
-// DeleteBatch removes multiple models by their IDs.
-// Returns a map of errors for models that couldn't be deleted (not found).
+// DeleteBatch removes multiple models by ID. The returned map identifies IDs
+// that DeleteBatch did not find.
 func (m *Models) DeleteBatch(ids []string) map[string]error {
 	if len(ids) == 0 {
 		return nil

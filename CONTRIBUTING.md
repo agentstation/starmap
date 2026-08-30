@@ -19,7 +19,7 @@ Thank you for your interest in contributing to Starmap! We welcome contributions
 Before contributing, please:
 
 1. Check [existing issues](https://github.com/agentstation/starmap/issues) to avoid duplicates
-2. Read our [Code of Conduct](CODE_OF_CONDUCT.md) (if available)
+2. Follow the [project behavior rules](CODE_OF_CONDUCT.md), if available
 3. Review the [ARCHITECTURE.md](docs/ARCHITECTURE.md) to understand the system design
 4. Join our [Discord](https://discord.gg/starmap) (if available) to discuss major changes
 
@@ -112,7 +112,7 @@ This is useful for:
 2. Make your changes
 3. Run `make fix` to format code
 4. Run `make lint` to check for issues
-5. Run `make test` to ensure tests pass
+5. Run `make test` and verify that the tests pass
 6. Commit with descriptive message
 7. Push and create pull request
 
@@ -170,7 +170,7 @@ See [ARCHITECTURE.md § Package Organization](docs/ARCHITECTURE.md#package-organ
 
 ### Quick Reference
 
-For comprehensive instructions, see the provider implementation section in [ARCHITECTURE.md](docs/ARCHITECTURE.md#data-sources).
+For full instructions, see the provider implementation section in [ARCHITECTURE.md](docs/ARCHITECTURE.md#data-sources).
 
 ### Basic Steps
 
@@ -241,7 +241,7 @@ For comprehensive instructions, see the provider implementation section in [ARCH
 
 5. **Update Documentation**
 
-   - Add provider to README.md if it's a major provider
+- Add the provider to README.md if it is a major provider
    - Update docs/ARCHITECTURE.md § Data Sources if needed
    - Add yourself to CONTRIBUTORS.md
 
@@ -327,7 +327,7 @@ All contributions must:
    ```
 
 6. **Open a Pull Request**:
-   - Provide clear description of changes
+- Describe the changes clearly
    - Reference related issues
    - Include screenshots/examples for UI changes
    - Update documentation if needed
@@ -337,7 +337,7 @@ All contributions must:
 - [ ] Code follows Go best practices
 - [ ] Tests added/updated and passing
 - [ ] Documentation updated
-- [ ] Commits are focused and atomic
+- [ ] Use focused and atomic commits
 - [ ] No merge conflicts with `main`
 - [ ] Passes CI checks (linting, tests, build)
 
@@ -346,7 +346,7 @@ All contributions must:
 1. Maintainers review PR within 2-3 business days
 2. Address feedback and requested changes
 3. Once approved, maintainer merges PR
-4. PR author will be added to CONTRIBUTORS.md
+4. A maintainer adds the PR author to CONTRIBUTORS.md
 
 ## Development Guidelines
 
@@ -360,7 +360,7 @@ All contributions must:
 
 ### Architecture Patterns
 
-- **Define interfaces where used**: Don't create interfaces "just in case"
+- **Define interfaces where used**: Do not create interfaces "just in case"
 - **Dependency injection**: Use functional options pattern
 - **Thread safety**: Always return deep copies, never expose internals
 - **Error handling**: Use typed errors from `pkg/errors`
@@ -381,7 +381,7 @@ See [ARCHITECTURE.md](docs/ARCHITECTURE.md) for detailed design patterns.
 - Keep commits focused and atomic
 - Write clear, descriptive commit messages
 - Reference issues in commits: `Fixes #123`
-- Don't commit generated files (unless necessary)
+- Do not commit generated files unless the change requires them
 - Add yourself to CONTRIBUTORS.md
 
 ## Contributing to models.dev

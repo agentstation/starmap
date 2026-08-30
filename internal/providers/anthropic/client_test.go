@@ -131,7 +131,7 @@ func TestAnthropicModelConversion(t *testing.T) {
 			t.Errorf("Model %s: authors = %#v, want no inferred author", apiModel.ID, starmapModel.Authors)
 		}
 		// Features must come from declared capabilities only. A model that
-		// declares none must not acquire invented features.
+		// declares none must not get invented features.
 		if apiModel.Capabilities == nil && starmapModel.Features != nil {
 			t.Errorf("Model %s: features = %#v, want no inferred features", apiModel.ID, starmapModel.Features)
 		}
@@ -143,10 +143,6 @@ func TestAnthropicModelConversion(t *testing.T) {
 	}
 }
 
-// TestAnthropicModelConversionInfersNothingWithoutCapabilities keeps the
-// anti-inference guarantee testable. Every model in the current governed
-// fixture declares capabilities, so the fixture alone can no longer prove that
-// the client refuses to invent facts from a model ID or display name.
 func TestAnthropicModelConversionInfersNothingWithoutCapabilities(t *testing.T) {
 	client := &Client{
 		provider: &catalogs.Provider{ID: catalogs.ProviderIDAnthropic, Name: "Anthropic"},

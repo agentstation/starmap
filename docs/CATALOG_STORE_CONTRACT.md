@@ -1,6 +1,6 @@
 # Catalog Store Contract
 
-`storage.Store` is Starmap's narrow durable-generation seam. It lets an
+`storage.Store` is Starmap's narrow durable-generation boundary. It lets an
 embedding application own persistence without teaching Starmap about that
 application's database, credentials, migrations, or lifecycle.
 
@@ -13,9 +13,9 @@ type Store interface {
 ```
 
 Starmap provides memory, filesystem, and conditional object-storage adapters.
-Starport may provide SQLite, MySQL, PostgreSQL, or other adapters, but Starport
-owns each concrete driver, connection pool, schema, migration, credential,
-backup, close, and dialect-specific transaction concern.
+Starport may provide SQLite, MySQL, PostgreSQL, or other adapters. Starport owns
+each concrete driver, connection pool, schema, migration, credential, backup,
+close, and dialect-specific transaction concern.
 
 ## Ownership and lifecycle
 
@@ -39,9 +39,9 @@ observations, and synchronization identity.
 
 A generation ID is immutable:
 
-- absent ID plus valid content may be stored;
-- the same ID plus byte-identical manifest and payload is an idempotent retry;
-- the same ID plus different content returns a typed conflict; and
+- the store may persist valid content for an absent ID.
+- the same ID plus unchanged manifest and payload bytes is an idempotent retry.
+- the same ID plus different content returns a typed conflict. And
 - no successful or failed operation may rewrite content already bound to an ID.
 
 `Get(ctx, id)` returns the complete validated generation bound to `id`.
@@ -51,20 +51,20 @@ not depend on reconstructing old content.
 ## Current and compare-and-swap
 
 `Current` returns the complete generation named by the one current pointer. An
-empty store returns a typed not-found error. It must never expose a partially
-written generation or a pointer whose generation cannot be read and validated.
+empty store returns a typed not-found error. It must never expose partial
+generation data. Each current pointer must identify a generation that the store can read and validate.
 
 `Commit(ctx, candidate, expectedGenerationID)` is one compare-and-swap
 operation:
 
-1. reject canceled context or invalid candidate before durable mutation;
-2. reject a generation-ID collision with a typed conflict;
-3. compare the actual current generation ID with `expectedGenerationID`;
-4. persist the complete immutable candidate; and
+1. reject canceled context or invalid candidate before durable mutation.
+2. reject a generation-ID collision with a typed conflict.
+3. compare the actual current generation ID with `expectedGenerationID`.
+4. persist the complete immutable candidate. And
 5. atomically change current only if the comparison still holds.
 
 An empty expected ID means the store must still have no current generation.
-Concurrent commits from the same base produce exactly one winner; every loser
+Concurrent commits from the same base produce exactly one winner. Every loser
 returns a typed conflict containing the expected and observed current IDs.
 Implementations must use their backend's native transaction, row/version
 predicate, or conditional-write primitive. A read followed by an unconditional
@@ -81,11 +81,11 @@ generation complete and readable.
 An implementation may retain a complete immutable addressed candidate when a
 failure occurs after candidate persistence but before current-pointer
 promotion. It must never expose partial content through `Get`, and retrying the
-same candidate must remain safe. Garbage collection of unreferenced immutable
-generations is an implementation-owned maintenance policy, not part of
+same candidate must remain safe. Each implementation owns cleanup of
+unreferenced immutable generations. That maintenance policy is not part of
 `Commit`.
 
-Rollback is normal compare-and-swap promotion of a retained prior generation:
+Rollback uses compare-and-swap to promote a retained prior generation:
 
 ```go
 prior, err := store.Get(ctx, priorID)
@@ -103,40 +103,41 @@ No special mutable rollback channel exists.
 
 Callers must be able to classify:
 
-- missing current or addressed generation with `errors.IsNotFound`;
+- missing current or addressed generation with `errors.IsNotFound`.
 - stale compare-and-swap or immutable-ID collision with
-  `errors.IsConflict` / `*errors.ConflictError`;
+  `errors.IsConflict` / `*errors.ConflictError`.
 - invalid manifest, payload, identity, or checksum with
-  `errors.IsInvalidInput`; and
+  `errors.IsInvalidInput`. And
 - cancellation or deadline with the standard `context` errors.
 
-Backend details may be wrapped with operation/resource context, but reusable
-credentials, connection strings, query arguments, payload bodies, or other
-secrets must not enter returned errors or logs.
+Backend wrappers may add operation and resource context. Returned errors and
+logs must not contain reusable credentials, connection strings, query
+arguments, payload bodies, or other secrets.
 
 ## External adapter verification
 
-The `testdata/consumers/store-only` module is compiled with `GOWORK=off`. It
-defines a Starport-owned adapter outside Starmap's module packages, proves the
-interface at compile time, injects it through `WithCatalogStore`, publishes a
-real generation, and executes the ownership, validation, idempotency, retained
-history, conflict, rollback, failure-preservation, and cancellation contract.
+The verification command compiles the `testdata/consumers/store-only` module
+with `GOWORK=off`. The module defines a Starport-owned adapter outside Starmap's
+packages and proves the interface at compile time. It injects the adapter through
+`WithCatalogStore` and publishes a real generation. It tests ownership,
+validation, idempotency, retained history, conflict, rollback, failure preservation,
+and cancellation.
 Its dependency gate rejects CLI, server, acquisition, SQLite, MySQL, and
 PostgreSQL implementations.
 
 Starmap deliberately does not export a `testing.T`-based conformance helper.
-The interface and executable external module are the stable product surface;
-backend-specific transaction, corruption, and fault injection remain local to
-each adapter. A public helper should be reconsidered only when multiple
-external repositories demonstrate a shared deep testing module that cannot be
-expressed through this behavioral contract.
+The interface and executable external module are the stable product surface.
+Backend-specific transaction, corruption, and fault injection remain local to
+each adapter. Reconsider a public helper only if multiple external repositories
+need a shared deep testing module. This behavioral contract must be unable to
+express that module.
 
 ## S3-compatible object storage
 
 `pkg/catalogs/storage/s3` is Starmap's optional production
 `storage.ObjectBackend`. It accepts an already-configured, caller-owned AWS
-SDK v2 S3 client and performs no network request during construction. Compose
-it with the generation store:
+SDK v2 S3 client and sends no network request during construction. Compose
+it with the catalog store:
 
 ```go
 backend, err := s3store.New(callerOwnedS3Client, s3store.Config{
@@ -149,13 +150,14 @@ store, err := storage.NewObject(backend, "production")
 ```
 
 The selected S3-compatible service must implement conditional `PutObject`
-writes. Immutable generation objects use `If-None-Match: *`; the current
+writes. Immutable generation objects use `If-None-Match: *`. The current
 pointer uses `If-Match` with the exact opaque ETag returned by the prior read.
 The adapter rejects unconditional writes, requires ETags, bounds object bodies,
 and maps 409/412 precondition failures to typed conflicts. A service that
 rejects conditional writes fails the operation explicitly. A service that
-silently ignores those standard headers is not S3-compatible for this contract
-and must not be selected.
+silently ignores those standard headers is not S3-compatible for this contract.
+
+Do not select such a service.
 
 Starmap never discovers credentials, constructs a default AWS configuration,
 opens a network connection in `New`, or closes the client. The embedding

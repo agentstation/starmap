@@ -53,13 +53,13 @@ type StreamState string
 const (
 	// StreamStateIdle means the broadcaster accepts streams but has no clients.
 	StreamStateIdle StreamState = "idle"
-	// StreamStateStreaming means at least one SSE client is connected.
+	// StreamStateStreaming means the broadcaster has active clients.
 	StreamStateStreaming StreamState = "streaming"
 	// StreamStateStopped means the broadcaster rejects new streams.
 	StreamStateStopped StreamState = "stopped"
 )
 
-// DeliveryError is a secret-free classification of the latest stream failure.
+// DeliveryError classifies the latest stream failure without exposing secrets.
 type DeliveryError struct {
 	Kind       string    `json:"kind"`
 	OccurredAt time.Time `json:"occurred_at"`
@@ -171,8 +171,8 @@ func NewBroadcaster(config Config, logger *zerolog.Logger) (*Broadcaster, error)
 }
 
 // Publish offers one committed generation to every connected stream. It never
-// blocks the catalog commit path. A connection that cannot accept the
-// publication is terminated instead of silently losing it.
+// blocks the catalog commit path. Publish terminates a connection that cannot
+// accept the generation, which prevents silent data loss.
 func (b *Broadcaster) Publish(publication Publication) error {
 	if publication.GenerationID == "" {
 		return &errors.ValidationError{

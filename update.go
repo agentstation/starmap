@@ -24,8 +24,8 @@ type Candidate struct {
 	evidence CandidateEvidence
 }
 
-// NewCandidate validates and returns a publication candidate. Empty evidence
-// is permitted for custom acquisition. Client.Update records a deterministic
+// NewCandidate validates and returns a publication candidate. Custom acquisition
+// can omit evidence. Client.Update records a deterministic
 // custom-update observation in that case.
 func NewCandidate(
 	catalog *catalogs.Catalog,
@@ -69,13 +69,13 @@ func NewCandidate(
 }
 
 // UpdateFunc builds and validates a complete candidate while Client.Update
-// holds the client's mutation transaction. Returning nil performs no
-// publication. The current catalog is immutable and safe to retain.
+// holds the client's mutation transaction. A nil result does not publish.
+// The current catalog is immutable and safe to retain.
 type UpdateFunc func(context.Context, *catalogs.Catalog) (*Candidate, error)
 
 // Publication identifies the durable generation produced by a successful
-// update. Published is false when the update function intentionally returns no
-// candidate or an identical retained generation is activated again.
+// update. Published is false when the update function returns no candidate or
+// reactivates an identical retained generation.
 type Publication struct {
 	Published       bool
 	GenerationID    string

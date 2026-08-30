@@ -73,10 +73,6 @@ func TestMergeModelsDropsReasoningControlsWhenProviderDeniesReasoning(t *testing
 	if model.ReasoningTokens != nil {
 		t.Errorf("reasoning token range = %#v, want nil beside a denied capability", model.ReasoningTokens)
 	}
-	// These four assertions restate the rule that catalog indexing enforces in
-	// validateReasoningFacts: a reasoning control or a subordinate reasoning
-	// capability requires reasoning support. Indexing reaches that rule
-	// through an unexported path, so the merged shape is asserted directly.
 	if model.Features.ReasoningEffort || model.Features.ReasoningTokens || model.Features.IncludeReasoning {
 		t.Errorf("subordinate reasoning capabilities survived: %#v", model.Features)
 	}

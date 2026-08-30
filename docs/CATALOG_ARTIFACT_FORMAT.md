@@ -3,13 +3,13 @@
 Starmap distributes a validated catalog generation as two byte objects:
 
 1. `starmap-catalog.tar.gz`, a deterministic archive with media type
-   `application/vnd.agentstation.starmap.catalog-artifact.v1+tar+gzip`;
+   `application/vnd.agentstation.starmap.catalog-artifact.v1+tar+gzip`.
 2. `starmap-catalog.intoto.json`, a detached in-toto Statement v1 that binds
    the archive and its logical members.
 
 The detached statement is reproducible signing input, not proof of publisher
 identity by itself. Release publication adds a repository/workflow-bound signed
-attestation; consumers verify that trust proof in addition to the byte-level
+attestation. Consumers verify that trust proof in addition to the byte-level
 checks defined here.
 
 ## Archive layout
@@ -20,26 +20,26 @@ checks defined here.
 | `manifest.json` | Validated generation manifest with source-bound review candidates |
 | `catalog.json` | Exact canonical catalog payload bound by the manifest |
 
-No other member, duplicate name, directory, link, or special file is accepted.
+The reader accepts no other member, duplicate name, directory, link, or special file.
 The descriptor binds each member's filename, media type, size, and SHA-256.
-`manifest.json` independently binds `catalog.json`; normal generation validation
+`manifest.json` independently binds `catalog.json`. Normal generation validation
 must pass before build and after open.
 
 The generation ID is an immutable logical identifier. The payload and archive
-are content-addressed independently by SHA-256; consumers must not infer a
-digest from the generation ID. Catalog compatibility is determined only by the
+use independent SHA-256 content addresses. Consumers must not infer a
+digest from the generation ID. Only the
 manifest schema version and consumer-compatibility range, never a Starmap or
 Starport binary/release version.
 
 ## Reproducibility
 
 For identical validated generation inputs, `artifact.Build` emits
-byte-identical archive and detached-statement output. The archive fixes:
+archive and detached-statement output with the same bytes. The archive fixes:
 
-- member order: descriptor, manifest, payload;
-- regular-file mode `0644`, zero owner/group, and Unix epoch timestamps;
+- member order: descriptor, manifest, payload.
+- regular-file mode `0644`, zero owner/group, and Unix epoch timestamps.
 - USTAR headers, gzip best compression, a fixed gzip OS marker, and no names or
-  comments in the gzip header;
+  comments in the gzip header.
 - compact deterministic JSON encodings.
 
 The executable fixture pins both the archive SHA-256 and detached-statement
@@ -50,31 +50,35 @@ version and fixture review.
 
 Consumers:
 
-1. bound compressed and expanded input sizes;
-2. parse only the three allowed regular-file members;
-3. strictly decode `artifact.json` and `manifest.json`;
+1. bound compressed and expanded input sizes.
+2. parse only the three allowed regular-file members.
+3. strictly decode `artifact.json` and `manifest.json`.
 4. verify manifest identity, validation result, payload checksum/size/media type,
-   schema version, and consumer compatibility;
-5. verify descriptor member hashes and sizes;
-6. verify all detached in-toto subjects and the compatibility predicate;
+   schema version, and consumer compatibility.
+5. verify descriptor member hashes and sizes.
+6. verify all detached in-toto subjects and the compatibility predicate.
 7. at the publication boundary, verify the signed repository/workflow
    attestation before atomic activation.
 
-Steps 1-6 are implemented by `artifact.Open`.
-`artifact.VerifyRelease` additionally verifies the exact detached
+`artifact.Open` implements steps 1-6.
+`artifact.VerifyRelease` also verifies the exact detached
 checksum and requires a caller-supplied `PublisherVerifier` to authenticate the
 archive bytes to the expected channel publisher. The verifier owns channel
-credentials, clients, trust policy, network access, and lifecycle; the
+credentials, clients, trust policy, network access, and lifecycle. The
 deterministic statement never substitutes for that identity proof.
 
 `acquisition.Syncer.ImportRelease` is the mutation boundary for portable
-releases. It completes every verification before entering the client mutation
-transaction, decodes the release as a `release_artifact` observation, combines
-it with the exact human workspace observation, and runs the normal authority
-reconciler. Human values and manual-only records therefore survive while a
+releases. It completes every verification before the client mutation
+transaction. It decodes the release as a `release_artifact` observation and
+combines it with the exact human catalog workspace observation. It then runs
+the normal authority reconciler.
+
+Human values and manual-only records therefore survive while a
 newer verified release fills or advances lower-authority facts. The reconciled
-candidate—not the release generation wholesale—is committed through the normal
-generation-store CAS and published atomically. A failure changes nothing, and
+candidate, not the complete release generation, enters the normal commit path
+through catalog-store CAS. The client publishes it atomically.
+
+A failure changes nothing, and
 the prior retained generation remains available through `Client.Rollback`.
 
 ## Immutable release publication
@@ -86,42 +90,45 @@ An exact retry is idempotent. Existing partial, tampered, or different bytes for
 the same generation ID return a typed conflict and are never overwritten.
 
 `go run ./cmd/starmap-catalog-release --generation-store <store> --output-dir
-<dir>` reads and stages the filesystem store's exact current committed
-generation, including its original validation report and every source
-observation link. Staging has no embedded-catalog fallback because rebuilding a
+<dir>` reads the filesystem store's exact current committed generation. It
+stages the original validation report and every source observation link.
+Staging has no embedded-catalog fallback.
+
+Rebuilding a
 manifest from projected YAML would erase the commit's evidence lineage. The
 scheduled catalog-generation workflow retains its isolated machine store until
-staging completes and publishes those three paths in a catalog-only prerelease
+staging completes. It publishes those three paths in a catalog-only prerelease
 keyed by the facts-only semantic digest. The generation manifest's payload
-descriptor continues to bind the exact evidence-bearing bytes; a rerun cannot
+descriptor continues to bind the exact evidence-bearing bytes. A rerun cannot
 silently replace a published asset.
+
 Application releases never append catalog-generation assets. Hosted workflow
 execution evidence remains separate from deterministic local verification.
 
-The workflow uses GitHub's `actions/attest-build-provenance` v2 action pinned
-to an immutable commit with
-`attestations: write` and `id-token: write`, then runs `gh attestation verify`
+The workflow pins GitHub's `actions/attest-build-provenance` v2 action to an
+immutable commit. It grants `attestations: write` and `id-token: write`, then
+runs `gh attestation verify`
 with the exact repository, signer workflow, and hosted-runner policy before and
 after public download. See GitHub's [artifact attestation guidance](https://docs.github.com/en/actions/how-tos/secure-your-work/use-artifact-attestations/use-artifact-attestations)
 and the [`gh attestation verify` contract](https://cli.github.com/manual/gh_attestation_verify).
 
 ## Optional OCI mirror
 
-The scheduled catalog-generation workflow can additionally mirror the same
+The scheduled catalog-generation workflow can also mirror the same
 three immutable assets to an OCI registry when
 `STARMAP_CATALOG_OCI_MIRROR=true`. The target defaults to
-`ghcr.io/<owner>/starmap-catalog` and can be replaced with
-`STARMAP_CATALOG_OCI_REPOSITORY` for an enterprise registry. ORAS publishes the
-manifest under `sha256-<archive digest>`, records the logical generation ID as
-`ai.agentstation.starmap.generation`, and preserves the catalog archive as a
-layer with the artifact media type defined above.
+`ghcr.io/<owner>/starmap-catalog`. Set `STARMAP_CATALOG_OCI_REPOSITORY` for an
+enterprise registry. ORAS publishes the manifest under
+`sha256-<archive digest>`. It records the logical generation ID as
+`ai.agentstation.starmap.generation` and preserves the catalog archive as a
+layer with the artifact media type above.
 
 An OCI manifest digest identifies the manifest and is therefore not expected to
 equal its catalog layer digest. Publication reads ORAS's immutable manifest
-reference, pulls by that digest, and requires both the returned layer descriptor
-and the downloaded archive bytes to equal the release archive SHA-256. It also
-compares the detached statement byte-for-byte. Tags are discovery aids only;
-enterprise consumers pin the manifest reference and validate the catalog layer
+reference and pulls by that digest. Both the returned layer descriptor and the
+downloaded archive bytes must equal the release archive SHA-256. Publication also
+compares the detached statement byte-for-byte. Tags are discovery aids only.
+Enterprise consumers pin the manifest reference and validate the catalog layer
 against a trusted release or hosted archive checksum. This follows ORAS's
 [single-file layer media-type convention](https://oras.land/docs/1.2/how_to_guides/pushing_and_pulling/)
 and [digest-addressed pull behavior](https://oras.land/docs/commands/oras_pull/).

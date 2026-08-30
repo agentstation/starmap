@@ -61,7 +61,7 @@ func (h *Hint) HasTag(tag string) bool {
 	return slices.Contains(h.Tags, tag)
 }
 
-// String returns a string representation of the hint.
+// String returns text for hint.
 func (h *Hint) String() string {
 	var parts []string
 
@@ -84,7 +84,7 @@ func (h *Hint) String() string {
 
 // Context provides information for generating contextual hints.
 type Context struct {
-	Command     string            // Current command being executed
+	Command     string
 	Subcommand  string            // Subcommand if applicable
 	Succeeded   bool              // Whether the operation succeeded
 	ErrorType   string            // Type of error if failed
@@ -119,7 +119,7 @@ type Provider interface {
 	Name() string
 }
 
-// ProviderFunc is an adapter to allow functions to be used as Providers.
+// ProviderFunc adapts a function to the Provider interface.
 type ProviderFunc func(Context) []*Hint
 
 // GetHints calls the function.
@@ -143,7 +143,7 @@ type RegistryConfig struct {
 	MaxHints    int      // Maximum number of hints to return
 	FilterTags  []string // Only include hints with these tags
 	ExcludeTags []string // Exclude hints with these tags
-	Enabled     bool     // Whether hints are enabled
+	Enabled     bool
 }
 
 // NewRegistry creates a new hint registry.
@@ -207,7 +207,6 @@ func (r *Registry) filterHints(hints []*Hint) []*Hint {
 	var filtered []*Hint
 
 	for _, hint := range hints {
-		// Skip if hint has excluded tags
 		excluded := slices.ContainsFunc(r.config.ExcludeTags, hint.HasTag)
 		if excluded {
 			continue

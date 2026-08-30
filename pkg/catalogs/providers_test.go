@@ -121,7 +121,6 @@ func TestProvidersFormatYAML(t *testing.T) {
 		}
 	}
 
-	// Test that providers are separated by blank lines
 	lines := strings.Split(yamlString, "\n")
 	foundAnthropicHeader := false
 	foundCerebrasHeader := false
@@ -133,7 +132,7 @@ func TestProvidersFormatYAML(t *testing.T) {
 		}
 		if line == "# Cerebras" {
 			foundCerebrasHeader = true
-			// Check if there's a blank line before this header
+			// Check if there is a blank line before this header
 			if i > 0 && lines[i-1] == "" {
 				foundBlankLineBeforeCerebras = true
 			}

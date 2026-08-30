@@ -57,7 +57,7 @@ func (a *Alert) WithDetails(details ...string) *Alert {
 	return a
 }
 
-// String returns a string representation of the alert.
+// String returns text for alert.
 func (a *Alert) String() string {
 	icon := a.Level.Icon()
 	message := fmt.Sprintf("%s %s", icon, a.Message)
@@ -74,7 +74,7 @@ type Writer interface {
 	WriteAlert(alert *Alert) error
 }
 
-// WriterFunc is an adapter to allow functions to be used as Writers.
+// WriterFunc adapts a function to the Writer interface.
 type WriterFunc func(*Alert) error
 
 // WriteAlert calls the function.

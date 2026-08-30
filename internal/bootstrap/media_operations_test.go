@@ -8,10 +8,6 @@ import (
 	"github.com/agentstation/starmap/pkg/catalogs"
 )
 
-// TestEveryPublishedMediaOperationMatchesItsDefinition cross-checks the shipped
-// catalog against the canonical media-operation table. The table is what the
-// derivation reads, so this test is the one place that proves the shipped bytes
-// agree with it rather than with an earlier version of it.
 func TestEveryPublishedMediaOperationMatchesItsDefinition(t *testing.T) {
 	builder, err := NewEmbeddedBuilder()
 	if err != nil {
@@ -100,12 +96,11 @@ func TestEveryPublishedMediaOperationMatchesItsDefinition(t *testing.T) {
 // servedThroughChat reports whether a provider serves a media operation on the
 // same path it serves chat.
 //
-// Every other media operation reaches its own path, so an offering that named
-// one of them beside chat completions had a fact wrong. Document recognition
-// broke that shape rather than an invariant: a provider that reads a scanned
-// page reads it with the same model and the same request a chat turn uses, and
-// the endpoint table says so. The operation stays its own because a consumer
-// asks for it by name and pays for it by the page.
+// Every other media operation reaches its own path. An offering that named one
+// beside chat completions therefore had an incorrect fact. Document recognition
+// is the exception. A provider reads a scanned page through the same model and
+// request path as a chat turn. The operation remains distinct because consumers
+// request it by name and pay by the page.
 func servedThroughChat(operation catalogs.ProviderOperation) bool {
 	return operation == catalogs.ProviderOperationDocumentsRecognition
 }
@@ -177,13 +172,11 @@ const geminiTokensPerPage = 258
 // TestEveryRecognitionOfferingCanBeBilledByThePage names the failure a refresh
 // would otherwise ship silently.
 //
-// Starport refuses to route a recognition request to an offering it cannot
-// bill, so an offering that names the operation and carries no page price is
-// an offering no consumer reaches. Google does not publish a price per page.
-// It bills a page as a fixed number of input tokens, so the catalog derives the
-// page price from the model's own input token price. That derivation is the
-// part a refresh breaks: a new input price lands from the provider and the page
-// price beside it keeps the old number. This recomputes it.
+// Starport cannot route a recognition request to an offering without a page
+// price. Google publishes a fixed input-token count for each page instead of a
+// page price. The catalog derives the page price from the model's input-token
+// price. A refresh can change that token price while leaving the derived page
+// price stale. This test detects that drift.
 func TestEveryRecognitionOfferingCanBeBilledByThePage(t *testing.T) {
 	builder, err := NewEmbeddedBuilder()
 	if err != nil {

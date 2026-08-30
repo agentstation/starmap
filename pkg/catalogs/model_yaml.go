@@ -15,8 +15,8 @@ func (m *Model) FormatYAML() string {
 	return formatted
 }
 
-// EncodeYAML returns formatted YAML or a typed parse error when model values
-// cannot be represented safely.
+// EncodeYAML returns formatted YAML. It returns a typed parse error for values
+// that YAML cannot represent safely.
 func (m *Model) EncodeYAML() (string, error) {
 	// Every human-editable model YAML exposes the complete Boolean capability
 	// surface, including models for which no source supplied feature claims.

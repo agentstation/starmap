@@ -10,10 +10,6 @@ import (
 	"github.com/agentstation/starmap/pkg/catalogs"
 )
 
-// TestF017CharacterizationRemoteClientIsOneShotManifestAndPayloadFetch pins the
-// low-level verified fetch primitive. It performs exactly one manifest GET and
-// one immutable payload GET; the public remote package owns the explicitly
-// started event-stream and reconnect lifecycle around this primitive.
 func TestF017CharacterizationRemoteClientIsOneShotManifestAndPayloadFetch(t *testing.T) {
 	current := catalogs.CurrentCatalogSchemaVersion
 	generation := remoteTestGeneration(t, current, catalogs.ConsumerCompatibility{

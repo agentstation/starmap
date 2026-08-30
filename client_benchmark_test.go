@@ -17,16 +17,13 @@ func BenchmarkClientCatalog(b *testing.B) {
 
 	b.ReportAllocs()
 	b.ResetTimer()
-	for i := 0; i < b.N; i++ {
+	for b.Loop() {
 		if catalog := client.Catalog(); catalog == nil {
 			b.Fatal("Catalog returned nil")
 		}
 	}
 }
 
-// BenchmarkClientUpdatePublication measures a complete immutable publication
-// of the production embedded catalog through generation encoding, validation,
-// durable in-memory CAS, and atomic client activation.
 func BenchmarkClientUpdatePublication(b *testing.B) {
 	client, err := New(WithCatalogStore(storage.NewMemory()))
 	if err != nil {
@@ -40,7 +37,7 @@ func BenchmarkClientUpdatePublication(b *testing.B) {
 	ctx := context.Background()
 	b.ReportAllocs()
 	b.ResetTimer()
-	for i := 0; i < b.N; i++ {
+	for b.Loop() {
 		publication, updateErr := client.Update(
 			ctx,
 			func(context.Context, *catalogs.Catalog) (*Candidate, error) {

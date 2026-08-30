@@ -225,11 +225,10 @@ func (merger *merger) mergeModelFeatures(
 	)
 }
 
-// suppressProjectedFeatureDefaults prevents the complete human YAML
-// capability checklist from becoming synthetic local evidence. When the
-// committed baseline had no feature record, an untouched all-false projection
-// is formatting—not an operator assertion—and a later real source claim must
-// be able to replace it.
+// suppressProjectedFeatureDefaults prevents the human YAML capability checklist
+// from becoming synthetic local evidence. An untouched, all-false projection
+// only formats a baseline that had no feature record. It does not assert an
+// operator choice, so a later source claim must replace it.
 func (merger *merger) suppressProjectedFeatureDefaults(
 	identity modelIdentity,
 	models map[sources.ID]*catalogs.Model,

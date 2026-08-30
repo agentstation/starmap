@@ -124,7 +124,7 @@ func TestNoPanicUnsupportedSerializationReturnsTypedError(t *testing.T) {
 }
 
 func TestModel_FormatYAML_ComprehensiveFormatting(t *testing.T) {
-	// Create a comprehensive test model with all features enabled to test formatting
+	// Create a complete test model with all features enabled to test formatting
 	testTime := time.Date(2025, 8, 22, 4, 9, 45, 0, time.UTC)
 	releaseDate := time.Date(2024, 12, 1, 0, 0, 0, 0, time.UTC)
 	knowledgeCutoff := time.Date(2024, 4, 1, 0, 0, 0, 0, time.UTC)
@@ -412,7 +412,7 @@ func testSubsectionSpacing(t *testing.T, yaml string) {
 		}
 
 		// Check if previous line is blank (indicating proper spacing)
-		// Exception: Don't require blank line immediately after "features:" line
+		// Exception: Do not require blank line immediately after "features:" line
 		if headerIndex > 0 {
 			previousLine := lines[headerIndex-1]
 			if strings.TrimSpace(previousLine) != "" && !strings.Contains(previousLine, "features:") {
@@ -425,7 +425,7 @@ func testSubsectionSpacing(t *testing.T, yaml string) {
 func testStructurePreservation(t *testing.T, yaml string, original Model) {
 	t.Helper()
 
-	// Test that essential content is preserved
+	// Check that essential content remains unchanged.
 	expectedContent := []string{
 		// Header comment with ID and description
 		fmt.Sprintf("# %s - %s", original.ID, original.FormatYAMLHeaderComment()),
@@ -452,14 +452,12 @@ func testStructurePreservation(t *testing.T, yaml string, original Model) {
 		"models.dev:",
 		"provider_shape: responses",
 
-		// Key feature flags that were set to true
 		"tool_calls: true",
 		"reasoning: true",
 		"temperature: true",
 		"format_response: true",
 		"streaming: true",
 
-		// Timestamps should be formatted properly
 		"created_at: 2025-08-22T04:09:45Z",
 		"updated_at: 2025-08-22T04:09:45Z",
 
@@ -507,7 +505,6 @@ func testCommentFormatting(t *testing.T, yaml string) {
 }
 
 func TestModel_FormatYAML_RoundTripConsistency(t *testing.T) {
-	// Test that a model can be formatted, saved, and loaded with consistent structure
 	original := createTestModel()
 
 	// Format to YAML
@@ -527,14 +524,11 @@ func TestModel_FormatYAML_RoundTripConsistency(t *testing.T) {
 		}
 	}
 
-	// Verify we have the expected number of blank lines for spacing
-	// Should have blank lines before major sections and subsections
 	expectedMinBlankLines := 8 // metadata, features, limits, pricing, timestamps, plus subsections
 	if len(blankLineIndices) < expectedMinBlankLines {
 		t.Errorf("Expected at least %d blank lines for proper spacing, got %d", expectedMinBlankLines, len(blankLineIndices))
 	}
 
-	// Verify the structure is maintained
 	majorSections := []string{"metadata:", "features:", "limits:", "pricing:"}
 	for _, section := range majorSections {
 		found := false

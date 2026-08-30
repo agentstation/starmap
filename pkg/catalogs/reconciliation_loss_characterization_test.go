@@ -56,7 +56,7 @@ func TestF004CharacterizationEnrichMergeDropsManualModelWithoutPricingOrLimits(t
 }
 
 // TestF008MergeModelsUsesExplicitPresence proves zero values clear only when a
-// source explicitly supplied them; missing and unknown claims retain a known
+// source explicitly supplied them. Missing and unknown claims retain a known
 // baseline.
 func TestF008MergeModelsUsesExplicitPresence(t *testing.T) {
 	existing := Model{

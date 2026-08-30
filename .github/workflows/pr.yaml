@@ -83,10 +83,9 @@ jobs:
         run: |
           go test ./pkg/catalogs ./pkg/catalogs/storage -race -run 'Migration|Rollback|Fault|Corrupt|ReopensCurrent' -count=1
 
-  # Additive supply-chain evidence. This job is deliberately not a required
-  # status check: it needs the GitHub API, so an upstream outage must not block
-  # merges, and the reviewed-pin allowlist in internal/ciworkflow remains the
-  # blocking control.
+  # This job adds supply-chain evidence. It is not a required status check
+  # because it needs the GitHub API. An upstream outage must not block merges.
+  # The reviewed-pin allowlist in internal/ciworkflow remains the blocking control.
   action-pins:
     name: Action Pin Provenance
     runs-on: ubuntu-latest

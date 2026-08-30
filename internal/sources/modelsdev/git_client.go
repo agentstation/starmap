@@ -69,7 +69,7 @@ func NewPinnedGitClient(outputDir, commit string) *GitClient {
 	return client
 }
 
-// EnsureRepository ensures the models.dev repository is available and up to date.
+// EnsureRepository verifies the models.dev repository is available and up to date.
 func (c *GitClient) EnsureRepository(ctx context.Context) error {
 	_, err := c.PrepareRepository(ctx)
 	return err
@@ -128,7 +128,7 @@ func (c *GitClient) BuildAPI(ctx context.Context) error {
 
 	logger.Info().Str("commit", c.Commit).Msg("Building models.dev API")
 
-	// Change to repo directory and run build
+	// Change to repository directory and run build
 	cmd := exec.CommandContext(ctx, "bun", "run", "script/build.ts")
 	cmd.Dir = filepath.Join(c.RepoPath, "packages", "web")
 
@@ -143,7 +143,6 @@ func (c *GitClient) BuildAPI(ctx context.Context) error {
 		}
 	}
 
-	// Verify api.json was created
 	apiPath := filepath.Join(c.RepoPath, "packages", "web", "dist", "_api.json")
 	if _, err := os.Stat(apiPath); os.IsNotExist(err) {
 		logger.Error().Str("path", apiPath).Msg("models.dev API build output is missing")
@@ -203,7 +202,7 @@ func (c *GitClient) repositoryExists() bool {
 
 // cloneRepository clones the models.dev repository.
 func (c *GitClient) cloneRepository(ctx context.Context) error {
-	// Create parent directory if it doesn't exist
+	// Create parent directory if it does not exist
 	parentDir := filepath.Dir(c.RepoPath)
 	if err := os.MkdirAll(parentDir, constants.DirPermissions); err != nil {
 		return errors.WrapIO("create", "parent directory", err)

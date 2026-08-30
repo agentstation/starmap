@@ -7,7 +7,7 @@ import (
 	"github.com/agentstation/starmap/pkg/catalogs"
 )
 
-// Memory is an in-process reference implementation of Store.
+// Memory implements Store in process for tests and simple deployments.
 type Memory struct {
 	mu          sync.RWMutex
 	currentID   string

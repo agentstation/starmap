@@ -201,7 +201,6 @@ func (s *Filesystem) readGeneration(ctx context.Context, id string) (catalogs.Ge
 		}
 		return catalogs.Generation{}, err
 	}
-	// dir is derived from a SHA-256 digest, not a caller-controlled path.
 	manifestData, err := os.ReadFile(manifestPath) //nolint:gosec
 	if os.IsNotExist(err) {
 		return catalogs.Generation{}, generationNotFound(id)
@@ -224,7 +223,6 @@ func (s *Filesystem) readGeneration(ctx context.Context, id string) (catalogs.Ge
 	if err := validateFilesystemEntry(payloadPath, false); err != nil {
 		return catalogs.Generation{}, err
 	}
-	// dir is derived from a SHA-256 digest, not a caller-controlled path.
 	payload, err := os.ReadFile(payloadPath) //nolint:gosec
 	if err != nil {
 		return catalogs.Generation{}, errors.WrapIO("read", payloadPath, err)
@@ -316,7 +314,6 @@ func (s *Filesystem) generationDir(id string) string {
 }
 
 func writeSyncedFile(path string, data []byte) error {
-	// path is constructed beneath a store-owned temporary generation directory.
 	file, err := os.OpenFile(path, os.O_WRONLY|os.O_CREATE|os.O_EXCL, resourcepolicy.FileMode) //nolint:gosec
 	if err != nil {
 		return err

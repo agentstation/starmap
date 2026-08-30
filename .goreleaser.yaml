@@ -171,8 +171,8 @@ announce:
   skip: false
 
 # Ko configuration for minimal static container images.
-# The base is digest-pinned; vulnerability status is verified against the exact
-# released image rather than inferred from a mutable product claim.
+# The digest pins the base image. Verify vulnerabilities against the released
+# image instead of a mutable product claim.
 # No Dockerfile needed - builds directly from Go source
 kos:
   - id: starmap-server
@@ -283,7 +283,7 @@ homebrew_casks:
 
       Documentation: https://starmap.agentstation.ai/
 
-# Sign and notarize Darwin binaries when Apple credentials are provisioned.
+# Sign and notarize Darwin binaries when Apple credentials exist.
 # The release remains buildable without them until the stable launch gate.
 notarize:
   macos:
@@ -316,7 +316,7 @@ signs:
       - "${artifact}"
     artifacts: checksum
     
-# Binary signing disabled - checksums.txt signing provides sufficient verification
+# Signed checksums provide sufficient binary verification.
 # Individual binary signatures add confusion without significant security benefit
 # since binaries are already distributed in archives with signed checksums.
 # Uncomment below to sign individual binaries if needed:

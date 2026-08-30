@@ -6,10 +6,10 @@ import (
 	"github.com/agentstation/starmap/pkg/sources"
 )
 
-// reconcileAuthoredCorpus applies the provider-independent construction inputs
-// before provider offerings are reconciled. The durable baseline remains the
+// reconcileAuthoredCorpus applies provider-independent construction inputs
+// before reconciling provider offerings. The durable baseline remains the
 // last-known-good fallback, the verified embedded corpus may add definitions,
-// and a complete human workspace is the editable authority.
+// and a complete human catalog workspace is the editable authority.
 //
 // Provider observations are deliberately absent from this flow. They may link
 // an offering to an authored model, but they cannot infer who authored it.
@@ -44,7 +44,7 @@ func reconcileAuthoredCorpus(
 		}
 	}
 
-	// The human workspace is explicit editable input, so matching records
+	// The human catalog workspace is explicit editable input, so matching records
 	// replace the durable baseline and embedded bootstrap.
 	for _, record := range localModels {
 		if err := setAuthoredModel(target, record); err != nil {

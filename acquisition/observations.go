@@ -13,7 +13,7 @@ import (
 
 // PublishObservations reconciles caller-verified catalog observations and
 // publishes the resulting immutable generation. This is the non-network
-// acquisition seam for operator and tenant catalog facts.
+// acquisition boundary for operator and tenant catalog facts.
 func (s *Syncer) PublishObservations(
 	ctx context.Context,
 	observations ...sources.Observation,

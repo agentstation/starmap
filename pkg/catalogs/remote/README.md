@@ -36,7 +36,7 @@ Package remote implements the versioned online Starmap\-to\-Starmap generation p
 
 ```go
 const (
-    // CatalogPath is appended to a versioned API base URL.
+    // CatalogPath is the current catalog resource path.
     CatalogPath = "/catalog"
     // ManifestPath returns the current strict generation manifest.
     ManifestPath = CatalogPath + "/manifest"
@@ -114,7 +114,7 @@ type Client struct {
 func NewClient(baseURL string, httpClient *http.Client, schemaVersion uint64) (*Client, error)
 ```
 
-NewClient creates a remote generation client. baseURL is the trusted, versioned HTTPS API root, for example https://starmap.example.com/api/v1. Plain HTTP is accepted only on loopback. The supplied HTTP client may add authentication or stricter TLS policy, but HTTPS responses must retain a standard verified certificate chain.
+NewClient creates a remote generation client. baseURL is the trusted, versioned HTTPS API root, for example https://starmap.example.com/api/v1. NewClient accepts plain HTTP only on loopback. The supplied HTTP client may add authentication or stricter TLS policy, but HTTPS responses must retain a standard verified certificate chain.
 
 <a name="Client.FetchCurrent"></a>
 ### func \(\*Client\) [FetchCurrent](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/remote/client.go#L154>)
@@ -150,7 +150,7 @@ FetchGeneration fetches and verifies one immutable generation by ID.
 func (c *Client) OpenEventStream(ctx context.Context, lastEventID string) (*EventStream, error)
 ```
 
-OpenEventStream opens the publication stream. lastEventID is sent as the standard Last\-Event\-ID request header when nonempty.
+OpenEventStream opens the publication stream. A nonempty lastEventID becomes the standard Last\-Event\-ID request header.
 
 <a name="EventStream"></a>
 ## type [EventStream](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/remote/stream.go#L34-L37>)

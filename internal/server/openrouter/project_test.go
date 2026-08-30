@@ -356,10 +356,6 @@ func TestEmbeddedCatalogProjectsEveryCanonicalDefinition(t *testing.T) {
 	}
 }
 
-// web_search_options names a search the provider runs inside the completion.
-// A client-executed tool cannot substitute for it, so a consumer that reads
-// supported_parameters to decide whether provider-side search is reachable
-// loses the feature entirely when the catalog claims no model has it.
 func TestEmbeddedCatalogAdvertisesProviderExecutedWebSearch(t *testing.T) {
 	t.Parallel()
 

@@ -1,44 +1,3 @@
-// Package starmap provides the small, provider-independent entry point for the
-// Starmap AI model catalog system.
-//
-// Starmap wraps the underlying catalog system with additional features including:
-// - Event hooks for model changes (added, updated, removed)
-// - Thread-safe access to an immutable canonical catalog
-// - Explicit, serialized publication of complete catalog generations
-// - Flexible configuration through functional options
-//
-// Example usage:
-//
-//	// Create a starmap instance with default settings
-//	sm, err := starmap.New()
-//	if err != nil {
-//	    log.Fatal(err)
-//	}
-//	// Register event hooks
-//	sm.OnModelAdded(func(model catalogs.Model) {
-//	    log.Printf("New model: %s", model.ID)
-//	})
-//
-//	// Get the current immutable catalog
-//	catalog := sm.Catalog()
-//
-//	model, err := catalog.FindModel("gpt-4o")
-//	if err != nil {
-//	    log.Fatal(err)
-//	}
-//
-//	// Provider acquisition is an explicit opt-in composition.
-//	syncer, err := acquisition.New(sm)
-//	if err != nil {
-//	    log.Fatal(err)
-//	}
-//	result, err := syncer.Sync(ctx,
-//	    sync.WithProvider("openai"),
-//	    sync.WithDryRun(true),
-//	)
-//	if err != nil {
-//	    log.Fatal(err)
-//	}
 package starmap
 
 import (
@@ -159,8 +118,8 @@ type Client struct {
 	hooks *hooks // Event hooks for catalog changes/updates
 }
 
-// New creates a Client using a background context. Call NewContext when
-// construction may perform storage I/O that must be canceled by the caller.
+// New creates a Client using a background context. Call NewContext when the
+// caller must cancel storage I/O during client setup.
 func New(opts ...Option) (*Client, error) {
 	return NewContext(context.Background(), opts...)
 }
@@ -232,7 +191,7 @@ func NewContext(ctx context.Context, opts ...Option) (*Client, error) {
 			generationGeneratedAt = stored.Manifest.GeneratedAt
 			usingEmbeddedBootstrap = false
 		case stderrors.Is(currentErr, errors.ErrNotFound):
-			// A newly configured store has no durable generation yet; the verified
+			// A newly configured store has no durable generation yet. The verified
 			// embedded/local baseline remains active until the first commit. Local
 			// YAML is deliberately consulted only in this empty-store case: once a
 			// durable current exists it is the authoritative restart source.
@@ -256,7 +215,6 @@ func NewContext(ctx context.Context, opts ...Option) (*Client, error) {
 			generationPayloadChecksum = catalogs.DescribeCatalogPayload(payload).Checksum
 			usingEmbeddedBootstrap = false
 		case stderrors.Is(humanErr, os.ErrNotExist):
-			// A missing workspace is seeded only by an explicit synchronization.
 		default:
 			return nil, errors.WrapResource("create", "human catalog workspace", catalogPath, humanErr)
 		}

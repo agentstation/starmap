@@ -16,8 +16,8 @@ func (a *Authors) FormatYAML() string {
 	return formatted
 }
 
-// EncodeYAML returns formatted author YAML or a typed parse error when an
-// author value cannot be represented safely.
+// EncodeYAML returns formatted author YAML. It returns a typed parse error for
+// values that YAML cannot represent safely.
 func (a *Authors) EncodeYAML() (string, error) {
 	if a == nil {
 		return "", nil

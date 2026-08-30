@@ -12,8 +12,8 @@ import (
 
 // Store commits and reads immutable catalog generations.
 //
-// Commit always performs compare-and-swap against expectedGenerationID. An
-// empty expected ID means that no current generation may exist. Implementations
+// Commit always compares and swaps against expectedGenerationID. An empty
+// expected ID means that no current generation may exist. Implementations
 // must validate and persist the complete generation before changing Current.
 // Repeating an already-successful identical commit is idempotent.
 //

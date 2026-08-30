@@ -24,19 +24,19 @@ type Notifier struct {
 
 // Config controls notification behavior.
 type Config struct {
-	OutputFormat string    // "table", "json", "yaml"
-	ShowHints    bool      // Whether to show hints
-	ShowAlerts   bool      // Whether to show alerts
-	MaxHints     int       // Maximum number of hints to show
-	AlertWriter  io.Writer // Where to write alerts (default: stderr)
-	HintWriter   io.Writer // Where to write hints (default: stdout)
-	UseColor     bool      // Whether to use colored output
+	OutputFormat string
+	ShowHints    bool
+	ShowAlerts   bool
+	MaxHints     int
+	AlertWriter  io.Writer
+	HintWriter   io.Writer
+	UseColor     bool
 }
 
 // DefaultConfig returns a sensible default configuration.
 func DefaultConfig() Config {
 	return Config{
-		OutputFormat: "auto", // Will be detected
+		OutputFormat: "auto",
 		ShowHints:    true,
 		ShowAlerts:   true,
 		MaxHints:     1, // Show only the most valuable hint

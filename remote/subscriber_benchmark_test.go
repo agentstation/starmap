@@ -8,9 +8,6 @@ import (
 	"github.com/agentstation/starmap/pkg/catalogs/storage"
 )
 
-// BenchmarkSubscriberActivation measures verification, decoding, durable
-// in-memory commit, and atomic activation of the complete embedded generation.
-// Subscriber construction is deliberately outside the timed region.
 func BenchmarkSubscriberActivation(b *testing.B) {
 	source, err := starmap.New()
 	if err != nil {
@@ -24,7 +21,7 @@ func BenchmarkSubscriberActivation(b *testing.B) {
 	ctx := context.Background()
 	b.ReportAllocs()
 	b.ResetTimer()
-	for i := 0; i < b.N; i++ {
+	for b.Loop() {
 		b.StopTimer()
 		subscriber, newErr := New(Config{
 			BaseURL: "https://starmap.invalid", CatalogStore: storage.NewMemory(),

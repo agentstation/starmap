@@ -41,11 +41,6 @@ func TestRefreshAnthropicProviderFixture(t *testing.T) {
 	}
 }
 
-// TestAnthropicProviderFixtureCurrency enforces the reviewed maximum-age policy
-// and compares the fixture against the live Anthropic wire shape. Only a live
-// capture can clear a stale or drifted fixture, so this test needs
-// catalog-acquisition credentials and stays outside the offline test path.
-// scripts/verify-provider-fixture-drift.sh owns it.
 func TestAnthropicProviderFixtureCurrency(t *testing.T) {
 	if !providerfixture.CurrencyRequested() {
 		t.Skipf("set %s=1 to compare fixtures against live provider responses",
@@ -80,11 +75,6 @@ func TestAnthropicProviderFixtureCurrency(t *testing.T) {
 	}
 }
 
-// TestAnthropicFixtureCaptureRoundTrip runs every step of the live refresh
-// except the provider request: it replays the recorded bytes through the real
-// client, captures them into a scratch fixture, and verifies the result. The
-// capture path stays covered offline, so only the request itself needs
-// credentials.
 func TestAnthropicFixtureCaptureRoundTrip(t *testing.T) {
 	fixture, provider := anthropicFixture(t)
 	recorded, err := fixture.Read()

@@ -11,8 +11,6 @@ import (
 	"github.com/agentstation/starmap/pkg/sources"
 )
 
-// No init() - sources are created explicitly
-
 // GitSource enhances models with models.dev data.
 type GitSource struct {
 	providers  catalogs.ProvidersReader
@@ -155,7 +153,7 @@ func (s *GitSource) Observe(ctx context.Context, opts ...sources.Option) (source
 
 // Cleanup releases any resources.
 func (s *GitSource) Cleanup() error {
-	// GitSource doesn't hold persistent resources
+	// GitSource does not hold persistent resources
 	return nil
 }
 

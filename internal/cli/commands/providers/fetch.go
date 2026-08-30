@@ -260,10 +260,7 @@ func fetchAllProviders(ctx context.Context, app application, timeout int, quiet 
 	semaphore := make(chan struct{}, 5) // Max 5 concurrent
 
 	for _, provider := range validProviders {
-		wg.Add(1)
-		go func(p *catalogs.Provider) {
-			defer wg.Done()
-
+		wg.Go(func() {
 			semaphore <- struct{}{}
 			defer func() { <-semaphore }()
 
@@ -271,18 +268,18 @@ func fetchAllProviders(ctx context.Context, app application, timeout int, quiet 
 			fetchCtx, cancel := context.WithTimeout(ctx, time.Duration(timeout)*time.Second)
 			defer cancel()
 
-			models, err := fetcher.FetchModels(fetchCtx, p)
+			models, err := fetcher.FetchModels(fetchCtx, provider)
 			// Convert to pointer slice for result struct compatibility
 			modelPointers := make([]*catalogs.Model, len(models))
 			for i := range models {
 				modelPointers[i] = &models[i]
 			}
 			results <- result{
-				provider: string(p.ID),
+				provider: string(provider.ID),
 				models:   modelPointers,
 				err:      err,
 			}
-		}(provider)
+		})
 	}
 
 	// Wait and close
@@ -362,10 +359,7 @@ func fetchAllProvidersRaw(ctx context.Context, app application, validProviders [
 	semaphore := make(chan struct{}, 5) // Max 5 concurrent
 
 	for _, prov := range validProviders {
-		wg.Add(1)
-		go func(p *catalogs.Provider) {
-			defer wg.Done()
-
+		wg.Go(func() {
 			semaphore <- struct{}{}
 			defer func() { <-semaphore }()
 
@@ -373,14 +367,14 @@ func fetchAllProvidersRaw(ctx context.Context, app application, validProviders [
 			fetchCtx, cancel := context.WithTimeout(ctx, time.Duration(timeout)*time.Second)
 			defer cancel()
 
-			rawData, stats, err := fetcher.FetchRawResponse(fetchCtx, p, p.CatalogEndpointURL())
+			rawData, stats, err := fetcher.FetchRawResponse(fetchCtx, prov, prov.CatalogEndpointURL())
 			results <- rawResult{
-				provider: string(p.ID),
+				provider: string(prov.ID),
 				rawData:  json.RawMessage(rawData),
 				stats:    stats,
 				err:      err,
 			}
-		}(prov)
+		})
 	}
 
 	// Wait and close

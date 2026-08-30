@@ -1,14 +1,9 @@
-# godot configuration
-# Which comments to check:
-#   declarations - for top level declaration comments (default);
-#   toplevel     - for top level comments;
-#   noinline     - for all except inline comments;
-#   all          - for all comments.
+# Check declaration comments only.
 scope: declarations
 
-# List of regexps for excluding particular comment lines from check.
+# Optional patterns can exclude comment lines.
 # exclude:
-  # Exclude experiments directory
+  # Exclude experiment directories.
   # - "llama3/experiments/.*"
   # - "experiments/.*"
 

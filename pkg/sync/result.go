@@ -17,7 +17,7 @@ import (
 type ProjectionStatus = projection.Status
 
 const (
-	// ProjectionStatusApplied reports that the workspace projection was written.
+	// ProjectionStatusApplied means the workspace matches the committed generation.
 	ProjectionStatusApplied = projection.StatusApplied
 	// ProjectionStatusPendingRepair reports that publication succeeded but the
 	// workspace projection needs repair.
@@ -60,9 +60,9 @@ type Result struct {
 	ProviderResults  map[catalogs.ProviderID]*ProviderResult // Results per provider
 
 	// Operation metadata
-	DryRun      bool   // Whether this was a dry run
-	Fresh       bool   // Whether this was a fresh sync
-	CatalogPath string // Human workspace used by the synchronization
+	DryRun      bool // Whether this was a dry run
+	Fresh       bool // Whether this was a fresh sync
+	CatalogPath string
 	Sources     []sources.ID
 	// SourceObservations contains caller-owned freshness/audit projections from
 	// every source used by this attempt, including no-change synchronizations.
@@ -77,7 +77,7 @@ type Result struct {
 
 // ProviderResult represents sync results for a single provider.
 type ProviderResult struct {
-	ProviderID catalogs.ProviderID  // The provider that was synced
+	ProviderID catalogs.ProviderID
 	Added      []catalogs.Model     // New models not in catalog
 	Updated    []differ.ModelUpdate // Existing models with changes
 	Removed    []catalogs.Model     // Models in catalog but not in API (informational only)
@@ -417,7 +417,5 @@ func getModelProvider(model catalogs.Model, modelProviderMap map[string]catalogs
 		return providerID
 	}
 
-	// This should never happen since the map is built from the final catalog
-	// If it does, it indicates a bug in the reconciler
 	return "unknown"
 }

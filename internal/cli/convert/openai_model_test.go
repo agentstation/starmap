@@ -77,7 +77,6 @@ func TestOpenAIModelMultipleAuthors(t *testing.T) {
 	}
 }
 
-// TestOpenAIModelNoAuthors tests handling when no authors are specified.
 func TestOpenAIModelNoAuthors(t *testing.T) {
 	model := &catalogs.Model{
 		ID:        "custom-model",

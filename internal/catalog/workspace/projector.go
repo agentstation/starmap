@@ -84,7 +84,7 @@ func ObserveInput(path string) (InputExpectation, error) {
 }
 
 // RequiresSeed reports whether an explicit operation selected an absent human
-// workspace that must be materialized even when catalog facts are unchanged.
+// workspace. The operation must create that workspace even without fact changes.
 func (i InputExpectation) RequiresSeed() bool {
 	return i.Path != "" && !i.Exists
 }

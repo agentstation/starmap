@@ -143,7 +143,7 @@ func (a *Authors) Add(author *Author) error {
 	return nil
 }
 
-// Delete removes an author by id. Returns an error if the author doesn't exist.
+// Delete removes an author by id. Returns an error if the author does not exist.
 func (a *Authors) Delete(id AuthorID) error {
 	a.mu.Lock()
 	defer a.mu.Unlock()
@@ -241,7 +241,7 @@ func (a *Authors) Clear() {
 }
 
 // AddBatch adds multiple authors in a single operation.
-// Only adds authors that don't already exist - fails if an author ID already exists.
+// Only adds authors that do not already exist - fails if an author ID already exists.
 // Returns a map of author IDs to errors for any failed additions.
 func (a *Authors) AddBatch(authors []*Author) map[AuthorID]error {
 	if len(authors) == 0 {
@@ -313,8 +313,8 @@ func (a *Authors) SetBatch(authors map[AuthorID]*Author) error {
 	return nil
 }
 
-// DeleteBatch removes multiple authors by their IDs.
-// Returns a map of errors for authors that couldn't be deleted (not found).
+// DeleteBatch removes multiple authors by ID. The returned map identifies IDs
+// that DeleteBatch did not find.
 func (a *Authors) DeleteBatch(ids []AuthorID) map[AuthorID]error {
 	if len(ids) == 0 {
 		return nil

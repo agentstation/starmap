@@ -161,11 +161,6 @@ func TestRefreshOpenAICompatibleProviderFixture(t *testing.T) {
 	}
 }
 
-// TestOpenAICompatibleProviderFixtureCurrency enforces the reviewed
-// maximum-age policy and compares every fixture against the live provider wire
-// shape. Only a live capture can clear a stale or drifted fixture, so this test
-// needs catalog-acquisition credentials and stays outside the offline test path.
-// scripts/verify-provider-fixture-drift.sh owns it.
 func TestOpenAICompatibleProviderFixtureCurrency(t *testing.T) {
 	if !providerfixture.CurrencyRequested() {
 		t.Skipf("set %s=1 to compare fixtures against live provider responses",

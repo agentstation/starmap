@@ -8,14 +8,6 @@ import (
 	"github.com/goccy/go-yaml"
 )
 
-// TestModelTokenPricingRoundTripsEveryTokenCostField proves that every token
-// price a catalog records survives both encodings.
-//
-// ModelTokenPricing.MarshalYAML is written by hand, one branch per field. A
-// field added to the struct without a matching branch encodes to JSON and
-// vanishes from YAML, and the human workspace stores YAML. The test walks the
-// struct by reflection instead of naming fields, so a new price is covered the
-// moment it is declared.
 func TestModelTokenPricingRoundTripsEveryTokenCostField(t *testing.T) {
 	t.Parallel()
 

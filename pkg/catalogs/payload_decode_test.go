@@ -11,8 +11,8 @@ import (
 )
 
 // TestF009MalformedPayloadSiblingReturnsPartialDiagnostic proves valid records
-// remain inspectable while callers receive a typed error that prevents the
-// partial catalog from being activated as a manifest-bound generation.
+// remain inspectable while callers receive a typed error. The error prevents
+// callers from activating the partial catalog as a manifest-bound generation.
 func TestF009MalformedPayloadSiblingReturnsPartialDiagnostic(t *testing.T) {
 	payload := []byte(`{
 		"schema_version": 6,

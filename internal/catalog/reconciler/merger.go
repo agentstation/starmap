@@ -183,7 +183,7 @@ func (merger *merger) calculateAuthorityScore(resourceType evidence.ResourceType
 // Returns 1.0 for non-empty values (we trust the data we have).
 // Future enhancement: could factor in data quality indicators, source reliability, etc.
 func (merger *merger) calculateConfidence(value any) float64 {
-	// Simple implementation: if we have a value, we're confident in it
+	// Simple implementation: if we have a value, we are confident in it
 	if value != nil && value != "" {
 		return 1.0
 	}
@@ -308,7 +308,6 @@ func (merger *merger) model(providerID catalogs.ProviderID, modelID string, sour
 		snapshot := catalogs.DeepCopyModel(*baselineModel)
 		baselineModelSnapshot = &snapshot
 	}
-	// Ensure ID is set even if not found in baseline
 	if merged == nil || merged.ID == "" {
 		merged = &catalogs.Model{
 			ID: modelID,
@@ -439,7 +438,6 @@ func (merger *merger) provider(providerID catalogs.ProviderID, sourceProviders m
 		merger.applyProviderPolicy(providerID, &merged, policy, policySources, &history)
 	}
 
-	// Ensure ID is set
 	merged.ID = providerID
 
 	return &merged, history

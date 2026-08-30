@@ -7,10 +7,9 @@ import (
 
 const modelResourceSeparator = "/"
 
-// ModelResourceID returns the durable provider-scoped identity used for model
-// provenance. Provider and model identifiers are opaque and escaped
-// independently so slashes, colons, and percent signs cannot make two
-// identities collide with one another or with the provenance key format.
+// ModelResourceID returns the durable provider-scoped identity for model
+// provenance. It escapes opaque provider and model identifiers independently.
+// This prevents slashes, colons, or percent signs from causing key collisions.
 func ModelResourceID(providerID, modelID string) string {
 	return url.QueryEscape(providerID) + modelResourceSeparator + url.QueryEscape(modelID)
 }

@@ -19,9 +19,6 @@ func TestLoadConfig(t *testing.T) {
 		t.Fatal("LoadConfig() returned nil config")
 	}
 
-	// Verify defaults are set
-	// Note: LogLevel may be empty (triggers precedence logic in logger.go)
-	// LogFormat should have a default
 	if config.LogFormat == "" {
 		t.Error("LogFormat not set to default")
 	}

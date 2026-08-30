@@ -36,7 +36,6 @@ func runTest(cmd *cobra.Command, args []string, app application) error {
 		return err
 	}
 
-	// If a specific provider was requested
 	if len(args) > 0 {
 		providerID := args[0]
 		return testSingleProvider(cmd, cat, providerID, app)
@@ -311,16 +310,14 @@ func testProvidersConcurrent(cmd *cobra.Command, cat catalogs.Reader, supportedP
 		resultChan := make(chan apiTestResult, len(providersToTest))
 
 		for _, work := range providersToTest {
-			wg.Add(1)
-			go func(w apiTestWork) {
-				defer wg.Done()
+			wg.Go(func() {
 				defer func() {
 					if r := recover(); r != nil {
 						// Convert a provider-client programming failure at this
 						// goroutine boundary so other provider results remain
 						// observable.
 						resultChan <- apiTestResult{
-							index:     w.index,
+							index:     work.index,
 							status:    emoji.Error + " Failed",
 							errorMsg:  fmt.Sprintf("panic during test: %v", r),
 							succeeded: false,
@@ -333,12 +330,12 @@ func testProvidersConcurrent(cmd *cobra.Command, cat catalogs.Reader, supportedP
 				defer cancel()
 
 				start := time.Now()
-				models, fetchErr := fetcher.FetchModels(ctx, &w.provider)
+				models, fetchErr := fetcher.FetchModels(ctx, &work.provider)
 				duration := time.Since(start)
 
 				if fetchErr != nil {
 					resultChan <- apiTestResult{
-						index:        w.index,
+						index:        work.index,
 						status:       emoji.Error + " Failed",
 						responseTime: duration.Truncate(time.Millisecond).String(),
 						errorMsg:     fetchErr.Error(),
@@ -346,14 +343,14 @@ func testProvidersConcurrent(cmd *cobra.Command, cat catalogs.Reader, supportedP
 					}
 				} else {
 					resultChan <- apiTestResult{
-						index:        w.index,
+						index:        work.index,
 						status:       emoji.Success + " Success",
 						responseTime: duration.Truncate(time.Millisecond).String(),
 						modelsFound:  fmt.Sprintf("%d", len(models)),
 						succeeded:    true,
 					}
 				}
-			}(work)
+			})
 		}
 
 		// Wait for all goroutines to complete
@@ -410,7 +407,6 @@ func testSingleProvider(cmd *cobra.Command, cat catalogs.Reader, providerID stri
 		return fmt.Errorf("provider %s not found in catalog", providerID)
 	}
 
-	// Check if provider is supported using canonical ID
 	if !fetcher.HasClient(provider.ID) {
 		return fmt.Errorf("provider %s not found or not supported", providerID)
 	}

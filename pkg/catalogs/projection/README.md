@@ -17,13 +17,13 @@ Package projection defines post\-commit workspace projection results.
 
 
 <a name="Result"></a>
-## type [Result](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/projection/projection.go#L21-L33>)
+## type [Result](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/projection/projection.go#L20-L32>)
 
 Result reports the post\-commit state of an optional human YAML workspace.
 
 ```go
 type Result struct {
-    // Path is the requested human workspace root.
+    // Path is the requested human catalog workspace root.
     Path string
     // Status reports whether projection completed or requires repair.
     Status Status
@@ -50,11 +50,10 @@ type Status string
 
 ```go
 const (
-    // StatusApplied means the committed generation was materialized
-    // successfully to the requested human workspace.
+    // StatusApplied means the workspace matches the committed generation.
     StatusApplied Status = "applied"
-    // StatusPendingRepair means the generation remains durably active,
-    // but its optional human workspace projection must be repaired.
+    // StatusPendingRepair means the generation remains durably active while the
+    // optional human catalog workspace needs repair.
     StatusPendingRepair Status = "pending_repair"
 
     // IssueWorkspaceFailed identifies a committed generation whose

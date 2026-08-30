@@ -6,7 +6,7 @@ import (
 )
 
 // updateCoordinator serializes complete catalog update transactions. Its zero
-// value is ready for use so test and embedded clients cannot bypass the seam.
+// value is ready for use so test and embedded clients cannot bypass the boundary.
 type updateCoordinator struct {
 	once sync.Once
 	slot chan struct{}

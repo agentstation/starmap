@@ -46,10 +46,9 @@ func validateModelFactConsistency(model Model) error {
 	return validateMediaOperationFacts(model)
 }
 
-// validateMediaOperationFacts holds a model whose tag names a dedicated media
-// operation to the facts that operation requires. It reads the same table the
-// derivation reads, so a model that carries the tag and fails the shape is one
-// the derivation would have published as a chat model instead.
+// validateMediaOperationFacts checks that each dedicated media tag has the facts
+// its operation requires. It reads the same table as operation derivation. A
+// model that fails this check would derive as a chat model.
 //
 // The output set is exact on purpose. A model that also writes text answers
 // through chat completions, and a tag that says otherwise contradicts the
@@ -80,11 +79,10 @@ func validateMediaOperationFacts(model Model) error {
 	return nil
 }
 
-// mediaFactsForTag collects what every operation sharing one tag agrees on: the
-// exact output set they all name, and the input modalities every one of them
-// requires. Image generation and image editing share a tag and an output, and
-// they differ only in that editing also reads an image, so the shared input is
-// the intersection rather than either list.
+// mediaFactsForTag collects facts shared by every operation with one tag. It
+// returns their common output set and required input modalities. Image generation
+// and editing share a tag and output. Editing also reads an image, so their shared
+// input is the intersection.
 func mediaFactsForTag(tag ModelTag) (input, output []ModelModality, found bool) {
 	for _, facts := range mediaOperationFacts {
 		if !slices.Contains(facts.Tags, tag) {

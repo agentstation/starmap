@@ -17,9 +17,8 @@ type Cache struct {
 	sequence     uint64
 }
 
-// New creates a new cache with the given TTL and cleanup interval.
-// defaultTTL is the default expiration time for cache entries.
-// cleanupInterval is how often expired items are removed from memory.
+// New creates a cache with the given default TTL and cleanup interval. The TTL
+// sets entry expiration. The cleanup interval controls expired-entry removal.
 func New(defaultTTL, cleanupInterval time.Duration) *Cache {
 	return &Cache{
 		store: gocache.New(defaultTTL, cleanupInterval),

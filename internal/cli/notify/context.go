@@ -123,7 +123,6 @@ func hasConfigFile() bool {
 
 // isFirstRun detects if this is the user's first time running starmap.
 func isFirstRun() bool {
-	// Check for any indication of previous usage
 	indicators := []string{
 		".starmap",
 	}

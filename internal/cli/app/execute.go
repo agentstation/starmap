@@ -88,7 +88,7 @@ when API keys are configured.`,
 	return rootCmd
 }
 
-// setupCommand is called before any command runs.
+// setupCommand runs before each command.
 func (a *App) setupCommand(cmd *cobra.Command, _ []string) error {
 	if a.commandFlags.configFile != "" {
 		config, err := loadConfig(a.commandFlags.configFile)
@@ -158,7 +158,7 @@ func (a *App) registerCommands(rootCmd *cobra.Command) {
 }
 
 // ExitOnError is a helper that prints an error and exits with status 1.
-// This is meant to be used in main.go for top-level error handling.
+// Use it in main.go for top-level error handling.
 func ExitOnError(err error) {
 	if err != nil {
 		//nolint:errcheck // Ignoring write error since we're exiting anyway
@@ -167,8 +167,8 @@ func ExitOnError(err error) {
 	}
 }
 
-// mustGetBool retrieves a boolean flag value or panics if the flag doesn't exist.
-// This should only be used for flags defined in this package.
+// mustGetBool retrieves a boolean flag value or panics if the flag does not exist.
+// Use it only for flags that this package defines.
 func mustGetBool(cmd *cobra.Command, name string) bool {
 	val, err := cmd.Flags().GetBool(name)
 	if err != nil {
@@ -177,8 +177,8 @@ func mustGetBool(cmd *cobra.Command, name string) bool {
 	return val
 }
 
-// mustGetString retrieves a string flag value or panics if the flag doesn't exist.
-// This should only be used for flags defined in this package.
+// mustGetString retrieves a string flag value or panics if the flag does not exist.
+// Use it only for flags that this package defines.
 func mustGetString(cmd *cobra.Command, name string) string {
 	val, err := cmd.Flags().GetString(name)
 	if err != nil {

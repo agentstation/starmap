@@ -17,12 +17,11 @@ func embeddedBuilder() (*catalogs.Builder, error) {
 	return catalogs.New(catalogs.WithFS(os.DirFS("../../internal/embedded/catalog")))
 }
 
-// Example demonstrates advanced catalog construction and publication.
+// Example shows advanced catalog construction and publication.
 func Example() {
 	// Create a memory-based draft.
 	builder := catalogs.NewEmpty()
 
-	// Define the canonical model independently from where it is served.
 	if err := builder.SetAuthor(catalogs.Author{ID: "openai", Name: "OpenAI"}); err != nil {
 		log.Fatal(err)
 	}
@@ -60,7 +59,7 @@ func Example() {
 	// Output: Found 1 models
 }
 
-// Example_embeddedCatalog demonstrates using the embedded catalog.
+// Example_embeddedCatalog shows using the embedded catalog.
 func Example_embeddedCatalog() {
 	// Load embedded data into a builder, then publish it.
 	builder, err := embeddedBuilder()
@@ -83,7 +82,7 @@ func Example_embeddedCatalog() {
 	}
 }
 
-// Example_fileBasedCatalog demonstrates file-based persistence.
+// Example_fileBasedCatalog shows file-based persistence.
 func Example_fileBasedCatalog() {
 	// Create a file-based builder.
 	catalogPath := filepath.Join(".", "my-catalog")
@@ -110,14 +109,10 @@ func Example_fileBasedCatalog() {
 		log.Fatal(err)
 	}
 
-	// Save to disk (would normally use SaveTo method or similar)
-	// Since Write is not part of the interface, this example shows the concept
-	// In actual usage, you would use catalog.SaveTo(catalogPath)
-
 	fmt.Println("Catalog saved to disk")
 }
 
-// Example_mergeCatalogs demonstrates merging two catalogs.
+// Example_mergeCatalogs shows merging two catalogs.
 func Example_mergeCatalogs() {
 	// Create base catalog
 	base := catalogs.NewEmpty()
@@ -170,7 +165,7 @@ func Example_mergeCatalogs() {
 	// Output: Model name: Model One Enhanced
 }
 
-// Example_mergeStrategies demonstrates different merge strategies.
+// Example_mergeStrategies shows different merge strategies.
 func Example_mergeStrategies() {
 	base := catalogs.NewEmpty()
 	baseProvider := catalogs.Provider{
@@ -215,7 +210,7 @@ func Example_mergeStrategies() {
 	fmt.Printf("EnrichEmpty - m1: %s\n", m1.Name) // Updated
 }
 
-// Example_concurrentAccess demonstrates thread-safe concurrent usage.
+// Example_concurrentAccess shows thread-safe concurrent usage.
 func Example_concurrentAccess() {
 	catalog := catalogs.NewEmpty()
 	ctx, cancel := context.WithTimeout(context.Background(), resourcepolicy.DefaultHTTPTimeout)
@@ -266,7 +261,7 @@ func Example_concurrentAccess() {
 	fmt.Printf("Created %d models concurrently\n", len(models.List()))
 }
 
-// Example_providerCapabilities demonstrates working with provider features.
+// Example_providerCapabilities shows working with provider features.
 func Example_providerCapabilities() {
 	catalog := catalogs.NewEmpty()
 
@@ -306,7 +301,7 @@ func Example_providerCapabilities() {
 	}
 }
 
-// Example_modelFiltering demonstrates filtering models.
+// Example_modelFiltering shows filtering models.
 func Example_modelFiltering() {
 	builder, _ := embeddedBuilder()
 	catalog, _ := builder.Build()
@@ -331,7 +326,7 @@ func Example_modelFiltering() {
 	fmt.Printf("Found %d models with vision\n", len(visionModels))
 }
 
-// Example_catalogCopy demonstrates creating independent copies.
+// Example_catalogCopy shows creating independent copies.
 func Example_catalogCopy() {
 	// Create original catalog
 	original := catalogs.NewEmpty()
@@ -364,7 +359,6 @@ func Example_catalogCopy() {
 	}
 	_ = copy.SetProvider(copiedProvider)
 
-	// Original is unchanged
 	originalModels, _ := original.ProviderModels("test")
 	copyModels, _ := copy.ProviderModels("test")
 	fmt.Printf("Original has %d models\n", len(originalModels.List()))

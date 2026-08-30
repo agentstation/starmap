@@ -9,13 +9,13 @@ import (
 	"github.com/agentstation/starmap/pkg/sources"
 )
 
-// Source observes a human workspace catalog, either injected after validated
+// Source observes a human catalog workspace catalog, either injected after validated
 // loading or loaded from its configured path.
 type Source struct {
 	catalogPath     string
 	snapshot        *catalogs.Catalog
 	loadReport      catalogs.LoadReport
-	catalogProvided bool // Track if catalog was provided via WithCatalog option
+	catalogProvided bool
 }
 
 var _ sources.Source = (*Source)(nil)
@@ -39,7 +39,7 @@ func WithCatalogPath(path string) Option {
 	}
 }
 
-// WithCatalog sets a pre-loaded human workspace catalog to reuse.
+// WithCatalog sets a pre-loaded human catalog workspace catalog to reuse.
 func WithCatalog(catalog *catalogs.Catalog) Option {
 	return func(s *Source) {
 		s.snapshot = catalog
@@ -58,8 +58,6 @@ func WithCatalogReport(catalog *catalogs.Catalog, report catalogs.LoadReport) Op
 
 // ID returns the ID of this source.
 func (s *Source) ID() sources.ID {
-	// For local source, we always return the constant name
-	// The path details can be logged separately if needed
 	return sources.LocalCatalogID
 }
 
@@ -68,7 +66,6 @@ func (s *Source) Name() string { return "Local Catalog" }
 
 // Observe returns catalog data from the configured source without retaining result state.
 func (s *Source) Observe(_ context.Context, _ ...sources.Option) (sources.Observation, error) {
-	// If catalog was provided via WithCatalog option, reuse it
 	if s.catalogProvided {
 		return s.observation(s.snapshot, s.loadReport)
 	}
@@ -124,7 +121,7 @@ func (s *Source) observation(catalog *catalogs.Catalog, report catalogs.LoadRepo
 
 // Cleanup releases any resources.
 func (s *Source) Cleanup() error {
-	// LocalSource doesn't hold any resources
+	// LocalSource does not hold any resources
 	return nil
 }
 
@@ -134,7 +131,7 @@ func (s *Source) Dependencies() []sources.Dependency {
 	return nil
 }
 
-// IsOptional reports that a human workspace observation is optional when the
+// IsOptional reports that a human catalog workspace observation is optional when the
 // verified embedded observation is available.
 func (s *Source) IsOptional() bool {
 	return true

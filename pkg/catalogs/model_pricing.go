@@ -6,29 +6,22 @@ import (
 	"github.com/agentstation/utc"
 )
 
+// Model pricing currencies.
 const (
-	// ModelPricingCurrencyUSD is the US Dollar currency constant.
-	ModelPricingCurrencyUSD ModelPricingCurrency = "USD" // US Dollar
-	// ModelPricingCurrencyEUR is the Euro currency constant.
-	ModelPricingCurrencyEUR ModelPricingCurrency = "EUR" // Euro
-	// ModelPricingCurrencyJPY is the Japanese Yen currency constant.
-	ModelPricingCurrencyJPY ModelPricingCurrency = "JPY" // Japanese Yen
-	// ModelPricingCurrencyGBP is the British Pound Sterling currency constant.
-	ModelPricingCurrencyGBP ModelPricingCurrency = "GBP" // British Pound Sterling
-	// ModelPricingCurrencyAUD is the Australian Dollar currency constant.
-	ModelPricingCurrencyAUD ModelPricingCurrency = "AUD" // Australian Dollar
-	// ModelPricingCurrencyCAD is the Canadian Dollar currency constant.
-	ModelPricingCurrencyCAD ModelPricingCurrency = "CAD" // Canadian Dollar
-	// ModelPricingCurrencyCNY is the Chinese Yuan currency constant.
-	ModelPricingCurrencyCNY ModelPricingCurrency = "CNY" // Chinese Yuan
-	// ModelPricingCurrencyNZD is the New Zealand Dollar currency constant.
-	ModelPricingCurrencyNZD ModelPricingCurrency = "NZD" // New Zealand Dollar
+	ModelPricingCurrencyUSD ModelPricingCurrency = "USD"
+	ModelPricingCurrencyEUR ModelPricingCurrency = "EUR"
+	ModelPricingCurrencyJPY ModelPricingCurrency = "JPY"
+	ModelPricingCurrencyGBP ModelPricingCurrency = "GBP"
+	ModelPricingCurrencyAUD ModelPricingCurrency = "AUD"
+	ModelPricingCurrencyCAD ModelPricingCurrency = "CAD"
+	ModelPricingCurrencyCNY ModelPricingCurrency = "CNY"
+	ModelPricingCurrencyNZD ModelPricingCurrency = "NZD"
 )
 
 // ModelPricingCurrency represents a currency code for model pricing.
 type ModelPricingCurrency string
 
-// String returns the string representation of a ModelPricingCurrency.
+// String returns text for ModelPricingCurrency.
 func (m ModelPricingCurrency) String() string {
 	return string(m)
 }
@@ -104,7 +97,7 @@ type ModelPricingTier struct {
 // ModelPricingTierType represents the dimension that activates a pricing tier.
 type ModelPricingTierType string
 
-// String returns the string representation of a ModelPricingTierType.
+// String returns text for ModelPricingTierType.
 func (m ModelPricingTierType) String() string {
 	return string(m)
 }
@@ -125,10 +118,6 @@ type ModelTokenPricing struct {
 	CacheRead  *ModelTokenCost `json:"cache_read,omitempty" yaml:"cache_read,omitempty"`   // Cache read costs (flat structure)
 	CacheWrite *ModelTokenCost `json:"cache_write,omitempty" yaml:"cache_write,omitempty"` // Cache write costs (flat structure)
 
-	// Media token types. A provider that meters audio bills it at its own
-	// rate, so an audio turn cannot be priced from Input and Output alone.
-	// These are per-token prices, unlike ModelOperationPricing.AudioInput,
-	// which is a flat price for one audio input.
 	AudioInput  *ModelTokenCost `json:"audio_input,omitempty" yaml:"audio_input,omitempty"`   // Audio input tokens
 	AudioOutput *ModelTokenCost `json:"audio_output,omitempty" yaml:"audio_output,omitempty"` // Audio output tokens
 }
@@ -196,9 +185,6 @@ type ModelOperationPricing struct {
 
 	// Media operations
 	ImageInput *float64 `json:"image_input,omitempty" yaml:"image_input,omitempty"` // Cost per image processed
-	// PageInput is the cost of one document page the provider reads. A page is
-	// the unit a document recognition provider bills, and it is not a token: a
-	// page of dense text and a page of white space cost the same.
 	PageInput  *float64 `json:"page_input,omitempty" yaml:"page_input,omitempty"`
 	AudioInput *float64 `json:"audio_input,omitempty" yaml:"audio_input,omitempty"` // Cost per audio input
 	VideoInput *float64 `json:"video_input,omitempty" yaml:"video_input,omitempty"` // Cost per video input
@@ -213,12 +199,6 @@ type ModelOperationPricing struct {
 	FunctionCall *float64 `json:"function_call,omitempty" yaml:"function_call,omitempty"` // Cost per function call
 	ToolUse      *float64 `json:"tool_use,omitempty" yaml:"tool_use,omitempty"`           // Cost per tool usage
 
-	// Rerank operations
-	//
-	// SearchUnit is the cost of one search unit, which is one query measured
-	// against a bounded number of documents. A provider that exceeds the bound
-	// splits the call and charges a unit for each part, so the unit is not the
-	// same as the request.
 	SearchUnit *float64 `json:"search_unit,omitempty" yaml:"search_unit,omitempty"`
 	// RerankBasis names which recorded price a rerank turn draws from.
 	// Providers disagree: some bill a search unit and some bill the tokens they
@@ -239,7 +219,7 @@ const (
 	ModelRerankBasisToken ModelRerankBasis = "token"
 )
 
-// String returns the string representation of a ModelRerankBasis.
+// String returns text for ModelRerankBasis.
 func (m ModelRerankBasis) String() string {
 	return string(m)
 }

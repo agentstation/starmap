@@ -13,7 +13,7 @@ import (
 	"github.com/agentstation/starmap/pkg/errors"
 )
 
-// RevisionKind identifies how an upstream observation revision was obtained.
+// RevisionKind identifies the source of an upstream observation revision.
 type RevisionKind = evidence.ObservationRevisionKind
 
 const (
@@ -34,11 +34,11 @@ const (
 // Revision identifies the exact upstream or normalized content revision.
 type Revision = evidence.ObservationRevision
 
-// ObservationCompleteness states whether all expected records were observed.
+// ObservationCompleteness states whether an observation contains every expected record.
 type ObservationCompleteness = evidence.ObservationCompleteness
 
 const (
-	// ObservationCompletenessComplete means every expected record was observed.
+	// ObservationCompletenessComplete means the observation contains every expected record.
 	ObservationCompletenessComplete = evidence.ObservationCompletenessComplete
 	// ObservationCompletenessPartial means at least one expected record is absent.
 	ObservationCompletenessPartial = evidence.ObservationCompletenessPartial
@@ -50,7 +50,7 @@ type ObservationStatus = evidence.ObservationStatus
 const (
 	// ObservationStatusSucceeded means the observation completed without known degradation.
 	ObservationStatusSucceeded = evidence.ObservationStatusSucceeded
-	// ObservationStatusDegraded means usable catalog data was returned with a known limitation.
+	// ObservationStatusDegraded means the observation contains known issues.
 	ObservationStatusDegraded = evidence.ObservationStatusDegraded
 )
 

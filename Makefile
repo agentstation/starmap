@@ -36,12 +36,14 @@ GOGET=$(GOCMD) get
 GOMOD=$(GOCMD) mod
 GOFMT=$(GOCMD) fmt
 GOVET=$(GOCMD) vet
+AGO=$(GOCMD) tool ago
 GOBIN?=$(shell go env GOPATH)/bin
 GOMARKDOC=$(GOBIN)/gomarkdoc
 GOLANGCI_LINT_VERSION=2.12.2
 GOLANGCI_LINT_INSTALL=github.com/golangci/golangci-lint/v2/cmd/golangci-lint@v$(GOLANGCI_LINT_VERSION)
 SWAG_VERSION=2.0.0-rc4
 SWAG_RUN=$(GOCMD) run github.com/swaggo/swag/v2/cmd/swag@v$(SWAG_VERSION)
+TECHNICAL_WRITING?=$(HOME)/.agents/skills/technical-writing/scripts/technical-writing
 
 # Colors for output
 RED=\033[0;31m
@@ -50,7 +52,7 @@ YELLOW=\033[1;33m
 BLUE=\033[0;34m
 NC=\033[0m # No Color
 
-.PHONY: help build install uninstall clean test test-race test-integration test-all test-coverage test-critical-coverage test-catalog-performance test-consumer-deps test-pure-go test-file-sizes verify-action-pins verify lint fmt check fix vet deps tidy run update install-tools goreleaser-check release-snapshot-devbox ci-test release release-snapshot release-tag release-local testdata demo godoc openapi-check version catalog-generation-check embedded-catalog-budget-check
+.PHONY: help build install uninstall clean test test-race test-integration test-all test-coverage test-critical-coverage test-catalog-performance test-consumer-deps test-pure-go test-file-sizes verify-action-pins verify lint technical-writing-check fmt check fix vet deps tidy run update install-tools goreleaser-check release-snapshot-devbox ci-test release release-snapshot release-tag release-local testdata demo godoc openapi-check version catalog-generation-check embedded-catalog-budget-check
 
 # Default target  
 all: clean fix check build
@@ -192,21 +194,30 @@ test-integration: ## Run integration tests
 test-all: test test-race test-integration ## Run all tests
 	@echo "$(GREEN)All tests completed!$(NC)"
 
-lint: ## Run golangci-lint only
-	@echo "$(BLUE)Running golangci-lint...$(NC)"
+lint: ## Run golangci-lint and ago
+	@echo "$(BLUE)Running linters...$(NC)"
 	@$(RUN_PREFIX) which golangci-lint > /dev/null || (echo "$(RED)golangci-lint not found. Install with: go install $(GOLANGCI_LINT_INSTALL)$(NC)" && exit 1)
 	$(RUN_PREFIX) golangci-lint run
+	$(AGO) -stale-ignores ./...
+	$(MAKE) technical-writing-check
 	@echo "$(GREEN)Linting complete$(NC)"
+
+technical-writing-check: ## Check the glossary and maintained technical prose
+	@test -x "$(TECHNICAL_WRITING)" || (echo "$(RED)technical-writing skill not found at $(TECHNICAL_WRITING)$(NC)" && exit 1)
+	$(TECHNICAL_WRITING) glossary check
+	$(TECHNICAL_WRITING) glossary update --check
+	$(TECHNICAL_WRITING) lint . --mode strict --format text
 
 fmt: ## Format Go code with gofmt only
 	@echo "$(BLUE)Formatting with gofmt...$(NC)"
 	$(GOFMT) ./...
 	@echo "$(GREEN)Formatting complete$(NC)"
 
-check: ## Run all checks: vet + lint + test (no fixes)
-	@echo "$(BLUE)Running checks: go vet & golangci-lint & tests...$(NC)"
+check: ## Run all checks: vet + linters + test (no fixes)
+	@echo "$(BLUE)Running checks: go vet, linters, and tests...$(NC)"
 	@$(RUN_PREFIX) which golangci-lint > /dev/null || (echo "$(RED)golangci-lint not found. Install with: go install $(GOLANGCI_LINT_INSTALL)$(NC)" && exit 1)
-	$(GOVET) ./... && $(RUN_PREFIX) golangci-lint run && $(GOTEST) ./...
+	$(GOVET) ./... && $(RUN_PREFIX) golangci-lint run && $(AGO) -stale-ignores ./... && $(GOTEST) ./...
+	$(MAKE) technical-writing-check
 	@echo "$(GREEN)All checks passed$(NC)"
 
 verify: ## Run repository verification gate

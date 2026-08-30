@@ -125,7 +125,7 @@ type SourceErrorKind string
 const (
 	// SourceErrorNotConfigured means that the selected source has no material.
 	SourceErrorNotConfigured SourceErrorKind = "not_configured"
-	// SourceErrorDenied means that source access or authentication was denied.
+	// SourceErrorDenied means that policy or access controls rejected the request.
 	SourceErrorDenied SourceErrorKind = "denied"
 	// SourceErrorInvalid means that the source reference or material is invalid.
 	SourceErrorInvalid SourceErrorKind = "invalid"

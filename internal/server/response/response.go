@@ -51,7 +51,6 @@ func Fail(code, message, details string) Response {
 func JSON(w http.ResponseWriter, status int, resp Response) {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(status)
-	// Encoding errors are ignored as headers are already sent (best effort)
 	_ = json.NewEncoder(w).Encode(resp)
 }
 
@@ -100,7 +99,7 @@ func RateLimited(w http.ResponseWriter, message string) {
 
 // InternalError writes a 500 error response.
 func InternalError(w http.ResponseWriter, logger *zerolog.Logger, err error) {
-	// Log the actual error but don't expose details to client
+	// Log the actual error but do not expose details to client
 	if logger != nil {
 		logger.Error().Err(err).Msg("Internal server error")
 	}

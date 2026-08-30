@@ -26,7 +26,7 @@ func TestDeepCopyProviderModels(t *testing.T) {
 		if len(result) != 0 {
 			t.Error("Expected empty result map")
 		}
-		// Verify it's a different map instance
+		// Verify it is a different map instance
 		if &input == &result {
 			t.Error("Expected different map instances")
 		}
@@ -57,7 +57,6 @@ func TestDeepCopyProviderModels(t *testing.T) {
 			t.Errorf("Expected length %d, got %d", len(input), len(result))
 		}
 
-		// Check that models are copied, not shared
 		for k, v := range input {
 			resultModel := result[k]
 			if resultModel == nil {

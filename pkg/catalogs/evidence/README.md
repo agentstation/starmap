@@ -43,7 +43,7 @@ CompareReviewCandidates returns a stable lexical order for review candidates.
 <a name="ObservationCompleteness"></a>
 ## type [ObservationCompleteness](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/evidence/source_observation.go#L30>)
 
-ObservationCompleteness states whether every expected record was observed.
+ObservationCompleteness states whether an observation contains every expected record.
 
 ```go
 type ObservationCompleteness string
@@ -53,7 +53,7 @@ type ObservationCompleteness string
 
 ```go
 const (
-    // ObservationCompletenessComplete means every expected record was observed.
+    // ObservationCompletenessComplete means the observation contains every expected record.
     ObservationCompletenessComplete ObservationCompleteness = "complete"
     // ObservationCompletenessPartial means at least one expected record is absent.
     ObservationCompletenessPartial ObservationCompleteness = "partial"
@@ -93,15 +93,15 @@ const (
     ObservationIssueCodeSchemaDrift ObservationIssueCode = "schema_drift"
     // ObservationIssueCodePayloadLimit means an upstream exceeded a bounded resource budget.
     ObservationIssueCodePayloadLimit ObservationIssueCode = "payload_limit"
-    // ObservationIssueCodeMissingCredentials means a provider could not be queried.
+    // ObservationIssueCodeMissingCredentials means authentication material was absent.
     ObservationIssueCodeMissingCredentials ObservationIssueCode = "missing_credentials"
     // ObservationIssueCodeConfiguration means source/provider configuration was invalid.
     ObservationIssueCodeConfiguration ObservationIssueCode = "configuration"
     // ObservationIssueCodeFetchFailed means upstream acquisition failed.
     ObservationIssueCodeFetchFailed ObservationIssueCode = "fetch_failed"
-    // ObservationIssueCodeStaleFallback means last-known-good stale evidence was used.
+    // ObservationIssueCodeStaleFallback means a stale cache entry supplied data.
     ObservationIssueCodeStaleFallback ObservationIssueCode = "stale_fallback"
-    // ObservationIssueCodeBootstrapFallback means embedded bootstrap evidence was used.
+    // ObservationIssueCodeBootstrapFallback means embedded data supplied the observation.
     ObservationIssueCodeBootstrapFallback ObservationIssueCode = "bootstrap_fallback"
     // ObservationIssueCodeVolumeCollapse means a source omitted records that
     // its prior accepted evidence supplied, without explicit lifecycle proof.
@@ -162,7 +162,7 @@ type ObservationRevision struct {
 <a name="ObservationRevisionKind"></a>
 ## type [ObservationRevisionKind](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/evidence/source_observation.go#L4>)
 
-ObservationRevisionKind identifies how an upstream revision was obtained.
+ObservationRevisionKind identifies the source of an upstream revision.
 
 ```go
 type ObservationRevisionKind string
@@ -208,9 +208,9 @@ const (
 ```
 
 <a name="ResourceType"></a>
-## type [ResourceType](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/evidence/resource.go#L6>)
+## type [ResourceType](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/evidence/resource.go#L5>)
 
-ResourceType identifies the type of resource being tracked or merged in the catalog system. This allows provenance tracking and reconciliation to handle different resource types \(models, providers, authors\) with appropriate logic.
+ResourceType identifies a catalog resource category. Provenance and reconciliation use it to select logic for models, providers, and authors.
 
 ```go
 type ResourceType string
@@ -238,13 +238,13 @@ const (
 ```
 
 <a name="ResourceType.String"></a>
-### func \(ResourceType\) [String](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/evidence/resource.go#L26>)
+### func \(ResourceType\) [String](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/evidence/resource.go#L25>)
 
 ```go
 func (rt ResourceType) String() string
 ```
 
-String returns the string representation of a resource type.
+String returns text for resource type.
 
 <a name="ReviewCandidate"></a>
 ## type [ReviewCandidate](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/evidence/review_candidate.go#L16-L26>)
@@ -334,7 +334,7 @@ SourceIDs returns all available source identifiers. This provides a convenient w
 func (id SourceID) IsValid() bool
 ```
 
-IsValid returns true if the SourceID is one of the defined constants. Uses SourceIDs\(\) to ensure consistency with the authoritative list.
+IsValid returns true if the SourceID is one of the defined constants. Uses SourceIDs\(\) to verify consistency with the authoritative list.
 
 <a name="SourceID.String"></a>
 ### func \(SourceID\) [String](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/evidence/source.go#L10>)
@@ -343,7 +343,7 @@ IsValid returns true if the SourceID is one of the defined constants. Uses Sourc
 func (id SourceID) String() string
 ```
 
-String returns the string representation of a source ID.
+String returns text for source ID.
 
 Generated by [gomarkdoc](<https://github.com/princjef/gomarkdoc>)
 

@@ -25,7 +25,6 @@ func TestSave(t *testing.T) {
 	err = sm.Save()
 	if err != nil {
 		t.Logf("Save failed (expected for embedded catalog): %v", err)
-		// This is expected to fail for embedded catalogs that don't support saving
 	}
 }
 

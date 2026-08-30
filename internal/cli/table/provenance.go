@@ -128,8 +128,8 @@ func MatchField(field string, patterns []string) bool {
 }
 
 // formatValueAsYAML formats a provenance value as YAML for display.
-// Complex values (maps, slices, structs) are formatted as multi-line YAML.
-// Simple values (strings, numbers, bools) are kept as-is.
+// It emits maps, slices, and structs as multiline YAML. It returns strings,
+// numbers, and Boolean values without changes.
 func formatValueAsYAML(val any) string {
 	if val == nil {
 		return "<nil>"
@@ -169,7 +169,7 @@ func formatValueAsYAML(val any) string {
 	// Convert to string and remove trailing newline
 	yamlStr := strings.TrimSuffix(string(yamlBytes), "\n")
 
-	// If it's a simple single-line value, return as-is
+	// If it is a simple single-line value, return as-is
 	if !strings.Contains(yamlStr, "\n") {
 		return yamlStr
 	}

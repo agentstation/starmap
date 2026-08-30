@@ -80,9 +80,8 @@ type FetchRawResult struct {
 	RequestURL string
 }
 
-// FetchRaw fetches raw response data from a provider's API endpoint.
-// This function is used for fetching raw API responses for testdata generation.
-// Returns a FetchRawResult containing the data, response headers, latency, and URL.
+// FetchRaw gets an unparsed provider API response for test data generation. Its
+// result contains the data, response headers, latency, and URL.
 func FetchRaw(
 	ctx context.Context,
 	provider *catalogs.Provider,
@@ -113,8 +112,6 @@ func FetchRaw(
 		}
 	}
 	defer func() {
-		// Bound best-effort draining so a peer cannot turn cleanup into an
-		// unbounded read after the payload ceiling is reached.
 		_, _ = io.Copy(io.Discard, io.LimitReader(resp.Body, 4096))
 		_ = resp.Body.Close()
 	}()

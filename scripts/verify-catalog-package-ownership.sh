@@ -189,7 +189,8 @@ check_v09() {
 }
 
 check_v10() {
-	local module
+	local module release_toolchain
+	release_toolchain="${STARMAP_RELEASE_GOTOOLCHAIN:-go1.26.6}"
 	for module in read-only store-only pinned-artifact server-embed remote-subscriber server-storage; do
 		test -f "$ROOT/testdata/consumers/$module/go.mod" || {
 			printf 'missing external consumer module: %s\n' "$module"
@@ -197,7 +198,11 @@ check_v10() {
 		}
 		(
 			cd "$ROOT/testdata/consumers/$module"
-			GOWORK=off go test ./...
+			if [[ "$module" == "pinned-artifact" ]]; then
+				GOTOOLCHAIN="$release_toolchain" GOWORK=off go test ./...
+			else
+				GOWORK=off go test ./...
+			fi
 		) || return 1
 	done
 }
@@ -211,8 +216,7 @@ check_v11() {
 		files+=("$path")
 	done < <(
 		find "$ROOT/docs" "$ROOT/pkg" \
-			\( -path "$ROOT/docs/reviews" -o -path "$ROOT/docs/proof" -o -path "$ROOT/docs/plans" \
-				-o -path "$ROOT/docs/STARMAP_ARCHITECTURE_CONTROL_PLANE.md" \) -prune \
+			\( -path "$ROOT/docs/reviews" -o -path "$ROOT/docs/proof" -o -path "$ROOT/docs/plans" \) -prune \
 			-o -type f -name '*.md' ! -path "$migration" -print0
 	)
 	while IFS= read -r path; do

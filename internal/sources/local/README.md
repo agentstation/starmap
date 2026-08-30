@@ -44,7 +44,7 @@ type Option func(*Source)
 func WithCatalog(catalog *catalogs.Catalog) Option
 ```
 
-WithCatalog sets a pre\-loaded human workspace catalog to reuse.
+WithCatalog sets a pre\-loaded human catalog workspace catalog to reuse.
 
 <a name="WithCatalogPath"></a>
 ### func [WithCatalogPath](<https://github.com/agentstation/starmap/blob/main/internal/sources/local/local.go#L36>)
@@ -67,7 +67,7 @@ WithCatalogReport sets a pre\-loaded catalog and its source load diagnostics.
 <a name="Source"></a>
 ## type [Source](<https://github.com/agentstation/starmap/blob/main/internal/sources/local/local.go#L14-L19>)
 
-Source observes a human workspace catalog, either injected after validated loading or loaded from its configured path.
+Source observes a human catalog workspace catalog, either injected after validated loading or loaded from its configured path.
 
 ```go
 type Source struct {
@@ -85,7 +85,7 @@ func New(opts ...Option) *Source
 New creates a new local source.
 
 <a name="Source.Cleanup"></a>
-### func \(\*Source\) [Cleanup](<https://github.com/agentstation/starmap/blob/main/internal/sources/local/local.go#L126>)
+### func \(\*Source\) [Cleanup](<https://github.com/agentstation/starmap/blob/main/internal/sources/local/local.go#L123>)
 
 ```go
 func (s *Source) Cleanup() error
@@ -94,7 +94,7 @@ func (s *Source) Cleanup() error
 Cleanup releases any resources.
 
 <a name="Source.Dependencies"></a>
-### func \(\*Source\) [Dependencies](<https://github.com/agentstation/starmap/blob/main/internal/sources/local/local.go#L133>)
+### func \(\*Source\) [Dependencies](<https://github.com/agentstation/starmap/blob/main/internal/sources/local/local.go#L130>)
 
 ```go
 func (s *Source) Dependencies() []sources.Dependency
@@ -112,16 +112,16 @@ func (s *Source) ID() sources.ID
 ID returns the ID of this source.
 
 <a name="Source.IsOptional"></a>
-### func \(\*Source\) [IsOptional](<https://github.com/agentstation/starmap/blob/main/internal/sources/local/local.go#L139>)
+### func \(\*Source\) [IsOptional](<https://github.com/agentstation/starmap/blob/main/internal/sources/local/local.go#L136>)
 
 ```go
 func (s *Source) IsOptional() bool
 ```
 
-IsOptional reports that a human workspace observation is optional when the verified embedded observation is available.
+IsOptional reports that a human catalog workspace observation is optional when the verified embedded observation is available.
 
 <a name="Source.Name"></a>
-### func \(\*Source\) [Name](<https://github.com/agentstation/starmap/blob/main/internal/sources/local/local.go#L67>)
+### func \(\*Source\) [Name](<https://github.com/agentstation/starmap/blob/main/internal/sources/local/local.go#L65>)
 
 ```go
 func (s *Source) Name() string
@@ -130,7 +130,7 @@ func (s *Source) Name() string
 Name returns the human\-friendly name of this source.
 
 <a name="Source.Observe"></a>
-### func \(\*Source\) [Observe](<https://github.com/agentstation/starmap/blob/main/internal/sources/local/local.go#L70>)
+### func \(\*Source\) [Observe](<https://github.com/agentstation/starmap/blob/main/internal/sources/local/local.go#L68>)
 
 ```go
 func (s *Source) Observe(_ context.Context, _ ...sources.Option) (sources.Observation, error)

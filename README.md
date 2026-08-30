@@ -48,7 +48,7 @@
 Building AI applications requires accurate information about models across multiple providers, but:
 
 - **Fragmented Information**: Each provider has different APIs, documentation formats, and update cycles
-- **Missing Pricing Data**: Many providers don't publish pricing through their APIs
+- **Missing Pricing Data**: Many providers do not publish pricing through their APIs
 - **Rapid Changes**: New models launch weekly, capabilities change, prices update
 - **Integration Complexity**: Each provider requires custom code to fetch and parse model data
 - **No Single Source of Truth**: Developers must check multiple sources for complete information
@@ -63,25 +63,25 @@ Starmap provides:
   your application, CLI, or repository workflow chooses
 - **Flexible Storage**: From in-memory for testing to persistent for production
 - **Event-Driven Updates**: React to model changes in real-time
-- **Type-Safe Go API**: Strongly typed models with comprehensive metadata
+- **Type-Safe Go API**: Strongly typed models with detailed metadata
 
 ### Who Uses Starmap?
 
 - **AI Application Developers**: Discover and compare models for your use case
 - **Platform Engineers**: Maintain accurate model catalogs for your organization
-- **Tool Builders**: Integrate comprehensive model data into your products
+- **Tool Builders**: Integrate cataloged model data into your products
 - **Researchers**: Track model capabilities and pricing trends
 - **Cost Optimizers**: Find the best price/performance for your workloads
 
 ## Key Features
 
-✅ **Comprehensive Coverage**: 500+ models from 10+ providers
-✅ **Accurate Pricing**: Valid provider-offering prices first, with models.dev fallback
-✅ **Reactive Distribution**: Verified server generations activate from SSE
-publication hints; source acquisition remains an explicit operation
-✅ **Flexible Architecture**: Simple merging or complex reconciliation
-✅ **Multiple Interfaces**: CLI, Go package, and HTTP server (REST + SSE)
-✅ **Production Ready**: Thread-safe, well-tested, actively maintained  
+- **Catalog Coverage**: 500+ models from 10+ providers.
+- **Accurate Pricing**: Valid provider-offering prices first, with models.dev fallback.
+- **Reactive Distribution**: Verified server generations activate from SSE
+  publication hints. Source acquisition remains an explicit operation.
+- **Flexible Architecture**: Simple merging or complex reconciliation.
+- **Multiple Interfaces**: CLI, Go package, and HTTP server (REST + SSE).
+- **Production Ready**: Thread-safe, well-tested, actively maintained.
 
 ## Installation
 
@@ -100,10 +100,10 @@ starmap version
 
 ### Go Package
 
-The library requires Go 1.25 or newer. Releases are built and verified with Go
+The library requires Go 1.25 or newer. The project builds and verifies releases with Go
 1.26.6, while required CI also tests the latest patched Go 1.25 toolchain.
 Supported library, CLI, server, and remote-consumer compositions require no C
-toolchain; release archives and containers are built with `CGO_ENABLED=0`.
+toolchain. Release builds set `CGO_ENABLED=0` for archives and containers.
 The external offline composition also verifies a compile-time-pinned catalog
 artifact and activates it without network access, provider credentials, or
 acquisition/server dependencies.
@@ -115,7 +115,7 @@ go get github.com/agentstation/starmap
 
 ### Docker
 
-Starmap release images are built with [ko](https://ko.build), `CGO_ENABLED=0`,
+Starmap builds release images with [ko](https://ko.build), `CGO_ENABLED=0`,
 and a digest-pinned Chainguard static base. Verify and scan the exact image
 digest, SBOM, and release attestation under your deployment policy.
 
@@ -175,7 +175,7 @@ starmap models list --capability vision
 starmap models list --output json > models.json
 ```
 
-Unfiltered model rows include `provider_id`; equal model IDs at different
+Unfiltered model rows include `provider_id`. Equal model IDs at different
 providers remain separate so provider-specific prices and limits are never
 silently collapsed.
 
@@ -235,22 +235,22 @@ starmap update openai -y
 
 ## Architecture
 
-Starmap uses a layered architecture with clean separation of concerns:
+Starmap assigns a distinct responsibility to each architecture layer:
 
 - **User Interfaces**: CLI, Go package, and HTTP server (REST + SSE)
 - **Core System**: Catalog management, reconciliation engine, and event hooks
 - **Data Sources**: Provider APIs, models.dev, embedded catalog, and local files
-- **Generation Stores**: Memory, filesystem, or conditional object storage;
+- **Generation Stores**: Memory, filesystem, or conditional object storage.
   embedding applications can inject their own store
 
 For detailed architecture diagrams, design principles, and implementation details, see **[ARCHITECTURE.md](docs/ARCHITECTURE.md)**.
 
 ## Core Concepts
 
-Starmap's core abstractions provide a clean separation of concerns:
+Starmap's core types separate catalog, storage, and acquisition responsibilities:
 
 ### 1. Catalog
-The concrete immutable product for model data access. Advanced producers use a separate builder; ordinary consumers retain and share the catalog safely. See [Catalog Package Documentation](pkg/catalogs/README.md).
+The concrete immutable product for model data access. Advanced producers use a separate builder. Ordinary consumers retain and share the catalog safely. See [Catalog Package Documentation](pkg/catalogs/README.md).
 
 ### 2. CatalogStore
 A generation-oriented commit/read/CAS boundary. The same conformance contract
@@ -258,9 +258,8 @@ covers Starmap's memory, filesystem, and conditional object-storage adapters
 while retaining old immutable generations. Embedding applications such as
 Starport may inject a database-backed implementation, but own its driver,
 schema, migrations, credentials, connection pool, backups, and lifecycle.
-The exact concurrency, idempotency, failure, rollback, ownership, and error
-requirements are defined in the
-[Catalog Store Contract](docs/CATALOG_STORE_CONTRACT.md).
+The [Catalog Store Contract](docs/CATALOG_STORE_CONTRACT.md) defines exact
+concurrency, idempotency, failure, rollback, ownership, and error requirements.
 For servers without a durable filesystem, `pkg/catalogs/storage/s3` adapts a
 caller-owned AWS SDK v2 S3 client to the same object-generation contract:
 
@@ -275,22 +274,22 @@ store, err := storage.NewObject(backend, "production")
 ```
 
 The caller configures and owns the client, endpoint, credentials, transport,
-retries, and lifecycle. Construction performs no network request, and every
+retries, and lifecycle. Construction sends no network request, and every
 write requires an S3-compatible `If-None-Match` or `If-Match` conditional
-write; there is no last-writer-wins fallback.
+write. There is no last-writer-wins fallback.
 
 The standalone `starmap serve` command uses the CLI's filesystem generation
-store by default. An embedding server selects storage before it constructs the
-Starmap client: use `storage.NewFilesystem` for a persistent local path, or
-compose `s3store.New` with `storage.NewObject` for an S3-compatible bucket,
-then inject the selected store through `starmap.WithCatalogStore`. Storage mode,
+store by default. An embedding server selects storage before client
+construction. Use `storage.NewFilesystem` for a persistent local path. For an
+S3-compatible bucket, compose `s3store.New` with `storage.NewObject`. Then inject
+the selected store through `starmap.WithCatalogStore`. Storage mode,
 paths, bucket, prefix, client, credentials, and lifecycle remain deployment
-configuration; `server.New` receives the already-constructed client and does
+configuration. `server.New` receives the already-constructed client and does
 not open storage.
 
 When a client starts with a configured store, it validates and publishes that
-store's current generation before returning from `starmap.New`; an empty store
-uses either the exact configured human workspace or the verified embedded
+store's current generation before returning from `starmap.New`. An empty store
+uses either the exact configured human catalog workspace or the verified embedded
 bootstrap until its first successful commit.
 
 Validated generations use a deterministic archive and detached in-toto
@@ -300,9 +299,9 @@ statement for release/hosted distribution. See the
 ### 3. Provider Offering
 
 The provider-scoped service contract for a model definition. Its key combines
-the provider ID with the provider's exact opaque model ID, so equal model IDs at
-different providers retain independent pricing, limits, availability, regions,
-endpoint behavior, lifecycle, modes, and request overrides.
+the provider ID with the provider's exact opaque model ID. Equal model IDs at
+different providers retain independent pricing, limits, availability, and regions.
+They also retain independent endpoint behavior, lifecycle, modes, and request overrides.
 
 ### 4. Source
 Abstraction for fetching data from external systems (provider APIs, models.dev, local files). Each implements a common interface for consistent data access.
@@ -470,10 +469,9 @@ starmap update --auto-install-deps
 ```
 
 The `starmap update` command owns the interactive prompt adapter. Go library,
-server, repository-job, and other non-CLI sync calls never read stdin: they skip
-an optional source with missing dependencies and return a typed error for a
-required source unless an explicit noninteractive dependency policy is
-configured.
+server, repository-job, and other non-CLI sync calls never read stdin. They skip
+an optional source with missing dependencies. A required source returns a typed
+error unless the caller configures a noninteractive dependency policy.
 
 **Available Flags:**
 - `--auto-install-deps` - Automatically install missing dependencies
@@ -502,7 +500,7 @@ starmap deps check --output yaml
 The command shows:
 - ✅ Available dependencies with version and path
 - ❌ Missing dependencies with installation instructions
-- ℹ️  Sources that don't require any dependencies
+- ℹ️  Sources that do not require any dependencies
 
 Example output:
 ```
@@ -604,7 +602,7 @@ for _, offering := range offerings {
 ```
 
 `New` is the convenient read-only constructor and uses a background context.
-When construction reads a configured generation store, use `NewContext` so the
+When construction reads a configured catalog store, use `NewContext` so the
 caller owns cancellation and deadlines:
 
 ```go
@@ -646,9 +644,9 @@ stats := sm.HookStats() // failures, panics, coalesced generations, and callback
 
 Generation-store CAS is the durable commit point. The immutable catalog,
 generation identity, and sequence become visible atomically before callbacks
-begin. Callback delivery never lets a later generation overtake an earlier
+start. Callback delivery never lets a later generation overtake an earlier
 one. If callbacks lag, Starmap keeps the running generation plus the newest
-pending generation; skipped intermediate sequences are observable through the
+pending generation. Skipped intermediate sequences are observable through the
 event sequence and `HookStats().Coalesced`.
 
 #### Advanced Catalog Construction
@@ -666,7 +664,7 @@ if err != nil {
 }
 ```
 
-The human workspace keeps canonical authored facts and provider-serving facts
+The human catalog workspace keeps canonical authored facts and provider-serving facts
 readable but separate:
 
 ```yaml
@@ -690,7 +688,7 @@ pricing:
       per_1m: 0.60
 ```
 
-Any number of providers may link to the same `author/slug`; a provider may also
+Any number of providers may link to the same `author/slug`. A provider may also
 serve models from many unrelated authors. Starmap generates `endpoints.yaml`
 from these validated links. That file is a digest-bound inspection/export
 projection, not an editable source of truth.
@@ -735,7 +733,7 @@ An importer supplies the three immutable release assets and a
 channel-specific `artifact.PublisherVerifier`. For GitHub Releases, that
 verifier should require the exact `agentstation/starmap` repository and catalog
 generation workflow identity. Starmap verifies all trust inputs before
-mutation, reconciles release facts below human workspace evidence, and retains
+mutation, reconciles release facts below human catalog workspace evidence, and retains
 the prior generation for rollback:
 
 ```go
@@ -813,7 +811,7 @@ Starmap combines data from multiple sources:
 - **models.dev**: Community-verified pricing and metadata ([models.dev](https://models.dev))
 - **Embedded Catalog**: Baseline data shipped with starmap
 - **Local Files**: Human authored-model and provider-serving YAML plus manual
-  fallback data; generated `endpoints.yaml` is not an authority
+  fallback data. Generated `endpoints.yaml` is not an authority
 
 For detailed source hierarchy, authority rules, and how sources work together, see **[ARCHITECTURE.md § Data Sources](docs/ARCHITECTURE.md#data-sources)**.
 
@@ -821,7 +819,7 @@ For detailed source hierarchy, authority rules, and how sources work together, s
 
 Starmap includes 500+ models from 10+ providers (OpenAI, Anthropic, Google,
 Groq, DeepSeek, Cerebras, Hetzner, Alibaba Cloud, Fireworks AI, DeepInfra, and
-more). Each package has detailed documentation in its README.
+more). Each package documents its contracts in its README.
 
 Catalog reads keep natural Go scalar fields. When an algorithm needs to
 distinguish an unreported value from an explicit zero, use the presence API:
@@ -862,7 +860,7 @@ starmap serve --cors-origins "https://example.com,https://app.example.com"
 ```
 
 Go programs can embed the same server directly. Construction starts no listener
-or background goroutine; `Serve` owns serving on the caller-provided listener,
+or background goroutine. `Serve` owns serving on the caller-provided listener,
 and `Shutdown` drains HTTP before stopping server services:
 
 ```go
@@ -945,15 +943,16 @@ authored identity and intrinsic facts from the model definition, then joins
 every eligible provider offering at response time.
 Endpoint rows therefore retain the serving provider and its exact opaque model
 ID even when that provider serves models from unrelated labs. The model summary
-uses the least expensive eligible USD provider price deterministically; each
+uses the least expensive eligible USD provider price deterministically. Each
 endpoint retains its own provider price and limits in OpenRouter's documented
 string units.
 
 The adapter does not read generated `endpoints.yaml` and does not create another
 catalog authority. That file remains the digest-bound, human-inspectable
-projection of the same definition/offering join. Runtime latency, throughput,
-and uptime fields are omitted because Starmap does not currently compose a
-provider-performance telemetry producer; catalog freshness and SSE health are
+projection of the same definition/offering join. The adapter omits runtime
+latency, throughput, and uptime fields because
+Starmap does not currently compose a
+provider-performance telemetry producer. Catalog freshness and SSE health are
 not substitutes for provider performance. Optional server authentication still
 governs these routes, with OpenRouter-shaped numeric `401` error envelopes.
 Model detail links honor the server's configured path prefix.
@@ -1027,19 +1026,19 @@ a rate bounded by the configured interval, and exposes the current mode and
 cumulative counters through `PollingFallbackStatus()`. Authentication failures
 (HTTP 401 or 403) are terminal for the active lifecycle: they do not retry or
 enter polling fallback. Construct a new subscriber after credentials or access
-policy have been corrected.
+policy are correct.
 
 `subscriber.Health()` reports stream state, last heartbeat, last publication
 event, last successful catch-up, active generation age, retry count, fallback
 status, and a structured secret-free last error. Heartbeats establish transport
-liveness only; they never change the active generation timestamp or catalog
+liveness only. They never change the active generation timestamp or catalog
 age. The publisher exposes the matching server-side view through
 `srv.Health()` and `/api/v1/stats`, including callback coalescing and SSE
 backpressure/write termination counters.
 
 `BaseURL` is the trusted publisher origin. Non-loopback servers require HTTPS
 with a verified certificate chain, and redirects cannot change origin. Plain
-HTTP is accepted only for local loopback embedding and tests.
+The client accepts HTTP only for local loopback embedding and tests.
 
 **Configuration Flags:**
 - `--port`: Server port (default: 8080)
@@ -1155,22 +1154,25 @@ workspace is the only human model representation and is both the local
 observation and the post-commit YAML projection. Starmap rejects overlapping
 workspace/state roots and rejects models.dev cache or checkout roots that
 contain, equal, or sit beneath the workspace before reading or writing it.
-Every authored and provider model YAML exposes the same complete Boolean
-capability checklist: unobserved capabilities are displayed as `false`,
+Every authored and provider model YAML exposes the same Boolean capability
+checklist. Starmap displays unobserved capabilities as `false`,
 explicit uncertainty remains `null`, and missing numeric limits are not
 invented as zero. This keeps hand editing discoverable while provenance and
 source authority still allow a later provider or upstream observation to
 replace untouched projection defaults.
+
 Machine-store reads and commits reject symbolic-link substitutions for the
 store root and its owned lock, current pointer, generation, manifest, and
 payload entries. Deployments must protect the parent data path from a hostile
 same-UID actor.
+
 Atomic projection uses hidden sibling staging and a hidden sibling
-generation/digest marker; neither is loaded as provider configuration, and
+generation/digest marker. Starmap does not load either as provider configuration, and
 normal completion removes all staging. A sibling advisory writer lock
-serializes projection and repair across processes; contention returns a typed
+serializes projection and repair across processes. Contention returns a typed
 conflict while readers continue to observe one complete old or new tree. The
 lock file carries no catalog data and an exited process cannot leave it held. A
+
 pre-plan generation-store layout found at `~/.starmap/catalog` fails with a
 typed migration error before mutation. Migrate that layout explicitly:
 
@@ -1183,22 +1185,23 @@ retained generation and its schema compatibility, before moving anything. It
 then relocates the machine store to `~/.starmap/state/catalog` and projects the
 current generation back to `~/.starmap/catalog` as provider YAML. Stop every
 older Starmap process that uses this path before migration and do not restart
-it afterward; older binaries do not understand the path's new meaning. A
-normal failure restores the original layout. If another actor recreates the
+it afterward. Older binaries do not understand the path's new meaning. A
+normal failure restores the original layout.
+
+If another actor recreates the
 vacated path, rollback preserves both it and the relocated store and returns a
 typed conflict rather than deleting either. If the process exits after the
-atomic store move, the next startup reads the exact relocated current
-generation and repairs the missing YAML projection without publishing a new
-generation.
+atomic store move, the next startup reads the relocated current generation.
+It repairs the missing YAML projection without publishing a new generation.
 
 Read-only construction uses the verified embedded catalog entirely in memory
 and creates no workspace. The first explicit update observes that catalog as
-`embedded_catalog`, commits one immutable generation even when its facts are
-unchanged, and then atomically creates the complete provider-YAML workspace.
-An absent path is never reported as `local_catalog`; local evidence begins only
-after a real human workspace exists.
+`embedded_catalog`. It commits one immutable generation even with unchanged
+facts. It then atomically creates the complete provider-YAML workspace.
+An absent path is never reported as `local_catalog`. Local evidence exists only
+after a real human catalog workspace exists.
 
-Later explicit updates load the human workspace and the running binary's
+Later explicit updates load the human catalog workspace and the running binary's
 verified embedded revision as separate observations. Unchanged generated fields
 can advance with the embedded revision, embedded data can fill missing fields,
 and semantic human edits remain local evidence. Provider acquisition uses a
@@ -1207,7 +1210,7 @@ providers introduced by the new embedded revision.
 
 Starmap never watches the workspace implicitly. A running client retains its
 current immutable catalog until the caller invokes
-`Sync(ctx, sync.WithSources(sources.LocalCatalogID))`; the CLI equivalent is
+`Sync(ctx, sync.WithSources(sources.LocalCatalogID))`. The CLI equivalent is
 `starmap update --source local`. One semantic change publishes one generation.
 An unchanged or formatting-only reload publishes none.
 
@@ -1370,11 +1373,11 @@ Quick links:
 
 ## License
 
-This project is licensed under the GNU Affero General Public License v3.0 (AGPL-3.0).
+Starmap uses the GNU Affero General Public License v3.0 (AGPL-3.0).
 
-The AGPL ensures that:
+The AGPL requires these conditions:
 - Source code remains open for any network use
-- Modifications must be shared with users
+- You must share modifications with users
 - The community benefits from all improvements
 
 See [LICENSE](LICENSE) file for full details.

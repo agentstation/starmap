@@ -17,7 +17,7 @@ Package errors provides custom error types for the starmap system. These errors 
 <details><summary>Example</summary>
 <p>
 
-Example demonstrates basic error creation and checking.
+Example shows basic error creation and checking.
 
 ```go
 package main
@@ -55,7 +55,7 @@ Resource not found
 <details><summary>Example (API Error)</summary>
 <p>
 
-Example\_aPIError demonstrates API error handling.
+Example\_aPIError shows API error handling.
 
 ```go
 package main
@@ -184,7 +184,7 @@ File not found in parse chain
 <details><summary>Example (Error Recovery)</summary>
 <p>
 
-Example\_errorRecovery demonstrates error recovery strategies.
+Example\_errorRecovery shows error recovery strategies.
 
 ```go
 package main
@@ -234,7 +234,7 @@ func main() {
 <details><summary>Example (Error Wrapping)</summary>
 <p>
 
-Example\_errorWrapping demonstrates error wrapping patterns.
+Example\_errorWrapping shows error wrapping patterns.
 
 ```go
 package main
@@ -340,7 +340,7 @@ Authentication required
 <details><summary>Example (Process Error)</summary>
 <p>
 
-Example\_processError demonstrates subprocess error handling.
+Example\_processError shows subprocess error handling.
 
 ```go
 package main
@@ -382,7 +382,7 @@ Git configuration error
 <details><summary>Example (Rate Limit Error)</summary>
 <p>
 
-Example\_rateLimitError demonstrates rate limit handling with retry.
+Example\_rateLimitError shows rate limit handling with retry.
 
 ```go
 package main
@@ -543,7 +543,6 @@ var (
     // ErrInvalidInput indicates that provided input was invalid.
     ErrInvalidInput = errors.New("invalid input")
 
-    // ErrAPIKeyRequired indicates that an API key is required but not provided.
     ErrAPIKeyRequired = errors.New("API key required")
 
     // ErrAPIKeyInvalid indicates that the provided API key is invalid.
@@ -552,13 +551,11 @@ var (
     // ErrProviderUnavailable indicates that a provider is temporarily unavailable.
     ErrProviderUnavailable = errors.New("provider unavailable")
 
-    // ErrRateLimited indicates that the API rate limit has been exceeded.
     ErrRateLimited = errors.New("rate limited")
 
     // ErrTimeout indicates that an operation timed out.
     ErrTimeout = errors.New("operation timed out")
 
-    // ErrCanceled indicates that an operation was canceled.
     ErrCanceled = errors.New("operation canceled")
 
     // ErrNotImplemented indicates that a feature is not yet implemented.
@@ -573,16 +570,16 @@ var (
 ```
 
 <a name="IsAPIKeyError"></a>
-## func [IsAPIKeyError](<https://github.com/agentstation/starmap/blob/main/pkg/errors/errors.go#L281>)
+## func [IsAPIKeyError](<https://github.com/agentstation/starmap/blob/main/pkg/errors/errors.go#L278>)
 
 ```go
 func IsAPIKeyError(err error) bool
 ```
 
-IsAPIKeyError checks if an error is related to API keys.
+IsAPIKeyError reports whether an error concerns an API key.
 
 <a name="IsAlreadyExists"></a>
-## func [IsAlreadyExists](<https://github.com/agentstation/starmap/blob/main/pkg/errors/errors.go#L266>)
+## func [IsAlreadyExists](<https://github.com/agentstation/starmap/blob/main/pkg/errors/errors.go#L263>)
 
 ```go
 func IsAlreadyExists(err error) bool
@@ -591,7 +588,7 @@ func IsAlreadyExists(err error) bool
 IsAlreadyExists checks if an error is an already exists error.
 
 <a name="IsCanceled"></a>
-## func [IsCanceled](<https://github.com/agentstation/starmap/blob/main/pkg/errors/errors.go#L296>)
+## func [IsCanceled](<https://github.com/agentstation/starmap/blob/main/pkg/errors/errors.go#L293>)
 
 ```go
 func IsCanceled(err error) bool
@@ -600,7 +597,7 @@ func IsCanceled(err error) bool
 IsCanceled checks if an error is a cancellation error.
 
 <a name="IsConflict"></a>
-## func [IsConflict](<https://github.com/agentstation/starmap/blob/main/pkg/errors/errors.go#L271>)
+## func [IsConflict](<https://github.com/agentstation/starmap/blob/main/pkg/errors/errors.go#L268>)
 
 ```go
 func IsConflict(err error) bool
@@ -609,7 +606,7 @@ func IsConflict(err error) bool
 IsConflict checks if an error is an optimistic concurrency or immutable identity conflict.
 
 <a name="IsNotFound"></a>
-## func [IsNotFound](<https://github.com/agentstation/starmap/blob/main/pkg/errors/errors.go#L261>)
+## func [IsNotFound](<https://github.com/agentstation/starmap/blob/main/pkg/errors/errors.go#L258>)
 
 ```go
 func IsNotFound(err error) bool
@@ -618,7 +615,7 @@ func IsNotFound(err error) bool
 IsNotFound checks if an error is a not found error.
 
 <a name="IsProviderUnavailable"></a>
-## func [IsProviderUnavailable](<https://github.com/agentstation/starmap/blob/main/pkg/errors/errors.go#L301>)
+## func [IsProviderUnavailable](<https://github.com/agentstation/starmap/blob/main/pkg/errors/errors.go#L298>)
 
 ```go
 func IsProviderUnavailable(err error) bool
@@ -627,7 +624,7 @@ func IsProviderUnavailable(err error) bool
 IsProviderUnavailable checks if an error indicates provider unavailability.
 
 <a name="IsRateLimited"></a>
-## func [IsRateLimited](<https://github.com/agentstation/starmap/blob/main/pkg/errors/errors.go#L286>)
+## func [IsRateLimited](<https://github.com/agentstation/starmap/blob/main/pkg/errors/errors.go#L283>)
 
 ```go
 func IsRateLimited(err error) bool
@@ -636,7 +633,7 @@ func IsRateLimited(err error) bool
 IsRateLimited checks if an error is a rate limit error.
 
 <a name="IsTimeout"></a>
-## func [IsTimeout](<https://github.com/agentstation/starmap/blob/main/pkg/errors/errors.go#L291>)
+## func [IsTimeout](<https://github.com/agentstation/starmap/blob/main/pkg/errors/errors.go#L288>)
 
 ```go
 func IsTimeout(err error) bool
@@ -645,7 +642,7 @@ func IsTimeout(err error) bool
 IsTimeout checks if an error is a timeout error.
 
 <a name="IsValidationError"></a>
-## func [IsValidationError](<https://github.com/agentstation/starmap/blob/main/pkg/errors/errors.go#L276>)
+## func [IsValidationError](<https://github.com/agentstation/starmap/blob/main/pkg/errors/errors.go#L273>)
 
 ```go
 func IsValidationError(err error) bool
@@ -654,7 +651,7 @@ func IsValidationError(err error) bool
 IsValidationError checks if an error is a validation error.
 
 <a name="WrapAPI"></a>
-## func [WrapAPI](<https://github.com/agentstation/starmap/blob/main/pkg/errors/errors.go#L545>)
+## func [WrapAPI](<https://github.com/agentstation/starmap/blob/main/pkg/errors/errors.go#L542>)
 
 ```go
 func WrapAPI(provider string, statusCode int, err error) error
@@ -663,7 +660,7 @@ func WrapAPI(provider string, statusCode int, err error) error
 WrapAPI wraps an error as an APIError.
 
 <a name="WrapIO"></a>
-## func [WrapIO](<https://github.com/agentstation/starmap/blob/main/pkg/errors/errors.go#L521>)
+## func [WrapIO](<https://github.com/agentstation/starmap/blob/main/pkg/errors/errors.go#L518>)
 
 ```go
 func WrapIO(operation, path string, err error) error
@@ -672,7 +669,7 @@ func WrapIO(operation, path string, err error) error
 WrapIO wraps an error as an IOError.
 
 <a name="WrapParse"></a>
-## func [WrapParse](<https://github.com/agentstation/starmap/blob/main/pkg/errors/errors.go#L537>)
+## func [WrapParse](<https://github.com/agentstation/starmap/blob/main/pkg/errors/errors.go#L534>)
 
 ```go
 func WrapParse(format, file string, err error) error
@@ -681,7 +678,7 @@ func WrapParse(format, file string, err error) error
 WrapParse wraps an error as a ParseError.
 
 <a name="WrapResource"></a>
-## func [WrapResource](<https://github.com/agentstation/starmap/blob/main/pkg/errors/errors.go#L529>)
+## func [WrapResource](<https://github.com/agentstation/starmap/blob/main/pkg/errors/errors.go#L526>)
 
 ```go
 func WrapResource(operation, resource, id string, err error) error
@@ -690,7 +687,7 @@ func WrapResource(operation, resource, id string, err error) error
 WrapResource wraps an error as a ResourceError.
 
 <a name="WrapValidation"></a>
-## func [WrapValidation](<https://github.com/agentstation/starmap/blob/main/pkg/errors/errors.go#L513>)
+## func [WrapValidation](<https://github.com/agentstation/starmap/blob/main/pkg/errors/errors.go#L510>)
 
 ```go
 func WrapValidation(field string, err error) error
@@ -699,7 +696,7 @@ func WrapValidation(field string, err error) error
 WrapValidation wraps an error as a ValidationError.
 
 <a name="APIError"></a>
-## type [APIError](<https://github.com/agentstation/starmap/blob/main/pkg/errors/errors.go#L120-L126>)
+## type [APIError](<https://github.com/agentstation/starmap/blob/main/pkg/errors/errors.go#L117-L123>)
 
 APIError represents an error from a provider API.
 
@@ -714,7 +711,7 @@ type APIError struct {
 ```
 
 <a name="NewAPIError"></a>
-### func [NewAPIError](<https://github.com/agentstation/starmap/blob/main/pkg/errors/errors.go#L153>)
+### func [NewAPIError](<https://github.com/agentstation/starmap/blob/main/pkg/errors/errors.go#L150>)
 
 ```go
 func NewAPIError(provider string, statusCode int, message string) *APIError
@@ -723,7 +720,7 @@ func NewAPIError(provider string, statusCode int, message string) *APIError
 NewAPIError creates a new APIError.
 
 <a name="APIError.Error"></a>
-### func \(\*APIError\) [Error](<https://github.com/agentstation/starmap/blob/main/pkg/errors/errors.go#L129>)
+### func \(\*APIError\) [Error](<https://github.com/agentstation/starmap/blob/main/pkg/errors/errors.go#L126>)
 
 ```go
 func (e *APIError) Error() string
@@ -732,7 +729,7 @@ func (e *APIError) Error() string
 Error implements the error interface.
 
 <a name="APIError.Is"></a>
-### func \(\*APIError\) [Is](<https://github.com/agentstation/starmap/blob/main/pkg/errors/errors.go#L142>)
+### func \(\*APIError\) [Is](<https://github.com/agentstation/starmap/blob/main/pkg/errors/errors.go#L139>)
 
 ```go
 func (e *APIError) Is(target error) bool
@@ -741,7 +738,7 @@ func (e *APIError) Is(target error) bool
 Is implements errors.Is support.
 
 <a name="APIError.Unwrap"></a>
-### func \(\*APIError\) [Unwrap](<https://github.com/agentstation/starmap/blob/main/pkg/errors/errors.go#L137>)
+### func \(\*APIError\) [Unwrap](<https://github.com/agentstation/starmap/blob/main/pkg/errors/errors.go#L134>)
 
 ```go
 func (e *APIError) Unwrap() error
@@ -750,7 +747,7 @@ func (e *APIError) Unwrap() error
 Unwrap implements errors.Unwrap.
 
 <a name="AuthenticationError"></a>
-## type [AuthenticationError](<https://github.com/agentstation/starmap/blob/main/pkg/errors/errors.go#L414-L419>)
+## type [AuthenticationError](<https://github.com/agentstation/starmap/blob/main/pkg/errors/errors.go#L411-L416>)
 
 AuthenticationError represents an authentication/authorization error.
 
@@ -764,7 +761,7 @@ type AuthenticationError struct {
 ```
 
 <a name="NewAuthenticationError"></a>
-### func [NewAuthenticationError](<https://github.com/agentstation/starmap/blob/main/pkg/errors/errors.go#L440>)
+### func [NewAuthenticationError](<https://github.com/agentstation/starmap/blob/main/pkg/errors/errors.go#L437>)
 
 ```go
 func NewAuthenticationError(provider, method, message string, err error) *AuthenticationError
@@ -773,7 +770,7 @@ func NewAuthenticationError(provider, method, message string, err error) *Authen
 NewAuthenticationError creates a new AuthenticationError.
 
 <a name="AuthenticationError.Error"></a>
-### func \(\*AuthenticationError\) [Error](<https://github.com/agentstation/starmap/blob/main/pkg/errors/errors.go#L422>)
+### func \(\*AuthenticationError\) [Error](<https://github.com/agentstation/starmap/blob/main/pkg/errors/errors.go#L419>)
 
 ```go
 func (e *AuthenticationError) Error() string
@@ -782,7 +779,7 @@ func (e *AuthenticationError) Error() string
 Error implements the error interface.
 
 <a name="AuthenticationError.Is"></a>
-### func \(\*AuthenticationError\) [Is](<https://github.com/agentstation/starmap/blob/main/pkg/errors/errors.go#L435>)
+### func \(\*AuthenticationError\) [Is](<https://github.com/agentstation/starmap/blob/main/pkg/errors/errors.go#L432>)
 
 ```go
 func (e *AuthenticationError) Is(target error) bool
@@ -791,7 +788,7 @@ func (e *AuthenticationError) Is(target error) bool
 Is implements errors.Is support.
 
 <a name="AuthenticationError.Unwrap"></a>
-### func \(\*AuthenticationError\) [Unwrap](<https://github.com/agentstation/starmap/blob/main/pkg/errors/errors.go#L430>)
+### func \(\*AuthenticationError\) [Unwrap](<https://github.com/agentstation/starmap/blob/main/pkg/errors/errors.go#L427>)
 
 ```go
 func (e *AuthenticationError) Unwrap() error
@@ -800,7 +797,7 @@ func (e *AuthenticationError) Unwrap() error
 Unwrap implements errors.Unwrap.
 
 <a name="ConfigError"></a>
-## type [ConfigError](<https://github.com/agentstation/starmap/blob/main/pkg/errors/errors.go#L162-L166>)
+## type [ConfigError](<https://github.com/agentstation/starmap/blob/main/pkg/errors/errors.go#L159-L163>)
 
 ConfigError represents a configuration error.
 
@@ -813,7 +810,7 @@ type ConfigError struct {
 ```
 
 <a name="NewConfigError"></a>
-### func [NewConfigError](<https://github.com/agentstation/starmap/blob/main/pkg/errors/errors.go#L221>)
+### func [NewConfigError](<https://github.com/agentstation/starmap/blob/main/pkg/errors/errors.go#L218>)
 
 ```go
 func NewConfigError(component, message string, err error) *ConfigError
@@ -822,7 +819,7 @@ func NewConfigError(component, message string, err error) *ConfigError
 NewConfigError creates a new ConfigError.
 
 <a name="ConfigError.Error"></a>
-### func \(\*ConfigError\) [Error](<https://github.com/agentstation/starmap/blob/main/pkg/errors/errors.go#L208>)
+### func \(\*ConfigError\) [Error](<https://github.com/agentstation/starmap/blob/main/pkg/errors/errors.go#L205>)
 
 ```go
 func (e *ConfigError) Error() string
@@ -831,7 +828,7 @@ func (e *ConfigError) Error() string
 Error implements the error interface.
 
 <a name="ConfigError.Unwrap"></a>
-### func \(\*ConfigError\) [Unwrap](<https://github.com/agentstation/starmap/blob/main/pkg/errors/errors.go#L216>)
+### func \(\*ConfigError\) [Unwrap](<https://github.com/agentstation/starmap/blob/main/pkg/errors/errors.go#L213>)
 
 ```go
 func (e *ConfigError) Unwrap() error
@@ -840,9 +837,9 @@ func (e *ConfigError) Unwrap() error
 Unwrap implements errors.Unwrap.
 
 <a name="ConflictError"></a>
-## type [ConflictError](<https://github.com/agentstation/starmap/blob/main/pkg/errors/errors.go#L53-L58>)
+## type [ConflictError](<https://github.com/agentstation/starmap/blob/main/pkg/errors/errors.go#L50-L55>)
 
-ConflictError reports that state did not match an expected version or that an immutable identity was reused for different content.
+ConflictError reports a version mismatch or immutable identity reuse with different content.
 
 ```go
 type ConflictError struct {
@@ -854,7 +851,7 @@ type ConflictError struct {
 ```
 
 <a name="ConflictError.Error"></a>
-### func \(\*ConflictError\) [Error](<https://github.com/agentstation/starmap/blob/main/pkg/errors/errors.go#L61>)
+### func \(\*ConflictError\) [Error](<https://github.com/agentstation/starmap/blob/main/pkg/errors/errors.go#L58>)
 
 ```go
 func (e *ConflictError) Error() string
@@ -863,7 +860,7 @@ func (e *ConflictError) Error() string
 Error implements the error interface.
 
 <a name="ConflictError.Is"></a>
-### func \(\*ConflictError\) [Is](<https://github.com/agentstation/starmap/blob/main/pkg/errors/errors.go#L69>)
+### func \(\*ConflictError\) [Is](<https://github.com/agentstation/starmap/blob/main/pkg/errors/errors.go#L66>)
 
 ```go
 func (e *ConflictError) Is(target error) bool
@@ -872,9 +869,9 @@ func (e *ConflictError) Is(target error) bool
 Is implements errors.Is support.
 
 <a name="DependencyError"></a>
-## type [DependencyError](<https://github.com/agentstation/starmap/blob/main/pkg/errors/errors.go#L197-L200>)
+## type [DependencyError](<https://github.com/agentstation/starmap/blob/main/pkg/errors/errors.go#L194-L197>)
 
-DependencyError indicates a required external dependency is missing.
+DependencyError reports a missing external dependency.
 
 ```go
 type DependencyError struct {
@@ -884,7 +881,7 @@ type DependencyError struct {
 ```
 
 <a name="DependencyError.Error"></a>
-### func \(\*DependencyError\) [Error](<https://github.com/agentstation/starmap/blob/main/pkg/errors/errors.go#L203>)
+### func \(\*DependencyError\) [Error](<https://github.com/agentstation/starmap/blob/main/pkg/errors/errors.go#L200>)
 
 ```go
 func (e *DependencyError) Error() string
@@ -893,7 +890,7 @@ func (e *DependencyError) Error() string
 Error implements the error interface.
 
 <a name="IOError"></a>
-## type [IOError](<https://github.com/agentstation/starmap/blob/main/pkg/errors/errors.go#L342-L347>)
+## type [IOError](<https://github.com/agentstation/starmap/blob/main/pkg/errors/errors.go#L339-L344>)
 
 IOError represents an error during I/O operations.
 
@@ -907,7 +904,7 @@ type IOError struct {
 ```
 
 <a name="NewIOError"></a>
-### func [NewIOError](<https://github.com/agentstation/starmap/blob/main/pkg/errors/errors.go#L363>)
+### func [NewIOError](<https://github.com/agentstation/starmap/blob/main/pkg/errors/errors.go#L360>)
 
 ```go
 func NewIOError(operation, path string, err error) *IOError
@@ -916,7 +913,7 @@ func NewIOError(operation, path string, err error) *IOError
 NewIOError creates a new IOError.
 
 <a name="IOError.Error"></a>
-### func \(\*IOError\) [Error](<https://github.com/agentstation/starmap/blob/main/pkg/errors/errors.go#L350>)
+### func \(\*IOError\) [Error](<https://github.com/agentstation/starmap/blob/main/pkg/errors/errors.go#L347>)
 
 ```go
 func (e *IOError) Error() string
@@ -925,7 +922,7 @@ func (e *IOError) Error() string
 Error implements the error interface.
 
 <a name="IOError.Unwrap"></a>
-### func \(\*IOError\) [Unwrap](<https://github.com/agentstation/starmap/blob/main/pkg/errors/errors.go#L358>)
+### func \(\*IOError\) [Unwrap](<https://github.com/agentstation/starmap/blob/main/pkg/errors/errors.go#L355>)
 
 ```go
 func (e *IOError) Unwrap() error
@@ -934,7 +931,7 @@ func (e *IOError) Unwrap() error
 Unwrap implements errors.Unwrap.
 
 <a name="LegacyCatalogLayoutError"></a>
-## type [LegacyCatalogLayoutError](<https://github.com/agentstation/starmap/blob/main/pkg/errors/errors.go#L172-L176>)
+## type [LegacyCatalogLayoutError](<https://github.com/agentstation/starmap/blob/main/pkg/errors/errors.go#L169-L173>)
 
 LegacyCatalogLayoutError reports that a path selected for the human YAML workspace still contains the pre\-plan immutable generation\-store layout. Callers can use the structured paths and entries to present or execute an explicit transactional migration.
 
@@ -947,7 +944,7 @@ type LegacyCatalogLayoutError struct {
 ```
 
 <a name="LegacyCatalogLayoutError.Error"></a>
-### func \(\*LegacyCatalogLayoutError\) [Error](<https://github.com/agentstation/starmap/blob/main/pkg/errors/errors.go#L179>)
+### func \(\*LegacyCatalogLayoutError\) [Error](<https://github.com/agentstation/starmap/blob/main/pkg/errors/errors.go#L176>)
 
 ```go
 func (e *LegacyCatalogLayoutError) Error() string
@@ -956,7 +953,7 @@ func (e *LegacyCatalogLayoutError) Error() string
 Error implements the error interface.
 
 <a name="NotFoundError"></a>
-## type [NotFoundError](<https://github.com/agentstation/starmap/blob/main/pkg/errors/errors.go#L74-L77>)
+## type [NotFoundError](<https://github.com/agentstation/starmap/blob/main/pkg/errors/errors.go#L71-L74>)
 
 NotFoundError represents an error when a resource is not found.
 
@@ -968,7 +965,7 @@ type NotFoundError struct {
 ```
 
 <a name="NewNotFoundError"></a>
-### func [NewNotFoundError](<https://github.com/agentstation/starmap/blob/main/pkg/errors/errors.go#L90>)
+### func [NewNotFoundError](<https://github.com/agentstation/starmap/blob/main/pkg/errors/errors.go#L87>)
 
 ```go
 func NewNotFoundError(resource, id string) *NotFoundError
@@ -977,7 +974,7 @@ func NewNotFoundError(resource, id string) *NotFoundError
 NewNotFoundError creates a new NotFoundError.
 
 <a name="NotFoundError.Error"></a>
-### func \(\*NotFoundError\) [Error](<https://github.com/agentstation/starmap/blob/main/pkg/errors/errors.go#L80>)
+### func \(\*NotFoundError\) [Error](<https://github.com/agentstation/starmap/blob/main/pkg/errors/errors.go#L77>)
 
 ```go
 func (e *NotFoundError) Error() string
@@ -986,7 +983,7 @@ func (e *NotFoundError) Error() string
 Error implements the error interface.
 
 <a name="NotFoundError.Is"></a>
-### func \(\*NotFoundError\) [Is](<https://github.com/agentstation/starmap/blob/main/pkg/errors/errors.go#L85>)
+### func \(\*NotFoundError\) [Is](<https://github.com/agentstation/starmap/blob/main/pkg/errors/errors.go#L82>)
 
 ```go
 func (e *NotFoundError) Is(target error) bool
@@ -995,7 +992,7 @@ func (e *NotFoundError) Is(target error) bool
 Is implements errors.Is support.
 
 <a name="ParseError"></a>
-## type [ParseError](<https://github.com/agentstation/starmap/blob/main/pkg/errors/errors.go#L306-L313>)
+## type [ParseError](<https://github.com/agentstation/starmap/blob/main/pkg/errors/errors.go#L303-L310>)
 
 ParseError represents an error when parsing data formats.
 
@@ -1011,7 +1008,7 @@ type ParseError struct {
 ```
 
 <a name="NewParseError"></a>
-### func [NewParseError](<https://github.com/agentstation/starmap/blob/main/pkg/errors/errors.go#L332>)
+### func [NewParseError](<https://github.com/agentstation/starmap/blob/main/pkg/errors/errors.go#L329>)
 
 ```go
 func NewParseError(format, file string, message string, err error) *ParseError
@@ -1020,7 +1017,7 @@ func NewParseError(format, file string, message string, err error) *ParseError
 NewParseError creates a new ParseError.
 
 <a name="ParseError.Error"></a>
-### func \(\*ParseError\) [Error](<https://github.com/agentstation/starmap/blob/main/pkg/errors/errors.go#L316>)
+### func \(\*ParseError\) [Error](<https://github.com/agentstation/starmap/blob/main/pkg/errors/errors.go#L313>)
 
 ```go
 func (e *ParseError) Error() string
@@ -1029,7 +1026,7 @@ func (e *ParseError) Error() string
 Error implements the error interface.
 
 <a name="ParseError.Unwrap"></a>
-### func \(\*ParseError\) [Unwrap](<https://github.com/agentstation/starmap/blob/main/pkg/errors/errors.go#L327>)
+### func \(\*ParseError\) [Unwrap](<https://github.com/agentstation/starmap/blob/main/pkg/errors/errors.go#L324>)
 
 ```go
 func (e *ParseError) Unwrap() error
@@ -1038,14 +1035,14 @@ func (e *ParseError) Unwrap() error
 Unwrap implements errors.Unwrap.
 
 <a name="ProcessError"></a>
-## type [ProcessError](<https://github.com/agentstation/starmap/blob/main/pkg/errors/errors.go#L479-L485>)
+## type [ProcessError](<https://github.com/agentstation/starmap/blob/main/pkg/errors/errors.go#L476-L482>)
 
 ProcessError represents an error from an external process or command.
 
 ```go
 type ProcessError struct {
-    Operation string // What operation was being performed
-    Command   string // The command that was executed
+    Operation string
+    Command   string
     Output    string // Stdout/stderr output from the process
     ExitCode  int    // Exit code if available
     Err       error  // Underlying error
@@ -1053,7 +1050,7 @@ type ProcessError struct {
 ```
 
 <a name="NewProcessError"></a>
-### func [NewProcessError](<https://github.com/agentstation/starmap/blob/main/pkg/errors/errors.go#L501>)
+### func [NewProcessError](<https://github.com/agentstation/starmap/blob/main/pkg/errors/errors.go#L498>)
 
 ```go
 func NewProcessError(operation, command, output string, err error) *ProcessError
@@ -1062,7 +1059,7 @@ func NewProcessError(operation, command, output string, err error) *ProcessError
 NewProcessError creates a new ProcessError.
 
 <a name="ProcessError.Error"></a>
-### func \(\*ProcessError\) [Error](<https://github.com/agentstation/starmap/blob/main/pkg/errors/errors.go#L488>)
+### func \(\*ProcessError\) [Error](<https://github.com/agentstation/starmap/blob/main/pkg/errors/errors.go#L485>)
 
 ```go
 func (e *ProcessError) Error() string
@@ -1071,7 +1068,7 @@ func (e *ProcessError) Error() string
 Error implements the error interface.
 
 <a name="ProcessError.Unwrap"></a>
-### func \(\*ProcessError\) [Unwrap](<https://github.com/agentstation/starmap/blob/main/pkg/errors/errors.go#L496>)
+### func \(\*ProcessError\) [Unwrap](<https://github.com/agentstation/starmap/blob/main/pkg/errors/errors.go#L493>)
 
 ```go
 func (e *ProcessError) Unwrap() error
@@ -1080,7 +1077,7 @@ func (e *ProcessError) Unwrap() error
 Unwrap implements errors.Unwrap.
 
 <a name="ResourceError"></a>
-## type [ResourceError](<https://github.com/agentstation/starmap/blob/main/pkg/errors/errors.go#L377-L383>)
+## type [ResourceError](<https://github.com/agentstation/starmap/blob/main/pkg/errors/errors.go#L374-L380>)
 
 ResourceError represents an error during resource operations.
 
@@ -1095,7 +1092,7 @@ type ResourceError struct {
 ```
 
 <a name="NewResourceError"></a>
-### func [NewResourceError](<https://github.com/agentstation/starmap/blob/main/pkg/errors/errors.go#L399>)
+### func [NewResourceError](<https://github.com/agentstation/starmap/blob/main/pkg/errors/errors.go#L396>)
 
 ```go
 func NewResourceError(operation, resource, id string, err error) *ResourceError
@@ -1104,7 +1101,7 @@ func NewResourceError(operation, resource, id string, err error) *ResourceError
 NewResourceError creates a new ResourceError.
 
 <a name="ResourceError.Error"></a>
-### func \(\*ResourceError\) [Error](<https://github.com/agentstation/starmap/blob/main/pkg/errors/errors.go#L386>)
+### func \(\*ResourceError\) [Error](<https://github.com/agentstation/starmap/blob/main/pkg/errors/errors.go#L383>)
 
 ```go
 func (e *ResourceError) Error() string
@@ -1113,7 +1110,7 @@ func (e *ResourceError) Error() string
 Error implements the error interface.
 
 <a name="ResourceError.Unwrap"></a>
-### func \(\*ResourceError\) [Unwrap](<https://github.com/agentstation/starmap/blob/main/pkg/errors/errors.go#L394>)
+### func \(\*ResourceError\) [Unwrap](<https://github.com/agentstation/starmap/blob/main/pkg/errors/errors.go#L391>)
 
 ```go
 func (e *ResourceError) Unwrap() error
@@ -1122,7 +1119,7 @@ func (e *ResourceError) Unwrap() error
 Unwrap implements errors.Unwrap.
 
 <a name="SyncError"></a>
-## type [SyncError](<https://github.com/agentstation/starmap/blob/main/pkg/errors/errors.go#L230-L234>)
+## type [SyncError](<https://github.com/agentstation/starmap/blob/main/pkg/errors/errors.go#L227-L231>)
 
 SyncError represents an error during sync operations.
 
@@ -1135,7 +1132,7 @@ type SyncError struct {
 ```
 
 <a name="NewSyncError"></a>
-### func [NewSyncError](<https://github.com/agentstation/starmap/blob/main/pkg/errors/errors.go#L250>)
+### func [NewSyncError](<https://github.com/agentstation/starmap/blob/main/pkg/errors/errors.go#L247>)
 
 ```go
 func NewSyncError(provider string, models []string, err error) *SyncError
@@ -1144,7 +1141,7 @@ func NewSyncError(provider string, models []string, err error) *SyncError
 NewSyncError creates a new SyncError.
 
 <a name="SyncError.Error"></a>
-### func \(\*SyncError\) [Error](<https://github.com/agentstation/starmap/blob/main/pkg/errors/errors.go#L237>)
+### func \(\*SyncError\) [Error](<https://github.com/agentstation/starmap/blob/main/pkg/errors/errors.go#L234>)
 
 ```go
 func (e *SyncError) Error() string
@@ -1153,7 +1150,7 @@ func (e *SyncError) Error() string
 Error implements the error interface.
 
 <a name="SyncError.Unwrap"></a>
-### func \(\*SyncError\) [Unwrap](<https://github.com/agentstation/starmap/blob/main/pkg/errors/errors.go#L245>)
+### func \(\*SyncError\) [Unwrap](<https://github.com/agentstation/starmap/blob/main/pkg/errors/errors.go#L242>)
 
 ```go
 func (e *SyncError) Unwrap() error
@@ -1162,7 +1159,7 @@ func (e *SyncError) Unwrap() error
 Unwrap implements errors.Unwrap.
 
 <a name="TimeoutError"></a>
-## type [TimeoutError](<https://github.com/agentstation/starmap/blob/main/pkg/errors/errors.go#L450-L454>)
+## type [TimeoutError](<https://github.com/agentstation/starmap/blob/main/pkg/errors/errors.go#L447-L451>)
 
 TimeoutError represents an operation timeout.
 
@@ -1175,7 +1172,7 @@ type TimeoutError struct {
 ```
 
 <a name="NewTimeoutError"></a>
-### func [NewTimeoutError](<https://github.com/agentstation/starmap/blob/main/pkg/errors/errors.go#L470>)
+### func [NewTimeoutError](<https://github.com/agentstation/starmap/blob/main/pkg/errors/errors.go#L467>)
 
 ```go
 func NewTimeoutError(operation, duration, message string) *TimeoutError
@@ -1184,7 +1181,7 @@ func NewTimeoutError(operation, duration, message string) *TimeoutError
 NewTimeoutError creates a new TimeoutError.
 
 <a name="TimeoutError.Error"></a>
-### func \(\*TimeoutError\) [Error](<https://github.com/agentstation/starmap/blob/main/pkg/errors/errors.go#L457>)
+### func \(\*TimeoutError\) [Error](<https://github.com/agentstation/starmap/blob/main/pkg/errors/errors.go#L454>)
 
 ```go
 func (e *TimeoutError) Error() string
@@ -1193,7 +1190,7 @@ func (e *TimeoutError) Error() string
 Error implements the error interface.
 
 <a name="TimeoutError.Is"></a>
-### func \(\*TimeoutError\) [Is](<https://github.com/agentstation/starmap/blob/main/pkg/errors/errors.go#L465>)
+### func \(\*TimeoutError\) [Is](<https://github.com/agentstation/starmap/blob/main/pkg/errors/errors.go#L462>)
 
 ```go
 func (e *TimeoutError) Is(target error) bool
@@ -1202,7 +1199,7 @@ func (e *TimeoutError) Is(target error) bool
 Is implements errors.Is support.
 
 <a name="ValidationError"></a>
-## type [ValidationError](<https://github.com/agentstation/starmap/blob/main/pkg/errors/errors.go#L95-L99>)
+## type [ValidationError](<https://github.com/agentstation/starmap/blob/main/pkg/errors/errors.go#L92-L96>)
 
 ValidationError represents a validation failure.
 
@@ -1215,7 +1212,7 @@ type ValidationError struct {
 ```
 
 <a name="NewValidationError"></a>
-### func [NewValidationError](<https://github.com/agentstation/starmap/blob/main/pkg/errors/errors.go#L115>)
+### func [NewValidationError](<https://github.com/agentstation/starmap/blob/main/pkg/errors/errors.go#L112>)
 
 ```go
 func NewValidationError(field string, value any, message string) *ValidationError
@@ -1224,7 +1221,7 @@ func NewValidationError(field string, value any, message string) *ValidationErro
 NewValidationError creates a new ValidationError.
 
 <a name="ValidationError.Error"></a>
-### func \(\*ValidationError\) [Error](<https://github.com/agentstation/starmap/blob/main/pkg/errors/errors.go#L102>)
+### func \(\*ValidationError\) [Error](<https://github.com/agentstation/starmap/blob/main/pkg/errors/errors.go#L99>)
 
 ```go
 func (e *ValidationError) Error() string
@@ -1233,7 +1230,7 @@ func (e *ValidationError) Error() string
 Error implements the error interface.
 
 <a name="ValidationError.Is"></a>
-### func \(\*ValidationError\) [Is](<https://github.com/agentstation/starmap/blob/main/pkg/errors/errors.go#L110>)
+### func \(\*ValidationError\) [Is](<https://github.com/agentstation/starmap/blob/main/pkg/errors/errors.go#L107>)
 
 ```go
 func (e *ValidationError) Is(target error) bool

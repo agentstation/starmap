@@ -40,7 +40,7 @@ This validates:
 
 // runCatalog validates the entire embedded catalog.
 func runCatalog(cmd *cobra.Command, args []string, app application) error {
-	// This command doesn't take positional arguments
+	// This command does not take positional arguments
 	if len(args) > 0 {
 		return fmt.Errorf("unexpected argument: %s", args[0])
 	}

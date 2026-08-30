@@ -6,8 +6,8 @@ func (a *App) catalogStatePath() (string, error) {
 	return expandHomePath(constants.DefaultCatalogStatePath)
 }
 
-// CatalogPath returns the configured human provider-YAML workspace, or the
-// canonical per-user default when no override is configured.
+// CatalogPath returns the configured human provider-YAML workspace. Without an
+// override, it returns the canonical per-user default.
 func (a *App) CatalogPath() (string, error) {
 	path := a.config.CatalogPath
 	if path == "" {

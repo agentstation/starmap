@@ -479,9 +479,8 @@ func deepCopyAuthorAttribution(attribution *AuthorAttribution) *AuthorAttributio
 	return &copied
 }
 
-// ShallowCopyProviderModels creates a shallow copy of a provider's Models map.
-// The map is copied but Model pointers are shared.
-// Returns nil if the input map is nil.
+// ShallowCopyProviderModels copies a provider's Models map while sharing its
+// Model pointers. It returns nil for a nil input map.
 func ShallowCopyProviderModels(models map[string]*Model) map[string]*Model {
 	if models == nil {
 		return nil

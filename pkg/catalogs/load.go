@@ -177,7 +177,7 @@ func (cat *Builder) loadLogos() error {
 	return nil
 }
 
-// readLogoSidecar reads one logo.svg file; a missing file is not an error.
+// readLogoSidecar reads one logo.svg file. A missing file is not an error.
 func (cat *Builder) readLogoSidecar(path string) ([]byte, error) {
 	data, err := fs.ReadFile(cat.config.readFilesystem(), path)
 	if err != nil {
@@ -217,7 +217,7 @@ func (cat *Builder) loadProviderModel(pathParts []string, model *Model) error {
 	providerID := ProviderID(pathParts[1])
 	provider, err := cat.Provider(providerID)
 	if err != nil {
-		return nil // Provider doesn't exist, skip
+		return nil // Provider does not exist, skip
 	}
 
 	if provider.Models == nil {

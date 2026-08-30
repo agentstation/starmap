@@ -40,7 +40,7 @@ func init() {
 
 // createDefaultLogger creates a logger with default settings.
 func createDefaultLogger() zerolog.Logger {
-	// Auto-detect if we're in a terminal for pretty output
+	// Auto-detect if we are in a terminal for pretty output
 	isTerminal := isatty()
 
 	var writer io.Writer = os.Stderr

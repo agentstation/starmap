@@ -36,8 +36,8 @@ func NewProvenance(opts ...ProvenanceOption) *Provenance {
 	return p
 }
 
-// Map returns a deep copy of the provenance map.
-// This ensures thread safety by preventing external modification of internal state.
+// Map returns a deep copy of the provenance map. The copy prevents callers from
+// modifying internal state across goroutines.
 func (p *Provenance) Map() provenance.Map {
 	p.mu.RLock()
 	defer p.mu.RUnlock()
@@ -94,8 +94,8 @@ func (p *Provenance) Len() int {
 	return length
 }
 
-// FindByField retrieves provenance for a specific field of a resource.
-// Returns nil if no provenance is found.
+// FindByField retrieves provenance for a specific resource field. It returns nil
+// when no entry matches.
 func (p *Provenance) FindByField(resourceType evidence.ResourceType, resourceID string, field string) []provenance.Entry {
 	p.mu.RLock()
 	defer p.mu.RUnlock()
@@ -151,8 +151,8 @@ func (p *Provenance) FormatYAML() string {
 	return formatted
 }
 
-// EncodeYAML returns provenance YAML or a typed parse error when evidence
-// values cannot be represented safely.
+// EncodeYAML returns provenance YAML. It returns a typed parse error for evidence
+// values that YAML cannot represent safely.
 func (p *Provenance) EncodeYAML() (string, error) {
 	p.mu.RLock()
 	defer p.mu.RUnlock()

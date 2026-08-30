@@ -118,7 +118,7 @@ func (s *Source) Observe(ctx context.Context, opts ...sources.Option) (sources.O
 
 	// Check if we have provider configs
 	if s.providers == nil {
-		// Can't fetch without provider configs
+		// Cannot fetch without provider configs
 		return s.observation(catalog, nil, sources.ObservationRecordCounts{})
 	}
 
@@ -152,7 +152,7 @@ func (s *Source) Observe(ctx context.Context, opts ...sources.Option) (sources.O
 	issues := make([]sources.ObservationIssue, 0)
 	for _, provider := range providerConfigs {
 		// The configured catalog may contain embedded or last-known-good models.
-		// Provider observations contain only models returned by this live call;
+		// Provider observations contain only models returned by this live call.
 		// bootstrap data remains a separate local-catalog observation.
 		providerConfig := catalogs.DeepCopyProvider(*provider)
 		providerConfig.Models = nil
@@ -177,46 +177,44 @@ func (s *Source) Observe(ctx context.Context, opts ...sources.Option) (sources.O
 	semaphore := make(chan struct{}, s.effectiveMaxConcurrency(len(providerConfigs)))
 
 	for _, provider := range providerConfigs {
-		wg.Add(1)
-		go func(p *catalogs.Provider) {
-			defer wg.Done()
+		wg.Go(func() {
 			semaphore <- struct{}{}
 			defer func() { <-semaphore }()
 
-			result := providerModels{providerID: p.ID}
+			result := providerModels{providerID: provider.ID}
 
-			logger := logging.WithProvider(ctx, string(p.ID))
-			models, err := s.fetcher.FetchModels(logger, p)
+			logger := logging.WithProvider(ctx, string(provider.ID))
+			models, err := s.fetcher.FetchModels(logger, provider)
 			if err != nil {
 				var quarantineErr *sourcepayload.QuarantineError
 				if errors.As(err, &quarantineErr) {
-					result.models, result.rejected, result.issues = quarantineProviderModels(p.ID, models)
+					result.models, result.rejected, result.issues = quarantineProviderModels(provider.ID, models)
 					if s.requireCanonicalLinks {
 						result.models, result.rejected, result.issues = linkReviewedProviderModels(
-							p,
+							provider,
 							result.models,
 							result.rejected,
 							result.issues,
 						)
 					}
 					result.rejected += quarantineErr.Report.Rejected
-					result.issues = append(result.issues, providerRecordIssues(p.ID, quarantineErr)...)
+					result.issues = append(result.issues, providerRecordIssues(provider.ID, quarantineErr)...)
 					resultChan <- result
 					return
 				}
 				logging.Ctx(logger).Warn().
 					Err(err).
-					Str("provider_id", string(p.ID)).
+					Str("provider_id", string(provider.ID)).
 					Msg("Provider observation degraded")
-				result.issues = append(result.issues, classifyProviderFetchIssue(p.ID, err))
+				result.issues = append(result.issues, classifyProviderFetchIssue(provider.ID, err))
 				resultChan <- result
 				return
 			}
 
-			result.models, result.rejected, result.issues = quarantineProviderModels(p.ID, models)
+			result.models, result.rejected, result.issues = quarantineProviderModels(provider.ID, models)
 			if s.requireCanonicalLinks {
 				result.models, result.rejected, result.issues = linkReviewedProviderModels(
-					p,
+					provider,
 					result.models,
 					result.rejected,
 					result.issues,
@@ -225,10 +223,10 @@ func (s *Source) Observe(ctx context.Context, opts ...sources.Option) (sources.O
 			resultChan <- result
 
 			logging.Ctx(logger).Info().
-				Str("provider_id", string(p.ID)).
+				Str("provider_id", string(provider.ID)).
 				Int("model_count", len(models)).
 				Msg("Fetched models")
-		}(provider)
+		})
 	}
 
 	wg.Wait()
@@ -456,7 +454,7 @@ func hasProviderModelID(seen map[string]struct{}, id string) bool {
 
 // Cleanup releases any resources.
 func (s *Source) Cleanup() error {
-	// ProvidersSource doesn't hold persistent resources
+	// ProvidersSource does not hold persistent resources
 	return nil
 }
 
@@ -467,7 +465,7 @@ func (s *Source) Dependencies() []sources.Dependency {
 }
 
 // IsOptional returns whether this source is optional.
-// Provider source is required - it's the core data source.
+// The provider source supplies the required core data.
 func (s *Source) IsOptional() bool {
 	return false
 }

@@ -34,7 +34,7 @@ type legacyLayoutMigrator struct {
 }
 
 // MigrateLegacyLayout explicitly relocates the pre-plan filesystem generation
-// store and projects its current generation back to the vacated human workspace
+// store and projects its current generation back to the vacated human catalog workspace
 // path. Validation and both advisory locks complete before the first rename.
 func MigrateLegacyLayout(
 	ctx context.Context,

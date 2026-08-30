@@ -33,9 +33,9 @@ func (r payloadDecodeReport) err() error {
 	return combined.Err("catalog payload models")
 }
 
-// DecodeCatalogPayload decodes the current catalog payload. A non-nil catalog together
-// with *sourcepayload.QuarantineError is a partial diagnostic result and must
-// not be activated as the manifest-bound generation.
+// DecodeCatalogPayload decodes the current catalog payload. A non-nil catalog
+// with *sourcepayload.QuarantineError is only a partial diagnostic result. Callers
+// must not activate it as the manifest-bound generation.
 func DecodeCatalogPayload(data []byte) (*Catalog, error) {
 	catalog, report, err := decodeCatalogPayload(data, (*Builder).Build)
 	if err != nil {
@@ -45,8 +45,8 @@ func DecodeCatalogPayload(data []byte) (*Catalog, error) {
 }
 
 // DecodeSourceObservationPayload decodes a source candidate without requiring
-// every provider record to have resolved canonical authorship. The returned
-// catalog is suitable only for reconciliation; durable generation activation
+// resolved canonical authorship for every provider record. The returned
+// catalog is suitable only for reconciliation. Durable generation activation
 // must use DecodeCatalogPayload.
 func DecodeSourceObservationPayload(data []byte) (*Catalog, error) {
 	catalog, report, err := decodeCatalogPayload(data, func(builder *Builder) (*Catalog, error) {

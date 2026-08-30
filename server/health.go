@@ -20,15 +20,15 @@ type StreamState string
 const (
 	// StreamStateIdle means the broadcaster accepts streams but has no clients.
 	StreamStateIdle StreamState = "idle"
-	// StreamStateStreaming means at least one SSE client is connected.
+	// StreamStateStreaming means the broadcaster has active clients.
 	StreamStateStreaming StreamState = "streaming"
 	// StreamStateStopped means the broadcaster rejects new streams.
 	StreamStateStopped StreamState = "stopped"
 )
 
 // Health is an immutable snapshot of publisher catalog, callback, and stream
-// delivery health. Catalog freshness is derived only from the active
-// generation timestamp; heartbeat activity cannot refresh it.
+// delivery health. Only the active generation timestamp determines catalog
+// generation timestamp. Heartbeat activity cannot refresh it.
 type Health struct {
 	State              State             `json:"state"`
 	ActiveGenerationID string            `json:"active_generation_id,omitempty"`

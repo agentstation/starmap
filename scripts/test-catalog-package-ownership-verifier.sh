@@ -27,7 +27,7 @@ mkdir -p "$FIXTURE/docs/reviews"
 printf '%s\n' 'Historical import: github.com/agentstation/starmap/pkg/catalog'"meta" \
 	>"$FIXTURE/docs/reviews/history.md"
 printf '%s\n' 'Archived import: github.com/agentstation/starmap/pkg/catalog'"store" \
-	>"$FIXTURE/docs/STARMAP_ARCHITECTURE_CONTROL_PLANE.md"
+	>"$FIXTURE/docs/reviews/architecture-control-plane.md"
 printf '%s\n' \
 	'pkg/catalog'"meta"' -> pkg/catalogs/evidence and pkg/catalogs/projection' \
 	'pkg/catalog'"store"' -> pkg/catalogs/storage' \
@@ -68,6 +68,11 @@ if grep -Eq 'make[[:space:]]+verify|scripts/verify\.sh' "$VERIFIER"; then
 	printf 'structural verifier invokes a full repository gate\n' >&2
 	exit 1
 fi
+
+grep -Fq 'STARMAP_RELEASE_GOTOOLCHAIN' "$VERIFIER" || {
+	printf 'verifier does not pin the release toolchain for archive bytes\n' >&2
+	exit 1
+}
 
 # CPO-V13 must report a dependency change and ignore a version change. A gate
 # that also reported version changes would fail every routine dependency
@@ -144,9 +149,9 @@ grep -Fq 'CPO-V13 PASS:' "$indirect_report" || {
 	exit 1
 }
 
-# The approved list is compared line by line, so a locale-dependent sort makes
-# the gate pass on one platform and fail on another. Assert the pin, then prove
-# it under a locale that collates differently when one is installed.
+# The verifier compares the approved list line by line. A locale-dependent sort
+# can therefore produce different results across platforms. Assert the locale
+# pin, then test another installed locale with different collation rules.
 grep -Fq 'LC_ALL=C sort' "$VERIFIER" || {
 	printf 'verifier sorts module paths without pinning the collation\n' >&2
 	exit 1

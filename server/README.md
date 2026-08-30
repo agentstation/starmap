@@ -8,11 +8,7 @@
 import "github.com/agentstation/starmap/server"
 ```
 
-Package server provides an embeddable HTTP server for a Starmap catalog.
-
-Alongside Starmap's native catalog and reactive\-generation routes, the server exposes OpenRouter\-compatible model discovery at /api/v1/model/\{author\}/\{slug\} and /api/v1/models/\{author\}/\{slug\}/endpoints. Those responses are server\-local projections over the same immutable catalog; they do not create a second persisted catalog or make generated endpoints.yaml authoritative.
-
-Storage is explicit caller composition before New. Standalone CLI serving uses storage.NewFilesystem by default. Embedding deployments without a persistent filesystem can pass a caller\-owned AWS SDK v2 client to New in package github.com/agentstation/starmap/pkg/catalogs/storage/s3, wrap that backend with storage.NewObject, and inject the resulting store through starmap.WithCatalogStore when constructing the client. Server construction never discovers credentials, creates a storage client, or owns its lifecycle.
+Package server provides the public Starmap HTTP server composition.
 
 ## Index
 
@@ -37,7 +33,7 @@ Storage is explicit caller composition before New. Standalone CLI serving uses s
 
 
 <a name="Config"></a>
-## type [Config](<https://github.com/agentstation/starmap/blob/main/server/config.go#L29-L69>)
+## type [Config](<https://github.com/agentstation/starmap/blob/main/server/config.go#L13-L51>)
 
 Config configures an embeddable Starmap HTTP server.
 
@@ -51,8 +47,6 @@ type Config struct {
     // PathPrefix is the root for versioned API routes.
     PathPrefix string
 
-    // CORSEnabled controls CORS middleware. CORSOrigins is the allowlist; an
-    // empty allowlist permits every origin when CORS is enabled.
     CORSEnabled bool
     CORSOrigins []string
 
@@ -61,7 +55,7 @@ type Config struct {
     AuthEnabled bool
     AuthHeader  string
 
-    // RateLimit is the per-IP requests-per-minute limit; zero disables it.
+    // RateLimit is the per-IP requests-per-minute limit. Zero disables it.
     RateLimit int
     // CacheTTL bounds derived response-cache entries.
     CacheTTL time.Duration
@@ -86,7 +80,7 @@ type Config struct {
 ```
 
 <a name="DefaultConfig"></a>
-### func [DefaultConfig](<https://github.com/agentstation/starmap/blob/main/server/config.go#L72>)
+### func [DefaultConfig](<https://github.com/agentstation/starmap/blob/main/server/config.go#L54>)
 
 ```go
 func DefaultConfig() Config
@@ -97,7 +91,7 @@ DefaultConfig returns production\-oriented server defaults.
 <a name="Health"></a>
 ## type [Health](<https://github.com/agentstation/starmap/blob/main/server/health.go#L32-L39>)
 
-Health is an immutable snapshot of publisher catalog, callback, and stream delivery health. Catalog freshness is derived only from the active generation timestamp; heartbeat activity cannot refresh it.
+Health is an immutable snapshot of publisher catalog, callback, and stream delivery health. Only the active generation timestamp determines catalog generation timestamp. Heartbeat activity cannot refresh it.
 
 ```go
 type Health struct {
@@ -281,7 +275,7 @@ type StreamState string
 const (
     // StreamStateIdle means the broadcaster accepts streams but has no clients.
     StreamStateIdle StreamState = "idle"
-    // StreamStateStreaming means at least one SSE client is connected.
+    // StreamStateStreaming means the broadcaster has active clients.
     StreamStateStreaming StreamState = "streaming"
     // StreamStateStopped means the broadcaster rejects new streams.
     StreamStateStopped StreamState = "stopped"

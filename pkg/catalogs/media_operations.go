@@ -2,10 +2,10 @@ package catalogs
 
 import "slices"
 
-// MediaOperationFacts states the exact model facts one dedicated media
-// operation requires. A dedicated media operation is one a consumer names for
-// itself rather than one it discovers inside a chat answer, so a chat model
-// that returns a picture is not one of these.
+// MediaOperationFacts states the exact model facts that a dedicated media
+// operation requires. Consumers request such an operation by name instead of
+// discovering it in a chat answer. A chat model that returns a picture therefore
+// does not qualify.
 //
 // Naming it is not the same as reaching a separate path. A provider that reads
 // a document serves the read through its chat path, and the endpoint table says

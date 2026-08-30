@@ -199,7 +199,6 @@ func TestAuth(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			// Create test handler that tracks if it was called
 			handlerCalled := false
 			testHandler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 				handlerCalled = true
@@ -227,7 +226,6 @@ func TestAuth(t *testing.T) {
 				t.Errorf("expected status %d, got %d", tt.expectedStatus, w.Code)
 			}
 
-			// Verify handler was called (or not)
 			if handlerCalled != tt.expectedPass {
 				t.Errorf("expected handler called=%v, got %v", tt.expectedPass, handlerCalled)
 			}

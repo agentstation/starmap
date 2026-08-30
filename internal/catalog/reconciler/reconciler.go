@@ -22,9 +22,8 @@ import (
 )
 
 // Reconciler combines data from multiple sources into a canonical catalog.
-// It is concrete because this package has one reconciliation engine; extension
-// points are accepted through the narrow authority.Reader and Source
-// interfaces.
+// It is concrete because this package has one reconciliation engine. The narrow
+// authority.Reader and Source interfaces accept extensions.
 type Reconciler struct {
 	strategy    *AuthorityStrategy
 	authorities authority.Reader
@@ -70,7 +69,7 @@ type modelResult struct {
 	apiCount   int // Count from primary source
 }
 
-// Sources performs reconciliation with clean step-by-step flow.
+// Sources reconciles observations in discrete steps.
 func (r *Reconciler) Sources(ctx context.Context, primary sources.ID, srcs []sources.Observation) (*Result, error) {
 	// Step 1: Initialize context and validate
 	rctx, err := r.initialize(ctx, primary, srcs)
@@ -333,9 +332,6 @@ func (r *Reconciler) result(
 		catalog.SetProvenance(combined)
 	}
 
-	// Build tracking maps from final catalog (not just current sync results)
-	// This ensures all models in the catalog have provider mappings, including
-	// those from the baseline that weren't re-fetched in this sync
 	for _, provider := range catalog.Providers().List() {
 		if provider.Models != nil {
 			for modelID := range provider.Models {

@@ -45,13 +45,13 @@ type HTTPClient struct {
 type HTTPAcquisition string
 
 const (
-	// HTTPAcquisitionFreshCache means a validated cache within TTL was used.
+	// HTTPAcquisitionFreshCache means a fresh cache entry satisfied the load.
 	HTTPAcquisitionFreshCache HTTPAcquisition = "fresh_cache"
-	// HTTPAcquisitionDownloaded means a validated upstream response was promoted.
+	// HTTPAcquisitionDownloaded means a successful request supplied new data.
 	HTTPAcquisitionDownloaded HTTPAcquisition = "downloaded"
 	// HTTPAcquisitionRevalidatedCache means a conditional request returned 304.
 	HTTPAcquisitionRevalidatedCache HTTPAcquisition = "revalidated_cache"
-	// HTTPAcquisitionStaleCache means upstream failed and stale last-known-good evidence was used.
+	// HTTPAcquisitionStaleCache means a stale cache entry supplied fallback data.
 	HTTPAcquisitionStaleCache HTTPAcquisition = "stale_cache"
 	// HTTPAcquisitionEmbeddedBootstrap means neither upstream nor cache was usable.
 	HTTPAcquisitionEmbeddedBootstrap HTTPAcquisition = "embedded_bootstrap"
@@ -61,8 +61,7 @@ const (
 type HTTPAcquisitionResult struct {
 	Kind     HTTPAcquisition
 	Revision sources.Revision
-	// Issues contains classified evidence explaining why upstream data was
-	// rejected before a fallback was selected.
+	// Issues explains why validation rejected upstream data and selected a fallback.
 	Issues []sources.ObservationIssue
 }
 
@@ -100,17 +99,17 @@ func NewHTTPClient(outputDir string) *HTTPClient {
 	}
 }
 
-// EnsureAPI ensures the api.json is available and up to date.
+// EnsureAPI verifies the api.json is available and up to date.
 func (c *HTTPClient) EnsureAPI(ctx context.Context) error {
 	_, err := c.AcquireAPI(ctx)
 	return err
 }
 
-// AcquireAPI ensures api.json is available and reports the exact evidence path.
+// AcquireAPI verifies api.json is available and reports the exact evidence path.
 func (c *HTTPClient) AcquireAPI(ctx context.Context) (HTTPAcquisitionResult, error) {
 	ctx = logging.WithSource(ctx, sources.ModelsDevHTTPID.String())
 	logger := logging.FromContext(ctx)
-	// Create cache directory if it doesn't exist
+	// Create cache directory if it does not exist
 	if err := os.MkdirAll(c.CacheDir, constants.DirPermissions); err != nil {
 		return HTTPAcquisitionResult{}, errors.WrapIO("create", "cache directory", err)
 	}
@@ -120,8 +119,6 @@ func (c *HTTPClient) AcquireAPI(ctx context.Context) (HTTPAcquisitionResult, err
 	cacheUsable := cacheValidationErr == nil
 	metadata, metadataErr := c.readCacheMetadata(apiPath)
 
-	// Only metadata-bound cache entries can be called fresh. Legacy or damaged
-	// sidecars are re-fetched and become degraded fallback if upstream is down.
 	if cacheUsable && metadataErr == nil && c.isCacheValid(apiPath) {
 		if metadata.Origin == HTTPAcquisitionEmbeddedBootstrap {
 			logger.Info().Str("acquisition", string(HTTPAcquisitionEmbeddedBootstrap)).Msg("Using models.dev bootstrap cache")
@@ -248,7 +245,7 @@ func (c *HTTPClient) isCacheValid(apiPath string) bool {
 	}
 	info, err := os.Stat(apiPath)
 	if err != nil {
-		return false // File doesn't exist
+		return false // File does not exist
 	}
 
 	// Check if file is recent enough

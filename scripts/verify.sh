@@ -103,10 +103,12 @@ run env CGO_ENABLED=1 go test ./... -race -short -timeout=20m
 run go vet ./...
 run ./scripts/verify-catalog-performance.sh
 run_lint
+run go tool ago -stale-ignores ./...
 
 check_critical_coverage
 
 run make docs-check
+run make technical-writing-check
 run git diff --check
 
 run go build -o "$TMPDIR/starmap" ./cmd/starmap

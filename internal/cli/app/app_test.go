@@ -81,7 +81,7 @@ func TestApp_Starmap_Singleton(t *testing.T) {
 		t.Fatalf("Starmap() failed on second call: %v", err)
 	}
 
-	// Verify it's the same instance (same pointer)
+	// Verify it is the same instance (same pointer)
 	if sm1 != sm2 {
 		t.Error("Starmap() returned different instances, expected singleton")
 	}
@@ -290,7 +290,6 @@ func TestApp_WithOptions(t *testing.T) {
 		t.Fatalf("New() with options failed: %v", err)
 	}
 
-	// Verify options were applied
 	if app.Config() != customConfig {
 		t.Error("WithConfig() option not applied")
 	}
@@ -410,7 +409,7 @@ func BenchmarkApp_Starmap(b *testing.B) {
 	}
 
 	b.ResetTimer()
-	for i := 0; i < b.N; i++ {
+	for b.Loop() {
 		_, err := app.Starmap()
 		if err != nil {
 			b.Fatalf("Starmap() failed: %v", err)

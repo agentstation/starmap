@@ -27,7 +27,7 @@ type ReleaseAssets struct {
 }
 
 // StageReleaseAssets validates and atomically stages archive, attestation, and
-// checksum assets. An exact retry is idempotent; rebinding the same generation
+// checksum assets. An exact retry is idempotent. Rebinding the same generation
 // ID to different bytes returns a typed conflict.
 func StageReleaseAssets(root string, artifact Bundle) (ReleaseAssets, error) {
 	if strings.TrimSpace(root) == "" {

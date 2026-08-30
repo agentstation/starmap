@@ -1,6 +1,6 @@
 package evidence
 
-// ObservationRevisionKind identifies how an upstream revision was obtained.
+// ObservationRevisionKind identifies the source of an upstream revision.
 type ObservationRevisionKind string
 
 const (
@@ -26,11 +26,11 @@ type ObservationRevision struct {
 	InputChecksum string                  `json:"input_checksum,omitempty" yaml:"input_checksum,omitempty"`
 }
 
-// ObservationCompleteness states whether every expected record was observed.
+// ObservationCompleteness states whether an observation contains every expected record.
 type ObservationCompleteness string
 
 const (
-	// ObservationCompletenessComplete means every expected record was observed.
+	// ObservationCompletenessComplete means the observation contains every expected record.
 	ObservationCompletenessComplete ObservationCompleteness = "complete"
 	// ObservationCompletenessPartial means at least one expected record is absent.
 	ObservationCompletenessPartial ObservationCompleteness = "partial"
@@ -77,15 +77,15 @@ const (
 	ObservationIssueCodeSchemaDrift ObservationIssueCode = "schema_drift"
 	// ObservationIssueCodePayloadLimit means an upstream exceeded a bounded resource budget.
 	ObservationIssueCodePayloadLimit ObservationIssueCode = "payload_limit"
-	// ObservationIssueCodeMissingCredentials means a provider could not be queried.
+	// ObservationIssueCodeMissingCredentials means authentication material was absent.
 	ObservationIssueCodeMissingCredentials ObservationIssueCode = "missing_credentials"
 	// ObservationIssueCodeConfiguration means source/provider configuration was invalid.
 	ObservationIssueCodeConfiguration ObservationIssueCode = "configuration"
 	// ObservationIssueCodeFetchFailed means upstream acquisition failed.
 	ObservationIssueCodeFetchFailed ObservationIssueCode = "fetch_failed"
-	// ObservationIssueCodeStaleFallback means last-known-good stale evidence was used.
+	// ObservationIssueCodeStaleFallback means a stale cache entry supplied data.
 	ObservationIssueCodeStaleFallback ObservationIssueCode = "stale_fallback"
-	// ObservationIssueCodeBootstrapFallback means embedded bootstrap evidence was used.
+	// ObservationIssueCodeBootstrapFallback means embedded data supplied the observation.
 	ObservationIssueCodeBootstrapFallback ObservationIssueCode = "bootstrap_fallback"
 	// ObservationIssueCodeVolumeCollapse means a source omitted records that
 	// its prior accepted evidence supplied, without explicit lifecycle proof.

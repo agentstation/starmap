@@ -72,7 +72,6 @@ func TestCache_SetWithTTL(t *testing.T) {
 	// Wait for expiration
 	time.Sleep(100 * time.Millisecond)
 
-	// Should be expired
 	_, found = c.Get("expiring")
 	if found {
 		t.Error("expected key to be expired")
@@ -362,7 +361,6 @@ func TestCache_DefaultExpiration(t *testing.T) {
 	// Wait for default expiration
 	time.Sleep(150 * time.Millisecond)
 
-	// Should be expired
 	_, found = c.Get("key")
 	if found {
 		t.Error("expected key to be expired after default TTL")

@@ -36,7 +36,7 @@ import (
 	"github.com/agentstation/starmap/pkg/provenance"
 )
 
-// MergeStrategy defines how catalogs should be merged.
+// MergeStrategy defines how to merge catalogs.
 type MergeStrategy int
 
 const (
@@ -49,15 +49,14 @@ const (
 )
 
 // Catalog is the immutable concrete product type. Builder is the advanced
-// mutation seam used to construct it.
+// mutation boundary used to construct it.
 
 // Compile-time interface check for the open algorithm input boundary.
 var _ Reader = (*Builder)(nil)
 
-// Builder is the advanced mutable catalog construction type. It is intended for
-// custom update callbacks, source/plugin authors, and persistence pipelines;
-// ordinary consumers should use the immutable *Catalog returned by
-// *starmap.Client.Catalog.
+// Builder is the advanced mutable catalog construction type. Use it for custom
+// update callbacks, source or plugin authors, and persistence pipelines. Ordinary
+// consumers should use the immutable *Catalog from *starmap.Client.Catalog.
 // It can work as:
 // - Memory catalog (readFS == nil)
 // - Embedded catalog (readFS is embed.FS)
@@ -112,7 +111,7 @@ func NewFromPath(path string) (*Builder, error) {
 }
 
 // NewEmpty creates an in-memory empty catalog.
-// This is useful for testing or temporary catalogs that don't
+// This is useful for testing or temporary catalogs that do not
 // need persistence.
 //
 // Example:

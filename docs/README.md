@@ -2,19 +2,10 @@
 
 Technical documentation for the Starmap AI Model Catalog project.
 
+Completed plans and review evidence are in [`reviews/`](reviews/). The archive
+includes the architecture and source-schema control planes.
+
 ## Core Documentation
-
-### [STARMAP_ARCHITECTURE_CONTROL_PLANE.md](STARMAP_ARCHITECTURE_CONTROL_PLANE.md)
-**Architecture Execution Plan and Status Ledger**
-
-Durable `/goal` prompt, phase/task/finding/PR/worktree ledgers, verifiable
-success criteria, and final repository cleanup gates for the current Starmap
-architecture program. It is grounded in the
-[2026-07-27 HTML architecture review](reviews/STARMAP_ARCHITECTURE_REVIEW_2026-07-27.html),
-the
-[independent Fable review](reviews/FABLE_STARMAP_PLAN_REVIEW_2026-07-27.md),
-and its
-[disposition record](reviews/FABLE_STARMAP_PLAN_REVIEW_DISPOSITION_2026-07-27.md).
 
 ### [API.md](API.md)
 **Go Package API Reference**
@@ -30,7 +21,7 @@ Auto-generated API documentation for the Starmap Go package including:
 ### [ARCHITECTURE.md](ARCHITECTURE.md)
 **System Architecture & Technical Deep Dive**
 
-Comprehensive technical documentation covering:
+Architecture documentation covering:
 - Design principles and patterns
 - System components and layers
 - Application layer (dependency injection)
@@ -85,7 +76,7 @@ Command-line interface reference and implementation guidelines:
 
 Repository verification guidance covering:
 - Full deterministic verification with `make verify`
-- Critical seam coverage thresholds
+- Critical boundary coverage thresholds
 - Focused package test commands
 - Race detection and docs checks
 - Live provider verification with credentials
@@ -161,4 +152,4 @@ See [CONTRIBUTING.md](../CONTRIBUTING.md) for:
 
 - **GitHub Issues**: https://github.com/agentstation/starmap/issues
 - **GitHub Discussions**: https://github.com/agentstation/starmap/discussions
-- **Documentation**: You're here! 📚
+- **Documentation**: This index

@@ -24,7 +24,7 @@ This checks:
   - Catalog configuration validity
   - URL formats and patterns`,
 		RunE: func(_ *cobra.Command, args []string) error {
-			// This command doesn't take positional arguments yet
+			// This command does not take positional arguments yet
 			if len(args) > 0 {
 				return fmt.Errorf("unexpected argument: %s", args[0])
 			}

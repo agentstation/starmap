@@ -21,7 +21,7 @@ starmap serve --host 0.0.0.0 --port 8080
 starmap serve --auth --cors-origins https://console.example.com
 ```
 
-The CLI composes its filesystem generation store and explicit acquisition
+The CLI composes its filesystem catalog store and explicit acquisition
 syncer before constructing the public server. An embedding Go application
 constructs its `*starmap.Client`, chooses a filesystem or conditional
 S3-compatible store, and passes the client to `server.New`. Server construction
@@ -103,8 +103,7 @@ numeric error dialect instead of the native envelope.
 
 ## Authentication and CORS
 
-When `--auth` is enabled, send either the configured header or an Authorization
-value:
+With `--auth`, send either the configured header or an Authorization value:
 
 ```bash
 curl -H 'X-API-Key: ...' http://localhost:8080/api/v1/models
@@ -114,8 +113,8 @@ curl -H 'Authorization: Bearer ...' \
 
 The health/readiness probes and both OpenAPI routes under the configured prefix
 remain public. Superseded prefixes are not exempt from authentication.
-Authentication comparison is constant-time; logs record only whether a key was
-supplied, never the key. OpenRouter routes return the OpenRouter 401 error
+Authentication comparison is constant-time. Logs record key presence, never
+the key. OpenRouter routes return the OpenRouter 401 error
 dialect, while native routes return Starmap's native 401 envelope.
 
 Enable CORS only with a deployment-owned origin policy. An explicit
@@ -124,8 +123,8 @@ Using `--cors` without an allowlist emits `Access-Control-Allow-Origin: *`.
 
 The model-search endpoint accepts one strict JSON object, rejects unknown
 fields or trailing values, and limits the decoded request body to 1 MiB.
-Provider endpoints and object-store clients are privileged operator
-configuration; HTTP request fields cannot select an arbitrary upstream URL.
+The operator controls privileged provider endpoints and object-store clients.
+HTTP request fields cannot select an arbitrary upstream URL.
 
 ## Immutable generation protocol
 
@@ -137,13 +136,13 @@ media type, size, digest, and identity before activation.
 
 Use the public [`remote`](../remote) package for the complete verified
 initial-fetch, SSE, reconnect/catch-up, durable activation, and shutdown
-lifecycle. The exact wire contract is documented in
-[REMOTE_CATALOG_PROTOCOL.md](REMOTE_CATALOG_PROTOCOL.md).
+lifecycle. [REMOTE_CATALOG_PROTOCOL.md](REMOTE_CATALOG_PROTOCOL.md) defines the
+exact wire contract.
 
 ## Reactive updates
 
 `GET /api/v1/updates/stream` is the sole Starmap catalog-publication transport.
-It is protected when server authentication is enabled; remote consumers supply
+Server authentication protects it when enabled. Remote consumers supply
 deployment-owned authentication through the caller-owned `http.Client`.
 The only data event is:
 
@@ -156,8 +155,8 @@ data: {"generation_id":"...","sequence":42}
 `connected` and `heartbeat` comments carry no event ID or catalog bytes. An
 event is a fetch hint, not a catalog payload. Each connection has one
 write-deadline-aware writer. Backpressure or write failure terminates the
-connection so the client reconnects and performs mandatory current-manifest
-catch-up; the server never silently drops a hint while reporting a healthy
+connection. The client then reconnects and fetches the current manifest. The
+server never silently drops a hint while reporting a healthy
 stream.
 
 The client rejects an SSE line larger than 64 KiB, a cumulative frame larger

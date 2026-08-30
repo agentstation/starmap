@@ -12,9 +12,9 @@ import (
 )
 
 // CopyProviderLogos copies provider logos from models.dev to output directory.
-// It tries the provider ID first, then checks aliases if the primary ID isn't found.
+// It tries the provider ID first, then checks aliases if the primary ID is not found.
 func CopyProviderLogos(outputDir string, providers []*catalogs.Provider) error {
-	// The models.dev repo is always cloned to this location by git.Fetch()
+	// The models.dev repository is always cloned to this location by git.Fetch()
 	sourcesPath := expandPath(constants.DefaultSourcesPath)
 	modelsDevRepo := filepath.Join(sourcesPath, "models.dev-git")
 	providersPath := filepath.Join(modelsDevRepo, "providers")
@@ -71,7 +71,7 @@ func CopyProviderLogos(outputDir string, providers []*catalogs.Provider) error {
 }
 
 // CopyAuthorLogos copies author logos from models.dev provider logos to author directories.
-// Since models.dev doesn't have a separate authors directory, we copy from the provider
+// Since models.dev does not have a separate authors directory, we copy from the provider
 // directory when the author ID matches a provider ID (or alias).
 func CopyAuthorLogos(outputDir string, authors []catalogs.Author, providers catalogs.ProvidersReader) error {
 	sourcesPath := expandPath(constants.DefaultSourcesPath)
@@ -167,7 +167,7 @@ func copyFile(src, dst string) error {
 		}
 	}
 
-	// Create destination directory if it doesn't exist
+	// Create destination directory if it does not exist
 	destDir := filepath.Dir(dst)
 	if err := os.MkdirAll(destDir, constants.DirPermissions); err != nil {
 		return errors.WrapIO("create", "destination directory", err)

@@ -14,28 +14,6 @@ import "github.com/agentstation/starmap/pkg/sources"
 
 Package sources provides public APIs for working with AI model data sources.
 
-Package sources defines interfaces and types for catalog data sources. Sources are responsible for fetching and synchronizing model data from various providers including local files, provider APIs, and external repositories.
-
-The package provides a unified interface for different data sources while supporting merge strategies, authorities for data precedence, and flexible configuration options.
-
-Example usage:
-
-```
-// Create a provider fetcher
-fetcher := NewProviderFetcher(providers)
-
-// Fetch models from a provider
-models, err := fetcher.FetchModels(ctx, provider)
-if err != nil {
-    log.Fatal(err)
-}
-
-// Check if a provider is supported
-if fetcher.HasClient(providerID) {
-    // Provider has a client implementation
-}
-```
-
 ## Index
 
 - [Constants](<#constants>)
@@ -130,7 +108,7 @@ const (
 
 ```go
 const (
-    // ObservationCompletenessComplete means every expected record was observed.
+    // ObservationCompletenessComplete means the observation contains every expected record.
     ObservationCompletenessComplete = evidence.ObservationCompletenessComplete
     // ObservationCompletenessPartial means at least one expected record is absent.
     ObservationCompletenessPartial = evidence.ObservationCompletenessPartial
@@ -143,7 +121,7 @@ const (
 const (
     // ObservationStatusSucceeded means the observation completed without known degradation.
     ObservationStatusSucceeded = evidence.ObservationStatusSucceeded
-    // ObservationStatusDegraded means usable catalog data was returned with a known limitation.
+    // ObservationStatusDegraded means the observation contains known issues.
     ObservationStatusDegraded = evidence.ObservationStatusDegraded
 )
 ```
@@ -204,7 +182,7 @@ func ValidateJSONPayload(data []byte) error
 ValidateJSONPayload enforces source byte and nesting limits before decoding.
 
 <a name="Dependency"></a>
-## type [Dependency](<https://github.com/agentstation/starmap/blob/main/pkg/sources/source.go#L92-L110>)
+## type [Dependency](<https://github.com/agentstation/starmap/blob/main/pkg/sources/source.go#L68-L86>)
 
 Dependency represents an external tool or runtime required by a source.
 
@@ -231,7 +209,7 @@ type Dependency struct {
 ```
 
 <a name="DependencyStatus"></a>
-## type [DependencyStatus](<https://github.com/agentstation/starmap/blob/main/pkg/sources/source.go#L113-L118>)
+## type [DependencyStatus](<https://github.com/agentstation/starmap/blob/main/pkg/sources/source.go#L89-L94>)
 
 DependencyStatus represents the availability status of a dependency.
 
@@ -251,14 +229,14 @@ FetchStats contains metadata about a fetch operation. This provides transparency
 
 ```go
 type FetchStats struct {
-    URL          string        // Endpoint that was called
+    URL          string
     StatusCode   int           // HTTP response status code
     Latency      time.Duration // Request duration
     PayloadSize  int64         // Response body size in bytes
     ContentType  string        // Content-Type from response header
-    AuthMethod   string        // How authentication was applied (Header, Query, None)
-    AuthLocation string        // Where auth was placed (header name or query param name)
-    AuthScheme   string        // Authentication scheme for header auth (Bearer, Basic, Direct)
+    AuthMethod   string
+    AuthLocation string
+    AuthScheme   string // Authentication scheme for header auth (Bearer, Basic, Direct)
 }
 ```
 
@@ -272,7 +250,7 @@ func (s *FetchStats) HumanSize() string
 HumanSize returns the payload size in human\-readable format.
 
 <a name="ID"></a>
-## type [ID](<https://github.com/agentstation/starmap/blob/main/pkg/sources/source.go#L35>)
+## type [ID](<https://github.com/agentstation/starmap/blob/main/pkg/sources/source.go#L12>)
 
 ID is the source\-owned spelling of the shared evidence source identity.
 
@@ -281,7 +259,7 @@ type ID = evidence.SourceID
 ```
 
 <a name="IDs"></a>
-### func [IDs](<https://github.com/agentstation/starmap/blob/main/pkg/sources/source.go#L48>)
+### func [IDs](<https://github.com/agentstation/starmap/blob/main/pkg/sources/source.go#L25>)
 
 ```go
 func IDs() []ID
@@ -290,9 +268,9 @@ func IDs() []ID
 IDs returns all available source identifiers.
 
 <a name="Observation"></a>
-## type [Observation](<https://github.com/agentstation/starmap/blob/main/pkg/sources/source.go#L78-L89>)
+## type [Observation](<https://github.com/agentstation/starmap/blob/main/pkg/sources/source.go#L54-L65>)
 
-Observation is one immutable direct source result. EvidenceChecksum binds the normalized canonical catalog payload; raw upstream evidence retention is a separate storage policy.
+Observation is one immutable direct source result. EvidenceChecksum binds the normalized canonical catalog payload. Raw upstream evidence retention is a separate storage policy.
 
 ```go
 type Observation struct {
@@ -339,7 +317,7 @@ Validate verifies required metadata and binds the evidence checksum to Catalog.
 <a name="ObservationCompleteness"></a>
 ## type [ObservationCompleteness](<https://github.com/agentstation/starmap/blob/main/pkg/sources/observation.go#L38>)
 
-ObservationCompleteness states whether all expected records were observed.
+ObservationCompleteness states whether an observation contains every expected record.
 
 ```go
 type ObservationCompleteness = evidence.ObservationCompleteness
@@ -453,7 +431,7 @@ type Options struct {
     ProviderID *catalogs.ProviderID
 
     // Typed source-specific options
-    CleanupRepo bool // For models.dev git source - remove repo after fetch
+    CleanupRepo bool // For models.dev git source - remove repository after fetch
     Reformat    bool // For file-based sources - reformat output files
 }
 ```
@@ -648,7 +626,7 @@ ResolveCatalog implements ProviderCredentialResolver.
 <a name="ProviderFetcher"></a>
 ## type [ProviderFetcher](<https://github.com/agentstation/starmap/blob/main/pkg/sources/providers.go#L41-L44>)
 
-ProviderFetcher provides operations for fetching models from provider APIs. Concrete provider clients are an explicit injected composition; use package acquisition for Starmap's built\-in provider implementations.
+ProviderFetcher provides operations for fetching models from provider APIs. Concrete provider clients are an explicit injected composition. Use package acquisition for Starmap's built\-in provider implementations.
 
 ```go
 type ProviderFetcher struct {
@@ -663,7 +641,7 @@ type ProviderFetcher struct {
 func NewProviderFetcher(providers catalogs.ProvidersReader, opts ...ProviderOption) *ProviderFetcher
 ```
 
-NewProviderFetcher creates a provider fetcher over the supplied catalog providers. Callers must inject the provider\-client and raw\-fetch roles they use; the root library never selects concrete provider implementations.
+NewProviderFetcher creates a provider fetcher over the supplied catalog providers. Callers must inject the provider\-client and raw\-fetch roles they use. The root library never selects concrete provider implementations.
 
 <a name="ProviderFetcher.FetchModels"></a>
 ### func \(\*ProviderFetcher\) [FetchModels](<https://github.com/agentstation/starmap/blob/main/pkg/sources/providers.go#L246>)
@@ -672,7 +650,7 @@ NewProviderFetcher creates a provider fetcher over the supplied catalog provider
 func (pf *ProviderFetcher) FetchModels(ctx context.Context, provider *catalogs.Provider, opts ...ProviderOption) ([]catalogs.Model, error)
 ```
 
-FetchModels fetches available models from a single provider's API. It handles credential resolution, client creation, and API communication. When a provider quarantines malformed records, FetchModels returns the valid siblings together with a non\-nil \*sourcepayload.QuarantineError wrapped in a SyncError; callers may consume the partial result only as degraded evidence.
+FetchModels fetches available models from a single provider's API. It handles credential resolution, client creation, and API communication. When a provider quarantines malformed records, FetchModels returns the valid siblings together with a non\-nil \*sourcepayload.QuarantineError wrapped in a SyncError. Callers may consume the partial result only as degraded evidence.
 
 Example:
 
@@ -700,7 +678,7 @@ func (pf *ProviderFetcher) FetchRawResponse(ctx context.Context, provider *catal
 
 FetchRawResponse fetches the raw API response from a provider's endpoint. This is useful for testing, debugging, or saving raw responses as testdata.
 
-The endpoint parameter should be the full URL to the API endpoint. The response is returned as raw bytes \(JSON\) without any parsing, along with fetch statistics.
+The endpoint parameter should be the full URL to the API endpoint. FetchRawResponse returns unparsed JSON bytes and fetch statistics.
 
 <a name="ProviderFetcher.HasClient"></a>
 ### func \(\*ProviderFetcher\) [HasClient](<https://github.com/agentstation/starmap/blob/main/pkg/sources/providers.go#L183>)
@@ -727,7 +705,7 @@ List returns all provider IDs that have client implementations.
 func (pf *ProviderFetcher) Providers() *catalogs.Providers
 ```
 
-Providers returns the providers that can be used by the provider fetcher.
+Providers returns the providers available to the provider fetcher.
 
 <a name="ProviderOption"></a>
 ## type [ProviderOption](<https://github.com/agentstation/starmap/blob/main/pkg/sources/providers.go#L62>)
@@ -814,7 +792,7 @@ type Revision = evidence.ObservationRevision
 <a name="RevisionKind"></a>
 ## type [RevisionKind](<https://github.com/agentstation/starmap/blob/main/pkg/sources/observation.go#L17>)
 
-RevisionKind identifies how an upstream observation revision was obtained.
+RevisionKind identifies the source of an upstream observation revision.
 
 ```go
 type RevisionKind = evidence.ObservationRevisionKind
@@ -823,7 +801,7 @@ type RevisionKind = evidence.ObservationRevisionKind
 <a name="SchemaDriftDisposition"></a>
 ## type [SchemaDriftDisposition](<https://github.com/agentstation/starmap/blob/main/pkg/sources/schema_drift.go#L38>)
 
-SchemaDriftDisposition defines how a mismatch or unknown member is handled.
+SchemaDriftDisposition defines the response to a mismatch or unknown member.
 
 ```go
 type SchemaDriftDisposition string
@@ -885,7 +863,7 @@ type SchemaFieldClass string
 
 ```go
 const (
-    // SchemaFieldIdentity is required identity whose absence or type drift rejects the record.
+    // SchemaFieldIdentity is an identity field whose drift rejects its scope.
     SchemaFieldIdentity SchemaFieldClass = "strict_identity"
     // SchemaFieldContainer is an object/array boundary whose type drift rejects its scope.
     SchemaFieldContainer SchemaFieldClass = "strict_container"
@@ -925,7 +903,7 @@ const (
 ```
 
 <a name="Source"></a>
-## type [Source](<https://github.com/agentstation/starmap/blob/main/pkg/sources/source.go#L57-L73>)
+## type [Source](<https://github.com/agentstation/starmap/blob/main/pkg/sources/source.go#L34-L49>)
 
 Source observes catalog information from one configured upstream.
 
@@ -940,7 +918,6 @@ type Source interface {
     // must not depend on prior Observe calls or publish result state on Source.
     Observe(ctx context.Context, opts ...Option) (Observation, error)
 
-    // Cleanup releases resources after all Observe calls have completed.
     Cleanup() error
 
     // Dependencies returns the list of external dependencies this source requires

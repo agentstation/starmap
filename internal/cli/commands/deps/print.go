@@ -195,13 +195,12 @@ func buildSourceDependencyRows(sourceStatus SourceDepStatus) [][]string {
 	return rows
 }
 
-// displayAlternativeSource shows alternative source information if dependencies are missing.
+// displayAlternativeSource shows alternative sources for missing dependencies.
 func displayAlternativeSource(sourceStatus SourceDepStatus) {
 	if len(sourceStatus.Dependencies) == 0 {
 		return
 	}
 
-	// Check if any dependencies are missing
 	hasMissing := false
 	for _, dep := range sourceStatus.Dependencies {
 		if !dep.Status.Available {
@@ -210,7 +209,7 @@ func displayAlternativeSource(sourceStatus SourceDepStatus) {
 		}
 	}
 
-	// Only show alternative if there's a problem to solve
+	// Only show alternative if there is a problem to solve
 	if !hasMissing {
 		return
 	}

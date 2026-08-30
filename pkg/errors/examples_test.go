@@ -9,7 +9,7 @@ import (
 	"github.com/agentstation/starmap/pkg/errors"
 )
 
-// Example demonstrates basic error creation and checking.
+// Example shows basic error creation and checking.
 func Example() {
 	// Create a not found error
 	err := &errors.NotFoundError{
@@ -25,7 +25,7 @@ func Example() {
 	// Output: Resource not found
 }
 
-// Example_aPIError demonstrates API error handling.
+// Example_aPIError shows API error handling.
 func Example_aPIError() {
 	// Simulate an API error
 	err := &errors.APIError{
@@ -63,7 +63,7 @@ func Example_authenticationError() {
 	// Output: Auth failed for anthropic: API key not configured
 }
 
-// Example_rateLimitError demonstrates rate limit handling with retry.
+// Example_rateLimitError shows rate limit handling with retry.
 func Example_rateLimitError() {
 	// Create API error for rate limiting
 	err := &errors.APIError{
@@ -80,7 +80,7 @@ func Example_rateLimitError() {
 	// Output: Rate limited: Rate limit exceeded. Try again in 30 seconds.
 }
 
-// Example_errorWrapping demonstrates error wrapping patterns.
+// Example_errorWrapping shows error wrapping patterns.
 func Example_errorWrapping() {
 	// Original error
 	originalErr := fmt.Errorf("connection refused")
@@ -119,7 +119,7 @@ func Example_validationError() {
 	// Output: validation failed for field api_key: API key cannot be empty
 }
 
-// Example_processError demonstrates subprocess error handling.
+// Example_processError shows subprocess error handling.
 func Example_processError() {
 	// Create process error
 	err := &errors.ProcessError{
@@ -140,7 +140,7 @@ func Example_processError() {
 	// Git configuration error
 }
 
-// Example_errorRecovery demonstrates error recovery strategies.
+// Example_errorRecovery shows error recovery strategies.
 func Example_errorRecovery() {
 	// Retry strategy for rate limits
 	var attemptRequest func() error

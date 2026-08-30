@@ -23,8 +23,6 @@ func TestRouteAliasMaterializesEligibleMigratedOfferings(t *testing.T) {
 		t.Fatalf("Build: %v", err)
 	}
 
-	// Eligibility is evaluated from the current offering facts. The test seam
-	// replaces only the immutable derived values, not ingestion configuration.
 	catalog.offerings[OfferingKey{ProviderID: "unavailable", ProviderModelID: "shared"}] = ProviderOffering{
 		ProviderID: "unavailable", ProviderModelID: "shared", DefinitionID: "author/shared",
 		Availability: OfferingAvailabilityUnavailable, Lifecycle: OfferingLifecycleActive,

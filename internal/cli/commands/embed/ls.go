@@ -39,7 +39,7 @@ Examples:
 	RunE: func(_ *cobra.Command, args []string) error {
 		// Human-readable sizes only make sense with long format
 		if lsHuman && !lsLong {
-			lsLong = true // Auto-enable long format when human-readable is used
+			lsLong = true
 		}
 
 		targetPath := "."
@@ -69,11 +69,11 @@ func listPath(fsys fs.FS, targetPath string) error {
 	}
 
 	if !info.IsDir() {
-		// If it's a file, just show the file
+		// If it is a file, just show the file
 		return listFile(fsys, targetPath)
 	}
 
-	// It's a directory, list contents
+	// It is a directory, list contents
 	if lsRecursive {
 		return listRecursive(fsys, targetPath)
 	}
@@ -104,7 +104,6 @@ func listDirectory(fsys fs.FS, dirPath string) error {
 	// Convert to FileInfo and filter
 	files := make([]*embedutil.FileInfo, 0, len(entries))
 	for _, entry := range entries {
-		// Skip hidden files unless -a flag is set
 		if !lsAll && embedutil.IsHidden(entry.Name()) {
 			continue
 		}
@@ -116,7 +115,7 @@ func listDirectory(fsys fs.FS, dirPath string) error {
 
 		fileInfo, err := embedutil.GetFileInfoFromEntry(entry, fullPath, fsys)
 		if err != nil {
-			continue // Skip files we can't get info for
+			continue // Skip files we cannot get info for
 		}
 
 		files = append(files, fileInfo)
@@ -150,7 +149,6 @@ func listRecursive(fsys fs.FS, rootPath string) error {
 			return nil // Continue walking
 		}
 
-		// Skip hidden files unless -a flag is set
 		if !lsAll && embedutil.IsHidden(d.Name()) {
 			if d.IsDir() {
 				return fs.SkipDir // Skip entire hidden directory

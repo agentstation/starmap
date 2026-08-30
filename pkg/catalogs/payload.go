@@ -11,7 +11,7 @@ import (
 )
 
 // CatalogPayload is the canonical construction-record JSON representation.
-// Author models own provider-independent facts; provider models own serving
+// Author models own provider-independent facts. Provider models own serving
 // facts and link to author models through Model.ModelRef.
 type CatalogPayload struct {
 	SchemaVersion  uint64             `json:"schema_version"`
@@ -36,7 +36,7 @@ func EncodeCatalogPayload(reader Reader) ([]byte, error) {
 }
 
 // CatalogSemanticChecksum returns the stable SHA-256 identity of catalog facts.
-// It excludes provenance and observation evidence; EncodeCatalogPayload remains
+// It excludes provenance and observation evidence. EncodeCatalogPayload remains
 // the exact integrity representation for storage, transport, and audit.
 func CatalogSemanticChecksum(reader Reader) (string, error) {
 	payload, err := catalogPayload(reader)

@@ -48,7 +48,7 @@ func reconcile(ctx context.Context, baseline *catalogs.Catalog, srcs []sources.O
 
 // ReconcileObservations applies the canonical authority and last-known-good
 // rules to an explicit set of already-verified observations. It is the internal
-// composition seam used by non-network acquisition adapters such as release
+// composition boundary used by non-network acquisition adapters such as release
 // import.
 func ReconcileObservations(
 	ctx context.Context,

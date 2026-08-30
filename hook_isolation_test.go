@@ -42,8 +42,6 @@ func TestHookIsolation(t *testing.T) {
 		t.Fatalf("first delivered sequence = %d, want 2", sequence)
 	}
 
-	// While the first generation is blocked, one pending generation is retained
-	// and later publications coalesce toward the newest sequence.
 	if _, err := client.Update(context.Background(), postCommitTestUpdate); err != nil {
 		t.Fatalf("second Update: %v", err)
 	}

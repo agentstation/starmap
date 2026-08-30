@@ -6,10 +6,9 @@ import (
 	"testing"
 )
 
-// TestRerankIsAPublishableOperation holds the contract that lets a catalog
-// state a provider serves reranking. Before this operation existed the word
-// only disqualified a model from the chat view, so a provider that ranked
-// documents had nothing to publish and the offering failed validation.
+// TestRerankIsAPublishableOperation checks the contract for publishing a rerank
+// service. Before this operation existed, the tag only excluded a model from
+// chat. Providers that ranked documents had no valid operation to publish.
 func TestRerankIsAPublishableOperation(t *testing.T) {
 	t.Parallel()
 
@@ -120,11 +119,6 @@ func TestRerankModelServesRerankAndNotChat(t *testing.T) {
 	}
 }
 
-// TestRerankBasisHoldsToItsPrice holds decision RNK-D4 as amended. Four
-// providers bill reranking in two different units, so the catalog records which
-// unit it means beside the price. A basis without its price leaves a consumer
-// nothing to charge, and a price without the basis leaves the same consumer
-// guessing which unit the provider counts.
 func TestRerankBasisHoldsToItsPrice(t *testing.T) {
 	t.Parallel()
 
@@ -203,9 +197,6 @@ func TestRerankBasisHoldsToItsPrice(t *testing.T) {
 	}
 }
 
-// TestRerankPriceDeepCopies keeps the search unit price out of the aliasing
-// class. Every other operation price is copied, and a shared pointer here would
-// let one offering's edit change another offering's cost.
 func TestRerankPriceDeepCopies(t *testing.T) {
 	t.Parallel()
 

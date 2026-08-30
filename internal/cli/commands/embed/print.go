@@ -13,7 +13,7 @@ import (
 func printWithLineNumbers(content string) {
 	lines := strings.Split(content, "\n")
 
-	// Don't number the final empty line if content ends with newline
+	// Do not number the final empty line if content ends with newline
 	if len(lines) > 0 && lines[len(lines)-1] == "" {
 		lines = lines[:len(lines)-1]
 	}
@@ -183,8 +183,6 @@ func printDirectorySummary(fsys fs.FS, dirPath string) error {
 
 // printCustomFormat displays file info using a custom format string.
 func printCustomFormat(targetPath string, info fs.FileInfo, format string) error {
-	// Simple format string replacement
-	// This could be expanded to support more format specifiers
 	result := format
 
 	// Replace common format specifiers
