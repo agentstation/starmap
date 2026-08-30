@@ -131,6 +131,9 @@ func deriveOfferingCapabilities(model Model) ProviderOfferingServiceCapabilities
 	if isRerankModel(model) {
 		capabilities.Operations = append(capabilities.Operations, ProviderOperationRerank)
 	}
+	if isModerationModel(model) {
+		capabilities.Operations = append(capabilities.Operations, ProviderOperationModerations)
+	}
 	if isChatCompletionModel(model) {
 		capabilities.Operations = append(capabilities.Operations, ProviderOperationChatCompletions)
 	}
@@ -166,6 +169,16 @@ func isRerankModel(model Model) bool {
 	return slices.Contains(model.Metadata.Tags, ModelTagRerank)
 }
 
+// isModerationModel reports whether the model classifies text against harm
+// categories. A moderation model reads text like a chat model does, so the
+// tag is the only fact that separates the two, exactly as with rerank.
+func isModerationModel(model Model) bool {
+	if model.Metadata == nil {
+		return false
+	}
+	return slices.Contains(model.Metadata.Tags, ModelTagModeration)
+}
+
 func isChatCompletionModel(model Model) bool {
 	if isEmbeddingModel(model) {
 		return false
@@ -177,8 +190,8 @@ func isChatCompletionModel(model Model) bool {
 		for _, tag := range model.Metadata.Tags {
 			switch tag {
 			case "embed", ModelTagEmbedding, "image-gen", "video-gen", "tts", "stt",
-				ModelTagRerank, ModelTagTextToImage, ModelTagTextToSpeech, ModelTagSpeechToText,
-				ModelTagTextToVideo:
+				ModelTagRerank, ModelTagModeration, ModelTagTextToImage, ModelTagTextToSpeech,
+				ModelTagSpeechToText, ModelTagTextToVideo:
 				return false
 			}
 		}

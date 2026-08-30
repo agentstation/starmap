@@ -1198,6 +1198,9 @@
     - operation: images-generations
       type: openai
       path: /v1/images/generations
+    - operation: moderations
+      type: openai
+      path: /v1/moderations
     - operation: images-edits
       type: openai
       path: /v1/images/edits

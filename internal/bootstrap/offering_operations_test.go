@@ -17,6 +17,7 @@ var nonChatTags = []catalogs.ModelTag{
 	"tts",
 	"stt",
 	catalogs.ModelTagRerank,
+	catalogs.ModelTagModeration,
 	catalogs.ModelTagTextToImage,
 	catalogs.ModelTagTextToSpeech,
 	catalogs.ModelTagSpeechToText,

@@ -181,6 +181,11 @@ const (
 	// query. The provider answers with a score for each document rather than
 	// with generated text, and it bills the call in its own unit.
 	ProviderOperationRerank ProviderOperation = "rerank"
+	// ProviderOperationModerations classifies text against a fixed set of
+	// harm categories and answers with a score for each one. A moderation
+	// model reads text and writes scores rather than prose, so the tag is
+	// what separates it from a chat model.
+	ProviderOperationModerations ProviderOperation = "moderations"
 )
 
 // ProviderInference defines stable provider-level inference service facts.

@@ -761,6 +761,7 @@ components:
         ModelTagLegal: Legal document processing
         ModelTagMath: Mathematical problem solving
         ModelTagMedical: Medical and healthcare
+        ModelTagModeration: Harm-category classification
         ModelTagMultimodal: Multiple input modalities
         ModelTagQA: Question answering
         ModelTagReasoning: Logical reasoning and problem solving
@@ -789,6 +790,7 @@ components:
       - ModelTagFunctionCalling
       - ModelTagEmbedding
       - ModelTagRerank
+      - ModelTagModeration
       - ModelTagSummarization
       - ModelTagTranslation
       - ModelTagQA
@@ -1319,6 +1321,7 @@ components:
       - ProviderOperationVideosGenerations
       - ProviderOperationDocumentsRecognition
       - ProviderOperationRerank
+      - ProviderOperationModerations
     catalogs.ProviderPrivacyPolicy:
       description: Privacy, Retention, and Governance Policies
       properties:
