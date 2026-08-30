@@ -6,6 +6,11 @@ authors:
 - id: openai
   name: openai
 
+# Model metadata
+metadata:
+  tags:
+  - moderation
+
 # Model features
 features:
   modalities:

@@ -1,6 +1,6 @@
 schema_version: 2
-generation_id: catalog-20260829T191640Z-810a3915da61
-catalog_digest: sha256:5ce9e47cda09e29a2c2caeae624790ed20d48f6ddddd1da031853644a8fcc4e4
+generation_id: catalog-20260830T083213Z-ad5d2a45e490
+catalog_digest: sha256:289c7c26ab022796a6638fe32b6bb2d9f2b7a59d0ac07a761fd30c975d91e488
 models:
   - model: ai21/jamba-1-5-large
     endpoints:
@@ -9144,11 +9144,11 @@ models:
         lifecycle: unknown
         service:
           operations:
-            - chat-completions
+            - moderations
         service_endpoints:
-          - operation: chat-completions
+          - operation: moderations
             type: openai
-            url: https://api.openai.com/v1/chat/completions
+            url: https://api.openai.com/v1/moderations
   - model: openai/omni-moderation-latest
     endpoints:
       - provider: openai
@@ -9157,11 +9157,11 @@ models:
         lifecycle: unknown
         service:
           operations:
-            - chat-completions
+            - moderations
         service_endpoints:
-          - operation: chat-completions
+          - operation: moderations
             type: openai
-            url: https://api.openai.com/v1/chat/completions
+            url: https://api.openai.com/v1/moderations
   - model: openai/sora-2
     endpoints:
       - provider: openai

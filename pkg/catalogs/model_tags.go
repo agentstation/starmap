@@ -25,6 +25,7 @@ const (
 	ModelTagFunctionCalling ModelTag = "function_calling"   // Tool/function calling
 	ModelTagEmbedding       ModelTag = "embedding"          // Text embeddings
 	ModelTagRerank          ModelTag = "rerank"             // Relevance ranking of documents
+	ModelTagModeration      ModelTag = "moderation"         // Harm-category classification
 	ModelTagSummarization   ModelTag = "summarization"      // Text summarization
 	ModelTagTranslation     ModelTag = "translation"        // Language translation
 	ModelTagQA              ModelTag = "question_answering" // Question answering
