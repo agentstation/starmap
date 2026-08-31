@@ -30,7 +30,9 @@ glossary_term = "error"
 [files]
 # Historical reviews preserve their accepted wording and evidence.
 # Catalog YAML contains structured product data instead of developer prose.
+# The CI checkout contains external skill sources.
 exclude = [
+  ".ci/**",
   "docs/reviews/**",
   "internal/embedded/catalog/**",
 ]
