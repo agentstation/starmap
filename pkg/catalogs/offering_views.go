@@ -158,10 +158,9 @@ func isEmbeddingModel(model Model) bool {
 		slices.Contains(model.Metadata.Tags, ModelTag("embed"))
 }
 
-// isRerankModel reports whether the model orders documents by relevance. A
-// reranker reads text and writes text, which is also the shape of a chat
-// model, so the tag is the only fact that separates the two. The media
-// operation table keys on modalities and therefore cannot name this one.
+// isRerankModel reports whether the model orders documents by relevance. Rerank
+// and chat models both read and write text, so only the tag separates them. The
+// modality-based media operation table cannot identify this operation.
 func isRerankModel(model Model) bool {
 	if model.Metadata == nil {
 		return false
@@ -201,8 +200,8 @@ func isChatCompletionModel(model Model) bool {
 		slices.Contains(model.Features.Modalities.Output, ModelModalityText)
 }
 
-// chargesForGeneratedMedia reports whether the model prices the production of
-// image, audio, or video output. Only the generation prices describe what a
+// chargesForGeneratedMedia reports whether the model charges to generate image,
+// audio, or video output. Only the generation prices describe what a
 // model serves. A flat request fee, or an input surcharge such as audio_input,
 // describes what the model accepts and what it costs, so neither disqualifies
 // a chat model. A declared price of zero states that the provider charges

@@ -20,8 +20,6 @@ import (
 // TestClientErrors tests error handling in the OpenAI client.
 func TestClientErrors(t *testing.T) {
 	t.Run("missing provider configuration", func(t *testing.T) {
-		// Skip this test - NewClient doesn't validate nil provider
-		// and will panic when ListModels is called
 		t.Skip("NewClient doesn't validate nil provider")
 	})
 
@@ -121,9 +119,9 @@ func TestClientErrors(t *testing.T) {
 	})
 
 	t.Run("network timeout", func(t *testing.T) {
-		// Create a server that doesn't respond quickly
+		// Create a server that does not respond quickly
 		server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-			// Don't respond, let the client timeout
+			// Do not respond, let the client timeout
 			<-r.Context().Done()
 		}))
 		defer server.Close()
@@ -257,7 +255,6 @@ func TestClientModelConversion(t *testing.T) {
 
 		assert.Equal(t, "test-model", model.ID)
 		assert.Equal(t, "test-model", model.Name)
-		// Model should be created with basic fields
 	})
 
 	t.Run("model with null permission", func(t *testing.T) {
@@ -282,7 +279,6 @@ func TestClientModelConversion(t *testing.T) {
 		}
 
 		model := mustConvertModel(t, client, deprecatedModel)
-		// OpenAI deprecated models like text-davinci-003 should be detected by name pattern
 		assert.Contains(t, model.ID, "davinci")
 	})
 

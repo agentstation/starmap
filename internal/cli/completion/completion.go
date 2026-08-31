@@ -27,7 +27,7 @@ func Install(cmd *cobra.Command, shell string) error {
 			return fmt.Errorf("failed to determine bash completion path: %w", err)
 		}
 
-		// Create parent directory if it doesn't exist
+		// Create parent directory if it does not exist
 		if err := os.MkdirAll(filepath.Dir(targetPath), pkgconstants.DirPermissions); err != nil {
 			return fmt.Errorf("failed to create completion directory: %w", err)
 		}
@@ -52,7 +52,7 @@ func Install(cmd *cobra.Command, shell string) error {
 			return fmt.Errorf("failed to determine zsh completion path: %w", err)
 		}
 
-		// Create parent directory if it doesn't exist
+		// Create parent directory if it does not exist
 		if err := os.MkdirAll(filepath.Dir(targetPath), pkgconstants.DirPermissions); err != nil {
 			return fmt.Errorf("failed to create completion directory: %w", err)
 		}
@@ -77,7 +77,7 @@ func Install(cmd *cobra.Command, shell string) error {
 			return fmt.Errorf("failed to determine fish completion path: %w", err)
 		}
 
-		// Create parent directory if it doesn't exist
+		// Create parent directory if it does not exist
 		if err := os.MkdirAll(filepath.Dir(targetPath), pkgconstants.DirPermissions); err != nil {
 			return fmt.Errorf("failed to create completion directory: %w", err)
 		}
@@ -132,7 +132,7 @@ func Uninstall(shell string) error {
 	// Check if file exists and remove it
 	if info, err := os.Stat(targetPath); err == nil && !info.IsDir() {
 		if err := os.Remove(targetPath); err != nil {
-			// If we can't remove it (permission issue), provide manual instructions
+			// If we cannot remove it (permission issue), provide manual instructions
 			fmt.Printf(emoji.Error+" Could not remove: %s\n", targetPath)
 			fmt.Printf("💡 Try manually: sudo rm -f %s\n", targetPath)
 			return nil

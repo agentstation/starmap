@@ -117,7 +117,7 @@ type ModelOptions struct {
 
 // CatalogModels returns exact provider model records from the catalog's
 // provider index. With no provider filter, equal model IDs from different
-// providers remain distinct and are ordered by provider ID, then model ID.
+// providers remain distinct. CatalogModels orders them by provider ID, then model ID.
 func CatalogModels(catalog *catalogs.Catalog, provider string) ([]ModelRecord, error) {
 	if catalog == nil {
 		return nil, &pkgerrors.ValidationError{

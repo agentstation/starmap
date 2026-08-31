@@ -2,13 +2,10 @@
 // These symbols create a consistent visual language across all command-line commands.
 package emoji
 
-// Symbol constants for CLI output provide a consistent visual language across commands.
-// These symbols are used for status indicators, alerts, and user feedback in terminal output.
+// CLI symbols.
 const (
 	// Success symbols indicate positive outcomes or configured states.
 
-	// Success represents successful completion of an operation.
-	// Used for: completed operations, verified credentials, passing tests, validation.
 	Success = "✓"
 
 	// Error and warning symbols indicate problems or missing requirements.
@@ -45,7 +42,5 @@ const (
 	// Used for: general information, tips, context.
 	Info = "i"
 
-	// Spinner can be used for in-progress operations (static).
-	// Note: For animated spinners, use a dedicated spinner library.
 	Spinner = "..."
 )

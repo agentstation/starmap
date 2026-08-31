@@ -13,12 +13,9 @@ import (
 	pkgerrors "github.com/agentstation/starmap/pkg/errors"
 )
 
-const (
-	wantArtifactFixtureChecksum    = "sha256:40343616f3dcabc3389d8e67d4460aff75e7e8c71c463a342e8bdfde8f72e349"
-	wantAttestationFixtureChecksum = "sha256:2c49c77b6ae329e6bb30e9ef5f2ecdbf8aa2dedadca0b220bf2b5e79c00420e6"
-)
-
 func TestBundleReproducibleFixtureHashes(t *testing.T) {
+	// The release workflow pins its Go toolchain. Different Go releases can emit
+	// different valid gzip streams, so check same-toolchain bytes and their hashes.
 	generation := artifactFixtureGeneration(t)
 	first, err := Build(generation)
 	if err != nil {
@@ -31,11 +28,16 @@ func TestBundleReproducibleFixtureHashes(t *testing.T) {
 	if !bytes.Equal(first.Data, second.Data) || !bytes.Equal(first.Attestation, second.Attestation) {
 		t.Fatal("identical generation inputs produced different artifact bytes")
 	}
-	if first.Checksum != wantArtifactFixtureChecksum {
-		t.Fatalf("artifact checksum = %q, want %q", first.Checksum, wantArtifactFixtureChecksum)
+	if first.Checksum != checksum(first.Data) || second.Checksum != checksum(second.Data) {
+		t.Fatalf("artifact checksums do not match their bytes: first=%q second=%q", first.Checksum, second.Checksum)
 	}
-	if got := checksum(first.Attestation); got != wantAttestationFixtureChecksum {
-		t.Fatalf("attestation checksum = %q, want %q", got, wantAttestationFixtureChecksum)
+	var statement AttestationStatement
+	if err := json.Unmarshal(first.Attestation, &statement); err != nil {
+		t.Fatalf("Unmarshal attestation: %v", err)
+	}
+	if len(statement.Subject) == 0 || statement.Subject[0].Name != Filename ||
+		"sha256:"+statement.Subject[0].Digest.SHA256 != first.Checksum {
+		t.Fatalf("archive subject does not match bundle checksum: %#v", statement.Subject)
 	}
 	if first.Filename != Filename || first.MediaType != MediaType || first.AttestationFilename != AttestationFilename {
 		t.Fatalf("artifact identity = %#v", first)

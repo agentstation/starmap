@@ -87,14 +87,13 @@ func (rl *RateLimiter) getVisitor(ip string) *visitor {
 	return v
 }
 
-// allow checks if a request from the IP is allowed.
+// allow reports whether the IP can make a request.
 func (rl *RateLimiter) allow(ip string) bool {
 	v := rl.getVisitor(ip)
 
 	v.mu.Lock()
 	defer v.mu.Unlock()
 
-	// Reset tokens if interval has passed
 	if time.Since(v.lastReset) > rl.interval {
 		v.tokens = rl.limit
 		v.lastReset = time.Now()
@@ -126,7 +125,7 @@ func RateLimit(rl *RateLimiter) func(http.Handler) http.Handler {
 
 				w.Header().Set("Content-Type", "application/json")
 				w.WriteHeader(http.StatusTooManyRequests)
-				// Write error response; if this fails, connection is likely broken
+				// Write error response. If this fails, connection is likely broken
 				if _, writeErr := w.Write([]byte(`{"data":null,"error":{"code":"RATE_LIMITED","message":"Rate limit exceeded","details":"Too many requests. Please try again later."}}`)); writeErr != nil {
 					rl.logger.Error().Err(writeErr).Msg("Failed to write rate limit error response")
 				}

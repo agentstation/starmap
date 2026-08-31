@@ -163,7 +163,7 @@ func (c *collector) findProvider(catalog catalogs.Reader, id catalogs.ProviderID
 	return nil
 }
 
-// isPrimaryFiltering returns true if primary source filtering is enabled.
+// isPrimaryFiltering reports whether primary source filtering is active.
 func (c *collector) isPrimaryFiltering() bool {
 	return c.primary != ""
 }
@@ -249,7 +249,7 @@ func (c *collector) baseCatalog() *catalogs.Catalog {
 }
 
 // authoredBootstrap selects the lowest-authority complete construction corpus.
-// A human workspace is reconciled separately because it is editable input.
+// Reconciliation handles a human catalog workspace separately because users can edit it.
 // Provider observations never invent authorship.
 func (c *collector) authoredBootstrap() *catalogs.Catalog {
 	preferred := []sources.ID{

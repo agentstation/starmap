@@ -16,10 +16,10 @@ import (
 
 // Helper function to add a model to a catalog through a provider.
 func addModelToProvider(catalog *catalogs.Builder, providerID string, model catalogs.Model) error {
-	// First ensure the provider exists
+	// First verify the provider exists
 	_, err := catalog.Provider(catalogs.ProviderID(providerID))
 	if err != nil {
-		// Create provider if it doesn't exist
+		// Create provider if it does not exist
 		provider := catalogs.Provider{
 			ID:     catalogs.ProviderID(providerID),
 			Name:   providerID,
@@ -249,7 +249,6 @@ func TestConcurrentCatalogAccess(t *testing.T) {
 			})
 		}
 
-		// Perform bulk write
 		wg.Go(func() {
 			for i := range 1000 {
 				model := catalogs.Model{
@@ -311,7 +310,7 @@ func TestConcurrentCatalogAccess(t *testing.T) {
 			models := builderProviderModels(copy, "test-provider")
 			assert.Len(t, models, 100, "Copy %d has wrong number of models", i)
 
-			// Modify copy shouldn't affect others
+			// Modify copy should not affect others
 			err := addModelToProvider(copy, "test-provider", catalogs.Model{
 				ID:   fmt.Sprintf("copy-%d-exclusive", i),
 				Name: fmt.Sprintf("Copy %d Exclusive", i),
@@ -354,7 +353,7 @@ func TestConcurrentCatalogAccess(t *testing.T) {
 						Name:        fmt.Sprintf("Model by writer %d iteration %d", writer, j),
 						Description: fmt.Sprintf("Updated at %v by writer %d", time.Now(), writer),
 					}
-					_ = addModelToProvider(catalog, "test-provider", model) // Ignore errors, we're testing races
+					_ = addModelToProvider(catalog, "test-provider", model)
 				}
 			}(i)
 		}
@@ -463,7 +462,6 @@ func TestConcurrentCatalogAccess(t *testing.T) {
 			t.Errorf("Delete error: %v", err)
 		}
 
-		// All models should be deleted
 		models := allBuilderProviderModels(catalog)
 		if len(models) > 0 {
 			t.Errorf("Expected 0 models, got %d", len(models))

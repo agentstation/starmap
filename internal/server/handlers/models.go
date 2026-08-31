@@ -267,7 +267,6 @@ func (h *Handlers) HandleSearchModels(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Apply filters to exact provider offerings when a provider is selected.
 	allModels, err := query.CatalogModels(cat, f.Provider)
 	if err != nil {
 		response.ErrorFromType(w, h.logger, err)

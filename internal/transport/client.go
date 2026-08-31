@@ -20,8 +20,8 @@ func New() *Client {
 	return &Client{
 		http: &http.Client{
 			Timeout: constants.DefaultHTTPTimeout,
-			// Provider credentials are scoped to the configured endpoint.
-			// Never replay them to a redirect target; callers must make an
+			// Scope provider credentials to the configured endpoint.
+			// Never replay them to a redirect target. Callers must make an
 			// endpoint migration explicit in provider configuration.
 			CheckRedirect: func(*http.Request, []*http.Request) error {
 				return http.ErrUseLastResponse
@@ -30,7 +30,7 @@ func New() *Client {
 	}
 }
 
-// Do performs an HTTP request with authentication applied.
+// Do sends an authenticated HTTP request.
 func (c *Client) Do(
 	req *http.Request,
 	provider *catalogs.Provider,
@@ -39,15 +39,14 @@ func (c *Client) Do(
 	return c.DoWithContext(req.Context(), req, provider, material)
 }
 
-// DoWithContext performs an HTTP request with authentication applied and context support.
-// The provided context will be used for the request, overriding any existing context in req.
+// DoWithContext sends an authenticated HTTP request. It replaces the request's
+// existing context with ctx.
 func (c *Client) DoWithContext(
 	ctx context.Context,
 	req *http.Request,
 	provider *catalogs.Provider,
 	material sources.ProviderCredentialMaterial,
 ) (*http.Response, error) {
-	// Clone the request with the provided context to ensure context is respected
 	req = req.Clone(ctx)
 
 	if provider != nil {
@@ -78,7 +77,7 @@ func (c *Client) DoWithContext(
 	return response, err
 }
 
-// Get performs a GET request.
+// Get sends a GET request.
 func (c *Client) Get(
 	ctx context.Context,
 	url string,

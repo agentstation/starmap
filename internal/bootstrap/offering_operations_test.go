@@ -25,12 +25,11 @@ var nonChatTags = []catalogs.ModelTag{
 
 // TestOfferedChatCompletionsAgreeWithCanonicalModelFacts cross-checks the two
 // authorities that must not disagree. A provider offering claims the
-// operations it serves; the canonical definition states what the model is.
-// When an offering advertises chat-completions for a model the author
-// classifies as an embedding, image, speech, or video model, the offering is
-// unroutable in practice and every consumer that trusts it sends a request the
-// provider rejects. Provider-level facts that omit the model's classification
-// tag are the way this drift enters the catalog.
+// operations it serves. The canonical definition states what the model is.
+// An offering becomes unroutable when it advertises chat completions for an
+// embedding, image, speech, or video model. Consumers then send requests that
+// the provider rejects. This drift enters the catalog when provider facts omit
+// the model's classification tag.
 func TestOfferedChatCompletionsAgreeWithCanonicalModelFacts(t *testing.T) {
 	builder, err := NewEmbeddedBuilder()
 	if err != nil {

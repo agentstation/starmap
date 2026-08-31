@@ -35,8 +35,8 @@ const (
 // Policy is the complete executable contract for one catalog field family.
 //
 // Path is both the reflected catalog path and the authority lookup pattern.
-// EvidencePath is used only when persisted provenance has a stable external
-// spelling that differs from Path.
+// Set EvidencePath only when persisted provenance uses a stable external spelling
+// that differs from Path.
 type Policy struct {
 	Resource     evidence.ResourceType
 	Path         string

@@ -5,6 +5,11 @@ ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 TMPDIR="$(mktemp -d "${TMPDIR:-/tmp}/starmap-pure-go.XXXXXX")"
 trap 'rm -rf "$TMPDIR"' EXIT
 
+# The pinned artifact digest covers compressed bytes. Use the release toolchain
+# because the standard library can change valid gzip output between Go releases.
+GOTOOLCHAIN="${STARMAP_RELEASE_GOTOOLCHAIN:-go1.26.6}"
+export GOTOOLCHAIN
+
 if git -C "$ROOT" grep -n -E '^[[:space:]]*import[[:space:]]+"C"' -- '*.go'; then
 	printf 'repository Go source imports C\n' >&2
 	exit 1

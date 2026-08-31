@@ -19,7 +19,7 @@ var legacyGenerationEntries = [...]string{
 }
 
 // ValidateHumanLayout verifies that path is absent or is not a pre-plan
-// immutable generation store. It is read-only and safe to call before
+// immutable catalog store. It is read-only and safe to call before
 // construction, repair, or publication.
 func ValidateHumanLayout(path, migrationTarget string) error {
 	if strings.TrimSpace(path) == "" {

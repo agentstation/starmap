@@ -255,8 +255,8 @@ func (c *Client) convertToModel(m modelResponse) *catalogs.Model {
 		model.Extensions[c.extensionSource()] = extension
 	}
 
-	// Don't set limits - let models.dev provide accurate data
-	// Anthropic API doesn't return token limits, so we rely on models.dev
+	// Do not set limits - let models.dev provide accurate data
+	// Anthropic API does not return token limits, so we rely on models.dev
 
 	return &model
 }

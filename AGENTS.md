@@ -19,6 +19,23 @@ This file provides Codex with project-specific guidance for working in this repo
 - **Defer cleanup** - Always close resources properly
 - **Godoc everything exported** - Clear documentation on public APIs
 
+### Modern Go and ago
+
+- Use Go 1.25 language and library features when they improve directness.
+- Use `sync.WaitGroup.Go` for goroutines whose lifetimes match the group.
+- Run `go tool ago -list -format json` before you interpret the active restrictions.
+- Run `go tool ago -stale-ignores -format json ./...` after each Go change.
+- The built-in ago defaults apply because this repository has no policy file.
+- Do not change the policy or add a suppression only to pass the linter.
+
+### Technical writing
+
+- Use `GLOSSARY.md` for developer-facing prose.
+- Use the `technical-writing` skill before you edit durable prose.
+- Run `make technical-writing-check` after each durable prose change.
+- Strict mode applies to maintained documentation and source comments.
+- The project policy excludes historical reviews and structured catalog data.
+
 ---
 
 ## Project Overview
@@ -51,7 +68,7 @@ make testdata PROVIDER=openai           # Refresh one governed provider fixture
 
 **See docs/ARCHITECTURE.md § Thread Safety for full details**
 
-**Publish concrete immutable catalogs; copy values at collection boundaries:**
+**Publish concrete immutable catalogs. Copy values at collection boundaries:**
 
 ```go
 // ❌ WRONG - publishes a mutable builder
@@ -66,7 +83,7 @@ func Catalog() *catalogs.Catalog {
 ```
 
 **Key patterns:**
-- `*catalogs.Builder` is the advanced mutation type; publish via `Builder.Build()`
+- `*catalogs.Builder` is the advanced mutation type. Publish with `Builder.Build()`.
 - Published catalogs are immutable and swapped as complete generations
 - Collection reads return caller-owned deep copies
 - Double-checked locking for singletons
@@ -237,7 +254,7 @@ Sources can declare external dependencies via `Dependencies()` interface method.
 
 **Implementation:**
 - Add `Dependencies() []Dependency` and `IsOptional() bool` methods to Source
-- Core resolution is noninteractive by default; the CLI supplies the only prompt adapter
+- Core resolution is noninteractive by default. The CLI supplies the only prompt adapter.
 - Explicit noninteractive policies support auto-install or optional-source skipping
 - Optional sources are gracefully skipped if deps missing
 - Use `//nolint:gosec` for subprocess calls (commands from trusted source code)
@@ -285,15 +302,18 @@ func (a *App) Catalog() (*catalogs.Catalog, error) { /* ... */ }
 
 See docs/ARCHITECTURE.md § Data Sources for concurrent pattern.
 
-Provider APIs fetched in parallel using goroutines + channels:
+Provider APIs run in parallel with goroutines and channels:
 ```go
+var wg sync.WaitGroup
 results := make(chan Result, len(providers))
 for _, provider := range providers {
-    go func(p Provider) {
-        models, err := p.Client.ListModels(ctx)
-        results <- Result{Provider: p, Models: models, Error: err}
-    }(provider)
+    wg.Go(func() {
+        models, err := provider.Client.ListModels(ctx)
+        results <- Result{Provider: provider, Models: models, Error: err}
+    })
 }
+wg.Wait()
+close(results)
 ```
 
 ### Merge Strategies
@@ -305,7 +325,12 @@ for _, provider := range providers {
 
 **Public contracts**: catalogs, storage, sources, errors, logging, constants
 
-**Internal**: bootstrap/{manifest,budget}, catalog/{authority,reconciler}, cli/{app,commands,convert}, embedded, server, server/handlers, sources/{providers,modelsdev,local,payload}, providers/{clients,openai,anthropic,google}, test/{catalog,logging,providerfixture}, transport
+**Internal packages**:
+
+- bootstrap/{manifest,budget}, catalog/{authority,reconciler}, and cli/{app,commands,convert}
+- embedded, server, and server/handlers
+- sources/{providers,modelsdev,local,payload} and providers/{clients,openai,anthropic,google}
+- test/{catalog,logging,providerfixture} and transport
 
 **Application**: consumer-local command/server roles, internal/cli/app (implementation)
 
@@ -327,7 +352,8 @@ FIREWORKS_API_KEY=...
 DEEPINFRA_TOKEN=...
 ```
 
-`DEEPINFRA_TOKEN` is optional for DeepInfra catalog fetching because `GET /v1/openai/models` is public, but it is required for DeepInfra inference calls.
+`DEEPINFRA_TOKEN` is optional for DeepInfra catalog fetching because
+`GET /v1/openai/models` is public. DeepInfra inference calls require the token.
 
 **Alibaba Cloud Model Studio** (optional non-US workspace domains):
 ```bash
@@ -373,7 +399,7 @@ make all            # Full cycle: clean, fix, lint, test, build
 make build          # Build binary
 make install        # Install to $GOPATH/bin
 make fix            # Format and tidy
-make lint           # Run linters
+make lint           # Run golangci-lint and ago
 ```
 
 ### Testing
@@ -388,6 +414,7 @@ go test ./... -race -short                 # All packages with race detector
 
 ```bash
 make verify                                     # scripts/verify.sh runs every automated gate
+go tool ago -stale-ignores -format json ./...   # Run the pinned restriction linter
 bash scripts/verify-live-providers.sh           # Manual only: calls live provider APIs
 bash scripts/verify-provider-fixture-drift.sh   # Manual only: calls live provider APIs
 ```
@@ -399,11 +426,11 @@ cannot report a regression, so add each new gate to `scripts/verify.sh` or name
 it here.
 
 `verify-provider-fixture-drift.sh` owns the fixture maximum-age and wire-drift
-policy. Offline tests stay hermetic: `Fixture.Verify` checks identity, bytes, and
-the content digest, and never consults the calendar. `Fixture.VerifyFreshness`
-enforces `max_age`, and only this credentialed gate calls it, because only a live
-capture can clear a stale or drifted fixture. Clear a reported fixture with
-`make testdata PROVIDER=<provider-id>`.
+policy. Offline tests stay hermetic. `Fixture.Verify` checks identity, bytes,
+and the content digest. It never consults the calendar.
+`Fixture.VerifyFreshness` enforces `max_age`. Only this credentialed gate calls
+it. A live capture must clear a stale or drifted fixture. Clear a reported
+fixture with `make testdata PROVIDER=<provider-id>`.
 
 Each governed fixture belongs to the client that proves its wire contract, so a
 custom protocol client owns its own capture path under

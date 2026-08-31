@@ -98,8 +98,8 @@ func (s *Server) connectHooks(sm *starmap.Client) error {
 	return nil
 }
 
-// Start activates server-owned services. SSE connections are request-owned, so
-// no background transport goroutine is needed.
+// Start activates server-owned services. Requests own their SSE connections, so
+// Start does not need a background transport goroutine.
 func (s *Server) Start() {
 	s.started.Store(true)
 	s.logger.Debug().Msg("Server services active")

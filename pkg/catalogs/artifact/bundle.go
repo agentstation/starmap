@@ -30,14 +30,11 @@ const (
 	AttestationPredicateType = "https://agentstation.ai/starmap/catalog-generation/v1"
 	// AttestationStatementType is the in-toto statement schema identifier.
 	AttestationStatementType = "https://in-toto.io/Statement/v1"
-	// Filename is the stable archive filename; generation identity is carried by
-	// the descriptor and distribution path rather than interpolated into a path.
+	// Filename is the stable catalog archive filename.
 	Filename = "starmap-catalog.tar.gz"
 	// AttestationFilename is the detached in-toto statement filename.
 	AttestationFilename = "starmap-catalog.intoto.json"
-	// OCIMirrorArtifactType identifies an OCI manifest that mirrors the exact
-	// immutable release assets. The catalog archive remains a layer with
-	// MediaType, so its digest can be compared across distribution channels.
+	// OCIMirrorArtifactType identifies an OCI catalog mirror manifest.
 	OCIMirrorArtifactType = "application/vnd.agentstation.starmap.catalog-mirror.v1"
 	// OCIGenerationAnnotation carries the logical catalog generation ID on an
 	// OCI mirror manifest. Consumers must still pin and verify content digests.
@@ -82,8 +79,8 @@ type Subject struct {
 }
 
 // AttestationPredicate records the catalog compatibility identity asserted by
-// the detached statement. Signature and builder provenance are added and
-// verified by the publication boundary.
+// the detached statement. The publication boundary adds and verifies signatures
+// and builder provenance.
 type AttestationPredicate struct {
 	GenerationID          string                         `json:"generation_id"`
 	ManifestVersion       uint64                         `json:"manifest_version"`

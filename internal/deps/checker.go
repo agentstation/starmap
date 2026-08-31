@@ -30,7 +30,6 @@ func Check(ctx context.Context, dep sources.Dependency) sources.DependencyStatus
 		status.Available = true
 		status.Path = path
 
-		// Try to get version if MinVersion is specified
 		if dep.MinVersion != "" {
 			version, err := getVersion(ctx, cmd)
 			if err != nil {
@@ -47,7 +46,6 @@ func Check(ctx context.Context, dep sources.Dependency) sources.DependencyStatus
 		return status
 	}
 
-	// None of the commands were found
 	if len(dep.CheckCommands) > 0 {
 		status.CheckError = fmt.Errorf("%s not found in PATH (tried: %s)", dep.DisplayName, strings.Join(dep.CheckCommands, ", "))
 	}
@@ -75,7 +73,7 @@ func CheckAll(ctx context.Context, src dependencySource) map[string]sources.Depe
 	return results
 }
 
-// HasMissingDeps returns true if any dependencies are missing.
+// HasMissingDeps reports whether any dependency is unavailable.
 func HasMissingDeps(statuses map[string]sources.DependencyStatus) bool {
 	for _, status := range statuses {
 		if !status.Available {
@@ -85,7 +83,7 @@ func HasMissingDeps(statuses map[string]sources.DependencyStatus) bool {
 	return false
 }
 
-// GetMissingDeps returns a list of dependencies that are missing.
+// GetMissingDeps returns the unavailable dependencies.
 func GetMissingDeps(deps []sources.Dependency, statuses map[string]sources.DependencyStatus) []sources.Dependency {
 	var missing []sources.Dependency
 	for _, dep := range deps {
@@ -145,7 +143,7 @@ func extractVersion(output string) string {
 // This is a simplified version comparison that works for semantic versioning.
 func meetsMinVersion(detected, required string) bool {
 	// Simple string comparison for now
-	// In a production system, you'd want a proper semver library
+	// In a production system, you would want a proper semver library
 	detectedParts := strings.Split(strings.TrimPrefix(detected, "v"), ".")
 	requiredParts := strings.Split(strings.TrimPrefix(required, "v"), ".")
 

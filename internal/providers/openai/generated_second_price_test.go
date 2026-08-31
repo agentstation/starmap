@@ -6,11 +6,6 @@ import (
 	"github.com/agentstation/starmap/pkg/catalogs"
 )
 
-// TestAPerSecondPriceLandsUnderTheOperationTheOutputNames holds the one place a
-// provider reports a single output_seconds price for two different operations.
-// A video price recorded under audio_gen answers a consumer that reads the
-// audio field and hides from one that reads the video field, and the catalog
-// carries thirteen video offerings that bill by the second.
 func TestAPerSecondPriceLandsUnderTheOperationTheOutputNames(t *testing.T) {
 	t.Parallel()
 

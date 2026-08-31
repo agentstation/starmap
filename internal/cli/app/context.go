@@ -6,8 +6,8 @@ import (
 	"syscall"
 )
 
-// ContextWithSignals creates a context that is cancelled when the application
-// receives an interrupt or termination signal. This enables graceful shutdown.
+// ContextWithSignals creates a context that an interrupt or termination signal
+// cancels. The application uses it for graceful shutdown.
 func ContextWithSignals(parent context.Context) (context.Context, context.CancelFunc) {
 	return signal.NotifyContext(parent, syscall.SIGINT, syscall.SIGTERM)
 }

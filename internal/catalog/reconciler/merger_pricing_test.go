@@ -8,7 +8,6 @@ import (
 	"github.com/agentstation/starmap/pkg/sources"
 )
 
-// TestFieldPriorities tests that field priorities are respected.
 func TestFieldPriorities(t *testing.T) {
 	// Set up authorities with default priorities
 	// The default authorities already have pricing from models.dev
@@ -31,7 +30,7 @@ func TestFieldPriorities(t *testing.T) {
 		sources.ModelsDevHTTPID: {
 			{
 				ID:   "model-1",
-				Name: "ModelsDev Name", // This should be ignored
+				Name: "ModelsDev Name",
 				Pricing: &catalogs.ModelPricing{
 					Currency: "USD", // Correct currency from ModelsDev
 					Tokens: &catalogs.ModelTokenPricing{

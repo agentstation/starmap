@@ -14,9 +14,9 @@ type State int
 const (
 	// StateConfigured means the provider has credentials configured.
 	StateConfigured State = iota
-	// StateMissing means required credentials are missing.
+	// StateMissing means the provider requires credentials but has none.
 	StateMissing
-	// StateInvalid means credentials are found but malformed or invalid.
+	// StateInvalid means the configured credentials failed validation.
 	StateInvalid
 	// StateOptional means the provider has optional or no auth requirements.
 	StateOptional

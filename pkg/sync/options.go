@@ -23,26 +23,21 @@ type Options struct {
 	Timeout time.Duration // Timeout for the entire sync operation
 
 	// Source selection
-	Sources    []sources.ID         // Which external/human sources to use; verified embedded always participates.
+	Sources    []sources.ID         // Which external/human sources to use. Verified embedded always participates.
 	ProviderID *catalogs.ProviderID // Filter for specific provider
 
-	// Human workspace used for both local observation and materialization.
 	CatalogPath string
 
-	// Source behavior control
-	Fresh              bool   // Delete existing models and fetch fresh from APIs (destructive)
+	Fresh              bool
 	CleanModelsDevRepo bool   // Remove temporary models.dev repository after update
 	Reformat           bool   // Reformat providers.yaml file even without changes
 	SourcesDir         string // Directory for external source data (models.dev cache/git)
 	ModelsDevGitCommit string // Exact models.dev commit required by Git verification
 
-	// Dependency control
 	AutoInstallDeps   bool // Automatically install missing dependencies without prompting
 	SkipDepPrompts    bool // Skip dependency prompts and continue without optional dependencies
 	RequireAllSources bool // Require every configured source to return a complete, successful, nonempty observation
 
-	// DependencyDecisionHandler is supplied by an interactive adapter. It is nil
-	// for library, server, scheduler, and other noninteractive callers.
 	DependencyDecisionHandler DependencyDecisionHandler
 }
 
@@ -258,7 +253,7 @@ func WithProvider(providerID catalogs.ProviderID) Option {
 	}
 }
 
-// WithCatalogPath configures the single human workspace used for local
+// WithCatalogPath configures the single human catalog workspace used for local
 // observation and post-commit materialization.
 func WithCatalogPath(path string) Option {
 	return func(opts *Options) {

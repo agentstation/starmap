@@ -232,7 +232,7 @@ Shutdown terminates active SSE connections. The owning HTTP server drains reques
 func (s *Server) Start()
 ```
 
-Start activates server\-owned services. SSE connections are request\-owned, so no background transport goroutine is needed.
+Start activates server\-owned services. Requests own their SSE connections, so Start does not need a background transport goroutine.
 
 <a name="Server.StartTime"></a>
 ### func \(\*Server\) [StartTime](<https://github.com/agentstation/starmap/blob/main/internal/server/server.go#L141>)

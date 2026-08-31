@@ -19,26 +19,27 @@ import (
 
 // Entry records the origin and history of one field value.
 type Entry struct {
-	Source           evidence.SourceID            // Source that provided the value (e.g., "providers", "models_dev_git")
-	Field            string                       // Field path
-	Value            any                          // The actual value
-	Timestamp        time.Time                    // When the value was set
-	ObservationID    string                       // Stable identity of the winning source observation
-	ObservedAt       time.Time                    // When the winning source was observed
-	Revision         evidence.ObservationRevision // Exact revision of the winning observation
-	EvidenceChecksum string                       // Digest binding the winning normalized evidence
-	Rejections       []Rejection                  // Higher-authority observations rejected before selection
-	Authority        float64                      // Authority score (0.0 to 1.0)
-	Confidence       float64                      // Confidence in the value (0.0 to 1.0)
-	Reason           string                       // Reason for selecting this value
-	PreviousValue    any                          // Previous value if updated
+	Source           evidence.SourceID
+	Field            string
+	Value            any
+	Timestamp        time.Time
+	ObservationID    string
+	ObservedAt       time.Time
+	Revision         evidence.ObservationRevision
+	EvidenceChecksum string
+	Rejections       []Rejection
+	// Authority ranges from 0.0 to 1.0.
+	Authority float64
+	// Confidence ranges from 0.0 to 1.0.
+	Confidence    float64
+	Reason        string
+	PreviousValue any
 }
 
-// MarshalJSON makes interface-valued evidence independent of the concrete Go
-// type used to construct it. This is required for immutable catalog payloads:
-// after a payload is decoded, Value and PreviousValue contain generic JSON
-// maps rather than the original source structs, but re-encoding must reproduce
-// the exact generation bytes.
+// MarshalJSON makes interface-valued evidence independent of its concrete Go
+// type. Immutable catalog payloads require this normalization. Decoding replaces
+// source structs in Value and PreviousValue with generic JSON maps. Re-encoding
+// must still reproduce the exact generation bytes.
 func (e Entry) MarshalJSON() ([]byte, error) {
 	value, err := canonicalDynamicJSON(e.Value)
 	if err != nil {
@@ -77,7 +78,7 @@ func (e Entry) MarshalJSON() ([]byte, error) {
 }
 
 // MarshalYAML uses the same canonical dynamic-value shape as MarshalJSON so a
-// human workspace can reproduce the exact immutable catalog payload.
+// human catalog workspace can reproduce the exact immutable catalog payload.
 func (e Entry) MarshalYAML() ([]byte, error) {
 	value, err := canonicalDynamicJSON(e.Value)
 	if err != nil {
@@ -172,8 +173,8 @@ func canonicalDynamicJSON(value any) (json.RawMessage, error) {
 
 // Rejection records why a higher-authority field observation did not win.
 type Rejection struct {
-	Source evidence.SourceID // Source whose field observation was rejected
-	Reason string            // Stable human-readable validation or applicability reason
+	Source evidence.SourceID
+	Reason string // Stable human-readable validation or applicability reason
 }
 
 // Map tracks provenance for multiple resources.
@@ -284,17 +285,17 @@ type ResourceProvenance struct {
 
 // Field contains provenance history for a single field.
 type Field struct {
-	Current   Entry          // Current value and its source
-	History   []Entry        // Historical values
-	Conflicts []ConflictInfo // Any conflicts that were resolved
+	Current   Entry   // Current value and its source
+	History   []Entry // Historical values
+	Conflicts []ConflictInfo
 }
 
-// ConflictInfo describes a conflict that was resolved.
+// ConflictInfo describes the selected resolution for a conflict.
 type ConflictInfo struct {
 	Sources        []evidence.SourceID // Sources that had conflicting values
 	Values         []any               // The conflicting values
-	Resolution     string              // How the conflict was resolved
-	SelectedSource evidence.SourceID   // Which source was selected
+	Resolution     string
+	SelectedSource evidence.SourceID
 }
 
 // GenerateReport creates a provenance report from a Map.
@@ -393,7 +394,7 @@ func detectConflicts(infos []Entry) []ConflictInfo {
 	return conflicts
 }
 
-// String generates a string representation of the provenance report.
+// String returns text for provenance report.
 func (r *Report) String() string {
 	var sb strings.Builder
 
@@ -469,7 +470,7 @@ type File struct {
 }
 
 // Load reads provenance data from a YAML file.
-// Returns nil, nil if the file doesn't exist (not an error).
+// Returns nil, nil if the file does not exist (not an error).
 func Load(path string) (*File, error) {
 	// Path is from catalog configuration, not user input
 	data, err := os.ReadFile(path) //nolint:gosec

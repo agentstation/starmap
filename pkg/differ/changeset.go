@@ -13,11 +13,11 @@ import (
 type ChangeType string
 
 const (
-	// ChangeTypeAdd indicates an item was added.
+	// ChangeTypeAdd introduces a catalog value.
 	ChangeTypeAdd ChangeType = "add"
-	// ChangeTypeUpdate indicates an item was updated.
+	// ChangeTypeUpdate modifies a catalog value.
 	ChangeTypeUpdate ChangeType = "update"
-	// ChangeTypeRemove indicates an item was removed.
+	// ChangeTypeRemove deletes a catalog value.
 	ChangeTypeRemove ChangeType = "remove"
 )
 
@@ -32,7 +32,7 @@ type FieldChange struct {
 
 // ModelUpdate represents an update to an existing model.
 type ModelUpdate struct {
-	ID         string              // ID of the model being updated
+	ID         string
 	ProviderID catalogs.ProviderID // Provider scope for this model update, when known
 	Existing   catalogs.Model      // Current model
 	New        catalogs.Model      // New model
@@ -47,18 +47,18 @@ type ModelChange struct {
 
 // ProviderUpdate represents an update to an existing provider.
 type ProviderUpdate struct {
-	ID       catalogs.ProviderID // ID of the provider being updated
-	Existing catalogs.Provider   // Current provider
-	New      catalogs.Provider   // New provider
-	Changes  []FieldChange       // Detailed list of field changes
+	ID       catalogs.ProviderID
+	Existing catalogs.Provider // Current provider
+	New      catalogs.Provider // New provider
+	Changes  []FieldChange     // Detailed list of field changes
 }
 
 // AuthorUpdate represents an update to an existing author.
 type AuthorUpdate struct {
-	ID       catalogs.AuthorID // ID of the author being updated
-	Existing catalogs.Author   // Current author
-	New      catalogs.Author   // New author
-	Changes  []FieldChange     // Detailed list of field changes
+	ID       catalogs.AuthorID
+	Existing catalogs.Author // Current author
+	New      catalogs.Author // New author
+	Changes  []FieldChange   // Detailed list of field changes
 }
 
 // ModelChangeset represents changes to models.

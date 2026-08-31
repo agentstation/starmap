@@ -254,7 +254,6 @@ func TestHTTPClient_EnsureAPI_SuccessfulDownload(t *testing.T) {
 		t.Fatalf("acquisition = %q, want %q", acquisition.Kind, HTTPAcquisitionDownloaded)
 	}
 
-	// Verify file was created
 	apiPath := client.GetAPIPath()
 	if _, err := os.Stat(apiPath); err != nil {
 		t.Fatalf("API file not created: %v", err)
@@ -312,7 +311,6 @@ func TestHTTPClient_EnsureAPI_CachedFile(t *testing.T) {
 		t.Fatalf("Failed to write cache metadata: %v", err)
 	}
 
-	// Test that cached file is used
 	ctx := context.Background()
 	acquisition, err := client.AcquireAPI(ctx)
 	if err != nil {
@@ -322,7 +320,7 @@ func TestHTTPClient_EnsureAPI_CachedFile(t *testing.T) {
 		t.Fatalf("acquisition = %q, want %q", acquisition.Kind, HTTPAcquisitionFreshCache)
 	}
 
-	// Verify cache file still exists and wasn't modified
+	// Verify cache file still exists and was not modified
 	info, err := os.Stat(apiPath)
 	if err != nil {
 		t.Fatalf("Cache file disappeared: %v", err)
@@ -510,7 +508,6 @@ func TestHTTPClient_EnsureAPI_HTTPFailureWithCache(t *testing.T) {
 		t.Fatalf("Failed to make cache file stale: %v", err)
 	}
 
-	// Test that stale cache is used when HTTP fails
 	ctx := context.Background()
 	acquisition, err := client.AcquireAPI(ctx)
 	if err != nil {
@@ -552,13 +549,12 @@ func TestHTTPClient_EnsureAPI_HTTPFailureWithEmbeddedFallback(t *testing.T) {
 		t.Fatalf("acquisition = %q, want %q", acquisition.Kind, HTTPAcquisitionEmbeddedBootstrap)
 	}
 
-	// Verify embedded data was copied to cache
 	apiPath := client.GetAPIPath()
 	if _, err := os.Stat(apiPath); err != nil {
 		t.Fatalf("Embedded data not copied to cache: %v", err)
 	}
 
-	// Verify it's valid JSON
+	// Verify it is valid JSON
 	data, err := os.ReadFile(apiPath)
 	if err != nil {
 		t.Fatalf("Failed to read cache file: %v", err)
@@ -622,7 +618,6 @@ func TestHTTPClient_EnsureAPI_InvalidResponses(t *testing.T) {
 				t.Fatalf("Expected no error (should use embedded fallback), got: %v", err)
 			}
 
-			// Verify embedded data was used
 			apiPath := client.GetAPIPath()
 			if _, err := os.Stat(apiPath); err != nil {
 				t.Fatalf("Expected fallback data to be written: %v", err)

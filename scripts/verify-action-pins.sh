@@ -2,11 +2,10 @@
 # Verify that every SHA-pinned GitHub Action resolves to the release tag its
 # comment claims.
 #
-# This is additive supply-chain evidence. The reviewed-pin allowlist in
-# internal/ciworkflow proves that a human acknowledged each pin, but it runs
-# offline and therefore cannot see whether a pinned commit belongs to the
-# version the comment advertises. This check closes that gap, so a pin that
-# points away from its stated release fails here.
+# This check adds supply-chain evidence. The reviewed-pin allowlist in
+# internal/ciworkflow proves that a human acknowledged each pin. It runs offline,
+# so it cannot confirm that a commit belongs to its advertised version. This
+# check closes that gap and rejects a pin outside its stated release.
 #
 # It never replaces the allowlist: Dependabot always bumps to a real tag, so
 # this check alone would approve every bump.
@@ -44,7 +43,7 @@ PINS="$(mktemp "${TMPDIR:-/tmp}/starmap-action-pins.XXXXXX")"
 trap 'rm -f "$PINS"' EXIT
 
 # Every active `uses:` reference must carry both a 40-character commit and the
-# version comment that names what the commit is supposed to be.
+# version comment that names the expected release.
 unverifiable="$(
 	grep -hE '^[[:space:]]*uses:' "$WORKFLOWS"/*.yaml |
 		grep -vE 'uses:[[:space:]]+[^@[:space:]]+@[0-9a-f]{40}[[:space:]]*#[[:space:]]*\S+' || true
@@ -68,8 +67,8 @@ failures=0
 checked=0
 while read -r action pinned version; do
 	[ -z "$action" ] && continue
-	# Subdirectory actions such as anchore/sbom-action/download-syft are tagged
-	# on their owning repository.
+	# Resolve subdirectory actions, such as anchore/sbom-action/download-syft,
+	# through their owning repository tags.
 	repo="$(printf '%s\n' "$action" | cut -d/ -f1,2)"
 
 	if ! ref="$(api "/repos/${repo}/git/ref/tags/${version}" 2>/dev/null)"; then
@@ -80,7 +79,7 @@ while read -r action pinned version; do
 
 	object_type="$(jq -r '.object.type // empty' <<<"$ref")"
 	resolved="$(jq -r '.object.sha // empty' <<<"$ref")"
-	# Annotated tags point at a tag object that must be dereferenced to a commit.
+	# Dereference an annotated tag object to its commit.
 	if [ "$object_type" = "tag" ]; then
 		if ! annotated="$(api "/repos/${repo}/git/tags/${resolved}" 2>/dev/null)"; then
 			printf '%s: cannot dereference annotated tag %s\n' "$action" "$version" >&2

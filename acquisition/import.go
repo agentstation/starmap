@@ -27,10 +27,10 @@ type ImportResult struct {
 	Projection *projection.Result
 }
 
-// ImportRelease verifies a portable catalog release, reconciles it as a trusted
-// low-authority observation with the current catalog and human workspace, then
-// atomically publishes the result. Verification failure cannot mutate the
-// client. The release generation itself is never activated wholesale.
+// ImportRelease verifies a portable catalog release. It reconciles the release
+// as a trusted, low-authority observation with the current catalog and human
+// workspace, then publishes the result atomically. A verification failure cannot
+// mutate the client. ImportRelease never activates the release wholesale.
 func (s *Syncer) ImportRelease(
 	ctx context.Context,
 	release artifact.Release,

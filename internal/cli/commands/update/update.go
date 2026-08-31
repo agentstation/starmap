@@ -151,7 +151,6 @@ func updateCatalogWithConfirmation(ctx context.Context, sm syncClient, flags *Fl
 		fmt.Fprintf(os.Stderr, "\n🔄 Starting update...\n\n")
 	}
 
-	// Perform the update
 	result, err := sm.Sync(ctx, opts...)
 	if err != nil {
 		return &errors.ProcessError{
@@ -161,7 +160,6 @@ func updateCatalogWithConfirmation(ctx context.Context, sm syncClient, flags *Fl
 		}
 	}
 
-	// Display results based on output format (checking if JSON logging is enabled)
 	if logger.GetLevel() == zerolog.TraceLevel {
 		// Assume structured output for trace level
 		formatter := format.New(format.FormatJSON)

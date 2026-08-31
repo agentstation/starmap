@@ -91,7 +91,6 @@ func showTree(fsys fs.FS, rootPath string) error {
 }
 
 func buildTree(fsys fs.FS, currentPath string, depth int) (*TreeNode, error) {
-	// Check if we've reached max depth
 	if treeMaxDepth > 0 && depth >= treeMaxDepth {
 		return nil, nil
 	}
@@ -136,7 +135,6 @@ func buildTree(fsys fs.FS, currentPath string, depth int) (*TreeNode, error) {
 
 	// Build children
 	for _, entry := range entries {
-		// Skip hidden files unless -a flag is set
 		if !treeAll && embedutil.IsHidden(entry.Name()) {
 			continue
 		}
@@ -148,7 +146,7 @@ func buildTree(fsys fs.FS, currentPath string, depth int) (*TreeNode, error) {
 
 		child, err := buildTree(fsys, childPath, depth+1)
 		if err != nil {
-			continue // Skip files we can't process
+			continue // Skip files we cannot process
 		}
 		if child != nil {
 			node.Children = append(node.Children, child)

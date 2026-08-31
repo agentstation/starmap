@@ -54,11 +54,10 @@ const (
 type GenerationCompleteness string
 
 const (
-	// GenerationCompletenessComplete means the generation contains all expected
-	// records. It may still be degraded for another reason, such as stale input.
+	// GenerationCompletenessComplete means the generation contains every expected record.
 	GenerationCompletenessComplete GenerationCompleteness = "complete"
-	// GenerationCompletenessPartial means at least one expected input or record
-	// is absent and the generation must also be marked degraded.
+	// GenerationCompletenessPartial means at least one expected input or record is
+	// absent. The generation must also have a degraded status.
 	GenerationCompletenessPartial GenerationCompleteness = "partial"
 )
 
@@ -141,8 +140,8 @@ type GenerationValidationReport struct {
 }
 
 // SourceObservationLink binds a generation to one immutable source
-// observation. The observation schema and retention policy are defined by the
-// source pipeline; this link is deliberately small and replay-oriented.
+// observation. The source pipeline defines the observation schema and retention
+// policy. This link is deliberately small and replay-oriented.
 type SourceObservationLink struct {
 	Source           evidence.SourceID                `json:"source" yaml:"source"`
 	ObservationID    string                           `json:"observation_id" yaml:"observation_id"`
@@ -171,7 +170,7 @@ func (c ConsumerCompatibility) SupportsSchema(schemaVersion uint64) bool {
 }
 
 // GenerationManifest describes one immutable, validated catalog generation.
-// It is shared by local stores and distribution transports; transport-specific
+// Local stores and distribution transports share it. Transport-specific
 // URLs, release tags, and binary versions do not belong in this domain record.
 type GenerationManifest struct {
 	ManifestVersion       uint64                     `json:"manifest_version" yaml:"manifest_version"`
@@ -190,9 +189,8 @@ type GenerationManifest struct {
 }
 
 // ParseGenerationManifestJSON strictly parses and validates a JSON manifest.
-// Unknown members, missing required members (including false/zero-valued
-// members), malformed JSON, and trailing documents are rejected with typed
-// validation errors.
+// It returns typed validation errors for unknown or missing members, including
+// false or zero values. It also rejects malformed JSON and trailing documents.
 func ParseGenerationManifestJSON(data []byte) (GenerationManifest, error) {
 	var raw map[string]json.RawMessage
 	if err := json.Unmarshal(data, &raw); err != nil {

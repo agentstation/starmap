@@ -79,8 +79,6 @@ func (f *ModelFilter) matches(model *catalogs.Model) bool {
 }
 
 func (f *ModelFilter) matchesProvider(_ *catalogs.Model) bool {
-	// Check if model has a provider association
-	// This might need adjustment based on how providers are stored
 	return true // Placeholder - needs implementation based on model structure
 }
 
@@ -193,8 +191,6 @@ func (f *ProviderFilter) matches(provider *catalogs.Provider) bool {
 	if f.Search != "" && !f.matchesSearch(provider) {
 		return false
 	}
-
-	// Additional filters can be added here
 
 	return true
 }

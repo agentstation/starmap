@@ -77,7 +77,7 @@ New creates a provider HTTP client.
 func (c *Client) Do(req *http.Request, provider *catalogs.Provider, material sources.ProviderCredentialMaterial) (*http.Response, error)
 ```
 
-Do performs an HTTP request with authentication applied.
+Do sends an authenticated HTTP request.
 
 <a name="Client.DoWithContext"></a>
 ### func \(\*Client\) [DoWithContext](<https://github.com/agentstation/starmap/blob/main/internal/transport/client.go#L44-L49>)
@@ -86,16 +86,16 @@ Do performs an HTTP request with authentication applied.
 func (c *Client) DoWithContext(ctx context.Context, req *http.Request, provider *catalogs.Provider, material sources.ProviderCredentialMaterial) (*http.Response, error)
 ```
 
-DoWithContext performs an HTTP request with authentication applied and context support. The provided context will be used for the request, overriding any existing context in req.
+DoWithContext sends an authenticated HTTP request. It replaces the request's existing context with ctx.
 
 <a name="Client.Get"></a>
-### func \(\*Client\) [Get](<https://github.com/agentstation/starmap/blob/main/internal/transport/client.go#L82-L87>)
+### func \(\*Client\) [Get](<https://github.com/agentstation/starmap/blob/main/internal/transport/client.go#L81-L86>)
 
 ```go
 func (c *Client) Get(ctx context.Context, url string, provider *catalogs.Provider, material sources.ProviderCredentialMaterial) (*http.Response, error)
 ```
 
-Get performs a GET request.
+Get sends a GET request.
 
 <a name="HeaderAuth"></a>
 ## type [HeaderAuth](<https://github.com/agentstation/starmap/blob/main/internal/transport/auth.go#L16>)

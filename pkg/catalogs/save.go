@@ -9,9 +9,9 @@ import (
 	"github.com/agentstation/starmap/pkg/logging"
 )
 
-// Save serializes a mutable builder to its configured construction path.
-// It is intentionally not a publication primitive; committed catalogs are
-// materialized atomically by the Starmap client.
+// Save serializes a mutable builder to its configured construction path. It is
+// not a publication primitive. The Starmap client materializes committed catalogs
+// atomically.
 func (cat *Builder) Save() error {
 	return cat.save(cat.config.resolveWritePath(""))
 }
@@ -35,8 +35,8 @@ func (cat *Builder) save(writePath string) error {
 
 // saveTo saves the catalog to the specified path.
 func (cat *Builder) saveTo(basePath string) error {
-	// A save is a replacement of Starmap-managed records. Remove the prior
-	// managed indexes/model trees first so deleted records cannot survive and be
+	// A save replaces Starmap-managed records. Remove the prior managed indexes
+	// and model trees first so deleted records cannot survive and become
 	// loaded into the next catalog. Transactional callers should publish through
 	// pkg/catalogs/storage, which preserves the previous generation on failure.
 	if err := removeManagedCatalogData(basePath); err != nil {
@@ -87,7 +87,7 @@ func (cat *Builder) saveIndexFiles(writeFile catalogFileWriter) error {
 		}
 	}
 
-	// Logo bytes stay out of the YAML indexes; persist them as the
+	// Logo bytes stay out of the YAML indexes. Persist them as the
 	// providers/<id>/logo.svg and authors/<id>/logo.svg sidecar files.
 	for _, provider := range providers {
 		if len(provider.Logo) == 0 {

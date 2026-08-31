@@ -59,9 +59,6 @@ func determineLogLevel(config *Config) string {
 		return "warn"
 	}
 
-	// 4. Environment variable (already loaded in config)
-	// This is handled by LoadConfig reading LOG_LEVEL env var
-
 	// 5. Default
 	return "info"
 }

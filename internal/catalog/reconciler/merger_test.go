@@ -274,17 +274,15 @@ func TestMergeComplexStructures(t *testing.T) {
 
 	model := result[0]
 
-	// Check features were merged correctly
 	if model.Features == nil {
 		t.Fatal("Expected features to be non-nil")
 	}
 
-	// Provider API features should be preserved
+	// Preserve provider API features.
 	if !model.Features.Streaming {
 		t.Error("Expected streaming to be true from Provider API")
 	}
 
-	// Missing provider claims are filled by models.dev.
 	if !model.Features.ToolCalls || !model.Features.WebSearch || !model.Features.Tools ||
 		!model.Features.ToolChoice || !model.Features.Attachments || !model.Features.Reasoning ||
 		!model.Features.ReasoningEffort || !model.Features.StructuredOutputs {
@@ -1298,7 +1296,7 @@ func BenchmarkMergeModels(b *testing.B) {
 	}
 
 	b.ResetTimer()
-	for i := 0; i < b.N; i++ {
+	for b.Loop() {
 		_, _, err := merger.Models(testSources)
 		if err != nil {
 			b.Fatalf("MergeModels failed: %v", err)
@@ -1341,7 +1339,7 @@ func TestMergeFieldReflection(t *testing.T) {
 		t.Errorf("Expected name 'Test Model', got %v", name)
 	}
 
-	// Test nested field access - this won't work with current implementation
+	// Test nested field access - this will not work with current implementation
 	// as it expects capitalized field names in the path
 	contextWindow := sm.modelFieldValue(&model, "Limits")
 	if contextWindow == nil {
@@ -1382,7 +1380,7 @@ func TestEdgeCases(t *testing.T) {
 	})
 
 	t.Run("very long field paths", func(t *testing.T) {
-		// Test that deep nesting doesn't cause issues
+		// Test that deep nesting does not cause issues
 		sources := map[sources.ID][]*catalogs.Model{
 			sources.ProvidersID: {
 				{

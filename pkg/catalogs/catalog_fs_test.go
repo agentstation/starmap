@@ -272,7 +272,6 @@ func TestCatalogWrite(t *testing.T) {
 	err = cat.SaveTo(tmpDir)
 	require.NoError(t, err)
 
-	// Verify files were written
 	assert.FileExists(t, filepath.Join(tmpDir, "providers.yaml"))
 	assert.FileExists(t, filepath.Join(tmpDir, "authors.yaml"))
 	assert.DirExists(t, filepath.Join(tmpDir, "providers"))
@@ -404,7 +403,7 @@ name: GPT-3.5 on Groq
 	require.NoError(t, err)
 	assert.Equal(t, 2, len(testBuilderModels(cat)))
 
-	// Verify hierarchical IDs are preserved
+	// Verify that hierarchical IDs remain unchanged.
 	model1, err := testBuilderFindModel(cat, "meta-llama/llama-3.1/70b")
 	assert.NoError(t, err)
 	assert.Equal(t, "Llama 3.1 70B", model1.Name)
@@ -522,7 +521,6 @@ func TestCatalogCopy(t *testing.T) {
 	err = original.SetProvider(provider)
 	assert.NoError(t, err)
 
-	// Copy should not be affected
 	assert.Equal(t, len(testBuilderModels(original))-1, len(testBuilderModels(copied)))
 }
 
@@ -531,7 +529,7 @@ func BenchmarkCatalogLoad(b *testing.B) {
 	testData := testFS()
 	b.ResetTimer()
 
-	for i := 0; i < b.N; i++ {
+	for b.Loop() {
 		_, _ = New(WithFS(testData))
 	}
 }
@@ -541,7 +539,7 @@ func BenchmarkCatalogWalk(b *testing.B) {
 	cat, _ := New(WithFS(testFS()))
 	b.ResetTimer()
 
-	for i := 0; i < b.N; i++ {
+	for b.Loop() {
 		_ = len(testBuilderModels(cat))
 	}
 }
@@ -551,7 +549,7 @@ func BenchmarkCatalogCopy(b *testing.B) {
 	cat, _ := New(WithFS(testFS()))
 	b.ResetTimer()
 
-	for i := 0; i < b.N; i++ {
+	for b.Loop() {
 		_, _ = cat.Copy()
 	}
 }

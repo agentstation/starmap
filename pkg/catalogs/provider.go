@@ -12,18 +12,17 @@ import (
 
 // Provider represents a provider configuration.
 type Provider struct {
-	// Core identification and integration
-	ID           ProviderID   `json:"id" yaml:"id"`                                         // Unique provider identifier
-	Aliases      []ProviderID `json:"aliases,omitempty" yaml:"aliases,omitempty"`           // Alternative IDs this provider is known by (e.g., in models.dev)
-	Name         string       `json:"name" yaml:"name"`                                     // Display name (must not be empty)
-	Description  *string      `json:"description,omitempty" yaml:"description,omitempty"`   // Short description of the provider's inference service
+	ID           ProviderID   `json:"id" yaml:"id"`
+	Aliases      []ProviderID `json:"aliases,omitempty" yaml:"aliases,omitempty"`
+	Name         string       `json:"name" yaml:"name"` // Display name (must not be empty)
+	Description  *string      `json:"description,omitempty" yaml:"description,omitempty"`
 	Website      *string      `json:"website,omitempty" yaml:"website,omitempty"`           // Official website URL
 	DocsURL      *string      `json:"docs_url,omitempty" yaml:"docs_url,omitempty"`         // Link to the provider's API documentation
 	Headquarters *string      `json:"headquarters,omitempty" yaml:"headquarters,omitempty"` // Company headquarters location
 	IconURL      *string      `json:"icon_url,omitempty" yaml:"icon_url,omitempty"`         // Provider icon/logo URL
 
 	// Logo holds the provider's SVG brand mark. The bytes travel in the JSON
-	// catalog payload but stay out of providers.yaml; on a filesystem catalog
+	// catalog payload but stay out of providers.yaml. On a filesystem catalog
 	// they live in the providers/<id>/logo.svg sidecar file.
 	Logo []byte `json:"logo_svg,omitempty" yaml:"-"`
 
@@ -323,7 +322,7 @@ type ProviderHealthComponent struct {
 // ProviderID represents a provider identifier type for compile-time safety.
 type ProviderID string
 
-// String returns the string representation of a ProviderID.
+// String returns text for ProviderID.
 func (pid ProviderID) String() string {
 	return string(pid)
 }
@@ -369,7 +368,7 @@ const (
 // ProviderRetentionType represents different types of data retention policies.
 type ProviderRetentionType string
 
-// String returns the string representation of a ProviderRetentionType.
+// String returns text for ProviderRetentionType.
 func (prt ProviderRetentionType) String() string {
 	return string(prt)
 }
@@ -390,7 +389,7 @@ type ProviderPrivacyPolicy struct {
 	TrainsOnData      *bool   `json:"trains_on_data,omitempty" yaml:"trains_on_data,omitempty"`             // Whether provider trains models on user data
 }
 
-// ProviderRetentionPolicy represents how long data is kept and deletion practices.
+// ProviderRetentionPolicy describes data retention duration and deletion practices.
 type ProviderRetentionPolicy struct {
 	Type     ProviderRetentionType `json:"type" yaml:"type"`                                                   // Type of retention policy
 	Duration *time.Duration        `json:"duration,omitempty" yaml:"duration,omitempty" swaggertype:"integer"` // nil = forever, 0 = immediate deletion
@@ -400,14 +399,14 @@ type ProviderRetentionPolicy struct {
 // ProviderGovernancePolicy represents oversight and moderation practices.
 type ProviderGovernancePolicy struct {
 	ModerationRequired *bool   `json:"moderation_required,omitempty" yaml:"moderation_required,omitempty"` // Whether the provider requires moderation
-	Moderated          *bool   `json:"moderated,omitempty" yaml:"moderated,omitempty"`                     // Whether provider content is moderated
-	Moderator          *string `json:"moderator,omitempty" yaml:"moderator,omitempty"`                     // Who moderates the provider
+	Moderated          *bool   `json:"moderated,omitempty" yaml:"moderated,omitempty"`
+	Moderator          *string `json:"moderator,omitempty" yaml:"moderator,omitempty"` // Who moderates the provider
 }
 
 // ProviderModerator represents a moderator for a provider.
 type ProviderModerator string
 
-// String returns the string representation of a ProviderModerator.
+// String returns text for ProviderModerator.
 func (pm ProviderModerator) String() string {
 	return string(pm)
 }

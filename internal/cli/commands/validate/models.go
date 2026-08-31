@@ -23,7 +23,7 @@ This checks:
   - Author references exist (if specified)
   - Data consistency and formats`,
 		RunE: func(_ *cobra.Command, args []string) error {
-			// This command doesn't take positional arguments yet
+			// This command does not take positional arguments yet
 			if len(args) > 0 {
 				return fmt.Errorf("unexpected argument: %s", args[0])
 			}

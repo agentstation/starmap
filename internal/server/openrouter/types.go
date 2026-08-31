@@ -70,8 +70,8 @@ type ModelLinks struct {
 	Details string `json:"details"`
 }
 
-// Pricing contains USD prices in OpenRouter's per-token, per-request, or
-// per-operation string units. Nil fields are omitted rather than invented.
+// Pricing contains USD prices in OpenRouter's string units. The units apply per
+// token, request, or operation. JSON output omits nil fields.
 type Pricing struct {
 	Prompt            *string `json:"prompt,omitempty"`
 	Completion        *string `json:"completion,omitempty"`

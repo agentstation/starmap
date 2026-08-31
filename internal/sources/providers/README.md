@@ -61,7 +61,7 @@ func New(providers catalogs.ProvidersReader, opts ...SourceOption) *Source
 New creates a new provider API source with the given provider configurations.
 
 <a name="Source.Cleanup"></a>
-### func \(\*Source\) [Cleanup](<https://github.com/agentstation/starmap/blob/main/internal/sources/providers/providers.go#L458>)
+### func \(\*Source\) [Cleanup](<https://github.com/agentstation/starmap/blob/main/internal/sources/providers/providers.go#L456>)
 
 ```go
 func (s *Source) Cleanup() error
@@ -70,7 +70,7 @@ func (s *Source) Cleanup() error
 Cleanup releases any resources.
 
 <a name="Source.Dependencies"></a>
-### func \(\*Source\) [Dependencies](<https://github.com/agentstation/starmap/blob/main/internal/sources/providers/providers.go#L465>)
+### func \(\*Source\) [Dependencies](<https://github.com/agentstation/starmap/blob/main/internal/sources/providers/providers.go#L463>)
 
 ```go
 func (s *Source) Dependencies() []sources.Dependency
@@ -88,13 +88,13 @@ func (s *Source) ID() sources.ID
 ID returns the ID of this source.
 
 <a name="Source.IsOptional"></a>
-### func \(\*Source\) [IsOptional](<https://github.com/agentstation/starmap/blob/main/internal/sources/providers/providers.go#L471>)
+### func \(\*Source\) [IsOptional](<https://github.com/agentstation/starmap/blob/main/internal/sources/providers/providers.go#L469>)
 
 ```go
 func (s *Source) IsOptional() bool
 ```
 
-IsOptional returns whether this source is optional. Provider source is required \- it's the core data source.
+IsOptional returns whether this source is optional. The provider source supplies the required core data.
 
 <a name="Source.Name"></a>
 ### func \(\*Source\) [Name](<https://github.com/agentstation/starmap/blob/main/internal/sources/providers/providers.go#L97>)

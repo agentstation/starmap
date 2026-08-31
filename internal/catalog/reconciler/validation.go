@@ -39,7 +39,7 @@ func (v *ValidationResult) HasWarnings() bool {
 	return len(v.Warnings) > 0
 }
 
-// String returns a string representation of the validation result.
+// String returns text for validation result.
 func (v *ValidationResult) String() string {
 	if v.IsValid() {
 		if v.HasWarnings() {

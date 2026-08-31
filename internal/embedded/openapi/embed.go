@@ -1,5 +1,4 @@
-// Package openapi embeds the OpenAPI 3.0 specification files for the Starmap HTTP API.
-// These files are embedded at build time and served by the API server at runtime.
+// Package openapi embeds the generated OpenAPI specifications.
 package openapi
 
 import _ "embed"

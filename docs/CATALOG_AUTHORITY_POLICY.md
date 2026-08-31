@@ -1,16 +1,17 @@
 # Catalog Authority Policy
 
 Starmap persists one human-readable provider-model record. Reconciliation
-selects the facts in that record once; immutable definitions, offerings, and
-author membership are derived read views of the same result.
+selects the facts in that record once. Immutable definitions, offerings, and
+Starmap derives immutable definitions, offerings, and author membership as read
+views of the same result.
 
 The sole executable source of field precedence is the immutable table returned
 by `authority.New`. Each `authority.Policy` owns:
 
-- the catalog resource and reflected field path;
-- the stable provenance path, when it differs from the Go field path;
-- one highest-to-lowest source order;
-- merge and empty-value semantics; and
+- the catalog resource and reflected field path.
+- the stable provenance path, when it differs from the Go field path.
+- one highest-to-lowest source order.
+- merge and empty-value semantics. And
 - the rationale for that decision.
 
 The reconciler iterates that table directly. Nested limits, metadata, features,
@@ -53,18 +54,18 @@ presence. `Model.Description`, feature booleans, limit integers, and
 `ModelMetadata.OpenWeights` remain their natural Go scalar types. Their owning
 types also expose typed presence methods:
 
-- `DescriptionValue`;
-- `ModelFeatures.Support`;
-- `ModelLimits.Value`; and
+- `DescriptionValue`.
+- `ModelFeatures.Support`.
+- `ModelLimits.Value`. And
 - `OpenWeightsValue`.
 
-Each returns `ValueMissing`, `ValueUnknown`, or `ValueKnown`. Direct non-zero
-Go literals are known without setter boilerplate. A source adapter or catalog
+Each returns `ValueMissing`, `ValueUnknown`, or `ValueKnown`. The API treats
+direct non-zero Go literals as known without setter boilerplate. A source adapter or catalog
 author uses `SetDescription`, `SetSupport`, `ModelLimits.Set`, or
 `SetOpenWeights` only when it must preserve an explicit scalar zero. The
 corresponding `SetDescriptionUnknown`, `SetSupportUnknown`,
 `ModelLimits.SetUnknown`, and `SetOpenWeightsUnknown` methods record an
-upstream `null`; matching `Unset` methods withdraw a claim.
+upstream `null`. Matching `Unset` methods withdraw a claim.
 
 The human YAML remains ordinary scalars:
 
@@ -80,21 +81,21 @@ limits:
 ```
 
 Generated human YAML expands every Boolean capability into the same editable
-matrix. A capability with no observed claim is displayed as the conservative
-`false` default; `null` remains explicitly unknown. Provenance and the
+matrix. The generated matrix displays a capability with no observed claim as the conservative
+`false` default. `null` remains explicitly unknown. Provenance and the
 committed baseline prevent an untouched generated default from becoming
 synthetic local evidence on the next update. An actual source claim or
 semantic human edit remains known and participates at that source's authority
 position.
 
-For non-Boolean fields, an omitted key is missing and makes no claim. `null`
-is explicitly unknown; `0` and `""` are known values. Missing numeric limits
-remain omitted rather than being fabricated as zero. Precise presence survives
+For non-Boolean fields, a key that does not occur makes no claim. `null`
+means explicitly unknown. Starmap treats `0` and `""` as known values. Starmap omits missing
+numeric limits instead of fabricating a zero. Precise presence survives
 immutable catalog JSON, deep copy, merge, reconciliation, baseline comparison,
 and change reporting.
 
 Provider and models.dev decoders mark presence from the upstream wire keys.
-Inferred positive capabilities remain known; an unreported false or zero does
+Inferred positive capabilities remain known. An unreported false or zero does
 not become an authoritative negative claim. During reconciliation, a known
 zero participates at its source's normal authority position, while missing and
 unknown values permit lower-authority fallback.
@@ -115,7 +116,7 @@ baseline fact but cannot replace a known fact.
 
 The pipeline compares each observation with models previously attributed to
 that same source. An unexplained count regression becomes a provider-scoped
-`volume_collapse` issue and partial/degraded evidence; it never becomes an
+`volume_collapse` issue and partial/degraded evidence. It never becomes an
 implicit removal. A source error without a usable candidate becomes a bounded
 partial/degraded empty observation so non-strict sync can retain the baseline
 and reconcile healthy siblings. Caller cancellation stops, required-all mode
@@ -125,9 +126,9 @@ fails, and a degraded `Fresh` run cannot publish from an empty baseline.
 
 Pricing is one atomic provider-offering fact. Selection:
 
-1. walks the model `Pricing` policy order;
-2. rejects malformed, future, or expired candidates with evidence;
-3. chooses the first semantically valid, currently effective candidate; and
+1. walks the model `Pricing` policy order.
+2. rejects malformed, future, or expired candidates with evidence.
+3. chooses the first semantically valid, currently effective candidate. And
 4. deep-copies the complete price without mixing currency, token, operation,
    tier, or effective-period subfields.
 
@@ -140,8 +141,8 @@ such as Starport.
 
 Model evidence is durable under the provider/model pair, never a bare model
 ID. The encoded resource identity escapes the provider and opaque provider
-model ID independently, so separators inside either value cannot collide.
-`Catalog.Provenance().FindModel(providerID, modelID)` is the normal read API;
+model ID independently. Separators inside either value therefore cannot collide.
+`Catalog.Provenance().FindModel(providerID, modelID)` is the normal read API.
 generic resource lookups remain available for algorithms that work across
 resource types.
 
@@ -155,23 +156,23 @@ the exact offering they describe.
 
 Local YAML is evidence, not an unconditional override layer:
 
-- current valid dynamic facts beat stale local copies for discoverable fields;
-- local values fill facts missing from dynamic sources;
-- operator connection configuration remains local-first; and
-- projected provenance is compared to the parsed semantic field value on
-  reload. An unchanged value retains its original source, observation identity,
-  revision, checksum, and timestamp;
-- when the original source is observed again, its current value replaces the
-  unchanged projection at that source's authority position—even for a normally
-  local-first operator field;
+- current valid dynamic facts beat stale local copies for discoverable fields.
+- local values fill facts missing from dynamic sources.
+- operator connection configuration remains local-first. And
+- reload compares projected provenance to the parsed semantic field value.
+  An unchanged value retains its original source, observation identity,
+  revision, checksum, and timestamp.
+- when reconciliation observes the original source again, its current value
+  replaces the unchanged projection at that source's authority position. This includes a normally
+  local-first operator field.
 - a semantic mismatch is a local claim and receives the current local
-  observation identity; and
+  observation identity. And
 - an explicitly present `false`, `0`, `""`, or `null` retains its distinct
-  presence state, while removing the key withdraws the local claim; and
+  presence state, while removing the key withdraws the local claim. And
 - comments, quoting, whitespace, and key order do not participate in the
   comparison.
 
 Model comparisons use the exact provider/model provenance identity. Provider
 configuration uses provider/field identity. The legacy bare model evidence in
-the current embedded bootstrap is consulted only when that model ID occurs at
-exactly one provider; ambiguous evidence is never promoted across offerings.
+reconciliation consults the current embedded bootstrap only when that model ID occurs at
+exactly one provider. Ambiguous evidence is never promoted across offerings.

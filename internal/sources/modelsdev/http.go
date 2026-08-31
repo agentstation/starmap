@@ -151,7 +151,7 @@ func (s *HTTPSource) Observe(ctx context.Context, opts ...sources.Option) (sourc
 
 // Cleanup releases any resources.
 func (s *HTTPSource) Cleanup() error {
-	// HTTPSource doesn't hold persistent resources
+	// HTTPSource does not hold persistent resources
 	return nil
 }
 

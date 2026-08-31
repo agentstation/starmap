@@ -13,7 +13,7 @@ type Flags struct {
 
 // Parse extracts global flags from the command hierarchy.
 // This is useful for subcommands that need to access global flags when
-// they weren't passed the flags struct directly.
+// they were not passed the flags struct directly.
 func Parse(cmd *cobra.Command) (*Flags, error) {
 	// Walk up the command hierarchy to find persistent flags
 	root := cmd

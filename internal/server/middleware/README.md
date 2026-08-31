@@ -63,7 +63,7 @@ func Logger(logger *zerolog.Logger) func(http.Handler) http.Handler
 Logger logs HTTP requests with structured logging.
 
 <a name="RateLimit"></a>
-## func [RateLimit](<https://github.com/agentstation/starmap/blob/main/internal/server/middleware/ratelimit.go#L113>)
+## func [RateLimit](<https://github.com/agentstation/starmap/blob/main/internal/server/middleware/ratelimit.go#L112>)
 
 ```go
 func RateLimit(rl *RateLimiter) func(http.Handler) http.Handler

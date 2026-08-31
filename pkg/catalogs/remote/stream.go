@@ -36,8 +36,8 @@ type EventStream struct {
 	scanner *bufio.Scanner
 }
 
-// OpenEventStream opens the publication stream. lastEventID is sent as the
-// standard Last-Event-ID request header when nonempty.
+// OpenEventStream opens the publication stream. A nonempty lastEventID becomes
+// the standard Last-Event-ID request header.
 func (c *Client) OpenEventStream(
 	ctx context.Context,
 	lastEventID string,
@@ -71,8 +71,8 @@ func (c *Client) OpenEventStream(
 		request.Header.Set("Last-Event-ID", lastEventID)
 	}
 
-	// Fetch timeouts must not bound a healthy long-lived stream. Stream
-	// liveness is owned by the reactive subscriber and its caller context.
+	// Fetch timeouts must not bound a healthy long-lived stream. The reactive
+	// subscriber and its caller context control stream liveness.
 	streamClient := *c.httpClient
 	streamClient.Timeout = 0
 	response, err := streamClient.Do(request)

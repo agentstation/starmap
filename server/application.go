@@ -1,3 +1,4 @@
+// Package server provides the public Starmap HTTP server composition.
 package server
 
 import (

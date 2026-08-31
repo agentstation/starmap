@@ -13,8 +13,8 @@ import (
 	"github.com/agentstation/starmap/pkg/errors"
 )
 
-// CurrentGeneration returns the exact immutable generation currently published
-// by this client. The embedded bootstrap is returned before durable mutation.
+// CurrentGeneration returns this client's current immutable generation. Before
+// any durable mutation, it returns the embedded bootstrap.
 func (c *Client) CurrentGeneration(ctx context.Context) (catalogs.Generation, error) {
 	if c == nil {
 		return catalogs.Generation{}, &errors.ValidationError{Field: "starmap.client", Message: "is required"}

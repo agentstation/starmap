@@ -98,7 +98,7 @@ Health returns the current server\-side stream delivery health.
 func (b *Broadcaster) Publish(publication Publication) error
 ```
 
-Publish offers one committed generation to every connected stream. It never blocks the catalog commit path. A connection that cannot accept the publication is terminated instead of silently losing it.
+Publish offers one committed generation to every connected stream. It never blocks the catalog commit path. Publish terminates a connection that cannot accept the generation, which prevents silent data loss.
 
 <a name="Broadcaster.ServeHTTP"></a>
 ### func \(\*Broadcaster\) [ServeHTTP](<https://github.com/agentstation/starmap/blob/main/internal/server/sse/broadcaster.go#L313>)
@@ -133,7 +133,7 @@ type Config struct {
 <a name="DeliveryError"></a>
 ## type [DeliveryError](<https://github.com/agentstation/starmap/blob/main/internal/server/sse/broadcaster.go#L63-L66>)
 
-DeliveryError is a secret\-free classification of the latest stream failure.
+DeliveryError classifies the latest stream failure without exposing secrets.
 
 ```go
 type DeliveryError struct {
@@ -200,7 +200,7 @@ type StreamState string
 const (
     // StreamStateIdle means the broadcaster accepts streams but has no clients.
     StreamStateIdle StreamState = "idle"
-    // StreamStateStreaming means at least one SSE client is connected.
+    // StreamStateStreaming means the broadcaster has active clients.
     StreamStateStreaming StreamState = "streaming"
     // StreamStateStopped means the broadcaster rejects new streams.
     StreamStateStopped StreamState = "stopped"

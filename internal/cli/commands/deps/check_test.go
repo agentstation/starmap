@@ -108,7 +108,6 @@ func TestGetAllSources(t *testing.T) {
 }
 
 func TestSourceDepStatus(t *testing.T) {
-	// Test that SourceDepStatus can be marshaled for JSON output
 	status := SourceDepStatus{
 		SourceID:   sources.ProvidersID,
 		SourceName: "providers",

@@ -23,11 +23,9 @@ func observe(ctx context.Context, srcs []sources.Source, opts []sources.Option) 
 	var wg sync.WaitGroup
 	results := make(chan sourceObservationResult, len(srcs))
 	for _, src := range srcs {
-		wg.Add(1)
-		go func(src sources.Source) {
-			defer wg.Done()
+		wg.Go(func() {
 			results <- observeSource(ctx, src, opts)
-		}(src)
+		})
 	}
 	wg.Wait()
 	close(results)
@@ -324,10 +322,7 @@ func cleanup(ctx context.Context, srcs []sources.Source) error {
 	var errMutex sync.Mutex
 
 	for _, src := range srcs {
-		wg.Add(1)
-		go func(src sources.Source) {
-			defer wg.Done()
-
+		wg.Go(func() {
 			if ctx.Err() != nil {
 				return
 			}
@@ -343,7 +338,7 @@ func cleanup(ctx context.Context, srcs []sources.Source) error {
 				errs = append(errs, wrappedErr)
 				errMutex.Unlock()
 			}
-		}(src)
+		})
 	}
 
 	wg.Wait()

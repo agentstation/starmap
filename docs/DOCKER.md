@@ -19,10 +19,10 @@ docker run --read-only --user 65532:65532 \
   serve --host 0.0.0.0
 ```
 
-The server starts from the verified embedded catalog and performs no provider
-network request merely because it is running. `POST /api/v1/update` is an
+The server starts from the verified embedded catalog and sends no provider
+network request on startup. `POST /api/v1/update` is an
 explicit acquisition operation. It uses only provider credentials supplied to
-the process and commits through the CLI-owned filesystem generation store.
+the process and commits through the CLI-owned filesystem catalog store.
 There is no in-process scheduler.
 
 For production, prefer an immutable `sha256:` image digest. The moving
@@ -52,18 +52,18 @@ docker run --read-only --user 65532:65532 \
   serve --host 0.0.0.0
 ```
 
-Back up both lifecycles. The generation store is the sole durable commit point;
-the YAML workspace is the human-editable local observation and repairable
+Back up both lifecycles. The catalog store is the sole durable commit point.
+The YAML workspace is the human-editable local observation and repairable
 post-commit projection. Do not mount either path inside the other, share the
 same writable filesystem store between independently scheduled containers, or
 edit machine-owned `state/catalog` files by hand.
 
-An existing pre-plan machine store at `catalog/` is rejected before mutation.
+Starmap rejects an existing pre-plan machine store at `catalog/` before mutation.
 Run `starmap migrate catalog` once with all older writers stopped.
 
 ## Provider credentials
 
-Provider credentials are optional and are needed only for explicit acquisition:
+You need optional provider credentials only for explicit acquisition:
 
 ```bash
 docker run --read-only --user 65532:65532 \
@@ -100,7 +100,7 @@ values or fingerprints.
 ## HTTP security
 
 Enable server authentication with `--auth` and supply the expected `API_KEY`
-environment variable. The default request header is `X-API-Key`; clients may
+environment variable. The default request header is `X-API-Key`. Clients may
 also use `Authorization: Bearer`.
 
 ```bash
@@ -112,8 +112,8 @@ docker run --read-only --user 65532:65532 \
   serve --host 0.0.0.0 --auth --rate-limit 100
 ```
 
-Terminate TLS at a trusted ingress or service mesh. Configure CORS with an
-explicit `--cors-origins` allowlist when browser access is required. Enabling
+Terminate TLS at a trusted ingress or service mesh. For browser access,
+configure CORS with an explicit `--cors-origins` allowlist. Enabling
 `--cors` without an allowlist permits every origin.
 
 ## Docker Compose
@@ -129,11 +129,11 @@ curl http://localhost:8080/api/v1/ready
 
 Before production use:
 
-- replace `latest` with a verified version or digest;
+- replace `latest` with a verified version or digest.
 - provision the named volume with UID/GID 65532 ownership as required by the
-  runtime;
-- inject `API_KEY` and provider credentials through a secret manager;
-- configure TLS, network policy, resource limits, and backup policy; and
+  runtime.
+- inject `API_KEY` and provider credentials through a secret manager.
+- configure TLS, network policy, resource limits, and backup policy. And
 - keep the root filesystem read-only while retaining writable `/tmp` and the
   mounted Starmap data root.
 
@@ -214,23 +214,23 @@ For horizontally scaled or filesystem-less Starmap servers, build a small
 embedding application that supplies the public `server` package with a
 `*starmap.Client` configured through `pkg/catalogs/storage/s3`. That optional
 adapter accepts a caller-owned S3-compatible client and requires conditional
-ETag writes; it never falls back to last-writer-wins. The embedding application
+ETag writes. It never falls back to last-writer-wins. The embedding application
 owns credentials, client transport/retries, update coordination, and shutdown.
 
 Starport may instead implement `storage.Store` with its own relational
-database. Starport—not Starmap—owns the driver, connection pool, schema,
+database. Starport, not Starmap, owns the driver, connection pool, schema,
 migrations, backups, transactions, CAS semantics, and lifecycle.
 
 ## Operations
 
 Use distinct probes:
 
-- `GET /health` for process liveness;
-- `GET /api/v1/ready` for catalog readiness and embedded-bootstrap policy;
+- `GET /health` for process liveness.
+- `GET /api/v1/ready` for catalog readiness and embedded-bootstrap policy.
 - `GET /api/v1/stats` for catalog age, callback delivery, SSE delivery, cache,
   and runtime data.
 
-SSE heartbeats prove transport liveness only; they never refresh catalog age.
+SSE heartbeats prove transport liveness only. They never refresh catalog age.
 Alert separately on stale active generation, repeated callback failures,
 backpressure-terminated streams, and failed explicit acquisition.
 

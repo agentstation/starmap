@@ -17,11 +17,11 @@ const (
 	LevelWarning
 	// LevelInfo indicates general informational messages.
 	LevelInfo
-	// LevelSuccess indicates successful completion of an operation.
+	// LevelSuccess indicates a successful outcome.
 	LevelSuccess
 )
 
-// String returns the string representation of the alert level.
+// String returns text for alert level.
 func (l Level) String() string {
 	switch l {
 	case LevelError:

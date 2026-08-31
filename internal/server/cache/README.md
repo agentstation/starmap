@@ -40,16 +40,16 @@ type Cache struct {
 ```
 
 <a name="New"></a>
-### func [New](<https://github.com/agentstation/starmap/blob/main/internal/server/cache/cache.go#L23>)
+### func [New](<https://github.com/agentstation/starmap/blob/main/internal/server/cache/cache.go#L22>)
 
 ```go
 func New(defaultTTL, cleanupInterval time.Duration) *Cache
 ```
 
-New creates a new cache with the given TTL and cleanup interval. defaultTTL is the default expiration time for cache entries. cleanupInterval is how often expired items are removed from memory.
+New creates a cache with the given default TTL and cleanup interval. The TTL sets entry expiration. The cleanup interval controls expired\-entry removal.
 
 <a name="Cache.ActivateGeneration"></a>
-### func \(\*Cache\) [ActivateGeneration](<https://github.com/agentstation/starmap/blob/main/internal/server/cache/cache.go#L66>)
+### func \(\*Cache\) [ActivateGeneration](<https://github.com/agentstation/starmap/blob/main/internal/server/cache/cache.go#L65>)
 
 ```go
 func (c *Cache) ActivateGeneration(sequence uint64, generationID string)
@@ -58,7 +58,7 @@ func (c *Cache) ActivateGeneration(sequence uint64, generationID string)
 ActivateGeneration atomically changes the visible namespace and removes old entries. Repeating the same generation is a no\-op.
 
 <a name="Cache.Clear"></a>
-### func \(\*Cache\) [Clear](<https://github.com/agentstation/starmap/blob/main/internal/server/cache/cache.go#L58>)
+### func \(\*Cache\) [Clear](<https://github.com/agentstation/starmap/blob/main/internal/server/cache/cache.go#L57>)
 
 ```go
 func (c *Cache) Clear()
@@ -67,7 +67,7 @@ func (c *Cache) Clear()
 Clear removes all items from the cache.
 
 <a name="Cache.Delete"></a>
-### func \(\*Cache\) [Delete](<https://github.com/agentstation/starmap/blob/main/internal/server/cache/cache.go#L51>)
+### func \(\*Cache\) [Delete](<https://github.com/agentstation/starmap/blob/main/internal/server/cache/cache.go#L50>)
 
 ```go
 func (c *Cache) Delete(key string)
@@ -76,7 +76,7 @@ func (c *Cache) Delete(key string)
 Delete removes a value from the cache.
 
 <a name="Cache.GenerationID"></a>
-### func \(\*Cache\) [GenerationID](<https://github.com/agentstation/starmap/blob/main/internal/server/cache/cache.go#L97>)
+### func \(\*Cache\) [GenerationID](<https://github.com/agentstation/starmap/blob/main/internal/server/cache/cache.go#L96>)
 
 ```go
 func (c *Cache) GenerationID() string
@@ -85,7 +85,7 @@ func (c *Cache) GenerationID() string
 GenerationID returns the active cache namespace.
 
 <a name="Cache.Get"></a>
-### func \(\*Cache\) [Get](<https://github.com/agentstation/starmap/blob/main/internal/server/cache/cache.go#L30>)
+### func \(\*Cache\) [Get](<https://github.com/agentstation/starmap/blob/main/internal/server/cache/cache.go#L29>)
 
 ```go
 func (c *Cache) Get(key string) (any, bool)
@@ -94,7 +94,7 @@ func (c *Cache) Get(key string) (any, bool)
 Get retrieves a value from the cache.
 
 <a name="Cache.GetGeneration"></a>
-### func \(\*Cache\) [GetGeneration](<https://github.com/agentstation/starmap/blob/main/internal/server/cache/cache.go#L75>)
+### func \(\*Cache\) [GetGeneration](<https://github.com/agentstation/starmap/blob/main/internal/server/cache/cache.go#L74>)
 
 ```go
 func (c *Cache) GetGeneration(sequence uint64, generationID, key string) (any, bool)
@@ -103,7 +103,7 @@ func (c *Cache) GetGeneration(sequence uint64, generationID, key string) (any, b
 GetGeneration retrieves a key only from generationID. The first request may initialize an empty cache, but an in\-flight old request cannot reactivate a superseded namespace.
 
 <a name="Cache.GetStats"></a>
-### func \(\*Cache\) [GetStats](<https://github.com/agentstation/starmap/blob/main/internal/server/cache/cache.go#L127>)
+### func \(\*Cache\) [GetStats](<https://github.com/agentstation/starmap/blob/main/internal/server/cache/cache.go#L126>)
 
 ```go
 func (c *Cache) GetStats() Stats
@@ -112,7 +112,7 @@ func (c *Cache) GetStats() Stats
 GetStats returns current cache statistics.
 
 <a name="Cache.ItemCount"></a>
-### func \(\*Cache\) [ItemCount](<https://github.com/agentstation/starmap/blob/main/internal/server/cache/cache.go#L113>)
+### func \(\*Cache\) [ItemCount](<https://github.com/agentstation/starmap/blob/main/internal/server/cache/cache.go#L112>)
 
 ```go
 func (c *Cache) ItemCount() int
@@ -121,7 +121,7 @@ func (c *Cache) ItemCount() int
 ItemCount returns the number of items in the cache.
 
 <a name="Cache.Set"></a>
-### func \(\*Cache\) [Set](<https://github.com/agentstation/starmap/blob/main/internal/server/cache/cache.go#L37>)
+### func \(\*Cache\) [Set](<https://github.com/agentstation/starmap/blob/main/internal/server/cache/cache.go#L36>)
 
 ```go
 func (c *Cache) Set(key string, value any)
@@ -130,7 +130,7 @@ func (c *Cache) Set(key string, value any)
 Set stores a value in the cache with default TTL.
 
 <a name="Cache.SetGeneration"></a>
-### func \(\*Cache\) [SetGeneration](<https://github.com/agentstation/starmap/blob/main/internal/server/cache/cache.go#L86>)
+### func \(\*Cache\) [SetGeneration](<https://github.com/agentstation/starmap/blob/main/internal/server/cache/cache.go#L85>)
 
 ```go
 func (c *Cache) SetGeneration(sequence uint64, generationID, key string, value any)
@@ -139,7 +139,7 @@ func (c *Cache) SetGeneration(sequence uint64, generationID, key string, value a
 SetGeneration stores a key in the active generation namespace.
 
 <a name="Cache.SetWithTTL"></a>
-### func \(\*Cache\) [SetWithTTL](<https://github.com/agentstation/starmap/blob/main/internal/server/cache/cache.go#L44>)
+### func \(\*Cache\) [SetWithTTL](<https://github.com/agentstation/starmap/blob/main/internal/server/cache/cache.go#L43>)
 
 ```go
 func (c *Cache) SetWithTTL(key string, value any, ttl time.Duration)
@@ -148,7 +148,7 @@ func (c *Cache) SetWithTTL(key string, value any, ttl time.Duration)
 SetWithTTL stores a value in the cache with custom TTL.
 
 <a name="Stats"></a>
-## type [Stats](<https://github.com/agentstation/starmap/blob/main/internal/server/cache/cache.go#L120-L124>)
+## type [Stats](<https://github.com/agentstation/starmap/blob/main/internal/server/cache/cache.go#L119-L123>)
 
 Stats returns cache statistics.
 

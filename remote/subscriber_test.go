@@ -825,6 +825,9 @@ func TestSubscriberReconnectCatchesUpWithoutEventAndDeduplicatesReplay(t *testin
 			currentManifestGets,
 		)
 	}
+	waitForSubscriberCondition(t, func() bool {
+		return subscriber.Health().StreamState == StreamStateStreaming
+	})
 	assertRecoveredStreamHealth(t, subscriber, second, 3)
 }
 

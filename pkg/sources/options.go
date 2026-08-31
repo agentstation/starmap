@@ -8,7 +8,7 @@ type Options struct {
 	ProviderID *catalogs.ProviderID
 
 	// Typed source-specific options
-	CleanupRepo bool // For models.dev git source - remove repo after fetch
+	CleanupRepo bool // For models.dev git source - remove repository after fetch
 	Reformat    bool // For file-based sources - reformat output files
 }
 

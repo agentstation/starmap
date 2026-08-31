@@ -52,7 +52,7 @@ func addTestModels(cat *catalogs.Builder, providerID string, models []*catalogs.
 	}
 	provider, err := cat.Provider(catalogs.ProviderID(providerID))
 	if err != nil {
-		// Create provider if it doesn't exist
+		// Create provider if it does not exist
 		provider = catalogs.Provider{
 			ID:     catalogs.ProviderID(providerID),
 			Name:   providerID,
@@ -134,8 +134,6 @@ func TestReconcilerBasic(t *testing.T) {
 		t.Fatal("Expected non-nil catalog in result")
 	}
 
-	// Check models were merged. The primary source determines model existence;
-	// secondary sources can enrich matching models but cannot add their own.
 	models := mustProviderModels(t, result.Catalog, "test-provider")
 	if len(models) != 2 {
 		t.Errorf("Expected 2 primary models, got %d", len(models))
@@ -381,7 +379,7 @@ func TestTimestampPreservation(t *testing.T) {
 			t.Fatalf("Failed to find reconciled model: %v", err)
 		}
 
-		// Verify timestamps were preserved (not updated)
+		// Verify that both timestamps remain unchanged.
 		if !reconciledModel.UpdatedAt.Equal(baselineTime) {
 			t.Errorf("Expected UpdatedAt to be preserved as %v, got %v",
 				baselineTime, reconciledModel.UpdatedAt)
@@ -434,13 +432,13 @@ func TestTimestampPreservation(t *testing.T) {
 			t.Fatalf("Failed to find reconciled model: %v", err)
 		}
 
-		// Verify UpdatedAt was updated (not preserved)
+		// Verify that UpdatedAt changes.
 		if reconciledModel.UpdatedAt.Equal(baselineTime) {
 			t.Errorf("Expected UpdatedAt to be updated from %v, but it was preserved",
 				baselineTime)
 		}
 
-		// Verify CreatedAt was preserved
+		// Verify that CreatedAt remains unchanged.
 		if !reconciledModel.CreatedAt.Equal(baselineTime) {
 			t.Errorf("Expected CreatedAt to be preserved as %v, got %v",
 				baselineTime, reconciledModel.CreatedAt)
@@ -491,7 +489,6 @@ func TestTimestampPreservation(t *testing.T) {
 			t.Fatalf("Failed to find reconciled model: %v", err)
 		}
 
-		// Verify timestamps were set (not zero)
 		if reconciledModel.CreatedAt.IsZero() {
 			t.Error("Expected CreatedAt to be set for new model")
 		}
@@ -565,7 +562,7 @@ func BenchmarkReconciliation(b *testing.B) {
 	srcs := reconciler.ConvertCatalogsMapToSources(srcMap)
 
 	b.ResetTimer()
-	for i := 0; i < b.N; i++ {
+	for b.Loop() {
 		_, err := reconcile.Sources(ctx, "source1", srcs)
 		if err != nil {
 			b.Fatalf("ReconcileCatalogs failed: %v", err)
@@ -605,7 +602,7 @@ func BenchmarkDiffing(b *testing.B) {
 	diff := differ.New()
 
 	b.ResetTimer()
-	for i := 0; i < b.N; i++ {
+	for b.Loop() {
 		_ = diff.Catalogs(oldCatalog, newCatalog)
 	}
 }

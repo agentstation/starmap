@@ -20,7 +20,7 @@ import (
 )
 
 const (
-	// CatalogPath is appended to a versioned API base URL.
+	// CatalogPath is the current catalog resource path.
 	CatalogPath = "/catalog"
 	// ManifestPath returns the current strict generation manifest.
 	ManifestPath = CatalogPath + "/manifest"
@@ -61,7 +61,7 @@ type Client struct {
 
 // NewClient creates a remote generation client. baseURL is the trusted,
 // versioned HTTPS API root, for example
-// https://starmap.example.com/api/v1. Plain HTTP is accepted only on loopback.
+// https://starmap.example.com/api/v1. NewClient accepts plain HTTP only on loopback.
 // The supplied HTTP client may add authentication or stricter TLS policy, but
 // HTTPS responses must retain a standard verified certificate chain.
 func NewClient(baseURL string, httpClient *http.Client, schemaVersion uint64) (*Client, error) {

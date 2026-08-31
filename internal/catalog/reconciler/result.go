@@ -42,10 +42,8 @@ type ResultMetadata struct {
 	// EndTime when reconciliation completed
 	EndTime time.Time
 
-	// Duration of the reconciliation
 	Duration time.Duration
 
-	// Sources that were reconciled
 	Sources []sources.ID
 
 	// DryRun indicates if this was a dry-run
@@ -69,12 +67,12 @@ func (r *Result) IsSuccess() bool {
 	return len(r.Errors) == 0
 }
 
-// HasChanges returns true if any changes were detected.
+// HasChanges reports whether reconciliation detected changes.
 func (r *Result) HasChanges() bool {
 	return r.Changeset != nil && r.Changeset.HasChanges()
 }
 
-// WasApplied returns true if changes were applied.
+// WasApplied reports whether reconciliation applied changes.
 func (r *Result) WasApplied() bool {
 	return r.AppliedChanges != nil && r.AppliedChanges.HasChanges()
 }

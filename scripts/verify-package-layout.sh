@@ -52,8 +52,6 @@ done < <(
 		-o -path "$ROOT/docs/plans/proof" \
 		-o -path "$ROOT/htmlcov" \) -prune \
 		-o -type f \
-		! -path "$ROOT/docs/ARCHITECTURE_CONTROL_PLANE.md" \
-		! -path "$ROOT/docs/STARMAP_ARCHITECTURE_CONTROL_PLANE.md" \
 		! -path "$ROOT/coverage.html" \
 		\( -name '*.go' -o -name '*.md' -o -name '*.sh' -o -name '*.yml' -o -name '*.yaml' -o -name Makefile \) \
 		-print0

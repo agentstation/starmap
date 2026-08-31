@@ -11,7 +11,7 @@ type ModelDelivery struct {
 // ModelResponseFormat represents a supported response format.
 type ModelResponseFormat string
 
-// String returns the string representation of a ModelResponseFormat.
+// String returns text for ModelResponseFormat.
 func (mrf ModelResponseFormat) String() string {
 	return string(mrf)
 }
@@ -44,10 +44,10 @@ const (
 	ModelResponseProtocolWebSocket ModelResponseProtocol = "websocket" // WebSocket protocol
 )
 
-// ModelStreaming represents how responses can be delivered.
+// ModelStreaming describes the available response delivery modes.
 type ModelStreaming string
 
-// String returns the string representation of a ModelStreaming.
+// String returns text for ModelStreaming.
 func (ms ModelStreaming) String() string {
 	return string(ms)
 }

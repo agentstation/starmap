@@ -19,7 +19,7 @@ import (
 	"github.com/agentstation/starmap/pkg/sources"
 )
 
-// Client acquires and normalizes model metadata from an OpenAI-compatible API.
+// Client gets and normalizes model metadata from an OpenAI-compatible API.
 type Client struct {
 	// Transport client
 	transport *transport.Client
@@ -348,7 +348,7 @@ func applyOpenAICompatiblePricing(pricing *catalogs.ModelPricing, source *ModelP
 	}
 	// OpenAI-compatible pricing blocks do not share a unit contract. Apply the
 	// provider-specific scale before storing the canonical USD-per-million
-	// value; never infer units from the price magnitude.
+	// value. Never infer units from the price magnitude.
 	if source.Prompt != nil && pricing.Tokens.Input == nil {
 		pricing.Tokens.Input = &catalogs.ModelTokenCost{
 			Per1M: normalizeProviderTokenPrice(*source.Prompt * tokenPriceScale),
@@ -396,8 +396,6 @@ func applyOpenAICompatibleMetadataPricing(
 	if source == nil {
 		return
 	}
-	// DeepInfra's metadata.pricing token fields are reported in USD per 1M
-	// tokens by its public /v1/openai/models payload, matching Per1M.
 	if source.InputTokens != nil && pricing.Tokens.Input == nil {
 		pricing.Tokens.Input = &catalogs.ModelTokenCost{Per1M: normalizeProviderTokenPrice(*source.InputTokens)}
 	}
@@ -423,12 +421,10 @@ func applyOpenAICompatibleMetadataPricing(
 	}
 }
 
-// applyGeneratedSecondPrice records a per-second price of generated media under
-// the operation the model's declared output names. One reported field carries
-// both, because a provider that bills by the second reports seconds whatever it
-// produced. A video model whose price landed in audio_gen would answer a
-// consumer that read the audio field and hide from one that read the video
-// field, and the modalities are already normalized when this runs.
+// applyGeneratedSecondPrice records a generated-media price under the operation
+// named by the model's declared output. Providers report the same per-second
+// field for audio and video. The normalized output modality selects the correct
+// operation so consumers find the price they expect.
 func applyGeneratedSecondPrice(
 	model *catalogs.Model,
 	pricing *catalogs.ModelPricing,
@@ -447,7 +443,7 @@ func applyGeneratedSecondPrice(
 }
 
 // Provider APIs sometimes emit binary-float artifacts around human decimal
-// list prices. Normalize only representational noise; no unit conversion or
+// list prices. Normalize only representational noise. No unit conversion or
 // source precedence decision happens here.
 func normalizeProviderTokenPrice(price float64) float64 {
 	const decimals = 1_000_000

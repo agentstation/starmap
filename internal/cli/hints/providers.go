@@ -72,7 +72,7 @@ func configHintProvider(_ Context) []*Hint {
 	var hints []*Hint
 
 	// Only show config hints on first run or when there are actual config issues
-	// Don't spam every successful command with generic config info
+	// Do not spam every successful command with generic config info
 
 	return hints
 }

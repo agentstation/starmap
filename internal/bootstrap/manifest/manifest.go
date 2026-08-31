@@ -23,7 +23,7 @@ type Report struct {
 }
 
 // Derive compares canonical reader bytes with the current manifest. Unchanged
-// input returns the exact current identity; changed input gets a new logical ID.
+// input returns the exact current identity. Changed input gets a new logical ID.
 func Derive(reader catalogs.Reader, current *catalogs.BootstrapManifest, generatedAt time.Time) (catalogs.BootstrapManifest, Report, error) {
 	if reader == nil {
 		return catalogs.BootstrapManifest{}, Report{}, &errors.ValidationError{Field: "bootstrap_manifest.catalog", Message: "is required"}
@@ -82,7 +82,7 @@ func Derive(reader catalogs.Reader, current *catalogs.BootstrapManifest, generat
 
 // DeriveCommitted binds changed embedded bytes to the identity of the exact
 // durable generation that produced them. It never reconstructs source
-// observations; release staging reads the same generation from its store.
+// observations. Release staging reads the same generation from its store.
 func DeriveCommitted(
 	reader catalogs.Reader,
 	generation catalogs.Generation,

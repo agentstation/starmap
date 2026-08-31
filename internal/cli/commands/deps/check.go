@@ -92,7 +92,6 @@ func runCheck(cmd *cobra.Command) error {
 		return err
 	}
 
-	// Return error if required dependencies are missing
 	if results.MissingDeps > 0 {
 		// Check if any missing deps are from required sources
 		hasRequiredMissing := false
@@ -126,7 +125,7 @@ func getAllSources() []dependencySource {
 	// Load embedded catalog to get provider configs for dependency checking
 	embedded, _, err := bootstrap.Embedded()
 	if err != nil {
-		// If we can't load embedded catalog, return sources without providers
+		// If we cannot load embedded catalog, return sources without providers
 		return []dependencySource{
 			local.New(),
 			modelsdev.NewGitSource(),

@@ -1,6 +1,6 @@
 package catalogs
 
-// MergeOption configures how catalogs are merged.
+// MergeOption configures catalog merging.
 type MergeOption func(*MergeOptions)
 
 // MergeOptions holds merge configuration.

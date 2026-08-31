@@ -33,8 +33,8 @@ type Prepared struct {
 	Publish        bool
 }
 
-// Store is retained as an internal test adapter while acquisition migrates to
-// Prepare. Production composition publishes through starmap.Client.Update.
+// Store remains an internal test adapter while acquisition migrates to Prepare.
+// Production composition publishes through starmap.Client.Update.
 type Store interface {
 	Catalog() (*catalogs.Catalog, error)
 	Apply(

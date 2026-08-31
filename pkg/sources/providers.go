@@ -36,7 +36,7 @@ type ProviderRawFetcher func(
 ) (*RawFetchResult, error)
 
 // ProviderFetcher provides operations for fetching models from provider APIs.
-// Concrete provider clients are an explicit injected composition; use package
+// Concrete provider clients are an explicit injected composition. Use package
 // acquisition for Starmap's built-in provider implementations.
 type ProviderFetcher struct {
 	providers catalogs.ProvidersReader
@@ -64,10 +64,10 @@ type ProviderOption func(*providerOptions)
 // providerDefaults returns options with sensible defaults.
 func providerDefaults() *providerOptions {
 	return &providerOptions{
-		timeout:            0,   // Default: no timeout
-		clientFactory:      nil, // Explicit acquisition composition is required
-		rawFetcher:         nil, // Explicit acquisition composition is required
-		credentialResolver: nil, // Explicit acquisition composition is required
+		timeout:            0, // Default: no timeout
+		clientFactory:      nil,
+		rawFetcher:         nil,
+		credentialResolver: nil,
 	}
 }
 
@@ -82,14 +82,14 @@ func (po *providerOptions) clone() *providerOptions {
 // FetchStats contains metadata about a fetch operation.
 // This provides transparency into API requests for debugging and monitoring.
 type FetchStats struct {
-	URL          string        // Endpoint that was called
+	URL          string
 	StatusCode   int           // HTTP response status code
 	Latency      time.Duration // Request duration
 	PayloadSize  int64         // Response body size in bytes
 	ContentType  string        // Content-Type from response header
-	AuthMethod   string        // How authentication was applied (Header, Query, None)
-	AuthLocation string        // Where auth was placed (header name or query param name)
-	AuthScheme   string        // Authentication scheme for header auth (Bearer, Basic, Direct)
+	AuthMethod   string
+	AuthLocation string
+	AuthScheme   string // Authentication scheme for header auth (Bearer, Basic, Direct)
 }
 
 // HumanSize returns the payload size in human-readable format.
@@ -140,7 +140,7 @@ func getAuthInfo(material ProviderCredentialMaterial) (method, location, scheme 
 
 // NewProviderFetcher creates a provider fetcher over the supplied catalog
 // providers. Callers must inject the provider-client and raw-fetch roles they
-// use; the root library never selects concrete provider implementations.
+// use. The root library never selects concrete provider implementations.
 func NewProviderFetcher(providers catalogs.ProvidersReader, opts ...ProviderOption) *ProviderFetcher {
 	options := providerDefaults().apply(opts...)
 
@@ -150,7 +150,7 @@ func NewProviderFetcher(providers catalogs.ProvidersReader, opts ...ProviderOpti
 	}
 }
 
-// Providers returns the providers that can be used by the provider fetcher.
+// Providers returns the providers available to the provider fetcher.
 func (pf *ProviderFetcher) Providers() *catalogs.Providers {
 	result := catalogs.NewProviders()
 	for _, provider := range pf.providers.List() {
@@ -229,7 +229,7 @@ func WithProviderCredentialResolver(resolver ProviderCredentialResolver) Provide
 // It handles credential resolution, client creation, and API communication.
 // When a provider quarantines malformed records, FetchModels returns the valid
 // siblings together with a non-nil *sourcepayload.QuarantineError wrapped in a
-// SyncError; callers may consume the partial result only as degraded evidence.
+// SyncError. Callers may consume the partial result only as degraded evidence.
 //
 // Example:
 //
@@ -285,7 +285,7 @@ func (pf *ProviderFetcher) FetchModels(ctx context.Context, provider *catalogs.P
 // This is useful for testing, debugging, or saving raw responses as testdata.
 //
 // The endpoint parameter should be the full URL to the API endpoint.
-// The response is returned as raw bytes (JSON) without any parsing, along with fetch statistics.
+// FetchRawResponse returns unparsed JSON bytes and fetch statistics.
 func (pf *ProviderFetcher) FetchRawResponse(ctx context.Context, provider *catalogs.Provider, endpoint string, opts ...ProviderOption) ([]byte, *FetchStats, error) {
 	options := pf.options.clone().apply(opts...)
 	ctx, cancel, err := prepareProviderContext(ctx, provider, options)

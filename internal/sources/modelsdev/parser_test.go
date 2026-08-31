@@ -354,9 +354,6 @@ func TestModelToStarmapModelPreservesCurrentModelsDevFields(t *testing.T) {
 		model.Pricing.Tokens.CacheWrite.Per1M != cacheWriteCost {
 		t.Fatalf("cache pricing = %#v", model.Pricing.Tokens)
 	}
-	// models.dev quotes input_audio and output_audio per million tokens, so
-	// they belong beside input and output, not under Operations, where a
-	// value means a flat price for one audio file.
 	if model.Pricing.Tokens.AudioInput == nil ||
 		model.Pricing.Tokens.AudioInput.Per1M != inputAudioCost ||
 		model.Pricing.Tokens.AudioOutput == nil ||

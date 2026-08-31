@@ -88,8 +88,8 @@ func NewObservationCatalog(source Reader) (*Catalog, error) {
 
 var _ Reader = (*Catalog)(nil)
 
-// Catalog is Starmap's immutable canonical catalog. Its state is unexported,
-// safe to retain across goroutines, and accessible only through read methods.
+// Catalog is Starmap's immutable canonical catalog. Read methods provide the only
+// access to its private state. Callers can retain it across goroutines.
 type Catalog struct {
 	source                     Reader
 	definitions                map[ModelDefinitionID]ModelDefinition

@@ -24,20 +24,17 @@ func main() {
 		app.ExitOnError(err)
 	}
 
-	// Create context with signal handling for graceful shutdown
+	// Handle signals for graceful shutdown.
 	ctx, cancel := app.ContextWithSignals(context.Background())
 	defer cancel()
 
-	// Execute with context
 	if err := application.Execute(ctx, os.Args[1:]); err != nil {
-		// Perform graceful shutdown with fresh context
-		// Use context.Background() since the signal context is already cancelled
-		// Give shutdown operations 5 seconds to complete
+		// The signal context is already canceled, so use a fresh shutdown context.
 		shutdownCtx, shutdownCancel := context.WithTimeout(context.Background(), 5*time.Second)
 		defer shutdownCancel()
 
 		if shutdownErr := application.Shutdown(shutdownCtx); shutdownErr != nil {
-			// Log shutdown error but don't return it - original error takes precedence
+			// Log shutdown error but do not return it - original error takes precedence
 			application.Logger().Error().Err(shutdownErr).Msg("Shutdown error during error handling")
 		}
 

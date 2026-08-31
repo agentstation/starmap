@@ -38,7 +38,7 @@ func TestRateLimiter_Allow(t *testing.T) {
 		name          string
 		limit         int
 		requests      int
-		expectedAllow int // How many should be allowed
+		expectedAllow int
 	}{
 		{
 			name:          "within limit",
@@ -111,7 +111,6 @@ func TestRateLimiter_MultipleIPs(t *testing.T) {
 		}
 	}
 
-	// Verify each IP is tracked separately
 	if len(rl.visitors) != 3 {
 		t.Errorf("expected 3 visitors, got %d", len(rl.visitors))
 	}
@@ -134,7 +133,6 @@ func TestRateLimiter_TokenRefresh(t *testing.T) {
 		}
 	}
 
-	// Next request should be denied
 	if rl.allow(ip) {
 		t.Error("expected request to be denied (no tokens)")
 	}
@@ -142,7 +140,6 @@ func TestRateLimiter_TokenRefresh(t *testing.T) {
 	// Wait for token refresh
 	time.Sleep(150 * time.Millisecond)
 
-	// Tokens should be refreshed
 	if !rl.allow(ip) {
 		t.Error("expected request to be allowed after token refresh")
 	}
@@ -218,7 +215,6 @@ func TestRateLimiter_ConcurrentMultipleIPs(t *testing.T) {
 
 	wg.Wait()
 
-	// Each IP should be allowed exactly the limit
 	for ip, count := range results {
 		if count != limit {
 			t.Errorf("IP %s: expected %d allowed, got %d", ip, limit, count)
@@ -322,7 +318,6 @@ func TestRateLimiter_Middleware_IgnoresUntrustedForwardedFor(t *testing.T) {
 		}
 	}
 
-	// Next request should be blocked
 	req := httptest.NewRequest("GET", "/api/v1/models", nil)
 	req.RemoteAddr = "192.0.2.10:9000"
 	req.Header.Set("X-Forwarded-For", "203.0.113.99")
@@ -464,5 +459,3 @@ func TestRateLimiter_BurstTraffic(t *testing.T) {
 		t.Errorf("expected %d allowed, got %d", limit, allowed)
 	}
 }
-
-// contains helper is defined in auth_test.go

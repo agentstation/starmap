@@ -29,7 +29,6 @@ Examples:
 			zsh := mustGetBool(cmd, "zsh")
 			fish := mustGetBool(cmd, "fish")
 
-			// If no specific shell flags are set, uninstall from all shells
 			if !bash && !zsh && !fish {
 				bash, zsh, fish = true, true, true
 			}

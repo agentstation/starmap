@@ -19,20 +19,23 @@ The verified catalog and reactive notification flow has four routes:
    positive SSE `id`/`sequence`. Flushed `connected` and `heartbeat` comments
    carry no event ID or catalog data.
 
-The retained manifest and payload requests are generation-addressed so a
-concurrent server publication cannot mix bytes from different generations.
-The configured API origin is the online publisher identity. Non-loopback
-publishers must use HTTPS; every HTTPS response must carry a completed,
-standard-library-verified certificate chain and remain on that exact origin.
-Loopback HTTP is retained only for local embedding and tests. The client bounds
-both bodies, requires exact response and descriptor media types, strictly
-parses and validates the manifest, and rejects an incompatible catalog-schema
-range or oversized descriptor before downloading the payload. It then
-requires a bounded canonical path-segment generation ID and verifies payload
-size and SHA-256 before decode or durable commit. An HTTP failure, unverified
-publisher, malformed/unknown manifest member, wrong media type, incompatible
-schema, unsafe identity, truncated/oversize body, corrupt checksum, or semantic
-decode error leaves the current catalog and durable store untouched.
+The retained manifest and payload requests use generation addresses. A
+concurrent server publication therefore cannot mix bytes from different
+generations. The configured API origin is the online publisher identity.
+
+Non-loopback publishers must use HTTPS. Every HTTPS response must carry a
+completed, standard-library-verified certificate chain. It must remain on that
+exact origin. Starmap retains loopback HTTP only for local embedding and tests.
+
+The client bounds both bodies and requires exact response and descriptor media
+types. It strictly parses and validates the manifest before payload download.
+It also rejects an incompatible catalog-schema range or oversized descriptor.
+The generation ID must be a bounded canonical path segment. The client verifies
+payload size and SHA-256 before decode or durable commit.
+
+Any verification or transport failure leaves the current catalog and durable
+store untouched. This includes malformed manifest data, unsafe identity,
+truncated data, a corrupt checksum, and semantic decode errors.
 
 Remote updates preserve the received generation and sync-run identities rather
 than minting a second local identity. Commit remains compare-and-swap and the
@@ -89,18 +92,21 @@ identity publishes its generation without copying the catalog or emitting model
 changes. An older retained event cannot regress the active generation.
 
 The subscriber expects the server's 20-second default heartbeat and uses a
-60-second default liveness deadline. Both are configurable; configuration must
+60-second default liveness deadline. Both are configurable. Configuration must
 leave room for at least two expected heartbeat intervals. Every comment or
 publication resets the liveness deadline, but comments never trigger a catalog
-fetch or advance publication identity. Silence closes the response body, joins
-the per-stream reader, and enters reconnect/catch-up. The caller context owns
+fetch or advance publication identity. Silence closes the response body and
+joins the per-stream reader. The subscriber then reconnects and fetches the
+current manifest.
+
+The caller context owns
 initial fetch, streaming, retries, activation, and termination. `Close` cancels
-that context and joins the owned lifecycle within a configurable five-second
-default, returning a typed timeout instead of waiting forever.
+that context and joins the owned lifecycle. A configurable five-second default
+bounds that wait. A timeout returns a typed error.
 
 Stream parsing rejects a line larger than 64 KiB or a cumulative event frame
 larger than 256 KiB. A supplied `Last-Event-ID` must be a positive unsigned
-integer and is rejected before network I/O otherwise. These fixed bounds keep
+integer. The client rejects another value before network I/O. These fixed bounds keep
 an untrusted publisher from growing subscriber memory through one fragmented
 event.
 

@@ -155,10 +155,6 @@ func TestAMediaModelReachesItsOfferingOperations(t *testing.T) {
 	}
 }
 
-// TestMediaFactsRefuseAContradictoryTag states the consistency rule. A tag that
-// names an operation while the modalities beside it name another is a catalog
-// defect, and it is one the derivation would answer by publishing the wrong
-// operation rather than by failing.
 func TestMediaFactsRefuseAContradictoryTag(t *testing.T) {
 	for _, test := range []struct {
 		name  string
@@ -258,14 +254,6 @@ func TestTheRecognitionOperationDecodesFromItsWireValue(t *testing.T) {
 	}
 }
 
-// TestAPagePriceIsAValidatedPriceOfItsOwn covers the unit a recognition
-// provider bills.
-//
-// A page is not a token. A provider that reads a document charges the same for
-// a page of dense text and a page of white space, so a catalog that carried
-// only token prices could state no recognition cost at all. This asserts the
-// page price counts as a price, survives a round trip, and is refused when it
-// is not a price a caller can be charged.
 func TestAPagePriceIsAValidatedPriceOfItsOwn(t *testing.T) {
 	pricing := &ModelPricing{
 		Operations: &ModelOperationPricing{PageInput: price(0.001)},

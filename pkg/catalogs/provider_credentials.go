@@ -24,7 +24,7 @@ type ProviderCredentials struct {
 }
 
 // ProviderCredentialPlane defines the ordered authentication profiles that one
-// credential plane permits. Selecting a profile is terminal; the catalog does
+// credential plane permits. Selecting a profile is terminal. The catalog does
 // not define automatic fallback between profiles.
 type ProviderCredentialPlane struct {
 	Required     bool                          `json:"required" yaml:"required"`
@@ -43,7 +43,7 @@ const (
 )
 
 // ProviderCredentialField defines one named material field and its conventional
-// ambient environment names. Product-specific names are derived from its ID.
+// ambient environment names. Its ID determines product-specific names.
 type ProviderCredentialField struct {
 	ID          ProviderCredentialFieldID   `json:"id" yaml:"id"`
 	Kind        ProviderCredentialFieldKind `json:"kind" yaml:"kind"`
@@ -94,8 +94,8 @@ type ProviderCredentialProfile struct {
 	ProtocolOptions  ProviderAuthenticationProtocolOptions `json:"protocol_options,omitempty" yaml:"protocol_options,omitempty"`
 }
 
-// ProviderCredentialPlacementKind identifies where one credential field is
-// applied to an HTTP request.
+// ProviderCredentialPlacementKind identifies the request location for one
+// credential field.
 type ProviderCredentialPlacementKind string
 
 const (
@@ -105,8 +105,8 @@ const (
 	ProviderCredentialPlacementQuery ProviderCredentialPlacementKind = "query"
 )
 
-// ProviderCredentialScheme identifies the transformation applied before a
-// credential field is placed on a request.
+// ProviderCredentialScheme identifies the transformation to apply before placing
+// a credential field on a request.
 type ProviderCredentialScheme string
 
 const (
@@ -136,8 +136,8 @@ type ProviderCredentialEndpointBinding struct {
 	Format   ProviderCredentialEndpointBindingFormat `json:"format" yaml:"format"`
 }
 
-// ProviderCredentialEndpointBindingFormat identifies how a value is encoded
-// before it replaces an endpoint template variable.
+// ProviderCredentialEndpointBindingFormat identifies how to encode a value before
+// it replaces an endpoint template variable.
 type ProviderCredentialEndpointBindingFormat string
 
 const (

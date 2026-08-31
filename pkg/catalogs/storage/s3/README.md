@@ -8,9 +8,9 @@
 import "github.com/agentstation/starmap/pkg/catalogs/storage/s3"
 ```
 
-Package s3 provides an S3\-compatible implementation of storage.ObjectBackend.
+Package s3 implements storage.ObjectBackend for S3\-compatible services.
 
-The caller owns the S3 client, including endpoint selection, credentials, retries, transport, and lifecycle. Backend construction performs no network operation. The selected service must implement conditional PutObject writes: If\-None\-Match for immutable objects and If\-Match for pointer promotion.
+The caller owns the S3 client, including endpoint selection, credentials, retries, transport, and lifecycle. Constructing a Backend does not access the network. The selected service must implement conditional PutObject writes: If\-None\-Match for immutable objects and If\-Match for pointer promotion.
 
 ## Index
 
@@ -22,7 +22,7 @@ The caller owns the S3 client, including endpoint selection, credentials, retrie
 
 
 <a name="Backend"></a>
-## type [Backend](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/storage/s3/backend.go#L41-L45>)
+## type [Backend](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/storage/s3/backend.go#L40-L44>)
 
 Backend adapts a caller\-owned AWS SDK v2 S3 client to ObjectBackend.
 
@@ -35,7 +35,7 @@ type Backend struct {
 ```
 
 <a name="New"></a>
-### func [New](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/storage/s3/backend.go#L51>)
+### func [New](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/storage/s3/backend.go#L50>)
 
 ```go
 func New(client *awss3.Client, config Config) (*Backend, error)
@@ -43,10 +43,10 @@ func New(client *awss3.Client, config Config) (*Backend, error)
 
 New creates an inert S3\-compatible object backend.
 
-The caller must configure client with its credentials, region, endpoint, transport, and retry policy before calling New. New performs no network work.
+The caller must configure client with its credentials, region, endpoint, transport, and retry policy before calling New. New does not access the network.
 
 <a name="Backend.Get"></a>
-### func \(\*Backend\) [Get](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/storage/s3/backend.go#L74>)
+### func \(\*Backend\) [Get](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/storage/s3/backend.go#L73>)
 
 ```go
 func (b *Backend) Get(ctx context.Context, key string) (storage.ObjectValue, error)
@@ -55,7 +55,7 @@ func (b *Backend) Get(ctx context.Context, key string) (storage.ObjectValue, err
 Get fetches one object and returns its opaque ETag as Version.
 
 <a name="Backend.Put"></a>
-### func \(\*Backend\) [Put](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/storage/s3/backend.go#L118-L123>)
+### func \(\*Backend\) [Put](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/storage/s3/backend.go#L117-L122>)
 
 ```go
 func (b *Backend) Put(ctx context.Context, key string, data []byte, condition storage.ObjectPutCondition) (storage.ObjectValue, error)
@@ -63,10 +63,10 @@ func (b *Backend) Put(ctx context.Context, key string, data []byte, condition st
 
 Put conditionally writes one object and returns its opaque ETag as Version.
 
-Exactly one condition is required. Backend never performs an unconditional last\-writer\-wins write.
+The caller must provide exactly one condition. Backend never uses an unconditional last\-writer\-wins write.
 
 <a name="Config"></a>
-## type [Config](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/storage/s3/backend.go#L29-L35>)
+## type [Config](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/storage/s3/backend.go#L28-L34>)
 
 Config describes one caller\-owned S3 bucket.
 

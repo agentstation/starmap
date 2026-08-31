@@ -29,8 +29,8 @@ type RecordReport struct {
 	Truncated bool
 }
 
-// QuarantineError reports that usable records were returned while malformed or
-// excess siblings were quarantined.
+// QuarantineError reports a partial result with usable records and quarantined
+// malformed or excess siblings.
 type QuarantineError struct {
 	// Collection identifies the affected source collection.
 	Collection string
@@ -54,7 +54,7 @@ func (e *QuarantineError) Unwrap() error {
 	return e.Report.Issues[0].Err
 }
 
-// Err returns a typed partial-result error when records were quarantined.
+// Err returns a typed partial-result error when the report contains quarantined records.
 func (r RecordReport) Err(collection string) error {
 	if r.Rejected == 0 {
 		return nil
@@ -62,8 +62,8 @@ func (r RecordReport) Err(collection string) error {
 	return &QuarantineError{Collection: collection, Report: r}
 }
 
-// DecodeJSONArray decodes members independently after requiring a valid JSON
-// array envelope. At most max records are decoded.
+// DecodeJSONArray requires a valid JSON array envelope, then decodes each member
+// independently. It decodes at most max records.
 func DecodeJSONArray[T any](data json.RawMessage, collection string, limit int) ([]T, RecordReport, error) {
 	var raw []json.RawMessage
 	if err := json.Unmarshal(data, &raw); err != nil {
@@ -98,8 +98,8 @@ func DecodeJSONArray[T any](data json.RawMessage, collection string, limit int) 
 	return decoded, report, nil
 }
 
-// DecodeJSONObject decodes object values independently in sorted key order
-// after requiring a valid JSON object envelope. At most max records are decoded.
+// DecodeJSONObject requires a valid JSON object envelope, then decodes values
+// independently in sorted key order. It decodes at most max records.
 func DecodeJSONObject[T any](data json.RawMessage, collection string, limit int) (map[string]T, RecordReport, error) {
 	var raw map[string]json.RawMessage
 	if err := json.Unmarshal(data, &raw); err != nil {

@@ -32,7 +32,13 @@ func TestPullRequestWorkflowPinsToolchainActionsToolsAndRequiredJobs(t *testing.
 		"group: pr-",
 		"  verification:",
 		"name: Verification Gate",
+		"name: Checkout pinned technical-writing skill",
+		"repository: agentstation/skills",
+		"ref: dc9948f59089426c7dd077e41469104ec788cf7f",
+		"path: .ci/agentstation-skills",
+		"persist-credentials: false",
 		"name: Run verification gate",
+		"TECHNICAL_WRITING: ${{ github.workspace }}/.ci/agentstation-skills/technical-writing/scripts/technical-writing",
 		"  security-reliability:",
 		"name: Security & Reliability",
 		"  action-pins:",
@@ -288,6 +294,7 @@ func TestPinnedArtifactConsumerIsOfflineAndDependencyBounded(t *testing.T) {
 	}
 	for _, check := range []string{
 		`PINNED_ARTIFACT_MODULE=`,
+		`STARMAP_RELEASE_GOTOOLCHAIN`,
 		`PINNED_MAX_NON_STANDARD_PACKAGES=32`,
 		`pinned_banned_pattern=`,
 		`starmap/pkg/catalogs/artifact`,

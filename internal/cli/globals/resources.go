@@ -48,7 +48,7 @@ func AddResourceFlags(cmd *cobra.Command) *ResourceFlags {
 	return flags
 }
 
-// mustGetString retrieves a string flag value or panics if the flag doesn't exist.
+// mustGetString retrieves a string flag value or panics if the flag does not exist.
 func mustGetString(cmd *cobra.Command, name string) string {
 	val, err := cmd.Flags().GetString(name)
 	if err != nil {
@@ -57,7 +57,7 @@ func mustGetString(cmd *cobra.Command, name string) string {
 	return val
 }
 
-// mustGetInt retrieves an integer flag value or panics if the flag doesn't exist.
+// mustGetInt retrieves an integer flag value or panics if the flag does not exist.
 func mustGetInt(cmd *cobra.Command, name string) int {
 	val, err := cmd.Flags().GetInt(name)
 	if err != nil {

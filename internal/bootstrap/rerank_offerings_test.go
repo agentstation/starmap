@@ -8,11 +8,9 @@ import (
 )
 
 // TestShippedRerankOfferingsCarryTheirCost reads the catalog this module
-// embeds and holds every rerank offering to the two facts a caller cannot
-// route without. The price is one of them, because an unpriced turn reads as
-// free to every spend limit downstream. The document bound is the other,
-// because a reranker refuses a longer list rather than truncating it, so a
-// caller that cannot read the bound sends a request that cannot succeed.
+// embeds and requires two facts for every rerank offering. First, the price
+// prevents spend limits from treating the request as free. Second, the document
+// bound prevents callers from sending a list that the reranker will reject.
 //
 // The test also fails when the catalog ships no rerank offering at all. An
 // operation the type system names and the data never carries is an operation
@@ -72,9 +70,6 @@ func TestShippedRerankOfferingsCarryTheirCost(t *testing.T) {
 	if len(bases) == 0 {
 		t.Fatal("the shipped catalog holds no rerank offering")
 	}
-	// Both bases have to ship. A catalog that carried one of them would let a
-	// consumer read the price it happens to find and still be right, which is
-	// the guess the basis field exists to remove.
 	for _, basis := range []catalogs.ModelRerankBasis{
 		catalogs.ModelRerankBasisSearchUnit,
 		catalogs.ModelRerankBasisToken,
@@ -85,10 +80,6 @@ func TestShippedRerankOfferingsCarryTheirCost(t *testing.T) {
 	}
 }
 
-// TestRerankProviderEndpointsResolve holds the other half of the offering. A
-// priced offering that resolves to no URL routes nowhere, and the projection
-// that carries the price is generated from the same provider record that
-// carries the path.
 func TestRerankProviderEndpointsResolve(t *testing.T) {
 	builder, err := NewEmbeddedBuilder()
 	if err != nil {

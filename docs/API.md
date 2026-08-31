@@ -25,45 +25,6 @@ This document provides a complete API reference for Starmap's public interfaces.
 import "github.com/agentstation/starmap"
 ```
 
-Package starmap provides the small, provider\-independent entry point for the Starmap AI model catalog system.
-
-Starmap wraps the underlying catalog system with additional features including: \- Event hooks for model changes \(added, updated, removed\) \- Thread\-safe access to an immutable canonical catalog \- Explicit, serialized publication of complete catalog generations \- Flexible configuration through functional options
-
-Example usage:
-
-```
-// Create a starmap instance with default settings
-sm, err := starmap.New()
-if err != nil {
-    log.Fatal(err)
-}
-// Register event hooks
-sm.OnModelAdded(func(model catalogs.Model) {
-    log.Printf("New model: %s", model.ID)
-})
-
-// Get the current immutable catalog
-catalog := sm.Catalog()
-
-model, err := catalog.FindModel("gpt-4o")
-if err != nil {
-    log.Fatal(err)
-}
-
-// Provider acquisition is an explicit opt-in composition.
-syncer, err := acquisition.New(sm)
-if err != nil {
-    log.Fatal(err)
-}
-result, err := syncer.Sync(ctx,
-    sync.WithProvider("openai"),
-    sync.WithDryRun(true),
-)
-if err != nil {
-    log.Fatal(err)
-}
-```
-
 Package starmap provides immutable AI model catalog reads, explicit generation publication, event hooks, and caller\-selected generation storage.
 
 ## Index
@@ -121,11 +82,11 @@ Package starmap provides immutable AI model catalog reads, explicit generation p
 const (
     // ReadinessIssueCatalogUnavailable means no active immutable catalog exists.
     ReadinessIssueCatalogUnavailable = "catalog_unavailable"
-    // ReadinessIssueEmbeddedBootstrapFuture means embedded metadata is dated in the future.
+    // ReadinessIssueEmbeddedBootstrapFuture means bootstrap metadata has a future date.
     ReadinessIssueEmbeddedBootstrapFuture = "embedded_bootstrap_future"
-    // ReadinessIssueEmbeddedBootstrapStale means the configured age budget was exceeded.
+    // ReadinessIssueEmbeddedBootstrapStale means bootstrap age exceeds its budget.
     ReadinessIssueEmbeddedBootstrapStale = "embedded_bootstrap_stale"
-    // ReadinessIssueEmbeddedBootstrapOversize means the configured size budget was exceeded.
+    // ReadinessIssueEmbeddedBootstrapOversize means bootstrap size exceeds its budget.
     ReadinessIssueEmbeddedBootstrapOversize = "embedded_bootstrap_oversize"
 )
 ```
@@ -157,7 +118,7 @@ type Candidate struct {
 func NewCandidate(catalog *catalogs.Catalog, evidence CandidateEvidence) (*Candidate, error)
 ```
 
-NewCandidate validates and returns a publication candidate. Empty evidence is permitted for custom acquisition. Client.Update records a deterministic custom\-update observation in that case.
+NewCandidate validates and returns a publication candidate. Custom acquisition can omit evidence. Client.Update records a deterministic custom\-update observation in that case.
 
 <a name="CandidateEvidence"></a>
 ## type [CandidateEvidence](<https://github.com/agentstation/starmap/blob/main/update.go#L15-L18>)
@@ -174,7 +135,7 @@ type CandidateEvidence struct {
 <a name="CatalogPublishedEvent"></a>
 ## type [CatalogPublishedEvent](<https://github.com/agentstation/starmap/blob/main/hooks.go#L19-L24>)
 
-CatalogPublishedEvent identifies one durably committed immutable catalog. Sequence increases with each in\-process activation; gaps tell observers that pending callback delivery coalesced to a newer generation. Catalog is safe to retain and share across goroutines.
+CatalogPublishedEvent identifies one durably committed immutable catalog. Sequence increases with each in\-process activation. Gaps tell observers that pending callback delivery coalesced to a newer generation. Catalog is safe to retain and share across goroutines.
 
 ```go
 type CatalogPublishedEvent struct {
@@ -188,7 +149,7 @@ type CatalogPublishedEvent struct {
 <a name="CatalogPublishedHook"></a>
 ## type [CatalogPublishedHook](<https://github.com/agentstation/starmap/blob/main/hooks.go#L28>)
 
-CatalogPublishedHook is called after a catalog generation is durably committed and atomically published.
+CatalogPublishedHook runs after Starmap durably commits and atomically publishes a catalog generation.
 
 ```go
 type CatalogPublishedHook func(CatalogPublishedEvent) error
@@ -208,7 +169,7 @@ type CatalogReadiness struct {
 ```
 
 <a name="CatalogState"></a>
-## type [CatalogState](<https://github.com/agentstation/starmap/blob/main/client.go#L74-L80>)
+## type [CatalogState](<https://github.com/agentstation/starmap/blob/main/client.go#L33-L39>)
 
 CatalogState holds one atomic snapshot. It pairs the current immutable catalog with its generation identity, checksum, timestamp, and local sequence.
 
@@ -223,7 +184,7 @@ type CatalogState struct {
 ```
 
 <a name="Client"></a>
-## type [Client](<https://github.com/agentstation/starmap/blob/main/client.go#L141-L160>)
+## type [Client](<https://github.com/agentstation/starmap/blob/main/client.go#L100-L119>)
 
 Client manages an immutable canonical catalog, explicit publication, persistence, and event hooks. It owns no provider acquisition, scheduling goroutine, or cadence.
 
@@ -234,16 +195,16 @@ type Client struct {
 ```
 
 <a name="New"></a>
-### func [New](<https://github.com/agentstation/starmap/blob/main/client.go#L164>)
+### func [New](<https://github.com/agentstation/starmap/blob/main/client.go#L123>)
 
 ```go
 func New(opts ...Option) (*Client, error)
 ```
 
-New creates a Client using a background context. Call NewContext when construction may perform storage I/O that must be canceled by the caller.
+New creates a Client using a background context. Call NewContext when the caller must cancel storage I/O during client setup.
 
 <a name="NewContext"></a>
-### func [NewContext](<https://github.com/agentstation/starmap/blob/main/client.go#L173>)
+### func [NewContext](<https://github.com/agentstation/starmap/blob/main/client.go#L132>)
 
 ```go
 func NewContext(ctx context.Context, opts ...Option) (*Client, error)
@@ -261,7 +222,7 @@ func (c *Client) Activate(ctx context.Context, generation catalogs.Generation) (
 Activate validates, durably commits, and atomically activates an immutable generation obtained by an explicit trusted distribution adapter.
 
 <a name="Client.Catalog"></a>
-### func \(\*Client\) [Catalog](<https://github.com/agentstation/starmap/blob/main/client.go#L62>)
+### func \(\*Client\) [Catalog](<https://github.com/agentstation/starmap/blob/main/client.go#L21>)
 
 ```go
 func (c *Client) Catalog() *catalogs.Catalog
@@ -270,7 +231,7 @@ func (c *Client) Catalog() *catalogs.Catalog
 Catalog returns the current immutable canonical catalog. It returns nil when called on a nil Client. After New or NewContext succeeds, Catalog is non\-failing, non\-nil, O\(1\), allocation\-free, and safe to retain across goroutines.
 
 <a name="Client.CurrentCatalogState"></a>
-### func \(\*Client\) [CurrentCatalogState](<https://github.com/agentstation/starmap/blob/main/client.go#L83>)
+### func \(\*Client\) [CurrentCatalogState](<https://github.com/agentstation/starmap/blob/main/client.go#L42>)
 
 ```go
 func (c *Client) CurrentCatalogState() CatalogState
@@ -285,10 +246,10 @@ CurrentCatalogState returns one atomic catalog/generation pair.
 func (c *Client) CurrentGeneration(ctx context.Context) (catalogs.Generation, error)
 ```
 
-CurrentGeneration returns the exact immutable generation currently published by this client. The embedded bootstrap is returned before durable mutation.
+CurrentGeneration returns this client's current immutable generation. Before any durable mutation, it returns the embedded bootstrap.
 
 <a name="Client.CurrentGenerationID"></a>
-### func \(\*Client\) [CurrentGenerationID](<https://github.com/agentstation/starmap/blob/main/client.go#L104>)
+### func \(\*Client\) [CurrentGenerationID](<https://github.com/agentstation/starmap/blob/main/client.go#L63>)
 
 ```go
 func (c *Client) CurrentGenerationID() string
@@ -321,7 +282,7 @@ HookStats returns a lock\-free snapshot of callback delivery health.
 func (c *Client) OnCatalogPublished(fn CatalogPublishedHook)
 ```
 
-OnCatalogPublished registers a callback for durable catalog publication. Generations begin callback delivery in sequence order. When callbacks lag, delivery retains the running generation and coalesces pending work to the newest committed generation.
+OnCatalogPublished registers a callback for durable catalog publication. Generations start callback delivery in sequence order. When callbacks lag, delivery retains the running generation and coalesces pending work to the newest committed generation.
 
 <a name="Client.OnModelAdded"></a>
 ### func \(\*Client\) [OnModelAdded](<https://github.com/agentstation/starmap/blob/main/hooks.go#L67>)
@@ -330,7 +291,7 @@ OnCatalogPublished registers a callback for durable catalog publication. Generat
 func (c *Client) OnModelAdded(fn ModelAddedHook)
 ```
 
-OnModelAdded registers a callback for when models are added.
+OnModelAdded registers a callback that receives added models.
 
 <a name="Client.OnModelRemoved"></a>
 ### func \(\*Client\) [OnModelRemoved](<https://github.com/agentstation/starmap/blob/main/hooks.go#L73>)
@@ -339,7 +300,7 @@ OnModelAdded registers a callback for when models are added.
 func (c *Client) OnModelRemoved(fn ModelRemovedHook)
 ```
 
-OnModelRemoved registers a callback for when models are removed.
+OnModelRemoved registers a callback that receives removed models.
 
 <a name="Client.OnModelUpdated"></a>
 ### func \(\*Client\) [OnModelUpdated](<https://github.com/agentstation/starmap/blob/main/hooks.go#L70>)
@@ -348,7 +309,7 @@ OnModelRemoved registers a callback for when models are removed.
 func (c *Client) OnModelUpdated(fn ModelUpdatedHook)
 ```
 
-OnModelUpdated registers a callback for when models are updated.
+OnModelUpdated registers a callback that receives changed models.
 
 <a name="Client.Readiness"></a>
 ### func \(\*Client\) [Readiness](<https://github.com/agentstation/starmap/blob/main/readiness.go#L50>)
@@ -366,7 +327,7 @@ Readiness evaluates catalog availability and configured embedded\-bootstrap age/
 func (c *Client) Rollback(ctx context.Context, generationID string) (*RollbackResult, error)
 ```
 
-Rollback atomically makes a retained generation current and projects its exact catalog semantics and provenance into the configured human workspace. Repeating a rollback to the current durable generation is idempotent.
+Rollback atomically makes a retained generation current and projects its exact catalog semantics and provenance into the configured human catalog workspace. Repeating a rollback to the current durable generation is idempotent.
 
 <a name="Client.Save"></a>
 ### func \(\*Client\) [Save](<https://github.com/agentstation/starmap/blob/main/persistence.go#L12>)
@@ -396,7 +357,7 @@ func (c *Client) Update(ctx context.Context, update UpdateFunc) (Publication, er
 Update serializes candidate construction, generation\-store CAS, and atomic in\-memory publication. Acquisition and scheduling remain explicit caller composition above Client.
 
 <a name="Client.WorkspacePath"></a>
-### func \(\*Client\) [WorkspacePath](<https://github.com/agentstation/starmap/blob/main/client.go#L121>)
+### func \(\*Client\) [WorkspacePath](<https://github.com/agentstation/starmap/blob/main/client.go#L80>)
 
 ```go
 func (c *Client) WorkspacePath() string
@@ -440,7 +401,7 @@ type HookDeliveryStats struct {
     // Coalesced is the number of pending catalog generations superseded by a
     // newer committed generation before callback delivery began.
     Coalesced uint64
-    // LastLatency is the duration of the most recently completed callback.
+    // LastLatency records how long the most recent callback took.
     LastLatency time.Duration
     // MaxLatency is the longest completed callback duration.
     MaxLatency time.Duration
@@ -450,7 +411,7 @@ type HookDeliveryStats struct {
 <a name="ModelAddedHook"></a>
 ## type [ModelAddedHook](<https://github.com/agentstation/starmap/blob/main/hooks.go#L31>)
 
-ModelAddedHook is called when a model is added to the catalog.
+ModelAddedHook runs when the catalog gains a model.
 
 ```go
 type ModelAddedHook func(model catalogs.Model)
@@ -459,7 +420,7 @@ type ModelAddedHook func(model catalogs.Model)
 <a name="ModelRemovedHook"></a>
 ## type [ModelRemovedHook](<https://github.com/agentstation/starmap/blob/main/hooks.go#L37>)
 
-ModelRemovedHook is called when a model is removed from the catalog.
+ModelRemovedHook runs when the catalog loses a model.
 
 ```go
 type ModelRemovedHook func(model catalogs.Model)
@@ -468,7 +429,7 @@ type ModelRemovedHook func(model catalogs.Model)
 <a name="ModelUpdatedHook"></a>
 ## type [ModelUpdatedHook](<https://github.com/agentstation/starmap/blob/main/hooks.go#L34>)
 
-ModelUpdatedHook is called when a model is updated in the catalog.
+ModelUpdatedHook runs when the catalog changes a model.
 
 ```go
 type ModelUpdatedHook func(old, updated catalogs.Model)
@@ -499,7 +460,7 @@ WithCatalogPath configures the human\-editable provider YAML workspace used for 
 func WithCatalogStore(store storage.Store) Option
 ```
 
-WithCatalogStore configures the writable generation store used by non\-dry sync, manual, remote, and scheduled catalog updates. Read\-only access and dry runs do not require a store. Starmap provides memory, filesystem, and conditional object\-storage implementations; embedding applications own and inject any database\-backed implementation.
+WithCatalogStore configures the writable catalog store used by non\-dry sync, manual, remote, and scheduled catalog updates. Read\-only access and dry runs do not require a store. Starmap provides memory, filesystem, and conditional object\-storage implementations. Embedding applications own and inject any database\-backed implementation.
 
 <a name="WithEmbeddedBootstrapMaxAge"></a>
 ### func [WithEmbeddedBootstrapMaxAge](<https://github.com/agentstation/starmap/blob/main/options.go#L93>)
@@ -522,7 +483,7 @@ WithEmbeddedBootstrapMaxSizeBytes fails readiness while the active embedded boot
 <a name="Publication"></a>
 ## type [Publication](<https://github.com/agentstation/starmap/blob/main/update.go#L79-L84>)
 
-Publication identifies the durable generation produced by a successful update. Published is false when the update function intentionally returns no candidate or an identical retained generation is activated again.
+Publication identifies the durable generation produced by a successful update. Published is false when the update function returns no candidate or reactivates an identical retained generation.
 
 ```go
 type Publication struct {
@@ -548,7 +509,7 @@ type ReadinessIssue struct {
 <a name="RollbackResult"></a>
 ## type [RollbackResult](<https://github.com/agentstation/starmap/blob/main/rollback.go#L14-L25>)
 
-RollbackResult describes activation of a retained immutable generation.
+RollbackResult describes an activated, retained immutable generation.
 
 ```go
 type RollbackResult struct {
@@ -568,7 +529,7 @@ type RollbackResult struct {
 <a name="UpdateFunc"></a>
 ## type [UpdateFunc](<https://github.com/agentstation/starmap/blob/main/update.go#L74>)
 
-UpdateFunc builds and validates a complete candidate while Client.Update holds the client's mutation transaction. Returning nil performs no publication. The current catalog is immutable and safe to retain.
+UpdateFunc builds and validates a complete candidate while Client.Update holds the client's mutation transaction. A nil result does not publish. The current catalog is immutable and safe to retain.
 
 ```go
 type UpdateFunc func(context.Context, *catalogs.Catalog) (*Candidate, error)

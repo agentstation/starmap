@@ -2,7 +2,8 @@ package catalogs
 
 import "reflect"
 
-// MergeModels performs a smart merge of two models, keeping existing values where the updated model has empty/nil values.
+// MergeModels combines two models and retains existing values when updated has
+// an empty or nil value.
 func MergeModels(existing, updated Model) Model {
 	result := existing // Start with existing model
 

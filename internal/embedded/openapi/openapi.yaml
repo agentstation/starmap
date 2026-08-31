@@ -3,16 +3,6 @@ components:
     catalogs.ArchitectureType:
       description: Type of architecture
       type: string
-      x-enum-comments:
-        ArchitectureTypeCNN: Convolutional Neural Networks
-        ArchitectureTypeDiffusion: Diffusion models (Stable Diffusion, DALL-E, etc.)
-        ArchitectureTypeGAN: Generative Adversarial Networks
-        ArchitectureTypeGRU: Gated Recurrent Unit networks
-        ArchitectureTypeLSTM: Long Short-Term Memory networks
-        ArchitectureTypeMoE: Mixture of Experts (Mixtral, GLaM, Switch Transformer)
-        ArchitectureTypeRNN: Recurrent Neural Networks
-        ArchitectureTypeTransformer: Transformer-based models (GPT, BERT, LLaMA, etc.)
-        ArchitectureTypeVAE: Variational Autoencoders
       x-enum-varnames:
       - ArchitectureTypeTransformer
       - ArchitectureTypeMoE
@@ -277,12 +267,10 @@ components:
           description: Whether this is a fine-tuned variant
           type: boolean
         parameter_count:
-          description: Model size (e.g., "7B", "70B", "405B")
           type: string
         quantization:
           $ref: '#/components/schemas/catalogs.Quantization'
         quantized:
-          description: Whether the model has been quantized
           type: boolean
         tokenizer:
           $ref: '#/components/schemas/catalogs.Tokenizer'
@@ -395,7 +383,7 @@ components:
           description: |-
             ReleaseDate is the first known public release of this identity. A rolling
             alias may later route to revisions with a newer KnowledgeCutoff. Zero
-            means unknown; missing day precision must not be fabricated.
+            means unknown. Do not invent missing day precision.
           type: string
         tags:
           items:
@@ -509,7 +497,7 @@ components:
           description: Response delivery
           type: boolean
         frequency_penalty:
-          description: Generation control - Repetition control
+          description: '[Core] Supports frequency penalty'
           type: boolean
         include_reasoning:
           description: Supports including reasoning traces in response
@@ -584,15 +572,11 @@ components:
           description: Supports structured outputs (JSON schema validation)
           type: boolean
         temperature:
-          description: Generation control - Core sampling and decoding
           type: boolean
         tfs:
           description: '[Advanced] Supports tail free sampling'
           type: boolean
         tool_calls:
-          description: |-
-            Core capabilities
-            Tool calling system - three distinct aspects:
           type: boolean
         tool_choice:
           description: Supports tool choice strategies (auto/none/required control)
@@ -610,7 +594,7 @@ components:
           description: '[Core] Supports returning top N log probabilities'
           type: boolean
         top_p:
-          description: '[Core] Supports top_p parameter (nucleus sampling)'
+          description: Supports nucleus sampling through top_p.
           type: boolean
         typical_p:
           description: '[Advanced] Supports typical_p parameter (typical sampling)'
@@ -749,25 +733,17 @@ components:
       type: string
       x-enum-comments:
         ModelTagAudio: Audio processing
-        ModelTagChat: Conversational AI
-        ModelTagCoding: Programming and code generation
-        ModelTagCreative: Creative content generation
         ModelTagEducation: Educational content
         ModelTagEmbedding: Text embeddings
         ModelTagFinance: Financial analysis
         ModelTagFunctionCalling: Tool/function calling
         ModelTagImageToText: Image captioning/OCR
-        ModelTagInstruct: Instruction following
         ModelTagLegal: Legal document processing
-        ModelTagMath: Mathematical problem solving
         ModelTagMedical: Medical and healthcare
         ModelTagModeration: Harm-category classification
         ModelTagMultimodal: Multiple input modalities
         ModelTagQA: Question answering
-        ModelTagReasoning: Logical reasoning and problem solving
         ModelTagRerank: Relevance ranking of documents
-        ModelTagResearch: Research and analysis
-        ModelTagRoleplay: Character roleplay and simulation
         ModelTagScience: Scientific applications
         ModelTagSpeechToText: Speech recognition
         ModelTagSummarization: Text summarization
@@ -776,7 +752,6 @@ components:
         ModelTagTextToVideo: Text-to-video generation
         ModelTagTranslation: Language translation
         ModelTagVision: Computer vision
-        ModelTagWriting: Creative and technical writing
       x-enum-varnames:
       - ModelTagCoding
       - ModelTagWriting
@@ -860,9 +835,7 @@ components:
     catalogs.Provider:
       properties:
         aliases:
-          description: Alternative IDs this provider is known by (e.g., in models.dev)
           items:
-            description: Core identification and integration
             type: string
             x-enum-varnames:
             - ProviderIDAlibabaQwen
@@ -906,7 +879,6 @@ components:
         credentials:
           $ref: '#/components/schemas/catalogs.ProviderCredentials'
         description:
-          description: Short description of the provider's inference service
           type: string
         docs_url:
           description: Link to the provider's API documentation
@@ -928,7 +900,7 @@ components:
         logo_svg:
           description: |-
             Logo holds the provider's SVG brand mark. The bytes travel in the JSON
-            catalog payload but stay out of providers.yaml; on a filesystem catalog
+            catalog payload but stay out of providers.yaml. On a filesystem catalog
             they live in the providers/<id>/logo.svg sidecar file.
           items:
             type: integer
@@ -1186,7 +1158,6 @@ components:
       description: Oversight and moderation practices
       properties:
         moderated:
-          description: Whether provider content is moderated
           type: boolean
         moderation_required:
           description: Whether the provider requires moderation
@@ -1205,7 +1176,6 @@ components:
           type: string
       type: object
     catalogs.ProviderID:
-      description: Core identification and integration
       type: string
       x-enum-varnames:
       - ProviderIDAlibabaQwen
@@ -1372,16 +1342,6 @@ components:
     catalogs.Quantization:
       description: Quantization level used by the model
       type: string
-      x-enum-comments:
-        QuantizationBF16: Brain floating point (16 bit)
-        QuantizationFP4: Floating point (4 bit)
-        QuantizationFP6: Floating point (6 bit)
-        QuantizationFP8: Floating point (8 bit)
-        QuantizationFP16: Floating point (16 bit)
-        QuantizationFP32: Floating point (32 bit)
-        QuantizationINT4: Integer (4 bit)
-        QuantizationINT8: Integer (8 bit)
-        QuantizationUnknown: Unknown quantization
       x-enum-varnames:
       - QuantizationINT4
       - QuantizationINT8
@@ -1408,23 +1368,6 @@ components:
     catalogs.Tokenizer:
       description: Tokenizer type used by the model
       type: string
-      x-enum-comments:
-        TokenizerClaude: Claude tokenizer
-        TokenizerCohere: Cohere tokenizer
-        TokenizerDeepSeek: DeepSeek tokenizer
-        TokenizerGPT: GPT tokenizer (OpenAI)
-        TokenizerGemini: Gemini tokenizer (Google)
-        TokenizerGrok: Grok tokenizer (xAI)
-        TokenizerLlama2: LLaMA 2 tokenizer
-        TokenizerLlama3: LLaMA 3 tokenizer
-        TokenizerLlama4: LLaMA 4 tokenizer
-        TokenizerMistral: Mistral tokenizer
-        TokenizerNova: Nova tokenizer (Amazon)
-        TokenizerQwen: Qwen tokenizer
-        TokenizerQwen3: Qwen 3 tokenizer
-        TokenizerRouter: Router-based tokenizer
-        TokenizerUnknown: Unknown tokenizer type
-        TokenizerYi: Yi tokenizer
       x-enum-varnames:
       - TokenizerClaude
       - TokenizerCohere
@@ -1445,10 +1388,6 @@ components:
     catalogs.ToolChoice:
       type: string
       x-enum-comments:
-        ToolChoiceAuto: Model autonomously decides whether to call tools based on
-          context
-        ToolChoiceNone: Model will never call tools, even if tool definitions are
-          provided
         ToolChoiceRequired: Model must call at least one tool before responding
       x-enum-varnames:
       - ToolChoiceAuto
@@ -1771,7 +1710,7 @@ info:
     REST API for the Starmap AI model catalog with reactive catalog publication updates over SSE.
 
     Features:
-    - Comprehensive model and provider queries
+    - Complete model and provider queries
     - Advanced filtering and search
     - Heartbeat-enabled catalog publication updates via Server-Sent Events
     - In-memory caching for performance
@@ -2389,7 +2328,7 @@ paths:
       - health
   /api/v1/stats:
     get:
-      description: Get comprehensive server and catalog statistics
+      description: Get complete server and catalog statistics
       requestBody:
         content:
           application/json:

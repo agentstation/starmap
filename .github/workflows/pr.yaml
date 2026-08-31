@@ -50,7 +50,17 @@ jobs:
           go install github.com/golangci/golangci-lint/v2/cmd/golangci-lint@v2.12.2
           go install github.com/princjef/gomarkdoc/cmd/gomarkdoc@v1.1.0
 
+      - name: Checkout pinned technical-writing skill
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          repository: agentstation/skills
+          ref: dc9948f59089426c7dd077e41469104ec788cf7f
+          path: .ci/agentstation-skills
+          persist-credentials: false
+
       - name: Run verification gate
+        env:
+          TECHNICAL_WRITING: ${{ github.workspace }}/.ci/agentstation-skills/technical-writing/scripts/technical-writing
         run: make verify
 
   security-reliability:
@@ -83,10 +93,9 @@ jobs:
         run: |
           go test ./pkg/catalogs ./pkg/catalogs/storage -race -run 'Migration|Rollback|Fault|Corrupt|ReopensCurrent' -count=1
 
-  # Additive supply-chain evidence. This job is deliberately not a required
-  # status check: it needs the GitHub API, so an upstream outage must not block
-  # merges, and the reviewed-pin allowlist in internal/ciworkflow remains the
-  # blocking control.
+  # This job adds supply-chain evidence. It is not a required status check
+  # because it needs the GitHub API. An upstream outage must not block merges.
+  # The reviewed-pin allowlist in internal/ciworkflow remains the blocking control.
   action-pins:
     name: Action Pin Provenance
     runs-on: ubuntu-latest

@@ -10,7 +10,7 @@ import (
 	"github.com/agentstation/starmap/pkg/errors"
 )
 
-// RollbackResult describes activation of a retained immutable generation.
+// RollbackResult describes an activated, retained immutable generation.
 type RollbackResult struct {
 	// FromGenerationID is the generation active before rollback.
 	FromGenerationID string
@@ -25,7 +25,7 @@ type RollbackResult struct {
 }
 
 // Rollback atomically makes a retained generation current and projects its
-// exact catalog semantics and provenance into the configured human workspace.
+// exact catalog semantics and provenance into the configured human catalog workspace.
 // Repeating a rollback to the current durable generation is idempotent.
 func (c *Client) Rollback(ctx context.Context, generationID string) (*RollbackResult, error) {
 	if c == nil {

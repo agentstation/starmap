@@ -23,7 +23,7 @@ type Release struct {
 // publisher. A GitHub Release implementation, for example, should require the
 // expected repository and signer workflow when verifying build provenance.
 //
-// VerifyPublisher must return nil only when data is authenticated as the exact
+// VerifyPublisher must return nil only after authenticating data as the exact
 // contents of name. Implementations own credentials, clients, trust policy,
 // network access, and lifecycle.
 type PublisherVerifier interface {
@@ -32,7 +32,7 @@ type PublisherVerifier interface {
 
 // VerifyRelease checks the detached checksum, archive statement, generation
 // compatibility, and channel-specific publisher identity before returning the
-// exact immutable generation. It performs no activation or persistence.
+// exact immutable generation. It does not activate or persist the generation.
 func VerifyRelease(
 	ctx context.Context,
 	release Release,

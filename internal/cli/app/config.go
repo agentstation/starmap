@@ -56,8 +56,7 @@ func LoadConfig() (*Config, error) {
 }
 
 // loadConfig loads configuration, using configFile when it is non-empty.
-// Explicit files are required to exist and parse successfully; the default
-// file remains optional.
+// An explicit file must exist and parse successfully. The default file remains optional.
 func loadConfig(configFile string) (*Config, error) {
 	// Load .env files first (before Viper env binding)
 	loadEnvFiles()
@@ -118,9 +117,8 @@ func loadConfig(configFile string) (*Config, error) {
 		RemoteServerOnly:              viper.GetBool("remote_server_only"),
 		CredentialSources:             credentialSources,
 
-		// Logging configuration
-		// LogLevel: empty string means "use precedence logic" (see logger.go)
-		// If LOG_LEVEL env var is set, it will be used; otherwise defaults to "info" via precedence
+		// An empty LogLevel uses the precedence rules in logger.go.
+		// LOG_LEVEL overrides the default level of "info".
 		LogLevel:  getEnvOrDefault("LOG_LEVEL", ""),
 		LogFormat: getEnvOrDefault("LOG_FORMAT", "auto"),
 		LogOutput: getEnvOrDefault("LOG_OUTPUT", "stderr"),

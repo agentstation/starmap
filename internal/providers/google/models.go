@@ -125,8 +125,6 @@ func (c *Client) convertGenAIModel(genaiModel *genai.Model) *catalogs.Model {
 		}
 	}
 
-	// Metadata.ReleaseDate will be provided by models.dev during reconciliation
-	// (models.dev is authoritative for metadata per authority hierarchy)
 	c.applyProviderExtensions(model, genaiModel)
 
 	return model

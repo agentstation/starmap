@@ -35,9 +35,9 @@ type SourceExtension struct {
 	Fields map[string]any `json:"fields,omitempty" yaml:"fields,omitempty"` // Preserved source-specific fields
 }
 
-// MarshalJSON canonicalizes source-defined dynamic values so immutable
-// catalog payload bytes do not depend on whether evidence is still represented
-// by a provider's concrete Go structs or has been decoded into generic maps.
+// MarshalJSON canonicalizes source-defined dynamic values. This keeps immutable
+// catalog bytes independent of the evidence representation. The evidence can
+// use concrete provider structs or generic maps from a prior decode.
 func (se SourceExtension) MarshalJSON() ([]byte, error) {
 	if len(se.Fields) == 0 {
 		return []byte("{}"), nil

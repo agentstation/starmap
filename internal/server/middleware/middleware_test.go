@@ -366,7 +366,6 @@ func TestLogger_Duration(t *testing.T) {
 		t.Fatal("duration_ms field not found or wrong type")
 	}
 
-	// Duration is logged in milliseconds as a float
 	durationMs := time.Duration(durationFloat * float64(time.Millisecond))
 
 	// Duration should be at least 50ms (sleep time)

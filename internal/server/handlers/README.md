@@ -10,28 +10,6 @@ import "github.com/agentstation/starmap/internal/server/handlers"
 
 Package handlers provides HTTP request handlers for the Starmap API.
 
-Handlers are organized by domain for maintainability:
-
-- models.go: Model listing, retrieval, and search
-- providers.go: Provider listing, retrieval, and models
-- admin.go: Administrative operations \(update, stats\)
-- health.go: Health and readiness checks
-- realtime.go: heartbeat\-enabled SSE publication updates
-- openapi.go: OpenAPI 3.1 specification endpoints
-
-All handlers follow a consistent pattern:
-
-1. Validate input
-2. Check cache \(if applicable\)
-3. Query catalog/data source
-4. Transform data
-5. Cache result \(if applicable\)
-6. Return response
-
-Handlers use dependency injection for testability and receive all dependencies through the Handlers struct.
-
-Package handlers provides HTTP request handlers for the Starmap API.
-
 ## Index
 
 - [type DateRange](<#DateRange>)
@@ -243,7 +221,7 @@ HandleSearchModels handles POST /api/v1/models/search. @Summary Search models @D
 func (h *Handlers) HandleStats(w http.ResponseWriter, _ *http.Request)
 ```
 
-HandleStats handles GET /api/v1/stats. @Summary Catalog statistics @Description Get comprehensive server and catalog statistics @Tags admin @Accept json @Produce json @Success 200 \{object\} response.Response\{data=object\} @Failure 500 \{object\} response.Response\{error=response.Error\} @Security ApiKeyAuth @Router /api/v1/stats \[get\].
+HandleStats handles GET /api/v1/stats. @Summary Catalog statistics @Description Get complete server and catalog statistics @Tags admin @Accept json @Produce json @Success 200 \{object\} response.Response\{data=object\} @Failure 500 \{object\} response.Response\{error=response.Error\} @Security ApiKeyAuth @Router /api/v1/stats \[get\].
 
 <a name="Handlers.HandleUpdate"></a>
 ### func \(\*Handlers\) [HandleUpdate](<https://github.com/agentstation/starmap/blob/main/internal/server/handlers/admin.go#L27>)

@@ -804,7 +804,7 @@ func selectDefinitionValue[T any](
 		if contender.semantic != selected.semantic {
 			// No provider-independent fact is safer than choosing by provider
 			// name, map order, or serialized value. Reconciliation can later
-			// attach decisive authority evidence; until then the read view
+			// attach decisive authority evidence. Until then the read view
 			// leaves this field unknown.
 			return zero, false, nil
 		}

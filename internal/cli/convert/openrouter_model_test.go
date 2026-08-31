@@ -129,7 +129,7 @@ func TestOpenRouterModelSchemaCompliance(t *testing.T) {
 		if tp.MaxCompletionTokens == 0 {
 			t.Error("TopProvider.MaxCompletionTokens is zero")
 		}
-		// IsModerated can be false, so we don't check it
+		// IsModerated can be false, so we do not check it
 	})
 
 	t.Run("Pricing Fields", func(t *testing.T) {

@@ -55,8 +55,7 @@ func defaultProviderClientFactory(
 }
 
 // WithProviderClientFactory replaces the concrete provider-client composition.
-// It is intended for source plugins, restricted deployments, and deterministic
-// integration tests.
+// Use it for source plugins, restricted deployments, and deterministic tests.
 func WithProviderClientFactory(factory sources.ProviderClientFactory) Option {
 	return func(options *options) error {
 		if factory == nil {
@@ -78,7 +77,7 @@ type Syncer struct {
 }
 
 // New constructs an explicit acquisition composition. It starts no goroutine
-// and performs no source or filesystem work.
+// and does not access sources or the filesystem.
 func New(client *starmap.Client, opts ...Option) (*Syncer, error) {
 	if client == nil {
 		return nil, &errors.ValidationError{

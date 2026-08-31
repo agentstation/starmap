@@ -944,7 +944,7 @@ func TestOpenAIClientListModels(t *testing.T) {
 		t.Error("Expected at least some models, got 0")
 	}
 
-	// Verify we made exactly 1 request (OpenAI doesn't do individual model fetching)
+	// Verify we made exactly 1 request (OpenAI does not do individual model fetching)
 	if requestCount != 1 {
 		t.Errorf("Expected 1 request, got %d", requestCount)
 	}
@@ -1024,13 +1024,12 @@ func TestSchemaDriftMutationMatrix(t *testing.T) {
 func TestAPIFormatChanges(t *testing.T) {
 	response := loadTestdataResponse(t)
 
-	// These tests ensure we catch API changes that could break our parsing
+	// These tests verify we catch API changes that could break our parsing
 	t.Run("Required fields present", func(t *testing.T) {
 		if len(response.Data) == 0 {
 			t.Fatal("No models in response - API might have changed")
 		}
 
-		// Check that all models have required fields
 		for i, model := range response.Data {
 			if model.ID == "" {
 				t.Errorf("Model %d missing required 'id' field", i)
@@ -1048,8 +1047,6 @@ func TestAPIFormatChanges(t *testing.T) {
 	})
 
 	t.Run("Known models still present", func(t *testing.T) {
-		// These models should exist in OpenAI's API - if they're missing,
-		// the API has changed significantly
 		expectedModels := []string{"gpt-3.5-turbo", "gpt-4o"}
 
 		for _, expectedID := range expectedModels {

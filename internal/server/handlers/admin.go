@@ -68,7 +68,7 @@ func (h *Handlers) HandleUpdate(w http.ResponseWriter, r *http.Request) {
 
 // HandleStats handles GET /api/v1/stats.
 // @Summary Catalog statistics
-// @Description Get comprehensive server and catalog statistics
+// @Description Get complete server and catalog statistics
 // @Tags admin
 // @Accept json
 // @Produce json

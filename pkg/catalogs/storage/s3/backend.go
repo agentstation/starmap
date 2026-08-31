@@ -1,9 +1,8 @@
-// Package s3 provides an S3-compatible implementation of
-// storage.ObjectBackend.
+// Package s3 implements storage.ObjectBackend for S3-compatible services.
 //
 // The caller owns the S3 client, including endpoint selection, credentials,
-// retries, transport, and lifecycle. Backend construction performs no network
-// operation. The selected service must implement conditional PutObject writes:
+// retries, transport, and lifecycle. Constructing a Backend does not access the
+// network. The selected service must implement conditional PutObject writes:
 // If-None-Match for immutable objects and If-Match for pointer promotion.
 package s3
 
@@ -47,7 +46,7 @@ type Backend struct {
 // New creates an inert S3-compatible object backend.
 //
 // The caller must configure client with its credentials, region, endpoint,
-// transport, and retry policy before calling New. New performs no network work.
+// transport, and retry policy before calling New. New does not access the network.
 func New(client *awss3.Client, config Config) (*Backend, error) {
 	if client == nil {
 		return nil, &errors.ConfigError{Component: "S3 catalog backend", Message: "client is required"}
@@ -113,8 +112,8 @@ func (b *Backend) Get(ctx context.Context, key string) (storage.ObjectValue, err
 
 // Put conditionally writes one object and returns its opaque ETag as Version.
 //
-// Exactly one condition is required. Backend never performs an unconditional
-// last-writer-wins write.
+// The caller must provide exactly one condition. Backend never uses an
+// unconditional last-writer-wins write.
 func (b *Backend) Put(
 	ctx context.Context,
 	key string,

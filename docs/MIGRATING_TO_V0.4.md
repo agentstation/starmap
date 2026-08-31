@@ -9,10 +9,10 @@ path for v0.3 data.
 
 1. Stop every process that can write the Starmap workspace or generation
    store.
-2. Back up the provider YAML workspace and durable generation store.
+2. Back up the provider YAML workspace and durable catalog store.
 3. Update code and custom provider YAML as described below.
 4. Start v0.4.0 against a new or migrated schema-v5 workspace and a new
-   manifest-v2 generation store.
+   manifest-v2 catalog store.
 5. Keep the backup until provider validation, catalog reads, and remote
    activation pass.
 
@@ -82,7 +82,7 @@ only after validation succeeds.
 ## Replace incompatible durable data
 
 v0.4.0 rejects pre-v5 payloads and manifest-v1 generations.
-After you back up the old data, start v0.4.0 with an empty generation store. A
+After you back up the old data, start v0.4.0 with an empty catalog store. A
 read-only client uses the verified embedded schema-v5 catalog until the first
 explicit update commits a durable generation.
 
@@ -100,8 +100,8 @@ artifact envelope, detached statement, and GitHub Actions provenance before it
 reads the declared consumer compatibility. It does not decode an incompatible
 payload or add a runtime compatibility path.
 
-After one schema-v5 catalog exists, each new catalog publication selects and
-verifies the newest prior prerelease that supports schema v5. An older
+After one schema-v5 catalog exists, each new publication selects the newest
+prior prerelease that supports schema v5. It verifies that release. An older
 pre-v5 prerelease remains immutable evidence, but it is not a v0.4 rollback
 target.
 

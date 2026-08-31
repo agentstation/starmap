@@ -52,7 +52,7 @@ ValidateJSON enforces source byte and nesting limits before decoding.
 <a name="QuarantineError"></a>
 ## type [QuarantineError](<https://github.com/agentstation/starmap/blob/main/pkg/sources/payload/records.go#L34-L39>)
 
-QuarantineError reports that usable records were returned while malformed or excess siblings were quarantined.
+QuarantineError reports a partial result with usable records and quarantined malformed or excess siblings.
 
 ```go
 type QuarantineError struct {
@@ -120,7 +120,7 @@ type RecordReport struct {
 func DecodeJSONArray[T any](data json.RawMessage, collection string, limit int) ([]T, RecordReport, error)
 ```
 
-DecodeJSONArray decodes members independently after requiring a valid JSON array envelope. At most max records are decoded.
+DecodeJSONArray requires a valid JSON array envelope, then decodes each member independently. It decodes at most max records.
 
 <a name="DecodeJSONObject"></a>
 ### func [DecodeJSONObject](<https://github.com/agentstation/starmap/blob/main/pkg/sources/payload/records.go#L103>)
@@ -129,7 +129,7 @@ DecodeJSONArray decodes members independently after requiring a valid JSON array
 func DecodeJSONObject[T any](data json.RawMessage, collection string, limit int) (map[string]T, RecordReport, error)
 ```
 
-DecodeJSONObject decodes object values independently in sorted key order after requiring a valid JSON object envelope. At most max records are decoded.
+DecodeJSONObject requires a valid JSON object envelope, then decodes values independently in sorted key order. It decodes at most max records.
 
 <a name="RecordReport.Err"></a>
 ### func \(RecordReport\) [Err](<https://github.com/agentstation/starmap/blob/main/pkg/sources/payload/records.go#L58>)
@@ -138,7 +138,7 @@ DecodeJSONObject decodes object values independently in sorted key order after r
 func (r RecordReport) Err(collection string) error
 ```
 
-Err returns a typed partial\-result error when records were quarantined.
+Err returns a typed partial\-result error when the report contains quarantined records.
 
 <a name="UnknownJSONField"></a>
 ## type [UnknownJSONField](<https://github.com/agentstation/starmap/blob/main/pkg/sources/payload/payload.go#L17-L20>)

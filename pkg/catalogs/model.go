@@ -19,10 +19,10 @@ type Model struct {
 	// ModelRef links a provider serving record to its canonical author/slug
 	// model. It is empty on authored-model records.
 	ModelRef    ModelDefinitionID `json:"model,omitempty" yaml:"model,omitempty"`
-	Name        string            `json:"name" yaml:"name"`                                   // Display name (must not be empty)
-	Authors     []Author          `json:"authors,omitempty" yaml:"authors,omitempty"`         // Authors/organizations of the model (if known)
-	Description string            `json:"description,omitempty" yaml:"description,omitempty"` // Description of the model and its use cases
-	Status      ModelStatus       `json:"status,omitempty" yaml:"status,omitempty"`           // Lifecycle status such as active, beta, preview, or deprecated
+	Name        string            `json:"name" yaml:"name"`
+	Authors     []Author          `json:"authors,omitempty" yaml:"authors,omitempty"` // Authors/organizations of the model (if known)
+	Description string            `json:"description,omitempty" yaml:"description,omitempty"`
+	Status      ModelStatus       `json:"status,omitempty" yaml:"status,omitempty"` // Lifecycle status such as active, beta, preview, or deprecated
 
 	// Provider-announced lifecycle dates for this serving record. A nil value
 	// means the provider has not announced the date.
@@ -69,10 +69,6 @@ type Model struct {
 	// Extensions - controlled source-specific fields that are not canonical schema
 	Extensions SourceExtensions `json:"extensions,omitempty" yaml:"extensions,omitempty"`
 
-	// Lifecycle evidence for record keeping and auditing. CreatedAt is the
-	// earliest known source or Starmap observation and UpdatedAt is the latest
-	// known source or Starmap change. When both are known, CreatedAt is never
-	// later than UpdatedAt. A zero value means unknown.
 	CreatedAt utc.Time `json:"created_at" yaml:"created_at"`
 	UpdatedAt utc.Time `json:"updated_at" yaml:"updated_at"`
 
@@ -83,7 +79,7 @@ type Model struct {
 type ModelMetadata struct {
 	// ReleaseDate is the first known public release of this model identity. For
 	// a rolling alias, its KnowledgeCutoff may advance beyond that initial date.
-	// A zero value means unknown; Starmap does not invent missing day precision.
+	// A zero value means unknown. Starmap does not invent missing day precision.
 	ReleaseDate     utc.Time           `json:"release_date" yaml:"release_date"`
 	OpenWeights     bool               `json:"open_weights" yaml:"open_weights"`                             // Whether model weights are open
 	KnowledgeCutoff *utc.Time          `json:"knowledge_cutoff,omitempty" yaml:"knowledge_cutoff,omitempty"` // Knowledge cutoff date (YYYY-MM or YYYY-MM-DD format)
@@ -114,7 +110,7 @@ type ModelProviderMode struct {
 
 // MarshalYAML preserves request-body values as native YAML scalars,
 // sequences, mappings, and nulls. The body is a JSON request fragment, so
-// values that cannot be represented by JSON are rejected.
+// SetExtension rejects values that JSON cannot represent.
 func (m ModelProviderMode) MarshalYAML() (any, error) {
 	entries := make(yaml.MapSlice, 0, 2)
 	if len(m.Headers) > 0 {
@@ -168,9 +164,7 @@ type ModelFeatures struct {
 	// Input/Output modalities
 	Modalities ModelModalities `json:"modalities" yaml:"modalities"` // Supported input/output modalities
 
-	// Core capabilities
-	// Tool calling system - three distinct aspects:
-	ToolCalls   bool `json:"tool_calls" yaml:"tool_calls"`   // Can invoke/call tools in responses (model outputs tool_calls)
+	ToolCalls   bool `json:"tool_calls" yaml:"tool_calls"`
 	Tools       bool `json:"tools" yaml:"tools"`             // Accepts tool definitions in requests (accepts tools parameter)
 	ToolChoice  bool `json:"tool_choice" yaml:"tool_choice"` // Supports tool choice strategies (auto/none/required control)
 	WebSearch   bool `json:"web_search" yaml:"web_search"`   // Supports web search capabilities
@@ -183,14 +177,13 @@ type ModelFeatures struct {
 	IncludeReasoning bool `json:"include_reasoning" yaml:"include_reasoning"` // Supports including reasoning traces in response
 	Verbosity        bool `json:"verbosity" yaml:"verbosity"`                 // Supports verbosity control (GPT-5+)
 
-	// Generation control - Core sampling and decoding
-	Temperature bool `json:"temperature" yaml:"temperature"` // [Core] Supports temperature parameter
-	TopP        bool `json:"top_p" yaml:"top_p"`             // [Core] Supports top_p parameter (nucleus sampling)
-	TopK        bool `json:"top_k" yaml:"top_k"`             // [Advanced] Supports top_k parameter
-	TopA        bool `json:"top_a" yaml:"top_a"`             // [Advanced] Supports top_a parameter (top-a sampling)
-	MinP        bool `json:"min_p" yaml:"min_p"`             // [Advanced] Supports min_p parameter (minimum probability threshold)
-	TypicalP    bool `json:"typical_p" yaml:"typical_p"`     // [Advanced] Supports typical_p parameter (typical sampling)
-	TFS         bool `json:"tfs" yaml:"tfs"`                 // [Advanced] Supports tail free sampling
+	Temperature bool `json:"temperature" yaml:"temperature"`
+	TopP        bool `json:"top_p" yaml:"top_p"`         // Supports nucleus sampling through top_p.
+	TopK        bool `json:"top_k" yaml:"top_k"`         // [Advanced] Supports top_k parameter
+	TopA        bool `json:"top_a" yaml:"top_a"`         // [Advanced] Supports top_a parameter (top-a sampling)
+	MinP        bool `json:"min_p" yaml:"min_p"`         // [Advanced] Supports min_p parameter (minimum probability threshold)
+	TypicalP    bool `json:"typical_p" yaml:"typical_p"` // [Advanced] Supports typical_p parameter (typical sampling)
+	TFS         bool `json:"tfs" yaml:"tfs"`             // [Advanced] Supports tail free sampling
 
 	// Generation control - Length and termination
 	MaxTokens       bool `json:"max_tokens" yaml:"max_tokens"`               // [Core] Supports max_tokens parameter
@@ -198,7 +191,6 @@ type ModelFeatures struct {
 	Stop            bool `json:"stop" yaml:"stop"`                           // [Core] Supports stop sequences/words
 	StopTokenIDs    bool `json:"stop_token_ids" yaml:"stop_token_ids"`       // [Advanced] Supports stop token IDs (numeric)
 
-	// Generation control - Repetition control
 	FrequencyPenalty  bool `json:"frequency_penalty" yaml:"frequency_penalty"`       // [Core] Supports frequency penalty
 	PresencePenalty   bool `json:"presence_penalty" yaml:"presence_penalty"`         // [Core] Supports presence penalty
 	RepetitionPenalty bool `json:"repetition_penalty" yaml:"repetition_penalty"`     // [Advanced] Supports repetition penalty
@@ -245,7 +237,7 @@ type ModelFeatures struct {
 // ModelStatus represents a model lifecycle or availability state.
 type ModelStatus string
 
-// String returns the string representation of a ModelStatus.
+// String returns text for ModelStatus.
 func (ms ModelStatus) String() string {
 	return string(ms)
 }
@@ -268,7 +260,7 @@ type ModelModalities struct {
 // ModelModality represents a supported input or output modality for AI models.
 type ModelModality string
 
-// String returns the string representation of a ModelModality.
+// String returns text for ModelModality.
 func (m ModelModality) String() string {
 	return string(m)
 }
@@ -287,17 +279,16 @@ const (
 // Used in API requests as the "tool_choice" parameter value.
 type ToolChoice string
 
-// String returns the string representation of a ToolChoice.
+// String returns text for ToolChoice.
 func (tc ToolChoice) String() string {
 	return string(tc)
 }
 
 // Tool choice strategies for controlling tool usage behavior.
 const (
-	ToolChoiceAuto     ToolChoice = "auto"     // Model autonomously decides whether to call tools based on context
-	ToolChoiceNone     ToolChoice = "none"     // Model will never call tools, even if tool definitions are provided
+	ToolChoiceAuto     ToolChoice = "auto"
+	ToolChoiceNone     ToolChoice = "none"
 	ToolChoiceRequired ToolChoice = "required" // Model must call at least one tool before responding
-	// Note: Specific tool names can also be used as values to force calling a particular tool.
 )
 
 // ModelControlLevels represents a set of effort/intensity levels for model controls.
@@ -309,7 +300,7 @@ type ModelControlLevels struct {
 // ModelControlLevel represents an effort/intensity level for model controls.
 type ModelControlLevel string
 
-// String returns the string representation of a ModelControlLevel.
+// String returns text for ModelControlLevel.
 func (mcl ModelControlLevel) String() string {
 	return string(mcl)
 }
@@ -342,11 +333,7 @@ type ModelLimits struct {
 	// MaxDocuments is the longest document list the provider ranks in one
 	// call. A reranker refuses a longer list rather than truncating it, and a
 	// caller that does not read this bound sends a request that cannot succeed.
-	MaxDocuments int64 `json:"max_documents,omitempty" yaml:"max_documents,omitempty"`
-	// DocumentTokens is the largest single document the provider reads in a
-	// rerank call, counted in tokens. A provider that exceeds this bound either
-	// truncates the document or splits it into chunks it bills separately, so
-	// the bound is a cost fact as well as a size fact.
+	MaxDocuments   int64 `json:"max_documents,omitempty" yaml:"max_documents,omitempty"`
 	DocumentTokens int64 `json:"document_tokens,omitempty" yaml:"document_tokens,omitempty"`
 
 	limitPresence uint8

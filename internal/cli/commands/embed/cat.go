@@ -83,7 +83,7 @@ func catFile(fsys fs.FS, filePath string) error {
 	} else {
 		fmt.Print(string(content))
 
-		// Ensure output ends with newline if file doesn't
+		// Verify output ends with newline if file does not
 		if len(content) > 0 && content[len(content)-1] != '\n' {
 			fmt.Println()
 		}

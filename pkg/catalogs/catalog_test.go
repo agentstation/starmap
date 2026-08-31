@@ -25,7 +25,6 @@ func TestCatalogModes(t *testing.T) {
 			t.Fatalf("Failed to set provider: %v", err)
 		}
 
-		// Verify it was added
 		models := testBuilderModels(cat)
 		if len(models) != 1 {
 			t.Errorf("Expected 1 model, got %d", len(models))

@@ -40,7 +40,7 @@ Examples:
 }
 
 func runGCloudAuth(cmd *cobra.Command, args []string) error {
-	// This command doesn't take positional arguments
+	// This command does not take positional arguments
 	if len(args) > 0 {
 		return fmt.Errorf("unexpected argument: %s", args[0])
 	}
@@ -83,7 +83,6 @@ func runGCloudAuth(cmd *cobra.Command, args []string) error {
 		return nil
 	}
 
-	// Check if gcloud is installed
 	if _, err := exec.LookPath("gcloud"); err != nil {
 		return fmt.Errorf("gcloud CLI not found. Please install Google Cloud SDK: https://cloud.google.com/sdk/docs/install")
 	}

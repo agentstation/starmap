@@ -13,7 +13,7 @@ import (
 	"github.com/agentstation/starmap/pkg/catalogs"
 )
 
-// printModelDetails prints detailed model information in a single comprehensive table.
+// printModelDetails prints detailed model information in a single complete table.
 func printModelDetails(model *catalogs.Model, provider catalogs.Provider) {
 	formatter := format.New(format.FormatTable)
 

@@ -1,6 +1,8 @@
 # Testing and Verification
 
-This document defines the verification model for Starmap. The goal is not only high line coverage; the goal is proof that the important modules are testable through stable interfaces and that production reliability properties are checked repeatedly.
+This document defines the verification model for Starmap. High line coverage
+alone is not the goal. Tests must exercise important modules through stable
+interfaces and repeat checks of production reliability properties.
 
 ## Primary Gate
 
@@ -16,8 +18,8 @@ make verify
 - `go test ./... -race -short -timeout=20m`
 - `go vet ./...`
 - exact pinned `golangci-lint` verification
-- critical seam coverage thresholds
-- `make docs-check` (generated Go documentation and embedded OpenAPI schemas;
+- critical boundary coverage thresholds
+- `make docs-check` (generated Go documentation and embedded OpenAPI schemas.
   OpenAPI reproduction uses the Makefile-pinned Swag version and does not
   require an ambient `swag` binary)
 - `git diff --check`
@@ -48,7 +50,7 @@ go test ./internal/server/sse ./internal/server/middleware ./internal/server
 go test ./pkg/catalogs -race
 ```
 
-## Critical Seam Coverage
+## Critical Boundary Coverage
 
 Global coverage is intentionally not the primary trust metric. CLI command constructors, generated packages, and optional integrations dilute the signal. Starmap instead enforces coverage on modules where correctness and production reliability concentrate:
 
@@ -70,31 +72,33 @@ Global coverage is intentionally not the primary trust metric. CLI command const
 | `internal/catalog/reconciler` | 75% |
 | `pkg/sources` | 35% |
 
-Author membership is derived while building the immutable catalog and is
-covered through the `pkg/catalogs` gate plus its behavior-focused derivation
-tests. It has no separate package threshold because there is no separate
+The immutable catalog build derives author membership. The `pkg/catalogs` gate
+and behavior-focused tests cover that derivation. It has no separate package
+threshold because there is no separate
 runtime attribution module.
 
 Raise these thresholds when a module gets stronger tests. Do not lower them to pass a change without documenting the reason.
 
-## Seam Expectations
+## Boundary Expectations
 
 Tests should cross the same interface callers use:
 
 - Catalog ownership: use public collection methods and mutate returned values to prove deep-copy boundaries.
 - Sync pipeline: inject fake source/store adapters and assert ordering, persistence, error policy, and dry-run behavior.
 - Provider source: inject fake provider clients and assert credential loading, bounded concurrency, partial failures, and catalog association.
-- Provider clients: use `httptest` and testdata; never call external APIs from ordinary unit tests.
+- Provider clients: use `httptest` and testdata. Never call external APIs from ordinary unit tests.
 - Query modules: test filtering, provider alias membership, pagination, and sorting without HTTP or Cobra.
 - HTTP handlers: test request/response translation, cache behavior, and error mapping without retesting query internals.
 - Reconciliation: assert field-rule coverage, authority resolution, provenance names, and resource-specific merge behavior.
 - SSE publication: test serialized writes, flushed heartbeats, write deadlines,
-  disconnect-on-backpressure, cleanup, and race safety through real HTTP
-  transport where behavior depends on flushing.
+  disconnect-on-backpressure, and cleanup.
+- SSE transport: use real HTTP when flushing behavior affects race safety.
 
 ## Source Completeness Tests
 
-Source completeness is a schema contract, not a best-effort parser behavior. Each source attribute must be classified as canonical, extension-preserved, or intentionally ignored with a reason.
+Source completeness is a schema contract, not a best-effort parser behavior.
+Classify each source attribute as canonical, extension-preserved, or ignored
+with a stated reason.
 
 Use these focused checks when changing provider clients, models.dev parsing, reconciliation rules, or catalog schema:
 
@@ -110,10 +114,12 @@ The source-shape tests normalize JSON paths, collapse array indexes to `[]`, and
 
 Run `make test-catalog-performance` to verify the public `Client.Catalog()` fast
 path. The gate runs `BenchmarkClientCatalog` three times and requires every run
-to remain at zero bytes and zero allocations per operation with a 10 microsecond
-latency ceiling. The ceiling is deliberately much wider than the measured
-nanosecond-scale result so it is portable across CI hosts while still detecting
-a regression to full-catalog copying. Run race tests separately; race
+to remain at zero bytes and zero allocations per operation. Each run has a 10
+microsecond latency ceiling. That ceiling is wider than the measured
+nanosecond-scale result. It remains portable across CI hosts while detecting
+a regression to full-catalog copying.
+
+Run race tests separately. Race
 instrumentation is not valid allocation-budget evidence.
 
 Live shape investigation and governed fixture refresh are separate opt-in
@@ -127,19 +133,22 @@ from embedded YAML. Ordinary tests never call provider APIs.
 ## Catalog generation safety
 
 Run `make catalog-generation-check` before changing embedded catalog tooling.
-The gate exercises an HTTP-error response, verifies the current embedded
-models.dev payload is retained on failure, requires typed and semantic source
-validation before an atomic file promotion, and command-spies the public CLI.
-The only supported update shape is a positional provider plus `--catalog-path`;
-the generation workflow must finish with the actual `validate catalog`
+The gate exercises an HTTP-error response. It verifies that failure preserves
+the current embedded models.dev payload. It requires typed and semantic source
+validation before an atomic file promotion and command-spies the public CLI.
+
+The only supported update shape is a positional provider plus `--catalog-path`.
+The generation workflow must finish with the actual `validate catalog`
 subcommand. Provider fixture refresh failures and successful no-op refreshes
-must both propagate nonzero. The refresh contract also proves that a selected
+must both propagate nonzero.
+
+The refresh contract also proves that a selected
 provider update does not change sibling fixtures.
 
 `make update-catalog` and `make update-catalog-provider PROVIDER=<id>` use the
-same checked workflow. The models.dev download uses curl's HTTP failure mode,
-is first written to a temporary sibling, and is never promoted merely because
-the response body is syntactically valid JSON.
+same checked workflow. The models.dev download uses curl's HTTP failure mode.
+The command first writes it to a temporary sibling. Syntactically valid JSON
+alone does not cause promotion.
 
 Run `make embedded-catalog-budget-check` to emit the versioned embedded-catalog
 release policy and current measurements. The command reports generation age,
@@ -177,7 +186,7 @@ make release-check
 ```
 
 `make test-pure-go` executes the external library, store, server, remote, and
-CLI compositions with `CGO_ENABLED=0` and verifies the local binary linkage.
+CLI compositions with `CGO_ENABLED=0`. It also verifies local binary linkage.
 `make verify` includes that gate, then runs the race suite separately with
 `CGO_ENABLED=1`. `make release-check` adds release-specific CLI and exact
 GoReleaser checks.

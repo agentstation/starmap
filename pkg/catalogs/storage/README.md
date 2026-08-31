@@ -97,7 +97,7 @@ Root returns the configured filesystem root without creating it.
 <a name="Memory"></a>
 ## type [Memory](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/storage/memory.go#L11-L15>)
 
-Memory is an in\-process reference implementation of Store.
+Memory implements Store in process for tests and simple deployments.
 
 ```go
 type Memory struct {
@@ -269,7 +269,7 @@ type ObjectValue struct {
 
 Store commits and reads immutable catalog generations.
 
-Commit always performs compare\-and\-swap against expectedGenerationID. An empty expected ID means that no current generation may exist. Implementations must validate and persist the complete generation before changing Current. Repeating an already\-successful identical commit is idempotent.
+Commit always compares and swaps against expectedGenerationID. An empty expected ID means that no current generation may exist. Implementations must validate and persist the complete generation before changing Current. Repeating an already\-successful identical commit is idempotent.
 
 Starmap provides memory, filesystem, and conditional object\-storage implementations. Embedding applications own and inject any database\-backed implementation, including its driver, schema, migrations, credentials, connection pool, backups, and lifecycle.
 

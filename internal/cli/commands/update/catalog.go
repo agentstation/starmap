@@ -9,7 +9,7 @@ import (
 )
 
 // LoadCatalog creates a starmap instance using app context.
-// If catalogPath is provided, it is the single local read/write workspace.
+// A catalogPath value selects the single local read/write workspace.
 // Otherwise, the application composition supplies its configured default.
 func LoadCatalog(app application, catalogPath string, isQuiet bool) (*starmap.Client, error) {
 	var sm *starmap.Client
@@ -24,7 +24,6 @@ func LoadCatalog(app application, catalogPath string, isQuiet bool) (*starmap.Cl
 			fmt.Fprintf(os.Stderr, "📁 Using catalog workspace: %s\n", catalogPath)
 		}
 	} else {
-		// Use app's default starmap (may be embedded or configured via app config)
 		sm, err = app.Starmap()
 		if err != nil {
 			return nil, errors.WrapResource("get", "starmap", "", err)

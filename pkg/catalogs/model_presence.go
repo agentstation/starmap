@@ -74,9 +74,9 @@ const (
 
 // modelLimitOrder is every model limit in published order.
 //
-// One list, because a limit that is added to the struct and forgotten in a
-// codec is a limit that survives a round trip in one format and vanishes in
-// another. Every place that walks the limits walks this.
+// This single list prevents codecs from omitting a new struct field. Such an
+// omission could preserve a limit in one format but lose it in another. Every
+// limit consumer uses this list.
 var modelLimitOrder = []ModelLimit{
 	ModelLimitContextWindow,
 	ModelLimitInputTokens,
@@ -86,9 +86,8 @@ var modelLimitOrder = []ModelLimit{
 	ModelLimitDocumentTokens,
 }
 
-// PublishedModelLimits returns every model limit in published order. A caller
-// outside this package that walks the limits walks this, so a limit added to
-// the struct cannot be reported by one consumer and missed by another.
+// PublishedModelLimits returns every model limit in published order. External
+// consumers use this list so they report the same limits.
 func PublishedModelLimits() []ModelLimit {
 	return append([]ModelLimit(nil), modelLimitOrder...)
 }

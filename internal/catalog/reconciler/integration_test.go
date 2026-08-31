@@ -19,7 +19,7 @@ import (
 func addModelsToProvider(cat *catalogs.Builder, providerID string, models []*catalogs.Model) error {
 	provider, err := cat.Provider(catalogs.ProviderID(providerID))
 	if err != nil {
-		// Create provider if it doesn't exist
+		// Create provider if it does not exist
 		provider = catalogs.Provider{
 			ID:     catalogs.ProviderID(providerID),
 			Name:   providerID,
@@ -271,7 +271,6 @@ func TestIntegrationFullReconciliationFlow(t *testing.T) {
 		t.Error("Expected gpt-4 metadata from models.dev")
 	}
 
-	// Check provenance was tracked
 	if len(result.Provenance) == 0 {
 		t.Error("Expected provenance to be tracked")
 	}
@@ -692,7 +691,7 @@ func TestIntegrationChangeDetection(t *testing.T) {
 	}
 	srcs := reconciler.ConvertCatalogsMapToSources(srcMap)
 
-	// Use LocalCatalog as primary since that's what we have
+	// Use LocalCatalog as primary since that is what we have
 	result, err := reconcile.Sources(ctx, sources.LocalCatalogID, srcs)
 	if err != nil {
 		t.Fatalf("ReconcileCatalogs failed: %v", err)
@@ -817,15 +816,12 @@ func TestIntegrationProvenanceTracking(t *testing.T) {
 		t.Fatalf("ReconcileCatalogs failed: %v", err)
 	}
 
-	// Check provenance was tracked
 	if result.Provenance == nil {
 		t.Fatal("Expected provenance to be tracked")
 	}
 
-	// Look for pricing provenance - keys are prefixed with "models.<id>.<field>"
 	foundPricingProvenance := false
 	for field, infos := range result.Provenance {
-		// Pricing is selected atomically, so it has one field-level provenance record.
 		if strings.Contains(field, "pricing") {
 			foundPricingProvenance = true
 			// Should have provenance info
