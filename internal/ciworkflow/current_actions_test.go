@@ -14,7 +14,7 @@ func TestActiveWorkflowsUseReviewedCurrentActions(t *testing.T) {
 		"actions/setup-go":                  "b7ad1dad31e06c5925ef5d2fc7ad053ef454303e", // v7.0.0
 		"actions/attest-build-provenance":   "4d101475d8b20a2381f78447822ac1eab6504dd8", // v4.2.2
 		"actions/upload-artifact":           "043fb46d1a93c77aae656e7c1c64a875d1fc6a0a", // v7.0.1
-		"anchore/sbom-action/download-syft": "e22c389904149dbc22b58101806040fa8d37a610", // v0.24.0
+		"anchore/sbom-action/download-syft": "3ad7283483fc7af8ff2b4ea19663c2d5ca935e26", // v0.24.2
 		"docker/login-action":               "dbcb813823bdd20940b903addbd779551569679f", // v4.6.0
 		"goreleaser/goreleaser-action":      "f06c13b6b1a9625abc9e6e439d9c05a8f2190e94", // v7.2.3
 		"oras-project/setup-oras":           "1d808f7d7f6995cc68b7bf507bfe5c5446e1dc9d", // v2.0.1
