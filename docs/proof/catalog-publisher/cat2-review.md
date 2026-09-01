@@ -147,14 +147,15 @@ implementation must still pin and scan the selected dependency graph.
 
 ## Open owner decisions
 
-1. Keep `starmap.New` offline and add connected `starmap.Open`, or add network
-   and shutdown behavior to `starmap.New`.
-2. Replace public GitHub when an operator configures a source, or define ordered
-   fallback settings.
-3. Put the source below a human catalog workspace, or make source following an
-   exact mirror mode.
-4. Select the default GitHub polling interval. The recommendation is one hour
-   with jitter and conditional requests.
+The [package and operator design](cat2-dx.md) replaces the earlier combined
+source proposal. It asks the owner to approve these contracts:
+
+1. Keep `starmap.New` offline and use `starmap.Open` for connected distribution.
+2. Separate exact `follow` mode from explicit `author` acquisition mode.
+3. Use the public source by default and use `none` as the network opt-out.
+4. Replace the public source when an operator configures another source.
+5. Prefer the source at startup and retain last-known-good state on failure.
+6. Poll GitHub hourly with jitter and conditional requests.
 
 The requested Starport configuration migration and dependency update are in
 scope for this campaign.
