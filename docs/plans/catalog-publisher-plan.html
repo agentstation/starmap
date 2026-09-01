@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Catalog publisher plan</title>
+<style>
+  :root {
+    --ink: #1a1e24; --muted: #5c6570; --line: #d8dde3; --soft: #f4f6f8;
+    --page: #ffffff; --accent: #2563eb; --todo: #6b7280;
+    --in-progress: #2563eb; --blocked: #dc2626; --done: #16a34a;
+    --no-action: #64748b; --rejected: #b45309;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --ink: #e5e9ee; --muted: #9aa4af; --line: #333a43; --soft: #1b2027;
+      --page: #11151a; --accent: #60a5fa; --todo: #9aa4af;
+      --in-progress: #60a5fa; --blocked: #f87171; --done: #4ade80;
+      --no-action: #94a3b8; --rejected: #fbbf24;
+    }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0 auto; padding: 2rem 1.25rem 4rem; max-width: 1080px;
+    background: var(--page); color: var(--ink);
+    font: 16px/1.55 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+      sans-serif; }
+  h1 { font-size: 1.6rem; margin: 0 0 0.25rem; }
+  h2 { font-size: 1.15rem; margin: 2rem 0 0.5rem;
+    border-bottom: 1px solid var(--line); padding-bottom: 0.25rem; }
+  h3 { font-size: 1rem; margin: 1.25rem 0 0.4rem; }
+  code { background: var(--soft); border: 1px solid var(--line);
+    border-radius: 4px; padding: 0.05rem 0.35rem; font-size: 0.85em; }
+  pre { background: var(--soft); border: 1px solid var(--line);
+    border-radius: 6px; padding: 0.9rem 1rem; overflow-x: auto; }
+  pre code { background: none; border: none; padding: 0; }
+  blockquote { margin: 0.75rem 0; padding: 0.6rem 1rem;
+    border-left: 3px solid var(--accent); background: var(--soft); }
+  table { border-collapse: collapse; width: 100%; margin: 0.75rem 0;
+    font-size: 0.92rem; }
+  th, td { border: 1px solid var(--line); padding: 0.35rem 0.55rem;
+    text-align: left; vertical-align: top; }
+  th { background: var(--soft); }
+  #status-line { color: var(--muted); font-size: 0.92rem; margin: 0 0 1rem; }
+  .bar { height: 0.75rem; border: 1px solid var(--line); border-radius: 999px;
+    overflow: hidden; background: var(--soft); }
+  .bar .fill { height: 100%; width: 0; background: var(--done); }
+  .counts { color: var(--muted); font-size: 0.92rem; margin: 0.4rem 0 0; }
+  .pair { display: grid; grid-template-columns: repeat(auto-fit,
+    minmax(280px, 1fr)); gap: 1rem; }
+  figure { margin: 0; border: 1px solid var(--line); border-radius: 8px;
+    padding: 0.75rem; background: var(--soft); }
+  figcaption { font-weight: 600; margin-bottom: 0.5rem; }
+  figure svg { max-width: 100%; height: auto; }
+  tr[data-status] td:nth-child(3) code { font-weight: 600; }
+  tr[data-status="todo"] td:nth-child(3) code { color: var(--todo); }
+  tr[data-status="in_progress"] td:nth-child(3) code {
+    color: var(--in-progress); }
+  tr[data-status="blocked"] td:nth-child(3) code { color: var(--blocked); }
+  tr[data-status="done"] td:nth-child(3) code { color: var(--done); }
+  tr[data-status="no-action"] td:nth-child(3) code { color: var(--no-action); }
+  tr[data-status="rejected"] td:nth-child(3) code { color: var(--rejected); }
+</style>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    var rows = document.querySelectorAll("#ledger tbody tr");
+    var terminal = { "done": 1, "no-action": 1, "rejected": 1 };
+    var total = rows.length, closed = 0, current = "";
+    rows.forEach(function (row) {
+      var status = (row.getAttribute("data-status") || "").split("(")[0].trim();
+      if (terminal[status]) { closed += 1; }
+      if (status === "in_progress" && !current) {
+        current = row.id + " " + row.cells[1].textContent.trim();
+      }
+    });
+    var pct = total ? Math.round((closed / total) * 100) : 0;
+    document.querySelector("#progress .fill").style.width = pct + "%";
+    var text = closed + " of " + total + " tasks terminal (" + pct + "%).";
+    if (current) { text += " In progress: " + current; }
+    document.querySelector("#progress .counts").textContent = text;
+  });
+</script>
+</head>
+<body>
+
+<header id="overview">
+  <h1>Catalog publisher plan</h1>
+  <p id="status-line">
+    Status: <code data-plan-status="active">active</code> ·
+    Owner: this plan · Created: 2026-09-01 ·
+    Baseline: main @ 42b610a ·
+    Proof root: <code>docs/proof/catalog-publisher/</code> ·
+    Next action: store 11 provider secrets and update the six-hour workflow
+  </p>
+
+  <section id="outcome">
+    <h2>Outcome</h2>
+    <blockquote>
+      Starmap refreshes its catalog every six hours with available acquisition
+      credentials, publishes a verified catalog resource, supports a verified
+      latest-catalog pull path, and releases the completed behavior.
+    </blockquote>
+  </section>
+
+  <section id="progress">
+    <h2>Progress</h2>
+    <div class="bar"><div class="fill"></div></div>
+    <p class="counts">The status ledger supplies progress.</p>
+  </section>
+
+  <section id="architecture">
+    <h2>Architecture</h2>
+    <div class="pair">
+      <figure>
+        <figcaption>Before</figcaption>
+        <svg viewBox="0 0 360 170" role="img"
+          aria-label="Local credentials do not reach the daily publisher">
+          <rect x="10" y="15" width="100" height="45" rx="7" fill="none"
+            stroke="currentColor"/>
+          <text x="60" y="42" text-anchor="middle" fill="currentColor">local .env</text>
+          <rect x="130" y="15" width="100" height="45" rx="7" fill="none"
+            stroke="currentColor"/>
+          <text x="180" y="34" text-anchor="middle" fill="currentColor">daily job</text>
+          <text x="180" y="50" text-anchor="middle" fill="currentColor">empty secrets</text>
+          <rect x="250" y="15" width="100" height="45" rx="7" fill="none"
+            stroke="currentColor"/>
+          <text x="300" y="34" text-anchor="middle" fill="currentColor">immutable</text>
+          <text x="300" y="50" text-anchor="middle" fill="currentColor">prerelease</text>
+          <rect x="130" y="105" width="100" height="45" rx="7" fill="none"
+            stroke="currentColor"/>
+          <text x="180" y="124" text-anchor="middle" fill="currentColor">Starmap</text>
+          <text x="180" y="140" text-anchor="middle" fill="currentColor">instance</text>
+          <line x1="110" y1="37" x2="126" y2="37" stroke="currentColor"/>
+          <line x1="230" y1="37" x2="246" y2="37" stroke="currentColor"/>
+        </svg>
+      </figure>
+      <figure>
+        <figcaption>After</figcaption>
+        <svg viewBox="0 0 360 170" role="img"
+          aria-label="Repository secrets feed a six-hour verified catalog channel">
+          <rect x="10" y="15" width="100" height="45" rx="7" fill="none"
+            stroke="currentColor"/>
+          <text x="60" y="34" text-anchor="middle" fill="currentColor">repository</text>
+          <text x="60" y="50" text-anchor="middle" fill="currentColor">secrets</text>
+          <rect x="130" y="15" width="100" height="45" rx="7" fill="none"
+            stroke="currentColor"/>
+          <text x="180" y="34" text-anchor="middle" fill="currentColor">six-hour</text>
+          <text x="180" y="50" text-anchor="middle" fill="currentColor">publisher</text>
+          <rect x="250" y="15" width="100" height="45" rx="7" fill="none"
+            stroke="currentColor"/>
+          <text x="300" y="34" text-anchor="middle" fill="currentColor">verified</text>
+          <text x="300" y="50" text-anchor="middle" fill="currentColor">catalog channel</text>
+          <rect x="130" y="105" width="100" height="45" rx="7" fill="none"
+            stroke="currentColor"/>
+          <text x="180" y="124" text-anchor="middle" fill="currentColor">Starmap</text>
+          <text x="180" y="140" text-anchor="middle" fill="currentColor">instance</text>
+          <line x1="110" y1="37" x2="126" y2="37" stroke="currentColor"/>
+          <line x1="230" y1="37" x2="246" y2="37" stroke="currentColor"/>
+          <line x1="300" y1="60" x2="215" y2="101" stroke="currentColor"/>
+        </svg>
+      </figure>
+    </div>
+  </section>
+</header>
+
+<main>
+  <section id="scope">
+    <h2>Scope</h2>
+    <p><strong>Owns:</strong> provider credential inventory, repository
+      Actions secrets, publisher cadence, catalog discovery, verification,
+      import, publication proof, and the next Starmap release.</p>
+    <p><strong>Does not own:</strong> Starport inference credentials, Starport
+      source changes, provider account creation, or a hosted deployment.</p>
+    <p><strong>Non-goals:</strong> change catalog authority, expose secret
+      values, weaken release verification, or call inference endpoints.</p>
+  </section>
+
+  <section id="invariants">
+    <h2>Invariants</h2>
+    <ol>
+      <li>No secret value enters Git, logs, plans, proof files, or replies.</li>
+      <li>The workflow exposes provider credentials only to its refresh step.</li>
+      <li>Catalog acquisition never uses Starport account or gateway secrets.</li>
+      <li>A failed refresh cannot replace the last verified catalog resource.</li>
+      <li>A Starmap instance verifies catalog bytes before activation.</li>
+      <li>The release requires protected main, and Starport's existing worktree
+        stays unchanged.</li>
+    </ol>
+  </section>
+
+  <section id="findings">
+    <h2>Findings ledger</h2>
+    <table>
+      <thead><tr><th>ID</th><th>Classification</th><th>Evidence</th><th>Owner</th></tr></thead>
+      <tbody>
+        <tr><td>CAT-F1</td><td>high confidence</td><td>The workflow names eight provider secrets. The repository stores no provider secrets.</td><td>CAT1</td></tr>
+        <tr><td>CAT-F2</td><td>high confidence</td><td>The Starmap file contains 12 non-empty provider credentials. Three equal values also exist in Starport.</td><td>CAT1</td></tr>
+        <tr><td>CAT-F3</td><td>architecture</td><td>GitHub catalog releases are immutable prereleases without a mutable latest pointer. The remote subscriber requires an HTTP/SSE publisher.</td><td>CAT2</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section id="decisions">
+    <h2>Decisions</h2>
+    <p><strong>CAT-D1, pending owner:</strong> Select a public GitHub catalog
+      channel or a hosted Starmap server. Reopen after the owner answers.</p>
+  </section>
+
+  <section id="ledger">
+    <h2>Status ledger</h2>
+    <table>
+      <thead><tr><th>ID</th><th>Task</th><th>Status</th><th>Evidence</th></tr></thead>
+      <tbody>
+        <tr id="CAT0" data-status="done"><td>CAT0</td><td>Pin the baseline and inventory credentials, workflow state, publication state, and consumer behavior.</td><td><code>done</code></td><td><a href="../proof/catalog-publisher/cat0.md">CAT0 proof</a>: 11 usable credentials, zero repository provider secrets, daily schedule, and no GitHub release consumer.</td></tr>
+        <tr id="CAT1" data-status="in_progress"><td>CAT1</td><td>Store acquisition credentials and change the publisher to a six-hour cadence.</td><td><code>in_progress</code></td><td></td></tr>
+        <tr id="CAT2" data-status="todo"><td>CAT2</td><td>Implement the owner-selected verified latest-catalog pull path.</td><td><code>todo</code></td><td></td></tr>
+        <tr id="CAT3" data-status="todo"><td>CAT3</td><td>Run local gates, structured review, protected pull-request checks, and merge.</td><td><code>todo</code></td><td></td></tr>
+        <tr id="CAT4" data-status="todo"><td>CAT4</td><td>Run the publisher and verify the public catalog resource and provenance.</td><td><code>todo</code></td><td></td></tr>
+        <tr id="CAT5" data-status="todo"><td>CAT5</td><td>Publish and verify the next Starmap release.</td><td><code>todo</code></td><td></td></tr>
+        <tr id="CAT9" data-status="todo"><td>CAT9</td><td>Delete this plan, its proof root, and its index entry after the final pull request merges.</td><td><code>todo</code></td><td></td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section id="tasks">
+    <h2>Tasks</h2>
+
+    <h3 id="task-CAT0">CAT0 Baseline and inventory</h3>
+    <ul>
+      <li><strong>Problem:</strong> the current credential and publication state needs secret-free evidence.</li>
+      <li><strong>Owning boundary and paths:</strong> GitHub settings, both local environment files, and publisher documentation.</li>
+      <li><strong>Steps:</strong> record names and availability, compare duplicate sources, inspect releases, and capture consumer behavior.</li>
+      <li><strong>Acceptance:</strong> the proof lists every acquisition provider and reports only secret-free states.</li>
+      <li><strong>Fail-before:</strong> repository provider secret count is zero and the publisher cadence is daily.</li>
+      <li><strong>Verification:</strong> inspect GitHub secret names, the workflow schedule, releases, and source contracts.</li>
+    </ul>
+
+    <h3 id="task-CAT1">CAT1 Secure six-hour publisher</h3>
+    <ul>
+      <li><strong>Problem:</strong> scheduled refreshes lack provider credentials and run once per day.</li>
+      <li><strong>Owning boundary and paths:</strong> repository Actions secrets and <code>.github/workflows/catalog-generation.yaml</code>.</li>
+      <li><strong>Steps:</strong> store available acquisition credentials, add required workflow bindings, and set the six-hour schedule.</li>
+      <li><strong>Acceptance:</strong> every available acquisition credential has one repository secret and one refresh-step binding.</li>
+      <li><strong>Fail-before:</strong> the repository secret inventory contains no provider credentials.</li>
+      <li><strong>Verification:</strong> run workflow contract tests, action pin checks, and a secret-name coverage check.</li>
+    </ul>
+
+    <h3 id="task-CAT2">CAT2 Latest published catalog</h3>
+    <ul>
+      <li><strong>Problem:</strong> an instance cannot consume the newest GitHub catalog release through the current remote client.</li>
+      <li><strong>Owning boundary and paths:</strong> the selected catalog discovery, verification, and import packages.</li>
+      <li><strong>Steps:</strong> implement the selected channel, preserve immutable verification, and add caller-facing configuration.</li>
+      <li><strong>Acceptance:</strong> a test instance discovers, verifies, imports, and activates the newest synthetic catalog resource.</li>
+      <li><strong>Fail-before:</strong> no production client discovers a <code>catalog-semantic-*</code> release.</li>
+      <li><strong>Verification:</strong> run focused race tests and consumer composition tests.</li>
+    </ul>
+
+    <h3 id="task-CAT3">CAT3 Review and merge</h3>
+    <ul>
+      <li><strong>Problem:</strong> repository and hosted gates must prove the final change.</li>
+      <li><strong>Owning boundary and paths:</strong> changed source, tests, workflow, documentation, and proof files.</li>
+      <li><strong>Steps:</strong> run required checks, commit, run autoreview, open the pull request, and merge after protected checks pass.</li>
+      <li><strong>Acceptance:</strong> the final commit passes local checks, autoreview, CodeQL, security, and verification gates.</li>
+      <li><strong>Fail-before:</strong> no pull request contains the requested behavior.</li>
+      <li><strong>Verification:</strong> run <code>make verify</code>, the focused tests, and hosted checks.</li>
+    </ul>
+
+    <h3 id="task-CAT4">CAT4 Publication proof</h3>
+    <ul>
+      <li><strong>Problem:</strong> local checks do not prove hosted credential use or public resource verification.</li>
+      <li><strong>Owning boundary and paths:</strong> the Catalog Generation workflow and public catalog release assets.</li>
+      <li><strong>Steps:</strong> dispatch the workflow, inspect provider results, download assets, and verify provenance.</li>
+      <li><strong>Acceptance:</strong> one six-hour publisher run passes and its public resource verifies from a clean directory.</li>
+      <li><strong>Fail-before:</strong> the latest run used the daily workflow without stored provider credentials.</li>
+      <li><strong>Verification:</strong> inspect the run, download assets, run release verification, and run attestation verification.</li>
+    </ul>
+
+    <h3 id="task-CAT5">CAT5 Starmap release</h3>
+    <ul>
+      <li><strong>Problem:</strong> consumers need a released Starmap version that contains the completed behavior.</li>
+      <li><strong>Owning boundary and paths:</strong> release workflow, release documentation, tags, assets, and attestations.</li>
+      <li><strong>Steps:</strong> select the version from the owner decision, run release checks, publish, and verify public assets.</li>
+      <li><strong>Acceptance:</strong> GitHub reports one immutable release whose assets, checksums, signatures, and attestations verify.</li>
+      <li><strong>Fail-before:</strong> latest release <code>v0.15.0</code> does not contain this work.</li>
+      <li><strong>Verification:</strong> run release checks and the public release readback procedure.</li>
+    </ul>
+
+    <h3 id="task-CAT9">CAT9 Cleanup</h3>
+    <ul>
+      <li><strong>Problem:</strong> a completed plan must not remain active.</li>
+      <li><strong>Owning boundary and paths:</strong> this plan, its proof root, and <code>docs/plans/README.md</code>.</li>
+      <li><strong>Steps:</strong> confirm the final merge, then delete the plan, proof root, and index entry.</li>
+      <li><strong>Acceptance:</strong> the repository contains no active reference to this plan.</li>
+      <li><strong>Fail-before:</strong> this plan remains after the final merge.</li>
+      <li><strong>Verification:</strong> search the repository for <code>catalog-publisher-plan</code>.</li>
+    </ul>
+  </section>
+
+  <section id="goal">
+    <h2>Goal</h2>
+    <pre><code>Execute docs/plans/catalog-publisher-plan.html to completion. This is a
+whole-plan goal. Read the plan fully, then read AGENTS.md,
+docs/SCHEDULED_CATALOG_GENERATION.md, docs/CATALOG_ARTIFACT_FORMAT.md,
+docs/RELEASES.md, .github/workflows/catalog-generation.yaml, and the changed
+package contracts. Work in /Users/jack/src/github.com/agentstation/starmap-catalog-publisher
+on branch codex/catalog-publisher-six-hour. Chat history is not progress state.
+Resume from the status ledger, execution log, and git state. If compaction
+happens, continue from the plan and git state. Keep one task in_progress.
+Implement at the owning boundary. Capture fail-before evidence. Run each named
+verification command. Commit work under repository policy. Write proof without
+secret values. Append the execution log. Mark the task terminal with evidence.
+Commit the plan transition, then advance. Decide when evidence is sufficient.
+Record a blocker when owner input controls the result. Preserve secret
+containment, immutable catalog verification, protected-branch checks, release
+verification, and Starport's dirty worktree. Do not expose secret values, copy
+inference-only credentials, change catalog authority, or weaken a gate. Use
+pull requests. Stop only at a valid plans-skill state. Before stopping, update
+the ledger, log, and next action. The goal is met when the six-hour publisher
+passes with all available acquisition credentials, a Starmap instance verifies
+and activates the latest published catalog, the selected release verifies, and
+cleanup removes this plan.</code></pre>
+  </section>
+
+  <section id="execution-log">
+    <h2>Execution log</h2>
+    <table>
+      <thead><tr><th>Date</th><th>Item</th><th>Action</th><th>Evidence</th></tr></thead>
+      <tbody>
+        <tr><td>2026-09-01</td><td>meta</td><td>authored</td><td>Plan activated at main commit <code>42b610a</code>. CAT0 started.</td></tr>
+        <tr><td>2026-09-01</td><td>CAT0</td><td>completed</td><td>Recorded 11 usable acquisition credentials, zero repository provider secrets, the daily schedule, and the incompatible release consumer.</td></tr>
+      </tbody>
+    </table>
+  </section>
+</main>
+</body>
+</html>
