@@ -2,7 +2,11 @@
 
 Date: 2026-09-01
 
-Baseline: `codex/catalog-publisher-six-hour` at `6c7edfbe`
+Baseline: `codex/catalog-publisher-six-hour` at `8e5ddf6a`
+
+The [final runtime and operations review](cat2-final-review.md) supersedes this
+file where it records newer timing evidence, repository corrections, or the
+pending acquisition Boolean name.
 
 ## Verdict
 
@@ -25,9 +29,10 @@ effective catalog
 error or status tuple.
 
 Provider catalog acquisition is automatic when Starmap finds usable
-catalog-acquisition credentials. Missing credentials are normal. The automatic
-policy is the pair `CATALOG_ACQUISITION_ON_START` and
-`CATALOG_ACQUISITION_INTERVAL`. There is no mode setting.
+catalog-acquisition credentials. Missing credentials are normal. This review
+recommends `CATALOG_ACQUISITION_ENABLED` and
+`CATALOG_ACQUISITION_INTERVAL`. The owner must ratify this replacement. There
+is no mode setting.
 
 Starport must replace its mutually exclusive local and remote runtimes with one
 adapter over the Starmap runtime. Starmap produces effective candidates.
@@ -83,8 +88,8 @@ The earlier CAT2 draft has these incorrect statements:
   An unchanged catalog can keep one immutable release for weeks. Channel
   health needs a separate heartbeat.
 - It implies a six-hour consumer freshness bound. A six-hour publisher and a
-  one-hour consumer poll have a nominal seven-hour bound before workflow,
-  transport, and jitter overhead.
+  one-hour consumer poll have a nominal seven-hour objective before workflow,
+  transport, and retry overhead.
 
 ## Current Starmap gaps
 
@@ -139,10 +144,10 @@ Current configuration also conflicts with the target:
   the exact lookuper that loaded process variables and `.env` files.
 
 The existing safe `GET /api/v1/catalog` shows generation metadata, a manifest
-summary, direct observation links, and age. The console adds a hard-coded
-seven-day stale rule. Neither surface shows source health, layer identity,
-provider outcomes, last attempts, next attempts, fallback, or transitive
-provenance.
+summary, direct observation links, and age. The current console does not have
+the previously reported seven-day stale badge. Neither surface shows source
+health, layer identity, provider outcomes, last attempts, next attempts,
+fallback, transitive provenance, or a server-evaluated freshness policy.
 
 ## Canonical names and layer rules
 
@@ -225,8 +230,7 @@ runtime, err := starmap.Open(ctx,
 		"https://catalog.example.com/api/v1",
 		catalogsource.WithAPIKey(sourceKey),
 	)),
-	starmap.WithAcquisitionOnStart(false),
-	starmap.WithAcquisitionInterval(0),
+	starmap.WithAcquisitionEnabled(false),
 	starmap.WithCatalogCredentialResolver(resolver),
 )
 ```
@@ -303,24 +307,22 @@ The suffixes and defaults are identical.
 | `CATALOG_SOURCE_POLL_INTERVAL` | `1h` | source check interval |
 | `CATALOG_SOURCE_STARTUP_POLICY` | `prefer_source` | `prefer_source` or `require_source` |
 | `CATALOG_SOURCE_MAX_AGE` | `8h` | status freshness budget; readiness gate only under `require_source` |
-| `CATALOG_ACQUISITION_ON_START` | `true` | run automatic provider acquisition after startup |
-| `CATALOG_ACQUISITION_INTERVAL` | `4h` | normal automatic provider cadence; `0s` disables periodic work |
+| `CATALOG_ACQUISITION_ENABLED` | `true` | pending owner decision; enable automatic startup and interval work |
+| `CATALOG_ACQUISITION_INTERVAL` | `4h` | normal cadence; `0s` means startup only while enabled |
 | `CATALOG_WORKSPACE_PATH` | empty | reviewed operator catalog input |
-| `CATALOG_REFRESH_TIMEOUT` | `2m` | one explicit refresh operation bound |
+| `CATALOG_REFRESH_TIMEOUT` | `5m` | one complete refresh operation bound |
 
-There is no `CATALOG_ACQUISITION` setting and no acquisition schedule or cron
-expression.
+There is no `CATALOG_ACQUISITION`, `CATALOG_ACQUISITION_ON_START`, acquisition
+schedule, or cron expression in the recommended contract.
 
-| On start | Interval | Automatic behavior |
+| Enabled | Interval | Automatic behavior |
 | --- | --- | --- |
-| `true` | `4h` | startup and periodic; default |
+| `true` | `4h` | automatic startup and periodic work; default |
 | `true` | `0s` | startup only |
-| `false` | `4h` | periodic only |
-| `false` | `0s` | manual only |
+| `false` | any value | manual only |
 
 `CATALOG_SOURCE=embedded` disables the network source. A deterministic and
-offline runtime also sets acquisition on start to false and the interval to
-`0s`.
+offline runtime also sets acquisition enabled to false.
 
 The retry policy is convention, not required configuration. Add process jitter
 and use bounded exponential retry after an attempted operation fails. Honor
@@ -359,8 +361,7 @@ Deterministic tests and air-gapped programs use:
 
 ```bash
 STARMAP_CATALOG_SOURCE=embedded
-STARMAP_CATALOG_ACQUISITION_ON_START=false
-STARMAP_CATALOG_ACQUISITION_INTERVAL=0s
+STARMAP_CATALOG_ACQUISITION_ENABLED=false
 ```
 
 ### Standalone Starport
@@ -373,7 +374,7 @@ state survive restart.
 Operators can state the four-hour defaults explicitly:
 
 ```bash
-STARPORT_CATALOG_ACQUISITION_ON_START=true
+STARPORT_CATALOG_ACQUISITION_ENABLED=true
 STARPORT_CATALOG_ACQUISITION_INTERVAL=4h
 ```
 
@@ -381,7 +382,7 @@ STARPORT_CATALOG_ACQUISITION_INTERVAL=4h
 
 ```bash
 # Central Starmap server: public source plus automatic acquisition.
-STARMAP_CATALOG_ACQUISITION_ON_START=true
+STARMAP_CATALOG_ACQUISITION_ENABLED=true
 STARMAP_CATALOG_ACQUISITION_INTERVAL=4h
 
 # Each Starport replica follows the central server.
@@ -398,8 +399,7 @@ therefore differ from the upstream generation. Status shows both IDs.
 ```bash
 STARPORT_CATALOG_SOURCE=starmap
 STARPORT_CATALOG_SOURCE_URL=https://catalog.corp.example/api/v1
-STARPORT_CATALOG_ACQUISITION_ON_START=false
-STARPORT_CATALOG_ACQUISITION_INTERVAL=0s
+STARPORT_CATALOG_ACQUISITION_ENABLED=false
 ```
 
 Only the central Starmap server queries providers. A private source
@@ -445,10 +445,10 @@ Timestamp ownership is:
 A status-only check or channel heartbeat does not create an effective catalog
 generation.
 
-The six-hour publisher plus one-hour consumer polling gives a nominal bound of
-about seven hours before execution, network, and jitter overhead. The default
-eight-hour freshness budget makes this bound operator-visible without making a
-temporary stale source a liveness failure.
+The six-hour publisher plus one-hour consumer polling gives a nominal
+seven-hour objective before execution, network, and retry overhead. It is not a
+bound. The proposed eight-hour warning makes delay operator-visible without
+making a temporarily stale source a liveness failure.
 
 GitHub's unauthenticated REST limit is 60 requests per hour per source IP.
 Authenticated requests have a 5,000-request hourly limit. Only correctly
@@ -517,8 +517,7 @@ A repeated manual request returns the active run instead of overlapping it.
 Manual refresh initiation and completion use Starport's existing admin audit
 boundary.
 
-The console replaces the hard-coded seven-day rule with the server's freshness
-evaluation and shows:
+The console uses the server's new freshness evaluation and shows:
 
 1. Effective catalog identity, digest, generated and activated time, age, and
    model, provider, and offering counts.
@@ -574,8 +573,9 @@ CAT2 must replace the old mode and default assertions before CAT5 starts.
 The red distribution verifier must add fixed conditions for:
 
 - Absence of `CATALOG_ACQUISITION` and `CATALOG_ACQUISITION_SCHEDULE`.
-- True and four-hour acquisition defaults in Starmap and Starport.
-- All four bool and interval combinations plus manual `Sync` in each.
+- Enabled and four-hour acquisition defaults in Starmap and Starport, if the
+  owner accepts CAT-D11.
+- Enabled plus interval combinations and manual `Sync` in each.
 - Neutral missing credentials with no provider request.
 - Public unauthenticated provider attempts.
 - Per-provider partial success and last-known-good retention.
@@ -610,14 +610,14 @@ container, and restart defaults. CAT7 owns Starmap chains and source health.
 CAT8 owns Starport configuration, lookuper injection, async API, audit,
 acceptance, UI, metrics, and three-replica scale-out.
 
-## Remaining owner decision
+## Remaining owner decisions
 
-One product promise remains unresolved. The six-hour publisher cadence plus the
-one-hour default consumer poll cannot provide a six-hour end-to-end freshness
-bound. The current recommendation is to state the accurate nominal seven-hour
-bound, use an eight-hour status budget, and keep the six-hour publisher. A hard
-six-hour target requires a shorter publisher cadence, a shorter consumer poll,
-or push delivery.
+Two product choices remain unresolved. First, accept the recommended
+`CATALOG_ACQUISITION_ENABLED` replacement, or retain `ON_START` to preserve a
+periodic-only state. Second, the six-hour publisher cadence plus the one-hour
+default consumer poll cannot provide a six-hour end-to-end freshness objective.
+The recommendation is a nominal seven-hour objective, an eight-hour warning,
+and the six-hour publisher. A six-hour objective needs the four-hour publisher.
 
 ## Review evidence
 

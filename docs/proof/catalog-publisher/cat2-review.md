@@ -160,7 +160,9 @@ It also records the public source default, embedded network opt-out, fast
 `prefer_source`, independent policies, automatic four-hour acquisition,
 per-provider retention, and unified Starport runtime.
 
-Only the end-to-end freshness promise remains an owner decision. The six-hour
-publisher and one-hour consumer poll give a nominal seven-hour bound before
-execution, network, and jitter overhead. The requested Starport breaking
-configuration migration and dependency update remain in scope.
+The [final runtime and operations review](cat2-final-review.md) records two
+remaining owner decisions: the automatic-acquisition Boolean name and the
+end-to-end freshness objective. A six-hour publisher and one-hour consumer poll
+give a nominal seven-hour objective before execution, network, and retry
+overhead. The requested Starport breaking configuration migration and
+dependency update remain in scope.
