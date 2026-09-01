@@ -89,7 +89,7 @@
     Owner: this plan · Created: 2026-09-01 ·
     Baseline: main @ 42b610a ·
     Proof root: <code>docs/proof/catalog-publisher/</code> ·
-    Next action: store 11 provider secrets and update the six-hour workflow
+    Next action: get the owner's catalog channel decision for CAT2
   </p>
 
   <section id="outcome">
@@ -211,8 +211,8 @@
       <thead><tr><th>ID</th><th>Task</th><th>Status</th><th>Evidence</th></tr></thead>
       <tbody>
         <tr id="CAT0" data-status="done"><td>CAT0</td><td>Pin the baseline and inventory credentials, workflow state, publication state, and consumer behavior.</td><td><code>done</code></td><td><a href="../proof/catalog-publisher/cat0.md">CAT0 proof</a>: 11 usable credentials, zero repository provider secrets, daily schedule, and no GitHub release consumer.</td></tr>
-        <tr id="CAT1" data-status="in_progress"><td>CAT1</td><td>Store acquisition credentials and change the publisher to a six-hour cadence.</td><td><code>in_progress</code></td><td></td></tr>
-        <tr id="CAT2" data-status="todo"><td>CAT2</td><td>Implement the owner-selected verified latest-catalog pull path.</td><td><code>todo</code></td><td></td></tr>
+        <tr id="CAT1" data-status="done"><td>CAT1</td><td>Store acquisition credentials and change the publisher to a six-hour cadence.</td><td><code>done</code></td><td><a href="../proof/catalog-publisher/cat1.md">CAT1 proof</a>: 11 stored credentials, 12 live providers, six-hour schedule, and focused checks.</td></tr>
+        <tr id="CAT2" data-status="blocked"><td>CAT2</td><td>Implement the owner-selected verified latest-catalog pull path.</td><td><code>blocked(owner channel decision)</code></td><td>CAT-D1 needs a GitHub catalog channel or hosted Starmap server selection.</td></tr>
         <tr id="CAT3" data-status="todo"><td>CAT3</td><td>Run local gates, structured review, protected pull-request checks, and merge.</td><td><code>todo</code></td><td></td></tr>
         <tr id="CAT4" data-status="todo"><td>CAT4</td><td>Run the publisher and verify the public catalog resource and provenance.</td><td><code>todo</code></td><td></td></tr>
         <tr id="CAT5" data-status="todo"><td>CAT5</td><td>Publish and verify the next Starmap release.</td><td><code>todo</code></td><td></td></tr>
@@ -327,6 +327,8 @@ cleanup removes this plan.</code></pre>
       <tbody>
         <tr><td>2026-09-01</td><td>meta</td><td>authored</td><td>Plan activated at main commit <code>42b610a</code>. CAT0 started.</td></tr>
         <tr><td>2026-09-01</td><td>CAT0</td><td>completed</td><td>Recorded 11 usable acquisition credentials, zero repository provider secrets, the daily schedule, and the incompatible release consumer.</td></tr>
+        <tr><td>2026-09-01</td><td>CAT1</td><td>completed</td><td>Stored 11 Actions secrets. Twelve provider catalog checks passed. Commit <code>cf3124c0</code> sets the six-hour publisher.</td></tr>
+        <tr><td>2026-09-01</td><td>CAT2</td><td>blocked</td><td>The owner must select a GitHub catalog channel or a hosted Starmap server.</td></tr>
       </tbody>
     </table>
   </section>
