@@ -1,146 +1,204 @@
-# CAT2 runtime and Starport DX review
+# CAT2 connected runtime and Starport contract review
 
 Date: 2026-09-01
 
-Baseline: `codex/catalog-publisher-six-hour` at `db0c3e73`
+Baseline: `codex/catalog-publisher-six-hour` at `6c7edfbe`
 
 ## Verdict
 
-Keep `Catalog()` as a non-failing immutable read. Do not return a catalog,
-error, and status tuple.
+The revised framing is correct. Starmap must own one connected runtime that
+retains and composes four independent states:
 
-Keep `Open` and `Sync`, but give them separate jobs:
+```text
+embedded public catalog
+        ↓
+selected upstream catalog
+        ↓
+retained operator observations
+        ↓
+effective catalog
+```
 
-- `Open` creates and starts the composed catalog runtime.
-- `Refresh` refreshes every enabled runtime layer once.
-- `RefreshPublicCatalog` refreshes only the selected upstream catalog.
-- `Sync` gets operator observations and rebuilds the effective catalog.
-- `Catalog`, `State`, and `Status` do not read external state.
+`starmap.New` and `starmap.NewContext` stay deterministic and offline.
+`starmap.Open` becomes the recommended connected entry point. `Catalog`,
+`State`, and `Status` remain non-I/O reads. A catalog read must not return an
+error or status tuple.
 
-Replace the proposed `follow` and `author` modes with two independent settings.
-One selects the upstream catalog. The other selects operator acquisition.
-This model permits both functions in one runtime.
+Provider catalog acquisition is automatic when Starmap finds usable
+catalog-acquisition credentials. Missing credentials are normal. The automatic
+policy is the pair `CATALOG_ACQUISITION_ON_START` and
+`CATALOG_ACQUISITION_INTERVAL`. There is no mode setting.
 
-Starport does not implement the target merge itself. Its embedded Starmap
-runtime builds one effective catalog. Starport validates and accepts that
-catalog as a complete routing candidate.
+Starport must replace its mutually exclusive local and remote runtimes with one
+adapter over the Starmap runtime. Starmap produces effective candidates.
+Starport keeps its separate candidate and accepted heads and its complete
+routing acceptance transaction.
 
-## Current Starmap behavior
+## Verified agreements
 
-`starmap.New` and `starmap.NewContext` load durable, workspace, or embedded
-state. They start no network request or background task.
+The repository supports these conclusions:
 
-`acquisition.Syncer.Sync` gets observations from configured acquisition
-sources. It reconciles the observations against the current catalog and
-publishes a new local generation.
+1. `Client.Catalog()` already provides a non-failing, immutable, O(1) read.
+   `CurrentCatalogState()` correlates the catalog with generation
+   identity, checksum, generated time, and local sequence.
+2. `New` and `NewContext` load embedded, durable, and workspace state without
+   starting network work. They are the correct offline constructors.
+3. `RefreshSource` is the correct source-only name. The selected source can be
+   public GitHub, custom GitHub, a Starmap server, a file, or embedded state.
+4. Source selection and provider acquisition are orthogonal. A custom upstream
+   cannot disable local provider acquisition by implication.
+5. A custom source replaces the public upstream. It must not trigger a hidden
+   public GitHub fallback request.
+6. Starmap, not Starport, owns source verification, catalog acquisition,
+   retained layers, reconciliation, and the effective generation.
+7. Starport already owns the correct final acceptance boundary. It builds
+   connectors and routes, validates the complete candidate, moves the accepted
+   head, and publishes one complete routable snapshot.
+8. An HTTP manual refresh should be asynchronous. Starport allows a two-minute
+   catalog refresh but applies a one-minute request timeout to the current
+   synchronous handler.
+9. Starport is pre-v1 and requires direct breaking changes. The implementation
+   must replace old environment names without a runtime alias period. The
+   migration guide still names each replacement. GitHub keeps historical
+   catalog tags readable because they contain published data, not application
+   configuration.
 
-`acquisition.Syncer.ImportRelease` verifies one release and reconciles it as a
-`release_artifact` observation. It does not retain public and operator inputs
-as separate runtime layers.
+## Verified disagreements and corrections
 
-`remote.Subscriber` verifies and activates complete server generations. It
-does not merge a remote generation with local operator observations.
+The earlier CAT2 draft has these incorrect statements:
 
-The authority table orders provider observations above release artifacts and
-embedded facts. It does not distinguish a publisher provider observation from
-an operator provider observation. Both currently use the `providers` source
-ID.
+- It defines `CATALOG_ACQUISITION=disabled|manual|scheduled`. Remove the
+  setting and the three policy constructors.
+- It defaults startup acquisition to false and the interval to zero. Both
+  Starmap and Starport default to startup acquisition and a four-hour interval.
+- It says Starport disables local acquisition when it follows a Starmap
+  server. The source and acquisition policies must compose.
+- It uses `RefreshPublicCatalog`. Rename it to `RefreshSource`.
+- It makes `prefer_source` wait for a source operation. The default must return
+  as soon as embedded or durable state is usable, start the source check, and
+  report `warming`.
+- It proposes a configuration alias period for Starport. This conflicts with
+  Starport's direct-breaking policy.
+- It treats `published_at` as evidence that the six-hour publisher is alive.
+  An unchanged catalog can keep one immutable release for weeks. Channel
+  health needs a separate heartbeat.
+- It implies a six-hour consumer freshness bound. A six-hour publisher and a
+  one-hour consumer poll have a nominal seven-hour bound before workflow,
+  transport, and jitter overhead.
 
-## Current Starport behavior
+## Current Starmap gaps
 
-Starport has two mutually exclusive catalog runtimes.
+The current source pipeline does not implement the target runtime:
 
-| Path | Startup input | Refresh behavior | Merge behavior |
+- `acquisition.Syncer.Sync` reconciles against the current effective catalog.
+  It does not retain embedded, upstream, and operator inputs independently.
+- `ImportRelease` adds a `release_artifact` observation. It does not establish
+  a replaceable upstream layer.
+- `remote.Subscriber` exact-activates a complete upstream generation. It does
+  not compose it with local operator observations.
+- The provider source enumerates every provider with a catalog endpoint and
+  attempts every fetch. A missing credential becomes a
+  `missing_credentials` issue and degrades the aggregate observation.
+- The provider source produces one `providers` observation. It cannot retain
+  one successful provider while carrying the last-known-good observation for a
+  different failed provider.
+- Publisher provider evidence and local operator provider evidence use the
+  same `providers` source identity.
+- `GenerationManifest.SourceObservations` binds direct observations, but it
+  does not carry a sanitized transitive source chain or runtime instance
+  identity for cycle detection.
+- The root package cannot import `acquisition` because `acquisition` imports
+  the root client. The runtime needs an internal observation and reconciliation
+  boundary. The public acquisition facade can remain for advanced callers.
+
+The runtime therefore needs a durable layer store in addition to the immutable
+effective catalog store. The layer store keys state by source identity and, for
+operator acquisition, provider ID. A source configuration change must not
+reuse retained state or health from another identity.
+
+## Current Starport gaps
+
+Starport has two mutually exclusive runtimes:
+
+| Path | Source work | Acquisition work | Acceptance |
 | --- | --- | --- | --- |
-| local | durable or embedded Starmap state | provider and local acquisition | Starmap merges embedded, provider, and local observations |
-| remote | accepted generation or embedded state | subscriber fetch and SSE | no merge; Starport accepts the complete remote generation |
+| local | none | provider and workspace sync | activates the local state |
+| remote | Starmap fetch and SSE | none | keeps remote and accepted heads |
 
-Empty Starport configuration selects the local path. Its defaults set
-`RefreshOnStart` to false and `RefreshInterval` to zero. The default therefore
-serves durable or embedded state without a refresh.
+The remote method named `Sync` does no I/O. It only returns the current
+subscriber state. The local `Sync` queries providers. One adapter
+must replace both meanings.
 
-`STARPORT_CATALOG_REMOTE_URL` selects the remote path. Validation rejects a
-remote URL with a workspace, startup acquisition, or scheduled acquisition.
+Current configuration also conflicts with the target:
 
-The local `RefreshCandidate` method calls provider acquisition. The remote
-method named `Sync` does not send a network request. It only reads the subscriber
-state. The shared name hides two different operations.
+- `RefreshOnStart` defaults to false.
+- `RefreshInterval` defaults to `0s`.
+- `starport dev` forcibly sets both values to disabled.
+- validation rejects a remote source with a workspace or acquisition.
+- the runtime constructs Starmap's default `os.LookupEnv` resolver instead of
+  the exact lookuper that loaded process variables and `.env` files.
 
-Starport already has the correct acceptance transaction. It builds connectors,
-validates routability, records the accepted head, and publishes one complete
-routing snapshot. A failed candidate retains the prior routes and cache
-identity.
+The existing safe `GET /api/v1/catalog` shows generation metadata, a manifest
+summary, direct observation links, and age. The console adds a hard-coded
+seven-day stale rule. Neither surface shows source health, layer identity,
+provider outcomes, last attempts, next attempts, fallback, or transitive
+provenance.
 
-## Canonical catalog names
+## Canonical names and layer rules
 
 The **Starmap public catalog** is the public catalog product. It has two
 delivery forms:
 
-| Form | Canonical name | Freshness |
+| Form | Name | Update point |
 | --- | --- | --- |
-| compiled binary payload | embedded public catalog | updated with a Starmap release |
-| verified `catalog-latest` generation | released public catalog | published by the six-hour workflow |
+| compiled payload | embedded public catalog | Starmap binary release |
+| verified channel selection | released public catalog | successful catalog publisher run |
 
-The runtime also holds **operator observations**. These observations come from
-provider APIs and reviewed local inputs under operator control.
+**Operator observations** are provider or reviewed local evidence obtained by
+the running deployment. The **effective catalog** is the immutable result that
+consumers read. It is never an input source.
 
-The **effective catalog** is the immutable result that consumers read. It is
-not another upstream source.
+The runtime retains all input layers independently. After any source or
+provider update, it rebuilds the effective catalog from retained inputs. It
+must not merge a new input into the prior effective result.
 
-## Layer contract
+The runtime retains operator observations by provider. A successful provider update
+can publish while another provider keeps its last-known-good observation. A
+provider list omission is discovery evidence. It is not entitlement or
+deletion evidence and cannot remove unrelated public or private facts.
 
-The runtime owns this ordered composition:
+## Credential and provider outcome contract
 
-```text
-embedded public catalog
-        ↓ fallback
-selected upstream catalog
-        ↓ public or enterprise baseline
-operator observations
-        ↓ field-level reconciliation
-effective catalog
-```
+Provider catalog metadata defines catalog authentication requirements. For
+example, DeepInfra already declares a `public` profile. The runtime must use
+this metadata. It must not probe a credentialed endpoint to discover whether
+authentication is optional.
 
-The default selected upstream is the released public catalog. A custom GitHub,
-Starmap, or file source replaces that upstream. It never causes an undeclared
-fallback request to the public GitHub repository.
+Each cycle resolves credentials again so rotation takes effect. Starport must
+pass Starmap a resolver backed by the same raw deployment lookuper used for
+process variables, `.env` files, explicit catalog credential references, and
+tests. It must not pass inference material, shared deployment credential
+records, or account BYOK. Remote source authentication is also a separate
+credential plane.
 
-The embedded public catalog remains the no-network baseline. A strict source
-policy can fail startup or readiness when the selected upstream is unavailable.
+Provider outcomes are:
 
-The runtime must retain each layer separately. Every public refresh or operator
-sync rebuilds the effective catalog from the retained layer states. The runtime
-must not merge a new upstream generation into the prior effective result as if
-that result were one source.
+| Condition | Outcome | Health effect | Request |
+| --- | --- | --- | --- |
+| required credential absent | `skipped_not_configured` | neutral | none |
+| declared public catalog profile | attempted, then succeeded or failed | failure degrades | yes |
+| usable credential and success | `succeeded` | healthy | yes |
+| configured reference invalid, denied, or unavailable | `failed` | degrades | none or source read only |
+| provider rejects credential | `failed` | degrades | yes |
+| transport or schema failure | `failed` | degrades | yes |
 
-This rule prevents three defects:
+`skipped_not_configured` is a runtime acquisition outcome. It is not an
+observation issue and does not enter generation evidence because the runtime
+observed no provider evidence.
 
-1. A public refresh cannot erase a private or special-access model.
-2. A carried operator value keeps its operator evidence.
-3. Repeated refreshes cannot create merge-order drift.
+## Go API
 
-Layer order does not replace field authority. Operator observations lead the
-same public observation scope. Missing operator fields fall back through the
-public layers. Source-specific field policies still choose provider,
-models.dev, local, and embedded facts within each layer.
-
-An operator provider list omission is not entitlement evidence. It must not
-delete a public model. Starport owns inference credentials and runtime
-availability. Provider failures can make an offering unroutable without
-removing the catalog fact.
-
-The implementation needs scoped observation identity. A publisher provider
-observation and an operator provider observation cannot collapse into one
-`providers` map entry.
-
-## Go package contract
-
-Keep `starmap.New` as the low-level deterministic client. Keep it free of
-network and lifecycle work.
-
-Make `starmap.Open` the recommended runtime entry point. The zero-option call
-uses the released public catalog and an in-memory store. Applications can
-supply a durable store.
+The recommended contract is:
 
 ```go
 runtime, err := starmap.Open(ctx)
@@ -154,268 +212,422 @@ state := runtime.State()
 status := runtime.Status()
 ```
 
-The target read contract is:
+`Open` uses an in-memory writable store when the caller supplies none. Server,
+CLI, container, and Starport composition inject durable storage.
+
+Client and runtime options are separate interfaces. Shared option values can
+implement both:
 
 ```go
-func (r *Runtime) Catalog() *catalogs.Catalog
-func (r *Runtime) State() starmap.CatalogState
-func (r *Runtime) Status() starmap.RuntimeStatus
-```
-
-`Catalog()` stays non-failing, non-nil after successful `Open`, O(1), and safe
-to retain. Returning an error would force every hot-path read to handle an
-operation that cannot fail.
-
-`Status()` reports public-source and acquisition health. It includes the
-active generation ID, so a caller can correlate health with `State()`.
-Status changes do not require a new catalog generation.
-
-Do not add `Snapshot()` until one consumer proves that catalog state and
-runtime health require one atomic read. If that need appears, return one named
-struct instead of a three-value tuple.
-
-I/O methods return errors and operation reports:
-
-```go
-func (r *Runtime) Refresh(ctx context.Context) (starmap.RefreshReport, error)
-func (r *Runtime) RefreshPublicCatalog(ctx context.Context) (starmap.PublicCatalogRefresh, error)
-func (r *Runtime) Sync(ctx context.Context, opts ...sync.Option) (*sync.Result, error)
-func (r *Runtime) Close() error
-```
-
-`Refresh` runs one complete configured cycle. It is the application-level
-operation for Starport and the Starmap server. `Sync` remains the exact name for
-operator observation and reconciliation.
-
-`Open` owns background work and bounded shutdown. The low-level `Client` still
-owns serialized durable publication. The runtime owns layer refresh order and
-is the only publisher that uses that client.
-
-The root package cannot import the current `acquisition` package because that
-package imports the root client. CAT5 must repair this dependency direction.
-The runtime can own the internal observation pipeline while the public
-`acquisition.Syncer` remains an advanced low-level facade.
-
-## Programmatic configuration
-
-Do not expose `follow` and `author` modes. Use orthogonal source and acquisition
-policies.
-
-```go
-runtime, err := starmap.Open(
-	ctx,
+runtime, err := starmap.Open(ctx,
 	starmap.WithCatalogStore(store),
-	starmap.WithCatalogSource(catalogsource.StarmapServer(
+	starmap.WithCatalogSource(catalogsource.Starmap(
 		"https://catalog.example.com/api/v1",
-		catalogsource.WithAPIKey(apiKey),
+		catalogsource.WithAPIKey(sourceKey),
 	)),
-	starmap.WithAcquisition(starmap.AcquisitionScheduled(15*time.Minute)),
+	starmap.WithAcquisitionOnStart(false),
+	starmap.WithAcquisitionInterval(0),
+	starmap.WithCatalogCredentialResolver(resolver),
 )
 ```
 
-The exact option constructors remain a CAT5 API task. This review fixes the
-public behavior.
+`New` and `NewContext` accept client options. `Open` accepts runtime options.
+`WithCatalogStore` and `WithCatalogPath` return shared concrete option values.
+The offline constructors reject source, lifecycle, and automatic acquisition
+options.
 
-| Catalog source | Use | Update method |
-| --- | --- | --- |
-| `public` | AgentStation released public catalog | GitHub conditional polling |
-| `github` | operator GitHub catalog | GitHub conditional polling |
-| `starmap` | Starmap server | SSE with conditional polling fallback |
-| `file` | reviewed local or air-gap release | explicit refresh or file watch |
-| `embedded` | embedded public catalog only | no source network request |
+The read methods do not access external systems:
 
-| Acquisition policy | Startup | Steady state |
-| --- | --- | --- |
-| `disabled` | no operator acquisition | no operator acquisition |
-| `manual` | optional explicit startup sync | explicit `Sync` only |
-| `scheduled` | configured startup sync | configured interval and explicit `Sync` |
-
-## Application configuration
-
-Starmap uses the `STARMAP_` prefix. Starport uses the `STARPORT_` prefix.
-
-| Setting | Default | Values or meaning |
-| --- | --- | --- |
-| `CATALOG_SOURCE` | `public` | `public`, `github`, `starmap`, `file`, or `embedded` |
-| `CATALOG_SOURCE_URL` | empty | Starmap API root or artifact location |
-| `CATALOG_SOURCE_API_KEY` | empty | Starmap server credential |
-| `CATALOG_SOURCE_REPOSITORY` | preset | custom GitHub `owner/repository` |
-| `CATALOG_SOURCE_CHANNEL` | `catalog-latest` | mutable discovery channel |
-| `CATALOG_SOURCE_SIGNER_WORKFLOW` | preset | expected GitHub workflow identity |
-| `CATALOG_SOURCE_TOKEN` | empty | optional GitHub API credential |
-| `CATALOG_SOURCE_POLL_INTERVAL` | `1h` | conditional polling interval |
-| `CATALOG_SOURCE_STARTUP_POLICY` | `prefer_source` | `prefer_source` or `require_source` |
-| `CATALOG_SOURCE_MAX_AGE` | disabled | readiness age budget |
-| `CATALOG_ACQUISITION` | `disabled` | `disabled`, `manual`, or `scheduled` |
-| `CATALOG_ACQUISITION_ON_START` | `false` | run one operator sync during startup |
-| `CATALOG_ACQUISITION_INTERVAL` | `0s` | operator sync schedule |
-| `CATALOG_WORKSPACE_PATH` | empty | reviewed operator catalog input |
-| `CATALOG_REFRESH_TIMEOUT` | `2m` | one source or acquisition operation bound |
-
-The old Starport `CATALOG_REMOTE_*` and ambiguous `CATALOG_REFRESH_*` settings
-need a documented migration period. Configuration inspection redacts every
-token, API key, and credential-bearing URL.
-
-Validation applies these rules:
-
-1. Reject source-specific fields that do not match `CATALOG_SOURCE`.
-2. Reject scheduled acquisition without a positive interval.
-3. Reject acquisition settings when the configuration disables acquisition.
-4. Reject a custom GitHub source without an explicit signer policy.
-5. Reject non-loopback plain HTTP Starmap sources.
-6. Reject URL credentials and cross-origin redirects.
-7. Reject a Starmap source that resolves to the serving instance itself.
-
-## Startup and steady state
-
-`prefer_source` is the default startup policy:
-
-1. Load the last effective durable generation.
-2. Use the embedded public catalog when no durable generation exists.
-3. Check the selected upstream within the startup timeout.
-4. Rebuild the effective catalog from all retained layers.
-5. Run startup acquisition only when configured.
-6. Return the best verified state when an optional operation fails.
-7. Report degradation and continue configured background retries.
-
-`require_source` fails `Open` when the selected upstream cannot establish an
-acceptable generation. A maximum-age policy can fail readiness while the
-runtime retains last-known-good state.
-
-GitHub sources use ETags and process jitter. Starmap sources use SSE and close
-the fetch-to-subscribe gap. Bounded conditional polling starts after repeated
-SSE failures.
-
-## Starport target
-
-Replace Starport's local and remote catalog runtimes with one adapter over the
-Starmap runtime.
-
-```text
-Starmap runtime refreshes configured layers
-    -> Starmap publishes one effective candidate head
-    -> Starport builds the complete connector candidate
-    -> Starport validates routes and inference configuration
-    -> Starport records the accepted head
-    -> Starport atomically publishes routes and cache identity
+```go
+func (r *Runtime) Catalog() *catalogs.Catalog
+func (r *Runtime) State() CatalogState
+func (r *Runtime) Status() RuntimeStatus
 ```
 
-Starport must preserve its separate candidate and accepted heads. It must also
-preserve the complete acceptance transaction.
+`Catalog()` stays non-failing, non-nil after successful `Open`, immutable,
+O(1), and safe to retain. `Status()` includes the active effective generation
+ID for correlation. Do not add a catalog, error, and status return tuple.
 
-Remove the remote no-I/O `Sync` compatibility method. Starport's manual
-`RefreshCatalog` operation should call the Starmap runtime `Refresh` method.
-Background effective-catalog updates should use one `Updates` stream.
+The I/O methods have distinct effects:
 
-Starport's empty configuration should select the released public catalog and
-disable operator acquisition. This default needs no provider catalog keys.
+```go
+func (r *Runtime) Refresh(ctx context.Context) (RefreshReport, error)
+func (r *Runtime) RefreshSource(ctx context.Context) (SourceRefreshReport, error)
+func (r *Runtime) Sync(ctx context.Context, opts ...sync.Option) (*sync.Result, error)
+func (r *Runtime) Updates() <-chan CatalogState
+func (r *Runtime) Close() error
+```
 
-A Starport instance can enable operator acquisition when it needs private or
-special-access models. A central Starmap server is the preferred enterprise
-owner of that work. Starport replicas then select the server and disable local
-acquisition.
+`Refresh` stages one source refresh followed by one provider acquisition pass.
+The provider pass uses credential metadata from the new source when the source
+succeeds. If the source fails, acquisition can use the retained source layer.
+The complete operation publishes one effective candidate when possible.
+
+`RefreshSource` changes only the selected upstream layer. `Sync` changes only
+operator observations. Both rebuild against all retained layers. Explicit
+calls remain available under every automatic policy.
+
+The runtime owns one mutation coordinator. It serializes source replacement,
+provider-layer replacement, effective rebuild, durable commit, and event
+publication. Concurrent manual and background requests join the compatible
+active run or coalesce into one pending complete refresh. They cannot publish
+out of order.
+
+`Updates` carries complete effective candidates for one application
+composition consumer. It coalesces to the latest state and includes sequence
+and generation identity so a consumer can ignore duplicates. Starport reads
+the initial `State`, then consumes `Updates`.
+
+`Close` is idempotent, cancels runtime-owned work, and joins it within a
+configured shutdown bound. `Open` uses its context to bound construction and a
+blocking `require_source` startup. The returned resource owns its background
+context. It does not retain the caller's context as an operation field.
+
+CAT5 should split the current public functional option type into `ClientOption`
+and `RuntimeOption`. This keeps runtime policy out of the offline client.
+
+## Automatic policy and environment
+
+Starmap uses the `STARMAP_` prefix. Starport uses the `STARPORT_` prefix.
+The suffixes and defaults are identical.
+
+| Suffix | Default | Meaning |
+| --- | --- | --- |
+| `CATALOG_SOURCE` | `public` | `public`, `github`, `starmap`, `file`, or `embedded` |
+| `CATALOG_SOURCE_URL` | empty | custom Starmap or file/artifact source location |
+| `CATALOG_SOURCE_API_KEY` | empty | remote Starmap protocol credential |
+| `CATALOG_SOURCE_REPOSITORY` | `agentstation/starmap` | GitHub source repository |
+| `CATALOG_SOURCE_CHANNEL` | `catalog-latest` | stable discovery channel |
+| `CATALOG_SOURCE_SIGNER_WORKFLOW` | publisher preset | expected GitHub workflow identity |
+| `CATALOG_SOURCE_TOKEN` | empty | optional GitHub API token |
+| `CATALOG_SOURCE_POLL_INTERVAL` | `1h` | source check interval |
+| `CATALOG_SOURCE_STARTUP_POLICY` | `prefer_source` | `prefer_source` or `require_source` |
+| `CATALOG_SOURCE_MAX_AGE` | `8h` | status freshness budget; readiness gate only under `require_source` |
+| `CATALOG_ACQUISITION_ON_START` | `true` | run automatic provider acquisition after startup |
+| `CATALOG_ACQUISITION_INTERVAL` | `4h` | normal automatic provider cadence; `0s` disables periodic work |
+| `CATALOG_WORKSPACE_PATH` | empty | reviewed operator catalog input |
+| `CATALOG_REFRESH_TIMEOUT` | `2m` | one explicit refresh operation bound |
+
+There is no `CATALOG_ACQUISITION` setting and no acquisition schedule or cron
+expression.
+
+| On start | Interval | Automatic behavior |
+| --- | --- | --- |
+| `true` | `4h` | startup and periodic; default |
+| `true` | `0s` | startup only |
+| `false` | `4h` | periodic only |
+| `false` | `0s` | manual only |
+
+`CATALOG_SOURCE=embedded` disables the network source. A deterministic and
+offline runtime also sets acquisition on start to false and the interval to
+`0s`.
+
+The retry policy is convention, not required configuration. Add process jitter
+and use bounded exponential retry after an attempted operation fails. Honor
+`Retry-After` and rate-limit reset values. Cap retries at the normal interval.
+A successful acquisition returns to the four-hour cadence.
+
+## Startup behavior
+
+`prefer_source` is the default:
+
+1. Verify and load the latest durable effective generation.
+2. Use the embedded public catalog when no durable generation exists.
+3. Return a usable runtime immediately.
+4. Start the selected source check and eligible provider acquisition.
+5. Report `warming` until the first configured automatic cycle completes.
+6. Keep last-known-good layers and catalog when a connected operation fails.
+
+An offline laptop must not wait for the two-minute refresh timeout.
+`require_source` can block within the caller context. It can fail when the
+runtime cannot establish an acceptable selected source. Liveness remains
+independent from catalog usability and freshness.
 
 ## Deployment examples
 
-### Individual developer
+### Local developer
 
-`starmap.Open(ctx)` starts with the embedded public catalog and checks the
-released public catalog. `starmap.New()` stays deterministic and offline.
+Developers need no settings. `starmap.Open(ctx)` serves embedded state and starts
+the public source and credential-detected acquisition work. With no network and
+no keys, it remains usable, reports source fallback, makes no provider request,
+and reports neutral skipped providers.
 
-### Standalone Starport with operator discovery
+With one key in the process environment or `.env`, the runtime calls only that
+eligible provider and catalog-declared public providers.
 
-```bash
-STARPORT_CATALOG_SOURCE=public
-STARPORT_CATALOG_ACQUISITION=scheduled
-STARPORT_CATALOG_ACQUISITION_ON_START=true
-STARPORT_CATALOG_ACQUISITION_INTERVAL=15m
-```
-
-The embedded Starmap runtime builds the effective catalog. Starport consumes
-that result and does not own fact reconciliation.
-
-### Enterprise Starmap source
-
-```bash
-# Central Starmap server
-STARMAP_CATALOG_SOURCE=public
-STARMAP_CATALOG_ACQUISITION=scheduled
-STARMAP_CATALOG_ACQUISITION_ON_START=true
-STARMAP_CATALOG_ACQUISITION_INTERVAL=15m
-
-# Each Starport instance
-STARPORT_CATALOG_SOURCE=starmap
-STARPORT_CATALOG_SOURCE_URL=https://catalog.corp.example/api/v1
-STARPORT_CATALOG_SOURCE_API_KEY=secret-reference-or-value
-STARPORT_CATALOG_ACQUISITION=disabled
-```
-
-Only the central server reaches public GitHub and provider catalog APIs.
-Starport replicas follow its effective generations.
-
-### Enterprise without public egress
+Deterministic tests and air-gapped programs use:
 
 ```bash
 STARMAP_CATALOG_SOURCE=embedded
-STARMAP_CATALOG_ACQUISITION=scheduled
-STARMAP_CATALOG_ACQUISITION_INTERVAL=15m
+STARMAP_CATALOG_ACQUISITION_ON_START=false
+STARMAP_CATALOG_ACQUISITION_INTERVAL=0s
 ```
 
-An operator can also select a reviewed file or internal Starmap source. A
-custom source never triggers a public GitHub fallback request.
+### Standalone Starport
 
-## Status and timestamps
+Starport needs no catalog settings. It follows the released public catalog
+and automatically uses catalog-acquisition credentials that the Starmap
+resolver finds. Manual refresh remains available. Durable layer and effective
+state survive restart.
 
-`RuntimeStatus` should separate these records:
+Operators can state the four-hour defaults explicitly:
 
-| Record | Required fields |
+```bash
+STARPORT_CATALOG_ACQUISITION_ON_START=true
+STARPORT_CATALOG_ACQUISITION_INTERVAL=4h
+```
+
+### Enterprise source with local replica acquisition
+
+```bash
+# Central Starmap server: public source plus automatic acquisition.
+STARMAP_CATALOG_ACQUISITION_ON_START=true
+STARMAP_CATALOG_ACQUISITION_INTERVAL=4h
+
+# Each Starport replica follows the central server.
+STARPORT_CATALOG_SOURCE=starmap
+STARPORT_CATALOG_SOURCE_URL=https://catalog.corp.example/api/v1
+```
+
+The replicas still query providers locally by default when their deployment
+environment holds eligible catalog credentials. Their effective generation can
+therefore differ from the upstream generation. Status shows both IDs.
+
+### Enterprise central-only acquisition
+
+```bash
+STARPORT_CATALOG_SOURCE=starmap
+STARPORT_CATALOG_SOURCE_URL=https://catalog.corp.example/api/v1
+STARPORT_CATALOG_ACQUISITION_ON_START=false
+STARPORT_CATALOG_ACQUISITION_INTERVAL=0s
+```
+
+Only the central Starmap server queries providers. A private source
+never falls back to public GitHub.
+
+## Public channel and timestamps
+
+New immutable releases use `catalog-<catalog-digest>`. Existing
+`catalog-semantic-*` and `catalog-payload-*` releases remain readable.
+
+`catalog-latest` is a mutable discovery ref, not an immutable GitHub release.
+Its attested `catalog-latest.json` document points to one immutable verified
+release. This distinction is necessary because GitHub locks immutable release
+tags and assets.
+
+Every successful six-hour publisher verification advances the channel
+document, including a no-change run. The document records a monotonic channel
+sequence, `channel_updated_at`, the immutable release identity, generation
+identity, archive digest, `published_at`, and the prior channel digest. It does
+not create a new catalog release or generation when the catalog has no semantic
+change.
+
+Consumers persist the highest verified sequence for each channel identity.
+They reject a lower sequence and reject different bytes at the same sequence.
+The channel has discovery and liveness authority only. Immutable release,
+artifact digest, repository, workflow identity, schema, and generation-order
+verification remain activation requirements.
+
+Timestamp ownership is:
+
+| Field | Meaning | Changes on no-change check |
+| --- | --- | --- |
+| `generated_at` | immutable source or effective generation creation | no |
+| `published_at` | immutable release publication | no |
+| `channel_updated_at` | publisher completed one scheduled verification | yes |
+| `checked_at` | this runtime completed a source check, including `304` | yes |
+| `observed_at` | provider or source evidence time | only when observed |
+| `last_attempt_at` | local operation began | yes |
+| `last_success_at` | local operation last succeeded | on success |
+| `activated_at` | local effective generation became active | on activation |
+| `next_attempt_at` | planned local source or acquisition attempt | after scheduling |
+
+A status-only check or channel heartbeat does not create an effective catalog
+generation.
+
+The six-hour publisher plus one-hour consumer polling gives a nominal bound of
+about seven hours before execution, network, and jitter overhead. The default
+eight-hour freshness budget makes this bound operator-visible without making a
+temporary stale source a liveness failure.
+
+GitHub's unauthenticated REST limit is 60 requests per hour per source IP.
+Authenticated requests have a 5,000-request hourly limit. Only correctly
+authenticated conditional requests that return `304` avoid the primary limit.
+The default source should use cacheable direct downloads where trust permits.
+It should make API calls only when needed and accept an optional source token.
+Large replica fleets should use a central Starmap source.
+
+## Runtime status contract
+
+`RuntimeStatus` is immutable caller-owned data. It contains no secret values,
+raw credential references, credential-bearing URLs, response bodies, or raw
+wrapped errors.
+
+Top-level fields:
+
+- `usable`, `phase`, `health`, and active effective generation ID.
+- Effective generation digest, generated time, activation time, and sequence.
+- Selected source kind and safe identity.
+- Direct source health observed by this runtime.
+- Upstream-reported sanitized source chain and provenance, labeled as upstream.
+- Direct upstream and derived effective generation IDs.
+- generation, publication, channel, check, observation, success, activation,
+  and next-attempt times.
+- Source and acquisition in-progress flags, operation kind, and run ID.
+- Last-known-good and fallback state.
+- Configured freshness budget, current evaluation, and age.
+- acquisition counts for eligible, attempted, succeeded,
+  `skipped_not_configured`, and failed providers.
+
+Each provider outcome contains provider ID, status, sanitized reason code,
+observed time, last attempt, last success, retained-last-known-good flag, and
+next attempt. It never includes a secret value or proof that an account can
+route inference.
+
+Direct and transitive health are distinct. A Starport replica can say that its
+central Starmap source is reachable. It can relay the central server's
+sanitized report about GitHub and providers, but it cannot claim that it
+observed those systems itself.
+
+Source chains include a stable instance identity, upstream generation ID, and
+bounded hop list bound to the served manifest or verified status document.
+Starmap rejects its own identity, a repeated identity, and a chain over the
+configured maximum before activation. URL comparison alone is not enough
+because aliases and load balancers can hide a cycle.
+
+## Starport API and console
+
+Keep `GET /api/v1/catalog` under `models:read`. It remains a safe catalog
+identity surface. Keep `GET /api/v1/catalog/changes` for accepted-generation
+diffs.
+
+Add admin-only operations:
+
+| Method and path | Contract |
 | --- | --- |
-| effective catalog | generation ID, generated time, activation time, sequence |
-| public catalog | form, source identity, generation ID, generated time, published time, checked time, last success |
-| operator acquisition | policy, last attempt, last success, provider results, next attempt |
+| `GET /api/v1/admin/catalog/status` | detailed runtime, source, acquisition, freshness, and provenance status |
+| `POST /api/v1/admin/catalog/refresh` | start or join one complete refresh; return `202` and an operation ID |
+| `GET /api/v1/admin/catalog/refreshes/{run_id}` | return active or completed refresh report |
 
-The immutable generation keeps `generated_at`. The mutable channel adds
-`published_at` and a monotonic publication sequence. Local health records add
-`checked_at`, `last_success_at`, and `activated_at`.
+A refresh report includes run ID, operation kind, start, completion, duration,
+and prior and current effective IDs. It also includes the upstream ID, change
+and activation states, source result, provider outcomes, retained state, and
+next attempts.
+A repeated manual request returns the active run instead of overlapping it.
+Manual refresh initiation and completion use Starport's existing admin audit
+boundary.
 
-Only generation facts belong to generation identity. Transport and health
-timestamps must not alter catalog bytes.
+The console replaces the hard-coded seven-day rule with the server's freshness
+evaluation and shows:
 
-## Edge-case policy
+1. Effective catalog identity, digest, generated and activated time, age, and
+   model, provider, and offering counts.
+2. Embedded baseline, selected upstream, and operator acquisition rows. Each
+   row shows role, safe identity, direct or upstream-reported provenance,
+   upstream and effective IDs, health, timestamps, and fallback.
+3. Acquisition counts, last attempt, last success, and next run.
+4. Provider details with sanitized status and reason. The UI collapses neutral
+   skipped rows by default.
+5. Changes between accepted effective generations.
+6. Model and offering provenance where the catalog provides field evidence.
 
-| Case | Required behavior |
+Catalog acquisition status must not appear on Starport's inference credential
+or BYOK screens.
+
+## Hidden effects
+
+The implementation and verifier must cover these effects:
+
+1. Retained layer state needs its own durable CAS contract. Effective
+   generation storage alone cannot reproduce a later merge.
+2. Per-provider last-known-good retention requires provider-scoped evidence,
+   outcomes, checksums, and garbage collection.
+3. A source refresh can change provider credential metadata. A complete
+   refresh must stage source state before eligibility and credential resolution.
+4. An unchanged catalog can still change channel health. Health persistence
+   and generation persistence must be separate.
+5. A downstream with local observations derives a new effective identity. It
+   cannot reuse the upstream generation ID even when most facts are equal.
+6. `Updates` can arrive faster than Starport acceptance. Starport may coalesce
+   candidates, but it must never move its accepted head before route and
+   connector validation succeeds.
+7. A restart must restore retained source identity and per-provider layers. It
+   must also restore channel sequence, freshness, and effective state. Old
+   health must not become a new successful check.
+8. Source reconfiguration must retire the old source layer and reset direct
+   source health. It must not silently request the default public source.
+9. Provider failures can contain credentials in URLs, bodies, headers, and
+   wrapped errors. Public and admin status must use structured reason codes.
+10. Metrics use bounded labels such as source kind and outcome. Provider ID,
+    generation ID, run ID, URL, and error text are not metric labels.
+11. Multi-replica Starport with shared storage needs one accepted-head CAS and
+    idempotent candidate handling. It does not need every replica to accept
+    every intermediate generation.
+12. Public GitHub polling by many replicas behind one NAT can exhaust the
+    unauthenticated API budget even with ETags. The central Starmap pattern is
+    an operational scaling boundary, not only a convenience.
+
+## CAT2, verifier, and acceptance changes
+
+CAT2 must replace the old mode and default assertions before CAT5 starts.
+
+The red distribution verifier must add fixed conditions for:
+
+- Absence of `CATALOG_ACQUISITION` and `CATALOG_ACQUISITION_SCHEDULE`.
+- True and four-hour acquisition defaults in Starmap and Starport.
+- All four bool and interval combinations plus manual `Sync` in each.
+- Neutral missing credentials with no provider request.
+- Public unauthenticated provider attempts.
+- Per-provider partial success and last-known-good retention.
+- Independent custom source and local acquisition.
+- No public fallback from GitHub, Starmap, file, or embedded sources.
+- Retained-layer rebuild instead of incremental effective merging.
+- Fast `prefer_source`, blocking `require_source`, and bounded `Close`.
+- `Refresh`, `RefreshSource`, `Sync`, status, and effective update semantics.
+- One staged publication for a complete refresh and no generation on no change.
+- Channel heartbeat advance without an immutable release change.
+- Direct versus upstream-reported health and provenance.
+- Starport `.env` lookuper injection with no inference, shared, or BYOK read.
+- Asynchronous manual refresh, run joining, audit, and overlap prevention.
+- Server-evaluated freshness and the detailed admin status surface.
+- Candidate and accepted head separation under failures.
+- Self-reference, two-node cycles, aliased cycles, and excessive hop rejection.
+- Bounded retry, jitter, rate-limit response handling, and bounded metrics.
+- Direct Starport configuration replacement with no legacy runtime aliases.
+- historical catalog tag readback.
+
+Acceptance tests must prove the four deployment journeys:
+
+| Journey | Required proof |
 | --- | --- |
-| first boot without network | use the embedded public catalog and report source degradation |
-| restart during source outage | use the durable last-known-good effective generation |
-| invalid signature or signer | reject before layer storage or effective publication |
-| public refresh after private model discovery | retain the private model and its operator evidence |
-| operator source omits a public model | retain the public fact; do not infer entitlement |
-| operator sync fails | retain prior operator layer and effective catalog |
-| custom source outage | do not request the public GitHub source |
-| source returns an older generation | reject unless an explicit rollback authorizes it |
-| equal time with different bytes | report a conflict and retain current state |
-| source configuration changes | bind health and retained state to the new source identity |
-| source points to self | reject before lifecycle start |
-| two Starmap servers form a cycle | detect the source chain and stop propagation |
-| Starport candidate fails | retain accepted routes, connectors, and cache identity |
-| concurrent public and operator updates | serialize layer replacement and effective publication |
-| process shutdown | cancel and join source and acquisition work within the bound |
+| offline local | embedded usable immediately, no provider requests, visible source fallback |
+| connected no-key | public source updates, neutral skips, no credential warnings |
+| connected one-key | only the eligible and public providers are called; other layers remain |
+| enterprise | central source, optional replica acquisition, central-only opt-out, no public fallback, separate upstream/effective IDs |
 
-## Owner decisions
+The CAT5 tests own runtime composition and concurrency. CAT6 owns CLI, server,
+container, and restart defaults. CAT7 owns Starmap chains and source health.
+CAT8 owns Starport configuration, lookuper injection, async API, audit,
+acceptance, UI, metrics, and three-replica scale-out.
 
-1. Approve `Catalog() *catalogs.Catalog`, plus separate `State()` and `Status()` reads.
-2. Approve `Open` for the composed runtime and `Sync` for operator acquisition.
-3. Approve the embedded public, released public, operator observation, and effective catalog names.
-4. Approve orthogonal source and acquisition settings without `follow` or `author` modes.
-5. Approve `public` as the source default and `embedded` as the network opt-out.
-6. Select whether scheduled operator acquisition is opt-in or key-detected by default.
-7. Approve operator observations as additive for model identity, not entitlement evidence.
+## Remaining owner decision
+
+One product promise remains unresolved. The six-hour publisher cadence plus the
+one-hour default consumer poll cannot provide a six-hour end-to-end freshness
+bound. The current recommendation is to state the accurate nominal seven-hour
+bound, use an eight-hour status budget, and keep the six-hour publisher. A hard
+six-hour target requires a shorter publisher cadence, a shorter consumer poll,
+or push delivery.
 
 ## Review evidence
 
 - Starmap module: Go 1.25 language floor and Go 1.26.6 toolchain.
 - Starport module: Go 1.26 language and Go 1.26.5 toolchain.
-- Modern Go guidance ran unfiltered for `client.go` and Starport
+- Modern Go guidance ran unfiltered for Starmap `client.go` and Starport
   `internal/catalog/runtime.go`.
-- The active Starmap `ago` policy uses the built-in v0.2.0 restrictions.
-- No Go source changed during this API and architecture review.
+- Starmap uses the built-in ago v0.2.0 policy. The active restrictions include
+  `no-new-expr`, so the Go 1.26 `new(value)` form does not apply to Starmap.
+- No production Go source or Starport worktree file changed during this review.
+- GitHub documents a 60-request unauthenticated hourly REST limit for each
+  source IP. It also documents a 5,000-request authenticated limit,
+  authenticated `304` exemptions, and immutable release locking.

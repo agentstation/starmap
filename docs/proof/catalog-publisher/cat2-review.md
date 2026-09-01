@@ -23,7 +23,8 @@ The target names are:
 - channel asset: `catalog-latest.json`
 - public configuration concept: `catalog source`
 - generation time: `generated_at`
-- channel publication time: `published_at`
+- release publication time: `published_at`
+- channel verification time: `channel_updated_at`
 
 The workflow and GoReleaser must recognize all three historical namespaces.
 Existing releases remain immutable and readable. New publication uses only the
@@ -67,7 +68,8 @@ acceptance transaction should remain the Starport integration boundary.
 
 ## Target flow
 
-The public `catalog-latest` channel points to one immutable
+The public `catalog-latest` channel is a mutable discovery ref, not a GitHub
+release. Its attested document points to one immutable
 `catalog-<catalog-digest>` release. A consumer verifies the channel document,
 the immutable release attestation, the archive checksum, the detached statement,
 schema compatibility, and monotonic generation order before activation.
@@ -93,6 +95,11 @@ The mutable channel has discovery authority only. It cannot replace immutable
 digest and publisher verification. A missing or invalid channel retains the
 last-known-good generation. A first run can use the embedded bootstrap while
 readiness reports source degradation.
+
+Each successful six-hour verification advances the channel sequence and
+`channel_updated_at`, including a no-change run. `published_at` stays bound to
+the selected immutable release. A channel-only update creates no catalog
+generation.
 
 Direct GitHub consumers should use conditional requests, a bounded timeout, and
 jittered polling. A configured enterprise source should not fall back to public
@@ -145,17 +152,15 @@ implementation must still pin and scan the selected dependency graph.
 - [SLSA verifier 2.7.1](https://github.com/slsa-framework/slsa-verifier/tree/v2.7.1)
 - [Packer attestation verifier](https://github.com/hashicorp/packer/blob/v1.16.0/internal/attestation/verify.go)
 
-## Open owner decisions
+## Runtime decision handoff
 
-The [package and operator design](cat2-dx.md) replaces the earlier combined
-source proposal. It asks the owner to approve these contracts:
+The [connected runtime and Starport review](cat2-dx.md) supersedes the earlier
+mode framing. It records the accepted offline `New` and connected `Open` APIs.
+It also records the public source default, embedded network opt-out, fast
+`prefer_source`, independent policies, automatic four-hour acquisition,
+per-provider retention, and unified Starport runtime.
 
-1. Keep `starmap.New` offline and use `starmap.Open` for connected distribution.
-2. Separate exact `follow` mode from explicit `author` acquisition mode.
-3. Use the public source by default and use `none` as the network opt-out.
-4. Replace the public source when an operator configures another source.
-5. Prefer the source at startup and retain last-known-good state on failure.
-6. Poll GitHub hourly with jitter and conditional requests.
-
-The requested Starport configuration migration and dependency update are in
-scope for this campaign.
+Only the end-to-end freshness promise remains an owner decision. The six-hour
+publisher and one-hour consumer poll give a nominal seven-hour bound before
+execution, network, and jitter overhead. The requested Starport breaking
+configuration migration and dependency update remain in scope.

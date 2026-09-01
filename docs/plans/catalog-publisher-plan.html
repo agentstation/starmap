@@ -85,11 +85,11 @@
 <header id="overview">
   <h1>Catalog distribution plan</h1>
   <p id="status-line">
-    Status: <code data-plan-status="proposed">proposed</code>.
+    Status: <code data-plan-status="active">active</code>.
     Owner: this plan. Created: 2026-09-01.
-    Baseline: main @ 42b610a, publisher work @ 7247a002.
+    Baseline: main @ 42b610a, publisher work @ 6c7edfbe.
     Proof root: <code>docs/proof/catalog-publisher/</code>.
-    Next action: get owner approval for CAT-D2 through CAT-D7, then activate CAT2.
+    Next action: resolve CAT-D10, then author the CAT2 red verifier.
   </p>
 
   <section id="outcome">
@@ -197,6 +197,11 @@
       <li>Each background lifecycle has one owner and a bounded shutdown.</li>
       <li>One runtime retains all input layers and owns effective catalog publication.</li>
     </ol>
+    <h3>Acquisition behavior</h3>
+    <ol start="12">
+      <li>A missing catalog-acquisition credential is neutral and causes no provider request.</li>
+      <li>Provider failures retain unrelated provider observations and effective facts.</li>
+    </ol>
   </section>
 
   <section id="naming">
@@ -206,11 +211,11 @@
       <tbody>
         <tr><td>Immutable GitHub release</td><td><code>catalog-&lt;catalog-digest&gt;</code></td><td>Read legacy <code>catalog-semantic-*</code> and <code>catalog-payload-*</code> tags.</td></tr>
         <tr><td>Stable public discovery</td><td><code>catalog-latest</code></td><td>No legacy equivalent exists.</td></tr>
-        <tr><td>Channel document</td><td><code>catalog-latest.json</code></td><td>New schema with <code>generated_at</code> and <code>published_at</code>.</td></tr>
+        <tr><td>Channel document</td><td><code>catalog-latest.json</code></td><td>Attested mutable document with sequence, <code>channel_updated_at</code>, and immutable release identity.</td></tr>
         <tr><td>Normalized fact identity</td><td>catalog digest</td><td>Retain <code>semantic_checksum</code> inside compatible manifests.</td></tr>
         <tr><td>Exact byte identity</td><td>payload checksum</td><td>No change.</td></tr>
         <tr><td>Configured upstream</td><td>catalog source</td><td>Deprecate remote server and remote URL names.</td></tr>
-        <tr><td>Source endpoint setting</td><td><code>catalog_source_url</code></td><td>Accept old settings for one documented migration period.</td></tr>
+        <tr><td>Source endpoint setting</td><td><code>catalog_source_url</code></td><td>Replace old Starport names directly; document the migration without runtime aliases.</td></tr>
         <tr><td>Binary baseline</td><td>embedded public catalog</td><td>Refine the existing embedded catalog term.</td></tr>
         <tr><td>Released baseline</td><td>released public catalog</td><td>Selected by <code>catalog-latest</code>.</td></tr>
         <tr><td>Consumer read model</td><td>effective catalog</td><td>New composed runtime term.</td></tr>
@@ -235,38 +240,37 @@
         <tr><td>CAT-F10</td><td>architecture</td><td>A connected source and acquisition scheduler need one mutation owner.</td><td>CAT5</td></tr>
         <tr><td>CAT-F11</td><td>integration</td><td>Starport selects local acquisition or remote generations and cannot combine them.</td><td>CAT8</td></tr>
         <tr><td>CAT-F12</td><td>correctness</td><td>The runtime must retain input layers or a public refresh can overwrite operator evidence.</td><td>CAT5</td></tr>
+        <tr><td>CAT-F13</td><td>correctness</td><td>The provider source attempts every provider and treats missing credentials as aggregate degradation.</td><td>CAT5</td></tr>
+        <tr><td>CAT-F14</td><td>persistence</td><td>Effective generation storage cannot restore independent upstream and per-provider layers.</td><td>CAT5</td></tr>
+        <tr><td>CAT-F15</td><td>integration</td><td>Starport development mode disables catalog refresh and remote configuration forbids local acquisition.</td><td>CAT8</td></tr>
+        <tr><td>CAT-F16</td><td>security</td><td>Starport's Starmap resolver bypasses the loader lookuper used for process and <code>.env</code> values.</td><td>CAT8</td></tr>
+        <tr><td>CAT-F17</td><td>operations</td><td>The synchronous two-minute catalog refresh runs under a one-minute HTTP request timeout.</td><td>CAT8</td></tr>
+        <tr><td>CAT-F18</td><td>scale</td><td>GitHub permits 60 unauthenticated REST requests per hour per source IP.</td><td>CAT4-CAT8</td></tr>
       </tbody>
     </table>
   </section>
 
   <section id="decisions">
     <h2>Decisions</h2>
-    <p><strong>CAT-D1, accepted 2026-09-01:</strong> New releases use
-      <code>catalog-&lt;digest&gt;</code>, discovery uses <code>catalog-latest</code>,
-      and only technical checksum fields use semantic terminology.</p>
+    <h3>Runtime and naming</h3>
+    <p><strong>CAT-D1, accepted 2026-09-01:</strong> New releases use <code>catalog-&lt;digest&gt;</code>, discovery uses <code>catalog-latest</code>, and only technical checksum fields use semantic terminology.</p>
+    <p><strong>CAT-D2, accepted 2026-09-01:</strong> Keep <code>starmap.New</code> offline, and make <code>starmap.Open</code> the connected API with narrow <code>Catalog</code>, <code>State</code>, and <code>Status</code> reads.</p>
+    <p><strong>CAT-D3, accepted 2026-09-01:</strong> Use independent source and acquisition policies that retain each layer and treat operator model observations as additive, not entitlement evidence.</p>
+    <p><strong>CAT-D4, accepted 2026-09-01:</strong> Support <code>public</code>, <code>github</code>, <code>starmap</code>, <code>file</code>, and <code>embedded</code> sources without public fallback from a custom source.</p>
+    <p><strong>CAT-D5, accepted 2026-09-01:</strong> Use fast <code>prefer_source</code> startup, last-known-good fallback, one-hour GitHub polling, and Starmap SSE with conditional polling fallback.</p>
+  </section>
+
+  <section id="acquisition-decisions">
+    <h2>Acquisition and publication decisions</h2>
+    <p><strong>CAT-D6, provisional engineering selection:</strong> Use <code>sigstore-go</code> behind Starmap-owned GitHub identity and transport policy, subject to CAT2.1 evidence and GitHub CLI parity.</p>
+    <p><strong>CAT-D7, accepted 2026-09-01:</strong> Give Starport one Starmap runtime, default its source to <code>public</code>, enable credential-detected acquisition, and preserve its accepted head.</p>
+    <p><strong>CAT-D8, accepted 2026-09-01:</strong> Remove the acquisition mode, default on-start to true and interval to four hours in both applications, and keep explicit <code>Sync</code>.</p>
+    <p><strong>CAT-D9, accepted 2026-09-01:</strong> Advance an attested channel sequence and <code>channel_updated_at</code> after every successful six-hour verification without a no-change catalog generation.</p>
   </section>
 
   <section id="pending-decisions">
-    <h2>Pending decisions</h2>
-    <p><strong>CAT-D2, pending owner:</strong> Keep <code>starmap.New</code>
-      offline, and make <code>starmap.Open</code> the connected distribution API
-      with narrow <code>Catalog</code>, <code>State</code>, and <code>Status</code> reads.</p>
-    <p><strong>CAT-D3, pending owner:</strong> Use independent source and
-      acquisition policies that retain each layer and treat operator model
-      observations as additive, not entitlement evidence.</p>
-    <p><strong>CAT-D4, pending owner:</strong> Support <code>public</code>,
-      <code>github</code>, <code>starmap</code>, <code>file</code>, and
-      <code>embedded</code> source kinds without public fallback from a custom source.</p>
-    <p><strong>CAT-D5, pending owner:</strong> Use <code>prefer_source</code>
-      startup, last-known-good fallback, one-hour GitHub polling, and Starmap
-      SSE with conditional polling fallback.</p>
-    <p><strong>CAT-D6, provisional engineering selection:</strong> Use
-      <code>sigstore-go</code> directly behind a Starmap-owned GitHub identity
-      policy and transport adapter, subject to CAT2.1 evidence and GitHub CLI
-      parity.</p>
-    <p><strong>CAT-D7, pending owner:</strong> Give Starport one Starmap runtime,
-      default its source to <code>public</code>, disable acquisition by default,
-      and preserve Starport's separate accepted head.</p>
+    <h2>Pending decision</h2>
+    <p><strong>CAT-D10, pending owner:</strong> State a nominal seven-hour freshness bound and eight-hour status budget. Otherwise, shorten cadence to target six hours end to end.</p>
   </section>
 
   <section id="test-matrix">
@@ -278,9 +282,10 @@
         <tr><td>Trust</td><td>valid workflow identity, wrong repository, wrong workflow, wrong digest, missing bundle, expired or invalid chain</td></tr>
         <tr><td>Activation</td><td>new facts, new identity with equal payload, older generation, incompatible schema, concurrent readers</td></tr>
         <tr><td>Failure</td><td>startup outage, poll outage, SSE outage, unauthorized source, partial channel update, shutdown timeout</td></tr>
-        <tr><td>Configuration</td><td>default public, embedded-only, custom GitHub, custom Starmap, file, disabled, manual, scheduled, migration, forbidden fallback</td></tr>
-        <tr><td>Composition</td><td>public-only, operator-only, public plus operator, source server plus operator, failed layer, retained provenance</td></tr>
-        <tr><td>Deployment</td><td>Go memory store, CLI filesystem store, Docker restart, source server, three Starport consumers</td></tr>
+        <tr><td>Configuration</td><td>default public, embedded-only, custom GitHub, custom Starmap, file, four acquisition combinations, direct migration, forbidden fallback</td></tr>
+        <tr><td>Composition</td><td>public-only, operator-only, public plus operator, source server plus operator, partial provider failure, retained provenance</td></tr>
+        <tr><td>Operations</td><td>channel heartbeat, no-change check, async refresh join, retry, rate limit, freshness evaluation, bounded metrics</td></tr>
+        <tr><td>Deployment</td><td>offline Go, CLI filesystem store, Docker restart, source server, standalone Starport, three Starport consumers</td></tr>
       </tbody>
     </table>
   </section>
@@ -292,7 +297,7 @@
       <tbody>
         <tr id="CAT0" data-status="done"><td>CAT0</td><td>Pin the publisher, credentials, source, and consumer baseline.</td><td><code>done</code></td><td><a href="../proof/catalog-publisher/cat0.md">CAT0 proof</a>.</td></tr>
         <tr id="CAT1" data-status="done"><td>CAT1</td><td>Store acquisition credentials and set the six-hour publisher cadence.</td><td><code>done</code></td><td><a href="../proof/catalog-publisher/cat1.md">CAT1 proof</a>; commit <code>cf3124c0</code>.</td></tr>
-        <tr id="CAT2" data-status="blocked"><td>CAT2</td><td>Ratify naming, source policy, lifecycle, and the red campaign verifier.</td><td><code>blocked(owner decisions)</code></td><td><a href="../proof/catalog-publisher/cat2-review.md">Architecture review</a> and <a href="../proof/catalog-publisher/cat2-dx.md">DX review</a>; CAT-D2 through CAT-D7 remain open.</td></tr>
+        <tr id="CAT2" data-status="in_progress"><td>CAT2</td><td>Ratify naming, source policy, lifecycle, and the red campaign verifier.</td><td><code>in_progress</code></td><td><a href="../proof/catalog-publisher/cat2-review.md">Trust review</a> and <a href="../proof/catalog-publisher/cat2-dx.md">runtime review</a>; only CAT-D10 remains open.</td></tr>
         <tr id="CAT2.1" data-status="todo"><td>CAT2.1</td><td>Select and prove the native Go attestation verifier dependency.</td><td><code>todo</code></td><td>Initial comparison is in the <a href="../proof/catalog-publisher/cat2-review.md">CAT2 review</a>.</td></tr>
         <tr id="CAT3" data-status="todo"><td>CAT3</td><td>Publish canonical immutable releases and the verified latest channel.</td><td><code>todo</code></td><td></td></tr>
         <tr id="CAT4" data-status="todo"><td>CAT4</td><td>Implement the native verified GitHub catalog source.</td><td><code>todo</code></td><td></td></tr>
@@ -335,8 +340,8 @@
     <ul>
       <li><strong>Problem:</strong> public names and lifecycle ownership do not define one source contract.</li>
       <li><strong>Owned paths:</strong> this plan, glossary, architecture documents, and a new distribution verifier.</li>
-      <li><strong>Steps:</strong> ratify CAT-D2 through CAT-D7, define channel and source configuration, and author the verifier red.</li>
-      <li><strong>Acceptance:</strong> <code>scripts/verify-catalog-distribution.sh</code> names a fixed condition count and fails only on missing target behavior.</li>
+      <li><strong>Steps:</strong> resolve CAT-D10, remove acquisition-mode framing, define the channel heartbeat, status, async refresh, per-provider retention, and author the verifier red.</li>
+      <li><strong>Acceptance:</strong> <code>scripts/verify-catalog-distribution.sh</code> defines the contract matrix in the CAT2 runtime review and fails only on missing target behavior.</li>
       <li><strong>Fail-before:</strong> capture every failing condition in <code>cat2-fail-before.txt</code>.</li>
       <li><strong>Verification:</strong> run the verifier, package ownership checks, and technical-writing checks.</li>
     </ul>
@@ -355,8 +360,8 @@
     <ul>
       <li><strong>Problem:</strong> immutable releases expose internal checksum terminology and have no stable channel.</li>
       <li><strong>Owned paths:</strong> workflow, release command, channel schema, GoReleaser, and workflow tests.</li>
-      <li><strong>Steps:</strong> publish <code>catalog-&lt;digest&gt;</code>, verify it, then promote an attested <code>catalog-latest.json</code> pointer.</li>
-      <li><strong>Acceptance:</strong> tests reject channel promotion before immutable verification and preserve all legacy rollback tags.</li>
+      <li><strong>Steps:</strong> publish <code>catalog-&lt;digest&gt;</code>, verify it, then advance the attested <code>catalog-latest.json</code> sequence on every successful run.</li>
+      <li><strong>Acceptance:</strong> tests reject promotion before immutable verification, advance heartbeat state on no change, create no no-change catalog generation, and preserve legacy rollback tags.</li>
       <li><strong>Fail-before:</strong> the workflow emits <code>catalog-semantic-*</code> and has no latest channel.</li>
       <li><strong>Verification:</strong> run actionlint, workflow tests, release fixtures, and action pin checks.</li>
     </ul>
@@ -365,8 +370,8 @@
     <ul>
       <li><strong>Problem:</strong> Go consumers cannot discover or verify the public release without <code>gh</code>.</li>
       <li><strong>Owned paths:</strong> a public GitHub source adapter, artifact verifier, transport policy, and dependency allowlist.</li>
-      <li><strong>Steps:</strong> implement the CAT2.1 selection, fetch the channel with ETag, fetch immutable assets, get attestation bundles, and verify repository and workflow identity.</li>
-      <li><strong>Acceptance:</strong> <code>TestGitHubSourceVerifiesCatalogLatest</code> passes and every trust-negative matrix case fails before activation.</li>
+      <li><strong>Steps:</strong> implement the CAT2.1 selection, fetch the channel and assets, get attestations, verify identity, and handle rate limits.</li>
+      <li><strong>Acceptance:</strong> <code>TestGitHubSourceVerifiesCatalogLatest</code> passes with durable rollback state, bounded API use, and rejection before activation for each trust-negative case.</li>
       <li><strong>Fail-before:</strong> no production GitHub release or Sigstore verifier exists.</li>
       <li><strong>Verification:</strong> run focused race tests, fuzz parsers, pure-Go checks, and dependency review.</li>
     </ul>
@@ -374,9 +379,9 @@
     <h3 id="task-CAT5">CAT5 Catalog-source runtime</h3>
     <ul>
       <li><strong>Problem:</strong> the low-level client cannot own source polling, fallback, health, shutdown, and acquisition serialization.</li>
-      <li><strong>Owned paths:</strong> connected runtime, retained layers, scoped evidence, source and acquisition policies, health, and consumer fixtures.</li>
-      <li><strong>Steps:</strong> add <code>Open</code>, retain each layer, rebuild the effective catalog, expose narrow reads, serialize refresh and sync, and own shutdown.</li>
-      <li><strong>Acceptance:</strong> the runtime defaults to <code>catalog-latest</code>, retains operator facts after public refresh, and preserves last-known-good state under race.</li>
+      <li><strong>Owned paths:</strong> connected runtime, durable retained layers, provider outcomes, scoped evidence, source and acquisition policies, health, and consumer fixtures.</li>
+      <li><strong>Steps:</strong> add <code>Open</code>, implement its I/O methods, retain all layers, expose narrow reads, serialize publication, and own shutdown.</li>
+      <li><strong>Acceptance:</strong> the runtime defaults to <code>catalog-latest</code> and four-hour automatic cycles, returns embedded state promptly, and preserves all layers under race.</li>
       <li><strong>Fail-before:</strong> package construction has no default verified source path.</li>
       <li><strong>Verification:</strong> run root, runtime, storage, race, and external consumer tests.</li>
     </ul>
@@ -385,8 +390,8 @@
     <ul>
       <li><strong>Problem:</strong> the CLI, server, and image ignore configured sources and default to embedded state.</li>
       <li><strong>Owned paths:</strong> CLI app composition, serve lifecycle, Docker Compose, environment example, and server shutdown.</li>
-      <li><strong>Steps:</strong> map source and acquisition settings, select the public source by default, keep operator sync explicit, and join runtime shutdown.</li>
-      <li><strong>Acceptance:</strong> server and container tests pull a synthetic channel by default and retain durable state during outage.</li>
+      <li><strong>Steps:</strong> map source, startup bool, and interval settings, select public by default, keep manual sync, and join runtime shutdown.</li>
+      <li><strong>Acceptance:</strong> package, server, and container tests pull a synthetic channel, detect eligible credentials, make no missing-credential calls, and retain durable state during outage.</li>
       <li><strong>Fail-before:</strong> CLI rejects <code>RemoteServerURL</code> and Docker sends no source request.</li>
       <li><strong>Verification:</strong> run CLI/server race tests, Compose validation, and a read-only-root container smoke test.</li>
     </ul>
@@ -394,9 +399,9 @@
     <h3 id="task-CAT7">CAT7 Starmap source cascading</h3>
     <ul>
       <li><strong>Problem:</strong> a Starmap server cannot combine an upstream Starmap source with operator acquisition.</li>
-      <li><strong>Owned paths:</strong> HTTP/SSE adapter, runtime source selection, server health, and readiness.</li>
-      <li><strong>Steps:</strong> adapt the current subscriber, preserve TLS origin policy, expose source state, and test a two-hop chain.</li>
-      <li><strong>Acceptance:</strong> <code>TestServerCascadesVerifiedCatalogSource</code> proves upstream to source server to downstream activation.</li>
+      <li><strong>Owned paths:</strong> HTTP/SSE adapter, source-chain manifest, runtime source selection, server status, health, and readiness.</li>
+      <li><strong>Steps:</strong> adapt the current subscriber, preserve TLS origin policy, separate direct and upstream health, and reject identity cycles and excessive hops.</li>
+      <li><strong>Acceptance:</strong> <code>TestServerCascadesVerifiedCatalogSource</code> proves upstream to source server to derived downstream activation, plus self, alias, and two-node cycle rejection.</li>
       <li><strong>Fail-before:</strong> server start owns no upstream subscriber.</li>
       <li><strong>Verification:</strong> run protocol, subscriber, server, concurrency, and failure tests with race detection.</li>
     </ul>
@@ -404,19 +409,19 @@
     <h3 id="task-CAT8">CAT8 Starport scale-out adoption</h3>
     <ul>
       <li><strong>Problem:</strong> Starport selects local acquisition or remote generations and gives two operations the name <code>Sync</code>.</li>
-      <li><strong>Owned paths:</strong> Starport catalog config, unified Starmap adapter, acceptance transaction, and operator tests.</li>
-      <li><strong>Steps:</strong> adopt source and acquisition settings, default to public with acquisition disabled, remove remote <code>Sync</code>, and test three consumers.</li>
-      <li><strong>Acceptance:</strong> all three instances accept one generation, survive source outage, and make no public GitHub request.</li>
-      <li><strong>Fail-before:</strong> empty Starport configuration selects local acquisition and remote URL is opt-in.</li>
+      <li><strong>Owned paths:</strong> Starport catalog config, unified Starmap adapter, raw deployment lookuper, acceptance transaction, admin API, audit, console, and metrics.</li>
+      <li><strong>Steps:</strong> adopt the new settings, default to public and automatic provider queries, remove remote <code>Sync</code>, add async status, and test three consumers.</li>
+      <li><strong>Acceptance:</strong> replicas show both provenances, support local queries or central-only policy, preserve accepted routes, and avoid public requests for private sources.</li>
+      <li><strong>Fail-before:</strong> Starport chooses local or remote, development disables refresh, the admin refresh is synchronous, and the console uses a seven-day constant.</li>
       <li><strong>Verification:</strong> run Starport catalog, app, configuration, architecture, and race checks.</li>
     </ul>
 
     <h3 id="task-CAT9">CAT9 Compatibility and documentation</h3>
     <ul>
-      <li><strong>Problem:</strong> old names and offline behavior need an explicit migration contract.</li>
+      <li><strong>Problem:</strong> old names, new network defaults, and deterministic offline behavior need an explicit migration contract.</li>
       <li><strong>Owned paths:</strong> glossary, README, architecture, trust, protocol, Docker, CLI, release, and migration documents.</li>
-      <li><strong>Steps:</strong> document names, defaults, timestamps, layers, policies, egress, health, aliases, and removal schedule.</li>
-      <li><strong>Acceptance:</strong> all maintained text uses catalog-source terminology and names every network default.</li>
+      <li><strong>Steps:</strong> document names, defaults, timestamps, layers, policies, egress, health, direct Starport replacements, and historical release readback.</li>
+      <li><strong>Acceptance:</strong> all maintained text uses catalog-source terminology, names every network default, defines every timestamp, and contains no old Starport environment alias.</li>
       <li><strong>Fail-before:</strong> current text says remote consumption is opt-in and startup makes no request.</li>
       <li><strong>Verification:</strong> run docs generation, docs checks, technical-writing checks, and stale-name scans.</li>
     </ul>
@@ -467,13 +472,16 @@ fail-before result. Run every named verifier. Commit work under repository
 policy. Run autoreview before each substantive pull request. Record exact test
 counts and hosted checks. Preserve secret containment, immutable verification,
 last-known-good activation, explicit enterprise egress, deterministic offline
-use, bounded shutdown, and Starport's acceptance transaction. Do not expose
-secrets, grant mutable tags integrity authority, require gh in a Go consumer,
-or weaken a gate. Stop only at a plans-skill stop state. Update the ledger, log,
-and next action before each stop. The goal is met when the six-hour publisher
-promotes catalog-latest, connected Starmap runtimes consume a configurable
-catalog source by default, a cascading server supplies scaled Starport
-instances, public releases verify, and CAT99 removes the plan.</code></pre>
+use, neutral missing credentials, per-provider retained state, bounded
+shutdown, and Starport's acceptance transaction. Do not expose secrets, grant
+mutable tags integrity authority, require gh in a Go consumer, reuse inference
+or BYOK credentials, add a Starport configuration alias, or weaken a gate.
+Stop only at a plans-skill stop state. Update the ledger, log, and next action
+before each stop. The goal is met when the six-hour publisher advances an
+attested catalog-latest channel, connected Starmap runtimes compose a
+configurable source and automatic four-hour acquisition, a cascading server
+supplies scaled Starport instances with complete operator status, public
+releases verify, and CAT99 removes the plan.</code></pre>
   </section>
 
   <section id="execution-log">
@@ -488,6 +496,7 @@ instances, public releases verify, and CAT99 removes the plan.</code></pre>
         <tr><td>2026-09-01</td><td>meta</td><td>proposed</td><td>Expanded the publisher plan into the catalog distribution campaign.</td></tr>
         <tr><td>2026-09-01</td><td>CAT2</td><td>refined</td><td>Separated catalog following from acquisition and specified package, operator, Starport, and enterprise source behavior.</td></tr>
         <tr><td>2026-09-01</td><td>CAT2</td><td>refined</td><td>Defined the layered runtime, canonical Go reads, orthogonal policies, and unified Starport consumer flow.</td></tr>
+        <tr><td>2026-09-01</td><td>CAT2</td><td>reconciled</td><td>Verified source, credential, persistence, timeout, status, and UI seams; accepted automatic true plus four-hour acquisition, per-provider retention, async refresh, and channel heartbeat. CAT-D10 remains.</td></tr>
       </tbody>
     </table>
   </section>
