@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Catalog publisher plan</title>
+<title>Catalog distribution plan</title>
 <style>
   :root {
     --ink: #1a1e24; --muted: #5c6570; --line: #d8dde3; --soft: #f4f6f8;
@@ -83,21 +83,22 @@
 <body>
 
 <header id="overview">
-  <h1>Catalog publisher plan</h1>
+  <h1>Catalog distribution plan</h1>
   <p id="status-line">
-    Status: <code data-plan-status="active">active</code> ·
-    Owner: this plan · Created: 2026-09-01 ·
-    Baseline: main @ 42b610a ·
-    Proof root: <code>docs/proof/catalog-publisher/</code> ·
-    Next action: get the owner's catalog channel decision for CAT2
+    Status: <code data-plan-status="proposed">proposed</code>.
+    Owner: this plan. Created: 2026-09-01.
+    Baseline: main @ 42b610a, publisher work @ 7247a002.
+    Proof root: <code>docs/proof/catalog-publisher/</code>.
+    Next action: get owner answers for CAT-D2 through CAT-D5, then activate CAT2.
   </p>
 
   <section id="outcome">
     <h2>Outcome</h2>
     <blockquote>
-      Starmap refreshes its catalog every six hours with available acquisition
-      credentials, publishes a verified catalog resource, supports a verified
-      latest-catalog pull path, and releases the completed behavior.
+      Starmap publishes one verified public catalog channel and consumes it by
+      default in connected package, server, and container runtimes. A configured
+      Starmap catalog source replaces the public source. Starport instances can
+      share an enterprise Starmap source without public GitHub egress.
     </blockquote>
   </section>
 
@@ -112,50 +113,50 @@
     <div class="pair">
       <figure>
         <figcaption>Before</figcaption>
-        <svg viewBox="0 0 360 170" role="img"
-          aria-label="Local credentials do not reach the daily publisher">
-          <rect x="10" y="15" width="100" height="45" rx="7" fill="none"
-            stroke="currentColor"/>
-          <text x="60" y="42" text-anchor="middle" fill="currentColor">local .env</text>
-          <rect x="130" y="15" width="100" height="45" rx="7" fill="none"
-            stroke="currentColor"/>
-          <text x="180" y="34" text-anchor="middle" fill="currentColor">daily job</text>
-          <text x="180" y="50" text-anchor="middle" fill="currentColor">empty secrets</text>
-          <rect x="250" y="15" width="100" height="45" rx="7" fill="none"
-            stroke="currentColor"/>
-          <text x="300" y="34" text-anchor="middle" fill="currentColor">immutable</text>
-          <text x="300" y="50" text-anchor="middle" fill="currentColor">prerelease</text>
-          <rect x="130" y="105" width="100" height="45" rx="7" fill="none"
-            stroke="currentColor"/>
-          <text x="180" y="124" text-anchor="middle" fill="currentColor">Starmap</text>
-          <text x="180" y="140" text-anchor="middle" fill="currentColor">instance</text>
-          <line x1="110" y1="37" x2="126" y2="37" stroke="currentColor"/>
-          <line x1="230" y1="37" x2="246" y2="37" stroke="currentColor"/>
+        <svg viewBox="0 0 440 220" role="img"
+          aria-label="Separate release, remote subscriber, and embedded consumers">
+          <rect x="10" y="15" width="120" height="48" rx="7" fill="none" stroke="currentColor"/>
+          <text x="70" y="35" text-anchor="middle" fill="currentColor">catalog-semantic</text>
+          <text x="70" y="52" text-anchor="middle" fill="currentColor">prereleases</text>
+          <rect x="160" y="15" width="120" height="48" rx="7" fill="none" stroke="currentColor"/>
+          <text x="220" y="35" text-anchor="middle" fill="currentColor">manual release</text>
+          <text x="220" y="52" text-anchor="middle" fill="currentColor">import</text>
+          <rect x="310" y="15" width="120" height="48" rx="7" fill="none" stroke="currentColor"/>
+          <text x="370" y="35" text-anchor="middle" fill="currentColor">opt-in remote</text>
+          <text x="370" y="52" text-anchor="middle" fill="currentColor">subscriber</text>
+          <rect x="55" y="145" width="130" height="48" rx="7" fill="none" stroke="currentColor"/>
+          <text x="120" y="165" text-anchor="middle" fill="currentColor">server and Docker</text>
+          <text x="120" y="182" text-anchor="middle" fill="currentColor">embedded startup</text>
+          <rect x="255" y="145" width="130" height="48" rx="7" fill="none" stroke="currentColor"/>
+          <text x="320" y="165" text-anchor="middle" fill="currentColor">Starport remote</text>
+          <text x="320" y="182" text-anchor="middle" fill="currentColor">opt-in only</text>
+          <line x1="130" y1="39" x2="156" y2="39" stroke="currentColor"/>
+          <line x1="370" y1="63" x2="330" y2="141" stroke="currentColor"/>
         </svg>
       </figure>
       <figure>
         <figcaption>After</figcaption>
-        <svg viewBox="0 0 360 170" role="img"
-          aria-label="Repository secrets feed a six-hour verified catalog channel">
-          <rect x="10" y="15" width="100" height="45" rx="7" fill="none"
-            stroke="currentColor"/>
-          <text x="60" y="34" text-anchor="middle" fill="currentColor">repository</text>
-          <text x="60" y="50" text-anchor="middle" fill="currentColor">secrets</text>
-          <rect x="130" y="15" width="100" height="45" rx="7" fill="none"
-            stroke="currentColor"/>
-          <text x="180" y="34" text-anchor="middle" fill="currentColor">six-hour</text>
-          <text x="180" y="50" text-anchor="middle" fill="currentColor">publisher</text>
-          <rect x="250" y="15" width="100" height="45" rx="7" fill="none"
-            stroke="currentColor"/>
-          <text x="300" y="34" text-anchor="middle" fill="currentColor">verified</text>
-          <text x="300" y="50" text-anchor="middle" fill="currentColor">catalog channel</text>
-          <rect x="130" y="105" width="100" height="45" rx="7" fill="none"
-            stroke="currentColor"/>
-          <text x="180" y="124" text-anchor="middle" fill="currentColor">Starmap</text>
-          <text x="180" y="140" text-anchor="middle" fill="currentColor">instance</text>
-          <line x1="110" y1="37" x2="126" y2="37" stroke="currentColor"/>
-          <line x1="230" y1="37" x2="246" y2="37" stroke="currentColor"/>
-          <line x1="300" y1="60" x2="215" y2="101" stroke="currentColor"/>
+        <svg viewBox="0 0 440 220" role="img"
+          aria-label="Public channel feeds configurable Starmap source hierarchy">
+          <rect x="10" y="15" width="120" height="48" rx="7" fill="none" stroke="currentColor"/>
+          <text x="70" y="35" text-anchor="middle" fill="currentColor">catalog-latest</text>
+          <text x="70" y="52" text-anchor="middle" fill="currentColor">verified channel</text>
+          <rect x="160" y="15" width="120" height="48" rx="7" fill="none" stroke="currentColor"/>
+          <text x="220" y="35" text-anchor="middle" fill="currentColor">catalog source</text>
+          <text x="220" y="52" text-anchor="middle" fill="currentColor">runtime contract</text>
+          <rect x="310" y="15" width="120" height="48" rx="7" fill="none" stroke="currentColor"/>
+          <text x="370" y="35" text-anchor="middle" fill="currentColor">enterprise</text>
+          <text x="370" y="52" text-anchor="middle" fill="currentColor">Starmap source</text>
+          <rect x="55" y="145" width="130" height="48" rx="7" fill="none" stroke="currentColor"/>
+          <text x="120" y="165" text-anchor="middle" fill="currentColor">package, server</text>
+          <text x="120" y="182" text-anchor="middle" fill="currentColor">and Docker</text>
+          <rect x="255" y="145" width="130" height="48" rx="7" fill="none" stroke="currentColor"/>
+          <text x="320" y="165" text-anchor="middle" fill="currentColor">Starport</text>
+          <text x="320" y="182" text-anchor="middle" fill="currentColor">scaled instances</text>
+          <line x1="130" y1="39" x2="156" y2="39" stroke="currentColor"/>
+          <line x1="280" y1="39" x2="306" y2="39" stroke="currentColor"/>
+          <line x1="195" y1="63" x2="137" y2="141" stroke="currentColor"/>
+          <line x1="370" y1="63" x2="329" y2="141" stroke="currentColor"/>
         </svg>
       </figure>
     </div>
@@ -165,26 +166,53 @@
 <main>
   <section id="scope">
     <h2>Scope</h2>
-    <p><strong>Owns:</strong> provider credential inventory, repository
-      Actions secrets, publisher cadence, catalog discovery, verification,
-      import, publication proof, and the next Starmap release.</p>
-    <p><strong>Does not own:</strong> Starport inference credentials, Starport
-      source changes, provider account creation, or a hosted deployment.</p>
-    <p><strong>Non-goals:</strong> change catalog authority, expose secret
-      values, weaken release verification, or call inference endpoints.</p>
+    <p><strong>Owns:</strong> publisher credentials and cadence, catalog names,
+      the public channel, GitHub verification, and catalog-source contracts.</p>
+    <p>The plan also owns connected runtimes, application defaults, source
+      cascading, Starport adoption, migration guidance, proof, and releases.</p>
+    <p><strong>Does not own:</strong> provider inference credentials, provider
+      account creation, a managed AgentStation Starmap deployment, or enterprise
+      network and storage provisioning.</p>
+    <p><strong>Non-goals:</strong> do not change provider fact authority without
+      an owner decision. Do not expose secrets or trust mutable tags. Do not
+      require GitHub CLI in a Go consumer.</p>
   </section>
 
   <section id="invariants">
     <h2>Invariants</h2>
+    <h3>Security and trust</h3>
     <ol>
       <li>No secret value enters Git, logs, plans, proof files, or replies.</li>
       <li>The workflow exposes provider credentials only to its refresh step.</li>
-      <li>Catalog acquisition never uses Starport account or gateway secrets.</li>
-      <li>A failed refresh cannot replace the last verified catalog resource.</li>
-      <li>A Starmap instance verifies catalog bytes before activation.</li>
-      <li>The release requires protected main, and Starport's existing worktree
-        stays unchanged.</li>
+      <li>The mutable channel can select only an immutable verified catalog release.</li>
+      <li>Every activation verifies publisher identity, bytes, schema, and generation order.</li>
+      <li>A failed source retains last-known-good state and reports degradation.</li>
     </ol>
+    <h3>Runtime behavior</h3>
+    <ol start="6">
+      <li>A configured enterprise source causes no undeclared public GitHub fallback.</li>
+      <li>The low-level catalog client remains safe for deterministic offline use.</li>
+      <li>Starport validates a complete runtime candidate before acceptance.</li>
+      <li>Existing catalog releases remain immutable and readable.</li>
+      <li>Each background lifecycle has one owner and a bounded shutdown.</li>
+    </ol>
+  </section>
+
+  <section id="naming">
+    <h2>Canonical names</h2>
+    <table>
+      <thead><tr><th>Concept</th><th>Canonical name</th><th>Migration</th></tr></thead>
+      <tbody>
+        <tr><td>Immutable GitHub release</td><td><code>catalog-&lt;catalog-digest&gt;</code></td><td>Read legacy <code>catalog-semantic-*</code> and <code>catalog-payload-*</code> tags.</td></tr>
+        <tr><td>Stable public discovery</td><td><code>catalog-latest</code></td><td>No legacy equivalent exists.</td></tr>
+        <tr><td>Channel document</td><td><code>catalog-latest.json</code></td><td>New schema with <code>generated_at</code> and <code>published_at</code>.</td></tr>
+        <tr><td>Normalized fact identity</td><td>catalog digest</td><td>Retain <code>semantic_checksum</code> inside compatible manifests.</td></tr>
+        <tr><td>Exact byte identity</td><td>payload checksum</td><td>No change.</td></tr>
+        <tr><td>Configured upstream</td><td>catalog source</td><td>Deprecate remote server and remote URL names.</td></tr>
+        <tr><td>Source endpoint setting</td><td><code>catalog_source_url</code></td><td>Accept old settings for one documented migration period.</td></tr>
+        <tr><td>Source follower</td><td>catalog source runtime</td><td>Keep <code>remote</code> as a compatibility facade if required.</td></tr>
+      </tbody>
+    </table>
   </section>
 
   <section id="findings">
@@ -192,17 +220,53 @@
     <table>
       <thead><tr><th>ID</th><th>Classification</th><th>Evidence</th><th>Owner</th></tr></thead>
       <tbody>
-        <tr><td>CAT-F1</td><td>high confidence</td><td>The workflow names eight provider secrets. The repository stores no provider secrets.</td><td>CAT1</td></tr>
-        <tr><td>CAT-F2</td><td>high confidence</td><td>The Starmap file contains 12 non-empty provider credentials. Three equal values also exist in Starport.</td><td>CAT1</td></tr>
-        <tr><td>CAT-F3</td><td>architecture</td><td>GitHub catalog releases are immutable prereleases without a mutable latest pointer. The remote subscriber requires an HTTP/SSE publisher.</td><td>CAT2</td></tr>
+        <tr><td>CAT-F1</td><td>closed</td><td>Eleven repository secrets now cover 12 live provider catalogs.</td><td>CAT1</td></tr>
+        <tr><td>CAT-F2</td><td>naming</td><td>The live repository has 28 semantic tags, 17 payload tags, and no latest channel.</td><td>CAT3</td></tr>
+        <tr><td>CAT-F3</td><td>architecture</td><td>Release import, HTTP subscription, and root client lifecycles are separate.</td><td>CAT4-CAT7</td></tr>
+        <tr><td>CAT-F4</td><td>integration</td><td>The CLI parses remote server settings but rejects them during composition.</td><td>CAT6</td></tr>
+        <tr><td>CAT-F5</td><td>integration</td><td>Server and Docker start from durable or embedded state and follow no source.</td><td>CAT6</td></tr>
+        <tr><td>CAT-F6</td><td>preserve</td><td>Starport already separates remote head from accepted runtime state.</td><td>CAT8</td></tr>
+        <tr><td>CAT-F7</td><td>trust</td><td>A Go consumer needs native Sigstore verification instead of the <code>gh</code> executable.</td><td>CAT4</td></tr>
+        <tr><td>CAT-F8</td><td>dependency</td><td>GitHub CLI and the reviewed production consumers use <code>sigstore-go</code> as the engine and add domain policy around it.</td><td>CAT2.1</td></tr>
       </tbody>
     </table>
   </section>
 
   <section id="decisions">
     <h2>Decisions</h2>
-    <p><strong>CAT-D1, pending owner:</strong> Select a public GitHub catalog
-      channel or a hosted Starmap server. Reopen after the owner answers.</p>
+    <p><strong>CAT-D1, accepted 2026-09-01:</strong> New releases use
+      <code>catalog-&lt;digest&gt;</code>, discovery uses <code>catalog-latest</code>,
+      and only technical checksum fields use semantic terminology.</p>
+    <p><strong>CAT-D2, pending owner:</strong> Keep <code>starmap.New</code> as
+      the offline primitive, and add <code>starmap.Open</code> as the connected
+      application default.</p>
+    <p><strong>CAT-D3, pending owner:</strong> A configured catalog source
+      replaces public GitHub without an implicit fallback.</p>
+    <p><strong>CAT-D4, pending owner:</strong> Reconcile the source below a local
+      human catalog workspace, while Starport exactly follows the selected
+      Starmap generation before runtime acceptance.</p>
+    <p><strong>CAT-D5, pending owner:</strong> Poll the public GitHub channel
+      hourly with jitter and conditional requests, and follow Starmap through
+      SSE.</p>
+    <p><strong>CAT-D6, provisional engineering selection:</strong> Use
+      <code>sigstore-go</code> directly behind a Starmap-owned GitHub identity
+      policy and transport adapter, subject to CAT2.1 evidence and GitHub CLI
+      parity.</p>
+  </section>
+
+  <section id="test-matrix">
+    <h2>Test matrix</h2>
+    <table>
+      <thead><tr><th>Dimension</th><th>Required cases</th></tr></thead>
+      <tbody>
+        <tr><td>Discovery</td><td>new channel, unchanged ETag, missing channel, malformed document, legacy immutable rollback</td></tr>
+        <tr><td>Trust</td><td>valid workflow identity, wrong repository, wrong workflow, wrong digest, missing bundle, expired or invalid chain</td></tr>
+        <tr><td>Activation</td><td>new facts, new identity with equal payload, older generation, incompatible schema, concurrent readers</td></tr>
+        <tr><td>Failure</td><td>startup outage, poll outage, SSE outage, unauthorized source, partial channel update, shutdown timeout</td></tr>
+        <tr><td>Configuration</td><td>default public, offline, custom GitHub, custom Starmap, API key, old-name migration, forbidden fallback</td></tr>
+        <tr><td>Deployment</td><td>Go memory store, CLI filesystem store, Docker restart, source server, three Starport followers</td></tr>
+      </tbody>
+    </table>
   </section>
 
   <section id="ledger">
@@ -210,13 +274,20 @@
     <table>
       <thead><tr><th>ID</th><th>Task</th><th>Status</th><th>Evidence</th></tr></thead>
       <tbody>
-        <tr id="CAT0" data-status="done"><td>CAT0</td><td>Pin the baseline and inventory credentials, workflow state, publication state, and consumer behavior.</td><td><code>done</code></td><td><a href="../proof/catalog-publisher/cat0.md">CAT0 proof</a>: 11 usable credentials, zero repository provider secrets, daily schedule, and no GitHub release consumer.</td></tr>
-        <tr id="CAT1" data-status="done"><td>CAT1</td><td>Store acquisition credentials and change the publisher to a six-hour cadence.</td><td><code>done</code></td><td><a href="../proof/catalog-publisher/cat1.md">CAT1 proof</a>: 11 stored credentials, 12 live providers, six-hour schedule, and focused checks.</td></tr>
-        <tr id="CAT2" data-status="blocked"><td>CAT2</td><td>Implement the owner-selected verified latest-catalog pull path.</td><td><code>blocked(owner channel decision)</code></td><td>CAT-D1 needs a GitHub catalog channel or hosted Starmap server selection.</td></tr>
-        <tr id="CAT3" data-status="todo"><td>CAT3</td><td>Run local gates, structured review, protected pull-request checks, and merge.</td><td><code>todo</code></td><td></td></tr>
-        <tr id="CAT4" data-status="todo"><td>CAT4</td><td>Run the publisher and verify the public catalog resource and provenance.</td><td><code>todo</code></td><td></td></tr>
-        <tr id="CAT5" data-status="todo"><td>CAT5</td><td>Publish and verify the next Starmap release.</td><td><code>todo</code></td><td></td></tr>
-        <tr id="CAT9" data-status="todo"><td>CAT9</td><td>Delete this plan, its proof root, and its index entry after the final pull request merges.</td><td><code>todo</code></td><td></td></tr>
+        <tr id="CAT0" data-status="done"><td>CAT0</td><td>Pin the publisher, credentials, source, and consumer baseline.</td><td><code>done</code></td><td><a href="../proof/catalog-publisher/cat0.md">CAT0 proof</a>.</td></tr>
+        <tr id="CAT1" data-status="done"><td>CAT1</td><td>Store acquisition credentials and set the six-hour publisher cadence.</td><td><code>done</code></td><td><a href="../proof/catalog-publisher/cat1.md">CAT1 proof</a>; commit <code>cf3124c0</code>.</td></tr>
+        <tr id="CAT2" data-status="blocked"><td>CAT2</td><td>Ratify naming, source policy, lifecycle, and the red campaign verifier.</td><td><code>blocked(owner decisions)</code></td><td><a href="../proof/catalog-publisher/cat2-review.md">CAT2 review</a>; CAT-D2 through CAT-D5 remain open.</td></tr>
+        <tr id="CAT2.1" data-status="todo"><td>CAT2.1</td><td>Select and prove the native Go attestation verifier dependency.</td><td><code>todo</code></td><td>Initial comparison is in the <a href="../proof/catalog-publisher/cat2-review.md">CAT2 review</a>.</td></tr>
+        <tr id="CAT3" data-status="todo"><td>CAT3</td><td>Publish canonical immutable releases and the verified latest channel.</td><td><code>todo</code></td><td></td></tr>
+        <tr id="CAT4" data-status="todo"><td>CAT4</td><td>Implement the native verified GitHub catalog source.</td><td><code>todo</code></td><td></td></tr>
+        <tr id="CAT5" data-status="todo"><td>CAT5</td><td>Create the catalog-source runtime and connected Go API.</td><td><code>todo</code></td><td></td></tr>
+        <tr id="CAT6" data-status="todo"><td>CAT6</td><td>Enable catalog sources by default in the CLI, server, and container.</td><td><code>todo</code></td><td></td></tr>
+        <tr id="CAT7" data-status="todo"><td>CAT7</td><td>Compose Starmap-to-Starmap source cascading and source health.</td><td><code>todo</code></td><td></td></tr>
+        <tr id="CAT8" data-status="todo"><td>CAT8</td><td>Migrate Starport to the catalog-source contract and prove scale-out.</td><td><code>todo</code></td><td></td></tr>
+        <tr id="CAT9" data-status="todo"><td>CAT9</td><td>Complete compatibility, migration, operator, and API documentation.</td><td><code>todo</code></td><td></td></tr>
+        <tr id="CAT10" data-status="todo"><td>CAT10</td><td>Run repository gates, structured reviews, pull requests, and merges.</td><td><code>todo</code></td><td></td></tr>
+        <tr id="CAT11" data-status="todo"><td>CAT11</td><td>Verify the hosted channel, publish Starmap, and update Starport.</td><td><code>todo</code></td><td></td></tr>
+        <tr id="CAT99" data-status="todo"><td>CAT99</td><td>Delete the plan, proof root, and index entry after final merge.</td><td><code>todo</code></td><td></td></tr>
       </tbody>
     </table>
   </section>
@@ -224,100 +295,169 @@
   <section id="tasks">
     <h2>Tasks</h2>
 
-    <h3 id="task-CAT0">CAT0 Baseline and inventory</h3>
+    <h3 id="task-CAT0">CAT0 Baseline</h3>
     <ul>
-      <li><strong>Problem:</strong> the current credential and publication state needs secret-free evidence.</li>
-      <li><strong>Owning boundary and paths:</strong> GitHub settings, both local environment files, and publisher documentation.</li>
-      <li><strong>Steps:</strong> record names and availability, compare duplicate sources, inspect releases, and capture consumer behavior.</li>
-      <li><strong>Acceptance:</strong> the proof lists every acquisition provider and reports only secret-free states.</li>
-      <li><strong>Fail-before:</strong> repository provider secret count is zero and the publisher cadence is daily.</li>
-      <li><strong>Verification:</strong> inspect GitHub secret names, the workflow schedule, releases, and source contracts.</li>
+      <li><strong>Problem:</strong> the campaign needs secret-free baseline evidence.</li>
+      <li><strong>Owned paths:</strong> GitHub settings, local environments, workflows, releases, Starmap, and Starport.</li>
+      <li><strong>Steps:</strong> inventory credential names, cadence, tags, assets, source APIs, and consumer composition.</li>
+      <li><strong>Acceptance:</strong> proof names each available source and reports no secret value.</li>
+      <li><strong>Fail-before:</strong> repository provider secret count is zero and cadence is daily.</li>
+      <li><strong>Verification:</strong> inspect GitHub metadata and source contracts.</li>
     </ul>
 
-    <h3 id="task-CAT1">CAT1 Secure six-hour publisher</h3>
+    <h3 id="task-CAT1">CAT1 Secure publisher cadence</h3>
     <ul>
-      <li><strong>Problem:</strong> scheduled refreshes lack provider credentials and run once per day.</li>
-      <li><strong>Owning boundary and paths:</strong> repository Actions secrets and <code>.github/workflows/catalog-generation.yaml</code>.</li>
-      <li><strong>Steps:</strong> store available acquisition credentials, add required workflow bindings, and set the six-hour schedule.</li>
-      <li><strong>Acceptance:</strong> every available acquisition credential has one repository secret and one refresh-step binding.</li>
-      <li><strong>Fail-before:</strong> the repository secret inventory contains no provider credentials.</li>
-      <li><strong>Verification:</strong> run workflow contract tests, action pin checks, and a secret-name coverage check.</li>
+      <li><strong>Problem:</strong> the publisher lacks credentials and runs daily.</li>
+      <li><strong>Owned paths:</strong> Actions secrets and <code>catalog-generation.yaml</code>.</li>
+      <li><strong>Steps:</strong> store available credentials, scope bindings, and request a six-hour run.</li>
+      <li><strong>Acceptance:</strong> 11 secrets cover 12 live catalog providers.</li>
+      <li><strong>Fail-before:</strong> no provider secret exists in repository Actions.</li>
+      <li><strong>Verification:</strong> run workflow tests, action pin checks, and live provider checks.</li>
     </ul>
 
-    <h3 id="task-CAT2">CAT2 Latest published catalog</h3>
+    <h3 id="task-CAT2">CAT2 Contract and campaign verifier</h3>
     <ul>
-      <li><strong>Problem:</strong> an instance cannot consume the newest GitHub catalog release through the current remote client.</li>
-      <li><strong>Owning boundary and paths:</strong> the selected catalog discovery, verification, and import packages.</li>
-      <li><strong>Steps:</strong> implement the selected channel, preserve immutable verification, and add caller-facing configuration.</li>
-      <li><strong>Acceptance:</strong> a test instance discovers, verifies, imports, and activates the newest synthetic catalog resource.</li>
-      <li><strong>Fail-before:</strong> no production client discovers a <code>catalog-semantic-*</code> release.</li>
-      <li><strong>Verification:</strong> run focused race tests and consumer composition tests.</li>
+      <li><strong>Problem:</strong> public names and lifecycle ownership do not define one source contract.</li>
+      <li><strong>Owned paths:</strong> this plan, glossary, architecture documents, and a new distribution verifier.</li>
+      <li><strong>Steps:</strong> ratify CAT-D2 through CAT-D5, define channel schema, and author the verifier red.</li>
+      <li><strong>Acceptance:</strong> <code>scripts/verify-catalog-distribution.sh</code> names a fixed condition count and fails only on missing target behavior.</li>
+      <li><strong>Fail-before:</strong> capture every failing condition in <code>cat2-fail-before.txt</code>.</li>
+      <li><strong>Verification:</strong> run the verifier, package ownership checks, and technical-writing checks.</li>
     </ul>
 
-    <h3 id="task-CAT3">CAT3 Review and merge</h3>
+    <h3 id="task-CAT2.1">CAT2.1 Native Go verifier selection</h3>
     <ul>
-      <li><strong>Problem:</strong> repository and hosted gates must prove the final change.</li>
-      <li><strong>Owning boundary and paths:</strong> changed source, tests, workflow, documentation, and proof files.</li>
-      <li><strong>Steps:</strong> run required checks, commit, run autoreview, open the pull request, and merge after protected checks pass.</li>
-      <li><strong>Acceptance:</strong> the final commit passes local checks, autoreview, CodeQL, security, and verification gates.</li>
-      <li><strong>Fail-before:</strong> no pull request contains the requested behavior.</li>
-      <li><strong>Verification:</strong> run <code>make verify</code>, the focused tests, and hosted checks.</li>
+      <li><strong>Problem:</strong> no reviewed wrapper provides Starmap's complete GitHub artifact trust contract.</li>
+      <li><strong>Owned paths:</strong> dependency decision record, isolated verifier spike, module graph, and public attestation fixture.</li>
+      <li><strong>Steps:</strong> compare the reviewed engines, clients, and production examples, and then measure the selected engine and transport.</li>
+      <li><strong>Acceptance:</strong> the record selects an engine and transport, proves Go 1.25 support, records dependency costs, reports no applicable vulnerability, and matches GitHub CLI fixtures.</li>
+      <li><strong>Fail-before:</strong> Starmap has no native verifier, dependency measurement, or GitHub parity fixture.</li>
+      <li><strong>Verification:</strong> run focused tests, <code>govulncheck</code>, license review, dependency inspection, and cross-tool verification.</li>
     </ul>
 
-    <h3 id="task-CAT4">CAT4 Publication proof</h3>
+    <h3 id="task-CAT3">CAT3 Canonical publication channel</h3>
     <ul>
-      <li><strong>Problem:</strong> local checks do not prove hosted credential use or public resource verification.</li>
-      <li><strong>Owning boundary and paths:</strong> the Catalog Generation workflow and public catalog release assets.</li>
-      <li><strong>Steps:</strong> dispatch the workflow, inspect provider results, download assets, and verify provenance.</li>
-      <li><strong>Acceptance:</strong> one six-hour publisher run passes and its public resource verifies from a clean directory.</li>
-      <li><strong>Fail-before:</strong> the latest run used the daily workflow without stored provider credentials.</li>
-      <li><strong>Verification:</strong> inspect the run, download assets, run release verification, and run attestation verification.</li>
+      <li><strong>Problem:</strong> immutable releases expose internal checksum terminology and have no stable channel.</li>
+      <li><strong>Owned paths:</strong> workflow, release command, channel schema, GoReleaser, and workflow tests.</li>
+      <li><strong>Steps:</strong> publish <code>catalog-&lt;digest&gt;</code>, verify it, then promote an attested <code>catalog-latest.json</code> pointer.</li>
+      <li><strong>Acceptance:</strong> tests reject channel promotion before immutable verification and preserve all legacy rollback tags.</li>
+      <li><strong>Fail-before:</strong> the workflow emits <code>catalog-semantic-*</code> and has no latest channel.</li>
+      <li><strong>Verification:</strong> run actionlint, workflow tests, release fixtures, and action pin checks.</li>
     </ul>
 
-    <h3 id="task-CAT5">CAT5 Starmap release</h3>
+    <h3 id="task-CAT4">CAT4 Verified GitHub catalog source</h3>
     <ul>
-      <li><strong>Problem:</strong> consumers need a released Starmap version that contains the completed behavior.</li>
-      <li><strong>Owning boundary and paths:</strong> release workflow, release documentation, tags, assets, and attestations.</li>
-      <li><strong>Steps:</strong> select the version from the owner decision, run release checks, publish, and verify public assets.</li>
-      <li><strong>Acceptance:</strong> GitHub reports one immutable release whose assets, checksums, signatures, and attestations verify.</li>
-      <li><strong>Fail-before:</strong> latest release <code>v0.15.0</code> does not contain this work.</li>
-      <li><strong>Verification:</strong> run release checks and the public release readback procedure.</li>
+      <li><strong>Problem:</strong> Go consumers cannot discover or verify the public release without <code>gh</code>.</li>
+      <li><strong>Owned paths:</strong> a public GitHub source adapter, artifact verifier, transport policy, and dependency allowlist.</li>
+      <li><strong>Steps:</strong> implement the CAT2.1 selection, fetch the channel with ETag, fetch immutable assets, get attestation bundles, and verify repository and workflow identity.</li>
+      <li><strong>Acceptance:</strong> <code>TestGitHubSourceVerifiesCatalogLatest</code> passes and every trust-negative matrix case fails before activation.</li>
+      <li><strong>Fail-before:</strong> no production GitHub release or Sigstore verifier exists.</li>
+      <li><strong>Verification:</strong> run focused race tests, fuzz parsers, pure-Go checks, and dependency review.</li>
     </ul>
 
-    <h3 id="task-CAT9">CAT9 Cleanup</h3>
+    <h3 id="task-CAT5">CAT5 Catalog-source runtime</h3>
     <ul>
-      <li><strong>Problem:</strong> a completed plan must not remain active.</li>
-      <li><strong>Owning boundary and paths:</strong> this plan, its proof root, and <code>docs/plans/README.md</code>.</li>
-      <li><strong>Steps:</strong> confirm the final merge, then delete the plan, proof root, and index entry.</li>
-      <li><strong>Acceptance:</strong> the repository contains no active reference to this plan.</li>
-      <li><strong>Fail-before:</strong> this plan remains after the final merge.</li>
-      <li><strong>Verification:</strong> search the repository for <code>catalog-publisher-plan</code>.</li>
+      <li><strong>Problem:</strong> the low-level client cannot own source polling, fallback, health, and shutdown.</li>
+      <li><strong>Owned paths:</strong> connected runtime, source interface, root options, storage composition, and external consumer fixtures.</li>
+      <li><strong>Steps:</strong> compose default public source, custom source, offline mode, initial fetch, polling, last-known-good, and close.</li>
+      <li><strong>Acceptance:</strong> <code>TestRuntimeDefaultsToCatalogLatest</code> and <code>TestRuntimeSourceFailureRetainsLastKnownGood</code> pass under race.</li>
+      <li><strong>Fail-before:</strong> package construction has no default verified source path.</li>
+      <li><strong>Verification:</strong> run root, runtime, storage, race, and external consumer tests.</li>
+    </ul>
+
+    <h3 id="task-CAT6">CAT6 Application defaults</h3>
+    <ul>
+      <li><strong>Problem:</strong> the CLI, server, and image ignore configured sources and default to embedded state.</li>
+      <li><strong>Owned paths:</strong> CLI app composition, serve lifecycle, Docker Compose, environment example, and server shutdown.</li>
+      <li><strong>Steps:</strong> select connected runtime by default, add offline and custom-source settings, and join source shutdown.</li>
+      <li><strong>Acceptance:</strong> server and container tests pull a synthetic channel by default and retain durable state during outage.</li>
+      <li><strong>Fail-before:</strong> CLI rejects <code>RemoteServerURL</code> and Docker sends no source request.</li>
+      <li><strong>Verification:</strong> run CLI/server race tests, Compose validation, and a read-only-root container smoke test.</li>
+    </ul>
+
+    <h3 id="task-CAT7">CAT7 Starmap source cascading</h3>
+    <ul>
+      <li><strong>Problem:</strong> a Starmap server cannot follow another Starmap source as its owned lifecycle.</li>
+      <li><strong>Owned paths:</strong> HTTP/SSE adapter, runtime source selection, server health, and readiness.</li>
+      <li><strong>Steps:</strong> adapt the current subscriber, preserve TLS origin policy, expose source state, and test a two-hop chain.</li>
+      <li><strong>Acceptance:</strong> <code>TestServerCascadesVerifiedCatalogSource</code> proves upstream to source server to downstream activation.</li>
+      <li><strong>Fail-before:</strong> server start owns no upstream subscriber.</li>
+      <li><strong>Verification:</strong> run protocol, subscriber, server, concurrency, and failure tests with race detection.</li>
+    </ul>
+
+    <h3 id="task-CAT8">CAT8 Starport scale-out adoption</h3>
+    <ul>
+      <li><strong>Problem:</strong> Starport remote mode is opt-in and uses ambiguous remote naming.</li>
+      <li><strong>Owned paths:</strong> Starport catalog config, remote runtime factory, acceptance transaction, and operator tests.</li>
+      <li><strong>Steps:</strong> adopt catalog-source names, set the public default, preserve aliases, and point three test instances at one Starmap server.</li>
+      <li><strong>Acceptance:</strong> all three instances accept one generation, survive source outage, and make no public GitHub request.</li>
+      <li><strong>Fail-before:</strong> empty Starport configuration selects local acquisition and remote URL is opt-in.</li>
+      <li><strong>Verification:</strong> run Starport catalog, app, configuration, architecture, and race checks.</li>
+    </ul>
+
+    <h3 id="task-CAT9">CAT9 Compatibility and documentation</h3>
+    <ul>
+      <li><strong>Problem:</strong> old names and offline behavior need an explicit migration contract.</li>
+      <li><strong>Owned paths:</strong> glossary, README, architecture, trust, protocol, Docker, CLI, release, and migration documents.</li>
+      <li><strong>Steps:</strong> document names, defaults, timestamps, source modes, egress, health, aliases, and removal schedule.</li>
+      <li><strong>Acceptance:</strong> all maintained text uses catalog-source terminology and names every network default.</li>
+      <li><strong>Fail-before:</strong> current text says remote consumption is opt-in and startup makes no request.</li>
+      <li><strong>Verification:</strong> run docs generation, docs checks, technical-writing checks, and stale-name scans.</li>
+    </ul>
+
+    <h3 id="task-CAT10">CAT10 Review and merge</h3>
+    <ul>
+      <li><strong>Problem:</strong> local and hosted gates must prove each repository change.</li>
+      <li><strong>Owned paths:</strong> changed source, tests, workflows, plans, and proof files.</li>
+      <li><strong>Steps:</strong> commit each task, run autoreview, open pull requests, resolve findings, and wait for protected checks.</li>
+      <li><strong>Acceptance:</strong> every work pull request passes review, CodeQL, security, and repository verification.</li>
+      <li><strong>Fail-before:</strong> no merged commit contains the complete distribution flow.</li>
+      <li><strong>Verification:</strong> run <code>make verify</code>, <code>make test-pure-go</code>, the campaign verifier, and hosted checks.</li>
+    </ul>
+
+    <h3 id="task-CAT11">CAT11 Hosted proof and releases</h3>
+    <ul>
+      <li><strong>Problem:</strong> fixtures do not prove public channel operation or released consumer behavior.</li>
+      <li><strong>Owned paths:</strong> hosted workflow, GitHub releases, image, Go module, and Starport dependency.</li>
+      <li><strong>Steps:</strong> dispatch publisher, verify from a clean consumer, release Starmap, update Starport, and verify public artifacts.</li>
+      <li><strong>Acceptance:</strong> a clean Go consumer, container, source server, and Starport instance activate the published generation.</li>
+      <li><strong>Fail-before:</strong> Starmap <code>v0.15.0</code> lacks the source runtime.</li>
+      <li><strong>Verification:</strong> run public downloads, attestation checks, release readback, image smoke tests, and Starport CI.</li>
+    </ul>
+
+    <h3 id="task-CAT99">CAT99 Cleanup</h3>
+    <ul>
+      <li><strong>Problem:</strong> a completed campaign must not remain active.</li>
+      <li><strong>Owned paths:</strong> this plan, proof root, and plan index.</li>
+      <li><strong>Steps:</strong> confirm final merges, then delete the plan, proof root, and index entry.</li>
+      <li><strong>Acceptance:</strong> no active catalog-distribution plan reference remains.</li>
+      <li><strong>Fail-before:</strong> this plan remains after final merge.</li>
+      <li><strong>Verification:</strong> search both repositories for the plan slug and open task IDs.</li>
     </ul>
   </section>
 
   <section id="goal">
     <h2>Goal</h2>
-    <pre><code>Execute docs/plans/catalog-publisher-plan.html to completion. This is a
-whole-plan goal. Read the plan fully, then read AGENTS.md,
-docs/SCHEDULED_CATALOG_GENERATION.md, docs/CATALOG_ARTIFACT_FORMAT.md,
-docs/RELEASES.md, .github/workflows/catalog-generation.yaml, and the changed
-package contracts. Work in /Users/jack/src/github.com/agentstation/starmap-catalog-publisher
-on branch codex/catalog-publisher-six-hour. Chat history is not progress state.
-Resume from the status ledger, execution log, and git state. If compaction
-happens, continue from the plan and git state. Keep one task in_progress.
-Implement at the owning boundary. Capture fail-before evidence. Run each named
-verification command. Commit work under repository policy. Write proof without
-secret values. Append the execution log. Mark the task terminal with evidence.
-Commit the plan transition, then advance. Decide when evidence is sufficient.
-Record a blocker when owner input controls the result. Preserve secret
-containment, immutable catalog verification, protected-branch checks, release
-verification, and Starport's dirty worktree. Do not expose secret values, copy
-inference-only credentials, change catalog authority, or weaken a gate. Use
-pull requests. Stop only at a valid plans-skill state. Before stopping, update
-the ledger, log, and next action. The goal is met when the six-hour publisher
-passes with all available acquisition credentials, a Starmap instance verifies
-and activates the latest published catalog, the selected release verifies, and
-cleanup removes this plan.</code></pre>
+    <pre><code>Execute docs/plans/catalog-publisher-plan.html to completion after the owner
+activates it. This is a whole-plan goal across Starmap and the named Starport
+integration task. Read the plan, both AGENTS.md files, the CAT2 review, catalog
+artifact and trust documents, remote protocol, workflow, and consumer seams.
+Work in /Users/jack/src/github.com/agentstation/starmap-catalog-publisher on
+branch codex/catalog-publisher-six-hour. Create a separate clean Starport
+worktree before CAT8. Preserve the existing dirty Starport worktree. Chat
+history is not progress state. Resume from the ledger, log, proof, and git
+state. Keep one task in_progress. Implement at the owning seam. Capture each
+fail-before result. Run every named verifier. Commit work under repository
+policy. Run autoreview before each substantive pull request. Record exact test
+counts and hosted checks. Preserve secret containment, immutable verification,
+last-known-good activation, explicit enterprise egress, deterministic offline
+use, bounded shutdown, and Starport's acceptance transaction. Do not expose
+secrets, grant mutable tags integrity authority, require gh in a Go consumer,
+or weaken a gate. Stop only at a plans-skill stop state. Update the ledger, log,
+and next action before each stop. The goal is met when the six-hour publisher
+promotes catalog-latest, connected Starmap runtimes consume a configurable
+catalog source by default, a cascading server supplies scaled Starport
+instances, public releases verify, and CAT99 removes the plan.</code></pre>
   </section>
 
   <section id="execution-log">
@@ -326,9 +466,10 @@ cleanup removes this plan.</code></pre>
       <thead><tr><th>Date</th><th>Item</th><th>Action</th><th>Evidence</th></tr></thead>
       <tbody>
         <tr><td>2026-09-01</td><td>meta</td><td>authored</td><td>Plan activated at main commit <code>42b610a</code>. CAT0 started.</td></tr>
-        <tr><td>2026-09-01</td><td>CAT0</td><td>completed</td><td>Recorded 11 usable acquisition credentials, zero repository provider secrets, the daily schedule, and the incompatible release consumer.</td></tr>
-        <tr><td>2026-09-01</td><td>CAT1</td><td>completed</td><td>Stored 11 Actions secrets. Twelve provider catalog checks passed. Commit <code>cf3124c0</code> sets the six-hour publisher.</td></tr>
-        <tr><td>2026-09-01</td><td>CAT2</td><td>blocked</td><td>The owner must select a GitHub catalog channel or a hosted Starmap server.</td></tr>
+        <tr><td>2026-09-01</td><td>CAT0</td><td>completed</td><td>Recorded credential, workflow, release, and consumer baselines.</td></tr>
+        <tr><td>2026-09-01</td><td>CAT1</td><td>completed</td><td>Stored 11 Actions secrets and set the six-hour publisher in <code>cf3124c0</code>.</td></tr>
+        <tr><td>2026-09-01</td><td>CAT2</td><td>reviewed</td><td>Traced Starmap and Starport source lifecycles, ratified public channel names, and opened four owner decisions.</td></tr>
+        <tr><td>2026-09-01</td><td>meta</td><td>proposed</td><td>Expanded the publisher plan into the catalog distribution campaign.</td></tr>
       </tbody>
     </table>
   </section>

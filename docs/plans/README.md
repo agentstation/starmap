@@ -2,4 +2,4 @@
 
 | Plan | Status | Outcome |
 | --- | --- | --- |
-| [Catalog publisher](catalog-publisher-plan.html) | `active` | Publish a verified six-hour catalog channel and release its consumer path. |
+| [Catalog distribution](catalog-publisher-plan.html) | `proposed` | Publish and consume a verified default catalog source across Starmap and Starport. |
