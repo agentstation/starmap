@@ -95,10 +95,10 @@
   <section id="outcome">
     <h2>Outcome</h2>
     <blockquote>
-      Starmap publishes one verified public catalog channel and consumes it by
-      default in connected package, server, and container runtimes. A configured
-      Starmap catalog source replaces the public source. Starport instances can
-      share an enterprise Starmap source without public GitHub egress.
+      Starmap publishes and embeds the Starmap public catalog. One connected
+      runtime composes the embedded catalog, a selected upstream catalog, and
+      operator observations into an effective catalog. Starport consumes that
+      catalog locally or from a shared enterprise Starmap server.
     </blockquote>
   </section>
 
@@ -137,26 +137,26 @@
       <figure>
         <figcaption>After</figcaption>
         <svg viewBox="0 0 440 220" role="img"
-          aria-label="Public channel feeds configurable Starmap source hierarchy">
+          aria-label="One Starmap runtime composes public and operator layers for Starport">
           <rect x="10" y="15" width="120" height="48" rx="7" fill="none" stroke="currentColor"/>
-          <text x="70" y="35" text-anchor="middle" fill="currentColor">catalog-latest</text>
-          <text x="70" y="52" text-anchor="middle" fill="currentColor">verified channel</text>
+          <text x="70" y="35" text-anchor="middle" fill="currentColor">embedded public</text>
+          <text x="70" y="52" text-anchor="middle" fill="currentColor">catalog</text>
           <rect x="160" y="15" width="120" height="48" rx="7" fill="none" stroke="currentColor"/>
-          <text x="220" y="35" text-anchor="middle" fill="currentColor">catalog source</text>
-          <text x="220" y="52" text-anchor="middle" fill="currentColor">runtime contract</text>
+          <text x="220" y="35" text-anchor="middle" fill="currentColor">selected upstream</text>
+          <text x="220" y="52" text-anchor="middle" fill="currentColor">catalog</text>
           <rect x="310" y="15" width="120" height="48" rx="7" fill="none" stroke="currentColor"/>
-          <text x="370" y="35" text-anchor="middle" fill="currentColor">enterprise</text>
-          <text x="370" y="52" text-anchor="middle" fill="currentColor">Starmap source</text>
+          <text x="370" y="35" text-anchor="middle" fill="currentColor">operator</text>
+          <text x="370" y="52" text-anchor="middle" fill="currentColor">observations</text>
           <rect x="55" y="145" width="130" height="48" rx="7" fill="none" stroke="currentColor"/>
-          <text x="120" y="165" text-anchor="middle" fill="currentColor">package, server</text>
-          <text x="120" y="182" text-anchor="middle" fill="currentColor">and Docker</text>
+          <text x="120" y="165" text-anchor="middle" fill="currentColor">Starmap effective</text>
+          <text x="120" y="182" text-anchor="middle" fill="currentColor">catalog</text>
           <rect x="255" y="145" width="130" height="48" rx="7" fill="none" stroke="currentColor"/>
-          <text x="320" y="165" text-anchor="middle" fill="currentColor">Starport</text>
-          <text x="320" y="182" text-anchor="middle" fill="currentColor">scaled instances</text>
-          <line x1="130" y1="39" x2="156" y2="39" stroke="currentColor"/>
-          <line x1="280" y1="39" x2="306" y2="39" stroke="currentColor"/>
-          <line x1="195" y1="63" x2="137" y2="141" stroke="currentColor"/>
-          <line x1="370" y1="63" x2="329" y2="141" stroke="currentColor"/>
+          <text x="320" y="165" text-anchor="middle" fill="currentColor">Starport accepted</text>
+          <text x="320" y="182" text-anchor="middle" fill="currentColor">runtime</text>
+          <line x1="70" y1="63" x2="105" y2="141" stroke="currentColor"/>
+          <line x1="220" y1="63" x2="135" y2="141" stroke="currentColor"/>
+          <line x1="370" y1="63" x2="155" y2="141" stroke="currentColor"/>
+          <line x1="185" y1="169" x2="251" y2="169" stroke="currentColor"/>
         </svg>
       </figure>
     </div>
@@ -195,7 +195,7 @@
       <li>Starport validates a complete runtime candidate before acceptance.</li>
       <li>Existing catalog releases remain immutable and readable.</li>
       <li>Each background lifecycle has one owner and a bounded shutdown.</li>
-      <li>Catalog following and catalog acquisition never run as independent writers.</li>
+      <li>One runtime retains all input layers and owns effective catalog publication.</li>
     </ol>
   </section>
 
@@ -211,7 +211,9 @@
         <tr><td>Exact byte identity</td><td>payload checksum</td><td>No change.</td></tr>
         <tr><td>Configured upstream</td><td>catalog source</td><td>Deprecate remote server and remote URL names.</td></tr>
         <tr><td>Source endpoint setting</td><td><code>catalog_source_url</code></td><td>Accept old settings for one documented migration period.</td></tr>
-        <tr><td>Source follower</td><td>catalog source runtime</td><td>Keep <code>remote</code> as a compatibility facade if required.</td></tr>
+        <tr><td>Binary baseline</td><td>embedded public catalog</td><td>Refine the existing embedded catalog term.</td></tr>
+        <tr><td>Released baseline</td><td>released public catalog</td><td>Selected by <code>catalog-latest</code>.</td></tr>
+        <tr><td>Consumer read model</td><td>effective catalog</td><td>New composed runtime term.</td></tr>
       </tbody>
     </table>
   </section>
@@ -231,6 +233,8 @@
         <tr><td>CAT-F8</td><td>dependency</td><td>GitHub CLI and the reviewed production consumers use <code>sigstore-go</code> as the engine and add domain policy around it.</td><td>CAT2.1</td></tr>
         <tr><td>CAT-F9</td><td>DX</td><td>Starport remote <code>Sync</code> performs no network work, while local <code>Sync</code> runs provider acquisition.</td><td>CAT8</td></tr>
         <tr><td>CAT-F10</td><td>architecture</td><td>A connected source and acquisition scheduler need one mutation owner.</td><td>CAT5</td></tr>
+        <tr><td>CAT-F11</td><td>integration</td><td>Starport selects local acquisition or remote generations and cannot combine them.</td><td>CAT8</td></tr>
+        <tr><td>CAT-F12</td><td>correctness</td><td>The runtime must retain input layers or a public refresh can overwrite operator evidence.</td><td>CAT5</td></tr>
       </tbody>
     </table>
   </section>
@@ -246,13 +250,13 @@
     <h2>Pending decisions</h2>
     <p><strong>CAT-D2, pending owner:</strong> Keep <code>starmap.New</code>
       offline, and make <code>starmap.Open</code> the connected distribution API
-      with the public source enabled.</p>
-    <p><strong>CAT-D3, pending owner:</strong> Use <code>follow</code> for exact
-      source activation and <code>author</code> for explicit acquisition and
-      derived generations.</p>
+      with narrow <code>Catalog</code>, <code>State</code>, and <code>Status</code> reads.</p>
+    <p><strong>CAT-D3, pending owner:</strong> Use independent source and
+      acquisition policies that retain each layer and treat operator model
+      observations as additive, not entitlement evidence.</p>
     <p><strong>CAT-D4, pending owner:</strong> Support <code>public</code>,
       <code>github</code>, <code>starmap</code>, <code>file</code>, and
-      <code>none</code> source kinds without public fallback from a custom source.</p>
+      <code>embedded</code> source kinds without public fallback from a custom source.</p>
     <p><strong>CAT-D5, pending owner:</strong> Use <code>prefer_source</code>
       startup, last-known-good fallback, one-hour GitHub polling, and Starmap
       SSE with conditional polling fallback.</p>
@@ -260,9 +264,9 @@
       <code>sigstore-go</code> directly behind a Starmap-owned GitHub identity
       policy and transport adapter, subject to CAT2.1 evidence and GitHub CLI
       parity.</p>
-    <p><strong>CAT-D7, pending owner:</strong> Make Starport a follow-mode
-      consumer by default, keep provider acquisition in author mode, and remove
-      the no-I/O remote <code>Sync</code> contract.</p>
+    <p><strong>CAT-D7, pending owner:</strong> Give Starport one Starmap runtime,
+      default its source to <code>public</code>, disable acquisition by default,
+      and preserve Starport's separate accepted head.</p>
   </section>
 
   <section id="test-matrix">
@@ -274,8 +278,9 @@
         <tr><td>Trust</td><td>valid workflow identity, wrong repository, wrong workflow, wrong digest, missing bundle, expired or invalid chain</td></tr>
         <tr><td>Activation</td><td>new facts, new identity with equal payload, older generation, incompatible schema, concurrent readers</td></tr>
         <tr><td>Failure</td><td>startup outage, poll outage, SSE outage, unauthorized source, partial channel update, shutdown timeout</td></tr>
-        <tr><td>Configuration</td><td>follow, author, default public, offline, custom GitHub, custom Starmap, file, API key, migration, forbidden fallback</td></tr>
-        <tr><td>Deployment</td><td>Go memory store, CLI filesystem store, Docker restart, source server, three Starport followers</td></tr>
+        <tr><td>Configuration</td><td>default public, embedded-only, custom GitHub, custom Starmap, file, disabled, manual, scheduled, migration, forbidden fallback</td></tr>
+        <tr><td>Composition</td><td>public-only, operator-only, public plus operator, source server plus operator, failed layer, retained provenance</td></tr>
+        <tr><td>Deployment</td><td>Go memory store, CLI filesystem store, Docker restart, source server, three Starport consumers</td></tr>
       </tbody>
     </table>
   </section>
@@ -369,9 +374,9 @@
     <h3 id="task-CAT5">CAT5 Catalog-source runtime</h3>
     <ul>
       <li><strong>Problem:</strong> the low-level client cannot own source polling, fallback, health, shutdown, and acquisition serialization.</li>
-      <li><strong>Owned paths:</strong> connected runtime, source contract, application mode, storage composition, health, and consumer fixtures.</li>
-      <li><strong>Steps:</strong> add <code>Open</code>, follow and author modes, source selection, initial fetch, last-known-good state, updates, readiness, and close.</li>
-      <li><strong>Acceptance:</strong> <code>TestRuntimeDefaultsToCatalogLatest</code> and <code>TestRuntimeSourceFailureRetainsLastKnownGood</code> pass under race.</li>
+      <li><strong>Owned paths:</strong> connected runtime, retained layers, scoped evidence, source and acquisition policies, health, and consumer fixtures.</li>
+      <li><strong>Steps:</strong> add <code>Open</code>, retain each layer, rebuild the effective catalog, expose narrow reads, serialize refresh and sync, and own shutdown.</li>
+      <li><strong>Acceptance:</strong> the runtime defaults to <code>catalog-latest</code>, retains operator facts after public refresh, and preserves last-known-good state under race.</li>
       <li><strong>Fail-before:</strong> package construction has no default verified source path.</li>
       <li><strong>Verification:</strong> run root, runtime, storage, race, and external consumer tests.</li>
     </ul>
@@ -380,7 +385,7 @@
     <ul>
       <li><strong>Problem:</strong> the CLI, server, and image ignore configured sources and default to embedded state.</li>
       <li><strong>Owned paths:</strong> CLI app composition, serve lifecycle, Docker Compose, environment example, and server shutdown.</li>
-      <li><strong>Steps:</strong> map common source settings, select follow mode by default, keep update commands explicit, and join source shutdown.</li>
+      <li><strong>Steps:</strong> map source and acquisition settings, select the public source by default, keep operator sync explicit, and join runtime shutdown.</li>
       <li><strong>Acceptance:</strong> server and container tests pull a synthetic channel by default and retain durable state during outage.</li>
       <li><strong>Fail-before:</strong> CLI rejects <code>RemoteServerURL</code> and Docker sends no source request.</li>
       <li><strong>Verification:</strong> run CLI/server race tests, Compose validation, and a read-only-root container smoke test.</li>
@@ -388,7 +393,7 @@
 
     <h3 id="task-CAT7">CAT7 Starmap source cascading</h3>
     <ul>
-      <li><strong>Problem:</strong> a Starmap server cannot follow another Starmap source as its owned lifecycle.</li>
+      <li><strong>Problem:</strong> a Starmap server cannot combine an upstream Starmap source with operator acquisition.</li>
       <li><strong>Owned paths:</strong> HTTP/SSE adapter, runtime source selection, server health, and readiness.</li>
       <li><strong>Steps:</strong> adapt the current subscriber, preserve TLS origin policy, expose source state, and test a two-hop chain.</li>
       <li><strong>Acceptance:</strong> <code>TestServerCascadesVerifiedCatalogSource</code> proves upstream to source server to downstream activation.</li>
@@ -398,9 +403,9 @@
 
     <h3 id="task-CAT8">CAT8 Starport scale-out adoption</h3>
     <ul>
-      <li><strong>Problem:</strong> Starport defaults to acquisition and gives two different operations the name <code>Sync</code>.</li>
-      <li><strong>Owned paths:</strong> Starport catalog config, remote runtime factory, acceptance transaction, and operator tests.</li>
-      <li><strong>Steps:</strong> adopt the common mode and source settings, set the public follow default, remove remote <code>Sync</code>, preserve aliases, and test three followers.</li>
+      <li><strong>Problem:</strong> Starport selects local acquisition or remote generations and gives two operations the name <code>Sync</code>.</li>
+      <li><strong>Owned paths:</strong> Starport catalog config, unified Starmap adapter, acceptance transaction, and operator tests.</li>
+      <li><strong>Steps:</strong> adopt source and acquisition settings, default to public with acquisition disabled, remove remote <code>Sync</code>, and test three consumers.</li>
       <li><strong>Acceptance:</strong> all three instances accept one generation, survive source outage, and make no public GitHub request.</li>
       <li><strong>Fail-before:</strong> empty Starport configuration selects local acquisition and remote URL is opt-in.</li>
       <li><strong>Verification:</strong> run Starport catalog, app, configuration, architecture, and race checks.</li>
@@ -410,7 +415,7 @@
     <ul>
       <li><strong>Problem:</strong> old names and offline behavior need an explicit migration contract.</li>
       <li><strong>Owned paths:</strong> glossary, README, architecture, trust, protocol, Docker, CLI, release, and migration documents.</li>
-      <li><strong>Steps:</strong> document names, defaults, timestamps, source modes, egress, health, aliases, and removal schedule.</li>
+      <li><strong>Steps:</strong> document names, defaults, timestamps, layers, policies, egress, health, aliases, and removal schedule.</li>
       <li><strong>Acceptance:</strong> all maintained text uses catalog-source terminology and names every network default.</li>
       <li><strong>Fail-before:</strong> current text says remote consumption is opt-in and startup makes no request.</li>
       <li><strong>Verification:</strong> run docs generation, docs checks, technical-writing checks, and stale-name scans.</li>
@@ -482,6 +487,7 @@ instances, public releases verify, and CAT99 removes the plan.</code></pre>
         <tr><td>2026-09-01</td><td>CAT2</td><td>reviewed</td><td>Traced Starmap and Starport source lifecycles, ratified public channel names, and opened four owner decisions.</td></tr>
         <tr><td>2026-09-01</td><td>meta</td><td>proposed</td><td>Expanded the publisher plan into the catalog distribution campaign.</td></tr>
         <tr><td>2026-09-01</td><td>CAT2</td><td>refined</td><td>Separated catalog following from acquisition and specified package, operator, Starport, and enterprise source behavior.</td></tr>
+        <tr><td>2026-09-01</td><td>CAT2</td><td>refined</td><td>Defined the layered runtime, canonical Go reads, orthogonal policies, and unified Starport consumer flow.</td></tr>
       </tbody>
     </table>
   </section>
