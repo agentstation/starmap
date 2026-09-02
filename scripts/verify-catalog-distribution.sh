@@ -234,5 +234,64 @@ starport_test CAT-V48 'the Starport candidate-to-accepted transaction rejects a 
 starmap_test CAT-V49 'the runtime lease fences the durable generation commit with its epoch' \
 	. TestRuntimeLeaseRejectsStaleEpochAtCommit
 
+# Console: the shell-owned catalog chip and panel (CAT-D19, CAT8.1 owns them).
+# A console condition runs one vitest file in the Starport console tree. It
+# reports UNVERIFIED without that tree or without pnpm.
+starport_console_test() {
+	local id="$1" desc="$2" file="$3"
+	if [ ! -d "$STARPORT/console/src" ] || ! command -v pnpm >/dev/null 2>&1; then
+		record UNVERIFIED "$id" "$desc (no Starport console tree or pnpm)"
+		return
+	fi
+	check "$id" "$desc" bash -c "cd '$STARPORT/console' && [ -f '$file' ] && pnpm vitest run --reporter=dot '$file'"
+}
+starport_console_test CAT-V50 'the shell catalog chip shows the state, the generation, and the age, and opens the panel' \
+	src/components/shell/CatalogChip.test.tsx
+starport_test CAT-V51 'the safe catalog metadata route reports the source, the chain, the freshness verdict, and the next attempt' \
+	./internal/catalog TestCatalogMetadataReportsSourceChainAndNextAttempt
+starport_console_test CAT-V52 'the catalog panel draws one node per hop and names the next update' \
+	src/components/shell/CatalogPanel.test.tsx
+
+# Documentation: declarative conditions, because prose has no runtime (CAT-D20, CAT9.1 owns them).
+topology_guide_complete() {
+	local guide="$STARPORT/docs/DEPLOYMENT-TOPOLOGIES.md"
+	[ -f "$guide" ] &&
+		file_has '^## .*[Ss]ingle Starport' "$guide" &&
+		file_has '^## .*[Ff]leet' "$guide" &&
+		file_has '^## .*[Cc]entral Starmap' "$guide" &&
+		file_has '^## .*[Cc]entral-only' "$guide" &&
+		[ "$(grep -c '^```mermaid' "$guide")" -ge 4 ] &&
+		(cd "$STARPORT" && bash scripts/verify-doc-links.sh)
+}
+starport_check CAT-V53 'the Starport topology guide names the four topologies with a diagram each and its links resolve' \
+	topology_guide_complete
+starport_check CAT-V54 'the Starport README names the central Starmap server topology and links the guide' \
+	bash -c "grep -qsi 'central Starmap' '$STARPORT/README.md' && grep -qs 'docs/DEPLOYMENT-TOPOLOGIES.md' '$STARPORT/README.md'"
+catalog_reference_complete() {
+	local guide="$STARPORT/docs/OPERATOR-GUIDE.md" example="$STARPORT/.env.example" suffix
+	[ -f "$guide" ] && [ -f "$example" ] || return 1
+	while read -r suffix; do
+		[ -n "$suffix" ] || continue
+		grep -qsF -- "STARPORT_CATALOG_$suffix" "$guide" || return 1
+		grep -qsF -- "STARPORT_CATALOG_$suffix" "$example" || return 1
+	done < <(
+		# shellcheck disable=SC2016
+		sed -nE 's/^\| `CATALOG_([A-Z_]+)` \|.*/\1/p' "$PROOF/cat2-final-review.md"
+	)
+	! grep -qsE 'STARPORT_CATALOG_(REMOTE_URL|REMOTE_API_KEY|REMOTE_ACTIVATION_INTERVAL|REFRESH_ON_START|REFRESH_INTERVAL)' "$example"
+}
+starport_check CAT-V55 'the Starport operator guide and environment example document every canonical catalog name and the example holds no removed name' \
+	catalog_reference_complete
+runbook_complete() {
+	local runbook=docs/ENTERPRISE_CATALOG_SERVER.md
+	[ -f "$runbook" ] &&
+		[ "$(grep -c '^## ' "$runbook")" -ge 7 ] &&
+		file_has 'starmap serve --auth' "$runbook" &&
+		file_has 'STARPORT_CATALOG_SOURCE_URL' "$runbook" &&
+		grep -qs "$runbook" README.md
+}
+check CAT-V56 'the Starmap enterprise catalog server runbook has its seven sections and the README links it' \
+	runbook_complete
+
 printf 'Summary: %d passed, %d failed, %d unverified.\n' "$pass" "$fail" "$unverified"
 [ "$fail" -eq 0 ] && [ "$unverified" -eq 0 ]

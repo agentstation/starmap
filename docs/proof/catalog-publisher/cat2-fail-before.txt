@@ -47,4 +47,11 @@ PASS CAT-V46 Starport accepts only a matching forward state through the expected
 PASS CAT-V47 Starport freshness keeps the age_seconds and degradation_reasons fields.
 FAIL CAT-V48 the Starport candidate-to-accepted transaction rejects a stale lease epoch.
 FAIL CAT-V49 the runtime lease fences the durable generation commit with its epoch.
-Summary: 7 passed, 42 failed, 0 unverified.
+FAIL CAT-V50 the shell catalog chip shows the state, the generation, and the age, and opens the panel.
+FAIL CAT-V51 the safe catalog metadata route reports the source, the chain, the freshness verdict, and the next attempt.
+FAIL CAT-V52 the catalog panel draws one node per hop and names the next update.
+FAIL CAT-V53 the Starport topology guide names the four topologies with a diagram each and its links resolve.
+FAIL CAT-V54 the Starport README names the central Starmap server topology and links the guide.
+FAIL CAT-V55 the Starport operator guide and environment example document every canonical catalog name and the example holds no removed name.
+FAIL CAT-V56 the Starmap enterprise catalog server runbook has its seven sections and the README links it.
+Summary: 7 passed, 49 failed, 0 unverified.
