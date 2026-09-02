@@ -374,8 +374,10 @@ func TestSourceObserveSeparatesBootstrapModelsWhenCredentialsAreMissing(t *testi
 	if err != nil {
 		t.Fatalf("Fetch should skip missing credentials without failing: %v", err)
 	}
-	if factoryCalls != 1 {
-		t.Fatalf("client validation calls = %d, want 1 before credential resolution", factoryCalls)
+	// The pre-flight credential check runs before client construction, so a
+	// provider without catalog-acquisition material builds no client at all.
+	if factoryCalls != 0 {
+		t.Fatalf("client construction calls = %d, want 0 for a skipped provider", factoryCalls)
 	}
 
 	fetchedProvider, err := observation.Catalog.Provider("missing-key")

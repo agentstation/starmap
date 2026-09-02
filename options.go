@@ -23,6 +23,13 @@ type options struct {
 	// embedded bootstrap policy
 	embeddedBootstrapMaxAge       time.Duration
 	embeddedBootstrapMaxSizeBytes int64
+
+	// connected-runtime configuration, accepted only by Open
+	runtime runtimeOptions
+
+	// runtimeOptions names every applied runtime-only option, in order. New
+	// and NewContext stay offline, so they reject the whole list.
+	runtimeOptions []string
 }
 
 func defaults() *options {
@@ -31,6 +38,20 @@ func defaults() *options {
 		catalogStore:                  nil, // Mutation requires an explicit writable store
 		embeddedBootstrapMaxAge:       0,   // Disabled until explicitly configured
 		embeddedBootstrapMaxSizeBytes: 0,   // Disabled until explicitly configured
+		runtime:                       runtimeDefaults(),
+	}
+}
+
+// rejectRuntimeOptions fails when an offline constructor received an option
+// that only the connected runtime supports.
+func (o *options) rejectRuntimeOptions(constructor string) error {
+	if len(o.runtimeOptions) == 0 {
+		return nil
+	}
+	return &errors.ValidationError{
+		Field:   constructor,
+		Value:   o.runtimeOptions[0],
+		Message: "is a connected-runtime option; call starmap.Open instead",
 	}
 }
 

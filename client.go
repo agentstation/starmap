@@ -142,6 +142,15 @@ func NewContext(ctx context.Context, opts ...Option) (*Client, error) {
 	if err != nil {
 		return nil, err
 	}
+	if err := options.rejectRuntimeOptions("starmap.NewContext"); err != nil {
+		return nil, err
+	}
+	return newClient(ctx, options)
+}
+
+// newClient builds the offline client from already applied options. NewContext
+// and Open share it, so both constructors publish the same verified baseline.
+func newClient(ctx context.Context, options *options) (*Client, error) {
 	if err := validateCatalogLayout(options.catalogStore, options.catalogPath); err != nil {
 		return nil, err
 	}
