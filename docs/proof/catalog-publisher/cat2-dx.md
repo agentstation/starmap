@@ -255,7 +255,7 @@ The I/O methods have distinct effects:
 ```go
 func (r *Runtime) Refresh(ctx context.Context) (RefreshReport, error)
 func (r *Runtime) RefreshSource(ctx context.Context) (SourceRefreshReport, error)
-func (r *Runtime) Sync(ctx context.Context, opts ...sync.Option) (*sync.Result, error)
+func (r *Runtime) Sync(ctx context.Context, opts ...SyncOption) (AcquisitionReport, error)
 func (r *Runtime) Updates() <-chan CatalogState
 func (r *Runtime) Close() error
 ```
@@ -280,8 +280,8 @@ composition consumer. It coalesces to the latest state and includes sequence
 and generation identity so a consumer can ignore duplicates. Starport reads
 the initial `State`, then consumes `Updates`.
 
-`Close` is idempotent, cancels runtime-owned work, and joins it within a
-configured shutdown bound. `Open` uses its context to bound construction and a
+`Close` is idempotent, cancels runtime-owned work, and joins it within five
+seconds. `Open` uses its context to bound construction and a
 blocking `require_source` startup. The returned resource owns its background
 context. It does not retain the caller's context as an operation field.
 

@@ -1,0 +1,49 @@
+FAIL CAT-V01 workflow publishes catalog-latest and no catalog-semantic tag
+PASS CAT-V02 workflow schedule is every four hours at minute 17
+FAIL CAT-V03 workflow job timeout is 60 minutes
+PASS CAT-V04 workflow serializes runs without cancel-in-progress
+FAIL CAT-V05 channel document carries channel_updated_at
+FAIL CAT-V06 native attestation verifier dependency is selected
+FAIL CAT-V07 legacy catalog-semantic and catalog-payload releases remain readable
+FAIL CAT-V08 root package exposes Open with a context
+FAIL CAT-V09 offline constructors reject runtime options
+FAIL CAT-V10 runtime exposes Catalog, State, and Status reads
+FAIL CAT-V11 runtime keeps explicit Refresh, RefreshSource, and Sync
+FAIL CAT-V12 Sync returns AcquisitionReport
+FAIL CAT-V13 Close joins owned work within five seconds
+FAIL CAT-V14 acquisition policy is enabled plus interval with no mode or on-start name
+FAIL CAT-V15 source selection names public, github, starmap, file, and embedded
+FAIL CAT-V16 a custom source never falls back to public GitHub
+FAIL CAT-V17 missing acquisition credentials skip the provider without a request
+FAIL CAT-V18 runtime retains layers and rebuilds the effective catalog
+FAIL CAT-V19 refresh runs are single-flight with run identity and cancellation
+FAIL CAT-V20 transfer inactivity timeout is configurable and defaults to two minutes
+FAIL CAT-V21 per-transfer maximum duration is configurable and defaults to 60 minutes
+FAIL CAT-V22 refresh timeout defaults to no added deadline
+FAIL CAT-V23 catalog transfer clients set no client-wide total timeout
+FAIL CAT-V24 catalog transport owns the response-header bound for every request
+FAIL CAT-V25 SSE stream open honors the response-header bound
+FAIL CAT-V26 slow-drip transfer fails at the per-transfer bound
+FAIL CAT-V27 catalog payload writes reset a per-chunk write deadline
+FAIL CAT-V28 SSE frame write deadline defaults to two minutes
+FAIL CAT-V29 admin update returns an accepted asynchronous operation
+FAIL CAT-V30 startup spread is configurable and defaults to 15 minutes
+FAIL CAT-V31 stable phase survives restart
+FAIL CAT-V32 subscriber reconnect delay caps at 15 minutes
+FAIL CAT-V33 subscriber backoff resets only after a healthy liveness window
+FAIL CAT-V34 subscriber honors Retry-After as a not-before
+FAIL CAT-V35 authentication failure waits instead of stopping the subscriber
+FAIL CAT-V36 fallback polling uses a stable jittered phase
+FAIL CAT-V37 direct GitHub consumers warn near the rate-limit budget
+FAIL CAT-V38 source server admission returns Retry-After
+PASS CAT-V39 publisher run measurements are recorded
+PASS CAT-V40 network measurements are recorded
+PASS CAT-V41 independent audit is recorded
+FAIL CAT-V42 Starport configuration has no legacy catalog names
+FAIL CAT-V43 Starport streaming carries no elapsed-budget total deadline
+FAIL CAT-V44 Starport admin refresh returns an accepted operation
+FAIL CAT-V45 Starport injects a deployment-lookup credential resolver into acquisition
+PASS CAT-V46 Starport accepted head commits by expected generation ID
+PASS CAT-V47 Starport freshness keeps age_seconds and degradation_reasons
+FAIL CAT-V48 Starport refresh lease records a fencing epoch
+Summary: 7 passed, 41 failed, 0 unverified
