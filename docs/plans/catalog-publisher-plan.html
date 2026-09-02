@@ -91,7 +91,7 @@
     Owner: this plan. Created: 2026-09-01.
     Baseline: main @ 42b610a, publisher work @ 6c7edfbe, Starport main @ 117ad8f5.
     Proof root: <code>docs/proof/catalog-publisher/</code>.
-    Next action: request the fourth review of the CAT2 corrections, then close CAT2 and start CAT2.1.
+    Next action: request the fifth review of the CAT2 corrections, then close CAT2 and start CAT2.1.
   </p>
 
   <section id="outcome">
@@ -108,6 +108,52 @@
     <h2>Progress</h2>
     <div class="bar"><div class="fill"></div></div>
     <p class="counts">The status ledger supplies progress.</p>
+  </section>
+</header>
+
+<main>
+  <section id="ledger">
+    <h2>Status ledger</h2>
+    <p>The plan runs in six phases. The table names the tasks in each phase and the verifier count that the gate expects when the phase closes. A condition can turn green earlier when an earlier task proves it. Phase 0 expects eight because CAT2.1 turns CAT-V06 green.</p>
+    <table>
+      <thead><tr><th>Phase</th><th>Tasks</th><th>Verifier blocks</th><th>Expected passing at close</th></tr></thead>
+      <tbody>
+        <tr><td>0 Baseline and contract</td><td>CAT0, CAT1, CAT2, CAT2.1</td><td>evidence CAT-V39 to CAT-V41 and the four preserved behaviors CAT-V02, CAT-V04, CAT-V46, and CAT-V47</td><td>8 of 64</td></tr>
+        <tr><td>1 Publication and source</td><td>CAT3, CAT4</td><td>publication CAT-V01 to CAT-V07</td><td>12 of 64</td></tr>
+        <tr><td>2 Runtime</td><td>CAT5, CAT6, CAT7</td><td>runtime CAT-V08 to CAT-V19, transport CAT-V20 to CAT-V29, fleet CAT-V30 to CAT-V38, lease CAT-V49, runtime status CAT-V60 and CAT-V61</td><td>46 of 64</td></tr>
+        <tr><td>3 Starport adoption</td><td>CAT8, CAT8.1</td><td>adoption CAT-V42 to CAT-V48, console CAT-V50 to CAT-V55, model surfaces CAT-V62 and CAT-V63</td><td>59 of 64</td></tr>
+        <tr><td>4 Documentation</td><td>CAT9, CAT9.1, CAT9.2</td><td>Starport documentation CAT-V56 to CAT-V58, Starmap documentation CAT-V59 and CAT-V64</td><td>64 of 64</td></tr>
+        <tr><td>5 Merge and release</td><td>CAT10, CAT11, CAT99</td><td>none</td><td>64 of 64</td></tr>
+      </tbody>
+    </table>
+    <table>
+      <thead><tr><th>ID</th><th>Task</th><th>Status</th><th>Evidence</th></tr></thead>
+      <tbody>
+        <tr class="phase"><td colspan="4">Phase 0: Baseline and contract</td></tr>
+        <tr id="CAT0" data-status="done"><td>CAT0</td><td>Pin the publisher, credentials, source, and consumer baseline.</td><td><code>done</code></td><td><a href="../proof/catalog-publisher/cat0.md">CAT0 proof</a>.</td></tr>
+        <tr id="CAT1" data-status="done"><td>CAT1</td><td>Store acquisition credentials and set the four-hour publisher cadence.</td><td><code>done</code></td><td><a href="../proof/catalog-publisher/cat1.md">CAT1 proof</a>; commits <code>cf3124c0</code> and <code>9017b83b</code>.</td></tr>
+        <tr id="CAT2" data-status="in_progress"><td>CAT2</td><td>Ratify naming, source policy, lifecycle, and the red campaign verifier.</td><td><code>in_progress</code></td><td><a href="../proof/catalog-publisher/cat2-review.md">Trust review</a>, <a href="../proof/catalog-publisher/cat2-dx.md">runtime review</a>, <a href="../proof/catalog-publisher/cat2-final-review.md">final review</a>, <a href="../proof/catalog-publisher/cat2-network-measurements.json">network measurements</a>, <a href="../proof/catalog-publisher/cat2-audit.md">audit</a>, and <a href="../proof/catalog-publisher/cat2-fail-before.txt">fail-before</a>. Work commits <code>84f92c15</code>, <code>ebdef9bb</code>, <code>7bdd74fc</code>, <code>4fc87dca</code>, <code>00e1f293</code>, and <code>88051b87</code>. <code>scripts/verify-catalog-distribution.sh</code> reports 7 passed, 57 failed, and 0 unverified of 64. Gates at <code>88051b87</code>: technical writing 677 files and 0 diagnostics, package ownership 13 passed, docs check current, shellcheck clean. The fourth review kept CAT2 open for a fifth review.</td></tr>
+        <tr id="CAT2.1" data-status="todo"><td>CAT2.1</td><td>Select and prove the native Go attestation verifier dependency.</td><td><code>todo</code></td><td>Initial comparison is in the <a href="../proof/catalog-publisher/cat2-review.md">CAT2 review</a>. The selection record is <code>docs/proof/catalog-publisher/cat2.1-verifier-selection.md</code>.</td></tr>
+        <tr class="phase"><td colspan="4">Phase 1: Publication and source</td></tr>
+        <tr id="CAT3" data-status="todo"><td>CAT3</td><td>Publish canonical immutable releases and the verified latest channel.</td><td><code>todo</code></td><td></td></tr>
+        <tr id="CAT4" data-status="todo"><td>CAT4</td><td>Implement the native verified GitHub catalog source.</td><td><code>todo</code></td><td></td></tr>
+        <tr class="phase"><td colspan="4">Phase 2: Runtime</td></tr>
+        <tr id="CAT5" data-status="todo"><td>CAT5</td><td>Create the catalog-source runtime and connected Go API.</td><td><code>todo</code></td><td></td></tr>
+        <tr id="CAT6" data-status="todo"><td>CAT6</td><td>Enable catalog sources by default in the CLI, server, and container.</td><td><code>todo</code></td><td></td></tr>
+        <tr id="CAT7" data-status="todo"><td>CAT7</td><td>Compose Starmap-to-Starmap source cascading and source health.</td><td><code>todo</code></td><td></td></tr>
+        <tr class="phase"><td colspan="4">Phase 3: Starport adoption</td></tr>
+        <tr id="CAT8" data-status="todo"><td>CAT8</td><td>Migrate Starport to the catalog-source contract and prove scale-out.</td><td><code>todo</code></td><td></td></tr>
+        <tr id="CAT8.1" data-status="todo"><td>CAT8.1</td><td>Replace the console catalog surfaces with the shell chip and panel.</td><td><code>todo</code></td><td></td></tr>
+        <tr class="phase"><td colspan="4">Phase 4: Documentation</td></tr>
+        <tr id="CAT9" data-status="todo"><td>CAT9</td><td>Complete compatibility, migration, operator, and API documentation.</td><td><code>todo</code></td><td></td></tr>
+        <tr id="CAT9.1" data-status="todo"><td>CAT9.1</td><td>Write the Starport topology guide, the configuration reference, the README paragraph, and the environment example.</td><td><code>todo</code></td><td></td></tr>
+        <tr id="CAT9.2" data-status="todo"><td>CAT9.2</td><td>Write the Starmap enterprise catalog server runbook, the README link, and the Kubernetes pair.</td><td><code>todo</code></td><td></td></tr>
+        <tr class="phase"><td colspan="4">Phase 5: Merge and release</td></tr>
+        <tr id="CAT10" data-status="todo"><td>CAT10</td><td>Run repository gates, structured reviews, pull requests, and merges.</td><td><code>todo</code></td><td></td></tr>
+        <tr id="CAT11" data-status="todo"><td>CAT11</td><td>Verify the hosted channel, publish Starmap, and update Starport.</td><td><code>todo</code></td><td></td></tr>
+        <tr id="CAT99" data-status="todo"><td>CAT99</td><td>Delete the plan, proof root, and index entry after final merge.</td><td><code>todo</code></td><td></td></tr>
+      </tbody>
+    </table>
   </section>
 
   <section id="architecture">
@@ -163,9 +209,7 @@
       </figure>
     </div>
   </section>
-</header>
 
-<main>
   <section id="scope">
     <h2>Scope</h2>
     <p><strong>Owns:</strong> publisher credentials and cadence, catalog names,
@@ -211,199 +255,44 @@
     </ol>
   </section>
 
-  <section id="naming">
-    <h2>Canonical names</h2>
+  <section id="decisions">
+    <h2>Decisions</h2>
+    <p>The full text of each decision is in <a href="../proof/catalog-publisher/cat2-decisions.md">the decisions record</a>, with the canonical names table.</p>
     <table>
-      <thead><tr><th>Concept</th><th>Canonical name</th><th>Migration</th></tr></thead>
+      <thead><tr><th>ID</th><th>State</th><th>Summary</th></tr></thead>
       <tbody>
-        <tr><td>Immutable GitHub release</td><td><code>catalog-&lt;catalog-digest&gt;</code></td><td>Read legacy <code>catalog-semantic-*</code> and <code>catalog-payload-*</code> tags.</td></tr>
-        <tr><td>Stable public discovery</td><td><code>catalog-latest</code></td><td>No legacy equivalent exists.</td></tr>
-        <tr><td>Channel document</td><td><code>catalog-latest.json</code></td><td>Attested mutable document with sequence, <code>channel_updated_at</code>, and immutable release identity.</td></tr>
-        <tr><td>Normalized fact identity</td><td>catalog digest</td><td>Retain <code>semantic_checksum</code> inside compatible manifests.</td></tr>
-        <tr><td>Exact byte identity</td><td>payload checksum</td><td>No change.</td></tr>
-        <tr><td>Configured upstream</td><td>catalog source</td><td>Deprecate remote server and remote URL names.</td></tr>
-        <tr><td>Source endpoint setting</td><td><code>catalog_source_url</code></td><td>Replace old Starport names directly; document the migration without runtime aliases.</td></tr>
-        <tr><td>Binary baseline</td><td>embedded public catalog</td><td>Refine the existing embedded catalog term.</td></tr>
-        <tr><td>Released baseline</td><td>released public catalog</td><td>Selected by <code>catalog-latest</code>.</td></tr>
-        <tr><td>Consumer read model</td><td>effective catalog</td><td>New composed runtime term.</td></tr>
+        <tr><td>CAT-D1</td><td>accepted</td><td><code>catalog-&lt;digest&gt;</code> releases and the <code>catalog-latest</code> channel.</td></tr>
+        <tr><td>CAT-D2</td><td>accepted</td><td><code>starmap.New</code> stays offline and <code>starmap.Open</code> is the connected API.</td></tr>
+        <tr><td>CAT-D3</td><td>accepted</td><td>Independent source and acquisition policies with retained layers.</td></tr>
+        <tr><td>CAT-D4</td><td>accepted</td><td>Five sources and no public fallback from a custom source.</td></tr>
+        <tr><td>CAT-D5</td><td>accepted</td><td>Fast startup, last-known-good fallback, hourly polling, and SSE.</td></tr>
+        <tr><td>CAT-D6</td><td>provisional</td><td><code>sigstore-go</code> behind Starmap-owned policy, subject to CAT2.1.</td></tr>
+        <tr><td>CAT-D7</td><td>accepted</td><td>One Starmap runtime in Starport with a preserved accepted head.</td></tr>
+        <tr><td>CAT-D8</td><td>accepted</td><td>Automatic four-hour acquisition by default, plus explicit <code>Sync</code>.</td></tr>
+        <tr><td>CAT-D9</td><td>accepted</td><td>An attested channel heartbeat without a no-change generation.</td></tr>
+        <tr><td>CAT-D10</td><td>accepted</td><td>Publish at minute 17 every four hours with a six-hour objective.</td></tr>
+        <tr><td>CAT-D11</td><td>accepted</td><td><code>CATALOG_ACQUISITION_ENABLED</code> plus <code>INTERVAL</code> with no periodic-only state.</td></tr>
+        <tr><td>CAT-D12</td><td>audited</td><td>Progress-aware bounds and the nested 60, 75, and 90-minute limits.</td></tr>
+        <tr><td>CAT-D13</td><td>audited</td><td>Stable phases, 15-minute spread, decorrelated retry, and admission.</td></tr>
+        <tr><td>CAT-D14</td><td>audited</td><td>One <code>Sync</code> signature and an idempotent five-second <code>Close</code>.</td></tr>
+        <tr><td>CAT-D15</td><td>audited</td><td>A 60-minute per-transfer maximum and the transport wrapper.</td></tr>
+        <tr><td>CAT-D16</td><td>audited</td><td>The header-driven request budget and the hop budget.</td></tr>
+        <tr><td>CAT-D17</td><td>audited</td><td>CAT8 pins a pseudo-version and CAT11 replaces it.</td></tr>
+        <tr><td>CAT-D18</td><td>audited</td><td>The epoch lease, and a lease-capable store for active-active servers.</td></tr>
+        <tr><td>CAT-D19</td><td>designed</td><td>The shell chip, the allowlisted safe response, and the panel.</td></tr>
+        <tr><td>CAT-D20</td><td>designed</td><td>The topology guide, the configuration reference, and the runbook.</td></tr>
       </tbody>
     </table>
   </section>
 
   <section id="findings">
     <h2>Findings ledger</h2>
-    <table>
-      <thead><tr><th>ID</th><th>Classification</th><th>Evidence</th><th>Owner</th></tr></thead>
-      <tbody>
-        <tr><td>CAT-F1</td><td>closed</td><td>Eleven repository secrets now cover 12 live provider catalogs.</td><td>CAT1</td></tr>
-        <tr><td>CAT-F2</td><td>naming</td><td>The live repository has 28 semantic tags, 17 payload tags, and no latest channel.</td><td>CAT3</td></tr>
-        <tr><td>CAT-F3</td><td>architecture</td><td>Release import, HTTP subscription, and root client lifecycles are separate.</td><td>CAT4-CAT7</td></tr>
-        <tr><td>CAT-F4</td><td>integration</td><td>The CLI parses remote server settings but rejects them during composition.</td><td>CAT6</td></tr>
-        <tr><td>CAT-F5</td><td>integration</td><td>Server and Docker start from durable or embedded state and follow no source.</td><td>CAT6</td></tr>
-        <tr><td>CAT-F6</td><td>preserve</td><td>Starport already separates remote head from accepted runtime state.</td><td>CAT8</td></tr>
-        <tr><td>CAT-F7</td><td>trust</td><td>A Go consumer needs native Sigstore verification instead of the <code>gh</code> executable.</td><td>CAT4</td></tr>
-        <tr><td>CAT-F8</td><td>dependency</td><td>GitHub CLI and the reviewed production consumers use <code>sigstore-go</code> as the engine and add domain policy around it.</td><td>CAT2.1</td></tr>
-        <tr><td>CAT-F9</td><td>DX</td><td>Starport remote <code>Sync</code> performs no network work, while local <code>Sync</code> runs provider acquisition.</td><td>CAT8</td></tr>
-        <tr><td>CAT-F10</td><td>architecture</td><td>A connected source and acquisition scheduler need one mutation owner.</td><td>CAT5</td></tr>
-        <tr><td>CAT-F11</td><td>integration</td><td>Starport selects local acquisition or remote generations and cannot combine them.</td><td>CAT8</td></tr>
-        <tr><td>CAT-F12</td><td>correctness</td><td>The runtime must retain input layers or a public refresh can overwrite operator evidence.</td><td>CAT5</td></tr>
-        <tr><td>CAT-F13</td><td>correctness</td><td>The provider source attempts every provider and treats missing credentials as aggregate degradation.</td><td>CAT5</td></tr>
-        <tr><td>CAT-F14</td><td>persistence</td><td>Effective generation storage cannot restore independent upstream and per-provider layers.</td><td>CAT5</td></tr>
-        <tr><td>CAT-F15</td><td>integration</td><td>Starport development mode disables catalog refresh and remote configuration forbids local acquisition.</td><td>CAT8</td></tr>
-        <tr><td>CAT-F16</td><td>security</td><td>Starport's Starmap resolver bypasses the loader lookuper used for process and <code>.env</code> values.</td><td>CAT8</td></tr>
-        <tr><td>CAT-F17</td><td>operations</td><td>Starport applies a one-minute request context to two-minute refresh and inference work, and to streams.</td><td>CAT8</td></tr>
-        <tr><td>CAT-F18</td><td>scale</td><td>GitHub permits 60 unauthenticated REST requests per hour per source IP.</td><td>CAT4-CAT8</td></tr>
-        <tr><td>CAT-F19</td><td>operations</td><td>The latest 20 successful publisher runs took 153-285 seconds; no job timeout is set.</td><td>CAT3</td></tr>
-        <tr><td>CAT-F20</td><td>operations</td><td>Starmap applies a 30-second total timeout to bodies allowed to reach 16 or 64 MiB.</td><td>CAT4-CAT7</td></tr>
-        <tr><td>CAT-F21</td><td>operations</td><td>Starport applies a two-minute remote body context and global elapsed request limits to long operations.</td><td>CAT8</td></tr>
-        <tr><td>CAT-F22</td><td>scale</td><td>The Starmap subscriber retries within 100 ms to five seconds and can synchronize a fleet after an outage.</td><td>CAT7</td></tr>
-        <tr><td>CAT-F23</td><td>closed</td><td>The runtime review and the final review stated two <code>Sync</code> signatures and two <code>Close</code> bounds. CAT-D14 reconciles them.</td><td>CAT2</td></tr>
-        <tr><td>CAT-F24</td><td>operations</td><td>Inactivity and size caps alone allow a slow-drip transfer to hold a refresh for hours. No per-transfer total bound exists.</td><td>CAT4-CAT5</td></tr>
-        <tr><td>CAT-F25</td><td>operations</td><td><code>remote.NewClient</code> copies the caller's client, and the SSE open has no response-header bound.</td><td>CAT4, CAT7</td></tr>
-        <tr><td>CAT-F26</td><td>operations</td><td>Starport bounds a stream with the two-minute <code>MaxElapsed</code> budget and a 30-second connector header timeout outside the route middleware.</td><td>CAT8</td></tr>
-        <tr><td>CAT-F27</td><td>scale</td><td>Direct GitHub consumers spend a per-identity request budget that the rate-limit headers report. A fixed number is a ceiling, not a safe threshold. Each polling hop adds one interval to the freshness age.</td><td>CAT4, CAT7, CAT9</td></tr>
-        <tr><td>CAT-F28</td><td>architecture</td><td>The refresh lease has no TTL, renewal, or fencing token, so a lost lease can still commit.</td><td>CAT8</td></tr>
-        <tr><td>CAT-F29</td><td>dependency</td><td>Starport pins Starmap <code>v0.15.0</code>, and the ledger orders CAT8 before the CAT11 release.</td><td>CAT8, CAT11</td></tr>
-        <tr><td>CAT-F30</td><td>preserve</td><td>The Starport console reads <code>age_seconds</code> and <code>degradation_reasons</code> from the freshness document.</td><td>CAT8</td></tr>
-        <tr><td>CAT-F31</td><td>DX</td><td>The console spends a full-width row on Models and half the Overview grid on four catalog facts. No surface shows the source, the derivation chain, or the next update.</td><td>CAT8.1</td></tr>
-        <tr><td>CAT-F32</td><td>operations</td><td>No shipped document explains a central Starmap server, a Starport fleet, or the choice between direct, central, and embedded sources. Neither repository has a topology diagram.</td><td>CAT9.1, CAT9.2</td></tr>
-        <tr><td>CAT-F33</td><td>DX</td><td>No consolidated catalog configuration reference exists. <code>.env.example</code> is the only reference, and the Starport README is outside CAT9.</td><td>CAT9.1</td></tr>
-      </tbody>
-    </table>
-  </section>
-
-  <section id="decisions">
-    <h2>Decisions</h2>
-    <h3>Runtime and naming</h3>
-    <p><strong>CAT-D1, accepted 2026-09-01:</strong> New releases use <code>catalog-&lt;digest&gt;</code>, discovery uses <code>catalog-latest</code>, and only technical checksum fields use semantic terminology.</p>
-    <p><strong>CAT-D2, accepted 2026-09-01:</strong> Keep <code>starmap.New</code> offline, and make <code>starmap.Open</code> the connected API with narrow <code>Catalog</code>, <code>State</code>, and <code>Status</code> reads.</p>
-    <p><strong>CAT-D3, accepted 2026-09-01:</strong> Use independent source and acquisition policies that retain each layer and treat operator model observations as additive, not entitlement evidence.</p>
-    <p><strong>CAT-D4, accepted 2026-09-01:</strong> Support <code>public</code>, <code>github</code>, <code>starmap</code>, <code>file</code>, and <code>embedded</code> sources without public fallback from a custom source.</p>
-    <p><strong>CAT-D5, accepted 2026-09-01:</strong> Use fast <code>prefer_source</code> startup, last-known-good fallback, one-hour GitHub polling, and Starmap SSE with conditional polling fallback.</p>
-  </section>
-
-  <section id="acquisition-decisions">
-    <h2>Acquisition decisions</h2>
-    <p><strong>CAT-D6, provisional engineering selection:</strong> Use <code>sigstore-go</code> behind Starmap-owned GitHub identity and transport policy, subject to CAT2.1 evidence and GitHub CLI parity.</p>
-    <p><strong>CAT-D7, accepted 2026-09-01:</strong> Give Starport one Starmap runtime, default its source to <code>public</code>, enable credential-detected acquisition, and preserve its accepted head.</p>
-    <p><strong>CAT-D8, accepted 2026-09-01:</strong> Remove the acquisition mode, enable automatic acquisition by default at a four-hour interval in both applications, and keep explicit <code>Sync</code>.</p>
-  </section>
-
-  <section id="publication-decisions">
-    <h2>Publication decisions</h2>
-    <p><strong>CAT-D9, accepted 2026-09-01:</strong> Advance an attested channel sequence and <code>channel_updated_at</code> after every successful four-hour verification without a no-change catalog generation.</p>
-    <p><strong>CAT-D10, accepted 2026-09-01:</strong> Publish every four hours at minute 17 and poll consumers every hour. Use a six-hour end-to-end freshness objective.</p>
-  </section>
-
-  <section id="automatic-policy-decision">
-    <h2>Automatic policy decision</h2>
-    <p><strong>CAT-D11, accepted 2026-09-01:</strong> Use <code>CATALOG_ACQUISITION_ENABLED</code> plus <code>INTERVAL</code>. A false enabled value disables all automatic work, and no periodic-only state exists.</p>
-    <p><strong>CAT-D12, audited 2026-09-01:</strong> Bound connect, TLS, headers, transfer inactivity, bytes, pages, and records. Add no whole-refresh deadline by default. Use a 60-minute publisher job limit.</p>
-    <p><strong>CAT-D13, audited 2026-09-01:</strong> Use full-interval stable phases, a 15-minute cold-start spread, one-second to 15-minute decorrelated retry, retry not-before, source admission, and a distributed refresh lease.</p>
-  </section>
-
-  <section id="contract-decisions">
-    <h2>Contract and transport decisions</h2>
-    <p><strong>CAT-D14, audited 2026-09-02:</strong> The runtime has one <code>Sync(ctx, ...SyncOption) (AcquisitionReport, error)</code> method. <code>Close</code> is idempotent and joins runtime-owned work within five seconds.</p>
-  </section>
-  <section id="transfer-decisions">
-    <h2>Transfer decisions</h2>
-    <p><strong>CAT-D15, audited 2026-09-02:</strong> Each finite HTTP body transfer has a maximum duration, default 60 minutes. A 64 MiB body at the 256 Kbps floor rate takes about 35 minutes, and the default provides headroom over that case. The limit does not bound an SSE subscription lifetime. A zero value is invalid and fails startup, and an operator on a slower link raises the value. A Starmap-owned transport wrapper applies the 60-second header bound to every catalog request, including the SSE open. Peak memory is one buffered body per in-flight transfer.</p>
-  </section>
-
-  <section id="fleet-decisions">
-    <h2>Fleet decisions</h2>
-    <p><strong>CAT-D16, audited 2026-09-02:</strong> The direct-consumer request budget comes from the rate-limit headers. The headers are limit, used, remaining, and reset. The budget subtracts a reserved headroom and divides by the measured requests per cycle. Status warns at 80 percent of the reported limit. A fleet above its budget uses authenticated conditional polling or a central Starmap source. The six-hour objective applies to direct consumers and SSE-push chains, and each polling hop adds one poll interval.</p>
-  </section>
-  <section id="lease-decisions">
-    <h2>Lease and dependency decisions</h2>
-    <p><strong>CAT-D17, audited 2026-09-02:</strong> CAT8 pins a Starmap pseudo-version from the plan branch. CAT11 replaces the pin with the released tag.</p>
-    <p><strong>CAT-D18, audited 2026-09-02:</strong> A shared-storage refresh lease has a 90-second TTL, a 30-second renewal interval, and an epoch. CAT5 owns the runtime lease, and a replicated Starmap fences its durable generation commit with the epoch. CAT8 keeps Starport's separate candidate-to-accepted transaction, which carries the epoch and rejects a stale one. A holder that loses the lease cancels its run within one renewal interval, discards the results, reports <code>lease_lost</code>, and retries at the next phase.</p>
-  </section>
-  <section id="console-decisions">
-    <h2>Console decision</h2>
-    <p><strong>CAT-D19, designed 2026-09-02:</strong> One shell-owned chip in a shell header slot on every route replaces the freshness bar and the overview card. The third review corrected it. It shows the freshness dot, the short generation ID, and the age, and a click opens a panel no wider than the viewport. The record is <code>docs/proof/catalog-publisher/cat2-console-catalog-design.md</code>.</p>
-    <ul>
-      <li>The safe route keeps identity, counts, age, and the server freshness verdict, and adds <code>freshness</code> and <code>activated_at</code>.</li>
-      <li>The admin status route alone carries the source, the layers, the hop chain, the fallback state, the schedule, and the provider outcomes.</li>
-      <li>Usability, freshness, fallback, source health, and active work each have their own element, and no spinner replaces the dot.</li>
-      <li>The panel draws the layers figure with the embedded baseline and a separate hop chain that labels direct and upstream-reported hops.</li>
-      <li>The small screen uses the 44 px top-bar control, and a <code>403</code> stops polling until the session changes.</li>
-      <li>CAT-V50 through CAT-V55 guard the surface.</li>
-    </ul>
-  </section>
-  <section id="documentation-decisions">
-    <h2>Documentation decision</h2>
-    <p><strong>CAT-D20, designed 2026-09-02:</strong> Starport gets a topology guide with five designs, a replicated variant, a diagram each, and a decision table. The third review corrected it. The operator guide gets the catalog configuration reference and the removed-name table. Starmap gets a server runbook and a Kubernetes pair example, and both READMEs name the central server topology. The record is <code>docs/proof/catalog-publisher/cat2-enterprise-docs-design.md</code>.</p>
-    <ul>
-      <li>Restricted replica egress and the air-gapped mirror are separate designs, because a central server with egress is not air-gapped.</li>
-      <li>CAT9.1 owns the Starport documents and CAT9.2 owns the Starmap documents, so each task maps to one pull request.</li>
-      <li>CAT-V56 through CAT-V59 guard the documents.</li>
-    </ul>
+    <p>CAT-F1 through CAT-F33 are in <a href="../proof/catalog-publisher/cat2-findings.md">the findings record</a>. Each finding names its owner task. CAT-F1 and CAT-F23 hold no open work, and CAT-F6 and CAT-F30 name behavior to preserve.</p>
   </section>
 
   <section id="test-matrix">
     <h2>Test matrix</h2>
-    <table>
-      <thead><tr><th>Dimension</th><th>Required cases</th></tr></thead>
-      <tbody>
-        <tr><td>Discovery</td><td>new channel, unchanged ETag, missing channel, malformed document, legacy immutable rollback</td></tr>
-        <tr><td>Trust</td><td>valid workflow identity, wrong repository, wrong workflow, wrong digest, missing bundle, expired or invalid chain</td></tr>
-        <tr><td>Activation</td><td>new facts, new identity with equal payload, older generation, incompatible schema, concurrent readers</td></tr>
-        <tr><td>Failure</td><td>startup outage, idle transfer, slow-drip transfer bound, oversized body, poll outage, SSE outage, unauthorized source, partial channel update, caller cancellation, shutdown timeout</td></tr>
-        <tr><td>Configuration</td><td>default public, embedded-only, custom GitHub, custom Starmap, file, enabled and interval combinations, direct migration, forbidden fallback</td></tr>
-        <tr><td>Composition</td><td>public-only, operator-only, public plus operator, source server plus operator, partial provider failure, retained provenance</td></tr>
-        <tr><td>Operations</td><td>channel heartbeat, no-change check, slow progress, async refresh join and cancel, full-interval phase, 15-minute startup and outage spread, retry not-before, rate limit, rate-limit warning, source admission, lease, route idle limits, freshness, hop age, bounded metrics</td></tr>
-        <tr><td>Determinism</td><td>injected clock, injected random source, <code>httptest</code> transports, <code>-race -count=3</code>, no sleep above 100 ms</td></tr>
-        <tr><td>Deployment</td><td>offline Go, CLI filesystem store, Docker restart, source server, standalone Starport, three Starport consumers</td></tr>
-        <tr><td>Console</td><td>one element per status concept, safe and admin route split, embedded baseline always present, direct and upstream-reported labels, chip on every route, 44 px small-screen control, viewport-bound panel, keyboard focus, no second request after 403</td></tr>
-        <tr><td>Documentation</td><td>five topologies, replicated variant, six diagrams, link check, canonical names, no removed name in the example, runbook sections, Kubernetes pair</td></tr>
-      </tbody>
-    </table>
-  </section>
-
-  <section id="ledger">
-    <h2>Status ledger</h2>
-    <p>The plan runs in six phases. The table names the tasks in each phase and the verifier count that the gate expects when the phase closes. A condition can turn green earlier when an earlier task proves it.</p>
-    <table>
-      <thead><tr><th>Phase</th><th>Tasks</th><th>Verifier blocks</th><th>Expected passing at close</th></tr></thead>
-      <tbody>
-        <tr><td>0 Baseline and contract</td><td>CAT0, CAT1, CAT2, CAT2.1</td><td>evidence CAT-V39 to CAT-V41 and the four preserved behaviors CAT-V02, CAT-V04, CAT-V46, and CAT-V47</td><td>7 of 59</td></tr>
-        <tr><td>1 Publication and source</td><td>CAT3, CAT4</td><td>publication CAT-V01 to CAT-V07</td><td>12 of 59</td></tr>
-        <tr><td>2 Runtime</td><td>CAT5, CAT6, CAT7</td><td>runtime CAT-V08 to CAT-V19, transport CAT-V20 to CAT-V29, fleet CAT-V30 to CAT-V38, lease CAT-V49</td><td>44 of 59</td></tr>
-        <tr><td>3 Starport adoption</td><td>CAT8, CAT8.1</td><td>adoption CAT-V42 to CAT-V48, console CAT-V50 to CAT-V55</td><td>55 of 59</td></tr>
-        <tr><td>4 Documentation</td><td>CAT9, CAT9.1, CAT9.2</td><td>Starport documentation CAT-V56 to CAT-V58, Starmap documentation CAT-V59</td><td>59 of 59</td></tr>
-        <tr><td>5 Merge and release</td><td>CAT10, CAT11, CAT99</td><td>none</td><td>59 of 59</td></tr>
-      </tbody>
-    </table>
-    <table>
-      <thead><tr><th>ID</th><th>Task</th><th>Status</th><th>Evidence</th></tr></thead>
-      <tbody>
-        <tr class="phase"><td colspan="4">Phase 0: Baseline and contract</td></tr>
-        <tr id="CAT0" data-status="done"><td>CAT0</td><td>Pin the publisher, credentials, source, and consumer baseline.</td><td><code>done</code></td><td><a href="../proof/catalog-publisher/cat0.md">CAT0 proof</a>.</td></tr>
-        <tr id="CAT1" data-status="done"><td>CAT1</td><td>Store acquisition credentials and set the four-hour publisher cadence.</td><td><code>done</code></td><td><a href="../proof/catalog-publisher/cat1.md">CAT1 proof</a>; commits <code>cf3124c0</code> and <code>9017b83b</code>.</td></tr>
-        <tr id="CAT2" data-status="in_progress"><td>CAT2</td><td>Ratify naming, source policy, lifecycle, and the red campaign verifier.</td><td><code>in_progress</code></td><td><a href="../proof/catalog-publisher/cat2-review.md">Trust review</a>, <a href="../proof/catalog-publisher/cat2-dx.md">runtime review</a>, <a href="../proof/catalog-publisher/cat2-final-review.md">final review</a>, <a href="../proof/catalog-publisher/cat2-network-measurements.json">network measurements</a>, <a href="../proof/catalog-publisher/cat2-audit.md">audit</a>, and <a href="../proof/catalog-publisher/cat2-fail-before.txt">fail-before</a>. Work commits <code>84f92c15</code>, <code>ebdef9bb</code>, <code>7bdd74fc</code>, <code>4fc87dca</code>, and <code>00e1f293</code>. <code>scripts/verify-catalog-distribution.sh</code> reports 7 passed, 52 failed, and 0 unverified of 59. Gates at <code>00e1f293</code>: technical writing 674 files and 0 diagnostics, package ownership 13 passed, docs check current, shellcheck clean. The third review kept CAT2 open for a fourth review.</td></tr>
-        <tr id="CAT2.1" data-status="todo"><td>CAT2.1</td><td>Select and prove the native Go attestation verifier dependency.</td><td><code>todo</code></td><td>Initial comparison is in the <a href="../proof/catalog-publisher/cat2-review.md">CAT2 review</a>. The selection record is <code>docs/proof/catalog-publisher/cat2.1-verifier-selection.md</code>.</td></tr>
-        <tr class="phase"><td colspan="4">Phase 1: Publication and source</td></tr>
-        <tr id="CAT3" data-status="todo"><td>CAT3</td><td>Publish canonical immutable releases and the verified latest channel.</td><td><code>todo</code></td><td></td></tr>
-        <tr id="CAT4" data-status="todo"><td>CAT4</td><td>Implement the native verified GitHub catalog source.</td><td><code>todo</code></td><td></td></tr>
-        <tr class="phase"><td colspan="4">Phase 2: Runtime</td></tr>
-        <tr id="CAT5" data-status="todo"><td>CAT5</td><td>Create the catalog-source runtime and connected Go API.</td><td><code>todo</code></td><td></td></tr>
-        <tr id="CAT6" data-status="todo"><td>CAT6</td><td>Enable catalog sources by default in the CLI, server, and container.</td><td><code>todo</code></td><td></td></tr>
-        <tr id="CAT7" data-status="todo"><td>CAT7</td><td>Compose Starmap-to-Starmap source cascading and source health.</td><td><code>todo</code></td><td></td></tr>
-        <tr class="phase"><td colspan="4">Phase 3: Starport adoption</td></tr>
-        <tr id="CAT8" data-status="todo"><td>CAT8</td><td>Migrate Starport to the catalog-source contract and prove scale-out.</td><td><code>todo</code></td><td></td></tr>
-        <tr id="CAT8.1" data-status="todo"><td>CAT8.1</td><td>Replace the console catalog surfaces with the shell chip and panel.</td><td><code>todo</code></td><td></td></tr>
-        <tr class="phase"><td colspan="4">Phase 4: Documentation</td></tr>
-        <tr id="CAT9" data-status="todo"><td>CAT9</td><td>Complete compatibility, migration, operator, and API documentation.</td><td><code>todo</code></td><td></td></tr>
-        <tr id="CAT9.1" data-status="todo"><td>CAT9.1</td><td>Write the Starport topology guide, the configuration reference, the README paragraph, and the environment example.</td><td><code>todo</code></td><td></td></tr>
-        <tr id="CAT9.2" data-status="todo"><td>CAT9.2</td><td>Write the Starmap enterprise catalog server runbook, the README link, and the Kubernetes pair.</td><td><code>todo</code></td><td></td></tr>
-        <tr class="phase"><td colspan="4">Phase 5: Merge and release</td></tr>
-        <tr id="CAT10" data-status="todo"><td>CAT10</td><td>Run repository gates, structured reviews, pull requests, and merges.</td><td><code>todo</code></td><td></td></tr>
-        <tr id="CAT11" data-status="todo"><td>CAT11</td><td>Verify the hosted channel, publish Starmap, and update Starport.</td><td><code>todo</code></td><td></td></tr>
-        <tr id="CAT99" data-status="todo"><td>CAT99</td><td>Delete the plan, proof root, and index entry after final merge.</td><td><code>todo</code></td><td></td></tr>
-      </tbody>
-    </table>
+    <p>The required cases for each dimension are in <a href="../proof/catalog-publisher/cat2-test-matrix.md">the test matrix record</a>. The verifier names the test that proves each case.</p>
   </section>
 
   <section id="tasks">
@@ -455,7 +344,7 @@
     <ul>
       <li><strong>Problem:</strong> immutable releases expose internal checksum terminology and have no stable channel.</li>
       <li><strong>Owned paths:</strong> workflow, release command, channel schema, GoReleaser, and workflow tests.</li>
-      <li><strong>Steps:</strong> publish <code>catalog-&lt;digest&gt;</code>, verify it, advance the attested <code>catalog-latest.json</code> sequence on every successful run, and set a 60-minute job timeout.</li>
+      <li><strong>Steps:</strong> publish <code>catalog-&lt;digest&gt;</code>, verify it, advance the attested <code>catalog-latest.json</code> sequence on every successful run, and set the 90-minute job and 75-minute publisher step limits.</li>
       <li><strong>Acceptance:</strong> tests reject promotion before immutable verification, advance heartbeat state on no change, create no no-change catalog generation, and preserve legacy rollback tags.</li>
       <li><strong>Fail-before:</strong> the workflow emits <code>catalog-semantic-*</code> and has no latest channel.</li>
       <li><strong>Verification:</strong> run actionlint, workflow tests, release fixtures, and action pin checks.</li>
@@ -476,10 +365,10 @@
     <ul>
       <li><strong>Problem:</strong> the low-level client cannot own source polling, fallback, health, shutdown, and acquisition serialization.</li>
       <li><strong>Owned paths:</strong> connected runtime, durable retained layers, the runtime lease, provider outcomes, scoped evidence, source and acquisition policies, health, and consumer fixtures.</li>
-      <li><strong>Steps:</strong> add <code>Open</code>, I/O methods, retained layers, provider outcomes, historical lifecycle, narrow reads, an epoch-fenced durable commit, and progress-aware publication, timing, and shutdown.</li>
-      <li><strong>Acceptance:</strong> the runtime returns embedded state, preserves layers under race, accepts slow progress, rejects unsafe input, reports stalls and memory, and keeps CAT-V49 green.</li>
+      <li><strong>Steps:</strong> add <code>Open</code>, I/O methods, retained layers, provider outcomes with last-known-good retention, historical lifecycle, narrow reads, an epoch-fenced durable commit, and progress-aware publication, timing, and shutdown.</li>
+      <li><strong>Acceptance:</strong> the runtime returns embedded state, preserves layers under race, accepts slow progress, rejects unsafe input, reports stalls and memory, and keeps status concepts independent.</li>
       <li><strong>Fail-before:</strong> package construction has no default verified source path.</li>
-      <li><strong>Verification:</strong> run root, runtime, storage, race, and external consumer tests.</li>
+      <li><strong>Verification:</strong> run root, runtime, storage, race, and external consumer tests, and turn CAT-V49, CAT-V60, and CAT-V61 green.</li>
     </ul>
 
     <h4 id="task-CAT6">CAT6 Application defaults</h4>
@@ -506,18 +395,18 @@
     <h4 id="task-CAT8">CAT8 Starport scale-out adoption</h4>
     <ul>
       <li><strong>Problem:</strong> Starport selects local acquisition or remote generations and gives two operations the name <code>Sync</code>.</li>
-      <li><strong>Owned paths:</strong> Starport catalog config, unified Starmap adapter, raw deployment lookuper, acceptance transaction, admin API, audit, console, and metrics.</li>
-      <li><strong>Steps:</strong> adopt settings, remove remote <code>Sync</code>, add automatic queries, progress, cancellation, route timing, an epoch-carrying acceptance transaction, a CAT-D17 pin, and CAT-V42 through CAT-V48 green.</li>
+      <li><strong>Owned paths:</strong> Starport catalog config, unified Starmap adapter, raw deployment lookuper, acceptance transaction, admin refresh routes, audit, metrics, and the console model and provider pages.</li>
+      <li><strong>Steps:</strong> adopt settings, remove remote <code>Sync</code>, add automatic queries, progress, cancellation, route timing, an epoch-fenced acceptance transaction, the CAT-D17 pin, route-validation state, and model page facts.</li>
       <li><strong>Acceptance:</strong> replicas show both provenances, support local queries or central-only policy, preserve accepted routes, enforce route-specific timing, and avoid public requests for private sources.</li>
       <li><strong>Fail-before:</strong> Starport chooses local or remote, development disables refresh, admin refresh is synchronous, status lacks freshness policy, and global timeouts cancel valid inference and streams.</li>
-      <li><strong>Verification:</strong> run Starport catalog, app, configuration, architecture, and race checks from main @ 117ad8f5, and CAT-V42 through CAT-V48.</li>
+      <li><strong>Verification:</strong> run Starport catalog, app, configuration, architecture, and race checks from main @ 117ad8f5, the model page tests, and CAT-V42 through CAT-V48, CAT-V62, and CAT-V63.</li>
     </ul>
 
     <h4 id="task-CAT8.1">CAT8.1 Console catalog surface</h4>
     <ul>
       <li><strong>Problem:</strong> the console spends a full row and half a card on four facts, merges independent state, and shows no source or next update.</li>
-      <li><strong>Owned paths:</strong> Starport shell slot, chip and panel components, the safe and admin catalog routes in <code>internal/server</code>, console tests, and the design record.</li>
-      <li><strong>Steps:</strong> add the two safe fields, build the shell slot, chip, panel, and figures, and delete the old surfaces.</li>
+      <li><strong>Owned paths:</strong> the shell slot, chip, and panel under <code>console/src/components/shell</code>, the <code>CatalogSummary</code> type and the catalog handlers in <code>internal/server</code>, their tests, and the design record.</li>
+      <li><strong>Steps:</strong> add the allowlisted safe response and the sanitized <code>503</code>, build the shell slot, chip, panel, and figures, and delete the old surfaces.</li>
       <li><strong>Acceptance:</strong> the chip renders on every route, no file imports the deleted components, and CAT-V50 through CAT-V55 are green.</li>
       <li><strong>Fail-before:</strong> Models has a full-width bar with a seven-day rule, Overview has a half-width card, and the console reads no source observation.</li>
       <li><strong>Verification:</strong> run <code>pnpm check</code> in the console, the Starport server tests, and CAT-V50 through CAT-V55.</li>
@@ -527,7 +416,7 @@
     <h4 id="task-CAT9">CAT9 Compatibility and documentation</h4>
     <ul>
       <li><strong>Problem:</strong> old names, new network defaults, and deterministic offline behavior need an explicit migration contract.</li>
-      <li><strong>Owned paths:</strong> glossary, README, architecture, trust, protocol, Docker, CLI, release, and migration documents.</li>
+      <li><strong>Owned paths:</strong> the Starmap glossary, architecture, trust, protocol, CLI, release, and migration documents, while CAT9.2 owns <code>README.md</code> and <code>docs/DOCKER.md</code> and CAT9.1 owns the Starport documents.</li>
       <li><strong>Steps:</strong> document names, defaults, timestamps, layers, policies, egress, health, direct Starport replacements, historical release readback, the direct-consumer thresholds, and the hop budget.</li>
       <li><strong>Acceptance:</strong> all maintained text uses catalog-source terminology, names every network default, defines every timestamp, and contains no old Starport environment alias.</li>
       <li><strong>Fail-before:</strong> current text says remote consumption is opt-in and startup makes no request.</li>
@@ -548,10 +437,10 @@
     <ul>
       <li><strong>Problem:</strong> no Starmap text explains how to run a central catalog server for a fleet or how to deploy the pair.</li>
       <li><strong>Owned paths:</strong> Starmap enterprise catalog server runbook, README, and Docker document.</li>
-      <li><strong>Steps:</strong> write the seven-step runbook, link it from the README, and add the two Kubernetes Deployments.</li>
+      <li><strong>Steps:</strong> write the eight-step runbook, link it from the README, and add the two Kubernetes Deployments and the Service.</li>
       <li><strong>Acceptance:</strong> an operator can stand up the server, point a fleet at it, and deploy the pair on Kubernetes.</li>
       <li><strong>Fail-before:</strong> the runbook does not exist, and the Docker document has no Starport manifest.</li>
-      <li><strong>Verification:</strong> run <code>make technical-writing-check</code>, <code>make docs-check</code>, and CAT-V59.</li>
+      <li><strong>Verification:</strong> run <code>make technical-writing-check</code>, <code>make docs-check</code>, CAT-V59, and CAT-V64.</li>
     </ul>
 
     <h3>Phase 5: Merge and release</h3>
@@ -636,6 +525,7 @@ and lease-owned, and CAT99 removes the plan.</code></pre>
         <tr><td>2026-09-02</td><td>CAT2</td><td>reopened</td><td>The second review found a discarded <code>go test</code> exit status, a brittle CAT-V23 scan, an unclear transfer contract, and split lease ownership. Commit <code>7bdd74fc</code> repaired them and added CAT-V49. CAT2 returned to <code>in_progress</code> and CAT2.1 to <code>todo</code>.</td></tr>
         <tr><td>2026-09-02</td><td>CAT8.1, CAT9.1</td><td>added</td><td>The owner asked for the console catalog surface and the enterprise deployment documentation. CAT-F31 through CAT-F33, CAT-D19, CAT-D20, two design records, and CAT-V50 through CAT-V56 record the scope.</td></tr>
         <tr><td>2026-09-02</td><td>CAT2, CAT8.1, CAT9.1, CAT9.2</td><td>corrected</td><td>The third review kept CAT2 open. It moved source detail to the admin route and separated the status concepts, the layers, and the hop chain. It moved the chip into a shell slot and separated restricted egress from air-gapped operation. It split CAT9.1 by repository, corrected the seven-day evidence, and grouped the tasks into six phases. The verifier holds 59 conditions at 7 passed.</td></tr>
+        <tr><td>2026-09-02</td><td>CAT2, CAT5, CAT8, CAT8.1, CAT9, CAT9.2</td><td>corrected</td><td>The fourth review kept CAT2 open. It nested the 60-minute transfer, the 75-minute publisher step, and the 90-minute job. It replaced the safe response with an allowlisted summary and a sanitized <code>503</code>, gave the unavailable and unauthorized states their own glyphs, required a lease-capable store for active-active servers, and corrected the shell geometry. The plan moved the ledger after Progress and the findings, decisions, and test matrix to proof records, so the plan deviates from the template order. Each path now has one owner. The verifier holds 64 conditions at 7 passed.</td></tr>
       </tbody>
     </table>
   </section>
