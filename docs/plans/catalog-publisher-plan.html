@@ -5,80 +5,40 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Catalog distribution plan</title>
 <style>
-  :root {
-    --ink: #1a1e24; --muted: #5c6570; --line: #d8dde3; --soft: #f4f6f8;
-    --page: #ffffff; --accent: #2563eb; --todo: #6b7280;
-    --in-progress: #2563eb; --blocked: #dc2626; --done: #16a34a;
-    --no-action: #64748b; --rejected: #b45309;
-  }
-  @media (prefers-color-scheme: dark) {
-    :root {
-      --ink: #e5e9ee; --muted: #9aa4af; --line: #333a43; --soft: #1b2027;
-      --page: #11151a; --accent: #60a5fa; --todo: #9aa4af;
-      --in-progress: #60a5fa; --blocked: #f87171; --done: #4ade80;
-      --no-action: #94a3b8; --rejected: #fbbf24;
-    }
-  }
+  :root { --ink: #1a1e24; --muted: #5c6570; --line: #d8dde3; --soft: #f4f6f8; --page: #ffffff; --accent: #2563eb; --todo: #6b7280; --in-progress: #2563eb; --blocked: #dc2626; --done: #16a34a; --no-action: #64748b; --rejected: #b45309; }
+  @media (prefers-color-scheme: dark) { :root { --ink: #e5e9ee; --muted: #9aa4af; --line: #333a43; --soft: #1b2027; --page: #11151a; --accent: #60a5fa; --todo: #9aa4af; --in-progress: #60a5fa; --blocked: #f87171; --done: #4ade80; --no-action: #94a3b8; --rejected: #fbbf24; } }
   * { box-sizing: border-box; }
-  body { margin: 0 auto; padding: 2rem 1.25rem 4rem; max-width: 1080px;
-    background: var(--page); color: var(--ink);
-    font: 16px/1.55 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-      sans-serif; }
+  body { margin: 0 auto; padding: 2rem 1.25rem 4rem; max-width: 1080px; background: var(--page); color: var(--ink); font: 16px/1.55 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
   h1 { font-size: 1.6rem; margin: 0 0 0.25rem; }
-  h2 { font-size: 1.15rem; margin: 2rem 0 0.5rem;
-    border-bottom: 1px solid var(--line); padding-bottom: 0.25rem; }
-  h3 { font-size: 1rem; margin: 1.25rem 0 0.4rem; }
-  code { background: var(--soft); border: 1px solid var(--line);
-    border-radius: 4px; padding: 0.05rem 0.35rem; font-size: 0.85em; }
-  pre { background: var(--soft); border: 1px solid var(--line);
-    border-radius: 6px; padding: 0.9rem 1rem; overflow-x: auto; }
-  pre code { background: none; border: none; padding: 0; }
-  blockquote { margin: 0.75rem 0; padding: 0.6rem 1rem;
-    border-left: 3px solid var(--accent); background: var(--soft); }
-  table { border-collapse: collapse; width: 100%; margin: 0.75rem 0;
-    font-size: 0.92rem; }
-  th, td { border: 1px solid var(--line); padding: 0.35rem 0.55rem;
-    text-align: left; vertical-align: top; }
-  th { background: var(--soft); }
-  #status-line { color: var(--muted); font-size: 0.92rem; margin: 0 0 1rem; }
-  .bar { height: 0.75rem; border: 1px solid var(--line); border-radius: 999px;
-    overflow: hidden; background: var(--soft); }
-  .bar .fill { height: 100%; width: 0; background: var(--done); }
-  .counts { color: var(--muted); font-size: 0.92rem; margin: 0.4rem 0 0; }
-  .pair { display: grid; grid-template-columns: repeat(auto-fit,
-    minmax(280px, 1fr)); gap: 1rem; }
-  figure { margin: 0; border: 1px solid var(--line); border-radius: 8px;
-    padding: 0.75rem; background: var(--soft); }
-  figcaption { font-weight: 600; margin-bottom: 0.5rem; }
-  figure svg { max-width: 100%; height: auto; }
-  tr[data-status] td:nth-child(3) code { font-weight: 600; }
-  tr.phase td { font-weight: 600; padding-top: 0.9em; }
-  h4 { margin: 1.4em 0 0.4em; font-size: 1.02em; }
-  tr[data-status="todo"] td:nth-child(3) code { color: var(--todo); }
-  tr[data-status="in_progress"] td:nth-child(3) code {
-    color: var(--in-progress); }
-  tr[data-status="blocked"] td:nth-child(3) code { color: var(--blocked); }
-  tr[data-status="done"] td:nth-child(3) code { color: var(--done); }
-  tr[data-status="no-action"] td:nth-child(3) code { color: var(--no-action); }
-  tr[data-status="rejected"] td:nth-child(3) code { color: var(--rejected); }
+  h2 { font-size: 1.15rem; margin: 2rem 0 0.5rem; border-bottom: 1px solid var(--line); padding-bottom: 0.25rem; }
+  h3 { font-size: 1rem; margin: 1.25rem 0 0.4rem; } h4 { margin: 1.4em 0 0.4em; font-size: 1.02em; }
+  code { background: var(--soft); border: 1px solid var(--line); border-radius: 4px; padding: 0.05rem 0.35rem; font-size: 0.85em; }
+  pre { background: var(--soft); border: 1px solid var(--line); border-radius: 6px; padding: 0.9rem 1rem; overflow-x: auto; } pre code { background: none; border: none; padding: 0; }
+  blockquote { margin: 0.75rem 0; padding: 0.6rem 1rem; border-left: 3px solid var(--accent); background: var(--soft); }
+  table { border-collapse: collapse; width: 100%; margin: 0.75rem 0; font-size: 0.92rem; }
+  th, td { border: 1px solid var(--line); padding: 0.35rem 0.55rem; text-align: left; vertical-align: top; } th { background: var(--soft); }
+  #status-line, .counts { color: var(--muted); font-size: 0.92rem; } #status-line { margin: 0 0 1rem; } .counts { margin: 0.4rem 0 0; }
+  .bar { height: 0.75rem; border: 1px solid var(--line); border-radius: 999px; overflow: hidden; background: var(--soft); } .bar .fill { height: 100%; width: 0; background: var(--done); }
+  .pair { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem; }
+  figure { margin: 0; border: 1px solid var(--line); border-radius: 8px; padding: 0.75rem; background: var(--soft); } figcaption { font-weight: 600; margin-bottom: 0.5rem; }
+  figure svg { max-width: 100%; height: auto; } figure rect { fill: none; stroke: currentColor; } figure text { fill: currentColor; text-anchor: middle; } figure line { stroke: currentColor; }
+  tr[data-status] td:nth-child(3) code { font-weight: 600; } tr.phase td { font-weight: 600; padding-top: 0.9em; }
+  tr[data-status="todo"] td:nth-child(3) code { color: var(--todo); } tr[data-status="in_progress"] td:nth-child(3) code { color: var(--in-progress); }
+  tr[data-status="blocked"] td:nth-child(3) code { color: var(--blocked); } tr[data-status="done"] td:nth-child(3) code { color: var(--done); }
+  tr[data-status="no-action"] td:nth-child(3) code { color: var(--no-action); } tr[data-status="rejected"] td:nth-child(3) code { color: var(--rejected); }
 </style>
 <script>
   document.addEventListener("DOMContentLoaded", function () {
-    var rows = document.querySelectorAll("#ledger tbody tr[data-status]");
-    var terminal = { "done": 1, "no-action": 1, "rejected": 1 };
+    var rows = document.querySelectorAll("#ledger tbody tr[data-status]"), terminal = { "done": 1, "no-action": 1, "rejected": 1 };
     var total = rows.length, closed = 0, current = "";
     rows.forEach(function (row) {
       var status = (row.getAttribute("data-status") || "").split("(")[0].trim();
       if (terminal[status]) { closed += 1; }
-      if (status === "in_progress" && !current) {
-        current = row.id + " " + row.cells[1].textContent.trim();
-      }
+      if (status === "in_progress" && !current) { current = row.id + " " + row.cells[1].textContent.trim(); }
     });
     var pct = total ? Math.round((closed / total) * 100) : 0;
     document.querySelector("#progress .fill").style.width = pct + "%";
-    var text = closed + " of " + total + " tasks terminal (" + pct + "%).";
-    if (current) { text += " In progress: " + current; }
-    document.querySelector("#progress .counts").textContent = text;
+    document.querySelector("#progress .counts").textContent = closed + " of " + total + " tasks terminal (" + pct + "%)." + (current ? " In progress: " + current : "");
   });
 </script>
 </head>
@@ -86,24 +46,11 @@
 
 <header id="overview">
   <h1>Catalog distribution plan</h1>
-  <p id="status-line">
-    Status: <code data-plan-status="active">active</code>.
-    Owner: this plan. Created: 2026-09-01.
-    Baseline: main @ 42b610a, publisher work @ 6c7edfbe, Starport main @ 117ad8f5.
-    Proof root: <code>docs/proof/catalog-publisher/</code>.
-    Next action: request the fifth review of the CAT2 corrections, then close CAT2 and start CAT2.1.
-  </p>
-
+  <p id="status-line">Status: <code data-plan-status="active">active</code>. Owner: this plan. Created: 2026-09-01. Baseline: main @ 42b610a, publisher work @ 6c7edfbe, Starport main @ 117ad8f5. Proof root: <code>docs/proof/catalog-publisher/</code>. Next action: request the sixth review of the CAT2 corrections, then close CAT2 and start CAT2.1.</p>
   <section id="outcome">
     <h2>Outcome</h2>
-    <blockquote>
-      Starmap publishes and embeds the Starmap public catalog. One connected
-      runtime composes the embedded catalog, a selected upstream catalog, and
-      operator observations into an effective catalog. Starport consumes that
-      catalog locally or from a shared enterprise Starmap server.
-    </blockquote>
+    <blockquote>Starmap publishes and embeds the Starmap public catalog. One connected runtime composes the embedded catalog, a selected upstream catalog, and operator observations into an effective catalog. Starport consumes that catalog locally or from a shared enterprise Starmap server.</blockquote>
   </section>
-
   <section id="progress">
     <h2>Progress</h2>
     <div class="bar"><div class="fill"></div></div>
@@ -112,18 +59,53 @@
 </header>
 
 <main>
+  <section id="architecture">
+    <h2>Architecture</h2>
+    <div class="pair">
+      <figure>
+        <figcaption>Before</figcaption>
+        <svg viewBox="0 0 440 220" role="img" aria-label="Separate release, remote subscriber, and embedded consumers">
+          <rect x="10" y="15" width="120" height="48" rx="7"/><text x="70" y="35">catalog-semantic</text><text x="70" y="52">prereleases</text>
+          <rect x="160" y="15" width="120" height="48" rx="7"/><text x="220" y="35">manual release</text><text x="220" y="52">import</text>
+          <rect x="310" y="15" width="120" height="48" rx="7"/><text x="370" y="35">opt-in remote</text><text x="370" y="52">subscriber</text>
+          <rect x="55" y="145" width="130" height="48" rx="7"/><text x="120" y="165">server and Docker</text><text x="120" y="182">embedded startup</text>
+          <rect x="255" y="145" width="130" height="48" rx="7"/><text x="320" y="165">Starport remote</text><text x="320" y="182">opt-in only</text>
+          <line x1="130" y1="39" x2="156" y2="39"/><line x1="370" y1="63" x2="330" y2="141"/>
+        </svg>
+      </figure>
+      <figure>
+        <figcaption>After</figcaption>
+        <svg viewBox="0 0 440 220" role="img" aria-label="One Starmap runtime composes public and operator layers for Starport">
+          <rect x="10" y="15" width="120" height="48" rx="7"/><text x="70" y="35">embedded public</text><text x="70" y="52">catalog</text>
+          <rect x="160" y="15" width="120" height="48" rx="7"/><text x="220" y="35">selected upstream</text><text x="220" y="52">catalog</text>
+          <rect x="310" y="15" width="120" height="48" rx="7"/><text x="370" y="35">operator</text><text x="370" y="52">observations</text>
+          <rect x="55" y="145" width="130" height="48" rx="7"/><text x="120" y="165">Starmap effective</text><text x="120" y="182">catalog</text>
+          <rect x="255" y="145" width="130" height="48" rx="7"/><text x="320" y="165">Starport accepted</text><text x="320" y="182">runtime</text>
+          <line x1="70" y1="63" x2="105" y2="141"/><line x1="220" y1="63" x2="135" y2="141"/><line x1="370" y1="63" x2="155" y2="141"/><line x1="185" y1="169" x2="251" y2="169"/>
+        </svg>
+      </figure>
+    </div>
+  </section>
+
+  <section id="scope">
+    <h2>Scope</h2>
+    <p><strong>Owns:</strong> publisher credentials and cadence, catalog names, the public channel, GitHub verification, and catalog-source contracts. The plan also owns connected runtimes, application defaults, source cascading, Starport adoption, the console catalog surface, migration and topology guidance, proof, and releases.</p>
+    <p><strong>Does not own:</strong> provider inference credentials, provider account creation, a managed AgentStation Starmap deployment, or enterprise network and storage provisioning.</p>
+    <p><strong>Non-goals:</strong> do not change provider fact authority without an owner decision. Do not expose secrets or trust mutable tags. Do not require GitHub CLI in a Go consumer.</p>
+  </section>
+
   <section id="ledger">
     <h2>Status ledger</h2>
     <p>The plan runs in six phases. The table names the tasks in each phase and the verifier count that the gate expects when the phase closes. A condition can turn green earlier when an earlier task proves it. Phase 0 expects eight because CAT2.1 turns CAT-V06 green.</p>
     <table>
       <thead><tr><th>Phase</th><th>Tasks</th><th>Verifier blocks</th><th>Expected passing at close</th></tr></thead>
       <tbody>
-        <tr><td>0 Baseline and contract</td><td>CAT0, CAT1, CAT2, CAT2.1</td><td>evidence CAT-V39 to CAT-V41 and the four preserved behaviors CAT-V02, CAT-V04, CAT-V46, and CAT-V47</td><td>8 of 64</td></tr>
-        <tr><td>1 Publication and source</td><td>CAT3, CAT4</td><td>publication CAT-V01 to CAT-V07</td><td>12 of 64</td></tr>
-        <tr><td>2 Runtime</td><td>CAT5, CAT6, CAT7</td><td>runtime CAT-V08 to CAT-V19, transport CAT-V20 to CAT-V29, fleet CAT-V30 to CAT-V38, lease CAT-V49, runtime status CAT-V60 and CAT-V61</td><td>46 of 64</td></tr>
-        <tr><td>3 Starport adoption</td><td>CAT8, CAT8.1</td><td>adoption CAT-V42 to CAT-V48, console CAT-V50 to CAT-V55, model surfaces CAT-V62 and CAT-V63</td><td>59 of 64</td></tr>
-        <tr><td>4 Documentation</td><td>CAT9, CAT9.1, CAT9.2</td><td>Starport documentation CAT-V56 to CAT-V58, Starmap documentation CAT-V59 and CAT-V64</td><td>64 of 64</td></tr>
-        <tr><td>5 Merge and release</td><td>CAT10, CAT11, CAT99</td><td>none</td><td>64 of 64</td></tr>
+        <tr><td>0 Baseline and contract</td><td>CAT0, CAT1, CAT2, CAT2.1</td><td>evidence CAT-V39 to CAT-V41 and the four preserved behaviors CAT-V02, CAT-V04, CAT-V46, and CAT-V47</td><td>8 of 68</td></tr>
+        <tr><td>1 Publication and source</td><td>CAT3, CAT4</td><td>publication CAT-V01 to CAT-V07</td><td>12 of 68</td></tr>
+        <tr><td>2 Runtime</td><td>CAT5, CAT6, CAT7</td><td>runtime CAT-V08 to CAT-V19, transport CAT-V20 to CAT-V29, fleet CAT-V30 to CAT-V38, lease CAT-V49, runtime status CAT-V60 and CAT-V61, propagated freshness CAT-V65, coalescing CAT-V66, scheduler identity CAT-V67</td><td>49 of 68</td></tr>
+        <tr><td>3 Starport adoption</td><td>CAT8, CAT8.1</td><td>CAT8 adoption CAT-V42 to CAT-V48, safe response CAT-V51, and route state CAT-V62; CAT8.1 console CAT-V50, CAT-V52 to CAT-V55, CAT-V63, and CAT-V68</td><td>63 of 68</td></tr>
+        <tr><td>4 Documentation</td><td>CAT9, CAT9.1, CAT9.2</td><td>Starport documentation CAT-V56 to CAT-V58, Starmap documentation CAT-V59 and CAT-V64</td><td>68 of 68</td></tr>
+        <tr><td>5 Merge and release</td><td>CAT10, CAT11, CAT99</td><td>none</td><td>68 of 68</td></tr>
       </tbody>
     </table>
     <table>
@@ -132,7 +114,7 @@
         <tr class="phase"><td colspan="4">Phase 0: Baseline and contract</td></tr>
         <tr id="CAT0" data-status="done"><td>CAT0</td><td>Pin the publisher, credentials, source, and consumer baseline.</td><td><code>done</code></td><td><a href="../proof/catalog-publisher/cat0.md">CAT0 proof</a>.</td></tr>
         <tr id="CAT1" data-status="done"><td>CAT1</td><td>Store acquisition credentials and set the four-hour publisher cadence.</td><td><code>done</code></td><td><a href="../proof/catalog-publisher/cat1.md">CAT1 proof</a>; commits <code>cf3124c0</code> and <code>9017b83b</code>.</td></tr>
-        <tr id="CAT2" data-status="in_progress"><td>CAT2</td><td>Ratify naming, source policy, lifecycle, and the red campaign verifier.</td><td><code>in_progress</code></td><td><a href="../proof/catalog-publisher/cat2-review.md">Trust review</a>, <a href="../proof/catalog-publisher/cat2-dx.md">runtime review</a>, <a href="../proof/catalog-publisher/cat2-final-review.md">final review</a>, <a href="../proof/catalog-publisher/cat2-network-measurements.json">network measurements</a>, <a href="../proof/catalog-publisher/cat2-audit.md">audit</a>, and <a href="../proof/catalog-publisher/cat2-fail-before.txt">fail-before</a>. Work commits <code>84f92c15</code>, <code>ebdef9bb</code>, <code>7bdd74fc</code>, <code>4fc87dca</code>, <code>00e1f293</code>, and <code>88051b87</code>. <code>scripts/verify-catalog-distribution.sh</code> reports 7 passed, 57 failed, and 0 unverified of 64. Gates at <code>88051b87</code>: technical writing 677 files and 0 diagnostics, package ownership 13 passed, docs check current, shellcheck clean. The fourth review kept CAT2 open for a fifth review.</td></tr>
+        <tr id="CAT2" data-status="in_progress"><td>CAT2</td><td>Ratify naming, source policy, lifecycle, and the red campaign verifier.</td><td><code>in_progress</code></td><td><a href="../proof/catalog-publisher/cat2-review.md">Trust review</a>, <a href="../proof/catalog-publisher/cat2-dx.md">runtime review</a>, <a href="../proof/catalog-publisher/cat2-final-review.md">final review</a>, <a href="../proof/catalog-publisher/cat2-network-measurements.json">network measurements</a>, <a href="../proof/catalog-publisher/cat2-audit.md">audit</a>, and <a href="../proof/catalog-publisher/cat2-fail-before.txt">fail-before</a>. Work commits <code>84f92c15</code>, <code>ebdef9bb</code>, <code>7bdd74fc</code>, <code>4fc87dca</code>, <code>00e1f293</code>, <code>88051b87</code>, and <code>a6f1bfd1</code>. <code>scripts/verify-catalog-distribution.sh</code> reports 7 passed, 61 failed, and 0 unverified of 68. Gates at <code>a6f1bfd1</code>: technical writing 677 files and 0 diagnostics, package ownership 13 passed, docs check current, shellcheck clean. The fifth review kept CAT2 open for a sixth review.</td></tr>
         <tr id="CAT2.1" data-status="todo"><td>CAT2.1</td><td>Select and prove the native Go attestation verifier dependency.</td><td><code>todo</code></td><td>Initial comparison is in the <a href="../proof/catalog-publisher/cat2-review.md">CAT2 review</a>. The selection record is <code>docs/proof/catalog-publisher/cat2.1-verifier-selection.md</code>.</td></tr>
         <tr class="phase"><td colspan="4">Phase 1: Publication and source</td></tr>
         <tr id="CAT3" data-status="todo"><td>CAT3</td><td>Publish canonical immutable releases and the verified latest channel.</td><td><code>todo</code></td><td></td></tr>
@@ -154,75 +136,6 @@
         <tr id="CAT99" data-status="todo"><td>CAT99</td><td>Delete the plan, proof root, and index entry after final merge.</td><td><code>todo</code></td><td></td></tr>
       </tbody>
     </table>
-  </section>
-
-  <section id="architecture">
-    <h2>Architecture</h2>
-    <div class="pair">
-      <figure>
-        <figcaption>Before</figcaption>
-        <svg viewBox="0 0 440 220" role="img"
-          aria-label="Separate release, remote subscriber, and embedded consumers">
-          <rect x="10" y="15" width="120" height="48" rx="7" fill="none" stroke="currentColor"/>
-          <text x="70" y="35" text-anchor="middle" fill="currentColor">catalog-semantic</text>
-          <text x="70" y="52" text-anchor="middle" fill="currentColor">prereleases</text>
-          <rect x="160" y="15" width="120" height="48" rx="7" fill="none" stroke="currentColor"/>
-          <text x="220" y="35" text-anchor="middle" fill="currentColor">manual release</text>
-          <text x="220" y="52" text-anchor="middle" fill="currentColor">import</text>
-          <rect x="310" y="15" width="120" height="48" rx="7" fill="none" stroke="currentColor"/>
-          <text x="370" y="35" text-anchor="middle" fill="currentColor">opt-in remote</text>
-          <text x="370" y="52" text-anchor="middle" fill="currentColor">subscriber</text>
-          <rect x="55" y="145" width="130" height="48" rx="7" fill="none" stroke="currentColor"/>
-          <text x="120" y="165" text-anchor="middle" fill="currentColor">server and Docker</text>
-          <text x="120" y="182" text-anchor="middle" fill="currentColor">embedded startup</text>
-          <rect x="255" y="145" width="130" height="48" rx="7" fill="none" stroke="currentColor"/>
-          <text x="320" y="165" text-anchor="middle" fill="currentColor">Starport remote</text>
-          <text x="320" y="182" text-anchor="middle" fill="currentColor">opt-in only</text>
-          <line x1="130" y1="39" x2="156" y2="39" stroke="currentColor"/>
-          <line x1="370" y1="63" x2="330" y2="141" stroke="currentColor"/>
-        </svg>
-      </figure>
-      <figure>
-        <figcaption>After</figcaption>
-        <svg viewBox="0 0 440 220" role="img"
-          aria-label="One Starmap runtime composes public and operator layers for Starport">
-          <rect x="10" y="15" width="120" height="48" rx="7" fill="none" stroke="currentColor"/>
-          <text x="70" y="35" text-anchor="middle" fill="currentColor">embedded public</text>
-          <text x="70" y="52" text-anchor="middle" fill="currentColor">catalog</text>
-          <rect x="160" y="15" width="120" height="48" rx="7" fill="none" stroke="currentColor"/>
-          <text x="220" y="35" text-anchor="middle" fill="currentColor">selected upstream</text>
-          <text x="220" y="52" text-anchor="middle" fill="currentColor">catalog</text>
-          <rect x="310" y="15" width="120" height="48" rx="7" fill="none" stroke="currentColor"/>
-          <text x="370" y="35" text-anchor="middle" fill="currentColor">operator</text>
-          <text x="370" y="52" text-anchor="middle" fill="currentColor">observations</text>
-          <rect x="55" y="145" width="130" height="48" rx="7" fill="none" stroke="currentColor"/>
-          <text x="120" y="165" text-anchor="middle" fill="currentColor">Starmap effective</text>
-          <text x="120" y="182" text-anchor="middle" fill="currentColor">catalog</text>
-          <rect x="255" y="145" width="130" height="48" rx="7" fill="none" stroke="currentColor"/>
-          <text x="320" y="165" text-anchor="middle" fill="currentColor">Starport accepted</text>
-          <text x="320" y="182" text-anchor="middle" fill="currentColor">runtime</text>
-          <line x1="70" y1="63" x2="105" y2="141" stroke="currentColor"/>
-          <line x1="220" y1="63" x2="135" y2="141" stroke="currentColor"/>
-          <line x1="370" y1="63" x2="155" y2="141" stroke="currentColor"/>
-          <line x1="185" y1="169" x2="251" y2="169" stroke="currentColor"/>
-        </svg>
-      </figure>
-    </div>
-  </section>
-
-  <section id="scope">
-    <h2>Scope</h2>
-    <p><strong>Owns:</strong> publisher credentials and cadence, catalog names,
-      the public channel, GitHub verification, and catalog-source contracts.</p>
-    <p>The plan also owns connected runtimes, application defaults, source
-      cascading, Starport adoption, the console catalog surface, migration and
-      topology guidance, proof, and releases.</p>
-    <p><strong>Does not own:</strong> provider inference credentials, provider
-      account creation, a managed AgentStation Starmap deployment, or enterprise
-      network and storage provisioning.</p>
-    <p><strong>Non-goals:</strong> do not change provider fact authority without
-      an owner decision. Do not expose secrets or trust mutable tags. Do not
-      require GitHub CLI in a Go consumer.</p>
   </section>
 
   <section id="invariants">
@@ -273,7 +186,7 @@
         <tr><td>CAT-D10</td><td>accepted</td><td>Publish at minute 17 every four hours with a six-hour objective.</td></tr>
         <tr><td>CAT-D11</td><td>accepted</td><td><code>CATALOG_ACQUISITION_ENABLED</code> plus <code>INTERVAL</code> with no periodic-only state.</td></tr>
         <tr><td>CAT-D12</td><td>audited</td><td>Progress-aware bounds and the nested 60, 75, and 90-minute limits.</td></tr>
-        <tr><td>CAT-D13</td><td>audited</td><td>Stable phases, 15-minute spread, decorrelated retry, and admission.</td></tr>
+        <tr><td>CAT-D13</td><td>audited</td><td>Stable phases from a clone-safe identity, 15-minute spread, retry, and admission.</td></tr>
         <tr><td>CAT-D14</td><td>audited</td><td>One <code>Sync</code> signature and an idempotent five-second <code>Close</code>.</td></tr>
         <tr><td>CAT-D15</td><td>audited</td><td>A 60-minute per-transfer maximum and the transport wrapper.</td></tr>
         <tr><td>CAT-D16</td><td>audited</td><td>The header-driven request budget and the hop budget.</td></tr>
@@ -281,13 +194,14 @@
         <tr><td>CAT-D18</td><td>audited</td><td>The epoch lease, and a lease-capable store for active-active servers.</td></tr>
         <tr><td>CAT-D19</td><td>designed</td><td>The shell chip, the allowlisted safe response, and the panel.</td></tr>
         <tr><td>CAT-D20</td><td>designed</td><td>The topology guide, the configuration reference, and the runbook.</td></tr>
+        <tr><td>CAT-D21</td><td>designed</td><td>A 30-second coalescing window for partial provider publication.</td></tr>
       </tbody>
     </table>
   </section>
 
   <section id="findings">
     <h2>Findings ledger</h2>
-    <p>CAT-F1 through CAT-F33 are in <a href="../proof/catalog-publisher/cat2-findings.md">the findings record</a>. Each finding names its owner task. CAT-F1 and CAT-F23 hold no open work, and CAT-F6 and CAT-F30 name behavior to preserve.</p>
+    <p>CAT-F1 through CAT-F38 are in <a href="../proof/catalog-publisher/cat2-findings.md">the findings record</a>. Each finding names its owner task. CAT-F1 and CAT-F23 hold no open work, and CAT-F6 and CAT-F30 name behavior to preserve.</p>
   </section>
 
   <section id="test-matrix">
@@ -347,7 +261,7 @@
       <li><strong>Steps:</strong> publish <code>catalog-&lt;digest&gt;</code>, verify it, advance the attested <code>catalog-latest.json</code> sequence on every successful run, and set the 90-minute job and 75-minute publisher step limits.</li>
       <li><strong>Acceptance:</strong> tests reject promotion before immutable verification, advance heartbeat state on no change, create no no-change catalog generation, and preserve legacy rollback tags.</li>
       <li><strong>Fail-before:</strong> the workflow emits <code>catalog-semantic-*</code> and has no latest channel.</li>
-      <li><strong>Verification:</strong> run actionlint, workflow tests, release fixtures, and action pin checks.</li>
+      <li><strong>Verification:</strong> run actionlint, the workflow tests with <code>TestCatalogGenerationWorkflowNestsTimeoutLimits</code>, release fixtures, and action pin checks.</li>
     </ul>
 
     <h4 id="task-CAT4">CAT4 Verified GitHub catalog source</h4>
@@ -365,10 +279,10 @@
     <ul>
       <li><strong>Problem:</strong> the low-level client cannot own source polling, fallback, health, shutdown, and acquisition serialization.</li>
       <li><strong>Owned paths:</strong> connected runtime, durable retained layers, the runtime lease, provider outcomes, scoped evidence, source and acquisition policies, health, and consumer fixtures.</li>
-      <li><strong>Steps:</strong> add <code>Open</code>, I/O methods, retained layers, provider outcomes with last-known-good retention, historical lifecycle, narrow reads, an epoch-fenced durable commit, and progress-aware publication, timing, and shutdown.</li>
+      <li><strong>Steps:</strong> add <code>Open</code>, I/O methods, retained layers, coalesced last-known-good provider outcomes, a clone-safe scheduler identity, lifecycle, narrow reads, an epoch-fenced commit, and progress-aware publication and shutdown.</li>
       <li><strong>Acceptance:</strong> the runtime returns embedded state, preserves layers under race, accepts slow progress, rejects unsafe input, reports stalls and memory, and keeps status concepts independent.</li>
       <li><strong>Fail-before:</strong> package construction has no default verified source path.</li>
-      <li><strong>Verification:</strong> run root, runtime, storage, race, and external consumer tests, and turn CAT-V49, CAT-V60, and CAT-V61 green.</li>
+      <li><strong>Verification:</strong> run root, runtime, storage, race, and external consumer tests, and turn CAT-V49, CAT-V60, CAT-V61, CAT-V66, and CAT-V67 green.</li>
     </ul>
 
     <h4 id="task-CAT6">CAT6 Application defaults</h4>
@@ -385,31 +299,31 @@
     <ul>
       <li><strong>Problem:</strong> a Starmap server cannot combine an upstream Starmap source with operator acquisition.</li>
       <li><strong>Owned paths:</strong> HTTP/SSE adapter, source-chain manifest, runtime source selection, server status, health, and readiness.</li>
-      <li><strong>Steps:</strong> adapt the subscriber with TLS origin policy, separate health, 15-minute initial and outage spreading, retry not-before, source admission, stable polling fallback, and cycle rejection.</li>
+      <li><strong>Steps:</strong> adapt the subscriber with TLS origin policy, separate health, 15-minute spreading, retry not-before, source admission, polling fallback, propagated freshness, and cycle rejection.</li>
       <li><strong>Acceptance:</strong> <code>TestServerCascadesVerifiedCatalogSource</code> proves upstream, source server, and downstream activation, plus self, alias, and two-node cycle rejection and subscriber deltas CAT-V32 to CAT-V36 green.</li>
       <li><strong>Fail-before:</strong> server start owns no upstream subscriber.</li>
-      <li><strong>Verification:</strong> run protocol, subscriber, server, concurrency, and failure tests with race detection, and CAT-V25 through CAT-V36.</li>
+      <li><strong>Verification:</strong> run protocol, subscriber, server, concurrency, and failure tests with race detection, and CAT-V25 through CAT-V36 and CAT-V65.</li>
     </ul>
 
     <h3>Phase 3: Starport adoption</h3>
     <h4 id="task-CAT8">CAT8 Starport scale-out adoption</h4>
     <ul>
       <li><strong>Problem:</strong> Starport selects local acquisition or remote generations and gives two operations the name <code>Sync</code>.</li>
-      <li><strong>Owned paths:</strong> Starport catalog config, unified Starmap adapter, raw deployment lookuper, acceptance transaction, admin refresh routes, audit, metrics, and the console model and provider pages.</li>
-      <li><strong>Steps:</strong> adopt settings, remove remote <code>Sync</code>, add automatic queries, progress, cancellation, route timing, an epoch-fenced acceptance transaction, the CAT-D17 pin, route-validation state, and model page facts.</li>
+      <li><strong>Owned paths:</strong> Starport catalog config, the Starmap adapter, the deployment lookuper, the acceptance transaction, every catalog route in <code>internal/server</code>, their Go tests, audit, and metrics.</li>
+      <li><strong>Steps:</strong> adopt settings, remove remote <code>Sync</code>, add automatic queries, progress, cancellation, route timing, the acceptance transaction, the CAT-D17 pin, route-validation state, safe summary, and sanitized <code>503</code>.</li>
       <li><strong>Acceptance:</strong> replicas show both provenances, support local queries or central-only policy, preserve accepted routes, enforce route-specific timing, and avoid public requests for private sources.</li>
       <li><strong>Fail-before:</strong> Starport chooses local or remote, development disables refresh, admin refresh is synchronous, status lacks freshness policy, and global timeouts cancel valid inference and streams.</li>
-      <li><strong>Verification:</strong> run Starport catalog, app, configuration, architecture, and race checks from main @ 117ad8f5, the model page tests, and CAT-V42 through CAT-V48, CAT-V62, and CAT-V63.</li>
+      <li><strong>Verification:</strong> run Starport catalog, app, configuration, architecture, and race checks from main @ 117ad8f5, and CAT-V42 through CAT-V48, CAT-V51, and CAT-V62.</li>
     </ul>
 
     <h4 id="task-CAT8.1">CAT8.1 Console catalog surface</h4>
     <ul>
       <li><strong>Problem:</strong> the console spends a full row and half a card on four facts, merges independent state, and shows no source or next update.</li>
-      <li><strong>Owned paths:</strong> the shell slot, chip, and panel under <code>console/src/components/shell</code>, the <code>CatalogSummary</code> type and the catalog handlers in <code>internal/server</code>, their tests, and the design record.</li>
-      <li><strong>Steps:</strong> add the allowlisted safe response and the sanitized <code>503</code>, build the shell slot, chip, panel, and figures, and delete the old surfaces.</li>
-      <li><strong>Acceptance:</strong> the chip renders on every route, no file imports the deleted components, and CAT-V50 through CAT-V55 are green.</li>
+      <li><strong>Owned paths:</strong> console only: the shell slot, chip, and panel under <code>console/src/components/shell</code>, catalog queries in <code>console/src/lib/queries.ts</code>, model and provider page facts, console tests, and the design record.</li>
+      <li><strong>Steps:</strong> build the shell summary query with cadence and recovery, the shell slot, chip, panel, figures, and model page facts, then delete the old surfaces.</li>
+      <li><strong>Acceptance:</strong> the chip renders on every route, no file imports the deleted components, and CAT-V50, CAT-V52 through CAT-V55, CAT-V63, and CAT-V68 are green.</li>
       <li><strong>Fail-before:</strong> Models has a full-width bar with a seven-day rule, Overview has a half-width card, and the console reads no source observation.</li>
-      <li><strong>Verification:</strong> run <code>pnpm check</code> in the console, the Starport server tests, and CAT-V50 through CAT-V55.</li>
+      <li><strong>Verification:</strong> run <code>pnpm check</code> in the console, and CAT-V50, CAT-V52 through CAT-V55, CAT-V63, and CAT-V68.</li>
     </ul>
 
     <h3>Phase 4: Documentation</h3>
@@ -436,8 +350,8 @@
     <h4 id="task-CAT9.2">CAT9.2 Starmap catalog server runbook</h4>
     <ul>
       <li><strong>Problem:</strong> no Starmap text explains how to run a central catalog server for a fleet or how to deploy the pair.</li>
-      <li><strong>Owned paths:</strong> Starmap enterprise catalog server runbook, README, and Docker document.</li>
-      <li><strong>Steps:</strong> write the eight-step runbook, link it from the README, and add the two Kubernetes Deployments and the Service.</li>
+      <li><strong>Owned paths:</strong> Starmap enterprise catalog server runbook, README, Docker document, and the <code>internal/deploymentdocs</code> test package.</li>
+      <li><strong>Steps:</strong> write the eight-step runbook, link it from the README, add the two Kubernetes Deployments and the Service, and add their parsing Go test.</li>
       <li><strong>Acceptance:</strong> an operator can stand up the server, point a fleet at it, and deploy the pair on Kubernetes.</li>
       <li><strong>Fail-before:</strong> the runbook does not exist, and the Docker document has no Starport manifest.</li>
       <li><strong>Verification:</strong> run <code>make technical-writing-check</code>, <code>make docs-check</code>, CAT-V59, and CAT-V64.</li>
@@ -526,6 +440,7 @@ and lease-owned, and CAT99 removes the plan.</code></pre>
         <tr><td>2026-09-02</td><td>CAT8.1, CAT9.1</td><td>added</td><td>The owner asked for the console catalog surface and the enterprise deployment documentation. CAT-F31 through CAT-F33, CAT-D19, CAT-D20, two design records, and CAT-V50 through CAT-V56 record the scope.</td></tr>
         <tr><td>2026-09-02</td><td>CAT2, CAT8.1, CAT9.1, CAT9.2</td><td>corrected</td><td>The third review kept CAT2 open. It moved source detail to the admin route and separated the status concepts, the layers, and the hop chain. It moved the chip into a shell slot and separated restricted egress from air-gapped operation. It split CAT9.1 by repository, corrected the seven-day evidence, and grouped the tasks into six phases. The verifier holds 59 conditions at 7 passed.</td></tr>
         <tr><td>2026-09-02</td><td>CAT2, CAT5, CAT8, CAT8.1, CAT9, CAT9.2</td><td>corrected</td><td>The fourth review kept CAT2 open. It nested the 60-minute transfer, the 75-minute publisher step, and the 90-minute job. It replaced the safe response with an allowlisted summary and a sanitized <code>503</code>, gave the unavailable and unauthorized states their own glyphs, required a lease-capable store for active-active servers, and corrected the shell geometry. The plan moved the ledger after Progress and the findings, decisions, and test matrix to proof records, so the plan deviates from the template order. Each path now has one owner. The verifier holds 64 conditions at 7 passed.</td></tr>
+        <tr><td>2026-09-02</td><td>CAT2, CAT5, CAT7, CAT8, CAT8.1, CAT9.2</td><td>corrected</td><td>The fifth review kept CAT2 open. Freshness now measures the propagated <code>channel_updated_at</code> through every hop. CAT-D21 bounds partial publication with a 30-second coalescing window, and the scheduler identity moved outside the catalog store. The console lifecycle defines one shell query, its cadence, <code>Retry-After</code>, and session-change resume. CAT-V03 and CAT-V64 run repository-owned Go tests, and CAT-V65 through CAT-V68 name the new tests. CAT8 owns every Starport catalog route and CAT8.1 only the console. The plan restored the template order with the ledger at line 97. The verifier holds 68 conditions at 7 passed.</td></tr>
       </tbody>
     </table>
   </section>
