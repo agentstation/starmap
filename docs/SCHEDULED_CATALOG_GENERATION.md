@@ -2,7 +2,7 @@
 
 The repository-owned Catalog Generation workflow is a distribution producer,
 not a scheduler embedded in ordinary Starmap consumers. It requests a run every
-six hours at minute 17 and supports manual dispatch. One non-cancelling
+four hours at minute 17 and supports manual dispatch. One non-cancelling
 concurrency group serializes publisher runs.
 
 The workflow runs these gates in order:

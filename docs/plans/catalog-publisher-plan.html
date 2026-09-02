@@ -89,7 +89,7 @@
     Owner: this plan. Created: 2026-09-01.
     Baseline: main @ 42b610a, publisher work @ 6c7edfbe.
     Proof root: <code>docs/proof/catalog-publisher/</code>.
-    Next action: resolve CAT-D10 and CAT-D11, then author the CAT2 red verifier.
+    Next action: author the CAT2 red verifier and capture its fail-before proof.
   </p>
 
   <section id="outcome">
@@ -262,17 +262,21 @@
   </section>
 
   <section id="acquisition-decisions">
-    <h2>Acquisition and publication decisions</h2>
+    <h2>Acquisition decisions</h2>
     <p><strong>CAT-D6, provisional engineering selection:</strong> Use <code>sigstore-go</code> behind Starmap-owned GitHub identity and transport policy, subject to CAT2.1 evidence and GitHub CLI parity.</p>
     <p><strong>CAT-D7, accepted 2026-09-01:</strong> Give Starport one Starmap runtime, default its source to <code>public</code>, enable credential-detected acquisition, and preserve its accepted head.</p>
     <p><strong>CAT-D8, accepted 2026-09-01:</strong> Remove the acquisition mode, enable automatic acquisition by default at a four-hour interval in both applications, and keep explicit <code>Sync</code>.</p>
-    <p><strong>CAT-D9, accepted 2026-09-01:</strong> Advance an attested channel sequence and <code>channel_updated_at</code> after every successful six-hour verification without a no-change catalog generation.</p>
   </section>
 
-  <section id="pending-decisions">
-    <h2>Pending decisions</h2>
-    <p><strong>CAT-D10, pending owner:</strong> Keep a six-hour publisher, state a nominal seven-hour freshness objective, and warn after eight hours. Otherwise, publish every four hours for a six-hour objective.</p>
-    <p><strong>CAT-D11, pending owner:</strong> Use <code>CATALOG_ACQUISITION_ENABLED</code> plus <code>INTERVAL</code> so one false value disables automatic work. Otherwise, retain <code>ON_START</code> only to preserve periodic-only acquisition.</p>
+  <section id="publication-decisions">
+    <h2>Publication decisions</h2>
+    <p><strong>CAT-D9, accepted 2026-09-01:</strong> Advance an attested channel sequence and <code>channel_updated_at</code> after every successful four-hour verification without a no-change catalog generation.</p>
+    <p><strong>CAT-D10, accepted 2026-09-01:</strong> Publish every four hours at minute 17 and poll consumers every hour. Use a six-hour end-to-end freshness objective.</p>
+  </section>
+
+  <section id="automatic-policy-decision">
+    <h2>Automatic policy decision</h2>
+    <p><strong>CAT-D11, accepted 2026-09-01:</strong> Use <code>CATALOG_ACQUISITION_ENABLED</code> plus <code>INTERVAL</code>. A false enabled value disables all automatic work, and no periodic-only state exists.</p>
   </section>
 
   <section id="test-matrix">
@@ -298,8 +302,8 @@
       <thead><tr><th>ID</th><th>Task</th><th>Status</th><th>Evidence</th></tr></thead>
       <tbody>
         <tr id="CAT0" data-status="done"><td>CAT0</td><td>Pin the publisher, credentials, source, and consumer baseline.</td><td><code>done</code></td><td><a href="../proof/catalog-publisher/cat0.md">CAT0 proof</a>.</td></tr>
-        <tr id="CAT1" data-status="done"><td>CAT1</td><td>Store acquisition credentials and set the six-hour publisher cadence.</td><td><code>done</code></td><td><a href="../proof/catalog-publisher/cat1.md">CAT1 proof</a>; commit <code>cf3124c0</code>.</td></tr>
-        <tr id="CAT2" data-status="in_progress"><td>CAT2</td><td>Ratify naming, source policy, lifecycle, and the red campaign verifier.</td><td><code>in_progress</code></td><td><a href="../proof/catalog-publisher/cat2-review.md">Trust review</a>, <a href="../proof/catalog-publisher/cat2-dx.md">runtime review</a>, and <a href="../proof/catalog-publisher/cat2-final-review.md">final review</a>; CAT-D10 and CAT-D11 remain.</td></tr>
+        <tr id="CAT1" data-status="done"><td>CAT1</td><td>Store acquisition credentials and set the four-hour publisher cadence.</td><td><code>done</code></td><td><a href="../proof/catalog-publisher/cat1.md">CAT1 proof</a>; commits <code>cf3124c0</code> and <code>9017b83b</code>.</td></tr>
+        <tr id="CAT2" data-status="in_progress"><td>CAT2</td><td>Ratify naming, source policy, lifecycle, and the red campaign verifier.</td><td><code>in_progress</code></td><td><a href="../proof/catalog-publisher/cat2-review.md">Trust review</a>, <a href="../proof/catalog-publisher/cat2-dx.md">runtime review</a>, and <a href="../proof/catalog-publisher/cat2-final-review.md">final review</a>; owner decisions are closed.</td></tr>
         <tr id="CAT2.1" data-status="todo"><td>CAT2.1</td><td>Select and prove the native Go attestation verifier dependency.</td><td><code>todo</code></td><td>Initial comparison is in the <a href="../proof/catalog-publisher/cat2-review.md">CAT2 review</a>.</td></tr>
         <tr id="CAT3" data-status="todo"><td>CAT3</td><td>Publish canonical immutable releases and the verified latest channel.</td><td><code>todo</code></td><td></td></tr>
         <tr id="CAT4" data-status="todo"><td>CAT4</td><td>Implement the native verified GitHub catalog source.</td><td><code>todo</code></td><td></td></tr>
@@ -332,8 +336,8 @@
     <ul>
       <li><strong>Problem:</strong> the publisher lacks credentials and runs daily.</li>
       <li><strong>Owned paths:</strong> Actions secrets and <code>catalog-generation.yaml</code>.</li>
-      <li><strong>Steps:</strong> store available credentials, scope bindings, and request a six-hour run.</li>
-      <li><strong>Acceptance:</strong> 11 secrets cover 12 live catalog providers.</li>
+      <li><strong>Steps:</strong> store available credentials, scope bindings, and request a four-hour run.</li>
+      <li><strong>Acceptance:</strong> 11 secrets cover 12 live catalog providers, and the workflow requests a four-hour run.</li>
       <li><strong>Fail-before:</strong> no provider secret exists in repository Actions.</li>
       <li><strong>Verification:</strong> run workflow tests, action pin checks, and live provider checks.</li>
     </ul>
@@ -342,7 +346,7 @@
     <ul>
       <li><strong>Problem:</strong> public names and lifecycle ownership do not define one source contract.</li>
       <li><strong>Owned paths:</strong> this plan, glossary, architecture documents, and a new distribution verifier.</li>
-      <li><strong>Steps:</strong> resolve CAT-D10 and CAT-D11, define timing, stable phase, channel heartbeat, status, async refresh, per-provider retention, route policy, and author the verifier red.</li>
+      <li><strong>Steps:</strong> record CAT-D10 and CAT-D11, define timing, stable phase, channel heartbeat, status, async refresh, per-provider retention, route policy, and author the verifier red.</li>
       <li><strong>Acceptance:</strong> <code>scripts/verify-catalog-distribution.sh</code> defines the contract matrix in the CAT2 runtime review and fails only on missing target behavior.</li>
       <li><strong>Fail-before:</strong> capture every failing condition in <code>cat2-fail-before.txt</code>.</li>
       <li><strong>Verification:</strong> run the verifier, package ownership checks, and technical-writing checks.</li>
@@ -479,7 +483,7 @@ shutdown, and Starport's acceptance transaction. Do not expose secrets, grant
 mutable tags integrity authority, require gh in a Go consumer, reuse inference
 or BYOK credentials, add a Starport configuration alias, or weaken a gate.
 Stop only at a plans-skill stop state. Update the ledger, log, and next action
-before each stop. The goal is met when the six-hour publisher advances an
+before each stop. The goal is met when the four-hour publisher advances an
 attested catalog-latest channel, connected Starmap runtimes compose a
 configurable source and automatic four-hour acquisition, a cascading server
 supplies scaled Starport instances with complete operator status, public
@@ -493,12 +497,13 @@ releases verify, and CAT99 removes the plan.</code></pre>
       <tbody>
         <tr><td>2026-09-01</td><td>meta</td><td>authored</td><td>Plan activated at main commit <code>42b610a</code>. CAT0 started.</td></tr>
         <tr><td>2026-09-01</td><td>CAT0</td><td>completed</td><td>Recorded credential, workflow, release, and consumer baselines.</td></tr>
-        <tr><td>2026-09-01</td><td>CAT1</td><td>completed</td><td>Stored 11 Actions secrets and set the six-hour publisher in <code>cf3124c0</code>.</td></tr>
+        <tr><td>2026-09-01</td><td>CAT1</td><td>completed</td><td>Stored 11 Actions secrets and set the initial six-hour publisher in <code>cf3124c0</code>.</td></tr>
         <tr><td>2026-09-01</td><td>CAT2</td><td>reviewed</td><td>Traced Starmap and Starport source lifecycles, ratified public channel names, and opened four owner decisions.</td></tr>
         <tr><td>2026-09-01</td><td>meta</td><td>proposed</td><td>Expanded the publisher plan into the catalog distribution campaign.</td></tr>
         <tr><td>2026-09-01</td><td>CAT2</td><td>refined</td><td>Separated catalog following from acquisition and specified package, operator, Starport, and enterprise source behavior.</td></tr>
         <tr><td>2026-09-01</td><td>CAT2</td><td>refined</td><td>Defined the layered runtime, canonical Go reads, orthogonal policies, and unified Starport consumer flow.</td></tr>
-        <tr><td>2026-09-01</td><td>CAT2</td><td>reconciled</td><td>Verified source, credential, persistence, timing, routing, status, and UI seams; recorded publisher measurements and corrections. CAT-D10 and CAT-D11 remain.</td></tr>
+        <tr><td>2026-09-01</td><td>CAT2</td><td>reconciled</td><td>Verified source, credential, persistence, timing, routing, status, and UI seams; recorded publisher measurements and corrections.</td></tr>
+        <tr><td>2026-09-01</td><td>CAT1, CAT2</td><td>ratified</td><td>The owner accepted <code>ACQUISITION_ENABLED</code> and the six-hour freshness objective. Commit <code>9017b83b</code> changed publication to every four hours. The fail-before test failed as expected. After the change, the workflow test, actionlint, 8 action pins, ago, and 659 prose files passed.</td></tr>
       </tbody>
     </table>
   </section>

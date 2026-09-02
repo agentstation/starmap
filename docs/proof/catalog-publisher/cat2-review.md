@@ -96,7 +96,7 @@ digest and publisher verification. A missing or invalid channel retains the
 last-known-good generation. A first run can use the embedded bootstrap while
 readiness reports source degradation.
 
-Each successful six-hour verification advances the channel sequence and
+Each successful four-hour verification advances the channel sequence and
 `channel_updated_at`, including a no-change run. `published_at` stays bound to
 the selected immutable release. A channel-only update creates no catalog
 generation.
@@ -160,9 +160,8 @@ It also records the public source default, embedded network opt-out, fast
 `prefer_source`, independent policies, automatic four-hour acquisition,
 per-provider retention, and unified Starport runtime.
 
-The [final runtime and operations review](cat2-final-review.md) records two
-remaining owner decisions: the automatic-acquisition Boolean name and the
-end-to-end freshness objective. A six-hour publisher and one-hour consumer poll
-give a nominal seven-hour objective before execution, network, and retry
-overhead. The requested Starport breaking configuration migration and
-dependency update remain in scope.
+The [final runtime and operations review](cat2-final-review.md) records the
+accepted automatic-acquisition Boolean and freshness objective. A four-hour
+publisher and one-hour consumer poll give a nominal five-hour path. The product
+uses a six-hour end-to-end freshness objective. The requested Starport breaking
+configuration migration and dependency update remain in scope.

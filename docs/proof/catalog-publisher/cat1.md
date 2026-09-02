@@ -2,7 +2,7 @@
 
 Date: 2026-09-01
 
-Work commit: `cf3124c0`
+Work commits: `cf3124c0`, `9017b83b`
 
 ## Repository secret state
 
@@ -46,13 +46,17 @@ returned status 0 and confirmed that its output contained no credential value.
 
 ## Workflow result
 
-The workflow requests `17 */6 * * *`. The refresh step binds the 11 stored
-credentials. A regression test checks the cadence, exact credential roster,
-and refresh-step scope.
+The workflow requests `17 */4 * * *`. The owner changed the cadence from six
+hours to four hours on 2026-09-01. This cadence supports the six-hour
+end-to-end freshness objective. The planned consumer poll runs every hour. The
+refresh step binds the 11 stored credentials. A regression test checks cadence,
+the exact credential roster, and refresh-step scope.
 
 ## Verification
 
-- `go test ./internal/ciworkflow -count=1`: passed.
+- Fail-before: the four-hour cadence test failed while the workflow still used
+  `17 */6 * * *`.
+- `go test ./internal/ciworkflow -count=1`: passed after commit `9017b83b`.
 - `actionlint .github/workflows/catalog-generation.yaml`: passed.
 - `bash scripts/verify-action-pins.sh`: passed with 8 references.
 - Technical-writing lint: passed for 4 files with 0 diagnostics.

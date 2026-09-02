@@ -9,22 +9,20 @@ Reviewed baselines:
 - Starport: `main` at `6db57d8c`. The worktree contains unrelated owner
   changes.
 
-No production source changed during this review. This proof records the final
-repository-grounded contract before CAT2 verification and CAT5-CAT8 work.
+The review changed no production source. The owner ratified its two open
+decisions on 2026-09-01. Commit `9017b83b` then changed the publisher cadence.
+This proof records the contract before CAT2 verification and CAT5-CAT8 work.
 
 ## Verdict
 
 The retained-layer runtime, connected `starmap.Open` API, orthogonal source and
 acquisition policies, Starport acceptance boundary, and detailed operator
-status are correct. Two owner choices remain:
+status are correct. The owner ratified these decisions:
 
-1. Replace `CATALOG_ACQUISITION_ON_START` with the simpler
-   `CATALOG_ACQUISITION_ENABLED`. This review recommends `ENABLED` because it
-   gives one complete automatic-work opt-out. Stable phasing and durable
-   freshness remove the main reason for a periodic-only state.
-2. Keep the six-hour publisher and call seven hours a nominal objective, with
-   a warning after eight hours. A six-hour end-to-end objective needs the
-   publisher to run every four hours.
+1. Replace `CATALOG_ACQUISITION_ON_START` with
+   `CATALOG_ACQUISITION_ENABLED`. A false value disables all automatic work.
+2. Publish every four hours at minute 17. Keep one-hour consumer polling and
+   use a six-hour end-to-end freshness objective.
 
 ## Steering report verification
 
@@ -32,10 +30,10 @@ status are correct. Two owner choices remain:
 | --- | --- | --- |
 | 1. Runtime contract | agree | Current Starmap has separate offline, import, and remote subscriber paths. Current Starport has separate local and remote runtimes. One retained-layer runtime removes both split meanings without moving Starport's accepted head. |
 | 2. Credential outcomes | agree | The provider source currently calls all catalog endpoints. Missing credentials become aggregate issues. It needs neutral preflight skip and provider-scoped retention. |
-| 3. Acquisition DX | agree with the proposed simplification | `ON_START` plus `INTERVAL` exposes a periodic-only state, but no repository use case requires that public state. Stable phase, fresh durable state, and lease ownership solve delayed startup work without a second Boolean. Keep this choice pending until the owner accepts the replacement. |
+| 3. Acquisition DX | accepted | `ON_START` plus `INTERVAL` exposes a periodic-only state, but no repository use case requires that public state. The owner selected `ENABLED` plus `INTERVAL`. Stable phase, fresh durable state, and lease ownership control delayed startup work. |
 | 4. Catalog, availability, routing | agree with corrections | Starport already separates catalog offering state, credential state, and routing. It already supports explicit fallback lists, model overrides, quotas, and budgets. Starmap model status has no `retired` state or successor field, so historical model lifecycle and `replaced_by` need schema work. |
 | 5. Measured timing | mostly agree | The 20-run median is 222.5 seconds, or 3 minutes 42.5 seconds, not 3 minutes 44 seconds. Current Starport execution has zero same-route retries by default. Other measured constants match the source. |
-| 6. CAT-D10 | agree | Six-hour publication plus one-hour polling is a nominal seven-hour path before execution delay, network delay, and retries. It is not a hard bound. |
+| 6. CAT-D10 | accepted | Four-hour publication plus one-hour polling gives a nominal five-hour path. The owner selected a six-hour end-to-end objective. It is not a hard bound. |
 | 7. Target timing | agree with one correction | Streaming needs no HTTP-wide or request-wide deadline after commitment, but it still needs first-token, stream-idle, and explicit operator cancellation. Current execution applies a hard two-minute context to streams and must change. |
 | 8. Anti-herd | agree | Current fixed tickers do not provide a stable fleet phase. The target needs deterministic phase, bounded full-jitter retry, rate-limit handling, and one lease owner for shared state. |
 | 9. Status and timestamps | agree | Current generation metadata does not express channel heartbeat, operation state, provider outcome, or direct versus upstream-reported health. |
@@ -86,9 +84,9 @@ suffixes and defaults are the same.
 | `CATALOG_SOURCE_TOKEN` | empty | Optional GitHub API token; local public use does not require it |
 | `CATALOG_SOURCE_POLL_INTERVAL` | `1h` | Conditional source check interval |
 | `CATALOG_SOURCE_STARTUP_POLICY` | `prefer_source` | `prefer_source` or `require_source` |
-| `CATALOG_SOURCE_MAX_AGE` | `8h` | Source freshness warning budget |
+| `CATALOG_SOURCE_MAX_AGE` | `6h` | Source freshness warning objective |
 | `CATALOG_SOURCE_MAX_HOPS` | `8` | Maximum accepted Starmap source-chain depth |
-| `CATALOG_ACQUISITION_ENABLED` | `true` | Pending CAT-D11: enables automatic startup and interval work |
+| `CATALOG_ACQUISITION_ENABLED` | `true` | Enables automatic startup and interval work |
 | `CATALOG_ACQUISITION_INTERVAL` | `4h` | Normal cadence; `0s` means startup only while enabled |
 | `CATALOG_WORKSPACE_PATH` | empty | Reviewed operator catalog input |
 | `CATALOG_REFRESH_TIMEOUT` | `5m` | Complete manual or automatic refresh deadline |
@@ -204,7 +202,7 @@ conclusion.
 
 | Concern | Current live behavior | Target owner and cancellation |
 | --- | --- | --- |
-| Publisher cadence | Main runs daily at `03:17` UTC. The plan branch uses minute 17 every six hours. | CAT3 keeps six hours unless CAT-D10 selects four hours. GitHub owns dispatch and can delay or drop a run. |
+| Publisher cadence | Main runs daily at `03:17` UTC. Commit `9017b83b` changes the plan branch to minute 17 every four hours. | Keep the four-hour cadence. GitHub owns dispatch and can delay or drop a run. |
 | Publisher execution | No job timeout; GitHub default is 360 minutes. The latest 20 successes were 153-285 seconds, median 222.5 seconds, p95 284 seconds. | CAT3 sets `timeout-minutes: 20`. GitHub cancels the job at the bound. |
 | Complete Starmap sync | `sync.Options` defaults to five minutes. | `Refresh` owns a five-minute child context. Caller cancellation wins. |
 | Starport catalog refresh | Two minutes. | Unified runtime uses the five-minute complete-cycle bound. |
@@ -244,26 +242,25 @@ The publisher run measurements are in
 20-minute workflow timeout with more than four times the observed maximum. It
 does not establish a worst-case service guarantee.
 
-## CAT-D10 freshness wording
+## CAT-D10 freshness contract
 
-The six-hour publisher plus one-hour poll is a **nominal seven-hour end-to-end
-freshness objective**. It is not a bound. Workflow dispatch delay, a three-to-
-five-minute run, transport, conditional poll phase, and retry can extend it.
+The four-hour publisher plus one-hour poll gives a nominal five-hour path. The
+product uses a **six-hour end-to-end freshness objective**. This value is not a
+hard bound. Workflow dispatch delay, publisher execution, transport, consumer
+phase, and retry can extend it.
 
-The recommendation is:
+The policy is:
 
-- Keep the six-hour publisher at minute 17.
-- Warn when `channel_updated_at` is older than eight hours.
-- Mark publisher channel health critical after 14 hours.
+- Keep the four-hour publisher at minute 17.
+- Warn when `channel_updated_at` is older than six hours.
+- Mark publisher channel health critical after 10 hours.
 - Warn when a consumer source check is older than 90 minutes and mark it
   critical after two hours.
 - Warn when eligible acquisition success is older than five hours and mark it
   critical after eight hours.
 
-If the product name must say "six-hour end-to-end objective," run the publisher
-every four hours and keep one-hour polling. That gives a nominal five-hour path
-and one hour of operational margin. Neither cadence is a mathematical
-guarantee. GitHub can delay or drop scheduled work.
+The cadence gives one hour of nominal operational margin. GitHub can delay or
+drop scheduled work, so the objective is not a mathematical guarantee.
 
 `channel_updated_at` advances after each successful publisher verification,
 including no-change runs. The signed channel sequence advances too. The
@@ -485,9 +482,9 @@ with the routing reason and applied policy. Safe reasons include
 
 ## Plan, verifier, and acceptance changes
 
-CAT2 must resolve CAT-D10 and CAT-D11. It then makes the distribution verifier
-red. If the owner accepts CAT-D11, the verifier rejects old acquisition mode
-and `ON_START` names. It proves the public default, four-hour acquisition,
+CAT2 records CAT-D10 and CAT-D11. It then makes the distribution verifier red.
+The verifier rejects old acquisition mode and `ON_START` names. It proves the
+public default, four-hour acquisition,
 manual `Sync`, neutral missing credentials, and public endpoint attempts. It
 also proves provider retention, retained-layer rebuild, startup policy,
 single-flight, async operations, bounded shutdown, channel heartbeat,
@@ -539,14 +536,12 @@ Acceptance tests cover:
   timeout. Prove async HTTP, route-specific inference, stream lifetime,
   shutdown, stable phase, and retry headers.
 
-## Remaining owner questions
+## Owner decisions
 
-1. Accept `CATALOG_ACQUISITION_ENABLED=true` plus
-   `CATALOG_ACQUISITION_INTERVAL=4h`, with `false` meaning manual-only, and
-   remove `CATALOG_ACQUISITION_ON_START`?
-2. Keep the six-hour publisher and a nominal seven-hour objective? This choice
-   warns after eight hours. Otherwise, use a four-hour publisher for a
-   six-hour end-to-end objective.
+1. The owner accepted CAT-D10. Publish every four hours and use a six-hour
+   end-to-end freshness objective.
+2. The owner accepted CAT-D11. Use `CATALOG_ACQUISITION_ENABLED` plus
+   `CATALOG_ACQUISITION_INTERVAL`. A false enabled value means manual-only.
 
 ## Evidence
 

@@ -29,10 +29,9 @@ effective catalog
 error or status tuple.
 
 Provider catalog acquisition is automatic when Starmap finds usable
-catalog-acquisition credentials. Missing credentials are normal. This review
-recommends `CATALOG_ACQUISITION_ENABLED` and
-`CATALOG_ACQUISITION_INTERVAL`. The owner must ratify this replacement. There
-is no mode setting.
+catalog-acquisition credentials. Missing credentials are normal. The owner
+accepted `CATALOG_ACQUISITION_ENABLED` and
+`CATALOG_ACQUISITION_INTERVAL`. There is no mode or on-start setting.
 
 Starport must replace its mutually exclusive local and remote runtimes with one
 adapter over the Starmap runtime. Starmap produces effective candidates.
@@ -84,12 +83,11 @@ The earlier CAT2 draft has these incorrect statements:
   report `warming`.
 - It proposes a configuration alias period for Starport. This conflicts with
   Starport's direct-breaking policy.
-- It treats `published_at` as evidence that the six-hour publisher is alive.
+- It treats `published_at` as evidence that the scheduled publisher is alive.
   An unchanged catalog can keep one immutable release for weeks. Channel
   health needs a separate heartbeat.
-- It implies a six-hour consumer freshness bound. A six-hour publisher and a
-  one-hour consumer poll have a nominal seven-hour objective before workflow,
-  transport, and retry overhead.
+- It cannot support the six-hour consumer freshness objective with a six-hour
+  publisher. The owner selected a four-hour publisher and one-hour poll.
 
 ## Current Starmap gaps
 
@@ -306,8 +304,8 @@ The suffixes and defaults are identical.
 | `CATALOG_SOURCE_TOKEN` | empty | optional GitHub API token |
 | `CATALOG_SOURCE_POLL_INTERVAL` | `1h` | source check interval |
 | `CATALOG_SOURCE_STARTUP_POLICY` | `prefer_source` | `prefer_source` or `require_source` |
-| `CATALOG_SOURCE_MAX_AGE` | `8h` | status freshness budget; readiness gate only under `require_source` |
-| `CATALOG_ACQUISITION_ENABLED` | `true` | pending owner decision; enable automatic startup and interval work |
+| `CATALOG_SOURCE_MAX_AGE` | `6h` | source freshness warning objective; readiness gate only under `require_source` |
+| `CATALOG_ACQUISITION_ENABLED` | `true` | enable automatic startup and interval work |
 | `CATALOG_ACQUISITION_INTERVAL` | `4h` | normal cadence; `0s` means startup only while enabled |
 | `CATALOG_WORKSPACE_PATH` | empty | reviewed operator catalog input |
 | `CATALOG_REFRESH_TIMEOUT` | `5m` | one complete refresh operation bound |
@@ -415,7 +413,7 @@ Its attested `catalog-latest.json` document points to one immutable verified
 release. This distinction is necessary because GitHub locks immutable release
 tags and assets.
 
-Every successful six-hour publisher verification advances the channel
+Every successful four-hour publisher verification advances the channel
 document, including a no-change run. The document records a monotonic channel
 sequence, `channel_updated_at`, the immutable release identity, generation
 identity, archive digest, `published_at`, and the prior channel digest. It does
@@ -445,9 +443,9 @@ Timestamp ownership is:
 A status-only check or channel heartbeat does not create an effective catalog
 generation.
 
-The six-hour publisher plus one-hour consumer polling gives a nominal
-seven-hour objective before execution, network, and retry overhead. It is not a
-bound. The proposed eight-hour warning makes delay operator-visible without
+The four-hour publisher plus one-hour consumer polling gives a nominal
+five-hour path. The product uses a six-hour end-to-end freshness objective. It
+is not a bound. The six-hour warning makes delay operator-visible without
 making a temporarily stale source a liveness failure.
 
 GitHub's unauthenticated REST limit is 60 requests per hour per source IP.
@@ -573,8 +571,7 @@ CAT2 must replace the old mode and default assertions before CAT5 starts.
 The red distribution verifier must add fixed conditions for:
 
 - Absence of `CATALOG_ACQUISITION` and `CATALOG_ACQUISITION_SCHEDULE`.
-- Enabled and four-hour acquisition defaults in Starmap and Starport, if the
-  owner accepts CAT-D11.
+- Enabled and four-hour acquisition defaults in Starmap and Starport.
 - Enabled plus interval combinations and manual `Sync` in each.
 - Neutral missing credentials with no provider request.
 - Public unauthenticated provider attempts.
@@ -610,14 +607,11 @@ container, and restart defaults. CAT7 owns Starmap chains and source health.
 CAT8 owns Starport configuration, lookuper injection, async API, audit,
 acceptance, UI, metrics, and three-replica scale-out.
 
-## Remaining owner decisions
+## Owner decisions
 
-Two product choices remain unresolved. First, accept the recommended
-`CATALOG_ACQUISITION_ENABLED` replacement, or retain `ON_START` to preserve a
-periodic-only state. Second, the six-hour publisher cadence plus the one-hour
-default consumer poll cannot provide a six-hour end-to-end freshness objective.
-The recommendation is a nominal seven-hour objective, an eight-hour warning,
-and the six-hour publisher. A six-hour objective needs the four-hour publisher.
+The owner accepted `CATALOG_ACQUISITION_ENABLED` and removed `ON_START`. A
+false enabled value means manual-only. The owner also selected a four-hour
+publisher and one-hour consumer poll for a six-hour freshness objective.
 
 ## Review evidence
 
