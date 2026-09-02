@@ -5,10 +5,10 @@ import (
 	"testing"
 )
 
-func TestCatalogGenerationWorkflowUsesSixHourAcquisitionCredentialScope(t *testing.T) {
+func TestCatalogGenerationWorkflowUsesFourHourAcquisitionCredentialScope(t *testing.T) {
 	workflow := readFixture(t, "../../.github/workflows/catalog-generation.yaml")
-	if !strings.Contains(workflow, `- cron: "17 */6 * * *"`) {
-		t.Error("catalog generation workflow does not request a six-hour schedule")
+	if !strings.Contains(workflow, `- cron: "17 */4 * * *"`) {
+		t.Error("catalog generation workflow does not request a four-hour schedule")
 	}
 
 	refreshStart := strings.Index(workflow, "- name: Refresh candidate catalog")
