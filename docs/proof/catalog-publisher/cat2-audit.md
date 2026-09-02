@@ -183,7 +183,7 @@ Evidence: plan decision CAT-D13. `starport/internal/catalog/remote_runtime.go:31
 Consequence: a stale lease holder can commit after failover unless the CAS carries the lease epoch.
 
 Correction: define the TTL, the renewal interval, and the epoch in the run record. Reject a commit from a lost lease. State that the lease applies only to shared storage.
-Owner: CAT8.
+Owner: CAT5 (runtime lease and durable commit), CAT8 (Starport acceptance transaction).
 
 CAT-A8 REQUIRED. CAT8 cannot import the Starmap `Open` API before CAT11 releases it.
 Evidence: `starport/go.mod` pins `v0.15.0`. ledger order CAT8 before CAT11.

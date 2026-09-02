@@ -311,11 +311,18 @@ The suffixes and defaults are identical.
 | `CATALOG_WORKSPACE_PATH` | empty | reviewed operator catalog input |
 | `CATALOG_STARTUP_SPREAD` | `15m` | stable cold automatic-work admission window |
 | `CATALOG_TRANSFER_IDLE_TIMEOUT` | `2m` | maximum time without body read or response write progress |
-| `CATALOG_TRANSFER_MAX_DURATION` | `60m` | maximum duration of one transfer, derived from the size cap at a 256 Kbps floor rate |
+| `CATALOG_TRANSFER_MAX_DURATION` | `60m` | maximum duration of one finite HTTP body transfer, zero is invalid |
 | `CATALOG_REFRESH_TIMEOUT` | `0s` | optional complete-operation cap; zero adds no deadline |
 
 There is no `CATALOG_ACQUISITION`, `CATALOG_ACQUISITION_ON_START`, acquisition
 schedule, or cron expression in the recommended contract.
+
+The transfer maximum applies to one finite HTTP body, such as a manifest, an
+archive, or a provider page. It does not bound an SSE subscription lifetime. A
+64 MiB body at the 256 Kbps floor rate takes about 35 minutes, and the
+60-minute default provides headroom over that case. A zero value is invalid
+and fails startup. An operator on a slower link raises the value or lowers the
+size cap, and status reports the observed transfer rate.
 
 | Enabled | Interval | Automatic behavior |
 | --- | --- | --- |

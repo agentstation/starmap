@@ -18,7 +18,7 @@ FAIL CAT-V17 a missing acquisition credential skips the provider without a reque
 FAIL CAT-V18 the runtime retains layers and rebuilds the effective catalog under race.
 FAIL CAT-V19 refresh runs are single-flight with run identity and cancellation.
 FAIL CAT-V20 a stalled body stops at the two-minute inactivity timeout.
-FAIL CAT-V21 the per-transfer maximum duration defaults to 60 minutes.
+FAIL CAT-V21 the per-transfer maximum duration defaults to 60 minutes and rejects zero.
 FAIL CAT-V22 Refresh adds no deadline by default.
 FAIL CAT-V23 catalog transfer clients set no client-wide total timeout.
 FAIL CAT-V24 the catalog transport applies the response-header bound to every request.
@@ -45,5 +45,6 @@ FAIL CAT-V44 the Starport admin refresh returns an accepted operation.
 FAIL CAT-V45 the Starport acquisition resolver reads only the deployment lookup and never a BYOK credential.
 PASS CAT-V46 Starport accepts only a matching forward state through the expected-ID compare-and-swap.
 PASS CAT-V47 Starport freshness keeps the age_seconds and degradation_reasons fields.
-FAIL CAT-V48 the Starport refresh lease renews within its TTL and the commit rejects a stale epoch.
-Summary: 7 passed, 41 failed, 0 unverified.
+FAIL CAT-V48 the Starport candidate-to-accepted transaction rejects a stale lease epoch.
+FAIL CAT-V49 the runtime lease fences the durable generation commit with its epoch.
+Summary: 7 passed, 42 failed, 0 unverified.

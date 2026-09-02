@@ -101,12 +101,19 @@ suffixes and defaults are the same.
 | `CATALOG_WORKSPACE_PATH` | empty | Reviewed operator catalog input |
 | `CATALOG_STARTUP_SPREAD` | `15m` | Stable admission window for cold automatic source and acquisition work |
 | `CATALOG_TRANSFER_IDLE_TIMEOUT` | `2m` | Maximum time with no body read or response write progress. The per-transfer maximum is separate |
-| `CATALOG_TRANSFER_MAX_DURATION` | `60m` | Maximum duration of one transfer, derived from the size cap at a 256 Kbps floor rate |
+| `CATALOG_TRANSFER_MAX_DURATION` | `60m` | Maximum duration of one finite HTTP body transfer. Zero is invalid |
 | `CATALOG_REFRESH_TIMEOUT` | `0s` | Optional complete-operation wall-clock cap; zero means no added cap |
 
 There is no `CATALOG_ACQUISITION`, `CATALOG_ACQUISITION_MODE`,
 `CATALOG_ACQUISITION_ON_START`, or acquisition schedule expression in the
 recommended contract.
+
+The transfer maximum applies to one finite HTTP body, such as a manifest, an
+archive, or a provider page. It does not bound an SSE subscription lifetime. A
+64 MiB body at the 256 Kbps floor rate takes about 35 minutes, and the
+60-minute default provides headroom over that case. A zero value is invalid
+and fails startup. An operator on a slower link raises the value or lowers the
+size cap, and status reports the observed transfer rate.
 
 | Enabled | Interval | Automatic behavior |
 | --- | --- | --- |
@@ -357,6 +364,11 @@ epoch.
 An owner that loses the lease cancels its run within one renewal interval. It
 discards the run results, reports `lease_lost`, and retries at the next phase.
 A deployment without shared storage needs no lease.
+
+The Starmap runtime owns the lease contract. A replicated central Starmap
+fences its durable generation commit with the epoch. Starport keeps its own
+candidate-to-accepted transaction, which carries the epoch and rejects a stale
+one.
 
 No fixed jitter window can make an unbounded fleet safe. The minimum admission
 window is:

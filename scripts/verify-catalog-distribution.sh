@@ -3,7 +3,7 @@
 #
 # Each condition asserts one accepted decision or one timing row from the CAT2
 # reviews and the CAT2 audit. A behavior condition runs the named Go test and
-# passes only when that test reports PASS. A declarative condition reads a
+# passes only when the test command exits zero and reports PASS. A declarative condition reads a
 # workflow, module, or configuration fact that no test can prove. The header
 # of each condition names its kind.
 #
@@ -53,9 +53,9 @@ check() {
 # go_test_passes runs one named test in one package tree of the tree at $1.
 # It passes only when the test reports PASS.
 go_test_passes() {
-	local tree="$1" pkg="$2" name="$3"
-	(cd "$tree" && go test -count=1 -run "^${name}\$" -v "$pkg" 2>&1 |
-		grep -q -- "^--- PASS: ${name}")
+	local tree="$1" pkg="$2" name="$3" output
+	output="$(cd "$tree" && go test -count=1 -run "^${name}\$" -v "$pkg" 2>&1)" || return 1
+	printf '%s\n' "$output" | grep -q -- "^--- PASS: ${name}"
 }
 
 # starmap_test records the outcome of one named Starmap test.
@@ -90,13 +90,6 @@ go_has() {
 	local pattern="$1"
 	shift
 	grep -RqsE --include='*.go' --exclude='*_test.go' -- "$pattern" "$@"
-}
-
-# go_lacks reports that a pattern appears in no non-test Go file under the paths.
-go_lacks() {
-	local pattern="$1"
-	shift
-	! grep -RqsE --include='*.go' --exclude='*_test.go' -- "$pattern" "$@"
 }
 
 file_has() {
@@ -162,12 +155,20 @@ starmap_test CAT-V19 'refresh runs are single-flight with run identity and cance
 # Transport policy: behavior tests plus declarative defaults (CAT-D12, CAT-D15).
 starmap_test CAT-V20 'a stalled body stops at the two-minute inactivity timeout' \
 	./pkg/catalogs/remote TestTransferIdleTimeoutStopsStalledBody
-starmap_test CAT-V21 'the per-transfer maximum duration defaults to 60 minutes' \
-	./pkg/catalogs/remote TestTransferMaxDurationDefaultsToSixtyMinutes
+transfer_max_duration_contract() {
+	go_test_passes "$ROOT" ./pkg/catalogs/remote TestTransferMaxDurationDefaultsToSixtyMinutes &&
+		go_test_passes "$ROOT" ./pkg/catalogs/remote TestTransferMaxDurationRejectsZero
+}
+check CAT-V21 'the per-transfer maximum duration defaults to 60 minutes and rejects zero' \
+	transfer_max_duration_contract
 starmap_test CAT-V22 'Refresh adds no deadline by default' \
 	. TestRefreshAddsNoDeadlineByDefault
+no_client_wide_timeout() {
+	go_test_passes "$ROOT" ./pkg/catalogs/remote TestNewClientSetsNoClientWideTimeout &&
+		go_test_passes "$ROOT" ./internal/transport TestNewSetsNoClientWideTimeout
+}
 check CAT-V23 'catalog transfer clients set no client-wide total timeout' \
-	go_lacks 'Timeout: *[A-Za-z0-9_.]*(Timeout|time\.)' pkg/catalogs/remote internal/transport
+	no_client_wide_timeout
 starmap_test CAT-V24 'the catalog transport applies the response-header bound to every request' \
 	./pkg/catalogs/remote TestCatalogTransportAppliesResponseHeaderTimeout
 starmap_test CAT-V25 'the SSE stream open honors the response-header bound' \
@@ -226,8 +227,12 @@ starport_test CAT-V46 'Starport accepts only a matching forward state through th
 	./internal/catalog TestRemoteRuntimeAcceptsOnlyMatchingForwardState
 starport_check CAT-V47 'Starport freshness keeps the age_seconds and degradation_reasons fields' \
 	bash -c "grep -qsE 'json:\"age_seconds\"' '$STARPORT/internal/catalog/freshness.go' && grep -qsE 'json:\"degradation_reasons' '$STARPORT/internal/catalog/freshness.go'"
-starport_test CAT-V48 'the Starport refresh lease renews within its TTL and the commit rejects a stale epoch' \
-	./internal/catalog TestRefreshLeaseRejectsStaleEpoch
+starport_test CAT-V48 'the Starport candidate-to-accepted transaction rejects a stale lease epoch' \
+	./internal/catalog TestAcceptRejectsStaleLeaseEpoch
+
+# Runtime lease: the Starmap runtime fences its durable generation commit (CAT-D18, owned by CAT5).
+starmap_test CAT-V49 'the runtime lease fences the durable generation commit with its epoch' \
+	. TestRuntimeLeaseRejectsStaleEpochAtCommit
 
 printf 'Summary: %d passed, %d failed, %d unverified.\n' "$pass" "$fail" "$unverified"
 [ "$fail" -eq 0 ] && [ "$unverified" -eq 0 ]
