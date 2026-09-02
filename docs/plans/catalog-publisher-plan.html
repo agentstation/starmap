@@ -89,7 +89,7 @@
     Owner: this plan. Created: 2026-09-01.
     Baseline: main @ 42b610a, publisher work @ 6c7edfbe, Starport main @ 117ad8f5.
     Proof root: <code>docs/proof/catalog-publisher/</code>.
-    Next action: start CAT2.1 and select the native Go attestation verifier dependency.
+    Next action: CAT2.1, select the native Go attestation verifier and write the selection record.
   </p>
 
   <section id="outcome">
@@ -258,7 +258,7 @@
         <tr><td>CAT-F24</td><td>operations</td><td>Inactivity and size caps alone allow a slow-drip transfer to hold a refresh for hours. No per-transfer total bound exists.</td><td>CAT4-CAT5</td></tr>
         <tr><td>CAT-F25</td><td>operations</td><td><code>remote.NewClient</code> copies the caller's client, and the SSE open has no response-header bound.</td><td>CAT4, CAT7</td></tr>
         <tr><td>CAT-F26</td><td>operations</td><td>Starport bounds a stream with the two-minute <code>MaxElapsed</code> budget and a 30-second connector header timeout outside the route middleware.</td><td>CAT8</td></tr>
-        <tr><td>CAT-F27</td><td>scale</td><td>Direct GitHub consumers meet the 60-per-hour egress limit near 60 instances per address and the token limit near 5,000. Each polling hop adds one interval to the freshness age.</td><td>CAT4, CAT7, CAT9</td></tr>
+        <tr><td>CAT-F27</td><td>scale</td><td>Direct GitHub consumers spend a per-identity request budget that the rate-limit headers report. A fixed number is a ceiling, not a safe threshold. Each polling hop adds one interval to the freshness age.</td><td>CAT4, CAT7, CAT9</td></tr>
         <tr><td>CAT-F28</td><td>architecture</td><td>The refresh lease has no TTL, renewal, or fencing token, so a lost lease can still commit.</td><td>CAT8</td></tr>
         <tr><td>CAT-F29</td><td>dependency</td><td>Starport pins Starmap <code>v0.15.0</code>, and the ledger orders CAT8 before the CAT11 release.</td><td>CAT8, CAT11</td></tr>
         <tr><td>CAT-F30</td><td>preserve</td><td>The Starport console reads <code>age_seconds</code> and <code>degradation_reasons</code> from the freshness document.</td><td>CAT8</td></tr>
@@ -303,9 +303,13 @@
   </section>
 
   <section id="fleet-decisions">
-    <h2>Fleet and dependency decisions</h2>
-    <p><strong>CAT-D16, audited 2026-09-02:</strong> Direct GitHub consumption stops at 60 unauthenticated instances per address and near 5,000 per token. Status warns at 80 percent of the reported rate limit. The six-hour objective applies to direct consumers and SSE-push chains. Each polling hop adds one poll interval.</p>
+    <h2>Fleet decisions</h2>
+    <p><strong>CAT-D16, audited 2026-09-02:</strong> The direct-consumer request budget comes from the rate-limit headers. The headers are limit, used, remaining, and reset. The budget subtracts a reserved headroom and divides by the measured requests per cycle. Status warns at 80 percent of the reported limit. A fleet above its budget uses authenticated conditional polling or a central Starmap source. The six-hour objective applies to direct consumers and SSE-push chains, and each polling hop adds one poll interval.</p>
+  </section>
+  <section id="lease-decisions">
+    <h2>Lease and dependency decisions</h2>
     <p><strong>CAT-D17, audited 2026-09-02:</strong> CAT8 pins a Starmap pseudo-version from the plan branch. CAT11 replaces the pin with the released tag.</p>
+    <p><strong>CAT-D18, audited 2026-09-02:</strong> The refresh lease has a 90-second TTL, a 30-second renewal interval, and an epoch. The run record and the accepted-head commit carry the epoch, and the compare-and-swap rejects a stale one. A holder that loses the lease cancels its run within one renewal interval, discards the results, reports <code>lease_lost</code>, and retries at the next phase. The lease applies only to shared storage.</p>
   </section>
 
   <section id="test-matrix">
@@ -333,8 +337,8 @@
       <tbody>
         <tr id="CAT0" data-status="done"><td>CAT0</td><td>Pin the publisher, credentials, source, and consumer baseline.</td><td><code>done</code></td><td><a href="../proof/catalog-publisher/cat0.md">CAT0 proof</a>.</td></tr>
         <tr id="CAT1" data-status="done"><td>CAT1</td><td>Store acquisition credentials and set the four-hour publisher cadence.</td><td><code>done</code></td><td><a href="../proof/catalog-publisher/cat1.md">CAT1 proof</a>; commits <code>cf3124c0</code> and <code>9017b83b</code>.</td></tr>
-        <tr id="CAT2" data-status="done"><td>CAT2</td><td>Ratify naming, source policy, lifecycle, and the red campaign verifier.</td><td><code>done</code></td><td><a href="../proof/catalog-publisher/cat2-review.md">Trust review</a>, <a href="../proof/catalog-publisher/cat2-dx.md">runtime review</a>, <a href="../proof/catalog-publisher/cat2-final-review.md">final review</a>, <a href="../proof/catalog-publisher/cat2-network-measurements.json">network measurements</a>, <a href="../proof/catalog-publisher/cat2-audit.md">audit</a>, and <a href="../proof/catalog-publisher/cat2-fail-before.txt">fail-before</a>. <code>scripts/verify-catalog-distribution.sh</code> reports 7 passed and 41 failed of 48.</td></tr>
-        <tr id="CAT2.1" data-status="todo"><td>CAT2.1</td><td>Select and prove the native Go attestation verifier dependency.</td><td><code>todo</code></td><td>Initial comparison is in the <a href="../proof/catalog-publisher/cat2-review.md">CAT2 review</a>.</td></tr>
+        <tr id="CAT2" data-status="done"><td>CAT2</td><td>Ratify naming, source policy, lifecycle, and the red campaign verifier.</td><td><code>done</code></td><td><a href="../proof/catalog-publisher/cat2-review.md">Trust review</a>, <a href="../proof/catalog-publisher/cat2-dx.md">runtime review</a>, <a href="../proof/catalog-publisher/cat2-final-review.md">final review</a>, <a href="../proof/catalog-publisher/cat2-network-measurements.json">network measurements</a>, <a href="../proof/catalog-publisher/cat2-audit.md">audit</a>, and <a href="../proof/catalog-publisher/cat2-fail-before.txt">fail-before</a>. <code>scripts/verify-catalog-distribution.sh</code> reports 7 passed, 41 failed, and 0 unverified of 48.</td></tr>
+        <tr id="CAT2.1" data-status="in_progress"><td>CAT2.1</td><td>Select and prove the native Go attestation verifier dependency.</td><td><code>in_progress</code></td><td>Initial comparison is in the <a href="../proof/catalog-publisher/cat2-review.md">CAT2 review</a>. The selection record is <code>docs/proof/catalog-publisher/cat2.1-verifier-selection.md</code>.</td></tr>
         <tr id="CAT3" data-status="todo"><td>CAT3</td><td>Publish canonical immutable releases and the verified latest channel.</td><td><code>todo</code></td><td></td></tr>
         <tr id="CAT4" data-status="todo"><td>CAT4</td><td>Implement the native verified GitHub catalog source.</td><td><code>todo</code></td><td></td></tr>
         <tr id="CAT5" data-status="todo"><td>CAT5</td><td>Create the catalog-source runtime and connected Go API.</td><td><code>todo</code></td><td></td></tr>
@@ -385,9 +389,9 @@
     <h3 id="task-CAT2.1">CAT2.1 Native Go verifier selection</h3>
     <ul>
       <li><strong>Problem:</strong> no reviewed wrapper provides Starmap's complete GitHub artifact trust contract.</li>
-      <li><strong>Owned paths:</strong> dependency decision record, isolated verifier spike, module graph, and public attestation fixture.</li>
+      <li><strong>Owned paths:</strong> the record <code>cat2.1-verifier-selection.md</code> with a <code>Selected engine:</code> line, the verifier spike, the module graph, and the attestation fixture.</li>
       <li><strong>Steps:</strong> compare the reviewed engines, clients, and production examples, and then measure the selected engine and transport.</li>
-      <li><strong>Acceptance:</strong> the record selects an engine and transport, proves Go 1.25 support, records dependency costs, reports no applicable vulnerability, and matches GitHub CLI fixtures.</li>
+      <li><strong>Acceptance:</strong> the record names the selected engine, transport, Go 1.25 support, dependency costs, vulnerability result, and GitHub CLI parity.</li>
       <li><strong>Fail-before:</strong> Starmap has no native verifier, dependency measurement, or GitHub parity fixture.</li>
       <li><strong>Verification:</strong> run focused tests, <code>govulncheck</code>, license review, dependency inspection, and cross-tool verification.</li>
     </ul>
@@ -537,8 +541,9 @@ and lease-owned, and CAT99 removes the plan.</code></pre>
         <tr><td>2026-09-01</td><td>CAT2</td><td>reconciled</td><td>Verified source, credential, persistence, timing, routing, status, and UI seams; recorded publisher measurements and corrections.</td></tr>
         <tr><td>2026-09-01</td><td>CAT1, CAT2</td><td>ratified</td><td>The owner accepted <code>ACQUISITION_ENABLED</code> and the six-hour freshness objective. Commit <code>9017b83b</code> changed publication to every four hours. The fail-before test failed as expected. After the change, the workflow test, actionlint, 8 action pins, ago, and 659 prose files passed.</td></tr>
         <tr><td>2026-09-01</td><td>CAT2</td><td>audited</td><td>Measured live asset sizes, traced Starmap and Starport transports, replaced elapsed body limits with idle-progress policy, and expanded cold-start and outage spreading to 15 minutes with lease and admission requirements.</td></tr>
-        <tr><td>2026-09-02</td><td>CAT2</td><td>audited</td><td>An independent audit recorded CAT-F23 through CAT-F30 and CAT-D14 through CAT-D17. It reconciled the <code>Sync</code> and <code>Close</code> contracts, added the transfer maximum duration, the transport wrapper, the fleet thresholds, the hop budget, the lease fencing contract, and the CAT8 pseudo-version pin.</td></tr>
+        <tr><td>2026-09-02</td><td>CAT2</td><td>audited</td><td>An independent audit recorded CAT-F23 through CAT-F30 and CAT-D14 through CAT-D17. It reconciled the <code>Sync</code> and <code>Close</code> contracts, added the transfer maximum duration, the transport wrapper, the header-driven fleet budget, the hop budget, the lease fencing contract, and the CAT8 pseudo-version pin.</td></tr>
         <tr><td>2026-09-02</td><td>CAT2</td><td>completed</td><td>Authored <code>scripts/verify-catalog-distribution.sh</code> red at 7 passed, 41 failed, and 0 unverified of 48 conditions. The fail-before capture is <code>cat2-fail-before.txt</code>.</td></tr>
+        <tr><td>2026-09-02</td><td>CAT2, CAT2.1</td><td>repaired</td><td>A second review rejected grep-only checks, a non-failing unverified outcome, a hard-coded engine, and 55 prose diagnostics. The verifier now runs named Go tests, fails on any unverified condition, and reads the CAT2.1 selection record. CAT-D16 and CAT-D18 record the header-driven budget and the lease contract. CAT2 moved to <code>done</code> and CAT2.1 to <code>in_progress</code>.</td></tr>
       </tbody>
     </table>
   </section>
