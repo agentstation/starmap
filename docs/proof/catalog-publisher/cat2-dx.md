@@ -4,9 +4,9 @@ Date: 2026-09-01
 
 Baseline: `codex/catalog-publisher-six-hour` at `8e5ddf6a`
 
-The [final runtime and operations review](cat2-final-review.md) supersedes this
-file where it records newer timing evidence, repository corrections, or the
-pending acquisition Boolean name.
+The [final runtime, transport, and operations review](cat2-final-review.md)
+supersedes this file where it records newer timing evidence or repository
+corrections.
 
 ## Verdict
 
@@ -78,9 +78,9 @@ The earlier CAT2 draft has these incorrect statements:
 - It says Starport disables local acquisition when it follows a Starmap
   server. The source and acquisition policies must compose.
 - It uses `RefreshPublicCatalog`. Rename it to `RefreshSource`.
-- It makes `prefer_source` wait for a source operation. The default must return
-  as soon as embedded or durable state is usable, start the source check, and
-  report `warming`.
+- It makes `prefer_source` wait for a source operation. The default returns as
+  soon as embedded or durable state is usable. It schedules connected work at
+  a stable phase and reports `warming`.
 - It proposes a configuration alias period for Starport. This conflicts with
   Starport's direct-breaking policy.
 - It treats `published_at` as evidence that the scheduled publisher is alive.
@@ -305,10 +305,13 @@ The suffixes and defaults are identical.
 | `CATALOG_SOURCE_POLL_INTERVAL` | `1h` | source check interval |
 | `CATALOG_SOURCE_STARTUP_POLICY` | `prefer_source` | `prefer_source` or `require_source` |
 | `CATALOG_SOURCE_MAX_AGE` | `6h` | source freshness warning objective; readiness gate only under `require_source` |
+| `CATALOG_SOURCE_MAX_HOPS` | `8` | maximum accepted Starmap source-chain depth |
 | `CATALOG_ACQUISITION_ENABLED` | `true` | enable automatic startup and interval work |
 | `CATALOG_ACQUISITION_INTERVAL` | `4h` | normal cadence; `0s` means startup only while enabled |
 | `CATALOG_WORKSPACE_PATH` | empty | reviewed operator catalog input |
-| `CATALOG_REFRESH_TIMEOUT` | `5m` | one complete refresh operation bound |
+| `CATALOG_STARTUP_SPREAD` | `15m` | stable cold automatic-work admission window |
+| `CATALOG_TRANSFER_IDLE_TIMEOUT` | `2m` | maximum time without body read or response write progress |
+| `CATALOG_REFRESH_TIMEOUT` | `0s` | optional complete-operation cap; zero adds no deadline |
 
 There is no `CATALOG_ACQUISITION`, `CATALOG_ACQUISITION_ON_START`, acquisition
 schedule, or cron expression in the recommended contract.
@@ -322,10 +325,13 @@ schedule, or cron expression in the recommended contract.
 `CATALOG_SOURCE=embedded` disables the network source. A deterministic and
 offline runtime also sets acquisition enabled to false.
 
-The retry policy is convention, not required configuration. Add process jitter
-and use bounded exponential retry after an attempted operation fails. Honor
-`Retry-After` and rate-limit reset values. Cap retries at the normal interval.
-A successful acquisition returns to the four-hour cadence.
+Normal source and acquisition cycles use stable phases across their full one-
+and four-hour intervals. Cold, rotated, or stale work uses stable offsets
+across 15 minutes. Transient retry uses bounded decorrelated jitter from one
+second to 15 minutes. `Retry-After` and rate-reset values are hard not-before
+times with post-boundary jitter. Authentication failures wait for credential
+change or the normal phase. A successful acquisition returns to the four-hour
+cadence.
 
 ## Startup behavior
 
@@ -334,11 +340,12 @@ A successful acquisition returns to the four-hour cadence.
 1. Verify and load the latest durable effective generation.
 2. Use the embedded public catalog when no durable generation exists.
 3. Return a usable runtime immediately.
-4. Start the selected source check and eligible provider acquisition.
+4. Schedule the selected source check and eligible provider acquisition at
+   their stable automatic phases.
 5. Report `warming` until the first configured automatic cycle completes.
 6. Keep last-known-good layers and catalog when a connected operation fails.
 
-An offline laptop must not wait for the two-minute refresh timeout.
+An offline laptop must not wait for connected work.
 `require_source` can block within the caller context. It can fail when the
 runtime cannot establish an acceptable selected source. Liveness remains
 independent from catalog usability and freshness.
@@ -472,6 +479,8 @@ Top-level fields:
 - generation, publication, channel, check, observation, success, activation,
   and next-attempt times.
 - Source and acquisition in-progress flags, operation kind, and run ID.
+- Current stage, byte or page progress, last progress, configured idle timeout,
+  optional total deadline, scheduled reason, and retry-not-before.
 - Last-known-good and fallback state.
 - Configured freshness budget, current evaluation, and age.
 - acquisition counts for eligible, attempted, succeeded,
@@ -506,11 +515,12 @@ Add admin-only operations:
 | `GET /api/v1/admin/catalog/status` | detailed runtime, source, acquisition, freshness, and provenance status |
 | `POST /api/v1/admin/catalog/refresh` | start or join one complete refresh; return `202` and an operation ID |
 | `GET /api/v1/admin/catalog/refreshes/{run_id}` | return active or completed refresh report |
+| `DELETE /api/v1/admin/catalog/refreshes/{run_id}` | request cancellation and audit the actor |
 
 A refresh report includes run ID, operation kind, start, completion, duration,
 and prior and current effective IDs. It also includes the upstream ID, change
-and activation states, source result, provider outcomes, retained state, and
-next attempts.
+and activation states, source result, provider outcomes, retained state,
+transfer progress, last progress, and next attempts.
 A repeated manual request returns the active run instead of overlapping it.
 Manual refresh initiation and completion use Starport's existing admin audit
 boundary.
@@ -589,7 +599,10 @@ The red distribution verifier must add fixed conditions for:
 - Server-evaluated freshness and the detailed admin status surface.
 - Candidate and accepted head separation under failures.
 - Self-reference, two-node cycles, aliased cycles, and excessive hop rejection.
-- Bounded retry, jitter, rate-limit response handling, and bounded metrics.
+- Slow progressing transfers beyond old elapsed limits, idle and oversize
+  rejection, caller cancellation, and slow response writes.
+- Full-interval stable phase, 15-minute cold and outage spread, bounded retry,
+  retry not-before, source admission, a distributed lease, and bounded metrics.
 - Direct Starport configuration replacement with no legacy runtime aliases.
 - historical catalog tag readback.
 

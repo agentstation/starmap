@@ -1,17 +1,20 @@
-# CAT2 final runtime and operations review
+# CAT2 final runtime, transport, and operations review
 
 Date: 2026-09-01
 
 Reviewed baselines:
 
-- Catalog plan: `codex/catalog-publisher-six-hour` at `8e5ddf6a`.
+- Catalog plan: `codex/catalog-publisher-six-hour` at `cbba4d62` before this
+  audit.
 - Starmap main worktree: `codex/security-baseline` at `fa7c26bb`.
-- Starport: `main` at `6db57d8c`. The worktree contains unrelated owner
-  changes.
+- Starport: `codex/cpl-b1` at `b522d7d`. The worktree contains unrelated owner
+  changes and was not edited.
 
 The review changed no production source. The owner ratified its two open
 decisions on 2026-09-01. Commit `9017b83b` then changed the publisher cadence.
 This proof records the contract before CAT2 verification and CAT5-CAT8 work.
+The final audit added no production source. It corrected target transport and
+fleet timing after it measured live assets and traced both HTTP stacks.
 
 ## Verdict
 
@@ -24,6 +27,13 @@ status are correct. The owner ratified these decisions:
 2. Publish every four hours at minute 17. Keep one-hour consumer polling and
    use a six-hour end-to-end freshness objective.
 
+The final audit found that the earlier 30-second source request and five-minute
+complete refresh targets were not safe. A Go `http.Client.Timeout` includes
+response-body reads. Starmap permits 16 MiB source documents and 64 MiB remote
+bodies, so a healthy slow transfer can exceed both targets. The corrected
+contract uses connection, TLS, response-header, and idle-progress bounds. It
+has no default whole-refresh deadline.
+
 ## Steering report verification
 
 | Section | Verdict | Repository evidence or correction |
@@ -32,10 +42,10 @@ status are correct. The owner ratified these decisions:
 | 2. Credential outcomes | agree | The provider source currently calls all catalog endpoints. Missing credentials become aggregate issues. It needs neutral preflight skip and provider-scoped retention. |
 | 3. Acquisition DX | accepted | `ON_START` plus `INTERVAL` exposes a periodic-only state, but no repository use case requires that public state. The owner selected `ENABLED` plus `INTERVAL`. Stable phase, fresh durable state, and lease ownership control delayed startup work. |
 | 4. Catalog, availability, routing | agree with corrections | Starport already separates catalog offering state, credential state, and routing. It already supports explicit fallback lists, model overrides, quotas, and budgets. Starmap model status has no `retired` state or successor field, so historical model lifecycle and `replaced_by` need schema work. |
-| 5. Measured timing | mostly agree | The 20-run median is 222.5 seconds, or 3 minutes 42.5 seconds, not 3 minutes 44 seconds. Current Starport execution has zero same-route retries by default. Other measured constants match the source. |
+| 5. Measured timing | disagree with the old target | The measured constants match, but a 30-second total body timeout and five-minute whole-refresh timeout reject valid transfers within current size limits. Current Starport execution also has zero same-route retries by default. |
 | 6. CAT-D10 | accepted | Four-hour publication plus one-hour polling gives a nominal five-hour path. The owner selected a six-hour end-to-end objective. It is not a hard bound. |
-| 7. Target timing | agree with one correction | Streaming needs no HTTP-wide or request-wide deadline after commitment, but it still needs first-token, stream-idle, and explicit operator cancellation. Current execution applies a hard two-minute context to streams and must change. |
-| 8. Anti-herd | agree | Current fixed tickers do not provide a stable fleet phase. The target needs deterministic phase, bounded full-jitter retry, rate-limit handling, and one lease owner for shared state. |
+| 7. Target timing | corrected | Catalog bodies, provider enumeration, and streams use progress-aware idle limits instead of client-wide elapsed limits. Streaming still needs first-token, stream-idle, and explicit operator cancellation. |
+| 8. Anti-herd | corrected | A 30-second reconnect cap and one-minute fallback poll are too small after a broad outage. The target uses full-interval stable phases, a 15-minute cold-start spread, decorrelated reconnect delay up to 15 minutes, admission control, and one lease owner for shared state. |
 | 9. Status and timestamps | agree | Current generation metadata does not express channel heartbeat, operation state, provider outcome, or direct versus upstream-reported health. |
 | 10. Starport API and UI | agree with one correction | The current admin refresh is synchronous. The current console does not contain the reported hard-coded seven-day stale badge. Add server-evaluated freshness; do not describe the change as removal of a current badge. |
 | 11. Deployment examples | agree | Current Starport validation prevents the required remote-source plus local-acquisition composition. The target cases prove that source selection and acquisition are independent. |
@@ -89,7 +99,9 @@ suffixes and defaults are the same.
 | `CATALOG_ACQUISITION_ENABLED` | `true` | Enables automatic startup and interval work |
 | `CATALOG_ACQUISITION_INTERVAL` | `4h` | Normal cadence; `0s` means startup only while enabled |
 | `CATALOG_WORKSPACE_PATH` | empty | Reviewed operator catalog input |
-| `CATALOG_REFRESH_TIMEOUT` | `5m` | Complete manual or automatic refresh deadline |
+| `CATALOG_STARTUP_SPREAD` | `15m` | Stable admission window for cold automatic source and acquisition work |
+| `CATALOG_TRANSFER_IDLE_TIMEOUT` | `2m` | Maximum time with no body read or response write progress; not a total transfer limit |
+| `CATALOG_REFRESH_TIMEOUT` | `0s` | Optional complete-operation wall-clock cap; zero means no added cap |
 
 There is no `CATALOG_ACQUISITION`, `CATALOG_ACQUISITION_MODE`,
 `CATALOG_ACQUISITION_ON_START`, or acquisition schedule expression in the
@@ -102,8 +114,10 @@ recommended contract.
 | `false` | any value | manual only; `Sync` remains available |
 
 Automatic startup work does not always mean an immediate provider request. A
-runtime with fresh durable observations can wait for its stable phase. A new
-runtime, a new credential, or stale evidence can run after a short jitter.
+runtime with fresh durable evidence waits for its stable full-interval phase.
+A new runtime, a new credential, or stale evidence uses a stable phase within
+the 15-minute startup spread. `require_source` starts immediately. An explicit
+`Refresh` or `Sync` also starts immediately and remains single-flight.
 
 A deterministic process uses:
 
@@ -164,8 +178,13 @@ manual complete refresh can coalesce one pending complete refresh. Publication
 cannot occur out of order. `Close` is idempotent, cancels owned work, and joins
 it within five seconds.
 
-The proposed option is `WithAcquisitionEnabled(bool)`. Do not keep both it and
-`WithAcquisitionOnStart`. Source and acquisition options remain independent.
+The proposed options include `WithAcquisitionEnabled(bool)`,
+`WithStartupSpread(time.Duration)`,
+`WithTransferIdleTimeout(time.Duration)`, and
+`WithRefreshTimeout(time.Duration)`. A zero refresh timeout adds no total
+deadline. The caller's context always wins. Do not keep both acquisition
+enabled and acquisition-on-start options. Source and acquisition options remain
+independent.
 
 ## Credential and provider contract
 
@@ -203,44 +222,62 @@ conclusion.
 | Concern | Current live behavior | Target owner and cancellation |
 | --- | --- | --- |
 | Publisher cadence | Main runs daily at `03:17` UTC. Commit `9017b83b` changes the plan branch to minute 17 every four hours. | Keep the four-hour cadence. GitHub owns dispatch and can delay or drop a run. |
-| Publisher execution | No job timeout; GitHub default is 360 minutes. The latest 20 successes were 153-285 seconds, median 222.5 seconds, p95 284 seconds. | CAT3 sets `timeout-minutes: 20`. GitHub cancels the job at the bound. |
-| Complete Starmap sync | `sync.Options` defaults to five minutes. | `Refresh` owns a five-minute child context. Caller cancellation wins. |
-| Starport catalog refresh | Two minutes. | Unified runtime uses the five-minute complete-cycle bound. |
-| Ordinary provider HTTP | 30-second Starmap default. | Provider adapter owns 30 seconds within the complete-cycle context. |
-| Google Vertex list | Two-minute paginated list context. | Keep provider-specific two minutes within the five-minute complete cycle. |
-| Provider concurrency | Maximum five. | Keep bounded; add stable provider offsets before admission. |
+| Publisher execution | No job timeout; GitHub default is 360 minutes. The latest 20 successes were 153-285 seconds, median 222.5 seconds, p95 284 seconds. | CAT3 sets `timeout-minutes: 60`. The workflow remains serialized and GitHub cancels a stuck job at the bound. |
+| Complete Starmap sync | `sync.Options` defaults to five minutes. | `Refresh` adds no deadline by default. The caller context or a nonzero configured refresh timeout owns total elapsed time. |
+| Starport catalog refresh | Two minutes. | The unified runtime uses the same no-added-total default and exposes asynchronous progress and cancellation. |
+| Ordinary provider HTTP | A 30-second `http.Client.Timeout` includes the response body. | Use 30-second connect, 30-second TLS, 60-second header, two-minute body-idle, byte, page, and record bounds. Do not set a client-wide total. |
+| Google Vertex list | One two-minute context bounds the whole paginated list. | Use the common per-request stage and idle policy plus Vertex page and record ceilings. Caller or operator context owns the whole enumeration. |
+| Provider concurrency | Maximum five. | Keep bounded. Admit cold providers across 15 minutes. A slow provider cannot hold the mutation lock or suppress completed provider layers. |
 | Sync cleanup | 30 seconds. | Keep separate from runtime shutdown; cleanup cannot extend the completed operation indefinitely. |
-| Catalog projection or repair | One minute. | Remains inside the complete-cycle budget where possible; report a distinct stage timeout. |
+| Catalog projection or repair | One minute. | Keep this local-operation bound and report the stage. It is not a network-body timeout. |
 | Durable catalog load | 10 seconds. | Construction stage owns 10 seconds; caller cancellation wins. |
-| models.dev HTTP and cache | 30-second request and one-hour cache validity. | Keep separate from released-catalog polling policy. |
-| Release or GitHub source fetch | Starmap uses 30 seconds. | Source adapter owns 30 seconds and conditional request state. |
-| Starport direct Starmap fetch | Two minutes. | Unified source adapter uses 30 seconds unless measured evidence requires an override. |
-| Public source poll | No default connected runtime. | One hour at a stable per-instance phase. A manual refresh can run sooner. |
-| Local acquisition | Starport defaults off; Starmap has explicit `Sync`. | Enabled by default, four-hour stable phase, with stale or new state startup rules. |
-| Starmap SSE | 20-second heartbeat, 60-second liveness, 100 ms to 5-second half-to-full jitter reconnect. | Keep heartbeat and liveness. Use full or decorrelated jitter, cap near 30 seconds, honor `Retry-After`, then use one-minute conditional polling after repeated failure. |
+| models.dev HTTP and cache | A 30-second total request and one-hour cache validity. | Use the common source transfer policy. Cache validity remains separate from public channel polling. |
+| Release or GitHub source fetch | Starmap uses a 30-second total client timeout. | Use 30-second connect, 30-second TLS, 60-second header, two-minute body-idle, compressed and expanded size bounds, and conditional state. |
+| Starport direct Starmap fetch | A two-minute context remains active until body close. | Remove the adapter total and use the same progress-aware Starmap transport. |
+| Public source poll | No default connected runtime. | One check per hour at a stable full-interval phase. Cold automatic work uses the 15-minute startup spread. Manual refresh can run sooner. |
+| Local acquisition | Starport defaults off; Starmap has explicit `Sync`. | Enable by default at a four-hour stable phase. Cold, rotated, or stale providers use stable offsets across 15 minutes. |
+| Starmap SSE | 20-second heartbeat, 60-second liveness, 100 ms to 5-second half-to-full jitter reconnect. | Keep heartbeat and liveness. Spread initial automatic connects across 15 minutes. Use decorrelated retry from one second to 15 minutes, honor `Retry-After`, and use 15-minute stable conditional polling after repeated failure. |
 | Remote subscriber shutdown | Five seconds. | Keep five seconds and join owned work. |
 | Starmap server shutdown grace | 100 ms. | Increase background-worker join to five seconds. HTTP server shutdown remains independently bounded. |
-| Starmap server HTTP | 10-second read, 10-second write, 120-second idle. | Streaming routes clear total write deadlines and own first-event and idle policy. |
-| Starmap admin update | Synchronous with a six-minute write deadline. | Return a refresh operation within five seconds; run it for at most five minutes. |
-| Starport admin refresh | Synchronous, two-minute work under a global 60-second request context. | Return or join a `202` operation within five seconds; background work owns five minutes. |
+| Starmap server HTTP | 10-second read, 10-second write, 120-second idle. | Catalog payload and SSE routes clear the total write deadline, reset a two-minute idle write deadline before each chunk or frame, and stop on disconnect. |
+| Starmap admin update | Synchronous with a six-minute write deadline. | Return a refresh operation within five seconds. Background work follows progress-aware policy and supports explicit cancellation. |
+| Starport admin refresh | Synchronous, two-minute work under a global 60-second request context. | Return or join a `202` operation within five seconds. Background work follows the runtime context and supports explicit cancellation. |
 | Starport HTTP | 30-second read and write, 120-second idle, global 60-second request context. | Control-plane routes keep 60 seconds. Inference and streaming routes use route-specific policy. |
-| Starport non-stream inference | Executor allows two minutes, but the global request context cancels after one minute. | Route context owns two minutes. Provider header wait remains 30 seconds. Caller cancellation wins. |
-| Starport streaming | Controller clears the 30-second write deadline, but global middleware cancels at 60 seconds and executor cancels at two minutes. | No total route or write deadline after stream commitment. Use first-token, stream-idle, disconnect, and operator cancellation bounds. |
+| Starport non-stream inference | Executor allows two minutes, but the global request context cancels after one minute. | A configurable route context owns total work; use a 10-minute default. Use a five-minute first-response bound and two-minute body-idle bound. Caller cancellation wins. |
+| Starport streaming | Controller clears the 30-second write deadline, but global middleware cancels at 60 seconds and executor cancels at two minutes. | No total route or write deadline after commitment. Use a five-minute first-event bound, two-minute provider and client idle bounds, disconnect, and operator cancellation. |
 | Starport retry | Three total attempts, zero same-route retries by default, 100 ms exponential settings unused unless enabled. | Routing policy owns retry eligibility; all attempts remain inside the route budget. |
-| Inference transport | 30-second dial, 10-second TLS, 30-second response-header timeout, 90-second idle connection. | Keep as transport-stage bounds; execution context owns total non-stream work. |
+| Inference transport | 30-second dial, 10-second TLS, 30-second response-header timeout, 90-second idle connection. | Use 30-second dial and TLS. Route policy owns the first-response bound. Body progress owns the idle bound; no client total applies. |
 | Direct secret cache | Five-minute refresh. | Add stable fleet phase and shared ownership where available. |
 | Credential reconciliation | One-minute interval with a 10-second timeout. | Add stable phase; one owner reconciles shared deployment state. |
 | Provider status pages | One-minute interval, five-second request, concurrency eight. | One fleet owner or shared cache; replicas consume the shared projection. |
 
-The earliest deadline always wins. A caller cancellation stops its operation.
-The five-minute complete-cycle deadline bounds all stages. A stage deadline can
-shorten that bound, but it cannot extend it. Runtime background work uses the
-same stage limits and stops when `Close` cancels the runtime context.
+The target does not use `http.Client.Timeout` for a catalog body, provider
+enumeration, SSE stream, or inference stream. That field covers connection,
+redirects, and response-body reads. Each transport instead bounds connection,
+TLS, response headers, and lack of body progress. Every successful body read or
+response write resets the two-minute idle timer. Exact compressed and expanded
+byte limits, page and record ceilings, checksum and schema validation, caller
+cancellation, and runtime `Close` remain hard bounds.
+
+`Refresh(ctx)` installs no wall-clock deadline by default. A nonzero operator
+setting can add one, and the earliest caller or configured deadline wins.
+Automatic work uses the runtime context. Network I/O happens outside the
+publication lock. Completed provider layers can advance while another provider
+is slow. A slow source also cannot stop the independent acquisition controller
+from rebuilding against retained source state.
 
 The publisher run measurements are in
 [`cat2-publisher-runs.json`](cat2-publisher-runs.json). The sample supports a
-20-minute workflow timeout with more than four times the observed maximum. It
-does not establish a worst-case service guarantee.
+one-hour workflow timeout with more than 12 times the observed maximum. It does
+not establish a worst-case service guarantee.
+
+The live asset and code-limit measurements are in
+[`cat2-network-measurements.json`](cat2-network-measurements.json). The newest
+catalog archive is 393,447 bytes and takes about 24.6 seconds at 128 kilobits
+per second before protocol overhead. A 16 MiB source takes about 134 seconds at
+one megabit per second. A permitted 64 MiB remote body takes about nine minutes
+at one megabit per second and 35 minutes at 256 kilobits per second. These
+values disprove the old 30-second and five-minute elapsed targets.
 
 ## CAT-D10 freshness contract
 
@@ -272,18 +309,34 @@ advances `checked_at` only.
 Each periodic controller uses a stable phase:
 
 ```text
-phase = hash(instance identity + source or provider identity) mod interval
+phase = hash(instance identity + controller + safe source identity) mod interval
 ```
 
-The runtime persists or derives a stable instance identity. A restart keeps
-the same phase. A process without durable state, a `require_source` start, a
-new credential, or stale evidence can run after a short bounded jitter.
+The runtime persists a random instance identity. Each replica needs a distinct
+identity. A cloned identity recreates synchronized phases. A restart keeps the
+same phase. Normal public-source work spreads across the full one-hour poll
+interval. Normal acquisition spreads across the full four-hour interval.
 
-Retry uses full jitter and respects provider or GitHub `Retry-After` and rate
-reset values. The normal transient sequence is approximately one minute, five
-minutes, 15 minutes, one hour, then the normal four-hour cadence. Authentication
-failures wait for credential change or the normal cycle. They do not use the
-transient retry loop.
+Cold `prefer_source` processes, new credentials, rotated credentials, and stale
+evidence use stable offsets across a 15-minute startup window. Fresh durable
+evidence waits for the normal full-interval phase. `require_source` and explicit
+manual operations bypass the startup delay because their caller chose to wait.
+
+Transient retry uses bounded decorrelated jitter from one second to 15 minutes.
+A successful request resets request retry. An SSE connection resets reconnect
+delay only after one 60-second healthy liveness window, so a flapping endpoint
+does not create a tight loop. After repeated SSE failures, conditional fallback
+polling uses a stable 15-minute phase rather than a one-minute fleet ticker.
+
+`Retry-After` and rate-reset timestamps are hard not-before values. The client
+adds post-boundary jitter of up to five minutes and never retries earlier.
+Without a secondary-rate-limit header, GitHub retry waits at least one minute.
+The GitHub source serializes calls and uses conditional requests.
+
+Each source or provider gets at most three transient retries in one cycle.
+Authentication and authorization failures wait for credential change or the
+next normal phase. They do not enter the transient loop. This retry budget
+prevents one automatic cycle from multiplying requests without bound.
 
 One runtime is single-flight. A manual call joins the compatible active run or
 returns its operation ID. A complete refresh can subsume a source-only or
@@ -294,10 +347,25 @@ refresh owner. Other replicas consume accepted state. Large fleets use a
 central Starmap source and SSE. One fleet owner polls provider status pages and
 reconciles shared secrets when possible.
 
-Public local setup does not require a GitHub token. Large fleets can use the
-optional source token and central Starmap pattern. Conditional requests and a
-stable phase also prevent a NAT fleet from consuming the unauthenticated
-60-request hourly budget in a burst.
+No fixed jitter window can make an unbounded fleet safe. The minimum admission
+window is:
+
+```text
+window seconds >= replica count / allowed source requests per second
+```
+
+Ten thousand cold instances across 15 minutes still average about 11 initial
+requests per second. One hundred thousand hourly pollers still average about 28
+requests per second. If the source cannot accept that rate, the deployment must
+increase the window or use a lease-owning central Starmap tier. Jitter removes
+bursts. It does not remove request volume.
+
+Starmap sources therefore cache immutable payloads, support ETags, bound fetch
+and SSE admission, and return `Retry-After` with `429` or `503`. Large services
+can place immutable payloads behind a CDN or object store. Public local setup
+does not require a GitHub token. Large fleets use an optional source token or,
+preferably, the central Starmap pattern. This pattern stops one NAT from
+spending GitHub's unauthenticated hourly budget for every replica.
 
 ## Deployment journeys
 
@@ -308,6 +376,9 @@ and no keys, source fallback is visible. Provider skips are neutral, and no
 provider request occurs. With network but no keys, only declared public
 provider endpoints run. With one explicit acquisition key, only that provider
 and public provider endpoints run.
+
+Cold automatic network work starts within the stable 15-minute spread.
+`Refresh` and `Sync` remain the immediate paths.
 
 Tests and air-gapped programs set the embedded source and disable acquisition:
 
@@ -322,7 +393,8 @@ Starport needs no catalog settings. It starts with embedded state, follows the
 public channel, and reads explicit catalog credentials. Manual
 refresh remains available. Durable layers and the accepted runtime survive
 restart. The console shows source, acquisition, provenance, freshness, and
-accepted changes.
+accepted changes. A slow advancing transfer reports progress and retains the
+accepted catalog instead of failing on elapsed time.
 
 ### Enterprise source with local replica acquisition
 
@@ -350,7 +422,9 @@ STARPORT_CATALOG_ACQUISITION_ENABLED=false
 
 Only the central Starmap collects provider observations. A private source never
 falls back to public GitHub. The central runtime uses a refresh lease. Replicas
-prefer SSE and use bounded conditional polling only as fallback.
+spread initial and outage reconnects across 15 minutes, prefer SSE, and use
+15-minute stable conditional polling only as fallback. The central source
+returns admission and retry guidance under saturation.
 
 ## Runtime status contract
 
@@ -366,6 +440,8 @@ prefer SSE and use bounded conditional polling only as fallback.
 - `published_at`, `channel_updated_at`, `checked_at`, `observed_at`,
   `last_attempt_at`, `last_success_at`, and `next_attempt_at` where applicable.
 - Source and acquisition in-progress state, operation kind, and run ID.
+- Current stage, bytes or pages completed, `last_progress_at`, configured idle
+  timeout, optional total deadline, scheduled reason, and retry-not-before.
 - Eligible, attempted, succeeded, skipped, and failed provider counts.
 - Sanitized provider outcomes with last-known-good retention.
 - Fallback and last-known-good state.
@@ -393,12 +469,14 @@ for `models:read`. Add admin-only operations:
 | `GET /api/v1/admin/catalog/status` | detailed runtime, direct source, upstream report, acquisition, freshness, and provenance |
 | `POST /api/v1/admin/catalog/refresh` | start or join a complete refresh; return `202` with an operation ID |
 | `GET /api/v1/admin/catalog/refreshes/{run_id}` | return active or completed operation state and report |
+| `DELETE /api/v1/admin/catalog/refreshes/{run_id}` | request cancellation of the active operation and audit the actor |
 
 A refresh report contains run ID, operation kind, start, completion, and
 duration. It gives prior, current, and upstream generation IDs. It also gives
 change and activation flags, source result, provider outcomes, retained state,
-and next attempts. Manual start and completion enter the existing admin audit
-trail. Overlapping refreshes join one run.
+next attempts, current transfer progress, and the last progress time. Manual
+start, cancellation, and completion enter the existing admin audit trail.
+Overlapping refreshes join one run.
 
 The console shows:
 
@@ -407,8 +485,8 @@ The console shows:
 2. Embedded, selected upstream, and operator-acquisition rows with safe
    identity, direct or upstream-reported health, generations, times, and
    fallback.
-3. Acquisition policy, eligible, attempted, succeeded, skipped, and failed
-   counts, plus last attempt, last success, and next run.
+3. Acquisition policy and provider outcome counts. Show last attempt, last
+   success, next run, active stage, and last progress.
 4. Provider outcomes and safe reasons. The UI collapses neutral skipped rows by
    default.
 5. Accepted-generation changes and distinct candidate, accepted, rejected, or
@@ -479,45 +557,69 @@ with the routing reason and applied policy. Safe reasons include
     restart storms.
 14. Catalog successor data changes request behavior only after an explicit
     Starport policy opt-in. Publishing metadata alone does not reroute traffic.
+15. `http.Client.Timeout` cannot coexist with progress-aware large-body
+    transfers because it includes response-body reads.
+16. Removing the total refresh deadline requires network work to stay outside
+    the mutation lock. A slow provider must not suppress completed provider
+    publication or source and acquisition independence.
+17. Idle progress alone permits a trusted endpoint to transfer very slowly.
+    Size, page, and record ceilings bound that tradeoff. Cancellation,
+    single-flight, and optional operator wall-clock limits add further bounds
+    without rejecting healthy slow links by default.
+18. A 15-minute spread is a default, not a fleet capacity proof. Deployments
+    calculate their required window and use a central lease owner when the
+    result exceeds source capacity.
+19. Multi-hop fallback polling can add one 15-minute interval per degraded hop.
+    Every downstream evaluates the propagated `channel_updated_at`, not only
+    its direct source check time.
+20. Backoff resets only after stable success. Resetting on a TCP connection or
+    first SSE header creates reconnect storms when a source flaps.
 
 ## Plan, verifier, and acceptance changes
 
-CAT2 records CAT-D10 and CAT-D11. It then makes the distribution verifier red.
-The verifier rejects old acquisition mode and `ON_START` names. It proves the
-public default, four-hour acquisition,
-manual `Sync`, neutral missing credentials, and public endpoint attempts. It
-also proves provider retention, retained-layer rebuild, startup policy,
-single-flight, async operations, bounded shutdown, channel heartbeat,
-source-chain safety, safe status, and historical tag readback.
+CAT2 records CAT-D10 through CAT-D13. It then makes the distribution verifier
+red. The verifier rejects old acquisition mode and `ON_START` names. It proves
+the public default, four-hour acquisition, manual `Sync`, neutral missing
+credentials, and public endpoint attempts. It also proves provider retention,
+retained-layer rebuild, startup policy, single-flight, async operations,
+bounded shutdown, channel heartbeat, source-chain safety, safe status, and
+historical tag readback. Transport cases prove slow progress, idle failure,
+size rejection, caller cancellation, stable spread, retry not-before, and lease
+ownership.
 
 CAT3 adds the canonical release and channel document, advances the no-change
-heartbeat, uses the selected cadence at minute 17, and sets a 20-minute job
+heartbeat, uses the selected cadence at minute 17, and sets a 60-minute job
 timeout.
 
-CAT4 implements conditional GitHub discovery, Sigstore verification, durable
-sequence and ETag state, 30-second requests, optional authentication,
-rate-limit response handling, stable phase, and bounded full-jitter retry.
+CAT4 implements conditional GitHub discovery and Sigstore verification. It
+adds durable sequence and ETag state, progress-aware transfer, optional
+authentication, rate-limit handling, full-interval phase, 15-minute cold
+spread, and bounded decorrelated retry.
 
 CAT5 implements the retained-layer runtime, provider evidence, and credential
-outcomes. It adds the five-minute refresh, nested provider timeouts,
-single-flight, stable phase, durable state, and five-second join. It also adds
-runtime status, historical model lifecycle, and successor metadata.
+outcomes. It removes the default whole-refresh deadline. It adds transport-stage
+and two-minute idle-progress bounds, page and record ceilings, per-provider
+progress, single-flight, stable phase, durable state, and five-second join. It
+also adds runtime status, historical model lifecycle, and successor metadata.
 
 CAT6 maps the canonical environment into `Open` for the CLI, server, and
 container. It proves embedded-first startup, durable restart, default network
-behavior, deterministic opt-out, and asynchronous Starmap admin refresh.
+behavior, deterministic opt-out, asynchronous cancellable Starmap admin
+refresh, and slow-client catalog delivery.
 
 CAT7 adapts Starmap HTTP and SSE into the same runtime. It adds safe source
-chains, direct versus upstream health, 20-second heartbeat, 60-second liveness,
-30-second reconnect cap, `Retry-After`, one-minute polling fallback, and cycle
-and hop rejection.
+chains and separates direct from upstream health. It also adds a 20-second
+heartbeat, 60-second liveness, 15-minute cold spread, one-second to 15-minute
+decorrelated retry, `Retry-After`, stable fallback polling, source admission,
+and chain rejection.
 
 CAT8 replaces Starport's two runtimes with one adapter. It injects the exact
 deployment acquisition lookuper and preserves candidate and accepted heads. It
 removes source-acquisition exclusion and enables acquisition in development.
 It consumes `Updates`, adds async admin operations and audit, and splits route
-timeouts. It also adds safe status, provenance, routing reasons, and
-lease-based scale-out proof.
+timeouts. It adds progress and cancellation, slow-transfer and long-stream
+proof, safe status, provenance, routing reasons, and lease-based scale-out
+proof.
 
 CAT9 documents direct pre-v1 Starport environment replacements. It does not add
 runtime aliases. It documents retained historical GitHub tag compatibility.
@@ -532,9 +634,14 @@ Acceptance tests cover:
 - Enterprise: central source, optional replica acquisition, and central-only
   opt-out. Prove no public fallback, separate IDs, chain rejection, a lease,
   and three replicas.
-- Timing: five-minute refresh, 30-second source fetch, and Vertex nested
-  timeout. Prove async HTTP, route-specific inference, stream lifetime,
-  shutdown, stable phase, and retry headers.
+- Timing: a source body that progresses beyond 30 seconds succeeds. A complete
+  refresh that progresses beyond five minutes also succeeds.
+- Limits: a two-minute idle body and an oversized body fail. Caller
+  cancellation wins. Pagination stays bounded.
+- Operations: prove async HTTP, route-specific inference, stream lifetime, slow
+  response writes, shutdown, stable phase, and 15-minute outage spreading.
+  Also prove `Retry-After`, retry budgets, source admission, and a distributed
+  lease.
 
 ## Owner decisions
 
@@ -553,9 +660,15 @@ paths supplied the remaining evidence.
 
 GitHub CLI supplied the latest 20 successful publisher runs. GitHub's primary
 documentation supplied scheduled-workflow, job-timeout, rate-limit,
-conditional-request, and retry behavior:
+conditional-request, and retry behavior. Go documentation supplied exact HTTP
+timeout semantics. AWS and Google Cloud supplied retry and jitter guidance:
 
 - <https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows>
 - <https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-syntax>
 - <https://docs.github.com/en/rest/using-the-rest-api/rate-limits-for-the-rest-api>
 - <https://docs.github.com/en/enterprise-cloud@latest/rest/using-the-rest-api/best-practices-for-using-the-rest-api>
+- <https://pkg.go.dev/net/http#Client>
+- <https://pkg.go.dev/net/http#Transport>
+- <https://pkg.go.dev/net/http#ResponseController.SetWriteDeadline>
+- <https://aws.amazon.com/blogs/architecture/exponential-backoff-and-jitter/>
+- <https://docs.cloud.google.com/storage/docs/retry-strategy>
