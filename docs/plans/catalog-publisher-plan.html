@@ -87,9 +87,9 @@
   <p id="status-line">
     Status: <code data-plan-status="active">active</code>.
     Owner: this plan. Created: 2026-09-01.
-    Baseline: main @ 42b610a, publisher work @ 6c7edfbe.
+    Baseline: main @ 42b610a, publisher work @ 6c7edfbe, Starport main @ 117ad8f5.
     Proof root: <code>docs/proof/catalog-publisher/</code>.
-    Next action: author the CAT2 red verifier and capture its fail-before proof.
+    Next action: start CAT2.1 and select the native Go attestation verifier dependency.
   </p>
 
   <section id="outcome">
@@ -203,6 +203,8 @@
       <li>Provider failures retain unrelated provider observations and effective facts.</li>
       <li>A progressing bounded transfer is not canceled by an arbitrary elapsed-time default.</li>
       <li>Automatic work uses stable fleet phases, retry not-before, admission control, and one owner for shared state.</li>
+      <li>A transfer has a total bound derived from its size cap and a floor rate, and no stage waits without a bound.</li>
+      <li>Catalog-acquisition credentials come only from the deployment lookup, never from the inference keyring.</li>
     </ol>
   </section>
 
@@ -252,6 +254,14 @@
         <tr><td>CAT-F20</td><td>operations</td><td>Starmap applies a 30-second total timeout to bodies allowed to reach 16 or 64 MiB.</td><td>CAT4-CAT7</td></tr>
         <tr><td>CAT-F21</td><td>operations</td><td>Starport applies a two-minute remote body context and global elapsed request limits to long operations.</td><td>CAT8</td></tr>
         <tr><td>CAT-F22</td><td>scale</td><td>The Starmap subscriber retries within 100 ms to five seconds and can synchronize a fleet after an outage.</td><td>CAT7</td></tr>
+        <tr><td>CAT-F23</td><td>closed</td><td>The runtime review and the final review stated two <code>Sync</code> signatures and two <code>Close</code> bounds. CAT-D14 reconciles them.</td><td>CAT2</td></tr>
+        <tr><td>CAT-F24</td><td>operations</td><td>Inactivity and size caps alone allow a slow-drip transfer to hold a refresh for hours. No per-transfer total bound exists.</td><td>CAT4-CAT5</td></tr>
+        <tr><td>CAT-F25</td><td>operations</td><td><code>remote.NewClient</code> copies the caller's client, and the SSE open has no response-header bound.</td><td>CAT4, CAT7</td></tr>
+        <tr><td>CAT-F26</td><td>operations</td><td>Starport bounds a stream with the two-minute <code>MaxElapsed</code> budget and a 30-second connector header timeout outside the route middleware.</td><td>CAT8</td></tr>
+        <tr><td>CAT-F27</td><td>scale</td><td>Direct GitHub consumers meet the 60-per-hour egress limit near 60 instances per address and the token limit near 5,000. Each polling hop adds one interval to the freshness age.</td><td>CAT4, CAT7, CAT9</td></tr>
+        <tr><td>CAT-F28</td><td>architecture</td><td>The refresh lease has no TTL, renewal, or fencing token, so a lost lease can still commit.</td><td>CAT8</td></tr>
+        <tr><td>CAT-F29</td><td>dependency</td><td>Starport pins Starmap <code>v0.15.0</code>, and the ledger orders CAT8 before the CAT11 release.</td><td>CAT8, CAT11</td></tr>
+        <tr><td>CAT-F30</td><td>preserve</td><td>The Starport console reads <code>age_seconds</code> and <code>degradation_reasons</code> from the freshness document.</td><td>CAT8</td></tr>
       </tbody>
     </table>
   </section>
@@ -286,6 +296,18 @@
     <p><strong>CAT-D13, audited 2026-09-01:</strong> Use full-interval stable phases, a 15-minute cold-start spread, one-second to 15-minute decorrelated retry, retry not-before, source admission, and a distributed refresh lease.</p>
   </section>
 
+  <section id="contract-decisions">
+    <h2>Contract and transport decisions</h2>
+    <p><strong>CAT-D14, audited 2026-09-02:</strong> The runtime has one <code>Sync(ctx, ...SyncOption) (AcquisitionReport, error)</code> method. <code>Close</code> is idempotent and joins runtime-owned work within five seconds.</p>
+    <p><strong>CAT-D15, audited 2026-09-02:</strong> Each transfer has a maximum duration equal to its size cap at a 256 Kbps floor rate, with a 60-minute default. A Starmap-owned transport wrapper applies the 60-second header bound to every catalog request, including the SSE open. Peak memory is one buffered body per in-flight transfer.</p>
+  </section>
+
+  <section id="fleet-decisions">
+    <h2>Fleet and dependency decisions</h2>
+    <p><strong>CAT-D16, audited 2026-09-02:</strong> Direct GitHub consumption stops at 60 unauthenticated instances per address and near 5,000 per token. Status warns at 80 percent of the reported rate limit. The six-hour objective applies to direct consumers and SSE-push chains. Each polling hop adds one poll interval.</p>
+    <p><strong>CAT-D17, audited 2026-09-02:</strong> CAT8 pins a Starmap pseudo-version from the plan branch. CAT11 replaces the pin with the released tag.</p>
+  </section>
+
   <section id="test-matrix">
     <h2>Test matrix</h2>
     <table>
@@ -294,10 +316,11 @@
         <tr><td>Discovery</td><td>new channel, unchanged ETag, missing channel, malformed document, legacy immutable rollback</td></tr>
         <tr><td>Trust</td><td>valid workflow identity, wrong repository, wrong workflow, wrong digest, missing bundle, expired or invalid chain</td></tr>
         <tr><td>Activation</td><td>new facts, new identity with equal payload, older generation, incompatible schema, concurrent readers</td></tr>
-        <tr><td>Failure</td><td>startup outage, idle transfer, oversized body, poll outage, SSE outage, unauthorized source, partial channel update, caller cancellation, shutdown timeout</td></tr>
+        <tr><td>Failure</td><td>startup outage, idle transfer, slow-drip transfer bound, oversized body, poll outage, SSE outage, unauthorized source, partial channel update, caller cancellation, shutdown timeout</td></tr>
         <tr><td>Configuration</td><td>default public, embedded-only, custom GitHub, custom Starmap, file, enabled and interval combinations, direct migration, forbidden fallback</td></tr>
         <tr><td>Composition</td><td>public-only, operator-only, public plus operator, source server plus operator, partial provider failure, retained provenance</td></tr>
-        <tr><td>Operations</td><td>channel heartbeat, no-change check, slow progress, async refresh join and cancel, full-interval phase, 15-minute startup and outage spread, retry not-before, rate limit, source admission, lease, route idle limits, freshness, bounded metrics</td></tr>
+        <tr><td>Operations</td><td>channel heartbeat, no-change check, slow progress, async refresh join and cancel, full-interval phase, 15-minute startup and outage spread, retry not-before, rate limit, rate-limit warning, source admission, lease, route idle limits, freshness, hop age, bounded metrics</td></tr>
+        <tr><td>Determinism</td><td>injected clock, injected random source, <code>httptest</code> transports, <code>-race -count=3</code>, no sleep above 100 ms</td></tr>
         <tr><td>Deployment</td><td>offline Go, CLI filesystem store, Docker restart, source server, standalone Starport, three Starport consumers</td></tr>
       </tbody>
     </table>
@@ -310,7 +333,7 @@
       <tbody>
         <tr id="CAT0" data-status="done"><td>CAT0</td><td>Pin the publisher, credentials, source, and consumer baseline.</td><td><code>done</code></td><td><a href="../proof/catalog-publisher/cat0.md">CAT0 proof</a>.</td></tr>
         <tr id="CAT1" data-status="done"><td>CAT1</td><td>Store acquisition credentials and set the four-hour publisher cadence.</td><td><code>done</code></td><td><a href="../proof/catalog-publisher/cat1.md">CAT1 proof</a>; commits <code>cf3124c0</code> and <code>9017b83b</code>.</td></tr>
-        <tr id="CAT2" data-status="in_progress"><td>CAT2</td><td>Ratify naming, source policy, lifecycle, and the red campaign verifier.</td><td><code>in_progress</code></td><td><a href="../proof/catalog-publisher/cat2-review.md">Trust review</a>, <a href="../proof/catalog-publisher/cat2-dx.md">runtime review</a>, <a href="../proof/catalog-publisher/cat2-final-review.md">final review</a>, and <a href="../proof/catalog-publisher/cat2-network-measurements.json">network measurements</a>; owner decisions are closed.</td></tr>
+        <tr id="CAT2" data-status="done"><td>CAT2</td><td>Ratify naming, source policy, lifecycle, and the red campaign verifier.</td><td><code>done</code></td><td><a href="../proof/catalog-publisher/cat2-review.md">Trust review</a>, <a href="../proof/catalog-publisher/cat2-dx.md">runtime review</a>, <a href="../proof/catalog-publisher/cat2-final-review.md">final review</a>, <a href="../proof/catalog-publisher/cat2-network-measurements.json">network measurements</a>, <a href="../proof/catalog-publisher/cat2-audit.md">audit</a>, and <a href="../proof/catalog-publisher/cat2-fail-before.txt">fail-before</a>. <code>scripts/verify-catalog-distribution.sh</code> reports 7 passed and 41 failed of 48.</td></tr>
         <tr id="CAT2.1" data-status="todo"><td>CAT2.1</td><td>Select and prove the native Go attestation verifier dependency.</td><td><code>todo</code></td><td>Initial comparison is in the <a href="../proof/catalog-publisher/cat2-review.md">CAT2 review</a>.</td></tr>
         <tr id="CAT3" data-status="todo"><td>CAT3</td><td>Publish canonical immutable releases and the verified latest channel.</td><td><code>todo</code></td><td></td></tr>
         <tr id="CAT4" data-status="todo"><td>CAT4</td><td>Implement the native verified GitHub catalog source.</td><td><code>todo</code></td><td></td></tr>
@@ -383,8 +406,8 @@
     <ul>
       <li><strong>Problem:</strong> Go consumers cannot discover or verify the public release without <code>gh</code>.</li>
       <li><strong>Owned paths:</strong> a public GitHub source adapter, artifact verifier, transport policy, and dependency allowlist.</li>
-      <li><strong>Steps:</strong> implement CAT2.1, fetch and verify channel assets and attestations, then add progress-aware transfer, stable phases, conditional requests, cold spread, and rate-limit-aware retry.</li>
-      <li><strong>Acceptance:</strong> <code>TestGitHubSourceVerifiesCatalogLatest</code> passes with durable rollback state, bounded API use, and rejection before activation for each trust-negative case.</li>
+      <li><strong>Steps:</strong> implement CAT2.1, verify channel assets and attestations, then add progress-aware transfer, a transport wrapper, stable phases, conditional requests, cold spread, and rate-limit-aware retry.</li>
+      <li><strong>Acceptance:</strong> <code>TestGitHubSourceVerifiesCatalogLatest</code> passes with durable rollback state, bounded API use, trust-negative rejection before activation, and CAT-V21, CAT-V24, CAT-V26, and CAT-V37 green.</li>
       <li><strong>Fail-before:</strong> no production GitHub release or Sigstore verifier exists.</li>
       <li><strong>Verification:</strong> run focused race tests, fuzz parsers, pure-Go checks, and dependency review.</li>
     </ul>
@@ -394,7 +417,7 @@
       <li><strong>Problem:</strong> the low-level client cannot own source polling, fallback, health, shutdown, and acquisition serialization.</li>
       <li><strong>Owned paths:</strong> connected runtime, durable retained layers, provider outcomes, scoped evidence, source and acquisition policies, health, and consumer fixtures.</li>
       <li><strong>Steps:</strong> add <code>Open</code>, I/O methods, retained layers, provider outcomes, historical lifecycle, narrow reads, and progress-aware publication, timing, and shutdown.</li>
-      <li><strong>Acceptance:</strong> the default runtime returns embedded state, preserves layers under race, runs four-hour cycles, accepts slow progress, rejects unsafe input, and passes CAT2 timing tests.</li>
+      <li><strong>Acceptance:</strong> the default runtime returns embedded state, preserves layers under race, accepts slow progress, rejects unsafe input, reports stalls and memory, and passes timing tests.</li>
       <li><strong>Fail-before:</strong> package construction has no default verified source path.</li>
       <li><strong>Verification:</strong> run root, runtime, storage, race, and external consumer tests.</li>
     </ul>
@@ -414,26 +437,26 @@
       <li><strong>Problem:</strong> a Starmap server cannot combine an upstream Starmap source with operator acquisition.</li>
       <li><strong>Owned paths:</strong> HTTP/SSE adapter, source-chain manifest, runtime source selection, server status, health, and readiness.</li>
       <li><strong>Steps:</strong> adapt the subscriber with TLS origin policy, separate health, 15-minute initial and outage spreading, retry not-before, source admission, stable polling fallback, and cycle rejection.</li>
-      <li><strong>Acceptance:</strong> <code>TestServerCascadesVerifiedCatalogSource</code> proves upstream to source server to derived downstream activation, plus self, alias, and two-node cycle rejection.</li>
+      <li><strong>Acceptance:</strong> <code>TestServerCascadesVerifiedCatalogSource</code> proves upstream, source server, and downstream activation, plus self, alias, and two-node cycle rejection and subscriber deltas CAT-V32 to CAT-V36 green.</li>
       <li><strong>Fail-before:</strong> server start owns no upstream subscriber.</li>
-      <li><strong>Verification:</strong> run protocol, subscriber, server, concurrency, and failure tests with race detection.</li>
+      <li><strong>Verification:</strong> run protocol, subscriber, server, concurrency, and failure tests with race detection, and CAT-V25 through CAT-V36.</li>
     </ul>
 
     <h3 id="task-CAT8">CAT8 Starport scale-out adoption</h3>
     <ul>
       <li><strong>Problem:</strong> Starport selects local acquisition or remote generations and gives two operations the name <code>Sync</code>.</li>
       <li><strong>Owned paths:</strong> Starport catalog config, unified Starmap adapter, raw deployment lookuper, acceptance transaction, admin API, audit, console, and metrics.</li>
-      <li><strong>Steps:</strong> adopt settings, remove remote <code>Sync</code>, and add automatic queries, progress, cancellation, route-specific total and idle policy, lease ownership, and three-consumer tests.</li>
+      <li><strong>Steps:</strong> adopt settings, remove remote <code>Sync</code>, add automatic queries, progress, cancellation, route timing, a fenced lease, a CAT-D17 pin, and CAT-V42 through CAT-V48 green.</li>
       <li><strong>Acceptance:</strong> replicas show both provenances, support local queries or central-only policy, preserve accepted routes, enforce route-specific timing, and avoid public requests for private sources.</li>
       <li><strong>Fail-before:</strong> Starport chooses local or remote, development disables refresh, admin refresh is synchronous, status lacks freshness policy, and global timeouts cancel valid inference and streams.</li>
-      <li><strong>Verification:</strong> run Starport catalog, app, configuration, architecture, and race checks.</li>
+      <li><strong>Verification:</strong> run Starport catalog, app, configuration, architecture, and race checks from main @ 117ad8f5, and CAT-V42 through CAT-V48.</li>
     </ul>
 
     <h3 id="task-CAT9">CAT9 Compatibility and documentation</h3>
     <ul>
       <li><strong>Problem:</strong> old names, new network defaults, and deterministic offline behavior need an explicit migration contract.</li>
       <li><strong>Owned paths:</strong> glossary, README, architecture, trust, protocol, Docker, CLI, release, and migration documents.</li>
-      <li><strong>Steps:</strong> document names, defaults, timestamps, layers, policies, egress, health, direct Starport replacements, and historical release readback.</li>
+      <li><strong>Steps:</strong> document names, defaults, timestamps, layers, policies, egress, health, direct Starport replacements, historical release readback, the direct-consumer thresholds, and the hop budget.</li>
       <li><strong>Acceptance:</strong> all maintained text uses catalog-source terminology, names every network default, defines every timestamp, and contains no old Starport environment alias.</li>
       <li><strong>Fail-before:</strong> current text says remote consumption is opt-in and startup makes no request.</li>
       <li><strong>Verification:</strong> run docs generation, docs checks, technical-writing checks, and stale-name scans.</li>
@@ -453,7 +476,7 @@
     <ul>
       <li><strong>Problem:</strong> fixtures do not prove public channel operation or released consumer behavior.</li>
       <li><strong>Owned paths:</strong> hosted workflow, GitHub releases, image, Go module, and Starport dependency.</li>
-      <li><strong>Steps:</strong> dispatch publisher, verify from a clean consumer, release Starmap, update Starport, and verify public artifacts.</li>
+      <li><strong>Steps:</strong> dispatch publisher, verify from a clean consumer, release Starmap, replace the Starport pseudo-version pin with the release, and verify public artifacts.</li>
       <li><strong>Acceptance:</strong> a clean Go consumer, container, source server, and Starport instance activate the published generation.</li>
       <li><strong>Fail-before:</strong> Starmap <code>v0.15.0</code> lacks the source runtime.</li>
       <li><strong>Verification:</strong> run public downloads, attestation checks, release readback, image smoke tests, and Starport CI.</li>
@@ -478,7 +501,8 @@ integration task. Read the plan, both AGENTS.md files, the CAT2 review, catalog
 artifact and trust documents, remote protocol, workflow, and consumer seams.
 Work in /Users/jack/src/github.com/agentstation/starmap-catalog-publisher on
 branch codex/catalog-publisher-six-hour. Create a separate clean Starport
-worktree before CAT8. Preserve the existing dirty Starport worktree. Chat
+worktree before CAT8 from main @ 117ad8f5. Preserve any unrelated Starport
+change. Chat
 history is not progress state. Resume from the ledger, log, proof, and git
 state. Keep one task in_progress. Implement at the owning seam. Capture each
 fail-before result. Run every named verifier. Commit work under repository
@@ -513,6 +537,8 @@ and lease-owned, and CAT99 removes the plan.</code></pre>
         <tr><td>2026-09-01</td><td>CAT2</td><td>reconciled</td><td>Verified source, credential, persistence, timing, routing, status, and UI seams; recorded publisher measurements and corrections.</td></tr>
         <tr><td>2026-09-01</td><td>CAT1, CAT2</td><td>ratified</td><td>The owner accepted <code>ACQUISITION_ENABLED</code> and the six-hour freshness objective. Commit <code>9017b83b</code> changed publication to every four hours. The fail-before test failed as expected. After the change, the workflow test, actionlint, 8 action pins, ago, and 659 prose files passed.</td></tr>
         <tr><td>2026-09-01</td><td>CAT2</td><td>audited</td><td>Measured live asset sizes, traced Starmap and Starport transports, replaced elapsed body limits with idle-progress policy, and expanded cold-start and outage spreading to 15 minutes with lease and admission requirements.</td></tr>
+        <tr><td>2026-09-02</td><td>CAT2</td><td>audited</td><td>An independent audit recorded CAT-F23 through CAT-F30 and CAT-D14 through CAT-D17. It reconciled the <code>Sync</code> and <code>Close</code> contracts, added the transfer maximum duration, the transport wrapper, the fleet thresholds, the hop budget, the lease fencing contract, and the CAT8 pseudo-version pin.</td></tr>
+        <tr><td>2026-09-02</td><td>CAT2</td><td>completed</td><td>Authored <code>scripts/verify-catalog-distribution.sh</code> red at 7 passed, 41 failed, and 0 unverified of 48 conditions. The fail-before capture is <code>cat2-fail-before.txt</code>.</td></tr>
       </tbody>
     </table>
   </section>
