@@ -31,8 +31,10 @@ glossary_term = "error"
 # Historical reviews preserve their accepted wording and evidence.
 # Catalog YAML contains structured product data instead of developer prose.
 # The CI checkout contains external skill sources.
+# A verifier fail-before capture is machine output, not prose.
 exclude = [
   ".ci/**",
+  "docs/proof/**/*-fail-before.txt",
   "docs/reviews/**",
   "internal/embedded/catalog/**",
 ]

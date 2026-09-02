@@ -100,7 +100,8 @@ suffixes and defaults are the same.
 | `CATALOG_ACQUISITION_INTERVAL` | `4h` | Normal cadence; `0s` means startup only while enabled |
 | `CATALOG_WORKSPACE_PATH` | empty | Reviewed operator catalog input |
 | `CATALOG_STARTUP_SPREAD` | `15m` | Stable admission window for cold automatic source and acquisition work |
-| `CATALOG_TRANSFER_IDLE_TIMEOUT` | `2m` | Maximum time with no body read or response write progress; not a total transfer limit |
+| `CATALOG_TRANSFER_IDLE_TIMEOUT` | `2m` | Maximum time with no body read or response write progress. The per-transfer maximum is separate |
+| `CATALOG_TRANSFER_MAX_DURATION` | `60m` | Maximum duration of one transfer, derived from the size cap at a 256 Kbps floor rate |
 | `CATALOG_REFRESH_TIMEOUT` | `0s` | Optional complete-operation wall-clock cap; zero means no added cap |
 
 There is no `CATALOG_ACQUISITION`, `CATALOG_ACQUISITION_MODE`,
@@ -180,7 +181,8 @@ it within five seconds.
 
 The proposed options include `WithAcquisitionEnabled(bool)`,
 `WithStartupSpread(time.Duration)`,
-`WithTransferIdleTimeout(time.Duration)`, and
+`WithTransferIdleTimeout(time.Duration)`,
+`WithTransferMaxDuration(time.Duration)`, and
 `WithRefreshTimeout(time.Duration)`. A zero refresh timeout adds no total
 deadline. The caller's context always wins. Do not keep both acquisition
 enabled and acquisition-on-start options. Source and acquisition options remain
@@ -225,7 +227,7 @@ conclusion.
 | Publisher execution | No job timeout; GitHub default is 360 minutes. The latest 20 successes were 153-285 seconds, median 222.5 seconds, p95 284 seconds. | CAT3 sets `timeout-minutes: 60`. The workflow remains serialized and GitHub cancels a stuck job at the bound. |
 | Complete Starmap sync | `sync.Options` defaults to five minutes. | `Refresh` adds no deadline by default. The caller context or a nonzero configured refresh timeout owns total elapsed time. |
 | Starport catalog refresh | Two minutes. | The unified runtime uses the same no-added-total default and exposes asynchronous progress and cancellation. |
-| Ordinary provider HTTP | A 30-second `http.Client.Timeout` includes the response body. | Use 30-second connect, 30-second TLS, 60-second header, two-minute body-idle, byte, page, and record bounds. Do not set a client-wide total. |
+| Ordinary provider HTTP | A 30-second `http.Client.Timeout` includes the response body. | Use 30-second connect, 30-second TLS, 60-second header, two-minute body-idle, byte, page, and record bounds. Set a 60-minute per-transfer maximum instead of a client-wide total. |
 | Google Vertex list | One two-minute context bounds the whole paginated list. | Use the common per-request stage and idle policy plus Vertex page and record ceilings. Caller or operator context owns the whole enumeration. |
 | Provider concurrency | Maximum five. | Keep bounded. Admit cold providers across 15 minutes. A slow provider cannot hold the mutation lock or suppress completed provider layers. |
 | Sync cleanup | 30 seconds. | Keep separate from runtime shutdown; cleanup cannot extend the completed operation indefinitely. |
@@ -347,6 +349,15 @@ refresh owner. Other replicas consume accepted state. Large fleets use a
 central Starmap source and SSE. One fleet owner polls provider status pages and
 reconciles shared secrets when possible.
 
+The lease has a 90-second time to live. The owner renews it every 30 seconds.
+Acquisition returns a lease epoch. The owner carries the epoch in the run
+record and in the accepted-head commit. The compare-and-swap rejects a stale
+epoch.
+
+An owner that loses the lease cancels its run within one renewal interval. It
+discards the run results, reports `lease_lost`, and retries at the next phase.
+A deployment without shared storage needs no lease.
+
 No fixed jitter window can make an unbounded fleet safe. The minimum admission
 window is:
 
@@ -366,6 +377,18 @@ can place immutable payloads behind a CDN or object store. Public local setup
 does not require a GitHub token. Large fleets use an optional source token or,
 preferably, the central Starmap pattern. This pattern stops one NAT from
 spending GitHub's unauthenticated hourly budget for every replica.
+
+A direct GitHub consumer budgets its requests from the `x-ratelimit-limit`,
+`x-ratelimit-used`, `x-ratelimit-remaining`, and `x-ratelimit-reset` headers.
+The runtime records the measured requests per refresh cycle. The fleet
+capacity is the remaining budget minus a reserved headroom, divided by the
+measured requests per cycle. Status warns when `used` passes 80 percent of
+`limit`.
+
+The GitHub documentation states ceilings such as 60 unauthenticated requests
+per hour per address and 5,000 per token. A ceiling is not a safe threshold.
+A fleet above its budget uses authenticated conditional polling or the central
+Starmap source.
 
 ## Deployment journeys
 

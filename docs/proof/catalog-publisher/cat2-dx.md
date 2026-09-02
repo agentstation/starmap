@@ -311,6 +311,7 @@ The suffixes and defaults are identical.
 | `CATALOG_WORKSPACE_PATH` | empty | reviewed operator catalog input |
 | `CATALOG_STARTUP_SPREAD` | `15m` | stable cold automatic-work admission window |
 | `CATALOG_TRANSFER_IDLE_TIMEOUT` | `2m` | maximum time without body read or response write progress |
+| `CATALOG_TRANSFER_MAX_DURATION` | `60m` | maximum duration of one transfer, derived from the size cap at a 256 Kbps floor rate |
 | `CATALOG_REFRESH_TIMEOUT` | `0s` | optional complete-operation cap; zero adds no deadline |
 
 There is no `CATALOG_ACQUISITION`, `CATALOG_ACQUISITION_ON_START`, acquisition
