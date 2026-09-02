@@ -231,7 +231,7 @@ conclusion.
 | Concern | Current live behavior | Target owner and cancellation |
 | --- | --- | --- |
 | Publisher cadence | Main runs daily at `03:17` UTC. Commit `9017b83b` changes the plan branch to minute 17 every four hours. | Keep the four-hour cadence. GitHub owns dispatch and can delay or drop a run. |
-| Publisher execution | No job timeout; GitHub default is 360 minutes. The latest 20 successes were 153-285 seconds, median 222.5 seconds, p95 284 seconds. | CAT3 sets `timeout-minutes: 60`. The workflow remains serialized and GitHub cancels a stuck job at the bound. |
+| Publisher execution | No job timeout; GitHub default is 360 minutes. The latest 20 successes were 153-285 seconds, median 222.5 seconds, p95 284 seconds. | CAT3 sets `timeout-minutes: 90` on the job and `timeout-minutes: 75` on the publisher step. The 60-minute transfer bound nests inside the step, and the step nests inside the job, so each outer limit keeps headroom. The workflow remains serialized and GitHub cancels a stuck job at the bound. |
 | Complete Starmap sync | `sync.Options` defaults to five minutes. | `Refresh` adds no deadline by default. The caller context or a nonzero configured refresh timeout owns total elapsed time. |
 | Starport catalog refresh | Two minutes. | The unified runtime uses the same no-added-total default and exposes asynchronous progress and cancellation. |
 | Ordinary provider HTTP | A 30-second `http.Client.Timeout` includes the response body. | Use 30-second connect, 30-second TLS, 60-second header, two-minute body-idle, byte, page, and record bounds. Set a 60-minute per-transfer maximum instead of a client-wide total. |
@@ -622,9 +622,9 @@ historical tag readback. Transport cases prove slow progress, idle failure,
 size rejection, caller cancellation, stable spread, retry not-before, and lease
 ownership.
 
-CAT3 adds the canonical release and channel document, advances the no-change
-heartbeat, uses the selected cadence at minute 17, and sets a 60-minute job
-timeout.
+CAT3 adds the canonical release and channel document and advances the
+no-change heartbeat. It uses the selected cadence at minute 17 and nests the
+90-minute job and 75-minute step limits above the 60-minute transfer bound.
 
 CAT4 implements conditional GitHub discovery and Sigstore verification. It
 adds durable sequence and ETag state, progress-aware transfer, optional

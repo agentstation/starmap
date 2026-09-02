@@ -35,7 +35,8 @@ the only catalog configuration reference.
 10. The three-credential separation rule appears only in architecture text.
 11. No alerting guidance covers catalog freshness.
 12. No document shows a topology diagram.
-13. No text explains a replicated central server or its lease.
+13. No text explains a replicated central server, its lease, or the store
+    that active-active servers require.
 
 ## Documents
 
@@ -71,34 +72,42 @@ freshness age, its egress, and its failure behavior.
    disables acquisition. This design is not air-gapped, because the central
    server still reaches the internet.
 5. Air-gapped mirror. No host inside the boundary reaches GitHub or a
-   provider. An operator moves the verified release artifact, or an OCI
-   mirror, across the boundary on a schedule. The central server serves the
-   transferred artifact from its workspace, and every host disables
-   acquisition. The freshness age follows the transfer cadence.
+   provider. The runtime has no OCI source, so an external process outside
+   the boundary pulls the artifact and its verification bundle. The
+   operator transfers both across the boundary on a schedule. The operator
+   then verifies the bundle offline with the CAT4 verification command and
+   exposes the artifact through the supported `file` source. Every host
+   disables acquisition, and the freshness age follows the transfer cadence.
 
-The replicated variant applies to designs 3, 4, and 5. Two or more central
-servers share one storage volume behind one load balancer. The CAT-D18 lease
-fences the durable generation commit, so one server collects at a time. The
-fleet subscribes through the balancer and reconnects on failover. The guide
-also shows the active and passive form with one standby server.
+The replicated variant applies to the three central-server designs. Two or
+more central servers run active-active behind one load balancer only on a
+lease-capable shared store. That store provides the CAT-D18 lease and a conditional
+compare-and-swap on the generation record. A plain shared filesystem volume
+provides neither, so the guide limits it to the single-server design and to
+the active and passive form. In that form one standby starts only
+after the active server stops. The fleet subscribes through the balancer and reconnects
+on failover.
 
 ## Central server runbook
 
 The Starmap runbook covers, in order:
 
-1. Start `starmap serve --auth` with a persistent store and a health probe.
-2. Provide acquisition credentials and separate them from the server API key
+1. Select the store. A single server uses a persistent volume. Active-active
+   servers use a store with the CAT-D18 lease and conditional writes.
+2. Start `starmap serve --auth` with the store and a health probe.
+3. Provide acquisition credentials and separate them from the server API key
    and from inference credentials.
-3. Set the acquisition interval and the source policy.
-4. Size the server for the fleet with the connection count and the SSE
+4. Set the acquisition interval and the source policy.
+5. Size the server for the fleet with the connection count and the SSE
    heartbeat.
-5. Point each Starport at the server with the source URL and the API key.
-6. Rotate the API key and read the health and readiness routes.
-7. Run the pair on Kubernetes with the example manifests in `docs/DOCKER.md`.
+6. Point each Starport at the server with the source URL and the API key.
+7. Rotate the API key and read the health and readiness routes.
+8. Run the pair on Kubernetes with the example manifests in `docs/DOCKER.md`.
 
-The Kubernetes example holds two Deployments. The Starmap Deployment mounts
-the shared volume and runs `starmap serve --auth`. The Starport Deployment
-sets `STARPORT_CATALOG_SOURCE_URL` to the Starmap Service.
+The Kubernetes example holds two Deployments and one Service. The Starmap
+Deployment mounts a persistent volume and runs `starmap serve --auth`. The
+Starport Deployment sets `STARPORT_CATALOG_SOURCE_URL` to the Starmap
+Service. The example is a single-server design, and the runbook says so.
 
 ## Configuration reference
 
@@ -116,9 +125,12 @@ have no runtime alias.
   topology and links the guide.
 - CAT-V58 checks that the operator guide and `.env.example` document every
   canonical `STARPORT_CATALOG_*` name and no removed name.
-- CAT-V59 checks that the Starmap runbook exists with its seven sections and
-  that the Starmap README links it. It also checks that `docs/DOCKER.md` holds
-  the Kubernetes pair.
+- CAT-V59 checks that the Starmap runbook exists with its eight sections and
+  that the Starmap README links it.
+- CAT-V64 parses the Kubernetes YAML in `docs/DOCKER.md` and checks the
+  structure. The check requires two Deployments with different names, one
+  Service, and a Starport container whose source URL names that Service. A
+  string count is not enough.
 
 Documentation conditions are declarative because prose has no runtime. The
 verifier states this in its comment.

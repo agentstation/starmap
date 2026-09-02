@@ -2,7 +2,8 @@
 
 Date: 2026-09-02. Owner task: CAT8.1. Decision: CAT-D19. The third review
 corrected the authorization split, the status semantics, the diagram, and the
-placement on 2026-09-02.
+placement. The fourth review corrected the safe response projection, the chip
+glyphs, the age definition, and the shell geometry.
 
 This record designs the Starport console catalog surface from first
 principles. It replaces the freshness bar and the overview card with one
@@ -22,10 +23,16 @@ The bar and the card spend a full row and a half card on four facts. The bar
 flags a catalog older than seven days with the hard-coded
 `STALE_AFTER_SECONDS` rule in `FreshnessBar.tsx`. Neither surface shows the
 catalog source, the derivation layers, the acquisition schedule, or the next
-update. The console reads none of `source_observations`, `sync_run_id`,
-`validation`, or `payload_checksum` from `GET /api/v1/catalog`. The Overview,
-Models, and Chat pages each answer the freshness question in a different
-place, and Chat does not answer it.
+update. The Overview, Models, and Chat pages each answer the freshness
+question in a different place, and Chat does not answer it.
+
+The safe route `GET /api/v1/catalog` writes the Go type `SnapshotMetadata`
+from `internal/catalog/freshness.go` directly. That type carries
+`validation`, `source_observations`, `sync_run_id`, `degradation_reasons`,
+`degraded`, `completeness`, `manifest_unavailable_reason`, and
+`payload_size_bytes`. A `models:read` session receives every one of them
+today. The console reads `age_seconds` and `degradation_reasons` from that
+response.
 
 ## Principles
 
@@ -42,8 +49,9 @@ place, and Chat does not answer it.
 6. Authorization shapes the surface. A `models:read` session sees the
    effective catalog. An admin session also sees the sources, the schedule,
    the provider outcomes, and the actions.
-7. Each status concept has its own element. Usability, freshness, fallback,
-   source health, and active work never share one indicator.
+7. Each status concept has its own element. Usability, authorization,
+   freshness, degradation, fallback, source health, and active work never
+   share one glyph.
 
 ## Authorization boundary
 
@@ -55,14 +63,50 @@ or acquisition field to the safe route.
 | Concept | Route | Scope |
 | --- | --- | --- |
 | effective generation ID, digest, generated time, activated time, and age | `GET /api/v1/catalog` | `models:read` |
+| published time and channel update time of the effective generation | `GET /api/v1/catalog` | `models:read` |
 | provider, model, and offering counts | `GET /api/v1/catalog` | `models:read` |
 | server freshness verdict and policy age | `GET /api/v1/catalog` | `models:read` |
 | changes between two generations | `GET /api/v1/catalog/changes` | `models:read` |
 | selected source identity and directly observed source health | `GET /api/v1/admin/catalog/status` | admin |
 | upstream-reported hop chain and layer generations | `GET /api/v1/admin/catalog/status` | admin |
 | fallback and retained last-known-good state | `GET /api/v1/admin/catalog/status` | admin |
+| degradation, validation, and the last check time | `GET /api/v1/admin/catalog/status` | admin |
 | acquisition policy, schedule, active run, and provider outcomes | `GET /api/v1/admin/catalog/status` | admin |
 | refresh start, join, and cancel | the admin refresh routes | admin |
+
+## Safe response projection
+
+The safe route stops writing `SnapshotMetadata`. CAT8.1 adds an explicit
+response type, `CatalogSummary`, in the Starport `dto` package. The handler
+projects the runtime state into that type. A field reaches the response only
+when the type names it.
+
+| Field | Meaning |
+| --- | --- |
+| `generation_id` | the effective generation ID |
+| `catalog_digest` | the normalized fact identity |
+| `payload_checksum` | the exact byte identity |
+| `catalog_sequence` and `availability_revision` | the existing ordering values |
+| `generated_at` and `generation_age_seconds` | the generation time and the age since it |
+| `published_at` and `channel_updated_at` | the release time and the last channel verification time |
+| `activated_at` | the time this Starport activated the generation |
+| `counts` | `providers`, `models`, and `offerings` |
+| `freshness` | `verdict`, `reference`, `policy_age_seconds`, `max_age_seconds`, and `evaluated_at` |
+
+The `freshness.verdict` is `fresh` or `stale`. The `freshness.reference`
+names the time the policy measures, `channel_updated_at` for a channel source
+and `generated_at` otherwise. The policy age is the age since that reference.
+The generation age and the policy age are different numbers.
+
+These fields never reach the safe response: `validation`,
+`source_observations`, `sync_run_id`, `degradation_reasons`, `degraded`,
+`completeness`, `manifest_available`, `manifest_unavailable_reason`, and
+`payload_size_bytes`. The admin status route carries them.
+
+Without an effective catalog the safe route answers `503`. The body is the
+existing error shape with the message "No catalog is available." and no
+internal detail. The response sets `Retry-After`. The route never maps that
+state to `500`.
 
 ## Catalog chip
 
@@ -72,17 +116,26 @@ every route, including Chat.
 Content:
 
 - Every session: a freshness dot, the label `Catalog`, the short generation ID
-  in the mono face, and the age. Example: `● Catalog 01J9…K3Q 2h`.
+  in the mono face, and the policy age. Example: `● Catalog 01J9…K3Q 2h`.
 - Admin session: the same content, plus separate pills and a trailing activity
   icon when the admin status document reports them.
 
+The displayed age is the freshness-policy age from `freshness.policy_age_seconds`.
+The identity section of the panel shows the generation age separately.
+
 Status elements, one per concept:
 
-- Usability. Without an effective catalog the chip shows the error dot and the
-  label `No catalog`. This is the only state without a generation ID.
-- Freshness. The dot takes the success color for `fresh` and the warning color
-  for `stale`. The verdict comes from the server. The age text also takes the
-  warning color when stale.
+- Freshness. The dot means freshness and nothing else. It takes the success
+  color for `fresh` and the warning color for `stale`. The verdict comes from
+  the server. The age text also takes the warning color when stale.
+- Usability. Without an effective catalog the chip shows the unavailable glyph
+  and the label `No catalog`. The glyph is a slashed circle in the error color.
+  No dot renders. This state has no generation ID and no age.
+- Authorization. After a `401` or `403` from the safe route, the chip shows
+  the lock glyph and the label `Catalog`. The glyph is neutral. No dot renders.
+- Degradation, admin only. A `degraded` pill in the warning tint appears
+  while the admin status document reports a failed provider outcome. It also
+  appears for a degraded overall health. The tooltip names the failed count.
 - Fallback, admin only. A `fallback` pill in the warning tint appears while the
   runtime serves a retained last-known-good generation.
 - Source health, admin only. A `source down` pill in the error tint appears
@@ -93,19 +146,26 @@ Status elements, one per concept:
   acquisition or a refresh runs. It never replaces the dot. The tooltip names
   the active stage.
 
+Every glyph differs by shape as well as by color. The freshness dot is a
+filled circle. The stale dot carries a short exclamation mark inside it. The
+unavailable glyph is a slashed circle. The authorization glyph is a lock.
+
 Size and placement:
 
 - The chip is 32 px tall on a wide screen, one line, with no card border in
   the healthy state.
 - The shell owns a 40 px header slot at the top of `main`, after the
   open-gateway banner. The slot is right-aligned and holds the chip.
-- The page container drops its top padding from 32 px to 8 px. The space above
-  a page heading stays the same, so no page gains vertical space.
+- On a wide screen the page container keeps 8 px of top padding instead of
+  32 px. The slot and the padding total 48 px above the first heading. The
+  layout therefore adds 16 px above every page heading on a wide screen.
 - The slot adds its height to `--app-banner`. The full-height Chat route reads
   that variable and lays out below the slot.
-- On a small screen the chip becomes a 44 px icon control, `size-11`, in the
-  small-screen top bar next to Search. It shows the dot alone. The label and
-  the tooltip carry the rest.
+- On a small screen no slot renders and the page keeps its 24 px top padding.
+  The chip becomes a 44 px icon control, `size-11`, in the existing 48 px
+  top bar next to Search. The small screen therefore adds no vertical space.
+- The small-screen control shows the status glyph alone, with its shape and
+  color. The `aria-label` carries the label, the ID, the age, and the verdict.
 - The panel width is `min(480px, 100vw)`.
 
 Interaction:
@@ -114,8 +174,8 @@ Interaction:
   tooltip sentence.
 - Click, Enter, and Space open the panel. Escape closes it. Focus returns to
   the chip on close.
-- The tooltip is one sentence with the full generation ID, the age, the
-  freshness verdict, and the policy age.
+- The tooltip is one sentence with the full generation ID, the policy age, the
+  freshness verdict, and the policy maximum.
 
 The Overview status hero keeps the model count. The Models page keeps its
 filter row and its count. CAT8.1 deletes the freshness bar and the catalog card.
@@ -125,9 +185,11 @@ filter row and its count. CAT8.1 deletes the freshness bar and the catalog card.
 The panel is a right-side sheet with flat sections and hairline dividers. It
 opens from the chip and closes with Escape.
 
-1. Identity, `models:read`. Full generation ID with a copy control, catalog
-   digest, generated time, activated time, and age. The section also shows the
-   server freshness verdict and the provider, model, and offering counts.
+1. Identity, `models:read`. Full generation ID with a copy control and the
+   catalog digest. Generated time with the generation age, published time,
+   channel update time, and activated time. The freshness verdict with the
+   policy age and the policy maximum. The provider, model, and offering
+   counts.
 2. Changes, `models:read`. The existing changes content moves here, with the
    from and to generations and the added, removed, and repriced rows.
 3. Layers, admin. The derivation figure, described below.
@@ -135,9 +197,12 @@ opens from the chip and closes with Escape.
 5. Schedule, admin. Acquisition policy, last attempt, last success, and the
    next attempt as an absolute time and a relative time. An active run shows
    the stage, the bytes or pages completed, and the last progress time. Source
-   polling shows the next check or the connected SSE stream.
-6. Providers, admin. Provider outcomes with safe reason codes. Neutral skipped
-   rows collapse by default.
+   polling shows the last check time and either the connected SSE stream or
+   the next conditional poll. A connected stream shows its last frame time.
+   The runtime schedules no fallback poll during a connected stream.
+6. Providers, admin. Provider outcomes with the safe reason codes from
+   `cat2-final-review.md`, for example `skipped_not_configured`. Neutral
+   skipped rows collapse by default.
 7. Actions, admin. `Refresh catalog`, `Cancel refresh`, and `Copy status` for
    the sanitized status document.
 
@@ -162,6 +227,10 @@ The layers figure is a vertical list of four nodes in composition order:
 4. Effective catalog. This Starport, with the effective generation ID and the
    activated time.
 
+The effective generation ID differs from the upstream generation ID whenever
+local observations exist. The figure shows both IDs in full so the difference
+is visible.
+
 A fallback state marks the selected upstream node `retained` and names the
 retained generation.
 
@@ -185,24 +254,18 @@ fallback state.
 
 ## No-authorization state
 
-When the safe route answers `401` or `403`, the chip shows the neutral dot and
+When the safe route answers `401` or `403`, the chip shows the lock glyph and
 the label `Catalog` without an ID. The tooltip reads "This session cannot read
 the catalog." The shell makes one request and stops polling until the session
 changes. It never retries in a loop.
 
-## Data contract additions
+## Related surfaces owned by CAT8
 
-The safe route `GET /api/v1/catalog` adds two fields:
-
-| Field | Meaning |
-| --- | --- |
-| `freshness` | the server verdict, `fresh` or `stale`, and the policy age |
-| `activated_at` | the time this Starport activated the generation |
-
-The admin route `GET /api/v1/admin/catalog/status` carries the selected
-source, the layer generations, the upstream-reported chain, the fallback
-state, the schedule, and the provider outcomes. The console reads them only
-from that route.
+The accepted contract also lists candidate, accepted, rejected, and pending
+route-validation state, model and offering provenance, catalog lifecycle,
+credential-specific availability, and routing state. Those facts belong to
+the model and provider pages, not to the chip. CAT8 owns them with the named
+tests CAT-V62 and CAT-V63.
 
 ## Alternatives considered
 
@@ -218,14 +281,22 @@ from that route.
   small-screen top bar.
 - One merged `fresh`, `stale`, `degraded`, or `fallback` value. Rejected.
   Usability, freshness, health, fallback, and active work are independent.
+- One dot for every state. Rejected. A dot that also means unavailable or
+  unauthorized no longer means freshness.
+- Serialize `SnapshotMetadata` and delete fields. Rejected. A deny list fails
+  open when the type gains a field. An allowlist fails closed.
 
 ## Verification
 
 - CAT-V50 runs the chip test. The chip renders one element per status concept.
-  A `models:read` render holds no admin pill and no activity icon.
-- CAT-V51 runs the Starport HTTP boundary test in `internal/server`. The safe
-  route serializes the freshness verdict and no source, chain, or acquisition
-  field. The admin status route requires the admin scope and serializes them.
+  A `models:read` render holds no admin pill and no activity icon. The
+  unavailable and authorization states render their glyphs and no dot.
+- CAT-V51 runs the Starport HTTP boundary tests in `internal/server`. The
+  first test fills every operational field with a sentinel value and proves
+  that the safe response holds no sentinel. The second test proves that a
+  missing catalog answers a sanitized `503`. The third test proves that the
+  admin status route requires the admin scope and serializes the operational
+  fields.
 - CAT-V52 runs the panel test. The layers figure always holds the embedded
   baseline. The hop chain labels the direct hop and each upstream-reported
   hop. The schedule names the next update.

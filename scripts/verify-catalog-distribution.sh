@@ -111,8 +111,14 @@ check CAT-V01 'the workflow publishes catalog-latest and no catalog-semantic tag
 	bash -c "grep -qsE 'catalog-latest' '$WORKFLOW' && ! grep -qsE 'catalog-semantic-' '$WORKFLOW'"
 check CAT-V02 'the workflow schedule runs every four hours at minute 17' \
 	file_has "cron: *['\"]?17 \*/4 \* \* \*" "$WORKFLOW"
-check CAT-V03 'the workflow job stops after 60 minutes' \
-	file_has 'timeout-minutes: *60' "$WORKFLOW"
+# The limits nest: 60-minute transfer, 75-minute publisher step, 90-minute job.
+workflow_timeout_hierarchy() {
+	file_has 'timeout-minutes: *90' "$WORKFLOW" &&
+		file_has 'timeout-minutes: *75' "$WORKFLOW" &&
+		! file_has 'timeout-minutes: *60' "$WORKFLOW"
+}
+check CAT-V03 'the workflow job stops after 90 minutes and the publisher step after 75 minutes' \
+	workflow_timeout_hierarchy
 check CAT-V04 'the workflow serializes runs and cancels no run in progress' \
 	file_has 'cancel-in-progress: *false' "$WORKFLOW"
 starmap_test CAT-V05 'the channel document advances channel_updated_at without a new catalog generation' \
@@ -247,8 +253,16 @@ starport_console_test() {
 }
 starport_console_test CAT-V50 'the catalog chip renders one element per status concept and a models:read render holds no admin pill or activity icon' \
 	src/components/shell/CatalogChip.test.tsx
-starport_test CAT-V51 'the safe catalog route serializes the freshness verdict and no source field, and the admin status route requires the admin scope' \
-	./internal/server TestCatalogRoutesSplitSafeMetadataFromAdminStatus
+# The safe route projects an allowlisted summary. The first test fills every
+# operational field with a sentinel value and proves that none reaches the
+# response. The second proves the sanitized 503. The third proves the admin scope.
+safe_catalog_boundary() {
+	go_test_passes "$STARPORT" ./internal/server TestSafeCatalogRouteProjectsAllowlistedSummaryOnly &&
+		go_test_passes "$STARPORT" ./internal/server TestSafeCatalogRouteAnswersMissingCatalogWithSanitized503 &&
+		go_test_passes "$STARPORT" ./internal/server TestAdminCatalogStatusRequiresAdminScope
+}
+starport_check CAT-V51 'the safe catalog route serializes only the allowlisted summary with no sentinel operational value, answers a missing catalog with a sanitized 503, and the admin status route requires the admin scope' \
+	safe_catalog_boundary
 starport_console_test CAT-V52 'the catalog panel always draws the embedded baseline, labels direct and upstream-reported hops, and names the next update' \
 	src/components/shell/CatalogPanel.test.tsx
 starport_console_test CAT-V53 'the shell renders the chip on Overview, Models, and Chat, uses the 44 px small-screen control, and bounds the panel to the viewport' \
@@ -293,18 +307,63 @@ starport_check CAT-V58 'the Starport operator guide and environment example docu
 
 # Starmap documentation: the central server runbook and the Kubernetes pair (CAT-D20, CAT9.2 owns it).
 runbook_complete() {
-	local runbook=docs/ENTERPRISE_CATALOG_SERVER.md docker=docs/DOCKER.md
+	local runbook=docs/ENTERPRISE_CATALOG_SERVER.md
 	[ -f "$runbook" ] &&
-		[ "$(grep -c '^## ' "$runbook")" -ge 7 ] &&
+		[ "$(grep -c '^## ' "$runbook")" -ge 8 ] &&
 		file_has 'starmap serve --auth' "$runbook" &&
 		file_has 'STARPORT_CATALOG_SOURCE_URL' "$runbook" &&
 		file_has 'DOCKER.md' "$runbook" &&
-		grep -qs "$runbook" README.md &&
-		[ "$(grep -c '^kind: Deployment' "$docker")" -ge 2 ] &&
-		file_has 'STARPORT_CATALOG_SOURCE_URL' "$docker"
+		grep -qs "$runbook" README.md
 }
-check CAT-V59 'the Starmap runbook has its seven sections, the README links it, and the Docker document holds the Kubernetes pair' \
+check CAT-V59 'the Starmap runbook has its eight sections and the README links it' \
 	runbook_complete
+
+# Runtime status and provider retention: accepted behavior of the runtime (CAT-D14, CAT-D17, owned by CAT5).
+starmap_test CAT-V60 'the runtime status reports usability, freshness, fallback, direct source health, and upstream-reported health as independent values' \
+	. TestRuntimeStatusKeepsUsabilityFreshnessFallbackAndHealthIndependent
+starmap_test CAT-V61 'a partial provider failure publishes the succeeded layers and the failed provider retains its own last-known-good observation' \
+	./acquisition/... TestSyncPartialFailurePublishesAndRetainsProviderLastKnownGood
+
+# Starport model and provider surfaces: route-validation state and per-model facts (CAT-D17, CAT8 owns them).
+starport_test CAT-V62 'the admin catalog status reports candidate, accepted, rejected, and pending route-validation state as distinct values' \
+	./internal/server TestAdminCatalogStatusReportsRouteValidationState
+starport_console_test CAT-V63 'the model detail shows lifecycle, credential-specific availability, provenance, and routing state as separate elements' \
+	src/components/models/ModelDetail.lifecycle.test.tsx
+
+# Kubernetes example: a structural parse of the manifests in docs/DOCKER.md (CAT-D20, CAT9.2 owns it).
+# The check reports UNVERIFIED without python3 and PyYAML.
+kubernetes_pair_parses() {
+	python3 - docs/DOCKER.md <<'PY'
+import re, sys
+import yaml
+text = open(sys.argv[1], encoding="utf-8").read()
+section = text.split("\n## Kubernetes", 1)
+if len(section) < 2:
+    sys.exit(1)
+body = section[1].split("\n## ", 1)[0]
+blocks = re.findall(r"```ya?ml\n(.*?)```", body, re.S)
+docs = [d for block in blocks for d in yaml.safe_load_all(block) if isinstance(d, dict)]
+deployments = {d["metadata"]["name"] for d in docs if d.get("kind") == "Deployment"}
+services = {d["metadata"]["name"] for d in docs if d.get("kind") == "Service"}
+if len(deployments) < 2 or len(services) != 1:
+    sys.exit(1)
+service = next(iter(services))
+for d in docs:
+    if d.get("kind") != "Deployment":
+        continue
+    for container in d["spec"]["template"]["spec"]["containers"]:
+        for env in container.get("env", []):
+            if env.get("name") == "STARPORT_CATALOG_SOURCE_URL" and service in str(env.get("value", "")):
+                sys.exit(0)
+sys.exit(1)
+PY
+}
+if python3 -c 'import yaml' >/dev/null 2>&1; then
+	check CAT-V64 'the Docker document Kubernetes example parses as two Deployments and one Service, and the Starport container names that Service in its source URL' \
+		kubernetes_pair_parses
+else
+	record UNVERIFIED CAT-V64 'the Docker document Kubernetes example parses as two Deployments and one Service, and the Starport container names that Service in its source URL (no python3 with PyYAML)'
+fi
 
 printf 'Summary: %d passed, %d failed, %d unverified.\n' "$pass" "$fail" "$unverified"
 [ "$fail" -eq 0 ] && [ "$unverified" -eq 0 ]
