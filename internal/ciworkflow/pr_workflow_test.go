@@ -388,10 +388,8 @@ func TestLocalBuildVersionIgnoresCatalogGenerationTags(t *testing.T) {
 	}
 
 	goreleaser := readFixture(t, "../../.goreleaser.yaml")
-	for _, catalogTag := range []string{"catalog-payload-*", "catalog-semantic-*"} {
-		if !strings.Contains(goreleaser, catalogTag) {
-			t.Fatalf("GoReleaser does not ignore catalog generation tag %q", catalogTag)
-		}
+	if !strings.Contains(goreleaser, `- "catalog-*"`) {
+		t.Fatal("GoReleaser does not ignore the catalog release and channel namespace")
 	}
 }
 

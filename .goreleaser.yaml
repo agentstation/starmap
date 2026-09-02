@@ -1,11 +1,11 @@
 version: 2
 
 git:
-  # Catalog generations have their own immutable prerelease namespace and must
-  # never participate in application SemVer discovery or changelog boundaries.
+  # Catalog releases and the catalog-latest channel have their own prerelease
+  # namespace. They never participate in application SemVer discovery or
+  # changelog boundaries. The pattern covers the two retired namespaces.
   ignore_tags:
-    - "catalog-payload-*"
-    - "catalog-semantic-*"
+    - "catalog-*"
 
 before:
   hooks:

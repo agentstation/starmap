@@ -11,6 +11,7 @@ import (
 	"io"
 	"os"
 	"path/filepath"
+	"sort"
 	"strings"
 
 	"github.com/agentstation/starmap/pkg/catalogs"
@@ -62,6 +63,27 @@ func run(args []string, output io.Writer) error {
 		"",
 		"filesystem store containing the exact committed generation to stage",
 	)
+	channelReleaseDir := flags.String(
+		"channel-release-dir",
+		"",
+		"advance the stable channel over this verified immutable release directory",
+	)
+	channelTag := flags.String("channel-tag", "", "immutable release tag that the channel selects")
+	channelPublishedAt := flags.String("channel-published-at", "", "RFC 3339 publication time of the immutable release")
+	channelUpdatedAt := flags.String("channel-updated-at", "", "RFC 3339 channel verification time; the default is now")
+	channelCurrent := flags.String("channel-current", "", "current channel document; an absent file is the first publication")
+	channelOut := flags.String("channel-out", "", "path that receives the canonical channel document")
+	channelAttested := flags.Bool(
+		"channel-attestation-verified",
+		false,
+		"the immutable release attestation verified before this promotion",
+	)
+	rollbackCandidates := flags.String(
+		"rollback-candidates",
+		"",
+		"GitHub release listing to search for readable immutable catalog releases",
+	)
+	excludeTag := flags.String("exclude-tag", "", "release tag to omit from the rollback candidates")
 	if err := flags.Parse(args); err != nil {
 		return err
 	}
@@ -74,27 +96,51 @@ func run(args []string, output io.Writer) error {
 			outputDirExplicit = true
 		}
 	})
-	if strings.TrimSpace(*inspectDir) != "" {
-		if outputDirExplicit || strings.TrimSpace(*generationStore) != "" || strings.TrimSpace(*verifyDir) != "" {
-			return &pkgerrors.ValidationError{
-				Field:   "catalog_release.mode",
-				Message: "inspect-dir cannot be combined with output-dir, generation-store, or verify-dir",
-			}
+	mode, err := selectMode(map[string]string{
+		"inspect-dir":         *inspectDir,
+		"verify-dir":          *verifyDir,
+		"channel-release-dir": *channelReleaseDir,
+		"rollback-candidates": *rollbackCandidates,
+	})
+	if err != nil {
+		return err
+	}
+	if mode != "" && (outputDirExplicit || strings.TrimSpace(*generationStore) != "") {
+		return &pkgerrors.ValidationError{
+			Field:   "catalog_release.mode",
+			Value:   mode,
+			Message: "cannot be combined with output-dir or generation-store",
 		}
+	}
+	switch mode {
+	case "inspect-dir":
 		report, err := inspectReleaseDirectory(strings.TrimSpace(*inspectDir))
 		if err != nil {
 			return err
 		}
 		return json.NewEncoder(output).Encode(report)
-	}
-	if strings.TrimSpace(*verifyDir) != "" {
-		if outputDirExplicit || strings.TrimSpace(*generationStore) != "" {
-			return &pkgerrors.ValidationError{
-				Field:   "catalog_release.mode",
-				Message: "verify-dir cannot be combined with output-dir or generation-store",
-			}
-		}
+	case "verify-dir":
 		report, err := verifyReleaseDirectory(strings.TrimSpace(*verifyDir))
+		if err != nil {
+			return err
+		}
+		return json.NewEncoder(output).Encode(report)
+	case "channel-release-dir":
+		report, err := stageChannelDocument(channelOptions{
+			releaseDirectory:    *channelReleaseDir,
+			tag:                 *channelTag,
+			publishedAt:         *channelPublishedAt,
+			updatedAt:           *channelUpdatedAt,
+			currentDocument:     *channelCurrent,
+			outputPath:          *channelOut,
+			attestationVerified: *channelAttested,
+		})
+		if err != nil {
+			return err
+		}
+		return json.NewEncoder(output).Encode(report)
+	case "rollback-candidates":
+		report, err := selectRollbackCandidates(*rollbackCandidates, *excludeTag)
 		if err != nil {
 			return err
 		}
@@ -138,6 +184,30 @@ func run(args []string, output io.Writer) error {
 		ArchiveChecksum:  assets.ArchiveChecksum,
 		Directory:        assets.Directory, Files: assets.Files,
 	})
+}
+
+// selectMode returns the single selected command mode. An empty result stages a
+// committed generation. Two selected modes return a typed validation error.
+func selectMode(modes map[string]string) (string, error) {
+	names := make([]string, 0, len(modes))
+	for name, value := range modes {
+		if strings.TrimSpace(value) != "" {
+			names = append(names, name)
+		}
+	}
+	switch len(names) {
+	case 0:
+		return "", nil
+	case 1:
+		return names[0], nil
+	default:
+		sort.Strings(names)
+		return "", &pkgerrors.ValidationError{
+			Field:   "catalog_release.mode",
+			Value:   names,
+			Message: "only one mode is supported at a time",
+		}
+	}
 }
 
 func verifyReleaseDirectory(directory string) (releaseReport, error) {
