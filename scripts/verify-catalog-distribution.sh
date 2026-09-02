@@ -245,27 +245,35 @@ starport_console_test() {
 	fi
 	check "$id" "$desc" bash -c "cd '$STARPORT/console' && [ -f '$file' ] && pnpm vitest run --reporter=dot '$file'"
 }
-starport_console_test CAT-V50 'the shell catalog chip shows the state, the generation, and the age, and opens the panel' \
+starport_console_test CAT-V50 'the catalog chip renders one element per status concept and a models:read render holds no admin pill or activity icon' \
 	src/components/shell/CatalogChip.test.tsx
-starport_test CAT-V51 'the safe catalog metadata route reports the source, the chain, the freshness verdict, and the next attempt' \
-	./internal/catalog TestCatalogMetadataReportsSourceChainAndNextAttempt
-starport_console_test CAT-V52 'the catalog panel draws one node per hop and names the next update' \
+starport_test CAT-V51 'the safe catalog route serializes the freshness verdict and no source field, and the admin status route requires the admin scope' \
+	./internal/server TestCatalogRoutesSplitSafeMetadataFromAdminStatus
+starport_console_test CAT-V52 'the catalog panel always draws the embedded baseline, labels direct and upstream-reported hops, and names the next update' \
 	src/components/shell/CatalogPanel.test.tsx
+starport_console_test CAT-V53 'the shell renders the chip on Overview, Models, and Chat, uses the 44 px small-screen control, and bounds the panel to the viewport' \
+	src/components/shell/Shell.catalog.test.tsx
+starport_console_test CAT-V54 'Enter and Space open the catalog panel, Escape closes it, and focus returns to the chip' \
+	src/components/shell/CatalogPanel.keyboard.test.tsx
+starport_console_test CAT-V55 'after a 403 the shell shows the no-authorization sentence and sends no second catalog request' \
+	src/components/shell/CatalogChip.unauthorized.test.tsx
 
-# Documentation: declarative conditions, because prose has no runtime (CAT-D20, CAT9.1 owns them).
+# Starport documentation: declarative conditions, because prose has no runtime (CAT-D20, CAT9.1 owns them).
 topology_guide_complete() {
 	local guide="$STARPORT/docs/DEPLOYMENT-TOPOLOGIES.md"
 	[ -f "$guide" ] &&
 		file_has '^## .*[Ss]ingle Starport' "$guide" &&
 		file_has '^## .*[Ff]leet' "$guide" &&
 		file_has '^## .*[Cc]entral Starmap' "$guide" &&
-		file_has '^## .*[Cc]entral-only' "$guide" &&
-		[ "$(grep -c '^```mermaid' "$guide")" -ge 4 ] &&
+		file_has '^## .*[Rr]estricted' "$guide" &&
+		file_has '^## .*[Aa]ir-gapped' "$guide" &&
+		file_has '^## .*[Rr]eplicated' "$guide" &&
+		[ "$(grep -c '^```mermaid' "$guide")" -ge 6 ] &&
 		(cd "$STARPORT" && bash scripts/verify-doc-links.sh)
 }
-starport_check CAT-V53 'the Starport topology guide names the four topologies with a diagram each and its links resolve' \
+starport_check CAT-V56 'the Starport topology guide names the five topologies and the replicated variant with a diagram each and its links resolve' \
 	topology_guide_complete
-starport_check CAT-V54 'the Starport README names the central Starmap server topology and links the guide' \
+starport_check CAT-V57 'the Starport README names the central Starmap server topology and links the guide' \
 	bash -c "grep -qsi 'central Starmap' '$STARPORT/README.md' && grep -qs 'docs/DEPLOYMENT-TOPOLOGIES.md' '$STARPORT/README.md'"
 catalog_reference_complete() {
 	local guide="$STARPORT/docs/OPERATOR-GUIDE.md" example="$STARPORT/.env.example" suffix
@@ -280,17 +288,22 @@ catalog_reference_complete() {
 	)
 	! grep -qsE 'STARPORT_CATALOG_(REMOTE_URL|REMOTE_API_KEY|REMOTE_ACTIVATION_INTERVAL|REFRESH_ON_START|REFRESH_INTERVAL)' "$example"
 }
-starport_check CAT-V55 'the Starport operator guide and environment example document every canonical catalog name and the example holds no removed name' \
+starport_check CAT-V58 'the Starport operator guide and environment example document every canonical catalog name and the example holds no removed name' \
 	catalog_reference_complete
+
+# Starmap documentation: the central server runbook and the Kubernetes pair (CAT-D20, CAT9.2 owns it).
 runbook_complete() {
-	local runbook=docs/ENTERPRISE_CATALOG_SERVER.md
+	local runbook=docs/ENTERPRISE_CATALOG_SERVER.md docker=docs/DOCKER.md
 	[ -f "$runbook" ] &&
 		[ "$(grep -c '^## ' "$runbook")" -ge 7 ] &&
 		file_has 'starmap serve --auth' "$runbook" &&
 		file_has 'STARPORT_CATALOG_SOURCE_URL' "$runbook" &&
-		grep -qs "$runbook" README.md
+		file_has 'DOCKER.md' "$runbook" &&
+		grep -qs "$runbook" README.md &&
+		[ "$(grep -c '^kind: Deployment' "$docker")" -ge 2 ] &&
+		file_has 'STARPORT_CATALOG_SOURCE_URL' "$docker"
 }
-check CAT-V56 'the Starmap enterprise catalog server runbook has its seven sections and the README links it' \
+check CAT-V59 'the Starmap runbook has its seven sections, the README links it, and the Docker document holds the Kubernetes pair' \
 	runbook_complete
 
 printf 'Summary: %d passed, %d failed, %d unverified.\n' "$pass" "$fail" "$unverified"

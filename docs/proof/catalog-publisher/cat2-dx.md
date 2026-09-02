@@ -142,8 +142,9 @@ Current configuration also conflicts with the target:
   the exact lookuper that loaded process variables and `.env` files.
 
 The existing safe `GET /api/v1/catalog` shows generation metadata, a manifest
-summary, direct observation links, and age. The current console does not have
-the previously reported seven-day stale badge. Neither surface shows source
+summary, direct observation links, and age. The current console flags a
+catalog older than seven days with a hard-coded badge in `FreshnessBar.tsx`.
+The third review confirmed that rule. Neither surface shows source
 health, layer identity, provider outcomes, last attempts, next attempts,
 fallback, transitive provenance, or a server-evaluated freshness policy.
 

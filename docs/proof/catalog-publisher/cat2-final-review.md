@@ -47,9 +47,9 @@ has no default whole-refresh deadline.
 | 7. Target timing | corrected | Catalog bodies, provider enumeration, and streams use progress-aware idle limits instead of client-wide elapsed limits. Streaming still needs first-token, stream-idle, and explicit operator cancellation. |
 | 8. Anti-herd | corrected | A 30-second reconnect cap and one-minute fallback poll are too small after a broad outage. The target uses full-interval stable phases, a 15-minute cold-start spread, decorrelated reconnect delay up to 15 minutes, admission control, and one lease owner for shared state. |
 | 9. Status and timestamps | agree | Current generation metadata does not express channel heartbeat, operation state, provider outcome, or direct versus upstream-reported health. |
-| 10. Starport API and UI | agree with one correction | The current admin refresh is synchronous. The current console does not contain the reported hard-coded seven-day stale badge. Add server-evaluated freshness; do not describe the change as removal of a current badge. |
+| 10. Starport API and UI | agree with one correction | The current admin refresh is synchronous. The current console flags a catalog older than seven days with the hard-coded `STALE_AFTER_SECONDS` rule in `FreshnessBar.tsx`. Add server-evaluated freshness and describe the change as the replacement of that rule. The third review corrected this evidence on 2026-09-02. |
 | 11. Deployment examples | agree | Current Starport validation prevents the required remote-source plus local-acquisition composition. The target cases prove that source selection and acquisition are independent. |
-| 12. Repository gaps | agree with one correction | All listed gaps exist except the current seven-day badge. Historical release tags remain a read compatibility requirement. Runtime environment aliases do not. |
+| 12. Repository gaps | agree with one correction | All listed gaps exist, including the current seven-day badge. Historical release tags remain a read compatibility requirement. Runtime environment aliases do not. |
 | 13. Required output | complete | This proof contains the API, timing, fleet, deployment, status, task, verifier, and owner-decision contracts. |
 
 ## Canonical runtime and layers

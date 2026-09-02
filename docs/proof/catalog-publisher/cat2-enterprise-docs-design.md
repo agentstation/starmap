@@ -1,6 +1,8 @@
 # Enterprise deployment documentation design
 
-Date: 2026-09-02. Owner task: CAT9.1. Decision: CAT-D20.
+Date: 2026-09-02. Owner tasks: CAT9.1 for Starport and CAT9.2 for Starmap.
+Decision: CAT-D20. The third review split the tasks by repository and
+separated restricted egress from air-gapped operation on 2026-09-02.
 
 This record lists the operator documentation that an enterprise needs to run
 Starport with a catalog source, and the gaps in the shipped text.
@@ -24,7 +26,8 @@ the only catalog configuration reference.
    embedded catalog.
 4. The GitHub request budget and the freshness hop arithmetic appear only in
    the plan.
-5. No procedure covers air-gapped or restricted-egress operation.
+5. No procedure covers restricted-egress or air-gapped operation, and no text
+   separates the two.
 6. The workspace catalog has two sentences and no file layout.
 7. No consolidated `CATALOG_*` reference or old-to-new name table exists.
 8. No procedure shows how to inspect, pin, or roll back a generation.
@@ -32,26 +35,27 @@ the only catalog configuration reference.
 10. The three-credential separation rule appears only in architecture text.
 11. No alerting guidance covers catalog freshness.
 12. No document shows a topology diagram.
+13. No text explains a replicated central server or its lease.
 
 ## Documents
 
-CAT9.1 adds or updates these documents.
+Each task owns one repository, so each task maps to one pull request.
 
-| Repository | Document | Content |
-| --- | --- | --- |
-| Starport | `docs/DEPLOYMENT-TOPOLOGIES.md` | the four topologies, one diagram each, a decision table, and the request budget arithmetic |
-| Starport | `docs/OPERATOR-GUIDE.md` | the catalog configuration reference, the workspace layout, the generation procedures, and the alert rules |
-| Starport | `README.md` | one paragraph and one diagram that name the central Starmap server topology |
-| Starport | `.env.example` | every `STARPORT_CATALOG_*` name from the canonical contract with its default |
-| Starmap | `docs/ENTERPRISE_CATALOG_SERVER.md` | the central server runbook |
-| Starmap | `README.md` | one paragraph that links the runbook from the HTTP server section |
-| Starmap | `docs/DOCKER.md` | the Kubernetes pair example |
+| Task | Repository | Document | Content |
+| --- | --- | --- | --- |
+| CAT9.1 | Starport | `docs/DEPLOYMENT-TOPOLOGIES.md` | the five topologies, the replicated variant, one diagram each, a decision table, and the request budget arithmetic |
+| CAT9.1 | Starport | `docs/OPERATOR-GUIDE.md` | the catalog configuration reference, the workspace layout, the generation procedures, and the alert rules |
+| CAT9.1 | Starport | `README.md` | one paragraph and one diagram that name the central Starmap server topology |
+| CAT9.1 | Starport | `.env.example` | every `STARPORT_CATALOG_*` name from the canonical contract with its default |
+| CAT9.2 | Starmap | `docs/ENTERPRISE_CATALOG_SERVER.md` | the central server runbook |
+| CAT9.2 | Starmap | `README.md` | one paragraph that links the runbook from the HTTP server section |
+| CAT9.2 | Starmap | `docs/DOCKER.md` | the Kubernetes pair example |
 
 ## Topologies
 
-The topology guide describes four valid designs. Each design has one mermaid
-diagram, its settings, its request budget, its freshness age, and its failure
-behavior.
+The topology guide describes five valid designs and one replicated variant.
+Each design has one mermaid diagram, its settings, its request budget, its
+freshness age, its egress, and its failure behavior.
 
 1. Single Starport with direct GitHub. No catalog settings. The gateway
    follows `catalog-latest` with conditional polling and runs its own
@@ -62,10 +66,21 @@ behavior.
 3. Central Starmap server with replica acquisition. One Starmap server follows
    GitHub and serves the fleet. Each replica sets the source URL and keeps its
    own acquisition on.
-4. Central-only acquisition. Only the central server collects provider
-   observations. Replicas disable acquisition and never reach GitHub or a
-   provider. This is the air-gapped and restricted-egress design, with an
-   optional OCI mirror.
+4. Restricted replica egress. The central server keeps its egress to GitHub
+   and to the providers. Each replica reaches only the central server and
+   disables acquisition. This design is not air-gapped, because the central
+   server still reaches the internet.
+5. Air-gapped mirror. No host inside the boundary reaches GitHub or a
+   provider. An operator moves the verified release artifact, or an OCI
+   mirror, across the boundary on a schedule. The central server serves the
+   transferred artifact from its workspace, and every host disables
+   acquisition. The freshness age follows the transfer cadence.
+
+The replicated variant applies to designs 3, 4, and 5. Two or more central
+servers share one storage volume behind one load balancer. The CAT-D18 lease
+fences the durable generation commit, so one server collects at a time. The
+fleet subscribes through the balancer and reconnects on failover. The guide
+also shows the active and passive form with one standby server.
 
 ## Central server runbook
 
@@ -79,7 +94,11 @@ The Starmap runbook covers, in order:
    heartbeat.
 5. Point each Starport at the server with the source URL and the API key.
 6. Rotate the API key and read the health and readiness routes.
-7. Run the pair on Kubernetes with the example manifests.
+7. Run the pair on Kubernetes with the example manifests in `docs/DOCKER.md`.
+
+The Kubernetes example holds two Deployments. The Starmap Deployment mounts
+the shared volume and runs `starmap serve --auth`. The Starport Deployment
+sets `STARPORT_CATALOG_SOURCE_URL` to the Starmap Service.
 
 ## Configuration reference
 
@@ -90,14 +109,16 @@ have no runtime alias.
 
 ## Verification
 
-- CAT-V53 checks that the topology guide names the four topologies and holds
-  four diagrams. The Starport link check must also pass.
-- CAT-V54 checks that the Starport README names the central Starmap server
+- CAT-V56 checks that the topology guide names the five topologies and the
+  replicated variant, and holds six diagrams. The Starport link check must
+  also pass.
+- CAT-V57 checks that the Starport README names the central Starmap server
   topology and links the guide.
-- CAT-V55 checks that the operator guide and `.env.example` document every
+- CAT-V58 checks that the operator guide and `.env.example` document every
   canonical `STARPORT_CATALOG_*` name and no removed name.
-- CAT-V56 checks that the Starmap runbook exists with its seven sections and
-  that the Starmap README links it.
+- CAT-V59 checks that the Starmap runbook exists with its seven sections and
+  that the Starmap README links it. It also checks that `docs/DOCKER.md` holds
+  the Kubernetes pair.
 
 Documentation conditions are declarative because prose has no runtime. The
 verifier states this in its comment.
