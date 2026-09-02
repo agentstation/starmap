@@ -111,11 +111,19 @@ the HTTP date form.
 | Body inactivity | 2 min |
 | Per-transfer maximum | 60 min, and zero is invalid |
 | Compressed body | 64 MiB |
-| Expanded body | 256 MiB |
 
 `Transfer.Body` reads one bounded body and reports progress. It reports the
 header stage, each body step, and the complete stage. Every report carries a
 safe resource label, never a URL, a token, or a host.
+
+Ordinary provider HTTP applies the same bounds. The client in
+`internal/transport` reads every provider body through `Transfer.Response`,
+which returns the reply with the body already in memory. A provider that stalls
+or drips therefore stops at the inactivity bound or at the per-transfer
+maximum, and `DecodeResponse` and `FetchRaw` read from memory. The provider
+policy keeps the shared connection, header, inactivity, and duration bounds. It
+lowers the size bound to `constants.MaxSourcePayloadBytes + 1`, so a body within
+that limit still reaches the decoder that owns the limit today.
 
 ## Fleet pacing rules
 
@@ -174,6 +182,16 @@ No test reaches a network. The package reuses the committed CAT2.1 evidence in
 | `TestGitHubSourceRejectsUnusableConfiguration` | The configuration checks |
 | `TestGitHubSourceDeclaresItsContract` | The `pkg/sources` contract |
 
+The transport package adds two tests for the provider read path:
+
+| Test | Purpose |
+| --- | --- |
+| `TestProviderBodyStopsAtTheIdleBound` | A stalled provider body fails at the inactivity bound |
+| `TestProviderTransferPolicyBoundsEveryBody` | The provider policy carries the inactivity, duration, and size bounds |
+
+The first test is a regression test. It fails when the client sends through
+`http.Client.Do` and leaves the body for a later unbounded read.
+
 ## Decisions for the orchestrator
 
 ### The verification function type
@@ -213,6 +231,27 @@ Neither should import a source adapter to reach them.
 `Transfer.Body` returns a `remote.Reply` value rather than an
 `*http.Response`. The transfer already read and closed the body, so no caller
 owns a stream. The value type also removes a false `bodyclose` report.
+
+`Transfer.Response` is the second entry point, and it returns an
+`*http.Response` whose body is the bytes the transfer already read. It exists
+for the provider read path, where existing callers hand the reply to
+`DecodeResponse` or read `FetchRawResult.Response`. The two entry points share
+one bounded send.
+
+### The removed expanded-body bound
+
+`TransferPolicy.MaxExpandedBytes` is gone. Nothing enforced it, and
+`pkg/catalogs/artifact` already bounds archive expansion with `maxArtifactBytes`.
+A policy field that no code reads states a bound the system does not hold.
+
+### The transfer error labels
+
+The transfer now carries provider traffic as well as catalog downloads, so the
+label of a `*errors.TimeoutError` reads `transfer <resource>` instead of
+`catalog transfer <resource>`, and the transport `*errors.APIError` names the
+provider `transfer`. The `*errors.ValidationError` field keeps its
+`catalog_transfer.` prefix, because it names the policy that
+`pkg/catalogs/remote` owns.
 
 ## Follow-up
 

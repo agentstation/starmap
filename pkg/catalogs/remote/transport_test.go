@@ -271,7 +271,6 @@ func TestTransferReportsProgressAndRejectsOversizedBody(t *testing.T) {
 
 	bounded := fastPolicy()
 	bounded.MaxCompressedBytes = 16
-	bounded.MaxExpandedBytes = 16
 	small := Transfer{Client: server.Client(), Policy: bounded}
 	if _, err := small.Body(context.Background(), getRequest(t, server.URL), "catalog-asset"); err == nil {
 		t.Fatal("Body accepted a body beyond the size bound")

@@ -1,6 +1,7 @@
 package remote
 
 import (
+	"bytes"
 	"context"
 	"io"
 	"net"
@@ -11,8 +12,9 @@ import (
 	"github.com/agentstation/starmap/pkg/errors"
 )
 
-// Catalog transfer bounds. Each value bounds one stage of one finite HTTP
-// body transfer. No value bounds a subscription lifetime.
+// Transfer bounds. Each value bounds one stage of one finite HTTP body
+// transfer, for a catalog download and for an ordinary provider request alike.
+// No value bounds a subscription lifetime.
 const (
 	// DefaultConnectTimeout bounds one TCP connection attempt.
 	DefaultConnectTimeout = 30 * time.Second
@@ -35,10 +37,6 @@ const (
 
 	// DefaultMaxCompressedBytes bounds the bytes read from one response body.
 	DefaultMaxCompressedBytes int64 = 64 << 20
-
-	// DefaultMaxExpandedBytes bounds the bytes one compressed body may expand
-	// into after decoding.
-	DefaultMaxExpandedBytes int64 = 256 << 20
 
 	// keepAliveInterval is the TCP keep-alive probe interval.
 	keepAliveInterval = 30 * time.Second
@@ -118,12 +116,9 @@ type TransferPolicy struct {
 
 	// MaxCompressedBytes bounds the bytes read from one response body.
 	MaxCompressedBytes int64
-
-	// MaxExpandedBytes bounds the bytes one body may expand into.
-	MaxExpandedBytes int64
 }
 
-// DefaultTransferPolicy returns the catalog transfer bounds.
+// DefaultTransferPolicy returns the shared transfer bounds.
 func DefaultTransferPolicy() TransferPolicy {
 	return TransferPolicy{
 		ConnectTimeout:        DefaultConnectTimeout,
@@ -132,7 +127,6 @@ func DefaultTransferPolicy() TransferPolicy {
 		IdleTimeout:           DefaultTransferIdleTimeout,
 		MaxDuration:           DefaultTransferMaxDuration,
 		MaxCompressedBytes:    DefaultMaxCompressedBytes,
-		MaxExpandedBytes:      DefaultMaxExpandedBytes,
 	}
 }
 
@@ -153,20 +147,8 @@ func (p TransferPolicy) Validate() error {
 			return transferValidation(bound.name, bound.value, "must be positive")
 		}
 	}
-	for _, bound := range []struct {
-		name  string
-		value int64
-	}{
-		{"max_compressed_bytes", p.MaxCompressedBytes},
-		{"max_expanded_bytes", p.MaxExpandedBytes},
-	} {
-		if bound.value <= 0 {
-			return transferValidation(bound.name, bound.value, "must be positive")
-		}
-	}
-	if p.MaxExpandedBytes < p.MaxCompressedBytes {
-		return transferValidation("max_expanded_bytes", p.MaxExpandedBytes,
-			"must be at least the compressed bound")
+	if p.MaxCompressedBytes <= 0 {
+		return transferValidation("max_compressed_bytes", p.MaxCompressedBytes, "must be positive")
 	}
 	return nil
 }
@@ -244,6 +226,46 @@ type Reply struct {
 // per-transfer maximum stops the transfer, and a *errors.ValidationError when
 // the body exceeds the size bound.
 func (t Transfer) Body(ctx context.Context, request *http.Request, resource string) (Reply, error) {
+	response, body, err := t.send(ctx, request, resource)
+	if err != nil {
+		return Reply{}, err
+	}
+	// The transfer holds the whole body in memory. Close the reader that holds
+	// it, so the reply owns no stream.
+	defer func() { _ = response.Body.Close() }()
+	return Reply{
+		StatusCode: response.StatusCode,
+		Header:     response.Header.Clone(),
+		Body:       body,
+	}, nil
+}
+
+// Response sends request under the same bounds as Body and returns the reply
+// as an *http.Response whose body already sits in memory. A later read of that
+// body cannot stall. A caller that hands the reply to an existing decoder
+// therefore keeps the inactivity bound and the per-transfer maximum. The
+// caller still closes the body, and that close does nothing.
+//
+// Response reports the same error types as Body.
+func (t Transfer) Response(
+	ctx context.Context,
+	request *http.Request,
+	resource string,
+) (*http.Response, error) {
+	response, _, err := t.send(ctx, request, resource)
+	if err != nil {
+		return nil, err
+	}
+	return response, nil
+}
+
+// send runs one bounded transfer. It closes the original stream and returns
+// the reply with the complete body in memory.
+func (t Transfer) send(
+	ctx context.Context,
+	request *http.Request,
+	resource string,
+) (*http.Response, []byte, error) {
 	if ctx == nil {
 		ctx = context.Background()
 	}
@@ -252,7 +274,7 @@ func (t Transfer) Body(ctx context.Context, request *http.Request, resource stri
 		policy = DefaultTransferPolicy()
 	}
 	if err := policy.Validate(); err != nil {
-		return Reply{}, err
+		return nil, nil, err
 	}
 	client := t.Client
 	if client == nil {
@@ -264,12 +286,12 @@ func (t Transfer) Body(ctx context.Context, request *http.Request, resource stri
 	guard := newTransferGuard(cancel, policy)
 	defer guard.stop()
 
-	// The caller owns the destination. This transfer is the shared catalog
-	// download path, so the URL is a configured catalog source or a caller
-	// integration point.
-	response, err := client.Do(request.Clone(transferCtx)) //nolint:gosec // The caller owns the catalog source URL.
+	// The caller owns the destination. This transfer is the shared download
+	// path, so the URL is a configured catalog source, a configured provider
+	// endpoint, or a caller integration point.
+	response, err := client.Do(request.Clone(transferCtx)) //nolint:gosec // The caller owns the source URL.
 	if err != nil {
-		return Reply{}, guard.wrap(ctx, resource, err)
+		return nil, nil, guard.wrap(ctx, resource, err)
 	}
 	defer func() { _ = response.Body.Close() }()
 	t.report(TransferProgress{
@@ -279,7 +301,7 @@ func (t Transfer) Body(ctx context.Context, request *http.Request, resource stri
 
 	body, err := t.read(ctx, guard, policy, response, resource)
 	if err != nil {
-		return Reply{}, err
+		return nil, nil, err
 	}
 	t.report(TransferProgress{
 		Resource:      resource,
@@ -287,11 +309,9 @@ func (t Transfer) Body(ctx context.Context, request *http.Request, resource stri
 		BytesReceived: int64(len(body)),
 		TotalBytes:    response.ContentLength,
 	})
-	return Reply{
-		StatusCode: response.StatusCode,
-		Header:     response.Header.Clone(),
-		Body:       body,
-	}, nil
+	response.Body = io.NopCloser(bytes.NewReader(body))
+	response.ContentLength = int64(len(body))
+	return response, body, nil
 }
 
 // read consumes the body in progress steps and enforces the size bound.
@@ -398,13 +418,13 @@ func (g *transferGuard) wrap(ctx context.Context, resource string, err error) er
 	switch cause {
 	case causeIdle:
 		return &errors.TimeoutError{
-			Operation: "catalog transfer " + resource,
+			Operation: "transfer " + resource,
 			Duration:  g.policy.IdleTimeout.String(),
 			Message:   "the transfer made no progress within the inactivity bound",
 		}
 	case causeMaxDuration:
 		return &errors.TimeoutError{
-			Operation: "catalog transfer " + resource,
+			Operation: "transfer " + resource,
 			Duration:  g.policy.MaxDuration.String(),
 			Message:   "the transfer exceeded the per-transfer maximum duration",
 		}
@@ -413,7 +433,7 @@ func (g *transferGuard) wrap(ctx context.Context, resource string, err error) er
 		return ctxErr
 	}
 	return &errors.APIError{
-		Provider: "catalog-transfer",
+		Provider: "transfer",
 		Endpoint: resource,
 		Message:  "transfer failed",
 		Err:      err,

@@ -35,6 +35,7 @@ Package remote implements the versioned online Starmap\-to\-Starmap generation p
 - [type StreamEvent](<#StreamEvent>)
 - [type Transfer](<#Transfer>)
   - [func \(t Transfer\) Body\(ctx context.Context, request \*http.Request, resource string\) \(Reply, error\)](<#Transfer.Body>)
+  - [func \(t Transfer\) Response\(ctx context.Context, request \*http.Request, resource string\) \(\*http.Response, error\)](<#Transfer.Response>)
 - [type TransferPolicy](<#TransferPolicy>)
   - [func DefaultTransferPolicy\(\) TransferPolicy](<#DefaultTransferPolicy>)
   - [func \(p TransferPolicy\) Validate\(\) error](<#TransferPolicy.Validate>)
@@ -63,7 +64,7 @@ const (
 )
 ```
 
-<a name="DefaultConnectTimeout"></a>Catalog transfer bounds. Each value bounds one stage of one finite HTTP body transfer. No value bounds a subscription lifetime.
+<a name="DefaultConnectTimeout"></a>Transfer bounds. Each value bounds one stage of one finite HTTP body transfer, for a catalog download and for an ordinary provider request alike. No value bounds a subscription lifetime.
 
 ```go
 const (
@@ -88,10 +89,6 @@ const (
 
     // DefaultMaxCompressedBytes bounds the bytes read from one response body.
     DefaultMaxCompressedBytes int64 = 64 << 20
-
-    // DefaultMaxExpandedBytes bounds the bytes one compressed body may expand
-    // into after decoding.
-    DefaultMaxExpandedBytes int64 = 256 << 20
 )
 ```
 
@@ -105,7 +102,7 @@ const (
 ```
 
 <a name="DefaultTransferClient"></a>
-## func [DefaultTransferClient](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/remote/transport.go#L211>)
+## func [DefaultTransferClient](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/remote/transport.go#L193>)
 
 ```go
 func DefaultTransferClient() *http.Client
@@ -141,7 +138,7 @@ func MarshalManifest(manifest catalogs.GenerationManifest) ([]byte, error)
 MarshalManifest returns strict JSON bytes for the server route.
 
 <a name="NewTransferClient"></a>
-## func [NewTransferClient](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/remote/transport.go#L201>)
+## func [NewTransferClient](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/remote/transport.go#L183>)
 
 ```go
 func NewTransferClient(policy TransferPolicy) (*http.Client, error)
@@ -150,7 +147,7 @@ func NewTransferClient(policy TransferPolicy) (*http.Client, error)
 NewTransferClient returns an HTTP client that applies the policy through its transport. The client sets no total timeout, because http.Client.Timeout also covers body reads and cannot coexist with progress\-aware transfers.
 
 <a name="NewTransport"></a>
-## func [NewTransport](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/remote/transport.go#L176>)
+## func [NewTransport](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/remote/transport.go#L158>)
 
 ```go
 func NewTransport(policy TransferPolicy) (*http.Transport, error)
@@ -253,7 +250,7 @@ func (s *EventStream) Next() (StreamEvent, error)
 Next returns the next complete publication or comment activity frame.
 
 <a name="ProgressFunc"></a>
-## type [ProgressFunc](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/remote/transport.go#L98>)
+## type [ProgressFunc](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/remote/transport.go#L96>)
 
 ProgressFunc receives one transfer progress report. Implementations must return promptly, because the transfer calls them inline.
 
@@ -274,7 +271,7 @@ type Publication struct {
 ```
 
 <a name="Reply"></a>
-## type [Reply](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/remote/transport.go#L229-L238>)
+## type [Reply](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/remote/transport.go#L211-L220>)
 
 Reply is one complete bounded HTTP reply. The transfer already read and closed the body, so a caller owns no stream and closes nothing.
 
@@ -305,7 +302,7 @@ type StreamEvent struct {
 ```
 
 <a name="Transfer"></a>
-## type [Transfer](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/remote/transport.go#L216-L225>)
+## type [Transfer](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/remote/transport.go#L198-L207>)
 
 Transfer reads one HTTP body under a bound and reports its progress.
 
@@ -323,7 +320,7 @@ type Transfer struct {
 ```
 
 <a name="Transfer.Body"></a>
-### func \(Transfer\) [Body](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/remote/transport.go#L246>)
+### func \(Transfer\) [Body](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/remote/transport.go#L228>)
 
 ```go
 func (t Transfer) Body(ctx context.Context, request *http.Request, resource string) (Reply, error)
@@ -333,8 +330,19 @@ Body sends request and reads the complete response body under the policy. The re
 
 Body returns a \*errors.TimeoutError when the inactivity bound or the per\-transfer maximum stops the transfer, and a \*errors.ValidationError when the body exceeds the size bound.
 
+<a name="Transfer.Response"></a>
+### func \(Transfer\) [Response](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/remote/transport.go#L250-L254>)
+
+```go
+func (t Transfer) Response(ctx context.Context, request *http.Request, resource string) (*http.Response, error)
+```
+
+Response sends request under the same bounds as Body and returns the reply as an \*http.Response whose body already sits in memory. A later read of that body cannot stall. A caller that hands the reply to an existing decoder therefore keeps the inactivity bound and the per\-transfer maximum. The caller still closes the body, and that close does nothing.
+
+Response reports the same error types as Body.
+
 <a name="TransferPolicy"></a>
-## type [TransferPolicy](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/remote/transport.go#L103-L124>)
+## type [TransferPolicy](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/remote/transport.go#L101-L119>)
 
 TransferPolicy bounds one finite HTTP body transfer at every stage. It replaces http.Client.Timeout, which also covers body reads and therefore rejects a healthy slow link.
 
@@ -357,23 +365,20 @@ type TransferPolicy struct {
 
     // MaxCompressedBytes bounds the bytes read from one response body.
     MaxCompressedBytes int64
-
-    // MaxExpandedBytes bounds the bytes one body may expand into.
-    MaxExpandedBytes int64
 }
 ```
 
 <a name="DefaultTransferPolicy"></a>
-### func [DefaultTransferPolicy](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/remote/transport.go#L127>)
+### func [DefaultTransferPolicy](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/remote/transport.go#L122>)
 
 ```go
 func DefaultTransferPolicy() TransferPolicy
 ```
 
-DefaultTransferPolicy returns the catalog transfer bounds.
+DefaultTransferPolicy returns the shared transfer bounds.
 
 <a name="TransferPolicy.Validate"></a>
-### func \(TransferPolicy\) [Validate](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/remote/transport.go#L141>)
+### func \(TransferPolicy\) [Validate](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/remote/transport.go#L135>)
 
 ```go
 func (p TransferPolicy) Validate() error
@@ -382,7 +387,7 @@ func (p TransferPolicy) Validate() error
 Validate reports whether every bound is positive. A zero maximum duration is invalid, because an unbounded transfer can hold a connection forever.
 
 <a name="TransferProgress"></a>
-## type [TransferProgress](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/remote/transport.go#L81-L94>)
+## type [TransferProgress](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/remote/transport.go#L79-L92>)
 
 TransferProgress reports how much of one transfer arrived. The resource is a safe caller\-supplied label. It never carries a URL, a token, or a host name.
 
@@ -404,7 +409,7 @@ type TransferProgress struct {
 ```
 
 <a name="TransferStage"></a>
-## type [TransferStage](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/remote/transport.go#L60>)
+## type [TransferStage](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/remote/transport.go#L58>)
 
 TransferStage names one phase of one catalog transfer.
 
