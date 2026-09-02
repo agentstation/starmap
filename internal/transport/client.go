@@ -4,8 +4,8 @@ import (
 	"context"
 	"net/http"
 
-	"github.com/agentstation/starmap/internal/constants"
 	"github.com/agentstation/starmap/pkg/catalogs"
+	"github.com/agentstation/starmap/pkg/catalogs/remote"
 	"github.com/agentstation/starmap/pkg/errors"
 	"github.com/agentstation/starmap/pkg/sources"
 )
@@ -15,19 +15,19 @@ type Client struct {
 	http *http.Client
 }
 
-// New creates a provider HTTP client.
+// New creates a provider HTTP client. The client applies the catalog transfer
+// bounds through its transport and sets no client-wide timeout. A client-wide
+// timeout also covers body reads, so it cannot bound a progress-aware
+// transfer.
 func New() *Client {
-	return &Client{
-		http: &http.Client{
-			Timeout: constants.DefaultHTTPTimeout,
-			// Scope provider credentials to the configured endpoint.
-			// Never replay them to a redirect target. Callers must make an
-			// endpoint migration explicit in provider configuration.
-			CheckRedirect: func(*http.Request, []*http.Request) error {
-				return http.ErrUseLastResponse
-			},
-		},
+	client := remote.DefaultTransferClient()
+	// Scope provider credentials to the configured endpoint.
+	// Never replay them to a redirect target. Callers must make an
+	// endpoint migration explicit in provider configuration.
+	client.CheckRedirect = func(*http.Request, []*http.Request) error {
+		return http.ErrUseLastResponse
 	}
+	return &Client{http: client}
 }
 
 // Do sends an authenticated HTTP request.

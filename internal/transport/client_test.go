@@ -11,9 +11,32 @@ import (
 	"testing"
 
 	"github.com/agentstation/starmap/pkg/catalogs"
+	"github.com/agentstation/starmap/pkg/catalogs/remote"
 	pkgerrors "github.com/agentstation/starmap/pkg/errors"
 	"github.com/agentstation/starmap/pkg/sources"
 )
+
+func TestNewSetsNoClientWideTimeout(t *testing.T) {
+	client := New()
+	if client.http.Timeout != 0 {
+		t.Fatalf("client timeout = %s, want no client-wide timeout", client.http.Timeout)
+	}
+	transport, ok := client.http.Transport.(*http.Transport)
+	if !ok {
+		t.Fatalf("client transport = %T, want *http.Transport", client.http.Transport)
+	}
+	if transport.ResponseHeaderTimeout != remote.DefaultResponseHeaderTimeout {
+		t.Fatalf("response header timeout = %s, want %s",
+			transport.ResponseHeaderTimeout, remote.DefaultResponseHeaderTimeout)
+	}
+	if transport.TLSHandshakeTimeout != remote.DefaultTLSHandshakeTimeout {
+		t.Fatalf("TLS handshake timeout = %s, want %s",
+			transport.TLSHandshakeTimeout, remote.DefaultTLSHandshakeTimeout)
+	}
+	if client.http.CheckRedirect == nil {
+		t.Fatal("the client follows redirects while it carries provider credentials")
+	}
+}
 
 type contextKey string
 

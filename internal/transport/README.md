@@ -62,13 +62,13 @@ type Client struct {
 ```
 
 <a name="New"></a>
-### func [New](<https://github.com/agentstation/starmap/blob/main/internal/transport/client.go#L19>)
+### func [New](<https://github.com/agentstation/starmap/blob/main/internal/transport/client.go#L22>)
 
 ```go
 func New() *Client
 ```
 
-New creates a provider HTTP client.
+New creates a provider HTTP client. The client applies the catalog transfer bounds through its transport and sets no client\-wide timeout. A client\-wide timeout also covers body reads, so it cannot bound a progress\-aware transfer.
 
 <a name="Client.Do"></a>
 ### func \(\*Client\) [Do](<https://github.com/agentstation/starmap/blob/main/internal/transport/client.go#L34-L38>)

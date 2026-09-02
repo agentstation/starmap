@@ -15,7 +15,6 @@ import (
 	"strings"
 
 	"github.com/agentstation/starmap/pkg/catalogs"
-	"github.com/agentstation/starmap/pkg/catalogs/internal/resourcepolicy"
 	"github.com/agentstation/starmap/pkg/errors"
 )
 
@@ -90,7 +89,7 @@ func NewClient(baseURL string, httpClient *http.Client, schemaVersion uint64) (*
 		return nil, &errors.ValidationError{Field: "catalog_remote.schema_version", Value: schemaVersion, Message: "must be positive"}
 	}
 	if httpClient == nil {
-		httpClient = &http.Client{Timeout: resourcepolicy.DefaultHTTPTimeout}
+		httpClient = DefaultTransferClient()
 	}
 	client := *httpClient
 	previousRedirectPolicy := client.CheckRedirect

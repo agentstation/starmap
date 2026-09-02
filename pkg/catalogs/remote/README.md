@@ -13,9 +13,12 @@ Package remote implements the versioned online Starmap\-to\-Starmap generation p
 ## Index
 
 - [Constants](<#constants>)
+- [func DefaultTransferClient\(\) \*http.Client](<#DefaultTransferClient>)
 - [func GenerationManifestPath\(generationID string\) string](<#GenerationManifestPath>)
 - [func ManifestETag\(generationID string\) string](<#ManifestETag>)
 - [func MarshalManifest\(manifest catalogs.GenerationManifest\) \(\[\]byte, error\)](<#MarshalManifest>)
+- [func NewTransferClient\(policy TransferPolicy\) \(\*http.Client, error\)](<#NewTransferClient>)
+- [func NewTransport\(policy TransferPolicy\) \(\*http.Transport, error\)](<#NewTransport>)
 - [func PayloadPath\(generationID string\) string](<#PayloadPath>)
 - [type Client](<#Client>)
   - [func NewClient\(baseURL string, httpClient \*http.Client, schemaVersion uint64\) \(\*Client, error\)](<#NewClient>)
@@ -26,8 +29,17 @@ Package remote implements the versioned online Starmap\-to\-Starmap generation p
 - [type EventStream](<#EventStream>)
   - [func \(s \*EventStream\) Close\(\) error](<#EventStream.Close>)
   - [func \(s \*EventStream\) Next\(\) \(StreamEvent, error\)](<#EventStream.Next>)
+- [type ProgressFunc](<#ProgressFunc>)
 - [type Publication](<#Publication>)
+- [type Reply](<#Reply>)
 - [type StreamEvent](<#StreamEvent>)
+- [type Transfer](<#Transfer>)
+  - [func \(t Transfer\) Body\(ctx context.Context, request \*http.Request, resource string\) \(Reply, error\)](<#Transfer.Body>)
+- [type TransferPolicy](<#TransferPolicy>)
+  - [func DefaultTransferPolicy\(\) TransferPolicy](<#DefaultTransferPolicy>)
+  - [func \(p TransferPolicy\) Validate\(\) error](<#TransferPolicy.Validate>)
+- [type TransferProgress](<#TransferProgress>)
+- [type TransferStage](<#TransferStage>)
 
 
 ## Constants
@@ -51,6 +63,38 @@ const (
 )
 ```
 
+<a name="DefaultConnectTimeout"></a>Catalog transfer bounds. Each value bounds one stage of one finite HTTP body transfer. No value bounds a subscription lifetime.
+
+```go
+const (
+    // DefaultConnectTimeout bounds one TCP connection attempt.
+    DefaultConnectTimeout = 30 * time.Second
+
+    // DefaultTLSHandshakeTimeout bounds one TLS handshake.
+    DefaultTLSHandshakeTimeout = 30 * time.Second
+
+    // DefaultResponseHeaderTimeout bounds the wait for response headers after
+    // the client writes the request.
+    DefaultResponseHeaderTimeout = 60 * time.Second
+
+    // DefaultTransferIdleTimeout bounds the time a transfer may make no
+    // progress. Every successful body read resets the timer.
+    DefaultTransferIdleTimeout = 2 * time.Minute
+
+    // DefaultTransferMaxDuration bounds one complete body transfer. A 64 MiB
+    // body at 256 kilobits per second takes about 35 minutes, so this value
+    // leaves headroom over a slow link.
+    DefaultTransferMaxDuration = 60 * time.Minute
+
+    // DefaultMaxCompressedBytes bounds the bytes read from one response body.
+    DefaultMaxCompressedBytes int64 = 64 << 20
+
+    // DefaultMaxExpandedBytes bounds the bytes one compressed body may expand
+    // into after decoding.
+    DefaultMaxExpandedBytes int64 = 256 << 20
+)
+```
+
 <a name="EventStreamMediaType"></a>
 
 ```go
@@ -60,8 +104,17 @@ const (
 )
 ```
 
+<a name="DefaultTransferClient"></a>
+## func [DefaultTransferClient](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/remote/transport.go#L211>)
+
+```go
+func DefaultTransferClient() *http.Client
+```
+
+DefaultTransferClient returns a transfer client with the default policy. The default policy is a set of constants, so this call cannot fail.
+
 <a name="GenerationManifestPath"></a>
-## func [GenerationManifestPath](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/remote/client.go#L46>)
+## func [GenerationManifestPath](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/remote/client.go#L45>)
 
 ```go
 func GenerationManifestPath(generationID string) string
@@ -70,7 +123,7 @@ func GenerationManifestPath(generationID string) string
 GenerationManifestPath returns the immutable manifest route for generationID.
 
 <a name="ManifestETag"></a>
-## func [ManifestETag](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/remote/client.go#L384>)
+## func [ManifestETag](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/remote/client.go#L383>)
 
 ```go
 func ManifestETag(generationID string) string
@@ -79,7 +132,7 @@ func ManifestETag(generationID string) string
 ManifestETag returns the strong entity tag for a generation manifest. A generation ID is immutable and restricted to HTTP entity\-tag\-safe bytes.
 
 <a name="MarshalManifest"></a>
-## func [MarshalManifest](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/remote/client.go#L389>)
+## func [MarshalManifest](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/remote/client.go#L388>)
 
 ```go
 func MarshalManifest(manifest catalogs.GenerationManifest) ([]byte, error)
@@ -87,8 +140,26 @@ func MarshalManifest(manifest catalogs.GenerationManifest) ([]byte, error)
 
 MarshalManifest returns strict JSON bytes for the server route.
 
+<a name="NewTransferClient"></a>
+## func [NewTransferClient](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/remote/transport.go#L201>)
+
+```go
+func NewTransferClient(policy TransferPolicy) (*http.Client, error)
+```
+
+NewTransferClient returns an HTTP client that applies the policy through its transport. The client sets no total timeout, because http.Client.Timeout also covers body reads and cannot coexist with progress\-aware transfers.
+
+<a name="NewTransport"></a>
+## func [NewTransport](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/remote/transport.go#L176>)
+
+```go
+func NewTransport(policy TransferPolicy) (*http.Transport, error)
+```
+
+NewTransport returns an HTTP transport that applies the connection, TLS, and response\-header bounds of the policy. The body bounds belong to Transfer.
+
 <a name="PayloadPath"></a>
-## func [PayloadPath](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/remote/client.go#L51>)
+## func [PayloadPath](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/remote/client.go#L50>)
 
 ```go
 func PayloadPath(generationID string) string
@@ -97,7 +168,7 @@ func PayloadPath(generationID string) string
 PayloadPath returns the immutable canonical payload route for generationID.
 
 <a name="Client"></a>
-## type [Client](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/remote/client.go#L56-L60>)
+## type [Client](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/remote/client.go#L55-L59>)
 
 Client fetches one exact current generation from a versioned Starmap API.
 
@@ -108,7 +179,7 @@ type Client struct {
 ```
 
 <a name="NewClient"></a>
-### func [NewClient](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/remote/client.go#L67>)
+### func [NewClient](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/remote/client.go#L66>)
 
 ```go
 func NewClient(baseURL string, httpClient *http.Client, schemaVersion uint64) (*Client, error)
@@ -117,7 +188,7 @@ func NewClient(baseURL string, httpClient *http.Client, schemaVersion uint64) (*
 NewClient creates a remote generation client. baseURL is the trusted, versioned HTTPS API root, for example https://starmap.example.com/api/v1. NewClient accepts plain HTTP only on loopback. The supplied HTTP client may add authentication or stricter TLS policy, but HTTPS responses must retain a standard verified certificate chain.
 
 <a name="Client.FetchCurrent"></a>
-### func \(\*Client\) [FetchCurrent](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/remote/client.go#L154>)
+### func \(\*Client\) [FetchCurrent](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/remote/client.go#L153>)
 
 ```go
 func (c *Client) FetchCurrent(ctx context.Context) (catalogs.Generation, error)
@@ -126,7 +197,7 @@ func (c *Client) FetchCurrent(ctx context.Context) (catalogs.Generation, error)
 FetchCurrent fetches the current manifest followed by its immutable, generation\-addressed payload and validates their binding and compatibility.
 
 <a name="Client.FetchCurrentIfChanged"></a>
-### func \(\*Client\) [FetchCurrentIfChanged](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/remote/client.go#L165-L168>)
+### func \(\*Client\) [FetchCurrentIfChanged](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/remote/client.go#L164-L167>)
 
 ```go
 func (c *Client) FetchCurrentIfChanged(ctx context.Context, generationID string) (generation catalogs.Generation, changed bool, err error)
@@ -135,7 +206,7 @@ func (c *Client) FetchCurrentIfChanged(ctx context.Context, generationID string)
 FetchCurrentIfChanged conditionally fetches the current manifest relative to generationID. It returns changed=false without fetching a payload when the publisher reports that generationID is still current.
 
 <a name="Client.FetchGeneration"></a>
-### func \(\*Client\) [FetchGeneration](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/remote/client.go#L192>)
+### func \(\*Client\) [FetchGeneration](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/remote/client.go#L191>)
 
 ```go
 func (c *Client) FetchGeneration(ctx context.Context, generationID string) (catalogs.Generation, error)
@@ -181,8 +252,17 @@ func (s *EventStream) Next() (StreamEvent, error)
 
 Next returns the next complete publication or comment activity frame.
 
+<a name="ProgressFunc"></a>
+## type [ProgressFunc](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/remote/transport.go#L98>)
+
+ProgressFunc receives one transfer progress report. Implementations must return promptly, because the transfer calls them inline.
+
+```go
+type ProgressFunc func(TransferProgress)
+```
+
 <a name="Publication"></a>
-## type [Publication](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/remote/client.go#L40-L43>)
+## type [Publication](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/remote/client.go#L39-L42>)
 
 Publication identifies one committed immutable catalog generation.
 
@@ -190,6 +270,24 @@ Publication identifies one committed immutable catalog generation.
 type Publication struct {
     GenerationID string `json:"generation_id"`
     Sequence     uint64 `json:"sequence"`
+}
+```
+
+<a name="Reply"></a>
+## type [Reply](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/remote/transport.go#L229-L238>)
+
+Reply is one complete bounded HTTP reply. The transfer already read and closed the body, so a caller owns no stream and closes nothing.
+
+```go
+type Reply struct {
+    // StatusCode is the reply status.
+    StatusCode int
+
+    // Header is a caller-owned copy of the reply header.
+    Header http.Header
+
+    // Body is the complete reply body.
+    Body []byte
 }
 ```
 
@@ -204,6 +302,127 @@ type StreamEvent struct {
     Comment     string
     EventID     string
 }
+```
+
+<a name="Transfer"></a>
+## type [Transfer](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/remote/transport.go#L216-L225>)
+
+Transfer reads one HTTP body under a bound and reports its progress.
+
+```go
+type Transfer struct {
+    // Client sends the request. A nil client uses the default transfer client.
+    Client *http.Client
+
+    // Policy bounds the transfer. A zero policy uses the defaults.
+    Policy TransferPolicy
+
+    // Progress receives progress reports. A nil value reports nothing.
+    Progress ProgressFunc
+}
+```
+
+<a name="Transfer.Body"></a>
+### func \(Transfer\) [Body](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/remote/transport.go#L246>)
+
+```go
+func (t Transfer) Body(ctx context.Context, request *http.Request, resource string) (Reply, error)
+```
+
+Body sends request and reads the complete response body under the policy. The resource is a safe label for progress and error reporting.
+
+Body returns a \*errors.TimeoutError when the inactivity bound or the per\-transfer maximum stops the transfer, and a \*errors.ValidationError when the body exceeds the size bound.
+
+<a name="TransferPolicy"></a>
+## type [TransferPolicy](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/remote/transport.go#L103-L124>)
+
+TransferPolicy bounds one finite HTTP body transfer at every stage. It replaces http.Client.Timeout, which also covers body reads and therefore rejects a healthy slow link.
+
+```go
+type TransferPolicy struct {
+    // ConnectTimeout bounds one TCP connection attempt.
+    ConnectTimeout time.Duration
+
+    // TLSHandshakeTimeout bounds one TLS handshake.
+    TLSHandshakeTimeout time.Duration
+
+    // ResponseHeaderTimeout bounds the wait for response headers.
+    ResponseHeaderTimeout time.Duration
+
+    // IdleTimeout bounds the time one transfer may make no progress.
+    IdleTimeout time.Duration
+
+    // MaxDuration bounds one complete body transfer. Zero is invalid.
+    MaxDuration time.Duration
+
+    // MaxCompressedBytes bounds the bytes read from one response body.
+    MaxCompressedBytes int64
+
+    // MaxExpandedBytes bounds the bytes one body may expand into.
+    MaxExpandedBytes int64
+}
+```
+
+<a name="DefaultTransferPolicy"></a>
+### func [DefaultTransferPolicy](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/remote/transport.go#L127>)
+
+```go
+func DefaultTransferPolicy() TransferPolicy
+```
+
+DefaultTransferPolicy returns the catalog transfer bounds.
+
+<a name="TransferPolicy.Validate"></a>
+### func \(TransferPolicy\) [Validate](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/remote/transport.go#L141>)
+
+```go
+func (p TransferPolicy) Validate() error
+```
+
+Validate reports whether every bound is positive. A zero maximum duration is invalid, because an unbounded transfer can hold a connection forever.
+
+<a name="TransferProgress"></a>
+## type [TransferProgress](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/remote/transport.go#L81-L94>)
+
+TransferProgress reports how much of one transfer arrived. The resource is a safe caller\-supplied label. It never carries a URL, a token, or a host name.
+
+```go
+type TransferProgress struct {
+    // Resource is the safe label of the transferred resource.
+    Resource string
+
+    // Stage is the phase that produced this report.
+    Stage TransferStage
+
+    // BytesReceived is the running count of body bytes read.
+    BytesReceived int64
+
+    // TotalBytes is the declared body length, or zero when the response
+    // declares none.
+    TotalBytes int64
+}
+```
+
+<a name="TransferStage"></a>
+## type [TransferStage](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/remote/transport.go#L60>)
+
+TransferStage names one phase of one catalog transfer.
+
+```go
+type TransferStage string
+```
+
+<a name="TransferStageHeaders"></a>
+
+```go
+const (
+    // TransferStageHeaders reports that the response headers arrived.
+    TransferStageHeaders TransferStage = "headers"
+    // TransferStageBody reports body bytes in flight.
+    TransferStageBody TransferStage = "body"
+    // TransferStageComplete reports a finished body.
+    TransferStageComplete TransferStage = "complete"
+)
 ```
 
 Generated by [gomarkdoc](<https://github.com/princjef/gomarkdoc>)
