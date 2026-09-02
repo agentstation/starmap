@@ -89,7 +89,7 @@
     Owner: this plan. Created: 2026-09-01.
     Baseline: main @ 42b610a, publisher work @ 6c7edfbe, Starport main @ 117ad8f5.
     Proof root: <code>docs/proof/catalog-publisher/</code>.
-    Next action: CAT2.1, select the native Go attestation verifier and write the selection record.
+    Next action: request the third review of the CAT2 corrections, then close CAT2 and start CAT2.1.
   </p>
 
   <section id="outcome">
@@ -203,7 +203,7 @@
       <li>Provider failures retain unrelated provider observations and effective facts.</li>
       <li>A progressing bounded transfer is not canceled by an arbitrary elapsed-time default.</li>
       <li>Automatic work uses stable fleet phases, retry not-before, admission control, and one owner for shared state.</li>
-      <li>A transfer has a total bound derived from its size cap and a floor rate, and no stage waits without a bound.</li>
+      <li>A transfer is one finite HTTP body with a maximum duration, and no stage waits without a bound.</li>
       <li>Catalog-acquisition credentials come only from the deployment lookup, never from the inference keyring.</li>
     </ol>
   </section>
@@ -299,7 +299,10 @@
   <section id="contract-decisions">
     <h2>Contract and transport decisions</h2>
     <p><strong>CAT-D14, audited 2026-09-02:</strong> The runtime has one <code>Sync(ctx, ...SyncOption) (AcquisitionReport, error)</code> method. <code>Close</code> is idempotent and joins runtime-owned work within five seconds.</p>
-    <p><strong>CAT-D15, audited 2026-09-02:</strong> Each transfer has a maximum duration equal to its size cap at a 256 Kbps floor rate, with a 60-minute default. A Starmap-owned transport wrapper applies the 60-second header bound to every catalog request, including the SSE open. Peak memory is one buffered body per in-flight transfer.</p>
+  </section>
+  <section id="transfer-decisions">
+    <h2>Transfer decisions</h2>
+    <p><strong>CAT-D15, audited 2026-09-02:</strong> Each finite HTTP body transfer has a maximum duration, default 60 minutes. A 64 MiB body at the 256 Kbps floor rate takes about 35 minutes, and the default provides headroom over that case. The limit does not bound an SSE subscription lifetime. A zero value is invalid and fails startup, and an operator on a slower link raises the value. A Starmap-owned transport wrapper applies the 60-second header bound to every catalog request, including the SSE open. Peak memory is one buffered body per in-flight transfer.</p>
   </section>
 
   <section id="fleet-decisions">
@@ -309,7 +312,7 @@
   <section id="lease-decisions">
     <h2>Lease and dependency decisions</h2>
     <p><strong>CAT-D17, audited 2026-09-02:</strong> CAT8 pins a Starmap pseudo-version from the plan branch. CAT11 replaces the pin with the released tag.</p>
-    <p><strong>CAT-D18, audited 2026-09-02:</strong> The refresh lease has a 90-second TTL, a 30-second renewal interval, and an epoch. The run record and the accepted-head commit carry the epoch, and the compare-and-swap rejects a stale one. A holder that loses the lease cancels its run within one renewal interval, discards the results, reports <code>lease_lost</code>, and retries at the next phase. The lease applies only to shared storage.</p>
+    <p><strong>CAT-D18, audited 2026-09-02:</strong> A shared-storage refresh lease has a 90-second TTL, a 30-second renewal interval, and an epoch. CAT5 owns the runtime lease, and a replicated Starmap fences its durable generation commit with the epoch. CAT8 keeps Starport's separate candidate-to-accepted transaction, which carries the epoch and rejects a stale one. A holder that loses the lease cancels its run within one renewal interval, discards the results, reports <code>lease_lost</code>, and retries at the next phase.</p>
   </section>
 
   <section id="test-matrix">
@@ -337,8 +340,8 @@
       <tbody>
         <tr id="CAT0" data-status="done"><td>CAT0</td><td>Pin the publisher, credentials, source, and consumer baseline.</td><td><code>done</code></td><td><a href="../proof/catalog-publisher/cat0.md">CAT0 proof</a>.</td></tr>
         <tr id="CAT1" data-status="done"><td>CAT1</td><td>Store acquisition credentials and set the four-hour publisher cadence.</td><td><code>done</code></td><td><a href="../proof/catalog-publisher/cat1.md">CAT1 proof</a>; commits <code>cf3124c0</code> and <code>9017b83b</code>.</td></tr>
-        <tr id="CAT2" data-status="done"><td>CAT2</td><td>Ratify naming, source policy, lifecycle, and the red campaign verifier.</td><td><code>done</code></td><td><a href="../proof/catalog-publisher/cat2-review.md">Trust review</a>, <a href="../proof/catalog-publisher/cat2-dx.md">runtime review</a>, <a href="../proof/catalog-publisher/cat2-final-review.md">final review</a>, <a href="../proof/catalog-publisher/cat2-network-measurements.json">network measurements</a>, <a href="../proof/catalog-publisher/cat2-audit.md">audit</a>, and <a href="../proof/catalog-publisher/cat2-fail-before.txt">fail-before</a>. <code>scripts/verify-catalog-distribution.sh</code> reports 7 passed, 41 failed, and 0 unverified of 48.</td></tr>
-        <tr id="CAT2.1" data-status="in_progress"><td>CAT2.1</td><td>Select and prove the native Go attestation verifier dependency.</td><td><code>in_progress</code></td><td>Initial comparison is in the <a href="../proof/catalog-publisher/cat2-review.md">CAT2 review</a>. The selection record is <code>docs/proof/catalog-publisher/cat2.1-verifier-selection.md</code>.</td></tr>
+        <tr id="CAT2" data-status="in_progress"><td>CAT2</td><td>Ratify naming, source policy, lifecycle, and the red campaign verifier.</td><td><code>in_progress</code></td><td><a href="../proof/catalog-publisher/cat2-review.md">Trust review</a>, <a href="../proof/catalog-publisher/cat2-dx.md">runtime review</a>, <a href="../proof/catalog-publisher/cat2-final-review.md">final review</a>, <a href="../proof/catalog-publisher/cat2-network-measurements.json">network measurements</a>, <a href="../proof/catalog-publisher/cat2-audit.md">audit</a>, and <a href="../proof/catalog-publisher/cat2-fail-before.txt">fail-before</a>. Work commits <code>84f92c15</code>, <code>ebdef9bb</code>, and <code>7bdd74fc</code>. <code>scripts/verify-catalog-distribution.sh</code> reports 7 passed, 42 failed, and 0 unverified of 49. Gates at <code>7bdd74fc</code>: technical writing 672 files and 0 diagnostics, package ownership 13 passed, docs check current, shellcheck clean. The second review reopened CAT2 for a third review.</td></tr>
+        <tr id="CAT2.1" data-status="todo"><td>CAT2.1</td><td>Select and prove the native Go attestation verifier dependency.</td><td><code>todo</code></td><td>Initial comparison is in the <a href="../proof/catalog-publisher/cat2-review.md">CAT2 review</a>. The selection record is <code>docs/proof/catalog-publisher/cat2.1-verifier-selection.md</code>.</td></tr>
         <tr id="CAT3" data-status="todo"><td>CAT3</td><td>Publish canonical immutable releases and the verified latest channel.</td><td><code>todo</code></td><td></td></tr>
         <tr id="CAT4" data-status="todo"><td>CAT4</td><td>Implement the native verified GitHub catalog source.</td><td><code>todo</code></td><td></td></tr>
         <tr id="CAT5" data-status="todo"><td>CAT5</td><td>Create the catalog-source runtime and connected Go API.</td><td><code>todo</code></td><td></td></tr>
@@ -419,9 +422,9 @@
     <h3 id="task-CAT5">CAT5 Catalog-source runtime</h3>
     <ul>
       <li><strong>Problem:</strong> the low-level client cannot own source polling, fallback, health, shutdown, and acquisition serialization.</li>
-      <li><strong>Owned paths:</strong> connected runtime, durable retained layers, provider outcomes, scoped evidence, source and acquisition policies, health, and consumer fixtures.</li>
-      <li><strong>Steps:</strong> add <code>Open</code>, I/O methods, retained layers, provider outcomes, historical lifecycle, narrow reads, and progress-aware publication, timing, and shutdown.</li>
-      <li><strong>Acceptance:</strong> the default runtime returns embedded state, preserves layers under race, accepts slow progress, rejects unsafe input, reports stalls and memory, and passes timing tests.</li>
+      <li><strong>Owned paths:</strong> connected runtime, durable retained layers, the runtime lease, provider outcomes, scoped evidence, source and acquisition policies, health, and consumer fixtures.</li>
+      <li><strong>Steps:</strong> add <code>Open</code>, I/O methods, retained layers, provider outcomes, historical lifecycle, narrow reads, an epoch-fenced durable commit, and progress-aware publication, timing, and shutdown.</li>
+      <li><strong>Acceptance:</strong> the runtime returns embedded state, preserves layers under race, accepts slow progress, rejects unsafe input, reports stalls and memory, and keeps CAT-V49 green.</li>
       <li><strong>Fail-before:</strong> package construction has no default verified source path.</li>
       <li><strong>Verification:</strong> run root, runtime, storage, race, and external consumer tests.</li>
     </ul>
@@ -450,7 +453,7 @@
     <ul>
       <li><strong>Problem:</strong> Starport selects local acquisition or remote generations and gives two operations the name <code>Sync</code>.</li>
       <li><strong>Owned paths:</strong> Starport catalog config, unified Starmap adapter, raw deployment lookuper, acceptance transaction, admin API, audit, console, and metrics.</li>
-      <li><strong>Steps:</strong> adopt settings, remove remote <code>Sync</code>, add automatic queries, progress, cancellation, route timing, a fenced lease, a CAT-D17 pin, and CAT-V42 through CAT-V48 green.</li>
+      <li><strong>Steps:</strong> adopt settings, remove remote <code>Sync</code>, add automatic queries, progress, cancellation, route timing, an epoch-carrying acceptance transaction, a CAT-D17 pin, and CAT-V42 through CAT-V48 green.</li>
       <li><strong>Acceptance:</strong> replicas show both provenances, support local queries or central-only policy, preserve accepted routes, enforce route-specific timing, and avoid public requests for private sources.</li>
       <li><strong>Fail-before:</strong> Starport chooses local or remote, development disables refresh, admin refresh is synchronous, status lacks freshness policy, and global timeouts cancel valid inference and streams.</li>
       <li><strong>Verification:</strong> run Starport catalog, app, configuration, architecture, and race checks from main @ 117ad8f5, and CAT-V42 through CAT-V48.</li>
@@ -544,6 +547,7 @@ and lease-owned, and CAT99 removes the plan.</code></pre>
         <tr><td>2026-09-02</td><td>CAT2</td><td>audited</td><td>An independent audit recorded CAT-F23 through CAT-F30 and CAT-D14 through CAT-D17. It reconciled the <code>Sync</code> and <code>Close</code> contracts, added the transfer maximum duration, the transport wrapper, the header-driven fleet budget, the hop budget, the lease fencing contract, and the CAT8 pseudo-version pin.</td></tr>
         <tr><td>2026-09-02</td><td>CAT2</td><td>completed</td><td>Authored <code>scripts/verify-catalog-distribution.sh</code> red at 7 passed, 41 failed, and 0 unverified of 48 conditions. The fail-before capture is <code>cat2-fail-before.txt</code>.</td></tr>
         <tr><td>2026-09-02</td><td>CAT2, CAT2.1</td><td>repaired</td><td>A second review rejected grep-only checks, a non-failing unverified outcome, a hard-coded engine, and 55 prose diagnostics. The verifier now runs named Go tests, fails on any unverified condition, and reads the CAT2.1 selection record. CAT-D16 and CAT-D18 record the header-driven budget and the lease contract. CAT2 moved to <code>done</code> and CAT2.1 to <code>in_progress</code>.</td></tr>
+        <tr><td>2026-09-02</td><td>CAT2</td><td>reopened</td><td>The second review found a discarded <code>go test</code> exit status, a brittle CAT-V23 scan, an unclear transfer contract, and split lease ownership. Commit <code>7bdd74fc</code> repaired them and added CAT-V49. CAT2 returned to <code>in_progress</code> and CAT2.1 to <code>todo</code>.</td></tr>
       </tbody>
     </table>
   </section>
