@@ -40,3 +40,8 @@ classification names behavior that the campaign must keep.
 | CAT-F31 | DX | The console spends a full-width row on Models and half the Overview grid on four catalog facts. No surface shows the source, the derivation chain, or the next update. | CAT8.1 |
 | CAT-F32 | operations | No shipped document explains a central Starmap server, a Starport fleet, or the choice between direct, central, and embedded sources. Neither repository has a topology diagram. | CAT9.1, CAT9.2 |
 | CAT-F33 | DX | No consolidated catalog configuration reference exists. `.env.example` is the only reference, and the Starport README is outside CAT9. | CAT9.1 |
+| CAT-F34 | correctness | A freshness fallback to `generated_at` let a downstream hop or local acquisition hide a stale public channel. | CAT7 |
+| CAT-F35 | architecture | The contract let completed provider layers advance, but no rule bounded the generations that a slow peer could cause. | CAT5 |
+| CAT-F36 | architecture | A cloned scheduler identity in shared or copied state synchronized replica phases. | CAT5 |
+| CAT-F37 | DX | The console lifecycle defined only the stop after `403`, and the Starport catalog queries had a stale time but no refetch interval. | CAT8.1 |
+| CAT-F38 | verification | CAT-V03 accepted reversed or unrelated timeout values, and CAT-V64 depended on an ambient interpreter. | CAT2 |

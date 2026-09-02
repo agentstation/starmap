@@ -127,10 +127,15 @@ have no runtime alias.
   canonical `STARPORT_CATALOG_*` name and no removed name.
 - CAT-V59 checks that the Starmap runbook exists with its eight sections and
   that the Starmap README links it.
-- CAT-V64 parses the Kubernetes YAML in `docs/DOCKER.md` and checks the
-  structure. The check requires two Deployments with different names, one
-  Service, and a Starport container whose source URL names that Service. A
-  string count is not enough.
+- CAT-V64 runs `TestDockerDocumentKubernetesPairWiresStarportToStarmap` in
+  `internal/deploymentdocs`. The test extracts the YAML blocks under the
+  `## Kubernetes` heading of `docs/DOCKER.md` and parses them with the
+  module's YAML dependency. It requires two Deployments with different names
+  and one Service. The Service selector must match the Starmap pod labels,
+  and its target port must match the Starmap container port. The Starport
+  container's `STARPORT_CATALOG_SOURCE_URL` must name the Service and its
+  port. A string count is not enough, and no ambient interpreter takes
+  part.
 
 Documentation conditions are declarative because prose has no runtime. The
 verifier states this in its comment.

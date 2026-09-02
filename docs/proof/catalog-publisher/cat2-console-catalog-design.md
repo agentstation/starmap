@@ -88,15 +88,24 @@ when the type names it.
 | `payload_checksum` | the exact byte identity |
 | `catalog_sequence` and `availability_revision` | the existing ordering values |
 | `generated_at` and `generation_age_seconds` | the generation time and the age since it |
-| `published_at` and `channel_updated_at` | the release time and the last channel verification time |
+| `published_at` and `channel_updated_at` | the upstream release time and the last channel verification time, forwarded unchanged through every hop |
 | `activated_at` | the time this Starport activated the generation |
 | `counts` | `providers`, `models`, and `offerings` |
 | `freshness` | `verdict`, `reference`, `policy_age_seconds`, `max_age_seconds`, and `evaluated_at` |
 
 The `freshness.verdict` is `fresh` or `stale`. The `freshness.reference`
-names the time the policy measures, `channel_updated_at` for a channel source
-and `generated_at` otherwise. The policy age is the age since that reference.
-The generation age and the policy age are different numbers.
+names the time the policy measures. For a `public`, `github`, or `starmap`
+source it is the propagated `channel_updated_at` of the public release at the
+head of the chain. Every Starmap hop forwards that time unchanged. A new
+effective generation from local acquisition never resets it, so a stale public
+channel stays stale behind any number of hops. Only a `file` or `embedded`
+source without a channel measures `generated_at`.
+
+The policy age is the age since that reference. The generation age and the
+policy age are different numbers. Direct-source health and the acquisition
+age are separate admin status facts, and neither one changes the verdict.
+CAT-V65 proves the propagation across two Starmap hops with local acquisition
+on each hop.
 
 These fields never reach the safe response: `validation`,
 `source_observations`, `sync_run_id`, `degradation_reasons`, `degraded`,
@@ -186,8 +195,8 @@ The panel is a right-side sheet with flat sections and hairline dividers. It
 opens from the chip and closes with Escape.
 
 1. Identity, `models:read`. Full generation ID with a copy control and the
-   catalog digest. Generated time with the generation age, published time,
-   channel update time, and activated time. The freshness verdict with the
+   catalog digest. Generated time with the generation age, the upstream
+   published time, the upstream channel update time, and activated time. The freshness verdict with the
    policy age and the policy maximum. The provider, model, and offering
    counts.
 2. Changes, `models:read`. The existing changes content moves here, with the
@@ -201,8 +210,11 @@ opens from the chip and closes with Escape.
    the next conditional poll. A connected stream shows its last frame time.
    The runtime schedules no fallback poll during a connected stream.
 6. Providers, admin. Provider outcomes with the safe reason codes from
-   `cat2-final-review.md`, for example `skipped_not_configured`. Neutral
-   skipped rows collapse by default.
+   `cat2-final-review.md`, for example `skipped_not_configured`. Each row
+   also shows the retained last-known-good observation with its generation
+   and time. A `retained` mark shows that the effective catalog serves that
+   observation instead of a fresh one. Neutral skipped rows collapse by
+   default.
 7. Actions, admin. `Refresh catalog`, `Cancel refresh`, and `Copy status` for
    the sanitized status document.
 
@@ -252,20 +264,42 @@ The figure data comes from the admin status document in
 source health, the upstream-reported chain, the provider outcomes, and the
 fallback state.
 
-## No-authorization state
+## Data lifecycle
 
-When the safe route answers `401` or `403`, the chip shows the lock glyph and
-the label `Catalog` without an ID. The tooltip reads "This session cannot read
-the catalog." The shell makes one request and stops polling until the session
-changes. It never retries in a loop.
+The shell owns one summary query. Every route reads the chip, the Identity
+section, and the Changes section from that query, and no page sends its own
+summary request. The query key is `catalog/summary`.
 
-## Related surfaces owned by CAT8
+- Cadence. The summary refetches every 60 seconds while the document is
+  visible, on window focus, and on network reconnect. It pauses while the
+  document is hidden. The existing catalog queries set a stale time and no
+  interval, so this is a new bound.
+- Admin status. The admin status query polls only while the panel is open or
+  an admin operation is active. It polls every 30 seconds while the panel is
+  open and every two seconds during an operation. It stops when the panel
+  closes and the operation ends.
+- Admin pills. An admin session sends one status request at mount. It sends
+  one more after each new generation in the summary. The pills therefore
+  reflect the last activation, and the pill tooltip names the status time.
+- Unavailable. After a `503`, the shell reads `Retry-After` as seconds or as
+  an HTTP date. It sends the next summary request no earlier than that time.
+  It clamps the wait between five seconds and five minutes. Without the header
+  it waits 30 seconds.
+- No authorization. After a `401` or `403`, the chip shows the lock glyph and
+  the label `Catalog` without an ID. The tooltip reads "This session cannot
+  read the catalog." The shell stops the summary and status queries. A session
+  change resets them and sends one new request. A session change is a login,
+  a logout, a token refresh, or a scope change. The shell never retries in a
+  loop.
+
+## Related surfaces
 
 The accepted contract also lists candidate, accepted, rejected, and pending
 route-validation state, model and offering provenance, catalog lifecycle,
 credential-specific availability, and routing state. Those facts belong to
-the model and provider pages, not to the chip. CAT8 owns them with the named
-tests CAT-V62 and CAT-V63.
+the model and provider pages, not to the chip. CAT8 owns the backend values
+in the admin status route with CAT-V62. CAT8.1 owns the model page rendering
+with CAT-V63.
 
 ## Alternatives considered
 
@@ -299,7 +333,8 @@ tests CAT-V62 and CAT-V63.
   fields.
 - CAT-V52 runs the panel test. The layers figure always holds the embedded
   baseline. The hop chain labels the direct hop and each upstream-reported
-  hop. The schedule names the next update.
+  hop. The schedule names the next update. The providers section shows the
+  retained last-known-good row of a failed provider.
 - CAT-V53 runs the shell test. The chip renders on Overview, Models, and Chat.
   The small-screen top bar holds the 44 px control. The panel never exceeds
   the viewport width.
@@ -307,5 +342,10 @@ tests CAT-V62 and CAT-V63.
   it, and focus returns to the chip.
 - CAT-V55 runs the no-authorization test. After a `403` the shell shows the
   sentence and sends no second request.
+- CAT-V68 runs the lifecycle test. Three routes share one summary request.
+  The interval fires while visible and not while hidden. A `503` with
+  `Retry-After: 120` delays the next request by 120 seconds. A `401` stops
+  the requests, and a session change sends exactly one new request. The
+  status query runs only while the panel is open.
 - CAT8.1 acceptance also requires that no console file imports
   `FreshnessBar` or `CatalogCard`, and that `pnpm check` passes.

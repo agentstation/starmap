@@ -112,13 +112,11 @@ check CAT-V01 'the workflow publishes catalog-latest and no catalog-semantic tag
 check CAT-V02 'the workflow schedule runs every four hours at minute 17' \
 	file_has "cron: *['\"]?17 \*/4 \* \* \*" "$WORKFLOW"
 # The limits nest: 60-minute transfer, 75-minute publisher step, 90-minute job.
-workflow_timeout_hierarchy() {
-	file_has 'timeout-minutes: *90' "$WORKFLOW" &&
-		file_has 'timeout-minutes: *75' "$WORKFLOW" &&
-		! file_has 'timeout-minutes: *60' "$WORKFLOW"
-}
-check CAT-V03 'the workflow job stops after 90 minutes and the publisher step after 75 minutes' \
-	workflow_timeout_hierarchy
+# The test parses the workflow with the module's YAML dependency. It reads
+# jobs.generate.timeout-minutes and the Refresh candidate catalog step limit
+# at their positions. Reversed or unrelated values cannot pass.
+starmap_test CAT-V03 'the workflow parses with the generate job at 90 minutes and the Refresh candidate catalog step at 75 minutes' \
+	./internal/ciworkflow TestCatalogGenerationWorkflowNestsTimeoutLimits
 check CAT-V04 'the workflow serializes runs and cancels no run in progress' \
 	file_has 'cancel-in-progress: *false' "$WORKFLOW"
 starmap_test CAT-V05 'the channel document advances channel_updated_at without a new catalog generation' \
@@ -330,40 +328,21 @@ starport_test CAT-V62 'the admin catalog status reports candidate, accepted, rej
 starport_console_test CAT-V63 'the model detail shows lifecycle, credential-specific availability, provenance, and routing state as separate elements' \
 	src/components/models/ModelDetail.lifecycle.test.tsx
 
-# Kubernetes example: a structural parse of the manifests in docs/DOCKER.md (CAT-D20, CAT9.2 owns it).
-# The check reports UNVERIFIED without python3 and PyYAML.
-kubernetes_pair_parses() {
-	python3 - docs/DOCKER.md <<'PY'
-import re, sys
-import yaml
-text = open(sys.argv[1], encoding="utf-8").read()
-section = text.split("\n## Kubernetes", 1)
-if len(section) < 2:
-    sys.exit(1)
-body = section[1].split("\n## ", 1)[0]
-blocks = re.findall(r"```ya?ml\n(.*?)```", body, re.S)
-docs = [d for block in blocks for d in yaml.safe_load_all(block) if isinstance(d, dict)]
-deployments = {d["metadata"]["name"] for d in docs if d.get("kind") == "Deployment"}
-services = {d["metadata"]["name"] for d in docs if d.get("kind") == "Service"}
-if len(deployments) < 2 or len(services) != 1:
-    sys.exit(1)
-service = next(iter(services))
-for d in docs:
-    if d.get("kind") != "Deployment":
-        continue
-    for container in d["spec"]["template"]["spec"]["containers"]:
-        for env in container.get("env", []):
-            if env.get("name") == "STARPORT_CATALOG_SOURCE_URL" and service in str(env.get("value", "")):
-                sys.exit(0)
-sys.exit(1)
-PY
-}
-if python3 -c 'import yaml' >/dev/null 2>&1; then
-	check CAT-V64 'the Docker document Kubernetes example parses as two Deployments and one Service, and the Starport container names that Service in its source URL' \
-		kubernetes_pair_parses
-else
-	record UNVERIFIED CAT-V64 'the Docker document Kubernetes example parses as two Deployments and one Service, and the Starport container names that Service in its source URL (no python3 with PyYAML)'
-fi
+# Kubernetes example: a repository-owned structural parse of the manifests in docs/DOCKER.md (CAT-D20, CAT9.2 owns it).
+# The test uses the module's YAML dependency. It checks the Deployment names, the Service selector
+# and target port, the Starmap container port, and the Starport source URL. No ambient interpreter takes part.
+starmap_test CAT-V64 'the Docker document Kubernetes pair parses as two named Deployments and one Service whose selector and port match Starmap, and the Starport source URL names that Service' \
+	./internal/deploymentdocs TestDockerDocumentKubernetesPairWiresStarportToStarmap
+
+# Fifth-review conditions: propagated freshness, bounded coalescing, clone-safe identity, and the console lifecycle.
+starmap_test CAT-V65 'freshness measures the propagated channel_updated_at through two Starmap hops with local acquisition on each hop' \
+	./internal/server TestCascadedFreshnessPropagatesChannelUpdatedAtThroughHops
+starmap_test CAT-V66 'completed provider observations publish through one bounded coalescing window while another provider stays blocked' \
+	./acquisition/... TestSyncPublishesCompletedProvidersWhileAnotherBlocked
+starmap_test CAT-V67 'cloned state and a shared store give replicas distinct scheduler phases and a restart keeps its phase' \
+	. TestSchedulerIdentityDivergesAcrossClonedState
+starport_console_test CAT-V68 'the shell owns one summary query with a visible-only cadence, waits for Retry-After after a 503, stops after a 401 until the session changes, and polls admin status only while the panel is open' \
+	src/components/shell/CatalogSummary.lifecycle.test.tsx
 
 printf 'Summary: %d passed, %d failed, %d unverified.\n' "$pass" "$fail" "$unverified"
 [ "$fail" -eq 0 ] && [ "$unverified" -eq 0 ]

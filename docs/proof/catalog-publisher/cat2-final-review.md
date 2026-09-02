@@ -275,10 +275,29 @@ publication lock. Completed provider layers can advance while another provider
 is slow. A slow source also cannot stop the independent acquisition controller
 from rebuilding against retained source state.
 
+Partial publication uses bounded coalescing. The first completed provider
+observation in a run opens a 30-second coalescing window. Every observation
+that completes inside the window joins it. At the end of the window the
+runtime emits one effective generation with every retained layer. The slow
+provider keeps its last-known-good observation in that generation.
+
+A provider that is still running joins the next window. A slow provider
+therefore delays no completed peer by more than 30 seconds.
+
+One run emits at most one effective generation per window, and a normal run
+emits one or two. The Starport candidate path receives each emitted generation
+through the same acceptance transaction. Starport validates one candidate at a
+time, and a newer candidate replaces a pending one instead of a queue. The
+named test is `TestSyncPublishesCompletedProvidersWhileAnotherBlocked` in
+`acquisition`. Two providers complete while a third blocks on an injected
+transport. The test proves one publication before the runtime cancels the
+blocked provider, the retained last-known-good row for that provider, and at
+most two emitted generations.
+
 The publisher run measurements are in
 [`cat2-publisher-runs.json`](cat2-publisher-runs.json). The sample supports a
-one-hour workflow timeout with more than 12 times the observed maximum. It does
-not establish a worst-case service guarantee.
+75-minute publisher step and the 90-minute job with more than 15 times the
+observed maximum. It does not establish a worst-case service guarantee.
 
 The live asset and code-limit measurements are in
 [`cat2-network-measurements.json`](cat2-network-measurements.json). The newest
@@ -321,10 +340,25 @@ Each periodic controller uses a stable phase:
 phase = hash(instance identity + controller + safe source identity) mod interval
 ```
 
-The runtime persists a random instance identity. Each replica needs a distinct
-identity. A cloned identity recreates synchronized phases. A restart keeps the
-same phase. Normal public-source work spreads across the full one-hour poll
-interval. Normal acquisition spreads across the full four-hour interval.
+The instance identity lives outside the catalog store. The runtime derives
+it from three inputs: a random seed in the process-local state directory, the
+host name, and the configured listen address. The setting `STARMAP_STATE_DIR`
+names the directory, and the default is the user state directory. The seed
+never enters the catalog path, a shared volume, the generation record, or the
+channel. The setting `STARMAP_SCHEDULER_IDENTITY` replaces the derived value.
+
+Two replicas that share one catalog store get distinct identities because
+their host names differ. Two replicas that start from one cloned image and
+state directory get distinct identities for the same reason. A restart on the
+same host keeps the same phase. Normal public-source work spreads across the
+full one-hour poll interval. Normal acquisition spreads across the full
+four-hour interval.
+
+The named test is `TestSchedulerIdentityDivergesAcrossClonedState` in the
+root package. It clones one state directory and one catalog store into two
+replicas with different host names. It proves a distinct phase for every
+controller and proves that a restart with the same host name keeps its
+phase.
 
 Cold `prefer_source` processes, new credentials, rotated credentials, and stale
 evidence use stable offsets across a 15-minute startup window. Fresh durable

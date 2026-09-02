@@ -1,6 +1,6 @@
 FAIL CAT-V01 the workflow publishes catalog-latest and no catalog-semantic tag.
 PASS CAT-V02 the workflow schedule runs every four hours at minute 17.
-FAIL CAT-V03 the workflow job stops after 90 minutes and the publisher step after 75 minutes.
+FAIL CAT-V03 the workflow parses with the generate job at 90 minutes and the Refresh candidate catalog step at 75 minutes.
 PASS CAT-V04 the workflow serializes runs and cancels no run in progress.
 FAIL CAT-V05 the channel document advances channel_updated_at without a new catalog generation.
 FAIL CAT-V06 go.mod names the attestation engine that the CAT2.1 record selected.
@@ -61,5 +61,9 @@ FAIL CAT-V60 the runtime status reports usability, freshness, fallback, direct s
 FAIL CAT-V61 a partial provider failure publishes the succeeded layers and the failed provider retains its own last-known-good observation.
 FAIL CAT-V62 the admin catalog status reports candidate, accepted, rejected, and pending route-validation state as distinct values.
 FAIL CAT-V63 the model detail shows lifecycle, credential-specific availability, provenance, and routing state as separate elements.
-FAIL CAT-V64 the Docker document Kubernetes example parses as two Deployments and one Service, and the Starport container names that Service in its source URL.
-Summary: 7 passed, 57 failed, 0 unverified.
+FAIL CAT-V64 the Docker document Kubernetes pair parses as two named Deployments and one Service whose selector and port match Starmap, and the Starport source URL names that Service.
+FAIL CAT-V65 freshness measures the propagated channel_updated_at through two Starmap hops with local acquisition on each hop.
+FAIL CAT-V66 completed provider observations publish through one bounded coalescing window while another provider stays blocked.
+FAIL CAT-V67 cloned state and a shared store give replicas distinct scheduler phases and a restart keeps its phase.
+FAIL CAT-V68 the shell owns one summary query with a visible-only cadence, waits for Retry-After after a 503, stops after a 401 until the session changes, and polls admin status only while the panel is open.
+Summary: 7 passed, 61 failed, 0 unverified.

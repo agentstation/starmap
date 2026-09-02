@@ -2,7 +2,8 @@
 
 Date: 2026-09-02. Owner task: CAT2. The plan keeps a one-line summary of
 each decision and a pointer to this record. The fourth review corrected
-CAT-D12, CAT-D18, CAT-D19, and CAT-D20.
+CAT-D12, CAT-D18, CAT-D19, and CAT-D20. The fifth review corrected CAT-D13,
+CAT-D19, and CAT-D20 and added CAT-D21.
 
 ## Canonical names
 
@@ -53,7 +54,7 @@ CAT-D12, CAT-D18, CAT-D19, and CAT-D20.
 
 **CAT-D12, audited 2026-09-01:** Bound connect, TLS, headers, transfer inactivity, bytes, pages, and records. Add no whole-refresh deadline by default. Nest the limits: a 60-minute transfer, a 75-minute publisher step, and a 90-minute workflow job.
 
-**CAT-D13, audited 2026-09-01:** Use full-interval stable phases, a 15-minute cold-start spread, one-second to 15-minute decorrelated retry, retry not-before, source admission, and a distributed refresh lease.
+**CAT-D13, audited 2026-09-01:** Use full-interval stable phases, a 15-minute cold-start spread, one-second to 15-minute decorrelated retry, retry not-before, source admission, and a distributed refresh lease. The scheduler identity comes from a process-local seed, the host name, and the listen address. It never enters the catalog store, so cloned replicas get distinct phases.
 
 ## Contract and transport decisions
 
@@ -81,8 +82,10 @@ CAT-D12, CAT-D18, CAT-D19, and CAT-D20.
 - Only the admin status route carries the source, layers, hop chain, fallback state, schedule, and provider outcomes.
 - Usability, authorization, freshness, degradation, fallback, source health, and active work each have their own element. The dot means freshness only, and the unavailable and lock glyphs differ by shape.
 - The panel draws the layers figure with the embedded baseline. A separate hop chain labels direct and upstream-reported hops.
-- The wide screen adds 16 px above each page heading for the slot. The small screen uses the 44 px top-bar control and adds no height. A `403` stops polling until the session changes.
-- CAT-V50 through CAT-V55 guard the surface.
+- The wide screen adds 16 px above each page heading for the slot. The small screen uses the 44 px top-bar control and adds no height.
+- The shell owns one summary query with a 60-second visible cadence. Admin status polls only while the panel is open or an operation runs. A `503` waits for `Retry-After`, and a `401` or `403` stops the queries until the session changes.
+- Freshness measures the propagated `channel_updated_at` through every hop. Local acquisition never resets it.
+- CAT-V50 through CAT-V55, CAT-V63, and CAT-V68 guard the surface.
 
 ## Documentation decision
 
@@ -92,5 +95,10 @@ CAT-D12, CAT-D18, CAT-D19, and CAT-D20.
 - Active-active central servers require a lease-capable store with conditional writes. A shared filesystem volume serves one writer at a time.
 - The air-gapped design uses an external pull, an offline verification, and the `file` source, because the runtime has no OCI source.
 - CAT9.1 owns the Starport documents and CAT9.2 owns the Starmap documents. Each task maps to one pull request.
+- A repository-owned Go test parses the Kubernetes pair with the module's YAML dependency. No ambient interpreter takes part.
 - CAT-V56 through CAT-V59 and CAT-V64 guard the documents.
+
+## Publication under partial completion
+
+**CAT-D21, designed 2026-09-02:** Completed provider observations publish through a 30-second coalescing window. The window emits one effective generation with every retained layer, and a running provider joins the next window. Starport validates one candidate at a time, and the newest pending candidate replaces an older one. CAT-V66 guards the behavior.
 
