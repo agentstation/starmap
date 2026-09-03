@@ -224,7 +224,7 @@ starport_check CAT-V42 'Starport rejects each removed catalog variable with a na
 starport_test CAT-V43 'Starport streaming carries no elapsed deadline after the first byte' \
 	./internal/execution TestStreamingCarriesNoElapsedDeadlineAfterFirstByte
 starport_test CAT-V44 'the Starport admin refresh returns an accepted operation' \
-	./internal/app/controllers TestAdminRefreshReturnsAcceptedOperation
+	./internal/server/controllers TestAdminRefreshReturnsAcceptedOperation
 starport_test CAT-V45 'the Starport acquisition resolver reads only the deployment lookup and never a BYOK credential' \
 	./internal/catalog TestAcquisitionResolverReadsOnlyDeploymentLookup
 starport_test CAT-V46 'Starport accepts only a matching forward state through the expected-ID compare-and-swap' \
