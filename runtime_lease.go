@@ -157,6 +157,9 @@ func (k *leaseKeeper) take(ctx context.Context) error {
 	k.mu.Lock()
 	if k.stopped {
 		k.mu.Unlock()
+		// Close ran while the store answered. The keeper returns the lease it
+		// just took, so another instance waits no full time to live for it.
+		k.release(lease)
 		return &errors.ConflictError{
 			Resource: "runtime lease",
 			Expected: string(leaseHeld),
@@ -297,6 +300,19 @@ func (k *leaseKeeper) status() leaseState {
 	return k.state
 }
 
+// release returns one lease to the store. It is best effort, because the lease
+// expires on its own when the store refuses the release.
+func (k *leaseKeeper) release(lease Lease) {
+	ctx, cancel := context.WithTimeout(context.Background(), LeaseRenewInterval)
+	defer cancel()
+	if err := k.store.Release(ctx, lease); err != nil {
+		logging.Debug().
+			Err(err).
+			Str("holder", k.holder).
+			Msg("Runtime lease release failed; the lease expires on its own")
+	}
+}
+
 // stop ends renewal and releases the lease. It is idempotent.
 func (k *leaseKeeper) stop() {
 	if k == nil || k.store == nil {
@@ -315,13 +331,6 @@ func (k *leaseKeeper) stop() {
 		if state != leaseHeld {
 			return
 		}
-		releaseCtx, cancel := context.WithTimeout(context.Background(), LeaseRenewInterval)
-		defer cancel()
-		if err := k.store.Release(releaseCtx, current); err != nil {
-			logging.Warn().
-				Err(err).
-				Str("holder", k.holder).
-				Msg("Runtime lease release failed; the lease expires on its own")
-		}
+		k.release(current)
 	})
 }

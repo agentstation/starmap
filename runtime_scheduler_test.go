@@ -328,3 +328,43 @@ func TestZeroAcquisitionIntervalRunsOneStartupPass(t *testing.T) {
 	default:
 	}
 }
+
+// TestRequireSourceOpensAsANonOwner proves that require_source names the
+// evidence the runtime needs, not the lease. A replica that another instance
+// owns opens without a read and consumes the state that the owner publishes.
+func TestRequireSourceOpensAsANonOwner(t *testing.T) {
+	t.Parallel()
+
+	leases := &stubLeaseStore{}
+	leases.refuseEvery()
+	source := newStubSource("required-source")
+	source.errs = []error{stderrors.New("the channel refused the request")}
+
+	runtime, err := Open(context.Background(),
+		WithStateDirectory(t.TempDir()),
+		WithSource(source),
+		WithLeaseStore(leases),
+		WithSourceStartupPolicy("require_source"),
+		WithSourcePollInterval(0),
+		WithStartupSpread(0),
+		WithAcquisitionEnabled(false),
+		WithRandom(func() float64 { return 0 }),
+	)
+	if err != nil {
+		t.Fatalf("Open as a non-owner: %v", err)
+	}
+	t.Cleanup(func() {
+		if closeErr := runtime.Close(); closeErr != nil {
+			t.Errorf("Close: %v", closeErr)
+		}
+	})
+	if got := source.readCount(); got != 0 {
+		t.Errorf("source reads = %d, want no read from a non-owner", got)
+	}
+	if got := runtime.Status().Lease; got != string(leaseLost) {
+		t.Errorf("status lease = %q, want %q", got, leaseLost)
+	}
+	if runtime.Catalog() == nil {
+		t.Error("a non-owner replica served no catalog")
+	}
+}

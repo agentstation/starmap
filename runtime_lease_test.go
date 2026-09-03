@@ -226,3 +226,35 @@ func TestManualRunByANonOwnerReturnsAConflict(t *testing.T) {
 		t.Error("the published catalog lost the source provider")
 	}
 }
+
+// TestTakeReleasesALeaseThatRacedClose proves that a lease taken while Close
+// ran goes back to the store. Another instance then waits no full time to live
+// for a lease that no holder uses.
+func TestTakeReleasesALeaseThatRacedClose(t *testing.T) {
+	t.Parallel()
+
+	leases := &stubLeaseStore{}
+	keeper := newLeaseKeeper(leases, "holder", time.Now)
+	var work sync.WaitGroup
+	keeper.base = context.Background()
+	keeper.work = &work
+	// The store answers the acquisition, and Close runs before the keeper
+	// installs the lease it just took.
+	leases.onAcquire(func() { keeper.stop() })
+
+	err := keeper.take(context.Background())
+	work.Wait()
+	if err == nil {
+		t.Fatal("take installed a lease that Close already ended")
+	}
+	var conflict *errors.ConflictError
+	if !stderrors.As(err, &conflict) {
+		t.Fatalf("error = %T (%v), want *errors.ConflictError", err, err)
+	}
+	if got := leases.releaseCount(); got != 1 {
+		t.Errorf("lease releases = %d, want one returned lease", got)
+	}
+	if state := keeper.status(); state != leaseLost {
+		t.Errorf("lease state = %q, want %q", state, leaseLost)
+	}
+}

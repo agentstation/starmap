@@ -53,6 +53,11 @@ repaired them.
 | A refused lease failed `Open` | A refusal opens a non-owner replica, and every run takes the lease again |
 | The window closed the run | The window emits and keeps waiting through `AcquisitionRequest.Publish` |
 
+A second review found two more lease items. A `require_source` `Open` now
+reads nothing when another instance owns the lease. That replica opens and
+consumes accepted state. `leaseKeeper.take` releases a lease that raced
+`Close` instead of leaving it to expire.
+
 Four smaller repairs joined them. `acquireProviders` records the report and
 degrades health before it returns a retention failure. The GitHub source
 adapter dropped its own budget field. It warns one time for each `Read` that
@@ -131,6 +136,12 @@ replica is normal. A manual `Refresh`, `RefreshSource`, or `Sync` returns the
 typed conflict to its caller. A successful acquisition installs the new epoch
 and restarts renewal.
 
+`leaseKeeper.take` returns a lease that raced `Close`. The store answers the
+acquisition, and the keeper then finds itself stopped. It releases that lease
+before it returns the conflict, so another instance waits no full time to live
+for a lease that no holder uses. The release is best effort and logs at debug
+level, because the lease expires on its own.
+
 ## Scheduler contract
 
 | Property | Value |
@@ -151,6 +162,11 @@ The `require_source` policy reads the source one time inside the `Open`
 context. A failed read fails `Open` with an `*errors.ResourceError`. A
 deployment that needs upstream state then never serves the embedded baseline
 instead. `Open` already read the source, so that policy needs no startup pass.
+
+The policy names the evidence the runtime needs, not the lease. A replica that
+another instance owns therefore reads nothing at `Open`. It logs at info level
+that the owner supplies the source state, and it consumes what the owner
+publishes. A store error that is not a refusal still fails `Open`.
 
 The `prefer_source` policy runs one read right after its startup offset when
 the runtime is cold. A runtime is cold when it retains no source layer, or when
@@ -243,6 +259,8 @@ Time alone moves freshness, and it moves neither health value nor the fallback.
 | `TestRefusedLeaseOpensAsANonOwner` | The non-owner replica |
 | `TestScheduledRunSkipsWhileAnotherInstanceOwnsTheLease` | The skipped run |
 | `TestManualRunByANonOwnerReturnsAConflict` | The manual conflict |
+| `TestRequireSourceOpensAsANonOwner` | The non-owner startup read |
+| `TestTakeReleasesALeaseThatRacedClose` | The lease that raced Close |
 
 Every test is hermetic. Six options inject every dependency that a test needs
 to control. They are `WithClock`, `WithRandom`, `WithSource`, `WithAcquirer`,
@@ -272,6 +290,8 @@ the rule returns.
 | The refusal branch in `leaseKeeper.start` | `TestRefusedLeaseOpensAsANonOwner` | `Open: failed to acquire runtime lease ...: another instance owns the runtime lease` |
 | The `ensureHeld` call in `Runtime.execute` | `TestManualRunByANonOwnerReturnsAConflict` | `source reads = 1, want no upstream request from a non-owner` |
 | The layer test that opens the window | `TestAcquireOpensNoWindowWithoutLayer` | `windows opened = 1, want none` |
+| The non-owner skip in `Open` | `TestRequireSourceOpensAsANonOwner` | `Open as a non-owner: failed to read catalog source ...: another instance owns the runtime lease` |
+| The release in `leaseKeeper.take` | `TestTakeReleasesALeaseThatRacedClose` | `lease releases = 0, want one returned lease` |
 
 ## Commands
 

@@ -79,7 +79,10 @@ const (
 	StartupPreferSource StartupPolicy = "prefer_source"
 
 	// StartupRequireSource keeps the runtime unusable until one verified
-	// upstream generation is active.
+	// upstream generation is active. Open reads the source one time and fails
+	// when that read fails. The policy names the evidence the runtime needs,
+	// not the lease. A replica that another instance owns therefore opens
+	// without a read and consumes the state that the owner publishes.
 	StartupRequireSource StartupPolicy = "require_source"
 
 	// StartupPreferLocal keeps the retained local generation active and

@@ -130,6 +130,13 @@ type stubLeaseStore struct {
 	// refuses every acquisition, so the instance never owns the lease.
 	refusals  int
 	refuseAll bool
+
+	// releases counts every lease the keeper returned.
+	releases int
+
+	// afterAcquire runs after one acquisition answers and before the keeper
+	// reads its own state. A test uses it to close the runtime mid-acquisition.
+	afterAcquire func()
 }
 
 // AcquireLease takes the lease and increases the epoch. A scripted refusal
@@ -155,7 +162,14 @@ func (s *stubLeaseStore) AcquireLease(_ context.Context, holder string, ttl time
 	if expires.IsZero() {
 		expires = time.Now().Add(ttl)
 	}
-	return Lease{Holder: holder, Epoch: s.epoch, ExpiresAt: expires}, nil
+	lease := Lease{Holder: holder, Epoch: s.epoch, ExpiresAt: expires}
+	if hook := s.afterAcquire; hook != nil {
+		s.afterAcquire = nil
+		s.mu.Unlock()
+		hook()
+		s.mu.Lock()
+	}
+	return lease, nil
 }
 
 // Renew extends the lease, or fails when a test scripted a loss.
@@ -170,8 +184,27 @@ func (s *stubLeaseStore) Renew(_ context.Context, lease Lease, ttl time.Duration
 	return lease, nil
 }
 
-// Release returns the lease.
-func (s *stubLeaseStore) Release(context.Context, Lease) error { return nil }
+// Release returns the lease and counts the call.
+func (s *stubLeaseStore) Release(context.Context, Lease) error {
+	s.mu.Lock()
+	defer s.mu.Unlock()
+	s.releases++
+	return nil
+}
+
+// releaseCount returns how many leases the keeper returned.
+func (s *stubLeaseStore) releaseCount() int {
+	s.mu.Lock()
+	defer s.mu.Unlock()
+	return s.releases
+}
+
+// onAcquire scripts work that runs while one acquisition answers.
+func (s *stubLeaseStore) onAcquire(hook func()) {
+	s.mu.Lock()
+	defer s.mu.Unlock()
+	s.afterAcquire = hook
+}
 
 // failLater scripts the next renewal to fail.
 func (s *stubLeaseStore) failLater(err error) {

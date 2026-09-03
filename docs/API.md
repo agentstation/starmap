@@ -292,7 +292,7 @@ type Acquirer interface {
 ```
 
 <a name="AcquisitionPolicy"></a>
-## type [AcquisitionPolicy](<https://github.com/agentstation/starmap/blob/main/runtime_policy.go#L261-L269>)
+## type [AcquisitionPolicy](<https://github.com/agentstation/starmap/blob/main/runtime_policy.go#L264-L272>)
 
 AcquisitionPolicy configures scheduled provider acquisition. The policy is exactly one switch and one period.
 
@@ -309,7 +309,7 @@ type AcquisitionPolicy struct {
 ```
 
 <a name="DefaultAcquisitionPolicy"></a>
-### func [DefaultAcquisitionPolicy](<https://github.com/agentstation/starmap/blob/main/runtime_policy.go#L272>)
+### func [DefaultAcquisitionPolicy](<https://github.com/agentstation/starmap/blob/main/runtime_policy.go#L275>)
 
 ```go
 func DefaultAcquisitionPolicy() AcquisitionPolicy
@@ -318,7 +318,7 @@ func DefaultAcquisitionPolicy() AcquisitionPolicy
 DefaultAcquisitionPolicy returns the canonical acquisition policy.
 
 <a name="AcquisitionPolicy.Validate"></a>
-### func \(AcquisitionPolicy\) [Validate](<https://github.com/agentstation/starmap/blob/main/runtime_policy.go#L278>)
+### func \(AcquisitionPolicy\) [Validate](<https://github.com/agentstation/starmap/blob/main/runtime_policy.go#L281>)
 
 ```go
 func (p AcquisitionPolicy) Validate() error
@@ -700,7 +700,7 @@ type EmbeddedBootstrapInfo struct {
 ```
 
 <a name="Freshness"></a>
-## type [Freshness](<https://github.com/agentstation/starmap/blob/main/runtime_policy.go#L364>)
+## type [Freshness](<https://github.com/agentstation/starmap/blob/main/runtime_policy.go#L367>)
 
 Freshness is the evaluated age of one observed timestamp.
 
@@ -727,7 +727,7 @@ const (
 ```
 
 <a name="Freshness.String"></a>
-### func \(Freshness\) [String](<https://github.com/agentstation/starmap/blob/main/runtime_policy.go#L381>)
+### func \(Freshness\) [String](<https://github.com/agentstation/starmap/blob/main/runtime_policy.go#L384>)
 
 ```go
 func (f Freshness) String() string
@@ -736,7 +736,7 @@ func (f Freshness) String() string
 String returns the wire value of the freshness level.
 
 <a name="FreshnessPolicy"></a>
-## type [FreshnessPolicy](<https://github.com/agentstation/starmap/blob/main/runtime_policy.go#L313-L322>)
+## type [FreshnessPolicy](<https://github.com/agentstation/starmap/blob/main/runtime_policy.go#L316-L325>)
 
 FreshnessPolicy holds the age thresholds that turn observed timestamps into a freshness level.
 
@@ -754,7 +754,7 @@ type FreshnessPolicy struct {
 ```
 
 <a name="DefaultFreshnessPolicy"></a>
-### func [DefaultFreshnessPolicy](<https://github.com/agentstation/starmap/blob/main/runtime_policy.go#L325>)
+### func [DefaultFreshnessPolicy](<https://github.com/agentstation/starmap/blob/main/runtime_policy.go#L328>)
 
 ```go
 func DefaultFreshnessPolicy() FreshnessPolicy
@@ -763,7 +763,7 @@ func DefaultFreshnessPolicy() FreshnessPolicy
 DefaultFreshnessPolicy returns the canonical freshness thresholds.
 
 <a name="FreshnessPolicy.Validate"></a>
-### func \(FreshnessPolicy\) [Validate](<https://github.com/agentstation/starmap/blob/main/runtime_policy.go#L337>)
+### func \(FreshnessPolicy\) [Validate](<https://github.com/agentstation/starmap/blob/main/runtime_policy.go#L340>)
 
 ```go
 func (p FreshnessPolicy) Validate() error
@@ -772,7 +772,7 @@ func (p FreshnessPolicy) Validate() error
 Validate checks that every warning threshold precedes its critical partner.
 
 <a name="Health"></a>
-## type [Health](<https://github.com/agentstation/starmap/blob/main/runtime_policy.go#L398>)
+## type [Health](<https://github.com/agentstation/starmap/blob/main/runtime_policy.go#L401>)
 
 Health is the operator\-facing state of one runtime component.
 
@@ -799,7 +799,7 @@ const (
 ```
 
 <a name="Health.String"></a>
-### func \(Health\) [String](<https://github.com/agentstation/starmap/blob/main/runtime_policy.go#L415>)
+### func \(Health\) [String](<https://github.com/agentstation/starmap/blob/main/runtime_policy.go#L418>)
 
 ```go
 func (h Health) String() string
@@ -1321,7 +1321,7 @@ func Open(ctx context.Context, opts ...Option) (*Runtime, error)
 Open returns a connected runtime. It serves the verified embedded catalog before the first upstream reply, so Catalog and State never wait for the network. Open starts the source and acquisition schedules and returns.
 
 <a name="Runtime.Catalog"></a>
-### func \(\*Runtime\) [Catalog](<https://github.com/agentstation/starmap/blob/main/runtime.go#L244>)
+### func \(\*Runtime\) [Catalog](<https://github.com/agentstation/starmap/blob/main/runtime.go#L250>)
 
 ```go
 func (r *Runtime) Catalog() *catalogs.Catalog
@@ -1330,7 +1330,7 @@ func (r *Runtime) Catalog() *catalogs.Catalog
 Catalog returns the current immutable effective catalog. It reaches no external system and never blocks on the source.
 
 <a name="Runtime.Client"></a>
-### func \(\*Runtime\) [Client](<https://github.com/agentstation/starmap/blob/main/runtime.go#L266>)
+### func \(\*Runtime\) [Client](<https://github.com/agentstation/starmap/blob/main/runtime.go#L272>)
 
 ```go
 func (r *Runtime) Client() *Client
@@ -1339,7 +1339,7 @@ func (r *Runtime) Client() *Client
 Client returns the immutable publication client underneath the runtime. Use it for explicit publication, hooks, and generation retrieval.
 
 <a name="Runtime.Close"></a>
-### func \(\*Runtime\) [Close](<https://github.com/agentstation/starmap/blob/main/runtime.go#L286>)
+### func \(\*Runtime\) [Close](<https://github.com/agentstation/starmap/blob/main/runtime.go#L292>)
 
 ```go
 func (r *Runtime) Close() error
@@ -1366,7 +1366,7 @@ func (r *Runtime) RefreshSource(ctx context.Context) (SourceRefreshReport, error
 RefreshSource reads the upstream source only. It changes the source layer.
 
 <a name="Runtime.State"></a>
-### func \(\*Runtime\) [State](<https://github.com/agentstation/starmap/blob/main/runtime.go#L255>)
+### func \(\*Runtime\) [State](<https://github.com/agentstation/starmap/blob/main/runtime.go#L261>)
 
 ```go
 func (r *Runtime) State() CatalogState
@@ -1393,7 +1393,7 @@ func (r *Runtime) Sync(ctx context.Context, providers ...catalogs.ProviderID) (A
 Sync observes providers only. It changes the provider layers and returns the acquisition report. An empty provider list observes every eligible provider.
 
 <a name="Runtime.Updates"></a>
-### func \(\*Runtime\) [Updates](<https://github.com/agentstation/starmap/blob/main/runtime.go#L276>)
+### func \(\*Runtime\) [Updates](<https://github.com/agentstation/starmap/blob/main/runtime.go#L282>)
 
 ```go
 func (r *Runtime) Updates() <-chan CatalogState
@@ -1593,7 +1593,7 @@ func (k SourceKind) Valid() bool
 Valid reports whether the kind is one of the accepted source names.
 
 <a name="SourcePolicy"></a>
-## type [SourcePolicy](<https://github.com/agentstation/starmap/blob/main/runtime_policy.go#L137-L165>)
+## type [SourcePolicy](<https://github.com/agentstation/starmap/blob/main/runtime_policy.go#L140-L168>)
 
 SourcePolicy selects and bounds the upstream catalog source. It holds no token and no API key, so a policy value is safe to log and to serve.
 
@@ -1630,7 +1630,7 @@ type SourcePolicy struct {
 ```
 
 <a name="DefaultSourcePolicy"></a>
-### func [DefaultSourcePolicy](<https://github.com/agentstation/starmap/blob/main/runtime_policy.go#L168>)
+### func [DefaultSourcePolicy](<https://github.com/agentstation/starmap/blob/main/runtime_policy.go#L171>)
 
 ```go
 func DefaultSourcePolicy() SourcePolicy
@@ -1639,7 +1639,7 @@ func DefaultSourcePolicy() SourcePolicy
 DefaultSourcePolicy returns the canonical public\-channel source policy.
 
 <a name="SourcePolicy.SafeIdentity"></a>
-### func \(SourcePolicy\) [SafeIdentity](<https://github.com/agentstation/starmap/blob/main/runtime_policy.go#L235>)
+### func \(SourcePolicy\) [SafeIdentity](<https://github.com/agentstation/starmap/blob/main/runtime_policy.go#L238>)
 
 ```go
 func (p SourcePolicy) SafeIdentity() string
@@ -1648,7 +1648,7 @@ func (p SourcePolicy) SafeIdentity() string
 SafeIdentity returns the source identity that status and logs may show. It names the kind and, for a GitHub channel, the repository and the channel. It never names a custom URL, a host, or a credential.
 
 <a name="SourcePolicy.Validate"></a>
-### func \(SourcePolicy\) [Validate](<https://github.com/agentstation/starmap/blob/main/runtime_policy.go#L181>)
+### func \(SourcePolicy\) [Validate](<https://github.com/agentstation/starmap/blob/main/runtime_policy.go#L184>)
 
 ```go
 func (p SourcePolicy) Validate() error
@@ -1748,7 +1748,10 @@ const (
     StartupPreferSource StartupPolicy = "prefer_source"
 
     // StartupRequireSource keeps the runtime unusable until one verified
-    // upstream generation is active.
+    // upstream generation is active. Open reads the source one time and fails
+    // when that read fails. The policy names the evidence the runtime needs,
+    // not the lease. A replica that another instance owns therefore opens
+    // without a read and consumes the state that the owner publishes.
     StartupRequireSource StartupPolicy = "require_source"
 
     // StartupPreferLocal keeps the retained local generation active and
@@ -1758,7 +1761,7 @@ const (
 ```
 
 <a name="ParseStartupPolicy"></a>
-### func [ParseStartupPolicy](<https://github.com/agentstation/starmap/blob/main/runtime_policy.go#L104>)
+### func [ParseStartupPolicy](<https://github.com/agentstation/starmap/blob/main/runtime_policy.go#L107>)
 
 ```go
 func ParseStartupPolicy(name string) (StartupPolicy, error)
@@ -1767,7 +1770,7 @@ func ParseStartupPolicy(name string) (StartupPolicy, error)
 ParseStartupPolicy converts one configured name into a startup policy.
 
 <a name="StartupPolicy.String"></a>
-### func \(StartupPolicy\) [String](<https://github.com/agentstation/starmap/blob/main/runtime_policy.go#L101>)
+### func \(StartupPolicy\) [String](<https://github.com/agentstation/starmap/blob/main/runtime_policy.go#L104>)
 
 ```go
 func (p StartupPolicy) String() string
@@ -1776,7 +1779,7 @@ func (p StartupPolicy) String() string
 String returns the wire value of the startup policy.
 
 <a name="StartupPolicy.Valid"></a>
-### func \(StartupPolicy\) [Valid](<https://github.com/agentstation/starmap/blob/main/runtime_policy.go#L98>)
+### func \(StartupPolicy\) [Valid](<https://github.com/agentstation/starmap/blob/main/runtime_policy.go#L101>)
 
 ```go
 func (p StartupPolicy) Valid() bool

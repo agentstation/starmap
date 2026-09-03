@@ -220,9 +220,15 @@ func Open(ctx context.Context, opts ...Option) (*Runtime, error) {
 
 	// The require_source policy blocks inside the Open context and reads the
 	// source once. A failed read fails Open, so a deployment that needs
-	// upstream state never serves the embedded baseline instead.
+	// upstream state never serves the embedded baseline instead. A non-owner
+	// replica reads nothing, because the lease owner supplies the state that
+	// this replica then consumes.
 	if runtime.config.source.StartupPolicy == StartupRequireSource {
-		if _, err := runtime.RefreshSource(ctx); err != nil {
+		if runtime.lease.status() == leaseLost {
+			logging.Info().
+				Str("holder", runtime.schedule.identity.Instance).
+				Msg("The lease owner supplies the source state; require_source reads nothing here")
+		} else if _, err := runtime.RefreshSource(ctx); err != nil {
 			runtime.abort()
 			return nil, errors.WrapResource(
 				"read", "catalog source", runtime.source.Identity(), err)
