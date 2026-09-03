@@ -1228,7 +1228,7 @@ See [pkg/sources/README.md](../pkg/sources/README.md) for details.
 
 Location: `runtime/runtime.go`, `runtime/options.go`, `runtime/policy.go`,
 `runtime/layers.go`, `runtime/status.go`, `runtime/vocabulary.go`,
-`runtime/status/`, `internal/catalog/settings`
+`runtime/status/`, `runtime/source/`, `internal/catalog/settings`
 
 **Purpose:** Serve one effective catalog from a verified embedded baseline, a
 configured catalog source, and retained provider observations
@@ -1243,19 +1243,22 @@ call starts the source schedule and the acquisition schedule, then returns. The
 `Status` call reads retained state only and reaches no external system. The
 `Close` call is idempotent. It joins runtime-owned work within five seconds.
 
-### The status vocabulary leaf
+### Vocabulary and contract leaves
 
-The runtime package carries the attested source machinery. One leaf package
-carries the public names that a reader of the runtime status needs. A package
-that renders that status therefore pays for no source machinery.
+The runtime package carries the attested source machinery. Two leaf packages
+carry the public names that a reader of the runtime needs. A package that uses
+one of those names therefore pays for no source machinery.
 
 | Package | Owns | Depends on |
 | --- | --- | --- |
 | `runtime/status` | `Status`, `Health`, `Freshness`, `SourceKind`, and `SourceHop` | `pkg/sources` and the standard library |
+| `runtime/source` | `Source`, `Watcher`, `IdentityAdopter`, and `Read` | `pkg/catalogs`, `runtime/status`, and the standard library |
 
-The `runtime` package keeps every published name as a type alias. A caller
-selects the import path that matches its own dependency budget. The `server`
-package renders the status vocabulary, and it imports no `runtime` package.
+The `runtime` package keeps every published name as a type alias, and it keeps
+the `Source` prefix that each contract name had. A caller selects the import
+path that matches its own dependency budget. The `server`
+package renders the status vocabulary, and the `remote` package implements the
+source contract. Neither package imports `runtime`.
 
 ### Layers
 

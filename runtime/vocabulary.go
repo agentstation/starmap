@@ -1,12 +1,33 @@
 package runtime
 
-import "github.com/agentstation/starmap/runtime/status"
+import (
+	"github.com/agentstation/starmap/runtime/source"
+	"github.com/agentstation/starmap/runtime/status"
+)
 
 // The observable runtime vocabulary lives in the leaf package
 // github.com/agentstation/starmap/runtime/status. A server renders that
 // vocabulary without the attested source machinery of this package. These
 // aliases keep every name valid under the runtime import path, so a caller
 // selects the import that matches its own dependency budget.
+
+// The upstream source contract lives in the leaf package
+// github.com/agentstation/starmap/runtime/source. A package that implements a
+// source depends on that contract alone. These aliases keep every name valid
+// under the runtime import path.
+
+// Source reads one upstream immutable catalog generation.
+type Source = source.Source
+
+// SourceWatcher is an optional Source that reports each upstream change.
+type SourceWatcher = source.Watcher
+
+// SourceIdentityAdopter is an optional Source that takes the fleet instance
+// identity of its runtime.
+type SourceIdentityAdopter = source.IdentityAdopter
+
+// SourceRead is one upstream observation.
+type SourceRead = source.Read
 
 // Status is the operator-facing state of one connected runtime.
 type Status = status.Status

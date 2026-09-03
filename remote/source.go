@@ -10,7 +10,8 @@ import (
 	protocol "github.com/agentstation/starmap/pkg/catalogs/remote"
 	"github.com/agentstation/starmap/pkg/catalogs/storage"
 	"github.com/agentstation/starmap/pkg/errors"
-	"github.com/agentstation/starmap/runtime"
+	"github.com/agentstation/starmap/runtime/source"
+	"github.com/agentstation/starmap/runtime/status"
 )
 
 // DefaultSourceIdentity is the safe identity of a cascaded Starmap source. It
@@ -63,9 +64,9 @@ type Source struct {
 
 // The cascaded source fills the reactive runtime source roles.
 var (
-	_ runtime.Source                = (*Source)(nil)
-	_ runtime.SourceWatcher         = (*Source)(nil)
-	_ runtime.SourceIdentityAdopter = (*Source)(nil)
+	_ source.Source                = (*Source)(nil)
+	_ source.Watcher         = (*Source)(nil)
+	_ source.IdentityAdopter = (*Source)(nil)
 )
 
 // NewSource builds the cascaded Starmap source. It starts no goroutine and
@@ -138,9 +139,9 @@ func (s *Source) AdoptInstanceIdentity(instance string) {
 // propagated channel time. It bounds the chain before it reports a generation.
 // The runtime owns the self, alias, and cycle rules, because only the runtime
 // knows its own identity.
-func (s *Source) Read(ctx context.Context) (runtime.SourceRead, error) {
+func (s *Source) Read(ctx context.Context) (source.Read, error) {
 	if err := s.start(ctx); err != nil {
-		return runtime.SourceRead{}, err
+		return source.Read{}, err
 	}
 	chain, chainErr := s.subscriber.protocol.FetchSourceChain(ctx)
 	// An upstream that serves no chain answers with a status, and an origin
@@ -150,18 +151,18 @@ func (s *Source) Read(ctx context.Context) (runtime.SourceRead, error) {
 	if chainErr != nil {
 		var apiErr *errors.APIError
 		if !stderrors.As(chainErr, &apiErr) || apiErr.StatusCode == 0 {
-			return runtime.SourceRead{}, chainErr
+			return source.Read{}, chainErr
 		}
 	}
 	disclosed := chainErr == nil
 	if disclosed {
 		if err := s.acceptChain(chain); err != nil {
-			return runtime.SourceRead{}, err
+			return source.Read{}, err
 		}
 	}
 
 	now := s.subscriber.currentTime()
-	read := runtime.SourceRead{
+	read := source.Read{
 		Health:           s.gradeUpstream(chain, disclosed, now),
 		Chain:            chainHops(chain, disclosed),
 		ChannelUpdatedAt: chain.ChannelUpdatedAt,
@@ -192,7 +193,7 @@ func (s *Source) Read(ctx context.Context) (runtime.SourceRead, error) {
 
 	generation, err := s.store.Current(ctx)
 	if err != nil {
-		return runtime.SourceRead{}, errors.WrapResource(
+		return source.Read{}, errors.WrapResource(
 			"load", "cascaded catalog generation", state.GenerationID, err)
 	}
 	read.Changed = true
@@ -253,9 +254,9 @@ func (s *Source) gradeUpstream(
 	chain protocol.SourceChain,
 	disclosed bool,
 	now time.Time,
-) runtime.Health {
+) status.Health {
 	if !disclosed {
-		return runtime.HealthDegraded
+		return status.HealthDegraded
 	}
 	health := chainHealth(worstChainHealth(chain))
 	if s.maxAge <= 0 || chain.ChannelUpdatedAt.IsZero() {
@@ -264,26 +265,26 @@ func (s *Source) gradeUpstream(
 	// Every hop evaluates the propagated origin time, not its own last check,
 	// so a stale origin degrades the whole cascade instead of one hop.
 	if now.Sub(chain.ChannelUpdatedAt) > s.maxAge {
-		return worseChainHealth(health, runtime.HealthDegraded)
+		return worseChainHealth(health, status.HealthDegraded)
 	}
 	return health
 }
 
 // chainHops returns the sanitized chain the runtime records, nearest hop
 // first. The serving upstream is the first hop.
-func chainHops(chain protocol.SourceChain, disclosed bool) []runtime.SourceHop {
+func chainHops(chain protocol.SourceChain, disclosed bool) []status.SourceHop {
 	if !disclosed {
 		return nil
 	}
-	hops := make([]runtime.SourceHop, 0, len(chain.Hops)+1)
-	hops = append(hops, runtime.SourceHop{
+	hops := make([]status.SourceHop, 0, len(chain.Hops)+1)
+	hops = append(hops, status.SourceHop{
 		Identity:    chain.Identity,
 		Health:      chainHealth(chain.Health),
 		PublishedAt: chain.ChannelUpdatedAt,
 		ObservedAt:  chain.ObservedAt,
 	})
 	for _, hop := range chain.Hops {
-		hops = append(hops, runtime.SourceHop{
+		hops = append(hops, status.SourceHop{
 			Identity:    hop.Identity,
 			Health:      chainHealth(hop.Health),
 			PublishedAt: hop.PublishedAt,
@@ -313,28 +314,28 @@ func hopHealth(chain protocol.SourceChain) []string {
 }
 
 // chainHealth converts one closed-set chain code onto the runtime health.
-func chainHealth(code string) runtime.Health {
+func chainHealth(code string) status.Health {
 	switch code {
 	case protocol.SourceChainHealthOK:
-		return runtime.HealthOK
+		return status.HealthOK
 	case protocol.SourceChainHealthDegraded:
-		return runtime.HealthDegraded
+		return status.HealthDegraded
 	case protocol.SourceChainHealthUnavailable:
-		return runtime.HealthUnavailable
+		return status.HealthUnavailable
 	default:
-		return runtime.HealthUnknown
+		return status.HealthUnknown
 	}
 }
 
 // ChainHealthCode converts one runtime health onto the closed chain code. A
 // server uses it while it builds the document it serves.
-func ChainHealthCode(health runtime.Health) string {
+func ChainHealthCode(health status.Health) string {
 	switch health {
-	case runtime.HealthOK:
+	case status.HealthOK:
 		return protocol.SourceChainHealthOK
-	case runtime.HealthDegraded:
+	case status.HealthDegraded:
 		return protocol.SourceChainHealthDegraded
-	case runtime.HealthUnavailable:
+	case status.HealthUnavailable:
 		return protocol.SourceChainHealthUnavailable
 	default:
 		return protocol.SourceChainHealthUnknown
@@ -354,7 +355,7 @@ func chainRank(code string) int {
 	}
 }
 
-func worseChainHealth(left, right runtime.Health) runtime.Health {
+func worseChainHealth(left, right status.Health) status.Health {
 	if chainRank(ChainHealthCode(right)) > chainRank(ChainHealthCode(left)) {
 		return right
 	}
