@@ -155,15 +155,39 @@ func (s *layerStore) instanceSeed() (string, error) {
 	return seed, nil
 }
 
+// adoptSourceIdentity hands the derived instance identity to a source that
+// takes one. The source then spreads its own work on the identity of this
+// runtime, so one replica keeps one phase across every controller it owns.
+func (r *Runtime) adoptSourceIdentity() {
+	adopter, ok := r.source.(SourceIdentityAdopter)
+	if !ok {
+		return
+	}
+	adopter.AdoptInstanceIdentity(r.schedule.identity.Instance)
+}
+
+// sourceChanges returns the upstream wake channel of a reactive source. A
+// source that reports no change returns nil, and its worker then wakes on the
+// poll interval alone.
+func (r *Runtime) sourceChanges() <-chan struct{} {
+	watcher, ok := r.source.(SourceWatcher)
+	if !ok {
+		return nil
+	}
+	return watcher.Changes()
+}
+
 // startSchedules launches the periodic source and acquisition workers. A
 // runtime without an acquirer runs source refresh only.
 func (r *Runtime) startSchedules() {
-	if interval := r.config.source.PollInterval; r.source != nil && interval > 0 {
+	interval := r.config.source.PollInterval
+	wake := r.sourceChanges()
+	if r.source != nil && (interval > 0 || wake != nil) {
 		offset := r.schedule.sourceOffset
 		phase := r.schedule.sourcePhase
 		startup := r.sourceNeedsStartupPass()
 		r.work.Go(func() {
-			r.runSchedule(controllerSource, interval, offset, phase, startup, func(ctx context.Context) {
+			r.runSchedule(controllerSource, interval, offset, phase, startup, wake, func(ctx context.Context) {
 				if _, err := r.RefreshSource(ctx); err != nil {
 					r.logScheduledFailure(controllerSource, err)
 				}
@@ -176,7 +200,7 @@ func (r *Runtime) startSchedules() {
 		phase := r.schedule.acquisitionPhase
 		startup := interval <= 0 || r.acquisitionNeedsStartupPass()
 		r.work.Go(func() {
-			r.runSchedule(controllerAcquisition, interval, offset, phase, startup, func(ctx context.Context) {
+			r.runSchedule(controllerAcquisition, interval, offset, phase, startup, nil, func(ctx context.Context) {
 				if _, err := r.Sync(ctx); err != nil {
 					r.logScheduledFailure(controllerAcquisition, err)
 				}
@@ -253,14 +277,24 @@ func (r *Runtime) logScheduledFailure(controller string, err error) {
 		Msg("Scheduled runtime work failed")
 }
 
+// Wake reasons of one scheduled worker. An operator reads the reason to tell a
+// reactive refresh from a periodic one.
+const (
+	wakeInterval = "interval"
+	wakeUpstream = "upstream_change"
+	wakeClosed   = "change_stream_closed"
+)
+
 // runSchedule paces one periodic worker. It waits the startup offset and runs
 // the startup pass that a cold runtime needs. It then wakes on every interval
-// boundary that its stable phase selects. A zero interval means one startup
-// pass and no periodic work.
+// boundary that its stable phase selects, and on every upstream change that
+// the wake channel reports. A zero interval with no wake channel means one
+// startup pass and no periodic work.
 func (r *Runtime) runSchedule(
 	controller string,
 	interval, offset, phase time.Duration,
 	startupPass bool,
+	wake <-chan struct{},
 	work func(context.Context),
 ) {
 	if !r.sleep(offset) {
@@ -272,18 +306,57 @@ func (r *Runtime) runSchedule(
 			Msg("Runtime schedule started its startup pass")
 		work(r.ctx)
 	}
-	if interval <= 0 {
-		return
-	}
 	for {
-		wait := untilNextRun(r.config.now(), interval, phase)
-		if !r.sleep(wait) {
+		if interval <= 0 && wake == nil {
 			return
+		}
+		reason, alive := r.waitForRun(untilNextRun(r.config.now(), interval, phase), wake)
+		if !alive {
+			return
+		}
+		if reason == wakeClosed {
+			wake = nil
+			continue
 		}
 		logging.Debug().
 			Str("controller", controller).
+			Str("reason", reason).
 			Msg("Runtime schedule woke a periodic worker")
 		work(r.ctx)
+	}
+}
+
+// waitForRun blocks until the next interval boundary or an upstream change. It
+// reports the reason it returned, and it reports false when the runtime
+// closed. A zero wait means the worker has no interval, so only a change or a
+// shutdown ends the wait.
+func (r *Runtime) waitForRun(
+	wait time.Duration,
+	wake <-chan struct{},
+) (string, bool) {
+	if wake == nil {
+		return wakeInterval, r.sleep(wait)
+	}
+	var boundary <-chan time.Time
+	if wait > 0 {
+		if after := r.config.scheduleTimer; after != nil {
+			boundary = after(wait)
+		} else {
+			timer := time.NewTimer(wait)
+			defer timer.Stop()
+			boundary = timer.C
+		}
+	}
+	select {
+	case <-r.ctx.Done():
+		return "", false
+	case <-boundary:
+		return wakeInterval, true
+	case _, open := <-wake:
+		if !open {
+			return wakeClosed, true
+		}
+		return wakeUpstream, true
 	}
 }
 

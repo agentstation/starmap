@@ -52,14 +52,21 @@ type Source struct {
 	maxHops    int
 	maxAge     time.Duration
 
-	startOnce sync.Once
-	startErr  error
-	cancel    context.CancelFunc
+	startMu sync.Mutex
+	started bool
+	cancel  context.CancelFunc
 
 	mu                sync.Mutex
 	lastGenerationID  string
 	lastChannelUpdate time.Time
 }
+
+// The cascaded source fills the reactive runtime source roles.
+var (
+	_ starmap.Source                = (*Source)(nil)
+	_ starmap.SourceWatcher         = (*Source)(nil)
+	_ starmap.SourceIdentityAdopter = (*Source)(nil)
+)
 
 // NewSource builds the cascaded Starmap source. It starts no goroutine and
 // sends no request. The first Read starts the subscriber.
@@ -105,10 +112,26 @@ func (s *Source) Close() error {
 	if s == nil {
 		return nil
 	}
-	if s.cancel != nil {
-		s.cancel()
+	s.startMu.Lock()
+	cancel := s.cancel
+	s.cancel = nil
+	s.startMu.Unlock()
+	if cancel != nil {
+		cancel()
 	}
 	return s.subscriber.Close()
+}
+
+// Changes reports each upstream publication the subscriber activated. The
+// runtime refreshes on that wake, so a streamed delta crosses one hop in
+// seconds instead of waiting for the next poll boundary.
+func (s *Source) Changes() <-chan struct{} { return s.subscriber.Updates() }
+
+// AdoptInstanceIdentity takes the fleet instance identity of the runtime that
+// owns this source. The subscriber then spreads its reconnects and phases its
+// fallback polls on the same identity the runtime schedules with.
+func (s *Source) AdoptInstanceIdentity(instance string) {
+	s.subscriber.AdoptInstanceIdentity(instance)
 }
 
 // Read reports the current upstream generation, the sanitized chain, and the
@@ -120,7 +143,11 @@ func (s *Source) Read(ctx context.Context) (starmap.SourceRead, error) {
 		return starmap.SourceRead{}, err
 	}
 	chain, chainErr := s.subscriber.protocol.FetchSourceChain(ctx)
-	if chainErr != nil && !stderrors.Is(chainErr, errors.ErrNotFound) {
+	// An upstream that serves no chain answers with a status, and an origin
+	// answers with a not-found status. Both stay readable without disclosure.
+	// A transport failure and a malformed document carry no status, so the
+	// read reports them instead of guessing at an origin.
+	if chainErr != nil {
 		var apiErr *errors.APIError
 		if !stderrors.As(chainErr, &apiErr) || apiErr.StatusCode == 0 {
 			return starmap.SourceRead{}, chainErr
@@ -181,19 +208,28 @@ func (s *Source) Read(ctx context.Context) (starmap.SourceRead, error) {
 	return read, nil
 }
 
-// start opens the subscriber lifecycle once. The lifetime outlives one
-// refresh run, so the source detaches the read context from its cancel signal
-// and keeps its values.
+// start opens the subscriber lifecycle once. The lifetime outlives one refresh
+// run, so the source detaches the read context from its cancel signal and
+// keeps its values.
+//
+// A failed start is never sticky. An upstream that refuses the first
+// credential must not disable this source for the life of the process. The
+// next read opens the lifecycle again. The runtime poll recovers on its own
+// after an operator rotates the key, and it recovers when the upstream returns.
 func (s *Source) start(ctx context.Context) error {
-	s.startOnce.Do(func() {
-		lifetime, cancel := context.WithCancel(context.WithoutCancel(ctx))
-		s.cancel = cancel
-		if err := s.subscriber.Start(lifetime); err != nil {
-			cancel()
-			s.startErr = err
-		}
-	})
-	return s.startErr
+	s.startMu.Lock()
+	defer s.startMu.Unlock()
+	if s.started {
+		return nil
+	}
+	lifetime, cancel := context.WithCancel(context.WithoutCancel(ctx))
+	if err := s.subscriber.Start(lifetime); err != nil {
+		cancel()
+		return err
+	}
+	s.cancel = cancel
+	s.started = true
+	return nil
 }
 
 // acceptChain bounds the disclosed cascade. A chain longer than the hop budget

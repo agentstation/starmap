@@ -4,6 +4,7 @@ import (
 	stderrors "errors"
 	"strings"
 	"testing"
+	"time"
 
 	"github.com/spf13/pflag"
 
@@ -174,8 +175,11 @@ func TestConfiguredSourceReplacesTheDefault(t *testing.T) {
 // builds the cascade source that the root package cannot construct.
 func TestStarmapSourceComposesTheCascadeSource(t *testing.T) {
 	values := map[string]string{
-		settings.Source:    string(starmap.SourceStarmap),
-		settings.SourceURL: "https://catalog.example.test",
+		settings.Source:              string(starmap.SourceStarmap),
+		settings.SourceURL:           "https://catalog.example.test",
+		settings.StartupSpread:       "90s",
+		settings.TransferIdleTimeout: "7s",
+		settings.TransferMaxDuration: "3m",
 	}
 	config, err := settings.Load(func(name string) (string, bool) {
 		value, found := values[name]
@@ -189,6 +193,16 @@ func TestStarmapSourceComposesTheCascadeSource(t *testing.T) {
 	}
 	if config.SourceURL != values[settings.SourceURL] {
 		t.Fatalf("source URL = %q, want %q", config.SourceURL, values[settings.SourceURL])
+	}
+	// The cascade needs the canonical bounds, so the parser keeps them.
+	if config.StartupSpread != 90*time.Second {
+		t.Fatalf("startup spread = %s, want 90s", config.StartupSpread)
+	}
+	if config.TransferIdleTimeout != 7*time.Second {
+		t.Fatalf("transfer idle timeout = %s, want 7s", config.TransferIdleTimeout)
+	}
+	if config.TransferMaxDuration != 3*time.Minute {
+		t.Fatalf("transfer max duration = %s, want 3m", config.TransferMaxDuration)
 	}
 
 	options, err := settings.Composition{Config: config}.Options()

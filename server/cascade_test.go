@@ -112,7 +112,7 @@ func TestServerCascadesVerifiedCatalogSource(t *testing.T) {
 	if acquired.PayloadChecksum == originStatus.PayloadChecksum {
 		t.Fatal("local acquisition changed no served bytes")
 	}
-	assertStreamedDeltaReachesMiddle(t, ctx, middle, acquired.PayloadChecksum)
+	assertStreamedDeltaReachesMiddle(t, middle, acquired.PayloadChecksum)
 }
 
 // assertCascadeRejections proves the three refusal rules of the source chain.
@@ -170,21 +170,18 @@ func assertCascadeRejections(
 	}
 }
 
-// assertStreamedDeltaReachesMiddle proves that the subscriber carries a
-// publication. The middle hop reads its own subscriber state, so a new
-// generation there arrived on the stream.
+// assertStreamedDeltaReachesMiddle proves the reactive path of the cascade.
+// The middle hop polls once an hour, and the test calls no refresh. Only the
+// subscriber stream can move the middle onto the new bytes. The wake reaches
+// the source worker, and that worker refreshes on its own.
 func assertStreamedDeltaReachesMiddle(
 	t *testing.T,
-	ctx context.Context,
 	middle *starmap.Runtime,
 	wantChecksum string,
 ) {
 	t.Helper()
 	deadline := time.Now().Add(cascadeDeadline)
 	for time.Now().Before(deadline) {
-		if _, err := middle.RefreshSource(ctx); err != nil {
-			t.Fatalf("middle RefreshSource: %v", err)
-		}
 		if middle.Status().PayloadChecksum == wantChecksum {
 			return
 		}
@@ -228,6 +225,7 @@ func openCascadeRuntime(t *testing.T, node cascade) *starmap.Runtime {
 		settings.AcquisitionEnabled:  "false",
 		settings.StateDirectory:      t.TempDir(),
 		settings.CoalesceWindow:      "10ms",
+		settings.StartupSpread:       "10ms",
 		settings.TransferMaxDuration: "5s",
 		settings.SchedulerIdentity:   node.identity,
 	}

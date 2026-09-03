@@ -133,6 +133,7 @@ Package starmap provides immutable AI model catalog reads, explicit generation p
 - [type RuntimeStatus](<#RuntimeStatus>)
 - [type Source](<#Source>)
 - [type SourceHop](<#SourceHop>)
+- [type SourceIdentityAdopter](<#SourceIdentityAdopter>)
 - [type SourceKind](<#SourceKind>)
   - [func ParseSourceKind\(name string\) \(SourceKind, error\)](<#ParseSourceKind>)
   - [func SourceKinds\(\) \[\]SourceKind](<#SourceKinds>)
@@ -145,6 +146,7 @@ Package starmap provides immutable AI model catalog reads, explicit generation p
   - [func \(p SourcePolicy\) Validate\(\) error](<#SourcePolicy.Validate>)
 - [type SourceRead](<#SourceRead>)
 - [type SourceRefreshReport](<#SourceRefreshReport>)
+- [type SourceWatcher](<#SourceWatcher>)
 - [type StartupPolicy](<#StartupPolicy>)
   - [func ParseStartupPolicy\(name string\) \(StartupPolicy, error\)](<#ParseStartupPolicy>)
   - [func \(p StartupPolicy\) String\(\) string](<#StartupPolicy.String>)
@@ -289,7 +291,7 @@ func EmbeddedBuilder() (*catalogs.Builder, error)
 EmbeddedBuilder returns a catalog builder loaded from the generation embedded in this module. Consumers use it to construct catalog fixtures without provisioning client storage. Callers that need the verified immutable generation with durable storage should construct a Client.
 
 <a name="Acquirer"></a>
-## type [Acquirer](<https://github.com/agentstation/starmap/blob/main/runtime.go#L122-L124>)
+## type [Acquirer](<https://github.com/agentstation/starmap/blob/main/runtime.go#L149-L151>)
 
 Acquirer collects provider observations for the runtime. The root package selects no concrete provider client, so the deployment injects this role. Package acquisition supplies the built\-in composition.
 
@@ -375,7 +377,7 @@ type AcquisitionReport struct {
 ```
 
 <a name="AcquisitionRequest"></a>
-## type [AcquisitionRequest](<https://github.com/agentstation/starmap/blob/main/runtime.go#L84-L105>)
+## type [AcquisitionRequest](<https://github.com/agentstation/starmap/blob/main/runtime.go#L111-L132>)
 
 AcquisitionRequest describes one provider acquisition run.
 
@@ -405,7 +407,7 @@ type AcquisitionRequest struct {
 ```
 
 <a name="AcquisitionResult"></a>
-## type [AcquisitionResult](<https://github.com/agentstation/starmap/blob/main/runtime.go#L108-L117>)
+## type [AcquisitionResult](<https://github.com/agentstation/starmap/blob/main/runtime.go#L135-L144>)
 
 AcquisitionResult is what one acquisition run observed.
 
@@ -1211,7 +1213,7 @@ func WithTransferMaxDuration(duration time.Duration) Option
 WithTransferMaxDuration bounds one whole transfer.
 
 <a name="ProviderLayer"></a>
-## type [ProviderLayer](<https://github.com/agentstation/starmap/blob/main/runtime.go#L69-L81>)
+## type [ProviderLayer](<https://github.com/agentstation/starmap/blob/main/runtime.go#L96-L108>)
 
 ProviderLayer is one retained per\-provider observation. The runtime keeps the last\-known\-good layer of every provider, so one failing provider never removes its records from the effective catalog.
 
@@ -1318,7 +1320,7 @@ type RollbackResult struct {
 ```
 
 <a name="Runtime"></a>
-## type [Runtime](<https://github.com/agentstation/starmap/blob/main/runtime.go#L130-L158>)
+## type [Runtime](<https://github.com/agentstation/starmap/blob/main/runtime.go#L157-L185>)
 
 Runtime is a connected Starmap. It serves the embedded catalog immediately, refreshes from one selected upstream source, retains per\-provider observations, and rebuilds one immutable effective catalog from those layers. Reads reach no external system.
 
@@ -1329,7 +1331,7 @@ type Runtime struct {
 ```
 
 <a name="Open"></a>
-### func [Open](<https://github.com/agentstation/starmap/blob/main/runtime.go#L163>)
+### func [Open](<https://github.com/agentstation/starmap/blob/main/runtime.go#L190>)
 
 ```go
 func Open(ctx context.Context, opts ...Option) (*Runtime, error)
@@ -1338,7 +1340,7 @@ func Open(ctx context.Context, opts ...Option) (*Runtime, error)
 Open returns a connected runtime. It serves the verified embedded catalog before the first upstream reply, so Catalog and State never wait for the network. Open starts the source and acquisition schedules and returns.
 
 <a name="Runtime.Catalog"></a>
-### func \(\*Runtime\) [Catalog](<https://github.com/agentstation/starmap/blob/main/runtime.go#L250>)
+### func \(\*Runtime\) [Catalog](<https://github.com/agentstation/starmap/blob/main/runtime.go#L278>)
 
 ```go
 func (r *Runtime) Catalog() *catalogs.Catalog
@@ -1347,7 +1349,7 @@ func (r *Runtime) Catalog() *catalogs.Catalog
 Catalog returns the current immutable effective catalog. It reaches no external system and never blocks on the source.
 
 <a name="Runtime.Client"></a>
-### func \(\*Runtime\) [Client](<https://github.com/agentstation/starmap/blob/main/runtime.go#L272>)
+### func \(\*Runtime\) [Client](<https://github.com/agentstation/starmap/blob/main/runtime.go#L300>)
 
 ```go
 func (r *Runtime) Client() *Client
@@ -1356,7 +1358,7 @@ func (r *Runtime) Client() *Client
 Client returns the immutable publication client underneath the runtime. Use it for explicit publication, hooks, and generation retrieval.
 
 <a name="Runtime.Close"></a>
-### func \(\*Runtime\) [Close](<https://github.com/agentstation/starmap/blob/main/runtime.go#L292>)
+### func \(\*Runtime\) [Close](<https://github.com/agentstation/starmap/blob/main/runtime.go#L320>)
 
 ```go
 func (r *Runtime) Close() error
@@ -1383,7 +1385,7 @@ func (r *Runtime) RefreshSource(ctx context.Context) (SourceRefreshReport, error
 RefreshSource reads the upstream source only. It changes the source layer.
 
 <a name="Runtime.State"></a>
-### func \(\*Runtime\) [State](<https://github.com/agentstation/starmap/blob/main/runtime.go#L261>)
+### func \(\*Runtime\) [State](<https://github.com/agentstation/starmap/blob/main/runtime.go#L289>)
 
 ```go
 func (r *Runtime) State() CatalogState
@@ -1410,7 +1412,7 @@ func (r *Runtime) Sync(ctx context.Context, providers ...catalogs.ProviderID) (A
 Sync observes providers only. It changes the provider layers and returns the acquisition report. An empty provider list observes every eligible provider.
 
 <a name="Runtime.Updates"></a>
-### func \(\*Runtime\) [Updates](<https://github.com/agentstation/starmap/blob/main/runtime.go#L282>)
+### func \(\*Runtime\) [Updates](<https://github.com/agentstation/starmap/blob/main/runtime.go#L310>)
 
 ```go
 func (r *Runtime) Updates() <-chan CatalogState
@@ -1535,7 +1537,7 @@ type Source interface {
 ```
 
 <a name="SourceHop"></a>
-## type [SourceHop](<https://github.com/agentstation/starmap/blob/main/runtime.go#L37-L42>)
+## type [SourceHop](<https://github.com/agentstation/starmap/blob/main/runtime.go#L64-L69>)
 
 SourceHop is one sanitized entry in an upstream source chain. A hop names the reporting identity and its health, never an address.
 
@@ -1545,6 +1547,20 @@ type SourceHop struct {
     Health      Health
     PublishedAt time.Time
     ObservedAt  time.Time
+}
+```
+
+<a name="SourceIdentityAdopter"></a>
+## type [SourceIdentityAdopter](<https://github.com/agentstation/starmap/blob/main/runtime.go#L55-L60>)
+
+SourceIdentityAdopter is an optional Source that takes the fleet instance identity of its runtime. The source and the runtime then spread their work on one identity, so a replica keeps one stable phase for every controller it owns. Open hands the identity over before the first read.
+
+```go
+type SourceIdentityAdopter interface {
+    Source
+
+    // AdoptInstanceIdentity takes the derived instance identity of the runtime.
+    AdoptInstanceIdentity(instance string)
 }
 ```
 
@@ -1697,7 +1713,7 @@ func (p SourcePolicy) Validate() error
 Validate checks the policy fields that the runtime depends on.
 
 <a name="SourceRead"></a>
-## type [SourceRead](<https://github.com/agentstation/starmap/blob/main/runtime.go#L45-L64>)
+## type [SourceRead](<https://github.com/agentstation/starmap/blob/main/runtime.go#L72-L91>)
 
 SourceRead is one upstream observation.
 
@@ -1767,6 +1783,22 @@ type SourceRefreshReport struct {
 
     // Chain is the sanitized upstream source chain.
     Chain []SourceHop
+}
+```
+
+<a name="SourceWatcher"></a>
+## type [SourceWatcher](<https://github.com/agentstation/starmap/blob/main/runtime.go#L44-L49>)
+
+SourceWatcher is an optional Source that reports an upstream change as it arrives. A reactive source, such as one Starmap cascaded onto another, learns of a publication on its own stream. The runtime then refreshes on that wake and waits for no poll boundary. A delta crosses a cascade in seconds instead of in one poll interval.
+
+The channel carries an empty value for each change and holds at most one pending wake. A closed channel means the source reports no further change, and the runtime falls back to its poll interval.
+
+```go
+type SourceWatcher interface {
+    Source
+
+    // Changes reports each upstream change as one wake.
+    Changes() <-chan struct{}
 }
 ```
 

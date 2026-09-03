@@ -4,8 +4,9 @@ import (
 	"net/http"
 
 	"github.com/agentstation/starmap"
-	protocol "github.com/agentstation/starmap/pkg/catalogs/remote"
 	"github.com/agentstation/starmap/internal/server/response"
+	protocol "github.com/agentstation/starmap/pkg/catalogs/remote"
+	"github.com/agentstation/starmap/pkg/logging"
 )
 
 // HandleCatalogSourceChain handles GET /api/v1/catalog/source-chain.
@@ -47,6 +48,12 @@ func SourceChainOf(status starmap.RuntimeStatus) protocol.SourceChain {
 	// document without bound by forwarding every hop it received.
 	hops := status.Chain
 	if len(hops) > protocol.MaxSourceChainHops-1 {
+		// A downstream detects a cycle from the disclosed hops, so an operator
+		// needs to know that this node served fewer hops than it observed.
+		logging.Warn().
+			Int("observed_hops", len(hops)).
+			Int("served_hops", protocol.MaxSourceChainHops-1).
+			Msg("Source chain served fewer hops than the runtime observed")
 		hops = hops[:protocol.MaxSourceChainHops-1]
 	}
 	for _, hop := range hops {

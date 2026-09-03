@@ -43,7 +43,7 @@ Package handlers provides HTTP request handlers for the Starmap API.
 
 
 <a name="SourceChainOf"></a>
-## func [SourceChainOf](<https://github.com/agentstation/starmap/blob/main/internal/server/handlers/sourcechain.go#L35>)
+## func [SourceChainOf](<https://github.com/agentstation/starmap/blob/main/internal/server/handlers/sourcechain.go#L36>)
 
 ```go
 func SourceChainOf(status starmap.RuntimeStatus) protocol.SourceChain
@@ -111,7 +111,7 @@ func (h *Handlers) HandleCatalogPayload(writer http.ResponseWriter, request *htt
 HandleCatalogPayload serves an immutable canonical payload by generation ID.
 
 <a name="Handlers.HandleCatalogSourceChain"></a>
-### func \(\*Handlers\) [HandleCatalogSourceChain](<https://github.com/agentstation/starmap/blob/main/internal/server/handlers/sourcechain.go#L18>)
+### func \(\*Handlers\) [HandleCatalogSourceChain](<https://github.com/agentstation/starmap/blob/main/internal/server/handlers/sourcechain.go#L19>)
 
 ```go
 func (h *Handlers) HandleCatalogSourceChain(w http.ResponseWriter, _ *http.Request)

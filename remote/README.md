@@ -21,6 +21,8 @@ Package remote provides a reactive Starmap catalog consumer.
 - [type PollingFallbackStatus](<#PollingFallbackStatus>)
 - [type Source](<#Source>)
   - [func NewSource\(ctx context.Context, config SourceConfig\) \(\*Source, error\)](<#NewSource>)
+  - [func \(s \*Source\) AdoptInstanceIdentity\(instance string\)](<#Source.AdoptInstanceIdentity>)
+  - [func \(s \*Source\) Changes\(\) \<\-chan struct\{\}](<#Source.Changes>)
   - [func \(s \*Source\) Close\(\) error](<#Source.Close>)
   - [func \(s \*Source\) Health\(\) Health](<#Source.Health>)
   - [func \(s \*Source\) Identity\(\) string](<#Source.Identity>)
@@ -30,12 +32,14 @@ Package remote provides a reactive Starmap catalog consumer.
 - [type Subscriber](<#Subscriber>)
   - [func New\(config Config\) \(\*Subscriber, error\)](<#New>)
   - [func NewContext\(ctx context.Context, config Config\) \(\*Subscriber, error\)](<#NewContext>)
+  - [func \(s \*Subscriber\) AdoptInstanceIdentity\(instance string\)](<#Subscriber.AdoptInstanceIdentity>)
   - [func \(s \*Subscriber\) Catalog\(\) \*catalogs.Catalog](<#Subscriber.Catalog>)
   - [func \(s \*Subscriber\) Close\(\) error](<#Subscriber.Close>)
   - [func \(s \*Subscriber\) Health\(\) Health](<#Subscriber.Health>)
   - [func \(s \*Subscriber\) PollingFallbackStatus\(\) PollingFallbackStatus](<#Subscriber.PollingFallbackStatus>)
   - [func \(s \*Subscriber\) Start\(ctx context.Context\) error](<#Subscriber.Start>)
   - [func \(s \*Subscriber\) State\(\) starmap.CatalogState](<#Subscriber.State>)
+  - [func \(s \*Subscriber\) Updates\(\) \<\-chan struct\{\}](<#Subscriber.Updates>)
 - [type UpstreamReport](<#UpstreamReport>)
 
 
@@ -75,7 +79,7 @@ const DefaultSourceIdentity = "starmap_cascade"
 ```
 
 <a name="ChainHealthCode"></a>
-## func [ChainHealthCode](<https://github.com/agentstation/starmap/blob/main/remote/source.go#L295>)
+## func [ChainHealthCode](<https://github.com/agentstation/starmap/blob/main/remote/source.go#L331>)
 
 ```go
 func ChainHealthCode(health starmap.Health) string
@@ -208,7 +212,7 @@ type PollingFallbackPolicy struct {
 ```
 
 <a name="PollingFallbackStatus"></a>
-## type [PollingFallbackStatus](<https://github.com/agentstation/starmap/blob/main/remote/subscriber.go#L61-L73>)
+## type [PollingFallbackStatus](<https://github.com/agentstation/starmap/blob/main/remote/subscriber.go#L67-L79>)
 
 PollingFallbackStatus is an immutable snapshot of the subscriber's bounded polling fallback. Counters are cumulative for the subscriber lifetime.
 
@@ -242,7 +246,7 @@ type Source struct {
 ```
 
 <a name="NewSource"></a>
-### func [NewSource](<https://github.com/agentstation/starmap/blob/main/remote/source.go#L66>)
+### func [NewSource](<https://github.com/agentstation/starmap/blob/main/remote/source.go#L73>)
 
 ```go
 func NewSource(ctx context.Context, config SourceConfig) (*Source, error)
@@ -250,8 +254,26 @@ func NewSource(ctx context.Context, config SourceConfig) (*Source, error)
 
 NewSource builds the cascaded Starmap source. It starts no goroutine and sends no request. The first Read starts the subscriber.
 
+<a name="Source.AdoptInstanceIdentity"></a>
+### func \(\*Source\) [AdoptInstanceIdentity](<https://github.com/agentstation/starmap/blob/main/remote/source.go#L133>)
+
+```go
+func (s *Source) AdoptInstanceIdentity(instance string)
+```
+
+AdoptInstanceIdentity takes the fleet instance identity of the runtime that owns this source. The subscriber then spreads its reconnects and phases its fallback polls on the same identity the runtime schedules with.
+
+<a name="Source.Changes"></a>
+### func \(\*Source\) [Changes](<https://github.com/agentstation/starmap/blob/main/remote/source.go#L128>)
+
+```go
+func (s *Source) Changes() <-chan struct{}
+```
+
+Changes reports each upstream publication the subscriber activated. The runtime refreshes on that wake, so a streamed delta crosses one hop in seconds instead of waiting for the next poll boundary.
+
 <a name="Source.Close"></a>
-### func \(\*Source\) [Close](<https://github.com/agentstation/starmap/blob/main/remote/source.go#L104>)
+### func \(\*Source\) [Close](<https://github.com/agentstation/starmap/blob/main/remote/source.go#L111>)
 
 ```go
 func (s *Source) Close() error
@@ -260,7 +282,7 @@ func (s *Source) Close() error
 Close stops the subscriber lifecycle. It is idempotent.
 
 <a name="Source.Health"></a>
-### func \(\*Source\) [Health](<https://github.com/agentstation/starmap/blob/main/remote/source.go#L101>)
+### func \(\*Source\) [Health](<https://github.com/agentstation/starmap/blob/main/remote/source.go#L108>)
 
 ```go
 func (s *Source) Health() Health
@@ -269,7 +291,7 @@ func (s *Source) Health() Health
 Health returns the subscriber's own transport health. It stays independent of the upstream\-reported health that Read carries.
 
 <a name="Source.Identity"></a>
-### func \(\*Source\) [Identity](<https://github.com/agentstation/starmap/blob/main/remote/source.go#L97>)
+### func \(\*Source\) [Identity](<https://github.com/agentstation/starmap/blob/main/remote/source.go#L104>)
 
 ```go
 func (s *Source) Identity() string
@@ -278,7 +300,7 @@ func (s *Source) Identity() string
 Identity returns the safe identity of the cascaded source. It stays stable for the life of the source, because the retained layer identity depends on it.
 
 <a name="Source.Read"></a>
-### func \(\*Source\) [Read](<https://github.com/agentstation/starmap/blob/main/remote/source.go#L118>)
+### func \(\*Source\) [Read](<https://github.com/agentstation/starmap/blob/main/remote/source.go#L141>)
 
 ```go
 func (s *Source) Read(ctx context.Context) (starmap.SourceRead, error)
@@ -342,7 +364,7 @@ const (
 ```
 
 <a name="Subscriber"></a>
-## type [Subscriber](<https://github.com/agentstation/starmap/blob/main/remote/subscriber.go#L28-L57>)
+## type [Subscriber](<https://github.com/agentstation/starmap/blob/main/remote/subscriber.go#L29-L63>)
 
 Subscriber owns one explicitly started remote catalog lifecycle.
 
@@ -353,7 +375,7 @@ type Subscriber struct {
 ```
 
 <a name="New"></a>
-### func [New](<https://github.com/agentstation/starmap/blob/main/remote/subscriber.go#L78>)
+### func [New](<https://github.com/agentstation/starmap/blob/main/remote/subscriber.go#L84>)
 
 ```go
 func New(config Config) (*Subscriber, error)
@@ -362,7 +384,7 @@ func New(config Config) (*Subscriber, error)
 New makes an idle subscriber and uses context.Background for store I/O. It does not create a goroutine or send a remote request. Call NewContext to cancel store I/O or set a deadline.
 
 <a name="NewContext"></a>
-### func [NewContext](<https://github.com/agentstation/starmap/blob/main/remote/subscriber.go#L85>)
+### func [NewContext](<https://github.com/agentstation/starmap/blob/main/remote/subscriber.go#L91>)
 
 ```go
 func NewContext(ctx context.Context, config Config) (*Subscriber, error)
@@ -370,8 +392,17 @@ func NewContext(ctx context.Context, config Config) (*Subscriber, error)
 
 NewContext validates config and makes an idle subscriber. The context bounds caller\-store reads and an optional pinned\-bootstrap commit. NewContext does not create a goroutine or send a remote request.
 
+<a name="Subscriber.AdoptInstanceIdentity"></a>
+### func \(\*Subscriber\) [AdoptInstanceIdentity](<https://github.com/agentstation/starmap/blob/main/remote/subscriber.go#L827>)
+
+```go
+func (s *Subscriber) AdoptInstanceIdentity(instance string)
+```
+
+AdoptInstanceIdentity takes the fleet instance identity of the owner. The subscriber then spreads its reconnects and phases its fallback polls on that identity. A started subscriber keeps the identity it began with, because its pacing state is already in flight.
+
 <a name="Subscriber.Catalog"></a>
-### func \(\*Subscriber\) [Catalog](<https://github.com/agentstation/starmap/blob/main/remote/subscriber.go#L180>)
+### func \(\*Subscriber\) [Catalog](<https://github.com/agentstation/starmap/blob/main/remote/subscriber.go#L187>)
 
 ```go
 func (s *Subscriber) Catalog() *catalogs.Catalog
@@ -380,7 +411,7 @@ func (s *Subscriber) Catalog() *catalogs.Catalog
 Catalog returns the catalog from State. Construction selects the verified durable current generation, the optional pinned bootstrap for an empty store, or the embedded bootstrap in that order.
 
 <a name="Subscriber.Close"></a>
-### func \(\*Subscriber\) [Close](<https://github.com/agentstation/starmap/blob/main/remote/subscriber.go#L340>)
+### func \(\*Subscriber\) [Close](<https://github.com/agentstation/starmap/blob/main/remote/subscriber.go#L347>)
 
 ```go
 func (s *Subscriber) Close() error
@@ -398,7 +429,7 @@ func (s *Subscriber) Health() Health
 Health returns the current subscriber health without performing I/O.
 
 <a name="Subscriber.PollingFallbackStatus"></a>
-### func \(\*Subscriber\) [PollingFallbackStatus](<https://github.com/agentstation/starmap/blob/main/remote/subscriber.go#L168>)
+### func \(\*Subscriber\) [PollingFallbackStatus](<https://github.com/agentstation/starmap/blob/main/remote/subscriber.go#L175>)
 
 ```go
 func (s *Subscriber) PollingFallbackStatus() PollingFallbackStatus
@@ -407,7 +438,7 @@ func (s *Subscriber) PollingFallbackStatus() PollingFallbackStatus
 PollingFallbackStatus returns the current bounded polling fallback state.
 
 <a name="Subscriber.Start"></a>
-### func \(\*Subscriber\) [Start](<https://github.com/agentstation/starmap/blob/main/remote/subscriber.go#L199>)
+### func \(\*Subscriber\) [Start](<https://github.com/agentstation/starmap/blob/main/remote/subscriber.go#L206>)
 
 ```go
 func (s *Subscriber) Start(ctx context.Context) error
@@ -416,13 +447,22 @@ func (s *Subscriber) Start(ctx context.Context) error
 Start runs the caller\-context\-owned remote lifecycle. It normally verifies current state, establishes the event stream, and closes the fetch\-to\-subscribe gap before it returns. A nonterminal initial transport failure keeps the verified local state and runs streaming recovery. Polling runs only when PollingFallbackPolicy enables it. HTTP 401 and 403 responses are terminal and never retry or enter polling fallback.
 
 <a name="Subscriber.State"></a>
-### func \(\*Subscriber\) [State](<https://github.com/agentstation/starmap/blob/main/remote/subscriber.go#L186>)
+### func \(\*Subscriber\) [State](<https://github.com/agentstation/starmap/blob/main/remote/subscriber.go#L193>)
 
 ```go
 func (s *Subscriber) State() starmap.CatalogState
 ```
 
 State returns one atomic catalog, generation identity, payload checksum, timestamp, and sequence snapshot without performing I/O.
+
+<a name="Subscriber.Updates"></a>
+### func \(\*Subscriber\) [Updates](<https://github.com/agentstation/starmap/blob/main/remote/subscriber.go#L807>)
+
+```go
+func (s *Subscriber) Updates() <-chan struct{}
+```
+
+Updates reports each activated publication as one wake. A reactive owner selects on the channel instead of polling the subscriber state. The channel holds one pending wake, so a fast publisher never blocks the stream reader. The subscriber never closes the channel, because an owner outlives it.
 
 <a name="UpstreamReport"></a>
 ## type [UpstreamReport](<https://github.com/agentstation/starmap/blob/main/remote/health.go#L36-L57>)

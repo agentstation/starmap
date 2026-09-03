@@ -6,6 +6,7 @@ import (
 
 	"github.com/agentstation/starmap"
 	"github.com/agentstation/starmap/internal/fleet"
+	protocol "github.com/agentstation/starmap/pkg/catalogs/remote"
 	"github.com/agentstation/starmap/pkg/catalogs/storage"
 	"github.com/agentstation/starmap/pkg/errors"
 	"github.com/agentstation/starmap/remote"
@@ -88,27 +89,50 @@ func (c Composition) Options() ([]starmap.Option, error) {
 // the accepted generation in its own state directory, so a restart serves the
 // last upstream catalog without a second durable copy here.
 func (c Composition) cascadeSource() (starmap.Source, error) {
-	if strings.TrimSpace(c.Config.SourceURL) == "" {
-		return nil, &errors.ConfigError{
-			Component: "catalog source",
-			Message:   "the starmap catalog source needs " + SourceURL,
-		}
-	}
-	subscriber := remote.Config{
-		BaseURL:      c.Config.SourceURL,
-		CatalogStore: storage.NewMemory(),
-		APIKey:       strings.TrimSpace(c.Config.SourceAPIKey),
-		Identity:     fleet.Identity{Instance: c.Config.SchedulerIdentity},
-		PollingFallback: &remote.PollingFallbackPolicy{
-			AfterFailures: cascadeFallbackAfterFailures,
-			Interval:      remote.DefaultFallbackPollInterval,
-		},
+	subscriber, err := cascadeSubscriber(c.Config)
+	if err != nil {
+		return nil, err
 	}
 	return remote.NewSource(context.Background(), remote.SourceConfig{
 		Subscriber: subscriber,
 		MaxHops:    c.Config.SourceMaxHops,
 		MaxAge:     c.Config.SourceMaxAge,
 	})
+}
+
+// cascadeSubscriber maps the canonical settings onto the subscriber transport
+// and pacing. The transfer bounds and the startup spread reach the subscriber,
+// so one deployment paces its cascade exactly as it paces every other worker.
+//
+// The identity here is the configured scheduler identity only. Open hands the
+// derived instance identity to the source. A deployment that configures no
+// identity still spreads its cascade on the identity of its own runtime.
+func cascadeSubscriber(config Config) (remote.Config, error) {
+	if strings.TrimSpace(config.SourceURL) == "" {
+		return remote.Config{}, &errors.ConfigError{
+			Component: "catalog source",
+			Message:   "the starmap catalog source needs " + SourceURL,
+		}
+	}
+	transfer := protocol.DefaultTransferPolicy()
+	if config.TransferIdleTimeout > 0 {
+		transfer.IdleTimeout = config.TransferIdleTimeout
+	}
+	if config.TransferMaxDuration > 0 {
+		transfer.MaxDuration = config.TransferMaxDuration
+	}
+	return remote.Config{
+		BaseURL:        config.SourceURL,
+		CatalogStore:   storage.NewMemory(),
+		APIKey:         strings.TrimSpace(config.SourceAPIKey),
+		Identity:       fleet.Identity{Instance: config.SchedulerIdentity},
+		StartupSpread:  config.StartupSpread,
+		TransferPolicy: &transfer,
+		PollingFallback: &remote.PollingFallbackPolicy{
+			AfterFailures: cascadeFallbackAfterFailures,
+			Interval:      remote.DefaultFallbackPollInterval,
+		},
+	}, nil
 }
 
 // Open composes the options and opens the connected runtime. The runtime serves

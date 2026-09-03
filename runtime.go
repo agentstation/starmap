@@ -32,6 +32,33 @@ type Source interface {
 	Read(ctx context.Context) (SourceRead, error)
 }
 
+// SourceWatcher is an optional Source that reports an upstream change as it
+// arrives. A reactive source, such as one Starmap cascaded onto another,
+// learns of a publication on its own stream. The runtime then refreshes on
+// that wake and waits for no poll boundary. A delta crosses a cascade in
+// seconds instead of in one poll interval.
+//
+// The channel carries an empty value for each change and holds at most one
+// pending wake. A closed channel means the source reports no further change,
+// and the runtime falls back to its poll interval.
+type SourceWatcher interface {
+	Source
+
+	// Changes reports each upstream change as one wake.
+	Changes() <-chan struct{}
+}
+
+// SourceIdentityAdopter is an optional Source that takes the fleet instance
+// identity of its runtime. The source and the runtime then spread their work
+// on one identity, so a replica keeps one stable phase for every controller it
+// owns. Open hands the identity over before the first read.
+type SourceIdentityAdopter interface {
+	Source
+
+	// AdoptInstanceIdentity takes the derived instance identity of the runtime.
+	AdoptInstanceIdentity(instance string)
+}
+
 // SourceHop is one sanitized entry in an upstream source chain. A hop names
 // the reporting identity and its health, never an address.
 type SourceHop struct {
@@ -208,6 +235,7 @@ func Open(ctx context.Context, opts ...Option) (*Runtime, error) {
 		runtime.cancel()
 		return nil, err
 	}
+	runtime.adoptSourceIdentity()
 	runtime.lease = newLeaseKeeper(
 		runtime.config.leaseStore,
 		runtime.schedule.identity.Instance,

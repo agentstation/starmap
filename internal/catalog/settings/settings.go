@@ -139,6 +139,18 @@ type Config struct {
 	// SourceAliases lists the other stable identities of this same runtime.
 	SourceAliases []string
 
+	// StartupSpread is the window that admits cold automatic work. It spreads
+	// the first cascade link of a fleet. Zero selects the default.
+	StartupSpread time.Duration
+
+	// TransferIdleTimeout bounds a transfer that makes no progress. It bounds
+	// the cascade subscriber transport too.
+	TransferIdleTimeout time.Duration
+
+	// TransferMaxDuration bounds one finite HTTP body transfer of the cascade
+	// subscriber. It never bounds an open event stream.
+	TransferMaxDuration time.Duration
+
 	// WorkspacePath is the reviewed operator catalog input.
 	WorkspacePath string
 
@@ -226,14 +238,23 @@ func table() []setting {
 		},
 		{
 			name: StartupSpread, flag: "catalog-startup-spread",
+			capture: captureDuration(StartupSpread, func(c *Config, value time.Duration) {
+				c.StartupSpread = value
+			}),
 			apply: durationOption(StartupSpread, starmap.WithStartupSpread),
 		},
 		{
 			name: TransferIdleTimeout, flag: "catalog-transfer-idle-timeout",
+			capture: captureDuration(TransferIdleTimeout, func(c *Config, value time.Duration) {
+				c.TransferIdleTimeout = value
+			}),
 			apply: durationOption(TransferIdleTimeout, starmap.WithTransferIdleTimeout),
 		},
 		{
 			name: TransferMaxDuration, flag: "catalog-transfer-max-duration",
+			capture: captureDuration(TransferMaxDuration, func(c *Config, value time.Duration) {
+				c.TransferMaxDuration = value
+			}),
 			apply: durationOption(TransferMaxDuration, starmap.WithTransferMaxDuration),
 		},
 		{
@@ -386,6 +407,26 @@ func captureSchedulerIdentity(value string, config *Config) error {
 func captureSourceAPIKey(value string, config *Config) error {
 	config.SourceAPIKey = value
 	return nil
+}
+
+// captureDuration returns the capture of one duration setting. The composition
+// step reads the parsed value, so a setting reaches both the runtime option and
+// the cascade subscriber.
+func captureDuration(
+	name string,
+	assign func(*Config, time.Duration),
+) func(string, *Config) error {
+	return func(value string, config *Config) error {
+		parsed, err := time.ParseDuration(value)
+		if err != nil {
+			return &errors.ValidationError{
+				Field: name, Value: value,
+				Message: "must be a duration such as 4h or 30s",
+			}
+		}
+		assign(config, parsed)
+		return nil
+	}
 }
 
 func captureSourceMaxAge(value string, config *Config) error {

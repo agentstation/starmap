@@ -6,6 +6,7 @@ import (
 	"io"
 	"net/http"
 	"strconv"
+	"strings"
 	"sync"
 	"time"
 
@@ -47,6 +48,11 @@ type Subscriber struct {
 
 	activationMu        sync.Mutex
 	identityEstablished bool
+
+	// changes wakes one owner after the subscriber activated a publication.
+	// It holds one pending wake, so a burst of publications never blocks the
+	// stream reader and a slow owner never misses that something moved.
+	changes chan struct{}
 
 	// reconnect paces stream reconnects. The run loop owns it, and it
 	// publishes its observable values through the fields under mu.
@@ -160,6 +166,7 @@ func NewContext(ctx context.Context, config Config) (*Subscriber, error) {
 		},
 		identityEstablished: !client.Readiness().Embedded.Active,
 		reconnect:           newReconnectState(normalized),
+		changes:             make(chan struct{}, 1),
 	}
 	return subscriber, nil
 }
@@ -787,7 +794,51 @@ func (s *Subscriber) activate(
 		return false, err
 	}
 	s.identityEstablished = true
+	if publication.Published {
+		s.signalChange()
+	}
 	return publication.Published, nil
+}
+
+// Updates reports each activated publication as one wake. A reactive owner
+// selects on the channel instead of polling the subscriber state. The channel
+// holds one pending wake, so a fast publisher never blocks the stream reader.
+// The subscriber never closes the channel, because an owner outlives it.
+func (s *Subscriber) Updates() <-chan struct{} {
+	if s == nil {
+		return nil
+	}
+	return s.changes
+}
+
+// signalChange wakes one owner without blocking. A pending wake already tells
+// the owner that the upstream moved, so a second wake adds nothing.
+func (s *Subscriber) signalChange() {
+	select {
+	case s.changes <- struct{}{}:
+	default:
+	}
+}
+
+// AdoptInstanceIdentity takes the fleet instance identity of the owner. The
+// subscriber then spreads its reconnects and phases its fallback polls on that
+// identity. A started subscriber keeps the identity it began with, because its
+// pacing state is already in flight.
+func (s *Subscriber) AdoptInstanceIdentity(instance string) {
+	if s == nil {
+		return
+	}
+	instance = strings.TrimSpace(instance)
+	if instance == "" {
+		return
+	}
+	s.mu.Lock()
+	defer s.mu.Unlock()
+	if s.state != stateIdle {
+		return
+	}
+	s.config.Identity.Instance = instance
+	s.reconnect.identity = s.config.controllerIdentity(controllerStream)
 }
 
 func (s *Subscriber) isActiveGeneration(id string) bool {
