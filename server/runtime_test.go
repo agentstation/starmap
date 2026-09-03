@@ -17,6 +17,7 @@ import (
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/catalogs/storage"
 	"github.com/agentstation/starmap/pkg/sources"
+	"github.com/agentstation/starmap/runtime"
 	"github.com/agentstation/starmap/server"
 )
 
@@ -40,8 +41,8 @@ func TestServerServesEmbeddedStateThenPullsChannel(t *testing.T) {
 	statePath := t.TempDir()
 	storePath := t.TempDir()
 
-	runtime := openRuntime(t, upstream, statePath, storePath)
-	srv := newServer(t, runtime)
+	connected := openRuntime(t, upstream, statePath, storePath)
+	srv := newServer(t, connected)
 	endpoint := httptest.NewServer(srv.Handler())
 	t.Cleanup(endpoint.Close)
 
@@ -53,10 +54,10 @@ func TestServerServesEmbeddedStateThenPullsChannel(t *testing.T) {
 	assertStatus(t, endpoint.URL+"/health", http.StatusOK)
 
 	// Readiness reports the connected runtime status.
-	assertRuntimeReadiness(t, endpoint.URL+"/api/v1/ready", runtime.Status())
+	assertRuntimeReadiness(t, endpoint.URL+"/api/v1/ready", connected.Status())
 
 	// The runtime pulls the synthetic channel in the foreground of this test.
-	report, err := runtime.RefreshSource(context.Background())
+	report, err := connected.RefreshSource(context.Background())
 	if err != nil {
 		t.Fatalf("RefreshSource: %v", err)
 	}
@@ -67,7 +68,7 @@ func TestServerServesEmbeddedStateThenPullsChannel(t *testing.T) {
 		http.StatusOK)
 
 	// Acquisition observes only the provider whose credential resolves.
-	acquired, err := runtime.Sync(context.Background())
+	acquired, err := connected.Sync(context.Background())
 	if err != nil {
 		t.Fatalf("Sync: %v", err)
 	}
@@ -86,8 +87,8 @@ func TestServerServesEmbeddedStateThenPullsChannel(t *testing.T) {
 	if elapsed := time.Since(started); elapsed >= shutdownBound {
 		t.Fatalf("shutdown took %s, want less than %s", elapsed, shutdownBound)
 	}
-	assertRuntimeClosed(t, runtime)
-	if err := runtime.Close(); err != nil {
+	assertRuntimeClosed(t, connected)
+	if err := connected.Close(); err != nil {
 		t.Fatalf("Close after shutdown: %v", err)
 	}
 
@@ -107,16 +108,16 @@ func TestServerServesEmbeddedStateThenPullsChannel(t *testing.T) {
 }
 
 // newServer composes the embeddable server the way the serve command does.
-func newServer(t *testing.T, runtime *starmap.Runtime) *server.Server {
+func newServer(t *testing.T, connected *runtime.Runtime) *server.Server {
 	t.Helper()
-	syncer, err := acquisition.New(runtime.Client())
+	syncer, err := acquisition.New(connected.Client())
 	if err != nil {
 		t.Fatalf("acquisition.New: %v", err)
 	}
 	srv, err := server.New(
-		runtime.Client(),
+		connected.Client(),
 		server.DefaultConfig(),
-		server.WithRuntime(runtime),
+		server.WithRuntime(connected),
 		server.WithSyncer(syncer),
 	)
 	if err != nil {
@@ -133,10 +134,10 @@ func openRuntime(
 	t *testing.T,
 	upstream *channel.Upstream,
 	statePath, storePath string,
-) *starmap.Runtime {
+) *runtime.Runtime {
 	t.Helper()
 	values := map[string]string{
-		settings.Source:              string(starmap.SourceEmbedded),
+		settings.Source:              string(runtime.SourceEmbedded),
 		settings.AcquisitionEnabled:  "false",
 		settings.SourcePollInterval:  "1h",
 		settings.StateDirectory:      statePath,
@@ -161,19 +162,21 @@ func openRuntime(
 	if err != nil {
 		t.Fatalf("acquisition.NewAcquirer: %v", err)
 	}
-	runtime, err := settings.Composition{
+	connected, err := settings.Composition{
 		Config:   config,
 		Source:   upstream,
 		Acquirer: acquirer,
-		Base: []starmap.Option{
-			starmap.WithCatalogStore(store),
-			starmap.WithCatalogPath(filepath.Join(t.TempDir(), "workspace")),
+		Base: []runtime.Option{
+			runtime.WithClientOptions(
+				starmap.WithCatalogStore(store),
+				starmap.WithCatalogPath(filepath.Join(t.TempDir(), "workspace")),
+			),
 		},
 	}.Open(context.Background())
 	if err != nil {
 		t.Fatalf("Composition.Open: %v", err)
 	}
-	return runtime
+	return connected
 }
 
 // assertStatus reads one endpoint and compares the status code.
@@ -195,7 +198,7 @@ func assertStatus(t *testing.T, url string, want int) {
 }
 
 // assertRuntimeReadiness proves that the readiness body reports the runtime.
-func assertRuntimeReadiness(t *testing.T, url string, status starmap.RuntimeStatus) {
+func assertRuntimeReadiness(t *testing.T, url string, status runtime.Status) {
 	t.Helper()
 	request, err := http.NewRequestWithContext(
 		context.Background(), http.MethodGet, url, nil)
@@ -269,9 +272,9 @@ func assertEligibility(
 
 // assertRuntimeClosed proves that the server shutdown joined the runtime. Close
 // owns the publication channel, so a closed channel proves the join.
-func assertRuntimeClosed(t *testing.T, runtime *starmap.Runtime) {
+func assertRuntimeClosed(t *testing.T, connected *runtime.Runtime) {
 	t.Helper()
-	updates := runtime.Updates()
+	updates := connected.Updates()
 	for {
 		select {
 		case _, open := <-updates:

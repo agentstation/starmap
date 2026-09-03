@@ -1,8 +1,9 @@
-package starmap
+package runtime
 
 import (
 	"context"
 	stderrors "errors"
+	"github.com/agentstation/starmap"
 	"sync"
 	"time"
 
@@ -277,7 +278,7 @@ func (r *Runtime) execute(
 	if ctx == nil {
 		return RefreshReport{}, &errors.ValidationError{Field: "context", Message: "is required"}
 	}
-	id, err := r.client.nextID()
+	id, err := r.client.NextID()
 	if err != nil {
 		return RefreshReport{}, err
 	}
@@ -612,9 +613,9 @@ func (r *Runtime) publishProviders(
 	ctx context.Context,
 	layers []ProviderLayer,
 	epoch uint64,
-) (CatalogState, error) {
+) (starmap.CatalogState, error) {
 	if err := r.retainProviders(layers); err != nil {
-		return CatalogState{}, err
+		return starmap.CatalogState{}, err
 	}
 	return r.rebuild(ctx, epoch)
 }

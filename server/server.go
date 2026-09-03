@@ -15,6 +15,7 @@ import (
 	internalserver "github.com/agentstation/starmap/internal/server"
 	"github.com/agentstation/starmap/pkg/errors"
 	pkgsync "github.com/agentstation/starmap/pkg/sync"
+	"github.com/agentstation/starmap/runtime"
 )
 
 // Syncer is the optional acquisition capability used by the update endpoint.
@@ -28,7 +29,7 @@ type Option func(*options) error
 
 type options struct {
 	logger  *zerolog.Logger
-	runtime *starmap.Runtime
+	runtime *runtime.Runtime
 	syncer  Syncer
 }
 
@@ -45,7 +46,7 @@ func WithLogger(logger *zerolog.Logger) Option {
 
 // WithRuntime joins the server to one connected runtime. Readiness then
 // reports the runtime status, and Shutdown joins the runtime shutdown.
-func WithRuntime(runtime *starmap.Runtime) Option {
+func WithRuntime(runtime *runtime.Runtime) Option {
 	return func(options *options) error {
 		if runtime == nil {
 			return &errors.ValidationError{Field: "server.runtime", Message: "is required"}
@@ -87,7 +88,7 @@ func isNilSyncer(syncer Syncer) bool {
 type Server struct {
 	implementation *internalserver.Server
 	httpServer     *http.Server
-	runtime        *starmap.Runtime
+	runtime        *runtime.Runtime
 	startOnce      sync.Once
 }
 

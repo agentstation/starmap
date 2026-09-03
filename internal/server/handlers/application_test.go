@@ -6,13 +6,14 @@ import (
 	"github.com/agentstation/starmap"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	pkgsync "github.com/agentstation/starmap/pkg/sync"
+	"github.com/agentstation/starmap/runtime"
 )
 
 type testApplication struct {
 	CatalogFunc      func() (*catalogs.Catalog, error)
 	CatalogStateFunc func() (starmap.CatalogState, error)
 	ReadinessFunc    func() (starmap.CatalogReadiness, error)
-	RuntimeFunc      func() starmap.RuntimeStatus
+	RuntimeFunc      func() runtime.Status
 	StarmapFunc      func(...starmap.Option) (*starmap.Client, error)
 	SyncFunc         func(context.Context, ...pkgsync.Option) (*pkgsync.Result, error)
 }
@@ -39,11 +40,11 @@ func (a *testApplication) Readiness() (starmap.CatalogReadiness, error) {
 	return starmap.CatalogReadiness{Ready: true}, nil
 }
 
-func (a *testApplication) RuntimeStatus() starmap.RuntimeStatus {
+func (a *testApplication) RuntimeStatus() runtime.Status {
 	if a.RuntimeFunc != nil {
 		return a.RuntimeFunc()
 	}
-	return starmap.RuntimeStatus{Usable: true}
+	return runtime.Status{Usable: true}
 }
 
 func (a *testApplication) Starmap(

@@ -1,4 +1,4 @@
-package starmap
+package runtime
 
 import (
 	"context"
@@ -23,7 +23,7 @@ func TestStartupSpreadDefaultsToFifteenMinutes(t *testing.T) {
 	if fleet.DefaultStartupSpread != want {
 		t.Fatalf("fleet.DefaultStartupSpread = %s, want %s", fleet.DefaultStartupSpread, want)
 	}
-	if got := runtimeDefaults().startupSpread; got != want {
+	if got := defaults().startupSpread; got != want {
 		t.Fatalf("default startup spread = %s, want %s", got, want)
 	}
 

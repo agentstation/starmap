@@ -6,13 +6,13 @@ import (
 	"strings"
 	"time"
 
-	"github.com/agentstation/starmap"
 	"github.com/agentstation/starmap/internal/auth"
 	"github.com/agentstation/starmap/internal/sources/providers"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/errors"
 	"github.com/agentstation/starmap/pkg/logging"
 	"github.com/agentstation/starmap/pkg/sources"
+	"github.com/agentstation/starmap/runtime"
 )
 
 // DefaultCoalesceWindow bounds how long a completed provider observation waits
@@ -25,7 +25,7 @@ const DefaultCoalesceWindow = 30 * time.Second
 type ProviderObservation struct {
 	// Layer is the observed provider catalog. It is empty unless the attempt
 	// succeeded.
-	Layer starmap.ProviderLayer
+	Layer runtime.ProviderLayer
 
 	// Attempt is the terminal attempt record of the provider.
 	Attempt sources.ProviderAttempt
@@ -156,15 +156,15 @@ func NewAcquirer(opts ...AcquirerOption) (*Acquirer, error) {
 // one window, and it still publishes its own layer later.
 func (a *Acquirer) AcquireProviders(
 	ctx context.Context,
-	request starmap.AcquisitionRequest,
-) (starmap.AcquisitionResult, error) {
+	request runtime.AcquisitionRequest,
+) (runtime.AcquisitionResult, error) {
 	if a == nil || a.observer == nil {
-		return starmap.AcquisitionResult{}, &errors.ValidationError{
+		return runtime.AcquisitionResult{}, &errors.ValidationError{
 			Field: "acquisition.acquirer", Message: "is required",
 		}
 	}
 	eligible := eligibleProviders(request)
-	result := starmap.AcquisitionResult{Eligible: len(eligible)}
+	result := runtime.AcquisitionResult{Eligible: len(eligible)}
 	if len(eligible) == 0 {
 		return result, nil
 	}
@@ -184,7 +184,7 @@ func (a *Acquirer) AcquireProviders(
 	}
 
 	answered := make(map[catalogs.ProviderID]bool, len(eligible))
-	var pending []starmap.ProviderLayer
+	var pending []runtime.ProviderLayer
 	var window <-chan time.Time
 	for len(answered) < len(eligible) {
 		select {
@@ -220,10 +220,10 @@ func (a *Acquirer) AcquireProviders(
 // single publication that follows the run.
 func (a *Acquirer) emit(
 	ctx context.Context,
-	request starmap.AcquisitionRequest,
+	request runtime.AcquisitionRequest,
 	eligible []catalogs.ProviderID,
 	answered map[catalogs.ProviderID]bool,
-	layers []starmap.ProviderLayer,
+	layers []runtime.ProviderLayer,
 ) error {
 	if len(layers) == 0 || request.Publish == nil {
 		return nil
@@ -271,10 +271,10 @@ func (a *Acquirer) observe(
 // before the run ended. The run reports the provider, and the runtime keeps
 // the retained layer of that provider.
 func (a *Acquirer) close(
-	result starmap.AcquisitionResult,
+	result runtime.AcquisitionResult,
 	eligible []catalogs.ProviderID,
 	answered map[catalogs.ProviderID]bool,
-) starmap.AcquisitionResult {
+) runtime.AcquisitionResult {
 	now := a.now()
 	for _, id := range eligible {
 		if answered[id] {
@@ -291,7 +291,7 @@ func (a *Acquirer) close(
 	slices.SortFunc(result.Attempts, func(left, right sources.ProviderAttempt) int {
 		return strings.Compare(string(left.ProviderID), string(right.ProviderID))
 	})
-	slices.SortFunc(result.Layers, func(left, right starmap.ProviderLayer) int {
+	slices.SortFunc(result.Layers, func(left, right runtime.ProviderLayer) int {
 		return strings.Compare(string(left.ProviderID), string(right.ProviderID))
 	})
 	return result
@@ -299,7 +299,7 @@ func (a *Acquirer) close(
 
 // coalesceWindow returns the window the run uses. The request wins, so one
 // deployment setting reaches both the runtime and the acquirer.
-func (a *Acquirer) coalesceWindow(request starmap.AcquisitionRequest) time.Duration {
+func (a *Acquirer) coalesceWindow(request runtime.AcquisitionRequest) time.Duration {
 	if request.CoalesceWindow > 0 {
 		return request.CoalesceWindow
 	}
@@ -307,7 +307,7 @@ func (a *Acquirer) coalesceWindow(request starmap.AcquisitionRequest) time.Durat
 }
 
 // eligibleProviders returns the providers one run observes, in stable order.
-func eligibleProviders(request starmap.AcquisitionRequest) []catalogs.ProviderID {
+func eligibleProviders(request runtime.AcquisitionRequest) []catalogs.ProviderID {
 	if len(request.Providers) > 0 {
 		selected := slices.Clone(request.Providers)
 		slices.Sort(selected)
@@ -372,7 +372,7 @@ func (o *providerSourceObserver) ObserveProvider(
 		return ProviderObservation{}, errors.WrapResource(
 			"encode", "provider observation", string(id), err)
 	}
-	result.Layer = starmap.ProviderLayer{
+	result.Layer = runtime.ProviderLayer{
 		ProviderID: id,
 		Payload:    payload,
 		Digest:     catalogs.DescribeCatalogPayload(payload).Checksum,

@@ -1,4 +1,4 @@
-package starmap
+package runtime
 
 import (
 	"context"
@@ -64,8 +64,8 @@ func TestAcquisitionPolicyFromEnabledAndInterval(t *testing.T) {
 		t.Fatalf("apply: %v", err)
 	}
 	want := AcquisitionPolicy{Enabled: true, Interval: 90 * time.Minute}
-	if config.runtime.acquisition != want {
-		t.Errorf("acquisition policy = %+v, want %+v", config.runtime.acquisition, want)
+	if config.acquisition != want {
+		t.Errorf("acquisition policy = %+v, want %+v", config.acquisition, want)
 	}
 }
 

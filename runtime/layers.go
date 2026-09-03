@@ -1,7 +1,8 @@
-package starmap
+package runtime
 
 import (
 	"encoding/json"
+	"github.com/agentstation/starmap"
 	"os"
 	"path/filepath"
 	"slices"
@@ -46,7 +47,7 @@ type sourceLayer struct {
 // layers are the verified embedded baseline, the selected upstream source,
 // the retained per-provider observations, and the built immutable result.
 type layerSet struct {
-	embedded  CatalogState
+	embedded  starmap.CatalogState
 	source    *sourceLayer
 	providers map[catalogs.ProviderID]ProviderLayer
 	sequence  uint64
@@ -83,16 +84,16 @@ func (l *layerSet) setProvider(layer ProviderLayer) {
 // upstream source replaces the baseline. Each provider observation then
 // enriches the result in stable order, so one failed provider keeps its
 // last-known-good records.
-func (l *layerSet) build(baseline CatalogState) (CatalogState, error) {
+func (l *layerSet) build(baseline starmap.CatalogState) (starmap.CatalogState, error) {
 	base := baseline.Catalog
-	state := CatalogState{
+	state := starmap.CatalogState{
 		GenerationID: baseline.GenerationID,
 		GeneratedAt:  baseline.GeneratedAt,
 	}
 	if l.source != nil {
 		decoded, err := catalogs.DecodeCatalogPayload(l.source.Payload)
 		if err != nil {
-			return CatalogState{}, errors.WrapResource(
+			return starmap.CatalogState{}, errors.WrapResource(
 				"decode", "retained source layer", l.source.GenerationID, err)
 		}
 		base = decoded
@@ -100,14 +101,14 @@ func (l *layerSet) build(baseline CatalogState) (CatalogState, error) {
 		state.GeneratedAt = l.source.PublishedAt
 	}
 	if base == nil {
-		return CatalogState{}, &errors.ValidationError{
+		return starmap.CatalogState{}, &errors.ValidationError{
 			Field: "effective catalog", Message: "has no baseline",
 		}
 	}
 
 	builder := catalogs.NewEmpty()
 	if err := builder.MergeWith(base, catalogs.WithStrategy(catalogs.MergeReplaceAll)); err != nil {
-		return CatalogState{}, errors.WrapResource(
+		return starmap.CatalogState{}, errors.WrapResource(
 			"merge", "effective catalog baseline", state.GenerationID, err)
 	}
 	for _, id := range l.providerOrder() {
@@ -118,27 +119,27 @@ func (l *layerSet) build(baseline CatalogState) (CatalogState, error) {
 		// validates the merged result.
 		observed, err := catalogs.DecodeSourceObservationPayload(layer.Payload)
 		if err != nil {
-			return CatalogState{}, errors.WrapResource(
+			return starmap.CatalogState{}, errors.WrapResource(
 				"decode", "retained provider layer", string(id), err)
 		}
 		if err := builder.MergeWith(observed, catalogs.WithStrategy(catalogs.MergeEnrichEmpty)); err != nil {
-			return CatalogState{}, errors.WrapResource(
+			return starmap.CatalogState{}, errors.WrapResource(
 				"merge", "retained provider layer", string(id), err)
 		}
 		if err := mergeAuthoredModels(builder, observed); err != nil {
-			return CatalogState{}, errors.WrapResource(
+			return starmap.CatalogState{}, errors.WrapResource(
 				"merge", "retained authored models", string(id), err)
 		}
 	}
 
 	catalog, err := builder.Build()
 	if err != nil {
-		return CatalogState{}, errors.WrapResource(
+		return starmap.CatalogState{}, errors.WrapResource(
 			"publish", "effective catalog", state.GenerationID, err)
 	}
 	payload, err := catalogs.EncodeCatalogPayload(catalog)
 	if err != nil {
-		return CatalogState{}, errors.WrapResource(
+		return starmap.CatalogState{}, errors.WrapResource(
 			"encode", "effective catalog", state.GenerationID, err)
 	}
 	l.sequence++

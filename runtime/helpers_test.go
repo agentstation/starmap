@@ -1,7 +1,8 @@
-package starmap
+package runtime
 
 import (
 	"context"
+	"strings"
 	"sync"
 	"testing"
 	"time"
@@ -373,11 +374,57 @@ func eventually(t *testing.T, within time.Duration, reason string, condition fun
 // a test-only option, so the public surface keeps one clock and one random
 // source. A test uses it to drive a schedule without a real delay.
 func withScheduleTimer(after func(time.Duration) <-chan time.Time) Option {
-	return runtimeOption("withScheduleTimer", func(r *runtimeOptions) error {
+	return func(r *options) error {
 		if after == nil {
 			return &errors.ValidationError{Field: "schedule_timer", Message: "is required"}
 		}
 		r.scheduleTimer = after
 		return nil
-	})
+	}
+}
+
+// mustTestCatalog builds one immutable catalog from a reader and seeds the
+// authored model definitions that a published generation needs.
+func mustTestCatalog(t testing.TB, reader catalogs.Reader) *catalogs.Catalog {
+	t.Helper()
+	builder, err := catalogs.NewBuilderFrom(reader)
+	if err != nil {
+		t.Fatalf("NewBuilderFrom: %v", err)
+	}
+	seedTestModelDefinitions(t, builder)
+	catalog, err := builder.Build()
+	if err != nil {
+		t.Fatalf("Build: %v", err)
+	}
+	return catalog
+}
+
+// seedTestModelDefinitions gives every provider model an authored definition,
+// so the built catalog satisfies the authored-model invariant.
+func seedTestModelDefinitions(t testing.TB, builder *catalogs.Builder) {
+	t.Helper()
+	const authorID catalogs.AuthorID = "test-author"
+	author := catalogs.Author{ID: authorID, Name: "Test Author"}
+	if err := builder.SetAuthor(author); err != nil {
+		t.Fatalf("SetAuthor: %v", err)
+	}
+	for _, provider := range builder.Providers().List() {
+		for modelID, model := range provider.Models {
+			if model == nil || model.ModelRef != "" {
+				continue
+			}
+			slug := strings.ReplaceAll(string(provider.ID)+"--"+modelID, "/", "--")
+			model.ModelRef = catalogs.AuthoredModelID(authorID, slug)
+			if err := builder.SetProviderModel(provider.ID, *model); err != nil {
+				t.Fatalf("SetProviderModel(%s/%s): %v", provider.ID, modelID, err)
+			}
+			if err := builder.SetAuthorModel(authorID, catalogs.Model{
+				ID:      slug,
+				Name:    model.Name,
+				Authors: []catalogs.Author{author},
+			}); err != nil {
+				t.Fatalf("SetAuthorModel(%s): %v", model.ModelRef, err)
+			}
+		}
+	}
 }

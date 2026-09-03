@@ -8,9 +8,9 @@ import (
 	"testing"
 	"time"
 
-	"github.com/agentstation/starmap"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	protocol "github.com/agentstation/starmap/pkg/catalogs/remote"
+	"github.com/agentstation/starmap/runtime"
 )
 
 // cascadeHops is the number of serving hops of the propagation test. Three
@@ -26,13 +26,13 @@ func TestCascadedFreshnessPropagatesChannelUpdatedAtThroughHops(t *testing.T) {
 	now := time.Now().UTC()
 	origin := now.Add(-12 * time.Hour)
 
-	status := starmap.RuntimeStatus{
+	status := runtime.Status{
 		Usable:           true,
 		InstanceIdentity: "hop-0",
 		SourceIdentity:   "synthetic-channel",
 		GenerationID:     "generation-0",
-		SourceHealth:     starmap.HealthOK,
-		UpstreamHealth:   starmap.HealthUnknown,
+		SourceHealth:     runtime.HealthOK,
+		UpstreamHealth:   runtime.HealthUnknown,
 		ChannelUpdatedAt: origin,
 		ObservedAt:       now,
 	}
@@ -72,7 +72,7 @@ func TestCascadedFreshnessPropagatesChannelUpdatedAtThroughHops(t *testing.T) {
 // at every hop below it.
 func assertReadinessReportsChannel(
 	t *testing.T,
-	status starmap.RuntimeStatus,
+	status runtime.Status,
 	origin, now time.Time,
 ) {
 	t.Helper()
@@ -100,13 +100,13 @@ func assertReadinessReportsChannel(
 	if err := json.NewDecoder(response.Body).Decode(&body); err != nil {
 		t.Fatalf("decode readiness body: %v", err)
 	}
-	if body.Data.Runtime.ChannelFreshness != string(starmap.FreshnessCritical) {
+	if body.Data.Runtime.ChannelFreshness != string(runtime.FreshnessCritical) {
 		t.Fatalf("readiness channel freshness = %q, want critical",
 			body.Data.Runtime.ChannelFreshness)
 	}
 	// The local check of this hop is current, so the critical grade above rests
 	// on the propagated origin time alone.
-	if body.Data.Runtime.SourceCheckFreshness != string(starmap.FreshnessCurrent) {
+	if body.Data.Runtime.SourceCheckFreshness != string(runtime.FreshnessCurrent) {
 		t.Fatalf("readiness source check freshness = %q, want current",
 			body.Data.Runtime.SourceCheckFreshness)
 	}
@@ -127,7 +127,7 @@ func assertReadinessReportsChannel(
 
 // fetchSourceChain serves one runtime status and reads the manifest back with
 // the protocol client, so the test crosses the real route and media type.
-func fetchSourceChain(t *testing.T, status starmap.RuntimeStatus) protocol.SourceChain {
+func fetchSourceChain(t *testing.T, status runtime.Status) protocol.SourceChain {
 	t.Helper()
 	app := newMockApplication()
 	app.runtimeStatus = &status
@@ -167,45 +167,45 @@ func downstreamStatus(
 	document protocol.SourceChain,
 	hop int,
 	now time.Time,
-) starmap.RuntimeStatus {
+) runtime.Status {
 	// The hop grades the propagated origin time. Its own check happened now, so
 	// a hop that graded the check time would report a current channel.
 	channelAge := now.Sub(document.ChannelUpdatedAt)
-	channelFreshness := starmap.FreshnessCurrent
+	channelFreshness := runtime.FreshnessCurrent
 	switch {
-	case channelAge >= starmap.FreshnessChannelCriticalAge:
-		channelFreshness = starmap.FreshnessCritical
-	case channelAge >= starmap.FreshnessChannelWarnAge:
-		channelFreshness = starmap.FreshnessWarn
+	case channelAge >= runtime.FreshnessChannelCriticalAge:
+		channelFreshness = runtime.FreshnessCritical
+	case channelAge >= runtime.FreshnessChannelWarnAge:
+		channelFreshness = runtime.FreshnessWarn
 	}
-	return starmap.RuntimeStatus{
+	return runtime.Status{
 		Usable:               true,
 		InstanceIdentity:     identityOfHop(hop),
 		SourceIdentity:       "starmap_cascade",
 		GenerationID:         document.GenerationID,
-		SourceHealth:         starmap.HealthOK,
-		UpstreamHealth:       starmap.HealthOK,
+		SourceHealth:         runtime.HealthOK,
+		UpstreamHealth:       runtime.HealthOK,
 		ChannelUpdatedAt:     document.ChannelUpdatedAt,
 		ChannelAge:           channelAge,
 		ChannelFreshness:     channelFreshness,
-		SourceCheckFreshness: starmap.FreshnessCurrent,
+		SourceCheckFreshness: runtime.FreshnessCurrent,
 		ObservedAt:           now,
 		Chain:                chainOfDocument(document),
 	}
 }
 
 // chainOfDocument returns the chain the downstream records, nearest hop first.
-func chainOfDocument(document protocol.SourceChain) []starmap.SourceHop {
-	hops := []starmap.SourceHop{{
+func chainOfDocument(document protocol.SourceChain) []runtime.SourceHop {
+	hops := []runtime.SourceHop{{
 		Identity:    document.Identity,
-		Health:      starmap.HealthOK,
+		Health:      runtime.HealthOK,
 		PublishedAt: document.ChannelUpdatedAt,
 		ObservedAt:  document.ObservedAt,
 	}}
 	for _, hop := range document.Hops {
-		hops = append(hops, starmap.SourceHop{
+		hops = append(hops, runtime.SourceHop{
 			Identity:    hop.Identity,
-			Health:      starmap.HealthOK,
+			Health:      runtime.HealthOK,
 			PublishedAt: hop.PublishedAt,
 			ObservedAt:  hop.ObservedAt,
 		})

@@ -1,10 +1,18 @@
-package starmap
+// Package runtime holds the connected catalog runtime. It opens a Starmap
+// client, reads verified upstream generations from one source, publishes each
+// accepted generation, and reports the operator-facing status of that work.
+//
+// The default source is the attested public GitHub channel. A caller that
+// opens the runtime accepts the signature verification and the network reads
+// that this channel needs. The root starmap package stays the offline library.
+package runtime
 
 import (
 	"context"
 	"sync"
 	"time"
 
+	"github.com/agentstation/starmap"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/errors"
 	"github.com/agentstation/starmap/pkg/logging"
@@ -155,14 +163,14 @@ type Acquirer interface {
 // observations, and rebuilds one immutable effective catalog from those
 // layers. Reads reach no external system.
 type Runtime struct {
-	client *Client
-	config runtimeOptions
+	client *starmap.Client
+	config options
 	source Source
 
 	// mu guards the retained layers and the published effective state.
 	mu        sync.RWMutex
 	layers    layerSet
-	effective CatalogState
+	effective starmap.CatalogState
 	report    statusState
 
 	store    *layerStore
@@ -175,7 +183,7 @@ type Runtime struct {
 	// after Close then sends nothing.
 	updatesMu     sync.Mutex
 	updatesClosed bool
-	updates       chan CatalogState
+	updates       chan starmap.CatalogState
 
 	ctx       context.Context
 	cancel    context.CancelFunc
@@ -195,19 +203,19 @@ func Open(ctx context.Context, opts ...Option) (*Runtime, error) {
 	if err != nil {
 		return nil, err
 	}
-	config.runtime.resolve()
-	if err := config.runtime.validate(); err != nil {
+	config.resolve()
+	if err := config.validate(); err != nil {
 		return nil, err
 	}
-	client, err := newClient(ctx, config)
+	client, err := starmap.NewContext(ctx, config.client...)
 	if err != nil {
 		return nil, err
 	}
 
 	runtime := &Runtime{
 		client:  client,
-		config:  config.runtime,
-		updates: make(chan CatalogState, updatesBuffer),
+		config:  *config,
+		updates: make(chan starmap.CatalogState, updatesBuffer),
 	}
 	runtime.ctx, runtime.cancel = context.WithCancel(context.WithoutCancel(ctx))
 
@@ -287,9 +295,9 @@ func (r *Runtime) Catalog() *catalogs.Catalog {
 
 // State returns one atomic snapshot of the effective catalog and its
 // generation identity. It reaches no external system.
-func (r *Runtime) State() CatalogState {
+func (r *Runtime) State() starmap.CatalogState {
 	if r == nil {
-		return CatalogState{}
+		return starmap.CatalogState{}
 	}
 	r.mu.RLock()
 	defer r.mu.RUnlock()
@@ -298,7 +306,7 @@ func (r *Runtime) State() CatalogState {
 
 // Client returns the immutable publication client underneath the runtime.
 // Use it for explicit publication, hooks, and generation retrieval.
-func (r *Runtime) Client() *Client {
+func (r *Runtime) Client() *starmap.Client {
 	if r == nil {
 		return nil
 	}
@@ -308,7 +316,7 @@ func (r *Runtime) Client() *Client {
 // Updates returns the channel that carries every published effective catalog
 // state. The runtime buffers the channel. A reader that falls behind loses
 // intermediate states and always observes the newest one.
-func (r *Runtime) Updates() <-chan CatalogState {
+func (r *Runtime) Updates() <-chan starmap.CatalogState {
 	if r == nil {
 		return nil
 	}
@@ -375,19 +383,19 @@ func (r *Runtime) initializeEffective() error {
 // caller holds no lock. The rebuild runs under the runtime write lock, so a
 // concurrent read never observes a partial generation. The epoch is the lease
 // epoch of the run, so a run that lost the lease commits nothing.
-func (r *Runtime) rebuild(ctx context.Context, epoch uint64) (CatalogState, error) {
+func (r *Runtime) rebuild(ctx context.Context, epoch uint64) (starmap.CatalogState, error) {
 	r.mu.Lock()
 	baseline := r.layers.embedded
 	state, err := r.layers.build(baseline)
 	if err != nil {
 		r.mu.Unlock()
-		return CatalogState{}, err
+		return starmap.CatalogState{}, err
 	}
 	r.mu.Unlock()
 
 	durable, err := r.commit(ctx, state, epoch)
 	if err != nil {
-		return CatalogState{}, err
+		return starmap.CatalogState{}, err
 	}
 
 	r.mu.Lock()
@@ -400,8 +408,8 @@ func (r *Runtime) rebuild(ctx context.Context, epoch uint64) (CatalogState, erro
 // commit durably publishes one effective catalog when the deployment holds a
 // writable store. The epoch that the run started under fences the commit, so an
 // instance that lost the lease cannot overwrite a newer generation.
-func (r *Runtime) commit(ctx context.Context, state CatalogState, epoch uint64) (CatalogState, error) {
-	if r.client.requireWritableCatalogStore() != nil {
+func (r *Runtime) commit(ctx context.Context, state starmap.CatalogState, epoch uint64) (starmap.CatalogState, error) {
+	if !r.client.PublishesDurably() {
 		// Without a durable store the runtime publishes in memory only. The
 		// effective catalog stays correct. It does not survive a restart.
 		return state, nil
@@ -409,14 +417,14 @@ func (r *Runtime) commit(ctx context.Context, state CatalogState, epoch uint64) 
 	publication, err := r.client.Update(ctx, func(
 		context.Context,
 		*catalogs.Catalog,
-	) (*Candidate, error) {
+	) (*starmap.Candidate, error) {
 		if err := r.lease.fence(epoch); err != nil {
 			return nil, err
 		}
-		return NewCandidate(state.Catalog, CandidateEvidence{})
+		return starmap.NewCandidate(state.Catalog, starmap.CandidateEvidence{})
 	})
 	if err != nil {
-		return CatalogState{}, err
+		return starmap.CatalogState{}, err
 	}
 	if !publication.Published {
 		return state, nil
@@ -427,7 +435,7 @@ func (r *Runtime) commit(ctx context.Context, state CatalogState, epoch uint64) 
 // broadcast delivers one published state to the updates channel. A full
 // channel drops the oldest pending state, so the newest state always arrives.
 // A closed runtime delivers nothing, because Close owns the channel.
-func (r *Runtime) broadcast(state CatalogState) {
+func (r *Runtime) broadcast(state starmap.CatalogState) {
 	r.updatesMu.Lock()
 	defer r.updatesMu.Unlock()
 	if r.updatesClosed {

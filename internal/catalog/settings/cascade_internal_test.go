@@ -5,8 +5,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/agentstation/starmap"
 	"github.com/agentstation/starmap/pkg/errors"
+	"github.com/agentstation/starmap/runtime"
 )
 
 // TestCascadeSubscriberCarriesTheCanonicalBounds proves that the composition
@@ -16,7 +16,7 @@ import (
 // cascade connection.
 func TestCascadeSubscriberCarriesTheCanonicalBounds(t *testing.T) {
 	values := map[string]string{
-		Source:              string(starmap.SourceStarmap),
+		Source:              string(runtime.SourceStarmap),
 		SourceURL:           "https://catalog.example.test",
 		SourceAPIKey:        "test-key",
 		StartupSpread:       "90s",
@@ -67,7 +67,7 @@ func TestCascadeSubscriberCarriesTheCanonicalBounds(t *testing.T) {
 // TestCascadeSubscriberNeedsAnUpstreamURL proves that the mapping names the
 // missing setting instead of building a subscriber with no upstream.
 func TestCascadeSubscriberNeedsAnUpstreamURL(t *testing.T) {
-	_, err := cascadeSubscriber(Config{SourceKind: starmap.SourceStarmap})
+	_, err := cascadeSubscriber(Config{SourceKind: runtime.SourceStarmap})
 	var configErr *errors.ConfigError
 	if !stderrors.As(err, &configErr) {
 		t.Fatalf("cascadeSubscriber error = %v, want a ConfigError", err)

@@ -1,8 +1,9 @@
-package starmap
+package runtime
 
 import (
 	"context"
 	stderrors "errors"
+	"github.com/agentstation/starmap"
 	"sync"
 	"testing"
 	"time"
@@ -26,7 +27,7 @@ func TestRuntimeLeaseRejectsStaleEpochAtCommit(t *testing.T) {
 	}
 
 	runtime := openTestRuntime(t,
-		WithCatalogStore(storage.NewMemory()),
+		WithClientOptions(starmap.WithCatalogStore(storage.NewMemory())),
 		WithSource(source),
 		WithLeaseStore(leases),
 	)
@@ -191,7 +192,7 @@ func TestManualRunByANonOwnerReturnsAConflict(t *testing.T) {
 	}
 
 	runtime := openTestRuntime(t,
-		WithCatalogStore(storage.NewMemory()),
+		WithClientOptions(starmap.WithCatalogStore(storage.NewMemory())),
 		WithSource(source),
 		WithLeaseStore(leases),
 	)

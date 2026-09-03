@@ -4,12 +4,12 @@ import (
 	"context"
 	"strings"
 
-	"github.com/agentstation/starmap"
 	"github.com/agentstation/starmap/internal/fleet"
 	protocol "github.com/agentstation/starmap/pkg/catalogs/remote"
 	"github.com/agentstation/starmap/pkg/catalogs/storage"
 	"github.com/agentstation/starmap/pkg/errors"
 	"github.com/agentstation/starmap/remote"
+	"github.com/agentstation/starmap/runtime"
 )
 
 // cascadeFallbackAfterFailures is how many consecutive stream failures the
@@ -32,50 +32,50 @@ type Composition struct {
 
 	// Source supplies an upstream source implementation. It overrides the
 	// source that the settings select, so a test injects a hermetic source.
-	Source starmap.Source
+	Source runtime.Source
 
 	// Acquirer collects provider observations. A runtime without one observes
 	// no provider.
-	Acquirer starmap.Acquirer
+	Acquirer runtime.Acquirer
 
 	// LeaseStore fences the durable generation commit of a replicated
 	// deployment. A single instance needs none.
-	LeaseStore starmap.LeaseStore
+	LeaseStore runtime.LeaseStore
 
 	// Base holds options that the process supplies before every setting. A
 	// canonical setting overrides a base option of the same name.
-	Base []starmap.Option
+	Base []runtime.Option
 
 	// Extra holds options that one command supplies last. The serve command
 	// supplies its listen address here, so two replicas on one host take
 	// separate schedule phases.
-	Extra []starmap.Option
+	Extra []runtime.Option
 }
 
 // Options returns the runtime options in precedence order: the process base
 // options first, then one option for each supplied canonical setting, then the
 // injected roles. A later option replaces an earlier one, so a canonical
 // setting always wins over a base default.
-func (c Composition) Options() ([]starmap.Option, error) {
+func (c Composition) Options() ([]runtime.Option, error) {
 	source := c.Source
-	if source == nil && c.Config.SourceKind == starmap.SourceStarmap {
+	if source == nil && c.Config.SourceKind == runtime.SourceStarmap {
 		built, err := c.cascadeSource()
 		if err != nil {
 			return nil, err
 		}
 		source = built
 	}
-	options := make([]starmap.Option, 0, len(c.Base)+len(c.Config.options)+len(c.Extra)+3)
+	options := make([]runtime.Option, 0, len(c.Base)+len(c.Config.options)+len(c.Extra)+3)
 	options = append(options, c.Base...)
 	options = append(options, c.Config.options...)
 	if source != nil {
-		options = append(options, starmap.WithSource(source))
+		options = append(options, runtime.WithSource(source))
 	}
 	if c.Acquirer != nil {
-		options = append(options, starmap.WithAcquirer(c.Acquirer))
+		options = append(options, runtime.WithAcquirer(c.Acquirer))
 	}
 	if c.LeaseStore != nil {
-		options = append(options, starmap.WithLeaseStore(c.LeaseStore))
+		options = append(options, runtime.WithLeaseStore(c.LeaseStore))
 	}
 	options = append(options, c.Extra...)
 	return options, nil
@@ -88,7 +88,7 @@ func (c Composition) Options() ([]starmap.Option, error) {
 // The subscriber keeps its verified generations in memory. The runtime retains
 // the accepted generation in its own state directory, so a restart serves the
 // last upstream catalog without a second durable copy here.
-func (c Composition) cascadeSource() (starmap.Source, error) {
+func (c Composition) cascadeSource() (runtime.Source, error) {
 	subscriber, err := cascadeSubscriber(c.Config)
 	if err != nil {
 		return nil, err
@@ -138,10 +138,10 @@ func cascadeSubscriber(config Config) (remote.Config, error) {
 // Open composes the options and opens the connected runtime. The runtime serves
 // the verified embedded catalog immediately and pulls its source in the
 // background.
-func (c Composition) Open(ctx context.Context) (*starmap.Runtime, error) {
+func (c Composition) Open(ctx context.Context) (*runtime.Runtime, error) {
 	options, err := c.Options()
 	if err != nil {
 		return nil, err
 	}
-	return starmap.Open(ctx, options...)
+	return runtime.Open(ctx, options...)
 }

@@ -8,9 +8,9 @@ import (
 
 	"github.com/spf13/pflag"
 
-	"github.com/agentstation/starmap"
 	"github.com/agentstation/starmap/internal/catalog/settings"
 	"github.com/agentstation/starmap/pkg/errors"
+	"github.com/agentstation/starmap/runtime"
 )
 
 // sampleValues holds one valid value for every canonical catalog setting. A new
@@ -131,8 +131,8 @@ func TestFlagOverridesEnvironment(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Load after parse: %v", err)
 	}
-	if config.SourceKind != starmap.SourceEmbedded {
-		t.Fatalf("source kind = %q, want %q", config.SourceKind, starmap.SourceEmbedded)
+	if config.SourceKind != runtime.SourceEmbedded {
+		t.Fatalf("source kind = %q, want %q", config.SourceKind, runtime.SourceEmbedded)
 	}
 	if configured := config.Configured(); len(configured) != 2 {
 		t.Fatalf("configured after parse = %v, want the flag and the environment", configured)
@@ -146,8 +146,8 @@ func TestDefaultSourceIsPublic(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Load: %v", err)
 	}
-	if config.SourceKind != starmap.SourcePublic {
-		t.Fatalf("default source = %q, want %q", config.SourceKind, starmap.SourcePublic)
+	if config.SourceKind != runtime.SourcePublic {
+		t.Fatalf("default source = %q, want %q", config.SourceKind, runtime.SourcePublic)
 	}
 	if configured := config.Configured(); len(configured) != 0 {
 		t.Fatalf("configured = %v, want none", configured)
@@ -157,8 +157,8 @@ func TestDefaultSourceIsPublic(t *testing.T) {
 // TestConfiguredSourceReplacesTheDefault proves that each supported source kind
 // replaces the public default.
 func TestConfiguredSourceReplacesTheDefault(t *testing.T) {
-	for _, kind := range []starmap.SourceKind{
-		starmap.SourceGitHub, starmap.SourceFile, starmap.SourceEmbedded,
+	for _, kind := range []runtime.SourceKind{
+		runtime.SourceGitHub, runtime.SourceFile, runtime.SourceEmbedded,
 	} {
 		config, err := settings.Load(single(settings.Source, string(kind)))
 		if err != nil {
@@ -175,7 +175,7 @@ func TestConfiguredSourceReplacesTheDefault(t *testing.T) {
 // builds the cascade source that the root package cannot construct.
 func TestStarmapSourceComposesTheCascadeSource(t *testing.T) {
 	values := map[string]string{
-		settings.Source:              string(starmap.SourceStarmap),
+		settings.Source:              string(runtime.SourceStarmap),
 		settings.SourceURL:           "https://catalog.example.test",
 		settings.StartupSpread:       "90s",
 		settings.TransferIdleTimeout: "7s",
@@ -188,8 +188,8 @@ func TestStarmapSourceComposesTheCascadeSource(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Load: %v", err)
 	}
-	if config.SourceKind != starmap.SourceStarmap {
-		t.Fatalf("source kind = %q, want %q", config.SourceKind, starmap.SourceStarmap)
+	if config.SourceKind != runtime.SourceStarmap {
+		t.Fatalf("source kind = %q, want %q", config.SourceKind, runtime.SourceStarmap)
 	}
 	if config.SourceURL != values[settings.SourceURL] {
 		t.Fatalf("source URL = %q, want %q", config.SourceURL, values[settings.SourceURL])
@@ -217,7 +217,7 @@ func TestStarmapSourceComposesTheCascadeSource(t *testing.T) {
 // TestStarmapSourceWithoutURLIsRejected proves that the composition step names
 // the missing setting instead of opening a source with no upstream.
 func TestStarmapSourceWithoutURLIsRejected(t *testing.T) {
-	values := map[string]string{settings.Source: string(starmap.SourceStarmap)}
+	values := map[string]string{settings.Source: string(runtime.SourceStarmap)}
 	config, err := settings.Load(func(name string) (string, bool) {
 		value, found := values[name]
 		return value, found

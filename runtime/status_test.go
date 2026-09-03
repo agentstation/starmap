@@ -1,4 +1,4 @@
-package starmap
+package runtime
 
 import (
 	"context"
@@ -168,7 +168,7 @@ func TestSourceMaxAgeSetsTheChannelThresholds(t *testing.T) {
 
 	// gradeChannel opens a runtime whose upstream published one generation the
 	// given age ago, then returns the status that the runtime reports.
-	gradeChannel := func(t *testing.T, age time.Duration, opts ...Option) RuntimeStatus {
+	gradeChannel := func(t *testing.T, age time.Duration, opts ...Option) Status {
 		t.Helper()
 		start := time.Date(2026, 3, 1, 12, 0, 0, 0, time.UTC)
 		clock := &testClock{now: start}

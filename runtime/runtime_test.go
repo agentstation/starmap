@@ -1,4 +1,4 @@
-package starmap
+package runtime
 
 import (
 	"context"
@@ -415,43 +415,6 @@ func TestRefreshAddsNoDeadlineByDefault(t *testing.T) {
 	}
 	if DefaultRefreshTimeout != 0 {
 		t.Fatalf("DefaultRefreshTimeout = %s, want zero", DefaultRefreshTimeout)
-	}
-}
-
-// TestNewRejectsRuntimeOptions proves that the offline constructors reject
-// every connected-runtime option with a typed validation error.
-func TestNewRejectsRuntimeOptions(t *testing.T) {
-	for name, option := range map[string]Option{
-		"WithCatalogSource":      WithCatalogSource("public"),
-		"WithAcquisitionEnabled": WithAcquisitionEnabled(true),
-		"WithStartupSpread":      WithStartupSpread(time.Minute),
-		"WithStateDirectory":     WithStateDirectory(t.TempDir()),
-		"WithRefreshTimeout":     WithRefreshTimeout(time.Minute),
-		"WithSourcePollInterval": WithSourcePollInterval(time.Minute),
-	} {
-		t.Run(name, func(t *testing.T) {
-			client, err := New(option)
-			if client != nil {
-				t.Fatal("New returned a client for a connected-runtime option")
-			}
-			var validation *pkgerrors.ValidationError
-			if !errors.As(err, &validation) {
-				t.Fatalf("New error = %v, want a validation error", err)
-			}
-			if validation.Field != "starmap.NewContext" {
-				t.Fatalf("error field = %q, want starmap.NewContext", validation.Field)
-			}
-			if value, ok := validation.Value.(string); !ok || value != name {
-				t.Fatalf("error value = %v, want the option name %q", validation.Value, name)
-			}
-			if _, err := NewContext(context.Background(), option); err == nil {
-				t.Fatal("NewContext accepted a connected-runtime option")
-			}
-		})
-	}
-
-	if _, err := New(WithCatalogPath(t.TempDir())); err != nil {
-		t.Fatalf("New rejected an offline option: %v", err)
 	}
 }
 

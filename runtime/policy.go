@@ -1,4 +1,4 @@
-package starmap
+package runtime
 
 import (
 	"slices"

@@ -4,11 +4,11 @@ import (
 	"context"
 	"os"
 
-	"github.com/agentstation/starmap"
 	"github.com/agentstation/starmap/acquisition"
 	"github.com/agentstation/starmap/internal/catalog/settings"
 	"github.com/agentstation/starmap/internal/constants"
 	"github.com/agentstation/starmap/pkg/errors"
+	"github.com/agentstation/starmap/runtime"
 )
 
 // CatalogSettings returns the canonical catalog settings that this process
@@ -21,7 +21,7 @@ func (a *App) CatalogSettings() settings.Config {
 // once and reuses it. The runtime serves the verified embedded catalog at once
 // and pulls the selected source in the background, so no command waits for the
 // network. Extra options apply last, so a command overrides one setting.
-func (a *App) Runtime(ctx context.Context, extra ...starmap.Option) (*starmap.Runtime, error) {
+func (a *App) Runtime(ctx context.Context, extra ...runtime.Option) (*runtime.Runtime, error) {
 	if ctx == nil {
 		return nil, &errors.ValidationError{Field: "context", Message: "is required"}
 	}
@@ -34,49 +34,49 @@ func (a *App) Runtime(ctx context.Context, extra ...starmap.Option) (*starmap.Ru
 	if err != nil {
 		return nil, err
 	}
-	runtime, err := composition.Open(ctx)
+	connected, err := composition.Open(ctx)
 	if err != nil {
 		return nil, err
 	}
-	a.runtime = runtime
+	a.runtime = connected
 
 	// The runtime commits every effective generation through this client, so
 	// the application publishes one client. A hook that a command registers
 	// then observes runtime publications.
 	a.mu.Lock()
-	a.starmap = runtime.Client()
+	a.starmap = connected.Client()
 	a.mu.Unlock()
-	return runtime, nil
+	return connected, nil
 }
 
 // RuntimeStatus reports the connected-runtime status of this process. A process
 // that opened no runtime reports the closed status.
-func (a *App) RuntimeStatus() starmap.RuntimeStatus {
+func (a *App) RuntimeStatus() runtime.Status {
 	a.runtimeMu.Lock()
-	runtime := a.runtime
+	connected := a.runtime
 	a.runtimeMu.Unlock()
-	if runtime == nil {
-		return starmap.RuntimeStatus{}
+	if connected == nil {
+		return runtime.Status{}
 	}
-	return runtime.Status()
+	return connected.Status()
 }
 
 // closeRuntime stops the connected runtime. Close joins runtime-owned work
 // inside the runtime's own five-second bound and releases the lease.
 func (a *App) closeRuntime() error {
 	a.runtimeMu.Lock()
-	runtime := a.runtime
+	connected := a.runtime
 	a.runtime = nil
 	a.runtimeMu.Unlock()
-	if runtime == nil {
+	if connected == nil {
 		return nil
 	}
-	return runtime.Close()
+	return connected.Close()
 }
 
 // composition builds the process composition from the canonical settings and
 // the roles that this process owns.
-func (a *App) composition(extra []starmap.Option) (settings.Composition, error) {
+func (a *App) composition(extra []runtime.Option) (settings.Composition, error) {
 	base, err := a.baseCatalogOptions()
 	if err != nil {
 		return settings.Composition{}, err
@@ -95,7 +95,7 @@ func (a *App) composition(extra []starmap.Option) (settings.Composition, error) 
 
 // baseCatalogOptions returns the options that this process supplies before any
 // canonical setting. A supplied setting replaces the matching base option.
-func (a *App) baseCatalogOptions() ([]starmap.Option, error) {
+func (a *App) baseCatalogOptions() ([]runtime.Option, error) {
 	storeOption, err := a.catalogStoreOption()
 	if err != nil {
 		return nil, err
@@ -108,14 +108,16 @@ func (a *App) baseCatalogOptions() ([]starmap.Option, error) {
 	if err != nil {
 		return nil, err
 	}
-	options := make([]starmap.Option, 0, 2+len(catalogOptions))
-	options = append(options, storeOption, starmap.WithStateDirectory(statePath))
-	return append(options, catalogOptions...), nil
+	return []runtime.Option{
+		runtime.WithClientOptions(storeOption),
+		runtime.WithStateDirectory(statePath),
+		runtime.WithClientOptions(catalogOptions...),
+	}, nil
 }
 
 // acquirer builds the provider acquisition role. The root package selects no
 // provider client, so the application injects this role.
-func (a *App) acquirer() (starmap.Acquirer, error) {
+func (a *App) acquirer() (runtime.Acquirer, error) {
 	resolver, err := a.CredentialResolver()
 	if err != nil {
 		return nil, err
@@ -149,7 +151,7 @@ func loadCatalogSettings(config *Config, overrides ...settings.Lookup) (settings
 		}
 		switch name {
 		case settings.Source:
-			return string(starmap.SourceStarmap), true
+			return string(runtime.SourceStarmap), true
 		case settings.SourceURL:
 			return config.RemoteServerURL, true
 		case settings.SourceAPIKey:

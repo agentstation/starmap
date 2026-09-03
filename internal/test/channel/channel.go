@@ -11,9 +11,9 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/agentstation/starmap"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/errors"
+	"github.com/agentstation/starmap/runtime"
 )
 
 const (
@@ -43,7 +43,7 @@ const (
 
 // Upstream is the local test server that publishes one synthetic channel and
 // answers one provider model request. It is also the source that reads that
-// channel, so a test injects it with starmap.WithSource.
+// channel, so a test injects it with runtime.WithSource.
 type Upstream struct {
 	server       *httptest.Server
 	payload      []byte
@@ -86,26 +86,26 @@ func (u *Upstream) Identity() string { return "synthetic-channel" }
 
 // Read checks the channel and returns the generation on the first change. A
 // later read reports no change, so the runtime keeps its durable generation.
-func (u *Upstream) Read(ctx context.Context) (starmap.SourceRead, error) {
+func (u *Upstream) Read(ctx context.Context) (runtime.SourceRead, error) {
 	request, err := http.NewRequestWithContext(
 		ctx, http.MethodGet, u.server.URL+"/channel", nil)
 	if err != nil {
-		return starmap.SourceRead{}, errors.WrapIO("build", "synthetic channel request", err)
+		return runtime.SourceRead{}, errors.WrapIO("build", "synthetic channel request", err)
 	}
 	response, err := http.DefaultClient.Do(request)
 	if err != nil {
-		return starmap.SourceRead{}, errors.WrapIO("read", "synthetic channel", err)
+		return runtime.SourceRead{}, errors.WrapIO("read", "synthetic channel", err)
 	}
 	defer func() { _ = response.Body.Close() }()
 	var channel struct {
 		Sequence int `json:"sequence"`
 	}
 	if err := json.NewDecoder(response.Body).Decode(&channel); err != nil {
-		return starmap.SourceRead{}, errors.WrapIO("decode", "synthetic channel", err)
+		return runtime.SourceRead{}, errors.WrapIO("decode", "synthetic channel", err)
 	}
 
 	published := time.Unix(1, 0).UTC()
-	read := starmap.SourceRead{Health: starmap.HealthOK, ChannelUpdatedAt: published}
+	read := runtime.SourceRead{Health: runtime.HealthOK, ChannelUpdatedAt: published}
 	if !u.served.CompareAndSwap(false, true) {
 		return read, nil
 	}

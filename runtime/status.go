@@ -1,4 +1,4 @@
-package starmap
+package runtime
 
 import (
 	"time"
@@ -40,10 +40,10 @@ type statusState struct {
 	lastRunID string
 }
 
-// RuntimeStatus is the operator-facing state of one connected runtime. It keeps
+// Status is the operator-facing state of one connected runtime. It keeps
 // usability, freshness, fallback, direct source health, and upstream-reported
 // health as five independent values, so a warning on one never hides another.
-type RuntimeStatus struct {
+type Status struct {
 	// Usable reports whether the runtime serves a catalog now. A runtime that
 	// serves the verified embedded catalog is usable.
 	Usable bool
@@ -137,9 +137,9 @@ type RuntimeStatus struct {
 
 // Status returns the current runtime status. It reads retained state only, so
 // it reaches no external system and never blocks on the source.
-func (r *Runtime) Status() RuntimeStatus {
+func (r *Runtime) Status() Status {
 	if r == nil {
-		return RuntimeStatus{}
+		return Status{}
 	}
 	now := r.config.now()
 
@@ -153,7 +153,7 @@ func (r *Runtime) Status() RuntimeStatus {
 	}
 	r.mu.RUnlock()
 
-	status := RuntimeStatus{
+	status := Status{
 		Usable:            effective.Catalog != nil,
 		GenerationID:      effective.GenerationID,
 		PayloadChecksum:   effective.PayloadChecksum,

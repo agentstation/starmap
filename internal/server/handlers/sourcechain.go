@@ -3,10 +3,10 @@ package handlers
 import (
 	"net/http"
 
-	"github.com/agentstation/starmap"
 	"github.com/agentstation/starmap/internal/server/response"
 	protocol "github.com/agentstation/starmap/pkg/catalogs/remote"
 	"github.com/agentstation/starmap/pkg/logging"
+	"github.com/agentstation/starmap/runtime"
 )
 
 // HandleCatalogSourceChain handles GET /api/v1/catalog/source-chain.
@@ -33,7 +33,7 @@ func (h *Handlers) HandleCatalogSourceChain(w http.ResponseWriter, _ *http.Reque
 // The document carries safe identities and bounded detail only, so it names no
 // URL, no credential, and no operator message. A downstream reads it to detect
 // a cycle and to grade the propagated origin freshness.
-func SourceChainOf(status starmap.RuntimeStatus) protocol.SourceChain {
+func SourceChainOf(status runtime.Status) protocol.SourceChain {
 	chain := protocol.SourceChain{
 		SchemaVersion:    protocol.SourceChainSchemaVersion,
 		Identity:         status.InstanceIdentity,
@@ -68,13 +68,13 @@ func SourceChainOf(status starmap.RuntimeStatus) protocol.SourceChain {
 }
 
 // sourceChainHealth converts one runtime health onto the closed chain code.
-func sourceChainHealth(health starmap.Health) string {
+func sourceChainHealth(health runtime.Health) string {
 	switch health {
-	case starmap.HealthOK:
+	case runtime.HealthOK:
 		return protocol.SourceChainHealthOK
-	case starmap.HealthDegraded:
+	case runtime.HealthDegraded:
 		return protocol.SourceChainHealthDegraded
-	case starmap.HealthUnavailable:
+	case runtime.HealthUnavailable:
 		return protocol.SourceChainHealthUnavailable
 	default:
 		return protocol.SourceChainHealthUnknown

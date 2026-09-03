@@ -13,6 +13,7 @@ import (
 
 	"github.com/agentstation/starmap"
 	"github.com/agentstation/starmap/pkg/errors"
+	"github.com/agentstation/starmap/runtime"
 )
 
 // Prefix is the canonical Starmap environment prefix. Starport uses STARPORT_
@@ -104,7 +105,7 @@ type Lookup func(name string) (string, bool)
 type setting struct {
 	name    string
 	flag    string
-	apply   func(value string) (starmap.Option, error)
+	apply   func(value string) (runtime.Option, error)
 	capture func(value string, config *Config) error
 }
 
@@ -114,7 +115,7 @@ type setting struct {
 // source that this build supplies no implementation for.
 type Config struct {
 	// SourceKind is the selected upstream source. The default is public.
-	SourceKind starmap.SourceKind
+	SourceKind runtime.SourceKind
 
 	// SourceURL is the safe endpoint or file identity of a custom source.
 	SourceURL string
@@ -161,7 +162,7 @@ type Config struct {
 	configured []string
 
 	// options holds one runtime option for each supplied setting.
-	options []starmap.Option
+	options []runtime.Option
 }
 
 // table returns every canonical setting in its documented order. The order is
@@ -170,105 +171,105 @@ func table() []setting {
 	return []setting{
 		{
 			name: Source, flag: "catalog-source", capture: captureSourceKind,
-			apply: stringOption(starmap.WithCatalogSource),
+			apply: stringOption(runtime.WithCatalogSource),
 		},
 		{
 			name: SourceURL, flag: "catalog-source-url", capture: captureSourceURL,
-			apply: stringOption(starmap.WithSourceURL),
+			apply: stringOption(runtime.WithSourceURL),
 		},
 		{
 			name: SourceAPIKey, flag: "catalog-source-api-key",
 			capture: captureSourceAPIKey,
-			apply:   stringOption(starmap.WithSourceAPIKey),
+			apply:   stringOption(runtime.WithSourceAPIKey),
 		},
 		{
 			name: SourceRepository, flag: "catalog-source-repository",
-			apply: stringOption(starmap.WithSourceRepository),
+			apply: stringOption(runtime.WithSourceRepository),
 		},
 		{
 			name: SourceChannel, flag: "catalog-source-channel",
-			apply: stringOption(starmap.WithSourceChannel),
+			apply: stringOption(runtime.WithSourceChannel),
 		},
 		{
 			name: SourceSignerWorkflow, flag: "catalog-source-signer-workflow",
-			apply: stringOption(starmap.WithSourceSignerWorkflow),
+			apply: stringOption(runtime.WithSourceSignerWorkflow),
 		},
 		{
 			name: SourceToken, flag: "catalog-source-token",
-			apply: stringOption(starmap.WithSourceToken),
+			apply: stringOption(runtime.WithSourceToken),
 		},
 		{
 			name: SourcePollInterval, flag: "catalog-source-poll-interval",
-			apply: durationOption(SourcePollInterval, starmap.WithSourcePollInterval),
+			apply: durationOption(SourcePollInterval, runtime.WithSourcePollInterval),
 		},
 		{
 			name: SourceStartupPolicy, flag: "catalog-source-startup-policy",
-			apply: stringOption(starmap.WithSourceStartupPolicy),
+			apply: stringOption(runtime.WithSourceStartupPolicy),
 		},
 		{
 			name: SourceMaxAge, flag: "catalog-source-max-age",
 			capture: captureSourceMaxAge,
-			apply:   durationOption(SourceMaxAge, starmap.WithSourceMaxAge),
+			apply:   durationOption(SourceMaxAge, runtime.WithSourceMaxAge),
 		},
 		{
 			name: SourceMaxHops, flag: "catalog-source-max-hops",
 			capture: captureSourceMaxHops,
-			apply:   intOption(SourceMaxHops, starmap.WithSourceMaxHops),
+			apply:   intOption(SourceMaxHops, runtime.WithSourceMaxHops),
 		},
 		{
 			name: SourceAliases, flag: "catalog-source-aliases",
 			capture: captureSourceAliases,
-			apply:   listOption(starmap.WithSourceAliases),
+			apply:   listOption(runtime.WithSourceAliases),
 		},
 		{
 			name: AcquisitionEnabled, flag: "catalog-acquisition-enabled",
-			apply: boolOption(AcquisitionEnabled, starmap.WithAcquisitionEnabled),
+			apply: boolOption(AcquisitionEnabled, runtime.WithAcquisitionEnabled),
 		},
 		{
 			name: AcquisitionInterval, flag: "catalog-acquisition-interval",
-			apply: durationOption(AcquisitionInterval, starmap.WithAcquisitionInterval),
+			apply: durationOption(AcquisitionInterval, runtime.WithAcquisitionInterval),
 		},
 		{
 			name: CoalesceWindow, flag: "catalog-coalesce-window",
-			apply: durationOption(CoalesceWindow, starmap.WithCoalesceWindow),
+			apply: durationOption(CoalesceWindow, runtime.WithCoalesceWindow),
 		},
 		{
 			name: WorkspacePath, flag: "catalog-workspace-path", capture: captureWorkspacePath,
-			apply: stringOption(starmap.WithCatalogPath),
+			apply: stringOption(workspacePathOption),
 		},
 		{
 			name: StartupSpread, flag: "catalog-startup-spread",
 			capture: captureDuration(StartupSpread, func(c *Config, value time.Duration) {
 				c.StartupSpread = value
 			}),
-			apply: durationOption(StartupSpread, starmap.WithStartupSpread),
+			apply: durationOption(StartupSpread, runtime.WithStartupSpread),
 		},
 		{
 			name: TransferIdleTimeout, flag: "catalog-transfer-idle-timeout",
 			capture: captureDuration(TransferIdleTimeout, func(c *Config, value time.Duration) {
 				c.TransferIdleTimeout = value
 			}),
-			apply: durationOption(TransferIdleTimeout, starmap.WithTransferIdleTimeout),
+			apply: durationOption(TransferIdleTimeout, runtime.WithTransferIdleTimeout),
 		},
 		{
 			name: TransferMaxDuration, flag: "catalog-transfer-max-duration",
 			capture: captureDuration(TransferMaxDuration, func(c *Config, value time.Duration) {
 				c.TransferMaxDuration = value
 			}),
-			apply: durationOption(TransferMaxDuration, starmap.WithTransferMaxDuration),
+			apply: durationOption(TransferMaxDuration, runtime.WithTransferMaxDuration),
 		},
 		{
 			name: RefreshTimeout, flag: "catalog-refresh-timeout",
-			apply: durationOption(RefreshTimeout, starmap.WithRefreshTimeout),
+			apply: durationOption(RefreshTimeout, runtime.WithRefreshTimeout),
 		},
 		{
 			name: StateDirectory, flag: "state-dir", capture: captureStateDirectory,
-			apply: stringOption(starmap.WithStateDirectory),
+			apply: stringOption(runtime.WithStateDirectory),
 		},
 		{
 			name: SchedulerIdentity, flag: "scheduler-identity",
 			capture: captureSchedulerIdentity,
-			apply:   stringOption(starmap.WithSchedulerIdentity),
+			apply:   stringOption(runtime.WithSchedulerIdentity),
 		},
 	}
 }
@@ -357,7 +358,7 @@ func Load(lookup Lookup) (Config, error) {
 			Field: "settings.lookup", Message: "is required",
 		}
 	}
-	config := Config{SourceKind: starmap.SourcePublic}
+	config := Config{SourceKind: runtime.SourcePublic}
 	for _, entry := range table() {
 		value, found := lookup(entry.name)
 		value = strings.TrimSpace(value)
@@ -383,10 +384,10 @@ func Load(lookup Lookup) (Config, error) {
 func (c Config) Configured() []string { return slices.Clone(c.configured) }
 
 // Options returns the runtime options that the supplied settings select.
-func (c Config) Options() []starmap.Option { return slices.Clone(c.options) }
+func (c Config) Options() []runtime.Option { return slices.Clone(c.options) }
 
 func captureSourceKind(value string, config *Config) error {
-	kind, err := starmap.ParseSourceKind(value)
+	kind, err := runtime.ParseSourceKind(value)
 	if err != nil {
 		return err
 	}
@@ -471,8 +472,8 @@ func splitList(value string) []string {
 }
 
 // listOption passes a comma-separated list to its option.
-func listOption(option func(...string) starmap.Option) func(string) (starmap.Option, error) {
-	return func(value string) (starmap.Option, error) {
+func listOption(option func(...string) runtime.Option) func(string) (runtime.Option, error) {
+	return func(value string) (runtime.Option, error) {
 		return option(splitList(value)...), nil
 	}
 }
@@ -487,9 +488,15 @@ func captureStateDirectory(value string, config *Config) error {
 	return nil
 }
 
+// workspacePathOption adapts the offline workspace-path option to the runtime
+// option list, so the one settings table carries both kinds of setting.
+func workspacePathOption(path string) runtime.Option {
+	return runtime.WithClientOptions(starmap.WithCatalogPath(path))
+}
+
 // stringOption passes the raw value to its option. The runtime validates it.
-func stringOption(option func(string) starmap.Option) func(string) (starmap.Option, error) {
-	return func(value string) (starmap.Option, error) {
+func stringOption(option func(string) runtime.Option) func(string) (runtime.Option, error) {
+	return func(value string) (runtime.Option, error) {
 		return option(value), nil
 	}
 }
@@ -497,9 +504,9 @@ func stringOption(option func(string) starmap.Option) func(string) (starmap.Opti
 // durationOption parses a Go duration and returns the option it selects.
 func durationOption(
 	name string,
-	option func(time.Duration) starmap.Option,
-) func(string) (starmap.Option, error) {
-	return func(value string) (starmap.Option, error) {
+	option func(time.Duration) runtime.Option,
+) func(string) (runtime.Option, error) {
+	return func(value string) (runtime.Option, error) {
 		parsed, err := time.ParseDuration(value)
 		if err != nil {
 			return nil, &errors.ValidationError{
@@ -514,9 +521,9 @@ func durationOption(
 // boolOption parses a boolean and returns the option it selects.
 func boolOption(
 	name string,
-	option func(bool) starmap.Option,
-) func(string) (starmap.Option, error) {
-	return func(value string) (starmap.Option, error) {
+	option func(bool) runtime.Option,
+) func(string) (runtime.Option, error) {
+	return func(value string) (runtime.Option, error) {
 		parsed, err := strconv.ParseBool(value)
 		if err != nil {
 			return nil, &errors.ValidationError{
@@ -530,9 +537,9 @@ func boolOption(
 // intOption parses a whole number and returns the option it selects.
 func intOption(
 	name string,
-	option func(int) starmap.Option,
-) func(string) (starmap.Option, error) {
-	return func(value string) (starmap.Option, error) {
+	option func(int) runtime.Option,
+) func(string) (runtime.Option, error) {
+	return func(value string) (runtime.Option, error) {
 		parsed, err := strconv.Atoi(value)
 		if err != nil {
 			return nil, &errors.ValidationError{

@@ -14,6 +14,7 @@ import (
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/catalogs/storage"
 	"github.com/agentstation/starmap/pkg/sources"
+	"github.com/agentstation/starmap/runtime"
 )
 
 // TestApplicationPullsSyntheticChannelAndRetainsState composes the application
@@ -28,10 +29,10 @@ func TestApplicationPullsSyntheticChannelAndRetainsState(t *testing.T) {
 	statePath := t.TempDir()
 	storePath := t.TempDir()
 
-	runtime := openApplicationRuntime(t, upstream, statePath, storePath)
+	connected := openApplicationRuntime(t, upstream, statePath, storePath)
 
 	// The runtime reads the synthetic channel from the local test server.
-	report, err := runtime.RefreshSource(context.Background())
+	report, err := connected.RefreshSource(context.Background())
 	if err != nil {
 		t.Fatalf("RefreshSource: %v", err)
 	}
@@ -41,12 +42,12 @@ func TestApplicationPullsSyntheticChannelAndRetainsState(t *testing.T) {
 	if upstream.ChannelReads() == 0 {
 		t.Fatal("the runtime read no channel from the local test server")
 	}
-	if _, found := runtime.Catalog().Providers().Get(channel.ConfiguredProvider); !found {
+	if _, found := connected.Catalog().Providers().Get(channel.ConfiguredProvider); !found {
 		t.Fatal("the effective catalog holds no provider from the channel")
 	}
 
 	// Acquisition observes only the provider whose credential resolves.
-	acquired, err := runtime.Sync(context.Background())
+	acquired, err := connected.Sync(context.Background())
 	if err != nil {
 		t.Fatalf("Sync: %v", err)
 	}
@@ -54,7 +55,7 @@ func TestApplicationPullsSyntheticChannelAndRetainsState(t *testing.T) {
 
 	// The source goes away and the process restarts. The durable state must
 	// still serve the last effective catalog.
-	if err := runtime.Close(); err != nil {
+	if err := connected.Close(); err != nil {
 		t.Fatalf("Close: %v", err)
 	}
 	upstream.Close()
@@ -133,11 +134,11 @@ func openApplicationRuntime(
 	t *testing.T,
 	upstream *channel.Upstream,
 	statePath, storePath string,
-) *starmap.Runtime {
+) *runtime.Runtime {
 	t.Helper()
 
 	values := map[string]string{
-		settings.Source:              string(starmap.SourceEmbedded),
+		settings.Source:              string(runtime.SourceEmbedded),
 		settings.AcquisitionEnabled:  "false",
 		settings.SourcePollInterval:  "1h",
 		settings.StateDirectory:      statePath,
@@ -168,14 +169,16 @@ func openApplicationRuntime(
 		Config:   config,
 		Source:   upstream,
 		Acquirer: acquirer,
-		Base: []starmap.Option{
-			starmap.WithCatalogStore(store),
-			starmap.WithCatalogPath(filepath.Join(t.TempDir(), "workspace")),
+		Base: []runtime.Option{
+			runtime.WithClientOptions(
+				starmap.WithCatalogStore(store),
+				starmap.WithCatalogPath(filepath.Join(t.TempDir(), "workspace")),
+			),
 		},
 	}
-	runtime, err := composition.Open(context.Background())
+	connected, err := composition.Open(context.Background())
 	if err != nil {
 		t.Fatalf("Composition.Open: %v", err)
 	}
-	return runtime
+	return connected
 }

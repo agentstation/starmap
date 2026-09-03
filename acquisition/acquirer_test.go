@@ -12,6 +12,7 @@ import (
 	"github.com/agentstation/starmap/acquisition"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/sources"
+	"github.com/agentstation/starmap/runtime"
 )
 
 // stubObserver observes providers under test control. It reaches no provider,
@@ -99,7 +100,7 @@ func (s *stubObserver) setAnswer(t testing.TB, id catalogs.ProviderID, modelID, 
 	s.mu.Lock()
 	defer s.mu.Unlock()
 	s.answers[id] = acquisition.ProviderObservation{
-		Layer: starmap.ProviderLayer{
+		Layer: runtime.ProviderLayer{
 			ProviderID: id,
 			Payload:    providerPayload(t, id, modelID, name),
 			ObservedAt: time.Now().UTC(),
@@ -164,25 +165,25 @@ func providerPayload(t testing.TB, id catalogs.ProviderID, modelID, name string)
 
 // openRuntime opens a runtime that reaches no network and observes providers
 // through the supplied acquirer.
-func openRuntime(t *testing.T, acquirer starmap.Acquirer) *starmap.Runtime {
+func openRuntime(t *testing.T, acquirer runtime.Acquirer) *runtime.Runtime {
 	t.Helper()
-	runtime, err := starmap.Open(context.Background(),
-		starmap.WithStateDirectory(t.TempDir()),
-		starmap.WithCatalogSource("embedded"),
-		starmap.WithSourcePollInterval(0),
-		starmap.WithStartupSpread(0),
-		starmap.WithAcquisitionEnabled(false),
-		starmap.WithAcquirer(acquirer),
+	connected, err := runtime.Open(context.Background(),
+		runtime.WithStateDirectory(t.TempDir()),
+		runtime.WithCatalogSource("embedded"),
+		runtime.WithSourcePollInterval(0),
+		runtime.WithStartupSpread(0),
+		runtime.WithAcquisitionEnabled(false),
+		runtime.WithAcquirer(acquirer),
 	)
 	if err != nil {
 		t.Fatalf("Open: %v", err)
 	}
 	t.Cleanup(func() {
-		if err := runtime.Close(); err != nil {
+		if err := connected.Close(); err != nil {
 			t.Errorf("Close: %v", err)
 		}
 	})
-	return runtime
+	return connected
 }
 
 // modelName returns the served name of one provider model.
@@ -213,17 +214,17 @@ func TestSyncPartialFailurePublishesAndRetainsProviderLastKnownGood(t *testing.T
 	if err != nil {
 		t.Fatalf("NewAcquirer: %v", err)
 	}
-	runtime := openRuntime(t, acquirer)
+	connected := openRuntime(t, acquirer)
 	ctx := context.Background()
 
-	first, err := runtime.Sync(ctx, "alpha", "beta")
+	first, err := connected.Sync(ctx, "alpha", "beta")
 	if err != nil {
 		t.Fatalf("Sync: %v", err)
 	}
 	if first.Succeeded != 2 || !first.Published {
 		t.Fatalf("first report = %+v, want two successes and a publication", first)
 	}
-	if got := modelName(t, runtime.Catalog(), "beta", "beta-model"); got != "Beta One" {
+	if got := modelName(t, connected.Catalog(), "beta", "beta-model"); got != "Beta One" {
 		t.Fatalf("beta model name = %q, want %q", got, "Beta One")
 	}
 
@@ -231,7 +232,7 @@ func TestSyncPartialFailurePublishesAndRetainsProviderLastKnownGood(t *testing.T
 	observer.setAnswer(t, "alpha", "alpha-model", "Alpha Two")
 	observer.setFailure("beta", stderrors.New("the provider closed the connection"))
 
-	second, err := runtime.Sync(ctx, "alpha", "beta")
+	second, err := connected.Sync(ctx, "alpha", "beta")
 	if err != nil {
 		t.Fatalf("Sync after a partial failure: %v", err)
 	}
@@ -241,14 +242,14 @@ func TestSyncPartialFailurePublishesAndRetainsProviderLastKnownGood(t *testing.T
 	if second.Succeeded != 1 || second.Failed != 1 {
 		t.Errorf("report = %+v, want one success and one failure", second)
 	}
-	if second.Health != starmap.HealthDegraded {
-		t.Errorf("health = %q, want %q", second.Health, starmap.HealthDegraded)
+	if second.Health != runtime.HealthDegraded {
+		t.Errorf("health = %q, want %q", second.Health, runtime.HealthDegraded)
 	}
 	if len(second.Retained) != 1 || second.Retained[0] != "beta" {
 		t.Errorf("retained = %v, want [beta]", second.Retained)
 	}
 
-	catalog := runtime.Catalog()
+	catalog := connected.Catalog()
 	if got := modelName(t, catalog, "alpha", "alpha-model"); got != "Alpha Two" {
 		t.Errorf("alpha model name = %q, want %q", got, "Alpha Two")
 	}
@@ -300,15 +301,15 @@ func TestSyncPublishesCompletedProvidersWhileAnotherBlocked(t *testing.T) {
 	if err != nil {
 		t.Fatalf("NewAcquirer: %v", err)
 	}
-	runtime := openRuntime(t, acquirer)
+	connected := openRuntime(t, acquirer)
 
 	type outcome struct {
-		report starmap.AcquisitionReport
+		report runtime.AcquisitionReport
 		err    error
 	}
 	done := make(chan outcome, 1)
 	go func() {
-		report, err := runtime.Sync(context.Background(), "fast", "slow")
+		report, err := connected.Sync(context.Background(), "fast", "slow")
 		done <- outcome{report: report, err: err}
 	}()
 
@@ -320,7 +321,7 @@ func TestSyncPublishesCompletedProvidersWhileAnotherBlocked(t *testing.T) {
 	}
 
 	// The first window publishes the provider that answered.
-	first := waitForProvider(t, runtime, "fast")
+	first := waitForProvider(t, connected, "fast")
 	if got := modelName(t, first.Catalog, "fast", "fast-model"); got != "Fast One" {
 		t.Errorf("fast model name = %q, want %q", got, "Fast One")
 	}
@@ -351,7 +352,7 @@ func TestSyncPublishesCompletedProvidersWhileAnotherBlocked(t *testing.T) {
 	if !report.Published {
 		t.Fatal("the run must publish every provider that answered")
 	}
-	final := runtime.State()
+	final := connected.State()
 	if final.Sequence <= first.Sequence {
 		t.Errorf("published sequence = %d, want a later publication than %d",
 			final.Sequence, first.Sequence)
@@ -392,9 +393,9 @@ func TestAcquireOpensNoWindowWithoutLayer(t *testing.T) {
 	if err != nil {
 		t.Fatalf("NewAcquirer: %v", err)
 	}
-	runtime := openRuntime(t, acquirer)
+	connected := openRuntime(t, acquirer)
 
-	report, err := runtime.Sync(context.Background(), "alpha", "beta")
+	report, err := connected.Sync(context.Background(), "alpha", "beta")
 	if err != nil {
 		t.Fatalf("Sync: %v", err)
 	}
@@ -413,13 +414,13 @@ func TestAcquireOpensNoWindowWithoutLayer(t *testing.T) {
 // returns the state that first held it.
 func waitForProvider(
 	t *testing.T,
-	runtime *starmap.Runtime,
+	connected *runtime.Runtime,
 	id catalogs.ProviderID,
 ) starmap.CatalogState {
 	t.Helper()
 	deadline := time.Now().Add(5 * time.Second)
 	for time.Now().Before(deadline) {
-		state := runtime.State()
+		state := connected.State()
 		if state.Catalog != nil {
 			if _, found := state.Catalog.Providers().Get(id); found {
 				return state

@@ -12,15 +12,15 @@ import (
 	"github.com/rs/zerolog"
 	"github.com/spf13/cobra"
 
-	"github.com/agentstation/starmap"
 	"github.com/agentstation/starmap/acquisition"
 	"github.com/agentstation/starmap/internal/cli/emoji"
 	"github.com/agentstation/starmap/pkg/sources"
+	"github.com/agentstation/starmap/runtime"
 	"github.com/agentstation/starmap/server"
 )
 
 type application interface {
-	Runtime(context.Context, ...starmap.Option) (*starmap.Runtime, error)
+	Runtime(context.Context, ...runtime.Option) (*runtime.Runtime, error)
 	Logger() *zerolog.Logger
 	CredentialResolver() (sources.ProviderCredentialResolver, error)
 }
@@ -126,9 +126,9 @@ func runServer(cmd *cobra.Command, _ []string, app application) error {
 	// listener never waits for the network. The listen address separates the
 	// schedule phase of two replicas on one host.
 	logger.Debug().Msg("Opening the connected catalog runtime")
-	runtime, err := app.Runtime(
+	connected, err := app.Runtime(
 		cmd.Context(),
-		starmap.WithListenAddress(fmt.Sprintf("%s:%d", cfg.Host, cfg.Port)),
+		runtime.WithListenAddress(fmt.Sprintf("%s:%d", cfg.Host, cfg.Port)),
 	)
 	if err != nil {
 		return fmt.Errorf("opening the catalog runtime: %w", err)
@@ -138,7 +138,7 @@ func runServer(cmd *cobra.Command, _ []string, app application) error {
 		return fmt.Errorf("loading catalog credentials: %w", err)
 	}
 	syncer, err := acquisition.New(
-		runtime.Client(),
+		connected.Client(),
 		acquisition.WithCredentialResolver(credentialResolver),
 	)
 	if err != nil {
@@ -147,10 +147,10 @@ func runServer(cmd *cobra.Command, _ []string, app application) error {
 
 	logger.Debug().Msg("Creating server instance")
 	srv, err := server.New(
-		runtime.Client(),
+		connected.Client(),
 		cfg,
 		server.WithLogger(logger),
-		server.WithRuntime(runtime),
+		server.WithRuntime(connected),
 		server.WithSyncer(syncer),
 	)
 	if err != nil {

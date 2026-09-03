@@ -20,6 +20,7 @@ import (
 	"github.com/agentstation/starmap/pkg/catalogs/storage"
 	"github.com/agentstation/starmap/pkg/errors"
 	"github.com/agentstation/starmap/pkg/sources"
+	"github.com/agentstation/starmap/runtime"
 )
 
 // App represents the starmap application with all its dependencies.
@@ -46,7 +47,7 @@ type App struct {
 	// Canonical catalog settings and the connected runtime they compose.
 	catalogSettings settings.Config
 	runtimeMu       sync.Mutex
-	runtime         *starmap.Runtime
+	runtime         *runtime.Runtime
 
 	credentialMu       sync.Mutex
 	credentialResolver sources.ProviderCredentialResolver

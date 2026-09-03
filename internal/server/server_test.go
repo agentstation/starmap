@@ -11,6 +11,7 @@ import (
 	"github.com/agentstation/starmap/acquisition"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	pkgsync "github.com/agentstation/starmap/pkg/sync"
+	"github.com/agentstation/starmap/runtime"
 )
 
 // TestServerInitialization proves construction starts no transport goroutine.
@@ -113,8 +114,8 @@ func TestServerStartDoesNotOwnAHiddenTransportLoop(t *testing.T) {
 type mockApplication struct {
 	logger        *zerolog.Logger
 	sm            *starmap.Client
-	runtime       *starmap.Runtime
-	runtimeStatus *starmap.RuntimeStatus
+	runtime       *runtime.Runtime
+	runtimeStatus *runtime.Status
 	catalog       *catalogs.Catalog
 	catalogState  *starmap.CatalogState
 }
@@ -152,7 +153,7 @@ func (m *mockApplication) Readiness() (starmap.CatalogReadiness, error) {
 	return m.sm.Readiness(), nil
 }
 
-func (m *mockApplication) RuntimeStatus() starmap.RuntimeStatus {
+func (m *mockApplication) RuntimeStatus() runtime.Status {
 	if m.runtimeStatus != nil {
 		return *m.runtimeStatus
 	}

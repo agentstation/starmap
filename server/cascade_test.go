@@ -16,6 +16,7 @@ import (
 	"github.com/agentstation/starmap/internal/test/channel"
 	"github.com/agentstation/starmap/pkg/catalogs/storage"
 	"github.com/agentstation/starmap/pkg/errors"
+	"github.com/agentstation/starmap/runtime"
 )
 
 // cascadeDeadline bounds every wait for a streamed delta. A subscriber that
@@ -149,9 +150,9 @@ func assertCascadeRejections(
 		},
 	} {
 		t.Run(test.name, func(t *testing.T) {
-			runtime := openCascadeRuntime(t, test.config)
-			t.Cleanup(func() { _ = runtime.Close() })
-			_, err := runtime.RefreshSource(ctx)
+			connected := openCascadeRuntime(t, test.config)
+			t.Cleanup(func() { _ = connected.Close() })
+			_, err := connected.RefreshSource(ctx)
 			var conflict *errors.ConflictError
 			if !stderrors.As(err, &conflict) {
 				t.Fatalf("RefreshSource error = %v, want a ConflictError", err)
@@ -159,8 +160,8 @@ func assertCascadeRejections(
 			if conflict.Actual != test.wantHop {
 				t.Fatalf("refused hop = %q, want %q", conflict.Actual, test.wantHop)
 			}
-			status := runtime.Status()
-			if status.SourceHealth != starmap.HealthUnavailable {
+			status := connected.Status()
+			if status.SourceHealth != runtime.HealthUnavailable {
 				t.Fatalf("source health = %s, want unavailable", status.SourceHealth)
 			}
 			if status.SourceReason != "chain_rejected" {
@@ -176,7 +177,7 @@ func assertCascadeRejections(
 // the source worker, and that worker refreshes on its own.
 func assertStreamedDeltaReachesMiddle(
 	t *testing.T,
-	middle *starmap.Runtime,
+	middle *runtime.Runtime,
 	wantChecksum string,
 ) {
 	t.Helper()
@@ -199,9 +200,9 @@ type cascade struct {
 }
 
 // serveRuntime serves one runtime and returns its versioned API root.
-func serveRuntime(t *testing.T, runtime *starmap.Runtime) string {
+func serveRuntime(t *testing.T, connected *runtime.Runtime) string {
 	t.Helper()
-	srv := newServer(t, runtime)
+	srv := newServer(t, connected)
 	endpoint := httptest.NewServer(srv.Handler())
 	t.Cleanup(endpoint.Close)
 	t.Cleanup(func() {
@@ -215,10 +216,10 @@ func serveRuntime(t *testing.T, runtime *starmap.Runtime) string {
 // openCascadeRuntime composes one downstream runtime with the starmap source
 // kind. The canonical settings own the composition, so the test exercises the
 // same path a deployment uses.
-func openCascadeRuntime(t *testing.T, node cascade) *starmap.Runtime {
+func openCascadeRuntime(t *testing.T, node cascade) *runtime.Runtime {
 	t.Helper()
 	values := map[string]string{
-		settings.Source:              string(starmap.SourceStarmap),
+		settings.Source:              string(runtime.SourceStarmap),
 		settings.SourceURL:           node.url,
 		settings.SourcePollInterval:  "1h",
 		settings.SourceMaxHops:       "8",
@@ -250,16 +251,18 @@ func openCascadeRuntime(t *testing.T, node cascade) *starmap.Runtime {
 	if err != nil {
 		t.Fatalf("acquisition.NewAcquirer: %v", err)
 	}
-	runtime, err := settings.Composition{
+	connected, err := settings.Composition{
 		Config:   config,
 		Acquirer: acquirer,
-		Base: []starmap.Option{
-			starmap.WithCatalogStore(store),
-			starmap.WithCatalogPath(filepath.Join(t.TempDir(), "workspace")),
+		Base: []runtime.Option{
+			runtime.WithClientOptions(
+				starmap.WithCatalogStore(store),
+				starmap.WithCatalogPath(filepath.Join(t.TempDir(), "workspace")),
+			),
 		},
 	}.Open(context.Background())
 	if err != nil {
 		t.Fatalf("Composition.Open: %v", err)
 	}
-	return runtime
+	return connected
 }
