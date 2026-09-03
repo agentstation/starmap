@@ -51,6 +51,7 @@ identifiers, command names, API fields, and protocol values remain exact.
 | models.dev | An external catalog source that supplies provider and model metadata. | models dev | approved | `internal/sources/modelsdev` |
 | OpenAI-compatible | Implements the relevant OpenAI API contract for compatible clients. |  | approved | `docs/REST_API.md` |
 | OpenAPI | The machine-readable specification for the Starmap REST API. |  | approved | `docs/openapi.yaml` |
+| OPENAI_API_KEY | The environment name of the OpenAI provider credential that acquisition reads. |  | approved | `docs/DOCKER.md` |
 | OpenRouter | An external model-routing service and optional Starmap data source. |  | approved | `internal/sources/openrouter` |
 | opt-in | Enabled only after an explicit configuration or API choice. |  | approved | `docs/REMOTE_CATALOG_PROTOCOL.md` |
 | payload digest | The SHA-256 digest of the exact catalog payload bytes. |  | approved | `docs/CATALOG_ARTIFACT_FORMAT.md` |
@@ -62,6 +63,7 @@ identifiers, command names, API fields, and protocol values remain exact.
 | reconciliation | The deterministic selection of catalog facts under the authority policy. |  | approved | `internal/catalog/reconciler` |
 | read-only | Permits reads but does not permit changes. |  | approved | `docs/DOCKER.md` |
 | remote subscriber | A client that follows remote events and activates validated catalog generations. |  | approved | `remote/subscriber.go` |
+| REST_API | The file name of the Starmap HTTP API reference document. |  | approved | `docs/REST_API.md` |
 | repository | The version-controlled Starmap project tree. | repo | approved | `AGENTS.md` |
 | review candidate | A provider offering that publication excludes until a person resolves its evidence. |  | approved | `pkg/catalogs/evidence/review_candidate.go` |
 | runbook | An ordered operator procedure for one deployment task. |  | approved | `docs/ENTERPRISE_CATALOG_SERVER.md` |

@@ -859,6 +859,13 @@ starmap serve --port 3000 --cors --auth --rate-limit 100
 starmap serve --cors-origins "https://example.com,https://app.example.com"
 ```
 
+One central server can serve a fleet of Starport replicas. Each replica then
+reads one internal endpoint instead of GitHub. The runbook in
+[docs/ENTERPRISE_CATALOG_SERVER.md](docs/ENTERPRISE_CATALOG_SERVER.md) covers
+that deployment. It has the store, the server command, the credentials, the
+intervals, the sizing, the replica settings, the key rotation, and the
+Kubernetes pair.
+
 Go programs can embed the same server directly. Construction starts no listener
 or background goroutine. `Serve` owns serving on the caller-provided listener,
 and `Shutdown` drains HTTP before stopping server services:
@@ -957,8 +964,11 @@ not substitutes for provider performance. Optional server authentication still
 governs these routes, with OpenRouter-shaped numeric `401` error envelopes.
 Model detail links honor the server's configured path prefix.
 
-Go consumers can opt into reactive remote catalogs without adding network
-behavior to the root package:
+`starmap.Open` is the connected constructor for a Go consumer. It reads a
+catalog source at startup under a startup policy, and
+[docs/ARCHITECTURE.md](docs/ARCHITECTURE.md#connected-catalog-runtime) lists
+every setting. A consumer that owns its own catalog store instead drives the
+`remote` package directly:
 
 ```go
 store, err := storage.NewFilesystem("/var/lib/my-service/starmap")
