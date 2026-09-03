@@ -253,4 +253,3 @@ func TestReleaseTagAndTitleBindCanonicalNames(t *testing.T) {
 		t.Fatal("ReleaseTitle accepted an empty generation ID")
 	}
 }
-
