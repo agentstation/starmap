@@ -10,6 +10,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/agentstation/starmap/internal/catalog/settings"
 	"github.com/agentstation/starmap/internal/constants"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/catalogs/evidence"
@@ -347,5 +348,51 @@ func validCatalogGeneration(t *testing.T, id string) catalogs.Generation {
 			},
 		},
 		Payload: payload,
+	}
+}
+
+// TestCatalogPathFollowsTheCanonicalWorkspaceSetting proves that one process
+// reads one workspace. A read-only command and the connected runtime both take
+// the canonical setting, so neither one reads a stale directory.
+func TestCatalogPathFollowsTheCanonicalWorkspaceSetting(t *testing.T) {
+	home := t.TempDir()
+	workspace := filepath.Join(t.TempDir(), "workspace")
+	t.Setenv("HOME", home)
+	t.Setenv(settings.WorkspacePath, workspace)
+
+	app, err := New("test", "test", "test", "test", WithConfig(&Config{}))
+	if err != nil {
+		t.Fatalf("New: %v", err)
+	}
+	path, err := app.CatalogPath()
+	if err != nil {
+		t.Fatalf("CatalogPath: %v", err)
+	}
+	if path != workspace {
+		t.Fatalf("CatalogPath() = %q, want %q", path, workspace)
+	}
+	if got := app.CatalogSettings().WorkspacePath; got != workspace {
+		t.Fatalf("settings workspace = %q, want %q", got, workspace)
+	}
+}
+
+// TestCatalogPathKeepsTheConfiguredWorkspaceWithoutTheSetting proves that the
+// file configuration still wins when the canonical setting is absent.
+func TestCatalogPathKeepsTheConfiguredWorkspaceWithoutTheSetting(t *testing.T) {
+	home := t.TempDir()
+	configured := filepath.Join(t.TempDir(), "configured")
+	t.Setenv("HOME", home)
+
+	app, err := New("test", "test", "test", "test",
+		WithConfig(&Config{CatalogPath: configured}))
+	if err != nil {
+		t.Fatalf("New: %v", err)
+	}
+	path, err := app.CatalogPath()
+	if err != nil {
+		t.Fatalf("CatalogPath: %v", err)
+	}
+	if path != configured {
+		t.Fatalf("CatalogPath() = %q, want %q", path, configured)
 	}
 }
