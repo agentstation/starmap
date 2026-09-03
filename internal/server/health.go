@@ -5,7 +5,7 @@ import (
 
 	"github.com/agentstation/starmap"
 	"github.com/agentstation/starmap/internal/server/sse"
-	"github.com/agentstation/starmap/runtime"
+	"github.com/agentstation/starmap/runtime/status"
 )
 
 // OperationalHealth is the internal server's immutable production health.
@@ -117,7 +117,7 @@ func (s *Server) operationalHealth() OperationalHealth {
 // sourceHealth projects the runtime source status onto the server health
 // report. It copies bounded codes and ages only, so the report carries no
 // message text and no endpoint.
-func sourceHealth(status runtime.Status) SourceHealth {
+func sourceHealth(status status.Status) SourceHealth {
 	return SourceHealth{
 		Identity:          status.InstanceIdentity,
 		SourceIdentity:    status.SourceIdentity,

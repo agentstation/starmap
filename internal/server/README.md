@@ -70,7 +70,7 @@ type Application interface {
     Catalog() (*catalogs.Catalog, error)
     CatalogState() (starmap.CatalogState, error)
     Readiness() (starmap.CatalogReadiness, error)
-    RuntimeStatus() runtime.Status
+    RuntimeStatus() status.Status
     Starmap(...starmap.Option) (*starmap.Client, error)
     Sync(context.Context, ...pkgsync.Option) (*pkgsync.Result, error)
     UpdatesEnabled() bool

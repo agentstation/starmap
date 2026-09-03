@@ -67,15 +67,6 @@ type SourceIdentityAdopter interface {
 	AdoptInstanceIdentity(instance string)
 }
 
-// SourceHop is one sanitized entry in an upstream source chain. A hop names
-// the reporting identity and its health, never an address.
-type SourceHop struct {
-	Identity    string
-	Health      Health
-	PublishedAt time.Time
-	ObservedAt  time.Time
-}
-
 // SourceRead is one upstream observation.
 type SourceRead struct {
 	// Changed reports whether the upstream generation moved.

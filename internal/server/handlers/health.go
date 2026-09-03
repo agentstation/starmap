@@ -6,7 +6,7 @@ import (
 	"time"
 
 	"github.com/agentstation/starmap/internal/server/response"
-	"github.com/agentstation/starmap/runtime"
+	"github.com/agentstation/starmap/runtime/status"
 )
 
 // HandleHealth handles GET /api/v1/health.
@@ -62,7 +62,7 @@ func (h *Handlers) HandleReady(w http.ResponseWriter, _ *http.Request) {
 
 // runtimeReadiness reports the connected runtime state. Every value is a
 // bounded code or an age, so the readiness body carries no message text.
-func runtimeReadiness(status runtime.Status) map[string]any {
+func runtimeReadiness(status status.Status) map[string]any {
 	return map[string]any{
 		"usable":                 status.Usable,
 		"generation_id":          status.GenerationID,

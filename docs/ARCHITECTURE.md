@@ -1227,7 +1227,8 @@ See [pkg/sources/README.md](../pkg/sources/README.md) for details.
 ## Connected Catalog Runtime
 
 Location: `runtime/runtime.go`, `runtime/options.go`, `runtime/policy.go`,
-`runtime/layers.go`, `runtime/status.go`, `internal/catalog/settings`
+`runtime/layers.go`, `runtime/status.go`, `runtime/vocabulary.go`,
+`runtime/status/`, `internal/catalog/settings`
 
 **Purpose:** Serve one effective catalog from a verified embedded baseline, a
 configured catalog source, and retained provider observations
@@ -1241,6 +1242,20 @@ The `Open`
 call starts the source schedule and the acquisition schedule, then returns. The
 `Status` call reads retained state only and reaches no external system. The
 `Close` call is idempotent. It joins runtime-owned work within five seconds.
+
+### The status vocabulary leaf
+
+The runtime package carries the attested source machinery. One leaf package
+carries the public names that a reader of the runtime status needs. A package
+that renders that status therefore pays for no source machinery.
+
+| Package | Owns | Depends on |
+| --- | --- | --- |
+| `runtime/status` | `Status`, `Health`, `Freshness`, `SourceKind`, and `SourceHop` | `pkg/sources` and the standard library |
+
+The `runtime` package keeps every published name as a type alias. A caller
+selects the import path that matches its own dependency budget. The `server`
+package renders the status vocabulary, and it imports no `runtime` package.
 
 ### Layers
 
@@ -1457,6 +1472,16 @@ option, the route is absent. The public server dependency closure contains no
 provider clients, acquisition pipeline, Google GenAI, gRPC, or cloud SDK
 packages. The CLI explicitly composes the acquisition implementation and
 uses this same public server package.
+
+A connected runtime is optional in the same way. The narrow input boundary is
+`server.ConnectedRuntime`, an interface with two methods. One method reports
+the runtime status, and the other joins the runtime shutdown. The option
+`server.WithRuntime(connected)` joins the server to one runtime, and
+`*runtime.Runtime` satisfies that contract.
+
+The server imports `runtime/status` for the vocabulary that it renders. It
+imports no runtime implementation. A consumer that embeds the server around an
+offline client therefore pays for no attested source machinery.
 
 ### Functional Options Pattern
 

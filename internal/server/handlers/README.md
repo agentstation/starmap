@@ -12,7 +12,7 @@ Package handlers provides HTTP request handlers for the Starmap API.
 
 ## Index
 
-- [func SourceChainOf\(status runtime.Status\) protocol.SourceChain](<#SourceChainOf>)
+- [func SourceChainOf\(status status.Status\) protocol.SourceChain](<#SourceChainOf>)
 - [type DateRange](<#DateRange>)
 - [type Handlers](<#Handlers>)
   - [func New\(app application, cache \*cache.Cache, sseBroadcaster \*sse.Broadcaster, operationRegistry \*operations.Registry, logger \*zerolog.Logger, startTime time.Time\) \*Handlers](<#New>)
@@ -46,7 +46,7 @@ Package handlers provides HTTP request handlers for the Starmap API.
 ## func [SourceChainOf](<https://github.com/agentstation/starmap/blob/main/internal/server/handlers/sourcechain.go#L36>)
 
 ```go
-func SourceChainOf(status runtime.Status) protocol.SourceChain
+func SourceChainOf(status status.Status) protocol.SourceChain
 ```
 
 SourceChainOf builds the served source\-chain manifest from runtime status. The document carries safe identities and bounded detail only, so it names no URL, no credential, and no operator message. A downstream reads it to detect a cycle and to grade the propagated origin freshness.

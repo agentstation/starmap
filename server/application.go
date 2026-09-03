@@ -10,12 +10,12 @@ import (
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/errors"
 	pkgsync "github.com/agentstation/starmap/pkg/sync"
-	"github.com/agentstation/starmap/runtime"
+	"github.com/agentstation/starmap/runtime/status"
 )
 
 type clientApplication struct {
 	client  *starmap.Client
-	runtime *runtime.Runtime
+	runtime ConnectedRuntime
 	logger  *zerolog.Logger
 	syncer  Syncer
 }
@@ -34,7 +34,10 @@ func (a *clientApplication) Readiness() (starmap.CatalogReadiness, error) {
 
 // RuntimeStatus reports the connected runtime state. A server without a
 // runtime reports the zero status, which is not usable.
-func (a *clientApplication) RuntimeStatus() runtime.Status {
+func (a *clientApplication) RuntimeStatus() status.Status {
+	if a.runtime == nil {
+		return status.Status{}
+	}
 	return a.runtime.Status()
 }
 

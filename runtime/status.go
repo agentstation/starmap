@@ -40,101 +40,6 @@ type statusState struct {
 	lastRunID string
 }
 
-// Status is the operator-facing state of one connected runtime. It keeps
-// usability, freshness, fallback, direct source health, and upstream-reported
-// health as five independent values, so a warning on one never hides another.
-type Status struct {
-	// Usable reports whether the runtime serves a catalog now. A runtime that
-	// serves the verified embedded catalog is usable.
-	Usable bool
-
-	// GenerationID identifies the served catalog generation.
-	GenerationID string
-
-	// PayloadChecksum is the digest of the served catalog payload.
-	PayloadChecksum string
-
-	// CatalogAge is the age of the served generation.
-	CatalogAge time.Duration
-
-	// Freshness grades the age of the served generation.
-	Freshness Freshness
-
-	// ChannelUpdatedAt is the origin publication time that the upstream chain
-	// propagated. Every hop carries the same value, so a downstream grades the
-	// age of the origin channel and not only its own check.
-	ChannelUpdatedAt time.Time
-
-	// ChannelAge is the age of the propagated origin publication time.
-	ChannelAge time.Duration
-
-	// ChannelFreshness grades the age of the propagated origin publication
-	// time. A cascade that stalls at any hop degrades every hop below it.
-	ChannelFreshness Freshness
-
-	// SourceCheckAge is the age of the last upstream check.
-	SourceCheckAge time.Duration
-
-	// SourceCheckFreshness grades the age of the last upstream check.
-	SourceCheckFreshness Freshness
-
-	// AcquisitionAge is the age of the last acquisition success.
-	AcquisitionAge time.Duration
-
-	// AcquisitionFreshness grades the age of the last acquisition success.
-	AcquisitionFreshness Freshness
-
-	// Fallback reports whether the runtime serves the embedded catalog because
-	// no upstream generation is active.
-	Fallback bool
-
-	// FallbackReason names why the runtime fell back.
-	FallbackReason string
-
-	// SourceHealth is what this runtime observed while it read its own source.
-	SourceHealth Health
-
-	// SourceReason is the safe reason code of the last source failure.
-	SourceReason string
-
-	// UpstreamHealth is the health the upstream reported about itself. It stays
-	// independent of SourceHealth, so a healthy transfer of a degraded upstream
-	// catalog still reports the degradation.
-	UpstreamHealth Health
-
-	// AcquisitionHealth is the state of the last provider acquisition run.
-	AcquisitionHealth Health
-
-	// InstanceIdentity is the stable identity of this runtime inside a fleet.
-	// A downstream compares it against a served source chain, so a cascade
-	// rejects a self reference that URL comparison cannot detect.
-	InstanceIdentity string
-
-	// SourceIdentity is the safe identity of the selected source.
-	SourceIdentity string
-
-	// SourceKind names the selected source.
-	SourceKind SourceKind
-
-	// Chain is the sanitized upstream source chain, nearest hop first.
-	Chain []SourceHop
-
-	// Lease reports the runtime lease state.
-	Lease string
-
-	// LastRunID identifies the last refresh run.
-	LastRunID string
-
-	// Providers holds one terminal attempt per provider of the last run.
-	Providers []sources.ProviderAttempt
-
-	// StartedAt is when the runtime opened.
-	StartedAt time.Time
-
-	// ObservedAt is when the runtime built this report.
-	ObservedAt time.Time
-}
-
 // Status returns the current runtime status. It reads retained state only, so
 // it reaches no external system and never blocks on the source.
 func (r *Runtime) Status() Status {
@@ -153,7 +58,7 @@ func (r *Runtime) Status() Status {
 	}
 	r.mu.RUnlock()
 
-	status := Status{
+	report := Status{
 		Usable:            effective.Catalog != nil,
 		GenerationID:      effective.GenerationID,
 		PayloadChecksum:   effective.PayloadChecksum,
@@ -172,11 +77,11 @@ func (r *Runtime) Status() Status {
 		ObservedAt:        now,
 	}
 	if r.source != nil {
-		status.SourceIdentity = r.source.Identity()
+		report.SourceIdentity = r.source.Identity()
 	}
 
 	policy := r.config.freshness
-	status.CatalogAge, status.Freshness = gradeAge(
+	report.CatalogAge, report.Freshness = gradeAge(
 		now, effective.GeneratedAt, policy.ChannelWarnAge, policy.ChannelCriticalAge)
 	// A hop grades the propagated origin time, so a stall above it degrades it
 	// too. Without a source layer the served catalog is the local baseline, and
@@ -185,12 +90,12 @@ func (r *Runtime) Status() Status {
 	if channelTime.IsZero() {
 		channelTime = effective.GeneratedAt
 	}
-	status.ChannelUpdatedAt = channelTime
-	status.ChannelAge, status.ChannelFreshness = gradeAge(
+	report.ChannelUpdatedAt = channelTime
+	report.ChannelAge, report.ChannelFreshness = gradeAge(
 		now, channelTime, policy.ChannelWarnAge, policy.ChannelCriticalAge)
-	status.SourceCheckAge, status.SourceCheckFreshness = gradeAge(
+	report.SourceCheckAge, report.SourceCheckFreshness = gradeAge(
 		now, state.sourceCheckedAt, policy.SourceCheckWarnAge, policy.SourceCheckCriticalAge)
-	status.AcquisitionAge, status.AcquisitionFreshness = gradeAge(
+	report.AcquisitionAge, report.AcquisitionFreshness = gradeAge(
 		now, state.acquisitionSucceededAt, policy.AcquisitionWarnAge, policy.AcquisitionCriticalAge)
 
 	// Fallback stays independent of health and freshness. A runtime can serve a
@@ -198,16 +103,16 @@ func (r *Runtime) Status() Status {
 	// stale upstream catalog while every read succeeds.
 	switch {
 	case hasSource:
-		status.Fallback = false
-		status.FallbackReason = FallbackNone
+		report.Fallback = false
+		report.FallbackReason = FallbackNone
 	case state.sourceCheckedAt.IsZero():
-		status.Fallback = true
-		status.FallbackReason = FallbackAwaitingSource
+		report.Fallback = true
+		report.FallbackReason = FallbackAwaitingSource
 	default:
-		status.Fallback = true
-		status.FallbackReason = FallbackSourceUnavailable
+		report.Fallback = true
+		report.FallbackReason = FallbackSourceUnavailable
 	}
-	return status
+	return report
 }
 
 // gradeAge returns the age of one observation and its freshness grade. A zero

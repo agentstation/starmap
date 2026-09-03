@@ -7,53 +7,6 @@ import (
 	"github.com/agentstation/starmap/pkg/errors"
 )
 
-// SourceKind names one supported upstream catalog source. Selection is
-// terminal: a deployment that names a custom source never falls back to the
-// public GitHub channel.
-type SourceKind string
-
-const (
-	// SourcePublic reads the attested public GitHub catalog channel of the
-	// Starmap project. It is the default.
-	SourcePublic SourceKind = "public"
-
-	// SourceGitHub reads an attested catalog channel from a named repository.
-	SourceGitHub SourceKind = "github"
-
-	// SourceStarmap reads from another Starmap runtime. The cascade client is
-	// an injected composition, because the root package holds no HTTP client.
-	SourceStarmap SourceKind = "starmap"
-
-	// SourceFile reads one immutable generation from a local path.
-	SourceFile SourceKind = "file"
-
-	// SourceEmbedded pins the runtime to the verified embedded bootstrap and
-	// contacts no external system.
-	SourceEmbedded SourceKind = "embedded"
-)
-
-// sourceKinds lists every accepted source name in declaration order.
-var sourceKinds = []SourceKind{
-	SourcePublic,
-	SourceGitHub,
-	SourceStarmap,
-	SourceFile,
-	SourceEmbedded,
-}
-
-// SourceKinds returns a caller-owned copy of every accepted source name.
-func SourceKinds() []SourceKind { return slices.Clone(sourceKinds) }
-
-// Valid reports whether the kind is one of the accepted source names.
-func (k SourceKind) Valid() bool { return slices.Contains(sourceKinds, k) }
-
-// String returns the wire value of the source kind.
-func (k SourceKind) String() string { return string(k) }
-
-// Custom reports whether the kind names a deployment-owned source. A custom
-// source never falls back to the public channel.
-func (k SourceKind) Custom() bool { return k.Valid() && k != SourcePublic }
-
 // ParseSourceKind converts one configured name into a source kind. It rejects
 // every unknown name with a typed validation error, so a typo never selects a
 // silent default.
@@ -429,26 +382,6 @@ func (p FreshnessPolicy) Validate() error {
 	return nil
 }
 
-// Freshness is the evaluated age of one observed timestamp.
-type Freshness string
-
-const (
-	// FreshnessUnknown means no observation supports an evaluation yet.
-	FreshnessUnknown Freshness = "unknown"
-
-	// FreshnessCurrent means the age is inside every threshold.
-	FreshnessCurrent Freshness = "current"
-
-	// FreshnessWarn means the age passed the warning threshold.
-	FreshnessWarn Freshness = "warn"
-
-	// FreshnessCritical means the age passed the critical threshold.
-	FreshnessCritical Freshness = "critical"
-)
-
-// String returns the wire value of the freshness level.
-func (f Freshness) String() string { return string(f) }
-
 // evaluate turns one age into a freshness level.
 func evaluateFreshness(age, warn, critical time.Duration) Freshness {
 	switch {
@@ -462,26 +395,6 @@ func evaluateFreshness(age, warn, critical time.Duration) Freshness {
 		return FreshnessCurrent
 	}
 }
-
-// Health is the operator-facing state of one runtime component.
-type Health string
-
-const (
-	// HealthUnknown means the component has not reported yet.
-	HealthUnknown Health = "unknown"
-
-	// HealthOK means the component reached its last objective.
-	HealthOK Health = "ok"
-
-	// HealthDegraded means the component works with reduced evidence.
-	HealthDegraded Health = "degraded"
-
-	// HealthUnavailable means the component cannot reach its dependency.
-	HealthUnavailable Health = "unavailable"
-)
-
-// String returns the wire value of the health state.
-func (h Health) String() string { return string(h) }
 
 // worseHealth returns the more serious of two health values.
 func worseHealth(left, right Health) Health {

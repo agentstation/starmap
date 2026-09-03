@@ -23,12 +23,10 @@ The default source is the attested public GitHub channel. A caller that opens th
 - [type AcquisitionRequest](<#AcquisitionRequest>)
 - [type AcquisitionResult](<#AcquisitionResult>)
 - [type Freshness](<#Freshness>)
-  - [func \(f Freshness\) String\(\) string](<#Freshness.String>)
 - [type FreshnessPolicy](<#FreshnessPolicy>)
   - [func DefaultFreshnessPolicy\(\) FreshnessPolicy](<#DefaultFreshnessPolicy>)
   - [func \(p FreshnessPolicy\) Validate\(\) error](<#FreshnessPolicy.Validate>)
 - [type Health](<#Health>)
-  - [func \(h Health\) String\(\) string](<#Health.String>)
 - [type Lease](<#Lease>)
 - [type LeaseStore](<#LeaseStore>)
 - [type Option](<#Option>)
@@ -82,9 +80,6 @@ The default source is the attested public GitHub channel. A caller that opens th
 - [type SourceKind](<#SourceKind>)
   - [func ParseSourceKind\(name string\) \(SourceKind, error\)](<#ParseSourceKind>)
   - [func SourceKinds\(\) \[\]SourceKind](<#SourceKinds>)
-  - [func \(k SourceKind\) Custom\(\) bool](<#SourceKind.Custom>)
-  - [func \(k SourceKind\) String\(\) string](<#SourceKind.String>)
-  - [func \(k SourceKind\) Valid\(\) bool](<#SourceKind.Valid>)
 - [type SourcePolicy](<#SourcePolicy>)
   - [func DefaultSourcePolicy\(\) SourcePolicy](<#DefaultSourcePolicy>)
   - [func \(p SourcePolicy\) SafeIdentity\(\) string](<#SourcePolicy.SafeIdentity>)
@@ -206,6 +201,63 @@ const (
 )
 ```
 
+<a name="SourcePublic"></a>Source kinds. Selection is terminal, so a deployment that names a custom source never falls back to the public GitHub channel.
+
+```go
+const (
+    // SourcePublic reads the attested public GitHub catalog channel.
+    SourcePublic = status.SourcePublic
+
+    // SourceGitHub reads an attested channel from a named repository.
+    SourceGitHub = status.SourceGitHub
+
+    // SourceStarmap reads from another Starmap runtime.
+    SourceStarmap = status.SourceStarmap
+
+    // SourceFile reads one immutable generation from a local path.
+    SourceFile = status.SourceFile
+
+    // SourceEmbedded pins the runtime to the verified embedded bootstrap.
+    SourceEmbedded = status.SourceEmbedded
+)
+```
+
+<a name="FreshnessUnknown"></a>Freshness grades of one observed timestamp.
+
+```go
+const (
+    // FreshnessUnknown means no observation supports an evaluation yet.
+    FreshnessUnknown = status.FreshnessUnknown
+
+    // FreshnessCurrent means the age is inside every threshold.
+    FreshnessCurrent = status.FreshnessCurrent
+
+    // FreshnessWarn means the age passed the warning threshold.
+    FreshnessWarn = status.FreshnessWarn
+
+    // FreshnessCritical means the age passed the critical threshold.
+    FreshnessCritical = status.FreshnessCritical
+)
+```
+
+<a name="HealthUnknown"></a>Health states of one runtime component.
+
+```go
+const (
+    // HealthUnknown means the component has not reported yet.
+    HealthUnknown = status.HealthUnknown
+
+    // HealthOK means the component reached its last objective.
+    HealthOK = status.HealthOK
+
+    // HealthDegraded means the component works with reduced evidence.
+    HealthDegraded = status.HealthDegraded
+
+    // HealthUnavailable means the component cannot reach its dependency.
+    HealthUnavailable = status.HealthUnavailable
+)
+```
+
 <a name="DefaultAcquisitionInterval"></a>Acquisition policy defaults. Acquisition has exactly two settings: whether it runs, and how often. No start\-time or mode setting exists.
 
 ```go
@@ -216,7 +268,7 @@ const (
 ```
 
 <a name="Acquirer"></a>
-## type [Acquirer](<https://github.com/agentstation/starmap/blob/main/runtime/runtime.go#L157-L159>)
+## type [Acquirer](<https://github.com/agentstation/starmap/blob/main/runtime/runtime.go#L148-L150>)
 
 Acquirer collects provider observations for the runtime. The root package selects no concrete provider client, so the deployment injects this role. Package acquisition supplies the built\-in composition.
 
@@ -227,7 +279,7 @@ type Acquirer interface {
 ```
 
 <a name="AcquisitionPolicy"></a>
-## type [AcquisitionPolicy](<https://github.com/agentstation/starmap/blob/main/runtime/policy.go#L291-L299>)
+## type [AcquisitionPolicy](<https://github.com/agentstation/starmap/blob/main/runtime/policy.go#L244-L252>)
 
 AcquisitionPolicy configures scheduled provider acquisition. The policy is exactly one switch and one period.
 
@@ -244,7 +296,7 @@ type AcquisitionPolicy struct {
 ```
 
 <a name="DefaultAcquisitionPolicy"></a>
-### func [DefaultAcquisitionPolicy](<https://github.com/agentstation/starmap/blob/main/runtime/policy.go#L302>)
+### func [DefaultAcquisitionPolicy](<https://github.com/agentstation/starmap/blob/main/runtime/policy.go#L255>)
 
 ```go
 func DefaultAcquisitionPolicy() AcquisitionPolicy
@@ -253,7 +305,7 @@ func DefaultAcquisitionPolicy() AcquisitionPolicy
 DefaultAcquisitionPolicy returns the canonical acquisition policy.
 
 <a name="AcquisitionPolicy.Validate"></a>
-### func \(AcquisitionPolicy\) [Validate](<https://github.com/agentstation/starmap/blob/main/runtime/policy.go#L308>)
+### func \(AcquisitionPolicy\) [Validate](<https://github.com/agentstation/starmap/blob/main/runtime/policy.go#L261>)
 
 ```go
 func (p AcquisitionPolicy) Validate() error
@@ -302,7 +354,7 @@ type AcquisitionReport struct {
 ```
 
 <a name="AcquisitionRequest"></a>
-## type [AcquisitionRequest](<https://github.com/agentstation/starmap/blob/main/runtime/runtime.go#L119-L140>)
+## type [AcquisitionRequest](<https://github.com/agentstation/starmap/blob/main/runtime/runtime.go#L110-L131>)
 
 AcquisitionRequest describes one provider acquisition run.
 
@@ -332,7 +384,7 @@ type AcquisitionRequest struct {
 ```
 
 <a name="AcquisitionResult"></a>
-## type [AcquisitionResult](<https://github.com/agentstation/starmap/blob/main/runtime/runtime.go#L143-L152>)
+## type [AcquisitionResult](<https://github.com/agentstation/starmap/blob/main/runtime/runtime.go#L134-L143>)
 
 AcquisitionResult is what one acquisition run observed.
 
@@ -350,43 +402,16 @@ type AcquisitionResult struct {
 ```
 
 <a name="Freshness"></a>
-## type [Freshness](<https://github.com/agentstation/starmap/blob/main/runtime/policy.go#L433>)
+## type [Freshness](<https://github.com/agentstation/starmap/blob/main/runtime/vocabulary.go#L21>)
 
 Freshness is the evaluated age of one observed timestamp.
 
 ```go
-type Freshness string
+type Freshness = status.Freshness
 ```
-
-<a name="FreshnessUnknown"></a>
-
-```go
-const (
-    // FreshnessUnknown means no observation supports an evaluation yet.
-    FreshnessUnknown Freshness = "unknown"
-
-    // FreshnessCurrent means the age is inside every threshold.
-    FreshnessCurrent Freshness = "current"
-
-    // FreshnessWarn means the age passed the warning threshold.
-    FreshnessWarn Freshness = "warn"
-
-    // FreshnessCritical means the age passed the critical threshold.
-    FreshnessCritical Freshness = "critical"
-)
-```
-
-<a name="Freshness.String"></a>
-### func \(Freshness\) [String](<https://github.com/agentstation/starmap/blob/main/runtime/policy.go#L450>)
-
-```go
-func (f Freshness) String() string
-```
-
-String returns the wire value of the freshness level.
 
 <a name="FreshnessPolicy"></a>
-## type [FreshnessPolicy](<https://github.com/agentstation/starmap/blob/main/runtime/policy.go#L347-L356>)
+## type [FreshnessPolicy](<https://github.com/agentstation/starmap/blob/main/runtime/policy.go#L300-L309>)
 
 FreshnessPolicy holds the age thresholds that turn observed timestamps into a freshness level.
 
@@ -404,7 +429,7 @@ type FreshnessPolicy struct {
 ```
 
 <a name="DefaultFreshnessPolicy"></a>
-### func [DefaultFreshnessPolicy](<https://github.com/agentstation/starmap/blob/main/runtime/policy.go#L359>)
+### func [DefaultFreshnessPolicy](<https://github.com/agentstation/starmap/blob/main/runtime/policy.go#L312>)
 
 ```go
 func DefaultFreshnessPolicy() FreshnessPolicy
@@ -413,7 +438,7 @@ func DefaultFreshnessPolicy() FreshnessPolicy
 DefaultFreshnessPolicy returns the canonical freshness thresholds.
 
 <a name="FreshnessPolicy.Validate"></a>
-### func \(FreshnessPolicy\) [Validate](<https://github.com/agentstation/starmap/blob/main/runtime/policy.go#L406>)
+### func \(FreshnessPolicy\) [Validate](<https://github.com/agentstation/starmap/blob/main/runtime/policy.go#L359>)
 
 ```go
 func (p FreshnessPolicy) Validate() error
@@ -422,40 +447,13 @@ func (p FreshnessPolicy) Validate() error
 Validate checks that every warning threshold precedes its critical partner.
 
 <a name="Health"></a>
-## type [Health](<https://github.com/agentstation/starmap/blob/main/runtime/policy.go#L467>)
+## type [Health](<https://github.com/agentstation/starmap/blob/main/runtime/vocabulary.go#L24>)
 
 Health is the operator\-facing state of one runtime component.
 
 ```go
-type Health string
+type Health = status.Health
 ```
-
-<a name="HealthUnknown"></a>
-
-```go
-const (
-    // HealthUnknown means the component has not reported yet.
-    HealthUnknown Health = "unknown"
-
-    // HealthOK means the component reached its last objective.
-    HealthOK Health = "ok"
-
-    // HealthDegraded means the component works with reduced evidence.
-    HealthDegraded Health = "degraded"
-
-    // HealthUnavailable means the component cannot reach its dependency.
-    HealthUnavailable Health = "unavailable"
-)
-```
-
-<a name="Health.String"></a>
-### func \(Health\) [String](<https://github.com/agentstation/starmap/blob/main/runtime/policy.go#L484>)
-
-```go
-func (h Health) String() string
-```
-
-String returns the wire value of the health state.
 
 <a name="Lease"></a>
 ## type [Lease](<https://github.com/agentstation/starmap/blob/main/runtime/lease.go#L27-L36>)
@@ -776,7 +774,7 @@ func WithTransferMaxDuration(duration time.Duration) Option
 WithTransferMaxDuration bounds one whole transfer.
 
 <a name="ProviderLayer"></a>
-## type [ProviderLayer](<https://github.com/agentstation/starmap/blob/main/runtime/runtime.go#L104-L116>)
+## type [ProviderLayer](<https://github.com/agentstation/starmap/blob/main/runtime/runtime.go#L95-L107>)
 
 ProviderLayer is one retained per\-provider observation. The runtime keeps the last\-known\-good layer of every provider, so one failing provider never removes its records from the effective catalog.
 
@@ -837,7 +835,7 @@ type RefreshReport struct {
 ```
 
 <a name="Runtime"></a>
-## type [Runtime](<https://github.com/agentstation/starmap/blob/main/runtime/runtime.go#L165-L193>)
+## type [Runtime](<https://github.com/agentstation/starmap/blob/main/runtime/runtime.go#L156-L184>)
 
 Runtime is a connected Starmap. It serves the embedded catalog immediately, refreshes from one selected upstream source, retains per\-provider observations, and rebuilds one immutable effective catalog from those layers. Reads reach no external system.
 
@@ -848,7 +846,7 @@ type Runtime struct {
 ```
 
 <a name="Open"></a>
-### func [Open](<https://github.com/agentstation/starmap/blob/main/runtime/runtime.go#L198>)
+### func [Open](<https://github.com/agentstation/starmap/blob/main/runtime/runtime.go#L189>)
 
 ```go
 func Open(ctx context.Context, opts ...Option) (*Runtime, error)
@@ -857,7 +855,7 @@ func Open(ctx context.Context, opts ...Option) (*Runtime, error)
 Open returns a connected runtime. It serves the verified embedded catalog before the first upstream reply, so Catalog and State never wait for the network. Open starts the source and acquisition schedules and returns.
 
 <a name="Runtime.Catalog"></a>
-### func \(\*Runtime\) [Catalog](<https://github.com/agentstation/starmap/blob/main/runtime/runtime.go#L287>)
+### func \(\*Runtime\) [Catalog](<https://github.com/agentstation/starmap/blob/main/runtime/runtime.go#L278>)
 
 ```go
 func (r *Runtime) Catalog() *catalogs.Catalog
@@ -866,7 +864,7 @@ func (r *Runtime) Catalog() *catalogs.Catalog
 Catalog returns the current immutable effective catalog. It reaches no external system and never blocks on the source.
 
 <a name="Runtime.Client"></a>
-### func \(\*Runtime\) [Client](<https://github.com/agentstation/starmap/blob/main/runtime/runtime.go#L309>)
+### func \(\*Runtime\) [Client](<https://github.com/agentstation/starmap/blob/main/runtime/runtime.go#L300>)
 
 ```go
 func (r *Runtime) Client() *starmap.Client
@@ -875,7 +873,7 @@ func (r *Runtime) Client() *starmap.Client
 Client returns the immutable publication client underneath the runtime. Use it for explicit publication, hooks, and generation retrieval.
 
 <a name="Runtime.Close"></a>
-### func \(\*Runtime\) [Close](<https://github.com/agentstation/starmap/blob/main/runtime/runtime.go#L329>)
+### func \(\*Runtime\) [Close](<https://github.com/agentstation/starmap/blob/main/runtime/runtime.go#L320>)
 
 ```go
 func (r *Runtime) Close() error
@@ -902,7 +900,7 @@ func (r *Runtime) RefreshSource(ctx context.Context) (SourceRefreshReport, error
 RefreshSource reads the upstream source only. It changes the source layer.
 
 <a name="Runtime.State"></a>
-### func \(\*Runtime\) [State](<https://github.com/agentstation/starmap/blob/main/runtime/runtime.go#L298>)
+### func \(\*Runtime\) [State](<https://github.com/agentstation/starmap/blob/main/runtime/runtime.go#L289>)
 
 ```go
 func (r *Runtime) State() starmap.CatalogState
@@ -911,7 +909,7 @@ func (r *Runtime) State() starmap.CatalogState
 State returns one atomic snapshot of the effective catalog and its generation identity. It reaches no external system.
 
 <a name="Runtime.Status"></a>
-### func \(\*Runtime\) [Status](<https://github.com/agentstation/starmap/blob/main/runtime/status.go#L140>)
+### func \(\*Runtime\) [Status](<https://github.com/agentstation/starmap/blob/main/runtime/status.go#L45>)
 
 ```go
 func (r *Runtime) Status() Status
@@ -929,7 +927,7 @@ func (r *Runtime) Sync(ctx context.Context, providers ...catalogs.ProviderID) (A
 Sync observes providers only. It changes the provider layers and returns the acquisition report. An empty provider list observes every eligible provider.
 
 <a name="Runtime.Updates"></a>
-### func \(\*Runtime\) [Updates](<https://github.com/agentstation/starmap/blob/main/runtime/runtime.go#L319>)
+### func \(\*Runtime\) [Updates](<https://github.com/agentstation/starmap/blob/main/runtime/runtime.go#L310>)
 
 ```go
 func (r *Runtime) Updates() <-chan starmap.CatalogState
@@ -955,17 +953,12 @@ type Source interface {
 ```
 
 <a name="SourceHop"></a>
-## type [SourceHop](<https://github.com/agentstation/starmap/blob/main/runtime/runtime.go#L72-L77>)
+## type [SourceHop](<https://github.com/agentstation/starmap/blob/main/runtime/vocabulary.go#L15>)
 
-SourceHop is one sanitized entry in an upstream source chain. A hop names the reporting identity and its health, never an address.
+SourceHop is one sanitized entry in an upstream source chain.
 
 ```go
-type SourceHop struct {
-    Identity    string
-    Health      Health
-    PublishedAt time.Time
-    ObservedAt  time.Time
-}
+type SourceHop = status.SourceHop
 ```
 
 <a name="SourceIdentityAdopter"></a>
@@ -983,40 +976,16 @@ type SourceIdentityAdopter interface {
 ```
 
 <a name="SourceKind"></a>
-## type [SourceKind](<https://github.com/agentstation/starmap/blob/main/runtime/policy.go#L13>)
+## type [SourceKind](<https://github.com/agentstation/starmap/blob/main/runtime/vocabulary.go#L18>)
 
-SourceKind names one supported upstream catalog source. Selection is terminal: a deployment that names a custom source never falls back to the public GitHub channel.
-
-```go
-type SourceKind string
-```
-
-<a name="SourcePublic"></a>
+SourceKind names one supported upstream catalog source.
 
 ```go
-const (
-    // SourcePublic reads the attested public GitHub catalog channel of the
-    // Starmap project. It is the default.
-    SourcePublic SourceKind = "public"
-
-    // SourceGitHub reads an attested catalog channel from a named repository.
-    SourceGitHub SourceKind = "github"
-
-    // SourceStarmap reads from another Starmap runtime. The cascade client is
-    // an injected composition, because the root package holds no HTTP client.
-    SourceStarmap SourceKind = "starmap"
-
-    // SourceFile reads one immutable generation from a local path.
-    SourceFile SourceKind = "file"
-
-    // SourceEmbedded pins the runtime to the verified embedded bootstrap and
-    // contacts no external system.
-    SourceEmbedded SourceKind = "embedded"
-)
+type SourceKind = status.SourceKind
 ```
 
 <a name="ParseSourceKind"></a>
-### func [ParseSourceKind](<https://github.com/agentstation/starmap/blob/main/runtime/policy.go#L60>)
+### func [ParseSourceKind](<https://github.com/agentstation/starmap/blob/main/runtime/policy.go#L13>)
 
 ```go
 func ParseSourceKind(name string) (SourceKind, error)
@@ -1025,7 +994,7 @@ func ParseSourceKind(name string) (SourceKind, error)
 ParseSourceKind converts one configured name into a source kind. It rejects every unknown name with a typed validation error, so a typo never selects a silent default.
 
 <a name="SourceKinds"></a>
-### func [SourceKinds](<https://github.com/agentstation/starmap/blob/main/runtime/policy.go#L45>)
+### func [SourceKinds](<https://github.com/agentstation/starmap/blob/main/runtime/vocabulary.go#L76>)
 
 ```go
 func SourceKinds() []SourceKind
@@ -1033,35 +1002,8 @@ func SourceKinds() []SourceKind
 
 SourceKinds returns a caller\-owned copy of every accepted source name.
 
-<a name="SourceKind.Custom"></a>
-### func \(SourceKind\) [Custom](<https://github.com/agentstation/starmap/blob/main/runtime/policy.go#L55>)
-
-```go
-func (k SourceKind) Custom() bool
-```
-
-Custom reports whether the kind names a deployment\-owned source. A custom source never falls back to the public channel.
-
-<a name="SourceKind.String"></a>
-### func \(SourceKind\) [String](<https://github.com/agentstation/starmap/blob/main/runtime/policy.go#L51>)
-
-```go
-func (k SourceKind) String() string
-```
-
-String returns the wire value of the source kind.
-
-<a name="SourceKind.Valid"></a>
-### func \(SourceKind\) [Valid](<https://github.com/agentstation/starmap/blob/main/runtime/policy.go#L48>)
-
-```go
-func (k SourceKind) Valid() bool
-```
-
-Valid reports whether the kind is one of the accepted source names.
-
 <a name="SourcePolicy"></a>
-## type [SourcePolicy](<https://github.com/agentstation/starmap/blob/main/runtime/policy.go#L147-L181>)
+## type [SourcePolicy](<https://github.com/agentstation/starmap/blob/main/runtime/policy.go#L100-L134>)
 
 SourcePolicy selects and bounds the upstream catalog source. It holds no token and no API key, so a policy value is safe to log and to serve.
 
@@ -1104,7 +1046,7 @@ type SourcePolicy struct {
 ```
 
 <a name="DefaultSourcePolicy"></a>
-### func [DefaultSourcePolicy](<https://github.com/agentstation/starmap/blob/main/runtime/policy.go#L184>)
+### func [DefaultSourcePolicy](<https://github.com/agentstation/starmap/blob/main/runtime/policy.go#L137>)
 
 ```go
 func DefaultSourcePolicy() SourcePolicy
@@ -1113,7 +1055,7 @@ func DefaultSourcePolicy() SourcePolicy
 DefaultSourcePolicy returns the canonical public\-channel source policy.
 
 <a name="SourcePolicy.SafeIdentity"></a>
-### func \(SourcePolicy\) [SafeIdentity](<https://github.com/agentstation/starmap/blob/main/runtime/policy.go#L265>)
+### func \(SourcePolicy\) [SafeIdentity](<https://github.com/agentstation/starmap/blob/main/runtime/policy.go#L218>)
 
 ```go
 func (p SourcePolicy) SafeIdentity() string
@@ -1122,7 +1064,7 @@ func (p SourcePolicy) SafeIdentity() string
 SafeIdentity returns the source identity that status and logs may show. It names the kind and, for a GitHub channel, the repository and the channel. It never names a custom URL, a host, or a credential.
 
 <a name="SourcePolicy.Validate"></a>
-### func \(SourcePolicy\) [Validate](<https://github.com/agentstation/starmap/blob/main/runtime/policy.go#L197>)
+### func \(SourcePolicy\) [Validate](<https://github.com/agentstation/starmap/blob/main/runtime/policy.go#L150>)
 
 ```go
 func (p SourcePolicy) Validate() error
@@ -1131,7 +1073,7 @@ func (p SourcePolicy) Validate() error
 Validate checks the policy fields that the runtime depends on.
 
 <a name="SourceRead"></a>
-## type [SourceRead](<https://github.com/agentstation/starmap/blob/main/runtime/runtime.go#L80-L99>)
+## type [SourceRead](<https://github.com/agentstation/starmap/blob/main/runtime/runtime.go#L71-L90>)
 
 SourceRead is one upstream observation.
 
@@ -1221,7 +1163,7 @@ type SourceWatcher interface {
 ```
 
 <a name="StartupPolicy"></a>
-## type [StartupPolicy](<https://github.com/agentstation/starmap/blob/main/runtime/policy.go#L74>)
+## type [StartupPolicy](<https://github.com/agentstation/starmap/blob/main/runtime/policy.go#L27>)
 
 StartupPolicy decides what the runtime serves while the first source read is still outstanding.
 
@@ -1251,7 +1193,7 @@ const (
 ```
 
 <a name="ParseStartupPolicy"></a>
-### func [ParseStartupPolicy](<https://github.com/agentstation/starmap/blob/main/runtime/policy.go#L107>)
+### func [ParseStartupPolicy](<https://github.com/agentstation/starmap/blob/main/runtime/policy.go#L60>)
 
 ```go
 func ParseStartupPolicy(name string) (StartupPolicy, error)
@@ -1260,7 +1202,7 @@ func ParseStartupPolicy(name string) (StartupPolicy, error)
 ParseStartupPolicy converts one configured name into a startup policy.
 
 <a name="StartupPolicy.String"></a>
-### func \(StartupPolicy\) [String](<https://github.com/agentstation/starmap/blob/main/runtime/policy.go#L104>)
+### func \(StartupPolicy\) [String](<https://github.com/agentstation/starmap/blob/main/runtime/policy.go#L57>)
 
 ```go
 func (p StartupPolicy) String() string
@@ -1269,7 +1211,7 @@ func (p StartupPolicy) String() string
 String returns the wire value of the startup policy.
 
 <a name="StartupPolicy.Valid"></a>
-### func \(StartupPolicy\) [Valid](<https://github.com/agentstation/starmap/blob/main/runtime/policy.go#L101>)
+### func \(StartupPolicy\) [Valid](<https://github.com/agentstation/starmap/blob/main/runtime/policy.go#L54>)
 
 ```go
 func (p StartupPolicy) Valid() bool
@@ -1278,102 +1220,12 @@ func (p StartupPolicy) Valid() bool
 Valid reports whether the policy is one of the accepted names.
 
 <a name="Status"></a>
-## type [Status](<https://github.com/agentstation/starmap/blob/main/runtime/status.go#L46-L136>)
+## type [Status](<https://github.com/agentstation/starmap/blob/main/runtime/vocabulary.go#L12>)
 
-Status is the operator\-facing state of one connected runtime. It keeps usability, freshness, fallback, direct source health, and upstream\-reported health as five independent values, so a warning on one never hides another.
+Status is the operator\-facing state of one connected runtime.
 
 ```go
-type Status struct {
-    // Usable reports whether the runtime serves a catalog now. A runtime that
-    // serves the verified embedded catalog is usable.
-    Usable bool
-
-    // GenerationID identifies the served catalog generation.
-    GenerationID string
-
-    // PayloadChecksum is the digest of the served catalog payload.
-    PayloadChecksum string
-
-    // CatalogAge is the age of the served generation.
-    CatalogAge time.Duration
-
-    // Freshness grades the age of the served generation.
-    Freshness Freshness
-
-    // ChannelUpdatedAt is the origin publication time that the upstream chain
-    // propagated. Every hop carries the same value, so a downstream grades the
-    // age of the origin channel and not only its own check.
-    ChannelUpdatedAt time.Time
-
-    // ChannelAge is the age of the propagated origin publication time.
-    ChannelAge time.Duration
-
-    // ChannelFreshness grades the age of the propagated origin publication
-    // time. A cascade that stalls at any hop degrades every hop below it.
-    ChannelFreshness Freshness
-
-    // SourceCheckAge is the age of the last upstream check.
-    SourceCheckAge time.Duration
-
-    // SourceCheckFreshness grades the age of the last upstream check.
-    SourceCheckFreshness Freshness
-
-    // AcquisitionAge is the age of the last acquisition success.
-    AcquisitionAge time.Duration
-
-    // AcquisitionFreshness grades the age of the last acquisition success.
-    AcquisitionFreshness Freshness
-
-    // Fallback reports whether the runtime serves the embedded catalog because
-    // no upstream generation is active.
-    Fallback bool
-
-    // FallbackReason names why the runtime fell back.
-    FallbackReason string
-
-    // SourceHealth is what this runtime observed while it read its own source.
-    SourceHealth Health
-
-    // SourceReason is the safe reason code of the last source failure.
-    SourceReason string
-
-    // UpstreamHealth is the health the upstream reported about itself. It stays
-    // independent of SourceHealth, so a healthy transfer of a degraded upstream
-    // catalog still reports the degradation.
-    UpstreamHealth Health
-
-    // AcquisitionHealth is the state of the last provider acquisition run.
-    AcquisitionHealth Health
-
-    // InstanceIdentity is the stable identity of this runtime inside a fleet.
-    // A downstream compares it against a served source chain, so a cascade
-    // rejects a self reference that URL comparison cannot detect.
-    InstanceIdentity string
-
-    // SourceIdentity is the safe identity of the selected source.
-    SourceIdentity string
-
-    // SourceKind names the selected source.
-    SourceKind SourceKind
-
-    // Chain is the sanitized upstream source chain, nearest hop first.
-    Chain []SourceHop
-
-    // Lease reports the runtime lease state.
-    Lease string
-
-    // LastRunID identifies the last refresh run.
-    LastRunID string
-
-    // Providers holds one terminal attempt per provider of the last run.
-    Providers []sources.ProviderAttempt
-
-    // StartedAt is when the runtime opened.
-    StartedAt time.Time
-
-    // ObservedAt is when the runtime built this report.
-    ObservedAt time.Time
-}
+type Status = status.Status
 ```
 
 Generated by [gomarkdoc](<https://github.com/princjef/gomarkdoc>)

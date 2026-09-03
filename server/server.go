@@ -15,7 +15,7 @@ import (
 	internalserver "github.com/agentstation/starmap/internal/server"
 	"github.com/agentstation/starmap/pkg/errors"
 	pkgsync "github.com/agentstation/starmap/pkg/sync"
-	"github.com/agentstation/starmap/runtime"
+	"github.com/agentstation/starmap/runtime/status"
 )
 
 // Syncer is the optional acquisition capability used by the update endpoint.
@@ -24,12 +24,28 @@ type Syncer interface {
 	Sync(context.Context, ...pkgsync.Option) (*pkgsync.Result, error)
 }
 
+// ConnectedRuntime is the whole contract the server needs from a connected
+// catalog runtime. The server reports the status and joins the shutdown, and
+// it never reads a catalog source itself.
+//
+// The narrow contract keeps the attested source machinery out of the public
+// server dependency closure. A consumer that embeds the server around an
+// offline client therefore pays for none of it. *runtime.Runtime in
+// github.com/agentstation/starmap/runtime satisfies this contract.
+type ConnectedRuntime interface {
+	// Status reports the observable runtime state without a source read.
+	Status() status.Status
+
+	// Close ends the runtime background work under its own bounded join.
+	Close() error
+}
+
 // Option configures a Server dependency.
 type Option func(*options) error
 
 type options struct {
 	logger  *zerolog.Logger
-	runtime *runtime.Runtime
+	runtime ConnectedRuntime
 	syncer  Syncer
 }
 
@@ -46,12 +62,12 @@ func WithLogger(logger *zerolog.Logger) Option {
 
 // WithRuntime joins the server to one connected runtime. Readiness then
 // reports the runtime status, and Shutdown joins the runtime shutdown.
-func WithRuntime(runtime *runtime.Runtime) Option {
+func WithRuntime(connected ConnectedRuntime) Option {
 	return func(options *options) error {
-		if runtime == nil {
+		if connected == nil || reflect.ValueOf(connected).IsZero() {
 			return &errors.ValidationError{Field: "server.runtime", Message: "is required"}
 		}
-		options.runtime = runtime
+		options.runtime = connected
 		return nil
 	}
 }
@@ -88,7 +104,7 @@ func isNilSyncer(syncer Syncer) bool {
 type Server struct {
 	implementation *internalserver.Server
 	httpServer     *http.Server
-	runtime        *runtime.Runtime
+	runtime        ConnectedRuntime
 	startOnce      sync.Once
 }
 
