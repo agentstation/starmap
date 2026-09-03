@@ -117,3 +117,112 @@ func TestRuntimeLeaseFenceRejectsALostLease(t *testing.T) {
 		t.Fatalf("error = %T, want *errors.ConflictError", err)
 	}
 }
+
+// TestRefusedLeaseOpensAsANonOwner proves that another holder does not fail
+// Open. The replica serves its retained catalog and records the lost lease.
+func TestRefusedLeaseOpensAsANonOwner(t *testing.T) {
+	t.Parallel()
+
+	leases := &stubLeaseStore{}
+	leases.refuseEvery()
+
+	runtime := openTestRuntime(t, WithLeaseStore(leases))
+	if state := runtime.lease.status(); state != leaseLost {
+		t.Errorf("lease state = %q, want %q", state, leaseLost)
+	}
+	if got := runtime.Status().Lease; got != string(leaseLost) {
+		t.Errorf("status lease = %q, want %q", got, leaseLost)
+	}
+	if runtime.Catalog() == nil {
+		t.Error("a non-owner replica served no catalog")
+	}
+	if got := leases.acquireCount(); got != 1 {
+		t.Errorf("lease acquisitions = %d, want one attempt at Open", got)
+	}
+}
+
+// TestScheduledRunSkipsWhileAnotherInstanceOwnsTheLease proves that a refused
+// replica sends no upstream request and observes no provider. It retries the
+// lease on every scheduled run.
+func TestScheduledRunSkipsWhileAnotherInstanceOwnsTheLease(t *testing.T) {
+	t.Parallel()
+
+	leases := &stubLeaseStore{}
+	leases.refuseEvery()
+	source := newStubSource("refused-source")
+	acquirer := &stubAcquirer{}
+	timer := newStubScheduleTimer()
+
+	openTestRuntime(t,
+		WithLeaseStore(leases),
+		WithSource(source),
+		WithSourcePollInterval(time.Hour),
+		WithAcquirer(acquirer),
+		WithAcquisitionEnabled(true),
+		WithAcquisitionInterval(time.Hour),
+		withScheduleTimer(timer.after),
+	)
+
+	// Open takes the lease once. Each scheduled startup pass retries it.
+	eventually(t, 5*time.Second, "no scheduled run retried the refused lease", func() bool {
+		return leases.acquireCount() >= 3
+	})
+	if got := source.readCount(); got != 0 {
+		t.Errorf("source reads = %d, want no upstream request from a non-owner", got)
+	}
+	if got := acquirer.callCount(); got != 0 {
+		t.Errorf("acquisition runs = %d, want no provider request from a non-owner", got)
+	}
+}
+
+// TestManualRunByANonOwnerReturnsAConflict proves that an explicit refresh by a
+// refused replica reports the conflict instead of writing. A later run takes
+// the lease again and publishes.
+func TestManualRunByANonOwnerReturnsAConflict(t *testing.T) {
+	t.Parallel()
+
+	leases := &stubLeaseStore{}
+	// The first refusal answers Open. The second answers the manual run.
+	leases.refuse(2)
+	source := newStubSource("owner-source")
+	payload := testCatalogPayload(t, "owner-provider", "owner-model", "Owner Model")
+	source.replies = []SourceRead{
+		testSourceRead(t, "generation-owner", payload, time.Now().UTC()),
+	}
+
+	runtime := openTestRuntime(t,
+		WithCatalogStore(storage.NewMemory()),
+		WithSource(source),
+		WithLeaseStore(leases),
+	)
+
+	_, err := runtime.RefreshSource(context.Background())
+	if err == nil {
+		t.Fatal("a non-owner refresh published a generation")
+	}
+	var conflict *errors.ConflictError
+	if !stderrors.As(err, &conflict) {
+		t.Fatalf("error = %T (%v), want *errors.ConflictError", err, err)
+	}
+	if got := source.readCount(); got != 0 {
+		t.Errorf("source reads = %d, want no upstream request from a non-owner", got)
+	}
+
+	// The other holder released the lease, so the next run owns it again.
+	report, err := runtime.RefreshSource(context.Background())
+	if err != nil {
+		t.Fatalf("RefreshSource after the lease returned: %v", err)
+	}
+	if !report.Published {
+		t.Fatalf("report = %+v, want a published generation", report)
+	}
+	if state := runtime.lease.status(); state != leaseHeld {
+		t.Errorf("lease state = %q, want %q", state, leaseHeld)
+	}
+	if runtime.lease.epoch() == 0 {
+		t.Error("the reacquired lease carries no epoch")
+	}
+	if _, found := runtime.Catalog().Providers().Get("owner-provider"); !found {
+		t.Error("the published catalog lost the source provider")
+	}
+}

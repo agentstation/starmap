@@ -263,7 +263,8 @@ type AcquisitionPolicy struct {
 	Enabled bool
 
 	// Interval is the acquisition period. The scheduler places each instance
-	// at a stable phase inside the interval.
+	// at a stable phase inside the interval. Zero means one startup pass and
+	// no periodic work.
 	Interval time.Duration
 }
 
@@ -272,14 +273,13 @@ func DefaultAcquisitionPolicy() AcquisitionPolicy {
 	return AcquisitionPolicy{Enabled: true, Interval: DefaultAcquisitionInterval}
 }
 
-// Validate checks the acquisition period.
+// Validate checks the acquisition period. Zero is valid and selects one
+// startup pass, so an operator schedules a single run without a cadence.
 func (p AcquisitionPolicy) Validate() error {
-	if !p.Enabled {
-		return nil
-	}
-	if p.Interval <= 0 {
+	if p.Interval < 0 {
 		return &errors.ValidationError{
-			Field: "acquisition_policy.interval", Value: p.Interval, Message: "must be positive",
+			Field: "acquisition_policy.interval", Value: p.Interval,
+			Message: "must not be negative",
 		}
 	}
 	return nil

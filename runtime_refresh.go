@@ -281,6 +281,13 @@ func (r *Runtime) execute(
 	if err != nil {
 		return RefreshReport{}, err
 	}
+
+	// A replica that lost the lease takes it again before the run starts. A
+	// refused replica returns the typed conflict here, so it reads no source
+	// and observes no provider before the fence rejects its commit.
+	if err := r.lease.ensureHeld(ctx); err != nil {
+		return RefreshReport{}, err
+	}
 	run, owner, err := r.runs.start(ctx, r.ctx, kind, id, r.lease.epoch())
 	if err != nil {
 		return RefreshReport{}, err
@@ -478,11 +485,16 @@ func (r *Runtime) acquireProviders(
 ) error {
 	result := AcquisitionReport{RunID: report.RunID, StartedAt: r.config.now()}
 	current := r.State().Catalog
+
+	// Each closed coalescing window publishes the layers it collected. The
+	// acquirer calls this from its own run goroutine, one window at a time.
+	windows := &windowPublisher{runtime: r, epoch: epoch}
 	observed, err := r.config.acquirer.AcquireProviders(ctx, AcquisitionRequest{
 		RunID:          report.RunID,
 		Current:        current,
 		Providers:      providers,
 		CoalesceWindow: r.config.coalesceWindow,
+		Publish:        windows.publish,
 	})
 	result.CompletedAt = r.config.now()
 	result.Eligible = observed.Eligible
@@ -498,24 +510,6 @@ func (r *Runtime) acquireProviders(
 		}
 	}
 
-	answered := make(map[catalogs.ProviderID]bool, len(observed.Layers))
-	for _, layer := range observed.Layers {
-		if saveErr := r.store.saveProvider(layer); saveErr != nil {
-			return stderrors.Join(err, saveErr)
-		}
-		answered[layer.ProviderID] = true
-		r.mu.Lock()
-		r.layers.setProvider(layer)
-		r.mu.Unlock()
-	}
-	r.mu.RLock()
-	for _, id := range r.layers.providerOrder() {
-		if !answered[id] {
-			result.Retained = append(result.Retained, id)
-		}
-	}
-	r.mu.RUnlock()
-
 	result.Health = HealthOK
 	switch {
 	case err != nil:
@@ -524,43 +518,161 @@ func (r *Runtime) acquireProviders(
 		result.Health = HealthDegraded
 	}
 
+	// The windows that closed inside the run already published their layers.
+	// Only the rest needs one final publication.
+	answered := make(map[catalogs.ProviderID]bool, len(observed.Layers))
+	var unpublished []ProviderLayer
+	for _, layer := range observed.Layers {
+		answered[layer.ProviderID] = true
+		if windows.published(layer.ProviderID) {
+			continue
+		}
+		unpublished = append(unpublished, layer)
+	}
+	result.Published = windows.publications() > 0
+	result.GenerationID = windows.generationID()
+
 	// A partial failure still publishes. The layers that answered move forward
 	// and the layers that did not keep their retained records.
-	if len(observed.Layers) > 0 {
-		state, publishErr := r.rebuild(ctx, epoch)
+	if len(unpublished) > 0 {
+		state, publishErr := r.publishProviders(ctx, unpublished, epoch)
 		if publishErr != nil {
 			result.Health = HealthDegraded
+			r.recordAcquisition(result, err)
 			report.Acquisition = result
 			return stderrors.Join(err, publishErr)
 		}
 		result.Published = true
 		result.GenerationID = state.GenerationID
+	}
+	if result.Published {
 		report.Published = true
-		report.GenerationID = state.GenerationID
+		report.GenerationID = result.GenerationID
 	}
 
+	r.mu.RLock()
+	for _, id := range r.layers.providerOrder() {
+		if !answered[id] {
+			result.Retained = append(result.Retained, id)
+		}
+	}
+	r.mu.RUnlock()
+
+	r.recordAcquisition(result, err)
+	report.Acquisition = result
+	return err
+}
+
+// recordAcquisition stores what Status reports about the last provider run.
+func (r *Runtime) recordAcquisition(result AcquisitionReport, err error) {
 	r.mu.Lock()
+	defer r.mu.Unlock()
 	r.report.acquisitionStartedAt = result.StartedAt
 	r.report.acquisitionHealth = result.Health
 	r.report.attempts = result.Attempts
 	if err == nil {
 		r.report.acquisitionSucceededAt = result.CompletedAt
 	}
-	r.mu.Unlock()
+}
 
-	report.Acquisition = result
-	return err
+// retainProviders durably keeps every supplied layer and installs it as the
+// layer that its provider last observed well.
+func (r *Runtime) retainProviders(layers []ProviderLayer) error {
+	for _, layer := range layers {
+		if err := r.store.saveProvider(layer); err != nil {
+			return err
+		}
+		r.mu.Lock()
+		r.layers.setProvider(layer)
+		r.mu.Unlock()
+	}
+	return nil
+}
+
+// publishProviders retains the supplied layers and publishes one effective
+// catalog that holds every retained layer.
+func (r *Runtime) publishProviders(
+	ctx context.Context,
+	layers []ProviderLayer,
+	epoch uint64,
+) (CatalogState, error) {
+	if err := r.retainProviders(layers); err != nil {
+		return CatalogState{}, err
+	}
+	return r.rebuild(ctx, epoch)
+}
+
+// windowPublisher publishes the layers of one closed coalescing window. It
+// records what it published, so the run publishes each layer one time.
+type windowPublisher struct {
+	runtime *Runtime
+	epoch   uint64
+
+	mu         sync.Mutex
+	seen       map[catalogs.ProviderID]bool
+	count      int
+	generation string
+}
+
+// publish retains and publishes the layers of one closed window.
+func (w *windowPublisher) publish(ctx context.Context, layers []ProviderLayer) error {
+	if len(layers) == 0 {
+		return nil
+	}
+	state, err := w.runtime.publishProviders(ctx, layers, w.epoch)
+	if err != nil {
+		return err
+	}
+	w.mu.Lock()
+	defer w.mu.Unlock()
+	if w.seen == nil {
+		w.seen = make(map[catalogs.ProviderID]bool, len(layers))
+	}
+	for _, layer := range layers {
+		w.seen[layer.ProviderID] = true
+	}
+	w.count++
+	w.generation = state.GenerationID
+	return nil
+}
+
+// published reports whether one closed window already published the provider.
+func (w *windowPublisher) published(id catalogs.ProviderID) bool {
+	w.mu.Lock()
+	defer w.mu.Unlock()
+	return w.seen[id]
+}
+
+// publications returns how many windows the run published.
+func (w *windowPublisher) publications() int {
+	w.mu.Lock()
+	defer w.mu.Unlock()
+	return w.count
+}
+
+// generationID returns the last generation that a closed window published.
+func (w *windowPublisher) generationID() string {
+	w.mu.Lock()
+	defer w.mu.Unlock()
+	return w.generation
 }
 
 // safeSourceReason maps one source failure onto a safe reason code. The code
-// names no URL, no host, and no credential.
+// names no URL, no host, and no credential. A refusal that declares a
+// not-before boundary or a spent budget is a rate limit. GitHub answers a
+// secondary rate limit with status 403 and a Retry-After header. A bare 403
+// without either signal is a credential refusal.
 func safeSourceReason(err error) string {
 	var refusal *github.RefusalError
 	if stderrors.As(err, &refusal) {
-		if refusal.Status == 429 {
+		switch {
+		case refusal.Status == 429,
+			!refusal.NotBefore.IsZero(),
+			refusal.Budget.Exhausted():
 			return string(sources.ProviderReasonRateLimited)
+		default:
+			return string(sources.ProviderReasonCredentialRejected)
 		}
-		return string(sources.ProviderReasonCredentialRejected)
 	}
 	return string(sources.ClassifyProviderReason(err))
 }

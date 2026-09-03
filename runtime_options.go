@@ -53,6 +53,11 @@ type runtimeOptions struct {
 
 	now    func() time.Time
 	random Random
+
+	// scheduleTimer paces the periodic workers. It stays unexported and nil in
+	// every deployment, so production keeps one stopped timer per wait. A test
+	// injects it to drive a schedule without a real delay.
+	scheduleTimer func(time.Duration) <-chan time.Time
 }
 
 // Random returns a uniform value in the half-open interval [0, 1). The
@@ -269,12 +274,13 @@ func WithAcquisitionEnabled(enabled bool) Option {
 	})
 }
 
-// WithAcquisitionInterval sets the provider acquisition period.
+// WithAcquisitionInterval sets the provider acquisition period. Zero selects
+// one startup pass and no periodic work.
 func WithAcquisitionInterval(interval time.Duration) Option {
 	return runtimeOption("WithAcquisitionInterval", func(r *runtimeOptions) error {
-		if interval <= 0 {
+		if interval < 0 {
 			return &errors.ValidationError{
-				Field: "acquisition_interval", Value: interval, Message: "must be positive",
+				Field: "acquisition_interval", Value: interval, Message: "must not be negative",
 			}
 		}
 		r.acquisition.Interval = interval

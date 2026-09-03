@@ -43,9 +43,16 @@ func TestAcquisitionPolicyFromEnabledAndInterval(t *testing.T) {
 	if err := (AcquisitionPolicy{}).Validate(); err != nil {
 		t.Errorf("a disabled policy must validate: %v", err)
 	}
-	// An enabled policy without a period is a configuration error.
-	if err := (AcquisitionPolicy{Enabled: true}).Validate(); err == nil {
-		t.Error("an enabled policy without an interval must fail")
+	// An enabled policy with a zero period runs one startup pass and no
+	// periodic work, so the canonical environment table accepts it.
+	if err := (AcquisitionPolicy{Enabled: true}).Validate(); err != nil {
+		t.Errorf("a zero interval must select one startup pass: %v", err)
+	}
+	// A negative period names no schedule at all.
+	var invalid *errors.ValidationError
+	err := (AcquisitionPolicy{Enabled: true, Interval: -time.Second}).Validate()
+	if !stderrors.As(err, &invalid) {
+		t.Errorf("negative interval error = %v, want a validation error", err)
 	}
 
 	// The two options build exactly this policy.

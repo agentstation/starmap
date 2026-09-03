@@ -468,3 +468,84 @@ func providerLayerCount(runtime *Runtime) int {
 	defer runtime.mu.RUnlock()
 	return len(runtime.layers.providers)
 }
+
+// TestCloseNeverRacesACallerOwnedRun proves that Close never closes the
+// publication channel under a run that a caller owns. The acquirer ignores its
+// context and answers after Close started, exactly as a slow provider client
+// can, and the run still returns a typed result.
+func TestCloseNeverRacesACallerOwnedRun(t *testing.T) {
+	t.Parallel()
+
+	release := make(chan struct{})
+	acquirer := &stubAcquirer{entered: make(chan struct{})}
+	acquirer.observe = func(context.Context) { <-release }
+	acquirer.result = AcquisitionResult{
+		Eligible: 1,
+		Attempts: []sources.ProviderAttempt{
+			testAttempt("race-provider", sources.ProviderOutcomeSucceeded, ""),
+		},
+		Layers: []ProviderLayer{
+			testProviderLayer(t, "race-provider", "race-model", "Race Model", time.Now().UTC()),
+		},
+	}
+
+	runtime := openTestRuntime(t, WithAcquirer(acquirer))
+
+	type outcome struct {
+		report AcquisitionReport
+		err    error
+	}
+	done := make(chan outcome, 1)
+	go func() {
+		report, err := runtime.Sync(context.Background())
+		done <- outcome{report: report, err: err}
+	}()
+
+	select {
+	case <-acquirer.entered:
+	case <-time.After(5 * time.Second):
+		t.Fatal("the caller-owned run never reached the acquirer")
+	}
+
+	// Close runs while the caller-owned run still publishes.
+	closed := make(chan error, 1)
+	go func() { closed <- runtime.Close() }()
+	close(release)
+
+	select {
+	case err := <-closed:
+		if err != nil {
+			t.Errorf("Close: %v", err)
+		}
+	case <-time.After(10 * time.Second):
+		t.Fatal("Close never returned")
+	}
+
+	select {
+	case result := <-done:
+		if result.report.RunID == "" {
+			t.Error("the run returned no report identity")
+		}
+		if result.err != nil && !typedRuntimeError(result.err) {
+			t.Errorf("Sync error = %T (%v), want a typed result", result.err, result.err)
+		}
+	case <-time.After(10 * time.Second):
+		t.Fatal("the caller-owned run never returned")
+	}
+}
+
+// typedRuntimeError reports whether one runtime failure carries a defined type.
+// A cancelled run reports the standard cancellation instead.
+func typedRuntimeError(err error) bool {
+	if errors.Is(err, context.Canceled) || errors.Is(err, context.DeadlineExceeded) {
+		return true
+	}
+	var validation *pkgerrors.ValidationError
+	var conflict *pkgerrors.ConflictError
+	var resource *pkgerrors.ResourceError
+	var config *pkgerrors.ConfigError
+	return errors.As(err, &validation) ||
+		errors.As(err, &conflict) ||
+		errors.As(err, &resource) ||
+		errors.As(err, &config)
+}

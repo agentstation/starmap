@@ -8,6 +8,7 @@ import (
 	"github.com/agentstation/starmap/internal/sources/github"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/errors"
+	"github.com/agentstation/starmap/pkg/logging"
 )
 
 // maxSourceFileBytes bounds a catalog payload read from a local file. A larger
@@ -94,6 +95,14 @@ func (g *githubSource) Read(ctx context.Context) (SourceRead, error) {
 	if err != nil {
 		return SourceRead{}, err
 	}
+	if status.Budget.Warn() {
+		// The check reports the budget on success too, so an operator sees the
+		// warning before a refusal arrives.
+		logging.Warn().
+			Int("used_percent", status.Budget.UsedPercent()).
+			Str("source", g.identity).
+			Msg("Catalog source request budget is nearly spent")
+	}
 	read := SourceRead{Health: HealthOK}
 	if !status.Changed {
 		return read, nil
@@ -107,16 +116,6 @@ func (g *githubSource) Read(ctx context.Context) (SourceRead, error) {
 	read.PublishedAt = release.PublishedAt
 	read.ChannelUpdatedAt = release.PublishedAt
 	return read, nil
-}
-
-// Budget reports the request budget the last channel check observed. The
-// runtime warns while the budget nears its bound.
-func (g *githubSource) Budget(ctx context.Context) (github.RateLimitBudget, error) {
-	status, err := g.source.Changed(ctx)
-	if err != nil {
-		return github.RateLimitBudget{}, err
-	}
-	return status.Budget, nil
 }
 
 // embeddedSource selects the verified embedded catalog. It reads nothing, so a

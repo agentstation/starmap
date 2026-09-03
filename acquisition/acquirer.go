@@ -130,11 +130,12 @@ func NewAcquirer(opts ...AcquirerOption) (*Acquirer, error) {
 	return acquirer, nil
 }
 
-// AcquireProviders observes every eligible provider concurrently. It returns as
-// soon as
-// every provider answers, or as soon as the coalescing window closes after the
-// first answer. A provider that did not answer inside the window keeps its own
-// retained layer, so one blocked provider never removes records.
+// AcquireProviders observes every eligible provider concurrently. The first
+// observation that carries a layer opens one bounded coalescing window. Every
+// layer that arrives inside the window joins the same publication. A window
+// that closes while a provider still runs emits the layers it collected and
+// keeps waiting. One slow provider then delays no completed peer by more than
+// one window, and it still publishes its own layer later.
 func (a *Acquirer) AcquireProviders(
 	ctx context.Context,
 	request starmap.AcquisitionRequest,
@@ -165,32 +166,57 @@ func (a *Acquirer) AcquireProviders(
 	}
 
 	answered := make(map[catalogs.ProviderID]bool, len(eligible))
+	var pending []starmap.ProviderLayer
 	var window <-chan time.Time
 	for len(answered) < len(eligible) {
 		select {
 		case observation := <-answers:
 			answered[observation.Attempt.ProviderID] = true
 			result.Attempts = append(result.Attempts, observation.Attempt)
-			if len(observation.Layer.Payload) > 0 {
-				result.Layers = append(result.Layers, observation.Layer)
+			if len(observation.Layer.Payload) == 0 {
+				// A skipped or failed attempt carries no layer. It publishes
+				// nothing, so it opens no window.
+				continue
 			}
+			result.Layers = append(result.Layers, observation.Layer)
+			pending = append(pending, observation.Layer)
 			if window == nil {
-				// The first answer opens the bounded window. Every later answer
-				// joins the same publication while the window stays open.
 				window = a.after(a.coalesceWindow(request))
 			}
 		case <-window:
-			logging.Warn().
-				Str("run_id", request.RunID).
-				Int("answered", len(answered)).
-				Int("eligible", len(eligible)).
-				Msg("Acquisition published before every provider answered")
-			return a.close(result, eligible, answered), nil
+			window = nil
+			emitted := pending
+			pending = nil
+			if err := a.emit(runCtx, request, eligible, answered, emitted); err != nil {
+				return a.close(result, eligible, answered), err
+			}
 		case <-runCtx.Done():
 			return a.close(result, eligible, answered), runCtx.Err()
 		}
 	}
 	return a.close(result, eligible, answered), nil
+}
+
+// emit publishes the layers that one closed window collected. The runtime
+// supplies the publication. An acquirer without one keeps every layer for the
+// single publication that follows the run.
+func (a *Acquirer) emit(
+	ctx context.Context,
+	request starmap.AcquisitionRequest,
+	eligible []catalogs.ProviderID,
+	answered map[catalogs.ProviderID]bool,
+	layers []starmap.ProviderLayer,
+) error {
+	if len(layers) == 0 || request.Publish == nil {
+		return nil
+	}
+	logging.Debug().
+		Str("run_id", request.RunID).
+		Int("answered", len(answered)).
+		Int("eligible", len(eligible)).
+		Int("layers", len(layers)).
+		Msg("Acquisition published a coalescing window before every provider answered")
+	return request.Publish(ctx, layers)
 }
 
 // observe runs one provider attempt and turns every failure into a terminal
@@ -224,8 +250,8 @@ func (a *Acquirer) observe(
 }
 
 // close records one terminal attempt for every provider that did not answer
-// inside the window. The run reports the provider, and the runtime keeps the
-// retained layer of that provider.
+// before the run ended. The run reports the provider, and the runtime keeps
+// the retained layer of that provider.
 func (a *Acquirer) close(
 	result starmap.AcquisitionResult,
 	eligible []catalogs.ProviderID,

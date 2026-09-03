@@ -161,10 +161,11 @@ func (r *Runtime) startSchedules() {
 	if interval := r.config.source.PollInterval; r.source != nil && interval > 0 {
 		offset := r.schedule.sourceOffset
 		phase := r.schedule.sourcePhase
+		startup := r.sourceNeedsStartupPass()
 		r.work.Go(func() {
-			r.runSchedule(controllerSource, interval, offset, phase, func(ctx context.Context) {
+			r.runSchedule(controllerSource, interval, offset, phase, startup, func(ctx context.Context) {
 				if _, err := r.RefreshSource(ctx); err != nil {
-					logging.Warn().Err(err).Msg("Scheduled source refresh failed")
+					r.logScheduledFailure(controllerSource, err)
 				}
 			})
 		})
@@ -173,24 +174,105 @@ func (r *Runtime) startSchedules() {
 		interval := r.config.acquisition.Interval
 		offset := r.schedule.acquisitionOffset
 		phase := r.schedule.acquisitionPhase
+		startup := interval <= 0 || r.acquisitionNeedsStartupPass()
 		r.work.Go(func() {
-			r.runSchedule(controllerAcquisition, interval, offset, phase, func(ctx context.Context) {
+			r.runSchedule(controllerAcquisition, interval, offset, phase, startup, func(ctx context.Context) {
 				if _, err := r.Sync(ctx); err != nil {
-					logging.Warn().Err(err).Msg("Scheduled provider acquisition failed")
+					r.logScheduledFailure(controllerAcquisition, err)
 				}
 			})
 		})
 	}
 }
 
-// runSchedule paces one periodic worker. It waits the startup offset, then
-// wakes on every interval boundary that its stable phase selects.
+// sourceNeedsStartupPass reports whether the source worker reads once right
+// after its startup offset. A runtime with no retained source layer, or with a
+// layer past the source-check warning age, is cold and reads early. A runtime
+// with fresh durable evidence waits for its stable full-interval phase. The
+// require_source policy needs no pass, because Open already read the source.
+func (r *Runtime) sourceNeedsStartupPass() bool {
+	if r.config.source.StartupPolicy == StartupRequireSource {
+		return false
+	}
+	r.mu.RLock()
+	layer := r.layers.source
+	observed := time.Time{}
+	if layer != nil {
+		observed = layer.ObservedAt
+	}
+	r.mu.RUnlock()
+	if layer == nil {
+		return true
+	}
+	return r.pastWarnAge(observed, r.config.freshness.SourceCheckWarnAge)
+}
+
+// acquisitionNeedsStartupPass reports whether the acquisition worker observes
+// providers once right after its startup offset. A runtime with no retained
+// provider layer, or with one layer past the acquisition warning age, is cold.
+func (r *Runtime) acquisitionNeedsStartupPass() bool {
+	r.mu.RLock()
+	var oldest time.Time
+	retained := 0
+	for _, id := range r.layers.providerOrder() {
+		layer := r.layers.providers[id]
+		if oldest.IsZero() || layer.ObservedAt.Before(oldest) {
+			oldest = layer.ObservedAt
+		}
+		retained++
+	}
+	r.mu.RUnlock()
+	if retained == 0 {
+		return true
+	}
+	return r.pastWarnAge(oldest, r.config.freshness.AcquisitionWarnAge)
+}
+
+// pastWarnAge reports whether one retained observation passed its warning age.
+// An observation without a timestamp counts as stale.
+func (r *Runtime) pastWarnAge(observed time.Time, warn time.Duration) bool {
+	if observed.IsZero() {
+		return true
+	}
+	return r.config.now().Sub(observed) >= warn
+}
+
+// logScheduledFailure reports one failed scheduled run. A replica that another
+// instance owns logs at debug, because a refused non-owner is normal fleet
+// behavior rather than a fault.
+func (r *Runtime) logScheduledFailure(controller string, err error) {
+	if isLeaseRefusal(err) {
+		logging.Debug().
+			Str("controller", controller).
+			Msg("Another instance owns the refresh lease; the scheduled run skipped")
+		return
+	}
+	logging.Warn().
+		Err(err).
+		Str("controller", controller).
+		Msg("Scheduled runtime work failed")
+}
+
+// runSchedule paces one periodic worker. It waits the startup offset and runs
+// the startup pass that a cold runtime needs. It then wakes on every interval
+// boundary that its stable phase selects. A zero interval means one startup
+// pass and no periodic work.
 func (r *Runtime) runSchedule(
 	controller string,
 	interval, offset, phase time.Duration,
+	startupPass bool,
 	work func(context.Context),
 ) {
 	if !r.sleep(offset) {
+		return
+	}
+	if startupPass {
+		logging.Debug().
+			Str("controller", controller).
+			Msg("Runtime schedule started its startup pass")
+		work(r.ctx)
+	}
+	if interval <= 0 {
 		return
 	}
 	for {
@@ -212,6 +294,14 @@ func (r *Runtime) sleep(delay time.Duration) bool {
 		case <-r.ctx.Done():
 			return false
 		default:
+			return true
+		}
+	}
+	if after := r.config.scheduleTimer; after != nil {
+		select {
+		case <-r.ctx.Done():
+			return false
+		case <-after(delay):
 			return true
 		}
 	}

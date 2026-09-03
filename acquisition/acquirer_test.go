@@ -271,8 +271,9 @@ func TestSyncPartialFailurePublishesAndRetainsProviderLastKnownGood(t *testing.T
 }
 
 // TestSyncPublishesCompletedProvidersWhileAnotherBlocked proves the bounded
-// coalescing window. A provider that answers publishes inside one window even
-// while another provider still works, and the blocked provider stops.
+// coalescing window. A provider that answers publishes inside one window while
+// another provider still works. The window closes the publication, never the
+// run, so the slow provider keeps working and publishes its own layer later.
 func TestSyncPublishesCompletedProvidersWhileAnotherBlocked(t *testing.T) {
 	t.Parallel()
 
@@ -280,11 +281,10 @@ func TestSyncPublishesCompletedProvidersWhileAnotherBlocked(t *testing.T) {
 	observer.setAnswer(t, "fast", "fast-model", "Fast One")
 	observer.block["slow"] = make(chan struct{})
 	observer.entered["slow"] = make(chan struct{})
-	observer.stopped["slow"] = make(chan struct{})
 	observer.setAnswer(t, "slow", "slow-model", "Slow One")
 
-	// The injected timer closes the window as soon as the first answer opens
-	// it, so the test needs no real delay.
+	// The injected timer closes the window as soon as the first layer opens it,
+	// so the test needs no real delay.
 	windows := make(chan time.Duration, 4)
 	after := func(window time.Duration) <-chan time.Time {
 		windows <- window
@@ -302,21 +302,30 @@ func TestSyncPublishesCompletedProvidersWhileAnotherBlocked(t *testing.T) {
 	}
 	runtime := openRuntime(t, acquirer)
 
-	report, err := runtime.Sync(context.Background(), "fast", "slow")
-	if err != nil {
-		t.Fatalf("Sync: %v", err)
+	type outcome struct {
+		report starmap.AcquisitionReport
+		err    error
 	}
-	if !report.Published {
-		t.Fatal("the completed provider must publish while another still works")
+	done := make(chan outcome, 1)
+	go func() {
+		report, err := runtime.Sync(context.Background(), "fast", "slow")
+		done <- outcome{report: report, err: err}
+	}()
+
+	// The slow provider entered its observation and still holds it.
+	select {
+	case <-observer.entered["slow"]:
+	case <-time.After(5 * time.Second):
+		t.Fatal("the slow provider never entered its observation")
 	}
-	if report.Succeeded != 1 || report.Failed != 1 {
-		t.Errorf("report = %+v, want one success and one unfinished provider", report)
-	}
-	if got := modelName(t, runtime.Catalog(), "fast", "fast-model"); got != "Fast One" {
+
+	// The first window publishes the provider that answered.
+	first := waitForProvider(t, runtime, "fast")
+	if got := modelName(t, first.Catalog, "fast", "fast-model"); got != "Fast One" {
 		t.Errorf("fast model name = %q, want %q", got, "Fast One")
 	}
-	if _, found := runtime.Catalog().Providers().Get("slow"); found {
-		t.Error("a provider that did not answer must publish no records")
+	if _, found := first.Catalog.Providers().Get("slow"); found {
+		t.Error("the blocked provider must publish no records before it answers")
 	}
 
 	// The window the runtime passed is the bounded thirty-second window.
@@ -326,25 +335,98 @@ func TestSyncPublishesCompletedProvidersWhileAnotherBlocked(t *testing.T) {
 			t.Errorf("coalescing window = %s, want 30s", window)
 		}
 	default:
-		t.Error("the first answer did not open a coalescing window")
+		t.Error("the first layer did not open a coalescing window")
 	}
 
-	// The unfinished provider reports a safe reason and stops with the run.
-	for _, attempt := range report.Attempts {
-		if attempt.ProviderID != "slow" {
-			continue
+	// The closed window stopped the publication, never the provider.
+	close(observer.block["slow"])
+	result := <-done
+	if result.err != nil {
+		t.Fatalf("Sync: %v", result.err)
+	}
+	report := result.report
+	if report.Succeeded != 2 || report.Failed != 0 {
+		t.Errorf("report = %+v, want two successes and no failure", report)
+	}
+	if !report.Published {
+		t.Fatal("the run must publish every provider that answered")
+	}
+	final := runtime.State()
+	if final.Sequence <= first.Sequence {
+		t.Errorf("published sequence = %d, want a later publication than %d",
+			final.Sequence, first.Sequence)
+	}
+	if err := observer.observed("slow"); err != nil {
+		t.Errorf("blocked provider context error = %v, want no cancellation", err)
+	}
+
+	if got := modelName(t, final.Catalog, "fast", "fast-model"); got != "Fast One" {
+		t.Errorf("fast model name = %q, want %q", got, "Fast One")
+	}
+	if got := modelName(t, final.Catalog, "slow", "slow-model"); got != "Slow One" {
+		t.Errorf("slow model name = %q, want %q", got, "Slow One")
+	}
+}
+
+// TestAcquireOpensNoWindowWithoutLayer proves that an attempt without a layer
+// opens no coalescing window. A run of failed providers publishes nothing.
+func TestAcquireOpensNoWindowWithoutLayer(t *testing.T) {
+	t.Parallel()
+
+	observer := newStubObserver()
+	observer.setFailure("alpha", stderrors.New("the provider closed the connection"))
+	observer.setFailure("beta", stderrors.New("the provider closed the connection"))
+
+	windows := make(chan time.Duration, 4)
+	after := func(window time.Duration) <-chan time.Time {
+		windows <- window
+		closed := make(chan time.Time)
+		close(closed)
+		return closed
+	}
+
+	acquirer, err := acquisition.NewAcquirer(
+		acquisition.WithProviderObserver(observer),
+		acquisition.WithAcquirerCoalesceTimer(after),
+	)
+	if err != nil {
+		t.Fatalf("NewAcquirer: %v", err)
+	}
+	runtime := openRuntime(t, acquirer)
+
+	report, err := runtime.Sync(context.Background(), "alpha", "beta")
+	if err != nil {
+		t.Fatalf("Sync: %v", err)
+	}
+	if report.Failed != 2 {
+		t.Errorf("report = %+v, want two failed providers", report)
+	}
+	if report.Published {
+		t.Error("a run without a layer must publish nothing")
+	}
+	if len(windows) != 0 {
+		t.Errorf("windows opened = %d, want none", len(windows))
+	}
+}
+
+// waitForProvider waits until the published catalog holds the provider. It
+// returns the state that first held it.
+func waitForProvider(
+	t *testing.T,
+	runtime *starmap.Runtime,
+	id catalogs.ProviderID,
+) starmap.CatalogState {
+	t.Helper()
+	deadline := time.Now().Add(5 * time.Second)
+	for time.Now().Before(deadline) {
+		state := runtime.State()
+		if state.Catalog != nil {
+			if _, found := state.Catalog.Providers().Get(id); found {
+				return state
+			}
 		}
-		if attempt.Reason != sources.ProviderReasonRequestTimeout {
-			t.Errorf("slow reason = %q, want %q", attempt.Reason, sources.ProviderReasonRequestTimeout)
-		}
+		time.Sleep(time.Millisecond)
 	}
-	<-observer.entered["slow"]
-	select {
-	case <-observer.stopped["slow"]:
-	case <-time.After(5 * time.Second):
-		t.Fatal("the blocked provider did not stop with the run")
-	}
-	if err := observer.observed("slow"); !stderrors.Is(err, context.Canceled) {
-		t.Errorf("blocked provider context error = %v, want context.Canceled", err)
-	}
+	t.Fatalf("the runtime never published provider %q", id)
+	return starmap.CatalogState{}
 }

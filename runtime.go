@@ -95,6 +95,13 @@ type AcquisitionRequest struct {
 	// CoalesceWindow bounds how long completed observations wait for a slower
 	// sibling before they publish.
 	CoalesceWindow time.Duration
+
+	// Publish emits the layers that completed inside one coalescing window.
+	// The runtime retains them, rebuilds the effective catalog, and publishes
+	// one generation under the lease epoch of the run. An acquirer that emits
+	// nothing early leaves the field unused, and the runtime then publishes
+	// every layer once the run returns.
+	Publish func(context.Context, []ProviderLayer) error
 }
 
 // AcquisitionResult is what one acquisition run observed.
@@ -136,7 +143,12 @@ type Runtime struct {
 	schedule scheduler
 	runs     runGroup
 
-	updates chan CatalogState
+	// updatesMu guards the publication channel. Close marks the channel closed
+	// under the lock that broadcast holds. A caller-owned run that publishes
+	// after Close then sends nothing.
+	updatesMu     sync.Mutex
+	updatesClosed bool
+	updates       chan CatalogState
 
 	ctx       context.Context
 	cancel    context.CancelFunc
@@ -205,8 +217,26 @@ func Open(ctx context.Context, opts ...Option) (*Runtime, error) {
 		runtime.cancel()
 		return nil, err
 	}
+
+	// The require_source policy blocks inside the Open context and reads the
+	// source once. A failed read fails Open, so a deployment that needs
+	// upstream state never serves the embedded baseline instead.
+	if runtime.config.source.StartupPolicy == StartupRequireSource {
+		if _, err := runtime.RefreshSource(ctx); err != nil {
+			runtime.abort()
+			return nil, errors.WrapResource(
+				"read", "catalog source", runtime.source.Identity(), err)
+		}
+	}
 	runtime.startSchedules()
 	return runtime, nil
+}
+
+// abort releases what a failed Open already started. It cancels runtime-owned
+// work and returns the lease, so a failed Open leaves no holder behind.
+func (r *Runtime) abort() {
+	r.cancel()
+	r.lease.stop()
 }
 
 // Catalog returns the current immutable effective catalog. It reaches no
@@ -276,7 +306,10 @@ func (r *Runtime) Close() error {
 			}
 		}
 		r.lease.stop()
+		r.updatesMu.Lock()
+		r.updatesClosed = true
 		close(r.updates)
+		r.updatesMu.Unlock()
 	})
 	return r.closeErr
 }
@@ -358,7 +391,13 @@ func (r *Runtime) commit(ctx context.Context, state CatalogState, epoch uint64) 
 
 // broadcast delivers one published state to the updates channel. A full
 // channel drops the oldest pending state, so the newest state always arrives.
+// A closed runtime delivers nothing, because Close owns the channel.
 func (r *Runtime) broadcast(state CatalogState) {
+	r.updatesMu.Lock()
+	defer r.updatesMu.Unlock()
+	if r.updatesClosed {
+		return
+	}
 	for {
 		select {
 		case r.updates <- state:
@@ -380,7 +419,4 @@ func (r *Runtime) onLeaseLost() {
 		Str("reason", string(leaseLost)).
 		Msg("Runtime lost the refresh lease and cancelled its active run")
 	r.runs.cancelActive()
-	r.mu.Lock()
-	r.report.leaseState = leaseLost
-	r.mu.Unlock()
 }

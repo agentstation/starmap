@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/agentstation/starmap/pkg/catalogs"
+	"github.com/agentstation/starmap/pkg/errors"
 	"github.com/agentstation/starmap/pkg/sources"
 )
 
@@ -86,10 +87,17 @@ type stubAcquirer struct {
 	result   AcquisitionResult
 	err      error
 	observe  func(context.Context)
+
+	// started signals the first run. entered closes once.
+	started sync.Once
+	entered chan struct{}
 }
 
 // AcquireProviders returns the scripted acquisition result.
 func (a *stubAcquirer) AcquireProviders(ctx context.Context, request AcquisitionRequest) (AcquisitionResult, error) {
+	if a.entered != nil {
+		a.started.Do(func() { close(a.entered) })
+	}
 	if a.observe != nil {
 		a.observe(ctx)
 	}
@@ -114,12 +122,33 @@ type stubLeaseStore struct {
 	holder   string
 	renewErr error
 	expiry   time.Time
+
+	// takes counts every acquisition the store answered.
+	takes int
+
+	// refusals is how many acquisitions refuse before one succeeds. refuseAll
+	// refuses every acquisition, so the instance never owns the lease.
+	refusals  int
+	refuseAll bool
 }
 
-// AcquireLease takes the lease and increases the epoch.
+// AcquireLease takes the lease and increases the epoch. A scripted refusal
+// answers with the conflict that another holder produces.
 func (s *stubLeaseStore) AcquireLease(_ context.Context, holder string, ttl time.Duration) (Lease, error) {
 	s.mu.Lock()
 	defer s.mu.Unlock()
+	s.takes++
+	if s.refuseAll || s.refusals > 0 {
+		if s.refusals > 0 {
+			s.refusals--
+		}
+		return Lease{}, &errors.ConflictError{
+			Resource: "runtime lease",
+			Expected: string(leaseHeld),
+			Actual:   string(leaseLost),
+			Message:  "another instance owns the runtime lease",
+		}
+	}
 	s.epoch++
 	s.holder = holder
 	expires := s.expiry
@@ -149,6 +178,27 @@ func (s *stubLeaseStore) failLater(err error) {
 	s.mu.Lock()
 	defer s.mu.Unlock()
 	s.renewErr = err
+}
+
+// refuse scripts how many acquisitions another holder wins.
+func (s *stubLeaseStore) refuse(count int) {
+	s.mu.Lock()
+	defer s.mu.Unlock()
+	s.refusals = count
+}
+
+// refuseEvery scripts a store that another instance always owns.
+func (s *stubLeaseStore) refuseEvery() {
+	s.mu.Lock()
+	defer s.mu.Unlock()
+	s.refuseAll = true
+}
+
+// acquireCount returns how many acquisitions the store answered.
+func (s *stubLeaseStore) acquireCount() int {
+	s.mu.Lock()
+	defer s.mu.Unlock()
+	return s.takes
 }
 
 // bumpEpoch simulates another instance taking the lease.
@@ -239,4 +289,62 @@ func openTestRuntime(t *testing.T, opts ...Option) *Runtime {
 		}
 	})
 	return runtime
+}
+
+// stubScheduleTimer records every schedule wait and never fires. A test then
+// observes the pacing decision of one worker without a real delay.
+type stubScheduleTimer struct {
+	waits chan time.Duration
+}
+
+func newStubScheduleTimer() *stubScheduleTimer {
+	return &stubScheduleTimer{waits: make(chan time.Duration, 8)}
+}
+
+// after records the wait and returns a channel that never fires.
+func (s *stubScheduleTimer) after(wait time.Duration) <-chan time.Time {
+	select {
+	case s.waits <- wait:
+	default:
+	}
+	return make(chan time.Time)
+}
+
+// waited returns the next recorded wait. It fails the test when no worker
+// waited inside the bound.
+func (s *stubScheduleTimer) waited(t *testing.T, within time.Duration) time.Duration {
+	t.Helper()
+	select {
+	case wait := <-s.waits:
+		return wait
+	case <-time.After(within):
+		t.Fatal("no runtime schedule waited for its next run")
+		return 0
+	}
+}
+
+// eventually waits until the condition holds. It fails the test otherwise.
+func eventually(t *testing.T, within time.Duration, reason string, condition func() bool) {
+	t.Helper()
+	deadline := time.Now().Add(within)
+	for time.Now().Before(deadline) {
+		if condition() {
+			return
+		}
+		time.Sleep(time.Millisecond)
+	}
+	t.Fatal(reason)
+}
+
+// withScheduleTimer injects the timer that paces the periodic workers. It stays
+// a test-only option, so the public surface keeps one clock and one random
+// source. A test uses it to drive a schedule without a real delay.
+func withScheduleTimer(after func(time.Duration) <-chan time.Time) Option {
+	return runtimeOption("withScheduleTimer", func(r *runtimeOptions) error {
+		if after == nil {
+			return &errors.ValidationError{Field: "schedule_timer", Message: "is required"}
+		}
+		r.scheduleTimer = after
+		return nil
+	})
 }

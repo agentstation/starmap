@@ -39,6 +39,27 @@ Every one of those conditions passes now. The distribution verifier reports
 `Summary: 36 passed, 13 failed, 19 unverified`. The remaining failures belong to
 CAT6, CAT7, and CAT9.
 
+## Repairs after the review
+
+The first CAT5 commit passed every condition but left five contract defects
+against `docs/proof/catalog-publisher/cat2-final-review.md`. A second commit
+repaired them.
+
+| Defect | Repair |
+| --- | --- |
+| `Close` raced a caller-owned run | `updatesMu` and `updatesClosed` guard the publication channel under one lock |
+| The startup policy validated but never ran | `Open` enforces `require_source`; both workers run a cold-start pass |
+| A zero acquisition period reached `untilNextRun` | `runSchedule` returns after the startup pass |
+| A refused lease failed `Open` | A refusal opens a non-owner replica, and every run takes the lease again |
+| The window closed the run | The window emits and keeps waiting through `AcquisitionRequest.Publish` |
+
+Four smaller repairs joined them. `acquireProviders` records the report and
+degrades health before it returns a retention failure. The GitHub source
+adapter dropped its own budget field. It warns one time for each `Read` that
+the status marks. `safeSourceReason` maps a not-before boundary and a spent
+budget onto `rate_limited`. It maps a bare 403 onto `credential_rejected`.
+Every handwritten Go file stays under 1,500 lines.
+
 ## Files
 
 | Path | Role |
@@ -98,6 +119,18 @@ commit calls `leaseKeeper.fence` with that epoch inside the update
 transaction. A stale epoch and a lost lease both return an
 `*errors.ConflictError`, so two instances never overwrite one another.
 
+A refused acquisition is a normal fleet state, not a failure. `LeaseStore`
+documents the `*errors.ConflictError` that another holder returns. `Open`
+records `lease_lost` and returns a usable runtime. The replica then serves its
+retained catalog. Every other store error still fails `Open`.
+
+Every run then takes the lease again. `leaseKeeper.ensureHeld` runs before
+`runGroup.start`, so a refused replica reads no source and observes no
+provider. A scheduled run logs the refusal at debug level, because a non-owner
+replica is normal. A manual `Refresh`, `RefreshSource`, or `Sync` returns the
+typed conflict to its caller. A successful acquisition installs the new epoch
+and restarts renewal.
+
 ## Scheduler contract
 
 | Property | Value |
@@ -112,6 +145,28 @@ name and the listen address join the seed, so a copied state directory produces
 two identities instead of one. The source controller and the acquisition
 controller derive separate phases from one identity.
 
+### The startup policy
+
+The `require_source` policy reads the source one time inside the `Open`
+context. A failed read fails `Open` with an `*errors.ResourceError`. A
+deployment that needs upstream state then never serves the embedded baseline
+instead. `Open` already read the source, so that policy needs no startup pass.
+
+The `prefer_source` policy runs one read right after its startup offset when
+the runtime is cold. A runtime is cold when it retains no source layer, or when
+that layer passed the source-check warning age. A runtime with fresh durable
+evidence sends no early request and waits for its stable full-interval phase.
+The acquisition worker follows the same rule against the retained provider
+layers and the acquisition warning age.
+
+### A zero acquisition interval
+
+The canonical environment table reads `true | 0s | one startup pass`. An
+enabled policy with a zero period therefore validates. `runSchedule` runs the
+startup pass and returns. A zero interval then never reaches `untilNextRun` and
+starts no periodic work. A negative period stays a validation error, because it
+names no schedule at all.
+
 ## Refresh runs
 
 `Refresh`, `RefreshSource`, and `Sync` share one run group. A second caller of
@@ -121,10 +176,16 @@ stops the run, and a caller deadline adds no deadline of its own. The
 configured refresh timeout is the only deadline a run carries, and it is unset
 by default.
 
-A provider that does not answer inside the bounded coalescing window keeps its
-retained layer. The window is 30 seconds by default, and it opens on the first
-answer. The providers that answered publish one generation, and the report
-names the retained providers.
+The bounded coalescing window is 30 seconds by default. It opens on the first
+observation that carries a layer. An answer that publishes nothing therefore
+opens no window. `AcquisitionRequest.Publish` carries the layers of one closed
+window back to the runtime. The runtime retains them, rebuilds the effective
+catalog, and publishes one generation under the epoch of the run.
+
+A closed window ends neither the run nor a provider. The acquirer emits what it
+collected and keeps waiting. One slow provider then delays no completed peer by
+more than one window, and it still publishes its own layer. The report names
+the providers that kept their retained layer.
 
 A missing catalog credential skips the provider before any request. The attempt
 carries the `skipped_not_configured` outcome and a safe reason code. The
@@ -170,14 +231,27 @@ Time alone moves freshness, and it moves neither health value nor the fallback.
 | `TestRuntimeStatusKeepsUsabilityFreshnessFallbackAndHealthIndependent` | CAT-V60 |
 | `TestSyncPartialFailurePublishesAndRetainsProviderLastKnownGood` | CAT-V61 |
 | `TestSyncPublishesCompletedProvidersWhileAnotherBlocked` | CAT-V66 |
+| `TestAcquireOpensNoWindowWithoutLayer` | CAT-V66 |
 | `TestStartupSpreadDefaultsToFifteenMinutes` | The startup spread default |
 | `TestStablePhaseSurvivesRestart` | The durable phase |
 | `TestSchedulerIdentityDivergesAcrossClonedState` | The cloned state directory |
+| `TestCloseNeverRacesACallerOwnedRun` | Close against a caller-owned run |
+| `TestRequireSourceFailsOpenWhenTheSourceFails` | The require_source policy |
+| `TestPreferSourceReadsOnceOnAColdStart` | The prefer_source cold start |
+| `TestFreshDurableEvidenceWaitsForItsPhase` | Fresh evidence waits |
+| `TestZeroAcquisitionIntervalRunsOneStartupPass` | The zero acquisition period |
+| `TestRefusedLeaseOpensAsANonOwner` | The non-owner replica |
+| `TestScheduledRunSkipsWhileAnotherInstanceOwnsTheLease` | The skipped run |
+| `TestManualRunByANonOwnerReturnsAConflict` | The manual conflict |
 
-Every test is hermetic. `WithClock`, `WithRandom`, `WithSource`,
-`WithAcquirer`, `WithLeaseStore`, and `WithAcquirerCoalesceTimer` inject every
-dependency that a test needs to control. No test sleeps for a real interval,
-and no test reaches a network. The whole suite passes behind a dead proxy.
+Every test is hermetic. Six options inject every dependency that a test needs
+to control. They are `WithClock`, `WithRandom`, `WithSource`, `WithAcquirer`,
+`WithLeaseStore`, and `WithAcquirerCoalesceTimer`. The test-only
+`withScheduleTimer` joins them. It records what a worker waits for and never
+fires, so a schedule test observes one pacing decision without a real delay.
+
+No test sleeps for a real interval, and no test reaches a network. The whole
+suite passes behind a dead proxy.
 
 ## Mutation evidence
 
@@ -191,7 +265,13 @@ the rule returns.
 | The terminal cascade selection | `TestCustomSourceNeverFallsBackToPublic` | `Open selected the fallback source "starmap_cascade"` |
 | The retained provider layers | `TestSyncPartialFailurePublishesAndRetainsProviderLastKnownGood` | `the catalog holds no provider "beta"` |
 | The durable instance seed | `TestStablePhaseSurvivesRestart` | the identity and both phases moved across the restart |
-| The bounded coalescing window | `TestSyncPublishesCompletedProvidersWhileAnotherBlocked` | `test timed out after 1m0s` |
+| The window cancels the run | `TestSyncPublishesCompletedProvidersWhileAnotherBlocked` | `Sync: context canceled` |
+| The closed-channel guard in `Runtime.broadcast` | `TestCloseNeverRacesACallerOwnedRun` | `panic: send on closed channel` |
+| The `require_source` read in `Open` | `TestRequireSourceFailsOpenWhenTheSourceFails` | `Open served the embedded baseline under require_source` |
+| The zero-interval guard in `runSchedule` | `TestZeroAcquisitionIntervalRunsOneStartupPass` | `acquisition runs = 8635, want one startup pass` |
+| The refusal branch in `leaseKeeper.start` | `TestRefusedLeaseOpensAsANonOwner` | `Open: failed to acquire runtime lease ...: another instance owns the runtime lease` |
+| The `ensureHeld` call in `Runtime.execute` | `TestManualRunByANonOwnerReturnsAConflict` | `source reads = 1, want no upstream request from a non-owner` |
+| The layer test that opens the window | `TestAcquireOpensNoWindowWithoutLayer` | `windows opened = 1, want none` |
 
 ## Commands
 
@@ -202,13 +282,13 @@ Every command ran with `GOTOOLCHAIN=go1.26.6`.
 | `make lint` | PASS |
 | `make test` | PASS |
 | `go tool ago -stale-ignores -format json ./...` | PASS, zero findings and zero stale ignores |
-| `make technical-writing-check` | PASS, 721 files and zero diagnostics |
+| `make technical-writing-check` | PASS, 722 files and zero diagnostics |
 | `bash scripts/verify-catalog-package-ownership.sh` | PASS, 13 passed and 0 failed |
 | `make godoc` | PASS |
 | `make docs-check` | PASS |
 | `shellcheck scripts/*.sh` | PASS |
 | `bash scripts/verify-catalog-distribution.sh` | 36 passed, 13 failed, 19 unverified |
-| `HTTPS_PROXY=127.0.0.1:1 go test -race .` and three more packages | PASS |
+| `HTTPS_PROXY=127.0.0.1:1 go test -race ./ ./acquisition` | PASS |
 
 ## Decisions for the orchestrator
 

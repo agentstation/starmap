@@ -2,6 +2,7 @@ package starmap
 
 import (
 	"context"
+	stderrors "errors"
 	"strconv"
 	"sync"
 	"time"
@@ -38,7 +39,10 @@ type Lease struct {
 // deployment whose instances share no storage needs no lease store, and the
 // runtime then commits without a fence.
 type LeaseStore interface {
-	// AcquireLease takes the lease for the named holder.
+	// AcquireLease takes the lease for the named holder. A store that another
+	// holder owns returns an *errors.ConflictError. That refusal names a
+	// non-owner state, not a failure. The runtime keeps serving its retained
+	// catalog and tries again at the next run. Every other error fails Open.
 	AcquireLease(ctx context.Context, holder string, ttl time.Duration) (Lease, error)
 
 	// Renew extends a held lease. It fails when another holder took the lease.
@@ -70,9 +74,16 @@ type leaseKeeper struct {
 	holder string
 	now    func() time.Time
 
-	mu    sync.RWMutex
-	lease Lease
-	state leaseState
+	// base is the runtime context. Renewal runs under it, so Close stops
+	// renewal even when a later run took the lease again.
+	base   context.Context
+	work   *sync.WaitGroup
+	onLost func()
+
+	mu      sync.RWMutex
+	lease   Lease
+	state   leaseState
+	stopped bool
 
 	stopOnce    sync.Once
 	cancelRenew context.CancelFunc
@@ -88,26 +99,98 @@ func newLeaseKeeper(store LeaseStore, holder string, now func() time.Time) *leas
 	return &leaseKeeper{store: store, holder: holder, now: now, state: state}
 }
 
-// start takes the lease and renews it until the context ends.
+// start takes the lease and renews it until the context ends. Another holder
+// makes this instance a consumer of accepted state, not a failure: the keeper
+// records lease_lost and Open returns a usable runtime.
 func (k *leaseKeeper) start(ctx context.Context, work *sync.WaitGroup, onLost func()) error {
 	if k.store == nil {
 		return nil
 	}
+	k.base = ctx
+	k.work = work
+	k.onLost = onLost
+	err := k.take(ctx)
+	if isLeaseRefusal(err) {
+		logging.Info().
+			Str("holder", k.holder).
+			Msg("Another instance owns the refresh lease; this instance consumes accepted state")
+		return nil
+	}
+	return err
+}
+
+// ensureHeld takes the lease again before one run starts. A non-owner that
+// stays refused sends no upstream request and observes no provider.
+func (k *leaseKeeper) ensureHeld(ctx context.Context) error {
+	if k == nil || k.store == nil {
+		return nil
+	}
+	k.mu.RLock()
+	state := k.state
+	stopped := k.stopped
+	k.mu.RUnlock()
+	if stopped {
+		return &errors.ConflictError{
+			Resource: "runtime lease",
+			Expected: string(leaseHeld),
+			Actual:   string(leaseLost),
+			Message:  "the runtime closed and released the lease",
+		}
+	}
+	if state == leaseHeld {
+		return nil
+	}
+	return k.take(ctx)
+}
+
+// take takes the lease and restarts renewal. A refusal leaves the keeper in
+// the lost state and returns the typed conflict.
+func (k *leaseKeeper) take(ctx context.Context) error {
 	lease, err := k.store.AcquireLease(ctx, k.holder, LeaseTTL)
 	if err != nil {
+		k.mu.Lock()
+		k.state = leaseLost
+		k.mu.Unlock()
 		return errors.WrapResource("acquire", "runtime lease", k.holder, err)
 	}
+
 	k.mu.Lock()
+	if k.stopped {
+		k.mu.Unlock()
+		return &errors.ConflictError{
+			Resource: "runtime lease",
+			Expected: string(leaseHeld),
+			Actual:   string(leaseLost),
+			Message:  "the runtime closed and released the lease",
+		}
+	}
 	k.lease = lease
 	k.state = leaseHeld
+	previous := k.cancelRenew
+	renewCtx, cancel := context.WithCancel(k.base)
+	k.cancelRenew = cancel
 	k.mu.Unlock()
 
-	renewCtx, cancel := context.WithCancel(ctx)
-	k.cancelRenew = cancel
-	work.Go(func() {
-		k.renewUntil(renewCtx, onLost)
+	// One renewal loop runs at a time. The previous loop already returned
+	// after it reported the loss, and this cancellation covers every other
+	// order of events.
+	if previous != nil {
+		previous()
+	}
+	k.work.Go(func() {
+		k.renewUntil(renewCtx, k.onLost)
 	})
 	return nil
+}
+
+// isLeaseRefusal reports whether another holder owns the lease. Every other
+// failure is a store failure, and Open reports it.
+func isLeaseRefusal(err error) bool {
+	if err == nil {
+		return false
+	}
+	var conflict *errors.ConflictError
+	return stderrors.As(err, &conflict)
 }
 
 // renewUntil renews the lease on every interval. It reports one loss and
@@ -220,13 +303,15 @@ func (k *leaseKeeper) stop() {
 		return
 	}
 	k.stopOnce.Do(func() {
-		if k.cancelRenew != nil {
-			k.cancelRenew()
-		}
-		k.mu.RLock()
+		k.mu.Lock()
+		k.stopped = true
+		cancel := k.cancelRenew
 		current := k.lease
 		state := k.state
-		k.mu.RUnlock()
+		k.mu.Unlock()
+		if cancel != nil {
+			cancel()
+		}
 		if state != leaseHeld {
 			return
 		}

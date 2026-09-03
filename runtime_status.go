@@ -37,8 +37,7 @@ type statusState struct {
 	acquisitionHealth      Health
 	attempts               []sources.ProviderAttempt
 
-	leaseState leaseState
-	lastRunID  string
+	lastRunID string
 }
 
 // RuntimeStatus is the operator-facing state of one connected runtime. It keeps
