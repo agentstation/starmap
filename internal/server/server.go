@@ -10,7 +10,9 @@ import (
 	"github.com/rs/zerolog"
 
 	"github.com/agentstation/starmap"
+	"github.com/agentstation/starmap/internal/constants"
 	"github.com/agentstation/starmap/internal/server/cache"
+	"github.com/agentstation/starmap/internal/server/operations"
 	"github.com/agentstation/starmap/internal/server/sse"
 	"github.com/agentstation/starmap/pkg/errors"
 )
@@ -21,6 +23,7 @@ type Server struct {
 	client         *starmap.Client
 	cache          *cache.Cache
 	sseBroadcaster *sse.Broadcaster
+	operations     *operations.Registry
 	logger         *zerolog.Logger
 	config         Config
 	startTime      time.Time
@@ -64,9 +67,12 @@ func New(app Application, cfg Config) (*Server, error) {
 		client:         sm,
 		cache:          cache.New(cfg.CacheTTL, cfg.CacheTTL*2),
 		sseBroadcaster: sseBroadcaster,
-		logger:         logger,
-		config:         cfg,
-		startTime:      time.Now(),
+		operations: operations.NewRegistry(operations.WithTimeout(
+			constants.UpdateContextTimeout + constants.DefaultCatalogProjectionTimeout,
+		)),
+		logger:    logger,
+		config:    cfg,
+		startTime: time.Now(),
 	}
 
 	// Connect the sole post-commit publication event to SSE.
@@ -119,6 +125,11 @@ func (s *Server) Shutdown(ctx context.Context) error {
 		}
 	}
 	s.sseBroadcaster.Close()
+	// A canceled admin update ends its own run, so shutdown joins the background
+	// operations inside the caller's grace period.
+	if err := s.operations.Close(ctx); err != nil {
+		return err
+	}
 	s.stopped.Store(true)
 	if err := ctx.Err(); err != nil {
 		return err

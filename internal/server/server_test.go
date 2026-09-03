@@ -113,6 +113,7 @@ func TestServerStartDoesNotOwnAHiddenTransportLoop(t *testing.T) {
 type mockApplication struct {
 	logger       *zerolog.Logger
 	sm           *starmap.Client
+	runtime      *starmap.Runtime
 	catalog      *catalogs.Catalog
 	catalogState *starmap.CatalogState
 }
@@ -148,6 +149,10 @@ func (m *mockApplication) CatalogState() (starmap.CatalogState, error) {
 
 func (m *mockApplication) Readiness() (starmap.CatalogReadiness, error) {
 	return m.sm.Readiness(), nil
+}
+
+func (m *mockApplication) RuntimeStatus() starmap.RuntimeStatus {
+	return m.runtime.Status()
 }
 
 func (m *mockApplication) Starmap(...starmap.Option) (*starmap.Client, error) {

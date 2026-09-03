@@ -1,6 +1,10 @@
 package server
 
-import "time"
+import (
+	"time"
+
+	"github.com/agentstation/starmap/internal/server/sse"
+)
 
 // Config holds server configuration.
 type Config struct {
@@ -54,8 +58,8 @@ func DefaultConfig() Config {
 		ReadTimeout:          10 * time.Second,
 		WriteTimeout:         10 * time.Second,
 		IdleTimeout:          120 * time.Second,
-		SSEHeartbeatInterval: 20 * time.Second,
-		SSEWriteTimeout:      10 * time.Second,
+		SSEHeartbeatInterval: sse.DefaultHeartbeatInterval,
+		SSEWriteTimeout:      sse.DefaultWriteTimeout,
 		ShutdownGracePeriod:  100 * time.Millisecond,
 		MetricsEnabled:       true,
 	}

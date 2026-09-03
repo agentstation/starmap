@@ -11,6 +11,7 @@ import (
 
 	"github.com/agentstation/starmap"
 	"github.com/agentstation/starmap/internal/server/cache"
+	"github.com/agentstation/starmap/internal/server/operations"
 	"github.com/agentstation/starmap/internal/server/sse"
 	"github.com/agentstation/starmap/pkg/catalogs"
 )
@@ -41,6 +42,7 @@ func TestStatsExposesCatalogAndPublicationHealthSeparately(t *testing.T) {
 		},
 		cache.New(time.Minute, time.Minute),
 		broadcaster,
+		operations.NewRegistry(),
 		&logger,
 		time.Now().Add(-time.Minute),
 	)

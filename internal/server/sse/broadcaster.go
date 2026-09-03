@@ -22,8 +22,11 @@ const (
 	CatalogPublishedEvent = remote.CatalogPublishedEvent
 	// DefaultHeartbeatInterval keeps idle streams alive through common proxies.
 	DefaultHeartbeatInterval = 20 * time.Second
-	// DefaultWriteTimeout bounds each event or heartbeat write and flush.
-	DefaultWriteTimeout = 10 * time.Second
+	// DefaultWriteTimeout bounds each event or heartbeat write and flush. The
+	// broadcaster resets the deadline before every frame, so the value bounds
+	// one frame and never bounds the stream. Two minutes lets a slow reader on
+	// a congested link keep its subscription.
+	DefaultWriteTimeout = 2 * time.Minute
 
 	publicationQueueSize = 1
 )

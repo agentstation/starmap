@@ -15,6 +15,7 @@ type Application interface {
 	Catalog() (*catalogs.Catalog, error)
 	CatalogState() (starmap.CatalogState, error)
 	Readiness() (starmap.CatalogReadiness, error)
+	RuntimeStatus() starmap.RuntimeStatus
 	Starmap(...starmap.Option) (*starmap.Client, error)
 	Sync(context.Context, ...pkgsync.Option) (*pkgsync.Result, error)
 	UpdatesEnabled() bool

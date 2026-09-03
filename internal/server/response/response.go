@@ -64,6 +64,12 @@ func Created(w http.ResponseWriter, data any) {
 	JSON(w, http.StatusCreated, Success(data))
 }
 
+// Accepted writes a successful response with 202 status. The server holds an
+// asynchronous operation, and the data names the operation identity.
+func Accepted(w http.ResponseWriter, data any) {
+	JSON(w, http.StatusAccepted, Success(data))
+}
+
 // BadRequest writes a 400 error response.
 func BadRequest(w http.ResponseWriter, message, details string) {
 	JSON(w, http.StatusBadRequest, Fail("BAD_REQUEST", message, details))

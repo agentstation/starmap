@@ -1,9 +1,12 @@
 package handlers
 
 import (
+	stderrors "errors"
 	"net/http"
 	"strings"
+	"time"
 
+	"github.com/agentstation/starmap/internal/constants"
 	"github.com/agentstation/starmap/internal/server/response"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/catalogs/remote"
@@ -91,5 +94,26 @@ func (h *Handlers) HandleCatalogPayload(writer http.ResponseWriter, request *htt
 	writer.Header().Set("Content-Type", catalogs.CatalogPayloadMediaType)
 	writer.Header().Set("Cache-Control", "public, max-age=31536000, immutable")
 	writer.Header().Set("X-Starmap-Generation-ID", generation.Manifest.GenerationID)
-	_, _ = writer.Write(generation.Payload)
+	h.streamCatalogPayload(writer, generation.Payload)
+}
+
+// streamCatalogPayload writes one payload in bounded chunks. It resets the
+// write deadline before every chunk, so the deadline bounds one chunk and never
+// bounds the transfer. A slow reader then keeps its download, and a stalled
+// reader still releases the connection.
+func (h *Handlers) streamCatalogPayload(writer http.ResponseWriter, payload []byte) {
+	controller := http.NewResponseController(writer)
+	for offset := 0; offset < len(payload); offset += constants.CatalogPayloadChunkBytes {
+		end := min(offset+constants.CatalogPayloadChunkBytes, len(payload))
+		err := controller.SetWriteDeadline(
+			time.Now().Add(constants.CatalogPayloadChunkTimeout),
+		)
+		if err != nil && !stderrors.Is(err, http.ErrNotSupported) {
+			h.log().Warn().Err(err).Msg("Catalog payload write deadline was refused")
+			return
+		}
+		if _, err := writer.Write(payload[offset:end]); err != nil {
+			return
+		}
+	}
 }

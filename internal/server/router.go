@@ -20,6 +20,7 @@ func (s *Server) setupRouter() http.Handler {
 		s.app,
 		s.cache,
 		s.sseBroadcaster,
+		s.operations,
 		s.logger,
 		s.startTime,
 	)
@@ -118,6 +119,11 @@ func (s *Server) registerRoutes(mux *http.ServeMux, h *handlers.Handlers) {
 			}
 			http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
 		})
+		// The exact stream pattern outranks this subtree pattern, so the
+		// publication stream keeps its own route.
+		mux.HandleFunc(prefix+"/updates/", func(w http.ResponseWriter, r *http.Request) {
+			s.serveOperationRoute(w, r, h, prefix)
+		})
 	}
 
 	mux.HandleFunc(prefix+"/stats", func(w http.ResponseWriter, r *http.Request) {
@@ -137,12 +143,56 @@ func (s *Server) registerRoutes(mux *http.ServeMux, h *handlers.Handlers) {
 
 	// Metrics endpoint (optional)
 	if s.config.MetricsEnabled {
-		mux.HandleFunc("/metrics", func(w http.ResponseWriter, _ *http.Request) {
-			w.Header().Set("Content-Type", "text/plain")
-			_, _ = fmt.Fprintf(w, "# Starmap API Metrics\n")
-			_, _ = fmt.Fprintf(w, "# TYPE starmap_api_info gauge\n")
-			_, _ = fmt.Fprintf(w, "starmap_api_info{version=\"v1\"} 1\n")
-		})
+		mux.HandleFunc("/metrics", s.handleMetrics)
+	}
+}
+
+// handleMetrics renders the server metrics. Every label value comes from a
+// closed set, so the metric cardinality cannot grow with client input.
+func (s *Server) handleMetrics(w http.ResponseWriter, _ *http.Request) {
+	w.Header().Set("Content-Type", "text/plain")
+	_, _ = fmt.Fprintf(w, "# Starmap API Metrics\n")
+	_, _ = fmt.Fprintf(w, "# TYPE starmap_api_info gauge\n")
+	_, _ = fmt.Fprintf(w, "starmap_api_info{version=\"v1\"} 1\n")
+	_, _ = fmt.Fprintf(w, "# TYPE starmap_admin_operations_total counter\n")
+	for _, sample := range s.operations.Metrics() {
+		_, _ = fmt.Fprintf(
+			w,
+			"starmap_admin_operations_total{kind=%q,state=%q,reason=%q} %d\n",
+			sample.Kind, sample.State, sample.Reason, sample.Total,
+		)
+	}
+}
+
+// serveOperationRoute dispatches one asynchronous update operation route.
+func (s *Server) serveOperationRoute(
+	w http.ResponseWriter,
+	r *http.Request,
+	h *handlers.Handlers,
+	prefix string,
+) {
+	parts, err := extractExactPathSegments(r, prefix+"/updates/", 1)
+	if err != nil || len(parts) != 1 {
+		http.Error(w, "Not found", http.StatusNotFound)
+		return
+	}
+	switch r.Method {
+	case http.MethodGet:
+		h.HandleOperationStatus(w, r, parts[0])
+	case http.MethodDelete:
+		h.HandleOperationCancel(w, r, parts[0])
+	default:
+		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+	}
+}
+
+// streamingRoutes lists the routes that own their own write bound. The catalog
+// payload resets a deadline for every chunk, and the publication stream resets
+// one for every frame. Both need the connection deadline cleared first.
+func streamingRoutes(prefix string) []middleware.RouteTimeout {
+	return []middleware.RouteTimeout{
+		{Path: prefix + "/updates/stream"},
+		{Path: prefix + "/catalog/generations/", Prefix: true},
 	}
 }
 
@@ -196,6 +246,10 @@ func (s *Server) applyMiddleware(handler http.Handler) http.Handler {
 		}
 		handler = middleware.CORS(corsConfig)(handler)
 	}
+
+	// Split route timeouts run before the handlers, so a streaming handler owns
+	// its bound before it writes the first byte.
+	handler = middleware.RouteTimeouts(streamingRoutes(cfg.PathPrefix), s.logger)(handler)
 
 	// Logging and recovery (always enabled)
 	handler = middleware.Logger(s.logger)(handler)

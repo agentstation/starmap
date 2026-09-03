@@ -3,6 +3,7 @@ package server
 import (
 	"bytes"
 	"context"
+	"encoding/json"
 	"net/http"
 	"net/http/httptest"
 	"reflect"
@@ -12,6 +13,7 @@ import (
 	"github.com/rs/zerolog"
 
 	"github.com/agentstation/starmap"
+	"github.com/agentstation/starmap/internal/server/operations"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/catalogs/storage"
 )
@@ -48,11 +50,22 @@ func TestDurableServerUpdatePublishesSameGenerationAfterProcessRestart(t *testin
 	if err != nil {
 		t.Fatalf("New server: %v", err)
 	}
+	handler := server.Handler()
 	recorder := httptest.NewRecorder()
-	server.Handler().ServeHTTP(recorder, httptest.NewRequest(http.MethodPost, "/api/v1/update?source=local_catalog", nil))
-	if recorder.Code != http.StatusOK {
+	handler.ServeHTTP(recorder, httptest.NewRequest(
+		http.MethodPost, "/api/v1/update?source=local_catalog", nil,
+	))
+	if recorder.Code != http.StatusAccepted {
 		t.Fatalf("update status = %d, body = %s", recorder.Code, recorder.Body.String())
 	}
+	operation := decodeOperationStatus(t, recorder.Body.Bytes())
+	<-server.operations.Done(operation.ID)
+	final := readOperationStatus(t, handler, operation.ID)
+	if final.State != operations.StateSucceeded {
+		t.Fatalf("operation state = %q, want %q: reason %q",
+			final.State, operations.StateSucceeded, final.Reason)
+	}
+
 	published, err := store.Current(context.Background())
 	if err != nil {
 		t.Fatalf("Current after update: %v", err)
@@ -83,4 +96,33 @@ func TestDurableServerUpdatePublishesSameGenerationAfterProcessRestart(t *testin
 		!reflect.DeepEqual(restartedGeneration.Manifest, published.Manifest) {
 		t.Fatal("restarted process did not publish the exact committed generation")
 	}
+}
+
+// readOperationStatus reads one operation status through the registered route.
+func readOperationStatus(
+	t *testing.T,
+	handler http.Handler,
+	id string,
+) operations.Status {
+	t.Helper()
+	recorder := httptest.NewRecorder()
+	handler.ServeHTTP(recorder, httptest.NewRequest(
+		http.MethodGet, "/api/v1/updates/"+id, nil,
+	))
+	if recorder.Code != http.StatusOK {
+		t.Fatalf("operation status = %d, body = %s", recorder.Code, recorder.Body.String())
+	}
+	return decodeOperationStatus(t, recorder.Body.Bytes())
+}
+
+// decodeOperationStatus reads one operation out of a response envelope.
+func decodeOperationStatus(t *testing.T, body []byte) operations.Status {
+	t.Helper()
+	var envelope struct {
+		Data operations.Status `json:"data"`
+	}
+	if err := json.Unmarshal(body, &envelope); err != nil {
+		t.Fatalf("Unmarshal operation: %v", err)
+	}
+	return envelope.Data
 }

@@ -6,6 +6,7 @@ import (
 	stderrors "errors"
 	"net/http"
 	"net/http/httptest"
+	"slices"
 	"strings"
 	"sync"
 	"testing"
@@ -385,6 +386,7 @@ type failingWriter struct {
 	writes     int
 	failAfter  int
 	deadlines  int
+	deadlineAt []time.Time
 	firstWrite chan struct{}
 	firstOnce  sync.Once
 }
@@ -418,11 +420,19 @@ func (w *failingWriter) Write(payload []byte) (int, error) {
 
 func (*failingWriter) Flush() {}
 
-func (w *failingWriter) SetWriteDeadline(time.Time) error {
+func (w *failingWriter) SetWriteDeadline(deadline time.Time) error {
 	w.mu.Lock()
 	w.deadlines++
+	w.deadlineAt = append(w.deadlineAt, deadline)
 	w.mu.Unlock()
 	return nil
+}
+
+// deadlineValues returns every write deadline the handler set, oldest first.
+func (w *failingWriter) deadlineValues() []time.Time {
+	w.mu.Lock()
+	defer w.mu.Unlock()
+	return slices.Clone(w.deadlineAt)
 }
 
 func (w *failingWriter) deadlineCount() int {

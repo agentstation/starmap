@@ -69,8 +69,10 @@ func TestDefaultConfigIncludesSSELivenessBudgets(t *testing.T) {
 	if config.SSEHeartbeatInterval != 20*time.Second {
 		t.Fatalf("SSE heartbeat interval = %s, want 20s", config.SSEHeartbeatInterval)
 	}
-	if config.SSEWriteTimeout != 10*time.Second {
-		t.Fatalf("SSE write timeout = %s, want 10s", config.SSEWriteTimeout)
+	// The frame write deadline defaults to two minutes. A slow reader keeps its
+	// stream, and a stalled reader still releases the connection.
+	if config.SSEWriteTimeout != 2*time.Minute {
+		t.Fatalf("SSE write timeout = %s, want 2m0s", config.SSEWriteTimeout)
 	}
 }
 
