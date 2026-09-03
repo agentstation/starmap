@@ -4,7 +4,6 @@ import (
 	"context"
 	stderrors "errors"
 	"io"
-	"math/rand/v2"
 	"net/http"
 	"strconv"
 	"sync"
@@ -43,9 +42,15 @@ type Subscriber struct {
 	lastCatchUpAt   time.Time
 	retries         uint64
 	lastError       *HealthError
+	retryNotBefore  time.Time
+	upstream        *UpstreamReport
 
 	activationMu        sync.Mutex
 	identityEstablished bool
+
+	// reconnect paces stream reconnects. The run loop owns it, and it
+	// publishes its observable values through the fields under mu.
+	reconnect reconnectState
 
 	retryDelay func(int) time.Duration
 	now        func() time.Time
@@ -90,9 +95,16 @@ func NewContext(ctx context.Context, config Config) (*Subscriber, error) {
 	if err != nil {
 		return nil, err
 	}
+	httpClient := normalized.HTTPClient
+	if httpClient == nil {
+		httpClient, err = normalized.transferClient()
+		if err != nil {
+			return nil, err
+		}
+	}
 	protocol, err := protocol.NewClient(
 		normalized.BaseURL,
-		normalized.HTTPClient,
+		httpClient,
 		catalogs.CurrentCatalogSchemaVersion,
 	)
 	if err != nil {
@@ -147,8 +159,8 @@ func NewContext(ctx context.Context, config Config) (*Subscriber, error) {
 			Enabled: normalized.PollingFallback != nil,
 		},
 		identityEstablished: !client.Readiness().Embedded.Active,
+		reconnect:           newReconnectState(normalized),
 	}
-	subscriber.retryDelay = subscriber.exponentialJitter
 	return subscriber, nil
 }
 
@@ -242,9 +254,10 @@ func (s *Subscriber) Start(ctx context.Context) error {
 		if runErr := runCtx.Err(); runErr != nil {
 			return runErr
 		}
-		if isTerminalRemoteError(err) {
+		if s.terminal(err) {
 			return err
 		}
+		s.observeRefusal(err)
 		if err := s.beginRun(runCtx, nil, done, 1, StreamStateRetrying); err != nil {
 			return err
 		}
@@ -262,23 +275,29 @@ func (s *Subscriber) Start(ctx context.Context) error {
 		if runErr := runCtx.Err(); runErr != nil {
 			return runErr
 		}
-		if isTerminalRemoteError(err) {
+		if s.terminal(err) {
 			return err
 		}
+		s.observeRefusal(err)
 		if err := s.beginRun(runCtx, nil, done, 1, StreamStateRetrying); err != nil {
 			return err
 		}
 		started = true
 		return nil
 	}
+	// The open stream starts its liveness window here. A later reconnect
+	// resets the backoff only when this window completes.
+	s.reconnect.opened(s.currentTime())
 	if err := s.catchUp(runCtx); err != nil {
 		_ = stream.Close()
+		s.reconnect.closed(s.currentTime())
 		if runErr := runCtx.Err(); runErr != nil {
 			return runErr
 		}
-		if isTerminalRemoteError(err) {
+		if s.terminal(err) {
 			return err
 		}
+		s.observeRefusal(err)
 		if err := s.beginRun(runCtx, nil, done, 1, StreamStateRetrying); err != nil {
 			return err
 		}
@@ -390,10 +409,17 @@ func (s *Subscriber) run(
 			if err == nil {
 				err = io.EOF
 			}
+			// The backoff resets only when the closed stream stayed open for a
+			// healthy liveness window. A stream that opened and failed at once
+			// proves no liveness, so its failure keeps the growing delay.
+			if s.reconnect.closed(s.currentTime()) {
+				attempt = 0
+			}
 			s.recordHealthError("stream_read", err)
-			if isTerminalRemoteError(err) {
+			if s.terminal(err) {
 				return
 			}
+			s.observeRefusal(err)
 			streamFailures++
 		}
 
@@ -405,9 +431,17 @@ func (s *Subscriber) run(
 			) {
 				return
 			}
+			if !s.awaitCredentialChange(ctx) {
+				return
+			}
 			s.setStreamState(StreamStateRetrying)
 			s.recordRetry()
-			if !waitRetry(ctx, s.retryDelay(attempt)) {
+			delay, delayErr := s.nextReconnectDelay(attempt)
+			if delayErr != nil {
+				s.recordHealthError("stream_backoff", delayErr)
+				return
+			}
+			if !waitRetry(ctx, delay) {
 				return
 			}
 
@@ -415,20 +449,27 @@ func (s *Subscriber) run(
 			next, openErr := s.protocol.OpenEventStream(ctx, lastEventID)
 			if openErr != nil {
 				s.recordHealthError("stream_open", openErr)
-				if isTerminalRemoteError(openErr) {
+				if s.terminal(openErr) {
 					return
 				}
+				s.observeRefusal(openErr)
 				attempt++
 				streamFailures++
 				continue
 			}
+			// A TCP connection and a first response header prove no liveness,
+			// so opening the stream records the start of the liveness window
+			// and never resets the backoff.
+			s.reconnect.opened(s.currentTime())
 			// Replay only improves efficiency. After each connection, the
 			// subscriber fetches and verifies current state before it reads events.
 			if catchUpErr := s.catchUp(ctx); catchUpErr != nil {
 				_ = next.Close()
-				if isTerminalRemoteError(catchUpErr) {
+				s.reconnect.closed(s.currentTime())
+				if s.terminal(catchUpErr) {
 					return
 				}
+				s.observeRefusal(catchUpErr)
 				attempt++
 				streamFailures++
 				continue
@@ -436,12 +477,66 @@ func (s *Subscriber) run(
 			s.finishPollingFallback()
 			s.setStreamState(StreamStateStreaming)
 			stream = next
-			attempt = 0
 			streamFailures = 0
 			nextPoll = time.Time{}
 			break
 		}
 	}
+}
+
+// nextReconnectDelay returns the wait before the next reconnect attempt. A
+// test may replace the delay through retryDelay.
+func (s *Subscriber) nextReconnectDelay(attempt int) (time.Duration, error) {
+	if s.retryDelay != nil {
+		return s.retryDelay(attempt), nil
+	}
+	delay, err := s.reconnect.next(s.currentTime())
+	if err != nil {
+		return 0, err
+	}
+	s.publishRetryBoundary(s.reconnect.boundary())
+	return delay, nil
+}
+
+// observeRefusal records a declared not-before boundary. The boundary is a
+// hard floor that replaces the computed backoff on the next attempt.
+func (s *Subscriber) observeRefusal(err error) {
+	var refusal *protocol.RefusalError
+	if !stderrors.As(err, &refusal) {
+		return
+	}
+	now := s.currentTime()
+	s.reconnect.refuse(now, refusal.NotBefore)
+	s.publishRetryBoundary(s.reconnect.boundary())
+}
+
+// terminal reports whether an error ends the subscriber. An authentication
+// failure is terminal only while the caller declared no credential-change
+// signal. With a signal the subscriber waits for a new credential instead.
+func (s *Subscriber) terminal(err error) bool {
+	return isTerminalRemoteError(err) && s.config.CredentialChanges == nil
+}
+
+// awaitCredentialChange blocks while the last failure was an authentication
+// failure and the caller declared a credential-change signal. A retry with the
+// rejected credential cannot succeed, so the subscriber waits instead of
+// spending its reconnect budget.
+func (s *Subscriber) awaitCredentialChange(ctx context.Context) bool {
+	changes := s.config.CredentialChanges
+	if changes == nil || !s.lastErrorWasAuthentication() {
+		return ctx.Err() == nil
+	}
+	s.setStreamState(StreamStateWaitingForCredentials)
+	select {
+	case <-ctx.Done():
+		return false
+	case _, open := <-changes:
+		if !open {
+			return false
+		}
+	}
+	s.clearAuthenticationFailure()
+	return ctx.Err() == nil
 }
 
 func isTerminalRemoteError(err error) bool {
@@ -462,8 +557,23 @@ func (s *Subscriber) pollFallbackIfDue(
 	}
 	s.startPollingFallback()
 	s.setStreamState(StreamStatePolling)
-	now := time.Now()
-	if !nextPoll.IsZero() && now.Before(*nextPoll) {
+	now := s.currentTime()
+	if nextPoll.IsZero() {
+		// The first poll of one fallback lands on the stable phase of this
+		// instance, so many degraded subscribers spread across the interval
+		// instead of polling together.
+		scheduled, err := fallbackPollAt(
+			s.config.controllerIdentity(controllerPoll),
+			policy.Interval,
+			now,
+		)
+		if err != nil {
+			s.recordHealthError("fallback_poll", err)
+			return false
+		}
+		*nextPoll = scheduled
+	}
+	if now.Before(*nextPoll) {
 		return ctx.Err() == nil
 	}
 
@@ -472,9 +582,10 @@ func (s *Subscriber) pollFallbackIfDue(
 	if ctx.Err() != nil {
 		return false
 	}
-	*nextPoll = time.Now().Add(policy.Interval)
+	*nextPoll = s.currentTime().Add(policy.Interval)
 	s.recordFallbackPoll(modified)
-	if isTerminalRemoteError(err) {
+	s.observeRefusal(err)
+	if s.terminal(err) {
 		return false
 	}
 	// A polling failure is observable later through P7.11 health, but it does
@@ -701,26 +812,6 @@ func (s *Subscriber) currentLastEventID() string {
 	s.mu.Lock()
 	defer s.mu.Unlock()
 	return s.lastEventID
-}
-
-func (s *Subscriber) exponentialJitter(attempt int) time.Duration {
-	delay := s.config.ReconnectMinDelay
-	for range min(attempt, 62) {
-		if delay >= s.config.ReconnectMaxDelay/2 {
-			delay = s.config.ReconnectMaxDelay
-			break
-		}
-		delay *= 2
-	}
-	if delay > s.config.ReconnectMaxDelay {
-		delay = s.config.ReconnectMaxDelay
-	}
-	half := delay / 2
-	if half <= 0 {
-		return delay
-	}
-	// Reconnect jitter is load spreading, not a security decision.
-	return half + time.Duration(rand.Int64N(int64(delay-half)+1)) //nolint:gosec
 }
 
 func waitRetry(ctx context.Context, delay time.Duration) bool {
