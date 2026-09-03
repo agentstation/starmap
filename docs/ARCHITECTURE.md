@@ -1226,14 +1226,15 @@ See [pkg/sources/README.md](../pkg/sources/README.md) for details.
 
 ## Connected Catalog Runtime
 
-Location: `runtime.go`, `runtime_options.go`, `runtime_policy.go`,
-`runtime_layers.go`, `runtime_status.go`, `internal/catalog/settings`
+Location: `runtime/runtime.go`, `runtime/options.go`, `runtime/policy.go`,
+`runtime/layers.go`, `runtime/status.go`, `internal/catalog/settings`
 
 **Purpose:** Serve one effective catalog from a verified embedded baseline, a
 configured catalog source, and retained provider observations
 
-`starmap.New` stays offline. The connected constructor is `starmap.Open`. It
-serves the verified embedded catalog before the first upstream reply. The
+`starmap.New` stays offline. The connected constructor is `runtime.Open` in
+`github.com/agentstation/starmap/runtime`. It serves the verified embedded
+catalog before the first upstream reply. The
 `Catalog` and `State` methods therefore never wait for the network.
 
 The `Open`

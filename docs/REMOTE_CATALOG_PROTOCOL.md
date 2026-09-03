@@ -67,7 +67,7 @@ Protocol tooling can import `github.com/agentstation/starmap/pkg/catalogs/remote
 as `protocol`. It can construct `protocol.Client`, fetch a current or addressed
 generation, and pass it to `starmap.Client.Activate`.
 
-`starmap.Open` is the normal consumer path. It selects this protocol with
+`runtime.Open` is the normal consumer path. It selects this protocol with
 `STARMAP_CATALOG_SOURCE=starmap` and the endpoint in
 `STARMAP_CATALOG_SOURCE_URL`. The connected runtime owns the startup read, the
 stream, the conditional polling fallback, the retained layers, and the served
@@ -137,6 +137,6 @@ an untrusted publisher from growing subscriber memory through one fragmented
 event.
 
 Importing the root `starmap` package never enables remote I/O or silently
-changes update behavior. `starmap.New` stays offline. `starmap.Open` is the
+changes update behavior. `starmap.New` stays offline. `runtime.Open` is the
 explicit connected constructor. It reads the configured catalog source at
 startup under the configured startup policy.

@@ -22,14 +22,14 @@ identifiers, command names, API fields, and protocol values remain exact.
 | catalog payload | The canonical JSON bytes for one catalog generation. |  | approved | `pkg/catalogs/payload.go` |
 | catalog source | The configured upstream that supplies verified catalog generations to a connected runtime. |  | approved | `internal/catalog/settings/settings.go` |
 | catalog store | The caller-supplied interface that persists and reads catalog generations. | generation store | approved | `pkg/catalogs/storage/store.go` |
-| connected runtime | The process state that `starmap.Open` returns. It reads a catalog source on a schedule. |  | approved | `runtime.go` |
+| connected runtime | The process state that `runtime.Open` returns. It reads a catalog source on a schedule. |  | approved | `runtime/runtime.go` |
 | CAS | The common abbreviation for compare-and-swap. |  | approved | `docs/CATALOG_STORE_CONTRACT.md` |
 | catch-up | The process that applies events which a subscriber missed. |  | approved | `docs/REMOTE_CATALOG_PROTOCOL.md` |
 | CLI | The command-line interface for Starmap operations. |  | approved | `docs/CLI.md` |
 | compare-and-swap | An atomic update that succeeds only when the stored value matches an expected value. |  | approved | `docs/CATALOG_STORE_CONTRACT.md` |
 | CORS | Cross-Origin Resource Sharing, an HTTP mechanism that permits selected cross-origin requests. |  | approved | `docs/DOCKER.md` |
 | embedded catalog | The verified catalog baseline that Starmap compiles into its binary. |  | approved | `internal/sources/embedded/source.go` |
-| effective catalog | The immutable catalog that a connected runtime builds from its retained layers. |  | approved | `runtime_layers.go` |
+| effective catalog | The immutable catalog that a connected runtime builds from its retained layers. |  | approved | `runtime/layers.go` |
 | egress | The outbound network traffic that a Starmap process starts. |  | approved | `docs/ARCHITECTURE.md` |
 | endpoint projection | The generated view that joins model definitions to provider offerings. |  | approved | `pkg/catalogs/projection` |
 | field-level | Applied to one field instead of a complete record. |  | approved | `docs/CATALOG_AUTHORITY_POLICY.md` |
@@ -45,7 +45,7 @@ identifiers, command names, API fields, and protocol values remain exact.
 | JSON | JavaScript Object Notation, the data format for Starmap API and catalog payloads. |  | approved | `docs/REST_API.md` |
 | last-known-good | The most recent catalog generation that completed validation and activation. |  | approved | `docs/CATALOG_DISTRIBUTION_TRUST.md` |
 | Kubernetes | The container orchestration system that runs the Starmap deployment example. |  | approved | `docs/DOCKER.md` |
-| lease | The shared-store claim that permits exactly one replica to refresh. |  | approved | `runtime_lease.go` |
+| lease | The shared-store claim that permits exactly one replica to refresh. |  | approved | `runtime/lease.go` |
 | manifest | The record that binds payload bytes, schema, compatibility, and source observations. |  | approved | `pkg/catalogs/generation_manifest.go` |
 | model definition | The provider-independent identity and intrinsic facts for one model. |  | approved | `docs/CATALOG_IDENTITY.md` |
 | models.dev | An external catalog source that supplies provider and model metadata. | models dev | approved | `internal/sources/modelsdev` |
@@ -77,7 +77,7 @@ identifiers, command names, API fields, and protocol values remain exact.
 | source observation | One source's identity, revision, time, checksum, and catalog evidence. |  | approved | `pkg/sources/observation.go` |
 | SSE | Server-Sent Events, the HTTP stream format for remote catalog notifications. |  | approved | `docs/REMOTE_CATALOG_PROTOCOL.md` |
 | Starmap | The Go library, command-line application, and server in this repository. | Star Map | approved | `README.md` |
-| startup policy | The rule that decides what a runtime serves before its first upstream reply. |  | approved | `runtime_policy.go` |
+| startup policy | The rule that decides what a runtime serves before its first upstream reply. |  | approved | `runtime/policy.go` |
 | trusted root | The Sigstore document that names the keys and authorities a verifier accepts. |  | approved | `internal/attestation/trustedroot.go` |
 | TUF | The Update Framework, the protocol that distributes a Sigstore trusted root. |  | approved | `internal/attestation/trustedroot.go` |
 | URL | A uniform resource locator that names one network endpoint. |  | approved | `docs/REST_API.md` |

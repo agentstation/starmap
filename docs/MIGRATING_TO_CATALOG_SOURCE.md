@@ -11,13 +11,14 @@ Remote catalog consumption was an opt-in mode. A process made no catalog request
 at startup, and an operator turned a separate remote mode on.
 
 A connected runtime now reads a catalog source at startup under a startup
-policy. `starmap.Open` returns that runtime. The default source is the public
+policy. `runtime.Open` returns that runtime. The `runtime` package holds it.
+The default source is the public
 `agentstation/starmap` channel on GitHub, and the default startup policy is
 `prefer_source`.
 
 `starmap.New` still opens no connection and makes no request. Importing the root
 package still enables no network work. The connected behavior belongs to the
-explicit `Open` constructor only.
+`github.com/agentstation/starmap/runtime` package only.
 
 ## The migration contract
 

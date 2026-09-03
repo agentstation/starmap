@@ -31,13 +31,6 @@ Package starmap provides immutable AI model catalog reads, explicit generation p
 
 - [Constants](<#constants>)
 - [func EmbeddedBuilder\(\) \(\*catalogs.Builder, error\)](<#EmbeddedBuilder>)
-- [type Acquirer](<#Acquirer>)
-- [type AcquisitionPolicy](<#AcquisitionPolicy>)
-  - [func DefaultAcquisitionPolicy\(\) AcquisitionPolicy](<#DefaultAcquisitionPolicy>)
-  - [func \(p AcquisitionPolicy\) Validate\(\) error](<#AcquisitionPolicy.Validate>)
-- [type AcquisitionReport](<#AcquisitionReport>)
-- [type AcquisitionRequest](<#AcquisitionRequest>)
-- [type AcquisitionResult](<#AcquisitionResult>)
 - [type Candidate](<#Candidate>)
   - [func NewCandidate\(catalog \*catalogs.Catalog, evidence CandidateEvidence\) \(\*Candidate, error\)](<#NewCandidate>)
 - [type CandidateEvidence](<#CandidateEvidence>)
@@ -55,10 +48,12 @@ Package starmap provides immutable AI model catalog reads, explicit generation p
   - [func \(c \*Client\) CurrentGenerationID\(\) string](<#Client.CurrentGenerationID>)
   - [func \(c \*Client\) Generation\(ctx context.Context, id string\) \(catalogs.Generation, error\)](<#Client.Generation>)
   - [func \(c \*Client\) HookStats\(\) HookDeliveryStats](<#Client.HookStats>)
+  - [func \(c \*Client\) NextID\(\) \(string, error\)](<#Client.NextID>)
   - [func \(c \*Client\) OnCatalogPublished\(fn CatalogPublishedHook\)](<#Client.OnCatalogPublished>)
   - [func \(c \*Client\) OnModelAdded\(fn ModelAddedHook\)](<#Client.OnModelAdded>)
   - [func \(c \*Client\) OnModelRemoved\(fn ModelRemovedHook\)](<#Client.OnModelRemoved>)
   - [func \(c \*Client\) OnModelUpdated\(fn ModelUpdatedHook\)](<#Client.OnModelUpdated>)
+  - [func \(c \*Client\) PublishesDurably\(\) bool](<#Client.PublishesDurably>)
   - [func \(c \*Client\) Readiness\(\) CatalogReadiness](<#Client.Readiness>)
   - [func \(c \*Client\) Rollback\(ctx context.Context, generationID string\) \(\*RollbackResult, error\)](<#Client.Rollback>)
   - [func \(c \*Client\) Save\(\) error](<#Client.Save>)
@@ -66,91 +61,18 @@ Package starmap provides immutable AI model catalog reads, explicit generation p
   - [func \(c \*Client\) Update\(ctx context.Context, update UpdateFunc\) \(Publication, error\)](<#Client.Update>)
   - [func \(c \*Client\) WorkspacePath\(\) string](<#Client.WorkspacePath>)
 - [type EmbeddedBootstrapInfo](<#EmbeddedBootstrapInfo>)
-- [type Freshness](<#Freshness>)
-  - [func \(f Freshness\) String\(\) string](<#Freshness.String>)
-- [type FreshnessPolicy](<#FreshnessPolicy>)
-  - [func DefaultFreshnessPolicy\(\) FreshnessPolicy](<#DefaultFreshnessPolicy>)
-  - [func \(p FreshnessPolicy\) Validate\(\) error](<#FreshnessPolicy.Validate>)
-- [type Health](<#Health>)
-  - [func \(h Health\) String\(\) string](<#Health.String>)
 - [type HookDeliveryStats](<#HookDeliveryStats>)
-- [type Lease](<#Lease>)
-- [type LeaseStore](<#LeaseStore>)
 - [type ModelAddedHook](<#ModelAddedHook>)
 - [type ModelRemovedHook](<#ModelRemovedHook>)
 - [type ModelUpdatedHook](<#ModelUpdatedHook>)
 - [type Option](<#Option>)
-  - [func WithAcquirer\(acquirer Acquirer\) Option](<#WithAcquirer>)
-  - [func WithAcquisitionEnabled\(enabled bool\) Option](<#WithAcquisitionEnabled>)
-  - [func WithAcquisitionInterval\(interval time.Duration\) Option](<#WithAcquisitionInterval>)
   - [func WithCatalogPath\(path string\) Option](<#WithCatalogPath>)
-  - [func WithCatalogSource\(name string\) Option](<#WithCatalogSource>)
   - [func WithCatalogStore\(store storage.Store\) Option](<#WithCatalogStore>)
-  - [func WithClock\(now func\(\) time.Time\) Option](<#WithClock>)
-  - [func WithCoalesceWindow\(window time.Duration\) Option](<#WithCoalesceWindow>)
   - [func WithEmbeddedBootstrapMaxAge\(maxAge time.Duration\) Option](<#WithEmbeddedBootstrapMaxAge>)
   - [func WithEmbeddedBootstrapMaxSizeBytes\(maxSizeBytes int64\) Option](<#WithEmbeddedBootstrapMaxSizeBytes>)
-  - [func WithFreshnessPolicy\(policy FreshnessPolicy\) Option](<#WithFreshnessPolicy>)
-  - [func WithLeaseStore\(store LeaseStore\) Option](<#WithLeaseStore>)
-  - [func WithListenAddress\(address string\) Option](<#WithListenAddress>)
-  - [func WithRandom\(random Random\) Option](<#WithRandom>)
-  - [func WithRefreshTimeout\(timeout time.Duration\) Option](<#WithRefreshTimeout>)
-  - [func WithSchedulerIdentity\(identity string\) Option](<#WithSchedulerIdentity>)
-  - [func WithSource\(source Source\) Option](<#WithSource>)
-  - [func WithSourceAPIKey\(key string\) Option](<#WithSourceAPIKey>)
-  - [func WithSourceAliases\(aliases ...string\) Option](<#WithSourceAliases>)
-  - [func WithSourceChannel\(channel string\) Option](<#WithSourceChannel>)
-  - [func WithSourceMaxAge\(maxAge time.Duration\) Option](<#WithSourceMaxAge>)
-  - [func WithSourceMaxHops\(hops int\) Option](<#WithSourceMaxHops>)
-  - [func WithSourcePolicy\(policy SourcePolicy\) Option](<#WithSourcePolicy>)
-  - [func WithSourcePollInterval\(interval time.Duration\) Option](<#WithSourcePollInterval>)
-  - [func WithSourceRepository\(repository string\) Option](<#WithSourceRepository>)
-  - [func WithSourceSignerWorkflow\(workflow string\) Option](<#WithSourceSignerWorkflow>)
-  - [func WithSourceStartupPolicy\(name string\) Option](<#WithSourceStartupPolicy>)
-  - [func WithSourceToken\(token string\) Option](<#WithSourceToken>)
-  - [func WithSourceURL\(url string\) Option](<#WithSourceURL>)
-  - [func WithStartupSpread\(spread time.Duration\) Option](<#WithStartupSpread>)
-  - [func WithStateDirectory\(directory string\) Option](<#WithStateDirectory>)
-  - [func WithTransferIdleTimeout\(timeout time.Duration\) Option](<#WithTransferIdleTimeout>)
-  - [func WithTransferMaxDuration\(duration time.Duration\) Option](<#WithTransferMaxDuration>)
-- [type ProviderLayer](<#ProviderLayer>)
 - [type Publication](<#Publication>)
-- [type Random](<#Random>)
 - [type ReadinessIssue](<#ReadinessIssue>)
-- [type RefreshReport](<#RefreshReport>)
 - [type RollbackResult](<#RollbackResult>)
-- [type Runtime](<#Runtime>)
-  - [func Open\(ctx context.Context, opts ...Option\) \(\*Runtime, error\)](<#Open>)
-  - [func \(r \*Runtime\) Catalog\(\) \*catalogs.Catalog](<#Runtime.Catalog>)
-  - [func \(r \*Runtime\) Client\(\) \*Client](<#Runtime.Client>)
-  - [func \(r \*Runtime\) Close\(\) error](<#Runtime.Close>)
-  - [func \(r \*Runtime\) Refresh\(ctx context.Context\) \(RefreshReport, error\)](<#Runtime.Refresh>)
-  - [func \(r \*Runtime\) RefreshSource\(ctx context.Context\) \(SourceRefreshReport, error\)](<#Runtime.RefreshSource>)
-  - [func \(r \*Runtime\) State\(\) CatalogState](<#Runtime.State>)
-  - [func \(r \*Runtime\) Status\(\) RuntimeStatus](<#Runtime.Status>)
-  - [func \(r \*Runtime\) Sync\(ctx context.Context, providers ...catalogs.ProviderID\) \(AcquisitionReport, error\)](<#Runtime.Sync>)
-  - [func \(r \*Runtime\) Updates\(\) \<\-chan CatalogState](<#Runtime.Updates>)
-- [type RuntimeStatus](<#RuntimeStatus>)
-- [type Source](<#Source>)
-- [type SourceHop](<#SourceHop>)
-- [type SourceIdentityAdopter](<#SourceIdentityAdopter>)
-- [type SourceKind](<#SourceKind>)
-  - [func ParseSourceKind\(name string\) \(SourceKind, error\)](<#ParseSourceKind>)
-  - [func SourceKinds\(\) \[\]SourceKind](<#SourceKinds>)
-  - [func \(k SourceKind\) Custom\(\) bool](<#SourceKind.Custom>)
-  - [func \(k SourceKind\) String\(\) string](<#SourceKind.String>)
-  - [func \(k SourceKind\) Valid\(\) bool](<#SourceKind.Valid>)
-- [type SourcePolicy](<#SourcePolicy>)
-  - [func DefaultSourcePolicy\(\) SourcePolicy](<#DefaultSourcePolicy>)
-  - [func \(p SourcePolicy\) SafeIdentity\(\) string](<#SourcePolicy.SafeIdentity>)
-  - [func \(p SourcePolicy\) Validate\(\) error](<#SourcePolicy.Validate>)
-- [type SourceRead](<#SourceRead>)
-- [type SourceRefreshReport](<#SourceRefreshReport>)
-- [type SourceWatcher](<#SourceWatcher>)
-- [type StartupPolicy](<#StartupPolicy>)
-  - [func ParseStartupPolicy\(name string\) \(StartupPolicy, error\)](<#ParseStartupPolicy>)
-  - [func \(p StartupPolicy\) String\(\) string](<#StartupPolicy.String>)
-  - [func \(p StartupPolicy\) Valid\(\) bool](<#StartupPolicy.Valid>)
 - [type UpdateFunc](<#UpdateFunc>)
 
 
@@ -171,116 +93,6 @@ const (
 )
 ```
 
-<a name="LeaseTTL"></a>Lease timing. One holder renews well inside the expiry, so a short pause never drops the lease and a stopped holder expires quickly.
-
-```go
-const (
-    // LeaseTTL bounds how long one lease stays valid without a renewal.
-    LeaseTTL = 90 * time.Second
-
-    // LeaseRenewInterval is the period between renewals.
-    LeaseRenewInterval = 30 * time.Second
-)
-```
-
-<a name="DefaultTransferIdleTimeout"></a>Transfer and refresh defaults. They match the canonical CATALOG\_TRANSFER\_\* and CATALOG\_REFRESH\_TIMEOUT settings.
-
-```go
-const (
-    // DefaultTransferIdleTimeout bounds a stalled transfer.
-    DefaultTransferIdleTimeout = 2 * time.Minute
-
-    // DefaultTransferMaxDuration bounds one whole transfer.
-    DefaultTransferMaxDuration = 60 * time.Minute
-
-    // DefaultRefreshTimeout is zero, so a refresh carries no deadline of its
-    // own. Transfer bounds and caller cancellation stop a stalled run.
-    DefaultRefreshTimeout time.Duration = 0
-
-    // DefaultCoalesceWindow bounds how long completed provider observations
-    // wait for a slower sibling before they publish.
-    DefaultCoalesceWindow = 30 * time.Second
-)
-```
-
-<a name="DefaultSourceRepository"></a>Source policy defaults. They match the canonical CATALOG\_SOURCE\_\* settings.
-
-```go
-const (
-    // DefaultSourceRepository is the public catalog repository.
-    DefaultSourceRepository = "agentstation/starmap"
-
-    // DefaultSourceChannel is the mutable release that names the current
-    // immutable catalog release.
-    DefaultSourceChannel = "catalog-latest"
-
-    // DefaultSourcePollInterval is how often the runtime checks the channel.
-    DefaultSourcePollInterval = time.Hour
-
-    // DefaultSourceMaxAge is the age at which a served catalog is stale.
-    DefaultSourceMaxAge = 6 * time.Hour
-
-    // DefaultSourceMaxHops bounds a cascade of Starmap runtimes.
-    DefaultSourceMaxHops = 8
-
-    // MaxSourceAliases bounds the declared alias list. A deployment names a
-    // few addresses of one node, so a longer list is a configuration error.
-    MaxSourceAliases = 16
-
-    // MaxSourceAliasBytes bounds one declared alias.
-    MaxSourceAliasBytes = 128
-)
-```
-
-<a name="FreshnessChannelWarnAge"></a>Freshness thresholds. They follow the four\-hour publication cadence, the one\-hour channel poll, and the six\-hour end\-to\-end objective.
-
-```go
-const (
-    // FreshnessChannelWarnAge is the served-catalog age that warns.
-    FreshnessChannelWarnAge = 6 * time.Hour
-
-    // FreshnessChannelCriticalAge is the served-catalog age that is critical.
-    FreshnessChannelCriticalAge = 10 * time.Hour
-
-    // FreshnessSourceCheckWarnAge is the source-check age that warns.
-    FreshnessSourceCheckWarnAge = 90 * time.Minute
-
-    // FreshnessSourceCheckCriticalAge is the source-check age that is critical.
-    FreshnessSourceCheckCriticalAge = 2 * time.Hour
-
-    // FreshnessAcquisitionWarnAge is the acquisition-success age that warns.
-    FreshnessAcquisitionWarnAge = 5 * time.Hour
-
-    // FreshnessAcquisitionCriticalAge is the acquisition-success age that is
-    // critical.
-    FreshnessAcquisitionCriticalAge = 8 * time.Hour
-)
-```
-
-<a name="FallbackNone"></a>Fallback reasons. They say why the runtime still serves the verified embedded catalog instead of an upstream generation.
-
-```go
-const (
-    // FallbackNone means an upstream generation is active.
-    FallbackNone = ""
-
-    // FallbackAwaitingSource means no upstream reply arrived yet.
-    FallbackAwaitingSource = "awaiting_source"
-
-    // FallbackSourceUnavailable means every source read failed so far.
-    FallbackSourceUnavailable = "source_unavailable"
-)
-```
-
-<a name="DefaultAcquisitionInterval"></a>Acquisition policy defaults. Acquisition has exactly two settings: whether it runs, and how often. No start\-time or mode setting exists.
-
-```go
-const (
-    // DefaultAcquisitionInterval is the provider acquisition period.
-    DefaultAcquisitionInterval = 4 * time.Hour
-)
-```
-
 <a name="EmbeddedBuilder"></a>
 ## func [EmbeddedBuilder](<https://github.com/agentstation/starmap/blob/main/embedded.go#L12>)
 
@@ -289,140 +101,6 @@ func EmbeddedBuilder() (*catalogs.Builder, error)
 ```
 
 EmbeddedBuilder returns a catalog builder loaded from the generation embedded in this module. Consumers use it to construct catalog fixtures without provisioning client storage. Callers that need the verified immutable generation with durable storage should construct a Client.
-
-<a name="Acquirer"></a>
-## type [Acquirer](<https://github.com/agentstation/starmap/blob/main/runtime.go#L149-L151>)
-
-Acquirer collects provider observations for the runtime. The root package selects no concrete provider client, so the deployment injects this role. Package acquisition supplies the built\-in composition.
-
-```go
-type Acquirer interface {
-    AcquireProviders(ctx context.Context, request AcquisitionRequest) (AcquisitionResult, error)
-}
-```
-
-<a name="AcquisitionPolicy"></a>
-## type [AcquisitionPolicy](<https://github.com/agentstation/starmap/blob/main/runtime_policy.go#L291-L299>)
-
-AcquisitionPolicy configures scheduled provider acquisition. The policy is exactly one switch and one period.
-
-```go
-type AcquisitionPolicy struct {
-    // Enabled reports whether scheduled provider acquisition runs.
-    Enabled bool
-
-    // Interval is the acquisition period. The scheduler places each instance
-    // at a stable phase inside the interval. Zero means one startup pass and
-    // no periodic work.
-    Interval time.Duration
-}
-```
-
-<a name="DefaultAcquisitionPolicy"></a>
-### func [DefaultAcquisitionPolicy](<https://github.com/agentstation/starmap/blob/main/runtime_policy.go#L302>)
-
-```go
-func DefaultAcquisitionPolicy() AcquisitionPolicy
-```
-
-DefaultAcquisitionPolicy returns the canonical acquisition policy.
-
-<a name="AcquisitionPolicy.Validate"></a>
-### func \(AcquisitionPolicy\) [Validate](<https://github.com/agentstation/starmap/blob/main/runtime_policy.go#L308>)
-
-```go
-func (p AcquisitionPolicy) Validate() error
-```
-
-Validate checks the acquisition period. Zero is valid and selects one startup pass, so an operator schedules a single run without a cadence.
-
-<a name="AcquisitionReport"></a>
-## type [AcquisitionReport](<https://github.com/agentstation/starmap/blob/main/runtime_refresh.go#L75-L106>)
-
-AcquisitionReport says what one provider acquisition run produced. A partial failure still publishes: the report names the providers that kept their own last\-known\-good observation.
-
-```go
-type AcquisitionReport struct {
-    // RunID is the identity of the run that produced this report.
-    RunID string
-
-    // StartedAt and CompletedAt bound the run.
-    StartedAt   time.Time
-    CompletedAt time.Time
-
-    // Eligible is the number of providers the run considered.
-    Eligible int
-
-    // Succeeded, Skipped, and Failed count the terminal attempts.
-    Succeeded int
-    Skipped   int
-    Failed    int
-
-    // Attempts holds one terminal attempt per eligible provider.
-    Attempts []sources.ProviderAttempt
-
-    // Published reports whether the runtime published a new effective catalog.
-    Published bool
-
-    // GenerationID identifies the published effective catalog.
-    GenerationID string
-
-    // Retained names the providers that kept their previous last-known-good
-    // observation because this run did not replace it.
-    Retained []catalogs.ProviderID
-
-    // Health grades the run. A failed provider degrades the run.
-    Health Health
-}
-```
-
-<a name="AcquisitionRequest"></a>
-## type [AcquisitionRequest](<https://github.com/agentstation/starmap/blob/main/runtime.go#L111-L132>)
-
-AcquisitionRequest describes one provider acquisition run.
-
-```go
-type AcquisitionRequest struct {
-    // RunID is the run identity that logs and status report.
-    RunID string
-
-    // Current is the immutable catalog the run starts from.
-    Current *catalogs.Catalog
-
-    // Providers restricts the run. An empty list observes every eligible
-    // provider.
-    Providers []catalogs.ProviderID
-
-    // CoalesceWindow bounds how long completed observations wait for a slower
-    // sibling before they publish.
-    CoalesceWindow time.Duration
-
-    // Publish emits the layers that completed inside one coalescing window.
-    // The runtime retains them, rebuilds the effective catalog, and publishes
-    // one generation under the lease epoch of the run. An acquirer that emits
-    // nothing early leaves the field unused, and the runtime then publishes
-    // every layer once the run returns.
-    Publish func(context.Context, []ProviderLayer) error
-}
-```
-
-<a name="AcquisitionResult"></a>
-## type [AcquisitionResult](<https://github.com/agentstation/starmap/blob/main/runtime.go#L135-L144>)
-
-AcquisitionResult is what one acquisition run observed.
-
-```go
-type AcquisitionResult struct {
-    // Eligible is the number of providers the run considered.
-    Eligible int
-
-    // Attempts holds one terminal attempt per eligible provider.
-    Attempts []sources.ProviderAttempt
-
-    // Layers holds one observation per provider that answered.
-    Layers []ProviderLayer
-}
-```
 
 <a name="Candidate"></a>
 ## type [Candidate](<https://github.com/agentstation/starmap/blob/main/update.go#L22-L25>)
@@ -508,7 +186,7 @@ type CatalogState struct {
 ```
 
 <a name="Client"></a>
-## type [Client](<https://github.com/agentstation/starmap/blob/main/client.go#L100-L119>)
+## type [Client](<https://github.com/agentstation/starmap/blob/main/client.go#L108-L127>)
 
 Client manages an immutable canonical catalog, explicit publication, persistence, and event hooks. It owns no provider acquisition, scheduling goroutine, or cadence.
 
@@ -519,7 +197,7 @@ type Client struct {
 ```
 
 <a name="New"></a>
-### func [New](<https://github.com/agentstation/starmap/blob/main/client.go#L123>)
+### func [New](<https://github.com/agentstation/starmap/blob/main/client.go#L131>)
 
 ```go
 func New(opts ...Option) (*Client, error)
@@ -528,7 +206,7 @@ func New(opts ...Option) (*Client, error)
 New creates a Client using a background context. Call NewContext when the caller must cancel storage I/O during client setup.
 
 <a name="NewContext"></a>
-### func [NewContext](<https://github.com/agentstation/starmap/blob/main/client.go#L132>)
+### func [NewContext](<https://github.com/agentstation/starmap/blob/main/client.go#L140>)
 
 ```go
 func NewContext(ctx context.Context, opts ...Option) (*Client, error)
@@ -599,6 +277,15 @@ func (c *Client) HookStats() HookDeliveryStats
 
 HookStats returns a lock\-free snapshot of callback delivery health.
 
+<a name="Client.NextID"></a>
+### func \(\*Client\) [NextID](<https://github.com/agentstation/starmap/blob/main/generation.go#L301>)
+
+```go
+func (c *Client) NextID() (string, error)
+```
+
+NextID returns one fresh UUID\-shaped identifier from the client identifier source. Catalog generations, sync runs, and connected refresh runs draw from this one source, so an injected source makes every identifier deterministic.
+
 <a name="Client.OnCatalogPublished"></a>
 ### func \(\*Client\) [OnCatalogPublished](<https://github.com/agentstation/starmap/blob/main/hooks.go#L61>)
 
@@ -634,6 +321,15 @@ func (c *Client) OnModelUpdated(fn ModelUpdatedHook)
 ```
 
 OnModelUpdated registers a callback that receives changed models.
+
+<a name="Client.PublishesDurably"></a>
+### func \(\*Client\) [PublishesDurably](<https://github.com/agentstation/starmap/blob/main/client.go#L91>)
+
+```go
+func (c *Client) PublishesDurably() bool
+```
+
+PublishesDurably reports whether the client holds the explicit writable catalog store that durable publication needs. A client without one keeps every published generation in memory, and a restart loses it. The connected runtime reads this before it commits an effective generation.
 
 <a name="Client.Readiness"></a>
 ### func \(\*Client\) [Readiness](<https://github.com/agentstation/starmap/blob/main/readiness.go#L50>)
@@ -709,114 +405,6 @@ type EmbeddedBootstrapInfo struct {
 }
 ```
 
-<a name="Freshness"></a>
-## type [Freshness](<https://github.com/agentstation/starmap/blob/main/runtime_policy.go#L394>)
-
-Freshness is the evaluated age of one observed timestamp.
-
-```go
-type Freshness string
-```
-
-<a name="FreshnessUnknown"></a>
-
-```go
-const (
-    // FreshnessUnknown means no observation supports an evaluation yet.
-    FreshnessUnknown Freshness = "unknown"
-
-    // FreshnessCurrent means the age is inside every threshold.
-    FreshnessCurrent Freshness = "current"
-
-    // FreshnessWarn means the age passed the warning threshold.
-    FreshnessWarn Freshness = "warn"
-
-    // FreshnessCritical means the age passed the critical threshold.
-    FreshnessCritical Freshness = "critical"
-)
-```
-
-<a name="Freshness.String"></a>
-### func \(Freshness\) [String](<https://github.com/agentstation/starmap/blob/main/runtime_policy.go#L411>)
-
-```go
-func (f Freshness) String() string
-```
-
-String returns the wire value of the freshness level.
-
-<a name="FreshnessPolicy"></a>
-## type [FreshnessPolicy](<https://github.com/agentstation/starmap/blob/main/runtime_policy.go#L343-L352>)
-
-FreshnessPolicy holds the age thresholds that turn observed timestamps into a freshness level.
-
-```go
-type FreshnessPolicy struct {
-    ChannelWarnAge     time.Duration
-    ChannelCriticalAge time.Duration
-
-    SourceCheckWarnAge     time.Duration
-    SourceCheckCriticalAge time.Duration
-
-    AcquisitionWarnAge     time.Duration
-    AcquisitionCriticalAge time.Duration
-}
-```
-
-<a name="DefaultFreshnessPolicy"></a>
-### func [DefaultFreshnessPolicy](<https://github.com/agentstation/starmap/blob/main/runtime_policy.go#L355>)
-
-```go
-func DefaultFreshnessPolicy() FreshnessPolicy
-```
-
-DefaultFreshnessPolicy returns the canonical freshness thresholds.
-
-<a name="FreshnessPolicy.Validate"></a>
-### func \(FreshnessPolicy\) [Validate](<https://github.com/agentstation/starmap/blob/main/runtime_policy.go#L367>)
-
-```go
-func (p FreshnessPolicy) Validate() error
-```
-
-Validate checks that every warning threshold precedes its critical partner.
-
-<a name="Health"></a>
-## type [Health](<https://github.com/agentstation/starmap/blob/main/runtime_policy.go#L428>)
-
-Health is the operator\-facing state of one runtime component.
-
-```go
-type Health string
-```
-
-<a name="HealthUnknown"></a>
-
-```go
-const (
-    // HealthUnknown means the component has not reported yet.
-    HealthUnknown Health = "unknown"
-
-    // HealthOK means the component reached its last objective.
-    HealthOK Health = "ok"
-
-    // HealthDegraded means the component works with reduced evidence.
-    HealthDegraded Health = "degraded"
-
-    // HealthUnavailable means the component cannot reach its dependency.
-    HealthUnavailable Health = "unavailable"
-)
-```
-
-<a name="Health.String"></a>
-### func \(Health\) [String](<https://github.com/agentstation/starmap/blob/main/runtime_policy.go#L445>)
-
-```go
-func (h Health) String() string
-```
-
-String returns the wire value of the health state.
-
 <a name="HookDeliveryStats"></a>
 ## type [HookDeliveryStats](<https://github.com/agentstation/starmap/blob/main/hooks.go#L41-L55>)
 
@@ -837,45 +425,6 @@ type HookDeliveryStats struct {
     LastLatency time.Duration
     // MaxLatency is the longest completed callback duration.
     MaxLatency time.Duration
-}
-```
-
-<a name="Lease"></a>
-## type [Lease](<https://github.com/agentstation/starmap/blob/main/runtime_lease.go#L27-L36>)
-
-Lease is the exclusive right to commit a durable catalog generation. The epoch increases on every fresh acquisition, so a commit that carries an older epoch is stale.
-
-```go
-type Lease struct {
-    // Holder names the instance that owns the lease.
-    Holder string
-
-    // Epoch increases on every fresh acquisition.
-    Epoch uint64
-
-    // ExpiresAt is when the lease lapses without a renewal.
-    ExpiresAt time.Time
-}
-```
-
-<a name="LeaseStore"></a>
-## type [LeaseStore](<https://github.com/agentstation/starmap/blob/main/runtime_lease.go#L41-L53>)
-
-LeaseStore is the shared\-storage lease that fences durable commits. A deployment whose instances share no storage needs no lease store, and the runtime then commits without a fence.
-
-```go
-type LeaseStore interface {
-    // AcquireLease takes the lease for the named holder. A store that another
-    // holder owns returns an *errors.ConflictError. That refusal names a
-    // non-owner state, not a failure. The runtime keeps serving its retained
-    // catalog and tries again at the next run. Every other error fails Open.
-    AcquireLease(ctx context.Context, holder string, ttl time.Duration) (Lease, error)
-
-    // Renew extends a held lease. It fails when another holder took the lease.
-    Renew(ctx context.Context, lease Lease, ttl time.Duration) (Lease, error)
-
-    // Release returns the lease early.
-    Release(ctx context.Context, lease Lease) error
 }
 ```
 
@@ -907,7 +456,7 @@ type ModelUpdatedHook func(old, updated catalogs.Model)
 ```
 
 <a name="Option"></a>
-## type [Option](<https://github.com/agentstation/starmap/blob/main/options.go#L90>)
+## type [Option](<https://github.com/agentstation/starmap/blob/main/options.go#L69>)
 
 Option is a function that configures a Starmap instance.
 
@@ -915,35 +464,8 @@ Option is a function that configures a Starmap instance.
 type Option func(*options) error
 ```
 
-<a name="WithAcquirer"></a>
-### func [WithAcquirer](<https://github.com/agentstation/starmap/blob/main/runtime_options.go#L312>)
-
-```go
-func WithAcquirer(acquirer Acquirer) Option
-```
-
-WithAcquirer injects the provider acquisition composition. The root package selects no concrete provider client, so a runtime without an acquirer runs source refresh only.
-
-<a name="WithAcquisitionEnabled"></a>
-### func [WithAcquisitionEnabled](<https://github.com/agentstation/starmap/blob/main/runtime_options.go#L288>)
-
-```go
-func WithAcquisitionEnabled(enabled bool) Option
-```
-
-WithAcquisitionEnabled turns scheduled provider acquisition on or off.
-
-<a name="WithAcquisitionInterval"></a>
-### func [WithAcquisitionInterval](<https://github.com/agentstation/starmap/blob/main/runtime_options.go#L297>)
-
-```go
-func WithAcquisitionInterval(interval time.Duration) Option
-```
-
-WithAcquisitionInterval sets the provider acquisition period. Zero selects one startup pass and no periodic work.
-
 <a name="WithCatalogPath"></a>
-### func [WithCatalogPath](<https://github.com/agentstation/starmap/blob/main/options.go#L105>)
+### func [WithCatalogPath](<https://github.com/agentstation/starmap/blob/main/options.go#L84>)
 
 ```go
 func WithCatalogPath(path string) Option
@@ -951,17 +473,8 @@ func WithCatalogPath(path string) Option
 
 WithCatalogPath configures the human\-editable provider YAML workspace used for both local observation and post\-commit materialization. Immutable generation state remains in the separately supplied CatalogStore.
 
-<a name="WithCatalogSource"></a>
-### func [WithCatalogSource](<https://github.com/agentstation/starmap/blob/main/runtime_options.go#L133>)
-
-```go
-func WithCatalogSource(name string) Option
-```
-
-WithCatalogSource selects the upstream catalog source by name. It accepts public, github, starmap, file, and embedded. A named custom source is terminal: the runtime never falls back to the public channel.
-
 <a name="WithCatalogStore"></a>
-### func [WithCatalogStore](<https://github.com/agentstation/starmap/blob/main/options.go#L63>)
+### func [WithCatalogStore](<https://github.com/agentstation/starmap/blob/main/options.go#L42>)
 
 ```go
 func WithCatalogStore(store storage.Store) Option
@@ -969,26 +482,8 @@ func WithCatalogStore(store storage.Store) Option
 
 WithCatalogStore configures the writable catalog store used by non\-dry sync, manual, remote, and scheduled catalog updates. Read\-only access and dry runs do not require a store. Starmap provides memory, filesystem, and conditional object\-storage implementations. Embedding applications own and inject any database\-backed implementation.
 
-<a name="WithClock"></a>
-### func [WithClock](<https://github.com/agentstation/starmap/blob/main/runtime_options.go#L443>)
-
-```go
-func WithClock(now func() time.Time) Option
-```
-
-WithClock injects the runtime clock. Tests use it to keep timing exact.
-
-<a name="WithCoalesceWindow"></a>
-### func [WithCoalesceWindow](<https://github.com/agentstation/starmap/blob/main/runtime_options.go#L389>)
-
-```go
-func WithCoalesceWindow(window time.Duration) Option
-```
-
-WithCoalesceWindow bounds how long completed provider observations wait for a slower sibling before they publish.
-
 <a name="WithEmbeddedBootstrapMaxAge"></a>
-### func [WithEmbeddedBootstrapMaxAge](<https://github.com/agentstation/starmap/blob/main/options.go#L114>)
+### func [WithEmbeddedBootstrapMaxAge](<https://github.com/agentstation/starmap/blob/main/options.go#L93>)
 
 ```go
 func WithEmbeddedBootstrapMaxAge(maxAge time.Duration) Option
@@ -997,241 +492,13 @@ func WithEmbeddedBootstrapMaxAge(maxAge time.Duration) Option
 WithEmbeddedBootstrapMaxAge fails readiness while the active catalog is the embedded bootstrap and its generation age exceeds maxAge.
 
 <a name="WithEmbeddedBootstrapMaxSizeBytes"></a>
-### func [WithEmbeddedBootstrapMaxSizeBytes](<https://github.com/agentstation/starmap/blob/main/options.go#L126>)
+### func [WithEmbeddedBootstrapMaxSizeBytes](<https://github.com/agentstation/starmap/blob/main/options.go#L105>)
 
 ```go
 func WithEmbeddedBootstrapMaxSizeBytes(maxSizeBytes int64) Option
 ```
 
 WithEmbeddedBootstrapMaxSizeBytes fails readiness while the active embedded bootstrap canonical payload exceeds maxSizeBytes.
-
-<a name="WithFreshnessPolicy"></a>
-### func [WithFreshnessPolicy](<https://github.com/agentstation/starmap/blob/main/runtime_options.go#L432>)
-
-```go
-func WithFreshnessPolicy(policy FreshnessPolicy) Option
-```
-
-WithFreshnessPolicy replaces the freshness thresholds.
-
-<a name="WithLeaseStore"></a>
-### func [WithLeaseStore](<https://github.com/agentstation/starmap/blob/main/runtime_options.go#L421>)
-
-```go
-func WithLeaseStore(store LeaseStore) Option
-```
-
-WithLeaseStore injects the shared\-storage lease that fences durable commits. A deployment without shared storage needs no lease.
-
-<a name="WithListenAddress"></a>
-### func [WithListenAddress](<https://github.com/agentstation/starmap/blob/main/runtime_options.go#L412>)
-
-```go
-func WithListenAddress(address string) Option
-```
-
-WithListenAddress records the server listen address. It separates two instances that share a copied state directory.
-
-<a name="WithRandom"></a>
-### func [WithRandom](<https://github.com/agentstation/starmap/blob/main/runtime_options.go#L454>)
-
-```go
-func WithRandom(random Random) Option
-```
-
-WithRandom injects the jitter source that spreads scheduled work.
-
-<a name="WithRefreshTimeout"></a>
-### func [WithRefreshTimeout](<https://github.com/agentstation/starmap/blob/main/runtime_options.go#L375>)
-
-```go
-func WithRefreshTimeout(timeout time.Duration) Option
-```
-
-WithRefreshTimeout bounds one whole refresh run. Zero, the default, adds no deadline, so a long transfer inside its own bounds is not cut short.
-
-<a name="WithSchedulerIdentity"></a>
-### func [WithSchedulerIdentity](<https://github.com/agentstation/starmap/blob/main/runtime_options.go#L403>)
-
-```go
-func WithSchedulerIdentity(identity string) Option
-```
-
-WithSchedulerIdentity overrides the derived instance identity. Use it when the deployment already owns a stable instance name.
-
-<a name="WithSource"></a>
-### func [WithSource](<https://github.com/agentstation/starmap/blob/main/runtime_options.go#L277>)
-
-```go
-func WithSource(source Source) Option
-```
-
-WithSource injects a deployment\-owned upstream source. It replaces every built\-in source implementation.
-
-<a name="WithSourceAPIKey"></a>
-### func [WithSourceAPIKey](<https://github.com/agentstation/starmap/blob/main/runtime_options.go#L199>)
-
-```go
-func WithSourceAPIKey(key string) Option
-```
-
-WithSourceAPIKey supplies the source API key. The runtime keeps the key out of status, logs, and errors.
-
-<a name="WithSourceAliases"></a>
-### func [WithSourceAliases](<https://github.com/agentstation/starmap/blob/main/runtime_options.go#L210>)
-
-```go
-func WithSourceAliases(aliases ...string) Option
-```
-
-WithSourceAliases declares the other stable identities that name this same runtime. A served source chain that names one of them is a self reference. The runtime then refuses the read instead of serving its own catalog back to itself.
-
-<a name="WithSourceChannel"></a>
-### func [WithSourceChannel](<https://github.com/agentstation/starmap/blob/main/runtime_options.go#L173>)
-
-```go
-func WithSourceChannel(channel string) Option
-```
-
-WithSourceChannel names the mutable release that selects the current catalog.
-
-<a name="WithSourceMaxAge"></a>
-### func [WithSourceMaxAge](<https://github.com/agentstation/starmap/blob/main/runtime_options.go#L250>)
-
-```go
-func WithSourceMaxAge(maxAge time.Duration) Option
-```
-
-WithSourceMaxAge sets the age at which the served catalog counts as stale.
-
-<a name="WithSourceMaxHops"></a>
-### func [WithSourceMaxHops](<https://github.com/agentstation/starmap/blob/main/runtime_options.go#L263>)
-
-```go
-func WithSourceMaxHops(hops int) Option
-```
-
-WithSourceMaxHops bounds a cascade of Starmap runtimes.
-
-<a name="WithSourcePolicy"></a>
-### func [WithSourcePolicy](<https://github.com/agentstation/starmap/blob/main/runtime_options.go#L145>)
-
-```go
-func WithSourcePolicy(policy SourcePolicy) Option
-```
-
-WithSourcePolicy replaces the whole upstream source policy.
-
-<a name="WithSourcePollInterval"></a>
-### func [WithSourcePollInterval](<https://github.com/agentstation/starmap/blob/main/runtime_options.go#L224>)
-
-```go
-func WithSourcePollInterval(interval time.Duration) Option
-```
-
-WithSourcePollInterval sets the channel check period.
-
-<a name="WithSourceRepository"></a>
-### func [WithSourceRepository](<https://github.com/agentstation/starmap/blob/main/runtime_options.go#L165>)
-
-```go
-func WithSourceRepository(repository string) Option
-```
-
-WithSourceRepository names the catalog repository of a GitHub channel.
-
-<a name="WithSourceSignerWorkflow"></a>
-### func [WithSourceSignerWorkflow](<https://github.com/agentstation/starmap/blob/main/runtime_options.go#L181>)
-
-```go
-func WithSourceSignerWorkflow(workflow string) Option
-```
-
-WithSourceSignerWorkflow pins the build provenance the source accepts.
-
-<a name="WithSourceStartupPolicy"></a>
-### func [WithSourceStartupPolicy](<https://github.com/agentstation/starmap/blob/main/runtime_options.go#L238>)
-
-```go
-func WithSourceStartupPolicy(name string) Option
-```
-
-WithSourceStartupPolicy decides what the runtime serves before the first upstream reply.
-
-<a name="WithSourceToken"></a>
-### func [WithSourceToken](<https://github.com/agentstation/starmap/blob/main/runtime_options.go#L190>)
-
-```go
-func WithSourceToken(token string) Option
-```
-
-WithSourceToken supplies the source access token. The runtime keeps the token out of status, logs, and errors.
-
-<a name="WithSourceURL"></a>
-### func [WithSourceURL](<https://github.com/agentstation/starmap/blob/main/runtime_options.go#L157>)
-
-```go
-func WithSourceURL(url string) Option
-```
-
-WithSourceURL sets the deployment\-owned source address used by the starmap and file sources.
-
-<a name="WithStartupSpread"></a>
-### func [WithStartupSpread](<https://github.com/agentstation/starmap/blob/main/runtime_options.go#L335>)
-
-```go
-func WithStartupSpread(spread time.Duration) Option
-```
-
-WithStartupSpread bounds the random delay before the first scheduled run.
-
-<a name="WithStateDirectory"></a>
-### func [WithStateDirectory](<https://github.com/agentstation/starmap/blob/main/runtime_options.go#L324>)
-
-```go
-func WithStateDirectory(directory string) Option
-```
-
-WithStateDirectory selects the durable directory that retains layers, the scheduler identity seed, and source discovery state.
-
-<a name="WithTransferIdleTimeout"></a>
-### func [WithTransferIdleTimeout](<https://github.com/agentstation/starmap/blob/main/runtime_options.go#L348>)
-
-```go
-func WithTransferIdleTimeout(timeout time.Duration) Option
-```
-
-WithTransferIdleTimeout bounds a stalled transfer.
-
-<a name="WithTransferMaxDuration"></a>
-### func [WithTransferMaxDuration](<https://github.com/agentstation/starmap/blob/main/runtime_options.go#L361>)
-
-```go
-func WithTransferMaxDuration(duration time.Duration) Option
-```
-
-WithTransferMaxDuration bounds one whole transfer.
-
-<a name="ProviderLayer"></a>
-## type [ProviderLayer](<https://github.com/agentstation/starmap/blob/main/runtime.go#L96-L108>)
-
-ProviderLayer is one retained per\-provider observation. The runtime keeps the last\-known\-good layer of every provider, so one failing provider never removes its records from the effective catalog.
-
-```go
-type ProviderLayer struct {
-    // ProviderID names the observed provider.
-    ProviderID catalogs.ProviderID
-
-    // Payload is the canonical encoding of the provider observation.
-    Payload []byte
-
-    // Digest is the content digest of Payload.
-    Digest string
-
-    // ObservedAt is when acquisition accepted the observation.
-    ObservedAt time.Time
-}
-```
 
 <a name="Publication"></a>
 ## type [Publication](<https://github.com/agentstation/starmap/blob/main/update.go#L79-L84>)
@@ -1247,15 +514,6 @@ type Publication struct {
 }
 ```
 
-<a name="Random"></a>
-## type [Random](<https://github.com/agentstation/starmap/blob/main/runtime_options.go#L66>)
-
-Random returns a uniform value in the half\-open interval \[0, 1\). The runtime uses it to spread scheduled work across a fleet.
-
-```go
-type Random func() float64
-```
-
 <a name="ReadinessIssue"></a>
 ## type [ReadinessIssue](<https://github.com/agentstation/starmap/blob/main/readiness.go#L20-L23>)
 
@@ -1265,37 +523,6 @@ ReadinessIssue is one stable machine\-readable reason a client is not ready.
 type ReadinessIssue struct {
     Code    string `json:"code"`
     Message string `json:"message"`
-}
-```
-
-<a name="RefreshReport"></a>
-## type [RefreshReport](<https://github.com/agentstation/starmap/blob/main/runtime_refresh.go#L111-L133>)
-
-RefreshReport says what one whole refresh produced. A source\-only run leaves the acquisition report empty, and an acquisition\-only run leaves the source report empty.
-
-```go
-type RefreshReport struct {
-    // RunID is the identity of the run.
-    RunID string
-
-    // Kind names the work the run did.
-    Kind string
-
-    // StartedAt and CompletedAt bound the run.
-    StartedAt   time.Time
-    CompletedAt time.Time
-
-    // Source reports the upstream read.
-    Source SourceRefreshReport
-
-    // Acquisition reports the provider observations.
-    Acquisition AcquisitionReport
-
-    // Published reports whether the runtime published a new effective catalog.
-    Published bool
-
-    // GenerationID identifies the published effective catalog.
-    GenerationID string
 }
 ```
 
@@ -1318,546 +545,6 @@ type RollbackResult struct {
     Projection *projection.Result
 }
 ```
-
-<a name="Runtime"></a>
-## type [Runtime](<https://github.com/agentstation/starmap/blob/main/runtime.go#L157-L185>)
-
-Runtime is a connected Starmap. It serves the embedded catalog immediately, refreshes from one selected upstream source, retains per\-provider observations, and rebuilds one immutable effective catalog from those layers. Reads reach no external system.
-
-```go
-type Runtime struct {
-    // contains filtered or unexported fields
-}
-```
-
-<a name="Open"></a>
-### func [Open](<https://github.com/agentstation/starmap/blob/main/runtime.go#L190>)
-
-```go
-func Open(ctx context.Context, opts ...Option) (*Runtime, error)
-```
-
-Open returns a connected runtime. It serves the verified embedded catalog before the first upstream reply, so Catalog and State never wait for the network. Open starts the source and acquisition schedules and returns.
-
-<a name="Runtime.Catalog"></a>
-### func \(\*Runtime\) [Catalog](<https://github.com/agentstation/starmap/blob/main/runtime.go#L278>)
-
-```go
-func (r *Runtime) Catalog() *catalogs.Catalog
-```
-
-Catalog returns the current immutable effective catalog. It reaches no external system and never blocks on the source.
-
-<a name="Runtime.Client"></a>
-### func \(\*Runtime\) [Client](<https://github.com/agentstation/starmap/blob/main/runtime.go#L300>)
-
-```go
-func (r *Runtime) Client() *Client
-```
-
-Client returns the immutable publication client underneath the runtime. Use it for explicit publication, hooks, and generation retrieval.
-
-<a name="Runtime.Close"></a>
-### func \(\*Runtime\) [Close](<https://github.com/agentstation/starmap/blob/main/runtime.go#L320>)
-
-```go
-func (r *Runtime) Close() error
-```
-
-Close stops runtime\-owned work and releases the lease. It is idempotent and joins within five seconds. A run that does not stop in time leaves a typed timeout error, so an operator sees the stall rather than a silent hang.
-
-<a name="Runtime.Refresh"></a>
-### func \(\*Runtime\) [Refresh](<https://github.com/agentstation/starmap/blob/main/runtime_refresh.go#L233>)
-
-```go
-func (r *Runtime) Refresh(ctx context.Context) (RefreshReport, error)
-```
-
-Refresh reads the upstream source and then observes every eligible provider. It changes the source layer and the provider layers in one run.
-
-<a name="Runtime.RefreshSource"></a>
-### func \(\*Runtime\) [RefreshSource](<https://github.com/agentstation/starmap/blob/main/runtime_refresh.go#L245>)
-
-```go
-func (r *Runtime) RefreshSource(ctx context.Context) (SourceRefreshReport, error)
-```
-
-RefreshSource reads the upstream source only. It changes the source layer.
-
-<a name="Runtime.State"></a>
-### func \(\*Runtime\) [State](<https://github.com/agentstation/starmap/blob/main/runtime.go#L289>)
-
-```go
-func (r *Runtime) State() CatalogState
-```
-
-State returns one atomic snapshot of the effective catalog and its generation identity. It reaches no external system.
-
-<a name="Runtime.Status"></a>
-### func \(\*Runtime\) [Status](<https://github.com/agentstation/starmap/blob/main/runtime_status.go#L140>)
-
-```go
-func (r *Runtime) Status() RuntimeStatus
-```
-
-Status returns the current runtime status. It reads retained state only, so it reaches no external system and never blocks on the source.
-
-<a name="Runtime.Sync"></a>
-### func \(\*Runtime\) [Sync](<https://github.com/agentstation/starmap/blob/main/runtime_refresh.go#L254>)
-
-```go
-func (r *Runtime) Sync(ctx context.Context, providers ...catalogs.ProviderID) (AcquisitionReport, error)
-```
-
-Sync observes providers only. It changes the provider layers and returns the acquisition report. An empty provider list observes every eligible provider.
-
-<a name="Runtime.Updates"></a>
-### func \(\*Runtime\) [Updates](<https://github.com/agentstation/starmap/blob/main/runtime.go#L310>)
-
-```go
-func (r *Runtime) Updates() <-chan CatalogState
-```
-
-Updates returns the channel that carries every published effective catalog state. The runtime buffers the channel. A reader that falls behind loses intermediate states and always observes the newest one.
-
-<a name="RuntimeStatus"></a>
-## type [RuntimeStatus](<https://github.com/agentstation/starmap/blob/main/runtime_status.go#L46-L136>)
-
-RuntimeStatus is the operator\-facing state of one connected runtime. It keeps usability, freshness, fallback, direct source health, and upstream\-reported health as five independent values, so a warning on one never hides another.
-
-```go
-type RuntimeStatus struct {
-    // Usable reports whether the runtime serves a catalog now. A runtime that
-    // serves the verified embedded catalog is usable.
-    Usable bool
-
-    // GenerationID identifies the served catalog generation.
-    GenerationID string
-
-    // PayloadChecksum is the digest of the served catalog payload.
-    PayloadChecksum string
-
-    // CatalogAge is the age of the served generation.
-    CatalogAge time.Duration
-
-    // Freshness grades the age of the served generation.
-    Freshness Freshness
-
-    // ChannelUpdatedAt is the origin publication time that the upstream chain
-    // propagated. Every hop carries the same value, so a downstream grades the
-    // age of the origin channel and not only its own check.
-    ChannelUpdatedAt time.Time
-
-    // ChannelAge is the age of the propagated origin publication time.
-    ChannelAge time.Duration
-
-    // ChannelFreshness grades the age of the propagated origin publication
-    // time. A cascade that stalls at any hop degrades every hop below it.
-    ChannelFreshness Freshness
-
-    // SourceCheckAge is the age of the last upstream check.
-    SourceCheckAge time.Duration
-
-    // SourceCheckFreshness grades the age of the last upstream check.
-    SourceCheckFreshness Freshness
-
-    // AcquisitionAge is the age of the last acquisition success.
-    AcquisitionAge time.Duration
-
-    // AcquisitionFreshness grades the age of the last acquisition success.
-    AcquisitionFreshness Freshness
-
-    // Fallback reports whether the runtime serves the embedded catalog because
-    // no upstream generation is active.
-    Fallback bool
-
-    // FallbackReason names why the runtime fell back.
-    FallbackReason string
-
-    // SourceHealth is what this runtime observed while it read its own source.
-    SourceHealth Health
-
-    // SourceReason is the safe reason code of the last source failure.
-    SourceReason string
-
-    // UpstreamHealth is the health the upstream reported about itself. It stays
-    // independent of SourceHealth, so a healthy transfer of a degraded upstream
-    // catalog still reports the degradation.
-    UpstreamHealth Health
-
-    // AcquisitionHealth is the state of the last provider acquisition run.
-    AcquisitionHealth Health
-
-    // InstanceIdentity is the stable identity of this runtime inside a fleet.
-    // A downstream compares it against a served source chain, so a cascade
-    // rejects a self reference that URL comparison cannot detect.
-    InstanceIdentity string
-
-    // SourceIdentity is the safe identity of the selected source.
-    SourceIdentity string
-
-    // SourceKind names the selected source.
-    SourceKind SourceKind
-
-    // Chain is the sanitized upstream source chain, nearest hop first.
-    Chain []SourceHop
-
-    // Lease reports the runtime lease state.
-    Lease string
-
-    // LastRunID identifies the last refresh run.
-    LastRunID string
-
-    // Providers holds one terminal attempt per provider of the last run.
-    Providers []sources.ProviderAttempt
-
-    // StartedAt is when the runtime opened.
-    StartedAt time.Time
-
-    // ObservedAt is when the runtime built this report.
-    ObservedAt time.Time
-}
-```
-
-<a name="Source"></a>
-## type [Source](<https://github.com/agentstation/starmap/blob/main/runtime.go#L25-L33>)
-
-Source reads one upstream immutable catalog generation. Every built\-in source verifies its evidence before it returns a generation.
-
-```go
-type Source interface {
-    // Identity returns the safe identity of the source. It names no URL, no
-    // host, and no credential.
-    Identity() string
-
-    // Read returns the current upstream generation. A source that finds no
-    // change reports Changed false and carries no generation.
-    Read(ctx context.Context) (SourceRead, error)
-}
-```
-
-<a name="SourceHop"></a>
-## type [SourceHop](<https://github.com/agentstation/starmap/blob/main/runtime.go#L64-L69>)
-
-SourceHop is one sanitized entry in an upstream source chain. A hop names the reporting identity and its health, never an address.
-
-```go
-type SourceHop struct {
-    Identity    string
-    Health      Health
-    PublishedAt time.Time
-    ObservedAt  time.Time
-}
-```
-
-<a name="SourceIdentityAdopter"></a>
-## type [SourceIdentityAdopter](<https://github.com/agentstation/starmap/blob/main/runtime.go#L55-L60>)
-
-SourceIdentityAdopter is an optional Source that takes the fleet instance identity of its runtime. The source and the runtime then spread their work on one identity, so a replica keeps one stable phase for every controller it owns. Open hands the identity over before the first read.
-
-```go
-type SourceIdentityAdopter interface {
-    Source
-
-    // AdoptInstanceIdentity takes the derived instance identity of the runtime.
-    AdoptInstanceIdentity(instance string)
-}
-```
-
-<a name="SourceKind"></a>
-## type [SourceKind](<https://github.com/agentstation/starmap/blob/main/runtime_policy.go#L13>)
-
-SourceKind names one supported upstream catalog source. Selection is terminal: a deployment that names a custom source never falls back to the public GitHub channel.
-
-```go
-type SourceKind string
-```
-
-<a name="SourcePublic"></a>
-
-```go
-const (
-    // SourcePublic reads the attested public GitHub catalog channel of the
-    // Starmap project. It is the default.
-    SourcePublic SourceKind = "public"
-
-    // SourceGitHub reads an attested catalog channel from a named repository.
-    SourceGitHub SourceKind = "github"
-
-    // SourceStarmap reads from another Starmap runtime. The cascade client is
-    // an injected composition, because the root package holds no HTTP client.
-    SourceStarmap SourceKind = "starmap"
-
-    // SourceFile reads one immutable generation from a local path.
-    SourceFile SourceKind = "file"
-
-    // SourceEmbedded pins the runtime to the verified embedded bootstrap and
-    // contacts no external system.
-    SourceEmbedded SourceKind = "embedded"
-)
-```
-
-<a name="ParseSourceKind"></a>
-### func [ParseSourceKind](<https://github.com/agentstation/starmap/blob/main/runtime_policy.go#L60>)
-
-```go
-func ParseSourceKind(name string) (SourceKind, error)
-```
-
-ParseSourceKind converts one configured name into a source kind. It rejects every unknown name with a typed validation error, so a typo never selects a silent default.
-
-<a name="SourceKinds"></a>
-### func [SourceKinds](<https://github.com/agentstation/starmap/blob/main/runtime_policy.go#L45>)
-
-```go
-func SourceKinds() []SourceKind
-```
-
-SourceKinds returns a caller\-owned copy of every accepted source name.
-
-<a name="SourceKind.Custom"></a>
-### func \(SourceKind\) [Custom](<https://github.com/agentstation/starmap/blob/main/runtime_policy.go#L55>)
-
-```go
-func (k SourceKind) Custom() bool
-```
-
-Custom reports whether the kind names a deployment\-owned source. A custom source never falls back to the public channel.
-
-<a name="SourceKind.String"></a>
-### func \(SourceKind\) [String](<https://github.com/agentstation/starmap/blob/main/runtime_policy.go#L51>)
-
-```go
-func (k SourceKind) String() string
-```
-
-String returns the wire value of the source kind.
-
-<a name="SourceKind.Valid"></a>
-### func \(SourceKind\) [Valid](<https://github.com/agentstation/starmap/blob/main/runtime_policy.go#L48>)
-
-```go
-func (k SourceKind) Valid() bool
-```
-
-Valid reports whether the kind is one of the accepted source names.
-
-<a name="SourcePolicy"></a>
-## type [SourcePolicy](<https://github.com/agentstation/starmap/blob/main/runtime_policy.go#L147-L181>)
-
-SourcePolicy selects and bounds the upstream catalog source. It holds no token and no API key, so a policy value is safe to log and to serve.
-
-```go
-type SourcePolicy struct {
-    // Kind selects the source implementation.
-    Kind SourceKind
-
-    // URL is the deployment-owned source address. It applies to the starmap
-    // and file kinds.
-    URL string
-
-    // Repository names the catalog repository for the public and github kinds.
-    Repository string
-
-    // Channel names the mutable release that selects the current catalog.
-    Channel string
-
-    // SignerWorkflow pins the build provenance the source accepts.
-    SignerWorkflow string
-
-    // PollInterval is the channel check period.
-    PollInterval time.Duration
-
-    // StartupPolicy decides what the runtime serves before the first reply.
-    StartupPolicy StartupPolicy
-
-    // MaxAge is the age at which the active catalog counts as stale.
-    MaxAge time.Duration
-
-    // MaxHops bounds a cascade of Starmap runtimes.
-    MaxHops int
-
-    // Aliases are the other stable identities that name this same runtime,
-    // such as a load-balancer name or a second deployment name. A served
-    // source chain that names one of them is a self reference, and address
-    // comparison alone cannot detect it.
-    Aliases []string
-}
-```
-
-<a name="DefaultSourcePolicy"></a>
-### func [DefaultSourcePolicy](<https://github.com/agentstation/starmap/blob/main/runtime_policy.go#L184>)
-
-```go
-func DefaultSourcePolicy() SourcePolicy
-```
-
-DefaultSourcePolicy returns the canonical public\-channel source policy.
-
-<a name="SourcePolicy.SafeIdentity"></a>
-### func \(SourcePolicy\) [SafeIdentity](<https://github.com/agentstation/starmap/blob/main/runtime_policy.go#L265>)
-
-```go
-func (p SourcePolicy) SafeIdentity() string
-```
-
-SafeIdentity returns the source identity that status and logs may show. It names the kind and, for a GitHub channel, the repository and the channel. It never names a custom URL, a host, or a credential.
-
-<a name="SourcePolicy.Validate"></a>
-### func \(SourcePolicy\) [Validate](<https://github.com/agentstation/starmap/blob/main/runtime_policy.go#L197>)
-
-```go
-func (p SourcePolicy) Validate() error
-```
-
-Validate checks the policy fields that the runtime depends on.
-
-<a name="SourceRead"></a>
-## type [SourceRead](<https://github.com/agentstation/starmap/blob/main/runtime.go#L72-L91>)
-
-SourceRead is one upstream observation.
-
-```go
-type SourceRead struct {
-    // Changed reports whether the upstream generation moved.
-    Changed bool
-
-    // Generation is the verified immutable catalog generation. It is empty
-    // when Changed is false.
-    Generation catalogs.Generation
-
-    // PublishedAt is the upstream publication time.
-    PublishedAt time.Time
-
-    // ChannelUpdatedAt is when the upstream channel last moved.
-    ChannelUpdatedAt time.Time
-
-    // Chain is the sanitized upstream source chain, nearest hop first.
-    Chain []SourceHop
-
-    // Health is the upstream-reported health of the source itself.
-    Health Health
-}
-```
-
-<a name="SourceRefreshReport"></a>
-## type [SourceRefreshReport](<https://github.com/agentstation/starmap/blob/main/runtime_refresh.go#L33-L70>)
-
-SourceRefreshReport says what one upstream source read produced.
-
-```go
-type SourceRefreshReport struct {
-    // RunID is the identity of the run that produced this report.
-    RunID string
-
-    // StartedAt and CompletedAt bound the run.
-    StartedAt   time.Time
-    CompletedAt time.Time
-
-    // SourceIdentity is the safe identity of the source that answered.
-    SourceIdentity string
-
-    // Changed reports whether the upstream generation moved.
-    Changed bool
-
-    // Published reports whether the runtime published a new effective catalog.
-    Published bool
-
-    // GenerationID identifies the upstream generation the runtime retained.
-    GenerationID string
-
-    // PublishedAt is the upstream publication time.
-    PublishedAt time.Time
-
-    // Health is what this runtime observed while it read the source. It grades
-    // the transfer only.
-    Health Health
-
-    // UpstreamHealth is the health the upstream reported about itself. It stays
-    // independent of Health, so a healthy transfer still carries a degraded
-    // upstream report.
-    UpstreamHealth Health
-
-    // Reason is the safe reason code of a failed read.
-    Reason string
-
-    // Chain is the sanitized upstream source chain.
-    Chain []SourceHop
-}
-```
-
-<a name="SourceWatcher"></a>
-## type [SourceWatcher](<https://github.com/agentstation/starmap/blob/main/runtime.go#L44-L49>)
-
-SourceWatcher is an optional Source that reports an upstream change as it arrives. A reactive source, such as one Starmap cascaded onto another, learns of a publication on its own stream. The runtime then refreshes on that wake and waits for no poll boundary. A delta crosses a cascade in seconds instead of in one poll interval.
-
-The channel carries an empty value for each change and holds at most one pending wake. A closed channel means the source reports no further change, and the runtime falls back to its poll interval.
-
-```go
-type SourceWatcher interface {
-    Source
-
-    // Changes reports each upstream change as one wake.
-    Changes() <-chan struct{}
-}
-```
-
-<a name="StartupPolicy"></a>
-## type [StartupPolicy](<https://github.com/agentstation/starmap/blob/main/runtime_policy.go#L74>)
-
-StartupPolicy decides what the runtime serves while the first source read is still outstanding.
-
-```go
-type StartupPolicy string
-```
-
-<a name="StartupPreferSource"></a>
-
-```go
-const (
-    // StartupPreferSource keeps the embedded baseline active and replaces it
-    // with the first verified upstream generation. It is the default.
-    StartupPreferSource StartupPolicy = "prefer_source"
-
-    // StartupRequireSource keeps the runtime unusable until one verified
-    // upstream generation is active. Open reads the source one time and fails
-    // when that read fails. The policy names the evidence the runtime needs,
-    // not the lease. A replica that another instance owns therefore opens
-    // without a read and consumes the state that the owner publishes.
-    StartupRequireSource StartupPolicy = "require_source"
-
-    // StartupPreferLocal keeps the retained local generation active and
-    // applies an upstream generation only on an explicit refresh.
-    StartupPreferLocal StartupPolicy = "prefer_local"
-)
-```
-
-<a name="ParseStartupPolicy"></a>
-### func [ParseStartupPolicy](<https://github.com/agentstation/starmap/blob/main/runtime_policy.go#L107>)
-
-```go
-func ParseStartupPolicy(name string) (StartupPolicy, error)
-```
-
-ParseStartupPolicy converts one configured name into a startup policy.
-
-<a name="StartupPolicy.String"></a>
-### func \(StartupPolicy\) [String](<https://github.com/agentstation/starmap/blob/main/runtime_policy.go#L104>)
-
-```go
-func (p StartupPolicy) String() string
-```
-
-String returns the wire value of the startup policy.
-
-<a name="StartupPolicy.Valid"></a>
-### func \(StartupPolicy\) [Valid](<https://github.com/agentstation/starmap/blob/main/runtime_policy.go#L101>)
-
-```go
-func (p StartupPolicy) Valid() bool
-```
-
-Valid reports whether the policy is one of the accepted names.
 
 <a name="UpdateFunc"></a>
 ## type [UpdateFunc](<https://github.com/agentstation/starmap/blob/main/update.go#L74>)

@@ -964,8 +964,9 @@ not substitutes for provider performance. Optional server authentication still
 governs these routes, with OpenRouter-shaped numeric `401` error envelopes.
 Model detail links honor the server's configured path prefix.
 
-`starmap.Open` is the connected constructor for a Go consumer. It reads a
-catalog source at startup under a startup policy, and
+`runtime.Open` in `github.com/agentstation/starmap/runtime` is the connected
+constructor for a Go consumer. It reads a catalog source at startup under a
+startup policy, and
 [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md#connected-catalog-runtime) lists
 every setting. A consumer that owns its own catalog store instead drives the
 `remote` package directly:

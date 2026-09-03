@@ -13,7 +13,7 @@ Package remote provides a reactive Starmap catalog consumer.
 ## Index
 
 - [Constants](<#constants>)
-- [func ChainHealthCode\(health starmap.Health\) string](<#ChainHealthCode>)
+- [func ChainHealthCode\(health runtime.Health\) string](<#ChainHealthCode>)
 - [type Config](<#Config>)
 - [type Health](<#Health>)
 - [type HealthError](<#HealthError>)
@@ -26,7 +26,7 @@ Package remote provides a reactive Starmap catalog consumer.
   - [func \(s \*Source\) Close\(\) error](<#Source.Close>)
   - [func \(s \*Source\) Health\(\) Health](<#Source.Health>)
   - [func \(s \*Source\) Identity\(\) string](<#Source.Identity>)
-  - [func \(s \*Source\) Read\(ctx context.Context\) \(starmap.SourceRead, error\)](<#Source.Read>)
+  - [func \(s \*Source\) Read\(ctx context.Context\) \(runtime.SourceRead, error\)](<#Source.Read>)
 - [type SourceConfig](<#SourceConfig>)
 - [type StreamState](<#StreamState>)
 - [type Subscriber](<#Subscriber>)
@@ -82,7 +82,7 @@ const DefaultSourceIdentity = "starmap_cascade"
 ## func [ChainHealthCode](<https://github.com/agentstation/starmap/blob/main/remote/source.go#L331>)
 
 ```go
-func ChainHealthCode(health starmap.Health) string
+func ChainHealthCode(health runtime.Health) string
 ```
 
 ChainHealthCode converts one runtime health onto the closed chain code. A server uses it while it builds the document it serves.
@@ -303,7 +303,7 @@ Identity returns the safe identity of the cascaded source. It stays stable for t
 ### func \(\*Source\) [Read](<https://github.com/agentstation/starmap/blob/main/remote/source.go#L141>)
 
 ```go
-func (s *Source) Read(ctx context.Context) (starmap.SourceRead, error)
+func (s *Source) Read(ctx context.Context) (runtime.SourceRead, error)
 ```
 
 Read reports the current upstream generation, the sanitized chain, and the propagated channel time. It bounds the chain before it reports a generation. The runtime owns the self, alias, and cycle rules, because only the runtime knows its own identity.

@@ -61,7 +61,7 @@ Package server provides HTTP server implementation for the Starmap API.
 
 
 <a name="Application"></a>
-## type [Application](<https://github.com/agentstation/starmap/blob/main/internal/server/application.go#L14-L23>)
+## type [Application](<https://github.com/agentstation/starmap/blob/main/internal/server/application.go#L15-L24>)
 
 Application is the catalog and operational role consumed by the HTTP server.
 
@@ -70,7 +70,7 @@ type Application interface {
     Catalog() (*catalogs.Catalog, error)
     CatalogState() (starmap.CatalogState, error)
     Readiness() (starmap.CatalogReadiness, error)
-    RuntimeStatus() starmap.RuntimeStatus
+    RuntimeStatus() runtime.Status
     Starmap(...starmap.Option) (*starmap.Client, error)
     Sync(context.Context, ...pkgsync.Option) (*pkgsync.Result, error)
     UpdatesEnabled() bool
@@ -131,7 +131,7 @@ func DefaultConfig() Config
 DefaultConfig returns a Config with sensible defaults.
 
 <a name="OperationalHealth"></a>
-## type [OperationalHealth](<https://github.com/agentstation/starmap/blob/main/internal/server/health.go#L11-L19>)
+## type [OperationalHealth](<https://github.com/agentstation/starmap/blob/main/internal/server/health.go#L12-L20>)
 
 OperationalHealth is the internal server's immutable production health.
 
@@ -148,7 +148,7 @@ type OperationalHealth struct {
 ```
 
 <a name="PublicationHealth"></a>
-## type [PublicationHealth](<https://github.com/agentstation/starmap/blob/main/internal/server/health.go#L61-L68>)
+## type [PublicationHealth](<https://github.com/agentstation/starmap/blob/main/internal/server/health.go#L62-L69>)
 
 PublicationHealth reports post\-commit callback delivery.
 
@@ -247,7 +247,7 @@ func (s *Server) StartTime() time.Time
 StartTime returns the server start time for uptime calculations.
 
 <a name="SourceHealth"></a>
-## type [SourceHealth](<https://github.com/agentstation/starmap/blob/main/internal/server/health.go#L25-L58>)
+## type [SourceHealth](<https://github.com/agentstation/starmap/blob/main/internal/server/health.go#L26-L59>)
 
 SourceHealth reports the runtime source of this node. Direct health and upstream\-reported health stay independent values. A healthy transfer of a degraded upstream catalog is still a degraded catalog. A stalled transfer of a healthy upstream catalog is still a stalled node.
 
@@ -289,7 +289,7 @@ type SourceHealth struct {
 ```
 
 <a name="StreamHealth"></a>
-## type [StreamHealth](<https://github.com/agentstation/starmap/blob/main/internal/server/health.go#L71-L88>)
+## type [StreamHealth](<https://github.com/agentstation/starmap/blob/main/internal/server/health.go#L72-L89>)
 
 StreamHealth reports server\-side SSE delivery.
 
