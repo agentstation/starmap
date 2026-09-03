@@ -13,6 +13,7 @@
 - [Application Layer](#application-layer)
 - [CLI Architecture](#cli-architecture)
 - [Core Package Layer](#core-package-layer)
+- [Connected Catalog Runtime](#connected-catalog-runtime)
 - [Root Package (starmap.Client)](#root-package-starmapclient)
 - [Data Sources](#data-sources)
 - [Sync Pipeline](#sync-pipeline)
@@ -1222,6 +1223,181 @@ Observation outcomes use one explicit policy:
   semantic human edits
 
 See [pkg/sources/README.md](../pkg/sources/README.md) for details.
+
+## Connected Catalog Runtime
+
+Location: `runtime.go`, `runtime_options.go`, `runtime_policy.go`,
+`runtime_layers.go`, `runtime_status.go`, `internal/catalog/settings`
+
+**Purpose:** Serve one effective catalog from a verified embedded baseline, a
+configured catalog source, and retained provider observations
+
+`starmap.New` stays offline. The connected constructor is `starmap.Open`. It
+serves the verified embedded catalog before the first upstream reply. The
+`Catalog` and `State` methods therefore never wait for the network.
+
+The `Open`
+call starts the source schedule and the acquisition schedule, then returns. The
+`Status` call reads retained state only and reaches no external system. The
+`Close` call is idempotent. It joins runtime-owned work within five seconds.
+
+### Layers
+
+The runtime keeps four layers and rebuilds the effective catalog from them.
+
+| Layer | Content | Retained at |
+| --- | --- | --- |
+| Embedded baseline | The verified catalog that the binary compiles in | The binary |
+| Catalog source | The last verified upstream generation and its payload | `<state>/catalog-runtime/source.json` |
+| Provider observations | One retained record for each acquired provider | `<state>/catalog-runtime/providers/` |
+| Effective catalog | The immutable result that `Catalog` returns | Memory |
+
+A restart reloads the retained layers, so the runtime serves the last upstream
+catalog with no network reply. One retained layer record is at most 64 MiB.
+
+### Source kinds
+
+`STARMAP_CATALOG_SOURCE` selects exactly one source kind.
+
+| Kind | Reads | Safe identity |
+| --- | --- | --- |
+| `public` | The public `agentstation/starmap` catalog channel on GitHub | `public_github` |
+| `github` | A configured GitHub repository and channel | `github:<repository>#<channel>` |
+| `starmap` | Another Starmap server over the versioned HTTP protocol | `starmap_cascade` |
+| `file` | A local catalog artifact path | `local_file` |
+| `embedded` | The compiled baseline only, with no request | `embedded` |
+
+Source selection is terminal. A custom kind never falls back to the public
+GitHub channel, because a silent fallback would replace a chosen publisher.
+
+### Startup policies
+
+`STARMAP_CATALOG_SOURCE_STARTUP_POLICY` decides what the runtime serves before
+the first upstream reply.
+
+| Policy | Behavior |
+| --- | --- |
+| `prefer_source` | Serve the embedded baseline, then replace it with the first verified upstream generation. This is the default. |
+| `require_source` | Stay unusable until one verified upstream generation is active. `Open` reads the source one time and fails when that read fails. |
+| `prefer_local` | Keep the retained local generation active and apply an upstream generation only on an explicit refresh. |
+
+`require_source` names the evidence the runtime needs, not the lease. A replica
+that another instance owns opens without a read and consumes the state that the
+owner publishes.
+
+### Catalog settings
+
+`internal/catalog/settings` maps every canonical name onto exactly one runtime
+option. No other catalog setting name exists. Each name also has a kebab-case
+command flag that carries the same grammar and the same value.
+
+| Environment name | Flag | Default |
+| --- | --- | --- |
+| `STARMAP_CATALOG_SOURCE` | `--catalog-source` | `public` |
+| `STARMAP_CATALOG_SOURCE_URL` | `--catalog-source-url` | empty |
+| `STARMAP_CATALOG_SOURCE_API_KEY` | `--catalog-source-api-key` | empty |
+| `STARMAP_CATALOG_SOURCE_REPOSITORY` | `--catalog-source-repository` | `agentstation/starmap` |
+| `STARMAP_CATALOG_SOURCE_CHANNEL` | `--catalog-source-channel` | `catalog-latest` |
+| `STARMAP_CATALOG_SOURCE_SIGNER_WORKFLOW` | `--catalog-source-signer-workflow` | `.github/workflows/catalog-generation.yaml` |
+| `STARMAP_CATALOG_SOURCE_TOKEN` | `--catalog-source-token` | empty |
+| `STARMAP_CATALOG_SOURCE_POLL_INTERVAL` | `--catalog-source-poll-interval` | `1h` |
+| `STARMAP_CATALOG_SOURCE_STARTUP_POLICY` | `--catalog-source-startup-policy` | `prefer_source` |
+| `STARMAP_CATALOG_SOURCE_MAX_AGE` | `--catalog-source-max-age` | `6h` |
+| `STARMAP_CATALOG_SOURCE_MAX_HOPS` | `--catalog-source-max-hops` | `8` |
+| `STARMAP_CATALOG_SOURCE_ALIASES` | `--catalog-source-aliases` | empty |
+| `STARMAP_CATALOG_ACQUISITION_ENABLED` | `--catalog-acquisition-enabled` | `true` |
+| `STARMAP_CATALOG_ACQUISITION_INTERVAL` | `--catalog-acquisition-interval` | `4h` |
+| `STARMAP_CATALOG_COALESCE_WINDOW` | `--catalog-coalesce-window` | `30s` |
+| `STARMAP_CATALOG_WORKSPACE_PATH` | `--catalog-workspace-path` | `~/.starmap/catalog` |
+| `STARMAP_CATALOG_STARTUP_SPREAD` | `--catalog-startup-spread` | `15m` |
+| `STARMAP_CATALOG_TRANSFER_IDLE_TIMEOUT` | `--catalog-transfer-idle-timeout` | `2m` |
+| `STARMAP_CATALOG_TRANSFER_MAX_DURATION` | `--catalog-transfer-max-duration` | `60m` |
+| `STARMAP_CATALOG_REFRESH_TIMEOUT` | `--catalog-refresh-timeout` | `0`, which adds no cap |
+| `STARMAP_STATE_DIR` | `--state-dir` | `~/.starmap/state/runtime` in the command-line application |
+| `STARMAP_SCHEDULER_IDENTITY` | `--scheduler-identity` | a derived stable identity |
+
+Starport reads the same suffixes under the `STARPORT_` prefix with the same
+defaults. The aliases value is a comma-separated list. It accepts at most 16
+entries of at most 128 bytes each.
+
+An acquisition interval of zero means one startup pass and no periodic work. A
+false `STARMAP_CATALOG_ACQUISITION_ENABLED` value disables every automatic
+acquisition. Scheduled acquisition also needs an injected acquirer, so a
+runtime without one runs source refresh only.
+
+`STARMAP_SCHEDULER_IDENTITY` replaces the derived identity. The derived value
+is the first 16 hex characters of a SHA-256 over a process-local seed, the host
+name, and the listen address. The seed lives at
+`<state>/catalog-runtime/instance-seed` and never enters the catalog store, so
+cloned replicas keep distinct scheduler phases.
+
+### Timestamps
+
+The runtime publishes five times and grades four of them.
+
+| Value | What it measures | Graded as |
+| --- | --- | --- |
+| `generated_at` | When the served generation was built | `freshness` and `catalog_age_seconds` |
+| `channel_updated_at` | When the origin published the channel. Every hop carries the same value. | `channel_freshness` and `channel_age_seconds` |
+| the source check time | When this runtime last checked its own source | `source_check_freshness` |
+| the acquisition success time | When provider acquisition last succeeded | `acquisition_freshness` |
+| `started_at` | When `Open` returned | not graded |
+| `observed_at` | When the runtime built the report | not graded |
+
+A zero time grades as `unknown` and never as `critical`, because no observation
+supports a judgment yet. Each grade is `unknown`, `current`, `warn`, or
+`critical`.
+
+| Graded value | Warn at | Critical at |
+| --- | --- | --- |
+| Channel and served generation | 6 hours | 10 hours |
+| Source check | 90 minutes | 2 hours |
+| Acquisition | 5 hours | 8 hours |
+
+### Freshness objective and the hop budget
+
+The publisher runs every four hours at minute 17 and each consumer polls every
+hour. The end-to-end objective is six hours. The objective applies to a direct
+consumer and to an SSE-push chain. Each polling hop adds one poll interval, so
+two polling hops exceed the objective. `STARMAP_CATALOG_SOURCE_MAX_HOPS`
+bounds an accepted chain at 8 hops. One served source-chain document discloses
+at most 16 hops.
+
+A direct consumer of the public GitHub channel takes its request budget from
+the `x-ratelimit-limit`, `x-ratelimit-used`, `x-ratelimit-remaining`, and
+`x-ratelimit-reset` reply headers. The budget subtracts a reserved headroom and
+divides by the measured requests for each cycle. Status warns at 80 percent of
+the reported limit. A fleet above its budget uses authenticated conditional
+polling or one central Starmap source.
+
+### Egress
+
+An offline `starmap.New` client makes no request. A connected runtime contacts
+only the hosts its selected source names.
+
+| Source kind | Contacted host | When |
+| --- | --- | --- |
+| `public` and `github` | The configured API root, `https://api.github.com` by default, plus the redirect target of the release asset download | At the startup pass and at each poll interval |
+| `starmap` | The configured `STARMAP_CATALOG_SOURCE_URL` origin | At the startup pass, for each stream event, and on the conditional polling fallback |
+| `file` and `embedded` | none | never |
+
+Scheduled provider acquisition adds the provider APIs of the injected acquirer.
+Sigstore verification adds no request, because the binary compiles in its
+trusted root. To stop every catalog request, set
+`STARMAP_CATALOG_SOURCE` to `embedded` and set
+`STARMAP_CATALOG_ACQUISITION_ENABLED` to `false`.
+
+### Refresh lease
+
+A shared store lets several replicas retain one generation record. The refresh
+lease has a 90-second lifetime, a 30-second renewal interval, and an epoch. A
+holder that loses the lease cancels its run within one renewal interval,
+discards the results, reports `lease_lost`, and retries at its next phase. A
+replicated deployment fences its durable commit with the epoch.
+
+Active-active replicas require a store that supports the lease and a
+conditional compare-and-swap on the generation record. A plain shared
+filesystem volume serves one writer at a time.
 
 ## Root Package (starmap.Client)
 

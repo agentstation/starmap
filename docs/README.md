@@ -87,6 +87,12 @@ Repository verification guidance covering:
 Required provider YAML, durable generation, provider acquisition, and remote
 subscriber changes for the direct pre-v1 compatibility break.
 
+### [MIGRATING_TO_CATALOG_SOURCE.md](MIGRATING_TO_CATALOG_SOURCE.md)
+**Catalog Source Runtime Migration Guide**
+
+The startup contract, the canonical setting names, the removed settings, the
+startup policies, and the offline configuration.
+
 ### [REST_API.md](REST_API.md)
 **HTTP Server API Reference**
 
@@ -110,6 +116,7 @@ Located in the project root:
 - [../CHANGELOG.md](../CHANGELOG.md) - Version history and release notes
 - [RELEASES.md](RELEASES.md) - Go compatibility and application release policy
 - [MIGRATING_TO_V0.4.md](MIGRATING_TO_V0.4.md) - v0.4.0 migration procedure
+- [MIGRATING_TO_CATALOG_SOURCE.md](MIGRATING_TO_CATALOG_SOURCE.md) - catalog source runtime migration
 - [../LICENSE](../LICENSE) - AGPL 3.0 license
 
 ## Package Documentation
@@ -129,6 +136,7 @@ Individual package READMEs provide implementation details:
 ## Quick Links
 
 - [System Architecture](ARCHITECTURE.md#overview)
+- [Connected Catalog Runtime](ARCHITECTURE.md#connected-catalog-runtime)
 - [CLI Architecture](ARCHITECTURE.md#cli-architecture)
 - [CLI Implementation Reference](CLI.md)
 - [Testing and Verification](TESTING.md)

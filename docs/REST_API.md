@@ -67,9 +67,12 @@ The configured prefix replaces `/api/v1` in every versioned route.
 | `GET /api/v1/providers` | Provider list |
 | `GET /api/v1/providers/{id}` | Provider detail |
 | `GET /api/v1/providers/{id}/models` | Exact provider offerings |
-| `POST /api/v1/update` | Explicit acquisition; present only when a syncer was composed |
+| `POST /api/v1/update` | Starts an explicit acquisition and answers 202 with the operation ID; present only when a syncer was composed |
+| `GET /api/v1/updates/{id}` | Status of one acquisition operation |
+| `DELETE /api/v1/updates/{id}` | Cancels one acquisition operation |
 | `GET /api/v1/stats` | Catalog, cache, runtime, callback, and SSE health |
 | `GET /api/v1/catalog/manifest` | Strict current generation manifest |
+| `GET /api/v1/catalog/source-chain` | Safe source-chain document of this runtime |
 | `GET /api/v1/catalog/generations/{id}/manifest` | Retained immutable generation manifest |
 | `GET /api/v1/catalog/generations/{id}/payload` | Retained immutable canonical payload |
 | `GET /api/v1/updates/stream` | Heartbeat-enabled catalog publication hints |
@@ -78,6 +81,12 @@ The configured prefix replaces `/api/v1` in every versioned route.
 | `GET /api/v1/openapi.json` | Generated OpenAPI JSON; always public under the configured prefix |
 | `GET /api/v1/openapi.yaml` | Generated OpenAPI YAML; always public under the configured prefix |
 | `GET /metrics` | Process metrics when enabled |
+
+`POST /api/v1/update` starts one asynchronous acquisition. It answers 202 with
+the operation status and a `Location` header that names the status route. The
+caller then polls `GET /api/v1/updates/{id}` and can stop the run with
+`DELETE /api/v1/updates/{id}`. The status detail carries bounded counts and
+identities only, never provider message text.
 
 Model/list responses carry `X-Starmap-Generation-ID`, so a caller can associate
 derived results with the immutable catalog generation used to produce them.
@@ -174,8 +183,48 @@ separate surfaces:
 
 - `/health` answers whether the process and HTTP handler are alive.
 - `/ready` checks that a usable catalog satisfies configured bootstrap policy.
+  It also reports the connected runtime fields below.
 - `/stats` exposes the active generation time, callback coalescing/failure, SSE
   clients, backpressure termination, and cache/runtime data.
+
+### Runtime readiness fields
+
+`/api/v1/ready` returns `status`, `catalog`, `runtime`, `cache.items`, and
+`sse_clients`. The `catalog` object holds the embedded-bootstrap policy result.
+The `runtime` object reports the connected runtime. Every value is a bounded
+code, a count, or an age in seconds, so the body carries no message text and no
+URL.
+
+| Field | Meaning |
+| --- | --- |
+| `usable` | Whether the runtime serves a catalog now |
+| `generation_id` | The served generation |
+| `source_kind` | `public`, `github`, `starmap`, `file`, or `embedded` |
+| `source_health` | What this runtime observed while it read its own source |
+| `source_reason` | The safe reason code of the last source failure |
+| `upstream_health` | The health the upstream reported about itself |
+| `acquisition_health` | The state of the last provider acquisition run |
+| `freshness` | The grade of the served generation age |
+| `catalog_age_seconds` | The age of the served generation |
+| `channel_freshness` | The grade of the propagated origin publication time |
+| `channel_age_seconds` | The age of the propagated origin publication time |
+| `source_check_freshness` | The grade of the last upstream check |
+| `instance_identity` | The stable identity of this runtime inside a fleet |
+| `chain_hops` | The number of upstream hops above this runtime |
+| `fallback` | Whether the runtime serves the embedded catalog |
+| `fallback_reason` | `awaiting_source`, `source_unavailable`, or empty |
+| `lease` | The refresh lease state of this replica |
+
+A health value is one of `unknown`, `ok`, `degraded`, and `unavailable`. A
+freshness grade is one of `unknown`, `current`, `warn`, and `critical`. The
+three freshness values stay independent. A warning on one never hides another.
+The `channel_freshness` grade covers the origin publication time that every hop
+carries, so a cascade that stalls at any hop degrades every hop below it. The
+`source_check_freshness` grade covers this runtime's own last check.
+
+A downstream compares `instance_identity` against a served source chain, so a
+cascade rejects a self reference that URL comparison cannot detect.
+`GET /api/v1/catalog/source-chain` returns the full document.
 
 A recent heartbeat proves stream transport activity only. It never changes the
 active catalog generation time or makes stale catalog data fresh.

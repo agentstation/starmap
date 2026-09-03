@@ -101,6 +101,30 @@ The `embed` command family uses a **custom help flag** pattern to free up common
 
 This pattern allows Unix-like familiarity (`ls -lah`) while avoiding global flag conflicts.
 
+## Catalog Source Settings
+
+Every command that opens a connected runtime reads the same catalog settings.
+`internal/catalog/settings` owns the canonical names. Each name has one
+kebab-case flag that carries the same value grammar, so one parser reads the
+environment value and the flag value.
+
+```bash
+starmap serve --catalog-source starmap \
+  --catalog-source-url https://catalog.example.com/api/v1
+STARMAP_CATALOG_SOURCE=embedded starmap serve
+```
+
+A flag wins over its environment name only when the operator changed the flag.
+An untouched flag never replaces an environment value.
+[ARCHITECTURE.md](ARCHITECTURE.md#catalog-settings) lists every name, every
+flag, and every default. Starport reads the same suffixes under the
+`STARPORT_` prefix.
+
+The credential settings stay separate. `--catalog-source-api-key` and
+`--catalog-source-token` reach the catalog source only. `API_KEY` is the server
+credential of `starmap serve --auth`. Provider credentials belong to
+acquisition. No setting is an alias of another.
+
 ## Flag Design Principles
 
 ### 1. Positional Arguments for Resources

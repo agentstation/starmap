@@ -71,8 +71,30 @@ Starmap repository secret named `HOMEBREW_TAP_DEPLOY_KEY`. Do not use a personal
 access token for this cross-repository write.
 
 Catalog generations are a separate product data channel. The scheduled catalog
-workflow publishes them under payload-digest prerelease tags. It never appends
-them to an application release.
+workflow publishes them under their own tags and never appends them to an
+application release.
+
+### Catalog release tags
+
+| Tag | Namespace | Meaning |
+| --- | --- | --- |
+| `catalog-<catalog-digest>` | `canonical` | The current immutable release namespace |
+| `catalog-semantic-<digest>` | `legacy-semantic` | A retired facts-digest namespace |
+| `catalog-payload-<digest>` | `legacy-payload` | The first retired payload namespace |
+| `catalog-latest` | none | The mutable discovery channel, not an immutable release |
+
+`catalog-latest` carries the attested channel document `catalog-latest.json`
+with the media type
+`application/vnd.agentstation.starmap.catalog-channel.v1+json`. The document
+advances its sequence and its `channel_updated_at` value after every successful
+verification. A consumer therefore grades origin freshness even when the
+catalog facts did not change.
+
+`artifact.ReleaseTagNamespace` reports the namespace of one tag. It recognizes
+the canonical namespace and both retired namespaces, so historical readback and
+rollback keep every published immutable release. Publication uses the canonical
+namespace only. Reading and rollback accept all three. Do not delete a retired
+tag, because an operator rolls back to it by exact tag.
 
 Use a minor version for a direct pre-v1 compatibility break and a patch version
 for a compatible correction. Reserve `v1.0.0` for an explicit public
