@@ -385,8 +385,8 @@
     <ul>
       <li><strong>Problem:</strong> the root package holds the connected runtime, so every offline <code>starmap.New</code> consumer compiles Sigstore, gRPC, and OpenTelemetry.</li>
       <li><strong>Owned paths:</strong> the root <code>runtime_*.go</code> files, the new <code>runtime</code> package, both composition roots, the docs that name <code>starmap.Open</code>, the campaign verifier, and the consumer modules.</li>
-      <li><strong>Steps:</strong> move the runtime files into <code>runtime</code> over the exported root API, and export a named root contract only where the runtime needs one. Rename the callers in the CLI, Starport, the docs, and the verifier. Tidy the consumer modules.</li>
-      <li><strong>Acceptance:</strong> the root imports no source, provider, or remote package, the read-only closure is at most 32, <code>runtime.Open(ctx)</code> defaults to the attested public channel, and the verifier holds 68 of 68.</li>
+      <li><strong>Steps:</strong> move the runtime files into <code>runtime</code> over the exported root API, then rename the callers in the CLI, Starport, the docs, and the verifier.</li>
+      <li><strong>Acceptance:</strong> the read-only closure is at most 32 without a source, provider, or remote package. The verifier holds 68 of 68 with the attested public channel as the default.</li>
       <li><strong>Fail-before:</strong> <code>make verify</code> at <code>ff09e6d3</code> reported 362 packages against a budget of 32.</li>
       <li><strong>Verification:</strong> run <code>make verify</code>, <code>make test-pure-go</code>, <code>make lint</code>, <code>make test</code>, the campaign verifier, and the Starport gates.</li>
     </ul>
