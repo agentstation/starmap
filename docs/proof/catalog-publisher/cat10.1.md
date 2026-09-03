@@ -103,68 +103,139 @@ Ten Starport files moved to the new import path.
 `starmap.New`, `starmap.NewContext`, `starmap.CatalogState`, and
 `starmap.EmbeddedBuilder` stay on the root import in Starport.
 
+## Correction to the first CAT10.1 report
+
+The first report claimed that the banned-import check for the server-embed
+consumer still passed. That claim was false. The script
+`scripts/verify-consumer-deps.sh` exits at the budget check, so it never
+reaches the banned check. Nothing observed that result.
+
+The measured closure at the base commit holds 84 forbidden packages. One of
+them is `internal/sources/github`. Eighteen are OpenTelemetry packages, and 65
+are gRPC packages.
+
+The first report also blamed a stale `SERVER_MAX_PACKAGES` from commit
+`5e0eb9bd`. That attribution was wrong. The same measurement on `origin/main`
+at commit `d632a1a2` returns 242 packages and zero forbidden imports. The
+breach is a campaign regression, and this task repairs it.
+
+## The consumer boundary repair
+
+The plan branch added `server.WithRuntime(*runtime.Runtime)`. The public
+`server` package therefore imported `runtime`. It inherited the attested
+GitHub source, the Sigstore verification, gRPC, and OpenTelemetry. The
+`remote` package implements the cascaded source, so it imported `runtime` for
+the same reason.
+
+Two leaf packages now carry the shared names.
+
+| Package | Owns | Imports |
+| --- | --- | --- |
+| `runtime/status` | `Status`, `Health`, `Freshness`, `SourceKind`, `SourceHop` | `pkg/sources` and the standard library |
+| `runtime/source` | `Source`, `Watcher`, `IdentityAdopter`, `Read` | `pkg/catalogs`, `runtime/status`, and the standard library |
+
+The file `runtime/vocabulary.go` keeps every published name. Each moved type
+becomes an alias, and each moved constant becomes a re-export. The runtime
+package still owns `ParseSourceKind`, `SourceKinds`, the startup policy, and
+the freshness policy. No public name changed. Starport therefore needed no
+edit, and its gates confirm that.
+
+The option `server.WithRuntime` now takes the interface
+`server.ConnectedRuntime`. That interface holds two methods, and they are
+everything the server reads from a connected runtime.
+
+| Method | Use |
+| --- | --- |
+| `Status() status.Status` | Readiness and the source chain render this report. |
+| `Close() error` | The server shutdown joins the runtime shutdown. |
+
+The type `*runtime.Runtime` satisfies the interface. The option refuses a nil
+runtime, and it also refuses a nil pointer inside the interface value. A
+concrete pointer no longer protects the caller once an interface holds it.
+
+The five `internal/server` files that render the status now import
+`runtime/status`. The `remote` package imports `runtime/source` and
+`runtime/status`. Neither the `server` package nor the `remote` package
+reaches `runtime` any more. Test files still import `runtime`.
+
 ## Consumer closure counts
 
-The base is commit `9b552208`. Each count comes from
-`GOWORK=off go list -deps` in the consumer module after `go mod tidy`.
+Three trees carry the measurements. Commit `d632a1a2` is `origin/main` before
+the campaign. Commit `9b552208` is the plan branch base. The head is this
+branch. Each measurement ran `GOWORK=off go list -deps` in the consumer module
+after `go mod tidy`. The server-storage row adds `-test`, because its own gate
+does.
 
-| Consumer | Measure | Before | After | Budget |
+Each cell reads the total count, then the non-standard count, then the
+forbidden count.
+
+| Consumer | Main `d632a1a2` | Base `9b552208` | Head | Budget |
 | --- | --- | --- | --- | --- |
-| read-only | non-standard packages | 362 | 31 | 32 |
-| pinned-artifact | non-standard packages | 362 | 32 | 32 |
-| server-embed | total packages | 594 | 595 | 260 |
+| read-only | 153 / 31 / 0 | 578 / 362 / 86 | 153 / 31 / 0 | 32 non-standard |
+| store-only | 153 / 31 / 0 | 578 / 362 / 86 | 153 / 31 / 0 | forbidden families only |
+| pinned-artifact | 161 / 32 / 0 | 578 / 362 / 86 | 161 / 32 / 0 | 32 non-standard |
+| server-embed | 242 / 49 / 0 | 594 / 378 / 84 | 246 / 52 / 0 | 260 total |
+| remote-subscriber | 225 / 33 / 0 | 579 / 363 / 84 | 230 / 37 / 0 | 240 total |
+| server-storage | 335 / 94 / 0 | 676 / 94 / 84 | 340 / 94 / 0 | 340 total |
 
-The read-only consumer fell by 331 packages. The Sigstore, Rekor, gRPC,
-protobuf, and OpenTelemetry families left both offline closures. Neither budget
-moved, and the banned-import patterns keep their original text.
+Every consumer passes its budget, and every forbidden count is zero. No budget
+moved, and no banned pattern changed.
 
-## The server-embed budget
+Three closures stay above the `origin/main` count. Six packages explain every
+difference.
 
-`make test-pure-go` and `make verify` fail on one condition that CAT10.1 did
-not cause. The server-embed consumer closure is 595 packages, and the budget
-allows 260 packages. The same measurement at the base commit `9b552208`
-returns 594, so the breach predates this task. The move adds exactly one package, which is the new
-`runtime` package itself.
+| Package | Reason | Consumers |
+| --- | --- | --- |
+| `internal/fleet` | The runtime derives one replica instance identity. | all three |
+| `hash/fnv` | The fleet package hashes that identity. | all three |
+| `runtime/status` | The status vocabulary leaf. | all three |
+| `runtime/source` | The source contract leaf. | remote-subscriber, server-storage |
+| `internal/server/operations` | The server renders the operations surface. | server-embed, server-storage |
+| `pkg/sources` | The status report names one provider attempt. | remote-subscriber |
 
-`SERVER_MAX_PACKAGES=260` entered `scripts/verify-consumer-deps.sh` in commit
-`5e0eb9bd` and never moved. The banned-import check for that consumer still
-passes, so no acquisition family reaches it. The gap is a stale total count
-after later dependency bumps. CAT10.1 leaves the budget alone rather than hide
-the drift.
+The server-storage closure reaches 340 packages, which equals its budget. That
+row leaves no headroom. The orchestrator owns any change to that number.
 
 ## Commands run
 
-Every command ran with `GOTOOLCHAIN=go1.26.6` exported.
+Every command ran with `GOTOOLCHAIN=go1.26.6` exported. Each row reports the
+final run on the head of this branch.
 
 | Command | Result |
 | --- | --- |
 | `make lint` | PASS, 0 issues |
 | `make test` | PASS |
 | `go tool ago -stale-ignores -format json ./...` | PASS, status 0, no findings |
-| `make technical-writing-check` | PASS, 767 files, 0 diagnostics |
+| `make technical-writing-check` | PASS, 773 files, 0 diagnostics |
 | `bash scripts/verify-catalog-package-ownership.sh` | PASS, 13 of 13 |
 | `make docs-check` | PASS |
 | `shellcheck scripts/*.sh` | PASS, status 0 |
+| `bash scripts/verify-consumer-deps.sh` | PASS, all six consumers |
+| `make test-pure-go` | PASS |
+| `make verify` | PASS |
 | `bash scripts/verify-catalog-distribution.sh` | PASS, 68 of 68 |
-| `make test-pure-go` | FAIL, server-embed budget only |
-| `make verify` | FAIL, server-embed budget only |
 
-The distribution verifier ran with
-`CATALOG_DISTRIBUTION_STARPORT_ROOT` set to the Starport worktree
-`agent-ad6e217c4e16a7520`.
+The distribution verifier ran with `CATALOG_DISTRIBUTION_STARPORT_ROOT` set to
+the Starport worktree `agent-ad6e217c4e16a7520`.
 
-Starport reported these results.
+Starport reported these results. Each Starport run used a temporary replace at
+this Starmap worktree.
 
 | Command | Result |
 | --- | --- |
-| `make lint` | PASS, 0 issues |
-| `go test ./...` | PASS |
+| `go build ./...` | PASS |
 | `go vet ./...` | PASS |
+| `go test ./...` | PASS |
+| `make lint` | PASS, 0 issues |
 | `bash scripts/verify-starmap-ownership.sh` | PASS, 12 of 12 |
-| `bash scripts/verify-dependency-direction.sh` | PASS, 6 of 6 |
 | `bash scripts/verify-catalog-driven-providers.sh` | PASS, 19 of 19 |
 | `bash scripts/verify-catalog-performance.sh` | PASS, 20 of 20 |
-| `bash scripts/verify-package-layout.sh` | PASS |
+
+The ownership gate reads `STARMAP_OWNERSHIP_STARMAP_ROOT`, and the
+catalog-driven gate reads `CATALOG_DRIVEN_STARMAP_ROOT`. Both named this
+Starmap worktree. The first CAT10.1 run also passed
+`scripts/verify-dependency-direction.sh` at 6 of 6 and
+`scripts/verify-package-layout.sh`. This run did not repeat those two.
 
 ## Starport commit state
 
