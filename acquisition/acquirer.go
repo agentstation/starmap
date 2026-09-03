@@ -47,6 +47,7 @@ type ProviderObserver interface {
 // failure still moves the catalog forward.
 type Acquirer struct {
 	observer ProviderObserver
+	resolver sources.ProviderCredentialResolver
 	window   time.Duration
 	now      func() time.Time
 	after    func(time.Duration) <-chan time.Time
@@ -65,6 +66,21 @@ func WithProviderObserver(observer ProviderObserver) AcquirerOption {
 			}
 		}
 		a.observer = observer
+		return nil
+	}
+}
+
+// WithAcquirerCredentialResolver injects the process credential resolver into
+// the default per-provider observation. One resolver then owns credential
+// caching for the process. A replaced observer ignores it.
+func WithAcquirerCredentialResolver(resolver sources.ProviderCredentialResolver) AcquirerOption {
+	return func(a *Acquirer) error {
+		if resolver == nil {
+			return &errors.ValidationError{
+				Field: "acquisition.credential_resolver", Message: "is required",
+			}
+		}
+		a.resolver = resolver
 		return nil
 	}
 }
@@ -114,10 +130,9 @@ func WithAcquirerCoalesceTimer(after func(time.Duration) <-chan time.Time) Acqui
 // and reaches no provider until a run starts.
 func NewAcquirer(opts ...AcquirerOption) (*Acquirer, error) {
 	acquirer := &Acquirer{
-		observer: newProviderSourceObserver(),
-		window:   DefaultCoalesceWindow,
-		now:      time.Now,
-		after:    time.After,
+		window: DefaultCoalesceWindow,
+		now:    time.Now,
+		after:  time.After,
 	}
 	for _, opt := range opts {
 		if opt == nil {
@@ -126,6 +141,9 @@ func NewAcquirer(opts ...AcquirerOption) (*Acquirer, error) {
 		if err := opt(acquirer); err != nil {
 			return nil, err
 		}
+	}
+	if acquirer.observer == nil {
+		acquirer.observer = newProviderSourceObserver(acquirer.resolver)
 	}
 	return acquirer, nil
 }
@@ -314,11 +332,15 @@ type providerSourceObserver struct {
 	options []providers.SourceOption
 }
 
-// newProviderSourceObserver returns the default per-provider observation.
-func newProviderSourceObserver() *providerSourceObserver {
+// newProviderSourceObserver returns the default per-provider observation. A
+// nil resolver selects the ambient environment resolver.
+func newProviderSourceObserver(resolver sources.ProviderCredentialResolver) *providerSourceObserver {
+	if resolver == nil {
+		resolver = auth.NewResolver()
+	}
 	return &providerSourceObserver{options: []providers.SourceOption{
 		providers.WithClientFactory(defaultProviderClientFactory),
-		providers.WithCredentialResolver(auth.NewResolver()),
+		providers.WithCredentialResolver(resolver),
 	}}
 }
 

@@ -14,6 +14,7 @@ import (
 
 	"github.com/agentstation/starmap"
 	"github.com/agentstation/starmap/internal/auth"
+	"github.com/agentstation/starmap/internal/catalog/settings"
 	"github.com/agentstation/starmap/internal/catalog/workspace"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/catalogs/storage"
@@ -41,6 +42,11 @@ type App struct {
 	// Starmap instance (lazy-initialized, singleton)
 	mu      sync.RWMutex
 	starmap *starmap.Client
+
+	// Canonical catalog settings and the connected runtime they compose.
+	catalogSettings settings.Config
+	runtimeMu       sync.Mutex
+	runtime         *starmap.Runtime
 
 	credentialMu       sync.Mutex
 	credentialResolver sources.ProviderCredentialResolver
@@ -73,6 +79,14 @@ func New(version, commit, date, builtBy string, opts ...Option) (*App, error) {
 			return nil, err
 		}
 	}
+
+	// The canonical catalog settings load after the options, so a test
+	// configuration selects the same names that a deployment uses.
+	catalogSettings, err := loadCatalogSettings(app.config)
+	if err != nil {
+		return nil, err
+	}
+	app.catalogSettings = catalogSettings
 
 	return app, nil
 }
@@ -257,20 +271,28 @@ func (a *App) Shutdown(ctx context.Context) error {
 		return err
 	}
 
-	return nil
+	return a.closeRuntime()
 }
 
 // buildStarmapOptions constructs starmap options from the app configuration.
 func (a *App) buildStarmapOptions(storeOption starmap.Option) ([]starmap.Option, error) {
-	opts := []starmap.Option{storeOption}
+	catalogOptions, err := a.catalogClientOptions()
+	if err != nil {
+		return nil, err
+	}
+	return append([]starmap.Option{storeOption}, catalogOptions...), nil
+}
 
+// catalogClientOptions returns the catalog options that every composition
+// shares. The connected runtime and the read-only client both use them.
+func (a *App) catalogClientOptions() ([]starmap.Option, error) {
 	// The CLI always composes one human provider-YAML workspace. Merely
 	// constructing the client reads it when present and never creates it.
 	catalogPath, err := a.CatalogPath()
 	if err != nil {
 		return nil, err
 	}
-	opts = append(opts, starmap.WithCatalogPath(catalogPath))
+	opts := []starmap.Option{starmap.WithCatalogPath(catalogPath)}
 
 	if a.config.EmbeddedBootstrapMaxAge > 0 {
 		opts = append(opts, starmap.WithEmbeddedBootstrapMaxAge(a.config.EmbeddedBootstrapMaxAge))
@@ -278,17 +300,6 @@ func (a *App) buildStarmapOptions(storeOption starmap.Option) ([]starmap.Option,
 	if a.config.EmbeddedBootstrapMaxSizeBytes > 0 {
 		opts = append(opts, starmap.WithEmbeddedBootstrapMaxSizeBytes(a.config.EmbeddedBootstrapMaxSizeBytes))
 	}
-
-	// Reactive remote composition is explicit and does not belong to the root
-	// read-only Client. P7 supplies the public remote subscriber.
-	if a.config.RemoteServerURL != "" {
-		return nil, &errors.ConfigError{
-			Component: "remote catalog",
-			Message: "remote catalog configuration requires the explicit " +
-				"reactive subscriber composition",
-		}
-	}
-
 	return opts, nil
 }
 
