@@ -128,33 +128,33 @@ starmap_test CAT-V07 'the GitHub source reads legacy catalog-semantic and catalo
 
 # Runtime contract: behavior tests (CAT-D2, CAT-D3, CAT-D8, CAT-D14).
 starmap_test CAT-V08 'Open returns a connected runtime with embedded state before any network reply' \
-	. TestOpenReturnsEmbeddedStateBeforeSourceReply
+	./runtime TestOpenReturnsEmbeddedStateBeforeSourceReply
 starmap_test CAT-V09 'the offline constructors reject runtime options' \
 	. TestNewRejectsRuntimeOptions
 starmap_test CAT-V10 'Catalog, State, and Status reads reach no external system' \
-	. TestRuntimeReadsReachNoExternalSystem
+	./runtime TestRuntimeReadsReachNoExternalSystem
 starmap_test CAT-V11 'Refresh, RefreshSource, and Sync change distinct layers' \
-	. TestRuntimeRefreshMethodsChangeDistinctLayers
+	./runtime TestRuntimeRefreshMethodsChangeDistinctLayers
 starmap_test CAT-V12 'Sync returns an AcquisitionReport' \
-	. TestRuntimeSyncReturnsAcquisitionReport
+	./runtime TestRuntimeSyncReturnsAcquisitionReport
 starmap_test CAT-V13 'Close joins runtime-owned work within five seconds' \
-	. TestRuntimeCloseJoinsWithinFiveSeconds
+	./runtime TestRuntimeCloseJoinsWithinFiveSeconds
 policy_names_hold() {
-	go_test_passes "$ROOT" . TestAcquisitionPolicyFromEnabledAndInterval &&
+	go_test_passes "$ROOT" ./runtime TestAcquisitionPolicyFromEnabledAndInterval &&
 		! grep -RqsE --include='*.go' 'ACQUISITION_MODE|ACQUISITION_ON_START|REFRESH_ON_START' "$ROOT"
 }
 check CAT-V14 'acquisition policy is enabled plus interval with no mode or on-start name' \
 	policy_names_hold
 starmap_test CAT-V15 'source selection accepts public, github, starmap, file, and embedded' \
-	. TestSourceSelectionNames
+	./runtime TestSourceSelectionNames
 starmap_test CAT-V16 'a custom source never falls back to public GitHub' \
-	. TestCustomSourceNeverFallsBackToPublic
+	./runtime TestCustomSourceNeverFallsBackToPublic
 starmap_test CAT-V17 'a missing acquisition credential skips the provider without a request' \
 	./internal/sources/providers TestMissingCredentialSkipsProviderWithoutRequest
 starmap_test CAT-V18 'the runtime retains layers and rebuilds the effective catalog under race' \
-	. TestRuntimeRetainsLayersUnderRace
+	./runtime TestRuntimeRetainsLayersUnderRace
 starmap_test CAT-V19 'refresh runs are single-flight with run identity and cancellation' \
-	. TestRefreshJoinsActiveRunAndCancels
+	./runtime TestRefreshJoinsActiveRunAndCancels
 
 # Transport policy: behavior tests plus declarative defaults (CAT-D12, CAT-D15).
 starmap_test CAT-V20 'a stalled body stops at the two-minute inactivity timeout' \
@@ -166,7 +166,7 @@ transfer_max_duration_contract() {
 check CAT-V21 'the per-transfer maximum duration defaults to 60 minutes and rejects zero' \
 	transfer_max_duration_contract
 starmap_test CAT-V22 'Refresh adds no deadline by default' \
-	. TestRefreshAddsNoDeadlineByDefault
+	./runtime TestRefreshAddsNoDeadlineByDefault
 no_client_wide_timeout() {
 	go_test_passes "$ROOT" ./pkg/catalogs/remote TestNewClientSetsNoClientWideTimeout &&
 		go_test_passes "$ROOT" ./internal/transport TestNewSetsNoClientWideTimeout
@@ -188,9 +188,9 @@ starmap_test CAT-V29 'the admin update returns an accepted asynchronous operatio
 
 # Fleet policy: behavior tests (CAT-D13, CAT-D16).
 starmap_test CAT-V30 'the startup spread defaults to 15 minutes' \
-	. TestStartupSpreadDefaultsToFifteenMinutes
+	./runtime TestStartupSpreadDefaultsToFifteenMinutes
 starmap_test CAT-V31 'a stable phase survives restart' \
-	. TestStablePhaseSurvivesRestart
+	./runtime TestStablePhaseSurvivesRestart
 starmap_test CAT-V32 'the subscriber reconnect delay uses decorrelated jitter up to 15 minutes' \
 	./remote TestSubscriberReconnectDelayCapsAtFifteenMinutes
 starmap_test CAT-V33 'the subscriber resets backoff only after a healthy liveness window' \
@@ -236,7 +236,7 @@ starport_test CAT-V48 'the Starport candidate-to-accepted transaction rejects a 
 
 # Runtime lease: the Starmap runtime fences its durable generation commit (CAT-D18, owned by CAT5).
 starmap_test CAT-V49 'the runtime lease fences the durable generation commit with its epoch' \
-	. TestRuntimeLeaseRejectsStaleEpochAtCommit
+	./runtime TestRuntimeLeaseRejectsStaleEpochAtCommit
 
 # Console: the shell-owned catalog chip and panel (CAT-D19, CAT8.1 owns them).
 # A console condition runs one vitest file in the Starport console tree. It
@@ -318,7 +318,7 @@ check CAT-V59 'the Starmap runbook has its eight sections and the README links i
 
 # Runtime status and provider retention: accepted behavior of the runtime (CAT-D14, CAT-D17, owned by CAT5).
 starmap_test CAT-V60 'the runtime status reports usability, freshness, fallback, direct source health, and upstream-reported health as independent values' \
-	. TestRuntimeStatusKeepsUsabilityFreshnessFallbackAndHealthIndependent
+	./runtime TestRuntimeStatusKeepsUsabilityFreshnessFallbackAndHealthIndependent
 starmap_test CAT-V61 'a partial provider failure publishes the succeeded layers and the failed provider retains its own last-known-good observation' \
 	./acquisition/... TestSyncPartialFailurePublishesAndRetainsProviderLastKnownGood
 
@@ -340,7 +340,7 @@ starmap_test CAT-V65 'freshness measures the propagated channel_updated_at throu
 starmap_test CAT-V66 'completed provider observations publish through one bounded coalescing window while another provider stays blocked' \
 	./acquisition/... TestSyncPublishesCompletedProvidersWhileAnotherBlocked
 starmap_test CAT-V67 'cloned state and a shared store give replicas distinct scheduler phases and a restart keeps its phase' \
-	. TestSchedulerIdentityDivergesAcrossClonedState
+	./runtime TestSchedulerIdentityDivergesAcrossClonedState
 starport_console_test CAT-V68 'the shell owns one summary query with a visible-only cadence, waits for Retry-After after a 503, stops after a 401 until the session changes, and polls admin status only while the panel is open' \
 	src/components/shell/CatalogSummary.lifecycle.test.tsx
 
