@@ -104,7 +104,7 @@
         <tr><td>1 Publication and source</td><td>CAT3, CAT4</td><td>publication CAT-V01 to CAT-V07</td><td>12 of 68</td></tr>
         <tr><td>2 Runtime</td><td>CAT5, CAT6, CAT7</td><td>runtime CAT-V08 to CAT-V19, transport CAT-V20 to CAT-V29, fleet CAT-V30 to CAT-V38, lease CAT-V49, runtime status CAT-V60 and CAT-V61, propagated freshness CAT-V65, coalescing CAT-V66, scheduler identity CAT-V67</td><td>49 of 68</td></tr>
         <tr><td>3 Starport adoption</td><td>CAT8, CAT8.1</td><td>CAT8 adoption CAT-V42 to CAT-V48, safe response CAT-V51, and route state CAT-V62; CAT8.1 console CAT-V50, CAT-V52 to CAT-V55, CAT-V63, and CAT-V68</td><td>63 of 68</td></tr>
-        <tr><td>4 Documentation</td><td>CAT9, CAT9.1, CAT9.2</td><td>Starport documentation CAT-V56 to CAT-V58, Starmap documentation CAT-V59 and CAT-V64</td><td>68 of 68</td></tr>
+        <tr><td>4 Documentation</td><td>CAT9, CAT9.1, CAT9.2, CAT9.3</td><td>Starport documentation CAT-V56 to CAT-V58, Starmap documentation CAT-V59 and CAT-V64</td><td>68 of 68</td></tr>
         <tr><td>5 Merge and release</td><td>CAT10, CAT11, CAT99</td><td>none</td><td>68 of 68</td></tr>
       </tbody>
     </table>
@@ -130,6 +130,7 @@
         <tr id="CAT9" data-status="todo"><td>CAT9</td><td>Complete compatibility, migration, operator, and API documentation.</td><td><code>todo</code></td><td></td></tr>
         <tr id="CAT9.1" data-status="todo"><td>CAT9.1</td><td>Write the Starport topology guide, the configuration reference, the README paragraph, and the environment example.</td><td><code>todo</code></td><td></td></tr>
         <tr id="CAT9.2" data-status="todo"><td>CAT9.2</td><td>Write the Starmap enterprise catalog server runbook, the README link, and the Kubernetes pair.</td><td><code>todo</code></td><td></td></tr>
+        <tr id="CAT9.3" data-status="todo"><td>CAT9.3</td><td>Wire the source maximum age into the Starmap channel freshness thresholds.</td><td><code>todo</code></td><td></td></tr>
         <tr class="phase"><td colspan="4">Phase 5: Merge and release</td></tr>
         <tr id="CAT10" data-status="todo"><td>CAT10</td><td>Run repository gates, structured reviews, pull requests, and merges.</td><td><code>todo</code></td><td></td></tr>
         <tr id="CAT11" data-status="todo"><td>CAT11</td><td>Verify the hosted channel, publish Starmap, and update Starport.</td><td><code>todo</code></td><td></td></tr>
@@ -357,6 +358,16 @@
       <li><strong>Verification:</strong> run <code>make technical-writing-check</code>, <code>make docs-check</code>, CAT-V59, and CAT-V64.</li>
     </ul>
 
+    <h4 id="task-CAT9.3">CAT9.3 Source maximum age wiring</h4>
+    <ul>
+      <li><strong>Problem:</strong> the runtime validates <code>WithSourceMaxAge</code> and never reads it again, so the freshness grade ignores the configured age.</li>
+      <li><strong>Owned paths:</strong> <code>runtime_options.go</code>, <code>runtime_policy.go</code>, <code>runtime_status.go</code>, and their tests.</li>
+      <li><strong>Steps:</strong> derive the channel warning age from the source maximum age, and scale the critical age in the same ratio.</li>
+      <li><strong>Acceptance:</strong> a runtime opened with a seven-day maximum age grades a two-day channel as current.</li>
+      <li><strong>Fail-before:</strong> the CAT9.1 review on 2026-09-03 found the value inert at <code>runtime_status.go</code>.</li>
+      <li><strong>Verification:</strong> run <code>TestSourceMaxAgeSetsTheChannelThresholds</code>, <code>make test</code>, and <code>make lint</code>.</li>
+    </ul>
+
     <h3>Phase 5: Merge and release</h3>
     <h4 id="task-CAT10">CAT10 Review and merge</h4>
     <ul>
@@ -449,6 +460,7 @@ and lease-owned, and CAT99 removes the plan.</code></pre>
         <tr><td>2026-09-02</td><td>CAT6, CAT7</td><td>done, started</td><td>A delegated agent composed the connected runtime into the CLI, the server, and the container examples. The owner review returned three defects, and the agent repaired every one. The verifier reached 41 of 68, and CAT7 opened.</td></tr>
         <tr><td>2026-09-02</td><td>CAT7, CAT8</td><td>done, started</td><td>A delegated agent built the cascade: the subscriber pacing, the source adapter, the chain rules, and the source-chain route. The owner review returned three defects, and the agent repaired every one. The verifier reached 49 of 68, and CAT8 opened in a clean Starport worktree.</td></tr>
         <tr><td>2026-09-03</td><td>CAT8, CAT8.1</td><td>done, started</td><td>A delegated agent migrated Starport to the catalog-source contract, the lease fence, the asynchronous refresh, and the two catalog routes. The owner review returned five defects, and the agent repaired every one. The verifier reached 56 of 68, and CAT8.1 opened with CAT9.1 in parallel.</td></tr>
+        <tr><td>2026-09-03</td><td>CAT9.1, CAT9.3</td><td>reviewed, added</td><td>The owner review of CAT9.1 returned seven factual defects to the agent. It also found that the runtime never reads the source maximum age after validation. CAT9.3 now owns that wiring in Starmap.</td></tr>
       </tbody>
     </table>
   </section>
