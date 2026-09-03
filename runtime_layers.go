@@ -112,7 +112,11 @@ func (l *layerSet) build(baseline CatalogState) (CatalogState, error) {
 	}
 	for _, id := range l.providerOrder() {
 		layer := l.providers[id]
-		observed, err := catalogs.DecodeCatalogPayload(layer.Payload)
+		// A retained provider layer holds one provider observation. It carries
+		// serving records that name an authored model of the baseline, so the
+		// layer alone resolves no canonical authorship. The final build below
+		// validates the merged result.
+		observed, err := catalogs.DecodeSourceObservationPayload(layer.Payload)
 		if err != nil {
 			return CatalogState{}, errors.WrapResource(
 				"decode", "retained provider layer", string(id), err)
