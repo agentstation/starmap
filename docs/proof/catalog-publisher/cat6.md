@@ -81,7 +81,7 @@ The default source is `public`. A configured `starmap`, `github`, `file`, or
 names the CAT7 handoff:
 
 ```text
-configuration error in catalog source: the starmap source kind is not yet available in this build
+configuration error in catalog source: the starmap catalog source is not yet available; select public, github, file, or embedded
 ```
 
 `starmap update` stays the manual acquisition command. It runs against the
@@ -102,6 +102,8 @@ alias, so this task kept the one canonical spelling and dropped the second one.
 | `TestStarmapSourceParsesAndCompositionRejectsIt` | the parser accepts the starmap source and composition rejects it |
 | `TestInvalidValueReturnsTypedError` | an invalid value returns a typed error |
 | `TestNilLookupIsRejected` | a nil lookup returns a typed error |
+| `TestCatalogPathFollowsTheCanonicalWorkspaceSetting` | the workspace setting wins, so one process reads one workspace |
+| `TestCatalogPathKeepsTheConfiguredWorkspaceWithoutTheSetting` | the file configuration still wins without the setting |
 | `TestApplicationPullsSyntheticChannelAndRetainsState` | the package pulls a synthetic channel, detects eligible credentials, and retains state |
 | `TestServerServesEmbeddedStateThenPullsChannel` | the server serves first, reports runtime readiness, and joins the runtime on shutdown |
 | `TestComposeExampleParsesAndPullsThePublicChannel` | the Compose example parses and sets no catalog setting |
@@ -139,6 +141,7 @@ restored its file afterward.
 | the operation reason carries the raw error | `TestRegistryReportsBoundedFailureReason` and `TestRegistryMetricsUseBoundedLabels` both fail on the leaked text |
 | the provider preflight stops gating on the credential | `TestApplicationPullsSyntheticChannelAndRetainsState`: `unconfigured outcome = "failed", want "skipped_not_configured"` |
 | the server shutdown skips the runtime close | `TestServerServesEmbeddedStateThenPullsChannel`: `the server shutdown did not close the runtime` |
+| `CatalogPath` reads only the file configuration | `TestCatalogPathFollowsTheCanonicalWorkspaceSetting`: the returned path falls back to the per-user default |
 | the Compose service sets `STARMAP_CATALOG_SOURCE` | `TestComposeExampleParsesAndPullsThePublicChannel`: `the running service sets "STARMAP_CATALOG_SOURCE"` |
 
 ## Two defects that CAT6 found and repaired
@@ -192,6 +195,9 @@ workspace path and the state directory both sit under the mount.
 | `shellcheck scripts/*.sh` | pass |
 | `bash scripts/verify-catalog-distribution.sh` | `Summary: 39 passed, 10 failed, 19 unverified.` |
 | `bash scripts/verify-container-smoke.sh` | `PASS the image serves with a read-only root and a writable state volume.` |
+
+`scripts/verify.sh` now runs the container smoke check, so `make verify` owns
+that gate.
 
 CAT-V27, CAT-V28, and CAT-V29 all report PASS. Ten conditions still fail. The
 run above lists them, and each one belongs to a later task. CAT7 owns CAT-V25,
