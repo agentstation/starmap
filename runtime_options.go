@@ -37,6 +37,10 @@ type runtimeOptions struct {
 	acquisition AcquisitionPolicy
 	freshness   FreshnessPolicy
 
+	// freshnessExplicit records that a caller supplied a freshness policy. An
+	// explicit policy wins, so the source maximum age derives no threshold.
+	freshnessExplicit bool
+
 	stateDirectory string
 	startupSpread  time.Duration
 
@@ -88,6 +92,17 @@ func (r runtimeOptions) transferPolicy() remote.TransferPolicy {
 	policy.IdleTimeout = r.transferIdleTimeout
 	policy.MaxDuration = r.transferMaxDuration
 	return policy
+}
+
+// resolve derives every setting that another setting implies. Open calls it
+// once, after it applies the options and before it validates them.
+func (r *runtimeOptions) resolve() {
+	// The source maximum age names the age at which the served catalog is
+	// stale, so it names the channel freshness thresholds too. An explicit
+	// freshness policy wins over the derivation.
+	if !r.freshnessExplicit {
+		r.freshness = r.freshness.withChannelMaxAge(r.source.MaxAge)
+	}
 }
 
 // validate checks every runtime setting before Open starts any work.
@@ -247,6 +262,9 @@ func WithSourceStartupPolicy(name string) Option {
 }
 
 // WithSourceMaxAge sets the age at which the served catalog counts as stale.
+// It also derives the channel freshness thresholds. The warning age becomes
+// the maximum age, and the critical age keeps the six-to-ten ratio of the
+// defaults. WithFreshnessPolicy wins over this derivation.
 func WithSourceMaxAge(maxAge time.Duration) Option {
 	return runtimeOption("WithSourceMaxAge", func(r *runtimeOptions) error {
 		if maxAge < 0 {
@@ -428,13 +446,15 @@ func WithLeaseStore(store LeaseStore) Option {
 	})
 }
 
-// WithFreshnessPolicy replaces the freshness thresholds.
+// WithFreshnessPolicy replaces the freshness thresholds. An explicit policy
+// wins, so WithSourceMaxAge then derives no channel threshold.
 func WithFreshnessPolicy(policy FreshnessPolicy) Option {
 	return runtimeOption("WithFreshnessPolicy", func(r *runtimeOptions) error {
 		if err := policy.Validate(); err != nil {
 			return err
 		}
 		r.freshness = policy
+		r.freshnessExplicit = true
 		return nil
 	})
 }

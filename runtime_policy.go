@@ -318,10 +318,14 @@ func (p AcquisitionPolicy) Validate() error {
 // Freshness thresholds. They follow the four-hour publication cadence, the
 // one-hour channel poll, and the six-hour end-to-end objective.
 const (
-	// FreshnessChannelWarnAge is the served-catalog age that warns.
+	// FreshnessChannelWarnAge is the served-catalog age that warns. A source
+	// maximum age above zero replaces it, unless the caller supplies an
+	// explicit freshness policy.
 	FreshnessChannelWarnAge = 6 * time.Hour
 
 	// FreshnessChannelCriticalAge is the served-catalog age that is critical.
+	// A source maximum age above zero replaces it with the scaled age, unless
+	// the caller supplies an explicit freshness policy.
 	FreshnessChannelCriticalAge = 10 * time.Hour
 
 	// FreshnessSourceCheckWarnAge is the source-check age that warns.
@@ -361,6 +365,41 @@ func DefaultFreshnessPolicy() FreshnessPolicy {
 		AcquisitionWarnAge:     FreshnessAcquisitionWarnAge,
 		AcquisitionCriticalAge: FreshnessAcquisitionCriticalAge,
 	}
+}
+
+// Channel threshold derivation. The source maximum age names the age at which
+// the served catalog is stale, so it names the channel warning age too. The
+// critical age keeps the ratio that the two defaults hold, in the lowest
+// terms: ten hours over six hours reduces to five over three.
+const (
+	channelCriticalNumerator   = 5
+	channelCriticalDenominator = 3
+
+	// maxDuration is the largest representable duration. A derivation that
+	// cannot order the two thresholds returns it, so no channel age ever
+	// reaches the critical grade.
+	maxDuration = time.Duration(1<<63 - 1)
+)
+
+// withChannelMaxAge returns the policy with the channel thresholds that a
+// source maximum age implies. The warning age becomes the maximum age, and the
+// critical age scales it by the default ratio. A maximum age of zero or less
+// returns the policy unchanged.
+func (p FreshnessPolicy) withChannelMaxAge(maxAge time.Duration) FreshnessPolicy {
+	if maxAge <= 0 {
+		return p
+	}
+	critical := maxAge / channelCriticalDenominator * channelCriticalNumerator
+	remainder := maxAge % channelCriticalDenominator
+	critical += remainder * channelCriticalNumerator / channelCriticalDenominator
+	// A tiny age rounds down to the warning age, and a huge age overflows to a
+	// negative one. Both keep the pair ordered by never reaching critical.
+	if critical <= maxAge {
+		critical = maxDuration
+	}
+	p.ChannelWarnAge = maxAge
+	p.ChannelCriticalAge = critical
+	return p
 }
 
 // Validate checks that every warning threshold precedes its critical partner.

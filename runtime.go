@@ -195,6 +195,7 @@ func Open(ctx context.Context, opts ...Option) (*Runtime, error) {
 	if err != nil {
 		return nil, err
 	}
+	config.runtime.resolve()
 	if err := config.runtime.validate(); err != nil {
 		return nil, err
 	}
