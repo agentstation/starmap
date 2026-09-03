@@ -111,11 +111,12 @@ func TestServerStartDoesNotOwnAHiddenTransportLoop(t *testing.T) {
 
 // mockApplication is a minimal Application implementation for testing
 type mockApplication struct {
-	logger       *zerolog.Logger
-	sm           *starmap.Client
-	runtime      *starmap.Runtime
-	catalog      *catalogs.Catalog
-	catalogState *starmap.CatalogState
+	logger        *zerolog.Logger
+	sm            *starmap.Client
+	runtime       *starmap.Runtime
+	runtimeStatus *starmap.RuntimeStatus
+	catalog       *catalogs.Catalog
+	catalogState  *starmap.CatalogState
 }
 
 func newMockApplication() *mockApplication {
@@ -152,6 +153,9 @@ func (m *mockApplication) Readiness() (starmap.CatalogReadiness, error) {
 }
 
 func (m *mockApplication) RuntimeStatus() starmap.RuntimeStatus {
+	if m.runtimeStatus != nil {
+		return *m.runtimeStatus
+	}
 	return m.runtime.Status()
 }
 

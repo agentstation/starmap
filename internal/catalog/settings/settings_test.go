@@ -1,7 +1,6 @@
 package settings_test
 
 import (
-	"context"
 	stderrors "errors"
 	"strings"
 	"testing"
@@ -28,6 +27,7 @@ func sampleValues() map[string]string {
 		settings.SourceStartupPolicy:  "embedded",
 		settings.SourceMaxAge:         "12h",
 		settings.SourceMaxHops:        "4",
+		settings.SourceAliases:        "replica-a,replica-b",
 		settings.AcquisitionEnabled:   "false",
 		settings.AcquisitionInterval:  "2h",
 		settings.CoalesceWindow:       "45s",
@@ -169,10 +169,10 @@ func TestConfiguredSourceReplacesTheDefault(t *testing.T) {
 	}
 }
 
-// TestStarmapSourceParsesAndCompositionRejectsIt proves the split contract. The
-// parser accepts the starmap source with its URL. Only the composition step
-// returns the typed error that names the source of the next task.
-func TestStarmapSourceParsesAndCompositionRejectsIt(t *testing.T) {
+// TestStarmapSourceComposesTheCascadeSource proves the split contract. The
+// parser accepts the starmap source with its URL, and the composition step
+// builds the cascade source that the root package cannot construct.
+func TestStarmapSourceComposesTheCascadeSource(t *testing.T) {
 	values := map[string]string{
 		settings.Source:    string(starmap.SourceStarmap),
 		settings.SourceURL: "https://catalog.example.test",
@@ -191,16 +191,33 @@ func TestStarmapSourceParsesAndCompositionRejectsIt(t *testing.T) {
 		t.Fatalf("source URL = %q, want %q", config.SourceURL, values[settings.SourceURL])
 	}
 
-	_, err = settings.Composition{Config: config}.Open(context.Background())
+	options, err := settings.Composition{Config: config}.Options()
+	if err != nil {
+		t.Fatalf("Options: %v", err)
+	}
+	if len(options) == 0 {
+		t.Fatal("Options returned no option for the starmap source")
+	}
+}
+
+// TestStarmapSourceWithoutURLIsRejected proves that the composition step names
+// the missing setting instead of opening a source with no upstream.
+func TestStarmapSourceWithoutURLIsRejected(t *testing.T) {
+	values := map[string]string{settings.Source: string(starmap.SourceStarmap)}
+	config, err := settings.Load(func(name string) (string, bool) {
+		value, found := values[name]
+		return value, found
+	})
+	if err != nil {
+		t.Fatalf("Load: %v", err)
+	}
+	_, err = settings.Composition{Config: config}.Options()
 	var configErr *errors.ConfigError
 	if !stderrors.As(err, &configErr) {
-		t.Fatalf("Open error = %v, want a ConfigError", err)
+		t.Fatalf("Options error = %v, want a ConfigError", err)
 	}
-	if configErr.Component != "catalog source" {
-		t.Fatalf("component = %q, want %q", configErr.Component, "catalog source")
-	}
-	if !strings.Contains(configErr.Message, "not yet available") {
-		t.Fatalf("message = %q, want the not-yet-available handoff", configErr.Message)
+	if !strings.Contains(configErr.Message, settings.SourceURL) {
+		t.Fatalf("message = %q, want the missing %s", configErr.Message, settings.SourceURL)
 	}
 }
 

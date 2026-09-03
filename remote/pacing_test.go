@@ -18,7 +18,7 @@ import (
 // TestSubscriberOpenHonorsResponseHeaderTimeout proves the bound that applies
 // to opening an event stream. OpenEventStream clears the client deadline,
 // because a healthy stream stays open for hours. The response-header timeout of
-// the transfer policy is then the only bound on the open, so a publisher that
+// the transfer policy is then the only bound on the open. A publisher that
 // accepts the connection and writes no header cannot hang a subscriber.
 func TestSubscriberOpenHonorsResponseHeaderTimeout(t *testing.T) {
 	t.Parallel()
@@ -74,8 +74,8 @@ func TestSubscriberOpenHonorsResponseHeaderTimeout(t *testing.T) {
 
 // TestSubscriberReconnectDelayCapsAtFifteenMinutes proves the fleet reconnect
 // bounds. The delay grows with decorrelated jitter from one second and never
-// exceeds fifteen minutes, so a long outage cannot produce an unbounded wait
-// and cannot produce a tight reconnect loop.
+// exceeds fifteen minutes. A long outage therefore causes no unbounded wait
+// and no tight reconnect loop.
 func TestSubscriberReconnectDelayCapsAtFifteenMinutes(t *testing.T) {
 	t.Parallel()
 
@@ -114,10 +114,10 @@ func TestSubscriberReconnectDelayCapsAtFifteenMinutes(t *testing.T) {
 }
 
 // TestSubscriberResetsBackoffAfterHealthyWindow proves the reset rule. A TCP
-// connection and a first response header prove no liveness, so only a stream
-// that stayed open for a healthy liveness window returns the delay to the
-// minimum. A publisher that accepts and drops each connection therefore keeps
-// the growing delay.
+// connection and a first response header prove no liveness. Only a stream that
+// stayed open for a healthy liveness window returns the delay to the minimum.
+// A publisher that accepts and drops each connection therefore keeps the
+// growing delay.
 func TestSubscriberResetsBackoffAfterHealthyWindow(t *testing.T) {
 	t.Parallel()
 
@@ -344,8 +344,8 @@ func TestSubscriberWaitsForCredentialChange(t *testing.T) {
 
 // TestFallbackPollingUsesStablePhase proves that fallback polling spreads
 // across the interval. Every subscriber of one fleet polls at the stable phase
-// of its own identity, so a fifteen-minute interval spreads the requests across
-// the whole interval instead of a shared instant.
+// of its own identity. A fifteen-minute interval therefore spreads the requests
+// across the whole interval instead of a shared instant.
 func TestFallbackPollingUsesStablePhase(t *testing.T) {
 	t.Parallel()
 
