@@ -133,6 +133,43 @@ digest (`upstream+local.<12 digest characters>`). It never reuses the upstream
 identity. Two different catalogs under one identity would let a downstream
 treat them as one generation.
 
+## Repairs after review
+
+The first review found three defects. Each repair carries its own test.
+
+The cascade now wakes the runtime. An optional source role,
+`starmap.SourceWatcher`, reports one wake for each upstream change through
+`Changes`. The cascaded source fills that role from the subscriber stream.
+
+The source worker in `runtime_scheduler.go` selects on the wake channel and on
+its interval boundary. It runs the same refresh work under the same coalesce
+window. A closed channel drops the worker back onto its poll interval. A
+streamed delta crosses one hop in seconds. The earlier end-to-end test hid the
+gap, because it called `RefreshSource` in a loop. That test now reads status
+alone and calls no refresh.
+
+The composed subscriber carries the canonical bounds. Its settings keep the
+transfer idle timeout, the transfer maximum duration, and the startup spread.
+The composition step maps all three onto the subscriber config. A second
+optional role, `starmap.SourceIdentityAdopter`, takes the derived instance
+identity. Open hands that identity to the source right after it initializes
+the schedule. A deployment that configures no identity still spreads its
+cascade on the identity of its runtime.
+
+A refused start is no longer sticky. The source held a terminal error under
+`sync.Once`. One 401 therefore disabled the source for the life of the
+process. The start now runs under a mutex and keeps no error. A later read
+opens the lifecycle again, so the runtime recovers after a key rotation.
+
+The review named three cheap items too. This repair closed two of them. The
+cascaded read drops the dead `ErrNotFound` branch, because a served status
+always arrives as an `APIError`. The served chain now warns when it names
+fewer hops than the runtime observed.
+
+The third item stays open. The refusal helper reads the wall clock inside
+`pkg/catalogs/remote`. That package holds no clock, so a test clock there
+needs a wider change than this repair.
+
 ## Tests
 
 | Test | Condition |
@@ -153,6 +190,11 @@ treat them as one generation.
 | `starmap.TestDerivedEffectiveGenerationNeverReusesTheUpstreamIdentity` | derived identity |
 | `settings.TestStarmapSourceComposesTheCascadeSource` | composition |
 | `settings.TestStarmapSourceWithoutURLIsRejected` | missing URL |
+| `settings.TestCascadeSubscriberCarriesTheCanonicalBounds` | the mapped bounds |
+| `settings.TestCascadeSubscriberNeedsAnUpstreamURL` | the named missing URL |
+| `starmap.TestRuntimeRefreshesOnAnUpstreamWake` | the reactive wake |
+| `starmap.TestRuntimeHandsItsInstanceIdentityToTheSource` | the adopted identity |
+| `remote.TestSourceRetriesAStartThatTheUpstreamRefused` | the retried start |
 
 `TestServerCascadesVerifiedCatalogSource` runs the whole cascade on loopback
 with the synthetic verified channel of `internal/test/channel`. An origin
@@ -161,8 +203,8 @@ runtime serves the channel, a middle runtime consumes the origin through the
 
 The test proves the shared payload checksum and the propagated origin channel
 time at both hops. It also proves one more chain entry at each hop, the three
-refusal rules, and a streamed delta. That delta reaches the middle after the
-origin publishes new bytes.
+refusal rules, and a streamed delta. The origin publishes new bytes, and the
+middle moves onto them with no refresh call, so the wake path carries them.
 
 Every test is hermetic and runs with `-race`. The package runs above used
 `HTTPS_PROXY=127.0.0.1:1`.
@@ -178,12 +220,16 @@ This task applied each mutation alone and then reverted it.
 | the source layer records the local check time as `ChannelUpdatedAt` | `--- FAIL: TestRuntimeGradesThePropagatedChannelTime`: `channel time = 2026-09-01 12:00:00 +0000 UTC, want the propagated origin time 2026-09-01 00:00:00 +0000 UTC` |
 | `deriveEffectiveGenerationID` returns the upstream identity | `--- FAIL: TestDerivedEffectiveGenerationNeverReusesTheUpstreamIdentity`: `derived identities "generation-upstream" and "generation-upstream" reuse the upstream identity` |
 | `refuse` writes no `Retry-After` header | `--- FAIL: TestSourceAdmissionReturnsRetryAfter`: `refusal carried no Retry-After header` |
+| `sourceChanges` returns nil for every source | `--- FAIL: TestRuntimeRefreshesOnAnUpstreamWake`: `source reads = 1, want 2`, and `--- FAIL: TestServerCascadesVerifiedCatalogSource`: `middle payload = "sha256:948a6164..." want the streamed delta "sha256:6115c41c..."` |
+| `Source.start` keeps its first start error | `--- FAIL: TestSourceRetriesAStartThatTheUpstreamRefused`: `second Read: API error from starmap-server (status 401): unexpected event stream response status` |
+| `cascadeSubscriber` drops the idle timeout and the startup spread | `--- FAIL: TestCascadeSubscriberCarriesTheCanonicalBounds`: `idle timeout = 2m0s, want 7s` |
+| `Open` hands no identity to the source | `--- FAIL: TestRuntimeHandsItsInstanceIdentityToTheSource`: `adopted identity = "", want the runtime identity "8a86ff98e4d8c579"` |
 
 ## Commands
 
 | Command | Result |
 | --- | --- |
-| `make lint` | pass, `0 issues`, strict prose `PASS: 750 file(s), 0 diagnostic(s)` |
+| `make lint` | pass, `0 issues`, strict prose `PASS: 754 file(s), 0 diagnostic(s)` |
 | `make test` | pass, exit 0, no `FAIL` line |
 | `go tool ago -stale-ignores -format json ./...` | `"findings": []`, `"staleIgnores": []` |
 | `make technical-writing-check` | pass |
