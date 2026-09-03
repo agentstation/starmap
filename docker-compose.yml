@@ -15,6 +15,32 @@ services:
       - HTTP_HOST=0.0.0.0
       - HTTP_PORT=8080
 
+      # Catalog settings (optional). This stack sets none, so the server pulls
+      # the public attested channel with the defaults below. Each line names one
+      # canonical setting and its default. A flag of the same name in kebab case
+      # overrides the setting for one command.
+      # - STARMAP_CATALOG_SOURCE=public
+      # - STARMAP_CATALOG_SOURCE_URL=
+      # - STARMAP_CATALOG_SOURCE_API_KEY=
+      # - STARMAP_CATALOG_SOURCE_REPOSITORY=agentstation/starmap
+      # - STARMAP_CATALOG_SOURCE_CHANNEL=catalog-latest
+      # - STARMAP_CATALOG_SOURCE_SIGNER_WORKFLOW=
+      # - STARMAP_CATALOG_SOURCE_TOKEN=
+      # - STARMAP_CATALOG_SOURCE_POLL_INTERVAL=1h
+      # - STARMAP_CATALOG_SOURCE_STARTUP_POLICY=prefer_source
+      # - STARMAP_CATALOG_SOURCE_MAX_AGE=6h
+      # - STARMAP_CATALOG_SOURCE_MAX_HOPS=8
+      # - STARMAP_CATALOG_ACQUISITION_ENABLED=true
+      # - STARMAP_CATALOG_ACQUISITION_INTERVAL=4h
+      # - STARMAP_CATALOG_COALESCE_WINDOW=30s
+      # - STARMAP_CATALOG_WORKSPACE_PATH=/home/nonroot/.starmap/catalog
+      # - STARMAP_CATALOG_STARTUP_SPREAD=15m
+      # - STARMAP_CATALOG_TRANSFER_IDLE_TIMEOUT=2m
+      # - STARMAP_CATALOG_TRANSFER_MAX_DURATION=60m
+      # - STARMAP_CATALOG_REFRESH_TIMEOUT=0s
+      # - STARMAP_STATE_DIR=/home/nonroot/.starmap/state/runtime
+      # - STARMAP_SCHEDULER_IDENTITY=
+
       # Provider API keys (optional - for live data fetching)
       # Uncomment and set in .env file
       # - OPENAI_API_KEY=${OPENAI_API_KEY}
@@ -37,9 +63,14 @@ services:
     env_file:
       - .env
 
-    # Persistent storage for catalog data
+    # The root filesystem stays read-only, so this volume holds the only
+    # writable state. It carries the catalog workspace path and the runtime
+    # state directory, so a durable catalog survives a restart. The mount point
+    # is the home directory of the image, because the unprivileged user already
+    # owns that directory. A deeper mount point would arrive owned by root and
+    # the server could not write it.
     volumes:
-      - starmap-data:/home/nonroot/.starmap
+      - starmap-data:/home/nonroot
       # Optional: Mount Google Cloud credentials
       # - ./secrets/gcp-key.json:/secrets/gcp-key.json:ro
 
