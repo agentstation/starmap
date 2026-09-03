@@ -254,7 +254,7 @@ spec:
                   key: api-key
           ports:
             - name: http
-              containerPort: 8081
+              containerPort: 8080
 ```
 
 This pair is a single-server design. One Starmap replica owns the persistent

@@ -54,7 +54,8 @@ active and passive pair only.
 
 `docs/DOCKER.md` gains a Service for the Starmap pods and a Starport Deployment
 that reads that Service through `STARPORT_CATALOG_SOURCE_URL`. The section now
-holds two Deployments and one Service.
+holds two Deployments and one Service. Each container keeps its own default
+port 8080, because the two Deployments run separate pods.
 
 `internal/deploymentdocs` is a test-only package. It adds no module. It uses
 `github.com/goccy/go-yaml`, which the module already holds as a direct

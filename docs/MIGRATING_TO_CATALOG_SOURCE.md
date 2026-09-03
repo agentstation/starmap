@@ -24,8 +24,9 @@ explicit `Open` constructor only.
 1. The old opt-in wording is gone. A connected process reads its source at
    startup.
 2. No removed name is a runtime alias. No removed name selects behavior.
-3. A process that still reads a removed name fails at startup. The error names
-   the removed setting, so no silent default replaces an operator choice.
+3. A Starport process that still reads a removed name fails at startup. The
+   error names the removed setting, so no silent default replaces an operator
+   choice. Starmap never carried those names.
 4. The canonical names live in `internal/catalog/settings`. Starmap reads them
    under the `STARMAP_` prefix and Starport reads the same suffixes under the
    `STARPORT_` prefix, with the same defaults.

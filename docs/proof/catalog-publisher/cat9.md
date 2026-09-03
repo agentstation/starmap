@@ -50,9 +50,10 @@ docs/proof/catalog-publisher/cat2-review.md:65:...
 | `GLOSSARY.md` | Eighteen approved terms for the new vocabulary |
 
 The migration contract states four facts. The old opt-in wording is gone. No
-removed name is a runtime alias. A process that still reads a removed name
-fails at startup. The canonical names live in `internal/catalog/settings`, and
-Starport reads the same suffixes with the same defaults.
+removed name is a runtime alias. A Starport process that still reads a removed
+name fails at startup, and Starmap never carried those names. The canonical
+names live in `internal/catalog/settings`, and Starport reads the same suffixes
+with the same defaults.
 
 ## The trusted-root finding
 

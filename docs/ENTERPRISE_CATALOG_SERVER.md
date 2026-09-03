@@ -38,8 +38,14 @@ Give the process its own state directory:
 
 ```bash
 export STARMAP_STATE_DIR=/var/lib/starmap/state
-export STARMAP_CATALOG_WORKSPACE_PATH=/var/lib/starmap/catalog
 ```
+
+That directory holds the runtime state, the retained generations, and the
+instance seed. Put it on the persistent volume.
+
+`STARMAP_CATALOG_WORKSPACE_PATH` is a separate setting. It names the reviewed
+operator catalog input, not the runtime state. Set it only when this server
+serves a catalog that an operator maintains on disk.
 
 Confirm the server serves a catalog:
 
