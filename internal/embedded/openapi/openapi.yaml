@@ -1786,6 +1786,19 @@ info:
   version: "1.0"
 openapi: 3.1.0
 paths:
+  /api/v1/catalog/source-chain:
+    get:
+      description: Safe identities and bounded detail for each cascade hop
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: object
+          description: OK
+      summary: Source chain manifest
+      tags:
+      - catalog
   /api/v1/health:
     get:
       description: Health check endpoint (liveness probe)

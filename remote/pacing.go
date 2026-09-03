@@ -7,8 +7,8 @@ import (
 )
 
 // Fleet controller names. A stable phase and a startup offset separate the two
-// controllers of one subscriber, so the reconnect spread and the fallback poll
-// phase never land on one instant.
+// controllers of one subscriber. The reconnect spread and the fallback poll
+// phase therefore never land on one instant.
 const (
 	controllerStream = "source_stream"
 	controllerPoll   = "source_poll"

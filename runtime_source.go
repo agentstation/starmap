@@ -32,7 +32,8 @@ func (r *Runtime) selectSource() (Source, error) {
 	case SourceStarmap:
 		return nil, &errors.ConfigError{
 			Component: "catalog source",
-			Message:   "the starmap cascade source needs an injected implementation",
+			Message: "the starmap cascade source arrives through WithSource, " +
+				"because the root package cannot import the cascade subscriber",
 		}
 	default:
 		return nil, &errors.ValidationError{

@@ -57,6 +57,11 @@ const (
 	// SourceMaxHops bounds an accepted Starmap source chain.
 	SourceMaxHops = Prefix + "CATALOG_SOURCE_MAX_HOPS"
 
+	// SourceAliases lists the other stable identities of this same runtime, as
+	// a comma-separated list. A served source chain that names one of them is
+	// a self reference.
+	SourceAliases = Prefix + "CATALOG_SOURCE_ALIASES"
+
 	// AcquisitionEnabled turns automatic provider acquisition on or off.
 	AcquisitionEnabled = Prefix + "CATALOG_ACQUISITION_ENABLED"
 
@@ -114,6 +119,26 @@ type Config struct {
 	// SourceURL is the safe endpoint or file identity of a custom source.
 	SourceURL string
 
+	// SchedulerIdentity is the explicit stable instance identity. It spreads
+	// the cascade subscriber across the startup window of a fleet. An empty
+	// value leaves one process to reconnect at once.
+	SchedulerIdentity string
+
+	// SourceAPIKey is the Starmap protocol credential. It never reaches
+	// status, a log line, or an error, and only the composition step reads it.
+	SourceAPIKey string
+
+	// SourceMaxAge is the age at which the served catalog counts as stale.
+	// Zero selects the runtime default.
+	SourceMaxAge time.Duration
+
+	// SourceMaxHops bounds an accepted Starmap source chain. Zero selects the
+	// runtime default.
+	SourceMaxHops int
+
+	// SourceAliases lists the other stable identities of this same runtime.
+	SourceAliases []string
+
 	// WorkspacePath is the reviewed operator catalog input.
 	WorkspacePath string
 
@@ -141,7 +166,8 @@ func table() []setting {
 		},
 		{
 			name: SourceAPIKey, flag: "catalog-source-api-key",
-			apply: stringOption(starmap.WithSourceAPIKey),
+			capture: captureSourceAPIKey,
+			apply:   stringOption(starmap.WithSourceAPIKey),
 		},
 		{
 			name: SourceRepository, flag: "catalog-source-repository",
@@ -169,11 +195,18 @@ func table() []setting {
 		},
 		{
 			name: SourceMaxAge, flag: "catalog-source-max-age",
-			apply: durationOption(SourceMaxAge, starmap.WithSourceMaxAge),
+			capture: captureSourceMaxAge,
+			apply:   durationOption(SourceMaxAge, starmap.WithSourceMaxAge),
 		},
 		{
 			name: SourceMaxHops, flag: "catalog-source-max-hops",
-			apply: intOption(SourceMaxHops, starmap.WithSourceMaxHops),
+			capture: captureSourceMaxHops,
+			apply:   intOption(SourceMaxHops, starmap.WithSourceMaxHops),
+		},
+		{
+			name: SourceAliases, flag: "catalog-source-aliases",
+			capture: captureSourceAliases,
+			apply:   listOption(starmap.WithSourceAliases),
 		},
 		{
 			name: AcquisitionEnabled, flag: "catalog-acquisition-enabled",
@@ -213,7 +246,8 @@ func table() []setting {
 		},
 		{
 			name: SchedulerIdentity, flag: "scheduler-identity",
-			apply: stringOption(starmap.WithSchedulerIdentity),
+			capture: captureSchedulerIdentity,
+			apply:   stringOption(starmap.WithSchedulerIdentity),
 		},
 	}
 }
@@ -342,6 +376,64 @@ func captureSourceKind(value string, config *Config) error {
 func captureSourceURL(value string, config *Config) error {
 	config.SourceURL = value
 	return nil
+}
+
+func captureSchedulerIdentity(value string, config *Config) error {
+	config.SchedulerIdentity = value
+	return nil
+}
+
+func captureSourceAPIKey(value string, config *Config) error {
+	config.SourceAPIKey = value
+	return nil
+}
+
+func captureSourceMaxAge(value string, config *Config) error {
+	maxAge, err := time.ParseDuration(value)
+	if err != nil {
+		return &errors.ValidationError{
+			Field: SourceMaxAge, Value: value,
+			Message: "must be a duration such as 4h or 30s",
+		}
+	}
+	config.SourceMaxAge = maxAge
+	return nil
+}
+
+func captureSourceMaxHops(value string, config *Config) error {
+	hops, err := strconv.Atoi(value)
+	if err != nil {
+		return &errors.ValidationError{
+			Field: SourceMaxHops, Value: value, Message: "must be a whole number",
+		}
+	}
+	config.SourceMaxHops = hops
+	return nil
+}
+
+func captureSourceAliases(value string, config *Config) error {
+	config.SourceAliases = splitList(value)
+	return nil
+}
+
+// splitList parses a comma-separated identity list. It drops empty entries, so
+// a trailing comma is not an error.
+func splitList(value string) []string {
+	parts := strings.Split(value, ",")
+	list := make([]string, 0, len(parts))
+	for _, part := range parts {
+		if trimmed := strings.TrimSpace(part); trimmed != "" {
+			list = append(list, trimmed)
+		}
+	}
+	return list
+}
+
+// listOption passes a comma-separated list to its option.
+func listOption(option func(...string) starmap.Option) func(string) (starmap.Option, error) {
+	return func(value string) (starmap.Option, error) {
+		return option(splitList(value)...), nil
+	}
 }
 
 func captureWorkspacePath(value string, config *Config) error {

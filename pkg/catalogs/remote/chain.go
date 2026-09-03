@@ -30,7 +30,7 @@ const (
 	maxSourceIdentityBytes = 128
 )
 
-// Source-chain health codes. The set is closed, so a document discloses a
+// Source-chain health codes. The set stays closed, so a document discloses a
 // grade and never free-form text.
 const (
 	// SourceChainHealthUnknown means the node reported no grade yet.

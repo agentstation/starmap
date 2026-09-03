@@ -133,6 +133,13 @@ const (
 
 	// DefaultSourceMaxHops bounds a cascade of Starmap runtimes.
 	DefaultSourceMaxHops = 8
+
+	// MaxSourceAliases bounds the declared alias list. A deployment names a
+	// few addresses of one node, so a longer list is a configuration error.
+	MaxSourceAliases = 16
+
+	// MaxSourceAliasBytes bounds one declared alias.
+	MaxSourceAliasBytes = 128
 )
 
 // SourcePolicy selects and bounds the upstream catalog source. It holds no
@@ -165,6 +172,12 @@ type SourcePolicy struct {
 
 	// MaxHops bounds a cascade of Starmap runtimes.
 	MaxHops int
+
+	// Aliases are the other stable identities that name this same runtime,
+	// such as a load-balancer name or a second deployment name. A served
+	// source chain that names one of them is a self reference, and address
+	// comparison alone cannot detect it.
+	Aliases []string
 }
 
 // DefaultSourcePolicy returns the canonical public-channel source policy.
@@ -206,6 +219,20 @@ func (p SourcePolicy) Validate() error {
 	if p.MaxHops < 1 {
 		return &errors.ValidationError{
 			Field: "source_policy.max_hops", Value: p.MaxHops, Message: "must be at least one",
+		}
+	}
+	if len(p.Aliases) > MaxSourceAliases {
+		return &errors.ValidationError{
+			Field: "source_policy.aliases", Value: len(p.Aliases),
+			Message: "exceeds the alias budget",
+		}
+	}
+	for _, alias := range p.Aliases {
+		if alias == "" || len(alias) > MaxSourceAliasBytes {
+			return &errors.ValidationError{
+				Field: "source_policy.aliases", Value: len(alias),
+				Message: "must be a bounded nonempty identity",
+			}
 		}
 	}
 	switch p.Kind {

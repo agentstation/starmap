@@ -12,12 +12,14 @@ Package handlers provides HTTP request handlers for the Starmap API.
 
 ## Index
 
+- [func SourceChainOf\(status starmap.RuntimeStatus\) protocol.SourceChain](<#SourceChainOf>)
 - [type DateRange](<#DateRange>)
 - [type Handlers](<#Handlers>)
   - [func New\(app application, cache \*cache.Cache, sseBroadcaster \*sse.Broadcaster, operationRegistry \*operations.Registry, logger \*zerolog.Logger, startTime time.Time\) \*Handlers](<#New>)
   - [func \(h \*Handlers\) HandleCatalogGenerationManifest\(writer http.ResponseWriter, request \*http.Request, generationID string\)](<#Handlers.HandleCatalogGenerationManifest>)
   - [func \(h \*Handlers\) HandleCatalogManifest\(writer http.ResponseWriter, request \*http.Request\)](<#Handlers.HandleCatalogManifest>)
   - [func \(h \*Handlers\) HandleCatalogPayload\(writer http.ResponseWriter, request \*http.Request, generationID string\)](<#Handlers.HandleCatalogPayload>)
+  - [func \(h \*Handlers\) HandleCatalogSourceChain\(w http.ResponseWriter, \_ \*http.Request\)](<#Handlers.HandleCatalogSourceChain>)
   - [func \(h \*Handlers\) HandleGetModel\(w http.ResponseWriter, \_ \*http.Request, modelID string\)](<#Handlers.HandleGetModel>)
   - [func \(h \*Handlers\) HandleGetProvider\(w http.ResponseWriter, \_ \*http.Request, providerID string\)](<#Handlers.HandleGetProvider>)
   - [func \(h \*Handlers\) HandleGetProviderModels\(w http.ResponseWriter, \_ \*http.Request, providerID string\)](<#Handlers.HandleGetProviderModels>)
@@ -39,6 +41,15 @@ Package handlers provides HTTP request handlers for the Starmap API.
 - [type SearchModalities](<#SearchModalities>)
 - [type SearchRequest](<#SearchRequest>)
 
+
+<a name="SourceChainOf"></a>
+## func [SourceChainOf](<https://github.com/agentstation/starmap/blob/main/internal/server/handlers/sourcechain.go#L35>)
+
+```go
+func SourceChainOf(status starmap.RuntimeStatus) protocol.SourceChain
+```
+
+SourceChainOf builds the served source\-chain manifest from runtime status. The document carries safe identities and bounded detail only, so it names no URL, no credential, and no operator message. A downstream reads it to detect a cycle and to grade the propagated origin freshness.
 
 <a name="DateRange"></a>
 ## type [DateRange](<https://github.com/agentstation/starmap/blob/main/internal/server/handlers/models.go#L169-L172>)
@@ -98,6 +109,15 @@ func (h *Handlers) HandleCatalogPayload(writer http.ResponseWriter, request *htt
 ```
 
 HandleCatalogPayload serves an immutable canonical payload by generation ID.
+
+<a name="Handlers.HandleCatalogSourceChain"></a>
+### func \(\*Handlers\) [HandleCatalogSourceChain](<https://github.com/agentstation/starmap/blob/main/internal/server/handlers/sourcechain.go#L18>)
+
+```go
+func (h *Handlers) HandleCatalogSourceChain(w http.ResponseWriter, _ *http.Request)
+```
+
+HandleCatalogSourceChain handles GET /api/v1/catalog/source\-chain. @Summary Source chain manifest @Description Safe identities and bounded detail for each cascade hop @Tags catalog @Produce json @Success 200 \{object\} object @Router /api/v1/catalog/source\-chain \[get\].
 
 <a name="Handlers.HandleGetModel"></a>
 ### func \(\*Handlers\) [HandleGetModel](<https://github.com/agentstation/starmap/blob/main/internal/server/handlers/models.go#L107>)

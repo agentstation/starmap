@@ -17,21 +17,32 @@ Package remote implements the versioned online Starmap\-to\-Starmap generation p
 - [func GenerationManifestPath\(generationID string\) string](<#GenerationManifestPath>)
 - [func ManifestETag\(generationID string\) string](<#ManifestETag>)
 - [func MarshalManifest\(manifest catalogs.GenerationManifest\) \(\[\]byte, error\)](<#MarshalManifest>)
+- [func MarshalSourceChain\(chain SourceChain\) \(\[\]byte, error\)](<#MarshalSourceChain>)
 - [func NewTransferClient\(policy TransferPolicy\) \(\*http.Client, error\)](<#NewTransferClient>)
 - [func NewTransport\(policy TransferPolicy\) \(\*http.Transport, error\)](<#NewTransport>)
 - [func PayloadPath\(generationID string\) string](<#PayloadPath>)
+- [func RetryBoundary\(header http.Header, now time.Time\) \(time.Time, bool\)](<#RetryBoundary>)
 - [type Client](<#Client>)
   - [func NewClient\(baseURL string, httpClient \*http.Client, schemaVersion uint64\) \(\*Client, error\)](<#NewClient>)
   - [func \(c \*Client\) FetchCurrent\(ctx context.Context\) \(catalogs.Generation, error\)](<#Client.FetchCurrent>)
   - [func \(c \*Client\) FetchCurrentIfChanged\(ctx context.Context, generationID string\) \(generation catalogs.Generation, changed bool, err error\)](<#Client.FetchCurrentIfChanged>)
   - [func \(c \*Client\) FetchGeneration\(ctx context.Context, generationID string\) \(catalogs.Generation, error\)](<#Client.FetchGeneration>)
+  - [func \(c \*Client\) FetchSourceChain\(ctx context.Context\) \(SourceChain, error\)](<#Client.FetchSourceChain>)
   - [func \(c \*Client\) OpenEventStream\(ctx context.Context, lastEventID string\) \(\*EventStream, error\)](<#Client.OpenEventStream>)
 - [type EventStream](<#EventStream>)
   - [func \(s \*EventStream\) Close\(\) error](<#EventStream.Close>)
   - [func \(s \*EventStream\) Next\(\) \(StreamEvent, error\)](<#EventStream.Next>)
 - [type ProgressFunc](<#ProgressFunc>)
 - [type Publication](<#Publication>)
+- [type RefusalError](<#RefusalError>)
+  - [func \(e \*RefusalError\) Error\(\) string](<#RefusalError.Error>)
+  - [func \(e \*RefusalError\) Unwrap\(\) error](<#RefusalError.Unwrap>)
 - [type Reply](<#Reply>)
+- [type SourceChain](<#SourceChain>)
+  - [func UnmarshalSourceChain\(data \[\]byte\) \(SourceChain, error\)](<#UnmarshalSourceChain>)
+  - [func \(c SourceChain\) Identities\(\) \[\]string](<#SourceChain.Identities>)
+  - [func \(c SourceChain\) Validate\(\) error](<#SourceChain.Validate>)
+- [type SourceChainHop](<#SourceChainHop>)
 - [type StreamEvent](<#StreamEvent>)
 - [type Transfer](<#Transfer>)
   - [func \(t Transfer\) Body\(ctx context.Context, request \*http.Request, resource string\) \(Reply, error\)](<#Transfer.Body>)
@@ -44,6 +55,41 @@ Package remote implements the versioned online Starmap\-to\-Starmap generation p
 
 
 ## Constants
+
+<a name="SourceChainPath"></a>
+
+```go
+const (
+    // SourceChainPath returns the source-chain manifest of the serving node.
+    SourceChainPath = CatalogPath + "/source-chain"
+
+    // SourceChainMediaType identifies strict source-chain JSON.
+    SourceChainMediaType = "application/vnd.agentstation.starmap.source-chain+json"
+
+    // SourceChainSchemaVersion is the current source-chain document version.
+    SourceChainSchemaVersion uint64 = 1
+
+    // MaxSourceChainHops bounds the hops one document may disclose. A chain
+    // discloses topology, so the bound keeps the disclosure small and keeps a
+    // forged document from growing without limit.
+    MaxSourceChainHops = 16
+)
+```
+
+<a name="SourceChainHealthUnknown"></a>Source\-chain health codes. The set stays closed, so a document discloses a grade and never free\-form text.
+
+```go
+const (
+    // SourceChainHealthUnknown means the node reported no grade yet.
+    SourceChainHealthUnknown = "unknown"
+    // SourceChainHealthOK means the node reached its last objective.
+    SourceChainHealthOK = "ok"
+    // SourceChainHealthDegraded means the node works with reduced evidence.
+    SourceChainHealthDegraded = "degraded"
+    // SourceChainHealthUnavailable means the node cannot reach its dependency.
+    SourceChainHealthUnavailable = "unavailable"
+)
+```
 
 <a name="CatalogPath"></a>
 
@@ -111,7 +157,7 @@ func DefaultTransferClient() *http.Client
 DefaultTransferClient returns a transfer client with the default policy. The default policy is a set of constants, so this call cannot fail.
 
 <a name="GenerationManifestPath"></a>
-## func [GenerationManifestPath](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/remote/client.go#L45>)
+## func [GenerationManifestPath](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/remote/client.go#L46>)
 
 ```go
 func GenerationManifestPath(generationID string) string
@@ -120,7 +166,7 @@ func GenerationManifestPath(generationID string) string
 GenerationManifestPath returns the immutable manifest route for generationID.
 
 <a name="ManifestETag"></a>
-## func [ManifestETag](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/remote/client.go#L383>)
+## func [ManifestETag](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/remote/client.go#L385>)
 
 ```go
 func ManifestETag(generationID string) string
@@ -129,13 +175,22 @@ func ManifestETag(generationID string) string
 ManifestETag returns the strong entity tag for a generation manifest. A generation ID is immutable and restricted to HTTP entity\-tag\-safe bytes.
 
 <a name="MarshalManifest"></a>
-## func [MarshalManifest](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/remote/client.go#L388>)
+## func [MarshalManifest](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/remote/client.go#L390>)
 
 ```go
 func MarshalManifest(manifest catalogs.GenerationManifest) ([]byte, error)
 ```
 
 MarshalManifest returns strict JSON bytes for the server route.
+
+<a name="MarshalSourceChain"></a>
+## func [MarshalSourceChain](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/remote/chain.go#L146>)
+
+```go
+func MarshalSourceChain(chain SourceChain) ([]byte, error)
+```
+
+MarshalSourceChain returns strict JSON bytes for the server route.
 
 <a name="NewTransferClient"></a>
 ## func [NewTransferClient](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/remote/transport.go#L183>)
@@ -156,7 +211,7 @@ func NewTransport(policy TransferPolicy) (*http.Transport, error)
 NewTransport returns an HTTP transport that applies the connection, TLS, and response\-header bounds of the policy. The body bounds belong to Transfer.
 
 <a name="PayloadPath"></a>
-## func [PayloadPath](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/remote/client.go#L50>)
+## func [PayloadPath](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/remote/client.go#L51>)
 
 ```go
 func PayloadPath(generationID string) string
@@ -164,8 +219,17 @@ func PayloadPath(generationID string) string
 
 PayloadPath returns the immutable canonical payload route for generationID.
 
+<a name="RetryBoundary"></a>
+## func [RetryBoundary](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/remote/refusal.go#L47>)
+
+```go
+func RetryBoundary(header http.Header, now time.Time) (time.Time, bool)
+```
+
+RetryBoundary returns the hard not\-before boundary a reply declared. It accepts the delta\-seconds and the HTTP\-date forms of Retry\-After.
+
 <a name="Client"></a>
-## type [Client](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/remote/client.go#L55-L59>)
+## type [Client](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/remote/client.go#L56-L60>)
 
 Client fetches one exact current generation from a versioned Starmap API.
 
@@ -176,7 +240,7 @@ type Client struct {
 ```
 
 <a name="NewClient"></a>
-### func [NewClient](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/remote/client.go#L66>)
+### func [NewClient](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/remote/client.go#L67>)
 
 ```go
 func NewClient(baseURL string, httpClient *http.Client, schemaVersion uint64) (*Client, error)
@@ -185,7 +249,7 @@ func NewClient(baseURL string, httpClient *http.Client, schemaVersion uint64) (*
 NewClient creates a remote generation client. baseURL is the trusted, versioned HTTPS API root, for example https://starmap.example.com/api/v1. NewClient accepts plain HTTP only on loopback. The supplied HTTP client may add authentication or stricter TLS policy, but HTTPS responses must retain a standard verified certificate chain.
 
 <a name="Client.FetchCurrent"></a>
-### func \(\*Client\) [FetchCurrent](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/remote/client.go#L153>)
+### func \(\*Client\) [FetchCurrent](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/remote/client.go#L154>)
 
 ```go
 func (c *Client) FetchCurrent(ctx context.Context) (catalogs.Generation, error)
@@ -194,7 +258,7 @@ func (c *Client) FetchCurrent(ctx context.Context) (catalogs.Generation, error)
 FetchCurrent fetches the current manifest followed by its immutable, generation\-addressed payload and validates their binding and compatibility.
 
 <a name="Client.FetchCurrentIfChanged"></a>
-### func \(\*Client\) [FetchCurrentIfChanged](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/remote/client.go#L164-L167>)
+### func \(\*Client\) [FetchCurrentIfChanged](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/remote/client.go#L165-L168>)
 
 ```go
 func (c *Client) FetchCurrentIfChanged(ctx context.Context, generationID string) (generation catalogs.Generation, changed bool, err error)
@@ -203,7 +267,7 @@ func (c *Client) FetchCurrentIfChanged(ctx context.Context, generationID string)
 FetchCurrentIfChanged conditionally fetches the current manifest relative to generationID. It returns changed=false without fetching a payload when the publisher reports that generationID is still current.
 
 <a name="Client.FetchGeneration"></a>
-### func \(\*Client\) [FetchGeneration](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/remote/client.go#L191>)
+### func \(\*Client\) [FetchGeneration](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/remote/client.go#L192>)
 
 ```go
 func (c *Client) FetchGeneration(ctx context.Context, generationID string) (catalogs.Generation, error)
@@ -211,8 +275,17 @@ func (c *Client) FetchGeneration(ctx context.Context, generationID string) (cata
 
 FetchGeneration fetches and verifies one immutable generation by ID.
 
+<a name="Client.FetchSourceChain"></a>
+### func \(\*Client\) [FetchSourceChain](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/remote/chain.go#L174>)
+
+```go
+func (c *Client) FetchSourceChain(ctx context.Context) (SourceChain, error)
+```
+
+FetchSourceChain returns the source\-chain manifest of the configured publisher. A publisher that serves no chain answers with a not\-found status, so a caller treats that upstream as an origin without a disclosed chain.
+
 <a name="Client.OpenEventStream"></a>
-### func \(\*Client\) [OpenEventStream](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/remote/stream.go#L41-L44>)
+### func \(\*Client\) [OpenEventStream](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/remote/stream.go#L42-L45>)
 
 ```go
 func (c *Client) OpenEventStream(ctx context.Context, lastEventID string) (*EventStream, error)
@@ -221,7 +294,7 @@ func (c *Client) OpenEventStream(ctx context.Context, lastEventID string) (*Even
 OpenEventStream opens the publication stream. A nonempty lastEventID becomes the standard Last\-Event\-ID request header.
 
 <a name="EventStream"></a>
-## type [EventStream](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/remote/stream.go#L34-L37>)
+## type [EventStream](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/remote/stream.go#L35-L38>)
 
 EventStream is one caller\-owned catalog publication stream.
 
@@ -232,7 +305,7 @@ type EventStream struct {
 ```
 
 <a name="EventStream.Close"></a>
-### func \(\*EventStream\) [Close](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/remote/stream.go#L189>)
+### func \(\*EventStream\) [Close](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/remote/stream.go#L191>)
 
 ```go
 func (s *EventStream) Close() error
@@ -241,7 +314,7 @@ func (s *EventStream) Close() error
 Close closes the underlying response body and unblocks Next.
 
 <a name="EventStream.Next"></a>
-### func \(\*EventStream\) [Next](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/remote/stream.go#L118>)
+### func \(\*EventStream\) [Next](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/remote/stream.go#L120>)
 
 ```go
 func (s *EventStream) Next() (StreamEvent, error)
@@ -259,7 +332,7 @@ type ProgressFunc func(TransferProgress)
 ```
 
 <a name="Publication"></a>
-## type [Publication](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/remote/client.go#L39-L42>)
+## type [Publication](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/remote/client.go#L40-L43>)
 
 Publication identifies one committed immutable catalog generation.
 
@@ -269,6 +342,45 @@ type Publication struct {
     Sequence     uint64 `json:"sequence"`
 }
 ```
+
+<a name="RefusalError"></a>
+## type [RefusalError](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/remote/refusal.go#L17-L29>)
+
+RefusalError reports that the publisher refused a request and named the earliest time a client may try again. The boundary is a hard floor. A client waits for it instead of its own backoff. The client also adds jitter, so a fleet does not return at one instant.
+
+```go
+type RefusalError struct {
+    // StatusCode is the refusal status, such as 429 or 503.
+    StatusCode int
+
+    // Resource is the safe label of the refused resource. It names no URL.
+    Resource string
+
+    // NotBefore is the earliest time the publisher accepts another request.
+    NotBefore time.Time
+
+    // Err is the underlying transport or status error.
+    Err error
+}
+```
+
+<a name="RefusalError.Error"></a>
+### func \(\*RefusalError\) [Error](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/remote/refusal.go#L33>)
+
+```go
+func (e *RefusalError) Error() string
+```
+
+Error returns the safe refusal text. It names the resource and the status, never the endpoint.
+
+<a name="RefusalError.Unwrap"></a>
+### func \(\*RefusalError\) [Unwrap](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/remote/refusal.go#L43>)
+
+```go
+func (e *RefusalError) Unwrap() error
+```
+
+Unwrap returns the underlying error.
 
 <a name="Reply"></a>
 ## type [Reply](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/remote/transport.go#L211-L220>)
@@ -288,8 +400,88 @@ type Reply struct {
 }
 ```
 
+<a name="SourceChain"></a>
+## type [SourceChain](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/remote/chain.go#L67-L97>)
+
+SourceChain is what one Starmap discloses about itself and the hops above it. The serving node is Identity, and Hops lists its upstream nodes with the nearest hop first. A downstream reads the document to reject a cycle and to evaluate the propagated channel freshness of the whole chain.
+
+```go
+type SourceChain struct {
+    // SchemaVersion is the document version. A reader rejects another version.
+    SchemaVersion uint64 `json:"schema_version"`
+
+    // Identity is the safe identity of the serving node.
+    Identity string `json:"identity"`
+
+    // Health is what the serving node observed while it read its own source.
+    Health string `json:"health"`
+
+    // UpstreamHealth is the health the serving node's upstream reported about
+    // itself. It stays independent of Health.
+    UpstreamHealth string `json:"upstream_health"`
+
+    // SourceIdentity is the safe identity of the source the node reads.
+    SourceIdentity string `json:"source_identity,omitempty"`
+
+    // GenerationID identifies the catalog generation the node serves.
+    GenerationID string `json:"generation_id,omitempty"`
+
+    // ChannelUpdatedAt is the propagated time the origin channel last moved.
+    // Every hop passes the value through unchanged, so a downstream grades the
+    // whole chain instead of its own last check.
+    ChannelUpdatedAt time.Time `json:"channel_updated_at"`
+
+    // ObservedAt is when the serving node built the document.
+    ObservedAt time.Time `json:"observed_at"`
+
+    // Hops lists the upstream nodes, nearest hop first.
+    Hops []SourceChainHop `json:"hops,omitempty"`
+}
+```
+
+<a name="UnmarshalSourceChain"></a>
+### func [UnmarshalSourceChain](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/remote/chain.go#L158>)
+
+```go
+func UnmarshalSourceChain(data []byte) (SourceChain, error)
+```
+
+UnmarshalSourceChain decodes and validates one source\-chain document.
+
+<a name="SourceChain.Identities"></a>
+### func \(SourceChain\) [Identities](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/remote/chain.go#L101>)
+
+```go
+func (c SourceChain) Identities() []string
+```
+
+Identities returns the serving identity followed by every hop identity, in chain order. A caller uses the list to reject a self reference and a cycle.
+
+<a name="SourceChain.Validate"></a>
+### func \(SourceChain\) [Validate](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/remote/chain.go#L112>)
+
+```go
+func (c SourceChain) Validate() error
+```
+
+Validate reports whether the document is a usable source chain. It bounds the hop count and every identity, and it accepts only the closed health set.
+
+<a name="SourceChainHop"></a>
+## type [SourceChainHop](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/remote/chain.go#L56-L61>)
+
+SourceChainHop is one sanitized upstream node of a served chain. A hop names a safe identity and a grade. It never names an address, a host, or a token.
+
+```go
+type SourceChainHop struct {
+    Identity    string    `json:"identity"`
+    Health      string    `json:"health"`
+    PublishedAt time.Time `json:"published_at,omitempty"`
+    ObservedAt  time.Time `json:"observed_at,omitempty"`
+}
+```
+
 <a name="StreamEvent"></a>
-## type [StreamEvent](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/remote/stream.go#L27-L31>)
+## type [StreamEvent](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/remote/stream.go#L28-L32>)
 
 StreamEvent is one parsed SSE publication or comment activity frame. Comments establish transport activity but never contain publication data.
 

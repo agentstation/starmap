@@ -56,6 +56,7 @@ Package server provides HTTP server implementation for the Starmap API.
   - [func \(s \*Server\) Shutdown\(ctx context.Context\) error](<#Server.Shutdown>)
   - [func \(s \*Server\) Start\(\)](<#Server.Start>)
   - [func \(s \*Server\) StartTime\(\) time.Time](<#Server.StartTime>)
+- [type SourceHealth](<#SourceHealth>)
 - [type StreamHealth](<#StreamHealth>)
 
 
@@ -130,7 +131,7 @@ func DefaultConfig() Config
 DefaultConfig returns a Config with sensible defaults.
 
 <a name="OperationalHealth"></a>
-## type [OperationalHealth](<https://github.com/agentstation/starmap/blob/main/internal/server/health.go#L11-L18>)
+## type [OperationalHealth](<https://github.com/agentstation/starmap/blob/main/internal/server/health.go#L11-L19>)
 
 OperationalHealth is the internal server's immutable production health.
 
@@ -142,11 +143,12 @@ type OperationalHealth struct {
     CatalogAgeSeconds  int64
     Publication        PublicationHealth
     Stream             StreamHealth
+    Source             SourceHealth
 }
 ```
 
 <a name="PublicationHealth"></a>
-## type [PublicationHealth](<https://github.com/agentstation/starmap/blob/main/internal/server/health.go#L21-L28>)
+## type [PublicationHealth](<https://github.com/agentstation/starmap/blob/main/internal/server/health.go#L61-L68>)
 
 PublicationHealth reports post\-commit callback delivery.
 
@@ -244,8 +246,50 @@ func (s *Server) StartTime() time.Time
 
 StartTime returns the server start time for uptime calculations.
 
+<a name="SourceHealth"></a>
+## type [SourceHealth](<https://github.com/agentstation/starmap/blob/main/internal/server/health.go#L25-L58>)
+
+SourceHealth reports the runtime source of this node. Direct health and upstream\-reported health stay independent values. A healthy transfer of a degraded upstream catalog is still a degraded catalog. A stalled transfer of a healthy upstream catalog is still a stalled node.
+
+```go
+type SourceHealth struct {
+    // Identity is the stable identity of this node inside a fleet.
+    Identity string
+
+    // SourceIdentity is the safe identity of the selected source.
+    SourceIdentity string
+
+    // Kind names the selected source.
+    Kind string
+
+    // Direct is what this node observed while it read its own source.
+    Direct string
+
+    // Upstream is the health the upstream reported about itself.
+    Upstream string
+
+    // Reason is the safe reason code of the last source failure.
+    Reason string
+
+    // ChannelUpdatedAt is the origin publication time the chain propagated.
+    ChannelUpdatedAt time.Time
+
+    // ChannelAgeSeconds is the age of that propagated publication time.
+    ChannelAgeSeconds int64
+
+    // ChannelFreshness grades the propagated publication time.
+    ChannelFreshness string
+
+    // Hops counts the upstream nodes above this node.
+    Hops int
+
+    // Fallback reports whether this node serves its local baseline.
+    Fallback bool
+}
+```
+
 <a name="StreamHealth"></a>
-## type [StreamHealth](<https://github.com/agentstation/starmap/blob/main/internal/server/health.go#L31-L46>)
+## type [StreamHealth](<https://github.com/agentstation/starmap/blob/main/internal/server/health.go#L71-L88>)
 
 StreamHealth reports server\-side SSE delivery.
 
@@ -253,6 +297,7 @@ StreamHealth reports server\-side SSE delivery.
 type StreamHealth struct {
     State                  string
     Clients                int
+    MaxClients             int
     LastHeartbeatAt        time.Time
     LastEventAt            time.Time
     LastGenerationID       string
@@ -263,6 +308,7 @@ type StreamHealth struct {
     Sent                   uint64
     Heartbeats             uint64
     Disconnected           uint64
+    Refused                uint64
     BackpressureTerminated uint64
     Failed                 uint64
 }

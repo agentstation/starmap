@@ -457,9 +457,9 @@ func (s *Subscriber) run(
 				streamFailures++
 				continue
 			}
-			// A TCP connection and a first response header prove no liveness,
-			// so opening the stream records the start of the liveness window
-			// and never resets the backoff.
+			// A TCP connection and a first response header prove no
+			// liveness. An open stream therefore records the start of the
+			// liveness window and never resets the backoff.
 			s.reconnect.opened(s.currentTime())
 			// Replay only improves efficiency. After each connection, the
 			// subscriber fetches and verifies current state before it reads events.
@@ -560,8 +560,8 @@ func (s *Subscriber) pollFallbackIfDue(
 	now := s.currentTime()
 	if nextPoll.IsZero() {
 		// The first poll of one fallback lands on the stable phase of this
-		// instance, so many degraded subscribers spread across the interval
-		// instead of polling together.
+		// instance. Many degraded subscribers therefore spread across the
+		// interval instead of polling together.
 		scheduled, err := fallbackPollAt(
 			s.config.controllerIdentity(controllerPoll),
 			policy.Interval,

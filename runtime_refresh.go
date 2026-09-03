@@ -344,6 +344,23 @@ func (r *Runtime) readSource(ctx context.Context, report *RefreshReport, epoch u
 		return err
 	}
 
+	// A cascade check runs before retention, so a loop never reaches the
+	// served catalog. The runtime owns the check, because only the runtime
+	// knows its own instance identity and its declared aliases.
+	if chainErr := acceptSourceChain(
+		r.schedule.identity.Instance,
+		r.config.source.Aliases,
+		r.config.source.MaxHops,
+		read.Chain,
+	); chainErr != nil {
+		result.Health = HealthUnavailable
+		result.Reason = chainRejected
+		result.Chain = read.Chain
+		r.recordSourceRead(result, false)
+		report.Source = result
+		return chainErr
+	}
+
 	// A completed read grades the transfer healthy. The upstream report stays
 	// separate, so a degraded upstream never hides a working transfer, and a
 	// working transfer never hides a degraded upstream.

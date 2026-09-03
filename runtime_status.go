@@ -60,6 +60,18 @@ type RuntimeStatus struct {
 	// Freshness grades the age of the served generation.
 	Freshness Freshness
 
+	// ChannelUpdatedAt is the origin publication time that the upstream chain
+	// propagated. Every hop carries the same value, so a downstream grades the
+	// age of the origin channel and not only its own check.
+	ChannelUpdatedAt time.Time
+
+	// ChannelAge is the age of the propagated origin publication time.
+	ChannelAge time.Duration
+
+	// ChannelFreshness grades the age of the propagated origin publication
+	// time. A cascade that stalls at any hop degrades every hop below it.
+	ChannelFreshness Freshness
+
 	// SourceCheckAge is the age of the last upstream check.
 	SourceCheckAge time.Duration
 
@@ -92,6 +104,11 @@ type RuntimeStatus struct {
 
 	// AcquisitionHealth is the state of the last provider acquisition run.
 	AcquisitionHealth Health
+
+	// InstanceIdentity is the stable identity of this runtime inside a fleet.
+	// A downstream compares it against a served source chain, so a cascade
+	// rejects a self reference that URL comparison cannot detect.
+	InstanceIdentity string
 
 	// SourceIdentity is the safe identity of the selected source.
 	SourceIdentity string
@@ -130,6 +147,10 @@ func (r *Runtime) Status() RuntimeStatus {
 	state := r.report
 	effective := r.effective
 	hasSource := r.layers.source != nil
+	var channelUpdatedAt time.Time
+	if hasSource {
+		channelUpdatedAt = r.layers.source.ChannelUpdatedAt
+	}
 	r.mu.RUnlock()
 
 	status := RuntimeStatus{
@@ -141,6 +162,8 @@ func (r *Runtime) Status() RuntimeStatus {
 		UpstreamHealth:    orUnknown(state.upstreamHealth),
 		AcquisitionHealth: orUnknown(state.acquisitionHealth),
 		SourceKind:        r.config.source.Kind,
+		ChannelUpdatedAt:  channelUpdatedAt,
+		InstanceIdentity:  r.schedule.identity.Instance,
 		Chain:             append([]SourceHop(nil), state.upstreamChain...),
 		Lease:             string(r.lease.status()),
 		LastRunID:         state.lastRunID,
@@ -155,6 +178,16 @@ func (r *Runtime) Status() RuntimeStatus {
 	policy := r.config.freshness
 	status.CatalogAge, status.Freshness = gradeAge(
 		now, effective.GeneratedAt, policy.ChannelWarnAge, policy.ChannelCriticalAge)
+	// A hop grades the propagated origin time, so a stall above it degrades it
+	// too. Without a source layer the served catalog is the local baseline, and
+	// its own generation time is the only channel time.
+	channelTime := channelUpdatedAt
+	if channelTime.IsZero() {
+		channelTime = effective.GeneratedAt
+	}
+	status.ChannelUpdatedAt = channelTime
+	status.ChannelAge, status.ChannelFreshness = gradeAge(
+		now, channelTime, policy.ChannelWarnAge, policy.ChannelCriticalAge)
 	status.SourceCheckAge, status.SourceCheckFreshness = gradeAge(
 		now, state.sourceCheckedAt, policy.SourceCheckWarnAge, policy.SourceCheckCriticalAge)
 	status.AcquisitionAge, status.AcquisitionFreshness = gradeAge(

@@ -87,6 +87,14 @@ func (s *Server) registerRoutes(mux *http.ServeMux, h *handlers.Handlers) {
 		http.Error(w, "Not found", http.StatusNotFound)
 	})
 
+	mux.HandleFunc(prefix+"/catalog/source-chain", func(w http.ResponseWriter, r *http.Request) {
+		if r.Method == http.MethodGet {
+			h.HandleCatalogSourceChain(w, r)
+			return
+		}
+		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+	})
+
 	// Admin endpoints
 	mux.HandleFunc(prefix+"/catalog/manifest", func(w http.ResponseWriter, r *http.Request) {
 		if r.Method == http.MethodGet {

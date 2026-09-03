@@ -3,7 +3,6 @@ package remote
 import (
 	"context"
 	stderrors "errors"
-	"slices"
 	"strings"
 	"sync"
 	"time"
@@ -29,16 +28,6 @@ type SourceConfig struct {
 	// DefaultSourceIdentity. It names no URL and no credential.
 	Identity string
 
-	// Self is the stable identity of the runtime that reads this source. A
-	// chain that names it is a self reference, so the source rejects it. An
-	// empty value disables the self check.
-	Self string
-
-	// Aliases are the other identities that name this same runtime, such as a
-	// load-balancer name or a second deployment name. URL comparison alone
-	// cannot detect an alias, so a deployment declares one here.
-	Aliases []string
-
 	// MaxHops bounds the accepted chain length, counting the serving upstream
 	// as the first hop. Zero selects the protocol maximum.
 	MaxHops int
@@ -60,8 +49,6 @@ type Source struct {
 	subscriber *Subscriber
 	store      storage.Store
 	identity   string
-	self       string
-	aliases    []string
 	maxHops    int
 	maxAge     time.Duration
 
@@ -95,18 +82,10 @@ func NewSource(ctx context.Context, config SourceConfig) (*Source, error) {
 	if maxHops <= 0 || maxHops > protocol.MaxSourceChainHops {
 		maxHops = protocol.MaxSourceChainHops
 	}
-	aliases := make([]string, 0, len(config.Aliases))
-	for _, alias := range config.Aliases {
-		if trimmed := strings.TrimSpace(alias); trimmed != "" {
-			aliases = append(aliases, trimmed)
-		}
-	}
 	return &Source{
 		subscriber: subscriber,
 		store:      config.Subscriber.CatalogStore,
 		identity:   identity,
-		self:       strings.TrimSpace(config.Self),
-		aliases:    aliases,
 		maxHops:    maxHops,
 		maxAge:     config.MaxAge,
 	}, nil
@@ -133,9 +112,9 @@ func (s *Source) Close() error {
 }
 
 // Read reports the current upstream generation, the sanitized chain, and the
-// propagated channel time. It rejects a self reference, an alias of itself,
-// a repeated identity, and an excessive hop count before it reports a
-// generation, so the runtime never activates a cyclic cascade.
+// propagated channel time. It bounds the chain before it reports a generation.
+// The runtime owns the self, alias, and cycle rules, because only the runtime
+// knows its own identity.
 func (s *Source) Read(ctx context.Context) (starmap.SourceRead, error) {
 	if err := s.start(ctx); err != nil {
 		return starmap.SourceRead{}, err
@@ -202,9 +181,9 @@ func (s *Source) Read(ctx context.Context) (starmap.SourceRead, error) {
 	return read, nil
 }
 
-// start begins the subscriber lifecycle once. The lifetime outlives one
-// refresh run, so the source detaches the cancellation of the read context and
-// keeps its values.
+// start opens the subscriber lifecycle once. The lifetime outlives one
+// refresh run, so the source detaches the read context from its cancel signal
+// and keeps its values.
 func (s *Source) start(ctx context.Context) error {
 	s.startOnce.Do(func() {
 		lifetime, cancel := context.WithCancel(context.WithoutCancel(ctx))
@@ -217,51 +196,18 @@ func (s *Source) start(ctx context.Context) error {
 	return s.startErr
 }
 
-// acceptChain rejects a cascade that names this runtime or repeats a node.
-// URL comparison cannot detect a load-balancer or DNS alias, so the check runs
-// on the disclosed identities and on the declared aliases.
+// acceptChain bounds the disclosed cascade. A chain longer than the hop budget
+// multiplies the origin latency, so the source refuses it here and never
+// reports the generation behind it.
 func (s *Source) acceptChain(chain protocol.SourceChain) error {
-	identities := chain.Identities()
-	if len(identities) > s.maxHops {
+	if identities := chain.Identities(); len(identities) > s.maxHops {
 		return &errors.ValidationError{
 			Field:   "catalog_source.chain.hops",
 			Value:   len(identities),
 			Message: "exceeds the configured maximum hop count",
 		}
 	}
-	seen := make(map[string]struct{}, len(identities))
-	for _, identity := range identities {
-		if s.namesSelf(identity) {
-			return &errors.ConflictError{
-				Resource: "catalog source chain",
-				Expected: "a chain that excludes this runtime",
-				Actual:   identity,
-				Message:  "a Starmap source cannot read its own catalog",
-			}
-		}
-		if _, repeated := seen[identity]; repeated {
-			return &errors.ConflictError{
-				Resource: "catalog source chain",
-				Expected: "one entry per source identity",
-				Actual:   identity,
-				Message:  "a repeated identity is a cycle",
-			}
-		}
-		seen[identity] = struct{}{}
-	}
 	return nil
-}
-
-// namesSelf reports whether an identity names this runtime or one of its
-// declared aliases.
-func (s *Source) namesSelf(identity string) bool {
-	if identity == "" {
-		return false
-	}
-	if s.self != "" && identity == s.self {
-		return true
-	}
-	return slices.Contains(s.aliases, identity)
 }
 
 // gradeUpstream returns the health the upstream reported about itself. A

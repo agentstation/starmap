@@ -1,6 +1,7 @@
 package starmap
 
 import (
+	"strings"
 	"time"
 
 	"github.com/agentstation/starmap/internal/fleet"
@@ -198,6 +199,23 @@ func WithSourceToken(token string) Option {
 func WithSourceAPIKey(key string) Option {
 	return runtimeOption("WithSourceAPIKey", func(r *runtimeOptions) error {
 		r.sourceAPIKey = key
+		return nil
+	})
+}
+
+// WithSourceAliases declares the other stable identities that name this same
+// runtime. A served source chain that names one of them is a self reference.
+// The runtime then refuses the read instead of serving its own catalog back to
+// itself.
+func WithSourceAliases(aliases ...string) Option {
+	return runtimeOption("WithSourceAliases", func(r *runtimeOptions) error {
+		trimmed := make([]string, 0, len(aliases))
+		for _, alias := range aliases {
+			if value := strings.TrimSpace(alias); value != "" {
+				trimmed = append(trimmed, value)
+			}
+		}
+		r.source.Aliases = trimmed
 		return nil
 	})
 }

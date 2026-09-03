@@ -145,7 +145,35 @@ func (l *layerSet) build(baseline CatalogState) (CatalogState, error) {
 	state.Catalog = catalog
 	state.PayloadChecksum = catalogs.DescribeCatalogPayload(payload).Checksum
 	state.Sequence = baseline.Sequence + l.sequence
+	// Local acquisition changes the served bytes, so the result is no longer
+	// the upstream generation. A reused upstream identity would let a
+	// downstream treat two different catalogs as one generation. The hop
+	// therefore derives its own identity from the upstream identity and the
+	// served digest. Only the layers decide that identity, so two rebuilds of
+	// the same layers keep one identity.
+	if l.source != nil && len(l.providers) > 0 {
+		state.GenerationID = deriveEffectiveGenerationID(
+			l.source.GenerationID, state.PayloadChecksum)
+	}
 	return state, nil
+}
+
+// effectiveGenerationSuffixLength bounds the digest suffix of a derived
+// identity. It keeps the identity short and still tells two payloads apart.
+const effectiveGenerationSuffixLength = 12
+
+// deriveEffectiveGenerationID returns the identity of a locally enriched
+// upstream generation. It never returns the upstream identity, because the
+// served payload differs from the upstream payload.
+func deriveEffectiveGenerationID(upstream, checksum string) string {
+	fragment := strings.TrimPrefix(checksum, "sha256:")
+	if len(fragment) > effectiveGenerationSuffixLength {
+		fragment = fragment[:effectiveGenerationSuffixLength]
+	}
+	if fragment == "" {
+		fragment = "local"
+	}
+	return upstream + "+local." + fragment
 }
 
 // mergeAuthoredModels adds the authored records that a provider layer needs.

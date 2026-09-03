@@ -11,8 +11,8 @@ import (
 const headerRetryAfter = "Retry-After"
 
 // RefusalError reports that the publisher refused a request and named the
-// earliest time a client may try again. The boundary is a hard floor: a client
-// waits for it instead of applying its own backoff, and it adds jitter so a
+// earliest time a client may try again. The boundary is a hard floor. A client
+// waits for it instead of its own backoff. The client also adds jitter, so a
 // fleet does not return at one instant.
 type RefusalError struct {
 	// StatusCode is the refusal status, such as 429 or 503.

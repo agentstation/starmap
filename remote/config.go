@@ -87,6 +87,11 @@ type Config struct {
 	// nil, because a supplied client already owns its transport. Nil selects
 	// the shared default policy.
 	TransferPolicy *protocol.TransferPolicy
+	// APIKey authenticates this subscriber to the upstream Starmap API. It
+	// applies only when HTTPClient is nil, because a supplied client already
+	// owns its credential. The subscriber sends it as a bearer token and never
+	// logs it.
+	APIKey string
 	// TLSConfig pins the TLS origin policy of the private transport, such as a
 	// minimum version or a private root pool. It applies only when HTTPClient
 	// is nil. Nil selects the platform policy.
@@ -142,7 +147,27 @@ func (c Config) transferClient() (*http.Client, error) {
 	if c.TLSConfig != nil {
 		transport.TLSClientConfig = c.TLSConfig.Clone()
 	}
-	return &http.Client{Transport: transport}, nil
+	if c.APIKey == "" {
+		return &http.Client{Transport: transport}, nil
+	}
+	return &http.Client{Transport: &bearerTransport{
+		base:  transport,
+		token: c.APIKey,
+	}}, nil
+}
+
+// bearerTransport sends one bearer credential with each subscriber request. It
+// copies the request before it adds the header, because a round tripper must
+// not modify the request it receives.
+type bearerTransport struct {
+	base  http.RoundTripper
+	token string
+}
+
+func (t *bearerTransport) RoundTrip(request *http.Request) (*http.Response, error) {
+	authorized := request.Clone(request.Context())
+	authorized.Header.Set("Authorization", "Bearer "+t.token)
+	return t.base.RoundTrip(authorized)
 }
 
 func (c Config) normalized() (Config, error) {

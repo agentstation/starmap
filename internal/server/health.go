@@ -15,6 +15,46 @@ type OperationalHealth struct {
 	CatalogAgeSeconds  int64
 	Publication        PublicationHealth
 	Stream             StreamHealth
+	Source             SourceHealth
+}
+
+// SourceHealth reports the runtime source of this node. Direct health and
+// upstream-reported health stay independent values. A healthy transfer of a
+// degraded upstream catalog is still a degraded catalog. A stalled transfer of
+// a healthy upstream catalog is still a stalled node.
+type SourceHealth struct {
+	// Identity is the stable identity of this node inside a fleet.
+	Identity string
+
+	// SourceIdentity is the safe identity of the selected source.
+	SourceIdentity string
+
+	// Kind names the selected source.
+	Kind string
+
+	// Direct is what this node observed while it read its own source.
+	Direct string
+
+	// Upstream is the health the upstream reported about itself.
+	Upstream string
+
+	// Reason is the safe reason code of the last source failure.
+	Reason string
+
+	// ChannelUpdatedAt is the origin publication time the chain propagated.
+	ChannelUpdatedAt time.Time
+
+	// ChannelAgeSeconds is the age of that propagated publication time.
+	ChannelAgeSeconds int64
+
+	// ChannelFreshness grades the propagated publication time.
+	ChannelFreshness string
+
+	// Hops counts the upstream nodes above this node.
+	Hops int
+
+	// Fallback reports whether this node serves its local baseline.
+	Fallback bool
 }
 
 // PublicationHealth reports post-commit callback delivery.
@@ -31,6 +71,7 @@ type PublicationHealth struct {
 type StreamHealth struct {
 	State                  string
 	Clients                int
+	MaxClients             int
 	LastHeartbeatAt        time.Time
 	LastEventAt            time.Time
 	LastGenerationID       string
@@ -41,6 +82,7 @@ type StreamHealth struct {
 	Sent                   uint64
 	Heartbeats             uint64
 	Disconnected           uint64
+	Refused                uint64
 	BackpressureTerminated uint64
 	Failed                 uint64
 }
@@ -57,6 +99,7 @@ func (s *Server) operationalHealth() OperationalHealth {
 		CatalogGeneratedAt: state.GeneratedAt,
 		Publication:        publicationHealth(s.client.HookStats()),
 		Stream:             streamHealth(s.sseBroadcaster.Health()),
+		Source:             sourceHealth(s.app.RuntimeStatus()),
 	}
 	if s.started.Load() {
 		health.State = "serving"
@@ -68,6 +111,25 @@ func (s *Server) operationalHealth() OperationalHealth {
 		health.CatalogAgeSeconds = int64(now.Sub(state.GeneratedAt) / time.Second)
 	}
 	return health
+}
+
+// sourceHealth projects the runtime source status onto the server health
+// report. It copies bounded codes and ages only, so the report carries no
+// message text and no endpoint.
+func sourceHealth(status starmap.RuntimeStatus) SourceHealth {
+	return SourceHealth{
+		Identity:          status.InstanceIdentity,
+		SourceIdentity:    status.SourceIdentity,
+		Kind:              string(status.SourceKind),
+		Direct:            string(status.SourceHealth),
+		Upstream:          string(status.UpstreamHealth),
+		Reason:            status.SourceReason,
+		ChannelUpdatedAt:  status.ChannelUpdatedAt,
+		ChannelAgeSeconds: int64(status.ChannelAge / time.Second),
+		ChannelFreshness:  string(status.ChannelFreshness),
+		Hops:              len(status.Chain),
+		Fallback:          status.Fallback,
+	}
 }
 
 func publicationHealth(stats starmap.HookDeliveryStats) PublicationHealth {
@@ -85,6 +147,7 @@ func streamHealth(health sse.Health) StreamHealth {
 	result := StreamHealth{
 		State:                  string(health.State),
 		Clients:                health.Clients,
+		MaxClients:             health.MaxClients,
 		LastHeartbeatAt:        health.LastHeartbeatAt,
 		LastEventAt:            health.LastEventAt,
 		LastGenerationID:       health.LastGenerationID,
@@ -93,6 +156,7 @@ func streamHealth(health sse.Health) StreamHealth {
 		Sent:                   health.Delivery.Sent,
 		Heartbeats:             health.Delivery.Heartbeats,
 		Disconnected:           health.Delivery.Disconnected,
+		Refused:                health.Delivery.Refused,
 		BackpressureTerminated: health.Delivery.BackpressureTerminated,
 		Failed:                 health.Delivery.Failed,
 	}
