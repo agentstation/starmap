@@ -81,14 +81,27 @@ application release.
 | `catalog-<catalog-digest>` | `canonical` | The current immutable release namespace |
 | `catalog-semantic-<digest>` | `legacy-semantic` | A retired facts-digest namespace |
 | `catalog-payload-<digest>` | `legacy-payload` | The first retired payload namespace |
-| `catalog-latest` | none | The mutable discovery channel, not an immutable release |
+| `catalog/v1` | none | A branch, not a tag. The mutable discovery channel |
 
-`catalog-latest` carries the attested channel document `catalog-latest.json`
+The `catalog/v1` branch carries the attested channel document `channel.json`
 with the media type
 `application/vnd.agentstation.starmap.catalog-channel.v1+json`. The document
 advances its sequence and its `channel_updated_at` value after every successful
 verification. A consumer therefore grades origin freshness even when the
 catalog facts did not change.
+
+The pointer lives on a branch because this repository enables immutable
+releases. GitHub freezes an immutable release at creation. It accepts no asset
+replacement and no asset deletion, and it never releases the tag again. A
+mutable document therefore cannot live on a release. The content stays
+immutable and the pointer stays mutable, the way a moving tag names one fixed
+digest.
+
+A repository ruleset protects the branch and accepts an update from GitHub
+Actions alone. The catalog generation workflow is the only writer. A human
+never commits to it, and a hand-written commit breaks the sequence that every
+client uses to reject a replayed pointer. The workflow fails the run with an
+explicit message when GitHub rejects the push.
 
 `artifact.ReleaseTagNamespace` reports the namespace of one tag. It recognizes
 the canonical namespace and both retired namespaces, so historical readback and

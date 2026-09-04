@@ -48,10 +48,22 @@ alone.
 
 ## Stable channel
 
-The stable channel is the `catalog-latest` release. It carries one attested
-asset, `catalog-latest.json`. The document names the selected immutable release,
-its assets, and their checksums. Consumers read the channel to discover the
-current catalog.
+The stable channel is the `catalog/v1` branch. It carries one attested file,
+`channel.json`. The document names the selected immutable release, its assets,
+and their checksums. Consumers read the channel to discover the current
+catalog.
+
+The channel is a branch because this repository enables immutable releases.
+GitHub freezes an immutable release at creation, so it never replaces a
+published asset. The pointer stays mutable on a branch, and the content stays
+immutable in a `catalog-<digest>` release.
+
+The workflow reads the branch through `git fetch` and `git show`, never through
+the raw content host, because that host caches a changed file for minutes. It
+commits the document with `git commit-tree` against a private index, so the
+publish leaves the checked-out source tree untouched. The first run writes a
+root commit that carries no source history, plus a short `README.md` that names
+the branch as a machine-written pointer.
 
 The workflow advances the channel sequence and `channel_updated_at` after every
 successful run. An unchanged catalog therefore proves freshness without a new
