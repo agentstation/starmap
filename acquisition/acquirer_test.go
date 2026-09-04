@@ -316,7 +316,7 @@ func TestSyncPublishesCompletedProvidersWhileAnotherBlocked(t *testing.T) {
 	// The slow provider entered its observation and still holds it.
 	select {
 	case <-observer.entered["slow"]:
-	case <-time.After(5 * time.Second):
+	case <-time.After(publishGuard):
 		t.Fatal("the slow provider never entered its observation")
 	}
 
@@ -410,6 +410,13 @@ func TestAcquireOpensNoWindowWithoutLayer(t *testing.T) {
 	}
 }
 
+// publishGuard bounds one wait for runtime work that carries no timer of its
+// own. Each publication rebuilds the effective catalog over the embedded
+// baseline, and a race run on a loaded hosted runner takes several seconds per
+// rebuild. The guard catches a hang. It never decides the order under test,
+// because the blocked provider answers only when the test releases it.
+const publishGuard = 30 * time.Second
+
 // waitForProvider waits until the published catalog holds the provider. It
 // returns the state that first held it.
 func waitForProvider(
@@ -418,7 +425,7 @@ func waitForProvider(
 	id catalogs.ProviderID,
 ) starmap.CatalogState {
 	t.Helper()
-	deadline := time.Now().Add(5 * time.Second)
+	deadline := time.Now().Add(publishGuard)
 	for time.Now().Before(deadline) {
 		state := connected.State()
 		if state.Catalog != nil {
