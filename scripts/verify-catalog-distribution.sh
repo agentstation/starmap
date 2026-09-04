@@ -107,8 +107,8 @@ selected_engine_required() {
 }
 
 # Publication: declarative workflow facts (CAT-D1, CAT-D9, CAT-D10, CAT-D12).
-check CAT-V01 'the workflow publishes catalog-latest and no catalog-semantic tag' \
-	bash -c "grep -qsE 'catalog-latest' '$WORKFLOW' && ! grep -qsE 'catalog-semantic-' '$WORKFLOW'"
+check CAT-V01 'the workflow publishes the catalog/v1 channel branch and no catalog-semantic tag' \
+	bash -c "grep -qsE 'CHANNEL_BRANCH: catalog/v1' '$WORKFLOW' && grep -qsF 'git push origin' '$WORKFLOW' && ! grep -qsE 'catalog-semantic-' '$WORKFLOW'"
 check CAT-V02 'the workflow schedule runs every four hours at minute 17' \
 	file_has "cron: *['\"]?17 \*/4 \* \* \*" "$WORKFLOW"
 # The limits nest: 60-minute transfer, 75-minute publisher step, 90-minute job.

@@ -36,7 +36,8 @@ type rollbackCandidate struct {
 // selectRollbackCandidates reads a GitHub release listing and returns every
 // readable immutable catalog release, newest first. It keeps the canonical
 // namespace and both retired namespaces, so every historical release stays a
-// rollback target. It never returns the mutable channel or an unrelated tag.
+// rollback target. It never returns an unrelated tag. The mutable channel is
+// a branch and carries no tag, so no listing entry can name it.
 func selectRollbackCandidates(listingPath, excludeTag string) (rollbackReport, error) {
 	path := strings.TrimSpace(listingPath)
 	if path == "" {

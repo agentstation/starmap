@@ -49,7 +49,8 @@ func TestScheduledGenerationWorkflowPublishesOnlyValidatedChangedPayload(t *test
 		"Read current catalog channel document", "Stage attested catalog channel document",
 		"Attest catalog channel document", "Verify catalog channel provenance",
 		"Publish catalog channel document", "Verify published catalog channel document",
-		"catalog-latest", "catalog-latest.json", `--title "Catalog latest"`,
+		"CHANNEL_BRANCH: " + ChannelName, "CHANNEL_FILE: " + ChannelFilename,
+		"persist-credentials: true",
 		"--channel-release-dir", "--channel-tag", "--channel-published-at",
 		"--channel-current", "--channel-out", "--channel-attestation-verified",
 	} {
@@ -99,20 +100,37 @@ func TestScheduledGenerationWorkflowPublishesOnlyValidatedChangedPayload(t *test
 		t.Fatal("scheduled generation uses expiring Actions artifacts as runtime publication")
 	}
 
-	// The immutable release never overwrites an asset. Only the mutable channel
-	// replaces its document in place.
-	immutable := workflowSection(t, workflow,
-		"Publish changed validated catalog generation", "Read current catalog channel document")
-	if strings.Contains(immutable, "--clobber") {
+	// Every release is immutable, so no step replaces a published asset. GitHub
+	// freezes an immutable release at creation, and a replace attempt fails the
+	// run.
+	if strings.Contains(workflow, "--clobber") {
 		t.Fatal("scheduled generation can overwrite an existing immutable release asset")
 	}
-	if strings.Count(workflow, "--clobber") != 1 {
-		t.Fatal("only the catalog channel document replaces a published asset")
-	}
+
+	// The mutable pointer is a branch commit, never a release asset.
 	channel := workflowSection(t, workflow,
 		"Publish catalog channel document", "Verify published catalog channel document")
-	if !strings.Contains(channel, `gh release upload catalog-latest "$DOCUMENT" --clobber`) {
-		t.Fatal("catalog channel does not replace its published document")
+	for _, required := range []string{
+		"git commit-tree", `git push origin "${COMMIT}:refs/heads/${CHANNEL_BRANCH}"`,
+		"::error::", "README.md",
+	} {
+		if !strings.Contains(channel, required) {
+			t.Errorf("catalog channel publish step is missing %q", required)
+		}
+	}
+	if strings.Contains(channel, "gh release") {
+		t.Fatal("catalog channel document is published as a release asset")
+	}
+
+	// The readback reads the branch through git, never through the caching raw
+	// content host.
+	readback := workflowSection(t, workflow,
+		"Verify published catalog channel document", "Set up ORAS for optional catalog mirror")
+	if !strings.Contains(readback, `git show "refs/remotes/origin/${CHANNEL_BRANCH}:${CHANNEL_FILE}"`) {
+		t.Fatal("catalog channel readback does not read the published branch")
+	}
+	if strings.Contains(workflow, "//raw.githubusercontent.com") {
+		t.Fatal("scheduled generation reads the channel through the caching raw content host")
 	}
 
 	// The retired namespaces belong to the Go release command, not the workflow.

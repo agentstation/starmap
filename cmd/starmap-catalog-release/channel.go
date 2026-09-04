@@ -122,14 +122,14 @@ func stageChannelDocument(options channelOptions) (channelReport, error) {
 	}, nil
 }
 
-// readCurrentChannel reads the channel document that the publisher downloaded.
-// A missing or empty path is the first publication.
+// readCurrentChannel reads the channel document that the publisher read from
+// the channel branch. A missing or empty path is the first publication.
 func readCurrentChannel(path string) (artifact.Channel, error) {
 	trimmed := strings.TrimSpace(path)
 	if trimmed == "" {
 		return artifact.Channel{}, nil
 	}
-	data, err := os.ReadFile(trimmed) //nolint:gosec // the publisher selects the downloaded channel document.
+	data, err := os.ReadFile(trimmed) //nolint:gosec // the publisher selects the channel document it read.
 	if os.IsNotExist(err) {
 		return artifact.Channel{}, nil
 	}
