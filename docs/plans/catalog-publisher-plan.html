@@ -46,7 +46,7 @@
 
 <header id="overview">
   <h1>Catalog distribution plan</h1>
-  <p id="status-line">Status: <code data-plan-status="active">active</code>. Owner: this plan. Created: 2026-09-01. Baseline: main @ 42b610a, publisher work @ 6c7edfbe, Starport main @ 117ad8f5. Proof root: <code>docs/proof/catalog-publisher/</code>. Next action: run the CAT10 structured reviews, then open the Starmap and Starport pull requests.</p>
+  <p id="status-line">Status: <code data-plan-status="active">active</code>. Owner: this plan. Created: 2026-09-01. Baseline: main @ 42b610a, publisher work @ 6c7edfbe, Starport main @ 117ad8f5. Proof root: <code>docs/proof/catalog-publisher/</code>. Next action: merge Starmap pull request #116, release Starmap, pin Starport at that release, then open the Starport pull request.</p>
   <section id="outcome">
     <h2>Outcome</h2>
     <blockquote>Starmap publishes and embeds the Starmap public catalog. One connected runtime composes the embedded catalog, a selected upstream catalog, and operator observations into an effective catalog. Starport consumes that catalog locally or from a shared enterprise Starmap server.</blockquote>
@@ -198,6 +198,7 @@
         <tr><td>CAT-D20</td><td>designed</td><td>The topology guide, the configuration reference, and the runbook.</td></tr>
         <tr><td>CAT-D21</td><td>designed</td><td>A 30-second coalescing window for partial provider publication.</td></tr>
         <tr><td>CAT-D22</td><td>designed</td><td>The connected runtime lives in <code>starmap/runtime</code>, beside <code>remote</code> and <code>server</code>. The attested public channel stays its default source. The root keeps the offline library at its PR #94 closure. The package name matches the documented concept and no caller imports the standard library <code>runtime</code> beside it. The 32 budget stays as the intentionality prompt.</td></tr>
+        <tr><td>CAT-D23</td><td>audited</td><td>The Starport pull request pins the Starmap release, not a pseudo-version. The Starport gate <code>V01</code> accepts only a tagged version, and the pre-PR review rated the local <code>replace</code> a P0 defect. So the order is: merge the Starmap pull request, release Starmap, then pin and open the Starport pull request. This replaces the CAT-D17 sequence.</td></tr>
       </tbody>
     </table>
   </section>
@@ -477,6 +478,7 @@ and lease-owned, and CAT99 removes the plan.</code></pre>
         <tr><td>2026-09-03</td><td>CAT9.3, CAT10</td><td>done, started</td><td>A delegated agent derived the channel thresholds from the source maximum age, with an explicit freshness policy in precedence. The owner review accepted the work and repaired one pre-existing gofmt drift. The Starport documentation now states the derived grade. The verifier holds 68 of 68, and CAT10 opened.</td></tr>
         <tr><td>2026-09-03</td><td>CAT10, CAT10.1</td><td>blocked, started</td><td>The CAT10 gate <code>make verify</code> found the read-only consumer closure at 362 packages. The root package imports the GitHub channel source since <code>d1a7e105</code>, so <code>starmap.New</code> consumers compile Sigstore. CAT-D22 moves the connected runtime into the <code>runtime</code> package and keeps the attested public channel as its default. CAT10.1 owns the move and CAT10 waits on it.</td></tr>
         <tr><td>2026-09-03</td><td>CAT10.1, CAT10</td><td>done, resumed</td><td>A delegated agent moved the connected runtime into the <code>runtime</code> package with <code>status</code> and <code>source</code> leaves. The owner review found that the server option still pulled the runtime into the server closure, and the agent narrowed it to a two-method interface. Every consumer closure sits inside its budget with zero banned packages, and the verifier holds 68 of 68. CAT10 resumed at the review step.</td></tr>
+        <tr><td>2026-09-03</td><td>CAT10</td><td>reviewed</td><td>The Starmap pre-PR review returned clean across five chunks, and pull request #116 opened with auto-merge. The hosted gate measured the server-storage closure at 341 on Linux, so the budget moved to 350. The Starport review rated the local <code>replace</code> a P0 defect, and CAT-D23 now orders the Starmap release before the Starport pull request.</td></tr>
       </tbody>
     </table>
   </section>
