@@ -176,9 +176,9 @@ forbidden count.
 | pinned-artifact | 161 / 32 / 0 | 578 / 362 / 86 | 161 / 32 / 0 | 32 non-standard |
 | server-embed | 242 / 49 / 0 | 594 / 378 / 84 | 246 / 52 / 0 | 260 total |
 | remote-subscriber | 225 / 33 / 0 | 579 / 363 / 84 | 230 / 37 / 0 | 240 total |
-| server-storage | 335 / 94 / 0 | 676 / 94 / 84 | 340 / 94 / 0 | 340 total |
+| server-storage | 335 / 94 / 0 | 676 / 94 / 84 | 340 / 94 / 0 | 350 total |
 
-Every consumer passes its budget, and every forbidden count is zero. No budget
+Every consumer passes its budget, and every forbidden count is zero. One budget
 moved, and no banned pattern changed.
 
 Three closures stay above the `origin/main` count. Six packages explain every
@@ -193,8 +193,13 @@ difference.
 | `internal/server/operations` | The server renders the operations surface. | server-embed, server-storage |
 | `pkg/sources` | The status report names one provider attempt. | remote-subscriber |
 
-The server-storage closure reaches 340 packages, which equals its budget. That
-row leaves no headroom. The orchestrator owns any change to that number.
+The server-storage closure reaches 340 packages on Darwin and 341 on Linux,
+because Linux adds three standard-library packages and Darwin adds two. The
+hosted gate at PR #116 failed on that Linux count against the former budget of
+340. The orchestrator raised `SERVER_STORAGE_MAX_PACKAGES` to 350 on purpose.
+The five packages above the `origin/main` count are Starmap-owned or standard
+library, and the change adds no third-party dependency. The budget stays a
+prompt for that question, not a hard rule.
 
 ## Commands run
 
