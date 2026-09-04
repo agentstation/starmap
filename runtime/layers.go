@@ -169,8 +169,15 @@ func (l *layerSet) build(baseline starmap.CatalogState) (starmap.CatalogState, e
 	// and a durable commit publishes that same identity. A baseline that names
 	// no identity leaves the identity to the publication.
 	if len(l.providers) > 0 && state.GenerationID != "" {
-		state.GenerationID = deriveEffectiveGenerationID(
-			state.GenerationID, state.PayloadChecksum)
+		upstream := state.GenerationID
+		if l.source == nil {
+			// Without an upstream layer the baseline is the generation that
+			// this runtime derived and committed before. A derivation from
+			// that identity would nest one more suffix on every restart, so
+			// the hop derives from the root identity again.
+			upstream = effectiveGenerationRoot(upstream)
+		}
+		state.GenerationID = deriveEffectiveGenerationID(upstream, state.PayloadChecksum)
 	}
 	return state, nil
 }
@@ -200,6 +207,13 @@ func deriveEffectiveGenerationID(upstream, checksum string) string {
 		fragment = "local"
 	}
 	return upstream + effectiveGenerationLocalSuffix + fragment
+}
+
+// effectiveGenerationRoot returns the identity that a derived identity started
+// from. An identity without a local suffix is its own root.
+func effectiveGenerationRoot(id string) string {
+	root, _, _ := strings.Cut(id, effectiveGenerationLocalSuffix)
+	return root
 }
 
 // linkProviderOfferings returns the provider records of one observation that

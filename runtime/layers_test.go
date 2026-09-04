@@ -154,7 +154,7 @@ func TestUnlinkedProviderOfferingsNeverBlockTheSourceLayer(t *testing.T) {
 // countingStore counts every commit that reaches the catalog store. A test
 // uses it to prove that an unchanged rebuild retains one generation.
 type countingStore struct {
-	*storage.Memory
+	storage.Store
 
 	mu      sync.Mutex
 	commits int
@@ -165,7 +165,7 @@ func (s *countingStore) Commit(ctx context.Context, generation catalogs.Generati
 	s.mu.Lock()
 	s.commits++
 	s.mu.Unlock()
-	return s.Memory.Commit(ctx, generation, expected)
+	return s.Store.Commit(ctx, generation, expected)
 }
 
 // commitCount returns how many commits the store answered.
@@ -263,7 +263,7 @@ func TestDurableRuntimeKeepsTheDerivedEffectiveIdentity(t *testing.T) {
 // rebuild that derives the committed identity serves the committed bytes, so
 // the catalog store keeps one generation.
 func TestUnchangedRebuildCommitsNoSecondGeneration(t *testing.T) {
-	store := &countingStore{Memory: storage.NewMemory()}
+	store := &countingStore{Store: storage.NewMemory()}
 	runtime := openIdentityRuntime(t, store)
 	refreshAndSync(t, runtime)
 
@@ -312,5 +312,72 @@ func TestRestartReportsTheCommittedEffectiveIdentity(t *testing.T) {
 	}
 	if got := second.Client().CurrentGenerationID(); got != derived {
 		t.Fatalf("committed generation after the restart = %q, want %q", got, derived)
+	}
+}
+
+// TestSourcelessDurableRestartKeepsOneDerivedIdentity proves that a durable
+// runtime without an upstream layer derives one identity across restarts. The
+// restart baseline is the generation that the previous run committed. A
+// derivation from that identity would nest one more suffix per restart and
+// commit one more generation per restart.
+func TestSourcelessDurableRestartKeepsOneDerivedIdentity(t *testing.T) {
+	stateDirectory := t.TempDir()
+	storeDirectory := t.TempDir()
+	observed := time.Date(2026, 9, 4, 9, 0, 0, 0, time.UTC)
+	open := func() (*Runtime, *countingStore) {
+		t.Helper()
+		filesystem, err := storage.NewFilesystem(storeDirectory)
+		if err != nil {
+			t.Fatalf("NewFilesystem: %v", err)
+		}
+		store := &countingStore{Store: filesystem}
+		acquirer := &stubAcquirer{result: AcquisitionResult{
+			Eligible: 1,
+			Attempts: []sources.ProviderAttempt{
+				testAttempt("deepinfra", sources.ProviderOutcomeSucceeded, ""),
+			},
+			Layers: []ProviderLayer{
+				testObservationLayer(t, "deepinfra", observed, "linked-model"),
+			},
+		}}
+		runtime := openTestRuntime(t,
+			WithSource(embeddedSource{}),
+			WithAcquirer(acquirer),
+			WithClientOptions(starmap.WithCatalogStore(store)),
+			WithStateDirectory(stateDirectory))
+		return runtime, store
+	}
+
+	first, firstStore := open()
+	root := first.Client().CurrentGenerationID()
+	if _, err := first.Sync(context.Background()); err != nil {
+		t.Fatalf("Sync: %v", err)
+	}
+	derived := first.State().GenerationID
+	if !strings.HasPrefix(derived, root+effectiveGenerationLocalSuffix) {
+		t.Fatalf("generation = %q, want %q with a local suffix", derived, root)
+	}
+	if got := firstStore.commitCount(); got != 1 {
+		t.Fatalf("commits before the restart = %d, want 1", got)
+	}
+	if err := first.Close(); err != nil {
+		t.Fatalf("Close: %v", err)
+	}
+
+	second, secondStore := open()
+	if got := second.State().GenerationID; got != derived {
+		t.Fatalf("generation after the restart = %q, want %q", got, derived)
+	}
+	if got := secondStore.commitCount(); got != 0 {
+		t.Fatalf("commits at the restart = %d, want 0", got)
+	}
+	if _, err := second.Sync(context.Background()); err != nil {
+		t.Fatalf("Sync after the restart: %v", err)
+	}
+	if got := second.State().GenerationID; got != derived {
+		t.Fatalf("generation after the restart sync = %q, want %q", got, derived)
+	}
+	if got := secondStore.commitCount(); got != 0 {
+		t.Fatalf("commits after the restart sync = %d, want 0", got)
 	}
 }

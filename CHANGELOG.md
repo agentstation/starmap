@@ -28,6 +28,10 @@ and [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
   the local digest with `.local.` instead of `+local.`. A published identity
   travels as one URL path segment. The remote catalog protocol accepts only
   letters, digits, dot, dash, and underscore there.
+- A durable runtime without an upstream layer now derives its identity from
+  the root generation. Its restart baseline is the generation that the
+  previous run committed, so a derivation from that identity nested one more
+  suffix and committed one more generation on every restart.
 
 ### Added
 
