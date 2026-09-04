@@ -20,6 +20,10 @@ const (
 	// acceptBinary asks for the asset bytes instead of the asset metadata.
 	acceptBinary = "application/octet-stream"
 
+	// acceptRaw asks the contents endpoint for the file bytes instead of the
+	// file metadata.
+	acceptRaw = "application/vnd.github.raw+json"
+
 	// apiVersion pins the REST API version, so a later default cannot change
 	// the reply shape under a running fleet.
 	apiVersion = "2022-11-28"
@@ -37,6 +41,7 @@ const (
 	resourceRelease     = "release"
 	resourceAsset       = "asset"
 	resourceAttestation = "attestation"
+	resourceChannel     = "channel"
 )
 
 // RefusalError reports a refused GitHub reply together with the hard
@@ -209,6 +214,32 @@ func (c *cycle) releaseByTag(ctx context.Context, tag, validator string) (reply,
 			"release.tag", document.TagName, "does not match the requested tag")
 	}
 	return answer, document, nil
+}
+
+// channelFile reads one file from the channel branch through the repository
+// contents endpoint. A non-empty validator makes the request conditional, so
+// an unchanged channel costs one request and no body. The raw media type
+// returns the file bytes, so one request replaces a metadata read and a
+// separate download.
+//
+// The endpoint reads a branch ref, not a release. GitHub freezes an immutable
+// release at creation, so a mutable pointer cannot live on one. The source
+// never reads the raw.githubusercontent.com host, because that host caches a
+// changed file for minutes.
+func (c *cycle) channelFile(ctx context.Context, channel, path, validator string) (reply, []byte, error) {
+	endpoint := c.client.repositoryURL("contents", path) +
+		"?" + url.Values{"ref": []string{channel}}.Encode()
+	answer, err := c.get(ctx, endpoint, acceptRaw, validator, resourceChannel)
+	if err != nil {
+		return reply{}, nil, err
+	}
+	if answer.StatusCode == http.StatusNotModified {
+		return answer, nil, nil
+	}
+	if err := c.checkStatus(answer, resourceChannel, path); err != nil {
+		return reply{}, nil, err
+	}
+	return answer, answer.Body, nil
 }
 
 // assetBytes downloads one release asset and checks its declared size.

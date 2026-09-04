@@ -21,7 +21,7 @@ func sampleValues() map[string]string {
 		settings.SourceURL:            "https://example.test/catalog",
 		settings.SourceAPIKey:         "placeholder",
 		settings.SourceRepository:     "example/catalog",
-		settings.SourceChannel:        "catalog-latest",
+		settings.SourceChannel:        "catalog/v1",
 		settings.SourceSignerWorkflow: ".github/workflows/publish.yml",
 		settings.SourceToken:          "placeholder",
 		settings.SourcePollInterval:   "30m",

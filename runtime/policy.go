@@ -74,9 +74,9 @@ const (
 	// DefaultSourceRepository is the public catalog repository.
 	DefaultSourceRepository = "agentstation/starmap"
 
-	// DefaultSourceChannel is the mutable release that names the current
+	// DefaultSourceChannel is the mutable branch that names the current
 	// immutable catalog release.
-	DefaultSourceChannel = "catalog-latest"
+	DefaultSourceChannel = "catalog/v1"
 
 	// DefaultSourcePollInterval is how often the runtime checks the channel.
 	DefaultSourcePollInterval = time.Hour
@@ -108,7 +108,7 @@ type SourcePolicy struct {
 	// Repository names the catalog repository for the public and github kinds.
 	Repository string
 
-	// Channel names the mutable release that selects the current catalog.
+	// Channel names the mutable branch that selects the current catalog.
 	Channel string
 
 	// SignerWorkflow pins the build provenance the source accepts.

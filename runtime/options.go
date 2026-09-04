@@ -207,7 +207,7 @@ func WithSourceRepository(repository string) Option {
 	}
 }
 
-// WithSourceChannel names the mutable release that selects the current catalog.
+// WithSourceChannel names the mutable branch that selects the current catalog.
 func WithSourceChannel(channel string) Option {
 	return func(r *options) error {
 		r.source.Channel = channel
