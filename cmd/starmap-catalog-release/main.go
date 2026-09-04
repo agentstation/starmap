@@ -165,7 +165,7 @@ func run(args []string, output io.Writer) error {
 			err,
 		)
 	}
-	semanticChecksum, err := generationSemanticChecksum(generation)
+	semanticChecksum, err := generation.SemanticChecksum()
 	if err != nil {
 		return err
 	}
@@ -219,7 +219,7 @@ func verifyReleaseDirectory(directory string) (releaseReport, error) {
 	if err != nil {
 		return releaseReport{}, pkgerrors.WrapResource("verify", "catalog release", release.directory, err)
 	}
-	semanticChecksum, err := generationSemanticChecksum(generation)
+	semanticChecksum, err := generation.SemanticChecksum()
 	if err != nil {
 		return releaseReport{}, err
 	}
@@ -308,28 +308,6 @@ func readReleaseDirectory(directory string) (releaseDirectory, error) {
 		directory: absolute, archive: archive, statement: statement,
 		archiveChecksum: "sha256:" + digestHex, files: files,
 	}, nil
-}
-
-func generationSemanticChecksum(generation catalogs.Generation) (string, error) {
-	catalog, err := catalogs.DecodeCatalogPayload(generation.Payload)
-	if err != nil {
-		return "", pkgerrors.WrapResource(
-			"decode",
-			"catalog release semantics",
-			generation.Manifest.GenerationID,
-			err,
-		)
-	}
-	checksum, err := catalogs.CatalogSemanticChecksum(catalog)
-	if err != nil {
-		return "", pkgerrors.WrapResource(
-			"encode",
-			"catalog release semantics",
-			generation.Manifest.GenerationID,
-			err,
-		)
-	}
-	return checksum, nil
 }
 
 func readReleaseAsset(path string) ([]byte, error) {
