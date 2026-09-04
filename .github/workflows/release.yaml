@@ -51,10 +51,20 @@ jobs:
           go install github.com/princjef/gomarkdoc/cmd/gomarkdoc@v1.1.0
           go install github.com/goreleaser/goreleaser/v2@v2.17.0
 
+      - name: Checkout pinned technical-writing skill
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          repository: agentstation/skills
+          ref: dc9948f59089426c7dd077e41469104ec788cf7f
+          path: .ci/agentstation-skills
+          persist-credentials: false
+
       - name: Check embedded catalog budgets
         run: make embedded-catalog-budget-check
 
       - name: Run release verification
+        env:
+          TECHNICAL_WRITING: ${{ github.workspace }}/.ci/agentstation-skills/technical-writing/scripts/technical-writing
         run: |
           make verify
           make release-check
