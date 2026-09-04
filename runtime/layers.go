@@ -12,6 +12,7 @@ import (
 	"github.com/agentstation/starmap/internal/constants"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/errors"
+	"github.com/agentstation/starmap/pkg/logging"
 )
 
 const (
@@ -115,20 +116,32 @@ func (l *layerSet) build(baseline starmap.CatalogState) (starmap.CatalogState, e
 		layer := l.providers[id]
 		// A retained provider layer holds one provider observation. It carries
 		// serving records that name an authored model of the baseline, so the
-		// layer alone resolves no canonical authorship. The final build below
-		// validates the merged result.
+		// layer alone resolves no canonical authorship. An offering that names
+		// no authored model of the merged result stays out of the effective
+		// catalog, because a published catalog holds linked offerings only.
 		observed, err := catalogs.DecodeSourceObservationPayload(layer.Payload)
 		if err != nil {
 			return starmap.CatalogState{}, errors.WrapResource(
 				"decode", "retained provider layer", string(id), err)
 		}
-		if err := builder.MergeWith(observed, catalogs.WithStrategy(catalogs.MergeEnrichEmpty)); err != nil {
+		linked, unresolved, err := linkProviderOfferings(builder, observed)
+		if err != nil {
+			return starmap.CatalogState{}, errors.WrapResource(
+				"link", "retained provider layer", string(id), err)
+		}
+		if err := builder.MergeWith(linked, catalogs.WithStrategy(catalogs.MergeEnrichEmpty)); err != nil {
 			return starmap.CatalogState{}, errors.WrapResource(
 				"merge", "retained provider layer", string(id), err)
 		}
 		if err := mergeAuthoredModels(builder, observed); err != nil {
 			return starmap.CatalogState{}, errors.WrapResource(
 				"merge", "retained authored models", string(id), err)
+		}
+		if unresolved > 0 {
+			logging.Info().
+				Str("provider_id", string(id)).
+				Int("unresolved_offerings", unresolved).
+				Msg("Provider offerings without a canonical model reference stay out of the effective catalog")
 		}
 	}
 
@@ -175,6 +188,70 @@ func deriveEffectiveGenerationID(upstream, checksum string) string {
 		fragment = "local"
 	}
 	return upstream + "+local." + fragment
+}
+
+// linkProviderOfferings returns the provider records of one observation that
+// name an authored model. The authored models of the builder and of the
+// observation both count. An offering without a canonical link takes the link
+// of the same offering in the builder. A baseline link therefore survives a
+// provider reply that omits it. The result leaves out an offering that still
+// names no authored model and counts it. The effective catalog then publishes
+// without it, and no provider reply blocks a rebuild.
+func linkProviderOfferings(builder *catalogs.Builder, observed catalogs.Reader) (catalogs.Reader, int, error) {
+	authored := make(map[catalogs.ModelDefinitionID]struct{})
+	for _, record := range builder.AuthoredModels() {
+		authored[record.ID()] = struct{}{}
+	}
+	for _, record := range observed.AuthoredModels() {
+		authored[record.ID()] = struct{}{}
+	}
+	linked, err := catalogs.NewBuilderFrom(observed)
+	if err != nil {
+		return nil, 0, err
+	}
+	unresolved := 0
+	for _, provider := range linked.Providers().List() {
+		var baseline map[string]*catalogs.Model
+		if current, err := builder.Provider(provider.ID); err == nil {
+			baseline = current.Models
+		}
+		models := make(map[string]*catalogs.Model, len(provider.Models))
+		for modelID, model := range provider.Models {
+			if model == nil {
+				continue
+			}
+			offering := catalogs.DeepCopyModel(*model)
+			if !resolvesAuthoredModel(authored, offering.ModelRef) {
+				offering.ModelRef = ""
+				if prior := baseline[modelID]; prior != nil && resolvesAuthoredModel(authored, prior.ModelRef) {
+					offering.ModelRef = prior.ModelRef
+				}
+			}
+			if offering.ModelRef == "" {
+				unresolved++
+				continue
+			}
+			models[modelID] = &offering
+		}
+		provider.Models = models
+		if err := linked.SetProvider(provider); err != nil {
+			return nil, 0, err
+		}
+	}
+	return linked, unresolved, nil
+}
+
+// resolvesAuthoredModel reports whether a canonical reference is well formed
+// and names an authored model of the merged result.
+func resolvesAuthoredModel(authored map[catalogs.ModelDefinitionID]struct{}, ref catalogs.ModelDefinitionID) bool {
+	if ref == "" {
+		return false
+	}
+	if _, _, err := catalogs.ParseModelDefinitionID(ref); err != nil {
+		return false
+	}
+	_, found := authored[ref]
+	return found
 }
 
 // mergeAuthoredModels adds the authored records that a provider layer needs.
