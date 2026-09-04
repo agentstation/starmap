@@ -201,6 +201,11 @@ The five packages above the `origin/main` count are Starmap-owned or standard
 library, and the change adds no third-party dependency. The budget stays a
 prompt for that question, not a hard rule.
 
+The second hosted run failed in `internal/ciworkflow`, because
+`TestExternalServerStorageMatrixStaysOptional` pins the budget literal. The
+test now expects 350. The first local rerun after the budget move covered the
+consumer script alone, not the Go test suite.
+
 ## Commands run
 
 Every command ran with `GOTOOLCHAIN=go1.26.6` exported. Each row reports the
