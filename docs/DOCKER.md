@@ -14,16 +14,23 @@ attestation/SBOM, and scan the exact deployed digest under your own policy.
 ```bash
 docker run --read-only --user 65532:65532 \
   --tmpfs /tmp \
+  --tmpfs /home/nonroot/.starmap \
   --publish 8080:8080 \
   ghcr.io/agentstation/starmap:<version> \
   serve --host 0.0.0.0
 ```
 
-The server starts from the verified embedded catalog and sends no provider
-network request on startup. `POST /api/v1/update` is an
-explicit acquisition operation. It uses only provider credentials supplied to
-the process and commits through the CLI-owned filesystem catalog store.
-There is no in-process scheduler.
+The server keeps its runtime state under `/home/nonroot/.starmap`. A read-only
+root filesystem needs that path writable, or the server exits at startup. The
+`tmpfs` mount gives an evaluation container ephemeral state. A container that
+keeps its catalog across a restart mounts a volume instead. See
+[Durable standalone storage](#durable-standalone-storage).
+
+The server starts from the verified embedded catalog, then pulls the public
+attested catalog channel from GitHub. It sends no provider network request on
+startup. `POST /api/v1/update` is an explicit acquisition operation. It uses
+only provider credentials supplied to the process and commits through the
+CLI-owned filesystem catalog store.
 
 For production, prefer an immutable `sha256:` image digest. The moving
 `latest` tag is useful for local evaluation, not a deployment trust root.
@@ -35,18 +42,22 @@ The standalone CLI owns two different filesystem lifecycles:
 ```text
 /home/nonroot/.starmap/
 ├── catalog/          # human-readable authored/provider YAML workspace
-└── state/catalog/    # machine-owned immutable generations and current pointer
+├── state/catalog/    # machine-owned immutable generations and current pointer
+└── state/runtime/    # connected-runtime layers, identity seed, and source state
 ```
 
-Mount their common parent on one durable filesystem so the post-commit YAML
-projection can use atomic sibling operations:
+Mount the home directory on one durable filesystem so the post-commit YAML
+projection can use atomic sibling operations. Docker gives an empty volume the
+ownership of the image directory it covers, and the unprivileged user owns
+`/home/nonroot`. A volume at a deeper path arrives owned by root, and the
+server cannot write it.
 
 ```bash
 docker volume create starmap-data
 
 docker run --read-only --user 65532:65532 \
   --tmpfs /tmp \
-  --mount type=volume,src=starmap-data,dst=/home/nonroot/.starmap \
+  --mount type=volume,src=starmap-data,dst=/home/nonroot \
   --publish 8080:8080 \
   ghcr.io/agentstation/starmap:<version> \
   serve --host 0.0.0.0
@@ -68,7 +79,7 @@ You need optional provider credentials only for explicit acquisition:
 ```bash
 docker run --read-only --user 65532:65532 \
   --tmpfs /tmp \
-  --mount type=volume,src=starmap-data,dst=/home/nonroot/.starmap \
+  --mount type=volume,src=starmap-data,dst=/home/nonroot \
   --env OPENAI_API_KEY \
   --env ANTHROPIC_API_KEY \
   --publish 8080:8080 \
@@ -106,6 +117,7 @@ also use `Authorization: Bearer`.
 ```bash
 docker run --read-only --user 65532:65532 \
   --tmpfs /tmp \
+  --tmpfs /home/nonroot/.starmap \
   --env API_KEY \
   --publish 127.0.0.1:8080:8080 \
   ghcr.io/agentstation/starmap:<version> \
