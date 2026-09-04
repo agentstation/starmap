@@ -4,10 +4,12 @@ CAT11 verified the public catalog channel from outside the repository. The
 first checks found two defects in `v0.16.2`. Two pull requests corrected them,
 and `v0.16.3` carries the corrections. The container check on `v0.16.3` found a
 third defect in the connected runtime. Pull request #121 corrected it,
-`v0.16.4` carries that correction, and Starport pins that release. Two findings
-stay open for an owner decision: the immutable channel release blocks the
-scheduled publisher, and a durable runtime reports a local generation
-identity.
+`v0.16.4` carries that correction, and Starport pins that release.
+
+Two more findings needed an owner decision: the immutable channel release
+blocked the scheduled publisher, and a durable runtime reported a local
+generation identity. Tasks CAT11.1 and CAT11.2 repair both in pull request
+#122, and `v0.16.5` carries the repairs.
 
 ## The public channel
 
@@ -323,18 +325,119 @@ release process, so it needs an owner decision. The candidate directions follow.
 identity finding above needs a runtime change and a fifth release. One release
 can carry both repairs.
 
-## Open findings
+## The owner decisions
 
-| Finding | State | Owner decision |
-| --- | --- | --- |
-| the immutable channel release blocks every later channel sequence | open, no repair | select the channel direction |
-| a durable runtime reports a local UUID instead of the channel-derived identity | open, no repair | confirm the repair at the runtime commit seam |
+The owner kept the immutable releases setting enabled and retired the
+`catalog-latest` release. The mutable pointer moves to the protected Git branch
+`catalog/v1`, which the owner named. The owner also asked for the identity
+repair in the same release. A GHCR OCI artifact channel waits for a later
+minor version.
+
+## CAT11.1: the channel branch
+
+**The protocol.** The channel document is now `channel.json` at the head of
+the orphan branch `catalog/v1`. Its format and media type did not change. The
+immutable `catalog-<digest>` releases still hold the content and the
+attestation. `artifact.ChannelName` names the branch, and
+`runtime.DefaultSourceChannel` follows it.
+
+**The publisher.** The channel step in `.github/workflows/catalog-generation.yaml`
+writes the document into a temporary index and writes a tree. It creates a
+commit with `github-actions[bot]` as the committer. It pushes that commit to
+`refs/heads/catalog/v1`. The first run creates the branch. The workflow
+concurrency group `catalog-generation-publisher` with `cancel-in-progress`
+false keeps two runs from racing on the branch.
+
+**The consumer.** The GitHub source reads the document through the contents
+endpoint with the raw media type and the branch as `ref`. It sends the stored
+ETag and treats a 304 answer as no change. The state store resets when the
+repository or the channel changes.
+
+**The ruleset.** Ruleset 22288924, named `catalog channel branch`, protects
+`refs/heads/catalog/v1` against deletion and force push. GitHub rejected the
+Actions app as a bypass actor. The error reads:
+
+```text
+Actor GitHub Actions integration must be part of the ruleset source or owner organization
+```
+
+The ruleset therefore has no bypass actor and no creation or update rule. The
+workflow token can push fast-forward commits. The catalog generation workflow is the
+only intended writer.
+
+**The rollback exclusion.** `ReleaseTagNamespace` returns `NamespaceUnknown`
+for every tag outside the digest prefixes. The legacy `catalog-latest` tag
+therefore never enters the rollback candidates, whatever the channel name.
+
+## CAT11.2: the durable identity
+
+**The repair.** `starmap.WithCandidateGenerationID` carries a requested
+identity into the candidate, and `newGeneration` keeps it instead of a fresh
+UUID. The runtime `commit` method passes the derived identity from the layer
+build. An empty identity still mints a new one. An identity equal to the
+current client generation returns a no-op, and `Client.Update` publishes
+nothing for a nil candidate. The local suffix is now `.local.`, so the identity
+stays a valid tag fragment.
+
+**The restart defect.** The Opus review noted that a restart could nest
+suffixes. A probe test confirmed it. A durable runtime without an upstream layer
+served this identity after one restart:
+
+```text
+catalog-…ad5d2a45e490.local.289c7c26ab02.local.289c7c26ab02
+```
+
+The identity grew on every restart. The restart
+baseline is the generation that the previous run committed, so a derivation
+from that identity added one more suffix. The `effectiveGenerationRoot`
+function in `runtime/layers.go` strips one suffix. The build derives from the
+root again when no source layer exists.
+
+**The tests.** `TestSourcelessDurableRestartKeepsOneDerivedIdentity` in
+`runtime/layers_test.go` opens a durable runtime from the embedded source with
+an acquirer and a catalog store. It proves one commit before the restart. It proves an unchanged identity
+after the restart and after a restart sync, with zero commits after the
+restart. It fails before the fix with the nested identity above. `TestEffectiveGenerationRootStripsOneLocalSuffix` in
+`runtime/chain_test.go` proves the root derivation.
+
+## The integration branch
+
+**The agents.** Two Opus agents built the repairs on separate branches from
+`45b1ea03`: `codex/catalog-channel-branch` at `3859edf4` and
+`codex/runtime-durable-identity` at `c93a60b8`. The orchestrator reviewed both
+diffs and accepted them without a defect.
+
+**The commits.** Branch `codex/catalog-v0.16.5` at `421e080b` carries six
+commits.
+
+- The durable commit identity.
+- The branch read in the GitHub source.
+- The branch publish step.
+- The release document changes.
+- The ruleset paragraph.
+- The root derivation. The CHANGELOG conflict between the two agent branches
+resolved with the channel bullets first, then the identity bullets.
+
+**The gates at `421e080b`.**
+
+| Check | Result |
+| --- | --- |
+| `go test ./...` | pass |
+| `go test -race -short` over the touched packages | 13 packages pass |
+| `make lint` and `go tool ago` | 0 issues |
+| `make docs-check` and `make technical-writing-check` | up to date, 776 files pass |
+| `make verify` | repository verification passed |
+| pre-PR review on Opus 5 at high effort | clean in two runs |
+
+**The pull request.** Pull request #122 opened from the branch with auto-merge
+armed.
 
 ## Untouched by this task
 
 CAT11 changed one consumer digest comparison, the publisher digest method, the
 fixtures, and one architecture paragraph. It changed the container document
-and the offering link step of the runtime layer build. The channel document format, the release
-layout, the attestation identity, and the connected runtime state layout did
-not change. A Starport gateway behaves as before with the new pin, except that
+and the offering link step of the runtime layer build. It moved the channel
+document to a branch and kept the derived identity through the durable commit.
+The channel document format, the release layout, and the attestation identity
+did not change. A Starport gateway behaves as before with the new pin, except that
 unlinked provider offerings now stay out of its effective catalog.
