@@ -322,7 +322,7 @@ func TestExternalServerStorageMatrixStaysOptional(t *testing.T) {
 	}
 	for _, check := range []string{
 		`SERVER_STORAGE_MODULE=`,
-		`SERVER_STORAGE_MAX_PACKAGES=340`,
+		`SERVER_STORAGE_MAX_PACKAGES=350`,
 		`go list -deps -test`,
 		`starmap/pkg/catalogs/storage/s3`,
 		`starmap/remote`,
