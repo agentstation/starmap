@@ -42,6 +42,8 @@ Package sources provides public APIs for working with AI model data sources.
 - [type Options](<#Options>)
   - [func Defaults\(\) \*Options](<#Defaults>)
   - [func \(o \*Options\) Apply\(opts ...Option\) \*Options](<#Options.Apply>)
+- [type ProviderAttempt](<#ProviderAttempt>)
+  - [func \(a ProviderAttempt\) Validate\(\) error](<#ProviderAttempt.Validate>)
 - [type ProviderClient](<#ProviderClient>)
 - [type ProviderClientFactory](<#ProviderClientFactory>)
 - [type ProviderCredentialLease](<#ProviderCredentialLease>)
@@ -71,7 +73,15 @@ Package sources provides public APIs for working with AI model data sources.
   - [func WithProviderCredentialResolver\(resolver ProviderCredentialResolver\) ProviderOption](<#WithProviderCredentialResolver>)
   - [func WithProviderRawFetcher\(fetcher ProviderRawFetcher\) ProviderOption](<#WithProviderRawFetcher>)
   - [func WithTimeout\(d time.Duration\) ProviderOption](<#WithTimeout>)
+- [type ProviderOutcome](<#ProviderOutcome>)
+  - [func \(o ProviderOutcome\) String\(\) string](<#ProviderOutcome.String>)
+  - [func \(o ProviderOutcome\) Valid\(\) bool](<#ProviderOutcome.Valid>)
 - [type ProviderRawFetcher](<#ProviderRawFetcher>)
+- [type ProviderReason](<#ProviderReason>)
+  - [func ClassifyProviderReason\(err error\) ProviderReason](<#ClassifyProviderReason>)
+  - [func ProviderReasons\(\) \[\]ProviderReason](<#ProviderReasons>)
+  - [func \(r ProviderReason\) String\(\) string](<#ProviderReason.String>)
+  - [func \(r ProviderReason\) Valid\(\) bool](<#ProviderReason.Valid>)
 - [type RawFetchResult](<#RawFetchResult>)
 - [type Revision](<#Revision>)
 - [type RevisionKind](<#RevisionKind>)
@@ -454,6 +464,44 @@ func (o *Options) Apply(opts ...Option) *Options
 
 Apply applies a set of options to create configured sourceOptions This is a helper for sources to use internally.
 
+<a name="ProviderAttempt"></a>
+## type [ProviderAttempt](<https://github.com/agentstation/starmap/blob/main/pkg/sources/outcome.go#L107-L127>)
+
+ProviderAttempt records one terminal provider acquisition attempt. It holds only values that are safe to log, to serve, and to retain.
+
+```go
+type ProviderAttempt struct {
+    // ProviderID names the attempted provider.
+    ProviderID catalogs.ProviderID
+
+    // Outcome is the terminal state of the attempt.
+    Outcome ProviderOutcome
+
+    // Reason explains a skip or a failure. It is empty for a success.
+    Reason ProviderReason
+
+    // Requested reports whether the attempt sent a provider request. A skip
+    // for a missing credential never sends one.
+    Requested bool
+
+    // StartedAt and CompletedAt bound the attempt.
+    StartedAt   time.Time
+    CompletedAt time.Time
+
+    // Records is the number of accepted provider records.
+    Records int
+}
+```
+
+<a name="ProviderAttempt.Validate"></a>
+### func \(ProviderAttempt\) [Validate](<https://github.com/agentstation/starmap/blob/main/pkg/sources/outcome.go#L131>)
+
+```go
+func (a ProviderAttempt) Validate() error
+```
+
+Validate checks that the attempt carries a defined outcome and a defined reason for every state other than success.
+
 <a name="ProviderClient"></a>
 ## type [ProviderClient](<https://github.com/agentstation/starmap/blob/main/pkg/sources/providers.go#L15-L17>)
 
@@ -752,6 +800,52 @@ func WithTimeout(d time.Duration) ProviderOption
 
 WithTimeout sets a timeout for provider operations. The timeout applies to the context passed to FetchModels.
 
+<a name="ProviderOutcome"></a>
+## type [ProviderOutcome](<https://github.com/agentstation/starmap/blob/main/pkg/sources/outcome.go#L17>)
+
+ProviderOutcome is the terminal state of one provider acquisition attempt. Every attempt reaches exactly one outcome.
+
+```go
+type ProviderOutcome string
+```
+
+<a name="ProviderOutcomeSucceeded"></a>
+
+```go
+const (
+    // ProviderOutcomeSucceeded means the provider answered and the observation
+    // carries provider records.
+    ProviderOutcomeSucceeded ProviderOutcome = "succeeded"
+
+    // ProviderOutcomeSkippedNotConfigured means the deployment holds no
+    // catalog-acquisition credential for the provider. Acquisition sends no
+    // request for a provider with this outcome.
+    ProviderOutcomeSkippedNotConfigured ProviderOutcome = "skipped_not_configured"
+
+    // ProviderOutcomeFailed means the attempt reached the provider and did not
+    // produce a usable observation.
+    ProviderOutcomeFailed ProviderOutcome = "failed"
+)
+```
+
+<a name="ProviderOutcome.String"></a>
+### func \(ProviderOutcome\) [String](<https://github.com/agentstation/starmap/blob/main/pkg/sources/outcome.go#L47>)
+
+```go
+func (o ProviderOutcome) String() string
+```
+
+String returns the wire value of the outcome.
+
+<a name="ProviderOutcome.Valid"></a>
+### func \(ProviderOutcome\) [Valid](<https://github.com/agentstation/starmap/blob/main/pkg/sources/outcome.go#L35>)
+
+```go
+func (o ProviderOutcome) Valid() bool
+```
+
+Valid reports whether the outcome is one of the three defined states.
+
 <a name="ProviderRawFetcher"></a>
 ## type [ProviderRawFetcher](<https://github.com/agentstation/starmap/blob/main/pkg/sources/providers.go#L31-L36>)
 
@@ -765,6 +859,85 @@ type ProviderRawFetcher func(
     string,
 ) (*RawFetchResult, error)
 ```
+
+<a name="ProviderReason"></a>
+## type [ProviderReason](<https://github.com/agentstation/starmap/blob/main/pkg/sources/outcome.go#L51>)
+
+ProviderReason is a safe machine\-readable cause for a skip or a failure. A reason names no URL, no host, no token, and no credential value.
+
+```go
+type ProviderReason string
+```
+
+<a name="ProviderReasonCredentialReferenceInvalid"></a>
+
+```go
+const (
+    // ProviderReasonCredentialReferenceInvalid means the credential reference
+    // does not parse or names an unsupported source.
+    ProviderReasonCredentialReferenceInvalid ProviderReason = "credential_reference_invalid" //nolint:gosec // A reason code holds no credential value.
+
+    // ProviderReasonCredentialUnavailable means the deployment holds no credential.
+    ProviderReasonCredentialUnavailable ProviderReason = "credential_unavailable" //nolint:gosec // A reason code holds no credential value.
+
+    // ProviderReasonCredentialRejected means the provider refused the credential.
+    ProviderReasonCredentialRejected ProviderReason = "credential_rejected" //nolint:gosec // A reason code holds no credential value.
+
+    // ProviderReasonCredentialExpired means the credential is past its expiry.
+    ProviderReasonCredentialExpired ProviderReason = "credential_expired" //nolint:gosec // A reason code holds no credential value.
+
+    // ProviderReasonInsufficientScope means the credential lacks a required scope.
+    ProviderReasonInsufficientScope ProviderReason = "insufficient_scope"
+
+    // ProviderReasonRateLimited means the provider applied a request budget.
+    ProviderReasonRateLimited ProviderReason = "rate_limited"
+
+    // ProviderReasonRequestTimeout means the attempt exceeded its time budget.
+    ProviderReasonRequestTimeout ProviderReason = "request_timeout"
+
+    // ProviderReasonTransportFailed means the connection failed before a reply.
+    ProviderReasonTransportFailed ProviderReason = "transport_failed"
+
+    // ProviderReasonResponseInvalid means the reply did not match the contract.
+    ProviderReasonResponseInvalid ProviderReason = "response_invalid"
+)
+```
+
+<a name="ClassifyProviderReason"></a>
+### func [ClassifyProviderReason](<https://github.com/agentstation/starmap/blob/main/pkg/sources/outcome.go#L166>)
+
+```go
+func ClassifyProviderReason(err error) ProviderReason
+```
+
+ClassifyProviderReason maps one acquisition error onto a safe reason code. It reads typed error structure first, so provider message text reaches the result only through the final transport classification.
+
+<a name="ProviderReasons"></a>
+### func [ProviderReasons](<https://github.com/agentstation/starmap/blob/main/pkg/sources/outcome.go#L103>)
+
+```go
+func ProviderReasons() []ProviderReason
+```
+
+ProviderReasons returns a caller\-owned copy of every defined reason code.
+
+<a name="ProviderReason.String"></a>
+### func \(ProviderReason\) [String](<https://github.com/agentstation/starmap/blob/main/pkg/sources/outcome.go#L100>)
+
+```go
+func (r ProviderReason) String() string
+```
+
+String returns the wire value of the reason.
+
+<a name="ProviderReason.Valid"></a>
+### func \(ProviderReason\) [Valid](<https://github.com/agentstation/starmap/blob/main/pkg/sources/outcome.go#L97>)
+
+```go
+func (r ProviderReason) Valid() bool
+```
+
+Valid reports whether the reason is one of the defined safe reason codes.
 
 <a name="RawFetchResult"></a>
 ## type [RawFetchResult](<https://github.com/agentstation/starmap/blob/main/pkg/sources/providers.go#L23-L28>)

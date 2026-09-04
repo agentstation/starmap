@@ -56,11 +56,12 @@ Package server provides HTTP server implementation for the Starmap API.
   - [func \(s \*Server\) Shutdown\(ctx context.Context\) error](<#Server.Shutdown>)
   - [func \(s \*Server\) Start\(\)](<#Server.Start>)
   - [func \(s \*Server\) StartTime\(\) time.Time](<#Server.StartTime>)
+- [type SourceHealth](<#SourceHealth>)
 - [type StreamHealth](<#StreamHealth>)
 
 
 <a name="Application"></a>
-## type [Application](<https://github.com/agentstation/starmap/blob/main/internal/server/application.go#L14-L22>)
+## type [Application](<https://github.com/agentstation/starmap/blob/main/internal/server/application.go#L15-L24>)
 
 Application is the catalog and operational role consumed by the HTTP server.
 
@@ -69,6 +70,7 @@ type Application interface {
     Catalog() (*catalogs.Catalog, error)
     CatalogState() (starmap.CatalogState, error)
     Readiness() (starmap.CatalogReadiness, error)
+    RuntimeStatus() status.Status
     Starmap(...starmap.Option) (*starmap.Client, error)
     Sync(context.Context, ...pkgsync.Option) (*pkgsync.Result, error)
     UpdatesEnabled() bool
@@ -77,7 +79,7 @@ type Application interface {
 ```
 
 <a name="Config"></a>
-## type [Config](<https://github.com/agentstation/starmap/blob/main/internal/server/config.go#L6-L40>)
+## type [Config](<https://github.com/agentstation/starmap/blob/main/internal/server/config.go#L10-L44>)
 
 Config holds server configuration.
 
@@ -120,7 +122,7 @@ type Config struct {
 ```
 
 <a name="DefaultConfig"></a>
-### func [DefaultConfig](<https://github.com/agentstation/starmap/blob/main/internal/server/config.go#L43>)
+### func [DefaultConfig](<https://github.com/agentstation/starmap/blob/main/internal/server/config.go#L47>)
 
 ```go
 func DefaultConfig() Config
@@ -129,7 +131,7 @@ func DefaultConfig() Config
 DefaultConfig returns a Config with sensible defaults.
 
 <a name="OperationalHealth"></a>
-## type [OperationalHealth](<https://github.com/agentstation/starmap/blob/main/internal/server/health.go#L11-L18>)
+## type [OperationalHealth](<https://github.com/agentstation/starmap/blob/main/internal/server/health.go#L12-L20>)
 
 OperationalHealth is the internal server's immutable production health.
 
@@ -141,11 +143,12 @@ type OperationalHealth struct {
     CatalogAgeSeconds  int64
     Publication        PublicationHealth
     Stream             StreamHealth
+    Source             SourceHealth
 }
 ```
 
 <a name="PublicationHealth"></a>
-## type [PublicationHealth](<https://github.com/agentstation/starmap/blob/main/internal/server/health.go#L21-L28>)
+## type [PublicationHealth](<https://github.com/agentstation/starmap/blob/main/internal/server/health.go#L62-L69>)
 
 PublicationHealth reports post\-commit callback delivery.
 
@@ -161,7 +164,7 @@ type PublicationHealth struct {
 ```
 
 <a name="Server"></a>
-## type [Server](<https://github.com/agentstation/starmap/blob/main/internal/server/server.go#L19-L30>)
+## type [Server](<https://github.com/agentstation/starmap/blob/main/internal/server/server.go#L21-L33>)
 
 Server holds the HTTP server state and dependencies.
 
@@ -172,7 +175,7 @@ type Server struct {
 ```
 
 <a name="New"></a>
-### func [New](<https://github.com/agentstation/starmap/blob/main/internal/server/server.go#L33>)
+### func [New](<https://github.com/agentstation/starmap/blob/main/internal/server/server.go#L36>)
 
 ```go
 func New(app Application, cfg Config) (*Server, error)
@@ -181,7 +184,7 @@ func New(app Application, cfg Config) (*Server, error)
 New creates a new server instance with the given configuration.
 
 <a name="Server.Cache"></a>
-### func \(\*Server\) [Cache](<https://github.com/agentstation/starmap/blob/main/internal/server/server.go#L131>)
+### func \(\*Server\) [Cache](<https://github.com/agentstation/starmap/blob/main/internal/server/server.go#L142>)
 
 ```go
 func (s *Server) Cache() *cache.Cache
@@ -190,7 +193,7 @@ func (s *Server) Cache() *cache.Cache
 Cache returns the server's cache instance.
 
 <a name="Server.Handler"></a>
-### func \(\*Server\) [Handler](<https://github.com/agentstation/starmap/blob/main/internal/server/server.go#L109>)
+### func \(\*Server\) [Handler](<https://github.com/agentstation/starmap/blob/main/internal/server/server.go#L115>)
 
 ```go
 func (s *Server) Handler() http.Handler
@@ -199,7 +202,7 @@ func (s *Server) Handler() http.Handler
 Handler returns the configured http.Handler with middleware chain applied.
 
 <a name="Server.OperationalHealth"></a>
-### func \(\*Server\) [OperationalHealth](<https://github.com/agentstation/starmap/blob/main/internal/server/server.go#L146>)
+### func \(\*Server\) [OperationalHealth](<https://github.com/agentstation/starmap/blob/main/internal/server/server.go#L157>)
 
 ```go
 func (s *Server) OperationalHealth() OperationalHealth
@@ -208,7 +211,7 @@ func (s *Server) OperationalHealth() OperationalHealth
 OperationalHealth returns server, publication, and stream health without I/O.
 
 <a name="Server.SSEBroadcaster"></a>
-### func \(\*Server\) [SSEBroadcaster](<https://github.com/agentstation/starmap/blob/main/internal/server/server.go#L136>)
+### func \(\*Server\) [SSEBroadcaster](<https://github.com/agentstation/starmap/blob/main/internal/server/server.go#L147>)
 
 ```go
 func (s *Server) SSEBroadcaster() *sse.Broadcaster
@@ -217,7 +220,7 @@ func (s *Server) SSEBroadcaster() *sse.Broadcaster
 SSEBroadcaster returns the SSE broadcaster.
 
 <a name="Server.Shutdown"></a>
-### func \(\*Server\) [Shutdown](<https://github.com/agentstation/starmap/blob/main/internal/server/server.go#L115>)
+### func \(\*Server\) [Shutdown](<https://github.com/agentstation/starmap/blob/main/internal/server/server.go#L121>)
 
 ```go
 func (s *Server) Shutdown(ctx context.Context) error
@@ -226,7 +229,7 @@ func (s *Server) Shutdown(ctx context.Context) error
 Shutdown terminates active SSE connections. The owning HTTP server drains request handlers before calling this method.
 
 <a name="Server.Start"></a>
-### func \(\*Server\) [Start](<https://github.com/agentstation/starmap/blob/main/internal/server/server.go#L103>)
+### func \(\*Server\) [Start](<https://github.com/agentstation/starmap/blob/main/internal/server/server.go#L109>)
 
 ```go
 func (s *Server) Start()
@@ -235,7 +238,7 @@ func (s *Server) Start()
 Start activates server\-owned services. Requests own their SSE connections, so Start does not need a background transport goroutine.
 
 <a name="Server.StartTime"></a>
-### func \(\*Server\) [StartTime](<https://github.com/agentstation/starmap/blob/main/internal/server/server.go#L141>)
+### func \(\*Server\) [StartTime](<https://github.com/agentstation/starmap/blob/main/internal/server/server.go#L152>)
 
 ```go
 func (s *Server) StartTime() time.Time
@@ -243,8 +246,50 @@ func (s *Server) StartTime() time.Time
 
 StartTime returns the server start time for uptime calculations.
 
+<a name="SourceHealth"></a>
+## type [SourceHealth](<https://github.com/agentstation/starmap/blob/main/internal/server/health.go#L26-L59>)
+
+SourceHealth reports the runtime source of this node. Direct health and upstream\-reported health stay independent values. A healthy transfer of a degraded upstream catalog is still a degraded catalog. A stalled transfer of a healthy upstream catalog is still a stalled node.
+
+```go
+type SourceHealth struct {
+    // Identity is the stable identity of this node inside a fleet.
+    Identity string
+
+    // SourceIdentity is the safe identity of the selected source.
+    SourceIdentity string
+
+    // Kind names the selected source.
+    Kind string
+
+    // Direct is what this node observed while it read its own source.
+    Direct string
+
+    // Upstream is the health the upstream reported about itself.
+    Upstream string
+
+    // Reason is the safe reason code of the last source failure.
+    Reason string
+
+    // ChannelUpdatedAt is the origin publication time the chain propagated.
+    ChannelUpdatedAt time.Time
+
+    // ChannelAgeSeconds is the age of that propagated publication time.
+    ChannelAgeSeconds int64
+
+    // ChannelFreshness grades the propagated publication time.
+    ChannelFreshness string
+
+    // Hops counts the upstream nodes above this node.
+    Hops int
+
+    // Fallback reports whether this node serves its local baseline.
+    Fallback bool
+}
+```
+
 <a name="StreamHealth"></a>
-## type [StreamHealth](<https://github.com/agentstation/starmap/blob/main/internal/server/health.go#L31-L46>)
+## type [StreamHealth](<https://github.com/agentstation/starmap/blob/main/internal/server/health.go#L72-L89>)
 
 StreamHealth reports server\-side SSE delivery.
 
@@ -252,6 +297,7 @@ StreamHealth reports server\-side SSE delivery.
 type StreamHealth struct {
     State                  string
     Clients                int
+    MaxClients             int
     LastHeartbeatAt        time.Time
     LastEventAt            time.Time
     LastGenerationID       string
@@ -262,6 +308,7 @@ type StreamHealth struct {
     Sent                   uint64
     Heartbeats             uint64
     Disconnected           uint64
+    Refused                uint64
     BackpressureTerminated uint64
     Failed                 uint64
 }

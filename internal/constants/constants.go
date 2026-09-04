@@ -28,6 +28,11 @@ const (
 	// SyncCleanupTimeout is the timeout for source cleanup after sync operations.
 	SyncCleanupTimeout = 30 * time.Second
 
+	// CatalogPayloadChunkTimeout bounds one catalog payload chunk write. The
+	// handler resets the deadline before every chunk, so the value bounds one
+	// chunk and never bounds the whole transfer.
+	CatalogPayloadChunkTimeout = 30 * time.Second
+
 	// CatalogStoreLockRetryDelay is the retry interval for a contended filesystem commit lock.
 	CatalogStoreLockRetryDelay = 10 * time.Millisecond
 )
@@ -70,6 +75,10 @@ const (
 	// server. Current request schemas are small query descriptions, not catalog
 	// payloads.
 	MaxServerRequestBodyBytes = 1 << 20
+
+	// CatalogPayloadChunkBytes is the catalog payload chunk that one write
+	// deadline covers. A slow reader then holds one chunk, not the transfer.
+	CatalogPayloadChunkBytes = 64 << 10
 )
 
 const (
@@ -85,6 +94,11 @@ const (
 	// DefaultCatalogStatePath is the CLI's machine-owned immutable generation
 	// database. Go consumers normally provide their own storage.Store.
 	DefaultCatalogStatePath = "~/.starmap/state/catalog"
+
+	// DefaultRuntimeStatePath is the CLI's process-local connected-runtime
+	// state directory. The scheduler seed, the retained provider layers, and
+	// the source discovery state live there.
+	DefaultRuntimeStatePath = "~/.starmap/state/runtime"
 
 	// DefaultCachePath is the default path for cache files.
 	DefaultCachePath = "~/.starmap/cache"

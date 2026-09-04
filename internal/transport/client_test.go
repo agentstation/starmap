@@ -9,11 +9,100 @@ import (
 	"strings"
 	"sync/atomic"
 	"testing"
+	"time"
 
+	"github.com/agentstation/starmap/internal/constants"
 	"github.com/agentstation/starmap/pkg/catalogs"
+	"github.com/agentstation/starmap/pkg/catalogs/remote"
 	pkgerrors "github.com/agentstation/starmap/pkg/errors"
 	"github.com/agentstation/starmap/pkg/sources"
 )
+
+// testIdleBound is the inactivity bound of the stalled-body test. It is short,
+// so the test finishes quickly.
+const testIdleBound = 100 * time.Millisecond
+
+// testMaxTransferBound keeps the stalled-body test at its inactivity bound
+// rather than its per-transfer maximum.
+const testMaxTransferBound = 30 * time.Second
+
+func TestProviderTransferPolicyBoundsEveryBody(t *testing.T) {
+	policy := providerTransferPolicy()
+	if policy.IdleTimeout != remote.DefaultTransferIdleTimeout {
+		t.Fatalf("idle timeout = %s, want %s",
+			policy.IdleTimeout, remote.DefaultTransferIdleTimeout)
+	}
+	if policy.MaxDuration != remote.DefaultTransferMaxDuration {
+		t.Fatalf("max duration = %s, want %s",
+			policy.MaxDuration, remote.DefaultTransferMaxDuration)
+	}
+	if policy.MaxCompressedBytes != constants.MaxSourcePayloadBytes+1 {
+		t.Fatalf("max compressed bytes = %d, want %d",
+			policy.MaxCompressedBytes, constants.MaxSourcePayloadBytes+1)
+	}
+}
+
+func TestProviderBodyStopsAtTheIdleBound(t *testing.T) {
+	release := make(chan struct{})
+	server := httptest.NewServer(http.HandlerFunc(func(
+		writer http.ResponseWriter,
+		_ *http.Request,
+	) {
+		writer.Header().Set("Content-Type", "application/json")
+		writer.WriteHeader(http.StatusOK)
+		if flusher, ok := writer.(http.Flusher); ok {
+			flusher.Flush()
+		}
+		// Hold the body open and send nothing.
+		<-release
+	}))
+	t.Cleanup(func() {
+		close(release)
+		server.Close()
+	})
+
+	policy := providerTransferPolicy()
+	policy.IdleTimeout = testIdleBound
+	policy.MaxDuration = testMaxTransferBound
+	client := newClient(policy)
+
+	response, err := client.Get(
+		context.Background(), server.URL, nil, sources.ProviderCredentialMaterial{},
+	)
+	if err == nil {
+		_ = response.Body.Close()
+		t.Fatal("Get read a stalled provider body without a bound")
+	}
+	var timeout *pkgerrors.TimeoutError
+	if !errors.As(err, &timeout) {
+		t.Fatalf("error = %T, want *errors.TimeoutError", err)
+	}
+	if timeout.Duration != testIdleBound.String() {
+		t.Fatalf("timeout duration = %q, want %q", timeout.Duration, testIdleBound)
+	}
+}
+
+func TestNewSetsNoClientWideTimeout(t *testing.T) {
+	client := New()
+	if client.http.Timeout != 0 {
+		t.Fatalf("client timeout = %s, want no client-wide timeout", client.http.Timeout)
+	}
+	transport, ok := client.http.Transport.(*http.Transport)
+	if !ok {
+		t.Fatalf("client transport = %T, want *http.Transport", client.http.Transport)
+	}
+	if transport.ResponseHeaderTimeout != remote.DefaultResponseHeaderTimeout {
+		t.Fatalf("response header timeout = %s, want %s",
+			transport.ResponseHeaderTimeout, remote.DefaultResponseHeaderTimeout)
+	}
+	if transport.TLSHandshakeTimeout != remote.DefaultTLSHandshakeTimeout {
+		t.Fatalf("TLS handshake timeout = %s, want %s",
+			transport.TLSHandshakeTimeout, remote.DefaultTLSHandshakeTimeout)
+	}
+	if client.http.CheckRedirect == nil {
+		t.Fatal("the client follows redirects while it carries provider credentials")
+	}
+}
 
 type contextKey string
 

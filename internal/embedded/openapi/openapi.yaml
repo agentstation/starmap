@@ -1675,6 +1675,46 @@ components:
         max_completion_tokens:
           type: integer
       type: object
+    operations.Kind:
+      description: Kind names the operation class.
+      type: string
+      x-enum-varnames:
+      - KindCatalogUpdate
+    operations.State:
+      description: State names the current lifecycle position.
+      type: string
+      x-enum-varnames:
+      - StateAccepted
+      - StateRunning
+      - StateSucceeded
+      - StateFailed
+      - StateCanceled
+    operations.Status:
+      properties:
+        accepted_at:
+          description: AcceptedAt records when the server accepted the operation.
+          type: string
+        completed_at:
+          description: CompletedAt records when the operation reached a terminal state.
+          type: string
+        detail:
+          additionalProperties: {}
+          description: Detail holds the bounded result summary that the operation
+            produced.
+          type: object
+        id:
+          description: ID is the opaque operation identity that a caller reads back.
+          type: string
+        kind:
+          $ref: '#/components/schemas/operations.Kind'
+        reason:
+          $ref: '#/components/schemas/sources.ProviderReason'
+        started_at:
+          description: StartedAt records when the operation began to run.
+          type: string
+        state:
+          $ref: '#/components/schemas/operations.State'
+      type: object
     response.Error:
       properties:
         code:
@@ -1693,6 +1733,30 @@ components:
         error:
           $ref: '#/components/schemas/response.Error'
       type: object
+    sources.ProviderReason:
+      description: |-
+        Reason holds the bounded failure cause. A successful operation and a
+        canceled operation both leave it empty.
+      type: string
+      x-enum-comments:
+        ProviderReasonCredentialExpired: nolint:gosec // A reason code holds no credential
+          value.
+        ProviderReasonCredentialReferenceInvalid: nolint:gosec // A reason code holds
+          no credential value.
+        ProviderReasonCredentialRejected: nolint:gosec // A reason code holds no credential
+          value.
+        ProviderReasonCredentialUnavailable: nolint:gosec // A reason code holds no
+          credential value.
+      x-enum-varnames:
+      - ProviderReasonCredentialReferenceInvalid
+      - ProviderReasonCredentialUnavailable
+      - ProviderReasonCredentialRejected
+      - ProviderReasonCredentialExpired
+      - ProviderReasonInsufficientScope
+      - ProviderReasonRateLimited
+      - ProviderReasonRequestTimeout
+      - ProviderReasonTransportFailed
+      - ProviderReasonResponseInvalid
   securitySchemes:
     ApiKeyAuth:
       description: API key for authentication (optional, configurable)
@@ -1722,6 +1786,19 @@ info:
   version: "1.0"
 openapi: 3.1.0
 paths:
+  /api/v1/catalog/source-chain:
+    get:
+      description: Safe identities and bounded detail for each cascade hop
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: object
+          description: OK
+      summary: Source chain manifest
+      tags:
+      - catalog
   /api/v1/health:
     get:
       description: Health check endpoint (liveness probe)
@@ -2368,7 +2445,7 @@ paths:
       - admin
   /api/v1/update:
     post:
-      description: Manually trigger catalog synchronization
+      description: Accept an asynchronous catalog synchronization
       parameters:
       - description: Update specific provider only
         in: query
@@ -2387,7 +2464,7 @@ paths:
             schema:
               type: object
       responses:
-        "200":
+        "202":
           content:
             application/json:
               schema:
@@ -2399,7 +2476,7 @@ paths:
                   error:
                     $ref: '#/components/schemas/response.Error'
                 type: object
-          description: OK
+          description: Accepted
         "500":
           content:
             application/json:
@@ -2416,6 +2493,89 @@ paths:
       security:
       - ApiKeyAuth: []
       summary: Trigger catalog update
+      tags:
+      - admin
+  /api/v1/updates/{id}:
+    delete:
+      description: Ask one accepted or running update to stop
+      parameters:
+      - description: Operation identity
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/error'
+                properties:
+                  data:
+                    type: object
+                  error:
+                    $ref: '#/components/schemas/response.Error'
+                type: object
+          description: OK
+        "404":
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/error'
+                properties:
+                  data:
+                    type: object
+                  error:
+                    $ref: '#/components/schemas/response.Error'
+                type: object
+          description: Not Found
+      security:
+      - ApiKeyAuth: []
+      summary: Cancel an update operation
+      tags:
+      - admin
+    get:
+      description: Report whether one update runs, finished, or stopped
+      parameters:
+      - description: Operation identity
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/error'
+                properties:
+                  data:
+                    type: object
+                  error:
+                    $ref: '#/components/schemas/response.Error'
+                type: object
+          description: OK
+        "404":
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/error'
+                properties:
+                  data:
+                    type: object
+                  error:
+                    $ref: '#/components/schemas/response.Error'
+                type: object
+          description: Not Found
+      security:
+      - ApiKeyAuth: []
+      summary: Read an update operation
       tags:
       - admin
   /api/v1/updates/stream:

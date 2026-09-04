@@ -84,6 +84,14 @@ func (c *Client) WorkspacePath() string {
 	return c.options.catalogPath
 }
 
+// PublishesDurably reports whether the client holds the explicit writable
+// catalog store that durable publication needs. A client without one keeps
+// every published generation in memory, and a restart loses it. The connected
+// runtime reads this before it commits an effective generation.
+func (c *Client) PublishesDurably() bool {
+	return c.requireWritableCatalogStore() == nil
+}
+
 func (c *Client) requireWritableCatalogStore() error {
 	if c == nil || c.options == nil || isNilCatalogStore(c.options.catalogStore) {
 		return &errors.ConfigError{
@@ -142,6 +150,13 @@ func NewContext(ctx context.Context, opts ...Option) (*Client, error) {
 	if err != nil {
 		return nil, err
 	}
+	return newClient(ctx, options)
+}
+
+// newClient builds the offline client from already applied options. It
+// publishes the verified baseline that every client serves before its first
+// durable generation.
+func newClient(ctx context.Context, options *options) (*Client, error) {
 	if err := validateCatalogLayout(options.catalogStore, options.catalogPath); err != nil {
 		return nil, err
 	}

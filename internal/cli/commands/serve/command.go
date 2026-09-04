@@ -12,15 +12,15 @@ import (
 	"github.com/rs/zerolog"
 	"github.com/spf13/cobra"
 
-	"github.com/agentstation/starmap"
 	"github.com/agentstation/starmap/acquisition"
 	"github.com/agentstation/starmap/internal/cli/emoji"
 	"github.com/agentstation/starmap/pkg/sources"
+	"github.com/agentstation/starmap/runtime"
 	"github.com/agentstation/starmap/server"
 )
 
 type application interface {
-	Starmap(...starmap.Option) (*starmap.Client, error)
+	Runtime(context.Context, ...runtime.Option) (*runtime.Runtime, error)
 	Logger() *zerolog.Logger
 	CredentialResolver() (sources.ProviderCredentialResolver, error)
 }
@@ -86,8 +86,15 @@ comprehensive filtering, search, and real-time notification capabilities.`,
 	cmd.Flags().Duration("read-timeout", 10*time.Second, "HTTP read timeout")
 	cmd.Flags().Duration("write-timeout", 10*time.Second, "HTTP write timeout")
 	cmd.Flags().Duration("idle-timeout", 120*time.Second, "HTTP idle timeout")
-	cmd.Flags().Duration("sse-heartbeat-interval", 20*time.Second, "SSE comment heartbeat interval")
-	cmd.Flags().Duration("sse-write-timeout", 10*time.Second, "per-frame SSE write and flush timeout")
+	serverDefaults := server.DefaultConfig()
+	cmd.Flags().Duration(
+		"sse-heartbeat-interval", serverDefaults.SSEHeartbeatInterval,
+		"SSE comment heartbeat interval",
+	)
+	cmd.Flags().Duration(
+		"sse-write-timeout", serverDefaults.SSEWriteTimeout,
+		"per-frame SSE write and flush timeout",
+	)
 
 	// Features flags
 	cmd.Flags().Bool("metrics", true, "Enable metrics endpoint")
@@ -114,27 +121,36 @@ func runServer(cmd *cobra.Command, _ []string, app application) error {
 		Dur("cache_ttl", cfg.CacheTTL).
 		Msg("Starting API server")
 
-	// Create server
-	logger.Debug().Msg("Creating server instance")
-	sm, err := app.Starmap()
+	// The connected runtime opens first. It serves the verified embedded
+	// catalog at once and pulls the configured source in the background, so the
+	// listener never waits for the network. The listen address separates the
+	// schedule phase of two replicas on one host.
+	logger.Debug().Msg("Opening the connected catalog runtime")
+	connected, err := app.Runtime(
+		cmd.Context(),
+		runtime.WithListenAddress(fmt.Sprintf("%s:%d", cfg.Host, cfg.Port)),
+	)
 	if err != nil {
-		return fmt.Errorf("loading starmap client: %w", err)
+		return fmt.Errorf("opening the catalog runtime: %w", err)
 	}
 	credentialResolver, err := app.CredentialResolver()
 	if err != nil {
 		return fmt.Errorf("loading catalog credentials: %w", err)
 	}
 	syncer, err := acquisition.New(
-		sm,
+		connected.Client(),
 		acquisition.WithCredentialResolver(credentialResolver),
 	)
 	if err != nil {
 		return fmt.Errorf("composing catalog acquisition: %w", err)
 	}
+
+	logger.Debug().Msg("Creating server instance")
 	srv, err := server.New(
-		sm,
+		connected.Client(),
 		cfg,
 		server.WithLogger(logger),
+		server.WithRuntime(connected),
 		server.WithSyncer(syncer),
 	)
 	if err != nil {

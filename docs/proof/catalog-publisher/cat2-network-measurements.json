@@ -1,0 +1,41 @@
+{
+  "measured_at": "2026-09-02T00:36:21Z",
+  "repository": "agentstation/starmap",
+  "query": "gh api repos/agentstation/starmap/releases?per_page=100",
+  "asset_name": "starmap-catalog.tar.gz",
+  "recent_assets": [
+    {"tag": "catalog-semantic-88dc537ac3ad5fef26490bbedd1c44d634f2c7101149bd8dee354242a9910312", "size_bytes": 393447},
+    {"tag": "catalog-semantic-83b4f0c4700bbe3d2c8beb9811ad88ae4231d466e003d6759c683a644174cd69", "size_bytes": 393555},
+    {"tag": "catalog-semantic-2ce1c75f904a5739c4a143155a38216df6d3d578d93be42e87450da24563b459", "size_bytes": 393342},
+    {"tag": "catalog-semantic-e2a6c92c30e1d73894906508f22045e0f44746ba7cf902fa3928cb2711d237c7", "size_bytes": 391113},
+    {"tag": "catalog-semantic-28653c322d5911f779dc24d97a8716f83d073afbc976cde2998b65c4ca7c891e", "size_bytes": 390914},
+    {"tag": "catalog-semantic-1c602c6ef168954f0d028dafc6eca7c12db65a6bb4790a40259692e9aae1d212", "size_bytes": 388202},
+    {"tag": "catalog-semantic-66ef8eb5f026c878b3193a9f14dfc4b6dacf6a4f7211e5d6e4e01d676d023c08", "size_bytes": 387580},
+    {"tag": "catalog-semantic-79ea7c3823efb12dd1c6e4510a245675e345c2906a254968275a5f0d54ccd5cf", "size_bytes": 386283},
+    {"tag": "catalog-semantic-2d440c2a533500e76f3aec2774b20b42ae160922e2aa59647f5beaa4c3e9229c", "size_bytes": 386674},
+    {"tag": "catalog-semantic-11351bf6891b2cf699adc09fae63c2bfce2167274de4c9f6580cba05520d99ed", "size_bytes": 386369},
+    {"tag": "catalog-semantic-ea2dc8cb4481b41349515ff51eb8b2712cbbf658c1e1a829cbe7118110b634e3", "size_bytes": 314903},
+    {"tag": "catalog-semantic-5b2ceb2ec7f0ce78adc010aead3cccf2ee27317f7236d0cd8b41783cbd3b3735", "size_bytes": 314497},
+    {"tag": "catalog-semantic-50dd3cf9565e8716737787b590ed225260e10116e865da26d2764297b8a0407c", "size_bytes": 314683},
+    {"tag": "catalog-semantic-c3a7a1f55b60d3ab0ec8948ed420d4a5413df9b64d0522d079f1244f52e665e8", "size_bytes": 313500},
+    {"tag": "catalog-semantic-25210ac0312979bab65355f242371edab004b201121cc4d6a4c2bb5219f45246", "size_bytes": 313969},
+    {"tag": "catalog-semantic-94174a31cb73447b719820628873432b3afb56d4cba4a1bef8c2d2caddd1a6c7", "size_bytes": 312818},
+    {"tag": "catalog-semantic-57f264a54e0f5893b989086f8f8b4177d100557304e425f24d112b89122a54e9", "size_bytes": 313124},
+    {"tag": "catalog-semantic-4dba11d110d8c36461fa56e382d9237e58cb1da0af8850e4500ffb9083e48f59", "size_bytes": 313348},
+    {"tag": "catalog-semantic-33f72c9e0bd12c819bbebf5c99bafbb6a624ca59edfcb248a22bc0de6f7864fd", "size_bytes": 312829},
+    {"tag": "catalog-semantic-1b7bca5829bc209ae65593ec1972cc5a0df2cf95d1f6201f3cc5b58306dcea7a", "size_bytes": 313325}
+  ],
+  "observed_size_bytes": {"minimum": 312818, "maximum": 393555, "latest": 393447},
+  "code_limits_bytes": {"source_json": 16777216, "remote_body": 67108864, "compressed_artifact": 67108864},
+  "derived_transfer_seconds": {
+    "latest_at_128_kilobits_per_second": 24.590,
+    "largest_observed_at_128_kilobits_per_second": 24.597,
+    "source_json_limit_at_1_megabit_per_second": 134.218,
+    "remote_body_limit_at_1_megabit_per_second": 536.871,
+    "remote_body_limit_at_256_kilobits_per_second": 2097.152
+  },
+  "fleet_spread_examples": {
+    "10000_instances_over_15_minutes_average_requests_per_second": 11.111,
+    "100000_instances_over_1_hour_average_requests_per_second": 27.778
+  }
+}

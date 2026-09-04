@@ -15,6 +15,7 @@ import (
 	internalserver "github.com/agentstation/starmap/internal/server"
 	"github.com/agentstation/starmap/pkg/errors"
 	pkgsync "github.com/agentstation/starmap/pkg/sync"
+	"github.com/agentstation/starmap/runtime/status"
 )
 
 // Syncer is the optional acquisition capability used by the update endpoint.
@@ -23,12 +24,29 @@ type Syncer interface {
 	Sync(context.Context, ...pkgsync.Option) (*pkgsync.Result, error)
 }
 
+// ConnectedRuntime is the whole contract the server needs from a connected
+// catalog runtime. The server reports the status and joins the shutdown, and
+// it never reads a catalog source itself.
+//
+// The narrow contract keeps the attested source machinery out of the public
+// server dependency closure. A consumer that embeds the server around an
+// offline client therefore pays for none of it. *runtime.Runtime in
+// github.com/agentstation/starmap/runtime satisfies this contract.
+type ConnectedRuntime interface {
+	// Status reports the observable runtime state without a source read.
+	Status() status.Status
+
+	// Close ends the runtime background work under its own bounded join.
+	Close() error
+}
+
 // Option configures a Server dependency.
 type Option func(*options) error
 
 type options struct {
-	logger *zerolog.Logger
-	syncer Syncer
+	logger  *zerolog.Logger
+	runtime ConnectedRuntime
+	syncer  Syncer
 }
 
 // WithLogger configures server diagnostics. The default logger discards output.
@@ -38,6 +56,18 @@ func WithLogger(logger *zerolog.Logger) Option {
 			return &errors.ValidationError{Field: "server.logger", Message: "is required"}
 		}
 		options.logger = logger
+		return nil
+	}
+}
+
+// WithRuntime joins the server to one connected runtime. Readiness then
+// reports the runtime status, and Shutdown joins the runtime shutdown.
+func WithRuntime(connected ConnectedRuntime) Option {
+	return func(options *options) error {
+		if connected == nil || reflect.ValueOf(connected).IsZero() {
+			return &errors.ValidationError{Field: "server.runtime", Message: "is required"}
+		}
+		options.runtime = connected
 		return nil
 	}
 }
@@ -74,6 +104,7 @@ func isNilSyncer(syncer Syncer) bool {
 type Server struct {
 	implementation *internalserver.Server
 	httpServer     *http.Server
+	runtime        ConnectedRuntime
 	startOnce      sync.Once
 }
 
@@ -98,7 +129,12 @@ func New(client *starmap.Client, config Config, serverOptions ...Option) (*Serve
 		return nil, err
 	}
 	implementation, err := internalserver.New(
-		&clientApplication{client: client, logger: options.logger, syncer: options.syncer},
+		&clientApplication{
+			client:  client,
+			runtime: options.runtime,
+			logger:  options.logger,
+			syncer:  options.syncer,
+		},
 		config.internal(),
 	)
 	if err != nil {
@@ -107,6 +143,7 @@ func New(client *starmap.Client, config Config, serverOptions ...Option) (*Serve
 	handler := implementation.Handler()
 	return &Server{
 		implementation: implementation,
+		runtime:        options.runtime,
 		httpServer: &http.Server{
 			Addr:         net.JoinHostPort(config.Host, strconv.Itoa(config.Port)),
 			Handler:      handler,
@@ -156,8 +193,9 @@ func (s *Server) Serve(listener net.Listener) error {
 }
 
 // Shutdown drains the HTTP server used by Serve and then stops server-owned
-// background services within ctx. A caller serving Handler through its own
-// http.Server must drain that server first.
+// background services within ctx. It also closes a runtime joined with
+// WithRuntime. A caller serving Handler through its own http.Server must drain
+// that server first.
 func (s *Server) Shutdown(ctx context.Context) error {
 	if s == nil || s.httpServer == nil || s.implementation == nil {
 		return &errors.ValidationError{Field: "server", Message: "is required"}
@@ -167,5 +205,11 @@ func (s *Server) Shutdown(ctx context.Context) error {
 	}
 	httpErr := s.httpServer.Shutdown(ctx)
 	serviceErr := s.implementation.Shutdown(ctx)
-	return stderrors.Join(httpErr, serviceErr)
+	// A joined runtime owns background acquisition, so the server shutdown ends
+	// it. Runtime.Close carries its own bounded join.
+	var runtimeErr error
+	if s.runtime != nil {
+		runtimeErr = s.runtime.Close()
+	}
+	return stderrors.Join(httpErr, serviceErr, runtimeErr)
 }

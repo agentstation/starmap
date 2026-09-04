@@ -13,9 +13,9 @@ import (
 	"net/url"
 	"path"
 	"strings"
+	"time"
 
 	"github.com/agentstation/starmap/pkg/catalogs"
-	"github.com/agentstation/starmap/pkg/catalogs/internal/resourcepolicy"
 	"github.com/agentstation/starmap/pkg/errors"
 )
 
@@ -90,7 +90,7 @@ func NewClient(baseURL string, httpClient *http.Client, schemaVersion uint64) (*
 		return nil, &errors.ValidationError{Field: "catalog_remote.schema_version", Value: schemaVersion, Message: "must be positive"}
 	}
 	if httpClient == nil {
-		httpClient = &http.Client{Timeout: resourcepolicy.DefaultHTTPTimeout}
+		httpClient = DefaultTransferClient()
 	}
 	client := *httpClient
 	previousRedirectPolicy := client.CheckRedirect
@@ -355,7 +355,8 @@ func (c *Client) fetchConditional(
 	}
 	if response.StatusCode != http.StatusOK {
 		_, _ = io.Copy(io.Discard, io.LimitReader(response.Body, 4096))
-		return nil, false, &errors.APIError{Provider: "starmap-server", Endpoint: target.String(), StatusCode: response.StatusCode, Message: "unexpected response status"}
+		status := &errors.APIError{Provider: "starmap-server", Endpoint: target.String(), StatusCode: response.StatusCode, Message: "unexpected response status"}
+		return nil, false, asRefusal(response, "catalog resource", time.Now(), status)
 	}
 	actualMediaType, _, err := mime.ParseMediaType(response.Header.Get("Content-Type"))
 	if err != nil || actualMediaType != mediaType {

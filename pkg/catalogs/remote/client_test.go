@@ -18,16 +18,30 @@ import (
 
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/catalogs/evidence"
-	"github.com/agentstation/starmap/pkg/catalogs/internal/resourcepolicy"
 )
 
-func TestClientDefaultHTTPTimeout(t *testing.T) {
+func TestNewClientSetsNoClientWideTimeout(t *testing.T) {
 	client, err := NewClient("https://starmap.example.com/api/v1", nil, catalogs.CurrentCatalogSchemaVersion)
 	if err != nil {
 		t.Fatalf("NewClient: %v", err)
 	}
-	if client.httpClient == http.DefaultClient || client.httpClient.Timeout != resourcepolicy.DefaultHTTPTimeout {
-		t.Fatalf("default HTTP client = %#v, want isolated timeout %s", client.httpClient, resourcepolicy.DefaultHTTPTimeout)
+	if client.httpClient == http.DefaultClient {
+		t.Fatal("default HTTP client is the shared default client")
+	}
+	if client.httpClient.Timeout != 0 {
+		t.Fatalf("default HTTP client timeout = %s, want no client-wide timeout", client.httpClient.Timeout)
+	}
+	transport, ok := client.httpClient.Transport.(*http.Transport)
+	if !ok {
+		t.Fatalf("default transport = %T, want *http.Transport", client.httpClient.Transport)
+	}
+	if transport.ResponseHeaderTimeout != DefaultResponseHeaderTimeout {
+		t.Fatalf("response header timeout = %s, want %s",
+			transport.ResponseHeaderTimeout, DefaultResponseHeaderTimeout)
+	}
+	if transport.TLSHandshakeTimeout != DefaultTLSHandshakeTimeout {
+		t.Fatalf("TLS handshake timeout = %s, want %s",
+			transport.TLSHandshakeTimeout, DefaultTLSHandshakeTimeout)
 	}
 }
 

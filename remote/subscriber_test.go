@@ -12,6 +12,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/agentstation/starmap/internal/fleet"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/catalogs/evidence"
 	protocol "github.com/agentstation/starmap/pkg/catalogs/remote"
@@ -145,37 +146,29 @@ func TestConfigDefaultsAndLivenessMargin(t *testing.T) {
 	}
 }
 
-func TestExponentialJitterStaysWithinBoundedSchedule(t *testing.T) {
+func TestReconnectDelayStaysWithinBoundedSchedule(t *testing.T) {
 	t.Parallel()
 
-	subscriber := &Subscriber{config: Config{
+	state := newReconnectState(Config{
 		ReconnectMinDelay: 100 * time.Millisecond,
 		ReconnectMaxDelay: 800 * time.Millisecond,
-	}}
-	for attempt, ceiling := range []time.Duration{
-		100 * time.Millisecond,
-		200 * time.Millisecond,
-		400 * time.Millisecond,
-		800 * time.Millisecond,
-		800 * time.Millisecond,
-		800 * time.Millisecond,
-	} {
-		for range 100 {
-			delay := subscriber.exponentialJitter(attempt)
-			if delay < ceiling/2 || delay > ceiling {
-				t.Fatalf(
-					"attempt %d delay = %s, want [%s, %s]",
-					attempt,
-					delay,
-					ceiling/2,
-					ceiling,
-				)
-			}
+		Random:            fleet.SystemRandom(),
+	})
+	now := time.Date(2026, time.July, 29, 16, 0, 0, 0, time.UTC)
+	for attempt := range 200 {
+		delay, err := state.next(now)
+		if err != nil {
+			t.Fatalf("attempt %d: %v", attempt, err)
 		}
-	}
-	if delay := subscriber.exponentialJitter(1_000_000); delay < 400*time.Millisecond ||
-		delay > 800*time.Millisecond {
-		t.Fatalf("large-attempt delay = %s, want bounded max jitter", delay)
+		if delay < 100*time.Millisecond || delay > 800*time.Millisecond {
+			t.Fatalf(
+				"attempt %d delay = %s, want [%s, %s]",
+				attempt,
+				delay,
+				100*time.Millisecond,
+				800*time.Millisecond,
+			)
+		}
 	}
 }
 

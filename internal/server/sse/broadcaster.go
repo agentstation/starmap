@@ -13,6 +13,7 @@ import (
 
 	"github.com/rs/zerolog"
 
+	"github.com/agentstation/starmap/internal/fleet"
 	"github.com/agentstation/starmap/pkg/catalogs/remote"
 	"github.com/agentstation/starmap/pkg/errors"
 )
@@ -22,16 +23,49 @@ const (
 	CatalogPublishedEvent = remote.CatalogPublishedEvent
 	// DefaultHeartbeatInterval keeps idle streams alive through common proxies.
 	DefaultHeartbeatInterval = 20 * time.Second
-	// DefaultWriteTimeout bounds each event or heartbeat write and flush.
-	DefaultWriteTimeout = 10 * time.Second
+	// DefaultWriteTimeout bounds each event or heartbeat write and flush. The
+	// broadcaster resets the deadline before every frame, so the value bounds
+	// one frame and never bounds the stream. Two minutes lets a slow reader on
+	// a congested link keep its subscription.
+	DefaultWriteTimeout = 2 * time.Minute
+
+	// DefaultMaxClients bounds concurrent subscriber connections. Each
+	// connection owns one writer goroutine and one queued publication, so an
+	// unbounded client count would let subscribers exhaust publisher memory.
+	DefaultMaxClients = 512
+
+	// DefaultAdmissionRetryAfter is the base wait a refused subscriber gets.
+	// The served value carries jitter, so a refused fleet does not return at
+	// one instant.
+	DefaultAdmissionRetryAfter = 30 * time.Second
 
 	publicationQueueSize = 1
+)
+
+// admission is the outcome of one connection request.
+type admission int
+
+const (
+	// admissionGranted means the broadcaster registered the connection.
+	admissionGranted admission = iota
+	// admissionClosed means the broadcaster no longer serves streams.
+	admissionClosed
+	// admissionAtCapacity means the bounded client budget is full.
+	admissionAtCapacity
 )
 
 // Config controls per-connection SSE liveness and write behavior.
 type Config struct {
 	HeartbeatInterval time.Duration
 	WriteTimeout      time.Duration
+
+	// MaxClients bounds concurrent subscriber connections. Zero selects
+	// DefaultMaxClients, and a negative value is invalid.
+	MaxClients int
+
+	// AdmissionRetryAfter is the base wait the publisher declares to a refused
+	// subscriber. Zero selects DefaultAdmissionRetryAfter.
+	AdmissionRetryAfter time.Duration
 }
 
 // Publication identifies one committed immutable catalog generation.
@@ -43,6 +77,7 @@ type DeliveryStats struct {
 	Sent                   uint64 `json:"sent"`
 	Heartbeats             uint64 `json:"heartbeats"`
 	Disconnected           uint64 `json:"disconnected"`
+	Refused                uint64 `json:"refused"`
 	BackpressureTerminated uint64 `json:"backpressure_terminated"`
 	Failed                 uint64 `json:"failed"`
 }
@@ -70,6 +105,7 @@ type DeliveryError struct {
 type Health struct {
 	State            StreamState    `json:"state"`
 	Clients          int            `json:"clients"`
+	MaxClients       int            `json:"max_clients"`
 	LastHeartbeatAt  time.Time      `json:"last_heartbeat_at"`
 	LastEventAt      time.Time      `json:"last_event_at"`
 	LastGenerationID string         `json:"last_generation_id,omitempty"`
@@ -93,6 +129,7 @@ type Broadcaster struct {
 	sent                   atomic.Uint64
 	heartbeats             atomic.Uint64
 	disconnected           atomic.Uint64
+	refused                atomic.Uint64
 	backpressureTerminated atomic.Uint64
 	failed                 atomic.Uint64
 	lastHeartbeatAt        atomic.Int64
@@ -150,6 +187,24 @@ func NewBroadcaster(config Config, logger *zerolog.Logger) (*Broadcaster, error)
 	}
 	if config.WriteTimeout == 0 {
 		config.WriteTimeout = DefaultWriteTimeout
+	}
+	if config.MaxClients == 0 {
+		config.MaxClients = DefaultMaxClients
+	}
+	if config.AdmissionRetryAfter == 0 {
+		config.AdmissionRetryAfter = DefaultAdmissionRetryAfter
+	}
+	if config.MaxClients < 0 {
+		return nil, &errors.ValidationError{
+			Field: "sse.max_clients", Value: config.MaxClients,
+			Message: "must be positive",
+		}
+	}
+	if config.AdmissionRetryAfter < 0 {
+		return nil, &errors.ValidationError{
+			Field: "sse.admission_retry_after", Value: config.AdmissionRetryAfter,
+			Message: "must be positive",
+		}
 	}
 	if config.HeartbeatInterval < 0 {
 		return nil, &errors.ValidationError{
@@ -227,6 +282,7 @@ func (b *Broadcaster) Stats() DeliveryStats {
 		Sent:                   b.sent.Load(),
 		Heartbeats:             b.heartbeats.Load(),
 		Disconnected:           b.disconnected.Load(),
+		Refused:                b.refused.Load(),
 		BackpressureTerminated: b.backpressureTerminated.Load(),
 		Failed:                 b.failed.Load(),
 	}
@@ -245,12 +301,14 @@ func (b *Broadcaster) Health() Health {
 		state = StreamStateStreaming
 	}
 	clients := len(b.clients)
+	maxClients := b.config.MaxClients
 	b.mu.Unlock()
 
 	b.healthMu.Lock()
 	health := Health{
 		State:            state,
 		Clients:          clients,
+		MaxClients:       maxClients,
 		LastGenerationID: b.lastGenerationID,
 		LastSequence:     b.lastSequence,
 		Delivery:         b.Stats(),
@@ -285,14 +343,43 @@ func (b *Broadcaster) Close() {
 	}
 }
 
-func (b *Broadcaster) register(connection *client) bool {
+// register admits one connection under the bounded client budget. A publisher
+// that admits every subscriber would let a client fleet exhaust its memory.
+// Admission therefore weighs capacity and not only the connection lifecycle.
+func (b *Broadcaster) register(connection *client) admission {
 	b.mu.Lock()
 	defer b.mu.Unlock()
 	if b.closed {
-		return false
+		return admissionClosed
+	}
+	if len(b.clients) >= b.config.MaxClients {
+		return admissionAtCapacity
 	}
 	b.clients[connection] = struct{}{}
-	return true
+	return admissionGranted
+}
+
+// retryAfterSeconds returns the jittered wait one refused subscriber gets. The
+// value never drops below one second, because a zero Retry-After invites an
+// immediate retry of a request the publisher just refused.
+func (b *Broadcaster) retryAfterSeconds() int {
+	base := b.config.AdmissionRetryAfter
+	wait := base + time.Duration(fleet.SystemRandom()()*float64(base))
+	seconds := int((wait + time.Second - 1) / time.Second)
+	return max(seconds, 1)
+}
+
+// refuse declares a bounded not-before to a subscriber the publisher cannot
+// admit. The subscriber honors the boundary, so a refused fleet returns across
+// a window instead of at one instant.
+func (b *Broadcaster) refuse(writer http.ResponseWriter, reason admission) {
+	b.refused.Add(1)
+	writer.Header().Set("Retry-After", strconv.Itoa(b.retryAfterSeconds()))
+	message := "Streaming unavailable"
+	if reason == admissionAtCapacity {
+		message = "Streaming at capacity"
+	}
+	http.Error(writer, message, http.StatusServiceUnavailable)
 }
 
 func (b *Broadcaster) disconnect(connection *client) bool {
@@ -327,8 +414,8 @@ func (b *Broadcaster) ServeHTTP(writer http.ResponseWriter, request *http.Reques
 	}
 
 	connection := newClient()
-	if !b.register(connection) {
-		http.Error(writer, "Streaming unavailable", http.StatusServiceUnavailable)
+	if granted := b.register(connection); granted != admissionGranted {
+		b.refuse(writer, granted)
 		return
 	}
 	defer b.disconnect(connection)

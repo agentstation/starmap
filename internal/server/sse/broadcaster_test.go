@@ -6,6 +6,8 @@ import (
 	stderrors "errors"
 	"net/http"
 	"net/http/httptest"
+	"slices"
+	"strconv"
 	"strings"
 	"sync"
 	"testing"
@@ -76,7 +78,7 @@ func TestPublishRejectsInvalidIdentity(t *testing.T) {
 func TestPublicationBackpressureTerminatesConnection(t *testing.T) {
 	broadcaster := newTestBroadcaster(t, Config{})
 	connection := newClient()
-	if !broadcaster.register(connection) {
+	if broadcaster.register(connection) != admissionGranted {
 		t.Fatal("register rejected active broadcaster")
 	}
 
@@ -329,7 +331,7 @@ func TestHeartbeatWriteFailureCleansUpConnection(t *testing.T) {
 func TestCloseTerminatesConnectionsAndRejectsNewOnes(t *testing.T) {
 	broadcaster := newTestBroadcaster(t, Config{})
 	connection := newClient()
-	if !broadcaster.register(connection) {
+	if broadcaster.register(connection) != admissionGranted {
 		t.Fatal("register rejected active broadcaster")
 	}
 	broadcaster.Close()
@@ -339,7 +341,7 @@ func TestCloseTerminatesConnectionsAndRejectsNewOnes(t *testing.T) {
 	case <-time.After(time.Second):
 		t.Fatal("Close did not terminate connection")
 	}
-	if broadcaster.register(newClient()) {
+	if broadcaster.register(newClient()) == admissionGranted {
 		t.Fatal("closed broadcaster accepted a connection")
 	}
 	if err := broadcaster.Publish(Publication{
@@ -385,6 +387,7 @@ type failingWriter struct {
 	writes     int
 	failAfter  int
 	deadlines  int
+	deadlineAt []time.Time
 	firstWrite chan struct{}
 	firstOnce  sync.Once
 }
@@ -418,11 +421,19 @@ func (w *failingWriter) Write(payload []byte) (int, error) {
 
 func (*failingWriter) Flush() {}
 
-func (w *failingWriter) SetWriteDeadline(time.Time) error {
+func (w *failingWriter) SetWriteDeadline(deadline time.Time) error {
 	w.mu.Lock()
 	w.deadlines++
+	w.deadlineAt = append(w.deadlineAt, deadline)
 	w.mu.Unlock()
 	return nil
+}
+
+// deadlineValues returns every write deadline the handler set, oldest first.
+func (w *failingWriter) deadlineValues() []time.Time {
+	w.mu.Lock()
+	defer w.mu.Unlock()
+	return slices.Clone(w.deadlineAt)
 }
 
 func (w *failingWriter) deadlineCount() int {
@@ -471,3 +482,63 @@ var _ http.ResponseWriter = (*failingWriter)(nil)
 var _ http.Flusher = (*failingWriter)(nil)
 var _ interface{ SetWriteDeadline(time.Time) error } = (*failingWriter)(nil)
 var _ http.ResponseWriter = (*basicWriter)(nil)
+
+// TestSourceAdmissionReturnsRetryAfter proves the bounded admission of the
+// source server. A subscriber that arrives at capacity receives 503 with a
+// Retry-After delay. A refused fleet therefore returns on a spread schedule
+// instead of one synchronized retry.
+func TestSourceAdmissionReturnsRetryAfter(t *testing.T) {
+	broadcaster := newTestBroadcaster(t, Config{
+		MaxClients:          1,
+		AdmissionRetryAfter: 10 * time.Second,
+	})
+	t.Cleanup(broadcaster.Close)
+
+	if admitted := broadcaster.register(newClient()); admitted != admissionGranted {
+		t.Fatalf("first admission = %v, want granted", admitted)
+	}
+
+	writer := newFailingWriter(10)
+	request := httptest.NewRequest(http.MethodGet, "/updates/stream", nil)
+	broadcaster.ServeHTTP(writer, request)
+
+	if status := writer.statusCode(); status != http.StatusServiceUnavailable {
+		t.Fatalf("status = %d, want %d", status, http.StatusServiceUnavailable)
+	}
+	header := writer.Header().Get("Retry-After")
+	if header == "" {
+		t.Fatal("refusal carried no Retry-After header")
+	}
+	seconds, err := strconv.Atoi(header)
+	if err != nil {
+		t.Fatalf("Retry-After = %q, want whole seconds", header)
+	}
+	if seconds < 10 || seconds > 20 {
+		t.Fatalf("Retry-After = %d seconds, want the 10s to 20s window", seconds)
+	}
+	if count := broadcaster.ClientCount(); count != 1 {
+		t.Fatalf("client count = %d, want the one admitted subscriber", count)
+	}
+	if stats := broadcaster.Stats(); stats.Refused != 1 {
+		t.Fatalf("refused = %d, want 1", stats.Refused)
+	}
+	if health := broadcaster.Health(); health.MaxClients != 1 {
+		t.Fatalf("health max clients = %d, want 1", health.MaxClients)
+	}
+}
+
+// TestAdmissionRetryAfterStaysJitteredAndWhole proves that every refusal names
+// a whole second inside the jitter window. A refusal that names one fixed delay
+// returns the whole fleet at one instant.
+func TestAdmissionRetryAfterStaysJitteredAndWhole(t *testing.T) {
+	broadcaster := newTestBroadcaster(t, Config{
+		AdmissionRetryAfter: time.Second,
+	})
+	t.Cleanup(broadcaster.Close)
+	for range 200 {
+		seconds := broadcaster.retryAfterSeconds()
+		if seconds < 1 || seconds > 2 {
+			t.Fatalf("Retry-After = %d seconds, want 1 or 2", seconds)
+		}
+	}
+}

@@ -6,6 +6,7 @@ import (
 
 	"github.com/spf13/cobra"
 
+	"github.com/agentstation/starmap/internal/catalog/settings"
 	"github.com/agentstation/starmap/pkg/errors"
 	"github.com/agentstation/starmap/pkg/logging"
 )
@@ -79,6 +80,12 @@ when API keys are configured.`,
 	rootCmd.PersistentFlags().StringVarP(&a.commandFlags.output, "output", "o", a.config.Output, "output format: table, json, yaml, wide")
 	rootCmd.PersistentFlags().StringVar(&a.commandFlags.logLevel, "log-level", a.config.LogLevel, "log level: trace, debug, info, warn, error (overrides -v/-q)")
 
+	// Every canonical catalog setting also carries a flag of the same name in
+	// kebab case. One command then overrides one deployment setting.
+	if err := settings.RegisterFlags(rootCmd.PersistentFlags()); err != nil {
+		panic("programming error: " + err.Error())
+	}
+
 	// Customize version output to match version subcommand
 	rootCmd.SetVersionTemplate("starmap {{.Version}}\n")
 
@@ -118,6 +125,14 @@ func (a *App) setupCommand(cmd *cobra.Command, _ []string) error {
 	if cmd.Flags().Changed("log-level") {
 		a.config.LogLevel = mustGetString(cmd, "log-level")
 	}
+
+	// The canonical catalog settings read again after flag parsing, so a
+	// changed catalog flag replaces the exported value for this command.
+	catalogSettings, err := loadCatalogSettings(a.config, settings.FlagLookup(cmd.Flags()))
+	if err != nil {
+		return err
+	}
+	a.catalogSettings = catalogSettings
 
 	// Reinitialize logger with updated config
 	logger := NewLogger(a.config)

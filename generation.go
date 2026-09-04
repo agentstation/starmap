@@ -213,11 +213,11 @@ func (c *Client) newGeneration(
 		return catalogs.Generation{}, err
 	}
 	descriptor := catalogs.DescribeCatalogPayload(payload)
-	generationID, err := c.nextID()
+	generationID, err := c.NextID()
 	if err != nil {
 		return catalogs.Generation{}, err
 	}
-	syncRunID, err := c.nextID()
+	syncRunID, err := c.NextID()
 	if err != nil {
 		return catalogs.Generation{}, err
 	}
@@ -295,7 +295,10 @@ func (c *Client) newGeneration(
 	return generation, nil
 }
 
-func (c *Client) nextID() (string, error) {
+// NextID returns one fresh UUID-shaped identifier from the client identifier
+// source. Catalog generations, sync runs, and connected refresh runs draw from
+// this one source, so an injected source makes every identifier deterministic.
+func (c *Client) NextID() (string, error) {
 	if c.newID != nil {
 		return c.newID()
 	}

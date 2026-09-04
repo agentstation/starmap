@@ -39,13 +39,26 @@ const (
     CatalogPublishedEvent = remote.CatalogPublishedEvent
     // DefaultHeartbeatInterval keeps idle streams alive through common proxies.
     DefaultHeartbeatInterval = 20 * time.Second
-    // DefaultWriteTimeout bounds each event or heartbeat write and flush.
-    DefaultWriteTimeout = 10 * time.Second
+    // DefaultWriteTimeout bounds each event or heartbeat write and flush. The
+    // broadcaster resets the deadline before every frame, so the value bounds
+    // one frame and never bounds the stream. Two minutes lets a slow reader on
+    // a congested link keep its subscription.
+    DefaultWriteTimeout = 2 * time.Minute
+
+    // DefaultMaxClients bounds concurrent subscriber connections. Each
+    // connection owns one writer goroutine and one queued publication, so an
+    // unbounded client count would let subscribers exhaust publisher memory.
+    DefaultMaxClients = 512
+
+    // DefaultAdmissionRetryAfter is the base wait a refused subscriber gets.
+    // The served value carries jitter, so a refused fleet does not return at
+    // one instant.
+    DefaultAdmissionRetryAfter = 30 * time.Second
 )
 ```
 
 <a name="Broadcaster"></a>
-## type [Broadcaster](<https://github.com/agentstation/starmap/blob/main/internal/server/sse/broadcaster.go#L85-L106>)
+## type [Broadcaster](<https://github.com/agentstation/starmap/blob/main/internal/server/sse/broadcaster.go#L121-L143>)
 
 Broadcaster delivers publications to HTTP SSE connections. Each connection owns exactly one writer goroutine: its request handler. Publication overload terminates that connection so reconnect catch\-up can recover without a silently healthy stream.
 
@@ -56,7 +69,7 @@ type Broadcaster struct {
 ```
 
 <a name="NewBroadcaster"></a>
-### func [NewBroadcaster](<https://github.com/agentstation/starmap/blob/main/internal/server/sse/broadcaster.go#L142>)
+### func [NewBroadcaster](<https://github.com/agentstation/starmap/blob/main/internal/server/sse/broadcaster.go#L179>)
 
 ```go
 func NewBroadcaster(config Config, logger *zerolog.Logger) (*Broadcaster, error)
@@ -65,7 +78,7 @@ func NewBroadcaster(config Config, logger *zerolog.Logger) (*Broadcaster, error)
 NewBroadcaster constructs an idle broadcaster. It starts no goroutine.
 
 <a name="Broadcaster.ClientCount"></a>
-### func \(\*Broadcaster\) [ClientCount](<https://github.com/agentstation/starmap/blob/main/internal/server/sse/broadcaster.go#L217>)
+### func \(\*Broadcaster\) [ClientCount](<https://github.com/agentstation/starmap/blob/main/internal/server/sse/broadcaster.go#L272>)
 
 ```go
 func (b *Broadcaster) ClientCount() int
@@ -74,7 +87,7 @@ func (b *Broadcaster) ClientCount() int
 ClientCount returns the number of currently registered SSE connections.
 
 <a name="Broadcaster.Close"></a>
-### func \(\*Broadcaster\) [Close](<https://github.com/agentstation/starmap/blob/main/internal/server/sse/broadcaster.go#L269>)
+### func \(\*Broadcaster\) [Close](<https://github.com/agentstation/starmap/blob/main/internal/server/sse/broadcaster.go#L327>)
 
 ```go
 func (b *Broadcaster) Close()
@@ -83,7 +96,7 @@ func (b *Broadcaster) Close()
 Close terminates every active connection and rejects new ones.
 
 <a name="Broadcaster.Health"></a>
-### func \(\*Broadcaster\) [Health](<https://github.com/agentstation/starmap/blob/main/internal/server/sse/broadcaster.go#L236>)
+### func \(\*Broadcaster\) [Health](<https://github.com/agentstation/starmap/blob/main/internal/server/sse/broadcaster.go#L292>)
 
 ```go
 func (b *Broadcaster) Health() Health
@@ -92,7 +105,7 @@ func (b *Broadcaster) Health() Health
 Health returns the current server\-side stream delivery health.
 
 <a name="Broadcaster.Publish"></a>
-### func \(\*Broadcaster\) [Publish](<https://github.com/agentstation/starmap/blob/main/internal/server/sse/broadcaster.go#L176>)
+### func \(\*Broadcaster\) [Publish](<https://github.com/agentstation/starmap/blob/main/internal/server/sse/broadcaster.go#L231>)
 
 ```go
 func (b *Broadcaster) Publish(publication Publication) error
@@ -101,7 +114,7 @@ func (b *Broadcaster) Publish(publication Publication) error
 Publish offers one committed generation to every connected stream. It never blocks the catalog commit path. Publish terminates a connection that cannot accept the generation, which prevents silent data loss.
 
 <a name="Broadcaster.ServeHTTP"></a>
-### func \(\*Broadcaster\) [ServeHTTP](<https://github.com/agentstation/starmap/blob/main/internal/server/sse/broadcaster.go#L313>)
+### func \(\*Broadcaster\) [ServeHTTP](<https://github.com/agentstation/starmap/blob/main/internal/server/sse/broadcaster.go#L400>)
 
 ```go
 func (b *Broadcaster) ServeHTTP(writer http.ResponseWriter, request *http.Request)
@@ -110,7 +123,7 @@ func (b *Broadcaster) ServeHTTP(writer http.ResponseWriter, request *http.Reques
 ServeHTTP serves one heartbeat\-enabled SSE connection.
 
 <a name="Broadcaster.Stats"></a>
-### func \(\*Broadcaster\) [Stats](<https://github.com/agentstation/starmap/blob/main/internal/server/sse/broadcaster.go#L224>)
+### func \(\*Broadcaster\) [Stats](<https://github.com/agentstation/starmap/blob/main/internal/server/sse/broadcaster.go#L279>)
 
 ```go
 func (b *Broadcaster) Stats() DeliveryStats
@@ -119,7 +132,7 @@ func (b *Broadcaster) Stats() DeliveryStats
 Stats returns cumulative delivery counters.
 
 <a name="Config"></a>
-## type [Config](<https://github.com/agentstation/starmap/blob/main/internal/server/sse/broadcaster.go#L32-L35>)
+## type [Config](<https://github.com/agentstation/starmap/blob/main/internal/server/sse/broadcaster.go#L58-L69>)
 
 Config controls per\-connection SSE liveness and write behavior.
 
@@ -127,11 +140,19 @@ Config controls per\-connection SSE liveness and write behavior.
 type Config struct {
     HeartbeatInterval time.Duration
     WriteTimeout      time.Duration
+
+    // MaxClients bounds concurrent subscriber connections. Zero selects
+    // DefaultMaxClients, and a negative value is invalid.
+    MaxClients int
+
+    // AdmissionRetryAfter is the base wait the publisher declares to a refused
+    // subscriber. Zero selects DefaultAdmissionRetryAfter.
+    AdmissionRetryAfter time.Duration
 }
 ```
 
 <a name="DeliveryError"></a>
-## type [DeliveryError](<https://github.com/agentstation/starmap/blob/main/internal/server/sse/broadcaster.go#L63-L66>)
+## type [DeliveryError](<https://github.com/agentstation/starmap/blob/main/internal/server/sse/broadcaster.go#L98-L101>)
 
 DeliveryError classifies the latest stream failure without exposing secrets.
 
@@ -143,7 +164,7 @@ type DeliveryError struct {
 ```
 
 <a name="DeliveryStats"></a>
-## type [DeliveryStats](<https://github.com/agentstation/starmap/blob/main/internal/server/sse/broadcaster.go#L41-L48>)
+## type [DeliveryStats](<https://github.com/agentstation/starmap/blob/main/internal/server/sse/broadcaster.go#L75-L83>)
 
 DeliveryStats is a lock\-free snapshot of SSE delivery behavior.
 
@@ -153,13 +174,14 @@ type DeliveryStats struct {
     Sent                   uint64 `json:"sent"`
     Heartbeats             uint64 `json:"heartbeats"`
     Disconnected           uint64 `json:"disconnected"`
+    Refused                uint64 `json:"refused"`
     BackpressureTerminated uint64 `json:"backpressure_terminated"`
     Failed                 uint64 `json:"failed"`
 }
 ```
 
 <a name="Health"></a>
-## type [Health](<https://github.com/agentstation/starmap/blob/main/internal/server/sse/broadcaster.go#L70-L79>)
+## type [Health](<https://github.com/agentstation/starmap/blob/main/internal/server/sse/broadcaster.go#L105-L115>)
 
 Health reports server\-side SSE publication delivery without conflating heartbeat liveness with catalog freshness.
 
@@ -167,6 +189,7 @@ Health reports server\-side SSE publication delivery without conflating heartbea
 type Health struct {
     State            StreamState    `json:"state"`
     Clients          int            `json:"clients"`
+    MaxClients       int            `json:"max_clients"`
     LastHeartbeatAt  time.Time      `json:"last_heartbeat_at"`
     LastEventAt      time.Time      `json:"last_event_at"`
     LastGenerationID string         `json:"last_generation_id,omitempty"`
@@ -177,7 +200,7 @@ type Health struct {
 ```
 
 <a name="Publication"></a>
-## type [Publication](<https://github.com/agentstation/starmap/blob/main/internal/server/sse/broadcaster.go#L38>)
+## type [Publication](<https://github.com/agentstation/starmap/blob/main/internal/server/sse/broadcaster.go#L72>)
 
 Publication identifies one committed immutable catalog generation.
 
@@ -186,7 +209,7 @@ type Publication = remote.Publication
 ```
 
 <a name="StreamState"></a>
-## type [StreamState](<https://github.com/agentstation/starmap/blob/main/internal/server/sse/broadcaster.go#L51>)
+## type [StreamState](<https://github.com/agentstation/starmap/blob/main/internal/server/sse/broadcaster.go#L86>)
 
 StreamState is the server\-side publication stream state.
 

@@ -1,0 +1,3 @@
+package status
+
+//go:generate gomarkdoc -e -o README.md . --repository.url https://github.com/agentstation/starmap --repository.default-branch main --repository.path /runtime/status

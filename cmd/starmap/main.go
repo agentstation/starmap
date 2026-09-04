@@ -28,17 +28,16 @@ func main() {
 	ctx, cancel := app.ContextWithSignals(context.Background())
 	defer cancel()
 
-	if err := application.Execute(ctx, os.Args[1:]); err != nil {
-		// The signal context is already canceled, so use a fresh shutdown context.
-		shutdownCtx, shutdownCancel := context.WithTimeout(context.Background(), 5*time.Second)
-		defer shutdownCancel()
+	err = application.Execute(ctx, os.Args[1:])
 
-		if shutdownErr := application.Shutdown(shutdownCtx); shutdownErr != nil {
-			// Log shutdown error but do not return it - original error takes precedence
-			application.Logger().Error().Err(shutdownErr).Msg("Shutdown error during error handling")
-		}
-
-		// Exit with original error, not shutdown error
-		app.ExitOnError(err)
+	// Every exit path stops the connected runtime. The signal context is
+	// already canceled, so the shutdown uses a fresh bounded context.
+	shutdownCtx, shutdownCancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer shutdownCancel()
+	if shutdownErr := application.Shutdown(shutdownCtx); shutdownErr != nil {
+		// The command error takes precedence, so the shutdown error only logs.
+		application.Logger().Error().Err(shutdownErr).Msg("Shutdown error")
 	}
+
+	app.ExitOnError(err)
 }

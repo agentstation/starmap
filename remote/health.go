@@ -23,9 +23,38 @@ const (
 	StreamStateRetrying StreamState = "retrying"
 	// StreamStatePolling means explicit conditional fallback polling is active.
 	StreamStatePolling StreamState = "polling"
+	// StreamStateWaitingForCredentials means the publisher rejected the
+	// credential and the subscriber waits for a replacement.
+	StreamStateWaitingForCredentials StreamState = "waiting_for_credentials"
 	// StreamStateStopped means the subscriber lifecycle ended.
 	StreamStateStopped StreamState = "stopped"
 )
+
+// UpstreamReport is what the upstream disclosed about itself. It stays
+// separate from the subscriber's own transport health, so a healthy transfer
+// of a degraded upstream catalog still reports the degradation.
+type UpstreamReport struct {
+	// Identity is the safe identity of the serving upstream node.
+	Identity string `json:"identity"`
+
+	// Health is what the upstream observed while it read its own source.
+	Health string `json:"health"`
+
+	// UpstreamHealth is what the upstream's own upstream reported.
+	UpstreamHealth string `json:"upstream_health"`
+
+	// GenerationID identifies the generation the upstream serves.
+	GenerationID string `json:"generation_id,omitempty"`
+
+	// ChannelUpdatedAt is the propagated origin channel time.
+	ChannelUpdatedAt time.Time `json:"channel_updated_at"`
+
+	// Hops counts the upstream nodes above the serving node.
+	Hops int `json:"hops"`
+
+	// ObservedAt is when the subscriber read the disclosure.
+	ObservedAt time.Time `json:"observed_at"`
+}
 
 // HealthError describes the latest subscriber error without secrets. It
 // excludes endpoint URLs, response bodies, and wrapped error text. Those values
@@ -52,6 +81,8 @@ type Health struct {
 	Retries                 uint64                `json:"retries"`
 	LastError               *HealthError          `json:"last_error,omitempty"`
 	PollingFallback         PollingFallbackStatus `json:"polling_fallback"`
+	RetryNotBefore          time.Time             `json:"retry_not_before,omitempty"`
+	Upstream                *UpstreamReport       `json:"upstream,omitempty"`
 }
 
 // Health returns the current subscriber health without performing I/O.
@@ -71,10 +102,15 @@ func (s *Subscriber) Health() Health {
 		LastSuccessfulCatchUpAt: s.lastCatchUpAt,
 		Retries:                 s.retries,
 		PollingFallback:         s.fallback,
+		RetryNotBefore:          s.retryNotBefore,
 	}
 	if s.lastError != nil {
 		lastError := *s.lastError
 		health.LastError = &lastError
+	}
+	if s.upstream != nil {
+		upstream := *s.upstream
+		health.Upstream = &upstream
 	}
 	s.mu.Unlock()
 	if !health.CatalogGeneratedAt.IsZero() {
@@ -125,8 +161,48 @@ func (s *Subscriber) recordHealthError(operation string, err error) {
 		return
 	}
 	healthError := classifyHealthError(operation, err, s.currentTime())
+	// A declared credential-change signal makes an authentication failure
+	// recoverable, so health reports it as nonterminal.
+	healthError.Terminal = healthError.Terminal && s.config.CredentialChanges == nil
 	s.mu.Lock()
 	s.lastError = &healthError
+	s.mu.Unlock()
+}
+
+// publishRetryBoundary records the hard not-before boundary that a refusal
+// declared, so health explains why the subscriber waits.
+func (s *Subscriber) publishRetryBoundary(boundary time.Time) {
+	s.mu.Lock()
+	s.retryNotBefore = boundary
+	s.mu.Unlock()
+}
+
+// recordUpstream stores the disclosure the upstream served about itself.
+func (s *Subscriber) recordUpstream(report UpstreamReport) {
+	s.mu.Lock()
+	s.upstream = &report
+	s.mu.Unlock()
+}
+
+// lastErrorWasAuthentication reports whether the publisher rejected the
+// credential of the last failed request.
+func (s *Subscriber) lastErrorWasAuthentication() bool {
+	s.mu.Lock()
+	defer s.mu.Unlock()
+	return s.lastError != nil && s.lastError.Kind == "http" &&
+		(s.lastError.StatusCode == http.StatusUnauthorized ||
+			s.lastError.StatusCode == http.StatusForbidden)
+}
+
+// clearAuthenticationFailure forgets an authentication failure after the
+// caller supplied a new credential, so the next failure decides again.
+func (s *Subscriber) clearAuthenticationFailure() {
+	s.mu.Lock()
+	if s.lastError != nil && s.lastError.Kind == "http" &&
+		(s.lastError.StatusCode == http.StatusUnauthorized ||
+			s.lastError.StatusCode == http.StatusForbidden) {
+		s.lastError = nil
+	}
 	s.mu.Unlock()
 }
 

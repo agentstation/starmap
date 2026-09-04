@@ -1,0 +1,36 @@
+{
+  "measured_at": "2026-09-01T23:04:51Z",
+  "repository": "agentstation/starmap",
+  "workflow": "catalog-generation.yaml",
+  "selection": "20 most recent successful runs returned by gh run list",
+  "statistics_seconds": {
+    "count": 20,
+    "minimum": 153,
+    "median": 222.5,
+    "mean": 221.75,
+    "p95_nearest_rank": 284,
+    "maximum": 285
+  },
+  "runs": [
+    {"id": 33487800986, "started_at": "2026-09-01T08:35:19Z", "completed_at": "2026-09-01T08:38:35Z", "duration_seconds": 196},
+    {"id": 33378809115, "started_at": "2026-08-31T09:40:10Z", "completed_at": "2026-08-31T09:44:54Z", "duration_seconds": 284},
+    {"id": 33303402864, "started_at": "2026-08-30T09:10:49Z", "completed_at": "2026-08-30T09:13:52Z", "duration_seconds": 183},
+    {"id": 33246767413, "started_at": "2026-08-29T09:59:59Z", "completed_at": "2026-08-29T10:03:43Z", "duration_seconds": 224},
+    {"id": 33184450254, "started_at": "2026-08-28T15:17:59Z", "completed_at": "2026-08-28T15:21:36Z", "duration_seconds": 217},
+    {"id": 33080531527, "started_at": "2026-08-27T14:07:49Z", "completed_at": "2026-08-27T14:11:49Z", "duration_seconds": 240},
+    {"id": 32928598233, "started_at": "2026-08-26T04:00:52Z", "completed_at": "2026-08-26T04:04:42Z", "duration_seconds": 230},
+    {"id": 32807092035, "started_at": "2026-08-25T03:57:15Z", "completed_at": "2026-08-25T04:00:43Z", "duration_seconds": 208},
+    {"id": 32688559672, "started_at": "2026-08-24T04:02:51Z", "completed_at": "2026-08-24T04:07:15Z", "duration_seconds": 264},
+    {"id": 32616666003, "started_at": "2026-08-23T03:58:02Z", "completed_at": "2026-08-23T04:02:47Z", "duration_seconds": 285},
+    {"id": 32550223730, "started_at": "2026-08-22T03:53:46Z", "completed_at": "2026-08-22T03:56:19Z", "duration_seconds": 153},
+    {"id": 32445275346, "started_at": "2026-08-21T03:58:46Z", "completed_at": "2026-08-21T04:02:23Z", "duration_seconds": 217},
+    {"id": 32330039430, "started_at": "2026-08-20T03:56:33Z", "completed_at": "2026-08-20T04:00:08Z", "duration_seconds": 215},
+    {"id": 32213940770, "started_at": "2026-08-19T03:56:41Z", "completed_at": "2026-08-19T04:00:22Z", "duration_seconds": 221},
+    {"id": 32097268989, "started_at": "2026-08-18T03:56:09Z", "completed_at": "2026-08-18T04:00:14Z", "duration_seconds": 245},
+    {"id": 31992929736, "started_at": "2026-08-17T03:59:49Z", "completed_at": "2026-08-17T04:03:33Z", "duration_seconds": 224},
+    {"id": 31925467686, "started_at": "2026-08-16T03:57:23Z", "completed_at": "2026-08-16T04:01:08Z", "duration_seconds": 225},
+    {"id": 31862913380, "started_at": "2026-08-15T03:51:30Z", "completed_at": "2026-08-15T03:55:21Z", "duration_seconds": 231},
+    {"id": 31771561619, "started_at": "2026-08-14T04:59:06Z", "completed_at": "2026-08-14T05:01:52Z", "duration_seconds": 166},
+    {"id": 31668886399, "started_at": "2026-08-13T05:01:27Z", "completed_at": "2026-08-13T05:04:54Z", "duration_seconds": 207}
+  ]
+}

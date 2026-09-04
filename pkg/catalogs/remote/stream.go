@@ -11,6 +11,7 @@ import (
 	"path"
 	"strconv"
 	"strings"
+	"time"
 
 	"github.com/agentstation/starmap/pkg/errors"
 )
@@ -91,12 +92,13 @@ func (c *Client) OpenEventStream(
 	if response.StatusCode != http.StatusOK {
 		defer func() { _ = response.Body.Close() }()
 		_, _ = io.Copy(io.Discard, io.LimitReader(response.Body, 4096))
-		return nil, &errors.APIError{
+		status := &errors.APIError{
 			Provider:   "starmap-server",
 			Endpoint:   target.String(),
 			StatusCode: response.StatusCode,
 			Message:    "unexpected event stream response status",
 		}
+		return nil, asRefusal(response, "catalog event stream", time.Now(), status)
 	}
 	actualMediaType, _, mediaErr := mime.ParseMediaType(
 		response.Header.Get("Content-Type"),

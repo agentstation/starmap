@@ -3,8 +3,10 @@ package handlers
 import (
 	"net/http"
 	"strings"
+	"time"
 
 	"github.com/agentstation/starmap/internal/server/response"
+	"github.com/agentstation/starmap/runtime/status"
 )
 
 // HandleHealth handles GET /api/v1/health.
@@ -50,9 +52,34 @@ func (h *Handlers) HandleReady(w http.ResponseWriter, _ *http.Request) {
 	response.OK(w, map[string]any{
 		"status":  "ready",
 		"catalog": readiness,
+		"runtime": runtimeReadiness(h.app.RuntimeStatus()),
 		"cache": map[string]any{
 			"items": h.cache.ItemCount(),
 		},
 		"sse_clients": h.sseBroadcaster.ClientCount(),
 	})
+}
+
+// runtimeReadiness reports the connected runtime state. Every value is a
+// bounded code or an age, so the readiness body carries no message text.
+func runtimeReadiness(status status.Status) map[string]any {
+	return map[string]any{
+		"usable":                 status.Usable,
+		"generation_id":          status.GenerationID,
+		"source_kind":            string(status.SourceKind),
+		"source_health":          string(status.SourceHealth),
+		"source_reason":          status.SourceReason,
+		"upstream_health":        string(status.UpstreamHealth),
+		"acquisition_health":     string(status.AcquisitionHealth),
+		"freshness":              string(status.Freshness),
+		"catalog_age_seconds":    int64(status.CatalogAge / time.Second),
+		"channel_freshness":      string(status.ChannelFreshness),
+		"channel_age_seconds":    int64(status.ChannelAge / time.Second),
+		"source_check_freshness": string(status.SourceCheckFreshness),
+		"instance_identity":      status.InstanceIdentity,
+		"chain_hops":             len(status.Chain),
+		"fallback":               status.Fallback,
+		"fallback_reason":        status.FallbackReason,
+		"lease":                  status.Lease,
+	}
 }

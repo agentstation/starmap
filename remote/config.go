@@ -2,26 +2,39 @@
 package remote
 
 import (
+	"crypto/tls"
 	"net/http"
 	"reflect"
 	"time"
 
+	"github.com/agentstation/starmap/internal/fleet"
 	"github.com/agentstation/starmap/pkg/catalogs"
+	protocol "github.com/agentstation/starmap/pkg/catalogs/remote"
 	"github.com/agentstation/starmap/pkg/catalogs/storage"
 	"github.com/agentstation/starmap/pkg/errors"
 )
 
 const (
-	// DefaultReconnectMinDelay is the first reconnect delay.
-	DefaultReconnectMinDelay = 100 * time.Millisecond
-	// DefaultReconnectMaxDelay bounds reconnect delay growth.
-	DefaultReconnectMaxDelay = 5 * time.Second
+	// DefaultReconnectMinDelay is the first reconnect delay. It matches the
+	// fleet minimum retry delay, so one subscriber paces like every other
+	// automatic Starmap worker.
+	DefaultReconnectMinDelay = fleet.MinRetryDelay
+	// DefaultReconnectMaxDelay bounds reconnect delay growth. It matches the
+	// fleet maximum retry delay.
+	DefaultReconnectMaxDelay = fleet.MaxRetryDelay
 	// DefaultExpectedHeartbeatInterval matches the server's default heartbeat.
 	DefaultExpectedHeartbeatInterval = 20 * time.Second
 	// DefaultLivenessTimeout bounds a stream with no heartbeat or event.
 	DefaultLivenessTimeout = 60 * time.Second
 	// DefaultShutdownTimeout bounds Close while joining owned loops.
 	DefaultShutdownTimeout = 5 * time.Second
+	// DefaultStartupSpread is the admission window of an initial or
+	// post-outage reconnect. Spreading needs a configured Identity.
+	DefaultStartupSpread = fleet.DefaultStartupSpread
+	// DefaultFallbackPollInterval is the fallback poll interval that a
+	// composed Starmap source selects. A subscriber policy stays explicit, so
+	// the caller always states the interval it wants.
+	DefaultFallbackPollInterval = 15 * time.Minute
 
 	minimumLivenessIntervals = 2
 )
@@ -69,6 +82,92 @@ type Config struct {
 	// PollingFallback explicitly enables bounded conditional polling after
 	// repeated streaming failures. Nil keeps polling disabled.
 	PollingFallback *PollingFallbackPolicy
+	// TransferPolicy bounds each stage of one transfer and bounds the wait for
+	// the event-stream response headers. It applies only when HTTPClient is
+	// nil, because a supplied client already owns its transport. Nil selects
+	// the shared default policy.
+	TransferPolicy *protocol.TransferPolicy
+	// APIKey authenticates this subscriber to the upstream Starmap API. It
+	// applies only when HTTPClient is nil, because a supplied client already
+	// owns its credential. The subscriber sends it as a bearer token and never
+	// logs it.
+	APIKey string
+	// TLSConfig pins the TLS origin policy of the private transport, such as a
+	// minimum version or a private root pool. It applies only when HTTPClient
+	// is nil. Nil selects the platform policy.
+	TLSConfig *tls.Config
+	// Identity names this subscriber inside a fleet. An empty instance
+	// identity disables startup spreading and stable-phase polling, so a
+	// single process reconnects and polls at once.
+	Identity fleet.Identity
+	// StartupSpread is the admission window of an initial or post-outage
+	// reconnect. Zero selects DefaultStartupSpread, and a negative value
+	// admits every reconnect at once.
+	StartupSpread time.Duration
+	// HealthyWindow is how long a stream must stay open before the subscriber
+	// resets its reconnect backoff. Zero selects LivenessTimeout, because a
+	// stream that outlives one liveness window proved its liveness.
+	HealthyWindow time.Duration
+	// Random supplies the jitter of the reconnect delay and of a refusal
+	// boundary. Nil selects the system source.
+	Random fleet.Random
+	// CredentialChanges reports that the caller replaced the credential of
+	// HTTPClient. An authentication failure then waits for a change instead of
+	// stopping the subscriber. Nil keeps an authentication failure terminal.
+	CredentialChanges <-chan struct{}
+}
+
+// random returns the configured jitter source, or the system source.
+func (c Config) random() fleet.Random {
+	if c.Random != nil {
+		return c.Random
+	}
+	return fleet.SystemRandom()
+}
+
+// controllerIdentity returns the fleet identity of one subscriber controller.
+func (c Config) controllerIdentity(controller string) fleet.Identity {
+	identity := c.Identity
+	identity.Controller = controller
+	return identity
+}
+
+// transferClient builds the private transport of a subscriber that supplied no
+// HTTP client. The transfer policy bounds the wait for response headers, which
+// is the only bound that applies to opening an event stream.
+func (c Config) transferClient() (*http.Client, error) {
+	policy := protocol.DefaultTransferPolicy()
+	if c.TransferPolicy != nil {
+		policy = *c.TransferPolicy
+	}
+	transport, err := protocol.NewTransport(policy)
+	if err != nil {
+		return nil, err
+	}
+	if c.TLSConfig != nil {
+		transport.TLSClientConfig = c.TLSConfig.Clone()
+	}
+	if c.APIKey == "" {
+		return &http.Client{Transport: transport}, nil
+	}
+	return &http.Client{Transport: &bearerTransport{
+		base:  transport,
+		token: c.APIKey,
+	}}, nil
+}
+
+// bearerTransport sends one bearer credential with each subscriber request. It
+// copies the request before it adds the header, because a round tripper must
+// not modify the request it receives.
+type bearerTransport struct {
+	base  http.RoundTripper
+	token string
+}
+
+func (t *bearerTransport) RoundTrip(request *http.Request) (*http.Response, error) {
+	authorized := request.Clone(request.Context())
+	authorized.Header.Set("Authorization", "Bearer "+t.token)
+	return t.base.RoundTrip(authorized)
 }
 
 func (c Config) normalized() (Config, error) {
@@ -104,6 +203,26 @@ func (c Config) normalized() (Config, error) {
 	}
 	if c.ShutdownTimeout == 0 {
 		c.ShutdownTimeout = DefaultShutdownTimeout
+	}
+	if c.StartupSpread == 0 {
+		c.StartupSpread = DefaultStartupSpread
+	}
+	if c.HealthyWindow == 0 {
+		c.HealthyWindow = c.LivenessTimeout
+	}
+	if c.HealthyWindow < 0 {
+		return Config{}, &errors.ValidationError{
+			Field:   "remote.healthy_window",
+			Value:   c.HealthyWindow,
+			Message: "must be positive",
+		}
+	}
+	if c.TransferPolicy != nil {
+		policy := *c.TransferPolicy
+		if err := policy.Validate(); err != nil {
+			return Config{}, err
+		}
+		c.TransferPolicy = &policy
 	}
 	if c.ReconnectMinDelay < 0 {
 		return Config{}, &errors.ValidationError{

@@ -13,12 +13,25 @@ Package artifact defines the deterministic distribution format for immutable Sta
 ## Index
 
 - [Constants](<#constants>)
+- [func EncodeChannel\(document Channel\) \(\[\]byte, error\)](<#EncodeChannel>)
+- [func IsReleaseTag\(tag string\) bool](<#IsReleaseTag>)
 - [func Open\(archive, attestation \[\]byte\) \(catalogs.Generation, error\)](<#Open>)
+- [func ReleaseTag\(catalogDigest string\) \(string, error\)](<#ReleaseTag>)
+- [func ReleaseTitle\(generationID string\) \(string, error\)](<#ReleaseTitle>)
 - [func VerifyRelease\(ctx context.Context, release Release, verifier PublisherVerifier\) \(catalogs.Generation, error\)](<#VerifyRelease>)
+- [type AdvanceKind](<#AdvanceKind>)
+  - [func \(k AdvanceKind\) CreatesGeneration\(\) bool](<#AdvanceKind.CreatesGeneration>)
 - [type AttestationPredicate](<#AttestationPredicate>)
 - [type AttestationStatement](<#AttestationStatement>)
 - [type Bundle](<#Bundle>)
   - [func Build\(generation catalogs.Generation\) \(Bundle, error\)](<#Build>)
+- [type Candidate](<#Candidate>)
+  - [func \(c Candidate\) Validate\(\) error](<#Candidate.Validate>)
+- [type Channel](<#Channel>)
+  - [func DecodeChannel\(data \[\]byte\) \(Channel, error\)](<#DecodeChannel>)
+  - [func \(c Channel\) Advance\(candidate Candidate, now time.Time\) \(Channel, AdvanceKind, error\)](<#Channel.Advance>)
+  - [func \(c Channel\) Validate\(\) error](<#Channel.Validate>)
+- [type ChannelAsset](<#ChannelAsset>)
 - [type Descriptor](<#Descriptor>)
   - [func Inspect\(archive, attestation \[\]byte\) \(Descriptor, error\)](<#Inspect>)
   - [func \(d Descriptor\) String\(\) string](<#Descriptor.String>)
@@ -28,7 +41,11 @@ Package artifact defines the deterministic distribution format for immutable Sta
 - [type Release](<#Release>)
 - [type ReleaseAssets](<#ReleaseAssets>)
   - [func StageReleaseAssets\(root string, artifact Bundle\) \(ReleaseAssets, error\)](<#StageReleaseAssets>)
+- [type ReleaseVerification](<#ReleaseVerification>)
+  - [func \(v ReleaseVerification\) Complete\(\) bool](<#ReleaseVerification.Complete>)
 - [type Subject](<#Subject>)
+- [type TagNamespace](<#TagNamespace>)
+  - [func ReleaseTagNamespace\(tag string\) TagNamespace](<#ReleaseTagNamespace>)
 
 
 ## Constants
@@ -59,6 +76,36 @@ const (
 )
 ```
 
+<a name="ChannelName"></a>
+
+```go
+const (
+    // ChannelName is the stable public discovery release that carries the
+    // channel document. It is a mutable pointer, not an immutable release.
+    ChannelName = "catalog-latest"
+    // ChannelFilename is the attested channel document asset name.
+    ChannelFilename = "catalog-latest.json"
+    // ChannelMediaType is the media type of the channel document.
+    ChannelMediaType = "application/vnd.agentstation.starmap.catalog-channel.v1+json"
+    // ChannelSchemaVersion is the current channel document schema version.
+    ChannelSchemaVersion uint64 = 1
+    // ChannelTitle is the title of the channel release.
+    ChannelTitle = "Catalog latest"
+
+    // ReleaseTagPrefix starts the canonical immutable release tag.
+    ReleaseTagPrefix = "catalog-"
+    // LegacySemanticTagPrefix starts the retired facts-digest namespace.
+    LegacySemanticTagPrefix = "catalog-semantic-"
+    // LegacyPayloadTagPrefix starts the first retired payload namespace.
+    LegacyPayloadTagPrefix = "catalog-payload-"
+    // ReleaseTitlePrefix starts the immutable release title.
+    ReleaseTitlePrefix = "Catalog "
+
+    // ChecksumPrefix starts every checksum this package reports.
+    ChecksumPrefix = "sha256:"
+)
+```
+
 <a name="ChecksumFilename"></a>
 
 ```go
@@ -67,6 +114,24 @@ const (
     ChecksumFilename = "starmap-catalog.tar.gz.sha256"
 )
 ```
+
+<a name="EncodeChannel"></a>
+## func [EncodeChannel](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/artifact/channel.go#L259>)
+
+```go
+func EncodeChannel(document Channel) ([]byte, error)
+```
+
+EncodeChannel renders one channel document as canonical indented JSON. Equal documents always encode to equal bytes.
+
+<a name="IsReleaseTag"></a>
+## func [IsReleaseTag](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/artifact/channel.go#L84>)
+
+```go
+func IsReleaseTag(tag string) bool
+```
+
+IsReleaseTag reports whether one tag names an immutable catalog release in any recognized namespace.
 
 <a name="Open"></a>
 ## func [Open](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/artifact/bundle.go#L175>)
@@ -77,6 +142,24 @@ func Open(archive, attestation []byte) (catalogs.Generation, error)
 
 Open verifies an archive and detached statement before returning its exact immutable catalog generation.
 
+<a name="ReleaseTag"></a>
+## func [ReleaseTag](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/artifact/channel.go#L90>)
+
+```go
+func ReleaseTag(catalogDigest string) (string, error)
+```
+
+ReleaseTag returns the canonical immutable release tag for one catalog digest. It accepts a prefixed or bare SHA\-256 hex digest.
+
+<a name="ReleaseTitle"></a>
+## func [ReleaseTitle](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/artifact/channel.go#L99>)
+
+```go
+func ReleaseTitle(generationID string) (string, error)
+```
+
+ReleaseTitle returns the immutable release title for one generation ID.
+
 <a name="VerifyRelease"></a>
 ## func [VerifyRelease](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/artifact/import.go#L36-L40>)
 
@@ -85,6 +168,36 @@ func VerifyRelease(ctx context.Context, release Release, verifier PublisherVerif
 ```
 
 VerifyRelease checks the detached checksum, archive statement, generation compatibility, and channel\-specific publisher identity before returning the exact immutable generation. It does not activate or persist the generation.
+
+<a name="AdvanceKind"></a>
+## type [AdvanceKind](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/artifact/channel.go#L156>)
+
+AdvanceKind names the outcome of one successful publisher run.
+
+```go
+type AdvanceKind string
+```
+
+<a name="AdvanceHeartbeat"></a>
+
+```go
+const (
+    // AdvanceHeartbeat keeps the selected immutable release and advances only
+    // the channel sequence and `channel_updated_at`.
+    AdvanceHeartbeat AdvanceKind = "heartbeat"
+    // AdvancePromotion selects a different verified immutable release.
+    AdvancePromotion AdvanceKind = "promotion"
+)
+```
+
+<a name="AdvanceKind.CreatesGeneration"></a>
+### func \(AdvanceKind\) [CreatesGeneration](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/artifact/channel.go#L168>)
+
+```go
+func (k AdvanceKind) CreatesGeneration() bool
+```
+
+CreatesGeneration reports whether the outcome selects a new catalog generation. A heartbeat creates no generation and no immutable release.
 
 <a name="AttestationPredicate"></a>
 ## type [AttestationPredicate](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/artifact/bundle.go#L84-L89>)
@@ -139,6 +252,91 @@ func Build(generation catalogs.Generation) (Bundle, error)
 ```
 
 Build validates a generation and deterministically packages it for distribution. Rebuilding identical generation bytes produces identical archive and attestation bytes.
+
+<a name="Candidate"></a>
+## type [Candidate](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/artifact/channel.go#L146-L153>)
+
+Candidate is one immutable catalog release offered to the channel.
+
+```go
+type Candidate struct {
+    GenerationID  string
+    Tag           string
+    CatalogDigest string
+    PublishedAt   time.Time
+    Assets        []ChannelAsset
+    Verification  ReleaseVerification
+}
+```
+
+<a name="Candidate.Validate"></a>
+### func \(Candidate\) [Validate](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/artifact/channel.go#L250>)
+
+```go
+func (c Candidate) Validate() error
+```
+
+Validate reports whether the candidate names a complete immutable release.
+
+<a name="Channel"></a>
+## type [Channel](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/artifact/channel.go#L119-L129>)
+
+Channel is the mutable attested discovery document that selects one immutable catalog release. The publisher advances its sequence and \`channel\_updated\_at\` after every successful verification run. The immutable identity fields change only when the publisher promotes a new release.
+
+```go
+type Channel struct {
+    SchemaVersion    uint64         `json:"schema_version"`
+    Name             string         `json:"channel"`
+    Sequence         uint64         `json:"sequence"`
+    ChannelUpdatedAt time.Time      `json:"channel_updated_at"`
+    GenerationID     string         `json:"generation_id"`
+    Tag              string         `json:"tag"`
+    CatalogDigest    string         `json:"catalog_digest"`
+    PublishedAt      time.Time      `json:"published_at"`
+    Assets           []ChannelAsset `json:"assets"`
+}
+```
+
+<a name="DecodeChannel"></a>
+### func [DecodeChannel](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/artifact/channel.go#L278>)
+
+```go
+func DecodeChannel(data []byte) (Channel, error)
+```
+
+DecodeChannel reads and validates one channel document.
+
+<a name="Channel.Advance"></a>
+### func \(Channel\) [Advance](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/artifact/channel.go#L177>)
+
+```go
+func (c Channel) Advance(candidate Candidate, now time.Time) (Channel, AdvanceKind, error)
+```
+
+Advance returns the channel document that follows one successful publisher run. A candidate whose digest equals the selected digest advances the sequence and \`channel\_updated\_at\` alone, so an unchanged catalog creates no generation and no immutable release. A different verified digest promotes that release. An incomplete verification returns a typed validation error.
+
+<a name="Channel.Validate"></a>
+### func \(Channel\) [Validate](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/artifact/channel.go#L230>)
+
+```go
+func (c Channel) Validate() error
+```
+
+Validate reports whether the channel document is internally consistent.
+
+<a name="ChannelAsset"></a>
+## type [ChannelAsset](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/artifact/channel.go#L108-L113>)
+
+ChannelAsset binds one published release asset name to its exact checksum.
+
+```go
+type ChannelAsset struct {
+    Name      string `json:"name"`
+    MediaType string `json:"media_type"`
+    Checksum  string `json:"checksum"`
+    SizeBytes int64  `json:"size_bytes"`
+}
+```
 
 <a name="Descriptor"></a>
 ## type [Descriptor](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/artifact/bundle.go#L59-L68>)
@@ -250,6 +448,28 @@ func StageReleaseAssets(root string, artifact Bundle) (ReleaseAssets, error)
 
 StageReleaseAssets validates and atomically stages archive, attestation, and checksum assets. An exact retry is idempotent. Rebinding the same generation ID to different bytes returns a typed conflict.
 
+<a name="ReleaseVerification"></a>
+## type [ReleaseVerification](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/artifact/channel.go#L134-L138>)
+
+ReleaseVerification records the immutable release checks that the publisher completed. The channel selects a release only after every check passes, so verification always precedes promotion.
+
+```go
+type ReleaseVerification struct {
+    AssetsPresent       bool `json:"assets_present"`
+    ChecksumsMatch      bool `json:"checksums_match"`
+    AttestationVerified bool `json:"attestation_verified"`
+}
+```
+
+<a name="ReleaseVerification.Complete"></a>
+### func \(ReleaseVerification\) [Complete](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/artifact/channel.go#L141>)
+
+```go
+func (v ReleaseVerification) Complete() bool
+```
+
+Complete reports whether every immutable release check passed.
+
 <a name="Subject"></a>
 ## type [Subject](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/artifact/bundle.go#L76-L79>)
 
@@ -261,6 +481,39 @@ type Subject struct {
     Digest DigestSet `json:"digest"`
 }
 ```
+
+<a name="TagNamespace"></a>
+## type [TagNamespace](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/artifact/channel.go#L49>)
+
+TagNamespace names the publication namespace of one catalog release tag.
+
+```go
+type TagNamespace string
+```
+
+<a name="NamespaceCanonical"></a>
+
+```go
+const (
+    // NamespaceCanonical is the current `catalog-<catalog-digest>` namespace.
+    NamespaceCanonical TagNamespace = "canonical"
+    // NamespaceLegacySemantic is the retired `catalog-semantic-*` namespace.
+    NamespaceLegacySemantic TagNamespace = "legacy-semantic"
+    // NamespaceLegacyPayload is the retired `catalog-payload-*` namespace.
+    NamespaceLegacyPayload TagNamespace = "legacy-payload"
+    // NamespaceUnknown names a tag that no catalog namespace owns.
+    NamespaceUnknown TagNamespace = "unknown"
+)
+```
+
+<a name="ReleaseTagNamespace"></a>
+### func [ReleaseTagNamespace](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/artifact/channel.go#L66>)
+
+```go
+func ReleaseTagNamespace(tag string) TagNamespace
+```
+
+ReleaseTagNamespace reports the namespace that owns one release tag. It recognizes the canonical namespace and both retired namespaces, so rollback and readback keep every historical immutable release. The channel pointer is not an immutable release and belongs to no namespace.
 
 Generated by [gomarkdoc](<https://github.com/princjef/gomarkdoc>)
 

@@ -102,6 +102,7 @@ run ./scripts/test-catalog-dependency-direction-verifier.sh
 run env CGO_ENABLED=1 go test ./... -race -short -timeout=20m
 run go vet ./...
 run ./scripts/verify-catalog-performance.sh
+run ./scripts/verify-container-smoke.sh
 run_lint
 run go tool ago -stale-ignores ./...
 

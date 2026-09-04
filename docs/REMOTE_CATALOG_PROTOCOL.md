@@ -4,7 +4,7 @@ The Starmap-to-Starmap online protocol uses a versioned API base URL such as
 `https://catalog.example.com/api/v1`. It is distinct from the signed release,
 hosted CDN, and OCI artifact distribution channels.
 
-The verified catalog and reactive notification flow has four routes:
+The verified catalog and reactive notification flow has five routes:
 
 1. `GET /catalog/manifest` returns the current strict
    `GenerationManifest` as
@@ -18,6 +18,23 @@ The verified catalog and reactive notification flow has four routes:
    `catalog.published`, containing only `generation_id` and the matching
    positive SSE `id`/`sequence`. Flushed `connected` and `heartbeat` comments
    carry no event ID or catalog data.
+5. `GET /catalog/source-chain` returns the served source chain as
+   `application/vnd.agentstation.starmap.source-chain+json`. The document
+   carries the schema version, the safe instance identity, and the source
+   identity. It also carries both health codes, the generation ID,
+   `channel_updated_at`, `observed_at`, and one entry for each disclosed hop.
+   The document names no URL, no credential, and no operator message. The
+   reply header is `no-store`.
+
+A downstream reads the source chain to grade the propagated origin freshness
+and to reject a cascade that names itself. The document discloses at most 16
+hops, so one node cannot grow the chain without bound.
+
+A runtime rejects four chains. It rejects a chain that repeats an identity. It
+rejects a chain that names the reader. It rejects a chain that names a
+configured alias of the reader. It rejects a chain longer than the hop budget.
+The `STARMAP_CATALOG_SOURCE_MAX_HOPS` setting holds that budget and defaults
+to 8.
 
 The retained manifest and payload requests use generation addresses. A
 concurrent server publication therefore cannot mix bytes from different
@@ -48,8 +65,17 @@ optional API key to both requests. It does not change the caller requests.
 Starmap no longer supports the old unversioned `GET /catalog` ad-hoc envelope.
 Protocol tooling can import `github.com/agentstation/starmap/pkg/catalogs/remote`
 as `protocol`. It can construct `protocol.Client`, fetch a current or addressed
-generation, and pass it to `starmap.Client.Activate`. Normal reactive consumers
-use the opt-in `github.com/agentstation/starmap/remote` package:
+generation, and pass it to `starmap.Client.Activate`.
+
+`runtime.Open` is the normal consumer path. It selects this protocol with
+`STARMAP_CATALOG_SOURCE=starmap` and the endpoint in
+`STARMAP_CATALOG_SOURCE_URL`. The connected runtime owns the startup read, the
+stream, the conditional polling fallback, the retained layers, and the served
+source chain. [ARCHITECTURE.md](ARCHITECTURE.md#connected-catalog-runtime)
+defines every setting and default.
+
+A consumer that owns its own catalog store instead uses the
+`github.com/agentstation/starmap/remote` package:
 
 ```go
 store, err := storage.NewFilesystem(statePath)
@@ -111,4 +137,6 @@ an untrusted publisher from growing subscriber memory through one fragmented
 event.
 
 Importing the root `starmap` package never enables remote I/O or silently
-changes update behavior.
+changes update behavior. `starmap.New` stays offline. `runtime.Open` is the
+explicit connected constructor. It reads the configured catalog source at
+startup under the configured startup policy.

@@ -5,6 +5,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"slices"
 	"strings"
 	"sync"
 	"time"
@@ -28,14 +29,23 @@ type SourceOption func(*sourceOptions)
 type sourceOptions struct {
 	clientFactory         ClientFactory
 	credentialResolver    sources.ProviderCredentialResolver
+	attemptSink           AttemptSink
+	now                   func() time.Time
 	maxConcurrency        int
 	requireCanonicalLinks bool
 }
+
+// AttemptSink receives one terminal provider attempt as soon as it completes.
+// It runs on the fetching goroutine, so an implementation must not block.
+type AttemptSink func(sources.ProviderAttempt)
 
 // Source fetches models from all provider APIs concurrently.
 type Source struct {
 	providers             catalogs.ProvidersReader // Provider configs injected during setup
 	fetcher               *sources.ProviderFetcher
+	credentials           *credentialMemo
+	attemptSink           AttemptSink
+	now                   func() time.Time
 	maxConcurrency        int
 	requireCanonicalLinks bool
 }
@@ -46,14 +56,22 @@ var _ sources.Source = (*Source)(nil)
 func New(providers catalogs.ProvidersReader, opts ...SourceOption) *Source {
 	options := sourceOptions{
 		credentialResolver:    auth.NewResolver(),
+		now:                   time.Now,
 		maxConcurrency:        constants.MaxConcurrentProviders,
 		requireCanonicalLinks: true,
 	}
 	for _, opt := range opts {
 		opt(&options)
 	}
+	// The pre-flight check and the fetcher share one memo, so each run resolves
+	// the credential of one provider one time.
+	memo := newCredentialMemo(options.credentialResolver)
+	var resolver sources.ProviderCredentialResolver
+	if memo != nil {
+		resolver = memo
+	}
 	fetcherOptions := []sources.ProviderOption{
-		sources.WithProviderCredentialResolver(options.credentialResolver),
+		sources.WithProviderCredentialResolver(resolver),
 	}
 	if options.clientFactory != nil {
 		fetcherOptions = append(fetcherOptions, sources.WithProviderClientFactory(options.clientFactory))
@@ -61,8 +79,29 @@ func New(providers catalogs.ProvidersReader, opts ...SourceOption) *Source {
 	return &Source{
 		providers:             providers,
 		fetcher:               sources.NewProviderFetcher(providers, fetcherOptions...),
+		credentials:           memo,
+		attemptSink:           options.attemptSink,
+		now:                   options.now,
 		maxConcurrency:        options.maxConcurrency,
 		requireCanonicalLinks: options.requireCanonicalLinks,
+	}
+}
+
+// WithAttemptSink observes each terminal provider attempt as it completes.
+// Partial publication uses the sink to release finished providers before every
+// provider answers.
+func WithAttemptSink(sink AttemptSink) SourceOption {
+	return func(options *sourceOptions) {
+		options.attemptSink = sink
+	}
+}
+
+// WithClock injects the attempt clock. Tests use it to keep timing exact.
+func WithClock(now func() time.Time) SourceOption {
+	return func(options *sourceOptions) {
+		if now != nil {
+			options.now = now
+		}
 	}
 }
 
@@ -102,11 +141,24 @@ type providerModels struct {
 	models     []*catalogs.Model
 	rejected   int
 	issues     []sources.ObservationIssue
+	attempt    sources.ProviderAttempt
 }
 
 // Observe returns a new immutable provider catalog without retaining result state.
 func (s *Source) Observe(ctx context.Context, opts ...sources.Option) (sources.Observation, error) {
+	observation, _, err := s.ObserveAttempts(ctx, opts...)
+	return observation, err
+}
+
+// ObserveAttempts returns the provider observation together with one terminal
+// attempt per eligible provider. The attempts report which providers answered,
+// which failed, and which acquisition skipped without a request.
+func (s *Source) ObserveAttempts(
+	ctx context.Context,
+	opts ...sources.Option,
+) (sources.Observation, []sources.ProviderAttempt, error) {
 	ctx = logging.WithSource(ctx, s.ID().String())
+	s.credentials.forget()
 	// Apply options
 	options := sources.Defaults().Apply(opts...)
 
@@ -119,7 +171,8 @@ func (s *Source) Observe(ctx context.Context, opts ...sources.Option) (sources.O
 	// Check if we have provider configs
 	if s.providers == nil {
 		// Cannot fetch without provider configs
-		return s.observation(catalog, nil, sources.ObservationRecordCounts{})
+		observation, err := s.observation(catalog, nil, sources.ObservationRecordCounts{})
+		return observation, nil, err
 	}
 
 	// Determine which providers to sync
@@ -145,7 +198,9 @@ func (s *Source) Observe(ctx context.Context, opts ...sources.Option) (sources.O
 	}
 
 	if len(providerConfigs) == 0 {
-		return s.observation(catalog, nil, sources.ObservationRecordCounts{}) // No providers to sync
+		// No providers to observe.
+		observation, err := s.observation(catalog, nil, sources.ObservationRecordCounts{})
+		return observation, nil, err
 	}
 
 	// Add provider configurations to the catalog first
@@ -182,8 +237,26 @@ func (s *Source) Observe(ctx context.Context, opts ...sources.Option) (sources.O
 			defer func() { <-semaphore }()
 
 			result := providerModels{providerID: provider.ID}
+			started := s.now()
 
 			logger := logging.WithProvider(ctx, string(provider.ID))
+			state, credentialErr := s.preflight(logger, provider)
+			if state != credentialReady {
+				reason := sources.ProviderReasonCredentialUnavailable
+				if state == credentialInvalid {
+					reason = sources.ClassifyProviderReason(credentialErr)
+				}
+				logging.Ctx(logger).Info().
+					Str("provider_id", string(provider.ID)).
+					Str("reason", reason.String()).
+					Msg("Provider skipped without a request")
+				result.issues = append(result.issues, skipIssue(provider.ID, reason))
+				result.attempt = skippedAttempt(provider.ID, reason, started, s.now())
+				s.publishAttempt(result.attempt)
+				resultChan <- result
+				return
+			}
+
 			models, err := s.fetcher.FetchModels(logger, provider)
 			if err != nil {
 				var quarantineErr *sourcepayload.QuarantineError
@@ -199,6 +272,8 @@ func (s *Source) Observe(ctx context.Context, opts ...sources.Option) (sources.O
 					}
 					result.rejected += quarantineErr.Report.Rejected
 					result.issues = append(result.issues, providerRecordIssues(provider.ID, quarantineErr)...)
+					result.attempt = succeededAttempt(provider.ID, len(result.models), started, s.now())
+					s.publishAttempt(result.attempt)
 					resultChan <- result
 					return
 				}
@@ -207,6 +282,8 @@ func (s *Source) Observe(ctx context.Context, opts ...sources.Option) (sources.O
 					Str("provider_id", string(provider.ID)).
 					Msg("Provider observation degraded")
 				result.issues = append(result.issues, classifyProviderFetchIssue(provider.ID, err))
+				result.attempt = failedAttempt(provider.ID, err, started, s.now())
+				s.publishAttempt(result.attempt)
 				resultChan <- result
 				return
 			}
@@ -220,6 +297,8 @@ func (s *Source) Observe(ctx context.Context, opts ...sources.Option) (sources.O
 					result.issues,
 				)
 			}
+			result.attempt = succeededAttempt(provider.ID, len(result.models), started, s.now())
+			s.publishAttempt(result.attempt)
 			resultChan <- result
 
 			logging.Ctx(logger).Info().
@@ -234,8 +313,12 @@ func (s *Source) Observe(ctx context.Context, opts ...sources.Option) (sources.O
 
 	// Process results and update catalog
 	records := sources.ObservationRecordCounts{}
+	attempts := make([]sources.ProviderAttempt, 0, len(providerConfigs))
 	for result := range resultChan {
 		issues = append(issues, result.issues...)
+		if result.attempt.ProviderID != "" {
+			attempts = append(attempts, result.attempt)
+		}
 		records.Rejected += result.rejected
 		if len(result.models) == 0 {
 			continue
@@ -282,7 +365,19 @@ func (s *Source) Observe(ctx context.Context, opts ...sources.Option) (sources.O
 		// Sources should only create catalogs, not persist them
 	}
 
-	return s.observation(catalog, issues, records)
+	slices.SortFunc(attempts, func(a, b sources.ProviderAttempt) int {
+		return strings.Compare(string(a.ProviderID), string(b.ProviderID))
+	})
+	observation, err := s.observation(catalog, issues, records)
+	return observation, attempts, err
+}
+
+// publishAttempt hands one terminal attempt to the configured sink.
+func (s *Source) publishAttempt(attempt sources.ProviderAttempt) {
+	if s.attemptSink == nil {
+		return
+	}
+	s.attemptSink(attempt)
 }
 
 func linkReviewedProviderModels(

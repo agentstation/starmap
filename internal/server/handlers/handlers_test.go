@@ -13,22 +13,35 @@ import (
 
 	"github.com/agentstation/starmap"
 	"github.com/agentstation/starmap/internal/server/cache"
+	"github.com/agentstation/starmap/internal/server/operations"
 	"github.com/agentstation/starmap/internal/server/response"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/catalogs/remote"
 	pkgerrors "github.com/agentstation/starmap/pkg/errors"
+	"github.com/agentstation/starmap/pkg/sources"
 	pkgsync "github.com/agentstation/starmap/pkg/sync"
 )
 
+// TestHandleUpdateReportsSyncFailure proves the operation status reports a
+// failed acquisition through a bounded reason code. The provider message text
+// never reaches the serialized status.
 func TestHandleUpdateReportsSyncFailure(t *testing.T) {
+	const secret = "an explicit writable store is required"
+	registry := operations.NewRegistry()
+	t.Cleanup(func() {
+		if err := registry.Close(context.Background()); err != nil {
+			t.Errorf("registry Close: %v", err)
+		}
+	})
 	h := &Handlers{
+		operations: registry,
 		app: &testApplication{SyncFunc: func(
 			context.Context,
 			...pkgsync.Option,
 		) (*pkgsync.Result, error) {
 			return nil, &pkgerrors.ConfigError{
 				Component: "catalog store",
-				Message:   "an explicit writable store is required",
+				Message:   secret,
 			}
 		}},
 	}
@@ -37,31 +50,53 @@ func TestHandleUpdateReportsSyncFailure(t *testing.T) {
 
 	h.HandleUpdate(rec, req)
 
-	if rec.Code != http.StatusInternalServerError {
-		t.Fatalf("status = %d, want %d: %s", rec.Code, http.StatusInternalServerError, rec.Body.String())
+	if rec.Code != http.StatusAccepted {
+		t.Fatalf("status = %d, want %d: %s", rec.Code, http.StatusAccepted, rec.Body.String())
 	}
-	var got response.Response
-	if err := json.Unmarshal(rec.Body.Bytes(), &got); err != nil {
-		t.Fatalf("Decode response: %v", err)
+	accepted := decodeOperation(t, rec.Body.Bytes())
+	<-registry.Done(accepted.ID)
+
+	statusRecorder := httptest.NewRecorder()
+	h.HandleOperationStatus(
+		statusRecorder,
+		httptest.NewRequest(http.MethodGet, "/api/v1/updates/"+accepted.ID, nil),
+		accepted.ID,
+	)
+	if statusRecorder.Code != http.StatusOK {
+		t.Fatalf("status read = %d, want 200: %s", statusRecorder.Code, statusRecorder.Body)
 	}
-	if got.Error == nil || got.Error.Code != "INTERNAL_ERROR" {
-		t.Fatalf("response error = %#v, want INTERNAL_ERROR", got.Error)
+	final := decodeOperation(t, statusRecorder.Body.Bytes())
+	if final.State != operations.StateFailed {
+		t.Fatalf("state = %q, want %q", final.State, operations.StateFailed)
+	}
+	if final.Reason != sources.ProviderReasonCredentialReferenceInvalid {
+		t.Fatalf(
+			"reason = %q, want %q",
+			final.Reason, sources.ProviderReasonCredentialReferenceInvalid,
+		)
+	}
+	if strings.Contains(statusRecorder.Body.String(), secret) {
+		t.Fatal("the serialized status carried the provider message text")
 	}
 }
 
-func TestHandleUpdateExtendsAndRestoresWriteDeadline(t *testing.T) {
+// TestHandleUpdateSetsNoConnectionWriteDeadline proves the accepted update
+// writes under the server-wide bound. The acquisition run left the request, so
+// the handler no longer extends the connection deadline of one response.
+func TestHandleUpdateSetsNoConnectionWriteDeadline(t *testing.T) {
+	registry := operations.NewRegistry()
+	t.Cleanup(func() {
+		if err := registry.Close(context.Background()); err != nil {
+			t.Errorf("registry Close: %v", err)
+		}
+	})
 	recorder := &deadlineRecorder{ResponseRecorder: httptest.NewRecorder()}
 	h := &Handlers{
+		operations: registry,
 		app: &testApplication{SyncFunc: func(
 			context.Context,
 			...pkgsync.Option,
 		) (*pkgsync.Result, error) {
-			if len(recorder.deadlines) != 1 {
-				t.Fatalf("deadlines during sync = %v, want one extended deadline", recorder.deadlines)
-			}
-			if time.Until(recorder.deadlines[0]) < 5*time.Minute {
-				t.Fatalf("update deadline = %v, want acquisition-sized budget", recorder.deadlines[0])
-			}
 			return &pkgsync.Result{}, nil
 		}},
 	}
@@ -71,11 +106,14 @@ func TestHandleUpdateExtendsAndRestoresWriteDeadline(t *testing.T) {
 		httptest.NewRequest(http.MethodPost, "/api/v1/update", nil),
 	)
 
-	if recorder.Code != http.StatusOK {
-		t.Fatalf("status = %d, want %d: %s", recorder.Code, http.StatusOK, recorder.Body.String())
+	if recorder.Code != http.StatusAccepted {
+		t.Fatalf(
+			"status = %d, want %d: %s",
+			recorder.Code, http.StatusAccepted, recorder.Body.String(),
+		)
 	}
-	if len(recorder.deadlines) != 2 || !recorder.deadlines[1].IsZero() {
-		t.Fatalf("deadlines = %v, want extended deadline followed by reset", recorder.deadlines)
+	if len(recorder.deadlines) != 0 {
+		t.Fatalf("deadlines = %v, want none from the accepted response", recorder.deadlines)
 	}
 }
 

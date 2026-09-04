@@ -48,10 +48,12 @@ Package starmap provides immutable AI model catalog reads, explicit generation p
   - [func \(c \*Client\) CurrentGenerationID\(\) string](<#Client.CurrentGenerationID>)
   - [func \(c \*Client\) Generation\(ctx context.Context, id string\) \(catalogs.Generation, error\)](<#Client.Generation>)
   - [func \(c \*Client\) HookStats\(\) HookDeliveryStats](<#Client.HookStats>)
+  - [func \(c \*Client\) NextID\(\) \(string, error\)](<#Client.NextID>)
   - [func \(c \*Client\) OnCatalogPublished\(fn CatalogPublishedHook\)](<#Client.OnCatalogPublished>)
   - [func \(c \*Client\) OnModelAdded\(fn ModelAddedHook\)](<#Client.OnModelAdded>)
   - [func \(c \*Client\) OnModelRemoved\(fn ModelRemovedHook\)](<#Client.OnModelRemoved>)
   - [func \(c \*Client\) OnModelUpdated\(fn ModelUpdatedHook\)](<#Client.OnModelUpdated>)
+  - [func \(c \*Client\) PublishesDurably\(\) bool](<#Client.PublishesDurably>)
   - [func \(c \*Client\) Readiness\(\) CatalogReadiness](<#Client.Readiness>)
   - [func \(c \*Client\) Rollback\(ctx context.Context, generationID string\) \(\*RollbackResult, error\)](<#Client.Rollback>)
   - [func \(c \*Client\) Save\(\) error](<#Client.Save>)
@@ -184,7 +186,7 @@ type CatalogState struct {
 ```
 
 <a name="Client"></a>
-## type [Client](<https://github.com/agentstation/starmap/blob/main/client.go#L100-L119>)
+## type [Client](<https://github.com/agentstation/starmap/blob/main/client.go#L108-L127>)
 
 Client manages an immutable canonical catalog, explicit publication, persistence, and event hooks. It owns no provider acquisition, scheduling goroutine, or cadence.
 
@@ -195,7 +197,7 @@ type Client struct {
 ```
 
 <a name="New"></a>
-### func [New](<https://github.com/agentstation/starmap/blob/main/client.go#L123>)
+### func [New](<https://github.com/agentstation/starmap/blob/main/client.go#L131>)
 
 ```go
 func New(opts ...Option) (*Client, error)
@@ -204,7 +206,7 @@ func New(opts ...Option) (*Client, error)
 New creates a Client using a background context. Call NewContext when the caller must cancel storage I/O during client setup.
 
 <a name="NewContext"></a>
-### func [NewContext](<https://github.com/agentstation/starmap/blob/main/client.go#L132>)
+### func [NewContext](<https://github.com/agentstation/starmap/blob/main/client.go#L140>)
 
 ```go
 func NewContext(ctx context.Context, opts ...Option) (*Client, error)
@@ -275,6 +277,15 @@ func (c *Client) HookStats() HookDeliveryStats
 
 HookStats returns a lock\-free snapshot of callback delivery health.
 
+<a name="Client.NextID"></a>
+### func \(\*Client\) [NextID](<https://github.com/agentstation/starmap/blob/main/generation.go#L301>)
+
+```go
+func (c *Client) NextID() (string, error)
+```
+
+NextID returns one fresh UUID\-shaped identifier from the client identifier source. Catalog generations, sync runs, and connected refresh runs draw from this one source, so an injected source makes every identifier deterministic.
+
 <a name="Client.OnCatalogPublished"></a>
 ### func \(\*Client\) [OnCatalogPublished](<https://github.com/agentstation/starmap/blob/main/hooks.go#L61>)
 
@@ -310,6 +321,15 @@ func (c *Client) OnModelUpdated(fn ModelUpdatedHook)
 ```
 
 OnModelUpdated registers a callback that receives changed models.
+
+<a name="Client.PublishesDurably"></a>
+### func \(\*Client\) [PublishesDurably](<https://github.com/agentstation/starmap/blob/main/client.go#L91>)
+
+```go
+func (c *Client) PublishesDurably() bool
+```
+
+PublishesDurably reports whether the client holds the explicit writable catalog store that durable publication needs. A client without one keeps every published generation in memory, and a restart loses it. The connected runtime reads this before it commits an effective generation.
 
 <a name="Client.Readiness"></a>
 ### func \(\*Client\) [Readiness](<https://github.com/agentstation/starmap/blob/main/readiness.go#L50>)

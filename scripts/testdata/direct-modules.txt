@@ -20,6 +20,7 @@ github.com/olekukonko/tablewriter
 github.com/openbao/openbao/api/v2
 github.com/patrickmn/go-cache
 github.com/rs/zerolog
+github.com/sigstore/sigstore-go
 github.com/spf13/cobra
 github.com/spf13/pflag
 github.com/spf13/viper

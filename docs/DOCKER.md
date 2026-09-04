@@ -206,6 +206,61 @@ spec:
           emptyDir: {}
 ```
 
+A Service gives the fleet one stable address for those pods:
+
+```yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: starmap
+spec:
+  selector:
+    app: starmap
+  ports:
+    - name: http
+      port: 8080
+      targetPort: http
+```
+
+A Starport replica reads that Service instead of GitHub:
+
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: starport
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: starport
+  template:
+    metadata:
+      labels:
+        app: starport
+    spec:
+      containers:
+        - name: starport
+          image: ghcr.io/agentstation/starport@sha256:<verified-image-digest>
+          env:
+            - name: STARPORT_CATALOG_SOURCE
+              value: starmap
+            - name: STARPORT_CATALOG_SOURCE_URL
+              value: http://starmap:8080/api/v1
+            - name: STARPORT_CATALOG_SOURCE_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: starmap-server
+                  key: api-key
+          ports:
+            - name: http
+              containerPort: 8080
+```
+
+This pair is a single-server design. One Starmap replica owns the persistent
+volume. Raise that replica count only on a lease-capable store, and read
+[ENTERPRISE_CATALOG_SERVER.md](ENTERPRISE_CATALOG_SERVER.md) first.
+
 If the API key protects readiness in a custom server composition, configure an
 authenticated probe or a distinct public health policy. Network policy should
 allow only required provider endpoints and the chosen ingress.

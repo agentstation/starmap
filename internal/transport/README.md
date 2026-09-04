@@ -51,7 +51,7 @@ type Authenticator interface {
 ```
 
 <a name="Client"></a>
-## type [Client](<https://github.com/agentstation/starmap/blob/main/internal/transport/client.go#L14-L16>)
+## type [Client](<https://github.com/agentstation/starmap/blob/main/internal/transport/client.go#L15-L18>)
 
 Client provides HTTP client functionality with authentication.
 
@@ -62,16 +62,16 @@ type Client struct {
 ```
 
 <a name="New"></a>
-### func [New](<https://github.com/agentstation/starmap/blob/main/internal/transport/client.go#L19>)
+### func [New](<https://github.com/agentstation/starmap/blob/main/internal/transport/client.go#L34>)
 
 ```go
 func New() *Client
 ```
 
-New creates a provider HTTP client.
+New creates a provider HTTP client. The client applies the transfer bounds through its transport and its body reads, and it sets no client\-wide timeout. A client\-wide timeout also covers body reads, so it cannot bound a progress\-aware transfer.
 
 <a name="Client.Do"></a>
-### func \(\*Client\) [Do](<https://github.com/agentstation/starmap/blob/main/internal/transport/client.go#L34-L38>)
+### func \(\*Client\) [Do](<https://github.com/agentstation/starmap/blob/main/internal/transport/client.go#L56-L60>)
 
 ```go
 func (c *Client) Do(req *http.Request, provider *catalogs.Provider, material sources.ProviderCredentialMaterial) (*http.Response, error)
@@ -80,7 +80,7 @@ func (c *Client) Do(req *http.Request, provider *catalogs.Provider, material sou
 Do sends an authenticated HTTP request.
 
 <a name="Client.DoWithContext"></a>
-### func \(\*Client\) [DoWithContext](<https://github.com/agentstation/starmap/blob/main/internal/transport/client.go#L44-L49>)
+### func \(\*Client\) [DoWithContext](<https://github.com/agentstation/starmap/blob/main/internal/transport/client.go#L66-L71>)
 
 ```go
 func (c *Client) DoWithContext(ctx context.Context, req *http.Request, provider *catalogs.Provider, material sources.ProviderCredentialMaterial) (*http.Response, error)
@@ -89,7 +89,7 @@ func (c *Client) DoWithContext(ctx context.Context, req *http.Request, provider 
 DoWithContext sends an authenticated HTTP request. It replaces the request's existing context with ctx.
 
 <a name="Client.Get"></a>
-### func \(\*Client\) [Get](<https://github.com/agentstation/starmap/blob/main/internal/transport/client.go#L81-L86>)
+### func \(\*Client\) [Get](<https://github.com/agentstation/starmap/blob/main/internal/transport/client.go#L107-L112>)
 
 ```go
 func (c *Client) Get(ctx context.Context, url string, provider *catalogs.Provider, material sources.ProviderCredentialMaterial) (*http.Response, error)
