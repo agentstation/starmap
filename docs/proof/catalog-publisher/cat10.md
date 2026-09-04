@@ -184,7 +184,7 @@ attestation, because the substantive diff did not change. Run 33838468154 at
 `github.com/agentstation/starmap v0.16.2`, the first tag with a GitHub
 release. The same gates passed against the downloaded `v0.16.2` module, the
 verifier reports 68 of 68, and the pre-PR gate reused the clean attestation.
-The branch pushed after release run 33841625845 succeeded. Run 33844884647
+The branch pushed after release run 33841625845 succeeded. Run 33843823866
 at `60615e0` passed all ten hosted jobs. Pull request #360 squash-merged as
 `4a52d48` on 2026-09-04, and the merge deleted the branch. The Starport main run
 33844884647 at `4a52d48` completed with success.
