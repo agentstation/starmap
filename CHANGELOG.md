@@ -7,6 +7,24 @@ and [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+### Fixed
+
+- A connected runtime with a catalog store now serves the generation ID that
+  its retained layers derive. The durable commit previously replaced that
+  identity with a fresh one. A served generation ID then named bytes that no
+  store held. An in-memory runtime and a durable runtime now report one
+  identity for one set of layers. A restart reports that identity again.
+- A derived effective generation ID now separates the upstream identity from
+  the local digest with `.local.` instead of `+local.`. A published identity
+  travels as one URL path segment. The remote catalog protocol accepts only
+  letters, digits, dot, dash, and underscore there.
+
+### Added
+
+- `starmap.WithCandidateGenerationID` binds one publication candidate to a
+  generation ID that the caller derives. `Client.Update` publishes that
+  identity. A candidate without the option still gets one fresh identity.
+
 ### Changed
 
 - Public catalog concepts now use one concept-owned package tree under

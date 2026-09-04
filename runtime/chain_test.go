@@ -164,7 +164,7 @@ func TestDerivedEffectiveGenerationNeverReusesTheUpstreamIdentity(t *testing.T) 
 	if first == second {
 		t.Fatalf("two payloads share the identity %q", first)
 	}
-	if !strings.HasPrefix(first, upstream+"+local.") {
+	if !strings.HasPrefix(first, upstream+effectiveGenerationLocalSuffix) {
 		t.Fatalf("derived identity = %q, want the upstream identity plus a local suffix",
 			first)
 	}
@@ -172,7 +172,7 @@ func TestDerivedEffectiveGenerationNeverReusesTheUpstreamIdentity(t *testing.T) 
 		upstream, "sha256:aaaaaaaaaaaaaaaabbbb"); repeated != first {
 		t.Fatalf("second derivation = %q, want the stable identity %q", repeated, first)
 	}
-	if empty := deriveEffectiveGenerationID(upstream, ""); empty != upstream+"+local.local" {
+	if empty := deriveEffectiveGenerationID(upstream, ""); empty != upstream+effectiveGenerationLocalSuffix+"local" {
 		t.Fatalf("derived identity with no digest = %q, want a named fallback", empty)
 	}
 }

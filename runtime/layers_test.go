@@ -3,11 +3,13 @@ package runtime
 import (
 	"context"
 	"strings"
+	"sync"
 	"testing"
 	"time"
 
 	"github.com/agentstation/starmap"
 	"github.com/agentstation/starmap/pkg/catalogs"
+	"github.com/agentstation/starmap/pkg/catalogs/storage"
 	"github.com/agentstation/starmap/pkg/sources"
 )
 
@@ -141,10 +143,174 @@ func TestUnlinkedProviderOfferingsNeverBlockTheSourceLayer(t *testing.T) {
 	if sourceReport.Reason != "" {
 		t.Fatalf("source reason = %q, want none", sourceReport.Reason)
 	}
-	if id := runtime.State().GenerationID; !strings.HasPrefix(id, "generation-2+local.") {
+	if id := runtime.State().GenerationID; !strings.HasPrefix(id, "generation-2"+effectiveGenerationLocalSuffix) {
 		t.Fatalf("effective generation = %q, want generation-2 with a local suffix", id)
 	}
 	if provider, found := runtime.Catalog().Providers().Get("deepinfra"); !found || provider.Models["linked-model"] == nil {
 		t.Fatal("the effective catalog lost the linked offering after the source refresh")
+	}
+}
+
+// countingStore counts every commit that reaches the catalog store. A test
+// uses it to prove that an unchanged rebuild retains one generation.
+type countingStore struct {
+	*storage.Memory
+
+	mu      sync.Mutex
+	commits int
+}
+
+// Commit counts the call and then commits through the wrapped store.
+func (s *countingStore) Commit(ctx context.Context, generation catalogs.Generation, expected string) error {
+	s.mu.Lock()
+	s.commits++
+	s.mu.Unlock()
+	return s.Memory.Commit(ctx, generation, expected)
+}
+
+// commitCount returns how many commits the store answered.
+func (s *countingStore) commitCount() int {
+	s.mu.Lock()
+	defer s.mu.Unlock()
+	return s.commits
+}
+
+// identityUpstreamGeneration is the upstream identity that every identity test
+// reads from its source.
+const identityUpstreamGeneration = "generation-upstream"
+
+// openIdentityRuntime opens one runtime above a fixed upstream reply and a
+// fixed provider observation. Two runtimes that use it compose the same
+// effective catalog, so a test compares the identity that each one reports. A
+// nil store selects in-memory publication.
+func openIdentityRuntime(t *testing.T, store storage.Store, opts ...Option) *Runtime {
+	t.Helper()
+	observed := time.Date(2026, 9, 4, 9, 0, 0, 0, time.UTC)
+	source := newStubSource("identity-source")
+	source.replies = []SourceRead{
+		testSourceRead(t, identityUpstreamGeneration,
+			testCatalogPayload(t, "deepinfra", "linked-model", "Linked Model"), observed),
+	}
+	acquirer := &stubAcquirer{result: AcquisitionResult{
+		Eligible: 1,
+		Attempts: []sources.ProviderAttempt{
+			testAttempt("deepinfra", sources.ProviderOutcomeSucceeded, ""),
+		},
+		Layers: []ProviderLayer{
+			testObservationLayer(t, "deepinfra", observed, "linked-model"),
+		},
+	}}
+	base := []Option{WithSource(source), WithAcquirer(acquirer)}
+	if store != nil {
+		base = append(base, WithClientOptions(starmap.WithCatalogStore(store)))
+	}
+	return openTestRuntime(t, append(base, opts...)...)
+}
+
+// refreshAndSync reads the upstream source and then observes the providers.
+func refreshAndSync(t *testing.T, runtime *Runtime) {
+	t.Helper()
+	if _, err := runtime.RefreshSource(context.Background()); err != nil {
+		t.Fatalf("RefreshSource: %v", err)
+	}
+	if _, err := runtime.Sync(context.Background()); err != nil {
+		t.Fatalf("Sync: %v", err)
+	}
+}
+
+// TestDurableRuntimeKeepsTheDerivedEffectiveIdentity proves that a catalog
+// store does not replace the identity that the retained layers derive. A
+// durable runtime and an in-memory runtime that hold the same layers report
+// one identity, so a served generation ID names the served bytes.
+func TestDurableRuntimeKeepsTheDerivedEffectiveIdentity(t *testing.T) {
+	memory := openIdentityRuntime(t, nil)
+	durable := openIdentityRuntime(t, storage.NewMemory())
+
+	// An upstream generation without a local layer keeps the upstream identity.
+	for _, runtime := range []*Runtime{memory, durable} {
+		if _, err := runtime.RefreshSource(context.Background()); err != nil {
+			t.Fatalf("RefreshSource: %v", err)
+		}
+	}
+	if got := durable.State().GenerationID; got != identityUpstreamGeneration {
+		t.Fatalf("durable generation = %q, want the upstream identity %q",
+			got, identityUpstreamGeneration)
+	}
+	if got := memory.State().GenerationID; got != identityUpstreamGeneration {
+		t.Fatalf("in-memory generation = %q, want the upstream identity %q",
+			got, identityUpstreamGeneration)
+	}
+
+	// One local layer derives the identity, and the durable commit keeps it.
+	for _, runtime := range []*Runtime{memory, durable} {
+		if _, err := runtime.Sync(context.Background()); err != nil {
+			t.Fatalf("Sync: %v", err)
+		}
+	}
+	derived := memory.State().GenerationID
+	if !strings.HasPrefix(derived, identityUpstreamGeneration+effectiveGenerationLocalSuffix) {
+		t.Fatalf("in-memory generation = %q, want the upstream identity with a local suffix", derived)
+	}
+	if got := durable.State().GenerationID; got != derived {
+		t.Fatalf("durable generation = %q, want the derived identity %q", got, derived)
+	}
+	if got := durable.Client().CurrentGenerationID(); got != derived {
+		t.Fatalf("committed generation = %q, want the derived identity %q", got, derived)
+	}
+}
+
+// TestUnchangedRebuildCommitsNoSecondGeneration proves the commit no-op. A
+// rebuild that derives the committed identity serves the committed bytes, so
+// the catalog store keeps one generation.
+func TestUnchangedRebuildCommitsNoSecondGeneration(t *testing.T) {
+	store := &countingStore{Memory: storage.NewMemory()}
+	runtime := openIdentityRuntime(t, store)
+	refreshAndSync(t, runtime)
+
+	committed := store.commitCount()
+	derived := runtime.State().GenerationID
+	if _, err := runtime.Sync(context.Background()); err != nil {
+		t.Fatalf("second Sync: %v", err)
+	}
+	if got := store.commitCount(); got != committed {
+		t.Fatalf("commits = %d, want the %d that the changed layers needed", got, committed)
+	}
+	if got := runtime.State().GenerationID; got != derived {
+		t.Fatalf("generation = %q, want the unchanged identity %q", got, derived)
+	}
+	if got := runtime.Client().CurrentGenerationID(); got != derived {
+		t.Fatalf("committed generation = %q, want the unchanged identity %q", got, derived)
+	}
+}
+
+// TestRestartReportsTheCommittedEffectiveIdentity proves that a restart from
+// the same durable state reports the identity that the previous run committed.
+func TestRestartReportsTheCommittedEffectiveIdentity(t *testing.T) {
+	stateDirectory := t.TempDir()
+	storeDirectory := t.TempDir()
+	store, err := storage.NewFilesystem(storeDirectory)
+	if err != nil {
+		t.Fatalf("NewFilesystem: %v", err)
+	}
+	first := openIdentityRuntime(t, store, WithStateDirectory(stateDirectory))
+	refreshAndSync(t, first)
+	derived := first.State().GenerationID
+	if !strings.HasPrefix(derived, identityUpstreamGeneration+effectiveGenerationLocalSuffix) {
+		t.Fatalf("generation = %q, want the upstream identity with a local suffix", derived)
+	}
+	if err := first.Close(); err != nil {
+		t.Fatalf("Close: %v", err)
+	}
+
+	restarted, err := storage.NewFilesystem(storeDirectory)
+	if err != nil {
+		t.Fatalf("NewFilesystem after the restart: %v", err)
+	}
+	second := openIdentityRuntime(t, restarted, WithStateDirectory(stateDirectory))
+	if got := second.State().GenerationID; got != derived {
+		t.Fatalf("generation after the restart = %q, want %q", got, derived)
+	}
+	if got := second.Client().CurrentGenerationID(); got != derived {
+		t.Fatalf("committed generation after the restart = %q, want %q", got, derived)
 	}
 }
