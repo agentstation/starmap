@@ -73,6 +73,9 @@ log/
 .cache/
 *.cache
 
+# Hosted workflow checkouts, such as the pinned technical-writing skill
+/.ci/
+
 # OS generated files
 .fseventsd
 .VolumeIcon.icns
