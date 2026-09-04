@@ -46,3 +46,41 @@ func loadGenerationFixture(t *testing.T) Generation {
 	}
 	return Generation{Manifest: loadGenerationManifestFixture(t), Payload: payload}
 }
+
+func TestGenerationSemanticChecksumExcludesProvenance(t *testing.T) {
+	t.Parallel()
+
+	catalog, err := NewEmpty().Build()
+	if err != nil {
+		t.Fatalf("Build: %v", err)
+	}
+	payload, err := EncodeCatalogPayload(catalog)
+	if err != nil {
+		t.Fatalf("EncodeCatalogPayload: %v", err)
+	}
+	generation := Generation{Manifest: loadGenerationManifestFixture(t), Payload: payload}
+	generation.Manifest.Payload = DescribeCatalogPayload(payload)
+	if err := generation.Validate(); err != nil {
+		t.Fatalf("Validate: %v", err)
+	}
+
+	checksum, err := generation.SemanticChecksum()
+	if err != nil {
+		t.Fatalf("SemanticChecksum: %v", err)
+	}
+	want, err := CatalogSemanticChecksum(catalog)
+	if err != nil {
+		t.Fatalf("CatalogSemanticChecksum: %v", err)
+	}
+	if checksum != want {
+		t.Fatalf("SemanticChecksum = %s, want %s", checksum, want)
+	}
+	if checksum == generation.Manifest.Payload.Checksum {
+		t.Fatal("the semantic checksum must not equal the exact payload checksum")
+	}
+
+	generation.Payload = []byte("{")
+	if _, err := generation.SemanticChecksum(); err == nil {
+		t.Fatal("SemanticChecksum accepted a payload that does not decode")
+	}
+}

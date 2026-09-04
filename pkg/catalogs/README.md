@@ -695,6 +695,7 @@ func main() {
 - [type FloatRange](<#FloatRange>)
 - [type Generation](<#Generation>)
   - [func \(g Generation\) Copy\(\) Generation](<#Generation.Copy>)
+  - [func \(g Generation\) SemanticChecksum\(\) \(string, error\)](<#Generation.SemanticChecksum>)
   - [func \(g Generation\) Validate\(\) error](<#Generation.Validate>)
 - [type GenerationCompleteness](<#GenerationCompleteness>)
 - [type GenerationManifest](<#GenerationManifest>)
@@ -2281,7 +2282,7 @@ type FloatRange struct {
 ```
 
 <a name="Generation"></a>
-## type [Generation](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/generation.go#L4-L7>)
+## type [Generation](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/generation.go#L6-L9>)
 
 Generation is an immutable manifest and its exact catalog payload bytes.
 
@@ -2293,7 +2294,7 @@ type Generation struct {
 ```
 
 <a name="Generation.Copy"></a>
-### func \(Generation\) [Copy](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/generation.go#L10>)
+### func \(Generation\) [Copy](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/generation.go#L12>)
 
 ```go
 func (g Generation) Copy() Generation
@@ -2301,8 +2302,17 @@ func (g Generation) Copy() Generation
 
 Copy returns a generation that does not share mutable slices with g.
 
+<a name="Generation.SemanticChecksum"></a>
+### func \(Generation\) [SemanticChecksum](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/generation.go#L35>)
+
+```go
+func (g Generation) SemanticChecksum() (string, error)
+```
+
+SemanticChecksum returns the facts\-only identity of the catalog the payload carries. It excludes provenance, so a regenerated payload with the same facts keeps the same value. The publisher keys the immutable release tag and the channel catalog digest by this value. The exact payload checksum stays in the manifest.
+
 <a name="Generation.Validate"></a>
-### func \(Generation\) [Validate](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/generation.go#L18>)
+### func \(Generation\) [Validate](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/generation.go#L20>)
 
 ```go
 func (g Generation) Validate() error

@@ -529,3 +529,44 @@ func TestGitHubSourceDeclaresItsContract(t *testing.T) {
 		t.Fatalf("Cleanup: %v", err)
 	}
 }
+
+// The publisher keys the release tag and the channel catalog digest by the
+// facts-only semantic checksum. The exact payload checksum in the generation
+// manifest differs from it. A consumer that compares the payload checksum to
+// the channel therefore rejects every published release.
+func TestGitHubSourceReportsTheSemanticCatalogDigest(t *testing.T) {
+	t.Parallel()
+
+	server := newFixtureServer(t)
+	published := publishCatalog(t, server, "semantic-digest-generation", testChannelSequence)
+	attester := &recordingAttester{}
+	source := newTestSource(t, server, WithAttester(attester.attest()))
+
+	want := semanticChecksum(t, published.Generation)
+	if want == published.Generation.Manifest.Payload.Checksum {
+		t.Fatal("fixture semantic checksum equals the payload checksum, the test proves nothing")
+	}
+	if artifact.ChecksumPrefix+published.Channel.CatalogDigest != want {
+		t.Fatalf("channel catalog digest = %s, want the semantic checksum %s",
+			published.Channel.CatalogDigest, want)
+	}
+
+	release, err := source.ReadChannel(t.Context())
+	if err != nil {
+		t.Fatalf("ReadChannel: %v", err)
+	}
+	if release.CatalogDigest != want {
+		t.Fatalf("release catalog digest = %s, want %s", release.CatalogDigest, want)
+	}
+	if release.Tag != published.Tag {
+		t.Fatalf("release tag = %s, want %s", release.Tag, published.Tag)
+	}
+
+	target, err := source.RollbackTarget()
+	if err != nil {
+		t.Fatalf("RollbackTarget: %v", err)
+	}
+	if target.CatalogDigest != want {
+		t.Fatalf("rollback target digest = %s, want %s", target.CatalogDigest, want)
+	}
+}
