@@ -468,6 +468,37 @@ is SLSA provenance v1.
 16:19 UTC on `45b1ea03`. It failed the channel upload step for the fourth
 defect, as expected before the repair.
 
+**The second run.** The schedule slot at 20:17 UTC had not started a run by
+20:47 UTC. A second dispatch on main `94feaad0` ran as 33918014714 and
+completed with success. The candidate catalog carried a new semantic digest,
+so the run published the immutable release `catalog-d15954fb…` with three
+assets at 20:51 UTC. It then pushed commit `1f1c1b9c` to `catalog/v1` with
+the message `catalog: publish channel sequence 2 for catalog-d15954fb…`.
+
+**The second document.** It names generation
+`c10f7f09-b6e2-4e60-aac8-8685aef2c032`, and `gh attestation verify` accepted
+it with the same signer workflow. The branch holds two commits, one per
+sequence. The channel advanced past the first sequence, which closes the
+fourth defect.
+
+**The consumer at sequence 2.** The `v0.16.5` consumer binary ran twice
+against the branch. The first run reopened the state directory that held
+sequence 1. The second run used an empty state directory.
+
+| Field | Reopened state | Empty state |
+| --- | --- | --- |
+| `usable` | true | true |
+| `fallback` | false | false |
+| `generation_id` | `c10f7f09-b6e2-4e60-aac8-8685aef2c032` | same |
+| `channel_freshness` | current | current |
+| `source_identity` | `public_github` | `public_github` |
+| `payload_checksum` | `sha256:721d6de0…` | same |
+| models and providers | 596 and 17 | 596 and 17 |
+
+Both runs exited with status zero. The reopened state moved from sequence 1
+to sequence 2 without a fallback, which proves the promotion path on a live
+consumer.
+
 ## The clean consumer on `v0.16.5`
 
 A fresh module `cat11consumer` requires `github.com/agentstation/starmap
