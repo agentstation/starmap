@@ -128,6 +128,7 @@ func rootRemoteGeneration(t *testing.T) catalogs.Generation {
 	generation, err := generationTestClient(at).newGeneration(
 		catalog,
 		CandidateEvidence{SourceObservations: []catalogs.SourceObservationLink{observation.Link()}},
+		"",
 	)
 	if err != nil {
 		t.Fatalf("newGeneration: %v", err)

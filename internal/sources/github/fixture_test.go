@@ -43,8 +43,8 @@ const (
 	// testChannelSequence is the first published channel sequence.
 	testChannelSequence = 7
 
-	// testETag is the channel release validator.
-	testETag = `W/"catalog-latest-1"`
+	// testETag is the channel document validator.
+	testETag = `W/"catalog-channel-1"`
 )
 
 // readFixture reads one committed evidence file.
@@ -129,12 +129,15 @@ type fixtureServer struct {
 	t      *testing.T
 	server *httptest.Server
 
-	mu          sync.Mutex
-	releases    map[string]releaseFixture
-	bundles     map[string][]byte
-	rateHeaders map[string]string
-	channelETag string
-	requests    int
+	mu            sync.Mutex
+	releases      map[string]releaseFixture
+	bundles       map[string][]byte
+	rateHeaders   map[string]string
+	channelRef    string
+	channelDoc    []byte
+	channelETag   string
+	requests      int
+	channelBodies int
 }
 
 // newFixtureServer starts one hermetic GitHub API stand-in.
@@ -145,6 +148,7 @@ func newFixtureServer(t *testing.T) *fixtureServer {
 		releases:    make(map[string]releaseFixture),
 		bundles:     make(map[string][]byte),
 		rateHeaders: make(map[string]string),
+		channelRef:  artifact.ChannelName,
 		channelETag: testETag,
 	}
 	fixture.server = httptest.NewServer(http.HandlerFunc(fixture.serve))
@@ -160,6 +164,14 @@ func (f *fixtureServer) requestCount() int {
 	f.mu.Lock()
 	defer f.mu.Unlock()
 	return f.requests
+}
+
+// channelBodyCount returns how often the server wrote the channel document
+// body. A conditional request that answers 304 writes none.
+func (f *fixtureServer) channelBodyCount() int {
+	f.mu.Lock()
+	defer f.mu.Unlock()
+	return f.channelBodies
 }
 
 // setRateHeaders replaces the rate-limit headers on every reply.
@@ -186,11 +198,27 @@ func (f *fixtureServer) setBundle(digest string, bundleJSON []byte) {
 	f.bundles[digest] = bundleJSON
 }
 
-// setChannelETag replaces the channel release validator.
+// setChannelETag replaces the channel document validator.
 func (f *fixtureServer) setChannelETag(etag string) {
 	f.mu.Lock()
 	defer f.mu.Unlock()
 	f.channelETag = etag
+}
+
+// setChannelRef replaces the branch ref the contents endpoint answers for.
+func (f *fixtureServer) setChannelRef(ref string) {
+	f.mu.Lock()
+	defer f.mu.Unlock()
+	f.channelRef = ref
+}
+
+// publishChannel commits one channel document to the channel branch and binds
+// its provenance.
+func (f *fixtureServer) publishChannel(document []byte) {
+	f.mu.Lock()
+	defer f.mu.Unlock()
+	f.channelDoc = append([]byte(nil), document...)
+	f.bundles[hexDigest(document)] = []byte(stubBundle)
 }
 
 func (f *fixtureServer) serve(writer http.ResponseWriter, request *http.Request) {
@@ -204,6 +232,8 @@ func (f *fixtureServer) serve(writer http.ResponseWriter, request *http.Request)
 	path := request.URL.Path
 	prefix := "/repos/" + testRepository + "/"
 	switch {
+	case strings.HasPrefix(path, prefix+"contents/"):
+		f.serveChannel(writer, request, strings.TrimPrefix(path, prefix+"contents/"))
 	case strings.HasPrefix(path, prefix+"releases/tags/"):
 		f.serveRelease(writer, request, strings.TrimPrefix(path, prefix+"releases/tags/"))
 	case strings.HasPrefix(path, prefix+"attestations/"):
@@ -215,21 +245,40 @@ func (f *fixtureServer) serve(writer http.ResponseWriter, request *http.Request)
 	}
 }
 
-func (f *fixtureServer) serveRelease(writer http.ResponseWriter, request *http.Request, tag string) {
+// serveChannel answers the repository contents endpoint for the channel
+// branch. It honors the conditional validator, so an unchanged document
+// answers 304 and writes no body.
+func (f *fixtureServer) serveChannel(writer http.ResponseWriter, request *http.Request, name string) {
+	f.mu.Lock()
+	ref := f.channelRef
+	document := f.channelDoc
+	etag := f.channelETag
+	f.mu.Unlock()
+	if name != artifact.ChannelFilename || request.URL.Query().Get("ref") != ref || len(document) == 0 {
+		writer.WriteHeader(http.StatusNotFound)
+		return
+	}
+	writer.Header().Set("ETag", etag)
+	if request.Header.Get("If-None-Match") == etag {
+		writer.WriteHeader(http.StatusNotModified)
+		return
+	}
+	writer.Header().Set("Content-Type", "application/vnd.github.raw+json")
+	f.mu.Lock()
+	f.channelBodies++
+	f.mu.Unlock()
+	if _, err := writer.Write(document); err != nil {
+		f.t.Errorf("write channel document: %v", err)
+	}
+}
+
+func (f *fixtureServer) serveRelease(writer http.ResponseWriter, _ *http.Request, tag string) {
 	f.mu.Lock()
 	release, found := f.releases[tag]
-	etag := f.channelETag
 	f.mu.Unlock()
 	if !found {
 		writer.WriteHeader(http.StatusNotFound)
 		return
-	}
-	if tag == artifact.ChannelName {
-		writer.Header().Set("ETag", etag)
-		if request.Header.Get("If-None-Match") == etag {
-			writer.WriteHeader(http.StatusNotModified)
-			return
-		}
 	}
 	assets := make([]releaseAsset, 0, len(release.Assets))
 	for _, asset := range release.Assets {
@@ -318,6 +367,17 @@ func testGeneration(t *testing.T, id string) catalogs.Generation {
 	return generation
 }
 
+// semanticChecksum returns the facts-only digest that the publisher keys a
+// release tag and a channel document by.
+func semanticChecksum(t *testing.T, generation catalogs.Generation) string {
+	t.Helper()
+	checksum, err := generation.SemanticChecksum()
+	if err != nil {
+		t.Fatalf("semantic checksum: %v", err)
+	}
+	return checksum
+}
+
 // releaseAssetsOf packages one generation as the three published assets.
 func releaseAssetsOf(t *testing.T, generation catalogs.Generation) []assetFixture {
 	t.Helper()
@@ -363,7 +423,7 @@ func publishCatalog(t *testing.T, server *fixtureServer, id string, sequence uin
 	t.Helper()
 	generation := testGeneration(t, id)
 	assets := releaseAssetsOf(t, generation)
-	digest := strings.TrimPrefix(generation.Manifest.Payload.Checksum, artifact.ChecksumPrefix)
+	digest := strings.TrimPrefix(semanticChecksum(t, generation), artifact.ChecksumPrefix)
 	tag, err := artifact.ReleaseTag(digest)
 	if err != nil {
 		t.Fatalf("release tag: %v", err)
@@ -388,10 +448,7 @@ func publishCatalog(t *testing.T, server *fixtureServer, id string, sequence uin
 	if err != nil {
 		t.Fatalf("encode channel: %v", err)
 	}
-	server.publish(releaseFixture{
-		Tag:    artifact.ChannelName,
-		Assets: []assetFixture{{Name: artifact.ChannelFilename, Body: encoded}},
-	})
+	server.publishChannel(encoded)
 	result.Channel = document
 	result.ChannelDoc = encoded
 	return result

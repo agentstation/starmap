@@ -20,9 +20,17 @@ jobs:
     # The publisher limits nest above the 60-minute catalog transfer bound. The
     # refresh step gets 75 minutes, and this job gets 90 minutes.
     timeout-minutes: 90
+    env:
+      # The discovery channel is a branch, not a release. GitHub freezes an
+      # immutable release at creation, so a mutable pointer cannot live on one.
+      CHANNEL_BRANCH: catalog/v1
+      CHANNEL_FILE: channel.json
     steps:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          # The channel branch push reuses this checkout credential.
+          persist-credentials: true
 
       - name: Set up Go
         uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
@@ -211,16 +219,19 @@ jobs:
 
       - name: Read current catalog channel document
         id: channel_current
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           CURRENT_DIRECTORY=${RUNNER_TEMP}/catalog-channel-current
           rm -rf "$CURRENT_DIRECTORY"
           mkdir -p "$CURRENT_DIRECTORY"
-          if gh release view catalog-latest >/dev/null 2>&1; then
-            gh release download catalog-latest --pattern 'catalog-latest.json' --dir "$CURRENT_DIRECTORY"
+          # Read the branch through git, never through raw.githubusercontent.com.
+          # That host caches a changed file for minutes. An absent branch is the
+          # first publication, and the sequence then starts at one.
+          if git fetch --no-tags --depth=1 origin \
+            "+refs/heads/${CHANNEL_BRANCH}:refs/remotes/origin/${CHANNEL_BRANCH}" 2>/dev/null; then
+            git show "refs/remotes/origin/${CHANNEL_BRANCH}:${CHANNEL_FILE}" \
+              > "${CURRENT_DIRECTORY}/${CHANNEL_FILE}"
           fi
-          printf 'document=%s\n' "$CURRENT_DIRECTORY/catalog-latest.json" >> "$GITHUB_OUTPUT"
+          printf 'document=%s\n' "${CURRENT_DIRECTORY}/${CHANNEL_FILE}" >> "$GITHUB_OUTPUT"
 
       - name: Stage attested catalog channel document
         id: channel
@@ -238,7 +249,7 @@ jobs:
             --channel-tag "${{ steps.change.outputs.tag }}" \
             --channel-published-at "$PUBLISHED_AT" \
             --channel-current "${{ steps.channel_current.outputs.document }}" \
-            --channel-out "$CHANNEL_DIRECTORY/catalog-latest.json" \
+            --channel-out "${CHANNEL_DIRECTORY}/${CHANNEL_FILE}" \
             --channel-attestation-verified > catalog-channel.json
           {
             printf 'document=%s\n' "$(jq -er .document catalog-channel.json)"
@@ -262,18 +273,66 @@ jobs:
             --deny-self-hosted-runners
 
       - name: Publish catalog channel document
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           DOCUMENT="${{ steps.channel.outputs.document }}"
-          if gh release view catalog-latest >/dev/null 2>&1; then
-            gh release upload catalog-latest "$DOCUMENT" --clobber
+          SEQUENCE="${{ steps.channel.outputs.sequence }}"
+          TAG="${{ steps.change.outputs.tag }}"
+          README=${RUNNER_TEMP}/catalog-channel-readme.md
+          INDEX=${RUNNER_TEMP}/catalog-channel-index
+
+          cat > "$README" <<'MARKDOWN'
+          # Catalog channel v1
+
+          This branch is a machine-written discovery pointer. The catalog
+          generation workflow is its only writer.
+
+          The file `channel.json` carries the media type
+          `application/vnd.agentstation.starmap.catalog-channel.v1+json`. It
+          names the one immutable `catalog-<digest>` release that a client
+          reads, and it carries build provenance that the client verifies
+          before it decodes the document.
+
+          Do not edit this branch by hand. A hand-written commit breaks the
+          sequence that every client uses to reject a replayed pointer.
+          MARKDOWN
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          # A push needs the current tip as the parent. An absent branch is the
+          # first publication, and it becomes a root commit that carries no
+          # source history.
+          PARENT=""
+          if git fetch --no-tags --depth=1 origin \
+            "+refs/heads/${CHANNEL_BRANCH}:refs/remotes/origin/${CHANNEL_BRANCH}" 2>/dev/null; then
+            PARENT="$(git rev-parse "refs/remotes/origin/${CHANNEL_BRANCH}")"
+          fi
+
+          # A private index leaves the working tree and the checked-out branch
+          # untouched, so this commit reaches the channel branch alone.
+          rm -f "$INDEX"
+          export GIT_INDEX_FILE="$INDEX"
+          if [ -n "$PARENT" ]; then
+            git read-tree "$PARENT"
           else
-            gh release create catalog-latest \
-              --prerelease \
-              --title "Catalog latest" \
-              --notes "Mutable attested discovery channel. Each entry selects one immutable catalog release." \
-              "$DOCUMENT"
+            git read-tree --empty
+            git update-index --add \
+              --cacheinfo "100644,$(git hash-object -w "$README"),README.md"
+          fi
+          git update-index --add \
+            --cacheinfo "100644,$(git hash-object -w "$DOCUMENT"),${CHANNEL_FILE}"
+          TREE="$(git write-tree)"
+          MESSAGE="catalog: publish channel sequence ${SEQUENCE} for ${TAG}"
+          if [ -n "$PARENT" ]; then
+            COMMIT="$(git commit-tree "$TREE" -p "$PARENT" -m "$MESSAGE")"
+          else
+            COMMIT="$(git commit-tree "$TREE" -m "$MESSAGE")"
+          fi
+          unset GIT_INDEX_FILE
+
+          if ! git push origin "${COMMIT}:refs/heads/${CHANNEL_BRANCH}"; then
+            echo "::error::The push to ${CHANNEL_BRANCH} failed. A ruleset that denies GitHub Actions, or a commit that another run pushed first, causes this. Read the branch, then run this workflow again."
+            exit 1
           fi
 
       - name: Verify published catalog channel document
@@ -283,12 +342,15 @@ jobs:
           PUBLISHED_DIRECTORY=${RUNNER_TEMP}/catalog-channel-published
           rm -rf "$PUBLISHED_DIRECTORY"
           mkdir -p "$PUBLISHED_DIRECTORY"
-          gh release download catalog-latest --pattern 'catalog-latest.json' --dir "$PUBLISHED_DIRECTORY"
-          cmp "${{ steps.channel.outputs.document }}" "$PUBLISHED_DIRECTORY/catalog-latest.json"
-          test "$(jq -er .sequence "$PUBLISHED_DIRECTORY/catalog-latest.json")" = "${{ steps.channel.outputs.sequence }}"
-          test "$(jq -er .tag "$PUBLISHED_DIRECTORY/catalog-latest.json")" = "${{ steps.change.outputs.tag }}"
+          git fetch --no-tags --depth=1 origin \
+            "+refs/heads/${CHANNEL_BRANCH}:refs/remotes/origin/${CHANNEL_BRANCH}"
+          git show "refs/remotes/origin/${CHANNEL_BRANCH}:${CHANNEL_FILE}" \
+            > "${PUBLISHED_DIRECTORY}/${CHANNEL_FILE}"
+          cmp "${{ steps.channel.outputs.document }}" "${PUBLISHED_DIRECTORY}/${CHANNEL_FILE}"
+          test "$(jq -er .sequence "${PUBLISHED_DIRECTORY}/${CHANNEL_FILE}")" = "${{ steps.channel.outputs.sequence }}"
+          test "$(jq -er .tag "${PUBLISHED_DIRECTORY}/${CHANNEL_FILE}")" = "${{ steps.change.outputs.tag }}"
           gh attestation verify \
-            "$PUBLISHED_DIRECTORY/catalog-latest.json" \
+            "${PUBLISHED_DIRECTORY}/${CHANNEL_FILE}" \
             --repo "$GITHUB_REPOSITORY" \
             --signer-workflow "$GITHUB_REPOSITORY/.github/workflows/catalog-generation.yaml" \
             --deny-self-hosted-runners

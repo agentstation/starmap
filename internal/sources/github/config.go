@@ -15,7 +15,7 @@ const (
 	// DefaultRepository is the public Starmap catalog repository.
 	DefaultRepository = "agentstation/starmap"
 
-	// DefaultChannel is the public discovery channel release.
+	// DefaultChannel is the public discovery channel branch.
 	DefaultChannel = artifact.ChannelName
 
 	// DefaultSignerWorkflow is the repository-relative path of the workflow
@@ -39,7 +39,9 @@ type Config struct {
 	// Repository is `CATALOG_SOURCE_REPOSITORY`, in `owner/name` form.
 	Repository string
 
-	// Channel is `CATALOG_SOURCE_CHANNEL`, the discovery release tag.
+	// Channel is `CATALOG_SOURCE_CHANNEL`, the branch that carries the
+	// channel document. The source reads that document from the repository
+	// contents endpoint at this ref.
 	Channel string
 
 	// SignerWorkflow is `CATALOG_SOURCE_SIGNER_WORKFLOW`.
@@ -85,7 +87,7 @@ func WithRepository(repository string) Option {
 	return func(c *Config) { c.Repository = repository }
 }
 
-// WithChannel sets the discovery release tag.
+// WithChannel sets the branch ref that carries the channel document.
 func WithChannel(channel string) Option {
 	return func(c *Config) { c.Channel = channel }
 }

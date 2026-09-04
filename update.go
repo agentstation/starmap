@@ -3,6 +3,7 @@ package starmap
 import (
 	"context"
 	"slices"
+	"strings"
 	"time"
 
 	"github.com/agentstation/starmap/pkg/catalogs"
@@ -20,8 +21,36 @@ type CandidateEvidence struct {
 // Candidate is a complete immutable catalog prepared off to the side for one
 // atomic publication. Evidence does not alter catalog facts.
 type Candidate struct {
-	catalog  *catalogs.Catalog
-	evidence CandidateEvidence
+	catalog      *catalogs.Catalog
+	evidence     CandidateEvidence
+	generationID string
+}
+
+// CandidateOption configures one publication candidate above its catalog and
+// its evidence.
+type CandidateOption func(*Candidate) error
+
+// WithCandidateGenerationID binds the candidate to a generation ID that the
+// caller derives. A caller that composes a catalog from its own layers knows
+// the identity of the result. The update then publishes that identity instead
+// of a fresh one.
+//
+// The identity names one payload. A retained generation never changes. A later
+// candidate that carries the same identity and other bytes therefore fails
+// with a typed conflict from the catalog store. A caller that omits this
+// option gets one fresh UUID-shaped identity per publication.
+func WithCandidateGenerationID(id string) CandidateOption {
+	return func(candidate *Candidate) error {
+		trimmed := strings.TrimSpace(id)
+		if trimmed == "" {
+			return &errors.ValidationError{
+				Field:   "candidate.generation_id",
+				Message: "is required",
+			}
+		}
+		candidate.generationID = trimmed
+		return nil
+	}
 }
 
 // NewCandidate validates and returns a publication candidate. Custom acquisition
@@ -30,6 +59,7 @@ type Candidate struct {
 func NewCandidate(
 	catalog *catalogs.Catalog,
 	evidence CandidateEvidence,
+	opts ...CandidateOption,
 ) (*Candidate, error) {
 	if catalog == nil {
 		return nil, &errors.ValidationError{
@@ -59,13 +89,22 @@ func NewCandidate(
 			)
 		}
 	}
-	return &Candidate{
+	candidate := &Candidate{
 		catalog: catalog,
 		evidence: CandidateEvidence{
 			SourceObservations: append([]catalogs.SourceObservationLink(nil), evidence.SourceObservations...),
 			ReviewCandidates:   reviewCandidates,
 		},
-	}, nil
+	}
+	for _, opt := range opts {
+		if opt == nil {
+			continue
+		}
+		if err := opt(candidate); err != nil {
+			return nil, err
+		}
+	}
+	return candidate, nil
 }
 
 // UpdateFunc builds and validates a complete candidate while Client.Update
@@ -118,7 +157,7 @@ func (c *Client) Update(ctx context.Context, update UpdateFunc) (Publication, er
 	if candidate == nil {
 		return Publication{}, nil
 	}
-	return c.commitAndPublish(ctx, candidate.catalog, candidate.evidence)
+	return c.commitAndPublish(ctx, candidate.catalog, candidate.evidence, candidate.generationID)
 }
 
 // Activate validates, durably commits, and atomically activates an immutable

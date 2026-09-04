@@ -7,8 +7,46 @@ and [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+### Fixed
+
+- The catalog discovery channel moves from the `catalog-latest` release to the
+  `catalog/v1` branch, and its document is now `channel.json`. This repository
+  enables GitHub immutable releases, which freeze a release at creation. A
+  frozen release accepts no asset replacement and no asset deletion, so the
+  publisher could not advance the pointer.
+- Scheduled run 33855316906 created its immutable content release. It then
+  failed at `gh release upload catalog-latest --clobber` with
+  `HTTP 422: Cannot delete asset from an immutable release`. The channel stuck
+  at its first sequence. The content now stays immutable in a
+  `catalog-<digest>` release, and the pointer stays mutable on a branch.
+- A connected runtime with a catalog store now serves the generation ID that
+  its retained layers derive. The durable commit previously replaced that
+  identity with a fresh one. A served generation ID then named bytes that no
+  store held. An in-memory runtime and a durable runtime now report one
+  identity for one set of layers. A restart reports that identity again.
+- A derived effective generation ID now separates the upstream identity from
+  the local digest with `.local.` instead of `+local.`. A published identity
+  travels as one URL path segment. The remote catalog protocol accepts only
+  letters, digits, dot, dash, and underscore there.
+- A durable runtime without an upstream layer now derives its identity from
+  the root generation. Its restart baseline is the generation that the
+  previous run committed, so a derivation from that identity nested one more
+  suffix and committed one more generation on every restart.
+
+### Added
+
+- `starmap.WithCandidateGenerationID` binds one publication candidate to a
+  generation ID that the caller derives. `Client.Update` publishes that
+  identity. A candidate without the option still gets one fresh identity.
+
 ### Changed
 
+- The GitHub catalog source reads the channel document from the repository
+  contents endpoint at the channel branch ref. The request is conditional. The
+  source no longer reads a channel release or its asset. One changed discovery
+  cycle therefore drops from eight requests to seven.
+- `STARMAP_CATALOG_SOURCE_CHANNEL` now names a branch ref. Its default is
+  `catalog/v1`.
 - Public catalog concepts now use one concept-owned package tree under
   `pkg/catalogs`. Evidence, projection, storage, artifact, and remote protocol
   behavior have separate child packages.
@@ -18,6 +56,10 @@ and [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ### BREAKING CHANGES
 
+- The catalog channel is a branch, and the source keeps no path to the retired
+  `catalog-latest` release. The channel protocol stays at v1, because no
+  external consumer reads it yet. A caller that pinned `catalog-latest` must
+  set `STARMAP_CATALOG_SOURCE_CHANNEL` to `catalog/v1`.
 - Follow the [v0.5.0 migration guide](docs/MIGRATING_TO_V0.5.md). The release
   removes `pkg/catalogmeta`, `pkg/catalogstore`, `pkg/catalogartifact`, and
   `pkg/catalogremote` without wrappers or compatibility aliases.

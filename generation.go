@@ -67,15 +67,20 @@ const (
 	customUpdateSourceID       = catalogevidence.SourceID("custom_update")
 )
 
+// commitAndPublish composes one generation and commits it. An empty
+// generationID mints a fresh identity. A caller-derived identity publishes
+// unchanged, so a composed catalog keeps the identity that its composer
+// already published in memory.
 func (c *Client) commitAndPublish(
 	ctx context.Context,
 	published *catalogs.Catalog,
 	evidence CandidateEvidence,
+	generationID string,
 ) (Publication, error) {
 	if err := c.requireWritableCatalogStore(); err != nil {
 		return Publication{}, err
 	}
-	generation, err := c.newGeneration(published, evidence)
+	generation, err := c.newGeneration(published, evidence, generationID)
 	if err != nil {
 		return Publication{}, err
 	}
@@ -204,18 +209,25 @@ func (c *Client) publishCommittedGenerationIdentity(generation catalogs.Generati
 	})
 }
 
+// newGeneration composes one validated generation. The requested identity
+// wins when the caller derived one. An empty request mints a fresh
+// UUID-shaped identity, so every other publication path keeps its behavior.
 func (c *Client) newGeneration(
 	published *catalogs.Catalog,
 	evidence CandidateEvidence,
+	requestedGenerationID string,
 ) (catalogs.Generation, error) {
 	payload, err := catalogs.EncodeCatalogPayload(published)
 	if err != nil {
 		return catalogs.Generation{}, err
 	}
 	descriptor := catalogs.DescribeCatalogPayload(payload)
-	generationID, err := c.NextID()
-	if err != nil {
-		return catalogs.Generation{}, err
+	generationID := requestedGenerationID
+	if generationID == "" {
+		generationID, err = c.NextID()
+		if err != nil {
+			return catalogs.Generation{}, err
+		}
 	}
 	syncRunID, err := c.NextID()
 	if err != nil {

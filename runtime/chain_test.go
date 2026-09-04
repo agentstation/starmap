@@ -164,7 +164,7 @@ func TestDerivedEffectiveGenerationNeverReusesTheUpstreamIdentity(t *testing.T) 
 	if first == second {
 		t.Fatalf("two payloads share the identity %q", first)
 	}
-	if !strings.HasPrefix(first, upstream+"+local.") {
+	if !strings.HasPrefix(first, upstream+effectiveGenerationLocalSuffix) {
 		t.Fatalf("derived identity = %q, want the upstream identity plus a local suffix",
 			first)
 	}
@@ -172,7 +172,25 @@ func TestDerivedEffectiveGenerationNeverReusesTheUpstreamIdentity(t *testing.T) 
 		upstream, "sha256:aaaaaaaaaaaaaaaabbbb"); repeated != first {
 		t.Fatalf("second derivation = %q, want the stable identity %q", repeated, first)
 	}
-	if empty := deriveEffectiveGenerationID(upstream, ""); empty != upstream+"+local.local" {
+	if empty := deriveEffectiveGenerationID(upstream, ""); empty != upstream+effectiveGenerationLocalSuffix+"local" {
 		t.Fatalf("derived identity with no digest = %q, want a named fallback", empty)
+	}
+}
+
+// TestEffectiveGenerationRootStripsOneLocalSuffix proves that the root of a
+// derived identity is the identity it started from. A plain identity is its
+// own root, so a second derivation from a committed identity never nests.
+func TestEffectiveGenerationRootStripsOneLocalSuffix(t *testing.T) {
+	const upstream = "catalog-20260830T083213Z-ad5d2a45e490"
+	derived := deriveEffectiveGenerationID(upstream, "sha256:aaaaaaaaaaaaaaaabbbb")
+	if root := effectiveGenerationRoot(derived); root != upstream {
+		t.Fatalf("root of %q = %q, want %q", derived, root, upstream)
+	}
+	if root := effectiveGenerationRoot(upstream); root != upstream {
+		t.Fatalf("root of a plain identity = %q, want %q", root, upstream)
+	}
+	nested := deriveEffectiveGenerationID(effectiveGenerationRoot(derived), "sha256:cccccccccccccccc")
+	if strings.Count(nested, effectiveGenerationLocalSuffix) != 1 {
+		t.Fatalf("second derivation = %q, want one local suffix", nested)
 	}
 }

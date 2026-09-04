@@ -35,7 +35,8 @@ const (
 	// SourceRepository names the GitHub repository that holds the channel.
 	SourceRepository = Prefix + "CATALOG_SOURCE_REPOSITORY"
 
-	// SourceChannel names the mutable attested discovery channel.
+	// SourceChannel names the branch that carries the attested channel
+	// document.
 	SourceChannel = Prefix + "CATALOG_SOURCE_CHANNEL"
 
 	// SourceSignerWorkflow pins the accepted build provenance.

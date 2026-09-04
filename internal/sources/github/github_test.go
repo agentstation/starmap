@@ -15,19 +15,18 @@ import (
 )
 
 // requestsPerChangedCycle is the request budget of one cycle that promotes a
-// release. The cycle reads the channel release, the channel document, and the
-// channel provenance. It then reads the immutable release, its three assets,
-// and the archive provenance.
-const requestsPerChangedCycle = 8
+// release. The cycle reads the channel document from the channel branch and
+// the channel provenance. It then reads the immutable release, its three
+// assets, and the archive provenance.
+const requestsPerChangedCycle = 7
 
 // requestsPerUnchangedCycle is the request budget of one cycle that finds an
 // unchanged channel.
 const requestsPerUnchangedCycle = 1
 
 // requestsPerChannelRead is the request budget a cycle spends before it
-// reaches the immutable release: the channel release, the channel document,
-// and the channel provenance.
-const requestsPerChannelRead = 3
+// reaches the immutable release: the channel document and its provenance.
+const requestsPerChannelRead = 2
 
 // progressRecorder collects transfer progress reports.
 type progressRecorder struct {
@@ -63,11 +62,11 @@ func (p *progressRecorder) received() int64 {
 	return p.bytes
 }
 
-func TestGitHubSourceVerifiesCatalogLatest(t *testing.T) {
+func TestGitHubSourceVerifiesTheChannelBranch(t *testing.T) {
 	t.Parallel()
 
 	server := newFixtureServer(t)
-	published := publishCatalog(t, server, "catalog-latest-generation", testChannelSequence)
+	published := publishCatalog(t, server, "channel-branch-generation", testChannelSequence)
 	attester := &recordingAttester{}
 	progress := newProgressRecorder()
 	source := newTestSource(t, server,
@@ -292,10 +291,7 @@ func TestGitHubSourceRejectsAssetsThatMissTheChannelRecord(t *testing.T) {
 			if err != nil {
 				t.Fatalf("encode channel: %v", err)
 			}
-			server.publish(releaseFixture{
-				Tag:    artifact.ChannelName,
-				Assets: []assetFixture{{Name: artifact.ChannelFilename, Body: encoded}},
-			})
+			server.publishChannel(encoded)
 			attester := &recordingAttester{}
 			source := newTestSource(t, server, WithAttester(attester.attest()))
 
@@ -527,5 +523,170 @@ func TestGitHubSourceDeclaresItsContract(t *testing.T) {
 	}
 	if err := source.Cleanup(); err != nil {
 		t.Fatalf("Cleanup: %v", err)
+	}
+}
+
+// The publisher keys the release tag and the channel catalog digest by the
+// facts-only semantic checksum. The exact payload checksum in the generation
+// manifest differs from it. A consumer that compares the payload checksum to
+// the channel therefore rejects every published release.
+func TestGitHubSourceReportsTheSemanticCatalogDigest(t *testing.T) {
+	t.Parallel()
+
+	server := newFixtureServer(t)
+	published := publishCatalog(t, server, "semantic-digest-generation", testChannelSequence)
+	attester := &recordingAttester{}
+	source := newTestSource(t, server, WithAttester(attester.attest()))
+
+	want := semanticChecksum(t, published.Generation)
+	if want == published.Generation.Manifest.Payload.Checksum {
+		t.Fatal("fixture semantic checksum equals the payload checksum, the test proves nothing")
+	}
+	if artifact.ChecksumPrefix+published.Channel.CatalogDigest != want {
+		t.Fatalf("channel catalog digest = %s, want the semantic checksum %s",
+			published.Channel.CatalogDigest, want)
+	}
+
+	release, err := source.ReadChannel(t.Context())
+	if err != nil {
+		t.Fatalf("ReadChannel: %v", err)
+	}
+	if release.CatalogDigest != want {
+		t.Fatalf("release catalog digest = %s, want %s", release.CatalogDigest, want)
+	}
+	if release.Tag != published.Tag {
+		t.Fatalf("release tag = %s, want %s", release.Tag, published.Tag)
+	}
+
+	target, err := source.RollbackTarget()
+	if err != nil {
+		t.Fatalf("RollbackTarget: %v", err)
+	}
+	if target.CatalogDigest != want {
+		t.Fatalf("rollback target digest = %s, want %s", target.CatalogDigest, want)
+	}
+}
+
+func TestGitHubSourceSkipsTheBodyWhenTheChannelIsUnchanged(t *testing.T) {
+	t.Parallel()
+
+	server := newFixtureServer(t)
+	publishCatalog(t, server, "unchanged-generation", testChannelSequence)
+	attester := &recordingAttester{}
+	source := newTestSource(t, server, WithAttester(attester.attest()))
+
+	if _, err := source.ReadChannel(t.Context()); err != nil {
+		t.Fatalf("ReadChannel: %v", err)
+	}
+	if got := server.channelBodyCount(); got != 1 {
+		t.Fatalf("channel document bodies = %d, want 1 after the first read", got)
+	}
+
+	// The stored validator makes the next check conditional. A 304 answers
+	// with no body, so the poll spends one request and no transfer.
+	before := server.requestCount()
+	status, err := source.Changed(t.Context())
+	if err != nil {
+		t.Fatalf("Changed: %v", err)
+	}
+	if status.Changed {
+		t.Fatal("Changed reported a moved channel after a verified read")
+	}
+	if got := server.requestCount() - before; got != requestsPerUnchangedCycle {
+		t.Fatalf("unchanged cycle requests = %d, want %d", got, requestsPerUnchangedCycle)
+	}
+	if got := server.channelBodyCount(); got != 1 {
+		t.Fatalf("channel document bodies = %d, want 1 after a 304", got)
+	}
+}
+
+func TestGitHubSourceAdvancesWithTheChannelSequence(t *testing.T) {
+	t.Parallel()
+
+	server := newFixtureServer(t)
+	first := publishCatalog(t, server, "first-generation", testChannelSequence)
+	attester := &recordingAttester{}
+	source := newTestSource(t, server, WithAttester(attester.attest()))
+
+	release, err := source.ReadChannel(t.Context())
+	if err != nil {
+		t.Fatalf("ReadChannel: %v", err)
+	}
+	if release.Tag != first.Tag || release.Sequence != testChannelSequence {
+		t.Fatalf("release = %s at sequence %d, want %s at %d",
+			release.Tag, release.Sequence, first.Tag, testChannelSequence)
+	}
+
+	// The publisher promotes a later generation and the validator moves.
+	next := publishCatalog(t, server, "next-generation", testChannelSequence+1)
+	server.setChannelETag(testETag + "-moved")
+
+	status, err := source.Changed(t.Context())
+	if err != nil {
+		t.Fatalf("Changed: %v", err)
+	}
+	if !status.Changed {
+		t.Fatal("Changed reported an unmoved channel after a promotion")
+	}
+	release, err = source.ReadChannel(t.Context())
+	if err != nil {
+		t.Fatalf("ReadChannel after promotion: %v", err)
+	}
+	if release.Tag != next.Tag || release.Sequence != testChannelSequence+1 {
+		t.Fatalf("release = %s at sequence %d, want %s at %d",
+			release.Tag, release.Sequence, next.Tag, testChannelSequence+1)
+	}
+	target, err := source.RollbackTarget()
+	if err != nil {
+		t.Fatalf("RollbackTarget: %v", err)
+	}
+	if target.Tag != next.Tag {
+		t.Fatalf("rollback target = %q, want the promoted release %q", target.Tag, next.Tag)
+	}
+}
+
+func TestGitHubSourceResetsTheStateWhenTheChannelChanges(t *testing.T) {
+	t.Parallel()
+
+	server := newFixtureServer(t)
+	publishCatalog(t, server, "settled-generation", testChannelSequence)
+	attester := &recordingAttester{}
+	directory := t.TempDir()
+	settled, err := New(
+		WithAPIBaseURL(server.url()),
+		WithRepository(testRepository),
+		WithStateDirectory(directory),
+		WithAttester(attester.attest()),
+	)
+	if err != nil {
+		t.Fatalf("New: %v", err)
+	}
+	if _, err := settled.ReadChannel(t.Context()); err != nil {
+		t.Fatalf("ReadChannel: %v", err)
+	}
+
+	// An operator points the source at a second branch that starts its own
+	// sequence at one. A new channel is a new state, so the earlier floor and
+	// the earlier validator never reject it.
+	const renamed = artifact.ChannelName + "-canary"
+	server.setChannelRef(renamed)
+	restarted := publishCatalog(t, server, "restarted-generation", 1)
+	moved, err := New(
+		WithAPIBaseURL(server.url()),
+		WithRepository(testRepository),
+		WithStateDirectory(directory),
+		WithChannel(renamed),
+		WithAttester(attester.attest()),
+	)
+	if err != nil {
+		t.Fatalf("New: %v", err)
+	}
+	release, err := moved.ReadChannel(t.Context())
+	if err != nil {
+		t.Fatalf("ReadChannel on the renamed channel: %v", err)
+	}
+	if release.Tag != restarted.Tag || release.Sequence != 1 {
+		t.Fatalf("release = %s at sequence %d, want %s at 1",
+			release.Tag, release.Sequence, restarted.Tag)
 	}
 }

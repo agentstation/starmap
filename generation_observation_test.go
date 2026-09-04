@@ -36,6 +36,7 @@ func TestGenerationLinksExactSourceObservationMetadata(t *testing.T) {
 	generation, err := client.newGeneration(
 		published,
 		CandidateEvidence{SourceObservations: []catalogs.SourceObservationLink{observation.Link()}},
+		"",
 	)
 	if err != nil {
 		t.Fatalf("newGeneration: %v", err)
@@ -78,6 +79,7 @@ func TestGenerationDerivesDegradedCompletenessFromObservations(t *testing.T) {
 	generation, err := generationTestClient(observedAt).newGeneration(
 		catalog,
 		CandidateEvidence{SourceObservations: []catalogs.SourceObservationLink{observation.Link()}},
+		"",
 	)
 	if err != nil {
 		t.Fatalf("newGeneration: %v", err)

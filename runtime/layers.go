@@ -12,6 +12,7 @@ import (
 	"github.com/agentstation/starmap/internal/constants"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/errors"
+	"github.com/agentstation/starmap/pkg/logging"
 )
 
 const (
@@ -115,20 +116,32 @@ func (l *layerSet) build(baseline starmap.CatalogState) (starmap.CatalogState, e
 		layer := l.providers[id]
 		// A retained provider layer holds one provider observation. It carries
 		// serving records that name an authored model of the baseline, so the
-		// layer alone resolves no canonical authorship. The final build below
-		// validates the merged result.
+		// layer alone resolves no canonical authorship. An offering that names
+		// no authored model of the merged result stays out of the effective
+		// catalog, because a published catalog holds linked offerings only.
 		observed, err := catalogs.DecodeSourceObservationPayload(layer.Payload)
 		if err != nil {
 			return starmap.CatalogState{}, errors.WrapResource(
 				"decode", "retained provider layer", string(id), err)
 		}
-		if err := builder.MergeWith(observed, catalogs.WithStrategy(catalogs.MergeEnrichEmpty)); err != nil {
+		linked, unresolved, err := linkProviderOfferings(builder, observed)
+		if err != nil {
+			return starmap.CatalogState{}, errors.WrapResource(
+				"link", "retained provider layer", string(id), err)
+		}
+		if err := builder.MergeWith(linked, catalogs.WithStrategy(catalogs.MergeEnrichEmpty)); err != nil {
 			return starmap.CatalogState{}, errors.WrapResource(
 				"merge", "retained provider layer", string(id), err)
 		}
 		if err := mergeAuthoredModels(builder, observed); err != nil {
 			return starmap.CatalogState{}, errors.WrapResource(
 				"merge", "retained authored models", string(id), err)
+		}
+		if unresolved > 0 {
+			logging.Info().
+				Str("provider_id", string(id)).
+				Int("unresolved_offerings", unresolved).
+				Msg("Provider offerings without a canonical model reference stay out of the effective catalog")
 		}
 	}
 
@@ -147,14 +160,24 @@ func (l *layerSet) build(baseline starmap.CatalogState) (starmap.CatalogState, e
 	state.PayloadChecksum = catalogs.DescribeCatalogPayload(payload).Checksum
 	state.Sequence = baseline.Sequence + l.sequence
 	// Local acquisition changes the served bytes, so the result is no longer
-	// the upstream generation. A reused upstream identity would let a
-	// downstream treat two different catalogs as one generation. The hop
-	// therefore derives its own identity from the upstream identity and the
-	// served digest. Only the layers decide that identity, so two rebuilds of
-	// the same layers keep one identity.
-	if l.source != nil && len(l.providers) > 0 {
-		state.GenerationID = deriveEffectiveGenerationID(
-			l.source.GenerationID, state.PayloadChecksum)
+	// the generation that the layers started from. A reused identity would let
+	// a downstream treat two different catalogs as one generation. The hop
+	// therefore derives its own identity from that identity and the served
+	// digest. The upstream layer supplies it, and the client baseline supplies
+	// it when the runtime retains no upstream layer. Only the layers decide the
+	// derived identity, so two rebuilds of the same layers keep one identity,
+	// and a durable commit publishes that same identity. A baseline that names
+	// no identity leaves the identity to the publication.
+	if len(l.providers) > 0 && state.GenerationID != "" {
+		upstream := state.GenerationID
+		if l.source == nil {
+			// Without an upstream layer the baseline is the generation that
+			// this runtime derived and committed before. A derivation from
+			// that identity would nest one more suffix on every restart, so
+			// the hop derives from the root identity again.
+			upstream = effectiveGenerationRoot(upstream)
+		}
+		state.GenerationID = deriveEffectiveGenerationID(upstream, state.PayloadChecksum)
 	}
 	return state, nil
 }
@@ -163,9 +186,18 @@ func (l *layerSet) build(baseline starmap.CatalogState) (starmap.CatalogState, e
 // identity. It keeps the identity short and still tells two payloads apart.
 const effectiveGenerationSuffixLength = 12
 
+// effectiveGenerationLocalSuffix separates the upstream identity from the
+// local digest of a derived identity.
+const effectiveGenerationLocalSuffix = ".local."
+
 // deriveEffectiveGenerationID returns the identity of a locally enriched
 // upstream generation. It never returns the upstream identity, because the
 // served payload differs from the upstream payload.
+//
+// A runtime with a catalog store publishes this identity, and a downstream
+// subscriber addresses it as one URL path segment. The suffix therefore stays
+// inside the remote protocol vocabulary of letters, digits, dot, dash, and
+// underscore.
 func deriveEffectiveGenerationID(upstream, checksum string) string {
 	fragment := strings.TrimPrefix(checksum, "sha256:")
 	if len(fragment) > effectiveGenerationSuffixLength {
@@ -174,7 +206,78 @@ func deriveEffectiveGenerationID(upstream, checksum string) string {
 	if fragment == "" {
 		fragment = "local"
 	}
-	return upstream + "+local." + fragment
+	return upstream + effectiveGenerationLocalSuffix + fragment
+}
+
+// effectiveGenerationRoot returns the identity that a derived identity started
+// from. An identity without a local suffix is its own root.
+func effectiveGenerationRoot(id string) string {
+	root, _, _ := strings.Cut(id, effectiveGenerationLocalSuffix)
+	return root
+}
+
+// linkProviderOfferings returns the provider records of one observation that
+// name an authored model. The authored models of the builder and of the
+// observation both count. An offering without a canonical link takes the link
+// of the same offering in the builder. A baseline link therefore survives a
+// provider reply that omits it. The result leaves out an offering that still
+// names no authored model and counts it. The effective catalog then publishes
+// without it, and no provider reply blocks a rebuild.
+func linkProviderOfferings(builder *catalogs.Builder, observed catalogs.Reader) (catalogs.Reader, int, error) {
+	authored := make(map[catalogs.ModelDefinitionID]struct{})
+	for _, record := range builder.AuthoredModels() {
+		authored[record.ID()] = struct{}{}
+	}
+	for _, record := range observed.AuthoredModels() {
+		authored[record.ID()] = struct{}{}
+	}
+	linked, err := catalogs.NewBuilderFrom(observed)
+	if err != nil {
+		return nil, 0, err
+	}
+	unresolved := 0
+	for _, provider := range linked.Providers().List() {
+		var baseline map[string]*catalogs.Model
+		if current, err := builder.Provider(provider.ID); err == nil {
+			baseline = current.Models
+		}
+		models := make(map[string]*catalogs.Model, len(provider.Models))
+		for modelID, model := range provider.Models {
+			if model == nil {
+				continue
+			}
+			offering := catalogs.DeepCopyModel(*model)
+			if !resolvesAuthoredModel(authored, offering.ModelRef) {
+				offering.ModelRef = ""
+				if prior := baseline[modelID]; prior != nil && resolvesAuthoredModel(authored, prior.ModelRef) {
+					offering.ModelRef = prior.ModelRef
+				}
+			}
+			if offering.ModelRef == "" {
+				unresolved++
+				continue
+			}
+			models[modelID] = &offering
+		}
+		provider.Models = models
+		if err := linked.SetProvider(provider); err != nil {
+			return nil, 0, err
+		}
+	}
+	return linked, unresolved, nil
+}
+
+// resolvesAuthoredModel reports whether a canonical reference is well formed
+// and names an authored model of the merged result.
+func resolvesAuthoredModel(authored map[catalogs.ModelDefinitionID]struct{}, ref catalogs.ModelDefinitionID) bool {
+	if ref == "" {
+		return false
+	}
+	if _, _, err := catalogs.ParseModelDefinitionID(ref); err != nil {
+		return false
+	}
+	_, found := authored[ref]
+	return found
 }
 
 // mergeAuthoredModels adds the authored records that a provider layer needs.

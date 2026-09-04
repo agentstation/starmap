@@ -1,13 +1,14 @@
 // Package github observes the attested public catalog channel of one GitHub
 // repository.
 //
-// Discovery reads the channel document from the mutable `catalog-latest`
-// release with a conditional request, so an unchanged channel costs one
-// request and no body. Verification runs before anything becomes active.
-// The source verifies the channel document attestation first. It then
-// verifies the immutable release that the document selects: every named
-// asset, its recorded checksum and size, and the build provenance of the
-// archive.
+// Discovery reads the channel document from the mutable `catalog/v1` branch
+// through the repository contents endpoint. The request carries the stored
+// validator, so an unchanged channel costs one request and no body.
+// Verification runs before
+// anything becomes active. The source verifies the channel document
+// attestation first. It then verifies the immutable release that the document
+// selects: every named asset, its recorded checksum and size, and the build
+// provenance of the archive.
 //
 // A document whose sequence moves backwards is a replay and the source
 // rejects it. A release whose provenance fails the trust policy never becomes
@@ -46,7 +47,10 @@ type Release struct {
 	// GenerationID is the catalog generation the release carries.
 	GenerationID string
 
-	// CatalogDigest is the catalog digest the release carries.
+	// CatalogDigest is the facts-only semantic digest of the catalog the
+	// release carries. The publisher keys the release tag and the channel
+	// document by this digest, not by the exact payload checksum that the
+	// generation manifest records.
 	CatalogDigest string
 
 	// PublishedAt is the publication time the channel recorded. It is zero
@@ -69,7 +73,7 @@ type Release struct {
 
 // ChannelStatus is the result of one conditional channel check.
 type ChannelStatus struct {
-	// Changed reports whether the channel release moved since the last
+	// Changed reports whether the channel document moved since the last
 	// verified read.
 	Changed bool
 
@@ -156,7 +160,7 @@ func (s *Source) Observe(ctx context.Context, _ ...sources.Option) (sources.Obse
 	})
 }
 
-// Changed reports whether the channel release moved since the last verified
+// Changed reports whether the channel document moved since the last verified
 // read. It sends one conditional request, and an unchanged channel returns no
 // body. It never advances the durable validator, because only a complete
 // verification may move the replay floor.
@@ -168,7 +172,8 @@ func (s *Source) Changed(ctx context.Context) (ChannelStatus, error) {
 		return ChannelStatus{}, err
 	}
 	refresh := s.client.newCycle()
-	answer, _, err := refresh.releaseByTag(ctx, s.config.Channel, state.ChannelETag)
+	answer, _, err := refresh.channelFile(
+		ctx, s.config.Channel, artifact.ChannelFilename, state.ChannelETag)
 	if err != nil {
 		return ChannelStatus{}, err
 	}
@@ -203,11 +208,11 @@ func (s *Source) ReadChannel(ctx context.Context) (Release, error) {
 		return Release{}, err
 	}
 	refresh := s.client.newCycle()
-	answer, channelRelease, err := refresh.releaseByTag(ctx, s.config.Channel, "")
+	answer, body, err := refresh.channelFile(ctx, s.config.Channel, artifact.ChannelFilename, "")
 	if err != nil {
 		return Release{}, err
 	}
-	document, err := s.readChannelDocument(ctx, refresh, channelRelease)
+	document, err := s.readChannelDocument(ctx, refresh, body)
 	if err != nil {
 		return Release{}, err
 	}
@@ -265,22 +270,14 @@ func (s *Source) ReadRelease(ctx context.Context, tag string) (Release, error) {
 	return s.readRelease(ctx, s.client.newCycle(), tag, nil)
 }
 
-// readChannelDocument downloads the channel document, verifies its
-// attestation, and decodes it. Verification precedes decoding, so unverified
+// readChannelDocument verifies the provenance that signs the channel document
+// bytes and then decodes them. It verifies before it decodes, so unverified
 // bytes never reach the channel schema.
 func (s *Source) readChannelDocument(
 	ctx context.Context,
 	refresh *cycle,
-	release releaseDocument,
+	body []byte,
 ) (artifact.Channel, error) {
-	asset, err := release.asset(artifact.ChannelFilename)
-	if err != nil {
-		return artifact.Channel{}, err
-	}
-	body, err := refresh.assetBytes(ctx, asset)
-	if err != nil {
-		return artifact.Channel{}, err
-	}
 	if _, err := refresh.verifyBytes(ctx, body); err != nil {
 		return artifact.Channel{}, errors.WrapResource(
 			"verify", "catalog channel document", s.config.Channel, err)
@@ -315,10 +312,14 @@ func (s *Source) readRelease(
 	if err != nil {
 		return Release{}, err
 	}
+	digest, err := generation.SemanticChecksum()
+	if err != nil {
+		return Release{}, err
+	}
 	return Release{
 		Tag:           tag,
 		GenerationID:  generation.Manifest.GenerationID,
-		CatalogDigest: generation.Manifest.Payload.Checksum,
+		CatalogDigest: digest,
 		Generation:    generation,
 		Provenance:    verifier.result,
 		Budget:        refresh.budgetResult(),
