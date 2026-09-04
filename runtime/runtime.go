@@ -351,7 +351,24 @@ func (r *Runtime) commit(ctx context.Context, state starmap.CatalogState, epoch 
 		if err := r.lease.fence(epoch); err != nil {
 			return nil, err
 		}
-		return starmap.NewCandidate(state.Catalog, starmap.CandidateEvidence{})
+		if state.GenerationID == "" {
+			// A baseline that names no identity leaves the client to mint one.
+			return starmap.NewCandidate(state.Catalog, starmap.CandidateEvidence{})
+		}
+		// The retained layers decide the identity of the effective catalog. A
+		// rebuild that derives the committed identity again also serves the
+		// committed bytes, so it commits no second generation.
+		if state.GenerationID == r.client.CurrentGenerationID() {
+			return nil, nil
+		}
+		// The durable generation keeps the derived identity. An in-memory
+		// runtime and a runtime with a catalog store then report one identity
+		// for one set of layers, and a restart reports it again.
+		return starmap.NewCandidate(
+			state.Catalog,
+			starmap.CandidateEvidence{},
+			starmap.WithCandidateGenerationID(state.GenerationID),
+		)
 	})
 	if err != nil {
 		return starmap.CatalogState{}, err

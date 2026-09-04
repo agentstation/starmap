@@ -55,7 +55,9 @@ func (r ReleaseRef) Empty() bool {
 
 // stateStore reads and writes the durable state of one repository channel.
 type stateStore struct {
-	path string
+	path       string
+	repository string
+	channel    string
 }
 
 // newStateStore resolves the state file of one configuration. The file name
@@ -68,12 +70,18 @@ func newStateStore(config Config) (*stateStore, error) {
 	}
 	key := sha256.Sum256([]byte(config.Repository + "\x00" + config.Channel))
 	return &stateStore{
-		path: filepath.Join(directory, hex.EncodeToString(key[:])+stateFileSuffix),
+		path:       filepath.Join(directory, hex.EncodeToString(key[:])+stateFileSuffix),
+		repository: config.Repository,
+		channel:    config.Channel,
 	}, nil
 }
 
 // load reads the durable state. An absent file returns the zero state, so a
-// cold instance starts with no validator and no sequence floor.
+// cold instance starts with no validator and no sequence floor. A file that
+// names another repository or another channel also returns the zero state. The
+// sequence floor and the validator of one channel say nothing about another
+// channel. A renamed channel therefore starts cold instead of rejecting its
+// first document as a replay.
 func (s *stateStore) load() (State, error) {
 	data, err := os.ReadFile(s.path)
 	if os.IsNotExist(err) {
@@ -92,6 +100,9 @@ func (s *stateStore) load() (State, error) {
 	if state.SchemaVersion != StateSchemaVersion {
 		// A state file from another schema carries no usable floor. Start
 		// cold rather than trust a document this build cannot read.
+		return State{}, nil
+	}
+	if state.Repository != s.repository || state.Channel != s.channel {
 		return State{}, nil
 	}
 	return state, nil

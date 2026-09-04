@@ -135,9 +135,9 @@ const (
     // DefaultSourceRepository is the public catalog repository.
     DefaultSourceRepository = "agentstation/starmap"
 
-    // DefaultSourceChannel is the mutable release that names the current
+    // DefaultSourceChannel is the mutable branch that names the current
     // immutable catalog release.
-    DefaultSourceChannel = "catalog-latest"
+    DefaultSourceChannel = "catalog/v1"
 
     // DefaultSourcePollInterval is how often the runtime checks the channel.
     DefaultSourcePollInterval = time.Hour
@@ -654,7 +654,7 @@ WithSourceAliases declares the other stable identities that name this same runti
 func WithSourceChannel(channel string) Option
 ```
 
-WithSourceChannel names the mutable release that selects the current catalog.
+WithSourceChannel names the mutable branch that selects the current catalog.
 
 <a name="WithSourceMaxAge"></a>
 ### func [WithSourceMaxAge](<https://github.com/agentstation/starmap/blob/main/runtime/options.go#L291>)
@@ -1006,7 +1006,7 @@ type SourcePolicy struct {
     // Repository names the catalog repository for the public and github kinds.
     Repository string
 
-    // Channel names the mutable release that selects the current catalog.
+    // Channel names the mutable branch that selects the current catalog.
     Channel string
 
     // SignerWorkflow pins the build provenance the source accepts.

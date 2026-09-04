@@ -1316,7 +1316,7 @@ command flag that carries the same grammar and the same value.
 | `STARMAP_CATALOG_SOURCE_URL` | `--catalog-source-url` | empty |
 | `STARMAP_CATALOG_SOURCE_API_KEY` | `--catalog-source-api-key` | empty |
 | `STARMAP_CATALOG_SOURCE_REPOSITORY` | `--catalog-source-repository` | `agentstation/starmap` |
-| `STARMAP_CATALOG_SOURCE_CHANNEL` | `--catalog-source-channel` | `catalog-latest` |
+| `STARMAP_CATALOG_SOURCE_CHANNEL` | `--catalog-source-channel` | `catalog/v1` |
 | `STARMAP_CATALOG_SOURCE_SIGNER_WORKFLOW` | `--catalog-source-signer-workflow` | `.github/workflows/catalog-generation.yaml` |
 | `STARMAP_CATALOG_SOURCE_TOKEN` | `--catalog-source-token` | empty |
 | `STARMAP_CATALOG_SOURCE_POLL_INTERVAL` | `--catalog-source-poll-interval` | `1h` |
@@ -1339,11 +1339,25 @@ Starport reads the same suffixes under the `STARPORT_` prefix with the same
 defaults. The aliases value is a comma-separated list. It accepts at most 16
 entries of at most 128 bytes each.
 
+The channel value names a branch, not a release. The source reads the channel
+document from the repository contents endpoint at that ref with the media type
+`application/vnd.github.raw+json`, so one request returns the file bytes. GitHub
+freezes an immutable release at creation, so a mutable pointer cannot live on
+one.
+
 GitHub serves an anonymous client 60 REST requests per hour per address. One
-changed cycle spends eight requests, and one unchanged cycle spends one. Several
-runtimes on one address can exhaust that budget between polls. A
+changed cycle spends seven requests, and one unchanged cycle spends one.
+Several runtimes on one address can exhaust that budget between polls. A
 `STARMAP_CATALOG_SOURCE_TOKEN` value raises the budget to the authenticated
 GitHub limit. The runtime keeps the token out of status, logs, and errors.
+
+The source sends the stored entity tag on every poll, and an unchanged channel
+answers `304 Not Modified` with no body. GitHub exempts a `304` from the primary
+rate limit only when the request carries an `Authorization` header. With
+`STARMAP_CATALOG_SOURCE_TOKEN` a `304` poll therefore costs nothing. Without a
+token the same poll still spends one request of the anonymous 60 per hour, which
+is the count above. The conditional request stays worthwhile in both cases,
+because it saves the document body.
 
 An acquisition interval of zero means one startup pass and no periodic work. A
 false `STARMAP_CATALOG_ACQUISITION_ENABLED` value disables every automatic

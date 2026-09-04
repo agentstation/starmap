@@ -160,14 +160,24 @@ func (l *layerSet) build(baseline starmap.CatalogState) (starmap.CatalogState, e
 	state.PayloadChecksum = catalogs.DescribeCatalogPayload(payload).Checksum
 	state.Sequence = baseline.Sequence + l.sequence
 	// Local acquisition changes the served bytes, so the result is no longer
-	// the upstream generation. A reused upstream identity would let a
-	// downstream treat two different catalogs as one generation. The hop
-	// therefore derives its own identity from the upstream identity and the
-	// served digest. Only the layers decide that identity, so two rebuilds of
-	// the same layers keep one identity.
-	if l.source != nil && len(l.providers) > 0 {
-		state.GenerationID = deriveEffectiveGenerationID(
-			l.source.GenerationID, state.PayloadChecksum)
+	// the generation that the layers started from. A reused identity would let
+	// a downstream treat two different catalogs as one generation. The hop
+	// therefore derives its own identity from that identity and the served
+	// digest. The upstream layer supplies it, and the client baseline supplies
+	// it when the runtime retains no upstream layer. Only the layers decide the
+	// derived identity, so two rebuilds of the same layers keep one identity,
+	// and a durable commit publishes that same identity. A baseline that names
+	// no identity leaves the identity to the publication.
+	if len(l.providers) > 0 && state.GenerationID != "" {
+		upstream := state.GenerationID
+		if l.source == nil {
+			// Without an upstream layer the baseline is the generation that
+			// this runtime derived and committed before. A derivation from
+			// that identity would nest one more suffix on every restart, so
+			// the hop derives from the root identity again.
+			upstream = effectiveGenerationRoot(upstream)
+		}
+		state.GenerationID = deriveEffectiveGenerationID(upstream, state.PayloadChecksum)
 	}
 	return state, nil
 }
@@ -176,9 +186,18 @@ func (l *layerSet) build(baseline starmap.CatalogState) (starmap.CatalogState, e
 // identity. It keeps the identity short and still tells two payloads apart.
 const effectiveGenerationSuffixLength = 12
 
+// effectiveGenerationLocalSuffix separates the upstream identity from the
+// local digest of a derived identity.
+const effectiveGenerationLocalSuffix = ".local."
+
 // deriveEffectiveGenerationID returns the identity of a locally enriched
 // upstream generation. It never returns the upstream identity, because the
 // served payload differs from the upstream payload.
+//
+// A runtime with a catalog store publishes this identity, and a downstream
+// subscriber addresses it as one URL path segment. The suffix therefore stays
+// inside the remote protocol vocabulary of letters, digits, dot, dash, and
+// underscore.
 func deriveEffectiveGenerationID(upstream, checksum string) string {
 	fragment := strings.TrimPrefix(checksum, "sha256:")
 	if len(fragment) > effectiveGenerationSuffixLength {
@@ -187,7 +206,14 @@ func deriveEffectiveGenerationID(upstream, checksum string) string {
 	if fragment == "" {
 		fragment = "local"
 	}
-	return upstream + "+local." + fragment
+	return upstream + effectiveGenerationLocalSuffix + fragment
+}
+
+// effectiveGenerationRoot returns the identity that a derived identity started
+// from. An identity without a local suffix is its own root.
+func effectiveGenerationRoot(id string) string {
+	root, _, _ := strings.Cut(id, effectiveGenerationLocalSuffix)
+	return root
 }
 
 // linkProviderOfferings returns the provider records of one observation that

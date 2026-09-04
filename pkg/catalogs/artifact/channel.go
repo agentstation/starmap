@@ -11,17 +11,17 @@ import (
 )
 
 const (
-	// ChannelName is the stable public discovery release that carries the
-	// channel document. It is a mutable pointer, not an immutable release.
-	ChannelName = "catalog-latest"
-	// ChannelFilename is the attested channel document asset name.
-	ChannelFilename = "catalog-latest.json"
+	// ChannelName is the repository branch that carries the channel
+	// document. It is a mutable pointer, not an immutable release. GitHub
+	// freezes an immutable release at creation, so the pointer cannot live
+	// on one.
+	ChannelName = "catalog/v1"
+	// ChannelFilename is the attested channel document path on that branch.
+	ChannelFilename = "channel.json"
 	// ChannelMediaType is the media type of the channel document.
 	ChannelMediaType = "application/vnd.agentstation.starmap.catalog-channel.v1+json"
 	// ChannelSchemaVersion is the current channel document schema version.
 	ChannelSchemaVersion uint64 = 1
-	// ChannelTitle is the title of the channel release.
-	ChannelTitle = "Catalog latest"
 
 	// ReleaseTagPrefix starts the canonical immutable release tag.
 	ReleaseTagPrefix = "catalog-"
@@ -61,7 +61,7 @@ const (
 
 // ReleaseTagNamespace reports the namespace that owns one release tag. It
 // recognizes the canonical namespace and both retired namespaces, so rollback
-// and readback keep every historical immutable release. The channel pointer is
+// and readback keep every historical immutable release. The channel branch is
 // not an immutable release and belongs to no namespace.
 func ReleaseTagNamespace(tag string) TagNamespace {
 	trimmed := strings.TrimSpace(tag)
@@ -113,9 +113,10 @@ type ChannelAsset struct {
 }
 
 // Channel is the mutable attested discovery document that selects one
-// immutable catalog release. The publisher advances its sequence and
-// `channel_updated_at` after every successful verification run. The immutable
-// identity fields change only when the publisher promotes a new release.
+// immutable catalog release. The publisher commits it to the channel branch
+// and advances its sequence and `channel_updated_at` after every successful
+// verification run. The immutable identity fields change only when the
+// publisher promotes a new release.
 type Channel struct {
 	SchemaVersion    uint64         `json:"schema_version"`
 	Name             string         `json:"channel"`
