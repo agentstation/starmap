@@ -15,9 +15,10 @@ import (
 	"github.com/agentstation/starmap/pkg/errors"
 )
 
-// The fixtures come from one public Starmap catalog release. The record
-// docs/proof/catalog-publisher/cat2.1-verifier-selection.md names the exact
-// capture commands. Every test reads these files and reaches no network.
+// The fixtures come from one public Starmap catalog release. The command
+// "gh attestation download starmap-catalog.tar.gz --repo agentstation/starmap"
+// captured the attestation lines, and "gh attestation trusted-root" captured
+// the trusted root. Every test reads these files and reaches no network.
 const (
 	// releaseTag is the captured public prerelease.
 	releaseTag = "catalog-semantic-f03df976d3164471b47fe874e23b4b45a13e2dc4d7dc2e83edfe55b43a353dc4"
