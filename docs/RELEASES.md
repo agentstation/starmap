@@ -97,11 +97,13 @@ mutable document therefore cannot live on a release. The content stays
 immutable and the pointer stays mutable, the way a moving tag names one fixed
 digest.
 
-A repository ruleset protects the branch and accepts an update from GitHub
-Actions alone. The catalog generation workflow is the only writer. A human
-never commits to it, and a hand-written commit breaks the sequence that every
-client uses to reject a replayed pointer. The workflow fails the run with an
-explicit message when GitHub rejects the push.
+A repository ruleset protects the branch against deletion and force push, so
+the pointer history only grows. GitHub rejects its own Actions app as a ruleset
+bypass actor, so the ruleset restricts no writer. The catalog generation
+workflow is the only intended writer. A human never commits to it, because a
+hand-written commit breaks the sequence that every client uses to reject a
+replayed pointer. The workflow fails the run with an explicit message when
+GitHub rejects the push.
 
 `artifact.ReleaseTagNamespace` reports the namespace of one tag. It recognizes
 the canonical namespace and both retired namespaces, so historical readback and
