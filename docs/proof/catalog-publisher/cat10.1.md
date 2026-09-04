@@ -206,6 +206,15 @@ The second hosted run failed in `internal/ciworkflow`, because
 test now expects 350. The first local rerun after the budget move covered the
 consumer script alone, not the Go test suite.
 
+The third hosted run failed in `acquisition`, where
+`TestSyncPublishesCompletedProvidersWhileAnotherBlocked` waited five seconds
+for the first window publication. A race run on the loaded hosted runner
+rebuilds the effective catalog over the embedded baseline in more than five
+seconds. The two hang guards in that test now allow thirty seconds. The guard
+never decides the order under test, because the blocked provider answers only
+when the test releases it. The package passed twice locally under race on two
+processors after the change.
+
 ## Commands run
 
 Every command ran with `GOTOOLCHAIN=go1.26.6` exported. Each row reports the
