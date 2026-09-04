@@ -22,8 +22,15 @@ cd "$ROOT" || exit 1
 
 STARPORT="${CATALOG_DISTRIBUTION_STARPORT_ROOT:-$ROOT/../starport}"
 WORKFLOW=.github/workflows/catalog-generation.yaml
-PROOF=docs/proof/catalog-publisher
-SELECTION="$PROOF/cat2.1-verifier-selection.md"
+# ENGINE is the attestation verifier module that CAT2.1 selected. The
+# campaign proof root recorded the comparison, and the closed campaign keeps
+# the selection here.
+ENGINE=github.com/sigstore/sigstore-go
+
+# CATALOG_NAMES lists every canonical catalog setting suffix that both Starmap
+# and Starport document. The CAT2 final review fixed the list, and the closed
+# campaign keeps it here.
+CATALOG_NAMES='SOURCE SOURCE_URL SOURCE_API_KEY SOURCE_REPOSITORY SOURCE_CHANNEL SOURCE_SIGNER_WORKFLOW SOURCE_TOKEN SOURCE_POLL_INTERVAL SOURCE_STARTUP_POLICY SOURCE_MAX_AGE SOURCE_MAX_HOPS ACQUISITION_ENABLED ACQUISITION_INTERVAL WORKSPACE_PATH STARTUP_SPREAD TRANSFER_IDLE_TIMEOUT TRANSFER_MAX_DURATION REFRESH_TIMEOUT'
 
 pass=0
 fail=0
@@ -97,13 +104,11 @@ file_has() {
 	grep -qsE -- "$pattern" "$file"
 }
 
-# selected_engine_required reads the CAT2.1 record and requires that go.mod
-# names the module the record selected.
+# selected_engine_required requires that go.mod names the selected engine and
+# that the attestation package imports it.
 selected_engine_required() {
-	local engine
-	# shellcheck disable=SC2016
-	engine="$(sed -nE 's/^Selected engine: `([^`]+)`.*/\1/p' "$SELECTION" | head -1)"
-	[ -n "$engine" ] && grep -qsF -- "$engine " go.mod
+	grep -qsF -- "$ENGINE " go.mod &&
+		grep -qsF -- "\"$ENGINE/pkg/verify\"" internal/attestation/attestation.go
 }
 
 # Publication: declarative workflow facts (CAT-D1, CAT-D9, CAT-D10, CAT-D12).
@@ -121,7 +126,7 @@ check CAT-V04 'the workflow serializes runs and cancels no run in progress' \
 	file_has 'cancel-in-progress: *false' "$WORKFLOW"
 starmap_test CAT-V05 'the channel document advances channel_updated_at without a new catalog generation' \
 	./pkg/catalogs/artifact/... TestChannelAdvancesUpdatedAtWithoutNewGeneration
-check CAT-V06 'go.mod names the attestation engine that the CAT2.1 record selected' \
+check CAT-V06 'go.mod names the selected attestation engine and the attestation package imports it' \
 	selected_engine_required
 starmap_test CAT-V07 'the GitHub source reads legacy catalog-semantic and catalog-payload releases' \
 	./internal/sources/... TestGitHubSourceReadsLegacyReleaseTags
@@ -206,13 +211,13 @@ starmap_test CAT-V37 'the GitHub source reports the rate-limit budget from limit
 starmap_test CAT-V38 'source server admission returns Retry-After on refusal' \
 	./internal/server/... TestSourceAdmissionReturnsRetryAfter
 
-# Evidence: declarative proof files.
-check CAT-V39 'the proof root records publisher run measurements' \
-	test -s "$PROOF/cat2-publisher-runs.json"
-check CAT-V40 'the proof root records network measurements' \
-	test -s "$PROOF/cat2-network-measurements.json"
-check CAT-V41 'the proof root records the independent audit' \
-	test -s "$PROOF/cat2-audit.md"
+# Evidence: the durable records of the measured bounds (CAT2 audit).
+check CAT-V39 'the scheduled generation document records the 60-minute transfer, 75-minute step, and 90-minute job bounds' \
+	bash -c "grep -qsF '60 minutes' docs/SCHEDULED_CATALOG_GENERATION.md && grep -qsF '75 minutes' docs/SCHEDULED_CATALOG_GENERATION.md && grep -qsF '90 minutes' docs/SCHEDULED_CATALOG_GENERATION.md"
+starmap_test CAT-V40 'the transfer policy defaults to the 60-minute maximum that the network measurements sized' \
+	./pkg/catalogs/remote TestTransferMaxDurationDefaultsToSixtyMinutes
+check CAT-V41 'the trust document records the policy choices that the audit ratified' \
+	grep -qs '^## Policy choices' docs/CATALOG_DISTRIBUTION_TRUST.md
 
 # Starport adoption: behavior tests plus declarative facts (CAT-D7, CAT-D13, CAT-D18).
 removed_variables_rejected() {
@@ -290,14 +295,10 @@ starport_check CAT-V57 'the Starport README names the central Starmap server top
 catalog_reference_complete() {
 	local guide="$STARPORT/docs/OPERATOR-GUIDE.md" example="$STARPORT/.env.example" suffix
 	[ -f "$guide" ] && [ -f "$example" ] || return 1
-	while read -r suffix; do
-		[ -n "$suffix" ] || continue
+	for suffix in $CATALOG_NAMES; do
 		grep -qsF -- "STARPORT_CATALOG_$suffix" "$guide" || return 1
 		grep -qsF -- "STARPORT_CATALOG_$suffix" "$example" || return 1
-	done < <(
-		# shellcheck disable=SC2016
-		sed -nE 's/^\| `CATALOG_([A-Z_]+)` \|.*/\1/p' "$PROOF/cat2-final-review.md"
-	)
+	done
 	! grep -qsE 'STARPORT_CATALOG_(REMOTE_URL|REMOTE_API_KEY|REMOTE_ACTIVATION_INTERVAL|REFRESH_ON_START|REFRESH_INTERVAL)' "$example"
 }
 starport_check CAT-V58 'the Starport operator guide and environment example document every canonical catalog name and the example holds no removed name' \
