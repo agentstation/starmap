@@ -46,7 +46,10 @@ type Release struct {
 	// GenerationID is the catalog generation the release carries.
 	GenerationID string
 
-	// CatalogDigest is the catalog digest the release carries.
+	// CatalogDigest is the facts-only semantic digest of the catalog the
+	// release carries. The publisher keys the release tag and the channel
+	// document by this digest, not by the exact payload checksum that the
+	// generation manifest records.
 	CatalogDigest string
 
 	// PublishedAt is the publication time the channel recorded. It is zero
@@ -315,10 +318,14 @@ func (s *Source) readRelease(
 	if err != nil {
 		return Release{}, err
 	}
+	digest, err := generation.SemanticChecksum()
+	if err != nil {
+		return Release{}, err
+	}
 	return Release{
 		Tag:           tag,
 		GenerationID:  generation.Manifest.GenerationID,
-		CatalogDigest: generation.Manifest.Payload.Checksum,
+		CatalogDigest: digest,
 		Generation:    generation,
 		Provenance:    verifier.result,
 		Budget:        refresh.budgetResult(),

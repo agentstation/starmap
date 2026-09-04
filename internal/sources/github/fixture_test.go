@@ -318,6 +318,17 @@ func testGeneration(t *testing.T, id string) catalogs.Generation {
 	return generation
 }
 
+// semanticChecksum returns the facts-only digest that the publisher keys a
+// release tag and a channel document by.
+func semanticChecksum(t *testing.T, generation catalogs.Generation) string {
+	t.Helper()
+	checksum, err := generation.SemanticChecksum()
+	if err != nil {
+		t.Fatalf("semantic checksum: %v", err)
+	}
+	return checksum
+}
+
 // releaseAssetsOf packages one generation as the three published assets.
 func releaseAssetsOf(t *testing.T, generation catalogs.Generation) []assetFixture {
 	t.Helper()
@@ -363,7 +374,7 @@ func publishCatalog(t *testing.T, server *fixtureServer, id string, sequence uin
 	t.Helper()
 	generation := testGeneration(t, id)
 	assets := releaseAssetsOf(t, generation)
-	digest := strings.TrimPrefix(generation.Manifest.Payload.Checksum, artifact.ChecksumPrefix)
+	digest := strings.TrimPrefix(semanticChecksum(t, generation), artifact.ChecksumPrefix)
 	tag, err := artifact.ReleaseTag(digest)
 	if err != nil {
 		t.Fatalf("release tag: %v", err)

@@ -1339,6 +1339,12 @@ Starport reads the same suffixes under the `STARPORT_` prefix with the same
 defaults. The aliases value is a comma-separated list. It accepts at most 16
 entries of at most 128 bytes each.
 
+GitHub serves an anonymous client 60 REST requests per hour per address. One
+changed cycle spends eight requests, and one unchanged cycle spends one. Several
+runtimes on one address can exhaust that budget between polls. A
+`STARMAP_CATALOG_SOURCE_TOKEN` value raises the budget to the authenticated
+GitHub limit. The runtime keeps the token out of status, logs, and errors.
+
 An acquisition interval of zero means one startup pass and no periodic work. A
 false `STARMAP_CATALOG_ACQUISITION_ENABLED` value disables every automatic
 acquisition. Scheduled acquisition also needs an injected acquirer, so a
