@@ -430,7 +430,113 @@ resolved with the channel bullets first, then the identity bullets.
 | pre-PR review on Opus 5 at high effort | clean in two runs |
 
 **The pull request.** Pull request #122 opened from the branch with auto-merge
-armed.
+armed. It squash-merged as `94feaad0` on 2026-09-04 at 18:50 UTC, and the
+main run 33908073617 passed.
+
+## The fifth release
+
+**The simulation.** The release test job ran locally at `94feaad0` with the
+pinned `agentstation/skills` revision under `.ci`, before the tag.
+`make embedded-catalog-budget-check` reported `passed` true, `make verify`
+reported `repository verification passed`, and `make release-check` reported
+`Ready for release`.
+
+**The tag and the result.** The annotated tag `v0.16.5` points at `94feaad0`.
+The tag push started release run 33910186412. The test, release, and Homebrew
+verification jobs passed, and the two recovery jobs skipped as designed.
+GitHub release `v0.16.5` published on 2026-09-04 at 19:47 UTC as an immutable
+release with fourteen assets. The image `ghcr.io/agentstation/starmap:v0.16.5`
+resolves to digest `sha256:1683bc0c…`.
+
+## The channel branch in production
+
+**The first run.** A dispatch of the catalog generation workflow on main
+`94feaad0` ran as 33909494616 and completed with success. It created the
+immutable release `catalog-5ec293b9…` with three assets. It then created the
+branch `catalog/v1` with one root commit, `0ea09720`, by `github-actions[bot]`.
+The commit message reads `catalog: publish channel sequence 1 for
+catalog-5ec293b9…`.
+
+**The document.** The `channel.json` at the head of the branch names channel
+`catalog/v1` at the first sequence. It names generation
+`89edfc64-7dff-47cc-ac38-2959ffef0a06` and tag `catalog-5ec293b9…`.
+`gh attestation verify` accepted the document with the repository and the
+signer workflow `catalog-generation.yaml` on `refs/heads/main`. The predicate
+is SLSA provenance v1.
+
+**The scheduled run before the merge.** Scheduled run 33894492087 started at
+16:19 UTC on `45b1ea03`. It failed the channel upload step for the fourth
+defect, as expected before the repair.
+
+## The clean consumer on `v0.16.5`
+
+A fresh module `cat11consumer` requires `github.com/agentstation/starmap
+v0.16.5` with an empty module cache. It opened the connected runtime against
+the branch channel and printed the runtime status.
+
+| Field | Value |
+| --- | --- |
+| `usable` | true |
+| `fallback` | false |
+| `generation_id` | `89edfc64-7dff-47cc-ac38-2959ffef0a06` |
+| `channel_freshness` | current |
+| `source_identity` | `public_github` |
+| `source_health` | ok |
+| models and providers | 596 and 17 |
+| `payload_checksum` | `sha256:bde0d3d6…` |
+
+The generation equals the channel document on the branch. The consumer
+activated sequence 1 with no fallback.
+
+## The container on `v0.16.5`
+
+**The invocation.** The `v0.16.5` image ran with the read-only root, a `tmpfs`
+at `/tmp`, and the durable volume at `/home/nonroot`. Before the first poll,
+the ready document reported the embedded generation with `fallback` true and
+`fallback_reason` `awaiting_source`.
+
+**The polls.** The source poll activated channel generation `89edfc64…` with
+`fallback` false and `source_health` ok. The acquisition poll then fetched the
+public DeepInfra models, skipped the other providers without credentials, and
+the served generation became `89edfc64…local.a4cfd706b5c8`. The logs hold no
+`Scheduled runtime work failed` line.
+
+**The restart.** A `docker restart` of the same container reported the same
+generation `89edfc64…local.a4cfd706b5c8` before its polls. The identity did
+not nest a second suffix, and the logs after the restart hold no failure line.
+This closes the generation identity finding.
+
+## Starport on `v0.16.5`
+
+**The pin.** Branch `codex/starmap-v0.16.5` from main `febbad3` carries one
+commit, `20a1f65`. It moves the pin to `v0.16.5`, renames the default source
+channel to `catalog/v1` in the config default and the documents, and corrects
+one test.
+
+**The test.** `TestVerifiedRemoteCatalogActivatesProvider` asserted that the
+candidate identity differs from the upstream identity. That assertion recorded
+the fresh UUID from the durable commit. With the repair, an instance without a
+provider layer serves the upstream generation under the upstream identity, so
+the test now asserts the equality.
+
+**The gates at `20a1f65`.** Every command ran with `GOTOOLCHAIN=go1.26.6`.
+
+| Check | Result |
+| --- | --- |
+| `go build ./...` and `go vet ./...` | pass |
+| `go test ./...` | 55 packages pass |
+| `go test -race -short` over app, catalog, and config | pass |
+| `make lint` | 0 issues |
+| the `scripts/verify-*.sh` and `scripts/test-*.sh` gates | 31 pass, 4 need the release `dist/` |
+| `scripts/smoke-first-run.sh` | pass |
+| Starmap `scripts/verify-catalog-distribution.sh` against this tree | 68 passed, 0 failed, 0 unverified |
+| pre-PR review on Opus 5 at high effort | clean |
+
+**The pull request.** The branch pushed with an explicit refspec, and pull
+request #362 opened from it. The first `Build` job failed on a Go module proxy
+stream error while it downloaded an unrelated dependency. A rerun of the
+failed job passed, and all ten checks passed. The pull request squash-merged
+as `6222afa` on 2026-09-04 at 20:23 UTC, and main run 33916012649 followed.
 
 ## Untouched by this task
 
