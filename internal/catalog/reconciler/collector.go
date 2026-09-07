@@ -13,10 +13,11 @@ import (
 
 // collector encapsulates data collection logic.
 type collector struct {
-	sources []sources.Observation
-	primary sources.ID
-	logger  zerolog.Logger
-	scoped  *scopedObservations
+	sources           []sources.Observation
+	primary           sources.ID
+	logger            zerolog.Logger
+	scoped            *scopedObservations
+	providerSelection providerObservationSelection
 }
 
 func (c *collector) reviewCandidateObservation(
@@ -36,7 +37,7 @@ func (c *collector) reviewCandidateObservation(
 			provider.ID,
 			provider.Aliases,
 		)
-		if sourceProvider == nil || sourceProvider.Models[providerModelID] == nil {
+		if sourceProvider == nil || !c.providerSelection.permits(observation, sourceProvider.ID) || sourceProvider.Models[providerModelID] == nil {
 			continue
 		}
 		if observation.SourceID == sources.ProvidersID && c.scoped != nil {
@@ -90,6 +91,9 @@ func (c *collector) collectProviders() map[sources.ID][]*catalogs.Provider {
 		if len(providers) > 0 {
 			providerList := make([]*catalogs.Provider, 0, len(providers))
 			for _, p := range providers {
+				if !c.providerSelection.permits(src, p.ID) {
+					continue
+				}
 				providerList = append(providerList, &p)
 			}
 			result[src.SourceID] = append(result[src.SourceID], providerList...)
@@ -127,6 +131,9 @@ func (c *collector) providerModels(src sources.Observation, provider *catalogs.P
 
 	// Find provider in source (check ID and aliases)
 	sourceProvider := c.findProvider(catalog, provider.ID, provider.Aliases)
+	if sourceProvider != nil && !c.providerSelection.permits(src, sourceProvider.ID) {
+		return nil
+	}
 
 	var models []*catalogs.Model
 

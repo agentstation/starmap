@@ -32,6 +32,7 @@ type Reconciler struct {
 	baseline          *catalogs.Catalog // Baseline catalog for comparison
 	changeTime        time.Time
 	projectedEvidence func(catalogs.ProviderID, provenance.Entry) bool
+	providerSelection providerObservationSelection
 }
 
 // New creates a new Reconciler with options.
@@ -51,6 +52,7 @@ func New(opts ...Option) (*Reconciler, error) {
 		baseline:          options.baseline,
 		changeTime:        options.changeTime,
 		projectedEvidence: options.projectedEvidence,
+		providerSelection: options.providerSelection,
 	}
 
 	return r, nil
@@ -140,7 +142,10 @@ func (r *Reconciler) initialize(ctx context.Context, primary sources.ID, srcs []
 		return nil, err
 	}
 	logger := logging.FromContext(ctx)
-	srcs, scoped, err := orderScopedObservations(ctx, srcs)
+	if err := r.providerSelection.validate(ctx, srcs); err != nil {
+		return nil, err
+	}
+	srcs, scoped, err := orderScopedObservations(ctx, srcs, r.providerSelection)
 	if err != nil {
 		return nil, err
 	}
@@ -148,13 +153,14 @@ func (r *Reconciler) initialize(ctx context.Context, primary sources.ID, srcs []
 	// Create collector
 	collector := newCollector(srcs, primary)
 	collector.scoped = scoped
+	collector.providerSelection = r.providerSelection
 
 	// Validate and get primary catalog if specified
 	var primaryCatalog *catalogs.Catalog
 	if primary != "" {
 		primaryCatalog = collector.primaryCatalog()
 		if primary == sources.ProvidersID && scoped != nil {
-			primaryCatalog, err = scopedPrimaryCatalog(srcs)
+			primaryCatalog, err = scopedPrimaryCatalog(srcs, r.providerSelection)
 			if err != nil {
 				return nil, err
 			}

@@ -16,6 +16,7 @@ type options struct {
 	changeTime        time.Time
 	baseline          *catalogs.Catalog // Existing catalog for comparison
 	projectedEvidence func(catalogs.ProviderID, provenance.Entry) bool
+	providerSelection providerObservationSelection
 }
 
 // WithProjectedEvidencePolicy controls reuse of unchanged facts from a local projection.

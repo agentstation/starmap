@@ -29,6 +29,7 @@ Package reconciler provides catalog synchronization and reconciliation capabilit
   - [func WithChangeTime\(at time.Time\) Option](<#WithChangeTime>)
   - [func WithProjectedEvidencePolicy\(permit func\(catalogs.ProviderID, provenance.Entry\) bool\) Option](<#WithProjectedEvidencePolicy>)
   - [func WithProvenance\(enabled bool\) Option](<#WithProvenance>)
+  - [func WithProviderObservationSelection\(input map\[string\]\[\]catalogs.ProviderID\) Option](<#WithProviderObservationSelection>)
 - [type Reconciler](<#Reconciler>)
   - [func New\(opts ...Option\) \(\*Reconciler, error\)](<#New>)
   - [func \(r \*Reconciler\) Sources\(ctx context.Context, primary sources.ID, srcs \[\]sources.Observation\) \(\*Result, error\)](<#Reconciler.Sources>)
@@ -51,7 +52,7 @@ Package reconciler provides catalog synchronization and reconciliation capabilit
 
 
 <a name="CompareProviderObservations"></a>
-## func [CompareProviderObservations](<https://github.com/agentstation/starmap/blob/main/internal/catalog/reconciler/scoped_observations.go#L124>)
+## func [CompareProviderObservations](<https://github.com/agentstation/starmap/blob/main/internal/catalog/reconciler/scoped_observations.go#L131>)
 
 ```go
 func CompareProviderObservations(left, right sources.Observation) int
@@ -116,7 +117,7 @@ func (s *AuthorityStrategy) ResolveResourceConflict(resourceType evidence.Resour
 ResolveResourceConflict resolves a resource field conflict.
 
 <a name="Option"></a>
-## type [Option](<https://github.com/agentstation/starmap/blob/main/internal/catalog/reconciler/options.go#L43>)
+## type [Option](<https://github.com/agentstation/starmap/blob/main/internal/catalog/reconciler/options.go#L44>)
 
 Option is a function that configures a Reconciler.
 
@@ -125,7 +126,7 @@ type Option func(*options) error
 ```
 
 <a name="WithAuthorities"></a>
-### func [WithAuthorities](<https://github.com/agentstation/starmap/blob/main/internal/catalog/reconciler/options.go#L60>)
+### func [WithAuthorities](<https://github.com/agentstation/starmap/blob/main/internal/catalog/reconciler/options.go#L61>)
 
 ```go
 func WithAuthorities(authorities authority.Reader) Option
@@ -134,7 +135,7 @@ func WithAuthorities(authorities authority.Reader) Option
 WithAuthorities sets the field authorities.
 
 <a name="WithBaseline"></a>
-### func [WithBaseline](<https://github.com/agentstation/starmap/blob/main/internal/catalog/reconciler/options.go#L82>)
+### func [WithBaseline](<https://github.com/agentstation/starmap/blob/main/internal/catalog/reconciler/options.go#L83>)
 
 ```go
 func WithBaseline(catalog *catalogs.Catalog) Option
@@ -143,7 +144,7 @@ func WithBaseline(catalog *catalogs.Catalog) Option
 WithBaseline sets an existing catalog to compare against for change detection.
 
 <a name="WithChangeTime"></a>
-### func [WithChangeTime](<https://github.com/agentstation/starmap/blob/main/internal/catalog/reconciler/options.go#L91>)
+### func [WithChangeTime](<https://github.com/agentstation/starmap/blob/main/internal/catalog/reconciler/options.go#L92>)
 
 ```go
 func WithChangeTime(at time.Time) Option
@@ -152,7 +153,7 @@ func WithChangeTime(at time.Time) Option
 WithChangeTime supplies stable timestamps for facts derived from retained evidence. It leaves original source timestamps and current\-time pricing validation unchanged.
 
 <a name="WithProjectedEvidencePolicy"></a>
-### func [WithProjectedEvidencePolicy](<https://github.com/agentstation/starmap/blob/main/internal/catalog/reconciler/options.go#L24>)
+### func [WithProjectedEvidencePolicy](<https://github.com/agentstation/starmap/blob/main/internal/catalog/reconciler/options.go#L25>)
 
 ```go
 func WithProjectedEvidencePolicy(permit func(catalogs.ProviderID, provenance.Entry) bool) Option
@@ -161,7 +162,7 @@ func WithProjectedEvidencePolicy(permit func(catalogs.ProviderID, provenance.Ent
 WithProjectedEvidencePolicy controls reuse of unchanged facts from a local projection. The callback checks the original evidence scope. Operator edits have no matching carried value and retain the local source's field authority.
 
 <a name="WithProvenance"></a>
-### func [WithProvenance](<https://github.com/agentstation/starmap/blob/main/internal/catalog/reconciler/options.go#L74>)
+### func [WithProvenance](<https://github.com/agentstation/starmap/blob/main/internal/catalog/reconciler/options.go#L75>)
 
 ```go
 func WithProvenance(enabled bool) Option
@@ -169,8 +170,17 @@ func WithProvenance(enabled bool) Option
 
 WithProvenance enables field\-level tracking.
 
+<a name="WithProviderObservationSelection"></a>
+### func [WithProviderObservationSelection](<https://github.com/agentstation/starmap/blob/main/internal/catalog/reconciler/provider_selection.go#L17>)
+
+```go
+func WithProviderObservationSelection(input map[string][]catalogs.ProviderID) Option
+```
+
+WithProviderObservationSelection selects provider records within original observations. Map keys are observation identities. An omitted identity keeps every provider. An empty list excludes all its provider records. Original receipts stay unchanged. The selection does not remove baseline facts or reviewed authored definitions.
+
 <a name="Reconciler"></a>
-## type [Reconciler](<https://github.com/agentstation/starmap/blob/main/internal/catalog/reconciler/reconciler.go#L27-L35>)
+## type [Reconciler](<https://github.com/agentstation/starmap/blob/main/internal/catalog/reconciler/reconciler.go#L27-L36>)
 
 Reconciler combines data from multiple sources into a canonical catalog. It is concrete because this package has one reconciliation engine. The narrow authority.Reader and Source interfaces accept extensions.
 
@@ -181,7 +191,7 @@ type Reconciler struct {
 ```
 
 <a name="New"></a>
-### func [New](<https://github.com/agentstation/starmap/blob/main/internal/catalog/reconciler/reconciler.go#L38>)
+### func [New](<https://github.com/agentstation/starmap/blob/main/internal/catalog/reconciler/reconciler.go#L39>)
 
 ```go
 func New(opts ...Option) (*Reconciler, error)
@@ -190,7 +200,7 @@ func New(opts ...Option) (*Reconciler, error)
 New creates a new Reconciler with options.
 
 <a name="Reconciler.Sources"></a>
-### func \(\*Reconciler\) [Sources](<https://github.com/agentstation/starmap/blob/main/internal/catalog/reconciler/reconciler.go#L77>)
+### func \(\*Reconciler\) [Sources](<https://github.com/agentstation/starmap/blob/main/internal/catalog/reconciler/reconciler.go#L79>)
 
 ```go
 func (r *Reconciler) Sources(ctx context.Context, primary sources.ID, srcs []sources.Observation) (*Result, error)

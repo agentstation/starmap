@@ -12,14 +12,14 @@ import (
 
 // orderUnscopedProviderObservations retains individual receipts from legacy provider layers.
 // A single legacy observation keeps the existing direct-reconciler contract.
-func orderUnscopedProviderObservations(ctx context.Context, ordered []sources.Observation) ([]sources.Observation, *scopedObservations, error) {
+func orderUnscopedProviderObservations(ctx context.Context, ordered []sources.Observation, selection providerObservationSelection) ([]sources.Observation, *scopedObservations, error) {
 	var positions []int
 	for index, observation := range ordered {
-		if observation.SourceID == sources.ProvidersID {
+		if observation.SourceID == sources.ProvidersID && !selection.excludesObservation(observation) {
 			positions = append(positions, index)
 		}
 	}
-	if len(positions) < 2 {
+	if len(positions) < 2 && len(selection) == 0 {
 		return ordered, nil, nil
 	}
 	providers := make([]sources.Observation, 0, len(positions))
@@ -45,7 +45,7 @@ func orderUnscopedProviderObservations(ctx context.Context, ordered []sources.Ob
 		}
 		return strings.Compare(left.ID, right.ID)
 	})
-	selected := &scopedObservations{models: make(map[modelIdentity]*scopedProviderRecord), providers: make(map[catalogs.ProviderID]*scopedProviderRecord)}
+	selected := &scopedObservations{selection: selection, models: make(map[modelIdentity]*scopedProviderRecord), providers: make(map[catalogs.ProviderID]*scopedProviderRecord)}
 	for index, observation := range providers {
 		if err := ctx.Err(); err != nil {
 			return nil, nil, err

@@ -16,6 +16,7 @@ import (
 type scopedObservations struct {
 	models    map[modelIdentity]*scopedProviderRecord
 	providers map[catalogs.ProviderID]*scopedProviderRecord
+	selection providerObservationSelection
 }
 
 type scopedProviderRecord struct {
@@ -26,7 +27,7 @@ type scopedProviderRecord struct {
 // orderScopedObservations owns the input order and validates each scoped receipt.
 // Provider records select direct observations before stale fallback, then observation time.
 // Conflicting records at the same time require an explicit source correction.
-func orderScopedObservations(ctx context.Context, input []sources.Observation) ([]sources.Observation, *scopedObservations, error) {
+func orderScopedObservations(ctx context.Context, input []sources.Observation, selection providerObservationSelection) ([]sources.Observation, *scopedObservations, error) {
 	ordered := slices.Clone(input)
 	var scoped []sources.Observation
 	var positions []int
@@ -35,6 +36,9 @@ func orderScopedObservations(ctx context.Context, input []sources.Observation) (
 	for index, observation := range input {
 		if err := ctx.Err(); err != nil {
 			return nil, nil, err
+		}
+		if selection.excludesObservation(observation) {
+			continue
 		}
 		if observation.ProviderBinding == nil {
 			unscopedProvider = unscopedProvider || observation.SourceID == sources.ProvidersID
@@ -53,7 +57,7 @@ func orderScopedObservations(ctx context.Context, input []sources.Observation) (
 		scoped, positions = append(scoped, observation), append(positions, index)
 	}
 	if len(scoped) == 0 {
-		return orderUnscopedProviderObservations(ctx, ordered)
+		return orderUnscopedProviderObservations(ctx, ordered, selection)
 	}
 	if unscopedProvider {
 		return nil, nil, &errors.ConflictError{Resource: "provider observation scope", Message: "scoped and unscoped provider observations cannot share one reconciliation"}
@@ -64,7 +68,7 @@ func orderScopedObservations(ctx context.Context, input []sources.Observation) (
 		}
 		return strings.Compare(left.ProviderBinding.ID, right.ProviderBinding.ID)
 	})
-	selected := &scopedObservations{models: make(map[modelIdentity]*scopedProviderRecord), providers: make(map[catalogs.ProviderID]*scopedProviderRecord)}
+	selected := &scopedObservations{selection: selection, models: make(map[modelIdentity]*scopedProviderRecord), providers: make(map[catalogs.ProviderID]*scopedProviderRecord)}
 	for index, observation := range scoped {
 		if err := ctx.Err(); err != nil {
 			return nil, nil, err
@@ -79,6 +83,9 @@ func orderScopedObservations(ctx context.Context, input []sources.Observation) (
 
 func (s *scopedObservations) add(observation sources.Observation) error {
 	for _, provider := range observation.Catalog.Providers().List() {
+		if !s.selection.permits(observation, provider.ID) {
+			continue
+		}
 		if err := s.addProvider(observation, provider); err != nil {
 			return err
 		}
@@ -168,13 +175,22 @@ func (merger *merger) providerObservation(source sources.ID, providerID catalogs
 
 // scopedPrimaryCatalog combines membership only for the primary-source filter.
 // It is not an observation and supplies no synthetic receipt or field authority.
-func scopedPrimaryCatalog(observations []sources.Observation) (*catalogs.Catalog, error) {
+func scopedPrimaryCatalog(observations []sources.Observation, selection providerObservationSelection) (*catalogs.Catalog, error) {
 	builder := catalogs.NewEmpty()
 	for _, observation := range observations {
 		if observation.SourceID != sources.ProvidersID {
 			continue
 		}
-		if err := builder.MergeWith(observation.Catalog, catalogs.WithStrategy(catalogs.MergeEnrichEmpty)); err != nil {
+		membership := catalogs.NewEmpty()
+		for _, provider := range observation.Catalog.Providers().List() {
+			if !selection.permits(observation, provider.ID) {
+				continue
+			}
+			if err := membership.SetProvider(provider); err != nil {
+				return nil, err
+			}
+		}
+		if err := builder.MergeWith(membership, catalogs.WithStrategy(catalogs.MergeEnrichEmpty)); err != nil {
 			return nil, err
 		}
 	}
