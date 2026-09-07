@@ -1234,3 +1234,35 @@ It must also retain original observations, preserve reset scope and previews, an
 
 The [manual composition proof](../../plans/proof/starport-production-catalog/csp3/manual-composition-verification.json) records 1,043 race events and corrected normal coverage of all 79 package suites.
 This is component progress. Manual runtime publication, complete ingestion, native qualification, and released-pair acceptance remain open.
+
+
+### CSP3 retained manual observations
+
+`Runtime.PublishObservations` now joins manual publication to runtime ownership and input recovery.
+It retains original payloads and safe receipts without source acquisition. Distinct concurrent calls retain distinct batches.
+Observations already in manual history preserve the generation and sequence without another broadcast.
+
+The first replay tests exposed two provider-order defects: older scheduled facts could replace newer manual facts, and a later omission could discard retained values.
+Provider observations now share retained history once manual publication starts. Reconstruction uses the reconciler's fallback and observation-time policy.
+A further test found that separate reviewed inputs in one batch could hide model definitions. Metadata passes now preserve those definitions through the baseline.
+All changes still publish as one transaction.
+
+Restart validates the original aggregate provider payload and receipt together. It excludes retired bindings and rejects selector changes without a new revision.
+Recovery validates the complete parent history before installing source, provider, or manual files.
+A lost catalog commit reply recovers the accepted generation. Rejected publication preserves the previous history.
+
+The private `manual.json` head references immutable batches and original observations under `publication-inputs`.
+Publication version 2 protects these records from older readers. New readers still accept version 1 records without manual history.
+Native upgrade and downgrade qualification remains open.
+
+The file manifest previously omitted scoped provider records and publication recovery files.
+Its private runtime-evidence entry now lists those paths and manual history. A real publication test checks the files it creates and still rejects unknown paths.
+
+History permits at most 4,096 batches and 64 MiB of encoded observations. Reaching either limit preserves accepted state and refuses new input.
+CSP5 owns production compaction, collection, and recovery. These limits are component safeguards, not a production capacity claim.
+
+The CLI and HTTP acquisition paths still need runtime publication and D24 reset scopes.
+Local projection provenance, field presence, scoped deletion, native qualification, and released-pair acceptance remain open.
+This implementation makes no request latency or allocation claim.
+
+The [manual retention proof](../../plans/proof/starport-production-catalog/csp3/manual-retention-verification.json) records 991 passing race events and normal coverage of 79 package suites.

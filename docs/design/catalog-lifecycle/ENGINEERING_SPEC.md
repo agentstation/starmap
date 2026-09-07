@@ -322,8 +322,9 @@ Generation and operation directory components use lowercase SHA-256 hashes of th
 | Starmap catalog store | `<state>/catalog/{current,.commit.lock,generations/<generation-id-hash>/}` | Preserve the accepted pointer, manifests, and payloads. Let the adapter manage locks. |
 | Runtime ownership | `R/{owner.json,.owner.lock,instance-seed}` | Persistent initialization and process locking. Restore one identity to one active owner only. |
 | Runtime evidence | `R/catalog-runtime/source.json`, `R/catalog-runtime/providers/<provider-id>.json`, and `R/catalog-runtime/providers/bindings/<key-digest>.json` | Preserve permitted source layers across restart. Fleet-required layers also need shared durable storage. |
+| Runtime manual history | `R/catalog-runtime/manual.json` | Owner-only head for accepted observation batches in `publication-inputs`. Preserve its full referenced history through restart and backup. |
 | Runtime publication record | `R/catalog-runtime/publication.json` | Owner-only transaction state. Startup resolves prepared records or replays committed records before reading retained inputs. |
-| Runtime publication inputs | `R/catalog-runtime/publication-inputs/<sha256>.json` | Owner-only immutable records for retention recovery. Preserve referenced records while publication remains pending. CSP5 owns collection after completion. |
+| Runtime publication inputs | `R/catalog-runtime/publication-inputs/<sha256>.json` | Owner-only immutable records for retention recovery. Preserve references from pending publication and accepted manual history. CSP5 owns safe compaction and collection. |
 | GitHub discovery | `R/github-catalog-source/<channel-hash>.json` | Preserve replay floors and verified release references. ETags alone are disposable. |
 | Badger | `<data>/badger/` | Embedded Starport KV. Back up through an engine-consistent method. |
 | SQLite | `<data>/sqlite/starport.db` and engine sidecars | Embedded Starport SQL. Recover through a consistent snapshot that includes committed WAL data. |
@@ -937,6 +938,29 @@ Recovery validates every referenced input before it writes retained files. Migra
 An accepted catalog remains active when later retention fails. Reports retain its generation ID and show degraded health.
 Pending recovery blocks further updates in that process. Reopening the runtime resolves the recorded outcome or returns a conflict.
 Unknown records remain unchanged. Shared fleet recovery and completed-input collection remain CSP11 and CSP5 work.
+
+`Runtime.PublishObservations` now retains original caller-supplied observations in that transaction.
+It validates receipts and active bindings, reads no source, and serializes distinct manual calls with refresh operations.
+Observations already in manual history do not append history, advance the catalog sequence, or broadcast another generation.
+
+Accepted manual history retains complete original payloads and safe receipts, including aggregate provider observations.
+Current active provider evidence enters that history when manual publication starts. Later provider windows append their selected observations.
+
+Reconstruction applies reviewed metadata before provider facts. Provider facts follow the shared fallback and observation-time policy.
+Earlier accepted facts survive a later omission. Equal-priority conflicts still require corrected evidence.
+The runtime excludes inactive binding observations after restart. Changed selectors require a new binding revision.
+
+Publication version 2 records manual history. New readers accept version 1 records that contain no manual reference.
+Version 2 idle markers prevent version 1 readers from silently rebuilding without manual history.
+Recovery validates all referenced parent batches before replacing any retained source, provider, or manual head.
+Native upgrade and downgrade qualification remains open.
+
+This component bounds manual history at 4,096 batches and 64 MiB of encoded observation records.
+A full history rejects new observations before publication and preserves its accepted head.
+CSP5 must provide tested compaction, collection, and operator recovery before production support.
+CLI and HTTP acquisition still use direct client publication. Their runtime integration and D24 reset scopes remain open.
+Local projection provenance also needs validation so copied fields cannot restore retired binding facts.
+
 
 Effective generation identity binds the payload, original source links, and review candidates.
 A receipt change creates a new identity even when selected catalog values remain unchanged.

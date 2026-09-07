@@ -946,3 +946,34 @@ The shared factory does not close that publication gap. Field presence, scoped d
 CSP3 remains in progress. All 50 primary cases remain UNVERIFIED.
 
 The shared review helper remains unchanged. No branch push or native CI dispatch occurred.
+
+
+### Manual runtime retention
+
+Commit `f25ab759` adds `Runtime.PublishObservations` and immutable manual input history.
+The operation joins runtime ownership and cancellation. It retains original observations only with their accepted catalog.
+Concurrent callers retain distinct batches. Repeated observations already in manual history preserve sequence and generation identity.
+
+Replay now preserves earlier provider facts through later omissions and orders manual and scheduled observations by the shared provider policy.
+It retains original aggregate provider receipts. Metadata passes preserve separate reviewed inputs within one atomic publication.
+Restart excludes retired bindings and rejects selector changes without a new revision.
+
+The private manual head and referenced input batches participate in publication recovery and migration validation.
+Recovery validates the full parent history before changing retained files. Lost commit replies recover the accepted generation.
+Publication version 2 rejects unsafe use by version 1 readers. Native format qualification remains open.
+The application file inventory now includes these files and scoped provider records under its private runtime-evidence policy.
+
+The [verification record](csp3/manual-retention-verification.json) preserves 35 captures, totaling 6,835,840 bytes, and 24 input hashes.
+Normal coverage includes 79 package suites and 3,567 passing test events. The final runtime and app runs replace their earlier suites.
+Five race package suites contribute 991 passing events. The final 31 manual events replace the earlier 30 runtime manual events.
+
+The five unchanged normal-suite skips and 22 packages without tests remain separate from passing test counts.
+Lint, ago, generation, dependency boundaries, and writing checks passed. Failed regressions and corrected fixtures remain in the proof record.
+
+Manual history currently permits 4,096 batches and 64 MiB of encoded observations. CSP5 must supply production compaction and collection.
+CLI and HTTP integration, D24 reset scopes, local projection provenance, field presence, and scoped deletion remain open.
+No request latency claim or primary acceptance credit follows from this work. All 50 primary cases remain UNVERIFIED.
+
+Next: define runtime-owned acquisition and reset scopes before the adapters adopt manual publication.
+The reset must preserve the selected baseline, unrelated scopes, and reviewed operator input. Preview and failed replacement must preserve accepted state.
+The shared review helper remains unchanged. No push, native CI dispatch, GitHub merge, or release occurred.
