@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "owner_response": "Yes on both requests. You have explicit permission",
+  "decisions": {
+    "shared_review_helper": "approved and applied",
+    "account_scope_links": "approved; implementation remains open"
+  },
+  "helper": {
+    "path": "/Users/jack/.agents/skills/autoreview/scripts/autoreview",
+    "before_sha256": "ee15ab4246c842576e7ea87473d481d64e8a6b7c7fd3a8d2a716606c8cfa372c",
+    "after_sha256": "514a321ec1cc5d15fe8a4e88c4735b9fe26461f271dcf050432d3c8ba6c94056",
+    "before_limit_bytes": 512000,
+    "after_limit_bytes": 300000,
+    "syntax_check": "PASS",
+    "self_test": "PASS",
+    "self_test_log_sha256": "ad10b909178c520e8f36a4cb53aed78bb0b49fad07dce530b343d809209accf7"
+  },
+  "primary_acceptance_credit": false
+}

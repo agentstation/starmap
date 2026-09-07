@@ -1,0 +1,8 @@
+cursor metadata: session_id=fake-session request_id=fake-request
+autoreview opencode jsonl parser self-test: ok
+autoreview opencode isolation self-test: ok
+self-test config defaults: ok
+self-test fallback scope: ok
+autoreview heartbeat metrics self-test: ok
+autoreview json array parser self-test: ok
+autoreview engine isolation self-test: ok
