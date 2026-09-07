@@ -1,0 +1,12 @@
+/Users/jack/.agents/skills/technical-writing/scripts/technical-writing glossary check
+PASS: /Users/jack/src/github.com/agentstation/starmap-catalog-requirements/GLOSSARY.md (80 term(s), 0 error(s))
+/Users/jack/.agents/skills/technical-writing/scripts/technical-writing glossary update --check
+PASS: no candidate terms are missing from /Users/jack/src/github.com/agentstation/starmap-catalog-requirements/GLOSSARY.md
+/Users/jack/.agents/skills/technical-writing/scripts/technical-writing lint . --mode strict --format text
+/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/docs/design/catalog-lifecycle/ENGINEERING_SPEC.md:963:1: error long_paragraph: paragraph has 7 sentences; limit is 6
+/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/docs/design/catalog-lifecycle/ENGINEERING_SPEC.md:964:88: error nominalization: express the action with a direct verb
+/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/docs/design/catalog-lifecycle/ENGINEERING_SPEC.md:969:1: error long_paragraph: paragraph has 7 sentences; limit is 6
+/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/docs/design/catalog-lifecycle/REPOSITORY_FINDINGS.md:1275:96: error nominalization: express the action with a direct verb
+/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/runtime/observation_update.go:21:19: error banned_word: use a short, precise alternative: 'obtains'
+FAIL: 1095 file(s), 5 diagnostic(s)
+make: *** [technical-writing-check] Error 1
