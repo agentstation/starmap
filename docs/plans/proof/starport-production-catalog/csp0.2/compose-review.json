@@ -1,0 +1,22 @@
+{
+  "build_source_commit": "5820a370ff9255a8148799f5b45fcaf927c2e1dc",
+  "recipe_commit": "ee3f2e1742f0ea7c654ad0ee0544f57f878c956f",
+  "inputs": {
+    "docker-compose.yml": "e1f0d3045acd96897f512082844ab5a1337fc91f2ae9393a726bab8646e5bb09",
+    "Dockerfile": "5fc96080d6cfd73605fa3fe6bfce7bea6a4eed1fb1725d616574a042f4c46a29",
+    ".dockerignore": "ceaf5010d092edf2a4354bfa632eba2b815265841ded74e0942fcc1cd080fe05",
+    ".env.example": "07c30ac3d1bdcfb06f3992693beaec09dbad2e118e53c7140e4bd9d868a89ad1"
+  },
+  "test_adjustments": [
+    "Loopback-only host port 19324 replaces the documented host port 8080.",
+    "A generated temporary master key replaces the placeholder.",
+    "Catalog source embedded and acquisition disabled isolate persistence from public egress.",
+    "JSON output keeps generated credentials in driver memory."
+  ],
+  "first_failure": "The first-boot local admin token prevents a network bind until rotation.",
+  "fix": "Retain both Starport directories and rotate the local admin token before startup.",
+  "proof_scope": "One native Linux ARM64 Compose process. Not replicated storage qualification.",
+  "provider_credentials_used": false,
+  "resources_removed": true,
+  "temporary_credential_file_removed": true
+}
