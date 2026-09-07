@@ -863,13 +863,9 @@ Within an unambiguous batch, the newest provider observation wins regardless of 
 Retention forwards cancellation through ordered selection and private-file publication. It does not undo previously committed batch members.
 Partial receipts produce degraded acquisition health. They do not authorize deletion or prove complete upstream coverage.
 
-The current connected runtime uses `MergeEnrichEmpty` for provider layers.
-Enrichment now retains valid new model records when pricing and limits are absent.
-It also retains their missing authored definitions. Existing authored definitions keep precedence.
-The runtime still excludes offerings without a resolved canonical model reference.
-
-Implement the target field-authority behavior through Starmap reconciliation,
-not a Starport merge. Tests must prove each deliberate precedence change.
+The connected runtime uses canonical Starmap reconciliation for provider layers.
+Valid serving records can omit optional pricing and limits. They must reference reviewed authored definitions.
+Provider observations cannot establish authored identity. Tests must prove each deliberate field-precedence change.
 
 Every provider observation must identify its provider, account or project
 scope, region, API surface, completeness, and credential role where applicable.
@@ -889,8 +885,9 @@ A different resolved profile causes refusal before client creation. The acquirer
 A runtime with explicit bindings now uses the built-in binding-aware batch role for scheduled and manual acquisition.
 
 The shared settings contract accepts `STARMAP_CATALOG_PROVIDER_BINDINGS` as a JSON array, or a list of objects in YAML.
-An explicit empty list permits no connected-runtime provider acquisition. Omission retains legacy unscoped behavior.
-Manual CLI and HTTP update integration, Starport adoption, and scoped deletion remain open.
+An explicit empty list permits no provider acquisition in the connected runtime or manual application syncer. Omission retains legacy unscoped behavior.
+The CLI update command and HTTP server share an application-owned acquisition factory. It passes the resolved binding set, credential resolver, and source directories.
+Manual runtime retention, Starport adoption, and scoped deletion remain open.
 
 Reconciliation now retains separate provider observations during collection and primary-source filtering.
 It selects direct observations before stale fallback, then uses observation time to select shared provider records.
@@ -910,7 +907,7 @@ Field provenance now carries optional binding identity and revision through JSON
 Volume checks compare only history from the same binding revision. They do not attribute unscoped or peer history to a selected binding.
 
 Existing unscoped payloads omit the new fields. Missing models remain in the accepted baseline. Scoped deletion remains open.
-CLI and HTTP composition still need to pass the shared settings and coordinate publication with runtime retention.
+CLI and HTTP composition now pass the shared settings. Their manual publication still needs coordination with runtime retention.
 
 Runtime reconstruction now uses the canonical reconciler for active provider layers.
 It restores each original observation and publishes its link and any review candidates with the effective generation.
@@ -924,6 +921,10 @@ Concurrent rebuilds serialize durable publication and activation. A rebuild chec
 Provider observations cannot introduce authored model definitions. Serving records must link to reviewed definitions from the baseline or selected catalog source.
 An unresolved record remains a review candidate with its original provider receipt.
 The runtime retains source layers separately. Upstream manifest lineage and complete manual-source publication remain open.
+
+The reconciler owns source selection and baseline enrichment for pipeline acquisition, explicit observation publication, release imports, and runtime reconstruction.
+The function accepts supplied observations. It does not read sources or publish catalogs.
+Runtime reconstruction supplies stable change timestamps.
 
 Source refresh and provider windows now stage immutable inputs before catalog publication.
 A private transaction record binds the prior and candidate catalog identities and payload checksums.
@@ -1036,6 +1037,21 @@ A source change stages and validates the replacement before acceptance.
 No source change may reintroduce retained observations from a revoked scope.
 Offline selection and disabled acquisition must take effect before any worker
 starts. A UI toggle cannot merely hide refresh controls.
+
+#### Fresh manual acquisition
+
+D24 changes fresh manual acquisition: `starmap update --force` in the current CLI and `sync.WithFresh` in Go.
+Reset prior local acquisition results while preserving the embedded or selected upstream baseline.
+Apply source and provider filters to the reset scope. Preserve unrelated scopes and reviewed operator inputs.
+An internal authoritative catalog still controls membership. Fresh mode cannot activate public fallback when internal startup rules forbid it.
+
+Prepare replacement observations before committing the reset. A failed, canceled, or degraded strict reset preserves the previous accepted inputs and generation.
+Acceptance must atomically bind the reset scope, replacement observations, and resulting generation to retained recovery records.
+Restart must reconstruct the same result. Retired binding revisions must not return through old local projections.
+Previews show the reset scope and catalog changes without altering active or retained state.
+
+The current pipeline still uses an empty reconciliation baseline for fresh mode.
+CSP3 must replace that behavior as part of manual runtime retention. The shared acquisition factory does not implement D24.
 
 ### 6.3 Acquisition across application compositions
 

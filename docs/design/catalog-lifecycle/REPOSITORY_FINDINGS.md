@@ -1214,3 +1214,23 @@ It now issues two complete publication requests. Its catalog, generation, and re
 The [input publication proof](../../plans/proof/starport-production-catalog/csp3/input-publication-verification.json) records exact checks and the failed publication regression.
 Manual non-provider observations still need retained input representation and CLI and HTTP composition.
 Completed-input collection, shared fleet recovery, native qualification, and released-pair acceptance remain open.
+
+
+### CSP3 shared manual composition and fresh-mode decision
+
+The CLI update command and HTTP server previously constructed syncers without the configured provider binding array.
+Both now call `App.CatalogAcquisition`, which applies the resolved set, credential resolver, and source directories.
+The shared config accessor preserves omission and explicit emptiness and returns owned declarations.
+Tests cover legacy selection, an empty set, separate scoped attempts, and unchanged state during previews.
+
+Source selection and baseline enrichment now belong to the reconciler.
+Pipeline acquisition, explicit observation publication, release imports, and runtime reconstruction call the same entry point.
+The runtime still excludes acquisition clients from its dependency set.
+
+D24 changes the target for fresh manual acquisition to preserve the embedded or selected upstream baseline.
+The existing CLI uses `--force`, and the Go API uses `sync.WithFresh`.
+The current pipeline still selects an empty reconciliation baseline. Manual runtime retention must implement D24 before acceptance.
+It must also retain original observations, preserve reset scope and previews, and prevent retired binding evidence from returning through local projections.
+
+The [manual composition proof](../../plans/proof/starport-production-catalog/csp3/manual-composition-verification.json) records 1,043 race events and corrected normal coverage of all 79 package suites.
+This is component progress. Manual runtime publication, complete ingestion, native qualification, and released-pair acceptance remain open.

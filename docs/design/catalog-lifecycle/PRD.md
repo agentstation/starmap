@@ -49,6 +49,7 @@ The [latency revision](../../plans/proof/starport-production-catalog/latency-rev
 | D21 | Performance claims require complete request measurements, declared workloads, and reviewed numeric limits. Existing narrow measurements remain historical evidence. | User accepted measurement recommendation on 2026-09-05 |
 | D22 | Windows may briefly remove the optional YAML workspace path during journaled replacement. Starmap readers retry; accepted inference state remains independent. | User accepted on 2026-09-06; implementation and native qualification remain open |
 | D23 | Explicitly selected service-managed primary configuration may use trusted administrator ownership and service read access. Untrusted writes remain forbidden. | User confirmed on 2026-09-06 |
+| D24 | A fresh manual update resets prior local acquisition results while preserving the embedded or selected upstream baseline. Internal authority remains binding. | User confirmed on 2026-09-07 |
 
 D23 permits checked, explicitly selected, administrator-owned primary configuration for service deployments. Catalog state and dotenv files retain private-access requirements.
 The [owner decision record](../../plans/proof/starport-production-catalog/csp2/owner-decisions-2026-09-06.md) defines its implementation and qualification limits.

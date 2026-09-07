@@ -912,3 +912,37 @@ Completed immutable inputs remain on disk. CSP5 owns bounded safe collection, an
 Native interruption, downgrade procedures, and released-pair qualification remain open. CSP3 remains in progress, and all 50 primary cases remain UNVERIFIED.
 
 The shared review helper remains unchanged. No branch push or native CI dispatch occurred.
+
+
+### Shared manual acquisition composition
+
+Work commit `46c8c2cc` moves source selection and baseline enrichment into the reconciler.
+The acquisition pipeline, observation publication, release import, and runtime reconstruction use that entry point.
+Runtime reconstruction keeps stable change timestamps and excludes acquisition clients from its dependencies.
+The three public source-selection tests retain their original pipeline fixtures. The private filter-error test moves with its implementation.
+
+CLI updates and the HTTP server now use one application-owned acquisition factory.
+It applies the resolved binding set, credential resolver, and source directories.
+Omission retains legacy selection. An explicit empty set makes no credential attempts and rejects a request for an undeclared provider.
+Two configured scopes make separate credential-resolution attempts. Construction makes none, and previews preserve current state.
+
+The [verification record](csp3/manual-composition-verification.json) preserves 22 captures, totaling 6,166,958 bytes, and fifteen input hashes.
+Eight package suites passed 1,043 race test events. The runtime suite completed in 600.750 seconds.
+Corrected normal coverage contains 3,536 passing events across 79 package suites, with 22 packages without tests.
+Use the final app suite instead of the app events from the initial normal run.
+
+The initial test move referenced a helper in another test package. Its correction restores the original pipeline fixtures.
+The new empty-set fixture initially expected success for a forbidden provider request. The correction asserts refusal and zero credential attempts.
+These are test-development failures, not fail-before evidence for a production defect. Both captures remain available.
+
+Code lint, Ago, generated documentation, all six consumer compositions, and corrected strict writing passed.
+
+The owner accepted D24: fresh manual acquisition resets prior local results while preserving the embedded or selected upstream baseline.
+The question used `--fresh`. The current CLI flag is `--force`, and the Go option is `sync.WithFresh`.
+No flag changed. The current pipeline still uses an empty baseline for that operation, so D24 implementation remains open.
+
+Manual acquisition still needs the runtime transaction to retain original source observations and apply reset scopes.
+The shared factory does not close that publication gap. Field presence, scoped deletion, native qualification, and released-pair acceptance remain open.
+CSP3 remains in progress. All 50 primary cases remain UNVERIFIED.
+
+The shared review helper remains unchanged. No branch push or native CI dispatch occurred.
