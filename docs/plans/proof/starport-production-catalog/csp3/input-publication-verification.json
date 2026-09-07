@@ -1,0 +1,332 @@
+{
+  "schema_version": 1,
+  "task": "CSP3",
+  "date": "2026-09-07",
+  "status": "component-progress-only",
+  "toolchain": "go1.26.6 darwin/arm64",
+  "work_commit": "b2e46470a46df5bde2ced4afa42cbce6172ecce6",
+  "evidence_commit": "aa8f0ea0382e87e7405938ab51079ef25427656c",
+  "planning_base": "b10466707ac8a890c2f94036affa977bdebd5f54",
+  "behavior": [
+    "Source refresh and provider windows stage immutable inputs and a prepared record before catalog publication.",
+    "Catalog acceptance precedes retained-file replacement. Startup resolves prepared outcomes or completes committed retention before reading input files.",
+    "A prepared record whose prior and candidate catalog match cannot prove acceptance. Recovery discards that pending transaction.",
+    "Recovery validates every referenced input before any retained-file write. Invalid records and unresolved heads remain unchanged. Migration refuses pending publication.",
+    "Accepted catalog identity remains visible when retention fails. Reports preserve publication and degrade health.",
+    "Cancellation before catalog commit cannot install inputs. A bounded completion attempt continues after acceptance despite caller cancellation.",
+    "Source and provider changes share one transaction. Private retention and rebuild helpers now exist only in tests."
+  ],
+  "limitations": [
+    "Manual non-provider observation retention and CLI/HTTP composition remain open.",
+    "Pending recovery blocks further updates in the current process. Reopening must resolve the recorded outcome or return a conflict.",
+    "Completed immutable input records remain on disk. CSP5 must implement bounded safe collection before release qualification.",
+    "CSP11 owns shared fleet recovery. Native interruption, downgrade, release qualification, and the full repository publication gate remain open.",
+    "Broad checks precede the final prior-head-first recovery condition and its cancellation tests. The final 20 race events cover those recovery and cancellation cases.",
+    "The 78 non-runtime normal suites precede later report and test-helper changes. The corrected runtime suite and focused tests cover those changes.",
+    "All 50 primary cases remain UNVERIFIED. CSP3 remains in progress. No push or native CI dispatch occurred."
+  ],
+  "fail_before": {
+    "command": "GOTOOLCHAIN=go1.26.6 go test -count=1 -timeout 5m ./runtime -run TestRejectedProviderPublicationDoesNotRetainInputs",
+    "exit_code": 1,
+    "capture": "csp3/input-publication-red.log",
+    "finding": "A rejected provider publication retained its inputs and changed the active generation after restart."
+  },
+  "checks": [
+    {
+      "command": "GOTOOLCHAIN=go1.26.6 go test -json -count=1 -timeout 5m ./...",
+      "exit_code": 1,
+      "capture": "csp3/input-publication-all.jsonl",
+      "passed_packages": 78,
+      "passed_test_events": 3280,
+      "failed_events": 1
+    },
+    {
+      "command": "GOTOOLCHAIN=go1.26.6 go test -json -count=1 -timeout 5m ./runtime",
+      "exit_code": 0,
+      "capture": "csp3/input-publication-runtime-final.jsonl",
+      "passed_packages": 1,
+      "passed_test_events": 377,
+      "failed_events": 0
+    },
+    {
+      "command": "GOTOOLCHAIN=go1.26.6 go test -race -json -count=1 -timeout 20m ./runtime ./acquisition ./internal/catalog/reconciler",
+      "exit_code": 0,
+      "capture": "csp3/input-publication-race-final.jsonl",
+      "passed_packages": 3,
+      "passed_test_events": 674,
+      "failed_events": 0
+    },
+    {
+      "command": "GOTOOLCHAIN=go1.26.6 go test -race -json -count=1 -timeout 5m ./runtime -run 'Test(Retention|Rejected.*Publication|SourceReportPreserves|AcquisitionReportPreserves)'",
+      "exit_code": 0,
+      "capture": "csp3/input-publication-final-boundaries-verified.jsonl",
+      "passed_packages": 1,
+      "passed_test_events": 20,
+      "failed_events": 0
+    }
+  ],
+  "normal_suite_composition": {
+    "passed_packages": 79,
+    "passed_test_events": 3524,
+    "packages_without_tests": 22,
+    "selection": "Use the 78 non-runtime suites from input-publication-all.jsonl and the complete corrected runtime suite from input-publication-runtime-final.jsonl. Exclude the failed runtime suite and its partial passing events."
+  },
+  "race_suite_composition": {
+    "broader_events": 674,
+    "runtime": 377,
+    "acquisition": 54,
+    "reconciler": 243,
+    "final_focused_events": 20,
+    "runtime_elapsed_seconds": 514.635
+  },
+  "static_checks": {
+    "code_lint_exit_code": 0,
+    "ago_exit_code": 0,
+    "ago_findings": 0,
+    "ago_errors": 0,
+    "generated_docs_exit_code": 0,
+    "strict_writing_exit_code": 0,
+    "strict_writing_files": 1079,
+    "strict_writing_diagnostics": 0,
+    "consumer_compositions_passed": 6
+  },
+  "captured_failures": [
+    {
+      "capture": "csp3/input-publication-all.jsonl",
+      "reason": "The concurrency fixture waited synchronously for retention while the first transaction held its retention lock. The suite reached its five-minute deadline."
+    },
+    {
+      "capture": "csp3/input-publication-race.jsonl",
+      "reason": "Stopped the superseded runtime test process with SIGQUIT after the normal suite proved the same fixture deadlock. The acquisition suite completed. The subsequent complete race run passed."
+    },
+    {
+      "capture": "csp3/input-publication-lint.log",
+      "reason": "Two old mutation helpers had no production callers. They now remain only as test helpers."
+    },
+    {
+      "capture": "csp3/input-publication-reports.jsonl",
+      "reason": "The new report tests initially referenced nested fields instead of the public report types."
+    },
+    {
+      "capture": "csp3/input-publication-final-boundaries.jsonl",
+      "reason": "The cancellation test initially imported the project errors package instead of the standard errors.Is implementation."
+    },
+    {
+      "capture": "csp3/input-publication-lint-verified.log",
+      "reason": "Code lint and Ago passed. One new findings sentence failed the active-voice rule. The corrected writing check passed."
+    },
+    {
+      "capture": "csp3/input-publication-writing-proof.log",
+      "reason": "The new proof exceeded two paragraph limits and contained one passive sentence. Paragraph separation and an explicit actor corrected these findings."
+    }
+  ],
+  "product_verifier": {
+    "exit_code": 1,
+    "passed": 0,
+    "unverified": 50,
+    "capture": "csp3/input-publication-product.json"
+  },
+  "code_inputs": [
+    {
+      "path": "runtime/README.md",
+      "sha256": "2f5c307fac010c53a0b054a3fb810a8f8eb7e50462dffa7e3c7f03fa579991bf"
+    },
+    {
+      "path": "runtime/migration_catalog.go",
+      "sha256": "65f1d253d86213f10097c39f2423ba93be411d8fc372a09c240ed8de284dc3c0"
+    },
+    {
+      "path": "runtime/reconciliation_publication_test.go",
+      "sha256": "5a61c7fc56012ffe4e816875173c7a873694cddd08fd5a10f873de510a8cd6aa"
+    },
+    {
+      "path": "runtime/refresh.go",
+      "sha256": "2ae4351a426f166453e14928f5f8394ac3578c0e021dd21db71a6ac7042cb013"
+    },
+    {
+      "path": "runtime/runtime.go",
+      "sha256": "040f9ee247e7776f81103500a6a2dd6b5e2e4fc18b2b4e40398b8cd8e349bbdf"
+    },
+    {
+      "path": "runtime/publication_cancellation_test.go",
+      "sha256": "78a3d21314d020efac8b4cad4d368be58dc122aaae03bc2c558dccaadb7fedff"
+    },
+    {
+      "path": "runtime/publication_journal.go",
+      "sha256": "7b0b42cb7d9e98061d7a191dd758c5864830c3e6a656ae05f53951d16b646a57"
+    },
+    {
+      "path": "runtime/publication_recovery_test.go",
+      "sha256": "7805d162f2709d8b119d1f43d580a0b063bc0cdf0bf4829b0a8a9fc034ccc4d3"
+    },
+    {
+      "path": "runtime/publication_report_test.go",
+      "sha256": "7b3e0539c3361560dd875a7142f1eec7484bc24572a25127ced8861afecc7584"
+    },
+    {
+      "path": "runtime/publication_retention.go",
+      "sha256": "969a82242c498f1cc74c20cd8837a724f0e8642ca54e7e21445afb1b39983982"
+    },
+    {
+      "path": "runtime/publication_retention_test.go",
+      "sha256": "6cd475c1d51766d13eaff15b98b078fededcc4d7fbc2aa8e6b7f97d982f9b357"
+    },
+    {
+      "path": "runtime/retention_helpers_test.go",
+      "sha256": "b2d27127a5865b278176ab2bbb03a1a2d92f51d751f7105390665e78d71f20ce"
+    }
+  ],
+  "captured_files": [
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/input-publication-ago-final.json",
+      "sha256": "b8fb7afa66aa7a93914ac258475dd0191be821803a8aea4439f5ba05022f5fa5",
+      "bytes": 289
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/input-publication-ago-verified.json",
+      "sha256": "b8fb7afa66aa7a93914ac258475dd0191be821803a8aea4439f5ba05022f5fa5",
+      "bytes": 289
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/input-publication-ago.json",
+      "sha256": "b8fb7afa66aa7a93914ac258475dd0191be821803a8aea4439f5ba05022f5fa5",
+      "bytes": 289
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/input-publication-all.jsonl",
+      "sha256": "e86b96355a4aa54585ea39cc108018436f84869acc6bf27c15e94c4d2e251cb2",
+      "bytes": 4210773
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/input-publication-consumers.log",
+      "sha256": "56667b8f5a604ac9a61a563e73d4b332835bf144d0814833511a4f9f204a11b9",
+      "bytes": 1254
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/input-publication-final-boundaries-verified.jsonl",
+      "sha256": "4b6aacaea042ba32b93e666898722c48d03848ccbdd6b6e0b674b57b15a3e0df",
+      "bytes": 26091
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/input-publication-final-boundaries.jsonl",
+      "sha256": "d23c8e43ab85532b711ba0298c366aeceda274cde0e3147dee457f156f1945ee",
+      "bytes": 1094
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/input-publication-focused.log",
+      "sha256": "673c2498bd3113ed10aa71c8a105d4cdd3808442dda25d6803768c2031f948bb",
+      "bytes": 53
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/input-publication-generate-final.log",
+      "sha256": "27dd462dc9ca4434c021d1dca387e8342bcee1cae5dcc46b51653588d9445a0d",
+      "bytes": 9934
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/input-publication-generate.log",
+      "sha256": "53981d2586d5c564da6be211af4a5f0cc0a46d9fcacedd601eebf9e9de276fec",
+      "bytes": 9934
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/input-publication-invalid-recovery.jsonl",
+      "sha256": "7bd2522f1f7a93bd94eb63bd4dd2526aca82ac6e37512171182fa39169c23149",
+      "bytes": 7423
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/input-publication-lint-final.log",
+      "sha256": "79dcba07f044ffb0619e753caddc71c2df63401070656410a2ff6c0966dc6c69",
+      "bytes": 1560
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/input-publication-lint-verified.log",
+      "sha256": "503c2188d19f1be9c9bd60241c9bfbfbd79f9319877e5d7cce8a22723c9f5359",
+      "bytes": 1796
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/input-publication-lint.log",
+      "sha256": "a758799ff8f52e614eabdb181d6818d34a90354d09fed1327cb6430230edddb5",
+      "bytes": 1032
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/input-publication-product.json",
+      "sha256": "0a5cc1a33899402e4135c4ef56e28730155c63025b771d83734fcab9c93df5bb",
+      "bytes": 7700
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/input-publication-race-final.jsonl",
+      "sha256": "e2bcd90302259f384be25d769523ece3dadf8d840b2b3861b81a648d45674e8a",
+      "bytes": 1023118
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/input-publication-race.jsonl",
+      "sha256": "4a9c19311c6092d71559526943cc50542cd3299a8fb30c7de4a07a077b5a0972",
+      "bytes": 1259549
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/input-publication-recovery.jsonl",
+      "sha256": "30f0345e0b3447d37fc11818ff1649c32968f2a72654cd0e14edf9e7ce8f9be1",
+      "bytes": 7903
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/input-publication-red.log",
+      "sha256": "99ddc6d60f579c113443d42dd83503a081b2a139128b140b5a1b2a468a301a03",
+      "bytes": 1026
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/input-publication-reports-final.jsonl",
+      "sha256": "2882909a8b1559c22b0b6cc53a75ae083c940efb0734358f639daeccc95064c4",
+      "bytes": 6718
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/input-publication-reports.jsonl",
+      "sha256": "ba22105f1637b3c6e3f70ce31b81fb36f554fe22f8544ad3a60de860a8866e8c",
+      "bytes": 1684
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/input-publication-runtime-final.jsonl",
+      "sha256": "ea4c934ac1e271310dfbc56bcc89a052949014fb3594a051a115049f94826bbc",
+      "bytes": 519513
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/input-publication-writing-final.log",
+      "sha256": "aa41f743eae1fca73ea5cec1c726b769e5ff63af7601a28b7451ad7805407e44",
+      "bytes": 558
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/input-publication-documents-final.log",
+      "sha256": "551bbc68701e11c9b90e4886f2f32b3693c6afebb258e7c24ed09bf8f72975e8",
+      "bytes": 3981
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/input-publication-documents-verified.log",
+      "sha256": "551bbc68701e11c9b90e4886f2f32b3693c6afebb258e7c24ed09bf8f72975e8",
+      "bytes": 3981
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/input-publication-writing-proof.log",
+      "sha256": "35f531fd5c111e4595102f03b127d1c748e192540858c3226f2c4f0608bc508e",
+      "bytes": 1172
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/input-publication-writing-docs.log",
+      "sha256": "ecf088879d13cb700ee4639715ee8259838fe0a653cd87468c284b709da817cf",
+      "bytes": 222
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/input-publication-writing-verified.log",
+      "sha256": "aa41f743eae1fca73ea5cec1c726b769e5ff63af7601a28b7451ad7805407e44",
+      "bytes": 558
+    }
+  ],
+  "document_contract": {
+    "exit_code": 0,
+    "tasks": 38,
+    "primary_cases": 50,
+    "required_subcases": 324,
+    "candidate_subcases": 305,
+    "candidate_extra_subcases": 8,
+    "historical_files_preserved": 57,
+    "local_links_checked": 264,
+    "plan_lines": 500
+  }
+}
