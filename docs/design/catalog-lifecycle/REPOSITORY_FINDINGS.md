@@ -1157,3 +1157,25 @@ History without a matching binding revision supplies no scoped completeness clai
 The [manual binding proof](../../plans/proof/starport-production-catalog/csp3/manual-bindings-verification.json) records component verification.
 CLI and HTTP adapters still need shared-setting composition and runtime retention during publication.
 Scoped deletion, field-presence handling, and released-pair qualification remain open.
+
+
+### CSP3 canonical runtime reconstruction
+
+The runtime previously merged provider layers with a separate enrichment algorithm and published no provider receipt links.
+Its effective catalog also accepted authored definitions from provider observations, contrary to the canonical reconciliation contract.
+
+Runtime reconstruction now restores original observations and uses the canonical reconciler.
+Field provenance, generation links, and excluded-model review candidates retain the corresponding provider receipt.
+Legacy layers use the same record selection as scoped observations. The active binding policy remains a separate runtime check.
+
+Stable generated timestamps preserve the payload for unchanged retained evidence.
+Each reconstruction checks pricing validity at the current time. Its rejection text now identifies the fixed interval boundary.
+Concurrent rebuilds serialize publication and effective-state activation.
+A further regression found synthesized provenance for providers outside the primary selection. The filter now applies before provider reconciliation.
+
+Three acquisition tests placed reviewed authored definitions only in their provider observations.
+Their fixtures now supply those definitions through an explicit catalog source. Model-retention and partial-failure assertions remain unchanged.
+A separate regression proves that a provider observation cannot establish authored identity, even when it includes a definition.
+
+The [runtime reconciliation proof](../../plans/proof/starport-production-catalog/csp3/runtime-reconciliation-verification.json) records verification and earlier failures.
+CLI and HTTP composition, upstream manifest lineage, field presence, scoped deletion, and released-pair qualification remain open.

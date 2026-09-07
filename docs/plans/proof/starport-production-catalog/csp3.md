@@ -812,3 +812,42 @@ Scoped deletion, field-presence handling, and released-pair acceptance remain op
 
 CSP3 remains in progress. All 50 primary cases remain UNVERIFIED.
 The shared review helper remains unchanged. No branch push or native CI dispatch occurred.
+
+
+### Canonical runtime reconstruction
+
+Work commit `05ba7e26` records this component. Evidence commit `cb63e726` includes 41 captures, totaling 11,827,113 bytes.
+
+Runtime rebuilds now restore retained provider observations and use the canonical reconciler.
+The effective catalog preserves field provenance. Durable generations include the original provider links and excluded-model review candidates.
+Legacy provider layers retain separate receipts. Active binding selection still precedes reconciliation.
+
+Generated change timestamps use retained publication and observation times.
+Each reconstruction evaluates pricing at the current time. Stable rejection text names the interval boundary.
+Unchanged retained inputs reproduce the same payload and generation identity.
+Concurrent rebuilds serialize durable publication and effective-state activation.
+
+The first regression proved that runtime reconstruction lost provider field receipts.
+The broader checks found that old runtime fixtures supplied authored definitions through provider observations alone.
+Those fixtures now supply reviewed definitions through an explicit catalog source. Existing model-retention and partial-failure assertions remain unchanged.
+A new regression excludes provider-only authored definitions and retains their original review evidence.
+
+A second regression proved that the primary filter synthesized provenance for unselected providers.
+The filter now runs before provider reconciliation. Reconstruction also avoids an unused copy of the full baseline.
+CPU profiles identify serialization and garbage collection costs. These profiles do not measure gateway request latency.
+
+The [verification record](csp3/runtime-reconciliation-verification.json) records exact checks, input hashes, and captured failures.
+All 79 normal package suites passed, with 3,505 passing test events and 22 packages without tests.
+Final race results contain 737 passing events: 358 runtime, 54 acquisition, 243 reconciler, and 82 pipeline events.
+The runtime race suite completed in 435.906 seconds. Code lint, Ago, generated documentation, and corrected strict writing passed.
+
+The five-minute race runs exceeded their suite deadline. Historical repository verification also records runtime suites above six minutes.
+The plan now uses the repository verifier's existing 20-minute suite deadline for CSP2 and CSP3 runtime checks.
+Every test and individual operation deadline remains unchanged. Product latency targets remain unchanged.
+
+CLI and HTTP adapters still need a transaction that retains manual source observations before they adopt the shared binding settings.
+Previews must avoid publication. The transaction must preserve source filters, fresh-mode semantics, strict acquisition, workspace projection, and retained layers.
+Upstream manifest lineage, complete field presence, scoped deletion, Starport adoption, and released-pair qualification remain open.
+
+CSP3 remains in progress. All 50 primary cases remain UNVERIFIED.
+The shared review helper remains unchanged. No branch push or native CI dispatch occurred.

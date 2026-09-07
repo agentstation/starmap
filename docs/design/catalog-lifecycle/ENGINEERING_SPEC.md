@@ -910,6 +910,19 @@ Volume checks compare only history from the same binding revision. They do not a
 Existing unscoped payloads omit the new fields. Missing models remain in the accepted baseline. Scoped deletion remains open.
 CLI and HTTP composition still need to pass the shared settings and coordinate publication with runtime retention.
 
+Runtime reconstruction now uses the canonical reconciler for active provider layers.
+It restores each original observation and publishes its link and any review candidates with the effective generation.
+Legacy provider layers retain separate record receipts. Binding selection still occurs before reconstruction.
+
+Generated change timestamps derive from retained publication and observation times, so unchanged evidence produces stable bytes.
+Each reconstruction checks pricing validity at the current time. Rejection evidence names the fixed interval boundary that caused refusal.
+The primary-source filter applies before provider reconciliation, so unselected providers retain their existing field evidence.
+Concurrent rebuilds serialize durable publication and activation. A rebuild checks cancellation before durable publication.
+
+Provider observations cannot introduce authored model definitions. Serving records must link to reviewed definitions from the baseline or selected catalog source.
+An unresolved record remains a review candidate with its original provider receipt.
+The runtime retains source layers separately. Upstream manifest lineage and complete manual-source publication remain open.
+
 Changing scope selectors or credential role requires a new binding revision and invalidates retained evidence from the former binding.
 Credential rotation permits retention only when the binding still describes the same scope.
 If the runtime cannot establish scope continuity, it must require new scoped evidence before use. Never promote an unknown account scope into global authority.
