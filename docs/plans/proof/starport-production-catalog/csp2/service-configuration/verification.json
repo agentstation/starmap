@@ -1,0 +1,105 @@
+{
+  "schema_version": 1,
+  "verdict": "PASS",
+  "scope": "Local implementation checks only. Native Windows and released-pair qualification remain UNVERIFIED.",
+  "work_commit": "707d63db33bfee0b935c3879869486efe41b19a4",
+  "inputs": {
+    ".github/workflows/pr.yaml": "fd85ca341e415e9885d7b38b96517a6d550869cf553d1a7fdb3d08e53430175c",
+    "GLOSSARY.md": "83ba7e75bf96faa4974c6bb947ce532ad7555332e8727fff922d9656ae49adbc",
+    "docs/CLI.md": "8d1f298d995d0fbf2571ace4a3bc6f60ea2b66ff572faf6f8be20754e94408d6",
+    "internal/cli/app/config.go": "469c1badd8cd275ecf3da5af5e37de3aa8864733ef009e0c158cb5028728c14d",
+    "internal/cli/app/config_access_darwin_test.go": "0361f04f35fa2356d763f48bc61e784ee72bf3942cad864c43926a09ccd54bad",
+    "internal/cli/app/config_access_windows_test.go": "20449a29e6ec75f31fa9be3604b2f2f90ea353a05b531c29dfe8c1c9ea1e3727",
+    "internal/cli/app/execute.go": "83e7b218ed3f4e8a5552289485d6f7e47cd45f100125d7187010841c1ae9487a",
+    "internal/cli/app/file_manifest.go": "db5b5f9419b130a3427b4f97f1d8ca4d7c9fd991395f125c83050699023adae4",
+    "internal/cli/app/runtime_migration.go": "20fe379b7087134c35e3196b388b31affd239502a35f65c987db3fdc9e849485",
+    "internal/cli/app/service_config_posix_test.go": "6c0ff0cd48bdbb7de5816b1d5a32d11a1c6b2b67ced8e106950079d28b31776e",
+    "internal/privatefiles/acl_darwin.go": "55f14eaaf383890efdc9b7a2a7e75db93cc5fbecea85d506bf9bc0a5fd2dc3b8",
+    "internal/privatefiles/acl_windows.go": "9ae5ea57201365419b59d634375fa956631c392d6c9caf8953ee0803460611a9",
+    "internal/privatefiles/records.go": "b7ef1609e23833955dc4813fe93efc18a7be44953c9b995cfbebabe68e02b636",
+    "internal/privatefiles/service_acl_darwin.go": "36dd443661dcb5781bfc8122a91e0e9ff59a59e88a3680caee4cf0ff58d5226d",
+    "internal/privatefiles/service_acl_linux.go": "daf26090a32bde4a7e1032f25793430411b2bae7454c217021b097de725fefb2",
+    "internal/privatefiles/service_configuration.go": "598762b8faf5949cd5790e87c18ee1613ca58904c36e307a33c0a029e1f94e9f",
+    "internal/privatefiles/service_configuration_linux_test.go": "86c8b135d39dcbc8074723bc59c547a8f6b346d1630ad4a4f60940c8b168dc14",
+    "internal/privatefiles/service_metadata_posix.go": "fb3eb3f8e9019cca8f97483cff2eb5e95aff03825cb3197027ac17e09fd725a0",
+    "internal/privatefiles/service_metadata_windows.go": "d3d12b0684a858ed6a9edb7eb8bd6f0d84fe74ab2f08b8501ec19bb055d2ce2c",
+    "internal/privatefiles/service_other.go": "b347c9eeb6af5d9edb316ac4079c186051d25cc65c3aa7faf2530e0097705047",
+    "internal/runtimeacl/windows/configuration.go": "59f577f6aff2740bc510e59a2f65631626086ef0c9fe1572b5542e94bd4bd5e0",
+    "internal/runtimeacl/windows/configuration_test.go": "c51c7bab5803fabe2baf81a0a707ed5eb92c9b24ae3d44d8be20b4988e25bb6e",
+    "pkg/productpaths/access.go": "798f4cadb851b19b147b3af8ccdb0bddbe31e93b3627fb8c9832e1e18973bbb4",
+    "pkg/productpaths/access_test.go": "22194f6aad72e89b0fa30bbd432384df73ee6d1a0812cac2200cbb30270cfc4a",
+    "pkg/productpaths/inspection_windows.go": "33a1642c2b37426a63acf1886ce9af5e00e812f4cebf0dae21f509827796df05",
+    "pkg/productpaths/policy/access.go": "f9b5def6a075b3b01b401aa6fde487fc0c70024f33ca3e1bf45f139420b646b8",
+    "pkg/productpaths/policy/configuration_test.go": "03420ccf48c59bc37057cd44e4f129ead32e885f8ee8dff187e2c6c719eb224c",
+    "pkg/productpaths/policy/posix.go": "b45728fbf63281da1a6a6899eb5142065bd18669e484ded71f194b4b3ee135c5",
+    "pkg/productpaths/security.go": "384917321f809470992059b280c7c182d77d08c4f3f84cc828f598319b3f781b",
+    "pkg/productpaths/security_test.go": "6bd1cd73552b5dbc9b31400dd08d7839338920208439346566df7049ba800104"
+  },
+  "captures": {
+    "ago.json": "b8fb7afa66aa7a93914ac258475dd0191be821803a8aea4439f5ba05022f5fa5",
+    "consumer.log": "7134196a62260e6cec30dc13bf1fae10a093fbc722245fd07f1d293f42007fa8",
+    "fail-before.log": "f0e0141bf08cd86eea3eeb6c042619351cef8c065f1298f954aee5ae3a25c7c0",
+    "first-focused.log": "4d15ae05ff37c113d1951c28c1049f9efcd9f3d718649b39238a2e270017ca4d",
+    "focused-final.jsonl": "88a4a97633834cd1236047681e8b4f74cba589d5cedd1a64404e47b07b334428",
+    "lint-final.log": "e92606b0bf483111dff0a120c315ea165821348f31365020e2468a0059095c47",
+    "lint-initial.log": "37dd200074db08ac17b0be0e32fd98cad6f4183fade1e581d700e4c95ad84a12",
+    "linux-owner.log": "6cebbff77454c7e6fa2d1ff3091a93e6294ea79622804cbba9f8b581f0ba87f9",
+    "race.jsonl": "3f55a227842f8a219789c849ee09ab1f98f828203d49f015a1ed21673e941393",
+    "second-focused.log": "394f13f68c2520715a32a9af4dc4f2d5441c6515d9e90ed6372649b6139b7971",
+    "shared-callers.jsonl": "9f9e3373da18a0ff3c60e54a41ccad70e96eacc2fdb865acee0177245fab3636",
+    "windows-build.json": "8b0261ce11713c9dbee171e0c153b28b4a988d7ae4f04ea008ccae75147e022a",
+    "workflow.log": "d9e50568bd2847bc333415583acbe465ce0ac29ca8ca70f39ba878167502aac4",
+    "writing-before-commit.log": "ce1b3b81b41bc6473e6dd92d2f2a6f5df8e1933b5f395489fd0e7cd9df4a7708",
+    "writing-initial.log": "c7ec7cc99ff570f03b43eb0ad630f37a430b636349f1db5b387941922e65c13b",
+    "writing-second.log": "07997aa87e7d0191c7d69f28bf922190ebfa873b846bc2e6641ab393e3b3c160",
+    "writing-settled.log": "ce1b3b81b41bc6473e6dd92d2f2a6f5df8e1933b5f395489fd0e7cd9df4a7708",
+    "writing-third.log": "2dfe80af1074aca74eb557a4f4d4e72d942c24e0a5a6bfe0a312869d288badce",
+    "linux-owner.json": "d9c65b69dec3023e2916955221a6dac2dd37e8bd7850b05b45aa07277ad0e867",
+    "writing-ledger-initial.log": "47f241976adbbfbe705e4e8660e6f61e69779804ee9e0fd06134da886ebf601c"
+  },
+  "test_suites": {
+    "race": {
+      "passed_test_events": 394,
+      "by_package": {
+        "github.com/agentstation/starmap/internal/privatefiles": 51,
+        "github.com/agentstation/starmap/internal/runtimeacl/windows": 54,
+        "github.com/agentstation/starmap/pkg/productpaths": 45,
+        "github.com/agentstation/starmap/pkg/productpaths/policy": 35,
+        "github.com/agentstation/starmap/internal/cli/app": 209
+      },
+      "failed_events": 0,
+      "skipped_events": 0
+    },
+    "focused-final": {
+      "passed_test_events": 42,
+      "by_package": {
+        "github.com/agentstation/starmap/pkg/productpaths/policy": 14,
+        "github.com/agentstation/starmap/internal/runtimeacl/windows": 1,
+        "github.com/agentstation/starmap/pkg/productpaths": 7,
+        "github.com/agentstation/starmap/internal/cli/app": 20
+      },
+      "failed_events": 0,
+      "skipped_events": 0
+    },
+    "shared-callers": {
+      "passed_test_events": 686,
+      "by_package": {
+        "github.com/agentstation/starmap/pkg/catalogs/storage": 47,
+        "github.com/agentstation/starmap/internal/bootstrap": 66,
+        "github.com/agentstation/starmap": 93,
+        "github.com/agentstation/starmap/runtime": 480
+      },
+      "failed_events": 0,
+      "skipped_events": 0
+    }
+  },
+  "commands": [
+    "GOTOOLCHAIN=go1.26.6 go test -race -json ./internal/privatefiles ./internal/runtimeacl/windows ./pkg/productpaths/... ./internal/cli/app -count=1",
+    "GOTOOLCHAIN=go1.26.6 go test -race -json ./internal/cli/app ./pkg/productpaths/... ./internal/runtimeacl/windows ./internal/privatefiles -run 'TestService|TestConfiguration|TestWindowsService|TestDotenv' -count=1",
+    "GOTOOLCHAIN=go1.26.6 go test -race -json . ./runtime ./pkg/catalogs/storage ./internal/bootstrap -count=1",
+    "GOTOOLCHAIN=go1.26.6 go tool ago -stale-ignores -format json ./...",
+    "GOTOOLCHAIN=go1.26.6 golangci-lint run",
+    "./scripts/verify-consumer-deps.sh",
+    "make technical-writing-check"
+  ]
+}

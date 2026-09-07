@@ -1,7 +1,9 @@
 # CSP2: Persistent baseline and product paths
 
 Status: native qualification remains incomplete. The owner resolved all three decisions and authorized reviewed publication on 2026-09-06.
-See the [decision record](csp2/owner-decisions-2026-09-06.md). Service-managed primary configuration still needs implementation. Changes remain local and uncommitted.
+See the [decision record](csp2/owner-decisions-2026-09-06.md). Service-managed primary configuration now passes local checks in commit `707d63db`.
+The [service configuration evidence](csp2/service-configuration.md) records its scope. Required review and native qualification remain open.
+
 The public accessor, root resolution, and persistent baseline export now pass local checks.
 The full A01 through A04 contracts remain incomplete.
 
@@ -1504,3 +1506,10 @@ The inherited selectors were synthetic paths. The test did not use provider cred
 This result covers only the CLI tail. The full publication gate still needs successful verification and review.
 
 The [CSP3 classification record](csp3/historical-output-classification.json) resolves the earlier frozen-output lint blocker without changing historical bytes.
+
+## Service-managed primary configuration
+
+Commit `707d63db` implements the approved primary configuration exception.
+The [service configuration proof](csp2/service-configuration.md) records selection, native access rules, diagnostics, migration rereads, and verification.
+The local suites pass 394, 42, and 686 race results. Native Linux ownership checks pass, and Windows code compiles.
+Native Windows execution and complete CSP2 acceptance remain UNVERIFIED. Starport adoption remains under CSP8.

@@ -383,9 +383,17 @@ The reader must verify trusted ownership, service read access, and absence of un
 The exception requires explicit selection. A failed private-file check must not enable it automatically.
 
 Catalog state and dotenv files retain their private-access requirements. CSP2 and CSP8 own implementation and qualification for Starmap and Starport.
-This approved exception remains unimplemented at this checkpoint.
 
-The Starmap CLI now applies private-file access checks to primary YAML and every explicit dotenv file before parsing.
+Starmap selects this policy with `--config-access=service-managed` or `STARMAP_CONFIG_ACCESS=service-managed` and an explicit `--config` or `CONFIG` path.
+The flag overrides the environment. YAML contents cannot select their own access policy.
+The selected policy also governs migration configuration rereads and the file manifest. Starport implementation remains under CSP8.
+
+Starmap permits POSIX ownership by root or the effective user, with no group or other write bits.
+Windows permits the process account, SYSTEM, Administrators, or TrustedInstaller as owner and mutation principals.
+Shared read grants remain valid. Native read operations establish service readability, and diagnostics retain uncertainty about effective access.
+The 1 MiB bound and protected ancestor checks apply in both modes. Neither mode repairs input files.
+
+The Starmap CLI applies the selected access policy to primary YAML and owner-only checks to every explicit dotenv file before parsing.
 Each file permits at most 1 MiB. This input bound applies before and during the read.
 Private read-only files remain valid. The reader resolves selected symlinks and validates the resulting regular file and supported native ACLs.
 
@@ -395,7 +403,7 @@ All dotenv files must pass access checks and parsing before any environment muta
 Read failures retain typed causes without configuration values. Parse errors continue to omit parser input.
 The shared record reader serves runtime evidence and configuration inputs. Directory policy stays with each caller.
 
-Linux and macOS now enforce the ancestor policy below. Service-owned file exceptions, other file roles, and native Windows qualification remain open.
+Linux and macOS now enforce the ancestor policy below. Starport service configuration, other file roles, and native Windows qualification remain open.
 
 Every manifest entry needs a descriptor for its override, applicability, access, retention, and recovery policy.
 An unselected local backend must not create empty database directories during shared startup.
