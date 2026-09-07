@@ -899,6 +899,17 @@ This selection applies within the provider source type. The existing field-autho
 The caller must select permitted bindings before reconciliation.
 This change does not complete field-presence handling, scoped deletion, or active-policy enforcement in manual update adapters.
 
+The manual acquisition package now accepts `acquisition.WithProviderBindings` during construction.
+An explicit empty set disables provider acquisition. Source and provider filters can only restrict the declarations.
+The pipeline validates selected provider profiles before source work, emits separate binding observations, and bounds concurrent provider calls.
+Strict mode requires the exact selected bindings. Dry-run previews still avoid publication.
+
+Field provenance now carries optional binding identity and revision through JSON and YAML.
+Volume checks compare only history from the same binding revision. They do not attribute unscoped or peer history to a selected binding.
+
+Existing unscoped payloads omit the new fields. Missing models remain in the accepted baseline. Scoped deletion remains open.
+CLI and HTTP composition still need to pass the shared settings and coordinate publication with runtime retention.
+
 Changing scope selectors or credential role requires a new binding revision and invalidates retained evidence from the former binding.
 Credential rotation permits retention only when the binding still describes the same scope.
 If the runtime cannot establish scope continuity, it must require new scoped evidence before use. Never promote an unknown account scope into global authority.

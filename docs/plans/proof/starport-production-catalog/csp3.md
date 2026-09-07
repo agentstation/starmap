@@ -773,3 +773,42 @@ Manual acquisition still needs separate observations for each selected binding a
 The caller remains responsible for active binding authorization. Field-presence handling, scoped deletion, and full runtime field authority remain open.
 CSP3 remains in progress, with zero primary passes and all 50 cases UNVERIFIED.
 The shared review helper remains unchanged, and no branch publication or native CI dispatch occurred.
+
+
+### Manual source binding integration
+
+Commit `31a27ae4` adds `acquisition.WithProviderBindings` to the manual syncer.
+Construction copies the declarations without contacting providers. An explicit empty set disables provider acquisition.
+Source and provider filters can restrict that set but cannot add bindings.
+
+The pipeline validates each selected profile before source work and emits separate observations for the selected bindings.
+Provider calls share the existing concurrency limit. Queued calls stop after cancellation.
+Strict mode requires each selected observation and rejects missing, duplicate, mismatched, failed, incomplete, or empty results.
+
+A strict-mode regression rejected valid serving records because the observation lacked authored definitions.
+The check now accepts either form of model data. The regression remains in the [captured failure](csp3/manual-bindings-profiles.log).
+Previews leave the store unchanged, and durable generation links retain both binding receipts.
+
+Field provenance now preserves optional binding identity and revision through JSON and YAML.
+The volume guard compares only matching binding history and keeps the binding when it changes observation health.
+Legacy unscoped payloads omit the new fields. History without a matching binding revision supplies no scoped completeness claim.
+
+[Final package runs](csp3/manual-bindings-verification.json) passed 398 race events: 234 reconciler, 82 pipeline, 28 provenance, and 54 acquisition events.
+Normal checks cover 79 distinct passing package suites and 22 packages without tests.
+The first broad normal run failed its acquisition fixture. The corrected acquisition and pipeline suites then passed.
+Code lint, Ago, generated documentation, and strict writing passed. The acquisition race suite completed in 264.865 seconds under its five-minute limit.
+
+Evidence commit `b4ace4a8` includes 37 captures, totaling 1,934,272 bytes.
+The local planning base contains those same files. Their output remains outside the code review diff.
+Earlier fixture, code lint, and writing failures remain recorded.
+
+Commit `aceea1a8` also restricts volume history to the binding's canonical provider.
+The [regression](csp3/manual-bindings-provider-history-regression.log) showed that a reused binding identity could import another provider's history.
+Final pipeline race and normal checks, code lint, and Ago pass after that correction. The other package runs precede this three-line guard.
+
+CLI and HTTP adapters still need shared-setting composition and runtime retention during publication.
+The standalone syncer does not replace the runtime's retained layer ledger or policy enforcement.
+Scoped deletion, field-presence handling, and released-pair acceptance remain open.
+
+CSP3 remains in progress. All 50 primary cases remain UNVERIFIED.
+The shared review helper remains unchanged. No branch push or native CI dispatch occurred.

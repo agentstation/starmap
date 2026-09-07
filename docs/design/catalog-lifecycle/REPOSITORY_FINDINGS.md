@@ -1137,3 +1137,23 @@ A second regression showed that a newer stale fallback could displace a direct p
 The caller still owns active binding selection. The manual CLI and HTTP adapters do not yet enforce that selection.
 Their pipeline must emit separate observations for the selected bindings and preserve runtime retention during publication.
 Field-presence handling, scoped deletion, and released-pair acceptance remain open.
+
+
+### CSP3 manual acquisition bindings
+
+The manual syncer now accepts an explicit set of provider bindings during construction.
+It checks each selected profile before source work and preserves separate observations through reconciliation and durable generation links.
+An explicit empty set contacts no providers. Operation filters cannot add undeclared providers.
+The shared provider-call limit applies across the selected bindings.
+
+Strict mode previously counted only authored definitions. Provider observations can instead contain serving records linked to an authored catalog.
+It now accepts either form of model data and still rejects empty, incomplete, failed, missing, duplicate, or mismatched observations.
+
+The volume guard previously compared every provider account against one source-wide history and dropped binding metadata when it changed health.
+Field provenance now preserves optional binding identity and revision through JSON and YAML.
+The guard uses matching history and retains the binding when it creates a degraded receipt.
+History without a matching binding revision supplies no scoped completeness claim.
+
+The [manual binding proof](../../plans/proof/starport-production-catalog/csp3/manual-bindings-verification.json) records component verification.
+CLI and HTTP adapters still need shared-setting composition and runtime retention during publication.
+Scoped deletion, field-presence handling, and released-pair qualification remain open.
