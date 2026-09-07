@@ -1179,3 +1179,19 @@ A separate regression proves that a provider observation cannot establish author
 
 The [runtime reconciliation proof](../../plans/proof/starport-production-catalog/csp3/runtime-reconciliation-verification.json) records verification and earlier failures.
 CLI and HTTP composition, upstream manifest lineage, field presence, scoped deletion, and released-pair qualification remain open.
+
+
+### CSP3 receipt-only generation changes
+
+A regression found that runtime publication reused an identity after an unselected provider receipt changed.
+Selected catalog values and the payload checksum stayed unchanged. The durable manifest therefore retained the old receipt.
+
+Effective identity now includes original source links and review candidates, with deterministic ordering.
+The catalog payload checksum remains separate. Empty evidence preserves the baseline identity input.
+
+A restore test supplies different manifest evidence under an existing identity.
+The existing store contract refuses that update with an immutable generation conflict and preserves current state.
+This test required no additional restore implementation.
+
+The [receipt identity proof](../../plans/proof/starport-production-catalog/csp3/receipt-identity-verification.json) records the checks and original publication failure.
+Manual source transactions, CLI and HTTP composition, and released-pair qualification remain open.

@@ -923,6 +923,10 @@ Provider observations cannot introduce authored model definitions. Serving recor
 An unresolved record remains a review candidate with its original provider receipt.
 The runtime retains source layers separately. Upstream manifest lineage and complete manual-source publication remain open.
 
+Effective generation identity binds the payload, original source links, and review candidates.
+A receipt change creates a new identity even when selected catalog values remain unchanged.
+Evidence ordering and empty-slice representation do not change the identity. The payload checksum continues to describe only catalog bytes.
+
 Changing scope selectors or credential role requires a new binding revision and invalidates retained evidence from the former binding.
 Credential rotation permits retention only when the binding still describes the same scope.
 If the runtime cannot establish scope continuity, it must require new scoped evidence before use. Never promote an unknown account scope into global authority.

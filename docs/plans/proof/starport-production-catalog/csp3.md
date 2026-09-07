@@ -851,3 +851,27 @@ Upstream manifest lineage, complete field presence, scoped deletion, Starport ad
 
 CSP3 remains in progress. All 50 primary cases remain UNVERIFIED.
 The shared review helper remains unchanged. No branch push or native CI dispatch occurred.
+
+
+### Receipt-only generation identity
+
+Work commit `dab45969` binds effective generation identity to catalog bytes, source links, and review candidates.
+The regression changed an older provider receipt while a newer provider observation continued to supply the selected values.
+Before the correction, publication reused the prior generation and retained the old receipt.
+The corrected generation keeps the same payload checksum and publishes the new receipt under a distinct identity.
+
+Evidence order and empty-slice representation do not change identity. Empty evidence preserves the baseline identity input.
+A separate restore check confirms that the existing store rejects altered manifest evidence under a retained identity.
+It returns an immutable generation conflict and preserves current state. No restore implementation changed.
+
+The [verification record](csp3/receipt-identity-verification.json) preserves 17 captures and seven source or generated-document hashes.
+Normal checks passed 79 package suites and 3,507 test events, with 22 packages without tests.
+Broader race checks passed 657 events: 360 runtime, 54 acquisition, and 243 reconciler events.
+Three final focused race tests passed after the restore test added an explicit conflict assertion.
+
+Code lint, Ago, generated documentation, and strict writing passed. The initial receipt publication failure remains recorded.
+The passing restore capture retains its original filename and does not count as fail-before evidence.
+
+Identity construction occurs during catalog reconstruction. These checks do not measure inference overhead.
+Manual source transactions and CLI and HTTP composition remain open. CSP3 remains in progress, and all 50 primary cases remain UNVERIFIED.
+The shared review helper remains unchanged. No branch push or native CI dispatch occurred.
