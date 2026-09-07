@@ -1,0 +1,22 @@
+[0;34mRunning linters...[0m 
+Info: New devbox available: 0.16.0 -> v0.18.0. Please run `devbox version update`.
+Info: Running script "which" on /Users/jack/src/github.com/agentstation/starmap-catalog-requirements
+devbox run golangci-lint run
+Info: New devbox available: 0.16.0 -> v0.18.0. Please run `devbox version update`.
+Info: Running script "golangci-lint" on /Users/jack/src/github.com/agentstation/starmap-catalog-requirements
+📦 Starmap development environment loaded
+Tools available: go, gomarkdoc, swag (v2 via flake), golangci-lint
+0 issues.
+devbox run go tool ago -stale-ignores ./...
+Info: New devbox available: 0.16.0 -> v0.18.0. Please run `devbox version update`.
+Info: Running script "go" on /Users/jack/src/github.com/agentstation/starmap-catalog-requirements
+📦 Starmap development environment loaded
+Tools available: go, gomarkdoc, swag (v2 via flake), golangci-lint
+/Applications/Xcode.app/Contents/Developer/usr/bin/make technical-writing-check
+/Users/jack/.agents/skills/technical-writing/scripts/technical-writing glossary check
+PASS: /Users/jack/src/github.com/agentstation/starmap-catalog-requirements/GLOSSARY.md (80 term(s), 0 error(s))
+/Users/jack/.agents/skills/technical-writing/scripts/technical-writing glossary update --check
+PASS: no candidate terms are missing from /Users/jack/src/github.com/agentstation/starmap-catalog-requirements/GLOSSARY.md
+/Users/jack/.agents/skills/technical-writing/scripts/technical-writing lint . --mode strict --format text
+PASS: 1071 file(s), 0 diagnostic(s)
+[0;32mLinting complete[0m 
