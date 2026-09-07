@@ -1050,3 +1050,24 @@ Lint, Ago, generated documentation, dependency boundaries, and corrected writing
 
 General source resets, projection membership, previews, and CLI/HTTP integration remain open. The CLI `--force` behavior has not changed yet.
 All 50 primary cases remain UNVERIFIED. No request latency claim, branch push, native CI dispatch, GitHub merge, or release follows.
+
+
+### Metadata provider selection
+
+Commit `b227b9a3` extends provider record selection to models.dev HTTP and Git observations.
+The first contract test failed because selection accepted only provider API observations.
+Reconciliation now keeps the original metadata payload and builds a separate provider view for baseline filtering.
+Selection uses original provider identities before canonical alias mapping. Receipts and shared authored definitions use the original observation.
+
+The [verification record](csp3/metadata-selection-verification.json) contains ten input hashes and the raw test captures.
+Fourteen focused contract events cover receipts, aliases, peers, empty selections, primary membership, and protected sources.
+All 79 normal package suites passed 3,631 test events. Five skips and 22 packages without tests remain separate.
+Five race suites passed 1,055 events. The runtime suite passed 447 events in 574.153 seconds.
+
+The final normal and race reconciler suites each passed 273 events and replace that package in the broader captures.
+They cover collection views keyed by source and observation identity, and the original catalog used for baseline comparison.
+Lint, Ago, generated documentation, and corrected writing checks passed. The failed initial contract and writing output remain in the evidence record.
+
+General source reset records, projection membership, previews, and CLI/HTTP integration remain open.
+All 50 primary cases remain UNVERIFIED. This work makes no request latency or released-pair acceptance claim.
+No branch push, native CI dispatch, GitHub merge, or release occurred.

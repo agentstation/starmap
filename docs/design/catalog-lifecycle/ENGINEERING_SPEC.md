@@ -977,13 +977,22 @@ These field checks do not implement scoped membership deletion, reset masks, or 
 
 The reconciler now supports provider record selection by original observation identity.
 An omitted identity retains all its providers. An explicit empty list excludes all provider records from that observation.
-It validates the original receipt before selection and rejects unknown observations, unknown providers, duplicate providers, and non-provider source selections.
+It validates the original receipt before selection and rejects unknown observations, unknown providers, and duplicate providers.
+
+Provider APIs and models.dev HTTP or Git observations support provider record selection.
+Selection rejects embedded, release, and local operator observations.
 The selection is an owned copy. Caller changes to the map or its slices cannot alter reconciliation.
 
 Selection applies before record conflicts, provider and model collection, review-candidate evidence, and primary membership filtering.
 Selected records retain their original observation identity and checksum. Neither payload nor receipt is rewritten to represent a smaller observation.
 This permits one provider to be reset within a legacy aggregate observation without discarding another provider's records.
 Baseline facts and reviewed authored definitions remain separate inputs.
+
+Metadata reconciliation now builds a separate provider view after original receipt validation.
+The view limits providers to the baseline and maps source aliases to canonical provider identities. Selection applies before that mapping.
+The original metadata observation supplies receipts and authored definitions. Filtering no longer replaces its catalog payload.
+
+Primary membership without a baseline also follows the selection. This prevents excluded records from reappearing through primary filtering.
 
 This reconciler option does not derive, retain, or publish reset scopes. Runtime provider resets now use it. General source resets and adapter integration remain open.
 Scoped membership and reset evidence still need checks that prevent old projections from restoring retired acquisition results.

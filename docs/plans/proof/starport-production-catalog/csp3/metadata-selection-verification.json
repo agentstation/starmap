@@ -1,0 +1,289 @@
+{
+  "schema_version": 1,
+  "task": "CSP3",
+  "date": "2026-09-07",
+  "status": "component-progress-only",
+  "toolchain": "go1.26.6 darwin/arm64",
+  "work_commit": "b227b9a3b1b2b205952154a145222d8a14b54e1a",
+  "evidence_commit": "0ecec3f4567f0726d18f559645ed4a781b954689",
+  "planning_base": "b7bf80bdd304fa27e502cf6501233be7a453b0f5",
+  "behavior": [
+    "WithProviderObservationSelection accepts provider records from models.dev HTTP and Git observations. Protected local, embedded, and release sources remain ineligible.",
+    "Original receipt validation precedes provider selection. Selection preserves unrelated provider records and shared authored definitions.",
+    "Metadata baseline filtering now builds a collection view instead of replacing the original observation catalog. Aliases select by original identity before mapping to canonical baseline identities.",
+    "Primary membership follows metadata selection when no baseline exists. Original payload bytes, observation identity, and checksum remain unchanged."
+  ],
+  "checks": [
+    {
+      "command": "GOTOOLCHAIN=go1.26.6 go test -race -json -count=1 -timeout 5m ./internal/catalog/reconciler -run ^TestMetadataSelection",
+      "exit_code": 0,
+      "capture": "csp3/metadata-selection-contracts.jsonl"
+    },
+    {
+      "command": "GOTOOLCHAIN=go1.26.6 go test -race -json -count=1 -timeout 20m ./runtime ./internal/catalog/reconciler ./internal/catalog/pipeline ./acquisition ./internal/cli/app",
+      "exit_code": 0,
+      "capture": "csp3/metadata-selection-race.jsonl"
+    },
+    {
+      "command": "GOTOOLCHAIN=go1.26.6 go test -json -count=1 -timeout 20m ./...",
+      "exit_code": 0,
+      "capture": "csp3/metadata-selection-all.jsonl"
+    },
+    {
+      "command": "GOTOOLCHAIN=go1.26.6 go test -race -json -count=1 -timeout 5m ./internal/catalog/reconciler",
+      "exit_code": 0,
+      "capture": "csp3/metadata-selection-reconciler-final.jsonl"
+    },
+    {
+      "command": "GOTOOLCHAIN=go1.26.6 go test -json -count=1 -timeout 5m ./internal/catalog/reconciler",
+      "exit_code": 0,
+      "capture": "csp3/metadata-selection-normal-final.jsonl"
+    },
+    {
+      "command": "GOTOOLCHAIN=go1.26.6 golangci-lint run",
+      "exit_code": 0,
+      "capture": "csp3/metadata-selection-lint-final.log"
+    },
+    {
+      "command": "GOTOOLCHAIN=go1.26.6 go tool ago -stale-ignores -format json ./...",
+      "exit_code": 0,
+      "capture": "csp3/metadata-selection-ago-final.json"
+    },
+    {
+      "command": "GOTOOLCHAIN=go1.26.6 make generate",
+      "exit_code": 0,
+      "capture": "csp3/metadata-selection-generate-final.log"
+    },
+    {
+      "command": "GOTOOLCHAIN=go1.26.6 make technical-writing-check",
+      "exit_code": 0,
+      "capture": "csp3/metadata-selection-writing-final.log"
+    },
+    {
+      "command": "GOTOOLCHAIN=go1.26.6 bash scripts/verify-catalog-product.sh --starport-root /Users/jack/src/github.com/agentstation/starport-catalog-lifecycle --task CSP3 --json",
+      "exit_code": 1,
+      "capture": "csp3/metadata-selection-product.json"
+    },
+    {
+      "command": "python3 docs/plans/proof/starport-production-catalog/activation-2026-09-05/verify_documents.py",
+      "exit_code": 0,
+      "capture": "csp3/metadata-selection-documents-final.log"
+    },
+    {
+      "command": "GOTOOLCHAIN=go1.26.6 make technical-writing-check",
+      "exit_code": 0,
+      "capture": "csp3/metadata-selection-writing-settled.log"
+    }
+  ],
+  "normal_suite": {
+    "passed_packages": 79,
+    "passed_test_events": 3631,
+    "packages_without_tests": 22,
+    "skipped_test_events": 5,
+    "capture": "csp3/metadata-selection-all.jsonl",
+    "final_replacement": "Replace the reconciler package suite with metadata-selection-normal-final.jsonl. Both suites contain 273 passing events."
+  },
+  "race_suite": {
+    "passed_packages": 5,
+    "passed_test_events": 1055,
+    "components": {
+      "runtime": 447,
+      "reconciler": 273,
+      "pipeline": 81,
+      "acquisition": 54,
+      "app": 200
+    },
+    "runtime_seconds": 574.153,
+    "capture": "csp3/metadata-selection-race.jsonl",
+    "final_replacement": "Replace the reconciler package suite with metadata-selection-reconciler-final.jsonl. Both suites contain 273 passing events."
+  },
+  "focused_contracts": {
+    "passed_test_events": 14,
+    "capture": "csp3/metadata-selection-contracts.jsonl"
+  },
+  "superseded_checks": [
+    {
+      "capture": "csp3/metadata-selection-red.jsonl",
+      "exit_code": 1,
+      "reason": "The new metadata selection contract initially failed because only provider API observations were eligible."
+    },
+    {
+      "capture": "csp3/metadata-selection-writing.log",
+      "exit_code": 2,
+      "reason": "Split three long paragraphs and replaced one passive sentence. Corrected writing checks pass."
+    },
+    {
+      "capture": "csp3/metadata-selection-writing-docs.log",
+      "exit_code": 2,
+      "reason": "Shortened the status paragraph to meet the sentence limit."
+    }
+  ],
+  "input_hashes": [
+    {
+      "path": "internal/catalog/reconciler/README.md",
+      "sha256": "5cc8f3089bcd4d9f3694102b27fc189664226e2604cc9533d81da38c1f8a4781"
+    },
+    {
+      "path": "internal/catalog/reconciler/collector.go",
+      "sha256": "0b34cf0db7f0890b0bad90809e59277963d3aed23154435b64ead842e6024619"
+    },
+    {
+      "path": "internal/catalog/reconciler/composition.go",
+      "sha256": "26fff08cdc7404c2333a56ed4cfec38be147ac0915f367fb2e342e81d0f522f2"
+    },
+    {
+      "path": "internal/catalog/reconciler/composition_test.go",
+      "sha256": "c3a7a5b7d353f56701007797e548930578537b327a7f7bb3d16f1c8989c26394"
+    },
+    {
+      "path": "internal/catalog/reconciler/metadata_selection_test.go",
+      "sha256": "253657b75cfc0b2a9471d6276203be05be021863f0a3827bfd49b5f0cb88f407"
+    },
+    {
+      "path": "internal/catalog/reconciler/options.go",
+      "sha256": "5bbee6e811f7d0ff2a226b1e54e8ebe494c7413fb62bc379ee3a636612de488b"
+    },
+    {
+      "path": "internal/catalog/reconciler/provider_collection.go",
+      "sha256": "32f9b48dcd91c3d083477c5a560df94648e7dcf553022c8a294874bad3a8b020"
+    },
+    {
+      "path": "internal/catalog/reconciler/provider_selection.go",
+      "sha256": "c1b098e3951e3c7c73825a3fe0ef2d1d849d93c5c1cba246d5f720641bfbc431"
+    },
+    {
+      "path": "internal/catalog/reconciler/reconciler.go",
+      "sha256": "479ba5138b4acb6ca83c4f046141d9ed04379651fd400f3a4b14263127e6dfa0"
+    },
+    {
+      "path": "internal/catalog/reconciler/scoped_observations.go",
+      "sha256": "57ff3af4d82b3b627b0c1280a43afb3f2310c55d45d527e35d65d478cd592982"
+    }
+  ],
+  "raw_captures": [
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/metadata-selection-ago-final.json",
+      "sha256": "b8fb7afa66aa7a93914ac258475dd0191be821803a8aea4439f5ba05022f5fa5",
+      "bytes": 289
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/metadata-selection-ago.json",
+      "sha256": "b8fb7afa66aa7a93914ac258475dd0191be821803a8aea4439f5ba05022f5fa5",
+      "bytes": 289
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/metadata-selection-all.jsonl",
+      "sha256": "85ee673c457f8d45af8ade8d014584625186796b490a77f63e95f14d4b3048fb",
+      "bytes": 4456633
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/metadata-selection-contracts.jsonl",
+      "sha256": "f20bdbbee4350b1322e24d732999e8d0256efd95a1d2bf9833cc1a6e1123df07",
+      "bytes": 17335
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/metadata-selection-focused.jsonl",
+      "sha256": "cd63a911932e0017524d991ddc49f16b6c5734503bd963f309c1535ba7873d3d",
+      "bytes": 4335
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/metadata-selection-generate-final.log",
+      "sha256": "ea4c003a7d8496dbe46ad725186fa928845fd0a3707508db5830d6d47210d255",
+      "bytes": 9934
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/metadata-selection-generate.log",
+      "sha256": "740bcf0790b4f81888108cdc5682ea80b7e0027734b25bace884d10f16e6bfd9",
+      "bytes": 9934
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/metadata-selection-lint-final.log",
+      "sha256": "e92606b0bf483111dff0a120c315ea165821348f31365020e2468a0059095c47",
+      "bytes": 10
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/metadata-selection-lint.log",
+      "sha256": "e92606b0bf483111dff0a120c315ea165821348f31365020e2468a0059095c47",
+      "bytes": 10
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/metadata-selection-normal-final.jsonl",
+      "sha256": "6a789d0dd1691b65df8b7cd633bd4114a7990771ef7b15988674cd3e16bd5950",
+      "bytes": 303938
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/metadata-selection-product.json",
+      "sha256": "0a5cc1a33899402e4135c4ef56e28730155c63025b771d83734fcab9c93df5bb",
+      "bytes": 7700
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/metadata-selection-race.jsonl",
+      "sha256": "3d01a8b50f23150638a1e8b672f6d654b03dabfafd3d3c443905b59a0b3b9080",
+      "bytes": 1505993
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/metadata-selection-reconciler-final.jsonl",
+      "sha256": "9e435dbcfc9972e59012d49acb31ba511942f492db40ee73ea08e64f8e8d5d1c",
+      "bytes": 303988
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/metadata-selection-red.jsonl",
+      "sha256": "d1183a8dc79b01ba2edc2c12c11f90c5d2ca7ba1525091aabe20eb2a9e0bb16a",
+      "bytes": 4431
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/metadata-selection-writing-final.log",
+      "sha256": "43fdea7f4e3fcf38ca78ef19ae11fba3a27ac56a6719f77bdcafd47475743938",
+      "bytes": 558
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/metadata-selection-writing.log",
+      "sha256": "f811b786f4dcde8ad89410fe3626125b9a8a32e68d3cee1805bcfe05664d0edf",
+      "bytes": 1349
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/metadata-selection-documents.log",
+      "sha256": "3d227120ad2ea33f461d371f33aed0760df7bb83f9b1f1a00e85e086f4e37f22",
+      "bytes": 3981
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/metadata-selection-documents-final.log",
+      "sha256": "c993163738f416a23fd928a7ba05a75e6365043c5dc97069aae087df7048424f",
+      "bytes": 3981
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/metadata-selection-writing-docs.log",
+      "sha256": "ae4e9a8840a7724801f5d3c723b563f45964dab9109aabb25f93f6a79b15b4b9",
+      "bytes": 785
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/metadata-selection-writing-settled.log",
+      "sha256": "43fdea7f4e3fcf38ca78ef19ae11fba3a27ac56a6719f77bdcafd47475743938",
+      "bytes": 558
+    }
+  ],
+  "audit": {
+    "scope": "Manual repository-grounded component audit. Required pre-PR review remains open.",
+    "reviewed": [
+      "Original receipt validation and immutable input ownership",
+      "Selection before baseline alias mapping",
+      "Canonical provider identity and peer preservation",
+      "Empty selection, primary membership, and shared authored definitions",
+      "Protected source refusal and corrupt excluded evidence"
+    ],
+    "final_changes": "After broader test launch, collection views gained keys that include source and observation identity. Baseline comparison retains its original catalog. Final normal and race reconciler suites cover these changes. Only comments and generated documentation changed afterward."
+  },
+  "limitations": [
+    "This change prepares reconciliation for metadata resets. Durable metadata reset scopes, projection membership, previews, and CLI/HTTP integration remain open.",
+    "The existing CLI --force and Go sync.WithFresh still select an empty baseline in the pipeline. D24 is not complete.",
+    "The checks do not establish request latency, allocation overhead, complete enterprise authority, native qualification, or released-pair acceptance.",
+    "No branch push, native CI dispatch, GitHub merge, release, or code PR occurred. Full repository verification and required pre-PR review remain open."
+  ],
+  "acceptance": {
+    "primary_passed": 0,
+    "primary_unverified": 50,
+    "required_subcases": 324,
+    "credit": "none"
+  },
+  "next_action": "Retain general source reset scopes and replay them with metadata provider selection. Complete projection membership, previews, and CLI/HTTP runtime publication."
+}

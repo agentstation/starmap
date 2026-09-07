@@ -1329,3 +1329,18 @@ General source resets, projection membership, previews, adapter integration, nat
 
 Component evidence: [provider reset verification](../../plans/proof/starport-production-catalog/csp3/provider-reset-verification.json).
 The checks cover 1,041 race events and 3,617 normal events. They provide no primary acceptance credit.
+
+
+### CSP3 metadata provider selection
+
+The provider selection contract now accepts models.dev HTTP and Git observations.
+The first new contract test failed because selection accepted only provider API observations.
+Repository review also found that metadata baseline filtering replaced the catalog while retaining the original observation identity and checksum.
+
+Reconciliation now builds a separate provider view after receipt validation. It applies selection before canonical alias mapping.
+The original observation remains available for receipts and shared authored definitions. A filtered view cannot replace that evidence.
+Tests cover baseline enrichment, peer providers, aliases, empty selections, original receipt checks, and protected source refusal.
+General source reset records, projection membership, previews, and CLI/HTTP adoption remain open.
+
+The [metadata selection proof](../../plans/proof/starport-production-catalog/csp3/metadata-selection-verification.json) records 1,055 passing race events and 3,631 normal events.
+All 50 primary cases remain UNVERIFIED.
