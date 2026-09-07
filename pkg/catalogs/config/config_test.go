@@ -9,8 +9,8 @@ import (
 
 func TestPublicDescriptorsCoverCanonicalSettings(t *testing.T) {
 	descriptors := config.Descriptors()
-	if len(descriptors) != 22 {
-		t.Fatalf("descriptor count = %d, want all 22 supported settings", len(descriptors))
+	if len(descriptors) != 23 {
+		t.Fatalf("descriptor count = %d, want all 23 supported settings", len(descriptors))
 	}
 	seen := make(map[string]bool)
 	for _, descriptor := range descriptors {
@@ -81,4 +81,20 @@ func TestPublicSettingsParseIsPassive(t *testing.T) {
 	if len(parsed.Configured()) != 0 || parsed.SourceKind != "public" {
 		t.Fatal("public parser read ambient configuration")
 	}
+}
+
+func TestProviderBindingsDescriptorPreservesOmissionAndRestart(t *testing.T) {
+	for _, descriptor := range config.Descriptors() {
+		if descriptor.Name != config.ProviderBindings {
+			continue
+		}
+		if descriptor.Type != config.ProviderBindingsValue || descriptor.Mutability != "restart" || descriptor.Scope != config.DeploymentScope || descriptor.SourceBinding != "" {
+			t.Fatal("binding schema has the wrong grammar, change class, or authority")
+		}
+		if descriptor.AllowEmpty || descriptor.Default != "" || descriptor.DefaultMeaning == "" {
+			t.Fatal("binding schema collapsed omission into an empty binding set")
+		}
+		return
+	}
+	t.Fatal("binding descriptor is absent")
 }

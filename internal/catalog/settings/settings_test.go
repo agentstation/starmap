@@ -31,6 +31,7 @@ func sampleValues() map[string]string {
 		settings.SourceAliases:        "replica-a,replica-b",
 		settings.AcquisitionEnabled:   "false",
 		settings.AcquisitionInterval:  "2h",
+		settings.ProviderBindings:     "[]",
 		settings.CoalesceWindow:       "45s",
 		settings.WorkspacePath:        "/var/lib/starmap/catalog",
 		settings.StartupSpread:        "5m",
