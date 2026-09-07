@@ -1002,3 +1002,29 @@ Lint, Ago, generated documentation, consumer dependency checks, and corrected wr
 Next: implement transactional D24 reset scopes, then connect CLI and HTTP acquisition to runtime publication.
 Preserve the selected baseline, unrelated scopes, reviewed operator inputs, previews, and accepted state on failure.
 All 50 primary cases remain UNVERIFIED. No code publication or native CI dispatch occurred.
+
+
+### Provider record selection
+
+Commit `624a9f33` adds `WithProviderObservationSelection` to the reconciler.
+It selects records within an original provider observation and preserves the receipt and payload.
+An omitted observation identity retains all providers. An explicit empty selection excludes its provider records.
+Original receipt validation precedes selection, and later caller changes to the selection cannot alter reconciliation.
+
+The first contract test failed before selection reached collection: the excluded provider overwrote the baseline.
+The correction applies selection before conflict checks, collection, review-candidate evidence, and primary membership filtering.
+It retains unrelated provider records, baseline facts, and reviewed authored definitions. It writes no files.
+
+The [verification record](csp3/provider-selection-verification.json) preserves 17 captures, totaling 5,917,796 bytes, and eight input hashes.
+All 79 normal package suites passed 3,594 test events. Five skips and 22 packages without tests remain separate.
+Five race package suites passed 1,018 test events. The runtime suite passed 424 events in 581.451 seconds.
+Fourteen focused contract events cover aggregate receipts, excluded conflicts, input order, empty and omitted selection, ownership, and invalid inputs.
+
+Code lint, seven Ago rules, generated documentation, and corrected writing checks passed.
+Only comments, import spacing, and generated documentation changed after the broader tests started.
+No request latency claim or primary acceptance credit follows. All 50 primary cases remain UNVERIFIED.
+
+Next: retain reset scopes with replacement observations and accepted generation identity.
+Replay must apply selection to prior input occurrences, including retained provider files. Source reset semantics and projection membership remain open.
+Then connect CLI and HTTP acquisition to runtime publication while preserving previews and failed-update state.
+No branch push, native CI dispatch, GitHub merge, release, or code PR occurred.

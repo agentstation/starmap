@@ -1287,3 +1287,22 @@ Three focused race repetitions passed with the smaller fixture. The complete run
 
 The [observation update proof](../../plans/proof/starport-production-catalog/csp3/observation-update-verification.json) records 1,004 passing race events and 79 normal package suites.
 D24 reset scopes and CLI/HTTP runtime integration remain open. All 50 primary acceptance cases remain UNVERIFIED.
+
+
+### CSP3 provider selection within retained observations
+
+The first selection contract test failed: an excluded provider still overwrote the baseline.
+Its original observation also contained an unrelated provider.
+
+`WithProviderObservationSelection` now selects provider records by original observation identity.
+The reconciler validates the original receipt before applying the selection. It preserves the original payload and receipt for the remaining provider.
+
+Selection applies before conflict checks, collection, review-candidate evidence, and primary membership filtering.
+Focused tests cover aggregate receipts, input-order stability, excluded conflicts, explicit empty selection, omitted selection, and invalid input.
+They also check that later changes to the caller's selection map and slices cannot change the result.
+
+This is a reconciliation component. Runtime reset scopes, retained reset evidence, source reset semantics, and CLI/HTTP adoption remain open.
+The option does not remove facts from the selected baseline or independently enforce enterprise authority.
+
+The [provider selection proof](../../plans/proof/starport-production-catalog/csp3/provider-selection-verification.json) records 1,018 passing race events and 3,594 passing normal events across 79 package suites.
+All 50 primary cases remain UNVERIFIED.

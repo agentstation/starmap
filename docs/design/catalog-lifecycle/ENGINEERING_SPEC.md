@@ -975,6 +975,17 @@ Other source types keep their existing field authority.
 A changed operator value no longer matches the carried value and keeps local source authority.
 These field checks do not implement scoped membership deletion, reset masks, or complete authority enforcement.
 
+The reconciler now supports provider record selection by original observation identity.
+An omitted identity retains all its providers. An explicit empty list excludes all provider records from that observation.
+It validates the original receipt before selection and rejects unknown observations, unknown providers, duplicate providers, and non-provider source selections.
+The selection is an owned copy. Caller changes to the map or its slices cannot alter reconciliation.
+
+Selection applies before record conflicts, provider and model collection, review-candidate evidence, and primary membership filtering.
+Selected records retain their original observation identity and checksum. Neither payload nor receipt is rewritten to represent a smaller observation.
+This permits one provider to be reset within a legacy aggregate observation without discarding another provider's records.
+Baseline facts and reviewed authored definitions remain separate inputs.
+
+This option does not derive, retain, or publish reset scopes. Runtime reset journaling and adapter integration remain open.
 Scoped membership and reset evidence still need checks that prevent old projections from restoring retired acquisition results.
 
 
