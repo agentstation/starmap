@@ -62,6 +62,7 @@ func TestCatalogAcquisitionUsesConfiguredBindings(t *testing.T) {
 					return sources.ProviderCredentialMaterial{}, &errors.ValidationError{Field: "test credentials", Message: "unavailable"}
 				}),
 			}
+			t.Cleanup(func() { _ = application.Shutdown(context.Background()) })
 			syncer, err := application.CatalogAcquisition(client)
 			if err != nil {
 				t.Fatal(err)

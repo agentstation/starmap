@@ -2458,6 +2458,11 @@ paths:
         name: source
         schema:
           type: string
+      - description: Reset selected acquisition and preserve the baseline
+        in: query
+        name: fresh
+        schema:
+          type: boolean
       requestBody:
         content:
           application/json:

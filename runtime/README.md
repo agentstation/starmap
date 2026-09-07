@@ -44,6 +44,8 @@ The default source is the attested public GitHub channel. A caller that opens th
 - [type Lease](<#Lease>)
 - [type LeaseStore](<#LeaseStore>)
 - [type ObservationInputs](<#ObservationInputs>)
+- [type ObservationReset](<#ObservationReset>)
+- [type ObservationUpdate](<#ObservationUpdate>)
 - [type Option](<#Option>)
   - [func WithAcquirer\(acquirer Acquirer\) Option](<#WithAcquirer>)
   - [func WithAcquisitionEnabled\(enabled bool\) Option](<#WithAcquisitionEnabled>)
@@ -93,13 +95,15 @@ The default source is the attested public GitHub channel. A caller that opens th
   - [func \(r \*Runtime\) Close\(\) error](<#Runtime.Close>)
   - [func \(r \*Runtime\) CompleteDirectoryMigration\(ctx context.Context, request DirectoryMigrationRequest\) \(DirectoryMigrationPublication, error\)](<#Runtime.CompleteDirectoryMigration>)
   - [func \(r \*Runtime\) ObservationInputs\(ctx context.Context\) \(ObservationInputs, error\)](<#Runtime.ObservationInputs>)
+  - [func \(r \*Runtime\) PreviewAcquisition\(ctx context.Context, prepare func\(context.Context, ObservationInputs\) \(ObservationUpdate, error\)\) \(starmap.CatalogState, error\)](<#Runtime.PreviewAcquisition>)
   - [func \(r \*Runtime\) PublishObservations\(ctx context.Context, observations ...sources.Observation\) \(starmap.CatalogState, error\)](<#Runtime.PublishObservations>)
   - [func \(r \*Runtime\) Refresh\(ctx context.Context\) \(RefreshReport, error\)](<#Runtime.Refresh>)
   - [func \(r \*Runtime\) RefreshSource\(ctx context.Context\) \(SourceRefreshReport, error\)](<#Runtime.RefreshSource>)
   - [func \(r \*Runtime\) State\(\) starmap.CatalogState](<#Runtime.State>)
   - [func \(r \*Runtime\) Status\(\) Status](<#Runtime.Status>)
   - [func \(r \*Runtime\) Sync\(ctx context.Context, providers ...catalogs.ProviderID\) \(AcquisitionReport, error\)](<#Runtime.Sync>)
-  - [func \(r \*Runtime\) UpdateObservations\(ctx context.Context, prepare func\(context.Context, ObservationInputs\) \(\[\]sources.Observation, error\), resets ...ProviderObservationReset\) \(starmap.CatalogState, error\)](<#Runtime.UpdateObservations>)
+  - [func \(r \*Runtime\) UpdateAcquisition\(ctx context.Context, prepare func\(context.Context, ObservationInputs\) \(ObservationUpdate, error\)\) \(starmap.CatalogState, error\)](<#Runtime.UpdateAcquisition>)
+  - [func \(r \*Runtime\) UpdateObservations\(ctx context.Context, prepare func\(context.Context, ObservationInputs\) \(\[\]sources.Observation, error\), resets ...ObservationReset\) \(starmap.CatalogState, error\)](<#Runtime.UpdateObservations>)
   - [func \(r \*Runtime\) Updates\(\) \<\-chan starmap.CatalogState](<#Runtime.Updates>)
 - [type Source](<#Source>)
 - [type SourceHop](<#SourceHop>)
@@ -701,6 +705,36 @@ type ObservationInputs struct {
 }
 ```
 
+<a name="ObservationReset"></a>
+## type [ObservationReset](<https://github.com/agentstation/starmap/blob/main/runtime/provider_reset.go#L18-L27>)
+
+ObservationReset names local acquisition evidence to replace. Empty SourceID selects provider APIs for compatibility.
+
+```go
+type ObservationReset struct {
+    // SourceID selects provider APIs or one models.dev source.
+    SourceID sources.ID `json:"source,omitempty"`
+    // ProviderID selects an original source provider identity. Empty selects an entire metadata source.
+    ProviderID catalogs.ProviderID `json:"provider_id"`
+    // BindingID selects one declared acquisition binding, or legacy unscoped input when empty.
+    BindingID string `json:"binding_id,omitempty"`
+    // BindingRevision selects that binding's declared revision.
+    BindingRevision string `json:"binding_revision,omitempty"`
+}
+```
+
+<a name="ObservationUpdate"></a>
+## type [ObservationUpdate](<https://github.com/agentstation/starmap/blob/main/runtime/acquisition_update.go#L13-L16>)
+
+ObservationUpdate contains original acquisition results and explicit reset scopes. Acquisition derives scopes from the sources and bindings that actually completed.
+
+```go
+type ObservationUpdate struct {
+    Observations []sources.Observation
+    Resets       []ObservationReset
+}
+```
+
 <a name="Option"></a>
 ## type [Option](<https://github.com/agentstation/starmap/blob/main/runtime/options.go#L156>)
 
@@ -1085,19 +1119,12 @@ func NewProviderLayer(id catalogs.ProviderID, observation sources.Observation) (
 NewProviderLayer encodes one validated provider observation with its durable receipt. It does not connect to a network or write files.
 
 <a name="ProviderObservationReset"></a>
-## type [ProviderObservationReset](<https://github.com/agentstation/starmap/blob/main/runtime/provider_reset.go#L18-L25>)
+## type [ProviderObservationReset](<https://github.com/agentstation/starmap/blob/main/runtime/provider_reset.go#L30>)
 
-ProviderObservationReset names one provider acquisition scope to replace. Empty binding fields select legacy unscoped observations only.
+ProviderObservationReset retains the provider\-oriented spelling of ObservationReset.
 
 ```go
-type ProviderObservationReset struct {
-    // ProviderID names the canonical provider whose prior local observations are reset.
-    ProviderID catalogs.ProviderID `json:"provider_id"`
-    // BindingID selects one declared acquisition binding, or legacy unscoped input when empty.
-    BindingID string `json:"binding_id,omitempty"`
-    // BindingRevision selects that binding's declared revision.
-    BindingRevision string `json:"binding_revision,omitempty"`
-}
+type ProviderObservationReset = ObservationReset
 ```
 
 <a name="Random"></a>
@@ -1205,6 +1232,15 @@ func (r *Runtime) ObservationInputs(ctx context.Context) (ObservationInputs, err
 
 ObservationInputs returns the current catalog and its selected baseline. It reads retained memory, starts no acquisition, and writes no files. A later update reads new snapshots under runtime operation ownership.
 
+<a name="Runtime.PreviewAcquisition"></a>
+### func \(\*Runtime\) [PreviewAcquisition](<https://github.com/agentstation/starmap/blob/main/runtime/acquisition_update.go#L57>)
+
+```go
+func (r *Runtime) PreviewAcquisition(ctx context.Context, prepare func(context.Context, ObservationInputs) (ObservationUpdate, error)) (starmap.CatalogState, error)
+```
+
+PreviewAcquisition computes an acquisition against one captured runtime snapshot. It writes no catalog, workspace, or runtime state. The callback owns source reads.
+
 <a name="Runtime.PublishObservations"></a>
 ### func \(\*Runtime\) [PublishObservations](<https://github.com/agentstation/starmap/blob/main/runtime/manual_observation.go#L93>)
 
@@ -1259,16 +1295,25 @@ func (r *Runtime) Sync(ctx context.Context, providers ...catalogs.ProviderID) (A
 
 Sync observes providers only. It changes the provider layers and returns the acquisition report. An empty provider list observes every eligible provider.
 
-<a name="Runtime.UpdateObservations"></a>
-### func \(\*Runtime\) [UpdateObservations](<https://github.com/agentstation/starmap/blob/main/runtime/observation_update.go#L55>)
+<a name="Runtime.UpdateAcquisition"></a>
+### func \(\*Runtime\) [UpdateAcquisition](<https://github.com/agentstation/starmap/blob/main/runtime/acquisition_update.go#L20>)
 
 ```go
-func (r *Runtime) UpdateObservations(ctx context.Context, prepare func(context.Context, ObservationInputs) ([]sources.Observation, error), resets ...ProviderObservationReset) (starmap.CatalogState, error)
+func (r *Runtime) UpdateAcquisition(ctx context.Context, prepare func(context.Context, ObservationInputs) (ObservationUpdate, error)) (starmap.CatalogState, error)
+```
+
+UpdateAcquisition prepares and commits one acquisition under runtime ownership. Failed preparation preserves accepted state. The callback must not mutate this runtime.
+
+<a name="Runtime.UpdateObservations"></a>
+### func \(\*Runtime\) [UpdateObservations](<https://github.com/agentstation/starmap/blob/main/runtime/observation_update.go#L57>)
+
+```go
+func (r *Runtime) UpdateObservations(ctx context.Context, prepare func(context.Context, ObservationInputs) ([]sources.Observation, error), resets ...ObservationReset) (starmap.CatalogState, error)
 ```
 
 UpdateObservations prepares and publishes original observations under runtime ownership. The callback may read sources. Runtime shutdown and caller cancellation stop its context. An error or empty observation list preserves accepted state. The callback must not call another mutation on this runtime. Use ObservationInputs for a read\-only preview.
 
-Optional resets replace prior local provider observations within the named scopes. Each scope requires complete successful replacement evidence. The baseline and unrelated scopes remain. Resets and replacements share the catalog publication journal.
+Optional resets replace prior local acquisition observations within the named scopes. Each scope requires complete successful replacement evidence. The baseline and unrelated scopes remain. Resets and replacements share the catalog publication journal.
 
 <a name="Runtime.Updates"></a>
 ### func \(\*Runtime\) [Updates](<https://github.com/agentstation/starmap/blob/main/runtime/runtime.go#L310>)

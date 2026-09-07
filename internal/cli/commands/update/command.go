@@ -34,7 +34,7 @@ Use absolute paths for legacy overrides. New relative paths require
   starmap update openai                     # Update specific provider
   starmap update --dry-run                  # Preview changes
   starmap update -y                         # Auto-approve changes
-  starmap update --force                    # Force fresh update
+  starmap update --force                    # Reset acquisition; keep baseline
   starmap update --source local             # Reload semantic workspace edits
   starmap update openai --dry-run           # Preview OpenAI updates`,
 		RunE: func(cmd *cobra.Command, args []string) error {

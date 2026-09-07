@@ -189,3 +189,43 @@ func decodeOperation(t *testing.T, body []byte) operations.Status {
 	}
 	return envelope.Data
 }
+
+func TestAdminUpdateFreshSelection(t *testing.T) {
+	for _, value := range []string{"true", "false", "invalid"} {
+		t.Run(value, func(t *testing.T) {
+			received := make(chan *pkgsync.Options, 1)
+			handlers, registry := newOperationHandlers(t, func(context.Context) (*pkgsync.Result, error) { return &pkgsync.Result{}, nil })
+			handlers.app = &testApplication{SyncFunc: func(_ context.Context, options ...pkgsync.Option) (*pkgsync.Result, error) {
+				received <- pkgsync.Defaults().Apply(options...)
+				return &pkgsync.Result{ResetCount: 1}, nil
+			}}
+			recorder := httptest.NewRecorder()
+			handlers.HandleUpdate(recorder, httptest.NewRequest(http.MethodPost, "/api/v1/update?provider=openai&source=providers&fresh="+value, nil))
+			if value == "invalid" {
+				if recorder.Code != http.StatusBadRequest {
+					t.Fatalf("invalid fresh status = %d", recorder.Code)
+				}
+				select {
+				case <-received:
+					t.Fatal("invalid reset started acquisition")
+				default:
+				}
+				return
+			}
+			if recorder.Code != http.StatusAccepted {
+				t.Fatalf("reset status = %d: %s", recorder.Code, recorder.Body)
+			}
+			var body struct {
+				Data operations.Status `json:"data"`
+			}
+			if err := json.Unmarshal(recorder.Body.Bytes(), &body); err != nil {
+				t.Fatal(err)
+			}
+			<-registry.Done(body.Data.ID)
+			options := <-received
+			if options.Fresh != (value == "true") || options.ProviderID == nil || *options.ProviderID != "openai" || len(options.Sources) != 1 || options.Sources[0] != "providers" {
+				t.Fatalf("reset options = %+v", options)
+			}
+		})
+	}
+}

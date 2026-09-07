@@ -6,10 +6,7 @@ import (
 	"github.com/agentstation/starmap/pkg/sources"
 )
 
-func requireHealthyObservations(
-	configured []sources.Source,
-	observations []sources.Observation,
-) error {
+func requireCompleteObservations(configured []sources.Source, observations []sources.Observation, allowEmpty bool) error {
 	expected := make(map[sourceObservationKey]struct{}, len(configured))
 	for _, source := range configured {
 		sourceID := source.ID()
@@ -74,7 +71,7 @@ func requireHealthyObservations(
 				"required source must be complete",
 			)
 		}
-		if !hasObservedModels(observation.Catalog) {
+		if !allowEmpty && !hasObservedModels(observation.Catalog) {
 			return requiredSourceError(
 				sourceID,
 				"catalog.models",

@@ -154,7 +154,7 @@ func (l *layerSet) build(ctx context.Context, baseline starmap.CatalogState) (st
 		return starmap.CatalogState{}, err
 	}
 	priorChecksum := identityChecksum
-	identityChecksum, err = providerResetChecksum(identityChecksum, l.manual)
+	identityChecksum, err = observationResetChecksum(identityChecksum, l.manual)
 	if err != nil {
 		return starmap.CatalogState{}, err
 	}

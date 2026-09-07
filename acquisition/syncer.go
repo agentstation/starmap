@@ -18,6 +18,7 @@ import (
 	"github.com/agentstation/starmap/pkg/productpaths"
 	"github.com/agentstation/starmap/pkg/sources"
 	pkgsync "github.com/agentstation/starmap/pkg/sync"
+	"github.com/agentstation/starmap/runtime"
 )
 
 // Option configures one acquisition Syncer.
@@ -76,6 +77,7 @@ func WithProviderClientFactory(factory sources.ProviderClientFactory) Option {
 // delegates serialized durable publication to a Client.
 type Syncer struct {
 	client            *starmap.Client
+	connected         *runtime.Runtime
 	pipeline          *pipeline.Pipeline
 	sourceDirectories productpaths.SourceDirectories
 }
@@ -135,6 +137,12 @@ func (s *Syncer) Sync(
 		return nil, err
 	}
 	defer cancel()
+	if s.connected != nil {
+		return s.syncRuntime(ctx, effective, parsed)
+	}
+	if parsed.Fresh {
+		return nil, &errors.ConfigError{Component: "acquisition", Message: "fresh acquisition requires NewForRuntime to preserve the baseline and retained scopes"}
+	}
 	if parsed.DryRun {
 		prepared, err := s.pipeline.Prepare(ctx, s.client.Catalog(), effective...)
 		if err != nil {

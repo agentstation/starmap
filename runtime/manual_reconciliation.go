@@ -16,7 +16,7 @@ import (
 
 func (l *layerSet) reconcileManualInputs(ctx context.Context, base *catalogs.Catalog, at time.Time, active []providerEvidenceKey) (*catalogs.Builder, starmap.CandidateEvidence, error) {
 	collected := starmap.CandidateEvidence{}
-	selection, err := selectProviderResetHistory(ctx, l.manual)
+	selection, err := selectObservationResetHistory(ctx, l.manual, base)
 	if err != nil {
 		return nil, collected, err
 	}
@@ -35,7 +35,7 @@ func (l *layerSet) reconcileManualInputs(ctx context.Context, base *catalogs.Cat
 			if err != nil {
 				return nil, collected, err
 			}
-			if observation.SourceID == sources.ProvidersID && (seenProviders[observation.ID] || selection.excludesAll(observation)) {
+			if selection.excludesAll(observation) || (resettableSource(observation.SourceID) && selection.latest[observation.ID] != batch) || (observation.SourceID == sources.ProvidersID && seenProviders[observation.ID]) {
 				continue
 			}
 			collected.SourceObservations = append(collected.SourceObservations, observation.Link())
@@ -103,7 +103,7 @@ func (l *layerSet) reconcileManualInputs(ctx context.Context, base *catalogs.Cat
 
 // Each metadata pass contains one observation per source. Later passes keep the
 // earlier reviewed definitions through the reconciler's baseline contract.
-func (l *layerSet) reconcileManualMetadata(ctx context.Context, base *catalogs.Catalog, at time.Time, observations []sources.Observation, selection *providerResetSelection) (*catalogs.Catalog, []evidence.ReviewCandidate, error) {
+func (l *layerSet) reconcileManualMetadata(ctx context.Context, base *catalogs.Catalog, at time.Time, observations []sources.Observation, selection *observationResetSelection) (*catalogs.Catalog, []evidence.ReviewCandidate, error) {
 	var reviews []evidence.ReviewCandidate
 	for len(observations) != 0 {
 		seen := make(map[sources.ID]bool)
@@ -129,7 +129,7 @@ func (l *layerSet) reconcileManualMetadata(ctx context.Context, base *catalogs.C
 	return base, reviews, nil
 }
 
-func (l *layerSet) reconcileManualBatch(ctx context.Context, base *catalogs.Catalog, at time.Time, observations []sources.Observation, selection *providerResetSelection) (*reconciler.Result, error) {
+func (l *layerSet) reconcileManualBatch(ctx context.Context, base *catalogs.Catalog, at time.Time, observations []sources.Observation, selection *observationResetSelection) (*reconciler.Result, error) {
 	baseSource := sources.EmbeddedCatalogID
 	if l.source != nil {
 		baseSource = sources.ReleaseArtifactID

@@ -15,7 +15,7 @@ func (r *Runtime) publishInputChanges(ctx context.Context, source *sourceLayer, 
 	return r.publishInputs(ctx, source, providers, nil, epoch, nil)
 }
 
-func (r *Runtime) publishInputs(ctx context.Context, source *sourceLayer, providers []ProviderLayer, manual []manualObservation, epoch uint64, resets []ProviderObservationReset) (starmap.CatalogState, error) {
+func (r *Runtime) publishInputs(ctx context.Context, source *sourceLayer, providers []ProviderLayer, manual []manualObservation, epoch uint64, resets []ObservationReset) (starmap.CatalogState, error) {
 	manualRequested := len(manual) != 0
 	if err := ctx.Err(); err != nil {
 		return starmap.CatalogState{}, err
@@ -30,7 +30,7 @@ func (r *Runtime) publishInputs(ctx context.Context, source *sourceLayer, provid
 	if err := r.config.providerBindings.validateManual(manual, true); err != nil {
 		return starmap.CatalogState{}, err
 	}
-	if err := validateProviderReplacement(ctx, resets, manual); err != nil {
+	if err := validateObservationReplacement(ctx, resets, manual); err != nil {
 		return starmap.CatalogState{}, err
 	}
 	r.publicationMu.Lock()

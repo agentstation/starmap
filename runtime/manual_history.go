@@ -10,9 +10,10 @@ import (
 )
 
 const (
-	manualHistoryName          = "manual.json"
-	manualHistoryVersion       = 2
-	manualHistoryLegacyVersion = 1
+	manualHistoryName            = "manual.json"
+	manualHistoryVersion         = 3
+	manualHistoryProviderVersion = 2
+	manualHistoryLegacyVersion   = 1
 	// Histories remain bounded until compaction replaces superseded evidence.
 	maxManualHistoryBatches = 4096
 )
@@ -22,14 +23,14 @@ type manualBatch struct {
 	reference    string
 	parent       *manualBatch
 	observations []manualObservation
-	resets       []ProviderObservationReset
+	resets       []ObservationReset
 }
 
 type manualBatchRecord struct {
-	Version      int                        `json:"version"`
-	Parent       string                     `json:"parent,omitempty"`
-	Observations []string                   `json:"observations"`
-	Resets       []ProviderObservationReset `json:"resets,omitempty"`
+	Version      int                `json:"version"`
+	Parent       string             `json:"parent,omitempty"`
+	Observations []string           `json:"observations"`
+	Resets       []ObservationReset `json:"resets,omitempty"`
 }
 
 type manualHistoryHead struct {
@@ -78,7 +79,7 @@ func (s *layerStore) loadManualHistory(ctx context.Context) (*manualBatch, error
 	if err := decodeInputRecord(raw, &head); err != nil {
 		return nil, err
 	}
-	if (head.Version != manualHistoryVersion && head.Version != manualHistoryLegacyVersion) || head.Batch == "" {
+	if !supportedManualHistoryVersion(head.Version) || head.Batch == "" {
 		return nil, invalidInputPublication("invalid manual history head")
 	}
 	return s.readManualHistory(ctx, head.Batch)
@@ -117,11 +118,11 @@ func (s *layerStore) readManualHistory(ctx context.Context, reference string) (*
 	return newest, nil
 }
 
-func selectManualObservations(ctx context.Context, history *manualBatch, input []manualObservation, resets []ProviderObservationReset) ([]manualObservation, error) {
+func selectManualObservations(ctx context.Context, history *manualBatch, input []manualObservation, resets []ObservationReset) ([]manualObservation, error) {
 	if len(input) == 0 {
 		return nil, nil
 	}
-	incomingBytes, err := providerResetBytes(resets)
+	incomingBytes, err := observationResetBytes(resets)
 	if err != nil {
 		return nil, err
 	}
@@ -132,7 +133,7 @@ func selectManualObservations(ctx context.Context, history *manualBatch, input [
 			return nil, err
 		}
 		batches++
-		size, err := providerResetBytes(batch.resets)
+		size, err := observationResetBytes(batch.resets)
 		if err != nil {
 			return nil, err
 		}
@@ -177,14 +178,21 @@ func (s *layerStore) readManualBatch(ctx context.Context, directory *privatefile
 	if err := s.readInput(directory, reference, &record); err != nil {
 		return nil, "", err
 	}
-	if (record.Version != manualHistoryVersion && record.Version != manualHistoryLegacyVersion) || len(record.Observations) == 0 || (record.Version == manualHistoryLegacyVersion && len(record.Resets) > 0) {
+	if !supportedManualHistoryVersion(record.Version) || len(record.Observations) == 0 || (record.Version == manualHistoryLegacyVersion && len(record.Resets) > 0) {
 		return nil, "", invalidInputPublication("invalid manual observation batch")
 	}
-	resets, err := prepareProviderResets(record.Resets)
+	if record.Version == manualHistoryProviderVersion {
+		for _, reset := range record.Resets {
+			if reset.SourceID != "" {
+				return nil, "", invalidInputPublication("metadata resets require manual history version 3")
+			}
+		}
+	}
+	resets, err := prepareObservationResets(record.Resets)
 	if err != nil {
 		return nil, "", err
 	}
-	size, err := providerResetBytes(resets)
+	size, err := observationResetBytes(resets)
 	if err != nil {
 		return nil, "", err
 	}
@@ -219,7 +227,7 @@ func (s *layerStore) readManualBatch(ctx context.Context, directory *privatefile
 		}
 		batch.observations = append(batch.observations, observation)
 	}
-	if err := validateProviderReplacement(ctx, batch.resets, batch.observations); err != nil {
+	if err := validateObservationReplacement(ctx, batch.resets, batch.observations); err != nil {
 		return nil, "", err
 	}
 	return batch, record.Parent, nil
@@ -266,7 +274,7 @@ func (l *layerSet) manualProviderAnchors() []manualObservation {
 }
 
 // prepareManualInputs anchors prior provider files before the first reset batch.
-func (l *layerSet) prepareManualInputs(ctx context.Context, input []manualObservation, providers []ProviderLayer, resets []ProviderObservationReset) ([]manualObservation, error) {
+func (l *layerSet) prepareManualInputs(ctx context.Context, input []manualObservation, providers []ProviderLayer, resets []ObservationReset) ([]manualObservation, error) {
 	if len(resets) > 0 && l.manual == nil {
 		anchors := l.manualProviderAnchors()
 		if len(anchors) > 0 {
@@ -274,4 +282,8 @@ func (l *layerSet) prepareManualInputs(ctx context.Context, input []manualObserv
 		}
 	}
 	return selectManualObservations(ctx, l.manual, l.manualInputs(input, providers), resets)
+}
+
+func supportedManualHistoryVersion(version int) bool {
+	return version == manualHistoryLegacyVersion || version == manualHistoryProviderVersion || version == manualHistoryVersion
 }

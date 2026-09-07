@@ -250,7 +250,7 @@ func TestStrictManualBindingsRequireExactSelection(t *testing.T) {
 		}
 		observations = append(observations, observation)
 	}
-	if err := requireHealthyObservations(bound, observations); err != nil {
+	if err := requireCompleteObservations(bound, observations, false); err != nil {
 		t.Fatal(err)
 	}
 	for _, defect := range []string{"missing", "duplicate", "revision", "scope", "unscoped"} {
@@ -272,7 +272,7 @@ func TestStrictManualBindingsRequireExactSelection(t *testing.T) {
 				}
 				changed[1].ProviderBinding = &binding
 			}
-			if err := requireHealthyObservations(bound, changed); err == nil {
+			if err := requireCompleteObservations(bound, changed, false); err == nil {
 				t.Fatal("strict check accepted mismatched binding")
 			}
 		})

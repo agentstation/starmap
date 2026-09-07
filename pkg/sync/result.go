@@ -62,6 +62,7 @@ type Result struct {
 	// Operation metadata
 	DryRun      bool // Whether this was a dry run
 	Fresh       bool // Whether this was a fresh sync
+	ResetCount  int  // Number of selected local acquisition scopes to replace
 	CatalogPath string
 	Sources     []sources.ID
 	// SourceObservations contains caller-owned freshness/audit projections from
@@ -95,7 +96,7 @@ type ProviderResult struct {
 
 // HasChanges returns true if the sync result contains any changes.
 func (sr *Result) HasChanges() bool {
-	return sr.TotalChanges > 0
+	return sr.TotalChanges > 0 || sr.ResetCount > 0
 }
 
 // HasChanges returns true if the provider result contains any changes.

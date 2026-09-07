@@ -214,15 +214,6 @@ func (p *Pipeline) Prepare(
 		}
 	}()
 
-	if options.Fresh {
-		empty := catalogs.NewEmpty()
-		existing, err = empty.Build()
-		if err != nil {
-			return nil, pkgerrors.WrapResource("publish", "fresh baseline snapshot", "", err)
-		}
-		logging.Info().Msg("Fresh sync uses an empty reconciliation baseline")
-	}
-
 	observations, observeErr := p.observe(ctx, srcs, options.SourceOptions())
 	if ctxErr := ctx.Err(); ctxErr != nil {
 		return nil, ctxErr
@@ -235,12 +226,14 @@ func (p *Pipeline) Prepare(
 			Err(observeErr).
 			Msg("Continuing with degraded source observations and last-known-good data")
 	}
-	observations, err = guardObservationHealth(existing, observations)
-	if err != nil {
-		return nil, pkgerrors.WrapResource("guard", "source observations", "", err)
+	if !options.Fresh {
+		observations, err = guardObservationHealth(existing, observations)
+		if err != nil {
+			return nil, pkgerrors.WrapResource("guard", "source observations", "", err)
+		}
 	}
 	if options.RequireAllSources {
-		if err := requireHealthyObservations(srcs, observations); err != nil {
+		if err := requireCompleteObservations(srcs, observations, options.Fresh); err != nil {
 			return nil, err
 		}
 	}
@@ -249,7 +242,7 @@ func (p *Pipeline) Prepare(
 			Provider: "all",
 			Err: &pkgerrors.ValidationError{
 				Field:   "fresh",
-				Message: "cannot publish from an empty baseline while any source observation is degraded or partial",
+				Message: "cannot reset acquisition while any source observation is degraded or partial",
 			},
 		}
 	}

@@ -12,15 +12,20 @@ import (
 	"github.com/agentstation/starmap/pkg/sources"
 )
 
-// providerResetSelection retains original observations and selects their permitted records.
+// observationResetSelection retains original observations and selects their permitted records.
 // A later batch can accept the same validated observation as new replacement evidence.
-type providerResetSelection struct {
+type observationResetSelection struct {
 	observations map[string]manualObservation
 	excluded     map[string]map[catalogs.ProviderID]bool
+	latest       map[string]*manualBatch
+	aliases      map[catalogs.ProviderID][]catalogs.ProviderID
 }
 
-func selectProviderResetHistory(ctx context.Context, history *manualBatch) (*providerResetSelection, error) {
-	selected := &providerResetSelection{observations: make(map[string]manualObservation), excluded: make(map[string]map[catalogs.ProviderID]bool)}
+func selectObservationResetHistory(ctx context.Context, history *manualBatch, baseline *catalogs.Catalog) (*observationResetSelection, error) {
+	selected := &observationResetSelection{observations: make(map[string]manualObservation), excluded: make(map[string]map[catalogs.ProviderID]bool), latest: make(map[string]*manualBatch), aliases: make(map[catalogs.ProviderID][]catalogs.ProviderID)}
+	for _, provider := range baseline.Providers().List() {
+		selected.aliases[provider.ID] = provider.Aliases
+	}
 	for _, batch := range manualBatches(history) {
 		for _, reset := range batch.resets {
 			for id, observation := range selected.observations {
@@ -40,30 +45,45 @@ func selectProviderResetHistory(ctx context.Context, history *manualBatch) (*pro
 			if err := ctx.Err(); err != nil {
 				return nil, err
 			}
-			if observation.Receipt.Link.Source != sources.ProvidersID {
+			if !resettableSource(observation.Receipt.Link.Source) {
 				continue
 			}
 			id := observation.Receipt.Link.ObservationID
 			selected.observations[id] = observation
+			selected.latest[id] = batch
 			delete(selected.excluded, id)
 		}
 	}
 	return selected, nil
 }
 
-func (s *providerResetSelection) permitsProjection(provider catalogs.ProviderID, entry provenance.Entry) bool {
-	return entry.Source != sources.ProvidersID || !s.excluded[entry.ObservationID][provider]
+func (s *observationResetSelection) permitsProjection(provider catalogs.ProviderID, entry provenance.Entry) bool {
+	if !resettableSource(entry.Source) {
+		return true
+	}
+	excluded := s.excluded[entry.ObservationID]
+	if excluded[""] || excluded[provider] {
+		return false
+	}
+	if entry.Source != sources.ProvidersID {
+		for _, alias := range s.aliases[provider] {
+			if excluded[alias] {
+				return false
+			}
+		}
+	}
+	return true
 }
 
-func (s *providerResetSelection) selection(observations []sources.Observation) map[string][]catalogs.ProviderID {
+func (s *observationResetSelection) selection(observations []sources.Observation) map[string][]catalogs.ProviderID {
 	selected := make(map[string][]catalogs.ProviderID)
 	for _, observation := range observations {
-		if observation.SourceID != sources.ProvidersID || len(s.excluded[observation.ID]) == 0 {
+		if !resettableSource(observation.SourceID) || len(s.excluded[observation.ID]) == 0 {
 			continue
 		}
 		selected[observation.ID] = []catalogs.ProviderID{}
 		for _, provider := range observation.Catalog.Providers().List() {
-			if !s.excluded[observation.ID][provider.ID] {
+			if !s.excluded[observation.ID][""] && !s.excluded[observation.ID][provider.ID] {
 				selected[observation.ID] = append(selected[observation.ID], provider.ID)
 			}
 		}
@@ -72,7 +92,14 @@ func (s *providerResetSelection) selection(observations []sources.Observation) m
 	return selected
 }
 
-func (s *providerResetSelection) excludesAll(observation sources.Observation) bool {
+func (s *observationResetSelection) excludesAll(observation sources.Observation) bool {
+	if s.excluded[observation.ID][""] {
+		return true
+	}
+	// A provider-only metadata reset retains independent authored definitions.
+	if observation.SourceID != sources.ProvidersID {
+		return false
+	}
 	if len(s.excluded[observation.ID]) == 0 {
 		return false
 	}
@@ -84,10 +111,10 @@ func (s *providerResetSelection) excludesAll(observation sources.Observation) bo
 	return true
 }
 
-// providerResetChecksum binds accepted reset operations even when payload bytes stay equal.
-func providerResetChecksum(checksum string, history *manualBatch) (string, error) {
+// observationResetChecksum binds accepted reset operations even when payload bytes stay equal.
+func observationResetChecksum(checksum string, history *manualBatch) (string, error) {
 	type resetIdentity struct {
-		Scopes       []ProviderObservationReset
+		Scopes       []ObservationReset
 		Replacements []string
 	}
 	var resets []resetIdentity

@@ -1,14 +1,21 @@
 package app
 
 import (
+	"context"
+
 	"github.com/agentstation/starmap"
 	"github.com/agentstation/starmap/acquisition"
+	"github.com/agentstation/starmap/pkg/errors"
+	"github.com/agentstation/starmap/runtime"
 )
 
 // CatalogAcquisition composes manual acquisition for CLI updates and HTTP requests.
 // It applies the same provider binding set as the connected runtime.
-// The constructor reads no source or provider data.
+// Source startup follows the configured runtime policy.
 func (a *App) CatalogAcquisition(client *starmap.Client) (*acquisition.Syncer, error) {
+	if client == nil {
+		return nil, &errors.ValidationError{Field: "acquisition.client", Message: "is required"}
+	}
 	resolver, err := a.CredentialResolver()
 	if err != nil {
 		return nil, err
@@ -28,5 +35,9 @@ func (a *App) CatalogAcquisition(client *starmap.Client) (*acquisition.Syncer, e
 	if present {
 		options = append(options, acquisition.WithProviderBindings(bindings...))
 	}
-	return acquisition.New(client, options...)
+	connected, err := a.Runtime(context.Background(), runtime.WithSourcePollInterval(0), runtime.WithAcquisitionEnabled(false), runtime.WithClientOptions(starmap.WithCatalogPath(client.WorkspacePath())))
+	if err != nil {
+		return nil, err
+	}
+	return acquisition.NewForRuntime(connected, options...)
 }

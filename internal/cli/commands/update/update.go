@@ -51,7 +51,7 @@ func addUpdateFlags(cmd *cobra.Command) *Flags {
 	cmd.Flags().BoolVar(&flags.DryRun, "dry-run", false,
 		"Preview changes without applying them")
 	cmd.Flags().BoolVarP(&flags.Force, "force", "f", false,
-		"Force fresh update (delete and recreate)")
+		"Reset selected acquisition; preserve the baseline")
 	cmd.Flags().BoolVarP(&flags.AutoApprove, "yes", "y", false,
 		"Auto-approve changes without confirmation")
 	cmd.Flags().StringVar(&flags.CatalogPath, "catalog-path", "",

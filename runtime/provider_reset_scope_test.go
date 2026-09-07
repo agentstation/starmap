@@ -127,7 +127,7 @@ func TestProviderResetHistoryVersionAndReplacementValidation(t *testing.T) {
 		{name: "current", version: 2, resets: []ProviderObservationReset{{ProviderID: "provider"}}, valid: true},
 		{name: "legacy-reset", version: 1, resets: []ProviderObservationReset{{ProviderID: "provider"}}},
 		{name: "missing-replacement", version: 2, resets: []ProviderObservationReset{{ProviderID: "other"}}},
-		{name: "future", version: 3},
+		{name: "future", version: 4},
 	} {
 		t.Run(test.name, func(t *testing.T) {
 			store, err := newLayerStore(privateRuntimeDirectory(t))
