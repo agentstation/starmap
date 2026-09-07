@@ -1373,3 +1373,19 @@ The [proof](../../plans/proof/starport-production-catalog/csp3/reset-projection.
 The source observation contract still has no explicit tombstone field. Reset clears retained acquisition while preserving the selected baseline.
 It does not establish source-scoped deletion authority or authorize lower-layer membership suppression. CSP3 must implement and verify that separate contract.
 No primary acceptance case gains credit.
+
+
+## CSP3 fresh CLI correction
+
+Commit `4df74524` corrects two mismatches between the accepted reset contract and the CLI.
+The CLI lacked `--fresh`. Its old confirmation stated that force mode deleted all model files and also prevented a declined dry run from starting.
+The command now accepts `--fresh`, retains `--force` and `-f`, and asks once after the preview. Dry runs ask no confirmation.
+Reset-only output now reports acquisition work even when model values remain equal.
+
+The [proof](../../plans/proof/starport-production-catalog/csp3/fresh-cli.md) records 59 focused race test events and 285 broader CLI race events.
+The built binary passed preview and apply against a local provider fixture. The preview left 1,275 workspace files unchanged.
+
+The deletion investigation also identified a boundary that CSP3 must preserve.
+Starport's `internal/providers/state/store.go` projects routing state by provider and model, without a Starmap acquisition binding.
+Its `internal/providers/keyring/keys.go` uses Starport account identity for credential storage. That identity does not establish an upstream provider account.
+Account-specific catalog removals must not become global offering withdrawals through either representation. Scope-aware routing enforcement remains unverified.
