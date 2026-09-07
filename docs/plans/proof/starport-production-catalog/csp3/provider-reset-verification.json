@@ -1,0 +1,338 @@
+{
+  "schema_version": 1,
+  "task": "CSP3",
+  "date": "2026-09-07",
+  "status": "component-progress-only",
+  "toolchain": "go1.26.6 darwin/arm64",
+  "work_commit": "575a9f3faed8fc23645de5500dbfba4bb5752cdc",
+  "evidence_commit": "f77dfcd2af6bf2790ee2fd2e0ee9a557ec51738f",
+  "planning_base": "7984d772e97f867a6a735033554a9def77a99c8c",
+  "behavior": [
+    "UpdateObservations accepts explicit provider reset scopes. Each scope requires a successful complete replacement. Failed or canceled preparation preserves accepted state.",
+    "Reset scopes, replacement observations, and accepted generation identity share the publication journal. Replay masks prior provider records without rewriting original receipts.",
+    "The selected baseline, unrelated providers and bindings, and reviewed operator edits remain. Existing scheduled files are anchored before the first reset.",
+    "Reset history changes generation identity even when the effective catalog payload is unchanged. Recovery resolves lost replies against that identity.",
+    "Manual head and batch version 2 retain resets. The reader accepts legacy version 1 without resets and refuses unsupported or inconsistent records.",
+    "Bounds cover 4096 batches and 64 MiB of encoded observations and reset scopes. Compaction remains CSP5 work."
+  ],
+  "checks": [
+    {
+      "command": "GOTOOLCHAIN=go1.26.6 go test -race -json -count=1 -timeout 20m ./runtime ./internal/catalog/reconciler ./internal/catalog/pipeline ./acquisition ./internal/cli/app",
+      "exit_code": 0,
+      "capture": "csp3/provider-reset-race.jsonl"
+    },
+    {
+      "command": "GOTOOLCHAIN=go1.26.6 go test -json -count=1 -timeout 20m ./...",
+      "exit_code": 0,
+      "capture": "csp3/provider-reset-all.jsonl"
+    },
+    {
+      "command": "GOTOOLCHAIN=go1.26.6 go test -race -json -count=1 -timeout 5m ./runtime -run ^TestProviderReset",
+      "exit_code": 0,
+      "capture": "csp3/provider-reset-scopes-final.jsonl"
+    },
+    {
+      "command": "GOTOOLCHAIN=go1.26.6 go test -json -count=1 -timeout 5m ./runtime -run ^TestProviderReset",
+      "exit_code": 0,
+      "capture": "csp3/provider-reset-normal-final.jsonl"
+    },
+    {
+      "command": "GOTOOLCHAIN=go1.26.6 golangci-lint run",
+      "exit_code": 0,
+      "capture": "csp3/provider-reset-lint-verified.log"
+    },
+    {
+      "command": "GOTOOLCHAIN=go1.26.6 go tool ago -stale-ignores -format json ./...",
+      "exit_code": 0,
+      "capture": "csp3/provider-reset-ago-final.json"
+    },
+    {
+      "command": "GOTOOLCHAIN=go1.26.6 make generate",
+      "exit_code": 0,
+      "capture": "csp3/provider-reset-generate-final.log"
+    },
+    {
+      "command": "GOTOOLCHAIN=go1.26.6 make technical-writing-check",
+      "exit_code": 0,
+      "capture": "csp3/provider-reset-writing-final.log"
+    },
+    {
+      "command": "GOTOOLCHAIN=go1.26.6 bash scripts/verify-catalog-product.sh --starport-root /Users/jack/src/github.com/agentstation/starport-catalog-lifecycle --task CSP3 --json",
+      "exit_code": 1,
+      "capture": "csp3/provider-reset-product.json"
+    },
+    {
+      "command": "GOTOOLCHAIN=go1.26.6 bash scripts/verify-consumer-deps.sh",
+      "exit_code": 0,
+      "capture": "csp3/provider-reset-dependencies.log"
+    },
+    {
+      "command": "python3 docs/plans/proof/starport-production-catalog/activation-2026-09-05/verify_documents.py",
+      "exit_code": 0,
+      "capture": "csp3/provider-reset-documents.log"
+    },
+    {
+      "command": "GOTOOLCHAIN=go1.26.6 make technical-writing-check",
+      "exit_code": 0,
+      "capture": "csp3/provider-reset-writing-settled.log"
+    }
+  ],
+  "normal_suite": {
+    "passed_packages": 79,
+    "passed_test_events": 3617,
+    "packages_without_tests": 22,
+    "skipped_test_events": 5,
+    "capture": "csp3/provider-reset-all.jsonl",
+    "final_replacement": "Replace the 23 TestProviderReset events with the 23 events in provider-reset-normal-final.jsonl. Test names and total counts do not change."
+  },
+  "race_suite": {
+    "passed_packages": 5,
+    "passed_test_events": 1041,
+    "components": {
+      "runtime": 447,
+      "reconciler": 259,
+      "pipeline": 81,
+      "acquisition": 54,
+      "app": 200
+    },
+    "runtime_seconds": 573.446,
+    "capture": "csp3/provider-reset-race.jsonl",
+    "final_replacement": "Replace the 23 TestProviderReset events with the 23 events in provider-reset-scopes-final.jsonl. The final test also loads the retained head for each history version case."
+  },
+  "focused_contracts": {
+    "passed_test_events": 23,
+    "capture": "csp3/provider-reset-scopes-final.jsonl"
+  },
+  "superseded_checks": [
+    {
+      "capture": "csp3/provider-reset-red.jsonl",
+      "exit_code": 1,
+      "reason": "The new reset contract initially retained the previous local context value instead of the baseline."
+    },
+    {
+      "capture": "csp3/provider-reset-contracts.jsonl",
+      "exit_code": 1,
+      "reason": "The fixture used a nonexistent PayloadChecksum field. Corrected to Payload.Checksum."
+    },
+    {
+      "capture": "csp3/provider-reset-contracts-fixed.jsonl",
+      "exit_code": 1,
+      "reason": "The degraded fixture omitted its required issue. Added the actual invalid-record issue."
+    },
+    {
+      "capture": "csp3/provider-reset-lint.log",
+      "exit_code": 1,
+      "reason": "Publication complexity exceeded the limit. Moved history preparation into its concept-owned method."
+    },
+    {
+      "capture": "csp3/provider-reset-writing.log",
+      "exit_code": 2,
+      "reason": "Corrected two semicolons and two nominalizations."
+    },
+    {
+      "capture": "csp3/provider-reset-writing-docs.log",
+      "exit_code": 2,
+      "reason": "Split the seven-sentence proof paragraph to meet the six-sentence limit."
+    }
+  ],
+  "input_hashes": [
+    {
+      "path": "docs/CATALOG_STORE_CONTRACT.md",
+      "sha256": "19b35ef826ea50ddb3031763fc3b59f1b0a93b162a9bdd658996591e7bb8722e"
+    },
+    {
+      "path": "runtime/README.md",
+      "sha256": "cc918835d38f00dcd5546c8fb3946f697c0a9821b249e3c49a2fbff0845b07ea"
+    },
+    {
+      "path": "runtime/layers.go",
+      "sha256": "3cbe48417fb7f5bf8ad796af67decdd8248ca030c43e0cf8b86ee0ab4724bcef"
+    },
+    {
+      "path": "runtime/manual_history.go",
+      "sha256": "bbfb2e63fe58e2f9f202590c54702086f4ab8dd0a09c5829b6558409f4fe4557"
+    },
+    {
+      "path": "runtime/manual_reconciliation.go",
+      "sha256": "6d6c9623051ad67f7766ba4f6c8ea1f9c687ec628022e22ea668753d5ddf6f54"
+    },
+    {
+      "path": "runtime/manual_recovery_test.go",
+      "sha256": "e6379d51a3f772fadc310c6afb28b8f02c8a407bf88d7c59cfa79242c14bdbbd"
+    },
+    {
+      "path": "runtime/observation_update.go",
+      "sha256": "50f3cf3c529ce9c865a8b6c698b4036d3f7671ccbfbc75b62fe2ee058bbde908"
+    },
+    {
+      "path": "runtime/provider_reset.go",
+      "sha256": "94542d1c9ca1601795f1eea22defd380bd03da119f910949153fbaae788f448f"
+    },
+    {
+      "path": "runtime/provider_reset_failure_test.go",
+      "sha256": "c50dd0fe7f2be20c716d081b48ec3b1a007910b6ad41ee2516e2c5229a703290"
+    },
+    {
+      "path": "runtime/provider_reset_replay.go",
+      "sha256": "4bfe62a162dabc369d0effa5851bc7afc2e386229d70e05713960d6244d2fb4f"
+    },
+    {
+      "path": "runtime/provider_reset_scope_test.go",
+      "sha256": "0170d50b52daba98c786d9e0d294c227307e24715758017a956f9a91d1414d80"
+    },
+    {
+      "path": "runtime/provider_reset_test.go",
+      "sha256": "4d1c47d84427cb24d015921b24ce95c032824dffc8d9ef09a7d335e6350ba77a"
+    },
+    {
+      "path": "runtime/publication_retention.go",
+      "sha256": "9a7637ee60feb68580fbb1a286323a244d0b0a031caf8d4b57cc7270d9e915c9"
+    }
+  ],
+  "raw_captures": [
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/provider-reset-ago-final.json",
+      "sha256": "b8fb7afa66aa7a93914ac258475dd0191be821803a8aea4439f5ba05022f5fa5",
+      "bytes": 289
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/provider-reset-ago.json",
+      "sha256": "b8fb7afa66aa7a93914ac258475dd0191be821803a8aea4439f5ba05022f5fa5",
+      "bytes": 289
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/provider-reset-all.jsonl",
+      "sha256": "d775f515e3bc1d228d419abd38c4014b22de08ed8bef2f611cc7f8116c828d03",
+      "bytes": 4441201
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/provider-reset-contracts-fixed.jsonl",
+      "sha256": "3c597effd34290f44f07e5047b8803f3c922a34d95e5c798415fff12aefe9ddf",
+      "bytes": 20203
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/provider-reset-contracts-verified.jsonl",
+      "sha256": "5a4a00ed6408aece37e5c3552343ddfd09235984a02696e5615c85d8191187dc",
+      "bytes": 19876
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/provider-reset-contracts.jsonl",
+      "sha256": "c5fe1f49459db583dbcef32b11caf9ebbd350739cb330a3df8b5c07f205c74a5",
+      "bytes": 1182
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/provider-reset-dependencies.log",
+      "sha256": "56667b8f5a604ac9a61a563e73d4b332835bf144d0814833511a4f9f204a11b9",
+      "bytes": 1254
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/provider-reset-focused.jsonl",
+      "sha256": "87c02525f578af835dcc5579f73ea3eadabebe3f5b8e599e582c9e89be65982a",
+      "bytes": 2376
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/provider-reset-generate-final.log",
+      "sha256": "93aaa20d57993920264be32f7c21df7e56914d568511556b2ea545fd6f0d9f25",
+      "bytes": 9934
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/provider-reset-generate.log",
+      "sha256": "01ba90ef81e7d2268e32f267cdad4e97c29b2209298a4c99f790aca7941723cf",
+      "bytes": 9934
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/provider-reset-lint-final.log",
+      "sha256": "e92606b0bf483111dff0a120c315ea165821348f31365020e2468a0059095c47",
+      "bytes": 10
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/provider-reset-lint-verified.log",
+      "sha256": "e92606b0bf483111dff0a120c315ea165821348f31365020e2468a0059095c47",
+      "bytes": 10
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/provider-reset-lint.log",
+      "sha256": "fa5ac7873c98403a0400d07315b1a177a7b715a4b6df61f4765174fd35198015",
+      "bytes": 359
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/provider-reset-normal-final.jsonl",
+      "sha256": "1d7b1bc53fbece557bdef9f35faf677a9494cc0db0b105b176a7f3851962bd01",
+      "bytes": 34008
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/provider-reset-product.json",
+      "sha256": "0a5cc1a33899402e4135c4ef56e28730155c63025b771d83734fcab9c93df5bb",
+      "bytes": 7700
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/provider-reset-race.jsonl",
+      "sha256": "cb6717a91d4a76ace2cde172b32442550eed3baf3049607f8bc4c33687c90093",
+      "bytes": 1489573
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/provider-reset-red.jsonl",
+      "sha256": "330854369fbbb13a64de6374d0b6c286913ff14bddcf0f7dcc6a6b8fea19be4d",
+      "bytes": 2631
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/provider-reset-scopes-final.jsonl",
+      "sha256": "d8fe72ecd6f75e81ca454ae20e7314c0802298de3da3be77ad3cff4413a0bf0c",
+      "bytes": 34014
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/provider-reset-scopes.jsonl",
+      "sha256": "2252996e80a4279b35234c10f661be67018711c89b741578d8191eea98af1b9a",
+      "bytes": 34014
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/provider-reset-writing-final.log",
+      "sha256": "f1d1eb4e1e9241c923fa73a120c0e2c736768d2295e7c7123ea6117a16724f7f",
+      "bytes": 558
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/provider-reset-writing.log",
+      "sha256": "3145b5accc39e13b3b0cf5875a5b63f3ea4dcaa8617481225be8225734105a52",
+      "bytes": 1321
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/provider-reset-documents.log",
+      "sha256": "ae7f00c64302f681c6d09971a1792f52ae62316d85d43ba5e6e484df62686c25",
+      "bytes": 3981
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/provider-reset-writing-docs.log",
+      "sha256": "456c7e16017a977328582bee0b532eb2cef878e910e25eaf9cf82a61b2ad91e9",
+      "bytes": 792
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/provider-reset-writing-settled.log",
+      "sha256": "f1d1eb4e1e9241c923fa73a120c0e2c736768d2295e7c7123ea6117a16724f7f",
+      "bytes": 558
+    }
+  ],
+  "audit": {
+    "scope": "Manual repository-grounded component audit. Required pre-PR review remains open.",
+    "reviewed": [
+      "Scope ownership and validation before callbacks",
+      "Original receipts and partial aggregate selection",
+      "Binding peers and reviewed operator values",
+      "Unchanged-payload generation identity and lost-reply recovery",
+      "Legacy head and batch loading, version refusal, and retained-file fallback"
+    ]
+  },
+  "limitations": [
+    "Only provider resets are implemented. General source reset semantics, projection membership, field presence, previews, and CLI/HTTP adoption remain open.",
+    "The existing CLI --force and Go sync.WithFresh still select an empty baseline in the pipeline. D24 is not complete.",
+    "Native upgrade and downgrade qualification remain open. An older history reader cannot load a version 2 head.",
+    "These checks do not establish request latency, allocation overhead, full enterprise authority, or released-pair acceptance.",
+    "No branch push, native CI dispatch, GitHub merge, release, or code PR occurred. Full repository verification and required pre-PR review remain open."
+  ],
+  "acceptance": {
+    "primary_passed": 0,
+    "primary_unverified": 50,
+    "required_subcases": 324,
+    "credit": "none"
+  },
+  "next_action": "Implement general source reset scopes and projection membership, then connect previews and CLI/HTTP acquisition to runtime publication."
+}

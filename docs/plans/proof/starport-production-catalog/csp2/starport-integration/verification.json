@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "verdict": "PASS",
+  "scope": "Local two-module workspace integration. Published-module and released-pair qualification remain UNVERIFIED.",
+  "starport_commit": "16e9dd224720c3b1eee625bf78b94798e6e75cc3",
+  "starmap_commit": "1f6b518e5b1a7e6dca012695e4f44c1b904e4610",
+  "passed_test_results": 134,
+  "skipped_test_results": 0,
+  "inputs": {
+    "internal/catalog/runtime_acquisition_test.go": "354747a3a24dfb73af9833d663f3b613d3ec42f0aae11e3fdc70f5fa60897b77",
+    "internal/catalog/settings.go": "dbfa82132af56bef1af8002fb44d1c2f9ff65a7f1f74ec8496a2e63c834074e5",
+    "internal/catalog/settings_test.go": "3fd05674d98f9fa7ba3508c554768e1dc0c52c2c41982f28ddbc3a5070055bb9",
+    "go.mod": "0bb403f18cf17ec607deeb9c473a0e51190a0db069b75dd569fb1b09c541545e",
+    "go.sum": "1e65bbda6ea74a4269dfd60b3cc7563532b41878e4e288e731cb9e0b2ed65bb2"
+  },
+  "captures": {
+    "lint.log": "e92606b0bf483111dff0a120c315ea165821348f31365020e2468a0059095c47",
+    "race.jsonl": "f5c39ea90ce95c5747576cbde123fa253c7f97dfa7d29b745772d2bd13c360a6",
+    "writing-final.log": "82b28c77d96b62928674b8010193d69b9935579cbb8d2fae09e3e7a90445e618",
+    "writing-initial.log": "c9bcf4701687b4a3fe8a3aaf3cb2f7f665d7997e36776f3bbc91a29c9b532a55",
+    "plan-writing-initial.log": "75a7dbaa715ef3adf2e1404cb4ac2fb2000f0ffdc35210b7808b1d8781035df2",
+    "workspace.json": "b9e2436e539da13e833dacfdb55febe5a3840824278e2c536882057b684b0f96",
+    "plan-documents.json": "40c37f9c7aec04e548baea0e72149fae471e6c56c61a46fe3361228494635048",
+    "plan-writing-final.log": "e4cb9a01e79c92afab1af53d098a7aa3e9f9b554117c014efc96a6867bc15f9d"
+  },
+  "commands": [
+    "GOWORK=/tmp/starport-local-flow.work GOTOOLCHAIN=go1.26.6 go test -race -json ./internal/catalog -count=1",
+    "GOWORK=/tmp/starport-local-flow.work GOTOOLCHAIN=go1.26.6 golangci-lint run ./internal/catalog/...",
+    "technical-writing lint internal/catalog/settings.go internal/catalog/settings_test.go internal/catalog/runtime_acquisition_test.go --mode strict --format text"
+  ]
+}

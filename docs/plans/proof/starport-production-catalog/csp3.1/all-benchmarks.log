@@ -1,0 +1,18 @@
+goos: darwin
+goarch: arm64
+pkg: github.com/agentstation/starmap/pkg/catalogs
+cpu: Apple M2 Max
+BenchmarkCatalogLoad-12         	    3001	    368384 ns/op	  297966 B/op	    5342 allocs/op
+BenchmarkCatalogWalk-12         	  365162	      3264 ns/op	    6432 B/op	      44 allocs/op
+BenchmarkCatalogCopy-12         	  136796	      8840 ns/op	   15984 B/op	     147 allocs/op
+BenchmarkOfferingLookup/models=1/provider-12         	 1912518	       639.2 ns/op	    1104 B/op	      11 allocs/op
+BenchmarkOfferingLookup/models=1/alias-12            	 1796922	       653.1 ns/op	    1104 B/op	      11 allocs/op
+BenchmarkOfferingLookup/models=100/provider-12       	 1793269	       686.9 ns/op	    1104 B/op	      11 allocs/op
+BenchmarkOfferingLookup/models=100/alias-12          	 1575151	       692.0 ns/op	    1104 B/op	      11 allocs/op
+BenchmarkOfferingLookup/models=10000/provider-12     	 1880325	       630.5 ns/op	    1104 B/op	      11 allocs/op
+BenchmarkOfferingLookup/models=10000/alias-12        	 1916412	       628.6 ns/op	    1104 B/op	      11 allocs/op
+BenchmarkConcurrentAccess/concurrent_reads-12        	    4833	    252384 ns/op	 1035185 B/op	    2034 allocs/op
+BenchmarkConcurrentAccess/concurrent_writes-12       	   10000	   2055797 ns/op	 5013907 B/op	   15047 allocs/op
+BenchmarkConcurrentAccess/concurrent_mixed-12        	   10000	    272252 ns/op	  608589 B/op	    1296 allocs/op
+PASS
+ok  	github.com/agentstation/starmap/pkg/catalogs	36.123s

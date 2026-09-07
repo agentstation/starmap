@@ -1,0 +1,5 @@
+--- FAIL: TestEnrichMergePreservesManualModelWithoutPricingOrLimits (0.00s)
+    reconciliation_loss_characterization_test.go:53: enrichment dropped a linked model without pricing or limits
+FAIL
+FAIL	github.com/agentstation/starmap/pkg/catalogs	0.213s
+FAIL

@@ -1,0 +1,7 @@
+{"level":"info","provider_count":1,"time":"2026-09-07T04:25:13-05:00","message":"Filtered providers by primary source"}
+{"level":"info","provider_count":1,"time":"2026-09-07T04:25:13-05:00","message":"Filtered providers by primary source"}
+--- FAIL: TestReceiptOnlyUpdatePublishesDistinctGeneration (3.65s)
+    generation_evidence_identity_test.go:40: receipt-only update reused the previous immutable generation
+FAIL
+FAIL	github.com/agentstation/starmap/runtime	4.066s
+FAIL

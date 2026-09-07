@@ -1,0 +1,75 @@
+{
+  "runtime": {
+    "usable": true,
+    "source_kind": "starmap",
+    "fallback": false,
+    "lease": "lease_held",
+    "started_at": "2026-09-07T10:00:15.067721-05:00",
+    "observed_at": "2026-09-07T10:00:15.248342-05:00"
+  },
+  "route_validation": {
+    "state": "pending",
+    "candidate": {
+      "generation_id": "catalog-20260830T083213Z-ad5d2a45e490.local.45af35c43056",
+      "payload_checksum": "sha256:d21b626ba45d677c9ae3b86ea5e34ff9586e3468d68dce6cc3f3255c870bbc1f",
+      "generated_at": "2026-09-07T14:59:48.584039Z",
+      "lease_epoch": 3
+    }
+  },
+  "source_health": "unknown",
+  "upstream_health": "unknown",
+  "acquisition": {
+    "enabled": false,
+    "health": "unknown",
+    "age_seconds": 0,
+    "freshness": "unknown"
+  },
+  "freshness": {
+    "catalog": "current",
+    "catalog_age_seconds": 26,
+    "channel": "current",
+    "channel_age_seconds": 26,
+    "source_check": "unknown",
+    "source_check_age_seconds": 0
+  },
+  "provenance": {
+    "upstream": {
+      "source_identity": "starmap_cascade",
+      "source_kind": "starmap",
+      "channel_updated_at": "2026-09-07T14:59:48.584039Z"
+    }
+  },
+  "catalog": {
+    "providers": 17,
+    "models": 511
+  },
+  "snapshot": {
+    "generation_id": "catalog-20260830T083213Z-ad5d2a45e490.local.45af35c43056",
+    "generated_at": "2026-09-07T15:00:09.036255Z",
+    "age_seconds": 6,
+    "catalog_sequence": 1,
+    "availability_revision": 1,
+    "payload_checksum": "sha256:d21b626ba45d677c9ae3b86ea5e34ff9586e3468d68dce6cc3f3255c870bbc1f",
+    "manifest_available": true,
+    "schema_version": 6,
+    "payload_size_bytes": 8275875,
+    "completeness": "complete",
+    "degraded": false,
+    "validation": {
+      "status": "passed",
+      "error_count": 0,
+      "warning_count": 0,
+      "validated_at": "2026-09-07T15:00:09.036255Z"
+    },
+    "source_observations": [
+      {
+        "source": "custom_update",
+        "observed_at": "2026-09-07T15:00:09.036255Z",
+        "completeness": "complete",
+        "status": "succeeded"
+      }
+    ],
+    "sync_run_id": "e68c2c5b-a92f-407c-8be4-9bd59ac067ed"
+  },
+  "operations": []
+}

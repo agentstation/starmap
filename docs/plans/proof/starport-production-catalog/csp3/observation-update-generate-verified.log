@@ -1,0 +1,134 @@
+[0;34mGenerating OpenAPI 3.1 documentation...[0m 
+[1;33mStep 1/3: Generating OpenAPI 3.1 with swag v2...[0m 
+Info: New devbox available: 0.16.0 -> v0.18.0. Please run `devbox version update`.
+Info: Running script "go" on /Users/jack/src/github.com/agentstation/starmap-catalog-requirements
+📦 Starmap development environment loaded
+Tools available: go, gomarkdoc, swag (v2 via flake), golangci-lint
+Swag version:  v2.0.0
+2026/09/07 07:39:06 Generate swagger docs....
+2026/09/07 07:39:06 Generate general API Info, search dir:./
+get pkg name for directory: ./
+2026/09/07 07:39:07 warning: failed to evaluate const DirMode at /Users/jack/src/github.com/agentstation/starmap-catalog-requirements/pkg/catalogs/internal/resourcepolicy/policy.go:23:2, strconv.ParseUint: parsing "o755": invalid syntax
+2026/09/07 07:39:07 warning: failed to evaluate const FileMode at /Users/jack/src/github.com/agentstation/starmap-catalog-requirements/pkg/catalogs/internal/resourcepolicy/policy.go:25:2, strconv.ParseUint: parsing "o644": invalid syntax
+2026/09/07 07:39:07 warning: failed to evaluate const SecureFileMode at /Users/jack/src/github.com/agentstation/starmap-catalog-requirements/pkg/catalogs/internal/resourcepolicy/policy.go:27:2, strconv.ParseUint: parsing "o600": invalid syntax
+2026/09/07 07:39:07 warning: failed to evaluate const DirectoryMode at /Users/jack/src/github.com/agentstation/starmap-catalog-requirements/internal/privatefiles/directory.go:15:2, strconv.ParseUint: parsing "o700": invalid syntax
+2026/09/07 07:39:07 warning: failed to evaluate const FileMode at /Users/jack/src/github.com/agentstation/starmap-catalog-requirements/internal/privatefiles/directory.go:17:2, strconv.ParseUint: parsing "o600": invalid syntax
+2026/09/07 07:39:08 warning: failed to evaluate const directoryMode at /Users/jack/src/github.com/agentstation/starmap-catalog-requirements/internal/catalog/workspace/resource_policy.go:9:2, strconv.ParseUint: parsing "o755": invalid syntax
+2026/09/07 07:39:08 warning: failed to evaluate const fileMode at /Users/jack/src/github.com/agentstation/starmap-catalog-requirements/internal/catalog/workspace/resource_policy.go:10:2, strconv.ParseUint: parsing "o644": invalid syntax
+2026/09/07 07:39:08 warning: failed to evaluate const fileMode at /Users/jack/src/github.com/agentstation/starmap-catalog-requirements/pkg/catalogs/artifact/bundle.go:47:2, strconv.ParseUint: parsing "o644": invalid syntax
+2026/09/07 07:39:08 warning: failed to evaluate const baselineDirectoryMode at /Users/jack/src/github.com/agentstation/starmap-catalog-requirements/internal/bootstrap/export.go:24:2, strconv.ParseUint: parsing "o700": invalid syntax
+2026/09/07 07:39:08 warning: failed to evaluate const baselineFileMode at /Users/jack/src/github.com/agentstation/starmap-catalog-requirements/internal/bootstrap/export.go:25:2, strconv.ParseUint: parsing "o600": invalid syntax
+2026/09/07 07:39:08 warning: failed to evaluate const DirectoryMode at /Users/jack/src/github.com/agentstation/starmap-catalog-requirements/internal/privatefiles/directory.go:15:2, strconv.ParseUint: parsing "o700": invalid syntax
+2026/09/07 07:39:08 warning: failed to evaluate const FileMode at /Users/jack/src/github.com/agentstation/starmap-catalog-requirements/internal/privatefiles/directory.go:17:2, strconv.ParseUint: parsing "o600": invalid syntax
+2026/09/07 07:39:08 Generating response.Response
+2026/09/07 07:39:08 Generating response.Error
+2026/09/07 07:39:08 Generating operations.Status
+2026/09/07 07:39:08 Generating operations.Kind
+2026/09/07 07:39:08 Generating operations.State
+2026/09/07 07:39:08 Generating sources.ProviderReason
+found schema with no Type, returning any
+2026/09/07 07:39:08 Generating catalogs.ModelDefinition
+2026/09/07 07:39:08 Generating catalogs.ModelDefinitionID
+2026/09/07 07:39:08 Generating catalogs.AuthorID
+2026/09/07 07:39:08 Generating catalogs.ModelDefinitionMetadata
+2026/09/07 07:39:08 Generating catalogs.ModelTag
+2026/09/07 07:39:08 Generating catalogs.ModelDefinitionLineage
+2026/09/07 07:39:08 Generating catalogs.ModelDefinitionWeights
+2026/09/07 07:39:08 Generating catalogs.ModelArchitecture
+2026/09/07 07:39:08 Generating catalogs.ArchitectureType
+2026/09/07 07:39:08 Generating catalogs.Tokenizer
+2026/09/07 07:39:08 Generating catalogs.Quantization
+2026/09/07 07:39:08 Generating catalogs.ModelDefinitionCapabilities
+2026/09/07 07:39:08 Generating catalogs.ModelFeatures
+2026/09/07 07:39:08 Generating catalogs.ModelModalities
+2026/09/07 07:39:08 Generating catalogs.ModelModality
+2026/09/07 07:39:08 Generating catalogs.ModelAttachments
+2026/09/07 07:39:08 Generating catalogs.ModelGeneration
+2026/09/07 07:39:08 Generating catalogs.FloatRange
+2026/09/07 07:39:08 Generating catalogs.IntRange
+2026/09/07 07:39:08 Generating catalogs.ModelControlLevels
+2026/09/07 07:39:08 Generating catalogs.ModelControlLevel
+2026/09/07 07:39:08 Generating catalogs.ModelTools
+2026/09/07 07:39:08 Generating catalogs.ToolChoice
+2026/09/07 07:39:08 Generating catalogs.ModelWebSearch
+2026/09/07 07:39:08 Generating catalogs.ModelDelivery
+2026/09/07 07:39:08 Generating catalogs.ModelResponseProtocol
+2026/09/07 07:39:08 Generating catalogs.ModelStreaming
+2026/09/07 07:39:08 Generating catalogs.ModelResponseFormat
+2026/09/07 07:39:08 Generating handlers.SearchRequest
+2026/09/07 07:39:08 Generating handlers.SearchModalities
+2026/09/07 07:39:08 Generating handlers.IntRange
+2026/09/07 07:39:08 Generating handlers.DateRange
+2026/09/07 07:39:08 Generating openrouter.ModelEnvelope
+2026/09/07 07:39:08 Generating openrouter.Model
+2026/09/07 07:39:08 Generating openrouter.Architecture
+found schema with no Type, returning any
+2026/09/07 07:39:08 Generating openrouter.ModelLinks
+found schema with no Type, returning any
+2026/09/07 07:39:08 Generating openrouter.Pricing
+2026/09/07 07:39:08 Generating openrouter.Reasoning
+2026/09/07 07:39:08 Generating openrouter.TopProvider
+2026/09/07 07:39:08 Generating openrouter.ErrorEnvelope
+2026/09/07 07:39:08 Generating openrouter.Error
+2026/09/07 07:39:08 Generating openrouter.EndpointsEnvelope
+2026/09/07 07:39:08 Generating openrouter.Endpoints
+2026/09/07 07:39:08 Generating openrouter.Endpoint
+2026/09/07 07:39:08 Generating openrouter.Percentiles
+2026/09/07 07:39:08 Generating catalogs.Provider
+2026/09/07 07:39:08 Generating catalogs.ProviderID
+2026/09/07 07:39:08 Generating catalogs.ProviderCredentials
+2026/09/07 07:39:08 Generating catalogs.ProviderCredentialField
+2026/09/07 07:39:08 Generating catalogs.ProviderCredentialFieldID
+2026/09/07 07:39:08 Generating catalogs.ProviderCredentialFieldKind
+2026/09/07 07:39:08 Generating catalogs.ProviderCredentialProfile
+2026/09/07 07:39:08 Generating catalogs.ProviderCredentialProfileID
+2026/09/07 07:39:08 Generating catalogs.ProviderAuthenticationPrimitive
+2026/09/07 07:39:08 Generating catalogs.ProviderCredentialPlacement
+2026/09/07 07:39:08 Generating catalogs.ProviderCredentialPlacementKind
+2026/09/07 07:39:08 Generating catalogs.ProviderCredentialScheme
+2026/09/07 07:39:08 Generating catalogs.ProviderCredentialEndpointBinding
+2026/09/07 07:39:08 Generating catalogs.ProviderCredentialEndpointBindingFormat
+2026/09/07 07:39:08 Generating catalogs.ProviderAuthenticationProtocolOptions
+2026/09/07 07:39:08 Generating catalogs.ProviderGoogleDefaultProtocolOptions
+2026/09/07 07:39:08 Generating catalogs.ProviderAWSDefaultProtocolOptions
+2026/09/07 07:39:08 Generating catalogs.ProviderCredentialPlane
+2026/09/07 07:39:08 Generating catalogs.ProviderCatalog
+2026/09/07 07:39:08 Generating catalogs.ProviderEndpoint
+2026/09/07 07:39:08 Generating catalogs.EndpointType
+2026/09/07 07:39:08 Generating catalogs.ProviderCatalogProtocolOptions
+2026/09/07 07:39:08 Generating catalogs.ProviderOpenAICatalogProtocolOptions
+2026/09/07 07:39:08 Generating catalogs.ProviderTokenPriceUnit
+2026/09/07 07:39:08 Generating catalogs.ProviderAnthropicCatalogProtocolOptions
+2026/09/07 07:39:08 Generating catalogs.FieldMapping
+2026/09/07 07:39:08 Generating catalogs.CapabilityMapping
+2026/09/07 07:39:08 Generating catalogs.ModelFeature
+2026/09/07 07:39:08 Generating catalogs.ProviderCapabilityCombination
+2026/09/07 07:39:08 Generating catalogs.AuthorMapping
+2026/09/07 07:39:08 Generating catalogs.ProviderInference
+2026/09/07 07:39:08 Generating catalogs.ProviderInferenceEndpoint
+2026/09/07 07:39:08 Generating catalogs.ProviderOperation
+2026/09/07 07:39:08 Generating catalogs.HealthAPIKind
+2026/09/07 07:39:08 Generating catalogs.ProviderHealthComponent
+2026/09/07 07:39:08 Generating catalogs.ProviderPrivacyPolicy
+2026/09/07 07:39:08 Generating catalogs.ProviderRetentionPolicy
+2026/09/07 07:39:08 Generating catalogs.ProviderRetentionType
+2026/09/07 07:39:08 Generating catalogs.ProviderGovernancePolicy
+2026/09/07 07:39:08 Generating catalogs.SourceExtensions
+2026/09/07 07:39:08 Generating catalogs.SourceExtension
+found schema with no Type, returning any
+2026/09/07 07:39:08 create docs.go at internal/embedded/openapi/docs.go
+2026/09/07 07:39:08 create swagger.json at internal/embedded/openapi/swagger.json
+2026/09/07 07:39:08 create swagger.yaml at internal/embedded/openapi/swagger.yaml
+[1;33mStep 2/3: Renaming generated files...[0m 
+[1;33mStep 3/3: Verifying embedded specs...[0m 
+[0;32mOpenAPI 3.1 specs generated and ready for embedding[0m 
+[0;32m  - internal/embedded/openapi/openapi.json[0m 
+[0;32m  - internal/embedded/openapi/openapi.yaml[0m 
+[0;34mSpecs will be embedded in binary via //go:embed[0m 
+[0;34mGenerating Go documentation...[0m 
+devbox run env PATH="/Users/jack/go/bin:$PATH" go generate ./...
+Info: New devbox available: 0.16.0 -> v0.18.0. Please run `devbox version update`.
+Info: Running script "env" on /Users/jack/src/github.com/agentstation/starmap-catalog-requirements
+📦 Starmap development environment loaded
+Tools available: go, gomarkdoc, swag (v2 via flake), golangci-lint
+[0;32mAll documentation generation complete[0m 

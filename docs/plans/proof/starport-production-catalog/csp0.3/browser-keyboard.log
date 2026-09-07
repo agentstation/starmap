@@ -1,0 +1,19 @@
+(node:9934) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+Update available: 1.6.0 -> 1.8.0
+Run `npm install -g chrome-devtools-mcp@latest` and `chrome-devtools start` to update and restart the daemon.
+
+Successfully pressed key: Tab
+Emulating viewport: {"isMobile":false,"hasTouch":false,"isLandscape":false,"width":320,"height":900}
+Emulating color scheme: dark
+(node:9935) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+Update available: 1.6.0 -> 1.8.0
+Run `npm install -g chrome-devtools-mcp@latest` and `chrome-devtools start` to update and restart the daemon.
+
+Script ran on page and returned:
+```json
+{"focusedHref":"file:///Users/jack/src/github.com/agentstation/starport-catalog-lifecycle/docs/assets/first-use-v1.2.0/first-use.gif","focusVisible":true}
+```

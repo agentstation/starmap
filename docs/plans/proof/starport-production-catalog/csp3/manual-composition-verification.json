@@ -1,0 +1,382 @@
+{
+  "schema_version": 1,
+  "task": "CSP3",
+  "date": "2026-09-07",
+  "status": "component-progress-only",
+  "toolchain": "go1.26.6 darwin/arm64",
+  "work_commit": "46c8c2cce1d80169e8bb1d61d008dedf6b57ca8b",
+  "evidence_commit": "b6f816e43dd86898b098c9cc1b7c74982bd7ca7b",
+  "planning_base": "129e6d530aac8cbdb4cbc7d2837a887fc66eb0d4",
+  "behavior": [
+    "The reconciler owns source selection and baseline enrichment. Pipeline acquisition, explicit observation publication, release imports, and runtime reconstruction call that entry point.",
+    "Runtime reconstruction supplies stable change timestamps. It imports no acquisition pipeline or provider clients.",
+    "CLI updates and the HTTP server share App.CatalogAcquisition. It applies the resolved provider binding set, credential resolver, and source directories.",
+    "Omission preserves legacy provider selection. An explicit empty set makes no credential attempts and refuses a request for a provider outside that set.",
+    "Two configured scopes make separate credential-resolution attempts. Construction makes none, and previews preserve the current catalog.",
+    "The shared config accessor returns owned binding declarations and preserves explicit presence."
+  ],
+  "owner_decision": {
+    "id": "D24",
+    "decision": "Reset previous local acquisition while preserving the embedded or selected upstream baseline.",
+    "current_cli": "starmap update --force",
+    "go_option": "sync.WithFresh",
+    "implementation": "pending manual runtime retention",
+    "clarification": "The owner question used --fresh. The existing CLI flag is --force; no new flag or alias was introduced."
+  },
+  "limitations": [
+    "Manual acquisition still publishes through the root client without retaining original observations in the runtime input transaction.",
+    "The current fresh pipeline still starts from an empty reconciliation baseline. D24 requires a behavior change before completion.",
+    "CSP3 must retain manual observations, preserve source selection and previews, apply reset scopes transactionally, and prevent retired bindings from returning through local projections.",
+    "CSP3 field presence, scoped deletion, and ingestion acceptance remain open. CSP4 authority, CSP5 collection, and CSP8 Starport adoption remain open.",
+    "No latency or allocation claim follows from these catalog reconstruction checks.",
+    "The full pre-publication repository gate, required code review, native qualification, and released-pair acceptance remain open. No push, merge on GitHub, release, or native CI dispatch occurred."
+  ],
+  "checks": [
+    {
+      "command": "GOTOOLCHAIN=go1.26.6 go test -race -json -count=1 -timeout 20m ./runtime",
+      "exit_code": 0,
+      "capture": "csp3/manual-composition-runtime-composition.jsonl"
+    },
+    {
+      "command": "GOTOOLCHAIN=go1.26.6 go test -race -json -count=1 -timeout 20m ./internal/catalog/reconciler ./internal/catalog/pipeline ./acquisition",
+      "exit_code": 0,
+      "capture": "csp3/manual-composition-consumers.jsonl"
+    },
+    {
+      "command": "GOTOOLCHAIN=go1.26.6 go test -race -json -count=1 -timeout 20m ./internal/cli/app ./pkg/catalogs/config ./internal/cli/commands/update ./internal/cli/commands/serve",
+      "exit_code": 0,
+      "capture": "csp3/manual-composition-adapters-final.jsonl"
+    },
+    {
+      "command": "GOTOOLCHAIN=go1.26.6 go test -json -count=1 -timeout 20m ./...",
+      "exit_code": 1,
+      "capture": "csp3/manual-composition-all.jsonl"
+    },
+    {
+      "command": "GOTOOLCHAIN=go1.26.6 go test -json -count=1 -timeout 20m ./internal/cli/app",
+      "exit_code": 0,
+      "capture": "csp3/manual-composition-app-normal-final.jsonl"
+    },
+    {
+      "command": "GOTOOLCHAIN=go1.26.6 golangci-lint run",
+      "exit_code": 0,
+      "capture": "csp3/manual-composition-lint-final.log"
+    },
+    {
+      "command": "GOTOOLCHAIN=go1.26.6 go tool ago -stale-ignores -format json ./...",
+      "exit_code": 0,
+      "capture": "csp3/manual-composition-ago-final.json"
+    },
+    {
+      "command": "GOTOOLCHAIN=go1.26.6 make generate",
+      "exit_code": 0,
+      "capture": "csp3/manual-composition-generate-final.log"
+    },
+    {
+      "command": "bash scripts/verify-consumer-deps.sh",
+      "exit_code": 0,
+      "capture": "csp3/manual-composition-dependencies.log"
+    },
+    {
+      "command": "GOTOOLCHAIN=go1.26.6 make technical-writing-check",
+      "exit_code": 0,
+      "capture": "csp3/manual-composition-writing-final.log"
+    },
+    {
+      "command": "bash scripts/verify-catalog-product.sh --starport-root /Users/jack/src/github.com/agentstation/starport-catalog-lifecycle --task CSP3 --json",
+      "exit_code": 1,
+      "capture": "csp3/manual-composition-product.json"
+    },
+    {
+      "command": "GOTOOLCHAIN=go1.26.6 make technical-writing-check",
+      "exit_code": 0,
+      "capture": "csp3/manual-composition-writing-corrected.log"
+    },
+    {
+      "command": "python3 docs/plans/proof/starport-production-catalog/activation-2026-09-05/verify_documents.py",
+      "exit_code": 0,
+      "capture": "csp3/manual-composition-documents-settled.log"
+    }
+  ],
+  "normal_suite_composition": {
+    "passed_packages": 79,
+    "passed_test_events": 3536,
+    "packages_without_tests": 22,
+    "selection": "Use the 78 non-app passing packages from manual-composition-all.jsonl and the complete corrected app suite from manual-composition-app-normal-final.jsonl. Exclude every event from the failed app suite."
+  },
+  "race_suite_composition": {
+    "passed_packages": 8,
+    "passed_test_events": 1043,
+    "components": {
+      "runtime": 381,
+      "acquisition": 54,
+      "reconciler": 244,
+      "pipeline": 81,
+      "app": 200,
+      "catalog_config": 60,
+      "update": 22,
+      "serve": 1
+    }
+  },
+  "superseded_checks": [
+    {
+      "capture": "csp3/manual-composition-composition.jsonl",
+      "exit_code": 1,
+      "reason": "The initial test move referenced a helper in a different test package. Public composition tests were restored to their original pipeline fixtures; only the private filter test moved."
+    },
+    {
+      "capture": "csp3/manual-composition-bindings-focused.jsonl",
+      "exit_code": 1,
+      "reason": "The new empty-set fixture expected success for an explicitly requested provider. The existing binding contract correctly refused that request."
+    },
+    {
+      "capture": "csp3/manual-composition-all.jsonl",
+      "exit_code": 1,
+      "reason": "This run compiled the same incorrect app fixture before its correction. All 78 other package suites passed."
+    },
+    {
+      "capture": "csp3/manual-composition-writing.log",
+      "exit_code": 2,
+      "reason": "Strict writing reported two new prose diagnostics. Both were corrected without changing writing policy."
+    },
+    {
+      "capture": "csp3/manual-composition-writing-settled.log",
+      "exit_code": 2,
+      "reason": "The first proof prose exceeded two paragraph limits and contained one semicolon. The correction preserves facts and restores the unchanged historical prefix."
+    }
+  ],
+  "input_hashes": [
+    {
+      "path": "acquisition/import.go",
+      "sha256": "b3c16b9bc24fc5e1c6987134a10e834606f16cf4f2a27c4bc3be7c2d1ad8fd48"
+    },
+    {
+      "path": "acquisition/observations.go",
+      "sha256": "a1a24713d548b1ca0eb006f4188e909e45a536745222df07fd33cd78225a56de"
+    },
+    {
+      "path": "internal/catalog/pipeline/reconcile.go",
+      "sha256": "7d1decce672fc88a6d8b82b7b53a24d788593e618e2ec79fc179c10e7e86bad3"
+    },
+    {
+      "path": "internal/catalog/pipeline/reconcile_test.go",
+      "sha256": "3a7f74433218e24f897888053adbdd923a0e3a4abf725209061a5114ac7d9781"
+    },
+    {
+      "path": "internal/catalog/reconciler/README.md",
+      "sha256": "cf00f3a949e237d733cfd0e323645c2b8526abdc2447f33df8043768904f00a9"
+    },
+    {
+      "path": "internal/catalog/reconciler/composition.go",
+      "sha256": "bfc0e3d331c5af2dcd367e904bb1642da475775e8ad0fd5fbff7877f0e697f00"
+    },
+    {
+      "path": "internal/catalog/reconciler/composition_test.go",
+      "sha256": "7a9481883770a491a1e116bae024a14251b87d668e517a1da0c16cf62da391b4"
+    },
+    {
+      "path": "internal/cli/app/catalog_acquisition.go",
+      "sha256": "8ef815b91a99dbf2177a0a8185e86b0cee70b4001bb3bba8cede260e93261b4e"
+    },
+    {
+      "path": "internal/cli/app/catalog_acquisition_test.go",
+      "sha256": "d5766c94d0457958d283947c3e58065a12fc767de1d9b68a2f15d2d0de0432e3"
+    },
+    {
+      "path": "internal/cli/commands/serve/command.go",
+      "sha256": "35637a06643069ec7ecff37d22b87e0895521a4730a49259fef61508bbbcc8da"
+    },
+    {
+      "path": "internal/cli/commands/update/application.go",
+      "sha256": "ff94640b4bf8afa5e631c757d43bcb0910ce7efe7b4fa7d03791a70a915d6487"
+    },
+    {
+      "path": "internal/cli/commands/update/update.go",
+      "sha256": "f4bb4c81c12c546a52faff8fddbe2399187c2ecebd2c901d78016095b953a9ab"
+    },
+    {
+      "path": "pkg/catalogs/config/provider_bindings.go",
+      "sha256": "2cded6483c699d39dfc719ba021de4ecaee16b9298c1149b11e539a50b5e4fb8"
+    },
+    {
+      "path": "pkg/catalogs/config/provider_bindings_test.go",
+      "sha256": "0951c0efb5e3fd10118c5d359fcd9523773c83969a1c32dd5645d2927a4dfabd"
+    },
+    {
+      "path": "runtime/reconciliation.go",
+      "sha256": "ca4b8ee54655bd19781b711e16d3e18b1959a120aef98793ec6769521f40874a"
+    }
+  ],
+  "captures": [
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/manual-composition-composition.jsonl",
+      "bytes": 142115,
+      "sha256": "3d5d8f595a85a1de3965cfbf105e920eb05140eda98d5f1a90db4a2af048c1a5"
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/manual-composition-runtime-composition.jsonl",
+      "bytes": 525737,
+      "sha256": "a3bb77ca87295d1c1ed7df3fc69c350dac78f2c9d364bd7b686347c30b02c6e2"
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/manual-composition-consumers.jsonl",
+      "bytes": 647691,
+      "sha256": "c572edb113b636cc6a9f610014bb4d3961c691393cbfcb5263826e57cf21e21f"
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/manual-composition-ago.json",
+      "bytes": 289,
+      "sha256": "b8fb7afa66aa7a93914ac258475dd0191be821803a8aea4439f5ba05022f5fa5"
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/manual-composition-generate.log",
+      "bytes": 9934,
+      "sha256": "1e7aa57f15d47add791d5d01c5158c3599b35c91d06e5baf171ff8a2ea1cd514"
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/manual-composition-adapter-compile.log",
+      "bytes": 2141,
+      "sha256": "be02c4da6b8ef61c2e84d366c5689f653a5a58982782a8a8f03d1ed4e1bbd19d"
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/manual-composition-bindings-focused.jsonl",
+      "bytes": 15824,
+      "sha256": "43330951eef5117fc86d6aab75622938c029e79d898a8f9fe50a6f2bf9cd7cb8"
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/manual-composition-all.jsonl",
+      "bytes": 4318876,
+      "sha256": "ec877b9bb41516c7aba34d068c45c569395f513d304f9b35f96c97e3341a6650"
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/manual-composition-lint.log",
+      "bytes": 10,
+      "sha256": "e92606b0bf483111dff0a120c315ea165821348f31365020e2468a0059095c47"
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/manual-composition-generate-final.log",
+      "bytes": 9934,
+      "sha256": "279c87428d0ee3473419619aa6be09d4ecb413b84aecc7c62417dbead97307b1"
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/manual-composition-adapters-final.jsonl",
+      "bytes": 279336,
+      "sha256": "af8006fb1517b40604d4ed3f93bb863264f7a18ff7c6bc45e17f9cd9c3a5cc7e"
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/manual-composition-ago-final.json",
+      "bytes": 289,
+      "sha256": "b8fb7afa66aa7a93914ac258475dd0191be821803a8aea4439f5ba05022f5fa5"
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/manual-composition-dependencies.log",
+      "bytes": 1254,
+      "sha256": "56667b8f5a604ac9a61a563e73d4b332835bf144d0814833511a4f9f204a11b9"
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/manual-composition-writing.log",
+      "bytes": 968,
+      "sha256": "6fee9ebcf4f7b284137d024aabcd25289eb1b6bb5959cb390ba3b1c7318102ed"
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/manual-composition-app-normal-final.jsonl",
+      "bytes": 194609,
+      "sha256": "22a05b544a906761eeeaf62fc65f223a5b2210d7ec02c5ef9507d97b2c57c38d"
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/manual-composition-lint-final.log",
+      "bytes": 10,
+      "sha256": "e92606b0bf483111dff0a120c315ea165821348f31365020e2468a0059095c47"
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/manual-composition-product.json",
+      "bytes": 7700,
+      "sha256": "0a5cc1a33899402e4135c4ef56e28730155c63025b771d83734fcab9c93df5bb"
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/manual-composition-documents-initial.log",
+      "bytes": 3981,
+      "sha256": "4cfefc41edfc64a4d36109a1d2c9c1cc6b94eab045a41d8db7c846b43502cb9a"
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/manual-composition-writing-final.log",
+      "bytes": 558,
+      "sha256": "ced220c0269adc433da06617936e83780a6c1bf7c487a690cd10a47e19343083"
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/manual-composition-writing-settled.log",
+      "bytes": 1163,
+      "sha256": "5b82494d151a780d08cf9bd66e93194f0eea7820e0defd255b4e742a4bf2f512"
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/manual-composition-writing-corrected.log",
+      "bytes": 558,
+      "sha256": "ced220c0269adc433da06617936e83780a6c1bf7c487a690cd10a47e19343083"
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/manual-composition-documents-settled.log",
+      "bytes": 3981,
+      "sha256": "efd169518f497de961b4ad6b6cd6f968495494460df3ff63a594bf90f9fc128c"
+    }
+  ],
+  "capture_count": 22,
+  "capture_bytes": 6166958,
+  "acceptance": {
+    "primary_passed": 0,
+    "primary_unverified": 50,
+    "required_subcases": 324,
+    "task_status": "in_progress"
+  },
+  "next_implementation_constraints": [
+    {
+      "contract": "Retain original observations and receipts without splitting an aggregate provider payload under its existing checksum. ProviderLayer accepts exactly one provider.",
+      "paths": [
+        "runtime/provider_evidence.go",
+        "pkg/sources/receipt.go",
+        "internal/catalog/pipeline/pipeline.go"
+      ]
+    },
+    {
+      "contract": "The volume guard classifies omitted records but does not add prior catalog facts to the observation payload. Replacing retained observations solely by source type can lose partial-history facts.",
+      "paths": [
+        "internal/catalog/pipeline/observation_health.go"
+      ]
+    },
+    {
+      "contract": "The runtime must own manual publication and retention together. Manual sync, explicit observation publication, and release import currently mutate the root client directly.",
+      "paths": [
+        "acquisition/syncer.go",
+        "acquisition/observations.go",
+        "acquisition/import.go",
+        "runtime/publication_retention.go"
+      ]
+    },
+    {
+      "contract": "The runtime cannot import the acquisition pipeline. The shared reconciler now exposes source selection and baseline enrichment without provider clients.",
+      "paths": [
+        "internal/catalog/reconciler/composition.go",
+        "runtime/reconciliation.go"
+      ]
+    },
+    {
+      "contract": "Manual operations must join runtime cancellation and shutdown ownership. Existing run groups serialize all kinds but coalesce callers of the same kind; distinct manual input batches must not coalesce.",
+      "paths": [
+        "runtime/refresh.go"
+      ]
+    },
+    {
+      "contract": "D24 must rebuild from the trusted embedded or selected source baseline, not from the current effective catalog with local facts folded into it. Preserve unselected scopes and reviewed operator inputs.",
+      "paths": [
+        "runtime/layers.go",
+        "internal/catalog/pipeline/pipeline.go"
+      ]
+    },
+    {
+      "contract": "Filtering direct provider observations alone cannot establish revocation safety when a local projection carries prior generated provider facts. The manual reconstruction contract must cover those field origins.",
+      "paths": [
+        "internal/catalog/pipeline/observation_health.go",
+        "runtime/provider_policy.go"
+      ]
+    }
+  ]
+}

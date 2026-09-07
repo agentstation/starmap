@@ -648,3 +648,426 @@ That draft targets the evidence branch from PR #125. The code draft targets the 
 The code review retains every changed source file, executable proof, generated API document, and settings schema.
 The three authored acceptance and performance JSON contracts belong with the planning documents.
 No production code changed during this split.
+
+
+### Publication review and container correction
+
+Planning draft [PR #126](https://github.com/agentstation/starmap/pull/126) targets the [evidence branch](https://github.com/agentstation/starmap/pull/125).
+Its Sol and Opus review passed all three portions of the 998,491-byte bundle with zero findings.
+Starport draft PR #366 passes all 16 current checks, including six native archive jobs.
+
+The [two further code review attempts](csp3/publication-review-context-retries.json) each stopped with “Prompt is too long.”
+Both ordinary Opus and the requested extended-context model reported a 200,000-token context window.
+Neither attempt grants code publication approval.
+The [prepared replay](csp3/review-smaller-prompts-replay.json) covers the complete code bundle in eight smaller prompts.
+The proposed shared-helper change lowers only the prompt ceiling from 512,000 to 300,000 bytes.
+The helper remains unchanged pending owner approval.
+
+Evidence PR #125 passed five CI checks and failed container startup because its baseline image digest was unavailable.
+Commit `ca0645be` updates the release, smoke script, and test pins to the same current digest.
+[Signature verification and focused checks](csp3/container-base-refresh.json) passed for the replacement image.
+The check uses the identity from [Chainguard's provenance instructions](https://images.chainguard.dev/directory/image/static/provenance).
+All 26 workflow race tests passed, and Ago reported no findings or errors.
+The local container served health requests with a read-only root and user 65532.
+
+This correction remains on the unpublished code branch.
+It does not change the failed evidence PR result or qualify native Starmap behavior.
+After the shared-helper decision, complete code review before the branch push, draft PR, and native workflow dispatch.
+CSP3 remains active, with batch acquisition and operator integration still open.
+
+
+### Binding-aware batch acquisition
+
+The built-in acquirer now implements `runtime.BindingAcquirer`.
+The [initial regression](csp3/binding-batch-red.log) failed because that role was absent.
+The batch validates all selected declarations before credential resolution or provider I/O.
+Empty declarations select nothing, duplicate identities cause refusal, and provider filters cannot introduce undeclared bindings.
+
+A shared loop records each target separately, including multiple bindings for one provider.
+Attempt results and source sinks carry `BindingID` and `BindingRevision`.
+The tests cover distinct concurrent credential profiles, partial failures, skipped credentials, early publication, cancellation, and late results.
+Callback payload and receipt copies protect the retained result from caller changes.
+A real runtime test verifies separate attempts, peer retention after failure, and both scopes after restart.
+
+The [runtime regression](csp3/binding-batch-runtime-red.jsonl) found that enrichment dropped models without pricing or limits.
+The [model regression](csp3/model-membership-red.log) isolates that membership filter.
+The catalog merge now retains these records and their missing authored definitions.
+Existing definitions keep precedence. The runtime still refuses offerings without a resolved canonical reference.
+
+[Final verification](csp3/binding-batch-verification.json) passed 1,341 race events across six packages under Go 1.26.6.
+All 79 tested packages passed the normal suite. Another 22 packages contain no tests.
+All six external consumer compositions passed, with the read-only closure at 37/37 and pinned-artifact closure at 38/38 on macOS.
+Code lint, Ago, and documentation generation passed.
+
+The first broader run used the host's Go 1.27.0 default.
+It recorded two failures and a runtime timeout. Its output remains separate from the passing pinned-toolchain run.
+The corrected run kept the same five-minute package limit.
+The credential-profile fixture now uses two API-key profiles because the contract forbids two unauthenticated alternatives.
+
+The product verifier still reports zero primary passes and 50 UNVERIFIED cases.
+CSP3 remains active for operator integration and the remaining scope and field-authority contracts.
+Code publication still waits for required review. The proposed shared-helper change remains unapplied.
+Raw results use the existing evidence branch before code review, so captured output does not enlarge the code review bundle.
+
+
+The work commit is `497fd923`. Evidence commit `251378b9` preserves thirteen captured files, totaling 3,589,200 bytes.
+Local planning merge `adc63446` supplies that evidence as the code review base.
+
+All captured-file diffs against this base are empty. The integration preserved every recorded Go input hash.
+Strict writing passed 1,053 files with zero diagnostics. The document validator still reports 38 tasks and 324 required subcases.
+These branch updates remain local pending their required publication reviews.
+
+
+### Shared provider binding settings
+
+Commit `8a27bf91` adds `STARMAP_CATALOG_PROVIDER_BINDINGS` to the shared configuration contract.
+The CLI flag accepts a JSON array, and the primary YAML file accepts binding objects as a list.
+The parser rejects null values, unknown fields, invalid declarations, and duplicate binding IDs without exposing credential values.
+An explicit empty array selects no connected-runtime provider acquisition. Omission retains the existing unscoped behavior.
+
+A higher-priority array replaces the complete lower array. Changing the upstream catalog source leaves this independent policy in place.
+The descriptor records deployment ownership and a required restart.
+The generated settings reference, Compose comments, and environment example document these rules and the current manual-update limitation.
+
+[Verification](csp3/binding-settings-verification.json) passed 269 race events across three packages and all 79 normal package suites.
+Another 22 packages have no tests. Code lint, Ago, generated references, and strict writing passed.
+The first package run found missing deployment examples. The first writing run found four prose diagnostics.
+Both failures and their corrected results remain in twelve captures, totaling 543,181 bytes, on evidence commit `f995eb7a`.
+
+Manual update integration remains open.
+The standalone CLI update constructs `acquisition.Syncer` without the connected runtime.
+The server update adapter also delegates to that standalone syncer, which does not enforce the runtime binding policy.
+The correction must preserve dry-run previews, explicit source selection, failure retention, and workspace projection.
+These settings are not evidence that those paths enforce scoped policy.
+
+CSP3 stays in progress. All 50 primary cases remain UNVERIFIED.
+The proposed shared-review-helper change remains unapplied, and these branch updates remain local.
+
+
+### Scoped records in reconciliation
+
+Commit `14233354` corrects source-type maps that discarded peer catalogs before reconciliation.
+The [first regression](csp3/scoped-reconciliation-red.log) reproduced a lost offering. It also showed that input order selected an older shared model.
+Collection now preserves scoped observations, and primary-source filtering includes every selected provider.
+
+Each selected provider or model record retains its original observation and health classification.
+Direct observations precede stale fallback. Observation time orders records within that classification.
+Records with the same identity, time, and classification must agree. Identical records select a receipt deterministically.
+The [health regression](csp3/scoped-reconciliation-health-red.log) proved that recency alone let a stale fallback displace a direct peer observation.
+
+Field provenance and review candidates now use the selected record's receipt.
+Counts report unique provider model IDs and source types.
+Tests cover peer membership, shared records, separate providers, receipt integrity, equal-time conflicts, health isolation, and cancellation before validation.
+The existing field-authority table still determines precedence between source types.
+
+[Final passing package runs](csp3/scoped-reconciliation-verification.json) total 348 race events: 234 reconciler, 62 pipeline, and 52 acquisition events.
+All 79 normal package suites passed, with another 22 packages containing no tests.
+Lint, Ago, documentation generation, and strict writing passed.
+Earlier compilation and fixture failures remain in the captures. The final binding fixture uses its provider definition's declared authentication profile.
+
+Evidence commit `609c7f38` preserves seventeen captures, totaling 2,025,415 bytes.
+The local planning base contains those exact files, so their output does not enlarge the code review diff.
+The plan again separates its header paragraphs. Adjacent table rows preserve its 500-line limit.
+
+Manual acquisition still needs separate observations for each selected binding and publication through runtime retention.
+The caller remains responsible for active binding authorization. Field-presence handling, scoped deletion, and full runtime field authority remain open.
+CSP3 remains in progress, with zero primary passes and all 50 cases UNVERIFIED.
+The shared review helper remains unchanged, and no branch publication or native CI dispatch occurred.
+
+
+### Manual source binding integration
+
+Commit `31a27ae4` adds `acquisition.WithProviderBindings` to the manual syncer.
+Construction copies the declarations without contacting providers. An explicit empty set disables provider acquisition.
+Source and provider filters can restrict that set but cannot add bindings.
+
+The pipeline validates each selected profile before source work and emits separate observations for the selected bindings.
+Provider calls share the existing concurrency limit. Queued calls stop after cancellation.
+Strict mode requires each selected observation and rejects missing, duplicate, mismatched, failed, incomplete, or empty results.
+
+A strict-mode regression rejected valid serving records because the observation lacked authored definitions.
+The check now accepts either form of model data. The regression remains in the [captured failure](csp3/manual-bindings-profiles.log).
+Previews leave the store unchanged, and durable generation links retain both binding receipts.
+
+Field provenance now preserves optional binding identity and revision through JSON and YAML.
+The volume guard compares only matching binding history and keeps the binding when it changes observation health.
+Legacy unscoped payloads omit the new fields. History without a matching binding revision supplies no scoped completeness claim.
+
+[Final package runs](csp3/manual-bindings-verification.json) passed 398 race events: 234 reconciler, 82 pipeline, 28 provenance, and 54 acquisition events.
+Normal checks cover 79 distinct passing package suites and 22 packages without tests.
+The first broad normal run failed its acquisition fixture. The corrected acquisition and pipeline suites then passed.
+Code lint, Ago, generated documentation, and strict writing passed. The acquisition race suite completed in 264.865 seconds under its five-minute limit.
+
+Evidence commit `b4ace4a8` includes 37 captures, totaling 1,934,272 bytes.
+The local planning base contains those same files. Their output remains outside the code review diff.
+Earlier fixture, code lint, and writing failures remain recorded.
+
+Commit `aceea1a8` also restricts volume history to the binding's canonical provider.
+The [regression](csp3/manual-bindings-provider-history-regression.log) showed that a reused binding identity could import another provider's history.
+Final pipeline race and normal checks, code lint, and Ago pass after that correction. The other package runs precede this three-line guard.
+
+CLI and HTTP adapters still need shared-setting composition and runtime retention during publication.
+The standalone syncer does not replace the runtime's retained layer ledger or policy enforcement.
+Scoped deletion, field-presence handling, and released-pair acceptance remain open.
+
+CSP3 remains in progress. All 50 primary cases remain UNVERIFIED.
+The shared review helper remains unchanged. No branch push or native CI dispatch occurred.
+
+
+### Canonical runtime reconstruction
+
+Work commit `05ba7e26` records this component. Evidence commit `cb63e726` includes 41 captures, totaling 11,827,113 bytes.
+
+Runtime rebuilds now restore retained provider observations and use the canonical reconciler.
+The effective catalog preserves field provenance. Durable generations include the original provider links and excluded-model review candidates.
+Legacy provider layers retain separate receipts. Active binding selection still precedes reconciliation.
+
+Generated change timestamps use retained publication and observation times.
+Each reconstruction evaluates pricing at the current time. Stable rejection text names the interval boundary.
+Unchanged retained inputs reproduce the same payload and generation identity.
+Concurrent rebuilds serialize durable publication and effective-state activation.
+
+The first regression proved that runtime reconstruction lost provider field receipts.
+The broader checks found that old runtime fixtures supplied authored definitions through provider observations alone.
+Those fixtures now supply reviewed definitions through an explicit catalog source. Existing model-retention and partial-failure assertions remain unchanged.
+A new regression excludes provider-only authored definitions and retains their original review evidence.
+
+A second regression proved that the primary filter synthesized provenance for unselected providers.
+The filter now runs before provider reconciliation. Reconstruction also avoids an unused copy of the full baseline.
+CPU profiles identify serialization and garbage collection costs. These profiles do not measure gateway request latency.
+
+The [verification record](csp3/runtime-reconciliation-verification.json) records exact checks, input hashes, and captured failures.
+All 79 normal package suites passed, with 3,505 passing test events and 22 packages without tests.
+Final race results contain 737 passing events: 358 runtime, 54 acquisition, 243 reconciler, and 82 pipeline events.
+The runtime race suite completed in 435.906 seconds. Code lint, Ago, generated documentation, and corrected strict writing passed.
+
+The five-minute race runs exceeded their suite deadline. Historical repository verification also records runtime suites above six minutes.
+The plan now uses the repository verifier's existing 20-minute suite deadline for CSP2 and CSP3 runtime checks.
+Every test and individual operation deadline remains unchanged. Product latency targets remain unchanged.
+
+CLI and HTTP adapters still need a transaction that retains manual source observations before they adopt the shared binding settings.
+Previews must avoid publication. The transaction must preserve source filters, fresh-mode semantics, strict acquisition, workspace projection, and retained layers.
+Upstream manifest lineage, complete field presence, scoped deletion, Starport adoption, and released-pair qualification remain open.
+
+CSP3 remains in progress. All 50 primary cases remain UNVERIFIED.
+The shared review helper remains unchanged. No branch push or native CI dispatch occurred.
+
+
+### Receipt-only generation identity
+
+Work commit `dab45969` binds effective generation identity to catalog bytes, source links, and review candidates.
+The regression changed an older provider receipt while a newer provider observation continued to supply the selected values.
+Before the correction, publication reused the prior generation and retained the old receipt.
+The corrected generation keeps the same payload checksum and publishes the new receipt under a distinct identity.
+
+Evidence order and empty-slice representation do not change identity. Empty evidence preserves the baseline identity input.
+A separate restore check confirms that the existing store rejects altered manifest evidence under a retained identity.
+It returns an immutable generation conflict and preserves current state. No restore implementation changed.
+
+The [verification record](csp3/receipt-identity-verification.json) preserves 17 captures and seven source or generated-document hashes.
+Normal checks passed 79 package suites and 3,507 test events, with 22 packages without tests.
+Broader race checks passed 657 events: 360 runtime, 54 acquisition, and 243 reconciler events.
+Three final focused race tests passed after the restore test added an explicit conflict assertion.
+
+Code lint, Ago, generated documentation, and strict writing passed. The initial receipt publication failure remains recorded.
+The passing restore capture retains its original filename and does not count as fail-before evidence.
+
+Identity construction occurs during catalog reconstruction. These checks do not measure inference overhead.
+Manual source transactions and CLI and HTTP composition remain open. CSP3 remains in progress, and all 50 primary cases remain UNVERIFIED.
+The shared review helper remains unchanged. No branch push or native CI dispatch occurred.
+
+
+### Catalog acceptance before input retention
+
+Work commit `b2e46470` adds journaled retention for source refresh and provider windows.
+The regression proved that rejected provider publication could change retained files and become active after restart.
+The new transaction stages immutable inputs before catalog publication. It replaces retained files only after catalog acceptance.
+
+Startup compares prepared records with the loaded catalog identity and checksum.
+It discards a transaction when the prior catalog remains current, including when prior and candidate catalogs are equal.
+It completes retention when the candidate is current. A committed record requires replay, and an unresolved prepared record refuses startup.
+Recovery validates every input before it writes retained files. Invalid records remain unchanged, and migration refuses pending publication.
+
+An accepted catalog stays active when later retention fails. Reports retain its generation ID and show degraded health.
+Cancellation before acceptance leaves the prior inputs intact. After acceptance, a bounded completion attempt continues despite caller cancellation.
+Pending recovery blocks further updates in the process. Reopening resolves the recorded outcome or returns a conflict.
+
+The [verification record](csp3/input-publication-verification.json) preserves 28 captures, totaling 7,109,494 bytes, and twelve input hashes.
+Broader race checks passed 674 events: 377 runtime, 54 acquisition, and 243 reconciler events.
+The runtime race suite completed in 514.635 seconds. Twenty final race events cover recovery, publication reporting, and cancellation.
+The final focused run includes the later prior-head-first recovery condition.
+
+Normal verification combines 78 non-runtime suites with the complete corrected runtime suite.
+These checks contain 3,524 passing test events across 79 package suites, with 22 packages without tests.
+The initial runtime suite reached its deadline because its concurrency fixture awaited retention during a blocked commit.
+The fixture now issues two complete publication requests. Its catalog, generation, and receipt assertions remain unchanged.
+
+The agent stopped the superseded race process after the normal suite proved the fixture failure. The subsequent complete race run passed.
+
+Code lint, Ago, generated documentation, all six consumer compositions, and corrected strict writing passed.
+Earlier fixture, compile, unused-helper, and writing failures remain recorded.
+
+Manual non-provider observations still need retained representation and CLI and HTTP composition.
+Completed immutable inputs remain on disk. CSP5 owns bounded safe collection, and CSP11 owns shared fleet recovery.
+Native interruption, downgrade procedures, and released-pair qualification remain open. CSP3 remains in progress, and all 50 primary cases remain UNVERIFIED.
+
+The shared review helper remains unchanged. No branch push or native CI dispatch occurred.
+
+
+### Shared manual acquisition composition
+
+Work commit `46c8c2cc` moves source selection and baseline enrichment into the reconciler.
+The acquisition pipeline, observation publication, release import, and runtime reconstruction use that entry point.
+Runtime reconstruction keeps stable change timestamps and excludes acquisition clients from its dependencies.
+The three public source-selection tests retain their original pipeline fixtures. The private filter-error test moves with its implementation.
+
+CLI updates and the HTTP server now use one application-owned acquisition factory.
+It applies the resolved binding set, credential resolver, and source directories.
+Omission retains legacy selection. An explicit empty set makes no credential attempts and rejects a request for an undeclared provider.
+Two configured scopes make separate credential-resolution attempts. Construction makes none, and previews preserve current state.
+
+The [verification record](csp3/manual-composition-verification.json) preserves 22 captures, totaling 6,166,958 bytes, and fifteen input hashes.
+Eight package suites passed 1,043 race test events. The runtime suite completed in 600.750 seconds.
+Corrected normal coverage contains 3,536 passing events across 79 package suites, with 22 packages without tests.
+Use the final app suite instead of the app events from the initial normal run.
+
+The initial test move referenced a helper in another test package. Its correction restores the original pipeline fixtures.
+The new empty-set fixture initially expected success for a forbidden provider request. The correction asserts refusal and zero credential attempts.
+These are test-development failures, not fail-before evidence for a production defect. Both captures remain available.
+
+Code lint, Ago, generated documentation, all six consumer compositions, and corrected strict writing passed.
+
+The owner accepted D24: fresh manual acquisition resets prior local results while preserving the embedded or selected upstream baseline.
+The question used `--fresh`. The current CLI flag is `--force`, and the Go option is `sync.WithFresh`.
+No flag changed. The current pipeline still uses an empty baseline for that operation, so D24 implementation remains open.
+
+Manual acquisition still needs the runtime transaction to retain original source observations and apply reset scopes.
+The shared factory does not close that publication gap. Field presence, scoped deletion, native qualification, and released-pair acceptance remain open.
+CSP3 remains in progress. All 50 primary cases remain UNVERIFIED.
+
+The shared review helper remains unchanged. No branch push or native CI dispatch occurred.
+
+
+### Manual runtime retention
+
+Commit `f25ab759` adds `Runtime.PublishObservations` and immutable manual input history.
+The operation joins runtime ownership and cancellation. It retains original observations only with their accepted catalog.
+Concurrent callers retain distinct batches. Repeated observations already in manual history preserve sequence and generation identity.
+
+Replay now preserves earlier provider facts through later omissions and orders manual and scheduled observations by the shared provider policy.
+It retains original aggregate provider receipts. Metadata passes preserve separate reviewed inputs within one atomic publication.
+Restart excludes retired bindings and rejects selector changes without a new revision.
+
+The private manual head and referenced input batches participate in publication recovery and migration validation.
+Recovery validates the full parent history before changing retained files. Lost commit replies recover the accepted generation.
+Publication version 2 rejects unsafe use by version 1 readers. Native format qualification remains open.
+The application file inventory now includes these files and scoped provider records under its private runtime-evidence policy.
+
+The [verification record](csp3/manual-retention-verification.json) preserves 35 captures, totaling 6,835,840 bytes, and 24 input hashes.
+Normal coverage includes 79 package suites and 3,567 passing test events. The final runtime and app runs replace their earlier suites.
+Five race package suites contribute 991 passing events. The final 31 manual events replace the earlier 30 runtime manual events.
+
+The five unchanged normal-suite skips and 22 packages without tests remain separate from passing test counts.
+Lint, ago, generation, dependency boundaries, and writing checks passed. Failed regressions and corrected fixtures remain in the proof record.
+
+Manual history currently permits 4,096 batches and 64 MiB of encoded observations. CSP5 must supply production compaction and collection.
+CLI and HTTP integration, D24 reset scopes, local projection provenance, field presence, and scoped deletion remain open.
+No request latency claim or primary acceptance credit follows from this work. All 50 primary cases remain UNVERIFIED.
+
+Next: define runtime-owned acquisition and reset scopes before the adapters adopt manual publication.
+The reset must preserve the selected baseline, unrelated scopes, and reviewed operator input. Preview and failed replacement must preserve accepted state.
+The shared review helper remains unchanged. No push, native CI dispatch, GitHub merge, or release occurred.
+
+
+### Acquisition ownership and projected fields
+
+Commit `96df25bf` adds runtime ownership of observation preparation and publication.
+The callback receives immutable current and baseline snapshots. A read-only method supplies the same pair without acquisition or file writes.
+Failed or empty preparation preserves state. Cancellation rejects a late result, and callbacks must not start another runtime mutation.
+
+A regression reproduced retired provider facts returning through unchanged local projections.
+The reconciler now checks the original provider, binding identity, and revision against runtime policy.
+Tests cover active and retired bindings, revision changes, another provider's binding, and actual operator edits.
+This field check does not authenticate accounts or implement reset scopes and membership deletion.
+
+The [verification record](csp3/observation-update-verification.json) preserves 28 captures, totaling 8,019,211 bytes, and fifteen input hashes.
+Final race coverage contains 1,004 passing test events across five package suites. The full runtime suite passed 424 events in 540.668 seconds.
+Corrected normal coverage contains 3,580 passing events across 79 package suites, with five skips and 22 packages without tests.
+
+The first runtime race run timed out before the publication-order fixture reached its blocked store.
+The fixture now contains only its two reviewed definitions. Its deadlines and durable publication assertions remain unchanged.
+Three focused race repetitions and the complete runtime race rerun passed. The failed run remains in the evidence record.
+Lint, Ago, generated documentation, consumer dependency checks, and corrected writing checks passed.
+
+Next: implement transactional D24 reset scopes, then connect CLI and HTTP acquisition to runtime publication.
+Preserve the selected baseline, unrelated scopes, reviewed operator inputs, previews, and accepted state on failure.
+All 50 primary cases remain UNVERIFIED. No code publication or native CI dispatch occurred.
+
+
+### Provider record selection
+
+Commit `624a9f33` adds `WithProviderObservationSelection` to the reconciler.
+It selects records within an original provider observation and preserves the receipt and payload.
+An omitted observation identity retains all providers. An explicit empty selection excludes its provider records.
+Original receipt validation precedes selection, and later caller changes to the selection cannot alter reconciliation.
+
+The first contract test failed before selection reached collection: the excluded provider overwrote the baseline.
+The correction applies selection before conflict checks, collection, review-candidate evidence, and primary membership filtering.
+It retains unrelated provider records, baseline facts, and reviewed authored definitions. It writes no files.
+
+The [verification record](csp3/provider-selection-verification.json) preserves 17 captures, totaling 5,917,796 bytes, and eight input hashes.
+All 79 normal package suites passed 3,594 test events. Five skips and 22 packages without tests remain separate.
+Five race package suites passed 1,018 test events. The runtime suite passed 424 events in 581.451 seconds.
+Fourteen focused contract events cover aggregate receipts, excluded conflicts, input order, empty and omitted selection, ownership, and invalid inputs.
+
+Code lint, seven Ago rules, generated documentation, and corrected writing checks passed.
+Only comments, import spacing, and generated documentation changed after the broader tests started.
+No request latency claim or primary acceptance credit follows. All 50 primary cases remain UNVERIFIED.
+
+Next: retain reset scopes with replacement observations and accepted generation identity.
+Replay must apply selection to prior input occurrences, including retained provider files. Source reset semantics and projection membership remain open.
+Then connect CLI and HTTP acquisition to runtime publication while preserving previews and failed-update state.
+No branch push, native CI dispatch, GitHub merge, release, or code PR occurred.
+
+
+### Durable provider resets
+
+Commit `575a9f3f` retains provider reset scopes with replacement observations and accepted generation identity.
+`UpdateObservations` requires a successful complete replacement for each scope. Failed or canceled preparation preserves accepted state.
+Replay preserves the selected baseline, unrelated providers and bindings, original receipts, and reviewed operator edits.
+It also anchors earlier scheduled files so they cannot restore reset facts after restart.
+
+A reset changes generation identity even when its effective payload stays the same. Lost-reply recovery uses that identity.
+Manual head and batch version 2 retain reset scopes. The reader accepts version 1 without resets and rejects inconsistent or future records.
+The 4,096-batch and 64 MiB limits include reset data. CSP5 still owns production compaction and collection.
+
+The [verification record](csp3/provider-reset-verification.json) contains source hashes and the original test captures.
+Final normal coverage contains 3,617 passing events across 79 package suites, with five skips and 22 packages without tests.
+Five race suites contain 1,041 passing events. The runtime suite passed 447 events in 573.446 seconds.
+The final 23 reset events replace the same events in each broader run after the history test added retained-head loading.
+
+Lint, Ago, generated documentation, dependency boundaries, and corrected writing checks passed. Failed checks remain in the evidence record.
+
+General source resets, projection membership, previews, and CLI/HTTP integration remain open. The CLI `--force` behavior has not changed yet.
+All 50 primary cases remain UNVERIFIED. No request latency claim, branch push, native CI dispatch, GitHub merge, or release follows.
+
+
+### Metadata provider selection
+
+Commit `b227b9a3` extends provider record selection to models.dev HTTP and Git observations.
+The first contract test failed because selection accepted only provider API observations.
+Reconciliation now keeps the original metadata payload and builds a separate provider view for baseline filtering.
+Selection uses original provider identities before canonical alias mapping. Receipts and shared authored definitions use the original observation.
+
+The [verification record](csp3/metadata-selection-verification.json) contains ten input hashes and the raw test captures.
+Fourteen focused contract events cover receipts, aliases, peers, empty selections, primary membership, and protected sources.
+All 79 normal package suites passed 3,631 test events. Five skips and 22 packages without tests remain separate.
+Five race suites passed 1,055 events. The runtime suite passed 447 events in 574.153 seconds.
+
+The final normal and race reconciler suites each passed 273 events and replace that package in the broader captures.
+They cover collection views keyed by source and observation identity, and the original catalog used for baseline comparison.
+Lint, Ago, generated documentation, and corrected writing checks passed. The failed initial contract and writing output remain in the evidence record.
+
+General source reset records, projection membership, previews, and CLI/HTTP integration remain open.
+All 50 primary cases remain UNVERIFIED. This work makes no request latency or released-pair acceptance claim.
+No branch push, native CI dispatch, GitHub merge, or release occurred.

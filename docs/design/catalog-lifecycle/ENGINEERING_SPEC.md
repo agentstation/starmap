@@ -322,6 +322,9 @@ Generation and operation directory components use lowercase SHA-256 hashes of th
 | Starmap catalog store | `<state>/catalog/{current,.commit.lock,generations/<generation-id-hash>/}` | Preserve the accepted pointer, manifests, and payloads. Let the adapter manage locks. |
 | Runtime ownership | `R/{owner.json,.owner.lock,instance-seed}` | Persistent initialization and process locking. Restore one identity to one active owner only. |
 | Runtime evidence | `R/catalog-runtime/source.json`, `R/catalog-runtime/providers/<provider-id>.json`, and `R/catalog-runtime/providers/bindings/<key-digest>.json` | Preserve permitted source layers across restart. Fleet-required layers also need shared durable storage. |
+| Runtime manual history | `R/catalog-runtime/manual.json` | Owner-only head for accepted observation batches in `publication-inputs`. Preserve its full referenced history through restart and backup. |
+| Runtime publication record | `R/catalog-runtime/publication.json` | Owner-only transaction state. Startup resolves prepared records or replays committed records before reading retained inputs. |
+| Runtime publication inputs | `R/catalog-runtime/publication-inputs/<sha256>.json` | Owner-only immutable records for retention recovery. Preserve references from pending publication and accepted manual history. CSP5 owns safe compaction and collection. |
 | GitHub discovery | `R/github-catalog-source/<channel-hash>.json` | Preserve replay floors and verified release references. ETags alone are disposable. |
 | Badger | `<data>/badger/` | Embedded Starport KV. Back up through an engine-consistent method. |
 | SQLite | `<data>/sqlite/starport.db` and engine sidecars | Embedded Starport SQL. Recover through a consistent snapshot that includes committed WAL data. |
@@ -380,9 +383,17 @@ The reader must verify trusted ownership, service read access, and absence of un
 The exception requires explicit selection. A failed private-file check must not enable it automatically.
 
 Catalog state and dotenv files retain their private-access requirements. CSP2 and CSP8 own implementation and qualification for Starmap and Starport.
-This approved exception remains unimplemented at this checkpoint.
 
-The Starmap CLI now applies private-file access checks to primary YAML and every explicit dotenv file before parsing.
+Starmap selects this policy with `--config-access=service-managed` or `STARMAP_CONFIG_ACCESS=service-managed` and an explicit `--config` or `CONFIG` path.
+The flag overrides the environment. YAML contents cannot select their own access policy.
+The selected policy also governs migration configuration rereads and the file manifest. Starport implementation remains under CSP8.
+
+Starmap permits POSIX ownership by root or the effective user, with no group or other write bits.
+Windows permits the process account, SYSTEM, Administrators, or TrustedInstaller as owner and mutation principals.
+Shared read grants remain valid. Native read operations establish service readability, and diagnostics retain uncertainty about effective access.
+The 1 MiB bound and protected ancestor checks apply in both modes. Neither mode repairs input files.
+
+The Starmap CLI applies the selected access policy to primary YAML and owner-only checks to every explicit dotenv file before parsing.
 Each file permits at most 1 MiB. This input bound applies before and during the read.
 Private read-only files remain valid. The reader resolves selected symlinks and validates the resulting regular file and supported native ACLs.
 
@@ -392,7 +403,7 @@ All dotenv files must pass access checks and parsing before any environment muta
 Read failures retain typed causes without configuration values. Parse errors continue to omit parser input.
 The shared record reader serves runtime evidence and configuration inputs. Directory policy stays with each caller.
 
-Linux and macOS now enforce the ancestor policy below. Service-owned file exceptions, other file roles, and native Windows qualification remain open.
+Linux and macOS now enforce the ancestor policy below. Starport service configuration, other file roles, and native Windows qualification remain open.
 
 Every manifest entry needs a descriptor for its override, applicability, access, retention, and recovery policy.
 An unselected local backend must not create empty database directories during shared startup.
@@ -861,9 +872,9 @@ Within an unambiguous batch, the newest provider observation wins regardless of 
 Retention forwards cancellation through ordered selection and private-file publication. It does not undo previously committed batch members.
 Partial receipts produce degraded acquisition health. They do not authorize deletion or prove complete upstream coverage.
 
-The current connected runtime uses `MergeEnrichEmpty` for provider layers.
-Implement the target field-authority behavior through Starmap reconciliation,
-not a Starport merge. Tests must prove each deliberate precedence change.
+The connected runtime uses canonical Starmap reconciliation for provider layers.
+Valid serving records can omit optional pricing and limits. They must reference reviewed authored definitions.
+Provider observations cannot establish authored identity. Tests must prove each deliberate field-precedence change.
 
 Every provider observation must identify its provider, account or project
 scope, region, API surface, completeness, and credential role where applicable.
@@ -875,12 +886,139 @@ It declares the provider, account or project scope, region, API surface, and cat
 The selected credential profile describes authentication. It does not identify the provider account.
 The resolver's opaque material version describes credential lifecycle. It is not an account identity or a persistent scope key.
 
+D25 requires an explicit link from each affected Starport inference profile to the acquisition scope that authorizes an account-specific removal.
+A shared provider name, environment variable, or credential material does not establish that link.
+The removal restricts the linked profile's eligible offerings. It preserves canonical model discovery and routes through unrelated accounts.
+Partial or failed observations cannot authorize removal. Internal Starmap authority remains binding on all subscriber profiles.
+
+CSP3 owns the scoped evidence contract. Starport integration must enforce the link before applying an account-specific restriction.
+Tests must cover linked and unrelated profiles, absent links, incomplete observations, restart, and profile-link changes.
+This approved requirement has no implementation or acceptance credit yet.
+
+
 Each observation must use the same binding and resolved credential material from preflight through its provider request.
 Concurrent observations must not replace each other's selected material.
 
 The provider source now uses one credential memo per observation run. Explicit binding calls restrict resolution to the declared acquisition profile.
 A different resolved profile causes refusal before client creation. The acquirer retains the binding and the source receipt without publishing them.
-Scheduled acquisition still selects providers without bindings. Active scope enforcement and scoped deletion remain open.
+A runtime with explicit bindings now uses the built-in binding-aware batch role for scheduled and manual acquisition.
+
+The shared settings contract accepts `STARMAP_CATALOG_PROVIDER_BINDINGS` as a JSON array, or a list of objects in YAML.
+An explicit empty list permits no provider acquisition in the connected runtime or manual application syncer. Omission retains legacy unscoped behavior.
+The CLI update command and HTTP server share an application-owned acquisition factory. It passes the resolved binding set, credential resolver, and source directories.
+Manual runtime retention, Starport adoption, and scoped deletion remain open.
+
+Reconciliation now retains separate provider observations during collection and primary-source filtering.
+It selects direct observations before stale fallback, then uses observation time to select shared provider records.
+Selected models and providers retain their own observation receipts and health classifications.
+Records with the same identity, time, and fallback classification must agree. Identical records select a receipt deterministically.
+
+This selection applies within the provider source type. The existing field-authority table still governs precedence between source types.
+The caller must select permitted bindings before reconciliation.
+This change does not complete field-presence handling, scoped deletion, or active-policy enforcement in manual update adapters.
+
+The manual acquisition package now accepts `acquisition.WithProviderBindings` during construction.
+An explicit empty set disables provider acquisition. Source and provider filters can only restrict the declarations.
+The pipeline validates selected provider profiles before source work, emits separate binding observations, and bounds concurrent provider calls.
+Strict mode requires the exact selected bindings. Dry-run previews still avoid publication.
+
+Field provenance now carries optional binding identity and revision through JSON and YAML.
+Volume checks compare only history from the same binding revision. They do not attribute unscoped or peer history to a selected binding.
+
+Existing unscoped payloads omit the new fields. Missing models remain in the accepted baseline. Scoped deletion remains open.
+CLI and HTTP composition now pass the shared settings. Their manual publication still needs coordination with runtime retention.
+
+Runtime reconstruction now uses the canonical reconciler for active provider layers.
+It restores each original observation and publishes its link and any review candidates with the effective generation.
+Legacy provider layers retain separate record receipts. Binding selection still occurs before reconstruction.
+
+Generated change timestamps derive from retained publication and observation times, so unchanged evidence produces stable bytes.
+Each reconstruction checks pricing validity at the current time. Rejection evidence names the fixed interval boundary that caused refusal.
+The primary-source filter applies before provider reconciliation, so unselected providers retain their existing field evidence.
+Concurrent rebuilds serialize durable publication and activation. A rebuild checks cancellation before durable publication.
+
+Provider observations cannot introduce authored model definitions. Serving records must link to reviewed definitions from the baseline or selected catalog source.
+An unresolved record remains a review candidate with its original provider receipt.
+The runtime retains source layers separately. Upstream manifest lineage and complete manual-source publication remain open.
+
+The reconciler owns source selection and baseline enrichment for pipeline acquisition, explicit observation publication, release imports, and runtime reconstruction.
+The function accepts supplied observations. It does not read sources or publish catalogs.
+Runtime reconstruction supplies stable change timestamps.
+
+Source refresh and provider windows now stage immutable inputs before catalog publication.
+A private transaction record binds the prior and candidate catalog identities and payload checksums.
+Only catalog acceptance permits retained input replacement. A bounded completion attempt continues after caller cancellation.
+
+Startup discards a prepared transaction only when the loaded catalog matches its prior identity and checksum.
+A matching accepted candidate completes retention. A committed record requires replay, and an unresolved prepared record blocks startup.
+Recovery validates every referenced input before it writes retained files. Migration refuses a pending transaction.
+
+An accepted catalog remains active when later retention fails. Reports retain its generation ID and show degraded health.
+Pending recovery blocks further updates in that process. Reopening the runtime resolves the recorded outcome or returns a conflict.
+Unknown records remain unchanged. Shared fleet recovery and completed-input collection remain CSP11 and CSP5 work.
+
+`Runtime.PublishObservations` now retains original caller-supplied observations in that transaction.
+It validates receipts and active bindings, reads no source, and serializes distinct manual calls with refresh operations.
+Without a reset, observations already in manual history do not append history, advance the catalog sequence, or broadcast another generation.
+
+Accepted manual history retains complete original payloads and safe receipts, including aggregate provider observations.
+Current active provider evidence enters that history when manual publication starts. Later provider windows append their selected observations.
+
+Reconstruction applies reviewed metadata before provider facts. Provider facts follow the shared fallback and observation-time policy.
+Earlier accepted facts survive a later omission unless an accepted reset clears that scope. Equal-priority conflicts still require corrected evidence.
+The runtime excludes inactive binding observations after restart. Changed selectors require a new binding revision.
+
+Publication version 2 records manual history. New readers accept version 1 records that contain no manual reference.
+Version 2 idle markers prevent version 1 readers from silently rebuilding without manual history.
+Recovery validates all referenced parent batches before replacing any retained source, provider, or manual head.
+Native upgrade and downgrade qualification remains open.
+
+This component bounds manual history at 4,096 batches and 64 MiB of encoded observations and reset scopes.
+A full history rejects new observations before publication and preserves its accepted head.
+CSP5 must provide tested compaction, collection, and operator recovery before production support.
+CLI and HTTP acquisition still use direct client publication. Their runtime integration and complete D24 source reset semantics remain open.
+
+`Runtime.ObservationInputs` now returns immutable current and selected-baseline snapshots from retained memory.
+The selected baseline excludes this runtime's local observations. This method reads no source and writes no files.
+
+`Runtime.UpdateObservations` holds operation ownership while a caller prepares original observations and the runtime publishes them.
+Empty or failed preparation preserves accepted state. Shutdown or cancellation rejects a late callback result.
+Callbacks must not request another mutation on the same runtime. Preview callers use the read-only input method.
+
+Runtime manual reconciliation now checks the original scope of unchanged fields in a local projection.
+A carried provider fact must match the active provider, binding identity, and revision. An explicit empty set permits no carried provider facts.
+Without an explicit set, only unscoped provider facts retain legacy behavior.
+
+Other source types keep their existing field authority.
+A changed operator value no longer matches the carried value and keeps local source authority.
+These field checks do not implement scoped membership deletion, reset masks, or complete authority enforcement.
+
+The reconciler now supports provider record selection by original observation identity.
+An omitted identity retains all its providers. An explicit empty list excludes all provider records from that observation.
+It validates the original receipt before selection and rejects unknown observations, unknown providers, and duplicate providers.
+
+Provider APIs and models.dev HTTP or Git observations support provider record selection.
+Selection rejects embedded, release, and local operator observations.
+The selection is an owned copy. Caller changes to the map or its slices cannot alter reconciliation.
+
+Selection applies before record conflicts, provider and model collection, review-candidate evidence, and primary membership filtering.
+Selected records retain their original observation identity and checksum. Neither payload nor receipt is rewritten to represent a smaller observation.
+This permits one provider to be reset within a legacy aggregate observation without discarding another provider's records.
+Baseline facts and reviewed authored definitions remain separate inputs.
+
+Metadata reconciliation now builds a separate provider view after original receipt validation.
+The view limits providers to the baseline and maps source aliases to canonical provider identities. Selection applies before that mapping.
+The original metadata observation supplies receipts and authored definitions. Filtering no longer replaces its catalog payload.
+
+Primary membership without a baseline also follows the selection. This prevents excluded records from reappearing through primary filtering.
+
+This reconciler option does not derive, retain, or publish reset scopes. Runtime provider resets now use it. General source resets and adapter integration remain open.
+Scoped membership and reset evidence still need checks that prevent old projections from restoring retired acquisition results.
+
+
+Effective generation identity binds the payload, original source links, and review candidates.
+A receipt change creates a new identity even when selected catalog values remain unchanged.
+Evidence ordering and empty-slice representation do not change the identity. The payload checksum continues to describe only catalog bytes.
 
 Changing scope selectors or credential role requires a new binding revision and invalidates retained evidence from the former binding.
 Credential rotation permits retention only when the binding still describes the same scope.
@@ -912,7 +1050,19 @@ The generation identity includes the complete active declarations, source identi
 An explicit return to an earlier selection reuses its retained immutable generation. The identity itself grants no source or account authority.
 
 The runtime requires `BindingAcquirer` for an explicit nonempty set and refuses unscoped provider I/O.
-The built-in batch acquirer still needs this role. Binding-level attempt reports and operator configuration remain incomplete.
+The built-in acquirer now implements this role. It validates the complete selected binding set before credential resolution or provider I/O.
+An explicit empty set selects nothing. A provider filter restricts that set and rejects any requested provider without a binding.
+Duplicate identities and invalid profile selections reject the batch before acquisition.
+
+Attempt records include `BindingID` and `BindingRevision`. Legacy attempts omit both fields.
+Eligible and terminal counts refer to bindings in this mode, so one provider can have several independent attempts.
+Source attempt sinks preserve the same identifiers.
+
+One shared coalescing loop tracks target positions, which prevents two bindings from sharing one completion slot.
+An early publication receives its own payload and receipt copies. Cancellation closes the run without publishing late results.
+Failures carry safe reason codes and leave permitted peer evidence available.
+Operator configuration remains incomplete.
+
 Legacy construction without the option still permits unscoped behavior. Configuration-omission guards and internal accepted-head policy remain under CSP4.
 
 Operator integration and scoped deletion remain under CSP3 before support. CSP18 must qualify scoped receipt upgrades and downgrade limits.
@@ -965,6 +1115,63 @@ A source change stages and validates the replacement before acceptance.
 No source change may reintroduce retained observations from a revoked scope.
 Offline selection and disabled acquisition must take effect before any worker
 starts. A UI toggle cannot merely hide refresh controls.
+
+#### Fresh manual acquisition
+
+D24 changes fresh manual acquisition: `starmap update --force` in the current CLI and `sync.WithFresh` in Go.
+Reset prior local acquisition results while preserving the embedded or selected upstream baseline.
+Apply source and provider filters to the reset scope. Preserve unrelated scopes and reviewed operator inputs.
+An internal authoritative catalog still controls membership. Fresh mode cannot activate public fallback when internal startup rules forbid it.
+
+Prepare replacement observations before committing the reset. A failed, canceled, or degraded strict reset preserves the previous accepted inputs and generation.
+Acceptance must atomically bind the reset scope, replacement observations, and resulting generation to retained recovery records.
+Restart must reconstruct the same result. Retired binding revisions must not return through old local projections.
+Previews show the reset scope and catalog changes without altering active or retained state.
+
+`Runtime.UpdateObservations` accepts explicit `ObservationReset` scopes. `ProviderObservationReset` remains an alias.
+A provider API scope names a provider and either legacy unscoped input or an exact binding identity and revision.
+A metadata scope names models.dev HTTP or Git and either one original provider identity or the whole source.
+Metadata resets preserve peer source records and independent authored definitions. Protected baseline and operator sources cannot be reset.
+
+Each scope requires complete successful replacement evidence. Invalid scopes and failed preparation preserve accepted history.
+The runtime owns the reset list before calling acquisition, so caller changes cannot alter the accepted scope.
+
+Reset scopes share the manual batch and publication journal with replacement observations.
+Earlier scheduled provider files enter a separate preceding batch before the first reset.
+Replay excludes cleared records while preserving unrelated providers and peer bindings within original observations.
+A reset can accept the same original receipt again. The operation retains it as a replacement instead of discarding it as a duplicate.
+
+Reset operations contribute to generation identity even when payload bytes do not change.
+Recovery can resolve a lost catalog commit reply and reconstruct the same scope decisions.
+Manual head and batch version 3 retain metadata resets. Version 2 retains provider resets, and version 1 contains no reset scopes.
+Readers accept these older records and reject reset fields that their version cannot describe.
+The history byte limit includes encoded reset scopes, and one request permits at most 4,096 reset scopes.
+
+Known cleared provider fields cannot return through unchanged local projections. Actual operator edits keep local field authority.
+
+The acquisition factory (`acquisition.NewForRuntime`) connects manual source reads to retained runtime publication.
+The runtime update (`Runtime.UpdateAcquisition`) derives reset scopes from completed source observations under one operation lock.
+The preview (`Runtime.PreviewAcquisition`) uses a captured snapshot without writing catalog, workspace, or runtime state.
+
+The CLI update and HTTP update use this composition. HTTP accepts `fresh=true`.
+The CLI uses `--fresh`, with `--force` and `-f` as aliases.
+A dry run asks no confirmation. An interactive apply asks once after the preview, and `--yes` skips confirmation.
+Preview and completion report acquisition reset counts even when no model values change.
+
+Fresh acquisition preserves the selected baseline and requires complete successful replacement observations.
+Explicit reset permits source omissions. Normal refresh retains the volume-collapse guard, and strict non-reset publication still rejects an empty source.
+The result reports reset count and generation identity even when the effective payload stays equal.
+A root-only acquisition composition rejects Fresh because it lacks separate baseline and retained acquisition history.
+
+Ten focused runtime race events now cover reset projections through restart.
+An unchanged acquired-only offering disappears, and the baseline offering remains. Metadata acquisition cannot introduce a provider outside the selected baseline.
+
+An unchanged acquired zero resets to the known baseline limit. An operator's explicit zero remains known zero.
+Unknown and missing local limits permit the known baseline fallback under the existing authority policy.
+These checks add coverage without a production change. They do not prove every membership or field-presence combination.
+
+Scoped tombstones, complete deletion authority, other projection combinations, enterprise authority enforcement, native qualification, and released-pair acceptance remain open.
+The [local developer milestone](../../plans/proof/starport-production-catalog/local-developer-flow.md) records working-pair integration evidence.
 
 ### 6.3 Acquisition across application compositions
 
@@ -1741,6 +1948,14 @@ Starmap must resolve canonical provider IDs and aliases through an immutable ind
 An offering lookup must not copy unrelated provider models.
 Preserve caller ownership for returned values and all alias, ambiguity, and missing-record behavior.
 Do not expose mutable internal maps to eliminate copies.
+
+The Starmap lookup now uses an immutable provider identity index. Commit `70f01b6a` completes CSP3.1 locally.
+The two assigned A44 checks and 843 catalog race test events pass. Returned values remain caller-owned.
+
+In the 10,000-model fixture, canonical lookup fell from 10.767 ms to 0.608 µs on the local macOS host.
+Allocations fell from 160,047 to 11. The fixture now uses 1,104 bytes per lookup at each measured catalog size.
+
+These are catalog API measurements. CSP10.1 still must qualify Starport request behavior and the remaining A44 subcases.
 
 Starport must build static candidates, endpoint metadata, capability fields, and model indexes before publishing a runtime generation.
 Exact model selection considers its matching offerings and explicit fallback set.

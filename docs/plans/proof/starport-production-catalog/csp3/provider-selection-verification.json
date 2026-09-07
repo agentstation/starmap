@@ -1,0 +1,259 @@
+{
+  "schema_version": 1,
+  "task": "CSP3",
+  "date": "2026-09-07",
+  "status": "component-progress-only",
+  "toolchain": "go1.26.6 darwin/arm64",
+  "work_commit": "624a9f337f90b2134a7cd0a499826b519acf1777",
+  "evidence_commit": "fc8924f55d1bd8ef46abb7da3cfcca441d8ab2cc",
+  "planning_base": "9cdeb81d1f60d81fa292d4952580049d120a8db5",
+  "behavior": [
+    "WithProviderObservationSelection owns a copy of provider record selections keyed by original observation identity. Omission retains every provider; an explicit empty list excludes provider records from that observation.",
+    "Original receipts validate before selection. Unknown observations, unknown providers, duplicate providers, non-provider sources, and corrupt excluded receipts fail.",
+    "Selection precedes conflicts, collection, review-candidate evidence, and primary membership. Remaining records retain their original receipt, identity, and checksum. No observation payload is cut down or rewritten.",
+    "Baseline facts remain. Selection does not remove reviewed authored definitions. The option performs no storage writes."
+  ],
+  "checks": [
+    {
+      "command": "GOTOOLCHAIN=go1.26.6 go test -race -json -count=1 -timeout 5m ./internal/catalog/reconciler -run ^TestProviderObservationSelection",
+      "exit_code": 0,
+      "capture": "csp3/provider-selection-contracts.jsonl"
+    },
+    {
+      "command": "GOTOOLCHAIN=go1.26.6 go test -race -json -count=1 -timeout 20m ./runtime ./internal/catalog/reconciler ./internal/catalog/pipeline ./acquisition ./internal/cli/app",
+      "exit_code": 0,
+      "capture": "csp3/provider-selection-race.jsonl"
+    },
+    {
+      "command": "GOTOOLCHAIN=go1.26.6 go test -json -count=1 -timeout 20m ./...",
+      "exit_code": 0,
+      "capture": "csp3/provider-selection-all.jsonl"
+    },
+    {
+      "command": "GOTOOLCHAIN=go1.26.6 golangci-lint run",
+      "exit_code": 0,
+      "capture": "csp3/provider-selection-lint-final.log"
+    },
+    {
+      "command": "GOTOOLCHAIN=go1.26.6 go tool ago -stale-ignores -format json ./...",
+      "exit_code": 0,
+      "capture": "csp3/provider-selection-ago-final.json"
+    },
+    {
+      "command": "GOTOOLCHAIN=go1.26.6 make generate",
+      "exit_code": 0,
+      "capture": "csp3/provider-selection-generate-final.log"
+    },
+    {
+      "command": "GOTOOLCHAIN=go1.26.6 make technical-writing-check",
+      "exit_code": 0,
+      "capture": "csp3/provider-selection-writing-final.log"
+    },
+    {
+      "command": "GOTOOLCHAIN=go1.26.6 bash scripts/verify-catalog-product.sh --starport-root /Users/jack/src/github.com/agentstation/starport-catalog-lifecycle --task CSP3 --json",
+      "exit_code": 1,
+      "capture": "csp3/provider-selection-product.json"
+    },
+    {
+      "command": "python3 docs/plans/proof/starport-production-catalog/activation-2026-09-05/verify_documents.py",
+      "exit_code": 0,
+      "capture": "csp3/provider-selection-documents.log"
+    },
+    {
+      "command": "GOTOOLCHAIN=go1.26.6 make technical-writing-check",
+      "exit_code": 0,
+      "capture": "csp3/provider-selection-writing-settled.log"
+    }
+  ],
+  "normal_suite": {
+    "passed_packages": 79,
+    "passed_test_events": 3594,
+    "packages_without_tests": 22,
+    "skipped_test_events": 5,
+    "capture": "csp3/provider-selection-all.jsonl"
+  },
+  "race_suite": {
+    "passed_packages": 5,
+    "passed_test_events": 1018,
+    "components": {
+      "runtime": 424,
+      "reconciler": 259,
+      "pipeline": 81,
+      "acquisition": 54,
+      "app": 200
+    },
+    "runtime_seconds": 581.451,
+    "capture": "csp3/provider-selection-race.jsonl"
+  },
+  "focused_contracts": {
+    "passed_test_events": 14,
+    "capture": "csp3/provider-selection-contracts.jsonl"
+  },
+  "superseded_checks": [
+    {
+      "capture": "csp3/provider-selection-red.jsonl",
+      "exit_code": 1,
+      "reason": "The new selection contract failed before the policy was connected to reconciliation. The excluded provider still overwrote the baseline."
+    },
+    {
+      "capture": "csp3/provider-selection-writing.log",
+      "exit_code": 2,
+      "reason": "A long sentence and a semicolon failed the writing check. Corrected comments and prose pass."
+    },
+    {
+      "capture": "csp3/provider-selection-writing-docs.log",
+      "exit_code": 2,
+      "reason": "The progress proof used an indirect verb phrase. It now states the file-write boundary directly."
+    }
+  ],
+  "input_hashes": [
+    {
+      "path": "internal/catalog/reconciler/README.md",
+      "sha256": "ad80c5abbdf65ff9a2209bd0bb3ae86aa301ab307b781db3fb5bc4ebbdfa0e2f"
+    },
+    {
+      "path": "internal/catalog/reconciler/collector.go",
+      "sha256": "a649459928c8fbe3ae679aba472ecc071f0e61be0963d058bf9f33e152bd0440"
+    },
+    {
+      "path": "internal/catalog/reconciler/options.go",
+      "sha256": "162fba32db6dc74f7f987d3dc3e587521c1e3c0645fb6ad5990a9faa8ce9aff5"
+    },
+    {
+      "path": "internal/catalog/reconciler/provider_observations.go",
+      "sha256": "2c4b829ea3452f265cb43609b2b658d1e94afc80807a2a4f65dcd72e6a3c2de5"
+    },
+    {
+      "path": "internal/catalog/reconciler/provider_selection.go",
+      "sha256": "560436cc44ad38389463cc2678e98da56fafb8bc75cac23339021c3ac6a222b1"
+    },
+    {
+      "path": "internal/catalog/reconciler/provider_selection_test.go",
+      "sha256": "6cc446be51c894ee92527405bf4f94612b9188fd10d96fba2af9df9b2a7abae4"
+    },
+    {
+      "path": "internal/catalog/reconciler/reconciler.go",
+      "sha256": "bdd6f8c6f78da8302d33702312cc4e77e8edfa3e891dfd6149e6b0f4d25352d3"
+    },
+    {
+      "path": "internal/catalog/reconciler/scoped_observations.go",
+      "sha256": "d7f24d6ac1fc9d4737bb10c80080b6cf2525e974a484b7a05187cdfeee5f463d"
+    }
+  ],
+  "raw_captures": [
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/provider-selection-ago-final.json",
+      "sha256": "b8fb7afa66aa7a93914ac258475dd0191be821803a8aea4439f5ba05022f5fa5",
+      "bytes": 289
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/provider-selection-ago.json",
+      "sha256": "b8fb7afa66aa7a93914ac258475dd0191be821803a8aea4439f5ba05022f5fa5",
+      "bytes": 289
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/provider-selection-all.jsonl",
+      "sha256": "4efbf2ec9cd89c80e34376833007ff4d72ce0541279c7f11acfac965cd44b4c0",
+      "bytes": 4405801
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/provider-selection-contracts.jsonl",
+      "sha256": "4447f6b588b2633757fe3a301dd6b7af425eb437a60660fbc01f2cba7c3a3368",
+      "bytes": 16944
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/provider-selection-focused.jsonl",
+      "sha256": "b83ea7b6d0f8816861fac4af4dcd64ea16d5e441ebc18c80bf450d79f07e632b",
+      "bytes": 1982
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/provider-selection-generate-final.log",
+      "sha256": "d455b7d231d7a1fc19371b2a77d86241baf27c49ae006577217c6a2c613c8796",
+      "bytes": 9934
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/provider-selection-generate.log",
+      "sha256": "82ed056c9454156bd6a2926ce324c93ccf7bd7a1ebeb2c01d78fe61823b7f935",
+      "bytes": 9934
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/provider-selection-lint-final.log",
+      "sha256": "e92606b0bf483111dff0a120c315ea165821348f31365020e2468a0059095c47",
+      "bytes": 10
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/provider-selection-lint.log",
+      "sha256": "e92606b0bf483111dff0a120c315ea165821348f31365020e2468a0059095c47",
+      "bytes": 10
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/provider-selection-product.json",
+      "sha256": "0a5cc1a33899402e4135c4ef56e28730155c63025b771d83734fcab9c93df5bb",
+      "bytes": 7700
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/provider-selection-race.jsonl",
+      "sha256": "97ec4107a30874b92f3802553b26075a72303dcf9e059a5cbdaf30aeb4821eb1",
+      "bytes": 1455777
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/provider-selection-red.jsonl",
+      "sha256": "9ea9c36b658a895620318abb4b67c5ac4ad04491312359b4d310dda1b33541da",
+      "bytes": 2269
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/provider-selection-writing-final.log",
+      "sha256": "d3869ecf09e448edb3d73cb3fb49dce7346731aa44a369807fbebb939cfe7533",
+      "bytes": 558
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/provider-selection-writing.log",
+      "sha256": "32f8d2517271c89a17f5a9b49ab55fd6a88c60a259315190d390088c4ca056b3",
+      "bytes": 967
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/provider-selection-documents.log",
+      "sha256": "fc53b804ba0b4d1216f3ee06359650a2cf3e4ba42b0125883031b1b905ac883d",
+      "bytes": 3981
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/provider-selection-writing-docs.log",
+      "sha256": "f17addd83af8a2ad5489200533b80f48b435ef14b83d01d4877362d96d6fb223",
+      "bytes": 793
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/provider-selection-writing-settled.log",
+      "sha256": "d3869ecf09e448edb3d73cb3fb49dce7346731aa44a369807fbebb939cfe7533",
+      "bytes": 558
+    }
+  ],
+  "audit": {
+    "scope": "Manual repository-grounded component audit. Required pre-PR review remains open.",
+    "reviewed": [
+      "Original receipt validation before exclusions",
+      "Record conflicts and remaining provider/model evidence",
+      "Primary membership, aliases, and review-candidate collection",
+      "Selection ownership and deterministic order",
+      "Preserved baseline and authored corpus boundaries"
+    ],
+    "open": [
+      "Reset scopes must apply to prior input occurrences, including provider files outside manual history.",
+      "Reset decisions and replacement observations must join accepted generation identity and recovery.",
+      "Source reset semantics and projection membership need further implementation."
+    ]
+  },
+  "limitations": [
+    "This is an internal reconciliation option. Runtime reset scope derivation, retained reset records, source reset semantics, and CLI/HTTP adoption remain open.",
+    "The existing CLI --force and Go sync.WithFresh still select an empty baseline in the pipeline. D24 is not complete.",
+    "The checks do not establish request latency, allocation overhead, full enterprise authority, native qualification, or released-pair acceptance.",
+    "Only comments, import spacing, and generated documentation changed after broader test launch. Final source hashes are recorded.",
+    "No branch push, native CI dispatch, GitHub merge, release, or code PR occurred. Full repository verification and required pre-PR review remain open."
+  ],
+  "acceptance": {
+    "primary_passed": 0,
+    "primary_unverified": 50,
+    "required_subcases": 324,
+    "credit": "none"
+  },
+  "next_action": "Retain D24 reset scopes with replacement observations and accepted generation identity. Use provider record selection during replay, preserve unrelated scopes and reviewed operator inputs, then connect CLI and HTTP to runtime publication."
+}

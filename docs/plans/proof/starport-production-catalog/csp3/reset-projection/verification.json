@@ -1,0 +1,21 @@
+{
+  "base_commit": "c5001e6ac0c840ea9a940dd44fa19677589e9a09",
+  "production_changes": false,
+  "command": "GOTOOLCHAIN=go1.26.6 go test -race -json -count=1 -timeout 5m ./runtime -run 'TestProviderResetProjectedLimitPresence|TestProviderResetProjectedFactsAndOperatorEdits|TestReset'",
+  "test_pass_events": 10,
+  "test_fail_events": 0,
+  "package_suites_pass": 1,
+  "primary_acceptance_credit": false,
+  "files": {
+    "offering-first.jsonl": "106c2096598332cd42cb4ed26012776455b1da1de20865f46e9e775cbcc65954",
+    "invalid-provider-fixture.jsonl": "85f7d43d4c8aafbf70cbc4a59f20c4b5cee3d549532ad85b0e265aaeeec8c66b",
+    "test-compile-error.jsonl": "5f40172716d699cb9fdeba5d6384c87268e6ebe54f5945f42d7896891b240dbb",
+    "normal.jsonl": "e81b9f00733a882d9288e5940d0adb6ccb7df0dd2cd52e7d162929b543178db3",
+    "race.jsonl": "a8ae6c8bf57e7506521a777faa61e18140e6f86ddba5393994d8febda675a0f2",
+    "ago.json": "b8fb7afa66aa7a93914ac258475dd0191be821803a8aea4439f5ba05022f5fa5"
+  },
+  "test_inputs": {
+    "runtime/reset_membership_test.go": "2b24fda3c3e5e085c64e83498007fd80802b60f9ad679171248e2aa30595172d",
+    "runtime/provider_reset_scope_test.go": "e81abd7c02b1a2042aa629d0396348b86601d280e6b6eed63c4564817ee48d71"
+  }
+}

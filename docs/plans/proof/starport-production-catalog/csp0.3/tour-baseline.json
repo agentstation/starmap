@@ -1,0 +1,16 @@
+{
+  "asset": "docs/assets/2026-08-29_starport-console.gif",
+  "width": 1440,
+  "height": 777,
+  "duration_seconds": 17.1,
+  "frames": 11,
+  "scene_review": {
+    "installation": false,
+    "keyless_catalog": false,
+    "provider_setup": false,
+    "real_streamed_inference": false,
+    "client_base_url": false
+  },
+  "verdict": "FAIL",
+  "scope": "The existing console tour does not satisfy E03 first-use scenes."
+}

@@ -1,0 +1,5 @@
+--- FAIL: TestManualBindingVolumeCannotBorrowAnotherProviderHistory (0.00s)
+    provider_bindings_test.go:350: another provider's history changed the bound receipt
+FAIL
+FAIL	github.com/agentstation/starmap/internal/catalog/pipeline	0.431s
+FAIL
