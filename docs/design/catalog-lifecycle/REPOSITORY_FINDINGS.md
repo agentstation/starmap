@@ -1459,3 +1459,11 @@ The published Starmap module pin remains unchanged. Full publication gates and r
 
 The [owner decision audit](../../plans/proof/starport-production-catalog/csp2/owner-blocked-audit.md) records the remaining prerequisites after three goal turns.
 No other `todo` task is eligible under the current dependency graph. The complete objective remains unfulfilled.
+
+
+## Owner approvals and execution resume
+
+The owner approved the shared review-helper patch and explicit account-scope links on 2026-09-07.
+The [approval record](../../plans/proof/starport-production-catalog/csp2/owner-approvals-2026-09-07.md) supersedes the earlier decision blocker.
+The helper now uses 300,000-byte prompts. Syntax validation and deterministic self-tests pass.
+D25 records the scope requirement. Native qualification, required review, scoped-removal implementation, and released-pair acceptance remain open.

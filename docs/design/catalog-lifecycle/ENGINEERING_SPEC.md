@@ -886,6 +886,16 @@ It declares the provider, account or project scope, region, API surface, and cat
 The selected credential profile describes authentication. It does not identify the provider account.
 The resolver's opaque material version describes credential lifecycle. It is not an account identity or a persistent scope key.
 
+D25 requires an explicit link from each affected Starport inference profile to the acquisition scope that authorizes an account-specific removal.
+A shared provider name, environment variable, or credential material does not establish that link.
+The removal restricts the linked profile's eligible offerings. It preserves canonical model discovery and routes through unrelated accounts.
+Partial or failed observations cannot authorize removal. Internal Starmap authority remains binding on all subscriber profiles.
+
+CSP3 owns the scoped evidence contract. Starport integration must enforce the link before applying an account-specific restriction.
+Tests must cover linked and unrelated profiles, absent links, incomplete observations, restart, and profile-link changes.
+This approved requirement has no implementation or acceptance credit yet.
+
+
 Each observation must use the same binding and resolved credential material from preflight through its provider request.
 Concurrent observations must not replace each other's selected material.
 
