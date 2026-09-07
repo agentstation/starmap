@@ -149,7 +149,7 @@ jobs:
           test "$(go env GOHOSTOS)" = "$EXPECTED_OS"
           test "$(go env GOARCH)" = "$EXPECTED_ARCH"
           test "$(go env GOHOSTARCH)" = "$EXPECTED_ARCH"
-          go test -json -count=1 -timeout=5m . ./runtime ./internal/bootstrap ./internal/filepublish ./internal/privatefiles ./internal/runtimeacl/windows ./internal/sources/github ./internal/cli/app ./pkg/productpaths ./pkg/productpaths/policy ./pkg/catalogs/storage ./internal/catalog/workspace > native-evidence/tests.jsonl
+          go test -json -count=1 -timeout=10m . ./runtime ./internal/bootstrap ./internal/filepublish ./internal/privatefiles ./internal/runtimeacl/windows ./internal/sources/github ./internal/cli/app ./pkg/productpaths ./pkg/productpaths/policy ./pkg/catalogs/storage ./internal/catalog/workspace > native-evidence/tests.jsonl
       - name: Retain native test evidence
         if: always()
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
