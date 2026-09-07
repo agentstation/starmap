@@ -160,3 +160,86 @@ func TestProviderResetHistoryVersionAndReplacementValidation(t *testing.T) {
 		})
 	}
 }
+
+func TestProviderResetProjectedLimitPresence(t *testing.T) {
+	for _, test := range []struct {
+		name     string
+		original int64
+		edit     func(*catalogs.Model)
+		want     int64
+	}{
+		{name: "unchanged-explicit-zero", original: 0, want: 100},
+		{name: "operator-explicit-zero", original: 200, edit: func(model *catalogs.Model) {
+			model.Limits.Set(catalogs.ModelLimitContextWindow, 0)
+		}, want: 0},
+		{name: "operator-unknown", original: 200, edit: func(model *catalogs.Model) {
+			model.Limits.SetUnknown(catalogs.ModelLimitContextWindow)
+		}, want: 100},
+		{name: "operator-missing", original: 200, edit: func(model *catalogs.Model) {
+			model.Limits = nil
+		}, want: 100},
+	} {
+		t.Run(test.name, func(t *testing.T) {
+			connected, options, at := providerResetRuntime(t, storage.NewMemory())
+			builder, err := catalogs.NewBuilderFrom(manualProviderObservation(t, 200, at).Catalog)
+			if err != nil {
+				t.Fatal(err)
+			}
+			provider, _ := builder.Provider("provider")
+			provider.Models["model"].Limits.Set(catalogs.ModelLimitContextWindow, test.original)
+			if err := builder.SetProvider(provider); err != nil {
+				t.Fatal(err)
+			}
+			observed, err := catalogs.NewObservationCatalog(builder)
+			if err != nil {
+				t.Fatal(err)
+			}
+			original := providerResetObservation(t, sources.ProvidersID, observed, at, nil)
+			if _, err := connected.PublishObservations(t.Context(), original); err != nil {
+				t.Fatal(err)
+			}
+			provider, _ = connected.State().Catalog.Provider("provider")
+			if got, presence := provider.Models["model"].Limits.Value(catalogs.ModelLimitContextWindow); got != test.original || presence != catalogs.ValueKnown {
+				t.Fatalf("original limit = %d, %v; want known %d", got, presence, test.original)
+			}
+			builder, err = catalogs.NewBuilderFrom(connected.State().Catalog)
+			if err != nil {
+				t.Fatal(err)
+			}
+			provider, _ = builder.Provider("provider")
+			if test.edit != nil {
+				test.edit(provider.Models["model"])
+			}
+			if err := builder.SetProvider(provider); err != nil {
+				t.Fatal(err)
+			}
+			projected, err := builder.Build()
+			if err != nil {
+				t.Fatal(err)
+			}
+			local := providerResetObservation(t, sources.LocalCatalogID, projected, at.Add(time.Minute), nil)
+			replacement := manualProviderObservation(t, 0, at.Add(2*time.Minute))
+			state, err := connected.UpdateObservations(t.Context(), func(context.Context, ObservationInputs) ([]sources.Observation, error) {
+				return []sources.Observation{local, replacement}, nil
+			}, ObservationReset{ProviderID: "provider"})
+			if err != nil {
+				t.Fatal(err)
+			}
+			provider, _ = state.Catalog.Provider("provider")
+			if got, presence := provider.Models["model"].Limits.Value(catalogs.ModelLimitContextWindow); got != test.want || presence != catalogs.ValueKnown {
+				t.Fatalf("reset limit = %d, %v; want known %d", got, presence, test.want)
+			}
+			if err := connected.Close(); err != nil {
+				t.Fatal(err)
+			}
+			restarted := openTestRuntime(t, options...)
+			provider, _ = restarted.State().Catalog.Provider("provider")
+			if got, presence := provider.Models["model"].Limits.Value(catalogs.ModelLimitContextWindow); got != test.want || presence != catalogs.ValueKnown {
+				t.Fatalf("restarted limit = %d, %v; want known %d", got, presence, test.want)
+			}
+			if restarted.State().GenerationID != state.GenerationID {
+				t.Fatal("restart changed the reset generation")
+			}
+		})
+	}
+}
