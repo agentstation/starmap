@@ -93,6 +93,66 @@ focused race events and three Go 1.25.12 test events pass. Both Windows
 architectures compile four affected test packages. Windows test runs for these
 changes remain UNVERIFIED. Code lint, Ago, and strict prose checks pass.
 
-Next: complete the repair review, publish the candidates, and rerun native CI.
+Next: inspect the native reruns and repair the remaining Windows failures.
 Use the focused descriptor evidence to repair Windows behavior at its owning
 package. Keep CSP2 in progress until native qualification passes.
+
+## Reviewed repair publication
+
+Both candidates passed the required cross-lab review at the P0 threshold.
+The foundation review covered eight portions. The follow-up review covered five.
+Each reported zero findings. Both commits now appear in their draft pull requests.
+
+The [foundation rerun](https://github.com/agentstation/starmap/actions/runs/34167265050)
+and [follow-up rerun](https://github.com/agentstation/starmap/actions/runs/34167265992)
+are in progress. The [publication record](native-qualification-2026-09-07/publication.json)
+binds each run to its reviewed commit. Both remain draft candidates.
+
+## Repair rerun results
+
+Both branches passed all four Linux and macOS runtime jobs. Both Windows runtime
+jobs failed on each branch. The [rerun record](native-qualification-2026-09-07/repair-rerun-results.json)
+retains the run state, commit IDs, artifact hashes, and test counts.
+
+The foundation Windows AMD64 artifact contains 936 passing and 102 failing test
+events. The follow-up artifact contains 1,096 passing and 108 failing events.
+Neither artifact contains skipped tests. Parent test and subtest failures count
+as test events, so these totals do not count independent defects.
+
+The native rerun confirms the catalog checkout repair. The payload now matches
+the unchanged manifest. The renamed-root and UNC fixtures pass on Windows AMD64.
+The runtime package also passes on that foundation job.
+
+The descriptor test found extra inherited grants after copying access metadata.
+It also found that the copy changed an absent SACL to a null SACL. The candidate
+repair assigns the captured descriptor with `NtSetSecurityObject`. The strict
+before-and-after equality check remains in place.
+
+The call omits absent SACL
+components and privileged central policy assignment. Descriptor comparison still
+refuses a candidate that loses central policy metadata. Native execution must
+verify the copy behavior.
+
+Baseline publication retains open child files during directory rename. The
+candidate closes each file after its write and sync. Validation reopens the file
+and checks its original identity, metadata, and bytes before publication or cleanup.
+
+Windows inspection resolves an initial identity from an open metadata handle.
+This avoids a later path lookup that can resolve the identity of a replacement.
+The candidate also distinguishes a missing path from an existing file ancestor.
+
+Denied-read tests use a duplicate thread token with no enabled privileges. They
+retain their deny assertions and report the inherited backup and restore privilege
+state. Native evidence must establish whether those privileges caused the earlier
+fixture failure. The test helper does not change the process token.
+
+Legacy migration remains unresolved. A native test checks whether an external
+hard link to the commit lock permits directory relocation while retaining the
+same lock. It checks writer exclusion before and after the move. This test does
+not change the production migration algorithm or grant qualification credit.
+
+The candidate repairs remain local. CSP2 remains in progress. Required checks,
+code review, publication, and another native run remain open.
+
+The Windows API contracts describe [security assignment](https://learn.microsoft.com/en-us/windows-hardware/drivers/ddi/ntifs/nf-ntifs-ntsetsecurityobject)
+and [rename constraints](https://learn.microsoft.com/en-us/windows-hardware/drivers/ddi/ntifs/ns-ntifs-_file_rename_information).

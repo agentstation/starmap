@@ -1,0 +1,1534 @@
+{
+  "runs": [
+    {
+      "conclusion": "",
+      "headSha": "90c8932efbef534d6157092e068fdc6f88d7ac61",
+      "jobs": [
+        {
+          "completedAt": "2026-09-07T22:37:57Z",
+          "conclusion": "success",
+          "databaseId": 101880670443,
+          "name": "Security & Reliability",
+          "startedAt": "2026-09-07T22:36:51Z",
+          "status": "completed",
+          "steps": [
+            {
+              "completedAt": "2026-09-07T22:36:52Z",
+              "conclusion": "success",
+              "name": "Set up job",
+              "number": 1,
+              "startedAt": "2026-09-07T22:36:52Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-09-07T22:36:55Z",
+              "conclusion": "success",
+              "name": "Checkout",
+              "number": 2,
+              "startedAt": "2026-09-07T22:36:52Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-09-07T22:37:07Z",
+              "conclusion": "success",
+              "name": "Set up release Go toolchain",
+              "number": 3,
+              "startedAt": "2026-09-07T22:36:55Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-09-07T22:37:08Z",
+              "conclusion": "success",
+              "name": "Install pinned vulnerability scanner",
+              "number": 4,
+              "startedAt": "2026-09-07T22:37:07Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-09-07T22:37:20Z",
+              "conclusion": "success",
+              "name": "Scan reachable Go vulnerabilities",
+              "number": 5,
+              "startedAt": "2026-09-07T22:37:08Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-09-07T22:37:53Z",
+              "conclusion": "success",
+              "name": "Run bounded fuzz smoke",
+              "number": 6,
+              "startedAt": "2026-09-07T22:37:20Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-09-07T22:37:55Z",
+              "conclusion": "success",
+              "name": "Run migration and persistence fault fixtures",
+              "number": 7,
+              "startedAt": "2026-09-07T22:37:53Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-09-07T22:37:55Z",
+              "conclusion": "success",
+              "name": "Post Set up release Go toolchain",
+              "number": 13,
+              "startedAt": "2026-09-07T22:37:55Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-09-07T22:37:55Z",
+              "conclusion": "success",
+              "name": "Post Checkout",
+              "number": 14,
+              "startedAt": "2026-09-07T22:37:55Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-09-07T22:37:55Z",
+              "conclusion": "success",
+              "name": "Complete job",
+              "number": 15,
+              "startedAt": "2026-09-07T22:37:55Z",
+              "status": "completed"
+            }
+          ],
+          "url": "https://github.com/agentstation/starmap/actions/runs/34167265050/job/101880670443"
+        },
+        {
+          "completedAt": "2026-09-07T22:39:40Z",
+          "conclusion": "success",
+          "databaseId": 101880670605,
+          "name": "Runtime macos-15",
+          "startedAt": "2026-09-07T22:36:56Z",
+          "status": "completed",
+          "steps": [
+            {
+              "completedAt": "2026-09-07T22:36:57Z",
+              "conclusion": "success",
+              "name": "Set up job",
+              "number": 1,
+              "startedAt": "2026-09-07T22:36:56Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-09-07T22:37:02Z",
+              "conclusion": "success",
+              "name": "Checkout",
+              "number": 2,
+              "startedAt": "2026-09-07T22:36:57Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-09-07T22:37:28Z",
+              "conclusion": "success",
+              "name": "Set up minimum supported Go toolchain",
+              "number": 3,
+              "startedAt": "2026-09-07T22:37:02Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-09-07T22:39:33Z",
+              "conclusion": "success",
+              "name": "Test native runtime, configuration, and paths",
+              "number": 4,
+              "startedAt": "2026-09-07T22:37:28Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-09-07T22:39:35Z",
+              "conclusion": "success",
+              "name": "Retain native test evidence",
+              "number": 5,
+              "startedAt": "2026-09-07T22:39:33Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-09-07T22:39:35Z",
+              "conclusion": "success",
+              "name": "Post Set up minimum supported Go toolchain",
+              "number": 9,
+              "startedAt": "2026-09-07T22:39:35Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-09-07T22:39:35Z",
+              "conclusion": "success",
+              "name": "Post Checkout",
+              "number": 10,
+              "startedAt": "2026-09-07T22:39:35Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-09-07T22:39:37Z",
+              "conclusion": "success",
+              "name": "Complete job",
+              "number": 11,
+              "startedAt": "2026-09-07T22:39:35Z",
+              "status": "completed"
+            }
+          ],
+          "url": "https://github.com/agentstation/starmap/actions/runs/34167265050/job/101880670605"
+        },
+        {
+          "completedAt": "2026-09-07T22:36:58Z",
+          "conclusion": "success",
+          "databaseId": 101880670606,
+          "name": "Action Pin Provenance",
+          "startedAt": "2026-09-07T22:36:51Z",
+          "status": "completed",
+          "steps": [
+            {
+              "completedAt": "2026-09-07T22:36:52Z",
+              "conclusion": "success",
+              "name": "Set up job",
+              "number": 1,
+              "startedAt": "2026-09-07T22:36:52Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-09-07T22:36:55Z",
+              "conclusion": "success",
+              "name": "Checkout",
+              "number": 2,
+              "startedAt": "2026-09-07T22:36:52Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-09-07T22:36:57Z",
+              "conclusion": "success",
+              "name": "Verify action pins resolve to their advertised releases",
+              "number": 3,
+              "startedAt": "2026-09-07T22:36:55Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-09-07T22:36:57Z",
+              "conclusion": "success",
+              "name": "Post Checkout",
+              "number": 6,
+              "startedAt": "2026-09-07T22:36:57Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-09-07T22:36:57Z",
+              "conclusion": "success",
+              "name": "Complete job",
+              "number": 7,
+              "startedAt": "2026-09-07T22:36:57Z",
+              "status": "completed"
+            }
+          ],
+          "url": "https://github.com/agentstation/starmap/actions/runs/34167265050/job/101880670606"
+        },
+        {
+          "completedAt": "2026-09-07T22:38:37Z",
+          "conclusion": "success",
+          "databaseId": 101880670633,
+          "name": "Runtime ubuntu-24.04-arm",
+          "startedAt": "2026-09-07T22:36:53Z",
+          "status": "completed",
+          "steps": [
+            {
+              "completedAt": "2026-09-07T22:36:56Z",
+              "conclusion": "success",
+              "name": "Set up job",
+              "number": 1,
+              "startedAt": "2026-09-07T22:36:54Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-09-07T22:36:58Z",
+              "conclusion": "success",
+              "name": "Checkout",
+              "number": 2,
+              "startedAt": "2026-09-07T22:36:56Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-09-07T22:37:10Z",
+              "conclusion": "success",
+              "name": "Set up minimum supported Go toolchain",
+              "number": 3,
+              "startedAt": "2026-09-07T22:36:58Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-09-07T22:38:33Z",
+              "conclusion": "success",
+              "name": "Test native runtime, configuration, and paths",
+              "number": 4,
+              "startedAt": "2026-09-07T22:37:10Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-09-07T22:38:34Z",
+              "conclusion": "success",
+              "name": "Retain native test evidence",
+              "number": 5,
+              "startedAt": "2026-09-07T22:38:33Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-09-07T22:38:34Z",
+              "conclusion": "success",
+              "name": "Post Set up minimum supported Go toolchain",
+              "number": 9,
+              "startedAt": "2026-09-07T22:38:34Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-09-07T22:38:34Z",
+              "conclusion": "success",
+              "name": "Post Checkout",
+              "number": 10,
+              "startedAt": "2026-09-07T22:38:34Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-09-07T22:38:35Z",
+              "conclusion": "success",
+              "name": "Complete job",
+              "number": 11,
+              "startedAt": "2026-09-07T22:38:34Z",
+              "status": "completed"
+            }
+          ],
+          "url": "https://github.com/agentstation/starmap/actions/runs/34167265050/job/101880670633"
+        },
+        {
+          "completedAt": "0001-01-01T00:00:00Z",
+          "conclusion": "",
+          "databaseId": 101880670652,
+          "name": "Verification Gate",
+          "startedAt": "2026-09-07T22:36:51Z",
+          "status": "in_progress",
+          "steps": [
+            {
+              "completedAt": "2026-09-07T22:36:52Z",
+              "conclusion": "success",
+              "name": "Set up job",
+              "number": 1,
+              "startedAt": "2026-09-07T22:36:52Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-09-07T22:36:55Z",
+              "conclusion": "success",
+              "name": "Checkout",
+              "number": 2,
+              "startedAt": "2026-09-07T22:36:52Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-09-07T22:37:07Z",
+              "conclusion": "success",
+              "name": "Set up minimum supported Go toolchain",
+              "number": 3,
+              "startedAt": "2026-09-07T22:36:55Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-09-07T22:43:07Z",
+              "conclusion": "success",
+              "name": "Test minimum supported Go version",
+              "number": 4,
+              "startedAt": "2026-09-07T22:37:07Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-09-07T22:44:00Z",
+              "conclusion": "success",
+              "name": "Test minimum supported external consumer",
+              "number": 5,
+              "startedAt": "2026-09-07T22:43:07Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-09-07T22:44:13Z",
+              "conclusion": "success",
+              "name": "Set up release Go toolchain",
+              "number": 6,
+              "startedAt": "2026-09-07T22:44:00Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-09-07T22:45:03Z",
+              "conclusion": "success",
+              "name": "Install pinned verification tools",
+              "number": 7,
+              "startedAt": "2026-09-07T22:44:13Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-09-07T22:45:03Z",
+              "conclusion": "success",
+              "name": "Checkout pinned technical-writing skill",
+              "number": 8,
+              "startedAt": "2026-09-07T22:45:03Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "0001-01-01T00:00:00Z",
+              "conclusion": "",
+              "name": "Run verification gate",
+              "number": 9,
+              "startedAt": "2026-09-07T22:45:03Z",
+              "status": "in_progress"
+            },
+            {
+              "completedAt": "0001-01-01T00:00:00Z",
+              "conclusion": "",
+              "name": "Post Checkout pinned technical-writing skill",
+              "number": 15,
+              "startedAt": "0001-01-01T00:00:00Z",
+              "status": "pending"
+            },
+            {
+              "completedAt": "0001-01-01T00:00:00Z",
+              "conclusion": "",
+              "name": "Post Set up release Go toolchain",
+              "number": 16,
+              "startedAt": "0001-01-01T00:00:00Z",
+              "status": "pending"
+            },
+            {
+              "completedAt": "0001-01-01T00:00:00Z",
+              "conclusion": "",
+              "name": "Post Set up minimum supported Go toolchain",
+              "number": 17,
+              "startedAt": "0001-01-01T00:00:00Z",
+              "status": "pending"
+            },
+            {
+              "completedAt": "0001-01-01T00:00:00Z",
+              "conclusion": "",
+              "name": "Post Checkout",
+              "number": 18,
+              "startedAt": "0001-01-01T00:00:00Z",
+              "status": "pending"
+            }
+          ],
+          "url": "https://github.com/agentstation/starmap/actions/runs/34167265050/job/101880670652"
+        },
+        {
+          "completedAt": "2026-09-07T22:41:43Z",
+          "conclusion": "failure",
+          "databaseId": 101880670680,
+          "name": "Runtime windows-2025",
+          "startedAt": "2026-09-07T22:36:51Z",
+          "status": "completed",
+          "steps": [
+            {
+              "completedAt": "2026-09-07T22:36:53Z",
+              "conclusion": "success",
+              "name": "Set up job",
+              "number": 1,
+              "startedAt": "2026-09-07T22:36:52Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-09-07T22:37:03Z",
+              "conclusion": "success",
+              "name": "Checkout",
+              "number": 2,
+              "startedAt": "2026-09-07T22:36:53Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-09-07T22:37:21Z",
+              "conclusion": "success",
+              "name": "Set up minimum supported Go toolchain",
+              "number": 3,
+              "startedAt": "2026-09-07T22:37:03Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-09-07T22:41:39Z",
+              "conclusion": "failure",
+              "name": "Test native runtime, configuration, and paths",
+              "number": 4,
+              "startedAt": "2026-09-07T22:37:21Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-09-07T22:41:39Z",
+              "conclusion": "success",
+              "name": "Retain native test evidence",
+              "number": 5,
+              "startedAt": "2026-09-07T22:41:39Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-09-07T22:41:39Z",
+              "conclusion": "skipped",
+              "name": "Post Set up minimum supported Go toolchain",
+              "number": 9,
+              "startedAt": "2026-09-07T22:41:39Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-09-07T22:41:41Z",
+              "conclusion": "success",
+              "name": "Post Checkout",
+              "number": 10,
+              "startedAt": "2026-09-07T22:41:39Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-09-07T22:41:41Z",
+              "conclusion": "success",
+              "name": "Complete job",
+              "number": 11,
+              "startedAt": "2026-09-07T22:41:41Z",
+              "status": "completed"
+            }
+          ],
+          "url": "https://github.com/agentstation/starmap/actions/runs/34167265050/job/101880670680"
+        },
+        {
+          "completedAt": "2026-09-07T22:41:24Z",
+          "conclusion": "success",
+          "databaseId": 101880670692,
+          "name": "Runtime macos-15-intel",
+          "startedAt": "2026-09-07T22:36:53Z",
+          "status": "completed",
+          "steps": [
+            {
+              "completedAt": "2026-09-07T22:36:57Z",
+              "conclusion": "success",
+              "name": "Set up job",
+              "number": 1,
+              "startedAt": "2026-09-07T22:36:54Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-09-07T22:37:09Z",
+              "conclusion": "success",
+              "name": "Checkout",
+              "number": 2,
+              "startedAt": "2026-09-07T22:36:57Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-09-07T22:38:13Z",
+              "conclusion": "success",
+              "name": "Set up minimum supported Go toolchain",
+              "number": 3,
+              "startedAt": "2026-09-07T22:37:09Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-09-07T22:41:18Z",
+              "conclusion": "success",
+              "name": "Test native runtime, configuration, and paths",
+              "number": 4,
+              "startedAt": "2026-09-07T22:38:13Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-09-07T22:41:20Z",
+              "conclusion": "success",
+              "name": "Retain native test evidence",
+              "number": 5,
+              "startedAt": "2026-09-07T22:41:18Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-09-07T22:41:20Z",
+              "conclusion": "success",
+              "name": "Post Set up minimum supported Go toolchain",
+              "number": 9,
+              "startedAt": "2026-09-07T22:41:20Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-09-07T22:41:21Z",
+              "conclusion": "success",
+              "name": "Post Checkout",
+              "number": 10,
+              "startedAt": "2026-09-07T22:41:20Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-09-07T22:41:21Z",
+              "conclusion": "success",
+              "name": "Complete job",
+              "number": 11,
+              "startedAt": "2026-09-07T22:41:21Z",
+              "status": "completed"
+            }
+          ],
+          "url": "https://github.com/agentstation/starmap/actions/runs/34167265050/job/101880670692"
+        },
+        {
+          "completedAt": "2026-09-07T22:39:25Z",
+          "conclusion": "success",
+          "databaseId": 101880670709,
+          "name": "Runtime ubuntu-24.04",
+          "startedAt": "2026-09-07T22:36:52Z",
+          "status": "completed",
+          "steps": [
+            {
+              "completedAt": "2026-09-07T22:36:54Z",
+              "conclusion": "success",
+              "name": "Set up job",
+              "number": 1,
+              "startedAt": "2026-09-07T22:36:53Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-09-07T22:36:57Z",
+              "conclusion": "success",
+              "name": "Checkout",
+              "number": 2,
+              "startedAt": "2026-09-07T22:36:54Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-09-07T22:37:16Z",
+              "conclusion": "success",
+              "name": "Set up minimum supported Go toolchain",
+              "number": 3,
+              "startedAt": "2026-09-07T22:36:57Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-09-07T22:39:20Z",
+              "conclusion": "success",
+              "name": "Test native runtime, configuration, and paths",
+              "number": 4,
+              "startedAt": "2026-09-07T22:37:16Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-09-07T22:39:22Z",
+              "conclusion": "success",
+              "name": "Retain native test evidence",
+              "number": 5,
+              "startedAt": "2026-09-07T22:39:20Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-09-07T22:39:22Z",
+              "conclusion": "success",
+              "name": "Post Set up minimum supported Go toolchain",
+              "number": 9,
+              "startedAt": "2026-09-07T22:39:22Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-09-07T22:39:22Z",
+              "conclusion": "success",
+              "name": "Post Checkout",
+              "number": 10,
+              "startedAt": "2026-09-07T22:39:22Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-09-07T22:39:22Z",
+              "conclusion": "success",
+              "name": "Complete job",
+              "number": 11,
+              "startedAt": "2026-09-07T22:39:22Z",
+              "status": "completed"
+            }
+          ],
+          "url": "https://github.com/agentstation/starmap/actions/runs/34167265050/job/101880670709"
+        },
+        {
+          "completedAt": "2026-09-07T22:42:24Z",
+          "conclusion": "failure",
+          "databaseId": 101880670715,
+          "name": "Runtime windows-11-arm",
+          "startedAt": "2026-09-07T22:36:51Z",
+          "status": "completed",
+          "steps": [
+            {
+              "completedAt": "2026-09-07T22:36:53Z",
+              "conclusion": "success",
+              "name": "Set up job",
+              "number": 1,
+              "startedAt": "2026-09-07T22:36:52Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-09-07T22:37:13Z",
+              "conclusion": "success",
+              "name": "Checkout",
+              "number": 2,
+              "startedAt": "2026-09-07T22:36:54Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-09-07T22:37:59Z",
+              "conclusion": "success",
+              "name": "Set up minimum supported Go toolchain",
+              "number": 3,
+              "startedAt": "2026-09-07T22:37:13Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-09-07T22:42:14Z",
+              "conclusion": "failure",
+              "name": "Test native runtime, configuration, and paths",
+              "number": 4,
+              "startedAt": "2026-09-07T22:37:59Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-09-07T22:42:15Z",
+              "conclusion": "success",
+              "name": "Retain native test evidence",
+              "number": 5,
+              "startedAt": "2026-09-07T22:42:14Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-09-07T22:42:15Z",
+              "conclusion": "skipped",
+              "name": "Post Set up minimum supported Go toolchain",
+              "number": 9,
+              "startedAt": "2026-09-07T22:42:15Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-09-07T22:42:20Z",
+              "conclusion": "success",
+              "name": "Post Checkout",
+              "number": 10,
+              "startedAt": "2026-09-07T22:42:15Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-09-07T22:42:20Z",
+              "conclusion": "success",
+              "name": "Complete job",
+              "number": 11,
+              "startedAt": "2026-09-07T22:42:20Z",
+              "status": "completed"
+            }
+          ],
+          "url": "https://github.com/agentstation/starmap/actions/runs/34167265050/job/101880670715"
+        }
+      ],
+      "status": "in_progress",
+      "url": "https://github.com/agentstation/starmap/actions/runs/34167265050"
+    },
+    {
+      "conclusion": "",
+      "headSha": "81336db7c8f8df78151114339a3dc78f89848390",
+      "jobs": [
+        {
+          "completedAt": "2026-09-07T22:37:58Z",
+          "conclusion": "success",
+          "databaseId": 101880673010,
+          "name": "Security & Reliability",
+          "startedAt": "2026-09-07T22:36:52Z",
+          "status": "completed",
+          "steps": [
+            {
+              "completedAt": "2026-09-07T22:36:53Z",
+              "conclusion": "success",
+              "name": "Set up job",
+              "number": 1,
+              "startedAt": "2026-09-07T22:36:53Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-09-07T22:36:56Z",
+              "conclusion": "success",
+              "name": "Checkout",
+              "number": 2,
+              "startedAt": "2026-09-07T22:36:53Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-09-07T22:37:08Z",
+              "conclusion": "success",
+              "name": "Set up release Go toolchain",
+              "number": 3,
+              "startedAt": "2026-09-07T22:36:56Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-09-07T22:37:09Z",
+              "conclusion": "success",
+              "name": "Install pinned vulnerability scanner",
+              "number": 4,
+              "startedAt": "2026-09-07T22:37:08Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-09-07T22:37:22Z",
+              "conclusion": "success",
+              "name": "Scan reachable Go vulnerabilities",
+              "number": 5,
+              "startedAt": "2026-09-07T22:37:09Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-09-07T22:37:54Z",
+              "conclusion": "success",
+              "name": "Run bounded fuzz smoke",
+              "number": 6,
+              "startedAt": "2026-09-07T22:37:22Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-09-07T22:37:56Z",
+              "conclusion": "success",
+              "name": "Run migration and persistence fault fixtures",
+              "number": 7,
+              "startedAt": "2026-09-07T22:37:54Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-09-07T22:37:56Z",
+              "conclusion": "success",
+              "name": "Post Set up release Go toolchain",
+              "number": 13,
+              "startedAt": "2026-09-07T22:37:56Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-09-07T22:37:56Z",
+              "conclusion": "success",
+              "name": "Post Checkout",
+              "number": 14,
+              "startedAt": "2026-09-07T22:37:56Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-09-07T22:37:56Z",
+              "conclusion": "success",
+              "name": "Complete job",
+              "number": 15,
+              "startedAt": "2026-09-07T22:37:56Z",
+              "status": "completed"
+            }
+          ],
+          "url": "https://github.com/agentstation/starmap/actions/runs/34167265992/job/101880673010"
+        },
+        {
+          "completedAt": "2026-09-07T22:37:06Z",
+          "conclusion": "success",
+          "databaseId": 101880673106,
+          "name": "Action Pin Provenance",
+          "startedAt": "2026-09-07T22:36:58Z",
+          "status": "completed",
+          "steps": [
+            {
+              "completedAt": "2026-09-07T22:36:59Z",
+              "conclusion": "success",
+              "name": "Set up job",
+              "number": 1,
+              "startedAt": "2026-09-07T22:36:58Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-09-07T22:37:01Z",
+              "conclusion": "success",
+              "name": "Checkout",
+              "number": 2,
+              "startedAt": "2026-09-07T22:36:59Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-09-07T22:37:04Z",
+              "conclusion": "success",
+              "name": "Verify action pins resolve to their advertised releases",
+              "number": 3,
+              "startedAt": "2026-09-07T22:37:01Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-09-07T22:37:04Z",
+              "conclusion": "success",
+              "name": "Post Checkout",
+              "number": 6,
+              "startedAt": "2026-09-07T22:37:04Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-09-07T22:37:04Z",
+              "conclusion": "success",
+              "name": "Complete job",
+              "number": 7,
+              "startedAt": "2026-09-07T22:37:04Z",
+              "status": "completed"
+            }
+          ],
+          "url": "https://github.com/agentstation/starmap/actions/runs/34167265992/job/101880673106"
+        },
+        {
+          "completedAt": "2026-09-07T22:39:04Z",
+          "conclusion": "success",
+          "databaseId": 101880673128,
+          "name": "Runtime ubuntu-24.04-arm",
+          "startedAt": "2026-09-07T22:36:55Z",
+          "status": "completed",
+          "steps": [
+            {
+              "completedAt": "2026-09-07T22:36:56Z",
+              "conclusion": "success",
+              "name": "Set up job",
+              "number": 1,
+              "startedAt": "2026-09-07T22:36:55Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-09-07T22:36:58Z",
+              "conclusion": "success",
+              "name": "Checkout",
+              "number": 2,
+              "startedAt": "2026-09-07T22:36:56Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-09-07T22:37:09Z",
+              "conclusion": "success",
+              "name": "Set up minimum supported Go toolchain",
+              "number": 3,
+              "startedAt": "2026-09-07T22:36:58Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-09-07T22:39:01Z",
+              "conclusion": "success",
+              "name": "Test native runtime, configuration, and paths",
+              "number": 4,
+              "startedAt": "2026-09-07T22:37:09Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-09-07T22:39:01Z",
+              "conclusion": "success",
+              "name": "Test administrator-owned Linux configuration",
+              "number": 5,
+              "startedAt": "2026-09-07T22:39:01Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-09-07T22:39:02Z",
+              "conclusion": "success",
+              "name": "Retain native test evidence",
+              "number": 6,
+              "startedAt": "2026-09-07T22:39:01Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-09-07T22:39:02Z",
+              "conclusion": "success",
+              "name": "Post Set up minimum supported Go toolchain",
+              "number": 11,
+              "startedAt": "2026-09-07T22:39:02Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-09-07T22:39:02Z",
+              "conclusion": "success",
+              "name": "Post Checkout",
+              "number": 12,
+              "startedAt": "2026-09-07T22:39:02Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-09-07T22:39:02Z",
+              "conclusion": "success",
+              "name": "Complete job",
+              "number": 13,
+              "startedAt": "2026-09-07T22:39:02Z",
+              "status": "completed"
+            }
+          ],
+          "url": "https://github.com/agentstation/starmap/actions/runs/34167265992/job/101880673128"
+        },
+        {
+          "completedAt": "0001-01-01T00:00:00Z",
+          "conclusion": "",
+          "databaseId": 101880673169,
+          "name": "Verification Gate",
+          "startedAt": "2026-09-07T22:36:52Z",
+          "status": "in_progress",
+          "steps": [
+            {
+              "completedAt": "2026-09-07T22:36:53Z",
+              "conclusion": "success",
+              "name": "Set up job",
+              "number": 1,
+              "startedAt": "2026-09-07T22:36:53Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-09-07T22:36:56Z",
+              "conclusion": "success",
+              "name": "Checkout",
+              "number": 2,
+              "startedAt": "2026-09-07T22:36:53Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-09-07T22:37:22Z",
+              "conclusion": "success",
+              "name": "Set up minimum supported Go toolchain",
+              "number": 3,
+              "startedAt": "2026-09-07T22:36:56Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-09-07T22:41:33Z",
+              "conclusion": "success",
+              "name": "Test minimum supported Go version",
+              "number": 4,
+              "startedAt": "2026-09-07T22:37:22Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-09-07T22:41:34Z",
+              "conclusion": "success",
+              "name": "Test minimum supported external consumer",
+              "number": 5,
+              "startedAt": "2026-09-07T22:41:33Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-09-07T22:41:47Z",
+              "conclusion": "success",
+              "name": "Set up release Go toolchain",
+              "number": 6,
+              "startedAt": "2026-09-07T22:41:34Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-09-07T22:41:52Z",
+              "conclusion": "success",
+              "name": "Install pinned verification tools",
+              "number": 7,
+              "startedAt": "2026-09-07T22:41:47Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-09-07T22:41:53Z",
+              "conclusion": "success",
+              "name": "Checkout pinned technical-writing skill",
+              "number": 8,
+              "startedAt": "2026-09-07T22:41:52Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "0001-01-01T00:00:00Z",
+              "conclusion": "",
+              "name": "Run verification gate",
+              "number": 9,
+              "startedAt": "2026-09-07T22:41:53Z",
+              "status": "in_progress"
+            },
+            {
+              "completedAt": "0001-01-01T00:00:00Z",
+              "conclusion": "",
+              "name": "Post Checkout pinned technical-writing skill",
+              "number": 15,
+              "startedAt": "0001-01-01T00:00:00Z",
+              "status": "pending"
+            },
+            {
+              "completedAt": "0001-01-01T00:00:00Z",
+              "conclusion": "",
+              "name": "Post Set up release Go toolchain",
+              "number": 16,
+              "startedAt": "0001-01-01T00:00:00Z",
+              "status": "pending"
+            },
+            {
+              "completedAt": "0001-01-01T00:00:00Z",
+              "conclusion": "",
+              "name": "Post Set up minimum supported Go toolchain",
+              "number": 17,
+              "startedAt": "0001-01-01T00:00:00Z",
+              "status": "pending"
+            },
+            {
+              "completedAt": "0001-01-01T00:00:00Z",
+              "conclusion": "",
+              "name": "Post Checkout",
+              "number": 18,
+              "startedAt": "0001-01-01T00:00:00Z",
+              "status": "pending"
+            }
+          ],
+          "url": "https://github.com/agentstation/starmap/actions/runs/34167265992/job/101880673169"
+        },
+        {
+          "completedAt": "2026-09-07T22:41:04Z",
+          "conclusion": "success",
+          "databaseId": 101880673191,
+          "name": "Runtime macos-15",
+          "startedAt": "2026-09-07T22:36:59Z",
+          "status": "completed",
+          "steps": [
+            {
+              "completedAt": "2026-09-07T22:37:02Z",
+              "conclusion": "success",
+              "name": "Set up job",
+              "number": 1,
+              "startedAt": "2026-09-07T22:36:59Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-09-07T22:37:08Z",
+              "conclusion": "success",
+              "name": "Checkout",
+              "number": 2,
+              "startedAt": "2026-09-07T22:37:02Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-09-07T22:37:47Z",
+              "conclusion": "success",
+              "name": "Set up minimum supported Go toolchain",
+              "number": 3,
+              "startedAt": "2026-09-07T22:37:08Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-09-07T22:40:55Z",
+              "conclusion": "success",
+              "name": "Test native runtime, configuration, and paths",
+              "number": 4,
+              "startedAt": "2026-09-07T22:37:47Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-09-07T22:40:55Z",
+              "conclusion": "skipped",
+              "name": "Test administrator-owned Linux configuration",
+              "number": 5,
+              "startedAt": "2026-09-07T22:40:55Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-09-07T22:40:56Z",
+              "conclusion": "success",
+              "name": "Retain native test evidence",
+              "number": 6,
+              "startedAt": "2026-09-07T22:40:55Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-09-07T22:40:56Z",
+              "conclusion": "success",
+              "name": "Post Set up minimum supported Go toolchain",
+              "number": 11,
+              "startedAt": "2026-09-07T22:40:56Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-09-07T22:40:58Z",
+              "conclusion": "success",
+              "name": "Post Checkout",
+              "number": 12,
+              "startedAt": "2026-09-07T22:40:56Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-09-07T22:41:00Z",
+              "conclusion": "success",
+              "name": "Complete job",
+              "number": 13,
+              "startedAt": "2026-09-07T22:40:58Z",
+              "status": "completed"
+            }
+          ],
+          "url": "https://github.com/agentstation/starmap/actions/runs/34167265992/job/101880673191"
+        },
+        {
+          "completedAt": "2026-09-07T22:45:30Z",
+          "conclusion": "success",
+          "databaseId": 101880673210,
+          "name": "Runtime macos-15-intel",
+          "startedAt": "2026-09-07T22:36:59Z",
+          "status": "completed",
+          "steps": [
+            {
+              "completedAt": "2026-09-07T22:37:05Z",
+              "conclusion": "success",
+              "name": "Set up job",
+              "number": 1,
+              "startedAt": "2026-09-07T22:37:01Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-09-07T22:37:16Z",
+              "conclusion": "success",
+              "name": "Checkout",
+              "number": 2,
+              "startedAt": "2026-09-07T22:37:05Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-09-07T22:37:50Z",
+              "conclusion": "success",
+              "name": "Set up minimum supported Go toolchain",
+              "number": 3,
+              "startedAt": "2026-09-07T22:37:16Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-09-07T22:45:08Z",
+              "conclusion": "success",
+              "name": "Test native runtime, configuration, and paths",
+              "number": 4,
+              "startedAt": "2026-09-07T22:37:50Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-09-07T22:45:09Z",
+              "conclusion": "skipped",
+              "name": "Test administrator-owned Linux configuration",
+              "number": 5,
+              "startedAt": "2026-09-07T22:45:09Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-09-07T22:45:10Z",
+              "conclusion": "success",
+              "name": "Retain native test evidence",
+              "number": 6,
+              "startedAt": "2026-09-07T22:45:09Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-09-07T22:45:25Z",
+              "conclusion": "success",
+              "name": "Post Set up minimum supported Go toolchain",
+              "number": 11,
+              "startedAt": "2026-09-07T22:45:10Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-09-07T22:45:25Z",
+              "conclusion": "success",
+              "name": "Post Checkout",
+              "number": 12,
+              "startedAt": "2026-09-07T22:45:25Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-09-07T22:45:26Z",
+              "conclusion": "success",
+              "name": "Complete job",
+              "number": 13,
+              "startedAt": "2026-09-07T22:45:25Z",
+              "status": "completed"
+            }
+          ],
+          "url": "https://github.com/agentstation/starmap/actions/runs/34167265992/job/101880673210"
+        },
+        {
+          "completedAt": "2026-09-07T22:43:17Z",
+          "conclusion": "failure",
+          "databaseId": 101880673238,
+          "name": "Runtime windows-11-arm",
+          "startedAt": "2026-09-07T22:36:52Z",
+          "status": "completed",
+          "steps": [
+            {
+              "completedAt": "2026-09-07T22:36:55Z",
+              "conclusion": "success",
+              "name": "Set up job",
+              "number": 1,
+              "startedAt": "2026-09-07T22:36:53Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-09-07T22:37:17Z",
+              "conclusion": "success",
+              "name": "Checkout",
+              "number": 2,
+              "startedAt": "2026-09-07T22:36:55Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-09-07T22:38:04Z",
+              "conclusion": "success",
+              "name": "Set up minimum supported Go toolchain",
+              "number": 3,
+              "startedAt": "2026-09-07T22:37:17Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-09-07T22:43:07Z",
+              "conclusion": "failure",
+              "name": "Test native runtime, configuration, and paths",
+              "number": 4,
+              "startedAt": "2026-09-07T22:38:04Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-09-07T22:43:07Z",
+              "conclusion": "skipped",
+              "name": "Test administrator-owned Linux configuration",
+              "number": 5,
+              "startedAt": "2026-09-07T22:43:07Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-09-07T22:43:08Z",
+              "conclusion": "success",
+              "name": "Retain native test evidence",
+              "number": 6,
+              "startedAt": "2026-09-07T22:43:07Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-09-07T22:43:08Z",
+              "conclusion": "skipped",
+              "name": "Post Set up minimum supported Go toolchain",
+              "number": 11,
+              "startedAt": "2026-09-07T22:43:08Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-09-07T22:43:13Z",
+              "conclusion": "success",
+              "name": "Post Checkout",
+              "number": 12,
+              "startedAt": "2026-09-07T22:43:08Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-09-07T22:43:13Z",
+              "conclusion": "success",
+              "name": "Complete job",
+              "number": 13,
+              "startedAt": "2026-09-07T22:43:13Z",
+              "status": "completed"
+            }
+          ],
+          "url": "https://github.com/agentstation/starmap/actions/runs/34167265992/job/101880673238"
+        },
+        {
+          "completedAt": "2026-09-07T22:43:46Z",
+          "conclusion": "failure",
+          "databaseId": 101880673295,
+          "name": "Runtime windows-2025",
+          "startedAt": "2026-09-07T22:36:52Z",
+          "status": "completed",
+          "steps": [
+            {
+              "completedAt": "2026-09-07T22:36:55Z",
+              "conclusion": "success",
+              "name": "Set up job",
+              "number": 1,
+              "startedAt": "2026-09-07T22:36:53Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-09-07T22:37:04Z",
+              "conclusion": "success",
+              "name": "Checkout",
+              "number": 2,
+              "startedAt": "2026-09-07T22:36:55Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-09-07T22:37:25Z",
+              "conclusion": "success",
+              "name": "Set up minimum supported Go toolchain",
+              "number": 3,
+              "startedAt": "2026-09-07T22:37:04Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-09-07T22:43:40Z",
+              "conclusion": "failure",
+              "name": "Test native runtime, configuration, and paths",
+              "number": 4,
+              "startedAt": "2026-09-07T22:37:25Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-09-07T22:43:40Z",
+              "conclusion": "skipped",
+              "name": "Test administrator-owned Linux configuration",
+              "number": 5,
+              "startedAt": "2026-09-07T22:43:40Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-09-07T22:43:41Z",
+              "conclusion": "success",
+              "name": "Retain native test evidence",
+              "number": 6,
+              "startedAt": "2026-09-07T22:43:40Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-09-07T22:43:41Z",
+              "conclusion": "skipped",
+              "name": "Post Set up minimum supported Go toolchain",
+              "number": 11,
+              "startedAt": "2026-09-07T22:43:41Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-09-07T22:43:43Z",
+              "conclusion": "success",
+              "name": "Post Checkout",
+              "number": 12,
+              "startedAt": "2026-09-07T22:43:41Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-09-07T22:43:44Z",
+              "conclusion": "success",
+              "name": "Complete job",
+              "number": 13,
+              "startedAt": "2026-09-07T22:43:43Z",
+              "status": "completed"
+            }
+          ],
+          "url": "https://github.com/agentstation/starmap/actions/runs/34167265992/job/101880673295"
+        },
+        {
+          "completedAt": "2026-09-07T22:42:26Z",
+          "conclusion": "success",
+          "databaseId": 101880673345,
+          "name": "Runtime ubuntu-24.04",
+          "startedAt": "2026-09-07T22:36:53Z",
+          "status": "completed",
+          "steps": [
+            {
+              "completedAt": "2026-09-07T22:36:55Z",
+              "conclusion": "success",
+              "name": "Set up job",
+              "number": 1,
+              "startedAt": "2026-09-07T22:36:54Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-09-07T22:36:59Z",
+              "conclusion": "success",
+              "name": "Checkout",
+              "number": 2,
+              "startedAt": "2026-09-07T22:36:55Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-09-07T22:37:30Z",
+              "conclusion": "success",
+              "name": "Set up minimum supported Go toolchain",
+              "number": 3,
+              "startedAt": "2026-09-07T22:36:59Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-09-07T22:42:21Z",
+              "conclusion": "success",
+              "name": "Test native runtime, configuration, and paths",
+              "number": 4,
+              "startedAt": "2026-09-07T22:37:30Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-09-07T22:42:21Z",
+              "conclusion": "success",
+              "name": "Test administrator-owned Linux configuration",
+              "number": 5,
+              "startedAt": "2026-09-07T22:42:21Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-09-07T22:42:23Z",
+              "conclusion": "success",
+              "name": "Retain native test evidence",
+              "number": 6,
+              "startedAt": "2026-09-07T22:42:21Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-09-07T22:42:23Z",
+              "conclusion": "success",
+              "name": "Post Set up minimum supported Go toolchain",
+              "number": 11,
+              "startedAt": "2026-09-07T22:42:23Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-09-07T22:42:23Z",
+              "conclusion": "success",
+              "name": "Post Checkout",
+              "number": 12,
+              "startedAt": "2026-09-07T22:42:23Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-09-07T22:42:23Z",
+              "conclusion": "success",
+              "name": "Complete job",
+              "number": 13,
+              "startedAt": "2026-09-07T22:42:23Z",
+              "status": "completed"
+            }
+          ],
+          "url": "https://github.com/agentstation/starmap/actions/runs/34167265992/job/101880673345"
+        }
+      ],
+      "status": "in_progress",
+      "url": "https://github.com/agentstation/starmap/actions/runs/34167265992"
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "/tmp/starmap-native-repair-foundation-windows-amd64/tests.jsonl",
+      "sha256": "f8599de230354bb7688a66af174099afd47980e7206acdd538335fc134bf8ef1",
+      "test_events": {
+        "pass": 936,
+        "fail": 102
+      },
+      "failed_by_package": {
+        "github.com/agentstation/starmap/internal/bootstrap": 13,
+        "github.com/agentstation/starmap/internal/cli/app": 14,
+        "github.com/agentstation/starmap/pkg/productpaths": 4,
+        "github.com/agentstation/starmap/pkg/catalogs/storage": 1,
+        "github.com/agentstation/starmap/internal/catalog/workspace": 62,
+        "github.com/agentstation/starmap": 8
+      }
+    },
+    {
+      "path": "/tmp/starmap-native-second-followup-windows-amd64/tests.jsonl",
+      "sha256": "6ac62f529e59eff8fff14d5be3e4aa89204c28f5517a47de0bc07acbcd166f39",
+      "test_events": {
+        "pass": 1096,
+        "fail": 108
+      },
+      "failed_by_package": {
+        "github.com/agentstation/starmap/internal/bootstrap": 13,
+        "github.com/agentstation/starmap/internal/cli/app": 20,
+        "github.com/agentstation/starmap/pkg/productpaths": 4,
+        "github.com/agentstation/starmap/pkg/catalogs/storage": 1,
+        "github.com/agentstation/starmap/internal/catalog/workspace": 62,
+        "github.com/agentstation/starmap": 8
+      }
+    },
+    {
+      "path": "/tmp/starmap-native-second-foundation-windows-arm64/tests.jsonl",
+      "sha256": "0351429be68eab51f6ed37d019a5af60ef777a41c44e1814f8bf16f8b2d8f19f",
+      "test_events": {
+        "pass": 936,
+        "fail": 102
+      },
+      "failed_by_package": {
+        "github.com/agentstation/starmap/internal/bootstrap": 13,
+        "github.com/agentstation/starmap/internal/cli/app": 14,
+        "github.com/agentstation/starmap/pkg/productpaths": 4,
+        "github.com/agentstation/starmap": 8,
+        "github.com/agentstation/starmap/pkg/catalogs/storage": 1,
+        "github.com/agentstation/starmap/internal/catalog/workspace": 62
+      }
+    }
+  ],
+  "native_repair_qualification": "failed",
+  "primary_acceptance_credit": 0
+}

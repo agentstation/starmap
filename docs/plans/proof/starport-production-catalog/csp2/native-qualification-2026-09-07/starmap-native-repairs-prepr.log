@@ -1,0 +1,46 @@
+review still running: claude elapsed=60s pid=87342 cpu=1.5s/60s(2%) rss=281M state=S
+review still running: claude elapsed=60s pid=88117 cpu=1.3s/60s(2%) rss=255M state=S
+review still running: claude elapsed=120s pid=88117 cpu=0.6s/60s(1%) rss=260M state=S
+review still running: claude elapsed=180s pid=88117 cpu=0.9s/60s(2%) rss=292M state=S
+review still running: claude elapsed=60s pid=89432 cpu=1.3s/60s(2%) rss=254M state=S
+review still running: claude elapsed=120s pid=89432 cpu=0.9s/60s(2%) rss=257M state=S
+review still running: claude elapsed=60s pid=89620 cpu=1.3s/60s(2%) rss=256M state=S
+review still running: claude elapsed=120s pid=89620 cpu=0.9s/60s(2%) rss=261M state=S
+review still running: claude elapsed=180s pid=89620 cpu=0.7s/60s(1%) rss=262M state=S
+review still running: claude elapsed=240s pid=89620 cpu=1.0s/60s(2%) rss=301M state=S
+review still running: claude elapsed=300s pid=89620 cpu=0.8s/60s(1%) rss=302M state=S
+review still running: claude elapsed=360s pid=89620 cpu=0.7s/60s(1%) rss=302M state=S
+review still running: claude elapsed=60s pid=90146 cpu=1.1s/60s(2%) rss=252M state=S
+review still running: claude elapsed=120s pid=90146 cpu=0.7s/60s(1%) rss=256M state=R
+review still running: claude elapsed=180s pid=90146 cpu=0.5s/60s(1%) rss=278M state=S
+review still running: claude elapsed=240s pid=90146 cpu=0.8s/60s(1%) rss=286M state=S
+review still running: claude elapsed=300s pid=90146 cpu=0.8s/60s(1%) rss=287M state=S
+review still running: claude elapsed=360s pid=90146 cpu=0.8s/60s(1%) rss=287M state=S
+review still running: claude elapsed=60s pid=90885 cpu=1.3s/60s(2%) rss=253M state=S
+review still running: claude elapsed=120s pid=90885 cpu=0.9s/60s(1%) rss=260M state=S
+review still running: claude elapsed=60s pid=91128 cpu=1.3s/60s(2%) rss=252M state=S
+review still running: claude elapsed=120s pid=91128 cpu=1.2s/60s(2%) rss=288M state=S
+autoreview target: branch
+branch: codex/catalog-foundation
+gate: pre-pr (configured cadence: pre-pr)
+profile: cross-lab
+config: /Users/jack/.config/autoreview/config.toml
+selection: sol=7.83, opus5=7.52
+reviewers: codex model=gpt-5.6-sol thinking=xhigh, claude model=claude-opus-5 thinking=high
+tools: on
+web_search: on
+ref: codex/catalog-plan
+trufflehog: clean (8.3s)
+bundle: 1667696 bytes; review passes: 8
+review pass: 1/8 (231840 prompt bytes)
+review pass: 2/8 (232023 prompt bytes)
+review pass: 3/8 (231898 prompt bytes)
+review pass: 4/8 (231980 prompt bytes)
+review pass: 5/8 (232061 prompt bytes)
+review pass: 6/8 (232021 prompt bytes)
+review pass: 7/8 (231886 prompt bytes)
+review pass: 8/8 (101907 prompt bytes)
+autoreview panel chunked clean: no accepted/actionable findings reported
+overall: patch is correct (0.99)
+Chunked review complete. chunk 1/8: 0 finding(s), chunk 2/8: 0 finding(s), chunk 3/8: 0 finding(s), chunk 4/8: 0 finding(s), chunk 5/8: 0 finding(s), chunk 6/8: 0 finding(s), chunk 7/8: 0 finding(s), chunk 8/8: 0 finding(s).
+autoreview clean attestation stored for this substantive diff
