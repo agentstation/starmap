@@ -1102,3 +1102,263 @@ Writing rules and severities remain unchanged. Final verification and review sti
 
 The final writing check passed all 1,047 scanned files with zero diagnostics. Both frozen-output hashes remain unchanged.
 The complete repository verification gate now precedes the authorized commit, review, draft PR, and native CI sequence.
+
+
+### CSP3 binding batches and model membership
+
+The [batch verification](../../plans/proof/starport-production-catalog/csp3/binding-batch-verification.json) closes the built-in acquisition-role gap described above.
+Explicit batches preserve separate binding identities through credential selection, receipts, attempt reports, retention, and restart.
+Invalid selections cause refusal before credential or provider work. Cancellation prevents late publication.
+
+The runtime integration test also reproduced the F-004 membership filter.
+Enrichment now preserves linked models without pricing or limits and carries their missing authored definitions.
+The generic merge owns this behavior. Existing definitions still keep precedence.
+
+The final checks passed 1,341 race events, 79 normal package suites, six consumer compositions, code lint, Ago, and generated documentation.
+The first broader run remains failed evidence. The final run used Go 1.26.6 and the unchanged five-minute package limit.
+Operator integration, scoped field authority, deletion rules, and released-pair acceptance remain open.
+
+
+### CSP3 scoped reconciliation records
+
+The manual source pipeline exposed another boundary before binding integration.
+Collector maps replaced earlier catalogs under the same source type. Shared records also selected facts by input order.
+The merger attached the last provider receipt to every model, including models supplied by another binding.
+
+Reconciliation now validates scoped receipts and keeps each selected provider or model record with its observation.
+Direct observations take precedence over stale fallback. Observation time then orders shared records within that classification.
+Records with equal identity, time, and fallback classification must agree.
+Primary-source filtering includes every scoped provider, and counts use unique model and source identities.
+Review candidates and field provenance select the receipt for the chosen record.
+
+The [scoped reconciliation proof](../../plans/proof/starport-production-catalog/csp3/scoped-reconciliation-verification.json) records the regressions and checks.
+A second regression showed that a newer stale fallback could displace a direct peer observation. The correction preserves the direct observation.
+
+The caller still owns active binding selection. The manual CLI and HTTP adapters do not yet enforce that selection.
+Their pipeline must emit separate observations for the selected bindings and preserve runtime retention during publication.
+Field-presence handling, scoped deletion, and released-pair acceptance remain open.
+
+
+### CSP3 manual acquisition bindings
+
+The manual syncer now accepts an explicit set of provider bindings during construction.
+It checks each selected profile before source work and preserves separate observations through reconciliation and durable generation links.
+An explicit empty set contacts no providers. Operation filters cannot add undeclared providers.
+The shared provider-call limit applies across the selected bindings.
+
+Strict mode previously counted only authored definitions. Provider observations can instead contain serving records linked to an authored catalog.
+It now accepts either form of model data and still rejects empty, incomplete, failed, missing, duplicate, or mismatched observations.
+
+The volume guard previously compared every provider account against one source-wide history and dropped binding metadata when it changed health.
+Field provenance now preserves optional binding identity and revision through JSON and YAML.
+The guard uses matching history and retains the binding when it creates a degraded receipt.
+History without a matching binding revision supplies no scoped completeness claim.
+
+The [manual binding proof](../../plans/proof/starport-production-catalog/csp3/manual-bindings-verification.json) records component verification.
+CLI and HTTP adapters still need shared-setting composition and runtime retention during publication.
+Scoped deletion, field-presence handling, and released-pair qualification remain open.
+
+
+### CSP3 canonical runtime reconstruction
+
+The runtime previously merged provider layers with a separate enrichment algorithm and published no provider receipt links.
+Its effective catalog also accepted authored definitions from provider observations, contrary to the canonical reconciliation contract.
+
+Runtime reconstruction now restores original observations and uses the canonical reconciler.
+Field provenance, generation links, and excluded-model review candidates retain the corresponding provider receipt.
+Legacy layers use the same record selection as scoped observations. The active binding policy remains a separate runtime check.
+
+Stable generated timestamps preserve the payload for unchanged retained evidence.
+Each reconstruction checks pricing validity at the current time. Its rejection text now identifies the fixed interval boundary.
+Concurrent rebuilds serialize publication and effective-state activation.
+A further regression found synthesized provenance for providers outside the primary selection. The filter now applies before provider reconciliation.
+
+Three acquisition tests placed reviewed authored definitions only in their provider observations.
+Their fixtures now supply those definitions through an explicit catalog source. Model-retention and partial-failure assertions remain unchanged.
+A separate regression proves that a provider observation cannot establish authored identity, even when it includes a definition.
+
+The [runtime reconciliation proof](../../plans/proof/starport-production-catalog/csp3/runtime-reconciliation-verification.json) records verification and earlier failures.
+CLI and HTTP composition, upstream manifest lineage, field presence, scoped deletion, and released-pair qualification remain open.
+
+
+### CSP3 receipt-only generation changes
+
+A regression found that runtime publication reused an identity after an unselected provider receipt changed.
+Selected catalog values and the payload checksum stayed unchanged. The durable manifest therefore retained the old receipt.
+
+Effective identity now includes original source links and review candidates, with deterministic ordering.
+The catalog payload checksum remains separate. Empty evidence preserves the baseline identity input.
+
+A restore test supplies different manifest evidence under an existing identity.
+The existing store contract refuses that update with an immutable generation conflict and preserves current state.
+This test required no additional restore implementation.
+
+The [receipt identity proof](../../plans/proof/starport-production-catalog/csp3/receipt-identity-verification.json) records the checks and original publication failure.
+Manual source transactions, CLI and HTTP composition, and released-pair qualification remain open.
+
+
+### CSP3 catalog acceptance before input retention
+
+A failing store reproduced a rejected provider publication that changed retained files and became active after restart.
+The runtime now stages immutable input records and a prepared transaction before catalog publication.
+It replaces retained source and provider files only after acceptance. Startup recovery resolves interrupted transactions before loading those files.
+
+A lost commit reply leaves a prepared record. Startup compares the loaded catalog with the prior and candidate identities and checksums.
+A committed record completes retention after partial writes. Every referenced input must validate before replay writes any retained file.
+An unresolved head or invalid record blocks recovery. Migration refuses pending publication.
+
+Reports preserve accepted publication when retention fails. The active catalog remains available while further updates require recovery.
+The concurrency fixture previously wrote retained inputs synchronously while the store blocked a catalog commit.
+It now issues two complete publication requests. Its catalog, generation, and receipt assertions remain unchanged.
+
+The [input publication proof](../../plans/proof/starport-production-catalog/csp3/input-publication-verification.json) records exact checks and the failed publication regression.
+Manual non-provider observations still need retained input representation and CLI and HTTP composition.
+Completed-input collection, shared fleet recovery, native qualification, and released-pair acceptance remain open.
+
+
+### CSP3 shared manual composition and fresh-mode decision
+
+The CLI update command and HTTP server previously constructed syncers without the configured provider binding array.
+Both now call `App.CatalogAcquisition`, which applies the resolved set, credential resolver, and source directories.
+The shared config accessor preserves omission and explicit emptiness and returns owned declarations.
+Tests cover legacy selection, an empty set, separate scoped attempts, and unchanged state during previews.
+
+Source selection and baseline enrichment now belong to the reconciler.
+Pipeline acquisition, explicit observation publication, release imports, and runtime reconstruction call the same entry point.
+The runtime still excludes acquisition clients from its dependency set.
+
+D24 changes the target for fresh manual acquisition to preserve the embedded or selected upstream baseline.
+The existing CLI uses `--force`, and the Go API uses `sync.WithFresh`.
+The current pipeline still selects an empty reconciliation baseline. Manual runtime retention must implement D24 before acceptance.
+It must also retain original observations, preserve reset scope and previews, and prevent retired binding evidence from returning through local projections.
+
+The [manual composition proof](../../plans/proof/starport-production-catalog/csp3/manual-composition-verification.json) records 1,043 race events and corrected normal coverage of all 79 package suites.
+This is component progress. Manual runtime publication, complete ingestion, native qualification, and released-pair acceptance remain open.
+
+
+### CSP3 retained manual observations
+
+`Runtime.PublishObservations` now joins manual publication to runtime ownership and input recovery.
+It retains original payloads and safe receipts without source acquisition. Distinct concurrent calls retain distinct batches.
+Observations already in manual history preserve the generation and sequence without another broadcast.
+
+The first replay tests exposed two provider-order defects: older scheduled facts could replace newer manual facts, and a later omission could discard retained values.
+Provider observations now share retained history once manual publication starts. Reconstruction uses the reconciler's fallback and observation-time policy.
+A further test found that separate reviewed inputs in one batch could hide model definitions. Metadata passes now preserve those definitions through the baseline.
+All changes still publish as one transaction.
+
+Restart validates the original aggregate provider payload and receipt together. It excludes retired bindings and rejects selector changes without a new revision.
+Recovery validates the complete parent history before installing source, provider, or manual files.
+A lost catalog commit reply recovers the accepted generation. Rejected publication preserves the previous history.
+
+The private `manual.json` head references immutable batches and original observations under `publication-inputs`.
+Publication version 2 protects these records from older readers. New readers still accept version 1 records without manual history.
+Native upgrade and downgrade qualification remains open.
+
+The file manifest previously omitted scoped provider records and publication recovery files.
+Its private runtime-evidence entry now lists those paths and manual history. A real publication test checks the files it creates and still rejects unknown paths.
+
+History permits at most 4,096 batches and 64 MiB of encoded observations. Reaching either limit preserves accepted state and refuses new input.
+CSP5 owns production compaction, collection, and recovery. These limits are component safeguards, not a production capacity claim.
+
+The CLI and HTTP acquisition paths still need runtime publication and D24 reset scopes.
+Local projection provenance, field presence, scoped deletion, native qualification, and released-pair acceptance remain open.
+This implementation makes no request latency or allocation claim.
+
+The [manual retention proof](../../plans/proof/starport-production-catalog/csp3/manual-retention-verification.json) records 991 passing race events and normal coverage of 79 package suites.
+
+
+### CSP3 acquisition ownership and projected binding facts
+
+Manual acquisition needs operation ownership throughout source preparation and catalog publication.
+`Runtime.UpdateObservations` now provides that boundary. The callback receives the current catalog and a separate trusted baseline.
+`Runtime.ObservationInputs` exposes the same immutable snapshots for read-only preparation. It reads no source and writes no files.
+A callback failure or empty result preserves state. Shutdown cancels the callback and rejects its late result.
+
+A focused regression reproduced a retired provider fact returning through a local catalog projection.
+The reconciler now accepts a policy for unchanged projected fields. Runtime publication checks the original provider, binding identity, and revision.
+The tests cover provider names and model limits, active and retired bindings, changed revisions, another provider's binding, and operator edits.
+This closes that field-reuse gap. Scoped reset masks, membership deletion, and full authority enforcement remain open.
+
+The broader race run timed out before a concurrency fixture reached its blocked store.
+That fixture rebuilt the full embedded catalog to check publication ordering for two reviewed definitions.
+It now uses those definitions without unrelated embedded records. Its deadlines and durable publication assertions remain unchanged.
+Three focused race repetitions passed with the smaller fixture. The complete runtime race rerun passed 424 test events.
+
+The [observation update proof](../../plans/proof/starport-production-catalog/csp3/observation-update-verification.json) records 1,004 passing race events and 79 normal package suites.
+D24 reset scopes and CLI/HTTP runtime integration remain open. All 50 primary acceptance cases remain UNVERIFIED.
+
+
+### CSP3 provider selection within retained observations
+
+The first selection contract test failed: an excluded provider still overwrote the baseline.
+Its original observation also contained an unrelated provider.
+
+`WithProviderObservationSelection` now selects provider records by original observation identity.
+The reconciler validates the original receipt before applying the selection. It preserves the original payload and receipt for the remaining provider.
+
+Selection applies before conflict checks, collection, review-candidate evidence, and primary membership filtering.
+Focused tests cover aggregate receipts, input-order stability, excluded conflicts, explicit empty selection, omitted selection, and invalid input.
+They also check that later changes to the caller's selection map and slices cannot change the result.
+
+This is a reconciliation component. Runtime reset scopes, retained reset evidence, source reset semantics, and CLI/HTTP adoption remain open.
+The option does not remove facts from the selected baseline or independently enforce enterprise authority.
+
+The [provider selection proof](../../plans/proof/starport-production-catalog/csp3/provider-selection-verification.json) records 1,018 passing race events and 3,594 passing normal events across 79 package suites.
+All 50 primary cases remain UNVERIFIED.
+
+
+### CSP3 durable provider resets
+
+The first reset contract test reproduced a retained local limit surviving replacement.
+`Runtime.UpdateObservations` now accepts provider reset scopes and requires complete successful replacement observations.
+The reset scope includes the provider, binding identity, and revision. Legacy unscoped input is a separate scope.
+
+Reset scopes and replacements enter one retained manual batch and catalog publication transaction.
+Earlier scheduled files enter a preceding batch, so restart cannot restore their cleared provider facts.
+Replay retains other providers within an aggregate receipt and other bindings of the same provider.
+It also rejects unchanged projected facts from cleared observations while preserving actual operator edits.
+
+A reset changes generation identity even when catalog bytes remain equal.
+The lost-reply test confirms that recovery keeps both the accepted catalog and reset scope.
+Rejected commits and failed preparation retain the previous history. Version checks reject reset fields under the legacy batch version.
+
+Manual heads and batches use version 2. New readers still accept version 1 records without resets.
+The byte bound now includes encoded reset scopes, and a request permits at most 4,096 scopes.
+General source resets, projection membership, previews, adapter integration, native qualification, and released-pair acceptance remain open.
+
+Component evidence: [provider reset verification](../../plans/proof/starport-production-catalog/csp3/provider-reset-verification.json).
+The checks cover 1,041 race events and 3,617 normal events. They provide no primary acceptance credit.
+
+
+### CSP3 metadata provider selection
+
+The provider selection contract now accepts models.dev HTTP and Git observations.
+The first new contract test failed because selection accepted only provider API observations.
+Repository review also found that metadata baseline filtering replaced the catalog while retaining the original observation identity and checksum.
+
+Reconciliation now builds a separate provider view after receipt validation. It applies selection before canonical alias mapping.
+The original observation remains available for receipts and shared authored definitions. A filtered view cannot replace that evidence.
+Tests cover baseline enrichment, peer providers, aliases, empty selections, original receipt checks, and protected source refusal.
+General source reset records, projection membership, previews, and CLI/HTTP adoption remain open.
+
+The [metadata selection proof](../../plans/proof/starport-production-catalog/csp3/metadata-selection-verification.json) records 1,055 passing race events and 3,631 normal events.
+All 50 primary cases remain UNVERIFIED.
+
+
+### CSP3 local developer integration
+
+The working branch connects CLI and HTTP acquisition to retained runtime publication.
+Metadata reset scopes now cover models.dev HTTP and Git. Manual history version 3 stores these scopes while accepting earlier provider reset records.
+The production pipeline previously treated an explicit reset as a volume collapse. Fresh mode now accepts complete replacement omissions and preserves its baseline.
+Normal refresh and strict publication keep their existing health checks.
+
+Actual binaries verified offline Starport startup, CLI acquisition, Starmap server refresh, HTTP reset, and Starport activation.
+The deterministic provider changed the GPT-4o mini context limit to 9,999 tokens. Reset restored the embedded limit of 128,000 tokens.
+Starport retained the accepted generation and payload checksum after restart.
+These results use a temporary Go workspace with the candidate Starmap package. The published Starport module pin remains unchanged.
+
+Starport's old acquisition test fixture omitted the source receipt required by the candidate runtime.
+The fixture now creates a validated original observation and provider layer. The focused pair test passes.
+The [local developer milestone](../../plans/proof/starport-production-catalog/local-developer-flow.md) owns commands, failures, and remaining checks.
+All 50 primary cases remain UNVERIFIED. Native qualification, full production integration, review, and release gates remain open.
