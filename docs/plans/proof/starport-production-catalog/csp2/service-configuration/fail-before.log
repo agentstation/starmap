@@ -1,0 +1,5 @@
+--- FAIL: TestServiceConfigurationExplicitSelection (0.00s)
+    service_config_posix_test.go:19: explicit service configuration: configuration error in configuration file /var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/TestServiceConfigurationExplicitSelection2330208908/002/config.yaml: cannot read the selected private file
+FAIL
+FAIL	github.com/agentstation/starmap/internal/cli/app	0.577s
+FAIL

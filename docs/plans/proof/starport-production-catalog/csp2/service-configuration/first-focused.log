@@ -1,0 +1,9 @@
+ok  	github.com/agentstation/starmap/internal/privatefiles	1.191s [no tests to run]
+ok  	github.com/agentstation/starmap/internal/runtimeacl/windows	1.531s
+ok  	github.com/agentstation/starmap/pkg/productpaths	1.675s [no tests to run]
+ok  	github.com/agentstation/starmap/pkg/productpaths/policy	1.373s [no tests to run]
+--- FAIL: TestServiceConfigurationExplicitSelection (0.00s)
+    service_config_posix_test.go:27: configuration was not parsed: map[STARMAP_CATALOG_SOURCE:embedded]
+FAIL
+FAIL	github.com/agentstation/starmap/internal/cli/app	0.664s
+FAIL

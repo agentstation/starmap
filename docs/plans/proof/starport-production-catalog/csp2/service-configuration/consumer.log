@@ -1,0 +1,14 @@
+ok  	github.com/agentstation/starmap-test/read-only-consumer	3.724s
+ok  	github.com/agentstation/starmap-test/store-only-consumer	2.595s
+ok  	github.com/agentstation/starmap-test/pinned-artifact-consumer	12.943s
+ok  	github.com/agentstation/starmap-test/server-embed-consumer	1.912s
+ok  	github.com/agentstation/starmap-test/remote-subscriber-consumer	2.645s
+ok  	github.com/agentstation/starmap-test/server-storage-consumer	5.277s
+read-only consumer dependency closure: 37/37 non-standard packages (162 total on this platform); forbidden families absent
+store-only consumer: caller-owned adapter contract and publication passed; application/database implementations absent
+pinned-artifact consumer: 38/38 non-standard packages; offline verified activation passed; online/acquisition families absent
+server-embed consumer dependency closure: 255/260 packages; acquisition families absent
+server-embed consumer: external compile and lifecycle test passed
+remote-subscriber consumer dependency closure: 238/240 packages; forbidden families absent
+remote-subscriber consumer: external compile and reactive lifecycle test passed
+server-storage consumer dependency closure: 349/350 packages; filesystem/S3 server and reactive restart matrix passed

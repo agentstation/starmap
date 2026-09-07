@@ -1,0 +1,6 @@
+/Users/jack/.agents/skills/technical-writing/scripts/technical-writing glossary check
+PASS: /Users/jack/src/github.com/agentstation/starmap-catalog-requirements/GLOSSARY.md (80 term(s), 0 error(s))
+/Users/jack/.agents/skills/technical-writing/scripts/technical-writing glossary update --check
+missing: ACL (docs/CATALOG_STORE_CONTRACT.md, docs/CLI.md)
+FAIL: 1 candidate term(s) are missing from /Users/jack/src/github.com/agentstation/starmap-catalog-requirements/GLOSSARY.md
+make: *** [technical-writing-check] Error 1

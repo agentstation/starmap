@@ -1,0 +1,886 @@
+ok  	github.com/agentstation/starmap/internal/privatefiles	1.183s [no tests to run]
+ok  	github.com/agentstation/starmap/internal/runtimeacl/windows	1.320s
+ok  	github.com/agentstation/starmap/pkg/productpaths	1.468s [no tests to run]
+ok  	github.com/agentstation/starmap/pkg/productpaths/policy	1.613s
+--- FAIL: TestServiceConfigurationSelectionAndPrivateBoundaries (0.01s)
+    service_config_posix_test.go:81: validation failed for field STARMAP_CATALOG_SOURCE_API_KEY: does not apply to the selected source kind
+{
+  "schema_version": 1,
+  "product": "starmap",
+  "build_version": "test",
+  "deployment_id": "local",
+  "instance_id": "default",
+  "relative_path_base": "",
+  "relative_path_base_origin": "unspecified",
+  "roots": {
+    "cache": {
+      "path": "/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/TestServiceConfigurationFlagPrecedenceAndTargetChecks2046105155/001/cache",
+      "origin": "environment",
+      "anchor": "/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/TestServiceConfigurationFlagPrecedenceAndTargetChecks2046105155/001"
+    },
+    "config": {
+      "path": "/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/TestServiceConfigurationFlagPrecedenceAndTargetChecks2046105155/001/config",
+      "origin": "environment",
+      "anchor": "/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/TestServiceConfigurationFlagPrecedenceAndTargetChecks2046105155/001"
+    },
+    "data": {
+      "path": "/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/TestServiceConfigurationFlagPrecedenceAndTargetChecks2046105155/001/data",
+      "origin": "environment",
+      "anchor": "/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/TestServiceConfigurationFlagPrecedenceAndTargetChecks2046105155/001"
+    },
+    "state": {
+      "path": "/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/TestServiceConfigurationFlagPrecedenceAndTargetChecks2046105155/001/state",
+      "origin": "environment",
+      "anchor": "/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/TestServiceConfigurationFlagPrecedenceAndTargetChecks2046105155/001"
+    }
+  },
+  "files": [
+    {
+      "id": "configuration",
+      "location": {
+        "path": "/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/TestServiceConfigurationFlagPrecedenceAndTargetChecks2046105155/002/config.yaml",
+        "origin": "selected-file"
+      },
+      "kind": "file",
+      "availability": "available",
+      "creation": "Operator-selected configuration.",
+      "recovery": "Preserve settings and required secret access.",
+      "policy": {
+        "selectors": [
+          "--config",
+          "CONFIG",
+          "STARMAP_CONFIG_DIR",
+          "STARMAP_HOME",
+          "--config-access",
+          "STARMAP_CONFIG_ACCESS"
+        ],
+        "applicability": "Selected configuration, including private credential settings.",
+        "access": "service-managed",
+        "retention": "operator",
+        "removal": "Remove only after preserving required settings and secret access."
+      }
+    },
+    {
+      "id": "baseline",
+      "location": {
+        "path": "/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/TestServiceConfigurationFlagPrecedenceAndTargetChecks2046105155/001/data/catalog/baseline",
+        "origin": "environment",
+        "anchor": "/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/TestServiceConfigurationFlagPrecedenceAndTargetChecks2046105155/001/data"
+      },
+      "kind": "tree",
+      "patterns": [
+        "*/manifest.json",
+        "*/catalog.json",
+        ".baseline-*/**"
+      ],
+      "availability": "available",
+      "creation": "Persistent application startup.",
+      "recovery": "Preserve or reproduce from the same binary.",
+      "policy": {
+        "selectors": [
+          "STARMAP_DATA_DIR",
+          "STARMAP_HOME"
+        ],
+        "applicability": "Verified embedded catalog export on persistent startup.",
+        "access": "public-read",
+        "retention": "reproducible",
+        "removal": "Remove only if the same binary can reproduce the baseline. Never remove an active export."
+      }
+    },
+    {
+      "id": "catalog-store",
+      "location": {
+        "path": "/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/TestServiceConfigurationFlagPrecedenceAndTargetChecks2046105155/001/state/catalog",
+        "origin": "environment",
+        "anchor": "/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/TestServiceConfigurationFlagPrecedenceAndTargetChecks2046105155/001/state"
+      },
+      "kind": "tree",
+      "patterns": [
+        "current",
+        ".commit.lock",
+        "generations/*/manifest.json",
+        "generations/*/catalog.json",
+        "generations/.candidate-*/**",
+        ".current-*"
+      ],
+      "availability": "available",
+      "creation": "Accepted catalog publication.",
+      "recovery": "Preserve generations and the current pointer through a consistent backup.",
+      "policy": {
+        "selectors": [
+          "STARMAP_STATE_ROOT",
+          "STARMAP_HOME",
+          "STARMAP_CATALOG_STORE_PATH"
+        ],
+        "applicability": "Filesystem catalog store selected by the standalone application.",
+        "access": "owner-only",
+        "retention": "durable",
+        "removal": "Preserve the current pointer and referenced generations. Use a consistent backup before replacement."
+      }
+    },
+    {
+      "id": "runtime-owner",
+      "location": {
+        "path": "/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/TestServiceConfigurationFlagPrecedenceAndTargetChecks2046105155/001/state/catalog/runtime/default/owner.json",
+        "origin": "environment",
+        "anchor": "/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/TestServiceConfigurationFlagPrecedenceAndTargetChecks2046105155/001/state"
+      },
+      "kind": "file",
+      "availability": "available",
+      "creation": "Persistent runtime initialization.",
+      "recovery": "Preserve the product, deployment, and instance binding.",
+      "policy": {
+        "selectors": [
+          "STARMAP_STATE_ROOT",
+          "STARMAP_HOME",
+          "STARMAP_STATE_DIR",
+          "STARMAP_INSTANCE_ID"
+        ],
+        "applicability": "Persistent identity and exclusive ownership for one runtime.",
+        "access": "owner-only",
+        "retention": "identity",
+        "removal": "Keep while the runtime or its recovery procedure needs this identity. A stopped process does not make deletion safe."
+      }
+    },
+    {
+      "id": "runtime-lock",
+      "location": {
+        "path": "/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/TestServiceConfigurationFlagPrecedenceAndTargetChecks2046105155/001/state/catalog/runtime/default/.owner.lock",
+        "origin": "environment",
+        "anchor": "/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/TestServiceConfigurationFlagPrecedenceAndTargetChecks2046105155/001/state"
+      },
+      "kind": "file",
+      "availability": "available",
+      "creation": "Runtime directory ownership.",
+      "recovery": "A lock file alone does not prove active ownership.",
+      "policy": {
+        "selectors": [
+          "STARMAP_STATE_ROOT",
+          "STARMAP_HOME",
+          "STARMAP_STATE_DIR",
+          "STARMAP_INSTANCE_ID"
+        ],
+        "applicability": "Persistent identity and exclusive ownership for one runtime.",
+        "access": "owner-only",
+        "retention": "identity",
+        "removal": "Keep while the runtime or its recovery procedure needs this identity. A stopped process does not make deletion safe."
+      }
+    },
+    {
+      "id": "runtime-seed",
+      "location": {
+        "path": "/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/TestServiceConfigurationFlagPrecedenceAndTargetChecks2046105155/001/state/catalog/runtime/default/instance-seed",
+        "origin": "environment",
+        "anchor": "/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/TestServiceConfigurationFlagPrecedenceAndTargetChecks2046105155/001/state"
+      },
+      "kind": "file",
+      "availability": "available",
+      "creation": "Persistent runtime initialization.",
+      "recovery": "Restore one identity to one fenced replacement only.",
+      "policy": {
+        "selectors": [
+          "STARMAP_STATE_ROOT",
+          "STARMAP_HOME",
+          "STARMAP_STATE_DIR",
+          "STARMAP_INSTANCE_ID"
+        ],
+        "applicability": "Persistent identity and exclusive ownership for one runtime.",
+        "access": "owner-only",
+        "retention": "identity",
+        "removal": "Keep while the runtime or its recovery procedure needs this identity. A stopped process does not make deletion safe."
+      }
+    },
+    {
+      "id": "migration-pending",
+      "location": {
+        "path": "/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/TestServiceConfigurationFlagPrecedenceAndTargetChecks2046105155/001/state/catalog/runtime/default/.migration-pending.json",
+        "origin": "environment",
+        "anchor": "/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/TestServiceConfigurationFlagPrecedenceAndTargetChecks2046105155/001/state"
+      },
+      "kind": "file",
+      "availability": "available",
+      "creation": "Migration staging and publication.",
+      "recovery": "Keep through publication. A pending target cannot start.",
+      "policy": {
+        "selectors": [
+          "STARMAP_STATE_ROOT",
+          "STARMAP_HOME",
+          "STARMAP_STATE_DIR",
+          "STARMAP_INSTANCE_ID"
+        ],
+        "applicability": "Runtime migration and legacy-root acknowledgement.",
+        "access": "owner-only",
+        "retention": "recovery",
+        "removal": "Keep until the migration procedure permits removal. Retirement records must still fence old runtime starts."
+      }
+    },
+    {
+      "id": "migration-receipt",
+      "location": {
+        "path": "/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/TestServiceConfigurationFlagPrecedenceAndTargetChecks2046105155/001/state/catalog/runtime/default/.migration-receipt.json",
+        "origin": "environment",
+        "anchor": "/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/TestServiceConfigurationFlagPrecedenceAndTargetChecks2046105155/001/state"
+      },
+      "kind": "file",
+      "availability": "available",
+      "creation": "Runtime migration publication.",
+      "recovery": "Preserve with the runtime and its operation journal.",
+      "policy": {
+        "selectors": [
+          "STARMAP_STATE_ROOT",
+          "STARMAP_HOME",
+          "STARMAP_STATE_DIR",
+          "STARMAP_INSTANCE_ID"
+        ],
+        "applicability": "Runtime migration and legacy-root acknowledgement.",
+        "access": "owner-only",
+        "retention": "recovery",
+        "removal": "Keep until the migration procedure permits removal. Retirement records must still fence old runtime starts."
+      }
+    },
+    {
+      "id": "migration-completed",
+      "location": {
+        "path": "/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/TestServiceConfigurationFlagPrecedenceAndTargetChecks2046105155/001/state/catalog/runtime/default/.migration-completed.json",
+        "origin": "environment",
+        "anchor": "/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/TestServiceConfigurationFlagPrecedenceAndTargetChecks2046105155/001/state"
+      },
+      "kind": "file",
+      "availability": "available",
+      "creation": "Completed runtime selection.",
+      "recovery": "Preserve while legacy-root acknowledgement is required.",
+      "policy": {
+        "selectors": [
+          "STARMAP_STATE_ROOT",
+          "STARMAP_HOME",
+          "STARMAP_STATE_DIR",
+          "STARMAP_INSTANCE_ID"
+        ],
+        "applicability": "Runtime migration and legacy-root acknowledgement.",
+        "access": "owner-only",
+        "retention": "recovery",
+        "removal": "Keep until the migration procedure permits removal. Retirement records must still fence old runtime starts."
+      }
+    },
+    {
+      "id": "migration-retired",
+      "location": {
+        "path": "/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/TestServiceConfigurationFlagPrecedenceAndTargetChecks2046105155/001/state/catalog/runtime/default/.migration-retired.json",
+        "origin": "environment",
+        "anchor": "/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/TestServiceConfigurationFlagPrecedenceAndTargetChecks2046105155/001/state"
+      },
+      "kind": "file",
+      "availability": "available",
+      "creation": "A later migration retires this runtime.",
+      "recovery": "Keep older binaries stopped and preserve the source files.",
+      "policy": {
+        "selectors": [
+          "STARMAP_STATE_ROOT",
+          "STARMAP_HOME",
+          "STARMAP_STATE_DIR",
+          "STARMAP_INSTANCE_ID"
+        ],
+        "applicability": "Runtime migration and legacy-root acknowledgement.",
+        "access": "owner-only",
+        "retention": "recovery",
+        "removal": "Keep until the migration procedure permits removal. Retirement records must still fence old runtime starts."
+      }
+    },
+    {
+      "id": "runtime-evidence",
+      "location": {
+        "path": "/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/TestServiceConfigurationFlagPrecedenceAndTargetChecks2046105155/001/state/catalog/runtime/default/catalog-runtime",
+        "origin": "environment",
+        "anchor": "/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/TestServiceConfigurationFlagPrecedenceAndTargetChecks2046105155/001/state"
+      },
+      "kind": "tree",
+      "patterns": [
+        "source.json",
+        "source.json.tmp",
+        "manual.json",
+        "publication.json",
+        ".layer-*",
+        "providers/*.json",
+        "providers/*.json.tmp",
+        "providers/.layer-*",
+        "providers/bindings/*.json",
+        "providers/bindings/.layer-*",
+        "publication-inputs/*.json",
+        "publication-inputs/.layer-*"
+      ],
+      "availability": "available",
+      "creation": "Source refresh, provider acquisition, or manual publication.",
+      "recovery": "Preserve accepted history and recovery inputs with the catalog state.",
+      "policy": {
+        "selectors": [
+          "STARMAP_STATE_ROOT",
+          "STARMAP_HOME",
+          "STARMAP_STATE_DIR",
+          "STARMAP_INSTANCE_ID"
+        ],
+        "applicability": "Permitted retained source and provider evidence.",
+        "access": "owner-only",
+        "retention": "durable",
+        "removal": "Preserve evidence required for retained startup and authority enforcement. This state is not a disposable source cache."
+      }
+    },
+    {
+      "id": "runtime-record-staging",
+      "location": {
+        "path": "/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/TestServiceConfigurationFlagPrecedenceAndTargetChecks2046105155/001/state/catalog/runtime/default",
+        "origin": "environment",
+        "anchor": "/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/TestServiceConfigurationFlagPrecedenceAndTargetChecks2046105155/001/state"
+      },
+      "kind": "patterns",
+      "patterns": [
+        ".owner-*"
+      ],
+      "availability": "available",
+      "creation": "Atomic owner or migration record writes.",
+      "recovery": "Remove only after ownership and interrupted-write checks.",
+      "policy": {
+        "selectors": [
+          "STARMAP_STATE_ROOT",
+          "STARMAP_HOME",
+          "STARMAP_STATE_DIR",
+          "STARMAP_INSTANCE_ID"
+        ],
+        "applicability": "Temporary owner and migration record writes.",
+        "access": "owner-only",
+        "retention": "recovery",
+        "removal": "Remove only after proving operation ownership and completing or abandoning the interrupted write."
+      }
+    },
+    {
+      "id": "github-discovery",
+      "location": {
+        "path": "/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/TestServiceConfigurationFlagPrecedenceAndTargetChecks2046105155/001/state/catalog/runtime/default/github-catalog-source",
+        "origin": "environment",
+        "anchor": "/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/TestServiceConfigurationFlagPrecedenceAndTargetChecks2046105155/001/state"
+      },
+      "kind": "tree",
+      "patterns": [
+        "*.json",
+        ".state-*"
+      ],
+      "availability": "available",
+      "creation": "Configured GitHub source initialization and refresh.",
+      "recovery": "Preserve replay floors and accepted release references.",
+      "policy": {
+        "selectors": [
+          "STARMAP_STATE_ROOT",
+          "STARMAP_HOME",
+          "STARMAP_STATE_DIR",
+          "STARMAP_INSTANCE_ID"
+        ],
+        "applicability": "Public or GitHub catalog discovery with retained replay protection.",
+        "access": "owner-only",
+        "retention": "durable",
+        "removal": "Preserve replay floors through restart and backup. Disabling downloads does not authorize resetting this state."
+      }
+    },
+    {
+      "id": "source-http",
+      "location": {
+        "path": "/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/TestServiceConfigurationFlagPrecedenceAndTargetChecks2046105155/001/cache/models.dev",
+        "origin": "environment",
+        "anchor": "/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/TestServiceConfigurationFlagPrecedenceAndTargetChecks2046105155/001/cache"
+      },
+      "kind": "tree",
+      "patterns": [
+        "api.json",
+        "api.json.metadata.json",
+        ".starmap-cache-*"
+      ],
+      "availability": "available",
+      "creation": "Explicit models.dev HTTP acquisition.",
+      "recovery": "Rebuild through permitted source access. Accepted evidence lives elsewhere.",
+      "policy": {
+        "selectors": [
+          "STARMAP_CACHE_DIR",
+          "STARMAP_HOME"
+        ],
+        "applicability": "Explicit models.dev HTTP acquisition.",
+        "access": "deployment-controlled",
+        "retention": "rebuildable",
+        "removal": "Remove only when no acquisition uses the files and permitted source access can rebuild them."
+      }
+    },
+    {
+      "id": "source-checkout",
+      "location": {
+        "path": "/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/TestServiceConfigurationFlagPrecedenceAndTargetChecks2046105155/001/cache/sources/models.dev-git",
+        "origin": "environment",
+        "anchor": "/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/TestServiceConfigurationFlagPrecedenceAndTargetChecks2046105155/001/cache"
+      },
+      "kind": "tree",
+      "patterns": [
+        "**"
+      ],
+      "availability": "available",
+      "creation": "Explicit pinned models.dev Git acquisition.",
+      "recovery": "Preserve operator-selected content. Rebuild managed input only through permitted acquisition.",
+      "policy": {
+        "selectors": [
+          "STARMAP_CACHE_DIR",
+          "STARMAP_HOME"
+        ],
+        "applicability": "Explicit models.dev Git acquisition, including caller-selected checkouts.",
+        "access": "deployment-controlled",
+        "retention": "operator",
+        "removal": "Preserve local edits. Remove a managed checkout only after excluding active acquisition and operator-owned content."
+      }
+    },
+    {
+      "id": "workspace",
+      "location": {
+        "path": "/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/TestServiceConfigurationFlagPrecedenceAndTargetChecks2046105155/001/data/catalog/workspace",
+        "origin": "environment",
+        "anchor": "/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/TestServiceConfigurationFlagPrecedenceAndTargetChecks2046105155/001/data"
+      },
+      "kind": "tree",
+      "patterns": [
+        "**"
+      ],
+      "availability": "available",
+      "creation": "Explicit catalog authoring or projection.",
+      "recovery": "Preserve operator content and projection receipts.",
+      "policy": {
+        "selectors": [
+          "STARMAP_DATA_DIR",
+          "STARMAP_HOME",
+          "STARMAP_CATALOG_WORKSPACE_PATH",
+          "--catalog-path"
+        ],
+        "applicability": "Selected optional YAML authoring workspace.",
+        "access": "deployment-controlled",
+        "retention": "operator",
+        "removal": "Preserve operator files and their projection receipt together. Catalog refresh does not authorize deleting unrelated files."
+      }
+    },
+    {
+      "id": "workspace-receipt",
+      "location": {
+        "path": "/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/TestServiceConfigurationFlagPrecedenceAndTargetChecks2046105155/001/data/catalog/.workspace.starmap-projection.json",
+        "origin": "environment",
+        "anchor": "/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/TestServiceConfigurationFlagPrecedenceAndTargetChecks2046105155/001/data"
+      },
+      "kind": "file",
+      "availability": "available",
+      "creation": "Successful workspace projection.",
+      "recovery": "Preserve with the human catalog workspace.",
+      "policy": {
+        "selectors": [
+          "STARMAP_DATA_DIR",
+          "STARMAP_HOME",
+          "STARMAP_CATALOG_WORKSPACE_PATH",
+          "--catalog-path"
+        ],
+        "applicability": "Selected optional YAML authoring workspace.",
+        "access": "deployment-controlled",
+        "retention": "operator",
+        "removal": "Preserve operator files and their projection receipt together. Catalog refresh does not authorize deleting unrelated files."
+      }
+    },
+    {
+      "id": "workspace-journal",
+      "location": {
+        "path": "/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/TestServiceConfigurationFlagPrecedenceAndTargetChecks2046105155/001/data/catalog/.workspace.starmap-replacement.json",
+        "origin": "environment",
+        "anchor": "/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/TestServiceConfigurationFlagPrecedenceAndTargetChecks2046105155/001/data"
+      },
+      "kind": "file",
+      "availability": "available",
+      "creation": "Windows workspace replacement records intent before either directory moves.",
+      "recovery": "Preserve with the candidate and backup. Projection repair validates and resumes the operation.",
+      "policy": {
+        "selectors": [
+          "STARMAP_DATA_DIR",
+          "STARMAP_HOME",
+          "STARMAP_CATALOG_WORKSPACE_PATH",
+          "--catalog-path"
+        ],
+        "applicability": "Workspace projection, validation, or interrupted replacement.",
+        "access": "deployment-controlled",
+        "retention": "recovery",
+        "removal": "Retain until verified recovery permits cleanup. Preserve changed files and candidates referenced by a replacement journal."
+      }
+    },
+    {
+      "id": "workspace-lock",
+      "location": {
+        "path": "/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/TestServiceConfigurationFlagPrecedenceAndTargetChecks2046105155/001/data/catalog/.workspace.starmap-write.lock",
+        "origin": "environment",
+        "anchor": "/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/TestServiceConfigurationFlagPrecedenceAndTargetChecks2046105155/001/data"
+      },
+      "kind": "file",
+      "availability": "available",
+      "creation": "First writer creates the lock. Shared reads and exclusive writes reuse it.",
+      "recovery": "Retain while the workspace is in use. A lock file alone does not prove active ownership.",
+      "policy": {
+        "selectors": [
+          "STARMAP_DATA_DIR",
+          "STARMAP_HOME",
+          "STARMAP_CATALOG_WORKSPACE_PATH",
+          "--catalog-path"
+        ],
+        "applicability": "Shared workspace reads and exclusive writes after the first writer.",
+        "access": "deployment-controlled",
+        "retention": "identity",
+        "removal": "Retain for the lifetime of the workspace. A lock file alone does not prove an active writer."
+      }
+    },
+    {
+      "id": "workspace-preparing",
+      "location": {
+        "path": "/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/TestServiceConfigurationFlagPrecedenceAndTargetChecks2046105155/001/data/catalog",
+        "origin": "environment",
+        "anchor": "/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/TestServiceConfigurationFlagPrecedenceAndTargetChecks2046105155/001/data"
+      },
+      "kind": "patterns",
+      "patterns": [
+        ".workspace.preparing-*"
+      ],
+      "availability": "available",
+      "creation": "Private workspace rendering and access restoration.",
+      "recovery": "Preserve interrupted preparation until ownership checks permit cleanup.",
+      "policy": {
+        "selectors": [
+          "STARMAP_DATA_DIR",
+          "STARMAP_HOME",
+          "STARMAP_CATALOG_WORKSPACE_PATH",
+          "--catalog-path"
+        ],
+        "applicability": "Private container for workspace rendering and access restoration.",
+        "access": "owner-only",
+        "retention": "recovery",
+        "removal": "Retain until verified operation ownership permits cleanup."
+      }
+    },
+    {
+      "id": "workspace-staging",
+      "location": {
+        "path": "/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/TestServiceConfigurationFlagPrecedenceAndTargetChecks2046105155/001/data/catalog",
+        "origin": "environment",
+        "anchor": "/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/TestServiceConfigurationFlagPrecedenceAndTargetChecks2046105155/001/data"
+      },
+      "kind": "patterns",
+      "patterns": [
+        ".workspace.preparing-*/**",
+        ".workspace.candidate-*/**",
+        "..workspace.candidate-*.verify-*/**",
+        "..workspace.starmap-projection.json.*",
+        "..workspace.starmap-replacement.json.*"
+      ],
+      "availability": "available",
+      "creation": "Workspace copy, verification, receipt, and journal writes.",
+      "recovery": "Preserve interrupted work until ownership and recovery checks permit cleanup.",
+      "policy": {
+        "selectors": [
+          "STARMAP_DATA_DIR",
+          "STARMAP_HOME",
+          "STARMAP_CATALOG_WORKSPACE_PATH",
+          "--catalog-path"
+        ],
+        "applicability": "Workspace projection, validation, or interrupted replacement.",
+        "access": "deployment-controlled",
+        "retention": "recovery",
+        "removal": "Retain until verified recovery permits cleanup. Preserve changed files and candidates referenced by a replacement journal."
+      }
+    },
+    {
+      "id": "workspace-backup",
+      "location": {
+        "path": "/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/TestServiceConfigurationFlagPrecedenceAndTargetChecks2046105155/001/data/catalog",
+        "origin": "environment",
+        "anchor": "/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/TestServiceConfigurationFlagPrecedenceAndTargetChecks2046105155/001/data"
+      },
+      "kind": "patterns",
+      "patterns": [
+        ".workspace.backup-*/**"
+      ],
+      "availability": "available",
+      "creation": "Windows replacement retains the previous workspace until the new receipt is saved.",
+      "recovery": "Retain with the replacement journal. Recovery refuses changed or unrecognized backup files.",
+      "policy": {
+        "selectors": [
+          "STARMAP_DATA_DIR",
+          "STARMAP_HOME",
+          "STARMAP_CATALOG_WORKSPACE_PATH",
+          "--catalog-path"
+        ],
+        "applicability": "Workspace projection, validation, or interrupted replacement.",
+        "access": "deployment-controlled",
+        "retention": "recovery",
+        "removal": "Retain until verified recovery permits cleanup. Preserve changed files and candidates referenced by a replacement journal."
+      }
+    },
+    {
+      "id": "migration-journal",
+      "location": {
+        "path": "/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/TestServiceConfigurationFlagPrecedenceAndTargetChecks2046105155/001/state/migrations",
+        "origin": "environment",
+        "anchor": "/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/TestServiceConfigurationFlagPrecedenceAndTargetChecks2046105155/001"
+      },
+      "kind": "tree",
+      "patterns": [
+        "*/manifest.json",
+        "*/journal.ndjson",
+        "*/journal.partial-*",
+        "*/.owner.lock",
+        "*/.owner-*"
+      ],
+      "availability": "available",
+      "creation": "An explicit runtime migration, unless its journal root is overridden.",
+      "recovery": "Preserve until the deployment recovery procedure permits removal.",
+      "policy": {
+        "selectors": [
+          "STARMAP_STATE_ROOT",
+          "STARMAP_HOME",
+          "migrate runtime --journal-root"
+        ],
+        "applicability": "Explicit runtime migration operations.",
+        "access": "owner-only",
+        "retention": "recovery",
+        "removal": "Preserve until migration completion and deployment recovery no longer require the operation records."
+      }
+    },
+    {
+      "id": "admin-identities",
+      "location": {
+        "path": "/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/TestServiceConfigurationFlagPrecedenceAndTargetChecks2046105155/001/state/admin/identities.json",
+        "origin": "environment",
+        "anchor": "/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/TestServiceConfigurationFlagPrecedenceAndTargetChecks2046105155/001"
+      },
+      "kind": "reserved",
+      "availability": "planned",
+      "creation": "Planned standalone administration setup.",
+      "recovery": "No implemented writer uses this reserved path.",
+      "policy": {
+        "selectors": [
+          "STARMAP_STATE_ROOT",
+          "STARMAP_HOME"
+        ],
+        "applicability": "Planned standalone administration setup.",
+        "access": "owner-only",
+        "retention": "identity",
+        "removal": "A future administration procedure must preserve identity and recovery access before removal."
+      }
+    },
+    {
+      "id": "admin-audit",
+      "location": {
+        "path": "/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/TestServiceConfigurationFlagPrecedenceAndTargetChecks2046105155/001/state/admin/audit/events.ndjson",
+        "origin": "environment",
+        "anchor": "/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/TestServiceConfigurationFlagPrecedenceAndTargetChecks2046105155/001"
+      },
+      "kind": "reserved",
+      "availability": "planned",
+      "creation": "Planned standalone administrative mutations.",
+      "recovery": "No implemented writer uses this reserved path.",
+      "policy": {
+        "selectors": [
+          "STARMAP_STATE_ROOT",
+          "STARMAP_HOME"
+        ],
+        "applicability": "Planned standalone administrative audit and operation records.",
+        "access": "owner-only",
+        "retention": "audit",
+        "removal": "A future qualified retention procedure must satisfy the deployment audit policy before removal."
+      }
+    },
+    {
+      "id": "admin-operations",
+      "location": {
+        "path": "/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/TestServiceConfigurationFlagPrecedenceAndTargetChecks2046105155/001/state/admin/operations",
+        "origin": "environment",
+        "anchor": "/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/TestServiceConfigurationFlagPrecedenceAndTargetChecks2046105155/001"
+      },
+      "kind": "reserved",
+      "availability": "planned",
+      "creation": "Planned standalone administrative receipts.",
+      "recovery": "No implemented writer uses this reserved path.",
+      "policy": {
+        "selectors": [
+          "STARMAP_STATE_ROOT",
+          "STARMAP_HOME"
+        ],
+        "applicability": "Planned standalone administrative audit and operation records.",
+        "access": "owner-only",
+        "retention": "audit",
+        "removal": "A future qualified retention procedure must satisfy the deployment audit policy before removal."
+      }
+    },
+    {
+      "id": "download-staging",
+      "location": {
+        "path": "/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/TestServiceConfigurationFlagPrecedenceAndTargetChecks2046105155/001/cache/catalog/downloads",
+        "origin": "environment",
+        "anchor": "/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/TestServiceConfigurationFlagPrecedenceAndTargetChecks2046105155/001"
+      },
+      "kind": "reserved",
+      "availability": "planned",
+      "creation": "Planned catalog download staging.",
+      "recovery": "No implemented writer uses this reserved path.",
+      "policy": {
+        "selectors": [
+          "STARMAP_CACHE_DIR",
+          "STARMAP_HOME"
+        ],
+        "applicability": "Planned catalog download staging.",
+        "access": "owner-only",
+        "retention": "recovery",
+        "removal": "A future cleanup procedure must exclude active downloads and unprocessed recovery records."
+      }
+    },
+    {
+      "id": "file-logs",
+      "location": {
+        "path": "/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/TestServiceConfigurationFlagPrecedenceAndTargetChecks2046105155/001/state/logs/starmap.log",
+        "origin": "environment",
+        "anchor": "/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/TestServiceConfigurationFlagPrecedenceAndTargetChecks2046105155/001"
+      },
+      "kind": "reserved",
+      "availability": "planned",
+      "creation": "Planned optional file logging. Current logging uses streams.",
+      "recovery": "No implemented writer uses this reserved path.",
+      "policy": {
+        "selectors": [
+          "STARMAP_STATE_ROOT",
+          "STARMAP_HOME"
+        ],
+        "applicability": "Planned optional file logging.",
+        "access": "owner-only",
+        "retention": "audit",
+        "removal": "A future rotation procedure must preserve the required retention window. Current logging uses streams."
+      }
+    },
+    {
+      "id": "managed-trust",
+      "location": {
+        "path": "/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/TestServiceConfigurationFlagPrecedenceAndTargetChecks2046105155/001/config/trust",
+        "origin": "environment",
+        "anchor": "/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/TestServiceConfigurationFlagPrecedenceAndTargetChecks2046105155/001"
+      },
+      "kind": "reserved",
+      "availability": "planned",
+      "creation": "Planned explicit managed trust import.",
+      "recovery": "No implemented writer uses this reserved path.",
+      "policy": {
+        "selectors": [
+          "STARMAP_CONFIG_DIR",
+          "STARMAP_HOME"
+        ],
+        "applicability": "Planned explicit managed trust import.",
+        "access": "owner-only",
+        "retention": "operator",
+        "removal": "Remove only through an explicit trust change that preserves access to accepted authorities."
+      }
+    }
+  ],
+  "external": [
+    {
+      "id": "dotenv",
+      "selection": "Only explicitly selected --env-file paths.",
+      "recovery": "Preserve required values privately. No working-directory discovery occurs.",
+      "policy": {
+        "selectors": [
+          "--env-file"
+        ],
+        "applicability": "Explicit environment files only.",
+        "access": "owner-only",
+        "retention": "operator",
+        "removal": "Preserve required values privately before removing an explicit input file."
+      }
+    },
+    {
+      "id": "credentials",
+      "selection": "Explicit credential references and external secret managers.",
+      "recovery": "Preserve access and provider credential roles. Values are excluded from this report.",
+      "policy": {
+        "selectors": [
+          "credential_sources"
+        ],
+        "applicability": "Explicit credential references or external secret managers.",
+        "access": "external-system",
+        "retention": "operator",
+        "removal": "Rotate or retire credentials through their owning system and preserve separate acquisition and inference roles."
+      }
+    },
+    {
+      "id": "runtime-migration",
+      "selection": "Explicit source, target, and optional journal root arguments.",
+      "recovery": "The operation manifest records those paths and checksums. Stages are siblings of the explicit target.",
+      "policy": {
+        "selectors": [
+          "migrate runtime --from",
+          "migrate runtime --to",
+          "migrate runtime --journal-root"
+        ],
+        "applicability": "Explicit migration destinations outside default roots.",
+        "access": "owner-only",
+        "retention": "recovery",
+        "removal": "Keep source, target, stage, and journals until the migration procedure permits removal."
+      }
+    },
+    {
+      "id": "release-artifacts",
+      "selection": "An explicit release output directory.",
+      "recovery": "Preserve artifact bytes, attestation, checksum, and release identity.",
+      "policy": {
+        "selectors": [
+          "release output directory"
+        ],
+        "applicability": "Explicit release assembly.",
+        "access": "deployment-controlled",
+        "retention": "durable",
+        "removal": "Preserve published bytes, attestations, and release identity for the supported release lifetime."
+      }
+    },
+    {
+      "id": "shell-completion",
+      "selection": "Explicit shell completion installation through the shell adapter.",
+      "recovery": "Regenerate from the installed binary and preserve shell configuration.",
+      "policy": {
+        "selectors": [
+          "shell completion destination"
+        ],
+        "applicability": "Explicit shell adapter installation.",
+        "access": "deployment-controlled",
+        "retention": "reproducible",
+        "removal": "Regenerate from the selected binary and preserve the shell configuration."
+      }
+    },
+    {
+      "id": "tool-caches",
+      "selection": "Git, Bun, and other external tools select their own caches.",
+      "recovery": "External tool caches are outside the product file manifest.",
+      "policy": {
+        "selectors": [
+          "external tool configuration"
+        ],
+        "applicability": "Caches owned by external tools.",
+        "access": "external-system",
+        "retention": "operator",
+        "removal": "Use the owning tool's cache policy. Product cleanup does not own these paths."
+      }
+    },
+    {
+      "id": "backup-and-usage",
+      "selection": "Planned explicit backup or usage-export destination. No default directory.",
+      "recovery": "Backup and export qualification remain separate production requirements.",
+      "policy": {
+        "selectors": [
+          "explicit backup or export destination"
+        ],
+        "applicability": "Planned backup and usage export operations.",
+        "access": "external-system",
+        "retention": "audit",
+        "removal": "Follow the deployment retention policy and prove backup recovery before removing retained exports."
+      }
+    }
+  ]
+}
+FAIL
+FAIL	github.com/agentstation/starmap/internal/cli/app	0.705s
+FAIL
