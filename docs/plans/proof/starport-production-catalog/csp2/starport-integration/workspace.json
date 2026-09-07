@@ -1,0 +1,5 @@
+{
+  "scope": "Recorded temporary test workspace, not repository configuration.",
+  "sha256": "9587de08fb0dea56985d7c5c9dbde0fddf1c08afc7325a16b883c2e89d30e22a",
+  "content": "go 1.26.6\n\nuse (\n\t/Users/jack/src/github.com/agentstation/starmap-catalog-requirements\n\t/Users/jack/src/github.com/agentstation/starport-catalog-lifecycle\n)\n"
+}

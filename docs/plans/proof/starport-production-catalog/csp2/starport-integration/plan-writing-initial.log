@@ -1,0 +1,12 @@
+/Users/jack/.agents/skills/technical-writing/scripts/technical-writing glossary check
+PASS: /Users/jack/src/github.com/agentstation/starmap-catalog-requirements/GLOSSARY.md (81 term(s), 0 error(s))
+/Users/jack/.agents/skills/technical-writing/scripts/technical-writing glossary update --check
+PASS: no candidate terms are missing from /Users/jack/src/github.com/agentstation/starmap-catalog-requirements/GLOSSARY.md
+/Users/jack/.agents/skills/technical-writing/scripts/technical-writing lint . --mode strict --format text
+/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/docs/plans/starport-production-catalog-plan.html:1:1: error long_paragraph: paragraph has 8 sentences; limit is 6
+/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/docs/plans/starport-production-catalog-plan.html:2:352: error banned_word: use a short, precise alternative: 'obtain'
+/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/docs/plans/starport-production-catalog-plan.html:2:485: error passive_voice: use active voice when the actor is known
+/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/docs/plans/proof/starport-production-catalog/csp2/owner-blocked-audit.md:6:101: error complex_verb: use a simple tense when it preserves the timing
+/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/docs/plans/proof/starport-production-catalog/csp2/owner-blocked-audit.md:15:83: error banned_word: use a short, precise alternative: 'acquire'
+FAIL: 1140 file(s), 5 diagnostic(s)
+make: *** [technical-writing-check] Error 1

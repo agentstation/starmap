@@ -1449,3 +1449,13 @@ It also checks access recovery and diagnostics that distinguish a compatible des
 The [fixture record](../../plans/proof/starport-production-catalog/csp2/windows-service-qualification.md) preserves AMD64 and ARM64 compilation and static checks.
 Native execution remains UNVERIFIED. GitHub Actions must fail if it cannot exercise administrator ownership.
 This adds no product behavior and gives no primary acceptance credit.
+
+
+## Starport integration preparation and owner decision audit
+
+Starport commit `16e9dd2` records the remaining catalog integration tests and corrected runtime-identity comments.
+The [local pair check](../../plans/proof/starport-production-catalog/csp2/starport-integration.md) passes 134 race results with package lint and changed-file prose checks.
+The published Starmap module pin remains unchanged. Full publication gates and released-pair qualification remain open.
+
+The [owner decision audit](../../plans/proof/starport-production-catalog/csp2/owner-blocked-audit.md) records the remaining prerequisites after three goal turns.
+No other `todo` task is eligible under the current dependency graph. The complete objective remains unfulfilled.
