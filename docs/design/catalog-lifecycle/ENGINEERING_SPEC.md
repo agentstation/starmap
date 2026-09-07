@@ -322,6 +322,8 @@ Generation and operation directory components use lowercase SHA-256 hashes of th
 | Starmap catalog store | `<state>/catalog/{current,.commit.lock,generations/<generation-id-hash>/}` | Preserve the accepted pointer, manifests, and payloads. Let the adapter manage locks. |
 | Runtime ownership | `R/{owner.json,.owner.lock,instance-seed}` | Persistent initialization and process locking. Restore one identity to one active owner only. |
 | Runtime evidence | `R/catalog-runtime/source.json`, `R/catalog-runtime/providers/<provider-id>.json`, and `R/catalog-runtime/providers/bindings/<key-digest>.json` | Preserve permitted source layers across restart. Fleet-required layers also need shared durable storage. |
+| Runtime publication record | `R/catalog-runtime/publication.json` | Owner-only transaction state. Startup resolves prepared records or replays committed records before reading retained inputs. |
+| Runtime publication inputs | `R/catalog-runtime/publication-inputs/<sha256>.json` | Owner-only immutable records for retention recovery. Preserve referenced records while publication remains pending. CSP5 owns collection after completion. |
 | GitHub discovery | `R/github-catalog-source/<channel-hash>.json` | Preserve replay floors and verified release references. ETags alone are disposable. |
 | Badger | `<data>/badger/` | Embedded Starport KV. Back up through an engine-consistent method. |
 | SQLite | `<data>/sqlite/starport.db` and engine sidecars | Embedded Starport SQL. Recover through a consistent snapshot that includes committed WAL data. |
@@ -922,6 +924,18 @@ Concurrent rebuilds serialize durable publication and activation. A rebuild chec
 Provider observations cannot introduce authored model definitions. Serving records must link to reviewed definitions from the baseline or selected catalog source.
 An unresolved record remains a review candidate with its original provider receipt.
 The runtime retains source layers separately. Upstream manifest lineage and complete manual-source publication remain open.
+
+Source refresh and provider windows now stage immutable inputs before catalog publication.
+A private transaction record binds the prior and candidate catalog identities and payload checksums.
+Only catalog acceptance permits retained input replacement. A bounded completion attempt continues after caller cancellation.
+
+Startup discards a prepared transaction only when the loaded catalog matches its prior identity and checksum.
+A matching accepted candidate completes retention. A committed record requires replay, and an unresolved prepared record blocks startup.
+Recovery validates every referenced input before it writes retained files. Migration refuses a pending transaction.
+
+An accepted catalog remains active when later retention fails. Reports retain its generation ID and show degraded health.
+Pending recovery blocks further updates in that process. Reopening the runtime resolves the recorded outcome or returns a conflict.
+Unknown records remain unchanged. Shared fleet recovery and completed-input collection remain CSP11 and CSP5 work.
 
 Effective generation identity binds the payload, original source links, and review candidates.
 A receipt change creates a new identity even when selected catalog values remain unchanged.

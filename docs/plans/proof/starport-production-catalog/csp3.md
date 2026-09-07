@@ -875,3 +875,40 @@ The passing restore capture retains its original filename and does not count as 
 Identity construction occurs during catalog reconstruction. These checks do not measure inference overhead.
 Manual source transactions and CLI and HTTP composition remain open. CSP3 remains in progress, and all 50 primary cases remain UNVERIFIED.
 The shared review helper remains unchanged. No branch push or native CI dispatch occurred.
+
+
+### Catalog acceptance before input retention
+
+Work commit `b2e46470` adds journaled retention for source refresh and provider windows.
+The regression proved that rejected provider publication could change retained files and become active after restart.
+The new transaction stages immutable inputs before catalog publication. It replaces retained files only after catalog acceptance.
+
+Startup compares prepared records with the loaded catalog identity and checksum.
+It discards a transaction when the prior catalog remains current, including when prior and candidate catalogs are equal.
+It completes retention when the candidate is current. A committed record requires replay, and an unresolved prepared record refuses startup.
+Recovery validates every input before it writes retained files. Invalid records remain unchanged, and migration refuses pending publication.
+
+An accepted catalog stays active when later retention fails. Reports retain its generation ID and show degraded health.
+Cancellation before acceptance leaves the prior inputs intact. After acceptance, a bounded completion attempt continues despite caller cancellation.
+Pending recovery blocks further updates in the process. Reopening resolves the recorded outcome or returns a conflict.
+
+The [verification record](csp3/input-publication-verification.json) preserves 28 captures, totaling 7,109,494 bytes, and twelve input hashes.
+Broader race checks passed 674 events: 377 runtime, 54 acquisition, and 243 reconciler events.
+The runtime race suite completed in 514.635 seconds. Twenty final race events cover recovery, publication reporting, and cancellation.
+The final focused run includes the later prior-head-first recovery condition.
+
+Normal verification combines 78 non-runtime suites with the complete corrected runtime suite.
+These checks contain 3,524 passing test events across 79 package suites, with 22 packages without tests.
+The initial runtime suite reached its deadline because its concurrency fixture awaited retention during a blocked commit.
+The fixture now issues two complete publication requests. Its catalog, generation, and receipt assertions remain unchanged.
+
+The agent stopped the superseded race process after the normal suite proved the fixture failure. The subsequent complete race run passed.
+
+Code lint, Ago, generated documentation, all six consumer compositions, and corrected strict writing passed.
+Earlier fixture, compile, unused-helper, and writing failures remain recorded.
+
+Manual non-provider observations still need retained representation and CLI and HTTP composition.
+Completed immutable inputs remain on disk. CSP5 owns bounded safe collection, and CSP11 owns shared fleet recovery.
+Native interruption, downgrade procedures, and released-pair qualification remain open. CSP3 remains in progress, and all 50 primary cases remain UNVERIFIED.
+
+The shared review helper remains unchanged. No branch push or native CI dispatch occurred.

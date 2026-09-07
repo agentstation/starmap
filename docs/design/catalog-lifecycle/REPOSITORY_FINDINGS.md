@@ -1195,3 +1195,22 @@ This test required no additional restore implementation.
 
 The [receipt identity proof](../../plans/proof/starport-production-catalog/csp3/receipt-identity-verification.json) records the checks and original publication failure.
 Manual source transactions, CLI and HTTP composition, and released-pair qualification remain open.
+
+
+### CSP3 catalog acceptance before input retention
+
+A failing store reproduced a rejected provider publication that changed retained files and became active after restart.
+The runtime now stages immutable input records and a prepared transaction before catalog publication.
+It replaces retained source and provider files only after acceptance. Startup recovery resolves interrupted transactions before loading those files.
+
+A lost commit reply leaves a prepared record. Startup compares the loaded catalog with the prior and candidate identities and checksums.
+A committed record completes retention after partial writes. Every referenced input must validate before replay writes any retained file.
+An unresolved head or invalid record blocks recovery. Migration refuses pending publication.
+
+Reports preserve accepted publication when retention fails. The active catalog remains available while further updates require recovery.
+The concurrency fixture previously wrote retained inputs synchronously while the store blocked a catalog commit.
+It now issues two complete publication requests. Its catalog, generation, and receipt assertions remain unchanged.
+
+The [input publication proof](../../plans/proof/starport-production-catalog/csp3/input-publication-verification.json) records exact checks and the failed publication regression.
+Manual non-provider observations still need retained input representation and CLI and HTTP composition.
+Completed-input collection, shared fleet recovery, native qualification, and released-pair acceptance remain open.
