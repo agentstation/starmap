@@ -1,0 +1,5 @@
+--- FAIL: TestAcquireBindingsKeepsTwoScopesForOneProvider (0.00s)
+    binding_batch_test.go:33: built-in acquirer cannot run the active binding set
+FAIL
+FAIL	github.com/agentstation/starmap/acquisition	0.528s
+FAIL
