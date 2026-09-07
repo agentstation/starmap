@@ -1,0 +1,501 @@
+{
+  "status": "local developer flow verified; production acceptance unverified",
+  "starmap_base": "61de93cb96eecda5e3721430f1fa762f9902af0e",
+  "starport_base": "5820a370ff9255a8148799f5b45fcaf927c2e1dc",
+  "dependency": "temporary GOWORK=/tmp/starport-local-flow.work; published module unchanged",
+  "platform": "macOS arm64",
+  "baseline_context_window": 128000,
+  "acquired_context_window": 9999,
+  "reset_context_window": 128000,
+  "restart_same_generation": true,
+  "restart_same_payload": true,
+  "inference_http_status": 200,
+  "inference_stream_complete": true,
+  "inference_source_server_offline": true,
+  "primary_acceptance_credit": 0,
+  "artifacts": [
+    {
+      "path": "inference-failure.json",
+      "bytes": 141,
+      "sha256": "92aeb596ad169f9c590bbb039020a1792203d472e6eaeac2149c2b89673fed9d"
+    },
+    {
+      "path": "inference-proof.json",
+      "bytes": 503,
+      "sha256": "0bbea21af7c84c1c230d3d202e654f09812ef9a028a26fd418d80fb99c1f6766"
+    },
+    {
+      "path": "starmap-acquired-models.json",
+      "bytes": 308288,
+      "sha256": "f21f75c0617f119da95b815c4938c65a4f209ca1b0e2cd13a544789684d24f2d"
+    },
+    {
+      "path": "starmap-reset-models.json",
+      "bytes": 308290,
+      "sha256": "5d87796f8d53896845689775ac35f7d3ce8702cbb4395b3fb36cb2adb36b61d3"
+    },
+    {
+      "path": "starmap-reset-operation.json",
+      "bytes": 564,
+      "sha256": "1ec2c2f65a14e9983abe97cffe7ae7532c3723eae26df80ef9268caa97fe9e93"
+    },
+    {
+      "path": "starmap-source-reset-contracts-fixed.jsonl",
+      "bytes": 68081,
+      "sha256": "612a9a7d2a86e762bae3d9793b3202a531d63cfe4b9e30685b49b9b1155c8993"
+    },
+    {
+      "path": "starmap-source-reset-contracts.jsonl",
+      "bytes": 52155,
+      "sha256": "e81fd80e825faac7ce4b595ca8d2fdc18afe65fcf50fc3128367ae4fd7038d96"
+    },
+    {
+      "path": "starmap-source-reset-focused.jsonl",
+      "bytes": 35775,
+      "sha256": "4438a383ed2682fdd2e4bb06f3ee2821f555ba2dd6233ff5adbb9eea235b58d0"
+    },
+    {
+      "path": "starmap-source-reset-red.jsonl",
+      "bytes": 1959,
+      "sha256": "b66073e7a4c671390e48eda412d7c1e13b59865c973b299151f4b9e30d2ca0f3"
+    },
+    {
+      "path": "starport-connected-status.json",
+      "bytes": 3414,
+      "sha256": "7dc431dbd907056178d409b55d176df3aa11d5d0007b2ae829d5f0ef76992162"
+    },
+    {
+      "path": "starport-local-flow-acquisition-final-race.jsonl",
+      "bytes": 9586,
+      "sha256": "db6fc4c6fcf3c8f0db69160a1f1adf8cb267d18897faad2f0bc8a921cab26d94"
+    },
+    {
+      "path": "starport-local-flow-ago-final.json",
+      "bytes": 289,
+      "sha256": "b8fb7afa66aa7a93914ac258475dd0191be821803a8aea4439f5ba05022f5fa5"
+    },
+    {
+      "path": "starport-local-flow-ago.json",
+      "bytes": 289,
+      "sha256": "b8fb7afa66aa7a93914ac258475dd0191be821803a8aea4439f5ba05022f5fa5"
+    },
+    {
+      "path": "starport-local-flow-cli-checks.log",
+      "bytes": 39242,
+      "sha256": "0613f965590f17615d4da9da36b76313628a81f904164bdf9c7657ab90d2cd88"
+    },
+    {
+      "path": "starport-local-flow-coverage.log",
+      "bytes": 2163,
+      "sha256": "67ecbb8977e8cbabd10e6a87f9162f283fd0dafba121685bc7301742e4f724ec"
+    },
+    {
+      "path": "starport-local-flow-docs-check.log",
+      "bytes": 1211,
+      "sha256": "c326a6932614067e6dc62592068f841cbf5eadf50fe1b0b63bc07614250aa50b"
+    },
+    {
+      "path": "starport-local-flow-documents-settled.json",
+      "bytes": 3981,
+      "sha256": "5469db13f71e4163be382e706662b8d41041b6ad124faf16976ab5b4a41c4770"
+    },
+    {
+      "path": "starport-local-flow-documents.json",
+      "bytes": 3981,
+      "sha256": "880d899ed4eabcdfec623358ba89bd9594e31de913f96a2b71de934a235ab4b4"
+    },
+    {
+      "path": "starport-local-flow-focused-race.jsonl",
+      "bytes": 31322,
+      "sha256": "ad339e2ac086975f861fa7927a9514f3fdcbc33b911d806a34644041de0da223"
+    },
+    {
+      "path": "starport-local-flow-generate-final.log",
+      "bytes": 9934,
+      "sha256": "dc36a079997e36571788e7472549948133219de100cddda217d504e6266aeab0"
+    },
+    {
+      "path": "starport-local-flow-generate.log",
+      "bytes": 9934,
+      "sha256": "ca53070792b46c7f65d348b09f4ecd950aa983749a7336442fa934a4b5d17a87"
+    },
+    {
+      "path": "starport-local-flow-inference-supplied.py",
+      "bytes": 3234,
+      "sha256": "06a939d952255466361bda94f6a6ff6345d57a1d7dd2ed2ffbbe218d3083ce0d"
+    },
+    {
+      "path": "starport-local-flow-lint-final.log",
+      "bytes": 2086,
+      "sha256": "75af8775b27b2ec14b33be137fee9eb906ca06ff3b3064d2dd221d62d2dead1d"
+    },
+    {
+      "path": "starport-local-flow-lint-settled.log",
+      "bytes": 1560,
+      "sha256": "0091cddb6ad3e357fd9a95dfecaca7da1f7fde7eb615b404e082bc023d03f9c7"
+    },
+    {
+      "path": "starport-local-flow-milestone-normal.jsonl",
+      "bytes": 1269708,
+      "sha256": "b1bfe78ae14632f242e62d4f5451cf4ba97228853a8bfd8249c6371f1f9616ee"
+    },
+    {
+      "path": "starport-local-flow-pair-first.jsonl",
+      "bytes": 3131,
+      "sha256": "9089a0a421cceef79b0be80cfb41ce4bc73797dd2690d92afff6c7e08fcafecd"
+    },
+    {
+      "path": "starport-local-flow-pair-fixed.jsonl",
+      "bytes": 2532,
+      "sha256": "ab9a23a77fd064ddefc8aa8373185e21e4c98ca9f9c33ac1e0855d3e8b028738"
+    },
+    {
+      "path": "starport-local-flow-pipeline-lint-fix.jsonl",
+      "bytes": 142037,
+      "sha256": "f9478851b832c1ca0275fb49cd348e54ae97348eb64f542ab7bf6cf5c0c0eed6"
+    },
+    {
+      "path": "starport-local-flow-product-fifth.log",
+      "bytes": 803,
+      "sha256": "99b723db1894906a97dd3eea1c8b4661d1e2353b37e1af9e53371c48abc29d22"
+    },
+    {
+      "path": "starport-local-flow-product-first.log",
+      "bytes": 742,
+      "sha256": "995a4617649bfdd873a6accbafdcdb786eafa2d4e402ea019c46d4c51b4d21b6"
+    },
+    {
+      "path": "starport-local-flow-product-fourth.log",
+      "bytes": 1957,
+      "sha256": "69f3ae9849d41c957783ec384dd4bb7446a8aa21a9e8bdd10c97f4ed2f34060c"
+    },
+    {
+      "path": "starport-local-flow-product-second.log",
+      "bytes": 657,
+      "sha256": "c77eabfeb48eab94eb791d05782fe492d5f1815b5f1c88926c71aec1a4f5de19"
+    },
+    {
+      "path": "starport-local-flow-product-seventh.log",
+      "bytes": 840,
+      "sha256": "9800fe33b78ae14acdafc3d66b1d1d279a475c82147595c7e2af658f56341abe"
+    },
+    {
+      "path": "starport-local-flow-product-sixth.log",
+      "bytes": 842,
+      "sha256": "2af5b59179caa3f1d52f54419f47ab6d0e7d29a88bf78965f7604ca05d75c2f3"
+    },
+    {
+      "path": "starport-local-flow-product-third.log",
+      "bytes": 89,
+      "sha256": "c51daa4a64ac1fed2f9781040b9bbe2d592705bc74fddca6892676e8b7c44a84"
+    },
+    {
+      "path": "starport-local-flow-run.py",
+      "bytes": 6455,
+      "sha256": "b211d1bb5c6efc618251fc66d913407421babf285e74bff1b85ba89f11ce5ae3"
+    },
+    {
+      "path": "starport-local-flow-runtime-first.jsonl",
+      "bytes": 5825,
+      "sha256": "37c6f9dc97cffc57bc21972fcbee0e9a075c421cd3aadf6062dfbdc926864db6"
+    },
+    {
+      "path": "starport-local-flow-runtime-fixed.jsonl",
+      "bytes": 9580,
+      "sha256": "5807c23ae649903f7a0104e1bd362b214b3d0df9a8db639a87369156c764d127"
+    },
+    {
+      "path": "starport-local-flow-starmap-build-info.log",
+      "bytes": 15674,
+      "sha256": "a7dff66e254bf6ebc48439da3163974a5321dcf6ae2486f183a3c347084565a6"
+    },
+    {
+      "path": "starport-local-flow-starport-ago.json",
+      "bytes": 1506,
+      "sha256": "4f487a33720dbcc197653d4c98caca2f91e8a8c0f1e927b80bfef14ff46b22e7"
+    },
+    {
+      "path": "starport-local-flow-starport-build-info.log",
+      "bytes": 18272,
+      "sha256": "ce3500bbb4c623466efe0542d8fef4e71b2ba13d80c48536d47c5737eb5b60fe"
+    },
+    {
+      "path": "starport-local-flow-starport-catalog-race.jsonl",
+      "bytes": 145051,
+      "sha256": "3292d97238c85544ded1e32419d3ad4ed411b2eccd78ec39cb3c521cb58eb527"
+    },
+    {
+      "path": "starport-local-flow-starport-settings-contract.jsonl",
+      "bytes": 3916,
+      "sha256": "1c7e4b0809fe39dd1135973eb5b4741fcbd766fba61e6220b84268cce3485318"
+    },
+    {
+      "path": "starport-local-flow-starport-settings-final.jsonl",
+      "bytes": 4222,
+      "sha256": "16a2c6472e9de1663830bb83509c90b7f48829014e1bf4eeb14f806d795778cd"
+    },
+    {
+      "path": "starport-local-flow-starport-settings-fixed.jsonl",
+      "bytes": 3906,
+      "sha256": "e6a24d73f1e6bb571ace230cf819db111b62b5a81dac04043aff8224c04f1f7f"
+    },
+    {
+      "path": "starport-local-flow-verify.log",
+      "bytes": 23104,
+      "sha256": "ae1925c7606e84e52c1b9c8fc06919faeb811e6712f5ccffa4ec878fab1f2f58"
+    },
+    {
+      "path": "starport-local-flow-writing-final4.log",
+      "bytes": 558,
+      "sha256": "8fbfc02c818b51a06828a3e08eb233da8b399c399c1a812781adb4ef72450bf9"
+    },
+    {
+      "path": "starport-local-flow-writing-settled.log",
+      "bytes": 558,
+      "sha256": "8fbfc02c818b51a06828a3e08eb233da8b399c399c1a812781adb4ef72450bf9"
+    },
+    {
+      "path": "starport-local-flow-writing2.log",
+      "bytes": 806,
+      "sha256": "1e7297908e90fd33b10f47b0a0e875dd243ec49773a6effce4199e9621bb9101"
+    },
+    {
+      "path": "starport-local-flow-writing3.log",
+      "bytes": 558,
+      "sha256": "ea2ed06a1ea50d94d34615d8a09bc0a0e0c619dfc6e8929a71db6e1594bce50b"
+    },
+    {
+      "path": "starport-offline-status.json",
+      "bytes": 1776,
+      "sha256": "9b776a3d88686986285c4acca9977d741a739b88ea865461b13d1b106e14f963"
+    },
+    {
+      "path": "starport-reset-status.json",
+      "bytes": 3793,
+      "sha256": "aeb6612d1c66796861ba0b2dc6526fa38d4e9c51504561a343e3acce6650111d"
+    },
+    {
+      "path": "starport-restart-status.json",
+      "bytes": 2111,
+      "sha256": "b1bf1f882e07e434a7dae598450a3a6950bd4dcf5eecc67d3690ba771564c175"
+    }
+  ],
+  "binaries": [
+    {
+      "path": "/tmp/starport-local-flow-starmap",
+      "sha256": "e85f539953f2d11811929254f87dc8220d3c6565347c3cefbe3f23ec53b2b4f6"
+    },
+    {
+      "path": "/tmp/starport-local-flow-gateway",
+      "sha256": "c1f0aed64aa3ddff109b12bc1dddf74719e648be23016371078b80f9f42e9c64"
+    }
+  ],
+  "limitations": [
+    "No released-pair or native-platform qualification",
+    "Binary integration precedes final nil-client validation, test-only fixture edits, and unused-wrapper removal",
+    "Canonical Starport directory owner and shared settings adoption remain CSP8 work",
+    "Required pre-PR review remains pending; shared-helper chunk size requires owner decision"
+  ],
+  "exploratory_checks": [
+    {
+      "command": "GOWORK=/tmp/starport-local-flow.work go tool ago -stale-ignores -format json ./...",
+      "repository": "starport",
+      "exit_code": 1,
+      "findings": 3,
+      "scope": "Starmap workspace tool; Starport has no declared ago tool; not a required Starport gate",
+      "files_unchanged": true
+    }
+  ],
+  "source_inputs": [
+    {
+      "repository": "starmap-catalog-requirements",
+      "path": "acquisition/runtime.go",
+      "sha256": "dd22a5a34f513fda16ff741bf78f82cf9ffd49bcf82cfd07841eb58a371b5c6b"
+    },
+    {
+      "repository": "starmap-catalog-requirements",
+      "path": "acquisition/runtime_test.go",
+      "sha256": "9c9941e9683ad5d5d79c9712836cf68e07aecb496d670861b5a9fb0eeb7c419d"
+    },
+    {
+      "repository": "starmap-catalog-requirements",
+      "path": "acquisition/syncer.go",
+      "sha256": "73fa6aeba4988ec07b1671a522d0e11d6ab9fc7aa595dea47c0ecde0a21ba294"
+    },
+    {
+      "repository": "starmap-catalog-requirements",
+      "path": "internal/catalog/pipeline/pipeline.go",
+      "sha256": "ee227f6bab7b152b8efdd640d8533a406539d84f46f6210d8c281cf3338756b1"
+    },
+    {
+      "repository": "starmap-catalog-requirements",
+      "path": "internal/catalog/pipeline/pipeline_test.go",
+      "sha256": "3f5f2d7f45ebfa5ade3c3c2346cc7cb539c878cf151819d2390f81dddec7d2c0"
+    },
+    {
+      "repository": "starmap-catalog-requirements",
+      "path": "internal/catalog/pipeline/sources.go",
+      "sha256": "5d39d05c935e06b1edf1598b8d67b0c58ae42e4f4451e984dda2ae666fcf6bce"
+    },
+    {
+      "repository": "starmap-catalog-requirements",
+      "path": "internal/catalog/pipeline/sources_test.go",
+      "sha256": "23b6eb6ab6906dd39f91cea7ef11b139b1651e8651d8f7531a7832b4bcc13750"
+    },
+    {
+      "repository": "starmap-catalog-requirements",
+      "path": "internal/catalog/pipeline/strict.go",
+      "sha256": "2f836b7b77540d9002938c35008ffde61cc6843c9014287a9386fcb5174f6a06"
+    },
+    {
+      "repository": "starmap-catalog-requirements",
+      "path": "internal/cli/app/catalog_acquisition.go",
+      "sha256": "bf11d15fe9e7ff0a9e47ba762d1dba4817c760e8d608ae80ec439a3bc0d22ce8"
+    },
+    {
+      "repository": "starmap-catalog-requirements",
+      "path": "internal/cli/app/catalog_acquisition_test.go",
+      "sha256": "a03a5e1c6726deb72ee86b0e7110cf1e7e7cb5488cb3c1447a9fe65e27768524"
+    },
+    {
+      "repository": "starmap-catalog-requirements",
+      "path": "internal/cli/commands/update/command.go",
+      "sha256": "e4c8caabea9b13f2057a1a1aa03dfdcf10b7752a6b2354d4ffbb07bcde2a8595"
+    },
+    {
+      "repository": "starmap-catalog-requirements",
+      "path": "internal/cli/commands/update/update.go",
+      "sha256": "be692e6fd7f9349a927bc55ea8215a54aedf5c0d6ac7e750f52d20bb9343b2d2"
+    },
+    {
+      "repository": "starmap-catalog-requirements",
+      "path": "internal/server/handlers/admin.go",
+      "sha256": "a12f38098909f954020ba2bebe2859835ebfa9dc39b9bfacf792a2b87a18ee0f"
+    },
+    {
+      "repository": "starmap-catalog-requirements",
+      "path": "internal/server/handlers/admin_operations_test.go",
+      "sha256": "a43551646c11028dbe5220a91374b57f231a43247b9a70928fd03f39d92791a9"
+    },
+    {
+      "repository": "starmap-catalog-requirements",
+      "path": "pkg/sync/options.go",
+      "sha256": "d12c259643c7c87caa5d845cc6bd93f160a0f04ba21baa70abb4af140aa631e1"
+    },
+    {
+      "repository": "starmap-catalog-requirements",
+      "path": "pkg/sync/result.go",
+      "sha256": "08595831b191319f7505a662ac7901a723e5faf30ca6cffccb12b873da55244a"
+    },
+    {
+      "repository": "starmap-catalog-requirements",
+      "path": "runtime/acquisition_update.go",
+      "sha256": "727524536725b58f284e17235626f3aaaf4722b079990ab4e66f6d914fb19fa2"
+    },
+    {
+      "repository": "starmap-catalog-requirements",
+      "path": "runtime/layers.go",
+      "sha256": "53f9745ca4264d274cd27bfb86d3833bde9f290c5feebadd5b76dc35939d424f"
+    },
+    {
+      "repository": "starmap-catalog-requirements",
+      "path": "runtime/manual_history.go",
+      "sha256": "774e5ec6bb967ed6c6b51481ec10c9450813f6fff1ae6cdcf70bc48014e2b31d"
+    },
+    {
+      "repository": "starmap-catalog-requirements",
+      "path": "runtime/manual_reconciliation.go",
+      "sha256": "efa94754540289749ae7d49cb85fa9e60af07acfe87eeca80fc5f7ba5d73d205"
+    },
+    {
+      "repository": "starmap-catalog-requirements",
+      "path": "runtime/observation_update.go",
+      "sha256": "1e5ab7c72226c4556c60fd899feb369ad7d6acd79fa4e970f0aac5c323c4f924"
+    },
+    {
+      "repository": "starmap-catalog-requirements",
+      "path": "runtime/provider_reset.go",
+      "sha256": "38bdc2c53d5d54d5c86b4a54613bb6cd0d01eb58d35ce98affa574deff36862a"
+    },
+    {
+      "repository": "starmap-catalog-requirements",
+      "path": "runtime/provider_reset_replay.go",
+      "sha256": "d8616aabc6e763d46d89ad467d3cea8d3746d8bfd68ab96d81a2a831b53d55b8"
+    },
+    {
+      "repository": "starmap-catalog-requirements",
+      "path": "runtime/provider_reset_scope_test.go",
+      "sha256": "4f5548802b08be36ad7a426b643a6befc0eaae77bf7635a07f128e952a4c64d2"
+    },
+    {
+      "repository": "starmap-catalog-requirements",
+      "path": "runtime/publication_retention.go",
+      "sha256": "c5f3f9b34efb26e62947115fcfc95a365b624d95064df3ff5c17d7fb4394acc1"
+    },
+    {
+      "repository": "starmap-catalog-requirements",
+      "path": "runtime/source_reset_failure_test.go",
+      "sha256": "60cb1cb8046a4e5893a349ea5a69cb049f46805446e3f28ad7c85ddf5c468db8"
+    },
+    {
+      "repository": "starmap-catalog-requirements",
+      "path": "runtime/source_reset_recovery_test.go",
+      "sha256": "6a0ddfcb9b5588ab634c18c5c417c511fcd7760ae3d75ecc5f883dc02efc082e"
+    },
+    {
+      "repository": "starmap-catalog-requirements",
+      "path": "runtime/source_reset_scope_test.go",
+      "sha256": "f98c3069155237f1581a6b4fd2132bcac525ed016f752f52e545982a037af855"
+    },
+    {
+      "repository": "starmap-catalog-requirements",
+      "path": "runtime/source_reset_test.go",
+      "sha256": "63a9a6870bd5d7b893ec37e3ec57fb9a85db111ac4551d3253ca16aa23e06f34"
+    },
+    {
+      "repository": "starport-catalog-lifecycle",
+      "path": "internal/catalog/runtime_acquisition_test.go",
+      "sha256": "354747a3a24dfb73af9833d663f3b613d3ec42f0aae11e3fdc70f5fa60897b77"
+    },
+    {
+      "repository": "starport-catalog-lifecycle",
+      "path": "internal/catalog/settings.go",
+      "sha256": "775f9bcc2861283b0e4590ed95db8814919166578800b8acef070139552bf7b2"
+    },
+    {
+      "repository": "starport-catalog-lifecycle",
+      "path": "internal/catalog/settings_test.go",
+      "sha256": "59aca45d578f61a9f362e4bb48d6506b979ab29f3ffdf8c26c3f2cd334961984"
+    },
+    {
+      "repository": "starmap-catalog-requirements",
+      "path": "internal/catalog/pipeline/observation_health_test.go",
+      "sha256": "be72433bba9785d01413fc5a6eca348e160d8c30bb38dbf897830000ccab09dd"
+    },
+    {
+      "repository": "starmap-catalog-requirements",
+      "path": "internal/catalog/pipeline/provider_bindings_test.go",
+      "sha256": "cd8d78686d067342bd4a7d2fb60f7fafde55bbc117302747624455c227270287"
+    }
+  ],
+  "implementation_commit": "eb2cbbd4d7519853185dbc5fda003e5a35bd4f8a",
+  "repository_verification": {
+    "original_command": "GOTOOLCHAIN=go1.26.6 make verify",
+    "original_exit_code": 2,
+    "normal_packages_passed": 79,
+    "race_packages_passed": 79,
+    "packages_without_tests": 22,
+    "container": "PASS: linux/amd64 image with read-only root and writable state volume",
+    "initial_failure": "unused requireHealthyObservations wrapper",
+    "repair": "Removed the unused wrapper; strict tests call the same production validator with empty-source refusal enabled",
+    "after_repair": [
+      "all pipeline race tests passed",
+      "make lint passed",
+      "STARMAP_VERIFY_COVERAGE_ONLY=1 make verify passed",
+      "make docs-check passed",
+      "all four repository CLI checks passed",
+      "git diff --check passed"
+    ],
+    "scope": "Original verifier plus corrected affected check and remaining repository-owned checks; no full successful verifier invocation claimed"
+  }
+}

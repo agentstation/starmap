@@ -1,0 +1,7 @@
+Starport offline ready
+CLI update complete
+Starmap server ready
+Starport refresh response {"id": "54456ac3-7f80-4385-a629-f7de3ff80512", "kind": "catalog_update", "state": "accepted", "accepted_at": "2026-09-07T14:59:41.120964Z", "changed": false, "joined": false}
+Starport connected ready
+Reset operation {"data": {"id": "e0b63234e88bc2c39a1bd56e00341040", "kind": "catalog_update", "state": "succeeded", "accepted_at": "2026-09-07T09:59:45.21551-05:00", "started_at": "2026-09-07T09:59:45.21553-05:00", "completed_at": "2026-09-07T10:00:07.385436-05:00", "detail": {"dry_run": false, "generation_id": "catalog-20260830T083213Z-ad5d2a45e490.local.45af35c43056", "providers_changed": 1, "reset_count": 1, "sync_run_id": "source-run-dc1838ab-1b6d-4731-bc34-7601a2a6e705", "total_changes": 1}}}
+Starport restart preserved accepted generation
