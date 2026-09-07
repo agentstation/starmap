@@ -1,0 +1,18 @@
+{
+  "starmap_commit": "70f01b6aca2634861d19a81ab1770f5d41412170",
+  "starport_commit": "5820a370ff9255a8148799f5b45fcaf927c2e1dc",
+  "scope": "Local working pair with a temporary Go workspace; no released-pair acceptance credit.",
+  "starport_test_events": 134,
+  "starport_package_suites": 1,
+  "files": {
+    "starport-catalog-race.jsonl": "d319b8f06df0924ac4feb84f4205c94c88d91cae7ea68b569edecddac48913a1",
+    "documents-settled.json": "0241ff7edc1ae233b395240f9a860c4395bf0371fa1dafd6a2bc735e54fde684",
+    "writing-first.log": "28e35cf09382ca22fe8a3fef43fc2048ef9bf53db39ac4085cb106564aca0a12",
+    "writing-settled.log": "231cd1ccf27623873a1ca68c709f0d5ce166c334a0e14a91d922dbb7279d22b2"
+  },
+  "starport_working_inputs": {
+    "internal/catalog/runtime_acquisition_test.go": "354747a3a24dfb73af9833d663f3b613d3ec42f0aae11e3fdc70f5fa60897b77",
+    "internal/catalog/settings.go": "775f9bcc2861283b0e4590ed95db8814919166578800b8acef070139552bf7b2",
+    "internal/catalog/settings_test.go": "59aca45d578f61a9f362e4bb48d6506b979ab29f3ffdf8c26c3f2cd334961984"
+  }
+}
