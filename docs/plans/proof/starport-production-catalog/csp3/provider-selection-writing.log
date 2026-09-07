@@ -1,0 +1,9 @@
+/Users/jack/.agents/skills/technical-writing/scripts/technical-writing glossary check
+PASS: /Users/jack/src/github.com/agentstation/starmap-catalog-requirements/GLOSSARY.md (80 term(s), 0 error(s))
+/Users/jack/.agents/skills/technical-writing/scripts/technical-writing glossary update --check
+PASS: no candidate terms are missing from /Users/jack/src/github.com/agentstation/starmap-catalog-requirements/GLOSSARY.md
+/Users/jack/.agents/skills/technical-writing/scripts/technical-writing lint . --mode strict --format text
+/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/docs/design/catalog-lifecycle/REPOSITORY_FINDINGS.md:1294:1: error long_sentence: sentence has 28 words; limit is 25
+/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/internal/catalog/reconciler/provider_selection.go:13:81: error semicolon: replace the semicolon with a period
+FAIL: 1097 file(s), 2 diagnostic(s)
+make: *** [technical-writing-check] Error 1
