@@ -15,7 +15,7 @@ ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$ROOT" || exit 1
 
 # BASE is the digest-pinned base image of the release configuration.
-BASE="cgr.dev/chainguard/static@sha256:60582b2ae6074f641094af0f370d4ab241aab271858a66223dcde7eee9f51638"
+BASE="cgr.dev/chainguard/static@sha256:f51c2493951313c3ad4069080b2814ffb6ed6fe3909dabeb84a9482f42d5600b"
 IMAGE="starmap-container-smoke:local"
 CONTAINER="starmap-container-smoke"
 VOLUME="starmap-container-smoke-state"

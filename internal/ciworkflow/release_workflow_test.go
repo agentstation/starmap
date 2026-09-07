@@ -104,7 +104,7 @@ func TestReleaseConfigurationPinsInputsAndBuildsSupportedTargets(t *testing.T) {
 		"goos:\n      - linux\n      - darwin\n      - windows",
 		"goarch:\n      - amd64\n      - arm64",
 		"env:\n      - CGO_ENABLED=0",
-		"cgr.dev/chainguard/static@sha256:60582b2ae6074f641094af0f370d4ab241aab271858a66223dcde7eee9f51638",
+		"cgr.dev/chainguard/static@sha256:f51c2493951313c3ad4069080b2814ffb6ed6fe3909dabeb84a9482f42d5600b",
 		`"{{ if not .Prerelease }}latest{{ end }}"`,
 		`make_latest: '{{ if .Prerelease }}false{{ else }}true{{ end }}'`,
 		"draft: true",
