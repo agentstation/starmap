@@ -365,5 +365,9 @@
     "diagnostics": 0,
     "exit_code": 0
   },
-  "planning_base_commit": "adc634469269e85dbeb010912d129dbd0821a8eb"
+  "planning_base_commit": "adc634469269e85dbeb010912d129dbd0821a8eb",
+  "work_commit": "497fd923b7fe866692ff9e199803eb7b1d44ee5c",
+  "integrated_commit": "891c0a5385bb97a985cd6db67491c5a344b9cbc3",
+  "raw_files_excluded_from_code_review_diff": true,
+  "publication": "Pending required reviews; these branch updates remain local."
 }

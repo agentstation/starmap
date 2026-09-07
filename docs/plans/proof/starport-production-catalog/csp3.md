@@ -708,3 +708,11 @@ The product verifier still reports zero primary passes and 50 UNVERIFIED cases.
 CSP3 remains active for operator integration and the remaining scope and field-authority contracts.
 Code publication still waits for required review. The proposed shared-helper change remains unapplied.
 Raw results use the existing evidence branch before code review, so captured output does not enlarge the code review bundle.
+
+
+The work commit is `497fd923`. Evidence commit `251378b9` preserves thirteen captured files, totaling 3,589,200 bytes.
+Local planning merge `adc63446` supplies that evidence as the code review base.
+
+All captured-file diffs against this base are empty. The integration preserved every recorded Go input hash.
+Strict writing passed 1,053 files with zero diagnostics. The document validator still reports 38 tasks and 324 required subcases.
+These branch updates remain local pending their required publication reviews.
