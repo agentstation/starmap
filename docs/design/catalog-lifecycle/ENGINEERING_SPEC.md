@@ -1134,7 +1134,11 @@ Known cleared provider fields cannot return through unchanged local projections.
 The acquisition factory (`acquisition.NewForRuntime`) connects manual source reads to retained runtime publication.
 The runtime update (`Runtime.UpdateAcquisition`) derives reset scopes from completed source observations under one operation lock.
 The preview (`Runtime.PreviewAcquisition`) uses a captured snapshot without writing catalog, workspace, or runtime state.
-The CLI update and HTTP update use this composition. HTTP accepts `fresh=true`. The CLI uses `--force`.
+
+The CLI update and HTTP update use this composition. HTTP accepts `fresh=true`.
+The CLI uses `--fresh`, with `--force` and `-f` as aliases.
+A dry run asks no confirmation. An interactive apply asks once after the preview, and `--yes` skips confirmation.
+Preview and completion report acquisition reset counts even when no model values change.
 
 Fresh acquisition preserves the selected baseline and requires complete successful replacement observations.
 Explicit reset permits source omissions. Normal refresh retains the volume-collapse guard, and strict non-reset publication still rejects an empty source.
