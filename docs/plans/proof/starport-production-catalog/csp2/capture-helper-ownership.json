@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "owner_branch": "codex/catalog-plan",
+  "reason": "Keep executable capture helpers in a complete code review, separate from binary evidence.",
+  "files": {
+    "docs/plans/proof/starport-production-catalog/csp0.2/compose-driver.py": "79629331f284c1b35dc7ef3757d5cecf2ac47917a308aa30349f5af6ba80f1e0",
+    "docs/plans/proof/starport-production-catalog/csp0.2/verify_current_release.py": "fa0b38ba5dfc7b16d23a7ae829b59b4ab8f21fbe7f0d3dec8658aa05f4f4315f",
+    "docs/plans/proof/starport-production-catalog/csp0.3/readme-preview.html": "acfb50fa39a328c6c52ba799d28ac8d123d6caad067666a70c8da498f3af3273",
+    "docs/plans/proof/starport-production-catalog/csp3/fresh-cli/fixture.py": "be0f04a47be2ccf9b588a01506ffe6bf604e3964e57ec98aa605c64f7c1ee28b",
+    "docs/plans/proof/starport-production-catalog/local-developer-flow/starport-local-flow-inference-supplied.py": "06a939d952255466361bda94f6a6ff6345d57a1d7dd2ed2ffbbe218d3083ce0d",
+    "docs/plans/proof/starport-production-catalog/local-developer-flow/starport-local-flow-run.py": "b211d1bb5c6efc618251fc66d913407421babf285e74bff1b85ba89f11ce5ae3"
+  }
+}
