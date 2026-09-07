@@ -1,0 +1,72 @@
+{
+  "foundation_commit": "0451b039e76b1fe11f629a1e26059c41147dd2a3",
+  "full_verification": {
+    "command": "GOTOOLCHAIN=go1.26.6 make verify",
+    "exit_code": 0,
+    "stages": 39,
+    "ordinary_packages_passed": 79,
+    "race_packages_passed": 79,
+    "failed_packages": 0
+  },
+  "windows_compilation": {
+    "toolchain": "go1.25.12",
+    "architectures": [
+      "amd64",
+      "arm64"
+    ],
+    "packages": [
+      "internal/bootstrap",
+      "pkg/productpaths",
+      "internal/catalog/workspace",
+      "internal/test/windowstoken",
+      "pkg/catalogs/storage"
+    ],
+    "native_execution": "UNVERIFIED"
+  },
+  "logs": [
+    {
+      "file": "starmap-native-second-verify.log",
+      "sha256": "17a472986adc8956fa543aa3d8cb3b5512c69fd164b806d25ceae41fe59e98a0",
+      "bytes": 66300
+    },
+    {
+      "file": "starmap-native-second-focused.jsonl",
+      "sha256": "36f569fafea5fb24f187cbd08288a2166edbd06515279ffa2fcfd2c8b9cc1a01",
+      "bytes": 106129,
+      "test_events": {
+        "pass": 106
+      }
+    },
+    {
+      "file": "starmap-native-second-go125.jsonl",
+      "sha256": "dee50a0ba6f7e0601e1ede3039595e975cceb8e7518843c56a5b65e26d4dfc45",
+      "bytes": 151078,
+      "test_events": {
+        "pass": 153
+      }
+    },
+    {
+      "file": "starmap-native-second-ago-final.json",
+      "sha256": "b8fb7afa66aa7a93914ac258475dd0191be821803a8aea4439f5ba05022f5fa5",
+      "bytes": 289
+    },
+    {
+      "file": "starmap-native-second-lint.log",
+      "sha256": "e92606b0bf483111dff0a120c315ea165821348f31365020e2468a0059095c47",
+      "bytes": 10
+    },
+    {
+      "file": "starmap-native-second-windows-lint-settled.log",
+      "sha256": "e92606b0bf483111dff0a120c315ea165821348f31365020e2468a0059095c47",
+      "bytes": 10
+    },
+    {
+      "file": "starmap-native-second-writing-settled.log",
+      "sha256": "375adf4bd9e499527ec5155336da3e069094ec882a714842db09506a588935a5",
+      "bytes": 554
+    }
+  ],
+  "review": "in progress",
+  "legacy_migration": "native lock-alias test pending; production algorithm unchanged",
+  "primary_acceptance_credit": 0
+}

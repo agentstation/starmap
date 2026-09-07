@@ -1527,8 +1527,134 @@
         "github.com/agentstation/starmap/pkg/catalogs/storage": 1,
         "github.com/agentstation/starmap/internal/catalog/workspace": 62
       }
+    },
+    {
+      "path": "/tmp/starmap-native-second-followup-windows-arm64/tests.jsonl",
+      "sha256": "66eb295da3c856064ed9fda93338001580756ef3964e722d6bb994f12f4767c2",
+      "test_events": {
+        "pass": 1096,
+        "fail": 108
+      },
+      "failed_by_package": {
+        "github.com/agentstation/starmap/internal/bootstrap": 13,
+        "github.com/agentstation/starmap/internal/cli/app": 20,
+        "github.com/agentstation/starmap/pkg/productpaths": 4,
+        "github.com/agentstation/starmap/pkg/catalogs/storage": 1,
+        "github.com/agentstation/starmap": 8,
+        "github.com/agentstation/starmap/internal/catalog/workspace": 62
+      }
     }
   ],
   "native_repair_qualification": "failed",
-  "primary_acceptance_credit": 0
+  "primary_acceptance_credit": 0,
+  "completion": [
+    {
+      "run_id": 34167265050,
+      "status": "completed",
+      "conclusion": "failure",
+      "head_sha": "90c8932efbef534d6157092e068fdc6f88d7ac61",
+      "url": "https://github.com/agentstation/starmap/actions/runs/34167265050",
+      "jobs": [
+        {
+          "name": "Security & Reliability",
+          "conclusion": "success",
+          "status": "completed"
+        },
+        {
+          "name": "Runtime macos-15",
+          "conclusion": "success",
+          "status": "completed"
+        },
+        {
+          "name": "Action Pin Provenance",
+          "conclusion": "success",
+          "status": "completed"
+        },
+        {
+          "name": "Runtime ubuntu-24.04-arm",
+          "conclusion": "success",
+          "status": "completed"
+        },
+        {
+          "name": "Verification Gate",
+          "conclusion": "success",
+          "status": "completed"
+        },
+        {
+          "name": "Runtime windows-2025",
+          "conclusion": "failure",
+          "status": "completed"
+        },
+        {
+          "name": "Runtime macos-15-intel",
+          "conclusion": "success",
+          "status": "completed"
+        },
+        {
+          "name": "Runtime ubuntu-24.04",
+          "conclusion": "success",
+          "status": "completed"
+        },
+        {
+          "name": "Runtime windows-11-arm",
+          "conclusion": "failure",
+          "status": "completed"
+        }
+      ]
+    },
+    {
+      "run_id": 34167265992,
+      "status": "completed",
+      "conclusion": "failure",
+      "head_sha": "81336db7c8f8df78151114339a3dc78f89848390",
+      "url": "https://github.com/agentstation/starmap/actions/runs/34167265992",
+      "jobs": [
+        {
+          "name": "Security & Reliability",
+          "conclusion": "success",
+          "status": "completed"
+        },
+        {
+          "name": "Action Pin Provenance",
+          "conclusion": "success",
+          "status": "completed"
+        },
+        {
+          "name": "Runtime ubuntu-24.04-arm",
+          "conclusion": "success",
+          "status": "completed"
+        },
+        {
+          "name": "Verification Gate",
+          "conclusion": "success",
+          "status": "completed"
+        },
+        {
+          "name": "Runtime macos-15",
+          "conclusion": "success",
+          "status": "completed"
+        },
+        {
+          "name": "Runtime macos-15-intel",
+          "conclusion": "success",
+          "status": "completed"
+        },
+        {
+          "name": "Runtime windows-11-arm",
+          "conclusion": "failure",
+          "status": "completed"
+        },
+        {
+          "name": "Runtime windows-2025",
+          "conclusion": "failure",
+          "status": "completed"
+        },
+        {
+          "name": "Runtime ubuntu-24.04",
+          "conclusion": "success",
+          "status": "completed"
+        }
+      ]
+    }
+  ]
 }

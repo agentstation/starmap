@@ -156,3 +156,31 @@ code review, publication, and another native run remain open.
 
 The Windows API contracts describe [security assignment](https://learn.microsoft.com/en-us/windows-hardware/drivers/ddi/ntifs/nf-ntifs-ntsetsecurityobject)
 and [rename constraints](https://learn.microsoft.com/en-us/windows-hardware/drivers/ddi/ntifs/ns-ntifs-_file_rename_information).
+The [security information contract](https://learn.microsoft.com/en-us/windows/win32/secauthz/security-information) defines the required rights for central policy assignment.
+
+## Second repair candidate
+
+Foundation commit `0451b039` passes all 39 repository verification stages.
+Ordinary tests and race tests each pass 79 packages. Two focused packages pass
+106 race results on Go `1.26.6`. Three packages pass 153 race results on Go
+`1.25.12`.
+
+Five affected packages compile for each Windows architecture. Windows-targeted
+lint, Ago, strict prose, and workflow shell syntax pass.
+
+[The candidate verification record](windows-repair-2026-09-07/verification.json)
+retains the logs and their hashes. Required cross-lab review remains open.
+Follow-up commit `0911e767` includes the foundation and preserves the Linux
+administrator-owned configuration job. Its service configuration test now uses
+the same privilege-controlled callback.
+
+Service test commit `6b8ed1c4` passes all 39 follow-up verification stages. Ordinary
+tests and race tests each pass 79 packages. Both Windows app test binaries
+compile with Go `1.25.12`. Windows-targeted lint, Ago, prose, and document
+checks pass. [Follow-up verification](windows-repair-2026-09-07/followup-verification.json) retains the command outputs. Required review and native execution remain open.
+
+Both predecessor runs finished. Their Linux verification gates passed, but their
+Windows failures kept the overall runs red. Each foundation Windows architecture
+recorded 936 passing and 102 failing events. Each follow-up Windows architecture
+recorded 1,096 passing and 108 failing events. All four artifacts report no skips.
+These results do not qualify the second repair candidate.
