@@ -50,8 +50,9 @@ func addUpdateFlags(cmd *cobra.Command) *Flags {
 		"Update from a specific source: all, local, provider-api, models.dev, models.dev-git")
 	cmd.Flags().BoolVar(&flags.DryRun, "dry-run", false,
 		"Preview changes without applying them")
-	cmd.Flags().BoolVarP(&flags.Force, "force", "f", false,
+	cmd.Flags().BoolVarP(&flags.Force, "fresh", "f", false,
 		"Reset selected acquisition; preserve the baseline")
+	cmd.Flags().BoolVar(&flags.Force, "force", false, "Alias for --fresh")
 	cmd.Flags().BoolVarP(&flags.AutoApprove, "yes", "y", false,
 		"Auto-approve changes without confirmation")
 	cmd.Flags().StringVar(&flags.CatalogPath, "catalog-path", "",
@@ -96,17 +97,6 @@ func ExecuteUpdate(ctx context.Context, app application, flags *Flags, logger *z
 	}
 	// Determine quiet mode from logger level
 	quiet := logger.GetLevel() > zerolog.InfoLevel
-
-	// Validate force update if needed
-	if flags.Force {
-		proceed, err := ValidateForceUpdate(quiet, flags.AutoApprove)
-		if err != nil {
-			return err
-		}
-		if !proceed {
-			return nil
-		}
-	}
 
 	// Load the appropriate catalog using app context
 	sm, err := LoadCatalog(app, flags.CatalogPath, quiet)
@@ -153,6 +143,9 @@ func updateCatalogWithConfirmation(ctx context.Context, sm syncClient, flags *Fl
 	}
 
 	if !quiet {
+		if flags.Force {
+			fmt.Fprintln(os.Stderr, "Reset selected acquisition after successful collection. Preserve the selected baseline and unrelated acquisition scopes.")
+		}
 		fmt.Fprintf(os.Stderr, "\n🔄 Starting update...\n\n")
 	}
 

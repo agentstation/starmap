@@ -77,6 +77,29 @@ func TestUpdateCatalogCommitBehavior(t *testing.T) {
 			wantDryRuns: []bool{false},
 		},
 		{
+			name:         "fresh approval previews then commits once",
+			flags:        Flags{Force: true},
+			confirmed:    true,
+			wantDryRuns:  []bool{true, false},
+			wantConfirms: 1,
+		},
+		{
+			name:         "fresh decline never commits",
+			flags:        Flags{Force: true},
+			wantDryRuns:  []bool{true},
+			wantConfirms: 1,
+		},
+		{
+			name:        "fresh dry run never commits or confirms",
+			flags:       Flags{Force: true, DryRun: true},
+			wantDryRuns: []bool{true},
+		},
+		{
+			name:        "fresh auto approval commits once",
+			flags:       Flags{Force: true, AutoApprove: true},
+			wantDryRuns: []bool{false},
+		},
+		{
 			name: "explicit dry run never commits or confirms",
 			flags: Flags{
 				DryRun: true,
@@ -106,6 +129,9 @@ func TestUpdateCatalogCommitBehavior(t *testing.T) {
 				t.Fatalf("sync calls = %d, want %d", len(client.options), len(tt.wantDryRuns))
 			}
 			for i, wantDryRun := range tt.wantDryRuns {
+				if client.options[i].Fresh != tt.flags.Force {
+					t.Fatalf("sync call %d Fresh = %v, want %v", i, client.options[i].Fresh, tt.flags.Force)
+				}
 				if client.options[i].DryRun != wantDryRun {
 					t.Fatalf("sync call %d DryRun = %v, want %v", i, client.options[i].DryRun, wantDryRun)
 				}

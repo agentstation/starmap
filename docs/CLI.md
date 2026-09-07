@@ -345,8 +345,13 @@ Commands may define their own short flags that do not conflict with global flags
 
 | Short | Long              | Purpose                     |
 |-------|-------------------|-----------------------------|
-| `-f`  | `--force`         | Force fresh update          |
+| `-f`  | `--fresh`         | Reset selected acquisition; preserve baseline |
+|       | `--force`         | Alias for `--fresh`          |
 | `-y`  | `--yes`           | Auto-approve changes        |
+
+Use `--fresh --dry-run` to preview a reset without confirmation or publication.
+A normal interactive update shows the preview before asking once to apply it.
+The `--yes` flag skips confirmation.
 
 ### Catalog Storage Migration
 
@@ -455,7 +460,7 @@ Use flags for filtering, options, and modifiers:
 
 ```bash
 # ✅ Good - options as flags
-starmap update openai --dry-run --force
+starmap update openai --dry-run --fresh
 starmap models list --provider openai --output json
 
 # Positional: what (resource/identity)
@@ -481,7 +486,7 @@ When assigning short flags, follow this priority:
 **Boolean flags** (presence = true):
 ```bash
 starmap update --dry-run      # true when present
-starmap update --force        # true when present
+starmap update --fresh        # true when present
 ```
 
 **Value flags** (require argument):
@@ -628,7 +633,7 @@ and lifecycle evidence.
 starmap update                    # Update all
 starmap update openai             # Positional argument for provider
 starmap update openai --dry-run   # Preview without publishing
-starmap update --force -y         # Multiple short flags
+starmap update --fresh -y         # Multiple short flags
 
 # Providers fetch command
 starmap providers fetch              # Fetch all providers

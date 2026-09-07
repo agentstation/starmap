@@ -10,6 +10,9 @@ import (
 // displayResultsSummary shows a detailed summary of the update results.
 func displayResultsSummary(result *sync.Result) {
 	fmt.Fprintf(os.Stderr, "=== UPDATE RESULTS ===\n\n")
+	if result.ResetCount > 0 {
+		fmt.Fprintf(os.Stderr, "Acquisition resets: %d\nModel changes: %d\n\n", result.ResetCount, result.TotalChanges)
+	}
 
 	// Show summary for each provider
 	for providerID, providerResult := range result.ProviderResults {

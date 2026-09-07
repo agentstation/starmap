@@ -27,6 +27,11 @@ The command will:
 • Reconcile all sources using field-level authority
 • Save the updated catalog to the same human catalog workspace
 
+Use --fresh to reset selected acquisition history after successful collection.
+The selected baseline and unrelated acquisition scopes remain.
+Use --fresh --dry-run to preview the reset without confirmation or publication.
+The --force flag remains an alias for --fresh.
+
 The default human catalog workspace uses the configured product data root.
 Use absolute paths for legacy overrides. New relative paths require
 --relative-path-base=config and use the configuration root.`,
@@ -34,7 +39,7 @@ Use absolute paths for legacy overrides. New relative paths require
   starmap update openai                     # Update specific provider
   starmap update --dry-run                  # Preview changes
   starmap update -y                         # Auto-approve changes
-  starmap update --force                    # Reset acquisition; keep baseline
+  starmap update --fresh                    # Reset acquisition; keep baseline
   starmap update --source local             # Reload semantic workspace edits
   starmap update openai --dry-run           # Preview OpenAI updates`,
 		RunE: func(cmd *cobra.Command, args []string) error {

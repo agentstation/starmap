@@ -119,6 +119,9 @@ func (sr *Result) Summary() string {
 	}
 
 	summary := fmt.Sprintf("%d total changes across %d providers", sr.TotalChanges, sr.ProvidersChanged)
+	if sr.ResetCount > 0 {
+		summary += fmt.Sprintf("; acquisition resets: %d", sr.ResetCount)
+	}
 	if len(parts) > 0 {
 		summary += " " + strings.Join(parts, " ")
 	}
