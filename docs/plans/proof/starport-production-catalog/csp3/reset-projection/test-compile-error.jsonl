@@ -1,0 +1,8 @@
+{"ImportPath":"github.com/agentstation/starmap/runtime [github.com/agentstation/starmap/runtime.test]","Action":"build-output","Output":"# github.com/agentstation/starmap/runtime [github.com/agentstation/starmap/runtime.test]\n"}
+{"ImportPath":"github.com/agentstation/starmap/runtime [github.com/agentstation/starmap/runtime.test]","Action":"build-output","Output":"runtime/provider_reset_scope_test.go:202:56: provider.Models[\"model\"].Limits.Get undefined (type *catalogs.ModelLimits has no field or method Get)\n"}
+{"ImportPath":"github.com/agentstation/starmap/runtime [github.com/agentstation/starmap/runtime.test]","Action":"build-output","Output":"runtime/provider_reset_scope_test.go:229:56: provider.Models[\"model\"].Limits.Get undefined (type *catalogs.ModelLimits has no field or method Get)\n"}
+{"ImportPath":"github.com/agentstation/starmap/runtime [github.com/agentstation/starmap/runtime.test]","Action":"build-output","Output":"runtime/provider_reset_scope_test.go:237:56: provider.Models[\"model\"].Limits.Get undefined (type *catalogs.ModelLimits has no field or method Get)\n"}
+{"ImportPath":"github.com/agentstation/starmap/runtime [github.com/agentstation/starmap/runtime.test]","Action":"build-fail"}
+{"Time":"2026-09-07T10:42:12.70412-05:00","Action":"start","Package":"github.com/agentstation/starmap/runtime"}
+{"Time":"2026-09-07T10:42:12.704206-05:00","Action":"output","Package":"github.com/agentstation/starmap/runtime","Output":"FAIL\tgithub.com/agentstation/starmap/runtime [build failed]\n"}
+{"Time":"2026-09-07T10:42:12.704221-05:00","Action":"fail","Package":"github.com/agentstation/starmap/runtime","Elapsed":0,"FailedBuild":"github.com/agentstation/starmap/runtime [github.com/agentstation/starmap/runtime.test]"}
