@@ -1,0 +1,39 @@
+{
+  "scope": "Post-run source snapshot. This is not pre-build provenance. Native records separately bind their binaries.",
+  "files": {
+    "client.go": "bf4f44ae23570a93f60cdca9403f43c9e9bfc5c2883d128f62b67a1078b05e73",
+    "workspace_repair.go": "fcb0d7f9d4aec798abb284218a582c41f1e88d6a7c81f0924822ce853e0360cb",
+    "runtime/runtime.go": "d74087af7418fdd190d18476463d558f38265e5177f9fcbf31c6903cbf4f2ca4",
+    "runtime/workspace.go": "ec4ff2a3c3de4947b97989ab7f583fd2ecef8bf18a9b9bffe2f433c5b39750e3",
+    "constructor_passivity_test.go": "78a35efaae43a4760f1329d7da01b56289a6b227a73eb7aff66c8224e0aa510b",
+    "constructor_workers_test.go": "0745a87020af4fd993a757affcf9a9a5d5022d4b4f5af1c287bbcc5796f1932a",
+    "workspace_repair_test.go": "7bc497d520305e2a924ca4c4adfb946bfa6fb4d9930e3a8f0347cfaedb97a462",
+    "runtime/workspace_test.go": "bf8c705d9ba380f3f2f2186cf6bf74d579652a22e77f553f0460606f97f2216d",
+    "persistence_test.go": "5c1d856cd70cea223115570b68a6ff2f34b6d70509e9ad8a3b09213d4654fc78",
+    "internal/cli/app/catalog_paths_test.go": "5dd20f50894e87eafb897c06b4450faf453021818aaf9280f90648ee00443dbb",
+    "scripts/catalog-product-checks.json": "9a885caff0164978d75711e3fb4d96059b00ce81981facc7773e503a11a7e7d7",
+    ".github/workflows/pr.yaml": "e8d612ed2c869c6bf6b8bb159b9cab9c976aa240d60b8c042bae4b9a85008b8d",
+    "docs/API.md": "135b14b969c19be237f4b93d719ae8512ff7aa76a0b6c41088c9c9d6bf535bcc",
+    "docs/CLI.md": "8258ef15da5b5b783eb1bddbf17de02749d88b10700890bf16a38a9879f2a4b3",
+    "docs/design/catalog-lifecycle/ENGINEERING_SPEC.md": "232a8a93b2465c03668c1dbf0ab0820cf9b7ded0710db3d07308a9bca3c77134",
+    "docs/design/catalog-lifecycle/REPOSITORY_FINDINGS.md": "aaa407281615fec1edbc499a513fbb1777ef8e4475538f5c3eb6ab5dd1d1937c",
+    "docs/plans/proof/starport-production-catalog/csp2.md": "ad90a728de8d4f196383260462a18070c4c8a658c9ca6a3af4987aed81afeb41",
+    "docs/plans/starport-production-catalog-plan.html": "035539c3d6a3e9a8b389df6036b2b1afcf2c2b7a952f7fe73f9c533bc9c5ea9a"
+  },
+  "worktrees": [
+    {
+      "path": "/Users/jack/src/github.com/agentstation/starmap-catalog-requirements",
+      "branch": "codex/catalog-requirements",
+      "head": "4780dfea9f7e002ea6eaaa82aa8f52ed0d4cc225",
+      "dirty_entries": 848,
+      "status_sha256": "ab8e52611c566c877e040ad559ddc3b0910ea0d2b97bcc537158fd231f79299d"
+    },
+    {
+      "path": "/Users/jack/src/github.com/agentstation/starport-catalog-lifecycle",
+      "branch": "codex/catalog-lifecycle",
+      "head": "042eb97851496ecdd1ef20bfa44fe3d84b86b2d8",
+      "dirty_entries": 22,
+      "status_sha256": "c3041a3b02009cea731d46ddb72228a695948fdfb72e26caf6eabeb3130d0e48"
+    }
+  ]
+}

@@ -1,0 +1,42 @@
+[
+  {
+    "command": [
+      "golangci-lint",
+      "run"
+    ],
+    "exit_code": 0,
+    "stdout": "0 issues.\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "go",
+      "tool",
+      "ago",
+      "-stale-ignores",
+      "-format",
+      "json",
+      "./..."
+    ],
+    "exit_code": 0,
+    "stdout": "{\n  \"schemaVersion\": 1,\n  \"version\": \"v0.2.0\",\n  \"rules\": [\n    \"no-dot-import\",\n    \"no-generic-methods\",\n    \"no-goto\",\n    \"no-invalid-ignore\",\n    \"no-naked-return\",\n    \"no-new-expr\",\n    \"no-self-referential-constraints\"\n  ],\n  \"findings\": [],\n  \"staleIgnores\": [],\n  \"errors\": []\n}\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "go",
+      "test",
+      "-race",
+      "-count=1",
+      "-timeout",
+      "2m",
+      "-json",
+      "./runtime",
+      "-run",
+      "^TestMigrationStartupRefusesReplacedTargetBeforeInitialization$"
+    ],
+    "exit_code": 0,
+    "stdout": "{\"Time\":\"2026-09-05T22:47:08.040977-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starmap/runtime\"}\n{\"Time\":\"2026-09-05T22:47:08.486975-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Test\":\"TestMigrationStartupRefusesReplacedTargetBeforeInitialization\"}\n{\"Time\":\"2026-09-05T22:47:08.487052-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Test\":\"TestMigrationStartupRefusesReplacedTargetBeforeInitialization\",\"Output\":\"=== RUN   TestMigrationStartupRefusesReplacedTargetBeforeInitialization\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-05T22:47:08.487122-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Test\":\"TestMigrationStartupRefusesReplacedTargetBeforeInitialization\",\"Output\":\"=== PAUSE TestMigrationStartupRefusesReplacedTargetBeforeInitialization\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-05T22:47:08.487127-05:00\",\"Action\":\"pause\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Test\":\"TestMigrationStartupRefusesReplacedTargetBeforeInitialization\"}\n{\"Time\":\"2026-09-05T22:47:08.487203-05:00\",\"Action\":\"cont\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Test\":\"TestMigrationStartupRefusesReplacedTargetBeforeInitialization\"}\n{\"Time\":\"2026-09-05T22:47:08.487209-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Test\":\"TestMigrationStartupRefusesReplacedTargetBeforeInitialization\",\"Output\":\"=== CONT  TestMigrationStartupRefusesReplacedTargetBeforeInitialization\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-05T22:47:18.358361-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Test\":\"TestMigrationStartupRefusesReplacedTargetBeforeInitialization\",\"Output\":\"--- PASS: TestMigrationStartupRefusesReplacedTargetBeforeInitialization (9.87s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-05T22:47:18.358381-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Test\":\"TestMigrationStartupRefusesReplacedTargetBeforeInitialization\",\"Elapsed\":9.87}\n{\"Time\":\"2026-09-05T22:47:18.358407-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Output\":\"PASS\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-05T22:47:19.3908-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Output\":\"ok  \\tgithub.com/agentstation/starmap/runtime\\t11.349s\\n\"}\n{\"Time\":\"2026-09-05T22:47:19.390877-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Elapsed\":11.35}\n",
+    "stderr": ""
+  }
+]

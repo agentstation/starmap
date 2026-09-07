@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "verdict": "PASS",
+  "review_type": "repository-grounded engineering assessment by the implementing agent; no independent reviewer or owner approval is claimed",
+  "date": "2026-09-05",
+  "profile_sha256": "ed33e678093dfa48b1e0c242300d04f2cd51e3bfaa57a92b8f22045d2d84e30b",
+  "observations": {
+    "timing_boundaries": true,
+    "latency_and_workload": true,
+    "resources_and_deadlines": true,
+    "correctness": true,
+    "qualification_method": true,
+    "baseline_costs": true,
+    "no_current_release_claim": true
+  },
+  "assessment": {
+    "timing_boundaries": "The baseline measures actual HTTP middleware through response receipt and complete handler return. It subtracts only measured fixture sleeps. Paired differences retain negative values. Production qualification must add precise milestone comparisons, connection lifecycle and backpressure cases under A50 gateway_provider_boundaries. The header timer cannot satisfy this contract.",
+    "latency_and_workload": "The local p99 target is 2 ms and the three-replica fleet target is 4 ms with store RTT p99 at most 0.5 ms. These are targets for warm valid state and required atomic admission, not current measurements. The workload defines ordinary and stream body sizes separately. Fifty 276-ms streams per second need about 14 concurrent requests before added work, within the 32-request standard workload. Saturation is a separate required exercise.",
+    "resources_and_deadlines": "The 256 KiB and 1500-allocation request budgets exclude separately counted stream events. Each event has 4 KiB and 32 allocations. Gateway frames must establish attribution. Heap, RSS, optional queues, response cache, generation retention, admission waits and cancellation all have explicit bounds. Hitting a resource limit cannot retain expired policy or permit a request that required admission refuses.",
+    "correctness": "The profile preserves 300-second permission validity, a 30-second clock-uncertainty bound, atomic per-attempt admission, retryable unknown-budget refusal and failed restrictive-activation fencing. Credential and authority variants remain mandatory. Controlled backend recovery remains required. No target permits a weaker consistency model.",
+    "qualification_method": "Three runs, 100000 samples per variant, at least 600 seconds, open-loop arrivals and 95-percent confidence intervals prevent the short serial baseline from becoming a production percentile claim. Stream runs need at least 2000 seconds at 50 requests/s to meet the count floor. Every run must meet upper confidence bounds. Dedicated runners and final artifact hashes are required. Four named native platforms receive initial numeric qualification, while all six archives require native functional evidence.",
+    "baseline_costs": "Three retained runs contain 600 warm direct/proxy pairs. Median paired added latency is about 56-59 ms. The allocation benchmark records about 113 MB and 1.3 million allocations per measured request including fixture work. About 89 percent of allocated bytes pass through DeepCopyProviderModels. Stored credential Argon2 costs remain a separate baseline. These findings support snapshot and credential-index work before pooling or GC tuning.",
+    "no_current_release_claim": "The profile explicitly marks engineering_targets and qualification UNVERIFIED. The baseline and numeric-profile subcases can pass while eight remaining A50 subcases remain UNVERIFIED. No local result qualifies a fleet, a released artifact, or a production latency percentile."
+  },
+  "evidence": {
+    "numeric-profile.json": "ed33e678093dfa48b1e0c242300d04f2cd51e3bfaa57a92b8f22045d2d84e30b",
+    "baseline-summary.json": "1f44a8db9656e40a7f8a997c9d05d21ac7fe62f072f18df016a46ceb5065aff6",
+    "baseline-run-1.json": "a9c3b810c9a97610fffff9a0f76e81d208b7f55699d6f376f90864041823dcb7",
+    "baseline-run-2.json": "de4d93497fe07eabfde4444b00a5b7dff5a4a8dc666bef7722302128d3ddeb7f",
+    "baseline-run-3.json": "db71f8d3e91074582051e3cc867e35dacbe31b3879d3be230159812c67d1d3c2",
+    "allocation-cumulative.json": "9628255aa47edab1510055629276d7bb7c3dade056e2f3c8d37710074e6f42e5",
+    "cpu-top.json": "f128f5133654ef7970b155fa0a068605cf462a925324ac51658d60fec27a7cb1",
+    "profile-command.json": "887ce79e4414b5ba73e984a16a0f1f510de44bcbfa6c229d2973073e32dbede2",
+    "component-benchmarks.json": "39f4838a1df0957aa357bbc8e4aa8c8177009331cba7920f019b8a822fb834f6",
+    "baseline-scope.json": "2c51b406832874e88e9d940facac9bcaad339bd25b2563e7b1fa87acc8b32280",
+    "source-manifest.json": "c4002a33b92347d4ad0dac7a5bf50b4bbe4d2da270b92e7b58d9218e8e609a6c"
+  },
+  "release_qualification": "UNVERIFIED"
+}

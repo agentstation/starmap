@@ -1,0 +1,18 @@
+{
+  "command": [
+    "env",
+    "GOTOOLCHAIN=go1.25.12",
+    "go",
+    "test",
+    "-json",
+    "-race",
+    "-count=1",
+    "-timeout=3m",
+    "./runtime",
+    "-run",
+    "Test(RestartReportsTheCommittedEffectiveIdentity|SourcelessDurableRestartKeepsOneDerivedIdentity)$"
+  ],
+  "exit_code": 1,
+  "stdout": "{\"Time\":\"2026-09-06T15:00:17.251113-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starmap/runtime\"}\n{\"Time\":\"2026-09-06T15:00:17.803745-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Test\":\"TestRestartReportsTheCommittedEffectiveIdentity\"}\n{\"Time\":\"2026-09-06T15:00:17.804211-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Test\":\"TestRestartReportsTheCommittedEffectiveIdentity\",\"Output\":\"=== RUN   TestRestartReportsTheCommittedEffectiveIdentity\\n\"}\n{\"Time\":\"2026-09-06T15:00:34.239073-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Test\":\"TestRestartReportsTheCommittedEffectiveIdentity\",\"Output\":\"    layers_test.go:295: Open: failed to load stored current catalog generation current: validation failed for field catalog_store.path: requires owner-only POSIX permissions. Review ownership and remove group and other access before retrying\\n\"}\n{\"Time\":\"2026-09-06T15:00:34.240669-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Test\":\"TestRestartReportsTheCommittedEffectiveIdentity\",\"Output\":\"--- FAIL: TestRestartReportsTheCommittedEffectiveIdentity (16.43s)\\n\"}\n{\"Time\":\"2026-09-06T15:00:34.240678-05:00\",\"Action\":\"fail\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Test\":\"TestRestartReportsTheCommittedEffectiveIdentity\",\"Elapsed\":16.43}\n{\"Time\":\"2026-09-06T15:00:34.240698-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Test\":\"TestSourcelessDurableRestartKeepsOneDerivedIdentity\"}\n{\"Time\":\"2026-09-06T15:00:34.2407-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Test\":\"TestSourcelessDurableRestartKeepsOneDerivedIdentity\",\"Output\":\"=== RUN   TestSourcelessDurableRestartKeepsOneDerivedIdentity\\n\"}\n{\"Time\":\"2026-09-06T15:00:34.312058-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Test\":\"TestSourcelessDurableRestartKeepsOneDerivedIdentity\",\"Output\":\"    layers_test.go:351: Open: failed to load stored current catalog generation current: validation failed for field catalog_store.path: requires owner-only POSIX permissions. Review ownership and remove group and other access before retrying\\n\"}\n{\"Time\":\"2026-09-06T15:00:34.313352-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Test\":\"TestSourcelessDurableRestartKeepsOneDerivedIdentity\",\"Output\":\"--- FAIL: TestSourcelessDurableRestartKeepsOneDerivedIdentity (0.08s)\\n\"}\n{\"Time\":\"2026-09-06T15:00:34.313368-05:00\",\"Action\":\"fail\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Test\":\"TestSourcelessDurableRestartKeepsOneDerivedIdentity\",\"Elapsed\":0.08}\n{\"Time\":\"2026-09-06T15:00:34.313372-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Output\":\"FAIL\\n\"}\n{\"Time\":\"2026-09-06T15:00:34.337716-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Output\":\"FAIL\\tgithub.com/agentstation/starmap/runtime\\t17.086s\\n\"}\n{\"Time\":\"2026-09-06T15:00:34.337737-05:00\",\"Action\":\"fail\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Elapsed\":17.087}\n",
+  "stderr": ""
+}

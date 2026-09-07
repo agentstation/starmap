@@ -1,0 +1,45 @@
+[
+  {
+    "path": "DESIGN.md",
+    "baseline_diagnostics": 90,
+    "current_diagnostics": 90,
+    "introduced": []
+  },
+  {
+    "path": "console/src/components/auth/FirstContact.tsx",
+    "baseline_diagnostics": 37,
+    "current_diagnostics": 6,
+    "introduced": [
+      [
+        "long_sentence",
+        "It is deliberately not a card inside the console. Someone reading it has no",
+        "sentence has 30 words; limit is 25"
+      ],
+      [
+        "em_dash",
+        "*where you are* \u2014 you are at the machine that printed it. The gateway API key",
+        "replace the em dash with explicit structure"
+      ],
+      [
+        "long_sentence",
+        "*where you are* \u2014 you are at the machine that printed it. The gateway API key",
+        "sentence has 29 words; limit is 25"
+      ],
+      [
+        "long_sentence",
+        "A full navigation rather than a router push. The credential arrived as a",
+        "sentence has 42 words; limit is 25"
+      ],
+      [
+        "complex_verb",
+        "rejection this page may have been reached through.",
+        "use a simple tense when it preserves the timing"
+      ],
+      [
+        "passive_voice",
+        "rejection this page may have been reached through.",
+        "use active voice when the actor is known"
+      ]
+    ]
+  }
+]

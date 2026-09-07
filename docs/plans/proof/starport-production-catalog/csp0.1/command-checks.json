@@ -1,0 +1,57 @@
+[
+  {
+    "command": [
+      "go",
+      "build",
+      "-o",
+      "/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starport-docs-commands-1cae1qzk/starport",
+      "./cmd/starport"
+    ],
+    "exit_code": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "starport",
+      "ui",
+      "--help"
+    ],
+    "exit_code": 0,
+    "stdout": "NAME:\n   starport ui - Open the Starport console in a browser\n\nUSAGE:\n   starport ui [options]\n\nDESCRIPTION:\n   Mints a one-time launch link from this machine's local admin token and opens it. The console signs in with a session cookie, so no gateway API key is pasted into a browser and none is stored there.\n\nOPTIONS:\n   --no-open   Print the launch link instead of opening a browser\n   --help, -h  show help\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "starport",
+      "agent",
+      "setup",
+      "--help"
+    ],
+    "exit_code": 0,
+    "stdout": "NAME:\n   starport agent setup - Install the embedded starport skill into a skills root\n\nUSAGE:\n   starport agent setup [options]\n\nOPTIONS:\n   --dir string  Skills root to install into (default: $AGENTS_HOME/skills or ~/.agents/skills)\n   --print       Write the skill to standard output instead of installing it\n   --help, -h    show help\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "starport",
+      "models",
+      "search",
+      "--help"
+    ],
+    "exit_code": 0,
+    "stdout": "NAME:\n   starport models search - Search routable models by ID, name, and author\n\nUSAGE:\n   starport models search [options] <query>...\n\nOPTIONS:\n   --json      Write machine-readable JSON\n   --help, -h  show help\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "starport",
+      "models",
+      "show",
+      "--help"
+    ],
+    "exit_code": 0,
+    "stdout": "NAME:\n   starport models show - Show one model's full catalog projection\n\nUSAGE:\n   starport models show [options] <model-id>\n\nOPTIONS:\n   --json      Write machine-readable JSON\n   --help, -h  show help\n",
+    "stderr": ""
+  }
+]

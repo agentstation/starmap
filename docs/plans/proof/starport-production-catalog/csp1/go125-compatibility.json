@@ -1,0 +1,17 @@
+{
+  "command": [
+    "go",
+    "test",
+    "-race",
+    "-count=1",
+    "-timeout",
+    "5m",
+    "./pkg/catalogs/config",
+    "./internal/catalog/settings",
+    "./internal/cli/app"
+  ],
+  "toolchain": "go1.25.12",
+  "exit_code": 0,
+  "stdout": "ok  \tgithub.com/agentstation/starmap/pkg/catalogs/config\t14.437s\nok  \tgithub.com/agentstation/starmap/internal/catalog/settings\t15.147s\nok  \tgithub.com/agentstation/starmap/internal/cli/app\t15.234s\n",
+  "stderr": ""
+}

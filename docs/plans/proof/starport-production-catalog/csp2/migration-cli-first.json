@@ -1,0 +1,17 @@
+{
+  "command": [
+    "go",
+    "test",
+    "-race",
+    "-count=1",
+    "-timeout",
+    "3m",
+    "-json",
+    "./internal/cli/app",
+    "-run",
+    "^TestRuntimeMigrationCommandPersistsSelectionBeforeCompletion$"
+  ],
+  "exit_code": 0,
+  "stdout": "{\"Time\":\"2026-09-05T22:29:42.082838-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\"}\n{\"Time\":\"2026-09-05T22:29:42.646724-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestRuntimeMigrationCommandPersistsSelectionBeforeCompletion\"}\n{\"Time\":\"2026-09-05T22:29:42.647037-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestRuntimeMigrationCommandPersistsSelectionBeforeCompletion\",\"Output\":\"=== RUN   TestRuntimeMigrationCommandPersistsSelectionBeforeCompletion\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-05T22:30:11.58045-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestRuntimeMigrationCommandPersistsSelectionBeforeCompletion\",\"Output\":\"--- PASS: TestRuntimeMigrationCommandPersistsSelectionBeforeCompletion (28.93s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-05T22:30:11.580693-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestRuntimeMigrationCommandPersistsSelectionBeforeCompletion\",\"Elapsed\":28.93}\n{\"Time\":\"2026-09-05T22:30:11.581537-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Output\":\"PASS\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-05T22:30:12.62338-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Output\":\"ok  \\tgithub.com/agentstation/starmap/internal/cli/app\\t30.539s\\n\"}\n{\"Time\":\"2026-09-05T22:30:12.623476-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Elapsed\":30.54}\n",
+  "stderr": ""
+}

@@ -1,0 +1,10 @@
+{
+  "command": [
+    "make",
+    "test-pure-go"
+  ],
+  "exit_code": 0,
+  "seconds": 15.119769096374512,
+  "stdout": "ok  \tgithub.com/agentstation/starmap-test/read-only-consumer\t(cached)\nok  \tgithub.com/agentstation/starmap-test/store-only-consumer\t(cached)\nok  \tgithub.com/agentstation/starmap-test/pinned-artifact-consumer\t(cached)\nok  \tgithub.com/agentstation/starmap-test/server-embed-consumer\t(cached)\nok  \tgithub.com/agentstation/starmap-test/remote-subscriber-consumer\t(cached)\nok  \tgithub.com/agentstation/starmap-test/server-storage-consumer\t4.951s\nread-only consumer dependency closure: 37/37 non-standard packages (161 total on this platform); forbidden families absent\nstore-only consumer: caller-owned adapter contract and publication passed; application/database implementations absent\npinned-artifact consumer: 38/38 non-standard packages; offline verified activation passed; online/acquisition families absent\nserver-embed consumer dependency closure: 254/260 packages; acquisition families absent\nserver-embed consumer: external compile and lifecycle test passed\nremote-subscriber consumer dependency closure: 237/240 packages; forbidden families absent\nremote-subscriber consumer: external compile and reactive lifecycle test passed\nserver-storage consumer dependency closure: 348/350 packages; filesystem/S3 server and reactive restart matrix passed\nok  \tgithub.com/agentstation/starmap/pkg/catalogs/storage/s3\t0.298s\nstarmap dev\npure-Go verification passed: library, pinned artifact, stores including S3, server, remote, and CLI execute with CGO_ENABLED=0\n",
+  "stderr": ""
+}

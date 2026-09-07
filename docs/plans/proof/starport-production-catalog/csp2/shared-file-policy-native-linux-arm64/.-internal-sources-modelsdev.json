@@ -1,0 +1,2522 @@
+{
+  "package": "./internal/sources/modelsdev",
+  "race": false,
+  "toolchain": "go1.25.12",
+  "commands": [
+    {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.25.12",
+        "GOOS=linux",
+        "GOARCH=arm64",
+        "CGO_ENABLED=0",
+        "go",
+        "test",
+        "-c",
+        "-o",
+        "/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/csp2-native-build-480tt6pu/test",
+        "././internal/sources/modelsdev"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "docker",
+        "volume",
+        "create",
+        "--label",
+        "purpose=csp2-native-package-verification",
+        "csp2-native-788d61861c9042dbbc81b629ad5d78fc"
+      ],
+      "exit_code": 0,
+      "stdout": "csp2-native-788d61861c9042dbbc81b629ad5d78fc\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "docker",
+        "create",
+        "--pull=never",
+        "--network",
+        "none",
+        "--read-only",
+        "--user",
+        "65532:65532",
+        "--cap-drop=ALL",
+        "--security-opt=no-new-privileges",
+        "--mount",
+        "type=bind,src=/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/csp2-native-build-480tt6pu/test,dst=/native-test,readonly",
+        "--mount",
+        "type=bind,src=/Users/jack/src/github.com/agentstation/starmap-catalog-requirements,dst=/Users/jack/src/github.com/agentstation/starmap-catalog-requirements,readonly",
+        "--mount",
+        "type=volume,src=csp2-native-788d61861c9042dbbc81b629ad5d78fc,dst=/home/nonroot",
+        "--env",
+        "TMPDIR=/home/nonroot",
+        "--env",
+        "GOMAXPROCS=4",
+        "--workdir",
+        "/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/internal/sources/modelsdev",
+        "--entrypoint",
+        "/native-test",
+        "cgr.dev/chainguard/static@sha256:60582b2ae6074f641094af0f370d4ab241aab271858a66223dcde7eee9f51638",
+        "-test.v=test2json",
+        "-test.count=1",
+        "-test.parallel=4",
+        "-test.timeout=10m"
+      ],
+      "exit_code": 0,
+      "stdout": "e0bdb7840de4f7c7d7725ae30d94130a2a6a43257c20731dac9ff48d99fc1bfc\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "docker",
+        "start",
+        "--attach",
+        "e0bdb7840de4f7c7d7725ae30d94130a2a6a43257c20731dac9ff48d99fc1bfc"
+      ],
+      "exit_code": 1,
+      "stdout": "\u0016=== RUN   TestCatalogGenerationToolingPromotesPayloadWithQuarantinedRecord\n\u0016--- PASS: TestCatalogGenerationToolingPromotesPayloadWithQuarantinedRecord (1.13s)\n\u0016=== NAME  \n\u0016=== RUN   TestCatalogGenerationToolingTypedAtomicPromotion\n\u0016--- PASS: TestCatalogGenerationToolingTypedAtomicPromotion (0.74s)\n\u0016=== NAME  \n\u0016=== RUN   TestCatalogGenerationToolingRejectsHTTPErrorBeforePromotion\n    catalog_generation_tooling_test.go:157: curl is required by catalog generation tooling\n\u0016--- FAIL: TestCatalogGenerationToolingRejectsHTTPErrorBeforePromotion (0.00s)\n\u0016=== NAME  \n\u0016=== RUN   TestCatalogGenerationToolingUsesCurrentCLIAndRealValidation\n    catalog_generation_tooling_test.go:241: generation command: exec: \"bash\": executable file not found in $PATH\n\u0016--- FAIL: TestCatalogGenerationToolingUsesCurrentCLIAndRealValidation (0.00s)\n\u0016=== NAME  \n\u0016=== RUN   TestCatalogGenerationToolingMakefileHasNoUnsafeLegacyRecipe\n\u0016--- PASS: TestCatalogGenerationToolingMakefileHasNoUnsafeLegacyRecipe (0.00s)\n\u0016=== NAME  \n\u0016=== RUN   TestGitClientPinsCommitAndFrozenLockfile\n    git_client_test.go:19: git init: exec: \"git\": executable file not found in $PATH\n\u0016--- FAIL: TestGitClientPinsCommitAndFrozenLockfile (0.00s)\n\u0016=== NAME  \n\u0016=== RUN   TestGitSemanticPromotionRejectsSyntacticallyValidIncompleteBuild\n\u0016--- PASS: TestGitSemanticPromotionRejectsSyntacticallyValidIncompleteBuild (0.00s)\n\u0016=== NAME  \n\u0016=== RUN   TestGitClientRejectsFloatingRevisionBeforeExternalWork\n\u0016--- PASS: TestGitClientRejectsFloatingRevisionBeforeExternalWork (0.00s)\n\u0016=== NAME  \n\u0016=== RUN   TestHTTPClientSemanticPromotionPreservesLastKnownGoodOnCompletenessRegression\n\u0016--- PASS: TestHTTPClientSemanticPromotionPreservesLastKnownGoodOnCompletenessRegression (0.06s)\n\u0016=== NAME  \n\u0016=== RUN   TestHTTPClientEnsureAPIPromotesRecordLocalSchemaDrift\n\u0016--- PASS: TestHTTPClientEnsureAPIPromotesRecordLocalSchemaDrift (0.08s)\n\u0016=== NAME  \n\u0016=== RUN   TestHTTPClient_EnsureAPI_SuccessfulDownload\n\u0016--- PASS: TestHTTPClient_EnsureAPI_SuccessfulDownload (0.05s)\n\u0016=== NAME  \n\u0016=== RUN   TestHTTPClient_EnsureAPI_CachedFile\n\u0016--- PASS: TestHTTPClient_EnsureAPI_CachedFile (0.04s)\n\u0016=== NAME  \n\u0016=== RUN   TestHTTPClientConditionalRevalidationRetainsHTTPRevision\n\u0016=== RUN   TestHTTPClientConditionalRevalidationRetainsHTTPRevision/etag\n\u0016--- PASS: TestHTTPClientConditionalRevalidationRetainsHTTPRevision/etag (0.11s)\n\u0016=== NAME  TestHTTPClientConditionalRevalidationRetainsHTTPRevision\n\u0016=== RUN   TestHTTPClientConditionalRevalidationRetainsHTTPRevision/last_modified\n\u0016--- PASS: TestHTTPClientConditionalRevalidationRetainsHTTPRevision/last_modified (0.06s)\n\u0016=== NAME  TestHTTPClientConditionalRevalidationRetainsHTTPRevision\n\u0016--- PASS: TestHTTPClientConditionalRevalidationRetainsHTTPRevision (0.17s)\n\u0016=== NAME  \n\u0016=== RUN   TestHTTPClientEmbeddedBootstrapCacheNeverBecomesFreshSuccess\n\u0016--- PASS: TestHTTPClientEmbeddedBootstrapCacheNeverBecomesFreshSuccess (0.64s)\n\u0016=== NAME  \n\u0016=== RUN   TestHTTPClientDoesNotSendValidatorFromMismatchedCacheMetadata\n\u0016--- PASS: TestHTTPClientDoesNotSendValidatorFromMismatchedCacheMetadata (0.05s)\n\u0016=== NAME  \n\u0016=== RUN   TestHTTPClient_EnsureAPI_HTTPFailureWithCache\n\u0016--- PASS: TestHTTPClient_EnsureAPI_HTTPFailureWithCache (0.04s)\n\u0016=== NAME  \n\u0016=== RUN   TestHTTPClient_EnsureAPI_HTTPFailureWithEmbeddedFallback\n\u0016--- PASS: TestHTTPClient_EnsureAPI_HTTPFailureWithEmbeddedFallback (0.34s)\n\u0016=== NAME  \n\u0016=== RUN   TestHTTPClient_EnsureAPI_InvalidResponses\n\u0016=== RUN   TestHTTPClient_EnsureAPI_InvalidResponses/Too_small_response\n\u0016--- PASS: TestHTTPClient_EnsureAPI_InvalidResponses/Too_small_response (0.28s)\n\u0016=== NAME  TestHTTPClient_EnsureAPI_InvalidResponses\n\u0016=== RUN   TestHTTPClient_EnsureAPI_InvalidResponses/Invalid_JSON\n\u0016--- PASS: TestHTTPClient_EnsureAPI_InvalidResponses/Invalid_JSON (0.28s)\n\u0016=== NAME  TestHTTPClient_EnsureAPI_InvalidResponses\n\u0016=== RUN   TestHTTPClient_EnsureAPI_InvalidResponses/Too_few_providers\n\u0016--- PASS: TestHTTPClient_EnsureAPI_InvalidResponses/Too_few_providers (0.29s)\n\u0016=== NAME  TestHTTPClient_EnsureAPI_InvalidResponses\n\u0016=== RUN   TestHTTPClient_EnsureAPI_InvalidResponses/HTTP_500_error\n\u0016--- PASS: TestHTTPClient_EnsureAPI_InvalidResponses/HTTP_500_error (0.32s)\n\u0016=== NAME  TestHTTPClient_EnsureAPI_InvalidResponses\n\u0016--- PASS: TestHTTPClient_EnsureAPI_InvalidResponses (1.17s)\n\u0016=== NAME  \n\u0016=== RUN   TestHTTPClient_isCacheValid\n\u0016--- PASS: TestHTTPClient_isCacheValid (0.00s)\n\u0016=== NAME  \n\u0016=== RUN   TestSourceAdaptersReturnCompleteObservationMetadata\n\u0016=== RUN   TestSourceAdaptersReturnCompleteObservationMetadata/http\n\u0016--- PASS: TestSourceAdaptersReturnCompleteObservationMetadata/http (0.00s)\n\u0016=== NAME  TestSourceAdaptersReturnCompleteObservationMetadata\n\u0016=== RUN   TestSourceAdaptersReturnCompleteObservationMetadata/git\n\u0016--- PASS: TestSourceAdaptersReturnCompleteObservationMetadata/git (0.00s)\n\u0016=== NAME  TestSourceAdaptersReturnCompleteObservationMetadata\n\u0016--- PASS: TestSourceAdaptersReturnCompleteObservationMetadata (0.00s)\n\u0016=== NAME  \n\u0016=== RUN   TestInvalidIdentityQuarantineMalformedModelsDevRecordsWithCounts\n\u0016--- PASS: TestInvalidIdentityQuarantineMalformedModelsDevRecordsWithCounts (0.00s)\n\u0016=== NAME  \n\u0016=== RUN   TestRepeatedFetchHTTPHonorsPerCallDirectory\n\u0016--- PASS: TestRepeatedFetchHTTPHonorsPerCallDirectory (0.00s)\n\u0016=== NAME  \n\u0016=== RUN   TestRepeatedFetchObservesChangedRevision\n\u0016--- PASS: TestRepeatedFetchObservesChangedRevision (0.00s)\n\u0016=== NAME  \n\u0016=== RUN   TestRepeatedFetchGitObservesChangedRevision\n\u0016--- PASS: TestRepeatedFetchGitObservesChangedRevision (0.00s)\n\u0016=== NAME  \n\u0016=== RUN   TestHTTPObservationClassifiesAcquisitionFallback\n\u0016=== RUN   TestHTTPObservationClassifiesAcquisitionFallback/stale_cache\n\u0016--- PASS: TestHTTPObservationClassifiesAcquisitionFallback/stale_cache (0.00s)\n\u0016=== NAME  TestHTTPObservationClassifiesAcquisitionFallback\n\u0016=== RUN   TestHTTPObservationClassifiesAcquisitionFallback/embedded_bootstrap\n\u0016--- PASS: TestHTTPObservationClassifiesAcquisitionFallback/embedded_bootstrap (0.00s)\n\u0016=== NAME  TestHTTPObservationClassifiesAcquisitionFallback\n\u0016--- PASS: TestHTTPObservationClassifiesAcquisitionFallback (0.00s)\n\u0016=== NAME  \n\u0016=== RUN   TestHTTPObservationRetainsConditionalHTTPRevision\n\u0016--- PASS: TestHTTPObservationRetainsConditionalHTTPRevision (0.00s)\n\u0016=== NAME  \n\u0016=== RUN   TestHTTPObservationRetainsEmbeddedBootstrapClassificationAcrossCacheReuse\n\u0016--- PASS: TestHTTPObservationRetainsEmbeddedBootstrapClassificationAcrossCacheReuse (2.12s)\n\u0016=== NAME  \n\u0016=== RUN   TestHTTPSourceSemanticPromotionReportsDegradedEvidence\n\u0016--- PASS: TestHTTPSourceSemanticPromotionReportsDegradedEvidence (0.00s)\n\u0016=== NAME  \n\u0016=== RUN   TestSchemaDriftMutationMatrix\n\u0016=== RUN   TestSchemaDriftMutationMatrix/valid\n\u0016--- PASS: TestSchemaDriftMutationMatrix/valid (0.00s)\n\u0016=== NAME  TestSchemaDriftMutationMatrix\n\u0016=== RUN   TestSchemaDriftMutationMatrix/missing\n\u0016--- PASS: TestSchemaDriftMutationMatrix/missing (0.00s)\n\u0016=== NAME  TestSchemaDriftMutationMatrix\n\u0016=== RUN   TestSchemaDriftMutationMatrix/renamed\n\u0016--- PASS: TestSchemaDriftMutationMatrix/renamed (0.00s)\n\u0016=== NAME  TestSchemaDriftMutationMatrix\n\u0016=== RUN   TestSchemaDriftMutationMatrix/null\n\u0016--- PASS: TestSchemaDriftMutationMatrix/null (0.00s)\n\u0016=== NAME  TestSchemaDriftMutationMatrix\n\u0016=== RUN   TestSchemaDriftMutationMatrix/wrong_type\n\u0016--- PASS: TestSchemaDriftMutationMatrix/wrong_type (0.00s)\n\u0016=== NAME  TestSchemaDriftMutationMatrix\n\u0016=== RUN   TestSchemaDriftMutationMatrix/unknown_additive\n\u0016--- PASS: TestSchemaDriftMutationMatrix/unknown_additive (0.00s)\n\u0016=== NAME  TestSchemaDriftMutationMatrix\n\u0016=== RUN   TestSchemaDriftMutationMatrix/oversized\n\u0016--- PASS: TestSchemaDriftMutationMatrix/oversized (0.02s)\n\u0016=== NAME  TestSchemaDriftMutationMatrix\n\u0016--- PASS: TestSchemaDriftMutationMatrix (0.02s)\n\u0016=== NAME  \n\u0016=== RUN   TestPayloadLimitModelsDevModelCount\n\u0016--- PASS: TestPayloadLimitModelsDevModelCount (0.01s)\n\u0016=== NAME  \n\u0016=== RUN   TestParseAPIBoundsProviderEnvelope\n\u0016--- PASS: TestParseAPIBoundsProviderEnvelope (0.00s)\n\u0016=== NAME  \n\u0016=== RUN   TestUnknownSourceEnumProducesFingerprintEvidence\n\u0016--- PASS: TestUnknownSourceEnumProducesFingerprintEvidence (0.00s)\n\u0016=== NAME  \n\u0016=== RUN   TestExperimentalModeProviderBodyPreservesNestedJSON\n\u0016--- PASS: TestExperimentalModeProviderBodyPreservesNestedJSON (0.00s)\n\u0016=== NAME  \n\u0016=== RUN   TestModelToStarmapModelPreservesCurrentModelsDevFields\n\u0016--- PASS: TestModelToStarmapModelPreservesCurrentModelsDevFields (0.00s)\n\u0016=== NAME  \n\u0016=== RUN   TestProviderToStarmapProviderPreservesModelsDevMetadata\n\u0016--- PASS: TestProviderToStarmapProviderPreservesModelsDevMetadata (0.00s)\n\u0016=== NAME  \n\u0016=== RUN   TestInterleavedUnmarshalAcceptsBooleanAndObject\n\u0016--- PASS: TestInterleavedUnmarshalAcceptsBooleanAndObject (0.00s)\n\u0016=== NAME  \n\u0016=== RUN   TestProcessFetchIncludesModelsWithNonCoreCostData\n\u0016--- PASS: TestProcessFetchIncludesModelsWithNonCoreCostData (0.00s)\n\u0016=== NAME  \n\u0016=== RUN   TestProcessFetchHonorsProviderFilter\n\u0016--- PASS: TestProcessFetchHonorsProviderFilter (0.00s)\n\u0016=== NAME  \n\u0016=== RUN   TestProcessFetchResolvesConfiguredProviderAliasBeforeFiltering\n\u0016--- PASS: TestProcessFetchResolvesConfiguredProviderAliasBeforeFiltering (0.00s)\n\u0016=== NAME  \n\u0016=== RUN   TestModelToStarmapModelDoesNotInventOpenWeightsWhenAbsent\n\u0016--- PASS: TestModelToStarmapModelDoesNotInventOpenWeightsWhenAbsent (0.00s)\n\u0016=== NAME  \n\u0016=== RUN   TestModelToStarmapModelExtensionsRoundTripWithoutTypeChurn\n\u0016--- PASS: TestModelToStarmapModelExtensionsRoundTripWithoutTypeChurn (0.00s)\n\u0016=== NAME  \n\u0016=== RUN   TestModelToStarmapModelReasoningOptionsOverrideContradictorySummary\n\u0016--- PASS: TestModelToStarmapModelReasoningOptionsOverrideContradictorySummary (0.00s)\n\u0016=== NAME  \n\u0016=== RUN   TestModelHasCatalogDataTreatsExplicitOpenWeightsFalseAsData\n\u0016--- PASS: TestModelHasCatalogDataTreatsExplicitOpenWeightsFalseAsData (0.00s)\n\u0016=== NAME  \n\u0016=== RUN   TestModelToStarmapModelPreservesExplicitSourcePresence\n\u0016--- PASS: TestModelToStarmapModelPreservesExplicitSourcePresence (0.00s)\n\u0016=== NAME  \n\u0016=== RUN   TestF009MalformedModelsDevSiblingIsQuarantined\n\u0016--- PASS: TestF009MalformedModelsDevSiblingIsQuarantined (0.00s)\n\u0016=== NAME  \n\u0016=== RUN   TestModelsDevSourceShapePathsAreClassified\n\u0016--- PASS: TestModelsDevSourceShapePathsAreClassified (0.00s)\n\u0016=== NAME  \n\u0016=== RUN   TestModelsDevCacheAndSourceCheckoutUseSeparatePassiveRoots\n\u0016--- PASS: TestModelsDevCacheAndSourceCheckoutUseSeparatePassiveRoots (0.00s)\n\u0016=== NAME  \n\u0016=== RUN   TestInvalidNativeSourceDirectoriesRefuseEffects\n\u0016--- PASS: TestInvalidNativeSourceDirectoriesRefuseEffects (0.00s)\n\u0016=== NAME  \n\u0016=== RUN   TestHTTPClientUsesContextStructuredLoggingWithoutDirectOutput\n\u0016--- PASS: TestHTTPClientUsesContextStructuredLoggingWithoutDirectOutput (0.02s)\n\u0016=== NAME  \n\u0016=== RUN   TestSourceAndProviderLibrariesContainNoDirectProcessWrites\n\u0016--- PASS: TestSourceAndProviderLibrariesContainNoDirectProcessWrites (0.04s)\n\u0016=== NAME  \n\u0016=== RUN   FuzzParseAPIDataNoPanic\n\u0016=== RUN   FuzzParseAPIDataNoPanic/seed#0\n\u0016--- PASS: FuzzParseAPIDataNoPanic/seed#0 (0.00s)\n\u0016=== NAME  FuzzParseAPIDataNoPanic\n\u0016=== RUN   FuzzParseAPIDataNoPanic/seed#1\n\u0016--- PASS: FuzzParseAPIDataNoPanic/seed#1 (0.00s)\n\u0016=== NAME  FuzzParseAPIDataNoPanic\n\u0016=== RUN   FuzzParseAPIDataNoPanic/seed#2\n\u0016--- PASS: FuzzParseAPIDataNoPanic/seed#2 (0.00s)\n\u0016=== NAME  FuzzParseAPIDataNoPanic\n\u0016=== RUN   FuzzParseAPIDataNoPanic/seed#3\n\u0016--- PASS: FuzzParseAPIDataNoPanic/seed#3 (0.00s)\n\u0016=== NAME  FuzzParseAPIDataNoPanic\n\u0016--- PASS: FuzzParseAPIDataNoPanic (0.00s)\n\u0016=== NAME  \n\u0016FAIL\n",
+      "stderr": "{\"level\":\"info\",\"source\":\"models_dev_http\",\"url\":\"http://127.0.0.1:36783\",\"time\":\"2026-09-06T22:39:06Z\",\"message\":\"Fetching models.dev catalog\"}\n{\"level\":\"warn\",\"source\":\"models_dev_http\",\"error\":\"validation failed for field models_dev.models: promotion retains less than 50% of the last-known-good model count 1001\",\"time\":\"2026-09-06T22:39:06Z\",\"message\":\"models.dev response failed semantic promotion\"}\n{\"level\":\"warn\",\"source\":\"models_dev_http\",\"acquisition\":\"stale_cache\",\"time\":\"2026-09-06T22:39:06Z\",\"message\":\"Using stale models.dev cache\"}\n{\"level\":\"info\",\"source\":\"models_dev_http\",\"url\":\"http://127.0.0.1:36811\",\"time\":\"2026-09-06T22:39:06Z\",\"message\":\"Fetching models.dev catalog\"}\n{\"level\":\"info\",\"source\":\"models_dev_http\",\"acquisition\":\"downloaded\",\"response_bytes\":205070,\"time\":\"2026-09-06T22:39:06Z\",\"message\":\"Downloaded models.dev catalog\"}\n{\"level\":\"info\",\"source\":\"models_dev_http\",\"url\":\"http://127.0.0.1:46035\",\"time\":\"2026-09-06T22:39:06Z\",\"message\":\"Fetching models.dev catalog\"}\n{\"level\":\"info\",\"source\":\"models_dev_http\",\"acquisition\":\"downloaded\",\"response_bytes\":205030,\"time\":\"2026-09-06T22:39:06Z\",\"message\":\"Downloaded models.dev catalog\"}\n{\"level\":\"info\",\"source\":\"models_dev_http\",\"acquisition\":\"fresh_cache\",\"time\":\"2026-09-06T22:39:06Z\",\"message\":\"Using models.dev cache\"}\n{\"level\":\"info\",\"source\":\"models_dev_http\",\"url\":\"http://127.0.0.1:45057\",\"time\":\"2026-09-06T22:39:06Z\",\"message\":\"Fetching models.dev catalog\"}\n{\"level\":\"info\",\"source\":\"models_dev_http\",\"acquisition\":\"downloaded\",\"response_bytes\":205030,\"time\":\"2026-09-06T22:39:06Z\",\"message\":\"Downloaded models.dev catalog\"}\n{\"level\":\"info\",\"source\":\"models_dev_http\",\"url\":\"http://127.0.0.1:45057\",\"time\":\"2026-09-06T22:39:06Z\",\"message\":\"Fetching models.dev catalog\"}\n{\"level\":\"info\",\"source\":\"models_dev_http\",\"acquisition\":\"revalidated_cache\",\"revision\":\"\\\"models-v1\\\"\",\"time\":\"2026-09-06T22:39:06Z\",\"message\":\"Revalidated models.dev cache\"}\n{\"level\":\"info\",\"source\":\"models_dev_http\",\"url\":\"http://127.0.0.1:42959\",\"time\":\"2026-09-06T22:39:06Z\",\"message\":\"Fetching models.dev catalog\"}\n{\"level\":\"info\",\"source\":\"models_dev_http\",\"acquisition\":\"downloaded\",\"response_bytes\":205030,\"time\":\"2026-09-06T22:39:06Z\",\"message\":\"Downloaded models.dev catalog\"}\n{\"level\":\"info\",\"source\":\"models_dev_http\",\"url\":\"http://127.0.0.1:42959\",\"time\":\"2026-09-06T22:39:07Z\",\"message\":\"Fetching models.dev catalog\"}\n{\"level\":\"info\",\"source\":\"models_dev_http\",\"acquisition\":\"revalidated_cache\",\"revision\":\"Wed, 08 Jul 2026 18:00:00 GMT\",\"time\":\"2026-09-06T22:39:07Z\",\"message\":\"Revalidated models.dev cache\"}\n{\"level\":\"info\",\"source\":\"models_dev_http\",\"url\":\"http://127.0.0.1:34495\",\"time\":\"2026-09-06T22:39:07Z\",\"message\":\"Fetching models.dev catalog\"}\n{\"level\":\"warn\",\"source\":\"models_dev_http\",\"status_code\":503,\"status\":\"503 Service Unavailable\",\"time\":\"2026-09-06T22:39:07Z\",\"message\":\"models.dev HTTP request returned non-success status\"}\n{\"level\":\"warn\",\"source\":\"models_dev_http\",\"acquisition\":\"embedded_bootstrap\",\"time\":\"2026-09-06T22:39:07Z\",\"message\":\"Falling back to embedded models.dev bootstrap\"}\n{\"level\":\"info\",\"source\":\"models_dev_http\",\"acquisition\":\"embedded_bootstrap\",\"time\":\"2026-09-06T22:39:07Z\",\"message\":\"Persisted embedded models.dev bootstrap cache\"}\n{\"level\":\"info\",\"source\":\"models_dev_http\",\"acquisition\":\"embedded_bootstrap\",\"time\":\"2026-09-06T22:39:07Z\",\"message\":\"Using models.dev bootstrap cache\"}\n{\"level\":\"info\",\"source\":\"models_dev_http\",\"url\":\"http://127.0.0.1:34499\",\"time\":\"2026-09-06T22:39:07Z\",\"message\":\"Fetching models.dev catalog\"}\n{\"level\":\"info\",\"source\":\"models_dev_http\",\"acquisition\":\"downloaded\",\"response_bytes\":205030,\"time\":\"2026-09-06T22:39:07Z\",\"message\":\"Downloaded models.dev catalog\"}\n{\"level\":\"info\",\"source\":\"models_dev_http\",\"url\":\"http://127.0.0.1:42277\",\"time\":\"2026-09-06T22:39:07Z\",\"message\":\"Fetching models.dev catalog\"}\n{\"level\":\"warn\",\"source\":\"models_dev_http\",\"status_code\":500,\"status\":\"500 Internal Server Error\",\"time\":\"2026-09-06T22:39:07Z\",\"message\":\"models.dev HTTP request returned non-success status\"}\n{\"level\":\"warn\",\"source\":\"models_dev_http\",\"acquisition\":\"stale_cache\",\"time\":\"2026-09-06T22:39:07Z\",\"message\":\"Using unverified legacy models.dev cache\"}\n{\"level\":\"info\",\"source\":\"models_dev_http\",\"url\":\"http://127.0.0.1:42451\",\"time\":\"2026-09-06T22:39:07Z\",\"message\":\"Fetching models.dev catalog\"}\n{\"level\":\"warn\",\"source\":\"models_dev_http\",\"status_code\":404,\"status\":\"404 Not Found\",\"time\":\"2026-09-06T22:39:07Z\",\"message\":\"models.dev HTTP request returned non-success status\"}\n{\"level\":\"warn\",\"source\":\"models_dev_http\",\"acquisition\":\"embedded_bootstrap\",\"time\":\"2026-09-06T22:39:07Z\",\"message\":\"Falling back to embedded models.dev bootstrap\"}\n{\"level\":\"info\",\"source\":\"models_dev_http\",\"acquisition\":\"embedded_bootstrap\",\"time\":\"2026-09-06T22:39:08Z\",\"message\":\"Persisted embedded models.dev bootstrap cache\"}\n{\"level\":\"info\",\"source\":\"models_dev_http\",\"url\":\"http://127.0.0.1:42973\",\"time\":\"2026-09-06T22:39:08Z\",\"message\":\"Fetching models.dev catalog\"}\n{\"level\":\"warn\",\"source\":\"models_dev_http\",\"response_bytes\":28,\"minimum_bytes\":100000,\"time\":\"2026-09-06T22:39:08Z\",\"message\":\"models.dev response is below minimum size\"}\n{\"level\":\"warn\",\"source\":\"models_dev_http\",\"acquisition\":\"embedded_bootstrap\",\"time\":\"2026-09-06T22:39:08Z\",\"message\":\"Falling back to embedded models.dev bootstrap\"}\n{\"level\":\"info\",\"source\":\"models_dev_http\",\"acquisition\":\"embedded_bootstrap\",\"time\":\"2026-09-06T22:39:08Z\",\"message\":\"Persisted embedded models.dev bootstrap cache\"}\n{\"level\":\"info\",\"source\":\"models_dev_http\",\"url\":\"http://127.0.0.1:33225\",\"time\":\"2026-09-06T22:39:08Z\",\"message\":\"Fetching models.dev catalog\"}\n{\"level\":\"warn\",\"source\":\"models_dev_http\",\"response_bytes\":17,\"minimum_bytes\":100000,\"time\":\"2026-09-06T22:39:08Z\",\"message\":\"models.dev response is below minimum size\"}\n{\"level\":\"warn\",\"source\":\"models_dev_http\",\"acquisition\":\"embedded_bootstrap\",\"time\":\"2026-09-06T22:39:08Z\",\"message\":\"Falling back to embedded models.dev bootstrap\"}\n{\"level\":\"info\",\"source\":\"models_dev_http\",\"acquisition\":\"embedded_bootstrap\",\"time\":\"2026-09-06T22:39:08Z\",\"message\":\"Persisted embedded models.dev bootstrap cache\"}\n{\"level\":\"info\",\"source\":\"models_dev_http\",\"url\":\"http://127.0.0.1:46793\",\"time\":\"2026-09-06T22:39:08Z\",\"message\":\"Fetching models.dev catalog\"}\n{\"level\":\"warn\",\"source\":\"models_dev_http\",\"response_bytes\":62,\"minimum_bytes\":100000,\"time\":\"2026-09-06T22:39:08Z\",\"message\":\"models.dev response is below minimum size\"}\n{\"level\":\"warn\",\"source\":\"models_dev_http\",\"acquisition\":\"embedded_bootstrap\",\"time\":\"2026-09-06T22:39:08Z\",\"message\":\"Falling back to embedded models.dev bootstrap\"}\n{\"level\":\"info\",\"source\":\"models_dev_http\",\"acquisition\":\"embedded_bootstrap\",\"time\":\"2026-09-06T22:39:08Z\",\"message\":\"Persisted embedded models.dev bootstrap cache\"}\n{\"level\":\"info\",\"source\":\"models_dev_http\",\"url\":\"http://127.0.0.1:40647\",\"time\":\"2026-09-06T22:39:08Z\",\"message\":\"Fetching models.dev catalog\"}\n{\"level\":\"warn\",\"source\":\"models_dev_http\",\"status_code\":500,\"status\":\"500 Internal Server Error\",\"time\":\"2026-09-06T22:39:08Z\",\"message\":\"models.dev HTTP request returned non-success status\"}\n{\"level\":\"warn\",\"source\":\"models_dev_http\",\"acquisition\":\"embedded_bootstrap\",\"time\":\"2026-09-06T22:39:08Z\",\"message\":\"Falling back to embedded models.dev bootstrap\"}\n{\"level\":\"info\",\"source\":\"models_dev_http\",\"acquisition\":\"embedded_bootstrap\",\"time\":\"2026-09-06T22:39:09Z\",\"message\":\"Persisted embedded models.dev bootstrap cache\"}\n{\"level\":\"info\",\"source\":\"models_dev_http\",\"model_count\":0,\"time\":\"2026-09-06T22:39:09Z\",\"message\":\"Found models with catalog data from models.dev HTTP\"}\n{\"level\":\"info\",\"source\":\"models_dev_git\",\"model_count\":0,\"time\":\"2026-09-06T22:39:09Z\",\"message\":\"Found models with catalog data from models.dev Git\"}\n{\"level\":\"info\",\"source\":\"models_dev_http\",\"model_count\":1,\"time\":\"2026-09-06T22:39:09Z\",\"message\":\"Found models with catalog data from models.dev HTTP\"}\n{\"level\":\"info\",\"source\":\"models_dev_http\",\"acquisition\":\"fresh_cache\",\"time\":\"2026-09-06T22:39:09Z\",\"message\":\"Using models.dev cache\"}\n{\"level\":\"info\",\"source\":\"models_dev_http\",\"acquisition\":\"fresh_cache\",\"time\":\"2026-09-06T22:39:09Z\",\"message\":\"Using models.dev cache\"}\n{\"level\":\"info\",\"source\":\"models_dev_http\",\"model_count\":1,\"time\":\"2026-09-06T22:39:09Z\",\"message\":\"Found models with catalog data from models.dev HTTP\"}\n{\"level\":\"info\",\"source\":\"models_dev_http\",\"model_count\":1,\"time\":\"2026-09-06T22:39:09Z\",\"message\":\"Found models with catalog data from models.dev HTTP\"}\n{\"level\":\"info\",\"source\":\"models_dev_git\",\"model_count\":1,\"time\":\"2026-09-06T22:39:09Z\",\"message\":\"Found models with catalog data from models.dev Git\"}\n{\"level\":\"info\",\"source\":\"models_dev_git\",\"model_count\":1,\"time\":\"2026-09-06T22:39:09Z\",\"message\":\"Found models with catalog data from models.dev Git\"}\n{\"level\":\"info\",\"source\":\"models_dev_http\",\"model_count\":0,\"time\":\"2026-09-06T22:39:09Z\",\"message\":\"Found models with catalog data from models.dev HTTP\"}\n{\"level\":\"info\",\"source\":\"models_dev_http\",\"model_count\":0,\"time\":\"2026-09-06T22:39:09Z\",\"message\":\"Found models with catalog data from models.dev HTTP\"}\n{\"level\":\"info\",\"source\":\"models_dev_http\",\"model_count\":0,\"time\":\"2026-09-06T22:39:09Z\",\"message\":\"Found models with catalog data from models.dev HTTP\"}\n{\"level\":\"info\",\"source\":\"models_dev_http\",\"source\":\"models_dev_http\",\"url\":\"http://127.0.0.1:32865\",\"time\":\"2026-09-06T22:39:09Z\",\"message\":\"Fetching models.dev catalog\"}\n{\"level\":\"warn\",\"source\":\"models_dev_http\",\"source\":\"models_dev_http\",\"status_code\":503,\"status\":\"503 Service Unavailable\",\"time\":\"2026-09-06T22:39:09Z\",\"message\":\"models.dev HTTP request returned non-success status\"}\n{\"level\":\"warn\",\"source\":\"models_dev_http\",\"source\":\"models_dev_http\",\"acquisition\":\"embedded_bootstrap\",\"time\":\"2026-09-06T22:39:09Z\",\"message\":\"Falling back to embedded models.dev bootstrap\"}\n{\"level\":\"info\",\"source\":\"models_dev_http\",\"source\":\"models_dev_http\",\"acquisition\":\"embedded_bootstrap\",\"time\":\"2026-09-06T22:39:09Z\",\"message\":\"Persisted embedded models.dev bootstrap cache\"}\n{\"level\":\"info\",\"source\":\"models_dev_http\",\"model_count\":5894,\"time\":\"2026-09-06T22:39:09Z\",\"message\":\"Found models with catalog data from models.dev HTTP\"}\n{\"level\":\"info\",\"source\":\"models_dev_http\",\"source\":\"models_dev_http\",\"acquisition\":\"embedded_bootstrap\",\"time\":\"2026-09-06T22:39:10Z\",\"message\":\"Using models.dev bootstrap cache\"}\n{\"level\":\"info\",\"source\":\"models_dev_http\",\"model_count\":5894,\"time\":\"2026-09-06T22:39:10Z\",\"message\":\"Found models with catalog data from models.dev HTTP\"}\n{\"level\":\"info\",\"source\":\"models_dev_http\",\"model_count\":1,\"time\":\"2026-09-06T22:39:11Z\",\"message\":\"Found models with catalog data from models.dev HTTP\"}\n"
+    },
+    {
+      "command": [
+        "docker",
+        "inspect",
+        "--format",
+        "{{json .State}}",
+        "e0bdb7840de4f7c7d7725ae30d94130a2a6a43257c20731dac9ff48d99fc1bfc"
+      ],
+      "exit_code": 0,
+      "stdout": "{\"Status\":\"exited\",\"Running\":false,\"Paused\":false,\"Restarting\":false,\"OOMKilled\":false,\"Dead\":false,\"Pid\":0,\"ExitCode\":1,\"Error\":\"\",\"StartedAt\":\"2026-09-06T22:39:04.453961591Z\",\"FinishedAt\":\"2026-09-06T22:39:11.475985594Z\"}\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "docker",
+        "rm",
+        "-f",
+        "e0bdb7840de4f7c7d7725ae30d94130a2a6a43257c20731dac9ff48d99fc1bfc"
+      ],
+      "exit_code": 0,
+      "stdout": "e0bdb7840de4f7c7d7725ae30d94130a2a6a43257c20731dac9ff48d99fc1bfc\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "docker",
+        "volume",
+        "rm",
+        "csp2-native-788d61861c9042dbbc81b629ad5d78fc"
+      ],
+      "exit_code": 0,
+      "stdout": "csp2-native-788d61861c9042dbbc81b629ad5d78fc\n",
+      "stderr": ""
+    }
+  ],
+  "test_events": [
+    {
+      "Time": "2026-09-06T17:39:11.594266-05:00",
+      "Action": "start",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594365-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestCatalogGenerationToolingPromotesPayloadWithQuarantinedRecord"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594368-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestCatalogGenerationToolingPromotesPayloadWithQuarantinedRecord",
+      "Output": "=== RUN   TestCatalogGenerationToolingPromotesPayloadWithQuarantinedRecord\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594375-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestCatalogGenerationToolingPromotesPayloadWithQuarantinedRecord",
+      "Output": "--- PASS: TestCatalogGenerationToolingPromotesPayloadWithQuarantinedRecord (1.13s)\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594377-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestCatalogGenerationToolingPromotesPayloadWithQuarantinedRecord",
+      "Elapsed": 1.13
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594381-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestCatalogGenerationToolingTypedAtomicPromotion"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594382-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestCatalogGenerationToolingTypedAtomicPromotion",
+      "Output": "=== RUN   TestCatalogGenerationToolingTypedAtomicPromotion\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594386-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestCatalogGenerationToolingTypedAtomicPromotion",
+      "Output": "--- PASS: TestCatalogGenerationToolingTypedAtomicPromotion (0.74s)\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594387-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestCatalogGenerationToolingTypedAtomicPromotion",
+      "Elapsed": 0.74
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594389-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestCatalogGenerationToolingRejectsHTTPErrorBeforePromotion"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.59439-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestCatalogGenerationToolingRejectsHTTPErrorBeforePromotion",
+      "Output": "=== RUN   TestCatalogGenerationToolingRejectsHTTPErrorBeforePromotion\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594392-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestCatalogGenerationToolingRejectsHTTPErrorBeforePromotion",
+      "Output": "    catalog_generation_tooling_test.go:157: curl is required by catalog generation tooling\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594393-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestCatalogGenerationToolingRejectsHTTPErrorBeforePromotion",
+      "Output": "--- FAIL: TestCatalogGenerationToolingRejectsHTTPErrorBeforePromotion (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594395-05:00",
+      "Action": "fail",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestCatalogGenerationToolingRejectsHTTPErrorBeforePromotion",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594396-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestCatalogGenerationToolingUsesCurrentCLIAndRealValidation"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594397-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestCatalogGenerationToolingUsesCurrentCLIAndRealValidation",
+      "Output": "=== RUN   TestCatalogGenerationToolingUsesCurrentCLIAndRealValidation\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594398-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestCatalogGenerationToolingUsesCurrentCLIAndRealValidation",
+      "Output": "    catalog_generation_tooling_test.go:241: generation command: exec: \"bash\": executable file not found in $PATH\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594401-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestCatalogGenerationToolingUsesCurrentCLIAndRealValidation",
+      "Output": "--- FAIL: TestCatalogGenerationToolingUsesCurrentCLIAndRealValidation (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594402-05:00",
+      "Action": "fail",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestCatalogGenerationToolingUsesCurrentCLIAndRealValidation",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594403-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestCatalogGenerationToolingMakefileHasNoUnsafeLegacyRecipe"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594404-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestCatalogGenerationToolingMakefileHasNoUnsafeLegacyRecipe",
+      "Output": "=== RUN   TestCatalogGenerationToolingMakefileHasNoUnsafeLegacyRecipe\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594406-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestCatalogGenerationToolingMakefileHasNoUnsafeLegacyRecipe",
+      "Output": "--- PASS: TestCatalogGenerationToolingMakefileHasNoUnsafeLegacyRecipe (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594408-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestCatalogGenerationToolingMakefileHasNoUnsafeLegacyRecipe",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594409-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestGitClientPinsCommitAndFrozenLockfile"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.59441-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestGitClientPinsCommitAndFrozenLockfile",
+      "Output": "=== RUN   TestGitClientPinsCommitAndFrozenLockfile\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594411-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestGitClientPinsCommitAndFrozenLockfile",
+      "Output": "    git_client_test.go:19: git init: exec: \"git\": executable file not found in $PATH\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594413-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestGitClientPinsCommitAndFrozenLockfile",
+      "Output": "--- FAIL: TestGitClientPinsCommitAndFrozenLockfile (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594414-05:00",
+      "Action": "fail",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestGitClientPinsCommitAndFrozenLockfile",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594416-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestGitSemanticPromotionRejectsSyntacticallyValidIncompleteBuild"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594417-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestGitSemanticPromotionRejectsSyntacticallyValidIncompleteBuild",
+      "Output": "=== RUN   TestGitSemanticPromotionRejectsSyntacticallyValidIncompleteBuild\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594418-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestGitSemanticPromotionRejectsSyntacticallyValidIncompleteBuild",
+      "Output": "--- PASS: TestGitSemanticPromotionRejectsSyntacticallyValidIncompleteBuild (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.59442-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestGitSemanticPromotionRejectsSyntacticallyValidIncompleteBuild",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594422-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestGitClientRejectsFloatingRevisionBeforeExternalWork"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594423-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestGitClientRejectsFloatingRevisionBeforeExternalWork",
+      "Output": "=== RUN   TestGitClientRejectsFloatingRevisionBeforeExternalWork\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594425-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestGitClientRejectsFloatingRevisionBeforeExternalWork",
+      "Output": "--- PASS: TestGitClientRejectsFloatingRevisionBeforeExternalWork (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594426-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestGitClientRejectsFloatingRevisionBeforeExternalWork",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594429-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestHTTPClientSemanticPromotionPreservesLastKnownGoodOnCompletenessRegression"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594431-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestHTTPClientSemanticPromotionPreservesLastKnownGoodOnCompletenessRegression",
+      "Output": "=== RUN   TestHTTPClientSemanticPromotionPreservesLastKnownGoodOnCompletenessRegression\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594434-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestHTTPClientSemanticPromotionPreservesLastKnownGoodOnCompletenessRegression",
+      "Output": "--- PASS: TestHTTPClientSemanticPromotionPreservesLastKnownGoodOnCompletenessRegression (0.06s)\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594436-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestHTTPClientSemanticPromotionPreservesLastKnownGoodOnCompletenessRegression",
+      "Elapsed": 0.06
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594438-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestHTTPClientEnsureAPIPromotesRecordLocalSchemaDrift"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594439-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestHTTPClientEnsureAPIPromotesRecordLocalSchemaDrift",
+      "Output": "=== RUN   TestHTTPClientEnsureAPIPromotesRecordLocalSchemaDrift\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594441-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestHTTPClientEnsureAPIPromotesRecordLocalSchemaDrift",
+      "Output": "--- PASS: TestHTTPClientEnsureAPIPromotesRecordLocalSchemaDrift (0.08s)\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594443-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestHTTPClientEnsureAPIPromotesRecordLocalSchemaDrift",
+      "Elapsed": 0.08
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594444-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestHTTPClient_EnsureAPI_SuccessfulDownload"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594445-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestHTTPClient_EnsureAPI_SuccessfulDownload",
+      "Output": "=== RUN   TestHTTPClient_EnsureAPI_SuccessfulDownload\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594447-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestHTTPClient_EnsureAPI_SuccessfulDownload",
+      "Output": "--- PASS: TestHTTPClient_EnsureAPI_SuccessfulDownload (0.05s)\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594449-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestHTTPClient_EnsureAPI_SuccessfulDownload",
+      "Elapsed": 0.05
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594451-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestHTTPClient_EnsureAPI_CachedFile"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594454-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestHTTPClient_EnsureAPI_CachedFile",
+      "Output": "=== RUN   TestHTTPClient_EnsureAPI_CachedFile\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594458-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestHTTPClient_EnsureAPI_CachedFile",
+      "Output": "--- PASS: TestHTTPClient_EnsureAPI_CachedFile (0.04s)\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.59446-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestHTTPClient_EnsureAPI_CachedFile",
+      "Elapsed": 0.04
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594462-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestHTTPClientConditionalRevalidationRetainsHTTPRevision"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594463-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestHTTPClientConditionalRevalidationRetainsHTTPRevision",
+      "Output": "=== RUN   TestHTTPClientConditionalRevalidationRetainsHTTPRevision\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594478-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestHTTPClientConditionalRevalidationRetainsHTTPRevision/etag"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594487-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestHTTPClientConditionalRevalidationRetainsHTTPRevision/etag",
+      "Output": "=== RUN   TestHTTPClientConditionalRevalidationRetainsHTTPRevision/etag\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.59449-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestHTTPClientConditionalRevalidationRetainsHTTPRevision/etag",
+      "Output": "--- PASS: TestHTTPClientConditionalRevalidationRetainsHTTPRevision/etag (0.11s)\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594492-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestHTTPClientConditionalRevalidationRetainsHTTPRevision/etag",
+      "Elapsed": 0.11
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594494-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestHTTPClientConditionalRevalidationRetainsHTTPRevision/last_modified"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594496-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestHTTPClientConditionalRevalidationRetainsHTTPRevision/last_modified",
+      "Output": "=== RUN   TestHTTPClientConditionalRevalidationRetainsHTTPRevision/last_modified\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594497-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestHTTPClientConditionalRevalidationRetainsHTTPRevision/last_modified",
+      "Output": "--- PASS: TestHTTPClientConditionalRevalidationRetainsHTTPRevision/last_modified (0.06s)\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594499-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestHTTPClientConditionalRevalidationRetainsHTTPRevision/last_modified",
+      "Elapsed": 0.06
+    },
+    {
+      "Time": "2026-09-06T17:39:11.5945-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestHTTPClientConditionalRevalidationRetainsHTTPRevision",
+      "Output": "--- PASS: TestHTTPClientConditionalRevalidationRetainsHTTPRevision (0.17s)\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594502-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestHTTPClientConditionalRevalidationRetainsHTTPRevision",
+      "Elapsed": 0.17
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594503-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestHTTPClientEmbeddedBootstrapCacheNeverBecomesFreshSuccess"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594505-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestHTTPClientEmbeddedBootstrapCacheNeverBecomesFreshSuccess",
+      "Output": "=== RUN   TestHTTPClientEmbeddedBootstrapCacheNeverBecomesFreshSuccess\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.59451-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestHTTPClientEmbeddedBootstrapCacheNeverBecomesFreshSuccess",
+      "Output": "--- PASS: TestHTTPClientEmbeddedBootstrapCacheNeverBecomesFreshSuccess (0.64s)\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594512-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestHTTPClientEmbeddedBootstrapCacheNeverBecomesFreshSuccess",
+      "Elapsed": 0.64
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594513-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestHTTPClientDoesNotSendValidatorFromMismatchedCacheMetadata"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594515-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestHTTPClientDoesNotSendValidatorFromMismatchedCacheMetadata",
+      "Output": "=== RUN   TestHTTPClientDoesNotSendValidatorFromMismatchedCacheMetadata\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594518-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestHTTPClientDoesNotSendValidatorFromMismatchedCacheMetadata",
+      "Output": "--- PASS: TestHTTPClientDoesNotSendValidatorFromMismatchedCacheMetadata (0.05s)\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.59452-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestHTTPClientDoesNotSendValidatorFromMismatchedCacheMetadata",
+      "Elapsed": 0.05
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594522-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestHTTPClient_EnsureAPI_HTTPFailureWithCache"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594523-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestHTTPClient_EnsureAPI_HTTPFailureWithCache",
+      "Output": "=== RUN   TestHTTPClient_EnsureAPI_HTTPFailureWithCache\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594524-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestHTTPClient_EnsureAPI_HTTPFailureWithCache",
+      "Output": "--- PASS: TestHTTPClient_EnsureAPI_HTTPFailureWithCache (0.04s)\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594526-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestHTTPClient_EnsureAPI_HTTPFailureWithCache",
+      "Elapsed": 0.04
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594527-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestHTTPClient_EnsureAPI_HTTPFailureWithEmbeddedFallback"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594528-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestHTTPClient_EnsureAPI_HTTPFailureWithEmbeddedFallback",
+      "Output": "=== RUN   TestHTTPClient_EnsureAPI_HTTPFailureWithEmbeddedFallback\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.59453-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestHTTPClient_EnsureAPI_HTTPFailureWithEmbeddedFallback",
+      "Output": "--- PASS: TestHTTPClient_EnsureAPI_HTTPFailureWithEmbeddedFallback (0.34s)\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594531-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestHTTPClient_EnsureAPI_HTTPFailureWithEmbeddedFallback",
+      "Elapsed": 0.34
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594532-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestHTTPClient_EnsureAPI_InvalidResponses"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594533-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestHTTPClient_EnsureAPI_InvalidResponses",
+      "Output": "=== RUN   TestHTTPClient_EnsureAPI_InvalidResponses\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594535-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestHTTPClient_EnsureAPI_InvalidResponses/Too_small_response"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594536-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestHTTPClient_EnsureAPI_InvalidResponses/Too_small_response",
+      "Output": "=== RUN   TestHTTPClient_EnsureAPI_InvalidResponses/Too_small_response\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594539-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestHTTPClient_EnsureAPI_InvalidResponses/Too_small_response",
+      "Output": "--- PASS: TestHTTPClient_EnsureAPI_InvalidResponses/Too_small_response (0.28s)\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.59454-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestHTTPClient_EnsureAPI_InvalidResponses/Too_small_response",
+      "Elapsed": 0.28
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594541-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestHTTPClient_EnsureAPI_InvalidResponses/Invalid_JSON"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594542-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestHTTPClient_EnsureAPI_InvalidResponses/Invalid_JSON",
+      "Output": "=== RUN   TestHTTPClient_EnsureAPI_InvalidResponses/Invalid_JSON\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594544-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestHTTPClient_EnsureAPI_InvalidResponses/Invalid_JSON",
+      "Output": "--- PASS: TestHTTPClient_EnsureAPI_InvalidResponses/Invalid_JSON (0.28s)\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594546-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestHTTPClient_EnsureAPI_InvalidResponses/Invalid_JSON",
+      "Elapsed": 0.28
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594547-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestHTTPClient_EnsureAPI_InvalidResponses/Too_few_providers"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594548-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestHTTPClient_EnsureAPI_InvalidResponses/Too_few_providers",
+      "Output": "=== RUN   TestHTTPClient_EnsureAPI_InvalidResponses/Too_few_providers\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.59455-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestHTTPClient_EnsureAPI_InvalidResponses/Too_few_providers",
+      "Output": "--- PASS: TestHTTPClient_EnsureAPI_InvalidResponses/Too_few_providers (0.29s)\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594551-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestHTTPClient_EnsureAPI_InvalidResponses/Too_few_providers",
+      "Elapsed": 0.29
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594552-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestHTTPClient_EnsureAPI_InvalidResponses/HTTP_500_error"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594553-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestHTTPClient_EnsureAPI_InvalidResponses/HTTP_500_error",
+      "Output": "=== RUN   TestHTTPClient_EnsureAPI_InvalidResponses/HTTP_500_error\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594555-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestHTTPClient_EnsureAPI_InvalidResponses/HTTP_500_error",
+      "Output": "--- PASS: TestHTTPClient_EnsureAPI_InvalidResponses/HTTP_500_error (0.32s)\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594556-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestHTTPClient_EnsureAPI_InvalidResponses/HTTP_500_error",
+      "Elapsed": 0.32
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594558-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestHTTPClient_EnsureAPI_InvalidResponses",
+      "Output": "--- PASS: TestHTTPClient_EnsureAPI_InvalidResponses (1.17s)\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594562-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestHTTPClient_EnsureAPI_InvalidResponses",
+      "Elapsed": 1.17
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594564-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestHTTPClient_isCacheValid"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594566-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestHTTPClient_isCacheValid",
+      "Output": "=== RUN   TestHTTPClient_isCacheValid\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594567-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestHTTPClient_isCacheValid",
+      "Output": "--- PASS: TestHTTPClient_isCacheValid (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594569-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestHTTPClient_isCacheValid",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T17:39:11.59457-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestSourceAdaptersReturnCompleteObservationMetadata"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594571-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestSourceAdaptersReturnCompleteObservationMetadata",
+      "Output": "=== RUN   TestSourceAdaptersReturnCompleteObservationMetadata\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594573-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestSourceAdaptersReturnCompleteObservationMetadata/http"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594574-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestSourceAdaptersReturnCompleteObservationMetadata/http",
+      "Output": "=== RUN   TestSourceAdaptersReturnCompleteObservationMetadata/http\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594575-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestSourceAdaptersReturnCompleteObservationMetadata/http",
+      "Output": "--- PASS: TestSourceAdaptersReturnCompleteObservationMetadata/http (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594577-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestSourceAdaptersReturnCompleteObservationMetadata/http",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594578-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestSourceAdaptersReturnCompleteObservationMetadata/git"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594579-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestSourceAdaptersReturnCompleteObservationMetadata/git",
+      "Output": "=== RUN   TestSourceAdaptersReturnCompleteObservationMetadata/git\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594583-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestSourceAdaptersReturnCompleteObservationMetadata/git",
+      "Output": "--- PASS: TestSourceAdaptersReturnCompleteObservationMetadata/git (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594584-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestSourceAdaptersReturnCompleteObservationMetadata/git",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594585-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestSourceAdaptersReturnCompleteObservationMetadata",
+      "Output": "--- PASS: TestSourceAdaptersReturnCompleteObservationMetadata (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594589-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestSourceAdaptersReturnCompleteObservationMetadata",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T17:39:11.59459-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestInvalidIdentityQuarantineMalformedModelsDevRecordsWithCounts"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594591-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestInvalidIdentityQuarantineMalformedModelsDevRecordsWithCounts",
+      "Output": "=== RUN   TestInvalidIdentityQuarantineMalformedModelsDevRecordsWithCounts\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594593-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestInvalidIdentityQuarantineMalformedModelsDevRecordsWithCounts",
+      "Output": "--- PASS: TestInvalidIdentityQuarantineMalformedModelsDevRecordsWithCounts (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594594-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestInvalidIdentityQuarantineMalformedModelsDevRecordsWithCounts",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594596-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestRepeatedFetchHTTPHonorsPerCallDirectory"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594597-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestRepeatedFetchHTTPHonorsPerCallDirectory",
+      "Output": "=== RUN   TestRepeatedFetchHTTPHonorsPerCallDirectory\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594598-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestRepeatedFetchHTTPHonorsPerCallDirectory",
+      "Output": "--- PASS: TestRepeatedFetchHTTPHonorsPerCallDirectory (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.5946-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestRepeatedFetchHTTPHonorsPerCallDirectory",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594601-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestRepeatedFetchObservesChangedRevision"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594602-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestRepeatedFetchObservesChangedRevision",
+      "Output": "=== RUN   TestRepeatedFetchObservesChangedRevision\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594603-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestRepeatedFetchObservesChangedRevision",
+      "Output": "--- PASS: TestRepeatedFetchObservesChangedRevision (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594605-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestRepeatedFetchObservesChangedRevision",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594606-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestRepeatedFetchGitObservesChangedRevision"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594607-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestRepeatedFetchGitObservesChangedRevision",
+      "Output": "=== RUN   TestRepeatedFetchGitObservesChangedRevision\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594608-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestRepeatedFetchGitObservesChangedRevision",
+      "Output": "--- PASS: TestRepeatedFetchGitObservesChangedRevision (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594609-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestRepeatedFetchGitObservesChangedRevision",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594611-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestHTTPObservationClassifiesAcquisitionFallback"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594612-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestHTTPObservationClassifiesAcquisitionFallback",
+      "Output": "=== RUN   TestHTTPObservationClassifiesAcquisitionFallback\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594613-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestHTTPObservationClassifiesAcquisitionFallback/stale_cache"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594614-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestHTTPObservationClassifiesAcquisitionFallback/stale_cache",
+      "Output": "=== RUN   TestHTTPObservationClassifiesAcquisitionFallback/stale_cache\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594616-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestHTTPObservationClassifiesAcquisitionFallback/stale_cache",
+      "Output": "--- PASS: TestHTTPObservationClassifiesAcquisitionFallback/stale_cache (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594617-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestHTTPObservationClassifiesAcquisitionFallback/stale_cache",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594618-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestHTTPObservationClassifiesAcquisitionFallback/embedded_bootstrap"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594619-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestHTTPObservationClassifiesAcquisitionFallback/embedded_bootstrap",
+      "Output": "=== RUN   TestHTTPObservationClassifiesAcquisitionFallback/embedded_bootstrap\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594621-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestHTTPObservationClassifiesAcquisitionFallback/embedded_bootstrap",
+      "Output": "--- PASS: TestHTTPObservationClassifiesAcquisitionFallback/embedded_bootstrap (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594622-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestHTTPObservationClassifiesAcquisitionFallback/embedded_bootstrap",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594624-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestHTTPObservationClassifiesAcquisitionFallback",
+      "Output": "--- PASS: TestHTTPObservationClassifiesAcquisitionFallback (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594625-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestHTTPObservationClassifiesAcquisitionFallback",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594628-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestHTTPObservationRetainsConditionalHTTPRevision"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.59463-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestHTTPObservationRetainsConditionalHTTPRevision",
+      "Output": "=== RUN   TestHTTPObservationRetainsConditionalHTTPRevision\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594631-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestHTTPObservationRetainsConditionalHTTPRevision",
+      "Output": "--- PASS: TestHTTPObservationRetainsConditionalHTTPRevision (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594633-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestHTTPObservationRetainsConditionalHTTPRevision",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594634-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestHTTPObservationRetainsEmbeddedBootstrapClassificationAcrossCacheReuse"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594635-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestHTTPObservationRetainsEmbeddedBootstrapClassificationAcrossCacheReuse",
+      "Output": "=== RUN   TestHTTPObservationRetainsEmbeddedBootstrapClassificationAcrossCacheReuse\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594636-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestHTTPObservationRetainsEmbeddedBootstrapClassificationAcrossCacheReuse",
+      "Output": "--- PASS: TestHTTPObservationRetainsEmbeddedBootstrapClassificationAcrossCacheReuse (2.12s)\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594638-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestHTTPObservationRetainsEmbeddedBootstrapClassificationAcrossCacheReuse",
+      "Elapsed": 2.12
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594639-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestHTTPSourceSemanticPromotionReportsDegradedEvidence"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594641-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestHTTPSourceSemanticPromotionReportsDegradedEvidence",
+      "Output": "=== RUN   TestHTTPSourceSemanticPromotionReportsDegradedEvidence\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594642-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestHTTPSourceSemanticPromotionReportsDegradedEvidence",
+      "Output": "--- PASS: TestHTTPSourceSemanticPromotionReportsDegradedEvidence (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594644-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestHTTPSourceSemanticPromotionReportsDegradedEvidence",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594647-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestSchemaDriftMutationMatrix"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594648-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestSchemaDriftMutationMatrix",
+      "Output": "=== RUN   TestSchemaDriftMutationMatrix\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594651-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestSchemaDriftMutationMatrix/valid"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594652-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestSchemaDriftMutationMatrix/valid",
+      "Output": "=== RUN   TestSchemaDriftMutationMatrix/valid\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594653-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestSchemaDriftMutationMatrix/valid",
+      "Output": "--- PASS: TestSchemaDriftMutationMatrix/valid (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594655-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestSchemaDriftMutationMatrix/valid",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594656-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestSchemaDriftMutationMatrix/missing"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594657-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestSchemaDriftMutationMatrix/missing",
+      "Output": "=== RUN   TestSchemaDriftMutationMatrix/missing\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594658-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestSchemaDriftMutationMatrix/missing",
+      "Output": "--- PASS: TestSchemaDriftMutationMatrix/missing (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594659-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestSchemaDriftMutationMatrix/missing",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594661-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestSchemaDriftMutationMatrix/renamed"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594662-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestSchemaDriftMutationMatrix/renamed",
+      "Output": "=== RUN   TestSchemaDriftMutationMatrix/renamed\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594663-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestSchemaDriftMutationMatrix/renamed",
+      "Output": "--- PASS: TestSchemaDriftMutationMatrix/renamed (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594664-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestSchemaDriftMutationMatrix/renamed",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594665-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestSchemaDriftMutationMatrix/null"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594667-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestSchemaDriftMutationMatrix/null",
+      "Output": "=== RUN   TestSchemaDriftMutationMatrix/null\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594668-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestSchemaDriftMutationMatrix/null",
+      "Output": "--- PASS: TestSchemaDriftMutationMatrix/null (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594669-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestSchemaDriftMutationMatrix/null",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T17:39:11.59467-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestSchemaDriftMutationMatrix/wrong_type"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594671-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestSchemaDriftMutationMatrix/wrong_type",
+      "Output": "=== RUN   TestSchemaDriftMutationMatrix/wrong_type\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594673-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestSchemaDriftMutationMatrix/wrong_type",
+      "Output": "--- PASS: TestSchemaDriftMutationMatrix/wrong_type (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594674-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestSchemaDriftMutationMatrix/wrong_type",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594675-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestSchemaDriftMutationMatrix/unknown_additive"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594676-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestSchemaDriftMutationMatrix/unknown_additive",
+      "Output": "=== RUN   TestSchemaDriftMutationMatrix/unknown_additive\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594678-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestSchemaDriftMutationMatrix/unknown_additive",
+      "Output": "--- PASS: TestSchemaDriftMutationMatrix/unknown_additive (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594679-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestSchemaDriftMutationMatrix/unknown_additive",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T17:39:11.59468-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestSchemaDriftMutationMatrix/oversized"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594682-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestSchemaDriftMutationMatrix/oversized",
+      "Output": "=== RUN   TestSchemaDriftMutationMatrix/oversized\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594683-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestSchemaDriftMutationMatrix/oversized",
+      "Output": "--- PASS: TestSchemaDriftMutationMatrix/oversized (0.02s)\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594685-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestSchemaDriftMutationMatrix/oversized",
+      "Elapsed": 0.02
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594686-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestSchemaDriftMutationMatrix",
+      "Output": "--- PASS: TestSchemaDriftMutationMatrix (0.02s)\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594687-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestSchemaDriftMutationMatrix",
+      "Elapsed": 0.02
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594691-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestPayloadLimitModelsDevModelCount"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594692-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestPayloadLimitModelsDevModelCount",
+      "Output": "=== RUN   TestPayloadLimitModelsDevModelCount\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594693-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestPayloadLimitModelsDevModelCount",
+      "Output": "--- PASS: TestPayloadLimitModelsDevModelCount (0.01s)\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594696-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestPayloadLimitModelsDevModelCount",
+      "Elapsed": 0.01
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594698-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestParseAPIBoundsProviderEnvelope"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594699-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestParseAPIBoundsProviderEnvelope",
+      "Output": "=== RUN   TestParseAPIBoundsProviderEnvelope\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594702-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestParseAPIBoundsProviderEnvelope",
+      "Output": "--- PASS: TestParseAPIBoundsProviderEnvelope (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594703-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestParseAPIBoundsProviderEnvelope",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594705-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestUnknownSourceEnumProducesFingerprintEvidence"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594706-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestUnknownSourceEnumProducesFingerprintEvidence",
+      "Output": "=== RUN   TestUnknownSourceEnumProducesFingerprintEvidence\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594707-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestUnknownSourceEnumProducesFingerprintEvidence",
+      "Output": "--- PASS: TestUnknownSourceEnumProducesFingerprintEvidence (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594709-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestUnknownSourceEnumProducesFingerprintEvidence",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T17:39:11.59471-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestExperimentalModeProviderBodyPreservesNestedJSON"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594711-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestExperimentalModeProviderBodyPreservesNestedJSON",
+      "Output": "=== RUN   TestExperimentalModeProviderBodyPreservesNestedJSON\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594714-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestExperimentalModeProviderBodyPreservesNestedJSON",
+      "Output": "--- PASS: TestExperimentalModeProviderBodyPreservesNestedJSON (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594716-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestExperimentalModeProviderBodyPreservesNestedJSON",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594721-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestModelToStarmapModelPreservesCurrentModelsDevFields"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594722-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestModelToStarmapModelPreservesCurrentModelsDevFields",
+      "Output": "=== RUN   TestModelToStarmapModelPreservesCurrentModelsDevFields\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594723-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestModelToStarmapModelPreservesCurrentModelsDevFields",
+      "Output": "--- PASS: TestModelToStarmapModelPreservesCurrentModelsDevFields (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594724-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestModelToStarmapModelPreservesCurrentModelsDevFields",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594726-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestProviderToStarmapProviderPreservesModelsDevMetadata"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594727-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestProviderToStarmapProviderPreservesModelsDevMetadata",
+      "Output": "=== RUN   TestProviderToStarmapProviderPreservesModelsDevMetadata\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594728-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestProviderToStarmapProviderPreservesModelsDevMetadata",
+      "Output": "--- PASS: TestProviderToStarmapProviderPreservesModelsDevMetadata (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594729-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestProviderToStarmapProviderPreservesModelsDevMetadata",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T17:39:11.59473-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestInterleavedUnmarshalAcceptsBooleanAndObject"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594731-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestInterleavedUnmarshalAcceptsBooleanAndObject",
+      "Output": "=== RUN   TestInterleavedUnmarshalAcceptsBooleanAndObject\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594735-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestInterleavedUnmarshalAcceptsBooleanAndObject",
+      "Output": "--- PASS: TestInterleavedUnmarshalAcceptsBooleanAndObject (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594737-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestInterleavedUnmarshalAcceptsBooleanAndObject",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594738-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestProcessFetchIncludesModelsWithNonCoreCostData"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594739-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestProcessFetchIncludesModelsWithNonCoreCostData",
+      "Output": "=== RUN   TestProcessFetchIncludesModelsWithNonCoreCostData\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.59474-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestProcessFetchIncludesModelsWithNonCoreCostData",
+      "Output": "--- PASS: TestProcessFetchIncludesModelsWithNonCoreCostData (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594742-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestProcessFetchIncludesModelsWithNonCoreCostData",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594743-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestProcessFetchHonorsProviderFilter"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594744-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestProcessFetchHonorsProviderFilter",
+      "Output": "=== RUN   TestProcessFetchHonorsProviderFilter\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594746-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestProcessFetchHonorsProviderFilter",
+      "Output": "--- PASS: TestProcessFetchHonorsProviderFilter (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594747-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestProcessFetchHonorsProviderFilter",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594748-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestProcessFetchResolvesConfiguredProviderAliasBeforeFiltering"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594749-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestProcessFetchResolvesConfiguredProviderAliasBeforeFiltering",
+      "Output": "=== RUN   TestProcessFetchResolvesConfiguredProviderAliasBeforeFiltering\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594751-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestProcessFetchResolvesConfiguredProviderAliasBeforeFiltering",
+      "Output": "--- PASS: TestProcessFetchResolvesConfiguredProviderAliasBeforeFiltering (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594752-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestProcessFetchResolvesConfiguredProviderAliasBeforeFiltering",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594753-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestModelToStarmapModelDoesNotInventOpenWeightsWhenAbsent"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594754-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestModelToStarmapModelDoesNotInventOpenWeightsWhenAbsent",
+      "Output": "=== RUN   TestModelToStarmapModelDoesNotInventOpenWeightsWhenAbsent\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594756-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestModelToStarmapModelDoesNotInventOpenWeightsWhenAbsent",
+      "Output": "--- PASS: TestModelToStarmapModelDoesNotInventOpenWeightsWhenAbsent (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.59476-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestModelToStarmapModelDoesNotInventOpenWeightsWhenAbsent",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594761-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestModelToStarmapModelExtensionsRoundTripWithoutTypeChurn"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594762-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestModelToStarmapModelExtensionsRoundTripWithoutTypeChurn",
+      "Output": "=== RUN   TestModelToStarmapModelExtensionsRoundTripWithoutTypeChurn\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594763-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestModelToStarmapModelExtensionsRoundTripWithoutTypeChurn",
+      "Output": "--- PASS: TestModelToStarmapModelExtensionsRoundTripWithoutTypeChurn (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594764-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestModelToStarmapModelExtensionsRoundTripWithoutTypeChurn",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594766-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestModelToStarmapModelReasoningOptionsOverrideContradictorySummary"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594767-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestModelToStarmapModelReasoningOptionsOverrideContradictorySummary",
+      "Output": "=== RUN   TestModelToStarmapModelReasoningOptionsOverrideContradictorySummary\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594769-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestModelToStarmapModelReasoningOptionsOverrideContradictorySummary",
+      "Output": "--- PASS: TestModelToStarmapModelReasoningOptionsOverrideContradictorySummary (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.59477-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestModelToStarmapModelReasoningOptionsOverrideContradictorySummary",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594771-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestModelHasCatalogDataTreatsExplicitOpenWeightsFalseAsData"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594778-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestModelHasCatalogDataTreatsExplicitOpenWeightsFalseAsData",
+      "Output": "=== RUN   TestModelHasCatalogDataTreatsExplicitOpenWeightsFalseAsData\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594784-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestModelHasCatalogDataTreatsExplicitOpenWeightsFalseAsData",
+      "Output": "--- PASS: TestModelHasCatalogDataTreatsExplicitOpenWeightsFalseAsData (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594786-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestModelHasCatalogDataTreatsExplicitOpenWeightsFalseAsData",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594787-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestModelToStarmapModelPreservesExplicitSourcePresence"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594789-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestModelToStarmapModelPreservesExplicitSourcePresence",
+      "Output": "=== RUN   TestModelToStarmapModelPreservesExplicitSourcePresence\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.59479-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestModelToStarmapModelPreservesExplicitSourcePresence",
+      "Output": "--- PASS: TestModelToStarmapModelPreservesExplicitSourcePresence (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594792-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestModelToStarmapModelPreservesExplicitSourcePresence",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594793-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestF009MalformedModelsDevSiblingIsQuarantined"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594794-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestF009MalformedModelsDevSiblingIsQuarantined",
+      "Output": "=== RUN   TestF009MalformedModelsDevSiblingIsQuarantined\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594796-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestF009MalformedModelsDevSiblingIsQuarantined",
+      "Output": "--- PASS: TestF009MalformedModelsDevSiblingIsQuarantined (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594797-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestF009MalformedModelsDevSiblingIsQuarantined",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594802-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestModelsDevSourceShapePathsAreClassified"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594805-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestModelsDevSourceShapePathsAreClassified",
+      "Output": "=== RUN   TestModelsDevSourceShapePathsAreClassified\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594807-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestModelsDevSourceShapePathsAreClassified",
+      "Output": "--- PASS: TestModelsDevSourceShapePathsAreClassified (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594808-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestModelsDevSourceShapePathsAreClassified",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T17:39:11.59481-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestModelsDevCacheAndSourceCheckoutUseSeparatePassiveRoots"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594811-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestModelsDevCacheAndSourceCheckoutUseSeparatePassiveRoots",
+      "Output": "=== RUN   TestModelsDevCacheAndSourceCheckoutUseSeparatePassiveRoots\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594813-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestModelsDevCacheAndSourceCheckoutUseSeparatePassiveRoots",
+      "Output": "--- PASS: TestModelsDevCacheAndSourceCheckoutUseSeparatePassiveRoots (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594816-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestModelsDevCacheAndSourceCheckoutUseSeparatePassiveRoots",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594818-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestInvalidNativeSourceDirectoriesRefuseEffects"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594819-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestInvalidNativeSourceDirectoriesRefuseEffects",
+      "Output": "=== RUN   TestInvalidNativeSourceDirectoriesRefuseEffects\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.59482-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestInvalidNativeSourceDirectoriesRefuseEffects",
+      "Output": "--- PASS: TestInvalidNativeSourceDirectoriesRefuseEffects (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594822-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestInvalidNativeSourceDirectoriesRefuseEffects",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594823-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestHTTPClientUsesContextStructuredLoggingWithoutDirectOutput"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594824-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestHTTPClientUsesContextStructuredLoggingWithoutDirectOutput",
+      "Output": "=== RUN   TestHTTPClientUsesContextStructuredLoggingWithoutDirectOutput\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594826-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestHTTPClientUsesContextStructuredLoggingWithoutDirectOutput",
+      "Output": "--- PASS: TestHTTPClientUsesContextStructuredLoggingWithoutDirectOutput (0.02s)\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594827-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestHTTPClientUsesContextStructuredLoggingWithoutDirectOutput",
+      "Elapsed": 0.02
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594829-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestSourceAndProviderLibrariesContainNoDirectProcessWrites"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.59483-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestSourceAndProviderLibrariesContainNoDirectProcessWrites",
+      "Output": "=== RUN   TestSourceAndProviderLibrariesContainNoDirectProcessWrites\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594832-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestSourceAndProviderLibrariesContainNoDirectProcessWrites",
+      "Output": "--- PASS: TestSourceAndProviderLibrariesContainNoDirectProcessWrites (0.04s)\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594833-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "TestSourceAndProviderLibrariesContainNoDirectProcessWrites",
+      "Elapsed": 0.04
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594834-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "FuzzParseAPIDataNoPanic"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594835-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "FuzzParseAPIDataNoPanic",
+      "Output": "=== RUN   FuzzParseAPIDataNoPanic\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594837-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "FuzzParseAPIDataNoPanic/seed#0"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594838-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "FuzzParseAPIDataNoPanic/seed#0",
+      "Output": "=== RUN   FuzzParseAPIDataNoPanic/seed#0\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594839-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "FuzzParseAPIDataNoPanic/seed#0",
+      "Output": "--- PASS: FuzzParseAPIDataNoPanic/seed#0 (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.59484-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "FuzzParseAPIDataNoPanic/seed#0",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594841-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "FuzzParseAPIDataNoPanic/seed#1"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.59485-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "FuzzParseAPIDataNoPanic/seed#1",
+      "Output": "=== RUN   FuzzParseAPIDataNoPanic/seed#1\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594857-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "FuzzParseAPIDataNoPanic/seed#1",
+      "Output": "--- PASS: FuzzParseAPIDataNoPanic/seed#1 (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594859-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "FuzzParseAPIDataNoPanic/seed#1",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T17:39:11.59486-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "FuzzParseAPIDataNoPanic/seed#2"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594861-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "FuzzParseAPIDataNoPanic/seed#2",
+      "Output": "=== RUN   FuzzParseAPIDataNoPanic/seed#2\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594863-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "FuzzParseAPIDataNoPanic/seed#2",
+      "Output": "--- PASS: FuzzParseAPIDataNoPanic/seed#2 (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594864-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "FuzzParseAPIDataNoPanic/seed#2",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594866-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "FuzzParseAPIDataNoPanic/seed#3"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594867-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "FuzzParseAPIDataNoPanic/seed#3",
+      "Output": "=== RUN   FuzzParseAPIDataNoPanic/seed#3\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594868-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "FuzzParseAPIDataNoPanic/seed#3",
+      "Output": "--- PASS: FuzzParseAPIDataNoPanic/seed#3 (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.59487-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "FuzzParseAPIDataNoPanic/seed#3",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594871-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "FuzzParseAPIDataNoPanic",
+      "Output": "--- PASS: FuzzParseAPIDataNoPanic (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594872-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Test": "FuzzParseAPIDataNoPanic",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594873-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Output": "FAIL\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594875-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Output": "{\"level\":\"info\",\"source\":\"models_dev_http\",\"url\":\"http://127.0.0.1:36783\",\"time\":\"2026-09-06T22:39:06Z\",\"message\":\"Fetching models.dev catalog\"}\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594877-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Output": "{\"level\":\"warn\",\"source\":\"models_dev_http\",\"error\":\"validation failed for field models_dev.models: promotion retains less than 50% of the last-known-good model count 1001\",\"time\":\"2026-09-06T22:39:06Z\",\"message\":\"models.dev response failed semantic promotion\"}\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594879-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Output": "{\"level\":\"warn\",\"source\":\"models_dev_http\",\"acquisition\":\"stale_cache\",\"time\":\"2026-09-06T22:39:06Z\",\"message\":\"Using stale models.dev cache\"}\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594881-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Output": "{\"level\":\"info\",\"source\":\"models_dev_http\",\"url\":\"http://127.0.0.1:36811\",\"time\":\"2026-09-06T22:39:06Z\",\"message\":\"Fetching models.dev catalog\"}\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594883-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Output": "{\"level\":\"info\",\"source\":\"models_dev_http\",\"acquisition\":\"downloaded\",\"response_bytes\":205070,\"time\":\"2026-09-06T22:39:06Z\",\"message\":\"Downloaded models.dev catalog\"}\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594885-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Output": "{\"level\":\"info\",\"source\":\"models_dev_http\",\"url\":\"http://127.0.0.1:46035\",\"time\":\"2026-09-06T22:39:06Z\",\"message\":\"Fetching models.dev catalog\"}\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594889-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Output": "{\"level\":\"info\",\"source\":\"models_dev_http\",\"acquisition\":\"downloaded\",\"response_bytes\":205030,\"time\":\"2026-09-06T22:39:06Z\",\"message\":\"Downloaded models.dev catalog\"}\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.59489-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Output": "{\"level\":\"info\",\"source\":\"models_dev_http\",\"acquisition\":\"fresh_cache\",\"time\":\"2026-09-06T22:39:06Z\",\"message\":\"Using models.dev cache\"}\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594892-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Output": "{\"level\":\"info\",\"source\":\"models_dev_http\",\"url\":\"http://127.0.0.1:45057\",\"time\":\"2026-09-06T22:39:06Z\",\"message\":\"Fetching models.dev catalog\"}\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594894-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Output": "{\"level\":\"info\",\"source\":\"models_dev_http\",\"acquisition\":\"downloaded\",\"response_bytes\":205030,\"time\":\"2026-09-06T22:39:06Z\",\"message\":\"Downloaded models.dev catalog\"}\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594898-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Output": "{\"level\":\"info\",\"source\":\"models_dev_http\",\"url\":\"http://127.0.0.1:45057\",\"time\":\"2026-09-06T22:39:06Z\",\"message\":\"Fetching models.dev catalog\"}\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594899-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Output": "{\"level\":\"info\",\"source\":\"models_dev_http\",\"acquisition\":\"revalidated_cache\",\"revision\":\"\\\"models-v1\\\"\",\"time\":\"2026-09-06T22:39:06Z\",\"message\":\"Revalidated models.dev cache\"}\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594902-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Output": "{\"level\":\"info\",\"source\":\"models_dev_http\",\"url\":\"http://127.0.0.1:42959\",\"time\":\"2026-09-06T22:39:06Z\",\"message\":\"Fetching models.dev catalog\"}\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594903-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Output": "{\"level\":\"info\",\"source\":\"models_dev_http\",\"acquisition\":\"downloaded\",\"response_bytes\":205030,\"time\":\"2026-09-06T22:39:06Z\",\"message\":\"Downloaded models.dev catalog\"}\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594905-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Output": "{\"level\":\"info\",\"source\":\"models_dev_http\",\"url\":\"http://127.0.0.1:42959\",\"time\":\"2026-09-06T22:39:07Z\",\"message\":\"Fetching models.dev catalog\"}\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594906-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Output": "{\"level\":\"info\",\"source\":\"models_dev_http\",\"acquisition\":\"revalidated_cache\",\"revision\":\"Wed, 08 Jul 2026 18:00:00 GMT\",\"time\":\"2026-09-06T22:39:07Z\",\"message\":\"Revalidated models.dev cache\"}\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594908-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Output": "{\"level\":\"info\",\"source\":\"models_dev_http\",\"url\":\"http://127.0.0.1:34495\",\"time\":\"2026-09-06T22:39:07Z\",\"message\":\"Fetching models.dev catalog\"}\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594909-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Output": "{\"level\":\"warn\",\"source\":\"models_dev_http\",\"status_code\":503,\"status\":\"503 Service Unavailable\",\"time\":\"2026-09-06T22:39:07Z\",\"message\":\"models.dev HTTP request returned non-success status\"}\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594911-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Output": "{\"level\":\"warn\",\"source\":\"models_dev_http\",\"acquisition\":\"embedded_bootstrap\",\"time\":\"2026-09-06T22:39:07Z\",\"message\":\"Falling back to embedded models.dev bootstrap\"}\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594912-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Output": "{\"level\":\"info\",\"source\":\"models_dev_http\",\"acquisition\":\"embedded_bootstrap\",\"time\":\"2026-09-06T22:39:07Z\",\"message\":\"Persisted embedded models.dev bootstrap cache\"}\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594914-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Output": "{\"level\":\"info\",\"source\":\"models_dev_http\",\"acquisition\":\"embedded_bootstrap\",\"time\":\"2026-09-06T22:39:07Z\",\"message\":\"Using models.dev bootstrap cache\"}\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594916-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Output": "{\"level\":\"info\",\"source\":\"models_dev_http\",\"url\":\"http://127.0.0.1:34499\",\"time\":\"2026-09-06T22:39:07Z\",\"message\":\"Fetching models.dev catalog\"}\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594917-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Output": "{\"level\":\"info\",\"source\":\"models_dev_http\",\"acquisition\":\"downloaded\",\"response_bytes\":205030,\"time\":\"2026-09-06T22:39:07Z\",\"message\":\"Downloaded models.dev catalog\"}\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594919-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Output": "{\"level\":\"info\",\"source\":\"models_dev_http\",\"url\":\"http://127.0.0.1:42277\",\"time\":\"2026-09-06T22:39:07Z\",\"message\":\"Fetching models.dev catalog\"}\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594921-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Output": "{\"level\":\"warn\",\"source\":\"models_dev_http\",\"status_code\":500,\"status\":\"500 Internal Server Error\",\"time\":\"2026-09-06T22:39:07Z\",\"message\":\"models.dev HTTP request returned non-success status\"}\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594922-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Output": "{\"level\":\"warn\",\"source\":\"models_dev_http\",\"acquisition\":\"stale_cache\",\"time\":\"2026-09-06T22:39:07Z\",\"message\":\"Using unverified legacy models.dev cache\"}\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594924-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Output": "{\"level\":\"info\",\"source\":\"models_dev_http\",\"url\":\"http://127.0.0.1:42451\",\"time\":\"2026-09-06T22:39:07Z\",\"message\":\"Fetching models.dev catalog\"}\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594925-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Output": "{\"level\":\"warn\",\"source\":\"models_dev_http\",\"status_code\":404,\"status\":\"404 Not Found\",\"time\":\"2026-09-06T22:39:07Z\",\"message\":\"models.dev HTTP request returned non-success status\"}\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594927-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Output": "{\"level\":\"warn\",\"source\":\"models_dev_http\",\"acquisition\":\"embedded_bootstrap\",\"time\":\"2026-09-06T22:39:07Z\",\"message\":\"Falling back to embedded models.dev bootstrap\"}\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594928-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Output": "{\"level\":\"info\",\"source\":\"models_dev_http\",\"acquisition\":\"embedded_bootstrap\",\"time\":\"2026-09-06T22:39:08Z\",\"message\":\"Persisted embedded models.dev bootstrap cache\"}\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594934-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Output": "{\"level\":\"info\",\"source\":\"models_dev_http\",\"url\":\"http://127.0.0.1:42973\",\"time\":\"2026-09-06T22:39:08Z\",\"message\":\"Fetching models.dev catalog\"}\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594936-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Output": "{\"level\":\"warn\",\"source\":\"models_dev_http\",\"response_bytes\":28,\"minimum_bytes\":100000,\"time\":\"2026-09-06T22:39:08Z\",\"message\":\"models.dev response is below minimum size\"}\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594937-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Output": "{\"level\":\"warn\",\"source\":\"models_dev_http\",\"acquisition\":\"embedded_bootstrap\",\"time\":\"2026-09-06T22:39:08Z\",\"message\":\"Falling back to embedded models.dev bootstrap\"}\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594939-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Output": "{\"level\":\"info\",\"source\":\"models_dev_http\",\"acquisition\":\"embedded_bootstrap\",\"time\":\"2026-09-06T22:39:08Z\",\"message\":\"Persisted embedded models.dev bootstrap cache\"}\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.59494-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Output": "{\"level\":\"info\",\"source\":\"models_dev_http\",\"url\":\"http://127.0.0.1:33225\",\"time\":\"2026-09-06T22:39:08Z\",\"message\":\"Fetching models.dev catalog\"}\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594941-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Output": "{\"level\":\"warn\",\"source\":\"models_dev_http\",\"response_bytes\":17,\"minimum_bytes\":100000,\"time\":\"2026-09-06T22:39:08Z\",\"message\":\"models.dev response is below minimum size\"}\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594943-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Output": "{\"level\":\"warn\",\"source\":\"models_dev_http\",\"acquisition\":\"embedded_bootstrap\",\"time\":\"2026-09-06T22:39:08Z\",\"message\":\"Falling back to embedded models.dev bootstrap\"}\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594944-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Output": "{\"level\":\"info\",\"source\":\"models_dev_http\",\"acquisition\":\"embedded_bootstrap\",\"time\":\"2026-09-06T22:39:08Z\",\"message\":\"Persisted embedded models.dev bootstrap cache\"}\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594946-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Output": "{\"level\":\"info\",\"source\":\"models_dev_http\",\"url\":\"http://127.0.0.1:46793\",\"time\":\"2026-09-06T22:39:08Z\",\"message\":\"Fetching models.dev catalog\"}\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594947-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Output": "{\"level\":\"warn\",\"source\":\"models_dev_http\",\"response_bytes\":62,\"minimum_bytes\":100000,\"time\":\"2026-09-06T22:39:08Z\",\"message\":\"models.dev response is below minimum size\"}\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594948-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Output": "{\"level\":\"warn\",\"source\":\"models_dev_http\",\"acquisition\":\"embedded_bootstrap\",\"time\":\"2026-09-06T22:39:08Z\",\"message\":\"Falling back to embedded models.dev bootstrap\"}\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.59495-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Output": "{\"level\":\"info\",\"source\":\"models_dev_http\",\"acquisition\":\"embedded_bootstrap\",\"time\":\"2026-09-06T22:39:08Z\",\"message\":\"Persisted embedded models.dev bootstrap cache\"}\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594951-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Output": "{\"level\":\"info\",\"source\":\"models_dev_http\",\"url\":\"http://127.0.0.1:40647\",\"time\":\"2026-09-06T22:39:08Z\",\"message\":\"Fetching models.dev catalog\"}\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594953-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Output": "{\"level\":\"warn\",\"source\":\"models_dev_http\",\"status_code\":500,\"status\":\"500 Internal Server Error\",\"time\":\"2026-09-06T22:39:08Z\",\"message\":\"models.dev HTTP request returned non-success status\"}\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594955-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Output": "{\"level\":\"warn\",\"source\":\"models_dev_http\",\"acquisition\":\"embedded_bootstrap\",\"time\":\"2026-09-06T22:39:08Z\",\"message\":\"Falling back to embedded models.dev bootstrap\"}\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594956-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Output": "{\"level\":\"info\",\"source\":\"models_dev_http\",\"acquisition\":\"embedded_bootstrap\",\"time\":\"2026-09-06T22:39:09Z\",\"message\":\"Persisted embedded models.dev bootstrap cache\"}\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594957-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Output": "{\"level\":\"info\",\"source\":\"models_dev_http\",\"model_count\":0,\"time\":\"2026-09-06T22:39:09Z\",\"message\":\"Found models with catalog data from models.dev HTTP\"}\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.59496-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Output": "{\"level\":\"info\",\"source\":\"models_dev_git\",\"model_count\":0,\"time\":\"2026-09-06T22:39:09Z\",\"message\":\"Found models with catalog data from models.dev Git\"}\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594961-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Output": "{\"level\":\"info\",\"source\":\"models_dev_http\",\"model_count\":1,\"time\":\"2026-09-06T22:39:09Z\",\"message\":\"Found models with catalog data from models.dev HTTP\"}\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594963-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Output": "{\"level\":\"info\",\"source\":\"models_dev_http\",\"acquisition\":\"fresh_cache\",\"time\":\"2026-09-06T22:39:09Z\",\"message\":\"Using models.dev cache\"}\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594964-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Output": "{\"level\":\"info\",\"source\":\"models_dev_http\",\"acquisition\":\"fresh_cache\",\"time\":\"2026-09-06T22:39:09Z\",\"message\":\"Using models.dev cache\"}\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594965-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Output": "{\"level\":\"info\",\"source\":\"models_dev_http\",\"model_count\":1,\"time\":\"2026-09-06T22:39:09Z\",\"message\":\"Found models with catalog data from models.dev HTTP\"}\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594966-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Output": "{\"level\":\"info\",\"source\":\"models_dev_http\",\"model_count\":1,\"time\":\"2026-09-06T22:39:09Z\",\"message\":\"Found models with catalog data from models.dev HTTP\"}\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594968-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Output": "{\"level\":\"info\",\"source\":\"models_dev_git\",\"model_count\":1,\"time\":\"2026-09-06T22:39:09Z\",\"message\":\"Found models with catalog data from models.dev Git\"}\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594969-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Output": "{\"level\":\"info\",\"source\":\"models_dev_git\",\"model_count\":1,\"time\":\"2026-09-06T22:39:09Z\",\"message\":\"Found models with catalog data from models.dev Git\"}\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594971-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Output": "{\"level\":\"info\",\"source\":\"models_dev_http\",\"model_count\":0,\"time\":\"2026-09-06T22:39:09Z\",\"message\":\"Found models with catalog data from models.dev HTTP\"}\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594973-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Output": "{\"level\":\"info\",\"source\":\"models_dev_http\",\"model_count\":0,\"time\":\"2026-09-06T22:39:09Z\",\"message\":\"Found models with catalog data from models.dev HTTP\"}\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594974-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Output": "{\"level\":\"info\",\"source\":\"models_dev_http\",\"model_count\":0,\"time\":\"2026-09-06T22:39:09Z\",\"message\":\"Found models with catalog data from models.dev HTTP\"}\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594975-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Output": "{\"level\":\"info\",\"source\":\"models_dev_http\",\"source\":\"models_dev_http\",\"url\":\"http://127.0.0.1:32865\",\"time\":\"2026-09-06T22:39:09Z\",\"message\":\"Fetching models.dev catalog\"}\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594977-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Output": "{\"level\":\"warn\",\"source\":\"models_dev_http\",\"source\":\"models_dev_http\",\"status_code\":503,\"status\":\"503 Service Unavailable\",\"time\":\"2026-09-06T22:39:09Z\",\"message\":\"models.dev HTTP request returned non-success status\"}\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594979-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Output": "{\"level\":\"warn\",\"source\":\"models_dev_http\",\"source\":\"models_dev_http\",\"acquisition\":\"embedded_bootstrap\",\"time\":\"2026-09-06T22:39:09Z\",\"message\":\"Falling back to embedded models.dev bootstrap\"}\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.59498-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Output": "{\"level\":\"info\",\"source\":\"models_dev_http\",\"source\":\"models_dev_http\",\"acquisition\":\"embedded_bootstrap\",\"time\":\"2026-09-06T22:39:09Z\",\"message\":\"Persisted embedded models.dev bootstrap cache\"}\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594982-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Output": "{\"level\":\"info\",\"source\":\"models_dev_http\",\"model_count\":5894,\"time\":\"2026-09-06T22:39:09Z\",\"message\":\"Found models with catalog data from models.dev HTTP\"}\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594983-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Output": "{\"level\":\"info\",\"source\":\"models_dev_http\",\"source\":\"models_dev_http\",\"acquisition\":\"embedded_bootstrap\",\"time\":\"2026-09-06T22:39:10Z\",\"message\":\"Using models.dev bootstrap cache\"}\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594986-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Output": "{\"level\":\"info\",\"source\":\"models_dev_http\",\"model_count\":5894,\"time\":\"2026-09-06T22:39:10Z\",\"message\":\"Found models with catalog data from models.dev HTTP\"}\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.594988-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Output": "{\"level\":\"info\",\"source\":\"models_dev_http\",\"model_count\":1,\"time\":\"2026-09-06T22:39:11Z\",\"message\":\"Found models with catalog data from models.dev HTTP\"}\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:11.59499-05:00",
+      "Action": "fail",
+      "Package": "github.com/agentstation/starmap/./internal/sources/modelsdev",
+      "Elapsed": 0.001
+    }
+  ],
+  "binary_sha256": "fbb968b3de3c39aac8f451dfdd29e63d6f1cc0e9865975c54f579c8a347ce9f2",
+  "state": {
+    "Status": "exited",
+    "Running": false,
+    "Paused": false,
+    "Restarting": false,
+    "OOMKilled": false,
+    "Dead": false,
+    "Pid": 0,
+    "ExitCode": 1,
+    "Error": "",
+    "StartedAt": "2026-09-06T22:39:04.453961591Z",
+    "FinishedAt": "2026-09-06T22:39:11.475985594Z"
+  },
+  "conversion_exit_code": 0,
+  "counts": {
+    "pass": 69,
+    "fail": 3,
+    "skip": 0
+  },
+  "passed": false,
+  "container_removed": true,
+  "volume_removed": true
+}

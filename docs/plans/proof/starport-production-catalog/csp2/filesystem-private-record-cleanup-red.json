@@ -1,0 +1,17 @@
+{
+  "command": [
+    "env",
+    "GOTOOLCHAIN=go1.25.12",
+    "go",
+    "test",
+    "-json",
+    "-race",
+    "-count=1",
+    "./internal/privatefiles",
+    "-run",
+    "TestPrivatePublicationPreservesModifiedStage$"
+  ],
+  "exit_code": 1,
+  "stdout": "{\"Time\":\"2026-09-06T15:07:10.895484-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starmap/internal/privatefiles\"}\n{\"Time\":\"2026-09-06T15:07:11.075751-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starmap/internal/privatefiles\",\"Test\":\"TestPrivatePublicationPreservesModifiedStage\"}\n{\"Time\":\"2026-09-06T15:07:11.075811-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/privatefiles\",\"Test\":\"TestPrivatePublicationPreservesModifiedStage\",\"Output\":\"=== RUN   TestPrivatePublicationPreservesModifiedStage\\n\"}\n{\"Time\":\"2026-09-06T15:07:11.085188-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/privatefiles\",\"Test\":\"TestPrivatePublicationPreservesModifiedStage\",\"Output\":\"    records_test.go:209: cleanup removed modified file: \\\"\\\" open /var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/TestPrivatePublicationPreservesModifiedStage3967347263/001/records/.current-DAN2SQVAQ3MI3IFIYAY5NANMUN: no such file or directory\\n\"}\n{\"Time\":\"2026-09-06T15:07:11.085601-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/privatefiles\",\"Test\":\"TestPrivatePublicationPreservesModifiedStage\",\"Output\":\"--- FAIL: TestPrivatePublicationPreservesModifiedStage (0.01s)\\n\"}\n{\"Time\":\"2026-09-06T15:07:11.085666-05:00\",\"Action\":\"fail\",\"Package\":\"github.com/agentstation/starmap/internal/privatefiles\",\"Test\":\"TestPrivatePublicationPreservesModifiedStage\",\"Elapsed\":0.01}\n{\"Time\":\"2026-09-06T15:07:11.085697-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/privatefiles\",\"Output\":\"FAIL\\n\"}\n{\"Time\":\"2026-09-06T15:07:11.086416-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/privatefiles\",\"Output\":\"FAIL\\tgithub.com/agentstation/starmap/internal/privatefiles\\t0.191s\\n\"}\n{\"Time\":\"2026-09-06T15:07:11.086431-05:00\",\"Action\":\"fail\",\"Package\":\"github.com/agentstation/starmap/internal/privatefiles\",\"Elapsed\":0.191}\n",
+  "stderr": ""
+}

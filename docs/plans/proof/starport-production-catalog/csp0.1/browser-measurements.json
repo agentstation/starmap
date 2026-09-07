@@ -1,0 +1,1150 @@
+[
+  {
+    "audience": "build",
+    "bodyFont": "16px",
+    "bodyLine": "26px",
+    "buttons": [
+      {
+        "height": 44,
+        "name": "Switch to light theme",
+        "width": 85.796875
+      },
+      {
+        "height": 44,
+        "name": "Build with Starport",
+        "width": 145.578125
+      },
+      {
+        "height": 44,
+        "name": "Manage your account",
+        "width": 164.484375
+      },
+      {
+        "height": 44,
+        "name": "Operate the gateway",
+        "width": 159.375
+      },
+      {
+        "height": 44,
+        "name": "Copy snippet",
+        "width": 80
+      },
+      {
+        "height": 44,
+        "name": "Copy snippet",
+        "width": 80
+      },
+      {
+        "height": 44,
+        "name": "Copy snippet",
+        "width": 80
+      },
+      {
+        "height": 44,
+        "name": "Copy snippet",
+        "width": 80
+      },
+      {
+        "height": 44,
+        "name": "Copy snippet",
+        "width": 80
+      },
+      {
+        "height": 44,
+        "name": "Copy snippet",
+        "width": 80
+      },
+      {
+        "height": 44,
+        "name": "Copy snippet",
+        "width": 80
+      }
+    ],
+    "code": [
+      {
+        "font": "14px",
+        "overflow": "auto",
+        "scrollWidth": 461,
+        "tabIndex": 0,
+        "width": 286
+      },
+      {
+        "font": "14px",
+        "overflow": "auto",
+        "scrollWidth": 461,
+        "tabIndex": 0,
+        "width": 286
+      },
+      {
+        "font": "14px",
+        "overflow": "auto",
+        "scrollWidth": 286,
+        "tabIndex": 0,
+        "width": 286
+      },
+      {
+        "font": "14px",
+        "overflow": "auto",
+        "scrollWidth": 780,
+        "tabIndex": 0,
+        "width": 286
+      },
+      {
+        "font": "14px",
+        "overflow": "auto",
+        "scrollWidth": 889,
+        "tabIndex": 0,
+        "width": 286
+      },
+      {
+        "font": "14px",
+        "overflow": "auto",
+        "scrollWidth": 286,
+        "tabIndex": 0,
+        "width": 286
+      },
+      {
+        "font": "14px",
+        "overflow": "auto",
+        "scrollWidth": 410,
+        "tabIndex": 0,
+        "width": 286
+      }
+    ],
+    "colors": {
+      "--accent": "#f0b23e",
+      "--accent-link": "#f0b23e",
+      "--bg-canvas": "#0a0b0c",
+      "--bg-panel": "#101112",
+      "--bg-raised": "#18191b",
+      "--text-1": "#f6f7f8",
+      "--text-2": "#c9ced6",
+      "--text-3": "#8b909a"
+    },
+    "documentWidth": 320,
+    "h1Font": "30px",
+    "h2Font": "22px",
+    "height": 800,
+    "mainWidth": 288,
+    "table": null,
+    "theme": "dark",
+    "width": 320
+  },
+  {
+    "audience": "account",
+    "bodyFont": "16px",
+    "bodyLine": "26px",
+    "buttons": [
+      {
+        "height": 44,
+        "name": "Switch to light theme",
+        "width": 85.796875
+      },
+      {
+        "height": 44,
+        "name": "Build with Starport",
+        "width": 145.578125
+      },
+      {
+        "height": 44,
+        "name": "Manage your account",
+        "width": 164.484375
+      },
+      {
+        "height": 44,
+        "name": "Operate the gateway",
+        "width": 159.375
+      }
+    ],
+    "code": [],
+    "colors": {
+      "--accent": "#f0b23e",
+      "--accent-link": "#f0b23e",
+      "--bg-canvas": "#0a0b0c",
+      "--bg-panel": "#101112",
+      "--bg-raised": "#18191b",
+      "--text-1": "#f6f7f8",
+      "--text-2": "#c9ced6",
+      "--text-3": "#8b909a"
+    },
+    "documentWidth": 320,
+    "h1Font": "30px",
+    "h2Font": "22px",
+    "height": 800,
+    "mainWidth": 288,
+    "table": {
+      "font": "14px",
+      "width": 286
+    },
+    "theme": "dark",
+    "width": 320
+  },
+  {
+    "audience": "operate",
+    "bodyFont": "16px",
+    "bodyLine": "26px",
+    "buttons": [
+      {
+        "height": 44,
+        "name": "Switch to light theme",
+        "width": 85.796875
+      },
+      {
+        "height": 44,
+        "name": "Build with Starport",
+        "width": 145.578125
+      },
+      {
+        "height": 44,
+        "name": "Manage your account",
+        "width": 164.484375
+      },
+      {
+        "height": 44,
+        "name": "Operate the gateway",
+        "width": 159.375
+      },
+      {
+        "height": 44,
+        "name": "Copy snippet",
+        "width": 80
+      },
+      {
+        "height": 44,
+        "name": "Copy snippet",
+        "width": 80
+      },
+      {
+        "height": 44,
+        "name": "Copy snippet",
+        "width": 80
+      },
+      {
+        "height": 44,
+        "name": "Copy snippet",
+        "width": 80
+      },
+      {
+        "height": 44,
+        "name": "Copy snippet",
+        "width": 80
+      }
+    ],
+    "code": [
+      {
+        "font": "14px",
+        "overflow": "auto",
+        "scrollWidth": 444,
+        "tabIndex": 0,
+        "width": 286
+      },
+      {
+        "font": "14px",
+        "overflow": "auto",
+        "scrollWidth": 704,
+        "tabIndex": 0,
+        "width": 286
+      },
+      {
+        "font": "14px",
+        "overflow": "auto",
+        "scrollWidth": 662,
+        "tabIndex": 0,
+        "width": 286
+      },
+      {
+        "font": "14px",
+        "overflow": "auto",
+        "scrollWidth": 310,
+        "tabIndex": 0,
+        "width": 286
+      },
+      {
+        "font": "14px",
+        "overflow": "auto",
+        "scrollWidth": 511,
+        "tabIndex": 0,
+        "width": 286
+      }
+    ],
+    "colors": {
+      "--accent": "#f0b23e",
+      "--accent-link": "#f0b23e",
+      "--bg-canvas": "#0a0b0c",
+      "--bg-panel": "#101112",
+      "--bg-raised": "#18191b",
+      "--text-1": "#f6f7f8",
+      "--text-2": "#c9ced6",
+      "--text-3": "#8b909a"
+    },
+    "documentWidth": 320,
+    "h1Font": "30px",
+    "h2Font": "22px",
+    "height": 800,
+    "mainWidth": 288,
+    "table": null,
+    "theme": "dark",
+    "width": 320
+  },
+  {
+    "audience": "operate",
+    "bodyFont": "16px",
+    "bodyLine": "26px",
+    "buttons": [
+      {
+        "height": 44,
+        "name": "Switch to dark theme",
+        "width": 87.171875
+      },
+      {
+        "height": 44,
+        "name": "Build with Starport",
+        "width": 145.578125
+      },
+      {
+        "height": 44,
+        "name": "Manage your account",
+        "width": 164.484375
+      },
+      {
+        "height": 44,
+        "name": "Operate the gateway",
+        "width": 159.375
+      },
+      {
+        "height": 44,
+        "name": "Copy snippet",
+        "width": 80
+      },
+      {
+        "height": 44,
+        "name": "Copy snippet",
+        "width": 80
+      },
+      {
+        "height": 44,
+        "name": "Copy snippet",
+        "width": 80
+      },
+      {
+        "height": 44,
+        "name": "Copy snippet",
+        "width": 80
+      },
+      {
+        "height": 44,
+        "name": "Copy snippet",
+        "width": 80
+      }
+    ],
+    "code": [
+      {
+        "font": "14px",
+        "overflow": "auto",
+        "scrollWidth": 444,
+        "tabIndex": 0,
+        "width": 286
+      },
+      {
+        "font": "14px",
+        "overflow": "auto",
+        "scrollWidth": 704,
+        "tabIndex": 0,
+        "width": 286
+      },
+      {
+        "font": "14px",
+        "overflow": "auto",
+        "scrollWidth": 662,
+        "tabIndex": 0,
+        "width": 286
+      },
+      {
+        "font": "14px",
+        "overflow": "auto",
+        "scrollWidth": 310,
+        "tabIndex": 0,
+        "width": 286
+      },
+      {
+        "font": "14px",
+        "overflow": "auto",
+        "scrollWidth": 511,
+        "tabIndex": 0,
+        "width": 286
+      }
+    ],
+    "colors": {
+      "--accent": "#b45309",
+      "--accent-link": "#a16207",
+      "--bg-canvas": "#fff",
+      "--bg-panel": "#fafafa",
+      "--bg-raised": "#f4f4f5",
+      "--text-1": "#18181b",
+      "--text-2": "#3f3f46",
+      "--text-3": "#71717a"
+    },
+    "documentWidth": 320,
+    "h1Font": "30px",
+    "h2Font": "22px",
+    "height": 800,
+    "mainWidth": 288,
+    "table": null,
+    "theme": "light",
+    "width": 320
+  },
+  {
+    "audience": "account",
+    "bodyFont": "16px",
+    "bodyLine": "26px",
+    "buttons": [
+      {
+        "height": 44,
+        "name": "Switch to dark theme",
+        "width": 87.171875
+      },
+      {
+        "height": 44,
+        "name": "Build with Starport",
+        "width": 145.578125
+      },
+      {
+        "height": 44,
+        "name": "Manage your account",
+        "width": 164.484375
+      },
+      {
+        "height": 44,
+        "name": "Operate the gateway",
+        "width": 159.375
+      }
+    ],
+    "code": [],
+    "colors": {
+      "--accent": "#b45309",
+      "--accent-link": "#a16207",
+      "--bg-canvas": "#fff",
+      "--bg-panel": "#fafafa",
+      "--bg-raised": "#f4f4f5",
+      "--text-1": "#18181b",
+      "--text-2": "#3f3f46",
+      "--text-3": "#71717a"
+    },
+    "documentWidth": 320,
+    "h1Font": "30px",
+    "h2Font": "22px",
+    "height": 800,
+    "mainWidth": 288,
+    "table": {
+      "font": "14px",
+      "width": 286
+    },
+    "theme": "light",
+    "width": 320
+  },
+  {
+    "audience": "build",
+    "bodyFont": "16px",
+    "bodyLine": "26px",
+    "buttons": [
+      {
+        "height": 44,
+        "name": "Switch to dark theme",
+        "width": 87.171875
+      },
+      {
+        "height": 44,
+        "name": "Build with Starport",
+        "width": 145.578125
+      },
+      {
+        "height": 44,
+        "name": "Manage your account",
+        "width": 164.484375
+      },
+      {
+        "height": 44,
+        "name": "Operate the gateway",
+        "width": 159.375
+      },
+      {
+        "height": 44,
+        "name": "Copy snippet",
+        "width": 80
+      },
+      {
+        "height": 44,
+        "name": "Copy snippet",
+        "width": 80
+      },
+      {
+        "height": 44,
+        "name": "Copy snippet",
+        "width": 80
+      },
+      {
+        "height": 44,
+        "name": "Copy snippet",
+        "width": 80
+      },
+      {
+        "height": 44,
+        "name": "Copy snippet",
+        "width": 80
+      },
+      {
+        "height": 44,
+        "name": "Copy snippet",
+        "width": 80
+      },
+      {
+        "height": 44,
+        "name": "Copy snippet",
+        "width": 80
+      }
+    ],
+    "code": [
+      {
+        "font": "14px",
+        "overflow": "auto",
+        "scrollWidth": 461,
+        "tabIndex": 0,
+        "width": 286
+      },
+      {
+        "font": "14px",
+        "overflow": "auto",
+        "scrollWidth": 461,
+        "tabIndex": 0,
+        "width": 286
+      },
+      {
+        "font": "14px",
+        "overflow": "auto",
+        "scrollWidth": 286,
+        "tabIndex": 0,
+        "width": 286
+      },
+      {
+        "font": "14px",
+        "overflow": "auto",
+        "scrollWidth": 780,
+        "tabIndex": 0,
+        "width": 286
+      },
+      {
+        "font": "14px",
+        "overflow": "auto",
+        "scrollWidth": 889,
+        "tabIndex": 0,
+        "width": 286
+      },
+      {
+        "font": "14px",
+        "overflow": "auto",
+        "scrollWidth": 286,
+        "tabIndex": 0,
+        "width": 286
+      },
+      {
+        "font": "14px",
+        "overflow": "auto",
+        "scrollWidth": 410,
+        "tabIndex": 0,
+        "width": 286
+      }
+    ],
+    "colors": {
+      "--accent": "#b45309",
+      "--accent-link": "#a16207",
+      "--bg-canvas": "#fff",
+      "--bg-panel": "#fafafa",
+      "--bg-raised": "#f4f4f5",
+      "--text-1": "#18181b",
+      "--text-2": "#3f3f46",
+      "--text-3": "#71717a"
+    },
+    "documentWidth": 320,
+    "h1Font": "30px",
+    "h2Font": "22px",
+    "height": 800,
+    "mainWidth": 288,
+    "table": null,
+    "theme": "light",
+    "width": 320
+  },
+  {
+    "audience": "build",
+    "bodyFont": "16px",
+    "bodyLine": "26px",
+    "buttons": [
+      {
+        "height": 44,
+        "name": "Switch to dark theme",
+        "width": 87.171875
+      },
+      {
+        "height": 44,
+        "name": "Build with Starport",
+        "width": 145.578125
+      },
+      {
+        "height": 44,
+        "name": "Manage your account",
+        "width": 164.484375
+      },
+      {
+        "height": 44,
+        "name": "Operate the gateway",
+        "width": 159.375
+      },
+      {
+        "height": 44,
+        "name": "Copy snippet",
+        "width": 80
+      },
+      {
+        "height": 44,
+        "name": "Copy snippet",
+        "width": 80
+      },
+      {
+        "height": 44,
+        "name": "Copy snippet",
+        "width": 80
+      },
+      {
+        "height": 44,
+        "name": "Copy snippet",
+        "width": 80
+      },
+      {
+        "height": 44,
+        "name": "Copy snippet",
+        "width": 80
+      },
+      {
+        "height": 44,
+        "name": "Copy snippet",
+        "width": 80
+      },
+      {
+        "height": 44,
+        "name": "Copy snippet",
+        "width": 80
+      }
+    ],
+    "code": [
+      {
+        "font": "14px",
+        "overflow": "auto",
+        "scrollWidth": 718,
+        "tabIndex": 0,
+        "width": 718
+      },
+      {
+        "font": "14px",
+        "overflow": "auto",
+        "scrollWidth": 718,
+        "tabIndex": 0,
+        "width": 718
+      },
+      {
+        "font": "14px",
+        "overflow": "auto",
+        "scrollWidth": 718,
+        "tabIndex": 0,
+        "width": 718
+      },
+      {
+        "font": "14px",
+        "overflow": "auto",
+        "scrollWidth": 780,
+        "tabIndex": 0,
+        "width": 718
+      },
+      {
+        "font": "14px",
+        "overflow": "auto",
+        "scrollWidth": 889,
+        "tabIndex": 0,
+        "width": 718
+      },
+      {
+        "font": "14px",
+        "overflow": "auto",
+        "scrollWidth": 718,
+        "tabIndex": 0,
+        "width": 718
+      },
+      {
+        "font": "14px",
+        "overflow": "auto",
+        "scrollWidth": 718,
+        "tabIndex": 0,
+        "width": 718
+      }
+    ],
+    "colors": {
+      "--accent": "#b45309",
+      "--accent-link": "#a16207",
+      "--bg-canvas": "#fff",
+      "--bg-panel": "#fafafa",
+      "--bg-raised": "#f4f4f5",
+      "--text-1": "#18181b",
+      "--text-2": "#3f3f46",
+      "--text-3": "#71717a"
+    },
+    "documentWidth": 1280,
+    "h1Font": "30px",
+    "h2Font": "22px",
+    "height": 900,
+    "mainWidth": 720,
+    "table": null,
+    "theme": "light",
+    "width": 1280
+  },
+  {
+    "audience": "account",
+    "bodyFont": "16px",
+    "bodyLine": "26px",
+    "buttons": [
+      {
+        "height": 44,
+        "name": "Switch to dark theme",
+        "width": 87.171875
+      },
+      {
+        "height": 44,
+        "name": "Build with Starport",
+        "width": 145.578125
+      },
+      {
+        "height": 44,
+        "name": "Manage your account",
+        "width": 164.484375
+      },
+      {
+        "height": 44,
+        "name": "Operate the gateway",
+        "width": 159.375
+      }
+    ],
+    "code": [],
+    "colors": {
+      "--accent": "#b45309",
+      "--accent-link": "#a16207",
+      "--bg-canvas": "#fff",
+      "--bg-panel": "#fafafa",
+      "--bg-raised": "#f4f4f5",
+      "--text-1": "#18181b",
+      "--text-2": "#3f3f46",
+      "--text-3": "#71717a"
+    },
+    "documentWidth": 1280,
+    "h1Font": "30px",
+    "h2Font": "22px",
+    "height": 900,
+    "mainWidth": 720,
+    "table": {
+      "font": "14px",
+      "width": 718
+    },
+    "theme": "light",
+    "width": 1280
+  },
+  {
+    "audience": "operate",
+    "bodyFont": "16px",
+    "bodyLine": "26px",
+    "buttons": [
+      {
+        "height": 44,
+        "name": "Switch to dark theme",
+        "width": 87.171875
+      },
+      {
+        "height": 44,
+        "name": "Build with Starport",
+        "width": 145.578125
+      },
+      {
+        "height": 44,
+        "name": "Manage your account",
+        "width": 164.484375
+      },
+      {
+        "height": 44,
+        "name": "Operate the gateway",
+        "width": 159.375
+      },
+      {
+        "height": 44,
+        "name": "Copy snippet",
+        "width": 80
+      },
+      {
+        "height": 44,
+        "name": "Copy snippet",
+        "width": 80
+      },
+      {
+        "height": 44,
+        "name": "Copy snippet",
+        "width": 80
+      },
+      {
+        "height": 44,
+        "name": "Copy snippet",
+        "width": 80
+      },
+      {
+        "height": 44,
+        "name": "Copy snippet",
+        "width": 80
+      }
+    ],
+    "code": [
+      {
+        "font": "14px",
+        "overflow": "auto",
+        "scrollWidth": 718,
+        "tabIndex": 0,
+        "width": 718
+      },
+      {
+        "font": "14px",
+        "overflow": "auto",
+        "scrollWidth": 718,
+        "tabIndex": 0,
+        "width": 718
+      },
+      {
+        "font": "14px",
+        "overflow": "auto",
+        "scrollWidth": 718,
+        "tabIndex": 0,
+        "width": 718
+      },
+      {
+        "font": "14px",
+        "overflow": "auto",
+        "scrollWidth": 718,
+        "tabIndex": 0,
+        "width": 718
+      },
+      {
+        "font": "14px",
+        "overflow": "auto",
+        "scrollWidth": 718,
+        "tabIndex": 0,
+        "width": 718
+      }
+    ],
+    "colors": {
+      "--accent": "#b45309",
+      "--accent-link": "#a16207",
+      "--bg-canvas": "#fff",
+      "--bg-panel": "#fafafa",
+      "--bg-raised": "#f4f4f5",
+      "--text-1": "#18181b",
+      "--text-2": "#3f3f46",
+      "--text-3": "#71717a"
+    },
+    "documentWidth": 1280,
+    "h1Font": "30px",
+    "h2Font": "22px",
+    "height": 900,
+    "mainWidth": 720,
+    "table": null,
+    "theme": "light",
+    "width": 1280
+  },
+  {
+    "audience": "operate",
+    "bodyFont": "16px",
+    "bodyLine": "26px",
+    "buttons": [
+      {
+        "height": 44,
+        "name": "Switch to light theme",
+        "width": 85.796875
+      },
+      {
+        "height": 44,
+        "name": "Build with Starport",
+        "width": 145.578125
+      },
+      {
+        "height": 44,
+        "name": "Manage your account",
+        "width": 164.484375
+      },
+      {
+        "height": 44,
+        "name": "Operate the gateway",
+        "width": 159.375
+      },
+      {
+        "height": 44,
+        "name": "Copy snippet",
+        "width": 80
+      },
+      {
+        "height": 44,
+        "name": "Copy snippet",
+        "width": 80
+      },
+      {
+        "height": 44,
+        "name": "Copy snippet",
+        "width": 80
+      },
+      {
+        "height": 44,
+        "name": "Copy snippet",
+        "width": 80
+      },
+      {
+        "height": 44,
+        "name": "Copy snippet",
+        "width": 80
+      }
+    ],
+    "code": [
+      {
+        "font": "14px",
+        "overflow": "auto",
+        "scrollWidth": 718,
+        "tabIndex": 0,
+        "width": 718
+      },
+      {
+        "font": "14px",
+        "overflow": "auto",
+        "scrollWidth": 718,
+        "tabIndex": 0,
+        "width": 718
+      },
+      {
+        "font": "14px",
+        "overflow": "auto",
+        "scrollWidth": 718,
+        "tabIndex": 0,
+        "width": 718
+      },
+      {
+        "font": "14px",
+        "overflow": "auto",
+        "scrollWidth": 718,
+        "tabIndex": 0,
+        "width": 718
+      },
+      {
+        "font": "14px",
+        "overflow": "auto",
+        "scrollWidth": 718,
+        "tabIndex": 0,
+        "width": 718
+      }
+    ],
+    "colors": {
+      "--accent": "#f0b23e",
+      "--accent-link": "#f0b23e",
+      "--bg-canvas": "#0a0b0c",
+      "--bg-panel": "#101112",
+      "--bg-raised": "#18191b",
+      "--text-1": "#f6f7f8",
+      "--text-2": "#c9ced6",
+      "--text-3": "#8b909a"
+    },
+    "documentWidth": 1280,
+    "h1Font": "30px",
+    "h2Font": "22px",
+    "height": 900,
+    "mainWidth": 720,
+    "table": null,
+    "theme": "dark",
+    "width": 1280
+  },
+  {
+    "audience": "account",
+    "bodyFont": "16px",
+    "bodyLine": "26px",
+    "buttons": [
+      {
+        "height": 44,
+        "name": "Switch to light theme",
+        "width": 85.796875
+      },
+      {
+        "height": 44,
+        "name": "Build with Starport",
+        "width": 145.578125
+      },
+      {
+        "height": 44,
+        "name": "Manage your account",
+        "width": 164.484375
+      },
+      {
+        "height": 44,
+        "name": "Operate the gateway",
+        "width": 159.375
+      }
+    ],
+    "code": [],
+    "colors": {
+      "--accent": "#f0b23e",
+      "--accent-link": "#f0b23e",
+      "--bg-canvas": "#0a0b0c",
+      "--bg-panel": "#101112",
+      "--bg-raised": "#18191b",
+      "--text-1": "#f6f7f8",
+      "--text-2": "#c9ced6",
+      "--text-3": "#8b909a"
+    },
+    "documentWidth": 1280,
+    "h1Font": "30px",
+    "h2Font": "22px",
+    "height": 900,
+    "mainWidth": 720,
+    "table": {
+      "font": "14px",
+      "width": 718
+    },
+    "theme": "dark",
+    "width": 1280
+  },
+  {
+    "audience": "build",
+    "bodyFont": "16px",
+    "bodyLine": "26px",
+    "buttons": [
+      {
+        "height": 44,
+        "name": "Switch to light theme",
+        "width": 85.796875
+      },
+      {
+        "height": 44,
+        "name": "Build with Starport",
+        "width": 145.578125
+      },
+      {
+        "height": 44,
+        "name": "Manage your account",
+        "width": 164.484375
+      },
+      {
+        "height": 44,
+        "name": "Operate the gateway",
+        "width": 159.375
+      },
+      {
+        "height": 44,
+        "name": "Copy snippet",
+        "width": 80
+      },
+      {
+        "height": 44,
+        "name": "Copy snippet",
+        "width": 80
+      },
+      {
+        "height": 44,
+        "name": "Copy snippet",
+        "width": 80
+      },
+      {
+        "height": 44,
+        "name": "Copy snippet",
+        "width": 80
+      },
+      {
+        "height": 44,
+        "name": "Copy snippet",
+        "width": 80
+      },
+      {
+        "height": 44,
+        "name": "Copy snippet",
+        "width": 80
+      },
+      {
+        "height": 44,
+        "name": "Copy snippet",
+        "width": 80
+      }
+    ],
+    "code": [
+      {
+        "font": "14px",
+        "overflow": "auto",
+        "scrollWidth": 718,
+        "tabIndex": 0,
+        "width": 718
+      },
+      {
+        "font": "14px",
+        "overflow": "auto",
+        "scrollWidth": 718,
+        "tabIndex": 0,
+        "width": 718
+      },
+      {
+        "font": "14px",
+        "overflow": "auto",
+        "scrollWidth": 718,
+        "tabIndex": 0,
+        "width": 718
+      },
+      {
+        "font": "14px",
+        "overflow": "auto",
+        "scrollWidth": 780,
+        "tabIndex": 0,
+        "width": 718
+      },
+      {
+        "font": "14px",
+        "overflow": "auto",
+        "scrollWidth": 889,
+        "tabIndex": 0,
+        "width": 718
+      },
+      {
+        "font": "14px",
+        "overflow": "auto",
+        "scrollWidth": 718,
+        "tabIndex": 0,
+        "width": 718
+      },
+      {
+        "font": "14px",
+        "overflow": "auto",
+        "scrollWidth": 718,
+        "tabIndex": 0,
+        "width": 718
+      }
+    ],
+    "colors": {
+      "--accent": "#f0b23e",
+      "--accent-link": "#f0b23e",
+      "--bg-canvas": "#0a0b0c",
+      "--bg-panel": "#101112",
+      "--bg-raised": "#18191b",
+      "--text-1": "#f6f7f8",
+      "--text-2": "#c9ced6",
+      "--text-3": "#8b909a"
+    },
+    "documentWidth": 1280,
+    "h1Font": "30px",
+    "h2Font": "22px",
+    "height": 900,
+    "mainWidth": 720,
+    "table": null,
+    "theme": "dark",
+    "width": 1280
+  }
+]

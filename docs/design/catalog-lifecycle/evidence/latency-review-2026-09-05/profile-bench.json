@@ -1,0 +1,6 @@
+{
+  "original_filename": "profile-bench.txt",
+  "format": "verbatim UTF-8 text",
+  "raw_sha256": "0183d501094949538b92950bac7361e5be1963931200c7cb76c84222a8cf3151",
+  "content": "goos: darwin\ngoarch: arm64\npkg: github.com/agentstation/starport/internal/router\ncpu: Apple M2 Max\nBenchmarkAuditCatalogSelection/routes_100-12         \t     453\t   2737703 ns/op\t 5715182 B/op\t   52126 allocs/op\nPASS\nok  \tgithub.com/agentstation/starport/internal/router\t1.904s\n"
+}

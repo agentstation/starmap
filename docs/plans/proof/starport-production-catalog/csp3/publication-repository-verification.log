@@ -1,0 +1,108 @@
+
+==> go test ./...
+ok  	github.com/agentstation/starmap	81.689s
+ok  	github.com/agentstation/starmap/acquisition	44.791s
+?   	github.com/agentstation/starmap/cmd/starmap	[no test files]
+ok  	github.com/agentstation/starmap/cmd/starmap-bootstrap-manifest	25.792s
+ok  	github.com/agentstation/starmap/cmd/starmap-catalog-release	1.480s
+ok  	github.com/agentstation/starmap/cmd/starmap-embedded-budget	5.640s
+ok  	github.com/agentstation/starmap/cmd/starmap-modelsdev-promote	1.901s
+ok  	github.com/agentstation/starmap/internal/architecture	1.229s
+ok  	github.com/agentstation/starmap/internal/attestation	1.142s
+ok  	github.com/agentstation/starmap/internal/auth	1.485s
+ok  	github.com/agentstation/starmap/internal/bootstrap	45.834s
+ok  	github.com/agentstation/starmap/internal/bootstrap/budget	8.733s
+ok  	github.com/agentstation/starmap/internal/bootstrap/manifest	1.798s
+ok  	github.com/agentstation/starmap/internal/catalog/pipeline	3.862s
+ok  	github.com/agentstation/starmap/internal/catalog/query	1.450s
+ok  	github.com/agentstation/starmap/internal/catalog/reconciler	1.335s
+ok  	github.com/agentstation/starmap/internal/catalog/settings	4.935s
+ok  	github.com/agentstation/starmap/internal/catalog/workspace	23.283s
+--- FAIL: TestMakeVerifyUsesCanonicalVerificationScript (0.00s)
+    pr_workflow_test.go:129: repository verification script is missing isolated catalog state "VERIFY_CATALOG_PATH=\"$ROOT/internal/embedded/catalog\""
+FAIL
+FAIL	github.com/agentstation/starmap/internal/ciworkflow	1.649s
+?   	github.com/agentstation/starmap/internal/cli/alerts	[no test files]
+ok  	github.com/agentstation/starmap/internal/cli/app	31.179s
+?   	github.com/agentstation/starmap/internal/cli/commands/auth	[no test files]
+?   	github.com/agentstation/starmap/internal/cli/commands/authors	[no test files]
+?   	github.com/agentstation/starmap/internal/cli/commands/completion	[no test files]
+ok  	github.com/agentstation/starmap/internal/cli/commands/config	1.380s
+ok  	github.com/agentstation/starmap/internal/cli/commands/deps	3.284s
+ok  	github.com/agentstation/starmap/internal/cli/commands/embed	0.580s
+ok  	github.com/agentstation/starmap/internal/cli/commands/migrate	0.379s
+ok  	github.com/agentstation/starmap/internal/cli/commands/models	0.411s
+ok  	github.com/agentstation/starmap/internal/cli/commands/providers	0.493s
+ok  	github.com/agentstation/starmap/internal/cli/commands/serve	0.892s
+ok  	github.com/agentstation/starmap/internal/cli/commands/update	1.067s
+ok  	github.com/agentstation/starmap/internal/cli/commands/validate	0.917s
+?   	github.com/agentstation/starmap/internal/cli/completion	[no test files]
+?   	github.com/agentstation/starmap/internal/cli/constants	[no test files]
+ok  	github.com/agentstation/starmap/internal/cli/convert	0.631s
+ok  	github.com/agentstation/starmap/internal/cli/embed	0.439s
+?   	github.com/agentstation/starmap/internal/cli/emoji	[no test files]
+?   	github.com/agentstation/starmap/internal/cli/filter	[no test files]
+?   	github.com/agentstation/starmap/internal/cli/format	[no test files]
+?   	github.com/agentstation/starmap/internal/cli/globals	[no test files]
+ok  	github.com/agentstation/starmap/internal/cli/hints	0.288s
+?   	github.com/agentstation/starmap/internal/cli/notify	[no test files]
+?   	github.com/agentstation/starmap/internal/cli/provider	[no test files]
+ok  	github.com/agentstation/starmap/internal/cli/table	0.329s
+?   	github.com/agentstation/starmap/internal/constants	[no test files]
+ok  	github.com/agentstation/starmap/internal/deploymentdocs	0.454s
+?   	github.com/agentstation/starmap/internal/deps	[no test files]
+ok  	github.com/agentstation/starmap/internal/embedded	4.578s
+?   	github.com/agentstation/starmap/internal/embedded/openapi	[no test files]
+ok  	github.com/agentstation/starmap/internal/filepublish	0.662s
+ok  	github.com/agentstation/starmap/internal/fleet	0.579s
+ok  	github.com/agentstation/starmap/internal/privatefiles	1.384s
+ok  	github.com/agentstation/starmap/internal/providers/anthropic	3.687s
+ok  	github.com/agentstation/starmap/internal/providers/clients	0.655s
+ok  	github.com/agentstation/starmap/internal/providers/google	0.295s
+ok  	github.com/agentstation/starmap/internal/providers/openai	2.465s
+ok  	github.com/agentstation/starmap/internal/runtimeacl/windows	0.521s
+ok  	github.com/agentstation/starmap/internal/server	37.500s
+ok  	github.com/agentstation/starmap/internal/server/cache	0.952s
+ok  	github.com/agentstation/starmap/internal/server/handlers	6.551s
+ok  	github.com/agentstation/starmap/internal/server/middleware	0.649s
+ok  	github.com/agentstation/starmap/internal/server/openrouter	4.093s
+ok  	github.com/agentstation/starmap/internal/server/operations	0.612s
+ok  	github.com/agentstation/starmap/internal/server/params	0.171s
+ok  	github.com/agentstation/starmap/internal/server/response	0.171s
+ok  	github.com/agentstation/starmap/internal/server/sse	0.235s
+ok  	github.com/agentstation/starmap/internal/sources/embedded	0.318s
+ok  	github.com/agentstation/starmap/internal/sources/github	0.720s
+ok  	github.com/agentstation/starmap/internal/sources/local	0.437s
+ok  	github.com/agentstation/starmap/internal/sources/modelsdev	15.510s
+ok  	github.com/agentstation/starmap/internal/sources/providers	0.394s
+?   	github.com/agentstation/starmap/internal/test/catalog	[no test files]
+?   	github.com/agentstation/starmap/internal/test/channel	[no test files]
+?   	github.com/agentstation/starmap/internal/test/logging	[no test files]
+ok  	github.com/agentstation/starmap/internal/test/providerfixture	0.398s
+ok  	github.com/agentstation/starmap/internal/transport	0.382s
+ok  	github.com/agentstation/starmap/pkg/catalogs	26.559s
+ok  	github.com/agentstation/starmap/pkg/catalogs/artifact	0.288s
+ok  	github.com/agentstation/starmap/pkg/catalogs/authority	0.401s
+ok  	github.com/agentstation/starmap/pkg/catalogs/config	3.685s
+ok  	github.com/agentstation/starmap/pkg/catalogs/evidence	0.683s
+?   	github.com/agentstation/starmap/pkg/catalogs/internal/resourcepolicy	[no test files]
+ok  	github.com/agentstation/starmap/pkg/catalogs/projection	0.598s
+ok  	github.com/agentstation/starmap/pkg/catalogs/remote	0.577s
+ok  	github.com/agentstation/starmap/pkg/catalogs/storage	5.602s
+ok  	github.com/agentstation/starmap/pkg/catalogs/storage/s3	0.368s
+ok  	github.com/agentstation/starmap/pkg/differ	0.201s
+ok  	github.com/agentstation/starmap/pkg/errors	0.178s
+ok  	github.com/agentstation/starmap/pkg/logging	0.188s
+ok  	github.com/agentstation/starmap/pkg/productpaths	0.518s
+ok  	github.com/agentstation/starmap/pkg/productpaths/policy	0.193s
+ok  	github.com/agentstation/starmap/pkg/provenance	0.212s
+ok  	github.com/agentstation/starmap/pkg/sources	0.242s
+ok  	github.com/agentstation/starmap/pkg/sources/payload	0.177s
+ok  	github.com/agentstation/starmap/pkg/sync	0.195s
+ok  	github.com/agentstation/starmap/remote	4.533s
+ok  	github.com/agentstation/starmap/runtime	68.760s
+?   	github.com/agentstation/starmap/runtime/source	[no test files]
+?   	github.com/agentstation/starmap/runtime/status	[no test files]
+ok  	github.com/agentstation/starmap/server	7.166s
+FAIL
+make: *** [verify] Error 1

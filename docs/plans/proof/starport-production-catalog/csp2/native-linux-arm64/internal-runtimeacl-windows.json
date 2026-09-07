@@ -1,0 +1,566 @@
+{
+  "package": "internal/runtimeacl/windows",
+  "race": false,
+  "toolchain": "go1.25.12",
+  "commands": [
+    {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.25.12",
+        "GOOS=linux",
+        "GOARCH=arm64",
+        "CGO_ENABLED=0",
+        "go",
+        "test",
+        "-c",
+        "-o",
+        "/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/csp2-native-build-hiy4yr6m/test",
+        "./internal/runtimeacl/windows"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "docker",
+        "volume",
+        "create",
+        "--label",
+        "purpose=csp2-native-package-verification",
+        "csp2-native-dce907e4968a43aaa30ddd513c4ab16d"
+      ],
+      "exit_code": 0,
+      "stdout": "csp2-native-dce907e4968a43aaa30ddd513c4ab16d\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "docker",
+        "create",
+        "--pull=never",
+        "--network",
+        "none",
+        "--read-only",
+        "--user",
+        "65532:65532",
+        "--cap-drop=ALL",
+        "--security-opt=no-new-privileges",
+        "--mount",
+        "type=bind,src=/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/csp2-native-build-hiy4yr6m/test,dst=/native-test,readonly",
+        "--mount",
+        "type=bind,src=/Users/jack/src/github.com/agentstation/starmap-catalog-requirements,dst=/Users/jack/src/github.com/agentstation/starmap-catalog-requirements,readonly",
+        "--mount",
+        "type=volume,src=csp2-native-dce907e4968a43aaa30ddd513c4ab16d,dst=/home/nonroot",
+        "--env",
+        "TMPDIR=/home/nonroot",
+        "--env",
+        "GOMAXPROCS=4",
+        "--workdir",
+        "/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/internal/runtimeacl/windows",
+        "--entrypoint",
+        "/native-test",
+        "cgr.dev/chainguard/static@sha256:60582b2ae6074f641094af0f370d4ab241aab271858a66223dcde7eee9f51638",
+        "-test.v=test2json",
+        "-test.count=1",
+        "-test.parallel=4",
+        "-test.timeout=10m"
+      ],
+      "exit_code": 0,
+      "stdout": "ed40152f56caa5374cfca1af2ab1d5c434415d60049d01e6ab60d56bbe8bccfb\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "docker",
+        "start",
+        "--attach",
+        "ed40152f56caa5374cfca1af2ab1d5c434415d60049d01e6ab60d56bbe8bccfb"
+      ],
+      "exit_code": 0,
+      "stdout": "\u0016=== RUN   TestWindowsACLGrantPolicy\n\u0016=== RUN   TestWindowsACLGrantPolicy/owner\n\u0016--- PASS: TestWindowsACLGrantPolicy/owner (0.00s)\n\u0016=== NAME  TestWindowsACLGrantPolicy\n\u0016=== RUN   TestWindowsACLGrantPolicy/host_administrators\n\u0016--- PASS: TestWindowsACLGrantPolicy/host_administrators (0.00s)\n\u0016=== NAME  TestWindowsACLGrantPolicy\n\u0016=== RUN   TestWindowsACLGrantPolicy/deny_only\n\u0016--- PASS: TestWindowsACLGrantPolicy/deny_only (0.00s)\n\u0016=== NAME  TestWindowsACLGrantPolicy\n\u0016=== RUN   TestWindowsACLGrantPolicy/empty_restrictive_ACL\n\u0016--- PASS: TestWindowsACLGrantPolicy/empty_restrictive_ACL (0.00s)\n\u0016=== NAME  TestWindowsACLGrantPolicy\n\u0016=== RUN   TestWindowsACLGrantPolicy/no_rights\n\u0016--- PASS: TestWindowsACLGrantPolicy/no_rights (0.00s)\n\u0016=== NAME  TestWindowsACLGrantPolicy\n\u0016=== RUN   TestWindowsACLGrantPolicy/everyone\n\u0016--- PASS: TestWindowsACLGrantPolicy/everyone (0.00s)\n\u0016=== NAME  TestWindowsACLGrantPolicy\n\u0016=== RUN   TestWindowsACLGrantPolicy/authenticated_users\n\u0016--- PASS: TestWindowsACLGrantPolicy/authenticated_users (0.00s)\n\u0016=== NAME  TestWindowsACLGrantPolicy\n\u0016=== RUN   TestWindowsACLGrantPolicy/another_account\n\u0016--- PASS: TestWindowsACLGrantPolicy/another_account (0.00s)\n\u0016=== NAME  TestWindowsACLGrantPolicy\n\u0016=== RUN   TestWindowsACLGrantPolicy/deny_does_not_excuse_a_grant\n\u0016--- PASS: TestWindowsACLGrantPolicy/deny_does_not_excuse_a_grant (0.00s)\n\u0016=== NAME  TestWindowsACLGrantPolicy\n\u0016=== RUN   TestWindowsACLGrantPolicy/missing_owner\n\u0016--- PASS: TestWindowsACLGrantPolicy/missing_owner (0.00s)\n\u0016=== NAME  TestWindowsACLGrantPolicy\n\u0016=== RUN   TestWindowsACLGrantPolicy/wrong_owner\n\u0016--- PASS: TestWindowsACLGrantPolicy/wrong_owner (0.00s)\n\u0016=== NAME  TestWindowsACLGrantPolicy\n\u0016=== RUN   TestWindowsACLGrantPolicy/absent_DACL\n\u0016--- PASS: TestWindowsACLGrantPolicy/absent_DACL (0.00s)\n\u0016=== NAME  TestWindowsACLGrantPolicy\n\u0016=== RUN   TestWindowsACLGrantPolicy/null_DACL\n\u0016--- PASS: TestWindowsACLGrantPolicy/null_DACL (0.00s)\n\u0016=== NAME  TestWindowsACLGrantPolicy\n\u0016=== RUN   TestWindowsACLGrantPolicy/unsupported_callback\n\u0016--- PASS: TestWindowsACLGrantPolicy/unsupported_callback (0.00s)\n\u0016=== NAME  TestWindowsACLGrantPolicy\n\u0016--- PASS: TestWindowsACLGrantPolicy (0.00s)\n\u0016=== NAME  \n\u0016PASS\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "docker",
+        "inspect",
+        "--format",
+        "{{json .State}}",
+        "ed40152f56caa5374cfca1af2ab1d5c434415d60049d01e6ab60d56bbe8bccfb"
+      ],
+      "exit_code": 0,
+      "stdout": "{\"Status\":\"exited\",\"Running\":false,\"Paused\":false,\"Restarting\":false,\"OOMKilled\":false,\"Dead\":false,\"Pid\":0,\"ExitCode\":0,\"Error\":\"\",\"StartedAt\":\"2026-09-06T17:51:47.342763176Z\",\"FinishedAt\":\"2026-09-06T17:51:47.384551343Z\"}\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "docker",
+        "rm",
+        "-f",
+        "ed40152f56caa5374cfca1af2ab1d5c434415d60049d01e6ab60d56bbe8bccfb"
+      ],
+      "exit_code": 0,
+      "stdout": "ed40152f56caa5374cfca1af2ab1d5c434415d60049d01e6ab60d56bbe8bccfb\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "docker",
+        "volume",
+        "rm",
+        "csp2-native-dce907e4968a43aaa30ddd513c4ab16d"
+      ],
+      "exit_code": 0,
+      "stdout": "csp2-native-dce907e4968a43aaa30ddd513c4ab16d\n",
+      "stderr": ""
+    }
+  ],
+  "test_events": [
+    {
+      "Time": "2026-09-06T12:51:47.485707-05:00",
+      "Action": "start",
+      "Package": "github.com/agentstation/starmap/internal/runtimeacl/windows"
+    },
+    {
+      "Time": "2026-09-06T12:51:47.485802-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/runtimeacl/windows",
+      "Test": "TestWindowsACLGrantPolicy"
+    },
+    {
+      "Time": "2026-09-06T12:51:47.485804-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/runtimeacl/windows",
+      "Test": "TestWindowsACLGrantPolicy",
+      "Output": "=== RUN   TestWindowsACLGrantPolicy\n"
+    },
+    {
+      "Time": "2026-09-06T12:51:47.485809-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/runtimeacl/windows",
+      "Test": "TestWindowsACLGrantPolicy/owner"
+    },
+    {
+      "Time": "2026-09-06T12:51:47.48581-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/runtimeacl/windows",
+      "Test": "TestWindowsACLGrantPolicy/owner",
+      "Output": "=== RUN   TestWindowsACLGrantPolicy/owner\n"
+    },
+    {
+      "Time": "2026-09-06T12:51:47.485814-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/runtimeacl/windows",
+      "Test": "TestWindowsACLGrantPolicy/owner",
+      "Output": "--- PASS: TestWindowsACLGrantPolicy/owner (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T12:51:47.485816-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/runtimeacl/windows",
+      "Test": "TestWindowsACLGrantPolicy/owner",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T12:51:47.485818-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/runtimeacl/windows",
+      "Test": "TestWindowsACLGrantPolicy/host_administrators"
+    },
+    {
+      "Time": "2026-09-06T12:51:47.48582-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/runtimeacl/windows",
+      "Test": "TestWindowsACLGrantPolicy/host_administrators",
+      "Output": "=== RUN   TestWindowsACLGrantPolicy/host_administrators\n"
+    },
+    {
+      "Time": "2026-09-06T12:51:47.485821-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/runtimeacl/windows",
+      "Test": "TestWindowsACLGrantPolicy/host_administrators",
+      "Output": "--- PASS: TestWindowsACLGrantPolicy/host_administrators (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T12:51:47.485825-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/runtimeacl/windows",
+      "Test": "TestWindowsACLGrantPolicy/host_administrators",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T12:51:47.485827-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/runtimeacl/windows",
+      "Test": "TestWindowsACLGrantPolicy/deny_only"
+    },
+    {
+      "Time": "2026-09-06T12:51:47.485828-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/runtimeacl/windows",
+      "Test": "TestWindowsACLGrantPolicy/deny_only",
+      "Output": "=== RUN   TestWindowsACLGrantPolicy/deny_only\n"
+    },
+    {
+      "Time": "2026-09-06T12:51:47.48583-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/runtimeacl/windows",
+      "Test": "TestWindowsACLGrantPolicy/deny_only",
+      "Output": "--- PASS: TestWindowsACLGrantPolicy/deny_only (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T12:51:47.485831-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/runtimeacl/windows",
+      "Test": "TestWindowsACLGrantPolicy/deny_only",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T12:51:47.485832-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/runtimeacl/windows",
+      "Test": "TestWindowsACLGrantPolicy/empty_restrictive_ACL"
+    },
+    {
+      "Time": "2026-09-06T12:51:47.485833-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/runtimeacl/windows",
+      "Test": "TestWindowsACLGrantPolicy/empty_restrictive_ACL",
+      "Output": "=== RUN   TestWindowsACLGrantPolicy/empty_restrictive_ACL\n"
+    },
+    {
+      "Time": "2026-09-06T12:51:47.485835-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/runtimeacl/windows",
+      "Test": "TestWindowsACLGrantPolicy/empty_restrictive_ACL",
+      "Output": "--- PASS: TestWindowsACLGrantPolicy/empty_restrictive_ACL (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T12:51:47.485836-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/runtimeacl/windows",
+      "Test": "TestWindowsACLGrantPolicy/empty_restrictive_ACL",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T12:51:47.485837-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/runtimeacl/windows",
+      "Test": "TestWindowsACLGrantPolicy/no_rights"
+    },
+    {
+      "Time": "2026-09-06T12:51:47.485838-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/runtimeacl/windows",
+      "Test": "TestWindowsACLGrantPolicy/no_rights",
+      "Output": "=== RUN   TestWindowsACLGrantPolicy/no_rights\n"
+    },
+    {
+      "Time": "2026-09-06T12:51:47.48584-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/runtimeacl/windows",
+      "Test": "TestWindowsACLGrantPolicy/no_rights",
+      "Output": "--- PASS: TestWindowsACLGrantPolicy/no_rights (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T12:51:47.485841-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/runtimeacl/windows",
+      "Test": "TestWindowsACLGrantPolicy/no_rights",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T12:51:47.485843-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/runtimeacl/windows",
+      "Test": "TestWindowsACLGrantPolicy/everyone"
+    },
+    {
+      "Time": "2026-09-06T12:51:47.485844-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/runtimeacl/windows",
+      "Test": "TestWindowsACLGrantPolicy/everyone",
+      "Output": "=== RUN   TestWindowsACLGrantPolicy/everyone\n"
+    },
+    {
+      "Time": "2026-09-06T12:51:47.485845-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/runtimeacl/windows",
+      "Test": "TestWindowsACLGrantPolicy/everyone",
+      "Output": "--- PASS: TestWindowsACLGrantPolicy/everyone (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T12:51:47.485847-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/runtimeacl/windows",
+      "Test": "TestWindowsACLGrantPolicy/everyone",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T12:51:47.485848-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/runtimeacl/windows",
+      "Test": "TestWindowsACLGrantPolicy/authenticated_users"
+    },
+    {
+      "Time": "2026-09-06T12:51:47.48585-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/runtimeacl/windows",
+      "Test": "TestWindowsACLGrantPolicy/authenticated_users",
+      "Output": "=== RUN   TestWindowsACLGrantPolicy/authenticated_users\n"
+    },
+    {
+      "Time": "2026-09-06T12:51:47.485853-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/runtimeacl/windows",
+      "Test": "TestWindowsACLGrantPolicy/authenticated_users",
+      "Output": "--- PASS: TestWindowsACLGrantPolicy/authenticated_users (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T12:51:47.485854-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/runtimeacl/windows",
+      "Test": "TestWindowsACLGrantPolicy/authenticated_users",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T12:51:47.485856-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/runtimeacl/windows",
+      "Test": "TestWindowsACLGrantPolicy/another_account"
+    },
+    {
+      "Time": "2026-09-06T12:51:47.485857-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/runtimeacl/windows",
+      "Test": "TestWindowsACLGrantPolicy/another_account",
+      "Output": "=== RUN   TestWindowsACLGrantPolicy/another_account\n"
+    },
+    {
+      "Time": "2026-09-06T12:51:47.485859-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/runtimeacl/windows",
+      "Test": "TestWindowsACLGrantPolicy/another_account",
+      "Output": "--- PASS: TestWindowsACLGrantPolicy/another_account (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T12:51:47.48586-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/runtimeacl/windows",
+      "Test": "TestWindowsACLGrantPolicy/another_account",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T12:51:47.485861-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/runtimeacl/windows",
+      "Test": "TestWindowsACLGrantPolicy/deny_does_not_excuse_a_grant"
+    },
+    {
+      "Time": "2026-09-06T12:51:47.485864-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/runtimeacl/windows",
+      "Test": "TestWindowsACLGrantPolicy/deny_does_not_excuse_a_grant",
+      "Output": "=== RUN   TestWindowsACLGrantPolicy/deny_does_not_excuse_a_grant\n"
+    },
+    {
+      "Time": "2026-09-06T12:51:47.485865-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/runtimeacl/windows",
+      "Test": "TestWindowsACLGrantPolicy/deny_does_not_excuse_a_grant",
+      "Output": "--- PASS: TestWindowsACLGrantPolicy/deny_does_not_excuse_a_grant (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T12:51:47.485867-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/runtimeacl/windows",
+      "Test": "TestWindowsACLGrantPolicy/deny_does_not_excuse_a_grant",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T12:51:47.485869-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/runtimeacl/windows",
+      "Test": "TestWindowsACLGrantPolicy/missing_owner"
+    },
+    {
+      "Time": "2026-09-06T12:51:47.48587-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/runtimeacl/windows",
+      "Test": "TestWindowsACLGrantPolicy/missing_owner",
+      "Output": "=== RUN   TestWindowsACLGrantPolicy/missing_owner\n"
+    },
+    {
+      "Time": "2026-09-06T12:51:47.485872-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/runtimeacl/windows",
+      "Test": "TestWindowsACLGrantPolicy/missing_owner",
+      "Output": "--- PASS: TestWindowsACLGrantPolicy/missing_owner (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T12:51:47.485874-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/runtimeacl/windows",
+      "Test": "TestWindowsACLGrantPolicy/missing_owner",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T12:51:47.485877-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/runtimeacl/windows",
+      "Test": "TestWindowsACLGrantPolicy/wrong_owner"
+    },
+    {
+      "Time": "2026-09-06T12:51:47.485878-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/runtimeacl/windows",
+      "Test": "TestWindowsACLGrantPolicy/wrong_owner",
+      "Output": "=== RUN   TestWindowsACLGrantPolicy/wrong_owner\n"
+    },
+    {
+      "Time": "2026-09-06T12:51:47.48588-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/runtimeacl/windows",
+      "Test": "TestWindowsACLGrantPolicy/wrong_owner",
+      "Output": "--- PASS: TestWindowsACLGrantPolicy/wrong_owner (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T12:51:47.485882-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/runtimeacl/windows",
+      "Test": "TestWindowsACLGrantPolicy/wrong_owner",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T12:51:47.485883-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/runtimeacl/windows",
+      "Test": "TestWindowsACLGrantPolicy/absent_DACL"
+    },
+    {
+      "Time": "2026-09-06T12:51:47.485886-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/runtimeacl/windows",
+      "Test": "TestWindowsACLGrantPolicy/absent_DACL",
+      "Output": "=== RUN   TestWindowsACLGrantPolicy/absent_DACL\n"
+    },
+    {
+      "Time": "2026-09-06T12:51:47.485887-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/runtimeacl/windows",
+      "Test": "TestWindowsACLGrantPolicy/absent_DACL",
+      "Output": "--- PASS: TestWindowsACLGrantPolicy/absent_DACL (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T12:51:47.485892-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/runtimeacl/windows",
+      "Test": "TestWindowsACLGrantPolicy/absent_DACL",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T12:51:47.485896-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/runtimeacl/windows",
+      "Test": "TestWindowsACLGrantPolicy/null_DACL"
+    },
+    {
+      "Time": "2026-09-06T12:51:47.485897-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/runtimeacl/windows",
+      "Test": "TestWindowsACLGrantPolicy/null_DACL",
+      "Output": "=== RUN   TestWindowsACLGrantPolicy/null_DACL\n"
+    },
+    {
+      "Time": "2026-09-06T12:51:47.485898-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/runtimeacl/windows",
+      "Test": "TestWindowsACLGrantPolicy/null_DACL",
+      "Output": "--- PASS: TestWindowsACLGrantPolicy/null_DACL (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T12:51:47.485899-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/runtimeacl/windows",
+      "Test": "TestWindowsACLGrantPolicy/null_DACL",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T12:51:47.4859-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/runtimeacl/windows",
+      "Test": "TestWindowsACLGrantPolicy/unsupported_callback"
+    },
+    {
+      "Time": "2026-09-06T12:51:47.485902-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/runtimeacl/windows",
+      "Test": "TestWindowsACLGrantPolicy/unsupported_callback",
+      "Output": "=== RUN   TestWindowsACLGrantPolicy/unsupported_callback\n"
+    },
+    {
+      "Time": "2026-09-06T12:51:47.485903-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/runtimeacl/windows",
+      "Test": "TestWindowsACLGrantPolicy/unsupported_callback",
+      "Output": "--- PASS: TestWindowsACLGrantPolicy/unsupported_callback (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T12:51:47.485905-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/runtimeacl/windows",
+      "Test": "TestWindowsACLGrantPolicy/unsupported_callback",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T12:51:47.485906-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/runtimeacl/windows",
+      "Test": "TestWindowsACLGrantPolicy",
+      "Output": "--- PASS: TestWindowsACLGrantPolicy (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T12:51:47.485908-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/runtimeacl/windows",
+      "Test": "TestWindowsACLGrantPolicy",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T12:51:47.485909-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/runtimeacl/windows",
+      "Output": "PASS\n"
+    },
+    {
+      "Time": "2026-09-06T12:51:47.485911-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/runtimeacl/windows",
+      "Elapsed": 0
+    }
+  ],
+  "binary_sha256": "10d542ab4042f137d75587c083db971a47c9b080fb89881877f85ed69fc304c2",
+  "state": {
+    "Status": "exited",
+    "Running": false,
+    "Paused": false,
+    "Restarting": false,
+    "OOMKilled": false,
+    "Dead": false,
+    "Pid": 0,
+    "ExitCode": 0,
+    "Error": "",
+    "StartedAt": "2026-09-06T17:51:47.342763176Z",
+    "FinishedAt": "2026-09-06T17:51:47.384551343Z"
+  },
+  "conversion_exit_code": 0,
+  "counts": {
+    "pass": 15,
+    "fail": 0,
+    "skip": 0
+  },
+  "passed": true,
+  "container_removed": true,
+  "volume_removed": true
+}

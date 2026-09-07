@@ -1,0 +1,28 @@
+{
+  "release": "v1.2.0",
+  "platform": "darwin/arm64",
+  "request": {
+    "model": "openai/gpt-4o-mini",
+    "max_tokens": 32,
+    "stream": true,
+    "messages": [
+      {
+        "role": "user",
+        "content": "Hello"
+      }
+    ]
+  },
+  "credential_source": "/Users/jack/src/github.com/agentstation/starport/.env",
+  "credential_name": "OPENAI_API_KEY",
+  "verdict": "FAIL",
+  "archive_sha256": "b5bb2961044c7aaf1bdec7ca277e9891cd0ab9bb5143aff00684534c5a9e0023",
+  "binary_sha256": "f6a0a9f456b847276ada55d3f75c15f45accf892ba205f4dca2deb0e68b018bc",
+  "version": "starport version 1.2.0",
+  "readiness_status": 200,
+  "catalog_status": 200,
+  "model_count": 511,
+  "error": "HTTP Error 500: Internal Server Error",
+  "error_body": "{\"error\":{\"code\":500,\"message\":\"The provider account cannot accept billed requests.\",\"metadata\":{\"error_type\":\"server_error\"}}}\n",
+  "shutdown_exit_code": 0,
+  "home_files_after_shutdown": []
+}

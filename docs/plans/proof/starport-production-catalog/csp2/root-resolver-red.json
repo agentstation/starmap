@@ -1,0 +1,14 @@
+{
+  "command": [
+    "go",
+    "test",
+    "-race",
+    "-count=1",
+    "-timeout",
+    "5m",
+    "./pkg/productpaths"
+  ],
+  "exit_code": 1,
+  "stdout": "FAIL\tgithub.com/agentstation/starmap/pkg/productpaths [build failed]\nFAIL\n",
+  "stderr": "github.com/agentstation/starmap/pkg/productpaths: no non-test Go files in /Users/jack/src/github.com/agentstation/starmap-catalog-requirements/pkg/productpaths\n"
+}

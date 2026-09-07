@@ -1,0 +1,54 @@
+{
+  "requested_model": "claude-fable-5",
+  "observed_models": [
+    "claude-fable-5"
+  ],
+  "exit_code": 0,
+  "subtype": "success",
+  "is_error": false,
+  "duration_ms": 446772,
+  "num_turns": 33,
+  "model_usage": {
+    "claude-haiku-4-5-20251001": {
+      "inputTokens": 2392,
+      "outputTokens": 17,
+      "cacheReadInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "webSearchRequests": 0,
+      "costUSD": 0.002477,
+      "contextWindow": 200000,
+      "maxOutputTokens": 32000,
+      "thinkingTokens": 0,
+      "canonicalModel": "claude-haiku-4-5",
+      "provider": "firstParty",
+      "costBasis": "list"
+    },
+    "claude-fable-5": {
+      "inputTokens": 38,
+      "outputTokens": 30749,
+      "cacheReadInputTokens": 1777742,
+      "cacheCreationInputTokens": 153321,
+      "webSearchRequests": 0,
+      "costUSD": 6.381991999999999,
+      "contextWindow": 200000,
+      "maxOutputTokens": 64000,
+      "thinkingTokens": 15048,
+      "canonicalModel": "claude-fable-5",
+      "provider": "firstParty",
+      "costBasis": "list"
+    }
+  },
+  "permission_denials": [],
+  "tool_errors": [],
+  "review_path": "docs/reviews/FABLE_CATALOG_PRODUCT_REVIEW_2026-09-04.md",
+  "review_sha256": "d51115aadcc7c20328c333e228f0adef550c546ee89ba3196a30c83ecb3dc2be",
+  "read_only_tools": [
+    "Glob",
+    "Read"
+  ],
+  "tool_calls": 32,
+  "review_text": "Verbatim final response. Private reasoning is not retained in the review evidence.",
+  "request_path": "docs/reviews/FABLE_CATALOG_PRODUCT_REVIEW_REQUEST_2026-09-04.md",
+  "stderr_bytes": 0,
+  "tool_policy": "Only Read, Glob, and Grep were enabled. No fallback model was configured."
+}

@@ -1,0 +1,23 @@
+{
+  "command": [
+    "env",
+    "GOTOOLCHAIN=go1.25.12",
+    "go",
+    "test",
+    "-json",
+    "-race",
+    "-count=1",
+    "-timeout=5m",
+    "./internal/cli/app",
+    "-run",
+    "Test(PersistentColdStartExportsInstalledBaseline|BaselineExportPreservesExistingAcceptedHead|RequiredBaselineWriteFailurePreventsRuntimeStartup)$"
+  ],
+  "exit_code": 0,
+  "counts": {
+    "pass": 3,
+    "fail": 0,
+    "skip": 0
+  },
+  "stdout": "{\"Time\":\"2026-09-06T13:10:43.576503-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\"}\n{\"Time\":\"2026-09-06T13:10:44.134666-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestPersistentColdStartExportsInstalledBaseline\"}\n{\"Time\":\"2026-09-06T13:10:44.134774-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestPersistentColdStartExportsInstalledBaseline\",\"Output\":\"=== RUN   TestPersistentColdStartExportsInstalledBaseline\\n\"}\n{\"Time\":\"2026-09-06T13:10:57.227972-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestPersistentColdStartExportsInstalledBaseline\",\"Output\":\"--- PASS: TestPersistentColdStartExportsInstalledBaseline (13.09s)\\n\"}\n{\"Time\":\"2026-09-06T13:10:57.228061-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestPersistentColdStartExportsInstalledBaseline\",\"Elapsed\":13.09}\n{\"Time\":\"2026-09-06T13:10:57.228096-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestBaselineExportPreservesExistingAcceptedHead\"}\n{\"Time\":\"2026-09-06T13:10:57.228111-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestBaselineExportPreservesExistingAcceptedHead\",\"Output\":\"=== RUN   TestBaselineExportPreservesExistingAcceptedHead\\n\"}\n{\"Time\":\"2026-09-06T13:10:59.216181-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestBaselineExportPreservesExistingAcceptedHead\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"generation_id\\\":\\\"accepted-before-baseline-export\\\",\\\"workspace\\\":\\\"/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/TestBaselineExportPreservesExistingAcceptedHead455704738/002/data/catalog/workspace\\\",\\\"time\\\":\\\"2026-09-06T13:10:59-05:00\\\",\\\"message\\\":\\\"Repaired YAML workspace from durable catalog generation\\\"}\\n\"}\n{\"Time\":\"2026-09-06T13:11:01.173585-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestBaselineExportPreservesExistingAcceptedHead\",\"Output\":\"--- PASS: TestBaselineExportPreservesExistingAcceptedHead (3.95s)\\n\"}\n{\"Time\":\"2026-09-06T13:11:01.173619-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestBaselineExportPreservesExistingAcceptedHead\",\"Elapsed\":3.95}\n{\"Time\":\"2026-09-06T13:11:01.173657-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestRequiredBaselineWriteFailurePreventsRuntimeStartup\"}\n{\"Time\":\"2026-09-06T13:11:01.173659-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestRequiredBaselineWriteFailurePreventsRuntimeStartup\",\"Output\":\"=== RUN   TestRequiredBaselineWriteFailurePreventsRuntimeStartup\\n\"}\n{\"Time\":\"2026-09-06T13:11:02.95834-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestRequiredBaselineWriteFailurePreventsRuntimeStartup\",\"Output\":\"--- PASS: TestRequiredBaselineWriteFailurePreventsRuntimeStartup (1.78s)\\n\"}\n{\"Time\":\"2026-09-06T13:11:02.958358-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestRequiredBaselineWriteFailurePreventsRuntimeStartup\",\"Elapsed\":1.78}\n{\"Time\":\"2026-09-06T13:11:02.958732-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Output\":\"PASS\\n\"}\n{\"Time\":\"2026-09-06T13:11:03.999064-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Output\":\"ok  \\tgithub.com/agentstation/starmap/internal/cli/app\\t20.422s\\n\"}\n{\"Time\":\"2026-09-06T13:11:03.999133-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Elapsed\":20.423}\n",
+  "stderr": ""
+}

@@ -1,0 +1,17 @@
+{
+  "command": [
+    "go",
+    "test",
+    "-race",
+    "-count=1",
+    "-timeout",
+    "2m",
+    "-json",
+    "./internal/cli/app",
+    "-run",
+    "^TestDefaultRuntimeRootAcceptsCompletedLegacyMigration$"
+  ],
+  "exit_code": 1,
+  "stdout": "{\"ImportPath\":\"github.com/agentstation/starmap/internal/cli/app [github.com/agentstation/starmap/internal/cli/app.test]\",\"Action\":\"build-output\",\"Output\":\"# github.com/agentstation/starmap/internal/cli/app [github.com/agentstation/starmap/internal/cli/app.test]\\n\"}\n{\"ImportPath\":\"github.com/agentstation/starmap/internal/cli/app [github.com/agentstation/starmap/internal/cli/app.test]\",\"Action\":\"build-output\",\"Output\":\"internal/cli/app/legacy_migration_test.go:42:84: undefined: runtime.WithSourceName\\n\"}\n{\"ImportPath\":\"github.com/agentstation/starmap/internal/cli/app [github.com/agentstation/starmap/internal/cli/app.test]\",\"Action\":\"build-output\",\"Output\":\"internal/cli/app/legacy_migration_test.go:59:161: undefined: runtime.WithSourceName\\n\"}\n{\"ImportPath\":\"github.com/agentstation/starmap/internal/cli/app [github.com/agentstation/starmap/internal/cli/app.test]\",\"Action\":\"build-fail\"}\n{\"Time\":\"2026-09-05T22:56:53.315271-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\"}\n{\"Time\":\"2026-09-05T22:56:53.315408-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Output\":\"FAIL\\tgithub.com/agentstation/starmap/internal/cli/app [build failed]\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-05T22:56:53.315425-05:00\",\"Action\":\"fail\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Elapsed\":0,\"FailedBuild\":\"github.com/agentstation/starmap/internal/cli/app [github.com/agentstation/starmap/internal/cli/app.test]\"}\n",
+  "stderr": ""
+}

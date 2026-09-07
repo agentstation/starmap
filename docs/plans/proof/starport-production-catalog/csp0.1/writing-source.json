@@ -1,0 +1,16 @@
+{
+  "command": [
+    "/Users/jack/.agents/skills/technical-writing/scripts/technical-writing",
+    "lint",
+    "console/src/routes/docs.tsx",
+    "console/src/routes/__root.tsx",
+    "console/src/components/settings/Deployment.tsx",
+    "console/src/components/settings/Section.tsx",
+    "docs/TASKS.md",
+    "--format",
+    "text"
+  ],
+  "exit_code": 0,
+  "stdout": "PASS: 5 file(s), 0 diagnostic(s)\n",
+  "stderr": ""
+}

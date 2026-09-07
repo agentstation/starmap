@@ -1,0 +1,18 @@
+{
+  "status": "review checks passed; repository writing gate has prior evidence diagnostics",
+  "report_sha256": "7f2fb00cdb4a6c7df235346d4a88211651a8b656f7b0f23b5b7f3e722ba36ab2",
+  "unchanged_product_source_files": 20,
+  "unchanged_canonical_documents": 5,
+  "verified_evidence_files": 12,
+  "checked_local_links": 3,
+  "targeted_prose_lint": {
+    "exit_code": 0,
+    "diagnostics": 0
+  },
+  "repository_prose_lint": {
+    "exit_code": 2,
+    "prior_evidence_diagnostics": 3
+  },
+  "review_only": true,
+  "manual_review": "Measured operations, source call chains, backend conditions, safe caching boundaries, and recommendation status checked."
+}

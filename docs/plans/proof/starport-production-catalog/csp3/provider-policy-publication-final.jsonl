@@ -1,0 +1,20 @@
+{"Time":"2026-09-06T23:02:58.435093-05:00","Action":"start","Package":"github.com/agentstation/starmap/runtime"}
+{"Time":"2026-09-06T23:02:58.882987-05:00","Action":"run","Package":"github.com/agentstation/starmap/runtime","Test":"TestProviderPolicyStartupAlignsHTTPGeneration"}
+{"Time":"2026-09-06T23:02:58.883055-05:00","Action":"output","Package":"github.com/agentstation/starmap/runtime","Test":"TestProviderPolicyStartupAlignsHTTPGeneration","Output":"=== RUN   TestProviderPolicyStartupAlignsHTTPGeneration\n"}
+{"Time":"2026-09-06T23:03:24.954579-05:00","Action":"output","Package":"github.com/agentstation/starmap/runtime","Test":"TestProviderPolicyStartupAlignsHTTPGeneration","Output":"--- PASS: TestProviderPolicyStartupAlignsHTTPGeneration (26.07s)\n"}
+{"Time":"2026-09-06T23:03:24.954916-05:00","Action":"pass","Package":"github.com/agentstation/starmap/runtime","Test":"TestProviderPolicyStartupAlignsHTTPGeneration","Elapsed":26.07}
+{"Time":"2026-09-06T23:03:24.955246-05:00","Action":"run","Package":"github.com/agentstation/starmap/runtime","Test":"TestProviderPolicyReactivationPreservesImmutableGeneration"}
+{"Time":"2026-09-06T23:03:24.955256-05:00","Action":"output","Package":"github.com/agentstation/starmap/runtime","Test":"TestProviderPolicyReactivationPreservesImmutableGeneration","Output":"=== RUN   TestProviderPolicyReactivationPreservesImmutableGeneration\n"}
+{"Time":"2026-09-06T23:03:48.60219-05:00","Action":"output","Package":"github.com/agentstation/starmap/runtime","Test":"TestProviderPolicyReactivationPreservesImmutableGeneration","Output":"--- PASS: TestProviderPolicyReactivationPreservesImmutableGeneration (23.65s)\n"}
+{"Time":"2026-09-06T23:03:48.602386-05:00","Action":"pass","Package":"github.com/agentstation/starmap/runtime","Test":"TestProviderPolicyReactivationPreservesImmutableGeneration","Elapsed":23.65}
+{"Time":"2026-09-06T23:03:48.602457-05:00","Action":"run","Package":"github.com/agentstation/starmap/runtime","Test":"TestProviderPolicyFailedStartupPublicationReleasesDirectory"}
+{"Time":"2026-09-06T23:03:48.602467-05:00","Action":"output","Package":"github.com/agentstation/starmap/runtime","Test":"TestProviderPolicyFailedStartupPublicationReleasesDirectory","Output":"=== RUN   TestProviderPolicyFailedStartupPublicationReleasesDirectory\n"}
+{"Time":"2026-09-06T23:03:56.571915-05:00","Action":"output","Package":"github.com/agentstation/starmap/runtime","Test":"TestProviderPolicyFailedStartupPublicationReleasesDirectory","Output":"--- PASS: TestProviderPolicyFailedStartupPublicationReleasesDirectory (7.97s)\n"}
+{"Time":"2026-09-06T23:03:56.572723-05:00","Action":"pass","Package":"github.com/agentstation/starmap/runtime","Test":"TestProviderPolicyFailedStartupPublicationReleasesDirectory","Elapsed":7.97}
+{"Time":"2026-09-06T23:03:56.572755-05:00","Action":"run","Package":"github.com/agentstation/starmap/runtime","Test":"TestProviderPolicyRejectsMismatchedStoredIdentity"}
+{"Time":"2026-09-06T23:03:56.572772-05:00","Action":"output","Package":"github.com/agentstation/starmap/runtime","Test":"TestProviderPolicyRejectsMismatchedStoredIdentity","Output":"=== RUN   TestProviderPolicyRejectsMismatchedStoredIdentity\n"}
+{"Time":"2026-09-06T23:04:00.53931-05:00","Action":"output","Package":"github.com/agentstation/starmap/runtime","Test":"TestProviderPolicyRejectsMismatchedStoredIdentity","Output":"--- PASS: TestProviderPolicyRejectsMismatchedStoredIdentity (3.97s)\n"}
+{"Time":"2026-09-06T23:04:00.5394-05:00","Action":"pass","Package":"github.com/agentstation/starmap/runtime","Test":"TestProviderPolicyRejectsMismatchedStoredIdentity","Elapsed":3.97}
+{"Time":"2026-09-06T23:04:00.539535-05:00","Action":"output","Package":"github.com/agentstation/starmap/runtime","Output":"PASS\n"}
+{"Time":"2026-09-06T23:04:01.570123-05:00","Action":"output","Package":"github.com/agentstation/starmap/runtime","Output":"ok  \tgithub.com/agentstation/starmap/runtime\t63.134s\n"}
+{"Time":"2026-09-06T23:04:01.570218-05:00","Action":"pass","Package":"github.com/agentstation/starmap/runtime","Elapsed":63.134}

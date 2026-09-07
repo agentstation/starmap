@@ -1,0 +1,119 @@
+[
+  {
+    "command": [
+      "go",
+      "test",
+      "-race",
+      "-count=1",
+      "-timeout",
+      "4m",
+      "-json",
+      "./internal/cli/app",
+      "./internal/cli/commands/config",
+      "./pkg/productpaths",
+      "-run",
+      "Test(ConfigPathsCommand|FileManifest|PathsFormats|ProductHomeAndLeafOverridesUseOneAnchor)"
+    ],
+    "environment": {
+      "GOTOOLCHAIN": "go1.25.12"
+    },
+    "exit_code": 1,
+    "stdout": "{\"Time\":\"2026-09-05T23:49:02.327105-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\"}\n{\"Time\":\"2026-09-05T23:49:02.327281-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starmap/internal/cli/commands/config\"}\n{\"Time\":\"2026-09-05T23:49:02.327375-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starmap/pkg/productpaths\"}\n{\"Time\":\"2026-09-05T23:49:02.496277-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/pkg/productpaths\",\"Output\":\"testing: warning: no tests to run\\n\"}\n{\"Time\":\"2026-09-05T23:49:02.496593-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/pkg/productpaths\",\"Output\":\"PASS\\n\"}\n{\"Time\":\"2026-09-05T23:49:02.814495-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starmap/internal/cli/commands/config\",\"Test\":\"TestPathsFormatsAndArgumentRefusal\"}\n{\"Time\":\"2026-09-05T23:49:02.814547-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/commands/config\",\"Test\":\"TestPathsFormatsAndArgumentRefusal\",\"Output\":\"=== RUN   TestPathsFormatsAndArgumentRefusal\\n\"}\n{\"Time\":\"2026-09-05T23:49:02.81481-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starmap/internal/cli/commands/config\",\"Test\":\"TestPathsFormatsAndArgumentRefusal/json\"}\n{\"Time\":\"2026-09-05T23:49:02.814863-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/commands/config\",\"Test\":\"TestPathsFormatsAndArgumentRefusal/json\",\"Output\":\"=== RUN   TestPathsFormatsAndArgumentRefusal/json\\n\"}\n{\"Time\":\"2026-09-05T23:49:02.815564-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/commands/config\",\"Test\":\"TestPathsFormatsAndArgumentRefusal/json\",\"Output\":\"--- PASS: TestPathsFormatsAndArgumentRefusal/json (0.00s)\\n\"}\n{\"Time\":\"2026-09-05T23:49:02.815571-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starmap/internal/cli/commands/config\",\"Test\":\"TestPathsFormatsAndArgumentRefusal/json\",\"Elapsed\":0}\n{\"Time\":\"2026-09-05T23:49:02.81558-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starmap/internal/cli/commands/config\",\"Test\":\"TestPathsFormatsAndArgumentRefusal/yaml\"}\n{\"Time\":\"2026-09-05T23:49:02.815583-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/commands/config\",\"Test\":\"TestPathsFormatsAndArgumentRefusal/yaml\",\"Output\":\"=== RUN   TestPathsFormatsAndArgumentRefusal/yaml\\n\"}\n{\"Time\":\"2026-09-05T23:49:02.815779-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/commands/config\",\"Test\":\"TestPathsFormatsAndArgumentRefusal/yaml\",\"Output\":\"--- PASS: TestPathsFormatsAndArgumentRefusal/yaml (0.00s)\\n\"}\n{\"Time\":\"2026-09-05T23:49:02.815786-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starmap/internal/cli/commands/config\",\"Test\":\"TestPathsFormatsAndArgumentRefusal/yaml\",\"Elapsed\":0}\n{\"Time\":\"2026-09-05T23:49:02.815789-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starmap/internal/cli/commands/config\",\"Test\":\"TestPathsFormatsAndArgumentRefusal/table\"}\n{\"Time\":\"2026-09-05T23:49:02.81579-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/commands/config\",\"Test\":\"TestPathsFormatsAndArgumentRefusal/table\",\"Output\":\"=== RUN   TestPathsFormatsAndArgumentRefusal/table\\n\"}\n{\"Time\":\"2026-09-05T23:49:02.816866-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/commands/config\",\"Test\":\"TestPathsFormatsAndArgumentRefusal/table\",\"Output\":\"--- PASS: TestPathsFormatsAndArgumentRefusal/table (0.00s)\\n\"}\n{\"Time\":\"2026-09-05T23:49:02.816876-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starmap/internal/cli/commands/config\",\"Test\":\"TestPathsFormatsAndArgumentRefusal/table\",\"Elapsed\":0}\n{\"Time\":\"2026-09-05T23:49:02.816897-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starmap/internal/cli/commands/config\",\"Test\":\"TestPathsFormatsAndArgumentRefusal/wide\"}\n{\"Time\":\"2026-09-05T23:49:02.816908-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/commands/config\",\"Test\":\"TestPathsFormatsAndArgumentRefusal/wide\",\"Output\":\"=== RUN   TestPathsFormatsAndArgumentRefusal/wide\\n\"}\n{\"Time\":\"2026-09-05T23:49:02.81781-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/commands/config\",\"Test\":\"TestPathsFormatsAndArgumentRefusal/wide\",\"Output\":\"--- PASS: TestPathsFormatsAndArgumentRefusal/wide (0.00s)\\n\"}\n{\"Time\":\"2026-09-05T23:49:02.817816-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starmap/internal/cli/commands/config\",\"Test\":\"TestPathsFormatsAndArgumentRefusal/wide\",\"Elapsed\":0}\n{\"Time\":\"2026-09-05T23:49:02.818113-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/commands/config\",\"Test\":\"TestPathsFormatsAndArgumentRefusal\",\"Output\":\"--- PASS: TestPathsFormatsAndArgumentRefusal (0.00s)\\n\"}\n{\"Time\":\"2026-09-05T23:49:02.81812-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starmap/internal/cli/commands/config\",\"Test\":\"TestPathsFormatsAndArgumentRefusal\",\"Elapsed\":0}\n{\"Time\":\"2026-09-05T23:49:02.81815-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/commands/config\",\"Output\":\"PASS\\n\"}\n{\"Time\":\"2026-09-05T23:49:03.36694-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestConfigPathsCommandIsPassiveAndReportsOrigins\"}\n{\"Time\":\"2026-09-05T23:49:03.3673-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestConfigPathsCommandIsPassiveAndReportsOrigins\",\"Output\":\"=== RUN   TestConfigPathsCommandIsPassiveAndReportsOrigins\\n\"}\n{\"Time\":\"2026-09-05T23:49:03.375336-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestConfigPathsCommandIsPassiveAndReportsOrigins\",\"Output\":\"--- PASS: TestConfigPathsCommandIsPassiveAndReportsOrigins (0.01s)\\n\"}\n{\"Time\":\"2026-09-05T23:49:03.375537-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestConfigPathsCommandIsPassiveAndReportsOrigins\",\"Elapsed\":0.01}\n{\"Time\":\"2026-09-05T23:49:03.375748-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestFileManifestCoversColdStartupAndPublication\"}\n{\"Time\":\"2026-09-05T23:49:03.375917-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestFileManifestCoversColdStartupAndPublication\",\"Output\":\"=== RUN   TestFileManifestCoversColdStartupAndPublication\\n\"}\n{\"Time\":\"2026-09-05T23:49:03.498065-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/pkg/productpaths\",\"Output\":\"ok  \\tgithub.com/agentstation/starmap/pkg/productpaths\\t1.171s [no tests to run]\\n\"}\n{\"Time\":\"2026-09-05T23:49:03.498107-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starmap/pkg/productpaths\",\"Elapsed\":1.171}\n{\"Time\":\"2026-09-05T23:49:03.82242-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/commands/config\",\"Output\":\"ok  \\tgithub.com/agentstation/starmap/internal/cli/commands/config\\t1.495s\\n\"}\n{\"Time\":\"2026-09-05T23:49:03.822459-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starmap/internal/cli/commands/config\",\"Elapsed\":1.495}\n{\"Time\":\"2026-09-05T23:49:20.882993-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestFileManifestCoversColdStartupAndPublication\",\"Output\":\"    file_manifest_test.go:119: covered 9 persistent startup files\\n\"}\n{\"Time\":\"2026-09-05T23:49:20.885297-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestFileManifestCoversColdStartupAndPublication\",\"Output\":\"--- PASS: TestFileManifestCoversColdStartupAndPublication (17.51s)\\n\"}\n{\"Time\":\"2026-09-05T23:49:20.885312-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestFileManifestCoversColdStartupAndPublication\",\"Elapsed\":17.51}\n{\"Time\":\"2026-09-05T23:49:20.885367-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestFileManifestReportsDisabledWorkspaceAndPlannedFeatures\"}\n{\"Time\":\"2026-09-05T23:49:20.885387-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestFileManifestReportsDisabledWorkspaceAndPlannedFeatures\",\"Output\":\"=== RUN   TestFileManifestReportsDisabledWorkspaceAndPlannedFeatures\\n\"}\n{\"Time\":\"2026-09-05T23:49:20.886911-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestFileManifestReportsDisabledWorkspaceAndPlannedFeatures\",\"Output\":\"--- PASS: TestFileManifestReportsDisabledWorkspaceAndPlannedFeatures (0.00s)\\n\"}\n{\"Time\":\"2026-09-05T23:49:20.886923-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestFileManifestReportsDisabledWorkspaceAndPlannedFeatures\",\"Elapsed\":0}\n{\"Time\":\"2026-09-05T23:49:20.886926-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestFileManifestPreservesLeafAnchorsWithoutCredentialValues\"}\n{\"Time\":\"2026-09-05T23:49:20.886931-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestFileManifestPreservesLeafAnchorsWithoutCredentialValues\",\"Output\":\"=== RUN   TestFileManifestPreservesLeafAnchorsWithoutCredentialValues\\n\"}\n{\"Time\":\"2026-09-05T23:49:20.88781-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestFileManifestPreservesLeafAnchorsWithoutCredentialValues\",\"Output\":\"    file_manifest_test.go:213: validation failed for field STARMAP_CATALOG_SOURCE_API_KEY: does not apply to the selected source kind\\n\"}\n{\"Time\":\"2026-09-05T23:49:20.888192-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestFileManifestPreservesLeafAnchorsWithoutCredentialValues\",\"Output\":\"--- FAIL: TestFileManifestPreservesLeafAnchorsWithoutCredentialValues (0.00s)\\n\"}\n{\"Time\":\"2026-09-05T23:49:20.888215-05:00\",\"Action\":\"fail\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestFileManifestPreservesLeafAnchorsWithoutCredentialValues\",\"Elapsed\":0}\n{\"Time\":\"2026-09-05T23:49:20.88832-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestProductHomeAndLeafOverridesUseOneAnchor\"}\n{\"Time\":\"2026-09-05T23:49:20.888331-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestProductHomeAndLeafOverridesUseOneAnchor\",\"Output\":\"=== RUN   TestProductHomeAndLeafOverridesUseOneAnchor\\n\"}\n{\"Time\":\"2026-09-05T23:49:20.889887-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestProductHomeAndLeafOverridesUseOneAnchor\",\"Output\":\"--- PASS: TestProductHomeAndLeafOverridesUseOneAnchor (0.00s)\\n\"}\n{\"Time\":\"2026-09-05T23:49:20.889909-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestProductHomeAndLeafOverridesUseOneAnchor\",\"Elapsed\":0}\n{\"Time\":\"2026-09-05T23:49:20.889951-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Output\":\"FAIL\\n\"}\n{\"Time\":\"2026-09-05T23:49:20.929034-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Output\":\"FAIL\\tgithub.com/agentstation/starmap/internal/cli/app\\t18.601s\\n\"}\n{\"Time\":\"2026-09-05T23:49:20.929054-05:00\",\"Action\":\"fail\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Elapsed\":18.602}\n",
+    "stderr": "",
+    "passed_test_results": 9
+  },
+  {
+    "command": [
+      "go",
+      "vet",
+      "./pkg/productpaths",
+      "./internal/cli/commands/config",
+      "./internal/cli/app"
+    ],
+    "environment": {},
+    "exit_code": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "bash",
+      "scripts/verify-package-layout.sh"
+    ],
+    "environment": {},
+    "exit_code": 0,
+    "stdout": "ok  \tgithub.com/agentstation/starmap/internal/architecture\t0.314s\npackage-layout verification passed\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "bash",
+      "scripts/verify-catalog-package-ownership.sh"
+    ],
+    "environment": {},
+    "exit_code": 0,
+    "stdout": "CPO-V01 PASS: the five approved catalog child packages exist\nCPO-V02 PASS: the four removed package trees are absent\nCPO-V03 PASS: catalogs owns Generation copy and validation\nCPO-V04 PASS: catalogs owns all canonical payload codecs\nCPO-V05 PASS: evidence is a standard-library-only leaf\nCPO-V06 PASS: projection is a standard-library-only leaf without aliases\nCPO-V07 PASS: storage accepts catalog generations and retains adapters\nCPO-V08 PASS: artifact is storage-independent and retains its byte test\nCPO-V09 PASS: remote is storage-independent and retains protocol tests\nCPO-V10 PASS: all six external consumer modules compile\nCPO-V11 PASS: current docs and the migration guide use approved paths\nCPO-V12 PASS: current authority passes the historical allowlist scan\nCPO-V13 PASS: the package graph resolves without a dependency change\nSummary: 13 passed, 0 failed\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "bash",
+      "scripts/verify-catalog-dependency-direction.sh"
+    ],
+    "environment": {},
+    "exit_code": 0,
+    "stdout": "SM-D01 PASS: catalogs does not import private authority policy\nSM-D02 PASS: catalogs does not import repository-wide constants\nSM-D03 PASS: catalogs does not import the private embedded filesystem\nSM-D04 PASS: catalogs does not import private source payload policy\nSM-D05 PASS: catalog artifacts do not import repository-wide constants\nSM-D06 PASS: catalog remote transport does not import repository-wide constants\nSM-D07 PASS: catalog storage does not import repository-wide constants\nSM-D08 PASS: catalog S3 storage does not import repository-wide constants\nSummary: 8 passed, 0 failed\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "go",
+      "tool",
+      "ago",
+      "-stale-ignores",
+      "-format",
+      "json",
+      "./..."
+    ],
+    "environment": {},
+    "exit_code": 0,
+    "stdout": "{\n  \"schemaVersion\": 1,\n  \"version\": \"v0.2.0\",\n  \"rules\": [\n    \"no-dot-import\",\n    \"no-generic-methods\",\n    \"no-goto\",\n    \"no-invalid-ignore\",\n    \"no-naked-return\",\n    \"no-new-expr\",\n    \"no-self-referential-constraints\"\n  ],\n  \"findings\": [],\n  \"staleIgnores\": [],\n  \"errors\": []\n}\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "go",
+      "build",
+      "-o",
+      "/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-manifest-build-ctm3f39r/starmap-windows",
+      "./cmd/starmap"
+    ],
+    "environment": {
+      "GOTOOLCHAIN": "go1.25.12",
+      "GOOS": "windows",
+      "GOARCH": "amd64",
+      "CGO_ENABLED": "0"
+    },
+    "exit_code": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "go",
+      "build",
+      "-o",
+      "/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-manifest-build-ctm3f39r/starmap-linux",
+      "./cmd/starmap"
+    ],
+    "environment": {
+      "GOTOOLCHAIN": "go1.25.12",
+      "GOOS": "linux",
+      "GOARCH": "amd64",
+      "CGO_ENABLED": "0"
+    },
+    "exit_code": 0,
+    "stdout": "",
+    "stderr": ""
+  }
+]

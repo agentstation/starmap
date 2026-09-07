@@ -1,0 +1,17 @@
+{
+  "command": [
+    "go",
+    "test",
+    "-run",
+    "^$",
+    "-bench",
+    ".",
+    "-benchtime=100ms",
+    "-benchmem",
+    "./internal/router",
+    "./internal/credentials"
+  ],
+  "exit_code": 0,
+  "stdout": "goos: darwin\ngoarch: arm64\npkg: github.com/agentstation/starport/internal/router\ncpu: Apple M2 Max\nBenchmarkSelectModel/SimpleModelSelection-12         \t  180357\t       623.1 ns/op\t     904 B/op\t      12 allocs/op\nBenchmarkSelectModel/WithProviderPreferences-12      \t   67143\t      1846 ns/op\t    3024 B/op\t      27 allocs/op\nBenchmarkRouteWithFallback/SingleModel-12            \t   28746\t      4183 ns/op\t    7680 B/op\t      56 allocs/op\nBenchmarkRouteWithFallback/ModelArray-12             \t   26533\t      4540 ns/op\t    8432 B/op\t      59 allocs/op\nBenchmarkLatencyTracking/RecordLatency-12            \t 4688270\t        25.75 ns/op\t       0 B/op\t       0 allocs/op\nBenchmarkLatencyTracking/GetLatency-12               \t 8430222\t        14.50 ns/op\t       0 B/op\t       0 allocs/op\nBenchmarkConcurrentRouting-12                        \t  207901\t       583.8 ns/op\t     904 B/op\t      12 allocs/op\nPASS\nok  \tgithub.com/agentstation/starport/internal/router\t1.429s\ngoos: darwin\ngoarch: arm64\npkg: github.com/agentstation/starport/internal/credentials\ncpu: Apple M2 Max\nBenchmarkArgon2KeyDerivation-12       \t       9\t  11793329 ns/op\t67114976 B/op\t      36 allocs/op\nBenchmarkEncryptCredential-12         \t       9\t  11455032 ns/op\t67116477 B/op\t      45 allocs/op\nBenchmarkDecryptCredential-12         \t       9\t  11524546 ns/op\t67116867 B/op\t      41 allocs/op\nBenchmarkProviderCachedMaterial-12    \t 2015616\t        59.89 ns/op\t       0 B/op\t       0 allocs/op\nPASS\nok  \tgithub.com/agentstation/starport/internal/credentials\t1.124s\n",
+  "stderr": ""
+}

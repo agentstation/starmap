@@ -1,0 +1,60 @@
+[
+  {
+    "command": [
+      "go",
+      "vet",
+      "./pkg/productpaths",
+      "./internal/bootstrap",
+      "./internal/cli/app"
+    ],
+    "exit_code": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "golangci-lint",
+      "run",
+      "./pkg/productpaths/...",
+      "./internal/bootstrap/...",
+      "./internal/cli/app/..."
+    ],
+    "exit_code": 1,
+    "stdout": "internal/cli/app/catalog_runtime.go:107:2: Consider preallocating resolvedExtras with capacity 2 + len(extra) (prealloc)\n\tresolvedExtras := []runtime.Option{runtime.WithStateDirectory(paths.Runtime.Path), runtime.WithClientOptions(starmap.WithCatalogPath(paths.Workspace.Path))}\n\t^\n1 issues:\n* prealloc: 1\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "go",
+      "tool",
+      "ago",
+      "-stale-ignores",
+      "-format",
+      "json",
+      "./..."
+    ],
+    "exit_code": 0,
+    "stdout": "{\n  \"schemaVersion\": 1,\n  \"version\": \"v0.2.0\",\n  \"rules\": [\n    \"no-dot-import\",\n    \"no-generic-methods\",\n    \"no-goto\",\n    \"no-invalid-ignore\",\n    \"no-naked-return\",\n    \"no-new-expr\",\n    \"no-self-referential-constraints\"\n  ],\n  \"findings\": [],\n  \"staleIgnores\": [],\n  \"errors\": []\n}\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "/Users/jack/.agents/skills/technical-writing/scripts/technical-writing",
+      "lint",
+      "pkg/productpaths",
+      "internal/bootstrap/export.go",
+      "internal/cli/app/product_paths.go",
+      "internal/cli/app/legacy_roots.go",
+      "internal/cli/app/config.go",
+      "internal/cli/app/catalog_paths.go",
+      "internal/cli/app/catalog_runtime.go",
+      "internal/cli/app/execute.go",
+      "internal/cli/app/app.go",
+      "--format",
+      "text"
+    ],
+    "exit_code": 0,
+    "stdout": "PASS: 12 file(s), 0 diagnostic(s)\n",
+    "stderr": ""
+  }
+]

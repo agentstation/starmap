@@ -1,0 +1,10 @@
+{
+  "command": [
+    "make",
+    "verify"
+  ],
+  "exit_code": 2,
+  "seconds": 661.5853300094604,
+  "output_path": "docs/plans/proof/starport-production-catalog/csp2/publication-preflight-final-output.log",
+  "scope": "Full publication preflight after approved platform budgets. No external publication."
+}

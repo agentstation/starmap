@@ -1,0 +1,10 @@
+{
+  "command": [
+    "golangci-lint",
+    "run",
+    "./runtime/..."
+  ],
+  "exit_code": 1,
+  "stdout": "runtime/migration_source.go:30:19: QF1008: could remove embedded field \"DirectoryOwner\" from selector (staticcheck)\n\tif err := record.DirectoryOwner.Validate(); err != nil {\n\t                 ^\n1 issues:\n* staticcheck: 1\n",
+  "stderr": ""
+}

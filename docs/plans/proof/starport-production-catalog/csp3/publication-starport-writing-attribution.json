@@ -1,0 +1,499 @@
+{
+  "method": "Compare the complete current source line for each diagnostic with HEAD. Earlier stdin comparison used the wrong TSX parser and does not establish attribution.",
+  "results": [
+    {
+      "path": "DESIGN.md",
+      "current_diagnostics": 90,
+      "every_diagnostic_on_unchanged_source": true,
+      "checks": [
+        {
+          "line": 13,
+          "rule": "long_sentence",
+          "unchanged_source": true
+        },
+        {
+          "line": 40,
+          "rule": "long_sentence",
+          "unchanged_source": true
+        },
+        {
+          "line": 40,
+          "rule": "em_dash",
+          "unchanged_source": true
+        },
+        {
+          "line": 41,
+          "rule": "em_dash",
+          "unchanged_source": true
+        },
+        {
+          "line": 47,
+          "rule": "semicolon",
+          "unchanged_source": true
+        },
+        {
+          "line": 47,
+          "rule": "semicolon",
+          "unchanged_source": true
+        },
+        {
+          "line": 47,
+          "rule": "semicolon",
+          "unchanged_source": true
+        },
+        {
+          "line": 49,
+          "rule": "semicolon",
+          "unchanged_source": true
+        },
+        {
+          "line": 57,
+          "rule": "passive_voice",
+          "unchanged_source": true
+        },
+        {
+          "line": 57,
+          "rule": "semicolon",
+          "unchanged_source": true
+        },
+        {
+          "line": 59,
+          "rule": "semicolon",
+          "unchanged_source": true
+        },
+        {
+          "line": 61,
+          "rule": "em_dash",
+          "unchanged_source": true
+        },
+        {
+          "line": 77,
+          "rule": "em_dash",
+          "unchanged_source": true
+        },
+        {
+          "line": 83,
+          "rule": "em_dash",
+          "unchanged_source": true
+        },
+        {
+          "line": 93,
+          "rule": "long_sentence",
+          "unchanged_source": true
+        },
+        {
+          "line": 95,
+          "rule": "long_sentence",
+          "unchanged_source": true
+        },
+        {
+          "line": 114,
+          "rule": "semicolon",
+          "unchanged_source": true
+        },
+        {
+          "line": 119,
+          "rule": "em_dash",
+          "unchanged_source": true
+        },
+        {
+          "line": 120,
+          "rule": "semicolon",
+          "unchanged_source": true
+        },
+        {
+          "line": 140,
+          "rule": "em_dash",
+          "unchanged_source": true
+        },
+        {
+          "line": 141,
+          "rule": "semicolon",
+          "unchanged_source": true
+        },
+        {
+          "line": 153,
+          "rule": "semicolon",
+          "unchanged_source": true
+        },
+        {
+          "line": 154,
+          "rule": "semicolon",
+          "unchanged_source": true
+        },
+        {
+          "line": 154,
+          "rule": "semicolon",
+          "unchanged_source": true
+        },
+        {
+          "line": 157,
+          "rule": "semicolon",
+          "unchanged_source": true
+        },
+        {
+          "line": 157,
+          "rule": "passive_voice",
+          "unchanged_source": true
+        },
+        {
+          "line": 181,
+          "rule": "semicolon",
+          "unchanged_source": true
+        },
+        {
+          "line": 193,
+          "rule": "passive_voice",
+          "unchanged_source": true
+        },
+        {
+          "line": 198,
+          "rule": "long_sentence",
+          "unchanged_source": true
+        },
+        {
+          "line": 200,
+          "rule": "em_dash",
+          "unchanged_source": true
+        },
+        {
+          "line": 203,
+          "rule": "semicolon",
+          "unchanged_source": true
+        },
+        {
+          "line": 204,
+          "rule": "em_dash",
+          "unchanged_source": true
+        },
+        {
+          "line": 206,
+          "rule": "semicolon",
+          "unchanged_source": true
+        },
+        {
+          "line": 209,
+          "rule": "long_sentence",
+          "unchanged_source": true
+        },
+        {
+          "line": 210,
+          "rule": "semicolon",
+          "unchanged_source": true
+        },
+        {
+          "line": 213,
+          "rule": "semicolon",
+          "unchanged_source": true
+        },
+        {
+          "line": 214,
+          "rule": "em_dash",
+          "unchanged_source": true
+        },
+        {
+          "line": 219,
+          "rule": "semicolon",
+          "unchanged_source": true
+        },
+        {
+          "line": 224,
+          "rule": "long_sentence",
+          "unchanged_source": true
+        },
+        {
+          "line": 227,
+          "rule": "semicolon",
+          "unchanged_source": true
+        },
+        {
+          "line": 227,
+          "rule": "semicolon",
+          "unchanged_source": true
+        },
+        {
+          "line": 228,
+          "rule": "semicolon",
+          "unchanged_source": true
+        },
+        {
+          "line": 228,
+          "rule": "semicolon",
+          "unchanged_source": true
+        },
+        {
+          "line": 228,
+          "rule": "semicolon",
+          "unchanged_source": true
+        },
+        {
+          "line": 235,
+          "rule": "semicolon",
+          "unchanged_source": true
+        },
+        {
+          "line": 236,
+          "rule": "semicolon",
+          "unchanged_source": true
+        },
+        {
+          "line": 236,
+          "rule": "semicolon",
+          "unchanged_source": true
+        },
+        {
+          "line": 239,
+          "rule": "semicolon",
+          "unchanged_source": true
+        },
+        {
+          "line": 241,
+          "rule": "long_sentence",
+          "unchanged_source": true
+        },
+        {
+          "line": 241,
+          "rule": "semicolon",
+          "unchanged_source": true
+        },
+        {
+          "line": 242,
+          "rule": "semicolon",
+          "unchanged_source": true
+        },
+        {
+          "line": 243,
+          "rule": "semicolon",
+          "unchanged_source": true
+        },
+        {
+          "line": 243,
+          "rule": "long_sentence",
+          "unchanged_source": true
+        },
+        {
+          "line": 245,
+          "rule": "semicolon",
+          "unchanged_source": true
+        },
+        {
+          "line": 246,
+          "rule": "em_dash",
+          "unchanged_source": true
+        },
+        {
+          "line": 253,
+          "rule": "long_sentence",
+          "unchanged_source": true
+        },
+        {
+          "line": 254,
+          "rule": "semicolon",
+          "unchanged_source": true
+        },
+        {
+          "line": 255,
+          "rule": "semicolon",
+          "unchanged_source": true
+        },
+        {
+          "line": 256,
+          "rule": "semicolon",
+          "unchanged_source": true
+        },
+        {
+          "line": 260,
+          "rule": "em_dash",
+          "unchanged_source": true
+        },
+        {
+          "line": 265,
+          "rule": "long_sentence",
+          "unchanged_source": true
+        },
+        {
+          "line": 268,
+          "rule": "em_dash",
+          "unchanged_source": true
+        },
+        {
+          "line": 270,
+          "rule": "passive_voice",
+          "unchanged_source": true
+        },
+        {
+          "line": 271,
+          "rule": "long_sentence",
+          "unchanged_source": true
+        },
+        {
+          "line": 295,
+          "rule": "em_dash",
+          "unchanged_source": true
+        },
+        {
+          "line": 296,
+          "rule": "semicolon",
+          "unchanged_source": true
+        },
+        {
+          "line": 296,
+          "rule": "semicolon",
+          "unchanged_source": true
+        },
+        {
+          "line": 298,
+          "rule": "long_sentence",
+          "unchanged_source": true
+        },
+        {
+          "line": 301,
+          "rule": "long_sentence",
+          "unchanged_source": true
+        },
+        {
+          "line": 302,
+          "rule": "semicolon",
+          "unchanged_source": true
+        },
+        {
+          "line": 303,
+          "rule": "semicolon",
+          "unchanged_source": true
+        },
+        {
+          "line": 303,
+          "rule": "semicolon",
+          "unchanged_source": true
+        },
+        {
+          "line": 303,
+          "rule": "semicolon",
+          "unchanged_source": true
+        },
+        {
+          "line": 308,
+          "rule": "em_dash",
+          "unchanged_source": true
+        },
+        {
+          "line": 312,
+          "rule": "long_sentence",
+          "unchanged_source": true
+        },
+        {
+          "line": 313,
+          "rule": "em_dash",
+          "unchanged_source": true
+        },
+        {
+          "line": 333,
+          "rule": "em_dash",
+          "unchanged_source": true
+        },
+        {
+          "line": 335,
+          "rule": "semicolon",
+          "unchanged_source": true
+        },
+        {
+          "line": 337,
+          "rule": "semicolon",
+          "unchanged_source": true
+        },
+        {
+          "line": 342,
+          "rule": "long_sentence",
+          "unchanged_source": true
+        },
+        {
+          "line": 343,
+          "rule": "semicolon",
+          "unchanged_source": true
+        },
+        {
+          "line": 343,
+          "rule": "semicolon",
+          "unchanged_source": true
+        },
+        {
+          "line": 350,
+          "rule": "em_dash",
+          "unchanged_source": true
+        },
+        {
+          "line": 353,
+          "rule": "long_sentence",
+          "unchanged_source": true
+        },
+        {
+          "line": 357,
+          "rule": "semicolon",
+          "unchanged_source": true
+        },
+        {
+          "line": 366,
+          "rule": "semicolon",
+          "unchanged_source": true
+        },
+        {
+          "line": 368,
+          "rule": "semicolon",
+          "unchanged_source": true
+        },
+        {
+          "line": 373,
+          "rule": "semicolon",
+          "unchanged_source": true
+        },
+        {
+          "line": 377,
+          "rule": "passive_voice",
+          "unchanged_source": true
+        },
+        {
+          "line": 379,
+          "rule": "semicolon",
+          "unchanged_source": true
+        }
+      ]
+    },
+    {
+      "path": "console/src/components/auth/FirstContact.tsx",
+      "current_diagnostics": 6,
+      "every_diagnostic_on_unchanged_source": true,
+      "checks": [
+        {
+          "line": 13,
+          "rule": "long_sentence",
+          "unchanged_source": true
+        },
+        {
+          "line": 19,
+          "rule": "em_dash",
+          "unchanged_source": true
+        },
+        {
+          "line": 19,
+          "rule": "long_sentence",
+          "unchanged_source": true
+        },
+        {
+          "line": 29,
+          "rule": "long_sentence",
+          "unchanged_source": true
+        },
+        {
+          "line": 33,
+          "rule": "complex_verb",
+          "unchanged_source": true
+        },
+        {
+          "line": 33,
+          "rule": "passive_voice",
+          "unchanged_source": true
+        }
+      ]
+    }
+  ]
+}

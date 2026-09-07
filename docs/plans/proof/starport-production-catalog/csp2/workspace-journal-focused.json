@@ -1,0 +1,16 @@
+{
+  "command": [
+    "go",
+    "test",
+    "-race",
+    "-json",
+    "./internal/catalog/workspace",
+    "-run",
+    "^TestJournal",
+    "-count=1",
+    "-timeout=3m"
+  ],
+  "exit_code": 1,
+  "stdout": "{\"ImportPath\":\"github.com/agentstation/starmap/internal/catalog/workspace [github.com/agentstation/starmap/internal/catalog/workspace.test]\",\"Action\":\"build-output\",\"Output\":\"# github.com/agentstation/starmap/internal/catalog/workspace [github.com/agentstation/starmap/internal/catalog/workspace.test]\\n\"}\n{\"ImportPath\":\"github.com/agentstation/starmap/internal/catalog/workspace [github.com/agentstation/starmap/internal/catalog/workspace.test]\",\"Action\":\"build-output\",\"Output\":\"internal/catalog/workspace/replacement_test.go:154:28: cannot use t (variable of interface type testing.TB) as *testing.T value in argument to assertNoProjectionStaging: need type assertion\\n\"}\n{\"ImportPath\":\"github.com/agentstation/starmap/internal/catalog/workspace [github.com/agentstation/starmap/internal/catalog/workspace.test]\",\"Action\":\"build-fail\"}\n{\"Time\":\"2026-09-06T10:47:30.133594-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starmap/internal/catalog/workspace\"}\n{\"Time\":\"2026-09-06T10:47:30.133677-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/catalog/workspace\",\"Output\":\"FAIL\\tgithub.com/agentstation/starmap/internal/catalog/workspace [build failed]\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-06T10:47:30.133687-05:00\",\"Action\":\"fail\",\"Package\":\"github.com/agentstation/starmap/internal/catalog/workspace\",\"Elapsed\":0,\"FailedBuild\":\"github.com/agentstation/starmap/internal/catalog/workspace [github.com/agentstation/starmap/internal/catalog/workspace.test]\"}\n",
+  "stderr": ""
+}

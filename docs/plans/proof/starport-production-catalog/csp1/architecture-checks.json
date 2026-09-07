@@ -1,0 +1,38 @@
+[
+  {
+    "command": [
+      "bash",
+      "scripts/verify-package-layout.sh"
+    ],
+    "exit_code": 0,
+    "stdout": "ok  \tgithub.com/agentstation/starmap/internal/architecture\t0.196s\npackage-layout verification passed\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "bash",
+      "scripts/verify-catalog-package-ownership.sh"
+    ],
+    "exit_code": 0,
+    "stdout": "CPO-V01 PASS: the five approved catalog child packages exist\nCPO-V02 PASS: the four removed package trees are absent\nCPO-V03 PASS: catalogs owns Generation copy and validation\nCPO-V04 PASS: catalogs owns all canonical payload codecs\nCPO-V05 PASS: evidence is a standard-library-only leaf\nCPO-V06 PASS: projection is a standard-library-only leaf without aliases\nCPO-V07 PASS: storage accepts catalog generations and retains adapters\nCPO-V08 PASS: artifact is storage-independent and retains its byte test\nCPO-V09 PASS: remote is storage-independent and retains protocol tests\nCPO-V10 PASS: all six external consumer modules compile\nCPO-V11 PASS: current docs and the migration guide use approved paths\nCPO-V12 PASS: current authority passes the historical allowlist scan\nCPO-V13 PASS: the package graph resolves without a dependency change\nSummary: 13 passed, 0 failed\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "bash",
+      "scripts/verify-catalog-dependency-direction.sh"
+    ],
+    "exit_code": 0,
+    "stdout": "SM-D01 PASS: catalogs does not import private authority policy\nSM-D02 PASS: catalogs does not import repository-wide constants\nSM-D03 PASS: catalogs does not import the private embedded filesystem\nSM-D04 PASS: catalogs does not import private source payload policy\nSM-D05 PASS: catalog artifacts do not import repository-wide constants\nSM-D06 PASS: catalog remote transport does not import repository-wide constants\nSM-D07 PASS: catalog storage does not import repository-wide constants\nSM-D08 PASS: catalog S3 storage does not import repository-wide constants\nSummary: 8 passed, 0 failed\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "python3",
+      "scripts/test_catalog_product_verify.py"
+    ],
+    "exit_code": 0,
+    "stdout": "",
+    "stderr": "test_baseline_cannot_claim_release_qualification (__main__.CatalogVerifierTests.test_baseline_cannot_claim_release_qualification) ... ok\ntest_baseline_keeps_negative_paired_differences (__main__.CatalogVerifierTests.test_baseline_keeps_negative_paired_differences) ... ok\ntest_baseline_refuses_lost_stream_events_and_wrong_milestones (__main__.CatalogVerifierTests.test_baseline_refuses_lost_stream_events_and_wrong_milestones) ... ok\ntest_baseline_refuses_missing_variant_or_initial_evidence (__main__.CatalogVerifierTests.test_baseline_refuses_missing_variant_or_initial_evidence) ... ok\ntest_baseline_refuses_partial_or_fabricated_timing (__main__.CatalogVerifierTests.test_baseline_refuses_partial_or_fabricated_timing) ... ok\ntest_browser_review_requires_current_inputs_and_captures (__main__.CatalogVerifierTests.test_browser_review_requires_current_inputs_and_captures) ... ok\ntest_combined_check_needs_every_result (__main__.CatalogVerifierTests.test_combined_check_needs_every_result) ... ok\ntest_command_failure_cannot_pass (__main__.CatalogVerifierTests.test_command_failure_cannot_pass) ... ok\ntest_complete_red_report (__main__.CatalogVerifierTests.test_complete_red_report) ... ok\ntest_duplicate_subcase_refuses (__main__.CatalogVerifierTests.test_duplicate_subcase_refuses) ... ok\ntest_empty_task_cannot_pass (__main__.CatalogVerifierTests.test_empty_task_cannot_pass) ... ok\ntest_evidence_paths_cannot_escape_repository (__main__.CatalogVerifierTests.test_evidence_paths_cannot_escape_repository) ... ok\ntest_final_roster_cannot_omit_a_case (__main__.CatalogVerifierTests.test_final_roster_cannot_omit_a_case) ... ok\ntest_fresh_baseline_adapter_cannot_pass_skipped_test (__main__.CatalogVerifierTests.test_fresh_baseline_adapter_cannot_pass_skipped_test) ... ok\ntest_missing_candidate_local_check_refuses (__main__.CatalogVerifierTests.test_missing_candidate_local_check_refuses) ... ok\ntest_missing_primary_refuses (__main__.CatalogVerifierTests.test_missing_primary_refuses) ... ok\ntest_missing_registration_is_unverified (__main__.CatalogVerifierTests.test_missing_registration_is_unverified) ... ok\ntest_numeric_profile_cannot_hide_workload_or_uncertainty (__main__.CatalogVerifierTests.test_numeric_profile_cannot_hide_workload_or_uncertainty) ... ok\ntest_numeric_profile_cannot_relax_correctness_for_latency (__main__.CatalogVerifierTests.test_numeric_profile_cannot_relax_correctness_for_latency) ... ok\ntest_numeric_profile_is_complete_but_unqualified (__main__.CatalogVerifierTests.test_numeric_profile_is_complete_but_unqualified) ... ok\ntest_numeric_profile_refuses_contradictory_resources (__main__.CatalogVerifierTests.test_numeric_profile_refuses_contradictory_resources) ... ok\ntest_numeric_profile_refuses_invalid_limits (__main__.CatalogVerifierTests.test_numeric_profile_refuses_invalid_limits) ... ok\ntest_partial_parent_never_passes (__main__.CatalogVerifierTests.test_partial_parent_never_passes) ... ok\ntest_performance_review_requires_current_targets_and_retained_evidence (__main__.CatalogVerifierTests.test_performance_review_requires_current_targets_and_retained_evidence) ... ok\ntest_qualification_cannot_use_component_passes (__main__.CatalogVerifierTests.test_qualification_cannot_use_component_passes) ... ok\ntest_real_go_missing_match_is_unverified (__main__.CatalogVerifierTests.test_real_go_missing_match_is_unverified) ... ok\ntest_real_named_go_test_executes (__main__.CatalogVerifierTests.test_real_named_go_test_executes) ... ok\ntest_retained_full_http_baseline_satisfies_measurement_contract (__main__.CatalogVerifierTests.test_retained_full_http_baseline_satisfies_measurement_contract) ... ok\ntest_skipped_child_cannot_pass_parent (__main__.CatalogVerifierTests.test_skipped_child_cannot_pass_parent) ... ok\ntest_unknown_case_refuses (__main__.CatalogVerifierTests.test_unknown_case_refuses) ... ok\n\n----------------------------------------------------------------------\nRan 30 tests in 3.311s\n\nOK\n"
+  }
+]

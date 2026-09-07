@@ -1,0 +1,23 @@
+{
+  "recorded_at": "2026-09-06T18:14:57.600275+00:00",
+  "head": "4780dfea9f7e002ea6eaaa82aa8f52ed0d4cc225",
+  "branch": "codex/catalog-requirements",
+  "scope": "Post-execution source and evidence snapshot for baseline cleanup. Earlier records retain their separate source revisions. No complete released-pair qualification.",
+  "files": {
+    "internal/bootstrap/export.go": "9b007d2daf6fbcb444d9f6e3a772a55d79ef8977599611e26f8ac63b0344506b",
+    "internal/bootstrap/export_stage.go": "4716659511f324259cc7a8012d5399c16b45e3f3cad638c53f0895d884aaa4bb",
+    "internal/bootstrap/export_cleanup_test.go": "2e4a9d78698b0cf66341a95071054b7954440a5e6796882488bcce6d2aa828ef",
+    "internal/bootstrap/export_test.go": "618c465e2630463cb0f816cb7dfa964a1f7a780d65433558af0da36487271ff2",
+    "go.mod": "4089f0c9d4e2a59e91b45b22419dcc16298b545ce74db69f19508377289e3513",
+    "go.sum": "e6bc0489a1beb9cc7af8ce96d3ab833002dab73fa559c2165e57a7865d13a356",
+    "docs/plans/proof/starport-production-catalog/csp2/baseline-stage-cleanup-red.json": "8aa9b5ea4b16d5c2050eeefe9cb92d3bb2ada49a028d56703c43400cb28f00cb",
+    "docs/plans/proof/starport-production-catalog/csp2/baseline-stage-cancellation-red.json": "78b446f27c19bb98cb0b4d4cd9069ae6be76cc7b4c10e29ace9219f77ae857e1",
+    "docs/plans/proof/starport-production-catalog/csp2/baseline-stage-cleanup-focused.json": "641bfee8b368a2f5decb117a547c37dc2aacc68badea6920200a5b649bb017a9",
+    "docs/plans/proof/starport-production-catalog/csp2/baseline-stage-cleanup-integration.json": "e7cd6c9e90c7d8da152118191d7981c39ca33d75ce0b202a35846344c359743d",
+    "docs/plans/proof/starport-production-catalog/csp2/baseline-stage-cleanup-application.json": "e1c9bb6080ece62eee1306f3f55d0ed7fc60ffafec6b57ed0e3d948f75ea9b99",
+    "docs/plans/proof/starport-production-catalog/csp2/baseline-stage-cleanup-windows-builds.json": "222af643e425d311cdd6fe7906b518f70e9d3b38ad1f4745999a1baa9867a9b7",
+    "docs/plans/proof/starport-production-catalog/csp2/baseline-stage-final-native-linux-arm64/engine.json": "02c551c482abb63fa88f75b107366e679953327bc61c22f2bbfe5766ed85848c",
+    "docs/plans/proof/starport-production-catalog/csp2/baseline-stage-final-native-linux-arm64/internal-bootstrap.json": "dc7c35899e1baee34bd362dc5fbf073421e81937198281aa57bbf4f260813ce7",
+    "docs/plans/proof/starport-production-catalog/csp2/baseline-stage-final-native-linux-arm64/summary.json": "29cf8815c88f9b1314b990b30b8943e1563104ab928d4ddae7c277ced2d2b36c"
+  }
+}

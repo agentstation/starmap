@@ -1,0 +1,30 @@
+{
+  "command": [
+    "bash",
+    "scripts/verify-readme-quickstart.sh"
+  ],
+  "exit_code": 0,
+  "stdout": "PASS README quickstart and dynamic stable-release selection\n",
+  "stderr": "",
+  "readme_sha256": "be20b3906562f779f12f0413a6a7ce9543ae44e98940436b1e331eccc2d3d2b8",
+  "readme_headings": [
+    "# Starport",
+    "## Install",
+    "## Quick start",
+    "### Terminal 1: start Starport and open the console",
+    "### Terminal 2: call Starport",
+    "### Serve without a gateway API key",
+    "### Keep the gateway",
+    "## Replace an existing gateway URL",
+    "## Features",
+    "## Configuration",
+    "### Catalog topology",
+    "## Cloud credentials",
+    "## Containers",
+    "# Edit .env. Set STARPORT_SECURITY_MASTER_KEY and OPENAI_API_KEY.",
+    "## Develop",
+    "## Documentation",
+    "## License and security"
+  ],
+  "source_head": "042eb97851496ecdd1ef20bfa44fe3d84b86b2d8"
+}

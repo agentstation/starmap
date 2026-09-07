@@ -1,0 +1,6 @@
+{
+  "original_filename": "embedded-bench.txt",
+  "format": "verbatim UTF-8 text",
+  "raw_sha256": "74920bd83444a8dd9019352f3c7edf355a1d39601b339ba75fe4b249f13fb467",
+  "content": "goos: darwin\ngoarch: arm64\npkg: github.com/agentstation/starport/internal/router\ncpu: Apple M2 Max\nBenchmarkAuditEmbeddedOpenAISelection-12    \t      78\t   9399040 ns/op\t       111.0 routes\t15274813 B/op\t  172240 allocs/op\nBenchmarkAuditEmbeddedOpenAISelection-12    \t      63\t  10069738 ns/op\t       111.0 routes\t15274905 B/op\t  172240 allocs/op\nBenchmarkAuditEmbeddedOpenAISelection-12    \t      68\t   9662260 ns/op\t       111.0 routes\t15274831 B/op\t  172240 allocs/op\nPASS\nok  \tgithub.com/agentstation/starport/internal/router\t3.723s\n"
+}

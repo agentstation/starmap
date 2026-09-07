@@ -1,0 +1,14 @@
+{
+  "command": [
+    "go",
+    "test",
+    "-race",
+    "-count=1",
+    "-timeout=10m",
+    "./internal/app",
+    "./internal/server/controllers"
+  ],
+  "toolchain": "go1.26.6",
+  "exit_code": 0,
+  "seconds": 146.886
+}

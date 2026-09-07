@@ -1,0 +1,10 @@
+{
+  "command": [
+    "make",
+    "test-file-sizes"
+  ],
+  "exit_code": 0,
+  "seconds": 3.8443729877471924,
+  "stdout": "1423\tinternal/catalog/reconciler/merger_test.go\n1071\tinternal/providers/openai/client_test.go\n1040\tremote/subscriber_test.go\nGo file-size verification passed: review >1000, justify >1500, fail >=2000 lines\n",
+  "stderr": ""
+}

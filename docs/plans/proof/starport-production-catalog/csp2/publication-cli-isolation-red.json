@@ -1,0 +1,10 @@
+{
+  "scope": "Synthetic inherited CONFIG proves verifier command contamination. No operator file used.",
+  "command": [
+    "starmap",
+    "validate",
+    "catalog"
+  ],
+  "exit_code": 1,
+  "output": "failed to load config: configuration error in configuration file /private/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-cli-check-lzakndzh/missing-operator-config.yaml: cannot read the selected private file\n"
+}

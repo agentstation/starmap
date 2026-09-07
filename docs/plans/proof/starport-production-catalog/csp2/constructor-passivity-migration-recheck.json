@@ -1,0 +1,23 @@
+{
+  "command": [
+    "env",
+    "GOTOOLCHAIN=go1.25.12",
+    "go",
+    "test",
+    "-json",
+    "-race",
+    "-count=1",
+    "-timeout=5m",
+    "./internal/cli/app",
+    "-run",
+    "^TestRuntimeRestartCompletesProjectionAfterMigrationMove$"
+  ],
+  "exit_code": 1,
+  "counts": {
+    "pass": 0,
+    "fail": 0,
+    "skip": 0
+  },
+  "stdout": "{\"ImportPath\":\"github.com/agentstation/starmap/internal/cli/app [github.com/agentstation/starmap/internal/cli/app.test]\",\"Action\":\"build-output\",\"Output\":\"# github.com/agentstation/starmap/internal/cli/app [github.com/agentstation/starmap/internal/cli/app.test]\\n\"}\n{\"ImportPath\":\"github.com/agentstation/starmap/internal/cli/app [github.com/agentstation/starmap/internal/cli/app.test]\",\"Action\":\"build-output\",\"Output\":\"internal/cli/app/catalog_paths_test.go:227:4: undefined: catalogconfig\\n\"}\n{\"ImportPath\":\"github.com/agentstation/starmap/internal/cli/app [github.com/agentstation/starmap/internal/cli/app.test]\",\"Action\":\"build-output\",\"Output\":\"internal/cli/app/catalog_paths_test.go:228:4: undefined: catalogconfig\\n\"}\n{\"ImportPath\":\"github.com/agentstation/starmap/internal/cli/app [github.com/agentstation/starmap/internal/cli/app.test]\",\"Action\":\"build-fail\"}\n{\"Time\":\"2026-09-06T13:34:31.270769-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\"}\n{\"Time\":\"2026-09-06T13:34:31.270842-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Output\":\"FAIL\\tgithub.com/agentstation/starmap/internal/cli/app [build failed]\\n\"}\n{\"Time\":\"2026-09-06T13:34:31.270853-05:00\",\"Action\":\"fail\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Elapsed\":0,\"FailedBuild\":\"github.com/agentstation/starmap/internal/cli/app [github.com/agentstation/starmap/internal/cli/app.test]\"}\n",
+  "stderr": ""
+}

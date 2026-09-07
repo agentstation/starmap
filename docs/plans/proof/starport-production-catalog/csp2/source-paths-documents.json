@@ -1,0 +1,37 @@
+[
+  {
+    "command": [
+      "/Users/jack/.agents/skills/technical-writing/scripts/technical-writing",
+      "lint",
+      "docs/CLI.md",
+      "docs/design/catalog-lifecycle/ENGINEERING_SPEC.md",
+      "docs/design/catalog-lifecycle/REPOSITORY_FINDINGS.md",
+      "docs/design/catalog-lifecycle/STORAGE_REVIEW.md",
+      "docs/plans/proof/starport-production-catalog/csp2.md",
+      "docs/plans/starport-production-catalog-plan.html",
+      "--format",
+      "json"
+    ],
+    "exit_code": 1,
+    "stdout": "{\n  \"config_sources\": [\n    \"/Users/jack/.config/agentstation/technical-writing.toml\",\n    \"/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/.agents/technical-writing.toml\"\n  ],\n  \"documents\": [\n    {\n      \"diagnostics\": [],\n      \"passed\": true,\n      \"path\": \"/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/docs/CLI.md\",\n      \"words\": 1977\n    },\n    {\n      \"diagnostics\": [\n        {\n          \"column\": 63,\n          \"excerpt\": \"Sync and release import must reject checkout overlap with the human workspace before publication.\",\n          \"line\": 435,\n          \"message\": \"use the approved term 'human catalog workspace' instead of 'human workspace'\",\n          \"path\": \"/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/docs/design/catalog-lifecycle/ENGINEERING_SPEC.md\",\n          \"rule\": \"glossary_term\",\n          \"severity\": \"error\"\n        }\n      ],\n      \"passed\": false,\n      \"path\": \"/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/docs/design/catalog-lifecycle/ENGINEERING_SPEC.md\",\n      \"words\": 18783\n    },\n    {\n      \"diagnostics\": [\n        {\n          \"column\": 58,\n          \"excerpt\": \"Release import accepted source-checkout overlap with the human workspace in a regression test.\",\n          \"line\": 508,\n          \"message\": \"use the approved term 'human catalog workspace' instead of 'human workspace'\",\n          \"path\": \"/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/docs/design/catalog-lifecycle/REPOSITORY_FINDINGS.md\",\n          \"rule\": \"glossary_term\",\n          \"severity\": \"error\"\n        }\n      ],\n      \"passed\": false,\n      \"path\": \"/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/docs/design/catalog-lifecycle/REPOSITORY_FINDINGS.md\",\n      \"words\": 5085\n    },\n    {\n      \"diagnostics\": [],\n      \"passed\": true,\n      \"path\": \"/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/docs/design/catalog-lifecycle/STORAGE_REVIEW.md\",\n      \"words\": 4254\n    },\n    {\n      \"diagnostics\": [\n        {\n          \"column\": 130,\n          \"excerpt\": \"The [import regression](csp2/source-import-separation-red.json) reproduced publication when the selected checkout overlapped the human workspace.\",\n          \"line\": 263,\n          \"message\": \"use the approved term 'human catalog workspace' instead of 'human workspace'\",\n          \"path\": \"/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/docs/plans/proof/starport-production-catalog/csp2.md\",\n          \"rule\": \"glossary_term\",\n          \"severity\": \"error\"\n        }\n      ],\n      \"passed\": false,\n      \"path\": \"/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/docs/plans/proof/starport-production-catalog/csp2.md\",\n      \"words\": 3194\n    },\n    {\n      \"diagnostics\": [],\n      \"passed\": true,\n      \"path\": \"/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/docs/plans/starport-production-catalog-plan.html\",\n      \"words\": 5053\n    }\n  ],\n  \"mode\": \"strict\",\n  \"passed\": false,\n  \"summary\": {\n    \"diagnostics\": 3,\n    \"errors\": 3,\n    \"files\": 6,\n    \"max_warnings_per_100_words\": 0.0,\n    \"warning_rate_per_100_words\": 0.0,\n    \"warnings\": 0\n  }\n}\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "make",
+      "technical-writing-check"
+    ],
+    "exit_code": 2,
+    "stdout": "/Users/jack/.agents/skills/technical-writing/scripts/technical-writing glossary check\nPASS: /Users/jack/src/github.com/agentstation/starmap-catalog-requirements/GLOSSARY.md (78 term(s), 0 error(s))\n/Users/jack/.agents/skills/technical-writing/scripts/technical-writing glossary update --check\nPASS: no candidate terms are missing from /Users/jack/src/github.com/agentstation/starmap-catalog-requirements/GLOSSARY.md\n/Users/jack/.agents/skills/technical-writing/scripts/technical-writing lint . --mode strict --format text\n/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/docs/design/catalog-lifecycle/ENGINEERING_SPEC.md:435:63: error glossary_term: use the approved term 'human catalog workspace' instead of 'human workspace'\n/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/docs/design/catalog-lifecycle/REPOSITORY_FINDINGS.md:508:58: error glossary_term: use the approved term 'human catalog workspace' instead of 'human workspace'\n/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/docs/plans/proof/starport-production-catalog/csp2.md:263:130: error glossary_term: use the approved term 'human catalog workspace' instead of 'human workspace'\n/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/docs/plans/proof/starport-production-catalog/storage-revision-2026-09-05/document_structure.txt:1:1: error long_sentence: sentence has 30 words; limit is 25\n/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/docs/plans/proof/starport-production-catalog/storage-revision-2026-09-05/starmap_writing.txt:1:1: error long_sentence: sentence has 38 words; limit is 25\n/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/docs/plans/proof/starport-production-catalog/storage-revision-2026-09-05/starmap_writing.txt:4:26: error ing_main_verb: prefer a simple verb form\nFAIL: 848 file(s), 6 diagnostic(s)\n",
+    "stderr": "make: *** [technical-writing-check] Error 1\n"
+  },
+  {
+    "command": [
+      "python3",
+      "docs/plans/proof/starport-production-catalog/activation-2026-09-05/verify_documents.py"
+    ],
+    "exit_code": 1,
+    "stdout": "",
+    "stderr": "Traceback (most recent call last):\n  File \"/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/docs/plans/proof/starport-production-catalog/activation-2026-09-05/verify_documents.py\", line 50, in <module>\n    assert hashlib.sha256(Path(path).read_bytes()).hexdigest() == digest, path\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: /Users/jack/src/github.com/agentstation/starmap-catalog-requirements/docs/design/catalog-lifecycle/STORAGE_REVIEW.md\n"
+  }
+]

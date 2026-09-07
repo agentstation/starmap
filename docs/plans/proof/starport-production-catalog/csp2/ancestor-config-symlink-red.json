@@ -1,0 +1,18 @@
+{
+  "command": [
+    "env",
+    "GOTOOLCHAIN=go1.25.12",
+    "go",
+    "test",
+    "-json",
+    "-race",
+    "-count=1",
+    "-timeout=2m",
+    "-run",
+    "^TestConfigurationSymlinkChecksIntermediateTargetAncestors$",
+    "./internal/cli/app"
+  ],
+  "exit_code": 1,
+  "stdout": "{\"Time\":\"2026-09-06T14:23:23.358834-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\"}\n{\"Time\":\"2026-09-06T14:23:23.921602-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestConfigurationSymlinkChecksIntermediateTargetAncestors\"}\n{\"Time\":\"2026-09-06T14:23:23.921766-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestConfigurationSymlinkChecksIntermediateTargetAncestors\",\"Output\":\"=== RUN   TestConfigurationSymlinkChecksIntermediateTargetAncestors\\n\"}\n{\"Time\":\"2026-09-06T14:23:23.924171-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestConfigurationSymlinkChecksIntermediateTargetAncestors\",\"Output\":\"    ancestor_access_posix_test.go:35: configuration accepted an unsafe intermediate target directory\\n\"}\n{\"Time\":\"2026-09-06T14:23:23.924806-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestConfigurationSymlinkChecksIntermediateTargetAncestors\",\"Output\":\"--- FAIL: TestConfigurationSymlinkChecksIntermediateTargetAncestors (0.00s)\\n\"}\n{\"Time\":\"2026-09-06T14:23:23.924815-05:00\",\"Action\":\"fail\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestConfigurationSymlinkChecksIntermediateTargetAncestors\",\"Elapsed\":0}\n{\"Time\":\"2026-09-06T14:23:23.92484-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Output\":\"FAIL\\n\"}\n{\"Time\":\"2026-09-06T14:23:23.926401-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Output\":\"FAIL\\tgithub.com/agentstation/starmap/internal/cli/app\\t0.567s\\n\"}\n{\"Time\":\"2026-09-06T14:23:23.926415-05:00\",\"Action\":\"fail\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Elapsed\":0.568}\n",
+  "stderr": ""
+}

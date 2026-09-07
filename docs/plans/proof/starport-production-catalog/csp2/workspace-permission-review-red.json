@@ -1,0 +1,22 @@
+{
+  "command": [
+    "env",
+    "GOTOOLCHAIN=go1.25.12",
+    "go",
+    "test",
+    "-race",
+    "-count=1",
+    "-timeout",
+    "5m",
+    "-json",
+    "-run",
+    "^TestReviewWorkspaceReplacementPreservesOperatorPermissions$",
+    "./internal/catalog/workspace"
+  ],
+  "exit_code": 1,
+  "source": "//go:build darwin || linux\n\npackage workspace\n\nimport (\n \"os\"\n \"path/filepath\"\n \"testing\"\n)\n\nfunc TestReviewWorkspaceReplacementPreservesOperatorPermissions(t *testing.T) {\n path := filepath.Join(t.TempDir(), \"workspace\")\n oldCatalog, oldIdentity := testCatalog(t, \"old\", \"Old\")\n if _, err := Project(t.Context(), path, oldCatalog, oldIdentity); err != nil { t.Fatal(err) }\n if err := os.Chmod(path, 0o770); err != nil { t.Fatal(err) }\n note := filepath.Join(path, \"private-notes.txt\")\n if err := os.WriteFile(note, []byte(\"operator note\"), 0o600); err != nil { t.Fatal(err) }\n if err := os.Chmod(note, 0o600); err != nil { t.Fatal(err) }\n next, identity := testCatalog(t, \"new\", \"New\")\n if _, err := Project(t.Context(), path, next, identity); err != nil { t.Fatal(err) }\n for name, want := range map[string]os.FileMode{path: 0o770, note: 0o600} {\n  info, err := os.Stat(name); if err != nil { t.Fatal(err) }\n  if got := info.Mode().Perm(); got != want { t.Errorf(\"%s mode changed: got %04o, want %04o\", filepath.Base(name), got, want) }\n }\n}\n",
+  "source_sha256": "eb50011cf14ed81f5c7d02148f2ce707c4fe13e232e445972dcbf4f1113a52e1",
+  "stdout": "{\"Time\":\"2026-09-06T16:05:10.154077-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starmap/internal/catalog/workspace\"}\n{\"Time\":\"2026-09-06T16:05:10.357526-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starmap/internal/catalog/workspace\",\"Test\":\"TestReviewWorkspaceReplacementPreservesOperatorPermissions\"}\n{\"Time\":\"2026-09-06T16:05:10.357571-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/catalog/workspace\",\"Test\":\"TestReviewWorkspaceReplacementPreservesOperatorPermissions\",\"Output\":\"=== RUN   TestReviewWorkspaceReplacementPreservesOperatorPermissions\\n\"}\n{\"Time\":\"2026-09-06T16:05:10.47317-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/catalog/workspace\",\"Test\":\"TestReviewWorkspaceReplacementPreservesOperatorPermissions\",\"Output\":\"    review_access_modes_probe_test.go:23: workspace mode changed: got 0755, want 0770\\n\"}\n{\"Time\":\"2026-09-06T16:05:10.473205-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/catalog/workspace\",\"Test\":\"TestReviewWorkspaceReplacementPreservesOperatorPermissions\",\"Output\":\"    review_access_modes_probe_test.go:23: private-notes.txt mode changed: got 0644, want 0600\\n\"}\n{\"Time\":\"2026-09-06T16:05:10.474366-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/catalog/workspace\",\"Test\":\"TestReviewWorkspaceReplacementPreservesOperatorPermissions\",\"Output\":\"--- FAIL: TestReviewWorkspaceReplacementPreservesOperatorPermissions (0.12s)\\n\"}\n{\"Time\":\"2026-09-06T16:05:10.474382-05:00\",\"Action\":\"fail\",\"Package\":\"github.com/agentstation/starmap/internal/catalog/workspace\",\"Test\":\"TestReviewWorkspaceReplacementPreservesOperatorPermissions\",\"Elapsed\":0.12}\n{\"Time\":\"2026-09-06T16:05:10.474417-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/catalog/workspace\",\"Output\":\"FAIL\\n\"}\n{\"Time\":\"2026-09-06T16:05:10.475477-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/catalog/workspace\",\"Output\":\"FAIL\\tgithub.com/agentstation/starmap/internal/catalog/workspace\\t0.321s\\n\"}\n{\"Time\":\"2026-09-06T16:05:10.475485-05:00\",\"Action\":\"fail\",\"Package\":\"github.com/agentstation/starmap/internal/catalog/workspace\",\"Elapsed\":0.321}\n",
+  "stderr": "",
+  "temporary_probe_removed": true
+}

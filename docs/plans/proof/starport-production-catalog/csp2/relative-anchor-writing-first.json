@@ -1,0 +1,18 @@
+{
+  "command": [
+    "/Users/jack/.agents/skills/technical-writing/scripts/technical-writing",
+    "lint",
+    "README.md",
+    "docs/CLI.md",
+    "docs/design/catalog-lifecycle/ENGINEERING_SPEC.md",
+    "docs/design/catalog-lifecycle/REPOSITORY_FINDINGS.md",
+    "internal/cli/app/relative_paths.go",
+    "internal/cli/app/relative_paths_test.go",
+    "internal/cli/commands/update/command.go",
+    "--format",
+    "json"
+  ],
+  "exit_code": 1,
+  "stdout": "{\n  \"config_sources\": [\n    \"/Users/jack/.config/agentstation/technical-writing.toml\",\n    \"/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/.agents/technical-writing.toml\"\n  ],\n  \"documents\": [\n    {\n      \"diagnostics\": [],\n      \"passed\": true,\n      \"path\": \"/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/README.md\",\n      \"words\": 4399\n    },\n    {\n      \"diagnostics\": [\n        {\n          \"column\": 39,\n          \"excerpt\": \"Its own contents cannot authorize the selection of that file. An absolute primary file can declare the base for its relative leaf settings.\",\n          \"line\": 64,\n          \"message\": \"express the action with a direct verb\",\n          \"path\": \"/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/docs/CLI.md\",\n          \"rule\": \"nominalization\",\n          \"severity\": \"error\"\n        }\n      ],\n      \"passed\": false,\n      \"path\": \"/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/docs/CLI.md\",\n      \"words\": 2264\n    },\n    {\n      \"diagnostics\": [\n        {\n          \"column\": 1,\n          \"excerpt\": \"Per-operation `sync.WithSourcesDir` retains precedence over these defaults and selects one parent for both transports.\",\n          \"line\": 453,\n          \"message\": \"paragraph has 8 sentences; limit is 6\",\n          \"path\": \"/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/docs/design/catalog-lifecycle/ENGINEERING_SPEC.md\",\n          \"rule\": \"long_paragraph\",\n          \"severity\": \"error\"\n        }\n      ],\n      \"passed\": false,\n      \"path\": \"/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/docs/design/catalog-lifecycle/ENGINEERING_SPEC.md\",\n      \"words\": 19062\n    },\n    {\n      \"diagnostics\": [],\n      \"passed\": true,\n      \"path\": \"/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/docs/design/catalog-lifecycle/REPOSITORY_FINDINGS.md\",\n      \"words\": 5328\n    },\n    {\n      \"diagnostics\": [],\n      \"passed\": true,\n      \"path\": \"/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/internal/cli/app/relative_paths.go\",\n      \"words\": 19\n    },\n    {\n      \"diagnostics\": [],\n      \"passed\": true,\n      \"path\": \"/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/internal/cli/app/relative_paths_test.go\",\n      \"words\": 10\n    },\n    {\n      \"diagnostics\": [],\n      \"passed\": true,\n      \"path\": \"/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/internal/cli/commands/update/command.go\",\n      \"words\": 20\n    }\n  ],\n  \"mode\": \"strict\",\n  \"passed\": false,\n  \"summary\": {\n    \"diagnostics\": 2,\n    \"errors\": 2,\n    \"files\": 7,\n    \"max_warnings_per_100_words\": 0.0,\n    \"warning_rate_per_100_words\": 0.0,\n    \"warnings\": 0\n  }\n}\n",
+  "stderr": ""
+}

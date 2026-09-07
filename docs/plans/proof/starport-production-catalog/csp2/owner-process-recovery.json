@@ -1,0 +1,21 @@
+{
+  "command": [
+    "go",
+    "test",
+    "-race",
+    "-count=1",
+    "-timeout",
+    "3m",
+    "-json",
+    "./runtime",
+    "-run",
+    "^TestOwnerRecord.*$"
+  ],
+  "exit_code": 0,
+  "passed_tests": [
+    "TestOwnerRecordCrashChild",
+    "TestOwnerRecordRecoversBeforeSeedInitialization"
+  ],
+  "stdout": "{\"Time\":\"2026-09-05T20:13:56.157998-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starmap/runtime\"}\n{\"Time\":\"2026-09-05T20:13:56.693747-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Test\":\"TestOwnerRecordRecoversBeforeSeedInitialization\"}\n{\"Time\":\"2026-09-05T20:13:56.693815-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Test\":\"TestOwnerRecordRecoversBeforeSeedInitialization\",\"Output\":\"=== RUN   TestOwnerRecordRecoversBeforeSeedInitialization\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-05T20:13:56.693887-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Test\":\"TestOwnerRecordRecoversBeforeSeedInitialization\",\"Output\":\"=== PAUSE TestOwnerRecordRecoversBeforeSeedInitialization\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-05T20:13:56.693895-05:00\",\"Action\":\"pause\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Test\":\"TestOwnerRecordRecoversBeforeSeedInitialization\"}\n{\"Time\":\"2026-09-05T20:13:56.693899-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Test\":\"TestOwnerRecordCrashChild\"}\n{\"Time\":\"2026-09-05T20:13:56.693907-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Test\":\"TestOwnerRecordCrashChild\",\"Output\":\"=== RUN   TestOwnerRecordCrashChild\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-05T20:13:56.693938-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Test\":\"TestOwnerRecordCrashChild\",\"Output\":\"--- PASS: TestOwnerRecordCrashChild (0.00s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-05T20:13:56.693949-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Test\":\"TestOwnerRecordCrashChild\",\"Elapsed\":0}\n{\"Time\":\"2026-09-05T20:13:56.693963-05:00\",\"Action\":\"cont\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Test\":\"TestOwnerRecordRecoversBeforeSeedInitialization\"}\n{\"Time\":\"2026-09-05T20:13:56.693965-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Test\":\"TestOwnerRecordRecoversBeforeSeedInitialization\",\"Output\":\"=== CONT  TestOwnerRecordRecoversBeforeSeedInitialization\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-05T20:14:06.872591-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Test\":\"TestOwnerRecordRecoversBeforeSeedInitialization\",\"Output\":\"--- PASS: TestOwnerRecordRecoversBeforeSeedInitialization (10.17s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-05T20:14:06.873359-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Test\":\"TestOwnerRecordRecoversBeforeSeedInitialization\",\"Elapsed\":10.17}\n{\"Time\":\"2026-09-05T20:14:06.875416-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Output\":\"PASS\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-05T20:14:07.899793-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Output\":\"ok  \\tgithub.com/agentstation/starmap/runtime\\t11.731s\\n\"}\n{\"Time\":\"2026-09-05T20:14:07.899858-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Elapsed\":11.732}\n",
+  "stderr": ""
+}

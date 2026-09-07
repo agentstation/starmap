@@ -1,0 +1,21 @@
+{
+  "command": [
+    "go",
+    "test",
+    "-race",
+    "-json",
+    "./internal/catalog/pipeline",
+    "-run",
+    "^TestEmbeddedRevisionLoadFailurePreservesExistingWorkspace$",
+    "-count=1",
+    "-timeout=2m"
+  ],
+  "exit_code": 0,
+  "counts": {
+    "github.com/agentstation/starmap/internal/catalog/pipeline": 1
+  },
+  "failures": [],
+  "skips": [],
+  "stdout": "{\"Time\":\"2026-09-06T10:08:27.752583-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starmap/internal/catalog/pipeline\"}\n{\"Time\":\"2026-09-06T10:08:28.2311-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starmap/internal/catalog/pipeline\",\"Test\":\"TestEmbeddedRevisionLoadFailurePreservesExistingWorkspace\"}\n{\"Time\":\"2026-09-06T10:08:28.231156-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/catalog/pipeline\",\"Test\":\"TestEmbeddedRevisionLoadFailurePreservesExistingWorkspace\",\"Output\":\"=== RUN   TestEmbeddedRevisionLoadFailurePreservesExistingWorkspace\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-06T10:08:28.231227-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/catalog/pipeline\",\"Test\":\"TestEmbeddedRevisionLoadFailurePreservesExistingWorkspace\",\"Output\":\"=== PAUSE TestEmbeddedRevisionLoadFailurePreservesExistingWorkspace\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-06T10:08:28.231231-05:00\",\"Action\":\"pause\",\"Package\":\"github.com/agentstation/starmap/internal/catalog/pipeline\",\"Test\":\"TestEmbeddedRevisionLoadFailurePreservesExistingWorkspace\"}\n{\"Time\":\"2026-09-06T10:08:28.231312-05:00\",\"Action\":\"cont\",\"Package\":\"github.com/agentstation/starmap/internal/catalog/pipeline\",\"Test\":\"TestEmbeddedRevisionLoadFailurePreservesExistingWorkspace\"}\n{\"Time\":\"2026-09-06T10:08:28.231316-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/catalog/pipeline\",\"Test\":\"TestEmbeddedRevisionLoadFailurePreservesExistingWorkspace\",\"Output\":\"=== CONT  TestEmbeddedRevisionLoadFailurePreservesExistingWorkspace\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-06T10:08:28.239688-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/catalog/pipeline\",\"Test\":\"TestEmbeddedRevisionLoadFailurePreservesExistingWorkspace\",\"Output\":\"--- PASS: TestEmbeddedRevisionLoadFailurePreservesExistingWorkspace (0.01s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-06T10:08:28.239736-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starmap/internal/catalog/pipeline\",\"Test\":\"TestEmbeddedRevisionLoadFailurePreservesExistingWorkspace\",\"Elapsed\":0.01}\n{\"Time\":\"2026-09-06T10:08:28.23977-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/catalog/pipeline\",\"Output\":\"PASS\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-06T10:08:29.246184-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/catalog/pipeline\",\"Output\":\"ok  \\tgithub.com/agentstation/starmap/internal/catalog/pipeline\\t1.492s\\n\"}\n{\"Time\":\"2026-09-06T10:08:29.246244-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starmap/internal/catalog/pipeline\",\"Elapsed\":1.494}\n",
+  "stderr": ""
+}

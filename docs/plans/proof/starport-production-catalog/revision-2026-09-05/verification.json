@@ -1,0 +1,215 @@
+{
+  "date_utc": "2026-09-05T16:20:40.488446+00:00",
+  "verdict": "PASS",
+  "scope": "Document revision and plan validation only. This result is not product acceptance evidence.",
+  "structural_validation_file": "../plan-validation.json",
+  "structural_validation_sha256": "ccd04228655f84febd518c10414712ea62bcfd5e9f728bbf8e9dfd8531136326",
+  "structural_validation_command": "python3 /tmp/catalog-document-verify.py",
+  "structural_validation_exit_code": 0,
+  "structural_validation_program_sha256": "cadc482b53295ef7109a6a76a5062b58777ba0939765b5b1f42734622dfe9230",
+  "structural_validation": {
+    "verdict": "PASS",
+    "plan_lines": 500,
+    "ledger_line": 44,
+    "task_count": 30,
+    "todo_count": 30,
+    "prd_count": 30,
+    "acceptance_count": 40,
+    "required_subcase_count": 194,
+    "task_checklists": 28,
+    "early_checks": 3,
+    "rehearsal_checks": 2,
+    "candidate_primary_cases": 33,
+    "publication_dependent_cases": 7,
+    "phase_primary_counts": {
+      "CSP7": 5,
+      "CSP10": 20,
+      "CSP15": 26,
+      "CSP17": 30,
+      "CSP21": 32,
+      "CSP22": 33,
+      "CSP23": 35,
+      "CSP24": 40
+    },
+    "html_local_links_checked": 41,
+    "markdown_local_links_checked": 33,
+    "pinned_source_references_checked": 73,
+    "unique_pinned_source_references": 66,
+    "historical_read_hashes_unchanged": 19,
+    "historical_screenshots_unchanged": 5,
+    "json_files_parsed": 17,
+    "checks": [
+      "unique HTML IDs",
+      "row/body order and status agreement",
+      "required sections and task fields",
+      "dependencies precede consumers",
+      "original task order preserved",
+      "append-only execution log preserved",
+      "all primary cases and required subcases assigned",
+      "no rehearsal counts as final qualification",
+      "candidate and release rosters agree",
+      "all PRD requirements covered",
+      "phase counts match primary ownership",
+      "all local links and anchors resolve",
+      "pinned source paths and line ranges exist",
+      "no external embedded resources",
+      "historical evidence hashes unchanged",
+      "JSON parses"
+    ],
+    "implementation_cases_run": 0,
+    "product_tests_rerun": false,
+    "browser_measurements_rerun": false
+  },
+  "writing_check": {
+    "command": "make technical-writing-check",
+    "repository": "starmap",
+    "exit_code": 0,
+    "files": 749,
+    "diagnostics": 0,
+    "glossary_terms": 77,
+    "glossary_errors": 0,
+    "missing_candidate_terms": 0
+  },
+  "worktree_whitespace_checks": [
+    {
+      "repository": "starmap",
+      "command": "git diff --check",
+      "exit_code": 0,
+      "diagnostics": 0
+    },
+    {
+      "repository": "starport",
+      "command": "git diff --check",
+      "exit_code": 0,
+      "diagnostics": 0
+    }
+  ],
+  "revised_document_diff_checks": [
+    {
+      "path": "docs/design/catalog-lifecycle/PRD.md",
+      "exit_code": 1,
+      "diagnostics": 0
+    },
+    {
+      "path": "docs/design/catalog-lifecycle/ENGINEERING_SPEC.md",
+      "exit_code": 1,
+      "diagnostics": 0
+    },
+    {
+      "path": "docs/design/catalog-lifecycle/REPOSITORY_FINDINGS.md",
+      "exit_code": 1,
+      "diagnostics": 0
+    },
+    {
+      "path": "docs/plans/starport-production-catalog-plan.html",
+      "exit_code": 1,
+      "diagnostics": 0
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/acceptance-map.json",
+      "exit_code": 1,
+      "diagnostics": 0
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/readme-demo-brief.md",
+      "exit_code": 1,
+      "diagnostics": 0
+    },
+    {
+      "path": "docs/plans/README.md",
+      "exit_code": 1,
+      "diagnostics": 0
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/plan-validation.json",
+      "exit_code": 1,
+      "diagnostics": 0
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/revision-2026-09-05/REVIEW_RESOLUTION.md",
+      "exit_code": 1,
+      "diagnostics": 0
+    }
+  ],
+  "no_index_exit_status_note": "Exit 1 means files differ. Each no-index check produced no whitespace diagnostics.",
+  "historical_verbatim_review_hash_matches": true,
+  "historical_assessment_hash_matches": true,
+  "finding_dispositions": {
+    "fable": 11,
+    "prior_audit": 10,
+    "product_implementation_claims": 0
+  },
+  "user_clarifications_recorded": [
+    "D12: local or initialized shared configuration authority",
+    "D14: retryable refusal for unknown required budget permission"
+  ],
+  "engineering_proposal": "D15: shared PostgreSQL configuration and audit; node-local bootstrap; Valkey catalog and coordination.",
+  "updated_artifacts": [
+    {
+      "path": "docs/design/catalog-lifecycle/PRD.md",
+      "sha256": "498fbb087045df8c5d2766c59262cde58f5ed0d6b6dbc1143b5e87e55e70696e"
+    },
+    {
+      "path": "docs/design/catalog-lifecycle/ENGINEERING_SPEC.md",
+      "sha256": "825800a7868f4829acf0974c2be11203a306ffc8555b52ffb117f919a0e3847a"
+    },
+    {
+      "path": "docs/design/catalog-lifecycle/REPOSITORY_FINDINGS.md",
+      "sha256": "0c975a4c4752fce0593408ceb73b096aa2497a03a797c7cb8d3d53fb4a474817"
+    },
+    {
+      "path": "docs/plans/starport-production-catalog-plan.html",
+      "sha256": "1644da4be8acaadc6ff8e54eb25ea7318143fe0349d464ae7a3ceda50bd8a2db"
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/acceptance-map.json",
+      "sha256": "b5d895c21f2db864f74251ab5dcf7e7386399d149e9e1c1ea5746b582fd7cd02"
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/readme-demo-brief.md",
+      "sha256": "202d9b7fa01995d8fc5fe1ac3a039fd522dc77bcd887e3ccfbf3ca7940e7bdee"
+    },
+    {
+      "path": "docs/plans/README.md",
+      "sha256": "46d3f4413dea1e659ffb239b63350f8c7586841be1694c2b847cb319f53feeba"
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/plan-validation.json",
+      "sha256": "ccd04228655f84febd518c10414712ea62bcfd5e9f728bbf8e9dfd8531136326"
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/revision-2026-09-05/REVIEW_RESOLUTION.md",
+      "sha256": "1435bdb38a483e1e0ffdf31ef163b5f52c48b4b789f16eeded2490b7de53c1f3"
+    }
+  ],
+  "worktree_scope": {
+    "starmap": {
+      "head": "4780dfea9f7e002ea6eaaa82aa8f52ed0d4cc225",
+      "tracked_modified_paths": [
+        "docs/README.md",
+        "docs/plans/README.md"
+      ],
+      "all_untracked_paths_under_docs": true,
+      "untracked_count": 37
+    },
+    "starport": {
+      "head": "042eb97851496ecdd1ef20bfa44fe3d84b86b2d8",
+      "tracked_modified_paths": [
+        "docs/TASKS.md"
+      ],
+      "all_untracked_paths_under_docs": true,
+      "untracked_count": 0
+    }
+  },
+  "product_tests_rerun": false,
+  "browser_measurements_rerun": false,
+  "provider_calls": 0,
+  "commits_created": 0,
+  "external_writes": 0,
+  "plan_activated": false,
+  "limitations": [
+    "Implementation and release cases remain UNVERIFIED.",
+    "Native, external backend, SDK, and final media qualification belong to the implementation tasks.",
+    "Permission validity, deprecation, source-admission thresholds, workload, supported versions, and recovery objectives remain explicit profile inputs."
+  ]
+}

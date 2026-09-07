@@ -1,0 +1,61 @@
+{
+  "platform": "darwin/arm64",
+  "release": "v1.2.0",
+  "archive_sha256": "b5bb2961044c7aaf1bdec7ca277e9891cd0ab9bb5143aff00684534c5a9e0023",
+  "binary_sha256": "f6a0a9f456b847276ada55d3f75c15f45accf892ba205f4dca2deb0e68b018bc",
+  "home_files": [],
+  "commands": [
+    {
+      "command": [
+        "gh",
+        "release",
+        "download",
+        "v1.2.0",
+        "--repo",
+        "agentstation/starport",
+        "--pattern",
+        "starport_1.2.0_darwin_arm64.tar.gz",
+        "--pattern",
+        "checksums.txt",
+        "--dir",
+        "/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starport-native-release-8q3i8ads"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "starport",
+        "--version"
+      ],
+      "exit_code": 0,
+      "stdout": "starport version 1.2.0\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "starport",
+        "models",
+        "search",
+        "gpt-4o",
+        "--json"
+      ],
+      "exit_code": 0,
+      "stdout": "{\n  \"data\": [\n    {\n      \"id\": \"openai/gpt-4o\",\n      \"name\": \"gpt-4o\",\n      \"context_length\": 128000,\n      \"pricing\": {\n        \"prompt\": \"2.5e-06\",\n        \"completion\": \"1e-05\",\n        \"currency\": \"USD\"\n      }\n    },\n    {\n      \"id\": \"openai/gpt-4o-2024-05-13\",\n      \"name\": \"gpt-4o-2024-05-13\",\n      \"context_length\": 128000,\n      \"pricing\": {\n        \"prompt\": \"5e-06\",\n        \"completion\": \"1.5e-05\",\n        \"currency\": \"USD\"\n      }\n    },\n    {\n      \"id\": \"openai/gpt-4o-2024-08-06\",\n      \"name\": \"gpt-4o-2024-08-06\",\n      \"context_length\": 128000\n    },\n    {\n      \"id\": \"openai/gpt-4o-2024-11-20\",\n      \"name\": \"gpt-4o-2024-11-20\",\n      \"context_length\": 128000,\n      \"pricing\": {\n        \"prompt\": \"2.5e-06\",\n        \"completion\": \"1e-05\",\n        \"currency\": \"USD\"\n      }\n    },\n    {\n      \"id\": \"openai/gpt-4o-mini\",\n      \"name\": \"gpt-4o-mini\",\n      \"context_length\": 128000,\n      \"pricing\": {\n        \"prompt\": \"1.5e-07\",\n        \"completion\": \"6e-07\",\n        \"currency\": \"USD\"\n      }\n    },\n    {\n      \"id\": \"openai/gpt-4o-mini-2024-07-18\",\n      \"name\": \"gpt-4o-mini-2024-07-18\"\n    },\n    {\n      \"id\": \"openai/gpt-4o-mini-search-preview\",\n      \"name\": \"gpt-4o-mini-search-preview\"\n    },\n    {\n      \"id\": \"openai/gpt-4o-mini-search-preview-2025-03-11\",\n      \"name\": \"gpt-4o-mini-search-preview-2025-03-11\"\n    },\n    {\n      \"id\": \"openai/gpt-4o-mini-transcribe\",\n      \"name\": \"gpt-4o-mini-transcribe\"\n    },\n    {\n      \"id\": \"openai/gpt-4o-mini-transcribe-2025-03-20\",\n      \"name\": \"gpt-4o-mini-transcribe-2025-03-20\"\n    },\n    {\n      \"id\": \"openai/gpt-4o-mini-transcribe-2025-12-15\",\n      \"name\": \"gpt-4o-mini-transcribe-2025-12-15\"\n    },\n    {\n      \"id\": \"openai/gpt-4o-mini-tts\",\n      \"name\": \"gpt-4o-mini-tts\"\n    },\n    {\n      \"id\": \"openai/gpt-4o-mini-tts-2025-03-20\",\n      \"name\": \"gpt-4o-mini-tts-2025-03-20\"\n    },\n    {\n      \"id\": \"openai/gpt-4o-mini-tts-2025-12-15\",\n      \"name\": \"gpt-4o-mini-tts-2025-12-15\"\n    },\n    {\n      \"id\": \"openai/gpt-4o-search-preview\",\n      \"name\": \"gpt-4o-search-preview\"\n    },\n    {\n      \"id\": \"openai/gpt-4o-search-preview-2025-03-11\",\n      \"name\": \"gpt-4o-search-preview-2025-03-11\"\n    },\n    {\n      \"id\": \"openai/gpt-4o-transcribe\",\n      \"name\": \"gpt-4o-transcribe\"\n    },\n    {\n      \"id\": \"openai/gpt-4o-transcribe-diarize\",\n      \"name\": \"gpt-4o-transcribe-diarize\"\n    }\n  ]\n}\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "starport",
+        "models",
+        "show",
+        "openai/gpt-4o-mini",
+        "--json"
+      ],
+      "exit_code": 0,
+      "stdout": "{\n  \"id\": \"openai/gpt-4o-mini\",\n  \"canonical_slug\": \"openai/gpt-4o-mini\",\n  \"name\": \"gpt-4o-mini\",\n  \"object\": \"model\",\n  \"created\": 1721260800,\n  \"owned_by\": \"openai\",\n  \"pricing\": {\n    \"prompt\": \"1.5e-07\",\n    \"completion\": \"6e-07\",\n    \"currency\": \"USD\"\n  },\n  \"context_length\": 128000,\n  \"description\": \"Small omni GPT for cheap multimodal assistance and production-scale traffic\",\n  \"architecture\": {\n    \"input_modalities\": [\n      \"image\",\n      \"pdf\",\n      \"text\"\n    ],\n    \"output_modalities\": [\n      \"text\"\n    ],\n    \"tokenizer\": \"\",\n    \"instruct_type\": null\n  },\n  \"top_provider\": {\n    \"context_length\": 128000,\n    \"max_completion_tokens\": 16384\n  },\n  \"supported_parameters\": [\n    \"temperature\",\n    \"top_p\",\n    \"max_tokens\",\n    \"stop\"\n  ],\n  \"authors\": [\n    {\n      \"id\": \"openai\",\n      \"name\": \"OpenAI\"\n    }\n  ],\n  \"lineage\": {\n    \"family\": \"gpt-mini\"\n  },\n  \"knowledge_cutoff\": \"2023-09-01\",\n  \"open_weights\": false,\n  \"offerings\": [\n    {\n      \"provider\": \"openai\",\n      \"provider_name\": \"OpenAI\",\n      \"provider_model_id\": \"gpt-4o-mini\",\n      \"context_length\": 128000,\n      \"max_completion_tokens\": 16384,\n      \"availability\": \"unknown\",\n      \"lifecycle\": \"unknown\",\n      \"pricing\": {\n        \"prompt\": \"1.5e-07\",\n        \"completion\": \"6e-07\",\n        \"cache_read\": \"7.5e-08\",\n        \"currency\": \"USD\"\n      },\n      \"operations\": [\n        \"chat-completions\"\n      ]\n    }\n  ]\n}\n",
+      "stderr": ""
+    }
+  ]
+}

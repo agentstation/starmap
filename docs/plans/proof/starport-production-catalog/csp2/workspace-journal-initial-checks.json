@@ -1,0 +1,42 @@
+[
+  {
+    "command": [
+      "go",
+      "test",
+      "-race",
+      "-json",
+      "./internal/catalog/workspace",
+      "-run",
+      "^Test(ProjectPreservesDirectoryCreatedAtPublication|ReadRefusesPendingReplacement)$",
+      "-count=1",
+      "-timeout=2m"
+    ],
+    "exit_code": 0,
+    "stdout": "{\"Time\":\"2026-09-06T10:45:03.811257-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starmap/internal/catalog/workspace\"}\n{\"Time\":\"2026-09-06T10:45:04.071461-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starmap/internal/catalog/workspace\",\"Test\":\"TestProjectPreservesDirectoryCreatedAtPublication\"}\n{\"Time\":\"2026-09-06T10:45:04.07259-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/catalog/workspace\",\"Test\":\"TestProjectPreservesDirectoryCreatedAtPublication\",\"Output\":\"=== RUN   TestProjectPreservesDirectoryCreatedAtPublication\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-06T10:45:04.160481-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/catalog/workspace\",\"Test\":\"TestProjectPreservesDirectoryCreatedAtPublication\",\"Output\":\"--- PASS: TestProjectPreservesDirectoryCreatedAtPublication (0.09s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-06T10:45:04.160521-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starmap/internal/catalog/workspace\",\"Test\":\"TestProjectPreservesDirectoryCreatedAtPublication\",\"Elapsed\":0.09}\n{\"Time\":\"2026-09-06T10:45:04.160584-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starmap/internal/catalog/workspace\",\"Test\":\"TestReadRefusesPendingReplacement\"}\n{\"Time\":\"2026-09-06T10:45:04.160601-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/catalog/workspace\",\"Test\":\"TestReadRefusesPendingReplacement\",\"Output\":\"=== RUN   TestReadRefusesPendingReplacement\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-06T10:45:04.164287-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/catalog/workspace\",\"Test\":\"TestReadRefusesPendingReplacement\",\"Output\":\"--- PASS: TestReadRefusesPendingReplacement (0.00s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-06T10:45:04.164301-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starmap/internal/catalog/workspace\",\"Test\":\"TestReadRefusesPendingReplacement\",\"Elapsed\":0}\n{\"Time\":\"2026-09-06T10:45:04.164304-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/catalog/workspace\",\"Output\":\"PASS\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-06T10:45:05.168897-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/catalog/workspace\",\"Output\":\"ok  \\tgithub.com/agentstation/starmap/internal/catalog/workspace\\t1.357s\\n\"}\n{\"Time\":\"2026-09-06T10:45:05.168959-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starmap/internal/catalog/workspace\",\"Elapsed\":1.358}\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "go",
+      "tool",
+      "ago",
+      "-stale-ignores",
+      "-format",
+      "json",
+      "./..."
+    ],
+    "exit_code": 0,
+    "stdout": "{\n  \"schemaVersion\": 1,\n  \"version\": \"v0.2.0\",\n  \"rules\": [\n    \"no-dot-import\",\n    \"no-generic-methods\",\n    \"no-goto\",\n    \"no-invalid-ignore\",\n    \"no-naked-return\",\n    \"no-new-expr\",\n    \"no-self-referential-constraints\"\n  ],\n  \"findings\": [],\n  \"staleIgnores\": [],\n  \"errors\": []\n}\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "golangci-lint",
+      "run",
+      "./internal/catalog/workspace/..."
+    ],
+    "exit_code": 0,
+    "stdout": "0 issues.\n",
+    "stderr": ""
+  }
+]

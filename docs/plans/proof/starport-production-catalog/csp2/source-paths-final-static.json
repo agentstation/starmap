@@ -1,0 +1,29 @@
+[
+  {
+    "command": [
+      "golangci-lint",
+      "run"
+    ],
+    "environment": {
+      "GOLANGCI_LINT_CACHE": "/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-source-final-lint-r00_vzrd"
+    },
+    "exit_code": 0,
+    "stdout": "0 issues.\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "go",
+      "tool",
+      "ago",
+      "-stale-ignores",
+      "-format",
+      "json",
+      "./..."
+    ],
+    "environment": {},
+    "exit_code": 0,
+    "stdout": "{\n  \"schemaVersion\": 1,\n  \"version\": \"v0.2.0\",\n  \"rules\": [\n    \"no-dot-import\",\n    \"no-generic-methods\",\n    \"no-goto\",\n    \"no-invalid-ignore\",\n    \"no-naked-return\",\n    \"no-new-expr\",\n    \"no-self-referential-constraints\"\n  ],\n  \"findings\": [],\n  \"staleIgnores\": [],\n  \"errors\": []\n}\n",
+    "stderr": ""
+  }
+]

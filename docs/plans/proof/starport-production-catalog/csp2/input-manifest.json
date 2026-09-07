@@ -1,0 +1,9 @@
+{
+  "files": {
+    "embedded.go": "33a81c84fe18a9b596e82e48032fceb9772e3f70c5a03a5179d90da8f28ce76e",
+    "embedded_test.go": "87a086bcfb2bb831b61d95f23d63e1fd74456351631c9520027a18da3dc516c7",
+    "internal/bootstrap/bootstrap.go": "921befb37e4c6d51ac115f4c118cac08fba79982520f38d123c6e15bf78230ef",
+    "internal/cli/app/baseline_export_test.go": "115c16950c25f5424024b0a902eacd6d8814fe95212a334e9445642a6b7f7b10"
+  },
+  "qualification": "Partial CSP2 progress. Persistent startup export remains unimplemented."
+}

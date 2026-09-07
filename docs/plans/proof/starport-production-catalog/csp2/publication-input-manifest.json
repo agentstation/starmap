@@ -1,0 +1,24 @@
+{
+  "base_commit": "4780dfea9f7e002ea6eaaa82aa8f52ed0d4cc225",
+  "branch": "codex/catalog-requirements",
+  "sha256": {
+    ".github/workflows/pr.yaml": "3a820ca4603a7b3b7ac812c8488eb00c5107f2749067ad923a515e7268a4c931",
+    "go.mod": "4089f0c9d4e2a59e91b45b22419dcc16298b545ce74db69f19508377289e3513",
+    "go.sum": "e6bc0489a1beb9cc7af8ce96d3ab833002dab73fa559c2165e57a7865d13a356",
+    "internal/bootstrap/export.go": "5e4a6e1fe7e9a134c56fcaf0e377b281d5bf26761c22d31f852e462bc45a30b0",
+    "internal/bootstrap/export_test.go": "618c465e2630463cb0f816cb7dfa964a1f7a780d65433558af0da36487271ff2",
+    "internal/filepublish/directory.go": "9bfbdbe7c94470414599697d317f192688033bb0f29cd228cdae15781097443a",
+    "internal/filepublish/directory_darwin.go": "6d6aa5773fa78bdd2a1f7c2ecc373166b2cfc192c193a36483154ddf6705f660",
+    "internal/filepublish/directory_linux.go": "625a1821dcbc5fb6cfc78a49c0aec508af6400ddba811880204988917f623754",
+    "internal/filepublish/directory_other.go": "39026dd4e8814ad90849fe47d0833274d193fd7e612ca3be1e6910c4c5c35eb1",
+    "internal/filepublish/directory_test.go": "858eeca76c79ef398a8f7ec6bd0d1f6553e8210eaf1bac8bdfe82babc8655bb5",
+    "internal/filepublish/directory_windows.go": "7f5d0c7fd8d82a5846fbd46fd2422ab0d5644effca884e75a085d31a4620ece6",
+    "runtime/migration_publish.go": "ec693730432e1c5b3194b43d2ba86c6f5077ee849838c94c49fc31e3fde45192",
+    "runtime/migration_publish_test.go": "e4100c9e36c05013609c34de8fe52daebde013b6c97d20febf04928a0b5cefb1",
+    "runtime/migration_rename.go": "691aa21d60982a7bb9d074fe0c509ddc4278aac99977f225fb961e1c79ddd74b",
+    "runtime/migration_stage.go": "f67845dac4841fe52a8aaff9c3e9d5ebd9eda7a6f4d9e1e863ead79d4353e9d1",
+    "runtime/migration_stage_test.go": "683a6290be57c089000d8eeb4b0401d84fb8616426ed5cf61eb26b916c4828cf"
+  },
+  "native_windows_execution": "UNVERIFIED",
+  "power_loss_durability": "UNVERIFIED"
+}

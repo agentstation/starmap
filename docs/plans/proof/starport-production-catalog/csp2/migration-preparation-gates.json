@@ -1,0 +1,53 @@
+[
+  {
+    "command": [
+      "go",
+      "vet",
+      "./runtime",
+      "./internal/cli/app"
+    ],
+    "exit_code": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "bash",
+      "scripts/verify-package-layout.sh"
+    ],
+    "exit_code": 0,
+    "stdout": "ok  \tgithub.com/agentstation/starmap/internal/architecture\t0.275s\npackage-layout verification passed\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "bash",
+      "scripts/verify-catalog-package-ownership.sh"
+    ],
+    "exit_code": 0,
+    "stdout": "CPO-V01 PASS: the five approved catalog child packages exist\nCPO-V02 PASS: the four removed package trees are absent\nCPO-V03 PASS: catalogs owns Generation copy and validation\nCPO-V04 PASS: catalogs owns all canonical payload codecs\nCPO-V05 PASS: evidence is a standard-library-only leaf\nCPO-V06 PASS: projection is a standard-library-only leaf without aliases\nCPO-V07 PASS: storage accepts catalog generations and retains adapters\nCPO-V08 PASS: artifact is storage-independent and retains its byte test\nCPO-V09 PASS: remote is storage-independent and retains protocol tests\nCPO-V10 PASS: all six external consumer modules compile\nCPO-V11 PASS: current docs and the migration guide use approved paths\nCPO-V12 PASS: current authority passes the historical allowlist scan\nCPO-V13 PASS: the package graph resolves without a dependency change\nSummary: 13 passed, 0 failed\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "bash",
+      "scripts/verify-catalog-dependency-direction.sh"
+    ],
+    "exit_code": 0,
+    "stdout": "SM-D01 PASS: catalogs does not import private authority policy\nSM-D02 PASS: catalogs does not import repository-wide constants\nSM-D03 PASS: catalogs does not import the private embedded filesystem\nSM-D04 PASS: catalogs does not import private source payload policy\nSM-D05 PASS: catalog artifacts do not import repository-wide constants\nSM-D06 PASS: catalog remote transport does not import repository-wide constants\nSM-D07 PASS: catalog storage does not import repository-wide constants\nSM-D08 PASS: catalog S3 storage does not import repository-wide constants\nSummary: 8 passed, 0 failed\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "bash",
+      "scripts/verify-catalog-product.sh",
+      "--starport-root",
+      "/Users/jack/src/github.com/agentstation/starport-catalog-lifecycle",
+      "--task",
+      "CSP2"
+    ],
+    "exit_code": 1,
+    "stdout": "CSP-V01 UNVERIFIED: A01\nCSP-V02 UNVERIFIED: A02\nCSP-V03 UNVERIFIED: A03\nCSP-V04 UNVERIFIED: A04\nCSP-V05 UNVERIFIED: A05\nCSP-V06 UNVERIFIED: A06\nCSP-V07 UNVERIFIED: A07\nCSP-V08 UNVERIFIED: A08\nCSP-V09 UNVERIFIED: A09\nCSP-V10 UNVERIFIED: A10\nCSP-V11 UNVERIFIED: A11\nCSP-V12 UNVERIFIED: A12\nCSP-V13 UNVERIFIED: A13\nCSP-V14 UNVERIFIED: A14\nCSP-V15 UNVERIFIED: A15\nCSP-V16 UNVERIFIED: A16\nCSP-V17 UNVERIFIED: A17\nCSP-V18 UNVERIFIED: A18\nCSP-V19 UNVERIFIED: A19\nCSP-V20 UNVERIFIED: A20\nCSP-V21 UNVERIFIED: A21\nCSP-V22 UNVERIFIED: A22\nCSP-V23 UNVERIFIED: A23\nCSP-V24 UNVERIFIED: A24\nCSP-V25 UNVERIFIED: A25\nCSP-V26 UNVERIFIED: A26\nCSP-V27 UNVERIFIED: A27\nCSP-V28 UNVERIFIED: A28\nCSP-V29 UNVERIFIED: A29\nCSP-V30 UNVERIFIED: A30\nCSP-V31 UNVERIFIED: A31\nCSP-V32 UNVERIFIED: A32\nCSP-V33 UNVERIFIED: A33\nCSP-V34 UNVERIFIED: A34\nCSP-V35 UNVERIFIED: A35\nCSP-V36 UNVERIFIED: A36\nCSP-V37 UNVERIFIED: A37\nCSP-V38 UNVERIFIED: A38\nCSP-V39 UNVERIFIED: A39\nCSP-V40 UNVERIFIED: A40\nCSP-V41 UNVERIFIED: A41\nCSP-V42 UNVERIFIED: A42\nCSP-V43 UNVERIFIED: A43\nCSP-V44 UNVERIFIED: A44\nCSP-V45 UNVERIFIED: A45\nCSP-V46 UNVERIFIED: A46\nCSP-V47 UNVERIFIED: A47\nCSP-V48 UNVERIFIED: A48\nCSP-V49 UNVERIFIED: A49\nCSP-V50 UNVERIFIED: A50\nSummary: 0 passed, 50 failed\nUNVERIFIED: 50 cases. Gate: FAIL.\n",
+    "stderr": ""
+  }
+]

@@ -1,0 +1,898 @@
+[
+  {
+    "url": "http://127.0.0.1:4177/docs?audience=build",
+    "theme": "dark",
+    "width": 320,
+    "documentWidth": 320,
+    "mainWidth": 288,
+    "bodyFont": "16px",
+    "bodyLine": "26px",
+    "codeFont": "14px",
+    "controls": [
+      {
+        "name": "Switch to light theme",
+        "height": 44
+      },
+      {
+        "name": "Build with Starport",
+        "height": 44
+      },
+      {
+        "name": "Manage your account",
+        "height": 44
+      },
+      {
+        "name": "Operate the gateway",
+        "height": 44
+      },
+      {
+        "name": "Copy snippet",
+        "height": 44
+      },
+      {
+        "name": "Copy snippet",
+        "height": 44
+      },
+      {
+        "name": "Copy snippet",
+        "height": 44
+      },
+      {
+        "name": "Copy snippet",
+        "height": 44
+      },
+      {
+        "name": "Copy snippet",
+        "height": 44
+      },
+      {
+        "name": "Copy snippet",
+        "height": 44
+      },
+      {
+        "name": "Copy snippet",
+        "height": 44
+      }
+    ],
+    "code": [
+      {
+        "tabIndex": 0,
+        "width": 286,
+        "scrollWidth": 461,
+        "overflow": "auto"
+      },
+      {
+        "tabIndex": 0,
+        "width": 286,
+        "scrollWidth": 461,
+        "overflow": "auto"
+      },
+      {
+        "tabIndex": 0,
+        "width": 286,
+        "scrollWidth": 286,
+        "overflow": "auto"
+      },
+      {
+        "tabIndex": 0,
+        "width": 286,
+        "scrollWidth": 780,
+        "overflow": "auto"
+      },
+      {
+        "tabIndex": 0,
+        "width": 286,
+        "scrollWidth": 889,
+        "overflow": "auto"
+      },
+      {
+        "tabIndex": 0,
+        "width": 286,
+        "scrollWidth": 286,
+        "overflow": "auto"
+      },
+      {
+        "tabIndex": 0,
+        "width": 286,
+        "scrollWidth": 410,
+        "overflow": "auto"
+      }
+    ],
+    "contrastSamples": 66,
+    "minimumContrast": 5.899221690008203,
+    "lowContrast": [],
+    "deploymentRequests": [],
+    "audience": "build"
+  },
+  {
+    "url": "http://127.0.0.1:4177/docs?audience=account",
+    "theme": "dark",
+    "width": 320,
+    "documentWidth": 320,
+    "mainWidth": 288,
+    "bodyFont": "16px",
+    "bodyLine": "26px",
+    "codeFont": null,
+    "controls": [
+      {
+        "name": "Switch to light theme",
+        "height": 44
+      },
+      {
+        "name": "Build with Starport",
+        "height": 44
+      },
+      {
+        "name": "Manage your account",
+        "height": 44
+      },
+      {
+        "name": "Operate the gateway",
+        "height": 44
+      }
+    ],
+    "code": [],
+    "contrastSamples": 52,
+    "minimumContrast": 5.899221690008203,
+    "lowContrast": [],
+    "deploymentRequests": [],
+    "audience": "account"
+  },
+  {
+    "url": "http://127.0.0.1:4177/docs?audience=operate",
+    "theme": "dark",
+    "width": 320,
+    "documentWidth": 320,
+    "mainWidth": 288,
+    "bodyFont": "16px",
+    "bodyLine": "26px",
+    "codeFont": "14px",
+    "controls": [
+      {
+        "name": "Switch to light theme",
+        "height": 44
+      },
+      {
+        "name": "Build with Starport",
+        "height": 44
+      },
+      {
+        "name": "Manage your account",
+        "height": 44
+      },
+      {
+        "name": "Operate the gateway",
+        "height": 44
+      },
+      {
+        "name": "Copy snippet",
+        "height": 44
+      },
+      {
+        "name": "Copy snippet",
+        "height": 44
+      },
+      {
+        "name": "Copy snippet",
+        "height": 44
+      },
+      {
+        "name": "Copy snippet",
+        "height": 44
+      },
+      {
+        "name": "Copy snippet",
+        "height": 44
+      }
+    ],
+    "code": [
+      {
+        "tabIndex": 0,
+        "width": 286,
+        "scrollWidth": 444,
+        "overflow": "auto"
+      },
+      {
+        "tabIndex": 0,
+        "width": 286,
+        "scrollWidth": 704,
+        "overflow": "auto"
+      },
+      {
+        "tabIndex": 0,
+        "width": 286,
+        "scrollWidth": 662,
+        "overflow": "auto"
+      },
+      {
+        "tabIndex": 0,
+        "width": 286,
+        "scrollWidth": 310,
+        "overflow": "auto"
+      },
+      {
+        "tabIndex": 0,
+        "width": 286,
+        "scrollWidth": 511,
+        "overflow": "auto"
+      }
+    ],
+    "contrastSamples": 73,
+    "minimumContrast": 5.899221690008203,
+    "lowContrast": [],
+    "deploymentRequests": [],
+    "audience": "operate"
+  },
+  {
+    "url": "http://127.0.0.1:4177/docs?audience=build",
+    "theme": "light",
+    "width": 320,
+    "documentWidth": 320,
+    "mainWidth": 288,
+    "bodyFont": "16px",
+    "bodyLine": "26px",
+    "codeFont": "14px",
+    "controls": [
+      {
+        "name": "Switch to dark theme",
+        "height": 44
+      },
+      {
+        "name": "Build with Starport",
+        "height": 44
+      },
+      {
+        "name": "Manage your account",
+        "height": 44
+      },
+      {
+        "name": "Operate the gateway",
+        "height": 44
+      },
+      {
+        "name": "Copy snippet",
+        "height": 44
+      },
+      {
+        "name": "Copy snippet",
+        "height": 44
+      },
+      {
+        "name": "Copy snippet",
+        "height": 44
+      },
+      {
+        "name": "Copy snippet",
+        "height": 44
+      },
+      {
+        "name": "Copy snippet",
+        "height": 44
+      },
+      {
+        "name": "Copy snippet",
+        "height": 44
+      },
+      {
+        "name": "Copy snippet",
+        "height": 44
+      }
+    ],
+    "code": [
+      {
+        "tabIndex": 0,
+        "width": 286,
+        "scrollWidth": 461,
+        "overflow": "auto"
+      },
+      {
+        "tabIndex": 0,
+        "width": 286,
+        "scrollWidth": 461,
+        "overflow": "auto"
+      },
+      {
+        "tabIndex": 0,
+        "width": 286,
+        "scrollWidth": 286,
+        "overflow": "auto"
+      },
+      {
+        "tabIndex": 0,
+        "width": 286,
+        "scrollWidth": 780,
+        "overflow": "auto"
+      },
+      {
+        "tabIndex": 0,
+        "width": 286,
+        "scrollWidth": 889,
+        "overflow": "auto"
+      },
+      {
+        "tabIndex": 0,
+        "width": 286,
+        "scrollWidth": 286,
+        "overflow": "auto"
+      },
+      {
+        "tabIndex": 0,
+        "width": 286,
+        "scrollWidth": 410,
+        "overflow": "auto"
+      }
+    ],
+    "contrastSamples": 66,
+    "minimumContrast": 4.630251574816984,
+    "lowContrast": [],
+    "deploymentRequests": [],
+    "audience": "build"
+  },
+  {
+    "url": "http://127.0.0.1:4177/docs?audience=account",
+    "theme": "light",
+    "width": 320,
+    "documentWidth": 320,
+    "mainWidth": 288,
+    "bodyFont": "16px",
+    "bodyLine": "26px",
+    "codeFont": null,
+    "controls": [
+      {
+        "name": "Switch to dark theme",
+        "height": 44
+      },
+      {
+        "name": "Build with Starport",
+        "height": 44
+      },
+      {
+        "name": "Manage your account",
+        "height": 44
+      },
+      {
+        "name": "Operate the gateway",
+        "height": 44
+      }
+    ],
+    "code": [],
+    "contrastSamples": 52,
+    "minimumContrast": 4.630251574816984,
+    "lowContrast": [],
+    "deploymentRequests": [],
+    "audience": "account"
+  },
+  {
+    "url": "http://127.0.0.1:4177/docs?audience=operate",
+    "theme": "light",
+    "width": 320,
+    "documentWidth": 320,
+    "mainWidth": 288,
+    "bodyFont": "16px",
+    "bodyLine": "26px",
+    "codeFont": "14px",
+    "controls": [
+      {
+        "name": "Switch to dark theme",
+        "height": 44
+      },
+      {
+        "name": "Build with Starport",
+        "height": 44
+      },
+      {
+        "name": "Manage your account",
+        "height": 44
+      },
+      {
+        "name": "Operate the gateway",
+        "height": 44
+      },
+      {
+        "name": "Copy snippet",
+        "height": 44
+      },
+      {
+        "name": "Copy snippet",
+        "height": 44
+      },
+      {
+        "name": "Copy snippet",
+        "height": 44
+      },
+      {
+        "name": "Copy snippet",
+        "height": 44
+      },
+      {
+        "name": "Copy snippet",
+        "height": 44
+      }
+    ],
+    "code": [
+      {
+        "tabIndex": 0,
+        "width": 286,
+        "scrollWidth": 444,
+        "overflow": "auto"
+      },
+      {
+        "tabIndex": 0,
+        "width": 286,
+        "scrollWidth": 704,
+        "overflow": "auto"
+      },
+      {
+        "tabIndex": 0,
+        "width": 286,
+        "scrollWidth": 662,
+        "overflow": "auto"
+      },
+      {
+        "tabIndex": 0,
+        "width": 286,
+        "scrollWidth": 310,
+        "overflow": "auto"
+      },
+      {
+        "tabIndex": 0,
+        "width": 286,
+        "scrollWidth": 511,
+        "overflow": "auto"
+      }
+    ],
+    "contrastSamples": 73,
+    "minimumContrast": 4.630251574816984,
+    "lowContrast": [],
+    "deploymentRequests": [],
+    "audience": "operate"
+  },
+  {
+    "url": "http://127.0.0.1:4177/docs?audience=build",
+    "theme": "dark",
+    "width": 1280,
+    "documentWidth": 1280,
+    "mainWidth": 720,
+    "bodyFont": "16px",
+    "bodyLine": "26px",
+    "codeFont": "14px",
+    "controls": [
+      {
+        "name": "Switch to light theme",
+        "height": 44
+      },
+      {
+        "name": "Build with Starport",
+        "height": 44
+      },
+      {
+        "name": "Manage your account",
+        "height": 44
+      },
+      {
+        "name": "Operate the gateway",
+        "height": 44
+      },
+      {
+        "name": "Copy snippet",
+        "height": 44
+      },
+      {
+        "name": "Copy snippet",
+        "height": 44
+      },
+      {
+        "name": "Copy snippet",
+        "height": 44
+      },
+      {
+        "name": "Copy snippet",
+        "height": 44
+      },
+      {
+        "name": "Copy snippet",
+        "height": 44
+      },
+      {
+        "name": "Copy snippet",
+        "height": 44
+      },
+      {
+        "name": "Copy snippet",
+        "height": 44
+      }
+    ],
+    "code": [
+      {
+        "tabIndex": 0,
+        "width": 718,
+        "scrollWidth": 718,
+        "overflow": "auto"
+      },
+      {
+        "tabIndex": 0,
+        "width": 718,
+        "scrollWidth": 718,
+        "overflow": "auto"
+      },
+      {
+        "tabIndex": 0,
+        "width": 718,
+        "scrollWidth": 718,
+        "overflow": "auto"
+      },
+      {
+        "tabIndex": 0,
+        "width": 718,
+        "scrollWidth": 780,
+        "overflow": "auto"
+      },
+      {
+        "tabIndex": 0,
+        "width": 718,
+        "scrollWidth": 889,
+        "overflow": "auto"
+      },
+      {
+        "tabIndex": 0,
+        "width": 718,
+        "scrollWidth": 718,
+        "overflow": "auto"
+      },
+      {
+        "tabIndex": 0,
+        "width": 718,
+        "scrollWidth": 718,
+        "overflow": "auto"
+      }
+    ],
+    "contrastSamples": 66,
+    "minimumContrast": 5.899221690008203,
+    "lowContrast": [],
+    "deploymentRequests": [],
+    "audience": "build"
+  },
+  {
+    "url": "http://127.0.0.1:4177/docs?audience=account",
+    "theme": "dark",
+    "width": 1280,
+    "documentWidth": 1280,
+    "mainWidth": 720,
+    "bodyFont": "16px",
+    "bodyLine": "26px",
+    "codeFont": null,
+    "controls": [
+      {
+        "name": "Switch to light theme",
+        "height": 44
+      },
+      {
+        "name": "Build with Starport",
+        "height": 44
+      },
+      {
+        "name": "Manage your account",
+        "height": 44
+      },
+      {
+        "name": "Operate the gateway",
+        "height": 44
+      }
+    ],
+    "code": [],
+    "contrastSamples": 52,
+    "minimumContrast": 5.899221690008203,
+    "lowContrast": [],
+    "deploymentRequests": [],
+    "audience": "account"
+  },
+  {
+    "url": "http://127.0.0.1:4177/docs?audience=operate",
+    "theme": "dark",
+    "width": 1280,
+    "documentWidth": 1280,
+    "mainWidth": 720,
+    "bodyFont": "16px",
+    "bodyLine": "26px",
+    "codeFont": "14px",
+    "controls": [
+      {
+        "name": "Switch to light theme",
+        "height": 44
+      },
+      {
+        "name": "Build with Starport",
+        "height": 44
+      },
+      {
+        "name": "Manage your account",
+        "height": 44
+      },
+      {
+        "name": "Operate the gateway",
+        "height": 44
+      },
+      {
+        "name": "Copy snippet",
+        "height": 44
+      },
+      {
+        "name": "Copy snippet",
+        "height": 44
+      },
+      {
+        "name": "Copy snippet",
+        "height": 44
+      },
+      {
+        "name": "Copy snippet",
+        "height": 44
+      },
+      {
+        "name": "Copy snippet",
+        "height": 44
+      }
+    ],
+    "code": [
+      {
+        "tabIndex": 0,
+        "width": 718,
+        "scrollWidth": 718,
+        "overflow": "auto"
+      },
+      {
+        "tabIndex": 0,
+        "width": 718,
+        "scrollWidth": 718,
+        "overflow": "auto"
+      },
+      {
+        "tabIndex": 0,
+        "width": 718,
+        "scrollWidth": 718,
+        "overflow": "auto"
+      },
+      {
+        "tabIndex": 0,
+        "width": 718,
+        "scrollWidth": 718,
+        "overflow": "auto"
+      },
+      {
+        "tabIndex": 0,
+        "width": 718,
+        "scrollWidth": 718,
+        "overflow": "auto"
+      }
+    ],
+    "contrastSamples": 73,
+    "minimumContrast": 5.899221690008203,
+    "lowContrast": [],
+    "deploymentRequests": [],
+    "audience": "operate"
+  },
+  {
+    "url": "http://127.0.0.1:4177/docs?audience=build",
+    "theme": "light",
+    "width": 1280,
+    "documentWidth": 1280,
+    "mainWidth": 720,
+    "bodyFont": "16px",
+    "bodyLine": "26px",
+    "codeFont": "14px",
+    "controls": [
+      {
+        "name": "Switch to dark theme",
+        "height": 44
+      },
+      {
+        "name": "Build with Starport",
+        "height": 44
+      },
+      {
+        "name": "Manage your account",
+        "height": 44
+      },
+      {
+        "name": "Operate the gateway",
+        "height": 44
+      },
+      {
+        "name": "Copy snippet",
+        "height": 44
+      },
+      {
+        "name": "Copy snippet",
+        "height": 44
+      },
+      {
+        "name": "Copy snippet",
+        "height": 44
+      },
+      {
+        "name": "Copy snippet",
+        "height": 44
+      },
+      {
+        "name": "Copy snippet",
+        "height": 44
+      },
+      {
+        "name": "Copy snippet",
+        "height": 44
+      },
+      {
+        "name": "Copy snippet",
+        "height": 44
+      }
+    ],
+    "code": [
+      {
+        "tabIndex": 0,
+        "width": 718,
+        "scrollWidth": 718,
+        "overflow": "auto"
+      },
+      {
+        "tabIndex": 0,
+        "width": 718,
+        "scrollWidth": 718,
+        "overflow": "auto"
+      },
+      {
+        "tabIndex": 0,
+        "width": 718,
+        "scrollWidth": 718,
+        "overflow": "auto"
+      },
+      {
+        "tabIndex": 0,
+        "width": 718,
+        "scrollWidth": 780,
+        "overflow": "auto"
+      },
+      {
+        "tabIndex": 0,
+        "width": 718,
+        "scrollWidth": 889,
+        "overflow": "auto"
+      },
+      {
+        "tabIndex": 0,
+        "width": 718,
+        "scrollWidth": 718,
+        "overflow": "auto"
+      },
+      {
+        "tabIndex": 0,
+        "width": 718,
+        "scrollWidth": 718,
+        "overflow": "auto"
+      }
+    ],
+    "contrastSamples": 66,
+    "minimumContrast": 4.630251574816984,
+    "lowContrast": [],
+    "deploymentRequests": [],
+    "audience": "build"
+  },
+  {
+    "url": "http://127.0.0.1:4177/docs?audience=account",
+    "theme": "light",
+    "width": 1280,
+    "documentWidth": 1280,
+    "mainWidth": 720,
+    "bodyFont": "16px",
+    "bodyLine": "26px",
+    "codeFont": null,
+    "controls": [
+      {
+        "name": "Switch to dark theme",
+        "height": 44
+      },
+      {
+        "name": "Build with Starport",
+        "height": 44
+      },
+      {
+        "name": "Manage your account",
+        "height": 44
+      },
+      {
+        "name": "Operate the gateway",
+        "height": 44
+      }
+    ],
+    "code": [],
+    "contrastSamples": 52,
+    "minimumContrast": 4.630251574816984,
+    "lowContrast": [],
+    "deploymentRequests": [],
+    "audience": "account"
+  },
+  {
+    "url": "http://127.0.0.1:4177/docs?audience=operate",
+    "theme": "light",
+    "width": 1280,
+    "documentWidth": 1280,
+    "mainWidth": 720,
+    "bodyFont": "16px",
+    "bodyLine": "26px",
+    "codeFont": "14px",
+    "controls": [
+      {
+        "name": "Switch to dark theme",
+        "height": 44
+      },
+      {
+        "name": "Build with Starport",
+        "height": 44
+      },
+      {
+        "name": "Manage your account",
+        "height": 44
+      },
+      {
+        "name": "Operate the gateway",
+        "height": 44
+      },
+      {
+        "name": "Copy snippet",
+        "height": 44
+      },
+      {
+        "name": "Copy snippet",
+        "height": 44
+      },
+      {
+        "name": "Copy snippet",
+        "height": 44
+      },
+      {
+        "name": "Copy snippet",
+        "height": 44
+      },
+      {
+        "name": "Copy snippet",
+        "height": 44
+      }
+    ],
+    "code": [
+      {
+        "tabIndex": 0,
+        "width": 718,
+        "scrollWidth": 718,
+        "overflow": "auto"
+      },
+      {
+        "tabIndex": 0,
+        "width": 718,
+        "scrollWidth": 718,
+        "overflow": "auto"
+      },
+      {
+        "tabIndex": 0,
+        "width": 718,
+        "scrollWidth": 718,
+        "overflow": "auto"
+      },
+      {
+        "tabIndex": 0,
+        "width": 718,
+        "scrollWidth": 718,
+        "overflow": "auto"
+      },
+      {
+        "tabIndex": 0,
+        "width": 718,
+        "scrollWidth": 718,
+        "overflow": "auto"
+      }
+    ],
+    "contrastSamples": 73,
+    "minimumContrast": 4.630251574816984,
+    "lowContrast": [],
+    "deploymentRequests": [],
+    "audience": "operate"
+  }
+]

@@ -1,0 +1,74 @@
+[
+  {
+    "task": "CSP0",
+    "root": "starmap-catalog-requirements",
+    "missing_path": "scripts/verify-catalog-product.sh",
+    "marked_new": true
+  },
+  {
+    "task": "CSP1",
+    "root": "starmap-catalog-requirements",
+    "missing_path": "./pkg/catalogs/config",
+    "marked_new": true
+  },
+  {
+    "task": "CSP11",
+    "root": "starmap-catalog-requirements",
+    "missing_path": "scripts/verify-catalog-product.sh",
+    "marked_new": true
+  },
+  {
+    "task": "CSP13",
+    "root": "starmap-catalog-requirements",
+    "missing_path": "scripts/verify-catalog-product.sh",
+    "marked_new": true
+  },
+  {
+    "task": "CSP15",
+    "root": "starmap-catalog-requirements",
+    "missing_path": "scripts/verify-catalog-product.sh",
+    "marked_new": true
+  },
+  {
+    "task": "CSP18",
+    "root": "starmap-catalog-requirements",
+    "missing_path": "scripts/verify-catalog-product.sh",
+    "marked_new": true
+  },
+  {
+    "task": "CSP19",
+    "root": "starmap-catalog-requirements",
+    "missing_path": "scripts/verify-catalog-product.sh",
+    "marked_new": true
+  },
+  {
+    "task": "CSP21",
+    "root": "starport-catalog-lifecycle",
+    "missing_path": "scripts/record-readme-demo.sh",
+    "marked_new": true
+  },
+  {
+    "task": "CSP21",
+    "root": "starport-catalog-lifecycle",
+    "missing_path": "scripts/verify-readme-demo.sh",
+    "marked_new": true
+  },
+  {
+    "task": "CSP22",
+    "root": "starmap-catalog-requirements",
+    "missing_path": "scripts/verify-catalog-product.sh",
+    "marked_new": true
+  },
+  {
+    "task": "CSP23",
+    "root": "starmap-catalog-requirements",
+    "missing_path": "scripts/verify-catalog-product.sh",
+    "marked_new": true
+  },
+  {
+    "task": "CSP24",
+    "root": "starmap-catalog-requirements",
+    "missing_path": "scripts/verify-catalog-product.sh",
+    "marked_new": true
+  }
+]

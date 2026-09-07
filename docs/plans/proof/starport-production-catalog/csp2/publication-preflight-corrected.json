@@ -1,0 +1,10 @@
+{
+  "command": [
+    "make",
+    "verify"
+  ],
+  "exit_code": 2,
+  "seconds": 84.09300780296326,
+  "output_path": "docs/plans/proof/starport-production-catalog/csp2/publication-preflight-corrected-output.log",
+  "scope": "Corrected local publication preflight. No external publication."
+}

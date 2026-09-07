@@ -1,0 +1,10 @@
+{
+  "packages": 11,
+  "passed_packages": 10,
+  "test_counts": {
+    "pass": 872,
+    "fail": 3,
+    "skip": 0
+  },
+  "scope": "Native Linux ARM64 containers, CGO disabled, no race instrumentation, no external network. Named volumes hold temporary test files. No power-loss or released-pair qualification."
+}

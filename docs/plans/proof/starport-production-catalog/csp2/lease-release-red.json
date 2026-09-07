@@ -1,0 +1,16 @@
+{
+  "command": [
+    "go",
+    "test",
+    "-race",
+    "-count=1",
+    "-timeout",
+    "1m",
+    "./runtime",
+    "-run",
+    "^TestRuntimeDirectoryOwnershipIncludesLeaseRelease$"
+  ],
+  "exit_code": 1,
+  "stdout": "--- FAIL: TestRuntimeDirectoryOwnershipIncludesLeaseRelease (9.73s)\n    directory_test.go:324: runtime lost directory ownership before lease release: <nil>\nFAIL\nFAIL\tgithub.com/agentstation/starmap/runtime\t10.204s\nFAIL\n",
+  "stderr": ""
+}

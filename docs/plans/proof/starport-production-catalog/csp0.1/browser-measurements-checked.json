@@ -1,0 +1,5758 @@
+[
+  {
+    "audience": "build",
+    "bodyFont": "16px",
+    "bodyLine": "26px",
+    "buttons": [
+      {
+        "height": 44,
+        "name": "Switch to light theme",
+        "width": 85.796875
+      },
+      {
+        "height": 44,
+        "name": "Build with Starport",
+        "width": 145.578125
+      },
+      {
+        "height": 44,
+        "name": "Manage your account",
+        "width": 164.484375
+      },
+      {
+        "height": 44,
+        "name": "Operate the gateway",
+        "width": 159.375
+      },
+      {
+        "height": 44,
+        "name": "Copy snippet",
+        "width": 80
+      },
+      {
+        "height": 44,
+        "name": "Copy snippet",
+        "width": 80
+      },
+      {
+        "height": 44,
+        "name": "Copy snippet",
+        "width": 80
+      },
+      {
+        "height": 44,
+        "name": "Copy snippet",
+        "width": 80
+      },
+      {
+        "height": 44,
+        "name": "Copy snippet",
+        "width": 80
+      },
+      {
+        "height": 44,
+        "name": "Copy snippet",
+        "width": 80
+      },
+      {
+        "height": 44,
+        "name": "Copy snippet",
+        "width": 80
+      }
+    ],
+    "code": [
+      {
+        "font": "14px",
+        "overflow": "auto",
+        "scrollWidth": 718,
+        "tabIndex": 0,
+        "width": 718
+      },
+      {
+        "font": "14px",
+        "overflow": "auto",
+        "scrollWidth": 718,
+        "tabIndex": 0,
+        "width": 718
+      },
+      {
+        "font": "14px",
+        "overflow": "auto",
+        "scrollWidth": 718,
+        "tabIndex": 0,
+        "width": 718
+      },
+      {
+        "font": "14px",
+        "overflow": "auto",
+        "scrollWidth": 780,
+        "tabIndex": 0,
+        "width": 718
+      },
+      {
+        "font": "14px",
+        "overflow": "auto",
+        "scrollWidth": 889,
+        "tabIndex": 0,
+        "width": 718
+      },
+      {
+        "font": "14px",
+        "overflow": "auto",
+        "scrollWidth": 718,
+        "tabIndex": 0,
+        "width": 718
+      },
+      {
+        "font": "14px",
+        "overflow": "auto",
+        "scrollWidth": 718,
+        "tabIndex": 0,
+        "width": 718
+      }
+    ],
+    "colors": {
+      "--accent": "#f0b23e",
+      "--accent-link": "#f0b23e",
+      "--bg-canvas": "#0a0b0c",
+      "--bg-panel": "#101112",
+      "--bg-raised": "#18191b",
+      "--text-1": "#f6f7f8",
+      "--text-2": "#c9ced6",
+      "--text-3": "#8b909a"
+    },
+    "documentWidth": 1280,
+    "h1Font": "30px",
+    "h2Font": "22px",
+    "height": 900,
+    "mainWidth": 720,
+    "table": null,
+    "theme": "dark",
+    "width": 1280,
+    "textPairs": [
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "16px",
+        "foreground": "rgb(246, 247, 248)",
+        "text": "Starport"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "16px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "Dark theme"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "16px",
+        "foreground": "rgb(240, 178, 62)",
+        "text": "Open console"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "30px",
+        "foreground": "rgb(246, 247, 248)",
+        "text": "Documentation"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "16px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "How to call, manage, and run the Starport gateway."
+      },
+      {
+        "background": "rgb(24, 25, 27)",
+        "font": "14px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "Build with Starport"
+      },
+      {
+        "background": "rgb(16, 17, 18)",
+        "font": "14px",
+        "foreground": "rgb(139, 144, 154)",
+        "text": "Manage your account"
+      },
+      {
+        "background": "rgb(16, 17, 18)",
+        "font": "14px",
+        "foreground": "rgb(139, 144, 154)",
+        "text": "Operate the gateway"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "16px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "Point an OpenAI or OpenRouter SDK at this gateway and ship."
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "22px",
+        "foreground": "rgb(246, 247, 248)",
+        "text": "Base URLs"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "16px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "Starport is a drop-in replacement for OpenRouter and for the OpenAI AP"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "14px",
+        "foreground": "rgb(246, 247, 248)",
+        "text": "http://127.0.0.1:4173/v1"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "14px",
+        "foreground": "rgb(139, 144, 154)",
+        "text": "OpenAI-compatible routes"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "14px",
+        "foreground": "rgb(246, 247, 248)",
+        "text": "http://127.0.0.1:4173/api/v1"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "14px",
+        "foreground": "rgb(139, 144, 154)",
+        "text": "OpenRouter-compatible routes"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "16px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "Keep the key in the STARPORT_API_KEY environment variable and read it "
+      },
+      {
+        "background": "rgb(24, 25, 27)",
+        "font": "14px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "STARPORT_API_KEY"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "16px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "Python"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "14px",
+        "foreground": "rgb(139, 144, 154)",
+        "text": "snippet"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "14px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "import os\nfrom openai import OpenAI\n\nclient = OpenAI(\n    base_url=\"ht"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "16px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "JavaScript"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "14px",
+        "foreground": "rgb(139, 144, 154)",
+        "text": "snippet"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "14px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "import OpenAI from \"openai\";\n\nconst client = new OpenAI({\n  baseURL: \""
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "22px",
+        "foreground": "rgb(246, 247, 248)",
+        "text": "Get a key"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "16px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "Requests authenticate with a gateway API key. On the gateway machine, "
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "16px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "Shell"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "14px",
+        "foreground": "rgb(139, 144, 154)",
+        "text": "snippet"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "14px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "starport ui"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "16px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "Create a scoped gateway key on the API keys page and store it in STARP"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "16px",
+        "foreground": "rgb(240, 178, 62)",
+        "text": "API keys"
+      },
+      {
+        "background": "rgb(24, 25, 27)",
+        "font": "14px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "STARPORT_API_KEY"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "16px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "A gateway API key identifies the caller. A separate provider credentia"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "22px",
+        "foreground": "rgb(246, 247, 248)",
+        "text": "Pick a model"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "16px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "Model IDs take the form author/model, for example anthropic/claude-son"
+      },
+      {
+        "background": "rgb(24, 25, 27)",
+        "font": "14px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "author/model"
+      },
+      {
+        "background": "rgb(24, 25, 27)",
+        "font": "14px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "anthropic/claude-sonnet-5"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "16px",
+        "foreground": "rgb(240, 178, 62)",
+        "text": "Models"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "16px",
+        "foreground": "rgb(240, 178, 62)",
+        "text": "Authors"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "16px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "The gateway routes each request to a provider that serves the model an"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "16px",
+        "foreground": "rgb(240, 178, 62)",
+        "text": "Chat"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "22px",
+        "foreground": "rgb(246, 247, 248)",
+        "text": "Presets"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "16px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "A preset is a saved routing recipe: model, parameters, and fallbacks u"
+      },
+      {
+        "background": "rgb(24, 25, 27)",
+        "font": "14px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "@preset/your-preset"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "16px",
+        "foreground": "rgb(240, 178, 62)",
+        "text": "Presets"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "16px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "Shell"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "14px",
+        "foreground": "rgb(139, 144, 154)",
+        "text": "snippet"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "14px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "curl http://127.0.0.1:4173/v1/chat/completions \\\n  -H \"Authorization: "
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "22px",
+        "foreground": "rgb(246, 247, 248)",
+        "text": "Beyond chat"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "16px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "The gateway also serves embeddings, images, audio, video jobs, documen"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "16px",
+        "foreground": "rgb(240, 178, 62)",
+        "text": "Models"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "16px",
+        "foreground": "rgb(240, 178, 62)",
+        "text": "Files"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "16px",
+        "foreground": "rgb(240, 178, 62)",
+        "text": "Jobs"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "16px",
+        "foreground": "rgb(240, 178, 62)",
+        "text": "Documents"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "16px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "A batch takes a file of requests and answers a file of results, at the"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "16px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "Shell"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "14px",
+        "foreground": "rgb(139, 144, 154)",
+        "text": "snippet"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "14px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "curl http://127.0.0.1:4173/v1/batches \\\n  -H \"Authorization: Bearer $S"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "22px",
+        "foreground": "rgb(246, 247, 248)",
+        "text": "Use it from a coding agent"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "16px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "The binary carries an agent skill that teaches a coding agent to insta"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "16px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "Shell"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "14px",
+        "foreground": "rgb(139, 144, 154)",
+        "text": "snippet"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "14px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "starport agent setup"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "16px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "The CLI also answers catalog questions offline from the embedded catal"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "16px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "Shell"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "14px",
+        "foreground": "rgb(139, 144, 154)",
+        "text": "snippet"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "14px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "starport models search gpt-4o --json\nstarport models show openai/gpt-4"
+      }
+    ]
+  },
+  {
+    "audience": "account",
+    "bodyFont": "16px",
+    "bodyLine": "26px",
+    "buttons": [
+      {
+        "height": 44,
+        "name": "Switch to light theme",
+        "width": 85.796875
+      },
+      {
+        "height": 44,
+        "name": "Build with Starport",
+        "width": 145.578125
+      },
+      {
+        "height": 44,
+        "name": "Manage your account",
+        "width": 164.484375
+      },
+      {
+        "height": 44,
+        "name": "Operate the gateway",
+        "width": 159.375
+      }
+    ],
+    "code": [],
+    "colors": {
+      "--accent": "#f0b23e",
+      "--accent-link": "#f0b23e",
+      "--bg-canvas": "#0a0b0c",
+      "--bg-panel": "#101112",
+      "--bg-raised": "#18191b",
+      "--text-1": "#f6f7f8",
+      "--text-2": "#c9ced6",
+      "--text-3": "#8b909a"
+    },
+    "documentWidth": 1280,
+    "h1Font": "30px",
+    "h2Font": "22px",
+    "height": 900,
+    "mainWidth": 720,
+    "table": {
+      "font": "14px",
+      "width": 718
+    },
+    "theme": "dark",
+    "width": 1280,
+    "textPairs": [
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "16px",
+        "foreground": "rgb(246, 247, 248)",
+        "text": "Starport"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "16px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "Dark theme"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "16px",
+        "foreground": "rgb(240, 178, 62)",
+        "text": "Open console"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "30px",
+        "foreground": "rgb(246, 247, 248)",
+        "text": "Documentation"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "16px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "How to call, manage, and run the Starport gateway."
+      },
+      {
+        "background": "rgb(16, 17, 18)",
+        "font": "14px",
+        "foreground": "rgb(139, 144, 154)",
+        "text": "Build with Starport"
+      },
+      {
+        "background": "rgb(24, 25, 27)",
+        "font": "14px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "Manage your account"
+      },
+      {
+        "background": "rgb(16, 17, 18)",
+        "font": "14px",
+        "foreground": "rgb(139, 144, 154)",
+        "text": "Operate the gateway"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "16px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "API keys, your own provider credentials, and what requests cost."
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "22px",
+        "foreground": "rgb(246, 247, 248)",
+        "text": "Gateway API keys"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "16px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "A gateway API key authenticates your requests to the Starport gateway "
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "16px",
+        "foreground": "rgb(240, 178, 62)",
+        "text": "API keys"
+      },
+      {
+        "background": "rgb(24, 25, 27)",
+        "font": "14px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "admin"
+      },
+      {
+        "background": "rgb(24, 25, 27)",
+        "font": "14px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "Scope"
+      },
+      {
+        "background": "rgb(24, 25, 27)",
+        "font": "14px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "Opens"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "14px",
+        "foreground": "rgb(246, 247, 248)",
+        "text": "chat:write"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "14px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "Chat completions and responses"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "14px",
+        "foreground": "rgb(246, 247, 248)",
+        "text": "embeddings:write"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "14px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "Embeddings"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "14px",
+        "foreground": "rgb(246, 247, 248)",
+        "text": "images:write"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "14px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "Image generation and edits"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "14px",
+        "foreground": "rgb(246, 247, 248)",
+        "text": "audio:write"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "14px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "Speech, transcription, and translation"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "14px",
+        "foreground": "rgb(246, 247, 248)",
+        "text": "rerank:write"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "14px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "Reranking"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "14px",
+        "foreground": "rgb(246, 247, 248)",
+        "text": "moderations:write"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "14px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "Moderation of the caller's own text"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "14px",
+        "foreground": "rgb(246, 247, 248)",
+        "text": "batches:write"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "14px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "Batch jobs: create, list, and cancel"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "14px",
+        "foreground": "rgb(246, 247, 248)",
+        "text": "models:read"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "14px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "The model catalog"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "14px",
+        "foreground": "rgb(246, 247, 248)",
+        "text": "activity:read"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "14px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "The key's own usage records"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "14px",
+        "foreground": "rgb(246, 247, 248)",
+        "text": "files:read"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "14px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "Read stored files"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "14px",
+        "foreground": "rgb(246, 247, 248)",
+        "text": "files:write"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "14px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "Upload and delete stored files"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "14px",
+        "foreground": "rgb(246, 247, 248)",
+        "text": "admin"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "14px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "Every admin route, including keys, accounts, teams, and the audit log"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "22px",
+        "foreground": "rgb(246, 247, 248)",
+        "text": "Bring your own provider credential"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "16px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "By default, your requests are paid by the credentials the operator con"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "16px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "Add one from a provider's detail page under Providers."
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "16px",
+        "foreground": "rgb(240, 178, 62)",
+        "text": "Providers"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "22px",
+        "foreground": "rgb(246, 247, 248)",
+        "text": "Track usage and spend"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "16px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "Every request is metered: tokens, cost, latency, cache hits, and which"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "16px",
+        "foreground": "rgb(240, 178, 62)",
+        "text": "Usage"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "16px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "A key, an account, or a team can carry a spend budget for a fixed wind"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "22px",
+        "foreground": "rgb(246, 247, 248)",
+        "text": "Stored work"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "16px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "Uploaded files, asynchronous media jobs, and parsed documents each hav"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "16px",
+        "foreground": "rgb(240, 178, 62)",
+        "text": "Files"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "16px",
+        "foreground": "rgb(240, 178, 62)",
+        "text": "Jobs"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "16px",
+        "foreground": "rgb(240, 178, 62)",
+        "text": "Documents"
+      }
+    ]
+  },
+  {
+    "audience": "operate",
+    "bodyFont": "16px",
+    "bodyLine": "26px",
+    "buttons": [
+      {
+        "height": 44,
+        "name": "Switch to light theme",
+        "width": 85.796875
+      },
+      {
+        "height": 44,
+        "name": "Build with Starport",
+        "width": 145.578125
+      },
+      {
+        "height": 44,
+        "name": "Manage your account",
+        "width": 164.484375
+      },
+      {
+        "height": 44,
+        "name": "Operate the gateway",
+        "width": 159.375
+      },
+      {
+        "height": 44,
+        "name": "Copy snippet",
+        "width": 80
+      },
+      {
+        "height": 44,
+        "name": "Copy snippet",
+        "width": 80
+      },
+      {
+        "height": 44,
+        "name": "Copy snippet",
+        "width": 80
+      },
+      {
+        "height": 44,
+        "name": "Copy snippet",
+        "width": 80
+      },
+      {
+        "height": 44,
+        "name": "Copy snippet",
+        "width": 80
+      }
+    ],
+    "code": [
+      {
+        "font": "14px",
+        "overflow": "auto",
+        "scrollWidth": 718,
+        "tabIndex": 0,
+        "width": 718
+      },
+      {
+        "font": "14px",
+        "overflow": "auto",
+        "scrollWidth": 718,
+        "tabIndex": 0,
+        "width": 718
+      },
+      {
+        "font": "14px",
+        "overflow": "auto",
+        "scrollWidth": 718,
+        "tabIndex": 0,
+        "width": 718
+      },
+      {
+        "font": "14px",
+        "overflow": "auto",
+        "scrollWidth": 718,
+        "tabIndex": 0,
+        "width": 718
+      },
+      {
+        "font": "14px",
+        "overflow": "auto",
+        "scrollWidth": 718,
+        "tabIndex": 0,
+        "width": 718
+      }
+    ],
+    "colors": {
+      "--accent": "#f0b23e",
+      "--accent-link": "#f0b23e",
+      "--bg-canvas": "#0a0b0c",
+      "--bg-panel": "#101112",
+      "--bg-raised": "#18191b",
+      "--text-1": "#f6f7f8",
+      "--text-2": "#c9ced6",
+      "--text-3": "#8b909a"
+    },
+    "documentWidth": 1280,
+    "h1Font": "30px",
+    "h2Font": "22px",
+    "height": 900,
+    "mainWidth": 720,
+    "table": null,
+    "theme": "dark",
+    "width": 1280,
+    "textPairs": [
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "16px",
+        "foreground": "rgb(246, 247, 248)",
+        "text": "Starport"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "16px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "Dark theme"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "16px",
+        "foreground": "rgb(240, 178, 62)",
+        "text": "Open console"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "30px",
+        "foreground": "rgb(246, 247, 248)",
+        "text": "Documentation"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "16px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "How to call, manage, and run the Starport gateway."
+      },
+      {
+        "background": "rgb(16, 17, 18)",
+        "font": "14px",
+        "foreground": "rgb(139, 144, 154)",
+        "text": "Build with Starport"
+      },
+      {
+        "background": "rgb(16, 17, 18)",
+        "font": "14px",
+        "foreground": "rgb(139, 144, 154)",
+        "text": "Manage your account"
+      },
+      {
+        "background": "rgb(24, 25, 27)",
+        "font": "14px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "Operate the gateway"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "16px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "Provider credentials, accounts, teams, policy, and deployment health."
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "22px",
+        "foreground": "rgb(246, 247, 248)",
+        "text": "Provider credentials"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "16px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "A provider credential pays a provider. It is a different thing from a "
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "16px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "Environment: a credential read from the process environment (for examp"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "16px",
+        "foreground": "rgb(246, 247, 248)",
+        "text": "Environment"
+      },
+      {
+        "background": "rgb(24, 25, 27)",
+        "font": "14px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "ANTHROPIC_API_KEY"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "16px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "Shared: a credential you apply in the console for the whole deployment"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "16px",
+        "foreground": "rgb(246, 247, 248)",
+        "text": "Shared"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "16px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "BYOK: a credential an account brought for itself. It applies to that a"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "16px",
+        "foreground": "rgb(246, 247, 248)",
+        "text": "BYOK"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "16px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "That is the default order. An account's credential strategy can prefer"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "16px",
+        "foreground": "rgb(240, 178, 62)",
+        "text": "Providers"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "22px",
+        "foreground": "rgb(246, 247, 248)",
+        "text": "Accounts and limits"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "16px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "Accounts isolate tenants: each has its own gateway API keys, BYOK cred"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "16px",
+        "foreground": "rgb(240, 178, 62)",
+        "text": "Accounts"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "22px",
+        "foreground": "rgb(246, 247, 248)",
+        "text": "Policy"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "16px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "Each account carries a policy with two rules: whether it may bring its"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "16px",
+        "foreground": "rgb(240, 178, 62)",
+        "text": "Accounts"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "16px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "Guardrails apply to the whole deployment. A configured check reads eac"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "16px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "Shell"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "14px",
+        "foreground": "rgb(139, 144, 154)",
+        "text": "snippet"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "14px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "export STARPORT_GUARDRAILS_CHECKS=\"pii,moderation\""
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "22px",
+        "foreground": "rgb(246, 247, 248)",
+        "text": "Teams and budgets"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "16px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "Members are the people your identity provider resolved; the gateway ne"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "16px",
+        "foreground": "rgb(240, 178, 62)",
+        "text": "Members"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "16px",
+        "foreground": "rgb(240, 178, 62)",
+        "text": "Teams"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "16px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "A team budget bounds spend over a day, a week, or a month, summed over"
+      },
+      {
+        "background": "rgb(24, 25, 27)",
+        "font": "14px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "5000000000"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "16px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "Shell"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "14px",
+        "foreground": "rgb(139, 144, 154)",
+        "text": "snippet"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "14px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "curl -X PUT http://127.0.0.1:4173/api/v1/admin/teams/TEAM_ID \\\n  -H \"A"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "22px",
+        "foreground": "rgb(246, 247, 248)",
+        "text": "Catalog and routing"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "16px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "The model catalog comes from a Starmap snapshot: providers, models, pr"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "16px",
+        "foreground": "rgb(240, 178, 62)",
+        "text": "Models"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "22px",
+        "foreground": "rgb(246, 247, 248)",
+        "text": "Audit log"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "16px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "Every admin mutation leaves one durable record: who asked, what it tou"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "16px",
+        "foreground": "rgb(240, 178, 62)",
+        "text": "Audit log"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "16px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "Shell"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "14px",
+        "foreground": "rgb(139, 144, 154)",
+        "text": "snippet"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "14px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "curl \"http://127.0.0.1:4173/api/v1/admin/audit?action=key.create&limit"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "16px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "Each record carries the request_id of the request that made the change"
+      },
+      {
+        "background": "rgb(24, 25, 27)",
+        "font": "14px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "request_id"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "16px",
+        "foreground": "rgb(240, 178, 62)",
+        "text": "Usage"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "22px",
+        "foreground": "rgb(246, 247, 248)",
+        "text": "Observability"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "16px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "The gateway serves a Prometheus scrape at GET /metrics with no credent"
+      },
+      {
+        "background": "rgb(24, 25, 27)",
+        "font": "14px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "GET /metrics"
+      },
+      {
+        "background": "rgb(24, 25, 27)",
+        "font": "14px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "STARPORT_TELEMETRY_METRICS"
+      },
+      {
+        "background": "rgb(24, 25, 27)",
+        "font": "14px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "admin"
+      },
+      {
+        "background": "rgb(24, 25, 27)",
+        "font": "14px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "off"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "16px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "Shell"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "14px",
+        "foreground": "rgb(139, 144, 154)",
+        "text": "snippet"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "14px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "curl http://127.0.0.1:4173/metrics"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "16px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "Traces leave over OTLP HTTP once the standard OpenTelemetry endpoint v"
+      },
+      {
+        "background": "rgb(24, 25, 27)",
+        "font": "14px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "traceparent"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "16px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "Shell"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "14px",
+        "foreground": "rgb(139, 144, 154)",
+        "text": "snippet"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "14px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "export OTEL_EXPORTER_OTLP_ENDPOINT=\"http://127.0.0.1:4318\""
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "16px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "Webhooks push budget, job, provider health, and key events to a URL yo"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "22px",
+        "foreground": "rgb(246, 247, 248)",
+        "text": "Health and settings"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "16px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "GET /health/live answers while the process runs, and GET /health/ready"
+      },
+      {
+        "background": "rgb(24, 25, 27)",
+        "font": "14px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "GET /health/live"
+      },
+      {
+        "background": "rgb(24, 25, 27)",
+        "font": "14px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "GET /health/ready"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "16px",
+        "foreground": "rgb(240, 178, 62)",
+        "text": "Overview"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "16px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "Authentication mode, retention windows, and appearance live in Setting"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "16px",
+        "foreground": "rgb(240, 178, 62)",
+        "text": "Settings"
+      }
+    ]
+  },
+  {
+    "audience": "build",
+    "bodyFont": "16px",
+    "bodyLine": "26px",
+    "buttons": [
+      {
+        "height": 44,
+        "name": "Switch to dark theme",
+        "width": 87.171875
+      },
+      {
+        "height": 44,
+        "name": "Build with Starport",
+        "width": 145.578125
+      },
+      {
+        "height": 44,
+        "name": "Manage your account",
+        "width": 164.484375
+      },
+      {
+        "height": 44,
+        "name": "Operate the gateway",
+        "width": 159.375
+      },
+      {
+        "height": 44,
+        "name": "Copy snippet",
+        "width": 80
+      },
+      {
+        "height": 44,
+        "name": "Copy snippet",
+        "width": 80
+      },
+      {
+        "height": 44,
+        "name": "Copy snippet",
+        "width": 80
+      },
+      {
+        "height": 44,
+        "name": "Copy snippet",
+        "width": 80
+      },
+      {
+        "height": 44,
+        "name": "Copy snippet",
+        "width": 80
+      },
+      {
+        "height": 44,
+        "name": "Copy snippet",
+        "width": 80
+      },
+      {
+        "height": 44,
+        "name": "Copy snippet",
+        "width": 80
+      }
+    ],
+    "code": [
+      {
+        "font": "14px",
+        "overflow": "auto",
+        "scrollWidth": 718,
+        "tabIndex": 0,
+        "width": 718
+      },
+      {
+        "font": "14px",
+        "overflow": "auto",
+        "scrollWidth": 718,
+        "tabIndex": 0,
+        "width": 718
+      },
+      {
+        "font": "14px",
+        "overflow": "auto",
+        "scrollWidth": 718,
+        "tabIndex": 0,
+        "width": 718
+      },
+      {
+        "font": "14px",
+        "overflow": "auto",
+        "scrollWidth": 780,
+        "tabIndex": 0,
+        "width": 718
+      },
+      {
+        "font": "14px",
+        "overflow": "auto",
+        "scrollWidth": 889,
+        "tabIndex": 0,
+        "width": 718
+      },
+      {
+        "font": "14px",
+        "overflow": "auto",
+        "scrollWidth": 718,
+        "tabIndex": 0,
+        "width": 718
+      },
+      {
+        "font": "14px",
+        "overflow": "auto",
+        "scrollWidth": 718,
+        "tabIndex": 0,
+        "width": 718
+      }
+    ],
+    "colors": {
+      "--accent": "#b45309",
+      "--accent-link": "#a16207",
+      "--bg-canvas": "#fff",
+      "--bg-panel": "#fafafa",
+      "--bg-raised": "#f4f4f5",
+      "--text-1": "#18181b",
+      "--text-2": "#3f3f46",
+      "--text-3": "#71717a"
+    },
+    "documentWidth": 1280,
+    "h1Font": "30px",
+    "h2Font": "22px",
+    "height": 900,
+    "mainWidth": 720,
+    "table": null,
+    "theme": "light",
+    "width": 1280,
+    "textPairs": [
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "16px",
+        "foreground": "rgb(24, 24, 27)",
+        "text": "Starport"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "16px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "Light theme"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "16px",
+        "foreground": "rgb(161, 98, 7)",
+        "text": "Open console"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "30px",
+        "foreground": "rgb(24, 24, 27)",
+        "text": "Documentation"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "16px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "How to call, manage, and run the Starport gateway."
+      },
+      {
+        "background": "rgb(244, 244, 245)",
+        "font": "14px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "Build with Starport"
+      },
+      {
+        "background": "rgb(250, 250, 250)",
+        "font": "14px",
+        "foreground": "rgb(113, 113, 122)",
+        "text": "Manage your account"
+      },
+      {
+        "background": "rgb(250, 250, 250)",
+        "font": "14px",
+        "foreground": "rgb(113, 113, 122)",
+        "text": "Operate the gateway"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "16px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "Point an OpenAI or OpenRouter SDK at this gateway and ship."
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "22px",
+        "foreground": "rgb(24, 24, 27)",
+        "text": "Base URLs"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "16px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "Starport is a drop-in replacement for OpenRouter and for the OpenAI AP"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "14px",
+        "foreground": "rgb(24, 24, 27)",
+        "text": "http://127.0.0.1:4173/v1"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "14px",
+        "foreground": "rgb(113, 113, 122)",
+        "text": "OpenAI-compatible routes"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "14px",
+        "foreground": "rgb(24, 24, 27)",
+        "text": "http://127.0.0.1:4173/api/v1"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "14px",
+        "foreground": "rgb(113, 113, 122)",
+        "text": "OpenRouter-compatible routes"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "16px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "Keep the key in the STARPORT_API_KEY environment variable and read it "
+      },
+      {
+        "background": "rgb(244, 244, 245)",
+        "font": "14px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "STARPORT_API_KEY"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "16px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "Python"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "14px",
+        "foreground": "rgb(113, 113, 122)",
+        "text": "snippet"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "14px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "import os\nfrom openai import OpenAI\n\nclient = OpenAI(\n    base_url=\"ht"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "16px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "JavaScript"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "14px",
+        "foreground": "rgb(113, 113, 122)",
+        "text": "snippet"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "14px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "import OpenAI from \"openai\";\n\nconst client = new OpenAI({\n  baseURL: \""
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "22px",
+        "foreground": "rgb(24, 24, 27)",
+        "text": "Get a key"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "16px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "Requests authenticate with a gateway API key. On the gateway machine, "
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "16px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "Shell"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "14px",
+        "foreground": "rgb(113, 113, 122)",
+        "text": "snippet"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "14px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "starport ui"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "16px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "Create a scoped gateway key on the API keys page and store it in STARP"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "16px",
+        "foreground": "rgb(161, 98, 7)",
+        "text": "API keys"
+      },
+      {
+        "background": "rgb(244, 244, 245)",
+        "font": "14px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "STARPORT_API_KEY"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "16px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "A gateway API key identifies the caller. A separate provider credentia"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "22px",
+        "foreground": "rgb(24, 24, 27)",
+        "text": "Pick a model"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "16px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "Model IDs take the form author/model, for example anthropic/claude-son"
+      },
+      {
+        "background": "rgb(244, 244, 245)",
+        "font": "14px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "author/model"
+      },
+      {
+        "background": "rgb(244, 244, 245)",
+        "font": "14px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "anthropic/claude-sonnet-5"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "16px",
+        "foreground": "rgb(161, 98, 7)",
+        "text": "Models"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "16px",
+        "foreground": "rgb(161, 98, 7)",
+        "text": "Authors"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "16px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "The gateway routes each request to a provider that serves the model an"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "16px",
+        "foreground": "rgb(161, 98, 7)",
+        "text": "Chat"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "22px",
+        "foreground": "rgb(24, 24, 27)",
+        "text": "Presets"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "16px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "A preset is a saved routing recipe: model, parameters, and fallbacks u"
+      },
+      {
+        "background": "rgb(244, 244, 245)",
+        "font": "14px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "@preset/your-preset"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "16px",
+        "foreground": "rgb(161, 98, 7)",
+        "text": "Presets"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "16px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "Shell"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "14px",
+        "foreground": "rgb(113, 113, 122)",
+        "text": "snippet"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "14px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "curl http://127.0.0.1:4173/v1/chat/completions \\\n  -H \"Authorization: "
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "22px",
+        "foreground": "rgb(24, 24, 27)",
+        "text": "Beyond chat"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "16px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "The gateway also serves embeddings, images, audio, video jobs, documen"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "16px",
+        "foreground": "rgb(161, 98, 7)",
+        "text": "Models"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "16px",
+        "foreground": "rgb(161, 98, 7)",
+        "text": "Files"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "16px",
+        "foreground": "rgb(161, 98, 7)",
+        "text": "Jobs"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "16px",
+        "foreground": "rgb(161, 98, 7)",
+        "text": "Documents"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "16px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "A batch takes a file of requests and answers a file of results, at the"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "16px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "Shell"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "14px",
+        "foreground": "rgb(113, 113, 122)",
+        "text": "snippet"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "14px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "curl http://127.0.0.1:4173/v1/batches \\\n  -H \"Authorization: Bearer $S"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "22px",
+        "foreground": "rgb(24, 24, 27)",
+        "text": "Use it from a coding agent"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "16px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "The binary carries an agent skill that teaches a coding agent to insta"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "16px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "Shell"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "14px",
+        "foreground": "rgb(113, 113, 122)",
+        "text": "snippet"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "14px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "starport agent setup"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "16px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "The CLI also answers catalog questions offline from the embedded catal"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "16px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "Shell"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "14px",
+        "foreground": "rgb(113, 113, 122)",
+        "text": "snippet"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "14px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "starport models search gpt-4o --json\nstarport models show openai/gpt-4"
+      }
+    ]
+  },
+  {
+    "audience": "account",
+    "bodyFont": "16px",
+    "bodyLine": "26px",
+    "buttons": [
+      {
+        "height": 44,
+        "name": "Switch to dark theme",
+        "width": 87.171875
+      },
+      {
+        "height": 44,
+        "name": "Build with Starport",
+        "width": 145.578125
+      },
+      {
+        "height": 44,
+        "name": "Manage your account",
+        "width": 164.484375
+      },
+      {
+        "height": 44,
+        "name": "Operate the gateway",
+        "width": 159.375
+      }
+    ],
+    "code": [],
+    "colors": {
+      "--accent": "#b45309",
+      "--accent-link": "#a16207",
+      "--bg-canvas": "#fff",
+      "--bg-panel": "#fafafa",
+      "--bg-raised": "#f4f4f5",
+      "--text-1": "#18181b",
+      "--text-2": "#3f3f46",
+      "--text-3": "#71717a"
+    },
+    "documentWidth": 1280,
+    "h1Font": "30px",
+    "h2Font": "22px",
+    "height": 900,
+    "mainWidth": 720,
+    "table": {
+      "font": "14px",
+      "width": 718
+    },
+    "theme": "light",
+    "width": 1280,
+    "textPairs": [
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "16px",
+        "foreground": "rgb(24, 24, 27)",
+        "text": "Starport"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "16px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "Light theme"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "16px",
+        "foreground": "rgb(161, 98, 7)",
+        "text": "Open console"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "30px",
+        "foreground": "rgb(24, 24, 27)",
+        "text": "Documentation"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "16px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "How to call, manage, and run the Starport gateway."
+      },
+      {
+        "background": "rgb(250, 250, 250)",
+        "font": "14px",
+        "foreground": "rgb(113, 113, 122)",
+        "text": "Build with Starport"
+      },
+      {
+        "background": "rgb(244, 244, 245)",
+        "font": "14px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "Manage your account"
+      },
+      {
+        "background": "rgb(250, 250, 250)",
+        "font": "14px",
+        "foreground": "rgb(113, 113, 122)",
+        "text": "Operate the gateway"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "16px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "API keys, your own provider credentials, and what requests cost."
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "22px",
+        "foreground": "rgb(24, 24, 27)",
+        "text": "Gateway API keys"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "16px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "A gateway API key authenticates your requests to the Starport gateway "
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "16px",
+        "foreground": "rgb(161, 98, 7)",
+        "text": "API keys"
+      },
+      {
+        "background": "rgb(244, 244, 245)",
+        "font": "14px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "admin"
+      },
+      {
+        "background": "rgb(244, 244, 245)",
+        "font": "14px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "Scope"
+      },
+      {
+        "background": "rgb(244, 244, 245)",
+        "font": "14px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "Opens"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "14px",
+        "foreground": "rgb(24, 24, 27)",
+        "text": "chat:write"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "14px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "Chat completions and responses"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "14px",
+        "foreground": "rgb(24, 24, 27)",
+        "text": "embeddings:write"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "14px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "Embeddings"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "14px",
+        "foreground": "rgb(24, 24, 27)",
+        "text": "images:write"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "14px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "Image generation and edits"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "14px",
+        "foreground": "rgb(24, 24, 27)",
+        "text": "audio:write"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "14px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "Speech, transcription, and translation"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "14px",
+        "foreground": "rgb(24, 24, 27)",
+        "text": "rerank:write"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "14px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "Reranking"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "14px",
+        "foreground": "rgb(24, 24, 27)",
+        "text": "moderations:write"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "14px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "Moderation of the caller's own text"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "14px",
+        "foreground": "rgb(24, 24, 27)",
+        "text": "batches:write"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "14px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "Batch jobs: create, list, and cancel"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "14px",
+        "foreground": "rgb(24, 24, 27)",
+        "text": "models:read"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "14px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "The model catalog"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "14px",
+        "foreground": "rgb(24, 24, 27)",
+        "text": "activity:read"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "14px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "The key's own usage records"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "14px",
+        "foreground": "rgb(24, 24, 27)",
+        "text": "files:read"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "14px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "Read stored files"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "14px",
+        "foreground": "rgb(24, 24, 27)",
+        "text": "files:write"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "14px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "Upload and delete stored files"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "14px",
+        "foreground": "rgb(24, 24, 27)",
+        "text": "admin"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "14px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "Every admin route, including keys, accounts, teams, and the audit log"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "22px",
+        "foreground": "rgb(24, 24, 27)",
+        "text": "Bring your own provider credential"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "16px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "By default, your requests are paid by the credentials the operator con"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "16px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "Add one from a provider's detail page under Providers."
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "16px",
+        "foreground": "rgb(161, 98, 7)",
+        "text": "Providers"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "22px",
+        "foreground": "rgb(24, 24, 27)",
+        "text": "Track usage and spend"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "16px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "Every request is metered: tokens, cost, latency, cache hits, and which"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "16px",
+        "foreground": "rgb(161, 98, 7)",
+        "text": "Usage"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "16px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "A key, an account, or a team can carry a spend budget for a fixed wind"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "22px",
+        "foreground": "rgb(24, 24, 27)",
+        "text": "Stored work"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "16px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "Uploaded files, asynchronous media jobs, and parsed documents each hav"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "16px",
+        "foreground": "rgb(161, 98, 7)",
+        "text": "Files"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "16px",
+        "foreground": "rgb(161, 98, 7)",
+        "text": "Jobs"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "16px",
+        "foreground": "rgb(161, 98, 7)",
+        "text": "Documents"
+      }
+    ]
+  },
+  {
+    "audience": "operate",
+    "bodyFont": "16px",
+    "bodyLine": "26px",
+    "buttons": [
+      {
+        "height": 44,
+        "name": "Switch to dark theme",
+        "width": 87.171875
+      },
+      {
+        "height": 44,
+        "name": "Build with Starport",
+        "width": 145.578125
+      },
+      {
+        "height": 44,
+        "name": "Manage your account",
+        "width": 164.484375
+      },
+      {
+        "height": 44,
+        "name": "Operate the gateway",
+        "width": 159.375
+      },
+      {
+        "height": 44,
+        "name": "Copy snippet",
+        "width": 80
+      },
+      {
+        "height": 44,
+        "name": "Copy snippet",
+        "width": 80
+      },
+      {
+        "height": 44,
+        "name": "Copy snippet",
+        "width": 80
+      },
+      {
+        "height": 44,
+        "name": "Copy snippet",
+        "width": 80
+      },
+      {
+        "height": 44,
+        "name": "Copy snippet",
+        "width": 80
+      }
+    ],
+    "code": [
+      {
+        "font": "14px",
+        "overflow": "auto",
+        "scrollWidth": 718,
+        "tabIndex": 0,
+        "width": 718
+      },
+      {
+        "font": "14px",
+        "overflow": "auto",
+        "scrollWidth": 718,
+        "tabIndex": 0,
+        "width": 718
+      },
+      {
+        "font": "14px",
+        "overflow": "auto",
+        "scrollWidth": 718,
+        "tabIndex": 0,
+        "width": 718
+      },
+      {
+        "font": "14px",
+        "overflow": "auto",
+        "scrollWidth": 718,
+        "tabIndex": 0,
+        "width": 718
+      },
+      {
+        "font": "14px",
+        "overflow": "auto",
+        "scrollWidth": 718,
+        "tabIndex": 0,
+        "width": 718
+      }
+    ],
+    "colors": {
+      "--accent": "#b45309",
+      "--accent-link": "#a16207",
+      "--bg-canvas": "#fff",
+      "--bg-panel": "#fafafa",
+      "--bg-raised": "#f4f4f5",
+      "--text-1": "#18181b",
+      "--text-2": "#3f3f46",
+      "--text-3": "#71717a"
+    },
+    "documentWidth": 1280,
+    "h1Font": "30px",
+    "h2Font": "22px",
+    "height": 900,
+    "mainWidth": 720,
+    "table": null,
+    "theme": "light",
+    "width": 1280,
+    "textPairs": [
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "16px",
+        "foreground": "rgb(24, 24, 27)",
+        "text": "Starport"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "16px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "Light theme"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "16px",
+        "foreground": "rgb(161, 98, 7)",
+        "text": "Open console"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "30px",
+        "foreground": "rgb(24, 24, 27)",
+        "text": "Documentation"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "16px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "How to call, manage, and run the Starport gateway."
+      },
+      {
+        "background": "rgb(250, 250, 250)",
+        "font": "14px",
+        "foreground": "rgb(113, 113, 122)",
+        "text": "Build with Starport"
+      },
+      {
+        "background": "rgb(250, 250, 250)",
+        "font": "14px",
+        "foreground": "rgb(113, 113, 122)",
+        "text": "Manage your account"
+      },
+      {
+        "background": "rgb(244, 244, 245)",
+        "font": "14px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "Operate the gateway"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "16px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "Provider credentials, accounts, teams, policy, and deployment health."
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "22px",
+        "foreground": "rgb(24, 24, 27)",
+        "text": "Provider credentials"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "16px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "A provider credential pays a provider. It is a different thing from a "
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "16px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "Environment: a credential read from the process environment (for examp"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "16px",
+        "foreground": "rgb(24, 24, 27)",
+        "text": "Environment"
+      },
+      {
+        "background": "rgb(244, 244, 245)",
+        "font": "14px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "ANTHROPIC_API_KEY"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "16px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "Shared: a credential you apply in the console for the whole deployment"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "16px",
+        "foreground": "rgb(24, 24, 27)",
+        "text": "Shared"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "16px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "BYOK: a credential an account brought for itself. It applies to that a"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "16px",
+        "foreground": "rgb(24, 24, 27)",
+        "text": "BYOK"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "16px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "That is the default order. An account's credential strategy can prefer"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "16px",
+        "foreground": "rgb(161, 98, 7)",
+        "text": "Providers"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "22px",
+        "foreground": "rgb(24, 24, 27)",
+        "text": "Accounts and limits"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "16px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "Accounts isolate tenants: each has its own gateway API keys, BYOK cred"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "16px",
+        "foreground": "rgb(161, 98, 7)",
+        "text": "Accounts"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "22px",
+        "foreground": "rgb(24, 24, 27)",
+        "text": "Policy"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "16px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "Each account carries a policy with two rules: whether it may bring its"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "16px",
+        "foreground": "rgb(161, 98, 7)",
+        "text": "Accounts"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "16px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "Guardrails apply to the whole deployment. A configured check reads eac"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "16px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "Shell"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "14px",
+        "foreground": "rgb(113, 113, 122)",
+        "text": "snippet"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "14px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "export STARPORT_GUARDRAILS_CHECKS=\"pii,moderation\""
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "22px",
+        "foreground": "rgb(24, 24, 27)",
+        "text": "Teams and budgets"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "16px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "Members are the people your identity provider resolved; the gateway ne"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "16px",
+        "foreground": "rgb(161, 98, 7)",
+        "text": "Members"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "16px",
+        "foreground": "rgb(161, 98, 7)",
+        "text": "Teams"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "16px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "A team budget bounds spend over a day, a week, or a month, summed over"
+      },
+      {
+        "background": "rgb(244, 244, 245)",
+        "font": "14px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "5000000000"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "16px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "Shell"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "14px",
+        "foreground": "rgb(113, 113, 122)",
+        "text": "snippet"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "14px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "curl -X PUT http://127.0.0.1:4173/api/v1/admin/teams/TEAM_ID \\\n  -H \"A"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "22px",
+        "foreground": "rgb(24, 24, 27)",
+        "text": "Catalog and routing"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "16px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "The model catalog comes from a Starmap snapshot: providers, models, pr"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "16px",
+        "foreground": "rgb(161, 98, 7)",
+        "text": "Models"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "22px",
+        "foreground": "rgb(24, 24, 27)",
+        "text": "Audit log"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "16px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "Every admin mutation leaves one durable record: who asked, what it tou"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "16px",
+        "foreground": "rgb(161, 98, 7)",
+        "text": "Audit log"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "16px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "Shell"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "14px",
+        "foreground": "rgb(113, 113, 122)",
+        "text": "snippet"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "14px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "curl \"http://127.0.0.1:4173/api/v1/admin/audit?action=key.create&limit"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "16px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "Each record carries the request_id of the request that made the change"
+      },
+      {
+        "background": "rgb(244, 244, 245)",
+        "font": "14px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "request_id"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "16px",
+        "foreground": "rgb(161, 98, 7)",
+        "text": "Usage"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "22px",
+        "foreground": "rgb(24, 24, 27)",
+        "text": "Observability"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "16px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "The gateway serves a Prometheus scrape at GET /metrics with no credent"
+      },
+      {
+        "background": "rgb(244, 244, 245)",
+        "font": "14px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "GET /metrics"
+      },
+      {
+        "background": "rgb(244, 244, 245)",
+        "font": "14px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "STARPORT_TELEMETRY_METRICS"
+      },
+      {
+        "background": "rgb(244, 244, 245)",
+        "font": "14px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "admin"
+      },
+      {
+        "background": "rgb(244, 244, 245)",
+        "font": "14px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "off"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "16px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "Shell"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "14px",
+        "foreground": "rgb(113, 113, 122)",
+        "text": "snippet"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "14px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "curl http://127.0.0.1:4173/metrics"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "16px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "Traces leave over OTLP HTTP once the standard OpenTelemetry endpoint v"
+      },
+      {
+        "background": "rgb(244, 244, 245)",
+        "font": "14px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "traceparent"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "16px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "Shell"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "14px",
+        "foreground": "rgb(113, 113, 122)",
+        "text": "snippet"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "14px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "export OTEL_EXPORTER_OTLP_ENDPOINT=\"http://127.0.0.1:4318\""
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "16px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "Webhooks push budget, job, provider health, and key events to a URL yo"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "22px",
+        "foreground": "rgb(24, 24, 27)",
+        "text": "Health and settings"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "16px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "GET /health/live answers while the process runs, and GET /health/ready"
+      },
+      {
+        "background": "rgb(244, 244, 245)",
+        "font": "14px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "GET /health/live"
+      },
+      {
+        "background": "rgb(244, 244, 245)",
+        "font": "14px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "GET /health/ready"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "16px",
+        "foreground": "rgb(161, 98, 7)",
+        "text": "Overview"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "16px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "Authentication mode, retention windows, and appearance live in Setting"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "16px",
+        "foreground": "rgb(161, 98, 7)",
+        "text": "Settings"
+      }
+    ]
+  },
+  {
+    "audience": "build",
+    "bodyFont": "16px",
+    "bodyLine": "26px",
+    "buttons": [
+      {
+        "height": 44,
+        "name": "Switch to light theme",
+        "width": 85.796875
+      },
+      {
+        "height": 44,
+        "name": "Build with Starport",
+        "width": 145.578125
+      },
+      {
+        "height": 44,
+        "name": "Manage your account",
+        "width": 164.484375
+      },
+      {
+        "height": 44,
+        "name": "Operate the gateway",
+        "width": 159.375
+      },
+      {
+        "height": 44,
+        "name": "Copy snippet",
+        "width": 80
+      },
+      {
+        "height": 44,
+        "name": "Copy snippet",
+        "width": 80
+      },
+      {
+        "height": 44,
+        "name": "Copy snippet",
+        "width": 80
+      },
+      {
+        "height": 44,
+        "name": "Copy snippet",
+        "width": 80
+      },
+      {
+        "height": 44,
+        "name": "Copy snippet",
+        "width": 80
+      },
+      {
+        "height": 44,
+        "name": "Copy snippet",
+        "width": 80
+      },
+      {
+        "height": 44,
+        "name": "Copy snippet",
+        "width": 80
+      }
+    ],
+    "code": [
+      {
+        "font": "14px",
+        "overflow": "auto",
+        "scrollWidth": 461,
+        "tabIndex": 0,
+        "width": 286
+      },
+      {
+        "font": "14px",
+        "overflow": "auto",
+        "scrollWidth": 461,
+        "tabIndex": 0,
+        "width": 286
+      },
+      {
+        "font": "14px",
+        "overflow": "auto",
+        "scrollWidth": 286,
+        "tabIndex": 0,
+        "width": 286
+      },
+      {
+        "font": "14px",
+        "overflow": "auto",
+        "scrollWidth": 780,
+        "tabIndex": 0,
+        "width": 286
+      },
+      {
+        "font": "14px",
+        "overflow": "auto",
+        "scrollWidth": 889,
+        "tabIndex": 0,
+        "width": 286
+      },
+      {
+        "font": "14px",
+        "overflow": "auto",
+        "scrollWidth": 286,
+        "tabIndex": 0,
+        "width": 286
+      },
+      {
+        "font": "14px",
+        "overflow": "auto",
+        "scrollWidth": 410,
+        "tabIndex": 0,
+        "width": 286
+      }
+    ],
+    "colors": {
+      "--accent": "#f0b23e",
+      "--accent-link": "#f0b23e",
+      "--bg-canvas": "#0a0b0c",
+      "--bg-panel": "#101112",
+      "--bg-raised": "#18191b",
+      "--text-1": "#f6f7f8",
+      "--text-2": "#c9ced6",
+      "--text-3": "#8b909a"
+    },
+    "documentWidth": 320,
+    "h1Font": "30px",
+    "h2Font": "22px",
+    "height": 900,
+    "mainWidth": 288,
+    "table": null,
+    "theme": "dark",
+    "width": 320,
+    "textPairs": [
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "16px",
+        "foreground": "rgb(246, 247, 248)",
+        "text": "Starport"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "16px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "Dark theme"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "16px",
+        "foreground": "rgb(240, 178, 62)",
+        "text": "Open console"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "30px",
+        "foreground": "rgb(246, 247, 248)",
+        "text": "Documentation"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "16px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "How to call, manage, and run the Starport gateway."
+      },
+      {
+        "background": "rgb(24, 25, 27)",
+        "font": "14px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "Build with Starport"
+      },
+      {
+        "background": "rgb(16, 17, 18)",
+        "font": "14px",
+        "foreground": "rgb(139, 144, 154)",
+        "text": "Manage your account"
+      },
+      {
+        "background": "rgb(16, 17, 18)",
+        "font": "14px",
+        "foreground": "rgb(139, 144, 154)",
+        "text": "Operate the gateway"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "16px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "Point an OpenAI or OpenRouter SDK at this gateway and ship."
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "22px",
+        "foreground": "rgb(246, 247, 248)",
+        "text": "Base URLs"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "16px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "Starport is a drop-in replacement for OpenRouter and for the OpenAI AP"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "14px",
+        "foreground": "rgb(246, 247, 248)",
+        "text": "http://127.0.0.1:4173/v1"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "14px",
+        "foreground": "rgb(139, 144, 154)",
+        "text": "OpenAI-compatible routes"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "14px",
+        "foreground": "rgb(246, 247, 248)",
+        "text": "http://127.0.0.1:4173/api/v1"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "14px",
+        "foreground": "rgb(139, 144, 154)",
+        "text": "OpenRouter-compatible routes"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "16px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "Keep the key in the STARPORT_API_KEY environment variable and read it "
+      },
+      {
+        "background": "rgb(24, 25, 27)",
+        "font": "14px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "STARPORT_API_KEY"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "16px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "Python"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "14px",
+        "foreground": "rgb(139, 144, 154)",
+        "text": "snippet"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "14px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "import os\nfrom openai import OpenAI\n\nclient = OpenAI(\n    base_url=\"ht"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "16px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "JavaScript"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "14px",
+        "foreground": "rgb(139, 144, 154)",
+        "text": "snippet"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "14px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "import OpenAI from \"openai\";\n\nconst client = new OpenAI({\n  baseURL: \""
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "22px",
+        "foreground": "rgb(246, 247, 248)",
+        "text": "Get a key"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "16px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "Requests authenticate with a gateway API key. On the gateway machine, "
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "16px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "Shell"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "14px",
+        "foreground": "rgb(139, 144, 154)",
+        "text": "snippet"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "14px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "starport ui"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "16px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "Create a scoped gateway key on the API keys page and store it in STARP"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "16px",
+        "foreground": "rgb(240, 178, 62)",
+        "text": "API keys"
+      },
+      {
+        "background": "rgb(24, 25, 27)",
+        "font": "14px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "STARPORT_API_KEY"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "16px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "A gateway API key identifies the caller. A separate provider credentia"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "22px",
+        "foreground": "rgb(246, 247, 248)",
+        "text": "Pick a model"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "16px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "Model IDs take the form author/model, for example anthropic/claude-son"
+      },
+      {
+        "background": "rgb(24, 25, 27)",
+        "font": "14px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "author/model"
+      },
+      {
+        "background": "rgb(24, 25, 27)",
+        "font": "14px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "anthropic/claude-sonnet-5"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "16px",
+        "foreground": "rgb(240, 178, 62)",
+        "text": "Models"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "16px",
+        "foreground": "rgb(240, 178, 62)",
+        "text": "Authors"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "16px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "The gateway routes each request to a provider that serves the model an"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "16px",
+        "foreground": "rgb(240, 178, 62)",
+        "text": "Chat"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "22px",
+        "foreground": "rgb(246, 247, 248)",
+        "text": "Presets"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "16px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "A preset is a saved routing recipe: model, parameters, and fallbacks u"
+      },
+      {
+        "background": "rgb(24, 25, 27)",
+        "font": "14px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "@preset/your-preset"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "16px",
+        "foreground": "rgb(240, 178, 62)",
+        "text": "Presets"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "16px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "Shell"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "14px",
+        "foreground": "rgb(139, 144, 154)",
+        "text": "snippet"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "14px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "curl http://127.0.0.1:4173/v1/chat/completions \\\n  -H \"Authorization: "
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "22px",
+        "foreground": "rgb(246, 247, 248)",
+        "text": "Beyond chat"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "16px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "The gateway also serves embeddings, images, audio, video jobs, documen"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "16px",
+        "foreground": "rgb(240, 178, 62)",
+        "text": "Models"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "16px",
+        "foreground": "rgb(240, 178, 62)",
+        "text": "Files"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "16px",
+        "foreground": "rgb(240, 178, 62)",
+        "text": "Jobs"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "16px",
+        "foreground": "rgb(240, 178, 62)",
+        "text": "Documents"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "16px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "A batch takes a file of requests and answers a file of results, at the"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "16px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "Shell"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "14px",
+        "foreground": "rgb(139, 144, 154)",
+        "text": "snippet"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "14px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "curl http://127.0.0.1:4173/v1/batches \\\n  -H \"Authorization: Bearer $S"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "22px",
+        "foreground": "rgb(246, 247, 248)",
+        "text": "Use it from a coding agent"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "16px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "The binary carries an agent skill that teaches a coding agent to insta"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "16px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "Shell"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "14px",
+        "foreground": "rgb(139, 144, 154)",
+        "text": "snippet"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "14px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "starport agent setup"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "16px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "The CLI also answers catalog questions offline from the embedded catal"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "16px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "Shell"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "14px",
+        "foreground": "rgb(139, 144, 154)",
+        "text": "snippet"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "14px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "starport models search gpt-4o --json\nstarport models show openai/gpt-4"
+      }
+    ]
+  },
+  {
+    "audience": "account",
+    "bodyFont": "16px",
+    "bodyLine": "26px",
+    "buttons": [
+      {
+        "height": 44,
+        "name": "Switch to light theme",
+        "width": 85.796875
+      },
+      {
+        "height": 44,
+        "name": "Build with Starport",
+        "width": 145.578125
+      },
+      {
+        "height": 44,
+        "name": "Manage your account",
+        "width": 164.484375
+      },
+      {
+        "height": 44,
+        "name": "Operate the gateway",
+        "width": 159.375
+      }
+    ],
+    "code": [],
+    "colors": {
+      "--accent": "#f0b23e",
+      "--accent-link": "#f0b23e",
+      "--bg-canvas": "#0a0b0c",
+      "--bg-panel": "#101112",
+      "--bg-raised": "#18191b",
+      "--text-1": "#f6f7f8",
+      "--text-2": "#c9ced6",
+      "--text-3": "#8b909a"
+    },
+    "documentWidth": 320,
+    "h1Font": "30px",
+    "h2Font": "22px",
+    "height": 900,
+    "mainWidth": 288,
+    "table": {
+      "font": "14px",
+      "width": 286
+    },
+    "theme": "dark",
+    "width": 320,
+    "textPairs": [
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "16px",
+        "foreground": "rgb(246, 247, 248)",
+        "text": "Starport"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "16px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "Dark theme"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "16px",
+        "foreground": "rgb(240, 178, 62)",
+        "text": "Open console"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "30px",
+        "foreground": "rgb(246, 247, 248)",
+        "text": "Documentation"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "16px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "How to call, manage, and run the Starport gateway."
+      },
+      {
+        "background": "rgb(16, 17, 18)",
+        "font": "14px",
+        "foreground": "rgb(139, 144, 154)",
+        "text": "Build with Starport"
+      },
+      {
+        "background": "rgb(24, 25, 27)",
+        "font": "14px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "Manage your account"
+      },
+      {
+        "background": "rgb(16, 17, 18)",
+        "font": "14px",
+        "foreground": "rgb(139, 144, 154)",
+        "text": "Operate the gateway"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "16px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "API keys, your own provider credentials, and what requests cost."
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "22px",
+        "foreground": "rgb(246, 247, 248)",
+        "text": "Gateway API keys"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "16px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "A gateway API key authenticates your requests to the Starport gateway "
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "16px",
+        "foreground": "rgb(240, 178, 62)",
+        "text": "API keys"
+      },
+      {
+        "background": "rgb(24, 25, 27)",
+        "font": "14px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "admin"
+      },
+      {
+        "background": "rgb(24, 25, 27)",
+        "font": "14px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "Scope"
+      },
+      {
+        "background": "rgb(24, 25, 27)",
+        "font": "14px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "Opens"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "14px",
+        "foreground": "rgb(246, 247, 248)",
+        "text": "chat:write"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "14px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "Chat completions and responses"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "14px",
+        "foreground": "rgb(246, 247, 248)",
+        "text": "embeddings:write"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "14px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "Embeddings"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "14px",
+        "foreground": "rgb(246, 247, 248)",
+        "text": "images:write"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "14px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "Image generation and edits"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "14px",
+        "foreground": "rgb(246, 247, 248)",
+        "text": "audio:write"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "14px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "Speech, transcription, and translation"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "14px",
+        "foreground": "rgb(246, 247, 248)",
+        "text": "rerank:write"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "14px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "Reranking"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "14px",
+        "foreground": "rgb(246, 247, 248)",
+        "text": "moderations:write"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "14px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "Moderation of the caller's own text"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "14px",
+        "foreground": "rgb(246, 247, 248)",
+        "text": "batches:write"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "14px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "Batch jobs: create, list, and cancel"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "14px",
+        "foreground": "rgb(246, 247, 248)",
+        "text": "models:read"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "14px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "The model catalog"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "14px",
+        "foreground": "rgb(246, 247, 248)",
+        "text": "activity:read"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "14px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "The key's own usage records"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "14px",
+        "foreground": "rgb(246, 247, 248)",
+        "text": "files:read"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "14px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "Read stored files"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "14px",
+        "foreground": "rgb(246, 247, 248)",
+        "text": "files:write"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "14px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "Upload and delete stored files"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "14px",
+        "foreground": "rgb(246, 247, 248)",
+        "text": "admin"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "14px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "Every admin route, including keys, accounts, teams, and the audit log"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "22px",
+        "foreground": "rgb(246, 247, 248)",
+        "text": "Bring your own provider credential"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "16px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "By default, your requests are paid by the credentials the operator con"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "16px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "Add one from a provider's detail page under Providers."
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "16px",
+        "foreground": "rgb(240, 178, 62)",
+        "text": "Providers"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "22px",
+        "foreground": "rgb(246, 247, 248)",
+        "text": "Track usage and spend"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "16px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "Every request is metered: tokens, cost, latency, cache hits, and which"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "16px",
+        "foreground": "rgb(240, 178, 62)",
+        "text": "Usage"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "16px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "A key, an account, or a team can carry a spend budget for a fixed wind"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "22px",
+        "foreground": "rgb(246, 247, 248)",
+        "text": "Stored work"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "16px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "Uploaded files, asynchronous media jobs, and parsed documents each hav"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "16px",
+        "foreground": "rgb(240, 178, 62)",
+        "text": "Files"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "16px",
+        "foreground": "rgb(240, 178, 62)",
+        "text": "Jobs"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "16px",
+        "foreground": "rgb(240, 178, 62)",
+        "text": "Documents"
+      }
+    ]
+  },
+  {
+    "audience": "operate",
+    "bodyFont": "16px",
+    "bodyLine": "26px",
+    "buttons": [
+      {
+        "height": 44,
+        "name": "Switch to light theme",
+        "width": 85.796875
+      },
+      {
+        "height": 44,
+        "name": "Build with Starport",
+        "width": 145.578125
+      },
+      {
+        "height": 44,
+        "name": "Manage your account",
+        "width": 164.484375
+      },
+      {
+        "height": 44,
+        "name": "Operate the gateway",
+        "width": 159.375
+      },
+      {
+        "height": 44,
+        "name": "Copy snippet",
+        "width": 80
+      },
+      {
+        "height": 44,
+        "name": "Copy snippet",
+        "width": 80
+      },
+      {
+        "height": 44,
+        "name": "Copy snippet",
+        "width": 80
+      },
+      {
+        "height": 44,
+        "name": "Copy snippet",
+        "width": 80
+      },
+      {
+        "height": 44,
+        "name": "Copy snippet",
+        "width": 80
+      }
+    ],
+    "code": [
+      {
+        "font": "14px",
+        "overflow": "auto",
+        "scrollWidth": 444,
+        "tabIndex": 0,
+        "width": 286
+      },
+      {
+        "font": "14px",
+        "overflow": "auto",
+        "scrollWidth": 704,
+        "tabIndex": 0,
+        "width": 286
+      },
+      {
+        "font": "14px",
+        "overflow": "auto",
+        "scrollWidth": 662,
+        "tabIndex": 0,
+        "width": 286
+      },
+      {
+        "font": "14px",
+        "overflow": "auto",
+        "scrollWidth": 310,
+        "tabIndex": 0,
+        "width": 286
+      },
+      {
+        "font": "14px",
+        "overflow": "auto",
+        "scrollWidth": 511,
+        "tabIndex": 0,
+        "width": 286
+      }
+    ],
+    "colors": {
+      "--accent": "#f0b23e",
+      "--accent-link": "#f0b23e",
+      "--bg-canvas": "#0a0b0c",
+      "--bg-panel": "#101112",
+      "--bg-raised": "#18191b",
+      "--text-1": "#f6f7f8",
+      "--text-2": "#c9ced6",
+      "--text-3": "#8b909a"
+    },
+    "documentWidth": 320,
+    "h1Font": "30px",
+    "h2Font": "22px",
+    "height": 900,
+    "mainWidth": 288,
+    "table": null,
+    "theme": "dark",
+    "width": 320,
+    "textPairs": [
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "16px",
+        "foreground": "rgb(246, 247, 248)",
+        "text": "Starport"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "16px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "Dark theme"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "16px",
+        "foreground": "rgb(240, 178, 62)",
+        "text": "Open console"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "30px",
+        "foreground": "rgb(246, 247, 248)",
+        "text": "Documentation"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "16px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "How to call, manage, and run the Starport gateway."
+      },
+      {
+        "background": "rgb(16, 17, 18)",
+        "font": "14px",
+        "foreground": "rgb(139, 144, 154)",
+        "text": "Build with Starport"
+      },
+      {
+        "background": "rgb(16, 17, 18)",
+        "font": "14px",
+        "foreground": "rgb(139, 144, 154)",
+        "text": "Manage your account"
+      },
+      {
+        "background": "rgb(24, 25, 27)",
+        "font": "14px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "Operate the gateway"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "16px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "Provider credentials, accounts, teams, policy, and deployment health."
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "22px",
+        "foreground": "rgb(246, 247, 248)",
+        "text": "Provider credentials"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "16px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "A provider credential pays a provider. It is a different thing from a "
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "16px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "Environment: a credential read from the process environment (for examp"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "16px",
+        "foreground": "rgb(246, 247, 248)",
+        "text": "Environment"
+      },
+      {
+        "background": "rgb(24, 25, 27)",
+        "font": "14px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "ANTHROPIC_API_KEY"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "16px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "Shared: a credential you apply in the console for the whole deployment"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "16px",
+        "foreground": "rgb(246, 247, 248)",
+        "text": "Shared"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "16px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "BYOK: a credential an account brought for itself. It applies to that a"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "16px",
+        "foreground": "rgb(246, 247, 248)",
+        "text": "BYOK"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "16px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "That is the default order. An account's credential strategy can prefer"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "16px",
+        "foreground": "rgb(240, 178, 62)",
+        "text": "Providers"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "22px",
+        "foreground": "rgb(246, 247, 248)",
+        "text": "Accounts and limits"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "16px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "Accounts isolate tenants: each has its own gateway API keys, BYOK cred"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "16px",
+        "foreground": "rgb(240, 178, 62)",
+        "text": "Accounts"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "22px",
+        "foreground": "rgb(246, 247, 248)",
+        "text": "Policy"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "16px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "Each account carries a policy with two rules: whether it may bring its"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "16px",
+        "foreground": "rgb(240, 178, 62)",
+        "text": "Accounts"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "16px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "Guardrails apply to the whole deployment. A configured check reads eac"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "16px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "Shell"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "14px",
+        "foreground": "rgb(139, 144, 154)",
+        "text": "snippet"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "14px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "export STARPORT_GUARDRAILS_CHECKS=\"pii,moderation\""
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "22px",
+        "foreground": "rgb(246, 247, 248)",
+        "text": "Teams and budgets"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "16px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "Members are the people your identity provider resolved; the gateway ne"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "16px",
+        "foreground": "rgb(240, 178, 62)",
+        "text": "Members"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "16px",
+        "foreground": "rgb(240, 178, 62)",
+        "text": "Teams"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "16px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "A team budget bounds spend over a day, a week, or a month, summed over"
+      },
+      {
+        "background": "rgb(24, 25, 27)",
+        "font": "14px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "5000000000"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "16px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "Shell"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "14px",
+        "foreground": "rgb(139, 144, 154)",
+        "text": "snippet"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "14px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "curl -X PUT http://127.0.0.1:4173/api/v1/admin/teams/TEAM_ID \\\n  -H \"A"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "22px",
+        "foreground": "rgb(246, 247, 248)",
+        "text": "Catalog and routing"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "16px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "The model catalog comes from a Starmap snapshot: providers, models, pr"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "16px",
+        "foreground": "rgb(240, 178, 62)",
+        "text": "Models"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "22px",
+        "foreground": "rgb(246, 247, 248)",
+        "text": "Audit log"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "16px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "Every admin mutation leaves one durable record: who asked, what it tou"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "16px",
+        "foreground": "rgb(240, 178, 62)",
+        "text": "Audit log"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "16px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "Shell"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "14px",
+        "foreground": "rgb(139, 144, 154)",
+        "text": "snippet"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "14px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "curl \"http://127.0.0.1:4173/api/v1/admin/audit?action=key.create&limit"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "16px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "Each record carries the request_id of the request that made the change"
+      },
+      {
+        "background": "rgb(24, 25, 27)",
+        "font": "14px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "request_id"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "16px",
+        "foreground": "rgb(240, 178, 62)",
+        "text": "Usage"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "22px",
+        "foreground": "rgb(246, 247, 248)",
+        "text": "Observability"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "16px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "The gateway serves a Prometheus scrape at GET /metrics with no credent"
+      },
+      {
+        "background": "rgb(24, 25, 27)",
+        "font": "14px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "GET /metrics"
+      },
+      {
+        "background": "rgb(24, 25, 27)",
+        "font": "14px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "STARPORT_TELEMETRY_METRICS"
+      },
+      {
+        "background": "rgb(24, 25, 27)",
+        "font": "14px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "admin"
+      },
+      {
+        "background": "rgb(24, 25, 27)",
+        "font": "14px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "off"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "16px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "Shell"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "14px",
+        "foreground": "rgb(139, 144, 154)",
+        "text": "snippet"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "14px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "curl http://127.0.0.1:4173/metrics"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "16px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "Traces leave over OTLP HTTP once the standard OpenTelemetry endpoint v"
+      },
+      {
+        "background": "rgb(24, 25, 27)",
+        "font": "14px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "traceparent"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "16px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "Shell"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "14px",
+        "foreground": "rgb(139, 144, 154)",
+        "text": "snippet"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "14px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "export OTEL_EXPORTER_OTLP_ENDPOINT=\"http://127.0.0.1:4318\""
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "16px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "Webhooks push budget, job, provider health, and key events to a URL yo"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "22px",
+        "foreground": "rgb(246, 247, 248)",
+        "text": "Health and settings"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "16px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "GET /health/live answers while the process runs, and GET /health/ready"
+      },
+      {
+        "background": "rgb(24, 25, 27)",
+        "font": "14px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "GET /health/live"
+      },
+      {
+        "background": "rgb(24, 25, 27)",
+        "font": "14px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "GET /health/ready"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "16px",
+        "foreground": "rgb(240, 178, 62)",
+        "text": "Overview"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "16px",
+        "foreground": "rgb(201, 206, 214)",
+        "text": "Authentication mode, retention windows, and appearance live in Setting"
+      },
+      {
+        "background": "rgb(10, 11, 12)",
+        "font": "16px",
+        "foreground": "rgb(240, 178, 62)",
+        "text": "Settings"
+      }
+    ]
+  },
+  {
+    "audience": "build",
+    "bodyFont": "16px",
+    "bodyLine": "26px",
+    "buttons": [
+      {
+        "height": 44,
+        "name": "Switch to dark theme",
+        "width": 87.171875
+      },
+      {
+        "height": 44,
+        "name": "Build with Starport",
+        "width": 145.578125
+      },
+      {
+        "height": 44,
+        "name": "Manage your account",
+        "width": 164.484375
+      },
+      {
+        "height": 44,
+        "name": "Operate the gateway",
+        "width": 159.375
+      },
+      {
+        "height": 44,
+        "name": "Copy snippet",
+        "width": 80
+      },
+      {
+        "height": 44,
+        "name": "Copy snippet",
+        "width": 80
+      },
+      {
+        "height": 44,
+        "name": "Copy snippet",
+        "width": 80
+      },
+      {
+        "height": 44,
+        "name": "Copy snippet",
+        "width": 80
+      },
+      {
+        "height": 44,
+        "name": "Copy snippet",
+        "width": 80
+      },
+      {
+        "height": 44,
+        "name": "Copy snippet",
+        "width": 80
+      },
+      {
+        "height": 44,
+        "name": "Copy snippet",
+        "width": 80
+      }
+    ],
+    "code": [
+      {
+        "font": "14px",
+        "overflow": "auto",
+        "scrollWidth": 461,
+        "tabIndex": 0,
+        "width": 286
+      },
+      {
+        "font": "14px",
+        "overflow": "auto",
+        "scrollWidth": 461,
+        "tabIndex": 0,
+        "width": 286
+      },
+      {
+        "font": "14px",
+        "overflow": "auto",
+        "scrollWidth": 286,
+        "tabIndex": 0,
+        "width": 286
+      },
+      {
+        "font": "14px",
+        "overflow": "auto",
+        "scrollWidth": 780,
+        "tabIndex": 0,
+        "width": 286
+      },
+      {
+        "font": "14px",
+        "overflow": "auto",
+        "scrollWidth": 889,
+        "tabIndex": 0,
+        "width": 286
+      },
+      {
+        "font": "14px",
+        "overflow": "auto",
+        "scrollWidth": 286,
+        "tabIndex": 0,
+        "width": 286
+      },
+      {
+        "font": "14px",
+        "overflow": "auto",
+        "scrollWidth": 410,
+        "tabIndex": 0,
+        "width": 286
+      }
+    ],
+    "colors": {
+      "--accent": "#b45309",
+      "--accent-link": "#a16207",
+      "--bg-canvas": "#fff",
+      "--bg-panel": "#fafafa",
+      "--bg-raised": "#f4f4f5",
+      "--text-1": "#18181b",
+      "--text-2": "#3f3f46",
+      "--text-3": "#71717a"
+    },
+    "documentWidth": 320,
+    "h1Font": "30px",
+    "h2Font": "22px",
+    "height": 900,
+    "mainWidth": 288,
+    "table": null,
+    "theme": "light",
+    "width": 320,
+    "textPairs": [
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "16px",
+        "foreground": "rgb(24, 24, 27)",
+        "text": "Starport"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "16px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "Light theme"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "16px",
+        "foreground": "rgb(161, 98, 7)",
+        "text": "Open console"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "30px",
+        "foreground": "rgb(24, 24, 27)",
+        "text": "Documentation"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "16px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "How to call, manage, and run the Starport gateway."
+      },
+      {
+        "background": "rgb(244, 244, 245)",
+        "font": "14px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "Build with Starport"
+      },
+      {
+        "background": "rgb(250, 250, 250)",
+        "font": "14px",
+        "foreground": "rgb(113, 113, 122)",
+        "text": "Manage your account"
+      },
+      {
+        "background": "rgb(250, 250, 250)",
+        "font": "14px",
+        "foreground": "rgb(113, 113, 122)",
+        "text": "Operate the gateway"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "16px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "Point an OpenAI or OpenRouter SDK at this gateway and ship."
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "22px",
+        "foreground": "rgb(24, 24, 27)",
+        "text": "Base URLs"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "16px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "Starport is a drop-in replacement for OpenRouter and for the OpenAI AP"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "14px",
+        "foreground": "rgb(24, 24, 27)",
+        "text": "http://127.0.0.1:4173/v1"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "14px",
+        "foreground": "rgb(113, 113, 122)",
+        "text": "OpenAI-compatible routes"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "14px",
+        "foreground": "rgb(24, 24, 27)",
+        "text": "http://127.0.0.1:4173/api/v1"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "14px",
+        "foreground": "rgb(113, 113, 122)",
+        "text": "OpenRouter-compatible routes"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "16px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "Keep the key in the STARPORT_API_KEY environment variable and read it "
+      },
+      {
+        "background": "rgb(244, 244, 245)",
+        "font": "14px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "STARPORT_API_KEY"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "16px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "Python"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "14px",
+        "foreground": "rgb(113, 113, 122)",
+        "text": "snippet"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "14px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "import os\nfrom openai import OpenAI\n\nclient = OpenAI(\n    base_url=\"ht"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "16px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "JavaScript"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "14px",
+        "foreground": "rgb(113, 113, 122)",
+        "text": "snippet"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "14px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "import OpenAI from \"openai\";\n\nconst client = new OpenAI({\n  baseURL: \""
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "22px",
+        "foreground": "rgb(24, 24, 27)",
+        "text": "Get a key"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "16px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "Requests authenticate with a gateway API key. On the gateway machine, "
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "16px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "Shell"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "14px",
+        "foreground": "rgb(113, 113, 122)",
+        "text": "snippet"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "14px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "starport ui"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "16px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "Create a scoped gateway key on the API keys page and store it in STARP"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "16px",
+        "foreground": "rgb(161, 98, 7)",
+        "text": "API keys"
+      },
+      {
+        "background": "rgb(244, 244, 245)",
+        "font": "14px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "STARPORT_API_KEY"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "16px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "A gateway API key identifies the caller. A separate provider credentia"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "22px",
+        "foreground": "rgb(24, 24, 27)",
+        "text": "Pick a model"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "16px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "Model IDs take the form author/model, for example anthropic/claude-son"
+      },
+      {
+        "background": "rgb(244, 244, 245)",
+        "font": "14px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "author/model"
+      },
+      {
+        "background": "rgb(244, 244, 245)",
+        "font": "14px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "anthropic/claude-sonnet-5"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "16px",
+        "foreground": "rgb(161, 98, 7)",
+        "text": "Models"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "16px",
+        "foreground": "rgb(161, 98, 7)",
+        "text": "Authors"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "16px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "The gateway routes each request to a provider that serves the model an"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "16px",
+        "foreground": "rgb(161, 98, 7)",
+        "text": "Chat"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "22px",
+        "foreground": "rgb(24, 24, 27)",
+        "text": "Presets"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "16px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "A preset is a saved routing recipe: model, parameters, and fallbacks u"
+      },
+      {
+        "background": "rgb(244, 244, 245)",
+        "font": "14px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "@preset/your-preset"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "16px",
+        "foreground": "rgb(161, 98, 7)",
+        "text": "Presets"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "16px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "Shell"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "14px",
+        "foreground": "rgb(113, 113, 122)",
+        "text": "snippet"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "14px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "curl http://127.0.0.1:4173/v1/chat/completions \\\n  -H \"Authorization: "
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "22px",
+        "foreground": "rgb(24, 24, 27)",
+        "text": "Beyond chat"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "16px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "The gateway also serves embeddings, images, audio, video jobs, documen"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "16px",
+        "foreground": "rgb(161, 98, 7)",
+        "text": "Models"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "16px",
+        "foreground": "rgb(161, 98, 7)",
+        "text": "Files"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "16px",
+        "foreground": "rgb(161, 98, 7)",
+        "text": "Jobs"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "16px",
+        "foreground": "rgb(161, 98, 7)",
+        "text": "Documents"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "16px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "A batch takes a file of requests and answers a file of results, at the"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "16px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "Shell"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "14px",
+        "foreground": "rgb(113, 113, 122)",
+        "text": "snippet"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "14px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "curl http://127.0.0.1:4173/v1/batches \\\n  -H \"Authorization: Bearer $S"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "22px",
+        "foreground": "rgb(24, 24, 27)",
+        "text": "Use it from a coding agent"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "16px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "The binary carries an agent skill that teaches a coding agent to insta"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "16px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "Shell"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "14px",
+        "foreground": "rgb(113, 113, 122)",
+        "text": "snippet"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "14px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "starport agent setup"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "16px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "The CLI also answers catalog questions offline from the embedded catal"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "16px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "Shell"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "14px",
+        "foreground": "rgb(113, 113, 122)",
+        "text": "snippet"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "14px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "starport models search gpt-4o --json\nstarport models show openai/gpt-4"
+      }
+    ]
+  },
+  {
+    "audience": "account",
+    "bodyFont": "16px",
+    "bodyLine": "26px",
+    "buttons": [
+      {
+        "height": 44,
+        "name": "Switch to dark theme",
+        "width": 87.171875
+      },
+      {
+        "height": 44,
+        "name": "Build with Starport",
+        "width": 145.578125
+      },
+      {
+        "height": 44,
+        "name": "Manage your account",
+        "width": 164.484375
+      },
+      {
+        "height": 44,
+        "name": "Operate the gateway",
+        "width": 159.375
+      }
+    ],
+    "code": [],
+    "colors": {
+      "--accent": "#b45309",
+      "--accent-link": "#a16207",
+      "--bg-canvas": "#fff",
+      "--bg-panel": "#fafafa",
+      "--bg-raised": "#f4f4f5",
+      "--text-1": "#18181b",
+      "--text-2": "#3f3f46",
+      "--text-3": "#71717a"
+    },
+    "documentWidth": 320,
+    "h1Font": "30px",
+    "h2Font": "22px",
+    "height": 900,
+    "mainWidth": 288,
+    "table": {
+      "font": "14px",
+      "width": 286
+    },
+    "theme": "light",
+    "width": 320,
+    "textPairs": [
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "16px",
+        "foreground": "rgb(24, 24, 27)",
+        "text": "Starport"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "16px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "Light theme"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "16px",
+        "foreground": "rgb(161, 98, 7)",
+        "text": "Open console"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "30px",
+        "foreground": "rgb(24, 24, 27)",
+        "text": "Documentation"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "16px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "How to call, manage, and run the Starport gateway."
+      },
+      {
+        "background": "rgb(250, 250, 250)",
+        "font": "14px",
+        "foreground": "rgb(113, 113, 122)",
+        "text": "Build with Starport"
+      },
+      {
+        "background": "rgb(244, 244, 245)",
+        "font": "14px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "Manage your account"
+      },
+      {
+        "background": "rgb(250, 250, 250)",
+        "font": "14px",
+        "foreground": "rgb(113, 113, 122)",
+        "text": "Operate the gateway"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "16px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "API keys, your own provider credentials, and what requests cost."
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "22px",
+        "foreground": "rgb(24, 24, 27)",
+        "text": "Gateway API keys"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "16px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "A gateway API key authenticates your requests to the Starport gateway "
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "16px",
+        "foreground": "rgb(161, 98, 7)",
+        "text": "API keys"
+      },
+      {
+        "background": "rgb(244, 244, 245)",
+        "font": "14px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "admin"
+      },
+      {
+        "background": "rgb(244, 244, 245)",
+        "font": "14px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "Scope"
+      },
+      {
+        "background": "rgb(244, 244, 245)",
+        "font": "14px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "Opens"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "14px",
+        "foreground": "rgb(24, 24, 27)",
+        "text": "chat:write"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "14px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "Chat completions and responses"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "14px",
+        "foreground": "rgb(24, 24, 27)",
+        "text": "embeddings:write"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "14px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "Embeddings"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "14px",
+        "foreground": "rgb(24, 24, 27)",
+        "text": "images:write"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "14px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "Image generation and edits"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "14px",
+        "foreground": "rgb(24, 24, 27)",
+        "text": "audio:write"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "14px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "Speech, transcription, and translation"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "14px",
+        "foreground": "rgb(24, 24, 27)",
+        "text": "rerank:write"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "14px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "Reranking"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "14px",
+        "foreground": "rgb(24, 24, 27)",
+        "text": "moderations:write"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "14px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "Moderation of the caller's own text"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "14px",
+        "foreground": "rgb(24, 24, 27)",
+        "text": "batches:write"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "14px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "Batch jobs: create, list, and cancel"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "14px",
+        "foreground": "rgb(24, 24, 27)",
+        "text": "models:read"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "14px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "The model catalog"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "14px",
+        "foreground": "rgb(24, 24, 27)",
+        "text": "activity:read"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "14px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "The key's own usage records"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "14px",
+        "foreground": "rgb(24, 24, 27)",
+        "text": "files:read"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "14px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "Read stored files"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "14px",
+        "foreground": "rgb(24, 24, 27)",
+        "text": "files:write"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "14px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "Upload and delete stored files"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "14px",
+        "foreground": "rgb(24, 24, 27)",
+        "text": "admin"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "14px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "Every admin route, including keys, accounts, teams, and the audit log"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "22px",
+        "foreground": "rgb(24, 24, 27)",
+        "text": "Bring your own provider credential"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "16px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "By default, your requests are paid by the credentials the operator con"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "16px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "Add one from a provider's detail page under Providers."
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "16px",
+        "foreground": "rgb(161, 98, 7)",
+        "text": "Providers"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "22px",
+        "foreground": "rgb(24, 24, 27)",
+        "text": "Track usage and spend"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "16px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "Every request is metered: tokens, cost, latency, cache hits, and which"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "16px",
+        "foreground": "rgb(161, 98, 7)",
+        "text": "Usage"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "16px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "A key, an account, or a team can carry a spend budget for a fixed wind"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "22px",
+        "foreground": "rgb(24, 24, 27)",
+        "text": "Stored work"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "16px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "Uploaded files, asynchronous media jobs, and parsed documents each hav"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "16px",
+        "foreground": "rgb(161, 98, 7)",
+        "text": "Files"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "16px",
+        "foreground": "rgb(161, 98, 7)",
+        "text": "Jobs"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "16px",
+        "foreground": "rgb(161, 98, 7)",
+        "text": "Documents"
+      }
+    ]
+  },
+  {
+    "audience": "operate",
+    "bodyFont": "16px",
+    "bodyLine": "26px",
+    "buttons": [
+      {
+        "height": 44,
+        "name": "Switch to dark theme",
+        "width": 87.171875
+      },
+      {
+        "height": 44,
+        "name": "Build with Starport",
+        "width": 145.578125
+      },
+      {
+        "height": 44,
+        "name": "Manage your account",
+        "width": 164.484375
+      },
+      {
+        "height": 44,
+        "name": "Operate the gateway",
+        "width": 159.375
+      },
+      {
+        "height": 44,
+        "name": "Copy snippet",
+        "width": 80
+      },
+      {
+        "height": 44,
+        "name": "Copy snippet",
+        "width": 80
+      },
+      {
+        "height": 44,
+        "name": "Copy snippet",
+        "width": 80
+      },
+      {
+        "height": 44,
+        "name": "Copy snippet",
+        "width": 80
+      },
+      {
+        "height": 44,
+        "name": "Copy snippet",
+        "width": 80
+      }
+    ],
+    "code": [
+      {
+        "font": "14px",
+        "overflow": "auto",
+        "scrollWidth": 444,
+        "tabIndex": 0,
+        "width": 286
+      },
+      {
+        "font": "14px",
+        "overflow": "auto",
+        "scrollWidth": 704,
+        "tabIndex": 0,
+        "width": 286
+      },
+      {
+        "font": "14px",
+        "overflow": "auto",
+        "scrollWidth": 662,
+        "tabIndex": 0,
+        "width": 286
+      },
+      {
+        "font": "14px",
+        "overflow": "auto",
+        "scrollWidth": 310,
+        "tabIndex": 0,
+        "width": 286
+      },
+      {
+        "font": "14px",
+        "overflow": "auto",
+        "scrollWidth": 511,
+        "tabIndex": 0,
+        "width": 286
+      }
+    ],
+    "colors": {
+      "--accent": "#b45309",
+      "--accent-link": "#a16207",
+      "--bg-canvas": "#fff",
+      "--bg-panel": "#fafafa",
+      "--bg-raised": "#f4f4f5",
+      "--text-1": "#18181b",
+      "--text-2": "#3f3f46",
+      "--text-3": "#71717a"
+    },
+    "documentWidth": 320,
+    "h1Font": "30px",
+    "h2Font": "22px",
+    "height": 900,
+    "mainWidth": 288,
+    "table": null,
+    "theme": "light",
+    "width": 320,
+    "textPairs": [
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "16px",
+        "foreground": "rgb(24, 24, 27)",
+        "text": "Starport"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "16px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "Light theme"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "16px",
+        "foreground": "rgb(161, 98, 7)",
+        "text": "Open console"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "30px",
+        "foreground": "rgb(24, 24, 27)",
+        "text": "Documentation"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "16px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "How to call, manage, and run the Starport gateway."
+      },
+      {
+        "background": "rgb(250, 250, 250)",
+        "font": "14px",
+        "foreground": "rgb(113, 113, 122)",
+        "text": "Build with Starport"
+      },
+      {
+        "background": "rgb(250, 250, 250)",
+        "font": "14px",
+        "foreground": "rgb(113, 113, 122)",
+        "text": "Manage your account"
+      },
+      {
+        "background": "rgb(244, 244, 245)",
+        "font": "14px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "Operate the gateway"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "16px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "Provider credentials, accounts, teams, policy, and deployment health."
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "22px",
+        "foreground": "rgb(24, 24, 27)",
+        "text": "Provider credentials"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "16px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "A provider credential pays a provider. It is a different thing from a "
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "16px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "Environment: a credential read from the process environment (for examp"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "16px",
+        "foreground": "rgb(24, 24, 27)",
+        "text": "Environment"
+      },
+      {
+        "background": "rgb(244, 244, 245)",
+        "font": "14px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "ANTHROPIC_API_KEY"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "16px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "Shared: a credential you apply in the console for the whole deployment"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "16px",
+        "foreground": "rgb(24, 24, 27)",
+        "text": "Shared"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "16px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "BYOK: a credential an account brought for itself. It applies to that a"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "16px",
+        "foreground": "rgb(24, 24, 27)",
+        "text": "BYOK"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "16px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "That is the default order. An account's credential strategy can prefer"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "16px",
+        "foreground": "rgb(161, 98, 7)",
+        "text": "Providers"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "22px",
+        "foreground": "rgb(24, 24, 27)",
+        "text": "Accounts and limits"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "16px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "Accounts isolate tenants: each has its own gateway API keys, BYOK cred"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "16px",
+        "foreground": "rgb(161, 98, 7)",
+        "text": "Accounts"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "22px",
+        "foreground": "rgb(24, 24, 27)",
+        "text": "Policy"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "16px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "Each account carries a policy with two rules: whether it may bring its"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "16px",
+        "foreground": "rgb(161, 98, 7)",
+        "text": "Accounts"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "16px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "Guardrails apply to the whole deployment. A configured check reads eac"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "16px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "Shell"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "14px",
+        "foreground": "rgb(113, 113, 122)",
+        "text": "snippet"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "14px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "export STARPORT_GUARDRAILS_CHECKS=\"pii,moderation\""
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "22px",
+        "foreground": "rgb(24, 24, 27)",
+        "text": "Teams and budgets"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "16px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "Members are the people your identity provider resolved; the gateway ne"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "16px",
+        "foreground": "rgb(161, 98, 7)",
+        "text": "Members"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "16px",
+        "foreground": "rgb(161, 98, 7)",
+        "text": "Teams"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "16px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "A team budget bounds spend over a day, a week, or a month, summed over"
+      },
+      {
+        "background": "rgb(244, 244, 245)",
+        "font": "14px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "5000000000"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "16px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "Shell"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "14px",
+        "foreground": "rgb(113, 113, 122)",
+        "text": "snippet"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "14px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "curl -X PUT http://127.0.0.1:4173/api/v1/admin/teams/TEAM_ID \\\n  -H \"A"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "22px",
+        "foreground": "rgb(24, 24, 27)",
+        "text": "Catalog and routing"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "16px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "The model catalog comes from a Starmap snapshot: providers, models, pr"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "16px",
+        "foreground": "rgb(161, 98, 7)",
+        "text": "Models"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "22px",
+        "foreground": "rgb(24, 24, 27)",
+        "text": "Audit log"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "16px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "Every admin mutation leaves one durable record: who asked, what it tou"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "16px",
+        "foreground": "rgb(161, 98, 7)",
+        "text": "Audit log"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "16px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "Shell"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "14px",
+        "foreground": "rgb(113, 113, 122)",
+        "text": "snippet"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "14px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "curl \"http://127.0.0.1:4173/api/v1/admin/audit?action=key.create&limit"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "16px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "Each record carries the request_id of the request that made the change"
+      },
+      {
+        "background": "rgb(244, 244, 245)",
+        "font": "14px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "request_id"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "16px",
+        "foreground": "rgb(161, 98, 7)",
+        "text": "Usage"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "22px",
+        "foreground": "rgb(24, 24, 27)",
+        "text": "Observability"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "16px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "The gateway serves a Prometheus scrape at GET /metrics with no credent"
+      },
+      {
+        "background": "rgb(244, 244, 245)",
+        "font": "14px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "GET /metrics"
+      },
+      {
+        "background": "rgb(244, 244, 245)",
+        "font": "14px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "STARPORT_TELEMETRY_METRICS"
+      },
+      {
+        "background": "rgb(244, 244, 245)",
+        "font": "14px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "admin"
+      },
+      {
+        "background": "rgb(244, 244, 245)",
+        "font": "14px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "off"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "16px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "Shell"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "14px",
+        "foreground": "rgb(113, 113, 122)",
+        "text": "snippet"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "14px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "curl http://127.0.0.1:4173/metrics"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "16px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "Traces leave over OTLP HTTP once the standard OpenTelemetry endpoint v"
+      },
+      {
+        "background": "rgb(244, 244, 245)",
+        "font": "14px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "traceparent"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "16px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "Shell"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "14px",
+        "foreground": "rgb(113, 113, 122)",
+        "text": "snippet"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "14px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "export OTEL_EXPORTER_OTLP_ENDPOINT=\"http://127.0.0.1:4318\""
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "16px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "Webhooks push budget, job, provider health, and key events to a URL yo"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "22px",
+        "foreground": "rgb(24, 24, 27)",
+        "text": "Health and settings"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "16px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "GET /health/live answers while the process runs, and GET /health/ready"
+      },
+      {
+        "background": "rgb(244, 244, 245)",
+        "font": "14px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "GET /health/live"
+      },
+      {
+        "background": "rgb(244, 244, 245)",
+        "font": "14px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "GET /health/ready"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "16px",
+        "foreground": "rgb(161, 98, 7)",
+        "text": "Overview"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "16px",
+        "foreground": "rgb(63, 63, 70)",
+        "text": "Authentication mode, retention windows, and appearance live in Setting"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "font": "16px",
+        "foreground": "rgb(161, 98, 7)",
+        "text": "Settings"
+      }
+    ]
+  }
+]

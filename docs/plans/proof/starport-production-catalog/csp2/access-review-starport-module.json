@@ -1,0 +1,26 @@
+[
+  {
+    "command": [
+      "go",
+      "env",
+      "GOWORK"
+    ],
+    "cwd": "/Users/jack/src/github.com/agentstation/starport-catalog-lifecycle",
+    "exit_code": 0,
+    "stdout": "\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "go",
+      "list",
+      "-m",
+      "-json",
+      "github.com/agentstation/starmap"
+    ],
+    "cwd": "/Users/jack/src/github.com/agentstation/starport-catalog-lifecycle",
+    "exit_code": 0,
+    "stdout": "{\n\t\"Path\": \"github.com/agentstation/starmap\",\n\t\"Version\": \"v0.16.5\",\n\t\"Time\": \"2026-09-04T18:50:55Z\",\n\t\"Dir\": \"/Users/jack/go/pkg/mod/github.com/agentstation/starmap@v0.16.5\",\n\t\"GoMod\": \"/Users/jack/go/pkg/mod/cache/download/github.com/agentstation/starmap/@v/v0.16.5.mod\",\n\t\"GoVersion\": \"1.25.0\",\n\t\"Sum\": \"h1:9kJHem8nw4uIx/+HPuYOQ5wfIy1i19jBHxKADckvQgc=\",\n\t\"GoModSum\": \"h1:AQj8DTFQ1xKmz0V+96RujBYTjsCXBCX3cZCl9iUsU8Q=\"\n}\n",
+    "stderr": ""
+  }
+]

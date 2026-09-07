@@ -1,0 +1,23 @@
+{
+  "command": [
+    "env",
+    "GOTOOLCHAIN=go1.25.12",
+    "go",
+    "test",
+    "-json",
+    "-race",
+    "-count=1",
+    "-timeout=5m",
+    "./internal/bootstrap",
+    "-run",
+    "^TestBaselineExportCancellationAfterStagingPreventsPublication$"
+  ],
+  "exit_code": 1,
+  "counts": {
+    "pass": 0,
+    "fail": 1,
+    "skip": 0
+  },
+  "stdout": "{\"Time\":\"2026-09-06T13:11:17.137734-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starmap/internal/bootstrap\"}\n{\"Time\":\"2026-09-06T13:11:17.409432-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starmap/internal/bootstrap\",\"Test\":\"TestBaselineExportCancellationAfterStagingPreventsPublication\"}\n{\"Time\":\"2026-09-06T13:11:17.409477-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/bootstrap\",\"Test\":\"TestBaselineExportCancellationAfterStagingPreventsPublication\",\"Output\":\"=== RUN   TestBaselineExportCancellationAfterStagingPreventsPublication\\n\"}\n{\"Time\":\"2026-09-06T13:11:28.799745-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/bootstrap\",\"Test\":\"TestBaselineExportCancellationAfterStagingPreventsPublication\",\"Output\":\"    export_cleanup_test.go:143: canceled export reached publication: {GenerationID:catalog-20260830T083213Z-ad5d2a45e490 Directory:/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/TestBaselineExportCancellationAfterStagingPreventsPublication1086306976/001/baseline/d12307970f5a583e2d8dc89ba82759dde0b7bc1731c30b5f77c983898c52f7f5 Created:true}, context canceled\\n\"}\n{\"Time\":\"2026-09-06T13:11:28.799832-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/bootstrap\",\"Test\":\"TestBaselineExportCancellationAfterStagingPreventsPublication\",\"Output\":\"    export_cleanup_test.go:147: canceled export retained files: [d d12307970f5a583e2d8dc89ba82759dde0b7bc1731c30b5f77c983898c52f7f5/], \\u003cnil\\u003e\\n\"}\n{\"Time\":\"2026-09-06T13:11:28.801121-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/bootstrap\",\"Test\":\"TestBaselineExportCancellationAfterStagingPreventsPublication\",\"Output\":\"--- FAIL: TestBaselineExportCancellationAfterStagingPreventsPublication (11.39s)\\n\"}\n{\"Time\":\"2026-09-06T13:11:28.801132-05:00\",\"Action\":\"fail\",\"Package\":\"github.com/agentstation/starmap/internal/bootstrap\",\"Test\":\"TestBaselineExportCancellationAfterStagingPreventsPublication\",\"Elapsed\":11.39}\n{\"Time\":\"2026-09-06T13:11:28.801207-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/bootstrap\",\"Output\":\"FAIL\\n\"}\n{\"Time\":\"2026-09-06T13:11:28.822635-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/bootstrap\",\"Output\":\"FAIL\\tgithub.com/agentstation/starmap/internal/bootstrap\\t11.685s\\n\"}\n{\"Time\":\"2026-09-06T13:11:28.822652-05:00\",\"Action\":\"fail\",\"Package\":\"github.com/agentstation/starmap/internal/bootstrap\",\"Elapsed\":11.685}\n",
+  "stderr": ""
+}

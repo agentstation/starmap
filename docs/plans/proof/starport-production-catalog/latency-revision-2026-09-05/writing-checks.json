@@ -1,0 +1,57 @@
+[
+  {
+    "name": "starmap_repository_writing",
+    "command": [
+      "make",
+      "technical-writing-check"
+    ],
+    "cwd": "/Users/jack/src/github.com/agentstation/starmap-catalog-requirements",
+    "exit_code": 2,
+    "output": "/Users/jack/.agents/skills/technical-writing/scripts/technical-writing glossary check\nPASS: /Users/jack/src/github.com/agentstation/starmap-catalog-requirements/GLOSSARY.md (77 term(s), 0 error(s))\n/Users/jack/.agents/skills/technical-writing/scripts/technical-writing glossary update --check\nPASS: no candidate terms are missing from /Users/jack/src/github.com/agentstation/starmap-catalog-requirements/GLOSSARY.md\n/Users/jack/.agents/skills/technical-writing/scripts/technical-writing lint . --mode strict --format text\n/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/docs/plans/proof/starport-production-catalog/storage-revision-2026-09-05/document_structure.txt:1:1: error long_sentence: sentence has 30 words; limit is 25\n/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/docs/plans/proof/starport-production-catalog/storage-revision-2026-09-05/starmap_writing.txt:1:1: error long_sentence: sentence has 38 words; limit is 25\n/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/docs/plans/proof/starport-production-catalog/storage-revision-2026-09-05/starmap_writing.txt:4:26: error ing_main_verb: prefer a simple verb form\nFAIL: 758 file(s), 3 diagnostic(s)\nmake: *** [technical-writing-check] Error 1\n"
+  },
+  {
+    "name": "starport_index_writing",
+    "command": [
+      "/Users/jack/.agents/skills/technical-writing/scripts/technical-writing",
+      "lint",
+      "docs/TASKS.md",
+      "--format",
+      "text"
+    ],
+    "cwd": "/Users/jack/src/github.com/agentstation/starport-catalog-lifecycle",
+    "exit_code": 0,
+    "output": "PASS: 1 file(s), 0 diagnostic(s)\n"
+  },
+  {
+    "name": "final_changed_starmap_files",
+    "command": [
+      "/Users/jack/.agents/skills/technical-writing/scripts/technical-writing",
+      "lint",
+      "docs/design/catalog-lifecycle/PRD.md",
+      "docs/design/catalog-lifecycle/ENGINEERING_SPEC.md",
+      "docs/design/catalog-lifecycle/REPOSITORY_FINDINGS.md",
+      "docs/plans/starport-production-catalog-plan.html",
+      "docs/plans/proof/starport-production-catalog/readme-demo-brief.md",
+      "docs/plans/proof/starport-production-catalog/latency-revision-2026-09-05/REVIEW_RESOLUTION.md",
+      "docs/plans/proof/starport-production-catalog/latency-revision-2026-09-05/verify_documents.py",
+      "docs/plans/README.md",
+      "docs/README.md",
+      "--format",
+      "text"
+    ],
+    "cwd": "/Users/jack/src/github.com/agentstation/starmap-catalog-requirements",
+    "exit_code": 0,
+    "output": "PASS: 9 file(s), 0 diagnostic(s)\n",
+    "sha256": {
+      "docs/design/catalog-lifecycle/PRD.md": "e962e5ca77165348c9c7711dba0ac7b225ea90526f30526502db38581ea5a03b",
+      "docs/design/catalog-lifecycle/ENGINEERING_SPEC.md": "a0dd68338a521733749ed8c9d379c593a1ce4df0e787ad922a549fe9ff27b656",
+      "docs/design/catalog-lifecycle/REPOSITORY_FINDINGS.md": "4cd17e2a0d366259a115f14f39d7c7e751bba11ff1a01479d4375c195ea662c3",
+      "docs/plans/starport-production-catalog-plan.html": "ce4d5576129de19ee7b10f0efb562dd7ff133309381464969fecc0f8d32792bd",
+      "docs/plans/proof/starport-production-catalog/readme-demo-brief.md": "3bc08bff37d9f607f66c69455edd85143a39e54fb26420dcaf36ad090c8271cd",
+      "docs/plans/proof/starport-production-catalog/latency-revision-2026-09-05/REVIEW_RESOLUTION.md": "0d0b5793960939875ed157b678b6048c9a013e570886360edb62ea4871198b10",
+      "docs/plans/proof/starport-production-catalog/latency-revision-2026-09-05/verify_documents.py": "5ea9f009ea14f159af90d92933c825a4e901efc1c1a9c196fe60d21255eaebb5",
+      "docs/plans/README.md": "b0da0c70d227a66b3692c544de125aee4b8e5215e043d5046a559e3b4e039a7b",
+      "docs/README.md": "c27c940bd5a1897cdcd3316271d329fab8622334294efcceea3aa7384a528715"
+    }
+  }
+]

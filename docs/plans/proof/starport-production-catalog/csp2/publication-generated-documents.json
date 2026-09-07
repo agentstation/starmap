@@ -1,0 +1,24 @@
+{
+  "results": [
+    {
+      "command": [
+        "make",
+        "godoc"
+      ],
+      "exit_code": 0,
+      "seconds": 1.437546968460083,
+      "stdout": "\u001b[0;34mGenerating Go documentation...\u001b[0m \ndevbox run env PATH=\"/Users/jack/go/bin:$PATH\" go generate ./...\n\ud83d\udce6 Starmap development environment loaded\nTools available: go, gomarkdoc, swag (v2 via flake), golangci-lint\n\u001b[0;32mGo documentation generation complete\u001b[0m \n",
+      "stderr": "Info: New devbox available: 0.16.0 -> v0.18.0. Please run `devbox version update`.\nInfo: Running script \"env\" on /Users/jack/src/github.com/agentstation/starmap-catalog-requirements\n"
+    },
+    {
+      "command": [
+        "make",
+        "docs-check"
+      ],
+      "exit_code": 0,
+      "seconds": 2.613323926925659,
+      "stdout": "\u001b[0;34mChecking if documentation is up to date...\u001b[0m \nChecking ./pkg/catalogs...\nChecking ./pkg/catalogs/evidence...\nChecking ./pkg/catalogs/storage...\nChecking ./pkg/catalogs/storage/s3...\nChecking ./pkg/catalogs/artifact...\nChecking ./pkg/catalogs/authority...\nChecking ./pkg/catalogs/projection...\nChecking ./pkg/catalogs/remote...\nChecking ./pkg/sources...\nChecking ./pkg/sources/payload...\nChecking ./pkg/errors...\nChecking ./pkg/logging...\nChecking ./internal/transport...\nChecking ./internal/providers/clients...\nChecking ./internal/catalog/reconciler...\nChecking ./internal/server...\nChecking ./internal/server/middleware...\nChecking ./internal/server/sse...\nChecking ./internal/server/response...\nChecking ./internal/server/cache...\nChecking ./internal/server/params...\nChecking ./internal/server/handlers...\nChecking ./internal/cli/convert...\nChecking ./internal/sources/providers...\nChecking ./internal/sources/local...\nChecking ./internal/sources/modelsdev...\nChecking ./internal/embedded...\nChecking ./internal/embedded/openapi...\nChecking ./server...\nChecking ./remote...\nChecking ./runtime...\nChecking ./runtime/source...\nChecking ./runtime/status...\n\u001b[0;32mAll documentation is up to date\u001b[0m \n",
+      "stderr": ""
+    }
+  ]
+}
