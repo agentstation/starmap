@@ -1,0 +1,363 @@
+{
+  "schema_version": 1,
+  "task": "CSP3",
+  "date": "2026-09-07",
+  "status": "component-progress-only",
+  "toolchain": "go1.26.6 darwin/arm64",
+  "work_commit": "96df25bfc43792311fc72ce3e2371d7d91c84253",
+  "evidence_commit": "0c0df0882608c5a8482534709f007bd3c16e5101",
+  "planning_base": "4012a5954e82e0eba0c55826ce7892c81a1e4abe",
+  "behavior": [
+    "Runtime.UpdateObservations owns callback preparation, cancellation, serialization, and publication. Runtime.ObservationInputs exposes immutable current and selected baseline snapshots without source reads or file writes.",
+    "Empty and failed preparation preserve accepted state. Shutdown rejects a late callback result. Callbacks must not call another mutation on the same runtime.",
+    "Unchanged projected provider fields require a permitted original provider, binding identity, and revision. Actual operator edits retain local field authority.",
+    "The publication-order fixture now uses only its two reviewed definitions. Both store-entry deadlines and all original publication assertions remain unchanged."
+  ],
+  "limitations": [
+    "D24 reset scopes and CLI/HTTP runtime integration remain open. The existing CLI flag is --force; the Go option is sync.WithFresh. Its current pipeline still selects an empty baseline.",
+    "Projected field checks do not prove account ownership or full selector identity. Scoped membership, field presence, reset masks, and full authority enforcement remain open.",
+    "No request latency or allocation measurement, primary acceptance credit, branch push, native CI dispatch, GitHub merge, or release. Full repository verification and required pre-PR review remain open."
+  ],
+  "checks": [
+    {
+      "command": "GOTOOLCHAIN=go1.26.6 go test -json -count=1 -timeout 20m ./...",
+      "exit_code": 0,
+      "capture": "csp3/observation-update-all.jsonl"
+    },
+    {
+      "command": "GOTOOLCHAIN=go1.26.6 go test -json -count=1 -timeout 20m ./runtime ./internal/catalog/reconciler ./internal/catalog/pipeline ./acquisition ./internal/cli/app",
+      "exit_code": 0,
+      "capture": "csp3/observation-update-normal-final.jsonl"
+    },
+    {
+      "command": "GOTOOLCHAIN=go1.26.6 go test -race -json -count=1 -timeout 20m ./runtime",
+      "exit_code": 0,
+      "capture": "csp3/observation-update-runtime-race-final.jsonl"
+    },
+    {
+      "command": "GOTOOLCHAIN=go1.26.6 go test -race -json -count=1 -timeout 20m ./internal/catalog/reconciler ./internal/catalog/pipeline ./acquisition ./internal/cli/app",
+      "exit_code": 0,
+      "capture": "csp3/observation-update-consumers-race.jsonl"
+    },
+    {
+      "command": "GOTOOLCHAIN=go1.26.6 go test -race -json -count=3 -timeout 20m ./runtime -run ^TestConcurrentRuntimeRebuildsPublishCompleteGenerationsInOrder$",
+      "exit_code": 0,
+      "capture": "csp3/observation-update-concurrency-final.jsonl"
+    },
+    {
+      "command": "GOTOOLCHAIN=go1.26.6 go test -json -count=1 -timeout 20m ./runtime -run ^TestConcurrentRuntimeRebuildsPublishCompleteGenerationsInOrder$",
+      "exit_code": 0,
+      "capture": "csp3/observation-update-concurrency-normal-final.jsonl"
+    },
+    {
+      "command": "GOTOOLCHAIN=go1.26.6 golangci-lint run",
+      "exit_code": 0,
+      "capture": "csp3/observation-update-lint-verified.log"
+    },
+    {
+      "command": "GOTOOLCHAIN=go1.26.6 go tool ago -stale-ignores -format json ./...",
+      "exit_code": 0,
+      "capture": "csp3/observation-update-ago-final.json"
+    },
+    {
+      "command": "GOTOOLCHAIN=go1.26.6 make generate",
+      "exit_code": 0,
+      "capture": "csp3/observation-update-generate-settled.log"
+    },
+    {
+      "command": "GOTOOLCHAIN=go1.26.6 bash scripts/verify-consumer-deps.sh",
+      "exit_code": 0,
+      "capture": "csp3/observation-update-dependencies.log"
+    },
+    {
+      "command": "GOTOOLCHAIN=go1.26.6 make technical-writing-check",
+      "exit_code": 0,
+      "capture": "csp3/observation-update-writing-final.log"
+    },
+    {
+      "command": "GOTOOLCHAIN=go1.26.6 bash scripts/verify-catalog-product.sh --starport-root /Users/jack/src/github.com/agentstation/starport-catalog-lifecycle --task CSP3 --json",
+      "exit_code": 1,
+      "capture": "csp3/observation-update-product.json"
+    },
+    {
+      "command": "python3 docs/plans/proof/starport-production-catalog/activation-2026-09-05/verify_documents.py",
+      "exit_code": 0,
+      "capture": "csp3/observation-update-documents.log"
+    },
+    {
+      "command": "GOTOOLCHAIN=go1.26.6 make technical-writing-check",
+      "exit_code": 0,
+      "capture": "csp3/observation-update-writing-docs.log"
+    }
+  ],
+  "normal_suite_composition": {
+    "passed_packages": 79,
+    "passed_test_events": 3580,
+    "packages_without_tests": 22,
+    "skipped_test_events": 5,
+    "selection": "Use all.jsonl except runtime, reconciler, pipeline, acquisition, and app. Replace those five suites with normal-final.jsonl, then replace its publication-order test with concurrency-normal-final.jsonl. All capture names have the observation-update- prefix.",
+    "skipped_tests": [
+      {
+        "package": "github.com/agentstation/starmap/internal/providers/anthropic",
+        "test": "TestRefreshAnthropicProviderFixture"
+      },
+      {
+        "package": "github.com/agentstation/starmap/internal/providers/anthropic",
+        "test": "TestAnthropicProviderFixtureCurrency"
+      },
+      {
+        "package": "github.com/agentstation/starmap/internal/providers/openai",
+        "test": "TestClientErrors/missing_provider_configuration"
+      },
+      {
+        "package": "github.com/agentstation/starmap/internal/providers/openai",
+        "test": "TestRefreshOpenAICompatibleProviderFixture"
+      },
+      {
+        "package": "github.com/agentstation/starmap/internal/providers/openai",
+        "test": "TestOpenAICompatibleProviderFixtureCurrency"
+      }
+    ]
+  },
+  "race_suite_composition": {
+    "passed_packages": 5,
+    "passed_test_events": 1004,
+    "components": {
+      "runtime": 424,
+      "reconciler": 245,
+      "pipeline": 81,
+      "acquisition": 54,
+      "app": 200
+    },
+    "selection": "Use observation-update-runtime-race-final.jsonl and observation-update-consumers-race.jsonl. The earlier failed runtime run contributes no coverage.",
+    "runtime_seconds": 540.668
+  },
+  "superseded_checks": [
+    {
+      "capture": "csp3/observation-update-projection-red.jsonl",
+      "exit_code": 1,
+      "reason": "A retired provider field returned through a local projection. The new policy rejects that unchanged projected evidence."
+    },
+    {
+      "capture": "csp3/observation-update-runtime-race.jsonl",
+      "exit_code": 1,
+      "reason": "The concurrency fixture did not reach its blocked store before the deadline. The fixture now excludes unrelated embedded records. Three focused race repetitions and the complete runtime race rerun passed."
+    },
+    {
+      "capture": "csp3/observation-update-writing.log",
+      "exit_code": 2,
+      "reason": "Paragraph length and restricted wording. Revised prose passes the writing check."
+    }
+  ],
+  "input_hashes": [
+    {
+      "path": "internal/catalog/reconciler/README.md",
+      "sha256": "8a380dc0203046a4bc4f20dbbe978e43a245aebebf7cf25e90a259bed9ad64ca"
+    },
+    {
+      "path": "internal/catalog/reconciler/merger.go",
+      "sha256": "944e3fc609ca2bafcf263d8d52458e8db62d6ff42f7cd8433f4189a5dbc9a414"
+    },
+    {
+      "path": "internal/catalog/reconciler/options.go",
+      "sha256": "cdb85f8cf825bffad5f894c9398053d1bbceae6e0927850c9e02d0db987ec9f6"
+    },
+    {
+      "path": "internal/catalog/reconciler/reconciler.go",
+      "sha256": "5e62fb884a74920fa217b12a242a13d2486987e1b24d55457d1ee7ec69922ed5"
+    },
+    {
+      "path": "internal/catalog/reconciler/source_identity.go",
+      "sha256": "5cef86afabef1ea758bd53dce488575efa98aa5c690e7266f7bf4c24f157b74c"
+    },
+    {
+      "path": "runtime/README.md",
+      "sha256": "096565ab62380073e51099dd9f1c52596efef35a3762c65728818cf59dcbfe46"
+    },
+    {
+      "path": "runtime/layers.go",
+      "sha256": "d4d05d6aba2b095563ac12eb6ee3b0bff54f26f1104721f66349d105c621bf73"
+    },
+    {
+      "path": "runtime/manual_observation.go",
+      "sha256": "86453417aa27b1b68d638c85d1b1e67d6154bd3144ca7d806123b0e1d3e37ce6"
+    },
+    {
+      "path": "runtime/manual_reconciliation.go",
+      "sha256": "e685d83667947e3adbc33b766ef4faa9aeeef9ee90263801d9f58d36f9bf3277"
+    },
+    {
+      "path": "runtime/provider_policy.go",
+      "sha256": "3caaf817e034e2ad23eedebd3f5de9dca708447d1ef9cba16b94a4c9de37d5b7"
+    },
+    {
+      "path": "runtime/reconciliation_publication_test.go",
+      "sha256": "1276031fe5ebb6bb19936323e258d31d17b098448c9039f18cc82ef338772462"
+    },
+    {
+      "path": "runtime/reconciliation_test.go",
+      "sha256": "ba1e3c01166f83a1698524da13f9a99d667c6ea8b23fb5f7e05b58451d7dcc44"
+    },
+    {
+      "path": "runtime/observation_update.go",
+      "sha256": "81ee57d5f4997b91fa0a740a1732598880112536a252d30cf6085978419b5dc6"
+    },
+    {
+      "path": "runtime/observation_update_test.go",
+      "sha256": "4ee5b45e621bb08a1ba4640c6deacc5a4787a8ed29c1fbe2eca1434291beb368"
+    },
+    {
+      "path": "runtime/projected_binding_test.go",
+      "sha256": "7c01346a57e91ae5aad05bbe5d7fd7caf61d14a8678e0ff6ddf4222bd683de09"
+    }
+  ],
+  "raw_captures": [
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/observation-update-ago-final.json",
+      "sha256": "b8fb7afa66aa7a93914ac258475dd0191be821803a8aea4439f5ba05022f5fa5",
+      "bytes": 289
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/observation-update-ago.json",
+      "sha256": "b8fb7afa66aa7a93914ac258475dd0191be821803a8aea4439f5ba05022f5fa5",
+      "bytes": 289
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/observation-update-all.jsonl",
+      "sha256": "27bc993cc7b02b719ec2980a153cad1d35be015f42324305de7a680154fa63b2",
+      "bytes": 4380115
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/observation-update-compile.log",
+      "sha256": "9b503296f67b8a8e824e16e207df443d8635f654ae65f6925c31073e50cdc45d",
+      "bytes": 70
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/observation-update-concurrency-final.jsonl",
+      "sha256": "76a024af75a25d2f0db68034f63977c9d92b6602646fe42b6825ac8cd8057aae",
+      "bytes": 5353
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/observation-update-concurrency-normal-final.jsonl",
+      "sha256": "72518e086775a88471e6ca8ce4517428846963bcf1f99d4a63b7d8be1e11f936",
+      "bytes": 2149
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/observation-update-consumers-race.jsonl",
+      "sha256": "f4f9c0d237b7d0f1db4b6065e05e39ddf0f13ddb74bb046a8e83a2c892a79d64",
+      "bytes": 843892
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/observation-update-dependencies.log",
+      "sha256": "56667b8f5a604ac9a61a563e73d4b332835bf144d0814833511a4f9f204a11b9",
+      "bytes": 1254
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/observation-update-focused.jsonl",
+      "sha256": "92c89509a059bf2b8bc35afc377a06ec39ecbfecc137d467b6c12e954bb242a0",
+      "bytes": 7839
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/observation-update-generate-final.log",
+      "sha256": "fc42d9ebde4f490861b23f53718efa486c2dbc0a2a7714ce78e56ab736bc8652",
+      "bytes": 9934
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/observation-update-generate-settled.log",
+      "sha256": "81d45fd77b5fffda724188984eb48b960765e0c9697a7a849946020e8e2bbbb4",
+      "bytes": 9934
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/observation-update-generate-verified.log",
+      "sha256": "844efdd4c79ed75b632031fda4abcf8a014d93c5b92ce92c0798a78cbe9d4db3",
+      "bytes": 9934
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/observation-update-generate.log",
+      "sha256": "5137f9e7b4e5f6cfe9910811e61d260940c8fe2cbd0a754ff2e4629998961395",
+      "bytes": 9934
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/observation-update-lint-final.log",
+      "sha256": "e92606b0bf483111dff0a120c315ea165821348f31365020e2468a0059095c47",
+      "bytes": 10
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/observation-update-lint-verified.log",
+      "sha256": "e92606b0bf483111dff0a120c315ea165821348f31365020e2468a0059095c47",
+      "bytes": 10
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/observation-update-lint.log",
+      "sha256": "e92606b0bf483111dff0a120c315ea165821348f31365020e2468a0059095c47",
+      "bytes": 10
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/observation-update-normal-final.jsonl",
+      "sha256": "fd5e5c6dceee056aae34ea9d55e233e934d02e213832640340b746f141d65116",
+      "bytes": 1439252
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/observation-update-product.json",
+      "sha256": "0a5cc1a33899402e4135c4ef56e28730155c63025b771d83734fcab9c93df5bb",
+      "bytes": 7700
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/observation-update-projection-contracts.jsonl",
+      "sha256": "50c75862f7ab38c91c50e29afdc4e8c248b28df7fb257a31d3a4faa8dfe8cf5c",
+      "bytes": 17267
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/observation-update-projection-fixed.jsonl",
+      "sha256": "484d971ef0b5197851c3735c0210436f83e252d346660ae12e320612a9d5b018",
+      "bytes": 5822
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/observation-update-projection-red.jsonl",
+      "sha256": "703d3b52fc06f0fa3a9b15cc69ad535d4f7876f8ea9e612b8d2f2d8f962b8cbe",
+      "bytes": 6138
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/observation-update-runtime-contracts-final.jsonl",
+      "sha256": "b6f667c6d69faded940a065efe3e7af2692231af65aa89c75aa11eb69a4f48ae",
+      "bytes": 72595
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/observation-update-runtime-race-final.jsonl",
+      "sha256": "5417f96b48ba5ed1f5c01de42df698059edf275017e1de44884f4cb45d18cb8c",
+      "bytes": 596168
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/observation-update-runtime-race.jsonl",
+      "sha256": "047294cb80a8ae98a5d46995efc04fbc902212dd560e57ba0096c446c71efbaa",
+      "bytes": 586635
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/observation-update-writing-final.log",
+      "sha256": "f8934343624cc3ab5eeff746cd7f5543d325082930c3c68b46796329816dd527",
+      "bytes": 558
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/observation-update-writing.log",
+      "sha256": "95c107ae5c482174d34a989121f2af0aa5baa1bbb119515eaa62471a98125277",
+      "bytes": 1521
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/observation-update-documents.log",
+      "sha256": "10dae1ccb18218efe7d5c786365f305c3748f631c6eac98967eb5ff731d2a45d",
+      "bytes": 3981
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/observation-update-writing-docs.log",
+      "sha256": "f8934343624cc3ab5eeff746cd7f5543d325082930c3c68b46796329816dd527",
+      "bytes": 558
+    }
+  ],
+  "acceptance": {
+    "primary_passed": 0,
+    "primary_unverified": 50,
+    "required_subcases": 324,
+    "credit": "none"
+  },
+  "next_action": "Implement transactional reset scopes that preserve the baseline, unrelated scopes, and reviewed operator inputs. Then connect CLI and HTTP acquisition to runtime ownership and preserve previews."
+}

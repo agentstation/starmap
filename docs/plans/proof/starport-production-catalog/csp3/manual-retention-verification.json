@@ -1,0 +1,496 @@
+{
+  "schema_version": 1,
+  "task": "CSP3",
+  "date": "2026-09-07",
+  "status": "component-progress-only",
+  "toolchain": "go1.26.6 darwin/arm64",
+  "work_commit": "f25ab7595b67f1077481b904ca4f0edc5e619acd",
+  "evidence_commit": "117d9062cc00b8f1949dcb8c76be2658190eae7f",
+  "planning_base": "7e69c6c8de5bc4aca91fda188aa1b9a71a59c321",
+  "behavior": [
+    "Runtime.PublishObservations validates and retains original caller-supplied observations through runtime ownership and the catalog input transaction. It reads no source.",
+    "Distinct concurrent manual calls serialize without coalescing. Observations already in manual history do not advance the sequence or broadcast another generation.",
+    "Aggregate provider observations retain their original provider set, payload checksum, and safe receipt. Diagnostic messages are absent from retained records.",
+    "Provider history preserves earlier facts through later omissions. Shared reconciliation orders fallback before direct evidence and then observation time. Equal-priority conflicts require corrected input.",
+    "Separate metadata passes preserve multiple reviewed inputs from the same source within one atomic publication.",
+    "Restart excludes inactive bindings and rejects changed selectors without a new revision. Rejected and canceled input cannot change accepted history.",
+    "Recovery validates the entire parent history before replacing any retained file. A lost catalog commit reply recovers the accepted generation.",
+    "The file inventory now covers publication journals, immutable recovery inputs, manual history, and scoped provider records under its existing private runtime policy."
+  ],
+  "format": {
+    "publication_version": 2,
+    "accepted_legacy_publication_version": 1,
+    "manual_history_version": 1,
+    "head": "R/catalog-runtime/manual.json",
+    "inputs": "R/catalog-runtime/publication-inputs/<sha256>.json",
+    "max_batches": 4096,
+    "max_encoded_observation_bytes": 67108864,
+    "native_upgrade_and_downgrade": "UNVERIFIED"
+  },
+  "limitations": [
+    "CLI and HTTP acquisition still publish directly through the root client. Their runtime integration and transactional D24 reset scopes remain open.",
+    "D24 preserves the embedded or selected upstream baseline while resetting selected local acquisition. The current pipeline still uses an empty baseline for sync.WithFresh and starmap update --force.",
+    "Local projection provenance must prevent copied fields from restoring retired binding evidence. Field presence and scoped deletion remain open.",
+    "History has fixed component limits and no compaction. CSP5 owns production compaction, collection, budgets, and operator recovery.",
+    "These checks do not measure gateway request latency or allocations. Shared fleet recovery, authority enforcement, Starport adoption, and released-pair acceptance remain open.",
+    "The full pre-publication repository gate, required code review, and native qualification remain open. No branch push, GitHub merge, release, or native CI dispatch occurred."
+  ],
+  "checks": [
+    {
+      "command": "GOTOOLCHAIN=go1.26.6 go test -race -json -count=1 -timeout 20m ./runtime ./internal/catalog/reconciler ./internal/catalog/pipeline ./acquisition",
+      "exit_code": 0,
+      "capture": "csp3/manual-retention-race.jsonl"
+    },
+    {
+      "command": "GOTOOLCHAIN=go1.26.6 go test -race -json -count=1 -timeout 20m ./runtime -run 'Test(Manual|RejectedManual)'",
+      "exit_code": 0,
+      "capture": "csp3/manual-retention-contracts-final.jsonl"
+    },
+    {
+      "command": "GOTOOLCHAIN=go1.26.6 go test -race -json -count=1 -timeout 20m ./internal/cli/app",
+      "exit_code": 0,
+      "capture": "csp3/manual-retention-app-final.jsonl"
+    },
+    {
+      "command": "GOTOOLCHAIN=go1.26.6 go test -json -count=1 -timeout 20m ./...",
+      "exit_code": 0,
+      "capture": "csp3/manual-retention-all.jsonl"
+    },
+    {
+      "command": "GOTOOLCHAIN=go1.26.6 go test -json -count=1 -timeout 20m ./runtime ./internal/cli/app",
+      "exit_code": 0,
+      "capture": "csp3/manual-retention-normal-final.jsonl"
+    },
+    {
+      "command": "GOTOOLCHAIN=go1.26.6 golangci-lint run",
+      "exit_code": 0,
+      "capture": "csp3/manual-retention-lint-verified.log"
+    },
+    {
+      "command": "GOTOOLCHAIN=go1.26.6 go tool ago -stale-ignores -format json ./...",
+      "exit_code": 0,
+      "capture": "csp3/manual-retention-ago-verified.json"
+    },
+    {
+      "command": "GOTOOLCHAIN=go1.26.6 make generate",
+      "exit_code": 0,
+      "capture": "csp3/manual-retention-generate-verified.log"
+    },
+    {
+      "command": "GOTOOLCHAIN=go1.26.6 bash scripts/verify-consumer-deps.sh",
+      "exit_code": 0,
+      "capture": "csp3/manual-retention-dependencies.log"
+    },
+    {
+      "command": "GOTOOLCHAIN=go1.26.6 make technical-writing-check",
+      "exit_code": 0,
+      "capture": "csp3/manual-retention-writing-verified.log"
+    },
+    {
+      "command": "bash scripts/verify-catalog-product.sh --starport-root /Users/jack/src/github.com/agentstation/starport-catalog-lifecycle --task CSP3 --json",
+      "exit_code": 1,
+      "capture": "csp3/manual-retention-product.json"
+    },
+    {
+      "command": "python3 docs/plans/proof/starport-production-catalog/activation-2026-09-05/verify_documents.py",
+      "exit_code": 0,
+      "capture": "csp3/manual-retention-documents.log"
+    },
+    {
+      "command": "GOTOOLCHAIN=go1.26.6 make technical-writing-check",
+      "exit_code": 0,
+      "capture": "csp3/manual-retention-writing-settled.log"
+    }
+  ],
+  "normal_suite_composition": {
+    "passed_packages": 79,
+    "passed_test_events": 3567,
+    "packages_without_tests": 22,
+    "skipped_test_events": 5,
+    "selection": "Use the 77 packages other than runtime and app from manual-retention-all.jsonl. Replace both complete suites with manual-retention-normal-final.jsonl after the metadata and inventory changes.",
+    "skipped_tests": [
+      {
+        "package": "github.com/agentstation/starmap/internal/providers/anthropic",
+        "test": "TestRefreshAnthropicProviderFixture"
+      },
+      {
+        "package": "github.com/agentstation/starmap/internal/providers/anthropic",
+        "test": "TestAnthropicProviderFixtureCurrency"
+      },
+      {
+        "package": "github.com/agentstation/starmap/internal/providers/openai",
+        "test": "TestClientErrors/missing_provider_configuration"
+      },
+      {
+        "package": "github.com/agentstation/starmap/internal/providers/openai",
+        "test": "TestRefreshOpenAICompatibleProviderFixture"
+      },
+      {
+        "package": "github.com/agentstation/starmap/internal/providers/openai",
+        "test": "TestOpenAICompatibleProviderFixtureCurrency"
+      }
+    ]
+  },
+  "race_suite_composition": {
+    "passed_packages": 5,
+    "passed_test_events": 991,
+    "components": {
+      "runtime": 411,
+      "reconciler": 245,
+      "pipeline": 81,
+      "acquisition": 54,
+      "app": 200
+    },
+    "selection": "Use manual-retention-race.jsonl except its 30 runtime TestManual or TestRejectedManual events. Replace those events with the 31 final manual contract events. Add the complete final app race suite."
+  },
+  "superseded_checks": [
+    {
+      "capture": "csp3/manual-retention-first.jsonl",
+      "exit_code": 1,
+      "reason": "The first fixture called ProviderModel on an immutable catalog. It now reads the immutable provider model map."
+    },
+    {
+      "capture": "csp3/manual-retention-focused.jsonl",
+      "exit_code": 1,
+      "reason": "A synthetic release baseline hid newer reviewed definitions. The collector now selects the newest authored corpus for that source."
+    },
+    {
+      "capture": "csp3/manual-retention-provider-order-red.jsonl",
+      "exit_code": 1,
+      "reason": "Older scheduled facts replaced newer manual facts, and a later omission discarded earlier provider fields. Shared history and priority replay fix both cases."
+    },
+    {
+      "capture": "csp3/manual-retention-policy.jsonl",
+      "exit_code": 1,
+      "reason": "The fallback fixture omitted the required source diagnostic message. The fixture now supplies it; retention still omits diagnostic text."
+    },
+    {
+      "capture": "csp3/manual-retention-reviewed-batch.jsonl",
+      "exit_code": 1,
+      "reason": "Two reviewed observations in one batch hid one input definition. Separate metadata passes preserve both definitions in one publication."
+    },
+    {
+      "capture": "csp3/manual-retention-lint.log",
+      "exit_code": 1,
+      "reason": "The initial publication function exceeded the complexity limit and omitted slice capacity."
+    },
+    {
+      "capture": "csp3/manual-retention-lint-latest.log",
+      "exit_code": 1,
+      "reason": "The publication function still exceeded the complexity limit. Journal completion now belongs to the layer store."
+    },
+    {
+      "capture": "csp3/manual-retention-writing.log",
+      "exit_code": 2,
+      "reason": "Initial specification prose exceeded paragraph length and contained restricted wording."
+    },
+    {
+      "capture": "csp3/manual-retention-writing-docs.log",
+      "exit_code": 2,
+      "reason": "The writing check interpreted has fixed as a complex verb. The sentence now states the bounds directly."
+    },
+    {
+      "capture": "csp3/manual-retention-writing-final.log",
+      "exit_code": 2,
+      "reason": "The progress paragraph exceeded the sentence limit. A paragraph break separates test totals from exclusions."
+    }
+  ],
+  "input_hashes": [
+    {
+      "path": "docs/CATALOG_STORE_CONTRACT.md",
+      "sha256": "48bc399c4ce4fc57de1aa29112e9ee2500b98879f205840a277a0792d15c6c9a"
+    },
+    {
+      "path": "internal/catalog/reconciler/README.md",
+      "sha256": "a16942eacd3a4b491c21de24d4bc3ffe5c220447bcca05d885895bc09a033bc8"
+    },
+    {
+      "path": "internal/catalog/reconciler/collector.go",
+      "sha256": "9cc54a9a6033fe4747637b67618c7e5b65e05c71c61d2c865542932eef9a28d7"
+    },
+    {
+      "path": "internal/catalog/reconciler/provider_observations.go",
+      "sha256": "436cb52697255fd09ec9e925c6e6ee9ca88217096742d18162b19d47fdafc0a7"
+    },
+    {
+      "path": "internal/catalog/reconciler/scoped_observations.go",
+      "sha256": "213a9c4c91654ac798ec039e100edbf96d32b96ba1129908665b6e1e0ff6249b"
+    },
+    {
+      "path": "internal/cli/app/file_manifest.go",
+      "sha256": "96bcc4d946d982f6c2219e8beb23cb12594763c25a1428edf9d80172045df624"
+    },
+    {
+      "path": "internal/cli/app/file_manifest_test.go",
+      "sha256": "9b821c6ce6b01e8c05fc19f2597f10eb39f6aabac1ec84e421d78f2035c46f59"
+    },
+    {
+      "path": "runtime/README.md",
+      "sha256": "eedf920935521a0ff7807e0c89fe236532fef261784f843ea6972a033af696d3"
+    },
+    {
+      "path": "runtime/layers.go",
+      "sha256": "9933618793ca7d7c06791e7f378e54287a0e97719f186de142e0c54483b1d92e"
+    },
+    {
+      "path": "runtime/migration_catalog.go",
+      "sha256": "2d40c33a63cd3894cd6a762bba9b33c2804a0e8336c2f6b3033b44bf09479d6e"
+    },
+    {
+      "path": "runtime/publication_journal.go",
+      "sha256": "a850602ea684e462903225e32f40858a100bef3f1bccd7a540a82c4434ba358e"
+    },
+    {
+      "path": "runtime/publication_recovery_test.go",
+      "sha256": "10ac7f1eab12cc1b4b4119c8d9864fbc716816d032b880c6522ad394e75bcd71"
+    },
+    {
+      "path": "runtime/publication_retention.go",
+      "sha256": "5892134dbff7623d259c25a1076d3a756ba64a08d8c9567e8f142c1c9194fced"
+    },
+    {
+      "path": "runtime/refresh.go",
+      "sha256": "1af24e067241fb705b7c53592e9f3f85befd507c4c4d776fee9be347f4a67700"
+    },
+    {
+      "path": "runtime/runtime.go",
+      "sha256": "2aa580ec4c44c576cdab79a470cedd1c1cb37e9305bc1f6f6f46e19d0458a8c4"
+    },
+    {
+      "path": "internal/catalog/reconciler/authored_observation_test.go",
+      "sha256": "3c81d406fdbdff7ab95dbad19fb27eb30a35ce2e780788326039b1037a598ff3"
+    },
+    {
+      "path": "runtime/manual_binding_test.go",
+      "sha256": "070997df5babefd005fde6cc7363b8f93859d91bd33f43cc3c5c57ff68cbc256"
+    },
+    {
+      "path": "runtime/manual_history.go",
+      "sha256": "5cd44488602e595666f8debe0fc4335cc4ce10b267bdf090a38f8d664c22c014"
+    },
+    {
+      "path": "runtime/manual_lifecycle_test.go",
+      "sha256": "2adf49a1fcbdaf34cdf8639edfba836fa09a5d109bbb0c47922aa6c3baa624c2"
+    },
+    {
+      "path": "runtime/manual_observation.go",
+      "sha256": "c2ab66611eb39136cff87f258d7f64e48c4f30a59ca8ecdc38348312f3a922e3"
+    },
+    {
+      "path": "runtime/manual_provider_test.go",
+      "sha256": "4fc7dc5e9ecb7572ffe6b647d80fb418247ff64932fbc5342cca5e775ac9cc6c"
+    },
+    {
+      "path": "runtime/manual_reconciliation.go",
+      "sha256": "fad8a5d13ed3ed1ac0be411e5b800a35a071f57b60788b7604f533a1729f6c72"
+    },
+    {
+      "path": "runtime/manual_recovery_test.go",
+      "sha256": "33eb718c911f46e7587f9c30b7414a6397f326400b512706fbe68f5fae2c9f86"
+    },
+    {
+      "path": "runtime/manual_retention_test.go",
+      "sha256": "a66dad85ff7a6823ce02017fc02186c58bc3de3f827f9f8350221712f3c3f003"
+    }
+  ],
+  "raw_captures": [
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/manual-retention-ago-final.json",
+      "sha256": "b8fb7afa66aa7a93914ac258475dd0191be821803a8aea4439f5ba05022f5fa5",
+      "bytes": 289
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/manual-retention-ago-verified.json",
+      "sha256": "b8fb7afa66aa7a93914ac258475dd0191be821803a8aea4439f5ba05022f5fa5",
+      "bytes": 289
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/manual-retention-ago.json",
+      "sha256": "b8fb7afa66aa7a93914ac258475dd0191be821803a8aea4439f5ba05022f5fa5",
+      "bytes": 289
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/manual-retention-all.jsonl",
+      "sha256": "96f1b7776278a2c54ed5d264ad87cd9618157fa6aeef1d27ee313744bd9f2ce5",
+      "bytes": 4371346
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/manual-retention-app-final.jsonl",
+      "sha256": "88c91c78727b41f2d6395bc2d67548d0739fa4944edfd866ba6938d276d6e18a",
+      "bytes": 195047
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/manual-retention-bindings.jsonl",
+      "sha256": "158da2bcc9962f4b46fdb72225f036b09d9d01e6de6d1b357b4641562f79d9ce",
+      "bytes": 5023
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/manual-retention-compile.log",
+      "sha256": "146cd220e44d6f0c52fb268c01b08a62bd3b8619638788ce6a5cb72de53100ac",
+      "bytes": 70
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/manual-retention-contracts-final.jsonl",
+      "sha256": "b8e941316814d0cd6602b1c7fb81af36882c84f2261646c2a026dabba18d2c62",
+      "bytes": 55886
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/manual-retention-contracts.jsonl",
+      "sha256": "1d67143a8c1960d5c060cd0cff56054037dfd43a47eefd3eeb9f6d85ed7dd848",
+      "bytes": 43075
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/manual-retention-corpus.jsonl",
+      "sha256": "33757c3944d5000a55af6c230488640e9fb6d843d82820fd78739b31214d2cdf",
+      "bytes": 11766
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/manual-retention-dependencies.log",
+      "sha256": "56667b8f5a604ac9a61a563e73d4b332835bf144d0814833511a4f9f204a11b9",
+      "bytes": 1254
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/manual-retention-first.jsonl",
+      "sha256": "1fbb6f33e24be392dbc928c3287f3088ca62efdeef6f3e27e5487d936be2769f",
+      "bytes": 1448
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/manual-retention-focused-latest.jsonl",
+      "sha256": "2a4ce59e09fe33dc4b84a58d4aea6259ea36068c8e366bf88ba63c9672c96fd7",
+      "bytes": 20378
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/manual-retention-focused.jsonl",
+      "sha256": "9fcc93fc55130fb13805e9d48417362af13c074cdbb2c96fa11a95b9f1224f88",
+      "bytes": 8309
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/manual-retention-generate-final.log",
+      "sha256": "249d1e8196c23fdca6ae71e54f188db9d1054f7cc95656a906a5074883e21c3f",
+      "bytes": 9934
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/manual-retention-generate-verified.log",
+      "sha256": "9e9a2e4ddda223c12562a8d2277039fb5fad7aebe79e1da255e073d2bf91ea9c",
+      "bytes": 9934
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/manual-retention-generate.log",
+      "sha256": "b703f9f8fe83cbe0ac698b9e354085f288977be5d29dae5faa66ead96cff1d62",
+      "bytes": 9934
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/manual-retention-lint-final.log",
+      "sha256": "e92606b0bf483111dff0a120c315ea165821348f31365020e2468a0059095c47",
+      "bytes": 10
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/manual-retention-lint-latest.log",
+      "sha256": "4573b8dba3a48379bcc561f5db9a360d567c7164eec87bda5b1512aed07ed62e",
+      "bytes": 324
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/manual-retention-lint-verified.log",
+      "sha256": "e92606b0bf483111dff0a120c315ea165821348f31365020e2468a0059095c47",
+      "bytes": 10
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/manual-retention-lint.log",
+      "sha256": "259b3114a658736289fdc3f9d3fe9bced1f1a2cfa992a480290d4f39e19496f8",
+      "bytes": 530
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/manual-retention-normal-final.jsonl",
+      "sha256": "e2b643fc5cf5a38182c079283aaffbf9908b62d76294bc7cda522cc549a77929",
+      "bytes": 773916
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/manual-retention-policy.jsonl",
+      "sha256": "65edc6dbe597617d818b43b3db5e70e959a88f44a59605126ef81ca289ff7c19",
+      "bytes": 55598
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/manual-retention-product.json",
+      "sha256": "0a5cc1a33899402e4135c4ef56e28730155c63025b771d83734fcab9c93df5bb",
+      "bytes": 7700
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/manual-retention-provider-order-fixed.jsonl",
+      "sha256": "ced5b3cbff1e3650160f7e339505b3e0e2bc05d1f3f3777e765229c53579d660",
+      "bytes": 7854
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/manual-retention-provider-order-red.jsonl",
+      "sha256": "586cecd5d592c1ef113b01f1e27c70b5aa52fb36e5075244cccab0fda7bdd9c1",
+      "bytes": 8116
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/manual-retention-race.jsonl",
+      "sha256": "a27c30ffc416db65df3c9a101505c4960c981134e625fa6ec25ed6305beb3fe0",
+      "bytes": 1226629
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/manual-retention-reviewed-batch.jsonl",
+      "sha256": "d04bdd1b6eb9daf88e97633ee5ccbe84189dd8b03e2989b053da60a273438a16",
+      "bytes": 2469
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/manual-retention-writing-code.log",
+      "sha256": "a2bfd3a362631468c2b4f5937746d7f322e18873aa428b00757f3ff32e77d33d",
+      "bytes": 558
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/manual-retention-writing-docs.log",
+      "sha256": "70eec091a6f546a50e31249c6ed194a22d4314a15a102f4c1ecea48f6ab52c81",
+      "bytes": 801
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/manual-retention-writing-verified.log",
+      "sha256": "a2bfd3a362631468c2b4f5937746d7f322e18873aa428b00757f3ff32e77d33d",
+      "bytes": 558
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/manual-retention-writing.log",
+      "sha256": "447646f918243cb4b9f0ac3f8b7e0ce1c4fd52793d8c20971d31dc184c8bf252",
+      "bytes": 1166
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/manual-retention-documents.log",
+      "sha256": "d6448bb0b23cea6b1001123ddd39bb92e57a7e6bfddfab9dfff4ffd9b2322ece",
+      "bytes": 3981
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/manual-retention-writing-final.log",
+      "sha256": "bb6c597835ff5503b56937d247335fc87c3d1b6522915d2f351f10d06b3ef389",
+      "bytes": 791
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/manual-retention-writing-settled.log",
+      "sha256": "a2bfd3a362631468c2b4f5937746d7f322e18873aa428b00757f3ff32e77d33d",
+      "bytes": 558
+    }
+  ],
+  "acceptance": {
+    "primary_passed": 0,
+    "primary_unverified": 50,
+    "required_subcases": 324,
+    "credit": "none"
+  },
+  "next_action": "Define the runtime-owned acquisition callback and reset scopes before CLI and HTTP adoption. Prepare replacements against the selected baseline, preserve operator input and unrelated scopes, then journal resets with accepted observations. Preserve preview behavior and reject borrowed retired-binding provenance.",
+  "audit": {
+    "scope": "Manual repository-grounded component audit; structured pre-PR review remains open.",
+    "reviewed": [
+      "Original receipt identity and payload ownership",
+      "Journal acceptance boundary and parent recovery validation",
+      "Manual run serialization, cancellation, and shutdown",
+      "Provider priority, omissions, binding revision checks, and replay identity",
+      "Private file inventory and migration reconstruction",
+      "Dependency boundaries and public generated documentation"
+    ],
+    "open": [
+      "Runtime-owned acquisition callback and D24 reset masks",
+      "Borrowed field provenance in local projections",
+      "Compaction, collection, shared recovery, and native format qualification"
+    ]
+  }
+}
