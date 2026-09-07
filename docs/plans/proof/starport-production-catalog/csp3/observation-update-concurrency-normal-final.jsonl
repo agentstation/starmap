@@ -1,0 +1,10 @@
+{"Time":"2026-09-07T07:37:40.853455-05:00","Action":"start","Package":"github.com/agentstation/starmap/runtime"}
+{"Time":"2026-09-07T07:37:41.243597-05:00","Action":"run","Package":"github.com/agentstation/starmap/runtime","Test":"TestConcurrentRuntimeRebuildsPublishCompleteGenerationsInOrder"}
+{"Time":"2026-09-07T07:37:41.243706-05:00","Action":"output","Package":"github.com/agentstation/starmap/runtime","Test":"TestConcurrentRuntimeRebuildsPublishCompleteGenerationsInOrder","Output":"=== RUN   TestConcurrentRuntimeRebuildsPublishCompleteGenerationsInOrder\n"}
+{"Time":"2026-09-07T07:37:42.760976-05:00","Action":"output","Package":"github.com/agentstation/starmap/runtime","Test":"TestConcurrentRuntimeRebuildsPublishCompleteGenerationsInOrder","Output":"{\"level\":\"info\",\"provider_count\":1,\"time\":\"2026-09-07T07:37:42-05:00\",\"message\":\"Filtered providers by primary source\"}\n"}
+{"Time":"2026-09-07T07:37:42.8131-05:00","Action":"output","Package":"github.com/agentstation/starmap/runtime","Test":"TestConcurrentRuntimeRebuildsPublishCompleteGenerationsInOrder","Output":"{\"level\":\"info\",\"provider_count\":2,\"time\":\"2026-09-07T07:37:42-05:00\",\"message\":\"Filtered providers by primary source\"}\n"}
+{"Time":"2026-09-07T07:37:42.865331-05:00","Action":"output","Package":"github.com/agentstation/starmap/runtime","Test":"TestConcurrentRuntimeRebuildsPublishCompleteGenerationsInOrder","Output":"--- PASS: TestConcurrentRuntimeRebuildsPublishCompleteGenerationsInOrder (1.62s)\n"}
+{"Time":"2026-09-07T07:37:42.865367-05:00","Action":"pass","Package":"github.com/agentstation/starmap/runtime","Test":"TestConcurrentRuntimeRebuildsPublishCompleteGenerationsInOrder","Elapsed":1.62}
+{"Time":"2026-09-07T07:37:42.865384-05:00","Action":"output","Package":"github.com/agentstation/starmap/runtime","Output":"PASS\n"}
+{"Time":"2026-09-07T07:37:42.87311-05:00","Action":"output","Package":"github.com/agentstation/starmap/runtime","Output":"ok  \tgithub.com/agentstation/starmap/runtime\t2.019s\n"}
+{"Time":"2026-09-07T07:37:42.87314-05:00","Action":"pass","Package":"github.com/agentstation/starmap/runtime","Elapsed":2.02}
