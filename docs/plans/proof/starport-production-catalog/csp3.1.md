@@ -36,3 +36,10 @@ The [verification record](csp3.1/verification.json) includes all six benchmark c
 The first fixture lacked its authored model's primary author. The corrected fixture declared its primary author before the allocation regression ran.
 The documentation check initially found shifted source links. Its original output remains beside the corrected check.
 CSP10.1 owns Starport integration and its remaining A44 subcases. CSP0.4 and CSP10.1 retain the full-request performance contract.
+
+The additional Starport catalog check passes 134 race test events in one package with the local Go workspace.
+The [integration record](csp3.1/integration-verification.json) identifies both commits and the three existing Starport working files.
+This check qualifies the working pair only. It does not establish request latency or released-pair support.
+
+The final document contract check passes all 38 tasks, 50 primary cases, and 324 required subcases.
+The prose check initially found an eight-sentence paragraph. Splitting that paragraph preserves its facts, and the final repository writing check passes.

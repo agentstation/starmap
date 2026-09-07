@@ -424,7 +424,7 @@ The [latency resolution](../../plans/proof/starport-production-catalog/latency-r
 
 | ID | Verified gap | Required disposition and owner |
 | --- | --- | --- |
-| LR01 | Exact-model planning rebuilds all candidates. Starmap offering reads copy complete provider model maps. | CSP3.1 repairs indexed lookup. CSP10.1 precomputes candidates. A44 preserves aliases, ownership, authority, and generation leases. |
+| LR01 | Exact-model planning rebuilds all candidates. Starmap offering reads copy complete provider model maps. | CSP3.1 completed locally in `70f01b6a`. CSP10.1 still must precompute candidates. A44 preserves aliases, ownership, authority, and generation leases. |
 | LR02 | Account and shared credential decryption repeats Argon2 during requests. | CSP9.1 manages bounded, revision-bound material. A45 preserves encryption strength, grants, rotation, expiry, and revocation. |
 | LR03 | Gateway key and account checks read KV records. Team budget policy can query SQL on each request. | CSP10.2 caches valid authorization bundles. CSP16 retains applied configuration in memory. A46 and A28 enforce validity and authority. |
 | LR04 | Applicable meters require repeated storage work. Lossy usage capture cannot prove strict concurrent budgets. | CSP12.2 reserves capacity atomically and recovers uncertain attempts. CSP15 qualifies real failures through A15 and A47. |
@@ -1389,3 +1389,13 @@ The deletion investigation also identified a boundary that CSP3 must preserve.
 Starport's `internal/providers/state/store.go` projects routing state by provider and model, without a Starmap acquisition binding.
 Its `internal/providers/keyring/keys.go` uses Starport account identity for credential storage. That identity does not establish an upstream provider account.
 Account-specific catalog removals must not become global offering withdrawals through either representation. Scope-aware routing enforcement remains unverified.
+
+
+## CSP3.1 offering lookup correction
+
+Commit `70f01b6a` replaces full-provider copies during offering lookup with an immutable identity index.
+Canonical and alias lookups retain their errors and caller-owned values. Concurrent mutation tests preserve retained catalog values.
+
+The [proof](../../plans/proof/starport-production-catalog/csp3.1.md) records the allocation regression, benchmark samples, 843 catalog race events, and both assigned A44 checks.
+At 10,000 models, canonical lookup changed from 17,398,242 bytes and 160,047 allocations to 1,104 bytes and 11 allocations.
+Full Starport request overhead remains outside this measurement. CSP10.1 owns its remaining candidate preparation and lookup work.
