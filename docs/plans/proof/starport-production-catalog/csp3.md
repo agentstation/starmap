@@ -747,7 +747,7 @@ The proposed shared-review-helper change remains unapplied, and these branch upd
 ### Scoped records in reconciliation
 
 Commit `14233354` corrects source-type maps that discarded peer catalogs before reconciliation.
-The [first regression](csp3/scoped-reconciliation-red.log) reproduced a lost offering and input-order selection of an older shared model.
+The [first regression](csp3/scoped-reconciliation-red.log) reproduced a lost offering. It also showed that input order selected an older shared model.
 Collection now preserves scoped observations, and primary-source filtering includes every selected provider.
 
 Each selected provider or model record retains its original observation and health classification.
@@ -767,7 +767,7 @@ Earlier compilation and fixture failures remain in the captures. The final bindi
 
 Evidence commit `609c7f38` preserves seventeen captures, totaling 2,025,415 bytes.
 The local planning base contains those exact files, so their output does not enlarge the code review diff.
-The plan's header paragraph boundary is restored, and adjacent table rows preserve its 500-line limit.
+The plan again separates its header paragraphs. Adjacent table rows preserve its 500-line limit.
 
 Manual acquisition still needs separate observations for each selected binding and publication through runtime retention.
 The caller remains responsible for active binding authorization. Field-presence handling, scoped deletion, and full runtime field authority remain open.
