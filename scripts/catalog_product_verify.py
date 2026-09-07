@@ -92,9 +92,11 @@ def run_check(identity, entry, roots):
     if entry.get("kind") == "vitest":
         return run_vitest(entry, roots)
     if entry.get("kind") == "reviewed_ui":
-        return reviewed_ui(entry, roots)
+        return reviewed_artifacts(entry, roots, "browser")
     if entry.get("kind") == "reviewed_first_use":
         return reviewed_first_use(entry, roots)
+    if entry.get("kind") == "reviewed_demo":
+        return reviewed_demo(entry, roots)
     if entry.get("kind") == "performance_baseline":
         return run_performance_baseline(entry, roots)
     if entry.get("kind") == "performance_profile":
@@ -162,33 +164,90 @@ def run_vitest(entry, roots):
     return {"status": "PASS" if passed else "UNVERIFIED", "report": report, **evidence}
 
 
-def reviewed_ui(entry, roots):
-    """Require a recorded browser review of the current source and its retained captures."""
+def reviewed_artifacts(entry, roots, medium):
+    """Require recorded observations of current source and retained artifacts."""
     try:
         proof = ROOT / entry["proof"]
         review = read_json(proof)
         root = roots[entry["repository"]]
         if review.get("schema_version") != 1 or review.get("verdict") != "PASS":
-            raise ValueError("A passing browser review is required.")
+            raise ValueError(f"A passing {medium} review is required.")
         required = set(entry["observations"])
         if not required or not all(review["observations"].get(name) is True for name in required):
-            raise ValueError("The browser review omits a required observation.")
+            raise ValueError(f"The {medium} review omits a required observation.")
         inputs = review["inputs"]
         if not set(entry["required_inputs"]) <= inputs.keys():
-            raise ValueError("The browser review omits required source inputs.")
+            raise ValueError(f"The {medium} review omits required source inputs.")
         for path, digest in inputs.items():
             if hashlib.sha256((root / path).read_bytes()).hexdigest() != digest:
-                raise ValueError(f"The browser review is stale: {path}")
+                raise ValueError(f"The {medium} review is stale: {path}")
         captures = review["captures"]
         if not captures:
-            raise ValueError("The browser review has no retained captures.")
+            raise ValueError(f"The {medium} review has no retained captures.")
         for path, digest in captures.items():
             if hashlib.sha256((proof.parent / path).read_bytes()).hexdigest() != digest:
                 raise ValueError(f"A reviewed capture changed: {path}")
-        return {"status": "PASS", "reason": "Recorded browser review matches the current inputs.",
+        return {"status": "PASS", "reason": f"Recorded {medium} review matches the current inputs.",
                 "proof": str(proof), "proof_sha256": hashlib.sha256(proof.read_bytes()).hexdigest(),
-                "scope": "Recorded manual browser observations. This invocation did not repeat browser interaction."}
+                "scope": f"Recorded manual {medium} observations. This invocation did not repeat the capture."}
     except (OSError, ValueError, KeyError, TypeError) as error:
+        return {"status": "UNVERIFIED", "reason": str(error)}
+
+
+def reviewed_demo(entry, roots):
+    """Require readable media and edits that preserve the real inference interval."""
+    checked = reviewed_artifacts(entry, roots, "media")
+    if checked["status"] != "PASS":
+        return checked
+    try:
+        proof = contained_path(ROOT, entry["proof"])
+        review = read_json(proof)
+        if not {review["capture"], review["render"]} <= review["captures"].keys():
+            raise ValueError("The media review must retain capture and render records.")
+        capture = read_json(contained_path(proof.parent, review["capture"]))
+        render = read_json(contained_path(proof.parent, review["render"]))
+        if capture.get("verdict") != "PASS" or capture.get("release") != review["release"]:
+            raise ValueError("The demonstration needs a successful capture of its release.")
+        if capture.get("response_status") != 200 or capture.get("stream_events", [{}])[-1].get("data") != "[DONE]":
+            raise ValueError("The demonstration needs a complete real inference stream.")
+        chunks = [json.loads(event["data"]) for event in capture["stream_events"][:-1]]
+        if not any(choice.get("delta", {}).get("content") for chunk in chunks for choice in chunk.get("choices", [])):
+            raise ValueError("The demonstration contains no model response.")
+        if (capture.get("persistent_selectors_present") != [] or capture.get("remaining_home_files") != []
+                or capture.get("catalog_environment_has_provider_key") is not False
+                or capture.get("shutdown_exit_code") != 0 or capture.get("scratch_removed") is not True):
+            raise ValueError("The capture does not establish temporary, keyless first use and cleanup.")
+        start, end = capture["inference_start_seconds"], capture["inference_end_seconds"]
+        if not 0 <= start < end:
+            raise ValueError("The inference interval is invalid.")
+        if render["capture_sha256"] != hashlib.sha256(contained_path(proof.parent, review["capture"]).read_bytes()).hexdigest():
+            raise ValueError("The renderer used a different capture.")
+        if render["width"] < 1280 or render["effective_font_at_900px"] < 14:
+            raise ValueError("The demonstration does not meet the readable dimensions.")
+        for edit in render["edits"]:
+            index = edit["before_event"]
+            if not isinstance(index, int) or not 0 < index < len(capture["events"]):
+                raise ValueError("The edit does not identify a captured interval.")
+            left, right = capture["events"][index - 1]["seconds"], capture["events"][index]["seconds"]
+            if (abs(edit["original_gap_seconds"] - (right - left)) > 0.000001
+                    or not math.isfinite(edit["edited_gap_seconds"]) or edit["edited_gap_seconds"] < 0):
+                raise ValueError("The edit does not match the captured interval.")
+            if left < end and right > start:
+                raise ValueError("An edit changes the inference interval.")
+        for name in ("first-use.gif", "first-use-uncut.gif"):
+            artifact = contained_path(roots[entry["repository"]], entry["asset_directory"] + "/" + name)
+            output = render["outputs"][name]
+            if output["sha256"] != hashlib.sha256(artifact.read_bytes()).hexdigest() or output["bytes"] != artifact.stat().st_size:
+                raise ValueError("The rendered artifact changed.")
+            header = artifact.read_bytes()[:10]
+            if (header[:6] not in (b"GIF87a", b"GIF89a")
+                    or int.from_bytes(header[6:8], "little") != render["width"]
+                    or int.from_bytes(header[8:10], "little") != render["height"]):
+                raise ValueError("The GIF dimensions do not match the render record.")
+        if render["outputs"]["first-use.gif"]["bytes"] >= 10 * 1024 * 1024:
+            raise ValueError("The GIF exceeds the project size budget.")
+        return checked
+    except (OSError, ValueError, KeyError, TypeError, IndexError) as error:
         return {"status": "UNVERIFIED", "reason": str(error)}
 
 

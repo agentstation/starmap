@@ -341,5 +341,76 @@ class FirstUseReviewTests(unittest.TestCase):
         self.assertEqual(self.check(), 'UNVERIFIED')
 
 
+class DemoReviewTests(unittest.TestCase):
+    def setUp(self):
+        self.directory = tempfile.TemporaryDirectory()
+        self.addCleanup(self.directory.cleanup)
+        self.root = Path(self.directory.name)
+        (self.root / 'README.md').write_text('fixture')
+        (self.root / 'assets').mkdir()
+        # The fixture covers identity and header checks. Human review owns visual quality.
+        data = b'GIF89a' + (1280).to_bytes(2, 'little') + (800).to_bytes(2, 'little')
+        outputs = {}
+        for name in ['first-use.gif', 'first-use-uncut.gif']:
+            (self.root / 'assets' / name).write_bytes(data)
+            outputs[name] = {'sha256': hashlib.sha256(data).hexdigest(), 'bytes': len(data)}
+        self.capture = {'verdict': 'PASS', 'release': 'v1.2.0', 'response_status': 200,
+                        'stream_events': [{'data': '{"choices":[{"delta":{"content":"Hello"}}]}'}, {'data': '[DONE]'}],
+                        'events': [{'seconds': 0}, {'seconds': 4}, {'seconds': 7}],
+                        'persistent_selectors_present': [], 'remaining_home_files': [],
+                        'catalog_environment_has_provider_key': False, 'shutdown_exit_code': 0, 'scratch_removed': True,
+                        'inference_start_seconds': 5, 'inference_end_seconds': 7}
+        self.render = {'width': 1280, 'height': 800, 'effective_font_at_900px': 18,
+                       'edits': [{'before_event': 1, 'original_gap_seconds': 4, 'edited_gap_seconds': 2}], 'outputs': outputs}
+        self.entry = {'kind': 'reviewed_demo', 'repository': 'starport', 'proof': 'review.json',
+                      'asset_directory': 'assets', 'required_inputs': ['README.md'], 'observations': ['readable']}
+
+    def check(self):
+        (self.root / 'capture.json').write_text(json.dumps(self.capture))
+        digest = lambda name: hashlib.sha256((self.root / name).read_bytes()).hexdigest()
+        self.render['capture_sha256'] = digest('capture.json')
+        (self.root / 'render.json').write_text(json.dumps(self.render))
+        review = {'schema_version': 1, 'verdict': 'PASS', 'release': 'v1.2.0', 'capture': 'capture.json',
+                  'render': 'render.json', 'observations': {'readable': True},
+                  'inputs': {'README.md': digest('README.md')},
+                  'captures': {name: digest(name) for name in ['capture.json', 'render.json']}}
+        (self.root / 'review.json').write_text(json.dumps(review))
+        with patch.object(verifier, 'ROOT', self.root):
+            return verifier.run_check('E03', self.entry, {'starport': self.root})['status']
+
+    def test_coherent_review_passes(self):
+        self.assertEqual(self.check(), 'PASS')
+
+    def test_edits_cannot_intersect_inference(self):
+        self.render['edits'] = [{'before_event': 2, 'original_gap_seconds': 3, 'edited_gap_seconds': 1}]
+        self.assertEqual(self.check(), 'UNVERIFIED')
+
+    def test_false_gap_or_negative_duration_refuses(self):
+        self.render['edits'][0]['original_gap_seconds'] = 10
+        self.assertEqual(self.check(), 'UNVERIFIED')
+        self.render['edits'][0]['original_gap_seconds'] = 4
+        self.render['edits'][0]['edited_gap_seconds'] = -1
+        self.assertEqual(self.check(), 'UNVERIFIED')
+
+    def test_incomplete_stream_or_cleanup_refuses(self):
+        self.capture['stream_events'] = []
+        self.assertEqual(self.check(), 'UNVERIFIED')
+        self.capture['stream_events'] = [{'data': '[DONE]'}]
+        self.assertEqual(self.check(), 'UNVERIFIED')
+        self.capture['stream_events'] = [{'data': '{"choices":[{"delta":{"content":"Hello"}}]}'}, {'data': '[DONE]'}]
+        self.capture['remaining_home_files'] = ['retained.db']
+        self.assertEqual(self.check(), 'UNVERIFIED')
+
+    def test_unreadable_dimensions_or_changed_gif_refuses(self):
+        self.render['width'] = 500
+        self.assertEqual(self.check(), 'UNVERIFIED')
+        self.render['width'] = 1280
+        self.render['height'] = 900
+        self.assertEqual(self.check(), 'UNVERIFIED')
+        self.render['height'] = 800
+        (self.root / 'assets/first-use.gif').write_bytes(b'changed')
+        self.assertEqual(self.check(), 'UNVERIFIED')
+
+
 if __name__ == '__main__':
     unittest.main(verbosity=2)

@@ -413,7 +413,7 @@
     "E02": {
       "kind": "reviewed_first_use",
       "repository": "starport",
-      "proof": "docs/plans/proof/starport-production-catalog/csp0.2/first-use-review.json",
+      "proof": "docs/plans/proof/starport-production-catalog/csp0.2/first-use-demo-review.json",
       "required_inputs": [
         "README.md",
         "docker-compose.yml",
@@ -448,6 +448,40 @@
         "source-build",
         "container-release",
         "compose-source"
+      ]
+    },
+    "E03": {
+      "kind": "reviewed_demo",
+      "repository": "starport",
+      "proof": "docs/plans/proof/starport-production-catalog/csp0.3/media-review.json",
+      "asset_directory": "docs/assets/first-use-v1.2.0",
+      "required_inputs": [
+        "README.md",
+        "docs/assets/first-use-v1.2.0/render.json",
+        "docs/assets/first-use-v1.2.0/events.json",
+        "docs/assets/first-use-v1.2.0/render.py",
+        "docs/assets/first-use-v1.2.0/first-use-uncut.gif",
+        "docs/assets/first-use-v1.2.0/poster.png",
+        "docs/assets/first-use-v1.2.0/first-use.gif",
+        "docs/assets/first-use-v1.2.0/capture.py",
+        "docs/assets/first-use-v1.2.0/replay.py",
+        "docs/assets/first-use-v1.2.0/TRANSCRIPT.md"
+      ],
+      "observations": [
+        "installation",
+        "catalog_before_credentials",
+        "separate_gateway_and_provider_credentials",
+        "real_streamed_answer",
+        "client_urls_and_persistent_next_step",
+        "readable_at_900px",
+        "original_inference_timing",
+        "edits_disclosed",
+        "no_secret_material",
+        "static_poster_and_transcript",
+        "light_dark_and_narrow_preview",
+        "keyboard_and_missing_image_fallback",
+        "temporary_cleanup",
+        "no_unfinished_product_claims"
       ]
     }
   }

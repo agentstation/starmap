@@ -1,0 +1,35 @@
+(node:9936) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+Update available: 1.6.0 -> 1.8.0
+Run `npm install -g chrome-devtools-mcp@latest` and `chrome-devtools start` to update and restart the daemon.
+
+Script ran on page and returned:
+```json
+true
+```
+(node:9937) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+Update available: 1.6.0 -> 1.8.0
+Run `npm install -g chrome-devtools-mcp@latest` and `chrome-devtools start` to update and restart the daemon.
+
+Emulating viewport: {"isMobile":false,"hasTouch":false,"isLandscape":false,"width":320,"height":900}
+Emulating color scheme: dark
+## Latest page snapshot
+uid=2_0 RootWebArea "Starport README media review" url="file:///tmp/starport-csp03-readme-preview.html"
+  uid=2_1 main
+    uid=2_2 heading "Starport" level="1"
+    uid=2_3 StaticText "Install. Explore the catalog. Send a real request."
+    uid=2_4 link "Starport returns a real streamed OpenAI answer after installation, catalog inspection, and provider setup. Select the preview to play." focusable focused url="file:///Users/jack/src/github.com/agentstation/starport-catalog-lifecycle/docs/assets/first-use-v1.2.0/first-use.gif"
+      uid=2_5 image "Starport returns a real streamed OpenAI answer after installation, catalog inspection, and provider setup. Select the preview to play." url="file:///unavailable-starport-preview.png"
+    uid=2_6 link "Watch the 38-second first request" url="file:///Users/jack/src/github.com/agentstation/starport-catalog-lifecycle/docs/assets/first-use-v1.2.0/first-use.gif"
+      uid=2_7 StaticText "Watch the 38-second first request"
+    uid=2_8 StaticText " or read the "
+    uid=2_9 link "transcript and reproduction steps" url="file:///Users/jack/src/github.com/agentstation/starport-catalog-lifecycle/docs/assets/first-use-v1.2.0/TRANSCRIPT.md"
+      uid=2_10 StaticText "transcript and reproduction steps"
+    uid=2_11 StaticText ". The recording uses release v1.2.0 and a real provider. It shortens the credential-entry wait and preserves inference timing. The static preview does not autoplay. The earlier "
+    uid=2_12 link "console tour" url="file:///Users/jack/src/github.com/agentstation/starport-catalog-lifecycle/docs/assets/2026-08-29_starport-console.gif"
+      uid=2_13 StaticText "console tour"
+    uid=2_14 StaticText " shows the catalog and provider views."
+
