@@ -34,8 +34,9 @@ type App struct {
 	builtBy string
 
 	// Configuration
-	config       *Config
-	commandFlags commandFlags
+	config             *Config
+	commandFlags       commandFlags
+	deferCommandConfig bool
 
 	// Logger
 	logger *zerolog.Logger
@@ -63,22 +64,22 @@ func New(version, commit, date, builtBy string, opts ...Option) (*App, error) {
 		builtBy: builtBy,
 	}
 
-	// Load configuration
-	config, err := LoadConfig()
-	if err != nil {
-		return nil, errors.WrapResource("load", "config", "", err)
-	}
-	app.config = config
-
-	// Initialize logger
-	logger := NewLogger(config)
-	app.logger = &logger
-
-	// Apply any custom options
+	// Explicit Go configuration replaces ambient file discovery.
 	for _, opt := range opts {
 		if err := opt(app); err != nil {
 			return nil, err
 		}
+	}
+	if app.config == nil {
+		config, err := LoadConfig()
+		if err != nil {
+			return nil, errors.WrapResource("load", "config", "", err)
+		}
+		app.config = config
+	}
+	if app.logger == nil {
+		logger := NewLogger(app.config)
+		app.logger = &logger
 	}
 
 	// The canonical catalog settings load after the options, so a test
@@ -90,6 +91,15 @@ func New(version, commit, date, builtBy string, opts ...Option) (*App, error) {
 	app.catalogSettings = catalogSettings
 
 	return app, nil
+}
+
+// NewForCommand defers configuration until Cobra parses the command flags.
+// Help and version flags remain available without a valid deployment configuration.
+func NewForCommand(version, commit, date, builtBy string) *App {
+	config := &Config{LogFormat: "auto", LogOutput: "stderr"}
+	logger := NewLogger(config)
+	return &App{version: version, commit: commit, date: date, builtBy: builtBy,
+		config: config, logger: &logger, deferCommandConfig: true}
 }
 
 // Version returns the version information.
@@ -305,6 +315,13 @@ func (a *App) catalogClientOptions() ([]starmap.Option, error) {
 }
 
 func (a *App) catalogStoreOption() (starmap.Option, error) {
+	paths, err := a.ResolvedPaths()
+	if err != nil {
+		return nil, err
+	}
+	if err := checkLegacyCatalogRoots(paths); err != nil {
+		return nil, err
+	}
 	path, err := a.catalogStatePath()
 	if err != nil {
 		return nil, err

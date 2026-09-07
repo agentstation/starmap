@@ -1,0 +1,594 @@
+{
+  "schema_version": 1,
+  "settings": [
+    {
+      "description": "Selects the upstream catalog source.",
+      "allowed_values": [
+        "public",
+        "github",
+        "starmap",
+        "file",
+        "embedded"
+      ],
+      "id": "catalog.source",
+      "name": "STARMAP_CATALOG_SOURCE",
+      "key": "catalog_source",
+      "flag": "catalog-source",
+      "environment": [
+        "STARMAP_CATALOG_SOURCE"
+      ],
+      "type": "string",
+      "unit": "",
+      "default": "public",
+      "default_meaning": "",
+      "allow_empty": false,
+      "allow_zero": false,
+      "sensitive": false,
+      "scope": "deployment",
+      "source_binding": "catalog-source",
+      "applicability": [
+        "all"
+      ],
+      "mutability": "runtime-replacement",
+      "introduced": 1,
+      "compatibility": "supported",
+      "anchor": "catalog-source"
+    },
+    {
+      "description": "Names the Starmap endpoint or catalog file.",
+      "id": "catalog.source.url",
+      "name": "STARMAP_CATALOG_SOURCE_URL",
+      "key": "catalog_source_url",
+      "flag": "catalog-source-url",
+      "environment": [
+        "STARMAP_CATALOG_SOURCE_URL"
+      ],
+      "type": "string",
+      "unit": "",
+      "default": "",
+      "default_meaning": "required for a custom URL or file source",
+      "allow_empty": false,
+      "allow_zero": false,
+      "sensitive": false,
+      "scope": "deployment",
+      "source_binding": "catalog-source",
+      "applicability": [
+        "starmap",
+        "file"
+      ],
+      "mutability": "runtime-replacement",
+      "introduced": 1,
+      "compatibility": "supported",
+      "anchor": "catalog-source-url"
+    },
+    {
+      "description": "Authenticates transport to the selected catalog source. It is separate from provider credentials.",
+      "id": "catalog.source.api.key",
+      "name": "STARMAP_CATALOG_SOURCE_API_KEY",
+      "key": "catalog_source_api_key",
+      "flag": "catalog-source-api-key",
+      "environment": [
+        "STARMAP_CATALOG_SOURCE_API_KEY"
+      ],
+      "type": "string",
+      "unit": "",
+      "default": "",
+      "default_meaning": "no transport credential",
+      "allow_empty": true,
+      "allow_zero": false,
+      "sensitive": true,
+      "scope": "deployment",
+      "source_binding": "catalog-source",
+      "applicability": [
+        "starmap"
+      ],
+      "mutability": "runtime-replacement",
+      "introduced": 1,
+      "compatibility": "supported",
+      "anchor": "catalog-source-api-key"
+    },
+    {
+      "description": "Names the GitHub repository that publishes the catalog channel.",
+      "id": "catalog.source.repository",
+      "name": "STARMAP_CATALOG_SOURCE_REPOSITORY",
+      "key": "catalog_source_repository",
+      "flag": "catalog-source-repository",
+      "environment": [
+        "STARMAP_CATALOG_SOURCE_REPOSITORY"
+      ],
+      "type": "string",
+      "unit": "",
+      "default": "agentstation/starmap",
+      "default_meaning": "",
+      "allow_empty": false,
+      "allow_zero": false,
+      "sensitive": false,
+      "scope": "deployment",
+      "source_binding": "catalog-source",
+      "applicability": [
+        "public",
+        "github"
+      ],
+      "mutability": "runtime-replacement",
+      "introduced": 1,
+      "compatibility": "supported",
+      "anchor": "catalog-source-repository"
+    },
+    {
+      "description": "Names the branch that holds the catalog channel document.",
+      "id": "catalog.source.channel",
+      "name": "STARMAP_CATALOG_SOURCE_CHANNEL",
+      "key": "catalog_source_channel",
+      "flag": "catalog-source-channel",
+      "environment": [
+        "STARMAP_CATALOG_SOURCE_CHANNEL"
+      ],
+      "type": "string",
+      "unit": "",
+      "default": "catalog/v1",
+      "default_meaning": "",
+      "allow_empty": false,
+      "allow_zero": false,
+      "sensitive": false,
+      "scope": "deployment",
+      "source_binding": "catalog-source",
+      "applicability": [
+        "public",
+        "github"
+      ],
+      "mutability": "runtime-replacement",
+      "introduced": 1,
+      "compatibility": "supported",
+      "anchor": "catalog-source-channel"
+    },
+    {
+      "description": "Pins the accepted build provenance workflow.",
+      "id": "catalog.source.signer.workflow",
+      "name": "STARMAP_CATALOG_SOURCE_SIGNER_WORKFLOW",
+      "key": "catalog_source_signer_workflow",
+      "flag": "catalog-source-signer-workflow",
+      "environment": [
+        "STARMAP_CATALOG_SOURCE_SIGNER_WORKFLOW"
+      ],
+      "type": "string",
+      "unit": "",
+      "default": "",
+      "default_meaning": "source adapter's default signing workflow",
+      "allow_empty": false,
+      "allow_zero": false,
+      "sensitive": false,
+      "scope": "deployment",
+      "source_binding": "catalog-source",
+      "applicability": [
+        "public",
+        "github"
+      ],
+      "mutability": "runtime-replacement",
+      "introduced": 1,
+      "compatibility": "supported",
+      "anchor": "catalog-source-signer-workflow"
+    },
+    {
+      "description": "Authenticates transport to the selected catalog source. It is separate from provider credentials.",
+      "id": "catalog.source.token",
+      "name": "STARMAP_CATALOG_SOURCE_TOKEN",
+      "key": "catalog_source_token",
+      "flag": "catalog-source-token",
+      "environment": [
+        "STARMAP_CATALOG_SOURCE_TOKEN"
+      ],
+      "type": "string",
+      "unit": "",
+      "default": "",
+      "default_meaning": "no transport credential",
+      "allow_empty": true,
+      "allow_zero": false,
+      "sensitive": true,
+      "scope": "deployment",
+      "source_binding": "catalog-source",
+      "applicability": [
+        "public",
+        "github"
+      ],
+      "mutability": "runtime-replacement",
+      "introduced": 1,
+      "compatibility": "supported",
+      "anchor": "catalog-source-token"
+    },
+    {
+      "description": "Sets the period between automatic source checks. Zero disables periodic checks.",
+      "id": "catalog.source.poll.interval",
+      "name": "STARMAP_CATALOG_SOURCE_POLL_INTERVAL",
+      "key": "catalog_source_poll_interval",
+      "flag": "catalog-source-poll-interval",
+      "environment": [
+        "STARMAP_CATALOG_SOURCE_POLL_INTERVAL"
+      ],
+      "type": "duration",
+      "unit": "duration",
+      "default": "1h0m0s",
+      "default_meaning": "",
+      "allow_empty": false,
+      "allow_zero": true,
+      "sensitive": false,
+      "scope": "deployment",
+      "source_binding": "",
+      "applicability": [
+        "all"
+      ],
+      "mutability": "runtime-replacement",
+      "introduced": 1,
+      "compatibility": "supported",
+      "anchor": "catalog-source-poll-interval"
+    },
+    {
+      "description": "Selects catalog availability before the first upstream reply.",
+      "allowed_values": [
+        "prefer_source",
+        "require_source",
+        "prefer_local"
+      ],
+      "id": "catalog.source.startup.policy",
+      "name": "STARMAP_CATALOG_SOURCE_STARTUP_POLICY",
+      "key": "catalog_source_startup_policy",
+      "flag": "catalog-source-startup-policy",
+      "environment": [
+        "STARMAP_CATALOG_SOURCE_STARTUP_POLICY"
+      ],
+      "type": "string",
+      "unit": "",
+      "default": "prefer_source",
+      "default_meaning": "",
+      "allow_empty": false,
+      "allow_zero": false,
+      "sensitive": false,
+      "scope": "deployment",
+      "source_binding": "",
+      "applicability": [
+        "all"
+      ],
+      "mutability": "runtime-replacement",
+      "introduced": 1,
+      "compatibility": "supported",
+      "anchor": "catalog-source-startup-policy"
+    },
+    {
+      "description": "Sets the source freshness warning threshold. Zero keeps the default channel freshness thresholds.",
+      "id": "catalog.source.max.age",
+      "name": "STARMAP_CATALOG_SOURCE_MAX_AGE",
+      "key": "catalog_source_max_age",
+      "flag": "catalog-source-max-age",
+      "environment": [
+        "STARMAP_CATALOG_SOURCE_MAX_AGE"
+      ],
+      "type": "duration",
+      "unit": "duration",
+      "default": "6h0m0s",
+      "default_meaning": "",
+      "allow_empty": false,
+      "allow_zero": true,
+      "sensitive": false,
+      "scope": "deployment",
+      "source_binding": "",
+      "applicability": [
+        "all"
+      ],
+      "mutability": "runtime-replacement",
+      "introduced": 1,
+      "compatibility": "supported",
+      "anchor": "catalog-source-max-age"
+    },
+    {
+      "description": "Limits the accepted source chain length.",
+      "id": "catalog.source.max.hops",
+      "name": "STARMAP_CATALOG_SOURCE_MAX_HOPS",
+      "key": "catalog_source_max_hops",
+      "flag": "catalog-source-max-hops",
+      "environment": [
+        "STARMAP_CATALOG_SOURCE_MAX_HOPS"
+      ],
+      "type": "integer",
+      "unit": "hops",
+      "default": "8",
+      "default_meaning": "",
+      "allow_empty": false,
+      "allow_zero": false,
+      "sensitive": false,
+      "scope": "deployment",
+      "source_binding": "",
+      "applicability": [
+        "all"
+      ],
+      "mutability": "runtime-replacement",
+      "introduced": 1,
+      "compatibility": "supported",
+      "anchor": "catalog-source-max-hops"
+    },
+    {
+      "description": "Names other identities of this runtime for source cycle detection.",
+      "id": "catalog.source.aliases",
+      "name": "STARMAP_CATALOG_SOURCE_ALIASES",
+      "key": "catalog_source_aliases",
+      "flag": "catalog-source-aliases",
+      "environment": [
+        "STARMAP_CATALOG_SOURCE_ALIASES"
+      ],
+      "type": "string-list",
+      "unit": "",
+      "default": "",
+      "default_meaning": "",
+      "allow_empty": true,
+      "allow_zero": false,
+      "sensitive": false,
+      "scope": "node",
+      "source_binding": "",
+      "applicability": [
+        "all"
+      ],
+      "mutability": "restart",
+      "introduced": 1,
+      "compatibility": "supported",
+      "anchor": "catalog-source-aliases"
+    },
+    {
+      "description": "Enables automatic provider acquisition.",
+      "id": "catalog.acquisition.enabled",
+      "name": "STARMAP_CATALOG_ACQUISITION_ENABLED",
+      "key": "catalog_acquisition_enabled",
+      "flag": "catalog-acquisition-enabled",
+      "environment": [
+        "STARMAP_CATALOG_ACQUISITION_ENABLED"
+      ],
+      "type": "boolean",
+      "unit": "",
+      "default": "true",
+      "default_meaning": "",
+      "allow_empty": false,
+      "allow_zero": false,
+      "sensitive": false,
+      "scope": "deployment",
+      "source_binding": "",
+      "applicability": [
+        "all"
+      ],
+      "mutability": "runtime-replacement",
+      "introduced": 1,
+      "compatibility": "supported",
+      "anchor": "catalog-acquisition-enabled"
+    },
+    {
+      "description": "Sets the acquisition period. Zero permits one startup pass when automatic acquisition is on.",
+      "id": "catalog.acquisition.interval",
+      "name": "STARMAP_CATALOG_ACQUISITION_INTERVAL",
+      "key": "catalog_acquisition_interval",
+      "flag": "catalog-acquisition-interval",
+      "environment": [
+        "STARMAP_CATALOG_ACQUISITION_INTERVAL"
+      ],
+      "type": "duration",
+      "unit": "duration",
+      "default": "4h0m0s",
+      "default_meaning": "",
+      "allow_empty": false,
+      "allow_zero": true,
+      "sensitive": false,
+      "scope": "deployment",
+      "source_binding": "",
+      "applicability": [
+        "all"
+      ],
+      "mutability": "runtime-replacement",
+      "introduced": 1,
+      "compatibility": "supported",
+      "anchor": "catalog-acquisition-interval"
+    },
+    {
+      "description": "Bounds the wait before completed provider observations publish.",
+      "id": "catalog.coalesce.window",
+      "name": "STARMAP_CATALOG_COALESCE_WINDOW",
+      "key": "catalog_coalesce_window",
+      "flag": "catalog-coalesce-window",
+      "environment": [
+        "STARMAP_CATALOG_COALESCE_WINDOW"
+      ],
+      "type": "duration",
+      "unit": "duration",
+      "default": "30s",
+      "default_meaning": "",
+      "allow_empty": false,
+      "allow_zero": false,
+      "sensitive": false,
+      "scope": "deployment",
+      "source_binding": "",
+      "applicability": [
+        "all"
+      ],
+      "mutability": "runtime-replacement",
+      "introduced": 1,
+      "compatibility": "supported",
+      "anchor": "catalog-coalesce-window"
+    },
+    {
+      "description": "Names the reviewed operator catalog input.",
+      "id": "catalog.workspace.path",
+      "name": "STARMAP_CATALOG_WORKSPACE_PATH",
+      "key": "catalog_workspace_path",
+      "flag": "catalog-workspace-path",
+      "environment": [
+        "STARMAP_CATALOG_WORKSPACE_PATH"
+      ],
+      "type": "string",
+      "unit": "",
+      "default": "",
+      "default_meaning": "hosting application's workspace",
+      "allow_empty": true,
+      "allow_zero": false,
+      "sensitive": false,
+      "scope": "node",
+      "source_binding": "",
+      "applicability": [
+        "all"
+      ],
+      "mutability": "restart",
+      "introduced": 1,
+      "compatibility": "supported",
+      "anchor": "catalog-workspace-path"
+    },
+    {
+      "description": "Spreads cold automatic work across a stable time window. Zero disables the spread.",
+      "id": "catalog.startup.spread",
+      "name": "STARMAP_CATALOG_STARTUP_SPREAD",
+      "key": "catalog_startup_spread",
+      "flag": "catalog-startup-spread",
+      "environment": [
+        "STARMAP_CATALOG_STARTUP_SPREAD"
+      ],
+      "type": "duration",
+      "unit": "duration",
+      "default": "15m0s",
+      "default_meaning": "",
+      "allow_empty": false,
+      "allow_zero": true,
+      "sensitive": false,
+      "scope": "deployment",
+      "source_binding": "",
+      "applicability": [
+        "all"
+      ],
+      "mutability": "runtime-replacement",
+      "introduced": 1,
+      "compatibility": "supported",
+      "anchor": "catalog-startup-spread"
+    },
+    {
+      "description": "Bounds a transfer that makes no progress.",
+      "id": "catalog.transfer.idle.timeout",
+      "name": "STARMAP_CATALOG_TRANSFER_IDLE_TIMEOUT",
+      "key": "catalog_transfer_idle_timeout",
+      "flag": "catalog-transfer-idle-timeout",
+      "environment": [
+        "STARMAP_CATALOG_TRANSFER_IDLE_TIMEOUT"
+      ],
+      "type": "duration",
+      "unit": "duration",
+      "default": "2m0s",
+      "default_meaning": "",
+      "allow_empty": false,
+      "allow_zero": false,
+      "sensitive": false,
+      "scope": "deployment",
+      "source_binding": "",
+      "applicability": [
+        "all"
+      ],
+      "mutability": "runtime-replacement",
+      "introduced": 1,
+      "compatibility": "supported",
+      "anchor": "catalog-transfer-idle-timeout"
+    },
+    {
+      "description": "Bounds one finite HTTP body transfer. It does not bound an open event stream.",
+      "id": "catalog.transfer.max.duration",
+      "name": "STARMAP_CATALOG_TRANSFER_MAX_DURATION",
+      "key": "catalog_transfer_max_duration",
+      "flag": "catalog-transfer-max-duration",
+      "environment": [
+        "STARMAP_CATALOG_TRANSFER_MAX_DURATION"
+      ],
+      "type": "duration",
+      "unit": "duration",
+      "default": "1h0m0s",
+      "default_meaning": "",
+      "allow_empty": false,
+      "allow_zero": false,
+      "sensitive": false,
+      "scope": "deployment",
+      "source_binding": "",
+      "applicability": [
+        "all"
+      ],
+      "mutability": "runtime-replacement",
+      "introduced": 1,
+      "compatibility": "supported",
+      "anchor": "catalog-transfer-max-duration"
+    },
+    {
+      "description": "Limits the time for one refresh. Zero adds no cap.",
+      "id": "catalog.refresh.timeout",
+      "name": "STARMAP_CATALOG_REFRESH_TIMEOUT",
+      "key": "catalog_refresh_timeout",
+      "flag": "catalog-refresh-timeout",
+      "environment": [
+        "STARMAP_CATALOG_REFRESH_TIMEOUT"
+      ],
+      "type": "duration",
+      "unit": "duration",
+      "default": "0s",
+      "default_meaning": "",
+      "allow_empty": false,
+      "allow_zero": true,
+      "sensitive": false,
+      "scope": "deployment",
+      "source_binding": "",
+      "applicability": [
+        "all"
+      ],
+      "mutability": "runtime-replacement",
+      "introduced": 1,
+      "compatibility": "supported",
+      "anchor": "catalog-refresh-timeout"
+    },
+    {
+      "description": "Names the runtime state directory for this process.",
+      "id": "state.dir",
+      "name": "STARMAP_STATE_DIR",
+      "key": "state_dir",
+      "flag": "state-dir",
+      "environment": [
+        "STARMAP_STATE_DIR"
+      ],
+      "type": "string",
+      "unit": "",
+      "default": "",
+      "default_meaning": "hosting application's state directory",
+      "allow_empty": false,
+      "allow_zero": false,
+      "sensitive": false,
+      "scope": "node",
+      "source_binding": "",
+      "applicability": [
+        "all"
+      ],
+      "mutability": "restart",
+      "introduced": 1,
+      "compatibility": "supported",
+      "anchor": "state-dir"
+    },
+    {
+      "description": "Sets a stable identity for this runtime instance.",
+      "id": "scheduler.identity",
+      "name": "STARMAP_SCHEDULER_IDENTITY",
+      "key": "scheduler_identity",
+      "flag": "scheduler-identity",
+      "environment": [
+        "STARMAP_SCHEDULER_IDENTITY"
+      ],
+      "type": "string",
+      "unit": "",
+      "default": "",
+      "default_meaning": "runtime-derived instance identity",
+      "allow_empty": true,
+      "allow_zero": false,
+      "sensitive": false,
+      "scope": "node",
+      "source_binding": "",
+      "applicability": [
+        "all"
+      ],
+      "mutability": "restart",
+      "introduced": 1,
+      "compatibility": "supported",
+      "anchor": "scheduler-identity"
+    }
+  ]
+}

@@ -1,0 +1,265 @@
+import argparse
+import io
+import sys
+from contextlib import redirect_stdout
+import json
+import hashlib
+import subprocess
+import tempfile
+import unittest
+from pathlib import Path
+from unittest.mock import patch
+
+import catalog_product_verify as verifier
+
+
+class CatalogVerifierTests(unittest.TestCase):
+    def setUp(self):
+        self.roster = verifier.read_json(verifier.ROSTER)
+
+    def test_complete_red_report(self):
+        read_json = verifier.read_json
+        def without_registered_evidence(path):
+            return {"schema_version": 1, "checks": {}} if path == verifier.REGISTRY else read_json(path)
+        output = io.StringIO()
+        with patch.object(verifier, 'read_json', side_effect=without_registered_evidence), patch.object(sys, 'argv', ['verifier', '--all', '--json']), redirect_stdout(output):
+            self.assertEqual(verifier.main(), 1)
+        report = json.loads(output.getvalue())
+        self.assertEqual(report['summary'], 'Summary: 0 passed, 50 failed')
+        self.assertEqual(report['unverified_cases'], 50)
+        self.assertEqual(report['selected_subcases'], 324)
+
+    def test_unknown_case_refuses(self):
+        args = argparse.Namespace(task=None, gate=None, case=['A99'])
+        with self.assertRaises(ValueError):
+            verifier.select_checks(args, self.roster)
+
+    def test_duplicate_subcase_refuses(self):
+        self.roster['required_subcases']['A01'].append(self.roster['required_subcases']['A01'][0])
+        with self.assertRaises(ValueError):
+            verifier.validate_roster(self.roster)
+
+    def test_missing_primary_refuses(self):
+        del self.roster['required_subcases']['A50']
+        with self.assertRaises(ValueError):
+            verifier.validate_roster(self.roster)
+
+    def test_empty_task_cannot_pass(self):
+        self.roster['task_checks']['CSP0.1'] = []
+        with self.assertRaises(ValueError):
+            verifier.validate_roster(self.roster)
+
+    def test_final_roster_cannot_omit_a_case(self):
+        self.roster['qualification']['final_required_primary_cases'].remove('A50')
+        with self.assertRaises(ValueError):
+            verifier.validate_roster(self.roster)
+
+    def test_missing_candidate_local_check_refuses(self):
+        self.roster['task_checks']['CSP22'].remove('A29.recovery_without_auth')
+        with self.assertRaises(ValueError):
+            verifier.validate_roster(self.roster)
+
+    def test_partial_parent_never_passes(self):
+        local = self.roster['qualification']['candidate_additional_subcases']
+        report = verifier.aggregate(self.roster, local, {item: {'status': 'PASS'} for item in local}, False)
+        self.assertTrue(all(case['status'] == 'UNVERIFIED' for case in report['cases']))
+
+    def test_qualification_cannot_use_component_passes(self):
+        selected = self.roster['task_checks']['CSP22']
+        report = verifier.aggregate(self.roster, selected, {item: {'status': 'PASS'} for item in selected}, True)
+        self.assertEqual(report['summary'], 'Summary: 43 passed, 7 failed')
+        self.assertEqual(report['gate_status'], 'FAIL')
+        self.assertEqual(report['qualification'], 'UNVERIFIED')
+
+    def test_missing_registration_is_unverified(self):
+        self.assertEqual(verifier.run_check('A01.test', None, {})['status'], 'UNVERIFIED')
+
+    def test_real_named_go_test_executes(self):
+        entry = {'kind': 'go_test', 'repository': 'starmap', 'package': './pkg/errors', 'test': 'TestConflictError'}
+        result = verifier.run_check('runner-fixture', entry, {'starmap': verifier.ROOT})
+        self.assertEqual(result['status'], 'PASS', result)
+
+    def test_real_go_missing_match_is_unverified(self):
+        entry = {'kind': 'go_test', 'repository': 'starmap', 'package': './pkg/errors', 'test': 'TestCSPVerifierMissingMatch'}
+        result = verifier.run_check('runner-fixture', entry, {'starmap': verifier.ROOT})
+        self.assertEqual(result['status'], 'UNVERIFIED', result)
+
+    def test_skipped_child_cannot_pass_parent(self):
+        events = [{'Test': 'TestBudget/subcase', 'Action': 'skip'}, {'Test': 'TestBudget', 'Action': 'pass'}]
+        output = subprocess.CompletedProcess([], 0, '\n'.join(map(json.dumps, events)), '')
+        entry = {'kind': 'go_test', 'repository': 'starmap', 'package': './pkg/errors', 'test': 'TestBudget'}
+        with patch.object(verifier.subprocess, 'run', return_value=output):
+            result = verifier.run_check('runner-fixture', entry, {'starmap': verifier.ROOT})
+        self.assertEqual(result['status'], 'UNVERIFIED')
+
+    def test_command_failure_cannot_pass(self):
+        output = subprocess.CompletedProcess([], 1, json.dumps({'Test': 'TestBudget', 'Action': 'pass'}), 'failure')
+        entry = {'kind': 'go_test', 'repository': 'starmap', 'package': './pkg/errors', 'test': 'TestBudget'}
+        with patch.object(verifier.subprocess, 'run', return_value=output):
+            result = verifier.run_check('runner-fixture', entry, {'starmap': verifier.ROOT})
+        self.assertEqual(result['status'], 'FAIL')
+
+    def test_combined_check_needs_every_result(self):
+        self.assertEqual(verifier.run_check('E01', {'kind': 'all', 'checks': []}, {})['status'], 'FAIL')
+        self.assertEqual(verifier.run_check('E01', {'kind': 'all', 'checks': [None]}, {})['status'], 'UNVERIFIED')
+
+    def test_browser_review_requires_current_inputs_and_captures(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            (root / 'source.tsx').write_text('current source')
+            (root / 'capture.png').write_bytes(b'review fixture')
+            digest = lambda path: hashlib.sha256((root / path).read_bytes()).hexdigest()
+            review = {'schema_version': 1, 'verdict': 'PASS', 'observations': {'reflow_320': True},
+                      'inputs': {'source.tsx': digest('source.tsx')},
+                      'captures': {'capture.png': digest('capture.png')}}
+            (root / 'review.json').write_text(json.dumps(review))
+            entry = {'kind': 'reviewed_ui', 'proof': 'review.json', 'repository': 'starport',
+                     'required_inputs': ['source.tsx'], 'observations': ['reflow_320']}
+            with patch.object(verifier, 'ROOT', root):
+                self.assertEqual(verifier.run_check('E01', entry, {'starport': root})['status'], 'PASS')
+                (root / 'source.tsx').write_text('changed source')
+                self.assertEqual(verifier.run_check('E01', entry, {'starport': root})['status'], 'UNVERIFIED')
+                (root / 'source.tsx').write_text('current source')
+                (root / 'capture.png').unlink()
+                self.assertEqual(verifier.run_check('E01', entry, {'starport': root})['status'], 'UNVERIFIED')
+
+
+    def performance_profile(self):
+        return verifier.read_json(verifier.ROOT / 'docs/plans/proof/starport-production-catalog/csp0.4/numeric-profile.json')
+
+    def performance_baseline(self):
+        return verifier.read_json(verifier.ROOT / 'docs/plans/proof/starport-production-catalog/csp0.4/baseline-run-1.json')
+
+    def test_retained_full_http_baseline_satisfies_measurement_contract(self):
+        result = verifier.validate_performance_baseline(self.performance_baseline(), 100)
+        self.assertEqual(result['warm_pairs'], 200)
+        self.assertEqual(result['initial_pairs'], 2)
+
+    def test_baseline_refuses_missing_variant_or_initial_evidence(self):
+        for field in ('warm_pairs', 'initial_pairs'):
+            report = self.performance_baseline()
+            report[field].pop()
+            with self.subTest(field=field), self.assertRaises(ValueError):
+                verifier.validate_performance_baseline(report, 100)
+
+    def test_baseline_refuses_partial_or_fabricated_timing(self):
+        for field, value in [('elapsed_ns', -1), ('first_byte_ns', 0), ('gateway_handler_ns', 0),
+                             ('controlled_wait_ns', 0), ('wait_adjusted_elapsed_ns', 0),
+                             ('request_bytes', 0), ('client_connection_reused', 'yes')]:
+            report = self.performance_baseline()
+            report['warm_pairs'][0]['proxied'][field] = value
+            with self.subTest(field=field), self.assertRaises(ValueError):
+                verifier.validate_performance_baseline(report, 100)
+
+    def test_baseline_keeps_negative_paired_differences(self):
+        report = self.performance_baseline()
+        pair = report['warm_pairs'][0]
+        # Add client delay to the direct sample. A valid negative pair must survive.
+        extra = pair['proxied']['elapsed_ns'] + 1_000_000
+        pair['direct']['elapsed_ns'] += extra
+        pair['direct']['wait_adjusted_elapsed_ns'] += extra
+        pair['paired_adjusted_delta_ns'] = pair['proxied']['wait_adjusted_elapsed_ns'] - pair['direct']['wait_adjusted_elapsed_ns']
+        self.assertLess(pair['paired_adjusted_delta_ns'], 0)
+        verifier.validate_performance_baseline(report, 100)
+        pair['paired_adjusted_delta_ns'] = 0
+        with self.assertRaises(ValueError):
+            verifier.validate_performance_baseline(report, 100)
+
+    def test_baseline_refuses_lost_stream_events_and_wrong_milestones(self):
+        for field, value in [('event_forwarding_ns', []), ('first_token_ns', 0)]:
+            report = self.performance_baseline()
+            pair = next(pair for pair in report['warm_pairs'] if pair['stream'])
+            pair['proxied'][field] = value
+            with self.subTest(field=field), self.assertRaises(ValueError):
+                verifier.validate_performance_baseline(report, 100)
+
+    def test_baseline_cannot_claim_release_qualification(self):
+        report = self.performance_baseline()
+        report['qualification'] = 'PASS'
+        with self.assertRaises(ValueError):
+            verifier.validate_performance_baseline(report, 100)
+
+    def test_numeric_profile_is_complete_but_unqualified(self):
+        verifier.validate_performance_profile(self.performance_profile())
+
+    def test_numeric_profile_refuses_invalid_limits(self):
+        for value in (0, -1, True, float('nan'), float('inf')):
+            profile = self.performance_profile()
+            profile['resources']['request_allocated_bytes'] = value
+            with self.subTest(value=value), self.assertRaises(ValueError):
+                verifier.validate_performance_profile(profile)
+
+    def test_numeric_profile_cannot_relax_correctness_for_latency(self):
+        for field, value in [('permission_validity_seconds', 600), ('maximum_clock_uncertainty_seconds', 60),
+                             ('unknown_required_budget', 'allow'), ('admission_mode', 'unbounded-local'),
+                             ('authority_activation_failure', 'use-old-policy'), ('controlled_backend_recovery', False)]:
+            profile = self.performance_profile()
+            profile['correctness'][field] = value
+            with self.subTest(field=field), self.assertRaises(ValueError):
+                verifier.validate_performance_profile(profile)
+
+    def test_numeric_profile_cannot_hide_workload_or_uncertainty(self):
+        mutations = [('workload', 'credential_sources', ['environment']),
+                     ('workload', 'authority_modes', ['public']), ('observability', 'usage_capture', 'off'),
+                     ('evidence', 'minimum_samples_per_variant', 100), ('evidence', 'negative_deltas', 'clamp'),
+                     ('evidence', 'provider_wait_method', 'whole-connector'), ('evidence', 'final_artifact_binding', False)]
+        for group, field, value in mutations:
+            profile = self.performance_profile()
+            profile[group][field] = value
+            with self.subTest(group=group, field=field), self.assertRaises(ValueError):
+                verifier.validate_performance_profile(profile)
+        profile = self.performance_profile()
+        profile['qualification_exercises'] = ['cold-start'] * 13
+        with self.assertRaises(ValueError):
+            verifier.validate_performance_profile(profile)
+
+    def test_numeric_profile_refuses_contradictory_resources(self):
+        profile = self.performance_profile()
+        profile['resources']['replica_live_heap_bytes'] = profile['resources']['replica_rss_bytes'] + 1
+        with self.assertRaises(ValueError):
+            verifier.validate_performance_profile(profile)
+
+    def test_performance_review_requires_current_targets_and_retained_evidence(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            (root / 'profile.json').write_text(json.dumps(self.performance_profile()))
+            (root / 'baseline.json').write_text(json.dumps(self.performance_baseline()))
+            digest = lambda name: hashlib.sha256((root / name).read_bytes()).hexdigest()
+            names = ('timing_boundaries', 'latency_and_workload', 'resources_and_deadlines', 'correctness',
+                     'qualification_method', 'baseline_costs', 'no_current_release_claim')
+            review = {'schema_version': 1, 'verdict': 'PASS', 'profile_sha256': digest('profile.json'),
+                      'observations': dict.fromkeys(names, True), 'assessment': dict.fromkeys(names, 'Unit-test fixture assessment.'),
+                      'evidence': {'baseline.json': digest('baseline.json')}}
+            (root / 'review.json').write_text(json.dumps(review))
+            entry = {'kind': 'performance_profile', 'repository': 'starport', 'profile': 'profile.json', 'proof': 'review.json'}
+            with patch.object(verifier, 'ROOT', root):
+                self.assertEqual(verifier.run_check('profile', entry, {'starport': root})['status'], 'PASS')
+                original = (root / 'profile.json').read_bytes()
+                (root / 'profile.json').write_bytes(original + b' ')
+                self.assertEqual(verifier.run_check('profile', entry, {'starport': root})['status'], 'UNVERIFIED')
+                (root / 'profile.json').write_bytes(original)
+                (root / 'baseline.json').unlink()
+                self.assertEqual(verifier.run_check('profile', entry, {'starport': root})['status'], 'UNVERIFIED')
+
+    def test_evidence_paths_cannot_escape_repository(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            for name in ('../outside', str(root.parent / 'outside')):
+                with self.subTest(name=name), self.assertRaises(ValueError):
+                    verifier.contained_path(root, name)
+
+    def test_fresh_baseline_adapter_cannot_pass_skipped_test(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            path = root / 'internal/app/performance_test.go'
+            path.parent.mkdir(parents=True)
+            path.touch()
+            events = [{'Test': 'TestFullPathMeasurementBaseline', 'Action': 'skip'}]
+            result = subprocess.CompletedProcess([], 0, '\n'.join(map(json.dumps, events)), '')
+            with patch.object(verifier.subprocess, 'run', return_value=result):
+                checked = verifier.run_performance_baseline({'repository': 'starport'}, {'starport': root})
+            self.assertEqual(checked['status'], 'UNVERIFIED')
+
+
+if __name__ == '__main__':
+    unittest.main(verbosity=2)

@@ -26,6 +26,7 @@ type GitClient struct {
 	RepoPath string
 	RepoURL  string
 	Commit   string
+	pathErr  error
 }
 
 // GitInputs records the exact source and dependency graph used for a build.
@@ -40,24 +41,16 @@ type Client = GitClient
 
 // NewClient creates a new models.dev git client.
 func NewClient(outputDir string) *Client {
-	if outputDir == "" {
-		outputDir = expandPath(constants.DefaultSourcesPath)
-	}
-	repoPath := filepath.Join(outputDir, "models.dev-git")
-	return &Client{
-		RepoPath: repoPath,
-		RepoURL:  ModelsDevRepoURL,
-	}
+	return NewGitClient(outputDir)
 }
 
 // NewGitClient creates a new models.dev git client.
 func NewGitClient(outputDir string) *GitClient {
-	if outputDir == "" {
-		outputDir = expandPath(constants.DefaultSourcesPath)
-	}
+	outputDir, pathErr := sourceDirectory(outputDir, true)
 	repoPath := filepath.Join(outputDir, "models.dev-git")
 	return &GitClient{
 		RepoPath: repoPath,
+		pathErr:  pathErr,
 		RepoURL:  ModelsDevRepoURL,
 	}
 }
@@ -77,6 +70,9 @@ func (c *GitClient) EnsureRepository(ctx context.Context) error {
 
 // PrepareRepository checks out the configured commit and verifies its frozen lockfile.
 func (c *GitClient) PrepareRepository(ctx context.Context) (GitInputs, error) {
+	if c.pathErr != nil {
+		return GitInputs{}, c.pathErr
+	}
 	ctx = logging.WithSource(ctx, sources.ModelsDevGitID.String())
 	logger := logging.FromContext(ctx)
 	if err := validateGitCommit(c.Commit); err != nil {
@@ -117,6 +113,9 @@ func (c *GitClient) PrepareRepository(ctx context.Context) (GitInputs, error) {
 
 // BuildAPI runs the build process to generate api.json.
 func (c *GitClient) BuildAPI(ctx context.Context) error {
+	if c.pathErr != nil {
+		return c.pathErr
+	}
 	ctx = logging.WithSource(ctx, sources.ModelsDevGitID.String())
 	logger := logging.FromContext(ctx)
 	if !c.repositoryExists() {
@@ -187,6 +186,9 @@ func (c *GitClient) GetProvidersPath() string {
 
 // Cleanup removes the models.dev repository.
 func (c *GitClient) Cleanup() error {
+	if c.pathErr != nil {
+		return c.pathErr
+	}
 	if !c.repositoryExists() {
 		return nil // Already cleaned up
 	}

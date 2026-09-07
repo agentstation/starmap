@@ -13,8 +13,10 @@ import (
 	"github.com/agentstation/starmap/internal/catalog/settings"
 	"github.com/agentstation/starmap/internal/constants"
 	"github.com/agentstation/starmap/pkg/catalogs"
+	catalogconfig "github.com/agentstation/starmap/pkg/catalogs/config"
 	"github.com/agentstation/starmap/pkg/catalogs/evidence"
 	"github.com/agentstation/starmap/pkg/catalogs/storage"
+	"github.com/agentstation/starmap/pkg/productpaths"
 )
 
 func TestCatalogPathsFreshInstallAreCanonicalSeparatedAndPassive(t *testing.T) {
@@ -28,7 +30,7 @@ func TestCatalogPathsFreshInstallAreCanonicalSeparatedAndPassive(t *testing.T) {
 	if err != nil {
 		t.Fatalf("CatalogPath: %v", err)
 	}
-	wantWorkspace := filepath.Join(home, ".starmap", "catalog")
+	wantWorkspace := filepath.Join(nativeRoot(t, productpaths.Data), "catalog", "workspace")
 	if workspace != wantWorkspace {
 		t.Fatalf("workspace = %q, want %q", workspace, wantWorkspace)
 	}
@@ -36,7 +38,7 @@ func TestCatalogPathsFreshInstallAreCanonicalSeparatedAndPassive(t *testing.T) {
 	if err != nil {
 		t.Fatalf("catalogStatePath: %v", err)
 	}
-	wantState := filepath.Join(home, ".starmap", "state", "catalog")
+	wantState := filepath.Join(nativeRoot(t, productpaths.State), "catalog")
 	if state != wantState {
 		t.Fatalf("state = %q, want %q", state, wantState)
 	}
@@ -85,7 +87,7 @@ func TestCatalogStatePathIgnoresUnlaunchedDraftLocation(t *testing.T) {
 	if err != nil {
 		t.Fatalf("CatalogPath: %v", err)
 	}
-	canonical := filepath.Join(home, ".starmap", "catalog")
+	canonical := filepath.Join(nativeRoot(t, productpaths.Data), "catalog", "workspace")
 	if path != canonical {
 		t.Fatalf("path = %q, want %q", path, canonical)
 	}
@@ -146,7 +148,7 @@ func TestCatalogWorkspaceMigrationAndRestartPreserveExactGeneration(t *testing.T
 	if err := store.Commit(context.Background(), generation, ""); err != nil {
 		t.Fatalf("Commit legacy: %v", err)
 	}
-	app, err := New("test", "test", "test", "test", WithConfig(&Config{}))
+	app, err := New("test", "test", "test", "test", WithConfig(&Config{CatalogPath: workspace, PathValues: map[string]string{"STARMAP_CATALOG_STORE_PATH": state}}))
 	if err != nil {
 		t.Fatalf("New app: %v", err)
 	}
@@ -171,7 +173,7 @@ func TestCatalogWorkspaceMigrationAndRestartPreserveExactGeneration(t *testing.T
 		t.Fatalf("first restart changed workspace:\nbefore=%v\nafter=%v", beforeRestart, after)
 	}
 
-	secondApp, err := New("test", "test", "test", "test", WithConfig(&Config{}))
+	secondApp, err := New("test", "test", "test", "test", WithConfig(&Config{CatalogPath: workspace, PathValues: map[string]string{"STARMAP_CATALOG_STORE_PATH": state}}))
 	if err != nil {
 		t.Fatalf("New second app: %v", err)
 	}
@@ -195,7 +197,8 @@ func TestCatalogWorkspaceMigrationAndRestartPreserveExactGeneration(t *testing.T
 	}
 }
 
-func TestRestartCompletesProjectionAfterMigrationMove(t *testing.T) {
+func TestRuntimeRestartCompletesProjectionAfterMigrationMove(t *testing.T) {
+	clearCatalogEnvironment(t)
 	home := t.TempDir()
 	t.Setenv("HOME", home)
 	workspace := filepath.Join(home, ".starmap", "catalog")
@@ -218,7 +221,14 @@ func TestRestartCompletesProjectionAfterMigrationMove(t *testing.T) {
 		t.Fatalf("workspace exists before restart repair: %v", err)
 	}
 
-	app, err := New("test", "test", "test", "test", WithConfig(&Config{}))
+	app, err := New("test", "test", "test", "test", WithConfig(&Config{
+		CatalogPath: workspace,
+		PathValues:  map[string]string{"STARMAP_HOME": filepath.Join(home, "product"), "STARMAP_CATALOG_STORE_PATH": state},
+		CatalogValues: map[string]string{
+			catalogconfig.Source: "embedded", catalogconfig.SourcePollInterval: "0s", catalogconfig.AcquisitionEnabled: "false",
+			catalogconfig.StateDirectory: filepath.Join(home, "runtime"),
+		},
+	}))
 	if err != nil {
 		t.Fatalf("New app: %v", err)
 	}
@@ -230,6 +240,13 @@ func TestRestartCompletesProjectionAfterMigrationMove(t *testing.T) {
 		t.Fatalf("restart generation = %q", client.CurrentGenerationID())
 	}
 	assertCatalogPayload(t, client.Catalog(), generation.Payload)
+	if _, err := os.Stat(workspace); !os.IsNotExist(err) {
+		t.Fatalf("passive application access changed the workspace: %v", err)
+	}
+	if _, err := app.Runtime(t.Context()); err != nil {
+		t.Fatalf("runtime restart: %v", err)
+	}
+	t.Cleanup(func() { _ = app.closeRuntime() })
 	if _, err := os.Stat(filepath.Join(workspace, "providers.yaml")); err != nil {
 		t.Fatalf("restart did not restore human workspace: %v", err)
 	}

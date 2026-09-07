@@ -120,6 +120,7 @@ type Client struct {
 	generationSequence        uint64
 	usingEmbeddedBootstrap    bool
 	embeddedBootstrap         catalogs.BootstrapManifest
+	embeddedCatalog           *catalogs.Catalog
 	now                       func() time.Time
 	newID                     func() (string, error)
 
@@ -133,10 +134,9 @@ func New(opts ...Option) (*Client, error) {
 }
 
 // NewContext creates a Client with the given options. The caller-owned context
-// bounds durable generation loading and workspace repair and must be non-nil.
-// When a durable generation and a marker-backed unchanged YAML workspace are
-// both configured, construction repairs a stale or interrupted projection by
-// digest. It never overwrites an unrecognized semantic workspace change.
+// bounds reads from caller-supplied storage and must be non-nil.
+// Construction never repairs or creates a workspace. Use RepairWorkspace for
+// explicit repair, or open the connected runtime for application startup.
 func NewContext(ctx context.Context, opts ...Option) (*Client, error) {
 	if ctx == nil {
 		return nil, &errors.ValidationError{Field: "context", Message: "is required"}
@@ -186,7 +186,6 @@ func newClient(ctx context.Context, options *options) (*Client, error) {
 	generationPayloadChecksum := bootstrapManifest.Payload.Checksum
 	generationGeneratedAt := bootstrapManifest.GeneratedAt
 	usingEmbeddedBootstrap := true
-	var durableCurrent *catalogs.Generation
 	if !isNilCatalogStore(sm.options.catalogStore) {
 		loadCtx, cancel := context.WithTimeout(ctx, catalogLoadTimeout)
 		stored, currentErr := sm.options.catalogStore.Current(loadCtx)
@@ -200,7 +199,6 @@ func newClient(ctx context.Context, options *options) (*Client, error) {
 			if err != nil {
 				return nil, errors.WrapResource("decode", "stored current catalog generation", stored.Manifest.GenerationID, err)
 			}
-			durableCurrent = &stored
 			generationID = stored.Manifest.GenerationID
 			generationPayloadChecksum = stored.Manifest.Payload.Checksum
 			generationGeneratedAt = stored.Manifest.GeneratedAt
@@ -215,23 +213,29 @@ func newClient(ctx context.Context, options *options) (*Client, error) {
 		}
 	}
 	if generationID == "" && catalogPath != "" {
-		human, humanErr := catalogs.NewFromPath(catalogPath)
-		switch {
-		case humanErr == nil:
-			initial, err = human.Build()
-			if err != nil {
-				return nil, errors.WrapResource("publish", "initial human catalog", catalogPath, err)
+		err := workspace.Read(ctx, catalogPath, func(workspace.InputExpectation) error {
+			human, humanErr := catalogs.NewFromPath(catalogPath)
+			switch {
+			case humanErr == nil:
+				initial, err = human.Build()
+				if err != nil {
+					return errors.WrapResource("publish", "initial human catalog", catalogPath, err)
+				}
+				generationGeneratedAt = time.Time{}
+				payload, encodeErr := catalogs.EncodeCatalogPayload(initial)
+				if encodeErr != nil {
+					return errors.WrapResource("encode", "initial human catalog", catalogPath, encodeErr)
+				}
+				generationPayloadChecksum = catalogs.DescribeCatalogPayload(payload).Checksum
+				usingEmbeddedBootstrap = false
+			case stderrors.Is(humanErr, os.ErrNotExist):
+			default:
+				return errors.WrapResource("create", "human catalog workspace", catalogPath, humanErr)
 			}
-			generationGeneratedAt = time.Time{}
-			payload, encodeErr := catalogs.EncodeCatalogPayload(initial)
-			if encodeErr != nil {
-				return nil, errors.WrapResource("encode", "initial human catalog", catalogPath, encodeErr)
-			}
-			generationPayloadChecksum = catalogs.DescribeCatalogPayload(payload).Checksum
-			usingEmbeddedBootstrap = false
-		case stderrors.Is(humanErr, os.ErrNotExist):
-		default:
-			return nil, errors.WrapResource("create", "human catalog workspace", catalogPath, humanErr)
+			return nil
+		})
+		if err != nil {
+			return nil, err
 		}
 	}
 	if err := constructionContextError(ctx); err != nil {
@@ -244,42 +248,7 @@ func newClient(ctx context.Context, options *options) (*Client, error) {
 	sm.generationSequence = 1
 	sm.usingEmbeddedBootstrap = usingEmbeddedBootstrap
 	sm.embeddedBootstrap = bootstrapManifest
-
-	if durableCurrent != nil && catalogPath != "" {
-		repairCtx, cancel := context.WithTimeout(ctx, catalogProjectionTimeout)
-		repair, repairErr := workspace.Repair(
-			repairCtx,
-			catalogPath,
-			initial,
-			workspace.Identity{
-				GenerationID:    durableCurrent.Manifest.GenerationID,
-				PayloadChecksum: durableCurrent.Manifest.Payload.Checksum,
-			},
-		)
-		cancel()
-		if err := constructionContextError(ctx); err != nil {
-			return nil, err
-		}
-		switch {
-		case repairErr != nil:
-			logging.Warn().
-				Err(repairErr).
-				Str("generation_id", durableCurrent.Manifest.GenerationID).
-				Str("workspace", catalogPath).
-				Msg("Durable catalog is active; YAML workspace repair remains pending")
-		case repair.Status == workspace.RepairStatusSkippedDirty:
-			logging.Warn().
-				Str("generation_id", durableCurrent.Manifest.GenerationID).
-				Str("workspace", catalogPath).
-				Str("issue_code", repair.IssueCode).
-				Msg("Durable catalog is active; YAML workspace has semantic human changes and was not overwritten")
-		case repair.Status == workspace.RepairStatusRepaired:
-			logging.Info().
-				Str("generation_id", durableCurrent.Manifest.GenerationID).
-				Str("workspace", catalogPath).
-				Msg("Repaired YAML workspace from durable catalog generation")
-		}
-	}
+	sm.embeddedCatalog = embeddedCatalog
 
 	// Get counts for logging
 	localProviders := initial.Providers().List()

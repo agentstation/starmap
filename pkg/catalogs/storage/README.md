@@ -39,7 +39,7 @@ Package storage provides durable generation\-oriented catalog storage.
 
 
 <a name="Filesystem"></a>
-## type [Filesystem](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/storage/filesystem.go#L27-L32>)
+## type [Filesystem](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/storage/filesystem.go#L29-L35>)
 
 Filesystem stores immutable generation directories and an atomically replaced current pointer beneath one root directory.
 
@@ -50,16 +50,16 @@ type Filesystem struct {
 ```
 
 <a name="NewFilesystem"></a>
-### func [NewFilesystem](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/storage/filesystem.go#L35>)
+### func [NewFilesystem](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/storage/filesystem.go#L39>)
 
 ```go
 func NewFilesystem(path string) (*Filesystem, error)
 ```
 
-NewFilesystem creates a filesystem catalog store rooted at path.
+NewFilesystem configures a filesystem catalog store without accessing or creating its root. Operations require private access to existing store entries and never change their permissions.
 
 <a name="Filesystem.Commit"></a>
-### func \(\*Filesystem\) [Commit](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/storage/filesystem.go#L88>)
+### func \(\*Filesystem\) [Commit](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/storage/filesystem.go#L92>)
 
 ```go
 func (s *Filesystem) Commit(ctx context.Context, generation catalogs.Generation, expectedGenerationID string) error
@@ -68,7 +68,7 @@ func (s *Filesystem) Commit(ctx context.Context, generation catalogs.Generation,
 Commit writes an immutable generation before atomically replacing current.
 
 <a name="Filesystem.Current"></a>
-### func \(\*Filesystem\) [Current](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/storage/filesystem.go#L58>)
+### func \(\*Filesystem\) [Current](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/storage/filesystem.go#L62>)
 
 ```go
 func (s *Filesystem) Current(ctx context.Context) (catalogs.Generation, error)
@@ -77,7 +77,7 @@ func (s *Filesystem) Current(ctx context.Context) (catalogs.Generation, error)
 Current returns the currently active generation.
 
 <a name="Filesystem.Get"></a>
-### func \(\*Filesystem\) [Get](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/storage/filesystem.go#L75>)
+### func \(\*Filesystem\) [Get](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/storage/filesystem.go#L79>)
 
 ```go
 func (s *Filesystem) Get(ctx context.Context, id string) (catalogs.Generation, error)
@@ -86,7 +86,7 @@ func (s *Filesystem) Get(ctx context.Context, id string) (catalogs.Generation, e
 Get returns an immutable generation by ID.
 
 <a name="Filesystem.Root"></a>
-### func \(\*Filesystem\) [Root](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/storage/filesystem.go#L50>)
+### func \(\*Filesystem\) [Root](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/storage/filesystem.go#L54>)
 
 ```go
 func (s *Filesystem) Root() string

@@ -18,7 +18,7 @@ func TestCatalogStoreConcurrentSameBaseCAS(t *testing.T) {
 			return store, store
 		},
 		"filesystem": func(t *testing.T) (Store, Store) {
-			root := t.TempDir()
+			root := privateFilesystemRoot(t)
 			first, err := NewFilesystem(root)
 			if err != nil {
 				t.Fatalf("NewFilesystem first: %v", err)

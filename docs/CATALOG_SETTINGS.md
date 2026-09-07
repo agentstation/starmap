@@ -1,0 +1,598 @@
+# Catalog settings reference
+
+This reference describes the Starmap catalog configuration contract in this source revision.
+The public package is `github.com/agentstation/starmap/pkg/catalogs/config`.
+The [descriptor export](catalog-settings-schema.json) contains the same metadata.
+Starport adoption remains a separate implementation task.
+
+The descriptors generate this reference and CLI descriptions.
+To regenerate both reference files, run:
+
+```sh
+go test ./internal/catalog/settings -run '^TestCatalogSettingsReferenceIsCurrent$' -args -update-settings-reference
+```
+
+## Value selection
+
+The Starmap command selects each independent value in this order:
+
+1. An explicit command flag.
+2. The process environment, including an explicit empty value.
+3. Explicit dotenv files, with the last listed file first.
+4. The selected configuration file.
+5. The runtime default.
+
+YAML uses the flat keys listed below.
+Boolean, integer, and string-list values can use native YAML types.
+Durations use Go duration syntax, such as `4h` or `30s`.
+Unknown keys fail validation.
+A valid higher-priority value can replace an invalid lower-priority scalar value.
+Malformed files and wrong YAML value types fail before value selection.
+
+All catalog CLI flags take a value, including boolean flags.
+For example, `--catalog-acquisition-enabled=false` disables automatic acquisition.
+An unchanged flag does not override another input.
+The parser trims surrounding whitespace and preserves explicit false, zero, and permitted empty values.
+An empty value fails unless its descriptor permits it.
+
+## Source and credential boundaries
+
+The source group contains the kind, endpoint, repository, channel, signing workflow, and transport credentials.
+A higher-priority source identity replaces the complete lower source group.
+Supply the source kind and its required endpoint together.
+Lower source credentials do not transfer to the replacement source.
+A higher-priority credential can replace a credential without changing the source identity.
+An explicit empty credential prevents lower credential fallback.
+
+Poll intervals, freshness thresholds, and acquisition policy keep independent precedence.
+The resolver reports selected and ignored origins without credential values.
+The Starmap source API key authenticates catalog transport.
+The GitHub source token authenticates GitHub access.
+Neither is a provider inference key.
+
+## Explicit dotenv files
+
+Service configuration does not discover dotenv files in the working directory.
+A local operator can name files explicitly:
+
+```sh
+starmap --env-file .env --env-file .env.local version
+```
+
+Later files replace earlier file values.
+The process environment takes precedence over every file, even when its value is empty.
+Conflicting file values produce diagnostics with setting names and file paths.
+Diagnostics omit both values.
+All files must pass private-access checks and parse before any environment change occurs.
+
+Each file permits at most 1 MiB. Private read-only files remain valid.
+See [configuration access and recovery](CLI.md#private-configuration-inputs) for platform requirements.
+
+Catalog dotenv values stay in their named file layers.
+Other dotenv values enter the process environment only when the process does not already define them.
+This supplies provider credentials to the existing acquisition resolver.
+Do not place credentials in command arguments or commit them to a repository.
+
+## Legacy migration
+
+`REMOTE_SERVER_URL` and `remote_server_url` imply the Starmap source kind within their own input layer.
+Their matching API key aliases are `REMOTE_SERVER_API_KEY` and `remote_server_api_key`.
+A canonical source identity replaces the legacy source group within that layer.
+The command reports legacy names without their values.
+Migrate the complete source group together.
+
+## Library and application responsibilities
+
+`Parse` accepts canonical names and rejects unknown names.
+`CanonicalValues` converts descriptor keys, semantic IDs, and canonical environment names.
+Conflicting aliases fail.
+`Load` reads a caller-supplied lookup and cannot enumerate unknown names.
+`Resolve` accepts ordered layers after the host selects eligible authorities.
+These APIs do not read files, inspect the environment, or start network work.
+
+`Config.Options()` supplies runtime options for the selected values.
+Absent values leave defaults with the runtime or hosting application.
+`Config.Value()` reports supplied values and presence, including secret values.
+Do not expose that method's output through diagnostics.
+
+Node settings belong to this process.
+Deployment settings belong to the selected deployment authority.
+A change class describes the required application action.
+It does not imply a live settings API in the current command.
+The command applies configuration at startup.
+
+Platform roots, primary file selection, storage migration, and Starport shared configuration need their separate implementation and qualification.
+This reference does not qualify those features.
+
+<a id="catalog-source"></a>
+
+## catalog_source
+
+Selects the upstream catalog source.
+
+| Property | Value |
+|---|---|
+| Environment | `STARMAP_CATALOG_SOURCE` |
+| CLI flag | `--catalog-source value` |
+| YAML key | `catalog_source` |
+| Semantic ID | `catalog.source` |
+| Grammar | `string` |
+| Accepted names | `public`, `github`, `starmap`, `file`, `embedded` |
+| Default | `public` |
+| Explicit empty | false |
+| Explicit zero | false |
+| Sensitive | false |
+| Scope | `deployment` |
+| Applicability | `all` |
+| Change class | `runtime-replacement` |
+| Compatibility | `supported`, schema 1 |
+| Source group | `catalog-source` |
+
+<a id="catalog-source-url"></a>
+
+## catalog_source_url
+
+Names the Starmap endpoint or catalog file.
+
+| Property | Value |
+|---|---|
+| Environment | `STARMAP_CATALOG_SOURCE_URL` |
+| CLI flag | `--catalog-source-url value` |
+| YAML key | `catalog_source_url` |
+| Semantic ID | `catalog.source.url` |
+| Grammar | `string` |
+| Default | required for a custom URL or file source |
+| Explicit empty | false |
+| Explicit zero | false |
+| Sensitive | false |
+| Scope | `deployment` |
+| Applicability | `starmap`, `file` |
+| Change class | `runtime-replacement` |
+| Compatibility | `supported`, schema 1 |
+| Source group | `catalog-source` |
+
+<a id="catalog-source-api-key"></a>
+
+## catalog_source_api_key
+
+Authenticates transport to the selected catalog source. It is separate from provider credentials.
+
+| Property | Value |
+|---|---|
+| Environment | `STARMAP_CATALOG_SOURCE_API_KEY` |
+| CLI flag | `--catalog-source-api-key value` |
+| YAML key | `catalog_source_api_key` |
+| Semantic ID | `catalog.source.api.key` |
+| Grammar | `string` |
+| Default | no transport credential |
+| Explicit empty | true |
+| Explicit zero | false |
+| Sensitive | true |
+| Scope | `deployment` |
+| Applicability | `starmap` |
+| Change class | `runtime-replacement` |
+| Compatibility | `supported`, schema 1 |
+| Source group | `catalog-source` |
+
+<a id="catalog-source-repository"></a>
+
+## catalog_source_repository
+
+Names the GitHub repository that publishes the catalog channel.
+
+| Property | Value |
+|---|---|
+| Environment | `STARMAP_CATALOG_SOURCE_REPOSITORY` |
+| CLI flag | `--catalog-source-repository value` |
+| YAML key | `catalog_source_repository` |
+| Semantic ID | `catalog.source.repository` |
+| Grammar | `string` |
+| Default | `agentstation/starmap` |
+| Explicit empty | false |
+| Explicit zero | false |
+| Sensitive | false |
+| Scope | `deployment` |
+| Applicability | `public`, `github` |
+| Change class | `runtime-replacement` |
+| Compatibility | `supported`, schema 1 |
+| Source group | `catalog-source` |
+
+<a id="catalog-source-channel"></a>
+
+## catalog_source_channel
+
+Names the branch that holds the catalog channel document.
+
+| Property | Value |
+|---|---|
+| Environment | `STARMAP_CATALOG_SOURCE_CHANNEL` |
+| CLI flag | `--catalog-source-channel value` |
+| YAML key | `catalog_source_channel` |
+| Semantic ID | `catalog.source.channel` |
+| Grammar | `string` |
+| Default | `catalog/v1` |
+| Explicit empty | false |
+| Explicit zero | false |
+| Sensitive | false |
+| Scope | `deployment` |
+| Applicability | `public`, `github` |
+| Change class | `runtime-replacement` |
+| Compatibility | `supported`, schema 1 |
+| Source group | `catalog-source` |
+
+<a id="catalog-source-signer-workflow"></a>
+
+## catalog_source_signer_workflow
+
+Pins the accepted build provenance workflow.
+
+| Property | Value |
+|---|---|
+| Environment | `STARMAP_CATALOG_SOURCE_SIGNER_WORKFLOW` |
+| CLI flag | `--catalog-source-signer-workflow value` |
+| YAML key | `catalog_source_signer_workflow` |
+| Semantic ID | `catalog.source.signer.workflow` |
+| Grammar | `string` |
+| Default | source adapter's default signing workflow |
+| Explicit empty | false |
+| Explicit zero | false |
+| Sensitive | false |
+| Scope | `deployment` |
+| Applicability | `public`, `github` |
+| Change class | `runtime-replacement` |
+| Compatibility | `supported`, schema 1 |
+| Source group | `catalog-source` |
+
+<a id="catalog-source-token"></a>
+
+## catalog_source_token
+
+Authenticates transport to the selected catalog source. It is separate from provider credentials.
+
+| Property | Value |
+|---|---|
+| Environment | `STARMAP_CATALOG_SOURCE_TOKEN` |
+| CLI flag | `--catalog-source-token value` |
+| YAML key | `catalog_source_token` |
+| Semantic ID | `catalog.source.token` |
+| Grammar | `string` |
+| Default | no transport credential |
+| Explicit empty | true |
+| Explicit zero | false |
+| Sensitive | true |
+| Scope | `deployment` |
+| Applicability | `public`, `github` |
+| Change class | `runtime-replacement` |
+| Compatibility | `supported`, schema 1 |
+| Source group | `catalog-source` |
+
+<a id="catalog-source-poll-interval"></a>
+
+## catalog_source_poll_interval
+
+Sets the period between automatic source checks. Zero disables periodic checks.
+
+| Property | Value |
+|---|---|
+| Environment | `STARMAP_CATALOG_SOURCE_POLL_INTERVAL` |
+| CLI flag | `--catalog-source-poll-interval value` |
+| YAML key | `catalog_source_poll_interval` |
+| Semantic ID | `catalog.source.poll.interval` |
+| Grammar | `duration` |
+| Default | `1h0m0s` |
+| Explicit empty | false |
+| Explicit zero | true |
+| Sensitive | false |
+| Scope | `deployment` |
+| Applicability | `all` |
+| Change class | `runtime-replacement` |
+| Compatibility | `supported`, schema 1 |
+
+<a id="catalog-source-startup-policy"></a>
+
+## catalog_source_startup_policy
+
+Selects catalog availability before the first upstream reply.
+
+| Property | Value |
+|---|---|
+| Environment | `STARMAP_CATALOG_SOURCE_STARTUP_POLICY` |
+| CLI flag | `--catalog-source-startup-policy value` |
+| YAML key | `catalog_source_startup_policy` |
+| Semantic ID | `catalog.source.startup.policy` |
+| Grammar | `string` |
+| Accepted names | `prefer_source`, `require_source`, `prefer_local` |
+| Default | `prefer_source` |
+| Explicit empty | false |
+| Explicit zero | false |
+| Sensitive | false |
+| Scope | `deployment` |
+| Applicability | `all` |
+| Change class | `runtime-replacement` |
+| Compatibility | `supported`, schema 1 |
+
+<a id="catalog-source-max-age"></a>
+
+## catalog_source_max_age
+
+Sets the source freshness warning threshold. Zero keeps the default channel freshness thresholds.
+
+| Property | Value |
+|---|---|
+| Environment | `STARMAP_CATALOG_SOURCE_MAX_AGE` |
+| CLI flag | `--catalog-source-max-age value` |
+| YAML key | `catalog_source_max_age` |
+| Semantic ID | `catalog.source.max.age` |
+| Grammar | `duration` |
+| Default | `6h0m0s` |
+| Explicit empty | false |
+| Explicit zero | true |
+| Sensitive | false |
+| Scope | `deployment` |
+| Applicability | `all` |
+| Change class | `runtime-replacement` |
+| Compatibility | `supported`, schema 1 |
+
+<a id="catalog-source-max-hops"></a>
+
+## catalog_source_max_hops
+
+Limits the accepted source chain length.
+
+| Property | Value |
+|---|---|
+| Environment | `STARMAP_CATALOG_SOURCE_MAX_HOPS` |
+| CLI flag | `--catalog-source-max-hops value` |
+| YAML key | `catalog_source_max_hops` |
+| Semantic ID | `catalog.source.max.hops` |
+| Grammar | `integer` |
+| Default | `8` |
+| Explicit empty | false |
+| Explicit zero | false |
+| Sensitive | false |
+| Scope | `deployment` |
+| Applicability | `all` |
+| Change class | `runtime-replacement` |
+| Compatibility | `supported`, schema 1 |
+
+<a id="catalog-source-aliases"></a>
+
+## catalog_source_aliases
+
+Names other identities of this runtime for source cycle detection.
+
+| Property | Value |
+|---|---|
+| Environment | `STARMAP_CATALOG_SOURCE_ALIASES` |
+| CLI flag | `--catalog-source-aliases value` |
+| YAML key | `catalog_source_aliases` |
+| Semantic ID | `catalog.source.aliases` |
+| Grammar | `string-list` |
+| Default | Empty |
+| Explicit empty | true |
+| Explicit zero | false |
+| Sensitive | false |
+| Scope | `node` |
+| Applicability | `all` |
+| Change class | `restart` |
+| Compatibility | `supported`, schema 1 |
+
+<a id="catalog-acquisition-enabled"></a>
+
+## catalog_acquisition_enabled
+
+Enables automatic provider acquisition.
+
+| Property | Value |
+|---|---|
+| Environment | `STARMAP_CATALOG_ACQUISITION_ENABLED` |
+| CLI flag | `--catalog-acquisition-enabled value` |
+| YAML key | `catalog_acquisition_enabled` |
+| Semantic ID | `catalog.acquisition.enabled` |
+| Grammar | `boolean` |
+| Default | `true` |
+| Explicit empty | false |
+| Explicit zero | false |
+| Sensitive | false |
+| Scope | `deployment` |
+| Applicability | `all` |
+| Change class | `runtime-replacement` |
+| Compatibility | `supported`, schema 1 |
+
+<a id="catalog-acquisition-interval"></a>
+
+## catalog_acquisition_interval
+
+Sets the acquisition period. Zero permits one startup pass when automatic acquisition is on.
+
+| Property | Value |
+|---|---|
+| Environment | `STARMAP_CATALOG_ACQUISITION_INTERVAL` |
+| CLI flag | `--catalog-acquisition-interval value` |
+| YAML key | `catalog_acquisition_interval` |
+| Semantic ID | `catalog.acquisition.interval` |
+| Grammar | `duration` |
+| Default | `4h0m0s` |
+| Explicit empty | false |
+| Explicit zero | true |
+| Sensitive | false |
+| Scope | `deployment` |
+| Applicability | `all` |
+| Change class | `runtime-replacement` |
+| Compatibility | `supported`, schema 1 |
+
+<a id="catalog-coalesce-window"></a>
+
+## catalog_coalesce_window
+
+Bounds the wait before completed provider observations publish.
+
+| Property | Value |
+|---|---|
+| Environment | `STARMAP_CATALOG_COALESCE_WINDOW` |
+| CLI flag | `--catalog-coalesce-window value` |
+| YAML key | `catalog_coalesce_window` |
+| Semantic ID | `catalog.coalesce.window` |
+| Grammar | `duration` |
+| Default | `30s` |
+| Explicit empty | false |
+| Explicit zero | false |
+| Sensitive | false |
+| Scope | `deployment` |
+| Applicability | `all` |
+| Change class | `runtime-replacement` |
+| Compatibility | `supported`, schema 1 |
+
+<a id="catalog-workspace-path"></a>
+
+## catalog_workspace_path
+
+Names the reviewed operator catalog input.
+
+| Property | Value |
+|---|---|
+| Environment | `STARMAP_CATALOG_WORKSPACE_PATH` |
+| CLI flag | `--catalog-workspace-path value` |
+| YAML key | `catalog_workspace_path` |
+| Semantic ID | `catalog.workspace.path` |
+| Grammar | `string` |
+| Default | hosting application's workspace |
+| Explicit empty | true |
+| Explicit zero | false |
+| Sensitive | false |
+| Scope | `node` |
+| Applicability | `all` |
+| Change class | `restart` |
+| Compatibility | `supported`, schema 1 |
+
+<a id="catalog-startup-spread"></a>
+
+## catalog_startup_spread
+
+Spreads cold automatic work across a stable time window. Zero disables the spread.
+
+| Property | Value |
+|---|---|
+| Environment | `STARMAP_CATALOG_STARTUP_SPREAD` |
+| CLI flag | `--catalog-startup-spread value` |
+| YAML key | `catalog_startup_spread` |
+| Semantic ID | `catalog.startup.spread` |
+| Grammar | `duration` |
+| Default | `15m0s` |
+| Explicit empty | false |
+| Explicit zero | true |
+| Sensitive | false |
+| Scope | `deployment` |
+| Applicability | `all` |
+| Change class | `runtime-replacement` |
+| Compatibility | `supported`, schema 1 |
+
+<a id="catalog-transfer-idle-timeout"></a>
+
+## catalog_transfer_idle_timeout
+
+Bounds a transfer that makes no progress.
+
+| Property | Value |
+|---|---|
+| Environment | `STARMAP_CATALOG_TRANSFER_IDLE_TIMEOUT` |
+| CLI flag | `--catalog-transfer-idle-timeout value` |
+| YAML key | `catalog_transfer_idle_timeout` |
+| Semantic ID | `catalog.transfer.idle.timeout` |
+| Grammar | `duration` |
+| Default | `2m0s` |
+| Explicit empty | false |
+| Explicit zero | false |
+| Sensitive | false |
+| Scope | `deployment` |
+| Applicability | `all` |
+| Change class | `runtime-replacement` |
+| Compatibility | `supported`, schema 1 |
+
+<a id="catalog-transfer-max-duration"></a>
+
+## catalog_transfer_max_duration
+
+Bounds one finite HTTP body transfer. It does not bound an open event stream.
+
+| Property | Value |
+|---|---|
+| Environment | `STARMAP_CATALOG_TRANSFER_MAX_DURATION` |
+| CLI flag | `--catalog-transfer-max-duration value` |
+| YAML key | `catalog_transfer_max_duration` |
+| Semantic ID | `catalog.transfer.max.duration` |
+| Grammar | `duration` |
+| Default | `1h0m0s` |
+| Explicit empty | false |
+| Explicit zero | false |
+| Sensitive | false |
+| Scope | `deployment` |
+| Applicability | `all` |
+| Change class | `runtime-replacement` |
+| Compatibility | `supported`, schema 1 |
+
+<a id="catalog-refresh-timeout"></a>
+
+## catalog_refresh_timeout
+
+Limits the time for one refresh. Zero adds no cap.
+
+| Property | Value |
+|---|---|
+| Environment | `STARMAP_CATALOG_REFRESH_TIMEOUT` |
+| CLI flag | `--catalog-refresh-timeout value` |
+| YAML key | `catalog_refresh_timeout` |
+| Semantic ID | `catalog.refresh.timeout` |
+| Grammar | `duration` |
+| Default | `0s` |
+| Explicit empty | false |
+| Explicit zero | true |
+| Sensitive | false |
+| Scope | `deployment` |
+| Applicability | `all` |
+| Change class | `runtime-replacement` |
+| Compatibility | `supported`, schema 1 |
+
+<a id="state-dir"></a>
+
+## state_dir
+
+Names the runtime state directory for this process.
+
+| Property | Value |
+|---|---|
+| Environment | `STARMAP_STATE_DIR` |
+| CLI flag | `--state-dir value` |
+| YAML key | `state_dir` |
+| Semantic ID | `state.dir` |
+| Grammar | `string` |
+| Default | hosting application's state directory |
+| Explicit empty | false |
+| Explicit zero | false |
+| Sensitive | false |
+| Scope | `node` |
+| Applicability | `all` |
+| Change class | `restart` |
+| Compatibility | `supported`, schema 1 |
+
+<a id="scheduler-identity"></a>
+
+## scheduler_identity
+
+Sets a stable identity for this runtime instance.
+
+| Property | Value |
+|---|---|
+| Environment | `STARMAP_SCHEDULER_IDENTITY` |
+| CLI flag | `--scheduler-identity value` |
+| YAML key | `scheduler_identity` |
+| Semantic ID | `scheduler.identity` |
+| Grammar | `string` |
+| Default | runtime-derived instance identity |
+| Explicit empty | true |
+| Explicit zero | false |
+| Sensitive | false |
+| Scope | `node` |
+| Applicability | `all` |
+| Change class | `restart` |
+| Compatibility | `supported`, schema 1 |

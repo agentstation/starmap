@@ -43,7 +43,7 @@ type AttemptSink func(sources.ProviderAttempt)
 type Source struct {
 	providers             catalogs.ProvidersReader // Provider configs injected during setup
 	fetcher               *sources.ProviderFetcher
-	credentials           *credentialMemo
+	credentialResolver    sources.ProviderCredentialResolver
 	attemptSink           AttemptSink
 	now                   func() time.Time
 	maxConcurrency        int
@@ -63,23 +63,14 @@ func New(providers catalogs.ProvidersReader, opts ...SourceOption) *Source {
 	for _, opt := range opts {
 		opt(&options)
 	}
-	// The pre-flight check and the fetcher share one memo, so each run resolves
-	// the credential of one provider one time.
-	memo := newCredentialMemo(options.credentialResolver)
-	var resolver sources.ProviderCredentialResolver
-	if memo != nil {
-		resolver = memo
-	}
-	fetcherOptions := []sources.ProviderOption{
-		sources.WithProviderCredentialResolver(resolver),
-	}
+	fetcherOptions := []sources.ProviderOption{}
 	if options.clientFactory != nil {
 		fetcherOptions = append(fetcherOptions, sources.WithProviderClientFactory(options.clientFactory))
 	}
 	return &Source{
 		providers:             providers,
 		fetcher:               sources.NewProviderFetcher(providers, fetcherOptions...),
-		credentials:           memo,
+		credentialResolver:    options.credentialResolver,
 		attemptSink:           options.attemptSink,
 		now:                   options.now,
 		maxConcurrency:        options.maxConcurrency,
@@ -158,7 +149,7 @@ func (s *Source) ObserveAttempts(
 	opts ...sources.Option,
 ) (sources.Observation, []sources.ProviderAttempt, error) {
 	ctx = logging.WithSource(ctx, s.ID().String())
-	s.credentials.forget()
+	credentials := newCredentialMemo(s.credentialResolver)
 	// Apply options
 	options := sources.Defaults().Apply(opts...)
 
@@ -240,7 +231,7 @@ func (s *Source) ObserveAttempts(
 			started := s.now()
 
 			logger := logging.WithProvider(ctx, string(provider.ID))
-			state, credentialErr := s.preflight(logger, provider)
+			state, credentialErr := credentials.preflight(logger, provider)
 			if state != credentialReady {
 				reason := sources.ProviderReasonCredentialUnavailable
 				if state == credentialInvalid {
@@ -257,7 +248,7 @@ func (s *Source) ObserveAttempts(
 				return
 			}
 
-			models, err := s.fetcher.FetchModels(logger, provider)
+			models, err := s.fetcher.FetchModels(logger, provider, sources.WithProviderCredentialResolver(credentials))
 			if err != nil {
 				var quarantineErr *sourcepayload.QuarantineError
 				if errors.As(err, &quarantineErr) {

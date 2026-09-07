@@ -109,8 +109,6 @@ func TestMakeVerifyUsesCanonicalVerificationScript(t *testing.T) {
 	}
 
 	for _, check := range []string{
-		`VERIFY_CATALOG_PATH="$ROOT/internal/embedded/catalog"`,
-		`VERIFY_CATALOG_DATABASE_PATH="$TMPDIR/catalog"`,
 		`VERIFY_HOME="$TMPDIR/home"`,
 		`GOLANGCI_LINT_CACHE="$TMPDIR/golangci-lint-cache"`,
 		`export GOLANGCI_LINT_CACHE`,
@@ -118,7 +116,11 @@ func TestMakeVerifyUsesCanonicalVerificationScript(t *testing.T) {
 		`run make test-pure-go`,
 		`run make test-file-sizes`,
 		`run env CGO_ENABLED=1 go test ./... -race -short -timeout=20m`,
-		`CATALOG_PATH="$VERIFY_CATALOG_DATABASE_PATH" CATALOG_EXPORT_PATH="$VERIFY_CATALOG_PATH"`,
+		`cd "$TMPDIR"`,
+		`STARMAP_HOME="$TMPDIR/product"`,
+		`STARMAP_CATALOG_SOURCE=embedded`,
+		`STARMAP_CATALOG_ACQUISITION_ENABLED=false`,
+		`STARMAP_CATALOG_WORKSPACE_PATH=`,
 		`env -i`,
 		`PATH="$PATH"`,
 		`CLOUDSDK_CONFIG="$VERIFY_HOME/.config/gcloud"`,

@@ -108,3 +108,52 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: make verify-action-pins
+
+  native-runtime:
+    name: Runtime ${{ matrix.runner }}
+    runs-on: ${{ matrix.runner }}
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - {runner: windows-2025, os: windows, arch: amd64}
+          - {runner: windows-11-arm, os: windows, arch: arm64}
+          - {runner: ubuntu-24.04, os: linux, arch: amd64}
+          - {runner: ubuntu-24.04-arm, os: linux, arch: arm64}
+          - {runner: macos-15-intel, os: darwin, arch: amd64}
+          - {runner: macos-15, os: darwin, arch: arm64}
+    env:
+      GOTOOLCHAIN: local
+      CGO_ENABLED: '0'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Set up minimum supported Go toolchain
+        uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
+        with:
+          go-version: '1.25.12'
+          cache: true
+      - name: Test native runtime, configuration, and paths
+        shell: bash
+        env:
+          EXPECTED_OS: ${{ matrix.os }}
+          EXPECTED_ARCH: ${{ matrix.arch }}
+        run: |
+          mkdir -p native-evidence
+          go version > native-evidence/toolchain.txt
+          go env GOOS GOARCH GOHOSTOS GOHOSTARCH CGO_ENABLED >> native-evidence/toolchain.txt
+          test "$(go env GOOS)" = "$EXPECTED_OS"
+          test "$(go env GOHOSTOS)" = "$EXPECTED_OS"
+          test "$(go env GOARCH)" = "$EXPECTED_ARCH"
+          test "$(go env GOHOSTARCH)" = "$EXPECTED_ARCH"
+          go test -json -count=1 -timeout=5m . ./runtime ./internal/bootstrap ./internal/filepublish ./internal/privatefiles ./internal/runtimeacl/windows ./internal/sources/github ./internal/cli/app ./pkg/productpaths ./pkg/productpaths/policy ./pkg/catalogs/storage ./internal/catalog/workspace > native-evidence/tests.jsonl
+      - name: Retain native test evidence
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: native-runtime-${{ matrix.runner }}
+          path: native-evidence/
+          if-no-files-found: error

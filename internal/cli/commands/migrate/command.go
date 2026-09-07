@@ -34,8 +34,12 @@ func newCatalogCommand(app catalogMigrator) *cobra.Command {
 		Short: "Move the former generation store and restore editable provider YAML",
 		Args:  cobra.NoArgs,
 		Long: `Migrate the former machine-owned generation store at the configured
-catalog_path into ~/.starmap/state/catalog, then project its current generation
+catalog_path into the resolved catalog store, then project its current generation
 back to catalog_path as the one human-editable provider-YAML workspace.
+
+The catalog store defaults to <state>/catalog. An explicit catalog-store path
+selects another destination. This command does not migrate runtime identity or
+product roots.
 
 The command validates every retained generation and the running binary's schema
 compatibility before moving anything. A validation or publication failure

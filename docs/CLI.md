@@ -29,6 +29,308 @@ The CLI reserves these short flags globally. Do not use them for a command-speci
 
 Structured output has one spelling: `--output` (short form `-o`).
 
+The [catalog settings reference](CATALOG_SETTINGS.md) lists every catalog flag, YAML key, default, and source boundary.
+Use `--env-file .env --env-file .env.local` to select dotenv files explicitly.
+The command does not discover working-directory dotenv files.
+
+### Private configuration inputs
+
+Selected YAML configuration and explicit dotenv files must be private regular files, each at most 1 MiB.
+On Linux and macOS, the effective user must own the file, with no group or other mode permissions.
+Read-only `0400` files remain valid. macOS also checks native ACL grants.
+Windows applies the same owner and DACL policy as private runtime records. Native Windows qualification remains pending.
+
+The reader resolves an explicitly selected symlink and validates its target before parsing.
+A broken selected symlink causes a conflict. A genuinely absent default configuration remains optional.
+
+Linux and macOS also check the ancestors of configuration paths. Operators remain responsible for trusted mounts. Read-only configuration mounts require no file writes.
+
+Before correcting an access refusal, verify the selected file and the process account.
+Preserve the file, then correct its ownership and private permissions through the operating system.
+On POSIX, use `chmod 600 /absolute/path/config.yaml` after that review. Use the same policy for each explicit dotenv file.
+
+The loader never repairs permissions or changes file contents. Error messages report access failures without file values.
+All explicit dotenv files must pass access checks and parsing before their values enter the environment.
+
+A refused primary file also prevents commands that need its configuration, including `config paths`.
+Use operating-system file inspection to diagnose that refusal. Command help remains available without loading the file.
+
+### Node directories and identity
+
+These settings belong to the Starmap process. The connected runtime records its product, deployment, and instance under its state directory.
+
+| Environment | YAML | Flag |
+| --- | --- | --- |
+| `STARMAP_HOME` | `home` | `--home` |
+| `STARMAP_CONFIG_DIR` | `config_dir` | `--config-dir` |
+| `STARMAP_DATA_DIR` | `data_dir` | `--data-dir` |
+| `STARMAP_STATE_ROOT` | `state_root` | `--state-root` |
+| `STARMAP_CACHE_DIR` | `cache_dir` | `--cache-dir` |
+| `STARMAP_DEPLOYMENT_ID` | `deployment_id` | `--deployment-id` |
+| `STARMAP_INSTANCE_ID` | `instance_id` | `--instance-id` |
+| `STARMAP_SCHEDULER_IDENTITY` | `scheduler_identity` | `--scheduler-identity` |
+| `STARMAP_CATALOG_STORE_PATH` | `catalog_store_path` | `--catalog-store-path` |
+| `STARMAP_RELATIVE_PATH_BASE` | `relative_path_base` | `--relative-path-base` |
+
+Root selectors require absolute paths. `STARMAP_HOME` groups `config/`, `data/`, `state/`, and `cache/` under one directory.
+A specific root replaces that child. Relative leaf paths use the resolved configuration root.
+The default primary file is `<config>/config.yaml`. A selected file cannot change its own configuration root.
+
+Legacy relative selectors require explicit intent before their anchor changes.
+Use the previous absolute path when upgrading an existing runtime or human catalog workspace.
+For new configuration-root paths, set `relative_path_base: config`, `STARMAP_RELATIVE_PATH_BASE=config`, or `--relative-path-base=config`.
+An empty declaration restores refusal of ambiguous relative selectors. Other values fail validation.
+
+This rule covers `--config`, `CONFIG`, `state_dir`, `catalog_workspace_path`, `catalog_path`, and update workspace and source overrides.
+File catalog sources apply the same rule to `catalog_source_url`. Their path report includes the resolved `source-file` entry.
+
+A relative primary file needs the declaration in flags, environment, or an explicit dotenv file before file selection.
+Its own contents cannot authorize that file choice. An absolute primary file can declare the base for its relative leaf settings.
+The new `catalog_store_path` setting always uses the configuration root for relative values because it has no legacy anchor.
+
+The declaration does not move files or verify an old migration. Resolve old relative values to absolute paths before changing it.
+The path report includes `relative_path_base` and its origin. Starmap never searches the current directory to guess an old anchor.
+
+Local defaults use deployment `local` and instance `default`. Configure distinct instance names for two processes on one machine.
+The default runtime directory is `<state>/catalog/runtime/<instance-id>/`. A changed port does not establish another identity.
+The runtime holds `.owner.lock` and retains `owner.json` and `instance-seed` in that directory.
+
+Set `scheduler_identity` to the identity returned by an explicit runtime migration.
+Select its target with `state_dir`. Keep the migrated deployment and instance values.
+The owner record binds this override. Changing or clearing it requires another ownership migration.
+
+An empty override selects the derived identity only when the directory has no conflicting owner record.
+Flags override environment values, explicit dotenv files, and YAML values in that order.
+Starport must select its own node identity. It must not inherit this setting from Starmap environment variables.
+
+The product owns those identity files. Use an explicit migration or recovery operation to change their ownership.
+
+On Linux and macOS, existing runtime directories and identity files must belong to the effective user and deny group and other mode bits.
+This check covers the runtime directory, `.owner.lock`, `owner.json`, and `instance-seed`.
+Application startup checks the configured runtime path before baseline export. Runtime ownership checks the selected path again before identity writes.
+
+A refusal identifies the file role. Inspect the selected path with `config paths --inspect` before changing permissions.
+Run the service under its intended account. Restore owner-only modes only after verifying that account and the selected paths.
+
+Use `0700` for the runtime directory and `0600` for its identity files. Starmap does not change existing modes automatically.
+After the correction, retry startup. The same account and permission checks apply when migration opens a runtime directory.
+
+On macOS, startup also checks native ACL entries on those four paths.
+An allow entry with nonzero rights must name the file owner, including inherited entries. Deny-only entries remain valid.
+This rule refuses non-owner grants even when another deny entry could limit their effective access.
+
+Use `ls -lde <path>` to inspect an affected ACL. Review each grant before an explicit operator correction. Starmap does not remove ACLs automatically.
+The `config paths --inspect` report still shows mode bits and ownership, without ACL entries.
+
+Linux and macOS also reject unsafe runtime ancestors. Native Windows ancestor checks and effective read and write access remain unqualified.
+
+The Windows adapter requires the process account as owner and restricts grants to that account, SYSTEM, and Administrators.
+New runtime identity paths receive protected DACLs during creation. Existing paths require an explicit operator correction.
+Use `icacls <path>` to inspect Windows grants. Deny entries remain valid, but absent, null, unsupported, or broader DACLs cause refusal.
+
+Native Windows enforcement, full file-role policies, and recovery remain unverified. Native qualification remains required before production support.
+
+The [CSP2 checkpoint](plans/proof/starport-production-catalog/csp2.md) identifies incomplete legacy migration and native platform qualification on this branch.
+
+### Inspect selected file locations
+
+```sh
+starmap config paths
+starmap config paths --output json
+starmap config paths --output yaml
+starmap config paths --output wide
+```
+
+The command resolves the selected configuration without opening a catalog runtime or creating product files.
+The table lists the four roots and managed file roles. JSON and YAML include origins, anchors, creation conditions, and recovery rules.
+The report contains path metadata and excludes credential values.
+
+File patterns describe possible files under each location. They do not assert file existence, access permissions, or active ownership.
+
+`available` identifies an implemented file role. `disabled` identifies an unselected human catalog workspace.
+`planned` identifies a reserved path whose writer remains unimplemented.
+
+Each file role and external destination includes a `policy` object in JSON and YAML.
+It names selectors, applicability, access requirements, retention class, and the condition for removal.
+Selectors identify configuration controls or explicit destination choices. They do not contain setting values or executable commands.
+Wide output adds access and retention columns. A mixed root can contain files with different policies.
+
+| Access class | Meaning |
+| --- | --- |
+| `owner-only` | Private access for the operating account. Use private POSIX modes and equivalent Windows ACLs. |
+| `public-read` | The exact embedded baseline permits explicit shared reads. Startup still creates its export privately. |
+| `deployment-controlled` | The operator sets access for catalog facts, authoring files, or source inputs. This class does not imply public data. |
+| `external-system` | The external service or tool owns access control. |
+
+Retention classes distinguish operator files, reproducible exports, durable state, identity, recovery records, rebuildable caches, and audit records.
+The `removal` field states the condition for cleanup. No retention class enables automatic deletion.
+Retained runtime evidence and GitHub replay floors are durable state. Disabling downloads does not make them disposable caches.
+
+Reserved paths cover administration, download staging, managed trust, and optional file logs.
+Current logging uses streams. A reported log path does not enable file logging.
+External entries explain explicit destinations for dotenv, credentials, migration operations, release artifacts, shell completion, tool caches, and future exports.
+
+Add `--inspect` to report current filesystem observations:
+
+```sh
+starmap config paths --inspect --output json
+starmap config paths --inspect --max-entries 20000 --output wide
+```
+
+Inspection reports present, absent, unavailable, and inapplicable locations. It reads matching directory entries without creating product files or opening a catalog runtime.
+The default budget is 10,000 entries. `--max-entries` requires `--inspect` and accepts 1 through 100,000.
+Unmatched directory entries also consume the budget. A scan that reaches its budget can report `complete: false` even at the directory boundary.
+The budget bounds metadata entries, not elapsed time on slow storage. Inspection is not an atomic snapshot or a readiness verdict.
+
+Linux and macOS report POSIX mode bits, UID, and GID. These observations do not establish effective access or ACL safety.
+Windows inspection now reports `windows-owner-and-dacl` with a `windows_security` observation. Native execution remains UNVERIFIED until the Windows matrix runs.
+
+Inspection adds `access_policy`, `access_status`, and `access_reason` for declared file roles.
+An `owner-only` POSIX file or directory reports `conflict` when its mode grants group or other access, or its owner differs from the operating account.
+The filesystem catalog store uses this class for its root, pointer, lock, generation files, and staging entries.
+
+Windows observations include owner and process SIDs, DACL state, entry count, and private-policy status.
+An `owner-only` entry reports a conflict when its observed descriptor violates the shared private DACL policy.
+Compatible descriptors retain an unverified access status. Deny entries can still prevent the process from reading or writing the file.
+Unavailable metadata, unsupported descriptors, changed identities, and symbolic links retain explicit uncertainty.
+The command does not follow selected symbolic links, read payload bytes, change permissions, or resolve account names through a directory service.
+
+Table output shows the owner SID. Wide output also shows DACL state and the native observation reason.
+JSON and YAML retain the complete structured observation. The report does not establish ancestor safety or a stable security snapshot.
+These conflicts concern the declared policy. They do not establish actual exposure through parent directories or ACLs.
+
+A present file without such a conflict still reports `unverified`. Inspection does not qualify effective access, including Windows ACLs.
+Absent, disabled, and planned entries report `not-assessed`. Wide inspection output includes these fields.
+The command never repairs permissions or deletes files. Existing startup permission guards remain separate.
+
+The runtime owner observation also compares a bounded `owner.json` record against the configured product, deployment, instance, and identity override.
+This comparison reads at most 4,097 bytes separately from the metadata budget. It reports `matches`, `absent`, `conflict`, `unavailable`, or `unverified`.
+The Windows owner comparison currently reports `unverified`. A match does not verify the instance seed, live directory lock, or fleet identity fencing.
+
+Inspection skips observed symbolic-link targets and does not read catalog payloads or credential files.
+Ordinary configuration resolution still reads the selected configuration and explicit dotenv inputs before inspection.
+
+### Private retained evidence and discovery files
+
+Retained source and provider records use private files under the selected runtime directory.
+GitHub discovery state follows the same rule. POSIX directories use `0700`, and record files use `0600`.
+Windows creation applies an explicit owner and protected DACL. Native Windows qualification remains pending.
+
+The writers check existing directory identity, ownership, and supported ACLs before access.
+They reject linked directories, linked records, nonregular records, and exposed existing files.
+Startup fails when retained-layer access fails. It does not treat an unsafe record as an empty catalog source.
+A lost directory binding also reports a conflict instead of an absent record.
+
+Older versions can leave evidence directories with `0755` and records with `0644`.
+Before correcting a refusal, stop the affected process and preserve a consistent backup.
+Use `starmap config paths --inspect --output wide` to locate the managed files and visible policy conflicts.
+Review the service account, ownership, and ACLs. Correct only the affected private paths, then restart with the same configuration.
+No automatic permission repair occurs on refused paths.
+
+New writes use unique `.layer-<id>` or `.state-<id>` temporary files.
+The writer flushes each complete record before publication and flushes the directory afterward.
+Legacy `.tmp` files remain untouched. Preserve orphan files until an explicit recovery or cleanup procedure identifies their owner.
+These operations do not qualify power-loss durability for an untested filesystem.
+
+### Windows workspace replacement and recovery
+
+The optional YAML workspace uses a journal when Windows replaces an existing directory.
+Starmap stages and validates the new tree, records intent, moves the old tree aside, and installs the candidate.
+The workspace path can be absent between those moves. A crash can extend that interval until recovery.
+
+For a workspace named `workspace`, the parent directory can contain these files:
+
+| File or directory | Purpose |
+| --- | --- |
+| `.workspace.starmap-replacement.json` | Recovery intent, directory identities, file checksums, and expected projection receipt. |
+| `.workspace.candidate-<id>/` | Validated replacement awaiting installation. |
+| `.workspace.backup-<id>/` | Previous workspace retained until the replacement receipt is saved. |
+| `..workspace.starmap-replacement.json.<id>` | Temporary journal write before intent publication. |
+
+`starmap config paths --inspect` reports these roles without starting recovery.
+A pending journal makes complete Starmap workspace reads return a retryable conflict.
+The accepted catalog remains available in memory. Existing inference permission and budget checks still apply.
+
+Connected runtime startup with a durable current generation attempts workspace repair under the writer lock.
+Close editor handles that prevent directory renaming, then restart with the same configuration and catalog store.
+Go callers can explicitly invoke `Client.RepairWorkspace(ctx)` to recover a stale or interrupted projection from the client's durable catalog.
+The result reports completed changes and any preserved operator changes. Repair does not publish a new catalog generation.
+
+`starmap.New` and `starmap.NewContext` never repair or create workspace files.
+Without a durable current generation, construction still refuses a pending workspace read. With one, catalog reads remain available without changing the workspace.
+
+If repair reports changed or unexpected files, preserve the journal, candidate, backup, and workspace together before operator recovery.
+Do not delete the journal to suppress the conflict. Recovery checks directory identity as well as file contents.
+A copied directory is not interchangeable with the recorded directory, even when its bytes match.
+
+Native Windows execution and power-loss qualification remain pending. Local process-exit tests do not establish either guarantee.
+
+### Source cache and checkout paths
+
+The `update` command and server acquisition use the configured cache root.
+HTTP source files use `<cache>/models.dev/{api.json,api.json.metadata.json}`. Git checkout files use `<cache>/sources/models.dev-git/`.
+The path report includes `source_cache` and `source_checkout`. Reading the report creates no files.
+
+`STARMAP_HOME` and `STARMAP_CACHE_DIR` select the same cache root used by these adapters.
+An explicit `update --sources-dir` overrides both source parents. `STARMAP_SOURCES_DIR` remains its environment fallback.
+Absolute overrides retain their exact locations. Relative overrides require the explicit configuration-root declaration above.
+Use absolute paths for service configuration.
+Provider and author logo projection uses the selected checkout parent.
+
+The defaults do not read, move, or delete old `~/.starmap/cache` or `~/.starmap/sources` directories.
+Accepted catalog evidence remains in the runtime and catalog store. Source caches can rebuild through permitted acquisition.
+This change does not add permission to contact a source or change its authority.
+
+### Runtime migration
+
+Stop the source process before migration. Keep older binaries stopped afterward because they do not honor retirement records.
+Keep the selected configuration file unchanged until completion finishes.
+This procedure moves one runtime directory. It does not move the catalog store, workspace, or other product files.
+
+Each operation requires `--from`, `--to`, `--operation-id`, and `--source-identity`.
+Use absolute runtime paths and the identity observed in the old deployment.
+The journal defaults to `<state>/migrations`. Use `--journal-root` to select another absolute directory outside both runtime trees.
+Reuse the same journal root, paths, operation ID, identity, deployment, and instance for retries.
+
+| Command | Result |
+| --- | --- |
+| `starmap migrate runtime prepare` | Records file checksums and reports whether the old owner record verifies the identity. |
+| `starmap migrate runtime stage` | Copies and verifies files in a private staging directory. The target remains absent. |
+| `starmap migrate runtime publish` | Publishes the target, records source retirement, and returns the target path and retained identity. |
+| `starmap migrate runtime complete` | Verifies the saved selection, opens the replacement, records completion, and closes that runtime. |
+
+Use `--output json` for machine-readable results. Publication includes staging when no verified stage exists.
+If publication stops, retry `publish` with the same arguments. It verifies existing operation records before reuse.
+
+Merge the following fields into the selected configuration file after publication. Replace the example values with the operation's target and ownership.
+
+```yaml
+state_dir: /absolute/replacement-runtime
+scheduler_identity: observed-source-identity
+deployment_id: production
+instance_id: catalog-a
+```
+
+Run `complete` with the same migration arguments and `--config` pointing to that file.
+Flags or environment variables alone do not satisfy the saved-selection check.
+Completion refuses a changed file or disagreement between the saved and effective selections.
+It verifies the required migration again under the target lock before owner, seed, or catalog initialization.
+The command preserves configuration content and closes its temporary runtime before returning.
+
+Configure the service to select the same file and roots before restarting it.
+Completion verifies the command's selected configuration. It does not edit service definitions or prove filesystem power-loss durability.
+Retain the migration journal and source files until the deployment's recovery procedure permits their removal.
+
+Completion also writes `.migration-completed.json` in the target runtime directory.
+If completion stops, retry `complete` with the same arguments and saved configuration.
+A retry repairs a missing record after the final journal event. It refuses conflicting records.
+
+Default-root startup accepts the preserved legacy runtime only when this record verifies its source files, retirement, target, owner, and identity.
+Keep `scheduler_identity` set to the retained identity. Another recognized legacy runtime still causes refusal.
+Later catalog updates in the target do not invalidate the record. Verification does not require the operation journal.
+Keep the old source intact while default-root startup needs this acknowledgement.
+
+
 **Why `-o` instead of `-f`?**
 We use `-o` for output format to:
 - Avoid conflict with embed cat's `--filename` flag
@@ -54,10 +356,12 @@ starmap migrate catalog
 
 This is the only command that opts into changing a detected pre-plan local
 storage layout. It moves the validated immutable catalog store from the
-configured `catalog_path` to `~/.starmap/state/catalog`, then materializes the
+configured `catalog_path` to the resolved catalog store, then materializes the
 current generation at `catalog_path` as editable provider YAML. It accepts no
 path arguments: `catalog_path` follows normal configuration precedence and the
-machine state destination is the canonical CLI-owned path.
+default machine state destination is `<state>/catalog`. An explicit `STARMAP_CATALOG_STORE_PATH` overrides it.
+
+This command handles the catalog-store versus workspace layout. Product-root and runtime-identity migration remain separate, incomplete CSP2 operations.
 
 Stop all older Starmap processes that use `catalog_path` before running the
 command, and do not restart those binaries afterward. They do not understand
@@ -424,3 +728,46 @@ so scripts, documentation, telemetry, and support guidance share one vocabulary.
 - Dry run: `--dry-run`
 
 **Questions?** See examples in this document or check `internal/cli/commands/*/` source code.
+
+### Ancestor access on Linux and macOS
+
+Private runtime, retained-file, discovery, and configuration paths require ancestors that protect their directory entries.
+Each existing ancestor and selected symlink must belong to root or the effective user.
+Other accounts can read and search trusted ancestors. Group or other write permissions require the sticky bit on a trusted ancestor.
+The sticky rule permits normal temporary directories while the child ownership checks protect the selected path.
+
+Starmap checks every intermediate directory in each symlink route.
+
+Intermediate directories and final targets must pass their applicable checks.
+
+macOS also refuses ancestor ACL grants that permit other accounts to change directory entries, permissions, ownership, or attributes.
+Root and the effective user remain trusted. Read-only grants and deny entries remain valid.
+
+A refused operation preserves existing file bytes and modes. Runtime checks run before baseline export, and configuration checks run before parsing.
+Private directory creation uses verified parent handles and checks child identity before descent.
+Retained-file publication checks ancestor access again before replacing its record.
+
+Inspect the selected path, its ancestors, and the service identity before correcting ownership or permissions.
+Do not change shared system directory permissions without reviewing their other users.
+Windows ancestor enforcement, managed-service ownership exceptions, and full filesystem qualification remain open.
+
+
+### Ancestor access on Windows
+
+Private-file operations now check existing Windows ancestors before access. This implementation still requires native Windows qualification.
+The guard accepts ancestors owned by the process account, SYSTEM, Administrators, or the Windows Modules Installer service.
+Private leaf files retain their stricter process-account ownership rule.
+
+Ancestors may grant shared read and traversal access. They may also grant subdirectory creation while child ownership and protected private creation remain mandatory.
+Grants that permit deletion, file creation, attribute changes, or security changes require a trusted host principal.
+The guard rejects absent or null DACLs and unsupported ACE types or flags.
+It does not compute ordered effective access, so a deny entry does not excuse an unsafe allow entry.
+
+Inheritance-only entries do not grant access to the ancestor itself. New private children receive protected ACLs, and existing children receive their own checks.
+The guard validates selected symlinks and their target ancestors. It inspects each component before parent traversal can remove it from the path.
+
+Drive paths, UNC shares, extended drive and UNC forms, and volume GUID paths enter the filesystem validator.
+Physical devices and unsupported reparse points cause refusal. Acceptance by the parser does not qualify every filesystem or mount arrangement.
+
+On refusal, inspect the ancestor path in the error and the intended service identity. Starmap does not change existing permissions automatically.
+Native tests cover permission correction and retained-file preservation, but their Windows execution remains UNVERIFIED.

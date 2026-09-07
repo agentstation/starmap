@@ -13,11 +13,13 @@ import (
 
 type commandFlags struct {
 	configFile string
+	envFiles   []string
 	verbose    bool
 	quiet      bool
 	noColor    bool
 	output     string
 	logLevel   string
+	pathValues map[string]*string
 }
 
 // Execute runs the starmap CLI application with the given arguments.
@@ -72,7 +74,12 @@ when API keys are configured.`,
 	})
 
 	// Add global flags
-	rootCmd.PersistentFlags().StringVar(&a.commandFlags.configFile, "config", "", "config file (default is $HOME/.starmap/config.yaml)")
+	rootCmd.PersistentFlags().StringVar(&a.commandFlags.configFile, "config", "", "configuration file (default is config.yaml under the selected configuration root)")
+	a.commandFlags.pathValues = make(map[string]*string)
+	for _, setting := range pathSettings() {
+		a.commandFlags.pathValues[setting.name] = rootCmd.PersistentFlags().String(setting.flag, "", setting.description+" ("+setting.name+")")
+	}
+	rootCmd.PersistentFlags().StringArrayVar(&a.commandFlags.envFiles, "env-file", nil, "load an explicit dotenv file (repeat in increasing precedence)")
 	rootCmd.PersistentFlags().BoolVarP(&a.commandFlags.verbose, "verbose", "v", a.config.Verbose, "verbose output (shortcut for --log-level=debug)")
 	rootCmd.PersistentFlags().BoolVarP(&a.commandFlags.quiet, "quiet", "q", a.config.Quiet, "minimal output (shortcut for --log-level=warn)")
 	rootCmd.PersistentFlags().BoolVar(&a.commandFlags.noColor, "no-color", a.config.NoColor, "disable colored output")
@@ -97,16 +104,40 @@ when API keys are configured.`,
 
 // setupCommand runs before each command.
 func (a *App) setupCommand(cmd *cobra.Command, _ []string) error {
-	if a.commandFlags.configFile != "" {
-		config, err := loadConfig(a.commandFlags.configFile)
+	dotenv, err := loadExplicitEnvFiles(a.commandFlags.envFiles)
+	if err != nil {
+		return err
+	}
+	if a.deferCommandConfig || a.commandFlags.configFile != "" || len(a.commandFlags.envFiles) > 0 || a.anyPathFlagChanged(cmd) {
+		bootstrap := &Config{dotenvPaths: dotenv.paths, pathOverrides: make(map[string]string)}
+		for _, setting := range pathSettings() {
+			if cmd.Flags().Changed(setting.flag) {
+				bootstrap.pathOverrides[setting.name] = *a.commandFlags.pathValues[setting.name]
+			}
+		}
+		config, err := loadConfigWithPaths(a.commandFlags.configFile, bootstrap)
 		if err != nil {
 			return errors.WrapResource("load", "config", a.commandFlags.configFile, err)
 		}
 		a.config = config
+		a.deferCommandConfig = false
 		a.credentialMu.Lock()
 		a.credentialResolver = nil
 		a.credentialMu.Unlock()
 	}
+
+	a.config.DotenvConflicts = dotenv.conflicts
+	a.config.dotenvLayers = dotenv.layers
+	a.config.dotenvPaths = dotenv.paths
+	if a.config.pathOverrides == nil {
+		a.config.pathOverrides = make(map[string]string)
+	}
+	for _, setting := range pathSettings() {
+		if cmd.Flags().Changed(setting.flag) {
+			a.config.pathOverrides[setting.name] = *a.commandFlags.pathValues[setting.name]
+		}
+	}
+	a.config.LegacyCatalogNames = append(a.config.LegacyCatalogNames, dotenv.legacyNames...)
 
 	// Apply only explicitly provided flags. Values loaded from a config file or
 	// environment must survive command construction and parsing.
@@ -141,6 +172,12 @@ func (a *App) setupCommand(cmd *cobra.Command, _ []string) error {
 	// explicitly so package-level diagnostics honor CLI flags without mutating
 	// zerolog's separate global logger or level.
 	logging.SetDefault(logger)
+	if len(a.config.LegacyCatalogNames) > 0 {
+		logger.Warn().Strs("settings", a.config.LegacyCatalogNames).Msg("legacy remote-server settings are deprecated. Use the catalog source group")
+	}
+	for _, conflict := range dotenv.conflicts {
+		logger.Warn().Str("setting", conflict.Name).Str("replaced_file", conflict.ReplacedFile).Str("selected_file", conflict.SelectedFile).Msg("explicit dotenv files contain different values")
+	}
 
 	return nil
 }
@@ -152,6 +189,7 @@ func (a *App) registerCommands(rootCmd *cobra.Command) {
 	rootCmd.AddCommand(a.NewDepsCommand())
 	rootCmd.AddCommand(a.NewAuthCommand())
 	rootCmd.AddCommand(a.NewMigrateCommand())
+	rootCmd.AddCommand(a.NewConfigCommand())
 
 	// Catalog commands (working with models/providers)
 	rootCmd.AddCommand(a.NewProvidersCommand())
@@ -200,4 +238,13 @@ func mustGetString(cmd *cobra.Command, name string) string {
 		panic("programming error: failed to get flag " + name + ": " + err.Error())
 	}
 	return val
+}
+
+func (a *App) anyPathFlagChanged(cmd *cobra.Command) bool {
+	for _, setting := range pathSettings() {
+		if cmd.Flags().Changed(setting.flag) {
+			return true
+		}
+	}
+	return false
 }

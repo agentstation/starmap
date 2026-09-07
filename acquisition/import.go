@@ -14,6 +14,7 @@ import (
 	"github.com/agentstation/starmap/pkg/catalogs/projection"
 	"github.com/agentstation/starmap/pkg/errors"
 	"github.com/agentstation/starmap/pkg/sources"
+	pkgsync "github.com/agentstation/starmap/pkg/sync"
 )
 
 // ImportResult describes a verified release observation and any local
@@ -41,6 +42,14 @@ func (s *Syncer) ImportRelease(
 			Field:   "acquisition.syncer",
 			Message: "is required",
 		}
+	}
+	projectionOptions := &pkgsync.Options{CatalogPath: s.client.WorkspacePath(), SourceDirectories: s.sourceDirectories}
+	if projectionOptions.CatalogPath != "" {
+		directories, err := projectionSourceDirectories(projectionOptions.CatalogPath, projectionOptions)
+		if err != nil {
+			return nil, err
+		}
+		projectionOptions.SourceDirectories = directories
 	}
 	generation, err := artifact.VerifyRelease(ctx, release, verifier)
 	if err != nil {
@@ -122,6 +131,7 @@ func (s *Syncer) ImportRelease(
 			input.Path,
 			publication,
 			input,
+			projectionOptions,
 		)
 	}
 	return result, nil
@@ -166,47 +176,40 @@ func observeImportWorkspace(
 	ctx context.Context,
 	path string,
 ) (workspace.InputExpectation, *sources.Observation, error) {
-	input, err := workspace.ObserveInput(path)
-	if err != nil {
-		return workspace.InputExpectation{}, nil, err
-	}
-	if !input.Exists {
-		return input, nil, nil
-	}
-	builder, err := catalogs.NewFromPath(input.Path)
-	if err != nil {
-		if os.IsNotExist(err) {
-			return input, nil, &errors.ConflictError{
-				Resource: "human catalog workspace",
-				Expected: input.Path,
-				Actual:   "removed during release import",
-			}
+	var input workspace.InputExpectation
+	var observation *sources.Observation
+	err := workspace.Read(ctx, path, func(observed workspace.InputExpectation) error {
+		input = observed
+		if !input.Exists {
+			return nil
 		}
-		return input, nil, errors.WrapResource(
-			"load",
-			"human catalog workspace",
-			input.Path,
-			err,
-		)
-	}
-	catalog, err := catalogs.NewObservationCatalog(builder)
-	if err != nil {
-		return input, nil, errors.WrapResource(
-			"observe",
-			"human catalog workspace",
-			input.Path,
-			err,
-		)
-	}
-	input, err = workspace.BindInputCatalog(input, catalog)
+		builder, err := catalogs.NewFromPath(input.Path)
+		if err != nil {
+			if os.IsNotExist(err) {
+				return &errors.ConflictError{
+					Resource: "human catalog workspace", Expected: input.Path,
+					Actual: "removed during release import",
+				}
+			}
+			return errors.WrapResource("load", "human catalog workspace", input.Path, err)
+		}
+		catalog, err := catalogs.NewObservationCatalog(builder)
+		if err != nil {
+			return errors.WrapResource("observe", "human catalog workspace", input.Path, err)
+		}
+		input, err = workspace.BindInputCatalog(input, catalog)
+		if err != nil {
+			return err
+		}
+		value, err := local.New(local.WithCatalogReport(catalog, builder.LoadReport())).Observe(ctx)
+		if err != nil {
+			return err
+		}
+		observation = &value
+		return nil
+	})
 	if err != nil {
 		return workspace.InputExpectation{}, nil, err
 	}
-	observation, err := local.New(
-		local.WithCatalogReport(catalog, builder.LoadReport()),
-	).Observe(ctx)
-	if err != nil {
-		return workspace.InputExpectation{}, nil, err
-	}
-	return input, &observation, nil
+	return input, observation, nil
 }

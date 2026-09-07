@@ -3,9 +3,8 @@ set -euo pipefail
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 TMPDIR="$(mktemp -d "${TMPDIR:-/tmp}/starmap-verify.XXXXXX")"
+TMPDIR="$(cd "$TMPDIR" && pwd -P)"
 trap 'rm -rf "$TMPDIR"' EXIT
-VERIFY_CATALOG_PATH="$ROOT/internal/embedded/catalog"
-VERIFY_CATALOG_DATABASE_PATH="$TMPDIR/catalog"
 VERIFY_HOME="$TMPDIR/home"
 GOLANGCI_LINT_CACHE="$TMPDIR/golangci-lint-cache"
 GOLANGCI_LINT_VERSION="2.12.2"
@@ -99,6 +98,7 @@ run ./scripts/verify-catalog-package-ownership.sh
 run ./scripts/test-catalog-package-ownership-verifier.sh
 run ./scripts/verify-catalog-dependency-direction.sh
 run ./scripts/test-catalog-dependency-direction-verifier.sh
+run python3 ./scripts/test_catalog_product_verify.py
 run env CGO_ENABLED=1 go test ./... -race -short -timeout=20m
 run go vet ./...
 run ./scripts/verify-catalog-performance.sh
@@ -113,23 +113,26 @@ run make technical-writing-check
 run git diff --check
 
 run go build -o "$TMPDIR/starmap" ./cmd/starmap
-run "$TMPDIR/starmap" version
-run env CATALOG_PATH="$VERIFY_CATALOG_DATABASE_PATH" CATALOG_EXPORT_PATH="$VERIFY_CATALOG_PATH" \
-	"$TMPDIR/starmap" validate catalog
-printf '\n==> isolated credential-free provider listing\n'
-mkdir -p "$VERIFY_HOME"
-(
+# Each CLI check uses only the embedded catalog and operation-owned paths.
+run_cli() (
 	cd "$TMPDIR"
 	env -i \
 		PATH="$PATH" \
-		CATALOG_PATH="$VERIFY_CATALOG_DATABASE_PATH" \
-		CATALOG_EXPORT_PATH="$VERIFY_CATALOG_PATH" \
-	CLOUDSDK_CONFIG="$VERIFY_HOME/.config/gcloud" \
-	HOME="$VERIFY_HOME" \
-	XDG_CONFIG_HOME="$VERIFY_HOME/.config" \
-	"$TMPDIR/starmap" providers
+		TMPDIR="$TMPDIR" \
+		HOME="$VERIFY_HOME" \
+		XDG_CONFIG_HOME="$VERIFY_HOME/.config" \
+		CLOUDSDK_CONFIG="$VERIFY_HOME/.config/gcloud" \
+		STARMAP_HOME="$TMPDIR/product" \
+		STARMAP_CATALOG_SOURCE=embedded \
+		STARMAP_CATALOG_ACQUISITION_ENABLED=false \
+		STARMAP_CATALOG_WORKSPACE_PATH= \
+		"$TMPDIR/starmap" "$@"
 )
-run env CATALOG_PATH="$VERIFY_CATALOG_DATABASE_PATH" CATALOG_EXPORT_PATH="$VERIFY_CATALOG_PATH" \
-	"$TMPDIR/starmap" models list --limit 5
+
+mkdir -p "$VERIFY_HOME"
+run run_cli version
+run run_cli validate catalog
+run run_cli providers
+run run_cli models list --limit 5
 
 printf '\nrepository verification passed\n'

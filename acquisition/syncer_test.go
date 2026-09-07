@@ -325,6 +325,7 @@ func TestProjectCommittedCatalogReportsAppliedAndPendingRepair(t *testing.T) {
 		path,
 		publication,
 		workspace.InputExpectation{},
+		pkgsync.Defaults(),
 	)
 	if applied.Status != pkgsync.ProjectionStatusApplied ||
 		applied.WorkspaceChecksum == "" ||
@@ -342,6 +343,7 @@ func TestProjectCommittedCatalogReportsAppliedAndPendingRepair(t *testing.T) {
 		blockingFile,
 		publication,
 		workspace.InputExpectation{},
+		pkgsync.Defaults(),
 	)
 	if pending.Status != pkgsync.ProjectionStatusPendingRepair ||
 		pending.IssueCode != pkgsync.ProjectionIssueWorkspaceFailed {

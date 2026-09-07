@@ -9,12 +9,13 @@ import (
 
 	"github.com/google/go-cmp/cmp"
 
+	"github.com/agentstation/starmap/internal/privatefiles"
 	"github.com/agentstation/starmap/pkg/catalogs/internal/resourcepolicy"
 	pkgerrors "github.com/agentstation/starmap/pkg/errors"
 )
 
 func TestAtomicFilesystemCommitFailurePreservesCurrent(t *testing.T) {
-	root := t.TempDir()
+	root := privateFilesystemRoot(t)
 	store, err := NewFilesystem(root)
 	if err != nil {
 		t.Fatalf("NewFilesystem: %v", err)
@@ -55,7 +56,7 @@ func TestAtomicFilesystemCommitFailurePreservesCurrent(t *testing.T) {
 }
 
 func TestFilesystemCatalogStoreReopensCurrentGeneration(t *testing.T) {
-	root := t.TempDir()
+	root := privateFilesystemRoot(t)
 	first, err := NewFilesystem(root)
 	if err != nil {
 		t.Fatalf("NewFilesystem first: %v", err)
@@ -79,7 +80,7 @@ func TestFilesystemCatalogStoreReopensCurrentGeneration(t *testing.T) {
 }
 
 func TestFilesystemCatalogStoreKeepsAndCleansMachineStagingUnderRoot(t *testing.T) {
-	root := t.TempDir()
+	root := privateFilesystemRoot(t)
 	store, err := NewFilesystem(root)
 	if err != nil {
 		t.Fatalf("NewFilesystem: %v", err)
@@ -131,7 +132,7 @@ func TestFilesystemCatalogStoreRejectsSymlinkedMachineEntries(t *testing.T) {
 
 	for _, entry := range []string{"generations", ".commit.lock", "current"} {
 		t.Run(entry, func(t *testing.T) {
-			root := t.TempDir()
+			root := privateFilesystemRoot(t)
 			target := filepath.Join(t.TempDir(), "operator-data")
 			if entry == "generations" {
 				if err := os.Mkdir(target, resourcepolicy.DirMode); err != nil {
@@ -159,12 +160,12 @@ func TestFilesystemCatalogStoreRejectsSymlinkedMachineEntries(t *testing.T) {
 }
 
 func TestFilesystemCatalogStoreRejectsSymlinkedGeneration(t *testing.T) {
-	root := t.TempDir()
+	root := privateFilesystemRoot(t)
 	store, err := NewFilesystem(root)
 	if err != nil {
 		t.Fatalf("NewFilesystem: %v", err)
 	}
-	if err := os.Mkdir(filepath.Join(root, "generations"), resourcepolicy.DirMode); err != nil {
+	if err := os.Mkdir(filepath.Join(root, "generations"), privatefiles.DirectoryMode); err != nil {
 		t.Fatalf("Mkdir generations: %v", err)
 	}
 	id := "symlinked-generation"
@@ -189,4 +190,13 @@ func assertInvalidFilesystemCommit(t *testing.T, store *Filesystem) {
 	if !stderrors.Is(err, pkgerrors.ErrInvalidInput) {
 		t.Fatalf("Commit error = %T %v, want invalid input", err, err)
 	}
+}
+
+func privateFilesystemRoot(t *testing.T) string {
+	t.Helper()
+	path := filepath.Join(t.TempDir(), "store")
+	if _, err := privatefiles.NewDirectory(path); err != nil {
+		t.Fatal(err)
+	}
+	return path
 }

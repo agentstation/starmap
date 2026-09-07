@@ -2,8 +2,8 @@
 
 package workspace
 
-import stderrors "errors"
+import "github.com/agentstation/starmap/pkg/errors"
 
-func swapDirectories(_, _ string) error {
-	return stderrors.New("atomic directory exchange is unsupported on this platform")
+func promoteExistingDirectory(_, target string) error {
+	return &errors.ValidationError{Field: "workspace_replacement", Value: target, Message: "directory exchange is unsupported; use the replacement journal"}
 }

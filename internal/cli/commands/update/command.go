@@ -25,10 +25,11 @@ The command will:
 • Fetch live data from provider APIs (if keys configured)
 • Enrich with models.dev data (descriptions, features, pricing, limits, logos)
 • Reconcile all sources using field-level authority
-• Save the updated catalog to the same human workspace
+• Save the updated catalog to the same human catalog workspace
 
-By default, the human provider-YAML workspace is ~/.starmap/catalog. Machine
-generation state is separate and is never treated as editable configuration.`,
+The default human catalog workspace uses the configured product data root.
+Use absolute paths for legacy overrides. New relative paths require
+--relative-path-base=config and use the configuration root.`,
 		Example: `  starmap update                            # Update entire catalog
   starmap update openai                     # Update specific provider
   starmap update --dry-run                  # Preview changes

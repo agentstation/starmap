@@ -3,10 +3,15 @@ package app
 import (
 	"context"
 	"os"
+	"slices"
+	"strconv"
+	"strings"
 
+	"github.com/agentstation/starmap"
 	"github.com/agentstation/starmap/acquisition"
+	"github.com/agentstation/starmap/internal/bootstrap"
 	"github.com/agentstation/starmap/internal/catalog/settings"
-	"github.com/agentstation/starmap/internal/constants"
+	catalogconfig "github.com/agentstation/starmap/pkg/catalogs/config"
 	"github.com/agentstation/starmap/pkg/errors"
 	"github.com/agentstation/starmap/runtime"
 )
@@ -27,8 +32,30 @@ func (a *App) Runtime(ctx context.Context, extra ...runtime.Option) (*runtime.Ru
 	}
 	a.runtimeMu.Lock()
 	defer a.runtimeMu.Unlock()
+	return a.openRuntimeLocked(ctx, extra)
+}
+
+// openRuntimeLocked requires runtimeMu throughout runtime creation and publication.
+func (a *App) openRuntimeLocked(ctx context.Context, extra []runtime.Option) (*runtime.Runtime, error) {
 	if a.runtime != nil {
 		return a.runtime, nil
+	}
+	paths, err := a.ResolvedPaths()
+	if err != nil {
+		return nil, err
+	}
+	completion, err := a.checkLegacyRoots(ctx, paths)
+	if err != nil {
+		return nil, err
+	}
+	if completion != nil {
+		extra = append(slices.Clone(extra), runtime.WithCompletedDirectoryMigration(*completion))
+	}
+	if err := runtime.ValidateDirectoryPermissions(ctx, paths.Runtime.Path); err != nil {
+		return nil, err
+	}
+	if _, err := bootstrap.Export(ctx, paths.Baselines.Path); err != nil {
+		return nil, err
 	}
 	composition, err := a.composition(extra)
 	if err != nil {
@@ -85,12 +112,17 @@ func (a *App) composition(extra []runtime.Option) (settings.Composition, error) 
 	if err != nil {
 		return settings.Composition{}, err
 	}
-	return settings.Composition{
-		Config:   a.catalogSettings,
-		Acquirer: acquirer,
-		Base:     base,
-		Extra:    extra,
-	}, nil
+	paths, err := a.ResolvedPaths()
+	if err != nil {
+		return settings.Composition{}, err
+	}
+	resolvedExtras := make([]runtime.Option, 0, 4+len(extra))
+	resolvedExtras = append(resolvedExtras, runtime.WithDirectoryOwner(runtime.DirectoryOwner{Product: "starmap", Deployment: paths.DeploymentID, Instance: paths.InstanceID}), runtime.WithStateDirectory(paths.Runtime.Path), runtime.WithClientOptions(starmap.WithCatalogPath(paths.Workspace.Path)))
+	if paths.SourceFile.Path != "" {
+		resolvedExtras = append(resolvedExtras, runtime.WithSourceURL(paths.SourceFile.Path))
+	}
+	resolvedExtras = append(resolvedExtras, extra...)
+	return settings.Composition{Config: a.catalogSettings, Acquirer: acquirer, Base: base, Extra: resolvedExtras}, nil
 }
 
 // baseCatalogOptions returns the options that this process supplies before any
@@ -131,33 +163,69 @@ func (a *App) acquirer() (runtime.Acquirer, error) {
 // scheduler seed, the retained provider layers, and the source discovery state
 // live there. It never joins the catalog store.
 func (a *App) runtimeStatePath() (string, error) {
-	if a.catalogSettings.StateDirectory != "" {
-		return a.catalogSettings.StateDirectory, nil
+	paths, err := a.ResolvedPaths()
+	if err != nil {
+		return "", err
 	}
-	return expandHomePath(constants.DefaultRuntimeStatePath)
+	return paths.Runtime.Path, nil
 }
 
-// loadCatalogSettings reads the canonical catalog settings of this process. An
-// override reads before the environment, so a flag replaces an exported value.
-// The legacy remote-server keys map onto the canonical starmap source names, so
-// one deployment carries one set of names.
+// loadCatalogSettings resolves flags, environment, canonical file values and legacy aliases.
+// Source replacement clears lower transport credentials before runtime composition.
 func loadCatalogSettings(config *Config, overrides ...settings.Lookup) (settings.Config, error) {
-	environment := func(name string) (string, bool) {
-		if value, found := os.LookupEnv(name); found {
-			return value, true
+	layers := make([]catalogconfig.Layer, 0, len(overrides)+3)
+	for index, lookup := range overrides {
+		values := make(map[string]string)
+		if lookup != nil {
+			for _, name := range settings.Names() {
+				if value, present := lookup(name); present {
+					values[name] = value
+				}
+			}
 		}
-		if config == nil || config.RemoteServerURL == "" {
-			return "", false
-		}
-		switch name {
-		case settings.Source:
-			return string(runtime.SourceStarmap), true
-		case settings.SourceURL:
-			return config.RemoteServerURL, true
-		case settings.SourceAPIKey:
-			return config.RemoteServerAPIKey, true
-		}
-		return "", false
+		layers = append(layers, catalogconfig.Layer{Name: "override-" + strconv.Itoa(index+1), Values: values})
 	}
-	return settings.Load(settings.Chain(append(overrides, environment)...))
+	environment := make(map[string]string)
+	for _, name := range append(settings.Names(), "REMOTE_SERVER_URL", "REMOTE_SERVER_API_KEY") {
+		if value, present := os.LookupEnv(name); present {
+			environment[name] = value
+		}
+	}
+	// Unknown catalog names must reach the schema even when no descriptor lists them.
+	for _, entry := range os.Environ() {
+		name, value, _ := strings.Cut(entry, "=")
+		if strings.HasPrefix(name, "STARMAP_CATALOG_") && !isPathEnvironmentName(name) {
+			environment[name] = value
+		}
+	}
+	input := catalogEnvironmentInput(environment)
+	layers = append(layers, catalogconfig.Layer{Name: "environment", Values: input.values})
+	if config != nil {
+		for index := len(config.dotenvLayers) - 1; index >= 0; index-- {
+			layers = append(layers, config.dotenvLayers[index])
+		}
+		values := config.CatalogValues
+		if !config.catalogFileRead {
+			legacy := make(map[string]string)
+			if config.RemoteServerURL != "" {
+				legacy[settings.SourceURL] = config.RemoteServerURL
+			}
+			if config.RemoteServerAPIKey != "" {
+				legacy[settings.SourceAPIKey] = config.RemoteServerAPIKey
+			}
+			values = normalizeLegacyCatalogSource(values, legacy)
+		}
+		layers = append(layers, catalogconfig.Layer{Name: "configuration-file", Values: values})
+		config.LegacyCatalogNames = append(config.LegacyCatalogNames, input.legacyNames...)
+		slices.Sort(config.LegacyCatalogNames)
+		config.LegacyCatalogNames = slices.Compact(config.LegacyCatalogNames)
+	}
+	resolved, err := catalogconfig.Resolve(layers...)
+	if err != nil {
+		return settings.Config{}, err
+	}
+	if config != nil {
+		config.CatalogOrigins, config.CatalogIgnored = resolved.Origins, resolved.Ignored
+	}
+	return resolved.Config, nil
 }

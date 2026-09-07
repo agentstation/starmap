@@ -3,6 +3,7 @@ package acquisition_test
 import (
 	"context"
 	stderrors "errors"
+	"path/filepath"
 	"strings"
 	"sync"
 	"testing"
@@ -99,12 +100,24 @@ func (s *stubObserver) setAnswer(t testing.TB, id catalogs.ProviderID, modelID, 
 	t.Helper()
 	s.mu.Lock()
 	defer s.mu.Unlock()
+	payload := providerPayload(t, id, modelID, name)
+	catalog, err := catalogs.DecodeSourceObservationPayload(payload)
+	if err != nil {
+		t.Fatal(err)
+	}
+	observation, err := sources.NewObservation(sources.ProvidersID, catalog, sources.ObservationMetadata{
+		ObservedAt: time.Now().UTC(), Revision: sources.Revision{Kind: sources.RevisionKindContentDigest},
+		Completeness: sources.ObservationCompletenessComplete, Status: sources.ObservationStatusSucceeded,
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+	layer, err := runtime.NewProviderLayer(id, observation)
+	if err != nil {
+		t.Fatal(err)
+	}
 	s.answers[id] = acquisition.ProviderObservation{
-		Layer: runtime.ProviderLayer{
-			ProviderID: id,
-			Payload:    providerPayload(t, id, modelID, name),
-			ObservedAt: time.Now().UTC(),
-		},
+		Layer: layer,
 		Attempt: sources.ProviderAttempt{
 			ProviderID: id,
 			Outcome:    sources.ProviderOutcomeSucceeded,
@@ -168,7 +181,7 @@ func providerPayload(t testing.TB, id catalogs.ProviderID, modelID, name string)
 func openRuntime(t *testing.T, acquirer runtime.Acquirer) *runtime.Runtime {
 	t.Helper()
 	connected, err := runtime.Open(context.Background(),
-		runtime.WithStateDirectory(t.TempDir()),
+		runtime.WithStateDirectory(filepath.Join(t.TempDir(), "runtime")),
 		runtime.WithCatalogSource("embedded"),
 		runtime.WithSourcePollInterval(0),
 		runtime.WithStartupSpread(0),

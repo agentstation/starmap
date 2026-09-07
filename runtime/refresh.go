@@ -4,6 +4,7 @@ import (
 	"context"
 	stderrors "errors"
 	"github.com/agentstation/starmap"
+	"slices"
 	"sync"
 	"time"
 
@@ -99,7 +100,7 @@ type AcquisitionReport struct {
 	GenerationID string
 
 	// Retained names the providers that kept their previous last-known-good
-	// observation because this run did not replace it.
+	// observation in at least one scope that this run did not replace.
 	Retained []catalogs.ProviderID
 
 	// Health grades the run. A failed provider degrades the run.
@@ -166,6 +167,7 @@ func (a *activeRun) join(ctx context.Context) (RefreshReport, error) {
 type runGroup struct {
 	mu     sync.Mutex
 	active *activeRun
+	closed bool
 }
 
 // start returns the run this caller must use. The second result reports
@@ -178,6 +180,10 @@ func (g *runGroup) start(
 ) (*activeRun, bool, error) {
 	for {
 		g.mu.Lock()
+		if g.closed {
+			g.mu.Unlock()
+			return nil, false, &errors.ConflictError{Resource: "runtime", Message: "runtime is closed"}
+		}
 		if g.active == nil {
 			runCtx, cancel := context.WithCancel(parent)
 			run := &activeRun{
@@ -216,6 +222,20 @@ func (g *runGroup) finish(run *activeRun, report RefreshReport, err error) {
 	run.err = err
 	run.cancel()
 	close(run.done)
+}
+
+// close refuses new runs and returns the completion signal of the current run.
+func (g *runGroup) close() <-chan struct{} {
+	g.mu.Lock()
+	defer g.mu.Unlock()
+	g.closed = true
+	if g.active != nil {
+		g.active.cancel()
+		return g.active.done
+	}
+	done := make(chan struct{})
+	close(done)
+	return done
 }
 
 // cancelActive cancels the run in flight. The runtime calls it on close and
@@ -283,13 +303,7 @@ func (r *Runtime) execute(
 		return RefreshReport{}, err
 	}
 
-	// A replica that lost the lease takes it again before the run starts. A
-	// refused replica returns the typed conflict here, so it reads no source
-	// and observes no provider before the fence rejects its commit.
-	if err := r.lease.ensureHeld(ctx); err != nil {
-		return RefreshReport{}, err
-	}
-	run, owner, err := r.runs.start(ctx, r.ctx, kind, id, r.lease.epoch())
+	run, owner, err := r.runs.start(ctx, r.ctx, kind, id, 0)
 	if err != nil {
 		return RefreshReport{}, err
 	}
@@ -311,7 +325,12 @@ func (r *Runtime) execute(
 	}
 
 	report := RefreshReport{RunID: run.id, Kind: string(kind), StartedAt: r.config.now()}
-	workErr := work(runCtx, &report, run.epoch)
+	// Directory ownership covers lease acquisition and all publication work.
+	workErr := r.lease.ensureHeld(runCtx)
+	if workErr == nil {
+		run.epoch = r.lease.epoch()
+		workErr = work(runCtx, &report, run.epoch)
+	}
 	report.CompletedAt = r.config.now()
 
 	r.mu.Lock()
@@ -336,6 +355,9 @@ func (r *Runtime) readSource(ctx context.Context, report *RefreshReport, epoch u
 	}
 
 	read, err := r.readWithRetry(ctx, source)
+	if canceled := ctx.Err(); canceled != nil {
+		err = stderrors.Join(err, canceled)
+	}
 	result.CompletedAt = r.config.now()
 	if err != nil {
 		result.Health = HealthUnavailable
@@ -386,7 +408,7 @@ func (r *Runtime) readSource(ctx context.Context, report *RefreshReport, epoch u
 		ObservedAt:       result.CompletedAt,
 		Chain:            read.Chain,
 	}
-	if err := r.store.saveSource(layer); err != nil {
+	if err := r.store.saveSource(ctx, layer); err != nil {
 		result.Health = HealthDegraded
 		result.Reason = "retention_failed"
 		r.recordSourceRead(result, false)
@@ -507,7 +529,7 @@ func (r *Runtime) acquireProviders(
 	// Each closed coalescing window publishes the layers it collected. The
 	// acquirer calls this from its own run goroutine, one window at a time.
 	windows := &windowPublisher{runtime: r, epoch: epoch}
-	observed, err := r.config.acquirer.AcquireProviders(ctx, AcquisitionRequest{
+	observed, err := r.acquireSelectedProviders(ctx, AcquisitionRequest{
 		RunID:          report.RunID,
 		Current:        current,
 		Providers:      providers,
@@ -532,23 +554,35 @@ func (r *Runtime) acquireProviders(
 	switch {
 	case err != nil:
 		result.Health = HealthUnavailable
-	case result.Failed > 0 || result.Skipped > 0:
+	case result.Failed > 0 || result.Skipped > 0 || hasDegradedProviderReceipt(observed.Layers):
 		result.Health = HealthDegraded
 	}
 
 	// The windows that closed inside the run already published their layers.
 	// Only the rest needs one final publication.
-	answered := make(map[catalogs.ProviderID]bool, len(observed.Layers))
+	result.Published = windows.publications() > 0
+	result.GenerationID = windows.generationID()
+	if result.Published {
+		report.Published = true
+		report.GenerationID = result.GenerationID
+	}
+	prepared, validationErr := prepareProviderEvidence(observed.Layers)
+	if validationErr != nil {
+		result.Health = HealthDegraded
+		combined := stderrors.Join(err, validationErr)
+		r.recordAcquisition(result, combined)
+		report.Acquisition = result
+		return combined
+	}
+	answered := make(map[providerEvidenceKey]bool, len(prepared))
 	var unpublished []ProviderLayer
-	for _, layer := range observed.Layers {
-		answered[layer.ProviderID] = true
-		if windows.published(layer.ProviderID) {
+	for _, layer := range prepared {
+		answered[layer.evidenceKey()] = true
+		if windows.published(layer) {
 			continue
 		}
 		unpublished = append(unpublished, layer)
 	}
-	result.Published = windows.publications() > 0
-	result.GenerationID = windows.generationID()
 
 	// A partial failure still publishes. The layers that answered move forward
 	// and the layers that did not keep their retained records.
@@ -556,9 +590,10 @@ func (r *Runtime) acquireProviders(
 		state, publishErr := r.publishProviders(ctx, unpublished, epoch)
 		if publishErr != nil {
 			result.Health = HealthDegraded
-			r.recordAcquisition(result, err)
+			combined := stderrors.Join(err, publishErr)
+			r.recordAcquisition(result, combined)
 			report.Acquisition = result
-			return stderrors.Join(err, publishErr)
+			return combined
 		}
 		result.Published = true
 		result.GenerationID = state.GenerationID
@@ -569,12 +604,13 @@ func (r *Runtime) acquireProviders(
 	}
 
 	r.mu.RLock()
-	for _, id := range r.layers.providerOrder() {
+	for _, id := range r.layers.activeProviderOrder() {
 		if !answered[id] {
-			result.Retained = append(result.Retained, id)
+			result.Retained = append(result.Retained, id.providerID)
 		}
 	}
 	r.mu.RUnlock()
+	result.Retained = slices.Compact(result.Retained)
 
 	r.recordAcquisition(result, err)
 	report.Acquisition = result
@@ -595,9 +631,27 @@ func (r *Runtime) recordAcquisition(result AcquisitionReport, err error) {
 
 // retainProviders durably keeps every supplied layer and installs it as the
 // layer that its provider last observed well.
-func (r *Runtime) retainProviders(layers []ProviderLayer) error {
-	for _, layer := range layers {
-		if err := r.store.saveProvider(layer); err != nil {
+func (r *Runtime) retainProviders(ctx context.Context, layers []ProviderLayer) error {
+	if err := ctx.Err(); err != nil {
+		return err
+	}
+	prepared, err := prepareProviderEvidence(layers)
+	if err != nil {
+		return err
+	}
+	r.providerRetentionMu.Lock()
+	defer r.providerRetentionMu.Unlock()
+	if err := ctx.Err(); err != nil {
+		return err
+	}
+	r.mu.RLock()
+	selected, err := selectProviderEvidence(prepared, r.layers.providers)
+	r.mu.RUnlock()
+	if err != nil {
+		return err
+	}
+	for _, layer := range selected {
+		if err := r.store.saveProvider(ctx, layer); err != nil {
 			return err
 		}
 		r.mu.Lock()
@@ -614,7 +668,13 @@ func (r *Runtime) publishProviders(
 	layers []ProviderLayer,
 	epoch uint64,
 ) (starmap.CatalogState, error) {
-	if err := r.retainProviders(layers); err != nil {
+	if err := ctx.Err(); err != nil {
+		return starmap.CatalogState{}, err
+	}
+	if err := r.config.providerBindings.validatePublication(layers); err != nil {
+		return starmap.CatalogState{}, err
+	}
+	if err := r.retainProviders(ctx, layers); err != nil {
 		return starmap.CatalogState{}, err
 	}
 	return r.rebuild(ctx, epoch)
@@ -627,7 +687,7 @@ type windowPublisher struct {
 	epoch   uint64
 
 	mu         sync.Mutex
-	seen       map[catalogs.ProviderID]bool
+	seen       map[providerPublicationKey]bool
 	count      int
 	generation string
 }
@@ -637,28 +697,42 @@ func (w *windowPublisher) publish(ctx context.Context, layers []ProviderLayer) e
 	if len(layers) == 0 {
 		return nil
 	}
-	state, err := w.runtime.publishProviders(ctx, layers, w.epoch)
+	prepared, err := prepareProviderEvidence(layers)
+	if err != nil {
+		return err
+	}
+	state, err := w.runtime.publishProviders(ctx, prepared, w.epoch)
 	if err != nil {
 		return err
 	}
 	w.mu.Lock()
 	defer w.mu.Unlock()
 	if w.seen == nil {
-		w.seen = make(map[catalogs.ProviderID]bool, len(layers))
+		w.seen = make(map[providerPublicationKey]bool, len(prepared))
 	}
-	for _, layer := range layers {
-		w.seen[layer.ProviderID] = true
+	for _, layer := range prepared {
+		w.seen[publicationKey(layer)] = true
 	}
 	w.count++
 	w.generation = state.GenerationID
 	return nil
 }
 
-// published reports whether one closed window already published the provider.
-func (w *windowPublisher) published(id catalogs.ProviderID) bool {
+// providerPublicationKey identifies exact evidence within one retained scope.
+type providerPublicationKey struct {
+	scope         providerEvidenceKey
+	observationID string
+}
+
+func publicationKey(layer ProviderLayer) providerPublicationKey {
+	return providerPublicationKey{scope: layer.evidenceKey(), observationID: layer.Receipt.Link.ObservationID}
+}
+
+// published reports whether a closed window published this validated observation.
+func (w *windowPublisher) published(layer ProviderLayer) bool {
 	w.mu.Lock()
 	defer w.mu.Unlock()
-	return w.seen[id]
+	return w.seen[publicationKey(layer)]
 }
 
 // publications returns how many windows the run published.
@@ -693,4 +767,13 @@ func safeSourceReason(err error) string {
 		}
 	}
 	return string(sources.ClassifyProviderReason(err))
+}
+
+func hasDegradedProviderReceipt(layers []ProviderLayer) bool {
+	for _, layer := range layers {
+		if layer.Receipt.Link.Status == sources.ObservationStatusDegraded {
+			return true
+		}
+	}
+	return false
 }

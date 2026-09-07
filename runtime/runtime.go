@@ -12,6 +12,8 @@ import (
 	"sync"
 	"time"
 
+	"github.com/gofrs/flock"
+
 	"github.com/agentstation/starmap"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/errors"
@@ -43,6 +45,9 @@ type ProviderLayer struct {
 
 	// ObservedAt is when acquisition accepted the observation.
 	ObservedAt time.Time
+
+	// Receipt binds source identity, completeness, and classified issues to Payload.
+	Receipt sources.ObservationReceipt
 }
 
 // AcquisitionRequest describes one provider acquisition run.
@@ -97,16 +102,21 @@ type Runtime struct {
 	config options
 	source Source
 
+	// providerRetentionMu serializes observation selection and durable provider writes.
+	providerRetentionMu sync.Mutex
+
 	// mu guards the retained layers and the published effective state.
 	mu        sync.RWMutex
 	layers    layerSet
 	effective starmap.CatalogState
 	report    statusState
 
-	store    *layerStore
-	lease    *leaseKeeper
-	schedule scheduler
-	runs     runGroup
+	instanceSeed string
+	directory    *flock.Flock
+	store        *layerStore
+	lease        *leaseKeeper
+	schedule     scheduler
+	runs         runGroup
 
 	// updatesMu guards the publication channel. Close marks the channel closed
 	// under the lock that broadcast holds. A caller-owned run that publishes
@@ -137,15 +147,53 @@ func Open(ctx context.Context, opts ...Option) (*Runtime, error) {
 	if err := config.validate(); err != nil {
 		return nil, err
 	}
-	client, err := starmap.NewContext(ctx, config.client...)
+	directory, err := acquireDirectory(ctx, config.stateDirectory)
 	if err != nil {
+		return nil, err
+	}
+	opened := false
+	defer func() {
+		if !opened && directory != nil {
+			_ = directory.Close()
+		}
+	}()
+	if err := refusePendingMigration(config.stateDirectory); err != nil {
+		return nil, err
+	}
+	if err := refuseRetiredMigration(config.stateDirectory); err != nil {
+		return nil, err
+	}
+	if config.publishedMigration != nil {
+		if err := VerifyDirectoryMigrationPublication(ctx, *config.publishedMigration); err != nil {
+			return nil, err
+		}
+	}
+	if config.completedMigration != nil {
+		if err := verifyCompletedMigrationSelection(ctx, *config.completedMigration); err != nil {
+			return nil, err
+		}
+	}
+	if err := bindDirectoryOwner(ctx, config.stateDirectory, config.directoryOwner, config.schedulerIdentity); err != nil {
+		return nil, errors.WrapResource("bind", "runtime directory owner", "", err)
+	}
+	seed, err := prepareInstanceSeed(ctx, config.stateDirectory)
+	if err != nil {
+		return nil, errors.WrapResource("prepare", "runtime instance seed", "", err)
+	}
+	client, err := starmap.NewContext(ctx, config.bindingClientOptions()...)
+	if err != nil {
+		return nil, err
+	}
+	if err := repairWorkspaceForStartup(ctx, client); err != nil {
 		return nil, err
 	}
 
 	runtime := &Runtime{
-		client:  client,
-		config:  *config,
-		updates: make(chan starmap.CatalogState, updatesBuffer),
+		client:       client,
+		directory:    directory,
+		instanceSeed: seed,
+		config:       *config,
+		updates:      make(chan starmap.CatalogState, updatesBuffer),
 	}
 	runtime.ctx, runtime.cancel = context.WithCancel(context.WithoutCancel(ctx))
 
@@ -185,6 +233,11 @@ func Open(ctx context.Context, opts ...Option) (*Runtime, error) {
 		return nil, err
 	}
 
+	if err := runtime.publishBindingStartup(ctx); err != nil {
+		runtime.abort()
+		return nil, errors.WrapResource("publish", "active binding catalog", "", err)
+	}
+
 	// The require_source policy blocks inside the Open context and reads the
 	// source once. A failed read fails Open, so a deployment that needs
 	// upstream state never serves the embedded baseline instead. A non-owner
@@ -202,6 +255,7 @@ func Open(ctx context.Context, opts ...Option) (*Runtime, error) {
 		}
 	}
 	runtime.startSchedules()
+	opened = true
 	return runtime, nil
 }
 
@@ -255,30 +309,36 @@ func (r *Runtime) Updates() <-chan starmap.CatalogState {
 
 // Close stops runtime-owned work and releases the lease. It is idempotent and
 // joins within five seconds. A run that does not stop in time leaves a typed
-// timeout error, so an operator sees the stall rather than a silent hang.
+// timeout error. Directory ownership remains held until work and lease release finish.
 func (r *Runtime) Close() error {
 	if r == nil {
 		return nil
 	}
 	r.closeOnce.Do(func() {
+		active := r.runs.close()
 		r.cancel()
-		r.runs.cancelActive()
-		joined := make(chan struct{})
+		joined := make(chan error, 1)
 		go func() {
+			<-active
 			r.work.Wait()
-			close(joined)
+			r.lease.stop()
+			var err error
+			if r.directory != nil {
+				err = r.directory.Close()
+			}
+			joined <- err
 		}()
 		timer := time.NewTimer(closeJoinTimeout)
 		defer timer.Stop()
 		select {
-		case <-joined:
+		case err := <-joined:
+			r.closeErr = err
 		case <-timer.C:
 			r.closeErr = &errors.TimeoutError{
 				Operation: "close starmap runtime",
 				Duration:  closeJoinTimeout.String(),
 			}
 		}
-		r.lease.stop()
 		r.updatesMu.Lock()
 		r.updatesClosed = true
 		close(r.updates)
@@ -287,16 +347,19 @@ func (r *Runtime) Close() error {
 	return r.closeErr
 }
 
-// initializeEffective publishes the starting effective catalog. It uses the
-// retained layers when a previous run left any, and the client baseline
-// otherwise. It reaches no external system.
+// initializeEffective selects startup state and retains the separate compiled baseline.
+// An explicit binding set always rebuilds, including when no retained evidence is active.
+// Without that set, an empty layer set keeps the accepted current state.
+// It reaches no external system.
 func (r *Runtime) initializeEffective() error {
-	baseline := r.client.CurrentCatalogState()
+	current := r.client.CurrentCatalogState()
+	baseline := r.client.EmbeddedCatalogState()
 	r.mu.Lock()
 	defer r.mu.Unlock()
 	r.layers.embedded = baseline
-	if r.layers.empty() {
-		r.effective = baseline
+	r.layers.providerBindings = r.config.providerBindings
+	if r.layers.empty() && r.config.providerBindings == nil {
+		r.effective = current
 		r.report.startedAt = r.config.now()
 		return nil
 	}
@@ -314,7 +377,14 @@ func (r *Runtime) initializeEffective() error {
 // concurrent read never observes a partial generation. The epoch is the lease
 // epoch of the run, so a run that lost the lease commits nothing.
 func (r *Runtime) rebuild(ctx context.Context, epoch uint64) (starmap.CatalogState, error) {
+	if err := ctx.Err(); err != nil {
+		return starmap.CatalogState{}, err
+	}
 	r.mu.Lock()
+	if err := ctx.Err(); err != nil {
+		r.mu.Unlock()
+		return starmap.CatalogState{}, err
+	}
 	baseline := r.layers.embedded
 	state, err := r.layers.build(baseline)
 	if err != nil {
@@ -339,10 +409,18 @@ func (r *Runtime) rebuild(ctx context.Context, epoch uint64) (starmap.CatalogSta
 // writable store. The epoch that the run started under fences the commit, so an
 // instance that lost the lease cannot overwrite a newer generation.
 func (r *Runtime) commit(ctx context.Context, state starmap.CatalogState, epoch uint64) (starmap.CatalogState, error) {
+	if err := ctx.Err(); err != nil {
+		return starmap.CatalogState{}, err
+	}
 	if !r.client.PublishesDurably() {
 		// Without a durable store the runtime publishes in memory only. The
 		// effective catalog stays correct. It does not survive a restart.
 		return state, nil
+	}
+	if restored, err := r.restoreBindingGeneration(ctx, state, epoch); err != nil {
+		return starmap.CatalogState{}, err
+	} else if restored {
+		return r.client.CurrentCatalogState(), nil
 	}
 	publication, err := r.client.Update(ctx, func(
 		context.Context,

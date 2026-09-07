@@ -15,6 +15,7 @@ import (
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/errors"
 	"github.com/agentstation/starmap/pkg/logging"
+	"github.com/agentstation/starmap/pkg/productpaths"
 	"github.com/agentstation/starmap/pkg/sources"
 	pkgsync "github.com/agentstation/starmap/pkg/sync"
 )
@@ -25,6 +26,7 @@ type Option func(*options) error
 type options struct {
 	providerClientFactory sources.ProviderClientFactory
 	credentialResolver    sources.ProviderCredentialResolver
+	sourceDirectories     productpaths.SourceDirectories
 }
 
 func defaults() options {
@@ -72,8 +74,9 @@ func WithProviderClientFactory(factory sources.ProviderClientFactory) Option {
 // Syncer observes configured sources, reconciles a complete candidate, and
 // delegates serialized durable publication to a Client.
 type Syncer struct {
-	client   *starmap.Client
-	pipeline *pipeline.Pipeline
+	client            *starmap.Client
+	pipeline          *pipeline.Pipeline
+	sourceDirectories productpaths.SourceDirectories
 }
 
 // New constructs an explicit acquisition composition. It starts no goroutine
@@ -98,7 +101,8 @@ func New(client *starmap.Client, opts ...Option) (*Syncer, error) {
 		}
 	}
 	return &Syncer{
-		client: client,
+		client:            client,
+		sourceDirectories: config.sourceDirectories,
 		pipeline: pipeline.NewAcquisition(
 			config.providerClientFactory,
 			config.credentialResolver,
@@ -186,6 +190,7 @@ func (s *Syncer) Sync(
 				prepared.Options.CatalogPath,
 				publication,
 				prepared.WorkspaceInput,
+				prepared.Options,
 			)
 		}
 		logging.Info().
@@ -219,7 +224,10 @@ func prepareSyncContext(
 func (s *Syncer) effectiveOptions(
 	opts []pkgsync.Option,
 ) ([]pkgsync.Option, *pkgsync.Options, error) {
-	parsed := pkgsync.Defaults().Apply(opts...)
+	effective := make([]pkgsync.Option, 0, 3+len(opts))
+	effective = append(effective, pkgsync.WithSourceDirectories(s.sourceDirectories))
+	effective = append(effective, opts...)
+	parsed := pkgsync.Defaults().Apply(effective...)
 	configuredPath := s.client.WorkspacePath()
 	if parsed.CatalogPath != "" && parsed.CatalogPath != configuredPath {
 		return nil, nil, &errors.ConfigError{
@@ -229,10 +237,31 @@ func (s *Syncer) effectiveOptions(
 		}
 	}
 
-	effective := append([]pkgsync.Option(nil), opts...)
 	if parsed.CatalogPath == "" && configuredPath != "" {
 		effective = append(effective, pkgsync.WithCatalogPath(configuredPath))
 		parsed = pkgsync.Defaults().Apply(effective...)
 	}
+	if parsed.CatalogPath != "" {
+		directories, err := projectionSourceDirectories(parsed.CatalogPath, parsed)
+		if err != nil {
+			return nil, nil, err
+		}
+		if parsed.SourcesDir == "" {
+			effective = append(effective, pkgsync.WithSourceDirectories(directories))
+			parsed.SourceDirectories = directories
+		}
+	}
 	return effective, parsed, nil
+}
+
+// WithSourceDirectories selects host-owned source cache and checkout directories.
+// New validates the paths without reading platform settings or creating files.
+func WithSourceDirectories(directories productpaths.SourceDirectories) Option {
+	return func(config *options) error {
+		if err := directories.Validate(); err != nil {
+			return err
+		}
+		config.sourceDirectories = directories
+		return nil
+	}
 }

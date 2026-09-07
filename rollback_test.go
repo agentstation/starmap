@@ -229,7 +229,7 @@ func publishRollbackFixture(
 ) rollbackFixture {
 	t.Helper()
 	builder := rollbackFixtureCatalog(t, name, source)
-	input, err := observeBoundWorkspaceInput(path)
+	input, err := observeBoundWorkspaceInput(t.Context(), path)
 	if err != nil {
 		t.Fatalf("observeBoundWorkspaceInput: %v", err)
 	}

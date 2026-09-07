@@ -184,11 +184,7 @@ func (p *Pipeline) Prepare(
 	if err := options.ValidateFilesystemLayout(); err != nil {
 		return nil, err
 	}
-	workspaceInput, err := workspace.ObserveInput(options.CatalogPath)
-	if err != nil {
-		return nil, err
-	}
-	inputs, err := p.loadCatalogInputs(options.CatalogPath, workspaceInput)
+	inputs, err := p.loadCatalogInputs(ctx, options.CatalogPath)
 	if err != nil {
 		return nil, err
 	}

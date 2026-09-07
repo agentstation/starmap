@@ -204,7 +204,7 @@ func TestRuntimeCloseJoinsWithinFiveSeconds(t *testing.T) {
 	source := newStubSource("scheduled")
 	acquirer := &stubAcquirer{}
 	runtime, err := Open(context.Background(),
-		WithStateDirectory(t.TempDir()),
+		WithStateDirectory(privateRuntimeDirectory(t)),
 		WithStartupSpread(0),
 		WithSource(source),
 		WithAcquirer(acquirer),
@@ -470,9 +470,10 @@ func TestCloseNeverRacesACallerOwnedRun(t *testing.T) {
 		t.Fatal("the caller-owned run never reached the acquirer")
 	}
 
-	// Close runs while the caller-owned run still publishes.
+	// The provider returns only after Close cancels the runtime.
 	closed := make(chan error, 1)
 	go func() { closed <- runtime.Close() }()
+	<-runtime.ctx.Done()
 	close(release)
 
 	select {

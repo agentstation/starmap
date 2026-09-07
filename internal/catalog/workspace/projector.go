@@ -1,4 +1,4 @@
-// Package workspace atomically projects committed catalogs into the optional
+// Package workspace projects committed catalogs into the optional
 // human-editable provider YAML workspace.
 package workspace
 
@@ -14,6 +14,7 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/agentstation/starmap/internal/filepublish"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/errors"
 )
@@ -62,25 +63,15 @@ type InputExpectation struct {
 // ObserveInput records the selected workspace's presence without creating or
 // modifying it.
 func ObserveInput(path string) (InputExpectation, error) {
-	if strings.TrimSpace(path) == "" {
-		return InputExpectation{}, nil
-	}
-	target, err := resolveTarget(path)
+	var input InputExpectation
+	err := Read(context.Background(), path, func(observed InputExpectation) error {
+		input = observed
+		return nil
+	})
 	if err != nil {
 		return InputExpectation{}, err
 	}
-	if err := ValidateHumanLayout(target, ""); err != nil {
-		return InputExpectation{}, err
-	}
-	_, err = os.Lstat(target)
-	switch {
-	case err == nil:
-		return InputExpectation{Path: target, Exists: true}, nil
-	case stderrors.Is(err, fs.ErrNotExist):
-		return InputExpectation{Path: target}, nil
-	default:
-		return InputExpectation{}, errors.WrapIO("inspect", target, err)
-	}
+	return input, nil
 }
 
 // RequiresSeed reports whether an explicit operation selected an absent human
@@ -91,6 +82,7 @@ func (i InputExpectation) RequiresSeed() bool {
 
 // BindInputCatalog records the semantic digest of the human catalog loaded
 // from an existing workspace before candidate construction.
+// Call it inside Read, after loading that catalog in the same callback.
 func BindInputCatalog(input InputExpectation, catalog *catalogs.Catalog) (InputExpectation, error) {
 	if input.Path == "" || !input.Exists {
 		return input, nil
@@ -138,12 +130,17 @@ type RepairResult struct {
 }
 
 type projector struct {
-	beforeInputCheck func() error
-	beforePromote    func() error
-	beforeMarker     func() error
+	beforeInputCheck      func() error
+	beforePromote         func() error
+	beforeMarker          func() error
+	journalReplacement    bool
+	afterReplacementPhase func(replacementPhase) error
+	afterStageRender      func(string) error
+	beforeAccessRestore   func(string) error
 }
 
-// Project stages, validates, syncs, and atomically publishes one workspace.
+// Project stages, validates, syncs, and publishes one workspace.
+// Windows uses a recovery journal when replacing an existing workspace.
 func Project(ctx context.Context, path string, catalog *catalogs.Catalog, identity Identity) (Receipt, error) {
 	return (projector{}).project(ctx, path, catalog, identity, InputExpectation{})
 }
@@ -207,6 +204,9 @@ func (p projector) projectLocked(
 	identity Identity,
 	expectation InputExpectation,
 ) (Receipt, error) {
+	if _, err := recoverReplacement(ctx, target); err != nil {
+		return Receipt{}, errors.WrapResource("recover", "workspace replacement", target, err)
+	}
 	input, err := readSemanticState(target)
 	if err != nil {
 		return Receipt{}, err
@@ -214,11 +214,24 @@ func (p projector) projectLocked(
 	if err := validateInputExpectation(target, input, expectation); err != nil {
 		return Receipt{}, err
 	}
-	staged, stagedState, err := stageCatalog(target, catalog, identity)
+	journaled := input.exists && (journalWorkspaceReplacement || p.journalReplacement)
+	var original treeSnapshot
+	if input.exists {
+		original, err = snapshotTree(ctx, target)
+		if err != nil {
+			return Receipt{}, errors.WrapResource("inspect", "workspace replacement", target, err)
+		}
+	}
+	staged, stagedState, err := p.stageCatalog(ctx, target, catalog, identity, &original)
 	if err != nil {
 		return Receipt{}, err
 	}
-	defer func() { _ = os.RemoveAll(staged) }()
+	cleanupStaged := true
+	defer func() {
+		if cleanupStaged {
+			_ = os.RemoveAll(staged)
+		}
+	}()
 	if p.beforeInputCheck != nil {
 		if err := p.beforeInputCheck(); err != nil {
 			return Receipt{}, err
@@ -243,6 +256,35 @@ func (p projector) projectLocked(
 		if err := p.beforePromote(); err != nil {
 			return Receipt{}, err
 		}
+	}
+	if err := ctx.Err(); err != nil {
+		return Receipt{}, err
+	}
+	marker := projectionMarker{
+		Version: markerVersion, GenerationID: identity.GenerationID,
+		PayloadChecksum: identity.PayloadChecksum, WorkspaceChecksum: stagedState.checksum,
+		EndpointChecksum: stagedState.endpointChecksum,
+	}
+	if input.exists && !journaled {
+		currentTree, err := snapshotTree(ctx, target)
+		if err != nil {
+			return Receipt{}, err
+		}
+		if !sameTree(original, currentTree) {
+			return Receipt{}, replacementConflict(target, "workspace content or access changed during staging")
+		}
+	}
+	if journaled {
+		owned, visible, err := p.replaceWithJournal(ctx, target, staged, original, marker)
+		cleanupStaged = !owned
+		var receipt Receipt
+		if visible {
+			receipt = Receipt{GenerationID: identity.GenerationID, WorkspaceChecksum: stagedState.checksum, EndpointChecksum: stagedState.endpointChecksum}
+		}
+		if err != nil {
+			return receipt, errors.WrapResource("replace", "catalog workspace", target, err)
+		}
+		return receipt, nil
 	}
 	if err := promoteDirectory(staged, target, input.exists); err != nil {
 		return Receipt{}, err
@@ -359,6 +401,10 @@ func (p projector) repair(ctx context.Context, path string, current *catalogs.Ca
 		return RepairResult{}, err
 	}
 	defer release()
+	recovered, err := recoverReplacement(ctx, target)
+	if err != nil {
+		return RepairResult{}, errors.WrapResource("recover", "workspace replacement", target, err)
+	}
 	state, err := readSemanticState(target)
 	if err != nil {
 		return RepairResult{}, err
@@ -370,13 +416,16 @@ func (p projector) repair(ctx context.Context, path string, current *catalogs.Ca
 			marker.PayloadChecksum == identity.PayloadChecksum &&
 			marker.WorkspaceChecksum == state.checksum &&
 			marker.EndpointChecksum == state.endpointChecksum {
+			if recovered {
+				return RepairResult{Status: RepairStatusRepaired}, nil
+			}
 			return RepairResult{Status: RepairStatusCurrent}, nil
 		}
 	} else if !stderrors.Is(markerErr, fs.ErrNotExist) {
 		return RepairResult{}, markerErr
 	}
 
-	desiredPath, desired, err := stageCatalog(target, current, identity)
+	desiredPath, desired, err := p.stageCatalog(ctx, target, current, identity, nil)
 	if err != nil {
 		return RepairResult{}, err
 	}
@@ -500,29 +549,29 @@ func readSemanticState(path string) (semanticState, error) {
 	}, nil
 }
 
-func stageCatalog(
+func (p projector) stageCatalog(
+	ctx context.Context,
 	target string,
 	catalog *catalogs.Catalog,
 	identity Identity,
+	expected *treeSnapshot,
 ) (string, semanticState, error) {
-	parent := filepath.Dir(target)
-	staged, err := os.MkdirTemp(parent, "."+filepath.Base(target)+".candidate-")
+	stage, err := prepareWorkspaceStage(target)
 	if err != nil {
-		return "", semanticState{}, errors.WrapIO("create", parent, err)
+		return "", semanticState{}, errors.WrapResource("prepare", "workspace staging", target, err)
 	}
-	cleanup := func(err error) (string, semanticState, error) {
-		_ = os.RemoveAll(staged)
-		return "", semanticState{}, err
+	defer stage.close()
+	staged := stage.renderPath()
+	cleanup := func(err error) (string, semanticState, error) { return "", semanticState{}, err }
+	if err := stage.readSource(ctx, target, expected); err != nil {
+		return cleanup(err)
 	}
-	if err := os.Chmod(staged, directoryMode); err != nil {
-		return cleanup(errors.WrapIO("chmod", staged, err))
+	if err := stage.copySource(ctx); err != nil {
+		return cleanup(err)
 	}
-	if info, statErr := os.Lstat(target); statErr == nil && info.IsDir() {
-		if err := os.CopyFS(staged, os.DirFS(target)); err != nil {
-			return cleanup(errors.WrapIO("copy", target, err))
-		}
-	} else if statErr != nil && !stderrors.Is(statErr, fs.ErrNotExist) {
-		return cleanup(errors.WrapIO("stat", target, statErr))
+	operatorBackup := filepath.Join(stage.private.Name(), "operator")
+	if err := preserveOperatorFiles(ctx, staged, operatorBackup); err != nil {
+		return cleanup(err)
 	}
 	builder, err := catalogs.NewBuilderFrom(catalog)
 	if err != nil {
@@ -530,6 +579,9 @@ func stageCatalog(
 	}
 	if err := builder.SaveTo(staged); err != nil {
 		return cleanup(errors.WrapIO("stage", staged, err))
+	}
+	if err := restoreOperatorFiles(operatorBackup, staged); err != nil {
+		return cleanup(err)
 	}
 	if _, err := writeEndpointProjection(staged, catalog, identity); err != nil {
 		return cleanup(errors.WrapResource("stage", "endpoint projection", target, err))
@@ -541,10 +593,16 @@ func stageCatalog(
 	if err := validateStableProjection(staged, state, catalog, identity); err != nil {
 		return cleanup(err)
 	}
-	if err := syncTree(staged); err != nil {
-		return cleanup(errors.WrapIO("sync", staged, err))
+	if p.afterStageRender != nil {
+		if err := p.afterStageRender(staged); err != nil {
+			return cleanup(err)
+		}
 	}
-	return staged, state, nil
+	candidate, err := stage.finish(ctx, target, p.beforeAccessRestore)
+	if err != nil {
+		return cleanup(errors.WrapResource("preserve access", "workspace staging", target, err))
+	}
+	return candidate, state, nil
 }
 
 func validateStableProjection(
@@ -685,58 +743,21 @@ func projectionCoverageError(field string, want, got int) error {
 func promoteDirectory(staged, target string, targetExists bool) error {
 	parent := filepath.Dir(target)
 	if targetExists {
-		if err := swapDirectories(staged, target); err != nil {
-			return errors.WrapIO("promote", target, err)
+		return promoteExistingDirectory(staged, target)
+	}
+	root, err := os.OpenRoot(parent)
+	if err != nil {
+		return errors.WrapIO("open", parent, err)
+	}
+	defer func() { _ = root.Close() }()
+	if err := filepublish.DirectoryNoReplace(root, filepath.Base(staged), filepath.Base(target)); err != nil {
+		if os.IsExist(err) {
+			return replacementConflict(target, "publication destination already exists")
 		}
-	} else if err := os.Rename(staged, target); err != nil {
 		return errors.WrapIO("promote", target, err)
 	}
-	if err := syncDirectory(parent); err != nil {
+	if err := filepublish.SyncDirectory(root); err != nil {
 		return errors.WrapIO("sync", parent, err)
-	}
-	return nil
-}
-
-func syncTree(root string) error {
-	var directories []string
-	err := filepath.WalkDir(root, func(path string, entry fs.DirEntry, walkErr error) error {
-		if walkErr != nil {
-			return walkErr
-		}
-		info, err := entry.Info()
-		if err != nil {
-			return err
-		}
-		switch {
-		case info.IsDir():
-			directories = append(directories, path)
-		case info.Mode().IsRegular():
-			file, err := os.Open(path) //nolint:gosec // path is confined to the private staging directory.
-			if err != nil {
-				return err
-			}
-			if err := file.Sync(); err != nil {
-				_ = file.Close()
-				return err
-			}
-			if err := file.Close(); err != nil {
-				return err
-			}
-		default:
-			return &errors.ValidationError{
-				Field: "workspace_projection.entry", Value: path,
-				Message: "only regular files and directories are supported",
-			}
-		}
-		return nil
-	})
-	if err != nil {
-		return err
-	}
-	for index := len(directories) - 1; index >= 0; index-- {
-		if err := syncDirectory(directories[index]); err != nil {
-			return err
-		}
 	}
 	return nil
 }
@@ -816,10 +837,10 @@ func writeProjectionMarker(target string, marker projectionMarker) error {
 }
 
 func syncDirectory(path string) error {
-	directory, err := os.Open(path) //nolint:gosec // caller passes a configured or staging-owned directory.
+	directory, err := os.OpenRoot(path)
 	if err != nil {
 		return err
 	}
 	defer func() { _ = directory.Close() }()
-	return directory.Sync()
+	return filepublish.SyncDirectory(directory)
 }

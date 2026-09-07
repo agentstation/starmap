@@ -9,6 +9,7 @@ import (
 	"github.com/agentstation/starmap/internal/cli/commands/auth"
 	"github.com/agentstation/starmap/internal/cli/commands/authors"
 	"github.com/agentstation/starmap/internal/cli/commands/completion"
+	configcmd "github.com/agentstation/starmap/internal/cli/commands/config"
 	"github.com/agentstation/starmap/internal/cli/commands/deps"
 	"github.com/agentstation/starmap/internal/cli/commands/embed"
 	"github.com/agentstation/starmap/internal/cli/commands/migrate"
@@ -82,7 +83,9 @@ func (a *App) NewAuthCommand() *cobra.Command {
 
 // NewMigrateCommand returns the explicit local-storage migration command.
 func (a *App) NewMigrateCommand() *cobra.Command {
-	return migrate.NewCommand(a)
+	command := migrate.NewCommand(a)
+	command.AddCommand(migrate.NewRuntimeCommand(a))
+	return command
 }
 
 // NewCompletionCommand returns a new completion command.
@@ -125,3 +128,6 @@ func (a *App) NewManCommand() *cobra.Command {
 		},
 	}
 }
+
+// NewConfigCommand returns passive configuration inspection commands.
+func (a *App) NewConfigCommand() *cobra.Command { return configcmd.NewCommand(a) }

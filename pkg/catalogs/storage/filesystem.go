@@ -11,9 +11,11 @@ import (
 
 	"github.com/gofrs/flock"
 
+	"github.com/agentstation/starmap/internal/privatefiles"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/catalogs/internal/resourcepolicy"
 	"github.com/agentstation/starmap/pkg/errors"
+	"github.com/agentstation/starmap/pkg/productpaths/policy"
 )
 
 const (
@@ -25,13 +27,15 @@ const (
 // Filesystem stores immutable generation directories and an atomically replaced
 // current pointer beneath one root directory.
 type Filesystem struct {
-	mu                     sync.RWMutex
-	root                   string
-	commitLock             *flock.Flock
-	beforeCurrentPromotion func() error
+	mu                        sync.RWMutex
+	root                      string
+	commitLock                *flock.Flock
+	beforeCurrentPromotion    func() error
+	beforeGenerationPromotion func(string) error
 }
 
-// NewFilesystem creates a filesystem catalog store rooted at path.
+// NewFilesystem configures a filesystem catalog store without accessing or creating its root.
+// Operations require private access to existing store entries and never change their permissions.
 func NewFilesystem(path string) (*Filesystem, error) {
 	if strings.TrimSpace(path) == "" {
 		return nil, &errors.ConfigError{Component: "catalog store", Message: "filesystem path is required"}
@@ -42,7 +46,7 @@ func NewFilesystem(path string) (*Filesystem, error) {
 	}
 	return &Filesystem{
 		root:       root,
-		commitLock: flock.New(filepath.Join(root, ".commit.lock")),
+		commitLock: flock.New(filepath.Join(root, ".commit.lock"), flock.SetFlag(os.O_RDWR)),
 	}, nil
 }
 
@@ -92,10 +96,19 @@ func (s *Filesystem) Commit(ctx context.Context, generation catalogs.Generation,
 	if err := validateFilesystemLayout(s.root); err != nil {
 		return err
 	}
-	if err := os.MkdirAll(filepath.Join(s.root, "generations"), resourcepolicy.DirMode); err != nil {
+	s.mu.Lock()
+	defer s.mu.Unlock()
+	if err := privatefiles.CreateDirectory(filepath.Join(s.root, "generations")); err != nil {
 		return errors.WrapIO("create", s.root, err)
 	}
 	if err := validateFilesystemLayout(s.root); err != nil {
+		return err
+	}
+	if err := s.prepareCommitLock(); err != nil {
+		return err
+	}
+	directory, err := privatefiles.ExistingDirectory(s.root)
+	if err != nil {
 		return err
 	}
 	candidate := generation.Copy()
@@ -112,8 +125,9 @@ func (s *Filesystem) Commit(ctx context.Context, generation catalogs.Generation,
 	}
 	defer func() { _ = s.commitLock.Unlock() }()
 
-	s.mu.Lock()
-	defer s.mu.Unlock()
+	if err := s.validateCommitLock(); err != nil {
+		return err
+	}
 	if err := validateFilesystemLayout(s.root); err != nil {
 		return err
 	}
@@ -146,11 +160,11 @@ func (s *Filesystem) Commit(ctx context.Context, generation catalogs.Generation,
 	}
 
 	if existingErr != nil {
-		if err := s.writeGeneration(candidate); err != nil {
+		if err := s.writeGeneration(ctx, candidate); err != nil {
 			return err
 		}
 	}
-	return s.writeCurrent(id)
+	return s.writeCurrent(ctx, id, directory)
 }
 
 func (s *Filesystem) currentID() (string, error) {
@@ -169,7 +183,7 @@ func (s *Filesystem) currentIDOrEmpty() (string, error) {
 	if err := validateFilesystemEntry(currentPath, false); err != nil {
 		return "", err
 	}
-	data, err := os.ReadFile(currentPath) //nolint:gosec // Fixed store-owned entry validated as a regular non-symlink file.
+	data, err := readPrivateStoreFile(currentPath)
 	if os.IsNotExist(err) {
 		return "", nil
 	}
@@ -201,7 +215,7 @@ func (s *Filesystem) readGeneration(ctx context.Context, id string) (catalogs.Ge
 		}
 		return catalogs.Generation{}, err
 	}
-	manifestData, err := os.ReadFile(manifestPath) //nolint:gosec
+	manifestData, err := readPrivateStoreFile(manifestPath)
 	if os.IsNotExist(err) {
 		return catalogs.Generation{}, generationNotFound(id)
 	}
@@ -223,7 +237,7 @@ func (s *Filesystem) readGeneration(ctx context.Context, id string) (catalogs.Ge
 	if err := validateFilesystemEntry(payloadPath, false); err != nil {
 		return catalogs.Generation{}, err
 	}
-	payload, err := os.ReadFile(payloadPath) //nolint:gosec
+	payload, err := readPrivateStoreFile(payloadPath)
 	if err != nil {
 		return catalogs.Generation{}, errors.WrapIO("read", payloadPath, err)
 	}
@@ -234,78 +248,19 @@ func (s *Filesystem) readGeneration(ctx context.Context, id string) (catalogs.Ge
 	return generation, nil
 }
 
-func (s *Filesystem) writeGeneration(generation catalogs.Generation) error {
-	manifest, err := marshalManifest(generation.Manifest)
-	if err != nil {
-		return err
-	}
-	base := filepath.Join(s.root, "generations")
-	temp, err := os.MkdirTemp(base, ".candidate-")
-	if err != nil {
-		return errors.WrapIO("create", base, err)
-	}
-	defer func() { _ = os.RemoveAll(temp) }()
-	if err := os.Chmod(temp, resourcepolicy.DirMode); err != nil {
-		return errors.WrapIO("chmod", temp, err)
-	}
-	if err := writeSyncedFile(filepath.Join(temp, manifestFilename), manifest); err != nil {
-		return errors.WrapIO("write", manifestFilename, err)
-	}
-	if err := writeSyncedFile(filepath.Join(temp, payloadFilename), generation.Payload); err != nil {
-		return errors.WrapIO("write", payloadFilename, err)
-	}
-	if err := syncDirectory(temp); err != nil {
-		return errors.WrapIO("sync", temp, err)
-	}
-	if err := os.Rename(temp, s.generationDir(generation.Manifest.GenerationID)); err != nil {
-		return errors.WrapIO("promote", generation.Manifest.GenerationID, err)
-	}
-	if err := syncDirectory(base); err != nil {
-		return errors.WrapIO("sync", base, err)
-	}
-	return nil
-}
-
-func (s *Filesystem) writeCurrent(id string) error {
-	if err := validateFilesystemEntry(
-		filepath.Join(s.root, currentFilename),
-		false,
-	); err != nil {
-		return err
-	}
-	temp, err := os.CreateTemp(s.root, ".current-")
-	if err != nil {
-		return errors.WrapIO("create", currentFilename, err)
-	}
-	tempPath := temp.Name()
-	defer func() { _ = os.Remove(tempPath) }()
-	if err := temp.Chmod(resourcepolicy.FileMode); err != nil {
-		_ = temp.Close()
-		return errors.WrapIO("chmod", tempPath, err)
-	}
-	if _, err := temp.WriteString(id + "\n"); err != nil {
-		_ = temp.Close()
-		return errors.WrapIO("write", tempPath, err)
-	}
-	if err := temp.Sync(); err != nil {
-		_ = temp.Close()
-		return errors.WrapIO("sync", tempPath, err)
-	}
-	if err := temp.Close(); err != nil {
-		return errors.WrapIO("close", tempPath, err)
-	}
+func (s *Filesystem) writeCurrent(ctx context.Context, id string, directory *privatefiles.Directory) error {
 	if s.beforeCurrentPromotion != nil {
 		if err := s.beforeCurrentPromotion(); err != nil {
 			return errors.WrapIO("promote", currentFilename, err)
 		}
 	}
-	if err := os.Rename(tempPath, filepath.Join(s.root, currentFilename)); err != nil {
-		return errors.WrapIO("promote", currentFilename, err)
+	if err := ctx.Err(); err != nil {
+		return err
 	}
-	if err := syncDirectory(s.root); err != nil {
-		return errors.WrapIO("sync", s.root, err)
+	if err := validateFilesystemLayout(s.root); err != nil {
+		return err
 	}
-	return nil
+	return directory.WriteFileContext(ctx, currentFilename, []byte(id+"\n"), ".current-")
 }
 
 func (s *Filesystem) generationDir(id string) string {
@@ -313,32 +268,10 @@ func (s *Filesystem) generationDir(id string) string {
 	return filepath.Join(s.root, "generations", hex.EncodeToString(digest[:]))
 }
 
-func writeSyncedFile(path string, data []byte) error {
-	file, err := os.OpenFile(path, os.O_WRONLY|os.O_CREATE|os.O_EXCL, resourcepolicy.FileMode) //nolint:gosec
-	if err != nil {
-		return err
-	}
-	if _, err := file.Write(data); err != nil {
-		_ = file.Close()
-		return err
-	}
-	if err := file.Sync(); err != nil {
-		_ = file.Close()
-		return err
-	}
-	return file.Close()
-}
-
-func syncDirectory(path string) error {
-	directory, err := os.Open(path) //nolint:gosec // path is store-owned and digest-confined.
-	if err != nil {
-		return err
-	}
-	defer func() { _ = directory.Close() }()
-	return directory.Sync()
-}
-
 func validateFilesystemLayout(root string) error {
+	if err := privatefiles.ValidateAncestors(root); err != nil {
+		return err
+	}
 	for _, entry := range []struct {
 		path      string
 		directory bool
@@ -356,6 +289,9 @@ func validateFilesystemLayout(root string) error {
 }
 
 func validateFilesystemEntry(path string, directory bool) error {
+	if err := policy.Require("catalog-store", policy.OwnerOnly); err != nil {
+		return err
+	}
 	info, err := os.Lstat(path)
 	if os.IsNotExist(err) {
 		return nil
@@ -384,7 +320,15 @@ func validateFilesystemEntry(path string, directory bool) error {
 			Message: "must be a regular file",
 		}
 	}
-	return nil
+	if err := privatefiles.ValidateMetadata(info, "catalog_store.path"); err != nil {
+		return err
+	}
+	parent, err := os.OpenRoot(filepath.Dir(path))
+	if err != nil {
+		return err
+	}
+	defer func() { _ = parent.Close() }()
+	return privatefiles.ValidateACL(parent, filepath.Base(path), info, "catalog_store.path")
 }
 
 var _ Store = (*Filesystem)(nil)

@@ -10,7 +10,6 @@ import (
 
 	"github.com/rs/zerolog"
 
-	"github.com/agentstation/starmap/internal/constants"
 	"github.com/agentstation/starmap/pkg/logging"
 )
 
@@ -119,7 +118,7 @@ func TestExplicitConfigFileLoadsAfterFlagParsing(t *testing.T) {
 	configPath := filepath.Join(t.TempDir(), "selected.yaml")
 	if err := os.WriteFile(configPath, []byte(
 		"catalog_path: /from-selected-file\noutput: yaml\n",
-	), constants.FilePermissions); err != nil {
+	), 0o600); err != nil {
 		t.Fatalf("WriteFile: %v", err)
 	}
 
@@ -149,7 +148,7 @@ func TestExplicitConfigFileLoadsAfterFlagParsing(t *testing.T) {
 
 func TestExplicitConfigFileMustExistAndParse(t *testing.T) {
 	malformed := filepath.Join(t.TempDir(), "malformed.yaml")
-	if err := os.WriteFile(malformed, []byte("catalog_path: [\n"), constants.FilePermissions); err != nil {
+	if err := os.WriteFile(malformed, []byte("catalog_path: [\n"), 0o600); err != nil {
 		t.Fatalf("WriteFile: %v", err)
 	}
 

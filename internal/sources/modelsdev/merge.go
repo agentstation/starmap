@@ -13,9 +13,11 @@ import (
 
 // CopyProviderLogos copies provider logos from models.dev to output directory.
 // It tries the provider ID first, then checks aliases if the primary ID is not found.
-func CopyProviderLogos(outputDir string, providers []*catalogs.Provider) error {
-	// The models.dev repository is always cloned to this location by git.Fetch()
-	sourcesPath := expandPath(constants.DefaultSourcesPath)
+func CopyProviderLogos(outputDir, checkoutDir string, providers []*catalogs.Provider) error {
+	sourcesPath, err := sourceDirectory(checkoutDir, true)
+	if err != nil {
+		return err
+	}
 	modelsDevRepo := filepath.Join(sourcesPath, "models.dev-git")
 	providersPath := filepath.Join(modelsDevRepo, "providers")
 
@@ -73,8 +75,11 @@ func CopyProviderLogos(outputDir string, providers []*catalogs.Provider) error {
 // CopyAuthorLogos copies author logos from models.dev provider logos to author directories.
 // Since models.dev does not have a separate authors directory, we copy from the provider
 // directory when the author ID matches a provider ID (or alias).
-func CopyAuthorLogos(outputDir string, authors []catalogs.Author, providers catalogs.ProvidersReader) error {
-	sourcesPath := expandPath(constants.DefaultSourcesPath)
+func CopyAuthorLogos(outputDir, checkoutDir string, authors []catalogs.Author, providers catalogs.ProvidersReader) error {
+	sourcesPath, err := sourceDirectory(checkoutDir, true)
+	if err != nil {
+		return err
+	}
 	modelsDevRepo := filepath.Join(sourcesPath, "models.dev-git")
 	providersPath := filepath.Join(modelsDevRepo, "providers")
 

@@ -4,7 +4,6 @@ import (
 	"context"
 	"time"
 
-	"github.com/agentstation/starmap/internal/constants"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/errors"
 	"github.com/agentstation/starmap/pkg/logging"
@@ -56,9 +55,6 @@ func (s *HTTPSource) ID() sources.ID {
 func (s *HTTPSource) Name() string { return "models.dev (HTTP)" }
 
 func acquireHTTPAPI(ctx context.Context, outputDir string) (*API, HTTPAcquisitionResult, error) {
-	if outputDir == "" {
-		outputDir = expandPath(constants.DefaultCachePath)
-	}
 	client := NewHTTPClient(outputDir)
 	acquisition, err := client.AcquireAPI(ctx)
 	if err != nil {
@@ -75,9 +71,9 @@ func (s *HTTPSource) Observe(ctx context.Context, opts ...sources.Option) (sourc
 	builder := catalogs.NewEmpty()
 
 	// Use configured sources directory or default
-	outputDir := s.sourcesDir
-	if outputDir == "" {
-		outputDir = expandPath(constants.DefaultCachePath)
+	outputDir, pathErr := sourceDirectory(s.sourcesDir, false)
+	if pathErr != nil {
+		return sources.Observation{}, pathErr
 	}
 
 	// Initialize models.dev data once

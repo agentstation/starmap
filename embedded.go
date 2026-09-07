@@ -7,8 +7,15 @@ import (
 
 // EmbeddedBuilder returns a catalog builder loaded from the generation
 // embedded in this module. Consumers use it to construct catalog fixtures
-// without provisioning client storage. Callers that need the verified
-// immutable generation with durable storage should construct a Client.
+// without provisioning client storage. Use EmbeddedGeneration for a verified
+// manifest and payload without a client or application storage.
 func EmbeddedBuilder() (*catalogs.Builder, error) {
 	return bootstraploader.NewEmbeddedBuilder()
+}
+
+// EmbeddedGeneration returns the verified generation compiled into this module.
+// The caller owns its manifest and payload. This function reads no application
+// configuration and creates no files, network connections, or runtime workers.
+func EmbeddedGeneration() (catalogs.Generation, error) {
+	return bootstraploader.Generation()
 }

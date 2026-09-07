@@ -1,0 +1,374 @@
+{
+  "schema_version": 1,
+  "checks": {
+    "E01": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "vitest",
+          "repository": "starport",
+          "files": [
+            "src/routes/docs.test.tsx"
+          ],
+          "tests": [
+            "the docs page links every sidebar destination",
+            "the operate persona names the real health paths and the two newer scopes",
+            "every snippet reads the key from STARPORT_API_KEY",
+            "static recovery docs load without a session or deployment requests",
+            "a public docs reader still needs authorization for deployment pages",
+            "documentation audience and section survive a copied URL and history",
+            "SDK setup never substitutes a local console token for a gateway key",
+            "public documentation supports both themes without deployment access",
+            "the access page links directly to public operator documentation"
+          ]
+        },
+        {
+          "kind": "reviewed_ui",
+          "repository": "starport",
+          "proof": "docs/plans/proof/starport-production-catalog/csp0.1/browser-review.json",
+          "required_inputs": [
+            "console/src/routes/docs.tsx",
+            "console/src/routes/__root.tsx",
+            "console/src/styles/docs.css",
+            "console/src/styles/tokens.css",
+            "console/src/components/auth/FirstContact.tsx",
+            "console/src/components/settings/Deployment.tsx",
+            "console/src/components/settings/Section.tsx",
+            "console/src/lib/api.ts",
+            "console/src/lib/theme.ts",
+            "console/src/router.tsx",
+            "console/src/main.tsx",
+            "console/package.json",
+            "console/pnpm-lock.yaml",
+            "internal/console/spa.go"
+          ],
+          "observations": [
+            "desktop",
+            "reflow_320",
+            "keyboard_focus",
+            "keyboard_tabs",
+            "keyboard_code_scroll",
+            "direct_fragment_reload",
+            "light_dark_contrast",
+            "static_docs_without_session",
+            "protected_routes_remain_guarded",
+            "current_commands_reviewed"
+          ]
+        }
+      ]
+    },
+    "A50.full_path_baseline": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestFullPathMeasurementIncludesAuthentication"
+        },
+        {
+          "kind": "performance_baseline",
+          "repository": "starport"
+        }
+      ]
+    },
+    "A50.reviewed_numeric_profile": {
+      "kind": "performance_profile",
+      "repository": "starport",
+      "profile": "docs/performance-targets-v1.json",
+      "proof": "docs/plans/proof/starport-production-catalog/csp0.4/numeric-profile-review.json"
+    },
+    "A24.descriptor_parity": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./pkg/catalogs/config",
+          "test": "TestPublicDescriptorsCoverCanonicalSettings"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./pkg/catalogs/config",
+          "test": "TestDescriptorDefaultsAndNamedValuesParse"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./pkg/catalogs/config",
+          "test": "TestPublicSettingsParseIsPassive"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./internal/catalog/settings",
+          "test": "TestEveryCanonicalNameMapsToOption"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./internal/catalog/settings",
+          "test": "TestFlagsMirrorCanonicalNames"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./internal/catalog/settings",
+          "test": "TestCatalogSettingsReferenceIsCurrent"
+        }
+      ]
+    },
+    "A24.zero_false_empty": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./pkg/catalogs/config",
+          "test": "TestPublicSettingsPreserveExplicitValues"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./pkg/catalogs/config",
+          "test": "TestPublicSettingsRejectUnknownAndInvalidValues"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./pkg/catalogs/config",
+          "test": "TestEmptyCredentialOverridesLowerLayer"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./internal/catalog/settings",
+          "test": "TestCascadeSubscriberExplicitZeroDisablesSpread"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./runtime",
+          "test": "TestZeroAcquisitionIntervalRunsOneStartupPass"
+        }
+      ]
+    },
+    "A24.aliases_coalescing": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./pkg/catalogs/config",
+          "test": "TestPublicOptionsApplyAliasesAndCoalescing"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./runtime",
+          "test": "TestRuntimeRefusesSelfAliasAndCyclicSourceChains"
+        }
+      ]
+    },
+    "A25.source_token_replacement": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./pkg/catalogs/config",
+          "test": "TestSourceReplacementDoesNotBorrowTransportCredentials"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./pkg/catalogs/config",
+          "test": "TestSourceReplacementRequiresACompleteApplicableGroup"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./internal/cli/app",
+          "test": "TestApplicationSourceReplacementClearsFileCredentials"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./internal/cli/app",
+          "test": "TestCommandDotenvSourceReplacementPreservesAuthority"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./pkg/catalogs/config",
+          "test": "TestSourceReplacementPreservesIndependentBasePolicy"
+        }
+      ]
+    },
+    "A24.starmap_yaml_parity": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./internal/cli/app",
+          "test": "TestEveryCanonicalSettingLoadsFromYAML"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./internal/cli/app",
+          "test": "TestCanonicalCatalogYAMLRetainsExplicitValues"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./internal/cli/app",
+          "test": "TestUnknownCatalogYAMLKeyFails"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./internal/cli/app",
+          "test": "TestUnknownCatalogEnvironmentNameFails"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./internal/catalog/settings",
+          "test": "TestFlagOverridesEnvironment"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./internal/cli/app",
+          "test": "TestCommandFlagsOverrideInvalidEnvironmentSettings"
+        }
+      ]
+    },
+    "A24.dotenv_conflict_migration": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./internal/cli/app",
+          "test": "TestServiceConfigurationDoesNotLoadIncidentalDotenv"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./internal/cli/app",
+          "test": "TestExplicitDotenvPrecedenceAndConflictDiagnostics"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./internal/cli/app",
+          "test": "TestCommandDotenvSourceReplacementPreservesAuthority"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./internal/cli/app",
+          "test": "TestExplicitDotenvFailureDoesNotMutateEnvironmentOrExposeValues"
+        }
+      ]
+    },
+    "A03.relative_anchor_migration_guard": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./internal/cli/app",
+          "test": "TestRelativeRuntimeRefusesUnknownLegacyAnchorBeforeWrites"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./internal/cli/app",
+          "test": "TestRelativePrimaryFileRefusesAmbiguousSelection"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./internal/cli/app",
+          "test": "TestRelativeLeafSelectionRequiresExplicitIntent"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./internal/cli/app",
+          "test": "TestRelativePrimaryIntentPrecedesFileSelection"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./internal/cli/app",
+          "test": "TestRelativePathDeclarationPrecedenceAndValidation"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./internal/cli/app",
+          "test": "TestRelativeUpdatePathsRefuseBeforeCatalogAccess"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./internal/cli/app",
+          "test": "TestAbsoluteRuntimeSelectionPreservesExistingIdentity"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./internal/cli/app",
+          "test": "TestOperationPathsRetainSelectedAnchor"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./internal/cli/app",
+          "test": "TestDotenvDeclaresRelativePrimarySelection"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./internal/cli/app",
+          "test": "TestRelativeFileSourceRefusesBeforeBaselineWrites"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./internal/cli/app",
+          "test": "TestFileSourceReadsReportedAnchorAcrossWorkingDirectories"
+        }
+      ]
+    },
+    "A02.constructor_filesystem_silence": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./",
+          "test": "TestReadOnlyConstructorDoesNotInitializeFilesystemStore"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./",
+          "test": "TestReadOnlyConstructorPreservesWorkspaceWithDurableCurrent"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./",
+          "test": "TestEmbeddedGenerationIsVerifiedPassiveAndIndependent"
+        }
+      ]
+    }
+  }
+}

@@ -8,8 +8,9 @@ import (
 	"path/filepath"
 	"time"
 
-	"github.com/agentstation/starmap/internal/constants"
+	"github.com/agentstation/starmap/internal/privatefiles"
 	"github.com/agentstation/starmap/pkg/errors"
+	"github.com/agentstation/starmap/pkg/productpaths/policy"
 )
 
 const (
@@ -55,6 +56,7 @@ func (r ReleaseRef) Empty() bool {
 
 // stateStore reads and writes the durable state of one repository channel.
 type stateStore struct {
+	directory  *privatefiles.Directory
 	path       string
 	repository string
 	channel    string
@@ -64,12 +66,17 @@ type stateStore struct {
 // is a digest of the repository and the channel. A custom deployment therefore
 // writes neither its host nor its URL into a path.
 func newStateStore(config Config) (*stateStore, error) {
+	if err := policy.Require("github-discovery", policy.OwnerOnly); err != nil {
+		return nil, err
+	}
 	directory := filepath.Join(config.StateDirectory, stateDirectoryName)
-	if err := os.MkdirAll(directory, constants.DirPermissions); err != nil {
-		return nil, errors.WrapIO("create", directory, err)
+	dir, err := privatefiles.NewDirectory(directory)
+	if err != nil {
+		return nil, errors.WrapIO("open private discovery directory", directory, err)
 	}
 	key := sha256.Sum256([]byte(config.Repository + "\x00" + config.Channel))
 	return &stateStore{
+		directory:  dir,
 		path:       filepath.Join(directory, hex.EncodeToString(key[:])+stateFileSuffix),
 		repository: config.Repository,
 		channel:    config.Channel,
@@ -83,7 +90,7 @@ func newStateStore(config Config) (*stateStore, error) {
 // channel. A renamed channel therefore starts cold instead of rejecting its
 // first document as a replay.
 func (s *stateStore) load() (State, error) {
-	data, err := os.ReadFile(s.path)
+	data, err := s.directory.ReadFile(filepath.Base(s.path), maxStateBytes)
 	if os.IsNotExist(err) {
 		return State{}, nil
 	}
@@ -108,8 +115,7 @@ func (s *stateStore) load() (State, error) {
 	return state, nil
 }
 
-// save writes the durable state through a temporary file and a rename, so a
-// crash never leaves a partial document behind.
+// save publishes one complete state record through a private temporary file.
 func (s *stateStore) save(state State) error {
 	state.SchemaVersion = StateSchemaVersion
 	data, err := json.MarshalIndent(state, "", "  ")
@@ -117,29 +123,11 @@ func (s *stateStore) save(state State) error {
 		return errors.WrapResource("encode", "catalog source state", state.Channel, err)
 	}
 	data = append(data, '\n')
-	directory := filepath.Dir(s.path)
-	file, err := os.CreateTemp(directory, ".state-")
-	if err != nil {
-		return errors.WrapIO("create", directory, err)
+	if len(data) > maxStateBytes {
+		return sourceValidation("state", len(data), "exceeds the state document size limit")
 	}
-	temporary := file.Name()
-	defer func() { _ = os.Remove(temporary) }()
-	if _, err := file.Write(data); err != nil {
-		_ = file.Close()
-		return errors.WrapIO("write", temporary, err)
-	}
-	if err := file.Sync(); err != nil {
-		_ = file.Close()
-		return errors.WrapIO("sync", temporary, err)
-	}
-	if err := file.Close(); err != nil {
-		return errors.WrapIO("close", temporary, err)
-	}
-	if err := os.Chmod(temporary, constants.FilePermissions); err != nil {
-		return errors.WrapIO("chmod", temporary, err)
-	}
-	if err := os.Rename(temporary, s.path); err != nil {
-		return errors.WrapIO("publish", s.path, err)
+	if err := s.directory.WriteFile(filepath.Base(s.path), data, ".state-"); err != nil {
+		return errors.WrapIO("write private discovery state", s.path, err)
 	}
 	return nil
 }

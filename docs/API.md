@@ -31,9 +31,12 @@ Package starmap provides immutable AI model catalog reads, explicit generation p
 
 - [Constants](<#constants>)
 - [func EmbeddedBuilder\(\) \(\*catalogs.Builder, error\)](<#EmbeddedBuilder>)
+- [func EmbeddedGeneration\(\) \(catalogs.Generation, error\)](<#EmbeddedGeneration>)
 - [type Candidate](<#Candidate>)
-  - [func NewCandidate\(catalog \*catalogs.Catalog, evidence CandidateEvidence\) \(\*Candidate, error\)](<#NewCandidate>)
+  - [func NewCandidate\(catalog \*catalogs.Catalog, evidence CandidateEvidence, opts ...CandidateOption\) \(\*Candidate, error\)](<#NewCandidate>)
 - [type CandidateEvidence](<#CandidateEvidence>)
+- [type CandidateOption](<#CandidateOption>)
+  - [func WithCandidateGenerationID\(id string\) CandidateOption](<#WithCandidateGenerationID>)
 - [type CatalogPublishedEvent](<#CatalogPublishedEvent>)
 - [type CatalogPublishedHook](<#CatalogPublishedHook>)
 - [type CatalogReadiness](<#CatalogReadiness>)
@@ -46,6 +49,7 @@ Package starmap provides immutable AI model catalog reads, explicit generation p
   - [func \(c \*Client\) CurrentCatalogState\(\) CatalogState](<#Client.CurrentCatalogState>)
   - [func \(c \*Client\) CurrentGeneration\(ctx context.Context\) \(catalogs.Generation, error\)](<#Client.CurrentGeneration>)
   - [func \(c \*Client\) CurrentGenerationID\(\) string](<#Client.CurrentGenerationID>)
+  - [func \(c \*Client\) EmbeddedCatalogState\(\) CatalogState](<#Client.EmbeddedCatalogState>)
   - [func \(c \*Client\) Generation\(ctx context.Context, id string\) \(catalogs.Generation, error\)](<#Client.Generation>)
   - [func \(c \*Client\) HookStats\(\) HookDeliveryStats](<#Client.HookStats>)
   - [func \(c \*Client\) NextID\(\) \(string, error\)](<#Client.NextID>)
@@ -55,6 +59,7 @@ Package starmap provides immutable AI model catalog reads, explicit generation p
   - [func \(c \*Client\) OnModelUpdated\(fn ModelUpdatedHook\)](<#Client.OnModelUpdated>)
   - [func \(c \*Client\) PublishesDurably\(\) bool](<#Client.PublishesDurably>)
   - [func \(c \*Client\) Readiness\(\) CatalogReadiness](<#Client.Readiness>)
+  - [func \(c \*Client\) RepairWorkspace\(ctx context.Context\) \(WorkspaceRepairResult, error\)](<#Client.RepairWorkspace>)
   - [func \(c \*Client\) Rollback\(ctx context.Context, generationID string\) \(\*RollbackResult, error\)](<#Client.Rollback>)
   - [func \(c \*Client\) Save\(\) error](<#Client.Save>)
   - [func \(c \*Client\) SaveTo\(path string\) error](<#Client.SaveTo>)
@@ -74,6 +79,7 @@ Package starmap provides immutable AI model catalog reads, explicit generation p
 - [type ReadinessIssue](<#ReadinessIssue>)
 - [type RollbackResult](<#RollbackResult>)
 - [type UpdateFunc](<#UpdateFunc>)
+- [type WorkspaceRepairResult](<#WorkspaceRepairResult>)
 
 
 ## Constants
@@ -100,10 +106,19 @@ const (
 func EmbeddedBuilder() (*catalogs.Builder, error)
 ```
 
-EmbeddedBuilder returns a catalog builder loaded from the generation embedded in this module. Consumers use it to construct catalog fixtures without provisioning client storage. Callers that need the verified immutable generation with durable storage should construct a Client.
+EmbeddedBuilder returns a catalog builder loaded from the generation embedded in this module. Consumers use it to construct catalog fixtures without provisioning client storage. Use EmbeddedGeneration for a verified manifest and payload without a client or application storage.
+
+<a name="EmbeddedGeneration"></a>
+## func [EmbeddedGeneration](<https://github.com/agentstation/starmap/blob/main/embedded.go#L19>)
+
+```go
+func EmbeddedGeneration() (catalogs.Generation, error)
+```
+
+EmbeddedGeneration returns the verified generation compiled into this module. The caller owns its manifest and payload. This function reads no application configuration and creates no files, network connections, or runtime workers.
 
 <a name="Candidate"></a>
-## type [Candidate](<https://github.com/agentstation/starmap/blob/main/update.go#L22-L25>)
+## type [Candidate](<https://github.com/agentstation/starmap/blob/main/update.go#L23-L27>)
 
 Candidate is a complete immutable catalog prepared off to the side for one atomic publication. Evidence does not alter catalog facts.
 
@@ -114,16 +129,16 @@ type Candidate struct {
 ```
 
 <a name="NewCandidate"></a>
-### func [NewCandidate](<https://github.com/agentstation/starmap/blob/main/update.go#L30-L33>)
+### func [NewCandidate](<https://github.com/agentstation/starmap/blob/main/update.go#L59-L63>)
 
 ```go
-func NewCandidate(catalog *catalogs.Catalog, evidence CandidateEvidence) (*Candidate, error)
+func NewCandidate(catalog *catalogs.Catalog, evidence CandidateEvidence, opts ...CandidateOption) (*Candidate, error)
 ```
 
 NewCandidate validates and returns a publication candidate. Custom acquisition can omit evidence. Client.Update records a deterministic custom\-update observation in that case.
 
 <a name="CandidateEvidence"></a>
-## type [CandidateEvidence](<https://github.com/agentstation/starmap/blob/main/update.go#L15-L18>)
+## type [CandidateEvidence](<https://github.com/agentstation/starmap/blob/main/update.go#L16-L19>)
 
 CandidateEvidence binds one publication candidate to its immutable source observations and excluded model review candidates.
 
@@ -133,6 +148,26 @@ type CandidateEvidence struct {
     ReviewCandidates   []catalogevidence.ReviewCandidate
 }
 ```
+
+<a name="CandidateOption"></a>
+## type [CandidateOption](<https://github.com/agentstation/starmap/blob/main/update.go#L31>)
+
+CandidateOption configures one publication candidate above its catalog and its evidence.
+
+```go
+type CandidateOption func(*Candidate) error
+```
+
+<a name="WithCandidateGenerationID"></a>
+### func [WithCandidateGenerationID](<https://github.com/agentstation/starmap/blob/main/update.go#L42>)
+
+```go
+func WithCandidateGenerationID(id string) CandidateOption
+```
+
+WithCandidateGenerationID binds the candidate to a generation ID that the caller derives. A caller that composes a catalog from its own layers knows the identity of the result. The update then publishes that identity instead of a fresh one.
+
+The identity names one payload. A retained generation never changes. A later candidate that carries the same identity and other bytes therefore fails with a typed conflict from the catalog store. A caller that omits this option gets one fresh UUID\-shaped identity per publication.
 
 <a name="CatalogPublishedEvent"></a>
 ## type [CatalogPublishedEvent](<https://github.com/agentstation/starmap/blob/main/hooks.go#L19-L24>)
@@ -186,7 +221,7 @@ type CatalogState struct {
 ```
 
 <a name="Client"></a>
-## type [Client](<https://github.com/agentstation/starmap/blob/main/client.go#L108-L127>)
+## type [Client](<https://github.com/agentstation/starmap/blob/main/client.go#L108-L128>)
 
 Client manages an immutable canonical catalog, explicit publication, persistence, and event hooks. It owns no provider acquisition, scheduling goroutine, or cadence.
 
@@ -197,7 +232,7 @@ type Client struct {
 ```
 
 <a name="New"></a>
-### func [New](<https://github.com/agentstation/starmap/blob/main/client.go#L131>)
+### func [New](<https://github.com/agentstation/starmap/blob/main/client.go#L132>)
 
 ```go
 func New(opts ...Option) (*Client, error)
@@ -212,10 +247,10 @@ New creates a Client using a background context. Call NewContext when the caller
 func NewContext(ctx context.Context, opts ...Option) (*Client, error)
 ```
 
-NewContext creates a Client with the given options. The caller\-owned context bounds durable generation loading and workspace repair and must be non\-nil. When a durable generation and a marker\-backed unchanged YAML workspace are both configured, construction repairs a stale or interrupted projection by digest. It never overwrites an unrecognized semantic workspace change.
+NewContext creates a Client with the given options. The caller\-owned context bounds reads from caller\-supplied storage and must be non\-nil. Construction never repairs or creates a workspace. Use RepairWorkspace for explicit repair, or open the connected runtime for application startup.
 
 <a name="Client.Activate"></a>
-### func \(\*Client\) [Activate](<https://github.com/agentstation/starmap/blob/main/update.go#L126>)
+### func \(\*Client\) [Activate](<https://github.com/agentstation/starmap/blob/main/update.go#L165>)
 
 ```go
 func (c *Client) Activate(ctx context.Context, generation catalogs.Generation) (Publication, error)
@@ -259,6 +294,15 @@ func (c *Client) CurrentGenerationID() string
 
 CurrentGenerationID returns the logical identity of the currently published catalog. Before the first durable mutation, this is the embedded bootstrap ID.
 
+<a name="Client.EmbeddedCatalogState"></a>
+### func \(\*Client\) [EmbeddedCatalogState](<https://github.com/agentstation/starmap/blob/main/baseline.go#L6>)
+
+```go
+func (c *Client) EmbeddedCatalogState() CatalogState
+```
+
+EmbeddedCatalogState returns the verified baseline compiled into this module. It remains independent of stored generations, workspace input, and later updates. The immutable state requires no storage reads or payload decoding.
+
 <a name="Client.Generation"></a>
 ### func \(\*Client\) [Generation](<https://github.com/agentstation/starmap/blob/main/generation.go#L42>)
 
@@ -278,7 +322,7 @@ func (c *Client) HookStats() HookDeliveryStats
 HookStats returns a lock\-free snapshot of callback delivery health.
 
 <a name="Client.NextID"></a>
-### func \(\*Client\) [NextID](<https://github.com/agentstation/starmap/blob/main/generation.go#L301>)
+### func \(\*Client\) [NextID](<https://github.com/agentstation/starmap/blob/main/generation.go#L313>)
 
 ```go
 func (c *Client) NextID() (string, error)
@@ -340,6 +384,15 @@ func (c *Client) Readiness() CatalogReadiness
 
 Readiness evaluates catalog availability and configured embedded\-bootstrap age/size budgets without performing I/O.
 
+<a name="Client.RepairWorkspace"></a>
+### func \(\*Client\) [RepairWorkspace](<https://github.com/agentstation/starmap/blob/main/workspace_repair.go#L27>)
+
+```go
+func (c *Client) RepairWorkspace(ctx context.Context) (WorkspaceRepairResult, error)
+```
+
+RepairWorkspace explicitly restores the workspace from this client's durable catalog. It preserves operator changes and serializes repair with catalog publications. It never commits a generation or changes the in\-memory catalog sequence. A client without a workspace or durable generation writes no files.
+
 <a name="Client.Rollback"></a>
 ### func \(\*Client\) [Rollback](<https://github.com/agentstation/starmap/blob/main/rollback.go#L30>)
 
@@ -368,7 +421,7 @@ func (c *Client) SaveTo(path string) error
 SaveTo atomically materializes the current committed generation into path. It never publishes a new generation.
 
 <a name="Client.Update"></a>
-### func \(\*Client\) [Update](<https://github.com/agentstation/starmap/blob/main/update.go#L89>)
+### func \(\*Client\) [Update](<https://github.com/agentstation/starmap/blob/main/update.go#L128>)
 
 ```go
 func (c *Client) Update(ctx context.Context, update UpdateFunc) (Publication, error)
@@ -501,7 +554,7 @@ func WithEmbeddedBootstrapMaxSizeBytes(maxSizeBytes int64) Option
 WithEmbeddedBootstrapMaxSizeBytes fails readiness while the active embedded bootstrap canonical payload exceeds maxSizeBytes.
 
 <a name="Publication"></a>
-## type [Publication](<https://github.com/agentstation/starmap/blob/main/update.go#L79-L84>)
+## type [Publication](<https://github.com/agentstation/starmap/blob/main/update.go#L118-L123>)
 
 Publication identifies the durable generation produced by a successful update. Published is false when the update function returns no candidate or reactivates an identical retained generation.
 
@@ -547,12 +600,31 @@ type RollbackResult struct {
 ```
 
 <a name="UpdateFunc"></a>
-## type [UpdateFunc](<https://github.com/agentstation/starmap/blob/main/update.go#L74>)
+## type [UpdateFunc](<https://github.com/agentstation/starmap/blob/main/update.go#L113>)
 
 UpdateFunc builds and validates a complete candidate while Client.Update holds the client's mutation transaction. A nil result does not publish. The current catalog is immutable and safe to retain.
 
 ```go
 type UpdateFunc func(context.Context, *catalogs.Catalog) (*Candidate, error)
+```
+
+<a name="WorkspaceRepairResult"></a>
+## type [WorkspaceRepairResult](<https://github.com/agentstation/starmap/blob/main/workspace_repair.go#L11-L21>)
+
+WorkspaceRepairResult describes an explicit repair of the optional YAML workspace.
+
+```go
+type WorkspaceRepairResult struct {
+    // Path identifies the configured workspace. It is empty without a workspace.
+    Path string
+    // GenerationID identifies the durable catalog used for repair.
+    // It is empty when the client has no durable generation to project.
+    GenerationID string
+    // Changed reports a completed repair that replaced workspace files.
+    Changed bool
+    // IssueCode identifies preserved operator changes that prevented repair.
+    IssueCode string
+}
 ```
 
 Generated by [gomarkdoc](<https://github.com/princjef/gomarkdoc>)

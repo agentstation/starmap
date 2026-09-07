@@ -35,15 +35,19 @@ type options struct {
 	sourceToken  string
 	sourceAPIKey string
 
-	acquisition AcquisitionPolicy
-	freshness   FreshnessPolicy
+	acquisition      AcquisitionPolicy
+	providerBindings *providerBindingPolicy
+	freshness        FreshnessPolicy
 
 	// freshnessExplicit records that a caller supplied a freshness policy. An
 	// explicit policy wins, so the source maximum age derives no threshold.
 	freshnessExplicit bool
 
-	stateDirectory string
-	startupSpread  time.Duration
+	directoryOwner     DirectoryOwner
+	stateDirectory     string
+	publishedMigration *DirectoryMigrationRequest
+	completedMigration *DirectoryMigrationCompletion
+	startupSpread      time.Duration
 
 	transferIdleTimeout time.Duration
 	transferMaxDuration time.Duration
@@ -77,6 +81,7 @@ type Random func() float64
 // defaults returns the canonical connected-runtime configuration.
 func defaults() *options {
 	return &options{
+		directoryOwner:      DirectoryOwner{Product: "starmap", Deployment: "local", Instance: "default"},
 		source:              DefaultSourcePolicy(),
 		acquisition:         DefaultAcquisitionPolicy(),
 		freshness:           DefaultFreshnessPolicy(),
@@ -112,6 +117,12 @@ func (r *options) resolve() {
 
 // validate checks every runtime setting before Open starts any work.
 func (r options) validate() error {
+	if err := r.validateCompletedMigration(); err != nil {
+		return err
+	}
+	if err := r.validatePublishedMigration(); err != nil {
+		return err
+	}
 	if err := r.source.Validate(); err != nil {
 		return err
 	}
@@ -362,6 +373,7 @@ func WithAcquirer(acquirer Acquirer) Option {
 
 // WithStateDirectory selects the durable directory that retains layers, the
 // scheduler identity seed, and source discovery state.
+// Open requires an absolute path and holds an exclusive directory lock until shutdown finishes.
 func WithStateDirectory(directory string) Option {
 	return func(r *options) error {
 		if directory == "" {
@@ -448,8 +460,7 @@ func WithSchedulerIdentity(identity string) Option {
 	}
 }
 
-// WithListenAddress records the server listen address. It separates two
-// instances that share a copied state directory.
+// WithListenAddress records the server listen address. It does not change instance identity.
 func WithListenAddress(address string) Option {
 	return func(r *options) error {
 		r.listenAddress = address

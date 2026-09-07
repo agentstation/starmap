@@ -13,6 +13,22 @@ REMOTE_SUBSCRIBER_MODULE="$ROOT/testdata/consumers/remote-subscriber"
 SERVER_STORAGE_MODULE="$ROOT/testdata/consumers/server-storage"
 MAX_NON_STANDARD_PACKAGES=32
 PINNED_MAX_NON_STANDARD_PACKAGES=32
+# Native file-access checks use the approved platform budgets.
+# Pinned activation also imports the existing artifact reader.
+case "$(go env GOOS)" in
+linux)
+	MAX_NON_STANDARD_PACKAGES=34
+	PINNED_MAX_NON_STANDARD_PACKAGES=35
+	;;
+darwin)
+	MAX_NON_STANDARD_PACKAGES=37
+	PINNED_MAX_NON_STANDARD_PACKAGES=38
+	;;
+windows)
+	MAX_NON_STANDARD_PACKAGES=35
+	PINNED_MAX_NON_STANDARD_PACKAGES=36
+	;;
+esac
 SERVER_MAX_PACKAGES=260
 REMOTE_MAX_PACKAGES=240
 SERVER_STORAGE_MAX_PACKAGES=350

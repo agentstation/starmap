@@ -8,6 +8,7 @@ import (
 	"io"
 	"net/http"
 	"net/http/httptest"
+	"path/filepath"
 	"strings"
 	"sync"
 	"sync/atomic"
@@ -174,7 +175,7 @@ func TestFilesystemAndObjectServerStorageAreReactiveAndRestartable(t *testing.T)
 	configs := map[string]StorageConfig{
 		"filesystem": {
 			Mode:           StorageFilesystem,
-			FilesystemPath: t.TempDir(),
+			FilesystemPath: filepath.Join(t.TempDir(), "catalog-store"),
 		},
 		"object": {
 			Mode:         StorageObject,

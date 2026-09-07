@@ -122,7 +122,7 @@ func TestCustomSourceNeverFallsBackToPublic(t *testing.T) {
 	t.Run("cascade without an injected client fails", func(t *testing.T) {
 		t.Parallel()
 		runtime, err := Open(context.Background(),
-			WithStateDirectory(t.TempDir()),
+			WithStateDirectory(privateRuntimeDirectory(t)),
 			WithCatalogSource("starmap"),
 			WithSourceURL("https://catalog.example"),
 			WithStartupSpread(0),
@@ -140,7 +140,7 @@ func TestCustomSourceNeverFallsBackToPublic(t *testing.T) {
 	t.Run("file source without a path fails", func(t *testing.T) {
 		t.Parallel()
 		runtime, err := Open(context.Background(),
-			WithStateDirectory(t.TempDir()),
+			WithStateDirectory(privateRuntimeDirectory(t)),
 			WithCatalogSource("file"),
 			WithStartupSpread(0),
 			WithAcquisitionEnabled(false),

@@ -360,6 +360,10 @@ func (o *providerSourceObserver) ObserveProvider(
 	if err != nil {
 		return ProviderObservation{}, err
 	}
+	return retainedProviderObservation(id, observed, attempts)
+}
+
+func retainedProviderObservation(id catalogs.ProviderID, observed sources.Observation, attempts []sources.ProviderAttempt) (ProviderObservation, error) {
 	result := ProviderObservation{}
 	if len(attempts) > 0 {
 		result.Attempt = attempts[0]
@@ -367,17 +371,11 @@ func (o *providerSourceObserver) ObserveProvider(
 	if result.Attempt.Outcome != sources.ProviderOutcomeSucceeded || observed.Catalog == nil {
 		return result, nil
 	}
-	payload, err := catalogs.EncodeCatalogPayload(observed.Catalog)
+	layer, err := runtime.NewProviderLayer(id, observed)
 	if err != nil {
-		return ProviderObservation{}, errors.WrapResource(
-			"encode", "provider observation", string(id), err)
+		return ProviderObservation{}, errors.WrapResource("retain", "provider observation", string(id), err)
 	}
-	result.Layer = runtime.ProviderLayer{
-		ProviderID: id,
-		Payload:    payload,
-		Digest:     catalogs.DescribeCatalogPayload(payload).Checksum,
-		ObservedAt: observed.ObservedAt,
-	}
+	result.Layer = layer
 	return result, nil
 }
 

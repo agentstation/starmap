@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"net/http"
 	"net/http/httptest"
+	"path/filepath"
 	"reflect"
 	"testing"
 	"time"
@@ -20,7 +21,7 @@ import (
 
 func TestDurableServerUpdatePublishesSameGenerationAfterProcessRestart(t *testing.T) {
 	catalogPath := t.TempDir()
-	storePath := t.TempDir()
+	storePath := filepath.Join(t.TempDir(), "store")
 	local := catalogs.NewEmpty()
 	if err := local.SetProvider(catalogs.Provider{ID: "before", Name: "Before"}); err != nil {
 		t.Fatalf("Set initial provider: %v", err)

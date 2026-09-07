@@ -14,17 +14,22 @@ attestation/SBOM, and scan the exact deployed digest under your own policy.
 ```bash
 docker run --read-only --user 65532:65532 \
   --tmpfs /tmp \
-  --tmpfs /home/nonroot/.starmap \
-  --publish 8080:8080 \
+  --tmpfs /var/lib/starmap:uid=65532,gid=65532,mode=0700 \
+  --env STARMAP_HOME=/var/lib/starmap \
+  --publish 127.0.0.1:8080:8080 \
   ghcr.io/agentstation/starmap:<version> \
   serve --host 0.0.0.0
 ```
 
-The server keeps its runtime state under `/home/nonroot/.starmap`. A read-only
-root filesystem needs that path writable, or the server exits at startup. The
-`tmpfs` mount gives an evaluation container ephemeral state. A container that
-keeps its catalog across a restart mounts a volume instead. See
-[Durable standalone storage](#durable-standalone-storage).
+This source revision uses the four application roots selected by `STARMAP_HOME`.
+The evaluation command stores them under `/var/lib/starmap`. It does not use ambient user-directory defaults.
+The mount provides UID/GID 65532 access while the container root filesystem remains read-only.
+
+The temporary mount loses its contents when the container stops. Use durable storage for retained catalogs and instance identity.
+See [Docker temporary mounts](https://docs.docker.com/engine/storage/tmpfs/) and [Durable standalone storage](#durable-standalone-storage).
+
+Verify that the selected image supports these roots before upgrading an existing deployment.
+A new environment setting does not migrate files from an older image's layout.
 
 The server starts from the verified embedded catalog, then pulls the public
 attested catalog channel from GitHub. It sends no provider network request on
@@ -37,20 +42,24 @@ For production, prefer an immutable `sha256:` image digest. The moving
 
 ## Durable standalone storage
 
-The standalone CLI owns two different filesystem lifecycles:
+The Compose recipe explicitly sets `STARMAP_HOME=/home/nonroot/starmap` inside its durable volume.
+The image's existing `/home/nonroot` directory supplies initial volume ownership for its nonroot account.
+Path resolution uses the explicit setting even if the process `HOME` value changes.
 
 ```text
-/home/nonroot/.starmap/
-├── catalog/          # human-readable authored/provider YAML workspace
-├── state/catalog/    # machine-owned immutable generations and current pointer
-└── state/runtime/    # connected-runtime layers, identity seed, and source state
+/home/nonroot/starmap/
+├── config/config.yaml                    # optional private configuration
+├── data/catalog/baseline/<id>/           # installed embedded baseline
+├── data/catalog/workspace/               # optional YAML authoring workspace
+├── state/catalog/                        # generations, current pointer, runtime child
+│   └── runtime/default/                  # owner, instance seed, retained evidence
+└── cache/                                # source caches and checkouts
 ```
 
-Mount the home directory on one durable filesystem so the post-commit YAML
-projection can use atomic sibling operations. Docker gives an empty volume the
-ownership of the image directory it covers, and the unprivileged user owns
-`/home/nonroot`. A volume at a deeper path arrives owned by root, and the
-server cannot write it.
+Docker copies existing image-directory contents into an empty volume by default.
+Existing volumes retain their own contents and permissions. See [Docker volume population](https://docs.docker.com/engine/storage/volumes/#mounting-a-volume-over-existing-data).
+The recipe requires a writable mount with the expected UID/GID 65532 ownership.
+A different image or storage driver needs its own provisioning and restart checks.
 
 ```bash
 docker volume create starmap-data
@@ -58,19 +67,22 @@ docker volume create starmap-data
 docker run --read-only --user 65532:65532 \
   --tmpfs /tmp \
   --mount type=volume,src=starmap-data,dst=/home/nonroot \
-  --publish 8080:8080 \
+  --env STARMAP_HOME=/home/nonroot/starmap \
+  --publish 127.0.0.1:8080:8080 \
   ghcr.io/agentstation/starmap:<version> \
   serve --host 0.0.0.0
 ```
 
-Back up both lifecycles. The catalog store is the sole durable commit point.
-The YAML workspace is the human-editable local observation and repairable
-post-commit projection. Do not mount either path inside the other, share the
-same writable filesystem store between independently scheduled containers, or
-edit machine-owned `state/catalog` files by hand.
+Back up configuration, authored data, the catalog store, and retained runtime identity as one stopped-instance set.
+The catalog store is the durable catalog commit point. Retained runtime records preserve acquisition evidence and instance identity.
+The YAML workspace provides local observations and a repairable projection. Caches have a separate retention policy.
+Never share one writable runtime or filesystem catalog store between independent Starmap processes.
 
-Starmap rejects an existing pre-plan machine store at `catalog/` before mutation.
-Run `starmap migrate catalog` once with all older writers stopped.
+Before changing an existing volume's layout, stop older writers and preserve a consistent backup.
+Run `config paths --inspect --output wide` with the old settings to record the selected paths.
+Keep explicit old absolute paths until the corresponding migration completes.
+Setting a new `STARMAP_HOME` alone can select empty roots and must not substitute for migration.
+The [CLI migration procedures](CLI.md#runtime-migration) describe runtime and catalog ownership boundaries.
 
 ## Provider credentials
 
@@ -80,9 +92,10 @@ You need optional provider credentials only for explicit acquisition:
 docker run --read-only --user 65532:65532 \
   --tmpfs /tmp \
   --mount type=volume,src=starmap-data,dst=/home/nonroot \
+  --env STARMAP_HOME=/home/nonroot/starmap \
   --env OPENAI_API_KEY \
   --env ANTHROPIC_API_KEY \
-  --publish 8080:8080 \
+  --publish 127.0.0.1:8080:8080 \
   ghcr.io/agentstation/starmap:<version> \
   serve --host 0.0.0.0 --auth
 ```
@@ -117,7 +130,8 @@ also use `Authorization: Bearer`.
 ```bash
 docker run --read-only --user 65532:65532 \
   --tmpfs /tmp \
-  --tmpfs /home/nonroot/.starmap \
+  --tmpfs /var/lib/starmap:uid=65532,gid=65532,mode=0700 \
+  --env STARMAP_HOME=/var/lib/starmap \
   --env API_KEY \
   --publish 127.0.0.1:8080:8080 \
   ghcr.io/agentstation/starmap:<version> \
@@ -130,7 +144,11 @@ configure CORS with an explicit `--cors-origins` allowlist. Enabling
 
 ## Docker Compose
 
-The repository `docker-compose.yml` is a local starting point:
+The repository `docker-compose.yml` is a local starting point for one instance.
+It binds the published port to loopback. Provide a controlled ingress before exposing it to another host.
+The CLI version command does not test server health. Use the HTTP liveness and readiness endpoints.
+
+
 
 ```bash
 cp .env.example .env
@@ -157,6 +175,14 @@ protection from a hostile same-UID process.
 ## Kubernetes
 
 The standalone CLI filesystem composition is a single-writer deployment.
+Provision the PVC mount for UID/GID 65532 before starting the pod.
+Its directory must permit that account to create the private `instance` child.
+Do not apply recursive group-permission changes to retained private files on replacement pods.
+An automatic `fsGroup` rewrite can conflict with their owner-only access policy.
+See [Kubernetes volume permission policy](https://kubernetes.io/docs/tasks/configure-pod-container/security-context/#configure-volume-permission-and-ownership-change-policy-for-pods).
+Storage-driver provisioning and mount recovery require validation on the chosen cluster.
+
+The following manifest defines the storage and network topology. It does not qualify a complete production deployment.
 A minimal pod shape is:
 
 ```yaml
@@ -166,6 +192,8 @@ metadata:
   name: starmap
 spec:
   replicas: 1
+  strategy:
+    type: Recreate
   selector:
     matchLabels:
       app: starmap
@@ -178,12 +206,13 @@ spec:
         runAsNonRoot: true
         runAsUser: 65532
         runAsGroup: 65532
-        fsGroup: 65532
       containers:
         - name: starmap
           image: ghcr.io/agentstation/starmap@sha256:<verified-image-digest>
           args: ["serve", "--host", "0.0.0.0", "--auth"]
           env:
+            - name: STARMAP_HOME
+              value: /var/lib/starmap/instance
             - name: API_KEY
               valueFrom:
                 secretKeyRef:
@@ -207,7 +236,7 @@ spec:
               drop: ["ALL"]
           volumeMounts:
             - name: data
-              mountPath: /home/nonroot/.starmap
+              mountPath: /var/lib/starmap
             - name: tmp
               mountPath: /tmp
       volumes:
@@ -217,6 +246,10 @@ spec:
         - name: tmp
           emptyDir: {}
 ```
+
+The `Recreate` strategy stops the old revision before starting its replacement during a Deployment upgrade.
+This creates an availability gap. Manual Pod deletion can still overlap termination and replacement.
+The runtime directory lock remains required. See [Kubernetes replacement behavior](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#recreate-deployment).
 
 A Service gives the fleet one stable address for those pods:
 

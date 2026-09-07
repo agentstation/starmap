@@ -3,6 +3,7 @@ package workspace
 import (
 	"context"
 	stderrors "errors"
+	"github.com/agentstation/starmap/pkg/productpaths"
 	"os"
 	"path/filepath"
 	"testing"
@@ -166,13 +167,24 @@ func TestValidateMachineSeparationResolvesSymlinkedAncestors(t *testing.T) {
 func TestCanonicalHumanWorkspaceIsSeparateFromEveryDefaultMachineRoot(t *testing.T) {
 	home := t.TempDir()
 	t.Setenv("HOME", home)
+	t.Setenv("USERPROFILE", home)
+	t.Setenv("APPDATA", filepath.Join(home, "roaming"))
+	t.Setenv("LOCALAPPDATA", filepath.Join(home, "local"))
+	t.Setenv("XDG_DATA_HOME", filepath.Join(home, "data"))
+	t.Setenv("XDG_STATE_HOME", filepath.Join(home, "state"))
+	t.Setenv("XDG_CACHE_HOME", filepath.Join(home, "cache"))
+	roots, err := productpaths.Resolve(productpaths.UserDefaults(productpaths.Starmap))
+	if err != nil {
+		t.Fatal(err)
+	}
+	human := filepath.Join(roots[productpaths.Data].Path, "catalog", "workspace")
 	for kind, path := range map[string]string{
-		"catalog state":   constants.DefaultCatalogStatePath,
-		"source cache":    constants.DefaultCachePath,
-		"source checkout": constants.DefaultSourcesPath,
-		"logs":            constants.DefaultLogsPath,
+		"catalog state":   filepath.Join(roots[productpaths.State].Path, "catalog"),
+		"source cache":    roots[productpaths.Cache].Path,
+		"source checkout": filepath.Join(roots[productpaths.Cache].Path, "sources"),
+		"logs":            filepath.Join(roots[productpaths.State].Path, "logs"),
 	} {
-		if err := ValidateMachineSeparation(constants.DefaultCatalogPath, path, kind); err != nil {
+		if err := ValidateMachineSeparation(human, path, kind); err != nil {
 			t.Errorf("%s overlaps human workspace: %v", kind, err)
 		}
 	}

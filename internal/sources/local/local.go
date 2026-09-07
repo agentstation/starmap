@@ -4,6 +4,7 @@ import (
 	"context"
 	"time"
 
+	"github.com/agentstation/starmap/internal/catalog/workspace"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/errors"
 	"github.com/agentstation/starmap/pkg/sources"
@@ -65,7 +66,7 @@ func (s *Source) ID() sources.ID {
 func (s *Source) Name() string { return "Local Catalog" }
 
 // Observe returns catalog data from the configured source without retaining result state.
-func (s *Source) Observe(_ context.Context, _ ...sources.Option) (sources.Observation, error) {
+func (s *Source) Observe(ctx context.Context, _ ...sources.Option) (sources.Observation, error) {
 	if s.catalogProvided {
 		return s.observation(s.snapshot, s.loadReport)
 	}
@@ -76,16 +77,24 @@ func (s *Source) Observe(_ context.Context, _ ...sources.Option) (sources.Observ
 			Message:   "a human workspace path or preloaded catalog is required",
 		}
 	}
-	builder, err := catalogs.NewFromPath(s.catalogPath)
+	var observation sources.Observation
+	err := workspace.Read(ctx, s.catalogPath, func(workspace.InputExpectation) error {
+		builder, err := catalogs.NewFromPath(s.catalogPath)
+		if err != nil {
+			return errors.WrapResource("load", "human catalog", s.catalogPath, err)
+		}
+		builder.SetMergeStrategy(catalogs.MergeReplaceAll)
+		catalog, err := catalogs.NewObservationCatalog(builder)
+		if err != nil {
+			return errors.WrapResource("publish", "local source observation", "", err)
+		}
+		observation, err = s.observation(catalog, builder.LoadReport())
+		return err
+	})
 	if err != nil {
-		return sources.Observation{}, errors.WrapResource("load", "human catalog", s.catalogPath, err)
+		return sources.Observation{}, err
 	}
-	builder.SetMergeStrategy(catalogs.MergeReplaceAll)
-	catalog, err := catalogs.NewObservationCatalog(builder)
-	if err != nil {
-		return sources.Observation{}, errors.WrapResource("publish", "local source observation", "", err)
-	}
-	return s.observation(catalog, builder.LoadReport())
+	return observation, nil
 }
 
 func (s *Source) observation(catalog *catalogs.Catalog, report catalogs.LoadReport) (sources.Observation, error) {

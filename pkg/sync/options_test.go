@@ -3,6 +3,7 @@ package sync
 import (
 	"context"
 	stderrors "errors"
+	"github.com/agentstation/starmap/pkg/productpaths"
 	"path/filepath"
 	"strings"
 	"testing"
@@ -115,6 +116,10 @@ func TestOptionsValidateRejectsConflictingDependencyPolicies(t *testing.T) {
 func TestOptionsValidateRejectsSourceStateOverlappingHumanWorkspace(t *testing.T) {
 	home := t.TempDir()
 	t.Setenv("HOME", home)
+	directories, err := productpaths.DefaultSourceDirectories(productpaths.Starmap)
+	if err != nil {
+		t.Fatal(err)
+	}
 	exactCommit := strings.Repeat("a", 40)
 
 	tests := []struct {
@@ -124,13 +129,13 @@ func TestOptionsValidateRejectsSourceStateOverlappingHumanWorkspace(t *testing.T
 		{
 			name: "default HTTP cache contains workspace",
 			opts: []Option{
-				WithCatalogPath(filepath.Join(home, ".starmap", "cache", "human")),
+				WithCatalogPath(filepath.Join(directories.Cache, "human")),
 			},
 		},
 		{
 			name: "default Git checkout contains workspace",
 			opts: []Option{
-				WithCatalogPath(filepath.Join(home, ".starmap", "sources", "human")),
+				WithCatalogPath(filepath.Join(directories.Checkouts, "human")),
 				WithSources(sources.ModelsDevGitID),
 				WithModelsDevGitCommit(exactCommit),
 			},
@@ -184,5 +189,31 @@ func TestOptionsValidateAcceptsFirstRunWorkspaceWithMissingParent(t *testing.T) 
 	)
 	if err := opts.Validate(catalogs.NewProviders()); err != nil {
 		t.Fatalf("Validate first-run workspace: %v", err)
+	}
+}
+
+func TestSourceDirectoriesPreserveExplicitSelectionAndWorkspaceBoundary(t *testing.T) {
+	t.Parallel()
+	root := t.TempDir()
+	directories, err := productpaths.SourceDirectoriesAt(filepath.Join(root, "host-cache"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	opts := Defaults().Apply(WithSourceDirectories(directories))
+	selected, err := opts.ResolvedSourceDirectories()
+	if err != nil || selected != directories {
+		t.Fatalf("host source defaults = %+v, %v", selected, err)
+	}
+	explicit := filepath.Join(root, "selected-source-parent")
+	opts.Apply(WithSourcesDir(explicit))
+	selected, err = opts.ResolvedSourceDirectories()
+	if err != nil || selected.Cache != explicit || selected.Checkouts != explicit {
+		t.Fatalf("explicit source override = %+v, %v", selected, err)
+	}
+	for _, path := range []string{directories.Cache, directories.Checkouts} {
+		invalid := Defaults().Apply(WithSourceDirectories(directories), WithCatalogPath(filepath.Join(path, "workspace")))
+		if err := invalid.ValidateFilesystemLayout(); err == nil {
+			t.Fatal("host source root overlaps human workspace")
+		}
 	}
 }

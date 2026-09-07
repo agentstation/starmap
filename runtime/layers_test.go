@@ -2,6 +2,7 @@ package runtime
 
 import (
 	"context"
+	"path/filepath"
 	"strings"
 	"sync"
 	"testing"
@@ -52,12 +53,7 @@ func testObservationPayload(t testing.TB, providerID catalogs.ProviderID, modelI
 func testObservationLayer(t testing.TB, providerID catalogs.ProviderID, observed time.Time, modelIDs ...string) ProviderLayer {
 	t.Helper()
 	payload := testObservationPayload(t, providerID, modelIDs...)
-	return ProviderLayer{
-		ProviderID: providerID,
-		Payload:    payload,
-		Digest:     catalogs.DescribeCatalogPayload(payload).Checksum,
-		ObservedAt: observed,
-	}
+	return testProviderLayerFromPayload(t, providerID, payload, observed)
 }
 
 // TestBuildKeepsUnlinkedOfferingsOutOfTheEffectiveCatalog proves that a
@@ -286,8 +282,8 @@ func TestUnchangedRebuildCommitsNoSecondGeneration(t *testing.T) {
 // TestRestartReportsTheCommittedEffectiveIdentity proves that a restart from
 // the same durable state reports the identity that the previous run committed.
 func TestRestartReportsTheCommittedEffectiveIdentity(t *testing.T) {
-	stateDirectory := t.TempDir()
-	storeDirectory := t.TempDir()
+	stateDirectory := privateRuntimeDirectory(t)
+	storeDirectory := filepath.Join(t.TempDir(), "store")
 	store, err := storage.NewFilesystem(storeDirectory)
 	if err != nil {
 		t.Fatalf("NewFilesystem: %v", err)
@@ -317,12 +313,11 @@ func TestRestartReportsTheCommittedEffectiveIdentity(t *testing.T) {
 
 // TestSourcelessDurableRestartKeepsOneDerivedIdentity proves that a durable
 // runtime without an upstream layer derives one identity across restarts. The
-// restart baseline is the generation that the previous run committed. A
-// derivation from that identity would nest one more suffix per restart and
-// commit one more generation per restart.
+// compiled baseline remains separate from the previously committed result.
+// Rebuilding the same retained inputs neither nests identities nor commits again.
 func TestSourcelessDurableRestartKeepsOneDerivedIdentity(t *testing.T) {
-	stateDirectory := t.TempDir()
-	storeDirectory := t.TempDir()
+	stateDirectory := privateRuntimeDirectory(t)
+	storeDirectory := filepath.Join(t.TempDir(), "store")
 	observed := time.Date(2026, 9, 4, 9, 0, 0, 0, time.UTC)
 	open := func() (*Runtime, *countingStore) {
 		t.Helper()

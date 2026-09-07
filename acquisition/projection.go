@@ -8,6 +8,7 @@ import (
 	"github.com/agentstation/starmap/internal/sources/modelsdev"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/logging"
+	"github.com/agentstation/starmap/pkg/productpaths"
 	pkgsync "github.com/agentstation/starmap/pkg/sync"
 )
 
@@ -17,6 +18,7 @@ func projectCommittedCatalog(
 	path string,
 	publication starmap.Publication,
 	input workspace.InputExpectation,
+	options *pkgsync.Options,
 ) *pkgsync.ProjectionResult {
 	result := &pkgsync.ProjectionResult{
 		Path:         path,
@@ -36,6 +38,7 @@ func projectCommittedCatalog(
 			PayloadChecksum: publication.PayloadChecksum,
 		},
 		input,
+		options,
 	)
 	result.WorkspaceChecksum = receipt.WorkspaceChecksum
 	if err != nil {
@@ -57,7 +60,12 @@ func projectCatalogWorkspace(
 	outputPath string,
 	identity workspace.Identity,
 	input workspace.InputExpectation,
+	options *pkgsync.Options,
 ) (workspace.Receipt, error) {
+	directories, err := projectionSourceDirectories(outputPath, options)
+	if err != nil {
+		return workspace.Receipt{}, err
+	}
 	receipt, err := workspace.ProjectExpected(ctx, outputPath, catalog, identity, input)
 	if err != nil {
 		return receipt, err
@@ -69,16 +77,27 @@ func projectCatalogWorkspace(
 		providerPointers[index] = &providers[index]
 	}
 	if len(providerPointers) > 0 {
-		if err := modelsdev.CopyProviderLogos(outputPath, providerPointers); err != nil {
+		if err := modelsdev.CopyProviderLogos(outputPath, directories.Checkouts, providerPointers); err != nil {
 			logging.Warn().Err(err).Msg("Could not copy provider logos")
 		}
 	}
 
 	authors := catalog.Authors().List()
 	if len(authors) > 0 {
-		if err := modelsdev.CopyAuthorLogos(outputPath, authors, catalog.Providers()); err != nil {
+		if err := modelsdev.CopyAuthorLogos(outputPath, directories.Checkouts, authors, catalog.Providers()); err != nil {
 			logging.Warn().Err(err).Msg("Could not copy author logos")
 		}
 	}
 	return receipt, nil
+}
+
+func projectionSourceDirectories(path string, options *pkgsync.Options) (productpaths.SourceDirectories, error) {
+	directories, err := options.ResolvedSourceDirectories()
+	if err != nil {
+		return productpaths.SourceDirectories{}, err
+	}
+	if err := workspace.ValidateMachineSeparation(path, directories.Checkouts, "source checkout"); err != nil {
+		return productpaths.SourceDirectories{}, err
+	}
+	return directories, nil
 }

@@ -215,7 +215,7 @@ func TestStoreOnlyApplyCommitsWithoutWorkspaceAccess(t *testing.T) {
 	}
 }
 
-func TestNewRepairsStaleProjectionFromDurableCurrentWithoutRepublishing(t *testing.T) {
+func TestExplicitRepairRestoresStaleProjectionWithoutRepublishing(t *testing.T) {
 	oldBuilder := catalogs.NewEmpty()
 	if err := oldBuilder.SetProvider(catalogs.Provider{ID: "old", Name: "Old Provider"}); err != nil {
 		t.Fatalf("SetProvider old: %v", err)
@@ -261,6 +261,13 @@ func TestNewRepairsStaleProjectionFromDurableCurrentWithoutRepublishing(t *testi
 		t.Fatalf("durable catalog is not active: %v", err)
 	}
 
+	repair, err := client.RepairWorkspace(t.Context())
+	if err != nil || !repair.Changed || repair.GenerationID != current.Manifest.GenerationID || repair.IssueCode != "" {
+		t.Fatalf("explicit repair = %+v, %v", repair, err)
+	}
+	if client.CurrentCatalogState().Sequence != 1 {
+		t.Fatal("explicit repair republished the catalog")
+	}
 	repaired, err := catalogs.NewFromPath(path)
 	if err != nil {
 		t.Fatalf("Load repaired workspace: %v", err)

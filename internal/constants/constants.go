@@ -99,15 +99,6 @@ const (
 	// state directory. The scheduler seed, the retained provider layers, and
 	// the source discovery state live there.
 	DefaultRuntimeStatePath = "~/.starmap/state/runtime"
-
-	// DefaultCachePath is the default path for cache files.
-	DefaultCachePath = "~/.starmap/cache"
-
-	// DefaultLogsPath is the default path for log files.
-	DefaultLogsPath = "~/.starmap/logs"
-
-	// DefaultSourcesPath is the default path for external source data.
-	DefaultSourcesPath = "~/.starmap/sources"
 )
 
 const (
