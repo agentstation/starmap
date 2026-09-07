@@ -1,0 +1,1 @@
+{"error":"failed to verify embedded bootstrap catalog catalog-20260830T083213Z-ad5d2a45e490: validation failed for field payload.size_bytes: payload has 8270770 bytes, want 8270634","size":8270770,"valid":false}

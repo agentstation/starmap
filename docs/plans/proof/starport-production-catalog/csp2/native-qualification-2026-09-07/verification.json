@@ -1,0 +1,159 @@
+{
+  "status": "UNVERIFIED",
+  "foundation": {
+    "head": "d68576c737f588d8a23ae27b0168f772d5a8c051",
+    "pull_request": 132,
+    "run_id": 34164034368,
+    "passed_native_runners": [
+      "ubuntu-24.04",
+      "ubuntu-24.04-arm",
+      "macos-15",
+      "macos-15-intel"
+    ],
+    "failed_native_runners": [
+      "windows-2025",
+      "windows-11-arm"
+    ]
+  },
+  "followup": {
+    "head": "fadf3434f9fbb6afe9426d43a3eb9ca50d774355",
+    "pull_request": 133,
+    "run_id": 34164035791,
+    "artifacts": [
+      {
+        "runner": "native-runtime-ubuntu-24.04-arm",
+        "artifact_file": "tests.jsonl",
+        "sha256": "4064a2c9168dc340e1634df4a4ae746d2ccedfb3973029f2face75b1227cf4e2",
+        "test_events": {
+          "pass": 1211,
+          "fail": 0,
+          "skip": 1
+        },
+        "failed_packages": []
+      },
+      {
+        "runner": "native-runtime-ubuntu-24.04",
+        "artifact_file": "tests.jsonl",
+        "sha256": "cdc6c9caaba5afd52685401f81a30c4137beaaafaabe6d1907ae01f01ff9feaa",
+        "test_events": {
+          "pass": 1210,
+          "fail": 1,
+          "skip": 1
+        },
+        "failed_packages": [
+          "github.com/agentstation/starmap/runtime"
+        ]
+      },
+      {
+        "runner": "native-runtime-macos-15",
+        "artifact_file": "tests.jsonl",
+        "sha256": "c014bea4b18a7a8acf9c5dd8891745d53f58a47b107c6c1e287c3e93cf5e9ba1",
+        "test_events": {
+          "pass": 1267,
+          "fail": 0,
+          "skip": 0
+        },
+        "failed_packages": []
+      },
+      {
+        "runner": "native-runtime-windows-11-arm",
+        "artifact_file": "tests.jsonl",
+        "sha256": "d695eeb53c508f01ba5c4bfbb8b64624986ae3de689a738edd4790f581b1a5f2",
+        "test_events": {
+          "pass": 785,
+          "fail": 409,
+          "skip": 0
+        },
+        "failed_packages": [
+          "github.com/agentstation/starmap/internal/filepublish",
+          "github.com/agentstation/starmap/internal/privatefiles",
+          "github.com/agentstation/starmap/internal/cli/app",
+          "github.com/agentstation/starmap/pkg/productpaths",
+          "github.com/agentstation/starmap/internal/bootstrap",
+          "github.com/agentstation/starmap",
+          "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "github.com/agentstation/starmap/runtime",
+          "github.com/agentstation/starmap/internal/catalog/workspace"
+        ]
+      },
+      {
+        "runner": "native-runtime-windows-2025",
+        "artifact_file": "tests.jsonl",
+        "sha256": "77d8e7ad2e4310db38a3b2716208db6a3ef0c8cc4605e8fa6a9ac9b2c2fb639c",
+        "test_events": {
+          "pass": 785,
+          "fail": 409,
+          "skip": 0
+        },
+        "failed_packages": [
+          "github.com/agentstation/starmap/internal/filepublish",
+          "github.com/agentstation/starmap/internal/privatefiles",
+          "github.com/agentstation/starmap/internal/cli/app",
+          "github.com/agentstation/starmap/pkg/productpaths",
+          "github.com/agentstation/starmap",
+          "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "github.com/agentstation/starmap/internal/bootstrap",
+          "github.com/agentstation/starmap/runtime",
+          "github.com/agentstation/starmap/internal/catalog/workspace"
+        ]
+      },
+      {
+        "runner": "starmap-native-followup-macos-intel",
+        "artifact_file": "tests.jsonl",
+        "sha256": "4e701d741df273e5f20e499b17dac254d7eee4602b96ffb74ca748e8fe318ba6",
+        "test_events": {
+          "pass": 1095,
+          "fail": 0,
+          "skip": 0
+        },
+        "failed_packages": [
+          "github.com/agentstation/starmap/runtime"
+        ]
+      }
+    ]
+  },
+  "current_changes": "Local repairs and Windows diagnostic fixture; native rerun required.",
+  "local_candidate": {
+    "foundation_commit": "90c8932e",
+    "followup_merge": "d2c72c1e",
+    "focused_race_events": {
+      "pass": 12,
+      "fail": 0,
+      "skip": 0
+    },
+    "go125_events": {
+      "pass": 3,
+      "fail": 0,
+      "skip": 0
+    },
+    "windows_compile_packages": [
+      "internal/bootstrap",
+      "internal/filepublish",
+      "internal/privatefiles",
+      "internal/catalog/workspace"
+    ],
+    "windows_compile_architectures": [
+      "amd64",
+      "arm64"
+    ],
+    "native_candidate_result": "UNVERIFIED",
+    "strict_prose": {
+      "files": 1066,
+      "diagnostics": 0
+    },
+    "ago": {
+      "findings": 0,
+      "stale_ignores": 0,
+      "errors": 0
+    },
+    "followup_focused_events": {
+      "pass": 12,
+      "fail": 0,
+      "skip": 0
+    },
+    "followup_strict_prose": {
+      "files": 1145,
+      "diagnostics": 0
+    }
+  }
+}
