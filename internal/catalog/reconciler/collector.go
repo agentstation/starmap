@@ -16,6 +16,7 @@ type collector struct {
 	sources []sources.Observation
 	primary sources.ID
 	logger  zerolog.Logger
+	scoped  *scopedObservations
 }
 
 func (c *collector) reviewCandidateObservation(
@@ -37,6 +38,12 @@ func (c *collector) reviewCandidateObservation(
 		)
 		if sourceProvider == nil || sourceProvider.Models[providerModelID] == nil {
 			continue
+		}
+		if observation.ProviderBinding != nil && c.scoped != nil {
+			selected := c.scoped.models[modelIdentity{providerID: sourceProvider.ID, modelID: providerModelID}]
+			if selected == nil || selected.observation.ID != observation.ID {
+				continue
+			}
 		}
 		candidates = append(candidates, observation)
 	}
@@ -85,7 +92,7 @@ func (c *collector) collectProviders() map[sources.ID][]*catalogs.Provider {
 			for _, p := range providers {
 				providerList = append(providerList, &p)
 			}
-			result[src.SourceID] = providerList
+			result[src.SourceID] = append(result[src.SourceID], providerList...)
 		}
 	}
 
@@ -102,7 +109,7 @@ func (c *collector) collectModelsForProvider(
 	for _, src := range c.sources {
 		models := c.providerModels(src, provider, primaryCatalog)
 		if len(models) > 0 {
-			result[src.SourceID] = models
+			result[src.SourceID] = append(result[src.SourceID], models...)
 		}
 	}
 
@@ -218,7 +225,9 @@ func (c *collector) enrichWithPrimaryModels(
 func (c *collector) sourceTypes() []sources.ID {
 	types := make([]sources.ID, 0, len(c.sources))
 	for _, src := range c.sources {
-		types = append(types, src.SourceID)
+		if !slices.Contains(types, src.SourceID) {
+			types = append(types, src.SourceID)
+		}
 	}
 	return types
 }

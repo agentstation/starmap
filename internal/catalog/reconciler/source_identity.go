@@ -107,7 +107,7 @@ func (merger *merger) suppressStaleModelFallback(
 	}
 	resolved := sourceModels
 	for source := range sourceModels {
-		if !merger.observationIsStaleFallback(source) {
+		if !observationIsStaleFallback(merger.modelObservation(source, modelIdentity{providerID: providerID, modelID: modelID})) {
 			continue
 		}
 		if len(resolved) == len(sourceModels) {
@@ -178,7 +178,7 @@ func (merger *merger) suppressStaleProviderFallback(
 	}
 	resolved := sourceProviders
 	for source := range sourceProviders {
-		if !merger.observationIsStaleFallback(source) {
+		if !observationIsStaleFallback(merger.providerObservation(source, providerID)) {
 			continue
 		}
 		if len(resolved) == len(sourceProviders) {
@@ -189,8 +189,7 @@ func (merger *merger) suppressStaleProviderFallback(
 	return resolved
 }
 
-func (merger *merger) observationIsStaleFallback(source sources.ID) bool {
-	evidence, exists := merger.observations[source]
+func observationIsStaleFallback(evidence sourceObservationEvidence, exists bool) bool {
 	if !exists || evidence.status != sources.ObservationStatusDegraded {
 		return false
 	}

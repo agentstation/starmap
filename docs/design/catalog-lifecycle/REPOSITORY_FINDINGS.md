@@ -1117,3 +1117,23 @@ The generic merge owns this behavior. Existing definitions still keep precedence
 The final checks passed 1,341 race events, 79 normal package suites, six consumer compositions, code lint, Ago, and generated documentation.
 The first broader run remains failed evidence. The final run used Go 1.26.6 and the unchanged five-minute package limit.
 Operator integration, scoped field authority, deletion rules, and released-pair acceptance remain open.
+
+
+### CSP3 scoped reconciliation records
+
+The manual source pipeline exposed another boundary before binding integration.
+Collector maps replaced earlier catalogs under the same source type. Shared records also selected facts by input order.
+The merger attached the last provider receipt to every model, including models supplied by another binding.
+
+Reconciliation now validates scoped receipts and keeps each selected provider or model record with its observation.
+Direct observations take precedence over stale fallback. Observation time then orders shared records within that classification.
+Records with equal identity, time, and fallback classification must agree.
+Primary-source filtering includes every scoped provider, and counts use unique model and source identities.
+Review candidates and field provenance select the receipt for the chosen record.
+
+The [scoped reconciliation proof](../../plans/proof/starport-production-catalog/csp3/scoped-reconciliation-verification.json) records the regressions and checks.
+A second regression showed that a newer stale fallback could displace a direct peer observation. The correction preserves the direct observation.
+
+The caller still owns active binding selection. The manual CLI and HTTP adapters do not yet enforce that selection.
+Their pipeline must emit separate observations for the selected bindings and preserve runtime retention during publication.
+Field-presence handling, scoped deletion, and released-pair acceptance remain open.

@@ -32,6 +32,7 @@ type merger struct {
 	observations    map[sources.ID]sourceObservationEvidence
 	sourceCatalogs  map[sources.ID]*catalogs.Catalog
 	carriedEvidence map[evidenceLocator]provenance.Entry
+	scoped          *scopedObservations
 }
 
 type sourceObservationEvidence struct {
@@ -518,7 +519,7 @@ func (merger *merger) recordModelHistory(
 		Confidence: merger.calculateConfidence(value),
 		Reason:     reason,
 	}
-	if evidence, exists := merger.observations[source]; exists {
+	if evidence, exists := merger.modelObservation(source, identity); exists {
 		current.ObservationID = evidence.id
 		current.ObservedAt = evidence.observedAt
 		current.Revision = evidence.revision

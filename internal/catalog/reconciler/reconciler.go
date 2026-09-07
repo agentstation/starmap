@@ -129,15 +129,32 @@ func (r *Reconciler) Sources(ctx context.Context, primary sources.ID, srcs []sou
 
 // initialize sets up reconciliation context.
 func (r *Reconciler) initialize(ctx context.Context, primary sources.ID, srcs []sources.Observation) (*reconcileContext, error) {
+	if ctx == nil {
+		return nil, &errors.ValidationError{Field: "reconciliation.context", Message: "is required"}
+	}
+	if err := ctx.Err(); err != nil {
+		return nil, err
+	}
 	logger := logging.FromContext(ctx)
+	srcs, scoped, err := orderScopedObservations(ctx, srcs)
+	if err != nil {
+		return nil, err
+	}
 
 	// Create collector
 	collector := newCollector(srcs, primary)
+	collector.scoped = scoped
 
 	// Validate and get primary catalog if specified
 	var primaryCatalog *catalogs.Catalog
 	if primary != "" {
 		primaryCatalog = collector.primaryCatalog()
+		if primary == sources.ProvidersID && scoped != nil {
+			primaryCatalog, err = scopedPrimaryCatalog(srcs)
+			if err != nil {
+				return nil, err
+			}
+		}
 		if primaryCatalog == nil {
 			return nil, &errors.ValidationError{
 				Field:   "primary",
@@ -152,6 +169,7 @@ func (r *Reconciler) initialize(ctx context.Context, primary sources.ID, srcs []
 
 	merger := r.createMerger()
 	merger.setObservations(srcs)
+	merger.scoped = scoped
 
 	// Create context
 	return &reconcileContext{
@@ -215,7 +233,13 @@ func (r *Reconciler) reconcileProviderModels(rctx *reconcileContext, provider *c
 	apiCount := 0
 	if rctx.collector.primary != "" {
 		if models, exists := modelSources[rctx.collector.primary]; exists {
-			apiCount = len(models)
+			identities := make(map[string]bool, len(models))
+			for _, model := range models {
+				if model != nil {
+					identities[model.ID] = true
+				}
+			}
+			apiCount = len(identities)
 		}
 	}
 

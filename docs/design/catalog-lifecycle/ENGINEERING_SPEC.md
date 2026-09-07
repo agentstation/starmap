@@ -885,7 +885,19 @@ Concurrent observations must not replace each other's selected material.
 The provider source now uses one credential memo per observation run. Explicit binding calls restrict resolution to the declared acquisition profile.
 A different resolved profile causes refusal before client creation. The acquirer retains the binding and the source receipt without publishing them.
 A runtime with explicit bindings now uses the built-in binding-aware batch role for scheduled and manual acquisition.
-Operator configuration and scoped deletion remain open.
+
+The shared settings contract accepts `STARMAP_CATALOG_PROVIDER_BINDINGS` as a JSON array, or a list of objects in YAML.
+An explicit empty list permits no connected-runtime provider acquisition. Omission retains legacy unscoped behavior.
+Manual CLI and HTTP update integration, Starport adoption, and scoped deletion remain open.
+
+Reconciliation now retains separate provider observations during collection and primary-source filtering.
+It selects direct observations before stale fallback, then uses observation time to select shared provider records.
+Selected models and providers retain their own observation receipts and health classifications.
+Records with the same identity, time, and fallback classification must agree. Identical records select a receipt deterministically.
+
+This selection applies within the provider source type. The existing field-authority table still governs precedence between source types.
+The caller must select permitted bindings before reconciliation.
+This change does not complete field-presence handling, scoped deletion, or active-policy enforcement in manual update adapters.
 
 Changing scope selectors or credential role requires a new binding revision and invalidates retained evidence from the former binding.
 Credential rotation permits retention only when the binding still describes the same scope.

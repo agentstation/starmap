@@ -263,7 +263,7 @@ func (merger *merger) recordProviderHistory(
 		Confidence: merger.calculateConfidence(value),
 		Reason:     fmt.Sprintf("%s: %s", policy.Path, reason),
 	}
-	if evidence, exists := merger.observations[source]; exists {
+	if evidence, exists := merger.providerObservation(source, providerID); exists {
 		current.ObservationID = evidence.id
 		current.ObservedAt = evidence.observedAt
 		current.Revision = evidence.revision
