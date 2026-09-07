@@ -1362,3 +1362,14 @@ Starport's old acquisition test fixture omitted the source receipt required by t
 The fixture now creates a validated original observation and provider layer. The focused pair test passes.
 The [local developer milestone](../../plans/proof/starport-production-catalog/local-developer-flow.md) owns commands, failures, and remaining checks.
 All 50 primary cases remain UNVERIFIED. Native qualification, full production integration, review, and release gates remain open.
+
+
+## CSP3 reset projection verification
+
+Commit `81b666a6` adds runtime tests without changing production behavior. Ten focused race test events pass through reset and restart.
+The tests cover acquired-only offering removal, baseline provider membership, explicit zero limits, unknown and missing limits, and changed operator values.
+The [proof](../../plans/proof/starport-production-catalog/csp3/reset-projection.md) records exact checks, digests, and unsuccessful fixture attempts.
+
+The source observation contract still has no explicit tombstone field. Reset clears retained acquisition while preserving the selected baseline.
+It does not establish source-scoped deletion authority or authorize lower-layer membership suppression. CSP3 must implement and verify that separate contract.
+No primary acceptance case gains credit.
