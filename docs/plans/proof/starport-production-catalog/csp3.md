@@ -716,3 +716,29 @@ Local planning merge `adc63446` supplies that evidence as the code review base.
 All captured-file diffs against this base are empty. The integration preserved every recorded Go input hash.
 Strict writing passed 1,053 files with zero diagnostics. The document validator still reports 38 tasks and 324 required subcases.
 These branch updates remain local pending their required publication reviews.
+
+
+### Shared provider binding settings
+
+Commit `8a27bf91` adds `STARMAP_CATALOG_PROVIDER_BINDINGS` to the shared configuration contract.
+The CLI flag accepts a JSON array, and the primary YAML file accepts binding objects as a list.
+The parser rejects null values, unknown fields, invalid declarations, and duplicate binding IDs without exposing credential values.
+An explicit empty array selects no connected-runtime provider acquisition. Omission retains the existing unscoped behavior.
+
+A higher-priority array replaces the complete lower array. Changing the upstream catalog source leaves this independent policy in place.
+The descriptor records deployment ownership and a required restart.
+The generated settings reference, Compose comments, and environment example document these rules and the current manual-update limitation.
+
+[Verification](csp3/binding-settings-verification.json) passed 269 race events across three packages and all 79 normal package suites.
+Another 22 packages have no tests. Code lint, Ago, generated references, and strict writing passed.
+The first package run found missing deployment examples. The first writing run found four prose diagnostics.
+Both failures and their corrected results remain in twelve captures, totaling 543,181 bytes, on evidence commit `f995eb7a`.
+
+Manual update integration remains open.
+The standalone CLI update constructs `acquisition.Syncer` without the connected runtime.
+The server update adapter also delegates to that standalone syncer, which does not enforce the runtime binding policy.
+The correction must preserve dry-run previews, explicit source selection, failure retention, and workspace projection.
+These settings are not evidence that those paths enforce scoped policy.
+
+CSP3 stays in progress. All 50 primary cases remain UNVERIFIED.
+The proposed shared-review-helper change remains unapplied, and these branch updates remain local.
