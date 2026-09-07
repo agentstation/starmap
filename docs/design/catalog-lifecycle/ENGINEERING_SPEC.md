@@ -959,7 +959,23 @@ This component bounds manual history at 4,096 batches and 64 MiB of encoded obse
 A full history rejects new observations before publication and preserves its accepted head.
 CSP5 must provide tested compaction, collection, and operator recovery before production support.
 CLI and HTTP acquisition still use direct client publication. Their runtime integration and D24 reset scopes remain open.
-Local projection provenance also needs validation so copied fields cannot restore retired binding facts.
+
+`Runtime.ObservationInputs` now returns immutable current and selected-baseline snapshots from retained memory.
+The selected baseline excludes this runtime's local observations. This method reads no source and writes no files.
+
+`Runtime.UpdateObservations` holds operation ownership while a caller prepares original observations and the runtime publishes them.
+Empty or failed preparation preserves accepted state. Shutdown or cancellation rejects a late callback result.
+Callbacks must not request another mutation on the same runtime. Preview callers use the read-only input method.
+
+Runtime manual reconciliation now checks the original scope of unchanged fields in a local projection.
+A carried provider fact must match the active provider, binding identity, and revision. An explicit empty set permits no carried provider facts.
+Without an explicit set, only unscoped provider facts retain legacy behavior.
+
+Other source types keep their existing field authority.
+A changed operator value no longer matches the carried value and keeps local source authority.
+These field checks do not implement scoped membership deletion, reset masks, or complete authority enforcement.
+
+Scoped membership and reset evidence still need checks that prevent old projections from restoring retired acquisition results.
 
 
 Effective generation identity binds the payload, original source links, and review candidates.

@@ -1266,3 +1266,24 @@ Local projection provenance, field presence, scoped deletion, native qualificati
 This implementation makes no request latency or allocation claim.
 
 The [manual retention proof](../../plans/proof/starport-production-catalog/csp3/manual-retention-verification.json) records 991 passing race events and normal coverage of 79 package suites.
+
+
+### CSP3 acquisition ownership and projected binding facts
+
+Manual acquisition needs operation ownership throughout source preparation and catalog publication.
+`Runtime.UpdateObservations` now provides that boundary. The callback receives the current catalog and a separate trusted baseline.
+`Runtime.ObservationInputs` exposes the same immutable snapshots for read-only preparation. It reads no source and writes no files.
+A callback failure or empty result preserves state. Shutdown cancels the callback and rejects its late result.
+
+A focused regression reproduced a retired provider fact returning through a local catalog projection.
+The reconciler now accepts a policy for unchanged projected fields. Runtime publication checks the original provider, binding identity, and revision.
+The tests cover provider names and model limits, active and retired bindings, changed revisions, another provider's binding, and operator edits.
+This closes that field-reuse gap. Scoped reset masks, membership deletion, and full authority enforcement remain open.
+
+The broader race run timed out before a concurrency fixture reached its blocked store.
+That fixture rebuilt the full embedded catalog to check publication ordering for two reviewed definitions.
+It now uses those definitions without unrelated embedded records. Its deadlines and durable publication assertions remain unchanged.
+Three focused race repetitions passed with the smaller fixture. The complete runtime race rerun passed 424 test events.
+
+The [observation update proof](../../plans/proof/starport-production-catalog/csp3/observation-update-verification.json) records 1,004 passing race events and 79 normal package suites.
+D24 reset scopes and CLI/HTTP runtime integration remain open. All 50 primary acceptance cases remain UNVERIFIED.

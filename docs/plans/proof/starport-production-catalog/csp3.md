@@ -977,3 +977,28 @@ No request latency claim or primary acceptance credit follows from this work. Al
 Next: define runtime-owned acquisition and reset scopes before the adapters adopt manual publication.
 The reset must preserve the selected baseline, unrelated scopes, and reviewed operator input. Preview and failed replacement must preserve accepted state.
 The shared review helper remains unchanged. No push, native CI dispatch, GitHub merge, or release occurred.
+
+
+### Acquisition ownership and projected fields
+
+Commit `96df25bf` adds runtime ownership of observation preparation and publication.
+The callback receives immutable current and baseline snapshots. A read-only method supplies the same pair without acquisition or file writes.
+Failed or empty preparation preserves state. Cancellation rejects a late result, and callbacks must not start another runtime mutation.
+
+A regression reproduced retired provider facts returning through unchanged local projections.
+The reconciler now checks the original provider, binding identity, and revision against runtime policy.
+Tests cover active and retired bindings, revision changes, another provider's binding, and actual operator edits.
+This field check does not authenticate accounts or implement reset scopes and membership deletion.
+
+The [verification record](csp3/observation-update-verification.json) preserves 28 captures, totaling 8,019,211 bytes, and fifteen input hashes.
+Final race coverage contains 1,004 passing test events across five package suites. The full runtime suite passed 424 events in 540.668 seconds.
+Corrected normal coverage contains 3,580 passing events across 79 package suites, with five skips and 22 packages without tests.
+
+The first runtime race run timed out before the publication-order fixture reached its blocked store.
+The fixture now contains only its two reviewed definitions. Its deadlines and durable publication assertions remain unchanged.
+Three focused race repetitions and the complete runtime race rerun passed. The failed run remains in the evidence record.
+Lint, Ago, generated documentation, consumer dependency checks, and corrected writing checks passed.
+
+Next: implement transactional D24 reset scopes, then connect CLI and HTTP acquisition to runtime publication.
+Preserve the selected baseline, unrelated scopes, reviewed operator inputs, previews, and accepted state on failure.
+All 50 primary cases remain UNVERIFIED. No code publication or native CI dispatch occurred.
