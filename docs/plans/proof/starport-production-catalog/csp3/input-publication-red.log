@@ -1,0 +1,10 @@
+{"level":"info","provider_count":1,"time":"2026-09-07T04:57:03-05:00","message":"Filtered providers by primary source"}
+{"level":"warn","issue_code":"unresolved_model_reference","provider_id":"provider","provider_model_id":"model","time":"2026-09-07T04:57:03-05:00","message":"provider offering has no explicit canonical model reference and was quarantined"}
+{"level":"info","provider_count":1,"time":"2026-09-07T04:57:04-05:00","message":"Filtered providers by primary source"}
+{"level":"warn","issue_code":"unresolved_model_reference","provider_id":"provider","provider_model_id":"model","time":"2026-09-07T04:57:04-05:00","message":"provider offering has no explicit canonical model reference and was quarantined"}
+--- FAIL: TestRejectedProviderPublicationDoesNotRetainInputs (2.81s)
+    publication_retention_test.go:45: rejected publication retained provider inputs
+    publication_retention_test.go:53: restart activated inputs from the rejected publication
+FAIL
+FAIL	github.com/agentstation/starmap/runtime	3.216s
+FAIL
