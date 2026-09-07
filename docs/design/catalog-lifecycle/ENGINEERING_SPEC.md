@@ -1141,7 +1141,14 @@ Explicit reset permits source omissions. Normal refresh retains the volume-colla
 The result reports reset count and generation identity even when the effective payload stays equal.
 A root-only acquisition composition rejects Fresh because it lacks separate baseline and retained acquisition history.
 
-Complete projection membership, field-presence replay, enterprise authority enforcement, native qualification, and released-pair acceptance remain open.
+Ten focused runtime race events now cover reset projections through restart.
+An unchanged acquired-only offering disappears, and the baseline offering remains. Metadata acquisition cannot introduce a provider outside the selected baseline.
+
+An unchanged acquired zero resets to the known baseline limit. An operator's explicit zero remains known zero.
+Unknown and missing local limits permit the known baseline fallback under the existing authority policy.
+These checks add coverage without a production change. They do not prove every membership or field-presence combination.
+
+Scoped tombstones, complete deletion authority, other projection combinations, enterprise authority enforcement, native qualification, and released-pair acceptance remain open.
 The [local developer milestone](../../plans/proof/starport-production-catalog/local-developer-flow.md) records working-pair integration evidence.
 
 ### 6.3 Acquisition across application compositions
