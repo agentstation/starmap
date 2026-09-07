@@ -1,0 +1,28 @@
+{"Time":"2026-09-07T10:52:09.504836-05:00","Action":"start","Package":"github.com/agentstation/starmap/internal/cli/commands/update"}
+{"Time":"2026-09-07T10:52:09.907681-05:00","Action":"run","Package":"github.com/agentstation/starmap/internal/cli/commands/update","Test":"TestFreshFlagAliases"}
+{"Time":"2026-09-07T10:52:09.907814-05:00","Action":"output","Package":"github.com/agentstation/starmap/internal/cli/commands/update","Test":"TestFreshFlagAliases","Output":"=== RUN   TestFreshFlagAliases\n"}
+{"Time":"2026-09-07T10:52:09.907848-05:00","Action":"run","Package":"github.com/agentstation/starmap/internal/cli/commands/update","Test":"TestFreshFlagAliases/--fresh"}
+{"Time":"2026-09-07T10:52:09.907853-05:00","Action":"output","Package":"github.com/agentstation/starmap/internal/cli/commands/update","Test":"TestFreshFlagAliases/--fresh","Output":"=== RUN   TestFreshFlagAliases/--fresh\n"}
+{"Time":"2026-09-07T10:52:09.90831-05:00","Action":"output","Package":"github.com/agentstation/starmap/internal/cli/commands/update","Test":"TestFreshFlagAliases/--fresh","Output":"    fresh_test.go:21: unknown flag: --fresh\n"}
+{"Time":"2026-09-07T10:52:09.908347-05:00","Action":"output","Package":"github.com/agentstation/starmap/internal/cli/commands/update","Test":"TestFreshFlagAliases/--fresh","Output":"--- FAIL: TestFreshFlagAliases/--fresh (0.00s)\n"}
+{"Time":"2026-09-07T10:52:09.908354-05:00","Action":"fail","Package":"github.com/agentstation/starmap/internal/cli/commands/update","Test":"TestFreshFlagAliases/--fresh","Elapsed":0}
+{"Time":"2026-09-07T10:52:09.908372-05:00","Action":"run","Package":"github.com/agentstation/starmap/internal/cli/commands/update","Test":"TestFreshFlagAliases/--force"}
+{"Time":"2026-09-07T10:52:09.908377-05:00","Action":"output","Package":"github.com/agentstation/starmap/internal/cli/commands/update","Test":"TestFreshFlagAliases/--force","Output":"=== RUN   TestFreshFlagAliases/--force\n"}
+{"Time":"2026-09-07T10:52:09.908382-05:00","Action":"output","Package":"github.com/agentstation/starmap/internal/cli/commands/update","Test":"TestFreshFlagAliases/--force","Output":"--- PASS: TestFreshFlagAliases/--force (0.00s)\n"}
+{"Time":"2026-09-07T10:52:09.908395-05:00","Action":"pass","Package":"github.com/agentstation/starmap/internal/cli/commands/update","Test":"TestFreshFlagAliases/--force","Elapsed":0}
+{"Time":"2026-09-07T10:52:09.908399-05:00","Action":"run","Package":"github.com/agentstation/starmap/internal/cli/commands/update","Test":"TestFreshFlagAliases/-f"}
+{"Time":"2026-09-07T10:52:09.908403-05:00","Action":"output","Package":"github.com/agentstation/starmap/internal/cli/commands/update","Test":"TestFreshFlagAliases/-f","Output":"=== RUN   TestFreshFlagAliases/-f\n"}
+{"Time":"2026-09-07T10:52:09.908407-05:00","Action":"output","Package":"github.com/agentstation/starmap/internal/cli/commands/update","Test":"TestFreshFlagAliases/-f","Output":"--- PASS: TestFreshFlagAliases/-f (0.00s)\n"}
+{"Time":"2026-09-07T10:52:09.90841-05:00","Action":"pass","Package":"github.com/agentstation/starmap/internal/cli/commands/update","Test":"TestFreshFlagAliases/-f","Elapsed":0}
+{"Time":"2026-09-07T10:52:09.908418-05:00","Action":"output","Package":"github.com/agentstation/starmap/internal/cli/commands/update","Test":"TestFreshFlagAliases","Output":"--- FAIL: TestFreshFlagAliases (0.00s)\n"}
+{"Time":"2026-09-07T10:52:09.908421-05:00","Action":"fail","Package":"github.com/agentstation/starmap/internal/cli/commands/update","Test":"TestFreshFlagAliases","Elapsed":0}
+{"Time":"2026-09-07T10:52:09.908424-05:00","Action":"run","Package":"github.com/agentstation/starmap/internal/cli/commands/update","Test":"TestFreshDryRunDoesNotAskBeforePreview"}
+{"Time":"2026-09-07T10:52:09.908428-05:00","Action":"output","Package":"github.com/agentstation/starmap/internal/cli/commands/update","Test":"TestFreshDryRunDoesNotAskBeforePreview","Output":"=== RUN   TestFreshDryRunDoesNotAskBeforePreview\n"}
+{"Time":"2026-09-07T10:52:09.908801-05:00","Action":"output","Package":"github.com/agentstation/starmap/internal/cli/commands/update","Test":"TestFreshDryRunDoesNotAskBeforePreview","Output":"\n"}
+{"Time":"2026-09-07T10:52:09.908911-05:00","Action":"output","Package":"github.com/agentstation/starmap/internal/cli/commands/update","Test":"TestFreshDryRunDoesNotAskBeforePreview","Output":"Continue with force update? (y/N): Force update cancelled\n"}
+{"Time":"2026-09-07T10:52:09.90892-05:00","Action":"output","Package":"github.com/agentstation/starmap/internal/cli/commands/update","Test":"TestFreshDryRunDoesNotAskBeforePreview","Output":"    fresh_test.go:71: fresh preview did not reach catalog construction: called=false, err=\u003cnil\u003e\n"}
+{"Time":"2026-09-07T10:52:09.909183-05:00","Action":"output","Package":"github.com/agentstation/starmap/internal/cli/commands/update","Test":"TestFreshDryRunDoesNotAskBeforePreview","Output":"--- FAIL: TestFreshDryRunDoesNotAskBeforePreview (0.00s)\n"}
+{"Time":"2026-09-07T10:52:09.909188-05:00","Action":"fail","Package":"github.com/agentstation/starmap/internal/cli/commands/update","Test":"TestFreshDryRunDoesNotAskBeforePreview","Elapsed":0}
+{"Time":"2026-09-07T10:52:09.9092-05:00","Action":"output","Package":"github.com/agentstation/starmap/internal/cli/commands/update","Output":"FAIL\n"}
+{"Time":"2026-09-07T10:52:09.9096-05:00","Action":"output","Package":"github.com/agentstation/starmap/internal/cli/commands/update","Output":"FAIL\tgithub.com/agentstation/starmap/internal/cli/commands/update\t0.404s\n"}
+{"Time":"2026-09-07T10:52:09.909611-05:00","Action":"fail","Package":"github.com/agentstation/starmap/internal/cli/commands/update","Elapsed":0.405}

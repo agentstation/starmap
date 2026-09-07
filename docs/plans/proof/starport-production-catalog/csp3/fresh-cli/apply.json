@@ -1,0 +1,21 @@
+{
+  "command": [
+    "/tmp/starmap-fresh-cli",
+    "update",
+    "openai",
+    "--source",
+    "provider-api",
+    "--catalog-path",
+    "/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-fresh-preview-3tyh9kar/workspace",
+    "--fresh",
+    "-y"
+  ],
+  "exit_code": 0,
+  "fixture_requests": [
+    "/models",
+    "/models"
+  ],
+  "confirmation_absent": true,
+  "reset_count_visible": true,
+  "completion_count_visible": true
+}

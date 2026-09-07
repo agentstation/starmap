@@ -1,0 +1,20 @@
+📁 Using catalog workspace: /var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-fresh-preview-3tyh9kar/workspace
+Reset selected acquisition after successful collection. Preserve the selected baseline and unrelated acquisition scopes.
+
+🔄 Starting update...
+
+{"level":"info","source":"providers","time":"2026-09-07T10:57:32-05:00","message":"Observing"}
+{"level":"info","source":"embedded_catalog","time":"2026-09-07T10:57:32-05:00","message":"Observing"}
+{"level":"info","source":"providers","provider_count":1,"max_concurrency":1,"time":"2026-09-07T10:57:32-05:00","message":"Syncing providers concurrently"}
+{"level":"info","source":"providers","provider_id":"openai","provider_id":"openai","model_count":1,"time":"2026-09-07T10:57:32-05:00","message":"Fetched models"}
+{"level":"info","provider_count":1,"time":"2026-09-07T10:57:33-05:00","message":"Filtered providers by primary source"}
+{"level":"info","added":0,"updated":0,"removed":0,"time":"2026-09-07T10:57:33-05:00","message":"Changes detected"}
+{"level":"info","provider_count":1,"time":"2026-09-07T10:57:33-05:00","message":"Filtered providers by primary source"}
+=== UPDATE RESULTS ===
+
+Acquisition resets: 1
+Model changes: 0
+
+
+🎉 Update completed successfully!
+📊 Total: 0 total changes across 0 providers; acquisition resets: 1 (Fresh sync)
