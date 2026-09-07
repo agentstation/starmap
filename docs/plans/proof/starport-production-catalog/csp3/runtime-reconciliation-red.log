@@ -1,0 +1,4 @@
+# github.com/agentstation/starmap/runtime [github.com/agentstation/starmap/runtime.test]
+runtime/reconciliation_test.go:61:81: layer.Receipt.ID undefined (type sources.ObservationReceipt has no field or method ID)
+FAIL	github.com/agentstation/starmap/runtime [build failed]
+FAIL

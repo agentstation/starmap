@@ -1,0 +1,26 @@
+File: starmap-runtime-authority-profile.test
+Type: cpu
+Time: 2026-09-07 03:57:54 CDT
+Duration: 5.95s, Total samples = 7.56s (126.96%)
+Showing nodes accounting for 0.08s, 1.06% of 7.56s total
+Dropped 371 nodes (cum <= 0.04s)
+Showing top 18 nodes out of 301
+      flat  flat%   sum%        cum   cum%
+         0     0%     0%      3.36s 44.44%  github.com/agentstation/starmap/runtime.TestRuntimeBaselineExcludesPreviouslyPublishedProviderEvidence
+         0     0%     0%      3.36s 44.44%  testing.tRunner
+         0     0%     0%      3.29s 43.52%  runtime.systemstack
+         0     0%     0%      1.71s 22.62%  github.com/agentstation/starmap/pkg/catalogs.EncodeCatalogPayload
+         0     0%     0%      1.71s 22.62%  github.com/agentstation/starmap/runtime.(*Runtime).rebuild
+         0     0%     0%      1.70s 22.49%  encoding/json.(*encodeState).marshal
+     0.02s  0.26%  0.26%      1.70s 22.49%  encoding/json.(*encodeState).reflectValue
+     0.01s  0.13%   0.4%      1.70s 22.49%  encoding/json.Marshal
+         0     0%   0.4%      1.69s 22.35%  encoding/json.mapEncoder.encode
+     0.02s  0.26%  0.66%      1.69s 22.35%  encoding/json.structEncoder.encode
+         0     0%  0.66%      1.69s 22.35%  runtime.gcBgMarkWorker.func2
+     0.01s  0.13%  0.79%      1.69s 22.35%  runtime.gcDrain
+     0.01s  0.13%  0.93%      1.68s 22.22%  encoding/json.condAddrEncoder.encode
+     0.01s  0.13%  1.06%      1.68s 22.22%  encoding/json.sliceEncoder.encode
+         0     0%  1.06%      1.67s 22.09%  encoding/json.addrMarshalerEncoder
+         0     0%  1.06%      1.67s 22.09%  encoding/json.arrayEncoder.encode
+         0     0%  1.06%      1.64s 21.69%  github.com/agentstation/starmap/runtime.Open
+         0     0%  1.06%      1.64s 21.69%  github.com/agentstation/starmap/runtime.TestRuntimeBaselineExcludesPreviouslyPublishedProviderEvidence.func1

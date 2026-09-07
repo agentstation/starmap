@@ -1,0 +1,5 @@
+--- FAIL: TestRetainedProviderFactsUseCanonicalAuthorityAndReceipts (0.00s)
+    reconciliation_test.go:62: effective catalog lost the provider receipt
+FAIL
+FAIL	github.com/agentstation/starmap/runtime	0.441s
+FAIL
