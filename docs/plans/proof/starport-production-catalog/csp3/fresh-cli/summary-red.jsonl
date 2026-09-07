@@ -1,0 +1,9 @@
+{"Time":"2026-09-07T10:56:23.622599-05:00","Action":"start","Package":"github.com/agentstation/starmap/pkg/sync"}
+{"Time":"2026-09-07T10:56:23.822713-05:00","Action":"run","Package":"github.com/agentstation/starmap/pkg/sync","Test":"TestResetOnlySummaryReportsAcquisitionWork"}
+{"Time":"2026-09-07T10:56:23.822768-05:00","Action":"output","Package":"github.com/agentstation/starmap/pkg/sync","Test":"TestResetOnlySummaryReportsAcquisitionWork","Output":"=== RUN   TestResetOnlySummaryReportsAcquisitionWork\n"}
+{"Time":"2026-09-07T10:56:23.822793-05:00","Action":"output","Package":"github.com/agentstation/starmap/pkg/sync","Test":"TestResetOnlySummaryReportsAcquisitionWork","Output":"    result_test.go:334: reset-only summary omits acquisition work: \"0 total changes across 0 providers (Fresh sync)\"\n"}
+{"Time":"2026-09-07T10:56:23.822815-05:00","Action":"output","Package":"github.com/agentstation/starmap/pkg/sync","Test":"TestResetOnlySummaryReportsAcquisitionWork","Output":"--- FAIL: TestResetOnlySummaryReportsAcquisitionWork (0.00s)\n"}
+{"Time":"2026-09-07T10:56:23.822826-05:00","Action":"fail","Package":"github.com/agentstation/starmap/pkg/sync","Test":"TestResetOnlySummaryReportsAcquisitionWork","Elapsed":0}
+{"Time":"2026-09-07T10:56:23.822835-05:00","Action":"output","Package":"github.com/agentstation/starmap/pkg/sync","Output":"FAIL\n"}
+{"Time":"2026-09-07T10:56:23.823084-05:00","Action":"output","Package":"github.com/agentstation/starmap/pkg/sync","Output":"FAIL\tgithub.com/agentstation/starmap/pkg/sync\t0.200s\n"}
+{"Time":"2026-09-07T10:56:23.823102-05:00","Action":"fail","Package":"github.com/agentstation/starmap/pkg/sync","Elapsed":0.201}
