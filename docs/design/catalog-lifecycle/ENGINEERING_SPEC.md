@@ -1931,6 +1931,14 @@ An offering lookup must not copy unrelated provider models.
 Preserve caller ownership for returned values and all alias, ambiguity, and missing-record behavior.
 Do not expose mutable internal maps to eliminate copies.
 
+The Starmap lookup now uses an immutable provider identity index. Commit `70f01b6a` completes CSP3.1 locally.
+The two assigned A44 checks and 843 catalog race test events pass. Returned values remain caller-owned.
+
+In the 10,000-model fixture, canonical lookup fell from 10.767 ms to 0.608 µs on the local macOS host.
+Allocations fell from 160,047 to 11. The fixture now uses 1,104 bytes per lookup at each measured catalog size.
+
+These are catalog API measurements. CSP10.1 still must qualify Starport request behavior and the remaining A44 subcases.
+
 Starport must build static candidates, endpoint metadata, capability fields, and model indexes before publishing a runtime generation.
 Exact model selection considers its matching offerings and explicit fallback set.
 It must not enumerate all unrelated routes or rebuild endpoint maps for each request.
