@@ -6,14 +6,29 @@ import (
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/catalogs/authority"
 	"github.com/agentstation/starmap/pkg/errors"
+	"github.com/agentstation/starmap/pkg/provenance"
 )
 
 // Options configures a reconciler.
 type options struct {
-	authorities authority.Reader
-	tracking    bool
-	changeTime  time.Time
-	baseline    *catalogs.Catalog // Existing catalog for comparison
+	authorities       authority.Reader
+	tracking          bool
+	changeTime        time.Time
+	baseline          *catalogs.Catalog // Existing catalog for comparison
+	projectedEvidence func(catalogs.ProviderID, provenance.Entry) bool
+}
+
+// WithProjectedEvidencePolicy controls reuse of unchanged facts from a local projection.
+// The callback checks the original evidence scope. Operator edits have no matching
+// carried value and retain the local source's field authority.
+func WithProjectedEvidencePolicy(permit func(catalogs.ProviderID, provenance.Entry) bool) Option {
+	return func(options *options) error {
+		if permit == nil {
+			return &errors.ValidationError{Field: "reconciliation.projected_evidence", Message: "is required"}
+		}
+		options.projectedEvidence = permit
+		return nil
+	}
 }
 
 func defaultOptions() *options {

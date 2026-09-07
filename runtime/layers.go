@@ -100,25 +100,14 @@ func (l *layerSet) build(ctx context.Context, baseline starmap.CatalogState) (st
 	if err := ctx.Err(); err != nil {
 		return starmap.CatalogState{}, err
 	}
-	base := baseline.Catalog
+	selected, err := l.selectedBaseline(baseline)
+	if err != nil {
+		return starmap.CatalogState{}, err
+	}
+	base := selected.Catalog
 	state := starmap.CatalogState{
-		GenerationID: baseline.GenerationID,
-		GeneratedAt:  baseline.GeneratedAt,
-	}
-	if l.source != nil {
-		decoded, err := catalogs.DecodeCatalogPayload(l.source.Payload)
-		if err != nil {
-			return starmap.CatalogState{}, errors.WrapResource(
-				"decode", "retained source layer", l.source.GenerationID, err)
-		}
-		base = decoded
-		state.GenerationID = l.source.GenerationID
-		state.GeneratedAt = l.source.PublishedAt
-	}
-	if base == nil {
-		return starmap.CatalogState{}, &errors.ValidationError{
-			Field: "effective catalog", Message: "has no baseline",
-		}
+		GenerationID: selected.GenerationID,
+		GeneratedAt:  selected.GeneratedAt,
 	}
 
 	var builder *catalogs.Builder

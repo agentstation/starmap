@@ -39,11 +39,14 @@ func TestConcurrentRuntimeRebuildsPublishCompleteGenerationsInOrder(t *testing.T
 	one := testProviderLayer(t, "concurrent-one", "one", "One", at)
 	two := testProviderLayer(t, "concurrent-two", "two", "Two", at.Add(time.Minute))
 	store := &gatedReconciliationStore{Store: storage.NewMemory()}
-	connected := openTestRuntime(t, WithSource(testReviewedDefinitionsSource(t, []ProviderLayer{one, two})), WithClientOptions(starmap.WithCatalogStore(store)))
+	connected := openTestRuntime(t, WithSource(testReviewedDefinitionsFromBaseline(t, nil, []ProviderLayer{one, two})), WithClientOptions(starmap.WithCatalogStore(store)))
 	if _, err := connected.RefreshSource(t.Context()); err != nil {
 		t.Fatal(err)
 	}
 	before := connected.State()
+	if before.Catalog.Providers().Len() != 0 || len(before.Catalog.AuthoredModels()) != 2 {
+		t.Fatal("publication fixture must contain two reviewed definitions without serving records")
+	}
 	entered, release := make(chan struct{}), make(chan struct{})
 	releaseOnce := sync.OnceFunc(func() { close(release) })
 	defer releaseOnce()

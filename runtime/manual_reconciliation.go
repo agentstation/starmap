@@ -133,7 +133,7 @@ func (l *layerSet) reconcileManualBatch(ctx context.Context, base *catalogs.Cata
 			at = observation.ObservedAt
 		}
 	}
-	return reconciler.ReconcileObservations(ctx, base, inputs, reconciler.WithChangeTime(at))
+	return reconciler.ReconcileObservations(ctx, base, inputs, reconciler.WithChangeTime(at), reconciler.WithProjectedEvidencePolicy(l.providerBindings.permitsProjectedEvidence))
 }
 
 func compactManualEvidence(collected *starmap.CandidateEvidence) {

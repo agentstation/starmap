@@ -23,17 +23,18 @@ type provenanceTracker interface {
 
 // merger implements strategic three-way merge.
 type merger struct {
-	authorities     authority.Reader
-	strategy        *AuthorityStrategy
-	tracker         provenanceTracker
-	baseline        *catalogs.Catalog // Baseline catalog for timestamp preservation
-	baselineModels  map[catalogs.ProviderID]map[string]*catalogs.Model
-	pricingAt       time.Time
-	changeAt        time.Time
-	observations    map[sources.ID]sourceObservationEvidence
-	sourceCatalogs  map[sources.ID]*catalogs.Catalog
-	carriedEvidence map[evidenceLocator]provenance.Entry
-	scoped          *scopedObservations
+	authorities       authority.Reader
+	strategy          *AuthorityStrategy
+	tracker           provenanceTracker
+	baseline          *catalogs.Catalog // Baseline catalog for timestamp preservation
+	baselineModels    map[catalogs.ProviderID]map[string]*catalogs.Model
+	pricingAt         time.Time
+	changeAt          time.Time
+	observations      map[sources.ID]sourceObservationEvidence
+	sourceCatalogs    map[sources.ID]*catalogs.Catalog
+	carriedEvidence   map[evidenceLocator]provenance.Entry
+	scoped            *scopedObservations
+	projectedEvidence func(catalogs.ProviderID, provenance.Entry) bool
 }
 
 type sourceObservationEvidence struct {

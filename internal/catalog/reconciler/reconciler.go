@@ -25,12 +25,13 @@ import (
 // It is concrete because this package has one reconciliation engine. The narrow
 // authority.Reader and Source interfaces accept extensions.
 type Reconciler struct {
-	strategy    *AuthorityStrategy
-	authorities authority.Reader
-	provenance  *provenance.Tracker
-	tracking    bool
-	baseline    *catalogs.Catalog // Baseline catalog for comparison
-	changeTime  time.Time
+	strategy          *AuthorityStrategy
+	authorities       authority.Reader
+	provenance        *provenance.Tracker
+	tracking          bool
+	baseline          *catalogs.Catalog // Baseline catalog for comparison
+	changeTime        time.Time
+	projectedEvidence func(catalogs.ProviderID, provenance.Entry) bool
 }
 
 // New creates a new Reconciler with options.
@@ -43,12 +44,13 @@ func New(opts ...Option) (*Reconciler, error) {
 
 	// Create reconciler from options
 	r := &Reconciler{
-		strategy:    NewAuthorityStrategy(options.authorities),
-		authorities: options.authorities,
-		provenance:  provenance.NewTracker(options.tracking),
-		tracking:    options.tracking,
-		baseline:    options.baseline,
-		changeTime:  options.changeTime,
+		strategy:          NewAuthorityStrategy(options.authorities),
+		authorities:       options.authorities,
+		provenance:        provenance.NewTracker(options.tracking),
+		tracking:          options.tracking,
+		baseline:          options.baseline,
+		changeTime:        options.changeTime,
+		projectedEvidence: options.projectedEvidence,
 	}
 
 	return r, nil
@@ -408,6 +410,7 @@ func (r *Reconciler) createMerger() *merger {
 		result = newMerger(r.authorities, r.strategy, r.baseline)
 	}
 	result.changeAt = r.changeTime
+	result.projectedEvidence = r.projectedEvidence
 	return result
 }
 

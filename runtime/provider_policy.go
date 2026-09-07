@@ -7,7 +7,9 @@ import (
 	"slices"
 	"strings"
 
+	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/errors"
+	"github.com/agentstation/starmap/pkg/provenance"
 	"github.com/agentstation/starmap/pkg/sources"
 )
 
@@ -15,6 +17,18 @@ import (
 // The map belongs to the runtime and remains immutable after construction.
 type providerBindingPolicy struct {
 	bindings map[string]sources.ProviderAcquisitionBinding
+}
+
+// permitsProjectedEvidence checks a carried provider fact against the active binding set.
+func (p *providerBindingPolicy) permitsProjectedEvidence(providerID catalogs.ProviderID, entry provenance.Entry) bool {
+	if entry.Source != sources.ProvidersID {
+		return true
+	}
+	if p == nil {
+		return entry.ProviderBindingID == "" && entry.ProviderBindingRevision == ""
+	}
+	active, exists := p.bindings[entry.ProviderBindingID]
+	return exists && active.ProviderID == providerID && active.Revision == entry.ProviderBindingRevision
 }
 
 // WithProviderBindings selects the complete active set for local provider evidence.

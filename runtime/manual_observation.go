@@ -91,14 +91,10 @@ func (p *providerBindingPolicy) validateManual(observations []manualObservation,
 // The runtime validates receipts and active bindings before it publishes any input.
 // This operation reads no source and joins runtime cancellation and shutdown.
 func (r *Runtime) PublishObservations(ctx context.Context, observations ...sources.Observation) (starmap.CatalogState, error) {
-	var state starmap.CatalogState
-	_, err := r.execute(ctx, runKindManual, func(runCtx context.Context, _ *RefreshReport, epoch uint64) error {
-		prepared, err := prepareManualObservations(runCtx, observations)
-		if err != nil {
-			return err
-		}
-		state, err = r.publishInputs(runCtx, nil, nil, prepared, epoch)
-		return err
+	if len(observations) == 0 {
+		return starmap.CatalogState{}, &errors.ValidationError{Field: "manual.observations", Message: "at least one observation is required"}
+	}
+	return r.UpdateObservations(ctx, func(context.Context, ObservationInputs) ([]sources.Observation, error) {
+		return observations, nil
 	})
-	return state, err
 }

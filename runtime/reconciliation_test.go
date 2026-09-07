@@ -228,9 +228,18 @@ func testReviewedDefinitionsSource(t *testing.T, layers []ProviderLayer) Source 
 	if err != nil {
 		t.Fatal(err)
 	}
-	builder, err := catalogs.NewBuilderFrom(client.EmbeddedCatalogState().Catalog)
-	if err != nil {
-		t.Fatal(err)
+	return testReviewedDefinitionsFromBaseline(t, client.EmbeddedCatalogState().Catalog, layers)
+}
+
+func testReviewedDefinitionsFromBaseline(t *testing.T, baseline *catalogs.Catalog, layers []ProviderLayer) Source {
+	t.Helper()
+	builder := catalogs.NewEmpty()
+	if baseline != nil {
+		var err error
+		builder, err = catalogs.NewBuilderFrom(baseline)
+		if err != nil {
+			t.Fatal(err)
+		}
 	}
 	for _, layer := range layers {
 		fixture, err := catalogs.DecodeCatalogPayload(layer.Payload)
