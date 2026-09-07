@@ -104,6 +104,9 @@ func TestWindowsAncestorPathForms(t *testing.T) {
 			if err != nil {
 				t.Fatal(err)
 			}
+			if want == filepath.VolumeName(want) {
+				want += `\`
+			}
 			if !strings.EqualFold(filepath.Clean(got), filepath.Clean(want)) {
 				t.Fatalf("resolved = %q, want %q", got, want)
 			}

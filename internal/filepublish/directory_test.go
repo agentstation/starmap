@@ -82,7 +82,12 @@ func TestDirectoryNoReplaceUsesOpenRootAfterRename(t *testing.T) {
 	if err := os.Mkdir(original, 0o700); err != nil {
 		t.Fatal(err)
 	}
-	root, err := os.OpenRoot(original)
+	anchor, err := os.OpenRoot(container)
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer func() { _ = anchor.Close() }()
+	root, err := anchor.OpenRoot("original")
 	if err != nil {
 		t.Fatal(err)
 	}

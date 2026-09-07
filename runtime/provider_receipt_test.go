@@ -158,7 +158,7 @@ func TestProviderReceiptReportsDegradedAcquisition(t *testing.T) {
 		Attempts: []sources.ProviderAttempt{testAttempt("provider", sources.ProviderOutcomeSucceeded, "")},
 		Layers:   []ProviderLayer{layer},
 	}}
-	r := openTestRuntime(t, WithAcquirer(acquirer))
+	r := openTestRuntime(t, WithCatalogSource("embedded"), WithAcquirer(acquirer))
 	report, err := r.Refresh(t.Context())
 	if err != nil {
 		t.Fatal(err)

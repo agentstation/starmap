@@ -1,0 +1,2 @@
+# Keep digest-bound catalog inputs byte-identical on every checkout.
+internal/embedded/catalog/** -text
