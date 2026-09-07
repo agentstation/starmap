@@ -1,0 +1,7 @@
+{"ImportPath":"github.com/agentstation/starmap/runtime [github.com/agentstation/starmap/runtime.test]","Action":"build-output","Output":"# github.com/agentstation/starmap/runtime [github.com/agentstation/starmap/runtime.test]\n"}
+{"ImportPath":"github.com/agentstation/starmap/runtime [github.com/agentstation/starmap/runtime.test]","Action":"build-output","Output":"runtime/manual_retention_test.go:61:31: before.Catalog.ProviderModel undefined (type *catalogs.Catalog has no field or method ProviderModel)\n"}
+{"ImportPath":"github.com/agentstation/starmap/runtime [github.com/agentstation/starmap/runtime.test]","Action":"build-output","Output":"runtime/manual_retention_test.go:65:30: before.Catalog.ProviderModel undefined (type *catalogs.Catalog has no field or method ProviderModel)\n"}
+{"ImportPath":"github.com/agentstation/starmap/runtime [github.com/agentstation/starmap/runtime.test]","Action":"build-fail"}
+{"Time":"2026-09-07T06:30:41.777458-05:00","Action":"start","Package":"github.com/agentstation/starmap/runtime"}
+{"Time":"2026-09-07T06:30:41.777661-05:00","Action":"output","Package":"github.com/agentstation/starmap/runtime","Output":"FAIL\tgithub.com/agentstation/starmap/runtime [build failed]\n"}
+{"Time":"2026-09-07T06:30:41.777678-05:00","Action":"fail","Package":"github.com/agentstation/starmap/runtime","Elapsed":0,"FailedBuild":"github.com/agentstation/starmap/runtime [github.com/agentstation/starmap/runtime.test]"}
