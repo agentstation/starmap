@@ -1,0 +1,166 @@
+{"level":"info","source":"providers","time":"2026-09-07T03:17:24-05:00","message":"Observing"}
+{"level":"info","source":"local_catalog","time":"2026-09-07T03:17:24-05:00","message":"Observing"}
+{"level":"info","source":"embedded_catalog","time":"2026-09-07T03:17:24-05:00","message":"Observing"}
+{"level":"info","source":"providers","provider_count":1,"max_concurrency":1,"time":"2026-09-07T03:17:24-05:00","message":"Syncing providers concurrently"}
+{"level":"info","source":"providers","provider_id":"acme","provider_id":"acme","model_count":2,"time":"2026-09-07T03:17:24-05:00","message":"Fetched models"}
+{"level":"info","provider_count":1,"time":"2026-09-07T03:17:24-05:00","message":"Filtered providers by primary source"}
+{"level":"warn","issue_code":"unresolved_model_reference","provider_id":"acme","provider_model_id":"tenant/new-model@2026:02","time":"2026-09-07T03:17:24-05:00","message":"provider offering has no explicit canonical model reference and was quarantined"}
+{"level":"info","added":1,"updated":0,"removed":0,"time":"2026-09-07T03:17:24-05:00","message":"Changes detected"}
+{"level":"info","dry_run":true,"time":"2026-09-07T03:17:24-05:00","message":"Dry run completed - no changes applied"}
+{"level":"info","source":"degraded","time":"2026-09-07T03:17:24-05:00","message":"Observing"}
+{"level":"info","source":"missing","time":"2026-09-07T03:17:24-05:00","message":"Observing"}
+{"level":"warn","error":"missing catalog","source":"missing","time":"2026-09-07T03:17:24-05:00","message":"Source observation had errors"}
+{"level":"info","source":"success","time":"2026-09-07T03:17:24-05:00","message":"Observing"}
+{"level":"info","source":"partial","time":"2026-09-07T03:17:24-05:00","message":"Observing"}
+{"level":"warn","error":"partial fetch failed","source":"partial","time":"2026-09-07T03:17:24-05:00","message":"Source observation had errors"}
+{"level":"warn","error":"context canceled","time":"2026-09-07T03:17:24-05:00","message":"Cleanup skipped - context already cancelled"}
+{"level":"warn","error":"second cleanup failed","source":"second","time":"2026-09-07T03:17:24-05:00","message":"Cleanup failed"}
+{"level":"warn","error":"first cleanup failed","source":"first","time":"2026-09-07T03:17:24-05:00","message":"Cleanup failed"}
+{"level":"info","sources_with_missing_deps":1,"time":"2026-09-07T03:17:24-05:00","message":"Some sources have missing dependencies"}
+{"level":"info","source":"optional-missing","time":"2026-09-07T03:17:24-05:00","message":"Skipping optional source (--skip-dep-prompts)"}
+{"level":"info","source":"optional-missing","time":"2026-09-07T03:17:24-05:00","message":"Skipping source due to missing dependencies"}
+{"level":"info","available":1,"skipped":1,"time":"2026-09-07T03:17:24-05:00","message":"Continuing with available sources"}
+{"level":"info","sources_with_missing_deps":1,"time":"2026-09-07T03:17:24-05:00","message":"Some sources have missing dependencies"}
+{"level":"info","source":"optional-missing","time":"2026-09-07T03:17:24-05:00","message":"Skipping source due to missing dependencies"}
+{"level":"info","available":1,"skipped":1,"time":"2026-09-07T03:17:24-05:00","message":"Continuing with available sources"}
+{"level":"info","sources_with_missing_deps":1,"time":"2026-09-07T03:17:24-05:00","message":"Some sources have missing dependencies"}
+{"level":"info","source":"optional-missing","time":"2026-09-07T03:17:24-05:00","message":"Skipping source due to missing dependencies"}
+{"level":"info","available":1,"skipped":1,"time":"2026-09-07T03:17:24-05:00","message":"Continuing with available sources"}
+{"level":"info","sources_with_missing_deps":1,"time":"2026-09-07T03:17:24-05:00","message":"Some sources have missing dependencies"}
+{"level":"info","sources_with_missing_deps":1,"time":"2026-09-07T03:17:24-05:00","message":"Some sources have missing dependencies"}
+{"level":"info","source":"optional-missing","time":"2026-09-07T03:17:24-05:00","message":"Skipping source due to missing dependencies"}
+{"level":"info","available":1,"skipped":1,"time":"2026-09-07T03:17:24-05:00","message":"Continuing with available sources"}
+{"level":"info","sources_with_missing_deps":1,"time":"2026-09-07T03:17:24-05:00","message":"Some sources have missing dependencies"}
+{"level":"info","sources_with_missing_deps":1,"time":"2026-09-07T03:17:24-05:00","message":"Some sources have missing dependencies"}
+{"level":"info","source":"optional-missing","time":"2026-09-07T03:17:24-05:00","message":"Skipping optional source (--skip-dep-prompts)"}
+{"level":"info","source":"optional-missing","time":"2026-09-07T03:17:24-05:00","message":"Skipping source due to missing dependencies"}
+{"level":"info","time":"2026-09-07T03:17:25-05:00","message":"No changes detected"}
+{"level":"info","dry_run":true,"time":"2026-09-07T03:17:25-05:00","message":"Dry run completed - no changes applied"}
+{"level":"info","added":1,"updated":0,"removed":0,"time":"2026-09-07T03:17:25-05:00","message":"Changes detected"}
+{"level":"info","dry_run":true,"time":"2026-09-07T03:17:25-05:00","message":"Dry run completed - no changes applied"}
+{"level":"info","time":"2026-09-07T03:17:25-05:00","message":"No changes detected"}
+{"level":"info","dry_run":true,"time":"2026-09-07T03:17:25-05:00","message":"Dry run completed - no changes applied"}
+{"level":"info","time":"2026-09-07T03:17:25-05:00","message":"No changes detected"}
+{"level":"info","dry_run":true,"time":"2026-09-07T03:17:25-05:00","message":"Dry run completed - no changes applied"}
+{"level":"info","time":"2026-09-07T03:17:25-05:00","message":"No changes detected"}
+{"level":"info","reformat":false,"force":false,"seed_workspace":true,"time":"2026-09-07T03:17:25-05:00","message":"Forcing save due to explicit materialization policy"}
+{"level":"info","time":"2026-09-07T03:17:25-05:00","message":"No changes detected"}
+{"level":"info","dry_run":true,"time":"2026-09-07T03:17:25-05:00","message":"Dry run completed - no changes applied"}
+{"level":"info","time":"2026-09-07T03:17:25-05:00","message":"No changes detected"}
+{"level":"info","time":"2026-09-07T03:17:25-05:00","message":"No changes detected"}
+{"level":"info","review_candidates":1,"time":"2026-09-07T03:17:25-05:00","message":"Publishing durable review candidates without catalog changes"}
+{"level":"info","time":"2026-09-07T03:17:25-05:00","message":"No changes detected"}
+{"level":"info","reformat":true,"force":false,"seed_workspace":false,"time":"2026-09-07T03:17:25-05:00","message":"Forcing save due to explicit materialization policy"}
+{"level":"info","time":"2026-09-07T03:17:25-05:00","message":"Fresh sync uses an empty reconciliation baseline"}
+{"level":"info","time":"2026-09-07T03:17:25-05:00","message":"No changes detected"}
+{"level":"info","reformat":false,"force":true,"seed_workspace":false,"time":"2026-09-07T03:17:25-05:00","message":"Forcing save due to explicit materialization policy"}
+{"level":"info","time":"2026-09-07T03:17:25-05:00","message":"Fresh sync uses an empty reconciliation baseline"}
+{"level":"info","time":"2026-09-07T03:17:25-05:00","message":"No changes detected"}
+{"level":"info","reformat":false,"force":true,"seed_workspace":false,"time":"2026-09-07T03:17:25-05:00","message":"Forcing save due to explicit materialization policy"}
+{"level":"warn","error":"provider timed out","time":"2026-09-07T03:17:25-05:00","message":"Continuing with degraded source observations and last-known-good data"}
+{"level":"info","time":"2026-09-07T03:17:25-05:00","message":"No changes detected"}
+{"level":"info","dry_run":true,"time":"2026-09-07T03:17:25-05:00","message":"Dry run completed - no changes applied"}
+{"level":"info","time":"2026-09-07T03:17:25-05:00","message":"Fresh sync uses an empty reconciliation baseline"}
+{"level":"info","source":"providers","time":"2026-09-07T03:17:25-05:00","message":"Observing"}
+{"level":"info","source":"embedded_catalog","time":"2026-09-07T03:17:25-05:00","message":"Observing"}
+{"level":"info","source":"providers","time":"2026-09-07T03:17:25-05:00","message":"Observing"}
+{"level":"info","source":"providers","provider_count":1,"max_concurrency":1,"time":"2026-09-07T03:17:25-05:00","message":"Syncing providers concurrently"}
+{"level":"info","source":"providers","provider_count":1,"max_concurrency":1,"time":"2026-09-07T03:17:25-05:00","message":"Syncing providers concurrently"}
+{"level":"info","source":"providers","provider_id":"provider","provider_id":"provider","model_count":1,"time":"2026-09-07T03:17:25-05:00","message":"Fetched models"}
+{"level":"info","source":"providers","provider_id":"provider","provider_id":"provider","model_count":1,"time":"2026-09-07T03:17:25-05:00","message":"Fetched models"}
+{"level":"info","provider_count":1,"time":"2026-09-07T03:17:25-05:00","message":"Filtered providers by primary source"}
+{"level":"info","added":0,"updated":2,"removed":0,"time":"2026-09-07T03:17:25-05:00","message":"Changes detected"}
+{"level":"info","dry_run":true,"time":"2026-09-07T03:17:25-05:00","message":"Dry run completed - no changes applied"}
+{"level":"info","source":"providers","time":"2026-09-07T03:17:25-05:00","message":"Observing"}
+{"level":"info","source":"providers","time":"2026-09-07T03:17:25-05:00","message":"Observing"}
+{"level":"info","source":"embedded_catalog","time":"2026-09-07T03:17:25-05:00","message":"Observing"}
+{"level":"info","source":"providers","provider_count":1,"max_concurrency":1,"time":"2026-09-07T03:17:25-05:00","message":"Syncing providers concurrently"}
+{"level":"info","source":"providers","provider_count":1,"max_concurrency":1,"time":"2026-09-07T03:17:25-05:00","message":"Syncing providers concurrently"}
+{"level":"warn","source":"providers","provider_id":"provider","error":"sync error for provider provider: fixture unavailable","provider_id":"provider","time":"2026-09-07T03:17:25-05:00","message":"Provider observation degraded"}
+{"level":"info","source":"providers","provider_id":"provider","provider_id":"provider","model_count":1,"time":"2026-09-07T03:17:25-05:00","message":"Fetched models"}
+{"level":"info","provider_count":1,"time":"2026-09-07T03:17:25-05:00","message":"Filtered providers by primary source"}
+{"level":"info","time":"2026-09-07T03:17:25-05:00","message":"No changes detected"}
+{"level":"info","dry_run":true,"time":"2026-09-07T03:17:25-05:00","message":"Dry run completed - no changes applied"}
+{"level":"info","source":"providers","time":"2026-09-07T03:17:25-05:00","message":"Observing"}
+{"level":"info","source":"embedded_catalog","time":"2026-09-07T03:17:25-05:00","message":"Observing"}
+{"level":"info","source":"providers","time":"2026-09-07T03:17:25-05:00","message":"Observing"}
+{"level":"info","source":"providers","provider_count":1,"max_concurrency":1,"time":"2026-09-07T03:17:25-05:00","message":"Syncing providers concurrently"}
+{"level":"info","source":"providers","provider_count":1,"max_concurrency":1,"time":"2026-09-07T03:17:25-05:00","message":"Syncing providers concurrently"}
+{"level":"info","source":"providers","provider_id":"provider","provider_id":"provider","model_count":1,"time":"2026-09-07T03:17:25-05:00","message":"Fetched models"}
+{"level":"warn","source":"providers","provider_id":"provider","error":"sync error for provider provider: fixture unavailable","provider_id":"provider","time":"2026-09-07T03:17:25-05:00","message":"Provider observation degraded"}
+{"level":"info","time":"2026-09-07T03:17:25-05:00","message":"Fresh sync uses an empty reconciliation baseline"}
+{"level":"info","source":"providers","time":"2026-09-07T03:17:25-05:00","message":"Observing"}
+{"level":"info","source":"embedded_catalog","time":"2026-09-07T03:17:25-05:00","message":"Observing"}
+{"level":"info","source":"providers","time":"2026-09-07T03:17:25-05:00","message":"Observing"}
+{"level":"info","source":"providers","provider_count":1,"max_concurrency":1,"time":"2026-09-07T03:17:25-05:00","message":"Syncing providers concurrently"}
+{"level":"info","source":"providers","provider_count":1,"max_concurrency":1,"time":"2026-09-07T03:17:25-05:00","message":"Syncing providers concurrently"}
+{"level":"warn","source":"providers","provider_id":"provider","error":"sync error for provider provider: fixture unavailable","provider_id":"provider","time":"2026-09-07T03:17:25-05:00","message":"Provider observation degraded"}
+{"level":"info","source":"providers","provider_id":"provider","provider_id":"provider","model_count":1,"time":"2026-09-07T03:17:25-05:00","message":"Fetched models"}
+{"level":"info","source":"embedded_catalog","time":"2026-09-07T03:17:25-05:00","message":"Observing"}
+{"level":"info","provider_count":1,"time":"2026-09-07T03:17:25-05:00","message":"Filtered providers by primary source"}
+{"level":"info","time":"2026-09-07T03:17:25-05:00","message":"No changes detected"}
+{"level":"info","dry_run":true,"time":"2026-09-07T03:17:25-05:00","message":"Dry run completed - no changes applied"}
+{"level":"info","source":"embedded_catalog","time":"2026-09-07T03:17:25-05:00","message":"Observing"}
+{"level":"info","provider_count":1,"time":"2026-09-07T03:17:25-05:00","message":"Filtered providers by primary source"}
+{"level":"info","time":"2026-09-07T03:17:25-05:00","message":"No changes detected"}
+{"level":"info","dry_run":true,"time":"2026-09-07T03:17:25-05:00","message":"Dry run completed - no changes applied"}
+{"level":"info","source":"providers","time":"2026-09-07T03:17:25-05:00","message":"Observing"}
+{"level":"info","source":"embedded_catalog","time":"2026-09-07T03:17:25-05:00","message":"Observing"}
+{"level":"info","source":"providers","provider_count":1,"max_concurrency":1,"time":"2026-09-07T03:17:25-05:00","message":"Syncing providers concurrently"}
+{"level":"info","source":"providers","provider_id":"provider","provider_id":"provider","model_count":1,"time":"2026-09-07T03:17:25-05:00","message":"Fetched models"}
+{"level":"info","provider_count":1,"time":"2026-09-07T03:17:25-05:00","message":"Filtered providers by primary source"}
+{"level":"info","added":0,"updated":1,"removed":0,"time":"2026-09-07T03:17:25-05:00","message":"Changes detected"}
+{"level":"info","dry_run":true,"time":"2026-09-07T03:17:25-05:00","message":"Dry run completed - no changes applied"}
+--- FAIL: TestManualBindingVolumeCannotBorrowAnotherProviderHistory (0.00s)
+    provider_bindings_test.go:344: Build: failed to validate catalog identities: credential environment conflict: "FIXTURE_BINDING_KEY" resolves to both "another-provider/api-key" and "provider/api-key"
+{"level":"info","source":"providers","time":"2026-09-07T03:17:25-05:00","message":"Observing"}
+{"level":"info","source":"providers","time":"2026-09-07T03:17:25-05:00","message":"Observing"}
+{"level":"info","source":"providers","time":"2026-09-07T03:17:25-05:00","message":"Observing"}
+{"level":"info","source":"providers","time":"2026-09-07T03:17:25-05:00","message":"Observing"}
+{"level":"info","source":"providers","time":"2026-09-07T03:17:25-05:00","message":"Observing"}
+{"level":"info","source":"providers","provider_count":1,"max_concurrency":1,"time":"2026-09-07T03:17:25-05:00","message":"Syncing providers concurrently"}
+{"level":"info","source":"providers","provider_count":1,"max_concurrency":1,"time":"2026-09-07T03:17:25-05:00","message":"Syncing providers concurrently"}
+{"level":"info","source":"providers","time":"2026-09-07T03:17:25-05:00","message":"Observing"}
+{"level":"info","source":"embedded_catalog","time":"2026-09-07T03:17:25-05:00","message":"Observing"}
+{"level":"info","source":"providers","provider_count":1,"max_concurrency":1,"time":"2026-09-07T03:17:25-05:00","message":"Syncing providers concurrently"}
+{"level":"info","source":"providers","time":"2026-09-07T03:17:25-05:00","message":"Observing"}
+{"level":"info","source":"providers","provider_count":1,"max_concurrency":1,"time":"2026-09-07T03:17:25-05:00","message":"Syncing providers concurrently"}
+{"level":"info","source":"providers","provider_count":1,"max_concurrency":1,"time":"2026-09-07T03:17:25-05:00","message":"Syncing providers concurrently"}
+{"level":"info","source":"providers","time":"2026-09-07T03:17:25-05:00","message":"Observing"}
+{"level":"warn","error":"context canceled","source":"providers","time":"2026-09-07T03:17:25-05:00","message":"Source observation had errors"}
+{"level":"warn","source":"providers","provider_id":"provider","error":"sync error for provider provider: context canceled","provider_id":"provider","time":"2026-09-07T03:17:25-05:00","message":"Provider observation degraded"}
+{"level":"warn","source":"providers","provider_id":"provider","error":"sync error for provider provider: context canceled","provider_id":"provider","time":"2026-09-07T03:17:25-05:00","message":"Provider observation degraded"}
+{"level":"warn","source":"providers","provider_id":"provider","error":"sync error for provider provider: context canceled","provider_id":"provider","time":"2026-09-07T03:17:25-05:00","message":"Provider observation degraded"}
+{"level":"warn","source":"providers","provider_id":"provider","error":"sync error for provider provider: context canceled","provider_id":"provider","time":"2026-09-07T03:17:25-05:00","message":"Provider observation degraded"}
+{"level":"warn","error":"context canceled","source":"providers","time":"2026-09-07T03:17:25-05:00","message":"Source observation had errors"}
+{"level":"warn","error":"context canceled","source":"providers","time":"2026-09-07T03:17:25-05:00","message":"Source observation had errors"}
+{"level":"warn","source":"providers","provider_id":"provider","error":"sync error for provider provider: context canceled","provider_id":"provider","time":"2026-09-07T03:17:25-05:00","message":"Provider observation degraded"}
+{"level":"info","provider_count":1,"time":"2026-09-07T03:17:25-05:00","message":"Filtered providers by primary source"}
+{"level":"info","provider_count":1,"time":"2026-09-07T03:17:25-05:00","message":"Filtered providers by primary source"}
+{"level":"info","provider_count":1,"time":"2026-09-07T03:17:25-05:00","message":"Filtered providers by primary source"}
+{"level":"info","time":"2026-09-07T03:17:25-05:00","message":"No changes detected"}
+{"level":"info","dry_run":true,"time":"2026-09-07T03:17:25-05:00","message":"Dry run completed - no changes applied"}
+{"level":"info","time":"2026-09-07T03:17:25-05:00","message":"No changes detected"}
+{"level":"info","dry_run":true,"time":"2026-09-07T03:17:25-05:00","message":"Dry run completed - no changes applied"}
+{"level":"info","provider_count":1,"time":"2026-09-07T03:17:25-05:00","message":"Filtered providers by primary source"}
+{"level":"info","provider_count":1,"time":"2026-09-07T03:17:25-05:00","message":"Filtered providers by primary source"}
+{"level":"info","provider_count":1,"time":"2026-09-07T03:17:25-05:00","message":"Filtered providers by primary source"}
+{"level":"info","run_id":"source-run-3107cab8-f3d9-423a-8a74-e14f2570a0fd","source":"embedded_catalog","time":"2026-09-07T03:17:25-05:00","message":"Observing"}
+{"level":"info","run_id":"source-run-3107cab8-f3d9-423a-8a74-e14f2570a0fd","source":"local_catalog","time":"2026-09-07T03:17:25-05:00","message":"Observing"}
+{"level":"info","run_id":"source-run-3107cab8-f3d9-423a-8a74-e14f2570a0fd","provider_count":1,"time":"2026-09-07T03:17:25-05:00","message":"Filtered providers by primary source"}
+{"level":"info","time":"2026-09-07T03:17:25-05:00","message":"No changes detected"}
+{"level":"info","run_id":"source-run-0c05c21c-9b27-4bdf-bb05-a0db9afbffc0","source":"embedded_catalog","time":"2026-09-07T03:17:25-05:00","message":"Observing"}
+{"level":"info","run_id":"source-run-0c05c21c-9b27-4bdf-bb05-a0db9afbffc0","source":"local_catalog","time":"2026-09-07T03:17:25-05:00","message":"Observing"}
+{"level":"info","run_id":"source-run-51ba470f-e5dc-4916-bf23-37ffaf8f42f4","source":"embedded_catalog","time":"2026-09-07T03:17:25-05:00","message":"Observing"}
+{"level":"info","run_id":"source-run-51ba470f-e5dc-4916-bf23-37ffaf8f42f4","source":"local_catalog","time":"2026-09-07T03:17:25-05:00","message":"Observing"}
+{"level":"info","run_id":"source-run-0c05c21c-9b27-4bdf-bb05-a0db9afbffc0","provider_count":1,"time":"2026-09-07T03:17:25-05:00","message":"Filtered providers by primary source"}
+{"level":"info","run_id":"source-run-51ba470f-e5dc-4916-bf23-37ffaf8f42f4","provider_count":1,"time":"2026-09-07T03:17:25-05:00","message":"Filtered providers by primary source"}
+{"level":"info","added":0,"updated":1,"removed":0,"time":"2026-09-07T03:17:25-05:00","message":"Changes detected"}
+{"level":"info","added":1,"updated":1,"removed":0,"time":"2026-09-07T03:17:25-05:00","message":"Changes detected"}
+{"level":"info","run_id":"source-run-bbb3c9b8-bdf5-4b82-bdc7-d963c764db6e","source":"local_catalog","time":"2026-09-07T03:17:25-05:00","message":"Observing"}
+{"level":"info","run_id":"source-run-bbb3c9b8-bdf5-4b82-bdc7-d963c764db6e","source":"embedded_catalog","time":"2026-09-07T03:17:25-05:00","message":"Observing"}
+{"level":"info","run_id":"source-run-bbb3c9b8-bdf5-4b82-bdc7-d963c764db6e","provider_count":1,"time":"2026-09-07T03:17:25-05:00","message":"Filtered providers by primary source"}
+{"level":"info","time":"2026-09-07T03:17:25-05:00","message":"No changes detected"}
+FAIL
+FAIL	github.com/agentstation/starmap/internal/catalog/pipeline	2.096s
+FAIL
