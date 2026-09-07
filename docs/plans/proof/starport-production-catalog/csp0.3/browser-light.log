@@ -1,0 +1,8 @@
+Emulation configured successfully
+Emulating viewport: {"isMobile":false,"hasTouch":false,"isLandscape":false,"width":948,"height":920}
+Emulating color scheme: light
+[{"type":"text","text":"Error: Access denied: path /tmp/starport-csp03-readme-light.png (canonical: /private/tmp/starport-csp03-readme-light.png) is not within any of the configured workspace roots."}]
+Script ran on page and returned:
+```json
+{"width":948,"scrollWidth":948,"posterWidth":900,"loaded":1280,"alt":"Starport returns a real streamed OpenAI answer after installation, catalog inspection, and provider setup. Select the preview to play."}
+```
