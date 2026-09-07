@@ -1,0 +1,10 @@
+{"Time":"2026-09-07T09:25:12.901564-05:00","Action":"start","Package":"github.com/agentstation/starmap/runtime"}
+{"Time":"2026-09-07T09:25:13.37034-05:00","Action":"run","Package":"github.com/agentstation/starmap/runtime","Test":"TestSourceResetRestoresBaselineAcrossRestart"}
+{"Time":"2026-09-07T09:25:13.370408-05:00","Action":"output","Package":"github.com/agentstation/starmap/runtime","Test":"TestSourceResetRestoresBaselineAcrossRestart","Output":"=== RUN   TestSourceResetRestoresBaselineAcrossRestart\n"}
+{"Time":"2026-09-07T09:25:22.867006-05:00","Action":"output","Package":"github.com/agentstation/starmap/runtime","Test":"TestSourceResetRestoresBaselineAcrossRestart","Output":"{\"level\":\"info\",\"provider_count\":1,\"time\":\"2026-09-07T09:25:22-05:00\",\"message\":\"Filtered providers by primary source\"}\n"}
+{"Time":"2026-09-07T09:25:22.936307-05:00","Action":"output","Package":"github.com/agentstation/starmap/runtime","Test":"TestSourceResetRestoresBaselineAcrossRestart","Output":"    source_reset_test.go:23: validation failed for field provider_id: is required\n"}
+{"Time":"2026-09-07T09:25:22.937594-05:00","Action":"output","Package":"github.com/agentstation/starmap/runtime","Test":"TestSourceResetRestoresBaselineAcrossRestart","Output":"--- FAIL: TestSourceResetRestoresBaselineAcrossRestart (9.57s)\n"}
+{"Time":"2026-09-07T09:25:22.937611-05:00","Action":"fail","Package":"github.com/agentstation/starmap/runtime","Test":"TestSourceResetRestoresBaselineAcrossRestart","Elapsed":9.57}
+{"Time":"2026-09-07T09:25:22.937901-05:00","Action":"output","Package":"github.com/agentstation/starmap/runtime","Output":"FAIL\n"}
+{"Time":"2026-09-07T09:25:22.970184-05:00","Action":"output","Package":"github.com/agentstation/starmap/runtime","Output":"FAIL\tgithub.com/agentstation/starmap/runtime\t10.068s\n"}
+{"Time":"2026-09-07T09:25:22.970224-05:00","Action":"fail","Package":"github.com/agentstation/starmap/runtime","Elapsed":10.069}
