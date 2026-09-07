@@ -1,0 +1,6 @@
+# github.com/agentstation/starmap/runtime [github.com/agentstation/starmap/runtime.test]
+runtime/reconciliation_test.go:103:23: undefined: ProviderLayerFromObservation
+runtime/reconciliation_test.go:132:9: invalid operation: operator ! not defined on ok (variable of interface type error)
+ok  	github.com/agentstation/starmap/internal/catalog/reconciler	0.201s
+FAIL	github.com/agentstation/starmap/runtime [build failed]
+FAIL

@@ -1,0 +1,19 @@
+[0;34mRunning linters...[0m 
+Info: New devbox available: 0.16.0 -> v0.18.0. Please run `devbox version update`.
+Info: Running script "which" on /Users/jack/src/github.com/agentstation/starmap-catalog-requirements
+devbox run golangci-lint run
+Info: New devbox available: 0.16.0 -> v0.18.0. Please run `devbox version update`.
+Info: Running script "golangci-lint" on /Users/jack/src/github.com/agentstation/starmap-catalog-requirements
+📦 Starmap development environment loaded
+Tools available: go, gomarkdoc, swag (v2 via flake), golangci-lint
+runtime/layers.go:99:20: func (*layerSet).build is unused (unused)
+func (l *layerSet) build(baseline starmap.CatalogState) (starmap.CatalogState, error) {
+                   ^
+runtime/runtime.go:417:19: func (*Runtime).commit is unused (unused)
+func (r *Runtime) commit(ctx context.Context, state starmap.CatalogState, epoch uint64) (starmap.CatalogState, error) {
+                  ^
+2 issues:
+* unused: 2
+Error: error running script "golangci-lint" in Devbox: exit status 1
+
+make: *** [lint] Error 1

@@ -1,0 +1,33 @@
+{"level":"info","provider_count":1,"time":"2026-09-07T03:49:08-05:00","message":"Filtered providers by primary source"}
+{"level":"warn","issue_code":"unresolved_model_reference","provider_id":"concurrent-one","provider_model_id":"one","time":"2026-09-07T03:49:08-05:00","message":"provider offering has no explicit canonical model reference and was quarantined"}
+{"level":"info","provider_count":2,"time":"2026-09-07T03:49:12-05:00","message":"Filtered providers by primary source"}
+{"level":"warn","issue_code":"unresolved_model_reference","provider_id":"concurrent-one","provider_model_id":"one","time":"2026-09-07T03:49:12-05:00","message":"provider offering has no explicit canonical model reference and was quarantined"}
+{"level":"warn","issue_code":"unresolved_model_reference","provider_id":"concurrent-two","provider_model_id":"two","time":"2026-09-07T03:49:12-05:00","message":"provider offering has no explicit canonical model reference and was quarantined"}
+--- FAIL: TestConcurrentRuntimeRebuildsPublishCompleteGenerationsInOrder (20.57s)
+    reconciliation_publication_test.go:89: concurrent rebuild discarded a retained provider
+{"level":"info","provider_count":1,"time":"2026-09-07T03:49:16-05:00","message":"Filtered providers by primary source"}
+{"level":"info","provider_count":1,"time":"2026-09-07T03:49:16-05:00","message":"Filtered providers by primary source"}
+{"level":"info","provider_count":2,"time":"2026-09-07T03:49:16-05:00","message":"Filtered providers by primary source"}
+{"level":"warn","issue_code":"unresolved_model_reference","provider_id":"provider-one","provider_model_id":"model-one","time":"2026-09-07T03:49:16-05:00","message":"provider offering has no explicit canonical model reference and was quarantined"}
+{"level":"warn","issue_code":"unresolved_model_reference","provider_id":"provider-two","provider_model_id":"model-two","time":"2026-09-07T03:49:16-05:00","message":"provider offering has no explicit canonical model reference and was quarantined"}
+{"level":"info","provider_count":2,"time":"2026-09-07T03:49:23-05:00","message":"Filtered providers by primary source"}
+{"level":"warn","issue_code":"unresolved_model_reference","provider_id":"provider-one","provider_model_id":"model-one","time":"2026-09-07T03:49:23-05:00","message":"provider offering has no explicit canonical model reference and was quarantined"}
+{"level":"warn","issue_code":"unresolved_model_reference","provider_id":"provider-two","provider_model_id":"model-two","time":"2026-09-07T03:49:23-05:00","message":"provider offering has no explicit canonical model reference and was quarantined"}
+{"level":"info","provider_count":2,"time":"2026-09-07T03:49:25-05:00","message":"Filtered providers by primary source"}
+{"level":"warn","issue_code":"unresolved_model_reference","provider_id":"provider-one","provider_model_id":"model-one","time":"2026-09-07T03:49:25-05:00","message":"provider offering has no explicit canonical model reference and was quarantined"}
+{"level":"warn","issue_code":"unresolved_model_reference","provider_id":"provider-two","provider_model_id":"model-two","time":"2026-09-07T03:49:25-05:00","message":"provider offering has no explicit canonical model reference and was quarantined"}
+{"level":"info","provider_count":2,"time":"2026-09-07T03:49:31-05:00","message":"Filtered providers by primary source"}
+{"level":"warn","issue_code":"unresolved_model_reference","provider_id":"provider-one","provider_model_id":"model-one","time":"2026-09-07T03:49:31-05:00","message":"provider offering has no explicit canonical model reference and was quarantined"}
+{"level":"warn","issue_code":"unresolved_model_reference","provider_id":"provider-two","provider_model_id":"model-two","time":"2026-09-07T03:49:31-05:00","message":"provider offering has no explicit canonical model reference and was quarantined"}
+{"level":"info","provider_count":2,"time":"2026-09-07T03:49:39-05:00","message":"Filtered providers by primary source"}
+{"level":"warn","issue_code":"unresolved_model_reference","provider_id":"provider-one","provider_model_id":"model-one","time":"2026-09-07T03:49:39-05:00","message":"provider offering has no explicit canonical model reference and was quarantined"}
+{"level":"warn","issue_code":"unresolved_model_reference","provider_id":"provider-two","provider_model_id":"model-two","time":"2026-09-07T03:49:39-05:00","message":"provider offering has no explicit canonical model reference and was quarantined"}
+{"level":"info","provider_count":2,"time":"2026-09-07T03:49:41-05:00","message":"Filtered providers by primary source"}
+{"level":"warn","issue_code":"unresolved_model_reference","provider_id":"provider-one","provider_model_id":"model-one","time":"2026-09-07T03:49:41-05:00","message":"provider offering has no explicit canonical model reference and was quarantined"}
+{"level":"warn","issue_code":"unresolved_model_reference","provider_id":"provider-two","provider_model_id":"model-two","time":"2026-09-07T03:49:41-05:00","message":"provider offering has no explicit canonical model reference and was quarantined"}
+{"level":"info","provider_count":2,"time":"2026-09-07T03:49:43-05:00","message":"Filtered providers by primary source"}
+{"level":"warn","issue_code":"unresolved_model_reference","provider_id":"unlinked-one","provider_model_id":"unknown-one","time":"2026-09-07T03:49:43-05:00","message":"provider offering has no explicit canonical model reference and was quarantined"}
+{"level":"warn","issue_code":"unresolved_model_reference","provider_id":"unlinked-two","provider_model_id":"unknown-two","time":"2026-09-07T03:49:43-05:00","message":"provider offering has no explicit canonical model reference and was quarantined"}
+FAIL
+FAIL	github.com/agentstation/starmap/runtime	52.734s
+FAIL
