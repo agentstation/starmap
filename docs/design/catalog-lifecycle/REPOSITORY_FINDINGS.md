@@ -1423,3 +1423,19 @@ It preserves provider response timing and discloses the shorter credential-entry
 E03 passes with source-bound media evidence. E02 passes again after the README header change.
 The [media proof](../../plans/proof/starport-production-catalog/csp0.3.md) records dimensions, bytes, reading time, local browser checks, and cleanup.
 This recording qualifies the early demonstration only. CSP24 still owns the final released-pair recording.
+
+
+## CSP2 service-managed primary configuration
+
+Commit `707d63db` implements D23 for the Starmap primary file. Operators select an explicit file path and service-managed access.
+The default remains owner-only. Dotenv files and catalog state keep their private-access requirements.
+Migration rereads and file diagnostics use the selected primary policy.
+
+The [service configuration proof](../../plans/proof/starport-production-catalog/csp2/service-configuration.md) records 394 application and file-access race results.
+The final focused checks pass 42 results, and shared callers pass another 686 results.
+An unprivileged native Linux child reads root-owned `0640` configuration and rejects unreadable, writable, and foreign-owned fixtures.
+Windows compilation passes. Native Windows ownership and ACL qualification remain UNVERIFIED.
+
+Code lint, Ago, all six consumer compositions, workflow parsing, and maintained prose pass.
+The implementation adds no library dependencies. Required pre-PR review remains pending.
+CSP8 owns Starport adoption. All primary acceptance cases retain their existing status.
