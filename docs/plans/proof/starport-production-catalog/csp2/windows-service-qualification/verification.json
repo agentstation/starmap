@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "work_commit": "fb54f39eba5e67422692ce20c7763f789e7aa379",
+  "compile_verdict": "PASS",
+  "native_verdict": "UNVERIFIED",
+  "native_test_results": 0,
+  "scope": "Windows AMD64 and ARM64 compilation and static checks only. Native CI must execute the new fixture.",
+  "test": "TestServiceConfigurationWindowsAdministratorOwnerAndDeniedRead",
+  "inputs": {
+    "internal/cli/app/service_config_windows_test.go": "7155b437a78afff27f79979fe6bb5d7b242b4b825612a761d0909f1f66c72b66",
+    ".github/workflows/pr.yaml": "fd85ca341e415e9885d7b38b96517a6d550869cf553d1a7fdb3d08e53430175c",
+    "internal/cli/app/config.go": "469c1badd8cd275ecf3da5af5e37de3aa8864733ef009e0c158cb5028728c14d",
+    "internal/privatefiles/acl_windows.go": "9ae5ea57201365419b59d634375fa956631c392d6c9caf8953ee0803460611a9",
+    "internal/runtimeacl/windows/configuration.go": "59f577f6aff2740bc510e59a2f65631626086ef0c9fe1572b5542e94bd4bd5e0",
+    "pkg/productpaths/inspection_windows.go": "33a1642c2b37426a63acf1886ce9af5e00e812f4cebf0dae21f509827796df05",
+    "pkg/productpaths/access.go": "798f4cadb851b19b147b3af8ccdb0bddbe31e93b3627fb8c9832e1e18973bbb4"
+  },
+  "artifacts": {
+    "amd64": {
+      "sha256": "ba59063f36594c851b46a642db9a1fc09b2763c7f8d8c04bbfeb4164a8f2787e",
+      "bytes": 68325888
+    },
+    "arm64": {
+      "sha256": "d680c9e6fe2d361537ea3a86cb2d0b42619b0babd27cf71938f9dc8be1db0415",
+      "bytes": 63926784
+    }
+  },
+  "captures": {
+    "ago.json": "b8fb7afa66aa7a93914ac258475dd0191be821803a8aea4439f5ba05022f5fa5",
+    "lint.log": "e92606b0bf483111dff0a120c315ea165821348f31365020e2468a0059095c47",
+    "writing.log": "8b44c021e1e836218058f762792080d50bf62031aadabb8ed1f3657208f8b9b0",
+    "documents.json": "7a4acaa3eb78484eb1a9dce47cb92306a5c3eaf496ceb0ce04cc433a96f64bf3",
+    "ledger-writing.log": "4fc76c7d1e989b6bf99901c1b8c72ba4b01339fa77559a86ef168f52498e89ec"
+  },
+  "commands": [
+    "GOTOOLCHAIN=go1.26.6 GOOS=windows GOARCH=amd64 CGO_ENABLED=0 go test -c -o /tmp/starmap-csp2-service-native/app-owner-amd64.test.exe ./internal/cli/app",
+    "GOTOOLCHAIN=go1.26.6 GOOS=windows GOARCH=arm64 CGO_ENABLED=0 go test -c -o /tmp/starmap-csp2-service-native/app-owner-arm64.test.exe ./internal/cli/app",
+    "GOTOOLCHAIN=go1.26.6 GOOS=windows GOARCH=amd64 golangci-lint run ./internal/cli/app/...",
+    "GOTOOLCHAIN=go1.26.6 go tool ago -stale-ignores -format json ./...",
+    "make technical-writing-check"
+  ]
+}
