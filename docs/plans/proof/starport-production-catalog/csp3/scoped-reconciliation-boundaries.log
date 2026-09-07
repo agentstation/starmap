@@ -1,0 +1,5 @@
+# github.com/agentstation/starmap/internal/catalog/reconciler [github.com/agentstation/starmap/internal/catalog/reconciler.test]
+internal/catalog/reconciler/scoped_observations_test.go:105:45: model.Authors undefined (type catalogs.AuthoredModel has no field or method Authors)
+internal/catalog/reconciler/scoped_observations_test.go:105:60: cannot use model (variable of struct type catalogs.AuthoredModel) as catalogs.Model value in argument to newBuilder.SetAuthorModel
+FAIL	github.com/agentstation/starmap/internal/catalog/reconciler [build failed]
+FAIL
