@@ -5,6 +5,7 @@ import (
 	"strings"
 
 	"github.com/agentstation/starmap/pkg/productpaths"
+	filepolicy "github.com/agentstation/starmap/pkg/productpaths/policy"
 )
 
 // FileManifest reports selected locations without opening catalog state or creating files.
@@ -76,6 +77,16 @@ func (a *App) FileManifest() (productpaths.FileManifest, error) {
 	}
 	if err := applyFilePolicies(&report); err != nil {
 		return productpaths.FileManifest{}, err
+	}
+	access, err := filepolicy.Configuration(a.config.ConfigAccess, a.config.ConfigFile != "")
+	if err != nil {
+		return productpaths.FileManifest{}, err
+	}
+	for i := range report.Files {
+		if report.Files[i].ID == "configuration" {
+			report.Files[i].Policy.Access = access
+			report.Files[i].Policy.Selectors = append(report.Files[i].Policy.Selectors, "--config-access", "STARMAP_CONFIG_ACCESS")
+		}
 	}
 	return report, nil
 }

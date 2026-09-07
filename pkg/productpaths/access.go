@@ -30,7 +30,13 @@ func assessManifestAccess(manifest FileManifest, report *FileInspection) {
 			item.AccessReason = item.WindowsSecurity.Reason
 			continue
 		}
-		if item.AccessPolicy != policy.OwnerOnly || item.PermissionScope != "posix-mode-bits-only" ||
+		if item.AccessPolicy == policy.ServiceManaged && item.PermissionScope == "windows-owner-and-dacl" &&
+			item.Kind == "file" && item.WindowsSecurity != nil && item.WindowsSecurity.ServicePolicyStatus == "conflict" {
+			item.AccessStatus = "conflict"
+			item.AccessReason = item.WindowsSecurity.ServicePolicyReason
+			continue
+		}
+		if (item.AccessPolicy != policy.OwnerOnly && item.AccessPolicy != policy.ServiceManaged) || item.PermissionScope != "posix-mode-bits-only" ||
 			(item.Kind != "file" && item.Kind != "directory") {
 			continue
 		}
@@ -41,9 +47,13 @@ func assessManifestAccess(manifest FileManifest, report *FileInspection) {
 		observed := policy.POSIXMetadata{Mode: fs.FileMode(mode), OwnerKnown: item.Owner != nil}
 		if item.Owner != nil {
 			observed.OwnerMatches = item.Owner.MatchesEffectiveUser
+			observed.OwnerTrusted = item.Owner.MatchesEffectiveUser || item.Owner.UID == 0
 		}
 		reason := policy.PrivatePOSIXReason(observed)
-		if reason == policy.GroupOrOtherModeBits || reason == policy.DifferentEffectiveOwner {
+		if item.AccessPolicy == policy.ServiceManaged {
+			reason = policy.ServicePOSIXReason(observed)
+		}
+		if reason != "" && reason != policy.OwnerUnavailable {
 			item.AccessStatus = "conflict"
 			item.AccessReason = reason
 		}

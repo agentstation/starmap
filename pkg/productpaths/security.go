@@ -8,5 +8,8 @@ type WindowsSecurity struct {
 	DACLState    string `json:"dacl_state" yaml:"dacl_state"`
 	EntryCount   int    `json:"entry_count" yaml:"entry_count"`
 	PolicyStatus string `json:"policy_status" yaml:"policy_status"`
-	Reason       string `json:"reason,omitempty" yaml:"reason,omitempty"`
+	// ServicePolicyStatus checks the explicit primary configuration exception.
+	ServicePolicyStatus string `json:"service_policy_status,omitempty" yaml:"service_policy_status,omitempty"`
+	ServicePolicyReason string `json:"service_policy_reason,omitempty" yaml:"service_policy_reason,omitempty"`
+	Reason              string `json:"reason,omitempty" yaml:"reason,omitempty"`
 }

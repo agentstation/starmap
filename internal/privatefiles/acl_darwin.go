@@ -62,6 +62,14 @@ var nativeDarwinACL = sync.OnceValues(func() (darwinACLFunctions, error) {
 
 // ValidateACL checks native grants on the expected file without changing its ACL.
 func ValidateACL(root *os.Root, name string, expected fs.FileInfo, field string) error {
+	return validateDarwinACL(root, name, expected, field, false)
+}
+
+func validateServiceACL(root *os.Root, name string, expected fs.FileInfo) error {
+	return validateDarwinACL(root, name, expected, "configuration.file", true)
+}
+
+func validateDarwinACL(root *os.Root, name string, expected fs.FileInfo, field string, service bool) error {
 	flags := os.O_RDONLY | unix.O_NOFOLLOW | unix.O_NONBLOCK
 	if expected.IsDir() {
 		flags |= unix.O_DIRECTORY
@@ -79,7 +87,11 @@ func ValidateACL(root *os.Root, name string, expected fs.FileInfo, field string)
 	if err != nil || !os.SameFile(expected, actual) || !os.SameFile(expected, current) || current.Mode()&os.ModeSymlink != 0 {
 		return &errors.ConflictError{Resource: field, Message: "file changed during ACL inspection"}
 	}
-	if err := ValidateMetadata(actual, field); err != nil {
+	if service {
+		if err := validateServiceMetadata(actual); err != nil {
+			return err
+		}
+	} else if err := ValidateMetadata(actual, field); err != nil {
 		return err
 	}
 	api, err := nativeDarwinACL()
@@ -89,6 +101,9 @@ func ValidateACL(root *os.Root, name string, expected fs.FileInfo, field string)
 	buffer, err := darwinACLBuffer(api, file, field)
 	if err != nil {
 		return err
+	}
+	if service {
+		return validateDarwinServiceGrants(api, buffer, field)
 	}
 	grants, err := darwinACLGrants(buffer)
 	if err != nil {

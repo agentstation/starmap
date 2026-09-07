@@ -35,7 +35,7 @@ The command does not discover working-directory dotenv files.
 
 ### Private configuration inputs
 
-Selected YAML configuration and explicit dotenv files must be private regular files, each at most 1 MiB.
+By default, selected YAML configuration and explicit dotenv files must be private regular files, each at most 1 MiB.
 On Linux and macOS, the effective user must own the file, with no group or other mode permissions.
 Read-only `0400` files remain valid. macOS also checks native ACL grants.
 Windows applies the same owner and DACL policy as private runtime records. Native Windows qualification remains pending.
@@ -54,6 +54,29 @@ All explicit dotenv files must pass access checks and parsing before their value
 
 A refused primary file also prevents commands that need its configuration, including `config paths`.
 Use operating-system file inspection to diagnose that refusal. Command help remains available without loading the file.
+
+### Service-managed primary configuration
+
+Select `--config-access=service-managed` or `STARMAP_CONFIG_ACCESS=service-managed` with an explicit `--config` or `CONFIG` file path.
+The flag overrides the environment. `owner-only` restores the default policy.
+A YAML file cannot select its own access policy. A missing explicit file remains an error.
+
+```bash
+starmap --config /etc/starmap/config.yaml --config-access service-managed config paths
+```
+
+On Linux and macOS, root or the effective user must own the file. Group and other writes are forbidden.
+For example, `root:starmap` with mode `0640` permits a service in the `starmap` group to read administrator-owned configuration.
+macOS also checks native ACL grants for untrusted mutation rights. Linux POSIX ACL masks bound shared writes through the group mode bits.
+
+Windows permits the process account, SYSTEM, Administrators, or TrustedInstaller as the owner.
+Read grants can include service groups. Mutation grants must remain limited to those trusted principals.
+A successful bounded file read proves current service read access. Deny entries can still cause that read to fail.
+Native Windows qualification remains pending.
+
+Both modes check the selected symlink route and target ancestors. Neither mode changes file contents, ownership, or permissions.
+The service exception applies only to primary configuration. Dotenv inputs and catalog state retain owner-only access.
+Choose shared readers with care when primary configuration contains credentials. Secret references keep values under the selected secret manager's access controls.
 
 ### Node directories and identity
 
@@ -158,6 +181,7 @@ Wide output adds access and retention columns. A mixed root can contain files wi
 | Access class | Meaning |
 | --- | --- |
 | `owner-only` | Private access for the operating account. Use private POSIX modes and equivalent Windows ACLs. |
+| `service-managed` | Explicit primary configuration with trusted ownership and no untrusted writes. The service must be able to read it. |
 | `public-read` | The exact embedded baseline permits explicit shared reads. Startup still creates its export privately. |
 | `deployment-controlled` | The operator sets access for catalog facts, authoring files, or source inputs. This class does not imply public data. |
 | `external-system` | The external service or tool owns access control. |
@@ -191,6 +215,8 @@ The filesystem catalog store uses this class for its root, pointer, lock, genera
 
 Windows observations include owner and process SIDs, DACL state, entry count, and private-policy status.
 An `owner-only` entry reports a conflict when its observed descriptor violates the shared private DACL policy.
+Service-managed entries use their separate service-policy assessment. POSIX inspection checks trusted ownership and shared write bits.
+
 Compatible descriptors retain an unverified access status. Deny entries can still prevent the process from reading or writing the file.
 Unavailable metadata, unsupported descriptors, changed identities, and symbolic links retain explicit uncertainty.
 The command does not follow selected symbolic links, read payload bytes, change permissions, or resolve account names through a directory service.

@@ -7,6 +7,8 @@ import "github.com/agentstation/starmap/pkg/errors"
 const (
 	// OwnerOnly restricts managed state to the process account and permitted host administrators.
 	OwnerOnly = "owner-only"
+	// ServiceManaged permits shared reads of explicitly selected, trusted configuration.
+	ServiceManaged = "service-managed"
 	// DeploymentControlled leaves input sharing and editing rights to the deployment.
 	DeploymentControlled = "deployment-controlled"
 	// PublicRead permits explicit read access to verified public exports.
@@ -49,4 +51,20 @@ func Require(role, supported string) error {
 		return &errors.ConfigError{Component: "file policy", Message: "file role requires a different access adapter: " + role}
 	}
 	return nil
+}
+
+// Configuration selects the primary input policy before the reader opens its bytes.
+// An empty selection retains owner-only access. Service mode requires an explicit path.
+func Configuration(selected string, explicitPath bool) (string, error) {
+	switch selected {
+	case "", OwnerOnly:
+		return OwnerOnly, nil
+	case ServiceManaged:
+		if explicitPath {
+			return ServiceManaged, nil
+		}
+		return "", &errors.ConfigError{Component: "configuration access", Message: "service-managed access requires an explicit configuration file path"}
+	default:
+		return "", &errors.ConfigError{Component: "configuration access", Message: "requires owner-only or service-managed"}
+	}
 }

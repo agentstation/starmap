@@ -34,13 +34,17 @@ func (d *Directory) ReadFile(name string, limit int64) ([]byte, error) {
 // ReadFile reads one bounded private regular file under an open root.
 // The caller owns directory access policy and closes the root.
 func ReadFile(root *os.Root, name string, limit int64) ([]byte, error) {
+	return readCheckedFile(root, name, limit, recordInfo)
+}
+
+func readCheckedFile(root *os.Root, name string, limit int64, inspect func(*os.Root, string) (fs.FileInfo, error)) ([]byte, error) {
 	if err := childName(name); err != nil {
 		return nil, err
 	}
 	if limit < 0 || limit == math.MaxInt64 {
 		return nil, &errors.ValidationError{Field: "private.file_limit", Message: "requires a nonnegative bounded byte limit"}
 	}
-	info, err := recordInfo(root, name)
+	info, err := inspect(root, name)
 	if err != nil {
 		return nil, err
 	}
@@ -66,7 +70,7 @@ func ReadFile(root *os.Root, name string, limit int64) ([]byte, error) {
 	if int64(len(data)) > limit {
 		return nil, oversized(name, limit)
 	}
-	after, err := recordInfo(root, name)
+	after, err := inspect(root, name)
 	if err != nil {
 		return nil, err
 	}

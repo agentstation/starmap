@@ -90,5 +90,10 @@ func openInspectionDirectory(root *os.Root, name string) (*os.File, error) {
 
 func observeWindowsDescriptor(account string, descriptor aclpolicy.Descriptor) *WindowsSecurity {
 	assessment := aclpolicy.Assess(account, descriptor)
-	return &WindowsSecurity{OwnerSID: descriptor.Owner, ProcessSID: account, DACLState: assessment.DACLState, EntryCount: assessment.EntryCount, PolicyStatus: assessment.Status, Reason: assessment.Reason}
+	result := &WindowsSecurity{OwnerSID: descriptor.Owner, ProcessSID: account, DACLState: assessment.DACLState, EntryCount: assessment.EntryCount, PolicyStatus: assessment.Status, Reason: assessment.Reason, ServicePolicyStatus: "compatible"}
+	if aclpolicy.ValidateConfiguration(account, descriptor, "inspection") != nil {
+		result.ServicePolicyStatus = "conflict"
+		result.ServicePolicyReason = "native-service-policy-conflict"
+	}
+	return result
 }
