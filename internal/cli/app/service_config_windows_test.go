@@ -8,6 +8,7 @@ import (
 	"golang.org/x/sys/windows"
 
 	"github.com/agentstation/starmap/internal/privatefiles"
+	"github.com/agentstation/starmap/internal/test/windowstoken"
 	"github.com/agentstation/starmap/pkg/productpaths"
 	"github.com/agentstation/starmap/pkg/productpaths/policy"
 )
@@ -63,49 +64,51 @@ func TestServiceConfigurationWindowsAdministratorOwnerAndDeniedRead(t *testing.T
 		{"denied-data-read", "(D;;0x1;;;" + account + ")", false},
 	} {
 		t.Run(test.name, func(t *testing.T) {
-			setWindowsServiceConfigurationDACL(t, path, "D:P"+test.deny+"(A;;FA;;;"+account+")(A;;FA;;;SY)(A;;FA;;;BA)")
-			data, err := readSelectedConfiguration(path, policy.ServiceManaged)
-			if (err == nil) != test.readable {
-				t.Fatalf("readable=%v, error=%v", test.readable, err)
-			}
-			if test.readable && string(data) != string(contents) {
-				t.Fatal("service read returned different bytes")
-			}
-			if !test.readable && len(data) != 0 {
-				t.Fatal("denied read returned configuration bytes")
-			}
-			if _, err := readConfigurationFile(path); err == nil {
-				t.Fatal("owner-only reader accepted administrator ownership")
-			}
-			manifest := productpaths.FileManifest{Files: []productpaths.FileEntry{{
-				ID: "configuration", Location: productpaths.Path{Path: path}, Kind: "file", Availability: "available", Policy: productpaths.FilePolicy{Access: policy.ServiceManaged},
-			}}}
-			inspection, err := productpaths.InspectManifest(t.Context(), manifest, 10)
-			if err != nil {
-				t.Fatal(err)
-			}
-			found := false
-			for _, observed := range inspection.Observations {
-				if observed.ID != "configuration" {
-					continue
+			windowstoken.WithoutPrivileges(t, func() {
+				setWindowsServiceConfigurationDACL(t, path, "D:P"+test.deny+"(A;;FA;;;"+account+")(A;;FA;;;SY)(A;;FA;;;BA)")
+				data, err := readSelectedConfiguration(path, policy.ServiceManaged)
+				if (err == nil) != test.readable {
+					t.Fatalf("readable=%v, error=%v", test.readable, err)
 				}
-				found = true
-				if observed.WindowsSecurity == nil || observed.WindowsSecurity.OwnerSID != administrators.String() {
-					t.Fatalf("native ownership observation: %+v", observed)
+				if test.readable && string(data) != string(contents) {
+					t.Fatal("service read returned different bytes")
 				}
-				if observed.WindowsSecurity.ServicePolicyStatus != "compatible" {
-					t.Fatalf("trusted descriptor rejected: %+v", observed.WindowsSecurity)
+				if !test.readable && len(data) != 0 {
+					t.Fatal("denied read returned configuration bytes")
 				}
-				if observed.WindowsSecurity.PolicyStatus != "conflict" {
-					t.Fatal("private policy did not report the different owner")
+				if _, err := readConfigurationFile(path); err == nil {
+					t.Fatal("owner-only reader accepted administrator ownership")
 				}
-				if observed.AccessStatus != "unverified" {
-					t.Fatalf("metadata claimed effective service access: %+v", observed)
+				manifest := productpaths.FileManifest{Files: []productpaths.FileEntry{{
+					ID: "configuration", Location: productpaths.Path{Path: path}, Kind: "file", Availability: "available", Policy: productpaths.FilePolicy{Access: policy.ServiceManaged},
+				}}}
+				inspection, err := productpaths.InspectManifest(t.Context(), manifest, 10)
+				if err != nil {
+					t.Fatal(err)
 				}
-			}
-			if !found {
-				t.Fatal("inspection omitted the selected configuration")
-			}
+				found := false
+				for _, observed := range inspection.Observations {
+					if observed.ID != "configuration" {
+						continue
+					}
+					found = true
+					if observed.WindowsSecurity == nil || observed.WindowsSecurity.OwnerSID != administrators.String() {
+						t.Fatalf("native ownership observation: %+v", observed)
+					}
+					if observed.WindowsSecurity.ServicePolicyStatus != "compatible" {
+						t.Fatalf("trusted descriptor rejected: %+v", observed.WindowsSecurity)
+					}
+					if observed.WindowsSecurity.PolicyStatus != "conflict" {
+						t.Fatal("private policy did not report the different owner")
+					}
+					if observed.AccessStatus != "unverified" {
+						t.Fatalf("metadata claimed effective service access: %+v", observed)
+					}
+				}
+				if !found {
+					t.Fatal("inspection omitted the selected configuration")
+				}
+			})
 		})
 	}
 	setWindowsServiceConfigurationDACL(t, path, private)
