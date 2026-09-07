@@ -1,0 +1,6 @@
+{"ImportPath":"github.com/agentstation/starmap/runtime [github.com/agentstation/starmap/runtime.test]","Action":"build-output","Output":"# github.com/agentstation/starmap/runtime [github.com/agentstation/starmap/runtime.test]\n"}
+{"ImportPath":"github.com/agentstation/starmap/runtime [github.com/agentstation/starmap/runtime.test]","Action":"build-output","Output":"runtime/provider_reset_test.go:172:80: accepted.Manifest.PayloadChecksum undefined (type catalogs.GenerationManifest has no field or method PayloadChecksum)\n"}
+{"ImportPath":"github.com/agentstation/starmap/runtime [github.com/agentstation/starmap/runtime.test]","Action":"build-fail"}
+{"Time":"2026-09-07T08:29:10.270877-05:00","Action":"start","Package":"github.com/agentstation/starmap/runtime"}
+{"Time":"2026-09-07T08:29:10.270989-05:00","Action":"output","Package":"github.com/agentstation/starmap/runtime","Output":"FAIL\tgithub.com/agentstation/starmap/runtime [build failed]\n"}
+{"Time":"2026-09-07T08:29:10.270999-05:00","Action":"fail","Package":"github.com/agentstation/starmap/runtime","Elapsed":0,"FailedBuild":"github.com/agentstation/starmap/runtime [github.com/agentstation/starmap/runtime.test]"}
