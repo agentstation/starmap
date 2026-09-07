@@ -1513,3 +1513,9 @@ Commit `707d63db` implements the approved primary configuration exception.
 The [service configuration proof](csp2/service-configuration.md) records selection, native access rules, diagnostics, migration rereads, and verification.
 The local suites pass 394, 42, and 686 race results. Native Linux ownership checks pass, and Windows code compiles.
 Native Windows execution and complete CSP2 acceptance remain UNVERIFIED. Starport adoption remains under CSP8.
+
+## Native Windows service qualification fixture
+
+Commit `fb54f39e` adds administrator-owner, denied-read, recovery, and diagnostic assertions to the existing Windows suite.
+The [fixture record](csp2/windows-service-qualification.md) preserves AMD64 and ARM64 compilation and static checks.
+Native execution remains UNVERIFIED. The fixture must not silently skip its ownership check in GitHub Actions.

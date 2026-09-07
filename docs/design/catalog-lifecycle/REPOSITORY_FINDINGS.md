@@ -1439,3 +1439,13 @@ Windows compilation passes. Native Windows ownership and ACL qualification remai
 Code lint, Ago, all six consumer compositions, workflow parsing, and maintained prose pass.
 The implementation adds no library dependencies. Required pre-PR review remains pending.
 CSP8 owns Starport adoption. All primary acceptance cases retain their existing status.
+
+
+## CSP2 Windows service ownership and denied reads
+
+Commit `fb54f39e` adds the missing native administrator-owner and denied-read fixture.
+It also checks access recovery and diagnostics that distinguish a compatible descriptor from proven effective access.
+
+The [fixture record](../../plans/proof/starport-production-catalog/csp2/windows-service-qualification.md) preserves AMD64 and ARM64 compilation and static checks.
+Native execution remains UNVERIFIED. GitHub Actions must fail if it cannot exercise administrator ownership.
+This adds no product behavior and gives no primary acceptance credit.
