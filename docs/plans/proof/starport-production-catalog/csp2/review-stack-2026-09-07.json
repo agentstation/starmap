@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "reason": "The complete code bundle exceeds eight prompts after the approved 300000-byte limit.",
+  "combined_bundle_bytes": 2297084,
+  "global_pass_limit": 8,
+  "global_pass_limit_changed": false,
+  "foundation": {
+    "branch": "codex/catalog-foundation",
+    "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-foundation",
+    "base": "codex/catalog-plan",
+    "source_commit": "be5cacb3b4d1987b9358cbbd18e2cbf5186a5e54",
+    "container_fix": "911d82778f7566b1ee743c499f039b1474c04bb8"
+  },
+  "followup": {
+    "branch": "codex/catalog-requirements",
+    "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-requirements",
+    "base": "codex/catalog-foundation"
+  },
+  "final_product_tree": "Matches d56f3487 exactly outside planning and design documents.",
+  "preflight": "Both bounded review preflights pass. Actual model review remains required.",
+  "acceptance_credit": false,
+  "captures": {
+    "combined-preflight.log": "7d8dadd0f1bce7361be7ab1ef4f9c8e093b1aa528fcb9afb8cfe50584a89fd72",
+    "synced-preflight.log": "7d8dadd0f1bce7361be7ab1ef4f9c8e093b1aa528fcb9afb8cfe50584a89fd72",
+    "foundation-preflight.log": "e56909a571b7ef85eaec0b5aceb0b281ebc69e40bbf6e7442a0a573616abc063",
+    "followup-preflight.log": "5bbb8011ff5f54ec9ed5341721279c5fe4c124cab7b2306314d9bd4726cfa6ac",
+    "workflow-race.jsonl": "e372dd03543e7f1ec7d0b78bcffbfae8e694759e6afcbdf5afb87eb39a75b672",
+    "documents.json": "16e165d6238815e41a67b417c79e442950d51a77337787f131f8ad310d0ca8e8",
+    "writing-initial.log": "18ea346ab152cec5ec5678c71b9ef57efcca5c2c313686970792bbfa1d27843d",
+    "writing-second.log": "a1dbdd19c6ac236e25d1c735a57b8c8cb02d884a98c607e77103a97325098fff",
+    "writing-final.log": "cbf3f5ba73c504290f75edec4bcbe13a3c79495583d6ae22761783ab8f1a610c"
+  }
+}

@@ -1467,3 +1467,14 @@ The owner approved the shared review-helper patch and explicit account-scope lin
 The [approval record](../../plans/proof/starport-production-catalog/csp2/owner-approvals-2026-09-07.md) supersedes the earlier decision blocker.
 The helper now uses 300,000-byte prompts. Syntax validation and deterministic self-tests pass.
 D25 records the scope requirement. Native qualification, required review, scoped-removal implementation, and released-pair acceptance remain open.
+
+
+## Publication checks after owner approval
+
+The complete Starmap code bundle exceeds the helper's eight-pass limit after the approved prompt change.
+The [two-part review stack](../../plans/proof/starport-production-catalog/csp2/review-stack-2026-09-07.md) preserves every source change and executable verifier.
+Both complete diffs pass prompt preflight. Actual model review remains required.
+
+Starport commit `0acf476` corrects direct runtime test fixtures that supplied non-private state directories.
+The [fixture evidence](../../plans/proof/starport-production-catalog/csp2/app-private-fixture.md) records five passing race results and the initial failures.
+All 12 ownership checks now pass. Production permission enforcement remains unchanged.

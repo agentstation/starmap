@@ -1,0 +1,2 @@
+/Users/jack/src/github.com/agentstation/starport-catalog-lifecycle/internal/app/app_test.go:32:68: error passive_voice: use active voice when the actor is known
+FAIL: 2 file(s), 1 diagnostic(s)
