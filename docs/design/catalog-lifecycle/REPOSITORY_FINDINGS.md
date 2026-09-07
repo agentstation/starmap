@@ -1412,3 +1412,14 @@ E02 now passes for the reviewed README with 11 native installation entries and t
 The [first-use proof](../../plans/proof/starport-production-catalog/csp0.2.md) records archive, Homebrew, source, container, and Compose scope.
 This correction supports one Compose gateway. Shared PostgreSQL, replicated operation, and disaster recovery remain separate qualification work.
 The full operator guide retains 48 existing prose diagnostics. The README and changed container procedure pass their prose checks.
+
+
+## CSP0.3 first-use demonstration
+
+Starport commit `02efa34` replaces the README's automatic console-tour animation with a static preview linked to a first-use demonstration.
+The 38-second GIF shows the actual v1.2.0 archive, catalog access before credentials, provider setup, and real streamed inference.
+It preserves provider response timing and discloses the shorter credential-entry wait. The transcript and uncut capture remain available.
+
+E03 passes with source-bound media evidence. E02 passes again after the README header change.
+The [media proof](../../plans/proof/starport-production-catalog/csp0.3.md) records dimensions, bytes, reading time, local browser checks, and cleanup.
+This recording qualifies the early demonstration only. CSP24 still owns the final released-pair recording.
