@@ -1,0 +1,9 @@
+/Users/jack/.agents/skills/technical-writing/scripts/technical-writing glossary check
+PASS: /Users/jack/src/github.com/agentstation/starmap-catalog-requirements/GLOSSARY.md (80 term(s), 0 error(s))
+/Users/jack/.agents/skills/technical-writing/scripts/technical-writing glossary update --check
+PASS: no candidate terms are missing from /Users/jack/src/github.com/agentstation/starmap-catalog-requirements/GLOSSARY.md
+/Users/jack/.agents/skills/technical-writing/scripts/technical-writing lint . --mode strict --format text
+/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/docs/design/catalog-lifecycle/ENGINEERING_SPEC.md:926:58: error nominalization: express the action with a direct verb
+/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/internal/cli/app/catalog_acquisition.go:10:26: error banned_word: use a short, precise alternative: 'acquire'
+FAIL: 1083 file(s), 2 diagnostic(s)
+make: *** [technical-writing-check] Error 1
