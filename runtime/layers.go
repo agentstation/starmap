@@ -48,13 +48,13 @@ type sourceLayer struct {
 	Chain            []SourceHop `json:"chain,omitempty"`
 }
 
-// layerSet holds the four layers that produce the effective catalog. The
-// layers are the verified embedded baseline, the selected upstream source,
-// the retained per-provider observations, and the built immutable result.
+// layerSet holds the inputs that produce the effective catalog: the embedded
+// baseline, selected upstream source, provider observations, and manual history.
 type layerSet struct {
 	embedded         starmap.CatalogState
 	source           *sourceLayer
 	providers        map[providerEvidenceKey]ProviderLayer
+	manual           *manualBatch
 	sequence         uint64
 	providerBindings *providerBindingPolicy
 	buildEvidence    starmap.CandidateEvidence
@@ -62,7 +62,7 @@ type layerSet struct {
 
 // empty reports whether any retained layer sits above the embedded baseline.
 func (l *layerSet) empty() bool {
-	return l.source == nil && len(l.providers) == 0
+	return l.source == nil && len(l.providers) == 0 && l.manual == nil
 }
 
 // providerOrder returns the retained provider identities in stable order, so
@@ -124,7 +124,13 @@ func (l *layerSet) build(ctx context.Context, baseline starmap.CatalogState) (st
 	var builder *catalogs.Builder
 	active := l.activeProviderOrder()
 	l.buildEvidence = starmap.CandidateEvidence{}
-	if len(active) > 0 {
+	if l.manual != nil {
+		var err error
+		builder, l.buildEvidence, err = l.reconcileManualInputs(ctx, base, state.GeneratedAt, active)
+		if err != nil {
+			return starmap.CatalogState{}, err
+		}
+	} else if len(active) > 0 {
 		var err error
 		builder, l.buildEvidence, err = l.reconcileProviders(ctx, base, state.GeneratedAt, active)
 		if err != nil {
@@ -163,7 +169,7 @@ func (l *layerSet) build(ctx context.Context, baseline starmap.CatalogState) (st
 		if err != nil {
 			return starmap.CatalogState{}, err
 		}
-	} else if len(active) > 0 && state.GenerationID != "" {
+	} else if len(l.buildEvidence.SourceObservations) > 0 && state.GenerationID != "" {
 		state.GenerationID = deriveEffectiveGenerationID(state.GenerationID, identityChecksum)
 	}
 	return state, nil
@@ -357,7 +363,7 @@ func validateProviderLayerID(id catalogs.ProviderID) error {
 }
 
 // loadRetainedLayers restores the durable layers that a previous run left.
-func (r *Runtime) loadRetainedLayers() error {
+func (r *Runtime) loadRetainedLayers(ctx context.Context) error {
 	source, err := r.store.loadSource()
 	if err != nil {
 		return err
@@ -369,9 +375,17 @@ func (r *Runtime) loadRetainedLayers() error {
 	if err := r.config.providerBindings.validateRetained(providers); err != nil {
 		return err
 	}
+	manual, err := r.store.loadManualHistory(ctx)
+	if err != nil {
+		return err
+	}
+	if err := validateManualHistory(manual, r.config.providerBindings); err != nil {
+		return err
+	}
 	r.mu.Lock()
 	defer r.mu.Unlock()
 	r.layers.source = source
 	r.layers.providers = providers
+	r.layers.manual = manual
 	return nil
 }

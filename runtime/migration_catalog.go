@@ -25,11 +25,15 @@ func validateMigrationCatalog(ctx context.Context, directory string) error {
 	if err != nil {
 		return err
 	}
+	manual, err := store.loadManualHistory(ctx)
+	if err != nil {
+		return err
+	}
 	client, err := starmap.NewContext(ctx)
 	if err != nil {
 		return err
 	}
-	layers := layerSet{source: source, providers: providers}
+	layers := layerSet{source: source, providers: providers, manual: manual}
 	if _, err := layers.build(ctx, client.EmbeddedCatalogState()); err != nil {
 		return err
 	}

@@ -217,7 +217,7 @@ func Open(ctx context.Context, opts ...Option) (*Runtime, error) {
 		runtime.cancel()
 		return nil, err
 	}
-	if err := runtime.loadRetainedLayers(); err != nil {
+	if err := runtime.loadRetainedLayers(ctx); err != nil {
 		runtime.cancel()
 		return nil, err
 	}

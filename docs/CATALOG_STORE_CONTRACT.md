@@ -370,7 +370,7 @@ The getter uses the catalog already verified during construction. It reads no st
 `EmbeddedGeneration` remains the constructor-free accessor for a complete manifest and payload.
 
 The connected runtime keeps this compiled baseline separately from the accepted current state.
-When retained inputs exist, reconstruction starts from the compiled baseline and applies the retained source and provider observations.
+When retained inputs exist, reconstruction starts from the compiled baseline and applies the retained source, provider, and manual observations.
 With an explicit binding set, startup reconstructs and publishes the selected state before returning.
 Without that option, an empty retained set preserves the accepted current state under legacy startup behavior.
 That legacy path still needs active authority and configuration-omission checks before operator qualification.

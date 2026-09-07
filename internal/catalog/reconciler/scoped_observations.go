@@ -59,14 +59,7 @@ func orderScopedObservations(ctx context.Context, input []sources.Observation) (
 		return nil, nil, &errors.ConflictError{Resource: "provider observation scope", Message: "scoped and unscoped provider observations cannot share one reconciliation"}
 	}
 	slices.SortFunc(scoped, func(left, right sources.Observation) int {
-		leftFallback, rightFallback := scopedFallback(left), scopedFallback(right)
-		if leftFallback != rightFallback {
-			if leftFallback {
-				return -1
-			}
-			return 1
-		}
-		if order := left.ObservedAt.Compare(right.ObservedAt); order != 0 {
+		if order := CompareProviderObservations(left, right); order != 0 {
 			return order
 		}
 		return strings.Compare(left.ProviderBinding.ID, right.ProviderBinding.ID)
@@ -123,7 +116,20 @@ func scopedFallback(observation sources.Observation) bool {
 }
 
 func sameScopedPriority(left, right sources.Observation) bool {
-	return left.ObservedAt.Equal(right.ObservedAt) && scopedFallback(left) == scopedFallback(right)
+	return CompareProviderObservations(left, right) == 0
+}
+
+// CompareProviderObservations orders fallback before direct evidence, then by observation time.
+// Equal priority requires record conflict checks before either observation can win.
+func CompareProviderObservations(left, right sources.Observation) int {
+	leftFallback, rightFallback := scopedFallback(left), scopedFallback(right)
+	if leftFallback != rightFallback {
+		if leftFallback {
+			return -1
+		}
+		return 1
+	}
+	return left.ObservedAt.Compare(right.ObservedAt)
 }
 
 func observationEvidence(observation sources.Observation) sourceObservationEvidence {

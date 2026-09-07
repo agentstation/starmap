@@ -16,6 +16,7 @@ Package reconciler provides catalog synchronization and reconciliation capabilit
 
 ## Index
 
+- [func CompareProviderObservations\(left, right sources.Observation\) int](<#CompareProviderObservations>)
 - [func ConvertCatalogsMapToSources\(srcs map\[sources.ID\]\*catalogs.Builder\) \[\]sources.Observation](<#ConvertCatalogsMapToSources>)
 - [func NewMockSource\(sourceType sources.ID, catalog \*catalogs.Builder\) sources.Observation](<#NewMockSource>)
 - [type AuthorityStrategy](<#AuthorityStrategy>)
@@ -47,6 +48,15 @@ Package reconciler provides catalog synchronization and reconciliation capabilit
   - [func \(v \*ValidationResult\) String\(\) string](<#ValidationResult.String>)
 - [type ValidationWarning](<#ValidationWarning>)
 
+
+<a name="CompareProviderObservations"></a>
+## func [CompareProviderObservations](<https://github.com/agentstation/starmap/blob/main/internal/catalog/reconciler/scoped_observations.go#L124>)
+
+```go
+func CompareProviderObservations(left, right sources.Observation) int
+```
+
+CompareProviderObservations orders fallback before direct evidence, then by observation time. Equal priority requires record conflict checks before either observation can win.
 
 <a name="ConvertCatalogsMapToSources"></a>
 ## func [ConvertCatalogsMapToSources](<https://github.com/agentstation/starmap/blob/main/internal/catalog/reconciler/test_helpers.go#L20>)

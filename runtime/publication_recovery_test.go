@@ -191,7 +191,7 @@ func TestRetentionRecoveryRefusesUnresolvedHead(t *testing.T) {
 
 func TestRetentionRecoveryRejectsInvalidRecords(t *testing.T) {
 	for name, record := range map[string]string{
-		"version":       `{"version":2,"phase":"idle"}`,
+		"version":       `{"version":3,"phase":"idle"}`,
 		"phase":         `{"version":1,"phase":"unknown"}`,
 		"trailing":      `{"version":1,"phase":"idle"} {}`,
 		"unknown-field": `{"version":1,"phase":"idle","unrecognized":true}`,

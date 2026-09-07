@@ -19,11 +19,12 @@ const (
 	// inputPublicationName holds the current retention transaction or an idle marker.
 	inputPublicationName = "publication.json"
 	// inputPublicationDirectory holds immutable records referenced by the transaction.
-	inputPublicationDirectory = "publication-inputs"
-	inputPublicationVersion   = 1
-	inputPublicationPrepared  = "prepared"
-	inputPublicationCommitted = "committed"
-	inputPublicationIdle      = "idle"
+	inputPublicationDirectory     = "publication-inputs"
+	inputPublicationVersion       = 2
+	inputPublicationLegacyVersion = 1
+	inputPublicationPrepared      = "prepared"
+	inputPublicationCommitted     = "committed"
+	inputPublicationIdle          = "idle"
 )
 
 // inputPublication connects staged inputs to the catalog commit that accepts them.
@@ -37,6 +38,7 @@ type inputPublication struct {
 	PayloadChecksum  string   `json:"payload_checksum,omitempty"`
 	Source           string   `json:"source,omitempty"`
 	Providers        []string `json:"providers,omitempty"`
+	Manual           string   `json:"manual,omitempty"`
 }
 
 func invalidInputPublication(message string) error {
@@ -60,11 +62,14 @@ func (s *layerStore) loadInputPublication() (*inputPublication, error) {
 	if err := decoder.Decode(new(any)); err != io.EOF {
 		return nil, invalidInputPublication("record contains trailing data")
 	}
-	if record.Version != inputPublicationVersion {
+	if record.Version != inputPublicationLegacyVersion && record.Version != inputPublicationVersion {
 		return nil, invalidInputPublication("unsupported record version")
 	}
+	if record.Version == inputPublicationLegacyVersion && record.Manual != "" {
+		return nil, invalidInputPublication("manual history requires publication version 2")
+	}
 	if record.Phase == inputPublicationIdle {
-		if record.ExpectedID != "" || record.ExpectedChecksum != "" || record.GenerationID != "" || record.PayloadChecksum != "" || record.Source != "" || len(record.Providers) != 0 {
+		if record.ExpectedID != "" || record.ExpectedChecksum != "" || record.GenerationID != "" || record.PayloadChecksum != "" || record.Source != "" || len(record.Providers) != 0 || record.Manual != "" {
 			return nil, invalidInputPublication("idle record contains pending inputs")
 		}
 		return nil, nil
@@ -72,7 +77,7 @@ func (s *layerStore) loadInputPublication() (*inputPublication, error) {
 	if record.Phase != inputPublicationPrepared && record.Phase != inputPublicationCommitted {
 		return nil, invalidInputPublication("unsupported record phase")
 	}
-	if record.GenerationID == "" || record.PayloadChecksum == "" || (record.Source == "" && len(record.Providers) == 0) {
+	if record.GenerationID == "" || record.PayloadChecksum == "" || (record.Source == "" && len(record.Providers) == 0 && record.Manual == "") {
 		return nil, invalidInputPublication("incomplete record")
 	}
 	return &record, nil
@@ -139,8 +144,20 @@ func (s *layerStore) readInput(directory *privatefiles.Directory, name string, v
 	if !bytes.Equal(actual[:], digest) {
 		return invalidInputPublication("referenced input digest does not match")
 	}
-	if err := json.Unmarshal(raw, value); err != nil {
+	if err := decodeInputRecord(raw, value); err != nil {
 		return errors.WrapParse("runtime publication input", name, err)
+	}
+	return nil
+}
+
+func decodeInputRecord(raw []byte, value any) error {
+	decoder := json.NewDecoder(bytes.NewReader(raw))
+	decoder.DisallowUnknownFields()
+	if err := decoder.Decode(value); err != nil {
+		return errors.WrapParse("runtime publication input", "", err)
+	}
+	if err := decoder.Decode(new(any)); err != io.EOF {
+		return invalidInputPublication("input contains trailing data")
 	}
 	return nil
 }
@@ -187,7 +204,7 @@ func (s *layerStore) publicationInputs(record inputPublication) (*sourceLayer, [
 	return source, providers, nil
 }
 
-func (s *layerStore) applyPublicationInputs(ctx context.Context, source *sourceLayer, providers []ProviderLayer) error {
+func (s *layerStore) applyPublicationInputs(ctx context.Context, source *sourceLayer, providers []ProviderLayer, manual string) error {
 	if source != nil {
 		if err := s.saveSource(ctx, *source); err != nil {
 			return err
@@ -198,7 +215,20 @@ func (s *layerStore) applyPublicationInputs(ctx context.Context, source *sourceL
 			return err
 		}
 	}
+	if manual != "" {
+		if err := s.saveManualHead(ctx, manual); err != nil {
+			return err
+		}
+	}
 	return s.clearInputPublication(ctx)
+}
+
+func (s *layerStore) completeInputPublication(ctx context.Context, record inputPublication, source *sourceLayer, providers []ProviderLayer) error {
+	record.Phase = inputPublicationCommitted
+	if err := s.writeInputPublication(ctx, record); err != nil {
+		return err
+	}
+	return s.applyPublicationInputs(ctx, source, providers, record.Manual)
 }
 
 // recoverInputPublication completes an accepted transaction before startup reads its files.
@@ -226,7 +256,12 @@ func (s *layerStore) recoverInputPublication(ctx context.Context, current starma
 	if err != nil {
 		return err
 	}
-	return s.applyPublicationInputs(ctx, source, providers)
+	if record.Manual != "" {
+		if _, err := s.readManualHistory(ctx, record.Manual); err != nil {
+			return err
+		}
+	}
+	return s.applyPublicationInputs(ctx, source, providers, record.Manual)
 }
 
 // refuseInputPublication keeps a later update from replacing unresolved recovery evidence.

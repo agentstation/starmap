@@ -16,8 +16,7 @@ import (
 	"github.com/agentstation/starmap/pkg/sources"
 )
 
-// runKind names the three refresh operations. Each one changes a distinct
-// layer, so a report says exactly what moved.
+// runKind names refresh and manual publication operations.
 type runKind string
 
 const (
@@ -29,6 +28,9 @@ const (
 
 	// runKindAcquisition observes providers only.
 	runKindAcquisition runKind = "acquisition"
+
+	// Manual batches have distinct inputs and must never join another caller's run.
+	runKindManual runKind = "manual"
 )
 
 // SourceRefreshReport says what one upstream source read produced.
@@ -134,8 +136,8 @@ type RefreshReport struct {
 	GenerationID string
 }
 
-// activeRun is one refresh in flight. A second caller of the same kind joins it
-// instead of starting a second run.
+// activeRun is one operation in flight. Equal refresh kinds share its result.
+// Manual callers wait for completion and then start their own operation.
 type activeRun struct {
 	id   string
 	kind runKind
@@ -200,7 +202,7 @@ func (g *runGroup) start(
 		}
 		existing := g.active
 		g.mu.Unlock()
-		if existing.kind == kind {
+		if existing.kind == kind && kind != runKindManual {
 			return existing, false, nil
 		}
 		select {
@@ -285,8 +287,8 @@ func (r *Runtime) Sync(ctx context.Context, providers ...catalogs.ProviderID) (A
 	return report.Acquisition, err
 }
 
-// execute runs one refresh under the single-flight group. A second caller of
-// the same kind joins the run in flight and reads its report.
+// execute joins operation lifetime to the runtime. Equal refresh kinds share a run.
+// Manual calls wait for prior work because their input batches can differ.
 func (r *Runtime) execute(
 	ctx context.Context,
 	kind runKind,
@@ -297,6 +299,9 @@ func (r *Runtime) execute(
 	}
 	if ctx == nil {
 		return RefreshReport{}, &errors.ValidationError{Field: "context", Message: "is required"}
+	}
+	if err := ctx.Err(); err != nil {
+		return RefreshReport{}, err
 	}
 	id, err := r.client.NextID()
 	if err != nil {

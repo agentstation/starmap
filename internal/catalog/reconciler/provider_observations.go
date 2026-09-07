@@ -40,13 +40,7 @@ func orderUnscopedProviderObservations(ctx context.Context, ordered []sources.Ob
 		providers = append(providers, observation)
 	}
 	slices.SortFunc(providers, func(left, right sources.Observation) int {
-		if scopedFallback(left) != scopedFallback(right) {
-			if scopedFallback(left) {
-				return -1
-			}
-			return 1
-		}
-		if order := left.ObservedAt.Compare(right.ObservedAt); order != 0 {
+		if order := CompareProviderObservations(left, right); order != 0 {
 			return order
 		}
 		return strings.Compare(left.ID, right.ID)

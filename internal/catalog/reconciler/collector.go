@@ -314,12 +314,18 @@ func (c *collector) completeObservation(sourceID sources.ID) (sources.Observatio
 }
 
 func (c *collector) catalogWithAuthoredCorpus(sourceID sources.ID) *catalogs.Catalog {
+	var selected *sources.Observation
 	for _, observation := range c.sources {
 		if observation.SourceID == sourceID &&
 			observation.Catalog != nil &&
 			len(observation.Catalog.AuthoredModels()) > 0 {
-			return observation.Catalog
+			if selected == nil || observation.ObservedAt.After(selected.ObservedAt) {
+				selected = &observation
+			}
 		}
+	}
+	if selected != nil {
+		return selected.Catalog
 	}
 	return nil
 }

@@ -12,6 +12,11 @@ import (
 // publishInputChanges stages retained inputs before catalog publication.
 // Only an accepted catalog can install those inputs into active retention.
 func (r *Runtime) publishInputChanges(ctx context.Context, source *sourceLayer, providers []ProviderLayer, epoch uint64) (starmap.CatalogState, error) {
+	return r.publishInputs(ctx, source, providers, nil, epoch)
+}
+
+func (r *Runtime) publishInputs(ctx context.Context, source *sourceLayer, providers []ProviderLayer, manual []manualObservation, epoch uint64) (starmap.CatalogState, error) {
+	manualRequested := len(manual) != 0
 	if err := ctx.Err(); err != nil {
 		return starmap.CatalogState{}, err
 	}
@@ -20,6 +25,9 @@ func (r *Runtime) publishInputChanges(ctx context.Context, source *sourceLayer, 
 		return starmap.CatalogState{}, err
 	}
 	if err := r.config.providerBindings.validatePublication(prepared); err != nil {
+		return starmap.CatalogState{}, err
+	}
+	if err := r.config.providerBindings.validateManual(manual, true); err != nil {
 		return starmap.CatalogState{}, err
 	}
 	r.publicationMu.Lock()
@@ -40,6 +48,7 @@ func (r *Runtime) publishInputChanges(ctx context.Context, source *sourceLayer, 
 	if err != nil {
 		return starmap.CatalogState{}, err
 	}
+	manual = candidate.manualInputs(manual, selected)
 	if source != nil {
 		owned := *source
 		owned.Payload = bytes.Clone(source.Payload)
@@ -49,6 +58,16 @@ func (r *Runtime) publishInputChanges(ctx context.Context, source *sourceLayer, 
 	}
 	for _, layer := range selected {
 		candidate.setProvider(layer)
+	}
+	manual, err = selectManualObservations(ctx, candidate.manual, manual)
+	if err != nil {
+		return starmap.CatalogState{}, err
+	}
+	if manualRequested && len(manual) == 0 && source == nil && len(selected) == 0 {
+		return r.State(), nil
+	}
+	if len(manual) != 0 {
+		candidate.manual = &manualBatch{parent: candidate.manual, observations: manual}
 	}
 	state, err := candidate.build(ctx, candidate.embedded)
 	if err != nil {
@@ -69,7 +88,14 @@ func (r *Runtime) publishInputChanges(ctx context.Context, source *sourceLayer, 
 		}
 		record.Providers = append(record.Providers, name)
 	}
-	changed := source != nil || len(selected) > 0
+	if len(manual) != 0 {
+		record.Manual, err = r.store.stageManualBatch(ctx, candidate.manual)
+		if err != nil {
+			return starmap.CatalogState{}, err
+		}
+		candidate.manual.reference = record.Manual
+	}
+	changed := source != nil || len(selected) > 0 || len(manual) != 0
 	if changed {
 		if err := r.store.writeInputPublication(ctx, record); err != nil {
 			return starmap.CatalogState{}, err
@@ -91,12 +117,5 @@ func (r *Runtime) publishInputChanges(ctx context.Context, source *sourceLayer, 
 	// A bounded completion attempt leaves recovery evidence on any storage failure.
 	finish, cancel := context.WithTimeout(context.WithoutCancel(ctx), closeJoinTimeout)
 	defer cancel()
-	record.Phase = inputPublicationCommitted
-	if err := r.store.writeInputPublication(finish, record); err != nil {
-		return durable, err
-	}
-	if err := r.store.applyPublicationInputs(finish, source, selected); err != nil {
-		return durable, err
-	}
-	return durable, nil
+	return durable, r.store.completeInputPublication(finish, record, source, selected)
 }
