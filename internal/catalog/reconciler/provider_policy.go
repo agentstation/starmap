@@ -268,6 +268,7 @@ func (merger *merger) recordProviderHistory(
 		current.ObservedAt = evidence.observedAt
 		current.Revision = evidence.revision
 		current.EvidenceChecksum = evidence.evidenceChecksum
+		current.ProviderBindingID, current.ProviderBindingRevision = evidence.bindingID, evidence.bindingRevision
 		if health := evidence.healthReason(); health != "" {
 			current.Reason += "; " + health
 		}

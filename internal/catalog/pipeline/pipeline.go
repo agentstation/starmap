@@ -4,6 +4,7 @@ package pipeline
 
 import (
 	"context"
+	"slices"
 	"time"
 
 	"github.com/google/uuid"
@@ -66,6 +67,7 @@ type reconcileFunc func(context.Context, *catalogs.Catalog, []sources.Observatio
 
 // Pipeline executes catalog sync through source observation, reconciliation, and persistence.
 type Pipeline struct {
+	providerBindings    *[]sources.ProviderAcquisitionBinding
 	store               Store
 	loadWorkspace       loadWorkspaceFunc
 	loadEmbedded        loadEmbeddedFunc
@@ -193,6 +195,10 @@ func (p *Pipeline) Prepare(
 	}
 
 	srcs := p.createSources(options, inputs)
+	srcs, err = p.bindProviderSources(srcs, options, inputs)
+	if err != nil {
+		return nil, err
+	}
 
 	srcs, err = p.resolveDependencies(ctx, srcs, options)
 	if err != nil {
@@ -333,7 +339,9 @@ func hasDegradedObservation(observations []sources.Observation) bool {
 func activeSourceIDs(observations []sources.Observation) []sources.ID {
 	ids := make([]sources.ID, 0, len(observations))
 	for _, observation := range observations {
-		ids = append(ids, observation.SourceID)
+		if !slices.Contains(ids, observation.SourceID) {
+			ids = append(ids, observation.SourceID)
+		}
 	}
 	return ids
 }

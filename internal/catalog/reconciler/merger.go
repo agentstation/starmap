@@ -40,6 +40,8 @@ type sourceObservationEvidence struct {
 	observedAt       time.Time
 	revision         sources.Revision
 	evidenceChecksum string
+	bindingID        string
+	bindingRevision  string
 	completeness     sources.ObservationCompleteness
 	status           sources.ObservationStatus
 	records          sources.ObservationRecordCounts
@@ -524,6 +526,7 @@ func (merger *merger) recordModelHistory(
 		current.ObservedAt = evidence.observedAt
 		current.Revision = evidence.revision
 		current.EvidenceChecksum = evidence.evidenceChecksum
+		current.ProviderBindingID, current.ProviderBindingRevision = evidence.bindingID, evidence.bindingRevision
 		if health := evidence.healthReason(); health != "" {
 			current.Reason += "; " + health
 		}

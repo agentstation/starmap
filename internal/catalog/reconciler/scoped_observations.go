@@ -119,11 +119,15 @@ func sameScopedPriority(left, right sources.Observation) bool {
 }
 
 func observationEvidence(observation sources.Observation) sourceObservationEvidence {
-	return sourceObservationEvidence{
+	result := sourceObservationEvidence{
 		id: observation.ID, observedAt: observation.ObservedAt, revision: observation.Revision,
 		evidenceChecksum: observation.EvidenceChecksum, completeness: observation.Completeness,
 		status: observation.Status, records: observation.Records, issues: slices.Clone(observation.Issues),
 	}
+	if observation.ProviderBinding != nil {
+		result.bindingID, result.bindingRevision = observation.ProviderBinding.ID, observation.ProviderBinding.Revision
+	}
+	return result
 }
 
 func (merger *merger) modelObservation(source sources.ID, identity modelIdentity) (sourceObservationEvidence, bool) {

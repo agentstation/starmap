@@ -1,6 +1,7 @@
 package pipeline
 
 import (
+	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/errors"
 	"github.com/agentstation/starmap/pkg/sources"
 )
@@ -9,10 +10,11 @@ func requireHealthyObservations(
 	configured []sources.Source,
 	observations []sources.Observation,
 ) error {
-	expected := make(map[sources.ID]struct{}, len(configured))
+	expected := make(map[sourceObservationKey]struct{}, len(configured))
 	for _, source := range configured {
 		sourceID := source.ID()
-		if _, exists := expected[sourceID]; exists {
+		key := configuredObservationKey(source)
+		if _, exists := expected[key]; exists {
 			return requiredSourceError(
 				sourceID,
 				"source",
@@ -20,12 +22,12 @@ func requireHealthyObservations(
 				"must be configured exactly once",
 			)
 		}
-		expected[sourceID] = struct{}{}
+		expected[key] = struct{}{}
 	}
 
-	observed := make(map[sources.ID]sources.Observation, len(observations))
+	observed := make(map[sourceObservationKey]sources.Observation, len(observations))
 	for _, observation := range observations {
-		if _, exists := expected[observation.SourceID]; !exists {
+		if _, exists := expected[observedSourceKey(observation)]; !exists {
 			return requiredSourceError(
 				observation.SourceID,
 				"source",
@@ -33,7 +35,7 @@ func requireHealthyObservations(
 				"was not configured for this synchronization",
 			)
 		}
-		if _, exists := observed[observation.SourceID]; exists {
+		if _, exists := observed[observedSourceKey(observation)]; exists {
 			return requiredSourceError(
 				observation.SourceID,
 				"observation",
@@ -41,12 +43,13 @@ func requireHealthyObservations(
 				"must be returned exactly once",
 			)
 		}
-		observed[observation.SourceID] = observation
+		observed[observedSourceKey(observation)] = observation
 	}
 
 	for _, source := range configured {
 		sourceID := source.ID()
-		observation, exists := observed[sourceID]
+		key := configuredObservationKey(source)
+		observation, exists := observed[key]
 		if !exists {
 			return requiredSourceError(
 				sourceID,
@@ -71,7 +74,7 @@ func requireHealthyObservations(
 				"required source must be complete",
 			)
 		}
-		if len(observation.Catalog.Definitions()) == 0 {
+		if !hasObservedModels(observation.Catalog) {
 			return requiredSourceError(
 				sourceID,
 				"catalog.models",
@@ -92,4 +95,19 @@ func requiredSourceError(sourceID sources.ID, field string, value any, message s
 			Message: message,
 		},
 	}
+}
+
+func hasObservedModels(catalog *catalogs.Catalog) bool {
+	if catalog == nil {
+		return false
+	}
+	if len(catalog.Definitions()) > 0 {
+		return true
+	}
+	for _, provider := range catalog.Providers().List() {
+		if len(provider.Models) > 0 {
+			return true
+		}
+	}
+	return false
 }

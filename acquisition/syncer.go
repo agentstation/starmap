@@ -27,6 +27,7 @@ type options struct {
 	providerClientFactory sources.ProviderClientFactory
 	credentialResolver    sources.ProviderCredentialResolver
 	sourceDirectories     productpaths.SourceDirectories
+	providerBindings      *[]sources.ProviderAcquisitionBinding
 }
 
 func defaults() options {
@@ -100,13 +101,14 @@ func New(client *starmap.Client, opts ...Option) (*Syncer, error) {
 			return nil, err
 		}
 	}
+	runner := pipeline.NewAcquisition(config.providerClientFactory, config.credentialResolver)
+	if config.providerBindings != nil {
+		runner = pipeline.NewBoundAcquisition(config.providerClientFactory, config.credentialResolver, *config.providerBindings)
+	}
 	return &Syncer{
 		client:            client,
 		sourceDirectories: config.sourceDirectories,
-		pipeline: pipeline.NewAcquisition(
-			config.providerClientFactory,
-			config.credentialResolver,
-		),
+		pipeline:          runner,
 	}, nil
 }
 
