@@ -862,6 +862,10 @@ Retention forwards cancellation through ordered selection and private-file publi
 Partial receipts produce degraded acquisition health. They do not authorize deletion or prove complete upstream coverage.
 
 The current connected runtime uses `MergeEnrichEmpty` for provider layers.
+Enrichment now retains valid new model records when pricing and limits are absent.
+It also retains their missing authored definitions. Existing authored definitions keep precedence.
+The runtime still excludes offerings without a resolved canonical model reference.
+
 Implement the target field-authority behavior through Starmap reconciliation,
 not a Starport merge. Tests must prove each deliberate precedence change.
 
@@ -880,7 +884,8 @@ Concurrent observations must not replace each other's selected material.
 
 The provider source now uses one credential memo per observation run. Explicit binding calls restrict resolution to the declared acquisition profile.
 A different resolved profile causes refusal before client creation. The acquirer retains the binding and the source receipt without publishing them.
-Scheduled acquisition still selects providers without bindings. Active scope enforcement and scoped deletion remain open.
+A runtime with explicit bindings now uses the built-in binding-aware batch role for scheduled and manual acquisition.
+Operator configuration and scoped deletion remain open.
 
 Changing scope selectors or credential role requires a new binding revision and invalidates retained evidence from the former binding.
 Credential rotation permits retention only when the binding still describes the same scope.
@@ -912,7 +917,19 @@ The generation identity includes the complete active declarations, source identi
 An explicit return to an earlier selection reuses its retained immutable generation. The identity itself grants no source or account authority.
 
 The runtime requires `BindingAcquirer` for an explicit nonempty set and refuses unscoped provider I/O.
-The built-in batch acquirer still needs this role. Binding-level attempt reports and operator configuration remain incomplete.
+The built-in acquirer now implements this role. It validates the complete selected binding set before credential resolution or provider I/O.
+An explicit empty set selects nothing. A provider filter restricts that set and rejects any requested provider without a binding.
+Duplicate identities and invalid profile selections reject the batch before acquisition.
+
+Attempt records include `BindingID` and `BindingRevision`. Legacy attempts omit both fields.
+Eligible and terminal counts refer to bindings in this mode, so one provider can have several independent attempts.
+Source attempt sinks preserve the same identifiers.
+
+One shared coalescing loop tracks target positions, which prevents two bindings from sharing one completion slot.
+An early publication receives its own payload and receipt copies. Cancellation closes the run without publishing late results.
+Failures carry safe reason codes and leave permitted peer evidence available.
+Operator configuration remains incomplete.
+
 Legacy construction without the option still permits unscoped behavior. Configuration-omission guards and internal accepted-head policy remain under CSP4.
 
 Operator integration and scoped deletion remain under CSP3 before support. CSP18 must qualify scoped receipt upgrades and downgrade limits.

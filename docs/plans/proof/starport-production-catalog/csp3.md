@@ -674,3 +674,37 @@ This correction remains on the unpublished code branch.
 It does not change the failed evidence PR result or qualify native Starmap behavior.
 After the shared-helper decision, complete code review before the branch push, draft PR, and native workflow dispatch.
 CSP3 remains active, with batch acquisition and operator integration still open.
+
+
+### Binding-aware batch acquisition
+
+The built-in acquirer now implements `runtime.BindingAcquirer`.
+The [initial regression](csp3/binding-batch-red.log) failed because that role was absent.
+The batch validates all selected declarations before credential resolution or provider I/O.
+Empty declarations select nothing, duplicate identities cause refusal, and provider filters cannot introduce undeclared bindings.
+
+A shared loop records each target separately, including multiple bindings for one provider.
+Attempt results and source sinks carry `BindingID` and `BindingRevision`.
+The tests cover distinct concurrent credential profiles, partial failures, skipped credentials, early publication, cancellation, and late results.
+Callback payload and receipt copies protect the retained result from caller changes.
+A real runtime test verifies separate attempts, peer retention after failure, and both scopes after restart.
+
+The [runtime regression](csp3/binding-batch-runtime-red.jsonl) found that enrichment dropped models without pricing or limits.
+The [model regression](csp3/model-membership-red.log) isolates that membership filter.
+The catalog merge now retains these records and their missing authored definitions.
+Existing definitions keep precedence. The runtime still refuses offerings without a resolved canonical reference.
+
+[Final verification](csp3/binding-batch-verification.json) passed 1,341 race events across six packages under Go 1.26.6.
+All 79 tested packages passed the normal suite. Another 22 packages contain no tests.
+All six external consumer compositions passed, with the read-only closure at 37/37 and pinned-artifact closure at 38/38 on macOS.
+Code lint, Ago, and documentation generation passed.
+
+The first broader run used the host's Go 1.27.0 default.
+It recorded two failures and a runtime timeout. Its output remains separate from the passing pinned-toolchain run.
+The corrected run kept the same five-minute package limit.
+The credential-profile fixture now uses two API-key profiles because the contract forbids two unauthenticated alternatives.
+
+The product verifier still reports zero primary passes and 50 UNVERIFIED cases.
+CSP3 remains active for operator integration and the remaining scope and field-authority contracts.
+Code publication still waits for required review. The proposed shared-helper change remains unapplied.
+Raw results use the existing evidence branch before code review, so captured output does not enlarge the code review bundle.

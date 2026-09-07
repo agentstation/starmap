@@ -145,10 +145,6 @@ func (l *layerSet) build(baseline starmap.CatalogState) (starmap.CatalogState, e
 			return starmap.CatalogState{}, errors.WrapResource(
 				"merge", "retained provider layer", string(id.providerID), err)
 		}
-		if err := mergeAuthoredModels(builder, observed); err != nil {
-			return starmap.CatalogState{}, errors.WrapResource(
-				"merge", "retained authored models", string(id.providerID), err)
-		}
 		if unresolved > 0 {
 			logging.Info().
 				Str("provider_id", string(id.providerID)).
@@ -280,26 +276,6 @@ func resolvesAuthoredModel(authored map[catalogs.ModelDefinitionID]struct{}, ref
 	}
 	_, found := authored[ref]
 	return found
-}
-
-// mergeAuthoredModels adds the authored records that a provider layer needs.
-// The enrich-empty merge carries providers and authors, so a provider model
-// would otherwise reference an authored record that the effective catalog does
-// not hold. An existing record wins, because enrichment never overwrites.
-func mergeAuthoredModels(builder *catalogs.Builder, source catalogs.Reader) error {
-	present := make(map[catalogs.ModelDefinitionID]struct{})
-	for _, record := range builder.AuthoredModels() {
-		present[record.ID()] = struct{}{}
-	}
-	for _, record := range source.AuthoredModels() {
-		if _, found := present[record.ID()]; found {
-			continue
-		}
-		if err := builder.SetAuthorModel(record.AuthorID, record.Model); err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // layerStore retains the runtime layers durably. A runtime without a state

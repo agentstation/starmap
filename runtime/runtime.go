@@ -76,13 +76,13 @@ type AcquisitionRequest struct {
 
 // AcquisitionResult is what one acquisition run observed.
 type AcquisitionResult struct {
-	// Eligible is the number of providers the run considered.
+	// Eligible counts provider targets, or bindings when the active set is explicit.
 	Eligible int
 
-	// Attempts holds one terminal attempt per eligible provider.
+	// Attempts holds one terminal attempt per eligible provider or binding.
 	Attempts []sources.ProviderAttempt
 
-	// Layers holds one observation per provider that answered.
+	// Layers holds one successful observation per provider or binding.
 	Layers []ProviderLayer
 }
 

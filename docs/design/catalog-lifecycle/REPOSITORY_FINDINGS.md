@@ -1102,3 +1102,18 @@ Writing rules and severities remain unchanged. Final verification and review sti
 
 The final writing check passed all 1,047 scanned files with zero diagnostics. Both frozen-output hashes remain unchanged.
 The complete repository verification gate now precedes the authorized commit, review, draft PR, and native CI sequence.
+
+
+### CSP3 binding batches and model membership
+
+The [batch verification](../../plans/proof/starport-production-catalog/csp3/binding-batch-verification.json) closes the built-in acquisition-role gap described above.
+Explicit batches preserve separate binding identities through credential selection, receipts, attempt reports, retention, and restart.
+Invalid selections cause refusal before credential or provider work. Cancellation prevents late publication.
+
+The runtime integration test also reproduced the F-004 membership filter.
+Enrichment now preserves linked models without pricing or limits and carries their missing authored definitions.
+The generic merge owns this behavior. Existing definitions still keep precedence.
+
+The final checks passed 1,341 race events, 79 normal package suites, six consumer compositions, code lint, Ago, and generated documentation.
+The first broader run remains failed evidence. The final run used Go 1.26.6 and the unchanged five-minute package limit.
+Operator integration, scoped field authority, deletion rules, and released-pair acceptance remain open.

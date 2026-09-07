@@ -3,14 +3,12 @@ package acquisition
 import (
 	"context"
 	"slices"
-	"strings"
 	"time"
 
 	"github.com/agentstation/starmap/internal/auth"
 	"github.com/agentstation/starmap/internal/sources/providers"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/errors"
-	"github.com/agentstation/starmap/pkg/logging"
 	"github.com/agentstation/starmap/pkg/sources"
 	"github.com/agentstation/starmap/runtime"
 )
@@ -164,77 +162,11 @@ func (a *Acquirer) AcquireProviders(
 		}
 	}
 	eligible := eligibleProviders(request)
-	result := runtime.AcquisitionResult{Eligible: len(eligible)}
-	if len(eligible) == 0 {
-		return result, nil
+	targets := make([]providerAttemptTarget, len(eligible))
+	for i, id := range eligible {
+		targets[i].providerID = id
 	}
-
-	// The run owns its own cancellation. Leaving the run stops every provider
-	// that still works, so a blocked provider frees its resources.
-	runCtx, cancel := context.WithCancel(ctx)
-	defer cancel()
-
-	// The channel holds one result per provider, so a late answer never blocks
-	// the goroutine that produces it.
-	answers := make(chan ProviderObservation, len(eligible))
-	for _, id := range eligible {
-		go func() {
-			answers <- a.observe(runCtx, request.Current, id)
-		}()
-	}
-
-	answered := make(map[catalogs.ProviderID]bool, len(eligible))
-	var pending []runtime.ProviderLayer
-	var window <-chan time.Time
-	for len(answered) < len(eligible) {
-		select {
-		case observation := <-answers:
-			answered[observation.Attempt.ProviderID] = true
-			result.Attempts = append(result.Attempts, observation.Attempt)
-			if len(observation.Layer.Payload) == 0 {
-				// A skipped or failed attempt carries no layer. It publishes
-				// nothing, so it opens no window.
-				continue
-			}
-			result.Layers = append(result.Layers, observation.Layer)
-			pending = append(pending, observation.Layer)
-			if window == nil {
-				window = a.after(a.coalesceWindow(request))
-			}
-		case <-window:
-			window = nil
-			emitted := pending
-			pending = nil
-			if err := a.emit(runCtx, request, eligible, answered, emitted); err != nil {
-				return a.close(result, eligible, answered), err
-			}
-		case <-runCtx.Done():
-			return a.close(result, eligible, answered), runCtx.Err()
-		}
-	}
-	return a.close(result, eligible, answered), nil
-}
-
-// emit publishes the layers that one closed window collected. The runtime
-// supplies the publication. An acquirer without one keeps every layer for the
-// single publication that follows the run.
-func (a *Acquirer) emit(
-	ctx context.Context,
-	request runtime.AcquisitionRequest,
-	eligible []catalogs.ProviderID,
-	answered map[catalogs.ProviderID]bool,
-	layers []runtime.ProviderLayer,
-) error {
-	if len(layers) == 0 || request.Publish == nil {
-		return nil
-	}
-	logging.Debug().
-		Str("run_id", request.RunID).
-		Int("answered", len(answered)).
-		Int("eligible", len(eligible)).
-		Int("layers", len(layers)).
-		Msg("Acquisition published a coalescing window before every provider answered")
-	return request.Publish(ctx, layers)
+	return a.acquireTargets(ctx, request, targets)
 }
 
 // observe runs one provider attempt and turns every failure into a terminal
@@ -265,36 +197,6 @@ func (a *Acquirer) observe(
 	}
 	observation.Layer.ProviderID = id
 	return observation
-}
-
-// close records one terminal attempt for every provider that did not answer
-// before the run ended. The run reports the provider, and the runtime keeps
-// the retained layer of that provider.
-func (a *Acquirer) close(
-	result runtime.AcquisitionResult,
-	eligible []catalogs.ProviderID,
-	answered map[catalogs.ProviderID]bool,
-) runtime.AcquisitionResult {
-	now := a.now()
-	for _, id := range eligible {
-		if answered[id] {
-			continue
-		}
-		result.Attempts = append(result.Attempts, sources.ProviderAttempt{
-			ProviderID:  id,
-			Outcome:     sources.ProviderOutcomeFailed,
-			Reason:      sources.ProviderReasonRequestTimeout,
-			Requested:   true,
-			CompletedAt: now,
-		})
-	}
-	slices.SortFunc(result.Attempts, func(left, right sources.ProviderAttempt) int {
-		return strings.Compare(string(left.ProviderID), string(right.ProviderID))
-	})
-	slices.SortFunc(result.Layers, func(left, right runtime.ProviderLayer) int {
-		return strings.Compare(string(left.ProviderID), string(right.ProviderID))
-	})
-	return result
 }
 
 // coalesceWindow returns the window the run uses. The request wins, so one

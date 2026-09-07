@@ -27,7 +27,16 @@ func (s *Source) ObserveBinding(
 	// The copy owns its resolver selection. Concurrent calls retain separate run memos.
 	selected := *s
 	selected.credentialResolver = bindingCredentialResolver{binding: binding, resolver: s.credentialResolver}
+	if s.attemptSink != nil {
+		selected.attemptSink = func(attempt sources.ProviderAttempt) {
+			attempt.BindingID, attempt.BindingRevision = binding.ID, binding.Revision
+			s.attemptSink(attempt)
+		}
+	}
 	observed, attempts, err := selected.ObserveAttempts(ctx, sources.WithProviderFilter(binding.ProviderID))
+	for i := range attempts {
+		attempts[i].BindingID, attempts[i].BindingRevision = binding.ID, binding.Revision
+	}
 	if err != nil {
 		return sources.Observation{}, attempts, err
 	}
@@ -48,6 +57,24 @@ func (s *Source) validateBinding(binding sources.ProviderAcquisitionBinding) err
 	if !found {
 		return &errors.NotFoundError{Resource: "provider", ID: string(binding.ProviderID)}
 	}
+	if err := ValidateBinding(provider, binding); err != nil {
+		return err
+	}
+	if s.credentialResolver == nil {
+		return bindingSelectionError("credential_profile_id", "requires a credential resolver")
+	}
+	return nil
+}
+
+// ValidateBinding checks the declared scope against the provider's acquisition configuration.
+// It does not resolve credentials, construct clients, or contact providers.
+func ValidateBinding(provider *catalogs.Provider, binding sources.ProviderAcquisitionBinding) error {
+	if err := binding.Validate(); err != nil {
+		return err
+	}
+	if provider == nil || provider.ID != binding.ProviderID {
+		return bindingSelectionError("provider_id", "requires the declared provider")
+	}
 	if provider.Catalog == nil {
 		return bindingSelectionError("provider_id", "requires a catalog endpoint")
 	}
@@ -58,9 +85,6 @@ func (s *Source) validateBinding(binding sources.ProviderAcquisitionBinding) err
 		return profile.ID == binding.CredentialProfileID
 	}) {
 		return bindingSelectionError("credential_profile_id", "requires a declared profile")
-	}
-	if s.credentialResolver == nil {
-		return bindingSelectionError("credential_profile_id", "requires a credential resolver")
 	}
 	return nil
 }

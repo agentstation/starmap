@@ -82,7 +82,7 @@ type AcquisitionReport struct {
 	StartedAt   time.Time
 	CompletedAt time.Time
 
-	// Eligible is the number of providers the run considered.
+	// Eligible counts provider targets, or bindings when the active set is explicit.
 	Eligible int
 
 	// Succeeded, Skipped, and Failed count the terminal attempts.
@@ -90,7 +90,7 @@ type AcquisitionReport struct {
 	Skipped   int
 	Failed    int
 
-	// Attempts holds one terminal attempt per eligible provider.
+	// Attempts holds one terminal attempt per eligible provider or binding.
 	Attempts []sources.ProviderAttempt
 
 	// Published reports whether the runtime published a new effective catalog.

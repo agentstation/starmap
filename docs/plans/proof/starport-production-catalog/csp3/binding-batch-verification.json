@@ -1,0 +1,369 @@
+{
+  "status": "PASS",
+  "scope": "CSP3 binding-batch and model-membership implementation; no primary acceptance credit",
+  "base_commit": "8f5a5ab6975e80e5e9a638aeb046768ad67dc48d",
+  "toolchain": "go1.26.6 darwin/arm64",
+  "commands": {
+    "race": "GOTOOLCHAIN=go1.26.6 go test -race -count=1 -timeout 5m -json ./runtime ./acquisition ./internal/catalog/reconciler ./pkg/catalogs ./pkg/sources ./internal/sources/providers",
+    "all_tests": "GOTOOLCHAIN=go1.26.6 go test ./...",
+    "consumers": "GOTOOLCHAIN=go1.26.6 bash scripts/verify-consumer-deps.sh",
+    "lint": "devbox run golangci-lint run",
+    "ago": "GOTOOLCHAIN=go1.26.6 go tool ago -stale-ignores -format json ./...",
+    "generated_docs": "make generate"
+  },
+  "race_test_events": {
+    "pass": 1341,
+    "fail": 0
+  },
+  "race_packages": [
+    {
+      "package": "github.com/agentstation/starmap/internal/catalog/reconciler",
+      "status": "pass",
+      "seconds": 1.369
+    },
+    {
+      "package": "github.com/agentstation/starmap/pkg/sources",
+      "status": "pass",
+      "seconds": 2.033
+    },
+    {
+      "package": "github.com/agentstation/starmap/internal/sources/providers",
+      "status": "pass",
+      "seconds": 3.099
+    },
+    {
+      "package": "github.com/agentstation/starmap/pkg/catalogs",
+      "status": "pass",
+      "seconds": 56.048
+    },
+    {
+      "package": "github.com/agentstation/starmap/acquisition",
+      "status": "pass",
+      "seconds": 205.488
+    },
+    {
+      "package": "github.com/agentstation/starmap/runtime",
+      "status": "pass",
+      "seconds": 300.206
+    }
+  ],
+  "normal_packages": {
+    "pass": 79,
+    "fail": 0,
+    "no_tests": 22
+  },
+  "external_consumers": {
+    "passed": 6,
+    "read_only_packages": 37,
+    "read_only_budget": 37,
+    "pinned_artifact_packages": 38,
+    "pinned_artifact_budget": 38,
+    "forbidden_dependencies_absent": true
+  },
+  "lint": {
+    "issues": 0,
+    "exit_code": 0
+  },
+  "ago": {
+    "findings": 0,
+    "errors": 0,
+    "stale_ignores": 0,
+    "exit_code": 0
+  },
+  "generated_docs": {
+    "exit_code": 0
+  },
+  "earlier_failures": [
+    "Built-in acquirer lacked BindingAcquirer.",
+    "Runtime dropped linked offerings without pricing or limits.",
+    "Preserved offerings initially lacked their authored definitions in a generic enrichment merge.",
+    "Concurrent profile fixture declared two none-authentication alternatives; the credential contract correctly rejected it. Corrected to two explicit API-key profiles.",
+    "Initial broad run used host-default Go 1.27.0, failed two checks, and exceeded the runtime package five-minute limit. The final pinned-toolchain run retained the same limit."
+  ],
+  "acceptance": {
+    "status": "UNVERIFIED",
+    "primary_pass": 0,
+    "primary_failed": 50,
+    "primary_unverified": 50,
+    "exit_code": 1
+  },
+  "remaining": [
+    "Operator and server update integration",
+    "Scoped field-authority and deletion acceptance",
+    "Required code review",
+    "Native Starmap qualification",
+    "Released-pair qualification"
+  ],
+  "raw_files": {
+    "binding-batch-red.log": "2784da554789e1b387e2489cb73484af9a652b8160b800f06447dc7d0f89f073",
+    "model-membership-red.log": "2fe5a25e4e11cd06390481820c69daee216bc58a1d161cf4f496b0b185c940c9",
+    "binding-batch-runtime-red.jsonl": "112495fea18ef4252d6fb55ac5b8bc2eb37e0d321774f7eb89fb34b1e6885b56",
+    "binding-batch-race.jsonl": "c0a7999ea44797212fdd9529af30348b60bb806446ddb499f5b1da3c0c79497b",
+    "binding-batch-race-final.jsonl": "7fa3c48cdc97c6601b1251ad848ca6de7d7997626d4ad9b61180b0aa2e5720eb",
+    "binding-batch-profiles-green.jsonl": "dec3a5c93adf8e4bdcf971e275ad67f1ece5b3d423422f31a3dfb700db4a7718",
+    "model-membership-green.jsonl": "66cd33ffc11870ca520401e02d68e21b5978c3f54d528644ca526af56c72f8ed",
+    "binding-batch-ago.json": "b8fb7afa66aa7a93914ac258475dd0191be821803a8aea4439f5ba05022f5fa5",
+    "binding-batch-all-tests.log": "5dcf691797bba96e957baedd924fda275a98da6d614908ea02883cfaefc895bc",
+    "binding-batch-lint.log": "32709c2b17f4d5abf64db997d8df20b5e258ac4b3e850611f6e536878fa526a9",
+    "binding-batch-consumers.log": "cf0907e9260db93f0195ffce1fead941f5ffbe89ecf1230343c4462994440ef1",
+    "binding-batch-generated.log": "8b474829dcbff97a65d18a5708a2d7d439cd1d5e8c58ec6bcb0ba95e5a0c2e47",
+    "binding-batch-acceptance.log": "0cb84a848ec77ec36be5b967a89c8076adcb0162a00e7c6305299edeedfabc56"
+  },
+  "evidence_commit": "251378b9",
+  "document_contracts": {
+    "verdict": "PASS",
+    "scope": "Document contracts only. No product acceptance credit.",
+    "tasks": 38,
+    "primary_cases": 50,
+    "required_subcases": 324,
+    "candidate_subcases": 305,
+    "candidate_extra_subcases": 8,
+    "dependency_graph": {
+      "CSP0": [],
+      "CSP0.1": [
+        "CSP0"
+      ],
+      "CSP0.2": [
+        "CSP0.1"
+      ],
+      "CSP0.3": [
+        "CSP0.2"
+      ],
+      "CSP0.4": [
+        "CSP0"
+      ],
+      "CSP1": [
+        "CSP0"
+      ],
+      "CSP2": [
+        "CSP1"
+      ],
+      "CSP3": [
+        "CSP1"
+      ],
+      "CSP3.1": [
+        "CSP0.4"
+      ],
+      "CSP4": [
+        "CSP2",
+        "CSP3"
+      ],
+      "CSP5": [
+        "CSP3",
+        "CSP4"
+      ],
+      "CSP6": [
+        "CSP2",
+        "CSP3",
+        "CSP4"
+      ],
+      "CSP7": [
+        "CSP1",
+        "CSP3"
+      ],
+      "CSP8": [
+        "CSP1",
+        "CSP2",
+        "CSP3",
+        "CSP3.1",
+        "CSP4",
+        "CSP5",
+        "CSP6",
+        "CSP7"
+      ],
+      "CSP9": [
+        "CSP7",
+        "CSP8"
+      ],
+      "CSP9.1": [
+        "CSP0.4",
+        "CSP9"
+      ],
+      "CSP10": [
+        "CSP4",
+        "CSP8",
+        "CSP9"
+      ],
+      "CSP10.1": [
+        "CSP0.4",
+        "CSP3.1",
+        "CSP10"
+      ],
+      "CSP10.2": [
+        "CSP0.4",
+        "CSP9.1",
+        "CSP10"
+      ],
+      "CSP10.3": [
+        "CSP0.4",
+        "CSP10.1"
+      ],
+      "CSP11": [
+        "CSP5",
+        "CSP10"
+      ],
+      "CSP12": [
+        "CSP8",
+        "CSP11"
+      ],
+      "CSP12.1": [
+        "CSP0.4",
+        "CSP8",
+        "CSP12"
+      ],
+      "CSP12.2": [
+        "CSP0.4",
+        "CSP10.2",
+        "CSP12"
+      ],
+      "CSP13": [
+        "CSP11",
+        "CSP12",
+        "CSP12.1",
+        "CSP12.2"
+      ],
+      "CSP14": [
+        "CSP1",
+        "CSP4",
+        "CSP5",
+        "CSP7"
+      ],
+      "CSP15": [
+        "CSP11",
+        "CSP12",
+        "CSP12.1",
+        "CSP12.2",
+        "CSP13"
+      ],
+      "CSP16": [
+        "CSP8",
+        "CSP9",
+        "CSP10",
+        "CSP10.2",
+        "CSP12",
+        "CSP12.1",
+        "CSP13"
+      ],
+      "CSP16.1": [
+        "CSP16"
+      ],
+      "CSP17": [
+        "CSP0.1",
+        "CSP10",
+        "CSP12",
+        "CSP16.1"
+      ],
+      "CSP18": [
+        "CSP1",
+        "CSP8",
+        "CSP16",
+        "CSP17"
+      ],
+      "CSP19": [
+        "CSP12",
+        "CSP12.1",
+        "CSP12.2",
+        "CSP13",
+        "CSP14",
+        "CSP15",
+        "CSP16",
+        "CSP16.1",
+        "CSP17",
+        "CSP18"
+      ],
+      "CSP20": [
+        "CSP17",
+        "CSP18",
+        "CSP19"
+      ],
+      "CSP21": [
+        "CSP17",
+        "CSP20"
+      ],
+      "CSP22": [
+        "CSP0",
+        "CSP0.1",
+        "CSP0.2",
+        "CSP0.3",
+        "CSP0.4",
+        "CSP1",
+        "CSP2",
+        "CSP3",
+        "CSP3.1",
+        "CSP4",
+        "CSP5",
+        "CSP6",
+        "CSP7",
+        "CSP8",
+        "CSP9",
+        "CSP9.1",
+        "CSP10",
+        "CSP10.1",
+        "CSP10.2",
+        "CSP10.3",
+        "CSP11",
+        "CSP12",
+        "CSP12.1",
+        "CSP12.2",
+        "CSP13",
+        "CSP14",
+        "CSP15",
+        "CSP16",
+        "CSP16.1",
+        "CSP17",
+        "CSP18",
+        "CSP19",
+        "CSP20",
+        "CSP21"
+      ],
+      "CSP23": [
+        "CSP22"
+      ],
+      "CSP24": [
+        "CSP23"
+      ],
+      "CSP99": [
+        "CSP24"
+      ]
+    },
+    "CA05_dependency_present": true,
+    "prior_audit_inputs_preserved": 46,
+    "historical_files_preserved": 57,
+    "local_links_checked": 252,
+    "pinned_links_checked": 74,
+    "plan_lines": 500,
+    "artifact_sha256": {
+      "docs/plans/starport-production-catalog-plan.html": "90d7b821b89b214d479c3ef6c323efe41468b9e846ec78e7bba7dc66c8ef2fb4",
+      "docs/plans/README.md": "58ffc3cf0950b60ad67058f664f9f6481a210f84f0e254d481e30dc74caf93cb",
+      "docs/design/catalog-lifecycle/PRD.md": "f2572726f803d552ec56256f0e750ec54640c8a28b3126b7c48575b7649b4f80",
+      "docs/design/catalog-lifecycle/ENGINEERING_SPEC.md": "11a9956ee98d98da21c2093126b43601304ce5003f748011d18b607e267ce060",
+      "docs/design/catalog-lifecycle/REPOSITORY_FINDINGS.md": "139868d73ed0124cea933a86394e86fac1e6105b2dd8ea7381a80107d3607b2b",
+      "docs/plans/proof/starport-production-catalog/activation-2026-09-05/RESOLUTION.md": "2ac700a8a18f58248bf636fbd6a0a139995c164c56eb5e84b1c3e9a8c90c54c5"
+    }
+  },
+  "code_inputs": {
+    "acquisition/acquirer.go": "44c3271322d64e96fa340f7f82d39748a246850419291c6a4ebca5df49db0907",
+    "acquisition/batch.go": "28e40edf8ea9902192b1ba8d824d9f9dea4ce75bba1c3f4511fc3910435f7aa3",
+    "acquisition/binding.go": "b65a6e114cb51044ec027f5d96870095f2c40b4e6917a17c90cfe939e8d43725",
+    "acquisition/binding_batch.go": "a2607aa276e2feb4262bf0ae48fea6cba2141ae96bf7430f613076a54fd5083a",
+    "acquisition/binding_batch_test.go": "15b61e6d13d2c69ea862561abd89c42d62dea34111b71c0291d0836e772f1228",
+    "acquisition/binding_runtime_test.go": "a406937818a9a75e19ae7138b23e85f3b7b404f161924f1d9549b11295a89d96",
+    "internal/sources/providers/binding.go": "6a4011d2c54531cab111e269cb236778c9f0e10d43405a7a880548736b731236",
+    "internal/sources/providers/binding_test.go": "9eef79dfef13ffde00ce6cf5dc912abaa77035597db515af9f6515af7f7ebf5a",
+    "pkg/catalogs/catalog.go": "d354a632f57741b3820c7978275e2a1ddf9f069d9f5a247f6aad974baddee4c9",
+    "pkg/catalogs/reconciliation_loss_characterization_test.go": "43d4d0ff76cea2ca94959d7843b306e28800faef32f45e76cb9e6b0a3e5c3614",
+    "pkg/sources/outcome.go": "33275ed511f2625e65c075a7613dea6961b7c11f2690557bc62f16c3d417aa03",
+    "pkg/sources/outcome_binding_test.go": "cd45d28d90311bd898883ffaf0fdb9c38768d09aa3f491f8b0e1ffccd6d925ae",
+    "runtime/layers.go": "744bb51be47d9d0c0efd8480fcee11d650b01bd47795178c0905e23df44fc62c",
+    "runtime/refresh.go": "c488a0e1e8748fa4abc0243aab5ef4a43972c1a5b053a04d225d2900c6127ae8",
+    "runtime/runtime.go": "db93403e983dc4e99a0d6748c8b0895b7504c953197dc8ef1707c9b6d00af4e9",
+    "runtime/status/status.go": "14818ac3ccc72f926a1966aee7b5ed5fd8d57e3a60c8a89b4c10831c2c452370"
+  },
+  "writing": {
+    "command": "make technical-writing-check",
+    "files": 1053,
+    "diagnostics": 0,
+    "exit_code": 0
+  },
+  "planning_base_commit": "adc634469269e85dbeb010912d129dbd0821a8eb"
+}
