@@ -1,0 +1,21 @@
+{"level":"info","dialect":"sqlite","time":"2026-09-07T15:49:10-05:00","message":"relational storage ready"}
+{"level":"info","backend":"filesystem","path":"/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/TestCatalogWideProviderActivation2756242588/004","time":"2026-09-07T15:49:10-05:00","message":"file byte storage ready"}
+{"level":"info","token_file":"/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/TestCatalogWideProviderActivation2756242588/003/local-admin-token.json","generation":1,"minted":true,"time":"2026-09-07T15:49:14-05:00","message":"Local admin token ready"}
+{"level":"info","time":"2026-09-07T15:49:14-05:00","message":"shutting down HTTP server"}
+--- FAIL: TestConfiguredProviderMissingCatalogFailsStartup (0.01s)
+    catalog_contract_test.go:37: 
+        	Error Trace:	/Users/jack/src/github.com/agentstation/starport-catalog-lifecycle/internal/app/catalog_contract_test.go:37
+        	Error:      	Received unexpected error:
+        	            	open Starmap runtime: validation failed for field runtime.directory: requires owner-only POSIX permissions. Review ownership and remove group and other access before retrying
+        	Test:       	TestConfiguredProviderMissingCatalogFailsStartup
+--- FAIL: TestAuthPlanesAreIsolated (0.01s)
+    catalog_contract_test.go:156: 
+        	Error Trace:	/Users/jack/src/github.com/agentstation/starport-catalog-lifecycle/internal/app/catalog_contract_test.go:174
+        	            				/Users/jack/src/github.com/agentstation/starport-catalog-lifecycle/internal/app/catalog_contract_test.go:156
+        	Error:      	Received unexpected error:
+        	            	open Starmap runtime: validation failed for field runtime.directory: requires owner-only POSIX permissions. Review ownership and remove group and other access before retrying
+        	Test:       	TestAuthPlanesAreIsolated
+FAIL
+FAIL	github.com/agentstation/starport/internal/app	5.432s
+ok  	github.com/agentstation/starport/internal/catalog	6.465s
+FAIL

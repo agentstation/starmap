@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "starport_commit": "0acf476",
+  "source_root": "/Users/jack/src/github.com/agentstation/starport-catalog-lifecycle",
+  "workspace": "/tmp/starport-local-flow.work",
+  "passed_race_test_results": 5,
+  "failed_test_results": 0,
+  "skipped_test_results": 0,
+  "package_lint": "PASS",
+  "changed_file_prose": "PASS",
+  "pre_pr_checks": "IN_PROGRESS",
+  "captures": {
+    "red.log": "755488a52881ace906d9eebce51b3af0f0963b24158ad4707612d9935d25133f",
+    "green.jsonl": "d9a78e8b05eaf6775ff1b0b4b9c4eb37dacb95dad6e298c29ed48504b714518e",
+    "lint.log": "e92606b0bf483111dff0a120c315ea165821348f31365020e2468a0059095c47",
+    "writing-initial.log": "284648020c74617168c2f2d146debc42571b961b5999cec57668071f86f5fead",
+    "writing-final.log": "81e766cdd55bab39002ef9a767c08dc53907c7753ca39fef7c347445f3fbf58e",
+    "ownership.log": "c2006ab0841a15af0792722064ee14dae63cd3fdb0ff32a1480655cb0d5961ed"
+  },
+  "ownership_cases": {
+    "passed": 12,
+    "failed": 0
+  }
+}
