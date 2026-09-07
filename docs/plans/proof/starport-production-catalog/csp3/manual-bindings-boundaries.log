@@ -1,0 +1,5 @@
+# github.com/agentstation/starmap/internal/catalog/pipeline [github.com/agentstation/starmap/internal/catalog/pipeline.test]
+internal/catalog/pipeline/provider_bindings_test.go:27:45: cannot use "author/" + id (value of type string) as catalogs.ModelDefinitionID value in struct literal
+internal/catalog/pipeline/provider_bindings_test.go:46:50: cannot use "author/" + id (value of type string) as catalogs.ModelDefinitionID value in struct literal
+FAIL	github.com/agentstation/starmap/internal/catalog/pipeline [build failed]
+FAIL

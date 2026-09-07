@@ -1,0 +1,16 @@
+[0;34mRunning linters...[0m 
+Info: New devbox available: 0.16.0 -> v0.18.0. Please run `devbox version update`.
+Info: Running script "which" on /Users/jack/src/github.com/agentstation/starmap-catalog-requirements
+devbox run golangci-lint run
+Info: New devbox available: 0.16.0 -> v0.18.0. Please run `devbox version update`.
+Info: Running script "golangci-lint" on /Users/jack/src/github.com/agentstation/starmap-catalog-requirements
+📦 Starmap development environment loaded
+Tools available: go, gomarkdoc, swag (v2 via flake), golangci-lint
+internal/catalog/pipeline/provider_bindings.go:89:27: QF1008: could remove embedded field "Source" from selector (staticcheck)
+	observation, _, err := s.Source.ObserveBinding(ctx, s.binding)
+	                         ^
+1 issues:
+* staticcheck: 1
+Error: error running script "golangci-lint" in Devbox: exit status 1
+
+make: *** [lint] Error 1
