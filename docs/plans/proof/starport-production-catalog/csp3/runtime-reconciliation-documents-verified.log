@@ -1,0 +1,231 @@
+{
+  "verdict": "PASS",
+  "scope": "Document contracts only. No product acceptance credit.",
+  "tasks": 38,
+  "primary_cases": 50,
+  "required_subcases": 324,
+  "candidate_subcases": 305,
+  "candidate_extra_subcases": 8,
+  "dependency_graph": {
+    "CSP0": [],
+    "CSP0.1": [
+      "CSP0"
+    ],
+    "CSP0.2": [
+      "CSP0.1"
+    ],
+    "CSP0.3": [
+      "CSP0.2"
+    ],
+    "CSP0.4": [
+      "CSP0"
+    ],
+    "CSP1": [
+      "CSP0"
+    ],
+    "CSP2": [
+      "CSP1"
+    ],
+    "CSP3": [
+      "CSP1"
+    ],
+    "CSP3.1": [
+      "CSP0.4"
+    ],
+    "CSP4": [
+      "CSP2",
+      "CSP3"
+    ],
+    "CSP5": [
+      "CSP3",
+      "CSP4"
+    ],
+    "CSP6": [
+      "CSP2",
+      "CSP3",
+      "CSP4"
+    ],
+    "CSP7": [
+      "CSP1",
+      "CSP3"
+    ],
+    "CSP8": [
+      "CSP1",
+      "CSP2",
+      "CSP3",
+      "CSP3.1",
+      "CSP4",
+      "CSP5",
+      "CSP6",
+      "CSP7"
+    ],
+    "CSP9": [
+      "CSP7",
+      "CSP8"
+    ],
+    "CSP9.1": [
+      "CSP0.4",
+      "CSP9"
+    ],
+    "CSP10": [
+      "CSP4",
+      "CSP8",
+      "CSP9"
+    ],
+    "CSP10.1": [
+      "CSP0.4",
+      "CSP3.1",
+      "CSP10"
+    ],
+    "CSP10.2": [
+      "CSP0.4",
+      "CSP9.1",
+      "CSP10"
+    ],
+    "CSP10.3": [
+      "CSP0.4",
+      "CSP10.1"
+    ],
+    "CSP11": [
+      "CSP5",
+      "CSP10"
+    ],
+    "CSP12": [
+      "CSP8",
+      "CSP11"
+    ],
+    "CSP12.1": [
+      "CSP0.4",
+      "CSP8",
+      "CSP12"
+    ],
+    "CSP12.2": [
+      "CSP0.4",
+      "CSP10.2",
+      "CSP12"
+    ],
+    "CSP13": [
+      "CSP11",
+      "CSP12",
+      "CSP12.1",
+      "CSP12.2"
+    ],
+    "CSP14": [
+      "CSP1",
+      "CSP4",
+      "CSP5",
+      "CSP7"
+    ],
+    "CSP15": [
+      "CSP11",
+      "CSP12",
+      "CSP12.1",
+      "CSP12.2",
+      "CSP13"
+    ],
+    "CSP16": [
+      "CSP8",
+      "CSP9",
+      "CSP10",
+      "CSP10.2",
+      "CSP12",
+      "CSP12.1",
+      "CSP13"
+    ],
+    "CSP16.1": [
+      "CSP16"
+    ],
+    "CSP17": [
+      "CSP0.1",
+      "CSP10",
+      "CSP12",
+      "CSP16.1"
+    ],
+    "CSP18": [
+      "CSP1",
+      "CSP8",
+      "CSP16",
+      "CSP17"
+    ],
+    "CSP19": [
+      "CSP12",
+      "CSP12.1",
+      "CSP12.2",
+      "CSP13",
+      "CSP14",
+      "CSP15",
+      "CSP16",
+      "CSP16.1",
+      "CSP17",
+      "CSP18"
+    ],
+    "CSP20": [
+      "CSP17",
+      "CSP18",
+      "CSP19"
+    ],
+    "CSP21": [
+      "CSP17",
+      "CSP20"
+    ],
+    "CSP22": [
+      "CSP0",
+      "CSP0.1",
+      "CSP0.2",
+      "CSP0.3",
+      "CSP0.4",
+      "CSP1",
+      "CSP2",
+      "CSP3",
+      "CSP3.1",
+      "CSP4",
+      "CSP5",
+      "CSP6",
+      "CSP7",
+      "CSP8",
+      "CSP9",
+      "CSP9.1",
+      "CSP10",
+      "CSP10.1",
+      "CSP10.2",
+      "CSP10.3",
+      "CSP11",
+      "CSP12",
+      "CSP12.1",
+      "CSP12.2",
+      "CSP13",
+      "CSP14",
+      "CSP15",
+      "CSP16",
+      "CSP16.1",
+      "CSP17",
+      "CSP18",
+      "CSP19",
+      "CSP20",
+      "CSP21"
+    ],
+    "CSP23": [
+      "CSP22"
+    ],
+    "CSP24": [
+      "CSP23"
+    ],
+    "CSP99": [
+      "CSP24"
+    ]
+  },
+  "CA05_dependency_present": true,
+  "prior_audit_inputs_preserved": 46,
+  "historical_files_preserved": 57,
+  "local_links_checked": 260,
+  "pinned_links_checked": 74,
+  "plan_lines": 500,
+  "artifact_sha256": {
+    "docs/plans/starport-production-catalog-plan.html": "a2d98afc989f26eab46e56da660a991d749f40e0b6d257945ca0b8261f0ddfdd",
+    "docs/plans/README.md": "58ffc3cf0950b60ad67058f664f9f6481a210f84f0e254d481e30dc74caf93cb",
+    "docs/design/catalog-lifecycle/PRD.md": "f2572726f803d552ec56256f0e750ec54640c8a28b3126b7c48575b7649b4f80",
+    "docs/design/catalog-lifecycle/ENGINEERING_SPEC.md": "21d1c995278e78b0ec62e8f8a2e1c1fba533387406082d304f3efdbe29663a85",
+    "docs/design/catalog-lifecycle/REPOSITORY_FINDINGS.md": "846dae0a93817b263332cd3c602f0bb7263857b514d0c7277cea6e92d54b2bf8",
+    "docs/plans/proof/starport-production-catalog/activation-2026-09-05/RESOLUTION.md": "2ac700a8a18f58248bf636fbd6a0a139995c164c56eb5e84b1c3e9a8c90c54c5"
+  }
+}
