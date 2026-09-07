@@ -152,22 +152,19 @@ func (l *layerSet) build(ctx context.Context, baseline starmap.CatalogState) (st
 	state.Catalog = catalog
 	state.PayloadChecksum = catalogs.DescribeCatalogPayload(payload).Checksum
 	state.Sequence = baseline.Sequence + l.sequence
-	// Local acquisition changes the served bytes, so the result is no longer
-	// the generation that the layers started from. A reused identity would let
-	// a downstream treat two different catalogs as one generation. The hop
-	// therefore derives its own identity from that identity and the served
-	// digest. The upstream layer supplies it, and the embedded baseline supplies
-	// it when the runtime retains no upstream layer. Only the layers decide the
-	// derived identity, so two rebuilds of the same layers keep one identity,
-	// and a durable commit publishes that same identity. A baseline that names
-	// no identity leaves the identity to the publication.
+	// Receipts and review evidence are immutable generation content even when
+	// another source supplies every selected catalog field.
+	identityChecksum, err := effectiveEvidenceChecksum(state.PayloadChecksum, l.buildEvidence)
+	if err != nil {
+		return starmap.CatalogState{}, err
+	}
 	if l.providerBindings != nil {
-		state.GenerationID, err = l.providerBindings.generationID(state.GenerationID, state.PayloadChecksum)
+		state.GenerationID, err = l.providerBindings.generationID(state.GenerationID, identityChecksum)
 		if err != nil {
 			return starmap.CatalogState{}, err
 		}
 	} else if len(active) > 0 && state.GenerationID != "" {
-		state.GenerationID = deriveEffectiveGenerationID(state.GenerationID, state.PayloadChecksum)
+		state.GenerationID = deriveEffectiveGenerationID(state.GenerationID, identityChecksum)
 	}
 	return state, nil
 }
@@ -182,7 +179,7 @@ const effectiveGenerationLocalSuffix = ".local."
 
 // deriveEffectiveGenerationID returns the identity of a locally enriched
 // upstream generation. It never returns the upstream identity, because the
-// served payload differs from the upstream payload.
+// served payload or its source evidence differs from the upstream generation.
 //
 // A runtime with a catalog store publishes this identity, and a downstream
 // subscriber addresses it as one URL path segment. The suffix therefore stays

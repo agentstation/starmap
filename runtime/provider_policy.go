@@ -77,7 +77,7 @@ func (p *providerBindingPolicy) validatePublication(layers []ProviderLayer) erro
 	return nil
 }
 
-// generationID binds selected declarations and catalog bytes to one opaque identity.
+// generationID binds selected declarations and a content checksum to one opaque identity.
 func (p *providerBindingPolicy) generationID(upstream, checksum string) (string, error) {
 	bindings := make([]sources.ProviderAcquisitionBinding, 0, len(p.bindings))
 	for _, binding := range p.bindings {
