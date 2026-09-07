@@ -1028,3 +1028,25 @@ Next: retain reset scopes with replacement observations and accepted generation 
 Replay must apply selection to prior input occurrences, including retained provider files. Source reset semantics and projection membership remain open.
 Then connect CLI and HTTP acquisition to runtime publication while preserving previews and failed-update state.
 No branch push, native CI dispatch, GitHub merge, release, or code PR occurred.
+
+
+### Durable provider resets
+
+Commit `575a9f3f` retains provider reset scopes with replacement observations and accepted generation identity.
+`UpdateObservations` requires a successful complete replacement for each scope. Failed or canceled preparation preserves accepted state.
+Replay preserves the selected baseline, unrelated providers and bindings, original receipts, and reviewed operator edits.
+It also anchors earlier scheduled files so they cannot restore reset facts after restart.
+
+A reset changes generation identity even when its effective payload stays the same. Lost-reply recovery uses that identity.
+Manual head and batch version 2 retain reset scopes. The reader accepts version 1 without resets and rejects inconsistent or future records.
+The 4,096-batch and 64 MiB limits include reset data. CSP5 still owns production compaction and collection.
+
+The [verification record](csp3/provider-reset-verification.json) contains source hashes and the original test captures.
+Final normal coverage contains 3,617 passing events across 79 package suites, with five skips and 22 packages without tests.
+Five race suites contain 1,041 passing events. The runtime suite passed 447 events in 573.446 seconds.
+The final 23 reset events replace the same events in each broader run after the history test added retained-head loading.
+
+Lint, Ago, generated documentation, dependency boundaries, and corrected writing checks passed. Failed checks remain in the evidence record.
+
+General source resets, projection membership, previews, and CLI/HTTP integration remain open. The CLI `--force` behavior has not changed yet.
+All 50 primary cases remain UNVERIFIED. No request latency claim, branch push, native CI dispatch, GitHub merge, or release follows.

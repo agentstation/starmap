@@ -941,13 +941,13 @@ Unknown records remain unchanged. Shared fleet recovery and completed-input coll
 
 `Runtime.PublishObservations` now retains original caller-supplied observations in that transaction.
 It validates receipts and active bindings, reads no source, and serializes distinct manual calls with refresh operations.
-Observations already in manual history do not append history, advance the catalog sequence, or broadcast another generation.
+Without a reset, observations already in manual history do not append history, advance the catalog sequence, or broadcast another generation.
 
 Accepted manual history retains complete original payloads and safe receipts, including aggregate provider observations.
 Current active provider evidence enters that history when manual publication starts. Later provider windows append their selected observations.
 
 Reconstruction applies reviewed metadata before provider facts. Provider facts follow the shared fallback and observation-time policy.
-Earlier accepted facts survive a later omission. Equal-priority conflicts still require corrected evidence.
+Earlier accepted facts survive a later omission unless an accepted reset clears that scope. Equal-priority conflicts still require corrected evidence.
 The runtime excludes inactive binding observations after restart. Changed selectors require a new binding revision.
 
 Publication version 2 records manual history. New readers accept version 1 records that contain no manual reference.
@@ -955,10 +955,10 @@ Version 2 idle markers prevent version 1 readers from silently rebuilding withou
 Recovery validates all referenced parent batches before replacing any retained source, provider, or manual head.
 Native upgrade and downgrade qualification remains open.
 
-This component bounds manual history at 4,096 batches and 64 MiB of encoded observation records.
+This component bounds manual history at 4,096 batches and 64 MiB of encoded observations and reset scopes.
 A full history rejects new observations before publication and preserves its accepted head.
 CSP5 must provide tested compaction, collection, and operator recovery before production support.
-CLI and HTTP acquisition still use direct client publication. Their runtime integration and D24 reset scopes remain open.
+CLI and HTTP acquisition still use direct client publication. Their runtime integration and complete D24 source reset semantics remain open.
 
 `Runtime.ObservationInputs` now returns immutable current and selected-baseline snapshots from retained memory.
 The selected baseline excludes this runtime's local observations. This method reads no source and writes no files.
@@ -985,7 +985,7 @@ Selected records retain their original observation identity and checksum. Neithe
 This permits one provider to be reset within a legacy aggregate observation without discarding another provider's records.
 Baseline facts and reviewed authored definitions remain separate inputs.
 
-This option does not derive, retain, or publish reset scopes. Runtime reset journaling and adapter integration remain open.
+This reconciler option does not derive, retain, or publish reset scopes. Runtime provider resets now use it. General source resets and adapter integration remain open.
 Scoped membership and reset evidence still need checks that prevent old projections from restoring retired acquisition results.
 
 
@@ -1100,6 +1100,25 @@ Prepare replacement observations before committing the reset. A failed, canceled
 Acceptance must atomically bind the reset scope, replacement observations, and resulting generation to retained recovery records.
 Restart must reconstruct the same result. Retired binding revisions must not return through old local projections.
 Previews show the reset scope and catalog changes without altering active or retained state.
+
+`Runtime.UpdateObservations` now accepts explicit `ProviderObservationReset` scopes.
+A scope names a provider and either legacy unscoped input or an exact binding identity and revision.
+Each scope requires complete successful replacement evidence. Invalid scopes and failed preparation preserve accepted history.
+The runtime owns the reset list before calling acquisition, so caller changes cannot alter the accepted scope.
+
+Reset scopes share the manual batch and publication journal with replacement observations.
+Earlier scheduled provider files enter a separate preceding batch before the first reset.
+Replay excludes cleared records while preserving unrelated providers and peer bindings within original observations.
+A reset can accept the same original receipt again. The operation retains it as a replacement instead of discarding it as a duplicate.
+
+Reset operations contribute to generation identity even when payload bytes do not change.
+Recovery can resolve a lost catalog commit reply and reconstruct the same scope decisions.
+Manual head and batch version 2 retain resets. Readers accept version 1 records without resets and reject unsupported versions.
+The history byte limit includes encoded reset scopes, and one request permits at most 4,096 reset scopes.
+
+Known cleared provider fields cannot return through unchanged local projections. Actual operator edits keep local field authority.
+General metadata-source resets, complete projection membership, preview reset summaries, and CLI/HTTP adoption remain open.
+The provider API is component progress. It does not complete D24 or enterprise authority enforcement.
 
 The current pipeline still uses an empty reconciliation baseline for fresh mode.
 CSP3 must replace that behavior as part of manual runtime retention. The shared acquisition factory does not implement D24.

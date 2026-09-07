@@ -1306,3 +1306,26 @@ The option does not remove facts from the selected baseline or independently enf
 
 The [provider selection proof](../../plans/proof/starport-production-catalog/csp3/provider-selection-verification.json) records 1,018 passing race events and 3,594 passing normal events across 79 package suites.
 All 50 primary cases remain UNVERIFIED.
+
+
+### CSP3 durable provider resets
+
+The first reset contract test reproduced a retained local limit surviving replacement.
+`Runtime.UpdateObservations` now accepts provider reset scopes and requires complete successful replacement observations.
+The reset scope includes the provider, binding identity, and revision. Legacy unscoped input is a separate scope.
+
+Reset scopes and replacements enter one retained manual batch and catalog publication transaction.
+Earlier scheduled files enter a preceding batch, so restart cannot restore their cleared provider facts.
+Replay retains other providers within an aggregate receipt and other bindings of the same provider.
+It also rejects unchanged projected facts from cleared observations while preserving actual operator edits.
+
+A reset changes generation identity even when catalog bytes remain equal.
+The lost-reply test confirms that recovery keeps both the accepted catalog and reset scope.
+Rejected commits and failed preparation retain the previous history. Version checks reject reset fields under the legacy batch version.
+
+Manual heads and batches use version 2. New readers still accept version 1 records without resets.
+The byte bound now includes encoded reset scopes, and a request permits at most 4,096 scopes.
+General source resets, projection membership, previews, adapter integration, native qualification, and released-pair acceptance remain open.
+
+Component evidence: [provider reset verification](../../plans/proof/starport-production-catalog/csp3/provider-reset-verification.json).
+The checks cover 1,041 race events and 3,617 normal events. They provide no primary acceptance credit.
