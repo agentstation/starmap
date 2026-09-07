@@ -1,0 +1,136 @@
+[0;34mChecking if documentation is up to date...[0m 
+Checking ./pkg/catalogs...
+
+[1mREADME.md[0m - [31m(expected)[0m [32m(actual)[0m
+[2m2006 | [0m[2m2006 | [0m  [2m[0m
+[2m2007 | [0m[2m2007 | [0m  [2m<a name="Catalog"></a>[0m
+[31m2008 | [0m       [31m-[0m [31m## type [Catalog](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/readonly.go#L9[0m[30;41m5[0m[31m-L10[0m[30;41m5[0m[31m>)[0m
+       [32m2008 | [0m[32m+[0m [32m## type [Catalog](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/readonly.go#L9[0m[30;42m3[0m[32m-L10[0m[30;42m2[0m[32m>)[0m
+[2m2009 | [0m[2m2009 | [0m  [2m[0m
+[2m2010 | [0m[2m2010 | [0m  [2mCatalog is Starmap's immutable canonical catalog. Read methods provide the only access to its private state. Callers can retain it across goroutines.[0m
+[2m~~~~[0m   [2m~~~~[0m
+[2m2053 | [0m[2m2053 | [0m  [2m[0m
+[2m2054 | [0m[2m2054 | [0m  [2m<a name="Catalog.Author"></a>[0m
+[31m2055 | [0m       [31m-[0m [31m### func \(\*Catalog\) [Author](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/readonly.go#L2[0m[30;41m62[0m[31m>)[0m
+       [32m2055 | [0m[32m+[0m [32m### func \(\*Catalog\) [Author](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/readonly.go#L2[0m[30;42m40[0m[32m>)[0m
+[2m2056 | [0m[2m2056 | [0m  [2m[0m
+[2m2057 | [0m[2m2057 | [0m  [2m```go[0m
+[2m~~~~[0m   [2m~~~~[0m
+[2m2062 | [0m[2m2062 | [0m  [2m[0m
+[2m2063 | [0m[2m2063 | [0m  [2m<a name="Catalog.AuthorModel"></a>[0m
+[31m2064 | [0m       [31m-[0m [31m### func \(\*Catalog\) [AuthorModel](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/readonly.go#L3[0m[30;41m33[0m[31m>)[0m
+       [32m2064 | [0m[32m+[0m [32m### func \(\*Catalog\) [AuthorModel](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/readonly.go#L3[0m[30;42m11[0m[32m>)[0m
+[2m2065 | [0m[2m2065 | [0m  [2m[0m
+[2m2066 | [0m[2m2066 | [0m  [2m```go[0m
+[2m~~~~[0m   [2m~~~~[0m
+[2m2071 | [0m[2m2071 | [0m  [2m[0m
+[2m2072 | [0m[2m2072 | [0m  [2m<a name="Catalog.AuthorModels"></a>[0m
+[31m2073 | [0m       [31m-[0m [31m### func \(\*Catalog\) [AuthorModels](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/readonly.go#L3[0m[30;41m48[0m[31m>)[0m
+       [32m2073 | [0m[32m+[0m [32m### func \(\*Catalog\) [AuthorModels](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/readonly.go#L3[0m[30;42m26[0m[32m>)[0m
+[2m2074 | [0m[2m2074 | [0m  [2m[0m
+[2m2075 | [0m[2m2075 | [0m  [2m```go[0m
+[2m~~~~[0m   [2m~~~~[0m
+[2m2080 | [0m[2m2080 | [0m  [2m[0m
+[2m2081 | [0m[2m2081 | [0m  [2m<a name="Catalog.AuthoredModels"></a>[0m
+[31m2082 | [0m       [31m-[0m [31m### func \(\*Catalog\) [AuthoredModels](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/readonly.go#L2[0m[30;41m44[0m[31m>)[0m
+       [32m2082 | [0m[32m+[0m [32m### func \(\*Catalog\) [AuthoredModels](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/readonly.go#L2[0m[30;42m22[0m[32m>)[0m
+[2m2083 | [0m[2m2083 | [0m  [2m[0m
+[2m2084 | [0m[2m2084 | [0m  [2m```go[0m
+[2m~~~~[0m   [2m~~~~[0m
+[2m2089 | [0m[2m2089 | [0m  [2m[0m
+[2m2090 | [0m[2m2090 | [0m  [2m<a name="Catalog.Authors"></a>[0m
+[31m2091 | [0m       [31m-[0m [31m### func \(\*Catalog\) [Authors](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/readonly.go#L2[0m[30;41m38[0m[31m>)[0m
+       [32m2091 | [0m[32m+[0m [32m### func \(\*Catalog\) [Authors](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/readonly.go#L2[0m[30;42m16[0m[32m>)[0m
+[2m2092 | [0m[2m2092 | [0m  [2m[0m
+[2m2093 | [0m[2m2093 | [0m  [2m```go[0m
+[2m~~~~[0m   [2m~~~~[0m
+[2m2098 | [0m[2m2098 | [0m  [2m[0m
+[2m2099 | [0m[2m2099 | [0m  [2m<a name="Catalog.Definition"></a>[0m
+[31m2100 | [0m       [31m-[0m [31m### func \(\*Catalog\) [Definition](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/readonly.go#L2[0m[30;41m65[0m[31m>)[0m
+       [32m2100 | [0m[32m+[0m [32m### func \(\*Catalog\) [Definition](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/readonly.go#L2[0m[30;42m43[0m[32m>)[0m
+[2m2101 | [0m[2m2101 | [0m  [2m[0m
+[2m2102 | [0m[2m2102 | [0m  [2m```go[0m
+[2m~~~~[0m   [2m~~~~[0m
+[2m2107 | [0m[2m2107 | [0m  [2m[0m
+[2m2108 | [0m[2m2108 | [0m  [2m<a name="Catalog.DefinitionOfferings"></a>[0m
+[31m2109 | [0m       [31m-[0m [31m### func \(\*Catalog\) [DefinitionOfferings](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/readonly.go#L[0m[30;41m3[0m[31m2[0m[30;41m0[0m[31m>)[0m
+       [32m2109 | [0m[32m+[0m [32m### func \(\*Catalog\) [DefinitionOfferings](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/readonly.go#L[0m[32m2[0m[30;42m9[0m[30;42m8[0m[32m>)[0m
+[2m2110 | [0m[2m2110 | [0m  [2m[0m
+[2m2111 | [0m[2m2111 | [0m  [2m```go[0m
+[2m~~~~[0m   [2m~~~~[0m
+[2m2116 | [0m[2m2116 | [0m  [2m[0m
+[2m2117 | [0m[2m2117 | [0m  [2m<a name="Catalog.Definitions"></a>[0m
+[31m2118 | [0m       [31m-[0m [31m### func \(\*Catalog\) [Definitions](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/readonly.go#L2[0m[30;41m74[0m[31m>)[0m
+       [32m2118 | [0m[32m+[0m [32m### func \(\*Catalog\) [Definitions](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/readonly.go#L2[0m[30;42m52[0m[32m>)[0m
+[2m2119 | [0m[2m2119 | [0m  [2m[0m
+[2m2120 | [0m[2m2120 | [0m  [2m```go[0m
+[2m~~~~[0m   [2m~~~~[0m
+[2m2125 | [0m[2m2125 | [0m  [2m[0m
+[2m2126 | [0m[2m2126 | [0m  [2m<a name="Catalog.FindModel"></a>[0m
+[31m2127 | [0m       [31m-[0m [31m### func \(\*Catalog\) [FindModel](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/readonly.go#L3[0m[30;41m63[0m[31m>)[0m
+       [32m2127 | [0m[32m+[0m [32m### func \(\*Catalog\) [FindModel](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/readonly.go#L3[0m[30;42m41[0m[32m>)[0m
+[2m2128 | [0m[2m2128 | [0m  [2m[0m
+[2m2129 | [0m[2m2129 | [0m  [2m```go[0m
+[2m~~~~[0m   [2m~~~~[0m
+[2m2143 | [0m[2m2143 | [0m  [2m[0m
+[2m2144 | [0m[2m2144 | [0m  [2m<a name="Catalog.Offering"></a>[0m
+[31m2145 | [0m       [31m-[0m [31m### func \(\*Catalog\) [Offering](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/readonly.go#L2[0m[30;41m89[0m[31m>)[0m
+       [32m2145 | [0m[32m+[0m [32m### func \(\*Catalog\) [Offering](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/readonly.go#L2[0m[30;42m67[0m[32m>)[0m
+[2m2146 | [0m[2m2146 | [0m  [2m[0m
+[2m2147 | [0m[2m2147 | [0m  [2m```go[0m
+[2m~~~~[0m   [2m~~~~[0m
+[2m2152 | [0m[2m2152 | [0m  [2m[0m
+[2m2153 | [0m[2m2153 | [0m  [2m<a name="Catalog.Provenance"></a>[0m
+[31m2154 | [0m       [31m-[0m [31m### func \(\*Catalog\) [Provenance](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/readonly.go#L2[0m[30;41m54[0m[31m>)[0m
+       [32m2154 | [0m[32m+[0m [32m### func \(\*Catalog\) [Provenance](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/readonly.go#L2[0m[30;42m32[0m[32m>)[0m
+[2m2155 | [0m[2m2155 | [0m  [2m[0m
+[2m2156 | [0m[2m2156 | [0m  [2m```go[0m
+[2m~~~~[0m   [2m~~~~[0m
+[2m2161 | [0m[2m2161 | [0m  [2m[0m
+[2m2162 | [0m[2m2162 | [0m  [2m<a name="Catalog.Provider"></a>[0m
+[31m2163 | [0m       [31m-[0m [31m### func \(\*Catalog\) [Provider](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/readonly.go#L2[0m[30;41m59[0m[31m>)[0m
+       [32m2163 | [0m[32m+[0m [32m### func \(\*Catalog\) [Provider](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/readonly.go#L2[0m[30;42m37[0m[32m>)[0m
+[2m2164 | [0m[2m2164 | [0m  [2m[0m
+[2m2165 | [0m[2m2165 | [0m  [2m```go[0m
+[2m~~~~[0m   [2m~~~~[0m
+[2m2170 | [0m[2m2170 | [0m  [2m[0m
+[2m2171 | [0m[2m2171 | [0m  [2m<a name="Catalog.ProviderOfferings"></a>[0m
+[31m2172 | [0m       [31m-[0m [31m### func \(\*Catalog\) [ProviderOfferings](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/readonly.go#L[0m[30;41m306[0m[31m>)[0m
+       [32m2172 | [0m[32m+[0m [32m### func \(\*Catalog\) [ProviderOfferings](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/readonly.go#L[0m[30;42m284[0m[32m>)[0m
+[2m2173 | [0m[2m2173 | [0m  [2m[0m
+[2m2174 | [0m[2m2174 | [0m  [2m```go[0m
+[2m~~~~[0m   [2m~~~~[0m
+[2m2179 | [0m[2m2179 | [0m  [2m[0m
+[2m2180 | [0m[2m2180 | [0m  [2m<a name="Catalog.Providers"></a>[0m
+[31m2181 | [0m       [31m-[0m [31m### func \(\*Catalog\) [Providers](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/readonly.go#L2[0m[30;41m33[0m[31m>)[0m
+       [32m2181 | [0m[32m+[0m [32m### func \(\*Catalog\) [Providers](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/readonly.go#L2[0m[30;42m11[0m[32m>)[0m
+[2m2182 | [0m[2m2182 | [0m  [2m[0m
+[2m2183 | [0m[2m2183 | [0m  [2m```go[0m
+Error: output does not match current files. Did you forget to run gomarkdoc?
+Usage:
+  gomarkdoc [package ...] [flags]
+
+Flags:
+  -c, --check                              Check the output to see if it matches the generated documentation. --output must be specified to use this.
+      --config string                      File from which to load configuration (default: .gomarkdoc.yml)
+  -e, --embed                              Embed documentation into existing markdown files if available, otherwise append to file.
+      --exclude-dirs strings               List of package directories to ignore when producing documentation.
+      --footer string                      Additional content to inject at the end of each output file.
+      --footer-file string                 File containing additional content to inject at the end of each output file.
+  -f, --format string                      Format to use for writing output data. Valid options: github (default), azure-devops, plain (default "github")
+      --header string                      Additional content to inject at the beginning of each output file.
+      --header-file string                 File containing additional content to inject at the beginning of each output file.
+  -h, --help                               help for gomarkdoc
+  -u, --include-unexported                 Output documentation for unexported symbols, methods and fields in addition to exported ones.
+  -o, --output string                      File or pattern specifying where to write documentation output. Defaults to printing to stdout.
+      --repository.default-branch string   Manual override for the git repository URL used in place of automatic detection.
+      --repository.path string             Manual override for the path from the root of the git repository used in place of automatic detection.
+      --repository.url string              Manual override for the git repository URL used in place of automatic detection.
+      --tags strings                       Set of build tags to apply when choosing which files to include for documentation generation.
+  -t, --template stringToString            Custom template string to use for the provided template name instead of the default template. (default [])
+      --template-file stringToString       Custom template file to use for the provided template name instead of the default template. (default [])
+  -v, --verbose count                      Log additional output from the execution of the command. Can be chained for additional verbosity.
+      --version                            Print the version.
+
+output does not match current files. Did you forget to run gomarkdoc?
+make: *** [docs-check] Error 1

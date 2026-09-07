@@ -369,6 +369,46 @@
           "test": "TestEmbeddedGenerationIsVerifiedPassiveAndIndependent"
         }
       ]
+    },
+    "A44.canonical_alias_lookup": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./pkg/catalogs",
+          "test": "TestOfferingLookupPreservesCanonicalAliasesAndErrors"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./pkg/catalogs",
+          "test": "TestOfferingLookupAllocationsDoNotScaleWithProviderModels"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./pkg/catalogs",
+          "test": "TestBuildRejectsAmbiguousAliases"
+        }
+      ]
+    },
+    "A44.caller_owned_values": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./pkg/catalogs",
+          "test": "TestOfferingLookupRetainsCallerOwnershipConcurrently"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./pkg/catalogs",
+          "test": "TestProviderOfferingsPreserveProviderSpecificFacts"
+        }
+      ]
     }
   }
 }

@@ -1,0 +1,112 @@
+{
+  "base_commit": "b66904f400d507778c83295ae90200b8f8235a67",
+  "measurements": {
+    "before": {
+      "models=1/provider": {
+        "runs": 3,
+        "median_ns": 1558.0,
+        "median_bytes": 3264,
+        "median_allocations": 31
+      },
+      "models=1/alias": {
+        "runs": 3,
+        "median_ns": 1570.0,
+        "median_bytes": 3264,
+        "median_allocations": 31
+      },
+      "models=100/provider": {
+        "runs": 3,
+        "median_ns": 80577.0,
+        "median_bytes": 174457,
+        "median_allocations": 1617
+      },
+      "models=100/alias": {
+        "runs": 3,
+        "median_ns": 82198.0,
+        "median_bytes": 174458,
+        "median_allocations": 1617
+      },
+      "models=10000/provider": {
+        "runs": 3,
+        "median_ns": 10766955.0,
+        "median_bytes": 17398242,
+        "median_allocations": 160047
+      },
+      "models=10000/alias": {
+        "runs": 3,
+        "median_ns": 10617798.0,
+        "median_bytes": 17398246,
+        "median_allocations": 160047
+      }
+    },
+    "after": {
+      "models=1/provider": {
+        "runs": 3,
+        "median_ns": 565.2,
+        "median_bytes": 1104,
+        "median_allocations": 11
+      },
+      "models=1/alias": {
+        "runs": 3,
+        "median_ns": 549.7,
+        "median_bytes": 1104,
+        "median_allocations": 11
+      },
+      "models=100/provider": {
+        "runs": 3,
+        "median_ns": 569.5,
+        "median_bytes": 1104,
+        "median_allocations": 11
+      },
+      "models=100/alias": {
+        "runs": 3,
+        "median_ns": 572.8,
+        "median_bytes": 1104,
+        "median_allocations": 11
+      },
+      "models=10000/provider": {
+        "runs": 3,
+        "median_ns": 607.8,
+        "median_bytes": 1104,
+        "median_allocations": 11
+      },
+      "models=10000/alias": {
+        "runs": 3,
+        "median_ns": 603.0,
+        "median_bytes": 1104,
+        "median_allocations": 11
+      }
+    }
+  },
+  "catalog_race_test_events": 843,
+  "catalog_race_package_suites": 9,
+  "verifier_tests": 30,
+  "selected_subcases": [
+    "A44.canonical_alias_lookup",
+    "A44.caller_owned_values"
+  ],
+  "selected_gate": "PASS",
+  "primary_acceptance_credit": false,
+  "files": {
+    "allocation-red.jsonl": "2b9b16d399da7c887bcc699aacae55cd022187bc9333fb3fd1119387fec1f29b",
+    "benchmark-before.log": "059cae30b187126044e433bbbc82da2bb12acbb4f0d0a598d03c33dc0db7225f",
+    "benchmark-after.log": "b0ec3869679d84cc1d8e7cf2da063effaa2e7c30e63c313c348147f1245d9cab",
+    "all-benchmarks.log": "77e7f71e6a211a5d95cb5265d1820b22b2ed6ad44dba18acb7b14a9e6be6f3d5",
+    "contract-race.jsonl": "94d419387cd9318e299b9bbb3e6aeae423d0e84283471483fa2c6c8519adff40",
+    "packages-race.jsonl": "49bcca071998349a3eac0dbd66ece8e6ac117470585d5e204c8edfe1d5fbee49",
+    "product-report.json": "b31a1b9dfce9de1e3c5cb7e6018f6ce7541ab2c762cae26086990587397b4e1d",
+    "lint.log": "cd2573d8d73d2eb737ef7bf9806998a13ac09e1c3f57c9dbce4462d0ee50c19a",
+    "ago.json": "b8fb7afa66aa7a93914ac258475dd0191be821803a8aea4439f5ba05022f5fa5",
+    "docs-first.log": "91f4d7f4aa71bbf6b1b76dffae27651d32219a08caa8e33d2647d859a7ded292",
+    "docs-settled.log": "c326a6932614067e6dc62592068f841cbf5eadf50fe1b0b63bc07614250aa50b",
+    "verifier-tests.log": "00001dcebbe0af70ab3ee00b64ed35e3c7ff825073420e7584eb61667d17cbc9"
+  },
+  "inputs": {
+    "pkg/catalogs/readonly.go": "f70f6378effce9b429f833355007fca41852d739d0d95b820b987a047e70e452",
+    "pkg/catalogs/offering_lookup_test.go": "3c8fa6d436b380b70a06a2dbf91f2010a6d3547379b46b3497ebd3064cb1ff4c",
+    "pkg/catalogs/read_views_test.go": "51d428ac14f8adb917052f34b9614e51a4b16450ebaabce59f94d1f444728eed",
+    "pkg/catalogs/copy.go": "4186196b64348dba950b5aac624d366718b6f0f9c79b8411449b89c39cc6d2eb",
+    "pkg/catalogs/identity_validation.go": "f5e9a42a77f6a01ec67a2525968d8bffd5bd0b6905c292951d4bc75624a48b43",
+    "scripts/catalog-product-checks.json": "7bc9cea89ba099897fab18a423da4a3cac9af4d65d66d84eab2ac7c946100580"
+  }
+}
