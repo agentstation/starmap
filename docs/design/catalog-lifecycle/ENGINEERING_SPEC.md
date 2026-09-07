@@ -1110,8 +1110,11 @@ Acceptance must atomically bind the reset scope, replacement observations, and r
 Restart must reconstruct the same result. Retired binding revisions must not return through old local projections.
 Previews show the reset scope and catalog changes without altering active or retained state.
 
-`Runtime.UpdateObservations` now accepts explicit `ProviderObservationReset` scopes.
-A scope names a provider and either legacy unscoped input or an exact binding identity and revision.
+`Runtime.UpdateObservations` accepts explicit `ObservationReset` scopes. `ProviderObservationReset` remains an alias.
+A provider API scope names a provider and either legacy unscoped input or an exact binding identity and revision.
+A metadata scope names models.dev HTTP or Git and either one original provider identity or the whole source.
+Metadata resets preserve peer source records and independent authored definitions. Protected baseline and operator sources cannot be reset.
+
 Each scope requires complete successful replacement evidence. Invalid scopes and failed preparation preserve accepted history.
 The runtime owns the reset list before calling acquisition, so caller changes cannot alter the accepted scope.
 
@@ -1122,15 +1125,24 @@ A reset can accept the same original receipt again. The operation retains it as 
 
 Reset operations contribute to generation identity even when payload bytes do not change.
 Recovery can resolve a lost catalog commit reply and reconstruct the same scope decisions.
-Manual head and batch version 2 retain resets. Readers accept version 1 records without resets and reject unsupported versions.
+Manual head and batch version 3 retain metadata resets. Version 2 retains provider resets, and version 1 contains no reset scopes.
+Readers accept these older records and reject reset fields that their version cannot describe.
 The history byte limit includes encoded reset scopes, and one request permits at most 4,096 reset scopes.
 
 Known cleared provider fields cannot return through unchanged local projections. Actual operator edits keep local field authority.
-General metadata-source resets, complete projection membership, preview reset summaries, and CLI/HTTP adoption remain open.
-The provider API is component progress. It does not complete D24 or enterprise authority enforcement.
 
-The current pipeline still uses an empty reconciliation baseline for fresh mode.
-CSP3 must replace that behavior as part of manual runtime retention. The shared acquisition factory does not implement D24.
+The acquisition factory (`acquisition.NewForRuntime`) connects manual source reads to retained runtime publication.
+The runtime update (`Runtime.UpdateAcquisition`) derives reset scopes from completed source observations under one operation lock.
+The preview (`Runtime.PreviewAcquisition`) uses a captured snapshot without writing catalog, workspace, or runtime state.
+The CLI update and HTTP update use this composition. HTTP accepts `fresh=true`. The CLI uses `--force`.
+
+Fresh acquisition preserves the selected baseline and requires complete successful replacement observations.
+Explicit reset permits source omissions. Normal refresh retains the volume-collapse guard, and strict non-reset publication still rejects an empty source.
+The result reports reset count and generation identity even when the effective payload stays equal.
+A root-only acquisition composition rejects Fresh because it lacks separate baseline and retained acquisition history.
+
+Complete projection membership, field-presence replay, enterprise authority enforcement, native qualification, and released-pair acceptance remain open.
+The [local developer milestone](../../plans/proof/starport-production-catalog/local-developer-flow.md) records working-pair integration evidence.
 
 ### 6.3 Acquisition across application compositions
 

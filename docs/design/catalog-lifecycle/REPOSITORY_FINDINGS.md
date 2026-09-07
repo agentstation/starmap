@@ -1344,3 +1344,21 @@ General source reset records, projection membership, previews, and CLI/HTTP adop
 
 The [metadata selection proof](../../plans/proof/starport-production-catalog/csp3/metadata-selection-verification.json) records 1,055 passing race events and 3,631 normal events.
 All 50 primary cases remain UNVERIFIED.
+
+
+### CSP3 local developer integration
+
+The working branch connects CLI and HTTP acquisition to retained runtime publication.
+Metadata reset scopes now cover models.dev HTTP and Git. Manual history version 3 stores these scopes while accepting earlier provider reset records.
+The production pipeline previously treated an explicit reset as a volume collapse. Fresh mode now accepts complete replacement omissions and preserves its baseline.
+Normal refresh and strict publication keep their existing health checks.
+
+Actual binaries verified offline Starport startup, CLI acquisition, Starmap server refresh, HTTP reset, and Starport activation.
+The deterministic provider changed the GPT-4o mini context limit to 9,999 tokens. Reset restored the embedded limit of 128,000 tokens.
+Starport retained the accepted generation and payload checksum after restart.
+These results use a temporary Go workspace with the candidate Starmap package. The published Starport module pin remains unchanged.
+
+Starport's old acquisition test fixture omitted the source receipt required by the candidate runtime.
+The fixture now creates a validated original observation and provider layer. The focused pair test passes.
+The [local developer milestone](../../plans/proof/starport-production-catalog/local-developer-flow.md) owns commands, failures, and remaining checks.
+All 50 primary cases remain UNVERIFIED. Native qualification, full production integration, review, and release gates remain open.

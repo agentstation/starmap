@@ -1,0 +1,59 @@
+{
+  "runtime": {
+    "usable": true,
+    "source_kind": "embedded",
+    "fallback": true,
+    "fallback_reason": "awaiting_source",
+    "lease": "lease_held",
+    "started_at": "2026-09-07T09:59:16.576207-05:00",
+    "observed_at": "2026-09-07T09:59:16.74375-05:00"
+  },
+  "route_validation": {
+    "state": "pending",
+    "candidate": {
+      "generation_id": "catalog-20260830T083213Z-ad5d2a45e490",
+      "payload_checksum": "sha256:289c7c26ab022796a6638fe32b6bb2d9f2b7a59d0ac07a761fd30c975d91e488",
+      "generated_at": "2026-08-30T08:32:13.408997Z",
+      "lease_epoch": 1
+    }
+  },
+  "source_health": "unknown",
+  "upstream_health": "unknown",
+  "acquisition": {
+    "enabled": false,
+    "health": "unknown",
+    "age_seconds": 0,
+    "freshness": "unknown"
+  },
+  "freshness": {
+    "catalog": "critical",
+    "catalog_age_seconds": 714423,
+    "channel": "critical",
+    "channel_age_seconds": 714423,
+    "source_check": "unknown",
+    "source_check_age_seconds": 0
+  },
+  "provenance": {
+    "upstream": {
+      "source_identity": "embedded",
+      "source_kind": "embedded",
+      "channel_updated_at": "2026-08-30T08:32:13.408997Z"
+    }
+  },
+  "catalog": {
+    "providers": 17,
+    "models": 511
+  },
+  "snapshot": {
+    "generation_id": "catalog-20260830T083213Z-ad5d2a45e490",
+    "generated_at": "2026-08-30T08:32:13.408997Z",
+    "age_seconds": 714423,
+    "catalog_sequence": 1,
+    "availability_revision": 1,
+    "payload_checksum": "sha256:289c7c26ab022796a6638fe32b6bb2d9f2b7a59d0ac07a761fd30c975d91e488",
+    "manifest_available": false,
+    "manifest_unavailable_reason": "no stored generation record for \"catalog-20260830T083213Z-ad5d2a45e490\", so the snapshot predates durable generation storage",
+    "degraded": false
+  },
+  "operations": []
+}

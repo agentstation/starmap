@@ -1,0 +1,27 @@
+Starport offline ready
+CLI update complete
+Starmap server ready
+Starport refresh response {"id": "a5e65d2b-706d-4df5-a425-f10e8a298ea0", "kind": "catalog_update", "state": "accepted", "accepted_at": "2026-09-07T14:54:50.740045Z", "changed": false, "joined": false}
+Starport connected ready
+Traceback (most recent call last):
+  File "/tmp/starport-local-flow-run.py", line 48, in <module>
+    update=read('http://127.0.0.1:19322/api/v1/updates/'+operation_id)
+  File "/tmp/starport-local-flow-run.py", line 9, in read
+    with urllib.request.urlopen(req,timeout=5) as response:return json.load(response)
+         ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.14/3.14.7/Frameworks/Python.framework/Versions/3.14/lib/python3.14/urllib/request.py", line 187, in urlopen
+    return opener.open(url, data, timeout)
+           ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.14/3.14.7/Frameworks/Python.framework/Versions/3.14/lib/python3.14/urllib/request.py", line 493, in open
+    response = meth(req, response)
+  File "/opt/homebrew/Cellar/python@3.14/3.14.7/Frameworks/Python.framework/Versions/3.14/lib/python3.14/urllib/request.py", line 602, in http_response
+    response = self.parent.error(
+        'http', request, response, code, msg, hdrs)
+  File "/opt/homebrew/Cellar/python@3.14/3.14.7/Frameworks/Python.framework/Versions/3.14/lib/python3.14/urllib/request.py", line 531, in error
+    return self._call_chain(*args)
+           ~~~~~~~~~~~~~~~~^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.14/3.14.7/Frameworks/Python.framework/Versions/3.14/lib/python3.14/urllib/request.py", line 464, in _call_chain
+    result = func(*args)
+  File "/opt/homebrew/Cellar/python@3.14/3.14.7/Frameworks/Python.framework/Versions/3.14/lib/python3.14/urllib/request.py", line 611, in http_error_default
+    raise HTTPError(req.full_url, code, msg, hdrs, fp)
+urllib.error.HTTPError: HTTP Error 429: Too Many Requests
