@@ -18,6 +18,7 @@ type collector struct {
 	logger            zerolog.Logger
 	scoped            *scopedObservations
 	providerSelection providerObservationSelection
+	providerViews     map[providerViewKey]*catalogs.Catalog
 }
 
 func (c *collector) reviewCandidateObservation(
@@ -33,11 +34,11 @@ func (c *collector) reviewCandidateObservation(
 			continue
 		}
 		sourceProvider := c.findProvider(
-			observation.Catalog,
+			c.providerCatalog(observation),
 			provider.ID,
 			provider.Aliases,
 		)
-		if sourceProvider == nil || !c.providerSelection.permits(observation, sourceProvider.ID) || sourceProvider.Models[providerModelID] == nil {
+		if sourceProvider == nil || !c.permitsProvider(observation, sourceProvider.ID) || sourceProvider.Models[providerModelID] == nil {
 			continue
 		}
 		if observation.SourceID == sources.ProvidersID && c.scoped != nil {
@@ -82,7 +83,7 @@ func (c *collector) collectProviders() map[sources.ID][]*catalogs.Provider {
 	result := make(map[sources.ID][]*catalogs.Provider)
 
 	for _, src := range c.sources {
-		catalog := src.Catalog
+		catalog := c.providerCatalog(src)
 		if catalog == nil {
 			continue
 		}
@@ -91,7 +92,7 @@ func (c *collector) collectProviders() map[sources.ID][]*catalogs.Provider {
 		if len(providers) > 0 {
 			providerList := make([]*catalogs.Provider, 0, len(providers))
 			for _, p := range providers {
-				if !c.providerSelection.permits(src, p.ID) {
+				if !c.permitsProvider(src, p.ID) {
 					continue
 				}
 				providerList = append(providerList, &p)
@@ -122,7 +123,7 @@ func (c *collector) collectModelsForProvider(
 
 // providerModels extracts models for a provider from a source.
 func (c *collector) providerModels(src sources.Observation, provider *catalogs.Provider, primaryCatalog *catalogs.Catalog) []*catalogs.Model {
-	catalog := src.Catalog
+	catalog := c.providerCatalog(src)
 	if catalog == nil {
 		return nil
 	}
@@ -131,7 +132,7 @@ func (c *collector) providerModels(src sources.Observation, provider *catalogs.P
 
 	// Find provider in source (check ID and aliases)
 	sourceProvider := c.findProvider(catalog, provider.ID, provider.Aliases)
-	if sourceProvider != nil && !c.providerSelection.permits(src, sourceProvider.ID) {
+	if sourceProvider != nil && !c.permitsProvider(src, sourceProvider.ID) {
 		return nil
 	}
 

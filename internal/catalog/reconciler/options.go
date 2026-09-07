@@ -7,16 +7,18 @@ import (
 	"github.com/agentstation/starmap/pkg/catalogs/authority"
 	"github.com/agentstation/starmap/pkg/errors"
 	"github.com/agentstation/starmap/pkg/provenance"
+	"github.com/agentstation/starmap/pkg/sources"
 )
 
 // Options configures a reconciler.
 type options struct {
-	authorities       authority.Reader
-	tracking          bool
-	changeTime        time.Time
-	baseline          *catalogs.Catalog // Existing catalog for comparison
-	projectedEvidence func(catalogs.ProviderID, provenance.Entry) bool
-	providerSelection providerObservationSelection
+	authorities            authority.Reader
+	tracking               bool
+	changeTime             time.Time
+	baseline               *catalogs.Catalog // Existing catalog for comparison
+	projectedEvidence      func(catalogs.ProviderID, provenance.Entry) bool
+	providerSelection      providerObservationSelection
+	baselineProviderSource sources.ID
 }
 
 // WithProjectedEvidencePolicy controls reuse of unchanged facts from a local projection.

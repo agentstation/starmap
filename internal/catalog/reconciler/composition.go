@@ -13,18 +13,19 @@ import (
 // The caller supplies verified observations and owns acquisition and publication.
 func ReconcileObservations(ctx context.Context, baseline *catalogs.Catalog, srcs []sources.Observation, extra ...Option) (*Result, error) {
 	primary := reconciliationPrimary(srcs)
-	var err error
-	srcs, err = reconciliationSources(baseline, srcs, primary)
-	if err != nil {
-		return nil, &pkgerrors.SyncError{
-			Provider: "all",
-			Err:      err,
-		}
+	collectionSource := sources.ID("")
+	if isModelsDevSource(primary) && baseline != nil && baseline.Providers().Len() > 0 {
+		collectionSource = primary
 	}
+	srcs = reconciliationSources(baseline, srcs, primary)
 	primary = reconciliationPrimaryAfterEnrichment(baseline, srcs, primary)
 
 	opts := []Option{
 		WithAuthorities(authority.New()),
+		func(options *options) error {
+			options.baselineProviderSource = collectionSource
+			return nil
+		},
 	}
 
 	if baseline != nil {
@@ -47,20 +48,17 @@ func ReconcileObservations(ctx context.Context, baseline *catalogs.Catalog, srcs
 	return result, nil
 }
 
-func reconciliationSources(baseline *catalogs.Catalog, srcs []sources.Observation, primary sources.ID) ([]sources.Observation, error) {
-	var err error
-	srcs, err = restrictModelsDevPrimaryToBaseline(baseline, srcs, primary)
-	if err != nil {
-		return nil, err
-	}
+func reconciliationSources(baseline *catalogs.Catalog, srcs []sources.Observation, primary sources.ID) []sources.Observation {
 	if !needsBaselineEnrichment(baseline, srcs, primary) {
-		return srcs, nil
+		return srcs
 	}
-
 	enriched := make([]sources.Observation, 0, len(srcs)+1)
 	enriched = append(enriched, sources.Observation{SourceID: sources.LocalCatalogID, Catalog: baseline})
-	enriched = append(enriched, srcs...)
-	return enriched, nil
+	return append(enriched, srcs...)
+}
+
+func isModelsDevSource(source sources.ID) bool {
+	return source == sources.ModelsDevHTTPID || source == sources.ModelsDevGitID
 }
 
 func reconciliationPrimaryAfterEnrichment(baseline *catalogs.Catalog, srcs []sources.Observation, primary sources.ID) sources.ID {
@@ -76,57 +74,18 @@ func reconciliationPrimaryAfterEnrichment(baseline *catalogs.Catalog, srcs []sou
 	return primary
 }
 
-func restrictModelsDevPrimaryToBaseline(baseline *catalogs.Catalog, srcs []sources.Observation, primary sources.ID) ([]sources.Observation, error) {
-	if primary != sources.ModelsDevHTTPID && primary != sources.ModelsDevGitID {
-		return srcs, nil
-	}
-	if baseline == nil || baseline.Providers().Len() == 0 {
-		return srcs, nil
-	}
-
-	restricted := make([]sources.Observation, 0, len(srcs))
-	for _, src := range srcs {
-		if src.SourceID != primary {
-			restricted = append(restricted, src)
-			continue
-		}
-		filtered, err := filterCatalogToBaselineProviders(src.Catalog, baseline)
-		if err != nil {
-			return nil, err
-		}
-		src.Catalog = filtered
-		restricted = append(restricted, src)
-	}
-	return restricted, nil
-}
-
-func filterCatalogToBaselineProviders(sourceCatalog, baseline *catalogs.Catalog) (*catalogs.Catalog, error) {
-	filtered, err := filterCatalogToBaselineProvidersInto(catalogs.NewEmpty(), sourceCatalog, baseline)
-	if err != nil {
-		return nil, err
-	}
-	return catalogs.NewObservationCatalog(filtered)
-}
-
-func filterCatalogToBaselineProvidersInto(filtered *catalogs.Builder, sourceCatalog, baseline catalogs.Reader) (*catalogs.Builder, error) {
-	if err := setBaselineProviders(filtered, sourceCatalog, baseline); err != nil {
-		return nil, err
-	}
-	return filtered, nil
-}
-
 type providerSetter interface {
 	SetProvider(catalogs.Provider) error
 }
 
-func setBaselineProviders(filtered providerSetter, sourceCatalog, baseline catalogs.Reader) error {
+func setBaselineProviders(filtered providerSetter, sourceCatalog, baseline catalogs.Reader, permit func(catalogs.ProviderID) bool) error {
 	if sourceCatalog == nil || baseline == nil {
 		return nil
 	}
 
 	for _, baselineProvider := range baseline.Providers().List() {
 		sourceProvider, ok := resolveProviderForBaseline(sourceCatalog, baselineProvider)
-		if !ok {
+		if !ok || (permit != nil && !permit(sourceProvider.ID)) {
 			continue
 		}
 		sourceProvider.ID = baselineProvider.ID

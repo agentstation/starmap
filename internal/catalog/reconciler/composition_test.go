@@ -34,6 +34,7 @@ func TestFilterCatalogToBaselineProvidersReturnsSetProviderError(t *testing.T) {
 		},
 		sourceCatalog,
 		baseline,
+		nil,
 	)
 	if !stderrors.Is(err, setErr) {
 		t.Fatalf("expected wrapped SetProvider error, got %v", err)

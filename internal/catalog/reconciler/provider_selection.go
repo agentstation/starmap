@@ -13,7 +13,9 @@ type providerObservationSelection map[string]map[catalogs.ProviderID]bool
 // WithProviderObservationSelection selects provider records within original observations.
 // Map keys are observation identities. An omitted identity keeps every provider.
 // An empty list excludes all its provider records. Original receipts stay unchanged.
-// The selection does not remove baseline facts or reviewed authored definitions.
+//
+// Provider APIs and models.dev observations support selection. Baselines and local
+// operator observations do not. Reviewed authored definitions remain separate inputs.
 func WithProviderObservationSelection(input map[string][]catalogs.ProviderID) Option {
 	selected := make(providerObservationSelection, len(input))
 	for id, providers := range input {
@@ -60,8 +62,8 @@ func (s providerObservationSelection) validate(ctx context.Context, observations
 		if !selected {
 			continue
 		}
-		if observation.SourceID != sources.ProvidersID || seen[observation.ID] {
-			return &errors.ValidationError{Field: "reconciliation.provider_selection", Message: "each selected identity must name one provider observation"}
+		if (observation.SourceID != sources.ProvidersID && !isModelsDevSource(observation.SourceID)) || seen[observation.ID] {
+			return &errors.ValidationError{Field: "reconciliation.provider_selection", Message: "each selected identity must name one acquisition observation"}
 		}
 		if err := observation.Validate(); err != nil {
 			return err

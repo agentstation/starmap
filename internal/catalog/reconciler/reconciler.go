@@ -25,14 +25,15 @@ import (
 // It is concrete because this package has one reconciliation engine. The narrow
 // authority.Reader and Source interfaces accept extensions.
 type Reconciler struct {
-	strategy          *AuthorityStrategy
-	authorities       authority.Reader
-	provenance        *provenance.Tracker
-	tracking          bool
-	baseline          *catalogs.Catalog // Baseline catalog for comparison
-	changeTime        time.Time
-	projectedEvidence func(catalogs.ProviderID, provenance.Entry) bool
-	providerSelection providerObservationSelection
+	strategy               *AuthorityStrategy
+	authorities            authority.Reader
+	provenance             *provenance.Tracker
+	tracking               bool
+	baseline               *catalogs.Catalog // Baseline catalog for comparison
+	changeTime             time.Time
+	projectedEvidence      func(catalogs.ProviderID, provenance.Entry) bool
+	providerSelection      providerObservationSelection
+	baselineProviderSource sources.ID
 }
 
 // New creates a new Reconciler with options.
@@ -45,14 +46,15 @@ func New(opts ...Option) (*Reconciler, error) {
 
 	// Create reconciler from options
 	r := &Reconciler{
-		strategy:          NewAuthorityStrategy(options.authorities),
-		authorities:       options.authorities,
-		provenance:        provenance.NewTracker(options.tracking),
-		tracking:          options.tracking,
-		baseline:          options.baseline,
-		changeTime:        options.changeTime,
-		projectedEvidence: options.projectedEvidence,
-		providerSelection: options.providerSelection,
+		strategy:               NewAuthorityStrategy(options.authorities),
+		authorities:            options.authorities,
+		provenance:             provenance.NewTracker(options.tracking),
+		tracking:               options.tracking,
+		baseline:               options.baseline,
+		changeTime:             options.changeTime,
+		projectedEvidence:      options.projectedEvidence,
+		providerSelection:      options.providerSelection,
+		baselineProviderSource: options.baselineProviderSource,
 	}
 
 	return r, nil
@@ -154,13 +156,16 @@ func (r *Reconciler) initialize(ctx context.Context, primary sources.ID, srcs []
 	collector := newCollector(srcs, primary)
 	collector.scoped = scoped
 	collector.providerSelection = r.providerSelection
+	if err := collector.restrictProviderCollection(r.baselineProviderSource, r.baseline); err != nil {
+		return nil, err
+	}
 
 	// Validate and get primary catalog if specified
 	var primaryCatalog *catalogs.Catalog
 	if primary != "" {
 		primaryCatalog = collector.primaryCatalog()
-		if primary == sources.ProvidersID && scoped != nil {
-			primaryCatalog, err = scopedPrimaryCatalog(srcs, r.providerSelection)
+		if (primary == sources.ProvidersID && scoped != nil) || (isModelsDevSource(primary) && len(r.providerSelection) > 0) {
+			primaryCatalog, err = selectedPrimaryCatalog(primary, srcs, r.providerSelection)
 			if err != nil {
 				return nil, err
 			}

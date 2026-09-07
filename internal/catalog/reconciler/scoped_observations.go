@@ -173,12 +173,12 @@ func (merger *merger) providerObservation(source sources.ID, providerID catalogs
 	return evidence, exists
 }
 
-// scopedPrimaryCatalog combines membership only for the primary-source filter.
+// selectedPrimaryCatalog combines membership only for the primary-source filter.
 // It is not an observation and supplies no synthetic receipt or field authority.
-func scopedPrimaryCatalog(observations []sources.Observation, selection providerObservationSelection) (*catalogs.Catalog, error) {
+func selectedPrimaryCatalog(primary sources.ID, observations []sources.Observation, selection providerObservationSelection) (*catalogs.Catalog, error) {
 	builder := catalogs.NewEmpty()
 	for _, observation := range observations {
-		if observation.SourceID != sources.ProvidersID {
+		if observation.SourceID != primary {
 			continue
 		}
 		membership := catalogs.NewEmpty()
