@@ -1,0 +1,3 @@
+ok  	github.com/agentstation/starmap/internal/catalog/pipeline	2.118s
+ok  	github.com/agentstation/starmap/internal/catalog/reconciler	0.257s
+ok  	github.com/agentstation/starmap/pkg/provenance	0.370s
