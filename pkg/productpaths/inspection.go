@@ -84,7 +84,7 @@ func InspectManifest(ctx context.Context, manifest FileManifest, limit int) (Fil
 			report.Observations = append(report.Observations, FileObservation{ID: entry.ID, Path: entry.Location.Path, State: "not-applicable", Reason: entry.Availability})
 			continue
 		}
-		info, statErr := os.Lstat(entry.Location.Path)
+		info, statErr := inspectionLstat(entry.Location.Path)
 		report.observe(entry.ID, entry.Location.Path, info, statErr)
 		if statErr != nil || !info.IsDir() || len(entry.Patterns) == 0 {
 			continue
@@ -173,7 +173,7 @@ func (report *FileInspection) scan(ctx context.Context, entry FileEntry, expecte
 	}
 	defer func() { _ = root.Close() }()
 	current, err := root.Stat(".")
-	selected, selectedErr := os.Lstat(entry.Location.Path)
+	selected, selectedErr := inspectionLstat(entry.Location.Path)
 	if err != nil || selectedErr != nil || selected.Mode()&os.ModeSymlink != 0 || !os.SameFile(current, expected) || !os.SameFile(selected, expected) {
 		report.changed(entry.ID, entry.Location.Path)
 		return nil

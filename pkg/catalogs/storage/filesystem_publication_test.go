@@ -5,6 +5,7 @@ import (
 	"errors"
 	"os"
 	"path/filepath"
+	"runtime"
 	"testing"
 
 	"github.com/agentstation/starmap/internal/privatefiles"
@@ -106,15 +107,33 @@ func TestFilesystemCatalogStoreRefusesReplacedRootAtPromotion(t *testing.T) {
 	if err := store.Commit(t.Context(), first, ""); err != nil {
 		t.Fatal(err)
 	}
+	var renameErr error
+	attempted := false
 	store.beforeCurrentPromotion = func() error {
-		if err := os.Rename(root, root+"-preserved"); err != nil {
-			return err
+		attempted = true
+		renameErr = os.Rename(root, root+"-preserved")
+		if renameErr != nil {
+			return renameErr
 		}
 		_, err := privatefiles.NewDirectory(root)
 		return err
 	}
 	if err := store.Commit(t.Context(), testGeneration("replace-second", "second"), first.Manifest.GenerationID); err == nil {
 		t.Fatal("published into replacement root")
+	}
+	if !attempted {
+		t.Fatal("commit did not reach root replacement")
+	}
+	if runtime.GOOS == "windows" && os.IsPermission(renameErr) {
+		// Windows can refuse the rename while the store holds its commit lock.
+		assertStoredGeneration(t, store, first)
+		if _, err := os.Lstat(root + "-preserved"); !os.IsNotExist(err) {
+			t.Fatalf("denied rename created a destination: %v", err)
+		}
+		return
+	}
+	if renameErr != nil {
+		t.Fatalf("fixture could not replace the root: %v", renameErr)
 	}
 	entries, err := os.ReadDir(root)
 	if err != nil || len(entries) != 0 {

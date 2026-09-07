@@ -6,6 +6,8 @@ import (
 	"testing"
 
 	"golang.org/x/sys/windows"
+
+	"github.com/agentstation/starmap/internal/test/windowstoken"
 )
 
 func TestWindowsInspectionReportsACLWithoutReadingContents(t *testing.T) {
@@ -21,39 +23,41 @@ func TestWindowsInspectionReportsACLWithoutReadingContents(t *testing.T) {
 		{"deny-content-read", "O:" + sid + "D:P(D;;0x1;;;WD)(A;;FA;;;" + sid + ")", "unverified"},
 	} {
 		t.Run(test.name, func(t *testing.T) {
-			path := filepath.Join(t.TempDir(), "catalog.json")
-			const contents = "preserve these private bytes"
-			if err := os.WriteFile(path, []byte(contents), 0o600); err != nil {
-				t.Fatal(err)
-			}
-			setInspectionDACL(t, path, test.sddl)
-			t.Cleanup(func() { setInspectionDACL(t, path, private) })
-			if test.name == "deny-content-read" {
-				if _, err := os.ReadFile(path); err == nil {
-					t.Fatal("fixture did not deny file-content reads")
+			windowstoken.WithoutPrivileges(t, func() {
+				path := filepath.Join(t.TempDir(), "catalog.json")
+				const contents = "preserve these private bytes"
+				if err := os.WriteFile(path, []byte(contents), 0o600); err != nil {
+					t.Fatal(err)
 				}
-			}
-			before, err := windows.GetNamedSecurityInfo(path, windows.SE_FILE_OBJECT, windows.OWNER_SECURITY_INFORMATION|windows.DACL_SECURITY_INFORMATION)
-			if err != nil {
-				t.Fatal(err)
-			}
-			report, err := InspectManifest(t.Context(), FileManifest{Files: []FileEntry{{ID: "catalog-store", Location: Path{Path: path}, Availability: "available", Policy: FilePolicy{Access: "owner-only"}}}}, 10)
-			if err != nil || !report.Complete || len(report.Observations) != 1 {
-				t.Fatalf("inspection incomplete: %+v %v", report, err)
-			}
-			item := report.Observations[0]
-			if item.AccessStatus != test.status || item.WindowsSecurity == nil || item.WindowsSecurity.OwnerSID != sid || item.WindowsSecurity.DACLState != "present" {
-				t.Fatalf("wrong Windows observation: %+v", item)
-			}
-			after, err := windows.GetNamedSecurityInfo(path, windows.SE_FILE_OBJECT, windows.OWNER_SECURITY_INFORMATION|windows.DACL_SECURITY_INFORMATION)
-			if err != nil || before.String() != after.String() {
-				t.Fatal("inspection changed native permissions", err)
-			}
-			setInspectionDACL(t, path, private)
-			actual, err := os.ReadFile(path)
-			if err != nil || string(actual) != contents {
-				t.Fatal("inspection changed payload bytes", err)
-			}
+				setInspectionDACL(t, path, test.sddl)
+				t.Cleanup(func() { setInspectionDACL(t, path, private) })
+				if test.name == "deny-content-read" {
+					if _, err := os.ReadFile(path); err == nil {
+						t.Fatal("fixture did not deny file-content reads")
+					}
+				}
+				before, err := windows.GetNamedSecurityInfo(path, windows.SE_FILE_OBJECT, windows.OWNER_SECURITY_INFORMATION|windows.DACL_SECURITY_INFORMATION)
+				if err != nil {
+					t.Fatal(err)
+				}
+				report, err := InspectManifest(t.Context(), FileManifest{Files: []FileEntry{{ID: "catalog-store", Location: Path{Path: path}, Availability: "available", Policy: FilePolicy{Access: "owner-only"}}}}, 10)
+				if err != nil || !report.Complete || len(report.Observations) != 1 {
+					t.Fatalf("inspection incomplete: %+v %v", report, err)
+				}
+				item := report.Observations[0]
+				if item.AccessStatus != test.status || item.WindowsSecurity == nil || item.WindowsSecurity.OwnerSID != sid || item.WindowsSecurity.DACLState != "present" {
+					t.Fatalf("wrong Windows observation: %+v", item)
+				}
+				after, err := windows.GetNamedSecurityInfo(path, windows.SE_FILE_OBJECT, windows.OWNER_SECURITY_INFORMATION|windows.DACL_SECURITY_INFORMATION)
+				if err != nil || before.String() != after.String() {
+					t.Fatal("inspection changed native permissions", err)
+				}
+				setInspectionDACL(t, path, private)
+				actual, err := os.ReadFile(path)
+				if err != nil || string(actual) != contents {
+					t.Fatal("inspection changed payload bytes", err)
+				}
+			})
 		})
 	}
 }
@@ -78,7 +82,7 @@ func TestWindowsInspectionRefusesChangedIdentityAndSymlinkTargets(t *testing.T) 
 	if err := os.WriteFile(path, []byte("old"), 0o600); err != nil {
 		t.Fatal(err)
 	}
-	old, err := os.Lstat(path)
+	old, err := inspectionLstat(path)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -97,7 +101,7 @@ func TestWindowsInspectionRefusesChangedIdentityAndSymlinkTargets(t *testing.T) 
 	if err := os.Symlink(path, link); err != nil {
 		t.Fatal(err)
 	}
-	info, err := os.Lstat(link)
+	info, err := inspectionLstat(link)
 	if err != nil {
 		t.Fatal(err)
 	}

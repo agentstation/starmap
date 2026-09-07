@@ -18,7 +18,7 @@ func TestWorkspaceReplacementPreservesAccessPolicy(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	base := "D:P(A;;FA;;;" + user.User.Sid.String() + ")(A;;FA;;;SY)(A;;FA;;;BA)(A;;RA;;;WD)"
+	base := "D:P(A;;FA;;;" + user.User.Sid.String() + ")(A;;FA;;;SY)(A;;FA;;;BA)(A;;0x80;;;WD)"
 	for _, name := range []string{".", "providers.yaml"} {
 		setWorkspaceTestDACL(t, filepath.Join(path, name), base)
 	}
