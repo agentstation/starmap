@@ -1,0 +1,51 @@
+{
+  "capture_sha256": "8a84f084d85591d32a4fa9636bfcbb4cadd7106439b1a60a8c92eb7f492c8be5",
+  "width": 1280,
+  "height": 800,
+  "font_size": 26,
+  "font": "/System/Library/Fonts/Menlo.ttc",
+  "effective_font_at_900px": 18.28125,
+  "edits": [
+    {
+      "before_event": 5,
+      "original_gap_seconds": 3.0040929999999997,
+      "edited_gap_seconds": 6
+    },
+    {
+      "before_event": 8,
+      "original_gap_seconds": 40.283747999999996,
+      "edited_gap_seconds": 8
+    }
+  ],
+  "outputs": {
+    "first-use-uncut.gif": {
+      "sha256": "7fba774218c64e73a102bc9d5f813d96e6759a93bd36f05a12c5ce0d28d14fc9",
+      "bytes": 512086,
+      "duration_ms": 64450,
+      "event_frames": 15
+    },
+    "first-use.gif": {
+      "sha256": "572a74653b202a41fd76c0480db20f7940f5bf090c895a4fbd95e919a90bfa0e",
+      "bytes": 516182,
+      "duration_ms": 38160,
+      "event_frames": 15
+    }
+  },
+  "edited_event_times_ms": [
+    30,
+    1300,
+    1520,
+    2280,
+    8280,
+    9930,
+    17930,
+    19480,
+    23490,
+    25060,
+    25080,
+    25120,
+    25140,
+    25190,
+    30190
+  ]
+}
