@@ -327,6 +327,30 @@ func TestManualBindingVolumeUsesOnlyMatchingHistory(t *testing.T) {
 	}
 }
 
+func TestManualBindingVolumeCannotBorrowAnotherProviderHistory(t *testing.T) {
+	builder, bindings := manualBindingFixture(t)
+	observation, err := sources.NewObservation(sources.ProvidersID, buildCatalog(t, builder), manualBindingMetadata(&bindings[0]))
+	if err != nil {
+		t.Fatal(err)
+	}
+	other, _ := builder.Provider("provider")
+	other.ID = "another-provider"
+	other.Credentials = testcatalog.UnauthenticatedCredentials()
+	if err := builder.SetProvider(other); err != nil {
+		t.Fatal(err)
+	}
+	builder.SetProvenance(provenance.Map{
+		"model:" + provenance.ModelResourceID("another-provider", "one") + ":Name": {{Source: sources.ProvidersID, ProviderBindingID: bindings[0].ID, ProviderBindingRevision: bindings[0].Revision}},
+	})
+	guarded, err := guardObservationVolume(buildCatalog(t, builder), observation)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if guarded.ID != observation.ID {
+		t.Fatal("another provider's history changed the bound receipt")
+	}
+}
+
 func manualBindingMetadata(binding *sources.ProviderAcquisitionBinding) sources.ObservationMetadata {
 	return sources.ObservationMetadata{ProviderBinding: binding, ObservedAt: time.Now().UTC(), Revision: sources.Revision{Kind: sources.RevisionKindContentDigest}, Status: sources.ObservationStatusSucceeded, Completeness: sources.ObservationCompletenessComplete}
 }

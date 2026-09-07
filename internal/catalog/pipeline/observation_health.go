@@ -80,6 +80,9 @@ func observationAttributedModelIDs(
 	provider catalogs.Provider,
 ) map[string]struct{} {
 	models := make(map[string]struct{})
+	if observation.ProviderBinding != nil && observation.ProviderBinding.ProviderID != provider.ID {
+		return models
+	}
 	for modelID := range provider.Models {
 		for _, entries := range baseline.Provenance().FindModel(provider.ID, modelID) {
 			current := currentProvenanceEntry(entries)
