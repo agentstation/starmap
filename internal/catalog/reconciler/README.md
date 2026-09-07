@@ -32,6 +32,7 @@ Package reconciler provides catalog synchronization and reconciliation capabilit
   - [func \(r \*Reconciler\) Sources\(ctx context.Context, primary sources.ID, srcs \[\]sources.Observation\) \(\*Result, error\)](<#Reconciler.Sources>)
 - [type Result](<#Result>)
   - [func NewResult\(\) \*Result](<#NewResult>)
+  - [func ReconcileObservations\(ctx context.Context, baseline \*catalogs.Catalog, srcs \[\]sources.Observation, extra ...Option\) \(\*Result, error\)](<#ReconcileObservations>)
   - [func \(r \*Result\) Finalize\(\)](<#Result.Finalize>)
   - [func \(r \*Result\) HasChanges\(\) bool](<#Result.HasChanges>)
   - [func \(r \*Result\) IsSuccess\(\) bool](<#Result.IsSuccess>)
@@ -214,6 +215,15 @@ func NewResult() *Result
 ```
 
 NewResult creates a new result with defaults.
+
+<a name="ReconcileObservations"></a>
+### func [ReconcileObservations](<https://github.com/agentstation/starmap/blob/main/internal/catalog/reconciler/composition.go#L14>)
+
+```go
+func ReconcileObservations(ctx context.Context, baseline *catalogs.Catalog, srcs []sources.Observation, extra ...Option) (*Result, error)
+```
+
+ReconcileObservations applies source selection, baseline enrichment, and canonical field authority. The caller supplies verified observations and owns acquisition and publication.
 
 <a name="Result.Finalize"></a>
 ### func \(\*Result\) [Finalize](<https://github.com/agentstation/starmap/blob/main/internal/catalog/reconciler/result.go#L121>)

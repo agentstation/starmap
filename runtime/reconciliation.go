@@ -40,11 +40,7 @@ func (l *layerSet) reconcileProviders(ctx context.Context, base *catalogs.Catalo
 			changedAt = observation.ObservedAt
 		}
 	}
-	engine, err := reconciler.New(reconciler.WithBaseline(base), reconciler.WithChangeTime(changedAt))
-	if err != nil {
-		return nil, evidence, err
-	}
-	result, err := engine.Sources(ctx, sources.ProvidersID, observations)
+	result, err := reconciler.ReconcileObservations(ctx, base, observations, reconciler.WithChangeTime(changedAt))
 	if err != nil {
 		return nil, evidence, err
 	}

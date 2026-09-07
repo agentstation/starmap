@@ -10,7 +10,6 @@ import (
 	"github.com/rs/zerolog"
 	"github.com/spf13/cobra"
 
-	"github.com/agentstation/starmap/acquisition"
 	"github.com/agentstation/starmap/internal/cli/emoji"
 	"github.com/agentstation/starmap/internal/cli/format"
 	"github.com/agentstation/starmap/internal/constants"
@@ -114,19 +113,7 @@ func ExecuteUpdate(ctx context.Context, app application, flags *Flags, logger *z
 	if err != nil {
 		return err
 	}
-	credentialResolver, err := app.CredentialResolver()
-	if err != nil {
-		return errors.WrapResource("load", "catalog credentials", "", err)
-	}
-	directories, err := app.SourceDirectories()
-	if err != nil {
-		return err
-	}
-	syncer, err := acquisition.New(
-		sm,
-		acquisition.WithCredentialResolver(credentialResolver),
-		acquisition.WithSourceDirectories(directories),
-	)
+	syncer, err := app.CatalogAcquisition(sm)
 	if err != nil {
 		return errors.WrapResource("create", "catalog acquisition", "", err)
 	}

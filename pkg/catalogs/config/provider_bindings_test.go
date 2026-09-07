@@ -25,6 +25,37 @@ func configuredBinding(id string) sources.ProviderAcquisitionBinding {
 	}
 }
 
+func TestProviderBindingAccessorPreservesPresenceAndOwnership(t *testing.T) {
+	for _, test := range []struct {
+		name    string
+		values  map[string]string
+		present bool
+		count   int
+	}{
+		{name: "omitted"},
+		{name: "empty", values: map[string]string{bindingsSetting: "[]"}, present: true},
+		{name: "one", values: map[string]string{bindingsSetting: bindingJSON(t, configuredBinding("one"))}, present: true, count: 1},
+	} {
+		t.Run(test.name, func(t *testing.T) {
+			settings, err := config.Parse(test.values)
+			if err != nil {
+				t.Fatal(err)
+			}
+			bindings, present, err := settings.ProviderAcquisitionBindings()
+			if err != nil || present != test.present || len(bindings) != test.count {
+				t.Fatalf("bindings = %d, present = %t, error = %v", len(bindings), present, err)
+			}
+			if len(bindings) != 0 {
+				bindings[0].ID = "changed"
+				again, _, err := settings.ProviderAcquisitionBindings()
+				if err != nil || again[0] != configuredBinding("one") {
+					t.Fatal("accessor returned shared binding storage")
+				}
+			}
+		})
+	}
+}
+
 func bindingJSON(t *testing.T, bindings ...sources.ProviderAcquisitionBinding) string {
 	t.Helper()
 	data, err := json.Marshal(bindings)
