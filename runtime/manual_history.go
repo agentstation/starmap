@@ -10,8 +10,9 @@ import (
 )
 
 const (
-	manualHistoryName    = "manual.json"
-	manualHistoryVersion = 1
+	manualHistoryName          = "manual.json"
+	manualHistoryVersion       = 2
+	manualHistoryLegacyVersion = 1
 	// Histories remain bounded until compaction replaces superseded evidence.
 	maxManualHistoryBatches = 4096
 )
@@ -21,12 +22,14 @@ type manualBatch struct {
 	reference    string
 	parent       *manualBatch
 	observations []manualObservation
+	resets       []ProviderObservationReset
 }
 
 type manualBatchRecord struct {
-	Version      int      `json:"version"`
-	Parent       string   `json:"parent,omitempty"`
-	Observations []string `json:"observations"`
+	Version      int                        `json:"version"`
+	Parent       string                     `json:"parent,omitempty"`
+	Observations []string                   `json:"observations"`
+	Resets       []ProviderObservationReset `json:"resets,omitempty"`
 }
 
 type manualHistoryHead struct {
@@ -35,8 +38,15 @@ type manualHistoryHead struct {
 }
 
 func (s *layerStore) stageManualBatch(ctx context.Context, batch *manualBatch) (string, error) {
-	record := manualBatchRecord{Version: manualHistoryVersion}
+	record := manualBatchRecord{Version: manualHistoryVersion, Resets: batch.resets}
 	if batch.parent != nil {
+		if batch.parent.reference == "" {
+			reference, err := s.stageManualBatch(ctx, batch.parent)
+			if err != nil {
+				return "", err
+			}
+			batch.parent.reference = reference
+		}
 		record.Parent = batch.parent.reference
 	}
 	for _, observation := range batch.observations {
@@ -68,7 +78,7 @@ func (s *layerStore) loadManualHistory(ctx context.Context) (*manualBatch, error
 	if err := decodeInputRecord(raw, &head); err != nil {
 		return nil, err
 	}
-	if head.Version != manualHistoryVersion || head.Batch == "" {
+	if (head.Version != manualHistoryVersion && head.Version != manualHistoryLegacyVersion) || head.Batch == "" {
 		return nil, invalidInputPublication("invalid manual history head")
 	}
 	return s.readManualHistory(ctx, head.Batch)
@@ -107,17 +117,26 @@ func (s *layerStore) readManualHistory(ctx context.Context, reference string) (*
 	return newest, nil
 }
 
-func selectManualObservations(ctx context.Context, history *manualBatch, input []manualObservation) ([]manualObservation, error) {
+func selectManualObservations(ctx context.Context, history *manualBatch, input []manualObservation, resets []ProviderObservationReset) ([]manualObservation, error) {
 	if len(input) == 0 {
 		return nil, nil
 	}
+	incomingBytes, err := providerResetBytes(resets)
+	if err != nil {
+		return nil, err
+	}
 	seen := make(map[string]bool)
-	bytesRetained, batches := 0, 0
+	bytesRetained, batches := incomingBytes, 0
 	for batch := history; batch != nil; batch = batch.parent {
 		if err := ctx.Err(); err != nil {
 			return nil, err
 		}
 		batches++
+		size, err := providerResetBytes(batch.resets)
+		if err != nil {
+			return nil, err
+		}
+		bytesRetained += size
 		for _, observation := range batch.observations {
 			if err := ctx.Err(); err != nil {
 				return nil, err
@@ -131,14 +150,15 @@ func selectManualObservations(ctx context.Context, history *manualBatch, input [
 		}
 	}
 	selected := make([]manualObservation, 0, len(input))
+	incomingSeen := make(map[string]bool)
 	for _, observation := range input {
 		if err := ctx.Err(); err != nil {
 			return nil, err
 		}
-		if seen[observation.Receipt.Link.ObservationID] {
+		if incomingSeen[observation.Receipt.Link.ObservationID] || (len(resets) == 0 && seen[observation.Receipt.Link.ObservationID]) {
 			continue
 		}
-		seen[observation.Receipt.Link.ObservationID] = true
+		incomingSeen[observation.Receipt.Link.ObservationID] = true
 		encoded, err := json.Marshal(observation)
 		if err != nil {
 			return nil, err
@@ -157,10 +177,22 @@ func (s *layerStore) readManualBatch(ctx context.Context, directory *privatefile
 	if err := s.readInput(directory, reference, &record); err != nil {
 		return nil, "", err
 	}
-	if record.Version != manualHistoryVersion || len(record.Observations) == 0 {
+	if (record.Version != manualHistoryVersion && record.Version != manualHistoryLegacyVersion) || len(record.Observations) == 0 || (record.Version == manualHistoryLegacyVersion && len(record.Resets) > 0) {
 		return nil, "", invalidInputPublication("invalid manual observation batch")
 	}
-	batch := &manualBatch{reference: reference}
+	resets, err := prepareProviderResets(record.Resets)
+	if err != nil {
+		return nil, "", err
+	}
+	size, err := providerResetBytes(resets)
+	if err != nil {
+		return nil, "", err
+	}
+	*bytesRead += size
+	if *bytesRead > maxLayerBytes {
+		return nil, "", invalidInputPublication("manual history exceeds the retained byte bound")
+	}
+	batch := &manualBatch{reference: reference, resets: resets}
 	seen := make(map[string]bool, len(record.Observations))
 	for _, reference := range record.Observations {
 		if err := ctx.Err(); err != nil {
@@ -187,6 +219,9 @@ func (s *layerStore) readManualBatch(ctx context.Context, directory *privatefile
 		}
 		batch.observations = append(batch.observations, observation)
 	}
+	if err := validateProviderReplacement(ctx, batch.resets, batch.observations); err != nil {
+		return nil, "", err
+	}
 	return batch, record.Parent, nil
 }
 
@@ -211,12 +246,7 @@ func validateManualHistory(history *manualBatch, policy *providerBindingPolicy) 
 // manualInputs includes provider evidence that predates or follows manual publication.
 func (l *layerSet) manualInputs(input []manualObservation, providers []ProviderLayer) []manualObservation {
 	if len(input) != 0 && l.manual == nil {
-		anchors := make([]manualObservation, 0, len(l.providers)+len(input))
-		for _, key := range l.activeProviderOrder() {
-			layer := l.providers[key]
-			anchors = append(anchors, manualObservation{Payload: layer.Payload, Receipt: layer.Receipt})
-		}
-		input = append(anchors, input...)
+		input = append(l.manualProviderAnchors(), input...)
 	}
 	if l.manual != nil || len(input) != 0 {
 		for _, layer := range providers {
@@ -224,4 +254,24 @@ func (l *layerSet) manualInputs(input []manualObservation, providers []ProviderL
 		}
 	}
 	return input
+}
+
+func (l *layerSet) manualProviderAnchors() []manualObservation {
+	anchors := make([]manualObservation, 0, len(l.providers))
+	for _, key := range l.activeProviderOrder() {
+		layer := l.providers[key]
+		anchors = append(anchors, manualObservation{Payload: layer.Payload, Receipt: layer.Receipt})
+	}
+	return anchors
+}
+
+// prepareManualInputs anchors prior provider files before the first reset batch.
+func (l *layerSet) prepareManualInputs(ctx context.Context, input []manualObservation, providers []ProviderLayer, resets []ProviderObservationReset) ([]manualObservation, error) {
+	if len(resets) > 0 && l.manual == nil {
+		anchors := l.manualProviderAnchors()
+		if len(anchors) > 0 {
+			l.manual = &manualBatch{observations: anchors}
+		}
+	}
+	return selectManualObservations(ctx, l.manual, l.manualInputs(input, providers), resets)
 }

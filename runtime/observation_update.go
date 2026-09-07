@@ -48,12 +48,20 @@ func (r *Runtime) ObservationInputs(ctx context.Context) (ObservationInputs, err
 // The callback may read sources. Runtime shutdown and caller cancellation stop its context.
 // An error or empty observation list preserves accepted state. The callback must not
 // call another mutation on this runtime. Use ObservationInputs for a read-only preview.
-func (r *Runtime) UpdateObservations(ctx context.Context, prepare func(context.Context, ObservationInputs) ([]sources.Observation, error)) (starmap.CatalogState, error) {
+//
+// Optional resets replace prior local provider observations within the named scopes.
+// Each scope requires complete successful replacement evidence. The baseline and
+// unrelated scopes remain. Resets and replacements share the catalog publication journal.
+func (r *Runtime) UpdateObservations(ctx context.Context, prepare func(context.Context, ObservationInputs) ([]sources.Observation, error), resets ...ProviderObservationReset) (starmap.CatalogState, error) {
 	if prepare == nil {
 		return starmap.CatalogState{}, &errors.ValidationError{Field: "observations.prepare", Message: "is required"}
 	}
+	resets, err := prepareProviderResets(resets)
+	if err != nil {
+		return starmap.CatalogState{}, err
+	}
 	var state starmap.CatalogState
-	_, err := r.execute(ctx, runKindManual, func(runCtx context.Context, _ *RefreshReport, epoch uint64) error {
+	_, err = r.execute(ctx, runKindManual, func(runCtx context.Context, _ *RefreshReport, epoch uint64) error {
 		inputs, err := r.ObservationInputs(runCtx)
 		if err != nil {
 			return err
@@ -65,7 +73,7 @@ func (r *Runtime) UpdateObservations(ctx context.Context, prepare func(context.C
 		if err := runCtx.Err(); err != nil {
 			return err
 		}
-		if len(observations) == 0 {
+		if len(observations) == 0 && len(resets) == 0 {
 			state = inputs.Current
 			return nil
 		}
@@ -73,7 +81,7 @@ func (r *Runtime) UpdateObservations(ctx context.Context, prepare func(context.C
 		if err != nil {
 			return err
 		}
-		state, err = r.publishInputs(runCtx, nil, nil, prepared, epoch)
+		state, err = r.publishInputs(runCtx, nil, nil, prepared, epoch, resets)
 		return err
 	})
 	return state, err

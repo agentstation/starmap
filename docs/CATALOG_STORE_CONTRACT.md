@@ -381,3 +381,26 @@ The same immutable inputs produce the same derived identity across restarts.
 The regression excludes provider evidence at the reconstruction boundary after reopening a real filesystem catalog store.
 The excluded provider no longer returns through the baseline. This check does not exercise an operator revocation API or active binding policy.
 Explicit local inputs still need source evidence when the runtime reconstructs a generation. A previously merged head cannot substitute for that evidence.
+
+
+## Provider reset retention
+
+`Runtime.UpdateObservations` accepts optional `ProviderObservationReset` scopes.
+Each scope names a canonical provider and, for scoped acquisition, a binding identity and revision.
+Empty binding fields select legacy unscoped observations. Each scope requires complete successful replacement evidence.
+Failed preparation, cancellation, or rejected publication preserves the accepted reset history.
+
+The runtime journals reset scopes with replacement observations and their accepted generation.
+Reset operations change generation identity even when payload bytes remain equal. Recovery can therefore resolve a lost commit reply.
+Earlier scheduled provider files enter a separate history batch before the first reset. They cannot restore cleared facts during restart.
+
+Replay selects records within original observations. It preserves the baseline, unrelated providers, peer binding scopes, and original receipts.
+Unchanged projected fields from a cleared observation cannot restore its provider facts. Actual operator edits keep local field authority.
+General source resets and complete projection membership rules remain separate work.
+
+Manual heads and batches now use version 2. Readers still accept version 1 records without resets.
+Version 1 batches cannot contain reset scopes. New head versions cause older readers to refuse the history.
+Recovery validates reset scopes and matching replacement receipts before applying any retained inputs.
+
+The component limits a history to 4,096 batches and 64 MiB of encoded observations and reset scopes.
+One reset request permits at most 4,096 scopes. Production compaction, native format qualification, and CLI/HTTP integration remain open.

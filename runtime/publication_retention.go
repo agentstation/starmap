@@ -12,10 +12,10 @@ import (
 // publishInputChanges stages retained inputs before catalog publication.
 // Only an accepted catalog can install those inputs into active retention.
 func (r *Runtime) publishInputChanges(ctx context.Context, source *sourceLayer, providers []ProviderLayer, epoch uint64) (starmap.CatalogState, error) {
-	return r.publishInputs(ctx, source, providers, nil, epoch)
+	return r.publishInputs(ctx, source, providers, nil, epoch, nil)
 }
 
-func (r *Runtime) publishInputs(ctx context.Context, source *sourceLayer, providers []ProviderLayer, manual []manualObservation, epoch uint64) (starmap.CatalogState, error) {
+func (r *Runtime) publishInputs(ctx context.Context, source *sourceLayer, providers []ProviderLayer, manual []manualObservation, epoch uint64, resets []ProviderObservationReset) (starmap.CatalogState, error) {
 	manualRequested := len(manual) != 0
 	if err := ctx.Err(); err != nil {
 		return starmap.CatalogState{}, err
@@ -28,6 +28,9 @@ func (r *Runtime) publishInputs(ctx context.Context, source *sourceLayer, provid
 		return starmap.CatalogState{}, err
 	}
 	if err := r.config.providerBindings.validateManual(manual, true); err != nil {
+		return starmap.CatalogState{}, err
+	}
+	if err := validateProviderReplacement(ctx, resets, manual); err != nil {
 		return starmap.CatalogState{}, err
 	}
 	r.publicationMu.Lock()
@@ -48,7 +51,10 @@ func (r *Runtime) publishInputs(ctx context.Context, source *sourceLayer, provid
 	if err != nil {
 		return starmap.CatalogState{}, err
 	}
-	manual = candidate.manualInputs(manual, selected)
+	manual, err = candidate.prepareManualInputs(ctx, manual, selected, resets)
+	if err != nil {
+		return starmap.CatalogState{}, err
+	}
 	if source != nil {
 		owned := *source
 		owned.Payload = bytes.Clone(source.Payload)
@@ -59,15 +65,11 @@ func (r *Runtime) publishInputs(ctx context.Context, source *sourceLayer, provid
 	for _, layer := range selected {
 		candidate.setProvider(layer)
 	}
-	manual, err = selectManualObservations(ctx, candidate.manual, manual)
-	if err != nil {
-		return starmap.CatalogState{}, err
-	}
 	if manualRequested && len(manual) == 0 && source == nil && len(selected) == 0 {
 		return r.State(), nil
 	}
 	if len(manual) != 0 {
-		candidate.manual = &manualBatch{parent: candidate.manual, observations: manual}
+		candidate.manual = &manualBatch{parent: candidate.manual, observations: manual, resets: resets}
 	}
 	state, err := candidate.build(ctx, candidate.embedded)
 	if err != nil {

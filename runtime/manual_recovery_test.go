@@ -99,14 +99,14 @@ func TestManualHistoryRefusesNewBatchAtCapacityWithoutChangingHead(t *testing.T)
 	for range maxManualHistoryBatches {
 		history = &manualBatch{parent: history, observations: prepared}
 	}
-	if selected, err := selectManualObservations(t.Context(), history, prepared); err != nil || len(selected) != 0 {
+	if selected, err := selectManualObservations(t.Context(), history, prepared, nil); err != nil || len(selected) != 0 {
 		t.Fatalf("duplicate at capacity = %v", err)
 	}
 	incoming, err := prepareManualObservations(t.Context(), []sources.Observation{manualTestObservation(t, "new", at.Add(time.Minute), false)})
 	if err != nil {
 		t.Fatal(err)
 	}
-	if _, err := selectManualObservations(t.Context(), history, incoming); !errors.IsConflict(err) {
+	if _, err := selectManualObservations(t.Context(), history, incoming, nil); !errors.IsConflict(err) {
 		t.Fatalf("new batch at capacity = %v", err)
 	}
 	if len(manualBatches(history)) != maxManualHistoryBatches || history.observations[0].Receipt.Link.ObservationID != prepared[0].Receipt.Link.ObservationID {

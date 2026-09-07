@@ -10,11 +10,17 @@ import (
 	"github.com/agentstation/starmap/internal/catalog/reconciler"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/catalogs/evidence"
+	"github.com/agentstation/starmap/pkg/provenance"
 	"github.com/agentstation/starmap/pkg/sources"
 )
 
 func (l *layerSet) reconcileManualInputs(ctx context.Context, base *catalogs.Catalog, at time.Time, active []providerEvidenceKey) (*catalogs.Builder, starmap.CandidateEvidence, error) {
 	collected := starmap.CandidateEvidence{}
+	selection, err := selectProviderResetHistory(ctx, l.manual)
+	if err != nil {
+		return nil, collected, err
+	}
+	seenProviders := make(map[string]bool)
 	var providers []sources.Observation
 	for _, batch := range manualBatches(l.manual) {
 		observations := make([]sources.Observation, 0, len(batch.observations))
@@ -29,8 +35,12 @@ func (l *layerSet) reconcileManualInputs(ctx context.Context, base *catalogs.Cat
 			if err != nil {
 				return nil, collected, err
 			}
+			if observation.SourceID == sources.ProvidersID && (seenProviders[observation.ID] || selection.excludesAll(observation)) {
+				continue
+			}
 			collected.SourceObservations = append(collected.SourceObservations, observation.Link())
 			if observation.SourceID == sources.ProvidersID {
+				seenProviders[observation.ID] = true
 				providers = append(providers, observation)
 			} else {
 				observations = append(observations, observation)
@@ -39,7 +49,7 @@ func (l *layerSet) reconcileManualInputs(ctx context.Context, base *catalogs.Cat
 		if len(observations) == 0 {
 			continue
 		}
-		metadata, reviews, err := l.reconcileManualMetadata(ctx, base, at, observations)
+		metadata, reviews, err := l.reconcileManualMetadata(ctx, base, at, observations, selection)
 		if err != nil {
 			return nil, collected, err
 		}
@@ -52,7 +62,7 @@ func (l *layerSet) reconcileManualInputs(ctx context.Context, base *catalogs.Cat
 	}
 	for _, key := range active {
 		retained := l.providers[key]
-		if seen[retained.Receipt.Link.ObservationID] {
+		if _, inHistory := selection.observations[retained.Receipt.Link.ObservationID]; seen[retained.Receipt.Link.ObservationID] || inHistory {
 			continue
 		}
 		observation, err := (manualObservation{Payload: retained.Payload, Receipt: retained.Receipt}).restore()
@@ -68,7 +78,7 @@ func (l *layerSet) reconcileManualInputs(ctx context.Context, base *catalogs.Cat
 		for end < len(providers) && reconciler.CompareProviderObservations(providers[0], providers[end]) == 0 {
 			end++
 		}
-		result, err := l.reconcileManualBatch(ctx, base, at, providers[:end])
+		result, err := l.reconcileManualBatch(ctx, base, at, providers[:end], selection)
 		if err != nil {
 			return nil, collected, err
 		}
@@ -93,7 +103,7 @@ func (l *layerSet) reconcileManualInputs(ctx context.Context, base *catalogs.Cat
 
 // Each metadata pass contains one observation per source. Later passes keep the
 // earlier reviewed definitions through the reconciler's baseline contract.
-func (l *layerSet) reconcileManualMetadata(ctx context.Context, base *catalogs.Catalog, at time.Time, observations []sources.Observation) (*catalogs.Catalog, []evidence.ReviewCandidate, error) {
+func (l *layerSet) reconcileManualMetadata(ctx context.Context, base *catalogs.Catalog, at time.Time, observations []sources.Observation, selection *providerResetSelection) (*catalogs.Catalog, []evidence.ReviewCandidate, error) {
 	var reviews []evidence.ReviewCandidate
 	for len(observations) != 0 {
 		seen := make(map[sources.ID]bool)
@@ -105,7 +115,7 @@ func (l *layerSet) reconcileManualMetadata(ctx context.Context, base *catalogs.C
 			seen[observation.SourceID] = true
 			end++
 		}
-		result, err := l.reconcileManualBatch(ctx, base, at, observations[:end])
+		result, err := l.reconcileManualBatch(ctx, base, at, observations[:end], selection)
 		if err != nil {
 			return nil, nil, err
 		}
@@ -119,7 +129,7 @@ func (l *layerSet) reconcileManualMetadata(ctx context.Context, base *catalogs.C
 	return base, reviews, nil
 }
 
-func (l *layerSet) reconcileManualBatch(ctx context.Context, base *catalogs.Catalog, at time.Time, observations []sources.Observation) (*reconciler.Result, error) {
+func (l *layerSet) reconcileManualBatch(ctx context.Context, base *catalogs.Catalog, at time.Time, observations []sources.Observation, selection *providerResetSelection) (*reconciler.Result, error) {
 	baseSource := sources.EmbeddedCatalogID
 	if l.source != nil {
 		baseSource = sources.ReleaseArtifactID
@@ -133,7 +143,9 @@ func (l *layerSet) reconcileManualBatch(ctx context.Context, base *catalogs.Cata
 			at = observation.ObservedAt
 		}
 	}
-	return reconciler.ReconcileObservations(ctx, base, inputs, reconciler.WithChangeTime(at), reconciler.WithProjectedEvidencePolicy(l.providerBindings.permitsProjectedEvidence))
+	return reconciler.ReconcileObservations(ctx, base, inputs, reconciler.WithChangeTime(at), reconciler.WithProjectedEvidencePolicy(func(provider catalogs.ProviderID, entry provenance.Entry) bool {
+		return l.providerBindings.permitsProjectedEvidence(provider, entry) && selection.permitsProjection(provider, entry)
+	}), reconciler.WithProviderObservationSelection(selection.selection(observations)))
 }
 
 func compactManualEvidence(collected *starmap.CandidateEvidence) {
