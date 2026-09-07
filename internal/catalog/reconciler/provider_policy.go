@@ -2,7 +2,6 @@ package reconciler
 
 import (
 	"fmt"
-	"time"
 
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/catalogs/authority"
@@ -258,7 +257,7 @@ func (merger *merger) recordProviderHistory(
 		Source:     source,
 		Field:      path,
 		Value:      value,
-		Timestamp:  time.Now(),
+		Timestamp:  merger.changeTime(),
 		Authority:  policy.Authority(source),
 		Confidence: merger.calculateConfidence(value),
 		Reason:     fmt.Sprintf("%s: %s", policy.Path, reason),

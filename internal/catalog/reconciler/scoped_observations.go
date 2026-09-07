@@ -53,7 +53,7 @@ func orderScopedObservations(ctx context.Context, input []sources.Observation) (
 		scoped, positions = append(scoped, observation), append(positions, index)
 	}
 	if len(scoped) == 0 {
-		return ordered, nil, nil
+		return orderUnscopedProviderObservations(ctx, ordered)
 	}
 	if unscopedProvider {
 		return nil, nil, &errors.ConflictError{Resource: "provider observation scope", Message: "scoped and unscoped provider observations cannot share one reconciliation"}
@@ -85,7 +85,15 @@ func orderScopedObservations(ctx context.Context, input []sources.Observation) (
 }
 
 func (s *scopedObservations) add(observation sources.Observation) error {
-	provider := observation.Catalog.Providers().List()[0]
+	for _, provider := range observation.Catalog.Providers().List() {
+		if err := s.addProvider(observation, provider); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+func (s *scopedObservations) addProvider(observation sources.Observation, provider catalogs.Provider) error {
 	record := &scopedProviderRecord{observation: observation, provider: provider}
 	if previous, exists := s.providers[provider.ID]; exists && sameScopedPriority(previous.observation, observation) {
 		old := previous.provider
@@ -157,7 +165,7 @@ func (merger *merger) providerObservation(source sources.ID, providerID catalogs
 func scopedPrimaryCatalog(observations []sources.Observation) (*catalogs.Catalog, error) {
 	builder := catalogs.NewEmpty()
 	for _, observation := range observations {
-		if observation.ProviderBinding == nil {
+		if observation.SourceID != sources.ProvidersID {
 			continue
 		}
 		if err := builder.MergeWith(observation.Catalog, catalogs.WithStrategy(catalogs.MergeEnrichEmpty)); err != nil {

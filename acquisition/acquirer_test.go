@@ -178,11 +178,11 @@ func providerPayload(t testing.TB, id catalogs.ProviderID, modelID, name string)
 
 // openRuntime opens a runtime that reaches no network and observes providers
 // through the supplied acquirer.
-func openRuntime(t *testing.T, acquirer runtime.Acquirer) *runtime.Runtime {
+func openRuntime(t *testing.T, acquirer runtime.Acquirer, reviewedPayloads ...[]byte) *runtime.Runtime {
 	t.Helper()
 	connected, err := runtime.Open(context.Background(),
 		runtime.WithStateDirectory(filepath.Join(t.TempDir(), "runtime")),
-		runtime.WithCatalogSource("embedded"),
+		runtime.WithSource(reviewedRuntimeSource(t, reviewedPayloads...)),
 		runtime.WithSourcePollInterval(0),
 		runtime.WithStartupSpread(0),
 		runtime.WithAcquisitionEnabled(false),
@@ -196,6 +196,9 @@ func openRuntime(t *testing.T, acquirer runtime.Acquirer) *runtime.Runtime {
 			t.Errorf("Close: %v", err)
 		}
 	})
+	if _, err := connected.RefreshSource(t.Context()); err != nil {
+		t.Fatal(err)
+	}
 	return connected
 }
 
@@ -227,7 +230,7 @@ func TestSyncPartialFailurePublishesAndRetainsProviderLastKnownGood(t *testing.T
 	if err != nil {
 		t.Fatalf("NewAcquirer: %v", err)
 	}
-	connected := openRuntime(t, acquirer)
+	connected := openRuntime(t, acquirer, providerPayload(t, "alpha", "alpha-model", "Alpha One"), providerPayload(t, "beta", "beta-model", "Beta One"))
 	ctx := context.Background()
 
 	first, err := connected.Sync(ctx, "alpha", "beta")
@@ -314,7 +317,7 @@ func TestSyncPublishesCompletedProvidersWhileAnotherBlocked(t *testing.T) {
 	if err != nil {
 		t.Fatalf("NewAcquirer: %v", err)
 	}
-	connected := openRuntime(t, acquirer)
+	connected := openRuntime(t, acquirer, providerPayload(t, "fast", "fast-model", "Fast One"), providerPayload(t, "slow", "slow-model", "Slow One"))
 
 	type outcome struct {
 		report runtime.AcquisitionReport

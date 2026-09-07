@@ -360,7 +360,7 @@ func (merger *merger) mergeModelPricing(
 		if !model.Pricing.IsEffectiveAt(merger.pricingAt) {
 			rejected = append(rejected, provenance.Rejection{
 				Source: source,
-				Reason: fmt.Sprintf("pricing is not effective at %s", merger.pricingAt.Format(time.RFC3339)),
+				Reason: pricingExclusionReason(model.Pricing, merger.pricingAt),
 			})
 			continue
 		}
@@ -399,7 +399,7 @@ func (merger *merger) mergeModelPricing(
 		Current: provenance.Entry{
 			Field:      policy.Evidence(),
 			Value:      retained,
-			Timestamp:  time.Now(),
+			Timestamp:  merger.changeTime(),
 			Rejections: append([]provenance.Rejection(nil), rejected...),
 			Confidence: confidence,
 			Reason:     reason,
@@ -469,4 +469,16 @@ func (merger *merger) mergeModelAuthors(
 	}
 	target.Authors = merged
 	merger.recordModelHistory(identity, history, policy, winner, merged, "merged non-duplicate authors by authority order")
+}
+
+// pricingExclusionReason names the immutable interval boundary that caused refusal.
+// Rechecking the same expired evidence does not change its materialized receipt.
+func pricingExclusionReason(pricing *catalogs.ModelPricing, at time.Time) string {
+	if pricing.EffectiveFrom != nil && at.Before(pricing.EffectiveFrom.Time()) {
+		return fmt.Sprintf("pricing is not effective before %s", pricing.EffectiveFrom.Time().UTC().Format(time.RFC3339Nano))
+	}
+	if pricing.EffectiveUntil != nil {
+		return fmt.Sprintf("pricing is not effective at or after %s", pricing.EffectiveUntil.Time().UTC().Format(time.RFC3339Nano))
+	}
+	return "pricing is outside its effective interval"
 }

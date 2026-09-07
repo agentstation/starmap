@@ -78,10 +78,11 @@ func TestBoundAcquirerRuntimeRetainsIndependentScopesAfterFailureAndRestart(t *t
 	if err != nil {
 		t.Fatal(err)
 	}
+	reviewed := reviewedRuntimeSource(t, observer.layers[first.ID].Payload, observer.layers[second.ID].Payload)
 	directory := filepath.Join(t.TempDir(), "runtime")
 	open := func() *runtime.Runtime {
 		t.Helper()
-		connected, err := runtime.Open(t.Context(), runtime.WithStateDirectory(directory), runtime.WithCatalogSource("embedded"), runtime.WithSourcePollInterval(0), runtime.WithAcquisitionEnabled(false), runtime.WithAcquirer(acquirer), runtime.WithProviderBindings(first, second))
+		connected, err := runtime.Open(t.Context(), runtime.WithStateDirectory(directory), runtime.WithSource(reviewed), runtime.WithSourcePollInterval(0), runtime.WithAcquisitionEnabled(false), runtime.WithAcquirer(acquirer), runtime.WithProviderBindings(first, second))
 		if err != nil {
 			t.Fatal(err)
 		}
@@ -90,6 +91,9 @@ func TestBoundAcquirerRuntimeRetainsIndependentScopesAfterFailureAndRestart(t *t
 				t.Error(err)
 			}
 		})
+		if _, err := connected.RefreshSource(t.Context()); err != nil {
+			t.Fatal(err)
+		}
 		return connected
 	}
 	connected := open()

@@ -39,7 +39,7 @@ func (c *collector) reviewCandidateObservation(
 		if sourceProvider == nil || sourceProvider.Models[providerModelID] == nil {
 			continue
 		}
-		if observation.ProviderBinding != nil && c.scoped != nil {
+		if observation.SourceID == sources.ProvidersID && c.scoped != nil {
 			selected := c.scoped.models[modelIdentity{providerID: sourceProvider.ID, modelID: providerModelID}]
 			if selected == nil || selected.observation.ID != observation.ID {
 				continue

@@ -22,12 +22,15 @@ func (r *Runtime) publishBindingStartup(ctx context.Context) error {
 	if r.config.providerBindings == nil {
 		return nil
 	}
-	state := r.State()
+	r.mu.RLock()
+	state := r.effective
+	evidence := r.layers.buildEvidence
+	r.mu.RUnlock()
 	current := r.client.CurrentCatalogState()
 	if current.GenerationID == state.GenerationID && current.PayloadChecksum == state.PayloadChecksum {
 		return nil
 	}
-	committed, err := r.commit(ctx, state, r.lease.epoch())
+	committed, err := r.commit(ctx, state, r.lease.epoch(), evidence)
 	if err != nil {
 		return err
 	}

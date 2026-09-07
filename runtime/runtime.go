@@ -105,6 +105,9 @@ type Runtime struct {
 	// providerRetentionMu serializes observation selection and durable provider writes.
 	providerRetentionMu sync.Mutex
 
+	// publicationMu orders complete rebuilds and their effective-state activation.
+	publicationMu sync.Mutex
+
 	// mu guards the retained layers and the published effective state.
 	mu        sync.RWMutex
 	layers    layerSet
@@ -214,7 +217,7 @@ func Open(ctx context.Context, opts ...Option) (*Runtime, error) {
 		runtime.cancel()
 		return nil, err
 	}
-	if err := runtime.initializeEffective(); err != nil {
+	if err := runtime.initializeEffective(ctx); err != nil {
 		runtime.cancel()
 		return nil, err
 	}
@@ -351,7 +354,7 @@ func (r *Runtime) Close() error {
 // An explicit binding set always rebuilds, including when no retained evidence is active.
 // Without that set, an empty layer set keeps the accepted current state.
 // It reaches no external system.
-func (r *Runtime) initializeEffective() error {
+func (r *Runtime) initializeEffective(ctx context.Context) error {
 	current := r.client.CurrentCatalogState()
 	baseline := r.client.EmbeddedCatalogState()
 	r.mu.Lock()
@@ -363,7 +366,7 @@ func (r *Runtime) initializeEffective() error {
 		r.report.startedAt = r.config.now()
 		return nil
 	}
-	state, err := r.layers.build(baseline)
+	state, err := r.layers.build(ctx, baseline)
 	if err != nil {
 		return err
 	}
@@ -377,6 +380,8 @@ func (r *Runtime) initializeEffective() error {
 // concurrent read never observes a partial generation. The epoch is the lease
 // epoch of the run, so a run that lost the lease commits nothing.
 func (r *Runtime) rebuild(ctx context.Context, epoch uint64) (starmap.CatalogState, error) {
+	r.publicationMu.Lock()
+	defer r.publicationMu.Unlock()
 	if err := ctx.Err(); err != nil {
 		return starmap.CatalogState{}, err
 	}
@@ -386,14 +391,15 @@ func (r *Runtime) rebuild(ctx context.Context, epoch uint64) (starmap.CatalogSta
 		return starmap.CatalogState{}, err
 	}
 	baseline := r.layers.embedded
-	state, err := r.layers.build(baseline)
+	state, err := r.layers.build(ctx, baseline)
 	if err != nil {
 		r.mu.Unlock()
 		return starmap.CatalogState{}, err
 	}
+	evidence := r.layers.buildEvidence
 	r.mu.Unlock()
 
-	durable, err := r.commit(ctx, state, epoch)
+	durable, err := r.commit(ctx, state, epoch, evidence)
 	if err != nil {
 		return starmap.CatalogState{}, err
 	}
@@ -408,7 +414,7 @@ func (r *Runtime) rebuild(ctx context.Context, epoch uint64) (starmap.CatalogSta
 // commit durably publishes one effective catalog when the deployment holds a
 // writable store. The epoch that the run started under fences the commit, so an
 // instance that lost the lease cannot overwrite a newer generation.
-func (r *Runtime) commit(ctx context.Context, state starmap.CatalogState, epoch uint64) (starmap.CatalogState, error) {
+func (r *Runtime) commit(ctx context.Context, state starmap.CatalogState, epoch uint64, evidence starmap.CandidateEvidence) (starmap.CatalogState, error) {
 	if err := ctx.Err(); err != nil {
 		return starmap.CatalogState{}, err
 	}
@@ -431,7 +437,7 @@ func (r *Runtime) commit(ctx context.Context, state starmap.CatalogState, epoch 
 		}
 		if state.GenerationID == "" {
 			// A baseline that names no identity leaves the client to mint one.
-			return starmap.NewCandidate(state.Catalog, starmap.CandidateEvidence{})
+			return starmap.NewCandidate(state.Catalog, evidence)
 		}
 		// The retained layers decide the identity of the effective catalog. A
 		// rebuild that derives the committed identity again also serves the
@@ -444,7 +450,7 @@ func (r *Runtime) commit(ctx context.Context, state starmap.CatalogState, epoch 
 		// for one set of layers, and a restart reports it again.
 		return starmap.NewCandidate(
 			state.Catalog,
-			starmap.CandidateEvidence{},
+			evidence,
 			starmap.WithCandidateGenerationID(state.GenerationID),
 		)
 	})

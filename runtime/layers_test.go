@@ -75,7 +75,7 @@ func TestBuildKeepsUnlinkedOfferingsOutOfTheEffectiveCatalog(t *testing.T) {
 	layers := layerSet{}
 	layers.setProvider(testObservationLayer(t, "deepinfra", observed, "linked-model", "unlinked-model"))
 
-	state, err := layers.build(baseline)
+	state, err := layers.build(t.Context(), baseline)
 	if err != nil {
 		t.Fatalf("build: %v", err)
 	}

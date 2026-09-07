@@ -13,7 +13,6 @@ import (
 	"github.com/agentstation/starmap/internal/privatefiles"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/errors"
-	"github.com/agentstation/starmap/pkg/logging"
 	"github.com/agentstation/starmap/pkg/productpaths/policy"
 )
 
@@ -58,6 +57,7 @@ type layerSet struct {
 	providers        map[providerEvidenceKey]ProviderLayer
 	sequence         uint64
 	providerBindings *providerBindingPolicy
+	buildEvidence    starmap.CandidateEvidence
 }
 
 // empty reports whether any retained layer sits above the embedded baseline.
@@ -94,9 +94,12 @@ func (l *layerSet) setProvider(layer ProviderLayer) {
 
 // build rebuilds the immutable effective catalog from the retained layers. The
 // upstream source replaces the baseline. Each provider observation then
-// enriches the result in stable order, so one failed provider keeps its
+// uses canonical field authority in stable order, so one failed provider keeps its
 // last-known-good records.
-func (l *layerSet) build(baseline starmap.CatalogState) (starmap.CatalogState, error) {
+func (l *layerSet) build(ctx context.Context, baseline starmap.CatalogState) (starmap.CatalogState, error) {
+	if err := ctx.Err(); err != nil {
+		return starmap.CatalogState{}, err
+	}
 	base := baseline.Catalog
 	state := starmap.CatalogState{
 		GenerationID: baseline.GenerationID,
@@ -118,38 +121,20 @@ func (l *layerSet) build(baseline starmap.CatalogState) (starmap.CatalogState, e
 		}
 	}
 
-	builder := catalogs.NewEmpty()
-	if err := builder.MergeWith(base, catalogs.WithStrategy(catalogs.MergeReplaceAll)); err != nil {
-		return starmap.CatalogState{}, errors.WrapResource(
-			"merge", "effective catalog baseline", state.GenerationID, err)
-	}
+	var builder *catalogs.Builder
 	active := l.activeProviderOrder()
-	for _, id := range active {
-		layer := l.providers[id]
-		// A retained provider layer holds one provider observation. It carries
-		// serving records that name an authored model of the baseline, so the
-		// layer alone resolves no canonical authorship. An offering that names
-		// no authored model of the merged result stays out of the effective
-		// catalog, because a published catalog holds linked offerings only.
-		observed, err := catalogs.DecodeSourceObservationPayload(layer.Payload)
+	l.buildEvidence = starmap.CandidateEvidence{}
+	if len(active) > 0 {
+		var err error
+		builder, l.buildEvidence, err = l.reconcileProviders(ctx, base, state.GeneratedAt, active)
 		if err != nil {
-			return starmap.CatalogState{}, errors.WrapResource(
-				"decode", "retained provider layer", string(id.providerID), err)
+			return starmap.CatalogState{}, err
 		}
-		linked, unresolved, err := linkProviderOfferings(builder, observed)
+	} else {
+		var err error
+		builder, err = catalogs.NewBuilderFrom(base)
 		if err != nil {
-			return starmap.CatalogState{}, errors.WrapResource(
-				"link", "retained provider layer", string(id.providerID), err)
-		}
-		if err := builder.MergeWith(linked, catalogs.WithStrategy(catalogs.MergeEnrichEmpty)); err != nil {
-			return starmap.CatalogState{}, errors.WrapResource(
-				"merge", "retained provider layer", string(id.providerID), err)
-		}
-		if unresolved > 0 {
-			logging.Info().
-				Str("provider_id", string(id.providerID)).
-				Int("unresolved_offerings", unresolved).
-				Msg("Provider offerings without a canonical model reference stay out of the effective catalog")
+			return starmap.CatalogState{}, errors.WrapResource("copy", "effective catalog baseline", state.GenerationID, err)
 		}
 	}
 
@@ -212,70 +197,6 @@ func deriveEffectiveGenerationID(upstream, checksum string) string {
 		fragment = "local"
 	}
 	return upstream + effectiveGenerationLocalSuffix + fragment
-}
-
-// linkProviderOfferings returns the provider records of one observation that
-// name an authored model. The authored models of the builder and of the
-// observation both count. An offering without a canonical link takes the link
-// of the same offering in the builder. A baseline link therefore survives a
-// provider reply that omits it. The result leaves out an offering that still
-// names no authored model and counts it. The effective catalog then publishes
-// without it, and no provider reply blocks a rebuild.
-func linkProviderOfferings(builder *catalogs.Builder, observed catalogs.Reader) (catalogs.Reader, int, error) {
-	authored := make(map[catalogs.ModelDefinitionID]struct{})
-	for _, record := range builder.AuthoredModels() {
-		authored[record.ID()] = struct{}{}
-	}
-	for _, record := range observed.AuthoredModels() {
-		authored[record.ID()] = struct{}{}
-	}
-	linked, err := catalogs.NewBuilderFrom(observed)
-	if err != nil {
-		return nil, 0, err
-	}
-	unresolved := 0
-	for _, provider := range linked.Providers().List() {
-		var baseline map[string]*catalogs.Model
-		if current, err := builder.Provider(provider.ID); err == nil {
-			baseline = current.Models
-		}
-		models := make(map[string]*catalogs.Model, len(provider.Models))
-		for modelID, model := range provider.Models {
-			if model == nil {
-				continue
-			}
-			offering := catalogs.DeepCopyModel(*model)
-			if !resolvesAuthoredModel(authored, offering.ModelRef) {
-				offering.ModelRef = ""
-				if prior := baseline[modelID]; prior != nil && resolvesAuthoredModel(authored, prior.ModelRef) {
-					offering.ModelRef = prior.ModelRef
-				}
-			}
-			if offering.ModelRef == "" {
-				unresolved++
-				continue
-			}
-			models[modelID] = &offering
-		}
-		provider.Models = models
-		if err := linked.SetProvider(provider); err != nil {
-			return nil, 0, err
-		}
-	}
-	return linked, unresolved, nil
-}
-
-// resolvesAuthoredModel reports whether a canonical reference is well formed
-// and names an authored model of the merged result.
-func resolvesAuthoredModel(authored map[catalogs.ModelDefinitionID]struct{}, ref catalogs.ModelDefinitionID) bool {
-	if ref == "" {
-		return false
-	}
-	if _, _, err := catalogs.ParseModelDefinitionID(ref); err != nil {
-		return false
-	}
-	_, found := authored[ref]
-	return found
 }
 
 // layerStore retains the runtime layers durably. A runtime without a state

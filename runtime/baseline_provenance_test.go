@@ -70,14 +70,14 @@ func TestEffectiveGenerationPreservesOpaqueBaselineIdentity(t *testing.T) {
 	baseline := starmap.CatalogState{Catalog: catalog, GenerationID: "approved.local.original", PayloadChecksum: catalogs.DescribeCatalogPayload(payload).Checksum}
 	layers := layerSet{}
 	layers.setProvider(testProviderLayer(t, "observed-provider", "observed-model", "Observed", time.Date(2026, 9, 6, 12, 0, 0, 0, time.UTC)))
-	state, err := layers.build(baseline)
+	state, err := layers.build(t.Context(), baseline)
 	if err != nil {
 		t.Fatal(err)
 	}
 	if !strings.HasPrefix(state.GenerationID, baseline.GenerationID+effectiveGenerationLocalSuffix) {
 		t.Fatalf("derived identity lost its opaque baseline: %s", state.GenerationID)
 	}
-	repeated, err := layers.build(baseline)
+	repeated, err := layers.build(t.Context(), baseline)
 	if err != nil {
 		t.Fatal(err)
 	}

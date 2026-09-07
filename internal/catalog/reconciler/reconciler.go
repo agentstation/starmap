@@ -30,6 +30,7 @@ type Reconciler struct {
 	provenance  *provenance.Tracker
 	tracking    bool
 	baseline    *catalogs.Catalog // Baseline catalog for comparison
+	changeTime  time.Time
 }
 
 // New creates a new Reconciler with options.
@@ -47,6 +48,7 @@ func New(opts ...Option) (*Reconciler, error) {
 		provenance:  provenance.NewTracker(options.tracking),
 		tracking:    options.tracking,
 		baseline:    options.baseline,
+		changeTime:  options.changeTime,
 	}
 
 	return r, nil
@@ -185,7 +187,7 @@ func (r *Reconciler) initialize(ctx context.Context, primary sources.ID, srcs []
 // reconcileProviders merges providers from all sources.
 func (r *Reconciler) reconcileProviders(rctx *reconcileContext) ([]*catalogs.Provider, error) {
 	// Collect providers from all sources
-	providerSources := rctx.collector.collectProviders()
+	providerSources := rctx.filter.providerSources(rctx.collector.collectProviders())
 
 	// Merge providers using configured strategy
 	return rctx.merger.Providers(providerSources)
@@ -399,10 +401,14 @@ func providerScopedProvenance(providerID catalogs.ProviderID, source provenance.
 
 // createMerger creates a merger based on configuration.
 func (r *Reconciler) createMerger() *merger {
+	var result *merger
 	if r.tracking && r.provenance != nil {
-		return newMergerWithProvenance(r.authorities, r.strategy, r.provenance, r.baseline)
+		result = newMergerWithProvenance(r.authorities, r.strategy, r.provenance, r.baseline)
+	} else {
+		result = newMerger(r.authorities, r.strategy, r.baseline)
 	}
-	return newMerger(r.authorities, r.strategy, r.baseline)
+	result.changeAt = r.changeTime
+	return result
 }
 
 // calcStats computes statistics from the catalog.

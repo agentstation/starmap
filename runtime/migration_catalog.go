@@ -27,7 +27,7 @@ func validateMigrationCatalog(ctx context.Context, directory string) error {
 		return err
 	}
 	layers := layerSet{source: source, providers: providers}
-	if _, err := layers.build(client.EmbeddedCatalogState()); err != nil {
+	if _, err := layers.build(ctx, client.EmbeddedCatalogState()); err != nil {
 		return err
 	}
 	return ctx.Err()

@@ -1,6 +1,8 @@
 package reconciler
 
 import (
+	"time"
+
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/catalogs/authority"
 	"github.com/agentstation/starmap/pkg/errors"
@@ -10,6 +12,7 @@ import (
 type options struct {
 	authorities authority.Reader
 	tracking    bool
+	changeTime  time.Time
 	baseline    *catalogs.Catalog // Existing catalog for comparison
 }
 
@@ -64,6 +67,18 @@ func WithProvenance(enabled bool) Option {
 func WithBaseline(catalog *catalogs.Catalog) Option {
 	return func(r *options) error {
 		r.baseline = catalog
+		return nil
+	}
+}
+
+// WithChangeTime supplies stable timestamps for facts derived from retained evidence.
+// It leaves original source timestamps and current-time pricing validation unchanged.
+func WithChangeTime(at time.Time) Option {
+	return func(options *options) error {
+		if at.IsZero() {
+			return &errors.ValidationError{Field: "reconciliation.change_time", Message: "must be specified"}
+		}
+		options.changeTime = at.UTC()
 		return nil
 	}
 }
