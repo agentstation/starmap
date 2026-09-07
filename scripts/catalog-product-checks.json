@@ -409,6 +409,46 @@
           "test": "TestProviderOfferingsPreserveProviderSpecificFacts"
         }
       ]
+    },
+    "E02": {
+      "kind": "reviewed_first_use",
+      "repository": "starport",
+      "proof": "docs/plans/proof/starport-production-catalog/csp0.2/first-use-review.json",
+      "required_inputs": [
+        "README.md",
+        "docker-compose.yml",
+        "Dockerfile",
+        ".dockerignore",
+        ".env.example",
+        "docs/OPERATOR-GUIDE.md",
+        "docs/PRODUCTION-STATUS.md",
+        "docs/PERFORMANCE.md",
+        "scripts/verify-readme-quickstart.sh",
+        "scripts/test-readme-quickstart-verifier.sh",
+        "scripts/verify-doc-links.sh"
+      ],
+      "observations": [
+        "install_catalog_credentials_inference_order",
+        "catalog_presence_is_not_provider_access",
+        "development_persistence_overrides_disclosed",
+        "recording_persistence_selectors_cleared",
+        "production_limits_linked",
+        "gateway_latency_claim_qualified",
+        "all_advertised_installation_methods_reviewed"
+      ],
+      "methods": [
+        "homebrew-linux",
+        "homebrew-macos",
+        "archive-darwin-arm64",
+        "archive-darwin-x86_64",
+        "archive-linux-arm64",
+        "archive-linux-x86_64",
+        "archive-windows-arm64",
+        "archive-windows-x86_64",
+        "source-build",
+        "container-release",
+        "compose-source"
+      ]
     }
   }
 }

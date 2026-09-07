@@ -261,5 +261,85 @@ class CatalogVerifierTests(unittest.TestCase):
             self.assertEqual(checked['status'], 'UNVERIFIED')
 
 
+class FirstUseReviewTests(unittest.TestCase):
+    def setUp(self):
+        self.directory = tempfile.TemporaryDirectory()
+        self.addCleanup(self.directory.cleanup)
+        self.root = Path(self.directory.name)
+        (self.root / 'README.md').write_text('reviewed README')
+        (self.root / 'native.json').write_text('{"exit_code": 0}')
+        self.inference = {'verdict': 'PASS', 'release': 'v1.2.0', 'response_status': 200,
+                          'content_type': 'text/event-stream', 'request': {'stream': True},
+                          'stream': 'data: {"choices":[{"delta":{"content":"Hello"}}]}\n\ndata: [DONE]\n\n'}
+        (self.root / 'inference.json').write_text(json.dumps(self.inference))
+        self.review = {'schema_version': 1, 'verdict': 'PASS', 'release': 'v1.2.0',
+                       'observations': {'catalog_before_keys': True},
+                       'inputs': {'README.md': self.digest('README.md')},
+                       'captures': {name: self.digest(name) for name in ['native.json', 'inference.json']},
+                       'inference_capture': 'inference.json',
+                       'methods': {'archive': {'verdict': 'PASS', 'native': True, 'platform': 'linux/arm64',
+                                              'artifact_kind': 'release', 'release': 'v1.2.0', 'captures': ['native.json']}}}
+        self.entry = {'kind': 'reviewed_first_use', 'proof': 'review.json', 'repository': 'starport',
+                      'required_inputs': ['README.md'], 'observations': ['catalog_before_keys'], 'methods': ['archive']}
+
+    def digest(self, name):
+        return hashlib.sha256((self.root / name).read_bytes()).hexdigest()
+
+    def check(self):
+        (self.root / 'review.json').write_text(json.dumps(self.review))
+        with patch.object(verifier, 'ROOT', self.root):
+            return verifier.run_check('E02', self.entry, {'starport': self.root})['status']
+
+    def test_complete_review_passes(self):
+        self.assertEqual(self.check(), 'PASS')
+
+    def test_changed_readme_requires_review(self):
+        (self.root / 'README.md').write_text('new installer')
+        self.assertEqual(self.check(), 'UNVERIFIED')
+
+    def test_missing_observation_refuses(self):
+        self.review['observations'].clear()
+        self.assertEqual(self.check(), 'UNVERIFIED')
+
+    def test_unqualified_or_missing_method_refuses(self):
+        method = self.review['methods']['archive']
+        for field, bad in [('verdict', 'FAIL'), ('native', False), ('platform', ''),
+                           ('release', 'v1.1.0'), ('captures', []), ('captures', ['missing.json']),
+                           ('artifact_kind', 'unknown')]:
+            before = method[field]
+            method[field] = bad
+            with self.subTest(field=field, bad=bad):
+                self.assertEqual(self.check(), 'UNVERIFIED')
+            method[field] = before
+        self.review['methods'].clear()
+        self.assertEqual(self.check(), 'UNVERIFIED')
+
+    def test_source_build_needs_exact_commit(self):
+        method = self.review['methods']['archive']
+        method['artifact_kind'] = 'source'
+        self.assertEqual(self.check(), 'UNVERIFIED')
+        method['source_commit'] = 'a' * 40
+        self.assertEqual(self.check(), 'PASS')
+
+    def test_changed_or_missing_capture_refuses(self):
+        (self.root / 'native.json').write_text('{"exit_code": 1}')
+        self.assertEqual(self.check(), 'UNVERIFIED')
+        (self.root / 'native.json').unlink()
+        self.assertEqual(self.check(), 'UNVERIFIED')
+
+    def test_incomplete_inference_refuses_even_with_matching_capture_digest(self):
+        for stream in ['', 'data: [DONE]\n', 'data: {"choices":[]}\n\ndata: [DONE]\n',
+                       'data: {"choices":[{"delta":{"content":"Hello"}}]}\n']:
+            self.inference['stream'] = stream
+            (self.root / 'inference.json').write_text(json.dumps(self.inference))
+            self.review['captures']['inference.json'] = self.digest('inference.json')
+            with self.subTest(stream=stream):
+                self.assertEqual(self.check(), 'UNVERIFIED')
+
+    def test_evidence_cannot_escape_its_root(self):
+        self.review['inputs'] = {'../README.md': 'a' * 64, 'README.md': self.digest('README.md')}
+        self.assertEqual(self.check(), 'UNVERIFIED')
+
+
 if __name__ == '__main__':
     unittest.main(verbosity=2)

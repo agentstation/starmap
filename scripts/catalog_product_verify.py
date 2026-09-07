@@ -93,6 +93,8 @@ def run_check(identity, entry, roots):
         return run_vitest(entry, roots)
     if entry.get("kind") == "reviewed_ui":
         return reviewed_ui(entry, roots)
+    if entry.get("kind") == "reviewed_first_use":
+        return reviewed_first_use(entry, roots)
     if entry.get("kind") == "performance_baseline":
         return run_performance_baseline(entry, roots)
     if entry.get("kind") == "performance_profile":
@@ -187,6 +189,69 @@ def reviewed_ui(entry, roots):
                 "proof": str(proof), "proof_sha256": hashlib.sha256(proof.read_bytes()).hexdigest(),
                 "scope": "Recorded manual browser observations. This invocation did not repeat browser interaction."}
     except (OSError, ValueError, KeyError, TypeError) as error:
+        return {"status": "UNVERIFIED", "reason": str(error)}
+
+
+def reviewed_first_use(entry, roots):
+    """Validate retained installer and inference evidence against the reviewed README inputs."""
+    try:
+        proof = contained_path(ROOT, entry["proof"])
+        review = read_json(proof)
+        root = roots[entry["repository"]]
+        if review.get("schema_version") != 1 or review.get("verdict") != "PASS":
+            raise ValueError("A passing first-use review is required.")
+        required = set(entry["observations"])
+        if not required or not all(review["observations"].get(name) is True for name in required):
+            raise ValueError("The first-use review omits a required observation.")
+        inputs = review["inputs"]
+        if not entry["required_inputs"] or not set(entry["required_inputs"]) <= inputs.keys():
+            raise ValueError("The first-use review omits required source inputs.")
+        for name, digest in inputs.items():
+            if hashlib.sha256(contained_path(root, name).read_bytes()).hexdigest() != digest:
+                raise ValueError(f"The first-use review is stale: {name}")
+        captures = review["captures"]
+        if not captures:
+            raise ValueError("The first-use review has no retained captures.")
+        for name, digest in captures.items():
+            if hashlib.sha256(contained_path(proof.parent, name).read_bytes()).hexdigest() != digest:
+                raise ValueError(f"A reviewed capture changed: {name}")
+        methods = review["methods"]
+        if not entry["methods"] or set(methods) != set(entry["methods"]):
+            raise ValueError("Every advertised installation method needs its native evidence.")
+        release = review["release"]
+        if not re.fullmatch(r"v[0-9]+\.[0-9]+\.[0-9]+", release):
+            raise ValueError("The review must identify the published release.")
+        for name, method in methods.items():
+            if method.get("verdict") != "PASS" or method.get("native") is not True or not method.get("platform"):
+                raise ValueError(f"Native installation evidence is incomplete: {name}")
+            if not method.get("captures") or not set(method["captures"]) <= captures.keys():
+                raise ValueError(f"The installation method has no retained evidence: {name}")
+            artifact_kind = method.get("artifact_kind")
+            if artifact_kind not in ("release", "source"):
+                raise ValueError(f"Unknown installation artifact kind: {name}")
+            if artifact_kind == "release" and method.get("release") != release:
+                raise ValueError(f"The installation release does not match the review: {name}")
+            if artifact_kind == "source" and not re.fullmatch(r"[0-9a-f]{40}", method.get("source_commit", "")):
+                raise ValueError(f"The installation artifact has no matching identity: {name}")
+        inference_name = review["inference_capture"]
+        if inference_name not in captures:
+            raise ValueError("Real inference evidence must be retained.")
+        inference = read_json(contained_path(proof.parent, inference_name))
+        if (inference.get("verdict") != "PASS" or inference.get("release") != release
+                or inference.get("response_status") != 200 or inference.get("content_type") != "text/event-stream"
+                or inference.get("request", {}).get("stream") is not True):
+            raise ValueError("The release needs successful real streamed inference.")
+        stream = inference.get("stream", "")
+        events = [line[6:] for line in stream.splitlines() if line.startswith("data: ")]
+        if not events or events[-1] != "[DONE]":
+            raise ValueError("The inference stream did not complete.")
+        chunks = [json.loads(event) for event in events[:-1]]
+        if not any(choice.get("delta", {}).get("content") for chunk in chunks for choice in chunk.get("choices", [])):
+            raise ValueError("The inference stream contains no model response.")
+        return {"status": "PASS", "proof": str(proof),
+                "proof_sha256": hashlib.sha256(proof.read_bytes()).hexdigest(),
+                "scope": "Recorded native installation and README review. This invocation did not reinstall software or call a paid provider."}
+    except (OSError, ValueError, KeyError, TypeError, AttributeError) as error:
         return {"status": "UNVERIFIED", "reason": str(error)}
 
 
