@@ -213,6 +213,10 @@ func Open(ctx context.Context, opts ...Option) (*Runtime, error) {
 		runtime.cancel()
 		return nil, err
 	}
+	if err := runtime.store.recoverInputPublication(ctx, client.CurrentCatalogState()); err != nil {
+		runtime.cancel()
+		return nil, err
+	}
 	if err := runtime.loadRetainedLayers(); err != nil {
 		runtime.cancel()
 		return nil, err
@@ -373,42 +377,6 @@ func (r *Runtime) initializeEffective(ctx context.Context) error {
 	r.effective = state
 	r.report.startedAt = r.config.now()
 	return nil
-}
-
-// rebuild publishes a new effective catalog from the retained layers. The
-// caller holds no lock. The rebuild runs under the runtime write lock, so a
-// concurrent read never observes a partial generation. The epoch is the lease
-// epoch of the run, so a run that lost the lease commits nothing.
-func (r *Runtime) rebuild(ctx context.Context, epoch uint64) (starmap.CatalogState, error) {
-	r.publicationMu.Lock()
-	defer r.publicationMu.Unlock()
-	if err := ctx.Err(); err != nil {
-		return starmap.CatalogState{}, err
-	}
-	r.mu.Lock()
-	if err := ctx.Err(); err != nil {
-		r.mu.Unlock()
-		return starmap.CatalogState{}, err
-	}
-	baseline := r.layers.embedded
-	state, err := r.layers.build(ctx, baseline)
-	if err != nil {
-		r.mu.Unlock()
-		return starmap.CatalogState{}, err
-	}
-	evidence := r.layers.buildEvidence
-	r.mu.Unlock()
-
-	durable, err := r.commit(ctx, state, epoch, evidence)
-	if err != nil {
-		return starmap.CatalogState{}, err
-	}
-
-	r.mu.Lock()
-	r.effective = durable
-	r.mu.Unlock()
-	r.broadcast(durable)
-	return durable, nil
 }
 
 // commit durably publishes one effective catalog when the deployment holds a

@@ -14,6 +14,9 @@ func validateMigrationCatalog(ctx context.Context, directory string) error {
 	if err != nil {
 		return err
 	}
+	if err := store.refuseInputPublication(); err != nil {
+		return err
+	}
 	source, err := store.loadSource()
 	if err != nil {
 		return err

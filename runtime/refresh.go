@@ -408,21 +408,17 @@ func (r *Runtime) readSource(ctx context.Context, report *RefreshReport, epoch u
 		ObservedAt:       result.CompletedAt,
 		Chain:            read.Chain,
 	}
-	if err := r.store.saveSource(ctx, layer); err != nil {
-		result.Health = HealthDegraded
-		result.Reason = "retention_failed"
-		r.recordSourceRead(result, false)
-		report.Source = result
-		return err
-	}
-	r.mu.Lock()
-	r.layers.source = &layer
-	r.mu.Unlock()
-
-	state, err := r.rebuild(ctx, epoch)
+	state, err := r.publishInputChanges(ctx, &layer, nil, epoch)
 	if err != nil {
 		result.Health = HealthDegraded
 		result.Reason = "publication_failed"
+		if state.GenerationID != "" {
+			result.Reason = "retention_pending"
+			result.Published = true
+			result.GenerationID = state.GenerationID
+			report.Published = true
+			report.GenerationID = state.GenerationID
+		}
 		r.recordSourceRead(result, false)
 		report.Source = result
 		return err
@@ -588,6 +584,12 @@ func (r *Runtime) acquireProviders(
 	// and the layers that did not keep their retained records.
 	if len(unpublished) > 0 {
 		state, publishErr := r.publishProviders(ctx, unpublished, epoch)
+		if state.GenerationID != "" {
+			result.Published = true
+			result.GenerationID = state.GenerationID
+			report.Published = true
+			report.GenerationID = state.GenerationID
+		}
 		if publishErr != nil {
 			result.Health = HealthDegraded
 			combined := stderrors.Join(err, publishErr)
@@ -629,38 +631,6 @@ func (r *Runtime) recordAcquisition(result AcquisitionReport, err error) {
 	}
 }
 
-// retainProviders durably keeps every supplied layer and installs it as the
-// layer that its provider last observed well.
-func (r *Runtime) retainProviders(ctx context.Context, layers []ProviderLayer) error {
-	if err := ctx.Err(); err != nil {
-		return err
-	}
-	prepared, err := prepareProviderEvidence(layers)
-	if err != nil {
-		return err
-	}
-	r.providerRetentionMu.Lock()
-	defer r.providerRetentionMu.Unlock()
-	if err := ctx.Err(); err != nil {
-		return err
-	}
-	r.mu.RLock()
-	selected, err := selectProviderEvidence(prepared, r.layers.providers)
-	r.mu.RUnlock()
-	if err != nil {
-		return err
-	}
-	for _, layer := range selected {
-		if err := r.store.saveProvider(ctx, layer); err != nil {
-			return err
-		}
-		r.mu.Lock()
-		r.layers.setProvider(layer)
-		r.mu.Unlock()
-	}
-	return nil
-}
-
 // publishProviders retains the supplied layers and publishes one effective
 // catalog that holds every retained layer.
 func (r *Runtime) publishProviders(
@@ -668,16 +638,7 @@ func (r *Runtime) publishProviders(
 	layers []ProviderLayer,
 	epoch uint64,
 ) (starmap.CatalogState, error) {
-	if err := ctx.Err(); err != nil {
-		return starmap.CatalogState{}, err
-	}
-	if err := r.config.providerBindings.validatePublication(layers); err != nil {
-		return starmap.CatalogState{}, err
-	}
-	if err := r.retainProviders(ctx, layers); err != nil {
-		return starmap.CatalogState{}, err
-	}
-	return r.rebuild(ctx, epoch)
+	return r.publishInputChanges(ctx, nil, layers, epoch)
 }
 
 // windowPublisher publishes the layers of one closed coalescing window. It
@@ -702,7 +663,7 @@ func (w *windowPublisher) publish(ctx context.Context, layers []ProviderLayer) e
 		return err
 	}
 	state, err := w.runtime.publishProviders(ctx, prepared, w.epoch)
-	if err != nil {
+	if err != nil && state.GenerationID == "" {
 		return err
 	}
 	w.mu.Lock()
@@ -715,7 +676,7 @@ func (w *windowPublisher) publish(ctx context.Context, layers []ProviderLayer) e
 	}
 	w.count++
 	w.generation = state.GenerationID
-	return nil
+	return err
 }
 
 // providerPublicationKey identifies exact evidence within one retained scope.

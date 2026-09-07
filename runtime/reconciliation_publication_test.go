@@ -63,11 +63,14 @@ func TestConcurrentRuntimeRebuildsPublishCompleteGenerationsInOrder(t *testing.T
 	if connected.State().GenerationID != before.GenerationID || connected.Client().CurrentGenerationID() != before.GenerationID {
 		t.Fatal("pending durable commit exposed an unaccepted generation")
 	}
-	if err := connected.retainProviders(t.Context(), []ProviderLayer{two}); err != nil {
-		t.Fatal(err)
-	}
 	second := make(chan error, 1)
-	go func() { _, err := connected.rebuild(t.Context(), connected.lease.epoch()); second <- err }()
+	started := make(chan struct{})
+	go func() {
+		close(started)
+		_, err := connected.publishProviders(t.Context(), []ProviderLayer{two}, connected.lease.epoch())
+		second <- err
+	}()
+	<-started
 	releaseOnce()
 	for _, done := range []<-chan error{first, second} {
 		select {
