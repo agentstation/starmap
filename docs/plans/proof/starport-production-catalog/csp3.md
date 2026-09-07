@@ -648,3 +648,29 @@ That draft targets the evidence branch from PR #125. The code draft targets the 
 The code review retains every changed source file, executable proof, generated API document, and settings schema.
 The three authored acceptance and performance JSON contracts belong with the planning documents.
 No production code changed during this split.
+
+
+### Publication review and container correction
+
+Planning draft [PR #126](https://github.com/agentstation/starmap/pull/126) targets the [evidence branch](https://github.com/agentstation/starmap/pull/125).
+Its Sol and Opus review passed all three portions of the 998,491-byte bundle with zero findings.
+Starport draft PR #366 passes all 16 current checks, including six native archive jobs.
+
+The [two further code review attempts](csp3/publication-review-context-retries.json) each stopped with “Prompt is too long.”
+Both ordinary Opus and the requested extended-context model reported a 200,000-token context window.
+Neither attempt grants code publication approval.
+The [prepared replay](csp3/review-smaller-prompts-replay.json) covers the complete code bundle in eight smaller prompts.
+The proposed shared-helper change lowers only the prompt ceiling from 512,000 to 300,000 bytes.
+The helper remains unchanged pending owner approval.
+
+Evidence PR #125 passed five CI checks and failed container startup because its baseline image digest was unavailable.
+Commit `ca0645be` updates the release, smoke script, and test pins to the same current digest.
+[Signature verification and focused checks](csp3/container-base-refresh.json) passed for the replacement image.
+The check uses the identity from [Chainguard's provenance instructions](https://images.chainguard.dev/directory/image/static/provenance).
+All 26 workflow race tests passed, and Ago reported no findings or errors.
+The local container served health requests with a read-only root and user 65532.
+
+This correction remains on the unpublished code branch.
+It does not change the failed evidence PR result or qualify native Starmap behavior.
+After the shared-helper decision, complete code review before the branch push, draft PR, and native workflow dispatch.
+CSP3 remains active, with batch acquisition and operator integration still open.

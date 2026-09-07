@@ -1,0 +1,32 @@
+{
+  "helper_sha256": "ee15ab4246c842576e7ea87473d481d64e8a6b7c7fd3a8d2a716606c8cfa372c",
+  "bundle_sha256": "bb7227d525809927cce57a0152e0140d4592a6c12e7e2698086d7add1d64998c",
+  "bundle_bytes": 1673904,
+  "max_review_passes": 8,
+  "limits": [
+    {
+      "limit_bytes": 512000,
+      "passes": 4,
+      "prompt_sizes": [
+        443849,
+        444034,
+        444052,
+        369883
+      ]
+    },
+    {
+      "limit_bytes": 300000,
+      "passes": 8,
+      "prompt_sizes": [
+        231812,
+        232046,
+        232001,
+        232014,
+        231993,
+        232058,
+        231987,
+        106036
+      ]
+    }
+  ]
+}

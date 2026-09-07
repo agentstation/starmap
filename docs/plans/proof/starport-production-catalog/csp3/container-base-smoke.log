@@ -1,0 +1,5 @@
+Building the server binary for linux/amd64.
+Building the smoke image on the release base.
+Starting the server with a read-only root filesystem.
+Reading the health endpoint.
+PASS the image serves with a read-only root and a writable state volume.
