@@ -1,13 +1,15 @@
 package workspace
 
 import (
-	stderrors "errors"
 	"os"
 	"path/filepath"
+	"runtime"
 	"unsafe"
 
 	"golang.org/x/sys/windows"
 )
+
+var ntSetWorkspaceSecurity = windows.NewLazySystemDLL("ntdll.dll").NewProc("NtSetSecurityObject")
 
 func copyNativeAccess(source, destination *os.File) error {
 	sd, err := windows.GetSecurityInfo(windows.Handle(source.Fd()), windows.SE_FILE_OBJECT,
@@ -15,45 +17,26 @@ func copyNativeAccess(source, destination *os.File) error {
 	if err != nil {
 		return err
 	}
-	owner, _, err := sd.Owner()
-	if err != nil {
-		return err
-	}
-	group, _, err := sd.Group()
-	if err != nil {
-		return err
-	}
-	dacl, _, err := sd.DACL()
-	if err != nil {
-		return err
+	if sd == nil || !sd.IsValid() {
+		return invalidWorkspaceDescriptor()
 	}
 	control, _, err := sd.Control()
 	if err != nil {
 		return err
 	}
-	sacl, _, err := sd.SACL()
-	if err != nil && !stderrors.Is(err, windows.ERROR_OBJECT_NOT_FOUND) {
+	// Central policy assignment needs a privileged handle. Snapshot equality still checks it.
+	flags := workspaceWindowsSecurity &^ windows.SCOPE_SECURITY_INFORMATION
+	if control&windows.SE_SACL_PRESENT == 0 {
+		flags &^= windows.LABEL_SECURITY_INFORMATION | windows.ATTRIBUTE_SECURITY_INFORMATION
+	}
+	if err := ntSetWorkspaceSecurity.Find(); err != nil {
 		return err
 	}
-	flags := windows.SECURITY_INFORMATION(windows.OWNER_SECURITY_INFORMATION | windows.GROUP_SECURITY_INFORMATION | windows.DACL_SECURITY_INFORMATION | windows.LABEL_SECURITY_INFORMATION | windows.ATTRIBUTE_SECURITY_INFORMATION)
-	if control&windows.SE_DACL_PROTECTED != 0 {
-		flags |= windows.PROTECTED_DACL_SECURITY_INFORMATION
-	} else {
-		current, err := windows.GetSecurityInfo(windows.Handle(destination.Fd()), windows.SE_FILE_OBJECT, windows.DACL_SECURITY_INFORMATION)
-		if err != nil {
-			return err
-		}
-		currentControl, _, err := current.Control()
-		if err != nil {
-			return err
-		}
-		// Re-enabling inheritance can import grants from the private preparation parent.
-		if currentControl&windows.SE_DACL_PROTECTED != 0 {
-			flags |= windows.UNPROTECTED_DACL_SECURITY_INFORMATION
-		}
-	}
-	if err := windows.SetSecurityInfo(windows.Handle(destination.Fd()), windows.SE_FILE_OBJECT, flags, owner, group, dacl, sacl); err != nil {
-		return err
+	// Assign the captured descriptor without importing grants from the staging parent.
+	status, _, _ := ntSetWorkspaceSecurity.Call(destination.Fd(), uintptr(flags), uintptr(unsafe.Pointer(sd))) //nolint:gosec // G103: The validated self-relative descriptor stays live until the synchronous call returns.
+	runtime.KeepAlive(sd)
+	if status != 0 {
+		return windows.NTStatus(status & 0xffffffff).Errno()
 	}
 	info, err := source.Stat()
 	if err != nil {

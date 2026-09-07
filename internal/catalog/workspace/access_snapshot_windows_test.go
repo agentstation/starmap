@@ -81,7 +81,7 @@ func TestTreeSnapshotDetectsNativeACLChange(t *testing.T) {
 			if err != nil {
 				t.Fatal(err)
 			}
-			setWorkspaceTestDACL(t, selected, base+"(A;;RA;;;WD)")
+			setWorkspaceTestDACL(t, selected, base+"(A;;0x80;;;WD)")
 			after, err := snapshotTree(t.Context(), path)
 			if err != nil {
 				t.Fatal(err)

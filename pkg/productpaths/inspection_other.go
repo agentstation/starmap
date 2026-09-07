@@ -14,3 +14,5 @@ func inspectPermissions(item *FileObservation, _ fs.FileInfo) {
 func openInspectionDirectory(root *os.Root, name string) (*os.File, error) {
 	return root.Open(name)
 }
+
+func inspectionLstat(path string) (os.FileInfo, error) { return os.Lstat(path) }

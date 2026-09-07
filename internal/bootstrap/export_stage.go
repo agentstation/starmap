@@ -23,7 +23,6 @@ type baselineStage struct {
 
 type baselineStageFile struct {
 	name     string
-	file     *os.File
 	info     os.FileInfo
 	contents []byte
 }
@@ -45,12 +44,13 @@ func openBaselineStage(parent *os.Root, name string) (*baselineStage, error) {
 	return stage, nil
 }
 
-func (s *baselineStage) write(name string, contents []byte) error {
+func (s *baselineStage) write(name string, contents []byte) (result error) {
 	file, err := s.root.OpenFile(name, os.O_RDWR|os.O_CREATE|os.O_EXCL, baselineFileMode)
 	if err != nil {
 		return err
 	}
-	record := &baselineStageFile{name: name, file: file}
+	defer func() { result = stderrors.Join(result, file.Close()) }()
+	record := &baselineStageFile{name: name}
 	s.files = append(s.files, record)
 	written, writeErr := file.Write(contents)
 	record.contents = contents[:written]
@@ -103,7 +103,7 @@ func (s *baselineStage) validate() error {
 	return nil
 }
 
-func (r *baselineStageFile) validate(root *os.Root) error {
+func (r *baselineStageFile) validate(root *os.Root) (result error) {
 	current, err := root.Lstat(r.name)
 	if err != nil {
 		return stderrors.Join(stageConflict(r.name), err)
@@ -111,7 +111,19 @@ func (r *baselineStageFile) validate(root *os.Root) error {
 	if r.info == nil || !current.Mode().IsRegular() || !os.SameFile(r.info, current) || r.info.Mode() != current.Mode() || r.info.Size() != current.Size() || !r.info.ModTime().Equal(current.ModTime()) {
 		return stageConflict(r.name)
 	}
-	contents, err := io.ReadAll(io.NewSectionReader(r.file, 0, int64(len(r.contents))+1))
+	file, err := root.Open(r.name)
+	if err != nil {
+		return stderrors.Join(stageConflict(r.name), err)
+	}
+	defer func() { result = stderrors.Join(result, file.Close()) }()
+	opened, err := file.Stat()
+	if err != nil {
+		return err
+	}
+	if !os.SameFile(r.info, opened) || r.info.Mode() != opened.Mode() || r.info.Size() != opened.Size() || !r.info.ModTime().Equal(opened.ModTime()) {
+		return stageConflict(r.name)
+	}
+	contents, err := io.ReadAll(io.NewSectionReader(file, 0, int64(len(r.contents))+1))
 	if err != nil {
 		return err
 	}
@@ -155,12 +167,6 @@ func (s *baselineStage) cleanup() error {
 
 func (s *baselineStage) close() error {
 	var result error
-	for _, record := range s.files {
-		if record.file != nil {
-			result = stderrors.Join(result, record.file.Close())
-			record.file = nil
-		}
-	}
 	if s.root != nil {
 		result = stderrors.Join(result, s.root.Close())
 		s.root = nil
