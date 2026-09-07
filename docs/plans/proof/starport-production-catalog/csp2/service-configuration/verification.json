@@ -55,7 +55,9 @@
     "writing-settled.log": "ce1b3b81b41bc6473e6dd92d2f2a6f5df8e1933b5f395489fd0e7cd9df4a7708",
     "writing-third.log": "2dfe80af1074aca74eb557a4f4d4e72d942c24e0a5a6bfe0a312869d288badce",
     "linux-owner.json": "d9c65b69dec3023e2916955221a6dac2dd37e8bd7850b05b45aa07277ad0e867",
-    "writing-ledger-initial.log": "47f241976adbbfbe705e4e8660e6f61e69779804ee9e0fd06134da886ebf601c"
+    "writing-ledger-initial.log": "47f241976adbbfbe705e4e8660e6f61e69779804ee9e0fd06134da886ebf601c",
+    "writing-ledger-final.log": "a5604b622ae4f9306c1c841ed3c410c33985fe71f3ac71c5ca59f9599c8117c4",
+    "documents.json": "245c54e147037b0b54dab3f7d0151118f5b063c06980d1d573a2af2a2ce56be5"
   },
   "test_suites": {
     "race": {
