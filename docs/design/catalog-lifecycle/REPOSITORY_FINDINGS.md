@@ -1399,3 +1399,16 @@ Canonical and alias lookups retain their errors and caller-owned values. Concurr
 The [proof](../../plans/proof/starport-production-catalog/csp3.1.md) records the allocation regression, benchmark samples, 843 catalog race events, and both assigned A44 checks.
 At 10,000 models, canonical lookup changed from 17,398,242 bytes and 160,047 allocations to 1,104 bytes and 11 allocations.
 Full Starport request overhead remains outside this measurement. CSP10.1 owns its remaining candidate preparation and lookup work.
+
+
+## CSP0.2 installation review
+
+The advertised Compose recipe failed before readiness on native Linux ARM64. The local admin token required rotation before a network bind.
+The recipe also lacked volumes for Starport's relational, file, and catalog state.
+Starport commit `ee3f2e1` retains both Starport directories, selects a durable catalog path, and adds the rotation command.
+The corrected run preserves the gateway key and a SQLite account template through container replacement.
+
+E02 now passes for the reviewed README with 11 native installation entries and the prior real streamed inference.
+The [first-use proof](../../plans/proof/starport-production-catalog/csp0.2.md) records archive, Homebrew, source, container, and Compose scope.
+This correction supports one Compose gateway. Shared PostgreSQL, replicated operation, and disaster recovery remain separate qualification work.
+The full operator guide retains 48 existing prose diagnostics. The README and changed container procedure pass their prose checks.
