@@ -1,0 +1,21 @@
+{
+  "head": "205dd041fb2d0267a2643c0d6af8d9f45e34842d",
+  "base": "b58a9df6f2da7fe95297e30d97604c9232e83a43",
+  "prior_head": "f216e7c01e874bdfb4fa57e6b5c1129f79a985fd",
+  "changed_files": 23,
+  "changed_scope": "Captured proof and labels only. No source, test, workflow, or executable capture helper changes.",
+  "complete_nonproof_diff_bytes": 1628351,
+  "complete_nonproof_diff_sha256": "696cc97032ac35dd69b89a71d851301e5d28c259d8c8b1d10ed7043fb0118a76",
+  "diff_identical_before_after": true,
+  "prose_files": 1081,
+  "prose_exit_code": 0,
+  "prepr_exit_code": 0,
+  "review_profile": "cross-lab",
+  "reviewers": [
+    "gpt-5.6-sol xhigh",
+    "claude-opus-5 high"
+  ],
+  "attestation_reused": true,
+  "prior_incomplete_attempt": "Default profile selected one reviewer. The exact owned helper was interrupted. The required cross-lab gate completed successfully.",
+  "published_pr": "https://github.com/agentstation/starmap/pull/132"
+}

@@ -1,0 +1,146 @@
+{
+  "schemaVersion": 1,
+  "version": "v0.2.0",
+  "policy": {
+    "ruleSource": "built-in",
+    "configDisabled": false,
+    "tests": false,
+    "exclude": []
+  },
+  "rules": [
+    {
+      "name": "no-self-referential-constraints",
+      "analyzer": "noselfreferentialconstraints",
+      "summary": "a generic type may not name itself in its own type parameter list",
+      "rationale": "Go 1.26 lifted the restriction that a generic type may not refer to itself in\nits type parameter list. The type Adder[A Adder[A]] interface{ Add(A) A } now\ncompiles. Before Go 1.26 the compiler rejected it as \"invalid recursive\ntype\".\n\nThis rule reports exactly that construct: the declared type's own name\nappearing inside its own type parameter list. It does not report F-bounded\nconstraints written through a separate interface, such as\ntype Node[T Cloneable[T]]. Generics in Go 1.18 made that shape legal. It is\nnot what Go 1.26 changed. Use no-f-bounded-constraints for those.\n\nDetection is syntactic and catches direct self-reference. Mutual recursion\nacross two declarations is not reported.",
+      "default": true,
+      "enabled": true,
+      "reverts": "1.26",
+      "severity": "error",
+      "docURL": "https://github.com/agentstation/ago/blob/main/docs/rules.md#no-self-referential-constraints"
+    },
+    {
+      "name": "no-f-bounded-constraints",
+      "analyzer": "nofboundedconstraints",
+      "summary": "a type parameter may not appear in its own constraint",
+      "rationale": "Reports F-bounded polymorphism. A type parameter appears inside its own\nconstraint, as in type Node[T Cloneable[T]] or func algo[A Adder[A]](x A) A.\n\nThis is not a version revert. Generics in Go 1.18 made this construct legal,\nand the standard library uses it. It is the most abstraction-dense shape the\ntype system allows. An ordinary interface plus a concrete type usually\nreaches the same shape, so some codebases choose to ban it. That is a\nhouse-style decision. That is why the rule is off by default.\n\nA constraint that refers to a sibling type parameter, such as\ntype Graph[N any, E Edge[N]], is not reported. The parameter does not appear\nin its own constraint.",
+      "default": false,
+      "enabled": false,
+      "severity": "error",
+      "docURL": "https://github.com/agentstation/ago/blob/main/docs/rules.md#no-f-bounded-constraints"
+    },
+    {
+      "name": "no-redundant-short-decl",
+      "analyzer": "noredundantshortdecl",
+      "summary": "use var except where := is syntactically required",
+      "rationale": "One way to introduce a variable instead of several.\n\nThe rule does not report := where var is a syntax error:\n\n\tswitch t := x.(type) { ... }   // var is not allowed in a switch guard\n\tfor i, v := range xs { ... }   // no var form exists\n\tselect { case v := \u003c-ch: ... } // var is not allowed in a receive clause\n\nIt reports := only in plain statement position, where var is a drop-in\nreplacement. Moving an if, for, or switch header declaration to a preceding var\nis legal but widens the variable's scope. The rule does not report those\ndeclarations. A blanket ban would force adding syntax to the language. The tool\nwill not do that.",
+      "default": false,
+      "enabled": false,
+      "severity": "error",
+      "docURL": "https://github.com/agentstation/ago/blob/main/docs/rules.md#no-redundant-short-decl"
+    },
+    {
+      "name": "no-naked-return",
+      "analyzer": "nonakedreturn",
+      "summary": "return statements must be explicit even with named results",
+      "rationale": "A bare return in a function with named results forces the reader to scroll up\nto learn the returned values. It also silently returns whatever the result\nvariables hold at that point. Naming the values costs nothing and survives\nlater edits to the function body.\n\nThe rule checks function literals against their own result list, not the\nenclosing function's. It reports a naked return inside a closure when the\nclosure itself declares named results.",
+      "default": true,
+      "enabled": true,
+      "severity": "error",
+      "docURL": "https://github.com/agentstation/ago/blob/main/docs/rules.md#no-naked-return"
+    },
+    {
+      "name": "no-init-func",
+      "analyzer": "noinitfunc",
+      "summary": "func init() is forbidden. initialize explicitly",
+      "rationale": "init runs before main in an order determined by the import graph, which makes\nan initialisation failure hard to localise and hard to test. Explicit wiring\nfrom main puts the order in one readable place.\n\nOff by default because avoiding init entirely requires a wiring convention\nthat a linter cannot supply.",
+      "default": false,
+      "enabled": false,
+      "severity": "error",
+      "docURL": "https://github.com/agentstation/ago/blob/main/docs/rules.md#no-init-func"
+    },
+    {
+      "name": "no-embedded-field",
+      "analyzer": "noembeddedfield",
+      "summary": "struct embedding is forbidden. name your fields",
+      "rationale": "Embedding promotes methods and fields implicitly, so a type's method set stops\nbeing visible at its declaration. Naming the field costs one selector per\nuse and makes the delegation explicit.\n\nOff by default because embedding is thoroughly idiomatic Go. Turning this on\nis a real break with house Go, not a tidy-up.\n\nInterface embedding is not reported. Composing interfaces from smaller ones\nis the language's intended mechanism and has no field to name.",
+      "default": false,
+      "enabled": false,
+      "severity": "error",
+      "docURL": "https://github.com/agentstation/ago/blob/main/docs/rules.md#no-embedded-field"
+    },
+    {
+      "name": "no-goto",
+      "analyzer": "nogoto",
+      "summary": "goto is forbidden",
+      "rationale": "Labelled break and continue cover the loop cases. A goto that jumps anywhere\nelse is control flow the reader has to simulate by hand.\n\nThis is a rule for application code, not a claim that goto is vestigial. The\nstandard library's goto statements concentrate in the type checkers, the\ncompiler, and the syscall exec paths. That code is either performance\ncritical or a hand-written state machine. If you write that kind of code,\nturn this rule off rather than working around it.",
+      "default": true,
+      "enabled": true,
+      "severity": "error",
+      "docURL": "https://github.com/agentstation/ago/blob/main/docs/rules.md#no-goto"
+    },
+    {
+      "name": "no-generic-methods",
+      "analyzer": "nogenericmethods",
+      "summary": "methods may not declare their own type parameters",
+      "rationale": "Go 1.27 lets a method declare type parameters of its own. Rewrite any such\nmethod as a package-level function that takes the receiver as its first\nargument. The feature buys call-site chaining and costs a second place to\nlook for a type's operations.\n\nA method whose receiver carries type parameters, such as\nfunc (b *Box[T]) Get() T, is not affected. The rule reports only a method that\nintroduces new type parameters.\n\nOn a toolchain older than Go 1.27 this rule is dormant. The parser rejects the\nconstruct before any analyzer runs.",
+      "default": true,
+      "enabled": true,
+      "reverts": "1.27",
+      "severity": "error",
+      "docURL": "https://github.com/agentstation/ago/blob/main/docs/rules.md#no-generic-methods"
+    },
+    {
+      "name": "no-generic-decls",
+      "analyzer": "nogenericdecls",
+      "summary": "no type parameters on any func or type declaration",
+      "rationale": "Reverts generics entirely. This is the strictest rule ago offers. It is the\nleast likely to be right for a given codebase: it forbids type parameters on\nany func or type declaration.\n\nReasonable for a codebase with no container libraries of its own. Hostile\notherwise. It does not stop you calling generic standard library functions\nsuch as slices.Sort. Recognising a generic call requires resolving the\ncallee to its declaration in another package.",
+      "default": false,
+      "enabled": false,
+      "reverts": "1.18",
+      "severity": "error",
+      "docURL": "https://github.com/agentstation/ago/blob/main/docs/rules.md#no-generic-decls"
+    },
+    {
+      "name": "no-invalid-ignore",
+      "analyzer": "noinvalidignore",
+      "summary": "every //ago:ignore must name a known rule and give a reason",
+      "rationale": "A suppression that names no rule silences everything on the line, and a\nsuppression that names a misspelled rule silences nothing at all. Both fail\nquietly, which is how a lint configuration rots.\n\nThis rule requires the full form:\n\n\t//ago:ignore no-goto -- hand-written state machine, see docs/parser.md\n\nThe reason is not decoration. It is the only record of why ago granted the\nexception. A reviewer or a coding agent reads it before deciding whether the\nexception still applies.\n\nTurning this rule off is possible but self-defeating. It is the rule that\nmakes every other rule's escape hatch auditable.",
+      "default": true,
+      "enabled": true,
+      "severity": "error",
+      "docURL": "https://github.com/agentstation/ago/blob/main/docs/rules.md#no-invalid-ignore"
+    },
+    {
+      "name": "no-dot-import",
+      "analyzer": "nodotimport",
+      "summary": "import . \"pkg\" is forbidden",
+      "rationale": "A dot import makes every identifier in the file ambiguous as to origin, which\ndefeats both the reader and grep.\n\nThe standard library uses dot imports in production code in exactly one\npattern. The two type checkers dot-import a package that holds nothing but\nerror-code constants, referenced densely enough that qualifying every use\nwould be noise. That is the narrow case where this rule is wrong. Outside of\nit, only tests and assembly generators excluded from the build use dot\nimports in the standard library.",
+      "default": true,
+      "enabled": true,
+      "severity": "error",
+      "docURL": "https://github.com/agentstation/ago/blob/main/docs/rules.md#no-dot-import"
+    },
+    {
+      "name": "no-blank-import-outside-main",
+      "analyzer": "noblankimportoutsidemain",
+      "summary": "import _ \"pkg\" only allowed in package main",
+      "rationale": "A blank import registers a side effect through the import graph, which makes\nprogram behaviour depend on which packages the linker includes. Confining\nblank imports to package main keeps that dependency explicit and puts it\nwhere a reader looks for wiring.\n\nOff by default because some driver-registration patterns legitimately need a\nblank import from a library package.\n\nFiles with a _test.go suffix are exempt. A test that blank-imports a driver\nregisters it for that binary only.",
+      "default": false,
+      "enabled": false,
+      "severity": "error",
+      "docURL": "https://github.com/agentstation/ago/blob/main/docs/rules.md#no-blank-import-outside-main"
+    },
+    {
+      "name": "no-new-expr",
+      "analyzer": "nonewexpr",
+      "summary": "new() takes a type, not an expression",
+      "rationale": "Go 1.26 lets the built-in new take an expression that supplies the initial\nvalue, so new(yearsSince(born)) allocates and initialises in one step.\n\nThe form collapses declaration, initialisation, and address-taking into a\nsingle expression. The two-line version with a named variable says the same\nthing and reads left to right:\n\n\tage := yearsSince(born)\n\tp := \u0026age\n\nWhen type information is available the rule decides exactly whether the\nargument is a type. Without it the rule falls back to syntax. It reports only\nunambiguous expressions such as new(f(x)). A shadowed new or a variable that\nlooks like a type name is not reported.",
+      "default": true,
+      "enabled": true,
+      "reverts": "1.26",
+      "severity": "error",
+      "docURL": "https://github.com/agentstation/ago/blob/main/docs/rules.md#no-new-expr"
+    }
+  ]
+}
