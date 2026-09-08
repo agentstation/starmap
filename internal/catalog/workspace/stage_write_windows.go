@@ -49,6 +49,7 @@ func writableStagedDirectory(file *os.File) (func() error, error) {
 		return nil, err
 	}
 	relative, err := assembly.ToSelfRelative()
+	runtime.KeepAlive(assemblyACL)
 	if err != nil {
 		return nil, err
 	}
