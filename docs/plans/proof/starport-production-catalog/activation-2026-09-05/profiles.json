@@ -1,0 +1,119 @@
+{
+  "status": "qualification inputs, no support credit",
+  "permission_validity_seconds": 300,
+  "maximum_clock_uncertainty_seconds": 30,
+  "model_deprecation_days": 30,
+  "recipes": {
+    "T1": {
+      "products": [
+        "starmap"
+      ],
+      "stores": [
+        "filesystem"
+      ],
+      "ownership": "one active writer"
+    },
+    "T2": {
+      "products": [
+        "starport"
+      ],
+      "stores": [
+        "badger",
+        "sqlite",
+        "filesystem blobs"
+      ],
+      "ownership": "one persistent gateway"
+    },
+    "T3": {
+      "products": [
+        "starport"
+      ],
+      "stores": [
+        "badger",
+        "sqlite",
+        "filesystem blobs"
+      ],
+      "ownership": "one production gateway"
+    },
+    "T4": {
+      "products": [
+        "starport"
+      ],
+      "stores": [
+        "valkey",
+        "postgres",
+        "object storage"
+      ],
+      "ownership": "replicated gateways, one refresh owner, controlled backend recovery"
+    },
+    "T5": {
+      "products": [
+        "starmap",
+        "starport"
+      ],
+      "stores": [
+        "T1 plus selected T2/T3/T4"
+      ],
+      "ownership": "one internal authority per namespace"
+    },
+    "T6": {
+      "products": [
+        "starmap",
+        "starport"
+      ],
+      "stores": [
+        "selected T1-T5"
+      ],
+      "ownership": "restricted network or controlled import"
+    },
+    "T7": {
+      "products": [
+        "starport"
+      ],
+      "stores": [
+        "memory badger",
+        "memory sqlite",
+        "private scratch"
+      ],
+      "ownership": "one ephemeral gateway"
+    }
+  },
+  "required_native_platforms": [
+    "linux",
+    "macos",
+    "windows"
+  ],
+  "optional_backends": {
+    "redis": "UNVERIFIED until mode-specific qualification",
+    "mysql": "UNVERIFIED until migration and compatibility qualification",
+    "valkey_cluster": "UNVERIFIED until hash-slot, failover, and admission fencing qualification"
+  },
+  "selection_gates": {
+    "CSP0.4": [
+      "numerical full-path latency and allocation limits",
+      "workload distributions",
+      "observability settings",
+      "memory and concurrency bounds",
+      "runner and toolchain identities"
+    ],
+    "CSP12.2": [
+      "billing-unit matrix",
+      "reconciliation and replay horizons by operation",
+      "admission clock authority and validity evidence"
+    ],
+    "CSP15": [
+      "exact backend versions and modes",
+      "write durability and acknowledged-loss bound",
+      "real backend failover and TLS evidence"
+    ],
+    "CSP19": [
+      "capacity and recovery objectives per recipe",
+      "container mounts and restore evidence"
+    ],
+    "CSP23": [
+      "actual release pair and artifacts",
+      "bot identity and protected publishing setup",
+      "returned documentation URL"
+    ]
+  }
+}
