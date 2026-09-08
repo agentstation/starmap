@@ -1,0 +1,52 @@
+{
+  "head": "c20ddbc3a34c52699e7785d303449168c6119c2a",
+  "initial_source_head": "0b87fd18",
+  "code_changed_during_checks": false,
+  "command": "GOTOOLCHAIN=go1.26.6 make verify",
+  "exit_code": 0,
+  "stages": 39,
+  "ordinary_package_passes": 79,
+  "race_package_passes": 79,
+  "verifier_unit_tests": 62,
+  "CSP2": {
+    "passed_subcases": 7,
+    "unverified_subcases": 15,
+    "gate": "FAIL"
+  },
+  "review_stack": {
+    "evidence_pr": "https://github.com/agentstation/starmap/pull/134",
+    "code_pr": "https://github.com/agentstation/starmap/pull/133",
+    "code_base": "codex/catalog-followup-evidence",
+    "helper_change": false,
+    "non_proof_diff_preserved": true,
+    "model_review": "pending"
+  },
+  "artifacts": [
+    {
+      "path": "followup-full-verify.log.gz",
+      "sha256": "b51cd356f844a728761492fa30b088446ba83b5815da6af2b633a1bdbf004f3c",
+      "uncompressed_sha256": "7cb219b97a9ab524077a11937c6b27074a01360202152634edb32571d2f310a8"
+    },
+    {
+      "path": "review-preflight-blocked.log.gz",
+      "sha256": "1f0c07d0646fe236be442e76189f4219f30f5a08b9b83c7a1e9b41e0a89e686b",
+      "uncompressed_sha256": "58c32fdc472a00142c053edecba9e2a981e185b1821b0ab9af4a143e9f5a13ac"
+    },
+    {
+      "path": "review-preflight-corrected.log.gz",
+      "sha256": "d73d84ca288de5d5b15e4b667270234ed0eaa98495d2333f1efb3510da15302b",
+      "uncompressed_sha256": "5a91329b70c9bbd30b61c2d8fde0139e5a354d00458823f84592701ded56a353"
+    },
+    {
+      "path": "evidence-secret-scan.log.gz",
+      "sha256": "6999ea0acc566ccac7d17654b13cbd849da7200e6108ffdbf35fe5a7ffe7f9f5",
+      "uncompressed_sha256": "71bfff988402bd710c7015d7ce027ad5e07e5dad3ef2a90ddbb9089a0f2ea8c9"
+    },
+    {
+      "path": "code-diff-preservation.json.gz",
+      "sha256": "e6f1979a394aff5b483d3386a7c72c3c64c0dab7e1c5b9fab6a876422278c091",
+      "uncompressed_sha256": "f65103edf574d254f0161f50f10afc76840214b712311ac6fd3130342432d106"
+    }
+  ],
+  "qualification": "Local component evidence. No released-pair or primary acceptance credit."
+}
