@@ -8,13 +8,20 @@ import (
 )
 
 func assessManifestAccess(manifest FileManifest, report *FileInspection) {
-	policies := make(map[string]string, len(manifest.Files))
+	entries := make(map[string]FileEntry, len(manifest.Files))
 	for _, entry := range manifest.Files {
-		policies[entry.ID] = entry.Policy.Access
+		entries[entry.ID] = entry
 	}
 	for index := range report.Observations {
 		item := &report.Observations[index]
-		item.AccessPolicy = policies[item.ID]
+		entry := entries[item.ID]
+		if entry.Kind == "patterns" && item.Path == entry.Location.Path {
+			item.AccessPolicy = ""
+			item.AccessStatus = "not-assessed"
+			item.AccessReason = "pattern-anchor"
+			continue
+		}
+		item.AccessPolicy = entry.Policy.Access
 		if item.AccessPolicy == "" {
 			continue
 		}

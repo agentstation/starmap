@@ -18,6 +18,7 @@ type FileManifest struct {
 
 // FileEntry identifies a file or a bounded tree and its creation and recovery rules.
 // Patterns use slash-separated relative names. A double star includes nested content.
+// For a patterns entry, Policy applies to matches, not to the Location scan parent.
 // Availability is available, disabled, or planned. Planned paths have no implemented writer.
 type FileEntry struct {
 	ID           string     `json:"id" yaml:"id"`
