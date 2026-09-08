@@ -20,8 +20,30 @@ func copyNativeAccess(source, destination *os.File) error {
 	if sd == nil || !sd.IsValid() {
 		return invalidWorkspaceDescriptor()
 	}
+	if err := assignNativeAccess(destination, sd); err != nil {
+		return err
+	}
+	info, err := source.Stat()
+	if err != nil {
+		return err
+	}
+	return destination.Chmod(info.Mode() & workspaceAccessMode)
+}
+
+func assignNativeAccess(destination *os.File, sd *windows.SECURITY_DESCRIPTOR) error {
 	control, _, err := sd.Control()
 	if err != nil {
+		return err
+	}
+	// Native assignment needs request bits to retain the automatic-inheritance model.
+	var inheritance windows.SECURITY_DESCRIPTOR_CONTROL
+	if control&windows.SE_DACL_AUTO_INHERITED != 0 {
+		inheritance |= windows.SE_DACL_AUTO_INHERIT_REQ
+	}
+	if control&windows.SE_SACL_AUTO_INHERITED != 0 {
+		inheritance |= windows.SE_SACL_AUTO_INHERIT_REQ
+	}
+	if err := sd.SetControl(windows.SE_DACL_AUTO_INHERIT_REQ|windows.SE_SACL_AUTO_INHERIT_REQ, inheritance); err != nil {
 		return err
 	}
 	// Central policy assignment needs a privileged handle. Snapshot equality still checks it.
@@ -43,11 +65,7 @@ func copyNativeAccess(source, destination *os.File) error {
 	if status != 0 {
 		return windows.NTStatus(status & 0xffffffff).Errno()
 	}
-	info, err := source.Stat()
-	if err != nil {
-		return err
-	}
-	return destination.Chmod(info.Mode() & workspaceAccessMode)
+	return nil
 }
 
 func openStagedDirectory(root *os.Root, name string) (*os.File, error) {

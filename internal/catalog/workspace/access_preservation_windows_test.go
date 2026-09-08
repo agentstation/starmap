@@ -29,6 +29,15 @@ func TestWorkspaceReplacementPreservesAccessPolicy(t *testing.T) {
 	}
 	next, identity := testCatalog(t, "new", "New")
 	if _, err := Project(t.Context(), path, next, identity); err != nil {
+		for _, entry := range before.Entries {
+			if !entry.Directory {
+				continue
+			}
+			sd, accessErr := windows.GetNamedSecurityInfo(filepath.Join(path, entry.Path), windows.SE_FILE_OBJECT, workspaceWindowsSecurity)
+			if accessErr == nil && sd != nil {
+				t.Logf("source directory %s: %s", entry.Path, sd.String())
+			}
+		}
 		t.Fatal(err)
 	}
 	after, err := snapshotTree(t.Context(), path)
