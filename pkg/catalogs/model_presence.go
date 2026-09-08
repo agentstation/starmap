@@ -212,6 +212,12 @@ func modelFeatures() []ModelFeature {
 	return allModelFeatures
 }
 
+// PublishedModelFeatures returns every Boolean capability in published order.
+// Callers own the returned slice.
+func PublishedModelFeatures() []ModelFeature {
+	return append([]ModelFeature(nil), allModelFeatures...)
+}
+
 // Set records an explicit model limit, including zero.
 func (l *ModelLimits) Set(limit ModelLimit, value int64) bool {
 	if l == nil {

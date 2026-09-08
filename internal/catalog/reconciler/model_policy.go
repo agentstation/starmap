@@ -145,13 +145,14 @@ func (merger *merger) mergeModelFeatures(
 	models map[sources.ID]*catalogs.Model,
 	history *map[string]provenance.Field,
 ) {
+	originalModels := merger.suppressProjectedFeatureDefaults(identity, models)
 	models = merger.modelSourcesForValue(
 		identity.providerID,
 		identity.modelID,
 		policy,
 		models,
 		func(model *catalogs.Model) any {
-			if model == nil {
+			if model == nil || model.Features == nil {
 				return nil
 			}
 			return model.Features
@@ -193,12 +194,13 @@ func (merger *merger) mergeModelFeatures(
 	}
 	merged.Features.Modalities = modalities
 	target.Features = merged.Features
+	merger.mergeFeatureEvidence(identity, target.Features, policy, originalModels, history)
 	merger.recordModelHistory(
 		identity,
 		history,
 		policy,
 		winner,
-		merged.Features,
+		target.Features,
 		fmt.Sprintf("merged capabilities by field presence with %s authority; accumulated documented modalities", winner),
 	)
 }

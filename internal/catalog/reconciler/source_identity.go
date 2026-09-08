@@ -223,8 +223,11 @@ func (merger *merger) projectedModelEvidence(
 		return provenance.Entry{}, false
 	}
 	entries := catalog.Provenance().FindModelField(providerID, modelID, field)
-	if len(entries) == 0 && modelIDIsUnique(catalog, modelID) {
-		entries = catalog.Provenance().FindByField(catalogevidence.ResourceTypeModel, modelID, field)
+	if len(entries) == 0 {
+		legacy := catalog.Provenance().FindByField(catalogevidence.ResourceTypeModel, modelID, field)
+		if len(legacy) > 0 && modelIDIsUnique(catalog, modelID) {
+			entries = legacy
+		}
 	}
 	return matchingCurrentEvidence(entries, value)
 }

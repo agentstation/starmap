@@ -323,12 +323,13 @@ func (merger *merger) model(providerID catalogs.ProviderID, modelID string, sour
 
 	for _, policy := range merger.authorities.Policies(evidence.ResourceTypeModel) {
 		policySources := sourceModels
-		if policy.Path != "Limits" {
+		if policy.Path != "Limits" && policy.Path != "Features" {
 			policySources = merger.modelSourcesForPolicy(providerID, modelID, policy, sourceModels)
 		}
 		merger.applyModelPolicy(identity, merged, policy, policySources, &history)
 	}
 	dropOrphanedReasoningFacts(merged)
+	merger.clearOrphanedReasoningEvidence(identity, merged, history)
 
 	// Handle timestamps with change detection
 	// Store baseline model for comparison (before it gets overwritten)
