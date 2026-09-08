@@ -750,6 +750,7 @@ func main() {
 - [type ModelDefinitionWeights](<#ModelDefinitionWeights>)
 - [type ModelDelivery](<#ModelDelivery>)
 - [type ModelFeature](<#ModelFeature>)
+  - [func PublishedModelFeatures\(\) \[\]ModelFeature](<#PublishedModelFeatures>)
 - [type ModelFeatures](<#ModelFeatures>)
   - [func \(f ModelFeatures\) MarshalJSON\(\) \(\[\]byte, error\)](<#ModelFeatures.MarshalJSON>)
   - [func \(f ModelFeatures\) MarshalYAML\(\) \(any, error\)](<#ModelFeatures.MarshalYAML>)
@@ -994,7 +995,7 @@ const CurrentBootstrapManifestVersion uint64 = 2
 ```
 
 <a name="CatalogSemanticChecksum"></a>
-## func [CatalogSemanticChecksum](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/payload.go#L41>)
+## func [CatalogSemanticChecksum](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/payload.go#L46>)
 
 ```go
 func CatalogSemanticChecksum(reader Reader) (string, error)
@@ -1021,7 +1022,7 @@ func DerivedCredentialEnvironmentName(product string, providerID ProviderID, fie
 DerivedCredentialEnvironmentName derives a product\-specific ambient name. It validates all components before it replaces ID separators with underscores.
 
 <a name="EncodeCatalogPayload"></a>
-## func [EncodeCatalogPayload](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/payload.go#L26>)
+## func [EncodeCatalogPayload](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/payload.go#L28>)
 
 ```go
 func EncodeCatalogPayload(reader Reader) ([]byte, error)
@@ -2187,7 +2188,7 @@ func (r *Catalog) Providers() ProvidersReader
 Providers returns the immutable catalog's provider collection reader.
 
 <a name="CatalogPayload"></a>
-## type [CatalogPayload](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/payload.go#L16-L23>)
+## type [CatalogPayload](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/payload.go#L18-L25>)
 
 CatalogPayload is the canonical construction\-record JSON representation. Author models own provider\-independent facts. Provider models own serving facts and link to author models through Model.ModelRef.
 
@@ -2750,7 +2751,7 @@ func MergeModels(existing, updated Model) Model
 MergeModels combines two models and retains existing values when updated has an empty or nil value. Valid pricing replaces the complete pricing object, including explicit zero prices. Invalid pricing retains the existing object.
 
 <a name="Model.DescriptionValue"></a>
-### func \(\*Model\) [DescriptionValue](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_presence.go#L366>)
+### func \(\*Model\) [DescriptionValue](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_presence.go#L372>)
 
 ```go
 func (m *Model) DescriptionValue() (string, ValuePresence)
@@ -2768,7 +2769,7 @@ func (m *Model) EncodeYAML() (string, error)
 EncodeYAML returns formatted YAML. It returns a typed parse error for values that YAML cannot represent safely.
 
 <a name="Model.Equal"></a>
-### func \(Model\) [Equal](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_presence.go#L418>)
+### func \(Model\) [Equal](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_presence.go#L424>)
 
 ```go
 func (m Model) Equal(other Model) bool
@@ -2813,7 +2814,7 @@ func (m Model) MarshalYAML() (any, error)
 MarshalYAML preserves an explicit empty or unknown description.
 
 <a name="Model.SetDescription"></a>
-### func \(\*Model\) [SetDescription](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_presence.go#L348>)
+### func \(\*Model\) [SetDescription](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_presence.go#L354>)
 
 ```go
 func (m *Model) SetDescription(description string)
@@ -2822,7 +2823,7 @@ func (m *Model) SetDescription(description string)
 SetDescription records an explicit model description, including an empty description.
 
 <a name="Model.SetDescriptionUnknown"></a>
-### func \(\*Model\) [SetDescriptionUnknown](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_presence.go#L354>)
+### func \(\*Model\) [SetDescriptionUnknown](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_presence.go#L360>)
 
 ```go
 func (m *Model) SetDescriptionUnknown()
@@ -2849,7 +2850,7 @@ func (m *Model) UnmarshalYAML(unmarshal func(any) error) error
 UnmarshalYAML restores description presence from the human YAML record.
 
 <a name="Model.UnsetDescription"></a>
-### func \(\*Model\) [UnsetDescription](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_presence.go#L360>)
+### func \(\*Model\) [UnsetDescription](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_presence.go#L366>)
 
 ```go
 func (m *Model) UnsetDescription()
@@ -3111,6 +3112,15 @@ const (
     ModelFeatureStreaming                     ModelFeature = "streaming"
 )
 ```
+
+<a name="PublishedModelFeatures"></a>
+### func [PublishedModelFeatures](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_presence.go#L217>)
+
+```go
+func PublishedModelFeatures() []ModelFeature
+```
+
+PublishedModelFeatures returns every Boolean capability in published order. Callers own the returned slice.
 
 <a name="ModelFeatures"></a>
 ## type [ModelFeatures](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model.go#L163-L235>)
@@ -3381,7 +3391,7 @@ func (l ModelLimits) MarshalYAML() (any, error)
 MarshalYAML preserves explicit zero and unknown limits while omitting unobserved limits.
 
 <a name="ModelLimits.Set"></a>
-### func \(\*ModelLimits\) [Set](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_presence.go#L216>)
+### func \(\*ModelLimits\) [Set](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_presence.go#L222>)
 
 ```go
 func (l *ModelLimits) Set(limit ModelLimit, value int64) bool
@@ -3390,7 +3400,7 @@ func (l *ModelLimits) Set(limit ModelLimit, value int64) bool
 Set records an explicit model limit, including zero.
 
 <a name="ModelLimits.SetUnknown"></a>
-### func \(\*ModelLimits\) [SetUnknown](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_presence.go#L228>)
+### func \(\*ModelLimits\) [SetUnknown](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_presence.go#L234>)
 
 ```go
 func (l *ModelLimits) SetUnknown(limit ModelLimit) bool
@@ -3417,7 +3427,7 @@ func (l *ModelLimits) UnmarshalYAML(unmarshal func(any) error) error
 UnmarshalYAML restores per\-limit presence from the human YAML record.
 
 <a name="ModelLimits.Unset"></a>
-### func \(\*ModelLimits\) [Unset](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_presence.go#L240>)
+### func \(\*ModelLimits\) [Unset](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_presence.go#L246>)
 
 ```go
 func (l *ModelLimits) Unset(limit ModelLimit) bool
@@ -3426,7 +3436,7 @@ func (l *ModelLimits) Unset(limit ModelLimit) bool
 Unset removes a model limit claim.
 
 <a name="ModelLimits.Value"></a>
-### func \(\*ModelLimits\) [Value](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_presence.go#L254>)
+### func \(\*ModelLimits\) [Value](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_presence.go#L260>)
 
 ```go
 func (l *ModelLimits) Value(limit ModelLimit) (int64, ValuePresence)
@@ -3485,7 +3495,7 @@ func (m ModelMetadata) MarshalYAML() (any, error)
 MarshalYAML preserves explicit false and unknown open\-weights claims.
 
 <a name="ModelMetadata.OpenWeightsValue"></a>
-### func \(\*ModelMetadata\) [OpenWeightsValue](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_presence.go#L399>)
+### func \(\*ModelMetadata\) [OpenWeightsValue](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_presence.go#L405>)
 
 ```go
 func (m *ModelMetadata) OpenWeightsValue() (bool, ValuePresence)
@@ -3494,7 +3504,7 @@ func (m *ModelMetadata) OpenWeightsValue() (bool, ValuePresence)
 OpenWeightsValue returns open\-weights support and its presence state.
 
 <a name="ModelMetadata.SetOpenWeights"></a>
-### func \(\*ModelMetadata\) [SetOpenWeights](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_presence.go#L380>)
+### func \(\*ModelMetadata\) [SetOpenWeights](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_presence.go#L386>)
 
 ```go
 func (m *ModelMetadata) SetOpenWeights(open bool)
@@ -3503,7 +3513,7 @@ func (m *ModelMetadata) SetOpenWeights(open bool)
 SetOpenWeights records an explicit open\-weights value.
 
 <a name="ModelMetadata.SetOpenWeightsUnknown"></a>
-### func \(\*ModelMetadata\) [SetOpenWeightsUnknown](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_presence.go#L387>)
+### func \(\*ModelMetadata\) [SetOpenWeightsUnknown](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_presence.go#L393>)
 
 ```go
 func (m *ModelMetadata) SetOpenWeightsUnknown()
@@ -3530,7 +3540,7 @@ func (m *ModelMetadata) UnmarshalYAML(unmarshal func(any) error) error
 UnmarshalYAML restores open\-weights presence from the human YAML record.
 
 <a name="ModelMetadata.UnsetOpenWeights"></a>
-### func \(\*ModelMetadata\) [UnsetOpenWeights](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_presence.go#L393>)
+### func \(\*ModelMetadata\) [UnsetOpenWeights](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_presence.go#L399>)
 
 ```go
 func (m *ModelMetadata) UnsetOpenWeights()
