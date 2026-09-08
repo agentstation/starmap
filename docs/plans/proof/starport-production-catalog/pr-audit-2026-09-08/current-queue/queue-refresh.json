@@ -1,0 +1,756 @@
+{
+  "captured_at": "2026-09-08T16:12:37.153982+00:00",
+  "repos": {
+    "starmap": {
+      "totalCount": 11,
+      "nodes": [
+        {
+          "number": 125,
+          "title": "Preserve catalog qualification captures",
+          "url": "https://github.com/agentstation/starmap/pull/125",
+          "headRefOid": "d8d12a26069f34442860cbcf8bb840dd073177fc",
+          "headRefName": "codex/catalog-evidence",
+          "baseRefName": "main",
+          "isDraft": true,
+          "mergeable": "MERGEABLE",
+          "mergeStateStatus": "CLEAN",
+          "updatedAt": "2026-09-08T05:20:16Z",
+          "reviewThreads": {
+            "totalCount": 0,
+            "nodes": []
+          },
+          "commits": {
+            "nodes": [
+              {
+                "commit": {
+                  "statusCheckRollup": {
+                    "contexts": {
+                      "totalCount": 6,
+                      "nodes": [
+                        {
+                          "name": "Analyze (actions)",
+                          "conclusion": "SUCCESS",
+                          "status": "COMPLETED"
+                        },
+                        {
+                          "name": "Verification Gate",
+                          "conclusion": "SUCCESS",
+                          "status": "COMPLETED"
+                        },
+                        {
+                          "name": "Analyze (go)",
+                          "conclusion": "SUCCESS",
+                          "status": "COMPLETED"
+                        },
+                        {
+                          "name": "Security & Reliability",
+                          "conclusion": "SUCCESS",
+                          "status": "COMPLETED"
+                        },
+                        {
+                          "name": "Action Pin Provenance",
+                          "conclusion": "SUCCESS",
+                          "status": "COMPLETED"
+                        },
+                        {
+                          "name": "CodeQL",
+                          "conclusion": "SUCCESS",
+                          "status": "COMPLETED"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        },
+        {
+          "number": 126,
+          "title": "docs: define production catalog contracts and verification plan",
+          "url": "https://github.com/agentstation/starmap/pull/126",
+          "headRefOid": "b58a9df6f2da7fe95297e30d97604c9232e83a43",
+          "headRefName": "codex/catalog-plan",
+          "baseRefName": "codex/catalog-evidence",
+          "isDraft": true,
+          "mergeable": "MERGEABLE",
+          "mergeStateStatus": "CLEAN",
+          "updatedAt": "2026-09-08T05:18:10Z",
+          "reviewThreads": {
+            "totalCount": 0,
+            "nodes": []
+          },
+          "commits": {
+            "nodes": [
+              {
+                "commit": {
+                  "statusCheckRollup": null
+                }
+              }
+            ]
+          }
+        },
+        {
+          "number": 128,
+          "title": "build(deps): bump github.com/Azure/azure-sdk-for-go/sdk/azidentity in /",
+          "url": "https://github.com/agentstation/starmap/pull/128",
+          "headRefOid": "c05d4c3554a4c7569c427d06db6db5a8ce38494a",
+          "headRefName": "dependabot/go_modules/go_modules-514a14c65d",
+          "baseRefName": "main",
+          "isDraft": false,
+          "mergeable": "MERGEABLE",
+          "mergeStateStatus": "CLEAN",
+          "updatedAt": "2026-09-08T16:02:53Z",
+          "reviewThreads": {
+            "totalCount": 0,
+            "nodes": []
+          },
+          "commits": {
+            "nodes": [
+              {
+                "commit": {
+                  "statusCheckRollup": {
+                    "contexts": {
+                      "totalCount": 4,
+                      "nodes": [
+                        {
+                          "name": "Verification Gate",
+                          "conclusion": "SUCCESS",
+                          "status": "COMPLETED"
+                        },
+                        {
+                          "name": "Security & Reliability",
+                          "conclusion": "SUCCESS",
+                          "status": "COMPLETED"
+                        },
+                        {
+                          "name": "Action Pin Provenance",
+                          "conclusion": "SUCCESS",
+                          "status": "COMPLETED"
+                        },
+                        {
+                          "name": "CodeQL",
+                          "conclusion": "NEUTRAL",
+                          "status": "COMPLETED"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        },
+        {
+          "number": 129,
+          "title": "build(deps): bump github.com/aws/aws-sdk-go-v2/config in /",
+          "url": "https://github.com/agentstation/starmap/pull/129",
+          "headRefOid": "ffeb595220e9de24f4ef78660d2658a2c6b6859a",
+          "headRefName": "dependabot/go_modules/go_modules-e480e64884",
+          "baseRefName": "main",
+          "isDraft": false,
+          "mergeable": "MERGEABLE",
+          "mergeStateStatus": "CLEAN",
+          "updatedAt": "2026-09-08T16:02:57Z",
+          "reviewThreads": {
+            "totalCount": 0,
+            "nodes": []
+          },
+          "commits": {
+            "nodes": [
+              {
+                "commit": {
+                  "statusCheckRollup": {
+                    "contexts": {
+                      "totalCount": 4,
+                      "nodes": [
+                        {
+                          "name": "Verification Gate",
+                          "conclusion": "SUCCESS",
+                          "status": "COMPLETED"
+                        },
+                        {
+                          "name": "Security & Reliability",
+                          "conclusion": "SUCCESS",
+                          "status": "COMPLETED"
+                        },
+                        {
+                          "name": "Action Pin Provenance",
+                          "conclusion": "SUCCESS",
+                          "status": "COMPLETED"
+                        },
+                        {
+                          "name": "CodeQL",
+                          "conclusion": "NEUTRAL",
+                          "status": "COMPLETED"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        },
+        {
+          "number": 130,
+          "title": "build(deps): bump github.com/aws/aws-sdk-go-v2/service/s3 in /",
+          "url": "https://github.com/agentstation/starmap/pull/130",
+          "headRefOid": "9b11e1c455d9f59ba342f30e64f1cd05d3b7a033",
+          "headRefName": "dependabot/go_modules/go_modules-99e672d88e",
+          "baseRefName": "main",
+          "isDraft": false,
+          "mergeable": "MERGEABLE",
+          "mergeStateStatus": "CLEAN",
+          "updatedAt": "2026-09-08T16:03:01Z",
+          "reviewThreads": {
+            "totalCount": 0,
+            "nodes": []
+          },
+          "commits": {
+            "nodes": [
+              {
+                "commit": {
+                  "statusCheckRollup": {
+                    "contexts": {
+                      "totalCount": 4,
+                      "nodes": [
+                        {
+                          "name": "Verification Gate",
+                          "conclusion": "SUCCESS",
+                          "status": "COMPLETED"
+                        },
+                        {
+                          "name": "Security & Reliability",
+                          "conclusion": "SUCCESS",
+                          "status": "COMPLETED"
+                        },
+                        {
+                          "name": "Action Pin Provenance",
+                          "conclusion": "SUCCESS",
+                          "status": "COMPLETED"
+                        },
+                        {
+                          "name": "CodeQL",
+                          "conclusion": "NEUTRAL",
+                          "status": "COMPLETED"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        },
+        {
+          "number": 131,
+          "title": "build(deps): bump github.com/aws/aws-sdk-go-v2/service/secretsmanager in /",
+          "url": "https://github.com/agentstation/starmap/pull/131",
+          "headRefOid": "0d6435d5b483e48c80b79d67be14430773caab19",
+          "headRefName": "dependabot/go_modules/go_modules-522bae20e5",
+          "baseRefName": "main",
+          "isDraft": false,
+          "mergeable": "MERGEABLE",
+          "mergeStateStatus": "CLEAN",
+          "updatedAt": "2026-09-08T16:03:05Z",
+          "reviewThreads": {
+            "totalCount": 0,
+            "nodes": []
+          },
+          "commits": {
+            "nodes": [
+              {
+                "commit": {
+                  "statusCheckRollup": {
+                    "contexts": {
+                      "totalCount": 4,
+                      "nodes": [
+                        {
+                          "name": "Verification Gate",
+                          "conclusion": "SUCCESS",
+                          "status": "COMPLETED"
+                        },
+                        {
+                          "name": "Security & Reliability",
+                          "conclusion": "SUCCESS",
+                          "status": "COMPLETED"
+                        },
+                        {
+                          "name": "Action Pin Provenance",
+                          "conclusion": "SUCCESS",
+                          "status": "COMPLETED"
+                        },
+                        {
+                          "name": "CodeQL",
+                          "conclusion": "NEUTRAL",
+                          "status": "COMPLETED"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        },
+        {
+          "number": 132,
+          "title": "catalog: persist baseline state and add canonical runtime contracts",
+          "url": "https://github.com/agentstation/starmap/pull/132",
+          "headRefOid": "205dd041fb2d0267a2643c0d6af8d9f45e34842d",
+          "headRefName": "codex/catalog-foundation",
+          "baseRefName": "codex/catalog-plan",
+          "isDraft": true,
+          "mergeable": "MERGEABLE",
+          "mergeStateStatus": "CLEAN",
+          "updatedAt": "2026-09-08T05:28:54Z",
+          "reviewThreads": {
+            "totalCount": 0,
+            "nodes": []
+          },
+          "commits": {
+            "nodes": [
+              {
+                "commit": {
+                  "statusCheckRollup": null
+                }
+              }
+            ]
+          }
+        },
+        {
+          "number": 133,
+          "title": "catalog: connect scoped acquisition and preserve baselines on reset",
+          "url": "https://github.com/agentstation/starmap/pull/133",
+          "headRefOid": "07dcb63db7ea0dc873db2ea21091f50ed11a2122",
+          "headRefName": "codex/catalog-requirements",
+          "baseRefName": "codex/catalog-followup-evidence",
+          "isDraft": true,
+          "mergeable": "MERGEABLE",
+          "mergeStateStatus": "CLEAN",
+          "updatedAt": "2026-09-08T15:33:13Z",
+          "reviewThreads": {
+            "totalCount": 0,
+            "nodes": []
+          },
+          "commits": {
+            "nodes": [
+              {
+                "commit": {
+                  "statusCheckRollup": null
+                }
+              }
+            ]
+          }
+        },
+        {
+          "number": 134,
+          "title": "Retain follow-up catalog verification evidence",
+          "url": "https://github.com/agentstation/starmap/pull/134",
+          "headRefOid": "99843ff85d01b8fb1f96e26b3ccd1a7044c26a6b",
+          "headRefName": "codex/catalog-followup-evidence",
+          "baseRefName": "codex/catalog-foundation",
+          "isDraft": true,
+          "mergeable": "MERGEABLE",
+          "mergeStateStatus": "CLEAN",
+          "updatedAt": "2026-09-08T13:05:55Z",
+          "reviewThreads": {
+            "totalCount": 0,
+            "nodes": []
+          },
+          "commits": {
+            "nodes": [
+              {
+                "commit": {
+                  "statusCheckRollup": null
+                }
+              }
+            ]
+          }
+        },
+        {
+          "number": 135,
+          "title": "Retain catalog qualification evidence",
+          "url": "https://github.com/agentstation/starmap/pull/135",
+          "headRefOid": "aff5fd53ce585b94aa80f628a5d8fcd1d8ede818",
+          "headRefName": "codex/catalog-qualification-evidence",
+          "baseRefName": "codex/catalog-requirements",
+          "isDraft": true,
+          "mergeable": "MERGEABLE",
+          "mergeStateStatus": "CLEAN",
+          "updatedAt": "2026-09-08T15:33:15Z",
+          "reviewThreads": {
+            "totalCount": 0,
+            "nodes": []
+          },
+          "commits": {
+            "nodes": [
+              {
+                "commit": {
+                  "statusCheckRollup": null
+                }
+              }
+            ]
+          }
+        },
+        {
+          "number": 136,
+          "title": "Qualify catalog paths and native recovery evidence",
+          "url": "https://github.com/agentstation/starmap/pull/136",
+          "headRefOid": "420c0d77ebeb5a64d36c57512b19db5ad3b5ec2d",
+          "headRefName": "codex/catalog-qualification",
+          "baseRefName": "codex/catalog-qualification-evidence",
+          "isDraft": true,
+          "mergeable": "MERGEABLE",
+          "mergeStateStatus": "CLEAN",
+          "updatedAt": "2026-09-08T15:33:18Z",
+          "reviewThreads": {
+            "totalCount": 0,
+            "nodes": []
+          },
+          "commits": {
+            "nodes": [
+              {
+                "commit": {
+                  "statusCheckRollup": null
+                }
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "starport": {
+      "totalCount": 3,
+      "nodes": [
+        {
+          "number": 366,
+          "title": "Add public operator documentation and catalog qualification checks",
+          "url": "https://github.com/agentstation/starport/pull/366",
+          "headRefOid": "5820a370ff9255a8148799f5b45fcaf927c2e1dc",
+          "headRefName": "codex/catalog-lifecycle",
+          "baseRefName": "main",
+          "isDraft": true,
+          "mergeable": "MERGEABLE",
+          "mergeStateStatus": "CLEAN",
+          "updatedAt": "2026-09-08T12:02:23Z",
+          "reviewThreads": {
+            "totalCount": 0,
+            "nodes": []
+          },
+          "commits": {
+            "nodes": [
+              {
+                "commit": {
+                  "statusCheckRollup": {
+                    "contexts": {
+                      "totalCount": 16,
+                      "nodes": [
+                        {
+                          "name": "Lint",
+                          "conclusion": "SUCCESS",
+                          "status": "COMPLETED"
+                        },
+                        {
+                          "name": "Native windows x86_64",
+                          "conclusion": "SUCCESS",
+                          "status": "COMPLETED"
+                        },
+                        {
+                          "name": "Native windows arm64",
+                          "conclusion": "SUCCESS",
+                          "status": "COMPLETED"
+                        },
+                        {
+                          "name": "Native linux x86_64",
+                          "conclusion": "SUCCESS",
+                          "status": "COMPLETED"
+                        },
+                        {
+                          "name": "Native linux arm64",
+                          "conclusion": "SUCCESS",
+                          "status": "COMPLETED"
+                        },
+                        {
+                          "name": "Native darwin x86_64",
+                          "conclusion": "SUCCESS",
+                          "status": "COMPLETED"
+                        },
+                        {
+                          "name": "Native darwin arm64",
+                          "conclusion": "SUCCESS",
+                          "status": "COMPLETED"
+                        },
+                        {
+                          "name": "Test (ubuntu-latest)",
+                          "conclusion": "SUCCESS",
+                          "status": "COMPLETED"
+                        },
+                        {
+                          "name": "Test (macos-latest)",
+                          "conclusion": "SUCCESS",
+                          "status": "COMPLETED"
+                        },
+                        {
+                          "name": "Test (windows-latest)",
+                          "conclusion": "SUCCESS",
+                          "status": "COMPLETED"
+                        },
+                        {
+                          "name": "Security Scan",
+                          "conclusion": "SUCCESS",
+                          "status": "COMPLETED"
+                        },
+                        {
+                          "name": "Release Contract",
+                          "conclusion": "SUCCESS",
+                          "status": "COMPLETED"
+                        },
+                        {
+                          "name": "OpenRouter SDK Compatibility",
+                          "conclusion": "SUCCESS",
+                          "status": "COMPLETED"
+                        },
+                        {
+                          "name": "Release Snapshot",
+                          "conclusion": "SUCCESS",
+                          "status": "COMPLETED"
+                        },
+                        {
+                          "name": "Action Pin Provenance",
+                          "conclusion": "SUCCESS",
+                          "status": "COMPLETED"
+                        },
+                        {
+                          "name": "Build",
+                          "conclusion": "SUCCESS",
+                          "status": "COMPLETED"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        },
+        {
+          "number": 367,
+          "title": "chore(deps): bump Homebrew/actions/setup-homebrew from 2026.08.31.1 to 2026.09.07.1 in the github-actions group",
+          "url": "https://github.com/agentstation/starport/pull/367",
+          "headRefOid": "3f0817ad23b69147caaafd2b30ccbd71a50e48a6",
+          "headRefName": "dependabot/github_actions/github-actions-f418b6a774",
+          "baseRefName": "main",
+          "isDraft": false,
+          "mergeable": "MERGEABLE",
+          "mergeStateStatus": "CLEAN",
+          "updatedAt": "2026-09-08T06:16:49Z",
+          "reviewThreads": {
+            "totalCount": 0,
+            "nodes": []
+          },
+          "commits": {
+            "nodes": [
+              {
+                "commit": {
+                  "statusCheckRollup": {
+                    "contexts": {
+                      "totalCount": 10,
+                      "nodes": [
+                        {
+                          "name": "Lint",
+                          "conclusion": "SUCCESS",
+                          "status": "COMPLETED"
+                        },
+                        {
+                          "name": "Test (ubuntu-latest)",
+                          "conclusion": "SUCCESS",
+                          "status": "COMPLETED"
+                        },
+                        {
+                          "name": "Test (macos-latest)",
+                          "conclusion": "SUCCESS",
+                          "status": "COMPLETED"
+                        },
+                        {
+                          "name": "Test (windows-latest)",
+                          "conclusion": "SUCCESS",
+                          "status": "COMPLETED"
+                        },
+                        {
+                          "name": "Security Scan",
+                          "conclusion": "SUCCESS",
+                          "status": "COMPLETED"
+                        },
+                        {
+                          "name": "Release Contract",
+                          "conclusion": "SUCCESS",
+                          "status": "COMPLETED"
+                        },
+                        {
+                          "name": "OpenRouter SDK Compatibility",
+                          "conclusion": "SUCCESS",
+                          "status": "COMPLETED"
+                        },
+                        {
+                          "name": "Release Snapshot",
+                          "conclusion": "SUCCESS",
+                          "status": "COMPLETED"
+                        },
+                        {
+                          "name": "Action Pin Provenance",
+                          "conclusion": "SUCCESS",
+                          "status": "COMPLETED"
+                        },
+                        {
+                          "name": "Build",
+                          "conclusion": "SUCCESS",
+                          "status": "COMPLETED"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        },
+        {
+          "number": 368,
+          "title": "chore(deps): bump the go-modules group with 9 updates",
+          "url": "https://github.com/agentstation/starport/pull/368",
+          "headRefOid": "ef6a247f603ae9f538eddc80677b290f4e55819f",
+          "headRefName": "dependabot/go_modules/go-modules-36d75f47ec",
+          "baseRefName": "main",
+          "isDraft": false,
+          "mergeable": "MERGEABLE",
+          "mergeStateStatus": "CLEAN",
+          "updatedAt": "2026-09-08T14:14:38Z",
+          "reviewThreads": {
+            "totalCount": 0,
+            "nodes": []
+          },
+          "commits": {
+            "nodes": [
+              {
+                "commit": {
+                  "statusCheckRollup": {
+                    "contexts": {
+                      "totalCount": 10,
+                      "nodes": [
+                        {
+                          "name": "Lint",
+                          "conclusion": "SUCCESS",
+                          "status": "COMPLETED"
+                        },
+                        {
+                          "name": "Test (ubuntu-latest)",
+                          "conclusion": "SUCCESS",
+                          "status": "COMPLETED"
+                        },
+                        {
+                          "name": "Test (macos-latest)",
+                          "conclusion": "SUCCESS",
+                          "status": "COMPLETED"
+                        },
+                        {
+                          "name": "Test (windows-latest)",
+                          "conclusion": "SUCCESS",
+                          "status": "COMPLETED"
+                        },
+                        {
+                          "name": "Security Scan",
+                          "conclusion": "SUCCESS",
+                          "status": "COMPLETED"
+                        },
+                        {
+                          "name": "Release Contract",
+                          "conclusion": "SUCCESS",
+                          "status": "COMPLETED"
+                        },
+                        {
+                          "name": "OpenRouter SDK Compatibility",
+                          "conclusion": "SUCCESS",
+                          "status": "COMPLETED"
+                        },
+                        {
+                          "name": "Release Snapshot",
+                          "conclusion": "SUCCESS",
+                          "status": "COMPLETED"
+                        },
+                        {
+                          "name": "Action Pin Provenance",
+                          "conclusion": "SUCCESS",
+                          "status": "COMPLETED"
+                        },
+                        {
+                          "name": "Build",
+                          "conclusion": "SUCCESS",
+                          "status": "COMPLETED"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  },
+  "superseded": {
+    "closedAt": "2026-09-08T05:18:20Z",
+    "headRefOid": "dc27ffa8662b5c7a9c374b996b87183c7ae31886",
+    "number": 127,
+    "state": "CLOSED",
+    "url": "https://github.com/agentstation/starmap/pull/127"
+  },
+  "summary": {
+    "checks": {
+      "SUCCESS": 54,
+      "NEUTRAL": 4
+    },
+    "without_attached_checks": [
+      "starmap#126",
+      "starmap#132",
+      "starmap#133",
+      "starmap#134",
+      "starmap#135",
+      "starmap#136"
+    ],
+    "unresolved_review_threads": 0
+  },
+  "description_update": {
+    "pr": 134,
+    "before": {
+      "baseRefName": "codex/catalog-foundation",
+      "body": "Retain catalog verification captures in a separate evidence draft so the follow-up code PR has a complete text review bundle.\n\nThe branch contains 197 proof artifacts, including captures from follow-up commit 303dd9af and its final repository checks. It preserves successful checks, failed attempts, native logs, source hashes, and qualification limits. All 121 compressed files decompress successfully. The decompressed captures pass secret scanning, and both changed Markdown files pass prose checks.\n\nThis branch changes no executable source or active acceptance map. The automatic pre-PR gate reports no substantive code changes. The follow-up code remains under its required Sol and Opus review.\n\nBase: foundation PR #132. The follow-up PR #133 will use this branch as its actual base. The complete diff outside captured proof remains identical, byte for byte, after local integration. No release or production acceptance claim accompanies these captures.\n\n\n<!-- catalog-pr-audit -->\nCurrent disposition (2026-09-08)\n\nRetain these 197 proof files. PR 133 depends on this evidence. #133 now uses this branch as its actual base and its required review passes. Revalidate ancestry after lower stack merges.\n\nParent update (2026-09-08)\n\nHead 99843ff8 now includes the current PR 132 head, 205dd041. The merge changes 23 proof paths and no implementation paths. The prose check passes across 1,072 files. The automatic pre-PR gate reports no substantive code changes. Remote readback confirms the published head.\n\nPRs 133, 135, and 136 still need this parent before their next publication. Validate each combined tree and preserve the existing source-evidence boundaries. This update adds no default-branch merge, release, or production acceptance.\n",
+      "headRefOid": "99843ff85d01b8fb1f96e26b3ccd1a7044c26a6b"
+    },
+    "after": {
+      "baseRefName": "codex/catalog-foundation",
+      "body": "Retain catalog verification captures in a separate evidence draft so the follow-up code PR has a complete text review bundle.\n\nThe branch contains 197 proof artifacts, including captures from follow-up commit 303dd9af and its final repository checks. It preserves successful checks, failed attempts, native logs, source hashes, and qualification limits. All 121 compressed files decompress successfully. The decompressed captures pass secret scanning, and both changed Markdown files pass prose checks.\n\nThis branch changes no executable source or active acceptance map. The automatic pre-PR gate reports no substantive code changes. The follow-up code remains under its required Sol and Opus review.\n\nBase: foundation PR #132. The follow-up PR #133 will use this branch as its actual base. The complete diff outside captured proof remains identical, byte for byte, after local integration. No release or production acceptance claim accompanies these captures.\n\n\n<!-- catalog-pr-audit -->\nCurrent disposition (2026-09-08)\n\nRetain these 197 proof files. PR 133 depends on this evidence. #133 now uses this branch as its actual base and its required review passes. Revalidate ancestry after lower stack merges.\n\nParent update (2026-09-08)\n\nHead 99843ff8 now includes the current PR 132 head, 205dd041. The merge changes 23 proof paths and no implementation paths. The prose check passes across 1,072 files. The automatic pre-PR gate reports no substantive code changes. Remote readback confirms the published head.\n\nPRs #133, #135, and #136 now include this parent. The completed update changes only proof paths and preserves each implementation diff. Revalidate dependent trees after any further parent change. This update adds no default-branch merge, release, or production acceptance.\n",
+      "headRefOid": "99843ff85d01b8fb1f96e26b3ccd1a7044c26a6b"
+    }
+  },
+  "automation": {
+    "id": "maintain-starmap-and-starport-pr-queue",
+    "status": "ACTIVE",
+    "frequency": "daily at 09:00 local time",
+    "stalled_review_days": 7
+  },
+  "ancestry": {
+    "order": [
+      125,
+      126,
+      132,
+      134,
+      133,
+      135,
+      136
+    ],
+    "verified_edges": 6
+  }
+}

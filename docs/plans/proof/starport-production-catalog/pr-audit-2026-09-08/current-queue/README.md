@@ -66,3 +66,20 @@ Its default-branch merge still requires owner authorization.
 
 The parent updates are complete. Seven PR descriptions now record the published ancestry or combined dependency evidence.
 The [publication record](../stack-parent-completion/verification.json) verifies every updated body against its remote value.
+
+## Daily queue review
+
+The [latest queue check](queue-refresh.json) confirms fourteen open PRs and zero unresolved review threads.
+Attached checks report 54 successes and four neutral results.
+Six stacked Starmap PRs have no attached checks.
+Every remote head and base matches the previous queue review.
+Starmap #127 remains closed, and no further PR qualifies for closure.
+
+The description for #134 now records the completed parent update across all dependent PRs.
+Remote readback confirms the corrected body and unchanged head and base.
+The merge order and required evidence above remain current.
+
+The active daily task checks both repositories at 09:00 local time.
+It reports actionable changes and reviews unchanged PRs after seven days without recorded progress.
+It preserves pending owner questions and the existing merge authorization boundary.
+The task identifier is `maintain-starmap-and-starport-pr-queue`.
