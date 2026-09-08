@@ -58,3 +58,8 @@ Starport has six unpublished commits through 69b5aff.
 These counts precede this audit commit.
 Published checks do not qualify those local changes.
 The active plan owns their next publication and its required review.
+
+The [final recheck](final-recheck.json) confirms unchanged heads, bases, and check totals for all fourteen PRs.
+The dependency order and dispositions remain current.
+Starport #367 remains mergeable at `3f0817ad`, with the two reviewed workflow pin changes.
+Its default-branch merge still requires owner authorization.

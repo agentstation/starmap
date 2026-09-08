@@ -1,0 +1,430 @@
+{
+  "base_commit": "ad2c09e3bf45e7ad07e856c7f092188a26c67391",
+  "source_commit": "876e7d42812528a8d347bdbc774f7f69af39374c",
+  "artifacts": [
+    {
+      "path": "captures/ago-final.json.gz",
+      "source": "/tmp/starmap-csp3-startup-admission/ago-final.json",
+      "sha256": "b8fb7afa66aa7a93914ac258475dd0191be821803a8aea4439f5ba05022f5fa5",
+      "bytes": 289
+    },
+    {
+      "path": "captures/final-before.json.gz",
+      "source": "/tmp/starmap-csp3-startup-admission/final-before.json",
+      "sha256": "eb00d062768802d6e617a4bee07663b1b83133958fd1d54640d54d899182064e",
+      "bytes": 349
+    },
+    {
+      "path": "captures/final-before.jsonl.gz",
+      "source": "/tmp/starmap-csp3-startup-admission/final-before.jsonl",
+      "sha256": "687b2ec045422c7ca7c6520fe0dc6fa8b15ff91acdc1e1d46451a08aa4ea3a29",
+      "bytes": 14067
+    },
+    {
+      "path": "captures/final-focused.jsonl.gz",
+      "source": "/tmp/starmap-csp3-startup-admission/final-focused.jsonl",
+      "sha256": "85ef02d990e7e6fe06dcaa15f1cb3194e927e718c76f0953870b4d6f495adad9",
+      "bytes": 38587
+    },
+    {
+      "path": "captures/full-final.jsonl.gz",
+      "source": "/tmp/starmap-csp3-startup-admission/full-final.jsonl",
+      "sha256": "29e81196eb818d257f490f1df567ffec313ada38c41cc917c38f19fa607e7a6d",
+      "bytes": 1654762
+    },
+    {
+      "path": "captures/identity-overlay.json.gz",
+      "source": "/tmp/starmap-csp3-startup-admission/identity-overlay.json",
+      "sha256": "694e42b0cc8c93596eaddbde324cf8f711896ddee7e9f0f6c73dbc72475e96d1",
+      "bytes": 186
+    },
+    {
+      "path": "captures/identity-probe.jsonl.gz",
+      "source": "/tmp/starmap-csp3-startup-admission/identity-probe.jsonl",
+      "sha256": "023db5058b4a0da24e1fd207d972fcb4f2f871c0a6c6dd819a8536f7559c61bb",
+      "bytes": 7189
+    },
+    {
+      "path": "captures/identity_probe_test.go.gz",
+      "source": "/tmp/starmap-csp3-startup-admission/identity_probe_test.go",
+      "sha256": "07fd853b69606be6f894c802190abf592a981d9a7f1d7fe50ccef844d91b2985",
+      "bytes": 2901
+    },
+    {
+      "path": "captures/lint-final.txt.gz",
+      "source": "/tmp/starmap-csp3-startup-admission/lint-final.txt",
+      "sha256": "e92606b0bf483111dff0a120c315ea165821348f31365020e2468a0059095c47",
+      "bytes": 10
+    },
+    {
+      "path": "captures/minimum-final.jsonl.gz",
+      "source": "/tmp/starmap-csp3-startup-admission/minimum-final.jsonl",
+      "sha256": "e8b13c49bbd2c858e22a4f9cb9dedb21f41f681c77d49298abadb9db205bb46b",
+      "bytes": 11726
+    },
+    {
+      "path": "captures/provider_policy_publication.go.gz",
+      "source": "/tmp/starmap-csp3-startup-admission/provider_policy_publication.go",
+      "sha256": "f9027a1f9bf807d9a2674a77659098131c94735340d2917e7b76f534624619c5",
+      "bytes": 2339
+    },
+    {
+      "path": "captures/provider_policy_publication.go.before.gz",
+      "source": "/tmp/starmap-csp3-startup-admission/provider_policy_publication.go.before",
+      "sha256": "fe57c94214ad485125c3d39052dac35463c7cdfabb2738617b882dfc037b4f3b",
+      "bytes": 2179
+    },
+    {
+      "path": "captures/provider_policy_startup.go.gz",
+      "source": "/tmp/starmap-csp3-startup-admission/provider_policy_startup.go",
+      "sha256": "6039d5e8726b11dbc05d07384e94f15ca99ebdb40183a546d361485eb8d53a90",
+      "bytes": 652
+    },
+    {
+      "path": "captures/runtime.go.gz",
+      "source": "/tmp/starmap-csp3-startup-admission/runtime.go",
+      "sha256": "75d8805ef781f09801897fb3c606a061f4c0dde04a94b11d82580427c8c6ba2e",
+      "bytes": 14969
+    },
+    {
+      "path": "captures/runtime.go.before.gz",
+      "source": "/tmp/starmap-csp3-startup-admission/runtime.go.before",
+      "sha256": "2aa580ec4c44c576cdab79a470cedd1c1cb37e9305bc1f6f6f46e19d0458a8c4",
+      "bytes": 14754
+    },
+    {
+      "path": "captures/withdrawal-before.json.gz",
+      "source": "/tmp/starmap-csp3-startup-admission/withdrawal-before.json",
+      "sha256": "c13cb491d59e1d15f4eeaa237742e4424685bbd70def9260b91d9a35423796dd",
+      "bytes": 188
+    },
+    {
+      "path": "captures/withdrawal-before.jsonl.gz",
+      "source": "/tmp/starmap-csp3-startup-admission/withdrawal-before.jsonl",
+      "sha256": "2e3451649ed1cccb9d36175c3db76669df39700c9a5404fb5f0ce479b33fee3d",
+      "bytes": 2572
+    },
+    {
+      "path": "captures/withdrawal-candidate.json.gz",
+      "source": "/tmp/starmap-csp3-startup-admission/withdrawal-candidate.json",
+      "sha256": "f253a235eb36973354a022539eaacf26d4a0e8c966526f866a496136b44b66e1",
+      "bytes": 686
+    },
+    {
+      "path": "captures/withdrawal-candidate.jsonl.gz",
+      "source": "/tmp/starmap-csp3-startup-admission/withdrawal-candidate.jsonl",
+      "sha256": "8689b58d3d080ab6650daa91656ac5da414ea757fd7710763df9238df94a6cc0",
+      "bytes": 7413
+    },
+    {
+      "path": "captures/withdrawal-expanded-before.json.gz",
+      "source": "/tmp/starmap-csp3-startup-admission/withdrawal-expanded-before.json",
+      "sha256": "53b11696b16c78dab4a981766418f5d40763f2faa9470312b473b9a2e4fcf8ec",
+      "bytes": 191
+    },
+    {
+      "path": "captures/withdrawal-expanded-before.jsonl.gz",
+      "source": "/tmp/starmap-csp3-startup-admission/withdrawal-expanded-before.jsonl",
+      "sha256": "d591d58ce36d36c76fdaaf8db3990ce0c5d154100d9df90d245461f248466bf2",
+      "bytes": 8237
+    },
+    {
+      "path": "captures/withdrawal-isolated-before.json.gz",
+      "source": "/tmp/starmap-csp3-startup-admission/withdrawal-isolated-before.json",
+      "sha256": "038b58dcf7bad44b4fc9c77d1afad0212e33420b0e7b20a154c6a7fd49014032",
+      "bytes": 191
+    },
+    {
+      "path": "captures/withdrawal-isolated-before.jsonl.gz",
+      "source": "/tmp/starmap-csp3-startup-admission/withdrawal-isolated-before.jsonl",
+      "sha256": "4495c0a4211f7378f6b3cdda1cd9961b8cc70c24e32eabeb546cc88f4987deb4",
+      "bytes": 8662
+    },
+    {
+      "path": "captures/withdrawal-isolated-candidate.json.gz",
+      "source": "/tmp/starmap-csp3-startup-admission/withdrawal-isolated-candidate.json",
+      "sha256": "0ec9f364a669c415e8363fc5233061de9068296b68d53fbc2fbc000bc3b2fd79",
+      "bytes": 686
+    },
+    {
+      "path": "captures/withdrawal-isolated-candidate.jsonl.gz",
+      "source": "/tmp/starmap-csp3-startup-admission/withdrawal-isolated-candidate.jsonl",
+      "sha256": "d562a9c3c997f672f72f0d1fa1bb2aca517e775f4e6d2f171c9cf3c65631384e",
+      "bytes": 7265
+    },
+    {
+      "path": "captures/withdrawal_expanded_test.go.gz",
+      "source": "/tmp/starmap-csp3-startup-admission/withdrawal_expanded_test.go",
+      "sha256": "4435a269cd726ea46dad535e271a3f6dd8dcf6a5a4b4a3f5ed32071887fb360a",
+      "bytes": 4781
+    },
+    {
+      "path": "captures/withdrawal_isolated_test.go.gz",
+      "source": "/tmp/starmap-csp3-startup-admission/withdrawal_isolated_test.go",
+      "sha256": "9d7798faca8ad79cfc78fdcc5be2002cad499ff8626fac203f7e0ff9e7cfbc40",
+      "bytes": 4909
+    },
+    {
+      "path": "captures/withdrawal_probe_test.go.gz",
+      "source": "/tmp/starmap-csp3-startup-admission/withdrawal_probe_test.go",
+      "sha256": "3bef0bf889b494f44068b00625a8a77a3b118db009a696c94c2a3d321f5418d2",
+      "bytes": 1300
+    },
+    {
+      "path": "captures/final-runtime.go.gz",
+      "source": "/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/runtime/runtime.go",
+      "sha256": "0035d0069292e2e723d2a996d766bec4aa235a3ba1036b6cf02862622ef9cf0b",
+      "bytes": 14971
+    },
+    {
+      "path": "captures/final-provider_policy_publication.go.gz",
+      "source": "/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/runtime/provider_policy_publication.go",
+      "sha256": "438519884ab551ecf8805338524ebc5fc007b5aaceba282ce3226b1628e2ba14",
+      "bytes": 2404
+    },
+    {
+      "path": "captures/final-provider_policy_startup.go.gz",
+      "source": "/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/runtime/provider_policy_startup.go",
+      "sha256": "6039d5e8726b11dbc05d07384e94f15ca99ebdb40183a546d361485eb8d53a90",
+      "bytes": 652
+    },
+    {
+      "path": "captures/final-provider_policy_startup_test.go.gz",
+      "source": "/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/runtime/provider_policy_startup_test.go",
+      "sha256": "0697770adddefa0461865beaf71553abe54ec984a4987adee7d63423a3890e91",
+      "bytes": 6645
+    }
+  ],
+  "checks": {
+    "final-before.jsonl": {
+      "counts": {
+        "test": {
+          "fail": 5,
+          "pass": 2
+        },
+        "package": {
+          "fail": 1
+        }
+      },
+      "package_results": [
+        {
+          "Time": "2026-09-08T09:49:02.927987-05:00",
+          "Action": "fail",
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Elapsed": 78.053
+        }
+      ],
+      "exit_status": 1
+    },
+    "final-focused.jsonl": {
+      "counts": {
+        "test": {
+          "pass": 30
+        },
+        "package": {
+          "pass": 1
+        }
+      },
+      "package_results": [
+        {
+          "Time": "2026-09-08T09:51:50.74536-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Elapsed": 245.855
+        }
+      ],
+      "command": "GOTOOLCHAIN=go1.26.6 go test -race ./runtime -run '^TestStartup(WithoutInputs|RemovedBinding|ExplicitEmptyBindings|UnscopedStoreOnly)|^TestProviderPolicy' -count=1 -json",
+      "exit_status": 0
+    },
+    "full-final.jsonl": {
+      "counts": {
+        "test": {
+          "pass": 1007
+        },
+        "package": {
+          "pass": 3
+        }
+      },
+      "package_results": [
+        {
+          "Time": "2026-09-08T09:53:27.221383-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starmap/internal/catalog/reconciler",
+          "Elapsed": 1.694
+        },
+        {
+          "Time": "2026-09-08T09:59:01.822412-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starmap/acquisition",
+          "Elapsed": 336.291
+        },
+        {
+          "Time": "2026-09-08T10:06:17.522307-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Elapsed": 772.726
+        }
+      ],
+      "command": "GOTOOLCHAIN=go1.26.6 go test -race -count=1 -timeout 20m ./runtime ./acquisition ./internal/catalog/reconciler -json",
+      "exit_status": "Process handle expired before resumed session could read status; all three terminal package events pass"
+    },
+    "identity-probe.jsonl": {
+      "counts": {
+        "test": {
+          "pass": 3,
+          "fail": 3
+        },
+        "package": {
+          "fail": 1
+        }
+      },
+      "package_results": [
+        {
+          "Time": "2026-09-08T09:34:45.464057-05:00",
+          "Action": "fail",
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Elapsed": 15.709
+        }
+      ],
+      "exit_status": 1,
+      "validity": "Rejected identity-only recovery candidate; no production generation-ID contract change"
+    },
+    "minimum-final.jsonl": {
+      "counts": {
+        "test": {
+          "pass": 7
+        },
+        "package": {
+          "pass": 1
+        }
+      },
+      "package_results": [
+        {
+          "Time": "2026-09-08T09:55:14.447777-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Elapsed": 106.52
+        }
+      ],
+      "command": "GOTOOLCHAIN=go1.25.12 go test -race ./runtime -run '^TestStartup(WithoutInputs|RemovedBinding|ExplicitEmptyBindings|UnscopedStoreOnly)' -count=1 -json",
+      "exit_status": 0
+    },
+    "withdrawal-before.jsonl": {
+      "counts": {
+        "test": {
+          "fail": 1
+        },
+        "package": {
+          "fail": 1
+        }
+      },
+      "package_results": [
+        {
+          "Time": "2026-09-08T09:38:20.906592-05:00",
+          "Action": "fail",
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Elapsed": 20.195
+        }
+      ],
+      "exit_status": 1
+    },
+    "withdrawal-candidate.jsonl": {
+      "counts": {
+        "test": {
+          "fail": 3,
+          "pass": 1
+        },
+        "package": {
+          "fail": 1
+        }
+      },
+      "package_results": [
+        {
+          "Time": "2026-09-08T09:43:49.214747-05:00",
+          "Action": "fail",
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Elapsed": 42.744
+        }
+      ],
+      "exit_status": 1,
+      "validity": "Three scenarios reject explicit empty state-directory configuration; only retained-input scenario tests intended behavior"
+    },
+    "withdrawal-expanded-before.jsonl": {
+      "counts": {
+        "test": {
+          "fail": 4
+        },
+        "package": {
+          "fail": 1
+        }
+      },
+      "package_results": [
+        {
+          "Time": "2026-09-08T09:42:06.11723-05:00",
+          "Action": "fail",
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Elapsed": 37.373
+        }
+      ],
+      "exit_status": 1,
+      "validity": "Three scenarios reject explicit empty state-directory configuration; only retained-input scenario tests intended behavior"
+    },
+    "withdrawal-isolated-before.jsonl": {
+      "counts": {
+        "test": {
+          "fail": 2,
+          "pass": 2
+        },
+        "package": {
+          "fail": 1
+        }
+      },
+      "package_results": [
+        {
+          "Time": "2026-09-08T09:45:07.945338-05:00",
+          "Action": "fail",
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Elapsed": 54.082
+        }
+      ],
+      "exit_status": 1
+    },
+    "withdrawal-isolated-candidate.jsonl": {
+      "counts": {
+        "test": {
+          "pass": 4
+        },
+        "package": {
+          "pass": 1
+        }
+      },
+      "package_results": [
+        {
+          "Time": "2026-09-08T09:45:14.565663-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Elapsed": 59.898
+        }
+      ],
+      "exit_status": 0
+    }
+  },
+  "other_checks": {
+    "ago": "exit 0; no findings, stale ignores, or errors",
+    "runtime_lint": "exit 0; zero issues",
+    "runtime_generate": "exit 0; generated README unchanged",
+    "technical_writing": {
+      "command": "GOTOOLCHAIN=go1.26.6 make technical-writing-check",
+      "exit_status": 0,
+      "files": 1224,
+      "diagnostics": 0,
+      "output": "/Users/jack/.agents/skills/technical-writing/scripts/technical-writing glossary check\nPASS: /Users/jack/src/github.com/agentstation/starmap-catalog-requirements/GLOSSARY.md (81 term(s), 0 error(s))\n/Users/jack/.agents/skills/technical-writing/scripts/technical-writing glossary update --check\nPASS: no candidate terms are missing from /Users/jack/src/github.com/agentstation/starmap-catalog-requirements/GLOSSARY.md\n/Users/jack/.agents/skills/technical-writing/scripts/technical-writing lint . --mode strict --format text\nPASS: 1224 file(s), 0 diagnostic(s)\n"
+    }
+  },
+  "credential_pattern_scan": {
+    "files": 32,
+    "matches": 0,
+    "scope": "Common credential patterns only; not a complete secret audit"
+  },
+  "qualification": "Local regression evidence only; CSP3 remains in_progress"
+}
