@@ -37,3 +37,16 @@ All 15 PR descriptions now state their dispositions. The initial audit added no 
 The [foundation parent check](foundation-parent-sync/verification.json) records the published PR 132 update. Its prose check passed across 1,081 files.
 
 The [later inventory](inventory-after-recovery.json) confirms 14 open PRs with unchanged heads. PR 127 remains closed. No additional PR is redundant.
+
+The [owner-requested recheck](inventory-owner-followup.json) confirms the same 14 open PRs, with unchanged published heads and bases. PR 127 remains closed. All reported checks are successful or neutral. Six stacked Starmap PRs report no attached checks. Their manual evidence remains subject to the commit boundaries above.
+
+At this capture, Starmap has 19 unpublished commits through `d641743c`, plus uncommitted CSP3 work. Starport has six unpublished commits through `69b5aff`, with a clean worktree. Published PR checks do not cover these local changes.
+
+| Group | Owner | Next action and trigger |
+| --- | --- | --- |
+| Starmap catalog stack | Catalog plan executor | Finish the current coherent CSP3 repair, run its checks and required review, then update the existing PR. Preserve parent order. |
+| Starport #366 | Catalog plan executor | Adopt the compatible approved Starmap tag, repeat integration checks and review, then update the existing PR. |
+| Starmap #128–#131 and Starport #368 | Dependency reviewer | Complete dependency review and combined-tree checks before an authorized merge. Keep the updates independent of unfinished catalog acceptance. |
+| Starport #367 | Release owner | The pin review and ten checks pass. Merge after authorization and a current-head check. |
+
+Recheck this inventory before each publication and merge. A changed head or base requires a fresh evidence assessment. A replacement must preserve the required changes before the older PR closes. No additional PR qualifies for closure in this recheck. No new PR, merge, release, or branch deletion occurred.
