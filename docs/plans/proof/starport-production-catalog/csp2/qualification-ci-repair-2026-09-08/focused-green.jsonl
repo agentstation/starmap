@@ -1,0 +1,53 @@
+{"Time":"2026-09-08T00:49:44.256448-05:00","Action":"start","Package":"github.com/agentstation/starmap"}
+{"Time":"2026-09-08T00:49:44.741547-05:00","Action":"run","Package":"github.com/agentstation/starmap","Test":"TestHookIsolation"}
+{"Time":"2026-09-08T00:49:44.741612-05:00","Action":"output","Package":"github.com/agentstation/starmap","Test":"TestHookIsolation","Output":"=== RUN   TestHookIsolation\n"}
+{"Time":"2026-09-08T00:49:59.782377-05:00","Action":"output","Package":"github.com/agentstation/starmap","Test":"TestHookIsolation","Output":"--- PASS: TestHookIsolation (15.04s)\n"}
+{"Time":"2026-09-08T00:49:59.782449-05:00","Action":"pass","Package":"github.com/agentstation/starmap","Test":"TestHookIsolation","Elapsed":15.04}
+{"Time":"2026-09-08T00:49:59.782756-05:00","Action":"run","Package":"github.com/agentstation/starmap","Test":"TestModelDiffWithoutObserversDoesNotReadCatalogs"}
+{"Time":"2026-09-08T00:49:59.782769-05:00","Action":"output","Package":"github.com/agentstation/starmap","Test":"TestModelDiffWithoutObserversDoesNotReadCatalogs","Output":"=== RUN   TestModelDiffWithoutObserversDoesNotReadCatalogs\n"}
+{"Time":"2026-09-08T00:49:59.782785-05:00","Action":"run","Package":"github.com/agentstation/starmap","Test":"TestModelDiffWithoutObserversDoesNotReadCatalogs/no-hooks"}
+{"Time":"2026-09-08T00:49:59.782789-05:00","Action":"output","Package":"github.com/agentstation/starmap","Test":"TestModelDiffWithoutObserversDoesNotReadCatalogs/no-hooks","Output":"=== RUN   TestModelDiffWithoutObserversDoesNotReadCatalogs/no-hooks\n"}
+{"Time":"2026-09-08T00:49:59.782798-05:00","Action":"output","Package":"github.com/agentstation/starmap","Test":"TestModelDiffWithoutObserversDoesNotReadCatalogs/no-hooks","Output":"--- PASS: TestModelDiffWithoutObserversDoesNotReadCatalogs/no-hooks (0.00s)\n"}
+{"Time":"2026-09-08T00:49:59.782809-05:00","Action":"pass","Package":"github.com/agentstation/starmap","Test":"TestModelDiffWithoutObserversDoesNotReadCatalogs/no-hooks","Elapsed":0}
+{"Time":"2026-09-08T00:49:59.782814-05:00","Action":"run","Package":"github.com/agentstation/starmap","Test":"TestModelDiffWithoutObserversDoesNotReadCatalogs/publication-only"}
+{"Time":"2026-09-08T00:49:59.782818-05:00","Action":"output","Package":"github.com/agentstation/starmap","Test":"TestModelDiffWithoutObserversDoesNotReadCatalogs/publication-only","Output":"=== RUN   TestModelDiffWithoutObserversDoesNotReadCatalogs/publication-only\n"}
+{"Time":"2026-09-08T00:49:59.782841-05:00","Action":"output","Package":"github.com/agentstation/starmap","Test":"TestModelDiffWithoutObserversDoesNotReadCatalogs/publication-only","Output":"--- PASS: TestModelDiffWithoutObserversDoesNotReadCatalogs/publication-only (0.00s)\n"}
+{"Time":"2026-09-08T00:49:59.782863-05:00","Action":"pass","Package":"github.com/agentstation/starmap","Test":"TestModelDiffWithoutObserversDoesNotReadCatalogs/publication-only","Elapsed":0}
+{"Time":"2026-09-08T00:49:59.782888-05:00","Action":"output","Package":"github.com/agentstation/starmap","Test":"TestModelDiffWithoutObserversDoesNotReadCatalogs","Output":"--- PASS: TestModelDiffWithoutObserversDoesNotReadCatalogs (0.00s)\n"}
+{"Time":"2026-09-08T00:49:59.782895-05:00","Action":"pass","Package":"github.com/agentstation/starmap","Test":"TestModelDiffWithoutObserversDoesNotReadCatalogs","Elapsed":0}
+{"Time":"2026-09-08T00:49:59.782902-05:00","Action":"run","Package":"github.com/agentstation/starmap","Test":"TestReaderProviderModelsPreservesProviderScopedIdentity"}
+{"Time":"2026-09-08T00:49:59.782907-05:00","Action":"output","Package":"github.com/agentstation/starmap","Test":"TestReaderProviderModelsPreservesProviderScopedIdentity","Output":"=== RUN   TestReaderProviderModelsPreservesProviderScopedIdentity\n"}
+{"Time":"2026-09-08T00:49:59.78328-05:00","Action":"output","Package":"github.com/agentstation/starmap","Test":"TestReaderProviderModelsPreservesProviderScopedIdentity","Output":"--- PASS: TestReaderProviderModelsPreservesProviderScopedIdentity (0.00s)\n"}
+{"Time":"2026-09-08T00:49:59.783288-05:00","Action":"pass","Package":"github.com/agentstation/starmap","Test":"TestReaderProviderModelsPreservesProviderScopedIdentity","Elapsed":0}
+{"Time":"2026-09-08T00:49:59.783302-05:00","Action":"run","Package":"github.com/agentstation/starmap","Test":"TestTriggerUpdateDiffsSameModelIDPerProvider"}
+{"Time":"2026-09-08T00:49:59.783306-05:00","Action":"output","Package":"github.com/agentstation/starmap","Test":"TestTriggerUpdateDiffsSameModelIDPerProvider","Output":"=== RUN   TestTriggerUpdateDiffsSameModelIDPerProvider\n"}
+{"Time":"2026-09-08T00:49:59.783961-05:00","Action":"output","Package":"github.com/agentstation/starmap","Test":"TestTriggerUpdateDiffsSameModelIDPerProvider","Output":"--- PASS: TestTriggerUpdateDiffsSameModelIDPerProvider (0.00s)\n"}
+{"Time":"2026-09-08T00:49:59.783973-05:00","Action":"pass","Package":"github.com/agentstation/starmap","Test":"TestTriggerUpdateDiffsSameModelIDPerProvider","Elapsed":0}
+{"Time":"2026-09-08T00:49:59.784095-05:00","Action":"run","Package":"github.com/agentstation/starmap","Test":"TestPostCommitEventOrdering"}
+{"Time":"2026-09-08T00:49:59.784102-05:00","Action":"output","Package":"github.com/agentstation/starmap","Test":"TestPostCommitEventOrdering","Output":"=== RUN   TestPostCommitEventOrdering\n"}
+{"Time":"2026-09-08T00:49:59.784128-05:00","Action":"run","Package":"github.com/agentstation/starmap","Test":"TestPostCommitEventOrdering/failed_commit_emits_no_event"}
+{"Time":"2026-09-08T00:49:59.784131-05:00","Action":"output","Package":"github.com/agentstation/starmap","Test":"TestPostCommitEventOrdering/failed_commit_emits_no_event","Output":"=== RUN   TestPostCommitEventOrdering/failed_commit_emits_no_event\n"}
+{"Time":"2026-09-08T00:50:01.776241-05:00","Action":"output","Package":"github.com/agentstation/starmap","Test":"TestPostCommitEventOrdering/failed_commit_emits_no_event","Output":"--- PASS: TestPostCommitEventOrdering/failed_commit_emits_no_event (1.99s)\n"}
+{"Time":"2026-09-08T00:50:01.776401-05:00","Action":"pass","Package":"github.com/agentstation/starmap","Test":"TestPostCommitEventOrdering/failed_commit_emits_no_event","Elapsed":1.99}
+{"Time":"2026-09-08T00:50:01.776427-05:00","Action":"run","Package":"github.com/agentstation/starmap","Test":"TestPostCommitEventOrdering/successful_commit_emits_matching_asynchronous_event"}
+{"Time":"2026-09-08T00:50:01.776436-05:00","Action":"output","Package":"github.com/agentstation/starmap","Test":"TestPostCommitEventOrdering/successful_commit_emits_matching_asynchronous_event","Output":"=== RUN   TestPostCommitEventOrdering/successful_commit_emits_matching_asynchronous_event\n"}
+{"Time":"2026-09-08T00:50:03.847847-05:00","Action":"output","Package":"github.com/agentstation/starmap","Test":"TestPostCommitEventOrdering/successful_commit_emits_matching_asynchronous_event","Output":"--- PASS: TestPostCommitEventOrdering/successful_commit_emits_matching_asynchronous_event (2.07s)\n"}
+{"Time":"2026-09-08T00:50:03.847877-05:00","Action":"pass","Package":"github.com/agentstation/starmap","Test":"TestPostCommitEventOrdering/successful_commit_emits_matching_asynchronous_event","Elapsed":2.07}
+{"Time":"2026-09-08T00:50:03.847886-05:00","Action":"output","Package":"github.com/agentstation/starmap","Test":"TestPostCommitEventOrdering","Output":"--- PASS: TestPostCommitEventOrdering (4.06s)\n"}
+{"Time":"2026-09-08T00:50:03.847891-05:00","Action":"pass","Package":"github.com/agentstation/starmap","Test":"TestPostCommitEventOrdering","Elapsed":4.06}
+{"Time":"2026-09-08T00:50:03.848161-05:00","Action":"run","Package":"github.com/agentstation/starmap","Test":"TestEmbeddedCatalogStateAllocations"}
+{"Time":"2026-09-08T00:50:03.84819-05:00","Action":"output","Package":"github.com/agentstation/starmap","Test":"TestEmbeddedCatalogStateAllocations","Output":"=== RUN   TestEmbeddedCatalogStateAllocations\n"}
+{"Time":"2026-09-08T00:50:14.146401-05:00","Action":"output","Package":"github.com/agentstation/starmap","Test":"TestEmbeddedCatalogStateAllocations","Output":"    baseline_allocations_test.go:30: isolated allocation check:\n"}
+{"Time":"2026-09-08T00:50:14.147236-05:00","Action":"output","Package":"github.com/agentstation/starmap","Test":"TestEmbeddedCatalogStateAllocations","Output":"        === RUN   TestEmbeddedCatalogStateAllocations\n"}
+{"Time":"2026-09-08T00:50:14.147284-05:00","Action":"output","Package":"github.com/agentstation/starmap","Test":"TestEmbeddedCatalogStateAllocations","Output":"            baseline_allocations_test.go:47: baseline allocations = 0, allocating control = 1\n"}
+{"Time":"2026-09-08T00:50:14.147289-05:00","Action":"output","Package":"github.com/agentstation/starmap","Test":"TestEmbeddedCatalogStateAllocations","Output":"        --- PASS: TestEmbeddedCatalogStateAllocations (9.23s)\n"}
+{"Time":"2026-09-08T00:50:14.147292-05:00","Action":"output","Package":"github.com/agentstation/starmap","Test":"TestEmbeddedCatalogStateAllocations","Output":"        PASS\n"}
+{"Time":"2026-09-08T00:50:14.14732-05:00","Action":"output","Package":"github.com/agentstation/starmap","Test":"TestEmbeddedCatalogStateAllocations","Output":"--- PASS: TestEmbeddedCatalogStateAllocations (10.30s)\n"}
+{"Time":"2026-09-08T00:50:14.147324-05:00","Action":"pass","Package":"github.com/agentstation/starmap","Test":"TestEmbeddedCatalogStateAllocations","Elapsed":10.3}
+{"Time":"2026-09-08T00:50:14.147334-05:00","Action":"run","Package":"github.com/agentstation/starmap","Test":"TestEmbeddedCatalogStateRemainsIndependentOfStoredCurrent"}
+{"Time":"2026-09-08T00:50:14.147337-05:00","Action":"output","Package":"github.com/agentstation/starmap","Test":"TestEmbeddedCatalogStateRemainsIndependentOfStoredCurrent","Output":"=== RUN   TestEmbeddedCatalogStateRemainsIndependentOfStoredCurrent\n"}
+{"Time":"2026-09-08T00:50:14.160775-05:00","Action":"output","Package":"github.com/agentstation/starmap","Test":"TestEmbeddedCatalogStateRemainsIndependentOfStoredCurrent","Output":"--- PASS: TestEmbeddedCatalogStateRemainsIndependentOfStoredCurrent (0.01s)\n"}
+{"Time":"2026-09-08T00:50:14.160795-05:00","Action":"pass","Package":"github.com/agentstation/starmap","Test":"TestEmbeddedCatalogStateRemainsIndependentOfStoredCurrent","Elapsed":0.01}
+{"Time":"2026-09-08T00:50:14.160802-05:00","Action":"output","Package":"github.com/agentstation/starmap","Output":"PASS\n"}
+{"Time":"2026-09-08T00:50:15.185369-05:00","Action":"output","Package":"github.com/agentstation/starmap","Output":"ok  \tgithub.com/agentstation/starmap\t30.928s\n"}
+{"Time":"2026-09-08T00:50:15.185423-05:00","Action":"pass","Package":"github.com/agentstation/starmap","Elapsed":30.929}

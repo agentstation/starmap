@@ -1,0 +1,68 @@
+{
+  "source_commit": "b5f00ae329dc483f8f13372f7a4d3d1ba0e98a18",
+  "same_production_inputs_as": "6be233eaff4e679e01c56e625ceec66b3f5b7255",
+  "cases": [
+    "unbound",
+    "account",
+    "public"
+  ],
+  "before": {
+    "baseline_input_price": 10,
+    "accepted_provider_price": 2,
+    "partial_peer_price": 3,
+    "omitted_model_actual_price": 10,
+    "omitted_model_required_price": 2
+  },
+  "counts": {
+    "result.jsonl": {
+      "pass": 0,
+      "fail": 5,
+      "skip": 0
+    },
+    "publish-result.jsonl": {
+      "pass": 0,
+      "fail": 5,
+      "skip": 0
+    },
+    "candidate-result.jsonl": {
+      "pass": 5,
+      "fail": 0,
+      "skip": 0
+    },
+    "candidate-contracts.jsonl": {
+      "pass": 90,
+      "fail": 0,
+      "skip": 0
+    }
+  },
+  "exit_codes": {
+    "result.jsonl": 1,
+    "publish-result.jsonl": 1,
+    "candidate-result.jsonl": 0,
+    "candidate-contracts.jsonl": 0
+  },
+  "commands": {
+    "publish": "GOTOOLCHAIN=go1.26.6 go test -race -count=1 -timeout=5m -overlay /tmp/starmap-csp3-partial-probe/publish-overlay.json -run ^TestCSP3PartialReplyPreservesPublishedPrice$ -json ./runtime",
+    "candidate": "Same named test with candidate-overlay.json.",
+    "contracts": "GOTOOLCHAIN=go1.26.6 go test -race -count=1 -timeout=10m -overlay /tmp/starmap-csp3-partial-probe/candidate-overlay.json -run ^Test(ProviderReceipt|Manual|ProviderReset|InputPublication|ProviderPolicy|CSP3Partial) -json ./runtime"
+  },
+  "candidate": "Retain prior provider observations before the first partial input, using the existing observation history. The checked-in production source remains unchanged.",
+  "limits": [
+    "The first probe uses a test-only fixture retention helper. The stronger probe uses the production publication transaction, filesystem catalog storage, and runtime close and reopen.",
+    "No CLI, HTTP, real provider, or separate-process restart qualification.",
+    "The overlay candidate does not implement scoped deletion. Its history growth, compaction, field-presence semantics, and publication policy require review before adoption.",
+    "These results provide CSP3 failure and candidate evidence, not task completion or released-pair acceptance."
+  ],
+  "sha256": {
+    "candidate-contracts.jsonl": "770d526cfa9ac3b87379cbd95249fddcbf5d5af13ddd0204dfd04797ecd4a997",
+    "candidate-overlay.json": "4f89d305b90b2f5a155171d8089d0309cb0febe24e69958c7f89092c6c375a15",
+    "candidate-result.jsonl": "cebf4debf5f6dcaa824962f78ec9a7fa488e5165840e2790e90547e16cecd3a1",
+    "manual_history_candidate.go.gz": "8e9df879db582e2e91846a8b1c874b7b8e62a2b19e1e28a1843212a87cc6af7a",
+    "overlay.json": "e7572292b5547ba03514e0e8dd3db203eb03fb8465d8f00a51593bc91c8073bd",
+    "partial-publish_test.go.gz": "83af18e089e5b7a85efe440c2ddf0ffcf49462e6c0770e21e2e898c390d799b8",
+    "partial_test.go.gz": "1df24193ad1affb4a12e7b7039e7b887523640445616648cd34dd7a1ce889171",
+    "publish-overlay.json": "85770c2235b16eb8172731a5eef8eea62c027476cff81f49dd1b302ec0b068b7",
+    "publish-result.jsonl": "5c0cf1a428ee9ff9f7506dc9db388f3c81ee6289adc742bd6e83b06cb709b140",
+    "result.jsonl": "26a6f5b7e0ed957aeab366dba23e89d38cf3efd067614e7e343f06e4cc96fcce"
+  }
+}
