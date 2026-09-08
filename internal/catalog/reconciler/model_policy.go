@@ -12,12 +12,7 @@ import (
 	"github.com/agentstation/starmap/pkg/sources"
 )
 
-const (
-	modelProvenanceLimitsContextWindow = "limits.context_window"
-	modelProvenanceLimitsInputTokens   = "limits.input_tokens"
-	modelProvenanceLimitsOutputTokens  = "limits.output_tokens"
-	modelProvenancePricing             = "pricing"
-)
+const modelProvenancePricing = "pricing"
 
 func (merger *merger) applyModelPolicy(
 	identity modelIdentity,
@@ -60,26 +55,9 @@ func (merger *merger) mergeModelLimits(
 	models map[sources.ID]*catalogs.Model,
 	history *map[string]provenance.Field,
 ) {
-	fields := []struct {
-		evidence string
-		limit    catalogs.ModelLimit
-	}{
-		{
-			evidence: modelProvenanceLimitsContextWindow,
-			limit:    catalogs.ModelLimitContextWindow,
-		},
-		{
-			evidence: modelProvenanceLimitsInputTokens,
-			limit:    catalogs.ModelLimitInputTokens,
-		},
-		{
-			evidence: modelProvenanceLimitsOutputTokens,
-			limit:    catalogs.ModelLimitOutputTokens,
-		},
-	}
-	for _, field := range fields {
+	for _, limit := range catalogs.PublishedModelLimits() {
 		fieldPolicy := policy
-		fieldPolicy.EvidencePath = field.evidence
+		fieldPolicy.EvidencePath = "limits." + string(limit)
 		fieldSources := merger.modelSourcesForValue(
 			identity.providerID,
 			identity.modelID,
@@ -89,7 +67,7 @@ func (merger *merger) mergeModelLimits(
 				if model == nil || model.Limits == nil {
 					return nil
 				}
-				value, state := model.Limits.Value(field.limit)
+				value, state := model.Limits.Value(limit)
 				if state != catalogs.ValueKnown {
 					return nil
 				}
@@ -101,14 +79,14 @@ func (merger *merger) mergeModelLimits(
 			if model == nil || model.Limits == nil {
 				continue
 			}
-			value, state := model.Limits.Value(field.limit)
+			value, state := model.Limits.Value(limit)
 			if state != catalogs.ValueKnown {
 				continue
 			}
 			if target.Limits == nil {
 				target.Limits = &catalogs.ModelLimits{}
 			}
-			target.Limits.Set(field.limit, value)
+			target.Limits.Set(limit, value)
 			merger.recordModelHistory(
 				identity,
 				history,
