@@ -296,3 +296,16 @@ and scheduled workers in its positive fixture. All 43 verifier tests pass.
 Seventeen selected subcases remain unverified. The acceptance command returns
 exit 1 and grants no primary credit. Cold offline startup still needs denied-egress
 evidence. Portable component results do not qualify native behavior.
+
+## Fourth foundation native run
+
+Foundation `6488e02f` passed all eight portions of the required cross-lab review
+with no findings. Draft PR 132 now contains that commit.
+[Native run 34175904597](https://github.com/agentstation/starmap/actions/runs/34175904597)
+reports `in_progress`. Native qualification remains unverified.
+
+The follow-up code from `c7ff1e55`, with the registry committed as `f6b702c0`,
+passes all 39 repository verification stages. Ordinary and race suites each pass
+79 packages. [The publication record](windows-third-repair-2026-09-07/reviewed-foundation-publication.json)
+retains both complete logs. Follow-up review and publication await the foundation
+native results. No public merge, release, or primary acceptance credit occurred.
