@@ -1,0 +1,81 @@
+{
+  "status": "PASS",
+  "scope": "Local provider evidence recovery regression only. CSP3 and released-pair acceptance remain unverified.",
+  "base_commit": "fa2bb08c",
+  "production_files": {
+    "manual_reconciliation.go": "5dc314e643026452e1dbe8f0c703991b4139bb12c3f8e4cee689a0da4f0fb8f7",
+    "provider_evidence_selection.go": "04549ad384b1dfc4d7ded7229bef6aa4b42a8519a5eaa108dcc4af0241066ed3",
+    "provider_evidence_recovery_test.go": "5844d20accb4bb82fec204d3d3ca8f22e1e68157e9c4fd207972b09447644180",
+    "provider_evidence_selection_test.go": "da757d804776b286519f9d1ea54d8ab59a30e516df6f79f9a3c518c41fc18ba8"
+  },
+  "commands": [
+    {
+      "command": "GOTOOLCHAIN=go1.26.6 go test -race ./runtime -run '^TestCompleteProviderRecoveryRetiresSupersededPartialReceipt$|^TestProviderEvidenceSelection' -count=1 -json",
+      "capture": "qualified.jsonl.gz",
+      "exit": 0,
+      "pass_events": 13,
+      "fail_events": 0,
+      "skip_events": 0
+    },
+    {
+      "command": "GOTOOLCHAIN=go1.25.12 go test -race ./runtime -run '^TestCompleteProviderRecoveryRetiresSupersededPartialReceipt$|^TestProviderEvidenceSelection' -count=1 -json",
+      "capture": "qualified-minimum.jsonl.gz",
+      "exit": 0,
+      "pass_events": 13,
+      "fail_events": 0,
+      "skip_events": 0
+    },
+    {
+      "command": "GOTOOLCHAIN=go1.26.6 go test -race ./runtime -run '^TestProviderReset|^TestManual|^TestProviderBinding|^TestProviderPolicy' -count=1 -json",
+      "capture": "regression.jsonl.gz",
+      "exit": 0,
+      "pass_events": 83,
+      "fail_events": 0,
+      "skip_events": 0,
+      "source_note": "This run started before correction of the unselected partial-observation fixture in provider_evidence_selection_test.go. All production files and selected tests match the captured final files."
+    },
+    {
+      "command": "GOTOOLCHAIN=go1.26.6 go test -race -overlay /tmp/starmap-csp3-recovery-red/overlay.json ./runtime -run '^TestCompleteProviderRecoveryRetiresSupersededPartialReceipt/(fully-replaced|retained-price)$' -count=1 -json",
+      "capture": "final-red.jsonl.gz",
+      "exit": 1,
+      "pass_events": 0,
+      "fail_events": 4,
+      "skip_events": 0,
+      "overlay": "Replace runtime/manual_reconciliation.go with original-manual-reconciliation.go.gz decoded from fa2bb08c. Other files match the current captured source."
+    },
+    {
+      "command": "GOTOOLCHAIN=go1.26.6 go tool ago -stale-ignores -format json ./...",
+      "capture": "ago.json",
+      "exit": 0
+    },
+    {
+      "command": "GOTOOLCHAIN=go1.26.6 golangci-lint run ./runtime/...",
+      "capture": "lint.txt",
+      "exit": 0
+    }
+  ],
+  "exploratory_captures": "red, focused, project, and expanded are intermediate candidates, without final-source qualification. final and minimum preserve an invalid partial-observation test fixture rejected for its missing issue. The corrected fixture uses the required issue and retains every assertion.",
+  "event_counts": "PASS and FAIL counts include test groups and package events, not only leaf tests.",
+  "unchanged_contracts": [
+    "Original manual receipt and payload history",
+    "Provider binding identity and revision boundary",
+    "Reset selection",
+    "Generation payload schema",
+    "History size limits",
+    "CSP5 physical collection ownership"
+  ],
+  "pending": [
+    "Scoped removal authority owner decision",
+    "Default removal review threshold owner decision",
+    "CSP3 transport and enforcement contracts",
+    "Complete task verification",
+    "Publication review"
+  ],
+  "work_commit": "1dddd1397eae74b10a8ffd4705fee551eab28d3d",
+  "writing_check": {
+    "command": "make technical-writing-check",
+    "exit": 0,
+    "files": 1182,
+    "diagnostics": 0
+  }
+}

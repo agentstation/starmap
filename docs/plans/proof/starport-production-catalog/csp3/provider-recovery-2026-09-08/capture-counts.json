@@ -1,0 +1,96 @@
+[
+  {
+    "file": "red.jsonl.gz",
+    "decoded_sha256": "1c1bf65803dff422134c015829200d907f3f5672e46ddf0b8e8c0e5ee4e3caec",
+    "events": {
+      "start": 1,
+      "run": 3,
+      "output": 21,
+      "fail": 3,
+      "pass": 1
+    }
+  },
+  {
+    "file": "focused.jsonl.gz",
+    "decoded_sha256": "cc6e7edcd97a8b040d43c724a1720a5ae12689c7ba8e590d58bc9cb470608526",
+    "events": {
+      "start": 1,
+      "run": 3,
+      "output": 21,
+      "pass": 1,
+      "fail": 3
+    }
+  },
+  {
+    "file": "project.jsonl.gz",
+    "decoded_sha256": "c541270ca9d2e3d15172a30b37c4c6dcfa5dae5d53a827aee92a6ce045fc18a8",
+    "events": {
+      "start": 1,
+      "run": 71,
+      "output": 390,
+      "pass": 72
+    }
+  },
+  {
+    "file": "expanded.jsonl.gz",
+    "decoded_sha256": "d6739ddcb7cfdb9782718befeab2e859cce3747c09320d6738475618dff1c368",
+    "events": {
+      "start": 1,
+      "run": 6,
+      "output": 39,
+      "pass": 7
+    }
+  },
+  {
+    "file": "final.jsonl.gz",
+    "decoded_sha256": "842f2b9c27a5eb817b4965c1e6b56787e0b85179d8ad3a31946cce27c59cc0cd",
+    "events": {
+      "start": 1,
+      "run": 12,
+      "output": 52,
+      "pass": 10,
+      "fail": 3
+    }
+  },
+  {
+    "file": "minimum.jsonl.gz",
+    "decoded_sha256": "4a88887ee483cde626d7e03909b7e0b27b96b381fab384475fc88a0db6bf2d18",
+    "events": {
+      "start": 1,
+      "run": 12,
+      "output": 52,
+      "pass": 10,
+      "fail": 3
+    }
+  },
+  {
+    "file": "final-red.jsonl.gz",
+    "decoded_sha256": "1293101fcaa8671f4d8a0009607741ec12b3ffb7a7914f2878e4ed1cbfc9821b",
+    "events": {
+      "start": 1,
+      "run": 3,
+      "output": 22,
+      "fail": 4
+    }
+  },
+  {
+    "file": "qualified.jsonl.gz",
+    "decoded_sha256": "a8815d25c0d091316d3cedbd0e1de63819579c97cb42dc32616d4f86a711bc18",
+    "events": {
+      "start": 1,
+      "run": 12,
+      "output": 51,
+      "pass": 13
+    }
+  },
+  {
+    "file": "qualified-minimum.jsonl.gz",
+    "decoded_sha256": "b03c5ab4bb9d6703f63cb0f6c299c8f6c0080895bbed9e81865f6ca9390e8119",
+    "events": {
+      "start": 1,
+      "run": 12,
+      "output": 51,
+      "pass": 13
+    }
+  }
+]
