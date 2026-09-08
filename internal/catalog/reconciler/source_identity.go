@@ -72,12 +72,13 @@ func (merger *merger) modelSourcesForValue(
 		delete(resolved, sources.LocalCatalogID)
 		return resolved
 	}
-	if ok && merger.projectedEvidence != nil && !merger.projectedEvidence(providerID, evidence) {
+	if ok && (!slices.Contains(policy.SourceOrder, evidence.Source) ||
+		(merger.projectedEvidence != nil && !merger.projectedEvidence(providerID, evidence))) {
 		resolved := cloneModelSources(sourceModels)
 		delete(resolved, sources.LocalCatalogID)
 		return resolved
 	}
-	if !ok || !slices.Contains(policy.SourceOrder, evidence.Source) {
+	if !ok {
 		return sourceModels
 	}
 
@@ -145,12 +146,13 @@ func (merger *merger) providerSourcesForPolicy(
 		return sourceProviders
 	}
 	evidence, ok := merger.projectedProviderEvidence(providerID, policy.Evidence(), localValue)
-	if ok && merger.projectedEvidence != nil && !merger.projectedEvidence(providerID, evidence) {
+	if ok && (!slices.Contains(policy.SourceOrder, evidence.Source) ||
+		(merger.projectedEvidence != nil && !merger.projectedEvidence(providerID, evidence))) {
 		resolved := cloneProviderSources(sourceProviders)
 		delete(resolved, sources.LocalCatalogID)
 		return resolved
 	}
-	if !ok || !slices.Contains(policy.SourceOrder, evidence.Source) {
+	if !ok {
 		return sourceProviders
 	}
 
