@@ -1,0 +1,185 @@
+{
+  "schema_version": 1,
+  "id": "starport-production-performance-v1",
+  "status": "engineering_targets",
+  "qualification": "UNVERIFIED",
+  "scope": "Targets for the planned production release. Current measurements do not satisfy or qualify these limits.",
+  "runner": {
+    "qualification_owner": "CSP22",
+    "dedicated": true,
+    "minimum_physical_cores": 8,
+    "memory_bytes": 17179869184,
+    "native_platforms": [
+      "linux/amd64",
+      "linux/arm64",
+      "darwin/arm64",
+      "windows/amd64"
+    ],
+    "exact_cpu_os_toolchain_artifact_required": true,
+    "platform_scope": "These four platforms receive initial numeric latency qualification. All six published archive targets still require native functional qualification. Other latency claims require a profile revision."
+  },
+  "workload": {
+    "operation": "chat-completions",
+    "input_bytes": 8192,
+    "output_bytes": 2048,
+    "prompt_tokens": 1024,
+    "completion_tokens": 256,
+    "catalog_routes": 10000,
+    "tenants": 1000,
+    "concurrency_per_replica": 32,
+    "offered_requests_per_second_per_replica": 200,
+    "stream_events": 256,
+    "event_content_bytes": 64,
+    "response_cache_states": [
+      "disabled",
+      "miss",
+      "hit"
+    ],
+    "credential_sources": [
+      "environment",
+      "shared",
+      "byok"
+    ],
+    "authority_modes": [
+      "public",
+      "internal"
+    ],
+    "connection_states": [
+      "pooled",
+      "cold"
+    ],
+    "max_stream_seconds": 600,
+    "offered_stream_requests_per_second_per_replica": 50,
+    "controlled_upstream_first_response_ms": 20,
+    "controlled_upstream_inter_event_ms": 1,
+    "latency_target_state": "warm valid policy and credentials, pooled connections, cache disabled or miss; evaluate cache hits separately",
+    "size_definition": "Input bytes are the JSON request body. Output bytes apply to non-stream content. Stream content is stream_events times event_content_bytes. Token counts are controlled upstream usage fields."
+  },
+  "recipes": {
+    "local": {
+      "stores": [
+        "badger",
+        "sqlite",
+        "filesystem"
+      ],
+      "replicas": 1,
+      "latency_ms": {
+        "p50": 0.5,
+        "p95": 1,
+        "p99": 2,
+        "p999": 5,
+        "first_byte_added_p99": 2,
+        "first_token_added_p99": 2,
+        "stream_forwarding_p99": 0.25
+      }
+    },
+    "fleet": {
+      "stores": [
+        "valkey",
+        "postgresql",
+        "objectstore"
+      ],
+      "replicas": 3,
+      "max_store_rtt_p99_ms": 0.5,
+      "latency_ms": {
+        "p50": 1.5,
+        "p95": 2.5,
+        "p99": 4,
+        "p999": 8,
+        "first_byte_added_p99": 4,
+        "first_token_added_p99": 4,
+        "stream_forwarding_p99": 0.25
+      }
+    }
+  },
+  "resources": {
+    "request_allocated_bytes": 262144,
+    "request_allocations": 1500,
+    "stream_event_allocated_bytes": 4096,
+    "stream_event_allocations": 32,
+    "active_stream_retained_bytes": 262144,
+    "replica_live_heap_bytes": 1073741824,
+    "replica_rss_bytes": 1610612736,
+    "cpu_utilization_percent": 70,
+    "gc_cpu_percent": 10,
+    "gc_pause_p99_ms": 1,
+    "retained_generations": 4,
+    "cold_load_concurrency": 32,
+    "optional_queue_entries": 1024,
+    "optional_queue_bytes": 4194304,
+    "response_cache_bytes": 268435456,
+    "measurement_definition": "Request allocation limits cover gateway work per request, excluding separately counted per-event work. Event limits apply to each forwarded content event. Profiles must exclude client and controlled upstream frames."
+  },
+  "deadlines_ms": {
+    "local_optional_cache_read": 0.25,
+    "remote_optional_cache_read": 2,
+    "optional_enqueue": 0.1,
+    "cold_policy_load": 1000,
+    "admission": 1000,
+    "cancellation_propagation_p99": 100,
+    "stream_idle": 30000,
+    "cold_connection": 5000
+  },
+  "correctness": {
+    "permission_validity_seconds": 300,
+    "maximum_clock_uncertainty_seconds": 30,
+    "admission_mode": "atomic-per-attempt",
+    "unknown_required_budget": "refuse-retryable",
+    "unknown_clock": "refuse",
+    "authority_activation_failure": "block-new-inference",
+    "retained_generation_limit_action": "delay-nonrestrictive-activation-and-block-new-inference-when-required-policy-cannot-activate",
+    "controlled_backend_recovery": true
+  },
+  "observability": {
+    "request_logging": "on",
+    "metrics": "on",
+    "usage_capture": "on",
+    "tracing": "10-percent-sampling-to-local-collector",
+    "optional_exports": "bounded-workers"
+  },
+  "evidence": {
+    "runs": 3,
+    "minimum_samples_per_variant": 100000,
+    "minimum_seconds_per_run": 600,
+    "open_loop_load": true,
+    "raw_samples_required": true,
+    "paired_measurement": true,
+    "percentile_method": "nearest-rank-on-per-pair-differences",
+    "confidence": 0.95,
+    "maximum_regression_percent": 10,
+    "compare_each_variant_separately": true,
+    "cpu_and_allocation_profiles": true,
+    "negative_deltas": "retain",
+    "provider_wait_method": "subtract-only-observed-controlled-waits",
+    "final_artifact_binding": true,
+    "minimum_duration_rule": "Each variant must meet both the minimum duration and sample count. Streams at 50 requests/s need at least 2000 seconds per run.",
+    "boundary_definition": "Compute each proxied-minus-direct difference after removing only measured deliberate upstream waits on each side. Report complete handler time separately. First-byte and first-token differences use matching milestones. Event forwarding runs from upstream emission to client receipt.",
+    "confidence_method": "Report a 95-percent confidence interval per percentile and variant using a documented order-statistic or bootstrap method. A release passes only if the upper bound meets the target in every run.",
+    "regression_rule": "A repeatable regression above 10 percent requires investigation and review even when the absolute limit passes. Never adjust a target to hide a regression."
+  },
+  "qualification_exercises": [
+    "large-input-1MiB",
+    "long-stream-10000-events",
+    "retry-before-stream-commit",
+    "generation-refresh-pressure",
+    "cold-start",
+    "backend-outage",
+    "saturation",
+    "slow-client",
+    "connection-reconnect",
+    "cancellation",
+    "cache-failure",
+    "credential-rotation",
+    "restrictive-policy-activation"
+  ],
+  "exclusions": [
+    "semantic-cache-and-paid-guardrail-work-use-separate-opt-in-profiles",
+    "redis-mysql-and-multi-region-need-separate-qualification"
+  ],
+  "rationale": {
+    "latency": "Small uncached warm requests should spend microseconds on indexed local reads and bounded protocol work. Fleet limits add room for one required admission round trip.",
+    "allocations": "Remove the measured full-provider copies before pooling or GC tuning. Complete protocol requests may allocate, but work must stay bounded.",
+    "correctness": "A latency target never permits skipping required budget admission or using expired authority.",
+    "measurement": "The local baseline identifies costs. A dedicated runner and the full recipe matrix must establish release claims."
+  }
+}
