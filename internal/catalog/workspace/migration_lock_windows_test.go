@@ -19,23 +19,21 @@ func TestLegacyLockAliasAllowsRelocationWithoutReleasingLock(t *testing.T) {
 	if err := os.WriteFile(original, nil, 0o600); err != nil {
 		t.Fatal(err)
 	}
-	alias := filepath.Join(parent, "migration.lock")
-	if err := os.Link(original, alias); err != nil {
+	release, err := acquireLegacyStoreLock(t.Context(), legacy)
+	if err != nil {
 		t.Fatal(err)
 	}
-	migration := flock.New(alias, flock.SetFlag(os.O_RDWR))
-	if err := migration.Lock(); err != nil {
-		t.Fatal(err)
-	}
-	defer func() { _ = migration.Unlock() }()
+	defer release()
 	assertMigrationAliasLocked(t, original)
 	if err := os.Rename(legacy, state); err != nil {
 		t.Fatal(err)
 	}
 	relocated := filepath.Join(state, ".commit.lock")
 	assertMigrationAliasLocked(t, relocated)
-	if err := migration.Unlock(); err != nil {
-		t.Fatal(err)
+	release()
+	aliases, err := filepath.Glob(filepath.Join(parent, ".legacy.starmap-migration-lock-*"))
+	if err != nil || len(aliases) != 0 {
+		t.Fatalf("migration alias survived release: %v, %v", aliases, err)
 	}
 	writer := flock.New(relocated, flock.SetFlag(os.O_RDWR))
 	locked, err := writer.TryLock()

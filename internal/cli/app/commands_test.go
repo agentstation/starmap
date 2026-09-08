@@ -114,7 +114,7 @@ func TestCommandConstructionPreservesLoadedConfiguration(t *testing.T) {
 }
 
 func TestExplicitConfigFileLoadsAfterFlagParsing(t *testing.T) {
-	t.Setenv("HOME", t.TempDir())
+	setTestHome(t, t.TempDir())
 	configPath := filepath.Join(t.TempDir(), "selected.yaml")
 	if err := os.WriteFile(configPath, []byte(
 		"catalog_path: /from-selected-file\noutput: yaml\n",
@@ -161,7 +161,7 @@ func TestExplicitConfigFileMustExistAndParse(t *testing.T) {
 	}
 	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {
-			t.Setenv("HOME", t.TempDir())
+			setTestHome(t, t.TempDir())
 			application, err := New("0.1.1", "abc123", "2026-07-12", "test")
 			if err != nil {
 				t.Fatalf("New: %v", err)

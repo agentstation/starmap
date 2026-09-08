@@ -91,7 +91,7 @@ func TestMalformedOptionalPrimaryConfigurationFails(t *testing.T) {
 
 func TestGoPathOptionsBypassAmbientConfiguration(t *testing.T) {
 	clearCatalogEnvironment(t)
-	t.Setenv("HOME", "")
+	setTestHome(t, "")
 	t.Setenv("STARMAP_HOME", "invalid-relative")
 	chosen := t.TempDir()
 	a, err := New("test", "test", "test", "test", WithConfig(&Config{PathValues: map[string]string{"STARMAP_HOME": chosen}}))
@@ -119,7 +119,7 @@ func nativeRoot(t *testing.T, root productpaths.Root) string {
 func TestImplicitNewRootsRefuseLegacyStateWithoutWriting(t *testing.T) {
 	clearCatalogEnvironment(t)
 	home := t.TempDir()
-	t.Setenv("HOME", home)
+	setTestHome(t, home)
 	legacy := filepath.Join(home, ".starmap", "state", "catalog")
 	if err := os.MkdirAll(legacy, 0o700); err != nil {
 		t.Fatal(err)

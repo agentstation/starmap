@@ -17,7 +17,7 @@ func TestWindowsJournalReplacementRecoversAfterEditorHandleCloses(t *testing.T) 
 	if err != nil {
 		t.Fatal(err)
 	}
-	handle, err := windows.CreateFile(name, windows.FILE_READ_ATTRIBUTES,
+	handle, err := windows.CreateFile(name, windows.FILE_LIST_DIRECTORY|windows.FILE_READ_ATTRIBUTES,
 		windows.FILE_SHARE_READ|windows.FILE_SHARE_WRITE, nil, windows.OPEN_EXISTING,
 		windows.FILE_FLAG_BACKUP_SEMANTICS, 0)
 	if err != nil {

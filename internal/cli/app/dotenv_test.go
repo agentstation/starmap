@@ -12,7 +12,7 @@ import (
 
 func TestServiceConfigurationDoesNotLoadIncidentalDotenv(t *testing.T) {
 	t.Chdir(t.TempDir())
-	t.Setenv("HOME", t.TempDir())
+	setTestHome(t, t.TempDir())
 	t.Setenv("CSP_DOTENV_INCIDENTAL", "")
 	if err := os.Unsetenv("CSP_DOTENV_INCIDENTAL"); err != nil {
 		t.Fatal(err)
@@ -56,7 +56,7 @@ func TestExplicitDotenvPrecedenceAndConflictDiagnostics(t *testing.T) {
 }
 
 func TestCommandFlagsOverrideInvalidEnvironmentSettings(t *testing.T) {
-	t.Setenv("HOME", t.TempDir())
+	setTestHome(t, t.TempDir())
 	t.Setenv(catalogconfig.SourcePollInterval, "invalid-duration")
 	application := NewForCommand("test", "test", "test", "test")
 	if err := application.Execute(t.Context(), []string{"--catalog-source", "embedded", "--catalog-source-poll-interval", "0s", "version"}); err != nil {
@@ -71,7 +71,7 @@ func TestCommandDotenvSourceReplacementPreservesAuthority(t *testing.T) {
 	for _, legacy := range []bool{false, true} {
 		t.Run(strconv.FormatBool(legacy), func(t *testing.T) {
 			clearCatalogEnvironment(t)
-			t.Setenv("HOME", t.TempDir())
+			setTestHome(t, t.TempDir())
 			directory := t.TempDir()
 			base, local := filepath.Join(directory, ".env"), filepath.Join(directory, ".env.local")
 			contents := "STARMAP_CATALOG_SOURCE=starmap\nSTARMAP_CATALOG_SOURCE_URL=https://old.example.test\nSTARMAP_CATALOG_SOURCE_API_KEY=old-transport-secret\n"

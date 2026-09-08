@@ -55,6 +55,15 @@ func (r readerLock) validate() error {
 	if (r.before == nil) != (after == nil) || (r.before != nil && !os.SameFile(r.before, after)) {
 		return readConflict(r.target, "workspace lock changed during the read; retry the read")
 	}
+	if r.lock != nil {
+		opened, err := r.lock.Stat()
+		if err != nil {
+			return errors.WrapIO("inspect read lock", writerLockPath(r.target), err)
+		}
+		if r.before == nil || !os.SameFile(r.before, opened) {
+			return readConflict(r.target, "workspace lock changed before the read")
+		}
+	}
 	return nil
 }
 
@@ -66,7 +75,7 @@ func (r readerLock) close() {
 
 func inspectReaderLock(target string) (os.FileInfo, error) {
 	path := writerLockPath(target)
-	info, err := os.Lstat(path)
+	info, err := readTargetInfo(path)
 	if os.IsNotExist(err) {
 		return nil, nil
 	}

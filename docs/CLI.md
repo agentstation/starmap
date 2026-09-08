@@ -367,6 +367,17 @@ Stop all older Starmap processes that use `catalog_path` before running the
 command, and do not restart those binaries afterward. They do not understand
 the path's new human-workspace meaning and can recreate machine state there.
 
+On Windows, the migration creates an adjacent hard link named
+`.<workspace-name>.starmap-migration-lock-<id>`. It holds the original commit lock
+through that alias while the catalog store moves. Competing writers cannot lock
+the store before or after relocation. The alias preserves the original private
+file access policy.
+
+The operation removes its own alias after releasing the lock. A crash can leave
+an alias without an active lock. Stop all store writers and migrations before
+removing an abandoned alias. Preserve the store's `.commit.lock`. Filesystems
+without hard-link support reject this migration before relocation.
+
 The command checks every retained generation, the current pointer, payload
 binding, and schema compatibility before the first rename. A normal failure restores
 the old store. If another actor recreates the vacated path, rollback preserves

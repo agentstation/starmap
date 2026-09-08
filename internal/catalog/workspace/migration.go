@@ -11,8 +11,6 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/gofrs/flock"
-
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/catalogs/storage"
 	"github.com/agentstation/starmap/pkg/errors"
@@ -73,21 +71,11 @@ func (m legacyLayoutMigrator) migrate(
 		return LegacyLayoutMigrationResult{}, err
 	}
 
-	storeLock := flock.New(filepath.Join(legacy, ".commit.lock"))
-	locked, err := storeLock.TryLockContext(ctx, lockRetryDelay)
+	releaseStore, err := acquireLegacyStoreLock(ctx, legacy)
 	if err != nil {
-		return LegacyLayoutMigrationResult{}, errors.WrapIO("lock", legacy, err)
+		return LegacyLayoutMigrationResult{}, err
 	}
-	if !locked {
-		if err := ctx.Err(); err != nil {
-			return LegacyLayoutMigrationResult{}, err
-		}
-		return LegacyLayoutMigrationResult{}, &errors.ConflictError{
-			Resource: "legacy catalog generation store",
-			Message:  "commit lock was not acquired",
-		}
-	}
-	defer func() { _ = storeLock.Unlock() }()
+	defer releaseStore()
 
 	generation, catalog, retained, err := inspectLegacyStore(ctx, legacy)
 	if err != nil {

@@ -49,8 +49,14 @@ func (s *baselineStage) write(name string, contents []byte) (result error) {
 	if err != nil {
 		return err
 	}
-	defer func() { result = stderrors.Join(result, file.Close()) }()
 	record := &baselineStageFile{name: name}
+	defer func() {
+		closeErr := file.Close()
+		result = stderrors.Join(result, closeErr)
+		if closeErr == nil && record.info != nil {
+			result = stderrors.Join(result, record.seal(s.root))
+		}
+	}()
 	s.files = append(s.files, record)
 	written, writeErr := file.Write(contents)
 	record.contents = contents[:written]
@@ -59,6 +65,19 @@ func (s *baselineStage) write(name string, contents []byte) (result error) {
 		return err
 	}
 	return file.Sync()
+}
+
+// seal records final timestamps after the writing handle closes.
+func (r *baselineStageFile) seal(root *os.Root) error {
+	current, err := root.Lstat(r.name)
+	if err != nil {
+		return stderrors.Join(stageConflict(r.name), err)
+	}
+	if !current.Mode().IsRegular() || !os.SameFile(r.info, current) || r.info.Mode() != current.Mode() || r.info.Size() != current.Size() {
+		return stageConflict(r.name)
+	}
+	r.info = current
+	return nil
 }
 
 func (s *baselineStage) validateLocation() error {
