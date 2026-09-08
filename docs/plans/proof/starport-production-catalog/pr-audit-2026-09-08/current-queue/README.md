@@ -1,6 +1,6 @@
 # Current pull request queue
 
-Seven PRs remain open after seven approved merges. All retain distinct work or required ancestry.
+Six PRs remain open after eight approved merges. All retain distinct work or required ancestry.
 Starmap #127 remains closed because #128 preserves its dependency changes.
 No additional PR qualifies for closure in this review.
 
@@ -14,7 +14,7 @@ Their existing manual evidence applies only to its recorded source.
 | 1 | Starport #367 | Merged at `565a4fcd` after pin review and ten passing checks. | Catalog plan executor |
 | 2 | Starmap #130–#131 | PRs #128 and #129 merged. Retain the two remaining dependency updates. Combined adapter, consumer, and listed SDK credential-path checks pass. Preserve the consumer checksum repair during integration. | Catalog plan executor |
 | 3 | Starport #368 | Merged at `857bd854` after local dependency checks and ten passing CI checks. | Catalog plan executor |
-| 4 | Starmap #132, #134, #133, #135, #136 | PR #125 merged at `96c098f9`, and #126 merged at `b5c3f48a`. Merge the remaining stack in this order after required checks pass. Continue CSP3 under its publication gate. | Catalog plan executor |
+| 4 | Starmap #134, #133, #135, #136 | PR #125 merged at `96c098f9`, #126 at `b5c3f48a`, and #132 at `12fca002`. Merge the remaining stack in this order after required checks pass. Continue CSP3 under its publication gate. | Catalog plan executor |
 | 5 | Starport #366 | Merged at `cffa9300` after 16 passing checks. CSP0.1 is complete. Six later local commits retain their separate release dependency. | Catalog plan executor |
 
 The current branch ancestry confirms all six parent relationships.
@@ -87,7 +87,7 @@ The task identifier is `maintain-starmap-and-starport-pr-queue`.
 ## Approved merges
 
 The owner authorized reviewed merges without repeated permission requests on 2026-09-08.
-The [merge record](../approved-merges/verification.json) confirms seven completed merges.
+The [merge record](../approved-merges/verification.json) confirms eight completed merges.
 Starmap requires each PR branch to include current main before merge.
 PR #129 merged at `df9585f5`. PR #132 now runs checks against that main revision.
 Starmap #128 merged at `e12a865f` after its required checks passed.
@@ -128,3 +128,13 @@ All four PRs are ready for review.
 The [propagation record](main-parent-propagation.json) verifies that every reviewed diff outside proof files retains identical bytes.
 Merge these PRs into main in the recorded order after their required checks pass.
 Do not count a merge into an intermediate branch as task completion.
+
+## Foundation merge
+
+Starmap #132 merged at `12fca002` after twelve successful checks.
+The [task closeout](../approved-merges/starmap-132-task-closeout.json) verifies 30 verifier tests and all six CSP1 subcases against that merge.
+CSP0 and CSP1 are complete. CSP2 still needs the later repair stack.
+
+PR #134 now targets main at head `b75985eb`.
+Automatic merge waits for its required checks.
+Then advance #133, #135, and #136 into main in order.

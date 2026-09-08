@@ -23,7 +23,18 @@ These two fragments do not qualify a complete stored-generation upgrade.
 The equality method compares serialized facts and presence.
 It resolves the existing comparison failure without ignoring the new private state.
 The prototype does not cover other optional null records or every architecture property.
-Source precedence, rejected receipts, state transitions, full package checks, and HTTP schema review remain open.
+The full affected suite passes 1,678 test results and four packages.
+
+Source precedence, receipt refusal, and state transitions pass 60 test results and two packages on each supported Go toolchain.
+The initial policy fixtures required pointer and canonical evidence-path corrections. Their failed captures remain in the verification record.
+
+The old-writer/new-reader check uses two real filesystem stores.
+The candidate preserves each accepted generation and original observation checksum through restart and source refresh.
+Each command passes three test results and one package.
+The earlier fragment checks remain narrower than this complete-state check.
+
+The current OpenAPI schema excludes null for both Boolean properties.
+Schema generation, production integration, and required publication review remain open.
 
 To reproduce a capture, extract its files and rewrite the two filesystem prefixes in its overlay.
 The source prefix names the checked repository. The replacement prefix names the extracted candidate files.

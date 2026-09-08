@@ -1,0 +1,28 @@
+{
+  "merge_commit": "12fca002d73f41372a90f102b93c07b23ad8594e",
+  "worktree": "/tmp/starmap-merge-acceptance-2026-09-08",
+  "csp0": {
+    "status": "PASS",
+    "command": "GOTOOLCHAIN=go1.26.6 python3 scripts/test_catalog_product_verify.py",
+    "test_count": 30,
+    "capture": "starmap-132-verifier-tests.txt.gz"
+  },
+  "csp1": {
+    "status": "PASS",
+    "command": "GOTOOLCHAIN=go1.26.6 bash scripts/verify-catalog-product.sh --task CSP1 --json",
+    "subcases": {
+      "A24.descriptor_parity": "PASS",
+      "A24.zero_false_empty": "PASS",
+      "A24.aliases_coalescing": "PASS",
+      "A25.source_token_replacement": "PASS",
+      "A24.starmap_yaml_parity": "PASS",
+      "A24.dotenv_conflict_migration": "PASS"
+    },
+    "capture": "starmap-132-csp1.json.gz"
+  },
+  "completion_scope": [
+    "CSP0",
+    "CSP1"
+  ],
+  "remaining": "CSP2 needs the later repair stack. No released-pair qualification follows from these component checks."
+}

@@ -69,6 +69,53 @@
     "full-affected.jsonl": {
       "pass_test": 1678,
       "pass_package": 4
+    },
+    "policy.jsonl": {
+      "fail_package": 1,
+      "pass_test": 13,
+      "pass_package": 1
+    },
+    "policy-original.jsonl": {
+      "fail_package": 1
+    },
+    "policy-pointer.jsonl": {
+      "pass_test": 13,
+      "fail_test": 14,
+      "fail_package": 1,
+      "pass_package": 1
+    },
+    "policy-pointer-original.jsonl": {
+      "fail_test": 14,
+      "fail_package": 1
+    },
+    "policy-canonical.jsonl": {
+      "pass_test": 27,
+      "pass_package": 2
+    },
+    "policy-canonical-original.jsonl": {
+      "fail_test": 14,
+      "fail_package": 1
+    },
+    "precedence.jsonl": {
+      "pass_test": 60,
+      "pass_package": 2
+    },
+    "precedence-original.jsonl": {
+      "fail_test": 25,
+      "pass_test": 22,
+      "fail_package": 1
+    },
+    "precedence-minimum.jsonl": {
+      "pass_test": 60,
+      "pass_package": 2
+    },
+    "upgrade-writer.jsonl": {
+      "pass_test": 3,
+      "pass_package": 1
+    },
+    "upgrade-reader.jsonl": {
+      "pass_test": 3,
+      "pass_package": 1
     }
   },
   "artifacts": [
@@ -256,16 +303,154 @@
       "path": "captures/full-affected.jsonl.gz",
       "sha256": "58a46aabb127af7bf910c746a97378e038bbd81e64c473d3690b93d79acd56ff",
       "content_sha256": "ef9c3563a71f2a66f7cc9f105851a160d70ff100cafbe4dd823de5e74b635bfd"
+    },
+    {
+      "path": "captures/state_test.go.gz",
+      "sha256": "0a708571df1f857c02d0075395864759f2e493343610e13832393118481c9910",
+      "content_sha256": "c3ba9e190099762b61ce64594533b66e64e158784a1defb637773d3133125d0d"
+    },
+    {
+      "path": "captures/policy_test.go.gz",
+      "sha256": "da6729ad6b0d92922627f53e6d1c985ceffe5391867bcbc28049b2d287fc6a47",
+      "content_sha256": "e3e8d1a25db0f74e6d260143a8bfa9bb789fcc9697b36a96db3e7bc204d1f2df"
+    },
+    {
+      "path": "captures/policy_pointer_test.go.gz",
+      "sha256": "84b3f59e3af1af162cd5774c6ee7b8058d62ba2afbfbd6e867409d1c1019ceca",
+      "content_sha256": "3e18b11e767df3b6b696965c9fa5af4a7ca401c18688860bc4ad711353407943"
+    },
+    {
+      "path": "captures/policy_canonical_test.go.gz",
+      "sha256": "43b2ea78c30bf7b4e58f0c3475d199866cdd70b9c08f41cc224a038ab801e354",
+      "content_sha256": "d3a2ee55a9a10d77bd518c05e0022a92bdeb5cb782e99adc58e61b4b69f56a97"
+    },
+    {
+      "path": "captures/precedence_test.go.gz",
+      "sha256": "e8572377714502eebac9a2338e79ce81764c716757b83249c4acbd690e15a4fe",
+      "content_sha256": "25a690271537902722d8a36a9725d624dab5173482c2fc1bd5ef460a874a785a"
+    },
+    {
+      "path": "captures/upgrade_test.go.gz",
+      "sha256": "01aed787a5da9eed38efa56120cd5b93d8058f0441df300491f9947325c905e0",
+      "content_sha256": "b085adced7c3f31bc437f64c2abb3746e9b3ce8bf666ee3c48e7c7ace2c2a08c"
+    },
+    {
+      "path": "captures/policy-overlay.json.gz",
+      "sha256": "7abacfcd6c36e137988aaa65a3f12f669e0c375165b3e55ef59395a61504d329",
+      "content_sha256": "408c023067b889f5570f4feb7c6790d65e26e093274ab8ec4bc3dde813175eee"
+    },
+    {
+      "path": "captures/policy-original-overlay.json.gz",
+      "sha256": "80a33d4663f2727bd099fadb598dfa3e8e70aff2a747eab91f7a0916912a166f",
+      "content_sha256": "154fe75644e55ca929e689232f2c657edb0a27efb615bcf8dd86e6a625e57943"
+    },
+    {
+      "path": "captures/policy-pointer-overlay.json.gz",
+      "sha256": "d14c61cb35ab0b375ebc65c51c6c19be43d1ff37bd4403f33b3c4637a03b18a4",
+      "content_sha256": "9889c2552c4976050cbc7320e5a709a6bc2b36ea6ad80ac009b9f9523c66d396"
+    },
+    {
+      "path": "captures/policy-pointer-original-overlay.json.gz",
+      "sha256": "9dd6de74f0b4140f8cffdf20b5cdd80030d3af59241e33ac9efae3afe7e5f7d9",
+      "content_sha256": "cbfbf48fe0673439dc4d4ba421631e7a013d85dce57a549b00cb1065d780b3a8"
+    },
+    {
+      "path": "captures/policy-canonical-overlay.json.gz",
+      "sha256": "2cfb1dc1c548a1ac67cb0b36812e0151bccafc6932737ecb46ccddc7c3c89a29",
+      "content_sha256": "f46f2d29d179bb721b28c571868b107bb7fefb2b2e8b1a51d02ab578b016a20c"
+    },
+    {
+      "path": "captures/policy-canonical-original-overlay.json.gz",
+      "sha256": "bae389387357ef3b2651d8b41754944e17ae524f15a1ec43ea8cd0e8b3f700ba",
+      "content_sha256": "5310d718e98325e24e56435790d5c1b1ebd0999ce9b4f75757f0196cd8336c47"
+    },
+    {
+      "path": "captures/precedence-overlay.json.gz",
+      "sha256": "d9cbbd2b778ca1e87bb8304192514101436e385954532ae5fd62ac6d5b001580",
+      "content_sha256": "5d9fa2ca94cc03dff2fffea1e0d9afc753a95c2e2db299bd21c01964147f83e2"
+    },
+    {
+      "path": "captures/precedence-original-overlay.json.gz",
+      "sha256": "4f45c4ba83fe6d155082d7ef947f5060fdbc982073cd1a221fd115abac4eb689",
+      "content_sha256": "a558051c529772048ef2bd6adbb126963b52de79557721c3c9c5631c475f32b9"
+    },
+    {
+      "path": "captures/upgrade-overlay.json.gz",
+      "sha256": "024ee8136a290072cdd179b5ef6b4ea5295fdccc02bcf7f5e9af092805b6701a",
+      "content_sha256": "b375b688c740069e253fc31b22dc1499587c7762a0588d30ccce891b4cd38979"
+    },
+    {
+      "path": "captures/upgrade-original-overlay.json.gz",
+      "sha256": "921e66558aab89efa6814ce9b80aa86f51dfbc1b4a831e11140a4f14468ec223",
+      "content_sha256": "53eb54cb40261287127f2629975f8d2ed552df4c70a5765ba504770c9eafbdc0"
+    },
+    {
+      "path": "captures/policy.jsonl.gz",
+      "sha256": "d439eab8658ed907ed1c0b18c63d8be3b1ce07990fc4d3156ad1626fd5433dbb",
+      "content_sha256": "0d98b46dc9b07589bdb138954e62864e02559d23c96589c090187a5b5fa5fc8e"
+    },
+    {
+      "path": "captures/policy-original.jsonl.gz",
+      "sha256": "8c912e82d342a4c7d907fb09cf4a8b76f952f8d756a7369f2e2498c63e8be4c6",
+      "content_sha256": "20cb896680b85ff3f9b7794afdcd2741d5e47bd90cfb99ab210866b8a3e2dfa6"
+    },
+    {
+      "path": "captures/policy-pointer.jsonl.gz",
+      "sha256": "17b0faed6118bfcab7decfc9ed32fa08f80fba229c1a72c8b6c62365a0b20bb6",
+      "content_sha256": "58e3d61d6a8b84db4e22f88a201f48bb591664f780c5e7b3f3b371a311e9de36"
+    },
+    {
+      "path": "captures/policy-pointer-original.jsonl.gz",
+      "sha256": "1d6bd892f3ace509380b6dbb33ab5aff1fec405f5749431cc3f0f09260afa1c1",
+      "content_sha256": "92d9956ed59150d5fe68369403258dbf2ec464b8e81bf40e9e80c703a720303d"
+    },
+    {
+      "path": "captures/policy-canonical.jsonl.gz",
+      "sha256": "dcb70c3879062e80b4d7a75b3876935023db27f74c588e6095d28c81c36af7a5",
+      "content_sha256": "5bf615bdbc09e4e49bc27e7cf52524f1ce22f1fede4815ec455c55464556d302"
+    },
+    {
+      "path": "captures/policy-canonical-original.jsonl.gz",
+      "sha256": "cf3f681633516882afd3dbf18adbd240c2dac56dc9686ccc5ee1cd782a44eaa5",
+      "content_sha256": "4f349065531e881620c4df67c2330cdcf87c8c5ef5f9147c8f42a59b868c641b"
+    },
+    {
+      "path": "captures/precedence.jsonl.gz",
+      "sha256": "84e7b3c9327f9540e2d3c9838f47a04120101361ab57f67bc4fdbb71f5f43591",
+      "content_sha256": "7110234f302e0b1f48cfb0447ce8929b5286cdfabf9baa64e8d2655844b79a9b"
+    },
+    {
+      "path": "captures/precedence-original.jsonl.gz",
+      "sha256": "9b26f67e4fa9333233ac49cc743669ae649a29ebfd7d2d3b7181c94f7d7106df",
+      "content_sha256": "f5faaf76bac422ca148bbd6b5fa89b5cf38021cbee1b94748b4d5743aaa99a85"
+    },
+    {
+      "path": "captures/precedence-minimum.jsonl.gz",
+      "sha256": "566fcbcd2795263d0d764b9b275d6620a7ce0df6e34d3a6de909693382844102",
+      "content_sha256": "385cc051927295e2c1a13f2dce74ba21680db4cad8e124b453a957cd312bb5ce"
+    },
+    {
+      "path": "captures/upgrade-writer.jsonl.gz",
+      "sha256": "9afee09450cd14d3cd277d781005299d37a0c85ca7ca672d59854f67e956f803",
+      "content_sha256": "2613bfc4842cf9bd65dd48ac60f361a551f52bd3a362060c1d146d1231c3f4f9"
+    },
+    {
+      "path": "captures/upgrade-reader.jsonl.gz",
+      "sha256": "ebc5b2c181d05fe0ab97fc133ca5a6d372381ecfe2d27a50f75e3b9627676c58",
+      "content_sha256": "4a115c0ed6f40b1127c2686d02257c1bfedb613994cf1f4446c3d5127328f8fd"
+    },
+    {
+      "path": "captures/upgrade-state.tar.gz",
+      "sha256": "e7b08e7d8e0984a1ea57d339e17828051f51c9b442fc0ea8f550564c4e0254d8",
+      "content_sha256": "cb8fa194e04b443a4cf49d7097db2ffd8a4b650fcd4990ff70b934f9aa5ca729"
     }
   ],
   "reproduction_command": "GOTOOLCHAIN=go1.26.6 go test -race -count=1 -timeout 5m -overlay /tmp/starmap-architecture-presence-2026-09-08/ordered-overlay.json ./pkg/catalogs ./internal/catalog/reconciler ./runtime -run 'Architecture|ReadViews|DeepCopy|Definition' -json",
   "minimum_toolchain": "go1.25.12",
   "remaining": [
-    "Source precedence and rejected-receipt cases",
-    "Getter/setter state transitions",
-    "Old-writer/new-reader observation recovery",
-    "HTTP schema review",
-    "Production integration and pre-PR review"
+    "HTTP schema contract and generation",
+    "Production integration and pre-PR review",
+    "Remaining CSP3 field and authority contracts"
   ],
   "full_affected_verification": {
     "status": "pass",
@@ -276,5 +461,17 @@
       "pass_package": 4
     },
     "terminal_evidence": "All four requested packages emitted terminal pass events. The process handle is no longer available."
+  },
+  "additional_qualification": {
+    "source_commit": "20b848c9",
+    "final_overlay": "upgrade-overlay.json",
+    "state_and_policy": "60 test results and two packages pass on each supported Go toolchain.",
+    "old_writer_new_reader": "Current production code writes two filesystem states. The candidate opens each accepted generation and preserves its original observation checksum through source refresh. Each command passes three test results and one package.",
+    "fixture_corrections": [
+      "Initial policy helper accepted a value where the provider map returns a pointer.",
+      "Second fixture used Metadata instead of the canonical lowercase metadata evidence path."
+    ],
+    "schema_gap": "OpenAPI architecture Boolean properties currently exclude null. Update the generator contract and regenerate before production adoption.",
+    "upgrade_fixture": "captures/upgrade-state.tar.gz"
   }
 }
