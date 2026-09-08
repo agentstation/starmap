@@ -1,0 +1,17 @@
+{
+  "command": [
+    "go",
+    "test",
+    "-race",
+    "-json",
+    "./runtime",
+    "-run",
+    "^TestCloseRejectsLateProviderPublication$",
+    "-count=1",
+    "-timeout",
+    "2m"
+  ],
+  "exit_code": 1,
+  "stdout": "{\"Time\":\"2026-09-06T01:16:59.126778-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starmap/runtime\"}\n{\"Time\":\"2026-09-06T01:16:59.557944-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Test\":\"TestCloseRejectsLateProviderPublication\"}\n{\"Time\":\"2026-09-06T01:16:59.558016-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Test\":\"TestCloseRejectsLateProviderPublication\",\"Output\":\"=== RUN   TestCloseRejectsLateProviderPublication\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-06T01:16:59.558052-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Test\":\"TestCloseRejectsLateProviderPublication\",\"Output\":\"=== PAUSE TestCloseRejectsLateProviderPublication\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-06T01:16:59.558054-05:00\",\"Action\":\"pause\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Test\":\"TestCloseRejectsLateProviderPublication\"}\n{\"Time\":\"2026-09-06T01:16:59.558181-05:00\",\"Action\":\"cont\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Test\":\"TestCloseRejectsLateProviderPublication\"}\n{\"Time\":\"2026-09-06T01:16:59.558189-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Test\":\"TestCloseRejectsLateProviderPublication\",\"Output\":\"=== CONT  TestCloseRejectsLateProviderPublication\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-06T01:17:11.602392-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Test\":\"TestCloseRejectsLateProviderPublication\",\"Output\":\"    close_cancellation_test.go:36: late provider result = \\u003cnil\\u003e, want cancellation\\n\",\"OutputType\":\"error\"}\n{\"Time\":\"2026-09-06T01:17:11.602423-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Test\":\"TestCloseRejectsLateProviderPublication\",\"Output\":\"    close_cancellation_test.go:42: shutdown retained or published a late provider result\\n\",\"OutputType\":\"error\"}\n{\"Time\":\"2026-09-06T01:17:11.603569-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Test\":\"TestCloseRejectsLateProviderPublication\",\"Output\":\"--- FAIL: TestCloseRejectsLateProviderPublication (12.05s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-06T01:17:11.603734-05:00\",\"Action\":\"fail\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Test\":\"TestCloseRejectsLateProviderPublication\",\"Elapsed\":12.05}\n{\"Time\":\"2026-09-06T01:17:11.604048-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Output\":\"FAIL\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-06T01:17:11.643567-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Output\":\"FAIL\\tgithub.com/agentstation/starmap/runtime\\t12.516s\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-06T01:17:11.643603-05:00\",\"Action\":\"fail\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Elapsed\":12.517}\n",
+  "stderr": ""
+}

@@ -1,0 +1,359 @@
+{
+  "captured_at": "2026-09-06T20:44:56.838629+00:00",
+  "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-requirements",
+  "branch": "codex/catalog-requirements",
+  "head": "4780dfea9f7e002ea6eaaa82aa8f52ed0d4cc225",
+  "goal_status": "active",
+  "task_status": "CSP2 in_progress",
+  "primary_cases_unverified": 50,
+  "selected_components": {
+    "PASS": 2,
+    "UNVERIFIED": 20
+  },
+  "windows_ancestor_checks": [
+    {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.25.12",
+        "go",
+        "test",
+        "-json",
+        "-race",
+        "-count=1",
+        "-timeout=5m",
+        "./internal/privatefiles",
+        "./internal/runtimeacl/windows"
+      ],
+      "exit_code": 0,
+      "counts": {
+        "pass": 96
+      }
+    },
+    {
+      "command": [
+        "env",
+        "GOOS=windows",
+        "GOARCH=amd64",
+        "CGO_ENABLED=0",
+        "golangci-lint",
+        "run",
+        "./internal/privatefiles/...",
+        "./internal/runtimeacl/windows/...",
+        "./runtime/...",
+        "./internal/cli/app/..."
+      ],
+      "exit_code": 0,
+      "counts": {}
+    },
+    {
+      "command": [
+        "go",
+        "tool",
+        "ago",
+        "-stale-ignores",
+        "-format",
+        "json",
+        "./..."
+      ],
+      "exit_code": 0,
+      "counts": {}
+    },
+    {
+      "command": [
+        "bash",
+        "scripts/verify-package-layout.sh"
+      ],
+      "exit_code": 0,
+      "counts": {}
+    },
+    {
+      "command": [
+        "bash",
+        "scripts/verify-catalog-dependency-direction.sh"
+      ],
+      "exit_code": 0,
+      "counts": {}
+    },
+    {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.25.12",
+        "GOOS=windows",
+        "GOARCH=amd64",
+        "CGO_ENABLED=0",
+        "go",
+        "test",
+        "-c",
+        "-o",
+        "/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/csp2-ancestor-settled-k0wmfk9w/amd64-internal-privatefiles.exe",
+        "./internal/privatefiles"
+      ],
+      "exit_code": 0,
+      "counts": {}
+    },
+    {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.25.12",
+        "GOOS=windows",
+        "GOARCH=amd64",
+        "CGO_ENABLED=0",
+        "go",
+        "test",
+        "-c",
+        "-o",
+        "/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/csp2-ancestor-settled-k0wmfk9w/amd64-internal-runtimeacl-windows.exe",
+        "./internal/runtimeacl/windows"
+      ],
+      "exit_code": 0,
+      "counts": {}
+    },
+    {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.25.12",
+        "GOOS=windows",
+        "GOARCH=amd64",
+        "CGO_ENABLED=0",
+        "go",
+        "test",
+        "-c",
+        "-o",
+        "/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/csp2-ancestor-settled-k0wmfk9w/amd64-runtime.exe",
+        "./runtime"
+      ],
+      "exit_code": 0,
+      "counts": {}
+    },
+    {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.25.12",
+        "GOOS=windows",
+        "GOARCH=amd64",
+        "CGO_ENABLED=0",
+        "go",
+        "test",
+        "-c",
+        "-o",
+        "/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/csp2-ancestor-settled-k0wmfk9w/amd64-internal-cli-app.exe",
+        "./internal/cli/app"
+      ],
+      "exit_code": 0,
+      "counts": {}
+    },
+    {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.25.12",
+        "GOOS=windows",
+        "GOARCH=arm64",
+        "CGO_ENABLED=0",
+        "go",
+        "test",
+        "-c",
+        "-o",
+        "/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/csp2-ancestor-settled-k0wmfk9w/arm64-internal-privatefiles.exe",
+        "./internal/privatefiles"
+      ],
+      "exit_code": 0,
+      "counts": {}
+    },
+    {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.25.12",
+        "GOOS=windows",
+        "GOARCH=arm64",
+        "CGO_ENABLED=0",
+        "go",
+        "test",
+        "-c",
+        "-o",
+        "/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/csp2-ancestor-settled-k0wmfk9w/arm64-internal-runtimeacl-windows.exe",
+        "./internal/runtimeacl/windows"
+      ],
+      "exit_code": 0,
+      "counts": {}
+    },
+    {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.25.12",
+        "GOOS=windows",
+        "GOARCH=arm64",
+        "CGO_ENABLED=0",
+        "go",
+        "test",
+        "-c",
+        "-o",
+        "/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/csp2-ancestor-settled-k0wmfk9w/arm64-runtime.exe",
+        "./runtime"
+      ],
+      "exit_code": 0,
+      "counts": {}
+    },
+    {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.25.12",
+        "GOOS=windows",
+        "GOARCH=arm64",
+        "CGO_ENABLED=0",
+        "go",
+        "test",
+        "-c",
+        "-o",
+        "/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/csp2-ancestor-settled-k0wmfk9w/arm64-internal-cli-app.exe",
+        "./internal/cli/app"
+      ],
+      "exit_code": 0,
+      "counts": {}
+    }
+  ],
+  "store_policy_checks": [
+    {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.25.12",
+        "go",
+        "test",
+        "-race",
+        "-count=1",
+        "-timeout",
+        "5m",
+        "-json",
+        "-run",
+        "Test(FileInspectionReportsCatalogStorePrivateConflicts|FileManifestReportsAccessAndRetentionPolicies|ConfigPathsReportsPoliciesAcrossFormats|FilePoliciesCoverExternalInputsAndRejectUnknownRoles|MigrationFilePolicyNamesExistingFlags|ConfigPathsInspectionReportsFilesWithoutInitialization)$",
+        "./internal/cli/app"
+      ],
+      "exit_code": 0,
+      "counts": {
+        "pass": 12
+      }
+    },
+    {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.25.12",
+        "go",
+        "tool",
+        "ago",
+        "-stale-ignores",
+        "-format",
+        "json",
+        "./..."
+      ],
+      "exit_code": 0,
+      "counts": {}
+    },
+    {
+      "command": [
+        "golangci-lint",
+        "run",
+        "./internal/cli/app/...",
+        "./pkg/productpaths/..."
+      ],
+      "exit_code": 0,
+      "counts": {}
+    }
+  ],
+  "store_policy_windows_builds": [
+    {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.25.12",
+        "GOOS=windows",
+        "GOARCH=amd64",
+        "CGO_ENABLED=0",
+        "go",
+        "test",
+        "-c",
+        "-o",
+        "/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/csp2-store-policy-xipp0qt0/amd64.exe",
+        "./internal/cli/app"
+      ],
+      "exit_code": 0,
+      "counts": {}
+    },
+    {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.25.12",
+        "GOOS=windows",
+        "GOARCH=arm64",
+        "CGO_ENABLED=0",
+        "go",
+        "test",
+        "-c",
+        "-o",
+        "/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/csp2-store-policy-xipp0qt0/arm64.exe",
+        "./internal/cli/app"
+      ],
+      "exit_code": 0,
+      "counts": {}
+    }
+  ],
+  "native_linux": {
+    "windows-ancestor-native-linux-arm64": {
+      "packages": 2,
+      "passed_packages": 2,
+      "test_counts": {
+        "pass": 70,
+        "fail": 0,
+        "skip": 0
+      },
+      "scope": "Native Linux ARM64 containers, CGO disabled, no race instrumentation, no external network. Named volumes hold temporary test files. No power-loss or released-pair qualification."
+    },
+    "store-policy-native-linux-arm64": {
+      "packages": 1,
+      "passed_packages": 1,
+      "test_counts": {
+        "pass": 185,
+        "fail": 0,
+        "skip": 0
+      },
+      "scope": "Native Linux ARM64 containers, CGO disabled, no race instrumentation, no external network. Named volumes hold temporary test files. No power-loss or released-pair qualification."
+    }
+  },
+  "manual_review": [
+    "Windows ancestor validation checks raw path components and selected symlink routes before private entry access.",
+    "Native descriptor decoding preserves ACE flags. The shared ancestor policy permits shared reads and subdirectory creation but rejects foreign mutation grants.",
+    "Private leaf rules remain stricter than ancestor rules. Production code uses SID comparisons without account-name lookup.",
+    "TrustedInstaller lookup and Windows rights comparisons exist as native tests. Cross-compilation does not prove their runtime result.",
+    "Filesystem namespace parsing is not native filesystem qualification. Unknown reparse points remain refused.",
+    "Catalog-store reporting previously used deployment-controlled access despite private enforcement. The descriptor now declares owner-only.",
+    "Application inspection uses the existing bounded metadata reader and does not initialize the catalog, runtime, or credential resolver.",
+    "The new real-file regression checks the store root, current pointer, and generation payload. It preserves bytes and permissions.",
+    "POSIX diagnostic success remains unverified for effective access. Windows metadata observations still explicitly state native-permissions-unverified.",
+    "No tests, policy suppressions, historical evidence, or acceptance requirements were weakened."
+  ],
+  "remaining": [
+    "Constructor remote-storage and worker policy owner decision.",
+    "Service-owned configuration policy owner decision.",
+    "Native Windows owner and DACL observations, native execution, and service procedures.",
+    "Other file roles and complete filesystem durability qualification.",
+    "CSP5 abandoned-stage collection and post-publication flush error classification.",
+    "All 50 primary acceptance cases against the declared released pair."
+  ],
+  "authorization": {
+    "commits": 0,
+    "pushes": 0,
+    "pull_requests": 0,
+    "ci_dispatches": 0,
+    "releases": 0
+  },
+  "input_manifest": "windows-ancestor-and-store-policy-input-manifest.json",
+  "document_checks": {
+    "record": "store-policy-final-documents.json",
+    "targeted_writing_exit": 0,
+    "targeted_writing": "PASS: 11 file(s), 0 diagnostic(s)",
+    "document_verifier_exit": 0,
+    "plan_lines": 500,
+    "historical_files_preserved": 57,
+    "whole_repository_writing_exit": 2,
+    "whole_repository_writing_scope": "969 files, three retained historical diagnostics only. No historical rewrite or policy suppression.",
+    "diff_check_exit": 0
+  },
+  "progress_classification": "This goal turn changed the catalog-store policy report, added and verified its regression, corrected documentation, and settled prior Windows evidence."
+}

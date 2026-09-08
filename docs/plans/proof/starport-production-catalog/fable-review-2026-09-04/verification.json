@@ -1,0 +1,210 @@
+{
+  "input_hashes_unchanged": 9,
+  "review_hash_matches": true,
+  "local_links_valid": true,
+  "read_files": 26,
+  "screenshot_reads": 5,
+  "read_manifest": [
+    {
+      "path": "/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/docs/design/catalog-lifecycle/PRD.md",
+      "sha256_after_review": "25af5b3b974af82d9881bf056e5a5ef510ef73fd0764415bc3e22be0e4733b98",
+      "requested_offset": 1,
+      "requested_limit": null,
+      "line_count": 239
+    },
+    {
+      "path": "/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/docs/design/catalog-lifecycle/ENGINEERING_SPEC.md",
+      "sha256_after_review": "c2f048616b29e7cafd31c70c112917f46228b321b02d9beba02c2d353e7185a7",
+      "requested_offset": 1,
+      "requested_limit": null,
+      "line_count": 1153
+    },
+    {
+      "path": "/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/docs/design/catalog-lifecycle/REPOSITORY_FINDINGS.md",
+      "sha256_after_review": "41c2c94688b2986ef359ea01fc239f3d6c873438cf4e3dfb3dfe04e741af7d55",
+      "requested_offset": 1,
+      "requested_limit": null,
+      "line_count": 333
+    },
+    {
+      "path": "/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/docs/plans/starport-production-catalog-plan.html",
+      "sha256_after_review": "5ba85d3164967a23748ff0d63e8490879a422d8ce995fddd0ffcfbe6512c2652",
+      "requested_offset": 1,
+      "requested_limit": null,
+      "line_count": 472
+    },
+    {
+      "path": "/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/docs/plans/proof/starport-production-catalog/readme-demo-brief.md",
+      "sha256_after_review": "745edcddf15a2029ca96753b133bcfff28d2057e56063895dad8eafba5ec893b",
+      "requested_offset": 1,
+      "requested_limit": null,
+      "line_count": 104
+    },
+    {
+      "path": "/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/docs/plans/proof/starport-production-catalog/audit-2026-09-04/AUDIT.md",
+      "sha256_after_review": "a4cabec7f6eeed73ed5050a32fcf5d88ce2cf1315693842a2020e5c817b754dc",
+      "requested_offset": 1,
+      "requested_limit": null,
+      "line_count": 332
+    },
+    {
+      "path": "/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/docs/plans/proof/starport-production-catalog/acceptance-map.json",
+      "sha256_after_review": "a9e807685347bc50335d8a9628f1c06812af7383e0e49b323dc5a7d7693e25ce",
+      "requested_offset": 1,
+      "requested_limit": null,
+      "line_count": 46
+    },
+    {
+      "path": "/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/docs/plans/proof/starport-production-catalog/readme-baseline.json",
+      "sha256_after_review": "89374bcd173ab100d42425d892721feae997746d5f4f18eb369f82985223b017",
+      "requested_offset": 1,
+      "requested_limit": null,
+      "line_count": 19
+    },
+    {
+      "path": "/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/docs/design/catalog-lifecycle/evidence/measurements.json",
+      "sha256_after_review": "db48cffac8f83ead0cb974ae0ae0eaaa3ca95d0db56531d0011637b8bb21dec8",
+      "requested_offset": 1,
+      "requested_limit": null,
+      "line_count": 1086
+    },
+    {
+      "path": "/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/docs/plans/proof/starport-production-catalog/audit-2026-09-04/test-summary.json",
+      "sha256_after_review": "83ea20ff434046d397191fc349c0466deab1e578bd276d3fe8deeac57b473fbc",
+      "requested_offset": 1,
+      "requested_limit": null,
+      "line_count": 35
+    },
+    {
+      "path": "/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/docs/design/catalog-lifecycle/evidence/starport-docs-desktop-dark.png",
+      "sha256_after_review": "52110a5a428f2fad1d085531ddbe88ebf3947a5bdcc544a8927e71411f923c4c",
+      "requested_offset": 1,
+      "requested_limit": null,
+      "line_count": null
+    },
+    {
+      "path": "/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/docs/design/catalog-lifecycle/evidence/starport-docs-desktop-light.png",
+      "sha256_after_review": "84d14d8ade126fccdede02e641eb2288562c7fd99b75b0fe928f0a678d09df3b",
+      "requested_offset": 1,
+      "requested_limit": null,
+      "line_count": null
+    },
+    {
+      "path": "/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/docs/design/catalog-lifecycle/evidence/starport-docs-mobile-dark.png",
+      "sha256_after_review": "04c70c5377e4a5a04703fdb021562f88bfa80a151653d6de726d4bc9a2d8221d",
+      "requested_offset": 1,
+      "requested_limit": null,
+      "line_count": null
+    },
+    {
+      "path": "/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/docs/design/catalog-lifecycle/evidence/starport-docs-build-320.png",
+      "sha256_after_review": "e21c245edc332aae41d33396581f097b5786345df694c1e664349f944db99e93",
+      "requested_offset": 1,
+      "requested_limit": null,
+      "line_count": null
+    },
+    {
+      "path": "/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/docs/design/catalog-lifecycle/evidence/starport-settings-light.png",
+      "sha256_after_review": "82a006ab48bde364914f2b435d36cd44c0f9f02b65908e26b4fba64ca0cc9eb8",
+      "requested_offset": 1,
+      "requested_limit": null,
+      "line_count": null
+    },
+    {
+      "path": "/Users/jack/src/github.com/agentstation/starport-catalog-lifecycle/README.md",
+      "sha256_after_review": "be20b3906562f779f12f0413a6a7ce9543ae44e98940436b1e331eccc2d3d2b8",
+      "requested_offset": 1,
+      "requested_limit": null,
+      "line_count": 406
+    },
+    {
+      "path": "/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/README.md",
+      "sha256_after_review": "c912a1a858501d027ad936f6ce998588d892521deafa0e55f3b572636f55332e",
+      "requested_offset": 1,
+      "requested_limit": 150,
+      "line_count": 1415
+    },
+    {
+      "path": "/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/AGENTS.md",
+      "sha256_after_review": "f9425066276ee6df62bc3a43305ee032b77827e78367182184293dfc80f88026",
+      "requested_offset": 1,
+      "requested_limit": null,
+      "line_count": 484
+    },
+    {
+      "path": "/Users/jack/src/github.com/agentstation/starport-catalog-lifecycle/AGENTS.md",
+      "sha256_after_review": "bbf4f0089bc7b521bb4a8c678a979f19e05e52906d05e403e990343db68c3b30",
+      "requested_offset": 1,
+      "requested_limit": 200,
+      "line_count": 209
+    },
+    {
+      "path": "/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/GLOSSARY.md",
+      "sha256_after_review": "9210d8225cb1db3f88dba9631c1734fd94a10d81c021155728e2c9a72f47907d",
+      "requested_offset": 1,
+      "requested_limit": 120,
+      "line_count": 84
+    },
+    {
+      "path": "/Users/jack/src/github.com/agentstation/starport-catalog-lifecycle/GLOSSARY.md",
+      "sha256_after_review": "77eb09e4a9bf607b27738f783c1cda06dc209efb760d9704ad8bf2f2d3c7ac8e",
+      "requested_offset": 1,
+      "requested_limit": 120,
+      "line_count": 26
+    },
+    {
+      "path": "/Users/jack/src/github.com/agentstation/starport-catalog-lifecycle/docs/DEPLOYMENT-TOPOLOGIES.md",
+      "sha256_after_review": "b89615d79c1601c141bb7effe276f70940fee5c60ec4f494143c978da6105029",
+      "requested_offset": 1,
+      "requested_limit": 120,
+      "line_count": 325
+    },
+    {
+      "path": "/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/docs/plans/proof/starport-production-catalog/planning.md",
+      "sha256_after_review": "3b6965f9241be25157d4f87dd0d1b4ab044c9d8cc236731762263937f420d86f",
+      "requested_offset": 1,
+      "requested_limit": null,
+      "line_count": 101
+    },
+    {
+      "path": "/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/docs/plans/README.md",
+      "sha256_after_review": "1ba8c857d01d5748d651524b99704cc996db2e93e0c417a8c427b3cc385efec4",
+      "requested_offset": 1,
+      "requested_limit": 60,
+      "line_count": 10
+    },
+    {
+      "path": "/Users/jack/src/github.com/agentstation/starport-catalog-lifecycle/internal/server/budget.go",
+      "sha256_after_review": "b86f4b87b98b2908492406ce14ca37ea53b3b4c1eeb6af465af0118993ea3038",
+      "requested_offset": 130,
+      "requested_limit": 50,
+      "line_count": 249
+    },
+    {
+      "path": "/Users/jack/src/github.com/agentstation/starport-catalog-lifecycle/internal/config/README.md",
+      "sha256_after_review": "f66f20797a782ab383d2273a226863604bbff9fa6bd4bafeff5c0c335f66c32f",
+      "requested_offset": 1,
+      "requested_limit": 80,
+      "line_count": 127
+    }
+  ],
+  "assessment_sha256": "acb93169dd463c4162bedbf66af21f13dc9012560a57b92506c4ab3a815244a6",
+  "verified_local_links": 7,
+  "pinned_source_links": 5,
+  "product_tests": "Not rerun. This request adds review artifacts only.",
+  "writing_check": {
+    "command": "make technical-writing-check",
+    "exit_code": 0,
+    "maintained_files_checked": 748,
+    "diagnostics": 0,
+    "verbatim_artifacts": "Original request and final reviewer response use the existing docs/reviews exclusion."
+  },
+  "diff_check": {
+    "command": "git diff --check",
+    "exit_code": 0,
+    "worktrees": [
+      "starmap-catalog-requirements",
+      "starport-catalog-lifecycle"
+    ]
+  }
+}

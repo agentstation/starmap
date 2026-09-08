@@ -1,0 +1,43 @@
+{
+  "starmap_root": "/Users/jack/src/github.com/agentstation/starmap-catalog-requirements",
+  "starport_root": "/Users/jack/src/github.com/agentstation/starport-catalog-lifecycle",
+  "toolchain": "go1.26.5",
+  "checks": [
+    {
+      "command": [
+        "go",
+        "mod",
+        "edit",
+        "-modfile=/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/csp3-starport-pair-048al2m_/pair.mod",
+        "-replace=github.com/agentstation/starmap=/Users/jack/src/github.com/agentstation/starmap-catalog-requirements"
+      ],
+      "exit_code": 0,
+      "seconds": 6.4698953330516815,
+      "output": "go: downloading go1.26.5 (darwin/arm64)\n"
+    },
+    {
+      "command": [
+        "go",
+        "test",
+        "-mod=mod",
+        "-modfile=/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/csp3-starport-pair-048al2m_/pair.mod",
+        "-json",
+        "-race",
+        "-count=1",
+        "-timeout=5m",
+        "./internal/catalog",
+        "-run",
+        "^TestStarmapAcquisitionPublishesRefresh$"
+      ],
+      "exit_code": 1,
+      "seconds": 37.039699625223875,
+      "output": "{\"Time\":\"2026-09-06T21:24:46.780898-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starport/internal/catalog\"}\n{\"Time\":\"2026-09-06T21:24:47.332322-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestStarmapAcquisitionPublishesRefresh\"}\n{\"Time\":\"2026-09-06T21:24:47.332381-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestStarmapAcquisitionPublishesRefresh\",\"Output\":\"=== RUN   TestStarmapAcquisitionPublishesRefresh\\n\"}\n{\"Time\":\"2026-09-06T21:24:57.023264-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestStarmapAcquisitionPublishesRefresh\",\"Output\":\"    runtime_acquisition_test.go:68: \\n\"}\n{\"Time\":\"2026-09-06T21:24:57.023328-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestStarmapAcquisitionPublishesRefresh\",\"Output\":\"        \\tError Trace:\\t/Users/jack/src/github.com/agentstation/starport-catalog-lifecycle/internal/catalog/runtime_acquisition_test.go:68\\n\"}\n{\"Time\":\"2026-09-06T21:24:57.023388-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestStarmapAcquisitionPublishesRefresh\",\"Output\":\"        \\tError:      \\tReceived unexpected error:\\n\"}\n{\"Time\":\"2026-09-06T21:24:57.02339-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestStarmapAcquisitionPublishesRefresh\",\"Output\":\"        \\t            \\tvalidation failed for field provider_layer.receipt: must describe the payload digest and observation time\\n\"}\n{\"Time\":\"2026-09-06T21:24:57.023394-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestStarmapAcquisitionPublishesRefresh\",\"Output\":\"        \\tTest:       \\tTestStarmapAcquisitionPublishesRefresh\\n\"}\n{\"Time\":\"2026-09-06T21:24:57.023408-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestStarmapAcquisitionPublishesRefresh\",\"Output\":\"{\\\"level\\\":\\\"warn\\\",\\\"error\\\":\\\"failed to await refresh run 7b1ffefa-be12-4855-860a-cd489dd975ed: context canceled\\\",\\\"controller\\\":\\\"source\\\",\\\"time\\\":\\\"2026-09-06T21:24:57-05:00\\\",\\\"message\\\":\\\"Scheduled runtime work failed\\\"}\\n\"}\n{\"Time\":\"2026-09-06T21:24:57.027503-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestStarmapAcquisitionPublishesRefresh\",\"Output\":\"{\\\"level\\\":\\\"warn\\\",\\\"error\\\":\\\"context canceled\\\",\\\"controller\\\":\\\"acquisition\\\",\\\"time\\\":\\\"2026-09-06T21:24:57-05:00\\\",\\\"message\\\":\\\"Scheduled runtime work failed\\\"}\\n\"}\n{\"Time\":\"2026-09-06T21:24:57.027667-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestStarmapAcquisitionPublishesRefresh\",\"Output\":\"--- FAIL: TestStarmapAcquisitionPublishesRefresh (9.70s)\\n\"}\n{\"Time\":\"2026-09-06T21:24:57.027673-05:00\",\"Action\":\"fail\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestStarmapAcquisitionPublishesRefresh\",\"Elapsed\":9.7}\n{\"Time\":\"2026-09-06T21:24:57.027709-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Output\":\"FAIL\\n\"}\n{\"Time\":\"2026-09-06T21:24:57.055116-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Output\":\"FAIL\\tgithub.com/agentstation/starport/internal/catalog\\t10.274s\\n\"}\n{\"Time\":\"2026-09-06T21:24:57.055227-05:00\",\"Action\":\"fail\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Elapsed\":10.274000000000001}\n"
+    }
+  ],
+  "input_hashes": {
+    "/Users/jack/src/github.com/agentstation/starport-catalog-lifecycle/go.mod": "0bb403f18cf17ec607deeb9c473a0e51190a0db069b75dd569fb1b09c541545e",
+    "/Users/jack/src/github.com/agentstation/starport-catalog-lifecycle/go.sum": "1e65bbda6ea74a4269dfd60b3cc7563532b41878e4e288e731cb9e0b2ed65bb2",
+    "/Users/jack/src/github.com/agentstation/starport-catalog-lifecycle/internal/catalog/runtime_acquisition_test.go": "2ae658ef8d8953c71624e832e8b6eb08cb55e1b05150d90b8ce0a903d50b5e09"
+  },
+  "changed_inputs": []
+}

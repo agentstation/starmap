@@ -1,0 +1,18 @@
+{
+  "command": [
+    "/Users/jack/.agents/skills/technical-writing/scripts/technical-writing",
+    "lint",
+    "docs/CLI.md",
+    "docs/design/catalog-lifecycle/ENGINEERING_SPEC.md",
+    "docs/design/catalog-lifecycle/REPOSITORY_FINDINGS.md",
+    "docs/plans/proof/starport-production-catalog/csp2.md",
+    "docs/plans/starport-production-catalog-plan.html",
+    "runtime/directory_permissions.go",
+    "runtime/directory_fixture_test.go",
+    "--format",
+    "json"
+  ],
+  "exit_code": 0,
+  "stdout": "{\n  \"config_sources\": [\n    \"/Users/jack/.config/agentstation/technical-writing.toml\",\n    \"/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/.agents/technical-writing.toml\"\n  ],\n  \"documents\": [\n    {\n      \"diagnostics\": [],\n      \"passed\": true,\n      \"path\": \"/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/docs/CLI.md\",\n      \"words\": 2627\n    },\n    {\n      \"diagnostics\": [],\n      \"passed\": true,\n      \"path\": \"/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/docs/design/catalog-lifecycle/ENGINEERING_SPEC.md\",\n      \"words\": 19261\n    },\n    {\n      \"diagnostics\": [],\n      \"passed\": true,\n      \"path\": \"/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/docs/design/catalog-lifecycle/REPOSITORY_FINDINGS.md\",\n      \"words\": 5618\n    },\n    {\n      \"diagnostics\": [],\n      \"passed\": true,\n      \"path\": \"/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/docs/plans/proof/starport-production-catalog/csp2.md\",\n      \"words\": 4944\n    },\n    {\n      \"diagnostics\": [],\n      \"passed\": true,\n      \"path\": \"/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/docs/plans/starport-production-catalog-plan.html\",\n      \"words\": 5047\n    },\n    {\n      \"diagnostics\": [],\n      \"passed\": true,\n      \"path\": \"/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/runtime/directory_permissions.go\",\n      \"words\": 58\n    },\n    {\n      \"diagnostics\": [],\n      \"passed\": true,\n      \"path\": \"/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/runtime/directory_fixture_test.go\",\n      \"words\": 21\n    }\n  ],\n  \"mode\": \"strict\",\n  \"passed\": true,\n  \"summary\": {\n    \"diagnostics\": 0,\n    \"errors\": 0,\n    \"files\": 7,\n    \"max_warnings_per_100_words\": 0.0,\n    \"warning_rate_per_100_words\": 0.0,\n    \"warnings\": 0\n  }\n}\n",
+  "stderr": ""
+}

@@ -1,0 +1,85 @@
+{
+  "commit": "5820a370ff9255a8148799f5b45fcaf927c2e1dc",
+  "checks": [
+    {
+      "link": "https://github.com/agentstation/starport/actions/runs/34085971745/job/101631502724",
+      "name": "Build",
+      "state": "IN_PROGRESS"
+    },
+    {
+      "link": "https://github.com/agentstation/starport/actions/runs/34085971741/job/101629963243",
+      "name": "Native darwin arm64",
+      "state": "SUCCESS"
+    },
+    {
+      "link": "https://github.com/agentstation/starport/actions/runs/34085971745/job/101629963140",
+      "name": "Test (macos-latest)",
+      "state": "SUCCESS"
+    },
+    {
+      "link": "https://github.com/agentstation/starport/actions/runs/34085971745/job/101629963301",
+      "name": "Release Contract",
+      "state": "SUCCESS"
+    },
+    {
+      "link": "https://github.com/agentstation/starport/actions/runs/34085971741/job/101629963130",
+      "name": "Native linux arm64",
+      "state": "SUCCESS"
+    },
+    {
+      "link": "https://github.com/agentstation/starport/actions/runs/34085971741/job/101629963271",
+      "name": "Native linux x86_64",
+      "state": "SUCCESS"
+    },
+    {
+      "link": "https://github.com/agentstation/starport/actions/runs/34085971741/job/101629963278",
+      "name": "Native darwin x86_64",
+      "state": "SUCCESS"
+    },
+    {
+      "link": "https://github.com/agentstation/starport/actions/runs/34085971745/job/101629963238",
+      "name": "Security Scan",
+      "state": "SUCCESS"
+    },
+    {
+      "link": "https://github.com/agentstation/starport/actions/runs/34085971741/job/101629963339",
+      "name": "Native windows arm64",
+      "state": "SUCCESS"
+    },
+    {
+      "link": "https://github.com/agentstation/starport/actions/runs/34085971741/job/101629963315",
+      "name": "Native windows x86_64",
+      "state": "SUCCESS"
+    },
+    {
+      "link": "https://github.com/agentstation/starport/actions/runs/34085971745/job/101629963091",
+      "name": "Lint",
+      "state": "SUCCESS"
+    },
+    {
+      "link": "https://github.com/agentstation/starport/actions/runs/34085971745/job/101629963070",
+      "name": "Test (ubuntu-latest)",
+      "state": "SUCCESS"
+    },
+    {
+      "link": "https://github.com/agentstation/starport/actions/runs/34085971745/job/101629963093",
+      "name": "Test (windows-latest)",
+      "state": "SUCCESS"
+    },
+    {
+      "link": "https://github.com/agentstation/starport/actions/runs/34085971745/job/101629962996",
+      "name": "OpenRouter SDK Compatibility",
+      "state": "SUCCESS"
+    },
+    {
+      "link": "https://github.com/agentstation/starport/actions/runs/34085971745/job/101629963133",
+      "name": "Release Snapshot",
+      "state": "IN_PROGRESS"
+    },
+    {
+      "link": "https://github.com/agentstation/starport/actions/runs/34085971745/job/101629963153",
+      "name": "Action Pin Provenance",
+      "state": "SUCCESS"
+    }
+  ]
+}

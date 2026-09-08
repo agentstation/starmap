@@ -1,0 +1,836 @@
+{
+  "package": "pkg/catalogs/storage",
+  "race": false,
+  "toolchain": "go1.25.12",
+  "commands": [
+    {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.25.12",
+        "GOOS=linux",
+        "GOARCH=arm64",
+        "CGO_ENABLED=0",
+        "go",
+        "test",
+        "-c",
+        "-o",
+        "/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/csp2-native-build-_3cqxywh/test",
+        "./pkg/catalogs/storage"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "docker",
+        "volume",
+        "create",
+        "--label",
+        "purpose=csp2-native-package-verification",
+        "csp2-native-0c2ea4327a894b80ab6433183ab7c268"
+      ],
+      "exit_code": 0,
+      "stdout": "csp2-native-0c2ea4327a894b80ab6433183ab7c268\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "docker",
+        "create",
+        "--pull=never",
+        "--network",
+        "none",
+        "--read-only",
+        "--user",
+        "65532:65532",
+        "--cap-drop=ALL",
+        "--security-opt=no-new-privileges",
+        "--mount",
+        "type=bind,src=/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/csp2-native-build-_3cqxywh/test,dst=/native-test,readonly",
+        "--mount",
+        "type=bind,src=/Users/jack/src/github.com/agentstation/starmap-catalog-requirements,dst=/Users/jack/src/github.com/agentstation/starmap-catalog-requirements,readonly",
+        "--mount",
+        "type=volume,src=csp2-native-0c2ea4327a894b80ab6433183ab7c268,dst=/home/nonroot",
+        "--env",
+        "TMPDIR=/home/nonroot",
+        "--env",
+        "GOMAXPROCS=4",
+        "--workdir",
+        "/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/pkg/catalogs/storage",
+        "--entrypoint",
+        "/native-test",
+        "cgr.dev/chainguard/static@sha256:60582b2ae6074f641094af0f370d4ab241aab271858a66223dcde7eee9f51638",
+        "-test.v=test2json",
+        "-test.count=1",
+        "-test.parallel=4",
+        "-test.timeout=10m"
+      ],
+      "exit_code": 0,
+      "stdout": "2686d3b16d74ebf92ee2131b48bc33514336f964adcf9d65806eb313eed12797\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "docker",
+        "start",
+        "--attach",
+        "2686d3b16d74ebf92ee2131b48bc33514336f964adcf9d65806eb313eed12797"
+      ],
+      "exit_code": 0,
+      "stdout": "\u0016=== RUN   TestCatalogStoreConcurrentSameBaseCAS\n\u0016=== RUN   TestCatalogStoreConcurrentSameBaseCAS/memory\n\u0016--- PASS: TestCatalogStoreConcurrentSameBaseCAS/memory (0.00s)\n\u0016=== NAME  TestCatalogStoreConcurrentSameBaseCAS\n\u0016=== RUN   TestCatalogStoreConcurrentSameBaseCAS/filesystem\n\u0016--- PASS: TestCatalogStoreConcurrentSameBaseCAS/filesystem (0.02s)\n\u0016=== NAME  TestCatalogStoreConcurrentSameBaseCAS\n\u0016=== RUN   TestCatalogStoreConcurrentSameBaseCAS/object\n\u0016--- PASS: TestCatalogStoreConcurrentSameBaseCAS/object (0.00s)\n\u0016=== NAME  TestCatalogStoreConcurrentSameBaseCAS\n\u0016--- PASS: TestCatalogStoreConcurrentSameBaseCAS (0.02s)\n\u0016=== NAME  \n\u0016=== RUN   TestCatalogStoreConformance\n\u0016=== RUN   TestCatalogStoreConformance/memory\n\u0016--- PASS: TestCatalogStoreConformance/memory (0.00s)\n\u0016=== NAME  TestCatalogStoreConformance\n\u0016=== RUN   TestCatalogStoreConformance/filesystem\n\u0016--- PASS: TestCatalogStoreConformance/filesystem (0.01s)\n\u0016=== NAME  TestCatalogStoreConformance\n\u0016=== RUN   TestCatalogStoreConformance/object\n\u0016--- PASS: TestCatalogStoreConformance/object (0.00s)\n\u0016=== NAME  TestCatalogStoreConformance\n\u0016--- PASS: TestCatalogStoreConformance (0.01s)\n\u0016=== NAME  \n\u0016=== RUN   TestCatalogStoreConformanceStaleRecordsDoNotReappear\n\u0016=== RUN   TestCatalogStoreConformanceStaleRecordsDoNotReappear/memory\n\u0016--- PASS: TestCatalogStoreConformanceStaleRecordsDoNotReappear/memory (0.00s)\n\u0016=== NAME  TestCatalogStoreConformanceStaleRecordsDoNotReappear\n\u0016=== RUN   TestCatalogStoreConformanceStaleRecordsDoNotReappear/filesystem\n\u0016--- PASS: TestCatalogStoreConformanceStaleRecordsDoNotReappear/filesystem (0.01s)\n\u0016=== NAME  TestCatalogStoreConformanceStaleRecordsDoNotReappear\n\u0016=== RUN   TestCatalogStoreConformanceStaleRecordsDoNotReappear/object\n\u0016--- PASS: TestCatalogStoreConformanceStaleRecordsDoNotReappear/object (0.00s)\n\u0016=== NAME  TestCatalogStoreConformanceStaleRecordsDoNotReappear\n\u0016--- PASS: TestCatalogStoreConformanceStaleRecordsDoNotReappear (0.01s)\n\u0016=== NAME  \n\u0016=== RUN   TestAtomicFilesystemCommitFailurePreservesCurrent\n\u0016--- PASS: TestAtomicFilesystemCommitFailurePreservesCurrent (0.01s)\n\u0016=== NAME  \n\u0016=== RUN   TestFilesystemCatalogStoreReopensCurrentGeneration\n\u0016--- PASS: TestFilesystemCatalogStoreReopensCurrentGeneration (0.01s)\n\u0016=== NAME  \n\u0016=== RUN   TestFilesystemCatalogStoreKeepsAndCleansMachineStagingUnderRoot\n\u0016--- PASS: TestFilesystemCatalogStoreKeepsAndCleansMachineStagingUnderRoot (0.01s)\n\u0016=== NAME  \n\u0016=== RUN   TestFilesystemCatalogStoreRejectsSymlinkedMachineEntries\n\u0016=== RUN   TestFilesystemCatalogStoreRejectsSymlinkedMachineEntries/root\n\u0016--- PASS: TestFilesystemCatalogStoreRejectsSymlinkedMachineEntries/root (0.00s)\n\u0016=== NAME  TestFilesystemCatalogStoreRejectsSymlinkedMachineEntries\n\u0016=== RUN   TestFilesystemCatalogStoreRejectsSymlinkedMachineEntries/generations\n\u0016--- PASS: TestFilesystemCatalogStoreRejectsSymlinkedMachineEntries/generations (0.00s)\n\u0016=== NAME  TestFilesystemCatalogStoreRejectsSymlinkedMachineEntries\n\u0016=== RUN   TestFilesystemCatalogStoreRejectsSymlinkedMachineEntries/.commit.lock\n\u0016--- PASS: TestFilesystemCatalogStoreRejectsSymlinkedMachineEntries/.commit.lock (0.00s)\n\u0016=== NAME  TestFilesystemCatalogStoreRejectsSymlinkedMachineEntries\n\u0016=== RUN   TestFilesystemCatalogStoreRejectsSymlinkedMachineEntries/current\n\u0016--- PASS: TestFilesystemCatalogStoreRejectsSymlinkedMachineEntries/current (0.00s)\n\u0016=== NAME  TestFilesystemCatalogStoreRejectsSymlinkedMachineEntries\n\u0016--- PASS: TestFilesystemCatalogStoreRejectsSymlinkedMachineEntries (0.00s)\n\u0016=== NAME  \n\u0016=== RUN   TestFilesystemCatalogStoreRejectsSymlinkedGeneration\n\u0016--- PASS: TestFilesystemCatalogStoreRejectsSymlinkedGeneration (0.00s)\n\u0016=== NAME  \n\u0016=== RUN   TestObjectCatalogStoreUploadPromotionRollbackFaults\n\u0016--- PASS: TestObjectCatalogStoreUploadPromotionRollbackFaults (0.00s)\n\u0016=== NAME  \n\u0016=== RUN   TestObjectCatalogStoreRejectsCorruptStoredPayload\n\u0016--- PASS: TestObjectCatalogStoreRejectsCorruptStoredPayload (0.00s)\n\u0016=== NAME  \n\u0016=== RUN   TestSeamConformanceObjectStoreAcceptsAlternateBackend\n\u0016--- PASS: TestSeamConformanceObjectStoreAcceptsAlternateBackend (0.00s)\n\u0016=== NAME  \n\u0016=== RUN   TestObjectCatalogStoreReopensCurrentGeneration\n\u0016--- PASS: TestObjectCatalogStoreReopensCurrentGeneration (0.00s)\n\u0016=== NAME  \n\u0016PASS\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "docker",
+        "inspect",
+        "--format",
+        "{{json .State}}",
+        "2686d3b16d74ebf92ee2131b48bc33514336f964adcf9d65806eb313eed12797"
+      ],
+      "exit_code": 0,
+      "stdout": "{\"Status\":\"exited\",\"Running\":false,\"Paused\":false,\"Restarting\":false,\"OOMKilled\":false,\"Dead\":false,\"Pid\":0,\"ExitCode\":0,\"Error\":\"\",\"StartedAt\":\"2026-09-06T17:51:58.138081875Z\",\"FinishedAt\":\"2026-09-06T17:51:58.25788425Z\"}\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "docker",
+        "rm",
+        "-f",
+        "2686d3b16d74ebf92ee2131b48bc33514336f964adcf9d65806eb313eed12797"
+      ],
+      "exit_code": 0,
+      "stdout": "2686d3b16d74ebf92ee2131b48bc33514336f964adcf9d65806eb313eed12797\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "docker",
+        "volume",
+        "rm",
+        "csp2-native-0c2ea4327a894b80ab6433183ab7c268"
+      ],
+      "exit_code": 0,
+      "stdout": "csp2-native-0c2ea4327a894b80ab6433183ab7c268\n",
+      "stderr": ""
+    }
+  ],
+  "test_events": [
+    {
+      "Time": "2026-09-06T12:51:58.348748-05:00",
+      "Action": "start",
+      "Package": "github.com/agentstation/starmap/pkg/catalogs/storage"
+    },
+    {
+      "Time": "2026-09-06T12:51:58.348845-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+      "Test": "TestCatalogStoreConcurrentSameBaseCAS"
+    },
+    {
+      "Time": "2026-09-06T12:51:58.348849-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+      "Test": "TestCatalogStoreConcurrentSameBaseCAS",
+      "Output": "=== RUN   TestCatalogStoreConcurrentSameBaseCAS\n"
+    },
+    {
+      "Time": "2026-09-06T12:51:58.348852-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+      "Test": "TestCatalogStoreConcurrentSameBaseCAS/memory"
+    },
+    {
+      "Time": "2026-09-06T12:51:58.348854-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+      "Test": "TestCatalogStoreConcurrentSameBaseCAS/memory",
+      "Output": "=== RUN   TestCatalogStoreConcurrentSameBaseCAS/memory\n"
+    },
+    {
+      "Time": "2026-09-06T12:51:58.348857-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+      "Test": "TestCatalogStoreConcurrentSameBaseCAS/memory",
+      "Output": "--- PASS: TestCatalogStoreConcurrentSameBaseCAS/memory (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T12:51:58.34886-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+      "Test": "TestCatalogStoreConcurrentSameBaseCAS/memory",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T12:51:58.348862-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+      "Test": "TestCatalogStoreConcurrentSameBaseCAS/filesystem"
+    },
+    {
+      "Time": "2026-09-06T12:51:58.348863-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+      "Test": "TestCatalogStoreConcurrentSameBaseCAS/filesystem",
+      "Output": "=== RUN   TestCatalogStoreConcurrentSameBaseCAS/filesystem\n"
+    },
+    {
+      "Time": "2026-09-06T12:51:58.348864-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+      "Test": "TestCatalogStoreConcurrentSameBaseCAS/filesystem",
+      "Output": "--- PASS: TestCatalogStoreConcurrentSameBaseCAS/filesystem (0.02s)\n"
+    },
+    {
+      "Time": "2026-09-06T12:51:58.348868-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+      "Test": "TestCatalogStoreConcurrentSameBaseCAS/filesystem",
+      "Elapsed": 0.02
+    },
+    {
+      "Time": "2026-09-06T12:51:58.34887-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+      "Test": "TestCatalogStoreConcurrentSameBaseCAS/object"
+    },
+    {
+      "Time": "2026-09-06T12:51:58.348872-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+      "Test": "TestCatalogStoreConcurrentSameBaseCAS/object",
+      "Output": "=== RUN   TestCatalogStoreConcurrentSameBaseCAS/object\n"
+    },
+    {
+      "Time": "2026-09-06T12:51:58.348874-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+      "Test": "TestCatalogStoreConcurrentSameBaseCAS/object",
+      "Output": "--- PASS: TestCatalogStoreConcurrentSameBaseCAS/object (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T12:51:58.348875-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+      "Test": "TestCatalogStoreConcurrentSameBaseCAS/object",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T12:51:58.348876-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+      "Test": "TestCatalogStoreConcurrentSameBaseCAS",
+      "Output": "--- PASS: TestCatalogStoreConcurrentSameBaseCAS (0.02s)\n"
+    },
+    {
+      "Time": "2026-09-06T12:51:58.348878-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+      "Test": "TestCatalogStoreConcurrentSameBaseCAS",
+      "Elapsed": 0.02
+    },
+    {
+      "Time": "2026-09-06T12:51:58.348879-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+      "Test": "TestCatalogStoreConformance"
+    },
+    {
+      "Time": "2026-09-06T12:51:58.348882-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+      "Test": "TestCatalogStoreConformance",
+      "Output": "=== RUN   TestCatalogStoreConformance\n"
+    },
+    {
+      "Time": "2026-09-06T12:51:58.348883-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+      "Test": "TestCatalogStoreConformance/memory"
+    },
+    {
+      "Time": "2026-09-06T12:51:58.348884-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+      "Test": "TestCatalogStoreConformance/memory",
+      "Output": "=== RUN   TestCatalogStoreConformance/memory\n"
+    },
+    {
+      "Time": "2026-09-06T12:51:58.348886-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+      "Test": "TestCatalogStoreConformance/memory",
+      "Output": "--- PASS: TestCatalogStoreConformance/memory (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T12:51:58.348887-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+      "Test": "TestCatalogStoreConformance/memory",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T12:51:58.34889-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+      "Test": "TestCatalogStoreConformance/filesystem"
+    },
+    {
+      "Time": "2026-09-06T12:51:58.348891-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+      "Test": "TestCatalogStoreConformance/filesystem",
+      "Output": "=== RUN   TestCatalogStoreConformance/filesystem\n"
+    },
+    {
+      "Time": "2026-09-06T12:51:58.348893-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+      "Test": "TestCatalogStoreConformance/filesystem",
+      "Output": "--- PASS: TestCatalogStoreConformance/filesystem (0.01s)\n"
+    },
+    {
+      "Time": "2026-09-06T12:51:58.348895-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+      "Test": "TestCatalogStoreConformance/filesystem",
+      "Elapsed": 0.01
+    },
+    {
+      "Time": "2026-09-06T12:51:58.348896-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+      "Test": "TestCatalogStoreConformance/object"
+    },
+    {
+      "Time": "2026-09-06T12:51:58.348898-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+      "Test": "TestCatalogStoreConformance/object",
+      "Output": "=== RUN   TestCatalogStoreConformance/object\n"
+    },
+    {
+      "Time": "2026-09-06T12:51:58.348899-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+      "Test": "TestCatalogStoreConformance/object",
+      "Output": "--- PASS: TestCatalogStoreConformance/object (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T12:51:58.348901-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+      "Test": "TestCatalogStoreConformance/object",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T12:51:58.348903-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+      "Test": "TestCatalogStoreConformance",
+      "Output": "--- PASS: TestCatalogStoreConformance (0.01s)\n"
+    },
+    {
+      "Time": "2026-09-06T12:51:58.348905-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+      "Test": "TestCatalogStoreConformance",
+      "Elapsed": 0.01
+    },
+    {
+      "Time": "2026-09-06T12:51:58.348906-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+      "Test": "TestCatalogStoreConformanceStaleRecordsDoNotReappear"
+    },
+    {
+      "Time": "2026-09-06T12:51:58.348908-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+      "Test": "TestCatalogStoreConformanceStaleRecordsDoNotReappear",
+      "Output": "=== RUN   TestCatalogStoreConformanceStaleRecordsDoNotReappear\n"
+    },
+    {
+      "Time": "2026-09-06T12:51:58.348909-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+      "Test": "TestCatalogStoreConformanceStaleRecordsDoNotReappear/memory"
+    },
+    {
+      "Time": "2026-09-06T12:51:58.348912-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+      "Test": "TestCatalogStoreConformanceStaleRecordsDoNotReappear/memory",
+      "Output": "=== RUN   TestCatalogStoreConformanceStaleRecordsDoNotReappear/memory\n"
+    },
+    {
+      "Time": "2026-09-06T12:51:58.348913-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+      "Test": "TestCatalogStoreConformanceStaleRecordsDoNotReappear/memory",
+      "Output": "--- PASS: TestCatalogStoreConformanceStaleRecordsDoNotReappear/memory (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T12:51:58.348916-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+      "Test": "TestCatalogStoreConformanceStaleRecordsDoNotReappear/memory",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T12:51:58.348918-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+      "Test": "TestCatalogStoreConformanceStaleRecordsDoNotReappear/filesystem"
+    },
+    {
+      "Time": "2026-09-06T12:51:58.348919-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+      "Test": "TestCatalogStoreConformanceStaleRecordsDoNotReappear/filesystem",
+      "Output": "=== RUN   TestCatalogStoreConformanceStaleRecordsDoNotReappear/filesystem\n"
+    },
+    {
+      "Time": "2026-09-06T12:51:58.348921-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+      "Test": "TestCatalogStoreConformanceStaleRecordsDoNotReappear/filesystem",
+      "Output": "--- PASS: TestCatalogStoreConformanceStaleRecordsDoNotReappear/filesystem (0.01s)\n"
+    },
+    {
+      "Time": "2026-09-06T12:51:58.348923-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+      "Test": "TestCatalogStoreConformanceStaleRecordsDoNotReappear/filesystem",
+      "Elapsed": 0.01
+    },
+    {
+      "Time": "2026-09-06T12:51:58.348926-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+      "Test": "TestCatalogStoreConformanceStaleRecordsDoNotReappear/object"
+    },
+    {
+      "Time": "2026-09-06T12:51:58.348927-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+      "Test": "TestCatalogStoreConformanceStaleRecordsDoNotReappear/object",
+      "Output": "=== RUN   TestCatalogStoreConformanceStaleRecordsDoNotReappear/object\n"
+    },
+    {
+      "Time": "2026-09-06T12:51:58.348929-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+      "Test": "TestCatalogStoreConformanceStaleRecordsDoNotReappear/object",
+      "Output": "--- PASS: TestCatalogStoreConformanceStaleRecordsDoNotReappear/object (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T12:51:58.348932-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+      "Test": "TestCatalogStoreConformanceStaleRecordsDoNotReappear/object",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T12:51:58.348933-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+      "Test": "TestCatalogStoreConformanceStaleRecordsDoNotReappear",
+      "Output": "--- PASS: TestCatalogStoreConformanceStaleRecordsDoNotReappear (0.01s)\n"
+    },
+    {
+      "Time": "2026-09-06T12:51:58.348935-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+      "Test": "TestCatalogStoreConformanceStaleRecordsDoNotReappear",
+      "Elapsed": 0.01
+    },
+    {
+      "Time": "2026-09-06T12:51:58.348938-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+      "Test": "TestAtomicFilesystemCommitFailurePreservesCurrent"
+    },
+    {
+      "Time": "2026-09-06T12:51:58.348941-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+      "Test": "TestAtomicFilesystemCommitFailurePreservesCurrent",
+      "Output": "=== RUN   TestAtomicFilesystemCommitFailurePreservesCurrent\n"
+    },
+    {
+      "Time": "2026-09-06T12:51:58.348945-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+      "Test": "TestAtomicFilesystemCommitFailurePreservesCurrent",
+      "Output": "--- PASS: TestAtomicFilesystemCommitFailurePreservesCurrent (0.01s)\n"
+    },
+    {
+      "Time": "2026-09-06T12:51:58.348946-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+      "Test": "TestAtomicFilesystemCommitFailurePreservesCurrent",
+      "Elapsed": 0.01
+    },
+    {
+      "Time": "2026-09-06T12:51:58.348947-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+      "Test": "TestFilesystemCatalogStoreReopensCurrentGeneration"
+    },
+    {
+      "Time": "2026-09-06T12:51:58.348948-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+      "Test": "TestFilesystemCatalogStoreReopensCurrentGeneration",
+      "Output": "=== RUN   TestFilesystemCatalogStoreReopensCurrentGeneration\n"
+    },
+    {
+      "Time": "2026-09-06T12:51:58.34895-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+      "Test": "TestFilesystemCatalogStoreReopensCurrentGeneration",
+      "Output": "--- PASS: TestFilesystemCatalogStoreReopensCurrentGeneration (0.01s)\n"
+    },
+    {
+      "Time": "2026-09-06T12:51:58.348951-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+      "Test": "TestFilesystemCatalogStoreReopensCurrentGeneration",
+      "Elapsed": 0.01
+    },
+    {
+      "Time": "2026-09-06T12:51:58.348952-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+      "Test": "TestFilesystemCatalogStoreKeepsAndCleansMachineStagingUnderRoot"
+    },
+    {
+      "Time": "2026-09-06T12:51:58.348953-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+      "Test": "TestFilesystemCatalogStoreKeepsAndCleansMachineStagingUnderRoot",
+      "Output": "=== RUN   TestFilesystemCatalogStoreKeepsAndCleansMachineStagingUnderRoot\n"
+    },
+    {
+      "Time": "2026-09-06T12:51:58.348955-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+      "Test": "TestFilesystemCatalogStoreKeepsAndCleansMachineStagingUnderRoot",
+      "Output": "--- PASS: TestFilesystemCatalogStoreKeepsAndCleansMachineStagingUnderRoot (0.01s)\n"
+    },
+    {
+      "Time": "2026-09-06T12:51:58.348957-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+      "Test": "TestFilesystemCatalogStoreKeepsAndCleansMachineStagingUnderRoot",
+      "Elapsed": 0.01
+    },
+    {
+      "Time": "2026-09-06T12:51:58.348959-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+      "Test": "TestFilesystemCatalogStoreRejectsSymlinkedMachineEntries"
+    },
+    {
+      "Time": "2026-09-06T12:51:58.34896-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+      "Test": "TestFilesystemCatalogStoreRejectsSymlinkedMachineEntries",
+      "Output": "=== RUN   TestFilesystemCatalogStoreRejectsSymlinkedMachineEntries\n"
+    },
+    {
+      "Time": "2026-09-06T12:51:58.348962-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+      "Test": "TestFilesystemCatalogStoreRejectsSymlinkedMachineEntries/root"
+    },
+    {
+      "Time": "2026-09-06T12:51:58.348963-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+      "Test": "TestFilesystemCatalogStoreRejectsSymlinkedMachineEntries/root",
+      "Output": "=== RUN   TestFilesystemCatalogStoreRejectsSymlinkedMachineEntries/root\n"
+    },
+    {
+      "Time": "2026-09-06T12:51:58.348965-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+      "Test": "TestFilesystemCatalogStoreRejectsSymlinkedMachineEntries/root",
+      "Output": "--- PASS: TestFilesystemCatalogStoreRejectsSymlinkedMachineEntries/root (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T12:51:58.348966-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+      "Test": "TestFilesystemCatalogStoreRejectsSymlinkedMachineEntries/root",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T12:51:58.348968-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+      "Test": "TestFilesystemCatalogStoreRejectsSymlinkedMachineEntries/generations"
+    },
+    {
+      "Time": "2026-09-06T12:51:58.348969-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+      "Test": "TestFilesystemCatalogStoreRejectsSymlinkedMachineEntries/generations",
+      "Output": "=== RUN   TestFilesystemCatalogStoreRejectsSymlinkedMachineEntries/generations\n"
+    },
+    {
+      "Time": "2026-09-06T12:51:58.348971-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+      "Test": "TestFilesystemCatalogStoreRejectsSymlinkedMachineEntries/generations",
+      "Output": "--- PASS: TestFilesystemCatalogStoreRejectsSymlinkedMachineEntries/generations (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T12:51:58.348973-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+      "Test": "TestFilesystemCatalogStoreRejectsSymlinkedMachineEntries/generations",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T12:51:58.348974-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+      "Test": "TestFilesystemCatalogStoreRejectsSymlinkedMachineEntries/.commit.lock"
+    },
+    {
+      "Time": "2026-09-06T12:51:58.348975-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+      "Test": "TestFilesystemCatalogStoreRejectsSymlinkedMachineEntries/.commit.lock",
+      "Output": "=== RUN   TestFilesystemCatalogStoreRejectsSymlinkedMachineEntries/.commit.lock\n"
+    },
+    {
+      "Time": "2026-09-06T12:51:58.348977-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+      "Test": "TestFilesystemCatalogStoreRejectsSymlinkedMachineEntries/.commit.lock",
+      "Output": "--- PASS: TestFilesystemCatalogStoreRejectsSymlinkedMachineEntries/.commit.lock (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T12:51:58.348979-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+      "Test": "TestFilesystemCatalogStoreRejectsSymlinkedMachineEntries/.commit.lock",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T12:51:58.34898-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+      "Test": "TestFilesystemCatalogStoreRejectsSymlinkedMachineEntries/current"
+    },
+    {
+      "Time": "2026-09-06T12:51:58.348982-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+      "Test": "TestFilesystemCatalogStoreRejectsSymlinkedMachineEntries/current",
+      "Output": "=== RUN   TestFilesystemCatalogStoreRejectsSymlinkedMachineEntries/current\n"
+    },
+    {
+      "Time": "2026-09-06T12:51:58.348984-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+      "Test": "TestFilesystemCatalogStoreRejectsSymlinkedMachineEntries/current",
+      "Output": "--- PASS: TestFilesystemCatalogStoreRejectsSymlinkedMachineEntries/current (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T12:51:58.348986-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+      "Test": "TestFilesystemCatalogStoreRejectsSymlinkedMachineEntries/current",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T12:51:58.348988-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+      "Test": "TestFilesystemCatalogStoreRejectsSymlinkedMachineEntries",
+      "Output": "--- PASS: TestFilesystemCatalogStoreRejectsSymlinkedMachineEntries (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T12:51:58.34899-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+      "Test": "TestFilesystemCatalogStoreRejectsSymlinkedMachineEntries",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T12:51:58.348996-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+      "Test": "TestFilesystemCatalogStoreRejectsSymlinkedGeneration"
+    },
+    {
+      "Time": "2026-09-06T12:51:58.348999-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+      "Test": "TestFilesystemCatalogStoreRejectsSymlinkedGeneration",
+      "Output": "=== RUN   TestFilesystemCatalogStoreRejectsSymlinkedGeneration\n"
+    },
+    {
+      "Time": "2026-09-06T12:51:58.349001-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+      "Test": "TestFilesystemCatalogStoreRejectsSymlinkedGeneration",
+      "Output": "--- PASS: TestFilesystemCatalogStoreRejectsSymlinkedGeneration (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T12:51:58.349002-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+      "Test": "TestFilesystemCatalogStoreRejectsSymlinkedGeneration",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T12:51:58.349003-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+      "Test": "TestObjectCatalogStoreUploadPromotionRollbackFaults"
+    },
+    {
+      "Time": "2026-09-06T12:51:58.349004-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+      "Test": "TestObjectCatalogStoreUploadPromotionRollbackFaults",
+      "Output": "=== RUN   TestObjectCatalogStoreUploadPromotionRollbackFaults\n"
+    },
+    {
+      "Time": "2026-09-06T12:51:58.349005-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+      "Test": "TestObjectCatalogStoreUploadPromotionRollbackFaults",
+      "Output": "--- PASS: TestObjectCatalogStoreUploadPromotionRollbackFaults (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T12:51:58.349007-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+      "Test": "TestObjectCatalogStoreUploadPromotionRollbackFaults",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T12:51:58.349008-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+      "Test": "TestObjectCatalogStoreRejectsCorruptStoredPayload"
+    },
+    {
+      "Time": "2026-09-06T12:51:58.349009-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+      "Test": "TestObjectCatalogStoreRejectsCorruptStoredPayload",
+      "Output": "=== RUN   TestObjectCatalogStoreRejectsCorruptStoredPayload\n"
+    },
+    {
+      "Time": "2026-09-06T12:51:58.349011-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+      "Test": "TestObjectCatalogStoreRejectsCorruptStoredPayload",
+      "Output": "--- PASS: TestObjectCatalogStoreRejectsCorruptStoredPayload (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T12:51:58.349013-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+      "Test": "TestObjectCatalogStoreRejectsCorruptStoredPayload",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T12:51:58.349014-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+      "Test": "TestSeamConformanceObjectStoreAcceptsAlternateBackend"
+    },
+    {
+      "Time": "2026-09-06T12:51:58.349015-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+      "Test": "TestSeamConformanceObjectStoreAcceptsAlternateBackend",
+      "Output": "=== RUN   TestSeamConformanceObjectStoreAcceptsAlternateBackend\n"
+    },
+    {
+      "Time": "2026-09-06T12:51:58.349018-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+      "Test": "TestSeamConformanceObjectStoreAcceptsAlternateBackend",
+      "Output": "--- PASS: TestSeamConformanceObjectStoreAcceptsAlternateBackend (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T12:51:58.349021-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+      "Test": "TestSeamConformanceObjectStoreAcceptsAlternateBackend",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T12:51:58.349022-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+      "Test": "TestObjectCatalogStoreReopensCurrentGeneration"
+    },
+    {
+      "Time": "2026-09-06T12:51:58.349023-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+      "Test": "TestObjectCatalogStoreReopensCurrentGeneration",
+      "Output": "=== RUN   TestObjectCatalogStoreReopensCurrentGeneration\n"
+    },
+    {
+      "Time": "2026-09-06T12:51:58.349026-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+      "Test": "TestObjectCatalogStoreReopensCurrentGeneration",
+      "Output": "--- PASS: TestObjectCatalogStoreReopensCurrentGeneration (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T12:51:58.349029-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+      "Test": "TestObjectCatalogStoreReopensCurrentGeneration",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T12:51:58.349033-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+      "Output": "PASS\n"
+    },
+    {
+      "Time": "2026-09-06T12:51:58.349035-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+      "Elapsed": 0
+    }
+  ],
+  "binary_sha256": "5e86a643ab7209b0fbf310a9c221cebd5d37973fb1a71483eb9577b858a2f466",
+  "state": {
+    "Status": "exited",
+    "Running": false,
+    "Paused": false,
+    "Restarting": false,
+    "OOMKilled": false,
+    "Dead": false,
+    "Pid": 0,
+    "ExitCode": 0,
+    "Error": "",
+    "StartedAt": "2026-09-06T17:51:58.138081875Z",
+    "FinishedAt": "2026-09-06T17:51:58.25788425Z"
+  },
+  "conversion_exit_code": 0,
+  "counts": {
+    "pass": 25,
+    "fail": 0,
+    "skip": 0
+  },
+  "passed": true,
+  "container_removed": true,
+  "volume_removed": true
+}

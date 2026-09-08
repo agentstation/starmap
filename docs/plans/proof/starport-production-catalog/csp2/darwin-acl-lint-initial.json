@@ -1,0 +1,22 @@
+{
+  "command": [
+    "golangci-lint",
+    "run"
+  ],
+  "exit_code": 1,
+  "findings": [
+    {
+      "file": "runtime/directory_acl_darwin.go",
+      "line": 89,
+      "rule": "G115",
+      "message": "integer overflow conversion uintptr -> int32"
+    },
+    {
+      "file": "runtime/directory_acl_darwin.go",
+      "line": 125,
+      "rule": "G115",
+      "message": "integer overflow conversion uint32 -> int32"
+    }
+  ],
+  "resolution": "Validate the file descriptor range before conversion. Decode the attribute offset without a signed narrowing conversion and refuse offsets outside int32 range."
+}

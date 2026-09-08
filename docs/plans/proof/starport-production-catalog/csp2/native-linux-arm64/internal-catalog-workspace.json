@@ -1,0 +1,3664 @@
+{
+  "package": "internal/catalog/workspace",
+  "race": false,
+  "toolchain": "go1.25.12",
+  "commands": [
+    {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.25.12",
+        "GOOS=linux",
+        "GOARCH=arm64",
+        "CGO_ENABLED=0",
+        "go",
+        "test",
+        "-c",
+        "-o",
+        "/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/csp2-native-build-o15crznz/test",
+        "./internal/catalog/workspace"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "docker",
+        "volume",
+        "create",
+        "--label",
+        "purpose=csp2-native-package-verification",
+        "csp2-native-e53dfb5994054686b8f6148860a8617c"
+      ],
+      "exit_code": 0,
+      "stdout": "csp2-native-e53dfb5994054686b8f6148860a8617c\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "docker",
+        "create",
+        "--pull=never",
+        "--network",
+        "none",
+        "--read-only",
+        "--user",
+        "65532:65532",
+        "--cap-drop=ALL",
+        "--security-opt=no-new-privileges",
+        "--mount",
+        "type=bind,src=/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/csp2-native-build-o15crznz/test,dst=/native-test,readonly",
+        "--mount",
+        "type=bind,src=/Users/jack/src/github.com/agentstation/starmap-catalog-requirements,dst=/Users/jack/src/github.com/agentstation/starmap-catalog-requirements,readonly",
+        "--mount",
+        "type=volume,src=csp2-native-e53dfb5994054686b8f6148860a8617c,dst=/home/nonroot",
+        "--env",
+        "TMPDIR=/home/nonroot",
+        "--env",
+        "GOMAXPROCS=4",
+        "--workdir",
+        "/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/internal/catalog/workspace",
+        "--entrypoint",
+        "/native-test",
+        "cgr.dev/chainguard/static@sha256:60582b2ae6074f641094af0f370d4ab241aab271858a66223dcde7eee9f51638",
+        "-test.v=test2json",
+        "-test.count=1",
+        "-test.parallel=4",
+        "-test.timeout=10m"
+      ],
+      "exit_code": 0,
+      "stdout": "1be3e6160f5bd6aa8beefa014278c81eb350edd69f255ad54778d18a5e72a513\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "docker",
+        "start",
+        "--attach",
+        "1be3e6160f5bd6aa8beefa014278c81eb350edd69f255ad54778d18a5e72a513"
+      ],
+      "exit_code": 0,
+      "stdout": "\u0016=== RUN   TestEndpointProjectionDeterministicallyJoinsCanonicalModelToOfferings\n\u0016=== PAUSE TestEndpointProjectionDeterministicallyJoinsCanonicalModelToOfferings\n\u0016=== NAME  \n\u0016=== RUN   TestEndpointProjectionIsStableAcrossWorkspaceRoundTrip\n\u0016=== PAUSE TestEndpointProjectionIsStableAcrossWorkspaceRoundTrip\n\u0016=== NAME  \n\u0016=== RUN   TestEndpointProjectionDriftIsDetectedWithoutOverwrite\n\u0016=== PAUSE TestEndpointProjectionDriftIsDetectedWithoutOverwrite\n\u0016=== NAME  \n\u0016=== RUN   TestEndpointProjectionEditBeforeProjectExpectedIsPreserved\n\u0016=== PAUSE TestEndpointProjectionEditBeforeProjectExpectedIsPreserved\n\u0016=== NAME  \n\u0016=== RUN   TestValidateHumanLayoutDetectsEveryLegacyGenerationEntry\n\u0016=== PAUSE TestValidateHumanLayoutDetectsEveryLegacyGenerationEntry\n\u0016=== NAME  \n\u0016=== RUN   TestProjectRejectsLegacyGenerationLayoutBeforeStaging\n\u0016=== PAUSE TestProjectRejectsLegacyGenerationLayoutBeforeStaging\n\u0016=== NAME  \n\u0016=== RUN   TestValidateHumanLayoutAcceptsMissingAndProviderYAMLPaths\n\u0016=== PAUSE TestValidateHumanLayoutAcceptsMissingAndProviderYAMLPaths\n\u0016=== NAME  \n\u0016=== RUN   TestValidateMachineSeparationRejectsOverlappingLifecycleRoots\n\u0016=== PAUSE TestValidateMachineSeparationRejectsOverlappingLifecycleRoots\n\u0016=== NAME  \n\u0016=== RUN   TestValidateMachineSeparationResolvesSymlinkedAncestors\n\u0016=== PAUSE TestValidateMachineSeparationResolvesSymlinkedAncestors\n\u0016=== NAME  \n\u0016=== RUN   TestCanonicalHumanWorkspaceIsSeparateFromEveryDefaultMachineRoot\n\u0016--- PASS: TestCanonicalHumanWorkspaceIsSeparateFromEveryDefaultMachineRoot (0.00s)\n\u0016=== NAME  \n\u0016=== RUN   TestMigrateLegacyLayoutRelocatesStoreAndProjectsCurrent\n\u0016=== PAUSE TestMigrateLegacyLayoutRelocatesStoreAndProjectsCurrent\n\u0016=== NAME  \n\u0016=== RUN   TestMigrateLegacyLayoutFailureRollsBackExactStore\n\u0016=== PAUSE TestMigrateLegacyLayoutFailureRollsBackExactStore\n\u0016=== NAME  \n\u0016=== RUN   TestMigrateLegacyLayoutProjectionFailureRollsBackOwnedWorkspace\n\u0016=== PAUSE TestMigrateLegacyLayoutProjectionFailureRollsBackOwnedWorkspace\n\u0016=== NAME  \n\u0016=== RUN   TestMigrateLegacyLayoutRollbackPreservesRecreatedLegacyPath\n\u0016=== PAUSE TestMigrateLegacyLayoutRollbackPreservesRecreatedLegacyPath\n\u0016=== NAME  \n\u0016=== RUN   TestOlderBinaryRejectsNewerSchemaBeforeMigrationMutation\n\u0016=== PAUSE TestOlderBinaryRejectsNewerSchemaBeforeMigrationMutation\n\u0016=== NAME  \n\u0016=== RUN   TestWorkspaceWritersAreExcludedAcrossProcessesWhileReadersRemainAvailable\n\u0016--- PASS: TestWorkspaceWritersAreExcludedAcrossProcessesWhileReadersRemainAvailable (0.05s)\n\u0016=== NAME  \n\u0016=== RUN   TestWorkspaceWriterLockIsReleasedWhenProcessExits\n\u0016--- PASS: TestWorkspaceWriterLockIsReleasedWhenProcessExits (0.04s)\n\u0016=== NAME  \n\u0016=== RUN   TestWorkspaceWriterProcessHelper\n\u0016--- PASS: TestWorkspaceWriterProcessHelper (0.00s)\n\u0016=== NAME  \n\u0016=== RUN   TestProjectAtomicallyReplacesValidatedWorkspace\n\u0016=== PAUSE TestProjectAtomicallyReplacesValidatedWorkspace\n\u0016=== NAME  \n\u0016=== RUN   TestProjectFailureBeforePromotePreservesOldWorkspace\n\u0016=== PAUSE TestProjectFailureBeforePromotePreservesOldWorkspace\n\u0016=== NAME  \n\u0016=== RUN   TestFirstProjectionFailureLeavesWorkspaceAbsent\n\u0016=== PAUSE TestFirstProjectionFailureLeavesWorkspaceAbsent\n\u0016=== NAME  \n\u0016=== RUN   TestFirstProjectionRejectsWorkspaceCreatedAfterObservation\n\u0016=== PAUSE TestFirstProjectionRejectsWorkspaceCreatedAfterObservation\n\u0016=== NAME  \n\u0016=== RUN   TestProjectExpectedRejectsSemanticEditAfterInputLoad\n\u0016=== PAUSE TestProjectExpectedRejectsSemanticEditAfterInputLoad\n\u0016=== NAME  \n\u0016=== RUN   TestProjectRejectsSymlinkedWriterLock\n\u0016=== PAUSE TestProjectRejectsSymlinkedWriterLock\n\u0016=== NAME  \n\u0016=== RUN   TestProjectRejectsCatalogThatDoesNotMatchCommittedPayload\n\u0016=== PAUSE TestProjectRejectsCatalogThatDoesNotMatchCommittedPayload\n\u0016=== NAME  \n\u0016=== RUN   TestProjectRejectsConcurrentSemanticEdit\n\u0016=== PAUSE TestProjectRejectsConcurrentSemanticEdit\n\u0016=== NAME  \n\u0016=== RUN   TestProjectSeparatesCatalogAndGeneratedEndpointDigests\n\u0016=== PAUSE TestProjectSeparatesCatalogAndGeneratedEndpointDigests\n\u0016=== NAME  \n\u0016=== RUN   TestRepairStaleUnmodifiedProjection\n\u0016=== PAUSE TestRepairStaleUnmodifiedProjection\n\u0016=== NAME  \n\u0016=== RUN   TestRepairDoesNotOverwriteDirtyWorkspace\n\u0016=== PAUSE TestRepairDoesNotOverwriteDirtyWorkspace\n\u0016=== NAME  \n\u0016=== RUN   TestRepairAcknowledgesSwapAfterMarkerFailure\n\u0016=== PAUSE TestRepairAcknowledgesSwapAfterMarkerFailure\n\u0016=== NAME  \n\u0016=== RUN   TestProjectRejectsWorkspaceSymlink\n\u0016=== PAUSE TestProjectRejectsWorkspaceSymlink\n\u0016=== NAME  \n\u0016=== RUN   TestProjectPreservesDirectoryCreatedAtPublication\n\u0016--- PASS: TestProjectPreservesDirectoryCreatedAtPublication (0.01s)\n\u0016=== NAME  \n\u0016=== RUN   TestProjectRefusesCancellationBeforePublication\n\u0016=== RUN   TestProjectRefusesCancellationBeforePublication/first\n\u0016--- PASS: TestProjectRefusesCancellationBeforePublication/first (0.01s)\n\u0016=== NAME  TestProjectRefusesCancellationBeforePublication\n\u0016=== RUN   TestProjectRefusesCancellationBeforePublication/replacement\n\u0016--- PASS: TestProjectRefusesCancellationBeforePublication/replacement (0.02s)\n\u0016=== NAME  TestProjectRefusesCancellationBeforePublication\n\u0016--- PASS: TestProjectRefusesCancellationBeforePublication (0.03s)\n\u0016=== NAME  \n\u0016=== RUN   TestReadRefusesActiveWriterProcess\n\u0016--- PASS: TestReadRefusesActiveWriterProcess (0.02s)\n\u0016=== NAME  \n\u0016=== RUN   TestReaderProcessBlocksWriterAndReleasesLockOnExit\n\u0016--- PASS: TestReaderProcessBlocksWriterAndReleasesLockOnExit (0.02s)\n\u0016=== NAME  \n\u0016=== RUN   TestWorkspaceReaderProcessHelper\n\u0016--- PASS: TestWorkspaceReaderProcessHelper (0.00s)\n\u0016=== NAME  \n\u0016=== RUN   TestReadRefusesPendingReplacement\n\u0016--- PASS: TestReadRefusesPendingReplacement (0.00s)\n\u0016=== NAME  \n\u0016=== RUN   TestReadPreservesPassiveFiles\n\u0016=== RUN   TestReadPreservesPassiveFiles/absent_parent\n\u0016--- PASS: TestReadPreservesPassiveFiles/absent_parent (0.00s)\n\u0016=== NAME  TestReadPreservesPassiveFiles\n\u0016=== RUN   TestReadPreservesPassiveFiles/absent\n\u0016--- PASS: TestReadPreservesPassiveFiles/absent (0.00s)\n\u0016=== NAME  TestReadPreservesPassiveFiles\n\u0016=== RUN   TestReadPreservesPassiveFiles/authored\n\u0016--- PASS: TestReadPreservesPassiveFiles/authored (0.00s)\n\u0016=== NAME  TestReadPreservesPassiveFiles\n\u0016=== RUN   TestReadPreservesPassiveFiles/existing_lock\n\u0016--- PASS: TestReadPreservesPassiveFiles/existing_lock (0.00s)\n\u0016=== NAME  TestReadPreservesPassiveFiles\n\u0016--- PASS: TestReadPreservesPassiveFiles (0.00s)\n\u0016=== NAME  \n\u0016=== RUN   TestReadExcludesWritersUntilCallbackReturns\n\u0016=== RUN   TestReadExcludesWritersUntilCallbackReturns/success\n\u0016--- PASS: TestReadExcludesWritersUntilCallbackReturns/success (0.00s)\n\u0016=== NAME  TestReadExcludesWritersUntilCallbackReturns\n\u0016=== RUN   TestReadExcludesWritersUntilCallbackReturns/callback_error\n\u0016--- PASS: TestReadExcludesWritersUntilCallbackReturns/callback_error (0.00s)\n\u0016=== NAME  TestReadExcludesWritersUntilCallbackReturns\n\u0016--- PASS: TestReadExcludesWritersUntilCallbackReturns (0.00s)\n\u0016=== NAME  \n\u0016=== RUN   TestReadDetectsFirstWriterAfterItFinishes\n\u0016--- PASS: TestReadDetectsFirstWriterAfterItFinishes (0.01s)\n\u0016=== NAME  \n\u0016=== RUN   TestReadDetectsFirstWriterWithoutDirectoryChange\n\u0016--- PASS: TestReadDetectsFirstWriterWithoutDirectoryChange (0.00s)\n\u0016=== NAME  \n\u0016=== RUN   TestReadDetectsExternalDirectoryReplacement\n\u0016--- PASS: TestReadDetectsExternalDirectoryReplacement (0.00s)\n\u0016=== NAME  \n\u0016=== RUN   TestReadRefusesInvalidLockWithoutReading\n\u0016--- PASS: TestReadRefusesInvalidLockWithoutReading (0.00s)\n\u0016=== NAME  \n\u0016=== RUN   TestReadCancellationAndCallbackValidation\n\u0016--- PASS: TestReadCancellationAndCallbackValidation (0.00s)\n\u0016=== NAME  \n\u0016=== RUN   TestObserveInputRefusesActiveWriter\n\u0016=== RUN   TestObserveInputRefusesActiveWriter/absent\n\u0016--- PASS: TestObserveInputRefusesActiveWriter/absent (0.00s)\n\u0016=== NAME  TestObserveInputRefusesActiveWriter\n\u0016=== RUN   TestObserveInputRefusesActiveWriter/present\n\u0016--- PASS: TestObserveInputRefusesActiveWriter/present (0.00s)\n\u0016=== NAME  TestObserveInputRefusesActiveWriter\n\u0016--- PASS: TestObserveInputRefusesActiveWriter (0.00s)\n\u0016=== NAME  \n\u0016=== RUN   TestJournalRecoveryRefusesCopiedCandidateIdentity\n\u0016--- PASS: TestJournalRecoveryRefusesCopiedCandidateIdentity (0.03s)\n\u0016=== NAME  \n\u0016=== RUN   TestJournalRecoveryValidatesMarkerBeforeMovingWorkspace\n\u0016--- PASS: TestJournalRecoveryValidatesMarkerBeforeMovingWorkspace (0.02s)\n\u0016=== NAME  \n\u0016=== RUN   TestJournalCleanupPreservesChangedBackup\n\u0016--- PASS: TestJournalCleanupPreservesChangedBackup (0.03s)\n\u0016=== NAME  \n\u0016=== RUN   TestJournalRecoveryRestoresOldTreeWhenCandidateIsMissing\n\u0016--- PASS: TestJournalRecoveryRestoresOldTreeWhenCandidateIsMissing (0.02s)\n\u0016=== NAME  \n\u0016=== RUN   TestJournalRecoveryRefusesCorruptIntentWithoutChanges\n\u0016--- PASS: TestJournalRecoveryRefusesCorruptIntentWithoutChanges (0.02s)\n\u0016=== NAME  \n\u0016=== RUN   TestJournalRecoveryRefusesInvalidBindingsWithoutChanges\n\u0016=== RUN   TestJournalRecoveryRefusesInvalidBindingsWithoutChanges/unsupported_version\n\u0016--- PASS: TestJournalRecoveryRefusesInvalidBindingsWithoutChanges/unsupported_version (0.02s)\n\u0016=== NAME  TestJournalRecoveryRefusesInvalidBindingsWithoutChanges\n\u0016=== RUN   TestJournalRecoveryRefusesInvalidBindingsWithoutChanges/different_workspace\n\u0016--- PASS: TestJournalRecoveryRefusesInvalidBindingsWithoutChanges/different_workspace (0.02s)\n\u0016=== NAME  TestJournalRecoveryRefusesInvalidBindingsWithoutChanges\n\u0016=== RUN   TestJournalRecoveryRefusesInvalidBindingsWithoutChanges/candidate_traversal\n\u0016--- PASS: TestJournalRecoveryRefusesInvalidBindingsWithoutChanges/candidate_traversal (0.02s)\n\u0016=== NAME  TestJournalRecoveryRefusesInvalidBindingsWithoutChanges\n\u0016=== RUN   TestJournalRecoveryRefusesInvalidBindingsWithoutChanges/backup_traversal\n\u0016--- PASS: TestJournalRecoveryRefusesInvalidBindingsWithoutChanges/backup_traversal (0.03s)\n\u0016=== NAME  TestJournalRecoveryRefusesInvalidBindingsWithoutChanges\n\u0016=== RUN   TestJournalRecoveryRefusesInvalidBindingsWithoutChanges/same_directory_identity\n\u0016--- PASS: TestJournalRecoveryRefusesInvalidBindingsWithoutChanges/same_directory_identity (0.02s)\n\u0016=== NAME  TestJournalRecoveryRefusesInvalidBindingsWithoutChanges\n\u0016=== RUN   TestJournalRecoveryRefusesInvalidBindingsWithoutChanges/inventory_digest\n\u0016--- PASS: TestJournalRecoveryRefusesInvalidBindingsWithoutChanges/inventory_digest (0.03s)\n\u0016=== NAME  TestJournalRecoveryRefusesInvalidBindingsWithoutChanges\n\u0016--- PASS: TestJournalRecoveryRefusesInvalidBindingsWithoutChanges (0.14s)\n\u0016=== NAME  \n\u0016=== RUN   TestJournalCancellationRetainsRecoveryState\n\u0016=== RUN   TestJournalCancellationRetainsRecoveryState/backup_moved\n\u0016--- PASS: TestJournalCancellationRetainsRecoveryState/backup_moved (0.03s)\n\u0016=== NAME  TestJournalCancellationRetainsRecoveryState\n\u0016=== RUN   TestJournalCancellationRetainsRecoveryState/candidate_installed\n\u0016--- PASS: TestJournalCancellationRetainsRecoveryState/candidate_installed (0.02s)\n\u0016=== NAME  TestJournalCancellationRetainsRecoveryState\n\u0016--- PASS: TestJournalCancellationRetainsRecoveryState (0.05s)\n\u0016=== NAME  \n\u0016=== RUN   TestJournalReplacementRecoversAfterProcessExit\n\u0016=== RUN   TestJournalReplacementRecoversAfterProcessExit/journal_saved\n\u0016--- PASS: TestJournalReplacementRecoversAfterProcessExit/journal_saved (0.04s)\n\u0016=== NAME  TestJournalReplacementRecoversAfterProcessExit\n\u0016=== RUN   TestJournalReplacementRecoversAfterProcessExit/backup_moved\n\u0016--- PASS: TestJournalReplacementRecoversAfterProcessExit/backup_moved (0.03s)\n\u0016=== NAME  TestJournalReplacementRecoversAfterProcessExit\n\u0016=== RUN   TestJournalReplacementRecoversAfterProcessExit/candidate_installed\n\u0016--- PASS: TestJournalReplacementRecoversAfterProcessExit/candidate_installed (0.03s)\n\u0016=== NAME  TestJournalReplacementRecoversAfterProcessExit\n\u0016=== RUN   TestJournalReplacementRecoversAfterProcessExit/marker_saved\n\u0016--- PASS: TestJournalReplacementRecoversAfterProcessExit/marker_saved (0.04s)\n\u0016=== NAME  TestJournalReplacementRecoversAfterProcessExit\n\u0016=== RUN   TestJournalReplacementRecoversAfterProcessExit/backup_entry_removed\n\u0016--- PASS: TestJournalReplacementRecoversAfterProcessExit/backup_entry_removed (0.04s)\n\u0016=== NAME  TestJournalReplacementRecoversAfterProcessExit\n\u0016=== RUN   TestJournalReplacementRecoversAfterProcessExit/backup_removed\n\u0016--- PASS: TestJournalReplacementRecoversAfterProcessExit/backup_removed (0.04s)\n\u0016=== NAME  TestJournalReplacementRecoversAfterProcessExit\n\u0016--- PASS: TestJournalReplacementRecoversAfterProcessExit (0.21s)\n\u0016=== NAME  \n\u0016=== RUN   TestJournalReplacementProcessHelper\n\u0016--- PASS: TestJournalReplacementProcessHelper (0.00s)\n\u0016=== NAME  \n\u0016=== RUN   TestJournalReplacementPreservesOperatorFiles\n\u0016--- PASS: TestJournalReplacementPreservesOperatorFiles (0.03s)\n\u0016=== NAME  \n\u0016=== RUN   TestJournalReplacementRecoversEachPhase\n\u0016=== RUN   TestJournalReplacementRecoversEachPhase/journal_saved\n\u0016--- PASS: TestJournalReplacementRecoversEachPhase/journal_saved (0.03s)\n\u0016=== NAME  TestJournalReplacementRecoversEachPhase\n\u0016=== RUN   TestJournalReplacementRecoversEachPhase/backup_moved\n\u0016--- PASS: TestJournalReplacementRecoversEachPhase/backup_moved (0.03s)\n\u0016=== NAME  TestJournalReplacementRecoversEachPhase\n\u0016=== RUN   TestJournalReplacementRecoversEachPhase/candidate_installed\n\u0016--- PASS: TestJournalReplacementRecoversEachPhase/candidate_installed (0.03s)\n\u0016=== NAME  TestJournalReplacementRecoversEachPhase\n\u0016=== RUN   TestJournalReplacementRecoversEachPhase/marker_saved\n\u0016--- PASS: TestJournalReplacementRecoversEachPhase/marker_saved (0.03s)\n\u0016=== NAME  TestJournalReplacementRecoversEachPhase\n\u0016=== RUN   TestJournalReplacementRecoversEachPhase/backup_entry_removed\n\u0016--- PASS: TestJournalReplacementRecoversEachPhase/backup_entry_removed (0.03s)\n\u0016=== NAME  TestJournalReplacementRecoversEachPhase\n\u0016=== RUN   TestJournalReplacementRecoversEachPhase/backup_removed\n\u0016--- PASS: TestJournalReplacementRecoversEachPhase/backup_removed (0.03s)\n\u0016=== NAME  TestJournalReplacementRecoversEachPhase\n\u0016--- PASS: TestJournalReplacementRecoversEachPhase (0.17s)\n\u0016=== NAME  \n\u0016=== RUN   TestJournalReplacementRefusesLateOperatorEdits\n\u0016--- PASS: TestJournalReplacementRefusesLateOperatorEdits (0.02s)\n\u0016=== NAME  \n\u0016=== RUN   TestJournalRecoveryPreservesUnexpectedWorkspace\n\u0016--- PASS: TestJournalRecoveryPreservesUnexpectedWorkspace (0.02s)\n\u0016=== NAME  \n\u0016=== RUN   TestTreeSnapshotBindsIdentityAndOperatorBytes\n\u0016--- PASS: TestTreeSnapshotBindsIdentityAndOperatorBytes (0.00s)\n\u0016=== NAME  \n\u0016=== RUN   TestTreeSnapshotEnforcesResourceBoundsAndCancellation\n\u0016--- PASS: TestTreeSnapshotEnforcesResourceBoundsAndCancellation (0.00s)\n\u0016=== NAME  \n\u0016=== CONT  TestEndpointProjectionDeterministicallyJoinsCanonicalModelToOfferings\n\u0016=== CONT  TestProjectAtomicallyReplacesValidatedWorkspace\n\u0016=== CONT  TestValidateMachineSeparationRejectsOverlappingLifecycleRoots\n\u0016=== CONT  TestValidateHumanLayoutDetectsEveryLegacyGenerationEntry\n\u0016=== RUN   TestValidateHumanLayoutDetectsEveryLegacyGenerationEntry/.commit.lock\n\u0016=== PAUSE TestValidateHumanLayoutDetectsEveryLegacyGenerationEntry/.commit.lock\n\u0016=== NAME  TestValidateHumanLayoutDetectsEveryLegacyGenerationEntry\n\u0016=== RUN   TestValidateHumanLayoutDetectsEveryLegacyGenerationEntry/current\n\u0016=== PAUSE TestValidateHumanLayoutDetectsEveryLegacyGenerationEntry/current\n\u0016=== NAME  TestValidateHumanLayoutDetectsEveryLegacyGenerationEntry\n\u0016=== RUN   TestValidateHumanLayoutDetectsEveryLegacyGenerationEntry/generations\n\u0016=== PAUSE TestValidateHumanLayoutDetectsEveryLegacyGenerationEntry/generations\n\u0016=== NAME  TestValidateHumanLayoutDetectsEveryLegacyGenerationEntry\n\u0016=== CONT  TestValidateHumanLayoutDetectsEveryLegacyGenerationEntry/.commit.lock\n\u0016=== RUN   TestValidateMachineSeparationRejectsOverlappingLifecycleRoots/siblings\n\u0016=== PAUSE TestValidateMachineSeparationRejectsOverlappingLifecycleRoots/siblings\n\u0016=== NAME  TestValidateMachineSeparationRejectsOverlappingLifecycleRoots\n\u0016=== RUN   TestValidateMachineSeparationRejectsOverlappingLifecycleRoots/same\n\u0016=== PAUSE TestValidateMachineSeparationRejectsOverlappingLifecycleRoots/same\n\u0016=== NAME  TestValidateMachineSeparationRejectsOverlappingLifecycleRoots\n\u0016=== RUN   TestValidateMachineSeparationRejectsOverlappingLifecycleRoots/machine_contains_workspace\n\u0016=== PAUSE TestValidateMachineSeparationRejectsOverlappingLifecycleRoots/machine_contains_workspace\n\u0016=== NAME  TestValidateMachineSeparationRejectsOverlappingLifecycleRoots\n\u0016=== RUN   TestValidateMachineSeparationRejectsOverlappingLifecycleRoots/workspace_contains_machine\n\u0016=== PAUSE TestValidateMachineSeparationRejectsOverlappingLifecycleRoots/workspace_contains_machine\n\u0016=== NAME  TestValidateMachineSeparationRejectsOverlappingLifecycleRoots\n\u0016=== CONT  TestValidateMachineSeparationRejectsOverlappingLifecycleRoots/siblings\n\u0016--- PASS: TestValidateMachineSeparationRejectsOverlappingLifecycleRoots/siblings (0.00s)\n\u0016=== CONT  TestOlderBinaryRejectsNewerSchemaBeforeMigrationMutation\n\u0016--- PASS: TestValidateHumanLayoutDetectsEveryLegacyGenerationEntry/.commit.lock (0.00s)\n\u0016=== CONT  TestValidateHumanLayoutAcceptsMissingAndProviderYAMLPaths\n\u0016--- PASS: TestValidateHumanLayoutAcceptsMissingAndProviderYAMLPaths (0.00s)\n\u0016=== CONT  TestProjectRejectsLegacyGenerationLayoutBeforeStaging\n\u0016--- PASS: TestProjectRejectsLegacyGenerationLayoutBeforeStaging (0.00s)\n\u0016=== CONT  TestValidateHumanLayoutDetectsEveryLegacyGenerationEntry/generations\n\u0016--- PASS: TestValidateHumanLayoutDetectsEveryLegacyGenerationEntry/generations (0.00s)\n\u0016=== CONT  TestValidateHumanLayoutDetectsEveryLegacyGenerationEntry/current\n\u0016--- PASS: TestValidateHumanLayoutDetectsEveryLegacyGenerationEntry/current (0.00s)\n\u0016--- PASS: TestValidateHumanLayoutDetectsEveryLegacyGenerationEntry (0.00s)\n\u0016=== CONT  TestEndpointProjectionDriftIsDetectedWithoutOverwrite\n\u0016--- PASS: TestEndpointProjectionDeterministicallyJoinsCanonicalModelToOfferings (0.00s)\n\u0016=== CONT  TestEndpointProjectionIsStableAcrossWorkspaceRoundTrip\n\u0016--- PASS: TestEndpointProjectionIsStableAcrossWorkspaceRoundTrip (0.01s)\n\u0016=== CONT  TestMigrateLegacyLayoutRollbackPreservesRecreatedLegacyPath\n\u0016--- PASS: TestOlderBinaryRejectsNewerSchemaBeforeMigrationMutation (0.01s)\n\u0016=== CONT  TestMigrateLegacyLayoutProjectionFailureRollsBackOwnedWorkspace\n\u0016--- PASS: TestMigrateLegacyLayoutRollbackPreservesRecreatedLegacyPath (0.02s)\n\u0016=== CONT  TestMigrateLegacyLayoutFailureRollsBackExactStore\n\u0016--- PASS: TestMigrateLegacyLayoutFailureRollsBackExactStore (0.02s)\n\u0016=== CONT  TestMigrateLegacyLayoutRelocatesStoreAndProjectsCurrent\n\u0016--- PASS: TestMigrateLegacyLayoutProjectionFailureRollsBackOwnedWorkspace (0.06s)\n\u0016=== CONT  TestValidateMachineSeparationResolvesSymlinkedAncestors\n\u0016--- PASS: TestValidateMachineSeparationResolvesSymlinkedAncestors (0.00s)\n\u0016=== CONT  TestValidateMachineSeparationRejectsOverlappingLifecycleRoots/workspace_contains_machine\n\u0016--- PASS: TestValidateMachineSeparationRejectsOverlappingLifecycleRoots/workspace_contains_machine (0.00s)\n\u0016=== CONT  TestValidateMachineSeparationRejectsOverlappingLifecycleRoots/machine_contains_workspace\n\u0016--- PASS: TestValidateMachineSeparationRejectsOverlappingLifecycleRoots/machine_contains_workspace (0.00s)\n\u0016=== CONT  TestValidateMachineSeparationRejectsOverlappingLifecycleRoots/same\n\u0016--- PASS: TestValidateMachineSeparationRejectsOverlappingLifecycleRoots/same (0.00s)\n\u0016--- PASS: TestValidateMachineSeparationRejectsOverlappingLifecycleRoots (0.00s)\n\u0016=== CONT  TestProjectRejectsCatalogThatDoesNotMatchCommittedPayload\n\u0016--- PASS: TestProjectAtomicallyReplacesValidatedWorkspace (0.08s)\n\u0016=== CONT  TestProjectRejectsWorkspaceSymlink\n\u0016--- PASS: TestProjectRejectsWorkspaceSymlink (0.00s)\n\u0016=== CONT  TestRepairAcknowledgesSwapAfterMarkerFailure\n\u0016--- PASS: TestEndpointProjectionDriftIsDetectedWithoutOverwrite (0.09s)\n\u0016=== CONT  TestRepairDoesNotOverwriteDirtyWorkspace\n\u0016--- PASS: TestProjectRejectsCatalogThatDoesNotMatchCommittedPayload (0.05s)\n\u0016=== CONT  TestRepairStaleUnmodifiedProjection\n\u0016--- PASS: TestMigrateLegacyLayoutRelocatesStoreAndProjectsCurrent (0.08s)\n\u0016=== CONT  TestProjectSeparatesCatalogAndGeneratedEndpointDigests\n\u0016--- PASS: TestRepairDoesNotOverwriteDirtyWorkspace (0.06s)\n\u0016=== CONT  TestProjectRejectsConcurrentSemanticEdit\n\u0016--- PASS: TestProjectSeparatesCatalogAndGeneratedEndpointDigests (0.03s)\n\u0016=== CONT  TestFirstProjectionRejectsWorkspaceCreatedAfterObservation\n\u0016--- PASS: TestFirstProjectionRejectsWorkspaceCreatedAfterObservation (0.00s)\n\u0016=== CONT  TestProjectRejectsSymlinkedWriterLock\n\u0016--- PASS: TestProjectRejectsSymlinkedWriterLock (0.00s)\n\u0016=== CONT  TestProjectExpectedRejectsSemanticEditAfterInputLoad\n\u0016--- PASS: TestRepairAcknowledgesSwapAfterMarkerFailure (0.09s)\n\u0016=== CONT  TestEndpointProjectionEditBeforeProjectExpectedIsPreserved\n\u0016--- PASS: TestProjectExpectedRejectsSemanticEditAfterInputLoad (0.03s)\n\u0016=== CONT  TestProjectFailureBeforePromotePreservesOldWorkspace\n\u0016--- PASS: TestRepairStaleUnmodifiedProjection (0.07s)\n\u0016=== CONT  TestFirstProjectionFailureLeavesWorkspaceAbsent\n\u0016--- PASS: TestFirstProjectionFailureLeavesWorkspaceAbsent (0.01s)\n\u0016--- PASS: TestProjectRejectsConcurrentSemanticEdit (0.05s)\n\u0016--- PASS: TestEndpointProjectionEditBeforeProjectExpectedIsPreserved (0.03s)\n\u0016--- PASS: TestProjectFailureBeforePromotePreservesOldWorkspace (0.03s)\n\u0016PASS\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "docker",
+        "inspect",
+        "--format",
+        "{{json .State}}",
+        "1be3e6160f5bd6aa8beefa014278c81eb350edd69f255ad54778d18a5e72a513"
+      ],
+      "exit_code": 0,
+      "stdout": "{\"Status\":\"exited\",\"Running\":false,\"Paused\":false,\"Restarting\":false,\"OOMKilled\":false,\"Dead\":false,\"Pid\":0,\"ExitCode\":0,\"Error\":\"\",\"StartedAt\":\"2026-09-06T17:51:58.971996126Z\",\"FinishedAt\":\"2026-09-06T17:52:00.172693335Z\"}\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "docker",
+        "rm",
+        "-f",
+        "1be3e6160f5bd6aa8beefa014278c81eb350edd69f255ad54778d18a5e72a513"
+      ],
+      "exit_code": 0,
+      "stdout": "1be3e6160f5bd6aa8beefa014278c81eb350edd69f255ad54778d18a5e72a513\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "docker",
+        "volume",
+        "rm",
+        "csp2-native-e53dfb5994054686b8f6148860a8617c"
+      ],
+      "exit_code": 0,
+      "stdout": "csp2-native-e53dfb5994054686b8f6148860a8617c\n",
+      "stderr": ""
+    }
+  ],
+  "test_events": [
+    {
+      "Time": "2026-09-06T12:52:00.26992-05:00",
+      "Action": "start",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270012-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestEndpointProjectionDeterministicallyJoinsCanonicalModelToOfferings"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270017-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestEndpointProjectionDeterministicallyJoinsCanonicalModelToOfferings",
+      "Output": "=== RUN   TestEndpointProjectionDeterministicallyJoinsCanonicalModelToOfferings\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270022-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestEndpointProjectionDeterministicallyJoinsCanonicalModelToOfferings",
+      "Output": "=== PAUSE TestEndpointProjectionDeterministicallyJoinsCanonicalModelToOfferings\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270023-05:00",
+      "Action": "pause",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestEndpointProjectionDeterministicallyJoinsCanonicalModelToOfferings"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270026-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestEndpointProjectionIsStableAcrossWorkspaceRoundTrip"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270027-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestEndpointProjectionIsStableAcrossWorkspaceRoundTrip",
+      "Output": "=== RUN   TestEndpointProjectionIsStableAcrossWorkspaceRoundTrip\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.27003-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestEndpointProjectionIsStableAcrossWorkspaceRoundTrip",
+      "Output": "=== PAUSE TestEndpointProjectionIsStableAcrossWorkspaceRoundTrip\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270031-05:00",
+      "Action": "pause",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestEndpointProjectionIsStableAcrossWorkspaceRoundTrip"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270033-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestEndpointProjectionDriftIsDetectedWithoutOverwrite"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270035-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestEndpointProjectionDriftIsDetectedWithoutOverwrite",
+      "Output": "=== RUN   TestEndpointProjectionDriftIsDetectedWithoutOverwrite\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270036-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestEndpointProjectionDriftIsDetectedWithoutOverwrite",
+      "Output": "=== PAUSE TestEndpointProjectionDriftIsDetectedWithoutOverwrite\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270037-05:00",
+      "Action": "pause",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestEndpointProjectionDriftIsDetectedWithoutOverwrite"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270038-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestEndpointProjectionEditBeforeProjectExpectedIsPreserved"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.27004-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestEndpointProjectionEditBeforeProjectExpectedIsPreserved",
+      "Output": "=== RUN   TestEndpointProjectionEditBeforeProjectExpectedIsPreserved\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270041-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestEndpointProjectionEditBeforeProjectExpectedIsPreserved",
+      "Output": "=== PAUSE TestEndpointProjectionEditBeforeProjectExpectedIsPreserved\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270042-05:00",
+      "Action": "pause",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestEndpointProjectionEditBeforeProjectExpectedIsPreserved"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270044-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestValidateHumanLayoutDetectsEveryLegacyGenerationEntry"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270046-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestValidateHumanLayoutDetectsEveryLegacyGenerationEntry",
+      "Output": "=== RUN   TestValidateHumanLayoutDetectsEveryLegacyGenerationEntry\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270047-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestValidateHumanLayoutDetectsEveryLegacyGenerationEntry",
+      "Output": "=== PAUSE TestValidateHumanLayoutDetectsEveryLegacyGenerationEntry\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270048-05:00",
+      "Action": "pause",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestValidateHumanLayoutDetectsEveryLegacyGenerationEntry"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270049-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestProjectRejectsLegacyGenerationLayoutBeforeStaging"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270051-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestProjectRejectsLegacyGenerationLayoutBeforeStaging",
+      "Output": "=== RUN   TestProjectRejectsLegacyGenerationLayoutBeforeStaging\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270052-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestProjectRejectsLegacyGenerationLayoutBeforeStaging",
+      "Output": "=== PAUSE TestProjectRejectsLegacyGenerationLayoutBeforeStaging\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270064-05:00",
+      "Action": "pause",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestProjectRejectsLegacyGenerationLayoutBeforeStaging"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270075-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestValidateHumanLayoutAcceptsMissingAndProviderYAMLPaths"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270077-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestValidateHumanLayoutAcceptsMissingAndProviderYAMLPaths",
+      "Output": "=== RUN   TestValidateHumanLayoutAcceptsMissingAndProviderYAMLPaths\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.27008-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestValidateHumanLayoutAcceptsMissingAndProviderYAMLPaths",
+      "Output": "=== PAUSE TestValidateHumanLayoutAcceptsMissingAndProviderYAMLPaths\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270081-05:00",
+      "Action": "pause",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestValidateHumanLayoutAcceptsMissingAndProviderYAMLPaths"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270083-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestValidateMachineSeparationRejectsOverlappingLifecycleRoots"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270084-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestValidateMachineSeparationRejectsOverlappingLifecycleRoots",
+      "Output": "=== RUN   TestValidateMachineSeparationRejectsOverlappingLifecycleRoots\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.27009-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestValidateMachineSeparationRejectsOverlappingLifecycleRoots",
+      "Output": "=== PAUSE TestValidateMachineSeparationRejectsOverlappingLifecycleRoots\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270092-05:00",
+      "Action": "pause",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestValidateMachineSeparationRejectsOverlappingLifecycleRoots"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270093-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestValidateMachineSeparationResolvesSymlinkedAncestors"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270094-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestValidateMachineSeparationResolvesSymlinkedAncestors",
+      "Output": "=== RUN   TestValidateMachineSeparationResolvesSymlinkedAncestors\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270096-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestValidateMachineSeparationResolvesSymlinkedAncestors",
+      "Output": "=== PAUSE TestValidateMachineSeparationResolvesSymlinkedAncestors\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270097-05:00",
+      "Action": "pause",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestValidateMachineSeparationResolvesSymlinkedAncestors"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270098-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestCanonicalHumanWorkspaceIsSeparateFromEveryDefaultMachineRoot"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270099-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestCanonicalHumanWorkspaceIsSeparateFromEveryDefaultMachineRoot",
+      "Output": "=== RUN   TestCanonicalHumanWorkspaceIsSeparateFromEveryDefaultMachineRoot\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270103-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestCanonicalHumanWorkspaceIsSeparateFromEveryDefaultMachineRoot",
+      "Output": "--- PASS: TestCanonicalHumanWorkspaceIsSeparateFromEveryDefaultMachineRoot (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270105-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestCanonicalHumanWorkspaceIsSeparateFromEveryDefaultMachineRoot",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270108-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestMigrateLegacyLayoutRelocatesStoreAndProjectsCurrent"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270109-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestMigrateLegacyLayoutRelocatesStoreAndProjectsCurrent",
+      "Output": "=== RUN   TestMigrateLegacyLayoutRelocatesStoreAndProjectsCurrent\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270111-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestMigrateLegacyLayoutRelocatesStoreAndProjectsCurrent",
+      "Output": "=== PAUSE TestMigrateLegacyLayoutRelocatesStoreAndProjectsCurrent\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270112-05:00",
+      "Action": "pause",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestMigrateLegacyLayoutRelocatesStoreAndProjectsCurrent"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270113-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestMigrateLegacyLayoutFailureRollsBackExactStore"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270115-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestMigrateLegacyLayoutFailureRollsBackExactStore",
+      "Output": "=== RUN   TestMigrateLegacyLayoutFailureRollsBackExactStore\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270116-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestMigrateLegacyLayoutFailureRollsBackExactStore",
+      "Output": "=== PAUSE TestMigrateLegacyLayoutFailureRollsBackExactStore\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270117-05:00",
+      "Action": "pause",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestMigrateLegacyLayoutFailureRollsBackExactStore"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270118-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestMigrateLegacyLayoutProjectionFailureRollsBackOwnedWorkspace"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270123-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestMigrateLegacyLayoutProjectionFailureRollsBackOwnedWorkspace",
+      "Output": "=== RUN   TestMigrateLegacyLayoutProjectionFailureRollsBackOwnedWorkspace\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270124-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestMigrateLegacyLayoutProjectionFailureRollsBackOwnedWorkspace",
+      "Output": "=== PAUSE TestMigrateLegacyLayoutProjectionFailureRollsBackOwnedWorkspace\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270125-05:00",
+      "Action": "pause",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestMigrateLegacyLayoutProjectionFailureRollsBackOwnedWorkspace"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270127-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestMigrateLegacyLayoutRollbackPreservesRecreatedLegacyPath"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270128-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestMigrateLegacyLayoutRollbackPreservesRecreatedLegacyPath",
+      "Output": "=== RUN   TestMigrateLegacyLayoutRollbackPreservesRecreatedLegacyPath\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270129-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestMigrateLegacyLayoutRollbackPreservesRecreatedLegacyPath",
+      "Output": "=== PAUSE TestMigrateLegacyLayoutRollbackPreservesRecreatedLegacyPath\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.27013-05:00",
+      "Action": "pause",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestMigrateLegacyLayoutRollbackPreservesRecreatedLegacyPath"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270131-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestOlderBinaryRejectsNewerSchemaBeforeMigrationMutation"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270133-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestOlderBinaryRejectsNewerSchemaBeforeMigrationMutation",
+      "Output": "=== RUN   TestOlderBinaryRejectsNewerSchemaBeforeMigrationMutation\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270134-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestOlderBinaryRejectsNewerSchemaBeforeMigrationMutation",
+      "Output": "=== PAUSE TestOlderBinaryRejectsNewerSchemaBeforeMigrationMutation\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270135-05:00",
+      "Action": "pause",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestOlderBinaryRejectsNewerSchemaBeforeMigrationMutation"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270136-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceWritersAreExcludedAcrossProcessesWhileReadersRemainAvailable"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270137-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceWritersAreExcludedAcrossProcessesWhileReadersRemainAvailable",
+      "Output": "=== RUN   TestWorkspaceWritersAreExcludedAcrossProcessesWhileReadersRemainAvailable\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270141-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceWritersAreExcludedAcrossProcessesWhileReadersRemainAvailable",
+      "Output": "--- PASS: TestWorkspaceWritersAreExcludedAcrossProcessesWhileReadersRemainAvailable (0.05s)\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270143-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceWritersAreExcludedAcrossProcessesWhileReadersRemainAvailable",
+      "Elapsed": 0.05
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270146-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceWriterLockIsReleasedWhenProcessExits"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270147-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceWriterLockIsReleasedWhenProcessExits",
+      "Output": "=== RUN   TestWorkspaceWriterLockIsReleasedWhenProcessExits\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270149-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceWriterLockIsReleasedWhenProcessExits",
+      "Output": "--- PASS: TestWorkspaceWriterLockIsReleasedWhenProcessExits (0.04s)\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.27015-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceWriterLockIsReleasedWhenProcessExits",
+      "Elapsed": 0.04
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270151-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceWriterProcessHelper"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270153-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceWriterProcessHelper",
+      "Output": "=== RUN   TestWorkspaceWriterProcessHelper\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270154-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceWriterProcessHelper",
+      "Output": "--- PASS: TestWorkspaceWriterProcessHelper (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270155-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceWriterProcessHelper",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270156-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestProjectAtomicallyReplacesValidatedWorkspace"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270157-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestProjectAtomicallyReplacesValidatedWorkspace",
+      "Output": "=== RUN   TestProjectAtomicallyReplacesValidatedWorkspace\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270159-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestProjectAtomicallyReplacesValidatedWorkspace",
+      "Output": "=== PAUSE TestProjectAtomicallyReplacesValidatedWorkspace\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.27016-05:00",
+      "Action": "pause",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestProjectAtomicallyReplacesValidatedWorkspace"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270161-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestProjectFailureBeforePromotePreservesOldWorkspace"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270163-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestProjectFailureBeforePromotePreservesOldWorkspace",
+      "Output": "=== RUN   TestProjectFailureBeforePromotePreservesOldWorkspace\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270166-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestProjectFailureBeforePromotePreservesOldWorkspace",
+      "Output": "=== PAUSE TestProjectFailureBeforePromotePreservesOldWorkspace\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270167-05:00",
+      "Action": "pause",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestProjectFailureBeforePromotePreservesOldWorkspace"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270168-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestFirstProjectionFailureLeavesWorkspaceAbsent"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270169-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestFirstProjectionFailureLeavesWorkspaceAbsent",
+      "Output": "=== RUN   TestFirstProjectionFailureLeavesWorkspaceAbsent\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270171-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestFirstProjectionFailureLeavesWorkspaceAbsent",
+      "Output": "=== PAUSE TestFirstProjectionFailureLeavesWorkspaceAbsent\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270172-05:00",
+      "Action": "pause",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestFirstProjectionFailureLeavesWorkspaceAbsent"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270173-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestFirstProjectionRejectsWorkspaceCreatedAfterObservation"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270174-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestFirstProjectionRejectsWorkspaceCreatedAfterObservation",
+      "Output": "=== RUN   TestFirstProjectionRejectsWorkspaceCreatedAfterObservation\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270175-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestFirstProjectionRejectsWorkspaceCreatedAfterObservation",
+      "Output": "=== PAUSE TestFirstProjectionRejectsWorkspaceCreatedAfterObservation\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270178-05:00",
+      "Action": "pause",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestFirstProjectionRejectsWorkspaceCreatedAfterObservation"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270179-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestProjectExpectedRejectsSemanticEditAfterInputLoad"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.27018-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestProjectExpectedRejectsSemanticEditAfterInputLoad",
+      "Output": "=== RUN   TestProjectExpectedRejectsSemanticEditAfterInputLoad\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270181-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestProjectExpectedRejectsSemanticEditAfterInputLoad",
+      "Output": "=== PAUSE TestProjectExpectedRejectsSemanticEditAfterInputLoad\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270182-05:00",
+      "Action": "pause",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestProjectExpectedRejectsSemanticEditAfterInputLoad"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270184-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestProjectRejectsSymlinkedWriterLock"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.27019-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestProjectRejectsSymlinkedWriterLock",
+      "Output": "=== RUN   TestProjectRejectsSymlinkedWriterLock\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270192-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestProjectRejectsSymlinkedWriterLock",
+      "Output": "=== PAUSE TestProjectRejectsSymlinkedWriterLock\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270194-05:00",
+      "Action": "pause",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestProjectRejectsSymlinkedWriterLock"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270196-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestProjectRejectsCatalogThatDoesNotMatchCommittedPayload"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270197-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestProjectRejectsCatalogThatDoesNotMatchCommittedPayload",
+      "Output": "=== RUN   TestProjectRejectsCatalogThatDoesNotMatchCommittedPayload\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270198-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestProjectRejectsCatalogThatDoesNotMatchCommittedPayload",
+      "Output": "=== PAUSE TestProjectRejectsCatalogThatDoesNotMatchCommittedPayload\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.2702-05:00",
+      "Action": "pause",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestProjectRejectsCatalogThatDoesNotMatchCommittedPayload"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270202-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestProjectRejectsConcurrentSemanticEdit"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270203-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestProjectRejectsConcurrentSemanticEdit",
+      "Output": "=== RUN   TestProjectRejectsConcurrentSemanticEdit\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270205-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestProjectRejectsConcurrentSemanticEdit",
+      "Output": "=== PAUSE TestProjectRejectsConcurrentSemanticEdit\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270206-05:00",
+      "Action": "pause",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestProjectRejectsConcurrentSemanticEdit"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270207-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestProjectSeparatesCatalogAndGeneratedEndpointDigests"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270208-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestProjectSeparatesCatalogAndGeneratedEndpointDigests",
+      "Output": "=== RUN   TestProjectSeparatesCatalogAndGeneratedEndpointDigests\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270209-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestProjectSeparatesCatalogAndGeneratedEndpointDigests",
+      "Output": "=== PAUSE TestProjectSeparatesCatalogAndGeneratedEndpointDigests\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270211-05:00",
+      "Action": "pause",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestProjectSeparatesCatalogAndGeneratedEndpointDigests"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270212-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestRepairStaleUnmodifiedProjection"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270213-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestRepairStaleUnmodifiedProjection",
+      "Output": "=== RUN   TestRepairStaleUnmodifiedProjection\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270214-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestRepairStaleUnmodifiedProjection",
+      "Output": "=== PAUSE TestRepairStaleUnmodifiedProjection\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270215-05:00",
+      "Action": "pause",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestRepairStaleUnmodifiedProjection"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270217-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestRepairDoesNotOverwriteDirtyWorkspace"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270218-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestRepairDoesNotOverwriteDirtyWorkspace",
+      "Output": "=== RUN   TestRepairDoesNotOverwriteDirtyWorkspace\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.27022-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestRepairDoesNotOverwriteDirtyWorkspace",
+      "Output": "=== PAUSE TestRepairDoesNotOverwriteDirtyWorkspace\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270221-05:00",
+      "Action": "pause",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestRepairDoesNotOverwriteDirtyWorkspace"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270222-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestRepairAcknowledgesSwapAfterMarkerFailure"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270223-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestRepairAcknowledgesSwapAfterMarkerFailure",
+      "Output": "=== RUN   TestRepairAcknowledgesSwapAfterMarkerFailure\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270225-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestRepairAcknowledgesSwapAfterMarkerFailure",
+      "Output": "=== PAUSE TestRepairAcknowledgesSwapAfterMarkerFailure\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270226-05:00",
+      "Action": "pause",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestRepairAcknowledgesSwapAfterMarkerFailure"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270227-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestProjectRejectsWorkspaceSymlink"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270229-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestProjectRejectsWorkspaceSymlink",
+      "Output": "=== RUN   TestProjectRejectsWorkspaceSymlink\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.27023-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestProjectRejectsWorkspaceSymlink",
+      "Output": "=== PAUSE TestProjectRejectsWorkspaceSymlink\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270231-05:00",
+      "Action": "pause",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestProjectRejectsWorkspaceSymlink"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270232-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestProjectPreservesDirectoryCreatedAtPublication"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270233-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestProjectPreservesDirectoryCreatedAtPublication",
+      "Output": "=== RUN   TestProjectPreservesDirectoryCreatedAtPublication\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270236-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestProjectPreservesDirectoryCreatedAtPublication",
+      "Output": "--- PASS: TestProjectPreservesDirectoryCreatedAtPublication (0.01s)\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270237-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestProjectPreservesDirectoryCreatedAtPublication",
+      "Elapsed": 0.01
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270238-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestProjectRefusesCancellationBeforePublication"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270244-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestProjectRefusesCancellationBeforePublication",
+      "Output": "=== RUN   TestProjectRefusesCancellationBeforePublication\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270249-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestProjectRefusesCancellationBeforePublication/first"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.27025-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestProjectRefusesCancellationBeforePublication/first",
+      "Output": "=== RUN   TestProjectRefusesCancellationBeforePublication/first\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270253-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestProjectRefusesCancellationBeforePublication/first",
+      "Output": "--- PASS: TestProjectRefusesCancellationBeforePublication/first (0.01s)\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270254-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestProjectRefusesCancellationBeforePublication/first",
+      "Elapsed": 0.01
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270256-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestProjectRefusesCancellationBeforePublication/replacement"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270261-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestProjectRefusesCancellationBeforePublication/replacement",
+      "Output": "=== RUN   TestProjectRefusesCancellationBeforePublication/replacement\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270263-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestProjectRefusesCancellationBeforePublication/replacement",
+      "Output": "--- PASS: TestProjectRefusesCancellationBeforePublication/replacement (0.02s)\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270265-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestProjectRefusesCancellationBeforePublication/replacement",
+      "Elapsed": 0.02
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270266-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestProjectRefusesCancellationBeforePublication",
+      "Output": "--- PASS: TestProjectRefusesCancellationBeforePublication (0.03s)\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270267-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestProjectRefusesCancellationBeforePublication",
+      "Elapsed": 0.03
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270269-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestReadRefusesActiveWriterProcess"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.27027-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestReadRefusesActiveWriterProcess",
+      "Output": "=== RUN   TestReadRefusesActiveWriterProcess\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270271-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestReadRefusesActiveWriterProcess",
+      "Output": "--- PASS: TestReadRefusesActiveWriterProcess (0.02s)\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270273-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestReadRefusesActiveWriterProcess",
+      "Elapsed": 0.02
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270274-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestReaderProcessBlocksWriterAndReleasesLockOnExit"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270275-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestReaderProcessBlocksWriterAndReleasesLockOnExit",
+      "Output": "=== RUN   TestReaderProcessBlocksWriterAndReleasesLockOnExit\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270279-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestReaderProcessBlocksWriterAndReleasesLockOnExit",
+      "Output": "--- PASS: TestReaderProcessBlocksWriterAndReleasesLockOnExit (0.02s)\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270281-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestReaderProcessBlocksWriterAndReleasesLockOnExit",
+      "Elapsed": 0.02
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270282-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceReaderProcessHelper"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270283-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceReaderProcessHelper",
+      "Output": "=== RUN   TestWorkspaceReaderProcessHelper\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270285-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceReaderProcessHelper",
+      "Output": "--- PASS: TestWorkspaceReaderProcessHelper (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270286-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceReaderProcessHelper",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270288-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestReadRefusesPendingReplacement"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270289-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestReadRefusesPendingReplacement",
+      "Output": "=== RUN   TestReadRefusesPendingReplacement\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.27029-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestReadRefusesPendingReplacement",
+      "Output": "--- PASS: TestReadRefusesPendingReplacement (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270292-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestReadRefusesPendingReplacement",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270293-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestReadPreservesPassiveFiles"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270294-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestReadPreservesPassiveFiles",
+      "Output": "=== RUN   TestReadPreservesPassiveFiles\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.2703-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestReadPreservesPassiveFiles/absent_parent"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270301-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestReadPreservesPassiveFiles/absent_parent",
+      "Output": "=== RUN   TestReadPreservesPassiveFiles/absent_parent\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270303-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestReadPreservesPassiveFiles/absent_parent",
+      "Output": "--- PASS: TestReadPreservesPassiveFiles/absent_parent (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270305-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestReadPreservesPassiveFiles/absent_parent",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270306-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestReadPreservesPassiveFiles/absent"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270307-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestReadPreservesPassiveFiles/absent",
+      "Output": "=== RUN   TestReadPreservesPassiveFiles/absent\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270308-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestReadPreservesPassiveFiles/absent",
+      "Output": "--- PASS: TestReadPreservesPassiveFiles/absent (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.27031-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestReadPreservesPassiveFiles/absent",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270311-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestReadPreservesPassiveFiles/authored"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270312-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestReadPreservesPassiveFiles/authored",
+      "Output": "=== RUN   TestReadPreservesPassiveFiles/authored\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270314-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestReadPreservesPassiveFiles/authored",
+      "Output": "--- PASS: TestReadPreservesPassiveFiles/authored (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270315-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestReadPreservesPassiveFiles/authored",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270316-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestReadPreservesPassiveFiles/existing_lock"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270318-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestReadPreservesPassiveFiles/existing_lock",
+      "Output": "=== RUN   TestReadPreservesPassiveFiles/existing_lock\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270319-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestReadPreservesPassiveFiles/existing_lock",
+      "Output": "--- PASS: TestReadPreservesPassiveFiles/existing_lock (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.27032-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestReadPreservesPassiveFiles/existing_lock",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270324-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestReadPreservesPassiveFiles",
+      "Output": "--- PASS: TestReadPreservesPassiveFiles (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270325-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestReadPreservesPassiveFiles",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270326-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestReadExcludesWritersUntilCallbackReturns"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270328-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestReadExcludesWritersUntilCallbackReturns",
+      "Output": "=== RUN   TestReadExcludesWritersUntilCallbackReturns\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270329-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestReadExcludesWritersUntilCallbackReturns/success"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.27033-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestReadExcludesWritersUntilCallbackReturns/success",
+      "Output": "=== RUN   TestReadExcludesWritersUntilCallbackReturns/success\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270331-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestReadExcludesWritersUntilCallbackReturns/success",
+      "Output": "--- PASS: TestReadExcludesWritersUntilCallbackReturns/success (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270333-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestReadExcludesWritersUntilCallbackReturns/success",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270334-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestReadExcludesWritersUntilCallbackReturns/callback_error"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270335-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestReadExcludesWritersUntilCallbackReturns/callback_error",
+      "Output": "=== RUN   TestReadExcludesWritersUntilCallbackReturns/callback_error\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270337-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestReadExcludesWritersUntilCallbackReturns/callback_error",
+      "Output": "--- PASS: TestReadExcludesWritersUntilCallbackReturns/callback_error (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270338-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestReadExcludesWritersUntilCallbackReturns/callback_error",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T12:52:00.27034-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestReadExcludesWritersUntilCallbackReturns",
+      "Output": "--- PASS: TestReadExcludesWritersUntilCallbackReturns (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270341-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestReadExcludesWritersUntilCallbackReturns",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270343-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestReadDetectsFirstWriterAfterItFinishes"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270344-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestReadDetectsFirstWriterAfterItFinishes",
+      "Output": "=== RUN   TestReadDetectsFirstWriterAfterItFinishes\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270345-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestReadDetectsFirstWriterAfterItFinishes",
+      "Output": "--- PASS: TestReadDetectsFirstWriterAfterItFinishes (0.01s)\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270347-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestReadDetectsFirstWriterAfterItFinishes",
+      "Elapsed": 0.01
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270348-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestReadDetectsFirstWriterWithoutDirectoryChange"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270349-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestReadDetectsFirstWriterWithoutDirectoryChange",
+      "Output": "=== RUN   TestReadDetectsFirstWriterWithoutDirectoryChange\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.27035-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestReadDetectsFirstWriterWithoutDirectoryChange",
+      "Output": "--- PASS: TestReadDetectsFirstWriterWithoutDirectoryChange (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270354-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestReadDetectsFirstWriterWithoutDirectoryChange",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270356-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestReadDetectsExternalDirectoryReplacement"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270357-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestReadDetectsExternalDirectoryReplacement",
+      "Output": "=== RUN   TestReadDetectsExternalDirectoryReplacement\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270358-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestReadDetectsExternalDirectoryReplacement",
+      "Output": "--- PASS: TestReadDetectsExternalDirectoryReplacement (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.27036-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestReadDetectsExternalDirectoryReplacement",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270361-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestReadRefusesInvalidLockWithoutReading"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270363-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestReadRefusesInvalidLockWithoutReading",
+      "Output": "=== RUN   TestReadRefusesInvalidLockWithoutReading\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270364-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestReadRefusesInvalidLockWithoutReading",
+      "Output": "--- PASS: TestReadRefusesInvalidLockWithoutReading (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270365-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestReadRefusesInvalidLockWithoutReading",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270367-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestReadCancellationAndCallbackValidation"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270368-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestReadCancellationAndCallbackValidation",
+      "Output": "=== RUN   TestReadCancellationAndCallbackValidation\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270369-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestReadCancellationAndCallbackValidation",
+      "Output": "--- PASS: TestReadCancellationAndCallbackValidation (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270371-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestReadCancellationAndCallbackValidation",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270372-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestObserveInputRefusesActiveWriter"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270373-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestObserveInputRefusesActiveWriter",
+      "Output": "=== RUN   TestObserveInputRefusesActiveWriter\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270374-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestObserveInputRefusesActiveWriter/absent"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270375-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestObserveInputRefusesActiveWriter/absent",
+      "Output": "=== RUN   TestObserveInputRefusesActiveWriter/absent\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270377-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestObserveInputRefusesActiveWriter/absent",
+      "Output": "--- PASS: TestObserveInputRefusesActiveWriter/absent (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270379-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestObserveInputRefusesActiveWriter/absent",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270382-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestObserveInputRefusesActiveWriter/present"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270385-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestObserveInputRefusesActiveWriter/present",
+      "Output": "=== RUN   TestObserveInputRefusesActiveWriter/present\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270386-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestObserveInputRefusesActiveWriter/present",
+      "Output": "--- PASS: TestObserveInputRefusesActiveWriter/present (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270387-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestObserveInputRefusesActiveWriter/present",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270388-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestObserveInputRefusesActiveWriter",
+      "Output": "--- PASS: TestObserveInputRefusesActiveWriter (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270389-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestObserveInputRefusesActiveWriter",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T12:52:00.27039-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestJournalRecoveryRefusesCopiedCandidateIdentity"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270391-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestJournalRecoveryRefusesCopiedCandidateIdentity",
+      "Output": "=== RUN   TestJournalRecoveryRefusesCopiedCandidateIdentity\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270393-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestJournalRecoveryRefusesCopiedCandidateIdentity",
+      "Output": "--- PASS: TestJournalRecoveryRefusesCopiedCandidateIdentity (0.03s)\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270394-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestJournalRecoveryRefusesCopiedCandidateIdentity",
+      "Elapsed": 0.03
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270395-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestJournalRecoveryValidatesMarkerBeforeMovingWorkspace"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270396-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestJournalRecoveryValidatesMarkerBeforeMovingWorkspace",
+      "Output": "=== RUN   TestJournalRecoveryValidatesMarkerBeforeMovingWorkspace\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270398-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestJournalRecoveryValidatesMarkerBeforeMovingWorkspace",
+      "Output": "--- PASS: TestJournalRecoveryValidatesMarkerBeforeMovingWorkspace (0.02s)\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270399-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestJournalRecoveryValidatesMarkerBeforeMovingWorkspace",
+      "Elapsed": 0.02
+    },
+    {
+      "Time": "2026-09-06T12:52:00.2704-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestJournalCleanupPreservesChangedBackup"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270402-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestJournalCleanupPreservesChangedBackup",
+      "Output": "=== RUN   TestJournalCleanupPreservesChangedBackup\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270403-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestJournalCleanupPreservesChangedBackup",
+      "Output": "--- PASS: TestJournalCleanupPreservesChangedBackup (0.03s)\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270404-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestJournalCleanupPreservesChangedBackup",
+      "Elapsed": 0.03
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270405-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestJournalRecoveryRestoresOldTreeWhenCandidateIsMissing"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270406-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestJournalRecoveryRestoresOldTreeWhenCandidateIsMissing",
+      "Output": "=== RUN   TestJournalRecoveryRestoresOldTreeWhenCandidateIsMissing\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270408-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestJournalRecoveryRestoresOldTreeWhenCandidateIsMissing",
+      "Output": "--- PASS: TestJournalRecoveryRestoresOldTreeWhenCandidateIsMissing (0.02s)\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270409-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestJournalRecoveryRestoresOldTreeWhenCandidateIsMissing",
+      "Elapsed": 0.02
+    },
+    {
+      "Time": "2026-09-06T12:52:00.27041-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestJournalRecoveryRefusesCorruptIntentWithoutChanges"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270411-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestJournalRecoveryRefusesCorruptIntentWithoutChanges",
+      "Output": "=== RUN   TestJournalRecoveryRefusesCorruptIntentWithoutChanges\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270413-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestJournalRecoveryRefusesCorruptIntentWithoutChanges",
+      "Output": "--- PASS: TestJournalRecoveryRefusesCorruptIntentWithoutChanges (0.02s)\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270414-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestJournalRecoveryRefusesCorruptIntentWithoutChanges",
+      "Elapsed": 0.02
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270415-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestJournalRecoveryRefusesInvalidBindingsWithoutChanges"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270417-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestJournalRecoveryRefusesInvalidBindingsWithoutChanges",
+      "Output": "=== RUN   TestJournalRecoveryRefusesInvalidBindingsWithoutChanges\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270418-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestJournalRecoveryRefusesInvalidBindingsWithoutChanges/unsupported_version"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270419-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestJournalRecoveryRefusesInvalidBindingsWithoutChanges/unsupported_version",
+      "Output": "=== RUN   TestJournalRecoveryRefusesInvalidBindingsWithoutChanges/unsupported_version\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.27042-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestJournalRecoveryRefusesInvalidBindingsWithoutChanges/unsupported_version",
+      "Output": "--- PASS: TestJournalRecoveryRefusesInvalidBindingsWithoutChanges/unsupported_version (0.02s)\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270422-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestJournalRecoveryRefusesInvalidBindingsWithoutChanges/unsupported_version",
+      "Elapsed": 0.02
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270427-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestJournalRecoveryRefusesInvalidBindingsWithoutChanges/different_workspace"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270428-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestJournalRecoveryRefusesInvalidBindingsWithoutChanges/different_workspace",
+      "Output": "=== RUN   TestJournalRecoveryRefusesInvalidBindingsWithoutChanges/different_workspace\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.27043-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestJournalRecoveryRefusesInvalidBindingsWithoutChanges/different_workspace",
+      "Output": "--- PASS: TestJournalRecoveryRefusesInvalidBindingsWithoutChanges/different_workspace (0.02s)\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270431-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestJournalRecoveryRefusesInvalidBindingsWithoutChanges/different_workspace",
+      "Elapsed": 0.02
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270433-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestJournalRecoveryRefusesInvalidBindingsWithoutChanges/candidate_traversal"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270436-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestJournalRecoveryRefusesInvalidBindingsWithoutChanges/candidate_traversal",
+      "Output": "=== RUN   TestJournalRecoveryRefusesInvalidBindingsWithoutChanges/candidate_traversal\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270438-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestJournalRecoveryRefusesInvalidBindingsWithoutChanges/candidate_traversal",
+      "Output": "--- PASS: TestJournalRecoveryRefusesInvalidBindingsWithoutChanges/candidate_traversal (0.02s)\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270439-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestJournalRecoveryRefusesInvalidBindingsWithoutChanges/candidate_traversal",
+      "Elapsed": 0.02
+    },
+    {
+      "Time": "2026-09-06T12:52:00.27044-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestJournalRecoveryRefusesInvalidBindingsWithoutChanges/backup_traversal"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270441-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestJournalRecoveryRefusesInvalidBindingsWithoutChanges/backup_traversal",
+      "Output": "=== RUN   TestJournalRecoveryRefusesInvalidBindingsWithoutChanges/backup_traversal\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270443-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestJournalRecoveryRefusesInvalidBindingsWithoutChanges/backup_traversal",
+      "Output": "--- PASS: TestJournalRecoveryRefusesInvalidBindingsWithoutChanges/backup_traversal (0.03s)\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270444-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestJournalRecoveryRefusesInvalidBindingsWithoutChanges/backup_traversal",
+      "Elapsed": 0.03
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270446-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestJournalRecoveryRefusesInvalidBindingsWithoutChanges/same_directory_identity"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270447-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestJournalRecoveryRefusesInvalidBindingsWithoutChanges/same_directory_identity",
+      "Output": "=== RUN   TestJournalRecoveryRefusesInvalidBindingsWithoutChanges/same_directory_identity\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270448-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestJournalRecoveryRefusesInvalidBindingsWithoutChanges/same_directory_identity",
+      "Output": "--- PASS: TestJournalRecoveryRefusesInvalidBindingsWithoutChanges/same_directory_identity (0.02s)\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.27045-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestJournalRecoveryRefusesInvalidBindingsWithoutChanges/same_directory_identity",
+      "Elapsed": 0.02
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270452-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestJournalRecoveryRefusesInvalidBindingsWithoutChanges/inventory_digest"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270453-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestJournalRecoveryRefusesInvalidBindingsWithoutChanges/inventory_digest",
+      "Output": "=== RUN   TestJournalRecoveryRefusesInvalidBindingsWithoutChanges/inventory_digest\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270454-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestJournalRecoveryRefusesInvalidBindingsWithoutChanges/inventory_digest",
+      "Output": "--- PASS: TestJournalRecoveryRefusesInvalidBindingsWithoutChanges/inventory_digest (0.03s)\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270455-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestJournalRecoveryRefusesInvalidBindingsWithoutChanges/inventory_digest",
+      "Elapsed": 0.03
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270457-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestJournalRecoveryRefusesInvalidBindingsWithoutChanges",
+      "Output": "--- PASS: TestJournalRecoveryRefusesInvalidBindingsWithoutChanges (0.14s)\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270458-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestJournalRecoveryRefusesInvalidBindingsWithoutChanges",
+      "Elapsed": 0.14
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270459-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestJournalCancellationRetainsRecoveryState"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.27046-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestJournalCancellationRetainsRecoveryState",
+      "Output": "=== RUN   TestJournalCancellationRetainsRecoveryState\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270462-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestJournalCancellationRetainsRecoveryState/backup_moved"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270463-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestJournalCancellationRetainsRecoveryState/backup_moved",
+      "Output": "=== RUN   TestJournalCancellationRetainsRecoveryState/backup_moved\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270464-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestJournalCancellationRetainsRecoveryState/backup_moved",
+      "Output": "--- PASS: TestJournalCancellationRetainsRecoveryState/backup_moved (0.03s)\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270465-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestJournalCancellationRetainsRecoveryState/backup_moved",
+      "Elapsed": 0.03
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270467-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestJournalCancellationRetainsRecoveryState/candidate_installed"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270468-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestJournalCancellationRetainsRecoveryState/candidate_installed",
+      "Output": "=== RUN   TestJournalCancellationRetainsRecoveryState/candidate_installed\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270469-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestJournalCancellationRetainsRecoveryState/candidate_installed",
+      "Output": "--- PASS: TestJournalCancellationRetainsRecoveryState/candidate_installed (0.02s)\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270479-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestJournalCancellationRetainsRecoveryState/candidate_installed",
+      "Elapsed": 0.02
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270483-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestJournalCancellationRetainsRecoveryState",
+      "Output": "--- PASS: TestJournalCancellationRetainsRecoveryState (0.05s)\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270486-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestJournalCancellationRetainsRecoveryState",
+      "Elapsed": 0.05
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270488-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestJournalReplacementRecoversAfterProcessExit"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270489-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestJournalReplacementRecoversAfterProcessExit",
+      "Output": "=== RUN   TestJournalReplacementRecoversAfterProcessExit\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.27049-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestJournalReplacementRecoversAfterProcessExit/journal_saved"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270493-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestJournalReplacementRecoversAfterProcessExit/journal_saved",
+      "Output": "=== RUN   TestJournalReplacementRecoversAfterProcessExit/journal_saved\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270495-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestJournalReplacementRecoversAfterProcessExit/journal_saved",
+      "Output": "--- PASS: TestJournalReplacementRecoversAfterProcessExit/journal_saved (0.04s)\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270496-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestJournalReplacementRecoversAfterProcessExit/journal_saved",
+      "Elapsed": 0.04
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270499-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestJournalReplacementRecoversAfterProcessExit/backup_moved"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.2705-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestJournalReplacementRecoversAfterProcessExit/backup_moved",
+      "Output": "=== RUN   TestJournalReplacementRecoversAfterProcessExit/backup_moved\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270502-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestJournalReplacementRecoversAfterProcessExit/backup_moved",
+      "Output": "--- PASS: TestJournalReplacementRecoversAfterProcessExit/backup_moved (0.03s)\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270503-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestJournalReplacementRecoversAfterProcessExit/backup_moved",
+      "Elapsed": 0.03
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270505-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestJournalReplacementRecoversAfterProcessExit/candidate_installed"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270506-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestJournalReplacementRecoversAfterProcessExit/candidate_installed",
+      "Output": "=== RUN   TestJournalReplacementRecoversAfterProcessExit/candidate_installed\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270507-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestJournalReplacementRecoversAfterProcessExit/candidate_installed",
+      "Output": "--- PASS: TestJournalReplacementRecoversAfterProcessExit/candidate_installed (0.03s)\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270512-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestJournalReplacementRecoversAfterProcessExit/candidate_installed",
+      "Elapsed": 0.03
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270513-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestJournalReplacementRecoversAfterProcessExit/marker_saved"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270514-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestJournalReplacementRecoversAfterProcessExit/marker_saved",
+      "Output": "=== RUN   TestJournalReplacementRecoversAfterProcessExit/marker_saved\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270516-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestJournalReplacementRecoversAfterProcessExit/marker_saved",
+      "Output": "--- PASS: TestJournalReplacementRecoversAfterProcessExit/marker_saved (0.04s)\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270517-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestJournalReplacementRecoversAfterProcessExit/marker_saved",
+      "Elapsed": 0.04
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270519-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestJournalReplacementRecoversAfterProcessExit/backup_entry_removed"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.27052-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestJournalReplacementRecoversAfterProcessExit/backup_entry_removed",
+      "Output": "=== RUN   TestJournalReplacementRecoversAfterProcessExit/backup_entry_removed\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270522-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestJournalReplacementRecoversAfterProcessExit/backup_entry_removed",
+      "Output": "--- PASS: TestJournalReplacementRecoversAfterProcessExit/backup_entry_removed (0.04s)\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270527-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestJournalReplacementRecoversAfterProcessExit/backup_entry_removed",
+      "Elapsed": 0.04
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270528-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestJournalReplacementRecoversAfterProcessExit/backup_removed"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270529-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestJournalReplacementRecoversAfterProcessExit/backup_removed",
+      "Output": "=== RUN   TestJournalReplacementRecoversAfterProcessExit/backup_removed\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270531-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestJournalReplacementRecoversAfterProcessExit/backup_removed",
+      "Output": "--- PASS: TestJournalReplacementRecoversAfterProcessExit/backup_removed (0.04s)\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270532-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestJournalReplacementRecoversAfterProcessExit/backup_removed",
+      "Elapsed": 0.04
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270533-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestJournalReplacementRecoversAfterProcessExit",
+      "Output": "--- PASS: TestJournalReplacementRecoversAfterProcessExit (0.21s)\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270535-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestJournalReplacementRecoversAfterProcessExit",
+      "Elapsed": 0.21
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270536-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestJournalReplacementProcessHelper"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270537-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestJournalReplacementProcessHelper",
+      "Output": "=== RUN   TestJournalReplacementProcessHelper\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270539-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestJournalReplacementProcessHelper",
+      "Output": "--- PASS: TestJournalReplacementProcessHelper (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270541-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestJournalReplacementProcessHelper",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270542-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestJournalReplacementPreservesOperatorFiles"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270543-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestJournalReplacementPreservesOperatorFiles",
+      "Output": "=== RUN   TestJournalReplacementPreservesOperatorFiles\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270545-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestJournalReplacementPreservesOperatorFiles",
+      "Output": "--- PASS: TestJournalReplacementPreservesOperatorFiles (0.03s)\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270546-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestJournalReplacementPreservesOperatorFiles",
+      "Elapsed": 0.03
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270547-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestJournalReplacementRecoversEachPhase"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270548-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestJournalReplacementRecoversEachPhase",
+      "Output": "=== RUN   TestJournalReplacementRecoversEachPhase\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.27055-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestJournalReplacementRecoversEachPhase/journal_saved"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270551-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestJournalReplacementRecoversEachPhase/journal_saved",
+      "Output": "=== RUN   TestJournalReplacementRecoversEachPhase/journal_saved\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270553-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestJournalReplacementRecoversEachPhase/journal_saved",
+      "Output": "--- PASS: TestJournalReplacementRecoversEachPhase/journal_saved (0.03s)\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270554-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestJournalReplacementRecoversEachPhase/journal_saved",
+      "Elapsed": 0.03
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270555-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestJournalReplacementRecoversEachPhase/backup_moved"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270556-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestJournalReplacementRecoversEachPhase/backup_moved",
+      "Output": "=== RUN   TestJournalReplacementRecoversEachPhase/backup_moved\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270559-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestJournalReplacementRecoversEachPhase/backup_moved",
+      "Output": "--- PASS: TestJournalReplacementRecoversEachPhase/backup_moved (0.03s)\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.27056-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestJournalReplacementRecoversEachPhase/backup_moved",
+      "Elapsed": 0.03
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270561-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestJournalReplacementRecoversEachPhase/candidate_installed"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270562-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestJournalReplacementRecoversEachPhase/candidate_installed",
+      "Output": "=== RUN   TestJournalReplacementRecoversEachPhase/candidate_installed\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270566-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestJournalReplacementRecoversEachPhase/candidate_installed",
+      "Output": "--- PASS: TestJournalReplacementRecoversEachPhase/candidate_installed (0.03s)\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270567-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestJournalReplacementRecoversEachPhase/candidate_installed",
+      "Elapsed": 0.03
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270569-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestJournalReplacementRecoversEachPhase/marker_saved"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270571-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestJournalReplacementRecoversEachPhase/marker_saved",
+      "Output": "=== RUN   TestJournalReplacementRecoversEachPhase/marker_saved\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270572-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestJournalReplacementRecoversEachPhase/marker_saved",
+      "Output": "--- PASS: TestJournalReplacementRecoversEachPhase/marker_saved (0.03s)\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270573-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestJournalReplacementRecoversEachPhase/marker_saved",
+      "Elapsed": 0.03
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270578-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestJournalReplacementRecoversEachPhase/backup_entry_removed"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270579-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestJournalReplacementRecoversEachPhase/backup_entry_removed",
+      "Output": "=== RUN   TestJournalReplacementRecoversEachPhase/backup_entry_removed\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270581-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestJournalReplacementRecoversEachPhase/backup_entry_removed",
+      "Output": "--- PASS: TestJournalReplacementRecoversEachPhase/backup_entry_removed (0.03s)\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270582-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestJournalReplacementRecoversEachPhase/backup_entry_removed",
+      "Elapsed": 0.03
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270583-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestJournalReplacementRecoversEachPhase/backup_removed"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270585-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestJournalReplacementRecoversEachPhase/backup_removed",
+      "Output": "=== RUN   TestJournalReplacementRecoversEachPhase/backup_removed\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270586-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestJournalReplacementRecoversEachPhase/backup_removed",
+      "Output": "--- PASS: TestJournalReplacementRecoversEachPhase/backup_removed (0.03s)\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270587-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestJournalReplacementRecoversEachPhase/backup_removed",
+      "Elapsed": 0.03
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270589-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestJournalReplacementRecoversEachPhase",
+      "Output": "--- PASS: TestJournalReplacementRecoversEachPhase (0.17s)\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.27059-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestJournalReplacementRecoversEachPhase",
+      "Elapsed": 0.17
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270592-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestJournalReplacementRefusesLateOperatorEdits"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270593-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestJournalReplacementRefusesLateOperatorEdits",
+      "Output": "=== RUN   TestJournalReplacementRefusesLateOperatorEdits\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270594-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestJournalReplacementRefusesLateOperatorEdits",
+      "Output": "--- PASS: TestJournalReplacementRefusesLateOperatorEdits (0.02s)\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270595-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestJournalReplacementRefusesLateOperatorEdits",
+      "Elapsed": 0.02
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270597-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestJournalRecoveryPreservesUnexpectedWorkspace"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270598-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestJournalRecoveryPreservesUnexpectedWorkspace",
+      "Output": "=== RUN   TestJournalRecoveryPreservesUnexpectedWorkspace\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270599-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestJournalRecoveryPreservesUnexpectedWorkspace",
+      "Output": "--- PASS: TestJournalRecoveryPreservesUnexpectedWorkspace (0.02s)\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270602-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestJournalRecoveryPreservesUnexpectedWorkspace",
+      "Elapsed": 0.02
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270603-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestTreeSnapshotBindsIdentityAndOperatorBytes"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270604-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestTreeSnapshotBindsIdentityAndOperatorBytes",
+      "Output": "=== RUN   TestTreeSnapshotBindsIdentityAndOperatorBytes\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270608-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestTreeSnapshotBindsIdentityAndOperatorBytes",
+      "Output": "--- PASS: TestTreeSnapshotBindsIdentityAndOperatorBytes (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270609-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestTreeSnapshotBindsIdentityAndOperatorBytes",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T12:52:00.27061-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestTreeSnapshotEnforcesResourceBoundsAndCancellation"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270612-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestTreeSnapshotEnforcesResourceBoundsAndCancellation",
+      "Output": "=== RUN   TestTreeSnapshotEnforcesResourceBoundsAndCancellation\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270613-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestTreeSnapshotEnforcesResourceBoundsAndCancellation",
+      "Output": "--- PASS: TestTreeSnapshotEnforcesResourceBoundsAndCancellation (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270615-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestTreeSnapshotEnforcesResourceBoundsAndCancellation",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270616-05:00",
+      "Action": "cont",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestEndpointProjectionDeterministicallyJoinsCanonicalModelToOfferings"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270617-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestEndpointProjectionDeterministicallyJoinsCanonicalModelToOfferings",
+      "Output": "=== CONT  TestEndpointProjectionDeterministicallyJoinsCanonicalModelToOfferings\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270618-05:00",
+      "Action": "cont",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestProjectAtomicallyReplacesValidatedWorkspace"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270619-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestProjectAtomicallyReplacesValidatedWorkspace",
+      "Output": "=== CONT  TestProjectAtomicallyReplacesValidatedWorkspace\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270621-05:00",
+      "Action": "cont",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestValidateMachineSeparationRejectsOverlappingLifecycleRoots"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270622-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestValidateMachineSeparationRejectsOverlappingLifecycleRoots",
+      "Output": "=== CONT  TestValidateMachineSeparationRejectsOverlappingLifecycleRoots\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270624-05:00",
+      "Action": "cont",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestValidateHumanLayoutDetectsEveryLegacyGenerationEntry"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270626-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestValidateHumanLayoutDetectsEveryLegacyGenerationEntry",
+      "Output": "=== CONT  TestValidateHumanLayoutDetectsEveryLegacyGenerationEntry\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270627-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestValidateHumanLayoutDetectsEveryLegacyGenerationEntry/.commit.lock"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270629-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestValidateHumanLayoutDetectsEveryLegacyGenerationEntry/.commit.lock",
+      "Output": "=== RUN   TestValidateHumanLayoutDetectsEveryLegacyGenerationEntry/.commit.lock\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270631-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestValidateHumanLayoutDetectsEveryLegacyGenerationEntry/.commit.lock",
+      "Output": "=== PAUSE TestValidateHumanLayoutDetectsEveryLegacyGenerationEntry/.commit.lock\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270632-05:00",
+      "Action": "pause",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestValidateHumanLayoutDetectsEveryLegacyGenerationEntry/.commit.lock"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270634-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestValidateHumanLayoutDetectsEveryLegacyGenerationEntry/current"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270635-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestValidateHumanLayoutDetectsEveryLegacyGenerationEntry/current",
+      "Output": "=== RUN   TestValidateHumanLayoutDetectsEveryLegacyGenerationEntry/current\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270636-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestValidateHumanLayoutDetectsEveryLegacyGenerationEntry/current",
+      "Output": "=== PAUSE TestValidateHumanLayoutDetectsEveryLegacyGenerationEntry/current\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.27064-05:00",
+      "Action": "pause",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestValidateHumanLayoutDetectsEveryLegacyGenerationEntry/current"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270641-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestValidateHumanLayoutDetectsEveryLegacyGenerationEntry/generations"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270643-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestValidateHumanLayoutDetectsEveryLegacyGenerationEntry/generations",
+      "Output": "=== RUN   TestValidateHumanLayoutDetectsEveryLegacyGenerationEntry/generations\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270644-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestValidateHumanLayoutDetectsEveryLegacyGenerationEntry/generations",
+      "Output": "=== PAUSE TestValidateHumanLayoutDetectsEveryLegacyGenerationEntry/generations\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270645-05:00",
+      "Action": "pause",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestValidateHumanLayoutDetectsEveryLegacyGenerationEntry/generations"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270647-05:00",
+      "Action": "cont",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestValidateHumanLayoutDetectsEveryLegacyGenerationEntry/.commit.lock"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270648-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestValidateHumanLayoutDetectsEveryLegacyGenerationEntry/.commit.lock",
+      "Output": "=== CONT  TestValidateHumanLayoutDetectsEveryLegacyGenerationEntry/.commit.lock\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270649-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestValidateMachineSeparationRejectsOverlappingLifecycleRoots/siblings"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.27065-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestValidateMachineSeparationRejectsOverlappingLifecycleRoots/siblings",
+      "Output": "=== RUN   TestValidateMachineSeparationRejectsOverlappingLifecycleRoots/siblings\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270652-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestValidateMachineSeparationRejectsOverlappingLifecycleRoots/siblings",
+      "Output": "=== PAUSE TestValidateMachineSeparationRejectsOverlappingLifecycleRoots/siblings\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270653-05:00",
+      "Action": "pause",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestValidateMachineSeparationRejectsOverlappingLifecycleRoots/siblings"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270654-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestValidateMachineSeparationRejectsOverlappingLifecycleRoots/same"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270656-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestValidateMachineSeparationRejectsOverlappingLifecycleRoots/same",
+      "Output": "=== RUN   TestValidateMachineSeparationRejectsOverlappingLifecycleRoots/same\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270658-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestValidateMachineSeparationRejectsOverlappingLifecycleRoots/same",
+      "Output": "=== PAUSE TestValidateMachineSeparationRejectsOverlappingLifecycleRoots/same\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270659-05:00",
+      "Action": "pause",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestValidateMachineSeparationRejectsOverlappingLifecycleRoots/same"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.27066-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestValidateMachineSeparationRejectsOverlappingLifecycleRoots/machine_contains_workspace"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270662-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestValidateMachineSeparationRejectsOverlappingLifecycleRoots/machine_contains_workspace",
+      "Output": "=== RUN   TestValidateMachineSeparationRejectsOverlappingLifecycleRoots/machine_contains_workspace\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270663-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestValidateMachineSeparationRejectsOverlappingLifecycleRoots/machine_contains_workspace",
+      "Output": "=== PAUSE TestValidateMachineSeparationRejectsOverlappingLifecycleRoots/machine_contains_workspace\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270664-05:00",
+      "Action": "pause",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestValidateMachineSeparationRejectsOverlappingLifecycleRoots/machine_contains_workspace"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270666-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestValidateMachineSeparationRejectsOverlappingLifecycleRoots/workspace_contains_machine"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270671-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestValidateMachineSeparationRejectsOverlappingLifecycleRoots/workspace_contains_machine",
+      "Output": "=== RUN   TestValidateMachineSeparationRejectsOverlappingLifecycleRoots/workspace_contains_machine\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270674-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestValidateMachineSeparationRejectsOverlappingLifecycleRoots/workspace_contains_machine",
+      "Output": "=== PAUSE TestValidateMachineSeparationRejectsOverlappingLifecycleRoots/workspace_contains_machine\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270675-05:00",
+      "Action": "pause",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestValidateMachineSeparationRejectsOverlappingLifecycleRoots/workspace_contains_machine"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270679-05:00",
+      "Action": "cont",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestValidateMachineSeparationRejectsOverlappingLifecycleRoots/siblings"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270682-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestValidateMachineSeparationRejectsOverlappingLifecycleRoots/siblings",
+      "Output": "=== CONT  TestValidateMachineSeparationRejectsOverlappingLifecycleRoots/siblings\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270684-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestValidateMachineSeparationRejectsOverlappingLifecycleRoots/siblings",
+      "Output": "--- PASS: TestValidateMachineSeparationRejectsOverlappingLifecycleRoots/siblings (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270685-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestValidateMachineSeparationRejectsOverlappingLifecycleRoots/siblings",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270686-05:00",
+      "Action": "cont",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestOlderBinaryRejectsNewerSchemaBeforeMigrationMutation"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270688-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestOlderBinaryRejectsNewerSchemaBeforeMigrationMutation",
+      "Output": "=== CONT  TestOlderBinaryRejectsNewerSchemaBeforeMigrationMutation\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270692-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestValidateHumanLayoutDetectsEveryLegacyGenerationEntry/.commit.lock",
+      "Output": "--- PASS: TestValidateHumanLayoutDetectsEveryLegacyGenerationEntry/.commit.lock (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270693-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestValidateHumanLayoutDetectsEveryLegacyGenerationEntry/.commit.lock",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270694-05:00",
+      "Action": "cont",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestValidateHumanLayoutAcceptsMissingAndProviderYAMLPaths"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270696-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestValidateHumanLayoutAcceptsMissingAndProviderYAMLPaths",
+      "Output": "=== CONT  TestValidateHumanLayoutAcceptsMissingAndProviderYAMLPaths\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270697-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestValidateHumanLayoutAcceptsMissingAndProviderYAMLPaths",
+      "Output": "--- PASS: TestValidateHumanLayoutAcceptsMissingAndProviderYAMLPaths (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270699-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestValidateHumanLayoutAcceptsMissingAndProviderYAMLPaths",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T12:52:00.2707-05:00",
+      "Action": "cont",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestProjectRejectsLegacyGenerationLayoutBeforeStaging"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270701-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestProjectRejectsLegacyGenerationLayoutBeforeStaging",
+      "Output": "=== CONT  TestProjectRejectsLegacyGenerationLayoutBeforeStaging\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270703-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestProjectRejectsLegacyGenerationLayoutBeforeStaging",
+      "Output": "--- PASS: TestProjectRejectsLegacyGenerationLayoutBeforeStaging (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270704-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestProjectRejectsLegacyGenerationLayoutBeforeStaging",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270705-05:00",
+      "Action": "cont",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestValidateHumanLayoutDetectsEveryLegacyGenerationEntry/generations"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270706-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestValidateHumanLayoutDetectsEveryLegacyGenerationEntry/generations",
+      "Output": "=== CONT  TestValidateHumanLayoutDetectsEveryLegacyGenerationEntry/generations\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270708-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestValidateHumanLayoutDetectsEveryLegacyGenerationEntry/generations",
+      "Output": "--- PASS: TestValidateHumanLayoutDetectsEveryLegacyGenerationEntry/generations (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.27071-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestValidateHumanLayoutDetectsEveryLegacyGenerationEntry/generations",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270712-05:00",
+      "Action": "cont",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestValidateHumanLayoutDetectsEveryLegacyGenerationEntry/current"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270714-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestValidateHumanLayoutDetectsEveryLegacyGenerationEntry/current",
+      "Output": "=== CONT  TestValidateHumanLayoutDetectsEveryLegacyGenerationEntry/current\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270716-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestValidateHumanLayoutDetectsEveryLegacyGenerationEntry/current",
+      "Output": "--- PASS: TestValidateHumanLayoutDetectsEveryLegacyGenerationEntry/current (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270717-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestValidateHumanLayoutDetectsEveryLegacyGenerationEntry/current",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270718-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestValidateHumanLayoutDetectsEveryLegacyGenerationEntry",
+      "Output": "--- PASS: TestValidateHumanLayoutDetectsEveryLegacyGenerationEntry (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.27072-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestValidateHumanLayoutDetectsEveryLegacyGenerationEntry",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270722-05:00",
+      "Action": "cont",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestEndpointProjectionDriftIsDetectedWithoutOverwrite"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270723-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestEndpointProjectionDriftIsDetectedWithoutOverwrite",
+      "Output": "=== CONT  TestEndpointProjectionDriftIsDetectedWithoutOverwrite\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270724-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestEndpointProjectionDeterministicallyJoinsCanonicalModelToOfferings",
+      "Output": "--- PASS: TestEndpointProjectionDeterministicallyJoinsCanonicalModelToOfferings (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270731-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestEndpointProjectionDeterministicallyJoinsCanonicalModelToOfferings",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270733-05:00",
+      "Action": "cont",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestEndpointProjectionIsStableAcrossWorkspaceRoundTrip"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270734-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestEndpointProjectionIsStableAcrossWorkspaceRoundTrip",
+      "Output": "=== CONT  TestEndpointProjectionIsStableAcrossWorkspaceRoundTrip\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270735-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestEndpointProjectionIsStableAcrossWorkspaceRoundTrip",
+      "Output": "--- PASS: TestEndpointProjectionIsStableAcrossWorkspaceRoundTrip (0.01s)\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270737-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestEndpointProjectionIsStableAcrossWorkspaceRoundTrip",
+      "Elapsed": 0.01
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270738-05:00",
+      "Action": "cont",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestMigrateLegacyLayoutRollbackPreservesRecreatedLegacyPath"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270739-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestMigrateLegacyLayoutRollbackPreservesRecreatedLegacyPath",
+      "Output": "=== CONT  TestMigrateLegacyLayoutRollbackPreservesRecreatedLegacyPath\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270741-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestOlderBinaryRejectsNewerSchemaBeforeMigrationMutation",
+      "Output": "--- PASS: TestOlderBinaryRejectsNewerSchemaBeforeMigrationMutation (0.01s)\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270742-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestOlderBinaryRejectsNewerSchemaBeforeMigrationMutation",
+      "Elapsed": 0.01
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270746-05:00",
+      "Action": "cont",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestMigrateLegacyLayoutProjectionFailureRollsBackOwnedWorkspace"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270747-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestMigrateLegacyLayoutProjectionFailureRollsBackOwnedWorkspace",
+      "Output": "=== CONT  TestMigrateLegacyLayoutProjectionFailureRollsBackOwnedWorkspace\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270749-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestMigrateLegacyLayoutRollbackPreservesRecreatedLegacyPath",
+      "Output": "--- PASS: TestMigrateLegacyLayoutRollbackPreservesRecreatedLegacyPath (0.02s)\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270753-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestMigrateLegacyLayoutRollbackPreservesRecreatedLegacyPath",
+      "Elapsed": 0.02
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270754-05:00",
+      "Action": "cont",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestMigrateLegacyLayoutFailureRollsBackExactStore"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270755-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestMigrateLegacyLayoutFailureRollsBackExactStore",
+      "Output": "=== CONT  TestMigrateLegacyLayoutFailureRollsBackExactStore\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270757-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestMigrateLegacyLayoutFailureRollsBackExactStore",
+      "Output": "--- PASS: TestMigrateLegacyLayoutFailureRollsBackExactStore (0.02s)\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.27076-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestMigrateLegacyLayoutFailureRollsBackExactStore",
+      "Elapsed": 0.02
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270761-05:00",
+      "Action": "cont",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestMigrateLegacyLayoutRelocatesStoreAndProjectsCurrent"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270762-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestMigrateLegacyLayoutRelocatesStoreAndProjectsCurrent",
+      "Output": "=== CONT  TestMigrateLegacyLayoutRelocatesStoreAndProjectsCurrent\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270764-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestMigrateLegacyLayoutProjectionFailureRollsBackOwnedWorkspace",
+      "Output": "--- PASS: TestMigrateLegacyLayoutProjectionFailureRollsBackOwnedWorkspace (0.06s)\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270766-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestMigrateLegacyLayoutProjectionFailureRollsBackOwnedWorkspace",
+      "Elapsed": 0.06
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270767-05:00",
+      "Action": "cont",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestValidateMachineSeparationResolvesSymlinkedAncestors"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270768-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestValidateMachineSeparationResolvesSymlinkedAncestors",
+      "Output": "=== CONT  TestValidateMachineSeparationResolvesSymlinkedAncestors\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.27077-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestValidateMachineSeparationResolvesSymlinkedAncestors",
+      "Output": "--- PASS: TestValidateMachineSeparationResolvesSymlinkedAncestors (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270771-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestValidateMachineSeparationResolvesSymlinkedAncestors",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270772-05:00",
+      "Action": "cont",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestValidateMachineSeparationRejectsOverlappingLifecycleRoots/workspace_contains_machine"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270773-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestValidateMachineSeparationRejectsOverlappingLifecycleRoots/workspace_contains_machine",
+      "Output": "=== CONT  TestValidateMachineSeparationRejectsOverlappingLifecycleRoots/workspace_contains_machine\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.27078-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestValidateMachineSeparationRejectsOverlappingLifecycleRoots/workspace_contains_machine",
+      "Output": "--- PASS: TestValidateMachineSeparationRejectsOverlappingLifecycleRoots/workspace_contains_machine (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270781-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestValidateMachineSeparationRejectsOverlappingLifecycleRoots/workspace_contains_machine",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270783-05:00",
+      "Action": "cont",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestValidateMachineSeparationRejectsOverlappingLifecycleRoots/machine_contains_workspace"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270784-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestValidateMachineSeparationRejectsOverlappingLifecycleRoots/machine_contains_workspace",
+      "Output": "=== CONT  TestValidateMachineSeparationRejectsOverlappingLifecycleRoots/machine_contains_workspace\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270785-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestValidateMachineSeparationRejectsOverlappingLifecycleRoots/machine_contains_workspace",
+      "Output": "--- PASS: TestValidateMachineSeparationRejectsOverlappingLifecycleRoots/machine_contains_workspace (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270787-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestValidateMachineSeparationRejectsOverlappingLifecycleRoots/machine_contains_workspace",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270788-05:00",
+      "Action": "cont",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestValidateMachineSeparationRejectsOverlappingLifecycleRoots/same"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270789-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestValidateMachineSeparationRejectsOverlappingLifecycleRoots/same",
+      "Output": "=== CONT  TestValidateMachineSeparationRejectsOverlappingLifecycleRoots/same\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270791-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestValidateMachineSeparationRejectsOverlappingLifecycleRoots/same",
+      "Output": "--- PASS: TestValidateMachineSeparationRejectsOverlappingLifecycleRoots/same (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270792-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestValidateMachineSeparationRejectsOverlappingLifecycleRoots/same",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270794-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestValidateMachineSeparationRejectsOverlappingLifecycleRoots",
+      "Output": "--- PASS: TestValidateMachineSeparationRejectsOverlappingLifecycleRoots (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270795-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestValidateMachineSeparationRejectsOverlappingLifecycleRoots",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270796-05:00",
+      "Action": "cont",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestProjectRejectsCatalogThatDoesNotMatchCommittedPayload"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270797-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestProjectRejectsCatalogThatDoesNotMatchCommittedPayload",
+      "Output": "=== CONT  TestProjectRejectsCatalogThatDoesNotMatchCommittedPayload\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270799-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestProjectAtomicallyReplacesValidatedWorkspace",
+      "Output": "--- PASS: TestProjectAtomicallyReplacesValidatedWorkspace (0.08s)\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270802-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestProjectAtomicallyReplacesValidatedWorkspace",
+      "Elapsed": 0.08
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270803-05:00",
+      "Action": "cont",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestProjectRejectsWorkspaceSymlink"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270804-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestProjectRejectsWorkspaceSymlink",
+      "Output": "=== CONT  TestProjectRejectsWorkspaceSymlink\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270805-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestProjectRejectsWorkspaceSymlink",
+      "Output": "--- PASS: TestProjectRejectsWorkspaceSymlink (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270806-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestProjectRejectsWorkspaceSymlink",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270807-05:00",
+      "Action": "cont",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestRepairAcknowledgesSwapAfterMarkerFailure"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270808-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestRepairAcknowledgesSwapAfterMarkerFailure",
+      "Output": "=== CONT  TestRepairAcknowledgesSwapAfterMarkerFailure\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.27081-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestEndpointProjectionDriftIsDetectedWithoutOverwrite",
+      "Output": "--- PASS: TestEndpointProjectionDriftIsDetectedWithoutOverwrite (0.09s)\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270811-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestEndpointProjectionDriftIsDetectedWithoutOverwrite",
+      "Elapsed": 0.09
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270813-05:00",
+      "Action": "cont",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestRepairDoesNotOverwriteDirtyWorkspace"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270814-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestRepairDoesNotOverwriteDirtyWorkspace",
+      "Output": "=== CONT  TestRepairDoesNotOverwriteDirtyWorkspace\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270816-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestProjectRejectsCatalogThatDoesNotMatchCommittedPayload",
+      "Output": "--- PASS: TestProjectRejectsCatalogThatDoesNotMatchCommittedPayload (0.05s)\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270817-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestProjectRejectsCatalogThatDoesNotMatchCommittedPayload",
+      "Elapsed": 0.05
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270818-05:00",
+      "Action": "cont",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestRepairStaleUnmodifiedProjection"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270819-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestRepairStaleUnmodifiedProjection",
+      "Output": "=== CONT  TestRepairStaleUnmodifiedProjection\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270821-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestMigrateLegacyLayoutRelocatesStoreAndProjectsCurrent",
+      "Output": "--- PASS: TestMigrateLegacyLayoutRelocatesStoreAndProjectsCurrent (0.08s)\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270822-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestMigrateLegacyLayoutRelocatesStoreAndProjectsCurrent",
+      "Elapsed": 0.08
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270823-05:00",
+      "Action": "cont",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestProjectSeparatesCatalogAndGeneratedEndpointDigests"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270824-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestProjectSeparatesCatalogAndGeneratedEndpointDigests",
+      "Output": "=== CONT  TestProjectSeparatesCatalogAndGeneratedEndpointDigests\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270826-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestRepairDoesNotOverwriteDirtyWorkspace",
+      "Output": "--- PASS: TestRepairDoesNotOverwriteDirtyWorkspace (0.06s)\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270827-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestRepairDoesNotOverwriteDirtyWorkspace",
+      "Elapsed": 0.06
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270828-05:00",
+      "Action": "cont",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestProjectRejectsConcurrentSemanticEdit"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270829-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestProjectRejectsConcurrentSemanticEdit",
+      "Output": "=== CONT  TestProjectRejectsConcurrentSemanticEdit\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270831-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestProjectSeparatesCatalogAndGeneratedEndpointDigests",
+      "Output": "--- PASS: TestProjectSeparatesCatalogAndGeneratedEndpointDigests (0.03s)\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270832-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestProjectSeparatesCatalogAndGeneratedEndpointDigests",
+      "Elapsed": 0.03
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270833-05:00",
+      "Action": "cont",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestFirstProjectionRejectsWorkspaceCreatedAfterObservation"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270835-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestFirstProjectionRejectsWorkspaceCreatedAfterObservation",
+      "Output": "=== CONT  TestFirstProjectionRejectsWorkspaceCreatedAfterObservation\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270836-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestFirstProjectionRejectsWorkspaceCreatedAfterObservation",
+      "Output": "--- PASS: TestFirstProjectionRejectsWorkspaceCreatedAfterObservation (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270837-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestFirstProjectionRejectsWorkspaceCreatedAfterObservation",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270838-05:00",
+      "Action": "cont",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestProjectRejectsSymlinkedWriterLock"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270839-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestProjectRejectsSymlinkedWriterLock",
+      "Output": "=== CONT  TestProjectRejectsSymlinkedWriterLock\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270846-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestProjectRejectsSymlinkedWriterLock",
+      "Output": "--- PASS: TestProjectRejectsSymlinkedWriterLock (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270847-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestProjectRejectsSymlinkedWriterLock",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270848-05:00",
+      "Action": "cont",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestProjectExpectedRejectsSemanticEditAfterInputLoad"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.27085-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestProjectExpectedRejectsSemanticEditAfterInputLoad",
+      "Output": "=== CONT  TestProjectExpectedRejectsSemanticEditAfterInputLoad\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270851-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestRepairAcknowledgesSwapAfterMarkerFailure",
+      "Output": "--- PASS: TestRepairAcknowledgesSwapAfterMarkerFailure (0.09s)\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270853-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestRepairAcknowledgesSwapAfterMarkerFailure",
+      "Elapsed": 0.09
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270854-05:00",
+      "Action": "cont",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestEndpointProjectionEditBeforeProjectExpectedIsPreserved"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270855-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestEndpointProjectionEditBeforeProjectExpectedIsPreserved",
+      "Output": "=== CONT  TestEndpointProjectionEditBeforeProjectExpectedIsPreserved\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270856-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestProjectExpectedRejectsSemanticEditAfterInputLoad",
+      "Output": "--- PASS: TestProjectExpectedRejectsSemanticEditAfterInputLoad (0.03s)\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270857-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestProjectExpectedRejectsSemanticEditAfterInputLoad",
+      "Elapsed": 0.03
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270858-05:00",
+      "Action": "cont",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestProjectFailureBeforePromotePreservesOldWorkspace"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270859-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestProjectFailureBeforePromotePreservesOldWorkspace",
+      "Output": "=== CONT  TestProjectFailureBeforePromotePreservesOldWorkspace\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270861-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestRepairStaleUnmodifiedProjection",
+      "Output": "--- PASS: TestRepairStaleUnmodifiedProjection (0.07s)\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270862-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestRepairStaleUnmodifiedProjection",
+      "Elapsed": 0.07
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270863-05:00",
+      "Action": "cont",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestFirstProjectionFailureLeavesWorkspaceAbsent"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270864-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestFirstProjectionFailureLeavesWorkspaceAbsent",
+      "Output": "=== CONT  TestFirstProjectionFailureLeavesWorkspaceAbsent\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270865-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestFirstProjectionFailureLeavesWorkspaceAbsent",
+      "Output": "--- PASS: TestFirstProjectionFailureLeavesWorkspaceAbsent (0.01s)\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270867-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestFirstProjectionFailureLeavesWorkspaceAbsent",
+      "Elapsed": 0.01
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270868-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestProjectRejectsConcurrentSemanticEdit",
+      "Output": "--- PASS: TestProjectRejectsConcurrentSemanticEdit (0.05s)\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270869-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestProjectRejectsConcurrentSemanticEdit",
+      "Elapsed": 0.05
+    },
+    {
+      "Time": "2026-09-06T12:52:00.27087-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestEndpointProjectionEditBeforeProjectExpectedIsPreserved",
+      "Output": "--- PASS: TestEndpointProjectionEditBeforeProjectExpectedIsPreserved (0.03s)\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270872-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestEndpointProjectionEditBeforeProjectExpectedIsPreserved",
+      "Elapsed": 0.03
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270873-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestProjectFailureBeforePromotePreservesOldWorkspace",
+      "Output": "--- PASS: TestProjectFailureBeforePromotePreservesOldWorkspace (0.03s)\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270874-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestProjectFailureBeforePromotePreservesOldWorkspace",
+      "Elapsed": 0.03
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270879-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Output": "PASS\n"
+    },
+    {
+      "Time": "2026-09-06T12:52:00.270882-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Elapsed": 0.001
+    }
+  ],
+  "binary_sha256": "21c2f95bca4eae367d3246f919f0acb22f7ca2a207c6fd9c944e5f4aee0342b1",
+  "state": {
+    "Status": "exited",
+    "Running": false,
+    "Paused": false,
+    "Restarting": false,
+    "OOMKilled": false,
+    "Dead": false,
+    "Pid": 0,
+    "ExitCode": 0,
+    "Error": "",
+    "StartedAt": "2026-09-06T17:51:58.971996126Z",
+    "FinishedAt": "2026-09-06T17:52:00.172693335Z"
+  },
+  "conversion_exit_code": 0,
+  "counts": {
+    "pass": 97,
+    "fail": 0,
+    "skip": 0
+  },
+  "passed": true,
+  "container_removed": true,
+  "volume_removed": true
+}

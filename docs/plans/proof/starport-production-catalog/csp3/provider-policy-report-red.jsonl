@@ -1,0 +1,9 @@
+{"Time":"2026-09-06T22:41:13.368744-05:00","Action":"start","Package":"github.com/agentstation/starmap/runtime"}
+{"Time":"2026-09-06T22:41:13.794062-05:00","Action":"run","Package":"github.com/agentstation/starmap/runtime","Test":"TestProviderPolicyRefusalReportsEarlierPublication"}
+{"Time":"2026-09-06T22:41:13.794147-05:00","Action":"output","Package":"github.com/agentstation/starmap/runtime","Test":"TestProviderPolicyRefusalReportsEarlierPublication","Output":"=== RUN   TestProviderPolicyRefusalReportsEarlierPublication\n"}
+{"Time":"2026-09-06T22:41:27.560875-05:00","Action":"output","Package":"github.com/agentstation/starmap/runtime","Test":"TestProviderPolicyRefusalReportsEarlierPublication","Output":"    provider_policy_test.go:197: policy refusal hid the earlier successful publication\n"}
+{"Time":"2026-09-06T22:41:27.561998-05:00","Action":"output","Package":"github.com/agentstation/starmap/runtime","Test":"TestProviderPolicyRefusalReportsEarlierPublication","Output":"--- FAIL: TestProviderPolicyRefusalReportsEarlierPublication (13.77s)\n"}
+{"Time":"2026-09-06T22:41:27.562029-05:00","Action":"fail","Package":"github.com/agentstation/starmap/runtime","Test":"TestProviderPolicyRefusalReportsEarlierPublication","Elapsed":13.77}
+{"Time":"2026-09-06T22:41:27.562346-05:00","Action":"output","Package":"github.com/agentstation/starmap/runtime","Output":"FAIL\n"}
+{"Time":"2026-09-06T22:41:27.585123-05:00","Action":"output","Package":"github.com/agentstation/starmap/runtime","Output":"FAIL\tgithub.com/agentstation/starmap/runtime\t14.216s\n"}
+{"Time":"2026-09-06T22:41:27.585172-05:00","Action":"fail","Package":"github.com/agentstation/starmap/runtime","Elapsed":14.216}

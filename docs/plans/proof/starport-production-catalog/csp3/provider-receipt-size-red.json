@@ -1,0 +1,17 @@
+{
+  "command": [
+    "env",
+    "GOTOOLCHAIN=go1.25.12",
+    "go",
+    "test",
+    "-json",
+    "-race",
+    "-count=1",
+    "-timeout=2m",
+    "./runtime",
+    "-run",
+    "^TestProviderReceiptOversizedBatchChangesNoEvidence$"
+  ],
+  "exit_code": 1,
+  "output": "{\"Time\":\"2026-09-06T20:00:40.357922-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starmap/runtime\"}\n{\"Time\":\"2026-09-06T20:00:40.780181-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Test\":\"TestProviderReceiptOversizedBatchChangesNoEvidence\"}\n{\"Time\":\"2026-09-06T20:00:40.780233-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Test\":\"TestProviderReceiptOversizedBatchChangesNoEvidence\",\"Output\":\"=== RUN   TestProviderReceiptOversizedBatchChangesNoEvidence\\n\"}\n{\"Time\":\"2026-09-06T20:00:42.084386-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Test\":\"TestProviderReceiptOversizedBatchChangesNoEvidence\",\"Output\":\"    provider_receipt_test.go:194: oversized batch changed memory\\n\"}\n{\"Time\":\"2026-09-06T20:00:42.084966-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Test\":\"TestProviderReceiptOversizedBatchChangesNoEvidence\",\"Output\":\"--- FAIL: TestProviderReceiptOversizedBatchChangesNoEvidence (1.30s)\\n\"}\n{\"Time\":\"2026-09-06T20:00:42.084975-05:00\",\"Action\":\"fail\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Test\":\"TestProviderReceiptOversizedBatchChangesNoEvidence\",\"Elapsed\":1.3}\n{\"Time\":\"2026-09-06T20:00:42.085896-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Output\":\"FAIL\\n\"}\n{\"Time\":\"2026-09-06T20:00:42.117569-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Output\":\"FAIL\\tgithub.com/agentstation/starmap/runtime\\t1.759s\\n\"}\n{\"Time\":\"2026-09-06T20:00:42.117601-05:00\",\"Action\":\"fail\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Elapsed\":1.76}\n"
+}

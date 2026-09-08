@@ -1,0 +1,9 @@
+{
+  "command": [
+    "make",
+    "technical-writing-check"
+  ],
+  "exit_code": 2,
+  "seconds": 33.95809195796028,
+  "output": "/Users/jack/.agents/skills/technical-writing/scripts/technical-writing glossary check\nPASS: /Users/jack/src/github.com/agentstation/starmap-catalog-requirements/GLOSSARY.md (80 term(s), 0 error(s))\n/Users/jack/.agents/skills/technical-writing/scripts/technical-writing glossary update --check\nPASS: no candidate terms are missing from /Users/jack/src/github.com/agentstation/starmap-catalog-requirements/GLOSSARY.md\n/Users/jack/.agents/skills/technical-writing/scripts/technical-writing lint . --mode strict --format text\n/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/docs/plans/proof/starport-production-catalog/storage-revision-2026-09-05/document_structure.txt:1:1: error long_sentence: sentence has 30 words; limit is 25\n/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/docs/plans/proof/starport-production-catalog/storage-revision-2026-09-05/starmap_writing.txt:1:1: error long_sentence: sentence has 38 words; limit is 25\n/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/docs/plans/proof/starport-production-catalog/storage-revision-2026-09-05/starmap_writing.txt:4:26: error ing_main_verb: prefer a simple verb form\nFAIL: 1023 file(s), 3 diagnostic(s)\nmake: *** [technical-writing-check] Error 1\n"
+}

@@ -1,0 +1,18 @@
+PASS ORP-V01 internal/usage owns the request record repository
+PASS ORP-V02 usage storage namespace is versioned usage:v1:
+PASS ORP-V03 proxy completion path writes usage records
+PASS ORP-V04 GET /api/v1/activity route is registered
+PASS ORP-V05 admin activity route is registered
+PASS ORP-V06 console serves a /usage page
+PASS ORP-V07 catalog snapshot metadata route is registered
+PASS ORP-V08 catalog refresh endpoint exists
+PASS ORP-V09 console catalog button calls the catalog refresh endpoint
+PASS ORP-V10 preset routes are registered
+PASS ORP-V11 @preset/ request references resolve
+PASS ORP-V12 provider.sort reaches the routing policy
+PASS ORP-V13 max_price rejection code exists in routing
+PASS ORP-V14 admin key API accepts allowed_models
+PASS ORP-V15 budget exhaustion has a 402 regression test
+PASS ORP-V16 chat page has a comparison mode
+PASS ORP-V17 POST /api/v1/rerank is registered on the OpenRouter family
+Summary: 17 passed, 0 failed

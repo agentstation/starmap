@@ -1,0 +1,57 @@
+[
+  {
+    "command": [
+      "go",
+      "vet",
+      "./pkg/catalogs/config",
+      "./internal/catalog/settings",
+      "./internal/cli/app"
+    ],
+    "exit_code": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "golangci-lint",
+      "run",
+      "./pkg/catalogs/config/...",
+      "./internal/catalog/settings/...",
+      "./internal/cli/app/..."
+    ],
+    "exit_code": 1,
+    "stdout": "internal/cli/app/dotenv.go:45:20: G304: Potential file inclusion via variable (gosec)\n\t\tcontents, err := os.ReadFile(path)\n\t\t                 ^\n1 issues:\n* gosec: 1\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "go",
+      "tool",
+      "ago",
+      "-stale-ignores",
+      "-format",
+      "json",
+      "./..."
+    ],
+    "exit_code": 0,
+    "stdout": "{\n  \"schemaVersion\": 1,\n  \"version\": \"v0.2.0\",\n  \"rules\": [\n    \"no-dot-import\",\n    \"no-generic-methods\",\n    \"no-goto\",\n    \"no-invalid-ignore\",\n    \"no-naked-return\",\n    \"no-new-expr\",\n    \"no-self-referential-constraints\"\n  ],\n  \"findings\": [],\n  \"staleIgnores\": [],\n  \"errors\": []\n}\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "/Users/jack/.agents/skills/technical-writing/scripts/technical-writing",
+      "lint",
+      "docs/CATALOG_SETTINGS.md",
+      "pkg/catalogs/config",
+      "internal/cli/app/catalog_aliases.go",
+      "internal/cli/app/catalog_file.go",
+      "internal/cli/app/dotenv.go",
+      "internal/catalog/settings/reference_test.go",
+      "--format",
+      "text"
+    ],
+    "exit_code": 1,
+    "stdout": "/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/docs/CATALOG_SETTINGS.md:403:77: error passive_voice: use active voice when the actor is known\n/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/docs/CATALOG_SETTINGS.md:535:10: error nominalization: express the action with a direct verb\nFAIL: 11 file(s), 2 diagnostic(s)\n",
+    "stderr": ""
+  }
+]

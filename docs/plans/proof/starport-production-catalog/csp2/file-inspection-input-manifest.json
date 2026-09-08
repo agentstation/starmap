@@ -1,0 +1,130 @@
+{
+  "head": "4780dfea9f7e002ea6eaaa82aa8f52ed0d4cc225",
+  "branch": "codex/catalog-requirements",
+  "files": [
+    {
+      "path": "go.mod",
+      "sha256": "d54afc69a499f08a2f14de6154b7b6b3d8b2de3ff8a6625e76f90e71bb906628"
+    },
+    {
+      "path": "go.sum",
+      "sha256": "b12603506b18e32d3ddc6d7aaea6c6c6d60a82977e4b76710c06399f8c762e9e"
+    },
+    {
+      "path": "internal/cli/app/config.go",
+      "sha256": "4792db40ee3fb0223c1e4cc45067bf3028298d7babdd12b18df07bc649066d97"
+    },
+    {
+      "path": "internal/cli/app/file_inspection.go",
+      "sha256": "cd104672d554441fb72e527e3690b54fc049ee7d19d67aadf46e43de747a507e"
+    },
+    {
+      "path": "internal/cli/app/file_inspection_test.go",
+      "sha256": "2f720e20731ba8be1ea29c2181da64b5fb69ba78307a2d05847fc396618c87d2"
+    },
+    {
+      "path": "internal/cli/app/file_manifest.go",
+      "sha256": "bc104c221641127ce074dd9894d9b9cb8089f2956c20045a2233b1b834194854"
+    },
+    {
+      "path": "internal/cli/app/file_manifest_test.go",
+      "sha256": "f741085600713bc9f3fd4eb147220447d06e92535c544a86fe6131aa1f9ac464"
+    },
+    {
+      "path": "internal/cli/app/product_paths.go",
+      "sha256": "215176e9eb3754a3526ed22de66fff9da04dc044d43d38f01c663946a39e88b4"
+    },
+    {
+      "path": "internal/cli/app/relative_paths.go",
+      "sha256": "6e88dc32af18df9dd046aa0f8552fb35c5b6441a59974d998002e5cb25907393"
+    },
+    {
+      "path": "internal/cli/commands/config/command.go",
+      "sha256": "8b7f501fd8af4d564bb65d1629552d7fcf243f2d35996c37a63e6689917ccf11"
+    },
+    {
+      "path": "internal/cli/commands/config/command_test.go",
+      "sha256": "faf43837548bdcd061a989c4a5b2dbbf2b0de2bbd9eca2622fa9abcf6a762c1a"
+    },
+    {
+      "path": "internal/cli/commands/config/inspection.go",
+      "sha256": "c3f3e1fb020c001cefb78fcefa462dfb200cb83cae17d0c2e3746e1aaa0fda42"
+    },
+    {
+      "path": "pkg/productpaths/inspection.go",
+      "sha256": "50eaafdb27aade4f2bc0a1c1709e64aa7ac031b38a84515b295e662ee2f67ef9"
+    },
+    {
+      "path": "pkg/productpaths/inspection_other.go",
+      "sha256": "7dd0ca95735456dce11006d1d727af319387edec3bd4b89d51119dcb3c651ac5"
+    },
+    {
+      "path": "pkg/productpaths/inspection_posix.go",
+      "sha256": "40f94c6d263263c2c06ac99849069368f370817f86c9498306dd494504d35fd1"
+    },
+    {
+      "path": "pkg/productpaths/inspection_test.go",
+      "sha256": "664433232ae0c4f593da46b5dffb318e18bca2c318707cf83f42ea7baf504b8d"
+    },
+    {
+      "path": "pkg/productpaths/manifest.go",
+      "sha256": "93f71c52d938d2d6124292aa952e92c25b9d66b95ee7e3f95038496d7407d619"
+    },
+    {
+      "path": "pkg/productpaths/paths.go",
+      "sha256": "76d28a4a30a7792400e934e209a6c4f89fbd043d80891aab3571b6ad25a7a914"
+    },
+    {
+      "path": "pkg/productpaths/paths_test.go",
+      "sha256": "2456727cf072871c4b6da3a2fd97e78dba99885b3f85ecbc134467f67ca21a1f"
+    },
+    {
+      "path": "pkg/productpaths/platform.go",
+      "sha256": "eb0d8ca5f348db97ac37357b9aab3bfdb41b25992ac93d585b8a7330868be3c4"
+    },
+    {
+      "path": "pkg/productpaths/platform_test.go",
+      "sha256": "31ef3fd45a9f8e36317b64db34461868a255b48c5d2c5d583cbb6203f27558f5"
+    },
+    {
+      "path": "pkg/productpaths/sources.go",
+      "sha256": "3b0610eaa1e7ea72468289bc8d5e12c47cc51abdd3ac6be25310216720af3654"
+    },
+    {
+      "path": "pkg/productpaths/sources_test.go",
+      "sha256": "5001a4d84bd086a6640a32ed3982e55f71ec651e3b7bdef5df1137372d8acad0"
+    },
+    {
+      "path": "runtime/owner.go",
+      "sha256": "7d5e1ad869533f2ee3a2fed93933e1dc3f66cc0d62cfd1c8d6c456af2a8f7757"
+    },
+    {
+      "path": "runtime/owner_inspection.go",
+      "sha256": "2c81cb6b302211d9e3b27ddcc9a867884c91b639830f14fc9eef3b33f6dd1ca5"
+    },
+    {
+      "path": "runtime/owner_inspection_other.go",
+      "sha256": "69cf73823baa7c2547e05c384bc63967cf1e60430f48ccd9c5d6e12d7608f957"
+    },
+    {
+      "path": "runtime/owner_inspection_posix.go",
+      "sha256": "a85a2625fc48f8de88116cee7d6d3c444de27e9da1bb1f567c2c5a98f9523407"
+    },
+    {
+      "path": "runtime/owner_inspection_test.go",
+      "sha256": "35b21af6c1cdd2c78abe1790196ff5dce035541ca74c9f3b4bb11d865bc2b4d3"
+    },
+    {
+      "path": "runtime/owner_seed.go",
+      "sha256": "b89bc78ed3a5a5b7bb9f2f624e424fd1915c5d7351acf720a79a6a1dd27e2c00"
+    },
+    {
+      "path": "runtime/owner_test.go",
+      "sha256": "a9706471d7ae0311e60e5acaebc45e162b062a34644d73e57cd2ade26dc4d378"
+    },
+    {
+      "path": "scripts/catalog-product-checks.json",
+      "sha256": "2f6dad6bc902942f9a61b2a074a0621362781ce1dca1514b83697ede964d76b0"
+    }
+  ]
+}

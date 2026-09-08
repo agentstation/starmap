@@ -1,0 +1,224 @@
+1.2.0: Pulling from agentstation/starport
+39dc083afc39: Pulling fs layer
+7c12895b777b: Pulling fs layer
+4f4fb700ef54: Pulling fs layer
+b839dfae01f6: Pulling fs layer
+dcaa5a89b0cc: Pulling fs layer
+069d1e267530: Pulling fs layer
+dd64bf2dd177: Pulling fs layer
+fb3762cfc3c4: Pulling fs layer
+3214acf345c0: Pulling fs layer
+33823e1e270c: Pulling fs layer
+52630fc75a18: Pulling fs layer
+a17ff7d9c5c5: Pulling fs layer
+bf7a4185f015: Pulling fs layer
+2780920e5dbf: Pulling fs layer
+990a9c434e5e: Pulling fs layer
+f7c03e5221c3: Pulling fs layer
+44136fa355b3: Already exists
+4f4fb700ef54: Already exists
+4f4fb700ef54: Pull complete
+39dc083afc39: Download complete
+7c12895b777b: Download complete
+fd94c2776f82: Download complete
+dd64bf2dd177: Download complete
+069d1e267530: Download complete
+b839dfae01f6: Download complete
+dcaa5a89b0cc: Download complete
+f7c03e5221c3: Download complete
+52630fc75a18: Download complete
+f7c03e5221c3: Pull complete
+3214acf345c0: Download complete
+a17ff7d9c5c5: Download complete
+33823e1e270c: Download complete
+fb3762cfc3c4: Download complete
+990a9c434e5e: Download complete
+2780920e5dbf: Download complete
+990a9c434e5e: Pull complete
+bf7a4185f015: Download complete
+39dc083afc39: Pull complete
+7c12895b777b: Pull complete
+dd64bf2dd177: Pull complete
+069d1e267530: Pull complete
+b839dfae01f6: Pull complete
+dcaa5a89b0cc: Pull complete
+52630fc75a18: Pull complete
+3214acf345c0: Pull complete
+2780920e5dbf: Pull complete
+bf7a4185f015: Pull complete
+a17ff7d9c5c5: Pull complete
+33823e1e270c: Pull complete
+fb3762cfc3c4: Pull complete
+Digest: sha256:543e4ac8df312339c4f24371be89e51bd5b5014d492b6831681963fc1e3a470a
+Status: Downloaded newer image for ghcr.io/agentstation/starport:1.2.0
+ghcr.io/agentstation/starport:1.2.0
+starport version 1.2.0
+{
+  "data": [
+    {
+      "id": "openai/gpt-4o",
+      "name": "gpt-4o",
+      "context_length": 128000,
+      "pricing": {
+        "prompt": "2.5e-06",
+        "completion": "1e-05",
+        "currency": "USD"
+      }
+    },
+    {
+      "id": "openai/gpt-4o-2024-05-13",
+      "name": "gpt-4o-2024-05-13",
+      "context_length": 128000,
+      "pricing": {
+        "prompt": "5e-06",
+        "completion": "1.5e-05",
+        "currency": "USD"
+      }
+    },
+    {
+      "id": "openai/gpt-4o-2024-08-06",
+      "name": "gpt-4o-2024-08-06",
+      "context_length": 128000
+    },
+    {
+      "id": "openai/gpt-4o-2024-11-20",
+      "name": "gpt-4o-2024-11-20",
+      "context_length": 128000,
+      "pricing": {
+        "prompt": "2.5e-06",
+        "completion": "1e-05",
+        "currency": "USD"
+      }
+    },
+    {
+      "id": "openai/gpt-4o-mini",
+      "name": "gpt-4o-mini",
+      "context_length": 128000,
+      "pricing": {
+        "prompt": "1.5e-07",
+        "completion": "6e-07",
+        "currency": "USD"
+      }
+    },
+    {
+      "id": "openai/gpt-4o-mini-2024-07-18",
+      "name": "gpt-4o-mini-2024-07-18"
+    },
+    {
+      "id": "openai/gpt-4o-mini-search-preview",
+      "name": "gpt-4o-mini-search-preview"
+    },
+    {
+      "id": "openai/gpt-4o-mini-search-preview-2025-03-11",
+      "name": "gpt-4o-mini-search-preview-2025-03-11"
+    },
+    {
+      "id": "openai/gpt-4o-mini-transcribe",
+      "name": "gpt-4o-mini-transcribe"
+    },
+    {
+      "id": "openai/gpt-4o-mini-transcribe-2025-03-20",
+      "name": "gpt-4o-mini-transcribe-2025-03-20"
+    },
+    {
+      "id": "openai/gpt-4o-mini-transcribe-2025-12-15",
+      "name": "gpt-4o-mini-transcribe-2025-12-15"
+    },
+    {
+      "id": "openai/gpt-4o-mini-tts",
+      "name": "gpt-4o-mini-tts"
+    },
+    {
+      "id": "openai/gpt-4o-mini-tts-2025-03-20",
+      "name": "gpt-4o-mini-tts-2025-03-20"
+    },
+    {
+      "id": "openai/gpt-4o-mini-tts-2025-12-15",
+      "name": "gpt-4o-mini-tts-2025-12-15"
+    },
+    {
+      "id": "openai/gpt-4o-search-preview",
+      "name": "gpt-4o-search-preview"
+    },
+    {
+      "id": "openai/gpt-4o-search-preview-2025-03-11",
+      "name": "gpt-4o-search-preview-2025-03-11"
+    },
+    {
+      "id": "openai/gpt-4o-transcribe",
+      "name": "gpt-4o-transcribe"
+    },
+    {
+      "id": "openai/gpt-4o-transcribe-diarize",
+      "name": "gpt-4o-transcribe-diarize"
+    }
+  ]
+}
+{
+  "id": "openai/gpt-4o-mini",
+  "canonical_slug": "openai/gpt-4o-mini",
+  "name": "gpt-4o-mini",
+  "object": "model",
+  "created": 1721260800,
+  "owned_by": "openai",
+  "pricing": {
+    "prompt": "1.5e-07",
+    "completion": "6e-07",
+    "currency": "USD"
+  },
+  "context_length": 128000,
+  "description": "Small omni GPT for cheap multimodal assistance and production-scale traffic",
+  "architecture": {
+    "input_modalities": [
+      "image",
+      "pdf",
+      "text"
+    ],
+    "output_modalities": [
+      "text"
+    ],
+    "tokenizer": "",
+    "instruct_type": null
+  },
+  "top_provider": {
+    "context_length": 128000,
+    "max_completion_tokens": 16384
+  },
+  "supported_parameters": [
+    "temperature",
+    "top_p",
+    "max_tokens",
+    "stop"
+  ],
+  "authors": [
+    {
+      "id": "openai",
+      "name": "OpenAI"
+    }
+  ],
+  "lineage": {
+    "family": "gpt-mini"
+  },
+  "knowledge_cutoff": "2023-09-01",
+  "open_weights": false,
+  "offerings": [
+    {
+      "provider": "openai",
+      "provider_name": "OpenAI",
+      "provider_model_id": "gpt-4o-mini",
+      "context_length": 128000,
+      "max_completion_tokens": 16384,
+      "availability": "unknown",
+      "lifecycle": "unknown",
+      "pricing": {
+        "prompt": "1.5e-07",
+        "completion": "6e-07",
+        "cache_read": "7.5e-08",
+        "currency": "USD"
+      },
+      "operations": [
+        "chat-completions"
+      ]
+    }
+  ]
+}

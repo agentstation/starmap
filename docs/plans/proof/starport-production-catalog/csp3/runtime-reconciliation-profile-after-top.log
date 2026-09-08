@@ -1,0 +1,20 @@
+File: starmap-runtime-authority-profile-after.test
+Type: cpu
+Time: 2026-09-07 04:01:11 CDT
+Duration: 5.65s, Total samples = 6.93s (122.62%)
+Showing nodes accounting for 0, 0% of 6.93s total
+Dropped 389 nodes (cum <= 0.03s)
+Showing top 12 nodes out of 295
+      flat  flat%   sum%        cum   cum%
+         0     0%     0%      3.16s 45.60%  github.com/agentstation/starmap/runtime.TestRuntimeBaselineExcludesPreviouslyPublishedProviderEvidence
+         0     0%     0%      3.15s 45.45%  testing.tRunner
+         0     0%     0%      2.90s 41.85%  runtime.systemstack
+         0     0%     0%      1.70s 24.53%  github.com/agentstation/starmap/runtime.Open
+         0     0%     0%      1.70s 24.53%  github.com/agentstation/starmap/runtime.TestRuntimeBaselineExcludesPreviouslyPublishedProviderEvidence.func1
+         0     0%     0%      1.60s 23.09%  runtime.gcBgMarkWorker.func2
+         0     0%     0%      1.60s 23.09%  runtime.gcDrain
+         0     0%     0%      1.51s 21.79%  github.com/agentstation/starmap/pkg/catalogs.EncodeCatalogPayload
+         0     0%     0%      1.48s 21.36%  encoding/json.(*encodeState).marshal
+         0     0%     0%      1.48s 21.36%  encoding/json.(*encodeState).reflectValue
+         0     0%     0%      1.48s 21.36%  encoding/json.Marshal
+         0     0%     0%      1.48s 21.36%  encoding/json.mapEncoder.encode

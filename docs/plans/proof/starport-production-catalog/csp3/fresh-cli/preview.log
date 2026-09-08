@@ -1,0 +1,19 @@
+📁 Using catalog workspace: /var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-fresh-preview-3tyh9kar/workspace
+Reset selected acquisition after successful collection. Preserve the selected baseline and unrelated acquisition scopes.
+
+🔄 Starting update...
+
+{"level":"info","run_id":"source-run-82cf8e9c-23a4-44a4-b6c4-0a292d94ab7a","source":"providers","time":"2026-09-07T10:57:24-05:00","message":"Observing"}
+{"level":"info","run_id":"source-run-82cf8e9c-23a4-44a4-b6c4-0a292d94ab7a","source":"embedded_catalog","time":"2026-09-07T10:57:24-05:00","message":"Observing"}
+{"level":"info","run_id":"source-run-82cf8e9c-23a4-44a4-b6c4-0a292d94ab7a","source":"providers","provider_count":1,"max_concurrency":1,"time":"2026-09-07T10:57:24-05:00","message":"Syncing providers concurrently"}
+{"level":"info","run_id":"source-run-82cf8e9c-23a4-44a4-b6c4-0a292d94ab7a","source":"providers","provider_id":"openai","provider_id":"openai","model_count":1,"time":"2026-09-07T10:57:24-05:00","message":"Fetched models"}
+{"level":"info","run_id":"source-run-82cf8e9c-23a4-44a4-b6c4-0a292d94ab7a","provider_count":1,"time":"2026-09-07T10:57:24-05:00","message":"Filtered providers by primary source"}
+{"level":"info","added":0,"updated":0,"removed":0,"time":"2026-09-07T10:57:24-05:00","message":"Changes detected"}
+{"level":"info","dry_run":true,"time":"2026-09-07T10:57:24-05:00","message":"Dry run completed - no changes applied"}
+{"level":"info","run_id":"source-run-82cf8e9c-23a4-44a4-b6c4-0a292d94ab7a","provider_count":1,"time":"2026-09-07T10:57:25-05:00","message":"Filtered providers by primary source"}
+=== UPDATE RESULTS ===
+
+Acquisition resets: 1
+Model changes: 0
+
+🔍 Dry run mode - no changes will be made

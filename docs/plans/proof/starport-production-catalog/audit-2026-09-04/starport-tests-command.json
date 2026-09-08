@@ -1,0 +1,23 @@
+{
+  "cwd": "/Users/jack/src/github.com/agentstation/starport-catalog-lifecycle",
+  "command": [
+    "go",
+    "test",
+    "-race",
+    "-count=1",
+    "-json",
+    "-timeout",
+    "5m",
+    "./internal/catalog",
+    "./internal/config",
+    "./internal/sqlstore",
+    "./internal/blob",
+    "./internal/proxy",
+    "./internal/jobs"
+  ],
+  "unset_environment": [
+    "TEST_POSTGRES_URL",
+    "TEST_MYSQL_DSN"
+  ],
+  "exit_code": 0
+}

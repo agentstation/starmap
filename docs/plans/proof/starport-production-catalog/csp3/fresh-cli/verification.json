@@ -1,0 +1,39 @@
+{
+  "base_commit": "c89b02800dc501ce2d59a153e1c593544d8e8ca6",
+  "binary_sha256": "dd8553dcf66c83c5ae94911a718a837cdb2be2cc2705224256dd2ab3397de5e8",
+  "focused_race_test_events": 59,
+  "focused_race_package_suites": 2,
+  "primary_acceptance_credit": false,
+  "files": {
+    "fixture.py": "be0f04a47be2ccf9b588a01506ffe6bf604e3964e57ec98aa605c64f7c1ee28b",
+    "lint.log": "0794ea836d8147988870aae85e3966c74945aae23bcafb97084716ea012b37c7",
+    "regression-red.jsonl": "9cff84dbdcca5db1e2bb9f3efa175572d5e2c1a23f570c4929cd1a474eac2544",
+    "all-cli-race.jsonl": "ab6a90f94630e9e62ea26327c6e869d508e9671c294dd3f618c962191e0a8416",
+    "help.log": "9f8afa24fb77a59042a49ff690623ccbfb6290e4d8c449585e1ab22fbee82be3",
+    "docs.log": "c326a6932614067e6dc62592068f841cbf5eadf50fe1b0b63bc07614250aa50b",
+    "ago.json": "b8fb7afa66aa7a93914ac258475dd0191be821803a8aea4439f5ba05022f5fa5",
+    "apply.log": "5608a934aed3edba1f8fb701a63c0d14f8be5b457ca33e5765963b05a5e9073e",
+    "summary-red.jsonl": "6d07e910b9d7edbd4951d61930e06a8a1083754b80f4b58e33d710f4ee502cc9",
+    "focused-race.jsonl": "b5dd738abbb9b812a2c5a975726efae4d377680de7b77149541dec64c91928b0",
+    "apply.json": "8b34c133730259307b1d1606c68e719639120811de374c6cadd632379f306272",
+    "preview.log": "1f3ea010abfb9126cdd07303bfeb6fe19976decc445fec90870c95ce03468627",
+    "preview.json": "3de80f0c0c4456b3038d47580d5749c25394488b73e936d73f6b1f15bf3350f2"
+  },
+  "inputs": {
+    "README.md": "b595b10db57cc39233bfeac13421ade042ca4e463743123f9779225a2323fe22",
+    "docs/CLI.md": "284a04755eaecb7dcd78a5e6808da62f12768c72b7319892f646f16c727f3523",
+    "internal/cli/commands/update/command.go": "782969c7812eed966a0db4f7b601f1ce3fb268261a2f173db04a8884c5ff608d",
+    "internal/cli/commands/update/print.go": "175e60e8875c52f5f4f4bb6eed2a57d7ac983dbc62d98d31e65ebbeaf95aa7af",
+    "internal/cli/commands/update/update.go": "d7c3c0358071cf5f271e544c605f91aa96b929de9f6dabdd870311c8bda66b8e",
+    "internal/cli/commands/update/update_test.go": "7a081886afc2ae18aed06326482a4a3936be30fa9898620f9ab79215a74a8f3c",
+    "internal/cli/commands/update/validation.go": "f646bdddf31e94a343d6eff5a6444c6762f61a04d31a29b238aa0417d4a5dc4a",
+    "pkg/sync/result.go": "90b1d5f2164ca19f1135fc97b14c97c9ba7ed2f52381b7c8bb3b78441ac04187",
+    "pkg/sync/result_test.go": "f9a86a4cdc694a9b5d3c94ae20e7ca90641ef238405d138489111f3e20296bf3",
+    "internal/cli/commands/update/fresh_test.go": "a9ca97d6bc85a5e38dd68dfefde8b763faa527533ba93fe4097df5465d743c6e"
+  },
+  "all_cli_race": {
+    "test_pass_events": 285,
+    "package_pass": 14,
+    "failures": []
+  }
+}

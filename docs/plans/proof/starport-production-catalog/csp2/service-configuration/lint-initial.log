@@ -1,0 +1,5 @@
+internal/cli/app/config.go:205:6: func readConfigurationFile is unused (unused)
+func readConfigurationFile(path string) ([]byte, error) {
+     ^
+1 issues:
+* unused: 1

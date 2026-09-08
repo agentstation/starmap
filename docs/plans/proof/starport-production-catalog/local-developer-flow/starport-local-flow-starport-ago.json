@@ -1,0 +1,50 @@
+{
+  "schemaVersion": 1,
+  "version": "v0.2.0",
+  "rules": [
+    "no-dot-import",
+    "no-generic-methods",
+    "no-goto",
+    "no-invalid-ignore",
+    "no-naked-return",
+    "no-new-expr",
+    "no-self-referential-constraints"
+  ],
+  "findings": [
+    {
+      "rule": "no-naked-return",
+      "severity": "error",
+      "message": "naked return in extractThoughtSummary; name the values you are returning",
+      "file": "internal/providers/connectors/google_base.go",
+      "line": 598,
+      "column": 4,
+      "endLine": 598,
+      "endColumn": 10,
+      "docURL": "https://github.com/agentstation/ago/blob/main/docs/rules.md#no-naked-return"
+    },
+    {
+      "rule": "no-naked-return",
+      "severity": "error",
+      "message": "naked return in extractThoughtSummary; name the values you are returning",
+      "file": "internal/providers/connectors/google_base.go",
+      "line": 610,
+      "column": 5,
+      "endLine": 610,
+      "endColumn": 11,
+      "docURL": "https://github.com/agentstation/ago/blob/main/docs/rules.md#no-naked-return"
+    },
+    {
+      "rule": "no-naked-return",
+      "severity": "error",
+      "message": "naked return in extractThoughtSummary; name the values you are returning",
+      "file": "internal/providers/connectors/google_base.go",
+      "line": 628,
+      "column": 4,
+      "endLine": 628,
+      "endColumn": 10,
+      "docURL": "https://github.com/agentstation/ago/blob/main/docs/rules.md#no-naked-return"
+    }
+  ],
+  "staleIgnores": [],
+  "errors": []
+}

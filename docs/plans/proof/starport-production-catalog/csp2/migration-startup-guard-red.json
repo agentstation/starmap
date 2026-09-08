@@ -1,0 +1,17 @@
+{
+  "command": [
+    "go",
+    "test",
+    "-race",
+    "-count=1",
+    "-timeout",
+    "2m",
+    "-json",
+    "./runtime",
+    "-run",
+    "^TestMigrationStartupRefusesReplacedTargetBeforeInitialization$"
+  ],
+  "exit_code": 1,
+  "stdout": "{\"Time\":\"2026-09-05T22:43:02.581526-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starmap/runtime\"}\n{\"Time\":\"2026-09-05T22:43:03.011722-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Test\":\"TestMigrationStartupRefusesReplacedTargetBeforeInitialization\"}\n{\"Time\":\"2026-09-05T22:43:03.012122-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Test\":\"TestMigrationStartupRefusesReplacedTargetBeforeInitialization\",\"Output\":\"=== RUN   TestMigrationStartupRefusesReplacedTargetBeforeInitialization\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-05T22:43:03.012181-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Test\":\"TestMigrationStartupRefusesReplacedTargetBeforeInitialization\",\"Output\":\"=== PAUSE TestMigrationStartupRefusesReplacedTargetBeforeInitialization\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-05T22:43:03.012184-05:00\",\"Action\":\"pause\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Test\":\"TestMigrationStartupRefusesReplacedTargetBeforeInitialization\"}\n{\"Time\":\"2026-09-05T22:43:03.012189-05:00\",\"Action\":\"cont\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Test\":\"TestMigrationStartupRefusesReplacedTargetBeforeInitialization\"}\n{\"Time\":\"2026-09-05T22:43:03.012191-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Test\":\"TestMigrationStartupRefusesReplacedTargetBeforeInitialization\",\"Output\":\"=== CONT  TestMigrationStartupRefusesReplacedTargetBeforeInitialization\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-05T22:43:12.711313-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Test\":\"TestMigrationStartupRefusesReplacedTargetBeforeInitialization\",\"Output\":\"    migration_check_test.go:80: migration startup initialized a replacement directory after preflight\\n\",\"OutputType\":\"error\"}\n{\"Time\":\"2026-09-05T22:43:12.713305-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Test\":\"TestMigrationStartupRefusesReplacedTargetBeforeInitialization\",\"Output\":\"--- FAIL: TestMigrationStartupRefusesReplacedTargetBeforeInitialization (9.70s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-05T22:43:12.713323-05:00\",\"Action\":\"fail\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Test\":\"TestMigrationStartupRefusesReplacedTargetBeforeInitialization\",\"Elapsed\":9.7}\n{\"Time\":\"2026-09-05T22:43:12.713671-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Output\":\"FAIL\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-05T22:43:12.733892-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Output\":\"FAIL\\tgithub.com/agentstation/starmap/runtime\\t10.152s\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-05T22:43:12.733905-05:00\",\"Action\":\"fail\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Elapsed\":10.152}\n",
+  "stderr": ""
+}

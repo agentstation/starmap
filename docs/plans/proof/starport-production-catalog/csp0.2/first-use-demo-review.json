@@ -1,0 +1,173 @@
+{
+  "schema_version": 1,
+  "verdict": "PASS",
+  "release": "v1.2.0",
+  "scope": "Reviewed current README with native evidence for each advertised installation method. Source builds identify their source revision separately. No full production acceptance credit.",
+  "observations": {
+    "install_catalog_credentials_inference_order": true,
+    "catalog_presence_is_not_provider_access": true,
+    "development_persistence_overrides_disclosed": true,
+    "recording_persistence_selectors_cleared": true,
+    "production_limits_linked": true,
+    "gateway_latency_claim_qualified": true,
+    "all_advertised_installation_methods_reviewed": true
+  },
+  "inputs": {
+    "README.md": "fd774a0cb9277aced43fb66607340c3465987f8f7293c19005140214c43e68fb",
+    "docker-compose.yml": "e1f0d3045acd96897f512082844ab5a1337fc91f2ae9393a726bab8646e5bb09",
+    "Dockerfile": "5fc96080d6cfd73605fa3fe6bfce7bea6a4eed1fb1725d616574a042f4c46a29",
+    ".dockerignore": "ceaf5010d092edf2a4354bfa632eba2b815265841ded74e0942fcc1cd080fe05",
+    ".env.example": "07c30ac3d1bdcfb06f3992693beaec09dbad2e118e53c7140e4bd9d868a89ad1",
+    "docs/OPERATOR-GUIDE.md": "c95e7b814fbc322b61ba0119fed08db1e5fa84c00fc5a20451084f3d6f434db8",
+    "docs/PRODUCTION-STATUS.md": "ca314c6cff9fb4be65a72352f43a749a0ba8f0df780acf7f9bb8dfd37e5e7b54",
+    "docs/PERFORMANCE.md": "0e317bf814373c302af3d935f1c9e60911bffff052627ec96f4d1d9a28dd2d9d",
+    "scripts/verify-readme-quickstart.sh": "af4553bc09314f877f67c76bbbc0a3cd07c1b784e4fd8758ebb3650a88759ab6",
+    "scripts/test-readme-quickstart-verifier.sh": "3370668e3d94ec8e8d4accb52c5cda4f6e6ea95451c4590f8622808d1466c2c9",
+    "scripts/verify-doc-links.sh": "7d8b48fcbdc18feee391e56973a1c383c9aab7e9bc3589a6f71dc2c5f3385c06"
+  },
+  "captures": {
+    "compose-after.json": "fff12a19d2ee6e9dcdc23bc386799d8b4a69ec17f817030b60f32f60e46a2f59",
+    "compose-review.json": "8b01808b9935b6861778b50483d9896847cf9e45324806fec309d753060d1ec7",
+    "container-guide-writing.log": "e056fea5a2c30d5370923b1e1f838eb8e810582f0df453b70a1d6fe8d874dd66",
+    "container-install.json": "9c64a5785a462728be5c7e8afc17c744ca51102f0195c96afd65086f13718749",
+    "current-release-review.json": "d10ab1b4952833687aa6c4a14bc75a796ca79bbf4fca113925de0f0a08129cc3",
+    "homebrew-cask.json": "029b812dbd63058eaf6e5f8408d615b4b1dddd6cec99f6cbab21dc8490f5665c",
+    "native-run-34084336162-review.json": "769640ac1043b7010e7dea3181f5b3e382cef5891988907f7610b7b5d02c21f0",
+    "native-run-34084336162/native-release-darwin-arm64/result.json": "8f07b432c85d979728121a3d7b5b6c4cdc4d0840a069084a24676e7b62586ff3",
+    "native-run-34084336162/native-release-darwin-x86_64/result.json": "71a581d7e7fd08868f46185b2991d9a19805a4fd180542a0dc5e1ba42873ea76",
+    "native-run-34084336162/native-release-linux-arm64/result.json": "91e0e1cff5962d527002cce6ca5ae351b732b125a697c71c8e85c2706edbbba0",
+    "native-run-34084336162/native-release-linux-x86_64/result.json": "f5c0ee467b52e71915a57a5eb0149e82f1617d5afbeef5db0d57d6701131fcb9",
+    "native-run-34084336162/native-release-windows-arm64/result.json": "008df9fb154dd949f100556f972d2d3d2ee42c2ff52773d8040eb20283effa5e",
+    "native-run-34084336162/native-release-windows-x86_64/result.json": "9c87fc9cb0d2f110be6473f1902ed6dd572774b117b3de9b5d60dd79433d0cf2",
+    "real-inference.json": "634056f9f0fd77911894d7a0ffef87bd5283353629c29b434e548e24ac7d6b78",
+    "release-run.json": "b0f2ebf965122d6a31b2ca09b18875caefbb234423584bc8e17dd310ee2289bd",
+    "release.json": "0b35e8f7197cac8ee89b08aeadb8e26f4abba5380b0ee28a8a6d96e45eed9868",
+    "source-install.json": "fffdeec774fdfe3024c230c9fa55cadce263aab4e197c6caeaee73a440ca21eb",
+    "demo-readme-writing.log": "e12ae53feccc4fff0b3f0c13af3086dd10594dd227d5a82c6e4384e72cb8a668",
+    "demo-links.log": "6fa0ebecdeaab1b0b3742fbe25a1de216e45c21fcd2f9f1b5a87476ce9910324",
+    "demo-quickstart.log": "47f29784b60e4bb2b1578966e76740d2eb1c8003ace95deed9381a7cf47a2ca0",
+    "demo-quickstart-tests.log": "7d41b9e2600c7116fe64544ac49db9565f311a88726840200651e723e46c72e4"
+  },
+  "methods": {
+    "homebrew-linux": {
+      "artifact_kind": "release",
+      "release": "v1.2.0",
+      "platform": "linux",
+      "native": true,
+      "verdict": "PASS",
+      "captures": [
+        "release-run.json",
+        "homebrew-cask.json"
+      ]
+    },
+    "homebrew-macos": {
+      "artifact_kind": "release",
+      "release": "v1.2.0",
+      "platform": "macos",
+      "native": true,
+      "verdict": "PASS",
+      "captures": [
+        "release-run.json",
+        "homebrew-cask.json"
+      ]
+    },
+    "archive-darwin-arm64": {
+      "artifact_kind": "release",
+      "release": "v1.2.0",
+      "platform": "darwin-arm64",
+      "native": true,
+      "verdict": "PASS",
+      "captures": [
+        "native-run-34084336162/native-release-darwin-arm64/result.json",
+        "native-run-34084336162-review.json"
+      ]
+    },
+    "archive-darwin-x86_64": {
+      "artifact_kind": "release",
+      "release": "v1.2.0",
+      "platform": "darwin-x86_64",
+      "native": true,
+      "verdict": "PASS",
+      "captures": [
+        "native-run-34084336162/native-release-darwin-x86_64/result.json",
+        "native-run-34084336162-review.json"
+      ]
+    },
+    "archive-linux-arm64": {
+      "artifact_kind": "release",
+      "release": "v1.2.0",
+      "platform": "linux-arm64",
+      "native": true,
+      "verdict": "PASS",
+      "captures": [
+        "native-run-34084336162/native-release-linux-arm64/result.json",
+        "native-run-34084336162-review.json"
+      ]
+    },
+    "archive-linux-x86_64": {
+      "artifact_kind": "release",
+      "release": "v1.2.0",
+      "platform": "linux-x86_64",
+      "native": true,
+      "verdict": "PASS",
+      "captures": [
+        "native-run-34084336162/native-release-linux-x86_64/result.json",
+        "native-run-34084336162-review.json"
+      ]
+    },
+    "archive-windows-arm64": {
+      "artifact_kind": "release",
+      "release": "v1.2.0",
+      "platform": "windows-arm64",
+      "native": true,
+      "verdict": "PASS",
+      "captures": [
+        "native-run-34084336162/native-release-windows-arm64/result.json",
+        "native-run-34084336162-review.json"
+      ]
+    },
+    "archive-windows-x86_64": {
+      "artifact_kind": "release",
+      "release": "v1.2.0",
+      "platform": "windows-x86_64",
+      "native": true,
+      "verdict": "PASS",
+      "captures": [
+        "native-run-34084336162/native-release-windows-x86_64/result.json",
+        "native-run-34084336162-review.json"
+      ]
+    },
+    "source-build": {
+      "artifact_kind": "source",
+      "source_commit": "25c1196bcaa4f957b027be4e9f5baa59a6c4b05d",
+      "platform": "darwin/arm64",
+      "native": true,
+      "verdict": "PASS",
+      "captures": [
+        "source-install.json"
+      ]
+    },
+    "container-release": {
+      "artifact_kind": "release",
+      "release": "v1.2.0",
+      "platform": "linux/arm64",
+      "native": true,
+      "verdict": "PASS",
+      "captures": [
+        "container-install.json"
+      ]
+    },
+    "compose-source": {
+      "artifact_kind": "source",
+      "source_commit": "5820a370ff9255a8148799f5b45fcaf927c2e1dc",
+      "platform": "linux/arm64",
+      "native": true,
+      "verdict": "PASS",
+      "captures": [
+        "compose-after.json",
+        "compose-review.json"
+      ]
+    }
+  },
+  "inference_capture": "real-inference.json"
+}

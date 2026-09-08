@@ -1,0 +1,33 @@
+{
+  "command": [
+    "/Users/jack/.agents/skills/technical-writing/scripts/technical-writing",
+    "lint",
+    "docs/CLI.md",
+    "docs/design/catalog-lifecycle/PRD.md",
+    "docs/design/catalog-lifecycle/ENGINEERING_SPEC.md",
+    "docs/design/catalog-lifecycle/REPOSITORY_FINDINGS.md",
+    "docs/plans/starport-production-catalog-plan.html",
+    "docs/plans/proof/starport-production-catalog/csp2.md",
+    "docs/plans/proof/starport-production-catalog/csp2/access-policy-conversation-review.md",
+    "pkg/productpaths/security.go",
+    "pkg/productpaths/security_test.go",
+    "pkg/productpaths/inspection_windows.go",
+    "pkg/productpaths/inspection_windows_test.go",
+    "pkg/productpaths/inspection.go",
+    "internal/cli/app/file_inspection.go",
+    "internal/runtimeacl/windows/assessment.go",
+    "internal/runtimeacl/windows/assessment_test.go",
+    "internal/runtimeacl/windows/descriptor.go",
+    "internal/runtimeacl/windows/descriptor_windows.go",
+    "internal/runtimeacl/windows/descriptor_windows_test.go",
+    "internal/privatefiles/acl_windows.go",
+    "internal/privatefiles/acl_windows_test.go",
+    "internal/cli/commands/config/inspection.go",
+    "internal/cli/commands/config/inspection_test.go",
+    "--format",
+    "text"
+  ],
+  "exit_code": 0,
+  "stdout": "PASS: 22 file(s), 0 diagnostic(s)\n",
+  "stderr": ""
+}

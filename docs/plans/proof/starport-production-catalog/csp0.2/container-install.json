@@ -1,0 +1,78 @@
+{
+  "schema_version": 1,
+  "method": "readme-versioned-container",
+  "release": "v1.2.0",
+  "native_platform": "linux/arm64",
+  "verdict": "PASS",
+  "commands": [
+    {
+      "command": [
+        "docker",
+        "pull",
+        "ghcr.io/agentstation/starport:1.2.0"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 5.432
+    },
+    {
+      "command": [
+        "gh",
+        "attestation",
+        "verify",
+        "oci://ghcr.io/agentstation/starport:1.2.0",
+        "--repo",
+        "agentstation/starport",
+        "--signer-workflow",
+        "agentstation/starport/.github/workflows/release.yaml"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 5.133
+    },
+    {
+      "command": [
+        "docker",
+        "run",
+        "--rm",
+        "ghcr.io/agentstation/starport:1.2.0",
+        "--version"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 0.446
+    },
+    {
+      "command": [
+        "docker",
+        "run",
+        "--rm",
+        "--network",
+        "none",
+        "ghcr.io/agentstation/starport:1.2.0",
+        "models",
+        "search",
+        "gpt-4o",
+        "--json"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 2.106
+    },
+    {
+      "command": [
+        "docker",
+        "run",
+        "--rm",
+        "--network",
+        "none",
+        "ghcr.io/agentstation/starport:1.2.0",
+        "models",
+        "show",
+        "openai/gpt-4o-mini",
+        "--json"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 1.922
+    }
+  ],
+  "image": [
+    "ghcr.io/agentstation/starport@sha256:543e4ac8df312339c4f24371be89e51bd5b5014d492b6831681963fc1e3a470a"
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "command": [
+    "go",
+    "test",
+    "-race",
+    "-count=1",
+    "-timeout",
+    "5m",
+    ".",
+    "-run",
+    "^TestEmbeddedGenerationIsVerifiedPassiveAndIndependent$"
+  ],
+  "exit_code": 1,
+  "stdout": "FAIL\tgithub.com/agentstation/starmap [build failed]\nFAIL\n",
+  "stderr": "# github.com/agentstation/starmap_test [github.com/agentstation/starmap.test]\n./embedded_test.go:48:27: undefined: starmap.EmbeddedGeneration\n./embedded_test.go:62:23: undefined: starmap.EmbeddedGeneration\n"
+}

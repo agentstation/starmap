@@ -1,0 +1,9 @@
+{"Time":"2026-09-06T22:09:15.473648-05:00","Action":"start","Package":"github.com/agentstation/starmap/runtime"}
+{"Time":"2026-09-06T22:09:15.917846-05:00","Action":"run","Package":"github.com/agentstation/starmap/runtime","Test":"TestEffectiveGenerationPreservesOpaqueBaselineIdentity"}
+{"Time":"2026-09-06T22:09:15.917949-05:00","Action":"output","Package":"github.com/agentstation/starmap/runtime","Test":"TestEffectiveGenerationPreservesOpaqueBaselineIdentity","Output":"=== RUN   TestEffectiveGenerationPreservesOpaqueBaselineIdentity\n"}
+{"Time":"2026-09-06T22:09:15.926618-05:00","Action":"output","Package":"github.com/agentstation/starmap/runtime","Test":"TestEffectiveGenerationPreservesOpaqueBaselineIdentity","Output":"    baseline_provenance_test.go:78: derived identity lost its opaque baseline: approved.local.3f2526f97bf9\n"}
+{"Time":"2026-09-06T22:09:15.92668-05:00","Action":"output","Package":"github.com/agentstation/starmap/runtime","Test":"TestEffectiveGenerationPreservesOpaqueBaselineIdentity","Output":"--- FAIL: TestEffectiveGenerationPreservesOpaqueBaselineIdentity (0.01s)\n"}
+{"Time":"2026-09-06T22:09:15.926694-05:00","Action":"fail","Package":"github.com/agentstation/starmap/runtime","Test":"TestEffectiveGenerationPreservesOpaqueBaselineIdentity","Elapsed":0.01}
+{"Time":"2026-09-06T22:09:15.926878-05:00","Action":"output","Package":"github.com/agentstation/starmap/runtime","Output":"FAIL\n"}
+{"Time":"2026-09-06T22:09:15.928068-05:00","Action":"output","Package":"github.com/agentstation/starmap/runtime","Output":"FAIL\tgithub.com/agentstation/starmap/runtime\t0.454s\n"}
+{"Time":"2026-09-06T22:09:15.928107-05:00","Action":"fail","Package":"github.com/agentstation/starmap/runtime","Elapsed":0.454}

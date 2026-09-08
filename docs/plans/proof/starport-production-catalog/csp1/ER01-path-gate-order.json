@@ -1,0 +1,26 @@
+{
+  "id": "ER01",
+  "date": "2026-09-05",
+  "classification": "in-scope execution ordering repair",
+  "finding": "CSP1 public configuration completion was gated on cross-product file-location and path-inventory implementation. CSP2 owns the Starmap paths and depends on CSP1. CSP8 owns Starport adoption and already requires all three checks.",
+  "change": "Remove the three premature duplicates from CSP1. Their existing CSP8, candidate, final and primary-case membership stays unchanged.",
+  "checks": [
+    "A24.primary_config_file_selection",
+    "A24.bootstrap_file_location",
+    "A24.generated_file_inventory"
+  ],
+  "required_subcases_before_sha256": "322f6f962d03325825c7b08eaace65048ce5c49d1ba8f95b04ac4280682e1075",
+  "required_subcases_after_sha256": "322f6f962d03325825c7b08eaace65048ce5c49d1ba8f95b04ac4280682e1075",
+  "primary_cases": 50,
+  "required_subcases": 324,
+  "CSP1_checks_after": [
+    "A24.descriptor_parity",
+    "A24.zero_false_empty",
+    "A24.aliases_coalescing",
+    "A25.source_token_replacement",
+    "A24.starmap_yaml_parity",
+    "A24.dotenv_conflict_migration"
+  ],
+  "completion_scope_changed": false,
+  "rejected_design": "Do not qualify the target path inventory using the old filesystem defaults just to close CSP1."
+}

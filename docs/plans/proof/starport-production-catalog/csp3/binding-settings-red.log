@@ -1,0 +1,12 @@
+--- FAIL: TestProviderBindingSettingsReachRuntimeWithoutAmbientFallback (1.35s)
+    --- FAIL: TestProviderBindingSettingsReachRuntimeWithoutAmbientFallback/empty (0.00s)
+        provider_bindings_test.go:81: validation failed for field STARMAP_CATALOG_PROVIDER_BINDINGS: is not a supported catalog setting
+    --- FAIL: TestProviderBindingSettingsReachRuntimeWithoutAmbientFallback/two-scopes (0.00s)
+        provider_bindings_test.go:81: validation failed for field STARMAP_CATALOG_PROVIDER_BINDINGS: is not a supported catalog setting
+    --- FAIL: TestProviderBindingSettingsReachRuntimeWithoutAmbientFallback/empty-replaces-file (0.00s)
+        provider_bindings_test.go:81: validation failed for field STARMAP_CATALOG_PROVIDER_BINDINGS: is not a supported catalog setting
+    --- FAIL: TestProviderBindingSettingsReachRuntimeWithoutAmbientFallback/source-replacement-keeps-bindings (0.00s)
+        provider_bindings_test.go:81: validation failed for field STARMAP_CATALOG_PROVIDER_BINDINGS: is not a supported catalog setting
+FAIL
+FAIL	github.com/agentstation/starmap/pkg/catalogs/config	1.739s
+FAIL

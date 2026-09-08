@@ -1,0 +1,5 @@
+Traceback (most recent call last):
+  File "/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/docs/plans/proof/starport-production-catalog/activation-2026-09-05/verify_documents.py", line 73, in <module>
+    assert target.exists(), (p, href)
+           ~~~~~~~~~~~~~^^
+AssertionError: (PosixPath('/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/docs/design/catalog-lifecycle/REPOSITORY_FINDINGS.md'), '../../plans/proof/starport-production-catalog/csp3/scoped-reconciliation-verification.json')

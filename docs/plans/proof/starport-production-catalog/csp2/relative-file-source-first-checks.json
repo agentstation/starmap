@@ -1,0 +1,45 @@
+[
+  {
+    "command": [
+      "go",
+      "test",
+      "-race",
+      "-count=1",
+      "-timeout",
+      "4m",
+      "-json",
+      "./internal/cli/app",
+      "-run",
+      "Test(RelativeFileSource|FileSourceReadsReportedAnchor)"
+    ],
+    "environment": {},
+    "exit_code": 0,
+    "stdout": "{\"Time\":\"2026-09-06T00:21:18.291424-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\"}\n{\"Time\":\"2026-09-06T00:21:18.853844-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestRelativeFileSourceRefusesBeforeBaselineWrites\"}\n{\"Time\":\"2026-09-06T00:21:18.853961-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestRelativeFileSourceRefusesBeforeBaselineWrites\",\"Output\":\"=== RUN   TestRelativeFileSourceRefusesBeforeBaselineWrites\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-06T00:21:18.855786-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestRelativeFileSourceRefusesBeforeBaselineWrites\",\"Output\":\"--- PASS: TestRelativeFileSourceRefusesBeforeBaselineWrites (0.00s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-06T00:21:18.855797-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestRelativeFileSourceRefusesBeforeBaselineWrites\",\"Elapsed\":0}\n{\"Time\":\"2026-09-06T00:21:18.85582-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestFileSourceReadsReportedAnchorAcrossWorkingDirectories\"}\n{\"Time\":\"2026-09-06T00:21:18.855831-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestFileSourceReadsReportedAnchorAcrossWorkingDirectories\",\"Output\":\"=== RUN   TestFileSourceReadsReportedAnchorAcrossWorkingDirectories\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-06T00:21:42.881348-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestFileSourceReadsReportedAnchorAcrossWorkingDirectories\",\"Output\":\"--- PASS: TestFileSourceReadsReportedAnchorAcrossWorkingDirectories (24.03s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-06T00:21:42.881382-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestFileSourceReadsReportedAnchorAcrossWorkingDirectories\",\"Elapsed\":24.03}\n{\"Time\":\"2026-09-06T00:21:42.881399-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Output\":\"PASS\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-06T00:21:43.923054-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Output\":\"ok  \\tgithub.com/agentstation/starmap/internal/cli/app\\t25.631s\\n\"}\n{\"Time\":\"2026-09-06T00:21:43.923079-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Elapsed\":25.631}\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "go",
+      "tool",
+      "ago",
+      "-stale-ignores",
+      "-format",
+      "json",
+      "./..."
+    ],
+    "environment": {},
+    "exit_code": 0,
+    "stdout": "{\n  \"schemaVersion\": 1,\n  \"version\": \"v0.2.0\",\n  \"rules\": [\n    \"no-dot-import\",\n    \"no-generic-methods\",\n    \"no-goto\",\n    \"no-invalid-ignore\",\n    \"no-naked-return\",\n    \"no-new-expr\",\n    \"no-self-referential-constraints\"\n  ],\n  \"findings\": [],\n  \"staleIgnores\": [],\n  \"errors\": []\n}\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "golangci-lint",
+      "run"
+    ],
+    "environment": {},
+    "exit_code": 0,
+    "stdout": "0 issues.\n",
+    "stderr": ""
+  }
+]

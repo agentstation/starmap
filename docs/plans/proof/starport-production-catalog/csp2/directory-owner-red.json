@@ -1,0 +1,15 @@
+{
+  "command": [
+    "go",
+    "test",
+    "-count=1",
+    "-timeout",
+    "3m",
+    "./runtime",
+    "-run",
+    "^(TestPersistentRuntimeRefusesConcurrentDirectoryOwner|TestClosedRuntimeRefusesNewAcquisition)$"
+  ],
+  "exit_code": 1,
+  "stdout": "--- FAIL: TestClosedRuntimeRefusesNewAcquisition (1.14s)\n    directory_test.go:51: closed runtime accepted a new acquisition\n--- FAIL: TestPersistentRuntimeRefusesConcurrentDirectoryOwner (1.14s)\n    directory_test.go:28: second runtime error = <nil>, want ownership conflict\nFAIL\nFAIL\tgithub.com/agentstation/starmap/runtime\t1.516s\nFAIL\n",
+  "stderr": ""
+}

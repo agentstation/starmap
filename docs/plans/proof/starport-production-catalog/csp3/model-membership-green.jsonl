@@ -1,0 +1,8 @@
+{"Time":"2026-09-07T01:29:35.534444-05:00","Action":"start","Package":"github.com/agentstation/starmap/pkg/catalogs"}
+{"Time":"2026-09-07T01:29:35.775068-05:00","Action":"run","Package":"github.com/agentstation/starmap/pkg/catalogs","Test":"TestEnrichMergePreservesManualModelWithoutPricingOrLimits"}
+{"Time":"2026-09-07T01:29:35.775147-05:00","Action":"output","Package":"github.com/agentstation/starmap/pkg/catalogs","Test":"TestEnrichMergePreservesManualModelWithoutPricingOrLimits","Output":"=== RUN   TestEnrichMergePreservesManualModelWithoutPricingOrLimits\n","OutputType":"frame"}
+{"Time":"2026-09-07T01:29:35.776247-05:00","Action":"output","Package":"github.com/agentstation/starmap/pkg/catalogs","Test":"TestEnrichMergePreservesManualModelWithoutPricingOrLimits","Output":"--- PASS: TestEnrichMergePreservesManualModelWithoutPricingOrLimits (0.00s)\n","OutputType":"frame"}
+{"Time":"2026-09-07T01:29:35.776291-05:00","Action":"pass","Package":"github.com/agentstation/starmap/pkg/catalogs","Test":"TestEnrichMergePreservesManualModelWithoutPricingOrLimits","Elapsed":0}
+{"Time":"2026-09-07T01:29:35.776313-05:00","Action":"output","Package":"github.com/agentstation/starmap/pkg/catalogs","Output":"PASS\n","OutputType":"frame"}
+{"Time":"2026-09-07T01:29:36.779907-05:00","Action":"output","Package":"github.com/agentstation/starmap/pkg/catalogs","Output":"ok  \tgithub.com/agentstation/starmap/pkg/catalogs\t1.245s\n"}
+{"Time":"2026-09-07T01:29:36.779963-05:00","Action":"pass","Package":"github.com/agentstation/starmap/pkg/catalogs","Elapsed":1.246}

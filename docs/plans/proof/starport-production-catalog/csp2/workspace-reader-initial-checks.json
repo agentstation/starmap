@@ -1,0 +1,41 @@
+[
+  {
+    "command": [
+      "go",
+      "test",
+      "-race",
+      "-json",
+      "./internal/catalog/workspace",
+      "-run",
+      "^TestObserveInputRefusesActiveWriter$",
+      "-count=1",
+      "-timeout=2m"
+    ],
+    "exit_code": 0,
+    "stdout": "{\"Time\":\"2026-09-06T09:54:39.956042-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starmap/internal/catalog/workspace\"}\n{\"Time\":\"2026-09-06T09:54:40.186902-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starmap/internal/catalog/workspace\",\"Test\":\"TestObserveInputRefusesActiveWriter\"}\n{\"Time\":\"2026-09-06T09:54:40.187044-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/catalog/workspace\",\"Test\":\"TestObserveInputRefusesActiveWriter\",\"Output\":\"=== RUN   TestObserveInputRefusesActiveWriter\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-06T09:54:40.187104-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starmap/internal/catalog/workspace\",\"Test\":\"TestObserveInputRefusesActiveWriter/absent\"}\n{\"Time\":\"2026-09-06T09:54:40.187109-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/catalog/workspace\",\"Test\":\"TestObserveInputRefusesActiveWriter/absent\",\"Output\":\"=== RUN   TestObserveInputRefusesActiveWriter/absent\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-06T09:54:40.188037-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/catalog/workspace\",\"Test\":\"TestObserveInputRefusesActiveWriter/absent\",\"Output\":\"--- PASS: TestObserveInputRefusesActiveWriter/absent (0.00s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-06T09:54:40.188055-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starmap/internal/catalog/workspace\",\"Test\":\"TestObserveInputRefusesActiveWriter/absent\",\"Elapsed\":0}\n{\"Time\":\"2026-09-06T09:54:40.188124-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starmap/internal/catalog/workspace\",\"Test\":\"TestObserveInputRefusesActiveWriter/present\"}\n{\"Time\":\"2026-09-06T09:54:40.18813-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/catalog/workspace\",\"Test\":\"TestObserveInputRefusesActiveWriter/present\",\"Output\":\"=== RUN   TestObserveInputRefusesActiveWriter/present\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-06T09:54:40.189496-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/catalog/workspace\",\"Test\":\"TestObserveInputRefusesActiveWriter/present\",\"Output\":\"--- PASS: TestObserveInputRefusesActiveWriter/present (0.00s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-06T09:54:40.18952-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starmap/internal/catalog/workspace\",\"Test\":\"TestObserveInputRefusesActiveWriter/present\",\"Elapsed\":0}\n{\"Time\":\"2026-09-06T09:54:40.189623-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/catalog/workspace\",\"Test\":\"TestObserveInputRefusesActiveWriter\",\"Output\":\"--- PASS: TestObserveInputRefusesActiveWriter (0.00s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-06T09:54:40.189713-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starmap/internal/catalog/workspace\",\"Test\":\"TestObserveInputRefusesActiveWriter\",\"Elapsed\":0}\n{\"Time\":\"2026-09-06T09:54:40.189739-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/catalog/workspace\",\"Output\":\"PASS\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-06T09:54:41.196105-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/catalog/workspace\",\"Output\":\"ok  \\tgithub.com/agentstation/starmap/internal/catalog/workspace\\t1.236s\\n\"}\n{\"Time\":\"2026-09-06T09:54:41.196161-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starmap/internal/catalog/workspace\",\"Elapsed\":1.24}\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "go",
+      "tool",
+      "ago",
+      "-stale-ignores",
+      "-format",
+      "json",
+      "./..."
+    ],
+    "exit_code": 0,
+    "stdout": "{\n  \"schemaVersion\": 1,\n  \"version\": \"v0.2.0\",\n  \"rules\": [\n    \"no-dot-import\",\n    \"no-generic-methods\",\n    \"no-goto\",\n    \"no-invalid-ignore\",\n    \"no-naked-return\",\n    \"no-new-expr\",\n    \"no-self-referential-constraints\"\n  ],\n  \"findings\": [],\n  \"staleIgnores\": [],\n  \"errors\": []\n}\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "bash",
+      "scripts/verify-catalog-dependency-direction.sh"
+    ],
+    "exit_code": 0,
+    "stdout": "SM-D01 PASS: catalogs does not import private authority policy\nSM-D02 PASS: catalogs does not import repository-wide constants\nSM-D03 PASS: catalogs does not import the private embedded filesystem\nSM-D04 PASS: catalogs does not import private source payload policy\nSM-D05 PASS: catalog artifacts do not import repository-wide constants\nSM-D06 PASS: catalog remote transport does not import repository-wide constants\nSM-D07 PASS: catalog storage does not import repository-wide constants\nSM-D08 PASS: catalog S3 storage does not import repository-wide constants\nSummary: 8 passed, 0 failed\n",
+    "stderr": ""
+  }
+]

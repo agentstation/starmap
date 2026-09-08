@@ -1,0 +1,14 @@
+{
+  "command": [
+    "go",
+    "tool",
+    "ago",
+    "-stale-ignores",
+    "-format",
+    "json",
+    "./..."
+  ],
+  "exit_code": 0,
+  "seconds": 3.1078244168311357,
+  "output": "{\n  \"schemaVersion\": 1,\n  \"version\": \"v0.2.0\",\n  \"rules\": [\n    \"no-dot-import\",\n    \"no-generic-methods\",\n    \"no-goto\",\n    \"no-invalid-ignore\",\n    \"no-naked-return\",\n    \"no-new-expr\",\n    \"no-self-referential-constraints\"\n  ],\n  \"findings\": [],\n  \"staleIgnores\": [],\n  \"errors\": []\n}\n"
+}

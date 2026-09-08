@@ -1,0 +1,73 @@
+[
+  {
+    "command": [
+      "bash",
+      "scripts/verify-console-modernization.sh"
+    ],
+    "exit_code": 0,
+    "stdout": "PASS CM-V01 console workspace exists with a package manifest\nPASS CM-V02 package manifest pins pnpm via the packageManager field\nPASS CM-V03 design tokens live in a Tailwind @theme layer\nPASS CM-V04 TanStack Router file routes directory exists\nPASS CM-V05 token layer defines the raised-surface role token\nPASS CM-V06 app shell component exists\nPASS CM-V07 overview route renders its page components\nPASS CM-V08 models route exists\nPASS CM-V09 providers route exists\nPASS CM-V10 keys route exists\nPASS CM-V11 usage route exists\nPASS CM-V12 presets route exists\nPASS CM-V13 settings route exists\nPASS CM-V14 chat route exists\nPASS CM-V15 chat composer carries the model picker\nPASS CM-V16 chat renders streaming markdown through streamdown\nPASS CM-V17 chat has a comparison mode component\nPASS CM-V18 console embeds the SPA build and serves its page fallback\nPASS CM-V19 command palette component exists\nPASS CM-V20 DESIGN.md states the one-accent law\nPASS CM-V21 legacy static console is deleted\nSummary: 21 passed, 0 failed\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "bash",
+      "scripts/verify-console-session-grants.sh"
+    ],
+    "exit_code": 0,
+    "stdout": "PASS CSG-V01 internal/localauth owns the grant seam\nPASS CSG-V02 the three grant kinds are named in one place\nPASS CSG-V03 a session records the grant that minted it\nPASS CSG-V04 ticket redemption goes through the registered grant\nPASS CSG-V05 the local admin token is a registered grant\nPASS CSG-V06 the paste path compares in constant time via the token\nPASS CSG-V07 the paste path obeys the token exposure rule\nPASS CSG-V08 the identity grant is registered\nPASS CSG-V09 the inert identity grant refusal is held by a contract test\nPASS CSG-V10 the console session route accepts the local token grant\nPASS CSG-V11 the route is registered\nPASS CSG-V12 the console has an auth route outside the shell\nPASS CSG-V13 the auth CLI can put the local admin token on the clipboard\nPASS CSG-V14 the page states its trust scope in the page\nPASS CSG-V15 the gateway key card no longer stands in for first contact\nPASS CSG-V16 sign-in copy belongs to the identity grant alone\nSummary: 16 passed, 0 failed\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "bash",
+      "scripts/verify-auth-onboarding.sh"
+    ],
+    "exit_code": 0,
+    "stdout": "PASS AON-V01 internal/account owns the account model\nPASS AON-V02 account storage namespace is versioned account:v1:\nPASS AON-V03 composition ensures the canonical default account\nPASS AON-V04 an account carries the credential strategy the operator governs\nPASS AON-V05 the limits vocabulary has its own owner, shared by key and account\nPASS AON-V06 identity.APIKey carries an account\nPASS AON-V07 the request context carries an account identity\nPASS AON-V08 no controller derives a credential scope from an API key ID\nPASS AON-V09 the provider credential package is named for all three sources\nPASS AON-V10 no package still calls the whole credential subsystem byok\nPASS AON-V11 the BYOK plane is scoped to an account, not to a key\nPASS AON-V12 the shared credential plane has a named scope\nPASS AON-V13 credential resolution consults the shared source\nPASS AON-V14 an operator applies a shared credential on the provider route\nPASS AON-V15 the account-brought credential route is named byok\nPASS AON-V16 the key-nested credential routes are gone\nPASS AON-V17 admin account routes are registered\nPASS AON-V18 the budget path resolves an account limit\nPASS AON-V19 config owns the gateway authentication mode\nPASS AON-V20 serve and dev accept --no-auth\nPASS AON-V21 startup validation holds the non-loopback tripwire\nPASS AON-V22 the admin authentication-mode route is registered\nPASS AON-V23 internal/localauth owns the local admin token\nPASS AON-V24 the starport auth command group exists\nPASS AON-V25 the launch route consumes a one-time ticket\nPASS AON-V26 no provider screen links to /keys for credentials\nSummary: 26 passed, 0 failed\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "bash",
+      "scripts/verify-console-polish.sh"
+    ],
+    "exit_code": 0,
+    "stdout": "PASS CPL-V01 lib/queries.ts owns the query factories through queryOptions\nPASS CPL-V02 main.tsx sets the query client defaults\nPASS CPL-V03 the router preloads on intent\nPASS CPL-V04 the router owns a not-found component\nPASS CPL-V05 every factory in lib/queries.ts passes the query signal\nPASS CPL-V06 at least eleven route files validate search params\nPASS CPL-V07 the console holds a shadcn components manifest\nPASS CPL-V08 the console depends on Base UI\nPASS CPL-V09 index.html bootstraps the theme before paint\nPASS CPL-V10 the shell renders a skip link\nPASS CPL-V11 dialog.tsx is present and Modal.tsx is gone\nPASS CPL-V12 sheet.tsx is present and SidePanel.tsx is gone\nPASS CPL-V13 Form.tsx owns DestructiveButton\nPASS CPL-V14 the console depends on sonner for toasts\nPASS CPL-V15 lib/api.ts types the budget exhausted error\nPASS CPL-V16 no component keeps its own notice state\nPASS CPL-V17 tooltip and dropdown menu components exist\nPASS CPL-V18 the chat model picker sets aria-activedescendant\nPASS CPL-V19 a skeleton component exists\nPASS CPL-V20 Field sets aria-invalid on error\nPASS CPL-V21 chat messages carry a live region\nPASS CPL-V22 format.test.ts covers the price pair formatter\nPASS CPL-V23 format.ts exports formatPricePair\nPASS CPL-V24 components/ui owns a shared DataTable\nPASS CPL-V25 the audit route uses DataTable\nPASS CPL-V26 provider offerings use DataTable\nPASS CPL-V27 the seven plain tables carry column scopes\nPASS CPL-V28 the usage charts share a syncId\nPASS CPL-V29 the chart emphasizes the last point with ReferenceDot\nPASS CPL-V30 system info reports build provenance, held by tests\nPASS CPL-V31 the server mounts the admin webhook summary route\nPASS CPL-V32 settings panels render Observability and Guardrails sections\nPASS CPL-V33 components/ui owns a shared BudgetLine\nPASS CPL-V34 a team read includes budget usage, held by tests\nPASS CPL-V35 delete team and delete account dialogs exist\nPASS CPL-V36 the audit route and client filters carry until\nPASS CPL-V37 lib/api.ts types the guardrail verdict field\nPASS CPL-V38 the usage route offers an NDJSON export\nPASS CPL-V39 the console names the X-Semantic-Cache header\nPASS CPL-V40 a batches panel exists\nPASS CPL-V41 the shell navigation reads Audit log in sentence case\nPASS CPL-V42 the key form uses the model picker\nPASS CPL-V43 chat.test.tsx exists\nPASS CPL-V44 the docs cite the real health paths\nPASS CPL-V45 docs.test.tsx exists\nPASS CPL-V46 lib/useMediaQuery.ts exists\nPASS CPL-V47 CI runs this gate\nPASS CPL-V48 the AGENTS.md evidence list names this gate\nSummary: 48 passed, 0 failed\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "bash",
+      "scripts/verify-doc-links.sh"
+    ],
+    "exit_code": 0,
+    "stdout": "PASS documentation links\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "go",
+      "test",
+      "-race",
+      "-count=1",
+      "./internal/console"
+    ],
+    "exit_code": 0,
+    "stdout": "ok  \tgithub.com/agentstation/starport/internal/console\t1.328s\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "go",
+      "test",
+      "-race",
+      "-count=1",
+      "-run",
+      "^(TestAdminProviderRoutesRequireAuthentication|TestAnExpiredSessionStopsAuthenticating|TestRequiredAuthenticationRefusesAKeylessRequest|TestAuthIntegrationWithConsole)$",
+      "./internal/server"
+    ],
+    "exit_code": 0,
+    "stdout": "ok  \tgithub.com/agentstation/starport/internal/server\t11.679s\n",
+    "stderr": ""
+  }
+]

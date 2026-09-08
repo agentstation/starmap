@@ -1,0 +1,12 @@
+{
+  "scope": "Exact file exclusions for frozen command output. No writing rule or severity changed.",
+  "reason": "Apply the existing historical-review and protected-source classification to these two immutable verification outputs.",
+  "hashes_before": {
+    "docs/plans/proof/starport-production-catalog/storage-revision-2026-09-05/document_structure.txt": "3903d2b40507853997d3ae6933f3dd168661f0d8ff73364919f3061e080f776f",
+    "docs/plans/proof/starport-production-catalog/storage-revision-2026-09-05/starmap_writing.txt": "7dd830d8f691c3b2027517396306232a359454b1df194aaefd6a378ec56d5331"
+  },
+  "hashes_after": {
+    "docs/plans/proof/starport-production-catalog/storage-revision-2026-09-05/document_structure.txt": "3903d2b40507853997d3ae6933f3dd168661f0d8ff73364919f3061e080f776f",
+    "docs/plans/proof/starport-production-catalog/storage-revision-2026-09-05/starmap_writing.txt": "7dd830d8f691c3b2027517396306232a359454b1df194aaefd6a378ec56d5331"
+  }
+}

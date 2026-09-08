@@ -1,0 +1,7 @@
+[0;34mGenerating Go documentation...[0m 
+devbox run env PATH="/Users/jack/go/bin:$PATH" go generate ./...
+Info: New devbox available: 0.16.0 -> v0.18.0. Please run `devbox version update`.
+Info: Running script "env" on /Users/jack/src/github.com/agentstation/starmap-catalog-requirements
+📦 Starmap development environment loaded
+Tools available: go, gomarkdoc, swag (v2 via flake), golangci-lint
+[0;32mGo documentation generation complete[0m 

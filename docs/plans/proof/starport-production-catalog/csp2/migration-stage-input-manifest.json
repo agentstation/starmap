@@ -1,0 +1,98 @@
+{
+  "branch": "codex/catalog-requirements",
+  "head": "4780dfea9f7e002ea6eaaa82aa8f52ed0d4cc225",
+  "files": [
+    {
+      "path": "runtime/migration_copy.go",
+      "sha256": "637b10ae16e99c44692c77c41df16c3d66f573bec7fe7b07159ea3ca3635f3f1"
+    },
+    {
+      "path": "runtime/migration_journal.go",
+      "sha256": "daf174c381f97d4794ab9c58c45ed1ca4f24039f413b0777826d8bde6b6cb288"
+    },
+    {
+      "path": "runtime/migration_journal_test.go",
+      "sha256": "00d265342de31dedacb4349d6556a1b6d5f0f38ca1d54107b9c58095c6b9ffe7"
+    },
+    {
+      "path": "runtime/migration_locations.go",
+      "sha256": "8c995c4d84fa4044edd42140694cdf46e5a25e965a481756e92e99b6897426a5"
+    },
+    {
+      "path": "runtime/migration_manifest.go",
+      "sha256": "df4605e039c21ac7876e7d30943d7b6e25b2f4f9b8400ad6d5e4b514c58bdf88"
+    },
+    {
+      "path": "runtime/migration_manifest_test.go",
+      "sha256": "928795c80324ff1a6701bcb4b28a5e8bb414924b4e3604083fb28bf1e57a390e"
+    },
+    {
+      "path": "runtime/migration_prepare.go",
+      "sha256": "d4632cdcba84c1340e41ec9c23ae44beefa22ee77e0764a050c1786d8a9db360"
+    },
+    {
+      "path": "runtime/migration_prepare_test.go",
+      "sha256": "1fd757232fb526860a262e0bc072809a8a9cb2d95797d50d7d5a8c58ba397021"
+    },
+    {
+      "path": "runtime/migration_process_test.go",
+      "sha256": "abc17ee4aff4a73a7d6804f32661973b67039cbad1f750cfb8c1791af39095ae"
+    },
+    {
+      "path": "runtime/migration_recovery_test.go",
+      "sha256": "a904a8182864e7d65f00df35f754bd1d534b9eac64511374f3a7f2fef008b5a1"
+    },
+    {
+      "path": "runtime/migration_rename_darwin.go",
+      "sha256": "d2e65744681143429e73dd5bc7f69be4811ece8532b10f8e986f5b80b331f595"
+    },
+    {
+      "path": "runtime/migration_rename_linux.go",
+      "sha256": "c333a31906ff66c6dc06e42490fa5e97868f1004124662053038098267c2ccf0"
+    },
+    {
+      "path": "runtime/migration_rename_other.go",
+      "sha256": "6f74b87876875e3914e531b623c51884c9ff0fccaa4f2b51256be1be8b38f58b"
+    },
+    {
+      "path": "runtime/migration_rename_windows.go",
+      "sha256": "fc86d4891387cbdd366b64cdad8b9c0b31bccaaa52578a76e3629c09f0fbae69"
+    },
+    {
+      "path": "runtime/migration_source.go",
+      "sha256": "edb8a3bcf40dba931d3b187d6cb59e215fe0b19cf178aba7dc98902b3860b6f9"
+    },
+    {
+      "path": "runtime/migration_stage.go",
+      "sha256": "605fd00a34473522f321ffcdad8ecce6859cf74008040d5e6768afc0ee693b68"
+    },
+    {
+      "path": "runtime/migration_stage_test.go",
+      "sha256": "1b785890573a477713dbefef6280828d22b19c79e9ac854efdd3c36e7521ed39"
+    },
+    {
+      "path": "runtime/migration_verify.go",
+      "sha256": "d10a5ba6b271ff3b44754a80b38c407ebee2eb0d99b8935ea95c2b1b1f97e367"
+    },
+    {
+      "path": "runtime/runtime.go",
+      "sha256": "b14dfa8ce487d5d90e8386b47a697a2c11f9859073efedeb6f0ddf4783b9afa5"
+    },
+    {
+      "path": "runtime/owner.go",
+      "sha256": "053ae746d4605c92533f4e5ab239e0dc8b677bbf9660cd968b7a17a30b8206c1"
+    },
+    {
+      "path": "runtime/owner_seed.go",
+      "sha256": "b89bc78ed3a5a5b7bb9f2f624e424fd1915c5d7351acf720a79a6a1dd27e2c00"
+    },
+    {
+      "path": "runtime/scheduler.go",
+      "sha256": "5f51782c3e7c3c1b98db7db063d9756b9faa398446aea3ee2efbdb9e3ab0b389"
+    },
+    {
+      "path": "runtime/directory.go",
+      "sha256": "6be9efdf35c955b2b74cb06df034ebeb2adc7d5496c4dde712c69acec9945c1b"
+    }
+  ]
+}

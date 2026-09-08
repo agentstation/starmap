@@ -1,0 +1,47 @@
+{
+  "source_commit": "5820a370ff9255a8148799f5b45fcaf927c2e1dc",
+  "platform": "linux/arm64",
+  "commands": [
+    {
+      "args": [
+        "up",
+        "--build",
+        "-d",
+        "valkey"
+      ],
+      "exit_code": 0
+    },
+    {
+      "args": [
+        "run",
+        "--rm",
+        "starport",
+        "init",
+        "--configured-storage",
+        "--name",
+        "primary-admin",
+        "--json"
+      ],
+      "exit_code": 0
+    },
+    {
+      "args": [
+        "up",
+        "-d",
+        "starport"
+      ],
+      "exit_code": 0
+    },
+    {
+      "args": [
+        "down",
+        "--volumes",
+        "--remove-orphans"
+      ],
+      "exit_code": 0
+    }
+  ],
+  "http": [],
+  "verdict": "FAIL",
+  "error": "gateway did not become ready"
+}

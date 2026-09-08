@@ -1,0 +1,887 @@
+{
+  "package": "internal/server",
+  "race": false,
+  "toolchain": "go1.25.12",
+  "commands": [
+    {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.25.12",
+        "GOOS=linux",
+        "GOARCH=arm64",
+        "CGO_ENABLED=0",
+        "go",
+        "test",
+        "-c",
+        "-o",
+        "/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/csp2-native-build-y7u0nseo/test",
+        "./internal/server"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "docker",
+        "volume",
+        "create",
+        "--label",
+        "purpose=csp2-native-package-verification",
+        "csp2-native-9421288b1ec4488fb61d7a8096fd35d0"
+      ],
+      "exit_code": 0,
+      "stdout": "csp2-native-9421288b1ec4488fb61d7a8096fd35d0\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "docker",
+        "create",
+        "--pull=never",
+        "--network",
+        "none",
+        "--read-only",
+        "--user",
+        "65532:65532",
+        "--cap-drop=ALL",
+        "--security-opt=no-new-privileges",
+        "--mount",
+        "type=bind,src=/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/csp2-native-build-y7u0nseo/test,dst=/native-test,readonly",
+        "--mount",
+        "type=bind,src=/Users/jack/src/github.com/agentstation/starmap-catalog-requirements,dst=/Users/jack/src/github.com/agentstation/starmap-catalog-requirements,readonly",
+        "--mount",
+        "type=volume,src=csp2-native-9421288b1ec4488fb61d7a8096fd35d0,dst=/home/nonroot",
+        "--env",
+        "TMPDIR=/home/nonroot",
+        "--env",
+        "GOMAXPROCS=4",
+        "--workdir",
+        "/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/internal/server",
+        "--entrypoint",
+        "/native-test",
+        "cgr.dev/chainguard/static@sha256:60582b2ae6074f641094af0f370d4ab241aab271858a66223dcde7eee9f51638",
+        "-test.v=test2json",
+        "-test.count=1",
+        "-test.parallel=4",
+        "-test.timeout=10m"
+      ],
+      "exit_code": 0,
+      "stdout": "6cc0dc2e89c62d87b205d69ecfc70602bb018367bfe54321fb65674159ef60ad\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "docker",
+        "start",
+        "--attach",
+        "6cc0dc2e89c62d87b205d69ecfc70602bb018367bfe54321fb65674159ef60ad"
+      ],
+      "exit_code": 0,
+      "stdout": "\u0016=== RUN   TestCascadedFreshnessPropagatesChannelUpdatedAtThroughHops\n\u0016--- PASS: TestCascadedFreshnessPropagatesChannelUpdatedAtThroughHops (1.52s)\n\u0016=== NAME  \n\u0016=== RUN   TestDurableServerUpdatePublishesSameGenerationAfterProcessRestart\n\u0016--- PASS: TestDurableServerUpdatePublishesSameGenerationAfterProcessRestart (11.45s)\n\u0016=== NAME  \n\u0016=== RUN   TestHierarchicalIDRoutePreservesCompleteOpaqueModelID\n\u0016--- PASS: TestHierarchicalIDRoutePreservesCompleteOpaqueModelID (0.00s)\n\u0016=== NAME  \n\u0016=== RUN   TestOpenRouterRoutesProjectCanonicalModelAndProviderEndpoints\n\u0016=== PAUSE TestOpenRouterRoutesProjectCanonicalModelAndProviderEndpoints\n\u0016=== NAME  \n\u0016=== RUN   TestOpenRouterRoutesUseNumericNotFoundEnvelope\n\u0016=== PAUSE TestOpenRouterRoutesUseNumericNotFoundEnvelope\n\u0016=== NAME  \n\u0016=== RUN   TestOpenRouterRouteMapsAmbiguousAliasToDeterministicNotFound\n\u0016=== PAUSE TestOpenRouterRouteMapsAmbiguousAliasToDeterministicNotFound\n\u0016=== NAME  \n\u0016=== RUN   TestOpenRouterAuthenticationUsesCompatibilityEnvelopeOnlyOnAdapterRoutes\n\u0016--- PASS: TestOpenRouterAuthenticationUsesCompatibilityEnvelopeOnlyOnAdapterRoutes (0.00s)\n\u0016=== NAME  \n\u0016=== RUN   TestOpenRouterModelDetailsUsesConfiguredPathPrefix\n\u0016=== PAUSE TestOpenRouterModelDetailsUsesConfiguredPathPrefix\n\u0016=== NAME  \n\u0016=== RUN   TestNativeModelPathRetainsNativeEnvelopeOutsideCompatibilitySuffix\n\u0016=== PAUSE TestNativeModelPathRetainsNativeEnvelopeOutsideCompatibilitySuffix\n\u0016=== NAME  \n\u0016=== RUN   TestPostCommitNotificationCorrespondsAcrossHTTPSSEAndCacheDespiteHookFaults\n\u0016--- PASS: TestPostCommitNotificationCorrespondsAcrossHTTPSSEAndCacheDespiteHookFaults (0.26s)\n\u0016=== NAME  \n\u0016=== RUN   TestWebSocketRouteIsAbsent\n\u0016--- PASS: TestWebSocketRouteIsAbsent (0.00s)\n\u0016=== NAME  \n\u0016=== RUN   TestCacheGenerationEventMatchesAtomicPublicationAndFailedCommitChangesNeither\n\u0016--- PASS: TestCacheGenerationEventMatchesAtomicPublicationAndFailedCommitChangesNeither (0.55s)\n\u0016=== NAME  \n\u0016=== RUN   TestCatalogPublicationEventsAndCacheCannotReorder\n\u0016--- PASS: TestCatalogPublicationEventsAndCacheCannotReorder (0.52s)\n\u0016=== NAME  \n\u0016=== RUN   TestRemoteCatalogClientAndServerShareVersionedManifestPayloadContract\n\u0016--- PASS: TestRemoteCatalogClientAndServerShareVersionedManifestPayloadContract (0.91s)\n\u0016=== NAME  \n\u0016=== RUN   TestModelSearchUsesDocumentedRouteOnly\n\u0016--- PASS: TestModelSearchUsesDocumentedRouteOnly (0.00s)\n\u0016=== NAME  \n\u0016=== RUN   TestAuthenticationPublicPathsFollowConfiguredPrefix\n\u0016--- PASS: TestAuthenticationPublicPathsFollowConfiguredPrefix (0.00s)\n\u0016=== NAME  \n\u0016=== RUN   TestAuthenticationOpenAPISecurityMatchesRuntime\n\u0016--- PASS: TestAuthenticationOpenAPISecurityMatchesRuntime (0.00s)\n\u0016=== NAME  \n\u0016=== RUN   TestServerInitialization\n\u0016--- PASS: TestServerInitialization (0.00s)\n\u0016=== NAME  \n\u0016=== RUN   TestNewRejectsNilStarmapClient\n\u0016=== PAUSE TestNewRejectsNilStarmapClient\n\u0016=== NAME  \n\u0016=== RUN   TestServerStartDoesNotOwnAHiddenTransportLoop\n\u0016--- PASS: TestServerStartDoesNotOwnAHiddenTransportLoop (0.00s)\n\u0016=== NAME  \n\u0016=== CONT  TestOpenRouterRoutesProjectCanonicalModelAndProviderEndpoints\n\u0016=== CONT  TestOpenRouterModelDetailsUsesConfiguredPathPrefix\n\u0016=== CONT  TestOpenRouterRouteMapsAmbiguousAliasToDeterministicNotFound\n\u0016=== CONT  TestNewRejectsNilStarmapClient\n\u0016--- PASS: TestNewRejectsNilStarmapClient (0.00s)\n\u0016=== CONT  TestNativeModelPathRetainsNativeEnvelopeOutsideCompatibilitySuffix\n\u0016--- PASS: TestOpenRouterRouteMapsAmbiguousAliasToDeterministicNotFound (0.00s)\n\u0016=== CONT  TestOpenRouterRoutesUseNumericNotFoundEnvelope\n\u0016--- PASS: TestOpenRouterModelDetailsUsesConfiguredPathPrefix (0.00s)\n\u0016--- PASS: TestNativeModelPathRetainsNativeEnvelopeOutsideCompatibilitySuffix (0.00s)\n\u0016--- PASS: TestOpenRouterRoutesUseNumericNotFoundEnvelope (0.00s)\n\u0016--- PASS: TestOpenRouterRoutesProjectCanonicalModelAndProviderEndpoints (0.00s)\n\u0016PASS\n",
+      "stderr": "{\"level\":\"info\",\"run_id\":\"source-run-7a7b32fb-02f4-4c48-9cd3-f3ee71c4757d\",\"source\":\"embedded_catalog\",\"time\":\"2026-09-06T20:02:55Z\",\"message\":\"Observing\"}\n{\"level\":\"info\",\"run_id\":\"source-run-7a7b32fb-02f4-4c48-9cd3-f3ee71c4757d\",\"source\":\"local_catalog\",\"time\":\"2026-09-06T20:02:55Z\",\"message\":\"Observing\"}\n{\"level\":\"info\",\"run_id\":\"source-run-7a7b32fb-02f4-4c48-9cd3-f3ee71c4757d\",\"provider_count\":19,\"time\":\"2026-09-06T20:02:56Z\",\"message\":\"Filtered providers by primary source\"}\n{\"level\":\"info\",\"added\":618,\"updated\":0,\"removed\":0,\"time\":\"2026-09-06T20:02:56Z\",\"message\":\"Changes detected\"}\n{\"level\":\"info\",\"changes_applied\":741,\"time\":\"2026-09-06T20:03:05Z\",\"message\":\"Sync completed successfully\"}\n"
+    },
+    {
+      "command": [
+        "docker",
+        "inspect",
+        "--format",
+        "{{json .State}}",
+        "6cc0dc2e89c62d87b205d69ecfc70602bb018367bfe54321fb65674159ef60ad"
+      ],
+      "exit_code": 0,
+      "stdout": "{\"Status\":\"exited\",\"Running\":false,\"Paused\":false,\"Restarting\":false,\"OOMKilled\":false,\"Dead\":false,\"Pid\":0,\"ExitCode\":0,\"Error\":\"\",\"StartedAt\":\"2026-09-06T20:02:52.414830136Z\",\"FinishedAt\":\"2026-09-06T20:03:07.730828837Z\"}\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "docker",
+        "rm",
+        "-f",
+        "6cc0dc2e89c62d87b205d69ecfc70602bb018367bfe54321fb65674159ef60ad"
+      ],
+      "exit_code": 0,
+      "stdout": "6cc0dc2e89c62d87b205d69ecfc70602bb018367bfe54321fb65674159ef60ad\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "docker",
+        "volume",
+        "rm",
+        "csp2-native-9421288b1ec4488fb61d7a8096fd35d0"
+      ],
+      "exit_code": 0,
+      "stdout": "csp2-native-9421288b1ec4488fb61d7a8096fd35d0\n",
+      "stderr": ""
+    }
+  ],
+  "test_events": [
+    {
+      "Time": "2026-09-06T15:03:07.863257-05:00",
+      "Action": "start",
+      "Package": "github.com/agentstation/starmap/internal/server"
+    },
+    {
+      "Time": "2026-09-06T15:03:07.86336-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/server",
+      "Test": "TestCascadedFreshnessPropagatesChannelUpdatedAtThroughHops"
+    },
+    {
+      "Time": "2026-09-06T15:03:07.863363-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/server",
+      "Test": "TestCascadedFreshnessPropagatesChannelUpdatedAtThroughHops",
+      "Output": "=== RUN   TestCascadedFreshnessPropagatesChannelUpdatedAtThroughHops\n"
+    },
+    {
+      "Time": "2026-09-06T15:03:07.863369-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/server",
+      "Test": "TestCascadedFreshnessPropagatesChannelUpdatedAtThroughHops",
+      "Output": "--- PASS: TestCascadedFreshnessPropagatesChannelUpdatedAtThroughHops (1.52s)\n"
+    },
+    {
+      "Time": "2026-09-06T15:03:07.863385-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/server",
+      "Test": "TestCascadedFreshnessPropagatesChannelUpdatedAtThroughHops",
+      "Elapsed": 1.52
+    },
+    {
+      "Time": "2026-09-06T15:03:07.86339-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/server",
+      "Test": "TestDurableServerUpdatePublishesSameGenerationAfterProcessRestart"
+    },
+    {
+      "Time": "2026-09-06T15:03:07.863394-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/server",
+      "Test": "TestDurableServerUpdatePublishesSameGenerationAfterProcessRestart",
+      "Output": "=== RUN   TestDurableServerUpdatePublishesSameGenerationAfterProcessRestart\n"
+    },
+    {
+      "Time": "2026-09-06T15:03:07.863396-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/server",
+      "Test": "TestDurableServerUpdatePublishesSameGenerationAfterProcessRestart",
+      "Output": "--- PASS: TestDurableServerUpdatePublishesSameGenerationAfterProcessRestart (11.45s)\n"
+    },
+    {
+      "Time": "2026-09-06T15:03:07.863398-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/server",
+      "Test": "TestDurableServerUpdatePublishesSameGenerationAfterProcessRestart",
+      "Elapsed": 11.45
+    },
+    {
+      "Time": "2026-09-06T15:03:07.863399-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/server",
+      "Test": "TestHierarchicalIDRoutePreservesCompleteOpaqueModelID"
+    },
+    {
+      "Time": "2026-09-06T15:03:07.863401-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/server",
+      "Test": "TestHierarchicalIDRoutePreservesCompleteOpaqueModelID",
+      "Output": "=== RUN   TestHierarchicalIDRoutePreservesCompleteOpaqueModelID\n"
+    },
+    {
+      "Time": "2026-09-06T15:03:07.863403-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/server",
+      "Test": "TestHierarchicalIDRoutePreservesCompleteOpaqueModelID",
+      "Output": "--- PASS: TestHierarchicalIDRoutePreservesCompleteOpaqueModelID (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T15:03:07.863404-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/server",
+      "Test": "TestHierarchicalIDRoutePreservesCompleteOpaqueModelID",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T15:03:07.863405-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/server",
+      "Test": "TestOpenRouterRoutesProjectCanonicalModelAndProviderEndpoints"
+    },
+    {
+      "Time": "2026-09-06T15:03:07.863406-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/server",
+      "Test": "TestOpenRouterRoutesProjectCanonicalModelAndProviderEndpoints",
+      "Output": "=== RUN   TestOpenRouterRoutesProjectCanonicalModelAndProviderEndpoints\n"
+    },
+    {
+      "Time": "2026-09-06T15:03:07.863408-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/server",
+      "Test": "TestOpenRouterRoutesProjectCanonicalModelAndProviderEndpoints",
+      "Output": "=== PAUSE TestOpenRouterRoutesProjectCanonicalModelAndProviderEndpoints\n"
+    },
+    {
+      "Time": "2026-09-06T15:03:07.863409-05:00",
+      "Action": "pause",
+      "Package": "github.com/agentstation/starmap/internal/server",
+      "Test": "TestOpenRouterRoutesProjectCanonicalModelAndProviderEndpoints"
+    },
+    {
+      "Time": "2026-09-06T15:03:07.86341-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/server",
+      "Test": "TestOpenRouterRoutesUseNumericNotFoundEnvelope"
+    },
+    {
+      "Time": "2026-09-06T15:03:07.863413-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/server",
+      "Test": "TestOpenRouterRoutesUseNumericNotFoundEnvelope",
+      "Output": "=== RUN   TestOpenRouterRoutesUseNumericNotFoundEnvelope\n"
+    },
+    {
+      "Time": "2026-09-06T15:03:07.863416-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/server",
+      "Test": "TestOpenRouterRoutesUseNumericNotFoundEnvelope",
+      "Output": "=== PAUSE TestOpenRouterRoutesUseNumericNotFoundEnvelope\n"
+    },
+    {
+      "Time": "2026-09-06T15:03:07.863417-05:00",
+      "Action": "pause",
+      "Package": "github.com/agentstation/starmap/internal/server",
+      "Test": "TestOpenRouterRoutesUseNumericNotFoundEnvelope"
+    },
+    {
+      "Time": "2026-09-06T15:03:07.863418-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/server",
+      "Test": "TestOpenRouterRouteMapsAmbiguousAliasToDeterministicNotFound"
+    },
+    {
+      "Time": "2026-09-06T15:03:07.863419-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/server",
+      "Test": "TestOpenRouterRouteMapsAmbiguousAliasToDeterministicNotFound",
+      "Output": "=== RUN   TestOpenRouterRouteMapsAmbiguousAliasToDeterministicNotFound\n"
+    },
+    {
+      "Time": "2026-09-06T15:03:07.86342-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/server",
+      "Test": "TestOpenRouterRouteMapsAmbiguousAliasToDeterministicNotFound",
+      "Output": "=== PAUSE TestOpenRouterRouteMapsAmbiguousAliasToDeterministicNotFound\n"
+    },
+    {
+      "Time": "2026-09-06T15:03:07.863421-05:00",
+      "Action": "pause",
+      "Package": "github.com/agentstation/starmap/internal/server",
+      "Test": "TestOpenRouterRouteMapsAmbiguousAliasToDeterministicNotFound"
+    },
+    {
+      "Time": "2026-09-06T15:03:07.863423-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/server",
+      "Test": "TestOpenRouterAuthenticationUsesCompatibilityEnvelopeOnlyOnAdapterRoutes"
+    },
+    {
+      "Time": "2026-09-06T15:03:07.863437-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/server",
+      "Test": "TestOpenRouterAuthenticationUsesCompatibilityEnvelopeOnlyOnAdapterRoutes",
+      "Output": "=== RUN   TestOpenRouterAuthenticationUsesCompatibilityEnvelopeOnlyOnAdapterRoutes\n"
+    },
+    {
+      "Time": "2026-09-06T15:03:07.863448-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/server",
+      "Test": "TestOpenRouterAuthenticationUsesCompatibilityEnvelopeOnlyOnAdapterRoutes",
+      "Output": "--- PASS: TestOpenRouterAuthenticationUsesCompatibilityEnvelopeOnlyOnAdapterRoutes (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T15:03:07.86345-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/server",
+      "Test": "TestOpenRouterAuthenticationUsesCompatibilityEnvelopeOnlyOnAdapterRoutes",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T15:03:07.863452-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/server",
+      "Test": "TestOpenRouterModelDetailsUsesConfiguredPathPrefix"
+    },
+    {
+      "Time": "2026-09-06T15:03:07.863454-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/server",
+      "Test": "TestOpenRouterModelDetailsUsesConfiguredPathPrefix",
+      "Output": "=== RUN   TestOpenRouterModelDetailsUsesConfiguredPathPrefix\n"
+    },
+    {
+      "Time": "2026-09-06T15:03:07.863455-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/server",
+      "Test": "TestOpenRouterModelDetailsUsesConfiguredPathPrefix",
+      "Output": "=== PAUSE TestOpenRouterModelDetailsUsesConfiguredPathPrefix\n"
+    },
+    {
+      "Time": "2026-09-06T15:03:07.863457-05:00",
+      "Action": "pause",
+      "Package": "github.com/agentstation/starmap/internal/server",
+      "Test": "TestOpenRouterModelDetailsUsesConfiguredPathPrefix"
+    },
+    {
+      "Time": "2026-09-06T15:03:07.863458-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/server",
+      "Test": "TestNativeModelPathRetainsNativeEnvelopeOutsideCompatibilitySuffix"
+    },
+    {
+      "Time": "2026-09-06T15:03:07.863459-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/server",
+      "Test": "TestNativeModelPathRetainsNativeEnvelopeOutsideCompatibilitySuffix",
+      "Output": "=== RUN   TestNativeModelPathRetainsNativeEnvelopeOutsideCompatibilitySuffix\n"
+    },
+    {
+      "Time": "2026-09-06T15:03:07.863461-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/server",
+      "Test": "TestNativeModelPathRetainsNativeEnvelopeOutsideCompatibilitySuffix",
+      "Output": "=== PAUSE TestNativeModelPathRetainsNativeEnvelopeOutsideCompatibilitySuffix\n"
+    },
+    {
+      "Time": "2026-09-06T15:03:07.863462-05:00",
+      "Action": "pause",
+      "Package": "github.com/agentstation/starmap/internal/server",
+      "Test": "TestNativeModelPathRetainsNativeEnvelopeOutsideCompatibilitySuffix"
+    },
+    {
+      "Time": "2026-09-06T15:03:07.863463-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/server",
+      "Test": "TestPostCommitNotificationCorrespondsAcrossHTTPSSEAndCacheDespiteHookFaults"
+    },
+    {
+      "Time": "2026-09-06T15:03:07.863465-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/server",
+      "Test": "TestPostCommitNotificationCorrespondsAcrossHTTPSSEAndCacheDespiteHookFaults",
+      "Output": "=== RUN   TestPostCommitNotificationCorrespondsAcrossHTTPSSEAndCacheDespiteHookFaults\n"
+    },
+    {
+      "Time": "2026-09-06T15:03:07.863466-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/server",
+      "Test": "TestPostCommitNotificationCorrespondsAcrossHTTPSSEAndCacheDespiteHookFaults",
+      "Output": "--- PASS: TestPostCommitNotificationCorrespondsAcrossHTTPSSEAndCacheDespiteHookFaults (0.26s)\n"
+    },
+    {
+      "Time": "2026-09-06T15:03:07.863468-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/server",
+      "Test": "TestPostCommitNotificationCorrespondsAcrossHTTPSSEAndCacheDespiteHookFaults",
+      "Elapsed": 0.26
+    },
+    {
+      "Time": "2026-09-06T15:03:07.863471-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/server",
+      "Test": "TestWebSocketRouteIsAbsent"
+    },
+    {
+      "Time": "2026-09-06T15:03:07.863473-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/server",
+      "Test": "TestWebSocketRouteIsAbsent",
+      "Output": "=== RUN   TestWebSocketRouteIsAbsent\n"
+    },
+    {
+      "Time": "2026-09-06T15:03:07.863474-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/server",
+      "Test": "TestWebSocketRouteIsAbsent",
+      "Output": "--- PASS: TestWebSocketRouteIsAbsent (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T15:03:07.863475-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/server",
+      "Test": "TestWebSocketRouteIsAbsent",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T15:03:07.863477-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/server",
+      "Test": "TestCacheGenerationEventMatchesAtomicPublicationAndFailedCommitChangesNeither"
+    },
+    {
+      "Time": "2026-09-06T15:03:07.863478-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/server",
+      "Test": "TestCacheGenerationEventMatchesAtomicPublicationAndFailedCommitChangesNeither",
+      "Output": "=== RUN   TestCacheGenerationEventMatchesAtomicPublicationAndFailedCommitChangesNeither\n"
+    },
+    {
+      "Time": "2026-09-06T15:03:07.863479-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/server",
+      "Test": "TestCacheGenerationEventMatchesAtomicPublicationAndFailedCommitChangesNeither",
+      "Output": "--- PASS: TestCacheGenerationEventMatchesAtomicPublicationAndFailedCommitChangesNeither (0.55s)\n"
+    },
+    {
+      "Time": "2026-09-06T15:03:07.863481-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/server",
+      "Test": "TestCacheGenerationEventMatchesAtomicPublicationAndFailedCommitChangesNeither",
+      "Elapsed": 0.55
+    },
+    {
+      "Time": "2026-09-06T15:03:07.863483-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/server",
+      "Test": "TestCatalogPublicationEventsAndCacheCannotReorder"
+    },
+    {
+      "Time": "2026-09-06T15:03:07.863487-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/server",
+      "Test": "TestCatalogPublicationEventsAndCacheCannotReorder",
+      "Output": "=== RUN   TestCatalogPublicationEventsAndCacheCannotReorder\n"
+    },
+    {
+      "Time": "2026-09-06T15:03:07.863488-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/server",
+      "Test": "TestCatalogPublicationEventsAndCacheCannotReorder",
+      "Output": "--- PASS: TestCatalogPublicationEventsAndCacheCannotReorder (0.52s)\n"
+    },
+    {
+      "Time": "2026-09-06T15:03:07.863489-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/server",
+      "Test": "TestCatalogPublicationEventsAndCacheCannotReorder",
+      "Elapsed": 0.52
+    },
+    {
+      "Time": "2026-09-06T15:03:07.863491-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/server",
+      "Test": "TestRemoteCatalogClientAndServerShareVersionedManifestPayloadContract"
+    },
+    {
+      "Time": "2026-09-06T15:03:07.863492-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/server",
+      "Test": "TestRemoteCatalogClientAndServerShareVersionedManifestPayloadContract",
+      "Output": "=== RUN   TestRemoteCatalogClientAndServerShareVersionedManifestPayloadContract\n"
+    },
+    {
+      "Time": "2026-09-06T15:03:07.863493-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/server",
+      "Test": "TestRemoteCatalogClientAndServerShareVersionedManifestPayloadContract",
+      "Output": "--- PASS: TestRemoteCatalogClientAndServerShareVersionedManifestPayloadContract (0.91s)\n"
+    },
+    {
+      "Time": "2026-09-06T15:03:07.863495-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/server",
+      "Test": "TestRemoteCatalogClientAndServerShareVersionedManifestPayloadContract",
+      "Elapsed": 0.91
+    },
+    {
+      "Time": "2026-09-06T15:03:07.863496-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/server",
+      "Test": "TestModelSearchUsesDocumentedRouteOnly"
+    },
+    {
+      "Time": "2026-09-06T15:03:07.863497-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/server",
+      "Test": "TestModelSearchUsesDocumentedRouteOnly",
+      "Output": "=== RUN   TestModelSearchUsesDocumentedRouteOnly\n"
+    },
+    {
+      "Time": "2026-09-06T15:03:07.863501-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/server",
+      "Test": "TestModelSearchUsesDocumentedRouteOnly",
+      "Output": "--- PASS: TestModelSearchUsesDocumentedRouteOnly (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T15:03:07.863503-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/server",
+      "Test": "TestModelSearchUsesDocumentedRouteOnly",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T15:03:07.863504-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/server",
+      "Test": "TestAuthenticationPublicPathsFollowConfiguredPrefix"
+    },
+    {
+      "Time": "2026-09-06T15:03:07.863505-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/server",
+      "Test": "TestAuthenticationPublicPathsFollowConfiguredPrefix",
+      "Output": "=== RUN   TestAuthenticationPublicPathsFollowConfiguredPrefix\n"
+    },
+    {
+      "Time": "2026-09-06T15:03:07.863507-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/server",
+      "Test": "TestAuthenticationPublicPathsFollowConfiguredPrefix",
+      "Output": "--- PASS: TestAuthenticationPublicPathsFollowConfiguredPrefix (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T15:03:07.863508-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/server",
+      "Test": "TestAuthenticationPublicPathsFollowConfiguredPrefix",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T15:03:07.863509-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/server",
+      "Test": "TestAuthenticationOpenAPISecurityMatchesRuntime"
+    },
+    {
+      "Time": "2026-09-06T15:03:07.86351-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/server",
+      "Test": "TestAuthenticationOpenAPISecurityMatchesRuntime",
+      "Output": "=== RUN   TestAuthenticationOpenAPISecurityMatchesRuntime\n"
+    },
+    {
+      "Time": "2026-09-06T15:03:07.863511-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/server",
+      "Test": "TestAuthenticationOpenAPISecurityMatchesRuntime",
+      "Output": "--- PASS: TestAuthenticationOpenAPISecurityMatchesRuntime (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T15:03:07.863513-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/server",
+      "Test": "TestAuthenticationOpenAPISecurityMatchesRuntime",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T15:03:07.863514-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/server",
+      "Test": "TestServerInitialization"
+    },
+    {
+      "Time": "2026-09-06T15:03:07.863515-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/server",
+      "Test": "TestServerInitialization",
+      "Output": "=== RUN   TestServerInitialization\n"
+    },
+    {
+      "Time": "2026-09-06T15:03:07.863516-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/server",
+      "Test": "TestServerInitialization",
+      "Output": "--- PASS: TestServerInitialization (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T15:03:07.863517-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/server",
+      "Test": "TestServerInitialization",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T15:03:07.863518-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/server",
+      "Test": "TestNewRejectsNilStarmapClient"
+    },
+    {
+      "Time": "2026-09-06T15:03:07.863519-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/server",
+      "Test": "TestNewRejectsNilStarmapClient",
+      "Output": "=== RUN   TestNewRejectsNilStarmapClient\n"
+    },
+    {
+      "Time": "2026-09-06T15:03:07.86352-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/server",
+      "Test": "TestNewRejectsNilStarmapClient",
+      "Output": "=== PAUSE TestNewRejectsNilStarmapClient\n"
+    },
+    {
+      "Time": "2026-09-06T15:03:07.865309-05:00",
+      "Action": "pause",
+      "Package": "github.com/agentstation/starmap/internal/server",
+      "Test": "TestNewRejectsNilStarmapClient"
+    },
+    {
+      "Time": "2026-09-06T15:03:07.865318-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/server",
+      "Test": "TestServerStartDoesNotOwnAHiddenTransportLoop"
+    },
+    {
+      "Time": "2026-09-06T15:03:07.865319-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/server",
+      "Test": "TestServerStartDoesNotOwnAHiddenTransportLoop",
+      "Output": "=== RUN   TestServerStartDoesNotOwnAHiddenTransportLoop\n"
+    },
+    {
+      "Time": "2026-09-06T15:03:07.865322-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/server",
+      "Test": "TestServerStartDoesNotOwnAHiddenTransportLoop",
+      "Output": "--- PASS: TestServerStartDoesNotOwnAHiddenTransportLoop (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T15:03:07.865324-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/server",
+      "Test": "TestServerStartDoesNotOwnAHiddenTransportLoop",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T15:03:07.865326-05:00",
+      "Action": "cont",
+      "Package": "github.com/agentstation/starmap/internal/server",
+      "Test": "TestOpenRouterRoutesProjectCanonicalModelAndProviderEndpoints"
+    },
+    {
+      "Time": "2026-09-06T15:03:07.865327-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/server",
+      "Test": "TestOpenRouterRoutesProjectCanonicalModelAndProviderEndpoints",
+      "Output": "=== CONT  TestOpenRouterRoutesProjectCanonicalModelAndProviderEndpoints\n"
+    },
+    {
+      "Time": "2026-09-06T15:03:07.86533-05:00",
+      "Action": "cont",
+      "Package": "github.com/agentstation/starmap/internal/server",
+      "Test": "TestOpenRouterModelDetailsUsesConfiguredPathPrefix"
+    },
+    {
+      "Time": "2026-09-06T15:03:07.865331-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/server",
+      "Test": "TestOpenRouterModelDetailsUsesConfiguredPathPrefix",
+      "Output": "=== CONT  TestOpenRouterModelDetailsUsesConfiguredPathPrefix\n"
+    },
+    {
+      "Time": "2026-09-06T15:03:07.865332-05:00",
+      "Action": "cont",
+      "Package": "github.com/agentstation/starmap/internal/server",
+      "Test": "TestOpenRouterRouteMapsAmbiguousAliasToDeterministicNotFound"
+    },
+    {
+      "Time": "2026-09-06T15:03:07.865333-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/server",
+      "Test": "TestOpenRouterRouteMapsAmbiguousAliasToDeterministicNotFound",
+      "Output": "=== CONT  TestOpenRouterRouteMapsAmbiguousAliasToDeterministicNotFound\n"
+    },
+    {
+      "Time": "2026-09-06T15:03:07.865335-05:00",
+      "Action": "cont",
+      "Package": "github.com/agentstation/starmap/internal/server",
+      "Test": "TestNewRejectsNilStarmapClient"
+    },
+    {
+      "Time": "2026-09-06T15:03:07.865336-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/server",
+      "Test": "TestNewRejectsNilStarmapClient",
+      "Output": "=== CONT  TestNewRejectsNilStarmapClient\n"
+    },
+    {
+      "Time": "2026-09-06T15:03:07.865338-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/server",
+      "Test": "TestNewRejectsNilStarmapClient",
+      "Output": "--- PASS: TestNewRejectsNilStarmapClient (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T15:03:07.865339-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/server",
+      "Test": "TestNewRejectsNilStarmapClient",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T15:03:07.86534-05:00",
+      "Action": "cont",
+      "Package": "github.com/agentstation/starmap/internal/server",
+      "Test": "TestNativeModelPathRetainsNativeEnvelopeOutsideCompatibilitySuffix"
+    },
+    {
+      "Time": "2026-09-06T15:03:07.865342-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/server",
+      "Test": "TestNativeModelPathRetainsNativeEnvelopeOutsideCompatibilitySuffix",
+      "Output": "=== CONT  TestNativeModelPathRetainsNativeEnvelopeOutsideCompatibilitySuffix\n"
+    },
+    {
+      "Time": "2026-09-06T15:03:07.865343-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/server",
+      "Test": "TestOpenRouterRouteMapsAmbiguousAliasToDeterministicNotFound",
+      "Output": "--- PASS: TestOpenRouterRouteMapsAmbiguousAliasToDeterministicNotFound (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T15:03:07.865344-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/server",
+      "Test": "TestOpenRouterRouteMapsAmbiguousAliasToDeterministicNotFound",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T15:03:07.865345-05:00",
+      "Action": "cont",
+      "Package": "github.com/agentstation/starmap/internal/server",
+      "Test": "TestOpenRouterRoutesUseNumericNotFoundEnvelope"
+    },
+    {
+      "Time": "2026-09-06T15:03:07.865347-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/server",
+      "Test": "TestOpenRouterRoutesUseNumericNotFoundEnvelope",
+      "Output": "=== CONT  TestOpenRouterRoutesUseNumericNotFoundEnvelope\n"
+    },
+    {
+      "Time": "2026-09-06T15:03:07.865348-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/server",
+      "Test": "TestOpenRouterModelDetailsUsesConfiguredPathPrefix",
+      "Output": "--- PASS: TestOpenRouterModelDetailsUsesConfiguredPathPrefix (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T15:03:07.86535-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/server",
+      "Test": "TestOpenRouterModelDetailsUsesConfiguredPathPrefix",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T15:03:07.865352-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/server",
+      "Test": "TestNativeModelPathRetainsNativeEnvelopeOutsideCompatibilitySuffix",
+      "Output": "--- PASS: TestNativeModelPathRetainsNativeEnvelopeOutsideCompatibilitySuffix (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T15:03:07.865353-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/server",
+      "Test": "TestNativeModelPathRetainsNativeEnvelopeOutsideCompatibilitySuffix",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T15:03:07.865354-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/server",
+      "Test": "TestOpenRouterRoutesUseNumericNotFoundEnvelope",
+      "Output": "--- PASS: TestOpenRouterRoutesUseNumericNotFoundEnvelope (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T15:03:07.865356-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/server",
+      "Test": "TestOpenRouterRoutesUseNumericNotFoundEnvelope",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T15:03:07.865357-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/server",
+      "Test": "TestOpenRouterRoutesProjectCanonicalModelAndProviderEndpoints",
+      "Output": "--- PASS: TestOpenRouterRoutesProjectCanonicalModelAndProviderEndpoints (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T15:03:07.865358-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/server",
+      "Test": "TestOpenRouterRoutesProjectCanonicalModelAndProviderEndpoints",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T15:03:07.865361-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/server",
+      "Output": "PASS\n"
+    },
+    {
+      "Time": "2026-09-06T15:03:07.865365-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/server",
+      "Output": "{\"level\":\"info\",\"run_id\":\"source-run-7a7b32fb-02f4-4c48-9cd3-f3ee71c4757d\",\"source\":\"embedded_catalog\",\"time\":\"2026-09-06T20:02:55Z\",\"message\":\"Observing\"}\n"
+    },
+    {
+      "Time": "2026-09-06T15:03:07.865367-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/server",
+      "Output": "{\"level\":\"info\",\"run_id\":\"source-run-7a7b32fb-02f4-4c48-9cd3-f3ee71c4757d\",\"source\":\"local_catalog\",\"time\":\"2026-09-06T20:02:55Z\",\"message\":\"Observing\"}\n"
+    },
+    {
+      "Time": "2026-09-06T15:03:07.865368-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/server",
+      "Output": "{\"level\":\"info\",\"run_id\":\"source-run-7a7b32fb-02f4-4c48-9cd3-f3ee71c4757d\",\"provider_count\":19,\"time\":\"2026-09-06T20:02:56Z\",\"message\":\"Filtered providers by primary source\"}\n"
+    },
+    {
+      "Time": "2026-09-06T15:03:07.86537-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/server",
+      "Output": "{\"level\":\"info\",\"added\":618,\"updated\":0,\"removed\":0,\"time\":\"2026-09-06T20:02:56Z\",\"message\":\"Changes detected\"}\n"
+    },
+    {
+      "Time": "2026-09-06T15:03:07.865372-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/server",
+      "Output": "{\"level\":\"info\",\"changes_applied\":741,\"time\":\"2026-09-06T20:03:05Z\",\"message\":\"Sync completed successfully\"}\n"
+    },
+    {
+      "Time": "2026-09-06T15:03:07.865379-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/server",
+      "Elapsed": 0.002
+    }
+  ],
+  "binary_sha256": "ea29cd851c3f775a3e3ba15937e60cf88e3164c8a6d89470bee8d7f2e5d5a0be",
+  "state": {
+    "Status": "exited",
+    "Running": false,
+    "Paused": false,
+    "Restarting": false,
+    "OOMKilled": false,
+    "Dead": false,
+    "Pid": 0,
+    "ExitCode": 0,
+    "Error": "",
+    "StartedAt": "2026-09-06T20:02:52.414830136Z",
+    "FinishedAt": "2026-09-06T20:03:07.730828837Z"
+  },
+  "conversion_exit_code": 0,
+  "counts": {
+    "pass": 20,
+    "fail": 0,
+    "skip": 0
+  },
+  "passed": true,
+  "container_removed": true,
+  "volume_removed": true
+}

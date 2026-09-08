@@ -1,0 +1,10 @@
+{"Time":"2026-09-07T10:40:56.726546-05:00","Action":"start","Package":"github.com/agentstation/starmap/runtime"}
+{"Time":"2026-09-07T10:40:57.126218-05:00","Action":"run","Package":"github.com/agentstation/starmap/runtime","Test":"TestResetRemovesAcquiredOnlyProviderFromProjection"}
+{"Time":"2026-09-07T10:40:57.126289-05:00","Action":"output","Package":"github.com/agentstation/starmap/runtime","Test":"TestResetRemovesAcquiredOnlyProviderFromProjection","Output":"=== RUN   TestResetRemovesAcquiredOnlyProviderFromProjection\n"}
+{"Time":"2026-09-07T10:40:58.529864-05:00","Action":"output","Package":"github.com/agentstation/starmap/runtime","Test":"TestResetRemovesAcquiredOnlyProviderFromProjection","Output":"{\"level\":\"info\",\"provider_count\":1,\"time\":\"2026-09-07T10:40:58-05:00\",\"message\":\"Filtered providers by primary source\"}\n"}
+{"Time":"2026-09-07T10:40:58.59218-05:00","Action":"output","Package":"github.com/agentstation/starmap/runtime","Test":"TestResetRemovesAcquiredOnlyProviderFromProjection","Output":"    reset_membership_test.go:84: fixture provider did not enter the acquired catalog: provider with ID acquired-provider not found\n"}
+{"Time":"2026-09-07T10:40:58.593826-05:00","Action":"output","Package":"github.com/agentstation/starmap/runtime","Test":"TestResetRemovesAcquiredOnlyProviderFromProjection","Output":"--- FAIL: TestResetRemovesAcquiredOnlyProviderFromProjection (1.47s)\n"}
+{"Time":"2026-09-07T10:40:58.593841-05:00","Action":"fail","Package":"github.com/agentstation/starmap/runtime","Test":"TestResetRemovesAcquiredOnlyProviderFromProjection","Elapsed":1.47}
+{"Time":"2026-09-07T10:40:58.593856-05:00","Action":"output","Package":"github.com/agentstation/starmap/runtime","Output":"FAIL\n"}
+{"Time":"2026-09-07T10:40:58.606368-05:00","Action":"output","Package":"github.com/agentstation/starmap/runtime","Output":"FAIL\tgithub.com/agentstation/starmap/runtime\t1.880s\n"}
+{"Time":"2026-09-07T10:40:58.606402-05:00","Action":"fail","Package":"github.com/agentstation/starmap/runtime","Elapsed":1.88}

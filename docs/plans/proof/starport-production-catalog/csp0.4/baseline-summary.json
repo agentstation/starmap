@@ -1,0 +1,145 @@
+{
+  "qualification": "UNVERIFIED",
+  "runs": [
+    {
+      "run": 1,
+      "variants": [
+        {
+          "stream": false,
+          "pairs": 100,
+          "paired_adjusted_delta_ms": {
+            "p50": 55.763125,
+            "p95": 58.323209,
+            "p99": 66.396416
+          },
+          "gateway_handler_ms": {
+            "p50": 56.9125,
+            "p95": 59.463834,
+            "p99": 67.484083
+          },
+          "first_token_ms": null,
+          "gateway_client_connections_reused": 100
+        },
+        {
+          "stream": true,
+          "pairs": 100,
+          "paired_adjusted_delta_ms": {
+            "p50": 55.83629,
+            "p95": 60.411001,
+            "p99": 66.218082
+          },
+          "gateway_handler_ms": {
+            "p50": 59.312084,
+            "p95": 63.871708,
+            "p99": 69.684167
+          },
+          "first_token_ms": {
+            "p50": 56.980208,
+            "p95": 61.620833,
+            "p99": 67.342042
+          },
+          "gateway_client_connections_reused": 100
+        }
+      ]
+    },
+    {
+      "run": 2,
+      "variants": [
+        {
+          "stream": false,
+          "pairs": 100,
+          "paired_adjusted_delta_ms": {
+            "p50": 57.939333,
+            "p95": 71.290583,
+            "p99": 75.278375
+          },
+          "gateway_handler_ms": {
+            "p50": 59.059583,
+            "p95": 72.481584,
+            "p99": 76.628875
+          },
+          "first_token_ms": null,
+          "gateway_client_connections_reused": 100
+        },
+        {
+          "stream": true,
+          "pairs": 100,
+          "paired_adjusted_delta_ms": {
+            "p50": 58.515874,
+            "p95": 74.087833,
+            "p99": 104.278417
+          },
+          "gateway_handler_ms": {
+            "p50": 61.994584,
+            "p95": 77.683584,
+            "p99": 107.867667
+          },
+          "first_token_ms": {
+            "p50": 59.613792,
+            "p95": 75.127291,
+            "p99": 105.217875
+          },
+          "gateway_client_connections_reused": 100
+        }
+      ]
+    },
+    {
+      "run": 3,
+      "variants": [
+        {
+          "stream": false,
+          "pairs": 100,
+          "paired_adjusted_delta_ms": {
+            "p50": 58.303543,
+            "p95": 76.040127,
+            "p99": 115.35796
+          },
+          "gateway_handler_ms": {
+            "p50": 59.412,
+            "p95": 77.140583,
+            "p99": 116.451709
+          },
+          "first_token_ms": null,
+          "gateway_client_connections_reused": 100
+        },
+        {
+          "stream": true,
+          "pairs": 100,
+          "paired_adjusted_delta_ms": {
+            "p50": 57.992793,
+            "p95": 73.074541,
+            "p99": 87.963875
+          },
+          "gateway_handler_ms": {
+            "p50": 61.400708,
+            "p95": 77.427917,
+            "p99": 96.865584
+          },
+          "first_token_ms": {
+            "p50": 59.09,
+            "p95": 74.467459,
+            "p99": 90.688208
+          },
+          "gateway_client_connections_reused": 100
+        }
+      ]
+    }
+  ],
+  "pair_count": 600,
+  "successful_http_requests": 1200,
+  "additional_initial_http_requests": 12,
+  "method": "Nearest rank per run. Quantiles use per-pair differences after removing measured controlled waits. Initial requests excluded. No p99.9 claim from 100 samples per variant.",
+  "environment": {
+    "cpu": "Apple M2 Max",
+    "macos": "15.7.2",
+    "go": "go1.27.0",
+    "gomaxprocs": 12,
+    "isolation": "Developer workstation, no fixed-runner production qualification"
+  },
+  "catalog": {
+    "catalog_generation": "catalog-20260830T083213Z-ad5d2a45e490",
+    "catalog_checksum": "sha256:289c7c26ab022796a6638fe32b6bb2d9f2b7a59d0ac07a761fd30c975d91e488",
+    "catalog_routes": 614
+  },
+  "limitations": "Paired deltas include loopback and client work. They do not isolate gateway CPU or qualify production latency."
+}

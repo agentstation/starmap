@@ -1,0 +1,58 @@
+[
+  {
+    "command": [
+      "golangci-lint",
+      "run"
+    ],
+    "exit_code": 0,
+    "stdout": "0 issues.\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "env",
+      "GOOS=windows",
+      "GOARCH=amd64",
+      "CGO_ENABLED=0",
+      "golangci-lint",
+      "run",
+      "./internal/filepublish/...",
+      "./runtime/..."
+    ],
+    "exit_code": 1,
+    "stdout": "internal/filepublish/directory_windows.go:40:85: G115: integer overflow conversion int -> uint32 (gosec)\n\treturn nativeError(windows.NtSetInformationFile(handle, &status, &buffer[0], uint32(len(buffer)), windows.FileRenameInformation))\n\t                                                                                   ^\ninternal/filepublish/directory_windows.go:64:60: G115: integer overflow conversion uintptr -> uint32 (gosec)\n\t\tbinary.LittleEndian.PutUint32(buffer[rootOffset:], uint32(parent))\n\t\t                                                         ^\ninternal/filepublish/directory_windows.go:66:79: G115: integer overflow conversion int -> uint32 (gosec)\n\tbinary.LittleEndian.PutUint32(buffer[unsafe.Offsetof(layout.length):], uint32((len(name)-1)*2))\n\t                                                                             ^\n3 issues:\n* gosec: 3\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "go",
+      "tool",
+      "ago",
+      "-stale-ignores",
+      "-format",
+      "json",
+      "./..."
+    ],
+    "exit_code": 0,
+    "stdout": "{\n  \"schemaVersion\": 1,\n  \"version\": \"v0.2.0\",\n  \"rules\": [\n    \"no-dot-import\",\n    \"no-generic-methods\",\n    \"no-goto\",\n    \"no-invalid-ignore\",\n    \"no-naked-return\",\n    \"no-new-expr\",\n    \"no-self-referential-constraints\"\n  ],\n  \"findings\": [],\n  \"staleIgnores\": [],\n  \"errors\": []\n}\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "env",
+      "GOTOOLCHAIN=go1.25.12",
+      "GOOS=windows",
+      "GOARCH=arm64",
+      "CGO_ENABLED=0",
+      "go",
+      "test",
+      "-c",
+      "-o",
+      "/tmp/starmap-filepublish-arm64.test.exe",
+      "./internal/filepublish"
+    ],
+    "exit_code": 0,
+    "stdout": "",
+    "stderr": ""
+  }
+]

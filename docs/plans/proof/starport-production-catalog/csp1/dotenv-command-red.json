@@ -1,0 +1,13 @@
+{
+  "command": [
+    "go",
+    "test",
+    "-count=1",
+    "-run",
+    "^(TestServiceConfigurationDoesNotLoadIncidentalDotenv|TestExplicitDotenvPrecedenceAndConflictDiagnostics|TestCommandFlagsOverrideInvalidEnvironmentSettings)$",
+    "./internal/cli/app"
+  ],
+  "exit_code": 1,
+  "stdout": "FAIL\tgithub.com/agentstation/starmap/internal/cli/app [build failed]\nFAIL\n",
+  "stderr": "# github.com/agentstation/starmap/internal/cli/app [github.com/agentstation/starmap/internal/cli/app.test]\ninternal/cli/app/dotenv_test.go:30:20: undefined: loadExplicitEnvFiles\ninternal/cli/app/dotenv_test.go:39:17: undefined: NewForCommand\n"
+}

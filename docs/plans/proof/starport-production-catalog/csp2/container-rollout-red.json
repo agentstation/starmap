@@ -1,0 +1,17 @@
+{
+  "command": [
+    "env",
+    "GOTOOLCHAIN=go1.25.12",
+    "go",
+    "test",
+    "-race",
+    "-json",
+    "./internal/deploymentdocs",
+    "-run",
+    "^TestKubernetesDeclaresMountedApplicationRoots$",
+    "-count=1"
+  ],
+  "exit_code": 1,
+  "stdout": "{\"Time\":\"2026-09-06T12:34:31.426821-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starmap/internal/deploymentdocs\"}\n{\"Time\":\"2026-09-06T12:34:31.593954-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starmap/internal/deploymentdocs\",\"Test\":\"TestKubernetesDeclaresMountedApplicationRoots\"}\n{\"Time\":\"2026-09-06T12:34:31.593992-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/deploymentdocs\",\"Test\":\"TestKubernetesDeclaresMountedApplicationRoots\",\"Output\":\"=== RUN   TestKubernetesDeclaresMountedApplicationRoots\\n\"}\n{\"Time\":\"2026-09-06T12:34:31.596874-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/deploymentdocs\",\"Test\":\"TestKubernetesDeclaresMountedApplicationRoots\",\"Output\":\"    container_paths_test.go:84: filesystem deployment permits overlapping writers during a rollout\\n\"}\n{\"Time\":\"2026-09-06T12:34:31.596902-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/deploymentdocs\",\"Test\":\"TestKubernetesDeclaresMountedApplicationRoots\",\"Output\":\"--- FAIL: TestKubernetesDeclaresMountedApplicationRoots (0.00s)\\n\"}\n{\"Time\":\"2026-09-06T12:34:31.596909-05:00\",\"Action\":\"fail\",\"Package\":\"github.com/agentstation/starmap/internal/deploymentdocs\",\"Test\":\"TestKubernetesDeclaresMountedApplicationRoots\",\"Elapsed\":0}\n{\"Time\":\"2026-09-06T12:34:31.596929-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/deploymentdocs\",\"Output\":\"FAIL\\n\"}\n{\"Time\":\"2026-09-06T12:34:31.59723-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/deploymentdocs\",\"Output\":\"FAIL\\tgithub.com/agentstation/starmap/internal/deploymentdocs\\t0.170s\\n\"}\n{\"Time\":\"2026-09-06T12:34:31.59724-05:00\",\"Action\":\"fail\",\"Package\":\"github.com/agentstation/starmap/internal/deploymentdocs\",\"Elapsed\":0.17}\n",
+  "stderr": ""
+}

@@ -1,0 +1,10 @@
+{
+  "command": [
+    "go",
+    "test",
+    "./pkg/catalogs/config"
+  ],
+  "exit_code": 1,
+  "stdout": "FAIL\tgithub.com/agentstation/starmap/pkg/catalogs/config [build failed]\nFAIL\n",
+  "stderr": "# github.com/agentstation/starmap/pkg/catalogs/config_test [github.com/agentstation/starmap/pkg/catalogs/config.test]\npkg/catalogs/config/resolution_test.go:10:26: undefined: config.Resolve\npkg/catalogs/config/resolution_test.go:11:10: undefined: config.Layer\npkg/catalogs/config/resolution_test.go:12:10: undefined: config.Layer\npkg/catalogs/config/resolution_test.go:23:26: undefined: config.Resolve\npkg/catalogs/config/resolution_test.go:24:10: undefined: config.Layer\npkg/catalogs/config/resolution_test.go:25:10: undefined: config.Layer\npkg/catalogs/config/resolution_test.go:33:24: undefined: config.CanonicalValues\npkg/catalogs/config/resolution_test.go:38:22: undefined: config.CanonicalValues\npkg/catalogs/config/resolution_test.go:39:22: undefined: config.CanonicalValues\n"
+}

@@ -1,0 +1,91 @@
+{
+  "verdict": "PASS",
+  "views": 12,
+  "contrast": [
+    {
+      "audience": "build",
+      "theme": "dark",
+      "width": 1280,
+      "minimum": 5.899221690008204,
+      "text_samples": 66
+    },
+    {
+      "audience": "account",
+      "theme": "dark",
+      "width": 1280,
+      "minimum": 5.899221690008204,
+      "text_samples": 52
+    },
+    {
+      "audience": "operate",
+      "theme": "dark",
+      "width": 1280,
+      "minimum": 5.899221690008204,
+      "text_samples": 73
+    },
+    {
+      "audience": "build",
+      "theme": "light",
+      "width": 1280,
+      "minimum": 4.630251574816983,
+      "text_samples": 66
+    },
+    {
+      "audience": "account",
+      "theme": "light",
+      "width": 1280,
+      "minimum": 4.630251574816983,
+      "text_samples": 52
+    },
+    {
+      "audience": "operate",
+      "theme": "light",
+      "width": 1280,
+      "minimum": 4.630251574816983,
+      "text_samples": 73
+    },
+    {
+      "audience": "build",
+      "theme": "dark",
+      "width": 320,
+      "minimum": 5.899221690008204,
+      "text_samples": 66
+    },
+    {
+      "audience": "account",
+      "theme": "dark",
+      "width": 320,
+      "minimum": 5.899221690008204,
+      "text_samples": 52
+    },
+    {
+      "audience": "operate",
+      "theme": "dark",
+      "width": 320,
+      "minimum": 5.899221690008204,
+      "text_samples": 73
+    },
+    {
+      "audience": "build",
+      "theme": "light",
+      "width": 320,
+      "minimum": 4.630251574816983,
+      "text_samples": 66
+    },
+    {
+      "audience": "account",
+      "theme": "light",
+      "width": 320,
+      "minimum": 4.630251574816983,
+      "text_samples": 52
+    },
+    {
+      "audience": "operate",
+      "theme": "light",
+      "width": 320,
+      "minimum": 4.630251574816983,
+      "text_samples": 73
+    }
+  ],
+  "total_text_samples": 764
+}

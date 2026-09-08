@@ -1,0 +1,10 @@
+{
+  "command": [
+    "go",
+    "test",
+    "./pkg/catalogs/config"
+  ],
+  "exit_code": 1,
+  "stdout": "FAIL\tgithub.com/agentstation/starmap/pkg/catalogs/config [build failed]\nFAIL\n",
+  "stderr": "github.com/agentstation/starmap/pkg/catalogs/config: no non-test Go files in /Users/jack/src/github.com/agentstation/starmap-catalog-requirements/pkg/catalogs/config\n"
+}

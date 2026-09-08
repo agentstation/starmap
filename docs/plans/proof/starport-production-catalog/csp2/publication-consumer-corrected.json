@@ -1,0 +1,10 @@
+{
+  "command": [
+    "make",
+    "test-pure-go"
+  ],
+  "exit_code": 2,
+  "seconds": 9.217976093292236,
+  "stdout": "ok  \tgithub.com/agentstation/starmap-test/read-only-consumer\t(cached)\nok  \tgithub.com/agentstation/starmap-test/store-only-consumer\t(cached)\nok  \tgithub.com/agentstation/starmap-test/pinned-artifact-consumer\t(cached)\nok  \tgithub.com/agentstation/starmap-test/server-embed-consumer\t(cached)\nok  \tgithub.com/agentstation/starmap-test/remote-subscriber-consumer\t(cached)\nok  \tgithub.com/agentstation/starmap-test/server-storage-consumer\t5.122s\n",
+  "stderr": "read-only consumer non-standard dependency closure is 37 packages; budget is 32\nmake: *** [test-pure-go] Error 1\n"
+}

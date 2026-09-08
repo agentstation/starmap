@@ -1,0 +1,49 @@
+{
+  "status": "LOCAL_CHECKS_PASS_CI_UNVERIFIED",
+  "checks": [
+    {
+      "command": [
+        "python3",
+        "scripts/test-native-release.py"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "........\n----------------------------------------------------------------------\nRan 8 tests in 0.018s\n\nOK\n"
+    },
+    {
+      "command": [
+        "/opt/homebrew/bin/actionlint",
+        ".github/workflows/native-release.yaml"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    }
+  ],
+  "files": [
+    {
+      "path": ".github/workflows/native-release.yaml",
+      "sha256": "bb0ff2c775a6c5bf7d0c0cec827a9d028afb6289afb0280eef21d487eed668f7"
+    },
+    {
+      "path": "scripts/verify-native-release.py",
+      "sha256": "e1067c13ba85f5c95f37454eccfd5f8b320d5e7db9fbb0c6ddf94b56354de98c"
+    },
+    {
+      "path": "scripts/test-native-release.py",
+      "sha256": "89d7673bebbd36526d91d402137c325a8e2d1ae8c64c80211093412589b11df2"
+    }
+  ],
+  "action_pins": {
+    "command": "bash scripts/verify-action-pins.sh",
+    "exit_code": 0,
+    "references_verified": 16
+  },
+  "local_native_result": "native-ci-local-darwin-arm64.json",
+  "native_ci_jobs": 6,
+  "ci_dispatched": false,
+  "committed": false,
+  "pushed": false,
+  "publication_policy": "The active plan requires explicit commit and publication authority.",
+  "test_repair": "The native-mismatch test initially intercepted platform.platform subprocesses. It now fixes platform metadata in that unit test. The native release check uses the actual platform."
+}

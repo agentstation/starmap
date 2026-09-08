@@ -1,0 +1,35 @@
+{
+  "scope": "Workspace access snapshot component; staging access preservation remains incomplete.",
+  "input_count": 48,
+  "input_mismatches": [],
+  "selected_subcases": 22,
+  "pass_subcases": [
+    "A02.constructor_filesystem_silence",
+    "A03.relative_anchor_migration_guard"
+  ],
+  "unverified_subcases": [
+    "A02.constructor_network_silence",
+    "A02.no_workers",
+    "A01.starmap_cold_offline",
+    "A01.existing_head_preserved",
+    "A01.required_write_failure",
+    "A03.starmap_linux",
+    "A03.starmap_macos",
+    "A03.starmap_windows",
+    "A04.starmap_linux_interruption",
+    "A04.starmap_macos_interruption",
+    "A04.starmap_windows_interruption",
+    "A04.dual_root_conflict",
+    "A04.human_workspace_preserved",
+    "A03.starmap_file_manifest",
+    "A03.root_leaf_precedence",
+    "A03.required_empty_path_refusal",
+    "A03.two_instances_same_user",
+    "A03.duplicate_owner_refusal",
+    "A03.service_container_roots",
+    "A04.identity_and_journal_recovery"
+  ],
+  "unverified_primary_cases": 50,
+  "commits_or_publication": false,
+  "next_action": "Preserve source access on staged workspace entries and qualify permissions through replacement and recovery."
+}

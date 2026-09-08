@@ -1,0 +1,45 @@
+{
+  "verdict": "LOCAL_PROGRESS_WITH_UNRESOLVED_CONSTRUCTOR_CONTRACT",
+  "previous_goal_turn": "Explanation only. This turn resumed live checks and added source tests, probe evidence, and durable plan updates.",
+  "race_results": {
+    "github.com/agentstation/starmap/internal/ciworkflow": 26,
+    "github.com/agentstation/starmap": 92
+  },
+  "native_linux_arm64_results": {
+    "pass": 92,
+    "fail": 0,
+    "skip": 0
+  },
+  "windows": "Two root test binaries cross-compiled. Native API execution remains unverified.",
+  "task_subcases": {
+    "PASS": 2,
+    "UNVERIFIED": 20
+  },
+  "primary_cases_unverified": 50,
+  "network_probe": {
+    "requests": 1,
+    "transport_workers": 2,
+    "server_workers": 1
+  },
+  "writing": {
+    "changed_files_passed": 10,
+    "historical_diagnostics_retained": 3,
+    "repository_exit_code": 2
+  },
+  "documents": {
+    "tasks": 38,
+    "primary_cases": 50,
+    "required_subcases": 324,
+    "plan_lines": 500,
+    "historical_files_preserved": 57
+  },
+  "source_inputs_unchanged": 18,
+  "no_commits": true,
+  "remaining": [
+    "Owner decision on remote store reads and their transport workers during construction.",
+    "Ancestor access and managed-service procedures.",
+    "Native Windows execution, supported-filesystem durability, and released-pair qualification.",
+    "Full embedded workspace repair performance under macOS race instrumentation."
+  ],
+  "scope": "Manual audit of this local checkpoint. No release acceptance or goal completion claim."
+}

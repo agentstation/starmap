@@ -1,0 +1,15 @@
+{
+  "command": [
+    "go",
+    "test",
+    "-count=1",
+    "-timeout",
+    "2m",
+    "./runtime",
+    "-run",
+    "^TestMigrationJournal"
+  ],
+  "exit_code": 1,
+  "stdout": "FAIL\tgithub.com/agentstation/starmap/runtime [build failed]\nFAIL\n",
+  "stderr": "# github.com/agentstation/starmap/runtime [github.com/agentstation/starmap/runtime.test]\nruntime/migration_journal_test.go:13:53: undefined: directoryMigrationManifest\nruntime/migration_journal_test.go:17:42: undefined: directoryMigrationManifest\nruntime/migration_journal_test.go:20:12: undefined: directoryMigrationFile\nruntime/migration_journal_test.go:27:18: undefined: openDirectoryMigrationJournal\nruntime/migration_journal_test.go:31:22: undefined: migrationPrepared\nruntime/migration_journal_test.go:34:41: undefined: migrationVerified\nruntime/migration_journal_test.go:37:41: undefined: migrationCopied\nruntime/migration_journal_test.go:48:18: undefined: openDirectoryMigrationJournal\nruntime/migration_journal_test.go:53:22: undefined: migrationCopied\nruntime/migration_journal_test.go:56:26: undefined: migrationPhase\nruntime/migration_journal_test.go:56:26: too many errors\n"
+}

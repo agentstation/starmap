@@ -1,0 +1,11 @@
+{
+  "command": [
+    "go",
+    "vet",
+    "./internal/app",
+    "./internal/server/controllers"
+  ],
+  "exit_code": 0,
+  "stdout": "",
+  "stderr": ""
+}

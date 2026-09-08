@@ -1,0 +1,12 @@
+{"Time":"2026-09-06T22:45:41.89001-05:00","Action":"start","Package":"github.com/agentstation/starmap/runtime"}
+{"Time":"2026-09-06T22:45:42.336374-05:00","Action":"run","Package":"github.com/agentstation/starmap/runtime","Test":"TestProviderPolicyStartupAlignsHTTPGeneration"}
+{"Time":"2026-09-06T22:45:42.33645-05:00","Action":"output","Package":"github.com/agentstation/starmap/runtime","Test":"TestProviderPolicyStartupAlignsHTTPGeneration","Output":"=== RUN   TestProviderPolicyStartupAlignsHTTPGeneration\n"}
+{"Time":"2026-09-06T22:46:03.697621-05:00","Action":"output","Package":"github.com/agentstation/starmap/runtime","Test":"TestProviderPolicyStartupAlignsHTTPGeneration","Output":"    provider_policy_publication_test.go:37: HTTP status = 200, want 404 for inactive provider\n"}
+{"Time":"2026-09-06T22:46:03.7307-05:00","Action":"output","Package":"github.com/agentstation/starmap/runtime","Test":"TestProviderPolicyStartupAlignsHTTPGeneration","Output":"    provider_policy_publication_test.go:45: HTTP manifest and runtime select different generations\n"}
+{"Time":"2026-09-06T22:46:03.73074-05:00","Action":"output","Package":"github.com/agentstation/starmap/runtime","Test":"TestProviderPolicyStartupAlignsHTTPGeneration","Output":"    provider_policy_publication_test.go:48: client and runtime disagree after startup\n"}
+{"Time":"2026-09-06T22:46:03.766451-05:00","Action":"output","Package":"github.com/agentstation/starmap/runtime","Test":"TestProviderPolicyStartupAlignsHTTPGeneration","Output":"    provider_policy_publication_test.go:55: durable current still selects the prior policy\n"}
+{"Time":"2026-09-06T22:46:03.7693-05:00","Action":"output","Package":"github.com/agentstation/starmap/runtime","Test":"TestProviderPolicyStartupAlignsHTTPGeneration","Output":"--- FAIL: TestProviderPolicyStartupAlignsHTTPGeneration (21.43s)\n"}
+{"Time":"2026-09-06T22:46:03.769344-05:00","Action":"fail","Package":"github.com/agentstation/starmap/runtime","Test":"TestProviderPolicyStartupAlignsHTTPGeneration","Elapsed":21.43}
+{"Time":"2026-09-06T22:46:03.769689-05:00","Action":"output","Package":"github.com/agentstation/starmap/runtime","Output":"FAIL\n"}
+{"Time":"2026-09-06T22:46:03.802846-05:00","Action":"output","Package":"github.com/agentstation/starmap/runtime","Output":"FAIL\tgithub.com/agentstation/starmap/runtime\t21.912s\n"}
+{"Time":"2026-09-06T22:46:03.802935-05:00","Action":"fail","Package":"github.com/agentstation/starmap/runtime","Elapsed":21.913}

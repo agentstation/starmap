@@ -1,0 +1,27 @@
+PASS MMD-V01 the canonical content vocabulary names audio, document, and video parts
+PASS MMD-V02 a contract test asserts every content kind has a clone arm
+PASS MMD-V03 the OpenAI codec carries the audio and file part spellings
+PASS MMD-V04 the OpenRouter codec carries the audio and file part spellings
+PASS MMD-V05 a connector contract test holds the non-text part payload
+PASS MMD-V06 the planner refuses a part kind the target model cannot accept
+PASS MMD-V07 one estimator serves the routing metadata and the usage path
+PASS MMD-V08 the response cache keys inline media bytes and skips a remote media URL
+PASS MMD-V09 the oversize request body states the limit in bytes
+PASS MMD-V10 the console audio control follows the model input modalities
+PASS MMD-V11 Starmap prices audio input and audio output
+PASS MMD-V12 the canonical chat types name an output modality and a delta audio chunk
+PASS MMD-V13 both codecs read the output modality request field
+PASS MMD-V14 a response holding an image part encodes to the documented field
+PASS MMD-V15 an unpriced media turn records a named cost reason and no cost
+PASS MMD-V16 the spend budget counts a priced media turn
+PASS MMD-V17 the catalog projection names the five media operations
+PASS MMD-V18 the residual offerings with no operation have a stated reason
+PASS MMD-V19 one named operation set replaces the hardcoded guards
+PASS MMD-V20 the route candidates are filtered to the requested operation
+PASS MMD-V21 a route test walks the router and names the eight media paths
+PASS MMD-V22 the media scopes exist and the anonymous identity carries them
+PASS MMD-V23 a transcription upload is read as multipart form data
+PASS MMD-V24 the console model facet reads output modalities
+PASS MMD-V25 CI runs this gate
+PASS MMD-V26 the required evidence list names this gate and its terminal count
+Summary: 26 passed, 0 failed

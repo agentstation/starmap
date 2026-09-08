@@ -1,0 +1,21 @@
+PASS CPV01 authors endpoints are registered on the API router
+PASS CPV02 catalog presentation projection package exists with tests
+PASS CPV03 model projection carries a per-provider offerings table
+PASS CPV04 provider projection populates the description field
+PASS CPV05 gateway serves catalog logos on a dedicated route
+PASS CPV06 console renders identity through an EntityLogo fallback chain
+PASS CPV07 provider detail route exists in the SPA
+PASS CPV08 model detail route exists in the SPA
+PASS CPV09 author list and detail routes exist in the SPA
+PASS CPV10 global command palette component exists
+PASS CPV11 composer no longer embeds the presets popover
+PASS CPV12 composer plus button owns attachments
+PASS CPV13 every proxied response carries the overhead header
+PASS CPV14 usage surfaces the gateway overhead
+PASS CPV15 chat metadata capitalizes TTFT
+PASS CPV16 sidebar wordmark reads STARPORT
+PASS CPV17 navigation labels the keys page API keys
+PASS CPV18 Starmap pin is v0.7.0 or later
+PASS CPV19 credential state carries operator-facing detail
+PASS CPV20 streaming provider rejections normalize and empty completions stay uncached
+Summary: 20 passed, 0 failed

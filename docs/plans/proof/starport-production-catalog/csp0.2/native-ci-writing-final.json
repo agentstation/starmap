@@ -1,0 +1,13 @@
+{
+  "command": [
+    "/Users/jack/.agents/skills/technical-writing/scripts/technical-writing",
+    "lint",
+    "docs/plans/proof/starport-production-catalog/csp0.2.md",
+    "docs/plans/starport-production-catalog-plan.html",
+    "--format",
+    "text"
+  ],
+  "exit_code": 0,
+  "stdout": "PASS: 2 file(s), 0 diagnostic(s)\n",
+  "stderr": ""
+}

@@ -1,0 +1,16 @@
+{
+  "command": [
+    "go",
+    "test",
+    "-race",
+    "-count=1",
+    "-timeout",
+    "2m",
+    "./runtime",
+    "-run",
+    "^TestSchedulerOverrideIsBoundToDirectoryOwner$"
+  ],
+  "exit_code": 1,
+  "stdout": "--- FAIL: TestSchedulerOverrideIsBoundToDirectoryOwner (14.89s)\n    owner_test.go:272: changed scheduler identity = <nil>, want ownership conflict\nFAIL\nFAIL\tgithub.com/agentstation/starmap/runtime\t15.350s\nFAIL\n",
+  "stderr": ""
+}

@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "scope": "Native Linux ARM64 owner/access test in an isolated container. No network access.",
+  "verdict": "PASS",
+  "image_id": "sha256:33ceb71981b602c1a7443a53469e4dba065f7503eab3078a2d7a57a2ab987517",
+  "image_os": "linux",
+  "image_architecture": "arm64",
+  "test_binary_sha256": "278571747dfdddfda72de83e8a28d34b895dccf27a7792f4809ea6c7eea23a60",
+  "test_binary_bytes": 4667506,
+  "toolchain": "go1.26.6",
+  "goos": "linux",
+  "goarch": "arm64",
+  "cgo_enabled": false,
+  "parent_uid": 0,
+  "child_uid": 65534,
+  "child_gid": 65534,
+  "command": "docker run --rm --network none -v /tmp/starmap-csp2-service-native:/checks:ro ubuntu:24.04 /checks/privatefiles.test -test.run '^TestServiceConfigurationAdministratorOwnedRead$' -test.v",
+  "output_sha256": "6cebbff77454c7e6fa2d1ff3091a93e6294ea79622804cbba9f8b581f0ba87f9"
+}

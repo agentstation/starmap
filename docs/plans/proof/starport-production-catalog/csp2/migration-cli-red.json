@@ -1,0 +1,17 @@
+{
+  "command": [
+    "go",
+    "test",
+    "-race",
+    "-count=1",
+    "-timeout",
+    "3m",
+    "-json",
+    "./internal/cli/app",
+    "-run",
+    "^TestRuntimeMigrationCommandPersistsSelectionBeforeCompletion$"
+  ],
+  "exit_code": 1,
+  "stdout": "{\"Time\":\"2026-09-05T22:27:17.064515-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\"}\n{\"Time\":\"2026-09-05T22:27:17.62596-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestRuntimeMigrationCommandPersistsSelectionBeforeCompletion\"}\n{\"Time\":\"2026-09-05T22:27:17.626054-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestRuntimeMigrationCommandPersistsSelectionBeforeCompletion\",\"Output\":\"=== RUN   TestRuntimeMigrationCommandPersistsSelectionBeforeCompletion\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-05T22:27:29.599415-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestRuntimeMigrationCommandPersistsSelectionBeforeCompletion\",\"Output\":\"    migration_command_test.go:60: prepare result = map[], unknown flag: --from\\n\",\"OutputType\":\"error\"}\n{\"Time\":\"2026-09-05T22:27:29.600908-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestRuntimeMigrationCommandPersistsSelectionBeforeCompletion\",\"Output\":\"--- FAIL: TestRuntimeMigrationCommandPersistsSelectionBeforeCompletion (11.97s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-05T22:27:29.600921-05:00\",\"Action\":\"fail\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestRuntimeMigrationCommandPersistsSelectionBeforeCompletion\",\"Elapsed\":11.97}\n{\"Time\":\"2026-09-05T22:27:29.601552-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Output\":\"FAIL\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-05T22:27:29.62171-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Output\":\"FAIL\\tgithub.com/agentstation/starmap/internal/cli/app\\t12.556s\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-05T22:27:29.621774-05:00\",\"Action\":\"fail\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Elapsed\":12.557}\n",
+  "stderr": ""
+}

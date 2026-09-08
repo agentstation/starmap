@@ -1,0 +1,39 @@
+{
+  "verdict": "PASS",
+  "scope": "Six native archive records and GitHub workflow identity. E02 registration and full installer coverage remain separate.",
+  "head_commit": "fabdc2b0956b1f0e35bade67f07a25f17c401654",
+  "tested_merge_commit": "7d88467f57c242179dc7e4bd48161698430a1145",
+  "run_url": "https://github.com/agentstation/starport/actions/runs/34084336162",
+  "results": [
+    {
+      "artifact": "native-release-windows-x86_64",
+      "archive": "starport_1.2.0_windows_x86_64.zip",
+      "model_count": 511
+    },
+    {
+      "artifact": "native-release-darwin-arm64",
+      "archive": "starport_1.2.0_darwin_arm64.tar.gz",
+      "model_count": 511
+    },
+    {
+      "artifact": "native-release-darwin-x86_64",
+      "archive": "starport_1.2.0_darwin_x86_64.tar.gz",
+      "model_count": 511
+    },
+    {
+      "artifact": "native-release-linux-arm64",
+      "archive": "starport_1.2.0_linux_arm64.tar.gz",
+      "model_count": 511
+    },
+    {
+      "artifact": "native-release-linux-x86_64",
+      "archive": "starport_1.2.0_linux_x86_64.tar.gz",
+      "model_count": 511
+    },
+    {
+      "artifact": "native-release-windows-arm64",
+      "archive": "starport_1.2.0_windows_arm64.zip",
+      "model_count": 511
+    }
+  ]
+}

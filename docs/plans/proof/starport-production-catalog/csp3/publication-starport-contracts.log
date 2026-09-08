@@ -1,0 +1,101 @@
+bash scripts/verify-starmap-ownership.sh
+PASS O01 active providers are the catalog and compiled primitive intersection
+PASS O02 primitive registries own inference transport and authentication dispatch
+PASS O03 catalog-acquisition and inference credential planes are isolated
+PASS O04 Google inference credentials never enter a URL
+PASS O05 model and endpoint discovery use one routable snapshot
+PASS O06 embedding routes require catalog and adapter capabilities
+PASS O07 provider model IDs stay exact and opaque
+PASS O08 connectors and current architecture contain no duplicate catalog ownership
+PASS O09 prompt cache and price behavior use exact offerings
+PASS O10 Starport has no provider-wide cache or sample-price tables
+PASS O11 Starmap owns provider acquisition auth and service facts
+PASS O12 catalog fact mutations flow without new Starport conditionals
+Summary: 12 passed, 0 failed
+bash scripts/verify-v1-architecture.sh
+PASS V01 published Starmap module boundary and Go floor
+PASS V02 canonical inference contract
+PASS V03 routable snapshot generation contract
+PASS V04 deterministic route planner contract
+PASS V05 attempt state and retry budget contract
+PASS V06 versioned concept repository contracts
+PASS V07 response cache semantic identity contract
+PASS V08 production composition fail-closed contract
+PASS V09 public package boundary contract
+PASS V10 OpenAI and OpenRouter protocol contracts
+PASS V11 import graph architecture fitness
+PASS V12 full Go test suite
+Summary: 12 passed, 0 failed
+bash scripts/verify-v1-release.sh
+PASS .goreleaser.yaml exists
+PASS .github/workflows/release.yaml exists
+PASS .env.example exists
+PASS SECURITY.md exists
+PASS stale docs/PLAN.md is absent
+PASS architecture has no stale active-plan claim
+PASS README has no pre-release status
+PASS workflow actions use reviewed commit pins
+PASS Starport uses a published Starmap version without replacement
+PASS release smoke requires all official OpenRouter SDKs
+PASS CI invokes the v1 release verifier
+PASS CI and release publication use the reviewed Syft version
+PASS release configuration covers the v1 platform matrix
+PASS release binaries use reproducible commit-time metadata
+PASS release binaries preserve Go VCS provenance
+PASS release workflow verifies provenance before immutable publication
+Summary: 16 passed, 0 failed
+bash scripts/verify-release-workflow.sh
+PASS release workflow contract
+bash scripts/verify-developer-experience.sh
+PASS DX-MAIN-1
+PASS DX-MAIN-2
+PASS DX-MAIN-3
+PASS DX-CFG-1
+PASS DX-CFG-2
+PASS DX-CFG-3
+PASS DX-CFG-4
+PASS DX-CFG-5
+PASS DX-CFG-6
+PASS DX-CFG-7
+PASS DX-CLI-1
+PASS DX-CLI-2
+PASS DX-CLI-3
+PASS DX-CLI-4
+PASS DX-CLI-5
+PASS DX-CLI-6
+PASS DX-CLI-7
+PASS DX-CLI-8
+PASS DX-CLI-9
+PASS DX-CLI-10
+PASS DX-CLI-11
+PASS DX-SETUP-1
+PASS DX-SETUP-2
+PASS DX-SETUP-3
+PASS DX-AUTH-1
+PASS DX-AUTH-2
+PASS DX-AUTH-3
+PASS DX-AUTH-4
+PASS DX-BREW-1
+PASS DX-BREW-2
+PASS DX-BREW-3
+PASS DX-BREW-4
+PASS DX-BREW-5
+PASS DX-DEV-1
+PASS DX-DEV-2
+PASS DX-DEV-3
+PASS DX-DEV-4
+PASS DX-DEV-5
+PASS DX-DEV-6
+PASS DX-DOC-1
+PASS DX-DOC-2
+PASS DX-DOC-3
+PASS DX-DOC-4
+PASS DX-DOC-5
+PASS DX-DOC-6
+PASS DX-DOC-7
+PASS DX-DOC-8
+Summary: 47 passed, 0 failed
+bash scripts/verify-doc-links.sh
+PASS documentation links
+bash scripts/test-doc-link-verifier.sh
+PASS documentation link verifier edge cases

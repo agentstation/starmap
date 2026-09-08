@@ -1,0 +1,17 @@
+{
+  "command": [
+    "go",
+    "test",
+    "-race",
+    "-count=1",
+    "-timeout",
+    "3m",
+    "-json",
+    "./internal/cli/app",
+    "-run",
+    "^TestRelativeFileSourceRefusesBeforeBaselineWrites$"
+  ],
+  "exit_code": 1,
+  "stdout": "{\"Time\":\"2026-09-06T00:19:54.956265-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\"}\n{\"Time\":\"2026-09-06T00:19:55.51221-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestRelativeFileSourceRefusesBeforeBaselineWrites\"}\n{\"Time\":\"2026-09-06T00:19:55.5123-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestRelativeFileSourceRefusesBeforeBaselineWrites\",\"Output\":\"=== RUN   TestRelativeFileSourceRefusesBeforeBaselineWrites\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-06T00:20:07.393118-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestRelativeFileSourceRefusesBeforeBaselineWrites\",\"Output\":\"    relative_paths_test.go:341: relative file source has no anchor refusal: \\u003cnil\\u003e\\n\",\"OutputType\":\"error\"}\n{\"Time\":\"2026-09-06T00:20:07.393182-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestRelativeFileSourceRefusesBeforeBaselineWrites\",\"Output\":\"    relative_paths_test.go:345: ambiguous file source created baseline or runtime files\\n\",\"OutputType\":\"error\"}\n{\"Time\":\"2026-09-06T00:20:07.394846-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestRelativeFileSourceRefusesBeforeBaselineWrites\",\"Output\":\"--- FAIL: TestRelativeFileSourceRefusesBeforeBaselineWrites (11.88s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-06T00:20:07.394867-05:00\",\"Action\":\"fail\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestRelativeFileSourceRefusesBeforeBaselineWrites\",\"Elapsed\":11.88}\n{\"Time\":\"2026-09-06T00:20:07.39513-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Output\":\"FAIL\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-06T00:20:07.422488-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Output\":\"FAIL\\tgithub.com/agentstation/starmap/internal/cli/app\\t12.466s\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-06T00:20:07.422514-05:00\",\"Action\":\"fail\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Elapsed\":12.466}\n",
+  "stderr": ""
+}

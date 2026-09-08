@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "scope": "Cross-compilation only. Native Windows execution remains UNVERIFIED.",
+  "goos": "windows",
+  "goarch": "amd64",
+  "cgo_enabled": false,
+  "toolchain": "go1.26.6",
+  "artifacts": {
+    "app-final.test.exe": {
+      "sha256": "90959a2d55f87356c91d816ea9b290fde79753400c33cdfd21502c564c1db602",
+      "bytes": 68307968
+    },
+    "productpaths-final.test.exe": {
+      "sha256": "1d06659cac637a04c2b0c8777c746762843d01a3a7f046f79347ccb087cc824c",
+      "bytes": 5649920
+    }
+  }
+}

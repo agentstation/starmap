@@ -1,0 +1,9 @@
+{
+  "command": [
+    "make",
+    "test-consumer-deps"
+  ],
+  "exit_code": 0,
+  "seconds": 21.28607387514785,
+  "output": "ok  \tgithub.com/agentstation/starmap-test/read-only-consumer\t1.612s\nok  \tgithub.com/agentstation/starmap-test/store-only-consumer\t1.833s\nok  \tgithub.com/agentstation/starmap-test/pinned-artifact-consumer\t3.046s\nok  \tgithub.com/agentstation/starmap-test/server-embed-consumer\t1.672s\nok  \tgithub.com/agentstation/starmap-test/remote-subscriber-consumer\t2.583s\nok  \tgithub.com/agentstation/starmap-test/server-storage-consumer\t5.247s\nread-only consumer dependency closure: 37/37 non-standard packages (162 total on this platform); forbidden families absent\nstore-only consumer: caller-owned adapter contract and publication passed; application/database implementations absent\npinned-artifact consumer: 38/38 non-standard packages; offline verified activation passed; online/acquisition families absent\nserver-embed consumer dependency closure: 255/260 packages; acquisition families absent\nserver-embed consumer: external compile and lifecycle test passed\nremote-subscriber consumer dependency closure: 238/240 packages; forbidden families absent\nremote-subscriber consumer: external compile and reactive lifecycle test passed\nserver-storage consumer dependency closure: 349/350 packages; filesystem/S3 server and reactive restart matrix passed\n"
+}

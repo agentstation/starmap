@@ -1,0 +1,911 @@
+{
+  "package": "internal/catalog/workspace",
+  "race": false,
+  "toolchain": "go1.25.12",
+  "commands": [
+    {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.25.12",
+        "GOOS=linux",
+        "GOARCH=arm64",
+        "CGO_ENABLED=0",
+        "go",
+        "test",
+        "-c",
+        "-tags=starmap_ownership_test",
+        "-o",
+        "/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/csp2-native-build-hud9kois/test",
+        "./internal/catalog/workspace"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "docker",
+        "volume",
+        "create",
+        "--label",
+        "purpose=csp2-native-package-verification",
+        "csp2-native-adbfa4f1434345e58d16465b30673318"
+      ],
+      "exit_code": 0,
+      "stdout": "csp2-native-adbfa4f1434345e58d16465b30673318\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "docker",
+        "create",
+        "--pull=never",
+        "--network",
+        "none",
+        "--read-only",
+        "--user",
+        "0:0",
+        "--cap-drop=ALL",
+        "--cap-add=CHOWN",
+        "--cap-add=FOWNER",
+        "--cap-add=DAC_OVERRIDE",
+        "--cap-add=SETUID",
+        "--cap-add=SETGID",
+        "--security-opt=no-new-privileges",
+        "--env",
+        "STARMAP_OWNERSHIP_FIXTURE=1",
+        "--mount",
+        "type=bind,src=/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/csp2-native-build-hud9kois/test,dst=/native-test,readonly",
+        "--mount",
+        "type=bind,src=/Users/jack/src/github.com/agentstation/starmap-catalog-requirements,dst=/Users/jack/src/github.com/agentstation/starmap-catalog-requirements,readonly",
+        "--mount",
+        "type=volume,src=csp2-native-adbfa4f1434345e58d16465b30673318,dst=/home/nonroot",
+        "--env",
+        "TMPDIR=/home/nonroot",
+        "--env",
+        "GOMAXPROCS=4",
+        "--workdir",
+        "/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/internal/catalog/workspace",
+        "--entrypoint",
+        "/native-test",
+        "sha256:60582b2ae6074f641094af0f370d4ab241aab271858a66223dcde7eee9f51638",
+        "-test.run=^TestWorkspaceForeignOwnership$",
+        "-test.v=test2json",
+        "-test.count=1",
+        "-test.parallel=4",
+        "-test.timeout=10m"
+      ],
+      "exit_code": 0,
+      "stdout": "0d335526ee767cbdb41e308427fd6b1f5d6a1aab238dc93e207bcaa6f07a2a5e\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "docker",
+        "start",
+        "--attach",
+        "0d335526ee767cbdb41e308427fd6b1f5d6a1aab238dc93e207bcaa6f07a2a5e"
+      ],
+      "exit_code": 1,
+      "stdout": "\u0016=== RUN   TestWorkspaceForeignOwnership\n\u0016=== RUN   TestWorkspaceForeignOwnership/atomic\n\u0016=== RUN   TestWorkspaceForeignOwnership/atomic/file-owner\n    access_ownership_linux_test.go:47: service child seed: exit status 1\n        --- FAIL: TestWorkspaceForeignOwnership (0.00s)\n            access_ownership_linux_test.go:22: IO error during inspect of /home/nonroot/TestWorkspaceForeignOwnershipatomicfile-owner1038640009/001/workspace: lstat /home/nonroot/TestWorkspaceForeignOwnershipatomicfile-owner1038640009/001/workspace: permission denied\n        FAIL\n\u0016--- FAIL: TestWorkspaceForeignOwnership/atomic/file-owner (0.01s)\n\u0016=== NAME  TestWorkspaceForeignOwnership/atomic\n\u0016=== RUN   TestWorkspaceForeignOwnership/atomic/file-group\n    access_ownership_linux_test.go:47: service child seed: exit status 1\n        --- FAIL: TestWorkspaceForeignOwnership (0.00s)\n            access_ownership_linux_test.go:22: IO error during inspect of /home/nonroot/TestWorkspaceForeignOwnershipatomicfile-group86195454/001/workspace: lstat /home/nonroot/TestWorkspaceForeignOwnershipatomicfile-group86195454/001/workspace: permission denied\n        FAIL\n\u0016--- FAIL: TestWorkspaceForeignOwnership/atomic/file-group (0.01s)\n\u0016=== NAME  TestWorkspaceForeignOwnership/atomic\n\u0016=== RUN   TestWorkspaceForeignOwnership/atomic/root-owner\n    access_ownership_linux_test.go:47: service child seed: exit status 1\n        --- FAIL: TestWorkspaceForeignOwnership (0.00s)\n            access_ownership_linux_test.go:22: IO error during inspect of /home/nonroot/TestWorkspaceForeignOwnershipatomicroot-owner4094256765/001/workspace: lstat /home/nonroot/TestWorkspaceForeignOwnershipatomicroot-owner4094256765/001/workspace: permission denied\n        FAIL\n\u0016--- FAIL: TestWorkspaceForeignOwnership/atomic/root-owner (0.01s)\n\u0016=== NAME  TestWorkspaceForeignOwnership/atomic\n\u0016=== RUN   TestWorkspaceForeignOwnership/atomic/root-group\n    access_ownership_linux_test.go:47: service child seed: exit status 1\n        --- FAIL: TestWorkspaceForeignOwnership (0.00s)\n            access_ownership_linux_test.go:22: IO error during inspect of /home/nonroot/TestWorkspaceForeignOwnershipatomicroot-group2717327511/001/workspace: lstat /home/nonroot/TestWorkspaceForeignOwnershipatomicroot-group2717327511/001/workspace: permission denied\n        FAIL\n\u0016--- FAIL: TestWorkspaceForeignOwnership/atomic/root-group (0.01s)\n\u0016=== NAME  TestWorkspaceForeignOwnership/atomic\n\u0016=== RUN   TestWorkspaceForeignOwnership/atomic/directory-owner\n    access_ownership_linux_test.go:47: service child seed: exit status 1\n        --- FAIL: TestWorkspaceForeignOwnership (0.00s)\n            access_ownership_linux_test.go:22: IO error during inspect of /home/nonroot/TestWorkspaceForeignOwnershipatomicdirectory-owner3556993463/001/workspace: lstat /home/nonroot/TestWorkspaceForeignOwnershipatomicdirectory-owner3556993463/001/workspace: permission denied\n        FAIL\n\u0016--- FAIL: TestWorkspaceForeignOwnership/atomic/directory-owner (0.01s)\n\u0016=== NAME  TestWorkspaceForeignOwnership/atomic\n\u0016=== RUN   TestWorkspaceForeignOwnership/atomic/operator-note-owner\n    access_ownership_linux_test.go:47: service child seed: exit status 1\n        --- FAIL: TestWorkspaceForeignOwnership (0.00s)\n            access_ownership_linux_test.go:22: IO error during inspect of /home/nonroot/TestWorkspaceForeignOwnershipatomicoperator-note-owner3392656335/001/workspace: lstat /home/nonroot/TestWorkspaceForeignOwnershipatomicoperator-note-owner3392656335/001/workspace: permission denied\n        FAIL\n\u0016--- FAIL: TestWorkspaceForeignOwnership/atomic/operator-note-owner (0.01s)\n\u0016=== NAME  TestWorkspaceForeignOwnership/atomic\n\u0016--- FAIL: TestWorkspaceForeignOwnership/atomic (0.04s)\n\u0016=== NAME  TestWorkspaceForeignOwnership\n\u0016=== RUN   TestWorkspaceForeignOwnership/journal\n\u0016=== RUN   TestWorkspaceForeignOwnership/journal/file-owner\n    access_ownership_linux_test.go:47: service child seed: exit status 1\n        --- FAIL: TestWorkspaceForeignOwnership (0.00s)\n            access_ownership_linux_test.go:22: IO error during inspect of /home/nonroot/TestWorkspaceForeignOwnershipjournalfile-owner2956575089/001/workspace: lstat /home/nonroot/TestWorkspaceForeignOwnershipjournalfile-owner2956575089/001/workspace: permission denied\n        FAIL\n\u0016--- FAIL: TestWorkspaceForeignOwnership/journal/file-owner (0.01s)\n\u0016=== NAME  TestWorkspaceForeignOwnership/journal\n\u0016=== RUN   TestWorkspaceForeignOwnership/journal/file-group\n    access_ownership_linux_test.go:47: service child seed: exit status 1\n        --- FAIL: TestWorkspaceForeignOwnership (0.00s)\n            access_ownership_linux_test.go:22: IO error during inspect of /home/nonroot/TestWorkspaceForeignOwnershipjournalfile-group3632718156/001/workspace: lstat /home/nonroot/TestWorkspaceForeignOwnershipjournalfile-group3632718156/001/workspace: permission denied\n        FAIL\n\u0016--- FAIL: TestWorkspaceForeignOwnership/journal/file-group (0.01s)\n\u0016=== NAME  TestWorkspaceForeignOwnership/journal\n\u0016=== RUN   TestWorkspaceForeignOwnership/journal/root-owner\n    access_ownership_linux_test.go:47: service child seed: exit status 1\n        --- FAIL: TestWorkspaceForeignOwnership (0.00s)\n            access_ownership_linux_test.go:22: IO error during inspect of /home/nonroot/TestWorkspaceForeignOwnershipjournalroot-owner2953561350/001/workspace: lstat /home/nonroot/TestWorkspaceForeignOwnershipjournalroot-owner2953561350/001/workspace: permission denied\n        FAIL\n\u0016--- FAIL: TestWorkspaceForeignOwnership/journal/root-owner (0.01s)\n\u0016=== NAME  TestWorkspaceForeignOwnership/journal\n\u0016=== RUN   TestWorkspaceForeignOwnership/journal/root-group\n    access_ownership_linux_test.go:47: service child seed: exit status 1\n        --- FAIL: TestWorkspaceForeignOwnership (0.00s)\n            access_ownership_linux_test.go:22: IO error during inspect of /home/nonroot/TestWorkspaceForeignOwnershipjournalroot-group300625637/001/workspace: lstat /home/nonroot/TestWorkspaceForeignOwnershipjournalroot-group300625637/001/workspace: permission denied\n        FAIL\n\u0016--- FAIL: TestWorkspaceForeignOwnership/journal/root-group (0.01s)\n\u0016=== NAME  TestWorkspaceForeignOwnership/journal\n\u0016=== RUN   TestWorkspaceForeignOwnership/journal/directory-owner\n    access_ownership_linux_test.go:47: service child seed: exit status 1\n        --- FAIL: TestWorkspaceForeignOwnership (0.00s)\n            access_ownership_linux_test.go:22: IO error during inspect of /home/nonroot/TestWorkspaceForeignOwnershipjournaldirectory-owner1206636706/001/workspace: lstat /home/nonroot/TestWorkspaceForeignOwnershipjournaldirectory-owner1206636706/001/workspace: permission denied\n        FAIL\n\u0016--- FAIL: TestWorkspaceForeignOwnership/journal/directory-owner (0.01s)\n\u0016=== NAME  TestWorkspaceForeignOwnership/journal\n\u0016=== RUN   TestWorkspaceForeignOwnership/journal/operator-note-owner\n    access_ownership_linux_test.go:47: service child seed: exit status 1\n        --- FAIL: TestWorkspaceForeignOwnership (0.00s)\n            access_ownership_linux_test.go:22: IO error during inspect of /home/nonroot/TestWorkspaceForeignOwnershipjournaloperator-note-owner528560891/001/workspace: lstat /home/nonroot/TestWorkspaceForeignOwnershipjournaloperator-note-owner528560891/001/workspace: permission denied\n        FAIL\n\u0016--- FAIL: TestWorkspaceForeignOwnership/journal/operator-note-owner (0.01s)\n\u0016=== NAME  TestWorkspaceForeignOwnership/journal\n\u0016--- FAIL: TestWorkspaceForeignOwnership/journal (0.05s)\n\u0016=== NAME  TestWorkspaceForeignOwnership\n\u0016--- FAIL: TestWorkspaceForeignOwnership (0.09s)\n\u0016=== NAME  \n\u0016FAIL\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "docker",
+        "inspect",
+        "--format",
+        "{{json .State}}",
+        "0d335526ee767cbdb41e308427fd6b1f5d6a1aab238dc93e207bcaa6f07a2a5e"
+      ],
+      "exit_code": 0,
+      "stdout": "{\"Status\":\"exited\",\"Running\":false,\"Paused\":false,\"Restarting\":false,\"OOMKilled\":false,\"Dead\":false,\"Pid\":0,\"ExitCode\":1,\"Error\":\"\",\"StartedAt\":\"2026-09-06T23:02:42.026060125Z\",\"FinishedAt\":\"2026-09-06T23:02:42.170187292Z\"}\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "docker",
+        "rm",
+        "-f",
+        "0d335526ee767cbdb41e308427fd6b1f5d6a1aab238dc93e207bcaa6f07a2a5e"
+      ],
+      "exit_code": 0,
+      "stdout": "0d335526ee767cbdb41e308427fd6b1f5d6a1aab238dc93e207bcaa6f07a2a5e\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "docker",
+        "volume",
+        "rm",
+        "csp2-native-adbfa4f1434345e58d16465b30673318"
+      ],
+      "exit_code": 0,
+      "stdout": "csp2-native-adbfa4f1434345e58d16465b30673318\n",
+      "stderr": ""
+    }
+  ],
+  "test_events": [
+    {
+      "Time": "2026-09-06T18:02:42.296159-05:00",
+      "Action": "start",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace"
+    },
+    {
+      "Time": "2026-09-06T18:02:42.296402-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceForeignOwnership"
+    },
+    {
+      "Time": "2026-09-06T18:02:42.296409-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceForeignOwnership",
+      "Output": "=== RUN   TestWorkspaceForeignOwnership\n"
+    },
+    {
+      "Time": "2026-09-06T18:02:42.296413-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceForeignOwnership/atomic"
+    },
+    {
+      "Time": "2026-09-06T18:02:42.296414-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceForeignOwnership/atomic",
+      "Output": "=== RUN   TestWorkspaceForeignOwnership/atomic\n"
+    },
+    {
+      "Time": "2026-09-06T18:02:42.296417-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceForeignOwnership/atomic/file-owner"
+    },
+    {
+      "Time": "2026-09-06T18:02:42.296419-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceForeignOwnership/atomic/file-owner",
+      "Output": "=== RUN   TestWorkspaceForeignOwnership/atomic/file-owner\n"
+    },
+    {
+      "Time": "2026-09-06T18:02:42.296421-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceForeignOwnership/atomic/file-owner",
+      "Output": "    access_ownership_linux_test.go:47: service child seed: exit status 1\n"
+    },
+    {
+      "Time": "2026-09-06T18:02:42.296422-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceForeignOwnership/atomic/file-owner",
+      "Output": "        --- FAIL: TestWorkspaceForeignOwnership (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T18:02:42.296424-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceForeignOwnership/atomic/file-owner",
+      "Output": "            access_ownership_linux_test.go:22: IO error during inspect of /home/nonroot/TestWorkspaceForeignOwnershipatomicfile-owner1038640009/001/workspace: lstat /home/nonroot/TestWorkspaceForeignOwnershipatomicfile-owner1038640009/001/workspace: permission denied\n"
+    },
+    {
+      "Time": "2026-09-06T18:02:42.296427-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceForeignOwnership/atomic/file-owner",
+      "Output": "        FAIL\n"
+    },
+    {
+      "Time": "2026-09-06T18:02:42.296466-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceForeignOwnership/atomic/file-owner",
+      "Output": "--- FAIL: TestWorkspaceForeignOwnership/atomic/file-owner (0.01s)\n"
+    },
+    {
+      "Time": "2026-09-06T18:02:42.29647-05:00",
+      "Action": "fail",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceForeignOwnership/atomic/file-owner",
+      "Elapsed": 0.01
+    },
+    {
+      "Time": "2026-09-06T18:02:42.296472-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceForeignOwnership/atomic/file-group"
+    },
+    {
+      "Time": "2026-09-06T18:02:42.296474-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceForeignOwnership/atomic/file-group",
+      "Output": "=== RUN   TestWorkspaceForeignOwnership/atomic/file-group\n"
+    },
+    {
+      "Time": "2026-09-06T18:02:42.296475-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceForeignOwnership/atomic/file-group",
+      "Output": "    access_ownership_linux_test.go:47: service child seed: exit status 1\n"
+    },
+    {
+      "Time": "2026-09-06T18:02:42.296476-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceForeignOwnership/atomic/file-group",
+      "Output": "        --- FAIL: TestWorkspaceForeignOwnership (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T18:02:42.296477-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceForeignOwnership/atomic/file-group",
+      "Output": "            access_ownership_linux_test.go:22: IO error during inspect of /home/nonroot/TestWorkspaceForeignOwnershipatomicfile-group86195454/001/workspace: lstat /home/nonroot/TestWorkspaceForeignOwnershipatomicfile-group86195454/001/workspace: permission denied\n"
+    },
+    {
+      "Time": "2026-09-06T18:02:42.296479-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceForeignOwnership/atomic/file-group",
+      "Output": "        FAIL\n"
+    },
+    {
+      "Time": "2026-09-06T18:02:42.29648-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceForeignOwnership/atomic/file-group",
+      "Output": "--- FAIL: TestWorkspaceForeignOwnership/atomic/file-group (0.01s)\n"
+    },
+    {
+      "Time": "2026-09-06T18:02:42.296481-05:00",
+      "Action": "fail",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceForeignOwnership/atomic/file-group",
+      "Elapsed": 0.01
+    },
+    {
+      "Time": "2026-09-06T18:02:42.296483-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceForeignOwnership/atomic/root-owner"
+    },
+    {
+      "Time": "2026-09-06T18:02:42.296484-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceForeignOwnership/atomic/root-owner",
+      "Output": "=== RUN   TestWorkspaceForeignOwnership/atomic/root-owner\n"
+    },
+    {
+      "Time": "2026-09-06T18:02:42.296485-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceForeignOwnership/atomic/root-owner",
+      "Output": "    access_ownership_linux_test.go:47: service child seed: exit status 1\n"
+    },
+    {
+      "Time": "2026-09-06T18:02:42.296486-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceForeignOwnership/atomic/root-owner",
+      "Output": "        --- FAIL: TestWorkspaceForeignOwnership (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T18:02:42.296488-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceForeignOwnership/atomic/root-owner",
+      "Output": "            access_ownership_linux_test.go:22: IO error during inspect of /home/nonroot/TestWorkspaceForeignOwnershipatomicroot-owner4094256765/001/workspace: lstat /home/nonroot/TestWorkspaceForeignOwnershipatomicroot-owner4094256765/001/workspace: permission denied\n"
+    },
+    {
+      "Time": "2026-09-06T18:02:42.296489-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceForeignOwnership/atomic/root-owner",
+      "Output": "        FAIL\n"
+    },
+    {
+      "Time": "2026-09-06T18:02:42.29649-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceForeignOwnership/atomic/root-owner",
+      "Output": "--- FAIL: TestWorkspaceForeignOwnership/atomic/root-owner (0.01s)\n"
+    },
+    {
+      "Time": "2026-09-06T18:02:42.296492-05:00",
+      "Action": "fail",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceForeignOwnership/atomic/root-owner",
+      "Elapsed": 0.01
+    },
+    {
+      "Time": "2026-09-06T18:02:42.296493-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceForeignOwnership/atomic/root-group"
+    },
+    {
+      "Time": "2026-09-06T18:02:42.296498-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceForeignOwnership/atomic/root-group",
+      "Output": "=== RUN   TestWorkspaceForeignOwnership/atomic/root-group\n"
+    },
+    {
+      "Time": "2026-09-06T18:02:42.296499-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceForeignOwnership/atomic/root-group",
+      "Output": "    access_ownership_linux_test.go:47: service child seed: exit status 1\n"
+    },
+    {
+      "Time": "2026-09-06T18:02:42.2965-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceForeignOwnership/atomic/root-group",
+      "Output": "        --- FAIL: TestWorkspaceForeignOwnership (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T18:02:42.296502-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceForeignOwnership/atomic/root-group",
+      "Output": "            access_ownership_linux_test.go:22: IO error during inspect of /home/nonroot/TestWorkspaceForeignOwnershipatomicroot-group2717327511/001/workspace: lstat /home/nonroot/TestWorkspaceForeignOwnershipatomicroot-group2717327511/001/workspace: permission denied\n"
+    },
+    {
+      "Time": "2026-09-06T18:02:42.296503-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceForeignOwnership/atomic/root-group",
+      "Output": "        FAIL\n"
+    },
+    {
+      "Time": "2026-09-06T18:02:42.296505-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceForeignOwnership/atomic/root-group",
+      "Output": "--- FAIL: TestWorkspaceForeignOwnership/atomic/root-group (0.01s)\n"
+    },
+    {
+      "Time": "2026-09-06T18:02:42.296506-05:00",
+      "Action": "fail",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceForeignOwnership/atomic/root-group",
+      "Elapsed": 0.01
+    },
+    {
+      "Time": "2026-09-06T18:02:42.296507-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceForeignOwnership/atomic/directory-owner"
+    },
+    {
+      "Time": "2026-09-06T18:02:42.296508-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceForeignOwnership/atomic/directory-owner",
+      "Output": "=== RUN   TestWorkspaceForeignOwnership/atomic/directory-owner\n"
+    },
+    {
+      "Time": "2026-09-06T18:02:42.296509-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceForeignOwnership/atomic/directory-owner",
+      "Output": "    access_ownership_linux_test.go:47: service child seed: exit status 1\n"
+    },
+    {
+      "Time": "2026-09-06T18:02:42.29651-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceForeignOwnership/atomic/directory-owner",
+      "Output": "        --- FAIL: TestWorkspaceForeignOwnership (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T18:02:42.296512-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceForeignOwnership/atomic/directory-owner",
+      "Output": "            access_ownership_linux_test.go:22: IO error during inspect of /home/nonroot/TestWorkspaceForeignOwnershipatomicdirectory-owner3556993463/001/workspace: lstat /home/nonroot/TestWorkspaceForeignOwnershipatomicdirectory-owner3556993463/001/workspace: permission denied\n"
+    },
+    {
+      "Time": "2026-09-06T18:02:42.296513-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceForeignOwnership/atomic/directory-owner",
+      "Output": "        FAIL\n"
+    },
+    {
+      "Time": "2026-09-06T18:02:42.296515-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceForeignOwnership/atomic/directory-owner",
+      "Output": "--- FAIL: TestWorkspaceForeignOwnership/atomic/directory-owner (0.01s)\n"
+    },
+    {
+      "Time": "2026-09-06T18:02:42.296516-05:00",
+      "Action": "fail",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceForeignOwnership/atomic/directory-owner",
+      "Elapsed": 0.01
+    },
+    {
+      "Time": "2026-09-06T18:02:42.296517-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceForeignOwnership/atomic/operator-note-owner"
+    },
+    {
+      "Time": "2026-09-06T18:02:42.296518-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceForeignOwnership/atomic/operator-note-owner",
+      "Output": "=== RUN   TestWorkspaceForeignOwnership/atomic/operator-note-owner\n"
+    },
+    {
+      "Time": "2026-09-06T18:02:42.296519-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceForeignOwnership/atomic/operator-note-owner",
+      "Output": "    access_ownership_linux_test.go:47: service child seed: exit status 1\n"
+    },
+    {
+      "Time": "2026-09-06T18:02:42.296521-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceForeignOwnership/atomic/operator-note-owner",
+      "Output": "        --- FAIL: TestWorkspaceForeignOwnership (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T18:02:42.296522-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceForeignOwnership/atomic/operator-note-owner",
+      "Output": "            access_ownership_linux_test.go:22: IO error during inspect of /home/nonroot/TestWorkspaceForeignOwnershipatomicoperator-note-owner3392656335/001/workspace: lstat /home/nonroot/TestWorkspaceForeignOwnershipatomicoperator-note-owner3392656335/001/workspace: permission denied\n"
+    },
+    {
+      "Time": "2026-09-06T18:02:42.296524-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceForeignOwnership/atomic/operator-note-owner",
+      "Output": "        FAIL\n"
+    },
+    {
+      "Time": "2026-09-06T18:02:42.296525-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceForeignOwnership/atomic/operator-note-owner",
+      "Output": "--- FAIL: TestWorkspaceForeignOwnership/atomic/operator-note-owner (0.01s)\n"
+    },
+    {
+      "Time": "2026-09-06T18:02:42.296527-05:00",
+      "Action": "fail",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceForeignOwnership/atomic/operator-note-owner",
+      "Elapsed": 0.01
+    },
+    {
+      "Time": "2026-09-06T18:02:42.296529-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceForeignOwnership/atomic",
+      "Output": "--- FAIL: TestWorkspaceForeignOwnership/atomic (0.04s)\n"
+    },
+    {
+      "Time": "2026-09-06T18:02:42.29653-05:00",
+      "Action": "fail",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceForeignOwnership/atomic",
+      "Elapsed": 0.04
+    },
+    {
+      "Time": "2026-09-06T18:02:42.296537-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceForeignOwnership/journal"
+    },
+    {
+      "Time": "2026-09-06T18:02:42.296539-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceForeignOwnership/journal",
+      "Output": "=== RUN   TestWorkspaceForeignOwnership/journal\n"
+    },
+    {
+      "Time": "2026-09-06T18:02:42.29654-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceForeignOwnership/journal/file-owner"
+    },
+    {
+      "Time": "2026-09-06T18:02:42.296541-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceForeignOwnership/journal/file-owner",
+      "Output": "=== RUN   TestWorkspaceForeignOwnership/journal/file-owner\n"
+    },
+    {
+      "Time": "2026-09-06T18:02:42.296543-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceForeignOwnership/journal/file-owner",
+      "Output": "    access_ownership_linux_test.go:47: service child seed: exit status 1\n"
+    },
+    {
+      "Time": "2026-09-06T18:02:42.296544-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceForeignOwnership/journal/file-owner",
+      "Output": "        --- FAIL: TestWorkspaceForeignOwnership (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T18:02:42.296546-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceForeignOwnership/journal/file-owner",
+      "Output": "            access_ownership_linux_test.go:22: IO error during inspect of /home/nonroot/TestWorkspaceForeignOwnershipjournalfile-owner2956575089/001/workspace: lstat /home/nonroot/TestWorkspaceForeignOwnershipjournalfile-owner2956575089/001/workspace: permission denied\n"
+    },
+    {
+      "Time": "2026-09-06T18:02:42.296548-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceForeignOwnership/journal/file-owner",
+      "Output": "        FAIL\n"
+    },
+    {
+      "Time": "2026-09-06T18:02:42.296549-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceForeignOwnership/journal/file-owner",
+      "Output": "--- FAIL: TestWorkspaceForeignOwnership/journal/file-owner (0.01s)\n"
+    },
+    {
+      "Time": "2026-09-06T18:02:42.29655-05:00",
+      "Action": "fail",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceForeignOwnership/journal/file-owner",
+      "Elapsed": 0.01
+    },
+    {
+      "Time": "2026-09-06T18:02:42.296552-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceForeignOwnership/journal/file-group"
+    },
+    {
+      "Time": "2026-09-06T18:02:42.296553-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceForeignOwnership/journal/file-group",
+      "Output": "=== RUN   TestWorkspaceForeignOwnership/journal/file-group\n"
+    },
+    {
+      "Time": "2026-09-06T18:02:42.296554-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceForeignOwnership/journal/file-group",
+      "Output": "    access_ownership_linux_test.go:47: service child seed: exit status 1\n"
+    },
+    {
+      "Time": "2026-09-06T18:02:42.296559-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceForeignOwnership/journal/file-group",
+      "Output": "        --- FAIL: TestWorkspaceForeignOwnership (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T18:02:42.29656-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceForeignOwnership/journal/file-group",
+      "Output": "            access_ownership_linux_test.go:22: IO error during inspect of /home/nonroot/TestWorkspaceForeignOwnershipjournalfile-group3632718156/001/workspace: lstat /home/nonroot/TestWorkspaceForeignOwnershipjournalfile-group3632718156/001/workspace: permission denied\n"
+    },
+    {
+      "Time": "2026-09-06T18:02:42.296562-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceForeignOwnership/journal/file-group",
+      "Output": "        FAIL\n"
+    },
+    {
+      "Time": "2026-09-06T18:02:42.296563-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceForeignOwnership/journal/file-group",
+      "Output": "--- FAIL: TestWorkspaceForeignOwnership/journal/file-group (0.01s)\n"
+    },
+    {
+      "Time": "2026-09-06T18:02:42.296564-05:00",
+      "Action": "fail",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceForeignOwnership/journal/file-group",
+      "Elapsed": 0.01
+    },
+    {
+      "Time": "2026-09-06T18:02:42.296565-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceForeignOwnership/journal/root-owner"
+    },
+    {
+      "Time": "2026-09-06T18:02:42.296567-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceForeignOwnership/journal/root-owner",
+      "Output": "=== RUN   TestWorkspaceForeignOwnership/journal/root-owner\n"
+    },
+    {
+      "Time": "2026-09-06T18:02:42.296568-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceForeignOwnership/journal/root-owner",
+      "Output": "    access_ownership_linux_test.go:47: service child seed: exit status 1\n"
+    },
+    {
+      "Time": "2026-09-06T18:02:42.296569-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceForeignOwnership/journal/root-owner",
+      "Output": "        --- FAIL: TestWorkspaceForeignOwnership (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T18:02:42.29657-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceForeignOwnership/journal/root-owner",
+      "Output": "            access_ownership_linux_test.go:22: IO error during inspect of /home/nonroot/TestWorkspaceForeignOwnershipjournalroot-owner2953561350/001/workspace: lstat /home/nonroot/TestWorkspaceForeignOwnershipjournalroot-owner2953561350/001/workspace: permission denied\n"
+    },
+    {
+      "Time": "2026-09-06T18:02:42.296572-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceForeignOwnership/journal/root-owner",
+      "Output": "        FAIL\n"
+    },
+    {
+      "Time": "2026-09-06T18:02:42.296573-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceForeignOwnership/journal/root-owner",
+      "Output": "--- FAIL: TestWorkspaceForeignOwnership/journal/root-owner (0.01s)\n"
+    },
+    {
+      "Time": "2026-09-06T18:02:42.296574-05:00",
+      "Action": "fail",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceForeignOwnership/journal/root-owner",
+      "Elapsed": 0.01
+    },
+    {
+      "Time": "2026-09-06T18:02:42.296576-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceForeignOwnership/journal/root-group"
+    },
+    {
+      "Time": "2026-09-06T18:02:42.296577-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceForeignOwnership/journal/root-group",
+      "Output": "=== RUN   TestWorkspaceForeignOwnership/journal/root-group\n"
+    },
+    {
+      "Time": "2026-09-06T18:02:42.296578-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceForeignOwnership/journal/root-group",
+      "Output": "    access_ownership_linux_test.go:47: service child seed: exit status 1\n"
+    },
+    {
+      "Time": "2026-09-06T18:02:42.296579-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceForeignOwnership/journal/root-group",
+      "Output": "        --- FAIL: TestWorkspaceForeignOwnership (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T18:02:42.296581-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceForeignOwnership/journal/root-group",
+      "Output": "            access_ownership_linux_test.go:22: IO error during inspect of /home/nonroot/TestWorkspaceForeignOwnershipjournalroot-group300625637/001/workspace: lstat /home/nonroot/TestWorkspaceForeignOwnershipjournalroot-group300625637/001/workspace: permission denied\n"
+    },
+    {
+      "Time": "2026-09-06T18:02:42.296582-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceForeignOwnership/journal/root-group",
+      "Output": "        FAIL\n"
+    },
+    {
+      "Time": "2026-09-06T18:02:42.296583-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceForeignOwnership/journal/root-group",
+      "Output": "--- FAIL: TestWorkspaceForeignOwnership/journal/root-group (0.01s)\n"
+    },
+    {
+      "Time": "2026-09-06T18:02:42.296585-05:00",
+      "Action": "fail",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceForeignOwnership/journal/root-group",
+      "Elapsed": 0.01
+    },
+    {
+      "Time": "2026-09-06T18:02:42.296586-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceForeignOwnership/journal/directory-owner"
+    },
+    {
+      "Time": "2026-09-06T18:02:42.296592-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceForeignOwnership/journal/directory-owner",
+      "Output": "=== RUN   TestWorkspaceForeignOwnership/journal/directory-owner\n"
+    },
+    {
+      "Time": "2026-09-06T18:02:42.296594-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceForeignOwnership/journal/directory-owner",
+      "Output": "    access_ownership_linux_test.go:47: service child seed: exit status 1\n"
+    },
+    {
+      "Time": "2026-09-06T18:02:42.296595-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceForeignOwnership/journal/directory-owner",
+      "Output": "        --- FAIL: TestWorkspaceForeignOwnership (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T18:02:42.296597-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceForeignOwnership/journal/directory-owner",
+      "Output": "            access_ownership_linux_test.go:22: IO error during inspect of /home/nonroot/TestWorkspaceForeignOwnershipjournaldirectory-owner1206636706/001/workspace: lstat /home/nonroot/TestWorkspaceForeignOwnershipjournaldirectory-owner1206636706/001/workspace: permission denied\n"
+    },
+    {
+      "Time": "2026-09-06T18:02:42.296598-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceForeignOwnership/journal/directory-owner",
+      "Output": "        FAIL\n"
+    },
+    {
+      "Time": "2026-09-06T18:02:42.296599-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceForeignOwnership/journal/directory-owner",
+      "Output": "--- FAIL: TestWorkspaceForeignOwnership/journal/directory-owner (0.01s)\n"
+    },
+    {
+      "Time": "2026-09-06T18:02:42.296601-05:00",
+      "Action": "fail",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceForeignOwnership/journal/directory-owner",
+      "Elapsed": 0.01
+    },
+    {
+      "Time": "2026-09-06T18:02:42.296602-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceForeignOwnership/journal/operator-note-owner"
+    },
+    {
+      "Time": "2026-09-06T18:02:42.296603-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceForeignOwnership/journal/operator-note-owner",
+      "Output": "=== RUN   TestWorkspaceForeignOwnership/journal/operator-note-owner\n"
+    },
+    {
+      "Time": "2026-09-06T18:02:42.296604-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceForeignOwnership/journal/operator-note-owner",
+      "Output": "    access_ownership_linux_test.go:47: service child seed: exit status 1\n"
+    },
+    {
+      "Time": "2026-09-06T18:02:42.296606-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceForeignOwnership/journal/operator-note-owner",
+      "Output": "        --- FAIL: TestWorkspaceForeignOwnership (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T18:02:42.296611-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceForeignOwnership/journal/operator-note-owner",
+      "Output": "            access_ownership_linux_test.go:22: IO error during inspect of /home/nonroot/TestWorkspaceForeignOwnershipjournaloperator-note-owner528560891/001/workspace: lstat /home/nonroot/TestWorkspaceForeignOwnershipjournaloperator-note-owner528560891/001/workspace: permission denied\n"
+    },
+    {
+      "Time": "2026-09-06T18:02:42.296612-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceForeignOwnership/journal/operator-note-owner",
+      "Output": "        FAIL\n"
+    },
+    {
+      "Time": "2026-09-06T18:02:42.296614-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceForeignOwnership/journal/operator-note-owner",
+      "Output": "--- FAIL: TestWorkspaceForeignOwnership/journal/operator-note-owner (0.01s)\n"
+    },
+    {
+      "Time": "2026-09-06T18:02:42.296616-05:00",
+      "Action": "fail",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceForeignOwnership/journal/operator-note-owner",
+      "Elapsed": 0.01
+    },
+    {
+      "Time": "2026-09-06T18:02:42.296618-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceForeignOwnership/journal",
+      "Output": "--- FAIL: TestWorkspaceForeignOwnership/journal (0.05s)\n"
+    },
+    {
+      "Time": "2026-09-06T18:02:42.296619-05:00",
+      "Action": "fail",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceForeignOwnership/journal",
+      "Elapsed": 0.05
+    },
+    {
+      "Time": "2026-09-06T18:02:42.29662-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceForeignOwnership",
+      "Output": "--- FAIL: TestWorkspaceForeignOwnership (0.09s)\n"
+    },
+    {
+      "Time": "2026-09-06T18:02:42.296622-05:00",
+      "Action": "fail",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceForeignOwnership",
+      "Elapsed": 0.09
+    },
+    {
+      "Time": "2026-09-06T18:02:42.296623-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Output": "FAIL\n"
+    },
+    {
+      "Time": "2026-09-06T18:02:42.296625-05:00",
+      "Action": "fail",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Elapsed": 0
+    }
+  ],
+  "binary_sha256": "0137cd55c98ed097e3a40aec0d54649fc64255420be5034ce2ef0d7ecaeea261",
+  "state": {
+    "Status": "exited",
+    "Running": false,
+    "Paused": false,
+    "Restarting": false,
+    "OOMKilled": false,
+    "Dead": false,
+    "Pid": 0,
+    "ExitCode": 1,
+    "Error": "",
+    "StartedAt": "2026-09-06T23:02:42.026060125Z",
+    "FinishedAt": "2026-09-06T23:02:42.170187292Z"
+  },
+  "conversion_exit_code": 0,
+  "counts": {
+    "pass": 0,
+    "fail": 15,
+    "skip": 0
+  },
+  "passed": false,
+  "container_removed": true,
+  "volume_removed": true
+}

@@ -1,0 +1,33 @@
+{
+  "command": [
+    "/Users/jack/.agents/skills/technical-writing/scripts/technical-writing",
+    "lint",
+    "docs/CLI.md",
+    "docs/design/catalog-lifecycle/PRD.md",
+    "docs/design/catalog-lifecycle/ENGINEERING_SPEC.md",
+    "docs/design/catalog-lifecycle/REPOSITORY_FINDINGS.md",
+    "docs/plans/starport-production-catalog-plan.html",
+    "docs/plans/proof/starport-production-catalog/csp2.md",
+    "docs/plans/proof/starport-production-catalog/csp2/access-policy-conversation-review.md",
+    "pkg/productpaths/security.go",
+    "pkg/productpaths/security_test.go",
+    "pkg/productpaths/inspection_windows.go",
+    "pkg/productpaths/inspection_windows_test.go",
+    "pkg/productpaths/inspection.go",
+    "internal/cli/app/file_inspection.go",
+    "internal/runtimeacl/windows/assessment.go",
+    "internal/runtimeacl/windows/assessment_test.go",
+    "internal/runtimeacl/windows/descriptor.go",
+    "internal/runtimeacl/windows/descriptor_windows.go",
+    "internal/runtimeacl/windows/descriptor_windows_test.go",
+    "internal/privatefiles/acl_windows.go",
+    "internal/privatefiles/acl_windows_test.go",
+    "internal/cli/commands/config/inspection.go",
+    "internal/cli/commands/config/inspection_test.go",
+    "--format",
+    "text"
+  ],
+  "exit_code": 1,
+  "stdout": "/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/docs/design/catalog-lifecycle/PRD.md:307:1: error long_paragraph: paragraph has 8 sentences; limit is 6\n/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/docs/design/catalog-lifecycle/ENGINEERING_SPEC.md:337:23: error nominalization: express the action with a direct verb\n/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/docs/plans/starport-production-catalog-plan.html:174:1: error long_paragraph: paragraph has 8 sentences; limit is 6\n/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/docs/plans/proof/starport-production-catalog/csp2.md:1365:1: error long_paragraph: paragraph has 7 sentences; limit is 6\n/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/docs/plans/proof/starport-production-catalog/csp2/access-policy-conversation-review.md:45:53: error banned_word: use a short, precise alternative: 'acquire'\nFAIL: 22 file(s), 5 diagnostic(s)\n",
+  "stderr": ""
+}

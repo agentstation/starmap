@@ -1,0 +1,743 @@
+{
+  "package": "internal/catalog/workspace",
+  "race": false,
+  "toolchain": "go1.25.12",
+  "commands": [
+    {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.25.12",
+        "GOOS=linux",
+        "GOARCH=arm64",
+        "CGO_ENABLED=0",
+        "go",
+        "test",
+        "-c",
+        "-tags=starmap_ownership_test",
+        "-o",
+        "/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/csp2-native-build-ehf36whq/test",
+        "./internal/catalog/workspace"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "docker",
+        "volume",
+        "create",
+        "--label",
+        "purpose=csp2-native-package-verification",
+        "csp2-native-28e84543c07441dcb8391f102c1bcf9c"
+      ],
+      "exit_code": 0,
+      "stdout": "csp2-native-28e84543c07441dcb8391f102c1bcf9c\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "docker",
+        "create",
+        "--pull=never",
+        "--network",
+        "none",
+        "--read-only",
+        "--user",
+        "0:0",
+        "--cap-drop=ALL",
+        "--cap-add=CHOWN",
+        "--cap-add=FOWNER",
+        "--cap-add=DAC_OVERRIDE",
+        "--cap-add=SETUID",
+        "--cap-add=SETGID",
+        "--security-opt=no-new-privileges",
+        "--env",
+        "STARMAP_OWNERSHIP_FIXTURE=1",
+        "--mount",
+        "type=bind,src=/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/csp2-native-build-ehf36whq/test,dst=/native-test,readonly",
+        "--mount",
+        "type=bind,src=/Users/jack/src/github.com/agentstation/starmap-catalog-requirements,dst=/Users/jack/src/github.com/agentstation/starmap-catalog-requirements,readonly",
+        "--mount",
+        "type=volume,src=csp2-native-28e84543c07441dcb8391f102c1bcf9c,dst=/home/nonroot",
+        "--env",
+        "TMPDIR=/home/nonroot",
+        "--env",
+        "GOMAXPROCS=4",
+        "--workdir",
+        "/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/internal/catalog/workspace",
+        "--entrypoint",
+        "/native-test",
+        "sha256:60582b2ae6074f641094af0f370d4ab241aab271858a66223dcde7eee9f51638",
+        "-test.run=^TestWorkspaceForeignOwnership$",
+        "-test.v=test2json",
+        "-test.count=1",
+        "-test.parallel=4",
+        "-test.timeout=10m"
+      ],
+      "exit_code": 0,
+      "stdout": "ad9cbbf847494ee4f89dbccf85a93dfe81be0feda017776e2625f1c7fe958ce9\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "docker",
+        "start",
+        "--attach",
+        "ad9cbbf847494ee4f89dbccf85a93dfe81be0feda017776e2625f1c7fe958ce9"
+      ],
+      "exit_code": 0,
+      "stdout": "\u0016=== RUN   TestWorkspaceForeignOwnership\n\u0016=== RUN   TestWorkspaceForeignOwnership/atomic\n\u0016=== RUN   TestWorkspaceForeignOwnership/atomic/file-owner\n    access_ownership_linux_test.go:55: service child seed: PASS\n    access_ownership_linux_test.go:64: service child refuse: PASS\n\u0016--- PASS: TestWorkspaceForeignOwnership/atomic/file-owner (0.07s)\n\u0016=== NAME  TestWorkspaceForeignOwnership/atomic\n\u0016=== RUN   TestWorkspaceForeignOwnership/atomic/file-group\n    access_ownership_linux_test.go:55: service child seed: PASS\n    access_ownership_linux_test.go:64: service child refuse: PASS\n\u0016--- PASS: TestWorkspaceForeignOwnership/atomic/file-group (0.07s)\n\u0016=== NAME  TestWorkspaceForeignOwnership/atomic\n\u0016=== RUN   TestWorkspaceForeignOwnership/atomic/root-owner\n    access_ownership_linux_test.go:55: service child seed: PASS\n    access_ownership_linux_test.go:64: service child refuse: PASS\n\u0016--- PASS: TestWorkspaceForeignOwnership/atomic/root-owner (0.06s)\n\u0016=== NAME  TestWorkspaceForeignOwnership/atomic\n\u0016=== RUN   TestWorkspaceForeignOwnership/atomic/root-group\n    access_ownership_linux_test.go:55: service child seed: PASS\n    access_ownership_linux_test.go:64: service child refuse: PASS\n\u0016--- PASS: TestWorkspaceForeignOwnership/atomic/root-group (0.06s)\n\u0016=== NAME  TestWorkspaceForeignOwnership/atomic\n\u0016=== RUN   TestWorkspaceForeignOwnership/atomic/directory-owner\n    access_ownership_linux_test.go:55: service child seed: PASS\n    access_ownership_linux_test.go:64: service child refuse: PASS\n\u0016--- PASS: TestWorkspaceForeignOwnership/atomic/directory-owner (0.06s)\n\u0016=== NAME  TestWorkspaceForeignOwnership/atomic\n\u0016=== RUN   TestWorkspaceForeignOwnership/atomic/operator-note-owner\n    access_ownership_linux_test.go:55: service child seed: PASS\n    access_ownership_linux_test.go:64: service child refuse: PASS\n\u0016--- PASS: TestWorkspaceForeignOwnership/atomic/operator-note-owner (0.06s)\n\u0016=== NAME  TestWorkspaceForeignOwnership/atomic\n\u0016--- PASS: TestWorkspaceForeignOwnership/atomic (0.38s)\n\u0016=== NAME  TestWorkspaceForeignOwnership\n\u0016=== RUN   TestWorkspaceForeignOwnership/journal\n\u0016=== RUN   TestWorkspaceForeignOwnership/journal/file-owner\n    access_ownership_linux_test.go:55: service child seed: PASS\n    access_ownership_linux_test.go:64: service child refuse: PASS\n\u0016--- PASS: TestWorkspaceForeignOwnership/journal/file-owner (0.07s)\n\u0016=== NAME  TestWorkspaceForeignOwnership/journal\n\u0016=== RUN   TestWorkspaceForeignOwnership/journal/file-group\n    access_ownership_linux_test.go:55: service child seed: PASS\n    access_ownership_linux_test.go:64: service child refuse: PASS\n\u0016--- PASS: TestWorkspaceForeignOwnership/journal/file-group (0.08s)\n\u0016=== NAME  TestWorkspaceForeignOwnership/journal\n\u0016=== RUN   TestWorkspaceForeignOwnership/journal/root-owner\n    access_ownership_linux_test.go:55: service child seed: PASS\n    access_ownership_linux_test.go:64: service child refuse: PASS\n\u0016--- PASS: TestWorkspaceForeignOwnership/journal/root-owner (0.08s)\n\u0016=== NAME  TestWorkspaceForeignOwnership/journal\n\u0016=== RUN   TestWorkspaceForeignOwnership/journal/root-group\n    access_ownership_linux_test.go:55: service child seed: PASS\n    access_ownership_linux_test.go:64: service child refuse: PASS\n\u0016--- PASS: TestWorkspaceForeignOwnership/journal/root-group (0.07s)\n\u0016=== NAME  TestWorkspaceForeignOwnership/journal\n\u0016=== RUN   TestWorkspaceForeignOwnership/journal/directory-owner\n    access_ownership_linux_test.go:55: service child seed: PASS\n    access_ownership_linux_test.go:64: service child refuse: PASS\n\u0016--- PASS: TestWorkspaceForeignOwnership/journal/directory-owner (0.07s)\n\u0016=== NAME  TestWorkspaceForeignOwnership/journal\n\u0016=== RUN   TestWorkspaceForeignOwnership/journal/operator-note-owner\n    access_ownership_linux_test.go:55: service child seed: PASS\n    access_ownership_linux_test.go:64: service child refuse: PASS\n\u0016--- PASS: TestWorkspaceForeignOwnership/journal/operator-note-owner (0.07s)\n\u0016=== NAME  TestWorkspaceForeignOwnership/journal\n\u0016--- PASS: TestWorkspaceForeignOwnership/journal (0.46s)\n\u0016=== NAME  TestWorkspaceForeignOwnership\n\u0016--- PASS: TestWorkspaceForeignOwnership (0.83s)\n\u0016=== NAME  \n\u0016PASS\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "docker",
+        "inspect",
+        "--format",
+        "{{json .State}}",
+        "ad9cbbf847494ee4f89dbccf85a93dfe81be0feda017776e2625f1c7fe958ce9"
+      ],
+      "exit_code": 0,
+      "stdout": "{\"Status\":\"exited\",\"Running\":false,\"Paused\":false,\"Restarting\":false,\"OOMKilled\":false,\"Dead\":false,\"Pid\":0,\"ExitCode\":0,\"Error\":\"\",\"StartedAt\":\"2026-09-06T23:03:17.85001167Z\",\"FinishedAt\":\"2026-09-06T23:03:18.731622629Z\"}\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "docker",
+        "rm",
+        "-f",
+        "ad9cbbf847494ee4f89dbccf85a93dfe81be0feda017776e2625f1c7fe958ce9"
+      ],
+      "exit_code": 0,
+      "stdout": "ad9cbbf847494ee4f89dbccf85a93dfe81be0feda017776e2625f1c7fe958ce9\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "docker",
+        "volume",
+        "rm",
+        "csp2-native-28e84543c07441dcb8391f102c1bcf9c"
+      ],
+      "exit_code": 0,
+      "stdout": "csp2-native-28e84543c07441dcb8391f102c1bcf9c\n",
+      "stderr": ""
+    }
+  ],
+  "test_events": [
+    {
+      "Time": "2026-09-06T18:03:18.856365-05:00",
+      "Action": "start",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace"
+    },
+    {
+      "Time": "2026-09-06T18:03:18.856715-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceForeignOwnership"
+    },
+    {
+      "Time": "2026-09-06T18:03:18.856719-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceForeignOwnership",
+      "Output": "=== RUN   TestWorkspaceForeignOwnership\n"
+    },
+    {
+      "Time": "2026-09-06T18:03:18.856723-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceForeignOwnership/atomic"
+    },
+    {
+      "Time": "2026-09-06T18:03:18.856725-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceForeignOwnership/atomic",
+      "Output": "=== RUN   TestWorkspaceForeignOwnership/atomic\n"
+    },
+    {
+      "Time": "2026-09-06T18:03:18.856728-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceForeignOwnership/atomic/file-owner"
+    },
+    {
+      "Time": "2026-09-06T18:03:18.85673-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceForeignOwnership/atomic/file-owner",
+      "Output": "=== RUN   TestWorkspaceForeignOwnership/atomic/file-owner\n"
+    },
+    {
+      "Time": "2026-09-06T18:03:18.856752-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceForeignOwnership/atomic/file-owner",
+      "Output": "    access_ownership_linux_test.go:55: service child seed: PASS\n"
+    },
+    {
+      "Time": "2026-09-06T18:03:18.85676-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceForeignOwnership/atomic/file-owner",
+      "Output": "    access_ownership_linux_test.go:64: service child refuse: PASS\n"
+    },
+    {
+      "Time": "2026-09-06T18:03:18.856823-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceForeignOwnership/atomic/file-owner",
+      "Output": "--- PASS: TestWorkspaceForeignOwnership/atomic/file-owner (0.07s)\n"
+    },
+    {
+      "Time": "2026-09-06T18:03:18.856831-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceForeignOwnership/atomic/file-owner",
+      "Elapsed": 0.07
+    },
+    {
+      "Time": "2026-09-06T18:03:18.856838-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceForeignOwnership/atomic/file-group"
+    },
+    {
+      "Time": "2026-09-06T18:03:18.856839-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceForeignOwnership/atomic/file-group",
+      "Output": "=== RUN   TestWorkspaceForeignOwnership/atomic/file-group\n"
+    },
+    {
+      "Time": "2026-09-06T18:03:18.856841-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceForeignOwnership/atomic/file-group",
+      "Output": "    access_ownership_linux_test.go:55: service child seed: PASS\n"
+    },
+    {
+      "Time": "2026-09-06T18:03:18.856842-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceForeignOwnership/atomic/file-group",
+      "Output": "    access_ownership_linux_test.go:64: service child refuse: PASS\n"
+    },
+    {
+      "Time": "2026-09-06T18:03:18.856844-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceForeignOwnership/atomic/file-group",
+      "Output": "--- PASS: TestWorkspaceForeignOwnership/atomic/file-group (0.07s)\n"
+    },
+    {
+      "Time": "2026-09-06T18:03:18.856845-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceForeignOwnership/atomic/file-group",
+      "Elapsed": 0.07
+    },
+    {
+      "Time": "2026-09-06T18:03:18.85685-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceForeignOwnership/atomic/root-owner"
+    },
+    {
+      "Time": "2026-09-06T18:03:18.856852-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceForeignOwnership/atomic/root-owner",
+      "Output": "=== RUN   TestWorkspaceForeignOwnership/atomic/root-owner\n"
+    },
+    {
+      "Time": "2026-09-06T18:03:18.856853-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceForeignOwnership/atomic/root-owner",
+      "Output": "    access_ownership_linux_test.go:55: service child seed: PASS\n"
+    },
+    {
+      "Time": "2026-09-06T18:03:18.856854-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceForeignOwnership/atomic/root-owner",
+      "Output": "    access_ownership_linux_test.go:64: service child refuse: PASS\n"
+    },
+    {
+      "Time": "2026-09-06T18:03:18.856856-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceForeignOwnership/atomic/root-owner",
+      "Output": "--- PASS: TestWorkspaceForeignOwnership/atomic/root-owner (0.06s)\n"
+    },
+    {
+      "Time": "2026-09-06T18:03:18.856857-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceForeignOwnership/atomic/root-owner",
+      "Elapsed": 0.06
+    },
+    {
+      "Time": "2026-09-06T18:03:18.856858-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceForeignOwnership/atomic/root-group"
+    },
+    {
+      "Time": "2026-09-06T18:03:18.85686-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceForeignOwnership/atomic/root-group",
+      "Output": "=== RUN   TestWorkspaceForeignOwnership/atomic/root-group\n"
+    },
+    {
+      "Time": "2026-09-06T18:03:18.856862-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceForeignOwnership/atomic/root-group",
+      "Output": "    access_ownership_linux_test.go:55: service child seed: PASS\n"
+    },
+    {
+      "Time": "2026-09-06T18:03:18.856863-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceForeignOwnership/atomic/root-group",
+      "Output": "    access_ownership_linux_test.go:64: service child refuse: PASS\n"
+    },
+    {
+      "Time": "2026-09-06T18:03:18.856865-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceForeignOwnership/atomic/root-group",
+      "Output": "--- PASS: TestWorkspaceForeignOwnership/atomic/root-group (0.06s)\n"
+    },
+    {
+      "Time": "2026-09-06T18:03:18.856866-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceForeignOwnership/atomic/root-group",
+      "Elapsed": 0.06
+    },
+    {
+      "Time": "2026-09-06T18:03:18.856868-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceForeignOwnership/atomic/directory-owner"
+    },
+    {
+      "Time": "2026-09-06T18:03:18.856869-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceForeignOwnership/atomic/directory-owner",
+      "Output": "=== RUN   TestWorkspaceForeignOwnership/atomic/directory-owner\n"
+    },
+    {
+      "Time": "2026-09-06T18:03:18.85687-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceForeignOwnership/atomic/directory-owner",
+      "Output": "    access_ownership_linux_test.go:55: service child seed: PASS\n"
+    },
+    {
+      "Time": "2026-09-06T18:03:18.856871-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceForeignOwnership/atomic/directory-owner",
+      "Output": "    access_ownership_linux_test.go:64: service child refuse: PASS\n"
+    },
+    {
+      "Time": "2026-09-06T18:03:18.856873-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceForeignOwnership/atomic/directory-owner",
+      "Output": "--- PASS: TestWorkspaceForeignOwnership/atomic/directory-owner (0.06s)\n"
+    },
+    {
+      "Time": "2026-09-06T18:03:18.856874-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceForeignOwnership/atomic/directory-owner",
+      "Elapsed": 0.06
+    },
+    {
+      "Time": "2026-09-06T18:03:18.856876-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceForeignOwnership/atomic/operator-note-owner"
+    },
+    {
+      "Time": "2026-09-06T18:03:18.856877-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceForeignOwnership/atomic/operator-note-owner",
+      "Output": "=== RUN   TestWorkspaceForeignOwnership/atomic/operator-note-owner\n"
+    },
+    {
+      "Time": "2026-09-06T18:03:18.856879-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceForeignOwnership/atomic/operator-note-owner",
+      "Output": "    access_ownership_linux_test.go:55: service child seed: PASS\n"
+    },
+    {
+      "Time": "2026-09-06T18:03:18.85688-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceForeignOwnership/atomic/operator-note-owner",
+      "Output": "    access_ownership_linux_test.go:64: service child refuse: PASS\n"
+    },
+    {
+      "Time": "2026-09-06T18:03:18.856881-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceForeignOwnership/atomic/operator-note-owner",
+      "Output": "--- PASS: TestWorkspaceForeignOwnership/atomic/operator-note-owner (0.06s)\n"
+    },
+    {
+      "Time": "2026-09-06T18:03:18.856883-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceForeignOwnership/atomic/operator-note-owner",
+      "Elapsed": 0.06
+    },
+    {
+      "Time": "2026-09-06T18:03:18.856884-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceForeignOwnership/atomic",
+      "Output": "--- PASS: TestWorkspaceForeignOwnership/atomic (0.38s)\n"
+    },
+    {
+      "Time": "2026-09-06T18:03:18.856886-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceForeignOwnership/atomic",
+      "Elapsed": 0.38
+    },
+    {
+      "Time": "2026-09-06T18:03:18.856887-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceForeignOwnership/journal"
+    },
+    {
+      "Time": "2026-09-06T18:03:18.856889-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceForeignOwnership/journal",
+      "Output": "=== RUN   TestWorkspaceForeignOwnership/journal\n"
+    },
+    {
+      "Time": "2026-09-06T18:03:18.856891-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceForeignOwnership/journal/file-owner"
+    },
+    {
+      "Time": "2026-09-06T18:03:18.856892-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceForeignOwnership/journal/file-owner",
+      "Output": "=== RUN   TestWorkspaceForeignOwnership/journal/file-owner\n"
+    },
+    {
+      "Time": "2026-09-06T18:03:18.856894-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceForeignOwnership/journal/file-owner",
+      "Output": "    access_ownership_linux_test.go:55: service child seed: PASS\n"
+    },
+    {
+      "Time": "2026-09-06T18:03:18.856896-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceForeignOwnership/journal/file-owner",
+      "Output": "    access_ownership_linux_test.go:64: service child refuse: PASS\n"
+    },
+    {
+      "Time": "2026-09-06T18:03:18.856897-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceForeignOwnership/journal/file-owner",
+      "Output": "--- PASS: TestWorkspaceForeignOwnership/journal/file-owner (0.07s)\n"
+    },
+    {
+      "Time": "2026-09-06T18:03:18.856899-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceForeignOwnership/journal/file-owner",
+      "Elapsed": 0.07
+    },
+    {
+      "Time": "2026-09-06T18:03:18.8569-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceForeignOwnership/journal/file-group"
+    },
+    {
+      "Time": "2026-09-06T18:03:18.856901-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceForeignOwnership/journal/file-group",
+      "Output": "=== RUN   TestWorkspaceForeignOwnership/journal/file-group\n"
+    },
+    {
+      "Time": "2026-09-06T18:03:18.856907-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceForeignOwnership/journal/file-group",
+      "Output": "    access_ownership_linux_test.go:55: service child seed: PASS\n"
+    },
+    {
+      "Time": "2026-09-06T18:03:18.856909-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceForeignOwnership/journal/file-group",
+      "Output": "    access_ownership_linux_test.go:64: service child refuse: PASS\n"
+    },
+    {
+      "Time": "2026-09-06T18:03:18.856911-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceForeignOwnership/journal/file-group",
+      "Output": "--- PASS: TestWorkspaceForeignOwnership/journal/file-group (0.08s)\n"
+    },
+    {
+      "Time": "2026-09-06T18:03:18.856916-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceForeignOwnership/journal/file-group",
+      "Elapsed": 0.08
+    },
+    {
+      "Time": "2026-09-06T18:03:18.856918-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceForeignOwnership/journal/root-owner"
+    },
+    {
+      "Time": "2026-09-06T18:03:18.856919-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceForeignOwnership/journal/root-owner",
+      "Output": "=== RUN   TestWorkspaceForeignOwnership/journal/root-owner\n"
+    },
+    {
+      "Time": "2026-09-06T18:03:18.856921-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceForeignOwnership/journal/root-owner",
+      "Output": "    access_ownership_linux_test.go:55: service child seed: PASS\n"
+    },
+    {
+      "Time": "2026-09-06T18:03:18.856924-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceForeignOwnership/journal/root-owner",
+      "Output": "    access_ownership_linux_test.go:64: service child refuse: PASS\n"
+    },
+    {
+      "Time": "2026-09-06T18:03:18.856925-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceForeignOwnership/journal/root-owner",
+      "Output": "--- PASS: TestWorkspaceForeignOwnership/journal/root-owner (0.08s)\n"
+    },
+    {
+      "Time": "2026-09-06T18:03:18.856926-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceForeignOwnership/journal/root-owner",
+      "Elapsed": 0.08
+    },
+    {
+      "Time": "2026-09-06T18:03:18.856928-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceForeignOwnership/journal/root-group"
+    },
+    {
+      "Time": "2026-09-06T18:03:18.856929-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceForeignOwnership/journal/root-group",
+      "Output": "=== RUN   TestWorkspaceForeignOwnership/journal/root-group\n"
+    },
+    {
+      "Time": "2026-09-06T18:03:18.85693-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceForeignOwnership/journal/root-group",
+      "Output": "    access_ownership_linux_test.go:55: service child seed: PASS\n"
+    },
+    {
+      "Time": "2026-09-06T18:03:18.856931-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceForeignOwnership/journal/root-group",
+      "Output": "    access_ownership_linux_test.go:64: service child refuse: PASS\n"
+    },
+    {
+      "Time": "2026-09-06T18:03:18.856932-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceForeignOwnership/journal/root-group",
+      "Output": "--- PASS: TestWorkspaceForeignOwnership/journal/root-group (0.07s)\n"
+    },
+    {
+      "Time": "2026-09-06T18:03:18.856934-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceForeignOwnership/journal/root-group",
+      "Elapsed": 0.07
+    },
+    {
+      "Time": "2026-09-06T18:03:18.856935-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceForeignOwnership/journal/directory-owner"
+    },
+    {
+      "Time": "2026-09-06T18:03:18.856937-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceForeignOwnership/journal/directory-owner",
+      "Output": "=== RUN   TestWorkspaceForeignOwnership/journal/directory-owner\n"
+    },
+    {
+      "Time": "2026-09-06T18:03:18.856939-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceForeignOwnership/journal/directory-owner",
+      "Output": "    access_ownership_linux_test.go:55: service child seed: PASS\n"
+    },
+    {
+      "Time": "2026-09-06T18:03:18.85694-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceForeignOwnership/journal/directory-owner",
+      "Output": "    access_ownership_linux_test.go:64: service child refuse: PASS\n"
+    },
+    {
+      "Time": "2026-09-06T18:03:18.856941-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceForeignOwnership/journal/directory-owner",
+      "Output": "--- PASS: TestWorkspaceForeignOwnership/journal/directory-owner (0.07s)\n"
+    },
+    {
+      "Time": "2026-09-06T18:03:18.856942-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceForeignOwnership/journal/directory-owner",
+      "Elapsed": 0.07
+    },
+    {
+      "Time": "2026-09-06T18:03:18.856944-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceForeignOwnership/journal/operator-note-owner"
+    },
+    {
+      "Time": "2026-09-06T18:03:18.856945-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceForeignOwnership/journal/operator-note-owner",
+      "Output": "=== RUN   TestWorkspaceForeignOwnership/journal/operator-note-owner\n"
+    },
+    {
+      "Time": "2026-09-06T18:03:18.856946-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceForeignOwnership/journal/operator-note-owner",
+      "Output": "    access_ownership_linux_test.go:55: service child seed: PASS\n"
+    },
+    {
+      "Time": "2026-09-06T18:03:18.856947-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceForeignOwnership/journal/operator-note-owner",
+      "Output": "    access_ownership_linux_test.go:64: service child refuse: PASS\n"
+    },
+    {
+      "Time": "2026-09-06T18:03:18.856949-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceForeignOwnership/journal/operator-note-owner",
+      "Output": "--- PASS: TestWorkspaceForeignOwnership/journal/operator-note-owner (0.07s)\n"
+    },
+    {
+      "Time": "2026-09-06T18:03:18.856952-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceForeignOwnership/journal/operator-note-owner",
+      "Elapsed": 0.07
+    },
+    {
+      "Time": "2026-09-06T18:03:18.856954-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceForeignOwnership/journal",
+      "Output": "--- PASS: TestWorkspaceForeignOwnership/journal (0.46s)\n"
+    },
+    {
+      "Time": "2026-09-06T18:03:18.856955-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceForeignOwnership/journal",
+      "Elapsed": 0.46
+    },
+    {
+      "Time": "2026-09-06T18:03:18.856961-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceForeignOwnership",
+      "Output": "--- PASS: TestWorkspaceForeignOwnership (0.83s)\n"
+    },
+    {
+      "Time": "2026-09-06T18:03:18.856963-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Test": "TestWorkspaceForeignOwnership",
+      "Elapsed": 0.83
+    },
+    {
+      "Time": "2026-09-06T18:03:18.856964-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Output": "PASS\n"
+    },
+    {
+      "Time": "2026-09-06T18:03:18.856966-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+      "Elapsed": 0.001
+    }
+  ],
+  "binary_sha256": "8ce46d495b9b32dd8a0decd30ec77d5bc5457d622245271557952cadd8e103de",
+  "state": {
+    "Status": "exited",
+    "Running": false,
+    "Paused": false,
+    "Restarting": false,
+    "OOMKilled": false,
+    "Dead": false,
+    "Pid": 0,
+    "ExitCode": 0,
+    "Error": "",
+    "StartedAt": "2026-09-06T23:03:17.85001167Z",
+    "FinishedAt": "2026-09-06T23:03:18.731622629Z"
+  },
+  "conversion_exit_code": 0,
+  "counts": {
+    "pass": 15,
+    "fail": 0,
+    "skip": 0
+  },
+  "passed": true,
+  "container_removed": true,
+  "volume_removed": true
+}

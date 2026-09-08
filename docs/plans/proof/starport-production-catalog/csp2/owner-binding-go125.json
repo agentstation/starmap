@@ -1,0 +1,19 @@
+{
+  "command": [
+    "go",
+    "test",
+    "-race",
+    "-count=1",
+    "-timeout",
+    "3m",
+    "./runtime",
+    "-run",
+    "^(TestSchedulerOverrideIsBoundToDirectoryOwner|TestOwnerRecordRecoversBeforeSeedInitialization|TestPersistentRuntimeRecordsDirectoryOwner)$"
+  ],
+  "environment": {
+    "GOTOOLCHAIN": "go1.25.12"
+  },
+  "exit_code": 0,
+  "stdout": "ok  \tgithub.com/agentstation/starmap/runtime\t10.862s\n",
+  "stderr": ""
+}

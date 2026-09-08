@@ -1,0 +1,9 @@
+{
+  "date": "2026-09-05",
+  "paid_inference": "Authorized by the user. One short OpenAI request is the starting scope. Necessary verification may exceed $0.01.",
+  "credential_lookup": "The user authorized searching Starport and Starmap .env files and other local sources if needed.",
+  "selected_source": "/Users/jack/src/github.com/agentstation/starport/.env",
+  "selected_name": "OPENAI_API_KEY",
+  "secret_value_recorded": false,
+  "publication": "Commits, pushes, releases, and new CI workflow dispatches remain separately gated."
+}

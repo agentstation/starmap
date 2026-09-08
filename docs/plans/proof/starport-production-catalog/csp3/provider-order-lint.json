@@ -1,0 +1,9 @@
+{
+  "command": [
+    "golangci-lint",
+    "run"
+  ],
+  "exit_code": 0,
+  "seconds": 3.84614708321169,
+  "output": "0 issues.\n"
+}

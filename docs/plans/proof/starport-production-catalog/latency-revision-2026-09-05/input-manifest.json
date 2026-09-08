@@ -1,0 +1,284 @@
+{
+  "backup": "/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starport-latency-docs-6k2zwrgz",
+  "inputs": [
+    {
+      "repository": "starmap",
+      "path": "docs/design/catalog-lifecycle/PRD.md",
+      "sha256": "1882fb181c6023dbe54c97866048cfcaf28e6fd7e18caa78242f7aa386037c65"
+    },
+    {
+      "repository": "starmap",
+      "path": "docs/design/catalog-lifecycle/ENGINEERING_SPEC.md",
+      "sha256": "30684534549d5224e1bcd2cc82334871850731780536ad787cea538286b02f82"
+    },
+    {
+      "repository": "starmap",
+      "path": "docs/design/catalog-lifecycle/REPOSITORY_FINDINGS.md",
+      "sha256": "acdb9f67b452af45eecd726c96a00af5e858f265bbd94738b87116306519aa0d"
+    },
+    {
+      "repository": "starmap",
+      "path": "docs/plans/starport-production-catalog-plan.html",
+      "sha256": "82b04d18eaf801b314234cafada75c082c9ac1d633b264f109e6dd5018966893"
+    },
+    {
+      "repository": "starmap",
+      "path": "docs/plans/proof/starport-production-catalog/acceptance-map.json",
+      "sha256": "a1b61d641a35badcb8786deb5b956d1991ace5c06630288612f86c88e5ce7c52"
+    },
+    {
+      "repository": "starmap",
+      "path": "docs/plans/proof/starport-production-catalog/readme-demo-brief.md",
+      "sha256": "0761b878d1afa9e1e539484c8bb9c67cc396f839d1901111f3b1a51a4b43e7be"
+    },
+    {
+      "repository": "starmap",
+      "path": "docs/plans/README.md",
+      "sha256": "34cec2e197a8ad514512180cea783527477b15fcce708a296d7024a1b86efe49"
+    },
+    {
+      "repository": "starmap",
+      "path": "docs/README.md",
+      "sha256": "78383c9ce9c35e11418ded4eaf0e9f9b2e777db1e0ccc1db0b689a97c368a7bd"
+    },
+    {
+      "repository": "starport",
+      "path": "docs/TASKS.md",
+      "sha256": "423f4ff8b8870a8aadbe3204671dc0c43b1daab707019829a2ca87243f771f8b"
+    }
+  ],
+  "historical_evidence": [
+    {
+      "path": "docs/plans/proof/starport-production-catalog/plan-validation.json",
+      "sha256": "3903d2b40507853997d3ae6933f3dd168661f0d8ff73364919f3061e080f776f"
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/planning.md",
+      "sha256": "3b6965f9241be25157d4f87dd0d1b4ab044c9d8cc236731762263937f420d86f"
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/readme-baseline.json",
+      "sha256": "89374bcd173ab100d42425d892721feae997746d5f4f18eb369f82985223b017"
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/revision-2026-09-05/REVIEW_RESOLUTION.md",
+      "sha256": "1435bdb38a483e1e0ffdf31ef163b5f52c48b4b789f16eeded2490b7de53c1f3"
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/revision-2026-09-05/input-manifest.json",
+      "sha256": "09e9eb89856bf2184e982749013d6d6064e2459d0520340250db400724976f42"
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/revision-2026-09-05/verification.json",
+      "sha256": "517b24a7e1b1aea701cce6980bc8dbc0e6ae30e0f8ca02b28c680596ce4d6a7f"
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/fable-review-2026-09-04/runner-result.json",
+      "sha256": "e05ca3f845545d1bf6196c9bd8dcbd49ec74ab10398258b9e94b2d6b20fe1079"
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/fable-review-2026-09-04/input-manifest.json",
+      "sha256": "9ebd7dbb3b22b6d3c61aaf0e241956923ff4e03ff6c33974c39e2cd4a3050b4f"
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/fable-review-2026-09-04/ASSESSMENT.md",
+      "sha256": "acb93169dd463c4162bedbf66af21f13dc9012560a57b92506c4ab3a815244a6"
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/fable-review-2026-09-04/verification.json",
+      "sha256": "16a16e596eeacec71b4ded103b7245a42500983d8afd0c989d009dac65b562bb"
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/fable-review-2026-09-04/read-requests.json",
+      "sha256": "1b560ee98ef447670a99810331bfa3cc080fdffb2cd964080ec0b13d356cb3b7"
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/audit-2026-09-04/evidence-checks.json",
+      "sha256": "8780524dfa9809546157fdd66986421c3f9f5eaa40c5e35ca4aafa54dfd6f700"
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/audit-2026-09-04/starport-budget-tests.jsonl",
+      "sha256": "8d8f7f70522b4eac1fed22a9d12deef3a94504e84c01d01a5682ff79f3d89d4d"
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/audit-2026-09-04/starmap-tests-command.json",
+      "sha256": "139cfc67b3c5c21f14606060e43d51e02e08aa123bacf1733cf5f45ee852dc63"
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/audit-2026-09-04/starport-budget-tests-command.json",
+      "sha256": "392a27f3dbd371b846e0cd6d436e30b10d4585b93b5a052c8302fd7be8b7f81e"
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/audit-2026-09-04/starmap-ago.json",
+      "sha256": "b8fb7afa66aa7a93914ac258475dd0191be821803a8aea4439f5ba05022f5fa5"
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/audit-2026-09-04/test-summary.json",
+      "sha256": "83ea20ff434046d397191fc349c0466deab1e578bd276d3fe8deeac57b473fbc"
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/audit-2026-09-04/AUDIT.md",
+      "sha256": "a4cabec7f6eeed73ed5050a32fcf5d88ce2cf1315693842a2020e5c817b754dc"
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/audit-2026-09-04/command-paths.json",
+      "sha256": "56ce216eb0351429b23dd8edfaf346f50e99fe40ca5a7216dcbbbb4cf428e0a9"
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/audit-2026-09-04/starport-tests-command.json",
+      "sha256": "b51780d45097abd3a3f1908ae155df65559a337fff43c3ee3996bf773815419d"
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/audit-2026-09-04/plan-validation-before.json",
+      "sha256": "07edbeb6d89916c21a71f7b485800f771b612713eb8b7acdeebe2736864c5500"
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/audit-2026-09-04/starport-tests.jsonl",
+      "sha256": "d326e9081f935f849f402dfd83a75fe6a2505ad9019a954ae4cbf20734ea1ece"
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/audit-2026-09-04/starmap-tests.jsonl",
+      "sha256": "35892422f9873c0b6d69c5ffcbebd0a88e38eec506ce32494433fb333c6a49f3"
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/storage-revision-2026-09-05/verify_documents.py",
+      "sha256": "ab07a0fee86d1b0e838dfebf67bfb132b201ae50159dfe8ad891cb2bf5689ab6"
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/storage-revision-2026-09-05/document_structure.txt",
+      "sha256": "3903d2b40507853997d3ae6933f3dd168661f0d8ff73364919f3061e080f776f"
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/storage-revision-2026-09-05/REVIEW_RESOLUTION.md",
+      "sha256": "c05b59aab2dbf9745e2d86645744acf7fe80f9d8b9d503be7b42971f7eb02c71"
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/storage-revision-2026-09-05/input-manifest.json",
+      "sha256": "7a6d97109157a2cbb0633e1ec88c4c6651d09044d0d2fb4800ffb8dd0a6e3e3d"
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/storage-revision-2026-09-05/starmap_writing.txt",
+      "sha256": "7dd830d8f691c3b2027517396306232a359454b1df194aaefd6a378ec56d5331"
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/storage-revision-2026-09-05/starport_writing.txt",
+      "sha256": "e056fea5a2c30d5370923b1e1f838eb8e810582f0df453b70a1d6fe8d874dd66"
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/storage-revision-2026-09-05/verification.json",
+      "sha256": "8a7a52c178f3ccda51dc465d73c2f67652fe9fac43568f9eebb7097829fe72c1"
+    },
+    {
+      "path": "docs/design/catalog-lifecycle/evidence/starport-docs-mobile-dark.png",
+      "sha256": "04c70c5377e4a5a04703fdb021562f88bfa80a151653d6de726d4bc9a2d8221d"
+    },
+    {
+      "path": "docs/design/catalog-lifecycle/evidence/starport-docs-desktop-light.png",
+      "sha256": "84d14d8ade126fccdede02e641eb2288562c7fd99b75b0fe928f0a678d09df3b"
+    },
+    {
+      "path": "docs/design/catalog-lifecycle/evidence/measurements.json",
+      "sha256": "db48cffac8f83ead0cb974ae0ae0eaaa3ca95d0db56531d0011637b8bb21dec8"
+    },
+    {
+      "path": "docs/design/catalog-lifecycle/evidence/starport-docs-build-320.png",
+      "sha256": "e21c245edc332aae41d33396581f097b5786345df694c1e664349f944db99e93"
+    },
+    {
+      "path": "docs/design/catalog-lifecycle/evidence/starport-docs-desktop-dark.png",
+      "sha256": "52110a5a428f2fad1d085531ddbe88ebf3947a5bdcc544a8927e71411f923c4c"
+    },
+    {
+      "path": "docs/design/catalog-lifecycle/evidence/starport-settings-light.png",
+      "sha256": "82a006ab48bde364914f2b435d36cd44c0f9f02b65908e26b4fba64ca0cc9eb8"
+    },
+    {
+      "path": "docs/design/catalog-lifecycle/evidence/latency-review-2026-09-05/catalog-bench.json",
+      "sha256": "fc4fb67d3c3ee9a0becdfe4f4adc0a50f02769a66237934aa508d702d21275d2"
+    },
+    {
+      "path": "docs/design/catalog-lifecycle/evidence/latency-review-2026-09-05/writing-check.json",
+      "sha256": "446e618856615a54587c586e21af226798d0f02f6b64b6362b57ab51b04838e6"
+    },
+    {
+      "path": "docs/design/catalog-lifecycle/evidence/latency-review-2026-09-05/server-bench-summary.json",
+      "sha256": "0bbfbaa82b733fc190e2967eafa37252955b1a07063c99b45391992f6a29f6ea"
+    },
+    {
+      "path": "docs/design/catalog-lifecycle/evidence/latency-review-2026-09-05/credential_benchmark_test.go.json",
+      "sha256": "297a2d3479284aefe09f4070d849cda786016f1cb515523385f89f23912635d1"
+    },
+    {
+      "path": "docs/design/catalog-lifecycle/evidence/latency-review-2026-09-05/embedded-bench.json",
+      "sha256": "4956ab5271636f668c360b018c0b240a25ae62bae90a7584e97cc91bde86e451"
+    },
+    {
+      "path": "docs/design/catalog-lifecycle/evidence/latency-review-2026-09-05/allocations-top.json",
+      "sha256": "5f941e52f96eb5e56861bd98a5f5ad5f4f16e2d82be417ebe4e5004a6c66ef4f"
+    },
+    {
+      "path": "docs/design/catalog-lifecycle/evidence/latency-review-2026-09-05/catalog.cpu.pprof",
+      "sha256": "e947231958e6060bd9401e882450d95e33eaf71bc9d235fca219c0440185367e"
+    },
+    {
+      "path": "docs/design/catalog-lifecycle/evidence/latency-review-2026-09-05/credential-bench.json",
+      "sha256": "4abb329607399c8634740b7c11c6fd5b15fdd28ded5df58ad0e9dfaaba591d78"
+    },
+    {
+      "path": "docs/design/catalog-lifecycle/evidence/latency-review-2026-09-05/profile-bench.json",
+      "sha256": "edf4058d1dcbc77980407bcfff0a06f94905f98813de3bd08023bf78931bbff2"
+    },
+    {
+      "path": "docs/design/catalog-lifecycle/evidence/latency-review-2026-09-05/manifest.json",
+      "sha256": "7888af23afe7756eefc3913b9289fde3be1f4339e8ae2882b0b7b728701a70fe"
+    },
+    {
+      "path": "docs/design/catalog-lifecycle/evidence/latency-review-2026-09-05/cpu-top.json",
+      "sha256": "4ff6341c2250456b9f4292e8891220222658954beeca77c08580a1f1e654dcb0"
+    },
+    {
+      "path": "docs/design/catalog-lifecycle/evidence/latency-review-2026-09-05/verification.json",
+      "sha256": "0cc1a6add7eda26cf58ba280b85c5e7ddbc4e074130edada7f4f3c6405176b0b"
+    },
+    {
+      "path": "docs/design/catalog-lifecycle/evidence/latency-review-2026-09-05/allocations-cumulative.json",
+      "sha256": "5fe93c2b49720ede60456765af0a1ab008bffbd94476cd0c6743a22c15272ca8"
+    },
+    {
+      "path": "docs/design/catalog-lifecycle/evidence/latency-review-2026-09-05/catalog.mem.pprof",
+      "sha256": "c422a4d173007b898314c0620bfc00c250e65d49f9117941d50113e1c3914a2c"
+    },
+    {
+      "path": "docs/design/catalog-lifecycle/evidence/latency-review-2026-09-05/catalog_benchmark_test.go.json",
+      "sha256": "2517b867be2b3fa6f199510f22b4d9b2aae61d28d7b13f7a187bd1bba9aaa008"
+    },
+    {
+      "path": "docs/design/catalog-lifecycle/evidence/storage-review-2026-09-05/local-tests.jsonl",
+      "sha256": "a2db99728ce615b87e468c9a35917840da27d3148f1e723fc4c90fbf0c107c15"
+    },
+    {
+      "path": "docs/design/catalog-lifecycle/evidence/storage-review-2026-09-05/document-verification.json",
+      "sha256": "e15cac8527312d5689d13c62652d6cda27a6b06f2ac6a6d3352bd17bc75129d9"
+    },
+    {
+      "path": "docs/design/catalog-lifecycle/evidence/storage-review-2026-09-05/writing-check.log",
+      "sha256": "6fb4971eb237b70bc8efba14c04f4cb17acccb74cbddeec318a64390bd251353"
+    },
+    {
+      "path": "docs/design/catalog-lifecycle/evidence/storage-review-2026-09-05/local-tests-summary.json",
+      "sha256": "84a31b064512b4430c5fe6fa28d0e9b4fb10719d6984557fe96f70e0464d1206"
+    },
+    {
+      "path": "docs/design/catalog-lifecycle/STORAGE_REVIEW.md",
+      "sha256": "986bdd31ccdf6ce58da585f26e8b5cf244e521aa0309c5cffe382b9ed6f8fa3f"
+    },
+    {
+      "path": "docs/design/catalog-lifecycle/LATENCY_REVIEW.md",
+      "sha256": "7f2fb00cdb4a6c7df235346d4a88211651a8b656f7b0f23b5b7f3e722ba36ab2"
+    }
+  ],
+  "heads": {
+    "starmap": "4780dfea9f7e002ea6eaaa82aa8f52ed0d4cc225",
+    "starport": "042eb97851496ecdd1ef20bfa44fe3d84b86b2d8"
+  }
+}

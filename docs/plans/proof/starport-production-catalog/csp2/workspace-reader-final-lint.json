@@ -1,0 +1,12 @@
+{
+  "command": [
+    "golangci-lint",
+    "run"
+  ],
+  "exit_code": 0,
+  "counts": {},
+  "failures": [],
+  "skips": [],
+  "stdout": "0 issues.\n",
+  "stderr": ""
+}

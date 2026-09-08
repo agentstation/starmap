@@ -1,0 +1,424 @@
+{
+  "cases": [
+    {
+      "id": "A01",
+      "condition": "CSP-V01",
+      "status": "UNVERIFIED",
+      "required_subcases": 5
+    },
+    {
+      "id": "A02",
+      "condition": "CSP-V02",
+      "status": "UNVERIFIED",
+      "required_subcases": 3
+    },
+    {
+      "id": "A03",
+      "condition": "CSP-V03",
+      "status": "UNVERIFIED",
+      "required_subcases": 16
+    },
+    {
+      "id": "A04",
+      "condition": "CSP-V04",
+      "status": "UNVERIFIED",
+      "required_subcases": 9
+    },
+    {
+      "id": "A05",
+      "condition": "CSP-V05",
+      "status": "UNVERIFIED",
+      "required_subcases": 6
+    },
+    {
+      "id": "A06",
+      "condition": "CSP-V06",
+      "status": "UNVERIFIED",
+      "required_subcases": 4
+    },
+    {
+      "id": "A07",
+      "condition": "CSP-V07",
+      "status": "UNVERIFIED",
+      "required_subcases": 4
+    },
+    {
+      "id": "A08",
+      "condition": "CSP-V08",
+      "status": "UNVERIFIED",
+      "required_subcases": 5
+    },
+    {
+      "id": "A09",
+      "condition": "CSP-V09",
+      "status": "UNVERIFIED",
+      "required_subcases": 4
+    },
+    {
+      "id": "A10",
+      "condition": "CSP-V10",
+      "status": "UNVERIFIED",
+      "required_subcases": 4
+    },
+    {
+      "id": "A11",
+      "condition": "CSP-V11",
+      "status": "UNVERIFIED",
+      "required_subcases": 7
+    },
+    {
+      "id": "A12",
+      "condition": "CSP-V12",
+      "status": "UNVERIFIED",
+      "required_subcases": 5
+    },
+    {
+      "id": "A13",
+      "condition": "CSP-V13",
+      "status": "UNVERIFIED",
+      "required_subcases": 3
+    },
+    {
+      "id": "A14",
+      "condition": "CSP-V14",
+      "status": "UNVERIFIED",
+      "required_subcases": 4
+    },
+    {
+      "id": "A15",
+      "condition": "CSP-V15",
+      "status": "UNVERIFIED",
+      "required_subcases": 8
+    },
+    {
+      "id": "A16",
+      "condition": "CSP-V16",
+      "status": "UNVERIFIED",
+      "required_subcases": 5
+    },
+    {
+      "id": "A17",
+      "condition": "CSP-V17",
+      "status": "UNVERIFIED",
+      "required_subcases": 5
+    },
+    {
+      "id": "A18",
+      "condition": "CSP-V18",
+      "status": "UNVERIFIED",
+      "required_subcases": 5
+    },
+    {
+      "id": "A19",
+      "condition": "CSP-V19",
+      "status": "UNVERIFIED",
+      "required_subcases": 4
+    },
+    {
+      "id": "A20",
+      "condition": "CSP-V20",
+      "status": "UNVERIFIED",
+      "required_subcases": 6
+    },
+    {
+      "id": "A21",
+      "condition": "CSP-V21",
+      "status": "UNVERIFIED",
+      "required_subcases": 5
+    },
+    {
+      "id": "A22",
+      "condition": "CSP-V22",
+      "status": "UNVERIFIED",
+      "required_subcases": 4
+    },
+    {
+      "id": "A23",
+      "condition": "CSP-V23",
+      "status": "UNVERIFIED",
+      "required_subcases": 4
+    },
+    {
+      "id": "A24",
+      "condition": "CSP-V24",
+      "status": "UNVERIFIED",
+      "required_subcases": 10
+    },
+    {
+      "id": "A25",
+      "condition": "CSP-V25",
+      "status": "UNVERIFIED",
+      "required_subcases": 6
+    },
+    {
+      "id": "A26",
+      "condition": "CSP-V26",
+      "status": "UNVERIFIED",
+      "required_subcases": 4
+    },
+    {
+      "id": "A27",
+      "condition": "CSP-V27",
+      "status": "UNVERIFIED",
+      "required_subcases": 6
+    },
+    {
+      "id": "A28",
+      "condition": "CSP-V28",
+      "status": "UNVERIFIED",
+      "required_subcases": 4
+    },
+    {
+      "id": "A29",
+      "condition": "CSP-V29",
+      "status": "UNVERIFIED",
+      "required_subcases": 5
+    },
+    {
+      "id": "A30",
+      "condition": "CSP-V30",
+      "status": "UNVERIFIED",
+      "required_subcases": 6
+    },
+    {
+      "id": "A31",
+      "condition": "CSP-V31",
+      "status": "UNVERIFIED",
+      "required_subcases": 9
+    },
+    {
+      "id": "A32",
+      "condition": "CSP-V32",
+      "status": "UNVERIFIED",
+      "required_subcases": 8
+    },
+    {
+      "id": "A33",
+      "condition": "CSP-V33",
+      "status": "UNVERIFIED",
+      "required_subcases": 9
+    },
+    {
+      "id": "A34",
+      "condition": "CSP-V34",
+      "status": "UNVERIFIED",
+      "required_subcases": 6
+    },
+    {
+      "id": "A35",
+      "condition": "CSP-V35",
+      "status": "UNVERIFIED",
+      "required_subcases": 4
+    },
+    {
+      "id": "A36",
+      "condition": "CSP-V36",
+      "status": "UNVERIFIED",
+      "required_subcases": 2
+    },
+    {
+      "id": "A37",
+      "condition": "CSP-V37",
+      "status": "UNVERIFIED",
+      "required_subcases": 5
+    },
+    {
+      "id": "A38",
+      "condition": "CSP-V38",
+      "status": "UNVERIFIED",
+      "required_subcases": 4
+    },
+    {
+      "id": "A39",
+      "condition": "CSP-V39",
+      "status": "UNVERIFIED",
+      "required_subcases": 3
+    },
+    {
+      "id": "A40",
+      "condition": "CSP-V40",
+      "status": "UNVERIFIED",
+      "required_subcases": 8
+    },
+    {
+      "id": "A41",
+      "condition": "CSP-V41",
+      "status": "UNVERIFIED",
+      "required_subcases": 10
+    },
+    {
+      "id": "A42",
+      "condition": "CSP-V42",
+      "status": "UNVERIFIED",
+      "required_subcases": 9
+    },
+    {
+      "id": "A43",
+      "condition": "CSP-V43",
+      "status": "UNVERIFIED",
+      "required_subcases": 7
+    },
+    {
+      "id": "A44",
+      "condition": "CSP-V44",
+      "status": "UNVERIFIED",
+      "required_subcases": 8
+    },
+    {
+      "id": "A45",
+      "condition": "CSP-V45",
+      "status": "UNVERIFIED",
+      "required_subcases": 9
+    },
+    {
+      "id": "A46",
+      "condition": "CSP-V46",
+      "status": "UNVERIFIED",
+      "required_subcases": 10
+    },
+    {
+      "id": "A47",
+      "condition": "CSP-V47",
+      "status": "UNVERIFIED",
+      "required_subcases": 22
+    },
+    {
+      "id": "A48",
+      "condition": "CSP-V48",
+      "status": "UNVERIFIED",
+      "required_subcases": 8
+    },
+    {
+      "id": "A49",
+      "condition": "CSP-V49",
+      "status": "UNVERIFIED",
+      "required_subcases": 7
+    },
+    {
+      "id": "A50",
+      "condition": "CSP-V50",
+      "status": "UNVERIFIED",
+      "required_subcases": 10
+    }
+  ],
+  "subcases": {
+    "A44.canonical_alias_lookup": {
+      "status": "PASS",
+      "checks": [
+        {
+          "status": "PASS",
+          "reason": "The named behavior test passed in this invocation.",
+          "command": [
+            "go",
+            "test",
+            "-race",
+            "-count=1",
+            "-timeout",
+            "5m",
+            "-json",
+            "-run",
+            "^TestOfferingLookupPreservesCanonicalAliasesAndErrors$",
+            "./pkg/catalogs"
+          ],
+          "cwd": "/Users/jack/src/github.com/agentstation/starmap-catalog-requirements",
+          "exit_code": 0,
+          "stdout": "{\"Time\":\"2026-09-07T11:16:40.885184-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs\"}\n{\"Time\":\"2026-09-07T11:16:41.122898-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs\",\"Test\":\"TestOfferingLookupPreservesCanonicalAliasesAndErrors\"}\n{\"Time\":\"2026-09-07T11:16:41.122957-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs\",\"Test\":\"TestOfferingLookupPreservesCanonicalAliasesAndErrors\",\"Output\":\"=== RUN   TestOfferingLookupPreservesCanonicalAliasesAndErrors\\n\"}\n{\"Time\":\"2026-09-07T11:16:41.12407-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs\",\"Test\":\"TestOfferingLookupPreservesCanonicalAliasesAndErrors/unknown/model-00000\"}\n{\"Time\":\"2026-09-07T11:16:41.124092-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs\",\"Test\":\"TestOfferingLookupPreservesCanonicalAliasesAndErrors/unknown/model-00000\",\"Output\":\"=== RUN   TestOfferingLookupPreservesCanonicalAliasesAndErrors/unknown/model-00000\\n\"}\n{\"Time\":\"2026-09-07T11:16:41.124124-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs\",\"Test\":\"TestOfferingLookupPreservesCanonicalAliasesAndErrors/unknown/model-00000\",\"Output\":\"--- PASS: TestOfferingLookupPreservesCanonicalAliasesAndErrors/unknown/model-00000 (0.00s)\\n\"}\n{\"Time\":\"2026-09-07T11:16:41.124128-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs\",\"Test\":\"TestOfferingLookupPreservesCanonicalAliasesAndErrors/unknown/model-00000\",\"Elapsed\":0}\n{\"Time\":\"2026-09-07T11:16:41.124134-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs\",\"Test\":\"TestOfferingLookupPreservesCanonicalAliasesAndErrors/provider/opaque/missing@001\"}\n{\"Time\":\"2026-09-07T11:16:41.124137-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs\",\"Test\":\"TestOfferingLookupPreservesCanonicalAliasesAndErrors/provider/opaque/missing@001\",\"Output\":\"=== RUN   TestOfferingLookupPreservesCanonicalAliasesAndErrors/provider/opaque/missing@001\\n\"}\n{\"Time\":\"2026-09-07T11:16:41.124187-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs\",\"Test\":\"TestOfferingLookupPreservesCanonicalAliasesAndErrors/provider/opaque/missing@001\",\"Output\":\"--- PASS: TestOfferingLookupPreservesCanonicalAliasesAndErrors/provider/opaque/missing@001 (0.00s)\\n\"}\n{\"Time\":\"2026-09-07T11:16:41.124192-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs\",\"Test\":\"TestOfferingLookupPreservesCanonicalAliasesAndErrors/provider/opaque/missing@001\",\"Elapsed\":0}\n{\"Time\":\"2026-09-07T11:16:41.124197-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs\",\"Test\":\"TestOfferingLookupPreservesCanonicalAliasesAndErrors/alias/opaque/missing@001\"}\n{\"Time\":\"2026-09-07T11:16:41.124198-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs\",\"Test\":\"TestOfferingLookupPreservesCanonicalAliasesAndErrors/alias/opaque/missing@001\",\"Output\":\"=== RUN   TestOfferingLookupPreservesCanonicalAliasesAndErrors/alias/opaque/missing@001\\n\"}\n{\"Time\":\"2026-09-07T11:16:41.124228-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs\",\"Test\":\"TestOfferingLookupPreservesCanonicalAliasesAndErrors/alias/opaque/missing@001\",\"Output\":\"--- PASS: TestOfferingLookupPreservesCanonicalAliasesAndErrors/alias/opaque/missing@001 (0.00s)\\n\"}\n{\"Time\":\"2026-09-07T11:16:41.124231-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs\",\"Test\":\"TestOfferingLookupPreservesCanonicalAliasesAndErrors/alias/opaque/missing@001\",\"Elapsed\":0}\n{\"Time\":\"2026-09-07T11:16:41.124259-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs\",\"Test\":\"TestOfferingLookupPreservesCanonicalAliasesAndErrors/empty/missing\"}\n{\"Time\":\"2026-09-07T11:16:41.124261-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs\",\"Test\":\"TestOfferingLookupPreservesCanonicalAliasesAndErrors/empty/missing\",\"Output\":\"=== RUN   TestOfferingLookupPreservesCanonicalAliasesAndErrors/empty/missing\\n\"}\n{\"Time\":\"2026-09-07T11:16:41.124268-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs\",\"Test\":\"TestOfferingLookupPreservesCanonicalAliasesAndErrors/empty/missing\",\"Output\":\"--- PASS: TestOfferingLookupPreservesCanonicalAliasesAndErrors/empty/missing (0.00s)\\n\"}\n{\"Time\":\"2026-09-07T11:16:41.124288-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs\",\"Test\":\"TestOfferingLookupPreservesCanonicalAliasesAndErrors/empty/missing\",\"Elapsed\":0}\n{\"Time\":\"2026-09-07T11:16:41.124293-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs\",\"Test\":\"TestOfferingLookupPreservesCanonicalAliasesAndErrors/empty-alias/missing\"}\n{\"Time\":\"2026-09-07T11:16:41.124294-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs\",\"Test\":\"TestOfferingLookupPreservesCanonicalAliasesAndErrors/empty-alias/missing\",\"Output\":\"=== RUN   TestOfferingLookupPreservesCanonicalAliasesAndErrors/empty-alias/missing\\n\"}\n{\"Time\":\"2026-09-07T11:16:41.124318-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs\",\"Test\":\"TestOfferingLookupPreservesCanonicalAliasesAndErrors/empty-alias/missing\",\"Output\":\"--- PASS: TestOfferingLookupPreservesCanonicalAliasesAndErrors/empty-alias/missing (0.00s)\\n\"}\n{\"Time\":\"2026-09-07T11:16:41.124321-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs\",\"Test\":\"TestOfferingLookupPreservesCanonicalAliasesAndErrors/empty-alias/missing\",\"Elapsed\":0}\n{\"Time\":\"2026-09-07T11:16:41.12442-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs\",\"Test\":\"TestOfferingLookupPreservesCanonicalAliasesAndErrors\",\"Output\":\"--- PASS: TestOfferingLookupPreservesCanonicalAliasesAndErrors (0.00s)\\n\"}\n{\"Time\":\"2026-09-07T11:16:41.124425-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs\",\"Test\":\"TestOfferingLookupPreservesCanonicalAliasesAndErrors\",\"Elapsed\":0}\n{\"Time\":\"2026-09-07T11:16:41.124669-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs\",\"Output\":\"PASS\\n\"}\n{\"Time\":\"2026-09-07T11:16:42.125512-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs\",\"Output\":\"ok  \\tgithub.com/agentstation/starmap/pkg/catalogs\\t1.241s\\n\"}\n{\"Time\":\"2026-09-07T11:16:42.125535-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs\",\"Elapsed\":1.242}\n",
+          "stderr": ""
+        },
+        {
+          "status": "PASS",
+          "reason": "The named behavior test passed in this invocation.",
+          "command": [
+            "go",
+            "test",
+            "-race",
+            "-count=1",
+            "-timeout",
+            "5m",
+            "-json",
+            "-run",
+            "^TestOfferingLookupAllocationsDoNotScaleWithProviderModels$",
+            "./pkg/catalogs"
+          ],
+          "cwd": "/Users/jack/src/github.com/agentstation/starmap-catalog-requirements",
+          "exit_code": 0,
+          "stdout": "{\"Time\":\"2026-09-07T11:16:42.606692-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs\"}\n{\"Time\":\"2026-09-07T11:16:42.85524-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs\",\"Test\":\"TestOfferingLookupAllocationsDoNotScaleWithProviderModels\"}\n{\"Time\":\"2026-09-07T11:16:42.855356-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs\",\"Test\":\"TestOfferingLookupAllocationsDoNotScaleWithProviderModels\",\"Output\":\"=== RUN   TestOfferingLookupAllocationsDoNotScaleWithProviderModels\\n\"}\n{\"Time\":\"2026-09-07T11:16:42.924514-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs\",\"Test\":\"TestOfferingLookupAllocationsDoNotScaleWithProviderModels/provider\"}\n{\"Time\":\"2026-09-07T11:16:42.924531-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs\",\"Test\":\"TestOfferingLookupAllocationsDoNotScaleWithProviderModels/provider\",\"Output\":\"=== RUN   TestOfferingLookupAllocationsDoNotScaleWithProviderModels/provider\\n\"}\n{\"Time\":\"2026-09-07T11:16:42.925044-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs\",\"Test\":\"TestOfferingLookupAllocationsDoNotScaleWithProviderModels/provider\",\"Output\":\"    offering_lookup_test.go:52: allocations: one model=11, one thousand models=11\\n\"}\n{\"Time\":\"2026-09-07T11:16:42.925083-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs\",\"Test\":\"TestOfferingLookupAllocationsDoNotScaleWithProviderModels/provider\",\"Output\":\"--- PASS: TestOfferingLookupAllocationsDoNotScaleWithProviderModels/provider (0.00s)\\n\"}\n{\"Time\":\"2026-09-07T11:16:42.925087-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs\",\"Test\":\"TestOfferingLookupAllocationsDoNotScaleWithProviderModels/provider\",\"Elapsed\":0}\n{\"Time\":\"2026-09-07T11:16:42.925104-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs\",\"Test\":\"TestOfferingLookupAllocationsDoNotScaleWithProviderModels/alias\"}\n{\"Time\":\"2026-09-07T11:16:42.925105-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs\",\"Test\":\"TestOfferingLookupAllocationsDoNotScaleWithProviderModels/alias\",\"Output\":\"=== RUN   TestOfferingLookupAllocationsDoNotScaleWithProviderModels/alias\\n\"}\n{\"Time\":\"2026-09-07T11:16:42.925889-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs\",\"Test\":\"TestOfferingLookupAllocationsDoNotScaleWithProviderModels/alias\",\"Output\":\"    offering_lookup_test.go:52: allocations: one model=11, one thousand models=11\\n\"}\n{\"Time\":\"2026-09-07T11:16:42.925898-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs\",\"Test\":\"TestOfferingLookupAllocationsDoNotScaleWithProviderModels/alias\",\"Output\":\"--- PASS: TestOfferingLookupAllocationsDoNotScaleWithProviderModels/alias (0.00s)\\n\"}\n{\"Time\":\"2026-09-07T11:16:42.9259-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs\",\"Test\":\"TestOfferingLookupAllocationsDoNotScaleWithProviderModels/alias\",\"Elapsed\":0}\n{\"Time\":\"2026-09-07T11:16:42.925903-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs\",\"Test\":\"TestOfferingLookupAllocationsDoNotScaleWithProviderModels\",\"Output\":\"--- PASS: TestOfferingLookupAllocationsDoNotScaleWithProviderModels (0.07s)\\n\"}\n{\"Time\":\"2026-09-07T11:16:42.925904-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs\",\"Test\":\"TestOfferingLookupAllocationsDoNotScaleWithProviderModels\",\"Elapsed\":0.07}\n{\"Time\":\"2026-09-07T11:16:42.926056-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs\",\"Output\":\"PASS\\n\"}\n{\"Time\":\"2026-09-07T11:16:43.934366-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs\",\"Output\":\"ok  \\tgithub.com/agentstation/starmap/pkg/catalogs\\t1.328s\\n\"}\n{\"Time\":\"2026-09-07T11:16:43.93444-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs\",\"Elapsed\":1.329}\n",
+          "stderr": ""
+        },
+        {
+          "status": "PASS",
+          "reason": "The named behavior test passed in this invocation.",
+          "command": [
+            "go",
+            "test",
+            "-race",
+            "-count=1",
+            "-timeout",
+            "5m",
+            "-json",
+            "-run",
+            "^TestBuildRejectsAmbiguousAliases$",
+            "./pkg/catalogs"
+          ],
+          "cwd": "/Users/jack/src/github.com/agentstation/starmap-catalog-requirements",
+          "exit_code": 0,
+          "stdout": "{\"Time\":\"2026-09-07T11:16:44.351806-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs\"}\n{\"Time\":\"2026-09-07T11:16:44.59371-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs\",\"Test\":\"TestBuildRejectsAmbiguousAliases\"}\n{\"Time\":\"2026-09-07T11:16:44.593795-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs\",\"Test\":\"TestBuildRejectsAmbiguousAliases\",\"Output\":\"=== RUN   TestBuildRejectsAmbiguousAliases\\n\"}\n{\"Time\":\"2026-09-07T11:16:44.59382-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs\",\"Test\":\"TestBuildRejectsAmbiguousAliases/provider_alias_collides_with_canonical_ID\"}\n{\"Time\":\"2026-09-07T11:16:44.593826-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs\",\"Test\":\"TestBuildRejectsAmbiguousAliases/provider_alias_collides_with_canonical_ID\",\"Output\":\"=== RUN   TestBuildRejectsAmbiguousAliases/provider_alias_collides_with_canonical_ID\\n\"}\n{\"Time\":\"2026-09-07T11:16:44.594069-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs\",\"Test\":\"TestBuildRejectsAmbiguousAliases/provider_alias_collides_with_canonical_ID\",\"Output\":\"--- PASS: TestBuildRejectsAmbiguousAliases/provider_alias_collides_with_canonical_ID (0.00s)\\n\"}\n{\"Time\":\"2026-09-07T11:16:44.594104-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs\",\"Test\":\"TestBuildRejectsAmbiguousAliases/provider_alias_collides_with_canonical_ID\",\"Elapsed\":0}\n{\"Time\":\"2026-09-07T11:16:44.594133-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs\",\"Test\":\"TestBuildRejectsAmbiguousAliases/provider_alias_has_multiple_owners\"}\n{\"Time\":\"2026-09-07T11:16:44.59415-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs\",\"Test\":\"TestBuildRejectsAmbiguousAliases/provider_alias_has_multiple_owners\",\"Output\":\"=== RUN   TestBuildRejectsAmbiguousAliases/provider_alias_has_multiple_owners\\n\"}\n{\"Time\":\"2026-09-07T11:16:44.594229-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs\",\"Test\":\"TestBuildRejectsAmbiguousAliases/provider_alias_has_multiple_owners\",\"Output\":\"--- PASS: TestBuildRejectsAmbiguousAliases/provider_alias_has_multiple_owners (0.00s)\\n\"}\n{\"Time\":\"2026-09-07T11:16:44.594237-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs\",\"Test\":\"TestBuildRejectsAmbiguousAliases/provider_alias_has_multiple_owners\",\"Elapsed\":0}\n{\"Time\":\"2026-09-07T11:16:44.594253-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs\",\"Test\":\"TestBuildRejectsAmbiguousAliases/author_alias_collides_with_canonical_ID\"}\n{\"Time\":\"2026-09-07T11:16:44.594255-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs\",\"Test\":\"TestBuildRejectsAmbiguousAliases/author_alias_collides_with_canonical_ID\",\"Output\":\"=== RUN   TestBuildRejectsAmbiguousAliases/author_alias_collides_with_canonical_ID\\n\"}\n{\"Time\":\"2026-09-07T11:16:44.594324-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs\",\"Test\":\"TestBuildRejectsAmbiguousAliases/author_alias_collides_with_canonical_ID\",\"Output\":\"--- PASS: TestBuildRejectsAmbiguousAliases/author_alias_collides_with_canonical_ID (0.00s)\\n\"}\n{\"Time\":\"2026-09-07T11:16:44.594336-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs\",\"Test\":\"TestBuildRejectsAmbiguousAliases/author_alias_collides_with_canonical_ID\",\"Elapsed\":0}\n{\"Time\":\"2026-09-07T11:16:44.594355-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs\",\"Test\":\"TestBuildRejectsAmbiguousAliases/author_alias_has_multiple_owners\"}\n{\"Time\":\"2026-09-07T11:16:44.594358-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs\",\"Test\":\"TestBuildRejectsAmbiguousAliases/author_alias_has_multiple_owners\",\"Output\":\"=== RUN   TestBuildRejectsAmbiguousAliases/author_alias_has_multiple_owners\\n\"}\n{\"Time\":\"2026-09-07T11:16:44.594423-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs\",\"Test\":\"TestBuildRejectsAmbiguousAliases/author_alias_has_multiple_owners\",\"Output\":\"--- PASS: TestBuildRejectsAmbiguousAliases/author_alias_has_multiple_owners (0.00s)\\n\"}\n{\"Time\":\"2026-09-07T11:16:44.594428-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs\",\"Test\":\"TestBuildRejectsAmbiguousAliases/author_alias_has_multiple_owners\",\"Elapsed\":0}\n{\"Time\":\"2026-09-07T11:16:44.594493-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs\",\"Test\":\"TestBuildRejectsAmbiguousAliases\",\"Output\":\"--- PASS: TestBuildRejectsAmbiguousAliases (0.00s)\\n\"}\n{\"Time\":\"2026-09-07T11:16:44.594502-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs\",\"Test\":\"TestBuildRejectsAmbiguousAliases\",\"Elapsed\":0}\n{\"Time\":\"2026-09-07T11:16:44.594587-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs\",\"Output\":\"PASS\\n\"}\n{\"Time\":\"2026-09-07T11:16:45.600243-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs\",\"Output\":\"ok  \\tgithub.com/agentstation/starmap/pkg/catalogs\\t1.249s\\n\"}\n{\"Time\":\"2026-09-07T11:16:45.600287-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs\",\"Elapsed\":1.249}\n",
+          "stderr": ""
+        }
+      ]
+    },
+    "A44.caller_owned_values": {
+      "status": "PASS",
+      "checks": [
+        {
+          "status": "PASS",
+          "reason": "The named behavior test passed in this invocation.",
+          "command": [
+            "go",
+            "test",
+            "-race",
+            "-count=1",
+            "-timeout",
+            "5m",
+            "-json",
+            "-run",
+            "^TestOfferingLookupRetainsCallerOwnershipConcurrently$",
+            "./pkg/catalogs"
+          ],
+          "cwd": "/Users/jack/src/github.com/agentstation/starmap-catalog-requirements",
+          "exit_code": 0,
+          "stdout": "{\"Time\":\"2026-09-07T11:16:46.023571-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs\"}\n{\"Time\":\"2026-09-07T11:16:46.265569-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs\",\"Test\":\"TestOfferingLookupRetainsCallerOwnershipConcurrently\"}\n{\"Time\":\"2026-09-07T11:16:46.265629-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs\",\"Test\":\"TestOfferingLookupRetainsCallerOwnershipConcurrently\",\"Output\":\"=== RUN   TestOfferingLookupRetainsCallerOwnershipConcurrently\\n\"}\n{\"Time\":\"2026-09-07T11:16:46.273224-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs\",\"Test\":\"TestOfferingLookupRetainsCallerOwnershipConcurrently\",\"Output\":\"--- PASS: TestOfferingLookupRetainsCallerOwnershipConcurrently (0.01s)\\n\"}\n{\"Time\":\"2026-09-07T11:16:46.273241-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs\",\"Test\":\"TestOfferingLookupRetainsCallerOwnershipConcurrently\",\"Elapsed\":0.01}\n{\"Time\":\"2026-09-07T11:16:46.273361-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs\",\"Output\":\"PASS\\n\"}\n{\"Time\":\"2026-09-07T11:16:47.280237-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs\",\"Output\":\"ok  \\tgithub.com/agentstation/starmap/pkg/catalogs\\t1.257s\\n\"}\n{\"Time\":\"2026-09-07T11:16:47.280278-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs\",\"Elapsed\":1.258}\n",
+          "stderr": ""
+        },
+        {
+          "status": "PASS",
+          "reason": "The named behavior test passed in this invocation.",
+          "command": [
+            "go",
+            "test",
+            "-race",
+            "-count=1",
+            "-timeout",
+            "5m",
+            "-json",
+            "-run",
+            "^TestProviderOfferingsPreserveProviderSpecificFacts$",
+            "./pkg/catalogs"
+          ],
+          "cwd": "/Users/jack/src/github.com/agentstation/starmap-catalog-requirements",
+          "exit_code": 0,
+          "stdout": "{\"Time\":\"2026-09-07T11:16:47.671621-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs\"}\n{\"Time\":\"2026-09-07T11:16:47.940604-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs\",\"Test\":\"TestProviderOfferingsPreserveProviderSpecificFacts\"}\n{\"Time\":\"2026-09-07T11:16:47.940681-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs\",\"Test\":\"TestProviderOfferingsPreserveProviderSpecificFacts\",\"Output\":\"=== RUN   TestProviderOfferingsPreserveProviderSpecificFacts\\n\"}\n{\"Time\":\"2026-09-07T11:16:47.942589-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs\",\"Test\":\"TestProviderOfferingsPreserveProviderSpecificFacts\",\"Output\":\"--- PASS: TestProviderOfferingsPreserveProviderSpecificFacts (0.00s)\\n\"}\n{\"Time\":\"2026-09-07T11:16:47.942623-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs\",\"Test\":\"TestProviderOfferingsPreserveProviderSpecificFacts\",\"Elapsed\":0}\n{\"Time\":\"2026-09-07T11:16:47.942724-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs\",\"Output\":\"PASS\\n\"}\n{\"Time\":\"2026-09-07T11:16:48.951385-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs\",\"Output\":\"ok  \\tgithub.com/agentstation/starmap/pkg/catalogs\\t1.280s\\n\"}\n{\"Time\":\"2026-09-07T11:16:48.951525-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs\",\"Elapsed\":1.2810000000000001}\n",
+          "stderr": ""
+        }
+      ]
+    }
+  },
+  "selected_subcases": 2,
+  "summary": "Summary: 0 passed, 50 failed",
+  "unverified_cases": 50,
+  "gate_status": "PASS",
+  "qualification": "component checks only",
+  "roster_sha256": "39a4ce039b8ddcedf9458b47d796c0d6d1af0d64e2935070dbde29e9fee6613d",
+  "registry_sha256": "7bc9cea89ba099897fab18a423da4a3cac9af4d65d66d84eab2ac7c946100580",
+  "backend_scope": "primary"
+}

@@ -1,0 +1,15 @@
+{
+  "command": [
+    "/Users/jack/.agents/skills/technical-writing/scripts/technical-writing",
+    "lint",
+    "docs/CLI.md",
+    "docs/design/catalog-lifecycle/ENGINEERING_SPEC.md",
+    "docs/design/catalog-lifecycle/REPOSITORY_FINDINGS.md",
+    "docs/plans/proof/starport-production-catalog/csp2.md",
+    "--format",
+    "json"
+  ],
+  "exit_code": 0,
+  "stdout": "{\n  \"config_sources\": [\n    \"/Users/jack/.config/agentstation/technical-writing.toml\",\n    \"/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/.agents/technical-writing.toml\"\n  ],\n  \"documents\": [\n    {\n      \"diagnostics\": [],\n      \"passed\": true,\n      \"path\": \"/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/docs/CLI.md\",\n      \"words\": 2277\n    },\n    {\n      \"diagnostics\": [],\n      \"passed\": true,\n      \"path\": \"/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/docs/design/catalog-lifecycle/ENGINEERING_SPEC.md\",\n      \"words\": 19091\n    },\n    {\n      \"diagnostics\": [],\n      \"passed\": true,\n      \"path\": \"/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/docs/design/catalog-lifecycle/REPOSITORY_FINDINGS.md\",\n      \"words\": 5382\n    },\n    {\n      \"diagnostics\": [],\n      \"passed\": true,\n      \"path\": \"/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/docs/plans/proof/starport-production-catalog/csp2.md\",\n      \"words\": 4130\n    }\n  ],\n  \"mode\": \"strict\",\n  \"passed\": true,\n  \"summary\": {\n    \"diagnostics\": 0,\n    \"errors\": 0,\n    \"files\": 4,\n    \"max_warnings_per_100_words\": 0.0,\n    \"warning_rate_per_100_words\": 0.0,\n    \"warnings\": 0\n  }\n}\n",
+  "stderr": ""
+}

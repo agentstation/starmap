@@ -1,0 +1,17 @@
+{
+  "command": [
+    "go",
+    "test",
+    "-race",
+    "-count=1",
+    "-timeout",
+    "1m",
+    "-json",
+    "./runtime",
+    "-run",
+    "^TestStageDirectoryMigrationDoesNotTruncatePartialLinkTarget$"
+  ],
+  "exit_code": 1,
+  "stdout": "{\"Time\":\"2026-09-05T21:34:06.295617-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starmap/runtime\"}\n{\"Time\":\"2026-09-05T21:34:06.718984-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Test\":\"TestStageDirectoryMigrationDoesNotTruncatePartialLinkTarget\"}\n{\"Time\":\"2026-09-05T21:34:06.719058-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Test\":\"TestStageDirectoryMigrationDoesNotTruncatePartialLinkTarget\",\"Output\":\"=== RUN   TestStageDirectoryMigrationDoesNotTruncatePartialLinkTarget\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-05T21:34:06.719117-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Test\":\"TestStageDirectoryMigrationDoesNotTruncatePartialLinkTarget\",\"Output\":\"=== PAUSE TestStageDirectoryMigrationDoesNotTruncatePartialLinkTarget\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-05T21:34:06.719119-05:00\",\"Action\":\"pause\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Test\":\"TestStageDirectoryMigrationDoesNotTruncatePartialLinkTarget\"}\n{\"Time\":\"2026-09-05T21:34:06.719121-05:00\",\"Action\":\"cont\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Test\":\"TestStageDirectoryMigrationDoesNotTruncatePartialLinkTarget\"}\n{\"Time\":\"2026-09-05T21:34:06.719125-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Test\":\"TestStageDirectoryMigrationDoesNotTruncatePartialLinkTarget\",\"Output\":\"=== CONT  TestStageDirectoryMigrationDoesNotTruncatePartialLinkTarget\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-05T21:34:06.802247-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Test\":\"TestStageDirectoryMigrationDoesNotTruncatePartialLinkTarget\",\"Output\":\"    migration_stage_test.go:252: scratch-file recovery changed its external hard-link target\\n\",\"OutputType\":\"error\"}\n{\"Time\":\"2026-09-05T21:34:06.803849-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Test\":\"TestStageDirectoryMigrationDoesNotTruncatePartialLinkTarget\",\"Output\":\"--- FAIL: TestStageDirectoryMigrationDoesNotTruncatePartialLinkTarget (0.08s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-05T21:34:06.803876-05:00\",\"Action\":\"fail\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Test\":\"TestStageDirectoryMigrationDoesNotTruncatePartialLinkTarget\",\"Elapsed\":0.08}\n{\"Time\":\"2026-09-05T21:34:06.804133-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Output\":\"FAIL\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-05T21:34:06.804706-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Output\":\"FAIL\\tgithub.com/agentstation/starmap/runtime\\t0.509s\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-05T21:34:06.804723-05:00\",\"Action\":\"fail\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Elapsed\":0.509}\n",
+  "stderr": ""
+}

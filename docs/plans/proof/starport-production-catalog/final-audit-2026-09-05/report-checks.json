@@ -1,0 +1,43 @@
+{
+  "report_links": [
+    "../coherence-audit-2026-09-05/AUDIT.md",
+    "input-manifest.json",
+    "../coherence-audit-2026-09-05/AUDIT.md#ca01-candidate-qualification-omits-checks-that-need-no-publication",
+    "../coherence-audit-2026-09-05/AUDIT.md#ca02-failover-restrictions-lack-an-enforceable-history-barrier",
+    "../coherence-audit-2026-09-05/AUDIT.md#ca03-reservation-coverage-does-not-enumerate-all-paid-paths",
+    "../coherence-audit-2026-09-05/AUDIT.md#ca04-budget-time-and-valuation-rules-remain-unspecified",
+    "../coherence-audit-2026-09-05/AUDIT.md#ca05-recovery-can-start-before-the-reservation-contract-exists",
+    "../coherence-audit-2026-09-05/AUDIT.md#ca06-starmap-configuration-reports-lack-explicit-positive-coverage",
+    "../coherence-audit-2026-09-05/AUDIT.md#ca07-the-latency-acceptance-rows-do-not-render-as-a-table",
+    "structural-check.json",
+    "rechecks.json",
+    "markdown-check.json",
+    "verification.json"
+  ],
+  "local_links_passed": 13,
+  "frozen_inputs_unchanged": 54,
+  "heads_unchanged": true,
+  "git_checks": [
+    {
+      "cwd": "/Users/jack/src/github.com/agentstation/starmap-catalog-requirements",
+      "command": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "exit_code": 0,
+      "output": ""
+    },
+    {
+      "cwd": "/Users/jack/src/github.com/agentstation/starport-catalog-lifecycle",
+      "command": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "exit_code": 0,
+      "output": ""
+    }
+  ],
+  "new_report_no_trailing_whitespace": true
+}

@@ -1,0 +1,51 @@
+[
+  {
+    "command": [
+      "/Users/jack/.agents/skills/technical-writing/scripts/technical-writing",
+      "lint",
+      "docs/CLI.md",
+      "docs/design/catalog-lifecycle/ENGINEERING_SPEC.md",
+      "docs/design/catalog-lifecycle/REPOSITORY_FINDINGS.md",
+      "docs/plans/proof/starport-production-catalog/csp2.md",
+      "docs/plans/starport-production-catalog-plan.html",
+      "pkg/productpaths/manifest.go",
+      "--format",
+      "json"
+    ],
+    "exit_code": 1,
+    "stdout": "{\n  \"config_sources\": [\n    \"/Users/jack/.config/agentstation/technical-writing.toml\",\n    \"/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/.agents/technical-writing.toml\"\n  ],\n  \"documents\": [\n    {\n      \"diagnostics\": [],\n      \"passed\": true,\n      \"path\": \"/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/docs/CLI.md\",\n      \"words\": 2108\n    },\n    {\n      \"diagnostics\": [],\n      \"passed\": true,\n      \"path\": \"/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/docs/design/catalog-lifecycle/ENGINEERING_SPEC.md\",\n      \"words\": 18885\n    },\n    {\n      \"diagnostics\": [],\n      \"passed\": true,\n      \"path\": \"/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/docs/design/catalog-lifecycle/REPOSITORY_FINDINGS.md\",\n      \"words\": 5186\n    },\n    {\n      \"diagnostics\": [],\n      \"passed\": true,\n      \"path\": \"/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/docs/plans/proof/starport-production-catalog/csp2.md\",\n      \"words\": 3585\n    },\n    {\n      \"diagnostics\": [\n        {\n          \"column\": 1,\n          \"excerpt\": \"CSP0.2 has real inference evidence and a locally verified native CI workflow. The plan requires explicit commit and publication authority before its six jobs run.\",\n          \"line\": 15,\n          \"message\": \"paragraph has 7 sentences; limit is 6\",\n          \"path\": \"/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/docs/plans/starport-production-catalog-plan.html\",\n          \"rule\": \"long_paragraph\",\n          \"severity\": \"error\"\n        }\n      ],\n      \"passed\": false,\n      \"path\": \"/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/docs/plans/starport-production-catalog-plan.html\",\n      \"words\": 5047\n    },\n    {\n      \"diagnostics\": [],\n      \"passed\": true,\n      \"path\": \"/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/pkg/productpaths/manifest.go\",\n      \"words\": 77\n    }\n  ],\n  \"mode\": \"strict\",\n  \"passed\": false,\n  \"summary\": {\n    \"diagnostics\": 1,\n    \"errors\": 1,\n    \"files\": 6,\n    \"max_warnings_per_100_words\": 0.0,\n    \"warning_rate_per_100_words\": 0.0,\n    \"warnings\": 0\n  }\n}\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "make",
+      "technical-writing-check"
+    ],
+    "exit_code": 2,
+    "stdout": "/Users/jack/.agents/skills/technical-writing/scripts/technical-writing glossary check\nPASS: /Users/jack/src/github.com/agentstation/starmap-catalog-requirements/GLOSSARY.md (78 term(s), 0 error(s))\n/Users/jack/.agents/skills/technical-writing/scripts/technical-writing glossary update --check\nPASS: no candidate terms are missing from /Users/jack/src/github.com/agentstation/starmap-catalog-requirements/GLOSSARY.md\n/Users/jack/.agents/skills/technical-writing/scripts/technical-writing lint . --mode strict --format text\n/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/docs/plans/starport-production-catalog-plan.html:15:1: error long_paragraph: paragraph has 7 sentences; limit is 6\n/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/docs/plans/proof/starport-production-catalog/storage-revision-2026-09-05/document_structure.txt:1:1: error long_sentence: sentence has 30 words; limit is 25\n/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/docs/plans/proof/starport-production-catalog/storage-revision-2026-09-05/starmap_writing.txt:1:1: error long_sentence: sentence has 38 words; limit is 25\n/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/docs/plans/proof/starport-production-catalog/storage-revision-2026-09-05/starmap_writing.txt:4:26: error ing_main_verb: prefer a simple verb form\nFAIL: 853 file(s), 4 diagnostic(s)\n",
+    "stderr": "make: *** [technical-writing-check] Error 1\n"
+  },
+  {
+    "command": [
+      "python3",
+      "docs/plans/proof/starport-production-catalog/activation-2026-09-05/verify_documents.py"
+    ],
+    "exit_code": 0,
+    "stdout": "{\n  \"verdict\": \"PASS\",\n  \"scope\": \"Document contracts only. No product acceptance credit.\",\n  \"tasks\": 38,\n  \"primary_cases\": 50,\n  \"required_subcases\": 324,\n  \"candidate_subcases\": 305,\n  \"candidate_extra_subcases\": 8,\n  \"dependency_graph\": {\n    \"CSP0\": [],\n    \"CSP0.1\": [\n      \"CSP0\"\n    ],\n    \"CSP0.2\": [\n      \"CSP0.1\"\n    ],\n    \"CSP0.3\": [\n      \"CSP0.2\"\n    ],\n    \"CSP0.4\": [\n      \"CSP0\"\n    ],\n    \"CSP1\": [\n      \"CSP0\"\n    ],\n    \"CSP2\": [\n      \"CSP1\"\n    ],\n    \"CSP3\": [\n      \"CSP1\"\n    ],\n    \"CSP3.1\": [\n      \"CSP0.4\"\n    ],\n    \"CSP4\": [\n      \"CSP2\",\n      \"CSP3\"\n    ],\n    \"CSP5\": [\n      \"CSP3\",\n      \"CSP4\"\n    ],\n    \"CSP6\": [\n      \"CSP2\",\n      \"CSP3\",\n      \"CSP4\"\n    ],\n    \"CSP7\": [\n      \"CSP1\",\n      \"CSP3\"\n    ],\n    \"CSP8\": [\n      \"CSP1\",\n      \"CSP2\",\n      \"CSP3\",\n      \"CSP3.1\",\n      \"CSP4\",\n      \"CSP5\",\n      \"CSP6\",\n      \"CSP7\"\n    ],\n    \"CSP9\": [\n      \"CSP7\",\n      \"CSP8\"\n    ],\n    \"CSP9.1\": [\n      \"CSP0.4\",\n      \"CSP9\"\n    ],\n    \"CSP10\": [\n      \"CSP4\",\n      \"CSP8\",\n      \"CSP9\"\n    ],\n    \"CSP10.1\": [\n      \"CSP0.4\",\n      \"CSP3.1\",\n      \"CSP10\"\n    ],\n    \"CSP10.2\": [\n      \"CSP0.4\",\n      \"CSP9.1\",\n      \"CSP10\"\n    ],\n    \"CSP10.3\": [\n      \"CSP0.4\",\n      \"CSP10.1\"\n    ],\n    \"CSP11\": [\n      \"CSP5\",\n      \"CSP10\"\n    ],\n    \"CSP12\": [\n      \"CSP8\",\n      \"CSP11\"\n    ],\n    \"CSP12.1\": [\n      \"CSP0.4\",\n      \"CSP8\",\n      \"CSP12\"\n    ],\n    \"CSP12.2\": [\n      \"CSP0.4\",\n      \"CSP10.2\",\n      \"CSP12\"\n    ],\n    \"CSP13\": [\n      \"CSP11\",\n      \"CSP12\",\n      \"CSP12.1\",\n      \"CSP12.2\"\n    ],\n    \"CSP14\": [\n      \"CSP1\",\n      \"CSP4\",\n      \"CSP5\",\n      \"CSP7\"\n    ],\n    \"CSP15\": [\n      \"CSP11\",\n      \"CSP12\",\n      \"CSP12.1\",\n      \"CSP12.2\",\n      \"CSP13\"\n    ],\n    \"CSP16\": [\n      \"CSP8\",\n      \"CSP9\",\n      \"CSP10\",\n      \"CSP10.2\",\n      \"CSP12\",\n      \"CSP12.1\",\n      \"CSP13\"\n    ],\n    \"CSP16.1\": [\n      \"CSP16\"\n    ],\n    \"CSP17\": [\n      \"CSP0.1\",\n      \"CSP10\",\n      \"CSP12\",\n      \"CSP16.1\"\n    ],\n    \"CSP18\": [\n      \"CSP1\",\n      \"CSP8\",\n      \"CSP16\",\n      \"CSP17\"\n    ],\n    \"CSP19\": [\n      \"CSP12\",\n      \"CSP12.1\",\n      \"CSP12.2\",\n      \"CSP13\",\n      \"CSP14\",\n      \"CSP15\",\n      \"CSP16\",\n      \"CSP16.1\",\n      \"CSP17\",\n      \"CSP18\"\n    ],\n    \"CSP20\": [\n      \"CSP17\",\n      \"CSP18\",\n      \"CSP19\"\n    ],\n    \"CSP21\": [\n      \"CSP17\",\n      \"CSP20\"\n    ],\n    \"CSP22\": [\n      \"CSP0\",\n      \"CSP0.1\",\n      \"CSP0.2\",\n      \"CSP0.3\",\n      \"CSP0.4\",\n      \"CSP1\",\n      \"CSP2\",\n      \"CSP3\",\n      \"CSP3.1\",\n      \"CSP4\",\n      \"CSP5\",\n      \"CSP6\",\n      \"CSP7\",\n      \"CSP8\",\n      \"CSP9\",\n      \"CSP9.1\",\n      \"CSP10\",\n      \"CSP10.1\",\n      \"CSP10.2\",\n      \"CSP10.3\",\n      \"CSP11\",\n      \"CSP12\",\n      \"CSP12.1\",\n      \"CSP12.2\",\n      \"CSP13\",\n      \"CSP14\",\n      \"CSP15\",\n      \"CSP16\",\n      \"CSP16.1\",\n      \"CSP17\",\n      \"CSP18\",\n      \"CSP19\",\n      \"CSP20\",\n      \"CSP21\"\n    ],\n    \"CSP23\": [\n      \"CSP22\"\n    ],\n    \"CSP24\": [\n      \"CSP23\"\n    ],\n    \"CSP99\": [\n      \"CSP24\"\n    ]\n  },\n  \"CA05_dependency_present\": true,\n  \"prior_audit_inputs_preserved\": 46,\n  \"historical_files_preserved\": 57,\n  \"local_links_checked\": 131,\n  \"pinned_links_checked\": 74,\n  \"plan_lines\": 500,\n  \"artifact_sha256\": {\n    \"docs/plans/starport-production-catalog-plan.html\": \"49d5cf54a188236d8dc550cc9bf4d21acf3b4079585347f08f90047c7f385e47\",\n    \"docs/plans/README.md\": \"58ffc3cf0950b60ad67058f664f9f6481a210f84f0e254d481e30dc74caf93cb\",\n    \"docs/design/catalog-lifecycle/PRD.md\": \"647189c2ebe6f8c16b518fc6a666047895faf94829c4e77b2b2eb3193a04112f\",\n    \"docs/design/catalog-lifecycle/ENGINEERING_SPEC.md\": \"3c219e85ba5a92bda124cf3c3b93ac64a4e6f9cf54834a600fbb3e8aaccb8117\",\n    \"docs/design/catalog-lifecycle/REPOSITORY_FINDINGS.md\": \"98685ed4ee259ee141d8d051f524bf275d033afba2b77fe628aab015f21671a6\",\n    \"docs/plans/proof/starport-production-catalog/activation-2026-09-05/RESOLUTION.md\": \"2ac700a8a18f58248bf636fbd6a0a139995c164c56eb5e84b1c3e9a8c90c54c5\"\n  }\n}\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "go",
+      "tool",
+      "ago",
+      "-stale-ignores",
+      "-format",
+      "json",
+      "./..."
+    ],
+    "exit_code": 0,
+    "stdout": "{\n  \"schemaVersion\": 1,\n  \"version\": \"v0.2.0\",\n  \"rules\": [\n    \"no-dot-import\",\n    \"no-generic-methods\",\n    \"no-goto\",\n    \"no-invalid-ignore\",\n    \"no-naked-return\",\n    \"no-new-expr\",\n    \"no-self-referential-constraints\"\n  ],\n  \"findings\": [],\n  \"staleIgnores\": [],\n  \"errors\": []\n}\n",
+    "stderr": ""
+  }
+]

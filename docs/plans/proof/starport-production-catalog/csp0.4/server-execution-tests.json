@@ -1,0 +1,15 @@
+{
+  "command": [
+    "go",
+    "test",
+    "-count=1",
+    "-timeout",
+    "5m",
+    "./internal/server/...",
+    "./internal/execution",
+    "./internal/app"
+  ],
+  "exit_code": 0,
+  "stdout": "ok  \tgithub.com/agentstation/starport/internal/server\t4.177s\nok  \tgithub.com/agentstation/starport/internal/server/controllers\t2.736s\n?   \tgithub.com/agentstation/starport/internal/server/dto\t[no test files]\n?   \tgithub.com/agentstation/starport/internal/server/requestctx\t[no test files]\nok  \tgithub.com/agentstation/starport/internal/execution\t0.490s\nok  \tgithub.com/agentstation/starport/internal/app\t9.660s\n",
+  "stderr": ""
+}

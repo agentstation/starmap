@@ -1,0 +1,29 @@
+{
+  "tabs": {
+    "url": "http://127.0.0.1:4177/docs?audience=operate",
+    "selected": [
+      "Operate the gateway"
+    ],
+    "focused": "Operate the gateway",
+    "outline": "2px",
+    "offset": "3px"
+  },
+  "code_before": {
+    "scrollLeft": 0,
+    "tabIndex": 0
+  },
+  "code_after": {
+    "scrollLeft": 175,
+    "outline": "2px"
+  },
+  "fragment": {
+    "url": "http://127.0.0.1:4177/docs?audience=operate#doc-health-and-settings",
+    "heading": "Health and settings",
+    "top": 417.078125,
+    "height": 900
+  },
+  "protected": {
+    "url": "http://127.0.0.1:4177/auth?next=%2Fmodels",
+    "publicDocsLink": true
+  }
+}

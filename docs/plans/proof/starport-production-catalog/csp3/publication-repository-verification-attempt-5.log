@@ -1,0 +1,111 @@
+
+==> go test ./...
+# github.com/agentstation/starmap/runtime [github.com/agentstation/starmap/runtime.test]
+runtime/provider_binding_test.go:49:20: r.store.write undefined (type *layerStore has no field or method write)
+runtime/provider_receipt_test.go:43:18: store.write undefined (type *layerStore has no field or method write)
+runtime/provider_receipt_test.go:73:18: store.write undefined (type *layerStore has no field or method write)
+runtime/provider_scope_test.go:184:22: r.store.write undefined (type *layerStore has no field or method write)
+runtime/provider_scope_test.go:253:21: r.store.write undefined (type *layerStore has no field or method write)
+ok  	github.com/agentstation/starmap	71.658s
+ok  	github.com/agentstation/starmap/acquisition	34.923s
+?   	github.com/agentstation/starmap/cmd/starmap	[no test files]
+ok  	github.com/agentstation/starmap/cmd/starmap-bootstrap-manifest	23.025s
+ok  	github.com/agentstation/starmap/cmd/starmap-catalog-release	2.477s
+ok  	github.com/agentstation/starmap/cmd/starmap-embedded-budget	(cached)
+ok  	github.com/agentstation/starmap/cmd/starmap-modelsdev-promote	0.903s
+ok  	github.com/agentstation/starmap/internal/architecture	(cached)
+ok  	github.com/agentstation/starmap/internal/attestation	(cached)
+ok  	github.com/agentstation/starmap/internal/auth	1.362s
+ok  	github.com/agentstation/starmap/internal/bootstrap	37.691s
+ok  	github.com/agentstation/starmap/internal/bootstrap/budget	(cached)
+ok  	github.com/agentstation/starmap/internal/bootstrap/manifest	(cached)
+ok  	github.com/agentstation/starmap/internal/catalog/pipeline	3.737s
+ok  	github.com/agentstation/starmap/internal/catalog/query	(cached)
+ok  	github.com/agentstation/starmap/internal/catalog/reconciler	1.516s
+ok  	github.com/agentstation/starmap/internal/catalog/settings	3.167s
+ok  	github.com/agentstation/starmap/internal/catalog/workspace	23.028s
+ok  	github.com/agentstation/starmap/internal/ciworkflow	1.891s
+?   	github.com/agentstation/starmap/internal/cli/alerts	[no test files]
+ok  	github.com/agentstation/starmap/internal/cli/app	25.071s
+?   	github.com/agentstation/starmap/internal/cli/commands/auth	[no test files]
+?   	github.com/agentstation/starmap/internal/cli/commands/authors	[no test files]
+?   	github.com/agentstation/starmap/internal/cli/commands/completion	[no test files]
+ok  	github.com/agentstation/starmap/internal/cli/commands/config	(cached)
+ok  	github.com/agentstation/starmap/internal/cli/commands/deps	(cached)
+ok  	github.com/agentstation/starmap/internal/cli/commands/embed	(cached)
+ok  	github.com/agentstation/starmap/internal/cli/commands/migrate	(cached)
+ok  	github.com/agentstation/starmap/internal/cli/commands/models	(cached)
+ok  	github.com/agentstation/starmap/internal/cli/commands/providers	(cached)
+ok  	github.com/agentstation/starmap/internal/cli/commands/serve	1.898s
+ok  	github.com/agentstation/starmap/internal/cli/commands/update	1.875s
+ok  	github.com/agentstation/starmap/internal/cli/commands/validate	(cached)
+?   	github.com/agentstation/starmap/internal/cli/completion	[no test files]
+?   	github.com/agentstation/starmap/internal/cli/constants	[no test files]
+ok  	github.com/agentstation/starmap/internal/cli/convert	(cached)
+ok  	github.com/agentstation/starmap/internal/cli/embed	(cached)
+?   	github.com/agentstation/starmap/internal/cli/emoji	[no test files]
+?   	github.com/agentstation/starmap/internal/cli/filter	[no test files]
+?   	github.com/agentstation/starmap/internal/cli/format	[no test files]
+?   	github.com/agentstation/starmap/internal/cli/globals	[no test files]
+ok  	github.com/agentstation/starmap/internal/cli/hints	(cached)
+?   	github.com/agentstation/starmap/internal/cli/notify	[no test files]
+?   	github.com/agentstation/starmap/internal/cli/provider	[no test files]
+ok  	github.com/agentstation/starmap/internal/cli/table	(cached)
+?   	github.com/agentstation/starmap/internal/constants	[no test files]
+ok  	github.com/agentstation/starmap/internal/deploymentdocs	(cached)
+?   	github.com/agentstation/starmap/internal/deps	[no test files]
+ok  	github.com/agentstation/starmap/internal/embedded	(cached)
+?   	github.com/agentstation/starmap/internal/embedded/openapi	[no test files]
+ok  	github.com/agentstation/starmap/internal/filepublish	1.670s
+ok  	github.com/agentstation/starmap/internal/fleet	(cached)
+ok  	github.com/agentstation/starmap/internal/privatefiles	2.267s
+ok  	github.com/agentstation/starmap/internal/providers/anthropic	3.317s
+ok  	github.com/agentstation/starmap/internal/providers/clients	(cached)
+ok  	github.com/agentstation/starmap/internal/providers/google	(cached)
+ok  	github.com/agentstation/starmap/internal/providers/openai	(cached)
+ok  	github.com/agentstation/starmap/internal/runtimeacl/windows	(cached)
+ok  	github.com/agentstation/starmap/internal/server	38.674s
+ok  	github.com/agentstation/starmap/internal/server/cache	(cached)
+ok  	github.com/agentstation/starmap/internal/server/handlers	(cached)
+ok  	github.com/agentstation/starmap/internal/server/middleware	(cached)
+ok  	github.com/agentstation/starmap/internal/server/openrouter	(cached)
+ok  	github.com/agentstation/starmap/internal/server/operations	(cached)
+ok  	github.com/agentstation/starmap/internal/server/params	(cached)
+ok  	github.com/agentstation/starmap/internal/server/response	(cached)
+ok  	github.com/agentstation/starmap/internal/server/sse	(cached)
+ok  	github.com/agentstation/starmap/internal/sources/embedded	(cached)
+ok  	github.com/agentstation/starmap/internal/sources/github	2.271s
+ok  	github.com/agentstation/starmap/internal/sources/local	1.638s
+ok  	github.com/agentstation/starmap/internal/sources/modelsdev	13.338s
+ok  	github.com/agentstation/starmap/internal/sources/providers	(cached)
+?   	github.com/agentstation/starmap/internal/test/catalog	[no test files]
+?   	github.com/agentstation/starmap/internal/test/channel	[no test files]
+?   	github.com/agentstation/starmap/internal/test/logging	[no test files]
+ok  	github.com/agentstation/starmap/internal/test/providerfixture	0.647s
+ok  	github.com/agentstation/starmap/internal/transport	(cached)
+ok  	github.com/agentstation/starmap/pkg/catalogs	24.593s
+ok  	github.com/agentstation/starmap/pkg/catalogs/artifact	0.479s
+ok  	github.com/agentstation/starmap/pkg/catalogs/authority	(cached)
+ok  	github.com/agentstation/starmap/pkg/catalogs/config	3.751s
+ok  	github.com/agentstation/starmap/pkg/catalogs/evidence	(cached)
+?   	github.com/agentstation/starmap/pkg/catalogs/internal/resourcepolicy	[no test files]
+ok  	github.com/agentstation/starmap/pkg/catalogs/projection	(cached)
+ok  	github.com/agentstation/starmap/pkg/catalogs/remote	(cached)
+ok  	github.com/agentstation/starmap/pkg/catalogs/storage	3.855s
+ok  	github.com/agentstation/starmap/pkg/catalogs/storage/s3	(cached)
+ok  	github.com/agentstation/starmap/pkg/differ	(cached)
+ok  	github.com/agentstation/starmap/pkg/errors	(cached)
+ok  	github.com/agentstation/starmap/pkg/logging	0.279s
+ok  	github.com/agentstation/starmap/pkg/productpaths	0.218s
+ok  	github.com/agentstation/starmap/pkg/productpaths/policy	(cached)
+ok  	github.com/agentstation/starmap/pkg/provenance	0.194s
+ok  	github.com/agentstation/starmap/pkg/sources	(cached)
+ok  	github.com/agentstation/starmap/pkg/sources/payload	(cached)
+ok  	github.com/agentstation/starmap/pkg/sync	0.216s
+ok  	github.com/agentstation/starmap/remote	3.873s
+FAIL	github.com/agentstation/starmap/runtime [build failed]
+?   	github.com/agentstation/starmap/runtime/source	[no test files]
+?   	github.com/agentstation/starmap/runtime/status	[no test files]
+ok  	github.com/agentstation/starmap/server	5.974s
+FAIL
+make: *** [verify] Error 1

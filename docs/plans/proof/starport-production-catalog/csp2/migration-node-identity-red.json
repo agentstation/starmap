@@ -1,0 +1,16 @@
+{
+  "command": [
+    "go",
+    "test",
+    "-race",
+    "-count=1",
+    "-timeout",
+    "2m",
+    "./internal/cli/app",
+    "-run",
+    "^Test(SchedulerIdentityConfigurationPrecedence|ApplicationSelectsPublishedMigrationThroughConfiguration)$"
+  ],
+  "exit_code": 1,
+  "stdout": "FAIL\tgithub.com/agentstation/starmap/internal/cli/app [build failed]\nFAIL\n",
+  "stderr": "# github.com/agentstation/starmap/internal/cli/app [github.com/agentstation/starmap/internal/cli/app.test]\ninternal/cli/app/migration_identity_test.go:53:13: paths.SchedulerIdentity undefined (type ProductPaths has no field or method SchedulerIdentity)\ninternal/cli/app/migration_identity_test.go:53:51: paths.SchedulerIdentityOrigin undefined (type ProductPaths has no field or method SchedulerIdentityOrigin)\ninternal/cli/app/migration_identity_test.go:54:53: paths.SchedulerIdentity undefined (type ProductPaths has no field or method SchedulerIdentity)\ninternal/cli/app/migration_identity_test.go:54:78: paths.SchedulerIdentityOrigin undefined (type ProductPaths has no field or method SchedulerIdentityOrigin)\n"
+}

@@ -1,0 +1,187 @@
+{
+  "recorded_at": "2026-09-06T18:00:17.290005+00:00",
+  "verdict": "PASS",
+  "audit": "Recounted saved test events and checked terminal container states, build commands, cleanup, and the prepared CI package roster. No test rerun.",
+  "counts": {
+    "pass": 697,
+    "fail": 0,
+    "skip": 0
+  },
+  "packages": [
+    {
+      "package": "runtime",
+      "counts": {
+        "pass": 239,
+        "fail": 0,
+        "skip": 0
+      },
+      "binary_sha256": "f86a35423b0f3931a45b29f1b8b294614480a9521669045fe7795de7976e9bbd",
+      "started_at": "2026-09-06T17:51:29.509035668Z",
+      "finished_at": "2026-09-06T17:51:44.609756258Z",
+      "all_command_exit_codes_zero": true,
+      "cleanup_confirmed": true
+    },
+    {
+      "package": "internal/bootstrap",
+      "counts": {
+        "pass": 47,
+        "fail": 0,
+        "skip": 0
+      },
+      "binary_sha256": "8e0c5e4481379061c3ef26984d43c55a8aacff7e0cb704f05523142b81b5d4e9",
+      "started_at": "2026-09-06T17:51:27.81778875Z",
+      "finished_at": "2026-09-06T17:51:57.026473083Z",
+      "all_command_exit_codes_zero": true,
+      "cleanup_confirmed": true
+    },
+    {
+      "package": "internal/filepublish",
+      "counts": {
+        "pass": 24,
+        "fail": 0,
+        "skip": 0
+      },
+      "binary_sha256": "904686ed8316e7894023e3e01311703ac312a27ff1632f0a87c6f2e26d42d4f2",
+      "started_at": "2026-09-06T17:51:46.153277176Z",
+      "finished_at": "2026-09-06T17:51:46.216757009Z",
+      "all_command_exit_codes_zero": true,
+      "cleanup_confirmed": true
+    },
+    {
+      "package": "internal/privatefiles",
+      "counts": {
+        "pass": 9,
+        "fail": 0,
+        "skip": 0
+      },
+      "binary_sha256": "b5d8b72aec9cf67fa9aca9ee2895055b56a398054f518b63deb860a5e9ce275a",
+      "started_at": "2026-09-06T17:51:46.847106759Z",
+      "finished_at": "2026-09-06T17:51:46.911866384Z",
+      "all_command_exit_codes_zero": true,
+      "cleanup_confirmed": true
+    },
+    {
+      "package": "internal/runtimeacl/windows",
+      "counts": {
+        "pass": 15,
+        "fail": 0,
+        "skip": 0
+      },
+      "binary_sha256": "10d542ab4042f137d75587c083db971a47c9b080fb89881877f85ed69fc304c2",
+      "started_at": "2026-09-06T17:51:47.342763176Z",
+      "finished_at": "2026-09-06T17:51:47.384551343Z",
+      "all_command_exit_codes_zero": true,
+      "cleanup_confirmed": true
+    },
+    {
+      "package": "internal/sources/github",
+      "counts": {
+        "pass": 31,
+        "fail": 0,
+        "skip": 0
+      },
+      "binary_sha256": "c957f0c54ea2d3712f4984bb394914d687b038148149af24b30cf160d6889d6c",
+      "started_at": "2026-09-06T17:51:49.360668885Z",
+      "finished_at": "2026-09-06T17:51:49.464107886Z",
+      "all_command_exit_codes_zero": true,
+      "cleanup_confirmed": true
+    },
+    {
+      "package": "internal/cli/app",
+      "counts": {
+        "pass": 177,
+        "fail": 0,
+        "skip": 0
+      },
+      "binary_sha256": "2b23ca8ed7630f55961599c99eb304729b45ef28342fee964f92a716bb10aa6c",
+      "started_at": "2026-09-06T17:51:53.281423304Z",
+      "finished_at": "2026-09-06T17:52:04.291410837Z",
+      "all_command_exit_codes_zero": true,
+      "cleanup_confirmed": true
+    },
+    {
+      "package": "pkg/productpaths",
+      "counts": {
+        "pass": 33,
+        "fail": 0,
+        "skip": 0
+      },
+      "binary_sha256": "dfa2da8c38b6519364ba92cc54174c5e586d2ca05b92d90b30afab1e803c54ff",
+      "started_at": "2026-09-06T17:51:57.51884125Z",
+      "finished_at": "2026-09-06T17:51:57.56458175Z",
+      "all_command_exit_codes_zero": true,
+      "cleanup_confirmed": true
+    },
+    {
+      "package": "pkg/catalogs/storage",
+      "counts": {
+        "pass": 25,
+        "fail": 0,
+        "skip": 0
+      },
+      "binary_sha256": "5e86a643ab7209b0fbf310a9c221cebd5d37973fb1a71483eb9577b858a2f466",
+      "started_at": "2026-09-06T17:51:58.138081875Z",
+      "finished_at": "2026-09-06T17:51:58.25788425Z",
+      "all_command_exit_codes_zero": true,
+      "cleanup_confirmed": true
+    },
+    {
+      "package": "internal/catalog/workspace",
+      "counts": {
+        "pass": 97,
+        "fail": 0,
+        "skip": 0
+      },
+      "binary_sha256": "21c2f95bca4eae367d3246f919f0acb22f7ca2a207c6fd9c944e5f4aee0342b1",
+      "started_at": "2026-09-06T17:51:58.971996126Z",
+      "finished_at": "2026-09-06T17:52:00.172693335Z",
+      "all_command_exit_codes_zero": true,
+      "cleanup_confirmed": true
+    }
+  ],
+  "remaining_resources": [
+    {
+      "command": [
+        "docker",
+        "ps",
+        "-aq",
+        "--filter",
+        "name=csp2-native-"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "docker",
+        "volume",
+        "ls",
+        "-q",
+        "--filter",
+        "label=purpose=csp2-native-package-verification"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    }
+  ],
+  "record_sha256": {
+    "docs/plans/proof/starport-production-catalog/csp2/native-linux-arm64/runtime.json": "29705fbc8cb0d7b088e0fa64c3c87f49821d192d09cf711c680fc60e107e1cab",
+    "docs/plans/proof/starport-production-catalog/csp2/native-linux-arm64/internal-bootstrap.json": "f3196bc62bcbff97e7c2a793fbfbbe1a1b3bcc633eebeede0cf1e3363f5f0524",
+    "docs/plans/proof/starport-production-catalog/csp2/native-linux-arm64/internal-filepublish.json": "f492288f88aa1615eb61d7fd7d844f03aeec764aa2cd9f3f7b38a6ad7ef848d1",
+    "docs/plans/proof/starport-production-catalog/csp2/native-linux-arm64/internal-privatefiles.json": "20273febaa9e938ea63c16f6b8d139593c0779e00ffb96c105a19226a6eec96e",
+    "docs/plans/proof/starport-production-catalog/csp2/native-linux-arm64/internal-runtimeacl-windows.json": "693944d43285c21a9075ad19cae2ef2339a6a0874d9f3608a6fe9d65f18e1552",
+    "docs/plans/proof/starport-production-catalog/csp2/native-linux-arm64/internal-sources-github.json": "223973eaad2adb9fd1b93b7c50d24f490a922b52f573bf48dae537186de7a256",
+    "docs/plans/proof/starport-production-catalog/csp2/native-linux-arm64/internal-cli-app.json": "fecb2a5e2a89d6ce80ddc86061355d56cb6746e9abcfe29f6570deac0a688293",
+    "docs/plans/proof/starport-production-catalog/csp2/native-linux-arm64/pkg-productpaths.json": "a73cb1a8a7eb2cf8872eb7e3fbafc6f689e62b4b6e8b0b74d1833ffa5e32bfb2",
+    "docs/plans/proof/starport-production-catalog/csp2/native-linux-arm64/pkg-catalogs-storage.json": "7113ac2760c47472b28bb7ab0bd8a1462ee92eea0d2209438d4d670c349962eb",
+    "docs/plans/proof/starport-production-catalog/csp2/native-linux-arm64/internal-catalog-workspace.json": "108f43debdb5ce42a55b6dd63b3838975adffb641168d0fab741cdbaf636ff2c",
+    "docs/plans/proof/starport-production-catalog/csp2/native-linux-arm64/summary.json": "bd2277f3a3b9b95734f037e10ca7ff8687a03f4c970b10343a287b597fce74b6",
+    "docs/plans/proof/starport-production-catalog/csp2/native-linux-arm64/engine.json": "02c551c482abb63fa88f75b107366e679953327bc61c22f2bbfe5766ed85848c",
+    "docs/plans/proof/starport-production-catalog/csp2/native-linux-suites.py": "52414a043fce4d00e332e3457f89070423e56d508c9240933782f1e3c25b345e",
+    ".github/workflows/pr.yaml": "6f9ffe684a3ab05d50f960a7252b3b676535a115da4050abf4a5c43e7709e9d5"
+  },
+  "scope": "Local Linux ARM64 execution. The Windows ACL package tests pure policy logic here, not Windows APIs. Journal phase tests force the shared journal on Linux. No native Windows, power-loss, race, released-pair, or full acceptance credit.",
+  "provenance_limit": "Binary hashes and build commands were captured during execution. This audit records existing evidence hashes after execution; it is not a pre-build source manifest."
+}

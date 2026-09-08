@@ -1,0 +1,200 @@
+{
+  "captured_at": "2026-09-06T20:11:14.653256+00:00",
+  "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-requirements",
+  "branch": "codex/catalog-requirements",
+  "head": "4780dfea9f7e002ea6eaaa82aa8f52ed0d4cc225",
+  "goal_status": "active",
+  "task_status": "CSP2 in_progress",
+  "primary_cases_unverified": 50,
+  "selected_components": {
+    "PASS": 2,
+    "UNVERIFIED": 20
+  },
+  "current_checks": [
+    {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.25.12",
+        "go",
+        "test",
+        "-p",
+        "2",
+        "-json",
+        "-race",
+        "-count=1",
+        "-timeout=5m",
+        "./internal/privatefiles",
+        "./pkg/catalogs/storage",
+        "./internal/sources/github"
+      ],
+      "exit_code": 0,
+      "counts": {
+        "pass": 129
+      }
+    },
+    {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.25.12",
+        "go",
+        "test",
+        "-json",
+        "-race",
+        "-count=1",
+        "-timeout=5m",
+        "./runtime",
+        "-run",
+        "Test(RetainedLayer|DurableRuntimeKeeps|RestartReports|SourcelessDurable|UnchangedRebuild)"
+      ],
+      "exit_code": 0,
+      "counts": {
+        "pass": 7
+      }
+    },
+    {
+      "command": [
+        "go",
+        "tool",
+        "ago",
+        "-stale-ignores",
+        "-format",
+        "json",
+        "./..."
+      ],
+      "exit_code": 0,
+      "counts": {}
+    },
+    {
+      "command": [
+        "golangci-lint",
+        "run"
+      ],
+      "exit_code": 0,
+      "counts": {}
+    },
+    {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.25.12",
+        "GOOS=windows",
+        "GOARCH=amd64",
+        "CGO_ENABLED=0",
+        "go",
+        "test",
+        "-c",
+        "-o",
+        "/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/csp2-record-final-windows-apzk6wsq/amd64.exe",
+        "./internal/privatefiles"
+      ],
+      "exit_code": 0,
+      "counts": {}
+    },
+    {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.25.12",
+        "GOOS=windows",
+        "GOARCH=arm64",
+        "CGO_ENABLED=0",
+        "go",
+        "test",
+        "-c",
+        "-o",
+        "/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/csp2-record-final-windows-apzk6wsq/arm64.exe",
+        "./internal/privatefiles"
+      ],
+      "exit_code": 0,
+      "counts": {}
+    }
+  ],
+  "previous_caller_checks": {
+    "pass": 291
+  },
+  "native_checks": {
+    "filesystem-private-native-linux-arm64": {
+      "packages": 3,
+      "passed_packages": 3,
+      "test_counts": {
+        "pass": 246,
+        "fail": 0,
+        "skip": 0
+      },
+      "scope": "Native Linux ARM64 containers, CGO disabled, no race instrumentation, no external network. Named volumes hold temporary test files. No power-loss or released-pair qualification."
+    },
+    "filesystem-private-cancellation-native-linux-arm64": {
+      "packages": 2,
+      "passed_packages": 2,
+      "test_counts": {
+        "pass": 68,
+        "fail": 0,
+        "skip": 0
+      },
+      "scope": "Native Linux ARM64 containers, CGO disabled, no race instrumentation, no external network. Named volumes hold temporary test files. No power-loss or released-pair qualification."
+    },
+    "filesystem-private-callers-native-linux-arm64": {
+      "packages": 3,
+      "passed_packages": 3,
+      "test_counts": {
+        "pass": 281,
+        "fail": 0,
+        "skip": 0
+      },
+      "scope": "Native Linux ARM64 containers, CGO disabled, no race instrumentation, no external network. Named volumes hold temporary test files. No power-loss or released-pair qualification."
+    },
+    "filesystem-private-record-cleanup-native-linux-arm64": {
+      "packages": 3,
+      "passed_packages": 3,
+      "test_counts": {
+        "pass": 100,
+        "fail": 0,
+        "skip": 0
+      },
+      "scope": "Native Linux ARM64 containers, CGO disabled, no race instrumentation, no external network. Named volumes hold temporary test files. No power-loss or released-pair qualification."
+    },
+    "filesystem-private-settled-native-linux-arm64": {
+      "packages": 1,
+      "passed_packages": 1,
+      "test_counts": {
+        "pass": 25,
+        "fail": 0,
+        "skip": 0
+      },
+      "scope": "Native Linux ARM64 containers, CGO disabled, no race instrumentation, no external network. Named volumes hold temporary test files. No power-loss or released-pair qualification."
+    }
+  },
+  "manual_review": [
+    "Private creation and access checks apply to catalog state. Public YAML permission constants remain unchanged.",
+    "Constructor resolves the path and allocates a lock adapter without opening the store.",
+    "Instance serialization precedes the shared flock. Lock identity is verified after acquisition.",
+    "Candidate content checks and no-replace rename preserve generation identity. Current writes retain the original directory binding.",
+    "Publication checks cancellation. Cleanup verifies original file metadata and content before removal.",
+    "Client.Catalog only returns the in-memory immutable snapshot under its mutex. This work does not qualify latency.",
+    "Existing public-store fixtures changed to private product subdirectories. Negative access fixtures retain their unsafe permissions.",
+    "Failed, intermediate, and narrower checks remain in separate records. Counts include Go subtests."
+  ],
+  "remaining": [
+    "Constructor remote-storage and worker policy owner decision.",
+    "Service-owned configuration policy owner decision.",
+    "Native Windows execution, ancestor policy, and complete service recipes.",
+    "CSP5 abandoned-stage collection and ambiguous post-publication flush outcomes.",
+    "Complete acceptance roster against the declared released pair."
+  ],
+  "authorization": {
+    "commits": 0,
+    "pushes": 0,
+    "pull_requests": 0,
+    "ci_dispatches": 0,
+    "releases": 0
+  },
+  "input_manifest": "filesystem-private-settled-input-manifest.json",
+  "document_checks": {
+    "document_verifier_exit": 0,
+    "plan_lines": 500,
+    "historical_files_preserved": 57,
+    "targeted_writing_exit": 0,
+    "targeted_writing": "PASS: 24 file(s), 0 diagnostic(s)",
+    "whole_repository_writing_exit": 2,
+    "whole_repository_writing_scope": "963 files, only three retained historical diagnostics. No policy suppression or historical rewrite.",
+    "diff_check_exit": 0
+  }
+}
