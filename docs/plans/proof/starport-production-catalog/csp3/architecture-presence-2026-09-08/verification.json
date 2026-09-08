@@ -211,7 +211,6 @@
     "archive_sha256": "a32ff898df886e6ec7faf443f84dbab4d44b302e405489e0450d455fb321f67e"
   },
   "remaining": [
-    "Complete the full publication gate",
     "Required structured review, publication, and merge",
     "Remaining CSP3 legacy-admission, record-presence, scoped-membership, and deletion contracts"
   ],

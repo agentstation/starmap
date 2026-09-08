@@ -19,10 +19,13 @@
     "minimum_go_1_25_12": {
       "pass_test": 50,
       "pass_package": 1
+    },
+    "race_go_1_26_6": {
+      "pass_test": 200,
+      "pass_package": 1
     }
   },
   "pending": {
-    "focused_race_session": 31804,
     "full_verification_session": 68726,
     "structured_review": true,
     "publication": true,
@@ -38,6 +41,16 @@
   "artifacts": {
     "native-tests.jsonl.gz": "571d85d6a43143bf35565244c103b0ba2f1fc2949de8b07e289b66d47b781d0e",
     "native-failure.txt.gz": "facaf9f7e3289debc9561ea52574f36f00ab7145affee1b1574bcd7ebc8433d4",
-    "minimum.jsonl.gz": "1b69c2e0528b5dabe2c2ee9f48a292a869e697c8f1099e9285fac6ac1e3660e3"
-  }
+    "minimum.jsonl.gz": "1b69c2e0528b5dabe2c2ee9f48a292a869e697c8f1099e9285fac6ac1e3660e3",
+    "focused-race.jsonl.gz": "97a535a2cd5109b34a062676409c07520ddabcb297818318d412e6a666f34da0",
+    "old-ci-jobs.json.gz": "f4b12f89d69b14b764f841888832335404f45f8943da8170d4337dec4630ed27"
+  },
+  "focused_race_exit_code": 0,
+  "old_ci_run": "Cancelled after the confirmed native failure because the hook repair supersedes its source.",
+  "commands": {
+    "focused_race": "GOTOOLCHAIN=go1.26.6 go test -race -json -count=20 -timeout=10m -run 'TestRollback|TestHookIsolation|TestF036HookOverload|TestModelDiffWithoutObservers|TestEmbeddedCatalogState' .",
+    "minimum": "GOTOOLCHAIN=go1.25.12 CGO_ENABLED=0 go test -json -count=5 -timeout=5m -run 'TestRollback|TestHookIsolation|TestF036HookOverload|TestModelDiffWithoutObservers|TestEmbeddedCatalogState' .",
+    "publication": "GOTOOLCHAIN=go1.26.6 make verify"
+  },
+  "next_after_verification": "Merge current main into the repair branch, validate changed dependencies and consumer closure, complete the pre-PR review, and publish the new PR133 head."
 }
