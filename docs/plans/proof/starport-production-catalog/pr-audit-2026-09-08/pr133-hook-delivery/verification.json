@@ -43,9 +43,9 @@
   },
   "pending": {
     "structured_review": false,
-    "publication": true,
+    "publication": false,
     "fresh_native_ci": true,
-    "dependency_main_merge": 130
+    "dependency_main_merge": false
   },
   "task_completion": false,
   "files": {
@@ -77,7 +77,7 @@
     "minimum": "GOTOOLCHAIN=go1.25.12 CGO_ENABLED=0 go test -json -count=5 -timeout=5m -run 'TestRollback|TestHookIsolation|TestF036HookOverload|TestModelDiffWithoutObservers|TestEmbeddedCatalogState' .",
     "publication": "GOTOOLCHAIN=go1.26.6 make verify"
   },
-  "next_after_verification": "After PR130 merges, merge its main commit into this candidate. Confirm tree equality, then publish PR133 and run fresh CI. Keep auto-merge off until all native jobs pass.",
+  "next_after_verification": "Merge PR133 after its fresh CI passes. Verify the merged source before closing CSP3.1. Continue PR135 and PR136 in order.",
   "full_verification": {
     "source": "effbfc92073a4f7b281f7c52bd488795126ae3a9",
     "exit_code": 0,
@@ -128,5 +128,9 @@
       }
     ],
     "s3_followup": "Only module and lock files changed. Automatic metadata-only review exits 0 without a model call."
-  }
+  },
+  "published_head": "55b4a12be54e3dce4da76671507a00b1af6f1bed",
+  "merged_main": "8b685475bdab6c61a141bd0816a9cd42830d85f0",
+  "published_tree": "52403fe8d23ab101859368a12e86bf0edb94f0c2",
+  "main_merge_review": "Automatic pre-PR gate exits 0 without a model call. The final merge tree equals the reviewed candidate tree."
 }

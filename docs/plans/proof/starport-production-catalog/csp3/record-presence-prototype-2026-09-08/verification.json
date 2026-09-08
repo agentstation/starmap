@@ -1,0 +1,94 @@
+{
+  "status": "unapplied prototype",
+  "source_base": "c871f2b8",
+  "production_changes": false,
+  "task_completion": false,
+  "files": {
+    "after.jsonl": {
+      "sha256": "5258f1bee383ba93d5bc53a041a921a32e1ce7edaef9b10a50bfffea322cd30e",
+      "bytes": 91474,
+      "counts": {
+        "pass_test": 101,
+        "pass_package": 1
+      }
+    },
+    "before-overlay.json": {
+      "sha256": "62710a7dec7162d5afbe54b2e1eeda0317d4a141c2f36489984e08e94cabded8",
+      "bytes": 224
+    },
+    "before-test.go.txt": {
+      "sha256": "a8c9b849af9e54bb234ce5cb84a353ab2e70cc95dccea9717a80a6cf400106e5",
+      "bytes": 3118
+    },
+    "before.jsonl": {
+      "sha256": "1b6e2a2b4c740055800eb38144f5ca2b76fc4d4b3780efad98aa1a65ad0d7ba5",
+      "bytes": 99629,
+      "counts": {
+        "pass_test": 57,
+        "fail_test": 29,
+        "fail_package": 1
+      }
+    },
+    "legacy-before.jsonl": {
+      "sha256": "dcfc3bf77d9d499a54e5881ac607d7b184323953d39dd97844dc7f069028c60e",
+      "bytes": 1794,
+      "counts": {
+        "pass_test": 1,
+        "pass_package": 1
+      }
+    },
+    "minimum.jsonl": {
+      "sha256": "bd7b83e484f1d6f34e6617b5dbcd72a9b36cf795764c857b556f52ca6228b262",
+      "bytes": 91466,
+      "counts": {
+        "pass_test": 101,
+        "pass_package": 1
+      }
+    },
+    "model.go": {
+      "sha256": "0ecbdcab43d3b6f7d74c978a5815187479d69c2efbd5e703b4553545992e5a39",
+      "bytes": 19222
+    },
+    "model_presence_codec.go": {
+      "sha256": "f438e2f0bec71a29d05f267d0fa741e78d6d06ba1f5372975d6da6248c000ad3",
+      "bytes": 12357
+    },
+    "model_record_api_test.go": {
+      "sha256": "078e96a17b6564708206a1fdf4c1318610e866fc387de2cc1bc1e6721e470fb7",
+      "bytes": 2032
+    },
+    "model_record_presence.go": {
+      "sha256": "5dde788d172c8efd3e636919d1c9db521238202ce74c4644e1c1f4b158cb21d6",
+      "bytes": 4419
+    },
+    "model_record_presence_test.go": {
+      "sha256": "cb0f07ebe823c86d8e5e0364b393339c114dcfec8c40b8bb8920387520afbe8c",
+      "bytes": 3155
+    },
+    "overlay.json": {
+      "sha256": "a03b86164321e0f0d2fbd0211fbe18500d96c4fba199ce3fcdaeead68b943dc7",
+      "bytes": 958
+    },
+    "record_selector_test.go": {
+      "sha256": "f27b44927ceb216add9f2cf9dd8d80debbd464ff3a41387a14b6a17d496a786c",
+      "bytes": 1054
+    },
+    "selection-overlay.json": {
+      "sha256": "051437276ac9c81f917241fce6674f7208a5131e30f63ec528dd0cc99e7bac6e",
+      "bytes": 1163
+    },
+    "selection.jsonl": {
+      "sha256": "28152a9b4bdcbdd16fbd47c49fdac548df7c449a00b4c6adcf92aaa5418ce010",
+      "bytes": 18680,
+      "counts": {
+        "fail_test": 15,
+        "fail_package": 1
+      }
+    }
+  },
+  "remaining": [
+    "Reconciliation must preserve whole-record unknown states and original receipts.",
+    "Nested presence scope needs source inspection and tests.",
+    "Publication, restart, policy refusal, definitions, and OpenAPI schema still need qualification."
+  ]
+}
