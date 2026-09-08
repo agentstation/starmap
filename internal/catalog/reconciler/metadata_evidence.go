@@ -36,14 +36,50 @@ func (merger *merger) mergeMetadataContributions(identity modelIdentity, target 
 		{"Metadata.Architecture.Type", ".architecture.type"},
 		{"Metadata.Architecture.Tokenizer", ".architecture.tokenizer"},
 		{"Metadata.Architecture.Quantization", ".architecture.quantization"},
-		{"Metadata.Architecture.Quantized", ".architecture.quantized"},
-		{"Metadata.Architecture.FineTuned", ".architecture.fine_tuned"},
 		{"Metadata.Architecture.BaseModel", ".architecture.base_model"},
 	} {
 		merger.selectModelContribution(identity, policy, models, history, field.evidence, func(model *catalogs.Model) (any, bool) {
 			value := merger.modelFieldValue(model, field.path)
 			return value, value != nil
 		}, func(value any) { present = true; merger.setModelFieldValue(&result, field.path, value) })
+	}
+	for _, flag := range []struct {
+		path    string
+		value   func(*catalogs.ModelArchitecture) (bool, catalogs.ValuePresence)
+		set     func(*catalogs.ModelArchitecture, bool)
+		unknown func(*catalogs.ModelArchitecture)
+	}{
+		{".architecture.quantized", (*catalogs.ModelArchitecture).QuantizedValue, (*catalogs.ModelArchitecture).SetQuantized, (*catalogs.ModelArchitecture).SetQuantizedUnknown},
+		{".architecture.fine_tuned", (*catalogs.ModelArchitecture).FineTunedValue, (*catalogs.ModelArchitecture).SetFineTuned, (*catalogs.ModelArchitecture).SetFineTunedUnknown},
+	} {
+		for _, presence := range []catalogs.ValuePresence{catalogs.ValueKnown, catalogs.ValueUnknown} {
+			selected := merger.selectModelContribution(identity, policy, models, history, flag.path, func(model *catalogs.Model) (any, bool) {
+				if model.Metadata == nil {
+					return nil, false
+				}
+				value, state := flag.value(model.Metadata.Architecture)
+				if state != presence {
+					return nil, false
+				}
+				if state == catalogs.ValueUnknown {
+					return nil, true
+				}
+				return value, true
+			}, func(value any) {
+				present = true
+				if result.Metadata.Architecture == nil {
+					result.Metadata.Architecture = &catalogs.ModelArchitecture{}
+				}
+				if value == nil {
+					flag.unknown(result.Metadata.Architecture)
+				} else {
+					flag.set(result.Metadata.Architecture, value.(bool))
+				}
+			})
+			if selected != "" {
+				break
+			}
+		}
 	}
 	for _, presence := range []catalogs.ValuePresence{catalogs.ValueKnown, catalogs.ValueUnknown} {
 		selected := merger.selectModelContribution(identity, policy, models, history, ".open_weights", func(model *catalogs.Model) (any, bool) {

@@ -2,13 +2,15 @@ package catalogs
 
 // ModelArchitecture represents the technical architecture details of a model.
 type ModelArchitecture struct {
-	ParameterCount string           `json:"parameter_count,omitempty" yaml:"parameter_count,omitempty"`
-	Type           ArchitectureType `json:"type,omitempty" yaml:"type,omitempty"`                 // Type of architecture
-	Tokenizer      Tokenizer        `json:"tokenizer,omitempty" yaml:"tokenizer,omitempty"`       // Tokenizer type used by the model
-	Quantization   Quantization     `json:"quantization,omitempty" yaml:"quantization,omitempty"` // Quantization level used by the model
-	Quantized      bool             `json:"quantized" yaml:"quantized"`
-	FineTuned      bool             `json:"fine_tuned" yaml:"fine_tuned"`                     // Whether this is a fine-tuned variant
-	BaseModel      *string          `json:"base_model,omitempty" yaml:"base_model,omitempty"` // Base model ID if fine-tuned
+	quantizedPresence ValuePresence
+	fineTunedPresence ValuePresence
+	ParameterCount    string           `json:"parameter_count,omitempty" yaml:"parameter_count,omitempty"`
+	Type              ArchitectureType `json:"type,omitempty" yaml:"type,omitempty"`                 // Type of architecture
+	Tokenizer         Tokenizer        `json:"tokenizer,omitempty" yaml:"tokenizer,omitempty"`       // Tokenizer type used by the model
+	Quantization      Quantization     `json:"quantization,omitempty" yaml:"quantization,omitempty"` // Quantization level used by the model
+	Quantized         bool             `json:"quantized" yaml:"quantized" extensions:"x-starmap-nullable"`
+	FineTuned         bool             `json:"fine_tuned" yaml:"fine_tuned" extensions:"x-starmap-nullable"` // Whether this is a fine-tuned variant
+	BaseModel         *string          `json:"base_model,omitempty" yaml:"base_model,omitempty"`             // Base model ID if fine-tuned
 }
 
 // ArchitectureType represents the type of model architecture.

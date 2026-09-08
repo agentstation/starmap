@@ -736,6 +736,19 @@ func main() {
   - [func \(m \*Model\) UnmarshalYAML\(unmarshal func\(any\) error\) error](<#Model.UnmarshalYAML>)
   - [func \(m \*Model\) UnsetDescription\(\)](<#Model.UnsetDescription>)
 - [type ModelArchitecture](<#ModelArchitecture>)
+  - [func \(a ModelArchitecture\) Equal\(other ModelArchitecture\) bool](<#ModelArchitecture.Equal>)
+  - [func \(a \*ModelArchitecture\) FineTunedValue\(\) \(bool, ValuePresence\)](<#ModelArchitecture.FineTunedValue>)
+  - [func \(a ModelArchitecture\) MarshalJSON\(\) \(\[\]byte, error\)](<#ModelArchitecture.MarshalJSON>)
+  - [func \(a ModelArchitecture\) MarshalYAML\(\) \(any, error\)](<#ModelArchitecture.MarshalYAML>)
+  - [func \(a \*ModelArchitecture\) QuantizedValue\(\) \(bool, ValuePresence\)](<#ModelArchitecture.QuantizedValue>)
+  - [func \(a \*ModelArchitecture\) SetFineTuned\(value bool\)](<#ModelArchitecture.SetFineTuned>)
+  - [func \(a \*ModelArchitecture\) SetFineTunedUnknown\(\)](<#ModelArchitecture.SetFineTunedUnknown>)
+  - [func \(a \*ModelArchitecture\) SetQuantized\(value bool\)](<#ModelArchitecture.SetQuantized>)
+  - [func \(a \*ModelArchitecture\) SetQuantizedUnknown\(\)](<#ModelArchitecture.SetQuantizedUnknown>)
+  - [func \(a \*ModelArchitecture\) UnmarshalJSON\(data \[\]byte\) error](<#ModelArchitecture.UnmarshalJSON>)
+  - [func \(a \*ModelArchitecture\) UnmarshalYAML\(unmarshal func\(any\) error\) error](<#ModelArchitecture.UnmarshalYAML>)
+  - [func \(a \*ModelArchitecture\) UnsetFineTuned\(\)](<#ModelArchitecture.UnsetFineTuned>)
+  - [func \(a \*ModelArchitecture\) UnsetQuantized\(\)](<#ModelArchitecture.UnsetQuantized>)
 - [type ModelAttachments](<#ModelAttachments>)
 - [type ModelControlLevel](<#ModelControlLevel>)
   - [func \(mcl ModelControlLevel\) String\(\) string](<#ModelControlLevel.String>)
@@ -1067,7 +1080,7 @@ func ValidateReviewCandidates(candidates []evidence.ReviewCandidate, observation
 ValidateReviewCandidates verifies durable review candidates against the exact source observations that supplied their evidence.
 
 <a name="ArchitectureType"></a>
-## type [ArchitectureType](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_architecture.go#L15>)
+## type [ArchitectureType](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_architecture.go#L17>)
 
 ArchitectureType represents the type of model architecture.
 
@@ -1092,7 +1105,7 @@ const (
 ```
 
 <a name="ArchitectureType.String"></a>
-### func \(ArchitectureType\) [String](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_architecture.go#L18>)
+### func \(ArchitectureType\) [String](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_architecture.go#L20>)
 
 ```go
 func (at ArchitectureType) String() string
@@ -2859,7 +2872,7 @@ func (m *Model) UnsetDescription()
 UnsetDescription removes the model's description claim.
 
 <a name="ModelArchitecture"></a>
-## type [ModelArchitecture](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_architecture.go#L4-L12>)
+## type [ModelArchitecture](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_architecture.go#L4-L14>)
 
 ModelArchitecture represents the technical architecture details of a model.
 
@@ -2869,11 +2882,129 @@ type ModelArchitecture struct {
     Type           ArchitectureType `json:"type,omitempty" yaml:"type,omitempty"`                 // Type of architecture
     Tokenizer      Tokenizer        `json:"tokenizer,omitempty" yaml:"tokenizer,omitempty"`       // Tokenizer type used by the model
     Quantization   Quantization     `json:"quantization,omitempty" yaml:"quantization,omitempty"` // Quantization level used by the model
-    Quantized      bool             `json:"quantized" yaml:"quantized"`
-    FineTuned      bool             `json:"fine_tuned" yaml:"fine_tuned"`                     // Whether this is a fine-tuned variant
-    BaseModel      *string          `json:"base_model,omitempty" yaml:"base_model,omitempty"` // Base model ID if fine-tuned
+    Quantized      bool             `json:"quantized" yaml:"quantized" extensions:"x-starmap-nullable"`
+    FineTuned      bool             `json:"fine_tuned" yaml:"fine_tuned" extensions:"x-starmap-nullable"` // Whether this is a fine-tuned variant
+    BaseModel      *string          `json:"base_model,omitempty" yaml:"base_model,omitempty"`             // Base model ID if fine-tuned
+    // contains filtered or unexported fields
 }
 ```
+
+<a name="ModelArchitecture.Equal"></a>
+### func \(ModelArchitecture\) [Equal](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_architecture_presence.go#L72>)
+
+```go
+func (a ModelArchitecture) Equal(other ModelArchitecture) bool
+```
+
+Equal compares architecture facts and Boolean presence states.
+
+<a name="ModelArchitecture.FineTunedValue"></a>
+### func \(\*ModelArchitecture\) [FineTunedValue](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_architecture_presence.go#L58>)
+
+```go
+func (a *ModelArchitecture) FineTunedValue() (bool, ValuePresence)
+```
+
+FineTunedValue returns the fine\-tuning claim and its presence. Nil receivers and false values without recorded presence return ValueMissing.
+
+<a name="ModelArchitecture.MarshalJSON"></a>
+### func \(ModelArchitecture\) [MarshalJSON](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_architecture_codec.go#L10>)
+
+```go
+func (a ModelArchitecture) MarshalJSON() ([]byte, error)
+```
+
+MarshalJSON preserves Boolean presence and the legacy field order.
+
+<a name="ModelArchitecture.MarshalYAML"></a>
+### func \(ModelArchitecture\) [MarshalYAML](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_architecture_codec.go#L63>)
+
+```go
+func (a ModelArchitecture) MarshalYAML() (any, error)
+```
+
+MarshalYAML preserves architecture claim presence in the authoring workspace.
+
+<a name="ModelArchitecture.QuantizedValue"></a>
+### func \(\*ModelArchitecture\) [QuantizedValue](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_architecture_presence.go#L24>)
+
+```go
+func (a *ModelArchitecture) QuantizedValue() (bool, ValuePresence)
+```
+
+QuantizedValue returns the quantization claim and its presence. Nil receivers and false values without recorded presence return ValueMissing.
+
+<a name="ModelArchitecture.SetFineTuned"></a>
+### func \(\*ModelArchitecture\) [SetFineTuned](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_architecture_presence.go#L39>)
+
+```go
+func (a *ModelArchitecture) SetFineTuned(value bool)
+```
+
+SetFineTuned records a known fine\-tuning claim, including false. Use this method to replace a previously decoded claim.
+
+<a name="ModelArchitecture.SetFineTunedUnknown"></a>
+### func \(\*ModelArchitecture\) [SetFineTunedUnknown](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_architecture_presence.go#L45>)
+
+```go
+func (a *ModelArchitecture) SetFineTunedUnknown()
+```
+
+SetFineTunedUnknown records an unknown fine\-tuning claim.
+
+<a name="ModelArchitecture.SetQuantized"></a>
+### func \(\*ModelArchitecture\) [SetQuantized](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_architecture_presence.go#L5>)
+
+```go
+func (a *ModelArchitecture) SetQuantized(value bool)
+```
+
+SetQuantized records a known quantization claim, including false. Use this method to replace a previously decoded claim.
+
+<a name="ModelArchitecture.SetQuantizedUnknown"></a>
+### func \(\*ModelArchitecture\) [SetQuantizedUnknown](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_architecture_presence.go#L11>)
+
+```go
+func (a *ModelArchitecture) SetQuantizedUnknown()
+```
+
+SetQuantizedUnknown records an unknown quantization claim.
+
+<a name="ModelArchitecture.UnmarshalJSON"></a>
+### func \(\*ModelArchitecture\) [UnmarshalJSON](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_architecture_codec.go#L40>)
+
+```go
+func (a *ModelArchitecture) UnmarshalJSON(data []byte) error
+```
+
+UnmarshalJSON restores architecture claim presence.
+
+<a name="ModelArchitecture.UnmarshalYAML"></a>
+### func \(\*ModelArchitecture\) [UnmarshalYAML](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_architecture_codec.go#L96>)
+
+```go
+func (a *ModelArchitecture) UnmarshalYAML(unmarshal func(any) error) error
+```
+
+UnmarshalYAML restores architecture claim presence from an authoring record.
+
+<a name="ModelArchitecture.UnsetFineTuned"></a>
+### func \(\*ModelArchitecture\) [UnsetFineTuned](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_architecture_presence.go#L51>)
+
+```go
+func (a *ModelArchitecture) UnsetFineTuned()
+```
+
+UnsetFineTuned removes the fine\-tuning claim.
+
+<a name="ModelArchitecture.UnsetQuantized"></a>
+### func \(\*ModelArchitecture\) [UnsetQuantized](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_architecture_presence.go#L17>)
+
+```go
+func (a *ModelArchitecture) UnsetQuantized()
+```
+
+UnsetQuantized removes the quantization claim.
 
 <a name="ModelAttachments"></a>
 ## type [ModelAttachments](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model.go#L318-L322>)
@@ -5673,7 +5804,7 @@ type ProvidersReader interface {
 ```
 
 <a name="Quantization"></a>
-## type [Quantization](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_architecture.go#L65>)
+## type [Quantization](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_architecture.go#L67>)
 
 Quantization represents the quantization level used by a model. Quantization reduces model size and computational requirements while aiming to preserve performance.
 
@@ -5698,7 +5829,7 @@ const (
 ```
 
 <a name="Quantization.String"></a>
-### func \(Quantization\) [String](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_architecture.go#L68>)
+### func \(Quantization\) [String](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_architecture.go#L70>)
 
 ```go
 func (q Quantization) String() string
@@ -5903,7 +6034,7 @@ func (o SourceObservationLink) Validate() error
 Validate verifies one complete source\-observation link.
 
 <a name="Tokenizer"></a>
-## type [Tokenizer](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_architecture.go#L36>)
+## type [Tokenizer](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_architecture.go#L38>)
 
 Tokenizer represents the tokenizer type used by a model.
 
@@ -5935,7 +6066,7 @@ const (
 ```
 
 <a name="Tokenizer.String"></a>
-### func \(Tokenizer\) [String](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_architecture.go#L39>)
+### func \(Tokenizer\) [String](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_architecture.go#L41>)
 
 ```go
 func (t Tokenizer) String() string

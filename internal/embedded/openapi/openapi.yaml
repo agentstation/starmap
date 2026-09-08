@@ -265,13 +265,15 @@ components:
           type: string
         fine_tuned:
           description: Whether this is a fine-tuned variant
-          type: boolean
+          type: [boolean, "null"]
+          x-starmap-nullable: true
         parameter_count:
           type: string
         quantization:
           $ref: '#/components/schemas/catalogs.Quantization'
         quantized:
-          type: boolean
+          type: [boolean, "null"]
+          x-starmap-nullable: true
         tokenizer:
           $ref: '#/components/schemas/catalogs.Tokenizer'
         type:
