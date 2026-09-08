@@ -3,7 +3,7 @@
 CSP0.1 passes after renewed browser review of the integrated Starport branch.
 The current E01 behavior tests and browser input hashes pass.
 All 50 primary release cases remain UNVERIFIED.
-Draft Starport PR #366 publishes the changes. The evidence below records the earlier local review.
+Starport PR #366 merged the changes. The evidence below records the accepted review and merge.
 
 ## Changes
 
@@ -86,3 +86,15 @@ Public documentation made no deployment-data requests in any measured view.
 The previous review remains in `csp0.1/browser-review-pre-main-integration.json`.
 The current review binds 220 source inputs and the renewed captures.
 This local browser review does not qualify public hosting, released installers, paid inference, or 200 percent browser zoom.
+
+## Implementation merge
+
+Starport PR #366 merged at `cffa9300160d90eecb641b756a3ab2dd05d6ef47` on 2026-09-08.
+All 16 checks passed at head `2973fd08122bc8264c499b99e60b44c890f3c6c7`.
+The [merge record](pr-audit-2026-09-08/approved-merges/starport-366-merged.json) confirms the merge and exact source.
+All 220 inputs from the accepted browser review match the merged source.
+E01 retains its nine passing behavior tests and 12 inspected browser views.
+CSP0.1 now meets the owner’s implementation-merge completion rule.
+
+The earlier local-only and pending-review statements describe their original checkpoints.
+Later README, Compose, and Starmap integration commits remain outside this merge.

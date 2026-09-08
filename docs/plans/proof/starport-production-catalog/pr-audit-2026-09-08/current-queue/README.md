@@ -1,6 +1,6 @@
 # Current pull request queue
 
-Ten PRs remain open after four approved merges. All retain distinct work or required ancestry.
+Nine PRs remain open after five approved merges. All retain distinct work or required ancestry.
 Starmap #127 remains closed because #128 preserves its dependency changes.
 No additional PR qualifies for closure in this review.
 
@@ -15,7 +15,7 @@ Their existing manual evidence applies only to its recorded source.
 | 2 | Starmap #128–#131 | Retain the four independent dependency updates. Combined adapter, consumer, and listed SDK credential-path checks pass. Preserve the consumer checksum repair during integration. | Catalog plan executor |
 | 3 | Starport #368 | Merged at `857bd854` after local dependency checks and ten passing CI checks. | Catalog plan executor |
 | 4 | Starmap #126, #132, #134, #133, #135, #136 | PR #125 merged at `96c098f9`. Merge the remaining stack in this order after required checks pass. Continue CSP3 under its publication gate. | Catalog plan executor |
-| 5 | Starport #366 | Merge the published documentation and qualification changes after current-base checks pass. Six later local commits retain their separate release dependency. | Catalog plan executor |
+| 5 | Starport #366 | Merged at `cffa9300` after 16 passing checks. CSP0.1 is complete. Six later local commits retain their separate release dependency. | Catalog plan executor |
 
 The current branch ancestry confirms all six parent relationships.
 The three published updates change 23 proof paths each and preserve every non-proof diff.
@@ -87,7 +87,7 @@ The task identifier is `maintain-starmap-and-starport-pr-queue`.
 ## Approved merges
 
 The owner authorized reviewed merges without repeated permission requests on 2026-09-08.
-The [merge record](../approved-merges/verification.json) confirms four completed merges.
+The [merge record](../approved-merges/verification.json) confirms five completed merges.
 Starmap requires each PR branch to include current main before merge.
 PRs #129 and #126 now need checks against main after the #128 merge.
 Starmap #128 merged at `e12a865f` after its required checks passed.
@@ -100,5 +100,5 @@ Releases still require separate authority.
 
 PR #366 now includes current main at head `2973fd08122bc8264c499b99e60b44c890f3c6c7`.
 Its published source retains stable Starmap v0.16.5 and can merge independently of the six later local commits.
-Fresh checks must pass before merge. The local product worktree still preserves all six commits.
+All 16 checks passed before merge at `cffa9300`. The local product worktree still preserves all six later commits.
 The later pseudo-version and release contract do not block this published scope.

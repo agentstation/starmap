@@ -1,0 +1,175 @@
+{
+  "headRefOid": "2973fd08122bc8264c499b99e60b44c890f3c6c7",
+  "mergeCommit": {
+    "oid": "cffa9300160d90eecb641b756a3ab2dd05d6ef47"
+  },
+  "mergedAt": "2026-09-08T17:14:37Z",
+  "number": 366,
+  "state": "MERGED",
+  "statusCheckRollup": [
+    {
+      "__typename": "CheckRun",
+      "completedAt": "2026-09-08T16:59:19Z",
+      "conclusion": "SUCCESS",
+      "detailsUrl": "https://github.com/agentstation/starport/actions/runs/34254145033/job/102155577176",
+      "name": "Lint",
+      "startedAt": "2026-09-08T16:57:01Z",
+      "status": "COMPLETED",
+      "workflowName": "CI"
+    },
+    {
+      "__typename": "CheckRun",
+      "completedAt": "2026-09-08T16:57:42Z",
+      "conclusion": "SUCCESS",
+      "detailsUrl": "https://github.com/agentstation/starport/actions/runs/34254145029/job/102155580518",
+      "name": "Native windows x86_64",
+      "startedAt": "2026-09-08T16:57:03Z",
+      "status": "COMPLETED",
+      "workflowName": "Native Release Verification"
+    },
+    {
+      "__typename": "CheckRun",
+      "completedAt": "2026-09-08T16:57:41Z",
+      "conclusion": "SUCCESS",
+      "detailsUrl": "https://github.com/agentstation/starport/actions/runs/34254145029/job/102155580657",
+      "name": "Native windows arm64",
+      "startedAt": "2026-09-08T16:57:02Z",
+      "status": "COMPLETED",
+      "workflowName": "Native Release Verification"
+    },
+    {
+      "__typename": "CheckRun",
+      "completedAt": "2026-09-08T16:57:26Z",
+      "conclusion": "SUCCESS",
+      "detailsUrl": "https://github.com/agentstation/starport/actions/runs/34254145029/job/102155580637",
+      "name": "Native linux x86_64",
+      "startedAt": "2026-09-08T16:57:02Z",
+      "status": "COMPLETED",
+      "workflowName": "Native Release Verification"
+    },
+    {
+      "__typename": "CheckRun",
+      "completedAt": "2026-09-08T16:57:25Z",
+      "conclusion": "SUCCESS",
+      "detailsUrl": "https://github.com/agentstation/starport/actions/runs/34254145029/job/102155580602",
+      "name": "Native linux arm64",
+      "startedAt": "2026-09-08T16:57:05Z",
+      "status": "COMPLETED",
+      "workflowName": "Native Release Verification"
+    },
+    {
+      "__typename": "CheckRun",
+      "completedAt": "2026-09-08T16:57:50Z",
+      "conclusion": "SUCCESS",
+      "detailsUrl": "https://github.com/agentstation/starport/actions/runs/34254145029/job/102155580276",
+      "name": "Native darwin x86_64",
+      "startedAt": "2026-09-08T16:57:03Z",
+      "status": "COMPLETED",
+      "workflowName": "Native Release Verification"
+    },
+    {
+      "__typename": "CheckRun",
+      "completedAt": "2026-09-08T16:57:24Z",
+      "conclusion": "SUCCESS",
+      "detailsUrl": "https://github.com/agentstation/starport/actions/runs/34254145029/job/102155580743",
+      "name": "Native darwin arm64",
+      "startedAt": "2026-09-08T16:57:06Z",
+      "status": "COMPLETED",
+      "workflowName": "Native Release Verification"
+    },
+    {
+      "__typename": "CheckRun",
+      "completedAt": "2026-09-08T17:05:13Z",
+      "conclusion": "SUCCESS",
+      "detailsUrl": "https://github.com/agentstation/starport/actions/runs/34254145033/job/102155577448",
+      "name": "Test (ubuntu-latest)",
+      "startedAt": "2026-09-08T16:57:01Z",
+      "status": "COMPLETED",
+      "workflowName": "CI"
+    },
+    {
+      "__typename": "CheckRun",
+      "completedAt": "2026-09-08T17:05:34Z",
+      "conclusion": "SUCCESS",
+      "detailsUrl": "https://github.com/agentstation/starport/actions/runs/34254145033/job/102155577534",
+      "name": "Test (macos-latest)",
+      "startedAt": "2026-09-08T16:57:06Z",
+      "status": "COMPLETED",
+      "workflowName": "CI"
+    },
+    {
+      "__typename": "CheckRun",
+      "completedAt": "2026-09-08T17:09:29Z",
+      "conclusion": "SUCCESS",
+      "detailsUrl": "https://github.com/agentstation/starport/actions/runs/34254145033/job/102155577574",
+      "name": "Test (windows-latest)",
+      "startedAt": "2026-09-08T16:57:02Z",
+      "status": "COMPLETED",
+      "workflowName": "CI"
+    },
+    {
+      "__typename": "CheckRun",
+      "completedAt": "2026-09-08T16:59:53Z",
+      "conclusion": "SUCCESS",
+      "detailsUrl": "https://github.com/agentstation/starport/actions/runs/34254145033/job/102155577532",
+      "name": "Security Scan",
+      "startedAt": "2026-09-08T16:57:01Z",
+      "status": "COMPLETED",
+      "workflowName": "CI"
+    },
+    {
+      "__typename": "CheckRun",
+      "completedAt": "2026-09-08T17:05:44Z",
+      "conclusion": "SUCCESS",
+      "detailsUrl": "https://github.com/agentstation/starport/actions/runs/34254145033/job/102155577449",
+      "name": "Release Contract",
+      "startedAt": "2026-09-08T16:57:01Z",
+      "status": "COMPLETED",
+      "workflowName": "CI"
+    },
+    {
+      "__typename": "CheckRun",
+      "completedAt": "2026-09-08T16:58:00Z",
+      "conclusion": "SUCCESS",
+      "detailsUrl": "https://github.com/agentstation/starport/actions/runs/34254145033/job/102155577629",
+      "name": "OpenRouter SDK Compatibility",
+      "startedAt": "2026-09-08T16:57:03Z",
+      "status": "COMPLETED",
+      "workflowName": "CI"
+    },
+    {
+      "__typename": "CheckRun",
+      "completedAt": "2026-09-08T17:07:43Z",
+      "conclusion": "SUCCESS",
+      "detailsUrl": "https://github.com/agentstation/starport/actions/runs/34254145033/job/102155577539",
+      "name": "Release Snapshot",
+      "startedAt": "2026-09-08T16:57:02Z",
+      "status": "COMPLETED",
+      "workflowName": "CI"
+    },
+    {
+      "__typename": "CheckRun",
+      "completedAt": "2026-09-08T16:57:15Z",
+      "conclusion": "SUCCESS",
+      "detailsUrl": "https://github.com/agentstation/starport/actions/runs/34254145033/job/102155577431",
+      "name": "Action Pin Provenance",
+      "startedAt": "2026-09-08T16:57:01Z",
+      "status": "COMPLETED",
+      "workflowName": "CI"
+    },
+    {
+      "__typename": "CheckRun",
+      "completedAt": "2026-09-08T17:13:08Z",
+      "conclusion": "SUCCESS",
+      "detailsUrl": "https://github.com/agentstation/starport/actions/runs/34254145033/job/102159779490",
+      "name": "Build",
+      "startedAt": "2026-09-08T17:09:32Z",
+      "status": "COMPLETED",
+      "workflowName": "CI"
+    }
+  ],
+  "url": "https://github.com/agentstation/starport/pull/366",
+  "browser_inputs_matched": 220,
+  "acceptance_evidence": "../../csp0.1/publication-review/task-verification.json",
+  "task_completed": "CSP0.1"
+}

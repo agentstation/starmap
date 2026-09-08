@@ -121,5 +121,17 @@
     "final-full.jsonl": "GOTOOLCHAIN=go1.26.6 go test -race -count=1 -timeout 20m ./runtime ./acquisition ./internal/catalog/reconciler -json",
     "final-focused.jsonl": "GOTOOLCHAIN=go1.26.6 go test -race -count=1 ./runtime ./internal/catalog/reconciler -run Description -json",
     "final-minimum.jsonl": "GOTOOLCHAIN=go1.25.12 go test -race -count=1 ./runtime ./internal/catalog/reconciler -run Description -json"
+  },
+  "publication_verification": {
+    "status": "in_progress",
+    "command": "GOTOOLCHAIN=go1.26.6 make verify",
+    "started_head": "a64ebdc1",
+    "log": "/tmp/starmap-description-repair-2026-09-08/publication-verify.txt",
+    "exec_session_id": 85055,
+    "completed_observations": {
+      "ordinary_go_package_suites": 79,
+      "verifier_regression_tests": 73
+    },
+    "remaining": "Full race suite and remaining repository gates, including the final prose check. No full publication-check pass yet."
   }
 }
