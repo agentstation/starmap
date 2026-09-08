@@ -39,3 +39,8 @@ Schema generation, production integration, and required publication review remai
 To reproduce a capture, extract its files and rewrite the two filesystem prefixes in its overlay.
 The source prefix names the checked repository. The replacement prefix names the extracted candidate files.
 Use `ordered-overlay.json` for the final candidate. Earlier overlays retain their own source variants.
+
+## Production follow-up
+
+The [production implementation](../architecture-presence-2026-09-08/README.md) records commit `9b6403eb` and its additional schema work.
+The prototype captures above preserve their original scope. Publication verification and required review remain open.

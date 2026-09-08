@@ -1,0 +1,208 @@
+{
+  "source_commit": "9b6403eb033af80f4ed4c73154314e1abc7256c6",
+  "status": "implemented locally; publication verification running",
+  "runs": {
+    "before.jsonl": {
+      "pass_test": 15,
+      "fail_test": 1,
+      "fail_package": 1
+    },
+    "numeric-before.jsonl": {
+      "fail_test": 1,
+      "fail_package": 1
+    },
+    "full-affected.jsonl": {
+      "pass_test": 1754,
+      "pass_package": 5
+    },
+    "minimum.jsonl": {
+      "pass_test": 128,
+      "pass_package": 4
+    },
+    "final-focused.jsonl": {
+      "pass_test": 129,
+      "pass_package": 4
+    },
+    "final-minimum.jsonl": {
+      "pass_test": 129,
+      "pass_package": 4
+    },
+    "tool-final.jsonl": {
+      "pass_test": 17,
+      "pass_package": 1
+    },
+    "tool-settled.jsonl": {
+      "pass_test": 17,
+      "pass_package": 1
+    }
+  },
+  "artifacts": [
+    {
+      "path": "captures/before.jsonl.gz",
+      "sha256": "118fff355a18f91eb5b19adc6d44bbe0565e8f9cb68aff1b27309a7313dc48fc",
+      "content_sha256": "b6e9bad62feefcf3091ef2e8db87ff2687e6d8883e4ff5da665e0b69f0561405"
+    },
+    {
+      "path": "captures/numeric-before.jsonl.gz",
+      "sha256": "3d346eecae34256c13c301519a283cd6ec36e04e51d5ed48adfc62d09fdf46b4",
+      "content_sha256": "3e1a38efeef9725fd74b9799ae375a9f61da3dad83a128284040b055ad662541"
+    },
+    {
+      "path": "captures/initial-main.go.gz",
+      "sha256": "a6b54baadacdfaa3564bdad41c1d058f9d76f472aead70b7dd303beecb899a5d",
+      "content_sha256": "f6551cfd4ed68a522ce02fe146e165e9cb5b0ded478a7b0deb75c6e45a4ecf84"
+    },
+    {
+      "path": "captures/full-affected.jsonl.gz",
+      "sha256": "e653ef2e7f6ff676c40a24fdded27fa361ce4381666345fc6a93c2bb2bdf2899",
+      "content_sha256": "b1d18faff690add78eaa8398d283e8812025ac5efa489facb2a0c2e1f21e321c"
+    },
+    {
+      "path": "captures/minimum.jsonl.gz",
+      "sha256": "f7eb795899b967dcd13e65bd848e247daeed3b0402104fed77d9b1dbf0108003",
+      "content_sha256": "b62d03e23b8c100576a7bd21408f0e9ef1af10dd1228c4bd79d24a23197eda0e"
+    },
+    {
+      "path": "captures/final-focused.jsonl.gz",
+      "sha256": "618b4ce2538558f2a8484329020749f0cee41d4b1c5b7125c2891d0ceb975965",
+      "content_sha256": "33f7c16087bcd84f54d924c8e11ec73ac170f9cc7ad0296263db7e43a4845c93"
+    },
+    {
+      "path": "captures/final-minimum.jsonl.gz",
+      "sha256": "528e949965edd9c86947164ae5d08916add0783b7abc68799ea8731f1994e371",
+      "content_sha256": "ec7177ebdd4364cc5ba53c559e2b35b5eef66e6c9b2ae2084e0d81db1a56d6e5"
+    },
+    {
+      "path": "captures/tool-final.jsonl.gz",
+      "sha256": "2e9febe4ced45e66032b95b2fa01206d4a359fad57640738ec0c02e1a8dab457",
+      "content_sha256": "4bbbcb8863f316db4a040ba9e8ec3ac2225ecee549660dba37fb0e440ea9af9f"
+    },
+    {
+      "path": "captures/tool-settled.jsonl.gz",
+      "sha256": "49fd03f229f845beaff264a3ae61d555a5dd23ec210d0dc24f8f341ba2e5c10a",
+      "content_sha256": "037194c7711a977f01ad8e26c2ab0c5d8b2599423c1f6af6a38a68e55f124b31"
+    },
+    {
+      "path": "captures/generate.txt.gz",
+      "sha256": "7a3065aedc153bb104e7eb43909f2dc953d30b0b3cfcb293f25aff80c6fad73c",
+      "content_sha256": "6b92df5559315ab1a828352c576b47fe3343c574a26f41fc04dfd4c33752b861"
+    },
+    {
+      "path": "captures/godoc.txt.gz",
+      "sha256": "ed6d1f87bdc9a508219bad30e8de8bad0a035728c4ca4634cbdf897c8f7e7241",
+      "content_sha256": "ce97fe27d9e65d6307e5fd386af519f5ba81594cad1a2cf251de03d7e00f1305"
+    },
+    {
+      "path": "captures/godoc-final.txt.gz",
+      "sha256": "ed6d1f87bdc9a508219bad30e8de8bad0a035728c4ca4634cbdf897c8f7e7241",
+      "content_sha256": "ce97fe27d9e65d6307e5fd386af519f5ba81594cad1a2cf251de03d7e00f1305"
+    },
+    {
+      "path": "captures/godoc-settled.txt.gz",
+      "sha256": "ed6d1f87bdc9a508219bad30e8de8bad0a035728c4ca4634cbdf897c8f7e7241",
+      "content_sha256": "ce97fe27d9e65d6307e5fd386af519f5ba81594cad1a2cf251de03d7e00f1305"
+    },
+    {
+      "path": "captures/ago.json.gz",
+      "sha256": "905b50ebb66dc28cecf0d5d7681aabcd8b20af21ce5f8834692f1c6c68590281",
+      "content_sha256": "b8fb7afa66aa7a93914ac258475dd0191be821803a8aea4439f5ba05022f5fa5"
+    },
+    {
+      "path": "captures/ago-final.json.gz",
+      "sha256": "905b50ebb66dc28cecf0d5d7681aabcd8b20af21ce5f8834692f1c6c68590281",
+      "content_sha256": "b8fb7afa66aa7a93914ac258475dd0191be821803a8aea4439f5ba05022f5fa5"
+    },
+    {
+      "path": "captures/ago-settled.json.gz",
+      "sha256": "905b50ebb66dc28cecf0d5d7681aabcd8b20af21ce5f8834692f1c6c68590281",
+      "content_sha256": "b8fb7afa66aa7a93914ac258475dd0191be821803a8aea4439f5ba05022f5fa5"
+    },
+    {
+      "path": "captures/lint.txt.gz",
+      "sha256": "647d2da27f16c5acd6f0de45cb6a67c1cbe53522ed599d176cf7edc6ad005ff7",
+      "content_sha256": "e28cfbbfdb95059a7b0749a1cf2d08f17f61a6699d0692cb9b2b71c8623a72d0"
+    },
+    {
+      "path": "captures/lint-final.txt.gz",
+      "sha256": "ee9e3bf054551c46480ce153f2874372237805c67ec52245790895469cce68ba",
+      "content_sha256": "d1a7ecaf588f2a57fa027c3d96e2b124500b8e97982b7e399df52e1d40bb9710"
+    },
+    {
+      "path": "captures/lint-settled.txt.gz",
+      "sha256": "bafcb04d67f6157ff3d4a1fdf228afd2df6cc6d786c61642c1125b1fe879e728",
+      "content_sha256": "e92606b0bf483111dff0a120c315ea165821348f31365020e2468a0059095c47"
+    },
+    {
+      "path": "captures/docs-check.txt.gz",
+      "sha256": "59747dd348188f43dea26abac4e12013e935e75b98d2e16bf78504bd027b453c",
+      "content_sha256": "6cbe9177dccfcb011803b2cdfe2ddca43eaf50d39d2f27a2711ff0b0c997d656"
+    },
+    {
+      "path": "captures/openapi-check.txt.gz",
+      "sha256": "a33779829af94d35cce9f563b25bc31e3c560a5b304afe1c6c4da08e4627eb95",
+      "content_sha256": "c8d89b42e5c2bddaed8d43f08681072e0f7ccff0481f0941aa40b30d9810241e"
+    },
+    {
+      "path": "captures/writing.txt.gz",
+      "sha256": "c65d89e809908251dc53a470520c487afa7a93e28d392b4939d72ebde3675057",
+      "content_sha256": "885caa3a19900ec72ca20f0a23fc3464de1e91cc26095069a9c245e7559ab1b5"
+    },
+    {
+      "path": "captures/windows-build.txt.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "content_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "captures/source-manifest.json.gz",
+      "sha256": "e74ac104e826e5142355f7fb9853d09144d4387f4649b98c743375d683a968b3",
+      "content_sha256": "57da5a484d2be4aeb082efe83adc7f515f5893d30640fa00aabe9fa693005f5e"
+    },
+    {
+      "path": "captures/proof-writing.txt.gz",
+      "sha256": "0cb8bf19952348755a1dc1af753f29174b124618973bffdbbd50e97b47092d69",
+      "content_sha256": "1250629ebe41ed0475ce88d02d4cd7097cd6acdad9e2514b3dfdc7bf92b65c6f"
+    },
+    {
+      "path": "captures/proof-writing-final.txt.gz",
+      "sha256": "f709bb577cf319b2d3d09e10faedfa89fbcdfa09db6cb0dc952a307b7a7ba1e6",
+      "content_sha256": "596f1795732ffd0e42cd25ef904ae6e05078801017bd621fc961e8eeb6dccda4"
+    }
+  ],
+  "full_affected_scope": "Initial integrated architecture candidate before the command-only numeric and rooted-I/O repairs and equivalent read-view switches. Final focused and command suites cover the later changes.",
+  "final_checks": {
+    "focused": {
+      "tests": 129,
+      "packages": 4,
+      "failures": 0
+    },
+    "minimum_go_1_25_12": {
+      "tests": 129,
+      "packages": 4,
+      "failures": 0
+    },
+    "command_go_1_26_6": {
+      "tests": 17,
+      "packages": 1,
+      "failures": 0
+    },
+    "lint": "0 issues",
+    "ago": "PASS; zero findings and errors",
+    "documentation_freshness": "PASS",
+    "prose": "1251 files PASS",
+    "windows_amd64_command_cross_build": "PASS; not native execution"
+  },
+  "publication_verification": {
+    "status": "in_progress",
+    "exec_session_id": 45225,
+    "command": "GOTOOLCHAIN=go1.26.6 make verify",
+    "log": "/tmp/starmap-openapi-presence-2026-09-08/publication-verify.txt",
+    "source_manifest": "captures/source-manifest.json.gz",
+    "last_confirmed_stage": "env CGO_ENABLED=1 go test ./... -race -short -timeout=20m"
+  },
+  "remaining": [
+    "Complete the full publication gate",
+    "Required structured review, publication, and merge",
+    "Remaining CSP3 legacy-admission, record-presence, scoped-membership, and deletion contracts"
+  ],
+  "task_completion": false
+}
