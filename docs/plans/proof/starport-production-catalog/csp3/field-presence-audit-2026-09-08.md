@@ -1,6 +1,6 @@
 # Model field presence audit
 
-CSP3 remains incomplete. The limit repair preserves unknown values without a known fallback. The composite repair addresses the recorded receipt failures. Explicit null and unknown-value failures remain open. Scoped membership and removal review remain separate open requirements.
+CSP3 remains incomplete. The limit repair preserves unknown values without a known fallback. The composite repair addresses the recorded receipt failures. Explicit null and unknown-value failures remain open. Rejected and legacy composite evidence also need repair. Scoped membership and removal review remain separate open requirements.
 
 ## Evidence scope
 
@@ -13,7 +13,7 @@ The audit examines `pkg/catalogs/model.go`, `model_presence_codec.go`, and `inte
 | Description | A private presence state preserves explicit empty and null values. | The JSON null probe passes for description. A separate reconciler probe loses an unknown description when no known fallback exists. |
 | Model metadata | Values merge across sources. Separate field and record-presence entries retain the contributing receipts. | The composite recovery test covers retained and replaced metadata through restart and source refresh. Architecture flag presence still needs repair. |
 | Modes | Named modes merge atomic pricing records and individual request overrides with separate evidence. | The composite recovery test covers mode overrides, empty records, dotted keys, and whole prices. Payload and YAML checks preserve original receipts. |
-| Authors | The merger accumulates distinct author identities and records one aggregate entry. | The expanded recovery probe confirms missing per-author receipts through filesystem restart and source refresh. Authorship must not change provider-serving identity. |
+| Authors | The merger records each membership independently and selects details from the resolved input. | Recovery and policy tests pass on the candidate. Legacy aggregate-only evidence still bypasses projection refusal. |
 | Extensions | Namespaced fields merge by authority with separate key and namespace evidence. | The composite recovery test covers false, null, nested values, empty namespaces, and dotted keys. Extension keys remain outside canonical facts. |
 | Pricing | One validated commercial record wins atomically. | Existing recovery tests cover free, paid, omitted, and retained pricing. Whole-record null presence still collapses during JSON decoding and encoding. |
 | Other optional records | Pointer fields omit nil values. | JSON round trips lose explicit nulls for limits, features, metadata, lineage, attachments, generation, reasoning, reasoning tokens, verbosity, tools, response, and lifecycle dates. |
@@ -29,13 +29,13 @@ The JSON probe checks fifteen fields. Description passes. Fourteen optional fiel
 
 Missing data makes no claim. Unknown data reports the absence of knowledge. An explicit null must not silently become permission to remove an offering. Preserve the original observation and apply the selected field policy during reconciliation.
 
-The description probe records two failure events: its test and package. JSON retains the unknown description, but reconciliation converts it to missing when no known fallback exists. The field selector currently discards unknown description claims.
+The original description probe records two failure events: its test and package. JSON retains the unknown description, but reconciliation converts it to missing without a known fallback. The later runtime probe records four failure events and four passes. Unknown descriptions disappear through recovery. Empty and nonempty descriptions retain their receipts.
 
 The architecture codec probe covers both Boolean flags with missing, null, false, and true inputs. Known values pass. Missing and null values become false, producing six failure events and four passing events. The composite selector preserves the existing architecture policy until the presence contract changes.
 
 ## Required next work
 
-Complete composite provenance verification at each owning concept. Authorship contributions need a repair with publication, restart, and source-refresh coverage. Do not assign one receipt to a result that still depends on another observation.
+Complete composite provenance verification at each owning concept. The [authorship repair](authorship-recovery-2026-09-08/README.md) covers publication, restart, and source refresh. Resolve legacy aggregate-only evidence and current composite rejection before publication. Do not assign one receipt to a result that still depends on another observation.
 
 Define and preserve whole-record presence through JSON, YAML, observation copies, and immutable payloads. Keep unknown claims separate from missing records and scoped tombstones. Verify compatibility before publishing a changed payload contract.
 
