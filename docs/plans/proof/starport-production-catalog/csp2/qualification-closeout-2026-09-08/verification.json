@@ -1,0 +1,45 @@
+{
+  "implementation_pr": {
+    "baseRefOid": "50557f055bd76fa5ad061253b3d23082634d47e0",
+    "headRefOid": "e68f61a603b2c017f3f96edd9a0eab25c4d87021",
+    "number": 136,
+    "state": "OPEN",
+    "url": "https://github.com/agentstation/starmap/pull/136"
+  },
+  "evidence_pr": {
+    "baseRefOid": "637f780a067466896f6b9ed03dc034cd764861a9",
+    "headRefOid": "50557f055bd76fa5ad061253b3d23082634d47e0",
+    "number": 135,
+    "state": "OPEN",
+    "url": "https://github.com/agentstation/starmap/pull/135"
+  },
+  "review": {
+    "profile": "cross-lab",
+    "reviewers": [
+      "gpt-5.6-sol xhigh",
+      "claude-opus-5 high"
+    ],
+    "portions": 1,
+    "bundle_bytes": 146682,
+    "findings": 0,
+    "exit_code": 0
+  },
+  "prose_files": 1175,
+  "evidence_prose_files": 1159,
+  "source_qualified": "7e5912623d0cd53e95451dbd84896b831c82d0a3",
+  "production_source_unchanged_at_publication": true,
+  "open_prs": {
+    "starmap": 11,
+    "starport": 3
+  },
+  "main_merges": 0,
+  "releases": 0,
+  "sha256": {
+    "pr135.json": "d5712b6c6a11ac081e2bf3b53addb374034f834937b7240a68c10b6ec1e1e53b",
+    "starport-open-prs.json": "8816ea56ef247ddcd220f483927ca10ab77868909d8e30665bab7994f23840d7",
+    "starmap-open-prs.json": "db98dbfc01bb8083da4258100a0261bcd0381714d4afeb4bc93b4fa22400f46c",
+    "evidence-prepr.log": "12bbf64de628b1299e17cb70dcdf7f21a4c4320237e3f2f5c15618a9d00cbac4",
+    "pr136.json": "8b6306c7d121029306c4d7b767394ff44321b1328908f0a5d4a12a241c4ac90d",
+    "prepr.log": "5e43b90fa702ae81b63ef1bc2c6c36e3a0a3c29549c80968b6df7439f455d293"
+  }
+}

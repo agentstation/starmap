@@ -1,0 +1,18 @@
+review still running: claude elapsed=60s pid=7322 cpu=1.0s/60s(2%) rss=254M state=S
+review still running: claude elapsed=120s pid=7322 cpu=0.7s/60s(1%) rss=228M state=S
+autoreview target: branch
+branch: codex/catalog-qualification
+gate: pre-pr (configured cadence: pre-pr)
+profile: cross-lab
+config: /Users/jack/.config/autoreview/config.toml
+selection: sol=7.83, opus5=7.52
+reviewers: codex model=gpt-5.6-sol thinking=xhigh, claude model=claude-opus-5 thinking=high
+tools: on
+web_search: on
+ref: 50557f05
+trufflehog: clean (3.2s)
+bundle: 146682 bytes; review passes: 1
+autoreview panel clean: no accepted/actionable findings reported
+overall: patch is correct (0.98)
+Panel review complete. claude model=claude-opus-5 thinking=high: 0 finding(s), codex model=gpt-5.6-sol thinking=xhigh: 0 finding(s).
+autoreview clean attestation stored for this substantive diff

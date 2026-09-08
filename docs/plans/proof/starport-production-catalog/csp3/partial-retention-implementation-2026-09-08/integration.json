@@ -1,0 +1,15 @@
+{
+  "commit": "9b18cedb8f1539911ceb93885d1b3d82e858598d",
+  "isolated_patch": "fa5954a6b598bc1ab7fcd5e24da15a136fbe8cd8",
+  "production_diff_from_isolated_patch": [],
+  "command": "GOTOOLCHAIN=go1.26.6 go test -race -count=1 -timeout=15m -run '^Test(ProviderReceipt|Manual|ProviderReset|InputPublication|ProviderPolicy|PartialProviderReply)' -json ./runtime",
+  "exit_code": 0,
+  "events": {
+    "pass": 103
+  },
+  "sha256": {
+    "integrated.jsonl": "f74067c360d6b6883dabb87e6b5ea6ac920c774aa5df44ebdf26583992ace0d2"
+  },
+  "published": false,
+  "task_complete": false
+}
