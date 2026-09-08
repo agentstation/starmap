@@ -1,0 +1,128 @@
+{
+  "schema_version": 1,
+  "reason": "The URI detector reports the synthetic credential URL in subtest labels as unknown. The source constructs it from eight placeholder characters.",
+  "original_commit": "f061dbde5e376c5dcf940875b30d58e3e713cb6d",
+  "source_fixture": "pkg/sources/credentials_test.go",
+  "source_fixture_sha256": "4b2a0a2719e4f4794697ca0d66f08d0de941afb92488ee54e5e550b13bd705e6",
+  "synthetic_value_sha256": "7cb00510fa82dd6689c15d5b86319dddaa575a9aab3d6c053038478c26b21d5d",
+  "published_label": "[synthetic-credential-url]",
+  "transformation": "Exact UTF-8 string substitution only; reversing the substitution restores every original byte.",
+  "historical_verification": "Existing historical capture hashes refer to original bytes at original_commit. This manifest binds current publishable derivatives to those captures.",
+  "test_results_changed": false,
+  "files": [
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/binding-acquisition-final-packages.jsonl",
+      "original_sha256": "eec7b7a2ac3d8f6582ef536c443f9eef163c0ce78609e568e0039878b7d83f28",
+      "published_sha256": "eb52215b6aa29aaebbc4bfa9db99ea33bd5e15688e92fb02b6e73ec91c0006b6",
+      "substitutions": 6
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/binding-batch-race-final.jsonl",
+      "original_sha256": "7fa3c48cdc97c6601b1251ad848ca6de7d7997626d4ad9b61180b0aa2e5720eb",
+      "published_sha256": "89e6f61ce0c0b09acf4e6086c48eb07684a6246b23bbccbccd35360d7a6777c2",
+      "substitutions": 6
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/binding-batch-race.jsonl",
+      "original_sha256": "c0a7999ea44797212fdd9529af30348b60bb806446ddb499f5b1da3c0c79497b",
+      "published_sha256": "2a984a79e7fe5c783ddae8942f64eba6a3ab19abec55bd4b8de0cc02aa542034",
+      "substitutions": 6
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/credential-run-packages-output.jsonl",
+      "original_sha256": "972c713fa80d0c294f24f8c3da2b2d8a625fe5de0b7b2170094dd792cbc1d4d1",
+      "published_sha256": "363ccfa60651230de7438ce5f52648bea0bdf9a67ca26b40460778a636a43059",
+      "substitutions": 6
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/input-publication-all.jsonl",
+      "original_sha256": "e86b96355a4aa54585ea39cc108018436f84869acc6bf27c15e94c4d2e251cb2",
+      "published_sha256": "f30f8a041680bc3545dcdb3292541446ba9aa39c0564efffa021c2681693e3d4",
+      "substitutions": 6
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/manual-composition-all.jsonl",
+      "original_sha256": "ec877b9bb41516c7aba34d068c45c569395f513d304f9b35f96c97e3341a6650",
+      "published_sha256": "ce137b247ed3d96b9bb7361dd4a7eb1f523bb71862e0729ce2f23735a3c6eb2d",
+      "substitutions": 6
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/manual-retention-all.jsonl",
+      "original_sha256": "96f1b7776278a2c54ed5d264ad87cd9618157fa6aeef1d27ee313744bd9f2ce5",
+      "published_sha256": "64b6d7e8fc550af50df6dca24a7b4880bc4d11afc5fafa9a505bc09999962aa9",
+      "substitutions": 6
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/metadata-selection-all.jsonl",
+      "original_sha256": "85ee673c457f8d45af8ade8d014584625186796b490a77f63e95f14d4b3048fb",
+      "published_sha256": "7811bc1d5704be2c918661454bf991e9efe7f3d519dfd74197c99ac066fd644e",
+      "substitutions": 6
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/observation-update-all.jsonl",
+      "original_sha256": "27bc993cc7b02b719ec2980a153cad1d35be015f42324305de7a680154fa63b2",
+      "published_sha256": "ee071d74d5a977a11a2b4a6d36d0e80ac9a3e7390d498c4c063e7890b70fa1f6",
+      "substitutions": 6
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/provider-binding-green.json",
+      "original_sha256": "59c2dd8f3d724114bb9aeca6d60548def0c621373b096086867da976704b802c",
+      "published_sha256": "8fba08be84451023d8c6787c75791ce0fc5b8ecd0db5b8076d490bb37af4155e",
+      "substitutions": 6
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/provider-binding-packages-output.jsonl",
+      "original_sha256": "d9837cc6f90914647a8247472e71fdf7bd2e95e4d081de3332b897e9ecad0909",
+      "published_sha256": "76479864069e0507ea6d53e7f75afab74d63202ebb976d4be70a3bf90f531fa8",
+      "substitutions": 6
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/provider-receipt-identity-packages-output.jsonl",
+      "original_sha256": "fc3f6f5c51e1fbf7425b92ccae04ed336b1984c7222243897e9589e80d73698b",
+      "published_sha256": "1b7049c45127891e275e0bbcc017c9c1a185f3a373896f9f4ba1a4b050f26ec0",
+      "substitutions": 6
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/provider-receipt-packages-output.jsonl",
+      "original_sha256": "a96cc482cb557cc9260506700a5137923ab5bf2bec605946a5c08529b0fcfb6b",
+      "published_sha256": "29aa60b6c8c55b3d69b8fe73a0788df604c17e2816e50a3168eb1a126b65a26b",
+      "substitutions": 6
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/provider-reset-all.jsonl",
+      "original_sha256": "d775f515e3bc1d228d419abd38c4014b22de08ed8bef2f611cc7f8116c828d03",
+      "published_sha256": "268aa8ac8e41645328fa3edf5fd3ab1a88d47efc9ce7366444fed1011dcaf560",
+      "substitutions": 6
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/provider-scope-retention-final-packages.jsonl",
+      "original_sha256": "29f96482f122f3992624da723ef25f1842eee5d22aa9024db687355ca66730c4",
+      "published_sha256": "0ba91a5afdd3a3ac7ca78d29b9d6c4572d5ed794ca8ec9625073b9eb05c1cba8",
+      "substitutions": 6
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/provider-selection-all.jsonl",
+      "original_sha256": "4efbf2ec9cd89c80e34376833007ff4d72ce0541279c7f11acfac965cd44b4c0",
+      "published_sha256": "163c93e4644ec2097785752a97dfe19819265442fc5fe655e62473ef9cea1c49",
+      "substitutions": 6
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/receipt-identity-all.jsonl",
+      "original_sha256": "3448874fb1b967aec3ab8cf3c96cce307bf62de4398b43a0097eb11f2aeecffb",
+      "published_sha256": "987218ebe034548223881051a0520e005b3feba1152d0abe106bc2c40595d711",
+      "substitutions": 6
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/runtime-reconciliation-all-verified.jsonl",
+      "original_sha256": "f2e8176ae4ea8422a233c50e54cc2e9cedc942e28bf6aee1c0366ba9f936444e",
+      "published_sha256": "d850f830908f1cf0f6dc54c6f07af5e3c2dfc85cc770ead35093760f3eefdf40",
+      "substitutions": 6
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/runtime-reconciliation-all.jsonl",
+      "original_sha256": "66a1d5e609e8a11b038908af11a89ce56cb4e29bd497e3a74fcaa62bf0b186c1",
+      "published_sha256": "846392ce003304f1d820866060a2eca8429aa1be163924f9f8b341f9297705c6",
+      "substitutions": 6
+    }
+  ]
+}
