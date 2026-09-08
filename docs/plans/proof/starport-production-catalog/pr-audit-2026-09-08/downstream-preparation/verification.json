@@ -7,7 +7,10 @@
     "proof_only_files": 174,
     "review": "Automatic metadata-only pre-PR gate exits 0 without a model call.",
     "published": true,
-    "tree_matches_previous_candidate": true
+    "tree_matches_previous_candidate": true,
+    "auto_merge_enabled": true,
+    "ci_run": 34285675518,
+    "watch_session": 22058
   },
   "pr136": {
     "head": "d5984e9a1d98c44861103962d16f56c2aa042bb9",
@@ -28,7 +31,14 @@
     "review_exit_code": 0,
     "review_findings": 0,
     "review_portions": 3,
-    "review_base": "4fdf12f8c63bcc3991cc77dfe542db32c214d9db"
+    "review_base": "4fdf12f8c63bcc3991cc77dfe542db32c214d9db",
+    "candidate_acceptance": {
+      "task": "CSP2",
+      "session": 16742,
+      "status": "running",
+      "output": "/tmp/starmap-pr136-candidate-csp2.json",
+      "qualifies_merge": false
+    }
   },
   "publication_order": [
     133,
