@@ -1,0 +1,361 @@
+{
+  "owner_authorized_merges": "2026-09-08",
+  "completion_requires_implementation_merge": true,
+  "records": [
+    {
+      "autoMergeRequest": null,
+      "baseRefName": "main",
+      "headRefOid": "3f0817ad23b69147caaafd2b30ccbd71a50e48a6",
+      "mergeCommit": {
+        "oid": "565a4fcded89a03fac9ec7701eed1fc562c806ee"
+      },
+      "mergedAt": "2026-09-08T16:26:43Z",
+      "number": 367,
+      "state": "MERGED",
+      "statusCheckRollup": [
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-09-07T14:07:57Z",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starport/actions/runs/34131083043/job/101771097349",
+          "name": "Lint",
+          "startedAt": "2026-09-07T14:06:11Z",
+          "status": "COMPLETED",
+          "workflowName": "CI"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-09-07T14:14:17Z",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starport/actions/runs/34131083043/job/101771097507",
+          "name": "Test (ubuntu-latest)",
+          "startedAt": "2026-09-07T14:06:11Z",
+          "status": "COMPLETED",
+          "workflowName": "CI"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-09-07T14:08:06Z",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starport/actions/runs/34131083043/job/101771097294",
+          "name": "Test (macos-latest)",
+          "startedAt": "2026-09-07T14:06:15Z",
+          "status": "COMPLETED",
+          "workflowName": "CI"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-09-07T14:08:25Z",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starport/actions/runs/34131083043/job/101771097466",
+          "name": "Test (windows-latest)",
+          "startedAt": "2026-09-07T14:06:11Z",
+          "status": "COMPLETED",
+          "workflowName": "CI"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-09-07T14:09:47Z",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starport/actions/runs/34131083043/job/101771097613",
+          "name": "Security Scan",
+          "startedAt": "2026-09-07T14:06:11Z",
+          "status": "COMPLETED",
+          "workflowName": "CI"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-09-07T14:14:29Z",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starport/actions/runs/34131083043/job/101771097071",
+          "name": "Release Contract",
+          "startedAt": "2026-09-07T14:06:10Z",
+          "status": "COMPLETED",
+          "workflowName": "CI"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-09-07T14:06:42Z",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starport/actions/runs/34131083043/job/101771097343",
+          "name": "OpenRouter SDK Compatibility",
+          "startedAt": "2026-09-07T14:06:10Z",
+          "status": "COMPLETED",
+          "workflowName": "CI"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-09-07T14:16:56Z",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starport/actions/runs/34131083043/job/101771097373",
+          "name": "Release Snapshot",
+          "startedAt": "2026-09-07T14:06:10Z",
+          "status": "COMPLETED",
+          "workflowName": "CI"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-09-07T14:06:22Z",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starport/actions/runs/34131083043/job/101771097386",
+          "name": "Action Pin Provenance",
+          "startedAt": "2026-09-07T14:06:11Z",
+          "status": "COMPLETED",
+          "workflowName": "CI"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-09-07T14:19:05Z",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starport/actions/runs/34131083043/job/101773632157",
+          "name": "Build",
+          "startedAt": "2026-09-07T14:14:31Z",
+          "status": "COMPLETED",
+          "workflowName": "CI"
+        }
+      ],
+      "url": "https://github.com/agentstation/starport/pull/367"
+    },
+    {
+      "autoMergeRequest": null,
+      "baseRefName": "main",
+      "headRefOid": "d8d12a26069f34442860cbcf8bb840dd073177fc",
+      "mergeCommit": {
+        "oid": "96c098f9c86bbc63501173752ccefc8a94e05374"
+      },
+      "mergedAt": "2026-09-08T16:28:39Z",
+      "number": 125,
+      "state": "MERGED",
+      "statusCheckRollup": [
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-09-07T21:16:21Z",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/34162476044/job/101866942038",
+          "name": "Analyze (actions)",
+          "startedAt": "2026-09-07T21:15:36Z",
+          "status": "COMPLETED",
+          "workflowName": "CodeQL"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-09-07T21:43:33Z",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/34162478515/job/101945742147",
+          "name": "Verification Gate",
+          "startedAt": "2026-09-07T21:15:38Z",
+          "status": "COMPLETED",
+          "workflowName": "Pull Request"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-09-07T21:17:32Z",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/34162476044/job/101866941856",
+          "name": "Analyze (go)",
+          "startedAt": "2026-09-07T21:15:36Z",
+          "status": "COMPLETED",
+          "workflowName": "CodeQL"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-09-08T05:17:29Z",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/34162478515/job/101945740535",
+          "name": "Security & Reliability",
+          "startedAt": "2026-09-08T05:15:28Z",
+          "status": "COMPLETED",
+          "workflowName": "Pull Request"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-09-07T21:15:51Z",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/34162478515/job/101945741565",
+          "name": "Action Pin Provenance",
+          "startedAt": "2026-09-07T21:15:38Z",
+          "status": "COMPLETED",
+          "workflowName": "Pull Request"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-09-07T21:16:15Z",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/runs/101867059693",
+          "name": "CodeQL",
+          "startedAt": "2026-09-07T21:16:12Z",
+          "status": "COMPLETED",
+          "workflowName": ""
+        }
+      ],
+      "url": "https://github.com/agentstation/starmap/pull/125"
+    },
+    {
+      "autoMergeRequest": {
+        "authorEmail": null,
+        "commitBody": null,
+        "commitHeadline": null,
+        "mergeMethod": "MERGE",
+        "enabledAt": "2026-09-08T16:32:12Z",
+        "enabledBy": {
+          "id": "MDQ6VXNlcjU2ODc0MDY=",
+          "is_bot": false,
+          "login": "jackspirou",
+          "name": "Jack Spirou"
+        }
+      },
+      "baseRefName": "main",
+      "headRefOid": "cddb86b2d7714e02f144c4208c281f225af44cbb",
+      "mergeCommit": null,
+      "mergedAt": null,
+      "number": 128,
+      "state": "OPEN",
+      "statusCheckRollup": [
+        {
+          "__typename": "CheckRun",
+          "completedAt": "0001-01-01T00:00:00Z",
+          "conclusion": "",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/34251492764/job/102146764892",
+          "name": "Verification Gate",
+          "startedAt": "2026-09-08T16:30:43Z",
+          "status": "IN_PROGRESS",
+          "workflowName": "Pull Request"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-09-08T16:31:30Z",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/34251487872/job/102146754661",
+          "name": "Analyze (actions)",
+          "startedAt": "2026-09-08T16:30:42Z",
+          "status": "COMPLETED",
+          "workflowName": "CodeQL"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "0001-01-01T00:00:00Z",
+          "conclusion": "",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/34251487872/job/102146754998",
+          "name": "Analyze (go)",
+          "startedAt": "2026-09-08T16:30:42Z",
+          "status": "IN_PROGRESS",
+          "workflowName": "CodeQL"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "0001-01-01T00:00:00Z",
+          "conclusion": "",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/34251492764/job/102146764897",
+          "name": "Security & Reliability",
+          "startedAt": "2026-09-08T16:30:43Z",
+          "status": "IN_PROGRESS",
+          "workflowName": "Pull Request"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-09-08T16:30:56Z",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/34251492764/job/102146764449",
+          "name": "Action Pin Provenance",
+          "startedAt": "2026-09-08T16:30:43Z",
+          "status": "COMPLETED",
+          "workflowName": "Pull Request"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-09-08T16:31:25Z",
+          "conclusion": "NEUTRAL",
+          "detailsUrl": "https://github.com/agentstation/starmap/runs/102146964842",
+          "name": "CodeQL",
+          "startedAt": "2026-09-08T16:31:22Z",
+          "status": "COMPLETED",
+          "workflowName": ""
+        }
+      ],
+      "url": "https://github.com/agentstation/starmap/pull/128"
+    },
+    {
+      "autoMergeRequest": null,
+      "baseRefName": "main",
+      "headRefOid": "c17d7818f38a6598e972bdeb5df56533b4730230",
+      "mergeCommit": null,
+      "mergedAt": null,
+      "number": 126,
+      "state": "OPEN",
+      "statusCheckRollup": [
+        {
+          "__typename": "CheckRun",
+          "completedAt": "0001-01-01T00:00:00Z",
+          "conclusion": "",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/34251497988/job/102146781314",
+          "name": "Verification Gate",
+          "startedAt": "2026-09-08T16:30:51Z",
+          "status": "IN_PROGRESS",
+          "workflowName": "Pull Request"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-09-08T16:31:33Z",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/34251492086/job/102146768751",
+          "name": "Analyze (actions)",
+          "startedAt": "2026-09-08T16:30:46Z",
+          "status": "COMPLETED",
+          "workflowName": "CodeQL"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "0001-01-01T00:00:00Z",
+          "conclusion": "",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/34251492086/job/102146768832",
+          "name": "Analyze (go)",
+          "startedAt": "2026-09-08T16:30:44Z",
+          "status": "IN_PROGRESS",
+          "workflowName": "CodeQL"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "0001-01-01T00:00:00Z",
+          "conclusion": "",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/34251497988/job/102146780973",
+          "name": "Security & Reliability",
+          "startedAt": "2026-09-08T16:30:46Z",
+          "status": "IN_PROGRESS",
+          "workflowName": "Pull Request"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-09-08T16:31:00Z",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/34251497988/job/102146781211",
+          "name": "Action Pin Provenance",
+          "startedAt": "2026-09-08T16:30:46Z",
+          "status": "COMPLETED",
+          "workflowName": "Pull Request"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-09-08T16:31:27Z",
+          "conclusion": "NEUTRAL",
+          "detailsUrl": "https://github.com/agentstation/starmap/runs/102146971053",
+          "name": "CodeQL",
+          "startedAt": "2026-09-08T16:31:23Z",
+          "status": "COMPLETED",
+          "workflowName": ""
+        }
+      ],
+      "url": "https://github.com/agentstation/starmap/pull/126"
+    }
+  ],
+  "tasks_awaiting_merge": [
+    "CSP0",
+    "CSP0.1",
+    "CSP0.2",
+    "CSP0.3",
+    "CSP0.4",
+    "CSP1",
+    "CSP2",
+    "CSP3.1"
+  ],
+  "releases_authorized": false
+}

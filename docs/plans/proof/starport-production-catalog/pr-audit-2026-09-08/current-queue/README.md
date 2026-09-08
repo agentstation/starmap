@@ -1,20 +1,20 @@
 # Current pull request queue
 
-Fourteen PRs remain open. All retain distinct work or required ancestry.
+Twelve PRs remain open after two approved merges. All retain distinct work or required ancestry.
 Starmap #127 remains closed because #128 preserves its dependency changes.
 No additional PR qualifies for closure in this review.
 
 The [completed parent update](../stack-parent-completion/verification.json) records current heads, bases, and attached checks.
-There are 54 successful checks and four neutral results.
-Six stacked Starmap PRs have no attached checks.
+That earlier capture records 54 successful checks and four neutral results.
+At that capture, six stacked Starmap PRs had no attached checks.
 Their existing manual evidence applies only to its recorded source.
 
 | Order | PRs | Disposition and next action | Owner |
 | --- | --- | --- | --- |
-| 1 | Starport #367 | Retain for an authorized merge. The pin review and ten current checks pass. Recheck the head before merge. | Release owner |
+| 1 | Starport #367 | Merged at `565a4fcd` after pin review and ten passing checks. | Catalog plan executor |
 | 2 | Starmap #128–#131 | Retain the four independent dependency updates. Combined adapter, consumer, and listed SDK credential-path checks pass. Preserve the consumer checksum repair during integration. | Catalog plan executor |
 | 3 | Starport #368 | Retain the dependency group. Validate storage, credentials, documentation, and catalog integration before merge. | Catalog plan executor |
-| 4 | Starmap #125, #126, #132, #134, #133, #135, #136 | Retain this dependency order. All current parents now propagate through #133, #135, and #136. Continue the unpublished CSP3 work under its publication gate. | Catalog plan executor |
+| 4 | Starmap #126, #132, #134, #133, #135, #136 | PR #125 merged at `96c098f9`. Merge the remaining stack in this order after required checks pass. Continue CSP3 under its publication gate. | Catalog plan executor |
 | 5 | Starport #366 | Retain the product changes. Adopt the compatible approved Starmap tag, then complete integration checks and publication review. | Catalog plan executor |
 
 The current branch ancestry confirms all six parent relationships.
@@ -60,9 +60,9 @@ Published checks do not qualify those local changes.
 The active plan owns their next publication and its required review.
 
 The [earlier recheck](final-recheck.json) records heads, bases, and check totals before the parent updates.
-The dependency order and dispositions remain current.
+The merge record below supersedes the earlier dispositions.
 Starport #367 remains mergeable at `3f0817ad`, with the two reviewed workflow pin changes.
-Its default-branch merge still requires owner authorization.
+The owner later authorized its merge, which completed at `565a4fcd`.
 
 The parent updates are complete. Seven PR descriptions now record the published ancestry or combined dependency evidence.
 The [publication record](../stack-parent-completion/verification.json) verifies every updated body against its remote value.
@@ -71,7 +71,7 @@ The [publication record](../stack-parent-completion/verification.json) verifies 
 
 The [latest queue check](queue-refresh.json) confirms fourteen open PRs and zero unresolved review threads.
 Attached checks report 54 successes and four neutral results.
-Six stacked Starmap PRs have no attached checks.
+At that capture, six stacked Starmap PRs had no attached checks.
 Every remote head and base matches the previous queue review.
 Starmap #127 remains closed, and no further PR qualifies for closure.
 
@@ -81,5 +81,17 @@ The merge order and required evidence above remain current.
 
 The active daily task checks both repositories at 09:00 local time.
 It reports actionable changes and reviews unchanged PRs after seven days without recorded progress.
-It preserves pending owner questions and the existing merge authorization boundary.
+It now merges reviewed PRs after required checks pass under the standing owner approval.
 The task identifier is `maintain-starmap-and-starport-pr-queue`.
+
+## Approved merges
+
+The owner authorized reviewed merges without repeated permission requests on 2026-09-08.
+The [merge record](../approved-merges/verification.json) confirms two completed merges.
+Starmap requires each PR branch to include current main before merge.
+PRs #128 and #126 now run fresh checks after their base updates.
+GitHub will merge #128 after its required checks pass.
+
+Record the merge commit before marking an implementation task done.
+Passing component evidence remains separate from a completed implementation merge.
+Releases still require separate authority.
