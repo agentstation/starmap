@@ -1,0 +1,534 @@
+{
+  "canonical_base": "5ccae0a46fd5148bdb0e17040f7db75ae22bd6f1",
+  "dependency_base": "9575418e46d2d9619ed562510366de63e6ad2275",
+  "source_commits": {
+    "canonical": "d35a62ee4fa0e9da17cc3a5aea02013a3ad9d981",
+    "dependency": "e2343509c3007919f5f83c07c4654cb24270508f"
+  },
+  "files": [
+    {
+      "path": "internal/auth/secret_sdk_aws_test.go",
+      "sha256": "8cb6c617456617f9a3b0544c3e4a5d3a69845ca1567ed81190257d2194c10576"
+    },
+    {
+      "path": "internal/auth/secret_sdk_azure_test.go",
+      "sha256": "1070dede6c848d3145057939c457dce5fec8ce65a998e8b3d01285039628d594"
+    },
+    {
+      "path": "internal/auth/secret_sdk_transport_test.go",
+      "sha256": "994b634349dcce52c4426828dcd366d20f33c474d91fcb73b2dc79a7f1f7cdbc"
+    },
+    {
+      "label": "canonical",
+      "path": "go.mod",
+      "sha256": "4089f0c9d4e2a59e91b45b22419dcc16298b545ce74db69f19508377289e3513"
+    },
+    {
+      "label": "dependency",
+      "path": "go.mod",
+      "sha256": "ffc86d508969ab816aac3670ee1edff512bd0bab7285680070d14caad8d12f09"
+    },
+    {
+      "label": "canonical",
+      "path": "go.sum",
+      "sha256": "e6bc0489a1beb9cc7af8ce96d3ab833002dab73fa559c2165e57a7865d13a356"
+    },
+    {
+      "label": "dependency",
+      "path": "go.sum",
+      "sha256": "5b8e5c9c6f462c946fd5ac14b15ac199b95e832ff7ab504a21289954bd426365"
+    },
+    {
+      "label": "canonical",
+      "path": "internal/auth/secret_source.go",
+      "sha256": "b63a308f80b1e255a9a6c712cab31b3ca93dd0031ea6eeef17b5214a4148c1a4"
+    },
+    {
+      "label": "dependency",
+      "path": "internal/auth/secret_source.go",
+      "sha256": "b63a308f80b1e255a9a6c712cab31b3ca93dd0031ea6eeef17b5214a4148c1a4"
+    },
+    {
+      "label": "canonical",
+      "path": "internal/auth/secret_source_aws.go",
+      "sha256": "f0303b063294701f675cf68611a1e7b6b023cb166911403e2b2d0207f9350bb0"
+    },
+    {
+      "label": "dependency",
+      "path": "internal/auth/secret_source_aws.go",
+      "sha256": "f0303b063294701f675cf68611a1e7b6b023cb166911403e2b2d0207f9350bb0"
+    },
+    {
+      "label": "canonical",
+      "path": "internal/auth/secret_source_azure.go",
+      "sha256": "9073681cecd8608f3fcc7cea022b6d10165fea22137e2b8c8c3bcbd41719903a"
+    },
+    {
+      "label": "dependency",
+      "path": "internal/auth/secret_source_azure.go",
+      "sha256": "9073681cecd8608f3fcc7cea022b6d10165fea22137e2b8c8c3bcbd41719903a"
+    }
+  ],
+  "scope_sources": [
+    {
+      "module_version": "v1.7.2",
+      "path": "/Users/jack/go/pkg/mod/github.com/!azure!a!d/microsoft-authentication-library-for-go@v1.7.2/apps/internal/oauth/ops/accesstokens/accesstokens.go",
+      "sha256": "32c58b975f2494b27c4458866366549a9b28e1701489218c3cadc72a9611d111",
+      "function": "AppendDefaultScopes"
+    },
+    {
+      "module_version": "v1.8.0",
+      "path": "/Users/jack/go/pkg/mod/github.com/!azure!a!d/microsoft-authentication-library-for-go@v1.8.0/apps/internal/oauth/ops/accesstokens/accesstokens.go",
+      "sha256": "e7fe325786afcca377440385ce65baa9840d718f6572b2657be00b3e87b9fb49",
+      "function": "AppendDefaultScopes"
+    }
+  ],
+  "checks": {
+    "accepted-baseline": {
+      "command": "GOTOOLCHAIN=go1.26.6 go test -race -count=1 -timeout 2m ./internal/auth -json",
+      "source_commit": "d35a62ee4fa0e9da17cc3a5aea02013a3ad9d981",
+      "exit_status": 0,
+      "counts": {
+        "test": {
+          "pass": 78
+        },
+        "package": {
+          "pass": 1
+        }
+      }
+    },
+    "accepted-current": {
+      "command": "GOTOOLCHAIN=go1.26.6 go test -race -count=1 -timeout 2m ./internal/auth -json",
+      "source_commit": "e2343509c3007919f5f83c07c4654cb24270508f",
+      "exit_status": 0,
+      "counts": {
+        "test": {
+          "pass": 78
+        },
+        "package": {
+          "pass": 1
+        }
+      }
+    },
+    "accepted-minimum": {
+      "command": "GOTOOLCHAIN=go1.25.12 go test -race -count=1 -timeout 2m ./internal/auth -json",
+      "source_commit": "e2343509c3007919f5f83c07c4654cb24270508f",
+      "exit_status": 0,
+      "counts": {
+        "test": {
+          "pass": 78
+        },
+        "package": {
+          "pass": 1
+        }
+      }
+    }
+  },
+  "other_checks": {
+    "package_lint": {
+      "exit": 0,
+      "issues": 0
+    },
+    "ago": {
+      "worktrees": 2,
+      "exit": 0,
+      "findings": 0,
+      "stale_ignores": 0,
+      "errors": 0
+    },
+    "technical_writing": {
+      "canonical_files": 1232,
+      "dependency_files": 1216,
+      "exit": 0,
+      "diagnostics": 0
+    }
+  },
+  "artifacts": [
+    {
+      "path": "captures/accepted-baseline-ago.json.gz",
+      "bytes": 289,
+      "sha256": "b8fb7afa66aa7a93914ac258475dd0191be821803a8aea4439f5ba05022f5fa5"
+    },
+    {
+      "path": "captures/accepted-baseline-ago.stderr.gz",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "captures/accepted-baseline.jsonl.gz",
+      "bytes": 72301,
+      "sha256": "e75f6730ae93a3eda20b2cd715d3e1f361c42e168e6b468d3ae17a96feb2087c"
+    },
+    {
+      "path": "captures/accepted-baseline.stderr.gz",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "captures/accepted-current-ago.json.gz",
+      "bytes": 289,
+      "sha256": "b8fb7afa66aa7a93914ac258475dd0191be821803a8aea4439f5ba05022f5fa5"
+    },
+    {
+      "path": "captures/accepted-current-ago.stderr.gz",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "captures/accepted-current.jsonl.gz",
+      "bytes": 72302,
+      "sha256": "5b4e1b7e92c514456de5004f6babb04a6c0b23c3c6a54dc4750bb25f72e44b79"
+    },
+    {
+      "path": "captures/accepted-current.stderr.gz",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "captures/accepted-lint.txt.gz",
+      "bytes": 10,
+      "sha256": "e92606b0bf483111dff0a120c315ea165821348f31365020e2468a0059095c47"
+    },
+    {
+      "path": "captures/accepted-minimum.jsonl.gz",
+      "bytes": 72312,
+      "sha256": "48a900ba385644f0d3be9827a4b0b663941a562ee545d13deda11e5160141a8e"
+    },
+    {
+      "path": "captures/accepted-minimum.stderr.gz",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "captures/accepted-secret_sdk_aws_test.go.gz",
+      "bytes": 5564,
+      "sha256": "8cb6c617456617f9a3b0544c3e4a5d3a69845ca1567ed81190257d2194c10576"
+    },
+    {
+      "path": "captures/accepted-secret_sdk_azure_test.go.gz",
+      "bytes": 4818,
+      "sha256": "1070dede6c848d3145057939c457dce5fec8ce65a998e8b3d01285039628d594"
+    },
+    {
+      "path": "captures/accepted-secret_sdk_transport_test.go.gz",
+      "bytes": 1994,
+      "sha256": "994b634349dcce52c4426828dcd366d20f33c474d91fcb73b2dc79a7f1f7cdbc"
+    },
+    {
+      "path": "captures/ago.json.gz",
+      "bytes": 289,
+      "sha256": "b8fb7afa66aa7a93914ac258475dd0191be821803a8aea4439f5ba05022f5fa5"
+    },
+    {
+      "path": "captures/ago.stderr.gz",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "captures/azure-first.go.gz",
+      "bytes": 4478,
+      "sha256": "a17fbb0e4936b5218b940b01837e8b425e5ddf09c03514d7a5908f77b7dc940d"
+    },
+    {
+      "path": "captures/baseline-ago.json.gz",
+      "bytes": 289,
+      "sha256": "b8fb7afa66aa7a93914ac258475dd0191be821803a8aea4439f5ba05022f5fa5"
+    },
+    {
+      "path": "captures/baseline-ago.stderr.gz",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "captures/baseline-all.jsonl.gz",
+      "bytes": 72310,
+      "sha256": "65bf1bac5d126c1db3a8ba452f6a645fa594b5a4db622519da204592bb3d2aa5"
+    },
+    {
+      "path": "captures/baseline-all.stderr.gz",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "captures/canonical-go.mod.gz",
+      "bytes": 9172,
+      "sha256": "4089f0c9d4e2a59e91b45b22419dcc16298b545ce74db69f19508377289e3513"
+    },
+    {
+      "path": "captures/canonical-go.sum.gz",
+      "bytes": 44965,
+      "sha256": "e6bc0489a1beb9cc7af8ce96d3ab833002dab73fa559c2165e57a7865d13a356"
+    },
+    {
+      "path": "captures/canonical-internal_auth_secret_source.go.gz",
+      "bytes": 3644,
+      "sha256": "b63a308f80b1e255a9a6c712cab31b3ca93dd0031ea6eeef17b5214a4148c1a4"
+    },
+    {
+      "path": "captures/canonical-internal_auth_secret_source_aws.go.gz",
+      "bytes": 3536,
+      "sha256": "f0303b063294701f675cf68611a1e7b6b023cb166911403e2b2d0207f9350bb0"
+    },
+    {
+      "path": "captures/canonical-internal_auth_secret_source_azure.go.gz",
+      "bytes": 3891,
+      "sha256": "9073681cecd8608f3fcc7cea022b6d10165fea22137e2b8c8c3bcbd41719903a"
+    },
+    {
+      "path": "captures/canonical-prose.txt.gz",
+      "bytes": 558,
+      "sha256": "38f17125074d6a09b8ba9f7f17d6f636654518e38ff1d970505578f5663263d9"
+    },
+    {
+      "path": "captures/current-all.jsonl.gz",
+      "bytes": 72319,
+      "sha256": "a0ac9798f95bb311172b28c2cc28cec623c84f8f53ba79fae53c9d57408b6297"
+    },
+    {
+      "path": "captures/current-all.stderr.gz",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "captures/dependency-go.mod.gz",
+      "bytes": 9135,
+      "sha256": "ffc86d508969ab816aac3670ee1edff512bd0bab7285680070d14caad8d12f09"
+    },
+    {
+      "path": "captures/dependency-go.sum.gz",
+      "bytes": 44756,
+      "sha256": "5b8e5c9c6f462c946fd5ac14b15ac199b95e832ff7ab504a21289954bd426365"
+    },
+    {
+      "path": "captures/dependency-internal_auth_secret_source.go.gz",
+      "bytes": 3644,
+      "sha256": "b63a308f80b1e255a9a6c712cab31b3ca93dd0031ea6eeef17b5214a4148c1a4"
+    },
+    {
+      "path": "captures/dependency-internal_auth_secret_source_aws.go.gz",
+      "bytes": 3536,
+      "sha256": "f0303b063294701f675cf68611a1e7b6b023cb166911403e2b2d0207f9350bb0"
+    },
+    {
+      "path": "captures/dependency-internal_auth_secret_source_azure.go.gz",
+      "bytes": 3891,
+      "sha256": "9073681cecd8608f3fcc7cea022b6d10165fea22137e2b8c8c3bcbd41719903a"
+    },
+    {
+      "path": "captures/dependency-prose.txt.gz",
+      "bytes": 582,
+      "sha256": "c4ddea1b64472eab12defd8d3262996c719666908ad2ff31460e417650917299"
+    },
+    {
+      "path": "captures/expanded-secret_sdk_aws_test.go.gz",
+      "bytes": 5321,
+      "sha256": "e070166af575b73a3b710466da7cf353e469e48a744ccc811460489a0c76e4ef"
+    },
+    {
+      "path": "captures/expanded-secret_sdk_azure_test.go.gz",
+      "bytes": 4536,
+      "sha256": "c976a9f7358b371ab45a208125131cd94c662343b72aa5a1a0aa50a129e44bed"
+    },
+    {
+      "path": "captures/expanded-secret_sdk_transport_test.go.gz",
+      "bytes": 1994,
+      "sha256": "994b634349dcce52c4426828dcd366d20f33c474d91fcb73b2dc79a7f1f7cdbc"
+    },
+    {
+      "path": "captures/expanded.jsonl.gz",
+      "bytes": 10063,
+      "sha256": "5f6b791e0ac107927b4f661895bb46200af2069775ecfa2c8df77f9f0859313d"
+    },
+    {
+      "path": "captures/expanded.stderr.gz",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "captures/final-ago.json.gz",
+      "bytes": 289,
+      "sha256": "b8fb7afa66aa7a93914ac258475dd0191be821803a8aea4439f5ba05022f5fa5"
+    },
+    {
+      "path": "captures/final-ago.stderr.gz",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "captures/final-current-all.jsonl.gz",
+      "bytes": 72324,
+      "sha256": "9778415c07de23d3edc516df14d17c40c8e08330b75ee0f7ada22fe65a1078b6"
+    },
+    {
+      "path": "captures/final-current-all.stderr.gz",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "captures/final-lint.txt.gz",
+      "bytes": 10,
+      "sha256": "e92606b0bf483111dff0a120c315ea165821348f31365020e2468a0059095c47"
+    },
+    {
+      "path": "captures/final-minimum-all.jsonl.gz",
+      "bytes": 72323,
+      "sha256": "8bb727f7ecfa2954b30bc34874e40a2f08824e199f3ee1a0583789caa9a4a28f"
+    },
+    {
+      "path": "captures/final-minimum-all.stderr.gz",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "captures/first.jsonl.gz",
+      "bytes": 9903,
+      "sha256": "2e3d0a3136aaf4eb0c76454c3d118e8415c6a06f357589d35571cb9e1e78effb"
+    },
+    {
+      "path": "captures/first.stderr.gz",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "captures/host-validated-secret_sdk_aws_test.go.gz",
+      "bytes": 5564,
+      "sha256": "8cb6c617456617f9a3b0544c3e4a5d3a69845ca1567ed81190257d2194c10576"
+    },
+    {
+      "path": "captures/host-validated-secret_sdk_azure_test.go.gz",
+      "bytes": 4665,
+      "sha256": "71c64acb6269a8733f08d8484a84b1d2aa2b52b3477dcad5164ebbad7a3c8ac5"
+    },
+    {
+      "path": "captures/host-validated-secret_sdk_transport_test.go.gz",
+      "bytes": 1994,
+      "sha256": "994b634349dcce52c4426828dcd366d20f33c474d91fcb73b2dc79a7f1f7cdbc"
+    },
+    {
+      "path": "captures/lint.txt.gz",
+      "bytes": 10,
+      "sha256": "e92606b0bf483111dff0a120c315ea165821348f31365020e2468a0059095c47"
+    },
+    {
+      "path": "captures/minimum-all.jsonl.gz",
+      "bytes": 72313,
+      "sha256": "deeafbcbec533ee975917bec039b64889f3faa51aedc2e4f4411f21655e1cfd8"
+    },
+    {
+      "path": "captures/minimum-all.stderr.gz",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "captures/pr-note.md.gz",
+      "bytes": 1214,
+      "sha256": "4e0704bb54be53357cef706ef4c1ea4f35eb9d5f703e63add09a5d674716aa53"
+    },
+    {
+      "path": "captures/pr-publication.json.gz",
+      "bytes": 32789,
+      "sha256": "57cf817a3d570dfb14ea7a8cc89ed94591dd72654f0a791ed2cbfed6daae39fa"
+    },
+    {
+      "path": "captures/pr128-before.json.gz",
+      "bytes": 6794,
+      "sha256": "2c8e83577c35f8d54c0762afcea4c553f495abad95ce0160fb64fd42e930dd5e"
+    },
+    {
+      "path": "captures/pr128-body.md.gz",
+      "bytes": 6840,
+      "sha256": "2af3d79d05cf3ae2723175e9836b6878579cfcb5d2c505fb52a10447d54d0275"
+    },
+    {
+      "path": "captures/pr129-before.json.gz",
+      "bytes": 5480,
+      "sha256": "dec5407b1b7355b669d9c7e357e1e713d552014cf80ff3e3a1349bc70331cdc8"
+    },
+    {
+      "path": "captures/pr129-body.md.gz",
+      "bytes": 5548,
+      "sha256": "9438e9bc7c4d95afa91f141d5b7f6c0b6dd7192ff953d9531be62b4cd41805dc"
+    },
+    {
+      "path": "captures/pr130-before.json.gz",
+      "bytes": 7247,
+      "sha256": "703d03eb1e1654ef950b539672a4e3d3e35b0e2d58fe5a1dadafe9fecc3705e3"
+    },
+    {
+      "path": "captures/pr130-body.md.gz",
+      "bytes": 7272,
+      "sha256": "2e4595712613dfa151fab157cb5f42826c9166a894508bd91edebfd04159cfad"
+    },
+    {
+      "path": "captures/pr131-before.json.gz",
+      "bytes": 5697,
+      "sha256": "65c3a68ce787d65c68a99d82c120cb83c737327dc89f912861101a2d48b3404d"
+    },
+    {
+      "path": "captures/pr131-body.md.gz",
+      "bytes": 5763,
+      "sha256": "8433adb3537874b49b9b1b5e38f3d26a0c28f4975ce6db245066c481fc4e8378"
+    },
+    {
+      "path": "captures/scope-probe.jsonl.gz",
+      "bytes": 2580,
+      "sha256": "188ebb8300512d308ab51f8dea5591f9d68cc95585310be9753e266b94f75ad0"
+    },
+    {
+      "path": "captures/source-binding-previous.json.gz",
+      "bytes": 766,
+      "sha256": "28a2d2483cdb252d4b9a2eacef3ab45b6b4540414a3d27123dbfb4c5bc55741b"
+    },
+    {
+      "path": "captures/source-binding.json.gz",
+      "bytes": 3096,
+      "sha256": "5749d68ac7c671dda37b30e53e1975a9a182fa56eae4ce8779f3e1c1f2185200"
+    }
+  ],
+  "pr_body_updates": [
+    {
+      "url": "https://github.com/agentstation/starmap/pull/128",
+      "head": "c05d4c3554a4c7569c427d06db6db5a8ce38494a",
+      "base": "main",
+      "readback_matches": true
+    },
+    {
+      "url": "https://github.com/agentstation/starmap/pull/129",
+      "head": "ffeb595220e9de24f4ef78660d2658a2c6b6859a",
+      "base": "main",
+      "readback_matches": true
+    },
+    {
+      "url": "https://github.com/agentstation/starmap/pull/130",
+      "head": "9b11e1c455d9f59ba342f30e64f1cd05d3b7a033",
+      "base": "main",
+      "readback_matches": true
+    },
+    {
+      "url": "https://github.com/agentstation/starmap/pull/131",
+      "head": "0d6435d5b483e48c80b79d67be14430773caab19",
+      "base": "main",
+      "readback_matches": true
+    }
+  ],
+  "credential_pattern_scan": {
+    "files": 68,
+    "matches": 0,
+    "scope": "Common credential patterns only; not a complete secret audit"
+  },
+  "diagnostic_captures": {
+    "first.jsonl": "Incorrect Azure expected scope; initial AWS source not retained. No qualification credit.",
+    "scope-probe.jsonl": "Observed public OAuth scope values for correction against both pinned MSAL sources."
+  },
+  "scope": "Nine listed local credential flows only; no live cloud IAM or complete identity-service qualification",
+  "code_pushes": 0,
+  "main_merges": 0,
+  "releases": 0,
+  "final_prose_check": {
+    "command": "GOTOOLCHAIN=go1.26.6 make technical-writing-check",
+    "exit": 0,
+    "files": 1232,
+    "diagnostics": 0,
+    "output": "/Users/jack/.agents/skills/technical-writing/scripts/technical-writing glossary check\nPASS: /Users/jack/src/github.com/agentstation/starmap-catalog-requirements/GLOSSARY.md (81 term(s), 0 error(s))\n/Users/jack/.agents/skills/technical-writing/scripts/technical-writing glossary update --check\nPASS: no candidate terms are missing from /Users/jack/src/github.com/agentstation/starmap-catalog-requirements/GLOSSARY.md\n/Users/jack/.agents/skills/technical-writing/scripts/technical-writing lint . --mode strict --format text\nPASS: 1232 file(s), 0 diagnostic(s)\n"
+  }
+}
