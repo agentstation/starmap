@@ -1,0 +1,308 @@
+{
+  "schema_version": 1,
+  "scope": "Independent discovery and readiness audit; no primary acceptance credit.",
+  "date": "2026-09-07",
+  "starmap_commit": "9693899bee34473ac14d61683207861dcedf6af2",
+  "starport_commit": "de0e00297428f16115a068f5a39ec6702e0674f5",
+  "starport_starmap_pin": "v0.16.5",
+  "toolchain": "go1.26.6 darwin/arm64",
+  "observations": {
+    "operator_keys_absent": {
+      "status": "PASS",
+      "definitions": 511,
+      "providers": 14,
+      "structural_routes": 614,
+      "note": "Catalog fixture counts, not caller readiness or HTTP qualification."
+    },
+    "production_cache": {
+      "status": "FAIL_BEFORE",
+      "test_events": {
+        "pass": 2,
+        "fail": 3,
+        "skip": 0
+      },
+      "stale": [
+        "models",
+        "providers"
+      ],
+      "endpoint": "Stored JSON entry exists; typed cache read misses and calls the service again.",
+      "scope": "Actual production model cache; unused response store uses the repository mock."
+    },
+    "pinned_pricing": {
+      "status": "DEFECT_REPRODUCED",
+      "mixed_record": "EUR input 2 retains old output 4.",
+      "explicit_zero": "Fresh USD input 1 remains 1 after explicit zero."
+    },
+    "pinned_metadata": {
+      "status": "FAIL_BEFORE",
+      "test_events": {
+        "pass": 0,
+        "fail": 1
+      }
+    },
+    "candidate_reconciliation": {
+      "status": "PASS",
+      "test_events": {
+        "pass": 19,
+        "fail": 0,
+        "skip": 0
+      }
+    },
+    "pinned_catalog_package": {
+      "status": "BUILD_FAILED",
+      "reason": "undefined runtime.NewProviderLayer",
+      "view_package": "PASS"
+    },
+    "facets": {
+      "providerFacetKey": "meta",
+      "filterAcceptsGroq": true,
+      "filterAcceptsNonServingAuthor": true,
+      "defaultWithoutUsableProviders": "meta/llama-example"
+    }
+  },
+  "limits": [
+    "No provider calls or paid inference.",
+    "No browser, HTTP compatibility, tenant, fleet, or release qualification.",
+    "The initial metadata overlay failed because its virtual directory did not exist. The corrected standalone test reproduced the defect.",
+    "The first facet runner used a nonexistent export. The corrected runner imports the actual matches function.",
+    "Offline toolchain auto-selection failed before the corrected absolute Go invocation."
+  ],
+  "artifacts": [
+    {
+      "path": "canonical-reconciliation.jsonl.gz",
+      "uncompressed_sha256": "b49b041836252a8ea0dd243a30f177405b8efa1805018de53091344db5a7acdc",
+      "sha256": "ad8a46cbb703b34f463b5819f05a52d92d7c96b28c9e167056a3d25a52f6885a",
+      "uncompressed_bytes": 17534
+    },
+    {
+      "path": "discovery.jsonl.gz",
+      "uncompressed_sha256": "0921fb4dc87928eb9dcde728d774ff27fd4fd10ae7bc22b515e9be08440aff92",
+      "sha256": "35fb34411bad002ce089ab4d065dc35d86e489b5d0848126c0e1dee7d2fb2f71",
+      "uncompressed_bytes": 78310
+    },
+    {
+      "path": "discovery_mock_cache_test.go.gz",
+      "uncompressed_sha256": "d26eae1f339ab51dbb4a099b64c5ed80a26c23aee27c2ef4f9e42366db1995d9",
+      "sha256": "4e692fc50638e1cc6d6c8a58b5d0959fcd72c05aa1c2abf93491962211bc1373",
+      "uncompressed_bytes": 4565
+    },
+    {
+      "path": "discovery_test.go.gz",
+      "uncompressed_sha256": "a35661ab3a482a14f75aecee6f305ff4fd7e468934c12b6da42e5f4dd444cd5b",
+      "sha256": "e6b1c51bcb7b9a6eb6da5b6fbd771ef73dffbbcaf27e5cc4aed00f9b578a54ca",
+      "uncompressed_bytes": 5629
+    },
+    {
+      "path": "facets-final.json.gz",
+      "uncompressed_sha256": "35ff92ad05104ca23edb794b3f94e40dcbc8f941b66159e23ee5e10649f428b7",
+      "sha256": "e2adb5aa80e61b2c38500f6924fd79fb3c7cbe1b363a72a65af70adbebda0be1",
+      "uncompressed_bytes": 160
+    },
+    {
+      "path": "facets-rerun.json.gz",
+      "uncompressed_sha256": "96736b1b426bf70f092582c3828ff15e7d76441394f17ad126097dd15e171d63",
+      "sha256": "2435d2443221b8cb3fc53ec8925a237022fa8aa121530d9ffbca2563939f926e",
+      "uncompressed_bytes": 742
+    },
+    {
+      "path": "facets.json.gz",
+      "uncompressed_sha256": "35ff92ad05104ca23edb794b3f94e40dcbc8f941b66159e23ee5e10649f428b7",
+      "sha256": "e2adb5aa80e61b2c38500f6924fd79fb3c7cbe1b363a72a65af70adbebda0be1",
+      "uncompressed_bytes": 160
+    },
+    {
+      "path": "facets.mjs.gz",
+      "uncompressed_sha256": "45c60a55672d8a68b480cf5eb13d3c90b93fbca269eec1946d7b283bb54f40e0",
+      "sha256": "49f5e72331087411e522ad5e18661fd3383f322c6d861b6b5f77d669819d82c7",
+      "uncompressed_bytes": 617
+    },
+    {
+      "path": "metadata-overlay.json.gz",
+      "uncompressed_sha256": "e9eedb22fc1dfebb9918f5705eb74ffe875cff3abddaa069822146fbaa812f61",
+      "sha256": "687b1bbad151feac314258b7fcff5118ba8827cc83aa2842209268f96cee07ec",
+      "uncompressed_bytes": 175
+    },
+    {
+      "path": "metadata_test.go.gz",
+      "uncompressed_sha256": "7dd55c49102921643e942a26314c63f2ceeda2472dd9d281e8ef67712aae25a1",
+      "sha256": "abe84dd6b8516de835baf3bfe8a316d2bc1c7fb2396c1b19622fcc144677571f",
+      "uncompressed_bytes": 1997
+    },
+    {
+      "path": "overlay.json.gz",
+      "uncompressed_sha256": "6d3da3c44c8f7866eabd86280dfc6487dcb6824637eebb1f4d7ff7f280b0b2a0",
+      "sha256": "89e89a13b75d8e47f49ef82a1ef3b5c4cbb1b1600faedf773b20745aae527a73",
+      "uncompressed_bytes": 188
+    },
+    {
+      "path": "pinned-catalog-corrected.log.gz",
+      "uncompressed_sha256": "8c5b5ace3d23657f2c1316d900cf9b6b7658bd44dec1b2f318e47b815955128b",
+      "sha256": "ccd1ccdab7ba9a0111e6db538c24b306d82b3affd86cb7fed8c2523892b8276c",
+      "uncompressed_bytes": 341
+    },
+    {
+      "path": "pinned-catalog-initial.log.gz",
+      "uncompressed_sha256": "9d66006e18c2006f27881be4f3ff39e7e9f16ef12a873c6bc568214e0300ff05",
+      "sha256": "4ee86fc9834376d1766e4ce822c846d56058c4d34e97b640830b8cd7a1b76982",
+      "uncompressed_bytes": 115
+    },
+    {
+      "path": "pinned-metadata-corrected.jsonl.gz",
+      "uncompressed_sha256": "40ad40532fa55a161a2fb27d400c65497e302511fd33f98c41a107d96522ca0e",
+      "sha256": "b1a997b090f2a93850cd0b79d0cba90ea023fdc1fa9b812b5b8724ec6114b752",
+      "uncompressed_bytes": 1563
+    },
+    {
+      "path": "pinned-metadata.jsonl.gz",
+      "uncompressed_sha256": "33129fc64a04de064594d25e46c64d6086f3093c13e147b9d9b24204eb43963a",
+      "sha256": "44474f90394ce8e3e599ffc0aa831384bed854d09c489f17b6eb1c4ca2349e43",
+      "uncompressed_bytes": 1091
+    },
+    {
+      "path": "pricing.go.gz",
+      "uncompressed_sha256": "7ef2eeda2e3cddc9740fe8dccc25f362dadd7a29aadfbeb29f43496e3b8f3afd",
+      "sha256": "f2079f3068737e8eb2ddcefb2475491a1690cada986273308bb255d5ff89241b",
+      "uncompressed_bytes": 901
+    },
+    {
+      "path": "pricing.json.gz",
+      "uncompressed_sha256": "6c5f0545d4efa8885abf4f011f6a4e18c0dd42add33e22b4501d127aadf99bd6",
+      "sha256": "54640e8ed3532c9724e7d58f8c8ed472f8b97501035142ab76a20088e29b614f",
+      "uncompressed_bytes": 280
+    },
+    {
+      "path": "production-cache.jsonl.gz",
+      "uncompressed_sha256": "261fbcf71e32c05fc0f8a3f8ce138968510498f86ad2d73876e32aa643e24919",
+      "sha256": "d5301728d84eba5369d120d92e3d1178bb5d81f59d52b5e994ab4b9bda773b8f",
+      "uncompressed_bytes": 79253
+    },
+    {
+      "path": "documents.json.gz",
+      "uncompressed_sha256": "e24a7873d26794ab85dc7b0b0c1584eb2d59e652aaef1848e09a74d64be29ca6",
+      "sha256": "c0e75aacd14119bdda2ea388f5b6335781c2cc765a398203bcbb1976413dc8da"
+    },
+    {
+      "path": "writing.log.gz",
+      "uncompressed_sha256": "3e9155c07c4e32d576dd495a7fb7bfc6b5c982b87f433fc34ff2e4830f8729fb",
+      "sha256": "2305c009f5842110bc3299aba44d20a8e7622a975e15379d21329ab2a832e9c3"
+    },
+    {
+      "path": "verifier-tests.log.gz",
+      "sha256": "51a43f5c5e06142abfc14b35a3f27ad8af9806f2bd5064d043391cdfa48b9709",
+      "uncompressed_sha256": "9cc4c229778a4ac4f578c8c97fd69e3ee085d71c04082da06b7d338f6d3e01c3"
+    }
+  ],
+  "inputs": [
+    {
+      "root": "/Users/jack/src/github.com/agentstation/starport-catalog-lifecycle",
+      "path": "go.mod",
+      "sha256": "0bb403f18cf17ec607deeb9c473a0e51190a0db069b75dd569fb1b09c541545e"
+    },
+    {
+      "root": "/Users/jack/src/github.com/agentstation/starport-catalog-lifecycle",
+      "path": "go.sum",
+      "sha256": "1e65bbda6ea74a4269dfd60b3cc7563532b41878e4e288e731cb9e0b2ed65bb2"
+    },
+    {
+      "root": "/Users/jack/src/github.com/agentstation/starport-catalog-lifecycle",
+      "path": "internal/providers/activation.go",
+      "sha256": "5055467ad227a2cdd7b51615d2ffbfbc6104c308e6dd6da08f53b7213af36cbb"
+    },
+    {
+      "root": "/Users/jack/src/github.com/agentstation/starport-catalog-lifecycle",
+      "path": "internal/catalog/control_plane.go",
+      "sha256": "d32c7d9cdb108ce8ad3e03b3b80ea65922f62b498489114e6998165ec8126b19"
+    },
+    {
+      "root": "/Users/jack/src/github.com/agentstation/starport-catalog-lifecycle",
+      "path": "internal/catalog/snapshot.go",
+      "sha256": "a9c95ffb78e5289b0f648038b9069b8d3e8d06eaadfe04ebe79828215934a6fe"
+    },
+    {
+      "root": "/Users/jack/src/github.com/agentstation/starport-catalog-lifecycle",
+      "path": "internal/proxy/proxy.go",
+      "sha256": "0e32d6aca833dfb2fff529a69958a9828e80b0ded739cf8f6fd240b4a1c25860"
+    },
+    {
+      "root": "/Users/jack/src/github.com/agentstation/starport-catalog-lifecycle",
+      "path": "internal/proxy/cache.go",
+      "sha256": "aabc3f088aa4f696e7e514b3b5ef47adea51707d557c302415a92d8d1bf1279b"
+    },
+    {
+      "root": "/Users/jack/src/github.com/agentstation/starport-catalog-lifecycle",
+      "path": "internal/cache/manager.go",
+      "sha256": "2aff4f539f8c01d122451f709d07a5e859a7fe2dd0c2b700780b18679184893a"
+    },
+    {
+      "root": "/Users/jack/src/github.com/agentstation/starport-catalog-lifecycle",
+      "path": "internal/app/app.go",
+      "sha256": "743cc88500c495eca58f1295f2f41cd5d741408670be06fecb4a162c18d0ee4a"
+    },
+    {
+      "root": "/Users/jack/src/github.com/agentstation/starport-catalog-lifecycle",
+      "path": "internal/catalog/runtime_acquisition_test.go",
+      "sha256": "354747a3a24dfb73af9833d663f3b613d3ec42f0aae11e3fdc70f5fa60897b77"
+    },
+    {
+      "root": "/Users/jack/src/github.com/agentstation/starport-catalog-lifecycle",
+      "path": "console/src/lib/modelFilter.ts",
+      "sha256": "ac87fb8507f38300917addacff7be494514f6f77e40b6d4d57deff2d35de8303"
+    },
+    {
+      "root": "/Users/jack/src/github.com/agentstation/starport-catalog-lifecycle",
+      "path": "console/src/routes/models.tsx",
+      "sha256": "7b39b6b27450d4d6dbafb7cd2048a768ce4c854a747edd27710df177a03ecceb"
+    },
+    {
+      "root": "/Users/jack/src/github.com/agentstation/starmap-catalog-requirements",
+      "path": "runtime/reconciliation.go",
+      "sha256": "ca4b8ee54655bd19781b711e16d3e18b1959a120aef98793ec6769521f40874a"
+    },
+    {
+      "root": "/Users/jack/src/github.com/agentstation/starmap-catalog-requirements",
+      "path": "runtime/observation_update.go",
+      "sha256": "1e5ab7c72226c4556c60fd899feb369ad7d6acd79fa4e970f0aac5c323c4f924"
+    },
+    {
+      "root": "/Users/jack/src/github.com/agentstation/starmap-catalog-requirements",
+      "path": "pkg/catalogs/merge_pricing_test.go",
+      "sha256": "3e20cf166ebfba2ef4a786b9dbf75ad9beb6651c0cd333e6d376407437da9c98"
+    },
+    {
+      "root": "/Users/jack/src/github.com/agentstation/starmap-catalog-requirements",
+      "path": "pkg/catalogs/reconciliation_loss_characterization_test.go",
+      "sha256": "43d4d0ff76cea2ca94959d7843b306e28800faef32f45e76cb9e6b0a3e5c3614"
+    },
+    {
+      "root": "/Users/jack/src/github.com/agentstation/starmap-catalog-requirements",
+      "path": "internal/catalog/reconciler/strategy.go",
+      "sha256": "900fcc049be701ed0bf3d8c8b4adb3dd6edabd8dcf0c361d48bbe265004d4bde"
+    },
+    {
+      "root": "/Users/jack/src/github.com/agentstation/starmap-catalog-requirements",
+      "path": "pkg/catalogs/authority/authority.go",
+      "sha256": "811dd4a2faf52127204b05179db8899b38795fb8a906e3235973e15041f222ca"
+    },
+    {
+      "root": "/Users/jack/go/pkg/mod/github.com/agentstation/starmap@v0.16.5",
+      "path": "runtime/layers.go",
+      "sha256": "5ff3d70acc327046a1535e85fa8c88ac66524306e765b3bd6aefe8af7a2a0dfe"
+    },
+    {
+      "root": "/Users/jack/go/pkg/mod/github.com/agentstation/starmap@v0.16.5",
+      "path": "pkg/catalogs/catalog.go",
+      "sha256": "04159b6775af4232b317b60ebe6009a5f2fb7d2b2e6fff3a1c531488f4c55712"
+    },
+    {
+      "root": "/Users/jack/go/pkg/mod/github.com/agentstation/starmap@v0.16.5",
+      "path": "pkg/catalogs/merge.go",
+      "sha256": "e221ae9cda73fb5569995c10d409d47934fdf066ad865feda2fb6ad51fe8cf52"
+    }
+  ],
+  "document_checks": {
+    "structure": "PASS: 38 tasks, 50 cases, 324 required subcases",
+    "verifier_unit_tests": 52,
+    "prose": "PASS",
+    "qualification": "No product acceptance credit."
+  }
+}

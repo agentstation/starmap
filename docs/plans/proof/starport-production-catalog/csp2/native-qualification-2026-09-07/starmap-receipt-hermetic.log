@@ -1,0 +1,6 @@
+=== RUN   TestProviderReceiptReportsDegradedAcquisition
+{"level":"info","provider_count":1,"time":"2026-09-07T17:00:37-05:00","message":"Filtered providers by primary source"}
+{"level":"warn","issue_code":"unresolved_model_reference","provider_id":"provider","provider_model_id":"model","time":"2026-09-07T17:00:37-05:00","message":"provider offering has no explicit canonical model reference and was quarantined"}
+--- PASS: TestProviderReceiptReportsDegradedAcquisition (11.39s)
+PASS
+ok  	github.com/agentstation/starmap/runtime	12.859s

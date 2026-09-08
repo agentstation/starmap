@@ -1,0 +1,285 @@
+{
+  "starport_commit": "de0e002",
+  "mode": "temporary local Go workspace",
+  "commands": [
+    {
+      "command": "bash scripts/verify-starmap-ownership.sh",
+      "exit_code": 0,
+      "seconds": 100.051,
+      "log": "01-verify-starmap-ownership_sh.log",
+      "log_sha256": "c2006ab0841a15af0792722064ee14dae63cd3fdb0ff32a1480655cb0d5961ed",
+      "log_bytes": 850
+    },
+    {
+      "command": "bash scripts/verify-v1-architecture.sh",
+      "exit_code": 1,
+      "seconds": 134.623,
+      "log": "02-verify-v1-architecture_sh.log",
+      "log_sha256": "b2fe8e2b0093ee2d3830f8f17f1375180f4cc3b6e6ae1cd4d124ddaff964c3f6",
+      "log_bytes": 32343
+    },
+    {
+      "command": "bash scripts/test-dependency-direction-verifier.sh",
+      "exit_code": 0,
+      "seconds": 0.713,
+      "log": "03-test-dependency-direction-verifier_sh.log",
+      "log_sha256": "8a71d7001424e24289e0d2a024579a006638b5fa0e7331ad4452c835278e6651",
+      "log_bytes": 52
+    },
+    {
+      "command": "bash scripts/verify-dependency-direction.sh",
+      "exit_code": 0,
+      "seconds": 0.757,
+      "log": "04-verify-dependency-direction_sh.log",
+      "log_sha256": "3a49bf0772b6d01f07c91a8c2a646acdfeaaa97cbb1b191026f789ae6f7d9027",
+      "log_bytes": 380
+    },
+    {
+      "command": "bash scripts/verify-catalog-driven-providers.sh",
+      "exit_code": 0,
+      "seconds": 154.271,
+      "log": "05-verify-catalog-driven-providers_sh.log",
+      "log_sha256": "e9d35a605013f2031a4ea6a6a34e8463fc5423692c137b7f98a01a8caa823f19",
+      "log_bytes": 1333
+    },
+    {
+      "command": "bash scripts/verify-package-layout.sh",
+      "exit_code": 0,
+      "seconds": 7.103,
+      "log": "06-verify-package-layout_sh.log",
+      "log_sha256": "013c65297b0f1a7efb8ff5d6ff496fe9a2c1c394d204d098d2473b04489d2fee",
+      "log_bytes": 102
+    },
+    {
+      "command": "bash scripts/verify-readme-quickstart.sh",
+      "exit_code": 0,
+      "seconds": 0.127,
+      "log": "07-verify-readme-quickstart_sh.log",
+      "log_sha256": "47f29784b60e4bb2b1578966e76740d2eb1c8003ace95deed9381a7cf47a2ca0",
+      "log_bytes": 60
+    },
+    {
+      "command": "bash scripts/verify-v1-release.sh",
+      "exit_code": 0,
+      "seconds": 0.082,
+      "log": "08-verify-v1-release_sh.log",
+      "log_sha256": "75074e58905a5ca1cb126c5686d11dc26445ae78dade9e1333a6429781ca7d81",
+      "log_bytes": 781
+    },
+    {
+      "command": "bash scripts/verify-release-workflow.sh",
+      "exit_code": 0,
+      "seconds": 3.108,
+      "log": "09-verify-release-workflow_sh.log",
+      "log_sha256": "df43a433b0e2eacf0b82829fa989238b489484de7c8f1e18a4cbba228d81cdc9",
+      "log_bytes": 31
+    },
+    {
+      "command": "bash scripts/verify-developer-experience.sh",
+      "exit_code": 0,
+      "seconds": 0.568,
+      "log": "10-verify-developer-experience_sh.log",
+      "log_sha256": "10524699a6c0461194d21217459b148daa9d422508d73a058e410d9d1661a7b5",
+      "log_bytes": 707
+    },
+    {
+      "command": "bash scripts/verify-doc-links.sh",
+      "exit_code": 0,
+      "seconds": 0.232,
+      "log": "11-verify-doc-links_sh.log",
+      "log_sha256": "6fa0ebecdeaab1b0b3742fbe25a1de216e45c21fcd2f9f1b5a87476ce9910324",
+      "log_bytes": 25
+    },
+    {
+      "command": "bash scripts/test-doc-link-verifier.sh",
+      "exit_code": 0,
+      "seconds": 0.232,
+      "log": "12-test-doc-link-verifier_sh.log",
+      "log_sha256": "69ea9d7375bbb4907e620ae48e022bb88f04aae68545a8942d01ddcf6744f9ec",
+      "log_bytes": 44
+    },
+    {
+      "command": "bash scripts/verify-openrouter-parity.sh",
+      "exit_code": 0,
+      "seconds": 0.183,
+      "log": "13-verify-openrouter-parity_sh.log",
+      "log_sha256": "ace79624055952778486dc7cf25da2986a30de02bd540e4b70f65201b1d3f7dd",
+      "log_bytes": 952
+    },
+    {
+      "command": "bash scripts/verify-console-modernization.sh",
+      "exit_code": 0,
+      "seconds": 0.085,
+      "log": "14-verify-console-modernization_sh.log",
+      "log_sha256": "185cebeb477b2b21b6a132c98b99abd3d13ee8aacf9346c35de5eb139e00e518",
+      "log_bytes": 1025
+    },
+    {
+      "command": "bash scripts/verify-auth-onboarding.sh",
+      "exit_code": 0,
+      "seconds": 0.125,
+      "log": "15-verify-auth-onboarding_sh.log",
+      "log_sha256": "a9f3f2754f2ecd95b04e7b4e728a5158fc3da0a828a9e1b221d8cae9075212c0",
+      "log_bytes": 1640
+    },
+    {
+      "command": "bash scripts/verify-console-session-grants.sh",
+      "exit_code": 0,
+      "seconds": 0.338,
+      "log": "16-verify-console-session-grants_sh.log",
+      "log_sha256": "2ca175ead00523a30b79eef397b9c4405addfd7282e54eba83bbaa9b458cfcb0",
+      "log_bytes": 993
+    },
+    {
+      "command": "bash scripts/verify-model-modalities.sh",
+      "exit_code": 0,
+      "seconds": 0.283,
+      "log": "17-verify-model-modalities_sh.log",
+      "log_sha256": "d57998380e34f83055a70a74d9fdeff70eae984d343f8ae8a9c6703288238e8a",
+      "log_bytes": 1870
+    },
+    {
+      "command": "bash scripts/verify-files-api.sh",
+      "exit_code": 0,
+      "seconds": 0.182,
+      "log": "18-verify-files-api_sh.log",
+      "log_sha256": "35598574923ffd7dc391ef6b76bc96aa39c6a3b8c4450fb8871b69a2e5012986",
+      "log_bytes": 1464
+    },
+    {
+      "command": "bash scripts/verify-async-media-jobs.sh",
+      "exit_code": 0,
+      "seconds": 0.175,
+      "log": "19-verify-async-media-jobs_sh.log",
+      "log_sha256": "543f39ad89b92167ef4f002ac871d08a3d9e15f41894ba07caad9b059fa7bbcb",
+      "log_bytes": 1388
+    },
+    {
+      "command": "bash scripts/verify-document-parser.sh",
+      "exit_code": 0,
+      "seconds": 0.18,
+      "log": "20-verify-document-parser_sh.log",
+      "log_sha256": "9d57be0d3f2aaedd1a2c3c82ce437dc2feba052469cbffbfb98dd780b2519ef7",
+      "log_bytes": 1534
+    },
+    {
+      "command": "bash scripts/verify-reranking.sh",
+      "exit_code": 0,
+      "seconds": 0.392,
+      "log": "21-verify-reranking_sh.log",
+      "log_sha256": "6b685274b742a26a13f1a34e597d307376708b2141ba568c45d62e078d1f654c",
+      "log_bytes": 1894
+    },
+    {
+      "command": "bash scripts/verify-catalog-performance.sh",
+      "exit_code": 0,
+      "seconds": 0.288,
+      "log": "22-verify-catalog-performance_sh.log",
+      "log_sha256": "eb824de909dc3d4c8fe352da20f0dc3ba326e3f8bfe18daa2d63e3fd431656be",
+      "log_bytes": 1172
+    },
+    {
+      "command": "bash scripts/verify-credential-sharing.sh",
+      "exit_code": 0,
+      "seconds": 0.182,
+      "log": "23-verify-credential-sharing_sh.log",
+      "log_sha256": "c74926b4e4352f4c6e5f688d628e76d44bb7d84f422900408de977ca33a4bec2",
+      "log_bytes": 1716
+    },
+    {
+      "command": "bash scripts/verify-enterprise-readiness.sh",
+      "exit_code": 0,
+      "seconds": 0.762,
+      "log": "24-verify-enterprise-readiness_sh.log",
+      "log_sha256": "466350440fbde6b80d1f91c8d8bdfac58d3af69453ff4d5696862584e5a4207b",
+      "log_bytes": 2282
+    },
+    {
+      "command": "bash scripts/verify-console-polish.sh",
+      "exit_code": 0,
+      "seconds": 0.228,
+      "log": "25-verify-console-polish_sh.log",
+      "log_sha256": "664858a2c06adebacd61ca8ce09a3cec33b5c758fe7f7d7635dc428db7f1556e",
+      "log_bytes": 2583
+    },
+    {
+      "command": "bash scripts/verify-action-pins.sh",
+      "exit_code": 0,
+      "seconds": 6.251,
+      "log": "26-verify-action-pins_sh.log",
+      "log_sha256": "cc3eab585b1e5500d7103ab4fab500c67cf1c077db98acffb0af057dc273d8f3",
+      "log_bytes": 1355
+    },
+    {
+      "command": "bash scripts/benchmark-overhead.sh",
+      "exit_code": 0,
+      "seconds": 6.697,
+      "log": "27-benchmark-overhead_sh.log",
+      "log_sha256": "26399d7753e90a56477840272e44576f628f6a4e4c0f3930effff140bc10b99d",
+      "log_bytes": 233
+    },
+    {
+      "command": "bash scripts/smoke-first-run.sh",
+      "exit_code": 1,
+      "seconds": 20.843,
+      "log": "28-smoke-first-run_sh.log",
+      "log_sha256": "2d47a033af557a0aed8c544d90bb555f9bcb9b67c1ebe74bad282fc018e1927d",
+      "log_bytes": 2474
+    },
+    {
+      "command": "go test ./...",
+      "exit_code": 0,
+      "seconds": 16.276,
+      "log": "29-___.log",
+      "log_sha256": "9540856c9fe4fdf29efcb9e6104d345fe8d502374c8eadc56713b0624c9d53a9",
+      "log_bytes": 4154
+    },
+    {
+      "command": "go vet ./...",
+      "exit_code": 0,
+      "seconds": 1.92,
+      "log": "30-___.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "log_bytes": 0
+    },
+    {
+      "command": "make lint",
+      "exit_code": 0,
+      "seconds": 6.752,
+      "log": "31-lint.log",
+      "log_sha256": "a4f569f52421ae61552d5ba2a165d1a4c54a10a9064148d690e9c44e0f888a20",
+      "log_bytes": 40
+    },
+    {
+      "command": "make build",
+      "exit_code": 0,
+      "seconds": 19.812,
+      "log": "32-build.log",
+      "log_sha256": "bd3f027ad158ca17c06c668eb2207710053a8179d63f9a4ced27255ea74ddc0f",
+      "log_bytes": 65410
+    },
+    {
+      "command": "bash scripts/smoke-openrouter-sdks.sh",
+      "exit_code": 0,
+      "seconds": 12.964,
+      "log": "33-smoke-openrouter-sdks_sh.log",
+      "log_sha256": "c2b09a26af9dba3ca8daf9d08370ff5dfcdcfdd5f4c9f9099c66c42c2e8ed585",
+      "log_bytes": 340
+    }
+  ],
+  "settled_checks": {
+    "v1_architecture": {
+      "exit_code": 1,
+      "passed_conditions": 11,
+      "failed_conditions": 1,
+      "open_condition": "V01 published Starmap module",
+      "log_sha256": "edebd5b69c8cd6541f05bb633c255b36d76668e6562f6a4c7ba5b1daea40f980"
+    },
+    "first_run": {
+      "port": 60990,
+      "exit_code": 0,
+      "reason": "Default port 18080 already belongs to another listener; that listener remains untouched."
+    }
+  },
+  "verdict": "32 of 33 command checks pass after fixture fixes and a free-port rerun; publication remains unqualified."
+}
