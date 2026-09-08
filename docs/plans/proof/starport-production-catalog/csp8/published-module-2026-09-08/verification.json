@@ -1,0 +1,114 @@
+{
+  "starmap_commit": "7e5912623d0cd53e95451dbd84896b831c82d0a3",
+  "module_version": "v0.16.6-0.20260908061148-7e5912623d0c",
+  "module_download_exit": 0,
+  "catalog_race_tests": {
+    "exit": 0,
+    "pass_events": 135,
+    "fail_events": 0,
+    "skip_events": 0
+  },
+  "application_build": {
+    "exit": 0,
+    "command": "GOWORK=off GOTOOLCHAIN=go1.26.6 go build -mod=readonly -modfile /tmp/starport-published-starmap-pair/go.mod -o /tmp/starport-published-starmap-pair/starport ./cmd/starport"
+  },
+  "workspace_override": false,
+  "module_replacement": false,
+  "starport_base_commit": "de0e00297428f16115a068f5a39ec6702e0674f5",
+  "status": "Local commit 69b5aff selects the verified pseudo-version. Thirty-one of 32 additional required commands pass. V01 correctly requires a stable release tag. The existing PR 366 description records six unpublished local commits. No source push, tagged release, or released-pair qualification.",
+  "sha256": {
+    "module-download.json": "ff2671b50c310941ac83616ea04b5a8db2dff0db1c9679b6619cd88178cb0e03",
+    "catalog-tests.jsonl": "6ab4c2ece86ca159fde22f48ea2bfd92ac86a67af22a96c200cc2e6b2fafa14a",
+    "all-tests.jsonl": "e655ac19bc15c617b6e432799ff7cd483b702a2c6033f2513a90b2ff433cf678",
+    "architecture.log": "edebd5b69c8cd6541f05bb633c255b36d76668e6562f6a4c7ba5b1daea40f980",
+    "required-27.log": "f8e2433e89ea6e42bd733b12bce8cb1ce9eab87fb0773d9ba2e2f09bca00706f",
+    "required-32.log": "c2b09a26af9dba3ca8daf9d08370ff5dfcdcfdd5f4c9f9099c66c42c2e8ed585",
+    "required-26.log": "cc3eab585b1e5500d7103ab4fab500c67cf1c077db98acffb0af057dc273d8f3",
+    "required-18.log": "35598574923ffd7dc391ef6b76bc96aa39c6a3b8c4450fb8871b69a2e5012986",
+    "required-30.log": "a4f569f52421ae61552d5ba2a165d1a4c54a10a9064148d690e9c44e0f888a20",
+    "required-24.log": "466350440fbde6b80d1f91c8d8bdfac58d3af69453ff4d5696862584e5a4207b",
+    "all-valkey-tests.jsonl": "bfe3584d8b70bfab1dea2d41d3fd824372bfa02f5a6fd583481b6f0a4cc9fa9d",
+    "required-25.log": "664858a2c06adebacd61ca8ce09a3cec33b5c758fe7f7d7635dc428db7f1556e",
+    "required-31.log": "8578b3822b2548e3663a6892e29bc23a6196d78bc5027ab1c5ae07b7b9163064",
+    "required-19.log": "543f39ad89b92167ef4f002ac871d08a3d9e15f41894ba07caad9b059fa7bbcb",
+    "required-21.log": "6b685274b742a26a13f1a34e597d307376708b2141ba568c45d62e078d1f654c",
+    "required-09.log": "df43a433b0e2eacf0b82829fa989238b489484de7c8f1e18a4cbba228d81cdc9",
+    "ownership.log": "c2006ab0841a15af0792722064ee14dae63cd3fdb0ff32a1480655cb0d5961ed",
+    "build-info.log": "4e04dd3dc4c9f775865037966cee7099bf93ec20cc8ceafb7c9fae5f0dd431ff",
+    "required-08.log": "75074e58905a5ca1cb126c5686d11dc26445ae78dade9e1333a6429781ca7d81",
+    "required-20.log": "9d57be0d3f2aaedd1a2c3c82ce437dc2feba052469cbffbfb98dd780b2519ef7",
+    "required-22.log": "eb824de909dc3d4c8fe352da20f0dc3ba326e3f8bfe18daa2d63e3fd431656be",
+    "required-checks.log": "9a1fe01d37d6ff9843d77bd939f24e65401e508a38a71ca98db1e45104d28cbc",
+    "required-23.log": "c74926b4e4352f4c6e5f688d628e76d44bb7d84f422900408de977ca33a4bec2",
+    "required-06.log": "22e12582afa0efe7aa6ae4f0fa24c612c13f449ffa0c23e02f08e08f4eed5def",
+    "required-12.log": "69ea9d7375bbb4907e620ae48e022bb88f04aae68545a8942d01ddcf6744f9ec",
+    "required-13.log": "ace79624055952778486dc7cf25da2986a30de02bd540e4b70f65201b1d3f7dd",
+    "required-07.log": "47f29784b60e4bb2b1578966e76740d2eb1c8003ace95deed9381a7cf47a2ca0",
+    "required-11.log": "6fa0ebecdeaab1b0b3742fbe25a1de216e45c21fcd2f9f1b5a87476ce9910324",
+    "required-05.log": "e9d35a605013f2031a4ea6a6a34e8463fc5423692c137b7f98a01a8caa823f19",
+    "required-04.log": "3a49bf0772b6d01f07c91a8c2a646acdfeaaa97cbb1b191026f789ae6f7d9027",
+    "required-10.log": "10524699a6c0461194d21217459b148daa9d422508d73a058e410d9d1661a7b5",
+    "required-14.log": "185cebeb477b2b21b6a132c98b99abd3d13ee8aacf9346c35de5eb139e00e518",
+    "required-28.log": "13df9cf24049e80dbd789601314d6896dc1a5674feff1997aab89e9fff49ff03",
+    "required-29.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "required-01.log": "c2006ab0841a15af0792722064ee14dae63cd3fdb0ff32a1480655cb0d5961ed",
+    "required-15.log": "a9f3f2754f2ecd95b04e7b4e728a5158fc3da0a828a9e1b221d8cae9075212c0",
+    "required-03.log": "8a71d7001424e24289e0d2a024579a006638b5fa0e7331ad4452c835278e6651",
+    "required-17.log": "d57998380e34f83055a70a74d9fdeff70eae984d343f8ae8a9c6703288238e8a",
+    "required-16.log": "2ca175ead00523a30b79eef397b9c4405addfd7282e54eba83bbaa9b458cfcb0",
+    "required-02.log": "edebd5b69c8cd6541f05bb633c255b36d76668e6562f6a4c7ba5b1daea40f980",
+    "required-checks-results.json": "972d44c0d425aa282e6e33f055933a52f39c4d4e04135af67807e9048050f2d5",
+    "required-checks-roster.json": "a72b85ff18d775776abeedd4f08982708434d8f63fb2005a799042f66292bf8b",
+    "valkey.json": "c86d7417bfd969fa3cc8781d2d636b440d1c97668ab98029738d0834b03cf87e"
+  },
+  "full_race_suite": {
+    "command": "GOWORK=off GOTOOLCHAIN=go1.26.6 go test -mod=readonly -race -short -count=1 -timeout=20m -json ./...",
+    "exit": 0,
+    "test_pass_events": 2946,
+    "package_pass_events": 55,
+    "test_skips": 41,
+    "packages_without_tests": 7,
+    "failures": 0
+  },
+  "full_ordinary_suite_with_valkey": {
+    "command": "TEST_VALKEY_URL=<isolated-service> GOWORK=off GOTOOLCHAIN=go1.26.6 go test -mod=readonly -count=1 -timeout=20m -json ./...",
+    "exit": 0,
+    "test_pass_events": 3009,
+    "package_pass_events": 55,
+    "test_skips": [
+      "TestValkeyPubSubReconnection",
+      "TestGatewayOverheadBenchmark"
+    ],
+    "packages_without_tests": 7,
+    "failures": 0,
+    "valkey_version": "7.2.14"
+  },
+  "module_file_sha256": {
+    "go.mod": "a44008fa6a89d293e783e5be5ce0caf65ea1f436f6cb7cc45a7c674c8eee4cfe",
+    "go.sum": "9870145d6ff127ba486fffa0f76b79ebfd931256dbcb4ddccff4fbe32c8ac273"
+  },
+  "release_gate": {
+    "check": "V01 published Starmap module boundary and Go floor",
+    "exit": 1,
+    "reason": "The checked-in verifier requires a stable vMAJOR.MINOR.PATCH tag. A published pseudo-version is not accepted.",
+    "other_architecture_cases_passed": 11,
+    "verifier_changed": false,
+    "required_authority": "The release owner must approve the compatible Starmap tagged release before Starport merge readiness."
+  },
+  "ownership_gate": {
+    "exit": 0,
+    "source": "Verified downloaded module directory, no workspace replacement"
+  },
+  "starport_candidate_commit": "69b5affb3b75ab911e167e92b4418f141212921d",
+  "required_commands": {
+    "total": 32,
+    "passed": 31,
+    "failed": 1,
+    "initial_process_exit": 1,
+    "remaining_commands_process_exit": 0,
+    "failed_commands": [
+      "bash scripts/verify-v1-architecture.sh"
+    ]
+  },
+  "performance_limit": "The existing overhead command executes its opt-in test and passes. Its millisecond header measurement does not qualify the complete A50 profile."
+}
