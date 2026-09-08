@@ -227,6 +227,9 @@ These conflicts concern the declared policy. They do not establish actual exposu
 
 A present file without such a conflict still reports `unverified`. Inspection does not qualify effective access, including Windows ACLs.
 Absent, disabled, and planned entries report `not-assessed`. Wide inspection output includes these fields.
+
+A pattern scan parent reports `not-assessed` with reason `pattern-anchor` and no managed-file access policy.
+The policy applies to matching files. Managed tree entries also apply their policy to the tree root.
 The command never repairs permissions or deletes files. Existing startup permission guards remain separate.
 
 The runtime owner observation also compares a bounded `owner.json` record against the configured product, deployment, instance, and identity override.
