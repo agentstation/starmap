@@ -22,8 +22,13 @@
     "ago": "PASS"
   },
   "review": "Automatic metadata-only pre-PR gate exits 0 without a model call.",
-  "fresh_ci": "pending",
+  "fresh_ci": {
+    "status": "running",
+    "native_jobs_passed": 6,
+    "remaining": "Verification Gate"
+  },
   "merge": "pending",
   "task_completion_credit": false,
-  "published": true
+  "published": true,
+  "auto_merge_enabled": true
 }

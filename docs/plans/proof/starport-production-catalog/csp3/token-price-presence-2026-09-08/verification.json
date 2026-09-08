@@ -36,11 +36,18 @@
   },
   "current_full_verifier": {
     "status": "running",
-    "session": 17673,
-    "output": "/tmp/starmap-token-cost-presence-2026-09-08/unit-repair-publication-verify.txt"
+    "session": 74957,
+    "output": "/tmp/starmap-token-cost-presence-2026-09-08/unit-repair-publication-verify-serial.txt",
+    "GOFLAGS": "-p=2"
   },
   "required_review": "pending full verification",
   "published": false,
   "task_completed": false,
-  "remaining": "Whole-record and other nested presence, original receipt handling, and scoped authority remain open."
+  "remaining": "Whole-record and other nested presence, original receipt handling, and scoped authority remain open.",
+  "space_failure": {
+    "session": 17673,
+    "exit_code": 143,
+    "details": "unit-repair-space-failure.json",
+    "cleanup": "Removed completed first-use compiler and lint caches only. Worktrees, media, source, and proof remain."
+  }
 }

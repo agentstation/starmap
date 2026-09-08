@@ -35,14 +35,36 @@
     "candidate_acceptance": {
       "task": "CSP2",
       "session": 16742,
-      "status": "running",
+      "status": "FAIL",
       "output": "/tmp/starmap-pr136-candidate-csp2.json",
-      "qualifies_merge": false
+      "qualifies_merge": false,
+      "exit_code": 1,
+      "passed_subcases": 14,
+      "failed_subcases": 2,
+      "unverified_subcases": 6,
+      "failure_reason": "Disk exhaustion interrupted five local behavior commands. Native evidence predates the current source and requires fresh CI artifacts.",
+      "space_retry": {
+        "test_pass": 5,
+        "package_pass": 1,
+        "exit_code": 0
+      }
+    },
+    "security_integration": {
+      "head": "b18575505a64040394a707f4c0baafd1514db3fc",
+      "reviewed_full_verifier_base": "d5984e9a1d98c44861103962d16f56c2aa042bb9",
+      "changed_files": [
+        "go.mod",
+        "go.sum"
+      ],
+      "auth_race_test_pass": 67,
+      "consumer_checks_pass": 6,
+      "review": "Automatic metadata-only gate exits 0 without a model call.",
+      "published": false
     }
   },
   "publication_order": [
-    133,
     135,
+    137,
     136
   ],
   "completion_requires": "Merge implementations and verify the merged source before updating task status."

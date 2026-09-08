@@ -1,0 +1,101 @@
+{
+  "task": "CSP3",
+  "source_commit": "7771357812ef297975b1821fd5f287b2ddbf728e",
+  "worktree": "/tmp/starmap-record-presence-worktree-2026-09-08",
+  "branch": "codex/catalog-record-presence",
+  "implemented": "Optional-record JSON/YAML presence and unknown-record reconciliation with original receipts. Lineage record presence has an explicit policy. Existing leaf policies retain their authority order.",
+  "checks": {
+    "selection_before": {
+      "test_fail": 15,
+      "package_fail": 1
+    },
+    "selection_after": {
+      "test_pass": 15,
+      "package_pass": 1
+    },
+    "receipt": {
+      "test_pass": 58,
+      "package_pass": 1
+    },
+    "fallback": {
+      "test_pass": 115,
+      "package_pass": 1
+    },
+    "package_race": {
+      "test_pass": 1349,
+      "package_pass": 3
+    },
+    "minimum_go_1_25_12": {
+      "test_pass": 216,
+      "package_pass": 2
+    },
+    "ago": {
+      "exit_code": 0,
+      "findings": 0,
+      "stale_ignores": 0,
+      "errors": 0
+    },
+    "writing": {
+      "exit_code": 0,
+      "files": 1251,
+      "diagnostics": 0
+    }
+  },
+  "initial_compile_failure": "Disk exhaustion prevented compilation before cleanup. The retained retry proves the actual behavior regression.",
+  "pending": [
+    "Full repository verification",
+    "Required pre-PR review",
+    "Known-record receipt refusal and definition representation checks",
+    "Layer publication, restart, and workspace qualification",
+    "Remaining nested-field presence"
+  ],
+  "task_complete": false,
+  "published": false,
+  "artifacts": {
+    "selection-before.jsonl.gz": {
+      "sha256": "656edb4d06ffeec953e689323a17720f30584d923d327a02d4342403da547f33",
+      "raw_sha256": "11c5296dd5aaa069b036e304f4eba0e651860810d137fbff9790b741e6edfabe",
+      "raw_bytes": 18677
+    },
+    "selection-after.jsonl.gz": {
+      "sha256": "86ce6582ad5448c375bb449759fce464fe61412ffce0c41b8acfbf9a96bdba80",
+      "raw_sha256": "aa9139c80e4f33c7715ce2fd218be903ac4b6f5ef816642a5ad9ad5482e7f815",
+      "raw_bytes": 14871
+    },
+    "receipt.jsonl.gz": {
+      "sha256": "26699f108fe02029cfab872bae321b12d91c956df7912407be8cfe0b38795aad",
+      "raw_sha256": "9a39fad1a14790580e2abd0aeae597102f0d7884d06d75cfef61b12b455a1252",
+      "raw_bytes": 74608
+    },
+    "fallback.jsonl.gz": {
+      "sha256": "5d322f393f93693331b7031600433f0c446678a2791cfc2bc39cacb5c39b75a4",
+      "raw_sha256": "7e3131d1496d15602d0d1c5115147b09626fda06b2985fb9644d9a33ed8d133d",
+      "raw_bytes": 136013
+    },
+    "packages.jsonl.gz": {
+      "sha256": "0e8d97be023ed7789bfcb3b771559c7674c8922f59c00f92d1b9534a93ec0205",
+      "raw_sha256": "159318a7cae3abec0a0a3fb3a261eec37a944f9f74648b29295b18f1c60e5729",
+      "raw_bytes": 1523093
+    },
+    "minimum.jsonl.gz": {
+      "sha256": "13aa83f0bafc2b8a00a6b964a91451757f4a0b8fb1d0c1ce70ceeb8da23a0fa7",
+      "raw_sha256": "ee72f4874e21423d8348d1161693967d22acb2eb124c8bb9b87735eb6c7ba818",
+      "raw_bytes": 227414
+    },
+    "ago.json.gz": {
+      "sha256": "905b50ebb66dc28cecf0d5d7681aabcd8b20af21ce5f8834692f1c6c68590281",
+      "raw_sha256": "b8fb7afa66aa7a93914ac258475dd0191be821803a8aea4439f5ba05022f5fa5",
+      "raw_bytes": 289
+    },
+    "writing.txt.gz": {
+      "sha256": "d1f895c649b6fe346ab88bab721042915f98c7ca5e64234ae0719061902a6df3",
+      "raw_sha256": "23927e0111e5f7edb0992d5e3cc3c80dc123bdbe9b0dfcd4cf7add171c48dd6e",
+      "raw_bytes": 534
+    },
+    "initial-build-failure.jsonl.gz": {
+      "sha256": "aa265973a0216148d73a8158132e9975f9fcfe39423b1fbf6f1c758668853d1f",
+      "raw_sha256": "215a64e42a3829bbbcc844d4cdaa2a58fa5ee69f477ef459c0100cb11f3187b3",
+      "raw_bytes": 1148
+    }
+  }
+}
