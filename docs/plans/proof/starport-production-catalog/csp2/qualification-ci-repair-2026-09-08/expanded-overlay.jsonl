@@ -1,0 +1,16 @@
+{"Time":"2026-09-08T00:59:37.084061-05:00","Action":"start","Package":"github.com/agentstation/starmap"}
+{"Time":"2026-09-08T00:59:37.572337-05:00","Action":"run","Package":"github.com/agentstation/starmap","Test":"TestEmbeddedCatalogStateAllocations"}
+{"Time":"2026-09-08T00:59:37.572486-05:00","Action":"output","Package":"github.com/agentstation/starmap","Test":"TestEmbeddedCatalogStateAllocations","Output":"=== RUN   TestEmbeddedCatalogStateAllocations\n"}
+{"Time":"2026-09-08T00:59:48.433881-05:00","Action":"output","Package":"github.com/agentstation/starmap","Test":"TestEmbeddedCatalogStateAllocations","Output":"    baseline_allocations_test.go:32: isolated allocation check:\n"}
+{"Time":"2026-09-08T00:59:48.434818-05:00","Action":"output","Package":"github.com/agentstation/starmap","Test":"TestEmbeddedCatalogStateAllocations","Output":"        === RUN   TestEmbeddedCatalogStateAllocations\n"}
+{"Time":"2026-09-08T00:59:48.434847-05:00","Action":"output","Package":"github.com/agentstation/starmap","Test":"TestEmbeddedCatalogStateAllocations","Output":"            baseline_allocations_test.go:73: fresh baseline allocations = 0\n"}
+{"Time":"2026-09-08T00:59:48.434853-05:00","Action":"output","Package":"github.com/agentstation/starmap","Test":"TestEmbeddedCatalogStateAllocations","Output":"            baseline_allocations_test.go:73: updated baseline allocations = 0\n"}
+{"Time":"2026-09-08T00:59:48.434857-05:00","Action":"output","Package":"github.com/agentstation/starmap","Test":"TestEmbeddedCatalogStateAllocations","Output":"            baseline_allocations_test.go:73: restarted baseline allocations = 0\n"}
+{"Time":"2026-09-08T00:59:48.434861-05:00","Action":"output","Package":"github.com/agentstation/starmap","Test":"TestEmbeddedCatalogStateAllocations","Output":"            baseline_allocations_test.go:80: allocating control = 1\n"}
+{"Time":"2026-09-08T00:59:48.434865-05:00","Action":"output","Package":"github.com/agentstation/starmap","Test":"TestEmbeddedCatalogStateAllocations","Output":"        --- PASS: TestEmbeddedCatalogStateAllocations (9.81s)\n"}
+{"Time":"2026-09-08T00:59:48.434869-05:00","Action":"output","Package":"github.com/agentstation/starmap","Test":"TestEmbeddedCatalogStateAllocations","Output":"        PASS\n"}
+{"Time":"2026-09-08T00:59:48.434951-05:00","Action":"output","Package":"github.com/agentstation/starmap","Test":"TestEmbeddedCatalogStateAllocations","Output":"--- PASS: TestEmbeddedCatalogStateAllocations (10.86s)\n"}
+{"Time":"2026-09-08T00:59:48.434956-05:00","Action":"pass","Package":"github.com/agentstation/starmap","Test":"TestEmbeddedCatalogStateAllocations","Elapsed":10.86}
+{"Time":"2026-09-08T00:59:48.434964-05:00","Action":"output","Package":"github.com/agentstation/starmap","Output":"PASS\n"}
+{"Time":"2026-09-08T00:59:49.437434-05:00","Action":"output","Package":"github.com/agentstation/starmap","Output":"ok  \tgithub.com/agentstation/starmap\t12.353s\n"}
+{"Time":"2026-09-08T00:59:49.437486-05:00","Action":"pass","Package":"github.com/agentstation/starmap","Elapsed":12.353}

@@ -1,0 +1,18 @@
+{
+	"Path": "github.com/agentstation/starmap",
+	"Version": "v0.16.6-0.20260908061148-7e5912623d0c",
+	"Query": "7e5912623d0cd53e95451dbd84896b831c82d0a3",
+	"Info": "/Users/jack/go/pkg/mod/cache/download/github.com/agentstation/starmap/@v/v0.16.6-0.20260908061148-7e5912623d0c.info",
+	"GoMod": "/Users/jack/go/pkg/mod/cache/download/github.com/agentstation/starmap/@v/v0.16.6-0.20260908061148-7e5912623d0c.mod",
+	"Zip": "/Users/jack/go/pkg/mod/cache/download/github.com/agentstation/starmap/@v/v0.16.6-0.20260908061148-7e5912623d0c.zip",
+	"Dir": "/Users/jack/go/pkg/mod/github.com/agentstation/starmap@v0.16.6-0.20260908061148-7e5912623d0c",
+	"Sum": "h1:jCnCknKZSbDk+sByB/G2ucpDj66e2XmHtKW56yXqE/E=",
+	"GoModSum": "h1:7dh43g9ePAzyMvIdNGfa+Ehz4xttGKfILQhwbokGbgo=",
+	"Origin": {
+		"VCS": "git",
+		"URL": "https://github.com/agentstation/starmap",
+		"Hash": "7e5912623d0cd53e95451dbd84896b831c82d0a3",
+		"TagSum": "t1:0u/rFQ7Vn0JyKvnk1j1zCh2XTsbmqAuhiLokQAXpigM=",
+		"Ref": "refs/heads/codex/catalog-qualification"
+	}
+}

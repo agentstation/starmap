@@ -1,0 +1,29 @@
+{
+  "source_commit": "b32a39dc",
+  "base_commit": "637f780a067466896f6b9ed03dc034cd764861a9",
+  "scope": "Evidence-only PR. The qualification code keeps its complete substantive diff against this actual parent.",
+  "reason": "The review helper refused more than eight bounded passes when raw evidence shared the code diff.",
+  "evidence_files": 19,
+  "scanner_exit_code": 0,
+  "sha256": {
+    "docs/plans/proof/starport-production-catalog/csp2/native-qualification-2026-09-07.md": "c133ed37e0ca3739d62382963005e90583271349c23715d4c42ebb3e8537f856",
+    "docs/plans/proof/starport-production-catalog/csp2/native-sixth-2026-09-07/followup-prepr.log": "827d0e97573c296f6a9624cba2c94647b053298651a56fd17034d1c88b44da54",
+    "docs/plans/proof/starport-production-catalog/csp2/native-sixth-2026-09-07/followup-review.json": "b1a4af05cbae7359cb3805156439b6088d83066ead6229e36d466277a138375d",
+    "docs/plans/proof/starport-production-catalog/csp2/native-sixth-2026-09-07/foundation-final-ci.json": "d76c84c0ed22f232b8fa5f0efbcdfd20721f162d87a5beb243e7dac6bcbf0f76",
+    "docs/plans/proof/starport-production-catalog/csp2/qualification-2026-09-07/ago.json": "b8fb7afa66aa7a93914ac258475dd0191be821803a8aea4439f5ba05022f5fa5",
+    "docs/plans/proof/starport-production-catalog/csp2/qualification-2026-09-07/components.json": "d6c07f26cff59d364834826f4dc185486b2f9c584ac9b1db014fc1240e75cbaa",
+    "docs/plans/proof/starport-production-catalog/csp2/qualification-2026-09-07/documents.json": "f83bab766124546072f7b22005a58beee208d33f4dc2551bb1934270ed0f5cf0",
+    "docs/plans/proof/starport-production-catalog/csp2/qualification-2026-09-07/final-ago.json": "b8fb7afa66aa7a93914ac258475dd0191be821803a8aea4439f5ba05022f5fa5",
+    "docs/plans/proof/starport-production-catalog/csp2/qualification-2026-09-07/full-verification.log": "702c197d64fc40714a2d983fddc0941377c0422e001b178c48b79f5054c89fba",
+    "docs/plans/proof/starport-production-catalog/csp2/qualification-2026-09-07/initial-components.json": "e367102969e31377c249117d0f7cd7112b5abaa99010c00e22e083cf50f8c50d",
+    "docs/plans/proof/starport-production-catalog/csp2/qualification-2026-09-07/initial-verifier-tests.log": "7ead837d711b1b1cb6941684470234d710a8ea7eea201dabf79965c1c2d6098d",
+    "docs/plans/proof/starport-production-catalog/csp2/qualification-2026-09-07/initial-writing.log": "371f51ef915224bb7c8cd3f14736e4ca046050cb6887c326e46aa89c5d7d3dc3",
+    "docs/plans/proof/starport-production-catalog/csp2/qualification-2026-09-07/path-suites.jsonl": "e588c590c9f6c5171d799fdfcc696e10b4928a0329bc7d53b0a6ba6daa3eac34",
+    "docs/plans/proof/starport-production-catalog/csp2/qualification-2026-09-07/recovery-components.json": "ddbb6bc64933dd9553a09e8efb64089835bd56988641cc6ff785a02bade6e5b7",
+    "docs/plans/proof/starport-production-catalog/csp2/qualification-2026-09-07/verification.json": "955fe73bf84e2d30187bc56c8fcfc29dd20aac909b62c62d9a3d6f5d6a7420fd",
+    "docs/plans/proof/starport-production-catalog/csp2/qualification-2026-09-07/verifier-tests.log": "5185a7322e1bf463b8f9d28675feadd5a374d47f1af733e6fdf0955cee8bf47b",
+    "docs/plans/proof/starport-production-catalog/csp2/qualification-2026-09-07/writing-fixed.log": "566ef82ed6781b5af4e972300bf612ffbb607f77c99f7d384af7972f34864d3d",
+    "docs/plans/proof/starport-production-catalog/csp2/qualification-2026-09-07/writing.log": "81efea05646922154b854936c2a6f9c11c99adf053dc00a603173fbb3171f90e",
+    "docs/plans/proof/starport-production-catalog/csp2/qualification-2026-09-07/review-preflight.log": "f8477639aeb37d706ec5963e12b3009e325528325460f413debbf7e1b31a59a6"
+  }
+}

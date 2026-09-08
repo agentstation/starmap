@@ -1,0 +1,23 @@
+{
+  "head": "7e5912623d0cd53e95451dbd84896b831c82d0a3",
+  "repair_commit": "eefcd154",
+  "evidence_parent": "b0361a38d7dcf64e0bb0ee3954872b2b12ec0d81",
+  "pull_request": 136,
+  "evidence_pull_request": 135,
+  "review": {
+    "exit": 0,
+    "profile": "cross-lab",
+    "reviewers": [
+      "gpt-5.6-sol xhigh",
+      "claude-opus-5 high"
+    ],
+    "portions": 1,
+    "findings": 0,
+    "bundle_bytes": 162372
+  },
+  "native_run": 34193810413,
+  "native_status_at_dispatch": "in_progress",
+  "acceptance": "Six native subcases remain UNVERIFIED until the whole workflow and source-bound capture pass.",
+  "nonproof_diff_unchanged_after_parent_merge": true,
+  "nonproof_diff_sha256": "d65d0bf19415dbb67a39b0d65fefc8045cdfa81e177a9711008d754ca48c78e6"
+}

@@ -1,0 +1,194 @@
+[
+  {
+    "command": "bash scripts/verify-starmap-ownership.sh",
+    "exit_code": 0,
+    "log": "required-01.log",
+    "elapsed_seconds": 64.182
+  },
+  {
+    "command": "bash scripts/verify-v1-architecture.sh",
+    "exit_code": 1,
+    "log": "required-02.log",
+    "elapsed_seconds": 67.933
+  },
+  {
+    "command": "bash scripts/test-dependency-direction-verifier.sh",
+    "exit_code": 0,
+    "log": "required-03.log",
+    "elapsed_seconds": 0.655
+  },
+  {
+    "command": "bash scripts/verify-dependency-direction.sh",
+    "exit_code": 0,
+    "log": "required-04.log",
+    "elapsed_seconds": 0.592
+  },
+  {
+    "command": "bash scripts/verify-catalog-driven-providers.sh",
+    "exit_code": 0,
+    "log": "required-05.log",
+    "elapsed_seconds": 127.111
+  },
+  {
+    "command": "bash scripts/verify-package-layout.sh",
+    "exit_code": 0,
+    "log": "required-06.log",
+    "elapsed_seconds": 5.685
+  },
+  {
+    "command": "bash scripts/verify-readme-quickstart.sh",
+    "exit_code": 0,
+    "log": "required-07.log",
+    "elapsed_seconds": 0.077
+  },
+  {
+    "command": "bash scripts/verify-v1-release.sh",
+    "exit_code": 0,
+    "log": "required-08.log",
+    "elapsed_seconds": 0.076
+  },
+  {
+    "command": "bash scripts/verify-release-workflow.sh",
+    "exit_code": 0,
+    "log": "required-09.log",
+    "elapsed_seconds": 1.958
+  },
+  {
+    "command": "bash scripts/verify-developer-experience.sh",
+    "exit_code": 0,
+    "log": "required-10.log",
+    "elapsed_seconds": 0.293
+  },
+  {
+    "command": "bash scripts/verify-doc-links.sh",
+    "exit_code": 0,
+    "log": "required-11.log",
+    "elapsed_seconds": 0.127
+  },
+  {
+    "command": "bash scripts/test-doc-link-verifier.sh",
+    "exit_code": 0,
+    "log": "required-12.log",
+    "elapsed_seconds": 0.183
+  },
+  {
+    "command": "bash scripts/verify-openrouter-parity.sh",
+    "exit_code": 0,
+    "log": "required-13.log",
+    "elapsed_seconds": 0.129
+  },
+  {
+    "command": "bash scripts/verify-console-modernization.sh",
+    "exit_code": 0,
+    "log": "required-14.log",
+    "elapsed_seconds": 0.041
+  },
+  {
+    "command": "bash scripts/verify-auth-onboarding.sh",
+    "exit_code": 0,
+    "log": "required-15.log",
+    "elapsed_seconds": 0.072
+  },
+  {
+    "command": "bash scripts/verify-console-session-grants.sh",
+    "exit_code": 0,
+    "log": "required-16.log",
+    "elapsed_seconds": 0.349
+  },
+  {
+    "command": "bash scripts/verify-model-modalities.sh",
+    "exit_code": 0,
+    "log": "required-17.log",
+    "elapsed_seconds": 0.239
+  },
+  {
+    "command": "bash scripts/verify-files-api.sh",
+    "exit_code": 0,
+    "log": "required-18.log",
+    "elapsed_seconds": 0.128
+  },
+  {
+    "command": "bash scripts/verify-async-media-jobs.sh",
+    "exit_code": 0,
+    "log": "required-19.log",
+    "elapsed_seconds": 0.131
+  },
+  {
+    "command": "bash scripts/verify-document-parser.sh",
+    "exit_code": 0,
+    "log": "required-20.log",
+    "elapsed_seconds": 0.184
+  },
+  {
+    "command": "bash scripts/verify-reranking.sh",
+    "exit_code": 0,
+    "log": "required-21.log",
+    "elapsed_seconds": 0.292
+  },
+  {
+    "command": "bash scripts/verify-catalog-performance.sh",
+    "exit_code": 0,
+    "log": "required-22.log",
+    "elapsed_seconds": 0.238
+  },
+  {
+    "command": "bash scripts/verify-credential-sharing.sh",
+    "exit_code": 0,
+    "log": "required-23.log",
+    "elapsed_seconds": 0.177
+  },
+  {
+    "command": "bash scripts/verify-enterprise-readiness.sh",
+    "exit_code": 0,
+    "log": "required-24.log",
+    "elapsed_seconds": 0.721
+  },
+  {
+    "command": "bash scripts/verify-console-polish.sh",
+    "exit_code": 0,
+    "log": "required-25.log",
+    "elapsed_seconds": 0.184
+  },
+  {
+    "command": "bash scripts/verify-action-pins.sh",
+    "exit_code": 0,
+    "log": "required-26.log",
+    "elapsed_seconds": 6.959
+  },
+  {
+    "command": "bash scripts/benchmark-overhead.sh",
+    "exit_code": 0,
+    "log": "required-27.log",
+    "elapsed_seconds": 6.706
+  },
+  {
+    "command": "bash scripts/smoke-first-run.sh",
+    "exit_code": 0,
+    "log": "required-28.log",
+    "elapsed_seconds": 18.746
+  },
+  {
+    "command": "go vet ./...",
+    "exit_code": 0,
+    "log": "required-29.log",
+    "elapsed_seconds": 1.591
+  },
+  {
+    "command": "make lint",
+    "exit_code": 0,
+    "log": "required-30.log",
+    "elapsed_seconds": 12.182
+  },
+  {
+    "command": "make build",
+    "exit_code": 0,
+    "log": "required-31.log",
+    "elapsed_seconds": 13.547
+  },
+  {
+    "command": "bash scripts/smoke-openrouter-sdks.sh",
+    "exit_code": 0,
+    "log": "required-32.log",
+    "elapsed_seconds": 9.676
+  }
+]

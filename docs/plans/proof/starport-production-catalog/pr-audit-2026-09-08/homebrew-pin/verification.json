@@ -1,0 +1,14 @@
+{
+  "pull_request": 367,
+  "repository": "agentstation/starport",
+  "head": "3f0817ad23b69147caaafd2b30ccbd71a50e48a6",
+  "tag": "2026.09.07.1",
+  "tag_commit": "f8d4222eb633e65c2a0157383cf80861fc7fae7f",
+  "tag_matches_pin": true,
+  "upstream_compare_commits": 6,
+  "upstream_changed_files": 4,
+  "selected_action_changed": false,
+  "required_checks": 10,
+  "checks_passed": 10,
+  "disposition": "Retain for an authorized merge. No merge or release performed."
+}

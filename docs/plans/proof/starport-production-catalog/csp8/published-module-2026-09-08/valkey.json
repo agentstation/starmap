@@ -1,0 +1,11 @@
+{
+  "container": "39aea74cf6dc537eba940595f9d50bc50bb10957d2b17f7ffd794dbfb7d8d46b",
+  "name": "starport-catalog-pair-20260908",
+  "image": "sha256:9acdf6f0ae1771ea63c401e127054b2d1779227b9230dcfae37fa684610eaa4f",
+  "repo_digests": [
+    "valkey/valkey@sha256:9acdf6f0ae1771ea63c401e127054b2d1779227b9230dcfae37fa684610eaa4f"
+  ],
+  "version": "Server v=7.2.14 sha=00000000:0 malloc=jemalloc-5.3.0 bits=64 build=fcca1d4040dcb3c5",
+  "url": "valkey://127.0.0.1:53877",
+  "storage": "ephemeral tmpfs; no host mounts"
+}

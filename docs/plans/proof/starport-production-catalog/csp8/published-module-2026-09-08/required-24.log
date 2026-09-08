@@ -1,0 +1,34 @@
+PASS ENR-V01 internal/telemetry owns the metric vocabulary
+PASS ENR-V02 the server serves a Prometheus scrape, held by tests
+PASS ENR-V03 the tracer exports over OTLP only when configuration names it
+PASS ENR-V04 the disabled tracer is a no-op, held by tests
+PASS ENR-V05 the usage seam owns a sink that streams NDJSON records out
+PASS ENR-V06 the activity API exports stored usage records
+PASS ENR-V07 internal/audit owns the record and migration 0006 lands in sqlstore
+PASS ENR-V08 every admin mutation writes an audit record, held by tests
+PASS ENR-V09 the console renders the audit log
+PASS ENR-V10 internal/events owns the signed webhook envelope
+PASS ENR-V11 budget, job, and health transitions emit named events
+PASS ENR-V12 the security posture document exists and the README links it
+PASS ENR-V13 the gateway serves /v1/responses on the canonical chat contract
+PASS ENR-V14 the responses codec round-trips, held by tests
+PASS ENR-V15 moderations is canonical, routed, and scoped
+PASS ENR-V16 the gateway serves /v1/batches over the jobs seam
+PASS ENR-V17 batch lines run through the planner and meter, held by tests
+PASS ENR-V18 spread selection stays inside the ranking band, held by tests
+PASS ENR-V19 availability publishes shared state through the KV contract
+PASS ENR-V20 with no shared store the tracker stays local, held by tests
+PASS ENR-V21 internal/guardrails owns the verdict vocabulary
+PASS ENR-V22 a check that cannot evaluate refuses, held by tests
+PASS ENR-V23 PII detection covers cards under Luhn, held by tests
+PASS ENR-V24 the moderation check rides the account's own routing
+PASS ENR-V25 the limits vocabulary reaches teams
+PASS ENR-V26 team budget exhaustion refuses pre-flight, held by tests
+PASS ENR-V27 the semantic cache is opt-in and lives beside the exact identity
+PASS ENR-V28 similarity answers only above the threshold, held by tests
+PASS ENR-V29 preset revisions pin and roll back, held by tests
+PASS ENR-V30 the CLI owns the agent surface: catalog verbs and the embedded skill
+PASS ENR-V31 the catalog verbs answer JSON and agent setup writes the skill, held by tests
+PASS ENR-V32 deleting an owner repairs a corrupt hash-index record, held by tests
+PASS ENR-V33 CI runs this gate and the evidence list names it
+Summary: 33 passed, 0 failed

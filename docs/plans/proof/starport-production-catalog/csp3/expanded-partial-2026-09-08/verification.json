@@ -1,0 +1,50 @@
+{
+  "source_commit": "2baa4a78f12c08c75757d58d7a371edbac458b0f",
+  "same_production_as": "7e5912623d0cd53e95451dbd84896b831c82d0a3",
+  "test": "TestCSP3PartialPublicationPreservesAcceptedFacts",
+  "dimensions": {
+    "scope": [
+      "unbound",
+      "account",
+      "public"
+    ],
+    "prior_price": [
+      0,
+      2
+    ],
+    "reply": [
+      "partial with valid peer",
+      "partial with no models"
+    ],
+    "stages": [
+      "publication",
+      "runtime reopen",
+      "source baseline refresh"
+    ]
+  },
+  "red": {
+    "exit_code": 1,
+    "pass_events": 0,
+    "fail_events": 18,
+    "skip_events": 0
+  },
+  "candidate": {
+    "exit_code": 0,
+    "pass_events": 18,
+    "fail_events": 0,
+    "skip_events": 0
+  },
+  "limits": [
+    "Candidate uses the existing original-observation history and its 4096-batch / 64 MiB admission bounds. CSP5 owns compaction before production support.",
+    "The fixture source controls transport. Production publication, filesystem storage, restart reconstruction, and source refresh execute. No HTTP, CLI, actual provider, or separate-process restart credit.",
+    "Production source remains unchanged. These are CSP3 failure and candidate checks, not completed acceptance."
+  ],
+  "sha256": {
+    "candidate-overlay.json": "b54124976c1f7d80af2a4b512d2b0d9e3a02acb33acc663992f1dee325136980",
+    "candidate.jsonl": "a6f855ec60a8d62ee590491c5af225b7c4ed2701944415b5f3e7b366e307daed",
+    "manual_history_candidate.go.gz": "8e9df879db582e2e91846a8b1c874b7b8e62a2b19e1e28a1843212a87cc6af7a",
+    "partial_test.go.gz": "cf90f28504e3e577d724457e14bff18a7a900fa0cac41e6119f02e4b2b5b769a",
+    "red-overlay.json": "a4b7b2ec5a650e4fbd0949e8692e3d2dff52642cbc97036dbc61f692f2ffe37b",
+    "red.jsonl": "f1dce25029c711a348711bba58de7ffe9bc30d0d32c050cfc84dbb451a2b7737"
+  }
+}

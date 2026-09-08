@@ -1,0 +1,57 @@
+{
+  "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-partial-retention",
+  "branch": "codex/catalog-partial-retention",
+  "commit": "fa5954a6b598bc1ab7fcd5e24da15a136fbe8cd8",
+  "base": "2baa4a78",
+  "test": "TestPartialProviderReplyPreservesPricingAcrossRestartAndSourceRefresh",
+  "before": {
+    "exit": 1,
+    "pass_events": 0,
+    "fail_events": 18,
+    "skip_events": 0,
+    "method": "Original runtime/manual_history.go from 7e591262 via a Go overlay. The new regression test remains unchanged."
+  },
+  "focused": {
+    "exit": 0,
+    "pass_events": 103,
+    "fail_events": 0,
+    "skip_events": 0,
+    "go": "1.26.6"
+  },
+  "minimum_go": {
+    "exit": 0,
+    "pass_events": 18,
+    "fail_events": 0,
+    "skip_events": 0,
+    "go": "1.25.12"
+  },
+  "ago": {
+    "exit": 0,
+    "findings": 0,
+    "stale_ignores": 0,
+    "errors": 0
+  },
+  "runtime_lint_exit": 0,
+  "prose": {
+    "exit": 0,
+    "files": 1168,
+    "diagnostics": 0
+  },
+  "scope": "Keep original accepted provider observations before partial publication. Verify paid and zero prices, partial and empty replies, three scope classes, restart, source refresh, and complete pricing records.",
+  "limits": [
+    "This local patch is not merged into the qualification branch or published. Required publication review and broader CSP3 acceptance remain open.",
+    "Existing 4096-batch and 64 MiB history bounds remain. CSP5 owns compaction and collection before production support.",
+    "Scoped deletions, other field presence contracts, and released-pair qualification remain open."
+  ],
+  "sha256": {
+    "partial_provider_pricing_test.go.gz": "5e84929115efd2b64bfff7a35a4c1b6bb3138e0083e93a685f6213168bf8b8cf",
+    "writing.log": "bef18d17e78cc432a4cc6d1bcc006425f9e2fab7385ea1be329d92efe3d5f09f",
+    "lint.log": "fbe0d267627eef3831650e9386f26bf74a475dda6db8dd8a29cb7eb30fc29066",
+    "red.jsonl": "2b7f530446e6bf6dd496e0e1f92f515342245957da76291df595a566a9f8670f",
+    "manual_history.go.gz": "5425ddfc99ea836f0d9a87cd9c1637c9b8f4ecac87db6ab91b89d4cbafa7a525",
+    "ago.json": "b8fb7afa66aa7a93914ac258475dd0191be821803a8aea4439f5ba05022f5fa5",
+    "focused.jsonl": "3857ac4c62277e1c4db781759e1a3e9cbcd2eb032ba61e76b3a49e60db90bb5e",
+    "minimum-go.jsonl": "1a776a3f7379e4376657a7e4d360487887d54006cc5873228db2203aa423fb36",
+    "ago-policy.json": "26546ffa43fa8ec4c65a1e08381818b02e9ffd25cf39d88885a3ca2c98189b30"
+  }
+}

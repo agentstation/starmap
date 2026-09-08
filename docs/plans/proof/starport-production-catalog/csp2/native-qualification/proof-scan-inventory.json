@@ -1,0 +1,572 @@
+[
+  {
+    "path": "docs/plans/proof/starport-production-catalog/csp2/native-qualification/capture.json",
+    "sha256": "6fa75e49faa82805c9a744ee761ef6d42d6000c772ff6989f417c909ab66aa4a",
+    "bytes": 32930,
+    "decoded_gzip": false
+  },
+  {
+    "path": "docs/plans/proof/starport-production-catalog/csp2/native-qualification/component-report.json",
+    "sha256": "6eb68d0ecdea85edaaa1d450c1f4ead9d8e2b326f06b017062c2717e6567b40f",
+    "bytes": 464220,
+    "decoded_gzip": false
+  },
+  {
+    "path": "docs/plans/proof/starport-production-catalog/csp2/native-qualification/final-run.json",
+    "sha256": "d331af64a41692613e8775e589369122ca57034110cbd961f6427ce3a5c0f105",
+    "bytes": 19484,
+    "decoded_gzip": false
+  },
+  {
+    "path": "docs/plans/proof/starport-production-catalog/csp2/native-qualification/native-runtime-macos-15-intel/tests.jsonl",
+    "sha256": "9e31eacc00866de1e8b30df0104ec7bcecbc5f3e73ad99d7c0592042e7d543e4",
+    "bytes": 1721628,
+    "decoded_gzip": false
+  },
+  {
+    "path": "docs/plans/proof/starport-production-catalog/csp2/native-qualification/native-runtime-macos-15-intel/toolchain.txt",
+    "sha256": "4f28d3dae1dfe8e165768127320fb8c738f3d76140c64c0f211e0b5518eec3fe",
+    "bytes": 62,
+    "decoded_gzip": false
+  },
+  {
+    "path": "docs/plans/proof/starport-production-catalog/csp2/native-qualification/native-runtime-macos-15/tests.jsonl",
+    "sha256": "e388f01480faefe1da01ac9cb37c2c4d6ded3c1da7c8cd8069b4739aeb761ea4",
+    "bytes": 1723746,
+    "decoded_gzip": false
+  },
+  {
+    "path": "docs/plans/proof/starport-production-catalog/csp2/native-qualification/native-runtime-macos-15/toolchain.txt",
+    "sha256": "bb9ee77d7c8e557aec36ec13ca7f0ca64de09f9fc157d40f8365df51cab84e05",
+    "bytes": 62,
+    "decoded_gzip": false
+  },
+  {
+    "path": "docs/plans/proof/starport-production-catalog/csp2/native-qualification/native-runtime-ubuntu-24.04-arm/service-owner.txt",
+    "sha256": "71e95cf3ba8f4ffce1f898b57a40a545879340c4a92fe4c330c9edbf8829d95e",
+    "bytes": 323,
+    "decoded_gzip": false
+  },
+  {
+    "path": "docs/plans/proof/starport-production-catalog/csp2/native-qualification/native-runtime-ubuntu-24.04-arm/tests.jsonl",
+    "sha256": "08c03273736c7eba50db118dcb78e66217eb853c3d73ddac952e4103b74ee7b4",
+    "bytes": 1692081,
+    "decoded_gzip": false
+  },
+  {
+    "path": "docs/plans/proof/starport-production-catalog/csp2/native-qualification/native-runtime-ubuntu-24.04-arm/toolchain.txt",
+    "sha256": "d626501f02ef63f1b2e1a71b9139471df8b5019d9660cc0670be28cfcddaf1ca",
+    "bytes": 59,
+    "decoded_gzip": false
+  },
+  {
+    "path": "docs/plans/proof/starport-production-catalog/csp2/native-qualification/native-runtime-ubuntu-24.04/service-owner.txt",
+    "sha256": "fa435cda637750b81627118f0af668ace485cb3868dae57a4df0e30b6e2dc912",
+    "bytes": 323,
+    "decoded_gzip": false
+  },
+  {
+    "path": "docs/plans/proof/starport-production-catalog/csp2/native-qualification/native-runtime-ubuntu-24.04/tests.jsonl",
+    "sha256": "f6d78abda507ba710d00a7c1cb56cbf842bdf133f1ac8731abf34f4278aa5d0e",
+    "bytes": 1690897,
+    "decoded_gzip": false
+  },
+  {
+    "path": "docs/plans/proof/starport-production-catalog/csp2/native-qualification/native-runtime-ubuntu-24.04/toolchain.txt",
+    "sha256": "da4d53167df8bd5077848a5cf1cc2b0a5e71b0bb53b9475454e6c43a1b6a1057",
+    "bytes": 59,
+    "decoded_gzip": false
+  },
+  {
+    "path": "docs/plans/proof/starport-production-catalog/csp2/native-qualification/native-runtime-windows-11-arm/tests.jsonl",
+    "sha256": "5869c03f05cd17794c3821a07f2ff9784080653e56b147348a2db7f20b20b289",
+    "bytes": 1463261,
+    "decoded_gzip": false
+  },
+  {
+    "path": "docs/plans/proof/starport-production-catalog/csp2/native-qualification/native-runtime-windows-11-arm/toolchain.txt",
+    "sha256": "3c29148d3cb3f9e77c69741baab010bfe82151125f667c25723ba18570505a33",
+    "bytes": 65,
+    "decoded_gzip": false
+  },
+  {
+    "path": "docs/plans/proof/starport-production-catalog/csp2/native-qualification/native-runtime-windows-2025/tests.jsonl",
+    "sha256": "2334e0a9d5fff32d46b4590dbc345fea79a23dbf6e3e02bc9ff4d470573c2943",
+    "bytes": 1463288,
+    "decoded_gzip": false
+  },
+  {
+    "path": "docs/plans/proof/starport-production-catalog/csp2/native-qualification/native-runtime-windows-2025/toolchain.txt",
+    "sha256": "9b7d2817082583a835c46b2e14d0613c4002696e8c090973f0aee69d18cebcad",
+    "bytes": 65,
+    "decoded_gzip": false
+  },
+  {
+    "path": "docs/plans/proof/starport-production-catalog/csp2/native-qualification/verification.json",
+    "sha256": "892b1051637912b3ad679635420e497a587e5d5cc239684fac24e9ae9d85f18c",
+    "bytes": 1855,
+    "decoded_gzip": false
+  },
+  {
+    "path": "docs/plans/proof/starport-production-catalog/csp2/qualification-2026-09-07/action-pins.log",
+    "sha256": "17c3c94041ee04808f02e389dc5d50e89c9f9fcd2dbc8f09c27f08b9e4facd8a",
+    "bytes": 714,
+    "decoded_gzip": false
+  },
+  {
+    "path": "docs/plans/proof/starport-production-catalog/csp2/qualification-2026-09-07/code-review.log",
+    "sha256": "8323ff86c5885d3cbb0d9b3785474cb2fbde9113c2a839fdbd6922a985d3b193",
+    "bytes": 807,
+    "decoded_gzip": false
+  },
+  {
+    "path": "docs/plans/proof/starport-production-catalog/csp2/qualification-2026-09-07/parent-final-ci.json",
+    "sha256": "fbfe15a34c9f22613368d962e1a3da706a5741999df9282c41f07e14455ac09f",
+    "bytes": 19582,
+    "decoded_gzip": false
+  },
+  {
+    "path": "docs/plans/proof/starport-production-catalog/csp2/qualification-2026-09-07/review.json",
+    "sha256": "15f29a79dd485f571f0d667c1589068dd5859913e9c064633bc135103b1feb1f",
+    "bytes": 764,
+    "decoded_gzip": false
+  },
+  {
+    "path": "docs/plans/proof/starport-production-catalog/csp2/qualification-ci-repair-2026-09-08/dispatched-run.json",
+    "sha256": "06118256fda73e39cc1ba64672d30d7aa0737dd01e85e836f677e8bfc1f510dd",
+    "bytes": 17394,
+    "decoded_gzip": false
+  },
+  {
+    "path": "docs/plans/proof/starport-production-catalog/csp2/qualification-ci-repair-2026-09-08/prepr.log",
+    "sha256": "e4423b22af85ae5a225bc87182166698d649aca27c7f1c5f9286ea03938fc803",
+    "bytes": 893,
+    "decoded_gzip": false
+  },
+  {
+    "path": "docs/plans/proof/starport-production-catalog/csp2/qualification-ci-repair-2026-09-08/publication.json",
+    "sha256": "6faf31282fa1707c41310ddd4f976eb070d79951c78e0b9adca141ed55891a71",
+    "bytes": 751,
+    "decoded_gzip": false
+  },
+  {
+    "path": "docs/plans/proof/starport-production-catalog/csp3/expanded-partial-2026-09-08/candidate-overlay.json",
+    "sha256": "b54124976c1f7d80af2a4b512d2b0d9e3a02acb33acc663992f1dee325136980",
+    "bytes": 355,
+    "decoded_gzip": false
+  },
+  {
+    "path": "docs/plans/proof/starport-production-catalog/csp3/expanded-partial-2026-09-08/candidate.jsonl",
+    "sha256": "a6f855ec60a8d62ee590491c5af225b7c4ed2701944415b5f3e7b366e307daed",
+    "bytes": 45149,
+    "decoded_gzip": false
+  },
+  {
+    "path": "docs/plans/proof/starport-production-catalog/csp3/expanded-partial-2026-09-08/manual_history_candidate.go.gz",
+    "sha256": "8e9df879db582e2e91846a8b1c874b7b8e62a2b19e1e28a1843212a87cc6af7a",
+    "bytes": 2390,
+    "decoded_gzip": true
+  },
+  {
+    "path": "docs/plans/proof/starport-production-catalog/csp3/expanded-partial-2026-09-08/partial_test.go.gz",
+    "sha256": "cf90f28504e3e577d724457e14bff18a7a900fa0cac41e6119f02e4b2b5b769a",
+    "bytes": 1848,
+    "decoded_gzip": true
+  },
+  {
+    "path": "docs/plans/proof/starport-production-catalog/csp3/expanded-partial-2026-09-08/red-overlay.json",
+    "sha256": "a4b7b2ec5a650e4fbd0949e8692e3d2dff52642cbc97036dbc61f692f2ffe37b",
+    "bytes": 190,
+    "decoded_gzip": false
+  },
+  {
+    "path": "docs/plans/proof/starport-production-catalog/csp3/expanded-partial-2026-09-08/red.jsonl",
+    "sha256": "f1dce25029c711a348711bba58de7ffe9bc30d0d32c050cfc84dbb451a2b7737",
+    "bytes": 45814,
+    "decoded_gzip": false
+  },
+  {
+    "path": "docs/plans/proof/starport-production-catalog/csp3/expanded-partial-2026-09-08/verification.json",
+    "sha256": "03f7184fac4ddcb2e48b43c5ef1079f5240b283d5be73ff04adf54c3bb7d4e31",
+    "bytes": 1814,
+    "decoded_gzip": false
+  },
+  {
+    "path": "docs/plans/proof/starport-production-catalog/csp3/partial-retention-implementation-2026-09-08/ago-policy.json",
+    "sha256": "26546ffa43fa8ec4c65a1e08381818b02e9ffd25cf39d88885a3ca2c98189b30",
+    "bytes": 11848,
+    "decoded_gzip": false
+  },
+  {
+    "path": "docs/plans/proof/starport-production-catalog/csp3/partial-retention-implementation-2026-09-08/ago.json",
+    "sha256": "b8fb7afa66aa7a93914ac258475dd0191be821803a8aea4439f5ba05022f5fa5",
+    "bytes": 289,
+    "decoded_gzip": false
+  },
+  {
+    "path": "docs/plans/proof/starport-production-catalog/csp3/partial-retention-implementation-2026-09-08/focused.jsonl",
+    "sha256": "3857ac4c62277e1c4db781759e1a3e9cbcd2eb032ba61e76b3a49e60db90bb5e",
+    "bytes": 178684,
+    "decoded_gzip": false
+  },
+  {
+    "path": "docs/plans/proof/starport-production-catalog/csp3/partial-retention-implementation-2026-09-08/lint.log",
+    "sha256": "fbe0d267627eef3831650e9386f26bf74a475dda6db8dd8a29cb7eb30fc29066",
+    "bytes": 357,
+    "decoded_gzip": false
+  },
+  {
+    "path": "docs/plans/proof/starport-production-catalog/csp3/partial-retention-implementation-2026-09-08/manual_history.go.gz",
+    "sha256": "5425ddfc99ea836f0d9a87cd9c1637c9b8f4ecac87db6ab91b89d4cbafa7a525",
+    "bytes": 2377,
+    "decoded_gzip": true
+  },
+  {
+    "path": "docs/plans/proof/starport-production-catalog/csp3/partial-retention-implementation-2026-09-08/minimum-go.jsonl",
+    "sha256": "1a776a3f7379e4376657a7e4d360487887d54006cc5873228db2203aa423fb36",
+    "bytes": 49051,
+    "decoded_gzip": false
+  },
+  {
+    "path": "docs/plans/proof/starport-production-catalog/csp3/partial-retention-implementation-2026-09-08/partial_provider_pricing_test.go.gz",
+    "sha256": "5e84929115efd2b64bfff7a35a4c1b6bb3138e0083e93a685f6213168bf8b8cf",
+    "bytes": 1917,
+    "decoded_gzip": true
+  },
+  {
+    "path": "docs/plans/proof/starport-production-catalog/csp3/partial-retention-implementation-2026-09-08/red.jsonl",
+    "sha256": "2b7f530446e6bf6dd496e0e1f92f515342245957da76291df595a566a9f8670f",
+    "bytes": 49965,
+    "decoded_gzip": false
+  },
+  {
+    "path": "docs/plans/proof/starport-production-catalog/csp3/partial-retention-implementation-2026-09-08/verification.json",
+    "sha256": "2b335236b256bec60cab27e76ed6d9a4b73bd8fbdd52defce03b6c42382104ce",
+    "bytes": 2416,
+    "decoded_gzip": false
+  },
+  {
+    "path": "docs/plans/proof/starport-production-catalog/csp3/partial-retention-implementation-2026-09-08/writing.log",
+    "sha256": "bef18d17e78cc432a4cc6d1bcc006425f9e2fab7385ea1be329d92efe3d5f09f",
+    "bytes": 568,
+    "decoded_gzip": false
+  },
+  {
+    "path": "docs/plans/proof/starport-production-catalog/csp8/published-module-2026-09-08/all-tests.jsonl",
+    "sha256": "e655ac19bc15c617b6e432799ff7cd483b702a2c6033f2513a90b2ff433cf678",
+    "bytes": 3607738,
+    "decoded_gzip": false
+  },
+  {
+    "path": "docs/plans/proof/starport-production-catalog/csp8/published-module-2026-09-08/all-valkey-tests.jsonl",
+    "sha256": "bfe3584d8b70bfab1dea2d41d3fd824372bfa02f5a6fd583481b6f0a4cc9fa9d",
+    "bytes": 3650532,
+    "decoded_gzip": false
+  },
+  {
+    "path": "docs/plans/proof/starport-production-catalog/csp8/published-module-2026-09-08/architecture.log",
+    "sha256": "edebd5b69c8cd6541f05bb633c255b36d76668e6562f6a4c7ba5b1daea40f980",
+    "bytes": 580,
+    "decoded_gzip": false
+  },
+  {
+    "path": "docs/plans/proof/starport-production-catalog/csp8/published-module-2026-09-08/build-info.log",
+    "sha256": "4e04dd3dc4c9f775865037966cee7099bf93ec20cc8ceafb7c9fae5f0dd431ff",
+    "bytes": 18362,
+    "decoded_gzip": false
+  },
+  {
+    "path": "docs/plans/proof/starport-production-catalog/csp8/published-module-2026-09-08/catalog-tests.jsonl",
+    "sha256": "6ab4c2ece86ca159fde22f48ea2bfd92ac86a67af22a96c200cc2e6b2fafa14a",
+    "bytes": 143327,
+    "decoded_gzip": false
+  },
+  {
+    "path": "docs/plans/proof/starport-production-catalog/csp8/published-module-2026-09-08/module-download.json",
+    "sha256": "ff2671b50c310941ac83616ea04b5a8db2dff0db1c9679b6619cd88178cb0e03",
+    "bytes": 1015,
+    "decoded_gzip": false
+  },
+  {
+    "path": "docs/plans/proof/starport-production-catalog/csp8/published-module-2026-09-08/ownership.log",
+    "sha256": "c2006ab0841a15af0792722064ee14dae63cd3fdb0ff32a1480655cb0d5961ed",
+    "bytes": 850,
+    "decoded_gzip": false
+  },
+  {
+    "path": "docs/plans/proof/starport-production-catalog/csp8/published-module-2026-09-08/proof-scan-inventory.json",
+    "sha256": "c82af7e5ad8e2a642478a672b2df7823d1a1dba7196c2c7f66a7cff9143d9013",
+    "bytes": 10563,
+    "decoded_gzip": false
+  },
+  {
+    "path": "docs/plans/proof/starport-production-catalog/csp8/published-module-2026-09-08/proof-scan-results.jsonl",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "bytes": 0,
+    "decoded_gzip": false
+  },
+  {
+    "path": "docs/plans/proof/starport-production-catalog/csp8/published-module-2026-09-08/proof-scan.json",
+    "sha256": "e690d86c9e547ee942adb111b43dfcb53b07c46ae19395387f8015697347a6f9",
+    "bytes": 247,
+    "decoded_gzip": false
+  },
+  {
+    "path": "docs/plans/proof/starport-production-catalog/csp8/published-module-2026-09-08/proof-scan.log",
+    "sha256": "ba7f3b28d9d8ed08d7d0f5d70b84348db86e9ee0978ee4ab7296516b57cbfc23",
+    "bytes": 489,
+    "decoded_gzip": false
+  },
+  {
+    "path": "docs/plans/proof/starport-production-catalog/csp8/published-module-2026-09-08/required-01.log",
+    "sha256": "c2006ab0841a15af0792722064ee14dae63cd3fdb0ff32a1480655cb0d5961ed",
+    "bytes": 850,
+    "decoded_gzip": false
+  },
+  {
+    "path": "docs/plans/proof/starport-production-catalog/csp8/published-module-2026-09-08/required-02.log",
+    "sha256": "edebd5b69c8cd6541f05bb633c255b36d76668e6562f6a4c7ba5b1daea40f980",
+    "bytes": 580,
+    "decoded_gzip": false
+  },
+  {
+    "path": "docs/plans/proof/starport-production-catalog/csp8/published-module-2026-09-08/required-03.log",
+    "sha256": "8a71d7001424e24289e0d2a024579a006638b5fa0e7331ad4452c835278e6651",
+    "bytes": 52,
+    "decoded_gzip": false
+  },
+  {
+    "path": "docs/plans/proof/starport-production-catalog/csp8/published-module-2026-09-08/required-04.log",
+    "sha256": "3a49bf0772b6d01f07c91a8c2a646acdfeaaa97cbb1b191026f789ae6f7d9027",
+    "bytes": 380,
+    "decoded_gzip": false
+  },
+  {
+    "path": "docs/plans/proof/starport-production-catalog/csp8/published-module-2026-09-08/required-05.log",
+    "sha256": "e9d35a605013f2031a4ea6a6a34e8463fc5423692c137b7f98a01a8caa823f19",
+    "bytes": 1333,
+    "decoded_gzip": false
+  },
+  {
+    "path": "docs/plans/proof/starport-production-catalog/csp8/published-module-2026-09-08/required-06.log",
+    "sha256": "22e12582afa0efe7aa6ae4f0fa24c612c13f449ffa0c23e02f08e08f4eed5def",
+    "bytes": 102,
+    "decoded_gzip": false
+  },
+  {
+    "path": "docs/plans/proof/starport-production-catalog/csp8/published-module-2026-09-08/required-07.log",
+    "sha256": "47f29784b60e4bb2b1578966e76740d2eb1c8003ace95deed9381a7cf47a2ca0",
+    "bytes": 60,
+    "decoded_gzip": false
+  },
+  {
+    "path": "docs/plans/proof/starport-production-catalog/csp8/published-module-2026-09-08/required-08.log",
+    "sha256": "75074e58905a5ca1cb126c5686d11dc26445ae78dade9e1333a6429781ca7d81",
+    "bytes": 781,
+    "decoded_gzip": false
+  },
+  {
+    "path": "docs/plans/proof/starport-production-catalog/csp8/published-module-2026-09-08/required-09.log",
+    "sha256": "df43a433b0e2eacf0b82829fa989238b489484de7c8f1e18a4cbba228d81cdc9",
+    "bytes": 31,
+    "decoded_gzip": false
+  },
+  {
+    "path": "docs/plans/proof/starport-production-catalog/csp8/published-module-2026-09-08/required-10.log",
+    "sha256": "10524699a6c0461194d21217459b148daa9d422508d73a058e410d9d1661a7b5",
+    "bytes": 707,
+    "decoded_gzip": false
+  },
+  {
+    "path": "docs/plans/proof/starport-production-catalog/csp8/published-module-2026-09-08/required-11.log",
+    "sha256": "6fa0ebecdeaab1b0b3742fbe25a1de216e45c21fcd2f9f1b5a87476ce9910324",
+    "bytes": 25,
+    "decoded_gzip": false
+  },
+  {
+    "path": "docs/plans/proof/starport-production-catalog/csp8/published-module-2026-09-08/required-12.log",
+    "sha256": "69ea9d7375bbb4907e620ae48e022bb88f04aae68545a8942d01ddcf6744f9ec",
+    "bytes": 44,
+    "decoded_gzip": false
+  },
+  {
+    "path": "docs/plans/proof/starport-production-catalog/csp8/published-module-2026-09-08/required-13.log",
+    "sha256": "ace79624055952778486dc7cf25da2986a30de02bd540e4b70f65201b1d3f7dd",
+    "bytes": 952,
+    "decoded_gzip": false
+  },
+  {
+    "path": "docs/plans/proof/starport-production-catalog/csp8/published-module-2026-09-08/required-14.log",
+    "sha256": "185cebeb477b2b21b6a132c98b99abd3d13ee8aacf9346c35de5eb139e00e518",
+    "bytes": 1025,
+    "decoded_gzip": false
+  },
+  {
+    "path": "docs/plans/proof/starport-production-catalog/csp8/published-module-2026-09-08/required-15.log",
+    "sha256": "a9f3f2754f2ecd95b04e7b4e728a5158fc3da0a828a9e1b221d8cae9075212c0",
+    "bytes": 1640,
+    "decoded_gzip": false
+  },
+  {
+    "path": "docs/plans/proof/starport-production-catalog/csp8/published-module-2026-09-08/required-16.log",
+    "sha256": "2ca175ead00523a30b79eef397b9c4405addfd7282e54eba83bbaa9b458cfcb0",
+    "bytes": 993,
+    "decoded_gzip": false
+  },
+  {
+    "path": "docs/plans/proof/starport-production-catalog/csp8/published-module-2026-09-08/required-17.log",
+    "sha256": "d57998380e34f83055a70a74d9fdeff70eae984d343f8ae8a9c6703288238e8a",
+    "bytes": 1870,
+    "decoded_gzip": false
+  },
+  {
+    "path": "docs/plans/proof/starport-production-catalog/csp8/published-module-2026-09-08/required-18.log",
+    "sha256": "35598574923ffd7dc391ef6b76bc96aa39c6a3b8c4450fb8871b69a2e5012986",
+    "bytes": 1464,
+    "decoded_gzip": false
+  },
+  {
+    "path": "docs/plans/proof/starport-production-catalog/csp8/published-module-2026-09-08/required-19.log",
+    "sha256": "543f39ad89b92167ef4f002ac871d08a3d9e15f41894ba07caad9b059fa7bbcb",
+    "bytes": 1388,
+    "decoded_gzip": false
+  },
+  {
+    "path": "docs/plans/proof/starport-production-catalog/csp8/published-module-2026-09-08/required-20.log",
+    "sha256": "9d57be0d3f2aaedd1a2c3c82ce437dc2feba052469cbffbfb98dd780b2519ef7",
+    "bytes": 1534,
+    "decoded_gzip": false
+  },
+  {
+    "path": "docs/plans/proof/starport-production-catalog/csp8/published-module-2026-09-08/required-21.log",
+    "sha256": "6b685274b742a26a13f1a34e597d307376708b2141ba568c45d62e078d1f654c",
+    "bytes": 1894,
+    "decoded_gzip": false
+  },
+  {
+    "path": "docs/plans/proof/starport-production-catalog/csp8/published-module-2026-09-08/required-22.log",
+    "sha256": "eb824de909dc3d4c8fe352da20f0dc3ba326e3f8bfe18daa2d63e3fd431656be",
+    "bytes": 1172,
+    "decoded_gzip": false
+  },
+  {
+    "path": "docs/plans/proof/starport-production-catalog/csp8/published-module-2026-09-08/required-23.log",
+    "sha256": "c74926b4e4352f4c6e5f688d628e76d44bb7d84f422900408de977ca33a4bec2",
+    "bytes": 1716,
+    "decoded_gzip": false
+  },
+  {
+    "path": "docs/plans/proof/starport-production-catalog/csp8/published-module-2026-09-08/required-24.log",
+    "sha256": "466350440fbde6b80d1f91c8d8bdfac58d3af69453ff4d5696862584e5a4207b",
+    "bytes": 2282,
+    "decoded_gzip": false
+  },
+  {
+    "path": "docs/plans/proof/starport-production-catalog/csp8/published-module-2026-09-08/required-25.log",
+    "sha256": "664858a2c06adebacd61ca8ce09a3cec33b5c758fe7f7d7635dc428db7f1556e",
+    "bytes": 2583,
+    "decoded_gzip": false
+  },
+  {
+    "path": "docs/plans/proof/starport-production-catalog/csp8/published-module-2026-09-08/required-26.log",
+    "sha256": "cc3eab585b1e5500d7103ab4fab500c67cf1c077db98acffb0af057dc273d8f3",
+    "bytes": 1355,
+    "decoded_gzip": false
+  },
+  {
+    "path": "docs/plans/proof/starport-production-catalog/csp8/published-module-2026-09-08/required-27.log",
+    "sha256": "f8e2433e89ea6e42bd733b12bce8cb1ce9eab87fb0773d9ba2e2f09bca00706f",
+    "bytes": 233,
+    "decoded_gzip": false
+  },
+  {
+    "path": "docs/plans/proof/starport-production-catalog/csp8/published-module-2026-09-08/required-28.log",
+    "sha256": "13df9cf24049e80dbd789601314d6896dc1a5674feff1997aab89e9fff49ff03",
+    "bytes": 103,
+    "decoded_gzip": false
+  },
+  {
+    "path": "docs/plans/proof/starport-production-catalog/csp8/published-module-2026-09-08/required-29.log",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "bytes": 0,
+    "decoded_gzip": false
+  },
+  {
+    "path": "docs/plans/proof/starport-production-catalog/csp8/published-module-2026-09-08/required-30.log",
+    "sha256": "a4f569f52421ae61552d5ba2a165d1a4c54a10a9064148d690e9c44e0f888a20",
+    "bytes": 40,
+    "decoded_gzip": false
+  },
+  {
+    "path": "docs/plans/proof/starport-production-catalog/csp8/published-module-2026-09-08/required-31.log",
+    "sha256": "8578b3822b2548e3663a6892e29bc23a6196d78bc5027ab1c5ae07b7b9163064",
+    "bytes": 65941,
+    "decoded_gzip": false
+  },
+  {
+    "path": "docs/plans/proof/starport-production-catalog/csp8/published-module-2026-09-08/required-32.log",
+    "sha256": "c2b09a26af9dba3ca8daf9d08370ff5dfcdcfdd5f4c9f9099c66c42c2e8ed585",
+    "bytes": 340,
+    "decoded_gzip": false
+  },
+  {
+    "path": "docs/plans/proof/starport-production-catalog/csp8/published-module-2026-09-08/required-checks-results.json",
+    "sha256": "972d44c0d425aa282e6e33f055933a52f39c4d4e04135af67807e9048050f2d5",
+    "bytes": 4591,
+    "decoded_gzip": false
+  },
+  {
+    "path": "docs/plans/proof/starport-production-catalog/csp8/published-module-2026-09-08/required-checks-roster.json",
+    "sha256": "a72b85ff18d775776abeedd4f08982708434d8f63fb2005a799042f66292bf8b",
+    "bytes": 1544,
+    "decoded_gzip": false
+  },
+  {
+    "path": "docs/plans/proof/starport-production-catalog/csp8/published-module-2026-09-08/required-checks.log",
+    "sha256": "9a1fe01d37d6ff9843d77bd939f24e65401e508a38a71ca98db1e45104d28cbc",
+    "bytes": 1596,
+    "decoded_gzip": false
+  },
+  {
+    "path": "docs/plans/proof/starport-production-catalog/csp8/published-module-2026-09-08/valkey.json",
+    "sha256": "c86d7417bfd969fa3cc8781d2d636b440d1c97668ab98029738d0834b03cf87e",
+    "bytes": 518,
+    "decoded_gzip": false
+  },
+  {
+    "path": "docs/plans/proof/starport-production-catalog/csp8/published-module-2026-09-08/verification.json",
+    "sha256": "58d83a80bd7fecfd94ce0636527cb5693e56b25b671197a0b330eccbfbb70eb8",
+    "bytes": 6885,
+    "decoded_gzip": false
+  },
+  {
+    "path": "docs/plans/proof/starport-production-catalog/pr-audit-2026-09-08/homebrew-pin/homebrew-compare.json",
+    "sha256": "c73c77c6232c79897beb8eb72e687b912a4a37c4941e5c325a7c3d31087cc847",
+    "bytes": 50952,
+    "decoded_gzip": false
+  },
+  {
+    "path": "docs/plans/proof/starport-production-catalog/pr-audit-2026-09-08/homebrew-pin/homebrew-tag.json",
+    "sha256": "b848437955be138a1c38194e7fb88395bec4cc27ce00f648120787f80b06e811",
+    "bytes": 361,
+    "decoded_gzip": false
+  },
+  {
+    "path": "docs/plans/proof/starport-production-catalog/pr-audit-2026-09-08/homebrew-pin/starport-367-current.json",
+    "sha256": "8ec984b7a235ae6f515341aa86a2a341076e44f43eadd4eebb0ea624b64184dc",
+    "bytes": 9032,
+    "decoded_gzip": false
+  },
+  {
+    "path": "docs/plans/proof/starport-production-catalog/pr-audit-2026-09-08/homebrew-pin/verification.json",
+    "sha256": "d073386b1e65a923412b8a25f3a6d4ea1dbcfc9fc19efd7ad95dc9626ef4c558",
+    "bytes": 464,
+    "decoded_gzip": false
+  },
+  {
+    "path": "docs/plans/proof/starport-production-catalog/pr-audit-2026-09-08/review.md",
+    "sha256": "10dac5be3a740ca64c321766f46f659228c5fd476b3d8b00034f14b3d1cfe1af",
+    "bytes": 7143,
+    "decoded_gzip": false
+  }
+]

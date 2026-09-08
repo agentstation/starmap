@@ -1,0 +1,12 @@
+autoreview target: branch
+branch: codex/catalog-qualification
+gate: pre-pr (configured cadence: pre-pr)
+profile: cross-lab
+config: /Users/jack/.config/autoreview/config.toml
+selection: sol=7.83, opus5=7.52
+reviewers: codex model=gpt-5.6-sol thinking=xhigh, claude model=claude-opus-5 thinking=high
+tools: on
+web_search: on
+ref: codex/catalog-requirements
+trufflehog: clean (3.3s)
+review bundle requires more than 8 bounded passes; reduce or split the change before review
