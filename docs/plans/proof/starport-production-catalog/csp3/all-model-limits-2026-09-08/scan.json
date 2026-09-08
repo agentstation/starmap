@@ -1,0 +1,62 @@
+{
+  "files": [
+    {
+      "file": "README.md",
+      "bytes": 1058,
+      "sha256": "5dfb07e988e87a093746eab98b961240af25cb3323d7f6500ecfa9d400446f4e"
+    },
+    {
+      "file": "ago.json",
+      "bytes": 289,
+      "sha256": "b8fb7afa66aa7a93914ac258475dd0191be821803a8aea4439f5ba05022f5fa5"
+    },
+    {
+      "file": "green.jsonl.gz",
+      "bytes": 9493,
+      "sha256": "b67b1dffd859f23ea199a7b2e4b3260a735e459848965a1d512605550fe4097b"
+    },
+    {
+      "file": "lint.txt",
+      "bytes": 10,
+      "sha256": "e92606b0bf483111dff0a120c315ea165821348f31365020e2468a0059095c47"
+    },
+    {
+      "file": "minimum.jsonl.gz",
+      "bytes": 9487,
+      "sha256": "c8ea163c8b06612ce2f0702ff3cf1eadc10ef4812bf02fae2040e9e0fabce896"
+    },
+    {
+      "file": "model_policy.go.gz",
+      "bytes": 12846,
+      "sha256": "4c38c6c80bb8cc31f4b0b25dc105f80c7e31cac5a73dab1b442c77b2161d4a38"
+    },
+    {
+      "file": "original-model-policy.go.gz",
+      "bytes": 13415,
+      "sha256": "1c02fb15175ccae2880465e659e76b414b4e5d5c7ec052bca6ee907712fbc1dd"
+    },
+    {
+      "file": "provider_limit_presence_test.go.gz",
+      "bytes": 4936,
+      "sha256": "8a906ba3e192451eb670e1239135f4368ae0aaeb7021dde832b26e2bebee7b90"
+    },
+    {
+      "file": "reconciler.jsonl.gz",
+      "bytes": 303958,
+      "sha256": "bd49b8d95ec5b3686633848f4374b654d44ae9d7786522c06fda35777f602753"
+    },
+    {
+      "file": "red.jsonl.gz",
+      "bytes": 19973,
+      "sha256": "763cc3df75d2884ad18cd6393dca745baf4056d73c33583d725efe290a4cd11e"
+    },
+    {
+      "file": "verification.json",
+      "bytes": 2523,
+      "sha256": "c57a53583de1c8f8bedb3d4c0cf24b451ed6d57ce5db458027a97f0b5befd6f2"
+    }
+  ],
+  "findings": [],
+  "decoded_bytes": 377988,
+  "scope": "Captured text and decoded gzip. Token and private-key pattern scan."
+}

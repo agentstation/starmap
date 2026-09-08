@@ -1,0 +1,74 @@
+{
+  "status": "PASS",
+  "scope": "All six published model limit fields through canonical runtime publication, durable retention, reopen, and source refresh. Full A08 and CSP3 remain unverified.",
+  "base_commit": "db2e8977",
+  "source_files": {
+    "internal/catalog/reconciler/model_policy.go": "4c38c6c80bb8cc31f4b0b25dc105f80c7e31cac5a73dab1b442c77b2161d4a38",
+    "runtime/provider_limit_presence_test.go": "8a906ba3e192451eb670e1239135f4368ae0aaeb7021dde832b26e2bebee7b90"
+  },
+  "checks": [
+    {
+      "command": "GOTOOLCHAIN=go1.26.6 go test -race ./runtime -run '^TestAllProviderLimitsRetainPresenceAcrossPublicationAndRestart$' -count=1 -json",
+      "capture": "red.jsonl.gz",
+      "exit": 1,
+      "events": {
+        "start": 1,
+        "run": 5,
+        "output": 60,
+        "fail": 4,
+        "pass": 2
+      }
+    },
+    {
+      "command": "GOTOOLCHAIN=go1.26.6 go test -race ./runtime -run '^TestAllProviderLimitsRetainPresenceAcrossPublicationAndRestart$' -count=1 -json",
+      "capture": "green.jsonl.gz",
+      "exit": 0,
+      "events": {
+        "start": 1,
+        "run": 5,
+        "output": 24,
+        "pass": 6
+      }
+    },
+    {
+      "command": "GOTOOLCHAIN=go1.25.12 go test -race ./runtime -run '^TestAllProviderLimitsRetainPresenceAcrossPublicationAndRestart$' -count=1 -json",
+      "capture": "minimum.jsonl.gz",
+      "exit": 0,
+      "events": {
+        "start": 1,
+        "run": 5,
+        "output": 24,
+        "pass": 6
+      }
+    },
+    {
+      "command": "GOTOOLCHAIN=go1.26.6 go test -race ./internal/catalog/reconciler -count=1 -json",
+      "capture": "reconciler.jsonl.gz",
+      "exit": 0,
+      "events": {
+        "start": 1,
+        "run": 273,
+        "output": 624,
+        "pass": 274,
+        "pause": 7,
+        "cont": 7
+      }
+    }
+  ],
+  "lint_commands": [
+    "GOTOOLCHAIN=go1.26.6 go tool ago -stale-ignores -format json ./...",
+    "GOTOOLCHAIN=go1.26.6 golangci-lint run ./runtime/... ./internal/catalog/reconciler/..."
+  ],
+  "lint_exit_codes": [
+    0,
+    0
+  ],
+  "note": "Event counts include parent tests and package events. Four runtime scenarios each assert six limit fields at publication, reopen, and source refresh. The final source restores and checks original observation presence. Red used the original model policy and the same new runtime test.",
+  "work_commit": "80a684fa9b0339bddedc8b3f237a32ffb0b47881",
+  "writing_check": {
+    "command": "make technical-writing-check",
+    "exit": 0,
+    "files": 1185,
+    "diagnostics": 0
+  }
+}

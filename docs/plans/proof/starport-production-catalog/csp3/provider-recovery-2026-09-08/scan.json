@@ -2,8 +2,8 @@
   "files": [
     {
       "file": "README.md",
-      "bytes": 1507,
-      "sha256": "656c4b3af98735e2bcca1298afb2cca03bdc0038e63f30588ccb28b70acc7e01"
+      "bytes": 1768,
+      "sha256": "bdc9e0eb97c39a6810f7b973598a81177da37c7a32856d52efede5e6c84c3dab"
     },
     {
       "file": "ago.json",
@@ -102,6 +102,6 @@
     }
   ],
   "findings": [],
-  "decoded_bytes": 440298,
+  "decoded_bytes": 440559,
   "scope": "Captured text and decoded gzip. Token and private-key pattern scan."
 }

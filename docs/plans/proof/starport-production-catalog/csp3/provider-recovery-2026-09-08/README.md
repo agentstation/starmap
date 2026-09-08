@@ -1,6 +1,6 @@
 # Provider evidence recovery
 
-A complete provider reply now retires a superseded receipt from the active generation. Durable history keeps the original receipt and payload. Current facts, unresolved review candidates, and uncovered offerings retain their evidence.
+A complete provider reply now retires a superseded receipt from the active generation. Durable history keeps the original receipt and payload. The selection contract requires current facts, unresolved review candidates, and uncovered offerings to retain their evidence.
 
 Replay previously retained every provider receipt, which kept a recovered generation degraded. Replay also relabeled retained pricing as upstream data and lost its provider receipt. The local projection now preserves that provenance before receipt selection.
 
@@ -11,3 +11,5 @@ Five publication scenarios cover full replacement, retained pricing, the same bi
 The intermediate fixture failures remain in the captures. Their partial observation omitted its required issue. The corrected fixture supplies that issue without weakening assertions.
 
 CSP3 remains in progress. This change does not establish removal authority, transport restrictions, or released-pair acceptance. CSP5 still owns physical history collection.
+
+The later [capability probe](../feature-recovery-2026-09-08/verification.json) finds an uncovered composite-field case. Merged capabilities lose a contributing receipt. CSP3 must repair that evidence path before publication.

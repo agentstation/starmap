@@ -1,0 +1,27 @@
+{
+  "files": [
+    {
+      "file": "README.md",
+      "bytes": 1046,
+      "sha256": "2390fd4ee6b5d6ffe1b53a088238825ebb34c685c24ec05e324adfa565ab460a"
+    },
+    {
+      "file": "probe.go.gz",
+      "bytes": 2848,
+      "sha256": "6760a10007e33f26a9d7ab0d5ab04fbb542b0dcf13e49fbff971ce5fff1a44c6"
+    },
+    {
+      "file": "red.jsonl.gz",
+      "bytes": 2686,
+      "sha256": "938abe3186ab4a285a68d7c604702a2dee9f71c28b28d10bad4b1cdf154f0689"
+    },
+    {
+      "file": "verification.json",
+      "bytes": 1463,
+      "sha256": "5d940a3d7e2f0a01229b083bcdffd45a45b3ed6c4e8542c08e8b5c03838332f2"
+    }
+  ],
+  "findings": [],
+  "decoded_bytes": 8043,
+  "scope": "Captured text and decoded gzip. Token and private-key pattern scan."
+}
