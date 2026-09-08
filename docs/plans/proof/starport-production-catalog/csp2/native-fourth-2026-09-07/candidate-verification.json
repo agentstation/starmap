@@ -1,0 +1,50 @@
+{
+  "code_commit": "ff298e2cab3e9ea6894f2b5a3b5643e896e4ff2a",
+  "base_commit": "6488e02fb908c685f9d474271e25958b5c555bcd",
+  "command": "GOTOOLCHAIN=go1.26.6 make verify",
+  "exit_code": 0,
+  "stages": 39,
+  "ordinary_package_passes": 79,
+  "race_package_passes": 79,
+  "windows_ago": {
+    "command": "GOOS=windows GOARCH=amd64 CGO_ENABLED=0 GOTOOLCHAIN=go1.26.6 /tmp/starmap-native-fourth-ago-host -stale-ignores -format json ./...",
+    "tool": "Host executable built from the repository-pinned Ago module.",
+    "exit_code": 0,
+    "initial_cross_execution": "go tool ago attempted to execute ago.exe on macOS and returned exec format error. The corrected invocation builds the tool for the host and selects Windows source during analysis."
+  },
+  "review": "in progress",
+  "native_qualification": "UNVERIFIED",
+  "logs": {
+    "candidate-verify.log": {
+      "path": "candidate-verify.log.gz",
+      "sha256": "5b42998799a8cf6f9bd0e853c16d4e438362166ee3fa37a2944d72482c3fbd38",
+      "uncompressed_sha256": "e2b819701d5791a68e2606363031c0ac276b8ae2f38bac7bdd0eb94a89167ae0"
+    },
+    "candidate-windows-ago.json": {
+      "path": "candidate-windows-ago.json.gz",
+      "sha256": "905b50ebb66dc28cecf0d5d7681aabcd8b20af21ce5f8834692f1c6c68590281",
+      "uncompressed_sha256": "b8fb7afa66aa7a93914ac258475dd0191be821803a8aea4439f5ba05022f5fa5"
+    },
+    "candidate-writing.log": {
+      "path": "candidate-writing.log.gz",
+      "sha256": "c27a552a845fa9f8fa88de0d5cfe2e8c2e9e0a321ed1d67e6f5e564e6a6e0011",
+      "uncompressed_sha256": "f420fca1d05f2a83b7b5cd4ae758dd4179b3a9492aa272daa11e2b0740942a9c"
+    },
+    "candidate-documents.json": {
+      "path": "candidate-documents.json.gz",
+      "sha256": "9b580f5253fca02e51d514e8d3d62cee2b073cc054981093faa5c7f52f010b07",
+      "uncompressed_sha256": "a2f7753c6e05754486b6715da1f074463dc0f35106f1164402dc2cddde2f6f78"
+    }
+  },
+  "document_checks": {
+    "exit_code": 0,
+    "tasks": 38,
+    "primary_cases": 50,
+    "required_subcases": 324
+  },
+  "strict_prose": {
+    "exit_code": 0,
+    "files": 1155,
+    "diagnostics": 0
+  }
+}

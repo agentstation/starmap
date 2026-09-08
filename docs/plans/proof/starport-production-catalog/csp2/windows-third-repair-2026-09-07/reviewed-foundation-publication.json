@@ -1,0 +1,63 @@
+{
+  "foundation_commit": "6488e02fb908c685f9d474271e25958b5c555bcd",
+  "foundation_review": {
+    "exit_code": 0,
+    "base": "codex/catalog-plan",
+    "gate": "pre-pr",
+    "profile": "cross-lab",
+    "portions": 8,
+    "findings": 0
+  },
+  "foundation_publication": {
+    "draft_pr": 132,
+    "run_id": 34175904597,
+    "url": "https://github.com/agentstation/starmap/actions/runs/34175904597",
+    "status": "in_progress",
+    "native_qualification": "UNVERIFIED",
+    "dispatch_evidence": "foundation-fourth-run-dispatch.json"
+  },
+  "followup_verification": {
+    "code_commit": "c7ff1e556a1355d013ecb3aa87b28b5dedd719fc",
+    "registry_commit": "f6b702c0",
+    "command": "GOTOOLCHAIN=go1.26.6 make verify",
+    "exit_code": 0,
+    "stages": 39,
+    "ordinary_package_passes": 79,
+    "race_package_passes": 79,
+    "note": "The registry was present when verification began. Documentation and proof were updated during verification. Final prose checks read the updated files."
+  },
+  "logs": {
+    "foundation-complete-review.log": {
+      "path": "foundation-complete-review.log.gz",
+      "sha256": "1354ce421d88900ac38e31c17138e25eef81b52ac8c88c8a192138adac3cad00",
+      "uncompressed_sha256": "a0ac07191576d2beb16354dbbf042afa5d1810037bfabbbaa5f456bdcf85eff1"
+    },
+    "followup-pattern-complete-verify.log": {
+      "path": "followup-pattern-complete-verify.log.gz",
+      "sha256": "05c2804ec75bb45725f87d8df4e5f0296195cfff22987d1e855fd1018178343a",
+      "uncompressed_sha256": "10c5037a7625fce50b6f38161fe79b9616da5a37e3027c7ecd04811dbf69e71d"
+    },
+    "publication-writing.log": {
+      "path": "publication-writing.log.gz",
+      "sha256": "c27a552a845fa9f8fa88de0d5cfe2e8c2e9e0a321ed1d67e6f5e564e6a6e0011",
+      "uncompressed_sha256": "f420fca1d05f2a83b7b5cd4ae758dd4179b3a9492aa272daa11e2b0740942a9c"
+    },
+    "publication-documents.json": {
+      "path": "publication-documents.json.gz",
+      "sha256": "d5d19f028cddc1727361a3f4b7f09efe89f82b14e27244030ef1f040e12658b8",
+      "uncompressed_sha256": "d0edddec39def0287e5f2e26282289d5821958dbd62fa4cf27272f911e6af130"
+    }
+  },
+  "primary_acceptance_credit": false,
+  "document_verification": {
+    "exit_code": 0,
+    "tasks": 38,
+    "primary_cases": 50,
+    "required_subcases": 324
+  },
+  "strict_prose": {
+    "exit_code": 0,
+    "files": 1155,
+    "diagnostics": 0
+  }
+}

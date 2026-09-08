@@ -1,0 +1,21 @@
+{"Time":"2026-09-07T17:06:33.890563-05:00","Action":"start","Package":"github.com/agentstation/starmap/internal/bootstrap"}
+{"Time":"2026-09-07T17:06:33.893073-05:00","Action":"start","Package":"github.com/agentstation/starmap/internal/filepublish"}
+{"Time":"2026-09-07T17:06:34.156627-05:00","Action":"run","Package":"github.com/agentstation/starmap/internal/bootstrap","Test":"TestEmbeddedCatalogCheckoutPreservesManifestInputs"}
+{"Time":"2026-09-07T17:06:34.156696-05:00","Action":"output","Package":"github.com/agentstation/starmap/internal/bootstrap","Test":"TestEmbeddedCatalogCheckoutPreservesManifestInputs","Output":"=== RUN   TestEmbeddedCatalogCheckoutPreservesManifestInputs\n"}
+{"Time":"2026-09-07T17:06:34.288402-05:00","Action":"run","Package":"github.com/agentstation/starmap/internal/filepublish","Test":"TestDirectoryNoReplaceUsesOpenRootAfterRename"}
+{"Time":"2026-09-07T17:06:34.288443-05:00","Action":"output","Package":"github.com/agentstation/starmap/internal/filepublish","Test":"TestDirectoryNoReplaceUsesOpenRootAfterRename","Output":"=== RUN   TestDirectoryNoReplaceUsesOpenRootAfterRename\n"}
+{"Time":"2026-09-07T17:06:34.292393-05:00","Action":"output","Package":"github.com/agentstation/starmap/internal/filepublish","Test":"TestDirectoryNoReplaceUsesOpenRootAfterRename","Output":"--- PASS: TestDirectoryNoReplaceUsesOpenRootAfterRename (0.00s)\n"}
+{"Time":"2026-09-07T17:06:34.292406-05:00","Action":"pass","Package":"github.com/agentstation/starmap/internal/filepublish","Test":"TestDirectoryNoReplaceUsesOpenRootAfterRename","Elapsed":0}
+{"Time":"2026-09-07T17:06:34.292465-05:00","Action":"run","Package":"github.com/agentstation/starmap/internal/filepublish","Test":"TestSyncDirectoryUsesRenamedOpenRoot"}
+{"Time":"2026-09-07T17:06:34.292488-05:00","Action":"output","Package":"github.com/agentstation/starmap/internal/filepublish","Test":"TestSyncDirectoryUsesRenamedOpenRoot","Output":"=== RUN   TestSyncDirectoryUsesRenamedOpenRoot\n"}
+{"Time":"2026-09-07T17:06:34.322486-05:00","Action":"output","Package":"github.com/agentstation/starmap/internal/filepublish","Test":"TestSyncDirectoryUsesRenamedOpenRoot","Output":"--- PASS: TestSyncDirectoryUsesRenamedOpenRoot (0.03s)\n"}
+{"Time":"2026-09-07T17:06:34.322606-05:00","Action":"pass","Package":"github.com/agentstation/starmap/internal/filepublish","Test":"TestSyncDirectoryUsesRenamedOpenRoot","Elapsed":0.03}
+{"Time":"2026-09-07T17:06:34.322641-05:00","Action":"output","Package":"github.com/agentstation/starmap/internal/filepublish","Output":"PASS\n"}
+{"Time":"2026-09-07T17:06:34.322827-05:00","Action":"output","Package":"github.com/agentstation/starmap/internal/filepublish","Output":"ok  \tgithub.com/agentstation/starmap/internal/filepublish\t0.424s\n"}
+{"Time":"2026-09-07T17:06:34.322867-05:00","Action":"pass","Package":"github.com/agentstation/starmap/internal/filepublish","Elapsed":0.43}
+{"Time":"2026-09-07T17:06:34.432982-05:00","Action":"output","Package":"github.com/agentstation/starmap/internal/bootstrap","Test":"TestEmbeddedCatalogCheckoutPreservesManifestInputs","Output":"    checkout_test.go:53: verified 1278 catalog input files with core.autocrlf=true\n"}
+{"Time":"2026-09-07T17:06:34.606683-05:00","Action":"output","Package":"github.com/agentstation/starmap/internal/bootstrap","Test":"TestEmbeddedCatalogCheckoutPreservesManifestInputs","Output":"--- PASS: TestEmbeddedCatalogCheckoutPreservesManifestInputs (0.45s)\n"}
+{"Time":"2026-09-07T17:06:34.606724-05:00","Action":"pass","Package":"github.com/agentstation/starmap/internal/bootstrap","Test":"TestEmbeddedCatalogCheckoutPreservesManifestInputs","Elapsed":0.45}
+{"Time":"2026-09-07T17:06:34.606741-05:00","Action":"output","Package":"github.com/agentstation/starmap/internal/bootstrap","Output":"PASS\n"}
+{"Time":"2026-09-07T17:06:34.608817-05:00","Action":"output","Package":"github.com/agentstation/starmap/internal/bootstrap","Output":"ok  \tgithub.com/agentstation/starmap/internal/bootstrap\t0.712s\n"}
+{"Time":"2026-09-07T17:06:34.60892-05:00","Action":"pass","Package":"github.com/agentstation/starmap/internal/bootstrap","Elapsed":0.718}

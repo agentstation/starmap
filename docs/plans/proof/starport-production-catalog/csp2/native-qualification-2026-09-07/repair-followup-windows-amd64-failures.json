@@ -1,0 +1,542 @@
+[
+  {
+    "package": "github.com/agentstation/starmap/internal/bootstrap",
+    "test": "TestBaselineExportPreservesChangedStaging/replaced_directory/publication",
+    "output": "=== RUN   TestBaselineExportPreservesChangedStaging/replaced_directory/publication\n    export_cleanup_test.go:35: rename C:\\Users\\RUNNER~1\\AppData\\Local\\Temp\\TestBaselineExportPreservesChangedStagingreplaced_directorypub430159105\\001\\baseline\\.baseline-X5BKJTHBSTG57CFMEXPB22N7EE C:\\Users\\RUNNER~1\\AppData\\Local\\Temp\\TestBaselineExportPreservesChangedStagingreplaced_directorypub430159105\\001\\baseline\\.baseline-X5BKJTHBSTG57CFMEXPB22N7EE-preserved: Access is denied.\n--- FAIL: TestBaselineExportPreservesChangedStaging/replaced_directory/publication (0.73s)\n"
+  },
+  {
+    "package": "github.com/agentstation/starmap/internal/bootstrap",
+    "test": "TestBaselineExportPreservesChangedStaging/replaced_directory/cancellation",
+    "output": "=== RUN   TestBaselineExportPreservesChangedStaging/replaced_directory/cancellation\n    export_cleanup_test.go:35: rename C:\\Users\\RUNNER~1\\AppData\\Local\\Temp\\TestBaselineExportPreservesChangedStagingreplaced_directorycan2201496022\\001\\baseline\\.baseline-AK5BV5HQDORQPUX4ZW2UCI4WRU C:\\Users\\RUNNER~1\\AppData\\Local\\Temp\\TestBaselineExportPreservesChangedStagingreplaced_directorycan2201496022\\001\\baseline\\.baseline-AK5BV5HQDORQPUX4ZW2UCI4WRU-preserved: Access is denied.\n--- FAIL: TestBaselineExportPreservesChangedStaging/replaced_directory/cancellation (0.66s)\n"
+  },
+  {
+    "package": "github.com/agentstation/starmap/internal/bootstrap",
+    "test": "TestBaselineExportPreservesChangedStaging/replaced_directory",
+    "output": "=== RUN   TestBaselineExportPreservesChangedStaging/replaced_directory\n--- FAIL: TestBaselineExportPreservesChangedStaging/replaced_directory (1.39s)\n"
+  },
+  {
+    "package": "github.com/agentstation/starmap/internal/bootstrap",
+    "test": "TestBaselineExportPreservesChangedStaging",
+    "output": "=== RUN   TestBaselineExportPreservesChangedStaging\n--- FAIL: TestBaselineExportPreservesChangedStaging (4.85s)\n"
+  },
+  {
+    "package": "github.com/agentstation/starmap/internal/bootstrap",
+    "test": "TestBaselineExportPreservesReusedStageNameAfterPublication",
+    "output": "=== RUN   TestBaselineExportPreservesReusedStageNameAfterPublication\n    export_cleanup_test.go:103: export failed: {GenerationID:catalog-20260830T083213Z-ad5d2a45e490 Directory:C:\\Users\\RUNNER~1\\AppData\\Local\\Temp\\TestBaselineExportPreservesReusedStageNameAfterPublication2356508361\\001\\baseline\\d12307970f5a583e2d8dc89ba82759dde0b7bc1731c30b5f77c983898c52f7f5 Created:false}, IO error during publish of C:\\Users\\RUNNER~1\\AppData\\Local\\Temp\\TestBaselineExportPreservesReusedStageNameAfterPublication2356508361\\001\\baseline\\d12307970f5a583e2d8dc89ba82759dde0b7bc1731c30b5f77c983898c52f7f5: publish directory .baseline-EYRWRH7LODHP3O24WMUIBSC6LC d12307970f5a583e2d8dc89ba82759dde0b7bc1731c30b5f77c983898c52f7f5: Access is denied.\n--- FAIL: TestBaselineExportPreservesReusedStageNameAfterPublication (0.65s)\n"
+  },
+  {
+    "package": "github.com/agentstation/starmap/internal/cli/app",
+    "test": "TestPersistentColdStartExportsInstalledBaseline",
+    "output": "=== RUN   TestPersistentColdStartExportsInstalledBaseline\n    baseline_export_test.go:39: IO error during publish of C:\\Users\\RUNNER~1\\AppData\\Local\\Temp\\TestPersistentColdStartExportsInstalledBaseline3104111670\\002\\data\\catalog\\baseline\\d12307970f5a583e2d8dc89ba82759dde0b7bc1731c30b5f77c983898c52f7f5: publish directory .baseline-255OE7QZVGTEHDVEFNCI2ZRQ5I d12307970f5a583e2d8dc89ba82759dde0b7bc1731c30b5f77c983898c52f7f5: Access is denied.\n--- FAIL: TestPersistentColdStartExportsInstalledBaseline (0.63s)\n"
+  },
+  {
+    "package": "github.com/agentstation/starmap/internal/cli/app",
+    "test": "TestBaselineExportPreservesExistingAcceptedHead",
+    "output": "=== RUN   TestBaselineExportPreservesExistingAcceptedHead\n    baseline_export_test.go:94: IO error during publish of C:\\Users\\RUNNER~1\\AppData\\Local\\Temp\\TestBaselineExportPreservesExistingAcceptedHead1587452061\\002\\data\\catalog\\baseline\\d12307970f5a583e2d8dc89ba82759dde0b7bc1731c30b5f77c983898c52f7f5: publish directory .baseline-MIMDLH72VBXEQRUCXP7PQWKQ3J d12307970f5a583e2d8dc89ba82759dde0b7bc1731c30b5f77c983898c52f7f5: Access is denied.\n--- FAIL: TestBaselineExportPreservesExistingAcceptedHead (0.84s)\n"
+  },
+  {
+    "package": "github.com/agentstation/starmap/internal/cli/app",
+    "test": "TestCatalogAcquisitionUsesConfiguredBindings/omitted",
+    "output": "=== RUN   TestCatalogAcquisitionUsesConfiguredBindings/omitted\n    catalog_acquisition_test.go:68: IO error during publish of C:\\Users\\RUNNER~1\\AppData\\Local\\Temp\\TestCatalogAcquisitionUsesConfiguredBindings294452139\\001\\data\\catalog\\baseline\\d12307970f5a583e2d8dc89ba82759dde0b7bc1731c30b5f77c983898c52f7f5: publish directory .baseline-WYYQPWJV44345BQH5EVWXD7NTB d12307970f5a583e2d8dc89ba82759dde0b7bc1731c30b5f77c983898c52f7f5: Access is denied.\n--- FAIL: TestCatalogAcquisitionUsesConfiguredBindings/omitted (0.57s)\n"
+  },
+  {
+    "package": "github.com/agentstation/starmap/internal/cli/app",
+    "test": "TestCatalogAcquisitionUsesConfiguredBindings/explicit-empty",
+    "output": "=== RUN   TestCatalogAcquisitionUsesConfiguredBindings/explicit-empty\n    catalog_acquisition_test.go:68: IO error during publish of C:\\Users\\RUNNER~1\\AppData\\Local\\Temp\\TestCatalogAcquisitionUsesConfiguredBindings294452139\\001\\data\\catalog\\baseline\\d12307970f5a583e2d8dc89ba82759dde0b7bc1731c30b5f77c983898c52f7f5: publish directory .baseline-3BQ25CW47ZLTVPZZVWWE5YWQDR d12307970f5a583e2d8dc89ba82759dde0b7bc1731c30b5f77c983898c52f7f5: Access is denied.\n--- FAIL: TestCatalogAcquisitionUsesConfiguredBindings/explicit-empty (0.56s)\n"
+  },
+  {
+    "package": "github.com/agentstation/starmap/internal/bootstrap",
+    "test": "TestBaselineExportIsIdempotentAndPreservesConflicts",
+    "output": "=== RUN   TestBaselineExportIsIdempotentAndPreservesConflicts\n    export_test.go:57: IO error during publish of C:\\Users\\RUNNER~1\\AppData\\Local\\Temp\\TestBaselineExportIsIdempotentAndPreservesConflicts3628380532\\001\\baseline\\d12307970f5a583e2d8dc89ba82759dde0b7bc1731c30b5f77c983898c52f7f5: publish directory .baseline-6RTCL7LCAQA6RAPVIKCBHCARKY d12307970f5a583e2d8dc89ba82759dde0b7bc1731c30b5f77c983898c52f7f5: Access is denied.\n--- FAIL: TestBaselineExportIsIdempotentAndPreservesConflicts (0.60s)\n"
+  },
+  {
+    "package": "github.com/agentstation/starmap/internal/cli/app",
+    "test": "TestCatalogAcquisitionUsesConfiguredBindings/two-scopes",
+    "output": "=== RUN   TestCatalogAcquisitionUsesConfiguredBindings/two-scopes\n    catalog_acquisition_test.go:68: IO error during publish of C:\\Users\\RUNNER~1\\AppData\\Local\\Temp\\TestCatalogAcquisitionUsesConfiguredBindings294452139\\001\\data\\catalog\\baseline\\d12307970f5a583e2d8dc89ba82759dde0b7bc1731c30b5f77c983898c52f7f5: publish directory .baseline-L6X2GDHNWXERY65YJDYWPXTTAM d12307970f5a583e2d8dc89ba82759dde0b7bc1731c30b5f77c983898c52f7f5: Access is denied.\n--- FAIL: TestCatalogAcquisitionUsesConfiguredBindings/two-scopes (0.59s)\n"
+  },
+  {
+    "package": "github.com/agentstation/starmap/internal/cli/app",
+    "test": "TestCatalogAcquisitionUsesConfiguredBindings",
+    "output": "=== RUN   TestCatalogAcquisitionUsesConfiguredBindings\n--- FAIL: TestCatalogAcquisitionUsesConfiguredBindings (1.73s)\n"
+  },
+  {
+    "package": "github.com/agentstation/starmap/internal/bootstrap",
+    "test": "TestConcurrentBaselineExportPublishesOneCompleteGeneration",
+    "output": "=== RUN   TestConcurrentBaselineExportPublishesOneCompleteGeneration\n    export_test.go:98: IO error during publish of C:\\Users\\RUNNER~1\\AppData\\Local\\Temp\\TestConcurrentBaselineExportPublishesOneCompleteGeneration2571309831\\001\\baseline\\d12307970f5a583e2d8dc89ba82759dde0b7bc1731c30b5f77c983898c52f7f5: publish directory .baseline-IM2OD6IDTRFVHXK3KEL7ASL2IH d12307970f5a583e2d8dc89ba82759dde0b7bc1731c30b5f77c983898c52f7f5: Access is denied.\n--- FAIL: TestConcurrentBaselineExportPublishesOneCompleteGeneration (1.27s)\n"
+  },
+  {
+    "package": "github.com/agentstation/starmap/internal/bootstrap",
+    "test": "TestBaselineExportRejectsSymlinksAndCancellation",
+    "output": "=== RUN   TestBaselineExportRejectsSymlinksAndCancellation\n    export_test.go:134: IO error during publish of C:\\Users\\RUNNER~1\\AppData\\Local\\Temp\\TestBaselineExportRejectsSymlinksAndCancellation2213035030\\001\\baseline\\d12307970f5a583e2d8dc89ba82759dde0b7bc1731c30b5f77c983898c52f7f5: publish directory .baseline-LM3AWWSBZJZ4DD5UNLZVTCLIDB d12307970f5a583e2d8dc89ba82759dde0b7bc1731c30b5f77c983898c52f7f5: Access is denied.\n--- FAIL: TestBaselineExportRejectsSymlinksAndCancellation (0.65s)\n"
+  },
+  {
+    "package": "github.com/agentstation/starmap/internal/cli/app",
+    "test": "TestCatalogWorkspaceMigrationAndRestartPreserveExactGeneration",
+    "output": "=== RUN   TestCatalogWorkspaceMigrationAndRestartPreserveExactGeneration\n    catalog_paths_test.go:157: MigrateCatalogWorkspace: IO error during relocate of C:\\Users\\RUNNER~1\\AppData\\Local\\Temp\\TestCatalogWorkspaceMigrationAndRestartPreserveExactGeneration3387596721\\001\\.starmap\\catalog: rename C:\\Users\\RUNNER~1\\AppData\\Local\\Temp\\TestCatalogWorkspaceMigrationAndRestartPreserveExactGeneration3387596721\\001\\.starmap\\catalog C:\\Users\\RUNNER~1\\AppData\\Local\\Temp\\TestCatalogWorkspaceMigrationAndRestartPreserveExactGeneration3387596721\\001\\.starmap\\state\\catalog: Access is denied.\n--- FAIL: TestCatalogWorkspaceMigrationAndRestartPreserveExactGeneration (0.54s)\n"
+  },
+  {
+    "package": "github.com/agentstation/starmap/internal/cli/app",
+    "test": "TestRuntimeRestartCompletesProjectionAfterMigrationMove",
+    "output": "=== RUN   TestRuntimeRestartCompletesProjectionAfterMigrationMove\n    catalog_paths_test.go:247: runtime restart: IO error during publish of C:\\Users\\RUNNER~1\\AppData\\Local\\Temp\\TestRuntimeRestartCompletesProjectionAfterMigrationMove3735021582\\001\\product\\data\\catalog\\baseline\\d12307970f5a583e2d8dc89ba82759dde0b7bc1731c30b5f77c983898c52f7f5: publish directory .baseline-B4OGM3RTNI3GOTDLJATXUQFGK5 d12307970f5a583e2d8dc89ba82759dde0b7bc1731c30b5f77c983898c52f7f5: Access is denied.\n--- FAIL: TestRuntimeRestartCompletesProjectionAfterMigrationMove (1.40s)\n"
+  },
+  {
+    "package": "github.com/agentstation/starmap/internal/cli/app",
+    "test": "TestFileInspectionReportsActiveOwnerAndLiteralWorkspace",
+    "output": "=== RUN   TestFileInspectionReportsActiveOwnerAndLiteralWorkspace\n    file_inspection_test.go:79: IO error during publish of C:\\Users\\RUNNER~1\\AppData\\Local\\Temp\\TestFileInspectionReportsActiveOwnerAndLiteralWorkspace1600120339\\001\\data\\catalog\\baseline\\d12307970f5a583e2d8dc89ba82759dde0b7bc1731c30b5f77c983898c52f7f5: publish directory .baseline-HQU2QHZ4PMQEMCMHTJTBJ5FLB3 d12307970f5a583e2d8dc89ba82759dde0b7bc1731c30b5f77c983898c52f7f5: Access is denied.\n--- FAIL: TestFileInspectionReportsActiveOwnerAndLiteralWorkspace (0.67s)\n"
+  },
+  {
+    "package": "github.com/agentstation/starmap/internal/cli/app",
+    "test": "TestFileManifestCoversColdStartupAndPublication",
+    "output": "=== RUN   TestFileManifestCoversColdStartupAndPublication\n    file_manifest_test.go:87: IO error during publish of C:\\Users\\RUNNER~1\\AppData\\Local\\Temp\\TestFileManifestCoversColdStartupAndPublication725979700\\001\\data\\catalog\\baseline\\d12307970f5a583e2d8dc89ba82759dde0b7bc1731c30b5f77c983898c52f7f5: publish directory .baseline-AAFIS34SQDK3JMONREWU5FEMFF d12307970f5a583e2d8dc89ba82759dde0b7bc1731c30b5f77c983898c52f7f5: Access is denied.\n--- FAIL: TestFileManifestCoversColdStartupAndPublication (0.70s)\n"
+  },
+  {
+    "package": "github.com/agentstation/starmap/internal/bootstrap",
+    "test": "TestBaselineExportRecoversAfterProcessInterruption/created",
+    "output": "=== RUN   TestBaselineExportRecoversAfterProcessInterruption/created\n    export_test.go:182: IO error during publish of C:\\Users\\RUNNER~1\\AppData\\Local\\Temp\\TestBaselineExportRecoversAfterProcessInterruptioncreated3237985364\\001\\baseline\\d12307970f5a583e2d8dc89ba82759dde0b7bc1731c30b5f77c983898c52f7f5: publish directory .baseline-HAZEPL5YBZCBZSOI6LQFBQVZTV d12307970f5a583e2d8dc89ba82759dde0b7bc1731c30b5f77c983898c52f7f5: Access is denied.\n--- FAIL: TestBaselineExportRecoversAfterProcessInterruption/created (4.59s)\n"
+  },
+  {
+    "package": "github.com/agentstation/starmap/internal/cli/app",
+    "test": "TestDefaultRuntimeRootAcceptsCompletedLegacyMigration",
+    "output": "=== RUN   TestDefaultRuntimeRootAcceptsCompletedLegacyMigration\n    legacy_migration_test.go:76: completed migration still blocks default startup: IO error during publish of C:\\Users\\RUNNER~1\\AppData\\Local\\Temp\\TestDefaultRuntimeRootAcceptsCompletedLegacyMigration2209638681\\001\\local\\starmap\\data\\catalog\\baseline\\d12307970f5a583e2d8dc89ba82759dde0b7bc1731c30b5f77c983898c52f7f5: publish directory .baseline-G6FTVBFGU7BKAFUG3LUAPA3477 d12307970f5a583e2d8dc89ba82759dde0b7bc1731c30b5f77c983898c52f7f5: Access is denied.\n--- FAIL: TestDefaultRuntimeRootAcceptsCompletedLegacyMigration (3.14s)\n"
+  },
+  {
+    "package": "github.com/agentstation/starmap/internal/bootstrap",
+    "test": "TestBaselineExportRecoversAfterProcessInterruption/manifest-written",
+    "output": "=== RUN   TestBaselineExportRecoversAfterProcessInterruption/manifest-written\n    export_test.go:182: IO error during publish of C:\\Users\\RUNNER~1\\AppData\\Local\\Temp\\TestBaselineExportRecoversAfterProcessInterruptionmanifest-writ3732886202\\001\\baseline\\d12307970f5a583e2d8dc89ba82759dde0b7bc1731c30b5f77c983898c52f7f5: publish directory .baseline-MNXVETOPNLI5J5YLU3JOQ6JYS5 d12307970f5a583e2d8dc89ba82759dde0b7bc1731c30b5f77c983898c52f7f5: Access is denied.\n--- FAIL: TestBaselineExportRecoversAfterProcessInterruption/manifest-written (5.04s)\n"
+  },
+  {
+    "package": "github.com/agentstation/starmap/internal/bootstrap",
+    "test": "TestBaselineExportRecoversAfterProcessInterruption/payload-written",
+    "output": "=== RUN   TestBaselineExportRecoversAfterProcessInterruption/payload-written\n    export_test.go:182: IO error during publish of C:\\Users\\RUNNER~1\\AppData\\Local\\Temp\\TestBaselineExportRecoversAfterProcessInterruptionpayload-writt2556509333\\001\\baseline\\d12307970f5a583e2d8dc89ba82759dde0b7bc1731c30b5f77c983898c52f7f5: publish directory .baseline-WAMF72K27ROF6MUEMTLNNAOEXO d12307970f5a583e2d8dc89ba82759dde0b7bc1731c30b5f77c983898c52f7f5: Access is denied.\n--- FAIL: TestBaselineExportRecoversAfterProcessInterruption/payload-written (6.06s)\n"
+  },
+  {
+    "package": "github.com/agentstation/starmap/internal/cli/app",
+    "test": "TestRuntimeMigrationCommandPersistsSelectionBeforeCompletion",
+    "output": "=== RUN   TestRuntimeMigrationCommandPersistsSelectionBeforeCompletion\n    migration_command_test.go:31: IO error during publish of C:\\Users\\RUNNER~1\\AppData\\Local\\Temp\\TestRuntimeMigrationCommandPersistsSelectionBeforeCompletion3386151213\\001\\data\\catalog\\baseline\\d12307970f5a583e2d8dc89ba82759dde0b7bc1731c30b5f77c983898c52f7f5: publish directory .baseline-ASZZAEMO33KXXC5K4YXAQJOZPW d12307970f5a583e2d8dc89ba82759dde0b7bc1731c30b5f77c983898c52f7f5: Access is denied.\n--- FAIL: TestRuntimeMigrationCommandPersistsSelectionBeforeCompletion (0.68s)\n"
+  },
+  {
+    "package": "github.com/agentstation/starmap/internal/bootstrap",
+    "test": "TestBaselineExportRecoversAfterProcessInterruption/promoted",
+    "output": "=== RUN   TestBaselineExportRecoversAfterProcessInterruption/promoted\n    export_test.go:174: child did not exit at its checkpoint: exit status 1 --- FAIL: TestBaselineExportCrashChild (5.93s)\n            export_test.go:212: IO error during publish of C:\\Users\\RUNNER~1\\AppData\\Local\\Temp\\TestBaselineExportRecoversAfterProcessInterruptionpromoted1765248497\\001\\baseline\\d12307970f5a583e2d8dc89ba82759dde0b7bc1731c30b5f77c983898c52f7f5: publish directory .baseline-R74F5YEIGZYKUFR4N3ZLCQW3ZL d12307970f5a583e2d8dc89ba82759dde0b7bc1731c30b5f77c983898c52f7f5: Access is denied.\n        FAIL\n--- FAIL: TestBaselineExportRecoversAfterProcessInterruption/promoted (6.01s)\n"
+  },
+  {
+    "package": "github.com/agentstation/starmap/internal/bootstrap",
+    "test": "TestBaselineExportRecoversAfterProcessInterruption",
+    "output": "=== RUN   TestBaselineExportRecoversAfterProcessInterruption\n--- FAIL: TestBaselineExportRecoversAfterProcessInterruption (21.71s)\n"
+  },
+  {
+    "package": "github.com/agentstation/starmap/internal/cli/app",
+    "test": "TestApplicationSelectsPublishedMigrationThroughConfiguration",
+    "output": "=== RUN   TestApplicationSelectsPublishedMigrationThroughConfiguration\n    migration_identity_test.go:77: IO error during publish of C:\\Users\\RUNNER~1\\AppData\\Local\\Temp\\TestApplicationSelectsPublishedMigrationThroughConfiguration837852533\\001\\data\\catalog\\baseline\\d12307970f5a583e2d8dc89ba82759dde0b7bc1731c30b5f77c983898c52f7f5: publish directory .baseline-EEXXV5B4EZZ22PXVOY4G2DPGKH d12307970f5a583e2d8dc89ba82759dde0b7bc1731c30b5f77c983898c52f7f5: Access is denied.\n--- FAIL: TestApplicationSelectsPublishedMigrationThroughConfiguration (0.90s)\n"
+  },
+  {
+    "package": "github.com/agentstation/starmap/internal/cli/app",
+    "test": "TestImplicitNewRootsRefuseLegacyStateWithoutWriting",
+    "output": "=== RUN   TestImplicitNewRootsRefuseLegacyStateWithoutWriting\n    product_paths_test.go:143: migration refusal created new baseline storage\n--- FAIL: TestImplicitNewRootsRefuseLegacyStateWithoutWriting (1.04s)\n"
+  },
+  {
+    "package": "github.com/agentstation/starmap/internal/cli/app",
+    "test": "TestApplicationBindsConfiguredRuntimeOwner",
+    "output": "=== RUN   TestApplicationBindsConfiguredRuntimeOwner\n    product_paths_test.go:241: IO error during publish of C:\\Users\\RUNNER~1\\AppData\\Local\\Temp\\TestApplicationBindsConfiguredRuntimeOwner2976671263\\001\\data\\catalog\\baseline\\d12307970f5a583e2d8dc89ba82759dde0b7bc1731c30b5f77c983898c52f7f5: publish directory .baseline-O6QBKPAUUD4FU7LONBLAPB6IFZ d12307970f5a583e2d8dc89ba82759dde0b7bc1731c30b5f77c983898c52f7f5: Access is denied.\n--- FAIL: TestApplicationBindsConfiguredRuntimeOwner (1.02s)\n"
+  },
+  {
+    "package": "github.com/agentstation/starmap/internal/cli/app",
+    "test": "TestAbsoluteRuntimeSelectionPreservesExistingIdentity",
+    "output": "=== RUN   TestAbsoluteRuntimeSelectionPreservesExistingIdentity\n    relative_paths_test.go:244: IO error during publish of C:\\Users\\RUNNER~1\\AppData\\Local\\Temp\\TestAbsoluteRuntimeSelectionPreservesExistingIdentity3100949753\\001\\data\\catalog\\baseline\\d12307970f5a583e2d8dc89ba82759dde0b7bc1731c30b5f77c983898c52f7f5: publish directory .baseline-DINBMDESGPWL5X6JFQ27WWFKNU d12307970f5a583e2d8dc89ba82759dde0b7bc1731c30b5f77c983898c52f7f5: Access is denied.\n--- FAIL: TestAbsoluteRuntimeSelectionPreservesExistingIdentity (0.90s)\n"
+  },
+  {
+    "package": "github.com/agentstation/starmap/internal/cli/app",
+    "test": "TestFileSourceReadsReportedAnchorAcrossWorkingDirectories",
+    "output": "=== RUN   TestFileSourceReadsReportedAnchorAcrossWorkingDirectories\n    relative_paths_test.go:392: IO error during publish of C:\\Users\\RUNNER~1\\AppData\\Local\\Temp\\TestFileSourceReadsReportedAnchorAcrossWorkingDirectories3695125569\\001\\data\\catalog\\baseline\\d12307970f5a583e2d8dc89ba82759dde0b7bc1731c30b5f77c983898c52f7f5: publish directory .baseline-Y3TVBZRT2GP5E7E5IWQU3Y25QZ d12307970f5a583e2d8dc89ba82759dde0b7bc1731c30b5f77c983898c52f7f5: Access is denied.\n--- FAIL: TestFileSourceReadsReportedAnchorAcrossWorkingDirectories (1.44s)\n"
+  },
+  {
+    "package": "github.com/agentstation/starmap/internal/cli/app",
+    "test": "TestRuntimeACLRefusalPrecedesBaselineExport",
+    "output": "=== RUN   TestRuntimeACLRefusalPrecedesBaselineExport\n    runtime_acl_windows_test.go:85: operator correction did not permit startup: IO error during publish of C:\\Users\\RUNNER~1\\AppData\\Local\\Temp\\TestRuntimeACLRefusalPrecedesBaselineExport3813720026\\001\\data\\catalog\\baseline\\d12307970f5a583e2d8dc89ba82759dde0b7bc1731c30b5f77c983898c52f7f5: publish directory .baseline-E2PHJMPORANGVVRYWPKZFLYMDS d12307970f5a583e2d8dc89ba82759dde0b7bc1731c30b5f77c983898c52f7f5: Access is denied.\n--- FAIL: TestRuntimeACLRefusalPrecedesBaselineExport (0.86s)\n"
+  },
+  {
+    "package": "github.com/agentstation/starmap/internal/cli/app",
+    "test": "TestServiceConfigurationWindowsAdministratorOwnerAndDeniedRead/denied-data-read",
+    "output": "=== RUN   TestServiceConfigurationWindowsAdministratorOwnerAndDeniedRead/denied-data-read\n    service_config_windows_test.go:69: readable=false, error=<nil>\n--- FAIL: TestServiceConfigurationWindowsAdministratorOwnerAndDeniedRead/denied-data-read (0.01s)\n"
+  },
+  {
+    "package": "github.com/agentstation/starmap/internal/cli/app",
+    "test": "TestServiceConfigurationWindowsAdministratorOwnerAndDeniedRead",
+    "output": "=== RUN   TestServiceConfigurationWindowsAdministratorOwnerAndDeniedRead\n--- FAIL: TestServiceConfigurationWindowsAdministratorOwnerAndDeniedRead (0.03s)\n"
+  },
+  {
+    "package": "github.com/agentstation/starmap/pkg/productpaths",
+    "test": "TestInspectionReportsAbsentInapplicableAndUnavailable",
+    "output": "=== RUN   TestInspectionReportsAbsentInapplicableAndUnavailable\n    inspection_test.go:100: invalid inspection coverage: {ObservedAt:2026-09-07 22:40:34.4724292 +0000 UTC Complete:true EntryLimit:100 Examined:4 Observations:[{ID:missing Path:C:\\Users\\RUNNER~1\\AppData\\Local\\Temp\\TestInspectionReportsAbsentInapplicableAndUnavailable3451584091\\001\\missing State:absent Kind: Mode: PermissionScope: Owner:<nil> WindowsSecurity:<nil> OwnerBinding: Reason: AccessPolicy: AccessStatus: AccessReason:} {ID:disabled Path: State:not-applicable Kind: Mode: PermissionScope: Owner:<nil> WindowsSecurity:<nil> OwnerBinding: Reason:disabled AccessPolicy: AccessStatus: AccessReason:} {ID:planned Path:C:\\Users\\RUNNER~1\\AppData\\Local\\Temp\\TestInspectionReportsAbsentInapplicableAndUnavailable3451584091\\001\\not-a-directory\\planned State:not-applicable Kind: Mode: PermissionScope: Owner:<nil> WindowsSecurity:<nil> OwnerBinding: Reason:planned AccessPolicy: AccessStatus: AccessReason:} {ID:unavailable Path:C:\\Users\\RUNNER~1\\AppData\\Local\\Temp\\TestInspectionReportsAbsentInapplicableAndUnavailable3451584091\\001\\not-a-directory\\child State:absent Kind: Mode: PermissionScope: Owner:<nil> WindowsSecurity:<nil> OwnerBinding: Reason: AccessPolicy: AccessStatus: AccessReason:}] Limitations:[Metadata observations are not an atomic snapshot. Mode bits and DACL policy checks do not establish effective access or ancestor safety. Filesystem ownership does not prove runtime ownership or fleet fencing. Observed symbolic links are not followed. File contents are not inspected.]} <nil>\n--- FAIL: TestInspectionReportsAbsentInapplicableAndUnavailable (0.00s)\n"
+  },
+  {
+    "package": "github.com/agentstation/starmap/pkg/productpaths",
+    "test": "TestWindowsInspectionReportsACLWithoutReadingContents/deny-content-read",
+    "output": "=== RUN   TestWindowsInspectionReportsACLWithoutReadingContents/deny-content-read\n    inspection_windows_test.go:33: fixture did not deny file-content reads\n--- FAIL: TestWindowsInspectionReportsACLWithoutReadingContents/deny-content-read (0.00s)\n"
+  },
+  {
+    "package": "github.com/agentstation/starmap/pkg/productpaths",
+    "test": "TestWindowsInspectionReportsACLWithoutReadingContents",
+    "output": "=== RUN   TestWindowsInspectionReportsACLWithoutReadingContents\n--- FAIL: TestWindowsInspectionReportsACLWithoutReadingContents (0.03s)\n"
+  },
+  {
+    "package": "github.com/agentstation/starmap/pkg/productpaths",
+    "test": "TestWindowsInspectionRefusesChangedIdentityAndSymlinkTargets",
+    "output": "=== RUN   TestWindowsInspectionRefusesChangedIdentityAndSymlinkTargets\n    inspection_windows_test.go:94: inspection accepted replacement metadata: {ID: Path:C:\\Users\\RUNNER~1\\AppData\\Local\\Temp\\TestWindowsInspectionRefusesChangedIdentityAndSymlinkTargets1110487111\\001\\selected State: Kind: Mode: PermissionScope:windows-owner-and-dacl Owner:<nil> WindowsSecurity:0xc000198680 OwnerBinding: Reason: AccessPolicy: AccessStatus: AccessReason:}\n--- FAIL: TestWindowsInspectionRefusesChangedIdentityAndSymlinkTargets (0.00s)\n"
+  },
+  {
+    "package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+    "test": "TestFilesystemCatalogStoreRefusesReplacedRootAtPromotion",
+    "output": "=== RUN   TestFilesystemCatalogStoreRefusesReplacedRootAtPromotion\n    filesystem_publication_test.go:121: replacement directory changed: [- .commit.lock - current d generations/], <nil>\n--- FAIL: TestFilesystemCatalogStoreRefusesReplacedRootAtPromotion (0.39s)\n"
+  },
+  {
+    "package": "github.com/agentstation/starmap/internal/catalog/workspace",
+    "test": "TestJournalRecoveryRefusesUnboundAccessMetadata/version",
+    "output": "=== RUN   TestJournalRecoveryRefusesUnboundAccessMetadata/version\n    access_journal_test.go:17: interrupt at journal_saved: failed to preserve access workspace staging C:\\Users\\RUNNER~1\\AppData\\Local\\Temp\\TestJournalRecoveryRefusesUnboundAccessMetadataversion1704939572\\001\\workspace: workspace replacement conflict: native access could not be preserved\n--- FAIL: TestJournalRecoveryRefusesUnboundAccessMetadata/version (0.38s)\n"
+  },
+  {
+    "package": "github.com/agentstation/starmap/internal/catalog/workspace",
+    "test": "TestJournalRecoveryRefusesUnboundAccessMetadata/access_digest",
+    "output": "=== RUN   TestJournalRecoveryRefusesUnboundAccessMetadata/access_digest\n    access_journal_test.go:17: interrupt at journal_saved: failed to preserve access workspace staging C:\\Users\\RUNNER~1\\AppData\\Local\\Temp\\TestJournalRecoveryRefusesUnboundAccessMetadataaccess_digest199577058\\001\\workspace: workspace replacement conflict: native access could not be preserved\n--- FAIL: TestJournalRecoveryRefusesUnboundAccessMetadata/access_digest (0.43s)\n"
+  },
+  {
+    "package": "github.com/agentstation/starmap/internal/catalog/workspace",
+    "test": "TestJournalRecoveryRefusesUnboundAccessMetadata",
+    "output": "=== RUN   TestJournalRecoveryRefusesUnboundAccessMetadata\n--- FAIL: TestJournalRecoveryRefusesUnboundAccessMetadata (0.81s)\n"
+  },
+  {
+    "package": "github.com/agentstation/starmap/internal/catalog/workspace",
+    "test": "TestWorkspaceRenderRemainsInsidePrivateStaging",
+    "output": "=== RUN   TestWorkspaceRenderRemainsInsidePrivateStaging\n    access_preservation_test.go:50: private render check failed to preserve access workspace staging C:\\Users\\RUNNER~1\\AppData\\Local\\Temp\\TestWorkspaceRenderRemainsInsidePrivateStaging2138977572\\001\\workspace: workspace replacement conflict: native access could not be preserved\n--- FAIL: TestWorkspaceRenderRemainsInsidePrivateStaging (0.38s)\n"
+  },
+  {
+    "package": "github.com/agentstation/starmap/internal/catalog/workspace",
+    "test": "TestWorkspaceAccessFailurePreservesOriginal",
+    "output": "=== RUN   TestWorkspaceAccessFailurePreservesOriginal\n    access_preservation_test.go:74: restore failure failed to preserve access workspace staging C:\\Users\\RUNNER~1\\AppData\\Local\\Temp\\TestWorkspaceAccessFailurePreservesOriginal3157778629\\001\\workspace: workspace replacement conflict: native access could not be preserved\n--- FAIL: TestWorkspaceAccessFailurePreservesOriginal (0.54s)\n"
+  },
+  {
+    "package": "github.com/agentstation/starmap/internal/catalog/workspace",
+    "test": "TestWorkspaceReplacementPreservesAccessPolicy",
+    "output": "=== RUN   TestWorkspaceReplacementPreservesAccessPolicy\n    access_preservation_windows_test.go:23: The access control list (ACL) structure is invalid.\n--- FAIL: TestWorkspaceReplacementPreservesAccessPolicy (0.27s)\n"
+  },
+  {
+    "package": "github.com/agentstation/starmap/internal/catalog/workspace",
+    "test": "TestWorkspaceReplacementPreservesInheritedAccessPolicy",
+    "output": "=== RUN   TestWorkspaceReplacementPreservesInheritedAccessPolicy\n    access_preservation_windows_test.go:107: failed to preserve access workspace staging C:\\Users\\RUNNER~1\\AppData\\Local\\Temp\\TestWorkspaceReplacementPreservesInheritedAccessPolicy1969082295\\001\\workspace: workspace replacement conflict: native access could not be preserved\n--- FAIL: TestWorkspaceReplacementPreservesInheritedAccessPolicy (0.38s)\n"
+  },
+  {
+    "package": "github.com/agentstation/starmap/internal/catalog/workspace",
+    "test": "TestNativeAccessCopyPreservesDescriptor/file",
+    "output": "=== RUN   TestNativeAccessCopyPreservesDescriptor/file\n    access_snapshot_windows_test.go:60: native access changed: before={\"control\":34820,\"sddl\":\"O:LAG:S-1-5-21-1456194669-2875347699-3862154473-513D:(A;;FA;;;SY)(A;;FA;;;BA)(A;;FA;;;LA)\"} after={\"control\":44052,\"sddl\":\"O:LAG:S-1-5-21-1456194669-2875347699-3862154473-513D:AI(A;;FA;;;SY)(A;;FA;;;BA)(A;;FA;;;LA)(A;ID;FA;;;SY)(A;ID;FA;;;BA)(A;ID;FA;;;LA)S:PAINO_ACCESS_CONTROL\"}\n--- FAIL: TestNativeAccessCopyPreservesDescriptor/file (0.00s)\n"
+  },
+  {
+    "package": "github.com/agentstation/starmap/internal/catalog/workspace",
+    "test": "TestNativeAccessCopyPreservesDescriptor/directory",
+    "output": "=== RUN   TestNativeAccessCopyPreservesDescriptor/directory\n    access_snapshot_windows_test.go:60: native access changed: before={\"control\":34820,\"sddl\":\"O:LAG:S-1-5-21-1456194669-2875347699-3862154473-513D:(A;OICI;FA;;;SY)(A;OICI;FA;;;BA)(A;OICI;FA;;;LA)\"} after={\"control\":44052,\"sddl\":\"O:LAG:S-1-5-21-1456194669-2875347699-3862154473-513D:AI(A;OICI;FA;;;SY)(A;OICI;FA;;;BA)(A;OICI;FA;;;LA)(A;OICIID;FA;;;SY)(A;OICIID;FA;;;BA)(A;OICIID;FA;;;LA)S:PAINO_ACCESS_CONTROL\"}\n--- FAIL: TestNativeAccessCopyPreservesDescriptor/directory (0.00s)\n"
+  },
+  {
+    "package": "github.com/agentstation/starmap/internal/catalog/workspace",
+    "test": "TestNativeAccessCopyPreservesDescriptor",
+    "output": "=== RUN   TestNativeAccessCopyPreservesDescriptor\n--- FAIL: TestNativeAccessCopyPreservesDescriptor (0.01s)\n"
+  },
+  {
+    "package": "github.com/agentstation/starmap/internal/catalog/workspace",
+    "test": "TestTreeSnapshotDetectsNativeACLChange/.",
+    "output": "=== RUN   TestTreeSnapshotDetectsNativeACLChange/.\n    access_snapshot_windows_test.go:84: The access control list (ACL) structure is invalid.\n--- FAIL: TestTreeSnapshotDetectsNativeACLChange/. (0.00s)\n"
+  },
+  {
+    "package": "github.com/agentstation/starmap/internal/catalog/workspace",
+    "test": "TestTreeSnapshotDetectsNativeACLChange/note.txt",
+    "output": "=== RUN   TestTreeSnapshotDetectsNativeACLChange/note.txt\n    access_snapshot_windows_test.go:84: The access control list (ACL) structure is invalid.\n--- FAIL: TestTreeSnapshotDetectsNativeACLChange/note.txt (0.00s)\n"
+  },
+  {
+    "package": "github.com/agentstation/starmap/internal/catalog/workspace",
+    "test": "TestTreeSnapshotDetectsNativeACLChange",
+    "output": "=== RUN   TestTreeSnapshotDetectsNativeACLChange\n--- FAIL: TestTreeSnapshotDetectsNativeACLChange (0.01s)\n"
+  },
+  {
+    "package": "github.com/agentstation/starmap/internal/catalog/workspace",
+    "test": "TestWorkspaceWritersAreExcludedAcrossProcessesWhileReadersRemainAvailable",
+    "output": "=== RUN   TestWorkspaceWritersAreExcludedAcrossProcessesWhileReadersRemainAvailable\n    multiprocess_test.go:49: timed out waiting for helper file \"C:\\\\Users\\\\RUNNER~1\\\\AppData\\\\Local\\\\Temp\\\\TestWorkspaceWritersAreExcludedAcrossProcessesWhileReadersRemain2848870579\\\\002\\\\ready\"\n--- FAIL: TestWorkspaceWritersAreExcludedAcrossProcessesWhileReadersRemainAvailable (10.27s)\n"
+  },
+  {
+    "package": "github.com/agentstation/starmap",
+    "test": "TestSaveReturnsNilAfterSuccessfulCatalogSave",
+    "output": "=== RUN   TestSaveReturnsNilAfterSuccessfulCatalogSave\n    persistence_test.go:44: Save returned error after successful catalog save: IO error during write of catalog: failed to preserve access workspace staging C:\\Users\\RUNNER~1\\AppData\\Local\\Temp\\TestSaveReturnsNilAfterSuccessfulCatalogSave547539145\\001: workspace replacement conflict: native access could not be preserved\n--- FAIL: TestSaveReturnsNilAfterSuccessfulCatalogSave (0.04s)\n"
+  },
+  {
+    "package": "github.com/agentstation/starmap",
+    "test": "TestExplicitRepairRestoresStaleProjectionWithoutRepublishing",
+    "output": "=== RUN   TestExplicitRepairRestoresStaleProjectionWithoutRepublishing\n    persistence_test.go:266: explicit repair = {Path:C:\\Users\\RUNNER~1\\AppData\\Local\\Temp\\TestExplicitRepairRestoresStaleProjectionWithoutRepublishing978736837\\001\\catalog GenerationID:generation-id Changed:false IssueCode:}, failed to preserve access workspace staging C:\\Users\\RUNNER~1\\AppData\\Local\\Temp\\TestExplicitRepairRestoresStaleProjectionWithoutRepublishing978736837\\001\\catalog: workspace replacement conflict: native access could not be preserved\n--- FAIL: TestExplicitRepairRestoresStaleProjectionWithoutRepublishing (0.08s)\n"
+  },
+  {
+    "package": "github.com/agentstation/starmap/internal/catalog/workspace",
+    "test": "TestWorkspaceWriterLockIsReleasedWhenProcessExits",
+    "output": "=== RUN   TestWorkspaceWriterLockIsReleasedWhenProcessExits\n    multiprocess_test.go:91: timed out waiting for helper file \"C:\\\\Users\\\\RUNNER~1\\\\AppData\\\\Local\\\\Temp\\\\TestWorkspaceWriterLockIsReleasedWhenProcessExits3902898161\\\\002\\\\ready\"\n--- FAIL: TestWorkspaceWriterLockIsReleasedWhenProcessExits (10.15s)\n"
+  },
+  {
+    "package": "github.com/agentstation/starmap/internal/catalog/workspace",
+    "test": "TestProjectRefusesCancellationBeforePublication/replacement",
+    "output": "=== RUN   TestProjectRefusesCancellationBeforePublication/replacement\n    publication_boundary_test.go:72: canceled publication = {GenerationID: WorkspaceChecksum: EndpointChecksum:}, failed to preserve access workspace staging C:\\Users\\RUNNER~1\\AppData\\Local\\Temp\\TestProjectRefusesCancellationBeforePublicationreplacement3425454999\\001\\workspace: workspace replacement conflict: native access could not be preserved\n--- FAIL: TestProjectRefusesCancellationBeforePublication/replacement (0.31s)\n"
+  },
+  {
+    "package": "github.com/agentstation/starmap/internal/catalog/workspace",
+    "test": "TestProjectRefusesCancellationBeforePublication",
+    "output": "=== RUN   TestProjectRefusesCancellationBeforePublication\n--- FAIL: TestProjectRefusesCancellationBeforePublication (0.56s)\n"
+  },
+  {
+    "package": "github.com/agentstation/starmap/internal/catalog/workspace",
+    "test": "TestReadDetectsExternalDirectoryReplacement",
+    "output": "=== RUN   TestReadDetectsExternalDirectoryReplacement\n    read_test.go:155: error = <nil>; want a retryable conflict\n--- FAIL: TestReadDetectsExternalDirectoryReplacement (0.00s)\n"
+  },
+  {
+    "package": "github.com/agentstation/starmap/internal/catalog/workspace",
+    "test": "TestJournalRecoveryRefusesCopiedCandidateIdentity",
+    "output": "=== RUN   TestJournalRecoveryRefusesCopiedCandidateIdentity\n    replacement_guard_test.go:53: interrupt at journal_saved: failed to preserve access workspace staging C:\\Users\\RUNNER~1\\AppData\\Local\\Temp\\TestJournalRecoveryRefusesCopiedCandidateIdentity2713076815\\001\\workspace: workspace replacement conflict: native access could not be preserved\n--- FAIL: TestJournalRecoveryRefusesCopiedCandidateIdentity (0.30s)\n"
+  },
+  {
+    "package": "github.com/agentstation/starmap/internal/catalog/workspace",
+    "test": "TestJournalRecoveryValidatesMarkerBeforeMovingWorkspace",
+    "output": "=== RUN   TestJournalRecoveryValidatesMarkerBeforeMovingWorkspace\n    replacement_guard_test.go:69: interrupt at journal_saved: failed to preserve access workspace staging C:\\Users\\RUNNER~1\\AppData\\Local\\Temp\\TestJournalRecoveryValidatesMarkerBeforeMovingWorkspace260319532\\001\\workspace: workspace replacement conflict: native access could not be preserved\n--- FAIL: TestJournalRecoveryValidatesMarkerBeforeMovingWorkspace (0.24s)\n"
+  },
+  {
+    "package": "github.com/agentstation/starmap/internal/catalog/workspace",
+    "test": "TestJournalCleanupPreservesChangedBackup",
+    "output": "=== RUN   TestJournalCleanupPreservesChangedBackup\n    replacement_guard_test.go:87: interrupt at marker_saved: failed to preserve access workspace staging C:\\Users\\RUNNER~1\\AppData\\Local\\Temp\\TestJournalCleanupPreservesChangedBackup114377687\\001\\workspace: workspace replacement conflict: native access could not be preserved\n--- FAIL: TestJournalCleanupPreservesChangedBackup (0.25s)\n"
+  },
+  {
+    "package": "github.com/agentstation/starmap/internal/catalog/workspace",
+    "test": "TestJournalRecoveryRestoresOldTreeWhenCandidateIsMissing",
+    "output": "=== RUN   TestJournalRecoveryRestoresOldTreeWhenCandidateIsMissing\n    replacement_guard_test.go:103: interrupt at backup_moved: failed to preserve access workspace staging C:\\Users\\RUNNER~1\\AppData\\Local\\Temp\\TestJournalRecoveryRestoresOldTreeWhenCandidateIsMissing3186698568\\001\\workspace: workspace replacement conflict: native access could not be preserved\n--- FAIL: TestJournalRecoveryRestoresOldTreeWhenCandidateIsMissing (0.33s)\n"
+  },
+  {
+    "package": "github.com/agentstation/starmap/internal/catalog/workspace",
+    "test": "TestJournalRecoveryRefusesCorruptIntentWithoutChanges",
+    "output": "=== RUN   TestJournalRecoveryRefusesCorruptIntentWithoutChanges\n    replacement_guard_test.go:125: interrupt at journal_saved: failed to preserve access workspace staging C:\\Users\\RUNNER~1\\AppData\\Local\\Temp\\TestJournalRecoveryRefusesCorruptIntentWithoutChanges2785952901\\001\\workspace: workspace replacement conflict: native access could not be preserved\n--- FAIL: TestJournalRecoveryRefusesCorruptIntentWithoutChanges (1.06s)\n"
+  },
+  {
+    "package": "github.com/agentstation/starmap/internal/catalog/workspace",
+    "test": "TestJournalRecoveryRefusesInvalidBindingsWithoutChanges/unsupported_version",
+    "output": "=== RUN   TestJournalRecoveryRefusesInvalidBindingsWithoutChanges/unsupported_version\n    replacement_guard_test.go:151: interrupt at journal_saved: failed to preserve access workspace staging C:\\Users\\RUNNER~1\\AppData\\Local\\Temp\\TestJournalRecoveryRefusesInvalidBindingsWithoutChangesunsuppor3709710924\\001\\workspace: workspace replacement conflict: native access could not be preserved\n--- FAIL: TestJournalRecoveryRefusesInvalidBindingsWithoutChanges/unsupported_version (0.34s)\n"
+  },
+  {
+    "package": "github.com/agentstation/starmap/internal/catalog/workspace",
+    "test": "TestJournalRecoveryRefusesInvalidBindingsWithoutChanges/different_workspace",
+    "output": "=== RUN   TestJournalRecoveryRefusesInvalidBindingsWithoutChanges/different_workspace\n    replacement_guard_test.go:151: interrupt at journal_saved: failed to preserve access workspace staging C:\\Users\\RUNNER~1\\AppData\\Local\\Temp\\TestJournalRecoveryRefusesInvalidBindingsWithoutChangesdifferen1199717908\\001\\workspace: workspace replacement conflict: native access could not be preserved\n--- FAIL: TestJournalRecoveryRefusesInvalidBindingsWithoutChanges/different_workspace (0.31s)\n"
+  },
+  {
+    "package": "github.com/agentstation/starmap/internal/catalog/workspace",
+    "test": "TestJournalRecoveryRefusesInvalidBindingsWithoutChanges/candidate_traversal",
+    "output": "=== RUN   TestJournalRecoveryRefusesInvalidBindingsWithoutChanges/candidate_traversal\n    replacement_guard_test.go:151: interrupt at journal_saved: failed to preserve access workspace staging C:\\Users\\RUNNER~1\\AppData\\Local\\Temp\\TestJournalRecoveryRefusesInvalidBindingsWithoutChangescandidat1628853727\\001\\workspace: workspace replacement conflict: native access could not be preserved\n--- FAIL: TestJournalRecoveryRefusesInvalidBindingsWithoutChanges/candidate_traversal (0.34s)\n"
+  },
+  {
+    "package": "github.com/agentstation/starmap/internal/catalog/workspace",
+    "test": "TestJournalRecoveryRefusesInvalidBindingsWithoutChanges/backup_traversal",
+    "output": "=== RUN   TestJournalRecoveryRefusesInvalidBindingsWithoutChanges/backup_traversal\n    replacement_guard_test.go:151: interrupt at journal_saved: failed to preserve access workspace staging C:\\Users\\RUNNER~1\\AppData\\Local\\Temp\\TestJournalRecoveryRefusesInvalidBindingsWithoutChangesbackup_t1701322847\\001\\workspace: workspace replacement conflict: native access could not be preserved\n--- FAIL: TestJournalRecoveryRefusesInvalidBindingsWithoutChanges/backup_traversal (0.37s)\n"
+  },
+  {
+    "package": "github.com/agentstation/starmap/internal/catalog/workspace",
+    "test": "TestJournalRecoveryRefusesInvalidBindingsWithoutChanges/same_directory_identity",
+    "output": "=== RUN   TestJournalRecoveryRefusesInvalidBindingsWithoutChanges/same_directory_identity\n    replacement_guard_test.go:151: interrupt at journal_saved: failed to preserve access workspace staging C:\\Users\\RUNNER~1\\AppData\\Local\\Temp\\TestJournalRecoveryRefusesInvalidBindingsWithoutChangessame_dir3552309421\\001\\workspace: workspace replacement conflict: native access could not be preserved\n--- FAIL: TestJournalRecoveryRefusesInvalidBindingsWithoutChanges/same_directory_identity (0.42s)\n"
+  },
+  {
+    "package": "github.com/agentstation/starmap/internal/catalog/workspace",
+    "test": "TestJournalRecoveryRefusesInvalidBindingsWithoutChanges/inventory_digest",
+    "output": "=== RUN   TestJournalRecoveryRefusesInvalidBindingsWithoutChanges/inventory_digest\n    replacement_guard_test.go:151: interrupt at journal_saved: failed to preserve access workspace staging C:\\Users\\RUNNER~1\\AppData\\Local\\Temp\\TestJournalRecoveryRefusesInvalidBindingsWithoutChangesinventor3960087139\\001\\workspace: workspace replacement conflict: native access could not be preserved\n--- FAIL: TestJournalRecoveryRefusesInvalidBindingsWithoutChanges/inventory_digest (0.33s)\n"
+  },
+  {
+    "package": "github.com/agentstation/starmap/internal/catalog/workspace",
+    "test": "TestJournalRecoveryRefusesInvalidBindingsWithoutChanges",
+    "output": "=== RUN   TestJournalRecoveryRefusesInvalidBindingsWithoutChanges\n--- FAIL: TestJournalRecoveryRefusesInvalidBindingsWithoutChanges (2.10s)\n"
+  },
+  {
+    "package": "github.com/agentstation/starmap/internal/catalog/workspace",
+    "test": "TestJournalCancellationRetainsRecoveryState/backup_moved",
+    "output": "=== RUN   TestJournalCancellationRetainsRecoveryState/backup_moved\n    replacement_guard_test.go:189: cancel at backup_moved: failed to preserve access workspace staging C:\\Users\\RUNNER~1\\AppData\\Local\\Temp\\TestJournalCancellationRetainsRecoveryStatebackup_moved2761771813\\001\\workspace: workspace replacement conflict: native access could not be preserved\n--- FAIL: TestJournalCancellationRetainsRecoveryState/backup_moved (0.31s)\n"
+  },
+  {
+    "package": "github.com/agentstation/starmap/internal/catalog/workspace",
+    "test": "TestJournalCancellationRetainsRecoveryState/candidate_installed",
+    "output": "=== RUN   TestJournalCancellationRetainsRecoveryState/candidate_installed\n    replacement_guard_test.go:189: cancel at candidate_installed: failed to preserve access workspace staging C:\\Users\\RUNNER~1\\AppData\\Local\\Temp\\TestJournalCancellationRetainsRecoveryStatecandidate_installed2702833546\\001\\workspace: workspace replacement conflict: native access could not be preserved\n--- FAIL: TestJournalCancellationRetainsRecoveryState/candidate_installed (0.28s)\n"
+  },
+  {
+    "package": "github.com/agentstation/starmap/internal/catalog/workspace",
+    "test": "TestJournalCancellationRetainsRecoveryState",
+    "output": "=== RUN   TestJournalCancellationRetainsRecoveryState\n--- FAIL: TestJournalCancellationRetainsRecoveryState (0.59s)\n"
+  },
+  {
+    "package": "github.com/agentstation/starmap/internal/catalog/workspace",
+    "test": "TestJournalReplacementRecoversAfterProcessExit/journal_saved",
+    "output": "=== RUN   TestJournalReplacementRecoversAfterProcessExit/journal_saved\n    replacement_process_test.go:33: process exit: exit status 1\n        --- FAIL: TestJournalReplacementProcessHelper (0.07s)\n            replacement_process_test.go:63: replacement did not exit at journal_saved: failed to preserve access workspace staging C:\\Users\\RUNNER~1\\AppData\\Local\\Temp\\TestJournalReplacementRecoversAfterProcessExitjournal_saved1927643662\\001\\workspace: workspace replacement conflict: native access could not be preserved\n        FAIL\n--- FAIL: TestJournalReplacementRecoversAfterProcessExit/journal_saved (0.30s)\n"
+  },
+  {
+    "package": "github.com/agentstation/starmap/internal/catalog/workspace",
+    "test": "TestJournalReplacementRecoversAfterProcessExit/backup_moved",
+    "output": "=== RUN   TestJournalReplacementRecoversAfterProcessExit/backup_moved\n    replacement_process_test.go:33: process exit: exit status 1\n        --- FAIL: TestJournalReplacementProcessHelper (0.07s)\n            replacement_process_test.go:63: replacement did not exit at backup_moved: failed to preserve access workspace staging C:\\Users\\RUNNER~1\\AppData\\Local\\Temp\\TestJournalReplacementRecoversAfterProcessExitbackup_moved4121526554\\001\\workspace: workspace replacement conflict: native access could not be preserved\n        FAIL\n--- FAIL: TestJournalReplacementRecoversAfterProcessExit/backup_moved (0.35s)\n"
+  },
+  {
+    "package": "github.com/agentstation/starmap/internal/catalog/workspace",
+    "test": "TestJournalReplacementRecoversAfterProcessExit/candidate_installed",
+    "output": "=== RUN   TestJournalReplacementRecoversAfterProcessExit/candidate_installed\n    replacement_process_test.go:33: process exit: exit status 1\n        --- FAIL: TestJournalReplacementProcessHelper (0.07s)\n            replacement_process_test.go:63: replacement did not exit at candidate_installed: failed to preserve access workspace staging C:\\Users\\RUNNER~1\\AppData\\Local\\Temp\\TestJournalReplacementRecoversAfterProcessExitcandidate_install964498723\\001\\workspace: workspace replacement conflict: native access could not be preserved\n        FAIL\n--- FAIL: TestJournalReplacementRecoversAfterProcessExit/candidate_installed (0.37s)\n"
+  },
+  {
+    "package": "github.com/agentstation/starmap/internal/catalog/workspace",
+    "test": "TestJournalReplacementRecoversAfterProcessExit/marker_saved",
+    "output": "=== RUN   TestJournalReplacementRecoversAfterProcessExit/marker_saved\n    replacement_process_test.go:33: process exit: exit status 1\n        --- FAIL: TestJournalReplacementProcessHelper (0.09s)\n            replacement_process_test.go:63: replacement did not exit at marker_saved: failed to preserve access workspace staging C:\\Users\\RUNNER~1\\AppData\\Local\\Temp\\TestJournalReplacementRecoversAfterProcessExitmarker_saved24238318\\001\\workspace: workspace replacement conflict: native access could not be preserved\n        FAIL\n--- FAIL: TestJournalReplacementRecoversAfterProcessExit/marker_saved (0.33s)\n"
+  },
+  {
+    "package": "github.com/agentstation/starmap/internal/catalog/workspace",
+    "test": "TestJournalReplacementRecoversAfterProcessExit/backup_entry_removed",
+    "output": "=== RUN   TestJournalReplacementRecoversAfterProcessExit/backup_entry_removed\n    replacement_process_test.go:33: process exit: exit status 1\n        --- FAIL: TestJournalReplacementProcessHelper (0.07s)\n            replacement_process_test.go:63: replacement did not exit at backup_entry_removed: failed to preserve access workspace staging C:\\Users\\RUNNER~1\\AppData\\Local\\Temp\\TestJournalReplacementRecoversAfterProcessExitbackup_entry_remo1684161124\\001\\workspace: workspace replacement conflict: native access could not be preserved\n        FAIL\n--- FAIL: TestJournalReplacementRecoversAfterProcessExit/backup_entry_removed (0.27s)\n"
+  },
+  {
+    "package": "github.com/agentstation/starmap/internal/catalog/workspace",
+    "test": "TestJournalReplacementRecoversAfterProcessExit/backup_removed",
+    "output": "=== RUN   TestJournalReplacementRecoversAfterProcessExit/backup_removed\n    replacement_process_test.go:33: process exit: exit status 1\n        --- FAIL: TestJournalReplacementProcessHelper (0.07s)\n            replacement_process_test.go:63: replacement did not exit at backup_removed: failed to preserve access workspace staging C:\\Users\\RUNNER~1\\AppData\\Local\\Temp\\TestJournalReplacementRecoversAfterProcessExitbackup_removed1853511815\\001\\workspace: workspace replacement conflict: native access could not be preserved\n        FAIL\n--- FAIL: TestJournalReplacementRecoversAfterProcessExit/backup_removed (0.37s)\n"
+  },
+  {
+    "package": "github.com/agentstation/starmap/internal/catalog/workspace",
+    "test": "TestJournalReplacementRecoversAfterProcessExit",
+    "output": "=== RUN   TestJournalReplacementRecoversAfterProcessExit\n--- FAIL: TestJournalReplacementRecoversAfterProcessExit (2.00s)\n"
+  },
+  {
+    "package": "github.com/agentstation/starmap/internal/catalog/workspace",
+    "test": "TestJournalReplacementPreservesOperatorFiles",
+    "output": "=== RUN   TestJournalReplacementPreservesOperatorFiles\n    replacement_test.go:26: replace: {GenerationID: WorkspaceChecksum: EndpointChecksum:}, failed to preserve access workspace staging C:\\Users\\RUNNER~1\\AppData\\Local\\Temp\\TestJournalReplacementPreservesOperatorFiles468078150\\001\\workspace: workspace replacement conflict: native access could not be preserved\n--- FAIL: TestJournalReplacementPreservesOperatorFiles (0.35s)\n"
+  },
+  {
+    "package": "github.com/agentstation/starmap/internal/catalog/workspace",
+    "test": "TestJournalReplacementRecoversEachPhase/journal_saved",
+    "output": "=== RUN   TestJournalReplacementRecoversEachPhase/journal_saved\n    replacement_test.go:56: phase journal_saved: failed to preserve access workspace staging C:\\Users\\RUNNER~1\\AppData\\Local\\Temp\\TestJournalReplacementRecoversEachPhasejournal_saved357986681\\001\\workspace: workspace replacement conflict: native access could not be preserved\n--- FAIL: TestJournalReplacementRecoversEachPhase/journal_saved (0.48s)\n"
+  },
+  {
+    "package": "github.com/agentstation/starmap/internal/catalog/workspace",
+    "test": "TestJournalReplacementRecoversEachPhase/backup_moved",
+    "output": "=== RUN   TestJournalReplacementRecoversEachPhase/backup_moved\n    replacement_test.go:56: phase backup_moved: failed to preserve access workspace staging C:\\Users\\RUNNER~1\\AppData\\Local\\Temp\\TestJournalReplacementRecoversEachPhasebackup_moved195780016\\001\\workspace: workspace replacement conflict: native access could not be preserved\n--- FAIL: TestJournalReplacementRecoversEachPhase/backup_moved (0.43s)\n"
+  },
+  {
+    "package": "github.com/agentstation/starmap/internal/catalog/workspace",
+    "test": "TestJournalReplacementRecoversEachPhase/candidate_installed",
+    "output": "=== RUN   TestJournalReplacementRecoversEachPhase/candidate_installed\n    replacement_test.go:56: phase candidate_installed: failed to preserve access workspace staging C:\\Users\\RUNNER~1\\AppData\\Local\\Temp\\TestJournalReplacementRecoversEachPhasecandidate_installed1799257674\\001\\workspace: workspace replacement conflict: native access could not be preserved\n--- FAIL: TestJournalReplacementRecoversEachPhase/candidate_installed (0.54s)\n"
+  },
+  {
+    "package": "github.com/agentstation/starmap/internal/catalog/workspace",
+    "test": "TestJournalReplacementRecoversEachPhase/marker_saved",
+    "output": "=== RUN   TestJournalReplacementRecoversEachPhase/marker_saved\n    replacement_test.go:56: phase marker_saved: failed to preserve access workspace staging C:\\Users\\RUNNER~1\\AppData\\Local\\Temp\\TestJournalReplacementRecoversEachPhasemarker_saved4158738329\\001\\workspace: workspace replacement conflict: native access could not be preserved\n--- FAIL: TestJournalReplacementRecoversEachPhase/marker_saved (0.50s)\n"
+  },
+  {
+    "package": "github.com/agentstation/starmap/internal/catalog/workspace",
+    "test": "TestJournalReplacementRecoversEachPhase/backup_entry_removed",
+    "output": "=== RUN   TestJournalReplacementRecoversEachPhase/backup_entry_removed\n    replacement_test.go:56: phase backup_entry_removed: failed to preserve access workspace staging C:\\Users\\RUNNER~1\\AppData\\Local\\Temp\\TestJournalReplacementRecoversEachPhasebackup_entry_removed254447652\\001\\workspace: workspace replacement conflict: native access could not be preserved\n--- FAIL: TestJournalReplacementRecoversEachPhase/backup_entry_removed (0.54s)\n"
+  },
+  {
+    "package": "github.com/agentstation/starmap/internal/catalog/workspace",
+    "test": "TestJournalReplacementRecoversEachPhase/backup_removed",
+    "output": "=== RUN   TestJournalReplacementRecoversEachPhase/backup_removed\n    replacement_test.go:56: phase backup_removed: failed to preserve access workspace staging C:\\Users\\RUNNER~1\\AppData\\Local\\Temp\\TestJournalReplacementRecoversEachPhasebackup_removed3493104006\\001\\workspace: workspace replacement conflict: native access could not be preserved\n--- FAIL: TestJournalReplacementRecoversEachPhase/backup_removed (0.51s)\n"
+  },
+  {
+    "package": "github.com/agentstation/starmap/internal/catalog/workspace",
+    "test": "TestJournalReplacementRecoversEachPhase",
+    "output": "=== RUN   TestJournalReplacementRecoversEachPhase\n--- FAIL: TestJournalReplacementRecoversEachPhase (3.00s)\n"
+  },
+  {
+    "package": "github.com/agentstation/starmap/internal/catalog/workspace",
+    "test": "TestJournalReplacementRefusesLateOperatorEdits",
+    "output": "=== RUN   TestJournalReplacementRefusesLateOperatorEdits\n    replacement_test.go:94: operator edit was lost open C:\\Users\\RUNNER~1\\AppData\\Local\\Temp\\TestJournalReplacementRefusesLateOperatorEdits1139615807\\001\\workspace\\notes.txt: The system cannot find the file specified.\n--- FAIL: TestJournalReplacementRefusesLateOperatorEdits (0.46s)\n"
+  },
+  {
+    "package": "github.com/agentstation/starmap/internal/catalog/workspace",
+    "test": "TestJournalRecoveryPreservesUnexpectedWorkspace",
+    "output": "=== RUN   TestJournalRecoveryPreservesUnexpectedWorkspace\n    replacement_test.go:115: failed to preserve access workspace staging C:\\Users\\RUNNER~1\\AppData\\Local\\Temp\\TestJournalRecoveryPreservesUnexpectedWorkspace2617764227\\001\\workspace: workspace replacement conflict: native access could not be preserved\n--- FAIL: TestJournalRecoveryPreservesUnexpectedWorkspace (0.49s)\n"
+  },
+  {
+    "package": "github.com/agentstation/starmap/internal/catalog/workspace",
+    "test": "TestWindowsJournalReplacementRecoversAfterEditorHandleCloses",
+    "output": "=== RUN   TestWindowsJournalReplacementRecoversAfterEditorHandleCloses\n    replacement_windows_test.go:39: error = <nil>; want a retryable conflict\n--- FAIL: TestWindowsJournalReplacementRecoversAfterEditorHandleCloses (0.41s)\n"
+  },
+  {
+    "package": "github.com/agentstation/starmap/internal/catalog/workspace",
+    "test": "TestProjectRejectsConcurrentSemanticEdit",
+    "output": "=== RUN   TestProjectRejectsConcurrentSemanticEdit\n=== PAUSE TestProjectRejectsConcurrentSemanticEdit\n=== CONT  TestProjectRejectsConcurrentSemanticEdit\n    projector_test.go:234: ProviderModel(\"old\").Name = \"Old Model\", want \"Human Edit\"\n--- FAIL: TestProjectRejectsConcurrentSemanticEdit (0.74s)\n"
+  },
+  {
+    "package": "github.com/agentstation/starmap/internal/catalog/workspace",
+    "test": "TestProjectAtomicallyReplacesValidatedWorkspace",
+    "output": "=== RUN   TestProjectAtomicallyReplacesValidatedWorkspace\n=== PAUSE TestProjectAtomicallyReplacesValidatedWorkspace\n=== CONT  TestProjectAtomicallyReplacesValidatedWorkspace\n    projector_test.go:32: Project new catalog: failed to preserve access workspace staging C:\\Users\\RUNNER~1\\AppData\\Local\\Temp\\TestProjectAtomicallyReplacesValidatedWorkspace2561232242\\001\\catalog: workspace replacement conflict: native access could not be preserved\n--- FAIL: TestProjectAtomicallyReplacesValidatedWorkspace (0.77s)\n"
+  },
+  {
+    "package": "github.com/agentstation/starmap/internal/catalog/workspace",
+    "test": "TestMigrateLegacyLayoutRollbackPreservesRecreatedLegacyPath",
+    "output": "=== RUN   TestMigrateLegacyLayoutRollbackPreservesRecreatedLegacyPath\n=== PAUSE TestMigrateLegacyLayoutRollbackPreservesRecreatedLegacyPath\n=== CONT  TestMigrateLegacyLayoutRollbackPreservesRecreatedLegacyPath\n    migration_test.go:180: migration error = IO error during relocate of C:\\Users\\RUNNER~1\\AppData\\Local\\Temp\\TestMigrateLegacyLayoutRollbackPreservesRecreatedLegacyPath3389050625\\001\\catalog: rename C:\\Users\\RUNNER~1\\AppData\\Local\\Temp\\TestMigrateLegacyLayoutRollbackPreservesRecreatedLegacyPath3389050625\\001\\catalog C:\\Users\\RUNNER~1\\AppData\\Local\\Temp\\TestMigrateLegacyLayoutRollbackPreservesRecreatedLegacyPath3389050625\\001\\state\\catalog: Access is denied., want injected fault\n--- FAIL: TestMigrateLegacyLayoutRollbackPreservesRecreatedLegacyPath (0.39s)\n"
+  },
+  {
+    "package": "github.com/agentstation/starmap/internal/catalog/workspace",
+    "test": "TestRepairDoesNotOverwriteDirtyWorkspace",
+    "output": "=== RUN   TestRepairDoesNotOverwriteDirtyWorkspace\n=== PAUSE TestRepairDoesNotOverwriteDirtyWorkspace\n=== CONT  TestRepairDoesNotOverwriteDirtyWorkspace\n    projector_test.go:350: Repair: failed to preserve access workspace staging C:\\Users\\RUNNER~1\\AppData\\Local\\Temp\\TestRepairDoesNotOverwriteDirtyWorkspace1483948034\\001\\catalog: workspace replacement conflict: native access could not be preserved\n--- FAIL: TestRepairDoesNotOverwriteDirtyWorkspace (0.79s)\n"
+  },
+  {
+    "package": "github.com/agentstation/starmap/internal/catalog/workspace",
+    "test": "TestMigrateLegacyLayoutProjectionFailureRollsBackOwnedWorkspace",
+    "output": "=== RUN   TestMigrateLegacyLayoutProjectionFailureRollsBackOwnedWorkspace\n=== PAUSE TestMigrateLegacyLayoutProjectionFailureRollsBackOwnedWorkspace\n=== CONT  TestMigrateLegacyLayoutProjectionFailureRollsBackOwnedWorkspace\n    migration_test.go:152: blocking marker survived projection rollback: <nil>\n--- FAIL: TestMigrateLegacyLayoutProjectionFailureRollsBackOwnedWorkspace (0.44s)\n"
+  },
+  {
+    "package": "github.com/agentstation/starmap/internal/catalog/workspace",
+    "test": "TestMigrateLegacyLayoutFailureRollsBackExactStore",
+    "output": "=== RUN   TestMigrateLegacyLayoutFailureRollsBackExactStore\n=== PAUSE TestMigrateLegacyLayoutFailureRollsBackExactStore\n=== CONT  TestMigrateLegacyLayoutFailureRollsBackExactStore\n    migration_test.go:109: migration error = IO error during relocate of C:\\Users\\RUNNER~1\\AppData\\Local\\Temp\\TestMigrateLegacyLayoutFailureRollsBackExactStore1609924069\\001\\catalog: rename C:\\Users\\RUNNER~1\\AppData\\Local\\Temp\\TestMigrateLegacyLayoutFailureRollsBackExactStore1609924069\\001\\catalog C:\\Users\\RUNNER~1\\AppData\\Local\\Temp\\TestMigrateLegacyLayoutFailureRollsBackExactStore1609924069\\001\\state\\catalog: Access is denied., want injected fault\n--- FAIL: TestMigrateLegacyLayoutFailureRollsBackExactStore (0.45s)\n"
+  },
+  {
+    "package": "github.com/agentstation/starmap/internal/catalog/workspace",
+    "test": "TestMigrateLegacyLayoutRelocatesStoreAndProjectsCurrent",
+    "output": "=== RUN   TestMigrateLegacyLayoutRelocatesStoreAndProjectsCurrent\n=== PAUSE TestMigrateLegacyLayoutRelocatesStoreAndProjectsCurrent\n=== CONT  TestMigrateLegacyLayoutRelocatesStoreAndProjectsCurrent\n    migration_test.go:41: MigrateLegacyLayout: IO error during relocate of C:\\Users\\RUNNER~1\\AppData\\Local\\Temp\\TestMigrateLegacyLayoutRelocatesStoreAndProjectsCurrent3937061562\\001\\catalog: rename C:\\Users\\RUNNER~1\\AppData\\Local\\Temp\\TestMigrateLegacyLayoutRelocatesStoreAndProjectsCurrent3937061562\\001\\catalog C:\\Users\\RUNNER~1\\AppData\\Local\\Temp\\TestMigrateLegacyLayoutRelocatesStoreAndProjectsCurrent3937061562\\001\\state\\catalog: Access is denied.\n--- FAIL: TestMigrateLegacyLayoutRelocatesStoreAndProjectsCurrent (0.77s)\n"
+  },
+  {
+    "package": "github.com/agentstation/starmap/internal/catalog/workspace",
+    "test": "TestRepairStaleUnmodifiedProjection",
+    "output": "=== RUN   TestRepairStaleUnmodifiedProjection\n=== PAUSE TestRepairStaleUnmodifiedProjection\n=== CONT  TestRepairStaleUnmodifiedProjection\n    projector_test.go:328: Repair: failed to preserve access workspace staging C:\\Users\\RUNNER~1\\AppData\\Local\\Temp\\TestRepairStaleUnmodifiedProjection1260387487\\001\\catalog: workspace replacement conflict: native access could not be preserved\n--- FAIL: TestRepairStaleUnmodifiedProjection (0.82s)\n"
+  },
+  {
+    "package": "github.com/agentstation/starmap/internal/catalog/workspace",
+    "test": "TestEndpointProjectionDriftIsDetectedWithoutOverwrite",
+    "output": "=== RUN   TestEndpointProjectionDriftIsDetectedWithoutOverwrite\n=== PAUSE TestEndpointProjectionDriftIsDetectedWithoutOverwrite\n=== CONT  TestEndpointProjectionDriftIsDetectedWithoutOverwrite\n    endpoint_projection_test.go:131: Repair: failed to preserve access workspace staging C:\\Users\\RUNNER~1\\AppData\\Local\\Temp\\TestEndpointProjectionDriftIsDetectedWithoutOverwrite2058789295\\001\\catalog: workspace replacement conflict: native access could not be preserved\n--- FAIL: TestEndpointProjectionDriftIsDetectedWithoutOverwrite (0.99s)\n"
+  },
+  {
+    "package": "github.com/agentstation/starmap/internal/catalog/workspace",
+    "test": "TestProjectFailureBeforePromotePreservesOldWorkspace",
+    "output": "=== RUN   TestProjectFailureBeforePromotePreservesOldWorkspace\n=== PAUSE TestProjectFailureBeforePromotePreservesOldWorkspace\n=== CONT  TestProjectFailureBeforePromotePreservesOldWorkspace\n    projector_test.go:79: Project error = failed to preserve access workspace staging C:\\Users\\RUNNER~1\\AppData\\Local\\Temp\\TestProjectFailureBeforePromotePreservesOldWorkspace2970314419\\001\\catalog: workspace replacement conflict: native access could not be preserved, want injected failure\n--- FAIL: TestProjectFailureBeforePromotePreservesOldWorkspace (0.58s)\n"
+  },
+  {
+    "package": "github.com/agentstation/starmap/internal/catalog/workspace",
+    "test": "TestRepairAcknowledgesSwapAfterMarkerFailure",
+    "output": "=== RUN   TestRepairAcknowledgesSwapAfterMarkerFailure\n=== PAUSE TestRepairAcknowledgesSwapAfterMarkerFailure\n=== CONT  TestRepairAcknowledgesSwapAfterMarkerFailure\n    projector_test.go:373: Project error = failed to preserve access workspace staging C:\\Users\\RUNNER~1\\AppData\\Local\\Temp\\TestRepairAcknowledgesSwapAfterMarkerFailure3198167195\\001\\catalog: workspace replacement conflict: native access could not be preserved, want injected marker failure\n--- FAIL: TestRepairAcknowledgesSwapAfterMarkerFailure (0.60s)\n"
+  },
+  {
+    "package": "github.com/agentstation/starmap",
+    "test": "TestExplicitWorkspaceRepairPreservesUnrecognizedOperatorFiles",
+    "output": "=== RUN   TestExplicitWorkspaceRepairPreservesUnrecognizedOperatorFiles\n    workspace_repair_test.go:35: operator workspace repair = {Path:C:\\Users\\RUNNER~1\\AppData\\Local\\Temp\\TestExplicitWorkspaceRepairPreservesUnrecognizedOperatorFiles278838715\\001\\workspace GenerationID:generation-id Changed:false IssueCode:}, failed to preserve access workspace staging C:\\Users\\RUNNER~1\\AppData\\Local\\Temp\\TestExplicitWorkspaceRepairPreservesUnrecognizedOperatorFiles278838715\\001\\workspace: workspace replacement conflict: native access could not be preserved\n--- FAIL: TestExplicitWorkspaceRepairPreservesUnrecognizedOperatorFiles (0.02s)\n"
+  },
+  {
+    "package": "github.com/agentstation/starmap",
+    "test": "TestWritableStoreAllowsConfiguredMutationTriggers/manual_sync",
+    "output": "=== RUN   TestWritableStoreAllowsConfiguredMutationTriggers/manual_sync\n{\"level\":\"info\",\"source\":\"embedded_catalog\",\"time\":\"2026-09-07T22:41:26Z\",\"message\":\"Observing\"}\n{\"level\":\"info\",\"source\":\"local_catalog\",\"time\":\"2026-09-07T22:41:26Z\",\"message\":\"Observing\"}\n{\"level\":\"info\",\"provider_count\":18,\"time\":\"2026-09-07T22:41:27Z\",\"message\":\"Filtered providers by primary source\"}\n{\"level\":\"info\",\"added\":618,\"updated\":0,\"removed\":0,\"time\":\"2026-09-07T22:41:27Z\",\"message\":\"Changes detected\"}\n    writable_store_test.go:102: projection = &projection.Result{Path:\"C:\\\\Users\\\\RUNNER~1\\\\AppData\\\\Local\\\\Temp\\\\TestWritableStoreAllowsConfiguredMutationTriggersmanual_sync1951624729\\\\001\", Status:\"pending_repair\", IssueCode:\"workspace_projection_failed\", GenerationID:\"73344edd-3e5f-4380-b427-b51561f042ff\", WorkspaceChecksum:\"\"}, want applied\n--- FAIL: TestWritableStoreAllowsConfiguredMutationTriggers/manual_sync (26.25s)\n"
+  },
+  {
+    "package": "github.com/agentstation/starmap",
+    "test": "TestWritableStoreAllowsConfiguredMutationTriggers",
+    "output": "=== RUN   TestWritableStoreAllowsConfiguredMutationTriggers\n--- FAIL: TestWritableStoreAllowsConfiguredMutationTriggers (26.25s)\n"
+  },
+  {
+    "package": "github.com/agentstation/starmap",
+    "test": "TestRollbackProjectionConflictKeepsCommittedGenerationAndHumanEdit",
+    "output": "=== RUN   TestRollbackProjectionConflictKeepsCommittedGenerationAndHumanEdit\n=== PAUSE TestRollbackProjectionConflictKeepsCommittedGenerationAndHumanEdit\n=== CONT  TestRollbackProjectionConflictKeepsCommittedGenerationAndHumanEdit\n    rollback_test.go:140: fixture projection = &projection.Result{Path:\"C:\\\\Users\\\\RUNNER~1\\\\AppData\\\\Local\\\\Temp\\\\TestRollbackProjectionConflictKeepsCommittedGenerationAndHumanEd2570350996\\\\001/catalog\", Status:\"pending_repair\", IssueCode:\"workspace_projection_failed\", GenerationID:\"aac4efef-c205-4e82-b85e-0000012e3b21\", WorkspaceChecksum:\"\"}, want applied\n--- FAIL: TestRollbackProjectionConflictKeepsCommittedGenerationAndHumanEdit (0.41s)\n"
+  },
+  {
+    "package": "github.com/agentstation/starmap",
+    "test": "TestRollbackCommitFailureLeavesCatalogAndWorkspaceUnchanged",
+    "output": "=== RUN   TestRollbackCommitFailureLeavesCatalogAndWorkspaceUnchanged\n=== PAUSE TestRollbackCommitFailureLeavesCatalogAndWorkspaceUnchanged\n=== CONT  TestRollbackCommitFailureLeavesCatalogAndWorkspaceUnchanged\n    rollback_test.go:111: fixture projection = &projection.Result{Path:\"C:\\\\Users\\\\RUNNER~1\\\\AppData\\\\Local\\\\Temp\\\\TestRollbackCommitFailureLeavesCatalogAndWorkspaceUnchanged3346941686\\\\001/catalog\", Status:\"pending_repair\", IssueCode:\"workspace_projection_failed\", GenerationID:\"aed1e2e4-7376-4d73-adaf-263b2f99e935\", WorkspaceChecksum:\"\"}, want applied\n--- FAIL: TestRollbackCommitFailureLeavesCatalogAndWorkspaceUnchanged (0.43s)\n"
+  },
+  {
+    "package": "github.com/agentstation/starmap",
+    "test": "TestRollbackRestoresExactRetainedGenerationAndWorkspace",
+    "output": "=== RUN   TestRollbackRestoresExactRetainedGenerationAndWorkspace\n=== PAUSE TestRollbackRestoresExactRetainedGenerationAndWorkspace\n=== CONT  TestRollbackRestoresExactRetainedGenerationAndWorkspace\n    rollback_test.go:29: fixture projection = &projection.Result{Path:\"C:\\\\Users\\\\RUNNER~1\\\\AppData\\\\Local\\\\Temp\\\\TestRollbackRestoresExactRetainedGenerationAndWorkspace2974356750\\\\001/catalog\", Status:\"pending_repair\", IssueCode:\"workspace_projection_failed\", GenerationID:\"c03e8e5c-2c9e-412c-abe5-9b416c9ba635\", WorkspaceChecksum:\"\"}, want applied\n--- FAIL: TestRollbackRestoresExactRetainedGenerationAndWorkspace (0.46s)\n"
+  }
+]

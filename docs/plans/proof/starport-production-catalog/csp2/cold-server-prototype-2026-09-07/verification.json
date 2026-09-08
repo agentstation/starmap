@@ -1,0 +1,43 @@
+{
+  "status": "PASS",
+  "qualification": "Prototype Linux ARM64 server evidence; no registered subcase or primary acceptance credit.",
+  "tested_commit": "49604a6586cc20db7dcbb1252404e74a69ece58f",
+  "go": "1.25.12",
+  "server_binary_sha256": "cef82d590a8eccea70f5bf5a61c6216a714e113e029402f44109f02d2d1bb3b7",
+  "fresh_containers": 2,
+  "uid": 65532,
+  "network": "Docker network none with a denied external TCP control",
+  "credentials": "Only HOME and STARMAP_HOME are supplied; no keys, tokens, or host directories.",
+  "generation_id": "catalog-20260830T083213Z-ad5d2a45e490",
+  "payload_checksum": "sha256:289c7c26ab022796a6638fe32b6bb2d9f2b7a59d0ac07a761fd30c975d91e488",
+  "payload_bytes": 8270634,
+  "manifest_matches_persisted": true,
+  "restart_retains_manifest_and_digest": true,
+  "baseline_file_modes": "0600",
+  "both_process_exits": 0,
+  "retained_instance_identity": "59cdac9a983b6da2f50e7768e1eddb8f69d425e7395c383eea7fdeade25a60ab",
+  "remaining_work": "Implement and review a reusable verifier with failure-path and cleanup checks before registering A01.starmap_cold_offline.",
+  "logs": {
+    "report.json": {
+      "path": "report.json.gz",
+      "sha256": "a02fb293f3dbda9372985646cec282c2c6635b43670cf46b52a26643077ff2f4",
+      "uncompressed_sha256": "34da3e22507d09d3514785a6f8972adf6570a755794f2af5c923064bc1917ed7"
+    },
+    "observe.go": {
+      "path": "observe.go.gz",
+      "sha256": "f6fd6043574c9b884e81b193b0c1ff8a59d65779c9d497ee462cc5fd359c2700",
+      "uncompressed_sha256": "945889b766de54e44964720d29e026437a74ba7ae1c21b8bfe90ab1b11a68de4"
+    },
+    "run.py": {
+      "path": "run.py.gz",
+      "sha256": "f6bf423cd34ea433c1dd6a9883202793b0cb69f065a5905b508d5325b2c724db",
+      "uncompressed_sha256": "2de180f3588fb09aec9da0a6e60523d36f119b6be9b8a08f08de6d57ef0388df"
+    },
+    "Dockerfile": {
+      "path": "Dockerfile.gz",
+      "sha256": "cc056dffe9fe647fde369978a3909f5609759c79ae3cfbaff7dcd540ee7b9ad4",
+      "uncompressed_sha256": "d48f8780ba1da597eb4150c509427206bd0e27d7117834957f997a5474510868"
+    }
+  },
+  "manifest_comparison": "Parsed JSON is equal. The HTTP and filesystem JSON use different formatting."
+}
