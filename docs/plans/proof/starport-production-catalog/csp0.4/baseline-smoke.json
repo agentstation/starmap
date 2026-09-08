@@ -1,0 +1,729 @@
+{
+  "architecture": "arm64",
+  "catalog_checksum": "sha256:289c7c26ab022796a6638fe32b6bb2d9f2b7a59d0ac07a761fd30c975d91e488",
+  "catalog_generation": "catalog-20260830T083213Z-ad5d2a45e490",
+  "catalog_routes": 614,
+  "concurrency": 1,
+  "controlled_wait_per_event_ns": 1000000,
+  "credentials": "fixture environment credential",
+  "go_version": "go1.27.0",
+  "gomaxprocs": 12,
+  "initial_pairs": [
+    {
+      "stream": false,
+      "order": "direct-first",
+      "direct": {
+        "elapsed_ns": 1827625,
+        "gateway_handler_ns": 0,
+        "before_upstream_ns": 442500,
+        "controlled_wait_ns": 1149209,
+        "wait_adjusted_elapsed_ns": 678416,
+        "first_byte_ns": 1771042,
+        "headers_received_ns": 1800250,
+        "client_connection_acquisition_ns": 285542,
+        "client_connection_reused": false,
+        "first_token_ns": 0,
+        "event_forwarding_ns": null,
+        "response_bytes": 234,
+        "request_bytes": 101
+      },
+      "proxied": {
+        "elapsed_ns": 393128917,
+        "gateway_handler_ns": 392544666,
+        "before_upstream_ns": 390031458,
+        "controlled_wait_ns": 1150375,
+        "wait_adjusted_elapsed_ns": 391978542,
+        "first_byte_ns": 392944250,
+        "headers_received_ns": 393006917,
+        "client_connection_acquisition_ns": 186042,
+        "client_connection_reused": false,
+        "first_token_ns": 0,
+        "event_forwarding_ns": null,
+        "response_bytes": 247,
+        "request_bytes": 108
+      },
+      "paired_adjusted_delta_ns": 391300126
+    },
+    {
+      "stream": true,
+      "order": "direct-first",
+      "direct": {
+        "elapsed_ns": 3748584,
+        "gateway_handler_ns": 0,
+        "before_upstream_ns": 143667,
+        "controlled_wait_ns": 3293916,
+        "wait_adjusted_elapsed_ns": 454668,
+        "first_byte_ns": 1449875,
+        "headers_received_ns": 1470542,
+        "client_connection_acquisition_ns": 26500,
+        "client_connection_reused": true,
+        "first_token_ns": 1635917,
+        "event_forwarding_ns": [
+          286750,
+          91041,
+          119375
+        ],
+        "response_bytes": 531,
+        "request_bytes": 100
+      },
+      "proxied": {
+        "elapsed_ns": 378908750,
+        "gateway_handler_ns": 378633250,
+        "before_upstream_ns": 374304458,
+        "controlled_wait_ns": 3345792,
+        "wait_adjusted_elapsed_ns": 375562958,
+        "first_byte_ns": 376022416,
+        "headers_received_ns": 376089166,
+        "client_connection_acquisition_ns": 28250,
+        "client_connection_reused": true,
+        "first_token_ns": 376265458,
+        "event_forwarding_ns": [
+          718250,
+          235541,
+          243375
+        ],
+        "response_bytes": 671,
+        "request_bytes": 107
+      },
+      "paired_adjusted_delta_ns": 375108290
+    }
+  ],
+  "limitations": "Paired deltas include loopback and client work. They do not isolate gateway CPU or qualify production latency.",
+  "load": "closed-loop, alternating direct/proxy order",
+  "maintenance": "App.Run loops are not started",
+  "metrics": "on",
+  "network": "loopback HTTP/1.1, pooled connections, no TLS or DNS",
+  "os": "darwin",
+  "profile": "local-quiescent-baseline-v1",
+  "qualification": "UNVERIFIED",
+  "response_cache": "disabled",
+  "schema_version": 1,
+  "storage": "persistent Badger and SQLite in isolated temporary directories",
+  "usage_capture": "on",
+  "warm_pairs": [
+    {
+      "stream": false,
+      "order": "direct-first",
+      "direct": {
+        "elapsed_ns": 1389750,
+        "gateway_handler_ns": 0,
+        "before_upstream_ns": 168042,
+        "controlled_wait_ns": 1003959,
+        "wait_adjusted_elapsed_ns": 385791,
+        "first_byte_ns": 1331917,
+        "headers_received_ns": 1360084,
+        "client_connection_acquisition_ns": 28792,
+        "client_connection_reused": true,
+        "first_token_ns": 0,
+        "event_forwarding_ns": null,
+        "response_bytes": 234,
+        "request_bytes": 101
+      },
+      "proxied": {
+        "elapsed_ns": 384190834,
+        "gateway_handler_ns": 383629917,
+        "before_upstream_ns": 381271667,
+        "controlled_wait_ns": 1145500,
+        "wait_adjusted_elapsed_ns": 383045334,
+        "first_byte_ns": 384008084,
+        "headers_received_ns": 384069959,
+        "client_connection_acquisition_ns": 41625,
+        "client_connection_reused": true,
+        "first_token_ns": 0,
+        "event_forwarding_ns": null,
+        "response_bytes": 247,
+        "request_bytes": 108
+      },
+      "paired_adjusted_delta_ns": 382659543
+    },
+    {
+      "stream": false,
+      "order": "proxy-first",
+      "direct": {
+        "elapsed_ns": 1416250,
+        "gateway_handler_ns": 0,
+        "before_upstream_ns": 210083,
+        "controlled_wait_ns": 1001583,
+        "wait_adjusted_elapsed_ns": 414667,
+        "first_byte_ns": 1372250,
+        "headers_received_ns": 1395042,
+        "client_connection_acquisition_ns": 45833,
+        "client_connection_reused": true,
+        "first_token_ns": 0,
+        "event_forwarding_ns": null,
+        "response_bytes": 234,
+        "request_bytes": 101
+      },
+      "proxied": {
+        "elapsed_ns": 380784959,
+        "gateway_handler_ns": 380312917,
+        "before_upstream_ns": 377838917,
+        "controlled_wait_ns": 1148000,
+        "wait_adjusted_elapsed_ns": 379636959,
+        "first_byte_ns": 380591459,
+        "headers_received_ns": 380650375,
+        "client_connection_acquisition_ns": 40417,
+        "client_connection_reused": true,
+        "first_token_ns": 0,
+        "event_forwarding_ns": null,
+        "response_bytes": 247,
+        "request_bytes": 108
+      },
+      "paired_adjusted_delta_ns": 379222292
+    },
+    {
+      "stream": false,
+      "order": "direct-first",
+      "direct": {
+        "elapsed_ns": 1491625,
+        "gateway_handler_ns": 0,
+        "before_upstream_ns": 134041,
+        "controlled_wait_ns": 1156875,
+        "wait_adjusted_elapsed_ns": 334750,
+        "first_byte_ns": 1419666,
+        "headers_received_ns": 1449208,
+        "client_connection_acquisition_ns": 27083,
+        "client_connection_reused": true,
+        "first_token_ns": 0,
+        "event_forwarding_ns": null,
+        "response_bytes": 234,
+        "request_bytes": 101
+      },
+      "proxied": {
+        "elapsed_ns": 379874625,
+        "gateway_handler_ns": 379416125,
+        "before_upstream_ns": 376924125,
+        "controlled_wait_ns": 1147333,
+        "wait_adjusted_elapsed_ns": 378727292,
+        "first_byte_ns": 379691958,
+        "headers_received_ns": 379753292,
+        "client_connection_acquisition_ns": 24000,
+        "client_connection_reused": true,
+        "first_token_ns": 0,
+        "event_forwarding_ns": null,
+        "response_bytes": 247,
+        "request_bytes": 108
+      },
+      "paired_adjusted_delta_ns": 378392542
+    },
+    {
+      "stream": false,
+      "order": "proxy-first",
+      "direct": {
+        "elapsed_ns": 1357333,
+        "gateway_handler_ns": 0,
+        "before_upstream_ns": 151875,
+        "controlled_wait_ns": 1010042,
+        "wait_adjusted_elapsed_ns": 347291,
+        "first_byte_ns": 1301958,
+        "headers_received_ns": 1326375,
+        "client_connection_acquisition_ns": 28792,
+        "client_connection_reused": true,
+        "first_token_ns": 0,
+        "event_forwarding_ns": null,
+        "response_bytes": 234,
+        "request_bytes": 101
+      },
+      "proxied": {
+        "elapsed_ns": 386293208,
+        "gateway_handler_ns": 385772500,
+        "before_upstream_ns": 383146041,
+        "controlled_wait_ns": 1148250,
+        "wait_adjusted_elapsed_ns": 385144958,
+        "first_byte_ns": 386094250,
+        "headers_received_ns": 386154541,
+        "client_connection_acquisition_ns": 35083,
+        "client_connection_reused": true,
+        "first_token_ns": 0,
+        "event_forwarding_ns": null,
+        "response_bytes": 247,
+        "request_bytes": 108
+      },
+      "paired_adjusted_delta_ns": 384797667
+    },
+    {
+      "stream": false,
+      "order": "direct-first",
+      "direct": {
+        "elapsed_ns": 1500875,
+        "gateway_handler_ns": 0,
+        "before_upstream_ns": 183958,
+        "controlled_wait_ns": 1127125,
+        "wait_adjusted_elapsed_ns": 373750,
+        "first_byte_ns": 1455417,
+        "headers_received_ns": 1480458,
+        "client_connection_acquisition_ns": 32667,
+        "client_connection_reused": true,
+        "first_token_ns": 0,
+        "event_forwarding_ns": null,
+        "response_bytes": 234,
+        "request_bytes": 101
+      },
+      "proxied": {
+        "elapsed_ns": 377854291,
+        "gateway_handler_ns": 377355042,
+        "before_upstream_ns": 374803625,
+        "controlled_wait_ns": 1149250,
+        "wait_adjusted_elapsed_ns": 376705041,
+        "first_byte_ns": 377654291,
+        "headers_received_ns": 377729125,
+        "client_connection_acquisition_ns": 23500,
+        "client_connection_reused": true,
+        "first_token_ns": 0,
+        "event_forwarding_ns": null,
+        "response_bytes": 247,
+        "request_bytes": 108
+      },
+      "paired_adjusted_delta_ns": 376331291
+    },
+    {
+      "stream": false,
+      "order": "proxy-first",
+      "direct": {
+        "elapsed_ns": 1383666,
+        "gateway_handler_ns": 0,
+        "before_upstream_ns": 198791,
+        "controlled_wait_ns": 1002959,
+        "wait_adjusted_elapsed_ns": 380707,
+        "first_byte_ns": 1333500,
+        "headers_received_ns": 1356250,
+        "client_connection_acquisition_ns": 35416,
+        "client_connection_reused": true,
+        "first_token_ns": 0,
+        "event_forwarding_ns": null,
+        "response_bytes": 234,
+        "request_bytes": 101
+      },
+      "proxied": {
+        "elapsed_ns": 378917166,
+        "gateway_handler_ns": 378465333,
+        "before_upstream_ns": 376193125,
+        "controlled_wait_ns": 1143708,
+        "wait_adjusted_elapsed_ns": 377773458,
+        "first_byte_ns": 378753458,
+        "headers_received_ns": 378809875,
+        "client_connection_acquisition_ns": 35250,
+        "client_connection_reused": true,
+        "first_token_ns": 0,
+        "event_forwarding_ns": null,
+        "response_bytes": 247,
+        "request_bytes": 108
+      },
+      "paired_adjusted_delta_ns": 377392751
+    },
+    {
+      "stream": false,
+      "order": "direct-first",
+      "direct": {
+        "elapsed_ns": 1475833,
+        "gateway_handler_ns": 0,
+        "before_upstream_ns": 157125,
+        "controlled_wait_ns": 1130625,
+        "wait_adjusted_elapsed_ns": 345208,
+        "first_byte_ns": 1427666,
+        "headers_received_ns": 1452083,
+        "client_connection_acquisition_ns": 32208,
+        "client_connection_reused": true,
+        "first_token_ns": 0,
+        "event_forwarding_ns": null,
+        "response_bytes": 234,
+        "request_bytes": 101
+      },
+      "proxied": {
+        "elapsed_ns": 403839000,
+        "gateway_handler_ns": 403398083,
+        "before_upstream_ns": 401130791,
+        "controlled_wait_ns": 1145250,
+        "wait_adjusted_elapsed_ns": 402693750,
+        "first_byte_ns": 403658791,
+        "headers_received_ns": 403718291,
+        "client_connection_acquisition_ns": 26875,
+        "client_connection_reused": true,
+        "first_token_ns": 0,
+        "event_forwarding_ns": null,
+        "response_bytes": 247,
+        "request_bytes": 108
+      },
+      "paired_adjusted_delta_ns": 402348542
+    },
+    {
+      "stream": false,
+      "order": "proxy-first",
+      "direct": {
+        "elapsed_ns": 1390542,
+        "gateway_handler_ns": 0,
+        "before_upstream_ns": 180250,
+        "controlled_wait_ns": 1041000,
+        "wait_adjusted_elapsed_ns": 349542,
+        "first_byte_ns": 1347834,
+        "headers_received_ns": 1369417,
+        "client_connection_acquisition_ns": 34667,
+        "client_connection_reused": true,
+        "first_token_ns": 0,
+        "event_forwarding_ns": null,
+        "response_bytes": 234,
+        "request_bytes": 101
+      },
+      "proxied": {
+        "elapsed_ns": 409105375,
+        "gateway_handler_ns": 408651458,
+        "before_upstream_ns": 406333417,
+        "controlled_wait_ns": 1153167,
+        "wait_adjusted_elapsed_ns": 407952208,
+        "first_byte_ns": 408915792,
+        "headers_received_ns": 408981792,
+        "client_connection_acquisition_ns": 30333,
+        "client_connection_reused": true,
+        "first_token_ns": 0,
+        "event_forwarding_ns": null,
+        "response_bytes": 247,
+        "request_bytes": 108
+      },
+      "paired_adjusted_delta_ns": 407602666
+    },
+    {
+      "stream": true,
+      "order": "direct-first",
+      "direct": {
+        "elapsed_ns": 3769500,
+        "gateway_handler_ns": 0,
+        "before_upstream_ns": 185292,
+        "controlled_wait_ns": 3308834,
+        "wait_adjusted_elapsed_ns": 460666,
+        "first_byte_ns": 1354667,
+        "headers_received_ns": 1377917,
+        "client_connection_acquisition_ns": 35250,
+        "client_connection_reused": true,
+        "first_token_ns": 1420875,
+        "event_forwarding_ns": [
+          149375,
+          101917,
+          100709
+        ],
+        "response_bytes": 531,
+        "request_bytes": 100
+      },
+      "proxied": {
+        "elapsed_ns": 379020625,
+        "gateway_handler_ns": 378775250,
+        "before_upstream_ns": 374399166,
+        "controlled_wait_ns": 3395376,
+        "wait_adjusted_elapsed_ns": 375625249,
+        "first_byte_ns": 375951333,
+        "headers_received_ns": 376012541,
+        "client_connection_acquisition_ns": 36291,
+        "client_connection_reused": true,
+        "first_token_ns": 376074416,
+        "event_forwarding_ns": [
+          434208,
+          281125,
+          256250
+        ],
+        "response_bytes": 671,
+        "request_bytes": 107
+      },
+      "paired_adjusted_delta_ns": 375164583
+    },
+    {
+      "stream": true,
+      "order": "proxy-first",
+      "direct": {
+        "elapsed_ns": 3774834,
+        "gateway_handler_ns": 0,
+        "before_upstream_ns": 169250,
+        "controlled_wait_ns": 3242041,
+        "wait_adjusted_elapsed_ns": 532793,
+        "first_byte_ns": 1331375,
+        "headers_received_ns": 1360250,
+        "client_connection_acquisition_ns": 36292,
+        "client_connection_reused": true,
+        "first_token_ns": 1405000,
+        "event_forwarding_ns": [
+          161416,
+          119917,
+          200291
+        ],
+        "response_bytes": 531,
+        "request_bytes": 100
+      },
+      "proxied": {
+        "elapsed_ns": 402716583,
+        "gateway_handler_ns": 402501000,
+        "before_upstream_ns": 398185083,
+        "controlled_wait_ns": 3351667,
+        "wait_adjusted_elapsed_ns": 399364916,
+        "first_byte_ns": 399806625,
+        "headers_received_ns": 399889458,
+        "client_connection_acquisition_ns": 29875,
+        "client_connection_reused": true,
+        "first_token_ns": 399951041,
+        "event_forwarding_ns": [
+          509625,
+          225750,
+          289583
+        ],
+        "response_bytes": 671,
+        "request_bytes": 107
+      },
+      "paired_adjusted_delta_ns": 398832123
+    },
+    {
+      "stream": true,
+      "order": "direct-first",
+      "direct": {
+        "elapsed_ns": 3849000,
+        "gateway_handler_ns": 0,
+        "before_upstream_ns": 165459,
+        "controlled_wait_ns": 3368291,
+        "wait_adjusted_elapsed_ns": 480709,
+        "first_byte_ns": 1485250,
+        "headers_received_ns": 1510250,
+        "client_connection_acquisition_ns": 29792,
+        "client_connection_reused": true,
+        "first_token_ns": 1555459,
+        "event_forwarding_ns": [
+          157875,
+          86625,
+          146959
+        ],
+        "response_bytes": 531,
+        "request_bytes": 100
+      },
+      "proxied": {
+        "elapsed_ns": 384272458,
+        "gateway_handler_ns": 384037209,
+        "before_upstream_ns": 379568958,
+        "controlled_wait_ns": 3371209,
+        "wait_adjusted_elapsed_ns": 380901249,
+        "first_byte_ns": 381245000,
+        "headers_received_ns": 381311458,
+        "client_connection_acquisition_ns": 25791,
+        "client_connection_reused": true,
+        "first_token_ns": 381380583,
+        "event_forwarding_ns": [
+          512750,
+          238375,
+          262208
+        ],
+        "response_bytes": 671,
+        "request_bytes": 107
+      },
+      "paired_adjusted_delta_ns": 380420540
+    },
+    {
+      "stream": true,
+      "order": "proxy-first",
+      "direct": {
+        "elapsed_ns": 3610875,
+        "gateway_handler_ns": 0,
+        "before_upstream_ns": 159834,
+        "controlled_wait_ns": 3196916,
+        "wait_adjusted_elapsed_ns": 413959,
+        "first_byte_ns": 1324125,
+        "headers_received_ns": 1347000,
+        "client_connection_acquisition_ns": 35625,
+        "client_connection_reused": true,
+        "first_token_ns": 1388417,
+        "event_forwarding_ns": [
+          145625,
+          85708,
+          109583
+        ],
+        "response_bytes": 531,
+        "request_bytes": 100
+      },
+      "proxied": {
+        "elapsed_ns": 385546125,
+        "gateway_handler_ns": 385319833,
+        "before_upstream_ns": 380850708,
+        "controlled_wait_ns": 3350874,
+        "wait_adjusted_elapsed_ns": 382195251,
+        "first_byte_ns": 382521750,
+        "headers_received_ns": 382591542,
+        "client_connection_acquisition_ns": 32792,
+        "client_connection_reused": true,
+        "first_token_ns": 382655250,
+        "event_forwarding_ns": [
+          540792,
+          241834,
+          278209
+        ],
+        "response_bytes": 671,
+        "request_bytes": 107
+      },
+      "paired_adjusted_delta_ns": 381781292
+    },
+    {
+      "stream": true,
+      "order": "direct-first",
+      "direct": {
+        "elapsed_ns": 3825125,
+        "gateway_handler_ns": 0,
+        "before_upstream_ns": 146542,
+        "controlled_wait_ns": 3433167,
+        "wait_adjusted_elapsed_ns": 391958,
+        "first_byte_ns": 1413375,
+        "headers_received_ns": 1435500,
+        "client_connection_acquisition_ns": 26000,
+        "client_connection_reused": true,
+        "first_token_ns": 1474833,
+        "event_forwarding_ns": [
+          125750,
+          73625,
+          109291
+        ],
+        "response_bytes": 531,
+        "request_bytes": 100
+      },
+      "proxied": {
+        "elapsed_ns": 385124458,
+        "gateway_handler_ns": 384897291,
+        "before_upstream_ns": 380474792,
+        "controlled_wait_ns": 3340001,
+        "wait_adjusted_elapsed_ns": 381784457,
+        "first_byte_ns": 382123083,
+        "headers_received_ns": 382192250,
+        "client_connection_acquisition_ns": 24750,
+        "client_connection_reused": true,
+        "first_token_ns": 382271125,
+        "event_forwarding_ns": [
+          532292,
+          254417,
+          292750
+        ],
+        "response_bytes": 671,
+        "request_bytes": 107
+      },
+      "paired_adjusted_delta_ns": 381392499
+    },
+    {
+      "stream": true,
+      "order": "proxy-first",
+      "direct": {
+        "elapsed_ns": 3796959,
+        "gateway_handler_ns": 0,
+        "before_upstream_ns": 179667,
+        "controlled_wait_ns": 3315417,
+        "wait_adjusted_elapsed_ns": 481542,
+        "first_byte_ns": 1334750,
+        "headers_received_ns": 1362584,
+        "client_connection_acquisition_ns": 35667,
+        "client_connection_reused": true,
+        "first_token_ns": 1414209,
+        "event_forwarding_ns": [
+          159292,
+          113875,
+          130042
+        ],
+        "response_bytes": 531,
+        "request_bytes": 100
+      },
+      "proxied": {
+        "elapsed_ns": 380846792,
+        "gateway_handler_ns": 380597584,
+        "before_upstream_ns": 376336542,
+        "controlled_wait_ns": 3327959,
+        "wait_adjusted_elapsed_ns": 377518833,
+        "first_byte_ns": 377879583,
+        "headers_received_ns": 377944250,
+        "client_connection_acquisition_ns": 31750,
+        "client_connection_reused": true,
+        "first_token_ns": 378009667,
+        "event_forwarding_ns": [
+          463375,
+          237583,
+          245791
+        ],
+        "response_bytes": 671,
+        "request_bytes": 107
+      },
+      "paired_adjusted_delta_ns": 377037291
+    },
+    {
+      "stream": true,
+      "order": "direct-first",
+      "direct": {
+        "elapsed_ns": 3803500,
+        "gateway_handler_ns": 0,
+        "before_upstream_ns": 149166,
+        "controlled_wait_ns": 3405166,
+        "wait_adjusted_elapsed_ns": 398334,
+        "first_byte_ns": 1423000,
+        "headers_received_ns": 1450750,
+        "client_connection_acquisition_ns": 25541,
+        "client_connection_reused": true,
+        "first_token_ns": 1497583,
+        "event_forwarding_ns": [
+          141917,
+          111500,
+          97291
+        ],
+        "response_bytes": 531,
+        "request_bytes": 100
+      },
+      "proxied": {
+        "elapsed_ns": 381842916,
+        "gateway_handler_ns": 381622041,
+        "before_upstream_ns": 377395500,
+        "controlled_wait_ns": 3348585,
+        "wait_adjusted_elapsed_ns": 378494331,
+        "first_byte_ns": 378981000,
+        "headers_received_ns": 379075916,
+        "client_connection_acquisition_ns": 30041,
+        "client_connection_reused": true,
+        "first_token_ns": 379161875,
+        "event_forwarding_ns": [
+          532792,
+          258250,
+          217666
+        ],
+        "response_bytes": 671,
+        "request_bytes": 107
+      },
+      "paired_adjusted_delta_ns": 378095997
+    },
+    {
+      "stream": true,
+      "order": "proxy-first",
+      "direct": {
+        "elapsed_ns": 3579459,
+        "gateway_handler_ns": 0,
+        "before_upstream_ns": 165875,
+        "controlled_wait_ns": 3097251,
+        "wait_adjusted_elapsed_ns": 482208,
+        "first_byte_ns": 1356584,
+        "headers_received_ns": 1383125,
+        "client_connection_acquisition_ns": 32584,
+        "client_connection_reused": true,
+        "first_token_ns": 1427250,
+        "event_forwarding_ns": [
+          149583,
+          97416,
+          97875
+        ],
+        "response_bytes": 531,
+        "request_bytes": 100
+      },
+      "proxied": {
+        "elapsed_ns": 391010833,
+        "gateway_handler_ns": 390761291,
+        "before_upstream_ns": 386465417,
+        "controlled_wait_ns": 3353167,
+        "wait_adjusted_elapsed_ns": 387657666,
+        "first_byte_ns": 388245375,
+        "headers_received_ns": 388308375,
+        "client_connection_acquisition_ns": 33125,
+        "client_connection_reused": true,
+        "first_token_ns": 388402042,
+        "event_forwarding_ns": [
+          681542,
+          263625,
+          257791
+        ],
+        "response_bytes": 671,
+        "request_bytes": 107
+      },
+      "paired_adjusted_delta_ns": 387175458
+    }
+  ]
+}

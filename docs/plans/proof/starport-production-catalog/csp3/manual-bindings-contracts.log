@@ -1,0 +1,28 @@
+--- FAIL: TestManualBindingsPreserveReceiptsHealthAndPreview (0.00s)
+    provider_bindings_test.go:87: Build: failed to validate catalog identities: failed to validate provider credentials provider: validation failed for field provider.credentials.catalog_acquisition.alternatives[0]: none authentication must be the sole alternative on an optional plane
+--- FAIL: TestManualBindingsValidateBeforeSourceWork (0.00s)
+    --- FAIL: TestManualBindingsValidateBeforeSourceWork/duplicate (0.00s)
+        provider_bindings_test.go:177: Build: failed to validate catalog identities: failed to validate provider credentials provider: validation failed for field provider.credentials.catalog_acquisition.alternatives[0]: none authentication must be the sole alternative on an optional plane
+    --- FAIL: TestManualBindingsValidateBeforeSourceWork/schema (0.00s)
+        provider_bindings_test.go:177: Build: failed to validate catalog identities: failed to validate provider credentials provider: validation failed for field provider.credentials.catalog_acquisition.alternatives[0]: none authentication must be the sole alternative on an optional plane
+    --- FAIL: TestManualBindingsValidateBeforeSourceWork/profile (0.00s)
+        provider_bindings_test.go:177: Build: failed to validate catalog identities: failed to validate provider credentials provider: validation failed for field provider.credentials.catalog_acquisition.alternatives[0]: none authentication must be the sole alternative on an optional plane
+    --- FAIL: TestManualBindingsValidateBeforeSourceWork/provider (0.00s)
+        provider_bindings_test.go:177: Build: failed to validate catalog identities: failed to validate provider credentials provider: validation failed for field provider.credentials.catalog_acquisition.alternatives[0]: none authentication must be the sole alternative on an optional plane
+    --- FAIL: TestManualBindingsValidateBeforeSourceWork/unbound-filter (0.00s)
+        provider_bindings_test.go:177: Build: failed to validate catalog identities: failed to validate provider credentials provider: validation failed for field provider.credentials.catalog_acquisition.alternatives[0]: none authentication must be the sole alternative on an optional plane
+--- FAIL: TestManualBindingsEmptyAndSourceSelection (0.00s)
+    --- FAIL: TestManualBindingsEmptyAndSourceSelection/empty (0.00s)
+        provider_bindings_test.go:206: Build: failed to validate catalog identities: failed to validate provider credentials provider: validation failed for field provider.credentials.catalog_acquisition.alternatives[0]: none authentication must be the sole alternative on an optional plane
+    --- FAIL: TestManualBindingsEmptyAndSourceSelection/embedded (0.00s)
+        provider_bindings_test.go:206: Build: failed to validate catalog identities: failed to validate provider credentials provider: validation failed for field provider.credentials.catalog_acquisition.alternatives[0]: none authentication must be the sole alternative on an optional plane
+    --- FAIL: TestManualBindingsEmptyAndSourceSelection/filtered (0.00s)
+        provider_bindings_test.go:206: Build: failed to validate catalog identities: failed to validate provider credentials provider: validation failed for field provider.credentials.catalog_acquisition.alternatives[0]: none authentication must be the sole alternative on an optional plane
+--- FAIL: TestStrictManualBindingsRequireExactSelection (0.00s)
+    provider_bindings_test.go:229: Build: failed to validate catalog identities: failed to validate provider credentials provider: validation failed for field provider.credentials.catalog_acquisition.alternatives[0]: none authentication must be the sole alternative on an optional plane
+--- FAIL: TestManualBindingVolumeUsesOnlyMatchingHistory (0.00s)
+    provider_bindings_test.go:279: Build: failed to validate catalog identities: failed to validate provider credentials provider: validation failed for field provider.credentials.catalog_acquisition.alternatives[0]: none authentication must be the sole alternative on an optional plane
+FAIL
+FAIL	github.com/agentstation/starmap/internal/catalog/pipeline	0.416s
+ok  	github.com/agentstation/starmap/pkg/provenance	0.550s
+FAIL

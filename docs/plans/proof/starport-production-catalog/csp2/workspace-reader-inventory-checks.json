@@ -1,0 +1,47 @@
+[
+  {
+    "command": [
+      "go",
+      "test",
+      "-race",
+      "-json",
+      "./internal/cli/app",
+      "-run",
+      "Test.*(FileManifest|PathManifest)",
+      "-count=1",
+      "-timeout=2m"
+    ],
+    "exit_code": 0,
+    "stdout": "{\"Time\":\"2026-09-06T10:06:56.206891-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\"}\n{\"Time\":\"2026-09-06T10:06:56.768246-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestFileManifestCoversColdStartupAndPublication\"}\n{\"Time\":\"2026-09-06T10:06:56.768305-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestFileManifestCoversColdStartupAndPublication\",\"Output\":\"=== RUN   TestFileManifestCoversColdStartupAndPublication\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-06T10:07:10.608103-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestFileManifestCoversColdStartupAndPublication\",\"Output\":\"    file_manifest_test.go:119: covered 9 persistent startup files\\n\"}\n{\"Time\":\"2026-09-06T10:07:10.61042-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestFileManifestCoversColdStartupAndPublication\",\"Output\":\"--- PASS: TestFileManifestCoversColdStartupAndPublication (13.84s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-06T10:07:10.610442-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestFileManifestCoversColdStartupAndPublication\",\"Elapsed\":13.84}\n{\"Time\":\"2026-09-06T10:07:10.610504-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestFileManifestReportsDisabledWorkspaceAndPlannedFeatures\"}\n{\"Time\":\"2026-09-06T10:07:10.610518-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestFileManifestReportsDisabledWorkspaceAndPlannedFeatures\",\"Output\":\"=== RUN   TestFileManifestReportsDisabledWorkspaceAndPlannedFeatures\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-06T10:07:10.612206-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestFileManifestReportsDisabledWorkspaceAndPlannedFeatures\",\"Output\":\"--- PASS: TestFileManifestReportsDisabledWorkspaceAndPlannedFeatures (0.00s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-06T10:07:10.612213-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestFileManifestReportsDisabledWorkspaceAndPlannedFeatures\",\"Elapsed\":0}\n{\"Time\":\"2026-09-06T10:07:10.612277-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestFileManifestPreservesLeafAnchorsWithoutCredentialValues\"}\n{\"Time\":\"2026-09-06T10:07:10.612279-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestFileManifestPreservesLeafAnchorsWithoutCredentialValues\",\"Output\":\"=== RUN   TestFileManifestPreservesLeafAnchorsWithoutCredentialValues\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-06T10:07:10.615045-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestFileManifestPreservesLeafAnchorsWithoutCredentialValues\",\"Output\":\"--- PASS: TestFileManifestPreservesLeafAnchorsWithoutCredentialValues (0.00s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-06T10:07:10.615053-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestFileManifestPreservesLeafAnchorsWithoutCredentialValues\",\"Elapsed\":0}\n{\"Time\":\"2026-09-06T10:07:10.616112-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Output\":\"PASS\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-06T10:07:11.651127-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Output\":\"ok  \\tgithub.com/agentstation/starmap/internal/cli/app\\t15.444s\\n\"}\n{\"Time\":\"2026-09-06T10:07:11.651159-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Elapsed\":15.444}\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "go",
+      "tool",
+      "ago",
+      "-stale-ignores",
+      "-format",
+      "json",
+      "./..."
+    ],
+    "exit_code": 0,
+    "stdout": "{\n  \"schemaVersion\": 1,\n  \"version\": \"v0.2.0\",\n  \"rules\": [\n    \"no-dot-import\",\n    \"no-generic-methods\",\n    \"no-goto\",\n    \"no-invalid-ignore\",\n    \"no-naked-return\",\n    \"no-new-expr\",\n    \"no-self-referential-constraints\"\n  ],\n  \"findings\": [],\n  \"staleIgnores\": [],\n  \"errors\": []\n}\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "/Users/jack/.agents/skills/technical-writing/scripts/technical-writing",
+      "lint",
+      "docs/design/catalog-lifecycle/ENGINEERING_SPEC.md",
+      "docs/design/catalog-lifecycle/REPOSITORY_FINDINGS.md",
+      "docs/plans/proof/starport-production-catalog/csp2.md",
+      "docs/plans/starport-production-catalog-plan.html",
+      "--format",
+      "text"
+    ],
+    "exit_code": 0,
+    "stdout": "PASS: 4 file(s), 0 diagnostic(s)\n",
+    "stderr": ""
+  }
+]

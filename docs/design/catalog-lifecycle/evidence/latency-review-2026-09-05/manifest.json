@@ -1,0 +1,88 @@
+{
+  "date": "2026-09-05",
+  "starport_head": "042eb97851496ecdd1ef20bfa44fe3d84b86b2d8",
+  "starmap_head": "4780dfea9f7e002ea6eaaa82aa8f52ed0d4cc225",
+  "starmap_dependency": "v0.16.5",
+  "go": "go version go1.27.0 darwin/arm64",
+  "platform": "macOS-15.7.2-arm64-arm-64bit-Mach-O",
+  "cpu": "Apple M2 Max",
+  "benchmarks": {
+    "catalog": "go test -overlay=<overlay.json> -run ^$ -bench ^BenchmarkAuditCatalogSelection$ -benchmem -benchtime=500ms -count=3 ./internal/router",
+    "embedded": "go test -overlay=<overlay.json> -run ^$ -bench ^BenchmarkAuditEmbeddedOpenAISelection$ -benchmem -benchtime=500ms -count=3 ./internal/router",
+    "credentials": "go test -overlay=<overlay.json> -run ^$ -bench ^BenchmarkAuditStoredCredentialDecryption$ -benchmem -benchtime=500ms -count=3 ./internal/credentials",
+    "profile": "go test -overlay=<overlay.json> -run ^$ -bench ^BenchmarkAuditCatalogSelection/routes_100$ -benchmem -benchtime=1s -count=1 -memprofile=<catalog.mem.pprof> -cpuprofile=<catalog.cpu.pprof> -o <router.test> ./internal/router",
+    "server": "go test -run ^$ -bench ^BenchmarkProxyHandler$ -benchmem -benchtime=500ms -count=3 ./internal/server",
+    "existing_router": "go test -run ^$ -bench Benchmark(SelectModel|RouteWithFallback|LatencyTracking|ConcurrentRouting)$ -benchmem -benchtime=500ms -count=3 ./internal/router",
+    "overhead": "STARPORT_OVERHEAD_BENCH=1 go test -count=1 -timeout=120s -run ^TestGatewayOverheadBenchmark$ -v ./internal/server/controllers"
+  },
+  "overhead_result": {
+    "p50_ms": 0,
+    "p99_ms": 0,
+    "requests": 200,
+    "note": "Transcribed from tool output. Integer header measurement excludes middleware, decode, final encoding, and real catalog."
+  },
+  "existing_router_result": {
+    "simple_selection_ns": [
+      725.6,
+      667.0,
+      673.0
+    ],
+    "simple_selection_bytes": 904,
+    "simple_selection_allocations": 12,
+    "local_latency_record_allocations": 0,
+    "local_latency_get_allocations": 0,
+    "note": "Transcribed from tool output. Registry-only fixture."
+  },
+  "source_sha256": {
+    "go.mod": "0bb403f18cf17ec607deeb9c473a0e51190a0db069b75dd569fb1b09c541545e",
+    "internal/router/planner_adapter.go": "3cfc31474e63619de0011a0070cbb01203ffb54e5d6ac2894b0dc0bd97e69aa3",
+    "internal/catalog/snapshot.go": "a9c95ffb78e5289b0f648038b9069b8d3e8d06eaadfe04ebe79828215934a6fe",
+    "internal/credentials/encryption.go": "ebea0a840e63b39456c33d863ca3892d7934522ce92cbc4630af87ea4468a333",
+    "internal/credentials/resolver.go": "7aeee607cbd97e0daea04f757c7a1ee3ad84076cea1f1318c919a15c4e8ffcc9",
+    "internal/providers/keyring/provider_keys.go": "ea585ad4d55d7bdd5e5c5b4f2add3069bfac738d60cb70bf78e16a9093742725",
+    "internal/server/controllers/chat.go": "b0d1faea74df15f0c7f69fc150e6ca9f462ab454e7ea4a47bf03170f62150c40",
+    "internal/server/controllers/overhead_benchmark_test.go": "fa0b37d8af890ecd000df36170ddb9e01cdad32e0b2f60dcdd51a0b732e162a3",
+    "internal/execution/overhead.go": "5fb37ea274a80809fcfac8d2dfbb4dfeec3dcedbbaab565a43eb63b2b0ad1965",
+    "internal/server/middleware.go": "ef405d8ddc4ac78648ba7469a03421be29d0d4d463ba20769b484fb53c3aacd9",
+    "internal/server/budget.go": "b86f4b87b98b2908492406ce14ca37ea53b3b4c1eeb6af465af0118993ea3038",
+    "internal/usage/repository.go": "64f41992a179648da08c8c70522f7bf8ed022b26b6941316319c7283757dc71f",
+    "internal/proxy/cache.go": "aabc3f088aa4f696e7e514b3b5ef47adea51707d557c302415a92d8d1bf1279b",
+    "internal/cache/manager.go": "2aff4f539f8c01d122451f709d07a5e859a7fe2dd0c2b700780b18679184893a",
+    "internal/cache/hybrid.go": "a672ef6117762da03a7b76f46603a7caf1e4c40c881245e3f0fefcdaed7a9f4b",
+    "internal/router/latency_shared.go": "f2acd5a863fe167162aeab6cb8d705ea426401fcb5fa68b274a39a725a861794",
+    "internal/availability/shared.go": "270fbfafddc549403dfb2c014aa8dae188696a7b966b1022d0b48adab2ef1e3e",
+    "internal/proxy/usage_capture.go": "abf4cc59427bea1c509af7c8623cef7245dcaf737847b196614088424f895e4a",
+    "internal/providers/connectors/http_client.go": "f2bef8bd1d8c94b9d18b1d0a9af2f8f90c614ea74fab3c825e54659e8334ddd7",
+    "docs/PERFORMANCE.md": "39e1d08430254b444073839dc8f0930c4871728f5bd689d6da77b17d732764a2"
+  },
+  "canonical_documents_sha256": {
+    "docs/design/catalog-lifecycle/PRD.md": "1882fb181c6023dbe54c97866048cfcaf28e6fd7e18caa78242f7aa386037c65",
+    "docs/design/catalog-lifecycle/ENGINEERING_SPEC.md": "30684534549d5224e1bcd2cc82334871850731780536ad787cea538286b02f82",
+    "docs/design/catalog-lifecycle/REPOSITORY_FINDINGS.md": "acdb9f67b452af45eecd726c96a00af5e858f265bbd94738b87116306519aa0d",
+    "docs/design/catalog-lifecycle/STORAGE_REVIEW.md": "986bdd31ccdf6ce58da585f26e8b5cf244e521aa0309c5cffe382b9ed6f8fa3f",
+    "docs/plans/starport-production-catalog-plan.html": "82b04d18eaf801b314234cafada75c082c9ac1d633b264f109e6dd5018966893"
+  },
+  "evidence_sha256": {
+    "allocations-cumulative.json": "5fe93c2b49720ede60456765af0a1ab008bffbd94476cd0c6743a22c15272ca8",
+    "allocations-top.json": "5f941e52f96eb5e56861bd98a5f5ad5f4f16e2d82be417ebe4e5004a6c66ef4f",
+    "catalog-bench.json": "fc4fb67d3c3ee9a0becdfe4f4adc0a50f02769a66237934aa508d702d21275d2",
+    "catalog.cpu.pprof": "e947231958e6060bd9401e882450d95e33eaf71bc9d235fca219c0440185367e",
+    "catalog.mem.pprof": "c422a4d173007b898314c0620bfc00c250e65d49f9117941d50113e1c3914a2c",
+    "catalog_benchmark_test.go.json": "2517b867be2b3fa6f199510f22b4d9b2aae61d28d7b13f7a187bd1bba9aaa008",
+    "cpu-top.json": "4ff6341c2250456b9f4292e8891220222658954beeca77c08580a1f1e654dcb0",
+    "credential-bench.json": "4abb329607399c8634740b7c11c6fd5b15fdd28ded5df58ad0e9dfaaba591d78",
+    "credential_benchmark_test.go.json": "297a2d3479284aefe09f4070d849cda786016f1cb515523385f89f23912635d1",
+    "embedded-bench.json": "4956ab5271636f668c360b018c0b240a25ae62bae90a7584e97cc91bde86e451",
+    "profile-bench.json": "edf4058d1dcbc77980407bcfff0a06f94905f98813de3bd08023bf78931bbff2",
+    "server-bench-summary.json": "0bbfbaa82b733fc190e2967eafa37252955b1a07063c99b45391992f6a29f6ea"
+  },
+  "limitations": [
+    "Review only. Product source unchanged.",
+    "Go overlays supplied isolated benchmark files outside the source worktree.",
+    "Synthetic catalog: one provider, distinct definitions, text chat. Real embedded case: only OpenAI chat adapter enabled.",
+    "No external providers, remote databases, Linux, Windows, full production middleware composition, or production p99 measured.",
+    "Two initial synthetic harness builds failed on incorrect Starmap field type names. Types were corrected before reported runs.",
+    "Server summary omits request log lines. Complete output and test binary remain in the temporary audit directory.",
+    "Text outputs and benchmark source use JSON envelopes. Each envelope preserves the exact original content and its SHA-256 digest."
+  ]
+}

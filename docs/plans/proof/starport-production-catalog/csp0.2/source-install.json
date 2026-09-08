@@ -1,0 +1,62 @@
+{
+  "schema_version": 1,
+  "method": "readme-source-build",
+  "verdict": "PASS",
+  "started_at": "2026-09-07T05:21:22Z",
+  "commands": [
+    {
+      "command": [
+        "git",
+        "clone",
+        "--depth",
+        "1",
+        "https://github.com/agentstation/starport.git",
+        "starport"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 1.691
+    },
+    {
+      "command": [
+        "make",
+        "build"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 21.98
+    },
+    {
+      "command": [
+        "/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starport-source-install-xz7rkg05/starport/starport",
+        "--version"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 1.171
+    },
+    {
+      "command": [
+        "/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starport-source-install-xz7rkg05/starport/starport",
+        "models",
+        "search",
+        "gpt-4o",
+        "--json"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 3.715
+    },
+    {
+      "command": [
+        "/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starport-source-install-xz7rkg05/starport/starport",
+        "models",
+        "show",
+        "openai/gpt-4o-mini",
+        "--json"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 2.705
+    }
+  ],
+  "source_commit": "25c1196bcaa4f957b027be4e9f5baa59a6c4b05d",
+  "go_mod_sha256": "0bb403f18cf17ec607deeb9c473a0e51190a0db069b75dd569fb1b09c541545e",
+  "binary_sha256": "da35f732027af6a028011336c8bb993353174918d00629a47211a695ea47dd09",
+  "user_files": []
+}

@@ -1,0 +1,1943 @@
+{
+  "package": "internal/bootstrap",
+  "race": false,
+  "toolchain": "go1.25.12",
+  "commands": [
+    {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.25.12",
+        "GOOS=linux",
+        "GOARCH=arm64",
+        "CGO_ENABLED=0",
+        "go",
+        "test",
+        "-c",
+        "-o",
+        "/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/csp2-native-build-izxc8vn9/test",
+        "./internal/bootstrap"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "docker",
+        "volume",
+        "create",
+        "--label",
+        "purpose=csp2-native-package-verification",
+        "csp2-native-13e7985839f84785a18ecb3f982a51f5"
+      ],
+      "exit_code": 0,
+      "stdout": "csp2-native-13e7985839f84785a18ecb3f982a51f5\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "docker",
+        "create",
+        "--pull=never",
+        "--network",
+        "none",
+        "--read-only",
+        "--user",
+        "65532:65532",
+        "--cap-drop=ALL",
+        "--security-opt=no-new-privileges",
+        "--mount",
+        "type=bind,src=/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/csp2-native-build-izxc8vn9/test,dst=/native-test,readonly",
+        "--mount",
+        "type=bind,src=/Users/jack/src/github.com/agentstation/starmap-catalog-requirements,dst=/Users/jack/src/github.com/agentstation/starmap-catalog-requirements,readonly",
+        "--mount",
+        "type=volume,src=csp2-native-13e7985839f84785a18ecb3f982a51f5,dst=/home/nonroot",
+        "--env",
+        "TMPDIR=/home/nonroot",
+        "--env",
+        "GOMAXPROCS=4",
+        "--workdir",
+        "/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/internal/bootstrap",
+        "--entrypoint",
+        "/native-test",
+        "cgr.dev/chainguard/static@sha256:60582b2ae6074f641094af0f370d4ab241aab271858a66223dcde7eee9f51638",
+        "-test.v=test2json",
+        "-test.count=1",
+        "-test.parallel=4",
+        "-test.timeout=10m"
+      ],
+      "exit_code": 0,
+      "stdout": "9ffeba5cc14fdfd5e253df6b82ab71fa0bd887c8cfead59a703ef2d318a56cfe\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "docker",
+        "start",
+        "--attach",
+        "9ffeba5cc14fdfd5e253df6b82ab71fa0bd887c8cfead59a703ef2d318a56cfe"
+      ],
+      "exit_code": 0,
+      "stdout": "\u0016=== RUN   TestEmbeddedAuthorModelCorpusHasExactReviewedDisposition\n\u0016--- PASS: TestEmbeddedAuthorModelCorpusHasExactReviewedDisposition (0.23s)\n\u0016=== NAME  \n\u0016=== RUN   TestEmbeddedBootstrapManifestMatchesCanonicalCatalog\n\u0016--- PASS: TestEmbeddedBootstrapManifestMatchesCanonicalCatalog (4.46s)\n\u0016=== NAME  \n\u0016=== RUN   TestEmbeddedReturnsOneVerifiedImmutableCatalog\n\u0016--- PASS: TestEmbeddedReturnsOneVerifiedImmutableCatalog (0.00s)\n\u0016=== NAME  \n\u0016=== RUN   TestEmbeddedBootstrapArtifactGenerationIsDeterministic\n\u0016--- PASS: TestEmbeddedBootstrapArtifactGenerationIsDeterministic (0.45s)\n\u0016=== NAME  \n\u0016=== RUN   TestEmbeddedGenerationPayloadRoundTripsWithoutQuarantine\n\u0016--- PASS: TestEmbeddedGenerationPayloadRoundTripsWithoutQuarantine (0.55s)\n\u0016=== NAME  \n\u0016=== RUN   TestEmbeddedCatalogIdentityGraphAndEndpointProjectionAreComplete\n\u0016--- PASS: TestEmbeddedCatalogIdentityGraphAndEndpointProjectionAreComplete (2.17s)\n\u0016=== NAME  \n\u0016=== RUN   TestEmbeddedProviderIdentityIsIndependentFromModelAuthorship\n\u0016=== RUN   TestEmbeddedProviderIdentityIsIndependentFromModelAuthorship/Groq_serves_an_OpenAI_safety_model\n\u0016--- PASS: TestEmbeddedProviderIdentityIsIndependentFromModelAuthorship/Groq_serves_an_OpenAI_safety_model (0.00s)\n\u0016=== NAME  TestEmbeddedProviderIdentityIsIndependentFromModelAuthorship\n\u0016=== RUN   TestEmbeddedProviderIdentityIsIndependentFromModelAuthorship/Groq_serves_a_Canopy_Labs_speech_model\n\u0016--- PASS: TestEmbeddedProviderIdentityIsIndependentFromModelAuthorship/Groq_serves_a_Canopy_Labs_speech_model (0.00s)\n\u0016=== NAME  TestEmbeddedProviderIdentityIsIndependentFromModelAuthorship\n\u0016=== RUN   TestEmbeddedProviderIdentityIsIndependentFromModelAuthorship/Vertex_serves_a_Meta_model\n\u0016--- PASS: TestEmbeddedProviderIdentityIsIndependentFromModelAuthorship/Vertex_serves_a_Meta_model (0.00s)\n\u0016=== NAME  TestEmbeddedProviderIdentityIsIndependentFromModelAuthorship\n\u0016=== RUN   TestEmbeddedProviderIdentityIsIndependentFromModelAuthorship/Alibaba_Cloud_serves_a_Qwen_Team_model\n\u0016--- PASS: TestEmbeddedProviderIdentityIsIndependentFromModelAuthorship/Alibaba_Cloud_serves_a_Qwen_Team_model (0.00s)\n\u0016=== NAME  TestEmbeddedProviderIdentityIsIndependentFromModelAuthorship\n\u0016=== RUN   TestEmbeddedProviderIdentityIsIndependentFromModelAuthorship/DeepInfra_serves_the_same_Qwen_Team_model\n\u0016--- PASS: TestEmbeddedProviderIdentityIsIndependentFromModelAuthorship/DeepInfra_serves_the_same_Qwen_Team_model (0.00s)\n\u0016=== NAME  TestEmbeddedProviderIdentityIsIndependentFromModelAuthorship\n\u0016=== RUN   TestEmbeddedProviderIdentityIsIndependentFromModelAuthorship/Vertex_deployment_revision_joins_the_OpenAI_model\n\u0016--- PASS: TestEmbeddedProviderIdentityIsIndependentFromModelAuthorship/Vertex_deployment_revision_joins_the_OpenAI_model (0.00s)\n\u0016=== NAME  TestEmbeddedProviderIdentityIsIndependentFromModelAuthorship\n\u0016=== RUN   TestEmbeddedProviderIdentityIsIndependentFromModelAuthorship/Vertex_MaaS_slug_joins_the_Google_model\n\u0016--- PASS: TestEmbeddedProviderIdentityIsIndependentFromModelAuthorship/Vertex_MaaS_slug_joins_the_Google_model (0.00s)\n\u0016=== NAME  TestEmbeddedProviderIdentityIsIndependentFromModelAuthorship\n\u0016=== RUN   TestEmbeddedProviderIdentityIsIndependentFromModelAuthorship/Groq_instant_label_joins_Meta_Llama_Instruct\n\u0016--- PASS: TestEmbeddedProviderIdentityIsIndependentFromModelAuthorship/Groq_instant_label_joins_Meta_Llama_Instruct (0.00s)\n\u0016=== NAME  TestEmbeddedProviderIdentityIsIndependentFromModelAuthorship\n\u0016=== RUN   TestEmbeddedProviderIdentityIsIndependentFromModelAuthorship/Groq_versatile_label_joins_Meta_Llama_Instruct\n\u0016--- PASS: TestEmbeddedProviderIdentityIsIndependentFromModelAuthorship/Groq_versatile_label_joins_Meta_Llama_Instruct (0.00s)\n\u0016=== NAME  TestEmbeddedProviderIdentityIsIndependentFromModelAuthorship\n\u0016=== RUN   TestEmbeddedProviderIdentityIsIndependentFromModelAuthorship/DeepInfra_GPT_Turbo_tier_joins_base_model\n\u0016--- PASS: TestEmbeddedProviderIdentityIsIndependentFromModelAuthorship/DeepInfra_GPT_Turbo_tier_joins_base_model (0.00s)\n\u0016=== NAME  TestEmbeddedProviderIdentityIsIndependentFromModelAuthorship\n\u0016=== RUN   TestEmbeddedProviderIdentityIsIndependentFromModelAuthorship/DeepInfra_Qwen_Turbo_tier_joins_base_model\n\u0016--- PASS: TestEmbeddedProviderIdentityIsIndependentFromModelAuthorship/DeepInfra_Qwen_Turbo_tier_joins_base_model (0.00s)\n\u0016=== NAME  TestEmbeddedProviderIdentityIsIndependentFromModelAuthorship\n\u0016=== RUN   TestEmbeddedProviderIdentityIsIndependentFromModelAuthorship/DeepInfra_MiniMax_Turbo_tier_joins_base_model\n\u0016--- PASS: TestEmbeddedProviderIdentityIsIndependentFromModelAuthorship/DeepInfra_MiniMax_Turbo_tier_joins_base_model (0.00s)\n\u0016=== NAME  TestEmbeddedProviderIdentityIsIndependentFromModelAuthorship\n\u0016=== RUN   TestEmbeddedProviderIdentityIsIndependentFromModelAuthorship/DeepInfra_Gemma_Turbo_tier_joins_base_model\n\u0016--- PASS: TestEmbeddedProviderIdentityIsIndependentFromModelAuthorship/DeepInfra_Gemma_Turbo_tier_joins_base_model (0.00s)\n\u0016=== NAME  TestEmbeddedProviderIdentityIsIndependentFromModelAuthorship\n\u0016=== RUN   TestEmbeddedProviderIdentityIsIndependentFromModelAuthorship/DeepInfra_FP8_route_joins_base_Meta_model\n\u0016--- PASS: TestEmbeddedProviderIdentityIsIndependentFromModelAuthorship/DeepInfra_FP8_route_joins_base_Meta_model (0.00s)\n\u0016=== NAME  TestEmbeddedProviderIdentityIsIndependentFromModelAuthorship\n\u0016=== RUN   TestEmbeddedProviderIdentityIsIndependentFromModelAuthorship/Fireworks_FP8_route_joins_base_FLUX_model\n\u0016--- PASS: TestEmbeddedProviderIdentityIsIndependentFromModelAuthorship/Fireworks_FP8_route_joins_base_FLUX_model (0.00s)\n\u0016=== NAME  TestEmbeddedProviderIdentityIsIndependentFromModelAuthorship\n\u0016=== RUN   TestEmbeddedProviderIdentityIsIndependentFromModelAuthorship/Vertex_embedding_alias_joins_EmbeddingGemma_300M\n\u0016--- PASS: TestEmbeddedProviderIdentityIsIndependentFromModelAuthorship/Vertex_embedding_alias_joins_EmbeddingGemma_300M (0.00s)\n\u0016=== NAME  TestEmbeddedProviderIdentityIsIndependentFromModelAuthorship\n\u0016=== RUN   TestEmbeddedProviderIdentityIsIndependentFromModelAuthorship/Nano_Banana_joins_Gemini_image_model\n\u0016--- PASS: TestEmbeddedProviderIdentityIsIndependentFromModelAuthorship/Nano_Banana_joins_Gemini_image_model (0.00s)\n\u0016=== NAME  TestEmbeddedProviderIdentityIsIndependentFromModelAuthorship\n\u0016=== RUN   TestEmbeddedProviderIdentityIsIndependentFromModelAuthorship/DeepInfra_GTE_route_joins_Alibaba_model\n\u0016--- PASS: TestEmbeddedProviderIdentityIsIndependentFromModelAuthorship/DeepInfra_GTE_route_joins_Alibaba_model (0.00s)\n\u0016=== NAME  TestEmbeddedProviderIdentityIsIndependentFromModelAuthorship\n\u0016=== RUN   TestEmbeddedProviderIdentityIsIndependentFromModelAuthorship/FastVideo_route_joins_Lightricks_model\n\u0016--- PASS: TestEmbeddedProviderIdentityIsIndependentFromModelAuthorship/FastVideo_route_joins_Lightricks_model (0.00s)\n\u0016=== NAME  TestEmbeddedProviderIdentityIsIndependentFromModelAuthorship\n\u0016--- PASS: TestEmbeddedProviderIdentityIsIndependentFromModelAuthorship (1.56s)\n\u0016=== NAME  \n\u0016=== RUN   TestEmbeddedOfferingsDoNotPublishChatRoutesForNonChatOperations\n\u0016--- PASS: TestEmbeddedOfferingsDoNotPublishChatRoutesForNonChatOperations (1.45s)\n\u0016=== NAME  \n\u0016=== RUN   TestBaselineExportPreservesChangedStaging\n\u0016=== RUN   TestBaselineExportPreservesChangedStaging/added_file\n\u0016=== RUN   TestBaselineExportPreservesChangedStaging/added_file/publication\n\u0016--- PASS: TestBaselineExportPreservesChangedStaging/added_file/publication (0.21s)\n\u0016=== NAME  TestBaselineExportPreservesChangedStaging/added_file\n\u0016=== RUN   TestBaselineExportPreservesChangedStaging/added_file/cancellation\n\u0016--- PASS: TestBaselineExportPreservesChangedStaging/added_file/cancellation (0.19s)\n\u0016=== NAME  TestBaselineExportPreservesChangedStaging/added_file\n\u0016--- PASS: TestBaselineExportPreservesChangedStaging/added_file (0.41s)\n\u0016=== NAME  TestBaselineExportPreservesChangedStaging\n\u0016=== RUN   TestBaselineExportPreservesChangedStaging/changed_file\n\u0016=== RUN   TestBaselineExportPreservesChangedStaging/changed_file/publication\n\u0016--- PASS: TestBaselineExportPreservesChangedStaging/changed_file/publication (0.18s)\n\u0016=== NAME  TestBaselineExportPreservesChangedStaging/changed_file\n\u0016=== RUN   TestBaselineExportPreservesChangedStaging/changed_file/cancellation\n\u0016--- PASS: TestBaselineExportPreservesChangedStaging/changed_file/cancellation (0.19s)\n\u0016=== NAME  TestBaselineExportPreservesChangedStaging/changed_file\n\u0016--- PASS: TestBaselineExportPreservesChangedStaging/changed_file (0.37s)\n\u0016=== NAME  TestBaselineExportPreservesChangedStaging\n\u0016=== RUN   TestBaselineExportPreservesChangedStaging/replaced_file\n\u0016=== RUN   TestBaselineExportPreservesChangedStaging/replaced_file/publication\n\u0016--- PASS: TestBaselineExportPreservesChangedStaging/replaced_file/publication (0.20s)\n\u0016=== NAME  TestBaselineExportPreservesChangedStaging/replaced_file\n\u0016=== RUN   TestBaselineExportPreservesChangedStaging/replaced_file/cancellation\n\u0016--- PASS: TestBaselineExportPreservesChangedStaging/replaced_file/cancellation (0.20s)\n\u0016=== NAME  TestBaselineExportPreservesChangedStaging/replaced_file\n\u0016--- PASS: TestBaselineExportPreservesChangedStaging/replaced_file (0.40s)\n\u0016=== NAME  TestBaselineExportPreservesChangedStaging\n\u0016=== RUN   TestBaselineExportPreservesChangedStaging/replaced_directory\n\u0016=== RUN   TestBaselineExportPreservesChangedStaging/replaced_directory/publication\n\u0016--- PASS: TestBaselineExportPreservesChangedStaging/replaced_directory/publication (0.21s)\n\u0016=== NAME  TestBaselineExportPreservesChangedStaging/replaced_directory\n\u0016=== RUN   TestBaselineExportPreservesChangedStaging/replaced_directory/cancellation\n\u0016--- PASS: TestBaselineExportPreservesChangedStaging/replaced_directory/cancellation (0.18s)\n\u0016=== NAME  TestBaselineExportPreservesChangedStaging/replaced_directory\n\u0016--- PASS: TestBaselineExportPreservesChangedStaging/replaced_directory (0.39s)\n\u0016=== NAME  TestBaselineExportPreservesChangedStaging\n\u0016--- PASS: TestBaselineExportPreservesChangedStaging (1.57s)\n\u0016=== NAME  \n\u0016=== RUN   TestBaselineExportPreservesReusedStageNameAfterPublication\n\u0016--- PASS: TestBaselineExportPreservesReusedStageNameAfterPublication (0.25s)\n\u0016=== NAME  \n\u0016=== RUN   TestBaselineExportCleansOnlyUnchangedOwnedStage\n\u0016=== RUN   TestBaselineExportCleansOnlyUnchangedOwnedStage/created\n\u0016--- PASS: TestBaselineExportCleansOnlyUnchangedOwnedStage/created (0.21s)\n\u0016=== NAME  TestBaselineExportCleansOnlyUnchangedOwnedStage\n\u0016=== RUN   TestBaselineExportCleansOnlyUnchangedOwnedStage/manifest-written\n\u0016--- PASS: TestBaselineExportCleansOnlyUnchangedOwnedStage/manifest-written (0.20s)\n\u0016=== NAME  TestBaselineExportCleansOnlyUnchangedOwnedStage\n\u0016=== RUN   TestBaselineExportCleansOnlyUnchangedOwnedStage/payload-written\n\u0016--- PASS: TestBaselineExportCleansOnlyUnchangedOwnedStage/payload-written (0.23s)\n\u0016=== NAME  TestBaselineExportCleansOnlyUnchangedOwnedStage\n\u0016--- PASS: TestBaselineExportCleansOnlyUnchangedOwnedStage (0.65s)\n\u0016=== NAME  \n\u0016=== RUN   TestBaselineExportCancellationAfterStagingPreventsPublication\n\u0016--- PASS: TestBaselineExportCancellationAfterStagingPreventsPublication (0.28s)\n\u0016=== NAME  \n\u0016=== RUN   TestBaselineExportPreservesDirectoryCreatedDuringStaging\n\u0016--- PASS: TestBaselineExportPreservesDirectoryCreatedDuringStaging (0.55s)\n\u0016=== NAME  \n\u0016=== RUN   TestBaselineExportIsIdempotentAndPreservesConflicts\n\u0016--- PASS: TestBaselineExportIsIdempotentAndPreservesConflicts (0.82s)\n\u0016=== NAME  \n\u0016=== RUN   TestConcurrentBaselineExportPublishesOneCompleteGeneration\n\u0016--- PASS: TestConcurrentBaselineExportPublishesOneCompleteGeneration (0.65s)\n\u0016=== NAME  \n\u0016=== RUN   TestBaselineExportRejectsSymlinksAndCancellation\n\u0016--- PASS: TestBaselineExportRejectsSymlinksAndCancellation (0.52s)\n\u0016=== NAME  \n\u0016=== RUN   TestBaselineExportRecoversAfterProcessInterruption\n\u0016=== RUN   TestBaselineExportRecoversAfterProcessInterruption/created\n\u0016--- PASS: TestBaselineExportRecoversAfterProcessInterruption/created (1.87s)\n\u0016=== NAME  TestBaselineExportRecoversAfterProcessInterruption\n\u0016=== RUN   TestBaselineExportRecoversAfterProcessInterruption/manifest-written\n\u0016--- PASS: TestBaselineExportRecoversAfterProcessInterruption/manifest-written (1.80s)\n\u0016=== NAME  TestBaselineExportRecoversAfterProcessInterruption\n\u0016=== RUN   TestBaselineExportRecoversAfterProcessInterruption/payload-written\n\u0016--- PASS: TestBaselineExportRecoversAfterProcessInterruption/payload-written (2.54s)\n\u0016=== NAME  TestBaselineExportRecoversAfterProcessInterruption\n\u0016=== RUN   TestBaselineExportRecoversAfterProcessInterruption/promoted\n\u0016--- PASS: TestBaselineExportRecoversAfterProcessInterruption/promoted (2.35s)\n\u0016=== NAME  TestBaselineExportRecoversAfterProcessInterruption\n\u0016--- PASS: TestBaselineExportRecoversAfterProcessInterruption (8.56s)\n\u0016=== NAME  \n\u0016=== RUN   TestBaselineExportCrashChild\n\u0016--- PASS: TestBaselineExportCrashChild (0.00s)\n\u0016=== NAME  \n\u0016=== RUN   TestEveryPublishedMediaOperationMatchesItsDefinition\n\u0016--- PASS: TestEveryPublishedMediaOperationMatchesItsDefinition (1.77s)\n\u0016=== NAME  \n\u0016=== RUN   TestTheResidualOfferingsAreRealtimeAlone\n\u0016--- PASS: TestTheResidualOfferingsAreRealtimeAlone (1.70s)\n\u0016=== NAME  \n\u0016=== RUN   TestEveryRecognitionOfferingCanBeBilledByThePage\n\u0016--- PASS: TestEveryRecognitionOfferingCanBeBilledByThePage (1.75s)\n\u0016=== NAME  \n\u0016=== RUN   TestShippedModerationOfferingsServeModerationsAlone\n\u0016--- PASS: TestShippedModerationOfferingsServeModerationsAlone (1.74s)\n\u0016=== NAME  \n\u0016=== RUN   TestOfferedChatCompletionsAgreeWithCanonicalModelFacts\n\u0016--- PASS: TestOfferedChatCompletionsAgreeWithCanonicalModelFacts (1.44s)\n\u0016=== NAME  \n\u0016=== RUN   TestEmbeddedProviderModelsMatchReviewedIdentityMap\n\u0016--- PASS: TestEmbeddedProviderModelsMatchReviewedIdentityMap (0.29s)\n\u0016=== NAME  \n\u0016=== RUN   TestEmbeddedAuthoredModelsAreCoveredByHistoricalOrServingIdentityReview\n\u0016--- PASS: TestEmbeddedAuthoredModelsAreCoveredByHistoricalOrServingIdentityReview (0.05s)\n\u0016=== NAME  \n\u0016=== RUN   TestEmbeddedModelYAMLExposesCompleteBooleanCapabilitySurface\n\u0016--- PASS: TestEmbeddedModelYAMLExposesCompleteBooleanCapabilitySurface (0.34s)\n\u0016=== NAME  \n\u0016=== RUN   TestShippedRerankOfferingsCarryTheirCost\n\u0016--- PASS: TestShippedRerankOfferingsCarryTheirCost (1.80s)\n\u0016=== NAME  \n\u0016=== RUN   TestRerankProviderEndpointsResolve\n\u0016--- PASS: TestRerankProviderEndpointsResolve (2.70s)\n\u0016=== NAME  \n\u0016PASS\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "docker",
+        "inspect",
+        "--format",
+        "{{json .State}}",
+        "9ffeba5cc14fdfd5e253df6b82ab71fa0bd887c8cfead59a703ef2d318a56cfe"
+      ],
+      "exit_code": 0,
+      "stdout": "{\"Status\":\"exited\",\"Running\":false,\"Paused\":false,\"Restarting\":false,\"OOMKilled\":false,\"Dead\":false,\"Pid\":0,\"ExitCode\":0,\"Error\":\"\",\"StartedAt\":\"2026-09-06T19:26:01.856599542Z\",\"FinishedAt\":\"2026-09-06T19:26:40.247667546Z\"}\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "docker",
+        "rm",
+        "-f",
+        "9ffeba5cc14fdfd5e253df6b82ab71fa0bd887c8cfead59a703ef2d318a56cfe"
+      ],
+      "exit_code": 0,
+      "stdout": "9ffeba5cc14fdfd5e253df6b82ab71fa0bd887c8cfead59a703ef2d318a56cfe\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "docker",
+        "volume",
+        "rm",
+        "csp2-native-13e7985839f84785a18ecb3f982a51f5"
+      ],
+      "exit_code": 0,
+      "stdout": "csp2-native-13e7985839f84785a18ecb3f982a51f5\n",
+      "stderr": ""
+    }
+  ],
+  "test_events": [
+    {
+      "Time": "2026-09-06T14:26:41.47027-05:00",
+      "Action": "start",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.470523-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestEmbeddedAuthorModelCorpusHasExactReviewedDisposition"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.470526-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestEmbeddedAuthorModelCorpusHasExactReviewedDisposition",
+      "Output": "=== RUN   TestEmbeddedAuthorModelCorpusHasExactReviewedDisposition\n"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.47148-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestEmbeddedAuthorModelCorpusHasExactReviewedDisposition",
+      "Output": "--- PASS: TestEmbeddedAuthorModelCorpusHasExactReviewedDisposition (0.23s)\n"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.471503-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestEmbeddedAuthorModelCorpusHasExactReviewedDisposition",
+      "Elapsed": 0.23
+    },
+    {
+      "Time": "2026-09-06T14:26:41.471518-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestEmbeddedBootstrapManifestMatchesCanonicalCatalog"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.471521-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestEmbeddedBootstrapManifestMatchesCanonicalCatalog",
+      "Output": "=== RUN   TestEmbeddedBootstrapManifestMatchesCanonicalCatalog\n"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.471525-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestEmbeddedBootstrapManifestMatchesCanonicalCatalog",
+      "Output": "--- PASS: TestEmbeddedBootstrapManifestMatchesCanonicalCatalog (4.46s)\n"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.471528-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestEmbeddedBootstrapManifestMatchesCanonicalCatalog",
+      "Elapsed": 4.46
+    },
+    {
+      "Time": "2026-09-06T14:26:41.471531-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestEmbeddedReturnsOneVerifiedImmutableCatalog"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.471535-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestEmbeddedReturnsOneVerifiedImmutableCatalog",
+      "Output": "=== RUN   TestEmbeddedReturnsOneVerifiedImmutableCatalog\n"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.471538-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestEmbeddedReturnsOneVerifiedImmutableCatalog",
+      "Output": "--- PASS: TestEmbeddedReturnsOneVerifiedImmutableCatalog (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.471541-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestEmbeddedReturnsOneVerifiedImmutableCatalog",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T14:26:41.471543-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestEmbeddedBootstrapArtifactGenerationIsDeterministic"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.471546-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestEmbeddedBootstrapArtifactGenerationIsDeterministic",
+      "Output": "=== RUN   TestEmbeddedBootstrapArtifactGenerationIsDeterministic\n"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.471549-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestEmbeddedBootstrapArtifactGenerationIsDeterministic",
+      "Output": "--- PASS: TestEmbeddedBootstrapArtifactGenerationIsDeterministic (0.45s)\n"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.471551-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestEmbeddedBootstrapArtifactGenerationIsDeterministic",
+      "Elapsed": 0.45
+    },
+    {
+      "Time": "2026-09-06T14:26:41.471554-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestEmbeddedGenerationPayloadRoundTripsWithoutQuarantine"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.471556-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestEmbeddedGenerationPayloadRoundTripsWithoutQuarantine",
+      "Output": "=== RUN   TestEmbeddedGenerationPayloadRoundTripsWithoutQuarantine\n"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.471562-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestEmbeddedGenerationPayloadRoundTripsWithoutQuarantine",
+      "Output": "--- PASS: TestEmbeddedGenerationPayloadRoundTripsWithoutQuarantine (0.55s)\n"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.471565-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestEmbeddedGenerationPayloadRoundTripsWithoutQuarantine",
+      "Elapsed": 0.55
+    },
+    {
+      "Time": "2026-09-06T14:26:41.471567-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestEmbeddedCatalogIdentityGraphAndEndpointProjectionAreComplete"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.47157-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestEmbeddedCatalogIdentityGraphAndEndpointProjectionAreComplete",
+      "Output": "=== RUN   TestEmbeddedCatalogIdentityGraphAndEndpointProjectionAreComplete\n"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.471573-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestEmbeddedCatalogIdentityGraphAndEndpointProjectionAreComplete",
+      "Output": "--- PASS: TestEmbeddedCatalogIdentityGraphAndEndpointProjectionAreComplete (2.17s)\n"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.471581-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestEmbeddedCatalogIdentityGraphAndEndpointProjectionAreComplete",
+      "Elapsed": 2.17
+    },
+    {
+      "Time": "2026-09-06T14:26:41.471586-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestEmbeddedProviderIdentityIsIndependentFromModelAuthorship"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.471589-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestEmbeddedProviderIdentityIsIndependentFromModelAuthorship",
+      "Output": "=== RUN   TestEmbeddedProviderIdentityIsIndependentFromModelAuthorship\n"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.471598-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestEmbeddedProviderIdentityIsIndependentFromModelAuthorship/Groq_serves_an_OpenAI_safety_model"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.471602-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestEmbeddedProviderIdentityIsIndependentFromModelAuthorship/Groq_serves_an_OpenAI_safety_model",
+      "Output": "=== RUN   TestEmbeddedProviderIdentityIsIndependentFromModelAuthorship/Groq_serves_an_OpenAI_safety_model\n"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.471606-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestEmbeddedProviderIdentityIsIndependentFromModelAuthorship/Groq_serves_an_OpenAI_safety_model",
+      "Output": "--- PASS: TestEmbeddedProviderIdentityIsIndependentFromModelAuthorship/Groq_serves_an_OpenAI_safety_model (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.471612-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestEmbeddedProviderIdentityIsIndependentFromModelAuthorship/Groq_serves_an_OpenAI_safety_model",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T14:26:41.471615-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestEmbeddedProviderIdentityIsIndependentFromModelAuthorship/Groq_serves_a_Canopy_Labs_speech_model"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.471617-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestEmbeddedProviderIdentityIsIndependentFromModelAuthorship/Groq_serves_a_Canopy_Labs_speech_model",
+      "Output": "=== RUN   TestEmbeddedProviderIdentityIsIndependentFromModelAuthorship/Groq_serves_a_Canopy_Labs_speech_model\n"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.471621-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestEmbeddedProviderIdentityIsIndependentFromModelAuthorship/Groq_serves_a_Canopy_Labs_speech_model",
+      "Output": "--- PASS: TestEmbeddedProviderIdentityIsIndependentFromModelAuthorship/Groq_serves_a_Canopy_Labs_speech_model (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.471628-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestEmbeddedProviderIdentityIsIndependentFromModelAuthorship/Groq_serves_a_Canopy_Labs_speech_model",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T14:26:41.471631-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestEmbeddedProviderIdentityIsIndependentFromModelAuthorship/Vertex_serves_a_Meta_model"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.471633-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestEmbeddedProviderIdentityIsIndependentFromModelAuthorship/Vertex_serves_a_Meta_model",
+      "Output": "=== RUN   TestEmbeddedProviderIdentityIsIndependentFromModelAuthorship/Vertex_serves_a_Meta_model\n"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.471637-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestEmbeddedProviderIdentityIsIndependentFromModelAuthorship/Vertex_serves_a_Meta_model",
+      "Output": "--- PASS: TestEmbeddedProviderIdentityIsIndependentFromModelAuthorship/Vertex_serves_a_Meta_model (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.47164-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestEmbeddedProviderIdentityIsIndependentFromModelAuthorship/Vertex_serves_a_Meta_model",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T14:26:41.471643-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestEmbeddedProviderIdentityIsIndependentFromModelAuthorship/Alibaba_Cloud_serves_a_Qwen_Team_model"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.471645-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestEmbeddedProviderIdentityIsIndependentFromModelAuthorship/Alibaba_Cloud_serves_a_Qwen_Team_model",
+      "Output": "=== RUN   TestEmbeddedProviderIdentityIsIndependentFromModelAuthorship/Alibaba_Cloud_serves_a_Qwen_Team_model\n"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.471648-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestEmbeddedProviderIdentityIsIndependentFromModelAuthorship/Alibaba_Cloud_serves_a_Qwen_Team_model",
+      "Output": "--- PASS: TestEmbeddedProviderIdentityIsIndependentFromModelAuthorship/Alibaba_Cloud_serves_a_Qwen_Team_model (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.471651-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestEmbeddedProviderIdentityIsIndependentFromModelAuthorship/Alibaba_Cloud_serves_a_Qwen_Team_model",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T14:26:41.471654-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestEmbeddedProviderIdentityIsIndependentFromModelAuthorship/DeepInfra_serves_the_same_Qwen_Team_model"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.471656-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestEmbeddedProviderIdentityIsIndependentFromModelAuthorship/DeepInfra_serves_the_same_Qwen_Team_model",
+      "Output": "=== RUN   TestEmbeddedProviderIdentityIsIndependentFromModelAuthorship/DeepInfra_serves_the_same_Qwen_Team_model\n"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.47166-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestEmbeddedProviderIdentityIsIndependentFromModelAuthorship/DeepInfra_serves_the_same_Qwen_Team_model",
+      "Output": "--- PASS: TestEmbeddedProviderIdentityIsIndependentFromModelAuthorship/DeepInfra_serves_the_same_Qwen_Team_model (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.471663-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestEmbeddedProviderIdentityIsIndependentFromModelAuthorship/DeepInfra_serves_the_same_Qwen_Team_model",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T14:26:41.471665-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestEmbeddedProviderIdentityIsIndependentFromModelAuthorship/Vertex_deployment_revision_joins_the_OpenAI_model"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.471668-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestEmbeddedProviderIdentityIsIndependentFromModelAuthorship/Vertex_deployment_revision_joins_the_OpenAI_model",
+      "Output": "=== RUN   TestEmbeddedProviderIdentityIsIndependentFromModelAuthorship/Vertex_deployment_revision_joins_the_OpenAI_model\n"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.471671-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestEmbeddedProviderIdentityIsIndependentFromModelAuthorship/Vertex_deployment_revision_joins_the_OpenAI_model",
+      "Output": "--- PASS: TestEmbeddedProviderIdentityIsIndependentFromModelAuthorship/Vertex_deployment_revision_joins_the_OpenAI_model (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.471683-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestEmbeddedProviderIdentityIsIndependentFromModelAuthorship/Vertex_deployment_revision_joins_the_OpenAI_model",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T14:26:41.471686-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestEmbeddedProviderIdentityIsIndependentFromModelAuthorship/Vertex_MaaS_slug_joins_the_Google_model"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.471689-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestEmbeddedProviderIdentityIsIndependentFromModelAuthorship/Vertex_MaaS_slug_joins_the_Google_model",
+      "Output": "=== RUN   TestEmbeddedProviderIdentityIsIndependentFromModelAuthorship/Vertex_MaaS_slug_joins_the_Google_model\n"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.471692-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestEmbeddedProviderIdentityIsIndependentFromModelAuthorship/Vertex_MaaS_slug_joins_the_Google_model",
+      "Output": "--- PASS: TestEmbeddedProviderIdentityIsIndependentFromModelAuthorship/Vertex_MaaS_slug_joins_the_Google_model (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.471695-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestEmbeddedProviderIdentityIsIndependentFromModelAuthorship/Vertex_MaaS_slug_joins_the_Google_model",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T14:26:41.471697-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestEmbeddedProviderIdentityIsIndependentFromModelAuthorship/Groq_instant_label_joins_Meta_Llama_Instruct"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.4717-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestEmbeddedProviderIdentityIsIndependentFromModelAuthorship/Groq_instant_label_joins_Meta_Llama_Instruct",
+      "Output": "=== RUN   TestEmbeddedProviderIdentityIsIndependentFromModelAuthorship/Groq_instant_label_joins_Meta_Llama_Instruct\n"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.471703-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestEmbeddedProviderIdentityIsIndependentFromModelAuthorship/Groq_instant_label_joins_Meta_Llama_Instruct",
+      "Output": "--- PASS: TestEmbeddedProviderIdentityIsIndependentFromModelAuthorship/Groq_instant_label_joins_Meta_Llama_Instruct (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.471706-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestEmbeddedProviderIdentityIsIndependentFromModelAuthorship/Groq_instant_label_joins_Meta_Llama_Instruct",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T14:26:41.471714-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestEmbeddedProviderIdentityIsIndependentFromModelAuthorship/Groq_versatile_label_joins_Meta_Llama_Instruct"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.471716-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestEmbeddedProviderIdentityIsIndependentFromModelAuthorship/Groq_versatile_label_joins_Meta_Llama_Instruct",
+      "Output": "=== RUN   TestEmbeddedProviderIdentityIsIndependentFromModelAuthorship/Groq_versatile_label_joins_Meta_Llama_Instruct\n"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.471916-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestEmbeddedProviderIdentityIsIndependentFromModelAuthorship/Groq_versatile_label_joins_Meta_Llama_Instruct",
+      "Output": "--- PASS: TestEmbeddedProviderIdentityIsIndependentFromModelAuthorship/Groq_versatile_label_joins_Meta_Llama_Instruct (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.471965-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestEmbeddedProviderIdentityIsIndependentFromModelAuthorship/Groq_versatile_label_joins_Meta_Llama_Instruct",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T14:26:41.47199-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestEmbeddedProviderIdentityIsIndependentFromModelAuthorship/DeepInfra_GPT_Turbo_tier_joins_base_model"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.471992-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestEmbeddedProviderIdentityIsIndependentFromModelAuthorship/DeepInfra_GPT_Turbo_tier_joins_base_model",
+      "Output": "=== RUN   TestEmbeddedProviderIdentityIsIndependentFromModelAuthorship/DeepInfra_GPT_Turbo_tier_joins_base_model\n"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.471996-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestEmbeddedProviderIdentityIsIndependentFromModelAuthorship/DeepInfra_GPT_Turbo_tier_joins_base_model",
+      "Output": "--- PASS: TestEmbeddedProviderIdentityIsIndependentFromModelAuthorship/DeepInfra_GPT_Turbo_tier_joins_base_model (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.471998-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestEmbeddedProviderIdentityIsIndependentFromModelAuthorship/DeepInfra_GPT_Turbo_tier_joins_base_model",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T14:26:41.472-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestEmbeddedProviderIdentityIsIndependentFromModelAuthorship/DeepInfra_Qwen_Turbo_tier_joins_base_model"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.472001-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestEmbeddedProviderIdentityIsIndependentFromModelAuthorship/DeepInfra_Qwen_Turbo_tier_joins_base_model",
+      "Output": "=== RUN   TestEmbeddedProviderIdentityIsIndependentFromModelAuthorship/DeepInfra_Qwen_Turbo_tier_joins_base_model\n"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.472003-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestEmbeddedProviderIdentityIsIndependentFromModelAuthorship/DeepInfra_Qwen_Turbo_tier_joins_base_model",
+      "Output": "--- PASS: TestEmbeddedProviderIdentityIsIndependentFromModelAuthorship/DeepInfra_Qwen_Turbo_tier_joins_base_model (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.472004-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestEmbeddedProviderIdentityIsIndependentFromModelAuthorship/DeepInfra_Qwen_Turbo_tier_joins_base_model",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T14:26:41.472006-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestEmbeddedProviderIdentityIsIndependentFromModelAuthorship/DeepInfra_MiniMax_Turbo_tier_joins_base_model"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.472007-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestEmbeddedProviderIdentityIsIndependentFromModelAuthorship/DeepInfra_MiniMax_Turbo_tier_joins_base_model",
+      "Output": "=== RUN   TestEmbeddedProviderIdentityIsIndependentFromModelAuthorship/DeepInfra_MiniMax_Turbo_tier_joins_base_model\n"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.472009-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestEmbeddedProviderIdentityIsIndependentFromModelAuthorship/DeepInfra_MiniMax_Turbo_tier_joins_base_model",
+      "Output": "--- PASS: TestEmbeddedProviderIdentityIsIndependentFromModelAuthorship/DeepInfra_MiniMax_Turbo_tier_joins_base_model (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.47201-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestEmbeddedProviderIdentityIsIndependentFromModelAuthorship/DeepInfra_MiniMax_Turbo_tier_joins_base_model",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T14:26:41.472012-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestEmbeddedProviderIdentityIsIndependentFromModelAuthorship/DeepInfra_Gemma_Turbo_tier_joins_base_model"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.472013-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestEmbeddedProviderIdentityIsIndependentFromModelAuthorship/DeepInfra_Gemma_Turbo_tier_joins_base_model",
+      "Output": "=== RUN   TestEmbeddedProviderIdentityIsIndependentFromModelAuthorship/DeepInfra_Gemma_Turbo_tier_joins_base_model\n"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.472014-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestEmbeddedProviderIdentityIsIndependentFromModelAuthorship/DeepInfra_Gemma_Turbo_tier_joins_base_model",
+      "Output": "--- PASS: TestEmbeddedProviderIdentityIsIndependentFromModelAuthorship/DeepInfra_Gemma_Turbo_tier_joins_base_model (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.472019-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestEmbeddedProviderIdentityIsIndependentFromModelAuthorship/DeepInfra_Gemma_Turbo_tier_joins_base_model",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T14:26:41.47202-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestEmbeddedProviderIdentityIsIndependentFromModelAuthorship/DeepInfra_FP8_route_joins_base_Meta_model"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.472021-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestEmbeddedProviderIdentityIsIndependentFromModelAuthorship/DeepInfra_FP8_route_joins_base_Meta_model",
+      "Output": "=== RUN   TestEmbeddedProviderIdentityIsIndependentFromModelAuthorship/DeepInfra_FP8_route_joins_base_Meta_model\n"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.472023-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestEmbeddedProviderIdentityIsIndependentFromModelAuthorship/DeepInfra_FP8_route_joins_base_Meta_model",
+      "Output": "--- PASS: TestEmbeddedProviderIdentityIsIndependentFromModelAuthorship/DeepInfra_FP8_route_joins_base_Meta_model (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.472024-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestEmbeddedProviderIdentityIsIndependentFromModelAuthorship/DeepInfra_FP8_route_joins_base_Meta_model",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T14:26:41.472112-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestEmbeddedProviderIdentityIsIndependentFromModelAuthorship/Fireworks_FP8_route_joins_base_FLUX_model"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.472119-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestEmbeddedProviderIdentityIsIndependentFromModelAuthorship/Fireworks_FP8_route_joins_base_FLUX_model",
+      "Output": "=== RUN   TestEmbeddedProviderIdentityIsIndependentFromModelAuthorship/Fireworks_FP8_route_joins_base_FLUX_model\n"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.472124-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestEmbeddedProviderIdentityIsIndependentFromModelAuthorship/Fireworks_FP8_route_joins_base_FLUX_model",
+      "Output": "--- PASS: TestEmbeddedProviderIdentityIsIndependentFromModelAuthorship/Fireworks_FP8_route_joins_base_FLUX_model (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.472127-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestEmbeddedProviderIdentityIsIndependentFromModelAuthorship/Fireworks_FP8_route_joins_base_FLUX_model",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T14:26:41.472131-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestEmbeddedProviderIdentityIsIndependentFromModelAuthorship/Vertex_embedding_alias_joins_EmbeddingGemma_300M"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.47214-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestEmbeddedProviderIdentityIsIndependentFromModelAuthorship/Vertex_embedding_alias_joins_EmbeddingGemma_300M",
+      "Output": "=== RUN   TestEmbeddedProviderIdentityIsIndependentFromModelAuthorship/Vertex_embedding_alias_joins_EmbeddingGemma_300M\n"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.472144-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestEmbeddedProviderIdentityIsIndependentFromModelAuthorship/Vertex_embedding_alias_joins_EmbeddingGemma_300M",
+      "Output": "--- PASS: TestEmbeddedProviderIdentityIsIndependentFromModelAuthorship/Vertex_embedding_alias_joins_EmbeddingGemma_300M (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.472149-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestEmbeddedProviderIdentityIsIndependentFromModelAuthorship/Vertex_embedding_alias_joins_EmbeddingGemma_300M",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T14:26:41.472152-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestEmbeddedProviderIdentityIsIndependentFromModelAuthorship/Nano_Banana_joins_Gemini_image_model"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.472154-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestEmbeddedProviderIdentityIsIndependentFromModelAuthorship/Nano_Banana_joins_Gemini_image_model",
+      "Output": "=== RUN   TestEmbeddedProviderIdentityIsIndependentFromModelAuthorship/Nano_Banana_joins_Gemini_image_model\n"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.472162-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestEmbeddedProviderIdentityIsIndependentFromModelAuthorship/Nano_Banana_joins_Gemini_image_model",
+      "Output": "--- PASS: TestEmbeddedProviderIdentityIsIndependentFromModelAuthorship/Nano_Banana_joins_Gemini_image_model (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.472166-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestEmbeddedProviderIdentityIsIndependentFromModelAuthorship/Nano_Banana_joins_Gemini_image_model",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T14:26:41.472169-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestEmbeddedProviderIdentityIsIndependentFromModelAuthorship/DeepInfra_GTE_route_joins_Alibaba_model"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.472172-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestEmbeddedProviderIdentityIsIndependentFromModelAuthorship/DeepInfra_GTE_route_joins_Alibaba_model",
+      "Output": "=== RUN   TestEmbeddedProviderIdentityIsIndependentFromModelAuthorship/DeepInfra_GTE_route_joins_Alibaba_model\n"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.472175-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestEmbeddedProviderIdentityIsIndependentFromModelAuthorship/DeepInfra_GTE_route_joins_Alibaba_model",
+      "Output": "--- PASS: TestEmbeddedProviderIdentityIsIndependentFromModelAuthorship/DeepInfra_GTE_route_joins_Alibaba_model (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.472178-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestEmbeddedProviderIdentityIsIndependentFromModelAuthorship/DeepInfra_GTE_route_joins_Alibaba_model",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T14:26:41.472181-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestEmbeddedProviderIdentityIsIndependentFromModelAuthorship/FastVideo_route_joins_Lightricks_model"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.472184-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestEmbeddedProviderIdentityIsIndependentFromModelAuthorship/FastVideo_route_joins_Lightricks_model",
+      "Output": "=== RUN   TestEmbeddedProviderIdentityIsIndependentFromModelAuthorship/FastVideo_route_joins_Lightricks_model\n"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.472189-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestEmbeddedProviderIdentityIsIndependentFromModelAuthorship/FastVideo_route_joins_Lightricks_model",
+      "Output": "--- PASS: TestEmbeddedProviderIdentityIsIndependentFromModelAuthorship/FastVideo_route_joins_Lightricks_model (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.472192-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestEmbeddedProviderIdentityIsIndependentFromModelAuthorship/FastVideo_route_joins_Lightricks_model",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T14:26:41.472195-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestEmbeddedProviderIdentityIsIndependentFromModelAuthorship",
+      "Output": "--- PASS: TestEmbeddedProviderIdentityIsIndependentFromModelAuthorship (1.56s)\n"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.472198-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestEmbeddedProviderIdentityIsIndependentFromModelAuthorship",
+      "Elapsed": 1.56
+    },
+    {
+      "Time": "2026-09-06T14:26:41.472202-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestEmbeddedOfferingsDoNotPublishChatRoutesForNonChatOperations"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.472204-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestEmbeddedOfferingsDoNotPublishChatRoutesForNonChatOperations",
+      "Output": "=== RUN   TestEmbeddedOfferingsDoNotPublishChatRoutesForNonChatOperations\n"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.472207-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestEmbeddedOfferingsDoNotPublishChatRoutesForNonChatOperations",
+      "Output": "--- PASS: TestEmbeddedOfferingsDoNotPublishChatRoutesForNonChatOperations (1.45s)\n"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.47221-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestEmbeddedOfferingsDoNotPublishChatRoutesForNonChatOperations",
+      "Elapsed": 1.45
+    },
+    {
+      "Time": "2026-09-06T14:26:41.472213-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestBaselineExportPreservesChangedStaging"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.472219-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestBaselineExportPreservesChangedStaging",
+      "Output": "=== RUN   TestBaselineExportPreservesChangedStaging\n"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.472222-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestBaselineExportPreservesChangedStaging/added_file"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.472225-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestBaselineExportPreservesChangedStaging/added_file",
+      "Output": "=== RUN   TestBaselineExportPreservesChangedStaging/added_file\n"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.472227-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestBaselineExportPreservesChangedStaging/added_file/publication"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.472229-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestBaselineExportPreservesChangedStaging/added_file/publication",
+      "Output": "=== RUN   TestBaselineExportPreservesChangedStaging/added_file/publication\n"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.472233-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestBaselineExportPreservesChangedStaging/added_file/publication",
+      "Output": "--- PASS: TestBaselineExportPreservesChangedStaging/added_file/publication (0.21s)\n"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.472236-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestBaselineExportPreservesChangedStaging/added_file/publication",
+      "Elapsed": 0.21
+    },
+    {
+      "Time": "2026-09-06T14:26:41.472239-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestBaselineExportPreservesChangedStaging/added_file/cancellation"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.472241-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestBaselineExportPreservesChangedStaging/added_file/cancellation",
+      "Output": "=== RUN   TestBaselineExportPreservesChangedStaging/added_file/cancellation\n"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.472245-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestBaselineExportPreservesChangedStaging/added_file/cancellation",
+      "Output": "--- PASS: TestBaselineExportPreservesChangedStaging/added_file/cancellation (0.19s)\n"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.472248-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestBaselineExportPreservesChangedStaging/added_file/cancellation",
+      "Elapsed": 0.19
+    },
+    {
+      "Time": "2026-09-06T14:26:41.472251-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestBaselineExportPreservesChangedStaging/added_file",
+      "Output": "--- PASS: TestBaselineExportPreservesChangedStaging/added_file (0.41s)\n"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.472254-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestBaselineExportPreservesChangedStaging/added_file",
+      "Elapsed": 0.41
+    },
+    {
+      "Time": "2026-09-06T14:26:41.472256-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestBaselineExportPreservesChangedStaging/changed_file"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.472258-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestBaselineExportPreservesChangedStaging/changed_file",
+      "Output": "=== RUN   TestBaselineExportPreservesChangedStaging/changed_file\n"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.472261-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestBaselineExportPreservesChangedStaging/changed_file/publication"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.472263-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestBaselineExportPreservesChangedStaging/changed_file/publication",
+      "Output": "=== RUN   TestBaselineExportPreservesChangedStaging/changed_file/publication\n"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.472267-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestBaselineExportPreservesChangedStaging/changed_file/publication",
+      "Output": "--- PASS: TestBaselineExportPreservesChangedStaging/changed_file/publication (0.18s)\n"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.472269-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestBaselineExportPreservesChangedStaging/changed_file/publication",
+      "Elapsed": 0.18
+    },
+    {
+      "Time": "2026-09-06T14:26:41.472273-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestBaselineExportPreservesChangedStaging/changed_file/cancellation"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.472275-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestBaselineExportPreservesChangedStaging/changed_file/cancellation",
+      "Output": "=== RUN   TestBaselineExportPreservesChangedStaging/changed_file/cancellation\n"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.472278-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestBaselineExportPreservesChangedStaging/changed_file/cancellation",
+      "Output": "--- PASS: TestBaselineExportPreservesChangedStaging/changed_file/cancellation (0.19s)\n"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.472281-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestBaselineExportPreservesChangedStaging/changed_file/cancellation",
+      "Elapsed": 0.19
+    },
+    {
+      "Time": "2026-09-06T14:26:41.472284-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestBaselineExportPreservesChangedStaging/changed_file",
+      "Output": "--- PASS: TestBaselineExportPreservesChangedStaging/changed_file (0.37s)\n"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.472287-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestBaselineExportPreservesChangedStaging/changed_file",
+      "Elapsed": 0.37
+    },
+    {
+      "Time": "2026-09-06T14:26:41.472289-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestBaselineExportPreservesChangedStaging/replaced_file"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.472292-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestBaselineExportPreservesChangedStaging/replaced_file",
+      "Output": "=== RUN   TestBaselineExportPreservesChangedStaging/replaced_file\n"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.472295-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestBaselineExportPreservesChangedStaging/replaced_file/publication"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.472297-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestBaselineExportPreservesChangedStaging/replaced_file/publication",
+      "Output": "=== RUN   TestBaselineExportPreservesChangedStaging/replaced_file/publication\n"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.4723-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestBaselineExportPreservesChangedStaging/replaced_file/publication",
+      "Output": "--- PASS: TestBaselineExportPreservesChangedStaging/replaced_file/publication (0.20s)\n"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.472303-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestBaselineExportPreservesChangedStaging/replaced_file/publication",
+      "Elapsed": 0.2
+    },
+    {
+      "Time": "2026-09-06T14:26:41.472306-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestBaselineExportPreservesChangedStaging/replaced_file/cancellation"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.472308-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestBaselineExportPreservesChangedStaging/replaced_file/cancellation",
+      "Output": "=== RUN   TestBaselineExportPreservesChangedStaging/replaced_file/cancellation\n"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.472311-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestBaselineExportPreservesChangedStaging/replaced_file/cancellation",
+      "Output": "--- PASS: TestBaselineExportPreservesChangedStaging/replaced_file/cancellation (0.20s)\n"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.472313-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestBaselineExportPreservesChangedStaging/replaced_file/cancellation",
+      "Elapsed": 0.2
+    },
+    {
+      "Time": "2026-09-06T14:26:41.472317-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestBaselineExportPreservesChangedStaging/replaced_file",
+      "Output": "--- PASS: TestBaselineExportPreservesChangedStaging/replaced_file (0.40s)\n"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.472319-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestBaselineExportPreservesChangedStaging/replaced_file",
+      "Elapsed": 0.4
+    },
+    {
+      "Time": "2026-09-06T14:26:41.472322-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestBaselineExportPreservesChangedStaging/replaced_directory"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.472324-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestBaselineExportPreservesChangedStaging/replaced_directory",
+      "Output": "=== RUN   TestBaselineExportPreservesChangedStaging/replaced_directory\n"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.472327-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestBaselineExportPreservesChangedStaging/replaced_directory/publication"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.472329-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestBaselineExportPreservesChangedStaging/replaced_directory/publication",
+      "Output": "=== RUN   TestBaselineExportPreservesChangedStaging/replaced_directory/publication\n"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.472337-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestBaselineExportPreservesChangedStaging/replaced_directory/publication",
+      "Output": "--- PASS: TestBaselineExportPreservesChangedStaging/replaced_directory/publication (0.21s)\n"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.47234-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestBaselineExportPreservesChangedStaging/replaced_directory/publication",
+      "Elapsed": 0.21
+    },
+    {
+      "Time": "2026-09-06T14:26:41.472343-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestBaselineExportPreservesChangedStaging/replaced_directory/cancellation"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.472345-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestBaselineExportPreservesChangedStaging/replaced_directory/cancellation",
+      "Output": "=== RUN   TestBaselineExportPreservesChangedStaging/replaced_directory/cancellation\n"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.472349-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestBaselineExportPreservesChangedStaging/replaced_directory/cancellation",
+      "Output": "--- PASS: TestBaselineExportPreservesChangedStaging/replaced_directory/cancellation (0.18s)\n"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.472351-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestBaselineExportPreservesChangedStaging/replaced_directory/cancellation",
+      "Elapsed": 0.18
+    },
+    {
+      "Time": "2026-09-06T14:26:41.472354-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestBaselineExportPreservesChangedStaging/replaced_directory",
+      "Output": "--- PASS: TestBaselineExportPreservesChangedStaging/replaced_directory (0.39s)\n"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.472357-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestBaselineExportPreservesChangedStaging/replaced_directory",
+      "Elapsed": 0.39
+    },
+    {
+      "Time": "2026-09-06T14:26:41.47236-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestBaselineExportPreservesChangedStaging",
+      "Output": "--- PASS: TestBaselineExportPreservesChangedStaging (1.57s)\n"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.472363-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestBaselineExportPreservesChangedStaging",
+      "Elapsed": 1.57
+    },
+    {
+      "Time": "2026-09-06T14:26:41.472366-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestBaselineExportPreservesReusedStageNameAfterPublication"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.472368-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestBaselineExportPreservesReusedStageNameAfterPublication",
+      "Output": "=== RUN   TestBaselineExportPreservesReusedStageNameAfterPublication\n"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.472373-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestBaselineExportPreservesReusedStageNameAfterPublication",
+      "Output": "--- PASS: TestBaselineExportPreservesReusedStageNameAfterPublication (0.25s)\n"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.472376-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestBaselineExportPreservesReusedStageNameAfterPublication",
+      "Elapsed": 0.25
+    },
+    {
+      "Time": "2026-09-06T14:26:41.472379-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestBaselineExportCleansOnlyUnchangedOwnedStage"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.472381-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestBaselineExportCleansOnlyUnchangedOwnedStage",
+      "Output": "=== RUN   TestBaselineExportCleansOnlyUnchangedOwnedStage\n"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.472384-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestBaselineExportCleansOnlyUnchangedOwnedStage/created"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.472386-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestBaselineExportCleansOnlyUnchangedOwnedStage/created",
+      "Output": "=== RUN   TestBaselineExportCleansOnlyUnchangedOwnedStage/created\n"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.472389-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestBaselineExportCleansOnlyUnchangedOwnedStage/created",
+      "Output": "--- PASS: TestBaselineExportCleansOnlyUnchangedOwnedStage/created (0.21s)\n"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.472392-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestBaselineExportCleansOnlyUnchangedOwnedStage/created",
+      "Elapsed": 0.21
+    },
+    {
+      "Time": "2026-09-06T14:26:41.472395-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestBaselineExportCleansOnlyUnchangedOwnedStage/manifest-written"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.472397-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestBaselineExportCleansOnlyUnchangedOwnedStage/manifest-written",
+      "Output": "=== RUN   TestBaselineExportCleansOnlyUnchangedOwnedStage/manifest-written\n"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.4724-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestBaselineExportCleansOnlyUnchangedOwnedStage/manifest-written",
+      "Output": "--- PASS: TestBaselineExportCleansOnlyUnchangedOwnedStage/manifest-written (0.20s)\n"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.472403-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestBaselineExportCleansOnlyUnchangedOwnedStage/manifest-written",
+      "Elapsed": 0.2
+    },
+    {
+      "Time": "2026-09-06T14:26:41.472405-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestBaselineExportCleansOnlyUnchangedOwnedStage/payload-written"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.472408-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestBaselineExportCleansOnlyUnchangedOwnedStage/payload-written",
+      "Output": "=== RUN   TestBaselineExportCleansOnlyUnchangedOwnedStage/payload-written\n"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.472416-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestBaselineExportCleansOnlyUnchangedOwnedStage/payload-written",
+      "Output": "--- PASS: TestBaselineExportCleansOnlyUnchangedOwnedStage/payload-written (0.23s)\n"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.472419-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestBaselineExportCleansOnlyUnchangedOwnedStage/payload-written",
+      "Elapsed": 0.23
+    },
+    {
+      "Time": "2026-09-06T14:26:41.472422-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestBaselineExportCleansOnlyUnchangedOwnedStage",
+      "Output": "--- PASS: TestBaselineExportCleansOnlyUnchangedOwnedStage (0.65s)\n"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.472425-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestBaselineExportCleansOnlyUnchangedOwnedStage",
+      "Elapsed": 0.65
+    },
+    {
+      "Time": "2026-09-06T14:26:41.472427-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestBaselineExportCancellationAfterStagingPreventsPublication"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.47243-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestBaselineExportCancellationAfterStagingPreventsPublication",
+      "Output": "=== RUN   TestBaselineExportCancellationAfterStagingPreventsPublication\n"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.472433-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestBaselineExportCancellationAfterStagingPreventsPublication",
+      "Output": "--- PASS: TestBaselineExportCancellationAfterStagingPreventsPublication (0.28s)\n"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.472436-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestBaselineExportCancellationAfterStagingPreventsPublication",
+      "Elapsed": 0.28
+    },
+    {
+      "Time": "2026-09-06T14:26:41.472439-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestBaselineExportPreservesDirectoryCreatedDuringStaging"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.472441-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestBaselineExportPreservesDirectoryCreatedDuringStaging",
+      "Output": "=== RUN   TestBaselineExportPreservesDirectoryCreatedDuringStaging\n"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.472444-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestBaselineExportPreservesDirectoryCreatedDuringStaging",
+      "Output": "--- PASS: TestBaselineExportPreservesDirectoryCreatedDuringStaging (0.55s)\n"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.472446-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestBaselineExportPreservesDirectoryCreatedDuringStaging",
+      "Elapsed": 0.55
+    },
+    {
+      "Time": "2026-09-06T14:26:41.472449-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestBaselineExportIsIdempotentAndPreservesConflicts"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.472451-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestBaselineExportIsIdempotentAndPreservesConflicts",
+      "Output": "=== RUN   TestBaselineExportIsIdempotentAndPreservesConflicts\n"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.472455-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestBaselineExportIsIdempotentAndPreservesConflicts",
+      "Output": "--- PASS: TestBaselineExportIsIdempotentAndPreservesConflicts (0.82s)\n"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.472457-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestBaselineExportIsIdempotentAndPreservesConflicts",
+      "Elapsed": 0.82
+    },
+    {
+      "Time": "2026-09-06T14:26:41.47246-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestConcurrentBaselineExportPublishesOneCompleteGeneration"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.472463-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestConcurrentBaselineExportPublishesOneCompleteGeneration",
+      "Output": "=== RUN   TestConcurrentBaselineExportPublishesOneCompleteGeneration\n"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.472466-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestConcurrentBaselineExportPublishesOneCompleteGeneration",
+      "Output": "--- PASS: TestConcurrentBaselineExportPublishesOneCompleteGeneration (0.65s)\n"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.472468-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestConcurrentBaselineExportPublishesOneCompleteGeneration",
+      "Elapsed": 0.65
+    },
+    {
+      "Time": "2026-09-06T14:26:41.472471-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestBaselineExportRejectsSymlinksAndCancellation"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.472473-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestBaselineExportRejectsSymlinksAndCancellation",
+      "Output": "=== RUN   TestBaselineExportRejectsSymlinksAndCancellation\n"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.472476-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestBaselineExportRejectsSymlinksAndCancellation",
+      "Output": "--- PASS: TestBaselineExportRejectsSymlinksAndCancellation (0.52s)\n"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.472479-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestBaselineExportRejectsSymlinksAndCancellation",
+      "Elapsed": 0.52
+    },
+    {
+      "Time": "2026-09-06T14:26:41.472485-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestBaselineExportRecoversAfterProcessInterruption"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.472528-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestBaselineExportRecoversAfterProcessInterruption",
+      "Output": "=== RUN   TestBaselineExportRecoversAfterProcessInterruption\n"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.472532-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestBaselineExportRecoversAfterProcessInterruption/created"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.472535-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestBaselineExportRecoversAfterProcessInterruption/created",
+      "Output": "=== RUN   TestBaselineExportRecoversAfterProcessInterruption/created\n"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.472539-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestBaselineExportRecoversAfterProcessInterruption/created",
+      "Output": "--- PASS: TestBaselineExportRecoversAfterProcessInterruption/created (1.87s)\n"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.472542-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestBaselineExportRecoversAfterProcessInterruption/created",
+      "Elapsed": 1.87
+    },
+    {
+      "Time": "2026-09-06T14:26:41.472546-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestBaselineExportRecoversAfterProcessInterruption/manifest-written"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.472549-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestBaselineExportRecoversAfterProcessInterruption/manifest-written",
+      "Output": "=== RUN   TestBaselineExportRecoversAfterProcessInterruption/manifest-written\n"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.472552-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestBaselineExportRecoversAfterProcessInterruption/manifest-written",
+      "Output": "--- PASS: TestBaselineExportRecoversAfterProcessInterruption/manifest-written (1.80s)\n"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.472555-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestBaselineExportRecoversAfterProcessInterruption/manifest-written",
+      "Elapsed": 1.8
+    },
+    {
+      "Time": "2026-09-06T14:26:41.472558-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestBaselineExportRecoversAfterProcessInterruption/payload-written"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.47256-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestBaselineExportRecoversAfterProcessInterruption/payload-written",
+      "Output": "=== RUN   TestBaselineExportRecoversAfterProcessInterruption/payload-written\n"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.472564-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestBaselineExportRecoversAfterProcessInterruption/payload-written",
+      "Output": "--- PASS: TestBaselineExportRecoversAfterProcessInterruption/payload-written (2.54s)\n"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.472567-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestBaselineExportRecoversAfterProcessInterruption/payload-written",
+      "Elapsed": 2.54
+    },
+    {
+      "Time": "2026-09-06T14:26:41.472576-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestBaselineExportRecoversAfterProcessInterruption/promoted"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.472579-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestBaselineExportRecoversAfterProcessInterruption/promoted",
+      "Output": "=== RUN   TestBaselineExportRecoversAfterProcessInterruption/promoted\n"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.472583-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestBaselineExportRecoversAfterProcessInterruption/promoted",
+      "Output": "--- PASS: TestBaselineExportRecoversAfterProcessInterruption/promoted (2.35s)\n"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.472586-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestBaselineExportRecoversAfterProcessInterruption/promoted",
+      "Elapsed": 2.35
+    },
+    {
+      "Time": "2026-09-06T14:26:41.472589-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestBaselineExportRecoversAfterProcessInterruption",
+      "Output": "--- PASS: TestBaselineExportRecoversAfterProcessInterruption (8.56s)\n"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.472592-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestBaselineExportRecoversAfterProcessInterruption",
+      "Elapsed": 8.56
+    },
+    {
+      "Time": "2026-09-06T14:26:41.472594-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestBaselineExportCrashChild"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.472597-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestBaselineExportCrashChild",
+      "Output": "=== RUN   TestBaselineExportCrashChild\n"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.4726-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestBaselineExportCrashChild",
+      "Output": "--- PASS: TestBaselineExportCrashChild (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.472603-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestBaselineExportCrashChild",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T14:26:41.472606-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestEveryPublishedMediaOperationMatchesItsDefinition"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.472608-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestEveryPublishedMediaOperationMatchesItsDefinition",
+      "Output": "=== RUN   TestEveryPublishedMediaOperationMatchesItsDefinition\n"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.472611-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestEveryPublishedMediaOperationMatchesItsDefinition",
+      "Output": "--- PASS: TestEveryPublishedMediaOperationMatchesItsDefinition (1.77s)\n"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.472619-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestEveryPublishedMediaOperationMatchesItsDefinition",
+      "Elapsed": 1.77
+    },
+    {
+      "Time": "2026-09-06T14:26:41.472622-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestTheResidualOfferingsAreRealtimeAlone"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.472624-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestTheResidualOfferingsAreRealtimeAlone",
+      "Output": "=== RUN   TestTheResidualOfferingsAreRealtimeAlone\n"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.472627-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestTheResidualOfferingsAreRealtimeAlone",
+      "Output": "--- PASS: TestTheResidualOfferingsAreRealtimeAlone (1.70s)\n"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.47263-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestTheResidualOfferingsAreRealtimeAlone",
+      "Elapsed": 1.7
+    },
+    {
+      "Time": "2026-09-06T14:26:41.472633-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestEveryRecognitionOfferingCanBeBilledByThePage"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.472635-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestEveryRecognitionOfferingCanBeBilledByThePage",
+      "Output": "=== RUN   TestEveryRecognitionOfferingCanBeBilledByThePage\n"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.472638-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestEveryRecognitionOfferingCanBeBilledByThePage",
+      "Output": "--- PASS: TestEveryRecognitionOfferingCanBeBilledByThePage (1.75s)\n"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.47264-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestEveryRecognitionOfferingCanBeBilledByThePage",
+      "Elapsed": 1.75
+    },
+    {
+      "Time": "2026-09-06T14:26:41.472643-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestShippedModerationOfferingsServeModerationsAlone"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.472646-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestShippedModerationOfferingsServeModerationsAlone",
+      "Output": "=== RUN   TestShippedModerationOfferingsServeModerationsAlone\n"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.472649-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestShippedModerationOfferingsServeModerationsAlone",
+      "Output": "--- PASS: TestShippedModerationOfferingsServeModerationsAlone (1.74s)\n"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.472651-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestShippedModerationOfferingsServeModerationsAlone",
+      "Elapsed": 1.74
+    },
+    {
+      "Time": "2026-09-06T14:26:41.472654-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestOfferedChatCompletionsAgreeWithCanonicalModelFacts"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.472656-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestOfferedChatCompletionsAgreeWithCanonicalModelFacts",
+      "Output": "=== RUN   TestOfferedChatCompletionsAgreeWithCanonicalModelFacts\n"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.472659-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestOfferedChatCompletionsAgreeWithCanonicalModelFacts",
+      "Output": "--- PASS: TestOfferedChatCompletionsAgreeWithCanonicalModelFacts (1.44s)\n"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.472662-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestOfferedChatCompletionsAgreeWithCanonicalModelFacts",
+      "Elapsed": 1.44
+    },
+    {
+      "Time": "2026-09-06T14:26:41.472665-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestEmbeddedProviderModelsMatchReviewedIdentityMap"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.472667-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestEmbeddedProviderModelsMatchReviewedIdentityMap",
+      "Output": "=== RUN   TestEmbeddedProviderModelsMatchReviewedIdentityMap\n"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.47267-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestEmbeddedProviderModelsMatchReviewedIdentityMap",
+      "Output": "--- PASS: TestEmbeddedProviderModelsMatchReviewedIdentityMap (0.29s)\n"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.472672-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestEmbeddedProviderModelsMatchReviewedIdentityMap",
+      "Elapsed": 0.29
+    },
+    {
+      "Time": "2026-09-06T14:26:41.472675-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestEmbeddedAuthoredModelsAreCoveredByHistoricalOrServingIdentityReview"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.472682-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestEmbeddedAuthoredModelsAreCoveredByHistoricalOrServingIdentityReview",
+      "Output": "=== RUN   TestEmbeddedAuthoredModelsAreCoveredByHistoricalOrServingIdentityReview\n"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.472689-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestEmbeddedAuthoredModelsAreCoveredByHistoricalOrServingIdentityReview",
+      "Output": "--- PASS: TestEmbeddedAuthoredModelsAreCoveredByHistoricalOrServingIdentityReview (0.05s)\n"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.472692-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestEmbeddedAuthoredModelsAreCoveredByHistoricalOrServingIdentityReview",
+      "Elapsed": 0.05
+    },
+    {
+      "Time": "2026-09-06T14:26:41.472695-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestEmbeddedModelYAMLExposesCompleteBooleanCapabilitySurface"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.472697-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestEmbeddedModelYAMLExposesCompleteBooleanCapabilitySurface",
+      "Output": "=== RUN   TestEmbeddedModelYAMLExposesCompleteBooleanCapabilitySurface\n"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.4727-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestEmbeddedModelYAMLExposesCompleteBooleanCapabilitySurface",
+      "Output": "--- PASS: TestEmbeddedModelYAMLExposesCompleteBooleanCapabilitySurface (0.34s)\n"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.472933-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestEmbeddedModelYAMLExposesCompleteBooleanCapabilitySurface",
+      "Elapsed": 0.34
+    },
+    {
+      "Time": "2026-09-06T14:26:41.47294-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestShippedRerankOfferingsCarryTheirCost"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.472941-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestShippedRerankOfferingsCarryTheirCost",
+      "Output": "=== RUN   TestShippedRerankOfferingsCarryTheirCost\n"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.472944-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestShippedRerankOfferingsCarryTheirCost",
+      "Output": "--- PASS: TestShippedRerankOfferingsCarryTheirCost (1.80s)\n"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.472946-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestShippedRerankOfferingsCarryTheirCost",
+      "Elapsed": 1.8
+    },
+    {
+      "Time": "2026-09-06T14:26:41.472948-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestRerankProviderEndpointsResolve"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.472949-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestRerankProviderEndpointsResolve",
+      "Output": "=== RUN   TestRerankProviderEndpointsResolve\n"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.47295-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestRerankProviderEndpointsResolve",
+      "Output": "--- PASS: TestRerankProviderEndpointsResolve (2.70s)\n"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.472951-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Test": "TestRerankProviderEndpointsResolve",
+      "Elapsed": 2.7
+    },
+    {
+      "Time": "2026-09-06T14:26:41.472952-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Output": "PASS\n"
+    },
+    {
+      "Time": "2026-09-06T14:26:41.472958-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/bootstrap",
+      "Elapsed": 0.003
+    }
+  ],
+  "binary_sha256": "9512c0da44d85b247db10a83f50a912105d1eaa3dd142e31a770fb6b429d8ca3",
+  "state": {
+    "Status": "exited",
+    "Running": false,
+    "Paused": false,
+    "Restarting": false,
+    "OOMKilled": false,
+    "Dead": false,
+    "Pid": 0,
+    "ExitCode": 0,
+    "Error": "",
+    "StartedAt": "2026-09-06T19:26:01.856599542Z",
+    "FinishedAt": "2026-09-06T19:26:40.247667546Z"
+  },
+  "conversion_exit_code": 0,
+  "counts": {
+    "pass": 66,
+    "fail": 0,
+    "skip": 0
+  },
+  "passed": true,
+  "container_removed": true,
+  "volume_removed": true
+}

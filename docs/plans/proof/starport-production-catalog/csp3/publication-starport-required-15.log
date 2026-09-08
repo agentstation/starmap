@@ -1,0 +1,24 @@
+PASS CSH-V01 internal/sqlstore owns the relational contract
+PASS CSH-V02 the embedded SQLite backend is pure Go, so the single binary holds
+PASS CSH-V03 sqlstore owns its migrations; no other package writes schema
+PASS CSH-V04 a PostgreSQL or MySQL connect scales the same contract
+PASS CSH-V05 one contract test suite runs against every backend
+PASS CSH-V06 the keyring holds a list of shared credentials per provider, held by tests
+PASS CSH-V07 each shared credential is open to every account or granted to some
+PASS CSH-V08 the served source word is shared, owned by the keyring alone
+PASS CSH-V09 the admin plane addresses a shared credential by id
+PASS CSH-V10 the console create flow asks open or granted and defaults to every account
+PASS CSH-V11 the account carries the operator's BYOK policy
+PASS CSH-V12 a BYOK put for a provider the policy withholds refuses, held by tests
+PASS CSH-V13 the account names its provider and model access, defaulting to all models
+PASS CSH-V14 planning refuses a model outside the account's access, held by tests
+PASS CSH-V15 account templates stamp creation defaults
+PASS CSH-V16 the console word for creation defaults is template, not preset
+PASS CSH-V17 internal/identity owns users, teams, and memberships
+PASS CSH-V18 gothic OAuth acquires an identity into the one user model
+PASS CSH-V19 WorkOS SSO acquires an identity beside gothic, same user model
+PASS CSH-V20 an identity session resolves the accounts its grants reach
+PASS CSH-V21 a granted shared credential serves only accounts its grants name, held by tests
+PASS CSH-V22 the console grants an account to a user or a team
+PASS CSH-V23 CI runs this gate and the evidence list names it
+Summary: 23 passed, 0 failed

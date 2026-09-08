@@ -1,0 +1,361 @@
+{
+  "command": [
+    "go",
+    "test",
+    "-race",
+    "-json",
+    "-count=1",
+    "-timeout",
+    "3m",
+    "./internal/config",
+    "./internal/storage",
+    "./internal/cache",
+    "./internal/sqlstore",
+    "-run",
+    "Test(PlatformPaths|PathsForConfigDir|ResolveStateDirectory|BadgerInMemory|BadgerStore$|CacheManager|SQLite|ContractOpenMigrateReadWrite|ContractTransactionRollback|MigrateRuns|MigrateFailure|DialectMigration)"
+  ],
+  "cwd": "/Users/jack/src/github.com/agentstation/starport-catalog-lifecycle",
+  "environment_removed": [
+    "TEST_VALKEY_URL",
+    "TEST_POSTGRES_URL",
+    "TEST_MYSQL_DSN"
+  ],
+  "exit_code": 0,
+  "duration_seconds": 13.32,
+  "counts": {
+    "top_level_passed": 19,
+    "subtests_passed": 46,
+    "failed": 0,
+    "skipped": 0,
+    "packages_passed": 4
+  },
+  "test_results": [
+    {
+      "name": "TestCacheManagerMultiNodeSharesResponses",
+      "action": "pass",
+      "package": "github.com/agentstation/starport/internal/cache"
+    },
+    {
+      "name": "TestCacheManagerSingleNodeCachesResponses",
+      "action": "pass",
+      "package": "github.com/agentstation/starport/internal/cache"
+    },
+    {
+      "name": "TestCacheManagerModelMetadata",
+      "action": "pass",
+      "package": "github.com/agentstation/starport/internal/cache"
+    },
+    {
+      "name": "TestCacheManagerConfig",
+      "action": "pass",
+      "package": "github.com/agentstation/starport/internal/cache"
+    },
+    {
+      "name": "TestBadgerInMemoryModeCreatesNoPersistentWorkers",
+      "action": "pass",
+      "package": "github.com/agentstation/starport/internal/storage"
+    },
+    {
+      "name": "TestBadgerStore/BasicOperations/SetAndGet",
+      "action": "pass",
+      "package": "github.com/agentstation/starport/internal/storage"
+    },
+    {
+      "name": "TestBadgerStore/BasicOperations/Exists",
+      "action": "pass",
+      "package": "github.com/agentstation/starport/internal/storage"
+    },
+    {
+      "name": "TestBadgerStore/BasicOperations/Delete",
+      "action": "pass",
+      "package": "github.com/agentstation/starport/internal/storage"
+    },
+    {
+      "name": "TestBadgerStore/BasicOperations/InvalidKey",
+      "action": "pass",
+      "package": "github.com/agentstation/starport/internal/storage"
+    },
+    {
+      "name": "TestBadgerStore/BasicOperations/NotFound",
+      "action": "pass",
+      "package": "github.com/agentstation/starport/internal/storage"
+    },
+    {
+      "name": "TestBadgerStore/BasicOperations",
+      "action": "pass",
+      "package": "github.com/agentstation/starport/internal/storage"
+    },
+    {
+      "name": "TestContractOpenMigrateReadWrite/sqlite",
+      "action": "pass",
+      "package": "github.com/agentstation/starport/internal/sqlstore"
+    },
+    {
+      "name": "TestContractOpenMigrateReadWrite",
+      "action": "pass",
+      "package": "github.com/agentstation/starport/internal/sqlstore"
+    },
+    {
+      "name": "TestContractTransactionRollback/sqlite",
+      "action": "pass",
+      "package": "github.com/agentstation/starport/internal/sqlstore"
+    },
+    {
+      "name": "TestContractTransactionRollback",
+      "action": "pass",
+      "package": "github.com/agentstation/starport/internal/sqlstore"
+    },
+    {
+      "name": "TestSQLitePersistsAcrossOpens",
+      "action": "pass",
+      "package": "github.com/agentstation/starport/internal/sqlstore"
+    },
+    {
+      "name": "TestSQLiteInMemory",
+      "action": "pass",
+      "package": "github.com/agentstation/starport/internal/sqlstore"
+    },
+    {
+      "name": "TestMigrateRunsEachFileOnceInOrder",
+      "action": "pass",
+      "package": "github.com/agentstation/starport/internal/sqlstore"
+    },
+    {
+      "name": "TestMigrateFailureRecordsNothing",
+      "action": "pass",
+      "package": "github.com/agentstation/starport/internal/sqlstore"
+    },
+    {
+      "name": "TestDialectMigrationSetsAgree",
+      "action": "pass",
+      "package": "github.com/agentstation/starport/internal/sqlstore"
+    },
+    {
+      "name": "TestResolveStateDirectoryIsProcessLocal/an_operator_value_wins",
+      "action": "pass",
+      "package": "github.com/agentstation/starport/internal/config"
+    },
+    {
+      "name": "TestResolveStateDirectoryIsProcessLocal/the_user_state_root_supplies_the_default",
+      "action": "pass",
+      "package": "github.com/agentstation/starport/internal/config"
+    },
+    {
+      "name": "TestResolveStateDirectoryIsProcessLocal/the_home_directory_supplies_the_default",
+      "action": "pass",
+      "package": "github.com/agentstation/starport/internal/config"
+    },
+    {
+      "name": "TestResolveStateDirectoryIsProcessLocal",
+      "action": "pass",
+      "package": "github.com/agentstation/starport/internal/config"
+    },
+    {
+      "name": "TestResolveStateDirectoryWithoutHomeNamesTheSettings",
+      "action": "pass",
+      "package": "github.com/agentstation/starport/internal/config"
+    },
+    {
+      "name": "TestPlatformPathsUseUserConfigDirectory",
+      "action": "pass",
+      "package": "github.com/agentstation/starport/internal/config"
+    },
+    {
+      "name": "TestPlatformPathsUseExplicitDirectory",
+      "action": "pass",
+      "package": "github.com/agentstation/starport/internal/config"
+    },
+    {
+      "name": "TestPlatformPathsRejectRelativeExplicitDirectory",
+      "action": "pass",
+      "package": "github.com/agentstation/starport/internal/config"
+    },
+    {
+      "name": "TestPathsForConfigDirDerivesManagedPaths",
+      "action": "pass",
+      "package": "github.com/agentstation/starport/internal/config"
+    },
+    {
+      "name": "TestBadgerStore/TTLOperations/SetWithTTL",
+      "action": "pass",
+      "package": "github.com/agentstation/starport/internal/storage"
+    },
+    {
+      "name": "TestBadgerStore/TTLOperations/GetTTL",
+      "action": "pass",
+      "package": "github.com/agentstation/starport/internal/storage"
+    },
+    {
+      "name": "TestBadgerStore/TTLOperations/ExpireAt",
+      "action": "pass",
+      "package": "github.com/agentstation/starport/internal/storage"
+    },
+    {
+      "name": "TestBadgerStore/TTLOperations",
+      "action": "pass",
+      "package": "github.com/agentstation/starport/internal/storage"
+    },
+    {
+      "name": "TestBadgerStore/AtomicOperations/Increment",
+      "action": "pass",
+      "package": "github.com/agentstation/starport/internal/storage"
+    },
+    {
+      "name": "TestBadgerStore/AtomicOperations/Decrement",
+      "action": "pass",
+      "package": "github.com/agentstation/starport/internal/storage"
+    },
+    {
+      "name": "TestBadgerStore/AtomicOperations/IncrementWithTTL",
+      "action": "pass",
+      "package": "github.com/agentstation/starport/internal/storage"
+    },
+    {
+      "name": "TestBadgerStore/AtomicOperations/CompareAndSwap",
+      "action": "pass",
+      "package": "github.com/agentstation/starport/internal/storage"
+    },
+    {
+      "name": "TestBadgerStore/AtomicOperations",
+      "action": "pass",
+      "package": "github.com/agentstation/starport/internal/storage"
+    },
+    {
+      "name": "TestBadgerStore/BatchOperations/BatchSetAndGet",
+      "action": "pass",
+      "package": "github.com/agentstation/starport/internal/storage"
+    },
+    {
+      "name": "TestBadgerStore/BatchOperations/BatchDelete",
+      "action": "pass",
+      "package": "github.com/agentstation/starport/internal/storage"
+    },
+    {
+      "name": "TestBadgerStore/BatchOperations/BatchSetWithTTL",
+      "action": "pass",
+      "package": "github.com/agentstation/starport/internal/storage"
+    },
+    {
+      "name": "TestBadgerStore/BatchOperations",
+      "action": "pass",
+      "package": "github.com/agentstation/starport/internal/storage"
+    },
+    {
+      "name": "TestBadgerStore/Transactions/BasicTransaction",
+      "action": "pass",
+      "package": "github.com/agentstation/starport/internal/storage"
+    },
+    {
+      "name": "TestBadgerStore/Transactions/TransactionRollback",
+      "action": "pass",
+      "package": "github.com/agentstation/starport/internal/storage"
+    },
+    {
+      "name": "TestBadgerStore/Transactions/TransactionWithTTL",
+      "action": "pass",
+      "package": "github.com/agentstation/starport/internal/storage"
+    },
+    {
+      "name": "TestBadgerStore/Transactions/TransactionIncrement",
+      "action": "pass",
+      "package": "github.com/agentstation/starport/internal/storage"
+    },
+    {
+      "name": "TestBadgerStore/Transactions",
+      "action": "pass",
+      "package": "github.com/agentstation/starport/internal/storage"
+    },
+    {
+      "name": "TestBadgerStore/ScanOperations/ScanWithPrefix",
+      "action": "pass",
+      "package": "github.com/agentstation/starport/internal/storage"
+    },
+    {
+      "name": "TestBadgerStore/ScanOperations/ScanWithPattern",
+      "action": "pass",
+      "package": "github.com/agentstation/starport/internal/storage"
+    },
+    {
+      "name": "TestBadgerStore/ScanOperations/ScanIgnoresExpiredKeys",
+      "action": "pass",
+      "package": "github.com/agentstation/starport/internal/storage"
+    },
+    {
+      "name": "TestBadgerStore/ScanOperations",
+      "action": "pass",
+      "package": "github.com/agentstation/starport/internal/storage"
+    },
+    {
+      "name": "TestBadgerStore/BackupRestore",
+      "action": "pass",
+      "package": "github.com/agentstation/starport/internal/storage"
+    },
+    {
+      "name": "TestBadgerStore/Concurrency/ConcurrentReadWrite",
+      "action": "pass",
+      "package": "github.com/agentstation/starport/internal/storage"
+    },
+    {
+      "name": "TestBadgerStore/Concurrency/ConcurrentIncrement",
+      "action": "pass",
+      "package": "github.com/agentstation/starport/internal/storage"
+    },
+    {
+      "name": "TestBadgerStore/Concurrency",
+      "action": "pass",
+      "package": "github.com/agentstation/starport/internal/storage"
+    },
+    {
+      "name": "TestBadgerStore/EdgeCases/OperationsAfterClose",
+      "action": "pass",
+      "package": "github.com/agentstation/starport/internal/storage"
+    },
+    {
+      "name": "TestBadgerStore/EdgeCases/LargeValues",
+      "action": "pass",
+      "package": "github.com/agentstation/starport/internal/storage"
+    },
+    {
+      "name": "TestBadgerStore/EdgeCases/EmptyValues",
+      "action": "pass",
+      "package": "github.com/agentstation/starport/internal/storage"
+    },
+    {
+      "name": "TestBadgerStore/EdgeCases/SpecialCharacterKeys",
+      "action": "pass",
+      "package": "github.com/agentstation/starport/internal/storage"
+    },
+    {
+      "name": "TestBadgerStore/EdgeCases",
+      "action": "pass",
+      "package": "github.com/agentstation/starport/internal/storage"
+    },
+    {
+      "name": "TestBadgerStore/Performance/WritePerformance",
+      "action": "pass",
+      "package": "github.com/agentstation/starport/internal/storage"
+    },
+    {
+      "name": "TestBadgerStore/Performance/ReadPerformance",
+      "action": "pass",
+      "package": "github.com/agentstation/starport/internal/storage"
+    },
+    {
+      "name": "TestBadgerStore/Performance/BatchPerformance",
+      "action": "pass",
+      "package": "github.com/agentstation/starport/internal/storage"
+    },
+    {
+      "name": "TestBadgerStore/Performance",
+      "action": "pass",
+      "package": "github.com/agentstation/starport/internal/storage"
+    },
+    {
+      "name": "TestBadgerStore",
+      "action": "pass",
+      "package": "github.com/agentstation/starport/internal/storage"
+    }
+  ],
+  "external_backends": "UNVERIFIED: no external services used",
+  "platform": "macOS host only"
+}

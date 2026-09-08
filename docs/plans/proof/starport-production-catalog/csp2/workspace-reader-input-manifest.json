@@ -1,0 +1,105 @@
+{
+  "scope": "Local shared workspace read guard. Windows journal and native qualification remain pending.",
+  "files": [
+    {
+      "path": "client.go",
+      "sha256": "e1fbb3fa24332b7819dc4ad9412d126c8b26e5e99c63d452be4cebaf27493ac3"
+    },
+    {
+      "path": "rollback.go",
+      "sha256": "afb0e34cd6a21704543d1688e335bb7688cc74d0ff3676e836e4189b4e470409"
+    },
+    {
+      "path": "rollback_test.go",
+      "sha256": "85eb275f6b1cbfc73713fa4ac8a4cd2fbca9589739f38559f53424f8f57edd12"
+    },
+    {
+      "path": "workspace_read_test.go",
+      "sha256": "0be72e7c87372443a0c5c0979ba42b019b344000425aefddb58b9f1d2ebea508"
+    },
+    {
+      "path": "cmd/starmap-bootstrap-manifest/main.go",
+      "sha256": "e6b014787a762cc4069ff15cc2506f9e34c4b5c987dff19f53abc9a276e9b086"
+    },
+    {
+      "path": "cmd/starmap-bootstrap-manifest/workspace_read_test.go",
+      "sha256": "55c9f5b4c234a81d35bbe29e8b1d2f2e3915a13196b9756b89b3323b26d3043b"
+    },
+    {
+      "path": "internal/catalog/workspace/read.go",
+      "sha256": "2cd886b666ded9bd8f48a17cdd1f7455862ec6b86ff1810a48e26bcf7caa7909"
+    },
+    {
+      "path": "internal/catalog/workspace/read_lock.go",
+      "sha256": "85fe8714d6486cc99958d3ed51d2563ec52cd0748df13486a6e938f6ea5254c9"
+    },
+    {
+      "path": "internal/catalog/workspace/read_test.go",
+      "sha256": "3375d503c69daee12de2148bf234b7b7277aa039a2decb3c8f261b1956b13996"
+    },
+    {
+      "path": "internal/catalog/workspace/read_process_test.go",
+      "sha256": "f788aa7f3b15be8a21944172d21964e45d893c7a1cabeb6de75c72a93740c0bb"
+    },
+    {
+      "path": "internal/catalog/workspace/projector.go",
+      "sha256": "73e0b54a68d2ccc8b70c8a588c1e89f618e649308a1d1b599403b8114391a4a0"
+    },
+    {
+      "path": "internal/catalog/pipeline/catalog_inputs.go",
+      "sha256": "4548ed133b5f73c44696bc003eff3e20e334c21076283d1fa81004460f961157"
+    },
+    {
+      "path": "internal/catalog/pipeline/pipeline.go",
+      "sha256": "e5b5d2241822a26b7d55311978cc03eaa402363447e8a79095d21de290778ee8"
+    },
+    {
+      "path": "internal/catalog/pipeline/workspace_read_test.go",
+      "sha256": "bad547211cdf4f1f1c86813119a6066378551c62d2ddf4aaa053f123ea3a9e1a"
+    },
+    {
+      "path": "internal/sources/local/local.go",
+      "sha256": "115291154fb5c7d27e889bcc78323bdea41b45c22962687092b7dd728993a098"
+    },
+    {
+      "path": "internal/sources/local/workspace_read_test.go",
+      "sha256": "f4dfd256bec12b91af96df9084887803bc3d247153604f7baab6b22b03c83e5e"
+    },
+    {
+      "path": "acquisition/import.go",
+      "sha256": "3c2c15f88ac1a1847623d5de1e29a0010ec5a7d486b314e2068db2a65dd3cb83"
+    },
+    {
+      "path": "acquisition/workspace_read_test.go",
+      "sha256": "bb91f170d36dfec65d3599ab1e88b8c70e17d8d9fcd5986c1fa603e5ea9d14e9"
+    },
+    {
+      "path": "internal/cli/app/file_manifest.go",
+      "sha256": "f35d2bc71595a88f3b50d410d4c484f4a47dc9812cf2be4b330f94945b00f79d"
+    },
+    {
+      "path": "docs/design/catalog-lifecycle/ENGINEERING_SPEC.md",
+      "sha256": "2ea52dfa4cdf019e65253c307da5f92347d096f2367dccf476d1a1cafad892ab"
+    },
+    {
+      "path": "docs/design/catalog-lifecycle/REPOSITORY_FINDINGS.md",
+      "sha256": "901006fcce82e5e670a35aa4b3f8d6c8d580b2e846ed8b2cf6fe369aa2b0e2d7"
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp2.md",
+      "sha256": "9e0866f451fdc30c21bd8fb29f0a89ffb3231819e4b887fcd4dbb170da20f0ec"
+    },
+    {
+      "path": "docs/plans/starport-production-catalog-plan.html",
+      "sha256": "530831796b923e7e173e1eead8a0ad591c43ee65cd4209ae651bf44a2f896d7b"
+    },
+    {
+      "path": "go.mod",
+      "sha256": "4089f0c9d4e2a59e91b45b22419dcc16298b545ce74db69f19508377289e3513"
+    },
+    {
+      "path": "go.sum",
+      "sha256": "e6bc0489a1beb9cc7af8ce96d3ab833002dab73fa559c2165e57a7865d13a356"
+    }
+  ]
+}

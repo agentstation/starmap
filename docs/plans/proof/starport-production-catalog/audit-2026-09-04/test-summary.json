@@ -1,0 +1,35 @@
+{
+  "starmap": {
+    "top_level_pass": 126,
+    "subtest_pass": 58,
+    "skipped": [],
+    "failed": [],
+    "packages_passed": 5,
+    "exit_code": 0,
+    "sha256": "35892422f9873c0b6d69c5ffcbebd0a88e38eec506ce32494433fb333c6a49f3"
+  },
+  "starport": {
+    "top_level_pass": 358,
+    "subtest_pass": 208,
+    "skipped": [],
+    "failed": [],
+    "packages_passed": 6,
+    "exit_code": 0,
+    "sha256": "d326e9081f935f849f402dfd83a75fe6a2505ad9019a954ae4cbf20734ea1ece"
+  },
+  "starport_budget": {
+    "top_level_pass": 2,
+    "subtest_pass": 0,
+    "failed": [],
+    "skipped": [],
+    "exit_code": 0,
+    "sha256": "8d8f7f70522b4eac1fed22a9d12deef3a94504e84c01d01a5682ff79f3d89d4d"
+  },
+  "totals": {
+    "top_level_pass": 486,
+    "subtest_pass": 266,
+    "failed": 0,
+    "skipped": 0,
+    "external_backends_qualified": false
+  }
+}

@@ -1,0 +1,11 @@
+/Users/jack/.agents/skills/technical-writing/scripts/technical-writing glossary check
+PASS: /Users/jack/src/github.com/agentstation/starmap-catalog-requirements/GLOSSARY.md (81 term(s), 0 error(s))
+/Users/jack/.agents/skills/technical-writing/scripts/technical-writing glossary update --check
+PASS: no candidate terms are missing from /Users/jack/src/github.com/agentstation/starmap-catalog-requirements/GLOSSARY.md
+/Users/jack/.agents/skills/technical-writing/scripts/technical-writing lint . --mode strict --format text
+/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/docs/CLI.md:216:1: error long_paragraph: paragraph has 8 sentences; limit is 6
+/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/internal/privatefiles/service_metadata_windows.go:5:33: error passive_voice: use active voice when the actor is known
+/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/pkg/productpaths/policy/access.go:56:68: error passive_voice: use active voice when the actor is known
+/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/pkg/productpaths/policy/posix.go:38:17: error passive_voice: use active voice when the actor is known
+FAIL: 1135 file(s), 4 diagnostic(s)
+make: *** [technical-writing-check] Error 1

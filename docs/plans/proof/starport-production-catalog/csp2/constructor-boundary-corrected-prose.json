@@ -1,0 +1,21 @@
+{
+  "command": [
+    "/Users/jack/.agents/skills/technical-writing/scripts/technical-writing",
+    "lint",
+    "constructor_workers_test.go",
+    "workspace_repair.go",
+    "runtime/workspace.go",
+    "constructor_passivity_test.go",
+    "docs/CLI.md",
+    "docs/API.md",
+    "docs/design/catalog-lifecycle/ENGINEERING_SPEC.md",
+    "docs/design/catalog-lifecycle/REPOSITORY_FINDINGS.md",
+    "docs/plans/proof/starport-production-catalog/csp2.md",
+    "docs/plans/starport-production-catalog-plan.html",
+    "--format",
+    "text"
+  ],
+  "exit_code": 0,
+  "stdout": "PASS: 10 file(s), 0 diagnostic(s)\n",
+  "stderr": ""
+}

@@ -1,0 +1,197 @@
+{
+  "schema_version": 1,
+  "task": "CSP3",
+  "status": "component-progress-only",
+  "date": "2026-09-07",
+  "work_commit": "8a27bf91763677c853c37affc868f36b3b727e70",
+  "evidence_commit": "f995eb7a49627c40fc886ce24526e289efbb936d",
+  "planning_base": "dba9b4be420081d9e1d183dbcf2257b8780a7712",
+  "toolchain": "go1.26.6 darwin/arm64",
+  "setting": "STARMAP_CATALOG_PROVIDER_BINDINGS",
+  "descriptor_count": 23,
+  "checks": [
+    {
+      "command": "GOTOOLCHAIN=go1.26.6 go test ./pkg/catalogs/config -run '^TestProviderBindingSettingsReachRuntimeWithoutAmbientFallback$' -count=1",
+      "exit_code": 1,
+      "role": "fail-before",
+      "reason": "Four explicit-binding cases refused the unknown setting."
+    },
+    {
+      "command": "GOTOOLCHAIN=go1.26.6 go test -race -count=1 -timeout 5m -json ./pkg/catalogs/config ./internal/catalog/settings ./internal/cli/app",
+      "exit_code": 0,
+      "passed_test_events": 269,
+      "failed_test_events": 0,
+      "skipped_test_events": 0,
+      "packages": [
+        {
+          "package": "github.com/agentstation/starmap/internal/catalog/settings",
+          "status": "pass",
+          "elapsed_seconds": 11.784
+        },
+        {
+          "package": "github.com/agentstation/starmap/pkg/catalogs/config",
+          "status": "pass",
+          "elapsed_seconds": 30.094
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/cli/app",
+          "status": "pass",
+          "elapsed_seconds": 102.201
+        }
+      ]
+    },
+    {
+      "command": "GOTOOLCHAIN=go1.26.6 go test ./...",
+      "exit_code": 0,
+      "passed_packages": 79,
+      "no_test_packages": 22,
+      "note": "The final prose-only reference edit followed this run. Its generated reference passed the focused race check."
+    },
+    {
+      "command": "GOTOOLCHAIN=go1.26.6 go test -race ./internal/catalog/settings -run '^TestCatalogSettingsReferenceIsCurrent$' -args -update-settings-reference",
+      "exit_code": 0
+    },
+    {
+      "command": "GOTOOLCHAIN=go1.26.6 go tool ago -stale-ignores -format json ./...",
+      "exit_code": 0,
+      "findings": 0,
+      "errors": 0
+    },
+    {
+      "command": "devbox run -- golangci-lint run ./...",
+      "exit_code": 0,
+      "issues": 0
+    },
+    {
+      "command": "make generate",
+      "exit_code": 0
+    },
+    {
+      "command": "make technical-writing-check",
+      "exit_code": 0,
+      "files": 1055,
+      "diagnostics": 0
+    },
+    {
+      "command": "bash scripts/verify-catalog-product.sh --starport-root /Users/jack/src/github.com/agentstation/starport-catalog-lifecycle --task CSP3 --json",
+      "exit_code": 1,
+      "primary_passed": 0,
+      "primary_unverified": 50
+    }
+  ],
+  "preserved_failures": [
+    "The first package run failed because deployment examples omitted the new canonical name.",
+    "The first writing check reported four diagnostics. The corrected generated reference passed strict writing."
+  ],
+  "limitations": [
+    "Manual CLI and HTTP update adapters still use the standalone acquisition pipeline. They do not enforce the configured binding policy.",
+    "Starport adoption and operator UI integration remain open.",
+    "Binding declarations do not prove upstream account ownership.",
+    "CSP3 and all primary product acceptance cases remain incomplete.",
+    "These local commits have not passed the required pre-PR code review. No code push or native CI dispatch occurred."
+  ],
+  "code_inputs": [
+    {
+      "path": "internal/catalog/settings/reference_test.go",
+      "sha256": "c5308606ed613e1210ab00f108194196565d891f903f0882b6ded0894d8a9466"
+    },
+    {
+      "path": "internal/catalog/settings/settings.go",
+      "sha256": "f0c7ab46851168acd40fdf14b69e3f11dd5a864e3f58ee24697eb2e657d802fd"
+    },
+    {
+      "path": "internal/catalog/settings/settings_test.go",
+      "sha256": "495608dddf71678ef0334ed6c1a05c3e0ad96ce40c50dfd6c8ee083034ceb664"
+    },
+    {
+      "path": "internal/cli/app/catalog_file.go",
+      "sha256": "822f373b7698327be9078af2c3df92d6a3ec8250e3c044416bf17d642a408ab7"
+    },
+    {
+      "path": "internal/cli/app/catalog_file_test.go",
+      "sha256": "10f7543e89c136ae47ad78515ef36648ad5aff79bdd8d87eb5409062d869eb76"
+    },
+    {
+      "path": "pkg/catalogs/config/config_test.go",
+      "sha256": "5cb49ae72a70a7bc969af2a980c555c2444a317fa731f08fa49f34afc6e9264a"
+    },
+    {
+      "path": "pkg/catalogs/config/descriptors.go",
+      "sha256": "a61e346f84c2c87744de10230e3a61697d3f4835b31d5414cc9622d9c37a5c75"
+    },
+    {
+      "path": "pkg/catalogs/config/provider_bindings.go",
+      "sha256": "422df4c000084b10b50bc8b8c16599bde6a722cc5dd8f36491bfd959b94b1e28"
+    },
+    {
+      "path": "pkg/catalogs/config/provider_bindings_test.go",
+      "sha256": "e777038fb223a77fe264038ccae4e3cd321e0639e57e7ab80a227432475ddfd4"
+    },
+    {
+      "path": "pkg/catalogs/config/settings.go",
+      "sha256": "0140a565f5e99d1436c20a84c43c25f0706d3b155262f0850895eab38da636d9"
+    }
+  ],
+  "captures": [
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/binding-settings-red.log",
+      "bytes": 1105,
+      "sha256": "2ac229348365e88403e6e6e6964b3e4d417010e1464409189d3a92ab7cc7eec6"
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/binding-settings-race.jsonl",
+      "bytes": 255634,
+      "sha256": "93db33fbea2679da375f1271e0f4f17e34bd8685525e6890c1179e206b749cf9"
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/binding-settings-race-final.jsonl",
+      "bytes": 255360,
+      "sha256": "0f1db102c35dc081c9ea0fa45f598ae5d63a7541a1f08dabf3d89ee18ca1ca36"
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/binding-settings-all-tests.log",
+      "bytes": 7000,
+      "sha256": "e66f2819c2c84a45f08ef5f376b1bf1fb790ec2df3947b99486b18d8fb0c83d5"
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/binding-settings-ago-final.json",
+      "bytes": 289,
+      "sha256": "b8fb7afa66aa7a93914ac258475dd0191be821803a8aea4439f5ba05022f5fa5"
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/binding-settings-lint.log",
+      "bytes": 313,
+      "sha256": "32709c2b17f4d5abf64db997d8df20b5e258ac4b3e850611f6e536878fa526a9"
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/binding-settings-generate.log",
+      "bytes": 9934,
+      "sha256": "b0ee4861e0812aeafc51003a879b1b4a4a3aff823f6b35a8156378a9f16a415c"
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/binding-settings-reference-final.log",
+      "bytes": 70,
+      "sha256": "fb6df6fc5c64de7102a6b33a3d8d4430e1c7e7e77414d9a148cf3b8b80fe0160"
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/binding-settings-writing.log",
+      "bytes": 1237,
+      "sha256": "8e231089e10850cabf5aa03abde0990ba0b79ebaed97985950d7b36f818f08bd"
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/binding-settings-writing-final.log",
+      "bytes": 558,
+      "sha256": "70bf308f128bd3d6035ffb13fd518b840c70a15149389e31f64b797a3376a2ec"
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/binding-settings-acceptance.json",
+      "bytes": 7700,
+      "sha256": "0a5cc1a33899402e4135c4ef56e28730155c63025b771d83734fcab9c93df5bb"
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/binding-settings-documents.log",
+      "bytes": 3981,
+      "sha256": "7e422c731a5bfde7470711ccc9706f0cbec86bdeceff8f62b444f3be04d251e0"
+    }
+  ]
+}

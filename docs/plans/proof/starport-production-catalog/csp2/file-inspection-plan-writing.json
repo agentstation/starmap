@@ -1,0 +1,13 @@
+{
+  "command": [
+    "/Users/jack/.agents/skills/technical-writing/scripts/technical-writing",
+    "lint",
+    "docs/plans/proof/starport-production-catalog/csp2.md",
+    "docs/plans/starport-production-catalog-plan.html",
+    "--format",
+    "json"
+  ],
+  "exit_code": 0,
+  "stdout": "{\n  \"config_sources\": [\n    \"/Users/jack/.config/agentstation/technical-writing.toml\",\n    \"/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/.agents/technical-writing.toml\"\n  ],\n  \"documents\": [\n    {\n      \"diagnostics\": [],\n      \"passed\": true,\n      \"path\": \"/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/docs/plans/proof/starport-production-catalog/csp2.md\",\n      \"words\": 4529\n    },\n    {\n      \"diagnostics\": [],\n      \"passed\": true,\n      \"path\": \"/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/docs/plans/starport-production-catalog-plan.html\",\n      \"words\": 5047\n    }\n  ],\n  \"mode\": \"strict\",\n  \"passed\": true,\n  \"summary\": {\n    \"diagnostics\": 0,\n    \"errors\": 0,\n    \"files\": 2,\n    \"max_warnings_per_100_words\": 0.0,\n    \"warning_rate_per_100_words\": 0.0,\n    \"warnings\": 0\n  }\n}\n",
+  "stderr": ""
+}

@@ -1,0 +1,13 @@
+{
+  "command": [
+    "docker",
+    "image",
+    "inspect",
+    "cgr.dev/chainguard/static@sha256:60582b2ae6074f641094af0f370d4ab241aab271858a66223dcde7eee9f51638",
+    "--format",
+    "{{.Os}} {{.Architecture}} {{.Id}}"
+  ],
+  "exit_code": 0,
+  "stdout": "linux arm64 sha256:60582b2ae6074f641094af0f370d4ab241aab271858a66223dcde7eee9f51638\n",
+  "stderr": ""
+}

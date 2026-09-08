@@ -1,0 +1,27 @@
+--- FAIL: TestManualBindingsPreserveReceiptsHealthAndPreview (0.00s)
+    provider_bindings_test.go:81: failed to validate authored model author/one: validation failed for field authored_model.authors: primary author must match the containing author
+--- FAIL: TestManualBindingsValidateBeforeSourceWork (0.00s)
+    --- FAIL: TestManualBindingsValidateBeforeSourceWork/duplicate (0.00s)
+        provider_bindings_test.go:155: failed to validate authored model author/one: validation failed for field authored_model.authors: primary author must match the containing author
+    --- FAIL: TestManualBindingsValidateBeforeSourceWork/schema (0.00s)
+        provider_bindings_test.go:155: failed to validate authored model author/one: validation failed for field authored_model.authors: primary author must match the containing author
+    --- FAIL: TestManualBindingsValidateBeforeSourceWork/profile (0.00s)
+        provider_bindings_test.go:155: failed to validate authored model author/one: validation failed for field authored_model.authors: primary author must match the containing author
+    --- FAIL: TestManualBindingsValidateBeforeSourceWork/provider (0.00s)
+        provider_bindings_test.go:155: failed to validate authored model author/one: validation failed for field authored_model.authors: primary author must match the containing author
+    --- FAIL: TestManualBindingsValidateBeforeSourceWork/unbound-filter (0.00s)
+        provider_bindings_test.go:155: failed to validate authored model author/one: validation failed for field authored_model.authors: primary author must match the containing author
+--- FAIL: TestManualBindingsEmptyAndSourceSelection (0.00s)
+    --- FAIL: TestManualBindingsEmptyAndSourceSelection/empty (0.00s)
+        provider_bindings_test.go:190: failed to validate authored model author/one: validation failed for field authored_model.authors: primary author must match the containing author
+    --- FAIL: TestManualBindingsEmptyAndSourceSelection/embedded (0.00s)
+        provider_bindings_test.go:190: failed to validate authored model author/one: validation failed for field authored_model.authors: primary author must match the containing author
+    --- FAIL: TestManualBindingsEmptyAndSourceSelection/filtered (0.00s)
+        provider_bindings_test.go:190: failed to validate authored model author/one: validation failed for field authored_model.authors: primary author must match the containing author
+--- FAIL: TestStrictManualBindingsRequireExactSelection (0.00s)
+    provider_bindings_test.go:225: failed to validate authored model author/one: validation failed for field authored_model.authors: primary author must match the containing author
+--- FAIL: TestManualBindingVolumeUsesOnlyMatchingHistory (0.00s)
+    provider_bindings_test.go:278: failed to validate authored model author/one: validation failed for field authored_model.authors: primary author must match the containing author
+FAIL
+FAIL	github.com/agentstation/starmap/internal/catalog/pipeline	0.413s
+FAIL

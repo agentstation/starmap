@@ -1,0 +1,9 @@
+{
+  "command": [
+    "bash",
+    "scripts/verify-doc-links.sh"
+  ],
+  "exit_code": 0,
+  "stdout": "PASS documentation links\n",
+  "stderr": ""
+}

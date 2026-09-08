@@ -1,0 +1,74 @@
+[
+  {
+    "command": [
+      "env",
+      "GOTOOLCHAIN=go1.25.12",
+      "GOOS=windows",
+      "GOARCH=amd64",
+      "CGO_ENABLED=0",
+      "go",
+      "test",
+      "-c",
+      "-o",
+      "/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/csp2-constructor-windows-r3s60xb3/check-amd64.exe",
+      "."
+    ],
+    "exit_code": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "env",
+      "GOTOOLCHAIN=go1.25.12",
+      "GOOS=windows",
+      "GOARCH=arm64",
+      "CGO_ENABLED=0",
+      "go",
+      "test",
+      "-c",
+      "-o",
+      "/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/csp2-constructor-windows-r3s60xb3/check-arm64.exe",
+      "."
+    ],
+    "exit_code": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "env",
+      "GOTOOLCHAIN=go1.25.12",
+      "GOOS=windows",
+      "GOARCH=amd64",
+      "CGO_ENABLED=0",
+      "go",
+      "test",
+      "-c",
+      "-o",
+      "/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/csp2-constructor-windows-r3s60xb3/check-amd64.exe",
+      "./runtime"
+    ],
+    "exit_code": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "env",
+      "GOTOOLCHAIN=go1.25.12",
+      "GOOS=windows",
+      "GOARCH=arm64",
+      "CGO_ENABLED=0",
+      "go",
+      "test",
+      "-c",
+      "-o",
+      "/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/csp2-constructor-windows-r3s60xb3/check-arm64.exe",
+      "./runtime"
+    ],
+    "exit_code": 0,
+    "stdout": "",
+    "stderr": ""
+  }
+]

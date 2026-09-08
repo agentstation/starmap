@@ -1,0 +1,13 @@
+{
+  "command": [
+    "bash",
+    "scripts/verify-catalog-product.sh",
+    "--starport-root",
+    "/Users/jack/src/github.com/agentstation/starport-catalog-lifecycle",
+    "--all",
+    "--json"
+  ],
+  "exit_code": 127,
+  "stdout": "",
+  "stderr": "bash: scripts/verify-catalog-product.sh: No such file or directory\n"
+}

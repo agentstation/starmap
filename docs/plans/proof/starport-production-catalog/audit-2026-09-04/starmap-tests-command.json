@@ -1,0 +1,18 @@
+{
+  "cwd": "/Users/jack/src/github.com/agentstation/starmap-catalog-requirements",
+  "command": [
+    "go",
+    "test",
+    "-race",
+    "-count=1",
+    "-json",
+    "-timeout",
+    "5m",
+    "./runtime",
+    "./internal/catalog/settings",
+    "./internal/cli/app",
+    "./acquisition",
+    "./pkg/catalogs/storage"
+  ],
+  "exit_code": 0
+}

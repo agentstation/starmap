@@ -1,0 +1,24 @@
+{"Time":"2026-09-06T21:48:49.740559-05:00","Action":"start","Package":"github.com/agentstation/starmap/runtime"}
+{"Time":"2026-09-06T21:48:50.178746-05:00","Action":"run","Package":"github.com/agentstation/starmap/runtime","Test":"TestProviderBindingReceiptSurvivesRetentionAndRestart"}
+{"Time":"2026-09-06T21:48:50.17884-05:00","Action":"output","Package":"github.com/agentstation/starmap/runtime","Test":"TestProviderBindingReceiptSurvivesRetentionAndRestart","Output":"=== RUN   TestProviderBindingReceiptSurvivesRetentionAndRestart\n"}
+{"Time":"2026-09-06T21:48:50.224577-05:00","Action":"output","Package":"github.com/agentstation/starmap/runtime","Test":"TestProviderBindingReceiptSurvivesRetentionAndRestart","Output":"--- PASS: TestProviderBindingReceiptSurvivesRetentionAndRestart (0.05s)\n"}
+{"Time":"2026-09-06T21:48:50.224615-05:00","Action":"pass","Package":"github.com/agentstation/starmap/runtime","Test":"TestProviderBindingReceiptSurvivesRetentionAndRestart","Elapsed":0.05}
+{"Time":"2026-09-06T21:48:50.226019-05:00","Action":"run","Package":"github.com/agentstation/starmap/runtime","Test":"TestProviderScopesRetainIndependentObservations"}
+{"Time":"2026-09-06T21:48:50.226033-05:00","Action":"output","Package":"github.com/agentstation/starmap/runtime","Test":"TestProviderScopesRetainIndependentObservations","Output":"=== RUN   TestProviderScopesRetainIndependentObservations\n"}
+{"Time":"2026-09-06T21:48:50.226081-05:00","Action":"run","Package":"github.com/agentstation/starmap/runtime","Test":"TestProviderScopesRetainIndependentObservations/memory"}
+{"Time":"2026-09-06T21:48:50.226087-05:00","Action":"output","Package":"github.com/agentstation/starmap/runtime","Test":"TestProviderScopesRetainIndependentObservations/memory","Output":"=== RUN   TestProviderScopesRetainIndependentObservations/memory\n"}
+{"Time":"2026-09-06T21:48:50.242204-05:00","Action":"output","Package":"github.com/agentstation/starmap/runtime","Test":"TestProviderScopesRetainIndependentObservations/memory","Output":"--- PASS: TestProviderScopesRetainIndependentObservations/memory (0.02s)\n"}
+{"Time":"2026-09-06T21:48:50.242307-05:00","Action":"pass","Package":"github.com/agentstation/starmap/runtime","Test":"TestProviderScopesRetainIndependentObservations/memory","Elapsed":0.02}
+{"Time":"2026-09-06T21:48:50.242318-05:00","Action":"run","Package":"github.com/agentstation/starmap/runtime","Test":"TestProviderScopesRetainIndependentObservations/disk"}
+{"Time":"2026-09-06T21:48:50.242323-05:00","Action":"output","Package":"github.com/agentstation/starmap/runtime","Test":"TestProviderScopesRetainIndependentObservations/disk","Output":"=== RUN   TestProviderScopesRetainIndependentObservations/disk\n"}
+{"Time":"2026-09-06T21:48:50.30132-05:00","Action":"output","Package":"github.com/agentstation/starmap/runtime","Test":"TestProviderScopesRetainIndependentObservations/disk","Output":"--- PASS: TestProviderScopesRetainIndependentObservations/disk (0.06s)\n"}
+{"Time":"2026-09-06T21:48:50.301359-05:00","Action":"pass","Package":"github.com/agentstation/starmap/runtime","Test":"TestProviderScopesRetainIndependentObservations/disk","Elapsed":0.06}
+{"Time":"2026-09-06T21:48:50.30137-05:00","Action":"output","Package":"github.com/agentstation/starmap/runtime","Test":"TestProviderScopesRetainIndependentObservations","Output":"--- PASS: TestProviderScopesRetainIndependentObservations (0.08s)\n"}
+{"Time":"2026-09-06T21:48:50.301375-05:00","Action":"pass","Package":"github.com/agentstation/starmap/runtime","Test":"TestProviderScopesRetainIndependentObservations","Elapsed":0.08}
+{"Time":"2026-09-06T21:48:50.301433-05:00","Action":"run","Package":"github.com/agentstation/starmap/runtime","Test":"TestProviderScopeChangeRequiresNewRevision"}
+{"Time":"2026-09-06T21:48:50.301446-05:00","Action":"output","Package":"github.com/agentstation/starmap/runtime","Test":"TestProviderScopeChangeRequiresNewRevision","Output":"=== RUN   TestProviderScopeChangeRequiresNewRevision\n"}
+{"Time":"2026-09-06T21:48:50.332654-05:00","Action":"output","Package":"github.com/agentstation/starmap/runtime","Test":"TestProviderScopeChangeRequiresNewRevision","Output":"--- PASS: TestProviderScopeChangeRequiresNewRevision (0.03s)\n"}
+{"Time":"2026-09-06T21:48:50.332717-05:00","Action":"pass","Package":"github.com/agentstation/starmap/runtime","Test":"TestProviderScopeChangeRequiresNewRevision","Elapsed":0.03}
+{"Time":"2026-09-06T21:48:50.335028-05:00","Action":"output","Package":"github.com/agentstation/starmap/runtime","Output":"PASS\n"}
+{"Time":"2026-09-06T21:48:51.337183-05:00","Action":"output","Package":"github.com/agentstation/starmap/runtime","Output":"ok  \tgithub.com/agentstation/starmap/runtime\t1.596s\n"}
+{"Time":"2026-09-06T21:48:51.33723-05:00","Action":"pass","Package":"github.com/agentstation/starmap/runtime","Elapsed":1.597}

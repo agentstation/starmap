@@ -1,0 +1,38 @@
+{
+  "inputs": {
+    "docs/plans/starport-production-catalog-plan.html": "fb70915595383dbe5d1acec6fe5be735232f72599afaee38b3a1cbcff5c61931",
+    "docs/plans/proof/starport-production-catalog/csp2.md": "4d353a17b31517338edde198d0453c59871d41b3d3227e808e752827f4b72e45",
+    "docs/plans/proof/starport-production-catalog/csp3.md": "73a70642a2940dfb9bbacfb1e6cec091d666a7c60ef8bc50c357d625143311a8",
+    "docs/design/catalog-lifecycle/ENGINEERING_SPEC.md": "888225e8f17bac9143b8365237518d484ce4c7eafb45934ae6d5a6cbc07fd2db",
+    "docs/design/catalog-lifecycle/REPOSITORY_FINDINGS.md": "700e27b90979c176c8a416da43985aadda6865fe7190d201bbe31402f840c0b1",
+    "docs/CATALOG_STORE_CONTRACT.md": "65d71d5eec6b94d622cf2c8e74327df4cb3012ceaa5c6d6d600dd2cf0d7ae933"
+  },
+  "results": [
+    {
+      "command": [
+        "/Users/jack/.agents/skills/technical-writing/scripts/technical-writing",
+        "lint",
+        "docs/plans/starport-production-catalog-plan.html",
+        "docs/plans/proof/starport-production-catalog/csp2.md",
+        "docs/plans/proof/starport-production-catalog/csp3.md",
+        "docs/design/catalog-lifecycle/ENGINEERING_SPEC.md",
+        "docs/design/catalog-lifecycle/REPOSITORY_FINDINGS.md",
+        "docs/CATALOG_STORE_CONTRACT.md",
+        "--format",
+        "text"
+      ],
+      "exit_code": 0,
+      "stdout": "PASS: 6 file(s), 0 diagnostic(s)\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "make",
+        "technical-writing-check"
+      ],
+      "exit_code": 2,
+      "stdout": "/Users/jack/.agents/skills/technical-writing/scripts/technical-writing glossary check\nPASS: /Users/jack/src/github.com/agentstation/starmap-catalog-requirements/GLOSSARY.md (80 term(s), 0 error(s))\n/Users/jack/.agents/skills/technical-writing/scripts/technical-writing glossary update --check\nPASS: no candidate terms are missing from /Users/jack/src/github.com/agentstation/starmap-catalog-requirements/GLOSSARY.md\n/Users/jack/.agents/skills/technical-writing/scripts/technical-writing lint . --mode strict --format text\n/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/docs/plans/proof/starport-production-catalog/storage-revision-2026-09-05/document_structure.txt:1:1: error long_sentence: sentence has 30 words; limit is 25\n/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/docs/plans/proof/starport-production-catalog/storage-revision-2026-09-05/starmap_writing.txt:1:1: error long_sentence: sentence has 38 words; limit is 25\n/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/docs/plans/proof/starport-production-catalog/storage-revision-2026-09-05/starmap_writing.txt:4:26: error ing_main_verb: prefer a simple verb form\nFAIL: 1018 file(s), 3 diagnostic(s)\n",
+      "stderr": "make: *** [technical-writing-check] Error 1\n"
+    }
+  ]
+}

@@ -1,0 +1,5 @@
+--- FAIL: TestManualBindingVolumeCannotBorrowAnotherProviderHistory (0.00s)
+    provider_bindings_test.go:344: Build: failed to validate catalog identities: credential environment conflict: "FIXTURE_BINDING_KEY" resolves to both "another-provider/api-key" and "provider/api-key"
+FAIL
+FAIL	github.com/agentstation/starmap/internal/catalog/pipeline	0.419s
+FAIL

@@ -1,0 +1,65 @@
+[
+  {
+    "command": [
+      "bash",
+      "scripts/verify-package-layout.sh"
+    ],
+    "exit_code": 0,
+    "stdout": "ok  \tgithub.com/agentstation/starmap/internal/architecture\t0.262s\npackage-layout verification passed\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "bash",
+      "scripts/verify-catalog-dependency-direction.sh"
+    ],
+    "exit_code": 0,
+    "stdout": "SM-D01 PASS: catalogs does not import private authority policy\nSM-D02 PASS: catalogs does not import repository-wide constants\nSM-D03 PASS: catalogs does not import the private embedded filesystem\nSM-D04 PASS: catalogs does not import private source payload policy\nSM-D05 PASS: catalog artifacts do not import repository-wide constants\nSM-D06 PASS: catalog remote transport does not import repository-wide constants\nSM-D07 PASS: catalog storage does not import repository-wide constants\nSM-D08 PASS: catalog S3 storage does not import repository-wide constants\nSummary: 8 passed, 0 failed\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "golangci-lint",
+      "run"
+    ],
+    "exit_code": 0,
+    "stdout": "0 issues.\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "env",
+      "GOTOOLCHAIN=go1.25.12",
+      "GOOS=windows",
+      "GOARCH=amd64",
+      "CGO_ENABLED=0",
+      "go",
+      "test",
+      "-c",
+      "-o",
+      "/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-reader-cross-sr92uo14/workspace-amd64.exe",
+      "./internal/catalog/workspace"
+    ],
+    "exit_code": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "env",
+      "GOTOOLCHAIN=go1.25.12",
+      "GOOS=windows",
+      "GOARCH=arm64",
+      "CGO_ENABLED=0",
+      "go",
+      "test",
+      "-c",
+      "-o",
+      "/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-reader-cross-sr92uo14/workspace-arm64.exe",
+      "./internal/catalog/workspace"
+    ],
+    "exit_code": 0,
+    "stdout": "",
+    "stderr": ""
+  }
+]

@@ -1,0 +1,233 @@
+{
+  "starmap_module": "/Users/jack/go/pkg/mod/github.com/agentstation/starmap@v0.16.5",
+  "completed": [
+    {
+      "command": [
+        "bash",
+        "scripts/test-dependency-direction-verifier.sh"
+      ],
+      "exit_code": 0,
+      "seconds": 0.616,
+      "log": "publication-starport-required-00.log"
+    },
+    {
+      "command": [
+        "bash",
+        "scripts/verify-dependency-direction.sh"
+      ],
+      "exit_code": 0,
+      "seconds": 0.643,
+      "log": "publication-starport-required-01.log"
+    },
+    {
+      "command": [
+        "bash",
+        "scripts/verify-catalog-driven-providers.sh"
+      ],
+      "exit_code": 0,
+      "seconds": 133.465,
+      "log": "publication-starport-required-02.log"
+    },
+    {
+      "command": [
+        "bash",
+        "scripts/verify-package-layout.sh"
+      ],
+      "exit_code": 0,
+      "seconds": 5.807,
+      "log": "publication-starport-required-03.log"
+    },
+    {
+      "command": [
+        "bash",
+        "scripts/verify-readme-quickstart.sh"
+      ],
+      "exit_code": 0,
+      "seconds": 0.041,
+      "log": "publication-starport-required-04.log"
+    },
+    {
+      "command": [
+        "bash",
+        "scripts/verify-openrouter-parity.sh"
+      ],
+      "exit_code": 0,
+      "seconds": 0.083,
+      "log": "publication-starport-required-05.log"
+    },
+    {
+      "command": [
+        "bash",
+        "scripts/verify-console-modernization.sh"
+      ],
+      "exit_code": 0,
+      "seconds": 0.027,
+      "log": "publication-starport-required-06.log"
+    },
+    {
+      "command": [
+        "bash",
+        "scripts/verify-auth-onboarding.sh"
+      ],
+      "exit_code": 0,
+      "seconds": 0.052,
+      "log": "publication-starport-required-07.log"
+    },
+    {
+      "command": [
+        "bash",
+        "scripts/verify-console-session-grants.sh"
+      ],
+      "exit_code": 0,
+      "seconds": 0.297,
+      "log": "publication-starport-required-08.log"
+    },
+    {
+      "command": [
+        "bash",
+        "scripts/verify-model-modalities.sh"
+      ],
+      "exit_code": 0,
+      "seconds": 0.194,
+      "log": "publication-starport-required-09.log"
+    },
+    {
+      "command": [
+        "bash",
+        "scripts/verify-files-api.sh"
+      ],
+      "exit_code": 0,
+      "seconds": 0.096,
+      "log": "publication-starport-required-10.log"
+    },
+    {
+      "command": [
+        "bash",
+        "scripts/verify-async-media-jobs.sh"
+      ],
+      "exit_code": 0,
+      "seconds": 0.118,
+      "log": "publication-starport-required-11.log"
+    },
+    {
+      "command": [
+        "bash",
+        "scripts/verify-document-parser.sh"
+      ],
+      "exit_code": 0,
+      "seconds": 0.143,
+      "log": "publication-starport-required-12.log"
+    },
+    {
+      "command": [
+        "bash",
+        "scripts/verify-reranking.sh"
+      ],
+      "exit_code": 0,
+      "seconds": 0.293,
+      "log": "publication-starport-required-13.log"
+    },
+    {
+      "command": [
+        "bash",
+        "scripts/verify-catalog-performance.sh"
+      ],
+      "exit_code": 0,
+      "seconds": 0.196,
+      "log": "publication-starport-required-14.log"
+    },
+    {
+      "command": [
+        "bash",
+        "scripts/verify-credential-sharing.sh"
+      ],
+      "exit_code": 0,
+      "seconds": 0.142,
+      "log": "publication-starport-required-15.log"
+    },
+    {
+      "command": [
+        "bash",
+        "scripts/verify-enterprise-readiness.sh"
+      ],
+      "exit_code": 0,
+      "seconds": 0.691,
+      "log": "publication-starport-required-16.log"
+    },
+    {
+      "command": [
+        "bash",
+        "scripts/verify-console-polish.sh"
+      ],
+      "exit_code": 0,
+      "seconds": 0.14,
+      "log": "publication-starport-required-17.log"
+    },
+    {
+      "command": [
+        "bash",
+        "scripts/verify-action-pins.sh"
+      ],
+      "exit_code": 0,
+      "seconds": 6.156,
+      "log": "publication-starport-required-18.log"
+    },
+    {
+      "command": [
+        "bash",
+        "scripts/benchmark-overhead.sh"
+      ],
+      "exit_code": 0,
+      "seconds": 7.021,
+      "log": "publication-starport-required-19.log"
+    },
+    {
+      "command": [
+        "bash",
+        "scripts/smoke-first-run.sh"
+      ],
+      "exit_code": 0,
+      "seconds": 16.78,
+      "log": "publication-starport-required-20.log"
+    },
+    {
+      "command": [
+        "go",
+        "test",
+        "./..."
+      ],
+      "exit_code": 0,
+      "seconds": 5.343,
+      "log": "publication-starport-required-21.log"
+    },
+    {
+      "command": [
+        "go",
+        "vet",
+        "./..."
+      ],
+      "exit_code": 0,
+      "seconds": 1.692,
+      "log": "publication-starport-required-22.log"
+    },
+    {
+      "command": [
+        "make",
+        "build"
+      ],
+      "exit_code": 0,
+      "seconds": 10.894,
+      "log": "publication-starport-required-23.log"
+    },
+    {
+      "command": [
+        "bash",
+        "scripts/smoke-openrouter-sdks.sh"
+      ],
+      "exit_code": 0,
+      "seconds": 15.446,
+      "log": "publication-starport-required-24.log"
+    }
+  ],
+  "remaining": []
+}

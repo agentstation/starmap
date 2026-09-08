@@ -1,0 +1,520 @@
+
+ RUN  v4.1.11 /Users/jack/src/github.com/agentstation/starport-catalog-lifecycle/console
+
+Not implemented: Window's scrollTo() method
+Not implemented: Window's scrollTo() method
+Not implemented: Window's scrollTo() method
+Not implemented: Window's scrollTo() method
+Not implemented: Window's scrollTo() method
+Not implemented: Window's scrollTo() method
+Not implemented: Window's scrollTo() method
+Not implemented: Window's scrollTo() method
+Not implemented: Window's scrollTo() method
+Not implemented: navigation to another Document
+Not implemented: Window's scrollTo() method
+Not implemented: Window's scrollTo() method
+Not implemented: Window's scrollTo() method
+Not implemented: Window's scrollTo() method
+Not implemented: Window's scrollTo() method
+Not implemented: Window's scrollTo() method
+Not implemented: Window's scrollTo() method
+Not implemented: Window's scrollTo() method
+Not implemented: Window's scrollTo() method
+Not implemented: Window's scrollTo() method
+Not implemented: Window's scrollTo() method
+Not implemented: Window's scrollTo() method
+Not implemented: Window's scrollTo() method
+Not implemented: Window's scrollTo() method
+Not implemented: Window's scrollTo() method
+Not implemented: Window's scrollTo() method
+Not implemented: Window's scrollTo() method
+Not implemented: Window's scrollTo() method
+Not implemented: Window's scrollTo() method
+Not implemented: Window's scrollTo() method
+Not implemented: Window's scrollTo() method
+Not implemented: Window's scrollTo() method
+Not implemented: Window's scrollTo() method
+Not implemented: Window's scrollTo() method
+Not implemented: Window's scrollTo() method
+Not implemented: Window's scrollTo() method
+Not implemented: Window's scrollTo() method
+Not implemented: Window's scrollTo() method
+Not implemented: Window's scrollTo() method
+Not implemented: Window's scrollTo() method
+Not implemented: Window's scrollTo() method
+Not implemented: Window's scrollTo() method
+Not implemented: Window's scrollTo() method
+Not implemented: Window's scrollTo() method
+Not implemented: Window's scrollTo() method
+Not implemented: Window's scrollTo() method
+Not implemented: Window's scrollTo() method
+Not implemented: Window's scrollTo() method
+Not implemented: Window's scrollTo() method
+Not implemented: Window's scrollTo() method
+Not implemented: Window's scrollTo() method
+Not implemented: Window's scrollTo() method
+Not implemented: Window's scrollTo() method
+Not implemented: Window's scrollTo() method
+Not implemented: Window's scrollTo() method
+Not implemented: Window's scrollTo() method
+Not implemented: Window's scrollTo() method
+Not implemented: Window's scrollTo() method
+Not implemented: Window's scrollTo() method
+Not implemented: Window's scrollTo() method
+Not implemented: Window's scrollTo() method
+Not implemented: Window's scrollTo() method
+Not implemented: Window's scrollTo() method
+Not implemented: Window's scrollTo() method
+(node:72844) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+Not implemented: Window's scrollTo() method
+Not implemented: Window's scrollTo() method
+Not implemented: Window's scrollTo() method
+Not implemented: Window's scrollTo() method
+Not implemented: Window's scrollTo() method
+Not implemented: Window's scrollTo() method
+Not implemented: Window's scrollTo() method
+Not implemented: Window's scrollTo() method
+Not implemented: Window's scrollTo() method
+Not implemented: Window's scrollTo() method
+Not implemented: Window's scrollTo() method
+Not implemented: Window's scrollTo() method
+Not implemented: Window's scrollTo() method
+Not implemented: Window's scrollTo() method
+Not implemented: Window's scrollTo() method
+Not implemented: Window's scrollTo() method
+Not implemented: Window's scrollTo() method
+Not implemented: Window's scrollTo() method
+Not implemented: Window's scrollTo() method
+Not implemented: Window's scrollTo() method
+Not implemented: Window's scrollTo() method
+(node:73040) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+Not implemented: Window's scrollTo() method
+Not implemented: Window's scrollTo() method
+(node:73098) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:73100) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:73101) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+Not implemented: Window's scrollTo() method
+Not implemented: Window's scrollTo() method
+Not implemented: Window's scrollTo() method
+Not implemented: Window's scrollTo() method
+ ❯ src/routes/compactScreen.test.tsx (4 tests | 2 failed) 2184ms
+   × an 800 px screen gets the icon rail, and expanding it opens an overlay 1025ms
+   × Escape and the backdrop close the overlay, and the preference is untouched 1007ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/routes/compactScreen.test.tsx > an 800 px screen gets the icon rail, and expanding it opens an overlay
+TestingLibraryElementError: Unable to find role="navigation" and name "Console"
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<div[39m
+      [33mclass[39m=[32m"documentation-shell"[39m
+    [36m>[39m
+      [36m<main[39m
+        [33mclass[39m=[32m"documentation mx-auto flex w-full flex-col gap-6"[39m
+      [36m>[39m
+        [36m<nav[39m
+          [33maria-label[39m=[32m"Documentation navigation"[39m
+          [33mclass[39m=[32m"flex flex-wrap items-center justify-between gap-3"[39m
+        [36m>[39m
+          [36m<span[39m
+            [33mclass[39m=[32m"font-semibold text-text-1"[39m
+          [36m>[39m
+            [0mStarport[0m
+          [36m</span>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"flex flex-wrap items-center gap-4"[39m
+          [36m>[39m
+            [36m<button[39m
+              [33maria-label[39m=[32m"Switch to light theme"[39m
+              [33mclass[39m=[32m"text-text-2 hover:underline"[39m
+              [33mtype[39m=[32m"button"[39m
+            [36m>[39m
+              [0mDark theme[0m
+            [36m</button>[39m
+            [36m<a[39m
+              [33mclass[39m=[32m"text-accent-link hover:underline"[39m
+              [33mhref[39m=[32m"/"[39m
+            [36m>[39m
+              [0mOpen console[0m
+            [36m</a>[39m
+          [36m</div>[39m
+        [36m</nav>[39m
+        [36m<div>[39m
+          [36m<h1[39m
+            [33mclass[39m=[32m"font-semibold tracking-[-0.01em]"[39m
+          [36m>[39m
+            [0mDocumentation[0m
+          [36m</h1>[39m
+          [36m<p[39m
+            [33mclass[39m=[32m"mt-2 text-text-2"[39m
+          [36m>[39m
+            [0mHow to call, manage, and run the Starport gateway.[0m
+          [36m</p>[39m
+        [36m</div>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"group/tabs flex flex-col gap-3"[39m
+          [33mdata-activation-direction[39m=[32m"none"[39m
+          [33mdata-orientation[39m=[32m"horizontal"[39m
+          [33mdata-slot[39m=[32m"tabs"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33maria-label[39m=[32m"Documentation audience"[39m
+            [33mclass[39m=[32m"group/tabs-list flex flex-wrap items-center gap-2"[39m
+            [33mdata-activation-direction[39m=[32m"none"[39m
+            [33mdata-orientation[39m=[32m"horizontal"[39m
+            [33mdata-slot[39m=[32m"tabs-list"[39m
+            [33mdata-variant[39m=[32m"chips"[39m
+            [33mrole[39m=[32m"tablist"[39m
+          [36m>[39m
+            [36m<button[39m
+              [33maria-controls[39m=[32m"base-ui-_r_3_"[39m
+              [33maria-disabled[39m=[32m"false"[39m
+              [33maria-selected[39m=[32m"true"[39m
+              [33mclass[39m=[32m"relative inline-flex items-center gap-1.5 whitespace-nowrap text-sm transition-colors duration-150 ease-standard outline-none focus-visible:ring-2 focus-visible:ring-accent/50 disabled:pointer-events-none disabled:opacity-50 group-data-[variant=line]/tabs-list:h-9 group-data-[variant=line]/tabs-list:rounded-t-xs group-data-[variant=line]/tabs-list:px-3 group-data-[variant=line]/tabs-list:text-text-3 group-data-[variant=line]/tabs-list:hover:text-text-1 group-data-[variant=line]/tabs-list:data-active:text-text-1 group-data-[variant=line]/tabs-list:after:absolute group-data-[variant=line]/tabs-list:after:inset-x-0 group-data-[variant=line]/tabs-list:after:-bottom-px group-data-[variant=line]/tabs-list:after:h-0.5 group-data-[variant=line]/tabs-list:after:bg-accent group-data-[variant=line]/tabs-list:after:opacity-0 group-data-[variant=line]/tabs-list:data-active:after:opacity-100 group-data-[variant=chips]/tabs-list:h-9 group-data-[variant=chips]/tabs-list:rounded-sm group-data-[variant=chips]/tabs-list:border group-data-[variant=chips]/tabs-list:border-border-1 group-data-[variant=chips]/tabs-list:bg-bg-panel group-data-[variant=chips]/tabs-list:px-3 group-data-[variant=chips]/tabs-list:text-text-3 group-data-[variant=chips]/tabs-list:hover:border-border-2 group-data-[variant=chips]/tabs-list:hover:text-text-2 group-data-[variant=chips]/tabs-list:data-active:border-border-3 group-data-[variant=chips]/tabs-list:data-active:bg-bg-raised group-data-[variant=chips]/tabs-list:data-active:text-text-1"[39m
+              [33mdata-activation-direction[39m=[32m"none"[39m
+              [33mdata-active[39m=[32m""[39m
+              [33mdata-composite-item-active[39m=[32m""[39m
+              [33mdata-orientation[39m=[32m"horizontal"[39m
+              [33mdata-slot[39m=[32m"tabs-trigger"[39m
+              [33mid[39m=[32m"base-ui-_r_0_"[39m
+              [33mrole[39m=[32m"tab"[39m
+              [33mtabindex[39m=[32m"0"[39m
+              [33mtype[39m=[32m"button"[39m
+            [36m>[39m
+              [0mBuild with Starport[0m
+            [36m</button>[39m
+            [36m<button[39m
+              [33maria-disabled[39m=[32m"false"[39m
+              [33maria-selected[39m=[32m"false"[39m
+              [33mclass[39m=[32m"relative inline-flex items-center gap-1.5 whitespace-nowrap text-sm transition-colors duration-150 ease-standard outline-none focus-visible:ring-2 focus-visible:ring-accent/50 disabled:pointer-events-none disabled:opacity-50 group-data-[variant=line]/tabs-list:h-9 group-data-[variant=line]/tabs-list:rounded-t-xs group-data-[variant=line]/tabs-list:px-3 group-data-[variant=line]/tabs-list:text-text-3 group-data-[variant=line]/tabs-list:hover:text-text-1 group-data-[variant=line]/tabs-list:data-active:text-text-1 group-data-[variant=line]/tabs-list:after:absolute group-data-[variant=line]/tabs-list:after:inset-x-0 group-data-[variant=line]/tabs-list:after:-bottom-px group-data-[variant=line]/tabs-list:after:h-0.5 group-data-[variant=line]/tabs-list:after:bg-accent group-data-[variant=line]/tabs-list:after:opacity-0 group-data-[variant=line]/tabs-list:data-active:after:opacity-100 group-data-[variant=chips]/tabs-list:h-9 group-data-[variant=chips]/tabs-list:rounded-sm group-data-[variant=chips]/tabs-list:border group-data-[variant=chips]/tabs-list:border-border-1 group-data-[variant=chips]/tabs-list:bg-bg-panel group-data-[variant=chips]/tabs-list:px-3 group-data-[variant=chips]/tabs-list:text-text-3 group-data-[variant=chips]/tabs-list:hover:border-border-2 group-data-[variant=chips]/tabs-list:hover:text-text-2 group-data-[variant=chips]/tabs-list:data-active:border-border-3 group-data-[variant=chips]/tabs-list:data-active:bg-bg-raised group-data-[variant=chips]/tabs-list:data-active:text-text-1"[39m
+              [33mdata-activation-direction[39m=[32m"none"[39m
+              [33mdata-orientation[39m=[32m"horizontal"[39m
+              [33mdata-slot[39m=[32m"tabs-trigger"[39m
+              [33mid[39m=[32m"base-ui-_r_1_"[39m
+              [33mrole[39m=[32m"tab"[39m
+              [33mtabindex[39m=[32m"-1"[39m
+              [33mtype[39m=[32m"button"[39m
+            [36m>[39m
+        ...
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<div[39m
+      [33mclass[39m=[32m"documentation-shell"[39m
+    [36m>[39m
+      [36m<main[39m
+        [33mclass[39m=[32m"documentation mx-auto flex w-full flex-col gap-6"[39m
+      [36m>[39m
+        [36m<nav[39m
+          [33maria-label[39m=[32m"Documentation navigation"[39m
+          [33mclass[39m=[32m"flex flex-wrap items-center justify-between gap-3"[39m
+        [36m>[39m
+          [36m<span[39m
+            [33mclass[39m=[32m"font-semibold text-text-1"[39m
+          [36m>[39m
+            [0mStarport[0m
+          [36m</span>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"flex flex-wrap items-center gap-4"[39m
+          [36m>[39m
+            [36m<button[39m
+              [33maria-label[39m=[32m"Switch to light theme"[39m
+              [33mclass[39m=[32m"text-text-2 hover:underline"[39m
+              [33mtype[39m=[32m"button"[39m
+            [36m>[39m
+              [0mDark theme[0m
+            [36m</button>[39m
+            [36m<a[39m
+              [33mclass[39m=[32m"text-accent-link hover:underline"[39m
+              [33mhref[39m=[32m"/"[39m
+            [36m>[39m
+              [0mOpen console[0m
+            [36m</a>[39m
+          [36m</div>[39m
+        [36m</nav>[39m
+        [36m<div>[39m
+          [36m<h1[39m
+            [33mclass[39m=[32m"font-semibold tracking-[-0.01em]"[39m
+          [36m>[39m
+            [0mDocumentation[0m
+          [36m</h1>[39m
+          [36m<p[39m
+            [33mclass[39m=[32m"mt-2 text-text-2"[39m
+          [36m>[39m
+            [0mHow to call, manage, and run the Starport gateway.[0m
+          [36m</p>[39m
+        [36m</div>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"group/tabs flex flex-col gap-3"[39m
+          [33mdata-activation-direction[39m=[32m"none"[39m
+          [33mdata-orientation[39m=[32m"horizontal"[39m
+          [33mdata-slot[39m=[32m"tabs"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33maria-label[39m=[32m"Documentation audience"[39m
+            [33mclass[39m=[32m"group/tabs-list flex flex-wrap items-center gap-2"[39m
+            [33mdata-activation-direction[39m=[32m"none"[39m
+            [33mdata-orientation[39m=[32m"horizontal"[39m
+            [33mdata-slot[39m=[32m"tabs-list"[39m
+            [33mdata-variant[39m=[32m"chips"[39m
+            [33mrole[39m=[32m"tablist"[39m
+          [36m>[39m
+            [36m<button[39m
+              [33maria-controls[39m=[32m"base-ui-_r_3_"[39m
+              [33maria-disabled[39m=[32m"false"[39m
+              [33maria-selected[39m=[32m"true"[39m
+              [33mclass[39m=[32m"relative inline-flex items-center gap-1.5 whitespace-nowrap text-sm transition-colors duration-150 ease-standard outline-none focus-visible:ring-2 focus-visible:ring-accent/50 disabled:pointer-events-none disabled:opacity-50 group-data-[variant=line]/tabs-list:h-9 group-data-[variant=line]/tabs-list:rounded-t-xs group-data-[variant=line]/tabs-list:px-3 group-data-[variant=line]/tabs-list:text-text-3 group-data-[variant=line]/tabs-list:hover:text-text-1 group-data-[variant=line]/tabs-list:data-active:text-text-1 group-data-[variant=line]/tabs-list:after:absolute group-data-[variant=line]/tabs-list:after:inset-x-0 group-data-[variant=line]/tabs-list:after:-bottom-px group-data-[variant=line]/tabs-list:after:h-0.5 group-data-[variant=line]/tabs-list:after:bg-accent group-data-[variant=line]/tabs-list:after:opacity-0 group-data-[variant=line]/tabs-list:data-active:after:opacity-100 group-data-[variant=chips]/tabs-list:h-9 group-data-[variant=chips]/tabs-list:rounded-sm group-data-[variant=chips]/tabs-list:border group-data-[variant=chips]/tabs-list:border-border-1 group-data-[variant=chips]/tabs-list:bg-bg-panel group-data-[variant=chips]/tabs-list:px-3 group-data-[variant=chips]/tabs-list:text-text-3 group-data-[variant=chips]/tabs-list:hover:border-border-2 group-data-[variant=chips]/tabs-list:hover:text-text-2 group-data-[variant=chips]/tabs-list:data-active:border-border-3 group-data-[variant=chips]/tabs-list:data-active:bg-bg-raised group-data-[variant=chips]/tabs-list:data-active:text-text-1"[39m
+              [33mdata-activation-direction[39m=[32m"none"[39m
+              [33mdata-active[39m=[32m""[39m
+              [33mdata-composite-item-active[39m=[32m""[39m
+              [33mdata-orientation[39m=[32m"horizontal"[39m
+              [33mdata-slot[39m=[32m"tabs-trigger"[39m
+              [33mid[39m=[32m"base-ui-_r_0_"[39m
+              [33mrole[39m=[32m"tab"[39m
+              [33mtabindex[39m=[32m"0"[39m
+              [33mtype[39m=[32m"button"[39m
+            [36m>[39m
+              [0mBuild with Starport[0m
+            [36m</button>[39m
+            [36m<button[39m
+              [33maria-disabled[39m=[32m"false"[39m
+              [33maria-selected[39m=[32m"false"[39m
+              [33mclass[39m=[32m"relative inline-flex items-center gap-1.5 whitespace-nowrap text-sm transition-colors duration-150 ease-standard outline-none focus-visible:ring-2 focus-visible:ring-accent/50 disabled:pointer-events-none disabled:opacity-50 group-data-[variant=line]/tabs-list:h-9 group-data-[variant=line]/tabs-list:rounded-t-xs group-data-[variant=line]/tabs-list:px-3 group-data-[variant=line]/tabs-list:text-text-3 group-data-[variant=line]/tabs-list:hover:text-text-1 group-data-[variant=line]/tabs-list:data-active:text-text-1 group-data-[variant=line]/tabs-list:after:absolute group-data-[variant=line]/tabs-list:after:inset-x-0 group-data-[variant=line]/tabs-list:after:-bottom-px group-data-[variant=line]/tabs-list:after:h-0.5 group-data-[variant=line]/tabs-list:after:bg-accent group-data-[variant=line]/tabs-list:after:opacity-0 group-data-[variant=line]/tabs-list:data-active:after:opacity-100 group-data-[variant=chips]/tabs-list:h-9 group-data-[variant=chips]/tabs-list:rounded-sm group-data-[variant=chips]/tabs-list:border group-data-[variant=chips]/tabs-list:border-border-1 group-data-[variant=chips]/tabs-list:bg-bg-panel group-data-[variant=chips]/tabs-list:px-3 group-data-[variant=chips]/tabs-list:text-text-3 group-data-[variant=chips]/tabs-list:hover:border-border-2 group-data-[variant=chips]/tabs-list:hover:text-text-2 group-data-[variant=chips]/tabs-list:data-active:border-border-3 group-data-[variant=chips]/tabs-list:data-active:bg-bg-raised group-data-[variant=chips]/tabs-list:data-active:text-text-1"[39m
+              [33mdata-activation-direction[39m=[32m"none"[39m
+              [33mdata-orientation[39m=[32m"horizontal"[39m
+              [33mdata-slot[39m=[32m"tabs-trigger"[39m
+              [33mid[39m=[32m"base-ui-_r_1_"[39m
+              [33mrole[39m=[32m"tab"[39m
+              [33mtabindex[39m=[32m"-1"[39m
+              [33mtype[39m=[32m"button"[39m
+            [36m>[39m
+        ...
+ ❯ waitForWrapper node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/wait-for.js:163:27
+ ❯ node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/query-helpers.js:86:33
+ ❯ src/routes/compactScreen.test.tsx:49:28
+     47| test("an 800 px screen gets the icon rail, and expanding it opens an o…
+     48|   openConsole("/docs");
+     49|   const nav = await screen.findByRole("navigation", { name: "Console" …
+       |                            ^
+     50|   // The rail keeps every destination reachable by name, without a lab…
+     51|   const models = within(nav).getByRole("link", { name: "Models" });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  src/routes/compactScreen.test.tsx > Escape and the backdrop close the overlay, and the preference is untouched
+TestingLibraryElementError: Unable to find role="navigation" and name "Console"
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<div[39m
+      [33mclass[39m=[32m"documentation-shell"[39m
+    [36m>[39m
+      [36m<main[39m
+        [33mclass[39m=[32m"documentation mx-auto flex w-full flex-col gap-6"[39m
+      [36m>[39m
+        [36m<nav[39m
+          [33maria-label[39m=[32m"Documentation navigation"[39m
+          [33mclass[39m=[32m"flex flex-wrap items-center justify-between gap-3"[39m
+        [36m>[39m
+          [36m<span[39m
+            [33mclass[39m=[32m"font-semibold text-text-1"[39m
+          [36m>[39m
+            [0mStarport[0m
+          [36m</span>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"flex flex-wrap items-center gap-4"[39m
+          [36m>[39m
+            [36m<button[39m
+              [33maria-label[39m=[32m"Switch to light theme"[39m
+              [33mclass[39m=[32m"text-text-2 hover:underline"[39m
+              [33mtype[39m=[32m"button"[39m
+            [36m>[39m
+              [0mDark theme[0m
+            [36m</button>[39m
+            [36m<a[39m
+              [33mclass[39m=[32m"text-accent-link hover:underline"[39m
+              [33mhref[39m=[32m"/"[39m
+            [36m>[39m
+              [0mOpen console[0m
+            [36m</a>[39m
+          [36m</div>[39m
+        [36m</nav>[39m
+        [36m<div>[39m
+          [36m<h1[39m
+            [33mclass[39m=[32m"font-semibold tracking-[-0.01em]"[39m
+          [36m>[39m
+            [0mDocumentation[0m
+          [36m</h1>[39m
+          [36m<p[39m
+            [33mclass[39m=[32m"mt-2 text-text-2"[39m
+          [36m>[39m
+            [0mHow to call, manage, and run the Starport gateway.[0m
+          [36m</p>[39m
+        [36m</div>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"group/tabs flex flex-col gap-3"[39m
+          [33mdata-activation-direction[39m=[32m"none"[39m
+          [33mdata-orientation[39m=[32m"horizontal"[39m
+          [33mdata-slot[39m=[32m"tabs"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33maria-label[39m=[32m"Documentation audience"[39m
+            [33mclass[39m=[32m"group/tabs-list flex flex-wrap items-center gap-2"[39m
+            [33mdata-activation-direction[39m=[32m"none"[39m
+            [33mdata-orientation[39m=[32m"horizontal"[39m
+            [33mdata-slot[39m=[32m"tabs-list"[39m
+            [33mdata-variant[39m=[32m"chips"[39m
+            [33mrole[39m=[32m"tablist"[39m
+          [36m>[39m
+            [36m<button[39m
+              [33maria-controls[39m=[32m"base-ui-_r_n_"[39m
+              [33maria-disabled[39m=[32m"false"[39m
+              [33maria-selected[39m=[32m"true"[39m
+              [33mclass[39m=[32m"relative inline-flex items-center gap-1.5 whitespace-nowrap text-sm transition-colors duration-150 ease-standard outline-none focus-visible:ring-2 focus-visible:ring-accent/50 disabled:pointer-events-none disabled:opacity-50 group-data-[variant=line]/tabs-list:h-9 group-data-[variant=line]/tabs-list:rounded-t-xs group-data-[variant=line]/tabs-list:px-3 group-data-[variant=line]/tabs-list:text-text-3 group-data-[variant=line]/tabs-list:hover:text-text-1 group-data-[variant=line]/tabs-list:data-active:text-text-1 group-data-[variant=line]/tabs-list:after:absolute group-data-[variant=line]/tabs-list:after:inset-x-0 group-data-[variant=line]/tabs-list:after:-bottom-px group-data-[variant=line]/tabs-list:after:h-0.5 group-data-[variant=line]/tabs-list:after:bg-accent group-data-[variant=line]/tabs-list:after:opacity-0 group-data-[variant=line]/tabs-list:data-active:after:opacity-100 group-data-[variant=chips]/tabs-list:h-9 group-data-[variant=chips]/tabs-list:rounded-sm group-data-[variant=chips]/tabs-list:border group-data-[variant=chips]/tabs-list:border-border-1 group-data-[variant=chips]/tabs-list:bg-bg-panel group-data-[variant=chips]/tabs-list:px-3 group-data-[variant=chips]/tabs-list:text-text-3 group-data-[variant=chips]/tabs-list:hover:border-border-2 group-data-[variant=chips]/tabs-list:hover:text-text-2 group-data-[variant=chips]/tabs-list:data-active:border-border-3 group-data-[variant=chips]/tabs-list:data-active:bg-bg-raised group-data-[variant=chips]/tabs-list:data-active:text-text-1"[39m
+              [33mdata-activation-direction[39m=[32m"none"[39m
+              [33mdata-active[39m=[32m""[39m
+              [33mdata-composite-item-active[39m=[32m""[39m
+              [33mdata-orientation[39m=[32m"horizontal"[39m
+              [33mdata-slot[39m=[32m"tabs-trigger"[39m
+              [33mid[39m=[32m"base-ui-_r_k_"[39m
+              [33mrole[39m=[32m"tab"[39m
+              [33mtabindex[39m=[32m"0"[39m
+              [33mtype[39m=[32m"button"[39m
+            [36m>[39m
+              [0mBuild with Starport[0m
+            [36m</button>[39m
+            [36m<button[39m
+              [33maria-disabled[39m=[32m"false"[39m
+              [33maria-selected[39m=[32m"false"[39m
+              [33mclass[39m=[32m"relative inline-flex items-center gap-1.5 whitespace-nowrap text-sm transition-colors duration-150 ease-standard outline-none focus-visible:ring-2 focus-visible:ring-accent/50 disabled:pointer-events-none disabled:opacity-50 group-data-[variant=line]/tabs-list:h-9 group-data-[variant=line]/tabs-list:rounded-t-xs group-data-[variant=line]/tabs-list:px-3 group-data-[variant=line]/tabs-list:text-text-3 group-data-[variant=line]/tabs-list:hover:text-text-1 group-data-[variant=line]/tabs-list:data-active:text-text-1 group-data-[variant=line]/tabs-list:after:absolute group-data-[variant=line]/tabs-list:after:inset-x-0 group-data-[variant=line]/tabs-list:after:-bottom-px group-data-[variant=line]/tabs-list:after:h-0.5 group-data-[variant=line]/tabs-list:after:bg-accent group-data-[variant=line]/tabs-list:after:opacity-0 group-data-[variant=line]/tabs-list:data-active:after:opacity-100 group-data-[variant=chips]/tabs-list:h-9 group-data-[variant=chips]/tabs-list:rounded-sm group-data-[variant=chips]/tabs-list:border group-data-[variant=chips]/tabs-list:border-border-1 group-data-[variant=chips]/tabs-list:bg-bg-panel group-data-[variant=chips]/tabs-list:px-3 group-data-[variant=chips]/tabs-list:text-text-3 group-data-[variant=chips]/tabs-list:hover:border-border-2 group-data-[variant=chips]/tabs-list:hover:text-text-2 group-data-[variant=chips]/tabs-list:data-active:border-border-3 group-data-[variant=chips]/tabs-list:data-active:bg-bg-raised group-data-[variant=chips]/tabs-list:data-active:text-text-1"[39m
+              [33mdata-activation-direction[39m=[32m"none"[39m
+              [33mdata-orientation[39m=[32m"horizontal"[39m
+              [33mdata-slot[39m=[32m"tabs-trigger"[39m
+              [33mid[39m=[32m"base-ui-_r_l_"[39m
+              [33mrole[39m=[32m"tab"[39m
+              [33mtabindex[39m=[32m"-1"[39m
+              [33mtype[39m=[32m"button"[39m
+            [36m>[39m
+        ...
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<div[39m
+      [33mclass[39m=[32m"documentation-shell"[39m
+    [36m>[39m
+      [36m<main[39m
+        [33mclass[39m=[32m"documentation mx-auto flex w-full flex-col gap-6"[39m
+      [36m>[39m
+        [36m<nav[39m
+          [33maria-label[39m=[32m"Documentation navigation"[39m
+          [33mclass[39m=[32m"flex flex-wrap items-center justify-between gap-3"[39m
+        [36m>[39m
+          [36m<span[39m
+            [33mclass[39m=[32m"font-semibold text-text-1"[39m
+          [36m>[39m
+            [0mStarport[0m
+          [36m</span>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"flex flex-wrap items-center gap-4"[39m
+          [36m>[39m
+            [36m<button[39m
+              [33maria-label[39m=[32m"Switch to light theme"[39m
+              [33mclass[39m=[32m"text-text-2 hover:underline"[39m
+              [33mtype[39m=[32m"button"[39m
+            [36m>[39m
+              [0mDark theme[0m
+            [36m</button>[39m
+            [36m<a[39m
+              [33mclass[39m=[32m"text-accent-link hover:underline"[39m
+              [33mhref[39m=[32m"/"[39m
+            [36m>[39m
+              [0mOpen console[0m
+            [36m</a>[39m
+          [36m</div>[39m
+        [36m</nav>[39m
+        [36m<div>[39m
+          [36m<h1[39m
+            [33mclass[39m=[32m"font-semibold tracking-[-0.01em]"[39m
+          [36m>[39m
+            [0mDocumentation[0m
+          [36m</h1>[39m
+          [36m<p[39m
+            [33mclass[39m=[32m"mt-2 text-text-2"[39m
+          [36m>[39m
+            [0mHow to call, manage, and run the Starport gateway.[0m
+          [36m</p>[39m
+        [36m</div>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"group/tabs flex flex-col gap-3"[39m
+          [33mdata-activation-direction[39m=[32m"none"[39m
+          [33mdata-orientation[39m=[32m"horizontal"[39m
+          [33mdata-slot[39m=[32m"tabs"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33maria-label[39m=[32m"Documentation audience"[39m
+            [33mclass[39m=[32m"group/tabs-list flex flex-wrap items-center gap-2"[39m
+            [33mdata-activation-direction[39m=[32m"none"[39m
+            [33mdata-orientation[39m=[32m"horizontal"[39m
+            [33mdata-slot[39m=[32m"tabs-list"[39m
+            [33mdata-variant[39m=[32m"chips"[39m
+            [33mrole[39m=[32m"tablist"[39m
+          [36m>[39m
+            [36m<button[39m
+              [33maria-controls[39m=[32m"base-ui-_r_n_"[39m
+              [33maria-disabled[39m=[32m"false"[39m
+              [33maria-selected[39m=[32m"true"[39m
+              [33mclass[39m=[32m"relative inline-flex items-center gap-1.5 whitespace-nowrap text-sm transition-colors duration-150 ease-standard outline-none focus-visible:ring-2 focus-visible:ring-accent/50 disabled:pointer-events-none disabled:opacity-50 group-data-[variant=line]/tabs-list:h-9 group-data-[variant=line]/tabs-list:rounded-t-xs group-data-[variant=line]/tabs-list:px-3 group-data-[variant=line]/tabs-list:text-text-3 group-data-[variant=line]/tabs-list:hover:text-text-1 group-data-[variant=line]/tabs-list:data-active:text-text-1 group-data-[variant=line]/tabs-list:after:absolute group-data-[variant=line]/tabs-list:after:inset-x-0 group-data-[variant=line]/tabs-list:after:-bottom-px group-data-[variant=line]/tabs-list:after:h-0.5 group-data-[variant=line]/tabs-list:after:bg-accent group-data-[variant=line]/tabs-list:after:opacity-0 group-data-[variant=line]/tabs-list:data-active:after:opacity-100 group-data-[variant=chips]/tabs-list:h-9 group-data-[variant=chips]/tabs-list:rounded-sm group-data-[variant=chips]/tabs-list:border group-data-[variant=chips]/tabs-list:border-border-1 group-data-[variant=chips]/tabs-list:bg-bg-panel group-data-[variant=chips]/tabs-list:px-3 group-data-[variant=chips]/tabs-list:text-text-3 group-data-[variant=chips]/tabs-list:hover:border-border-2 group-data-[variant=chips]/tabs-list:hover:text-text-2 group-data-[variant=chips]/tabs-list:data-active:border-border-3 group-data-[variant=chips]/tabs-list:data-active:bg-bg-raised group-data-[variant=chips]/tabs-list:data-active:text-text-1"[39m
+              [33mdata-activation-direction[39m=[32m"none"[39m
+              [33mdata-active[39m=[32m""[39m
+              [33mdata-composite-item-active[39m=[32m""[39m
+              [33mdata-orientation[39m=[32m"horizontal"[39m
+              [33mdata-slot[39m=[32m"tabs-trigger"[39m
+              [33mid[39m=[32m"base-ui-_r_k_"[39m
+              [33mrole[39m=[32m"tab"[39m
+              [33mtabindex[39m=[32m"0"[39m
+              [33mtype[39m=[32m"button"[39m
+            [36m>[39m
+              [0mBuild with Starport[0m
+            [36m</button>[39m
+            [36m<button[39m
+              [33maria-disabled[39m=[32m"false"[39m
+              [33maria-selected[39m=[32m"false"[39m
+              [33mclass[39m=[32m"relative inline-flex items-center gap-1.5 whitespace-nowrap text-sm transition-colors duration-150 ease-standard outline-none focus-visible:ring-2 focus-visible:ring-accent/50 disabled:pointer-events-none disabled:opacity-50 group-data-[variant=line]/tabs-list:h-9 group-data-[variant=line]/tabs-list:rounded-t-xs group-data-[variant=line]/tabs-list:px-3 group-data-[variant=line]/tabs-list:text-text-3 group-data-[variant=line]/tabs-list:hover:text-text-1 group-data-[variant=line]/tabs-list:data-active:text-text-1 group-data-[variant=line]/tabs-list:after:absolute group-data-[variant=line]/tabs-list:after:inset-x-0 group-data-[variant=line]/tabs-list:after:-bottom-px group-data-[variant=line]/tabs-list:after:h-0.5 group-data-[variant=line]/tabs-list:after:bg-accent group-data-[variant=line]/tabs-list:after:opacity-0 group-data-[variant=line]/tabs-list:data-active:after:opacity-100 group-data-[variant=chips]/tabs-list:h-9 group-data-[variant=chips]/tabs-list:rounded-sm group-data-[variant=chips]/tabs-list:border group-data-[variant=chips]/tabs-list:border-border-1 group-data-[variant=chips]/tabs-list:bg-bg-panel group-data-[variant=chips]/tabs-list:px-3 group-data-[variant=chips]/tabs-list:text-text-3 group-data-[variant=chips]/tabs-list:hover:border-border-2 group-data-[variant=chips]/tabs-list:hover:text-text-2 group-data-[variant=chips]/tabs-list:data-active:border-border-3 group-data-[variant=chips]/tabs-list:data-active:bg-bg-raised group-data-[variant=chips]/tabs-list:data-active:text-text-1"[39m
+              [33mdata-activation-direction[39m=[32m"none"[39m
+              [33mdata-orientation[39m=[32m"horizontal"[39m
+              [33mdata-slot[39m=[32m"tabs-trigger"[39m
+              [33mid[39m=[32m"base-ui-_r_l_"[39m
+              [33mrole[39m=[32m"tab"[39m
+              [33mtabindex[39m=[32m"-1"[39m
+              [33mtype[39m=[32m"button"[39m
+            [36m>[39m
+        ...
+ ❯ waitForWrapper node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/wait-for.js:163:27
+ ❯ node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/query-helpers.js:86:33
+ ❯ src/routes/compactScreen.test.tsx:68:16
+     66| test("Escape and the backdrop close the overlay, and the preference is…
+     67|   openConsole("/docs");
+     68|   await screen.findByRole("navigation", { name: "Console" });
+       |                ^
+     69|   fireEvent.click(screen.getByRole("button", { name: "Expand sidebar" …
+     70|   fireEvent.keyDown(window, { key: "Escape" });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed | 73 passed (74)
+      Tests  2 failed | 455 passed (457)
+   Start at  23:37:48
+   Duration  74.56s (transform 1.18s, setup 214ms, import 25.80s, tests 19.15s, environment 23.18s)
+

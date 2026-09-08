@@ -1,0 +1,37 @@
+{
+  "date": "2026-09-05",
+  "inputs": [
+    {
+      "path": "docs/design/catalog-lifecycle/PRD.md",
+      "sha256": "25af5b3b974af82d9881bf056e5a5ef510ef73fd0764415bc3e22be0e4733b98"
+    },
+    {
+      "path": "docs/design/catalog-lifecycle/ENGINEERING_SPEC.md",
+      "sha256": "c2f048616b29e7cafd31c70c112917f46228b321b02d9beba02c2d353e7185a7"
+    },
+    {
+      "path": "docs/design/catalog-lifecycle/REPOSITORY_FINDINGS.md",
+      "sha256": "41c2c94688b2986ef359ea01fc239f3d6c873438cf4e3dfb3dfe04e741af7d55"
+    },
+    {
+      "path": "docs/plans/starport-production-catalog-plan.html",
+      "sha256": "5ba85d3164967a23748ff0d63e8490879a422d8ce995fddd0ffcfbe6512c2652"
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/acceptance-map.json",
+      "sha256": "a9e807685347bc50335d8a9628f1c06812af7383e0e49b323dc5a7d7693e25ce"
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/readme-demo-brief.md",
+      "sha256": "745edcddf15a2029ca96753b133bcfff28d2057e56063895dad8eafba5ec893b"
+    },
+    {
+      "path": "docs/plans/README.md",
+      "sha256": "1ba8c857d01d5748d651524b99704cc996db2e93e0c417a8c427b3cc385efec4"
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/plan-validation.json",
+      "sha256": "b689a5914286b802ea3a576e7cb724206e6dcab010b5971d40c22d571ec08684"
+    }
+  ]
+}

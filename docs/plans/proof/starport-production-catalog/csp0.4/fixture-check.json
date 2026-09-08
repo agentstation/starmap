@@ -1,0 +1,15 @@
+{
+  "command": [
+    "go",
+    "test",
+    "-count=1",
+    "-run",
+    "^TestFullPathMeasurement",
+    "-timeout",
+    "90s",
+    "./internal/app"
+  ],
+  "exit_code": 0,
+  "stdout": "ok  \tgithub.com/agentstation/starport/internal/app\t3.745s\n",
+  "stderr": ""
+}

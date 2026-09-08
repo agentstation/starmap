@@ -1,0 +1,46 @@
+[
+  {
+    "command": [
+      "env",
+      "GOTOOLCHAIN=go1.25.12",
+      "go",
+      "test",
+      "-race",
+      "-json",
+      "./internal/cli/app",
+      "-run",
+      "^TestFileManifestReportsAccessAndRetentionPolicies$",
+      "-count=1",
+      "-timeout=2m"
+    ],
+    "exit_code": 0,
+    "stdout": "{\"Time\":\"2026-09-06T11:17:36.639267-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\"}\n{\"Time\":\"2026-09-06T11:17:37.214985-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestFileManifestReportsAccessAndRetentionPolicies\"}\n{\"Time\":\"2026-09-06T11:17:37.215029-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestFileManifestReportsAccessAndRetentionPolicies\",\"Output\":\"=== RUN   TestFileManifestReportsAccessAndRetentionPolicies\\n\"}\n{\"Time\":\"2026-09-06T11:17:37.219618-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestFileManifestReportsAccessAndRetentionPolicies\",\"Output\":\"--- PASS: TestFileManifestReportsAccessAndRetentionPolicies (0.00s)\\n\"}\n{\"Time\":\"2026-09-06T11:17:37.219653-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestFileManifestReportsAccessAndRetentionPolicies\",\"Elapsed\":0}\n{\"Time\":\"2026-09-06T11:17:37.219703-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Output\":\"PASS\\n\"}\n{\"Time\":\"2026-09-06T11:17:38.226981-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Output\":\"ok  \\tgithub.com/agentstation/starmap/internal/cli/app\\t1.587s\\n\"}\n{\"Time\":\"2026-09-06T11:17:38.227036-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Elapsed\":1.588}\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "go",
+      "tool",
+      "ago",
+      "-stale-ignores",
+      "-format",
+      "json",
+      "./..."
+    ],
+    "exit_code": 0,
+    "stdout": "{\n  \"schemaVersion\": 1,\n  \"version\": \"v0.2.0\",\n  \"rules\": [\n    \"no-dot-import\",\n    \"no-generic-methods\",\n    \"no-goto\",\n    \"no-invalid-ignore\",\n    \"no-naked-return\",\n    \"no-new-expr\",\n    \"no-self-referential-constraints\"\n  ],\n  \"findings\": [],\n  \"staleIgnores\": [],\n  \"errors\": []\n}\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "golangci-lint",
+      "run",
+      "./pkg/productpaths/...",
+      "./internal/cli/app/...",
+      "./internal/cli/commands/config/..."
+    ],
+    "exit_code": 0,
+    "stdout": "0 issues.\n",
+    "stderr": ""
+  }
+]

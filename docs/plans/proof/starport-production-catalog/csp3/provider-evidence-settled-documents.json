@@ -1,0 +1,37 @@
+[
+  {
+    "command": [
+      "python3",
+      "docs/plans/proof/starport-production-catalog/activation-2026-09-05/verify_documents.py"
+    ],
+    "exit_code": 0,
+    "stdout": "{\n  \"verdict\": \"PASS\",\n  \"scope\": \"Document contracts only. No product acceptance credit.\",\n  \"tasks\": 38,\n  \"primary_cases\": 50,\n  \"required_subcases\": 324,\n  \"candidate_subcases\": 305,\n  \"candidate_extra_subcases\": 8,\n  \"dependency_graph\": {\n    \"CSP0\": [],\n    \"CSP0.1\": [\n      \"CSP0\"\n    ],\n    \"CSP0.2\": [\n      \"CSP0.1\"\n    ],\n    \"CSP0.3\": [\n      \"CSP0.2\"\n    ],\n    \"CSP0.4\": [\n      \"CSP0\"\n    ],\n    \"CSP1\": [\n      \"CSP0\"\n    ],\n    \"CSP2\": [\n      \"CSP1\"\n    ],\n    \"CSP3\": [\n      \"CSP1\"\n    ],\n    \"CSP3.1\": [\n      \"CSP0.4\"\n    ],\n    \"CSP4\": [\n      \"CSP2\",\n      \"CSP3\"\n    ],\n    \"CSP5\": [\n      \"CSP3\",\n      \"CSP4\"\n    ],\n    \"CSP6\": [\n      \"CSP2\",\n      \"CSP3\",\n      \"CSP4\"\n    ],\n    \"CSP7\": [\n      \"CSP1\",\n      \"CSP3\"\n    ],\n    \"CSP8\": [\n      \"CSP1\",\n      \"CSP2\",\n      \"CSP3\",\n      \"CSP3.1\",\n      \"CSP4\",\n      \"CSP5\",\n      \"CSP6\",\n      \"CSP7\"\n    ],\n    \"CSP9\": [\n      \"CSP7\",\n      \"CSP8\"\n    ],\n    \"CSP9.1\": [\n      \"CSP0.4\",\n      \"CSP9\"\n    ],\n    \"CSP10\": [\n      \"CSP4\",\n      \"CSP8\",\n      \"CSP9\"\n    ],\n    \"CSP10.1\": [\n      \"CSP0.4\",\n      \"CSP3.1\",\n      \"CSP10\"\n    ],\n    \"CSP10.2\": [\n      \"CSP0.4\",\n      \"CSP9.1\",\n      \"CSP10\"\n    ],\n    \"CSP10.3\": [\n      \"CSP0.4\",\n      \"CSP10.1\"\n    ],\n    \"CSP11\": [\n      \"CSP5\",\n      \"CSP10\"\n    ],\n    \"CSP12\": [\n      \"CSP8\",\n      \"CSP11\"\n    ],\n    \"CSP12.1\": [\n      \"CSP0.4\",\n      \"CSP8\",\n      \"CSP12\"\n    ],\n    \"CSP12.2\": [\n      \"CSP0.4\",\n      \"CSP10.2\",\n      \"CSP12\"\n    ],\n    \"CSP13\": [\n      \"CSP11\",\n      \"CSP12\",\n      \"CSP12.1\",\n      \"CSP12.2\"\n    ],\n    \"CSP14\": [\n      \"CSP1\",\n      \"CSP4\",\n      \"CSP5\",\n      \"CSP7\"\n    ],\n    \"CSP15\": [\n      \"CSP11\",\n      \"CSP12\",\n      \"CSP12.1\",\n      \"CSP12.2\",\n      \"CSP13\"\n    ],\n    \"CSP16\": [\n      \"CSP8\",\n      \"CSP9\",\n      \"CSP10\",\n      \"CSP10.2\",\n      \"CSP12\",\n      \"CSP12.1\",\n      \"CSP13\"\n    ],\n    \"CSP16.1\": [\n      \"CSP16\"\n    ],\n    \"CSP17\": [\n      \"CSP0.1\",\n      \"CSP10\",\n      \"CSP12\",\n      \"CSP16.1\"\n    ],\n    \"CSP18\": [\n      \"CSP1\",\n      \"CSP8\",\n      \"CSP16\",\n      \"CSP17\"\n    ],\n    \"CSP19\": [\n      \"CSP12\",\n      \"CSP12.1\",\n      \"CSP12.2\",\n      \"CSP13\",\n      \"CSP14\",\n      \"CSP15\",\n      \"CSP16\",\n      \"CSP16.1\",\n      \"CSP17\",\n      \"CSP18\"\n    ],\n    \"CSP20\": [\n      \"CSP17\",\n      \"CSP18\",\n      \"CSP19\"\n    ],\n    \"CSP21\": [\n      \"CSP17\",\n      \"CSP20\"\n    ],\n    \"CSP22\": [\n      \"CSP0\",\n      \"CSP0.1\",\n      \"CSP0.2\",\n      \"CSP0.3\",\n      \"CSP0.4\",\n      \"CSP1\",\n      \"CSP2\",\n      \"CSP3\",\n      \"CSP3.1\",\n      \"CSP4\",\n      \"CSP5\",\n      \"CSP6\",\n      \"CSP7\",\n      \"CSP8\",\n      \"CSP9\",\n      \"CSP9.1\",\n      \"CSP10\",\n      \"CSP10.1\",\n      \"CSP10.2\",\n      \"CSP10.3\",\n      \"CSP11\",\n      \"CSP12\",\n      \"CSP12.1\",\n      \"CSP12.2\",\n      \"CSP13\",\n      \"CSP14\",\n      \"CSP15\",\n      \"CSP16\",\n      \"CSP16.1\",\n      \"CSP17\",\n      \"CSP18\",\n      \"CSP19\",\n      \"CSP20\",\n      \"CSP21\"\n    ],\n    \"CSP23\": [\n      \"CSP22\"\n    ],\n    \"CSP24\": [\n      \"CSP23\"\n    ],\n    \"CSP99\": [\n      \"CSP24\"\n    ]\n  },\n  \"CA05_dependency_present\": true,\n  \"prior_audit_inputs_preserved\": 46,\n  \"historical_files_preserved\": 57,\n  \"local_links_checked\": 201,\n  \"pinned_links_checked\": 74,\n  \"plan_lines\": 500,\n  \"artifact_sha256\": {\n    \"docs/plans/starport-production-catalog-plan.html\": \"fb70915595383dbe5d1acec6fe5be735232f72599afaee38b3a1cbcff5c61931\",\n    \"docs/plans/README.md\": \"58ffc3cf0950b60ad67058f664f9f6481a210f84f0e254d481e30dc74caf93cb\",\n    \"docs/design/catalog-lifecycle/PRD.md\": \"0aa8efe78f2ff464358110bd6bc4a22ae0cb7b20308e6144b5f27b697fa4f650\",\n    \"docs/design/catalog-lifecycle/ENGINEERING_SPEC.md\": \"888225e8f17bac9143b8365237518d484ce4c7eafb45934ae6d5a6cbc07fd2db\",\n    \"docs/design/catalog-lifecycle/REPOSITORY_FINDINGS.md\": \"700e27b90979c176c8a416da43985aadda6865fe7190d201bbe31402f840c0b1\",\n    \"docs/plans/proof/starport-production-catalog/activation-2026-09-05/RESOLUTION.md\": \"2ac700a8a18f58248bf636fbd6a0a139995c164c56eb5e84b1c3e9a8c90c54c5\"\n  }\n}\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "/Users/jack/.agents/skills/technical-writing/scripts/technical-writing",
+      "lint",
+      "docs/plans/starport-production-catalog-plan.html",
+      "docs/plans/proof/starport-production-catalog/csp2.md",
+      "docs/plans/proof/starport-production-catalog/csp3.md",
+      "docs/design/catalog-lifecycle/ENGINEERING_SPEC.md",
+      "docs/design/catalog-lifecycle/REPOSITORY_FINDINGS.md",
+      "docs/CATALOG_STORE_CONTRACT.md",
+      "--format",
+      "text"
+    ],
+    "exit_code": 1,
+    "stdout": "/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/docs/plans/proof/starport-production-catalog/csp3.md:66:57: error passive_voice: use active voice when the actor is known\nFAIL: 6 file(s), 1 diagnostic(s)\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "make",
+      "technical-writing-check"
+    ],
+    "exit_code": 2,
+    "stdout": "/Users/jack/.agents/skills/technical-writing/scripts/technical-writing glossary check\nPASS: /Users/jack/src/github.com/agentstation/starmap-catalog-requirements/GLOSSARY.md (80 term(s), 0 error(s))\n/Users/jack/.agents/skills/technical-writing/scripts/technical-writing glossary update --check\nPASS: no candidate terms are missing from /Users/jack/src/github.com/agentstation/starmap-catalog-requirements/GLOSSARY.md\n/Users/jack/.agents/skills/technical-writing/scripts/technical-writing lint . --mode strict --format text\n/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/docs/plans/proof/starport-production-catalog/csp3.md:66:57: error passive_voice: use active voice when the actor is known\n/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/docs/plans/proof/starport-production-catalog/storage-revision-2026-09-05/document_structure.txt:1:1: error long_sentence: sentence has 30 words; limit is 25\n/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/docs/plans/proof/starport-production-catalog/storage-revision-2026-09-05/starmap_writing.txt:1:1: error long_sentence: sentence has 38 words; limit is 25\n/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/docs/plans/proof/starport-production-catalog/storage-revision-2026-09-05/starmap_writing.txt:4:26: error ing_main_verb: prefer a simple verb form\nFAIL: 1018 file(s), 4 diagnostic(s)\n",
+    "stderr": "make: *** [technical-writing-check] Error 1\n"
+  }
+]

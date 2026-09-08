@@ -1,0 +1,25 @@
+[
+  {
+    "command": [
+      "pnpm",
+      "-C",
+      "console",
+      "typecheck"
+    ],
+    "exit_code": 0,
+    "seconds": 1.154
+  },
+  {
+    "command": [
+      "pnpm",
+      "-C",
+      "console",
+      "exec",
+      "vitest",
+      "run",
+      "--maxWorkers=1"
+    ],
+    "exit_code": 1,
+    "seconds": 75.134
+  }
+]

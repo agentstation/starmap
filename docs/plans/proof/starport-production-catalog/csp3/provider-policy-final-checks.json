@@ -1,0 +1,45 @@
+{
+  "checks": [
+    {
+      "command": [
+        "make",
+        "technical-writing-check"
+      ],
+      "exit_code": 2,
+      "seconds": 36.659644457977265,
+      "output": "/Users/jack/.agents/skills/technical-writing/scripts/technical-writing glossary check\nPASS: /Users/jack/src/github.com/agentstation/starmap-catalog-requirements/GLOSSARY.md (80 term(s), 0 error(s))\n/Users/jack/.agents/skills/technical-writing/scripts/technical-writing glossary update --check\nPASS: no candidate terms are missing from /Users/jack/src/github.com/agentstation/starmap-catalog-requirements/GLOSSARY.md\n/Users/jack/.agents/skills/technical-writing/scripts/technical-writing lint . --mode strict --format text\n/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/docs/plans/starport-production-catalog-plan.html:1:1: error long_paragraph: paragraph has 7 sentences; limit is 6\nFAIL: 1047 file(s), 1 diagnostic(s)\nmake: *** [technical-writing-check] Error 1\n"
+    },
+    {
+      "command": [
+        "python3",
+        "docs/plans/proof/starport-production-catalog/activation-2026-09-05/verify_documents.py"
+      ],
+      "exit_code": 0,
+      "seconds": 0.7717415001243353,
+      "output": "{\n  \"verdict\": \"PASS\",\n  \"scope\": \"Document contracts only. No product acceptance credit.\",\n  \"tasks\": 38,\n  \"primary_cases\": 50,\n  \"required_subcases\": 324,\n  \"candidate_subcases\": 305,\n  \"candidate_extra_subcases\": 8,\n  \"dependency_graph\": {\n    \"CSP0\": [],\n    \"CSP0.1\": [\n      \"CSP0\"\n    ],\n    \"CSP0.2\": [\n      \"CSP0.1\"\n    ],\n    \"CSP0.3\": [\n      \"CSP0.2\"\n    ],\n    \"CSP0.4\": [\n      \"CSP0\"\n    ],\n    \"CSP1\": [\n      \"CSP0\"\n    ],\n    \"CSP2\": [\n      \"CSP1\"\n    ],\n    \"CSP3\": [\n      \"CSP1\"\n    ],\n    \"CSP3.1\": [\n      \"CSP0.4\"\n    ],\n    \"CSP4\": [\n      \"CSP2\",\n      \"CSP3\"\n    ],\n    \"CSP5\": [\n      \"CSP3\",\n      \"CSP4\"\n    ],\n    \"CSP6\": [\n      \"CSP2\",\n      \"CSP3\",\n      \"CSP4\"\n    ],\n    \"CSP7\": [\n      \"CSP1\",\n      \"CSP3\"\n    ],\n    \"CSP8\": [\n      \"CSP1\",\n      \"CSP2\",\n      \"CSP3\",\n      \"CSP3.1\",\n      \"CSP4\",\n      \"CSP5\",\n      \"CSP6\",\n      \"CSP7\"\n    ],\n    \"CSP9\": [\n      \"CSP7\",\n      \"CSP8\"\n    ],\n    \"CSP9.1\": [\n      \"CSP0.4\",\n      \"CSP9\"\n    ],\n    \"CSP10\": [\n      \"CSP4\",\n      \"CSP8\",\n      \"CSP9\"\n    ],\n    \"CSP10.1\": [\n      \"CSP0.4\",\n      \"CSP3.1\",\n      \"CSP10\"\n    ],\n    \"CSP10.2\": [\n      \"CSP0.4\",\n      \"CSP9.1\",\n      \"CSP10\"\n    ],\n    \"CSP10.3\": [\n      \"CSP0.4\",\n      \"CSP10.1\"\n    ],\n    \"CSP11\": [\n      \"CSP5\",\n      \"CSP10\"\n    ],\n    \"CSP12\": [\n      \"CSP8\",\n      \"CSP11\"\n    ],\n    \"CSP12.1\": [\n      \"CSP0.4\",\n      \"CSP8\",\n      \"CSP12\"\n    ],\n    \"CSP12.2\": [\n      \"CSP0.4\",\n      \"CSP10.2\",\n      \"CSP12\"\n    ],\n    \"CSP13\": [\n      \"CSP11\",\n      \"CSP12\",\n      \"CSP12.1\",\n      \"CSP12.2\"\n    ],\n    \"CSP14\": [\n      \"CSP1\",\n      \"CSP4\",\n      \"CSP5\",\n      \"CSP7\"\n    ],\n    \"CSP15\": [\n      \"CSP11\",\n      \"CSP12\",\n      \"CSP12.1\",\n      \"CSP12.2\",\n      \"CSP13\"\n    ],\n    \"CSP16\": [\n      \"CSP8\",\n      \"CSP9\",\n      \"CSP10\",\n      \"CSP10.2\",\n      \"CSP12\",\n      \"CSP12.1\",\n      \"CSP13\"\n    ],\n    \"CSP16.1\": [\n      \"CSP16\"\n    ],\n    \"CSP17\": [\n      \"CSP0.1\",\n      \"CSP10\",\n      \"CSP12\",\n      \"CSP16.1\"\n    ],\n    \"CSP18\": [\n      \"CSP1\",\n      \"CSP8\",\n      \"CSP16\",\n      \"CSP17\"\n    ],\n    \"CSP19\": [\n      \"CSP12\",\n      \"CSP12.1\",\n      \"CSP12.2\",\n      \"CSP13\",\n      \"CSP14\",\n      \"CSP15\",\n      \"CSP16\",\n      \"CSP16.1\",\n      \"CSP17\",\n      \"CSP18\"\n    ],\n    \"CSP20\": [\n      \"CSP17\",\n      \"CSP18\",\n      \"CSP19\"\n    ],\n    \"CSP21\": [\n      \"CSP17\",\n      \"CSP20\"\n    ],\n    \"CSP22\": [\n      \"CSP0\",\n      \"CSP0.1\",\n      \"CSP0.2\",\n      \"CSP0.3\",\n      \"CSP0.4\",\n      \"CSP1\",\n      \"CSP2\",\n      \"CSP3\",\n      \"CSP3.1\",\n      \"CSP4\",\n      \"CSP5\",\n      \"CSP6\",\n      \"CSP7\",\n      \"CSP8\",\n      \"CSP9\",\n      \"CSP9.1\",\n      \"CSP10\",\n      \"CSP10.1\",\n      \"CSP10.2\",\n      \"CSP10.3\",\n      \"CSP11\",\n      \"CSP12\",\n      \"CSP12.1\",\n      \"CSP12.2\",\n      \"CSP13\",\n      \"CSP14\",\n      \"CSP15\",\n      \"CSP16\",\n      \"CSP16.1\",\n      \"CSP17\",\n      \"CSP18\",\n      \"CSP19\",\n      \"CSP20\",\n      \"CSP21\"\n    ],\n    \"CSP23\": [\n      \"CSP22\"\n    ],\n    \"CSP24\": [\n      \"CSP23\"\n    ],\n    \"CSP99\": [\n      \"CSP24\"\n    ]\n  },\n  \"CA05_dependency_present\": true,\n  \"prior_audit_inputs_preserved\": 46,\n  \"historical_files_preserved\": 57,\n  \"local_links_checked\": 241,\n  \"pinned_links_checked\": 74,\n  \"plan_lines\": 500,\n  \"artifact_sha256\": {\n    \"docs/plans/starport-production-catalog-plan.html\": \"3ea8ee8435b074fd876f71acd708d1139fa0d4cd7e65dd818c2289723e8f3293\",\n    \"docs/plans/README.md\": \"58ffc3cf0950b60ad67058f664f9f6481a210f84f0e254d481e30dc74caf93cb\",\n    \"docs/design/catalog-lifecycle/PRD.md\": \"f2572726f803d552ec56256f0e750ec54640c8a28b3126b7c48575b7649b4f80\",\n    \"docs/design/catalog-lifecycle/ENGINEERING_SPEC.md\": \"8c79b10443b5b77f18a0a9f6f551c88c874da7c50b2d2dc9049d5daef1209e64\",\n    \"docs/design/catalog-lifecycle/REPOSITORY_FINDINGS.md\": \"d764efaa20d133f9fa3be2bce4ae244ef1baf6cbdf5ff42a223e90aa97385b03\",\n    \"docs/plans/proof/starport-production-catalog/activation-2026-09-05/RESOLUTION.md\": \"2ac700a8a18f58248bf636fbd6a0a139995c164c56eb5e84b1c3e9a8c90c54c5\"\n  }\n}\n"
+    },
+    {
+      "command": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "exit_code": 0,
+      "seconds": 0.022633334156125784,
+      "output": ""
+    },
+    {
+      "command": [
+        "bash",
+        "scripts/verify-catalog-product.sh",
+        "--starport-root",
+        "/Users/jack/src/github.com/agentstation/starport-catalog-lifecycle",
+        "--task",
+        "CSP3"
+      ],
+      "exit_code": 1,
+      "seconds": 0.05864316690713167,
+      "output": "CSP-V01 UNVERIFIED: A01\nCSP-V02 UNVERIFIED: A02\nCSP-V03 UNVERIFIED: A03\nCSP-V04 UNVERIFIED: A04\nCSP-V05 UNVERIFIED: A05\nCSP-V06 UNVERIFIED: A06\nCSP-V07 UNVERIFIED: A07\nCSP-V08 UNVERIFIED: A08\nCSP-V09 UNVERIFIED: A09\nCSP-V10 UNVERIFIED: A10\nCSP-V11 UNVERIFIED: A11\nCSP-V12 UNVERIFIED: A12\nCSP-V13 UNVERIFIED: A13\nCSP-V14 UNVERIFIED: A14\nCSP-V15 UNVERIFIED: A15\nCSP-V16 UNVERIFIED: A16\nCSP-V17 UNVERIFIED: A17\nCSP-V18 UNVERIFIED: A18\nCSP-V19 UNVERIFIED: A19\nCSP-V20 UNVERIFIED: A20\nCSP-V21 UNVERIFIED: A21\nCSP-V22 UNVERIFIED: A22\nCSP-V23 UNVERIFIED: A23\nCSP-V24 UNVERIFIED: A24\nCSP-V25 UNVERIFIED: A25\nCSP-V26 UNVERIFIED: A26\nCSP-V27 UNVERIFIED: A27\nCSP-V28 UNVERIFIED: A28\nCSP-V29 UNVERIFIED: A29\nCSP-V30 UNVERIFIED: A30\nCSP-V31 UNVERIFIED: A31\nCSP-V32 UNVERIFIED: A32\nCSP-V33 UNVERIFIED: A33\nCSP-V34 UNVERIFIED: A34\nCSP-V35 UNVERIFIED: A35\nCSP-V36 UNVERIFIED: A36\nCSP-V37 UNVERIFIED: A37\nCSP-V38 UNVERIFIED: A38\nCSP-V39 UNVERIFIED: A39\nCSP-V40 UNVERIFIED: A40\nCSP-V41 UNVERIFIED: A41\nCSP-V42 UNVERIFIED: A42\nCSP-V43 UNVERIFIED: A43\nCSP-V44 UNVERIFIED: A44\nCSP-V45 UNVERIFIED: A45\nCSP-V46 UNVERIFIED: A46\nCSP-V47 UNVERIFIED: A47\nCSP-V48 UNVERIFIED: A48\nCSP-V49 UNVERIFIED: A49\nCSP-V50 UNVERIFIED: A50\nSummary: 0 passed, 50 failed\nUNVERIFIED: 50 cases. Gate: FAIL.\n"
+    }
+  ]
+}

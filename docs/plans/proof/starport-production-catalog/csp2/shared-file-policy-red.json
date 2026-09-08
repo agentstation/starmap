@@ -1,0 +1,12 @@
+{
+  "command": [
+    "env",
+    "GOTOOLCHAIN=go1.25.12",
+    "go",
+    "test",
+    "./pkg/productpaths/policy"
+  ],
+  "exit_code": 1,
+  "stdout": "FAIL\tgithub.com/agentstation/starmap/pkg/productpaths/policy [build failed]\nFAIL\n",
+  "stderr": "# github.com/agentstation/starmap/pkg/productpaths/policy [github.com/agentstation/starmap/pkg/productpaths/policy.test]\npkg/productpaths/policy/access_test.go:15:16: undefined: ForRole\npkg/productpaths/policy/access_test.go:19:14: undefined: Require\npkg/productpaths/policy/access_test.go:22:14: undefined: Require\npkg/productpaths/policy/access_test.go:28:21: undefined: ForRole\npkg/productpaths/policy/access_test.go:31:13: undefined: Require\npkg/productpaths/policy/access_test.go:31:27: undefined: OwnerOnly\npkg/productpaths/policy/access_test.go:40:9: undefined: POSIXMetadata\npkg/productpaths/policy/access_test.go:42:19: undefined: POSIXMetadata\npkg/productpaths/policy/access_test.go:43:21: undefined: POSIXMetadata\npkg/productpaths/policy/access_test.go:44:27: undefined: POSIXMetadata\npkg/productpaths/policy/access_test.go:44:27: too many errors\n"
+}

@@ -1,0 +1,91 @@
+Update synchronizes your local starmap catalog by fetching the latest data
+from all configured sources:
+
+1. Provider APIs - Live model information from OpenAI, Anthropic, etc.
+2. models.dev - Pricing, limits, and metadata enrichment
+3. Embedded catalog - Baseline catalog data
+
+The command will:
+• Load the current catalog workspace, with embedded data as the offline fallback
+• Fetch live data from provider APIs (if keys configured)
+• Enrich with models.dev data (descriptions, features, pricing, limits, logos)
+• Reconcile all sources using field-level authority
+• Save the updated catalog to the same human catalog workspace
+
+Use --fresh to reset selected acquisition history after successful collection.
+The selected baseline and unrelated acquisition scopes remain.
+Use --fresh --dry-run to preview the reset without confirmation or publication.
+The --force flag remains an alias for --fresh.
+
+The default human catalog workspace uses the configured product data root.
+Use absolute paths for legacy overrides. New relative paths require
+--relative-path-base=config and use the configuration root.
+
+Usage:
+  starmap update [provider] [flags]
+
+Examples:
+  starmap update                            # Update entire catalog
+  starmap update openai                     # Update specific provider
+  starmap update --dry-run                  # Preview changes
+  starmap update -y                         # Auto-approve changes
+  starmap update --fresh                    # Reset acquisition; keep baseline
+  starmap update --source local             # Reload semantic workspace edits
+  starmap update openai --dry-run           # Preview OpenAI updates
+
+Flags:
+      --auto-install-deps              Automatically install missing dependencies without prompting
+      --catalog-path string            Human catalog workspace (default: configured product workspace)
+      --cleanup                        Remove temporary models.dev repository after update
+      --dry-run                        Preview changes without applying them
+      --force                          Alias for --fresh
+  -f, --fresh                          Reset selected acquisition; preserve the baseline
+  -h, --help                           help for update
+      --models-dev-git-commit string   Exact commit required with --source models.dev-git
+      --reformat                       Reformat catalog files even without changes
+      --require-all-sources            Require every source to be available, complete, successful, and nonempty
+      --skip-dep-prompts               Skip dependency prompts and continue without optional dependencies
+      --source string                  Update from a specific source: all, local, provider-api, models.dev, models.dev-git
+      --sources-dir string             External source parent (default: configured product cache)
+  -y, --yes                            Auto-approve changes without confirmation
+
+Global Flags:
+      --cache-dir string                        absolute disposable cache root (STARMAP_CACHE_DIR)
+      --catalog-acquisition-enabled string      Enables automatic provider acquisition. Environment: STARMAP_CATALOG_ACQUISITION_ENABLED
+      --catalog-acquisition-interval string     Sets the acquisition period. Zero permits one startup pass when automatic acquisition is on. Environment: STARMAP_CATALOG_ACQUISITION_INTERVAL
+      --catalog-coalesce-window string          Bounds the wait before completed provider observations publish. Environment: STARMAP_CATALOG_COALESCE_WINDOW
+      --catalog-provider-bindings string        Selects the complete active provider binding set. An empty array permits no local provider acquisition. Environment: STARMAP_CATALOG_PROVIDER_BINDINGS
+      --catalog-refresh-timeout string          Limits the time for one refresh. Zero adds no cap. Environment: STARMAP_CATALOG_REFRESH_TIMEOUT
+      --catalog-source string                   Selects the upstream catalog source. Environment: STARMAP_CATALOG_SOURCE
+      --catalog-source-aliases string           Names other identities of this runtime for source cycle detection. Environment: STARMAP_CATALOG_SOURCE_ALIASES
+      --catalog-source-api-key string           Authenticates transport to the selected catalog source. It is separate from provider credentials. Environment: STARMAP_CATALOG_SOURCE_API_KEY
+      --catalog-source-channel string           Names the branch that holds the catalog channel document. Environment: STARMAP_CATALOG_SOURCE_CHANNEL
+      --catalog-source-max-age string           Sets the source freshness warning threshold. Zero keeps the default channel freshness thresholds. Environment: STARMAP_CATALOG_SOURCE_MAX_AGE
+      --catalog-source-max-hops string          Limits the accepted source chain length. Environment: STARMAP_CATALOG_SOURCE_MAX_HOPS
+      --catalog-source-poll-interval string     Sets the period between automatic source checks. Zero disables periodic checks. Environment: STARMAP_CATALOG_SOURCE_POLL_INTERVAL
+      --catalog-source-repository string        Names the GitHub repository that publishes the catalog channel. Environment: STARMAP_CATALOG_SOURCE_REPOSITORY
+      --catalog-source-signer-workflow string   Pins the accepted build provenance workflow. Environment: STARMAP_CATALOG_SOURCE_SIGNER_WORKFLOW
+      --catalog-source-startup-policy string    Selects catalog availability before the first upstream reply. Environment: STARMAP_CATALOG_SOURCE_STARTUP_POLICY
+      --catalog-source-token string             Authenticates transport to the selected catalog source. It is separate from provider credentials. Environment: STARMAP_CATALOG_SOURCE_TOKEN
+      --catalog-source-url string               Names the Starmap endpoint or catalog file. Environment: STARMAP_CATALOG_SOURCE_URL
+      --catalog-startup-spread string           Spreads cold automatic work across a stable time window. Zero disables the spread. Environment: STARMAP_CATALOG_STARTUP_SPREAD
+      --catalog-store-path string               catalog store path, relative to the configuration root unless absolute (STARMAP_CATALOG_STORE_PATH)
+      --catalog-transfer-idle-timeout string    Bounds a transfer that makes no progress. Environment: STARMAP_CATALOG_TRANSFER_IDLE_TIMEOUT
+      --catalog-transfer-max-duration string    Bounds one finite HTTP body transfer. It does not bound an open event stream. Environment: STARMAP_CATALOG_TRANSFER_MAX_DURATION
+      --catalog-workspace-path string           Names the reviewed operator catalog input. Environment: STARMAP_CATALOG_WORKSPACE_PATH
+      --config string                           configuration file (default is config.yaml under the selected configuration root)
+      --config-dir string                       absolute configuration root (STARMAP_CONFIG_DIR)
+      --data-dir string                         absolute durable data root (STARMAP_DATA_DIR)
+      --deployment-id string                    persistent deployment identity (default: local) (STARMAP_DEPLOYMENT_ID)
+      --env-file stringArray                    load an explicit dotenv file (repeat in increasing precedence)
+      --home string                             absolute parent for configuration, data, state, and cache (STARMAP_HOME)
+      --instance-id string                      portable instance name for one process (default: default) (STARMAP_INSTANCE_ID)
+      --log-level string                        log level: trace, debug, info, warn, error (overrides -v/-q)
+      --no-color                                disable colored output
+  -o, --output string                           output format: table, json, yaml, wide
+  -q, --quiet                                   minimal output (shortcut for --log-level=warn)
+      --relative-path-base string               explicit relative leaf anchor: config (unset requires absolute legacy selectors) (STARMAP_RELATIVE_PATH_BASE)
+      --scheduler-identity string               Sets a stable identity for this runtime instance. Environment: STARMAP_SCHEDULER_IDENTITY
+      --state-dir string                        Names the runtime state directory for this process. Environment: STARMAP_STATE_DIR
+      --state-root string                       absolute process state root (STARMAP_STATE_ROOT)
+  -v, --verbose                                 verbose output (shortcut for --log-level=debug)

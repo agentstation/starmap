@@ -1,0 +1,13 @@
+{
+  "command": [
+    "go",
+    "test",
+    "-count=1",
+    "-run",
+    "^TestCascadeSubscriberExplicitZeroDisablesSpread$",
+    "./internal/catalog/settings"
+  ],
+  "exit_code": 1,
+  "stdout": "--- FAIL: TestCascadeSubscriberExplicitZeroDisablesSpread (0.00s)\n    cascade_internal_test.go:87: explicit zero selected the subscriber default spread\nFAIL\nFAIL\tgithub.com/agentstation/starmap/internal/catalog/settings\t0.474s\nFAIL\n",
+  "stderr": ""
+}

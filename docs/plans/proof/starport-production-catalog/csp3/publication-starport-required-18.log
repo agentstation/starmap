@@ -1,0 +1,17 @@
+Homebrew/actions/setup-homebrew 2026.08.31.1 matches 3cdb78d0f62ad29dd32de765782654f4eedea607
+actions/attest-build-provenance v4.2.2 matches 4d101475d8b20a2381f78447822ac1eab6504dd8
+actions/checkout v7.0.1 matches 3d3c42e5aac5ba805825da76410c181273ba90b1
+actions/setup-go v7.0.0 matches b7ad1dad31e06c5925ef5d2fc7ad053ef454303e
+actions/setup-node v7.0.0 matches 820762786026740c76f36085b0efc47a31fe5020
+actions/setup-python v7.0.0 matches 5fda3b95a4ea91299a34e894583c3862153e4b97
+actions/upload-artifact v7.0.1 matches 043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+anchore/sbom-action/download-syft v0.24.2 matches 3ad7283483fc7af8ff2b4ea19663c2d5ca935e26
+codecov/codecov-action v7.0.0 matches fb8b3582c8e4def4969c97caa2f19720cb33a72f
+docker/build-push-action v7.3.0 matches 53b7df96c91f9c12dcc8a07bcb9ccacbed38856a
+docker/login-action v4.6.0 matches dbcb813823bdd20940b903addbd779551569679f
+docker/setup-buildx-action v4.3.0 matches 37fe631027851001ddb9b187196cc803df7f5f0e
+golangci/golangci-lint-action v9.3.0 matches ba0d7d2ec06a0ea1cb5fa41b2e4a3ab91d21278a
+goreleaser/goreleaser-action v7.2.3 matches f06c13b6b1a9625abc9e6e439d9c05a8f2190e94
+peter-evans/create-pull-request v8.1.1 matches 5f6978faf089d4d20b00c7766989d076bb2fc7f1
+securego/gosec v2.29.0 matches deb54465fea23d19a77f037e11e6589021f8501d
+action pins: 16 reference(s) match their release tags

@@ -1,0 +1,834 @@
+{
+  "package": "server",
+  "race": false,
+  "toolchain": "go1.25.12",
+  "commands": [
+    {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.25.12",
+        "GOOS=linux",
+        "GOARCH=arm64",
+        "CGO_ENABLED=0",
+        "go",
+        "test",
+        "-c",
+        "-o",
+        "/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/csp2-native-build-_8dj4b2w/test",
+        "./server"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "docker",
+        "volume",
+        "create",
+        "--label",
+        "purpose=csp2-native-package-verification",
+        "csp2-native-ee83af37856344e48b01997ee6f92ec3"
+      ],
+      "exit_code": 0,
+      "stdout": "csp2-native-ee83af37856344e48b01997ee6f92ec3\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "docker",
+        "create",
+        "--pull=never",
+        "--network",
+        "none",
+        "--read-only",
+        "--user",
+        "65532:65532",
+        "--cap-drop=ALL",
+        "--security-opt=no-new-privileges",
+        "--mount",
+        "type=bind,src=/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/csp2-native-build-_8dj4b2w/test,dst=/native-test,readonly",
+        "--mount",
+        "type=bind,src=/Users/jack/src/github.com/agentstation/starmap-catalog-requirements,dst=/Users/jack/src/github.com/agentstation/starmap-catalog-requirements,readonly",
+        "--mount",
+        "type=volume,src=csp2-native-ee83af37856344e48b01997ee6f92ec3,dst=/home/nonroot",
+        "--env",
+        "TMPDIR=/home/nonroot",
+        "--env",
+        "GOMAXPROCS=4",
+        "--workdir",
+        "/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/server",
+        "--entrypoint",
+        "/native-test",
+        "cgr.dev/chainguard/static@sha256:60582b2ae6074f641094af0f370d4ab241aab271858a66223dcde7eee9f51638",
+        "-test.v=test2json",
+        "-test.count=1",
+        "-test.parallel=4",
+        "-test.timeout=10m"
+      ],
+      "exit_code": 0,
+      "stdout": "7b13b4fd7e6aa144cfc7eed450da6b9bc1d8b3a7cebe21959b9da71c71f4bb37\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "docker",
+        "start",
+        "--attach",
+        "7b13b4fd7e6aa144cfc7eed450da6b9bc1d8b3a7cebe21959b9da71c71f4bb37"
+      ],
+      "exit_code": 0,
+      "stdout": "\u0016=== RUN   TestHealthSeparatesCatalogFreshnessFromStreamLifecycle\n\u0016=== PAUSE TestHealthSeparatesCatalogFreshnessFromStreamLifecycle\n\u0016=== NAME  \n\u0016=== RUN   TestHealthExposesCoalescedPublicationDelivery\n\u0016=== PAUSE TestHealthExposesCoalescedPublicationDelivery\n\u0016=== NAME  \n\u0016=== RUN   TestNewRejectsNilClient\n\u0016--- PASS: TestNewRejectsNilClient (0.00s)\n\u0016=== NAME  \n\u0016=== RUN   TestNewRejectsInvalidConfigWithoutPanicking\n\u0016=== RUN   TestNewRejectsInvalidConfigWithoutPanicking/port\n\u0016--- PASS: TestNewRejectsInvalidConfigWithoutPanicking/port (0.00s)\n\u0016=== NAME  TestNewRejectsInvalidConfigWithoutPanicking\n\u0016=== RUN   TestNewRejectsInvalidConfigWithoutPanicking/relative_prefix\n\u0016--- PASS: TestNewRejectsInvalidConfigWithoutPanicking/relative_prefix (0.00s)\n\u0016=== NAME  TestNewRejectsInvalidConfigWithoutPanicking\n\u0016=== RUN   TestNewRejectsInvalidConfigWithoutPanicking/root_prefix\n\u0016--- PASS: TestNewRejectsInvalidConfigWithoutPanicking/root_prefix (0.00s)\n\u0016=== NAME  TestNewRejectsInvalidConfigWithoutPanicking\n\u0016=== RUN   TestNewRejectsInvalidConfigWithoutPanicking/trailing_slash\n\u0016--- PASS: TestNewRejectsInvalidConfigWithoutPanicking/trailing_slash (0.00s)\n\u0016=== NAME  TestNewRejectsInvalidConfigWithoutPanicking\n\u0016=== RUN   TestNewRejectsInvalidConfigWithoutPanicking/wildcard_prefix\n\u0016--- PASS: TestNewRejectsInvalidConfigWithoutPanicking/wildcard_prefix (0.00s)\n\u0016=== NAME  TestNewRejectsInvalidConfigWithoutPanicking\n\u0016=== RUN   TestNewRejectsInvalidConfigWithoutPanicking/negative_rate\n\u0016--- PASS: TestNewRejectsInvalidConfigWithoutPanicking/negative_rate (0.00s)\n\u0016=== NAME  TestNewRejectsInvalidConfigWithoutPanicking\n\u0016=== RUN   TestNewRejectsInvalidConfigWithoutPanicking/negative_read_timeout\n\u0016--- PASS: TestNewRejectsInvalidConfigWithoutPanicking/negative_read_timeout (0.00s)\n\u0016=== NAME  TestNewRejectsInvalidConfigWithoutPanicking\n\u0016=== RUN   TestNewRejectsInvalidConfigWithoutPanicking/negative_SSE_heartbeat\n\u0016--- PASS: TestNewRejectsInvalidConfigWithoutPanicking/negative_SSE_heartbeat (0.00s)\n\u0016=== NAME  TestNewRejectsInvalidConfigWithoutPanicking\n\u0016=== RUN   TestNewRejectsInvalidConfigWithoutPanicking/negative_SSE_write_timeout\n\u0016--- PASS: TestNewRejectsInvalidConfigWithoutPanicking/negative_SSE_write_timeout (0.00s)\n\u0016=== NAME  TestNewRejectsInvalidConfigWithoutPanicking\n\u0016--- PASS: TestNewRejectsInvalidConfigWithoutPanicking (1.91s)\n\u0016=== NAME  \n\u0016=== RUN   TestDefaultConfigIncludesSSELivenessBudgets\n\u0016--- PASS: TestDefaultConfigIncludesSSELivenessBudgets (0.00s)\n\u0016=== NAME  \n\u0016=== RUN   TestReadOnlyServerDoesNotExposeUpdateRoute\n\u0016--- PASS: TestReadOnlyServerDoesNotExposeUpdateRoute (0.00s)\n\u0016=== NAME  \n\u0016=== RUN   TestWithSyncerRejectsTypedNil\n\u0016--- PASS: TestWithSyncerRejectsTypedNil (0.00s)\n\u0016=== NAME  \n\u0016=== RUN   TestServerCascadesVerifiedCatalogSource\n\u0016=== RUN   TestServerCascadesVerifiedCatalogSource/self_reference\n\u0016--- PASS: TestServerCascadesVerifiedCatalogSource/self_reference (0.01s)\n\u0016=== NAME  TestServerCascadesVerifiedCatalogSource\n\u0016=== RUN   TestServerCascadesVerifiedCatalogSource/alias_of_this_instance\n\u0016--- PASS: TestServerCascadesVerifiedCatalogSource/alias_of_this_instance (0.01s)\n\u0016=== NAME  TestServerCascadesVerifiedCatalogSource\n\u0016=== RUN   TestServerCascadesVerifiedCatalogSource/two_node_cycle\n\u0016--- PASS: TestServerCascadesVerifiedCatalogSource/two_node_cycle (0.01s)\n\u0016=== NAME  TestServerCascadesVerifiedCatalogSource\n\u0016--- PASS: TestServerCascadesVerifiedCatalogSource (0.14s)\n\u0016=== NAME  \n\u0016=== RUN   TestServerServesEmbeddedStateThenPullsChannel\n\u0016--- PASS: TestServerServesEmbeddedStateThenPullsChannel (0.05s)\n\u0016=== NAME  \n\u0016=== CONT  TestHealthSeparatesCatalogFreshnessFromStreamLifecycle\n\u0016=== CONT  TestHealthExposesCoalescedPublicationDelivery\n\u0016--- PASS: TestHealthSeparatesCatalogFreshnessFromStreamLifecycle (0.00s)\n\u0016--- PASS: TestHealthExposesCoalescedPublicationDelivery (0.61s)\n\u0016PASS\n",
+      "stderr": "{\"level\":\"info\",\"source\":\"providers\",\"provider_count\":1,\"max_concurrency\":1,\"time\":\"2026-09-06T20:02:49Z\",\"message\":\"Syncing providers concurrently\"}\n{\"level\":\"info\",\"source\":\"providers\",\"provider_count\":1,\"max_concurrency\":1,\"time\":\"2026-09-06T20:02:49Z\",\"message\":\"Syncing providers concurrently\"}\n{\"level\":\"info\",\"source\":\"providers\",\"provider_id\":\"provider-unconfigured\",\"provider_id\":\"provider-unconfigured\",\"reason\":\"credential_unavailable\",\"time\":\"2026-09-06T20:02:49Z\",\"message\":\"Provider skipped without a request\"}\n{\"level\":\"info\",\"source\":\"providers\",\"provider_id\":\"provider-configured\",\"provider_id\":\"provider-configured\",\"model_count\":1,\"time\":\"2026-09-06T20:02:49Z\",\"message\":\"Fetched models\"}\n{\"level\":\"info\",\"source\":\"providers\",\"provider_count\":1,\"max_concurrency\":1,\"time\":\"2026-09-06T20:02:49Z\",\"message\":\"Syncing providers concurrently\"}\n{\"level\":\"info\",\"source\":\"providers\",\"provider_count\":1,\"max_concurrency\":1,\"time\":\"2026-09-06T20:02:49Z\",\"message\":\"Syncing providers concurrently\"}\n{\"level\":\"info\",\"source\":\"providers\",\"provider_id\":\"provider-unconfigured\",\"provider_id\":\"provider-unconfigured\",\"reason\":\"credential_unavailable\",\"time\":\"2026-09-06T20:02:49Z\",\"message\":\"Provider skipped without a request\"}\n{\"level\":\"info\",\"source\":\"providers\",\"provider_id\":\"provider-configured\",\"provider_id\":\"provider-configured\",\"model_count\":1,\"time\":\"2026-09-06T20:02:49Z\",\"message\":\"Fetched models\"}\n{\"level\":\"info\",\"generation_id\":\"synthetic-1.local.94dc549da15a\",\"workspace\":\"/home/nonroot/TestServerServesEmbeddedStateThenPullsChannel1059996859/004/workspace\",\"time\":\"2026-09-06T20:02:49Z\",\"message\":\"Repaired YAML workspace from durable catalog generation\"}\n"
+    },
+    {
+      "command": [
+        "docker",
+        "inspect",
+        "--format",
+        "{{json .State}}",
+        "7b13b4fd7e6aa144cfc7eed450da6b9bc1d8b3a7cebe21959b9da71c71f4bb37"
+      ],
+      "exit_code": 0,
+      "stdout": "{\"Status\":\"exited\",\"Running\":false,\"Paused\":false,\"Restarting\":false,\"OOMKilled\":false,\"Dead\":false,\"Pid\":0,\"ExitCode\":0,\"Error\":\"\",\"StartedAt\":\"2026-09-06T20:02:47.417843842Z\",\"FinishedAt\":\"2026-09-06T20:02:50.26873901Z\"}\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "docker",
+        "rm",
+        "-f",
+        "7b13b4fd7e6aa144cfc7eed450da6b9bc1d8b3a7cebe21959b9da71c71f4bb37"
+      ],
+      "exit_code": 0,
+      "stdout": "7b13b4fd7e6aa144cfc7eed450da6b9bc1d8b3a7cebe21959b9da71c71f4bb37\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "docker",
+        "volume",
+        "rm",
+        "csp2-native-ee83af37856344e48b01997ee6f92ec3"
+      ],
+      "exit_code": 0,
+      "stdout": "csp2-native-ee83af37856344e48b01997ee6f92ec3\n",
+      "stderr": ""
+    }
+  ],
+  "test_events": [
+    {
+      "Time": "2026-09-06T15:02:50.436363-05:00",
+      "Action": "start",
+      "Package": "github.com/agentstation/starmap/server"
+    },
+    {
+      "Time": "2026-09-06T15:02:50.436548-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/server",
+      "Test": "TestHealthSeparatesCatalogFreshnessFromStreamLifecycle"
+    },
+    {
+      "Time": "2026-09-06T15:02:50.436552-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/server",
+      "Test": "TestHealthSeparatesCatalogFreshnessFromStreamLifecycle",
+      "Output": "=== RUN   TestHealthSeparatesCatalogFreshnessFromStreamLifecycle\n"
+    },
+    {
+      "Time": "2026-09-06T15:02:50.436554-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/server",
+      "Test": "TestHealthSeparatesCatalogFreshnessFromStreamLifecycle",
+      "Output": "=== PAUSE TestHealthSeparatesCatalogFreshnessFromStreamLifecycle\n"
+    },
+    {
+      "Time": "2026-09-06T15:02:50.436556-05:00",
+      "Action": "pause",
+      "Package": "github.com/agentstation/starmap/server",
+      "Test": "TestHealthSeparatesCatalogFreshnessFromStreamLifecycle"
+    },
+    {
+      "Time": "2026-09-06T15:02:50.436557-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/server",
+      "Test": "TestHealthExposesCoalescedPublicationDelivery"
+    },
+    {
+      "Time": "2026-09-06T15:02:50.436559-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/server",
+      "Test": "TestHealthExposesCoalescedPublicationDelivery",
+      "Output": "=== RUN   TestHealthExposesCoalescedPublicationDelivery\n"
+    },
+    {
+      "Time": "2026-09-06T15:02:50.436561-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/server",
+      "Test": "TestHealthExposesCoalescedPublicationDelivery",
+      "Output": "=== PAUSE TestHealthExposesCoalescedPublicationDelivery\n"
+    },
+    {
+      "Time": "2026-09-06T15:02:50.436562-05:00",
+      "Action": "pause",
+      "Package": "github.com/agentstation/starmap/server",
+      "Test": "TestHealthExposesCoalescedPublicationDelivery"
+    },
+    {
+      "Time": "2026-09-06T15:02:50.436564-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/server",
+      "Test": "TestNewRejectsNilClient"
+    },
+    {
+      "Time": "2026-09-06T15:02:50.436567-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/server",
+      "Test": "TestNewRejectsNilClient",
+      "Output": "=== RUN   TestNewRejectsNilClient\n"
+    },
+    {
+      "Time": "2026-09-06T15:02:50.436582-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/server",
+      "Test": "TestNewRejectsNilClient",
+      "Output": "--- PASS: TestNewRejectsNilClient (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T15:02:50.436585-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/server",
+      "Test": "TestNewRejectsNilClient",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T15:02:50.436586-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/server",
+      "Test": "TestNewRejectsInvalidConfigWithoutPanicking"
+    },
+    {
+      "Time": "2026-09-06T15:02:50.436588-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/server",
+      "Test": "TestNewRejectsInvalidConfigWithoutPanicking",
+      "Output": "=== RUN   TestNewRejectsInvalidConfigWithoutPanicking\n"
+    },
+    {
+      "Time": "2026-09-06T15:02:50.436589-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/server",
+      "Test": "TestNewRejectsInvalidConfigWithoutPanicking/port"
+    },
+    {
+      "Time": "2026-09-06T15:02:50.43659-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/server",
+      "Test": "TestNewRejectsInvalidConfigWithoutPanicking/port",
+      "Output": "=== RUN   TestNewRejectsInvalidConfigWithoutPanicking/port\n"
+    },
+    {
+      "Time": "2026-09-06T15:02:50.436591-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/server",
+      "Test": "TestNewRejectsInvalidConfigWithoutPanicking/port",
+      "Output": "--- PASS: TestNewRejectsInvalidConfigWithoutPanicking/port (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T15:02:50.436593-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/server",
+      "Test": "TestNewRejectsInvalidConfigWithoutPanicking/port",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T15:02:50.436594-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/server",
+      "Test": "TestNewRejectsInvalidConfigWithoutPanicking/relative_prefix"
+    },
+    {
+      "Time": "2026-09-06T15:02:50.436595-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/server",
+      "Test": "TestNewRejectsInvalidConfigWithoutPanicking/relative_prefix",
+      "Output": "=== RUN   TestNewRejectsInvalidConfigWithoutPanicking/relative_prefix\n"
+    },
+    {
+      "Time": "2026-09-06T15:02:50.436597-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/server",
+      "Test": "TestNewRejectsInvalidConfigWithoutPanicking/relative_prefix",
+      "Output": "--- PASS: TestNewRejectsInvalidConfigWithoutPanicking/relative_prefix (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T15:02:50.436599-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/server",
+      "Test": "TestNewRejectsInvalidConfigWithoutPanicking/relative_prefix",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T15:02:50.4366-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/server",
+      "Test": "TestNewRejectsInvalidConfigWithoutPanicking/root_prefix"
+    },
+    {
+      "Time": "2026-09-06T15:02:50.436601-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/server",
+      "Test": "TestNewRejectsInvalidConfigWithoutPanicking/root_prefix",
+      "Output": "=== RUN   TestNewRejectsInvalidConfigWithoutPanicking/root_prefix\n"
+    },
+    {
+      "Time": "2026-09-06T15:02:50.436603-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/server",
+      "Test": "TestNewRejectsInvalidConfigWithoutPanicking/root_prefix",
+      "Output": "--- PASS: TestNewRejectsInvalidConfigWithoutPanicking/root_prefix (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T15:02:50.436604-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/server",
+      "Test": "TestNewRejectsInvalidConfigWithoutPanicking/root_prefix",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T15:02:50.436605-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/server",
+      "Test": "TestNewRejectsInvalidConfigWithoutPanicking/trailing_slash"
+    },
+    {
+      "Time": "2026-09-06T15:02:50.436606-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/server",
+      "Test": "TestNewRejectsInvalidConfigWithoutPanicking/trailing_slash",
+      "Output": "=== RUN   TestNewRejectsInvalidConfigWithoutPanicking/trailing_slash\n"
+    },
+    {
+      "Time": "2026-09-06T15:02:50.436608-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/server",
+      "Test": "TestNewRejectsInvalidConfigWithoutPanicking/trailing_slash",
+      "Output": "--- PASS: TestNewRejectsInvalidConfigWithoutPanicking/trailing_slash (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T15:02:50.436609-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/server",
+      "Test": "TestNewRejectsInvalidConfigWithoutPanicking/trailing_slash",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T15:02:50.43661-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/server",
+      "Test": "TestNewRejectsInvalidConfigWithoutPanicking/wildcard_prefix"
+    },
+    {
+      "Time": "2026-09-06T15:02:50.436611-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/server",
+      "Test": "TestNewRejectsInvalidConfigWithoutPanicking/wildcard_prefix",
+      "Output": "=== RUN   TestNewRejectsInvalidConfigWithoutPanicking/wildcard_prefix\n"
+    },
+    {
+      "Time": "2026-09-06T15:02:50.436613-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/server",
+      "Test": "TestNewRejectsInvalidConfigWithoutPanicking/wildcard_prefix",
+      "Output": "--- PASS: TestNewRejectsInvalidConfigWithoutPanicking/wildcard_prefix (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T15:02:50.436614-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/server",
+      "Test": "TestNewRejectsInvalidConfigWithoutPanicking/wildcard_prefix",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T15:02:50.436615-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/server",
+      "Test": "TestNewRejectsInvalidConfigWithoutPanicking/negative_rate"
+    },
+    {
+      "Time": "2026-09-06T15:02:50.436617-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/server",
+      "Test": "TestNewRejectsInvalidConfigWithoutPanicking/negative_rate",
+      "Output": "=== RUN   TestNewRejectsInvalidConfigWithoutPanicking/negative_rate\n"
+    },
+    {
+      "Time": "2026-09-06T15:02:50.436618-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/server",
+      "Test": "TestNewRejectsInvalidConfigWithoutPanicking/negative_rate",
+      "Output": "--- PASS: TestNewRejectsInvalidConfigWithoutPanicking/negative_rate (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T15:02:50.436621-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/server",
+      "Test": "TestNewRejectsInvalidConfigWithoutPanicking/negative_rate",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T15:02:50.436622-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/server",
+      "Test": "TestNewRejectsInvalidConfigWithoutPanicking/negative_read_timeout"
+    },
+    {
+      "Time": "2026-09-06T15:02:50.436623-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/server",
+      "Test": "TestNewRejectsInvalidConfigWithoutPanicking/negative_read_timeout",
+      "Output": "=== RUN   TestNewRejectsInvalidConfigWithoutPanicking/negative_read_timeout\n"
+    },
+    {
+      "Time": "2026-09-06T15:02:50.436624-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/server",
+      "Test": "TestNewRejectsInvalidConfigWithoutPanicking/negative_read_timeout",
+      "Output": "--- PASS: TestNewRejectsInvalidConfigWithoutPanicking/negative_read_timeout (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T15:02:50.436626-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/server",
+      "Test": "TestNewRejectsInvalidConfigWithoutPanicking/negative_read_timeout",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T15:02:50.436632-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/server",
+      "Test": "TestNewRejectsInvalidConfigWithoutPanicking/negative_SSE_heartbeat"
+    },
+    {
+      "Time": "2026-09-06T15:02:50.436634-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/server",
+      "Test": "TestNewRejectsInvalidConfigWithoutPanicking/negative_SSE_heartbeat",
+      "Output": "=== RUN   TestNewRejectsInvalidConfigWithoutPanicking/negative_SSE_heartbeat\n"
+    },
+    {
+      "Time": "2026-09-06T15:02:50.436635-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/server",
+      "Test": "TestNewRejectsInvalidConfigWithoutPanicking/negative_SSE_heartbeat",
+      "Output": "--- PASS: TestNewRejectsInvalidConfigWithoutPanicking/negative_SSE_heartbeat (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T15:02:50.436637-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/server",
+      "Test": "TestNewRejectsInvalidConfigWithoutPanicking/negative_SSE_heartbeat",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T15:02:50.436638-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/server",
+      "Test": "TestNewRejectsInvalidConfigWithoutPanicking/negative_SSE_write_timeout"
+    },
+    {
+      "Time": "2026-09-06T15:02:50.436639-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/server",
+      "Test": "TestNewRejectsInvalidConfigWithoutPanicking/negative_SSE_write_timeout",
+      "Output": "=== RUN   TestNewRejectsInvalidConfigWithoutPanicking/negative_SSE_write_timeout\n"
+    },
+    {
+      "Time": "2026-09-06T15:02:50.436641-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/server",
+      "Test": "TestNewRejectsInvalidConfigWithoutPanicking/negative_SSE_write_timeout",
+      "Output": "--- PASS: TestNewRejectsInvalidConfigWithoutPanicking/negative_SSE_write_timeout (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T15:02:50.436646-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/server",
+      "Test": "TestNewRejectsInvalidConfigWithoutPanicking/negative_SSE_write_timeout",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T15:02:50.436649-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/server",
+      "Test": "TestNewRejectsInvalidConfigWithoutPanicking",
+      "Output": "--- PASS: TestNewRejectsInvalidConfigWithoutPanicking (1.91s)\n"
+    },
+    {
+      "Time": "2026-09-06T15:02:50.436652-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/server",
+      "Test": "TestNewRejectsInvalidConfigWithoutPanicking",
+      "Elapsed": 1.91
+    },
+    {
+      "Time": "2026-09-06T15:02:50.436654-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/server",
+      "Test": "TestDefaultConfigIncludesSSELivenessBudgets"
+    },
+    {
+      "Time": "2026-09-06T15:02:50.436656-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/server",
+      "Test": "TestDefaultConfigIncludesSSELivenessBudgets",
+      "Output": "=== RUN   TestDefaultConfigIncludesSSELivenessBudgets\n"
+    },
+    {
+      "Time": "2026-09-06T15:02:50.436657-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/server",
+      "Test": "TestDefaultConfigIncludesSSELivenessBudgets",
+      "Output": "--- PASS: TestDefaultConfigIncludesSSELivenessBudgets (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T15:02:50.436658-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/server",
+      "Test": "TestDefaultConfigIncludesSSELivenessBudgets",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T15:02:50.43666-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/server",
+      "Test": "TestReadOnlyServerDoesNotExposeUpdateRoute"
+    },
+    {
+      "Time": "2026-09-06T15:02:50.436662-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/server",
+      "Test": "TestReadOnlyServerDoesNotExposeUpdateRoute",
+      "Output": "=== RUN   TestReadOnlyServerDoesNotExposeUpdateRoute\n"
+    },
+    {
+      "Time": "2026-09-06T15:02:50.436664-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/server",
+      "Test": "TestReadOnlyServerDoesNotExposeUpdateRoute",
+      "Output": "--- PASS: TestReadOnlyServerDoesNotExposeUpdateRoute (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T15:02:50.436665-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/server",
+      "Test": "TestReadOnlyServerDoesNotExposeUpdateRoute",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T15:02:50.436666-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/server",
+      "Test": "TestWithSyncerRejectsTypedNil"
+    },
+    {
+      "Time": "2026-09-06T15:02:50.436667-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/server",
+      "Test": "TestWithSyncerRejectsTypedNil",
+      "Output": "=== RUN   TestWithSyncerRejectsTypedNil\n"
+    },
+    {
+      "Time": "2026-09-06T15:02:50.436669-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/server",
+      "Test": "TestWithSyncerRejectsTypedNil",
+      "Output": "--- PASS: TestWithSyncerRejectsTypedNil (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T15:02:50.436671-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/server",
+      "Test": "TestWithSyncerRejectsTypedNil",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T15:02:50.436672-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/server",
+      "Test": "TestServerCascadesVerifiedCatalogSource"
+    },
+    {
+      "Time": "2026-09-06T15:02:50.436673-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/server",
+      "Test": "TestServerCascadesVerifiedCatalogSource",
+      "Output": "=== RUN   TestServerCascadesVerifiedCatalogSource\n"
+    },
+    {
+      "Time": "2026-09-06T15:02:50.436676-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/server",
+      "Test": "TestServerCascadesVerifiedCatalogSource/self_reference"
+    },
+    {
+      "Time": "2026-09-06T15:02:50.436677-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/server",
+      "Test": "TestServerCascadesVerifiedCatalogSource/self_reference",
+      "Output": "=== RUN   TestServerCascadesVerifiedCatalogSource/self_reference\n"
+    },
+    {
+      "Time": "2026-09-06T15:02:50.436678-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/server",
+      "Test": "TestServerCascadesVerifiedCatalogSource/self_reference",
+      "Output": "--- PASS: TestServerCascadesVerifiedCatalogSource/self_reference (0.01s)\n"
+    },
+    {
+      "Time": "2026-09-06T15:02:50.43668-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/server",
+      "Test": "TestServerCascadesVerifiedCatalogSource/self_reference",
+      "Elapsed": 0.01
+    },
+    {
+      "Time": "2026-09-06T15:02:50.436681-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/server",
+      "Test": "TestServerCascadesVerifiedCatalogSource/alias_of_this_instance"
+    },
+    {
+      "Time": "2026-09-06T15:02:50.436682-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/server",
+      "Test": "TestServerCascadesVerifiedCatalogSource/alias_of_this_instance",
+      "Output": "=== RUN   TestServerCascadesVerifiedCatalogSource/alias_of_this_instance\n"
+    },
+    {
+      "Time": "2026-09-06T15:02:50.436684-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/server",
+      "Test": "TestServerCascadesVerifiedCatalogSource/alias_of_this_instance",
+      "Output": "--- PASS: TestServerCascadesVerifiedCatalogSource/alias_of_this_instance (0.01s)\n"
+    },
+    {
+      "Time": "2026-09-06T15:02:50.436686-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/server",
+      "Test": "TestServerCascadesVerifiedCatalogSource/alias_of_this_instance",
+      "Elapsed": 0.01
+    },
+    {
+      "Time": "2026-09-06T15:02:50.436687-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/server",
+      "Test": "TestServerCascadesVerifiedCatalogSource/two_node_cycle"
+    },
+    {
+      "Time": "2026-09-06T15:02:50.436688-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/server",
+      "Test": "TestServerCascadesVerifiedCatalogSource/two_node_cycle",
+      "Output": "=== RUN   TestServerCascadesVerifiedCatalogSource/two_node_cycle\n"
+    },
+    {
+      "Time": "2026-09-06T15:02:50.43669-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/server",
+      "Test": "TestServerCascadesVerifiedCatalogSource/two_node_cycle",
+      "Output": "--- PASS: TestServerCascadesVerifiedCatalogSource/two_node_cycle (0.01s)\n"
+    },
+    {
+      "Time": "2026-09-06T15:02:50.436691-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/server",
+      "Test": "TestServerCascadesVerifiedCatalogSource/two_node_cycle",
+      "Elapsed": 0.01
+    },
+    {
+      "Time": "2026-09-06T15:02:50.436692-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/server",
+      "Test": "TestServerCascadesVerifiedCatalogSource",
+      "Output": "--- PASS: TestServerCascadesVerifiedCatalogSource (0.14s)\n"
+    },
+    {
+      "Time": "2026-09-06T15:02:50.436695-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/server",
+      "Test": "TestServerCascadesVerifiedCatalogSource",
+      "Elapsed": 0.14
+    },
+    {
+      "Time": "2026-09-06T15:02:50.436696-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/server",
+      "Test": "TestServerServesEmbeddedStateThenPullsChannel"
+    },
+    {
+      "Time": "2026-09-06T15:02:50.436698-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/server",
+      "Test": "TestServerServesEmbeddedStateThenPullsChannel",
+      "Output": "=== RUN   TestServerServesEmbeddedStateThenPullsChannel\n"
+    },
+    {
+      "Time": "2026-09-06T15:02:50.436699-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/server",
+      "Test": "TestServerServesEmbeddedStateThenPullsChannel",
+      "Output": "--- PASS: TestServerServesEmbeddedStateThenPullsChannel (0.05s)\n"
+    },
+    {
+      "Time": "2026-09-06T15:02:50.4367-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/server",
+      "Test": "TestServerServesEmbeddedStateThenPullsChannel",
+      "Elapsed": 0.05
+    },
+    {
+      "Time": "2026-09-06T15:02:50.436702-05:00",
+      "Action": "cont",
+      "Package": "github.com/agentstation/starmap/server",
+      "Test": "TestHealthSeparatesCatalogFreshnessFromStreamLifecycle"
+    },
+    {
+      "Time": "2026-09-06T15:02:50.436703-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/server",
+      "Test": "TestHealthSeparatesCatalogFreshnessFromStreamLifecycle",
+      "Output": "=== CONT  TestHealthSeparatesCatalogFreshnessFromStreamLifecycle\n"
+    },
+    {
+      "Time": "2026-09-06T15:02:50.436704-05:00",
+      "Action": "cont",
+      "Package": "github.com/agentstation/starmap/server",
+      "Test": "TestHealthExposesCoalescedPublicationDelivery"
+    },
+    {
+      "Time": "2026-09-06T15:02:50.436705-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/server",
+      "Test": "TestHealthExposesCoalescedPublicationDelivery",
+      "Output": "=== CONT  TestHealthExposesCoalescedPublicationDelivery\n"
+    },
+    {
+      "Time": "2026-09-06T15:02:50.436706-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/server",
+      "Test": "TestHealthSeparatesCatalogFreshnessFromStreamLifecycle",
+      "Output": "--- PASS: TestHealthSeparatesCatalogFreshnessFromStreamLifecycle (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T15:02:50.436738-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/server",
+      "Test": "TestHealthSeparatesCatalogFreshnessFromStreamLifecycle",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T15:02:50.43674-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/server",
+      "Test": "TestHealthExposesCoalescedPublicationDelivery",
+      "Output": "--- PASS: TestHealthExposesCoalescedPublicationDelivery (0.61s)\n"
+    },
+    {
+      "Time": "2026-09-06T15:02:50.436748-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/server",
+      "Test": "TestHealthExposesCoalescedPublicationDelivery",
+      "Elapsed": 0.61
+    },
+    {
+      "Time": "2026-09-06T15:02:50.43675-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/server",
+      "Output": "PASS\n"
+    },
+    {
+      "Time": "2026-09-06T15:02:50.436751-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/server",
+      "Output": "{\"level\":\"info\",\"source\":\"providers\",\"provider_count\":1,\"max_concurrency\":1,\"time\":\"2026-09-06T20:02:49Z\",\"message\":\"Syncing providers concurrently\"}\n"
+    },
+    {
+      "Time": "2026-09-06T15:02:50.436754-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/server",
+      "Output": "{\"level\":\"info\",\"source\":\"providers\",\"provider_count\":1,\"max_concurrency\":1,\"time\":\"2026-09-06T20:02:49Z\",\"message\":\"Syncing providers concurrently\"}\n"
+    },
+    {
+      "Time": "2026-09-06T15:02:50.436755-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/server",
+      "Output": "{\"level\":\"info\",\"source\":\"providers\",\"provider_id\":\"provider-unconfigured\",\"provider_id\":\"provider-unconfigured\",\"reason\":\"credential_unavailable\",\"time\":\"2026-09-06T20:02:49Z\",\"message\":\"Provider skipped without a request\"}\n"
+    },
+    {
+      "Time": "2026-09-06T15:02:50.436757-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/server",
+      "Output": "{\"level\":\"info\",\"source\":\"providers\",\"provider_id\":\"provider-configured\",\"provider_id\":\"provider-configured\",\"model_count\":1,\"time\":\"2026-09-06T20:02:49Z\",\"message\":\"Fetched models\"}\n"
+    },
+    {
+      "Time": "2026-09-06T15:02:50.436759-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/server",
+      "Output": "{\"level\":\"info\",\"source\":\"providers\",\"provider_count\":1,\"max_concurrency\":1,\"time\":\"2026-09-06T20:02:49Z\",\"message\":\"Syncing providers concurrently\"}\n"
+    },
+    {
+      "Time": "2026-09-06T15:02:50.43676-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/server",
+      "Output": "{\"level\":\"info\",\"source\":\"providers\",\"provider_count\":1,\"max_concurrency\":1,\"time\":\"2026-09-06T20:02:49Z\",\"message\":\"Syncing providers concurrently\"}\n"
+    },
+    {
+      "Time": "2026-09-06T15:02:50.436762-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/server",
+      "Output": "{\"level\":\"info\",\"source\":\"providers\",\"provider_id\":\"provider-unconfigured\",\"provider_id\":\"provider-unconfigured\",\"reason\":\"credential_unavailable\",\"time\":\"2026-09-06T20:02:49Z\",\"message\":\"Provider skipped without a request\"}\n"
+    },
+    {
+      "Time": "2026-09-06T15:02:50.436764-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/server",
+      "Output": "{\"level\":\"info\",\"source\":\"providers\",\"provider_id\":\"provider-configured\",\"provider_id\":\"provider-configured\",\"model_count\":1,\"time\":\"2026-09-06T20:02:49Z\",\"message\":\"Fetched models\"}\n"
+    },
+    {
+      "Time": "2026-09-06T15:02:50.436765-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/server",
+      "Output": "{\"level\":\"info\",\"generation_id\":\"synthetic-1.local.94dc549da15a\",\"workspace\":\"/home/nonroot/TestServerServesEmbeddedStateThenPullsChannel1059996859/004/workspace\",\"time\":\"2026-09-06T20:02:49Z\",\"message\":\"Repaired YAML workspace from durable catalog generation\"}\n"
+    },
+    {
+      "Time": "2026-09-06T15:02:50.436768-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/server",
+      "Elapsed": 0
+    }
+  ],
+  "binary_sha256": "a512ba7bb8c59afded7341666e91ffa7abaeaacc84ccd9e334e64de6fcf9ebbf",
+  "state": {
+    "Status": "exited",
+    "Running": false,
+    "Paused": false,
+    "Restarting": false,
+    "OOMKilled": false,
+    "Dead": false,
+    "Pid": 0,
+    "ExitCode": 0,
+    "Error": "",
+    "StartedAt": "2026-09-06T20:02:47.417843842Z",
+    "FinishedAt": "2026-09-06T20:02:50.26873901Z"
+  },
+  "conversion_exit_code": 0,
+  "counts": {
+    "pass": 21,
+    "fail": 0,
+    "skip": 0
+  },
+  "passed": true,
+  "container_removed": true,
+  "volume_removed": true
+}

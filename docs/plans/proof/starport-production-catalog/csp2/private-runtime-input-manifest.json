@@ -1,0 +1,106 @@
+{
+  "head": "4780dfea9f7e002ea6eaaa82aa8f52ed0d4cc225",
+  "branch": "codex/catalog-requirements",
+  "files": [
+    {
+      "path": "go.mod",
+      "sha256": "d54afc69a499f08a2f14de6154b7b6b3d8b2de3ff8a6625e76f90e71bb906628"
+    },
+    {
+      "path": "go.sum",
+      "sha256": "b12603506b18e32d3ddc6d7aaea6c6c6d60a82977e4b76710c06399f8c762e9e"
+    },
+    {
+      "path": "internal/cli/app/catalog_runtime.go",
+      "sha256": "357abdf6def6a035ba47a92c9ef9c1adac8785e2f41f737eeaadab2512b93bfa"
+    },
+    {
+      "path": "internal/cli/app/runtime_permissions_posix_test.go",
+      "sha256": "8080780ebe0b75de976184c18680c24c6822caf1a15c8465cf9dcca153ca868b"
+    },
+    {
+      "path": "runtime/directory.go",
+      "sha256": "02d596ce1eb53960f57dbe14c8630af913a27d978c4a013ce0f37442d74c59a5"
+    },
+    {
+      "path": "runtime/directory_fixture_test.go",
+      "sha256": "eb81c83f66c30832a79e2d0e14b89a36a866a306045be266fe33e4569246a9a5"
+    },
+    {
+      "path": "runtime/directory_permissions.go",
+      "sha256": "5b3beaa6e261c46cb6871a635513cd71a459f2c6f21093ace11f064f18073e9b"
+    },
+    {
+      "path": "runtime/directory_permissions_other.go",
+      "sha256": "968b2e174db1f05bb394a143a1c39e428122c0f962cd5b22433b419116d4506d"
+    },
+    {
+      "path": "runtime/directory_permissions_posix.go",
+      "sha256": "d86b2b3852fbd6e738eeaa6a248f1e265eae0ce130f1df3ba3d47321a9ed9043"
+    },
+    {
+      "path": "runtime/directory_privacy_posix_test.go",
+      "sha256": "3ee3f2c8771c9f6a5790df652dc9a8af8e06a5633131f6e0ac7edfdbfe515637"
+    },
+    {
+      "path": "runtime/directory_test.go",
+      "sha256": "27f68b48f04aa16255c3ba69fcd1085af6ec11be3c067e4872b2c87f15b19340"
+    },
+    {
+      "path": "runtime/helpers_test.go",
+      "sha256": "5f0622bae87f86db13da843fc7ffb52fd9515f28bc7133a90420fae60caa3cb3"
+    },
+    {
+      "path": "runtime/layers_test.go",
+      "sha256": "c49b7e5e097e2685becab1034788f8d85ac86a626afc1f3346850d9cab12bc9e"
+    },
+    {
+      "path": "runtime/migration_stage_test.go",
+      "sha256": "683a6290be57c089000d8eeb4b0401d84fb8616426ed5cf61eb26b916c4828cf"
+    },
+    {
+      "path": "runtime/owner.go",
+      "sha256": "7d5e1ad869533f2ee3a2fed93933e1dc3f66cc0d62cfd1c8d6c456af2a8f7757"
+    },
+    {
+      "path": "runtime/owner_inspection.go",
+      "sha256": "2c81cb6b302211d9e3b27ddcc9a867884c91b639830f14fc9eef3b33f6dd1ca5"
+    },
+    {
+      "path": "runtime/owner_inspection_other.go",
+      "sha256": "69cf73823baa7c2547e05c384bc63967cf1e60430f48ccd9c5d6e12d7608f957"
+    },
+    {
+      "path": "runtime/owner_inspection_posix.go",
+      "sha256": "a85a2625fc48f8de88116cee7d6d3c444de27e9da1bb1f567c2c5a98f9523407"
+    },
+    {
+      "path": "runtime/owner_inspection_test.go",
+      "sha256": "276b99330bd05a81bf174ae99de280c7731ab39eb4a61c759fd49a79e726a1e6"
+    },
+    {
+      "path": "runtime/owner_seed.go",
+      "sha256": "b89bc78ed3a5a5b7bb9f2f624e424fd1915c5d7351acf720a79a6a1dd27e2c00"
+    },
+    {
+      "path": "runtime/owner_test.go",
+      "sha256": "6ce23e733dfa0a8e7093ad629ce22866c824ee836cbf868ecbdb4be429f00481"
+    },
+    {
+      "path": "runtime/policy_test.go",
+      "sha256": "16b4c8ee2cc3f9e50c0497f489032d35a2903ff930ea0cb0a1f96b6a8b0fb823"
+    },
+    {
+      "path": "runtime/runtime_test.go",
+      "sha256": "eac3ae80b6a44fca4c05ff85830488c34335204bd4262f0a95d820ea52a42c95"
+    },
+    {
+      "path": "runtime/scheduler_test.go",
+      "sha256": "0e21ba3bd79671fd78cd82c2bdbc50881eaa32f53cbb2404ece631603df55952"
+    },
+    {
+      "path": "scripts/catalog-product-checks.json",
+      "sha256": "2f6dad6bc902942f9a61b2a074a0621362781ce1dca1514b83697ede964d76b0"
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "command": [
+    "go",
+    "test",
+    "-count=1",
+    "-run",
+    "^(TestCanonicalCatalogYAMLRetainsExplicitValues|TestUnknownCatalogYAMLKeyFails)$",
+    "./internal/cli/app"
+  ],
+  "exit_code": 1,
+  "stdout": "--- FAIL: TestCanonicalCatalogYAMLRetainsExplicitValues (0.00s)\n    catalog_file_test.go:21: YAML lost the value or presence of STARMAP_CATALOG_SOURCE\n--- FAIL: TestUnknownCatalogYAMLKeyFails (0.00s)\n    catalog_file_test.go:28: unknown YAML key was accepted\nFAIL\nFAIL\tgithub.com/agentstation/starmap/internal/cli/app\t0.467s\nFAIL\n",
+  "stderr": ""
+}

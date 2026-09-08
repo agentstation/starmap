@@ -1,0 +1,15 @@
+{
+  "command": [
+    "go",
+    "test",
+    "-count=1",
+    "-timeout",
+    "3m",
+    "./internal/cli/app",
+    "-run",
+    "^(TestFrozenConfigurationRootDoesNotResolveAgain|TestGoPathOptionsRejectUnknownNamesWithoutValues)$"
+  ],
+  "exit_code": 1,
+  "stdout": "--- FAIL: TestFrozenConfigurationRootDoesNotResolveAgain (0.00s)\n    product_paths_test.go:202: validation failed for field config: must be a nonempty absolute directory\n--- FAIL: TestGoPathOptionsRejectUnknownNamesWithoutValues (0.00s)\n    product_paths_test.go:214: unknown node path setting was ignored\nFAIL\nFAIL\tgithub.com/agentstation/starmap/internal/cli/app\t0.484s\nFAIL\n",
+  "stderr": ""
+}

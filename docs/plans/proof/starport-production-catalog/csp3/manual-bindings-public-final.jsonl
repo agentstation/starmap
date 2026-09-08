@@ -1,0 +1,13 @@
+{"Time":"2026-09-07T03:03:53.58418-05:00","Action":"start","Package":"github.com/agentstation/starmap/acquisition"}
+{"Time":"2026-09-07T03:03:55.190117-05:00","Action":"run","Package":"github.com/agentstation/starmap/acquisition","Test":"TestManualBindingOptionCopiesAndValidatesWithoutAcquisition"}
+{"Time":"2026-09-07T03:03:55.190579-05:00","Action":"output","Package":"github.com/agentstation/starmap/acquisition","Test":"TestManualBindingOptionCopiesAndValidatesWithoutAcquisition","Output":"=== RUN   TestManualBindingOptionCopiesAndValidatesWithoutAcquisition\n"}
+{"Time":"2026-09-07T03:03:55.19072-05:00","Action":"output","Package":"github.com/agentstation/starmap/acquisition","Test":"TestManualBindingOptionCopiesAndValidatesWithoutAcquisition","Output":"--- PASS: TestManualBindingOptionCopiesAndValidatesWithoutAcquisition (0.00s)\n"}
+{"Time":"2026-09-07T03:03:55.19078-05:00","Action":"pass","Package":"github.com/agentstation/starmap/acquisition","Test":"TestManualBindingOptionCopiesAndValidatesWithoutAcquisition","Elapsed":0}
+{"Time":"2026-09-07T03:03:55.190815-05:00","Action":"run","Package":"github.com/agentstation/starmap/acquisition","Test":"TestManualSyncBindingReceiptsReachDurableGeneration"}
+{"Time":"2026-09-07T03:03:55.190821-05:00","Action":"output","Package":"github.com/agentstation/starmap/acquisition","Test":"TestManualSyncBindingReceiptsReachDurableGeneration","Output":"=== RUN   TestManualSyncBindingReceiptsReachDurableGeneration\n"}
+{"Time":"2026-09-07T03:04:15.635841-05:00","Action":"output","Package":"github.com/agentstation/starmap/acquisition","Test":"TestManualSyncBindingReceiptsReachDurableGeneration","Output":"    syncer_bindings_test.go:88: configuration error in acquisition: sync catalog path is not the Client workspace; construct the Client with starmap.WithCatalogPath\n"}
+{"Time":"2026-09-07T03:04:15.638472-05:00","Action":"output","Package":"github.com/agentstation/starmap/acquisition","Test":"TestManualSyncBindingReceiptsReachDurableGeneration","Output":"--- FAIL: TestManualSyncBindingReceiptsReachDurableGeneration (20.45s)\n"}
+{"Time":"2026-09-07T03:04:15.642183-05:00","Action":"fail","Package":"github.com/agentstation/starmap/acquisition","Test":"TestManualSyncBindingReceiptsReachDurableGeneration","Elapsed":20.45}
+{"Time":"2026-09-07T03:04:15.642217-05:00","Action":"output","Package":"github.com/agentstation/starmap/acquisition","Output":"FAIL\n"}
+{"Time":"2026-09-07T03:04:15.667743-05:00","Action":"output","Package":"github.com/agentstation/starmap/acquisition","Output":"FAIL\tgithub.com/agentstation/starmap/acquisition\t22.083s\n"}
+{"Time":"2026-09-07T03:04:15.66968-05:00","Action":"fail","Package":"github.com/agentstation/starmap/acquisition","Elapsed":22.086}

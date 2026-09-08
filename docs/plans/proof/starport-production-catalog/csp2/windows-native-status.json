@@ -1,0 +1,16 @@
+{
+  "native_fail_before": "UNVERIFIED",
+  "native_implementation": "UNVERIFIED",
+  "reason": "No native Windows runner was used. CI publication and dispatch remain outside current authority.",
+  "prepared_workflow": ".github/workflows/pr.yaml",
+  "windows_runners": [
+    "windows-2025",
+    "windows-11-arm"
+  ],
+  "known_remaining_seams": [
+    "workspace atomic directory exchange",
+    "directory flush and interruption durability",
+    "full file inventory access policies"
+  ],
+  "prepared_job": "native-runtime"
+}

@@ -1,0 +1,32 @@
+{
+  "base_commit": "4780dfea9f7e002ea6eaaa82aa8f52ed0d4cc225",
+  "branch": "codex/catalog-requirements",
+  "sha256": {
+    ".github/workflows/pr.yaml": "64f4db905ffe1d223996f066df7f5fd6d6a6690859c0f4cb96c9a88cd3a26974",
+    "go.mod": "4089f0c9d4e2a59e91b45b22419dcc16298b545ce74db69f19508377289e3513",
+    "go.sum": "e6bc0489a1beb9cc7af8ce96d3ab833002dab73fa559c2165e57a7865d13a356",
+    "internal/bootstrap/export.go": "4e5abb90bb95c9a3fb0da30ff02e961dcec0bb3fb30edb751f445e49de154601",
+    "internal/bootstrap/export_test.go": "618c465e2630463cb0f816cb7dfa964a1f7a780d65433558af0da36487271ff2",
+    "internal/catalog/workspace/projector.go": "a114954353678e6e1711f8c21b285688464bafbd22cc67d41527961a0f5dffbf",
+    "internal/filepublish/directory.go": "9bfbdbe7c94470414599697d317f192688033bb0f29cd228cdae15781097443a",
+    "internal/filepublish/directory_darwin.go": "6d6aa5773fa78bdd2a1f7c2ecc373166b2cfc192c193a36483154ddf6705f660",
+    "internal/filepublish/directory_linux.go": "625a1821dcbc5fb6cfc78a49c0aec508af6400ddba811880204988917f623754",
+    "internal/filepublish/directory_other.go": "39026dd4e8814ad90849fe47d0833274d193fd7e612ca3be1e6910c4c5c35eb1",
+    "internal/filepublish/directory_test.go": "858eeca76c79ef398a8f7ec6bd0d1f6553e8210eaf1bac8bdfe82babc8655bb5",
+    "internal/filepublish/directory_windows.go": "7f5d0c7fd8d82a5846fbd46fd2422ab0d5644effca884e75a085d31a4620ece6",
+    "internal/filepublish/sync.go": "553cbb41a6084296abf02141d4910881b1d5d813cd6e023b93284fcb321b0fd2",
+    "internal/filepublish/sync_other.go": "ced34f9bd0bf57ecaa896588a7ebfe156b30b3333fb8d95deaa147a05c42fcad",
+    "internal/filepublish/sync_test.go": "f0556d5a49b702aafc55559af144e1bab2d31351845e69757d07b0872d5af8ea",
+    "internal/filepublish/sync_windows.go": "28c8d96a60f1ba5ebf4aef3d17ea369d900b3763bda199cb0f91573d9fc14faf",
+    "internal/filepublish/sync_windows_test.go": "804f62e8434789c08bcdd5823235d973131ea49bf54968b76b7b47ae6a726f68",
+    "pkg/catalogs/storage/filesystem.go": "7fa1b5fd1d16048534ba9b74bec0674b1c044882b815d60a062d6c9c3eb025fb",
+    "runtime/migration_journal.go": "0c45aa40e77f14df8c522e444b4902e334964b0645e485d76d403d64dad3e43b",
+    "runtime/owner.go": "29b755d911ece4dbea09b9741f53b680ea1f233b4684e598121df468bd128233",
+    "runtime/owner_seed.go": "d785eb92fca934120d1820a8fa14650f7721036450ba98b7712d239204e69180"
+  },
+  "inspected_source": {
+    "/Users/jack/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.25.12.darwin-arm64/src/internal/syscall/windows/types_windows.go": "1d7fc589c848a69aab69d7c1e8d980da243abaf9c3d131071d6d601b88c84500"
+  },
+  "native_windows_execution": "UNVERIFIED",
+  "hardware_power_loss": "UNVERIFIED"
+}

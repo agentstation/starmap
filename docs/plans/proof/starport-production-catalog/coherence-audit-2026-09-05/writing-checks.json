@@ -1,0 +1,46 @@
+[
+  {
+    "name": "targeted_starmap_writing",
+    "command": [
+      "/Users/jack/.agents/skills/technical-writing/scripts/technical-writing",
+      "lint",
+      "docs/design/catalog-lifecycle/PRD.md",
+      "docs/design/catalog-lifecycle/ENGINEERING_SPEC.md",
+      "docs/design/catalog-lifecycle/REPOSITORY_FINDINGS.md",
+      "docs/plans/starport-production-catalog-plan.html",
+      "docs/plans/proof/starport-production-catalog/readme-demo-brief.md",
+      "docs/plans/proof/starport-production-catalog/latency-revision-2026-09-05/REVIEW_RESOLUTION.md",
+      "docs/plans/README.md",
+      "docs/README.md",
+      "docs/plans/proof/starport-production-catalog/coherence-audit-2026-09-05/AUDIT.md",
+      "--format",
+      "text"
+    ],
+    "cwd": "/Users/jack/src/github.com/agentstation/starmap-catalog-requirements",
+    "exit_code": 0,
+    "output": "PASS: 9 file(s), 0 diagnostic(s)\n"
+  },
+  {
+    "name": "starport_index_writing",
+    "command": [
+      "/Users/jack/.agents/skills/technical-writing/scripts/technical-writing",
+      "lint",
+      "docs/TASKS.md",
+      "--format",
+      "text"
+    ],
+    "cwd": "/Users/jack/src/github.com/agentstation/starport-catalog-lifecycle",
+    "exit_code": 0,
+    "output": "PASS: 1 file(s), 0 diagnostic(s)\n"
+  },
+  {
+    "name": "starmap_repository_writing",
+    "command": [
+      "make",
+      "technical-writing-check"
+    ],
+    "cwd": "/Users/jack/src/github.com/agentstation/starmap-catalog-requirements",
+    "exit_code": 2,
+    "output": "/Users/jack/.agents/skills/technical-writing/scripts/technical-writing glossary check\nPASS: /Users/jack/src/github.com/agentstation/starmap-catalog-requirements/GLOSSARY.md (77 term(s), 0 error(s))\n/Users/jack/.agents/skills/technical-writing/scripts/technical-writing glossary update --check\nPASS: no candidate terms are missing from /Users/jack/src/github.com/agentstation/starmap-catalog-requirements/GLOSSARY.md\n/Users/jack/.agents/skills/technical-writing/scripts/technical-writing lint . --mode strict --format text\n/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/docs/plans/proof/starport-production-catalog/storage-revision-2026-09-05/document_structure.txt:1:1: error long_sentence: sentence has 30 words; limit is 25\n/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/docs/plans/proof/starport-production-catalog/storage-revision-2026-09-05/starmap_writing.txt:1:1: error long_sentence: sentence has 38 words; limit is 25\n/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/docs/plans/proof/starport-production-catalog/storage-revision-2026-09-05/starmap_writing.txt:4:26: error ing_main_verb: prefer a simple verb form\nFAIL: 759 file(s), 3 diagnostic(s)\nmake: *** [technical-writing-check] Error 1\n"
+  }
+]

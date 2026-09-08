@@ -1,0 +1,74 @@
+[
+  {
+    "command": [
+      "env",
+      "GOTOOLCHAIN=go1.25.12",
+      "GOOS=windows",
+      "GOARCH=amd64",
+      "CGO_ENABLED=0",
+      "go",
+      "test",
+      "-c",
+      "-o",
+      "/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/csp2-win-native-tests-9bd29d8z/amd64-internal-privatefiles.exe",
+      "./internal/privatefiles"
+    ],
+    "exit_code": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "env",
+      "GOTOOLCHAIN=go1.25.12",
+      "GOOS=windows",
+      "GOARCH=amd64",
+      "CGO_ENABLED=0",
+      "go",
+      "test",
+      "-c",
+      "-o",
+      "/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/csp2-win-native-tests-9bd29d8z/amd64-internal-runtimeacl-windows.exe",
+      "./internal/runtimeacl/windows"
+    ],
+    "exit_code": 1,
+    "stdout": "",
+    "stderr": "# github.com/agentstation/starmap/internal/runtimeacl/windows [github.com/agentstation/starmap/internal/runtimeacl/windows.test]\ninternal/runtimeacl/windows/ancestor_native_windows_test.go:9:81: undefined: native.FILE_ADD_SUBDIRECTORY\n"
+  },
+  {
+    "command": [
+      "env",
+      "GOTOOLCHAIN=go1.25.12",
+      "GOOS=windows",
+      "GOARCH=arm64",
+      "CGO_ENABLED=0",
+      "go",
+      "test",
+      "-c",
+      "-o",
+      "/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/csp2-win-native-tests-9bd29d8z/arm64-internal-privatefiles.exe",
+      "./internal/privatefiles"
+    ],
+    "exit_code": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "env",
+      "GOTOOLCHAIN=go1.25.12",
+      "GOOS=windows",
+      "GOARCH=arm64",
+      "CGO_ENABLED=0",
+      "go",
+      "test",
+      "-c",
+      "-o",
+      "/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/csp2-win-native-tests-9bd29d8z/arm64-internal-runtimeacl-windows.exe",
+      "./internal/runtimeacl/windows"
+    ],
+    "exit_code": 1,
+    "stdout": "",
+    "stderr": "# github.com/agentstation/starmap/internal/runtimeacl/windows [github.com/agentstation/starmap/internal/runtimeacl/windows.test]\ninternal/runtimeacl/windows/ancestor_native_windows_test.go:9:81: undefined: native.FILE_ADD_SUBDIRECTORY\n"
+  }
+]

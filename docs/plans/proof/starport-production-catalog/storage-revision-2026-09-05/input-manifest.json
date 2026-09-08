@@ -1,0 +1,350 @@
+{
+  "date_utc": "2026-09-05T17:24:07.387302+00:00",
+  "inputs": [
+    {
+      "repository": "starmap",
+      "path": "docs/design/catalog-lifecycle/PRD.md",
+      "sha256": "498fbb087045df8c5d2766c59262cde58f5ed0d6b6dbc1143b5e87e55e70696e"
+    },
+    {
+      "repository": "starmap",
+      "path": "docs/design/catalog-lifecycle/ENGINEERING_SPEC.md",
+      "sha256": "825800a7868f4829acf0974c2be11203a306ffc8555b52ffb117f919a0e3847a"
+    },
+    {
+      "repository": "starmap",
+      "path": "docs/design/catalog-lifecycle/REPOSITORY_FINDINGS.md",
+      "sha256": "0c975a4c4752fce0593408ceb73b096aa2497a03a797c7cb8d3d53fb4a474817"
+    },
+    {
+      "repository": "starmap",
+      "path": "docs/plans/starport-production-catalog-plan.html",
+      "sha256": "1644da4be8acaadc6ff8e54eb25ea7318143fe0349d464ae7a3ceda50bd8a2db"
+    },
+    {
+      "repository": "starmap",
+      "path": "docs/plans/proof/starport-production-catalog/acceptance-map.json",
+      "sha256": "b5d895c21f2db864f74251ab5dcf7e7386399d149e9e1c1ea5746b582fd7cd02"
+    },
+    {
+      "repository": "starmap",
+      "path": "docs/plans/proof/starport-production-catalog/readme-demo-brief.md",
+      "sha256": "202d9b7fa01995d8fc5fe1ac3a039fd522dc77bcd887e3ccfbf3ca7940e7bdee"
+    },
+    {
+      "repository": "starmap",
+      "path": "docs/plans/proof/starport-production-catalog/plan-validation.json",
+      "sha256": "ccd04228655f84febd518c10414712ea62bcfd5e9f728bbf8e9dfd8531136326"
+    },
+    {
+      "repository": "starmap",
+      "path": "docs/plans/README.md",
+      "sha256": "46d3f4413dea1e659ffb239b63350f8c7586841be1694c2b847cb319f53feeba"
+    },
+    {
+      "repository": "starmap",
+      "path": "docs/README.md",
+      "sha256": "e5661014a9a008e28afbe9b88e1ae4db44123853210896169c9f4a91e5518c13"
+    },
+    {
+      "repository": "starport",
+      "path": "docs/TASKS.md",
+      "sha256": "49abf20593bb9f37326a463fa6d81fd1599b4ad2c53abdb73c4107ed46a8a6ae"
+    }
+  ],
+  "historical_evidence": [
+    {
+      "path": "docs/design/catalog-lifecycle/evidence/starport-docs-mobile-dark.png",
+      "sha256": "04c70c5377e4a5a04703fdb021562f88bfa80a151653d6de726d4bc9a2d8221d"
+    },
+    {
+      "path": "docs/design/catalog-lifecycle/evidence/starport-docs-desktop-light.png",
+      "sha256": "84d14d8ade126fccdede02e641eb2288562c7fd99b75b0fe928f0a678d09df3b"
+    },
+    {
+      "path": "docs/design/catalog-lifecycle/evidence/measurements.json",
+      "sha256": "db48cffac8f83ead0cb974ae0ae0eaaa3ca95d0db56531d0011637b8bb21dec8"
+    },
+    {
+      "path": "docs/design/catalog-lifecycle/evidence/starport-docs-build-320.png",
+      "sha256": "e21c245edc332aae41d33396581f097b5786345df694c1e664349f944db99e93"
+    },
+    {
+      "path": "docs/design/catalog-lifecycle/evidence/starport-docs-desktop-dark.png",
+      "sha256": "52110a5a428f2fad1d085531ddbe88ebf3947a5bdcc544a8927e71411f923c4c"
+    },
+    {
+      "path": "docs/design/catalog-lifecycle/evidence/starport-settings-light.png",
+      "sha256": "82a006ab48bde364914f2b435d36cd44c0f9f02b65908e26b4fba64ca0cc9eb8"
+    },
+    {
+      "path": "docs/design/catalog-lifecycle/evidence/storage-review-2026-09-05/local-tests.jsonl",
+      "sha256": "a2db99728ce615b87e468c9a35917840da27d3148f1e723fc4c90fbf0c107c15"
+    },
+    {
+      "path": "docs/design/catalog-lifecycle/evidence/storage-review-2026-09-05/document-verification.json",
+      "sha256": "e15cac8527312d5689d13c62652d6cda27a6b06f2ac6a6d3352bd17bc75129d9"
+    },
+    {
+      "path": "docs/design/catalog-lifecycle/evidence/storage-review-2026-09-05/writing-check.log",
+      "sha256": "6fb4971eb237b70bc8efba14c04f4cb17acccb74cbddeec318a64390bd251353"
+    },
+    {
+      "path": "docs/design/catalog-lifecycle/evidence/storage-review-2026-09-05/local-tests-summary.json",
+      "sha256": "84a31b064512b4430c5fe6fa28d0e9b4fb10719d6984557fe96f70e0464d1206"
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/planning.md",
+      "sha256": "3b6965f9241be25157d4f87dd0d1b4ab044c9d8cc236731762263937f420d86f"
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/readme-baseline.json",
+      "sha256": "89374bcd173ab100d42425d892721feae997746d5f4f18eb369f82985223b017"
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/revision-2026-09-05/REVIEW_RESOLUTION.md",
+      "sha256": "1435bdb38a483e1e0ffdf31ef163b5f52c48b4b789f16eeded2490b7de53c1f3"
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/revision-2026-09-05/input-manifest.json",
+      "sha256": "09e9eb89856bf2184e982749013d6d6064e2459d0520340250db400724976f42"
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/revision-2026-09-05/verification.json",
+      "sha256": "517b24a7e1b1aea701cce6980bc8dbc0e6ae30e0f8ca02b28c680596ce4d6a7f"
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/fable-review-2026-09-04/runner-result.json",
+      "sha256": "e05ca3f845545d1bf6196c9bd8dcbd49ec74ab10398258b9e94b2d6b20fe1079"
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/fable-review-2026-09-04/input-manifest.json",
+      "sha256": "9ebd7dbb3b22b6d3c61aaf0e241956923ff4e03ff6c33974c39e2cd4a3050b4f"
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/fable-review-2026-09-04/ASSESSMENT.md",
+      "sha256": "acb93169dd463c4162bedbf66af21f13dc9012560a57b92506c4ab3a815244a6"
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/fable-review-2026-09-04/verification.json",
+      "sha256": "16a16e596eeacec71b4ded103b7245a42500983d8afd0c989d009dac65b562bb"
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/fable-review-2026-09-04/read-requests.json",
+      "sha256": "1b560ee98ef447670a99810331bfa3cc080fdffb2cd964080ec0b13d356cb3b7"
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/audit-2026-09-04/evidence-checks.json",
+      "sha256": "8780524dfa9809546157fdd66986421c3f9f5eaa40c5e35ca4aafa54dfd6f700"
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/audit-2026-09-04/starport-budget-tests.jsonl",
+      "sha256": "8d8f7f70522b4eac1fed22a9d12deef3a94504e84c01d01a5682ff79f3d89d4d"
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/audit-2026-09-04/starmap-tests-command.json",
+      "sha256": "139cfc67b3c5c21f14606060e43d51e02e08aa123bacf1733cf5f45ee852dc63"
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/audit-2026-09-04/starport-budget-tests-command.json",
+      "sha256": "392a27f3dbd371b846e0cd6d436e30b10d4585b93b5a052c8302fd7be8b7f81e"
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/audit-2026-09-04/starmap-ago.json",
+      "sha256": "b8fb7afa66aa7a93914ac258475dd0191be821803a8aea4439f5ba05022f5fa5"
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/audit-2026-09-04/test-summary.json",
+      "sha256": "83ea20ff434046d397191fc349c0466deab1e578bd276d3fe8deeac57b473fbc"
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/audit-2026-09-04/AUDIT.md",
+      "sha256": "a4cabec7f6eeed73ed5050a32fcf5d88ce2cf1315693842a2020e5c817b754dc"
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/audit-2026-09-04/command-paths.json",
+      "sha256": "56ce216eb0351429b23dd8edfaf346f50e99fe40ca5a7216dcbbbb4cf428e0a9"
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/audit-2026-09-04/starport-tests-command.json",
+      "sha256": "b51780d45097abd3a3f1908ae155df65559a337fff43c3ee3996bf773815419d"
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/audit-2026-09-04/plan-validation-before.json",
+      "sha256": "07edbeb6d89916c21a71f7b485800f771b612713eb8b7acdeebe2736864c5500"
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/audit-2026-09-04/starport-tests.jsonl",
+      "sha256": "d326e9081f935f849f402dfd83a75fe6a2505ad9019a954ae4cbf20734ea1ece"
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/audit-2026-09-04/starmap-tests.jsonl",
+      "sha256": "35892422f9873c0b6d69c5ffcbebd0a88e38eec506ce32494433fb333c6a49f3"
+    },
+    {
+      "path": "docs/reviews/P8_COMPLEXITY_AUDIT_2026-07-29.md",
+      "sha256": "6c986c889cbea4e5ad15cfcc49e6cd4203a0c13c23fad9bcb620883824cdeafd"
+    },
+    {
+      "path": "docs/reviews/FABLE_STARMAP_PLAN_REVIEW_PROMPT.md",
+      "sha256": "4318207dda147f2ee1f2011548afecef320360e5e8e5ecc4e98416f7bb458cb3"
+    },
+    {
+      "path": "docs/reviews/GO_FILE_SIZE_REVIEWS.tsv",
+      "sha256": "00d8a4b85c515cf660fbdf786bfaca2d145f024b5f2d87700dafaff2390c6b59"
+    },
+    {
+      "path": "docs/reviews/STARMAP_ARCHITECTURE_REVIEW_2026-07-27.html",
+      "sha256": "de08e0b3a8e3a22463968f326c4e7659a8f69c04dea166b15ace76e62b0d9235"
+    },
+    {
+      "path": "docs/reviews/P9_DISTRIBUTION_CONVERGENCE_2026-07-29.md",
+      "sha256": "ebfb498202d12d97545a64c277e6e5767cb2268d5422625ad13403d3071b0562"
+    },
+    {
+      "path": "docs/reviews/FABLE_STARMAP_PLAN_REVIEW_DISPOSITION_2026-07-27.md",
+      "sha256": "df13364d205ca48848841f6aed20888ea0e8baf81e148ea1da73e2bc3406ae86"
+    },
+    {
+      "path": "docs/reviews/P10_CATALOG_FACT_CONSISTENCY_2026-07-29.md",
+      "sha256": "d3eef2bbc2f0f280fe78f6c22b0ddf4ef8b23a971f265db3761fe9e39b57e5b7"
+    },
+    {
+      "path": "docs/reviews/P3_WORKSPACE_LIFECYCLE_OUTCOME_REVIEW_2026-07-28.md",
+      "sha256": "0bb257ec3cb368b069a5101bf2af436d7ab214cdf28b15c1208a35e7a0ac9c88"
+    },
+    {
+      "path": "docs/reviews/P2_USER_JOURNEYS_2026-07-27.md",
+      "sha256": "97512993863712b5ce06ef5f0396d45a61d00986c0853f36affb2f2147c8b523"
+    },
+    {
+      "path": "docs/reviews/P6_COMPOSITION_OUTCOME_2026-07-29.md",
+      "sha256": "14a995725688947975e4409a94e2bcdd124a617c8141e7282124e2ca27c182bf"
+    },
+    {
+      "path": "docs/reviews/P7_PRODUCTION_HEALTH_MATRIX_2026-07-29.md",
+      "sha256": "fb2ce53c2a610585b047cbcab3272128c9cedd6501b3a03f5d4887c38eb0c83f"
+    },
+    {
+      "path": "docs/reviews/P7_OPENROUTER_ADAPTER_ARCHITECTURE_REVIEW_2026-07-29.html",
+      "sha256": "d591a135e43c97b7ba594d2e8eaae20af73244ce952b666e132071fbd73526c1"
+    },
+    {
+      "path": "docs/reviews/P6_PACKAGE_GRAPH_2026-07-28.md",
+      "sha256": "1bf465b9f6435287b6d0f7d4d6226d1aa219e4f4da405042fbcbf0e0f98f8d5e"
+    },
+    {
+      "path": "docs/reviews/P8_RESIDUAL_DELETION_AUDIT_2026-07-29.md",
+      "sha256": "88354160da16de0d0e84fef93e71de6a274805270b373a27c159bf2b162a1fa3"
+    },
+    {
+      "path": "docs/reviews/P7_OPENROUTER_ADAPTER_OUTCOME_2026-07-29.md",
+      "sha256": "64863a12ed9205a3657131bc8b5cea5b29f3403b49018c6d3c500995166a8ea4"
+    },
+    {
+      "path": "docs/reviews/P5_CATALOG_READ_MODEL_OUTCOME_REVIEW_2026-07-28.md",
+      "sha256": "974522d8a360302f9abfd12ef01385dc23510b31f86c50141a701f5095f6da1e"
+    },
+    {
+      "path": "docs/reviews/P5_AUTHOR_MODEL_CORPUS_MAP_2026-07-28.yaml",
+      "sha256": "e5af4b7b49176d0f3a91013189db456d2cfb23887a88473081e063c4c6326ca9"
+    },
+    {
+      "path": "docs/reviews/P8_TEST_MODULARITY_REVIEW_2026-07-29.md",
+      "sha256": "5d48cb6edc7b077fe964a3947cc1caf2cabcedbfa027bcc8c1516f752ca5fced"
+    },
+    {
+      "path": "docs/reviews/P2_PRODUCTION_COMPOSITION_DECISIONS_2026-07-27.md",
+      "sha256": "93df45eee57fa376fcd375962f414ef2e4e699586a299e8ca08c13f55a35a60c"
+    },
+    {
+      "path": "docs/reviews/P10_SECURITY_REVIEW_2026-07-29.md",
+      "sha256": "91b52de5e3e1de99dfbffafd7a74ade29a9a3083ef29bf8a56105dc467fbdc3c"
+    },
+    {
+      "path": "docs/reviews/P8_CANONICAL_GO_REVIEW_2026-07-29.md",
+      "sha256": "6ba96806f524a7143e53205abfc969abf07e686bcad9bed85f4610ff8617e2b3"
+    },
+    {
+      "path": "docs/reviews/P7_CONSUMER_DEPENDENCY_BUDGET_CORRECTION_2026-07-29.md",
+      "sha256": "80f43d8ae9a6a7e0f6c24d5e5a08f42ce9032da15082cb825bf7f34ca0df5462"
+    },
+    {
+      "path": "docs/reviews/P7_PURE_GO_RELEASE_OUTCOME_2026-07-29.md",
+      "sha256": "4a8fedd56ff03a3d815ab78794152b2466061c279e9ff528d4c33d09cdc51e86"
+    },
+    {
+      "path": "docs/reviews/P8_PRODUCTION_FILE_MODULARITY_REVIEW_2026-07-29.md",
+      "sha256": "c6ef036c2fb5013e3cfe9c593a0ef33438f9ff953d70ba38c55f2ba46c0fbb8a"
+    },
+    {
+      "path": "docs/reviews/P2_COMPOSITION_BASELINE_2026-07-27.md",
+      "sha256": "2066a6e0273be4d51a66a75df090fdf37f5dab09d116e87604e1a306b17f0541"
+    },
+    {
+      "path": "docs/reviews/P8_GO_NAMING_AUDIT_2026-07-29.md",
+      "sha256": "d9f5dc37c1544cca5d8364874d70f77a9a40a0067e28d30c6784601a276f4374"
+    },
+    {
+      "path": "docs/reviews/P5_PROVIDER_MODEL_IDENTITY_REVIEW_2026-07-28.md",
+      "sha256": "e2c82fa085ab15936eea091ca3d1c6e7126d26398dc77b5b8abf064100b707d1"
+    },
+    {
+      "path": "docs/reviews/P5_AUTHOR_MODEL_CORPUS_DISPOSITION_2026-07-28.md",
+      "sha256": "9bb58cbbb75c3db61737342eda086b26fe9d7b844e46f4658dd30b46874b3a72"
+    },
+    {
+      "path": "docs/reviews/PR40_DONOR_INVENTORY_2026-07-27.md",
+      "sha256": "c5065505110e963bb563c8dfee57600809a0b5740d06706953ac2e025c04b266"
+    },
+    {
+      "path": "docs/reviews/FABLE_CATALOG_PRODUCT_REVIEW_2026-09-04.md",
+      "sha256": "d51115aadcc7c20328c333e228f0adef550c546ee89ba3196a30c83ecb3dc2be"
+    },
+    {
+      "path": "docs/reviews/P5_PROVIDER_MODEL_IDENTITY_MAP_2026-07-28.yaml",
+      "sha256": "1b3f07e7782e1c5749789b2b80ed77cd06a4185a67e195a1909707ea7bf50482"
+    },
+    {
+      "path": "docs/reviews/FABLE_STARMAP_PLAN_REVIEW_2026-07-27.md",
+      "sha256": "b2f78de7be15762f9d0425f99a698dc3d63397b3c2e07e553eb16ed51a3495b2"
+    },
+    {
+      "path": "docs/reviews/P7_REMOTE_FAILURE_MATRIX_2026-07-29.md",
+      "sha256": "5889ba8bcd1cd0b81f40af6af3f02b1386f9080aab1cf510ed0f3bb967369e43"
+    },
+    {
+      "path": "docs/reviews/FABLE_CATALOG_PRODUCT_REVIEW_REQUEST_2026-09-04.md",
+      "sha256": "df49c4ee3d5b5152572c4241bfa5b1e4cb570d2067624b85495999351af47843"
+    },
+    {
+      "path": "docs/reviews/AUTHOR_SLUG_ENDPOINT_COMPATIBILITY_REVIEW_2026-07-28.md",
+      "sha256": "49439a17edee71115fc06d28af3dbff6e73fe0de8d20e84bd48b7e6e1679296b"
+    },
+    {
+      "path": "docs/reviews/P10_PRODUCTION_BUDGETS_2026-07-29.md",
+      "sha256": "ff1b14d5bfc3a0cdf47ef13d83c45acb1a1ee658af36313341347262ac06bb79"
+    },
+    {
+      "path": "docs/reviews/control-planes/ARCHITECTURE_CONTROL_PLANE.md",
+      "sha256": "59e109d10d6ccbf4f296b9d8e0cd89c1ceb973949f102e86cbb0a84c2af8dbe9"
+    },
+    {
+      "path": "docs/reviews/control-planes/STARMAP_ARCHITECTURE_CONTROL_PLANE.md",
+      "sha256": "8019400cf7ae63393a6322b98d518bcb61634d450cbb62f1d4ac0b5e3eb34f37"
+    },
+    {
+      "path": "docs/reviews/control-planes/SOURCE_SCHEMA_CONTROL_PLANE.md",
+      "sha256": "b4d2231f558a4402a81daa7f53dc0565b2c0157b944cd19f3052b425ae8893eb"
+    },
+    {
+      "path": "docs/design/catalog-lifecycle/STORAGE_REVIEW.md",
+      "sha256": "986bdd31ccdf6ce58da585f26e8b5cf244e521aa0309c5cffe382b9ed6f8fa3f"
+    }
+  ],
+  "backup": "/tmp/catalog-storage-revision-input",
+  "heads": {
+    "starmap": "4780dfea9f7e002ea6eaaa82aa8f52ed0d4cc225",
+    "starport": "042eb97851496ecdd1ef20bfa44fe3d84b86b2d8"
+  }
+}

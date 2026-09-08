@@ -1,0 +1,237 @@
+{
+  "schema_version": 1,
+  "task": "CSP3",
+  "date": "2026-09-07",
+  "status": "component-progress-only",
+  "work_commit": "1423335440c1b60bdb890b79c43590c4995e67cb",
+  "evidence_commit": "609c7f3876e6a06031cfb1fedbeb6d31549dd4eb",
+  "planning_base": "5b2dd8c0ca9c4c9fdf5164dc44cd741670d8ce04",
+  "toolchain": "go1.26.6 darwin/arm64",
+  "passed_race_test_events": 348,
+  "race_packages": [
+    {
+      "package": "github.com/agentstation/starmap/internal/catalog/reconciler",
+      "status": "pass",
+      "passed_test_events": 234,
+      "elapsed_seconds": 1.437,
+      "capture": "scoped-reconciliation-fixture-final.jsonl"
+    },
+    {
+      "package": "github.com/agentstation/starmap/internal/catalog/pipeline",
+      "status": "pass",
+      "passed_test_events": 62,
+      "elapsed_seconds": 8.894,
+      "capture": "scoped-reconciliation-final.jsonl"
+    },
+    {
+      "package": "github.com/agentstation/starmap/acquisition",
+      "status": "pass",
+      "passed_test_events": 52,
+      "elapsed_seconds": 205.019,
+      "capture": "scoped-reconciliation-acquisition-final.jsonl"
+    }
+  ],
+  "checks": [
+    {
+      "command": "GOTOOLCHAIN=go1.26.6 go test -race -count=1 -timeout 5m -json ./internal/catalog/reconciler ./internal/catalog/pipeline",
+      "exit_code": 0,
+      "passed_test_events": 296
+    },
+    {
+      "command": "GOTOOLCHAIN=go1.26.6 go test -race -count=1 -timeout 5m -json ./acquisition",
+      "exit_code": 0,
+      "passed_test_events": 52
+    },
+    {
+      "command": "GOTOOLCHAIN=go1.26.6 go test -race -count=1 -timeout 5m -json ./internal/catalog/reconciler",
+      "exit_code": 0,
+      "passed_test_events": 234,
+      "note": "The final fixture uses the provider definition\u2019s declared unauthenticated profile. This run replaces the earlier reconciler count."
+    },
+    {
+      "command": "GOTOOLCHAIN=go1.26.6 go test ./...",
+      "exit_code": 0,
+      "passed_packages": 79,
+      "no_test_packages": 22
+    },
+    {
+      "command": "GOTOOLCHAIN=go1.26.6 go tool ago -stale-ignores -format json ./...",
+      "exit_code": 0,
+      "findings": 0,
+      "errors": 0
+    },
+    {
+      "command": "devbox run -- golangci-lint run ./...",
+      "exit_code": 0,
+      "issues": 0
+    },
+    {
+      "command": "make generate",
+      "exit_code": 0
+    },
+    {
+      "command": "make technical-writing-check",
+      "exit_code": 0,
+      "files": 1057,
+      "diagnostics": 0
+    },
+    {
+      "command": "bash scripts/verify-catalog-product.sh --starport-root /Users/jack/src/github.com/agentstation/starport-catalog-lifecycle --task CSP3 --json",
+      "exit_code": 1,
+      "primary_passed": 0,
+      "primary_unverified": 50
+    }
+  ],
+  "regressions": [
+    "Collection discarded peer offerings under the same source type.",
+    "Input order selected an older shared model.",
+    "A newer stale fallback displaced a direct peer observation."
+  ],
+  "retained_failures": [
+    "The boundary fixture initially used the wrong authored-model Go type.",
+    "The first health fixture omitted its required issue message.",
+    "The changed-provider fixture initially reused the previous content revision.",
+    "Writing detected a missing paragraph boundary in the plan and an oversized specification paragraph.",
+    "The first document check ran before the new proof link existed. The final document contract check passed after the proof was created."
+  ],
+  "limitations": [
+    "The caller owns active binding authorization. Reconciliation validates receipts without granting authority to a binding.",
+    "Selection currently chooses records within the provider source type. Full field-presence handling and scoped deletion remain open.",
+    "Manual CLI and HTTP source batching and runtime publication remain incomplete.",
+    "The connected runtime still uses its existing enrichment path. This change does not claim full field-authority integration there.",
+    "No primary acceptance case or native platform qualification becomes complete from these component checks.",
+    "The shared review helper remains unchanged at a 512000-byte prompt limit. Required publication review still precedes any code push or native CI dispatch."
+  ],
+  "code_inputs": [
+    {
+      "path": "internal/catalog/reconciler/collector.go",
+      "sha256": "ead96b409bbbda0c960cfad31b8ee9be3f05e69d7cc830249a04b008e1296d23"
+    },
+    {
+      "path": "internal/catalog/reconciler/merger.go",
+      "sha256": "8b668a14afdee4bb642d43b63647efe2f340116aa1e1132a3007eb2aa2d58671"
+    },
+    {
+      "path": "internal/catalog/reconciler/provider_policy.go",
+      "sha256": "352ee13b63f832e9b0b2ad54177e0e8dd09ccb43443d52b48dc4f4e0c740eae0"
+    },
+    {
+      "path": "internal/catalog/reconciler/reconciler.go",
+      "sha256": "b138310265402ff8266f727f6bcb896e80061b3b24a482e4c25e0ec2e9f42557"
+    },
+    {
+      "path": "internal/catalog/reconciler/scoped_observations.go",
+      "sha256": "f057ebe0b4c4af343dbd9761c2af3eb363ab9f3e0927e4d3b5323458044ed9aa"
+    },
+    {
+      "path": "internal/catalog/reconciler/scoped_observations_test.go",
+      "sha256": "9b9500fa17fb1af8d8eafadd97e5c6e34c67ce087d97fa0b24c79c58a1211588"
+    },
+    {
+      "path": "internal/catalog/reconciler/source_identity.go",
+      "sha256": "411d2a6d8f74b90eeed317db5f5e7ec0a3e7beff6ae2ae806f80ff787f1f8c84"
+    }
+  ],
+  "captures": [
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/scoped-reconciliation-red.log",
+      "bytes": 1456,
+      "sha256": "06985e5c2f7ba70481f99f88b0be2c41dfed291b4070b80d81d2bf602d6423e1"
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/scoped-reconciliation-health-red.log",
+      "bytes": 375,
+      "sha256": "f2bbd90719e7d14dbe36d0ec4ce35d041527cff68caeefc40ee848d953e9f51e"
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/scoped-reconciliation-boundaries.log",
+      "bytes": 558,
+      "sha256": "82b26681a1560ee8952b72c0c369256a97b992183f495e89e0c0fabc5f4bdceb"
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/scoped-reconciliation-race.jsonl",
+      "bytes": 576461,
+      "sha256": "2a42aaba2e511d9e050e693d3c962b7fa72ec8d4ba983339798c8540777d90d4"
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/scoped-reconciliation-race-final.jsonl",
+      "bytes": 579506,
+      "sha256": "c1bfbf456124da409f10e2e970e9cbb335d27ab3dc9d0430b602f4efc59f1102"
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/scoped-reconciliation-final.jsonl",
+      "bytes": 359830,
+      "sha256": "d44cc5c8f4e52d00f3edb9ad30b19ca25743f5f11b3640b3ae02eae3c16f0bbb"
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/scoped-reconciliation-fixture-final.jsonl",
+      "bytes": 259963,
+      "sha256": "1bc0806fa180e4c91f1cce04206a31f2a93e3abcc309072c168a71fcc3cd729d"
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/scoped-reconciliation-acquisition-final.jsonl",
+      "bytes": 219351,
+      "sha256": "676845498346acb19f12de3a06fc0305d40c9bd5cdd81ddc458e696ea3cc6d53"
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/scoped-reconciliation-packages-final.log",
+      "bytes": 7014,
+      "sha256": "db619cccefc6eb3e085c63ea486331c0af2e3d3f93286e41af41e8c6a79c1dad"
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/scoped-reconciliation-ago-closed.json",
+      "bytes": 289,
+      "sha256": "b8fb7afa66aa7a93914ac258475dd0191be821803a8aea4439f5ba05022f5fa5"
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/scoped-reconciliation-lint-verified.log",
+      "bytes": 313,
+      "sha256": "32709c2b17f4d5abf64db997d8df20b5e258ac4b3e850611f6e536878fa526a9"
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/scoped-reconciliation-generate.log",
+      "bytes": 9934,
+      "sha256": "e2c9c8e5cf48fbae140d38848660122a1d7e2dc608f2b729c8daa866b0586694"
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/scoped-reconciliation-writing.log",
+      "bytes": 785,
+      "sha256": "13e76895bfee7328145139de884916c5d061c093423320bb72a7a76c1407171c"
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/scoped-reconciliation-writing-final.log",
+      "bytes": 788,
+      "sha256": "ef54a89e4d32102d0346c1738eefedec6ca2ea3e415e3f99158a1daeb6bc0cbb"
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/scoped-reconciliation-writing-complete.log",
+      "bytes": 558,
+      "sha256": "46ae0c525c2a1c14324c8d7154eaa1c6d4fb7be7e60ae315a02c54ecb46a9bbe"
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/scoped-reconciliation-acceptance.json",
+      "bytes": 7700,
+      "sha256": "0a5cc1a33899402e4135c4ef56e28730155c63025b771d83734fcab9c93df5bb"
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/scoped-reconciliation-documents.log",
+      "bytes": 534,
+      "sha256": "12ea1cdb8c06ac1e06f31948be5539224c6e8daa579bce38bd26e4d2f20d50f7"
+    }
+  ],
+  "document_contract": {
+    "verdict": "PASS",
+    "scope": "Document contracts only. No product acceptance credit.",
+    "tasks": 38,
+    "primary_cases": 50,
+    "required_subcases": 324,
+    "candidate_subcases": 305,
+    "candidate_extra_subcases": 8,
+    "historical_files_preserved": 57,
+    "local_links_checked": 256,
+    "pinned_links_checked": 74,
+    "plan_lines": 500,
+    "command": "python3 docs/plans/proof/starport-production-catalog/activation-2026-09-05/verify_documents.py",
+    "exit_code": 0
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "verdict": "PASS",
+  "plan_lines": 471,
+  "ledger_line": 42,
+  "task_count": 26,
+  "todo_count": 26,
+  "prd_count": 28,
+  "acceptance_count": 39,
+  "links_checked": 35,
+  "checks": [
+    "unique IDs",
+    "row/body order and status agreement",
+    "required sections and fields",
+    "dependencies precede consumers",
+    "all acceptance cases assigned",
+    "all local links resolve",
+    "no external embedded resources",
+    "JSON parses"
+  ],
+  "implementation_cases_run": 0
+}

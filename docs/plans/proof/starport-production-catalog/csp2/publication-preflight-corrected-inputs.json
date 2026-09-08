@@ -1,0 +1,10 @@
+{
+  "scripts/verify.sh": "616344dcb39e270e071aae283d52de93c0f170336b6df3c43a58f91960c3eb71",
+  "internal/catalog/settings/application_test.go": "2c928922fa3453a27a596ae138a7755d951868142508e884cc5516c99ac20ea8",
+  "internal/catalog/settings/deployment_test.go": "ada77c8aa0ce5b76c5116580e0ff86be0b88caaef18eb84211ec49867462035b",
+  "pkg/catalogs/merge.go": "eda164c1851db908612ab167d3797df4f9b92b18337194c599adfe3a0972bc8b",
+  "pkg/catalogs/merge_pricing_test.go": "3e20cf166ebfba2ef4a786b9dbf75ad9beb6651c0cd333e6d376407437da9c98",
+  "runtime/provider_pricing_test.go": "5a3a860bf5d730f2717ca666570554c95e97a71c65eba4254d6281496ef63842",
+  "go.mod": "4089f0c9d4e2a59e91b45b22419dcc16298b545ce74db69f19508377289e3513",
+  "go.sum": "e6bc0489a1beb9cc7af8ce96d3ab833002dab73fa559c2165e57a7865d13a356"
+}

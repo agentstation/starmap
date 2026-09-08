@@ -1,0 +1,16 @@
+{
+  "command": [
+    "go",
+    "test",
+    "-race",
+    "-count=1",
+    "-timeout",
+    "2m",
+    "./runtime",
+    "-run",
+    "^TestSchedulerIdentityDoesNotChangeWithListenAddress$"
+  ],
+  "exit_code": 1,
+  "stdout": "--- FAIL: TestSchedulerIdentityDoesNotChangeWithListenAddress (10.41s)\n    owner_test.go:132: listen address changed persistent instance identity\nFAIL\nFAIL\tgithub.com/agentstation/starmap/runtime\t10.861s\nFAIL\n",
+  "stderr": ""
+}

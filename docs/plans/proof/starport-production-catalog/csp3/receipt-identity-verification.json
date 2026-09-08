@@ -1,0 +1,215 @@
+{
+  "schema_version": 1,
+  "task": "CSP3",
+  "date": "2026-09-07",
+  "status": "component-progress-only",
+  "toolchain": "go1.26.6 darwin/arm64",
+  "work_commit": "dab45969c954434437723462ef1ee85ba27714d6",
+  "evidence_commit": "5b3f2b089523ce4c7165d03c7ebce6e8d586288d",
+  "planning_base": "8caa94c78d10310328deb3677c2f210c410a2a87",
+  "behavior": [
+    "Effective generation identity includes source receipt links and review candidates as well as catalog bytes.",
+    "An unselected receipt update publishes a distinct generation even when the payload checksum stays unchanged.",
+    "Canonical evidence ordering and normalized empty arrays preserve identity for equivalent inputs.",
+    "The existing immutable-store conflict rejects altered evidence under a retained generation ID. No restore implementation changed."
+  ],
+  "limitations": [
+    "Manual source transactions, CLI and HTTP composition, field presence, scoped deletion, upstream lineage, and released-pair qualification remain open.",
+    "All 50 primary cases remain UNVERIFIED. CSP3 remains in progress.",
+    "Broad normal and runtime/acquisition race captures precede the new restore test. Final focused race checks cover that test and its explicit conflict assertion. Production inputs are unchanged between those checks.",
+    "Generation identity construction runs during catalog reconstruction. These checks do not measure inference overhead.",
+    "The full repository publication gate, second-model review, and native Starmap qualification remain open. No push or native CI dispatch occurred."
+  ],
+  "fail_before": {
+    "command": "GOTOOLCHAIN=go1.26.6 go test -count=1 -timeout 5m ./runtime -run TestReceiptOnlyUpdatePublishesDistinctGeneration",
+    "exit_code": 1,
+    "capture": "csp3/receipt-identity-red.log",
+    "finding": "Receipt-only update reused the previous immutable generation."
+  },
+  "restore_existing_behavior": {
+    "exit_code": 0,
+    "capture": "csp3/receipt-identity-restore-red.log",
+    "note": "The filename came from the attempted regression. The check passed before any restore change and is not fail-before evidence."
+  },
+  "checks": [
+    {
+      "command": "GOTOOLCHAIN=go1.26.6 go test -json -count=1 -timeout 5m ./...",
+      "exit_code": 0,
+      "capture": "csp3/receipt-identity-all.jsonl",
+      "passed_test_events": 3507,
+      "passed_packages": 79,
+      "packages_without_tests": 22,
+      "failed_events": 0
+    },
+    {
+      "command": "GOTOOLCHAIN=go1.26.6 go test -race -count=1 -timeout 20m -json ./runtime ./acquisition",
+      "exit_code": 0,
+      "capture": "csp3/receipt-identity-race.jsonl",
+      "passed_test_events": 414,
+      "passed_packages": 2,
+      "packages_without_tests": 0,
+      "failed_events": 0
+    },
+    {
+      "command": "GOTOOLCHAIN=go1.26.6 go test -race -json -count=1 -timeout 5m ./internal/catalog/reconciler",
+      "exit_code": 0,
+      "capture": "csp3/receipt-identity-reconciler.jsonl",
+      "passed_test_events": 243,
+      "passed_packages": 1,
+      "packages_without_tests": 0,
+      "failed_events": 0
+    },
+    {
+      "command": "GOTOOLCHAIN=go1.26.6 go test -race -json -count=1 -timeout 5m ./runtime -run 'Test(ReceiptOnlyUpdate|EffectiveIdentityBinds|RestoreRejectsDifferentEvidence)'",
+      "exit_code": 0,
+      "capture": "csp3/receipt-identity-final-focused.jsonl",
+      "passed_test_events": 3,
+      "passed_packages": 1,
+      "packages_without_tests": 0,
+      "failed_events": 0
+    }
+  ],
+  "static_checks": {
+    "ago_exit_code": 0,
+    "ago_findings": 0,
+    "ago_incomplete_errors": 0,
+    "lint_exit_code": 0,
+    "generated_docs_exit_code": 0,
+    "strict_writing_exit_code": 0,
+    "strict_writing_files": 1072,
+    "strict_writing_diagnostics": 0,
+    "document_contract_exit_code": 0,
+    "document_tasks": 38,
+    "document_primary_cases": 50,
+    "document_required_subcases": 324,
+    "document_plan_lines": 500
+  },
+  "product_verifier": {
+    "exit_code": 1,
+    "passed": 0,
+    "unverified": 50,
+    "capture": "csp3/receipt-identity-product.json"
+  },
+  "code_inputs": [
+    {
+      "path": "runtime/generation_evidence_identity.go",
+      "sha256": "7fff600d07d75c4b97946a14fc78938afbf223d529b70196174772b4ee3caada"
+    },
+    {
+      "path": "runtime/generation_evidence_identity_test.go",
+      "sha256": "de2ffaee4a35fa483acfdbae4fbe2b7b7fe08a3374393d765ea5c7170b558c3b"
+    },
+    {
+      "path": "runtime/generation_evidence_restore_test.go",
+      "sha256": "a2e711511783a5f96f4002df53db97f4e2d563c14ba4e91b93420e43afe8c47a"
+    },
+    {
+      "path": "runtime/layers.go",
+      "sha256": "d5bfa557c19abd83faeb362f71a795b9026c799ace847b3d2f907e5a1a1f8bbf"
+    },
+    {
+      "path": "runtime/provider_policy.go",
+      "sha256": "c4c9c76599c2ee6ef6138512dc0d95487b65a6d0127ecb42fb32e74db50647e7"
+    },
+    {
+      "path": "update.go",
+      "sha256": "75a0cfa4fe882c6eb4c90a0ce84c701ae4be3a1e9ccc9bd884f649e6afcc7200"
+    },
+    {
+      "path": "docs/API.md",
+      "sha256": "486f02e5758d2f23dd6814b29af18edc638ff4e20023a74916a86b7e2de3c981"
+    }
+  ],
+  "captured_files": [
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/receipt-identity-ago-final.json",
+      "sha256": "b8fb7afa66aa7a93914ac258475dd0191be821803a8aea4439f5ba05022f5fa5",
+      "bytes": 289
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/receipt-identity-ago.json",
+      "sha256": "b8fb7afa66aa7a93914ac258475dd0191be821803a8aea4439f5ba05022f5fa5",
+      "bytes": 289
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/receipt-identity-all.jsonl",
+      "sha256": "3448874fb1b967aec3ab8cf3c96cce307bf62de4398b43a0097eb11f2aeecffb",
+      "bytes": 4275101
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/receipt-identity-final-focused.jsonl",
+      "sha256": "861c79404abfed78e38d1b2cda046ecc3ad993ce13f41927e81e57e8b7e3bfc7",
+      "bytes": 4485
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/receipt-identity-focused.log",
+      "sha256": "7f1b1787e34a16c316f68e2f83c2f29113d26de5a781beae66e0d670fb0142c0",
+      "bytes": 53
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/receipt-identity-generate.log",
+      "sha256": "793f633d2d7e104def3112b3f6e0ba0e5a06bb3eab2d9b54bcb9836cb4c5b6f6",
+      "bytes": 9934
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/receipt-identity-lint-final.log",
+      "sha256": "afd3100a05e69e6678a630e4f04b1350bb48c850773d27e16942abe9c3eb3719",
+      "bytes": 1560
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/receipt-identity-lint.log",
+      "sha256": "e4b7cfbc1e1122ace5a94bb4610346ed8d60265d07b2ae2ef915bfb1c90be40f",
+      "bytes": 1560
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/receipt-identity-product.json",
+      "sha256": "0a5cc1a33899402e4135c4ef56e28730155c63025b771d83734fcab9c93df5bb",
+      "bytes": 7700
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/receipt-identity-race.jsonl",
+      "sha256": "99300b2950e64a7e0ef30f204a1c50cb43cacb30ddbd7d00cd4e49268936f269",
+      "bytes": 732925
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/receipt-identity-reconciler.jsonl",
+      "sha256": "2c3bf67a4809d907f6b09634676c82c4870ee8fac940b3f5201127f182fdbf3a",
+      "bytes": 269106
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/receipt-identity-red.log",
+      "sha256": "22a484e84f6a9f311913a619d27767f9ad09a7a8cfdcd5dc7337a8f7bf564788",
+      "bytes": 475
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/receipt-identity-restore-red.log",
+      "sha256": "ea410592a319f47c383610376206398baf54a38204a18af3b12cb290f4bb68b6",
+      "bytes": 52
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/receipt-identity-writing-proof.log",
+      "sha256": "2fe9a4fe1eff2755513cbaebf9aece1694e2d4a2443213a91bc134da6e291e28",
+      "bytes": 791
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/receipt-identity-writing-final.log",
+      "sha256": "360ae5a110ce3ded5b3d5c7611d971a19bd54ff95467cf529fd2cf8c559a11ba",
+      "bytes": 558
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/receipt-identity-documents-final.log",
+      "sha256": "d313680c9a223cd8df74cf39f698d72fb4ecca541af07349527b7c3374f4a249",
+      "bytes": 3981
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/receipt-identity-documents-verified.log",
+      "sha256": "d313680c9a223cd8df74cf39f698d72fb4ecca541af07349527b7c3374f4a249",
+      "bytes": 3981
+    }
+  ],
+  "documentation_failure": {
+    "capture": "csp3/receipt-identity-writing-proof.log",
+    "exit_code": 2,
+    "finding": "One proof paragraph exceeded the six-sentence limit. The correction separates the verification and static-check paragraphs."
+  }
+}

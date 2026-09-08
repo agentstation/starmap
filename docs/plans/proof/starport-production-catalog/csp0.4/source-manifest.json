@@ -1,0 +1,11 @@
+{
+  "starport_base": "042eb97851496ecdd1ef20bfa44fe3d84b86b2d8",
+  "worktree": "Uncommitted measurement tests and earlier documentation changes. Production Go source unchanged.",
+  "files": {
+    "internal/app/performance_test.go": "b3cea0909a3d73b7a6d0d206238aab0edf9ac8db428c52db58f98240d942a476",
+    "internal/app/app_test.go": "97648f442fcb338b74db7e5733d3616e73a21e78fe989ec28d784782ac4a8511",
+    "internal/server/controllers/overhead_benchmark_test.go": "d128332ecda56a87ac3b9e2703de6666760384da10d5c29357467479607f2509",
+    "go.mod": "0bb403f18cf17ec607deeb9c473a0e51190a0db069b75dd569fb1b09c541545e",
+    "go.sum": "1e65bbda6ea74a4269dfd60b3cc7563532b41878e4e288e731cb9e0b2ed65bb2"
+  }
+}

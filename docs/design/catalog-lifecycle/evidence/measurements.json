@@ -1,0 +1,1086 @@
+{
+  "source_revision": "042eb97851496ecdd1ef20bfa44fe3d84b86b2d8",
+  "review_date": "2026-09-04",
+  "method": "Real console routes and CSS through Vite 8.2.2. Dummy session marker and empty API responses. Responsive desktop-browser viewports, not native mobile devices. Development tool overlays present.",
+  "measurements": {
+    "account-320-dark": {
+      "url": "http://127.0.0.1:5194/docs",
+      "theme": "dark",
+      "viewport": [
+        320,
+        844
+      ],
+      "documentWidth": 320,
+      "panel": {
+        "tag": "DIV",
+        "text": "Gateway API keysA gateway API key authenticates your requests to ",
+        "font": "Geist, system-ui, \"Segoe UI\", sans-serif",
+        "size": "16px",
+        "line": "24px",
+        "color": "rgb(246, 247, 248)",
+        "width": 288,
+        "height": 1684.5,
+        "scrollWidth": 288,
+        "clientWidth": 288
+      },
+      "paragraph": {
+        "tag": "P",
+        "text": "A gateway API key authenticates your requests to the Starport gat",
+        "font": "Geist, system-ui, \"Segoe UI\", sans-serif",
+        "size": "14px",
+        "line": "22.75px",
+        "color": "rgb(201, 206, 214)",
+        "width": 288,
+        "height": 182,
+        "scrollWidth": 288,
+        "clientWidth": 288
+      },
+      "paragraphLines": [
+        " ",
+        "A gateway API key authenticates your ",
+        "requests to the Starport gateway and ",
+        "nothing else. Keys carry scopes (what routes ",
+        "they may call) and optional spend limits. ",
+        "Create, rotate, and revoke them on the API ",
+        "keys page. A new key gets the whole ",
+        "inference set below; an admin key gets",
+        " alone.",
+        "admin"
+      ],
+      "paragraphContrast": {
+        "foreground": "rgb(201, 206, 214)",
+        "background": "rgb(10, 11, 12)",
+        "ratio": 12.46
+      },
+      "h1": {
+        "tag": "H1",
+        "text": "Documentation",
+        "font": "Geist, system-ui, \"Segoe UI\", sans-serif",
+        "size": "24px",
+        "line": "32px",
+        "color": "rgb(246, 247, 248)",
+        "width": 288,
+        "height": 32,
+        "scrollWidth": 288,
+        "clientWidth": 288
+      },
+      "h2": {
+        "tag": "H2",
+        "text": "Gateway API keys",
+        "font": "Geist, system-ui, \"Segoe UI\", sans-serif",
+        "size": "14px",
+        "line": "20px",
+        "color": "rgb(246, 247, 248)",
+        "width": 288,
+        "height": 20,
+        "scrollWidth": 288,
+        "clientWidth": 288
+      },
+      "tabs": [
+        {
+          "tag": "BUTTON",
+          "text": "Build with Starport",
+          "font": "Geist, system-ui, \"Segoe UI\", sans-serif",
+          "size": "13px",
+          "line": "18px",
+          "color": "rgb(201, 206, 214)",
+          "width": 137.0390625,
+          "height": 36,
+          "scrollWidth": 135,
+          "clientWidth": 135
+        },
+        {
+          "tag": "BUTTON",
+          "text": "Manage your account",
+          "font": "Geist, system-ui, \"Segoe UI\", sans-serif",
+          "size": "13px",
+          "line": "18px",
+          "color": "rgb(246, 247, 248)",
+          "width": 154.5859375,
+          "height": 36,
+          "scrollWidth": 153,
+          "clientWidth": 153
+        },
+        {
+          "tag": "BUTTON",
+          "text": "Operate the gateway",
+          "font": "Geist, system-ui, \"Segoe UI\", sans-serif",
+          "size": "13px",
+          "line": "18px",
+          "color": "rgb(139, 144, 154)",
+          "width": 149.84375,
+          "height": 36,
+          "scrollWidth": 148,
+          "clientWidth": 148
+        }
+      ],
+      "code": [],
+      "tables": [
+        {
+          "tag": "TABLE",
+          "text": "ScopeOpenschat:writeChat completions and responsesembeddings:writ",
+          "font": "Geist, system-ui, \"Segoe UI\", sans-serif",
+          "size": "13px",
+          "line": "18px",
+          "color": "rgb(201, 206, 214)",
+          "width": 286,
+          "height": 602,
+          "scrollWidth": 286,
+          "clientWidth": 286
+        }
+      ],
+      "sectionAnchors": [
+        "",
+        "",
+        "",
+        ""
+      ],
+      "fontLoaded": true,
+      "selected": "Manage your account"
+    },
+    "build-320-dark": {
+      "url": "http://127.0.0.1:5194/docs",
+      "theme": "dark",
+      "viewport": [
+        320,
+        844
+      ],
+      "documentWidth": 320,
+      "panel": {
+        "tag": "DIV",
+        "text": "Base URLsStarport is a drop-in replacement for OpenRouter and for",
+        "font": "Geist, system-ui, \"Segoe UI\", sans-serif",
+        "size": "16px",
+        "line": "24px",
+        "color": "rgb(246, 247, 248)",
+        "width": 288,
+        "height": 2584.75,
+        "scrollWidth": 288,
+        "clientWidth": 288
+      },
+      "paragraph": {
+        "tag": "P",
+        "text": "Starport is a drop-in replacement for OpenRouter and for the Open",
+        "font": "Geist, system-ui, \"Segoe UI\", sans-serif",
+        "size": "14px",
+        "line": "22.75px",
+        "color": "rgb(201, 206, 214)",
+        "width": 288,
+        "height": 91,
+        "scrollWidth": 288,
+        "clientWidth": 288
+      },
+      "paragraphLines": [
+        "Starport is a drop-in replacement for ",
+        "OpenRouter and for the OpenAI API. Point ",
+        "your existing SDK at this gateway and keep ",
+        "your code:"
+      ],
+      "paragraphContrast": {
+        "foreground": "rgb(201, 206, 214)",
+        "background": "rgb(10, 11, 12)",
+        "ratio": 12.46
+      },
+      "h1": {
+        "tag": "H1",
+        "text": "Documentation",
+        "font": "Geist, system-ui, \"Segoe UI\", sans-serif",
+        "size": "24px",
+        "line": "32px",
+        "color": "rgb(246, 247, 248)",
+        "width": 288,
+        "height": 32,
+        "scrollWidth": 288,
+        "clientWidth": 288
+      },
+      "h2": {
+        "tag": "H2",
+        "text": "Base URLs",
+        "font": "Geist, system-ui, \"Segoe UI\", sans-serif",
+        "size": "14px",
+        "line": "20px",
+        "color": "rgb(246, 247, 248)",
+        "width": 288,
+        "height": 20,
+        "scrollWidth": 288,
+        "clientWidth": 288
+      },
+      "tabs": [
+        {
+          "tag": "BUTTON",
+          "text": "Build with Starport",
+          "font": "Geist, system-ui, \"Segoe UI\", sans-serif",
+          "size": "13px",
+          "line": "18px",
+          "color": "rgb(201, 206, 214)",
+          "width": 137.0390625,
+          "height": 36,
+          "scrollWidth": 135,
+          "clientWidth": 135
+        },
+        {
+          "tag": "BUTTON",
+          "text": "Manage your account",
+          "font": "Geist, system-ui, \"Segoe UI\", sans-serif",
+          "size": "13px",
+          "line": "18px",
+          "color": "rgb(139, 144, 154)",
+          "width": 154.5859375,
+          "height": 36,
+          "scrollWidth": 153,
+          "clientWidth": 153
+        },
+        {
+          "tag": "BUTTON",
+          "text": "Operate the gateway",
+          "font": "Geist, system-ui, \"Segoe UI\", sans-serif",
+          "size": "13px",
+          "line": "18px",
+          "color": "rgb(139, 144, 154)",
+          "width": 149.84375,
+          "height": 36,
+          "scrollWidth": 148,
+          "clientWidth": 148
+        }
+      ],
+      "code": [
+        {
+          "tag": "PRE",
+          "text": "import os\nfrom openai import OpenAI\n\nclient = OpenAI(\n    base_ur",
+          "font": "\"Geist Mono\", \"JetBrains Mono\", ui-monospace, monospace",
+          "size": "12px",
+          "line": "16px",
+          "color": "rgb(201, 206, 214)",
+          "width": 286,
+          "height": 200,
+          "scrollWidth": 426,
+          "clientWidth": 286
+        },
+        {
+          "tag": "PRE",
+          "text": "import OpenAI from \"openai\";\n\nconst client = new OpenAI({\n  baseU",
+          "font": "\"Geist Mono\", \"JetBrains Mono\", ui-monospace, monospace",
+          "size": "12px",
+          "line": "16px",
+          "color": "rgb(201, 206, 214)",
+          "width": 286,
+          "height": 184,
+          "scrollWidth": 426,
+          "clientWidth": 286
+        },
+        {
+          "tag": "PRE",
+          "text": "export STARPORT_API_KEY=\"$(starport auth token)\"",
+          "font": "\"Geist Mono\", \"JetBrains Mono\", ui-monospace, monospace",
+          "size": "12px",
+          "line": "16px",
+          "color": "rgb(201, 206, 214)",
+          "width": 286,
+          "height": 40,
+          "scrollWidth": 398,
+          "clientWidth": 286
+        },
+        {
+          "tag": "PRE",
+          "text": "curl http://127.0.0.1:5194/v1/chat/completions \\\n  -H \"Authorizat",
+          "font": "\"Geist Mono\", \"JetBrains Mono\", ui-monospace, monospace",
+          "size": "12px",
+          "line": "16px",
+          "color": "rgb(201, 206, 214)",
+          "width": 286,
+          "height": 88,
+          "scrollWidth": 700,
+          "clientWidth": 286
+        },
+        {
+          "tag": "PRE",
+          "text": "curl http://127.0.0.1:5194/v1/batches \\\n  -H \"Authorization: Bear",
+          "font": "\"Geist Mono\", \"JetBrains Mono\", ui-monospace, monospace",
+          "size": "12px",
+          "line": "16px",
+          "color": "rgb(201, 206, 214)",
+          "width": 286,
+          "height": 88,
+          "scrollWidth": 794,
+          "clientWidth": 286
+        },
+        {
+          "tag": "PRE",
+          "text": "starport agent setup",
+          "font": "\"Geist Mono\", \"JetBrains Mono\", ui-monospace, monospace",
+          "size": "12px",
+          "line": "16px",
+          "color": "rgb(201, 206, 214)",
+          "width": 286,
+          "height": 40,
+          "scrollWidth": 286,
+          "clientWidth": 286
+        },
+        {
+          "tag": "PRE",
+          "text": "starport models search gpt-4o --json\nstarport models show openai/",
+          "font": "\"Geist Mono\", \"JetBrains Mono\", ui-monospace, monospace",
+          "size": "12px",
+          "line": "16px",
+          "color": "rgb(201, 206, 214)",
+          "width": 286,
+          "height": 56,
+          "scrollWidth": 383,
+          "clientWidth": 286
+        }
+      ],
+      "tables": [],
+      "sectionAnchors": [
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+      ],
+      "fontLoaded": true,
+      "selected": "Build with Starport"
+    },
+    "operate-1440-dark": {
+      "url": "http://127.0.0.1:5194/docs",
+      "theme": "dark",
+      "viewport": [
+        1440,
+        1000
+      ],
+      "documentWidth": 1440,
+      "panel": {
+        "tag": "DIV",
+        "text": "Provider credentialsA provider credential pays a provider. It is ",
+        "font": "Geist, system-ui, \"Segoe UI\", sans-serif",
+        "size": "16px",
+        "line": "24px",
+        "color": "rgb(246, 247, 248)",
+        "width": 768,
+        "height": 1912.25,
+        "scrollWidth": 768,
+        "clientWidth": 768
+      },
+      "paragraph": {
+        "tag": "P",
+        "text": "A provider credential pays a provider. It is a different thing fr",
+        "font": "Geist, system-ui, \"Segoe UI\", sans-serif",
+        "size": "14px",
+        "line": "22.75px",
+        "color": "rgb(201, 206, 214)",
+        "width": 768,
+        "height": 45.5,
+        "scrollWidth": 768,
+        "clientWidth": 768
+      },
+      "paragraphLines": [
+        "A provider credential pays a provider. It is a different thing from a gateway API key, which only identifies a caller. Each ",
+        "provider resolves its paying credential from three possible sources:"
+      ],
+      "paragraphContrast": {
+        "foreground": "rgb(201, 206, 214)",
+        "background": "rgb(10, 11, 12)",
+        "ratio": 12.46
+      },
+      "h1": {
+        "tag": "H1",
+        "text": "Documentation",
+        "font": "Geist, system-ui, \"Segoe UI\", sans-serif",
+        "size": "24px",
+        "line": "32px",
+        "color": "rgb(246, 247, 248)",
+        "width": 768,
+        "height": 32,
+        "scrollWidth": 768,
+        "clientWidth": 768
+      },
+      "h2": {
+        "tag": "H2",
+        "text": "Provider credentials",
+        "font": "Geist, system-ui, \"Segoe UI\", sans-serif",
+        "size": "14px",
+        "line": "20px",
+        "color": "rgb(246, 247, 248)",
+        "width": 768,
+        "height": 20,
+        "scrollWidth": 768,
+        "clientWidth": 768
+      },
+      "tabs": [
+        {
+          "tag": "BUTTON",
+          "text": "Build with Starport",
+          "font": "Geist, system-ui, \"Segoe UI\", sans-serif",
+          "size": "13px",
+          "line": "18px",
+          "color": "rgb(139, 144, 154)",
+          "width": 137.0390625,
+          "height": 36,
+          "scrollWidth": 135,
+          "clientWidth": 135
+        },
+        {
+          "tag": "BUTTON",
+          "text": "Manage your account",
+          "font": "Geist, system-ui, \"Segoe UI\", sans-serif",
+          "size": "13px",
+          "line": "18px",
+          "color": "rgb(139, 144, 154)",
+          "width": 154.5859375,
+          "height": 36,
+          "scrollWidth": 153,
+          "clientWidth": 153
+        },
+        {
+          "tag": "BUTTON",
+          "text": "Operate the gateway",
+          "font": "Geist, system-ui, \"Segoe UI\", sans-serif",
+          "size": "13px",
+          "line": "18px",
+          "color": "rgb(246, 247, 248)",
+          "width": 149.84375,
+          "height": 36,
+          "scrollWidth": 148,
+          "clientWidth": 148
+        }
+      ],
+      "code": [
+        {
+          "tag": "PRE",
+          "text": "export STARPORT_GUARDRAILS_CHECKS=\"pii,moderation\"",
+          "font": "\"Geist Mono\", \"JetBrains Mono\", ui-monospace, monospace",
+          "size": "12px",
+          "line": "16px",
+          "color": "rgb(201, 206, 214)",
+          "width": 766,
+          "height": 40,
+          "scrollWidth": 766,
+          "clientWidth": 766
+        },
+        {
+          "tag": "PRE",
+          "text": "curl -X PUT http://127.0.0.1:5194/api/v1/admin/teams/TEAM_ID \\\n  ",
+          "font": "\"Geist Mono\", \"JetBrains Mono\", ui-monospace, monospace",
+          "size": "12px",
+          "line": "16px",
+          "color": "rgb(201, 206, 214)",
+          "width": 766,
+          "height": 88,
+          "scrollWidth": 766,
+          "clientWidth": 766
+        },
+        {
+          "tag": "PRE",
+          "text": "curl \"http://127.0.0.1:5194/api/v1/admin/audit?action=key.create&",
+          "font": "\"Geist Mono\", \"JetBrains Mono\", ui-monospace, monospace",
+          "size": "12px",
+          "line": "16px",
+          "color": "rgb(201, 206, 214)",
+          "width": 766,
+          "height": 56,
+          "scrollWidth": 766,
+          "clientWidth": 766
+        },
+        {
+          "tag": "PRE",
+          "text": "curl http://127.0.0.1:5194/metrics",
+          "font": "\"Geist Mono\", \"JetBrains Mono\", ui-monospace, monospace",
+          "size": "12px",
+          "line": "16px",
+          "color": "rgb(201, 206, 214)",
+          "width": 766,
+          "height": 40,
+          "scrollWidth": 766,
+          "clientWidth": 766
+        },
+        {
+          "tag": "PRE",
+          "text": "export OTEL_EXPORTER_OTLP_ENDPOINT=\"http://127.0.0.1:4318\"",
+          "font": "\"Geist Mono\", \"JetBrains Mono\", ui-monospace, monospace",
+          "size": "12px",
+          "line": "16px",
+          "color": "rgb(201, 206, 214)",
+          "width": 766,
+          "height": 40,
+          "scrollWidth": 766,
+          "clientWidth": 766
+        }
+      ],
+      "tables": [],
+      "sectionAnchors": [
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+      ],
+      "fontLoaded": true,
+      "selected": "Operate the gateway"
+    },
+    "operate-1440-light": {
+      "url": "http://127.0.0.1:5194/docs",
+      "theme": "light",
+      "viewport": [
+        1440,
+        1000
+      ],
+      "documentWidth": 1440,
+      "panel": {
+        "tag": "DIV",
+        "text": "Provider credentialsA provider credential pays a provider. It is ",
+        "font": "Geist, system-ui, \"Segoe UI\", sans-serif",
+        "size": "16px",
+        "line": "24px",
+        "color": "rgb(24, 24, 27)",
+        "width": 768,
+        "height": 1912.25,
+        "scrollWidth": 768,
+        "clientWidth": 768
+      },
+      "paragraph": {
+        "tag": "P",
+        "text": "A provider credential pays a provider. It is a different thing fr",
+        "font": "Geist, system-ui, \"Segoe UI\", sans-serif",
+        "size": "14px",
+        "line": "22.75px",
+        "color": "rgb(63, 63, 70)",
+        "width": 768,
+        "height": 45.5,
+        "scrollWidth": 768,
+        "clientWidth": 768
+      },
+      "paragraphLines": [
+        "A provider credential pays a provider. It is a different thing from a gateway API key, which only identifies a caller. Each ",
+        "provider resolves its paying credential from three possible sources:"
+      ],
+      "paragraphContrast": {
+        "foreground": "rgb(63, 63, 70)",
+        "background": "rgb(255, 255, 255)",
+        "ratio": 10.44
+      },
+      "h1": {
+        "tag": "H1",
+        "text": "Documentation",
+        "font": "Geist, system-ui, \"Segoe UI\", sans-serif",
+        "size": "24px",
+        "line": "32px",
+        "color": "rgb(24, 24, 27)",
+        "width": 768,
+        "height": 32,
+        "scrollWidth": 768,
+        "clientWidth": 768
+      },
+      "h2": {
+        "tag": "H2",
+        "text": "Provider credentials",
+        "font": "Geist, system-ui, \"Segoe UI\", sans-serif",
+        "size": "14px",
+        "line": "20px",
+        "color": "rgb(24, 24, 27)",
+        "width": 768,
+        "height": 20,
+        "scrollWidth": 768,
+        "clientWidth": 768
+      },
+      "tabs": [
+        {
+          "tag": "BUTTON",
+          "text": "Build with Starport",
+          "font": "Geist, system-ui, \"Segoe UI\", sans-serif",
+          "size": "13px",
+          "line": "18px",
+          "color": "rgb(113, 113, 122)",
+          "width": 137.0390625,
+          "height": 36,
+          "scrollWidth": 135,
+          "clientWidth": 135
+        },
+        {
+          "tag": "BUTTON",
+          "text": "Manage your account",
+          "font": "Geist, system-ui, \"Segoe UI\", sans-serif",
+          "size": "13px",
+          "line": "18px",
+          "color": "rgb(113, 113, 122)",
+          "width": 154.5859375,
+          "height": 36,
+          "scrollWidth": 153,
+          "clientWidth": 153
+        },
+        {
+          "tag": "BUTTON",
+          "text": "Operate the gateway",
+          "font": "Geist, system-ui, \"Segoe UI\", sans-serif",
+          "size": "13px",
+          "line": "18px",
+          "color": "rgb(24, 24, 27)",
+          "width": 149.84375,
+          "height": 36,
+          "scrollWidth": 148,
+          "clientWidth": 148
+        }
+      ],
+      "code": [
+        {
+          "tag": "PRE",
+          "text": "export STARPORT_GUARDRAILS_CHECKS=\"pii,moderation\"",
+          "font": "\"Geist Mono\", \"JetBrains Mono\", ui-monospace, monospace",
+          "size": "12px",
+          "line": "16px",
+          "color": "rgb(63, 63, 70)",
+          "width": 766,
+          "height": 40,
+          "scrollWidth": 766,
+          "clientWidth": 766
+        },
+        {
+          "tag": "PRE",
+          "text": "curl -X PUT http://127.0.0.1:5194/api/v1/admin/teams/TEAM_ID \\\n  ",
+          "font": "\"Geist Mono\", \"JetBrains Mono\", ui-monospace, monospace",
+          "size": "12px",
+          "line": "16px",
+          "color": "rgb(63, 63, 70)",
+          "width": 766,
+          "height": 88,
+          "scrollWidth": 766,
+          "clientWidth": 766
+        },
+        {
+          "tag": "PRE",
+          "text": "curl \"http://127.0.0.1:5194/api/v1/admin/audit?action=key.create&",
+          "font": "\"Geist Mono\", \"JetBrains Mono\", ui-monospace, monospace",
+          "size": "12px",
+          "line": "16px",
+          "color": "rgb(63, 63, 70)",
+          "width": 766,
+          "height": 56,
+          "scrollWidth": 766,
+          "clientWidth": 766
+        },
+        {
+          "tag": "PRE",
+          "text": "curl http://127.0.0.1:5194/metrics",
+          "font": "\"Geist Mono\", \"JetBrains Mono\", ui-monospace, monospace",
+          "size": "12px",
+          "line": "16px",
+          "color": "rgb(63, 63, 70)",
+          "width": 766,
+          "height": 40,
+          "scrollWidth": 766,
+          "clientWidth": 766
+        },
+        {
+          "tag": "PRE",
+          "text": "export OTEL_EXPORTER_OTLP_ENDPOINT=\"http://127.0.0.1:4318\"",
+          "font": "\"Geist Mono\", \"JetBrains Mono\", ui-monospace, monospace",
+          "size": "12px",
+          "line": "16px",
+          "color": "rgb(63, 63, 70)",
+          "width": 766,
+          "height": 40,
+          "scrollWidth": 766,
+          "clientWidth": 766
+        }
+      ],
+      "tables": [],
+      "sectionAnchors": [
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+      ],
+      "fontLoaded": true,
+      "selected": "Operate the gateway"
+    },
+    "operate-320-dark": {
+      "url": "http://127.0.0.1:5194/docs",
+      "theme": "dark",
+      "viewport": [
+        320,
+        844
+      ],
+      "documentWidth": 320,
+      "panel": {
+        "tag": "DIV",
+        "text": "Provider credentialsA provider credential pays a provider. It is ",
+        "font": "Geist, system-ui, \"Segoe UI\", sans-serif",
+        "size": "16px",
+        "line": "24px",
+        "color": "rgb(246, 247, 248)",
+        "width": 288,
+        "height": 3277.25,
+        "scrollWidth": 288,
+        "clientWidth": 288
+      },
+      "paragraph": {
+        "tag": "P",
+        "text": "A provider credential pays a provider. It is a different thing fr",
+        "font": "Geist, system-ui, \"Segoe UI\", sans-serif",
+        "size": "14px",
+        "line": "22.75px",
+        "color": "rgb(201, 206, 214)",
+        "width": 288,
+        "height": 113.75,
+        "scrollWidth": 288,
+        "clientWidth": 288
+      },
+      "paragraphLines": [
+        "A provider credential pays a provider. It is a ",
+        "different thing from a gateway API key, which ",
+        "only identifies a caller. Each provider ",
+        "resolves its paying credential from three ",
+        "possible sources:"
+      ],
+      "paragraphContrast": {
+        "foreground": "rgb(201, 206, 214)",
+        "background": "rgb(10, 11, 12)",
+        "ratio": 12.46
+      },
+      "h1": {
+        "tag": "H1",
+        "text": "Documentation",
+        "font": "Geist, system-ui, \"Segoe UI\", sans-serif",
+        "size": "24px",
+        "line": "32px",
+        "color": "rgb(246, 247, 248)",
+        "width": 288,
+        "height": 32,
+        "scrollWidth": 288,
+        "clientWidth": 288
+      },
+      "h2": {
+        "tag": "H2",
+        "text": "Provider credentials",
+        "font": "Geist, system-ui, \"Segoe UI\", sans-serif",
+        "size": "14px",
+        "line": "20px",
+        "color": "rgb(246, 247, 248)",
+        "width": 288,
+        "height": 20,
+        "scrollWidth": 288,
+        "clientWidth": 288
+      },
+      "tabs": [
+        {
+          "tag": "BUTTON",
+          "text": "Build with Starport",
+          "font": "Geist, system-ui, \"Segoe UI\", sans-serif",
+          "size": "13px",
+          "line": "18px",
+          "color": "rgb(139, 144, 154)",
+          "width": 137.0390625,
+          "height": 36,
+          "scrollWidth": 135,
+          "clientWidth": 135
+        },
+        {
+          "tag": "BUTTON",
+          "text": "Manage your account",
+          "font": "Geist, system-ui, \"Segoe UI\", sans-serif",
+          "size": "13px",
+          "line": "18px",
+          "color": "rgb(139, 144, 154)",
+          "width": 154.5859375,
+          "height": 36,
+          "scrollWidth": 153,
+          "clientWidth": 153
+        },
+        {
+          "tag": "BUTTON",
+          "text": "Operate the gateway",
+          "font": "Geist, system-ui, \"Segoe UI\", sans-serif",
+          "size": "13px",
+          "line": "18px",
+          "color": "rgb(246, 247, 248)",
+          "width": 149.84375,
+          "height": 36,
+          "scrollWidth": 148,
+          "clientWidth": 148
+        }
+      ],
+      "code": [
+        {
+          "tag": "PRE",
+          "text": "export STARPORT_GUARDRAILS_CHECKS=\"pii,moderation\"",
+          "font": "\"Geist Mono\", \"JetBrains Mono\", ui-monospace, monospace",
+          "size": "12px",
+          "line": "16px",
+          "color": "rgb(201, 206, 214)",
+          "width": 286,
+          "height": 40,
+          "scrollWidth": 412,
+          "clientWidth": 286
+        },
+        {
+          "tag": "PRE",
+          "text": "curl -X PUT http://127.0.0.1:5194/api/v1/admin/teams/TEAM_ID \\\n  ",
+          "font": "\"Geist Mono\", \"JetBrains Mono\", ui-monospace, monospace",
+          "size": "12px",
+          "line": "16px",
+          "color": "rgb(201, 206, 214)",
+          "width": 286,
+          "height": 88,
+          "scrollWidth": 635,
+          "clientWidth": 286
+        },
+        {
+          "tag": "PRE",
+          "text": "curl \"http://127.0.0.1:5194/api/v1/admin/audit?action=key.create&",
+          "font": "\"Geist Mono\", \"JetBrains Mono\", ui-monospace, monospace",
+          "size": "12px",
+          "line": "16px",
+          "color": "rgb(201, 206, 214)",
+          "width": 286,
+          "height": 56,
+          "scrollWidth": 599,
+          "clientWidth": 286
+        },
+        {
+          "tag": "PRE",
+          "text": "curl http://127.0.0.1:5194/metrics",
+          "font": "\"Geist Mono\", \"JetBrains Mono\", ui-monospace, monospace",
+          "size": "12px",
+          "line": "16px",
+          "color": "rgb(201, 206, 214)",
+          "width": 286,
+          "height": 40,
+          "scrollWidth": 297,
+          "clientWidth": 286
+        },
+        {
+          "tag": "PRE",
+          "text": "export OTEL_EXPORTER_OTLP_ENDPOINT=\"http://127.0.0.1:4318\"",
+          "font": "\"Geist Mono\", \"JetBrains Mono\", ui-monospace, monospace",
+          "size": "12px",
+          "line": "16px",
+          "color": "rgb(201, 206, 214)",
+          "width": 286,
+          "height": 40,
+          "scrollWidth": 470,
+          "clientWidth": 286
+        }
+      ],
+      "tables": [],
+      "sectionAnchors": [
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+      ],
+      "fontLoaded": true,
+      "selected": "Operate the gateway"
+    },
+    "operate-390-dark": {
+      "url": "http://127.0.0.1:5194/docs",
+      "theme": "dark",
+      "viewport": [
+        390,
+        844
+      ],
+      "documentWidth": 390,
+      "panel": {
+        "tag": "DIV",
+        "text": "Provider credentialsA provider credential pays a provider. It is ",
+        "font": "Geist, system-ui, \"Segoe UI\", sans-serif",
+        "size": "16px",
+        "line": "24px",
+        "color": "rgb(246, 247, 248)",
+        "width": 358,
+        "height": 2822.25,
+        "scrollWidth": 358,
+        "clientWidth": 358
+      },
+      "paragraph": {
+        "tag": "P",
+        "text": "A provider credential pays a provider. It is a different thing fr",
+        "font": "Geist, system-ui, \"Segoe UI\", sans-serif",
+        "size": "14px",
+        "line": "22.75px",
+        "color": "rgb(201, 206, 214)",
+        "width": 358,
+        "height": 91,
+        "scrollWidth": 358,
+        "clientWidth": 358
+      },
+      "paragraphLines": [
+        "A provider credential pays a provider. It is a different ",
+        "thing from a gateway API key, which only identifies a ",
+        "caller. Each provider resolves its paying credential from ",
+        "three possible sources:"
+      ],
+      "paragraphContrast": {
+        "foreground": "rgb(201, 206, 214)",
+        "background": "rgb(10, 11, 12)",
+        "ratio": 12.46
+      },
+      "h1": {
+        "tag": "H1",
+        "text": "Documentation",
+        "font": "Geist, system-ui, \"Segoe UI\", sans-serif",
+        "size": "24px",
+        "line": "32px",
+        "color": "rgb(246, 247, 248)",
+        "width": 358,
+        "height": 32,
+        "scrollWidth": 358,
+        "clientWidth": 358
+      },
+      "h2": {
+        "tag": "H2",
+        "text": "Provider credentials",
+        "font": "Geist, system-ui, \"Segoe UI\", sans-serif",
+        "size": "14px",
+        "line": "20px",
+        "color": "rgb(246, 247, 248)",
+        "width": 358,
+        "height": 20,
+        "scrollWidth": 358,
+        "clientWidth": 358
+      },
+      "tabs": [
+        {
+          "tag": "BUTTON",
+          "text": "Build with Starport",
+          "font": "Geist, system-ui, \"Segoe UI\", sans-serif",
+          "size": "13px",
+          "line": "18px",
+          "color": "rgb(139, 144, 154)",
+          "width": 137.0390625,
+          "height": 36,
+          "scrollWidth": 135,
+          "clientWidth": 135
+        },
+        {
+          "tag": "BUTTON",
+          "text": "Manage your account",
+          "font": "Geist, system-ui, \"Segoe UI\", sans-serif",
+          "size": "13px",
+          "line": "18px",
+          "color": "rgb(139, 144, 154)",
+          "width": 154.5859375,
+          "height": 36,
+          "scrollWidth": 153,
+          "clientWidth": 153
+        },
+        {
+          "tag": "BUTTON",
+          "text": "Operate the gateway",
+          "font": "Geist, system-ui, \"Segoe UI\", sans-serif",
+          "size": "13px",
+          "line": "18px",
+          "color": "rgb(246, 247, 248)",
+          "width": 149.84375,
+          "height": 36,
+          "scrollWidth": 148,
+          "clientWidth": 148
+        }
+      ],
+      "code": [
+        {
+          "tag": "PRE",
+          "text": "export STARPORT_GUARDRAILS_CHECKS=\"pii,moderation\"",
+          "font": "\"Geist Mono\", \"JetBrains Mono\", ui-monospace, monospace",
+          "size": "12px",
+          "line": "16px",
+          "color": "rgb(201, 206, 214)",
+          "width": 356,
+          "height": 40,
+          "scrollWidth": 412,
+          "clientWidth": 356
+        },
+        {
+          "tag": "PRE",
+          "text": "curl -X PUT http://127.0.0.1:5194/api/v1/admin/teams/TEAM_ID \\\n  ",
+          "font": "\"Geist Mono\", \"JetBrains Mono\", ui-monospace, monospace",
+          "size": "12px",
+          "line": "16px",
+          "color": "rgb(201, 206, 214)",
+          "width": 356,
+          "height": 88,
+          "scrollWidth": 635,
+          "clientWidth": 356
+        },
+        {
+          "tag": "PRE",
+          "text": "curl \"http://127.0.0.1:5194/api/v1/admin/audit?action=key.create&",
+          "font": "\"Geist Mono\", \"JetBrains Mono\", ui-monospace, monospace",
+          "size": "12px",
+          "line": "16px",
+          "color": "rgb(201, 206, 214)",
+          "width": 356,
+          "height": 56,
+          "scrollWidth": 599,
+          "clientWidth": 356
+        },
+        {
+          "tag": "PRE",
+          "text": "curl http://127.0.0.1:5194/metrics",
+          "font": "\"Geist Mono\", \"JetBrains Mono\", ui-monospace, monospace",
+          "size": "12px",
+          "line": "16px",
+          "color": "rgb(201, 206, 214)",
+          "width": 356,
+          "height": 40,
+          "scrollWidth": 356,
+          "clientWidth": 356
+        },
+        {
+          "tag": "PRE",
+          "text": "export OTEL_EXPORTER_OTLP_ENDPOINT=\"http://127.0.0.1:4318\"",
+          "font": "\"Geist Mono\", \"JetBrains Mono\", ui-monospace, monospace",
+          "size": "12px",
+          "line": "16px",
+          "color": "rgb(201, 206, 214)",
+          "width": 356,
+          "height": 40,
+          "scrollWidth": 470,
+          "clientWidth": 356
+        }
+      ],
+      "tables": [],
+      "sectionAnchors": [
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+      ],
+      "fontLoaded": true,
+      "selected": "Operate the gateway"
+    },
+    "settings-light": {
+      "viewport": [
+        1440,
+        1000
+      ],
+      "theme": "light",
+      "setting": "STARPORT_STORAGE_MODE",
+      "fontSize": "12px",
+      "foreground": "rgb(161, 161, 170)",
+      "background": "rgb(255, 255, 255)",
+      "contrast": 2.562908108464821,
+      "interactive": false
+    }
+  },
+  "screenshots": {
+    "starport-docs-desktop-dark.png": "52110a5a428f2fad1d085531ddbe88ebf3947a5bdcc544a8927e71411f923c4c",
+    "starport-docs-mobile-dark.png": "04c70c5377e4a5a04703fdb021562f88bfa80a151653d6de726d4bc9a2d8221d",
+    "starport-docs-desktop-light.png": "84d14d8ade126fccdede02e641eb2288562c7fd99b75b0fe928f0a678d09df3b",
+    "starport-docs-build-320.png": "e21c245edc332aae41d33396581f097b5786345df694c1e664349f944db99e93",
+    "starport-settings-light.png": "82a006ab48bde364914f2b435d36cd44c0f9f02b65908e26b4fba64ca0cc9eb8"
+  }
+}

@@ -1,0 +1,17 @@
+ok  	github.com/agentstation/starmap-test/read-only-consumer	(cached)
+ok  	github.com/agentstation/starmap-test/store-only-consumer	(cached)
+ok  	github.com/agentstation/starmap-test/pinned-artifact-consumer	(cached)
+ok  	github.com/agentstation/starmap-test/server-embed-consumer	1.857s
+ok  	github.com/agentstation/starmap-test/remote-subscriber-consumer	3.376s
+ok  	github.com/agentstation/starmap-test/server-storage-consumer	6.497s
+read-only consumer dependency closure: 37/37 non-standard packages (161 total on this platform); forbidden families absent
+store-only consumer: caller-owned adapter contract and publication passed; application/database implementations absent
+pinned-artifact consumer: 38/38 non-standard packages; offline verified activation passed; online/acquisition families absent
+server-embed consumer dependency closure: 254/260 packages; acquisition families absent
+server-embed consumer: external compile and lifecycle test passed
+remote-subscriber consumer dependency closure: 237/240 packages; forbidden families absent
+remote-subscriber consumer: external compile and reactive lifecycle test passed
+server-storage consumer dependency closure: 348/350 packages; filesystem/S3 server and reactive restart matrix passed
+ok  	github.com/agentstation/starmap/pkg/catalogs/storage/s3	(cached)
+starmap dev
+pure-Go verification passed: library, pinned artifact, stores including S3, server, remote, and CLI execute with CGO_ENABLED=0

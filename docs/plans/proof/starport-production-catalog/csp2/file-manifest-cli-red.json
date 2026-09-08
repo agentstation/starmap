@@ -1,0 +1,17 @@
+{
+  "command": [
+    "go",
+    "test",
+    "-race",
+    "-count=1",
+    "-timeout",
+    "2m",
+    "-json",
+    "./internal/cli/app",
+    "-run",
+    "^TestConfigPathsCommandIsPassiveAndReportsOrigins$"
+  ],
+  "exit_code": 1,
+  "stdout": "{\"Time\":\"2026-09-05T23:40:18.22555-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\"}\n{\"Time\":\"2026-09-05T23:40:18.810428-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestConfigPathsCommandIsPassiveAndReportsOrigins\"}\n{\"Time\":\"2026-09-05T23:40:18.810535-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestConfigPathsCommandIsPassiveAndReportsOrigins\",\"Output\":\"=== RUN   TestConfigPathsCommandIsPassiveAndReportsOrigins\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-05T23:40:18.812296-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestConfigPathsCommandIsPassiveAndReportsOrigins\",\"Output\":\"    file_manifest_test.go:23: path report command failed: unknown command \\\"config\\\" for \\\"starmap\\\"\\n\",\"OutputType\":\"error\"}\n{\"Time\":\"2026-09-05T23:40:18.812713-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestConfigPathsCommandIsPassiveAndReportsOrigins\",\"Output\":\"--- FAIL: TestConfigPathsCommandIsPassiveAndReportsOrigins (0.00s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-05T23:40:18.812722-05:00\",\"Action\":\"fail\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestConfigPathsCommandIsPassiveAndReportsOrigins\",\"Elapsed\":0}\n{\"Time\":\"2026-09-05T23:40:18.812793-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Output\":\"FAIL\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-05T23:40:18.814442-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Output\":\"FAIL\\tgithub.com/agentstation/starmap/internal/cli/app\\t0.588s\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-05T23:40:18.814455-05:00\",\"Action\":\"fail\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Elapsed\":0.589}\n",
+  "stderr": ""
+}

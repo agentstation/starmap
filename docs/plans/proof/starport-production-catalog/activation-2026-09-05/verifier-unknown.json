@@ -1,0 +1,17 @@
+{
+  "command": [
+    "bash",
+    "scripts/verify-catalog-product.sh",
+    "--starport-root",
+    "/Users/jack/src/github.com/agentstation/starport-catalog-lifecycle",
+    "--case",
+    "A99",
+    "--json"
+  ],
+  "exit_code": 2,
+  "report": {
+    "gate_status": "FAIL",
+    "error": "Unknown primary acceptance case."
+  },
+  "stderr": ""
+}

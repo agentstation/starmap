@@ -1,0 +1,51 @@
+{
+  "command": [
+    "go",
+    "test",
+    "-json",
+    "-race",
+    "-count=1",
+    "-timeout=10m",
+    "./runtime",
+    "-run",
+    "^TestProviderPolicy(StartupAlignsHTTPGeneration|ReactivationPreservesImmutableGeneration|FailedStartupPublicationReleasesDirectory|RejectsMismatchedStoredIdentity)$"
+  ],
+  "toolchain": "go1.25.12",
+  "exit_code": 0,
+  "seconds": 66.6177294170484,
+  "counts": {
+    "pass": 4
+  },
+  "failures": [],
+  "inputs_before": {
+    "go.mod": "4089f0c9d4e2a59e91b45b22419dcc16298b545ce74db69f19508377289e3513",
+    "go.sum": "e6bc0489a1beb9cc7af8ce96d3ab833002dab73fa559c2165e57a7865d13a356",
+    "runtime/layers.go": "66490fb072113a498baea267b0cae79960af8e56fb139519ce65ae2e31d7137b",
+    "runtime/options.go": "62d1aff693a599b22f21822911f2f822023646becc2be9a515f539c643ccadaf",
+    "runtime/provider_policy.go": "0ed559058d36578366f8221e8ea65aa4542daeeb6366b5e3a74f83abc69afbff",
+    "runtime/provider_policy_acquisition.go": "f0f4092a76a92be73b94204befe64235497032ca7aef80111b25f8220158759f",
+    "runtime/provider_policy_publication.go": "975381e205082e619e67e74c6d51b84bc88916cbb4cf28355295a0a2018a2762",
+    "runtime/provider_policy_publication_test.go": "f29549062d059bbe30506977800f3fb1a73fa6fd51e1d3b62561aa559dcae0c5",
+    "runtime/provider_policy_test.go": "527c296404febf6547d0ebd1d55ea1e1e03490ac1f29873debccec23e8a80589",
+    "runtime/provider_window_test.go": "f7ffac17ba788b3222107e5930d89eef7d711415e50a7a0f58facf44c39b2613",
+    "runtime/refresh.go": "208e46ce88b50a73a235780be93a3a0a5c32ee9a68385f4cccba28bfe6caedcd",
+    "runtime/runtime.go": "a9e8cef02a50440c58455aa59a28ef60a53958bc11a81896e53dea899739341a",
+    "runtime/scheduler.go": "e6e95a3febb749fb1143ffd1572908a06b1ab8a9789f2915de46ebe9c3c34d6d"
+  },
+  "inputs_after": {
+    "go.mod": "4089f0c9d4e2a59e91b45b22419dcc16298b545ce74db69f19508377289e3513",
+    "go.sum": "e6bc0489a1beb9cc7af8ce96d3ab833002dab73fa559c2165e57a7865d13a356",
+    "runtime/layers.go": "66490fb072113a498baea267b0cae79960af8e56fb139519ce65ae2e31d7137b",
+    "runtime/options.go": "62d1aff693a599b22f21822911f2f822023646becc2be9a515f539c643ccadaf",
+    "runtime/provider_policy.go": "0ed559058d36578366f8221e8ea65aa4542daeeb6366b5e3a74f83abc69afbff",
+    "runtime/provider_policy_acquisition.go": "f0f4092a76a92be73b94204befe64235497032ca7aef80111b25f8220158759f",
+    "runtime/provider_policy_publication.go": "975381e205082e619e67e74c6d51b84bc88916cbb4cf28355295a0a2018a2762",
+    "runtime/provider_policy_publication_test.go": "f29549062d059bbe30506977800f3fb1a73fa6fd51e1d3b62561aa559dcae0c5",
+    "runtime/provider_policy_test.go": "527c296404febf6547d0ebd1d55ea1e1e03490ac1f29873debccec23e8a80589",
+    "runtime/provider_window_test.go": "f7ffac17ba788b3222107e5930d89eef7d711415e50a7a0f58facf44c39b2613",
+    "runtime/refresh.go": "208e46ce88b50a73a235780be93a3a0a5c32ee9a68385f4cccba28bfe6caedcd",
+    "runtime/runtime.go": "a9e8cef02a50440c58455aa59a28ef60a53958bc11a81896e53dea899739341a",
+    "runtime/scheduler.go": "e6e95a3febb749fb1143ffd1572908a06b1ab8a9789f2915de46ebe9c3c34d6d"
+  },
+  "unchanged": true
+}

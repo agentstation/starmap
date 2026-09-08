@@ -1,0 +1,33 @@
+[
+  {
+    "command": [
+      "pnpm",
+      "-C",
+      "console",
+      "typecheck"
+    ],
+    "exit_code": 0,
+    "seconds": 2.915,
+    "log": "publication-starport-ui-0.log"
+  },
+  {
+    "command": [
+      "pnpm",
+      "-C",
+      "console",
+      "test"
+    ],
+    "exit_code": 1,
+    "seconds": 47.273,
+    "log": "publication-starport-ui-1.log"
+  },
+  {
+    "command": [
+      "python3",
+      "scripts/test-native-release.py"
+    ],
+    "exit_code": 0,
+    "seconds": 0.194,
+    "log": "publication-starport-ui-2.log"
+  }
+]

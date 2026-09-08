@@ -1,0 +1,10 @@
+{"Time":"2026-09-06T23:01:50.707725-05:00","Action":"start","Package":"github.com/agentstation/starmap/runtime"}
+{"Time":"2026-09-06T23:01:51.154682-05:00","Action":"run","Package":"github.com/agentstation/starmap/runtime","Test":"TestProviderPolicyRejectsMismatchedStoredIdentity"}
+{"Time":"2026-09-06T23:01:51.154755-05:00","Action":"output","Package":"github.com/agentstation/starmap/runtime","Test":"TestProviderPolicyRejectsMismatchedStoredIdentity","Output":"=== RUN   TestProviderPolicyRejectsMismatchedStoredIdentity\n"}
+{"Time":"2026-09-06T23:02:08.594094-05:00","Action":"output","Package":"github.com/agentstation/starmap/runtime","Test":"TestProviderPolicyRejectsMismatchedStoredIdentity","Output":"    provider_policy_publication_test.go:167: store returned another identity with matching bytes and startup accepted it\n"}
+{"Time":"2026-09-06T23:02:08.600257-05:00","Action":"output","Package":"github.com/agentstation/starmap/runtime","Test":"TestProviderPolicyRejectsMismatchedStoredIdentity","Output":"    provider_policy_publication_test.go:170: a mismatched addressed generation reached current publication\n"}
+{"Time":"2026-09-06T23:02:08.601244-05:00","Action":"output","Package":"github.com/agentstation/starmap/runtime","Test":"TestProviderPolicyRejectsMismatchedStoredIdentity","Output":"--- FAIL: TestProviderPolicyRejectsMismatchedStoredIdentity (17.45s)\n"}
+{"Time":"2026-09-06T23:02:08.601269-05:00","Action":"fail","Package":"github.com/agentstation/starmap/runtime","Test":"TestProviderPolicyRejectsMismatchedStoredIdentity","Elapsed":17.45}
+{"Time":"2026-09-06T23:02:08.601508-05:00","Action":"output","Package":"github.com/agentstation/starmap/runtime","Output":"FAIL\n"}
+{"Time":"2026-09-06T23:02:08.625359-05:00","Action":"output","Package":"github.com/agentstation/starmap/runtime","Output":"FAIL\tgithub.com/agentstation/starmap/runtime\t17.917s\n"}
+{"Time":"2026-09-06T23:02:08.625411-05:00","Action":"fail","Package":"github.com/agentstation/starmap/runtime","Elapsed":17.917}

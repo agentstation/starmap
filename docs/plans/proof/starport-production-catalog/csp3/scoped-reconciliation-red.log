@@ -1,0 +1,10 @@
+{"level":"info","provider_count":1,"time":"2026-09-07T02:19:11-05:00","message":"Filtered providers by primary source"}
+--- FAIL: TestScopedReconciliationKeepsPeerOfferingsAndReceipts (0.00s)
+    scoped_observations_test.go:70: lost a scoped offering (reverse=false): &catalogs.Provider{ID:"provider-a", Aliases:[]catalogs.ProviderID(nil), Name:"Provider A", Description:(*string)(nil), Website:(*string)(nil), DocsURL:(*string)(nil), Headquarters:(*string)(nil), IconURL:(*string)(nil), Logo:[]uint8(nil), Credentials:(*catalogs.ProviderCredentials)(0x509af4db810), Catalog:(*catalogs.ProviderCatalog)(nil), Models:map[string]*catalogs.Model{"model-two":(*catalogs.Model)(0x509af4ec900)}, StatusPageURL:(*string)(nil), Inference:(*catalogs.ProviderInference)(nil), PrivacyPolicy:(*catalogs.ProviderPrivacyPolicy)(nil), RetentionPolicy:(*catalogs.ProviderRetentionPolicy)(nil), GovernancePolicy:(*catalogs.ProviderGovernancePolicy)(nil), Extensions:catalogs.SourceExtensions(nil)}
+{"level":"info","provider_count":1,"time":"2026-09-07T02:19:11-05:00","message":"Filtered providers by primary source"}
+{"level":"info","provider_count":1,"time":"2026-09-07T02:19:11-05:00","message":"Filtered providers by primary source"}
+--- FAIL: TestScopedReconciliationSelectsNewestSharedOffering (0.00s)
+    scoped_observations_test.go:103: input order selected an older scoped offering
+FAIL
+FAIL	github.com/agentstation/starmap/internal/catalog/reconciler	0.200s
+FAIL

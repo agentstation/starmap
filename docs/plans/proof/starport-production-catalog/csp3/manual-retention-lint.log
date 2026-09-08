@@ -1,0 +1,9 @@
+runtime/publication_retention.go:18:1: cyclomatic complexity 33 of func `(*Runtime).publishInputs` is high (> 30) (gocyclo)
+func (r *Runtime) publishInputs(ctx context.Context, source *sourceLayer, providers []ProviderLayer, manual []manualObservation, epoch uint64) (starmap.CatalogState, error) {
+^
+runtime/manual_reconciliation.go:103:2: Consider preallocating inputs with capacity 1 + len(observations) (prealloc)
+	inputs := []sources.Observation{{SourceID: baseSource, Catalog: base}}
+	^
+2 issues:
+* gocyclo: 1
+* prealloc: 1

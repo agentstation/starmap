@@ -1,0 +1,16 @@
+{
+  "command": [
+    "go",
+    "test",
+    "-race",
+    "-count=1",
+    "-timeout",
+    "5m",
+    "./internal/catalog/settings",
+    "-run",
+    "^TestCatalogSettingsReferenceIsCurrent$"
+  ],
+  "exit_code": 1,
+  "stdout": "--- FAIL: TestCatalogSettingsReferenceIsCurrent (0.00s)\n    reference_test.go:40: open /Users/jack/src/github.com/agentstation/starmap-catalog-requirements/docs/catalog-settings-schema.json: no such file or directory\nFAIL\nFAIL\tgithub.com/agentstation/starmap/internal/catalog/settings\t0.531s\nFAIL\n",
+  "stderr": ""
+}

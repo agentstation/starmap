@@ -1,0 +1,40 @@
+{
+  "repository": "/Users/jack/src/github.com/agentstation/starport-catalog-lifecycle",
+  "revision": "042eb97851496ecdd1ef20bfa44fe3d84b86b2d8",
+  "files": {
+    "internal/limits/limits.go": {
+      "sha256": "214d1e106b4dff586b42192d002dcb0fb3cc605198dcdda40117228d100fe435",
+      "matches_head": true
+    },
+    "internal/limits/spend.go": {
+      "sha256": "ec0c758e6be311e1ca84c0fd854af0ec072e5e3c062cdfed3900b2cf2d41ee51",
+      "matches_head": true
+    },
+    "internal/usage/repository.go": {
+      "sha256": "64f41992a179648da08c8c70522f7bf8ed022b26b6941316319c7283757dc71f",
+      "matches_head": true
+    },
+    "internal/storage/valkey.go": {
+      "sha256": "21ffff15c3b046af61919dfee3360077b22b1b0f51ff42455f8e0589c334c952",
+      "matches_head": true
+    },
+    "internal/proxy/parser.go": {
+      "sha256": "93dbd31506ac128497ffe4998b57ce8c07afd8cf55fcb50661ef14da300121a0",
+      "matches_head": true
+    },
+    "internal/proxy/rerank.go": {
+      "sha256": "21080819ecf378da2ad6ab7f0e6257347b5b0eb390b79d80895196e63086e804",
+      "matches_head": true
+    },
+    "internal/proxy/semantic_cache.go": {
+      "sha256": "49a909aa22ebeaa0fb111bd3db26cb9924715f076ae651a022572700267aae6b",
+      "matches_head": true
+    }
+  },
+  "official_contracts": {
+    "https://valkey.io/commands/wait/": "WAIT does not guarantee strongly consistent failover.",
+    "https://valkey.io/topics/replication/": "Acknowledged writes can be lost during failover.",
+    "https://docs.github.com/en/actions/how-tos/write-workflows/choose-when-workflows-run/trigger-a-workflow": "The specification correctly distinguishes GitHub App behavior from GITHUB_TOKEN-created PR workflows.",
+    "https://github.github.com/gfm/#tables-extension-": "An empty line ends a table."
+  }
+}

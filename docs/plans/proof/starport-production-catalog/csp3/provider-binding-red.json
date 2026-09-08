@@ -1,0 +1,17 @@
+{
+  "command": [
+    "env",
+    "GOTOOLCHAIN=go1.25.12",
+    "go",
+    "test",
+    "-json",
+    "-race",
+    "-count=1",
+    "-timeout=1m",
+    "./pkg/sources",
+    "-run",
+    "TestObservationRejectsUnboundProviderBinding|TestReceiptRejectsUnboundProviderBinding"
+  ],
+  "exit_code": 1,
+  "output": "{\"Time\":\"2026-09-06T20:56:23.431893-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starmap/pkg/sources\"}\n{\"Time\":\"2026-09-06T20:56:23.676766-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starmap/pkg/sources\",\"Test\":\"TestObservationRejectsUnboundProviderBinding\"}\n{\"Time\":\"2026-09-06T20:56:23.676866-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/pkg/sources\",\"Test\":\"TestObservationRejectsUnboundProviderBinding\",\"Output\":\"=== RUN   TestObservationRejectsUnboundProviderBinding\\n\"}\n{\"Time\":\"2026-09-06T20:56:23.680207-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/pkg/sources\",\"Test\":\"TestObservationRejectsUnboundProviderBinding\",\"Output\":\"    provider_binding_test.go:65: accepted provider binding without binding its observation identity\\n\"}\n{\"Time\":\"2026-09-06T20:56:23.680259-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/pkg/sources\",\"Test\":\"TestObservationRejectsUnboundProviderBinding\",\"Output\":\"--- FAIL: TestObservationRejectsUnboundProviderBinding (0.00s)\\n\"}\n{\"Time\":\"2026-09-06T20:56:23.680263-05:00\",\"Action\":\"fail\",\"Package\":\"github.com/agentstation/starmap/pkg/sources\",\"Test\":\"TestObservationRejectsUnboundProviderBinding\",\"Elapsed\":0}\n{\"Time\":\"2026-09-06T20:56:23.68034-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starmap/pkg/sources\",\"Test\":\"TestReceiptRejectsUnboundProviderBinding\"}\n{\"Time\":\"2026-09-06T20:56:23.680364-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/pkg/sources\",\"Test\":\"TestReceiptRejectsUnboundProviderBinding\",\"Output\":\"=== RUN   TestReceiptRejectsUnboundProviderBinding\\n\"}\n{\"Time\":\"2026-09-06T20:56:23.681054-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/pkg/sources\",\"Test\":\"TestReceiptRejectsUnboundProviderBinding\",\"Output\":\"    provider_binding_test.go:93: receipt discarded provider binding and accepted unbound evidence\\n\"}\n{\"Time\":\"2026-09-06T20:56:23.681394-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/pkg/sources\",\"Test\":\"TestReceiptRejectsUnboundProviderBinding\",\"Output\":\"--- FAIL: TestReceiptRejectsUnboundProviderBinding (0.00s)\\n\"}\n{\"Time\":\"2026-09-06T20:56:23.681406-05:00\",\"Action\":\"fail\",\"Package\":\"github.com/agentstation/starmap/pkg/sources\",\"Test\":\"TestReceiptRejectsUnboundProviderBinding\",\"Elapsed\":0}\n{\"Time\":\"2026-09-06T20:56:23.68249-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/pkg/sources\",\"Output\":\"FAIL\\n\"}\n{\"Time\":\"2026-09-06T20:56:23.684153-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/pkg/sources\",\"Output\":\"FAIL\\tgithub.com/agentstation/starmap/pkg/sources\\t0.252s\\n\"}\n{\"Time\":\"2026-09-06T20:56:23.684163-05:00\",\"Action\":\"fail\",\"Package\":\"github.com/agentstation/starmap/pkg/sources\",\"Elapsed\":0.252}\n"
+}

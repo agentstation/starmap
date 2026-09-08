@@ -1,0 +1,24 @@
+{
+  "command": [
+    "env",
+    "GOTOOLCHAIN=go1.25.12",
+    "go",
+    "test",
+    "-p",
+    "2",
+    "-json",
+    "-race",
+    "-count=1",
+    "-timeout=10m",
+    "./pkg/catalogs/storage",
+    "./runtime",
+    "./internal/cli/app",
+    "./internal/catalog/workspace",
+    "./remote",
+    "./server"
+  ],
+  "exit_code": 1,
+  "stdout": "{\"ImportPath\":\"github.com/agentstation/starmap/pkg/catalogs/storage\",\"Action\":\"build-output\",\"Output\":\"# github.com/agentstation/starmap/pkg/catalogs/storage\\n\"}\n{\"ImportPath\":\"github.com/agentstation/starmap/pkg/catalogs/storage\",\"Action\":\"build-output\",\"Output\":\"pkg/catalogs/storage/filesystem_private.go:55:3: undefined: owned\\n\"}\n{\"ImportPath\":\"github.com/agentstation/starmap/pkg/catalogs/storage\",\"Action\":\"build-output\",\"Output\":\"pkg/catalogs/storage/filesystem_private.go:55:9: undefined: record\\n\"}\n{\"ImportPath\":\"github.com/agentstation/starmap/pkg/catalogs/storage\",\"Action\":\"build-fail\"}\n{\"Time\":\"2026-09-06T14:53:11.698055-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs/storage\"}\n{\"Time\":\"2026-09-06T14:53:11.698084-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs/storage\",\"Output\":\"FAIL\\tgithub.com/agentstation/starmap/pkg/catalogs/storage [build failed]\\n\"}\n{\"Time\":\"2026-09-06T14:53:11.698093-05:00\",\"Action\":\"fail\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs/storage\",\"Elapsed\":0,\"FailedBuild\":\"github.com/agentstation/starmap/pkg/catalogs/storage\"}\n{\"Time\":\"2026-09-06T14:53:12.228171-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starmap/runtime\"}\n{\"Time\":\"2026-09-06T14:53:12.228189-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Output\":\"FAIL\\tgithub.com/agentstation/starmap/runtime [build failed]\\n\"}\n{\"Time\":\"2026-09-06T14:53:12.228194-05:00\",\"Action\":\"fail\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Elapsed\":0,\"FailedBuild\":\"github.com/agentstation/starmap/pkg/catalogs/storage\"}\n{\"Time\":\"2026-09-06T14:53:12.676246-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\"}\n{\"Time\":\"2026-09-06T14:53:12.67627-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Output\":\"FAIL\\tgithub.com/agentstation/starmap/internal/cli/app [build failed]\\n\"}\n{\"Time\":\"2026-09-06T14:53:12.676276-05:00\",\"Action\":\"fail\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Elapsed\":0,\"FailedBuild\":\"github.com/agentstation/starmap/pkg/catalogs/storage\"}\n{\"Time\":\"2026-09-06T14:53:12.676281-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starmap/internal/catalog/workspace\"}\n{\"Time\":\"2026-09-06T14:53:12.676294-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/catalog/workspace\",\"Output\":\"FAIL\\tgithub.com/agentstation/starmap/internal/catalog/workspace [build failed]\\n\"}\n{\"Time\":\"2026-09-06T14:53:12.676299-05:00\",\"Action\":\"fail\",\"Package\":\"github.com/agentstation/starmap/internal/catalog/workspace\",\"Elapsed\":0,\"FailedBuild\":\"github.com/agentstation/starmap/pkg/catalogs/storage\"}\n{\"Time\":\"2026-09-06T14:53:12.67668-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starmap/remote\"}\n{\"Time\":\"2026-09-06T14:53:12.676693-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/remote\",\"Output\":\"FAIL\\tgithub.com/agentstation/starmap/remote [build failed]\\n\"}\n{\"Time\":\"2026-09-06T14:53:12.676696-05:00\",\"Action\":\"fail\",\"Package\":\"github.com/agentstation/starmap/remote\",\"Elapsed\":0,\"FailedBuild\":\"github.com/agentstation/starmap/pkg/catalogs/storage\"}\n{\"Time\":\"2026-09-06T14:53:12.676703-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starmap/server\"}\n{\"Time\":\"2026-09-06T14:53:12.676708-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/server\",\"Output\":\"FAIL\\tgithub.com/agentstation/starmap/server [build failed]\\n\"}\n{\"Time\":\"2026-09-06T14:53:12.676711-05:00\",\"Action\":\"fail\",\"Package\":\"github.com/agentstation/starmap/server\",\"Elapsed\":0,\"FailedBuild\":\"github.com/agentstation/starmap/pkg/catalogs/storage\"}\n",
+  "stderr": "",
+  "counts": {}
+}

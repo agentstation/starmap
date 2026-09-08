@@ -1,0 +1,46 @@
+[
+  {
+    "command": [
+      "go",
+      "tool",
+      "ago",
+      "-stale-ignores",
+      "-format",
+      "json",
+      "./..."
+    ],
+    "exit_code": 0,
+    "stdout": "{\n  \"schemaVersion\": 1,\n  \"version\": \"v0.2.0\",\n  \"rules\": [\n    \"no-dot-import\",\n    \"no-generic-methods\",\n    \"no-goto\",\n    \"no-invalid-ignore\",\n    \"no-naked-return\",\n    \"no-new-expr\",\n    \"no-self-referential-constraints\"\n  ],\n  \"findings\": [],\n  \"staleIgnores\": [],\n  \"errors\": []\n}\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "golangci-lint",
+      "run",
+      "./pkg/productpaths/...",
+      "./internal/cli/app/...",
+      "./internal/cli/commands/config/..."
+    ],
+    "exit_code": 0,
+    "stdout": "0 issues.\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "env",
+      "GOTOOLCHAIN=go1.25.12",
+      "go",
+      "test",
+      "-race",
+      "-json",
+      "./internal/cli/app",
+      "-run",
+      "^Test(FileManifestReportsAccess|FilePolicies|ConfigPathsReportsPolicies|MigrationFilePolicy)",
+      "-count=1",
+      "-timeout=2m"
+    ],
+    "exit_code": 0,
+    "stdout": "{\"Time\":\"2026-09-06T11:23:46.342844-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\"}\n{\"Time\":\"2026-09-06T11:23:46.926236-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestFileManifestReportsAccessAndRetentionPolicies\"}\n{\"Time\":\"2026-09-06T11:23:46.926357-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestFileManifestReportsAccessAndRetentionPolicies\",\"Output\":\"=== RUN   TestFileManifestReportsAccessAndRetentionPolicies\\n\"}\n{\"Time\":\"2026-09-06T11:23:46.932949-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestFileManifestReportsAccessAndRetentionPolicies\",\"Output\":\"--- PASS: TestFileManifestReportsAccessAndRetentionPolicies (0.01s)\\n\"}\n{\"Time\":\"2026-09-06T11:23:46.932962-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestFileManifestReportsAccessAndRetentionPolicies\",\"Elapsed\":0.01}\n{\"Time\":\"2026-09-06T11:23:46.933179-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestConfigPathsReportsPoliciesAcrossFormats\"}\n{\"Time\":\"2026-09-06T11:23:46.933184-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestConfigPathsReportsPoliciesAcrossFormats\",\"Output\":\"=== RUN   TestConfigPathsReportsPoliciesAcrossFormats\\n\"}\n{\"Time\":\"2026-09-06T11:23:46.933187-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestConfigPathsReportsPoliciesAcrossFormats/json\"}\n{\"Time\":\"2026-09-06T11:23:46.933188-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestConfigPathsReportsPoliciesAcrossFormats/json\",\"Output\":\"=== RUN   TestConfigPathsReportsPoliciesAcrossFormats/json\\n\"}\n{\"Time\":\"2026-09-06T11:23:46.941136-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestConfigPathsReportsPoliciesAcrossFormats/json\",\"Output\":\"--- PASS: TestConfigPathsReportsPoliciesAcrossFormats/json (0.01s)\\n\"}\n{\"Time\":\"2026-09-06T11:23:46.941151-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestConfigPathsReportsPoliciesAcrossFormats/json\",\"Elapsed\":0.01}\n{\"Time\":\"2026-09-06T11:23:46.94117-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestConfigPathsReportsPoliciesAcrossFormats/yaml\"}\n{\"Time\":\"2026-09-06T11:23:46.941177-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestConfigPathsReportsPoliciesAcrossFormats/yaml\",\"Output\":\"=== RUN   TestConfigPathsReportsPoliciesAcrossFormats/yaml\\n\"}\n{\"Time\":\"2026-09-06T11:23:46.955694-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestConfigPathsReportsPoliciesAcrossFormats/yaml\",\"Output\":\"--- PASS: TestConfigPathsReportsPoliciesAcrossFormats/yaml (0.01s)\\n\"}\n{\"Time\":\"2026-09-06T11:23:46.955701-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestConfigPathsReportsPoliciesAcrossFormats/yaml\",\"Elapsed\":0.01}\n{\"Time\":\"2026-09-06T11:23:46.955745-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestConfigPathsReportsPoliciesAcrossFormats/wide\"}\n{\"Time\":\"2026-09-06T11:23:46.955749-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestConfigPathsReportsPoliciesAcrossFormats/wide\",\"Output\":\"=== RUN   TestConfigPathsReportsPoliciesAcrossFormats/wide\\n\"}\n{\"Time\":\"2026-09-06T11:23:46.964707-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestConfigPathsReportsPoliciesAcrossFormats/wide\",\"Output\":\"--- PASS: TestConfigPathsReportsPoliciesAcrossFormats/wide (0.01s)\\n\"}\n{\"Time\":\"2026-09-06T11:23:46.964733-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestConfigPathsReportsPoliciesAcrossFormats/wide\",\"Elapsed\":0.01}\n{\"Time\":\"2026-09-06T11:23:46.964769-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestConfigPathsReportsPoliciesAcrossFormats\",\"Output\":\"--- PASS: TestConfigPathsReportsPoliciesAcrossFormats (0.03s)\\n\"}\n{\"Time\":\"2026-09-06T11:23:46.964783-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestConfigPathsReportsPoliciesAcrossFormats\",\"Elapsed\":0.03}\n{\"Time\":\"2026-09-06T11:23:46.964846-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestFilePoliciesCoverExternalInputsAndRejectUnknownRoles\"}\n{\"Time\":\"2026-09-06T11:23:46.964849-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestFilePoliciesCoverExternalInputsAndRejectUnknownRoles\",\"Output\":\"=== RUN   TestFilePoliciesCoverExternalInputsAndRejectUnknownRoles\\n\"}\n{\"Time\":\"2026-09-06T11:23:46.966335-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestFilePoliciesCoverExternalInputsAndRejectUnknownRoles\",\"Output\":\"--- PASS: TestFilePoliciesCoverExternalInputsAndRejectUnknownRoles (0.00s)\\n\"}\n{\"Time\":\"2026-09-06T11:23:46.96634-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestFilePoliciesCoverExternalInputsAndRejectUnknownRoles\",\"Elapsed\":0}\n{\"Time\":\"2026-09-06T11:23:46.966357-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestMigrationFilePolicyNamesExistingFlags\"}\n{\"Time\":\"2026-09-06T11:23:46.966367-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestMigrationFilePolicyNamesExistingFlags\",\"Output\":\"=== RUN   TestMigrationFilePolicyNamesExistingFlags\\n\"}\n{\"Time\":\"2026-09-06T11:23:46.967537-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestMigrationFilePolicyNamesExistingFlags\",\"Output\":\"--- PASS: TestMigrationFilePolicyNamesExistingFlags (0.00s)\\n\"}\n{\"Time\":\"2026-09-06T11:23:46.96755-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestMigrationFilePolicyNamesExistingFlags\",\"Elapsed\":0}\n{\"Time\":\"2026-09-06T11:23:46.967773-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Output\":\"PASS\\n\"}\n{\"Time\":\"2026-09-06T11:23:47.97475-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Output\":\"ok  \\tgithub.com/agentstation/starmap/internal/cli/app\\t1.630s\\n\"}\n{\"Time\":\"2026-09-06T11:23:47.9748-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Elapsed\":1.63}\n",
+    "stderr": ""
+  }
+]

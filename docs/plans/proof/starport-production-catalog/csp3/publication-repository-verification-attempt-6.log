@@ -1,0 +1,1251 @@
+
+==> go test ./...
+ok  	github.com/agentstation/starmap	90.687s
+ok  	github.com/agentstation/starmap/acquisition	39.993s
+?   	github.com/agentstation/starmap/cmd/starmap	[no test files]
+ok  	github.com/agentstation/starmap/cmd/starmap-bootstrap-manifest	24.078s
+ok  	github.com/agentstation/starmap/cmd/starmap-catalog-release	1.707s
+ok  	github.com/agentstation/starmap/cmd/starmap-embedded-budget	(cached)
+ok  	github.com/agentstation/starmap/cmd/starmap-modelsdev-promote	0.655s
+ok  	github.com/agentstation/starmap/internal/architecture	(cached)
+ok  	github.com/agentstation/starmap/internal/attestation	(cached)
+ok  	github.com/agentstation/starmap/internal/auth	0.579s
+ok  	github.com/agentstation/starmap/internal/bootstrap	42.174s
+ok  	github.com/agentstation/starmap/internal/bootstrap/budget	(cached)
+ok  	github.com/agentstation/starmap/internal/bootstrap/manifest	(cached)
+ok  	github.com/agentstation/starmap/internal/catalog/pipeline	3.586s
+ok  	github.com/agentstation/starmap/internal/catalog/query	(cached)
+ok  	github.com/agentstation/starmap/internal/catalog/reconciler	0.858s
+ok  	github.com/agentstation/starmap/internal/catalog/settings	3.844s
+ok  	github.com/agentstation/starmap/internal/catalog/workspace	20.953s
+ok  	github.com/agentstation/starmap/internal/ciworkflow	1.274s
+?   	github.com/agentstation/starmap/internal/cli/alerts	[no test files]
+ok  	github.com/agentstation/starmap/internal/cli/app	31.589s
+?   	github.com/agentstation/starmap/internal/cli/commands/auth	[no test files]
+?   	github.com/agentstation/starmap/internal/cli/commands/authors	[no test files]
+?   	github.com/agentstation/starmap/internal/cli/commands/completion	[no test files]
+ok  	github.com/agentstation/starmap/internal/cli/commands/config	(cached)
+ok  	github.com/agentstation/starmap/internal/cli/commands/deps	(cached)
+ok  	github.com/agentstation/starmap/internal/cli/commands/embed	(cached)
+ok  	github.com/agentstation/starmap/internal/cli/commands/migrate	(cached)
+ok  	github.com/agentstation/starmap/internal/cli/commands/models	(cached)
+ok  	github.com/agentstation/starmap/internal/cli/commands/providers	(cached)
+ok  	github.com/agentstation/starmap/internal/cli/commands/serve	(cached)
+ok  	github.com/agentstation/starmap/internal/cli/commands/update	0.325s
+ok  	github.com/agentstation/starmap/internal/cli/commands/validate	(cached)
+?   	github.com/agentstation/starmap/internal/cli/completion	[no test files]
+?   	github.com/agentstation/starmap/internal/cli/constants	[no test files]
+ok  	github.com/agentstation/starmap/internal/cli/convert	(cached)
+ok  	github.com/agentstation/starmap/internal/cli/embed	(cached)
+?   	github.com/agentstation/starmap/internal/cli/emoji	[no test files]
+?   	github.com/agentstation/starmap/internal/cli/filter	[no test files]
+?   	github.com/agentstation/starmap/internal/cli/format	[no test files]
+?   	github.com/agentstation/starmap/internal/cli/globals	[no test files]
+ok  	github.com/agentstation/starmap/internal/cli/hints	(cached)
+?   	github.com/agentstation/starmap/internal/cli/notify	[no test files]
+?   	github.com/agentstation/starmap/internal/cli/provider	[no test files]
+ok  	github.com/agentstation/starmap/internal/cli/table	(cached)
+?   	github.com/agentstation/starmap/internal/constants	[no test files]
+ok  	github.com/agentstation/starmap/internal/deploymentdocs	(cached)
+?   	github.com/agentstation/starmap/internal/deps	[no test files]
+ok  	github.com/agentstation/starmap/internal/embedded	(cached)
+?   	github.com/agentstation/starmap/internal/embedded/openapi	[no test files]
+ok  	github.com/agentstation/starmap/internal/filepublish	1.033s
+ok  	github.com/agentstation/starmap/internal/fleet	(cached)
+ok  	github.com/agentstation/starmap/internal/privatefiles	1.633s
+ok  	github.com/agentstation/starmap/internal/providers/anthropic	2.655s
+ok  	github.com/agentstation/starmap/internal/providers/clients	(cached)
+ok  	github.com/agentstation/starmap/internal/providers/google	(cached)
+ok  	github.com/agentstation/starmap/internal/providers/openai	(cached)
+ok  	github.com/agentstation/starmap/internal/runtimeacl/windows	(cached)
+ok  	github.com/agentstation/starmap/internal/server	42.703s
+ok  	github.com/agentstation/starmap/internal/server/cache	(cached)
+ok  	github.com/agentstation/starmap/internal/server/handlers	(cached)
+ok  	github.com/agentstation/starmap/internal/server/middleware	(cached)
+ok  	github.com/agentstation/starmap/internal/server/openrouter	(cached)
+ok  	github.com/agentstation/starmap/internal/server/operations	(cached)
+ok  	github.com/agentstation/starmap/internal/server/params	(cached)
+ok  	github.com/agentstation/starmap/internal/server/response	(cached)
+ok  	github.com/agentstation/starmap/internal/server/sse	(cached)
+ok  	github.com/agentstation/starmap/internal/sources/embedded	(cached)
+ok  	github.com/agentstation/starmap/internal/sources/github	1.108s
+ok  	github.com/agentstation/starmap/internal/sources/local	0.553s
+ok  	github.com/agentstation/starmap/internal/sources/modelsdev	13.949s
+ok  	github.com/agentstation/starmap/internal/sources/providers	(cached)
+?   	github.com/agentstation/starmap/internal/test/catalog	[no test files]
+?   	github.com/agentstation/starmap/internal/test/channel	[no test files]
+?   	github.com/agentstation/starmap/internal/test/logging	[no test files]
+ok  	github.com/agentstation/starmap/internal/test/providerfixture	0.805s
+ok  	github.com/agentstation/starmap/internal/transport	(cached)
+ok  	github.com/agentstation/starmap/pkg/catalogs	26.611s
+ok  	github.com/agentstation/starmap/pkg/catalogs/artifact	0.524s
+ok  	github.com/agentstation/starmap/pkg/catalogs/authority	(cached)
+ok  	github.com/agentstation/starmap/pkg/catalogs/config	4.076s
+ok  	github.com/agentstation/starmap/pkg/catalogs/evidence	(cached)
+?   	github.com/agentstation/starmap/pkg/catalogs/internal/resourcepolicy	[no test files]
+ok  	github.com/agentstation/starmap/pkg/catalogs/projection	(cached)
+ok  	github.com/agentstation/starmap/pkg/catalogs/remote	(cached)
+ok  	github.com/agentstation/starmap/pkg/catalogs/storage	3.547s
+ok  	github.com/agentstation/starmap/pkg/catalogs/storage/s3	(cached)
+ok  	github.com/agentstation/starmap/pkg/differ	(cached)
+ok  	github.com/agentstation/starmap/pkg/errors	(cached)
+ok  	github.com/agentstation/starmap/pkg/logging	0.414s
+ok  	github.com/agentstation/starmap/pkg/productpaths	0.191s
+ok  	github.com/agentstation/starmap/pkg/productpaths/policy	(cached)
+ok  	github.com/agentstation/starmap/pkg/provenance	0.180s
+ok  	github.com/agentstation/starmap/pkg/sources	(cached)
+ok  	github.com/agentstation/starmap/pkg/sources/payload	(cached)
+ok  	github.com/agentstation/starmap/pkg/sync	0.197s
+ok  	github.com/agentstation/starmap/remote	4.973s
+ok  	github.com/agentstation/starmap/runtime	83.271s
+?   	github.com/agentstation/starmap/runtime/source	[no test files]
+?   	github.com/agentstation/starmap/runtime/status	[no test files]
+ok  	github.com/agentstation/starmap/server	6.863s
+
+==> make test-pure-go
+ok  	github.com/agentstation/starmap-test/read-only-consumer	(cached)
+ok  	github.com/agentstation/starmap-test/store-only-consumer	(cached)
+ok  	github.com/agentstation/starmap-test/pinned-artifact-consumer	(cached)
+ok  	github.com/agentstation/starmap-test/server-embed-consumer	(cached)
+ok  	github.com/agentstation/starmap-test/remote-subscriber-consumer	(cached)
+ok  	github.com/agentstation/starmap-test/server-storage-consumer	4.912s
+read-only consumer dependency closure: 37/37 non-standard packages (161 total on this platform); forbidden families absent
+store-only consumer: caller-owned adapter contract and publication passed; application/database implementations absent
+pinned-artifact consumer: 38/38 non-standard packages; offline verified activation passed; online/acquisition families absent
+server-embed consumer dependency closure: 254/260 packages; acquisition families absent
+server-embed consumer: external compile and lifecycle test passed
+remote-subscriber consumer dependency closure: 237/240 packages; forbidden families absent
+remote-subscriber consumer: external compile and reactive lifecycle test passed
+server-storage consumer dependency closure: 348/350 packages; filesystem/S3 server and reactive restart matrix passed
+ok  	github.com/agentstation/starmap/pkg/catalogs/storage/s3	(cached)
+starmap dev
+pure-Go verification passed: library, pinned artifact, stores including S3, server, remote, and CLI execute with CGO_ENABLED=0
+
+==> make test-file-sizes
+1423	internal/catalog/reconciler/merger_test.go
+1071	internal/providers/openai/client_test.go
+1040	remote/subscriber_test.go
+Go file-size verification passed: review >1000, justify >1500, fail >=2000 lines
+
+==> ./scripts/verify-package-layout.sh
+ok  	github.com/agentstation/starmap/internal/architecture	0.195s
+package-layout verification passed
+
+==> ./scripts/test-package-layout-verifier.sh
+package-layout verifier regression tests passed
+
+==> ./scripts/verify-catalog-package-ownership.sh
+CPO-V01 PASS: the five approved catalog child packages exist
+CPO-V02 PASS: the four removed package trees are absent
+CPO-V03 PASS: catalogs owns Generation copy and validation
+CPO-V04 PASS: catalogs owns all canonical payload codecs
+CPO-V05 PASS: evidence is a standard-library-only leaf
+CPO-V06 PASS: projection is a standard-library-only leaf without aliases
+CPO-V07 PASS: storage accepts catalog generations and retains adapters
+CPO-V08 PASS: artifact is storage-independent and retains its byte test
+CPO-V09 PASS: remote is storage-independent and retains protocol tests
+CPO-V10 PASS: all six external consumer modules compile
+CPO-V11 PASS: current docs and the migration guide use approved paths
+CPO-V12 PASS: current authority passes the historical allowlist scan
+CPO-V13 PASS: the package graph resolves without a dependency change
+Summary: 13 passed, 0 failed
+
+==> ./scripts/test-catalog-package-ownership-verifier.sh
+catalog package ownership verifier regression tests passed
+
+==> ./scripts/verify-catalog-dependency-direction.sh
+SM-D01 PASS: catalogs does not import private authority policy
+SM-D02 PASS: catalogs does not import repository-wide constants
+SM-D03 PASS: catalogs does not import the private embedded filesystem
+SM-D04 PASS: catalogs does not import private source payload policy
+SM-D05 PASS: catalog artifacts do not import repository-wide constants
+SM-D06 PASS: catalog remote transport does not import repository-wide constants
+SM-D07 PASS: catalog storage does not import repository-wide constants
+SM-D08 PASS: catalog S3 storage does not import repository-wide constants
+Summary: 8 passed, 0 failed
+
+==> ./scripts/test-catalog-dependency-direction-verifier.sh
+catalog dependency direction verifier tests passed
+
+==> python3 ./scripts/test_catalog_product_verify.py
+test_baseline_cannot_claim_release_qualification (__main__.CatalogVerifierTests.test_baseline_cannot_claim_release_qualification) ... ok
+test_baseline_keeps_negative_paired_differences (__main__.CatalogVerifierTests.test_baseline_keeps_negative_paired_differences) ... ok
+test_baseline_refuses_lost_stream_events_and_wrong_milestones (__main__.CatalogVerifierTests.test_baseline_refuses_lost_stream_events_and_wrong_milestones) ... ok
+test_baseline_refuses_missing_variant_or_initial_evidence (__main__.CatalogVerifierTests.test_baseline_refuses_missing_variant_or_initial_evidence) ... ok
+test_baseline_refuses_partial_or_fabricated_timing (__main__.CatalogVerifierTests.test_baseline_refuses_partial_or_fabricated_timing) ... ok
+test_browser_review_requires_current_inputs_and_captures (__main__.CatalogVerifierTests.test_browser_review_requires_current_inputs_and_captures) ... ok
+test_combined_check_needs_every_result (__main__.CatalogVerifierTests.test_combined_check_needs_every_result) ... ok
+test_command_failure_cannot_pass (__main__.CatalogVerifierTests.test_command_failure_cannot_pass) ... ok
+test_complete_red_report (__main__.CatalogVerifierTests.test_complete_red_report) ... ok
+test_duplicate_subcase_refuses (__main__.CatalogVerifierTests.test_duplicate_subcase_refuses) ... ok
+test_empty_task_cannot_pass (__main__.CatalogVerifierTests.test_empty_task_cannot_pass) ... ok
+test_evidence_paths_cannot_escape_repository (__main__.CatalogVerifierTests.test_evidence_paths_cannot_escape_repository) ... ok
+test_final_roster_cannot_omit_a_case (__main__.CatalogVerifierTests.test_final_roster_cannot_omit_a_case) ... ok
+test_fresh_baseline_adapter_cannot_pass_skipped_test (__main__.CatalogVerifierTests.test_fresh_baseline_adapter_cannot_pass_skipped_test) ... ok
+test_missing_candidate_local_check_refuses (__main__.CatalogVerifierTests.test_missing_candidate_local_check_refuses) ... ok
+test_missing_primary_refuses (__main__.CatalogVerifierTests.test_missing_primary_refuses) ... ok
+test_missing_registration_is_unverified (__main__.CatalogVerifierTests.test_missing_registration_is_unverified) ... ok
+test_numeric_profile_cannot_hide_workload_or_uncertainty (__main__.CatalogVerifierTests.test_numeric_profile_cannot_hide_workload_or_uncertainty) ... ok
+test_numeric_profile_cannot_relax_correctness_for_latency (__main__.CatalogVerifierTests.test_numeric_profile_cannot_relax_correctness_for_latency) ... ok
+test_numeric_profile_is_complete_but_unqualified (__main__.CatalogVerifierTests.test_numeric_profile_is_complete_but_unqualified) ... ok
+test_numeric_profile_refuses_contradictory_resources (__main__.CatalogVerifierTests.test_numeric_profile_refuses_contradictory_resources) ... ok
+test_numeric_profile_refuses_invalid_limits (__main__.CatalogVerifierTests.test_numeric_profile_refuses_invalid_limits) ... ok
+test_partial_parent_never_passes (__main__.CatalogVerifierTests.test_partial_parent_never_passes) ... ok
+test_performance_review_requires_current_targets_and_retained_evidence (__main__.CatalogVerifierTests.test_performance_review_requires_current_targets_and_retained_evidence) ... ok
+test_qualification_cannot_use_component_passes (__main__.CatalogVerifierTests.test_qualification_cannot_use_component_passes) ... ok
+test_real_go_missing_match_is_unverified (__main__.CatalogVerifierTests.test_real_go_missing_match_is_unverified) ... ok
+test_real_named_go_test_executes (__main__.CatalogVerifierTests.test_real_named_go_test_executes) ... ok
+test_retained_full_http_baseline_satisfies_measurement_contract (__main__.CatalogVerifierTests.test_retained_full_http_baseline_satisfies_measurement_contract) ... ok
+test_skipped_child_cannot_pass_parent (__main__.CatalogVerifierTests.test_skipped_child_cannot_pass_parent) ... ok
+test_unknown_case_refuses (__main__.CatalogVerifierTests.test_unknown_case_refuses) ... ok
+
+----------------------------------------------------------------------
+Ran 30 tests in 3.482s
+
+OK
+
+==> env CGO_ENABLED=1 go test ./... -race -short -timeout=20m
+ok  	github.com/agentstation/starmap	391.261s
+ok  	github.com/agentstation/starmap/acquisition	263.767s
+?   	github.com/agentstation/starmap/cmd/starmap	[no test files]
+ok  	github.com/agentstation/starmap/cmd/starmap-bootstrap-manifest	152.473s
+ok  	github.com/agentstation/starmap/cmd/starmap-catalog-release	2.916s
+ok  	github.com/agentstation/starmap/cmd/starmap-embedded-budget	(cached)
+ok  	github.com/agentstation/starmap/cmd/starmap-modelsdev-promote	6.072s
+ok  	github.com/agentstation/starmap/internal/architecture	(cached)
+ok  	github.com/agentstation/starmap/internal/attestation	(cached)
+ok  	github.com/agentstation/starmap/internal/auth	1.828s
+ok  	github.com/agentstation/starmap/internal/bootstrap	273.344s
+ok  	github.com/agentstation/starmap/internal/bootstrap/budget	(cached)
+ok  	github.com/agentstation/starmap/internal/bootstrap/manifest	(cached)
+ok  	github.com/agentstation/starmap/internal/catalog/pipeline	18.933s
+ok  	github.com/agentstation/starmap/internal/catalog/query	(cached)
+ok  	github.com/agentstation/starmap/internal/catalog/reconciler	2.125s
+ok  	github.com/agentstation/starmap/internal/catalog/settings	23.593s
+ok  	github.com/agentstation/starmap/internal/catalog/workspace	33.317s
+ok  	github.com/agentstation/starmap/internal/ciworkflow	1.783s
+?   	github.com/agentstation/starmap/internal/cli/alerts	[no test files]
+ok  	github.com/agentstation/starmap/internal/cli/app	168.401s
+?   	github.com/agentstation/starmap/internal/cli/commands/auth	[no test files]
+?   	github.com/agentstation/starmap/internal/cli/commands/authors	[no test files]
+?   	github.com/agentstation/starmap/internal/cli/commands/completion	[no test files]
+ok  	github.com/agentstation/starmap/internal/cli/commands/config	(cached)
+ok  	github.com/agentstation/starmap/internal/cli/commands/deps	(cached)
+ok  	github.com/agentstation/starmap/internal/cli/commands/embed	(cached)
+ok  	github.com/agentstation/starmap/internal/cli/commands/migrate	(cached)
+ok  	github.com/agentstation/starmap/internal/cli/commands/models	(cached)
+ok  	github.com/agentstation/starmap/internal/cli/commands/providers	(cached)
+ok  	github.com/agentstation/starmap/internal/cli/commands/serve	2.592s
+ok  	github.com/agentstation/starmap/internal/cli/commands/update	1.898s
+ok  	github.com/agentstation/starmap/internal/cli/commands/validate	(cached)
+?   	github.com/agentstation/starmap/internal/cli/completion	[no test files]
+?   	github.com/agentstation/starmap/internal/cli/constants	[no test files]
+ok  	github.com/agentstation/starmap/internal/cli/convert	(cached)
+ok  	github.com/agentstation/starmap/internal/cli/embed	(cached)
+?   	github.com/agentstation/starmap/internal/cli/emoji	[no test files]
+?   	github.com/agentstation/starmap/internal/cli/filter	[no test files]
+?   	github.com/agentstation/starmap/internal/cli/format	[no test files]
+?   	github.com/agentstation/starmap/internal/cli/globals	[no test files]
+ok  	github.com/agentstation/starmap/internal/cli/hints	(cached)
+?   	github.com/agentstation/starmap/internal/cli/notify	[no test files]
+?   	github.com/agentstation/starmap/internal/cli/provider	[no test files]
+ok  	github.com/agentstation/starmap/internal/cli/table	(cached)
+?   	github.com/agentstation/starmap/internal/constants	[no test files]
+ok  	github.com/agentstation/starmap/internal/deploymentdocs	(cached)
+?   	github.com/agentstation/starmap/internal/deps	[no test files]
+ok  	github.com/agentstation/starmap/internal/embedded	(cached)
+?   	github.com/agentstation/starmap/internal/embedded/openapi	[no test files]
+ok  	github.com/agentstation/starmap/internal/filepublish	2.113s
+ok  	github.com/agentstation/starmap/internal/fleet	(cached)
+ok  	github.com/agentstation/starmap/internal/privatefiles	2.206s
+ok  	github.com/agentstation/starmap/internal/providers/anthropic	17.560s
+ok  	github.com/agentstation/starmap/internal/providers/clients	(cached)
+ok  	github.com/agentstation/starmap/internal/providers/google	(cached)
+ok  	github.com/agentstation/starmap/internal/providers/openai	(cached)
+ok  	github.com/agentstation/starmap/internal/runtimeacl/windows	(cached)
+ok  	github.com/agentstation/starmap/internal/server	161.307s
+ok  	github.com/agentstation/starmap/internal/server/cache	(cached)
+ok  	github.com/agentstation/starmap/internal/server/handlers	(cached)
+ok  	github.com/agentstation/starmap/internal/server/middleware	(cached)
+ok  	github.com/agentstation/starmap/internal/server/openrouter	(cached)
+ok  	github.com/agentstation/starmap/internal/server/operations	(cached)
+ok  	github.com/agentstation/starmap/internal/server/params	(cached)
+ok  	github.com/agentstation/starmap/internal/server/response	(cached)
+ok  	github.com/agentstation/starmap/internal/server/sse	(cached)
+ok  	github.com/agentstation/starmap/internal/sources/embedded	(cached)
+ok  	github.com/agentstation/starmap/internal/sources/github	2.310s
+ok  	github.com/agentstation/starmap/internal/sources/local	1.289s
+ok  	github.com/agentstation/starmap/internal/sources/modelsdev	122.519s
+ok  	github.com/agentstation/starmap/internal/sources/providers	(cached)
+?   	github.com/agentstation/starmap/internal/test/catalog	[no test files]
+?   	github.com/agentstation/starmap/internal/test/channel	[no test files]
+?   	github.com/agentstation/starmap/internal/test/logging	[no test files]
+ok  	github.com/agentstation/starmap/internal/test/providerfixture	1.401s
+ok  	github.com/agentstation/starmap/internal/transport	(cached)
+ok  	github.com/agentstation/starmap/pkg/catalogs	100.805s
+ok  	github.com/agentstation/starmap/pkg/catalogs/artifact	1.389s
+ok  	github.com/agentstation/starmap/pkg/catalogs/authority	(cached)
+ok  	github.com/agentstation/starmap/pkg/catalogs/config	21.038s
+ok  	github.com/agentstation/starmap/pkg/catalogs/evidence	(cached)
+?   	github.com/agentstation/starmap/pkg/catalogs/internal/resourcepolicy	[no test files]
+ok  	github.com/agentstation/starmap/pkg/catalogs/projection	(cached)
+ok  	github.com/agentstation/starmap/pkg/catalogs/remote	(cached)
+ok  	github.com/agentstation/starmap/pkg/catalogs/storage	5.556s
+ok  	github.com/agentstation/starmap/pkg/catalogs/storage/s3	(cached)
+ok  	github.com/agentstation/starmap/pkg/differ	(cached)
+ok  	github.com/agentstation/starmap/pkg/errors	(cached)
+ok  	github.com/agentstation/starmap/pkg/logging	1.210s
+ok  	github.com/agentstation/starmap/pkg/productpaths	1.300s
+ok  	github.com/agentstation/starmap/pkg/productpaths/policy	(cached)
+ok  	github.com/agentstation/starmap/pkg/provenance	1.279s
+ok  	github.com/agentstation/starmap/pkg/sources	(cached)
+ok  	github.com/agentstation/starmap/pkg/sources/payload	(cached)
+ok  	github.com/agentstation/starmap/pkg/sync	1.320s
+ok  	github.com/agentstation/starmap/remote	32.264s
+ok  	github.com/agentstation/starmap/runtime	365.979s
+?   	github.com/agentstation/starmap/runtime/source	[no test files]
+?   	github.com/agentstation/starmap/runtime/status	[no test files]
+ok  	github.com/agentstation/starmap/server	32.775s
+
+==> go vet ./...
+
+==> ./scripts/verify-catalog-performance.sh
+goos: darwin
+goarch: arm64
+pkg: github.com/agentstation/starmap
+cpu: Apple M2 Max
+BenchmarkClientCatalog-12    	146448508	         8.446 ns/op	       0 B/op	       0 allocs/op
+BenchmarkClientCatalog-12    	127945040	         9.247 ns/op	       0 B/op	       0 allocs/op
+BenchmarkClientCatalog-12    	130273809	         9.338 ns/op	       0 B/op	       0 allocs/op
+PASS
+ok  	github.com/agentstation/starmap	5.373s
+catalog performance gate passed: <= 10000 ns/op, 0 B/op, 0 allocs/op across 3 runs
+
+==> ./scripts/verify-container-smoke.sh
+Building the server binary for linux/amd64.
+Building the smoke image on the release base.
+Starting the server with a read-only root filesystem.
+Reading the health endpoint.
+PASS the image serves with a read-only root and a writable state volume.
+
+==> devbox run golangci-lint run
+Info: New devbox available: 0.16.0 -> v0.18.0. Please run `devbox version update`.
+Info: Running script "golangci-lint" on /Users/jack/src/github.com/agentstation/starmap-catalog-requirements
+📦 Starmap development environment loaded
+Tools available: go, gomarkdoc, swag (v2 via flake), golangci-lint
+0 issues.
+
+==> go tool ago -stale-ignores ./...
+
+==> coverage ./internal/catalog/pipeline >= 70%
+ok  	github.com/agentstation/starmap/internal/catalog/pipeline	1.768s	coverage: 82.9% of statements
+
+==> coverage ./internal/catalog/query >= 75%
+ok  	github.com/agentstation/starmap/internal/catalog/query	(cached)	coverage: 77.7% of statements
+
+==> coverage ./internal/providers/clients >= 80%
+ok  	github.com/agentstation/starmap/internal/providers/clients	(cached)	coverage: 81.0% of statements
+
+==> coverage ./internal/sources/providers >= 75%
+ok  	github.com/agentstation/starmap/internal/sources/providers	(cached)	coverage: 85.8% of statements
+
+==> coverage ./internal/server/middleware >= 90%
+ok  	github.com/agentstation/starmap/internal/server/middleware	(cached)	coverage: 96.6% of statements
+
+==> coverage ./internal/server/openrouter >= 85%
+ok  	github.com/agentstation/starmap/internal/server/openrouter	(cached)	coverage: 88.8% of statements
+
+==> coverage ./internal/server/params >= 95%
+ok  	github.com/agentstation/starmap/internal/server/params	(cached)	coverage: 98.5% of statements
+
+==> coverage ./internal/server/response >= 95%
+ok  	github.com/agentstation/starmap/internal/server/response	(cached)	coverage: 96.6% of statements
+
+==> coverage ./internal/server/sse >= 90%
+ok  	github.com/agentstation/starmap/internal/server/sse	(cached)	coverage: 92.4% of statements
+
+==> coverage ./internal/transport >= 40%
+ok  	github.com/agentstation/starmap/internal/transport	(cached)	coverage: 89.0% of statements
+
+==> coverage ./pkg/catalogs/authority >= 90%
+ok  	github.com/agentstation/starmap/pkg/catalogs/authority	(cached)	coverage: 95.6% of statements
+
+==> coverage ./pkg/catalogs >= 55%
+ok  	github.com/agentstation/starmap/pkg/catalogs	19.559s	coverage: 75.6% of statements
+
+==> coverage ./pkg/errors >= 80%
+ok  	github.com/agentstation/starmap/pkg/errors	(cached)	coverage: 88.3% of statements
+
+==> coverage ./internal/catalog/reconciler >= 75%
+ok  	github.com/agentstation/starmap/internal/catalog/reconciler	0.236s	coverage: 83.2% of statements
+
+==> coverage ./pkg/sources >= 35%
+ok  	github.com/agentstation/starmap/pkg/sources	(cached)	coverage: 67.0% of statements
+
+==> make docs-check
+[0;34mChecking if documentation is up to date...[0m 
+Checking ./pkg/catalogs...
+Checking ./pkg/catalogs/evidence...
+Checking ./pkg/catalogs/storage...
+Checking ./pkg/catalogs/storage/s3...
+Checking ./pkg/catalogs/artifact...
+Checking ./pkg/catalogs/authority...
+Checking ./pkg/catalogs/projection...
+Checking ./pkg/catalogs/remote...
+Checking ./pkg/sources...
+Checking ./pkg/sources/payload...
+Checking ./pkg/errors...
+Checking ./pkg/logging...
+Checking ./internal/transport...
+Checking ./internal/providers/clients...
+Checking ./internal/catalog/reconciler...
+Checking ./internal/server...
+Checking ./internal/server/middleware...
+Checking ./internal/server/sse...
+Checking ./internal/server/response...
+Checking ./internal/server/cache...
+Checking ./internal/server/params...
+Checking ./internal/server/handlers...
+Checking ./internal/cli/convert...
+Checking ./internal/sources/providers...
+Checking ./internal/sources/local...
+Checking ./internal/sources/modelsdev...
+Checking ./internal/embedded...
+Checking ./internal/embedded/openapi...
+Checking ./server...
+Checking ./remote...
+Checking ./runtime...
+Checking ./runtime/source...
+Checking ./runtime/status...
+[0;32mAll documentation is up to date[0m 
+
+==> make technical-writing-check
+/Users/jack/.agents/skills/technical-writing/scripts/technical-writing glossary check
+PASS: /Users/jack/src/github.com/agentstation/starmap-catalog-requirements/GLOSSARY.md (80 term(s), 0 error(s))
+/Users/jack/.agents/skills/technical-writing/scripts/technical-writing glossary update --check
+PASS: no candidate terms are missing from /Users/jack/src/github.com/agentstation/starmap-catalog-requirements/GLOSSARY.md
+/Users/jack/.agents/skills/technical-writing/scripts/technical-writing lint . --mode strict --format text
+PASS: 1048 file(s), 0 diagnostic(s)
+
+==> git diff --check
+
+==> go build -o /private/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-verify.PE9YGt/starmap ./cmd/starmap
+
+==> run_cli version
+starmap dev
+
+==> run_cli validate catalog
+Validating catalog components...
+
+Validating providers.yaml...   ✓ Validated provider: Alibaba Cloud Model Studio
+  ✓ Validated provider: Anthropic
+  ✓ Validated provider: Azure OpenAI
+  ✓ Validated provider: Cerebras
+  ✓ Validated provider: Cohere
+  ✓ Validated provider: DeepInfra
+  ✓ Validated provider: DeepSeek
+  ✓ Validated provider: Fireworks AI
+  ✓ Validated provider: Google AI Studio
+  ✓ Validated provider: Google Vertex AI
+  ✓ Validated provider: Groq
+  ✓ Validated provider: Hetzner
+  ✓ Validated provider: Mistral AI
+  ✓ Validated provider: Moonshot AI
+  ✓ Validated provider: Ollama
+  ✓ Validated provider: OpenAI
+  ✓ Validated provider: Voyage AI
+✓ Validated 17 providers successfully
+✓ Success
+Validating authors.yaml...   ✓ Validated author: 01.AI
+  ✓ Validated author: Adept
+  ✓ Validated author: AI21 Labs
+  ✓ Validated author: Alibaba Cloud
+  ✓ Validated author: Alignment Research Center
+  ✓ Validated author: Amazon
+  ✓ Validated author: Anthropic
+  ✓ Validated author: Anysphere
+  ✓ Validated author: Apple
+  ✓ Validated author: Beijing Academy of Artificial Intelligence
+  ✓ Validated author: Baichuan Intelligence
+  ✓ Validated author: Baidu
+  ✓ Validated author: BigScience
+  ✓ Validated author: Black Forest Labs
+  ✓ Validated author: Boson AI
+  ✓ Validated author: Bria
+  ✓ Validated author: ByteDance
+  ✓ Validated author: California Institute of Technology
+  ✓ Validated author: University of Cambridge
+  ✓ Validated author: Canopy Labs
+  ✓ Validated author: Character.AI
+  ✓ Validated author: Carnegie Mellon University
+  ✓ Validated author: CodeFuse-AI
+  ✓ Validated author: Cognitive Computations
+  ✓ Validated author: Cohere
+  ✓ Validated author: Cornell University
+  ✓ Validated author: Cursor
+  ✓ Validated author: Google DeepMind
+  ✓ Validated author: DeepReinforce
+  ✓ Validated author: DeepSeek
+  ✓ Validated author: Duke University
+  ✓ Validated author: Eric Hartford
+  ✓ Validated author: EleutherAI
+  ✓ Validated author: ETH Zurich
+  ✓ Validated author: FastChat Team
+  ✓ Validated author: FastVideo
+  ✓ Validated author: Georgia Tech Research Institute
+  ✓ Validated author: Google
+  ✓ Validated author: Groq
+  ✓ Validated author: Gryphe
+  ✓ Validated author: H2O.ai
+  ✓ Validated author: Harvard University
+  ✓ Validated author: Hexgrad
+  ✓ Validated author: Huawei
+  ✓ Validated author: Hugging Face
+  ✓ Validated author: IBM
+  ✓ Validated author: Inflection AI
+  ✓ Validated author: Intfloat
+  ✓ Validated author: Inworld AI
+  ✓ Validated author: jondurbin
+  ✓ Validated author: LAION
+  ✓ Validated author: Lightricks
+  ✓ Validated author: LMSYS Org
+  ✓ Validated author: Meta
+  ✓ Validated author: Microsoft
+  ✓ Validated author: Midjourney
+  ✓ Validated author: MiniMax
+  ✓ Validated author: Mistral AI
+  ✓ Validated author: MIT
+  ✓ Validated author: Moonshot AI
+  ✓ Validated author: MosaicML
+  ✓ Validated author: Moxin
+  ✓ Validated author: Nous Research
+  ✓ Validated author: NVIDIA
+  ✓ Validated author: Open-Orca
+  ✓ Validated author: OpenAI
+  ✓ Validated author: University of Oxford
+  ✓ Validated author: Peking University
+  ✓ Validated author: Perplexity AI
+  ✓ Validated author: Phind
+  ✓ Validated author: PixVerse
+  ✓ Validated author: PlayAI
+  ✓ Validated author: Princeton University
+  ✓ Validated author: Pruna AI
+  ✓ Validated author: Qwen Team
+  ✓ Validated author: Resemble AI
+  ✓ Validated author: Runway ML
+  ✓ Validated author: Salesforce
+  ✓ Validated author: Sao10K
+  ✓ Validated author: SDAIA
+  ✓ Validated author: SenseTime
+  ✓ Validated author: Sentence Transformers
+  ✓ Validated author: Sesame
+  ✓ Validated author: Shanghai AI Laboratory
+  ✓ Validated author: Shibing624
+  ✓ Validated author: Stability AI
+  ✓ Validated author: Stanford University
+  ✓ Validated author: Stanford Alpaca
+  ✓ Validated author: StepFun
+  ✓ Validated author: teknium
+  ✓ Validated author: Tencent
+  ✓ Validated author: The NLPER
+  ✓ Validated author: THUDM
+  ✓ Validated author: Together AI
+  ✓ Validated author: Tsinghua University
+  ✓ Validated author: UC Berkeley
+  ✓ Validated author: University of Chicago
+  ✓ Validated author: University of Washington
+  ✓ Validated author: Vicuna Team
+  ✓ Validated author: Voyage AI
+  ✓ Validated author: WizardLM Team
+  ✓ Validated author: xAI
+  ✓ Validated author: Xiaomi
+  ✓ Validated author: Yale University
+  ✓ Validated author: Zhipu AI
+✓ Validated 105 authors successfully
+✓ Success
+Validating model definitions...   ✓ Validated model: qwen3-30b-a3b-thinking-2507
+  ✓ Validated model: qwen3-vl-235b-a22b-thinking
+  ✓ Validated model: qwen3-vl-flash-2026-01-22-us
+  ✓ Validated model: qwen-plus-2025-12-01
+  ✓ Validated model: deepseek-v4-flash-us
+  ✓ Validated model: qwen3.6-flash-us
+  ✓ Validated model: qwen-plus
+  ✓ Validated model: qwen3-vl-flash
+  ✓ Validated model: wan2.6-image
+  ✓ Validated model: glm-5.2
+  ✓ Validated model: deepseek-v4-pro
+  ✓ Validated model: qwen3.7-plus-2026-05-26
+  ✓ Validated model: qwen3-max
+  ✓ Validated model: qwen-plus-2025-07-28
+  ✓ Validated model: qwen3.5-flash-2026-02-23
+  ✓ Validated model: qwen3-vl-235b-a22b-instruct
+  ✓ Validated model: qwen3-8b
+  ✓ Validated model: qwen3-vl-8b-thinking
+  ✓ Validated model: qwen3-coder-plus-2025-07-22
+  ✓ Validated model: qwen3.5-plus
+  ✓ Validated model: qwen3-235b-a22b-thinking-2507
+  ✓ Validated model: qwen3-vl-8b-instruct
+  ✓ Validated model: qwen3-32b
+  ✓ Validated model: qwen-mt-flash
+  ✓ Validated model: qwen3-coder-30b-a3b-instruct
+  ✓ Validated model: qwen3-235b-a22b-instruct-2507
+  ✓ Validated model: qwen3-14b
+  ✓ Validated model: qwen3-vl-plus-2025-12-19-us
+  ✓ Validated model: qwen3-asr-flash-2025-09-08-us
+  ✓ Validated model: qwen3-vl-plus
+  ✓ Validated model: qwen-vl-ocr-2025-11-20
+  ✓ Validated model: kimi-k2.5
+  ✓ Validated model: qwen3.6-flash-2026-04-16
+  ✓ Validated model: qwen-flash-2025-07-28-us
+  ✓ Validated model: qwen3.7-max-2026-05-20
+  ✓ Validated model: qwen-plus-2025-12-01-us
+  ✓ Validated model: qwen3.6-35b-a3b
+  ✓ Validated model: deepseek-v4-flash
+  ✓ Validated model: qwen3-max-2025-09-23
+  ✓ Validated model: qwen-plus-us
+  ✓ Validated model: qwen3-coder-480b-a35b-instruct
+  ✓ Validated model: qwen3.7-max
+  ✓ Validated model: qwen3-vl-30b-a3b-instruct
+  ✓ Validated model: qwen3-vl-32b-instruct
+  ✓ Validated model: qwen3-vl-30b-a3b-thinking
+  ✓ Validated model: qwen3-vl-plus-2025-12-19
+  ✓ Validated model: qwen3.7-max-us
+  ✓ Validated model: qwen-vl-ocr
+  ✓ Validated model: qwen3-235b-a22b
+  ✓ Validated model: qwen3.5-27b
+  ✓ Validated model: qwen3-vl-flash-2025-10-15
+  ✓ Validated model: qwen3-30b-a3b
+  ✓ Validated model: qwen3-next-80b-a3b-instruct
+  ✓ Validated model: deepseek-v4-pro-us
+  ✓ Validated model: qwen3-max-preview
+  ✓ Validated model: qwen3.7-max-2026-06-08
+  ✓ Validated model: qwen3.5-397b-a17b
+  ✓ Validated model: glm-5.1
+  ✓ Validated model: qwen3-asr-flash-us
+  ✓ Validated model: qwen3.7-plus
+  ✓ Validated model: qwen3-coder-plus-2025-09-23
+  ✓ Validated model: qwen-mt-lite
+  ✓ Validated model: qwen-mt-plus
+  ✓ Validated model: qwen3-vl-32b-thinking
+  ✓ Validated model: wan2.6-t2i
+  ✓ Validated model: qwen3-30b-a3b-instruct-2507
+  ✓ Validated model: qwen3.6-plus-2026-04-02
+  ✓ Validated model: qwen3-vl-plus-2025-09-23
+  ✓ Validated model: qwen3-coder-flash
+  ✓ Validated model: qwen-flash
+  ✓ Validated model: qwen-flash-2025-07-28
+  ✓ Validated model: qwen3-coder-plus
+  ✓ Validated model: qwen3-vl-flash-us
+  ✓ Validated model: qwen3.5-35b-a3b
+  ✓ Validated model: qwen3.6-flash
+  ✓ Validated model: pre-qwen-mt-lite
+  ✓ Validated model: kimi-k2.7-code
+  ✓ Validated model: qwen3-next-80b-a3b-thinking
+  ✓ Validated model: qwen3-vl-flash-2025-10-15-us
+  ✓ Validated model: qwen-flash-us
+  ✓ Validated model: qwen-plus-2025-09-11
+  ✓ Validated model: qwen3.5-flash
+  ✓ Validated model: qwen3-coder-flash-2025-07-28
+  ✓ Validated model: qwen3.7-plus-us
+  ✓ Validated model: qwen3.5-122b-a10b
+  ✓ Validated model: Claude Sonnet 4.6
+  ✓ Validated model: Claude Opus 4.5
+  ✓ Validated model: Claude Opus 4.1
+  ✓ Validated model: Claude Sonnet 5
+  ✓ Validated model: Claude Haiku 4.5
+  ✓ Validated model: Claude Opus 4.6
+  ✓ Validated model: Claude Fable 5
+  ✓ Validated model: Claude Sonnet 4.5
+  ✓ Validated model: Claude Opus 4.7
+  ✓ Validated model: Claude Opus 4.8
+  ✓ Validated model: zai-glm-4.7
+  ✓ Validated model: gemma-4-31b
+  ✓ Validated model: gpt-oss-120b
+  ✓ Validated model: rerank-v3.5
+  ✓ Validated model: rerank-v4.0-fast
+  ✓ Validated model: rerank-v4.0-pro
+  ✓ Validated model: Bria/Bria-3.2-vector
+  ✓ Validated model: Bria/Bria-3.2
+  ✓ Validated model: deepseek-ai/DeepSeek-V3.2
+  ✓ Validated model: black-forest-labs/FLUX-1-Redux-dev
+  ✓ Validated model: Qwen/Qwen3-32B
+  ✓ Validated model: Qwen/Qwen3.5-35B-A3B
+  ✓ Validated model: Bria/blur_background
+  ✓ Validated model: openai/whisper-large-v3-turbo
+  ✓ Validated model: Qwen/Qwen2.5-72B-Instruct
+  ✓ Validated model: Qwen/Qwen3-Coder-480B-A35B-Instruct-Turbo
+  ✓ Validated model: mistralai/Mistral-Small-3.2-24B-Instruct-2506
+  ✓ Validated model: nvidia/Nemotron-3-Nano-30B-A3B
+  ✓ Validated model: ByteDance/Seedance-1.5-Pro
+  ✓ Validated model: black-forest-labs/FLUX.1-Kontext-dev
+  ✓ Validated model: zai-org/GLM-4.6
+  ✓ Validated model: anthropic/claude-opus-4-7
+  ✓ Validated model: Qwen/Qwen3-235B-A22B-Instruct-2507
+  ✓ Validated model: inworld-ai/realtime-tts-1.5-max
+  ✓ Validated model: Qwen/Qwen3.5-27B
+  ✓ Validated model: zai-org/GLM-4.7-Flash
+  ✓ Validated model: Qwen/Qwen3-Embedding-0.6B
+  ✓ Validated model: deepseek-ai/DeepSeek-R1-0528
+  ✓ Validated model: intfloat/multilingual-e5-large
+  ✓ Validated model: anthropic/claude-opus-4-8
+  ✓ Validated model: Sao10K/L3.1-70B-Euryale-v2.2
+  ✓ Validated model: NousResearch/Hermes-3-Llama-3.1-70B
+  ✓ Validated model: google/gemini-2.5-flash
+  ✓ Validated model: NousResearch/Hermes-3-Llama-3.1-405B
+  ✓ Validated model: google/gemma-4-31B-it
+  ✓ Validated model: meta-llama/Llama-4-Maverick-17B-128E-Instruct-FP8
+  ✓ Validated model: BAAI/bge-large-en-v1.5
+  ✓ Validated model: ByteDance/Seedance-2.0
+  ✓ Validated model: Qwen/Qwen3-Max-Thinking
+  ✓ Validated model: MiniMaxAI/MiniMax-M2.7
+  ✓ Validated model: Qwen/Qwen3-235B-A22B-Thinking-2507
+  ✓ Validated model: ByteDance/Seed-2.0-pro
+  ✓ Validated model: mistralai/Voxtral-Mini-3B-2507
+  ✓ Validated model: nvidia/NVIDIA-Nemotron-3-Super-120B-A12B
+  ✓ Validated model: Qwen/Qwen3-14B
+  ✓ Validated model: google/gemma-4-26B-A4B-it
+  ✓ Validated model: mistralai/Voxtral-Small-24B-2507
+  ✓ Validated model: mistralai/Mistral-Small-24B-Instruct-2501
+  ✓ Validated model: meta-llama/Meta-Llama-3.1-8B-Instruct-Turbo
+  ✓ Validated model: MiniMaxAI/MiniMax-M2.7-Turbo
+  ✓ Validated model: sentence-transformers/clip-ViT-B-32-multilingual-v1
+  ✓ Validated model: shibing624/text2vec-base-chinese
+  ✓ Validated model: sentence-transformers/all-mpnet-base-v2
+  ✓ Validated model: PrunaAI/p-video
+  ✓ Validated model: BAAI/bge-base-en-v1.5
+  ✓ Validated model: google/gemini-3.1-pro
+  ✓ Validated model: google/veo-3.1-fast
+  ✓ Validated model: zai-org/GLM-5.2
+  ✓ Validated model: nvidia/Nemotron-3.5-ASR-Streaming-Multilingual-0.6b
+  ✓ Validated model: Wan-AI/Wan2.2-T2V-A14B
+  ✓ Validated model: XiaomiMiMo/MiMo-V2.5-Pro
+  ✓ Validated model: ResembleAI/chatterbox-turbo
+  ✓ Validated model: nvidia/Nemotron-Content-Safety-3.5
+  ✓ Validated model: Qwen/Qwen3-VL-30B-A3B-Instruct
+  ✓ Validated model: google/gemini-1.5-flash-8b
+  ✓ Validated model: anthropic/claude-fable-5
+  ✓ Validated model: BAAI/bge-m3
+  ✓ Validated model: Qwen/Qwen3-VL-235B-A22B-Instruct
+  ✓ Validated model: XiaomiMiMo/MiMo-V2.5-tts
+  ✓ Validated model: XiaomiMiMo/MiMo-V2.5
+  ✓ Validated model: stabilityai/sdxl-turbo
+  ✓ Validated model: moonshotai/Kimi-K2.5
+  ✓ Validated model: google/gemma-3-27b-it
+  ✓ Validated model: Qwen/Qwen3.5-9B
+  ✓ Validated model: google/gemini-3-pro-image
+  ✓ Validated model: Wan-AI/Wan2.6-T2I
+  ✓ Validated model: Pixverse/Pixverse-6-T2V
+  ✓ Validated model: Bria/expand
+  ✓ Validated model: black-forest-labs/FLUX-2-pro
+  ✓ Validated model: Qwen/Qwen3.5-397B-A17B
+  ✓ Validated model: XiaomiMiMo/MiMo-V2.5-tts-voicedesign
+  ✓ Validated model: sentence-transformers/all-MiniLM-L12-v2
+  ✓ Validated model: hexgrad/Kokoro-82M
+  ✓ Validated model: sentence-transformers/clip-ViT-B-32
+  ✓ Validated model: meta-llama/Llama-Guard-4-12B
+  ✓ Validated model: deepseek-ai/DeepSeek-V4-Flash
+  ✓ Validated model: Qwen/Qwen3.7-Max
+  ✓ Validated model: openai/whisper-large-v3
+  ✓ Validated model: Qwen/Qwen3-Next-80B-A3B-Instruct
+  ✓ Validated model: mistralai/Mistral-Nemo-Instruct-2407
+  ✓ Validated model: moonshotai/Kimi-K2.7-Code
+  ✓ Validated model: Qwen/Qwen-Image-Edit
+  ✓ Validated model: black-forest-labs/FLUX-2-klein-4b
+  ✓ Validated model: anthropic/claude-haiku-4-5
+  ✓ Validated model: inworld-ai/realtime-tts-2
+  ✓ Validated model: Qwen/Qwen3.6-35B-A3B
+  ✓ Validated model: ByteDance/Seedream-4
+  ✓ Validated model: deepseek-ai/DeepSeek-V3-0324
+  ✓ Validated model: sesame/csm-1b
+  ✓ Validated model: openai/gpt-oss-20b
+  ✓ Validated model: anthropic/claude-sonnet-5
+  ✓ Validated model: Qwen/Qwen3-Max
+  ✓ Validated model: black-forest-labs/FLUX-1.1-pro
+  ✓ Validated model: Bria/remove_background
+  ✓ Validated model: openai/gpt-oss-120b
+  ✓ Validated model: zai-org/GLM-4.7
+  ✓ Validated model: Qwen/Qwen3.6-27B
+  ✓ Validated model: google/gemma-4-31B-it-turbo
+  ✓ Validated model: nvidia/NVIDIA-Nemotron-3-Ultra-550B-A55B
+  ✓ Validated model: meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo
+  ✓ Validated model: google/gemma-3-12b-it
+  ✓ Validated model: intfloat/e5-large-v2
+  ✓ Validated model: Qwen/Qwen3-TTS-VoiceDesign
+  ✓ Validated model: google/gemini-2.5-pro
+  ✓ Validated model: Qwen/Qwen3-Embedding-4B
+  ✓ Validated model: BAAI/bge-en-icl
+  ✓ Validated model: meta-llama/Llama-4-Scout-17B-16E-Instruct
+  ✓ Validated model: bosonai/HiggsAudioV2.5
+  ✓ Validated model: black-forest-labs/FLUX-2-klein-9b
+  ✓ Validated model: intfloat/multilingual-e5-large-instruct
+  ✓ Validated model: black-forest-labs/FLUX-2-max
+  ✓ Validated model: meta-llama/Llama-3.3-70B-Instruct-Turbo
+  ✓ Validated model: Qwen/Qwen3-30B-A3B
+  ✓ Validated model: Bria/fibo_edit
+  ✓ Validated model: sentence-transformers/all-MiniLM-L6-v2
+  ✓ Validated model: microsoft/phi-4
+  ✓ Validated model: stepfun-ai/Step-3.7-Flash
+  ✓ Validated model: Sao10K/L3-8B-Lunaris-v1-Turbo
+  ✓ Validated model: sentence-transformers/paraphrase-MiniLM-L6-v2
+  ✓ Validated model: deepseek-ai/DeepSeek-V3.1-Terminus
+  ✓ Validated model: nvidia/Cosmos3-Nano
+  ✓ Validated model: Bria/erase_foreground
+  ✓ Validated model: Qwen/Qwen-Image-Max
+  ✓ Validated model: google/gemini-3.1-flash-lite
+  ✓ Validated model: thenlper/gte-base
+  ✓ Validated model: zai-org/GLM-5.1
+  ✓ Validated model: google/gemini-1.5-flash
+  ✓ Validated model: deepreinforce-ai/Ornith-1.0-35B
+  ✓ Validated model: black-forest-labs/FLUX-1-schnell
+  ✓ Validated model: sentence-transformers/multi-qa-mpnet-base-dot-v1
+  ✓ Validated model: deepseek-ai/DeepSeek-V4-Pro
+  ✓ Validated model: PrunaAI/p-image
+  ✓ Validated model: BAAI/bge-m3-multi
+  ✓ Validated model: deepseek-ai/DeepSeek-V3.1
+  ✓ Validated model: Wan-AI/Wan2.6-T2V
+  ✓ Validated model: MiniMaxAI/MiniMax-M3
+  ✓ Validated model: Pixverse/Pixverse-T2V
+  ✓ Validated model: intfloat/e5-base-v2
+  ✓ Validated model: Qwen/Qwen3-TTS
+  ✓ Validated model: Bria/fibo
+  ✓ Validated model: google/embeddinggemma-300m
+  ✓ Validated model: Qwen/Qwen3-Embedding-8B
+  ✓ Validated model: Qwen/Qwen3.5-122B-A10B
+  ✓ Validated model: deepseek-ai/DeepSeek-V3
+  ✓ Validated model: black-forest-labs/FLUX-1-dev
+  ✓ Validated model: ByteDance/Seed-2.0-mini
+  ✓ Validated model: anthropic/claude-sonnet-4-6
+  ✓ Validated model: ByteDance/Seed-1.8
+  ✓ Validated model: zai-org/GLM-5
+  ✓ Validated model: nvidia/llama-nemotron-embed-vl-1b-v2
+  ✓ Validated model: google/gemma-3-4b-it
+  ✓ Validated model: black-forest-labs/FLUX-2-dev
+  ✓ Validated model: google/veo-3.1
+  ✓ Validated model: Pixverse/Pixverse-T2V-HD
+  ✓ Validated model: thenlper/gte-large
+  ✓ Validated model: nvidia/Cosmos3-Super
+  ✓ Validated model: Gryphe/MythoMax-L2-13b
+  ✓ Validated model: FastVideo/LTX-2.3-Distilled-Diffusers
+  ✓ Validated model: openai/gpt-oss-120b-Turbo
+  ✓ Validated model: inworld-ai/realtime-tts-1.5-mini
+  ✓ Validated model: ResembleAI/chatterbox-multilingual
+  ✓ Validated model: moonshotai/Kimi-K2.6
+  ✓ Validated model: google/gemini-3.5-flash
+  ✓ Validated model: ByteDance/Seed-2.0-code
+  ✓ Validated model: deepseek-v4-pro
+  ✓ Validated model: deepseek-v4-flash
+  ✓ Validated model: accounts/fireworks/models/deepseek-v4-pro
+  ✓ Validated model: accounts/fireworks/models/glm-5p2
+  ✓ Validated model: accounts/fireworks/models/flux-1-schnell-fp8
+  ✓ Validated model: accounts/fireworks/models/gpt-oss-120b
+  ✓ Validated model: accounts/fireworks/models/kimi-k2p5
+  ✓ Validated model: accounts/fireworks/models/glm-5p1
+  ✓ Validated model: accounts/fireworks/models/kimi-k2p6
+  ✓ Validated model: Gemini 2.0 Flash-Lite 001
+  ✓ Validated model: Gemini 3 Pro Preview
+  ✓ Validated model: Gemini 2.5 Flash Native Audio Preview 12-2025
+  ✓ Validated model: Gemini Robotics-ER 1.5 Preview
+  ✓ Validated model: Gemini 2.5 Flash
+  ✓ Validated model: Gemini 3.1 Pro Preview Custom Tools
+  ✓ Validated model: Gemma 4 31B IT
+  ✓ Validated model: Gemini Embedding 2 Preview
+  ✓ Validated model: Lyria 3 Pro Preview
+  ✓ Validated model: Gemini 2.5 Pro
+  ✓ Validated model: Gemini 3.1 Flash Lite Preview
+  ✓ Validated model: Gemini 3.1 Flash TTS Preview
+  ✓ Validated model: Model that performs Attributed Question Answering.
+  ✓ Validated model: Gemini Omni Flash Preview
+  ✓ Validated model: Gemini 2.5 Computer Use Preview 10-2025
+  ✓ Validated model: Nano Banana 2
+  ✓ Validated model: Deep Research Pro Preview (Dec-12-2025)
+  ✓ Validated model: Lyria 3 Clip Preview
+  ✓ Validated model: Gemini 2.0 Flash 001
+  ✓ Validated model: Gemini 2.5 Flash-Lite
+  ✓ Validated model: Veo 3.1
+  ✓ Validated model: Gemini 3.1 Pro Preview
+  ✓ Validated model: Nano Banana 2 Lite
+  ✓ Validated model: Deep Research Max Preview (Apr-21-2026)
+  ✓ Validated model: Gemini 3.5 Live Translate Preview
+  ✓ Validated model: Gemini 3 Flash Preview
+  ✓ Validated model: Gemini 3.5 Flash
+  ✓ Validated model: Deep Research Preview (Apr-21-2026)
+  ✓ Validated model: Gemini 2.5 Flash Preview TTS
+  ✓ Validated model: Nano Banana Pro
+  ✓ Validated model: Antigravity Agent Preview
+  ✓ Validated model: Gemini Flash Latest
+  ✓ Validated model: Gemini Pro Latest
+  ✓ Validated model: Nano Banana Pro
+  ✓ Validated model: Gemini 2.5 Pro Preview TTS
+  ✓ Validated model: Gemini 2.5 Flash Native Audio Latest
+  ✓ Validated model: Gemma 4 26B A4B IT
+  ✓ Validated model: Gemini 3.1 Flash Lite
+  ✓ Validated model: Gemini Embedding 2
+  ✓ Validated model: Imagen 4 Fast
+  ✓ Validated model: Gemini 3.1 Flash Live Preview
+  ✓ Validated model: Veo 3.1 lite
+  ✓ Validated model: Gemini 2.0 Flash
+  ✓ Validated model: Gemini Embedding 001
+  ✓ Validated model: Nano Banana Pro
+  ✓ Validated model: Gemini 2.0 Flash-Lite
+  ✓ Validated model: Gemini 2.5 Flash Native Audio Preview 09-2025
+  ✓ Validated model: Nano Banana
+  ✓ Validated model: Veo 3.1 fast
+  ✓ Validated model: Nano Banana 2
+  ✓ Validated model: Gemini Robotics-ER 1.6 Preview
+  ✓ Validated model: Gemini Flash-Lite Latest
+  ✓ Validated model: Imagen 4 Ultra
+  ✓ Validated model: Imagen 4
+  ✓ Validated model: alphagenome-request
+  ✓ Validated model: lyria-002
+  ✓ Validated model: veo-3.1-generate-001
+  ✓ Validated model: gemini-3.1-flash-lite-image
+  ✓ Validated model: imagesegmentation-deeplabv3
+  ✓ Validated model: tab-net
+  ✓ Validated model: Llama 3.1 405B Instruct
+  ✓ Validated model: gemma-4-26b-a4b-it-maas
+  ✓ Validated model: textembedding-gecko
+  ✓ Validated model: gemini-2.5-pro-tts
+  ✓ Validated model: imageclassification-proprietary-maxvit
+  ✓ Validated model: jax-owl-vit-v2
+  ✓ Validated model: automl-vision-image-object-detection
+  ✓ Validated model: veo-3.0-fast-generate-001
+  ✓ Validated model: language-v1-analyze-sentiment
+  ✓ Validated model: imageclassification-proprietary-efficientnet
+  ✓ Validated model: derm-foundation
+  ✓ Validated model: hear
+  ✓ Validated model: language-v1-moderate-text
+  ✓ Validated model: gemini-2.5-computer-use-preview-10-2025
+  ✓ Validated model: gemini-3-pro-image
+  ✓ Validated model: keras-yolov8
+  ✓ Validated model: txgemma
+  ✓ Validated model: vehicle-detector
+  ✓ Validated model: people-blur
+  ✓ Validated model: dito
+  ✓ Validated model: gemini-3-pro-image-preview
+  ✓ Validated model: GPT-4o
+  ✓ Validated model: paligemma
+  ✓ Validated model: text-translation
+  ✓ Validated model: shieldgemma2
+  ✓ Validated model: translate-llm
+  ✓ Validated model: gemma
+  ✓ Validated model: text-embedding-large-exp-03-07
+  ✓ Validated model: content-moderation
+  ✓ Validated model: imagewatermarkdetector
+  ✓ Validated model: tfvision-movinet-var
+  ✓ Validated model: gemini-3-pro-preview
+  ✓ Validated model: translategemma
+  ✓ Validated model: veo-3.0-generate-001
+  ✓ Validated model: imageclassification-proprietary-vit
+  ✓ Validated model: video-speech-transcription
+  ✓ Validated model: path-foundation
+  ✓ Validated model: gemini-3.1-flash-tts-preview
+  ✓ Validated model: gemini-3-flash-preview
+  ✓ Validated model: gemini-2.5-flash-tts
+  ✓ Validated model: imageobjectdetection-yolo
+  ✓ Validated model: vit-jax
+  ✓ Validated model: t5-flan
+  ✓ Validated model: object-detector
+  ✓ Validated model: medasr
+  ✓ Validated model: imageclassification-vit
+  ✓ Validated model: gemini-2.5-flash-image
+  ✓ Validated model: text-embedding-005
+  ✓ Validated model: Claude 3 Opus
+  ✓ Validated model: earth-ai-imagery-owlvit-eap-10-2025
+  ✓ Validated model: mammut
+  ✓ Validated model: t5gemma
+  ✓ Validated model: Llama 3.2 90B Vision Instruct
+  ✓ Validated model: medsiglip
+  ✓ Validated model: cloudnerf-pytorch-zipnerf
+  ✓ Validated model: Qwen 2.5 Coder 32B Instruct
+  ✓ Validated model: pretrained-form-parser
+  ✓ Validated model: t5-1.1
+  ✓ Validated model: earth-ai-imagery-mammut-eap-10-2025
+  ✓ Validated model: pic2word
+  ✓ Validated model: veo-3.1-fast-generate-001
+  ✓ Validated model: gemma4
+  ✓ Validated model: tfvision-movinet-vcn
+  ✓ Validated model: label-detector-pali-001
+  ✓ Validated model: multimodalembedding
+  ✓ Validated model: gemini-3.1-flash-lite-preview
+  ✓ Validated model: weather-next-v2
+  ✓ Validated model: chirp-3
+  ✓ Validated model: bert-base
+  ✓ Validated model: resnet50
+  ✓ Validated model: tfvision-yolov7
+  ✓ Validated model: pretrained-ocr
+  ✓ Validated model: gemini-3.1-pro-preview
+  ✓ Validated model: lyria-3-clip-preview
+  ✓ Validated model: image-segmentation-001
+  ✓ Validated model: lyria-3-pro-preview
+  ✓ Validated model: codegemma
+  ✓ Validated model: Claude 3.5 Haiku
+  ✓ Validated model: gemini-3.5-flash
+  ✓ Validated model: language-v1-classify-text-v1
+  ✓ Validated model: gemma3n
+  ✓ Validated model: bert-base-uncased
+  ✓ Validated model: functiongemma
+  ✓ Validated model: veo-3.1-lite-generate-001
+  ✓ Validated model: gemini-2.5-flash
+  ✓ Validated model: Jamba 1.5 Large
+  ✓ Validated model: gemini-3.1-flash-lite
+  ✓ Validated model: gemma2
+  ✓ Validated model: chirp-2
+  ✓ Validated model: language-v1-analyze-entity-sentiment
+  ✓ Validated model: virtual-try-on-001
+  ✓ Validated model: f-vlm-jax
+  ✓ Validated model: gemini-2.5-flash-lite
+  ✓ Validated model: gemini-embedding-2
+  ✓ Validated model: gemini-2.5-pro
+  ✓ Validated model: weathernext
+  ✓ Validated model: gemma3
+  ✓ Validated model: text-detector
+  ✓ Validated model: imageobjectdetection-proprietary-spinenet
+  ✓ Validated model: pt-test
+  ✓ Validated model: ppe-detector
+  ✓ Validated model: gemini-live-2.5-flash-native-audio
+  ✓ Validated model: automl-e2e
+  ✓ Validated model: language-v1-analyze-syntax
+  ✓ Validated model: gemini-3.1-flash-image-preview
+  ✓ Validated model: occupancy-analytics
+  ✓ Validated model: Claude 3.5 Sonnet
+  ✓ Validated model: medgemma
+  ✓ Validated model: veo-2.0-generate-001
+  ✓ Validated model: timesfm
+  ✓ Validated model: gemini-omni-flash-preview
+  ✓ Validated model: automl-vision-image-classification
+  ✓ Validated model: product-recognizer
+  ✓ Validated model: DeepSeek R1 Distill Llama 70B
+  ✓ Validated model: DeepSeek R1 Distill Qwen 32B
+  ✓ Validated model: tag-recognizer
+  ✓ Validated model: owlvit-base-patch32
+  ✓ Validated model: embeddinggemma
+  ✓ Validated model: video-text-detection
+  ✓ Validated model: imageobjectdetection-proprietary-yolo
+  ✓ Validated model: gemini-embedding-001
+  ✓ Validated model: Jamba 1.5 Mini
+  ✓ Validated model: face-detector
+  ✓ Validated model: imageclassification-efficientnet
+  ✓ Validated model: Llama 3.1 70B Instruct
+  ✓ Validated model: bart-large-cnn
+  ✓ Validated model: cxr-foundation
+  ✓ Validated model: diffusiongemma
+  ✓ Validated model: text-multilingual-embedding-002
+  ✓ Validated model: gemini-3.1-flash-image
+  ✓ Validated model: Safety GPT OSS 20B
+  ✓ Validated model: ALLaM-2-7b
+  ✓ Validated model: Compound
+  ✓ Validated model: Llama 4 Scout 17B 16E
+  ✓ Validated model: Compound Mini
+  ✓ Validated model: Llama 3.1 8B
+  ✓ Validated model: GPT OSS 20B
+  ✓ Validated model: Canopy Labs Orpheus V1 English
+  ✓ Validated model: Whisper
+  ✓ Validated model: Whisper Large V3 Turbo
+  ✓ Validated model: Prompt Guard 2 86M
+  ✓ Validated model: GPT OSS 120B
+  ✓ Validated model: Llama 3.3 70B
+  ✓ Validated model: Qwen/Qwen3.6-27B
+  ✓ Validated model: Llama Prompt Guard 2 22M
+  ✓ Validated model: Qwen3-32B
+  ✓ Validated model: Canopy Labs Orpheus Arabic Saudi
+  ✓ Validated model: Qwen3.8-27B
+  ✓ Validated model: Qwen/Qwen3.6-35B-A3B-FP8
+  ✓ Validated model: kimi-k2.6
+  ✓ Validated model: kimi-k2.7-code
+  ✓ Validated model: moonshot-v1-8k
+  ✓ Validated model: moonshot-v1-128k
+  ✓ Validated model: moonshot-v1-128k-vision-preview
+  ✓ Validated model: moonshot-v1-32k-vision-preview
+  ✓ Validated model: moonshot-v1-auto
+  ✓ Validated model: kimi-k2.5
+  ✓ Validated model: moonshot-v1-8k-vision-preview
+  ✓ Validated model: moonshot-v1-32k
+  ✓ Validated model: kimi-k3
+  ✓ Validated model: kimi-k2.7-code-highspeed
+  ✓ Validated model: o4-mini-2025-04-16
+  ✓ Validated model: o3
+  ✓ Validated model: gpt-realtime-mini-2025-12-15
+  ✓ Validated model: tts-1-hd-1106
+  ✓ Validated model: gpt-5.6-sol
+  ✓ Validated model: o3-mini
+  ✓ Validated model: gpt-5.5
+  ✓ Validated model: gpt-5.1-codex-mini
+  ✓ Validated model: gpt-5.4
+  ✓ Validated model: gpt-4.1-nano
+  ✓ Validated model: gpt-image-2-2026-04-21
+  ✓ Validated model: gpt-image-1.5
+  ✓ Validated model: gpt-5.4-pro
+  ✓ Validated model: gpt-realtime-2.1-mini
+  ✓ Validated model: text-embedding-3-small
+  ✓ Validated model: gpt-5-search-api-2025-10-14
+  ✓ Validated model: gpt-realtime-1.5
+  ✓ Validated model: gpt-3.5-turbo-16k
+  ✓ Validated model: gpt-5-pro-2025-10-06
+  ✓ Validated model: o4-mini
+  ✓ Validated model: text-embedding-ada-002
+  ✓ Validated model: gpt-audio-mini-2025-10-06
+  ✓ Validated model: text-embedding-3-large
+  ✓ Validated model: gpt-audio
+  ✓ Validated model: gpt-5.2-pro-2025-12-11
+  ✓ Validated model: gpt-5-pro
+  ✓ Validated model: gpt-5.4-pro-2026-03-05
+  ✓ Validated model: gpt-5.3-codex
+  ✓ Validated model: gpt-5.1-codex
+  ✓ Validated model: gpt-4o-mini-transcribe
+  ✓ Validated model: gpt-4o-mini-transcribe-2025-12-15
+  ✓ Validated model: gpt-3.5-turbo
+  ✓ Validated model: gpt-5.3-chat-latest
+  ✓ Validated model: gpt-5-search-api
+  ✓ Validated model: omni-moderation-2024-09-26
+  ✓ Validated model: gpt-4o-mini-search-preview-2025-03-11
+  ✓ Validated model: gpt-5-codex
+  ✓ Validated model: gpt-5.4-2026-03-05
+  ✓ Validated model: gpt-realtime-2025-08-28
+  ✓ Validated model: gpt-5.2
+  ✓ Validated model: gpt-4o-mini-tts-2025-03-20
+  ✓ Validated model: chat-latest
+  ✓ Validated model: gpt-5.4-mini
+  ✓ Validated model: omni-moderation-latest
+  ✓ Validated model: gpt-5.4-nano
+  ✓ Validated model: gpt-4o-mini-tts-2025-12-15
+  ✓ Validated model: gpt-4o-2024-05-13
+  ✓ Validated model: gpt-image-1
+  ✓ Validated model: gpt-5-nano
+  ✓ Validated model: gpt-5.2-pro
+  ✓ Validated model: o3-mini-2025-01-31
+  ✓ Validated model: gpt-5.6-terra
+  ✓ Validated model: gpt-3.5-turbo-instruct-0914
+  ✓ Validated model: gpt-image-1-mini
+  ✓ Validated model: gpt-5.1
+  ✓ Validated model: gpt-4o-search-preview
+  ✓ Validated model: gpt-audio-mini
+  ✓ Validated model: gpt-4o-mini-search-preview
+  ✓ Validated model: o3-2025-04-16
+  ✓ Validated model: gpt-5.5-pro
+  ✓ Validated model: gpt-4o-mini-transcribe-2025-03-20
+  ✓ Validated model: chatgpt-image-latest
+  ✓ Validated model: gpt-5.1-2025-11-13
+  ✓ Validated model: gpt-4o-transcribe
+  ✓ Validated model: babbage-002
+  ✓ Validated model: sora-2-pro
+  ✓ Validated model: gpt-image-2
+  ✓ Validated model: gpt-5.2-chat-latest
+  ✓ Validated model: gpt-5
+  ✓ Validated model: gpt-3.5-turbo-1106
+  ✓ Validated model: davinci-002
+  ✓ Validated model: gpt-5.2-codex
+  ✓ Validated model: gpt-4o-2024-11-20
+  ✓ Validated model: gpt-realtime-translate
+  ✓ Validated model: o1-2024-12-17
+  ✓ Validated model: gpt-realtime
+  ✓ Validated model: gpt-4o-mini-tts
+  ✓ Validated model: gpt-realtime-mini-2025-10-06
+  ✓ Validated model: gpt-realtime-mini
+  ✓ Validated model: gpt-realtime-2
+  ✓ Validated model: gpt-5-chat-latest
+  ✓ Validated model: sora-2
+  ✓ Validated model: gpt-realtime-2.1
+  ✓ Validated model: gpt-audio-1.5
+  ✓ Validated model: tts-1-hd
+  ✓ Validated model: gpt-5.4-mini-2026-03-17
+  ✓ Validated model: gpt-5.6-luna
+  ✓ Validated model: gpt-5.1-codex-max
+  ✓ Validated model: gpt-4.1-mini-2025-04-14
+  ✓ Validated model: gpt-5.1-chat-latest
+  ✓ Validated model: gpt-4.1-2025-04-14
+  ✓ Validated model: gpt-5-mini
+  ✓ Validated model: gpt-5-nano-2025-08-07
+  ✓ Validated model: gpt-4o-search-preview-2025-03-11
+  ✓ Validated model: gpt-5.2-2025-12-11
+  ✓ Validated model: gpt-3.5-turbo-instruct
+  ✓ Validated model: o1
+  ✓ Validated model: tts-1
+  ✓ Validated model: gpt-realtime-whisper
+  ✓ Validated model: gpt-5.5-2026-04-23
+  ✓ Validated model: gpt-4o-mini-2024-07-18
+  ✓ Validated model: gpt-4o-mini
+  ✓ Validated model: gpt-audio-mini-2025-12-15
+  ✓ Validated model: gpt-4o-transcribe-diarize
+  ✓ Validated model: tts-1-1106
+  ✓ Validated model: gpt-5-mini-2025-08-07
+  ✓ Validated model: gpt-3.5-turbo-0125
+  ✓ Validated model: whisper-1
+  ✓ Validated model: gpt-4o
+  ✓ Validated model: gpt-4.1-nano-2025-04-14
+  ✓ Validated model: gpt-4.1
+  ✓ Validated model: gpt-4.1-mini
+  ✓ Validated model: gpt-audio-2025-08-28
+  ✓ Validated model: gpt-5-2025-08-07
+  ✓ Validated model: gpt-5.5-pro-2026-04-23
+  ✓ Validated model: gpt-5.4-nano-2026-03-17
+  ✓ Validated model: gpt-4o-2024-08-06
+  ✓ Validated model: rerank-2.5-lite
+  ✓ Validated model: rerank-2.5
+✓ Validated 618 models successfully
+✓ Success
+Validating cross-references... ✓ Success
+
+[
+  {
+    "Component": "Providers",
+    "Status": "✓ Success",
+    "Issues": "0",
+    "Details": "Structure valid"
+  },
+  {
+    "Component": "Authors",
+    "Status": "✓ Success",
+    "Issues": "0",
+    "Details": "Structure valid"
+  },
+  {
+    "Component": "Models",
+    "Status": "✓ Success",
+    "Issues": "0",
+    "Details": "Definitions valid"
+  },
+  {
+    "Component": "Cross-references",
+    "Status": "✓ Success",
+    "Issues": "0",
+    "Details": "References valid"
+  }
+]
+
+==> run_cli providers
+{"level":"info","time":"2026-09-07T00:30:25-05:00","message":"Found 17 providers"}
+┌────────────────────────────┬──────────────────┬────────────────────────┬──────────────┬──────────────────────┬───────────┬────────┬───────────────┐
+│            NAME            │        ID        │        LOCATION        │   API TYPE   │       ENV KEY        │    KEY    │ MODELS │    STATUS     │
+├────────────────────────────┼──────────────────┼────────────────────────┼──────────────┼──────────────────────┼───────────┼────────┼───────────────┤
+│ Alibaba Cloud Model Studio │ alibaba          │ Hangzhou, China        │ openai       │ DASHSCOPE_API_KEY    │ (not set) │   85   │ ✗ Missing     │
+│ Anthropic                  │ anthropic        │ San Francisco, CA, USA │ anthropic    │ ANTHROPIC_API_KEY    │ (not set) │   10   │ ✗ Missing     │
+│ Azure OpenAI               │ azure-openai     │ Redmond, WA, USA       │ openai       │ AZURE_OPENAI_API_KEY │ (not set) │   0    │ ✗ Missing     │
+│ Cerebras                   │ cerebras         │ Sunnyvale, CA, USA     │ openai       │ CEREBRAS_API_KEY     │ (not set) │   3    │ ✗ Missing     │
+│ Cohere                     │ cohere           │ Toronto, Canada        │ -            │ (no implementation)  │ (n/a)     │   3    │ × Unsupported │
+│ DeepInfra                  │ deepinfra        │ San Francisco, CA, USA │ openai       │ (no key required)    │ -         │  168   │ - Optional    │
+│ DeepSeek                   │ deepseek         │ Beijing, China         │ openai       │ DEEPSEEK_API_KEY     │ (not set) │   2    │ ✗ Missing     │
+│ Fireworks AI               │ fireworks-ai     │ Redwood City, CA, USA  │ openai       │ FIREWORKS_API_KEY    │ (not set) │   7    │ ✗ Missing     │
+│ Google AI Studio           │ google-ai-studio │ Mountain View, CA, USA │ google       │ GOOGLE_API_KEY       │ (not set) │   54   │ ✗ Missing     │
+│ Google Vertex AI           │ google-vertex    │ Mountain View, CA, USA │ google-cloud │ (google-default)     │ (not set) │  136   │ ✗ Missing     │
+│ Groq                       │ groq             │ Mountain View, CA, USA │ openai       │ GROQ_API_KEY         │ (not set) │   17   │ ✗ Missing     │
+│ Hetzner                    │ hetzner          │                        │ openai       │ HETZNER_API_KEY      │ (not set) │   2    │ ✗ Missing     │
+│ Mistral AI                 │ mistral          │ Paris, France          │ openai       │ MISTRAL_API_KEY      │ (not set) │   0    │ ✗ Missing     │
+│ Moonshot AI                │ moonshot-ai      │ Beijing, China         │ openai       │ MOONSHOT_API_KEY     │ (not set) │   12   │ ✗ Missing     │
+│ Ollama                     │ ollama           │                        │ -            │ (no implementation)  │ (n/a)     │   0    │ × Unsupported │
+│ OpenAI                     │ openai           │ San Francisco, CA, USA │ openai       │ OPENAI_API_KEY       │ (not set) │  117   │ ✗ Missing     │
+│ Voyage AI                  │ voyage           │ Palo Alto, CA, USA     │ -            │ (no implementation)  │ (n/a)     │   2    │ × Unsupported │
+└────────────────────────────┴──────────────────┴────────────────────────┴──────────────┴──────────────────────┴───────────┴────────┴───────────────┘
+
+==> run_cli models list --limit 5
+{"level":"info","time":"2026-09-07T00:30:26-05:00","message":"Found 5 models"}
+┌───────────┬────────────────────────┬────────────────────────┬─────────┬────────┬─────────────┬──────────────┐
+│ PROVIDER  │           ID           │          NAME          │ CONTEXT │ OUTPUT │ INPUT PRICE │ OUTPUT PRICE │
+├───────────┼────────────────────────┼────────────────────────┼─────────┼────────┼─────────────┼──────────────┤
+│ deepinfra │ BAAI/bge-base-en-v1.5  │ BAAI/bge-base-en-v1.5  │ 512     │ 512    │ $0.005000   │ -            │
+│ deepinfra │ BAAI/bge-en-icl        │ BAAI/bge-en-icl        │ 8,192   │ 8,192  │ $0.010000   │ -            │
+│ deepinfra │ BAAI/bge-large-en-v1.5 │ BAAI/bge-large-en-v1.5 │ 512     │ 512    │ $0.010000   │ -            │
+│ deepinfra │ BAAI/bge-m3            │ BAAI/bge-m3            │ 8,192   │ 8,192  │ $0.010000   │ -            │
+│ deepinfra │ BAAI/bge-m3-multi      │ BAAI/bge-m3-multi      │ 8,192   │ 8,192  │ $0.010000   │ -            │
+└───────────┴────────────────────────┴────────────────────────┴─────────┴────────┴─────────────┴──────────────┘
+
+repository verification passed

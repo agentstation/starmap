@@ -1,0 +1,22 @@
+{
+  "pinned_source_references": 62,
+  "reference_errors": [],
+  "reviewed_revisions": {
+    "starmap": "4780dfea9f7e002ea6eaaa82aa8f52ed0d4cc225",
+    "starport": "042eb97851496ecdd1ef20bfa44fe3d84b86b2d8"
+  },
+  "screenshots_hash_verified": [
+    "starport-docs-desktop-dark.png",
+    "starport-docs-mobile-dark.png",
+    "starport-docs-desktop-light.png",
+    "starport-docs-build-320.png",
+    "starport-settings-light.png"
+  ],
+  "measurement_sets": 7,
+  "reviewed_documents_sha256": {
+    "docs/design/catalog-lifecycle/PRD.md": "270270345fa4aa9610fcfe38a15653b8b647aa7fa56c6ccbb94adc81444ec447",
+    "docs/design/catalog-lifecycle/REPOSITORY_FINDINGS.md": "ae260a72fe10bcff3781f34b911bff446fe230662377367169aa53b4eb187258",
+    "docs/design/catalog-lifecycle/ENGINEERING_SPEC.md": "bc62663962cdef4ad93c5a6da67b4898e7d4dc22e7c994a18e99033ccf540027",
+    "docs/plans/starport-production-catalog-plan.html": "35b6b7067a7e4325494eb2be020f00b6f557da9979a4aed9d3e3c1a28bb7056d"
+  }
+}

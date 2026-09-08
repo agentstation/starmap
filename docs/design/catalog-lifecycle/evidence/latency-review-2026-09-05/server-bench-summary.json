@@ -1,0 +1,6 @@
+{
+  "original_filename": "server-bench-summary.txt",
+  "format": "verbatim UTF-8 text",
+  "raw_sha256": "7b236f4081fa78469186ae99f39369536c4872a96da4248647b8a91ffc5b707d",
+  "content": "goos: darwin\ngoarch: arm64\npkg: github.com/agentstation/starport/internal/server\ncpu: Apple M2 Max\nBenchmarkProxyHandler/SimpleRequest-12\n      55\t  10935531 ns/op\t   26485 B/op\t     196 allocs/op\nBenchmarkProxyHandler/SimpleRequest-12\n      56\t  11041273 ns/op\t   26588 B/op\t     196 allocs/op\nBenchmarkProxyHandler/SimpleRequest-12\n      57\t  10886346 ns/op\t   26454 B/op\t     196 allocs/op\nBenchmarkProxyHandler/ConcurrentRequests-12\n     633\t    909979 ns/op\t   26052 B/op\t     196 allocs/op\nBenchmarkProxyHandler/ConcurrentRequests-12\n     586\t    911900 ns/op\t   26026 B/op\t     196 allocs/op\nBenchmarkProxyHandler/ConcurrentRequests-12\n     624\t    912507 ns/op\t   26055 B/op\t     196 allocs/op\nPASS\nok  \tgithub.com/agentstation/starport/internal/server\t5.595s\n"
+}

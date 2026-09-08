@@ -1,0 +1,19 @@
+PASS AMJ-V01 one transition table names every legal state change
+PASS AMJ-V02 the record exposes no provider job identifier to a caller
+PASS AMJ-V03 a job written by one account is unreadable by another
+PASS AMJ-V04 the import graph test names the package and bounds its imports
+PASS AMJ-V05 the catalog projects the video generation operation
+PASS AMJ-V06 the named operation set holds the video operation
+PASS AMJ-V07 a descriptor claiming the operation with no interface fails activation
+PASS AMJ-V08 an unknown provider state word and a spent lifetime both fail loudly
+PASS AMJ-V09 a route test walks the router and names the four video paths
+PASS AMJ-V10 a key holding no videos:write scope cannot submit a job
+PASS AMJ-V11 another account's job answers not found rather than forbidden
+PASS AMJ-V12 the content route serves Starport bytes and never a provider URL
+PASS AMJ-V13 an expired asset answers 410 and its job keeps an expired marker
+PASS AMJ-V14 a completed job draws exactly one usage record however often a caller polls
+PASS AMJ-V15 a failed job and a cancelled job draw no cost
+PASS AMJ-V16 an account at its outstanding job limit draws a refusal, and a terminal job frees a slot
+PASS AMJ-V17 the console submits a job, names a failure, and marks an expired asset
+PASS AMJ-V18 CI runs this gate and the evidence list names its terminal count
+Summary: 18 passed, 0 failed

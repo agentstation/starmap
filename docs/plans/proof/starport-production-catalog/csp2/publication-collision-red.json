@@ -1,0 +1,17 @@
+{
+  "command": [
+    "go",
+    "test",
+    "-race",
+    "-json",
+    "./internal/bootstrap",
+    "-run",
+    "^TestBaselineExportPreservesDirectoryCreatedDuringStaging$",
+    "-count=1",
+    "-timeout",
+    "2m"
+  ],
+  "exit_code": 0,
+  "stdout": "{\"Time\":\"2026-09-06T02:31:57.44647-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starmap/internal/bootstrap\"}\n{\"Time\":\"2026-09-06T02:31:57.743028-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starmap/internal/bootstrap\",\"Test\":\"TestBaselineExportPreservesDirectoryCreatedDuringStaging\"}\n{\"Time\":\"2026-09-06T02:31:57.743246-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/bootstrap\",\"Test\":\"TestBaselineExportPreservesDirectoryCreatedDuringStaging\",\"Output\":\"=== RUN   TestBaselineExportPreservesDirectoryCreatedDuringStaging\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-06T02:32:14.907961-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/bootstrap\",\"Test\":\"TestBaselineExportPreservesDirectoryCreatedDuringStaging\",\"Output\":\"--- PASS: TestBaselineExportPreservesDirectoryCreatedDuringStaging (17.16s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-06T02:32:14.908099-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starmap/internal/bootstrap\",\"Test\":\"TestBaselineExportPreservesDirectoryCreatedDuringStaging\",\"Elapsed\":17.16}\n{\"Time\":\"2026-09-06T02:32:14.908424-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/bootstrap\",\"Output\":\"PASS\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-06T02:32:15.950396-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/bootstrap\",\"Output\":\"ok  \\tgithub.com/agentstation/starmap/internal/bootstrap\\t18.503s\\n\"}\n{\"Time\":\"2026-09-06T02:32:15.950471-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starmap/internal/bootstrap\",\"Elapsed\":18.504}\n",
+  "stderr": ""
+}

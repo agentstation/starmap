@@ -1,0 +1,43 @@
+[
+  {
+    "command": [
+      "pnpm",
+      "-C",
+      "console",
+      "typecheck"
+    ],
+    "exit_code": 0,
+    "seconds": 4.847
+  },
+  {
+    "command": [
+      "pnpm",
+      "-C",
+      "console",
+      "exec",
+      "vitest",
+      "run",
+      "--maxWorkers=1"
+    ],
+    "exit_code": 0,
+    "seconds": 93.703
+  },
+  {
+    "command": [
+      "pnpm",
+      "-C",
+      "console",
+      "build"
+    ],
+    "exit_code": 0,
+    "seconds": 3.974
+  },
+  {
+    "command": [
+      "bash",
+      "scripts/verify-console-polish.sh"
+    ],
+    "exit_code": 0,
+    "seconds": 0.155
+  }
+]

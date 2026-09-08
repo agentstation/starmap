@@ -1,0 +1,16 @@
+{
+  "cwd": "/Users/jack/src/github.com/agentstation/starport-catalog-lifecycle",
+  "command": [
+    "go",
+    "test",
+    "-race",
+    "-count=1",
+    "-json",
+    "-timeout",
+    "5m",
+    "./internal/server",
+    "-run",
+    "Test(BudgetStorageErrorFailsOpen|TeamBudgetReadErrorFailsOpen)$"
+  ],
+  "exit_code": 0
+}

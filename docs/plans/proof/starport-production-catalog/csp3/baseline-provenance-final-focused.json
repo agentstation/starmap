@@ -1,0 +1,30 @@
+{
+  "command": [
+    "go",
+    "test",
+    "-json",
+    "-race",
+    "-count=1",
+    "-timeout=10m",
+    ".",
+    "./runtime",
+    "-run",
+    "TestEmbeddedCatalogState|TestRuntimeBaselineExcludes|TestEffectiveGenerationPreserves"
+  ],
+  "toolchain": "go1.25.12",
+  "exit_code": 0,
+  "seconds": 27.72088445769623,
+  "output": "{\"Time\":\"2026-09-06T22:19:02.393923-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starmap\"}\n{\"Time\":\"2026-09-06T22:19:02.394055-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starmap/runtime\"}\n{\"Time\":\"2026-09-06T22:19:02.844706-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Test\":\"TestRuntimeBaselineExcludesPreviouslyPublishedProviderEvidence\"}\n{\"Time\":\"2026-09-06T22:19:02.844798-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Test\":\"TestRuntimeBaselineExcludesPreviouslyPublishedProviderEvidence\",\"Output\":\"=== RUN   TestRuntimeBaselineExcludesPreviouslyPublishedProviderEvidence\\n\"}\n{\"Time\":\"2026-09-06T22:19:03.303468-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starmap\",\"Test\":\"TestEmbeddedCatalogStateRemainsIndependentOfStoredCurrent\"}\n{\"Time\":\"2026-09-06T22:19:03.303522-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap\",\"Test\":\"TestEmbeddedCatalogStateRemainsIndependentOfStoredCurrent\",\"Output\":\"=== RUN   TestEmbeddedCatalogStateRemainsIndependentOfStoredCurrent\\n\"}\n{\"Time\":\"2026-09-06T22:19:13.55473-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap\",\"Test\":\"TestEmbeddedCatalogStateRemainsIndependentOfStoredCurrent\",\"Output\":\"--- PASS: TestEmbeddedCatalogStateRemainsIndependentOfStoredCurrent (10.25s)\\n\"}\n{\"Time\":\"2026-09-06T22:19:13.554868-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starmap\",\"Test\":\"TestEmbeddedCatalogStateRemainsIndependentOfStoredCurrent\",\"Elapsed\":10.25}\n{\"Time\":\"2026-09-06T22:19:13.555808-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap\",\"Output\":\"PASS\\n\"}\n{\"Time\":\"2026-09-06T22:19:14.586799-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap\",\"Output\":\"ok  \\tgithub.com/agentstation/starmap\\t12.192s\\n\"}\n{\"Time\":\"2026-09-06T22:19:14.586885-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starmap\",\"Elapsed\":12.193}\n{\"Time\":\"2026-09-06T22:19:26.216025-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Test\":\"TestRuntimeBaselineExcludesPreviouslyPublishedProviderEvidence\",\"Output\":\"--- PASS: TestRuntimeBaselineExcludesPreviouslyPublishedProviderEvidence (23.37s)\\n\"}\n{\"Time\":\"2026-09-06T22:19:26.216074-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Test\":\"TestRuntimeBaselineExcludesPreviouslyPublishedProviderEvidence\",\"Elapsed\":23.37}\n{\"Time\":\"2026-09-06T22:19:26.21615-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Test\":\"TestEffectiveGenerationPreservesOpaqueBaselineIdentity\"}\n{\"Time\":\"2026-09-06T22:19:26.216155-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Test\":\"TestEffectiveGenerationPreservesOpaqueBaselineIdentity\",\"Output\":\"=== RUN   TestEffectiveGenerationPreservesOpaqueBaselineIdentity\\n\"}\n{\"Time\":\"2026-09-06T22:19:26.222203-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Test\":\"TestEffectiveGenerationPreservesOpaqueBaselineIdentity\",\"Output\":\"--- PASS: TestEffectiveGenerationPreservesOpaqueBaselineIdentity (0.01s)\\n\"}\n{\"Time\":\"2026-09-06T22:19:26.222214-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Test\":\"TestEffectiveGenerationPreservesOpaqueBaselineIdentity\",\"Elapsed\":0.01}\n{\"Time\":\"2026-09-06T22:19:26.232977-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Output\":\"PASS\\n\"}\n{\"Time\":\"2026-09-06T22:19:27.265796-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Output\":\"ok  \\tgithub.com/agentstation/starmap/runtime\\t24.872s\\n\"}\n{\"Time\":\"2026-09-06T22:19:27.265819-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Elapsed\":24.872}\n",
+  "input_hashes": {
+    "baseline.go": "3adbc066b2ae337d8fbf952389f5fd1724ac49839527f7b8b1bf049e47818c6f",
+    "baseline_test.go": "0b5a80fd74db8e190c30c62dee3fdcfee7b947db7f8a752de4921b59baeb4bfc",
+    "client.go": "3d9a84efdc69842aef32598dfc137184c1fb3304e5494762feb29574a5c3e51f",
+    "runtime/runtime.go": "49093f491d2f6870d48a308e84f3c330a3a71fb3bc6ed78981ec9960e4824acd",
+    "runtime/layers.go": "a1ed7bf8b91995601e8e82c0614559c68e7549b6e1a191fdbcd35681435bba43",
+    "runtime/chain_test.go": "1160d1433ba2aae7a93597e6327c7502fb62696c8d367eb56b6b03157551750c",
+    "runtime/layers_test.go": "02be8a70d360c3673d4e701b84fae13531b84658d327e6d75a08683db675b4e2",
+    "runtime/baseline_provenance_test.go": "3e44717555955bf35bdb245e3a45a3279267313020eb4835fdfef73531ffd852",
+    "runtime/migration_catalog.go": "ae71ef5876a6fcef491a4abd332ee68dd6e6ffa95c45d376f432f416b4789648"
+  },
+  "changed_inputs": []
+}

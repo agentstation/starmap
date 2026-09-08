@@ -1,0 +1,782 @@
+$ vitest run
+
+ RUN  v4.1.11 /Users/jack/src/github.com/agentstation/starport-catalog-lifecycle/console
+
+ ❯ src/components/ui/DateField.test.tsx (3 tests | 2 failed) 10681ms
+   × the trigger reads the chosen day, opens the month grid, and a pick closes it 10640ms
+   × a locked field offers no clear control 40ms
+Not implemented: Window's scrollTo() method
+Not implemented: Window's scrollTo() method
+Not implemented: Window's scrollTo() method
+Not implemented: Window's scrollTo() method
+Not implemented: Window's scrollTo() method
+Not implemented: Window's scrollTo() method
+Not implemented: Window's scrollTo() method
+Not implemented: Window's scrollTo() method
+Not implemented: Window's scrollTo() method
+Not implemented: Window's scrollTo() method
+Not implemented: Window's scrollTo() method
+Not implemented: Window's scrollTo() method
+Not implemented: Window's scrollTo() method
+Not implemented: Window's scrollTo() method
+Not implemented: Window's scrollTo() method
+Not implemented: Window's scrollTo() method
+Not implemented: Window's scrollTo() method
+Not implemented: Window's scrollTo() method
+Not implemented: Window's scrollTo() method
+Not implemented: Window's scrollTo() method
+Not implemented: Window's scrollTo() method
+Not implemented: Window's scrollTo() method
+Not implemented: Window's scrollTo() method
+Not implemented: Window's scrollTo() method
+Not implemented: Window's scrollTo() method
+Not implemented: Window's scrollTo() method
+Not implemented: Window's scrollTo() method
+Not implemented: Window's scrollTo() method
+Not implemented: Window's scrollTo() method
+Not implemented: Window's scrollTo() method
+Not implemented: Window's scrollTo() method
+Not implemented: Window's scrollTo() method
+ ❯ src/routes/smallScreen.test.tsx (3 tests | 1 failed) 2796ms
+   × a 375 px screen gets a top bar whose trigger opens the navigation sheet 1539ms
+Not implemented: Window's scrollTo() method
+Not implemented: Window's scrollTo() method
+Not implemented: Window's scrollTo() method
+Not implemented: Window's scrollTo() method
+Not implemented: Window's scrollTo() method
+Not implemented: Window's scrollTo() method
+Not implemented: Window's scrollTo() method
+Not implemented: Window's scrollTo() method
+Not implemented: Window's scrollTo() method
+Not implemented: Window's scrollTo() method
+ ❯ src/routes/usage.test.tsx (2 tests | 1 failed) 4122ms
+     × exports the filtered listing as NDJSON through the admin export route 1571ms
+Not implemented: Window's scrollTo() method
+Not implemented: Window's scrollTo() method
+Not implemented: Window's scrollTo() method
+Not implemented: Window's scrollTo() method
+(node:11128) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:11127) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+Not implemented: Window's scrollTo() method
+ ❯ src/components/palette/CommandPalette.test.tsx (7 tests | 1 failed) 2573ms
+   × ⌘K opens the palette and keyboard-only traversal navigates 1328ms
+Not implemented: Window's scrollTo() method
+Not implemented: Window's scrollTo() method
+Not implemented: Window's scrollTo() method
+Not implemented: Window's scrollTo() method
+Not implemented: Window's scrollTo() method
+Not implemented: Window's scrollTo() method
+Not implemented: Window's scrollTo() method
+Not implemented: Window's scrollTo() method
+Not implemented: Window's scrollTo() method
+Not implemented: Window's scrollTo() method
+Not implemented: Window's scrollTo() method
+Not implemented: Window's scrollTo() method
+Not implemented: Window's scrollTo() method
+Not implemented: Window's scrollTo() method
+Not implemented: Window's scrollTo() method
+Not implemented: Window's scrollTo() method
+Not implemented: Window's scrollTo() method
+Not implemented: Window's scrollTo() method
+Not implemented: Window's scrollTo() method
+Not implemented: Window's scrollTo() method
+Not implemented: Window's scrollTo() method
+Not implemented: Window's scrollTo() method
+Not implemented: Window's scrollTo() method
+Not implemented: navigation to another Document
+Not implemented: Window's scrollTo() method
+Not implemented: Window's scrollTo() method
+Not implemented: Window's scrollTo() method
+Not implemented: Window's scrollTo() method
+Not implemented: Window's scrollTo() method
+Not implemented: Window's scrollTo() method
+Not implemented: Window's scrollTo() method
+Not implemented: Window's scrollTo() method
+Not implemented: Window's scrollTo() method
+Not implemented: Window's scrollTo() method
+Not implemented: Window's scrollTo() method
+Not implemented: Window's scrollTo() method
+Not implemented: Window's scrollTo() method
+Not implemented: Window's scrollTo() method
+Not implemented: Window's scrollTo() method
+Not implemented: Window's scrollTo() method
+Not implemented: Window's scrollTo() method
+Not implemented: Window's scrollTo() method
+Not implemented: Window's scrollTo() method
+(node:14212) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+Not implemented: Window's scrollTo() method
+(node:14249) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:14376) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 5 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/routes/smallScreen.test.tsx > a 375 px screen gets a top bar whose trigger opens the navigation sheet
+TestingLibraryElementError: Unable to find role="button" and name "Open navigation"
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<div[39m
+      [33mclass[39m=[32m"flex min-h-screen bg-bg-canvas text-text-1 flex-col"[39m
+    [36m>[39m
+      [36m<a[39m
+        [33mclass[39m=[32m"sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-sm focus:border focus:border-border-2 focus:bg-bg-raised focus:px-3 focus:py-2 focus:text-sm focus:text-text-1"[39m
+        [33mhref[39m=[32m"#main"[39m
+      [36m>[39m
+        [0mSkip to content[0m
+      [36m</a>[39m
+      [36m<header[39m
+        [33mclass[39m=[32m"h-12 shrink-0 border-b border-border-1 bg-bg-panel"[39m
+      [36m/>[39m
+      [36m<main[39m
+        [33mclass[39m=[32m"min-w-0 flex-1 transition-[margin] duration-150 ease-standard "[39m
+        [33mid[39m=[32m"main"[39m
+        [33mstyle[39m=[32m"--app-banner: 3rem;"[39m
+        [33mtabindex[39m=[32m"-1"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"mx-auto max-w-[1280px] px-4 pt-6 pb-6 sm:px-8 sm:pt-2 sm:pb-8"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"flex flex-col gap-4"[39m
+          [36m>[39m
+            [36m<div>[39m
+              [36m<h1[39m
+                [33mclass[39m=[32m"text-xl font-semibold tracking-[-0.01em]"[39m
+              [36m>[39m
+                [0mModels[0m
+              [36m</h1>[39m
+              [36m<p[39m
+                [33mclass[39m=[32m"mt-1 text-sm text-text-3"[39m
+              [36m>[39m
+                [0mEvery model this gateway can route, from the current Starmap snapshot.[0m
+              [36m</p>[39m
+            [36m</div>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"flex flex-wrap items-center gap-2"[39m
+            [36m>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"relative"[39m
+              [36m>[39m
+                [36m<svg[39m
+                  [33maria-hidden[39m=[32m"true"[39m
+                  [33mclass[39m=[32m"lucide lucide-search pointer-events-none absolute left-2.5 top-1/2 size-3.5 -translate-y-1/2 text-text-4"[39m
+                  [33mfill[39m=[32m"none"[39m
+                  [33mheight[39m=[32m"24"[39m
+                  [33mstroke[39m=[32m"currentColor"[39m
+                  [33mstroke-linecap[39m=[32m"round"[39m
+                  [33mstroke-linejoin[39m=[32m"round"[39m
+                  [33mstroke-width[39m=[32m"2"[39m
+                  [33mviewBox[39m=[32m"0 0 24 24"[39m
+                  [33mwidth[39m=[32m"24"[39m
+                  [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"[39m
+                [36m>[39m
+                  [36m<path[39m
+                    [33md[39m=[32m"m21 21-4.34-4.34"[39m
+                  [36m/>[39m
+                  [36m<circle[39m
+                    [33mcx[39m=[32m"11"[39m
+                    [33mcy[39m=[32m"11"[39m
+                    [33mr[39m=[32m"8"[39m
+                  [36m/>[39m
+                [36m</svg>[39m
+                [36m<input[39m
+                  [33maria-label[39m=[32m"Search models"[39m
+                  [33mclass[39m=[32m"h-8 w-64 rounded-sm border border-border-1 bg-bg-panel pl-8 pr-2 text-sm text-text-1 outline-none transition-colors duration-150 ease-standard placeholder:text-text-4 hover:border-border-2 focus-visible:border-accent"[39m
+                  [33mplaceholder[39m=[32m"Search models  /"[39m
+                  [33mtype[39m=[32m"search"[39m
+                  [33mvalue[39m=[32m""[39m
+                [36m/>[39m
+              [36m</div>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"flex h-8 max-w-56 items-center rounded-sm border text-xs transition-colors duration-150 ease-standard border-border-1 bg-bg-panel text-text-2 hover:border-border-2"[39m
+              [36m>[39m
+                [36m<button[39m
+                  [33maria-expanded[39m=[32m"false"[39m
+                  [33maria-haspopup[39m=[32m"dialog"[39m
+                  [33mclass[39m=[32m"flex h-full min-w-0 items-center gap-1.5 rounded-sm px-2.5 outline-none focus-visible:ring-2 focus-visible:ring-accent/50"[39m
+                  [33mdata-base-ui-click-trigger[39m=[32m""[39m
+                  [33mdata-slot[39m=[32m"popover-trigger"[39m
+                  [33mid[39m=[32m"base-ui-_r_1_"[39m
+                  [33mtabindex[39m=[32m"0"[39m
+                  [33mtype[39m=[32m"button"[39m
+                [36m>[39m
+                  [36m<span[39m
+                    [33mclass[39m=[32m"truncate"[39m
+                  [36m>[39m
+                    [0mProvider[0m
+                  [36m</span>[39m
+                  [36m<svg[39m
+                    [33maria-hidden[39m=[32m"true"[39m
+                    [33mclass[39m=[32m"lucide lucide-chevron-down size-3.5 shrink-0 text-text-3"[39m
+                    [33mfill[39m=[32m"none"[39m
+                    [33mheight[39m=[32m"24"[39m
+                    [33mstroke[39m=[32m"currentColor"[39m
+                    [33mstroke-linecap[39m=[32m"round"[39m
+                    [33mstroke-linejoin[39m=[32m"round"[39m
+                    [33mstroke-width[39m=[32m"2"[39m
+                    [33mviewBox[39m=[32m"0 0 24 24"[39m
+                    [33mwidth[39m=[32m"24"[39m
+                    [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"[39m
+                  [36m>[39m
+                    [36m<path[39m
+                      [33md[39m=[32m"m6 9 6 6 6-6"[39m
+                    [36m/>[39m
+                  [36m</svg>[39m
+                [36m</button>[39m
+              [36m</div>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"flex h-8 max-w-56 items-center rounded-sm border text-xs transition-colors duration-150 ease-standard border-border-1 bg-bg-panel text-text-2 hover:border-border-2"[39m
+              [36m>[39m
+                [36m<button[39m
+                  [33maria-expanded[39m=[32m"false"[39m
+                  [33maria-haspopup[39m=[32m"dialog"[39m
+                  [33mclass[39m=[32m"flex h-full min-w-0 items-center gap-1.5 rounded-sm px-2.5 outline-none focus-visible:ring-2 focus-visible:ring-accent/50"[39m
+                  [33mdata-base-ui-click-trigger[39m=[32m""[39m
+                  [33mdata-slot[39m=[32m"popover-trigger"[39m
+                  [33mid[39m=[32m"base-ui-_r_3_"[39m
+                  [33mtabindex[39m=[32m"0"[39m
+                  [33mtype[39m=[32m"button"[39m
+                [36m>[39m
+                  [36m<span[39m
+                    [33mclass[39m=[32m"truncate"[39m
+                  [36m>[39m
+                    [0mAuthor[0m
+                  [36m</span>[39m
+                  [36m<svg[39m
+                    [33maria-hidden[39m=[32m"true"[39m
+                    [33mclass[39m=[32m"lucide lucide-...
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<div[39m
+      [33mclass[39m=[32m"flex min-h-screen bg-bg-canvas text-text-1 flex-col"[39m
+    [36m>[39m
+      [36m<a[39m
+        [33mclass[39m=[32m"sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-sm focus:border focus:border-border-2 focus:bg-bg-raised focus:px-3 focus:py-2 focus:text-sm focus:text-text-1"[39m
+        [33mhref[39m=[32m"#main"[39m
+      [36m>[39m
+        [0mSkip to content[0m
+      [36m</a>[39m
+      [36m<header[39m
+        [33mclass[39m=[32m"h-12 shrink-0 border-b border-border-1 bg-bg-panel"[39m
+      [36m/>[39m
+      [36m<main[39m
+        [33mclass[39m=[32m"min-w-0 flex-1 transition-[margin] duration-150 ease-standard "[39m
+        [33mid[39m=[32m"main"[39m
+        [33mstyle[39m=[32m"--app-banner: 3rem;"[39m
+        [33mtabindex[39m=[32m"-1"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"mx-auto max-w-[1280px] px-4 pt-6 pb-6 sm:px-8 sm:pt-2 sm:pb-8"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"flex flex-col gap-4"[39m
+          [36m>[39m
+            [36m<div>[39m
+              [36m<h1[39m
+                [33mclass[39m=[32m"text-xl font-semibold tracking-[-0.01em]"[39m
+              [36m>[39m
+                [0mModels[0m
+              [36m</h1>[39m
+              [36m<p[39m
+                [33mclass[39m=[32m"mt-1 text-sm text-text-3"[39m
+              [36m>[39m
+                [0mEvery model this gateway can route, from the current Starmap snapshot.[0m
+              [36m</p>[39m
+            [36m</div>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"flex flex-wrap items-center gap-2"[39m
+            [36m>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"relative"[39m
+              [36m>[39m
+                [36m<svg[39m
+                  [33maria-hidden[39m=[32m"true"[39m
+                  [33mclass[39m=[32m"lucide lucide-search pointer-events-none absolute left-2.5 top-1/2 size-3.5 -translate-y-1/2 text-text-4"[39m
+                  [33mfill[39m=[32m"none"[39m
+                  [33mheight[39m=[32m"24"[39m
+                  [33mstroke[39m=[32m"currentColor"[39m
+                  [33mstroke-linecap[39m=[32m"round"[39m
+                  [33mstroke-linejoin[39m=[32m"round"[39m
+                  [33mstroke-width[39m=[32m"2"[39m
+                  [33mviewBox[39m=[32m"0 0 24 24"[39m
+                  [33mwidth[39m=[32m"24"[39m
+                  [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"[39m
+                [36m>[39m
+                  [36m<path[39m
+                    [33md[39m=[32m"m21 21-4.34-4.34"[39m
+                  [36m/>[39m
+                  [36m<circle[39m
+                    [33mcx[39m=[32m"11"[39m
+                    [33mcy[39m=[32m"11"[39m
+                    [33mr[39m=[32m"8"[39m
+                  [36m/>[39m
+                [36m</svg>[39m
+                [36m<input[39m
+                  [33maria-label[39m=[32m"Search models"[39m
+                  [33mclass[39m=[32m"h-8 w-64 rounded-sm border border-border-1 bg-bg-panel pl-8 pr-2 text-sm text-text-1 outline-none transition-colors duration-150 ease-standard placeholder:text-text-4 hover:border-border-2 focus-visible:border-accent"[39m
+                  [33mplaceholder[39m=[32m"Search models  /"[39m
+                  [33mtype[39m=[32m"search"[39m
+                  [33mvalue[39m=[32m""[39m
+                [36m/>[39m
+              [36m</div>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"flex h-8 max-w-56 items-center rounded-sm border text-xs transition-colors duration-150 ease-standard border-border-1 bg-bg-panel text-text-2 hover:border-border-2"[39m
+              [36m>[39m
+                [36m<button[39m
+                  [33maria-expanded[39m=[32m"false"[39m
+                  [33maria-haspopup[39m=[32m"dialog"[39m
+                  [33mclass[39m=[32m"flex h-full min-w-0 items-center gap-1.5 rounded-sm px-2.5 outline-none focus-visible:ring-2 focus-visible:ring-accent/50"[39m
+                  [33mdata-base-ui-click-trigger[39m=[32m""[39m
+                  [33mdata-slot[39m=[32m"popover-trigger"[39m
+                  [33mid[39m=[32m"base-ui-_r_1_"[39m
+                  [33mtabindex[39m=[32m"0"[39m
+                  [33mtype[39m=[32m"button"[39m
+                [36m>[39m
+                  [36m<span[39m
+                    [33mclass[39m=[32m"truncate"[39m
+                  [36m>[39m
+                    [0mProvider[0m
+                  [36m</span>[39m
+                  [36m<svg[39m
+                    [33maria-hidden[39m=[32m"true"[39m
+                    [33mclass[39m=[32m"lucide lucide-chevron-down size-3.5 shrink-0 text-text-3"[39m
+                    [33mfill[39m=[32m"none"[39m
+                    [33mheight[39m=[32m"24"[39m
+                    [33mstroke[39m=[32m"currentColor"[39m
+                    [33mstroke-linecap[39m=[32m"round"[39m
+                    [33mstroke-linejoin[39m=[32m"round"[39m
+                    [33mstroke-width[39m=[32m"2"[39m
+                    [33mviewBox[39m=[32m"0 0 24 24"[39m
+                    [33mwidth[39m=[32m"24"[39m
+                    [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"[39m
+                  [36m>[39m
+                    [36m<path[39m
+                      [33md[39m=[32m"m6 9 6 6 6-6"[39m
+                    [36m/>[39m
+                  [36m</svg>[39m
+                [36m</button>[39m
+              [36m</div>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"flex h-8 max-w-56 items-center rounded-sm border text-xs transition-colors duration-150 ease-standard border-border-1 bg-bg-panel text-text-2 hover:border-border-2"[39m
+              [36m>[39m
+                [36m<button[39m
+                  [33maria-expanded[39m=[32m"false"[39m
+                  [33maria-haspopup[39m=[32m"dialog"[39m
+                  [33mclass[39m=[32m"flex h-full min-w-0 items-center gap-1.5 rounded-sm px-2.5 outline-none focus-visible:ring-2 focus-visible:ring-accent/50"[39m
+                  [33mdata-base-ui-click-trigger[39m=[32m""[39m
+                  [33mdata-slot[39m=[32m"popover-trigger"[39m
+                  [33mid[39m=[32m"base-ui-_r_3_"[39m
+                  [33mtabindex[39m=[32m"0"[39m
+                  [33mtype[39m=[32m"button"[39m
+                [36m>[39m
+                  [36m<span[39m
+                    [33mclass[39m=[32m"truncate"[39m
+                  [36m>[39m
+                    [0mAuthor[0m
+                  [36m</span>[39m
+                  [36m<svg[39m
+                    [33maria-hidden[39m=[32m"true"[39m
+                    [33mclass[39m=[32m"lucide lucide-...
+ ❯ waitForWrapper node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/wait-for.js:163:27
+ ❯ node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/query-helpers.js:86:33
+ ❯ src/routes/smallScreen.test.tsx:50:32
+     48|   await import("@/components/shell/SmallScreenNav");
+     49|   openConsole("/models");
+     50|   const trigger = await screen.findByRole("button", { name: "Open navi…
+       |                                ^
+     51|   expect(screen.queryByRole("navigation", { name: "Console" })).toBeNu…
+     52|   fireEvent.click(trigger);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/5]⎯
+
+ FAIL  src/routes/usage.test.tsx > usage page > exports the filtered listing as NDJSON through the admin export route
+TestingLibraryElementError: Unable to find an element with the text: /requests · all keys/. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<div[39m
+      [33mclass[39m=[32m"flex min-h-screen bg-bg-canvas text-text-1 "[39m
+    [36m>[39m
+      [36m<a[39m
+        [33mclass[39m=[32m"sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-sm focus:border focus:border-border-2 focus:bg-bg-raised focus:px-3 focus:py-2 focus:text-sm focus:text-text-1"[39m
+        [33mhref[39m=[32m"#main"[39m
+      [36m>[39m
+        [0mSkip to content[0m
+      [36m</a>[39m
+      [36m<aside[39m
+        [33mclass[39m=[32m"fixed inset-y-0 left-0 flex flex-col border-r border-border-1 bg-bg-panel transition-[width] duration-150 ease-standard w-60"[39m
+        [33mid[39m=[32m"console-sidebar"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"flex h-14 items-center gap-2.5 px-4"[39m
+        [36m>[39m
+          [36m<svg[39m
+            [33maria-hidden[39m=[32m"true"[39m
+            [33mclass[39m=[32m"size-5 text-accent"[39m
+            [33mviewBox[39m=[32m"0 0 24 24"[39m
+          [36m>[39m
+            [36m<path[39m
+              [33md[39m=[32m"M12 1l2.4 7.2L22 10l-7.6 1.8L12 19l-2.4-7.2L2 10l7.6-1.8z"[39m
+              [33mfill[39m=[32m"currentColor"[39m
+            [36m/>[39m
+          [36m</svg>[39m
+          [36m<span[39m
+            [33mclass[39m=[32m"text-sm font-semibold tracking-[0.08em]"[39m
+          [36m>[39m
+            [0mSTARPORT[0m
+          [36m</span>[39m
+        [36m</div>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"px-2 pt-2"[39m
+        [36m>[39m
+          [36m<button[39m
+            [33mclass[39m=[32m"flex h-9 w-full items-center gap-2.5 rounded-sm border border-border-1 bg-bg-raised px-3 text-text-4 transition-colors duration-150 ease-standard hover:border-border-2 hover:text-text-2 "[39m
+            [33mtype[39m=[32m"button"[39m
+          [36m>[39m
+            [36m<svg[39m
+              [33maria-hidden[39m=[32m"true"[39m
+              [33mclass[39m=[32m"lucide lucide-search size-4 shrink-0"[39m
+              [33mfill[39m=[32m"none"[39m
+              [33mheight[39m=[32m"24"[39m
+              [33mstroke[39m=[32m"currentColor"[39m
+              [33mstroke-linecap[39m=[32m"round"[39m
+              [33mstroke-linejoin[39m=[32m"round"[39m
+              [33mstroke-width[39m=[32m"2"[39m
+              [33mviewBox[39m=[32m"0 0 24 24"[39m
+              [33mwidth[39m=[32m"24"[39m
+              [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"[39m
+            [36m>[39m
+              [36m<path[39m
+                [33md[39m=[32m"m21 21-4.34-4.34"[39m
+              [36m/>[39m
+              [36m<circle[39m
+                [33mcx[39m=[32m"11"[39m
+                [33mcy[39m=[32m"11"[39m
+                [33mr[39m=[32m"8"[39m
+              [36m/>[39m
+            [36m</svg>[39m
+            [36m<span[39m
+              [33mclass[39m=[32m"text-sm"[39m
+            [36m>[39m
+              [0mSearch[0m
+            [36m</span>[39m
+            [36m<kbd[39m
+              [33mclass[39m=[32m"ml-auto rounded-xs border border-border-1 px-1.5 py-0.5 font-sans text-[10px] tracking-[0.08em]"[39m
+            [36m>[39m
+              [0m⌘ K[0m
+            [36m</kbd>[39m
+          [36m</button>[39m
+        [36m</div>[39m
+        [36m<nav[39m
+          [33maria-label[39m=[32m"Console"[39m
+          [33mclass[39m=[32m"flex flex-1 flex-col px-2 pt-2"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"flex flex-col gap-0.5"[39m
+          [36m>[39m
+            [36m<a[39m
+              [33mclass[39m=[32m"relative flex h-9 items-center gap-2.5 rounded-sm px-3 text-base font-medium transition-colors duration-150 ease-standard  text-text-3 hover:bg-bg-hover hover:text-text-2"[39m
+              [33mhref[39m=[32m"/"[39m
+            [36m>[39m
+              [36m<svg[39m
+                [33maria-hidden[39m=[32m"true"[39m
+                [33mclass[39m=[32m"lucide lucide-layout-dashboard size-4 shrink-0"[39m
+                [33mfill[39m=[32m"none"[39m
+                [33mheight[39m=[32m"24"[39m
+                [33mstroke[39m=[32m"currentColor"[39m
+                [33mstroke-linecap[39m=[32m"round"[39m
+                [33mstroke-linejoin[39m=[32m"round"[39m
+                [33mstroke-width[39m=[32m"2"[39m
+                [33mviewBox[39m=[32m"0 0 24 24"[39m
+                [33mwidth[39m=[32m"24"[39m
+                [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"[39m
+              [36m>[39m
+                [36m<rect[39m
+                  [33mheight[39m=[32m"9"[39m
+                  [33mrx[39m=[32m"1"[39m
+                  [33mwidth[39m=[32m"7"[39m
+                  [33mx[39m=[32m"3"[39m
+                  [33my[39m=[32m"3"[39m
+                [36m/>[39m
+                [36m<rect[39m
+                  [33mheight[39m=[32m"5"[39m
+                  [33mrx[39m=[32m"1"[39m
+                  [33mwidth[39m=[32m"7"[39m
+                  [33mx[39m=[32m"14"[39m
+                  [33my[39m=[32m"3"[39m
+                [36m/>[39m
+                [36m<rect[39m
+                  [33mheight[39m=[32m"9"[39m
+                  [33mrx[39m=[32m"1"[39m
+                  [33mwidth[39m=[32m"7"[39m
+                  [33mx[39m=[32m"14"[39m
+                  [33my[39m=[32m"12"[39m
+                [36m/>[39m
+                [36m<rect[39m
+                  [33mheight[39m=[32m"5"[39m
+                  [33mrx[39m=[32m"1"[39m
+                  [33mwidth[39m=[32m"7"[39m
+                  [33mx[39m=[32m"3"[39m
+                  [33my[39m=[32m"16"[39m
+                [36m/>[39m
+              [36m</svg>[39m
+              [36m<span>[39m
+                [0mOverview[0m
+              [36m</span>[39m
+            [36m</a>[39m
+            [36m<a[39m
+              [33mclass[39m=[32m"relative flex h-9 items-center gap-2.5 rounded-sm px-3 text-base font-medium transition-colors duration-150 ease-standard  text-text-3 hover:bg-bg-hover hover:text-text-2"[39m
+              [33mhref[39m=[32m"/chat"[39m
+            [36m>[39m
+              [36m<svg[39m
+                [33maria-hidden[39m=[32m"true"[39m
+                [33mclass[39m=[32m"lucide lucide-message-square size-4 shrink-0"[39m
+                [33mfill[39m=[32m"none"[39m
+                [33mheight[39m=[32m"24"[39m
+                [33mstroke[39m=[32m"currentColor"[39m
+                [33mstroke-linecap[39m=[32m"round"[39m
+                [33mstroke-linejoin[39m=[32m"round"[39m
+                [33mstroke-width[39m=[32m"2"[39m
+                [33mviewBox[39m=[32m"0 0 24 24"[39m
+                [33mwidth[39m=[32m"24"[39m
+                [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"[39m
+              [...
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<div[39m
+      [33mclass[39m=[32m"flex min-h-screen bg-bg-canvas text-text-1 "[39m
+    [36m>[39m
+      [36m<a[39m
+        [33mclass[39m=[32m"sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-sm focus:border focus:border-border-2 focus:bg-bg-raised focus:px-3 focus:py-2 focus:text-sm focus:text-text-1"[39m
+        [33mhref[39m=[32m"#main"[39m
+      [36m>[39m
+        [0mSkip to content[0m
+      [36m</a>[39m
+      [36m<aside[39m
+        [33mclass[39m=[32m"fixed inset-y-0 left-0 flex flex-col border-r border-border-1 bg-bg-panel transition-[width] duration-150 ease-standard w-60"[39m
+        [33mid[39m=[32m"console-sidebar"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"flex h-14 items-center gap-2.5 px-4"[39m
+        [36m>[39m
+          [36m<svg[39m
+            [33maria-hidden[39m=[32m"true"[39m
+            [33mclass[39m=[32m"size-5 text-accent"[39m
+            [33mviewBox[39m=[32m"0 0 24 24"[39m
+          [36m>[39m
+            [36m<path[39m
+              [33md[39m=[32m"M12 1l2.4 7.2L22 10l-7.6 1.8L12 19l-2.4-7.2L2 10l7.6-1.8z"[39m
+              [33mfill[39m=[32m"currentColor"[39m
+            [36m/>[39m
+          [36m</svg>[39m
+          [36m<span[39m
+            [33mclass[39m=[32m"text-sm font-semibold tracking-[0.08em]"[39m
+          [36m>[39m
+            [0mSTARPORT[0m
+          [36m</span>[39m
+        [36m</div>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"px-2 pt-2"[39m
+        [36m>[39m
+          [36m<button[39m
+            [33mclass[39m=[32m"flex h-9 w-full items-center gap-2.5 rounded-sm border border-border-1 bg-bg-raised px-3 text-text-4 transition-colors duration-150 ease-standard hover:border-border-2 hover:text-text-2 "[39m
+            [33mtype[39m=[32m"button"[39m
+          [36m>[39m
+            [36m<svg[39m
+              [33maria-hidden[39m=[32m"true"[39m
+              [33mclass[39m=[32m"lucide lucide-search size-4 shrink-0"[39m
+              [33mfill[39m=[32m"none"[39m
+              [33mheight[39m=[32m"24"[39m
+              [33mstroke[39m=[32m"currentColor"[39m
+              [33mstroke-linecap[39m=[32m"round"[39m
+              [33mstroke-linejoin[39m=[32m"round"[39m
+              [33mstroke-width[39m=[32m"2"[39m
+              [33mviewBox[39m=[32m"0 0 24 24"[39m
+              [33mwidth[39m=[32m"24"[39m
+              [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"[39m
+            [36m>[39m
+              [36m<path[39m
+                [33md[39m=[32m"m21 21-4.34-4.34"[39m
+              [36m/>[39m
+              [36m<circle[39m
+                [33mcx[39m=[32m"11"[39m
+                [33mcy[39m=[32m"11"[39m
+                [33mr[39m=[32m"8"[39m
+              [36m/>[39m
+            [36m</svg>[39m
+            [36m<span[39m
+              [33mclass[39m=[32m"text-sm"[39m
+            [36m>[39m
+              [0mSearch[0m
+            [36m</span>[39m
+            [36m<kbd[39m
+              [33mclass[39m=[32m"ml-auto rounded-xs border border-border-1 px-1.5 py-0.5 font-sans text-[10px] tracking-[0.08em]"[39m
+            [36m>[39m
+              [0m⌘ K[0m
+            [36m</kbd>[39m
+          [36m</button>[39m
+        [36m</div>[39m
+        [36m<nav[39m
+          [33maria-label[39m=[32m"Console"[39m
+          [33mclass[39m=[32m"flex flex-1 flex-col px-2 pt-2"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"flex flex-col gap-0.5"[39m
+          [36m>[39m
+            [36m<a[39m
+              [33mclass[39m=[32m"relative flex h-9 items-center gap-2.5 rounded-sm px-3 text-base font-medium transition-colors duration-150 ease-standard  text-text-3 hover:bg-bg-hover hover:text-text-2"[39m
+              [33mhref[39m=[32m"/"[39m
+            [36m>[39m
+              [36m<svg[39m
+                [33maria-hidden[39m=[32m"true"[39m
+                [33mclass[39m=[32m"lucide lucide-layout-dashboard size-4 shrink-0"[39m
+                [33mfill[39m=[32m"none"[39m
+                [33mheight[39m=[32m"24"[39m
+                [33mstroke[39m=[32m"currentColor"[39m
+                [33mstroke-linecap[39m=[32m"round"[39m
+                [33mstroke-linejoin[39m=[32m"round"[39m
+                [33mstroke-width[39m=[32m"2"[39m
+                [33mviewBox[39m=[32m"0 0 24 24"[39m
+                [33mwidth[39m=[32m"24"[39m
+                [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"[39m
+              [36m>[39m
+                [36m<rect[39m
+                  [33mheight[39m=[32m"9"[39m
+                  [33mrx[39m=[32m"1"[39m
+                  [33mwidth[39m=[32m"7"[39m
+                  [33mx[39m=[32m"3"[39m
+                  [33my[39m=[32m"3"[39m
+                [36m/>[39m
+                [36m<rect[39m
+                  [33mheight[39m=[32m"5"[39m
+                  [33mrx[39m=[32m"1"[39m
+                  [33mwidth[39m=[32m"7"[39m
+                  [33mx[39m=[32m"14"[39m
+                  [33my[39m=[32m"3"[39m
+                [36m/>[39m
+                [36m<rect[39m
+                  [33mheight[39m=[32m"9"[39m
+                  [33mrx[39m=[32m"1"[39m
+                  [33mwidth[39m=[32m"7"[39m
+                  [33mx[39m=[32m"14"[39m
+                  [33my[39m=[32m"12"[39m
+                [36m/>[39m
+                [36m<rect[39m
+                  [33mheight[39m=[32m"5"[39m
+                  [33mrx[39m=[32m"1"[39m
+                  [33mwidth[39m=[32m"7"[39m
+                  [33mx[39m=[32m"3"[39m
+                  [33my[39m=[32m"16"[39m
+                [36m/>[39m
+              [36m</svg>[39m
+              [36m<span>[39m
+                [0mOverview[0m
+              [36m</span>[39m
+            [36m</a>[39m
+            [36m<a[39m
+              [33mclass[39m=[32m"relative flex h-9 items-center gap-2.5 rounded-sm px-3 text-base font-medium transition-colors duration-150 ease-standard  text-text-3 hover:bg-bg-hover hover:text-text-2"[39m
+              [33mhref[39m=[32m"/chat"[39m
+            [36m>[39m
+              [36m<svg[39m
+                [33maria-hidden[39m=[32m"true"[39m
+                [33mclass[39m=[32m"lucide lucide-message-square size-4 shrink-0"[39m
+                [33mfill[39m=[32m"none"[39m
+                [33mheight[39m=[32m"24"[39m
+                [33mstroke[39m=[32m"currentColor"[39m
+                [33mstroke-linecap[39m=[32m"round"[39m
+                [33mstroke-linejoin[39m=[32m"round"[39m
+                [33mstroke-width[39m=[32m"2"[39m
+                [33mviewBox[39m=[32m"0 0 24 24"[39m
+                [33mwidth[39m=[32m"24"[39m
+                [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"[39m
+              [...
+ ❯ waitForWrapper node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/wait-for.js:163:27
+ ❯ node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/query-helpers.js:86:33
+ ❯ src/routes/usage.test.tsx:60:18
+     58|
+     59|     // The control waits for the listing, so a download never races it…
+     60|     await screen.findByText(/requests · all keys/);
+       |                  ^
+     61|     const button = screen.getByRole("button", { name: "Export NDJSON" …
+     62|     fireEvent.click(button);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/5]⎯
+
+ FAIL  src/components/palette/CommandPalette.test.tsx > ⌘K opens the palette and keyboard-only traversal navigates
+TestingLibraryElementError: Unable to find a label with the text of: Search everything
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div />[39m
+[36m</body>[39m
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div />[39m
+[36m</body>[39m
+ ❯ waitForWrapper node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/wait-for.js:163:27
+ ❯ node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/query-helpers.js:86:33
+ ❯ src/components/palette/CommandPalette.test.tsx:117:30
+    115|
+    116|   fireEvent.keyDown(document, { key: "k", metaKey: true });
+    117|   const input = await screen.findByLabelText("Search everything");
+       |                              ^
+    118|
+    119|   fireEvent.change(input, { target: { value: "gptoss120" } });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/5]⎯
+
+ FAIL  src/components/ui/DateField.test.tsx > the trigger reads the chosen day, opens the month grid, and a pick closes it
+Error: Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+ ❯ src/components/ui/DateField.test.tsx:29:1
+     27| });
+     28|
+     29| test("the trigger reads the chosen day, opens the month grid, and a pi…
+       | ^
+     30|   render(<Harness initial="2026-09-30" />);
+     31|   const trigger = screen.getByRole("button", { name: /Sep 30, 2026/ });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/5]⎯
+
+ FAIL  src/components/ui/DateField.test.tsx > a locked field offers no clear control
+TestingLibraryElementError: Unable to find an accessible element with the role "button" and name "Clear date"
+
+There are no accessible roles. But there might be some inaccessible roles. If you wish to access them, then set the `hidden` option to `true`. Learn more about this here: https://testing-library.com/docs/dom-testing-library/api-queries#byrole
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div />[39m
+[36m</body>[39m
+ ❯ Object.getElementError node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/config.js:37:19
+ ❯ node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/query-helpers.js:76:38
+ ❯ node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/query-helpers.js:52:17
+ ❯ node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/query-helpers.js:95:19
+ ❯ src/components/ui/DateField.test.tsx:54:26
+     52|   cleanup();
+     53|   render(<Harness initial="2026-09-30" />);
+     54|   fireEvent.click(screen.getByRole("button", { name: "Clear date" }));
+       |                          ^
+     55|   expect(screen.getByTestId("value").textContent).toBe("");
+     56|   expect(screen.getByRole("button", { name: /Never/ })).toBeTruthy();
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/5]⎯
+
+
+ Test Files  4 failed | 66 passed (70)
+      Tests  5 failed | 439 passed (444)
+   Start at  23:26:49
+   Duration  46.06s (transform 46.72s, setup 2.62s, import 220.91s, tests 111.36s, environment 129.77s)
+
+[ELIFECYCLE] Test failed. See above for more details.

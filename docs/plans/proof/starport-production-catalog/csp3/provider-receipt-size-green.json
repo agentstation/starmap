@@ -1,0 +1,32 @@
+[
+  {
+    "command": [
+      "env",
+      "GOTOOLCHAIN=go1.25.12",
+      "go",
+      "test",
+      "-json",
+      "-race",
+      "-count=1",
+      "-timeout=2m",
+      "./runtime",
+      "-run",
+      "^TestProviderReceiptOversizedBatchChangesNoEvidence$"
+    ],
+    "exit_code": 0,
+    "output": "{\"Time\":\"2026-09-06T20:01:28.969079-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starmap/runtime\"}\n{\"Time\":\"2026-09-06T20:01:29.404631-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Test\":\"TestProviderReceiptOversizedBatchChangesNoEvidence\"}\n{\"Time\":\"2026-09-06T20:01:29.404705-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Test\":\"TestProviderReceiptOversizedBatchChangesNoEvidence\",\"Output\":\"=== RUN   TestProviderReceiptOversizedBatchChangesNoEvidence\\n\"}\n{\"Time\":\"2026-09-06T20:01:30.363698-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Test\":\"TestProviderReceiptOversizedBatchChangesNoEvidence\",\"Output\":\"--- PASS: TestProviderReceiptOversizedBatchChangesNoEvidence (0.96s)\\n\"}\n{\"Time\":\"2026-09-06T20:01:30.363716-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Test\":\"TestProviderReceiptOversizedBatchChangesNoEvidence\",\"Elapsed\":0.96}\n{\"Time\":\"2026-09-06T20:01:30.36405-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Output\":\"PASS\\n\"}\n{\"Time\":\"2026-09-06T20:01:31.410132-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Output\":\"ok  \\tgithub.com/agentstation/starmap/runtime\\t2.441s\\n\"}\n{\"Time\":\"2026-09-06T20:01:31.410153-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Elapsed\":2.441}\n"
+  },
+  {
+    "command": [
+      "go",
+      "tool",
+      "ago",
+      "-stale-ignores",
+      "-format",
+      "json",
+      "./..."
+    ],
+    "exit_code": 0,
+    "output": "{\n  \"schemaVersion\": 1,\n  \"version\": \"v0.2.0\",\n  \"rules\": [\n    \"no-dot-import\",\n    \"no-generic-methods\",\n    \"no-goto\",\n    \"no-invalid-ignore\",\n    \"no-naked-return\",\n    \"no-new-expr\",\n    \"no-self-referential-constraints\"\n  ],\n  \"findings\": [],\n  \"staleIgnores\": [],\n  \"errors\": []\n}\n"
+  }
+]

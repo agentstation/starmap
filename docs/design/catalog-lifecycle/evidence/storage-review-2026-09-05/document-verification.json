@@ -1,0 +1,272 @@
+{
+  "verdict": "PASS",
+  "source_references": [
+    {
+      "reference": "sp-paths",
+      "repository": "starport",
+      "path": "internal/config/paths.go",
+      "line": 42,
+      "sha256": "523ca18da9df7da2a16bd12a5efa83eb4b78264a52ad0dc1ba28403d91b387c1"
+    },
+    {
+      "reference": "sp-state",
+      "repository": "starport",
+      "path": "internal/config/catalog.go",
+      "line": 231,
+      "sha256": "46d23c13e45efcbecb6bf076f9731c24fab894f08794ad993978465eb6fe0196"
+    },
+    {
+      "reference": "sp-app",
+      "repository": "starport",
+      "path": "internal/app/app.go",
+      "line": 225,
+      "sha256": "743cc88500c495eca58f1295f2f41cd5d741408670be06fecb4a162c18d0ee4a"
+    },
+    {
+      "reference": "sp-sql-migrations",
+      "repository": "starport",
+      "path": "internal/sqlstore/migrations",
+      "line": null,
+      "sha256": "11319c870c3de9bcccab4907fd355d3fca33cac3bfdf94a9407a0c2fb37c4e37"
+    },
+    {
+      "reference": "sp-loader",
+      "repository": "starport",
+      "path": "internal/config/loader.go",
+      "line": 124,
+      "sha256": "4fe60fd1db68a2a4bfe4c2f256b21de853e7b80cc778d49abc33e6249a1b52dc"
+    },
+    {
+      "reference": "sp-storage-config",
+      "repository": "starport",
+      "path": "internal/config/storage.go",
+      "line": 36,
+      "sha256": "99374472de92741f2d73245717c60ad4e0cf5a7eb5a3826f0dd5bb18634465f9"
+    },
+    {
+      "reference": "sp-generations",
+      "repository": "starport",
+      "path": "internal/catalog/generation_store.go",
+      "line": 17,
+      "sha256": "84e26d4befd145f48585d7f8a5ae90d7702be84ec6c881641391e88f49af1968"
+    },
+    {
+      "reference": "sp-lease",
+      "repository": "starport",
+      "path": "internal/catalog/lease.go",
+      "line": 18,
+      "sha256": "c5bcb573ab2cc621c84cfa7591cf6f24815cf46ec69f635d330b2a202271c12f"
+    },
+    {
+      "reference": "sp-blob",
+      "repository": "starport",
+      "path": "internal/blob/filesystem.go",
+      "line": 18,
+      "sha256": "bb713ab35d6f118b2cc90bafe374762aa6c4284edddf2bafcfa99771749f64f2"
+    },
+    {
+      "reference": "sp-files-config",
+      "repository": "starport",
+      "path": "internal/config/files.go",
+      "line": 103,
+      "sha256": "8a790dae4bdddf2ae08bee6d0863acc3061cda542b3bd88bfb2f7b917be135be"
+    },
+    {
+      "reference": "sp-setup",
+      "repository": "starport",
+      "path": "internal/setup/service.go",
+      "line": 406,
+      "sha256": "186cdd6ca1be89d96d67fde4431c0e2ad25287275d2673fd5176a2536007dfa6"
+    },
+    {
+      "reference": "sp-token",
+      "repository": "starport",
+      "path": "internal/localauth/store.go",
+      "line": 16,
+      "sha256": "4b7358b82b92c89c0d93939df07025ee95206aa90f5a1e05af0729c01ee2c27d"
+    },
+    {
+      "reference": "sp-cli",
+      "repository": "starport",
+      "path": "internal/cli/app.go",
+      "line": 217,
+      "sha256": "ee47c7e884a79d9b5382f2fa11dffa5e1e20c790f3f323af9cb14cbdb18caaf4"
+    },
+    {
+      "reference": "sp-dev",
+      "repository": "starport",
+      "path": "internal/app/development.go",
+      "line": 41,
+      "sha256": "5104aa94056516e5f5dd563ed1308cad089a9c6e5cff3bfcc74851fc168b07d0"
+    },
+    {
+      "reference": "sp-authmode",
+      "repository": "starport",
+      "path": "internal/app/app.go",
+      "line": 992,
+      "sha256": "743cc88500c495eca58f1295f2f41cd5d741408670be06fecb4a162c18d0ee4a"
+    },
+    {
+      "reference": "sp-cache-manager",
+      "repository": "starport",
+      "path": "internal/cache/manager.go",
+      "line": 43,
+      "sha256": "2aff4f539f8c01d122451f709d07a5e859a7fe2dd0c2b700780b18679184893a"
+    },
+    {
+      "reference": "sp-cache-compose",
+      "repository": "starport",
+      "path": "internal/app/app.go",
+      "line": 602,
+      "sha256": "743cc88500c495eca58f1295f2f41cd5d741408670be06fecb4a162c18d0ee4a"
+    },
+    {
+      "reference": "sp-hybrid",
+      "repository": "starport",
+      "path": "internal/cache/hybrid.go",
+      "line": 62,
+      "sha256": "a672ef6117762da03a7b76f46603a7caf1e4c40c881245e3f0fefcdaed7a9f4b"
+    },
+    {
+      "reference": "sp-badger",
+      "repository": "starport",
+      "path": "internal/storage/badger.go",
+      "line": 43,
+      "sha256": "d7d7d099276d208bd753259fb9170ed39317b5720295289f7f7871526ac8addb"
+    },
+    {
+      "reference": "sp-valkey",
+      "repository": "starport",
+      "path": "internal/storage/valkey.go",
+      "line": 22,
+      "sha256": "21ffff15c3b046af61919dfee3360077b22b1b0f51ff42455f8e0589c334c952"
+    },
+    {
+      "reference": "sp-sql-open",
+      "repository": "starport",
+      "path": "internal/sqlstore/open.go",
+      "line": 44,
+      "sha256": "58cb5e5440b9f6b236e1112f220c94bf4903e92eb38c3abb9a6a763344b44bda"
+    },
+    {
+      "reference": "sm-defaults",
+      "repository": "starmap",
+      "path": "internal/constants/constants.go",
+      "line": 91,
+      "sha256": "3c0d3cfc8d73d72c84eea510e4598534e9f29653342ae4c2a10f9dad54eea85f"
+    },
+    {
+      "reference": "sm-config",
+      "repository": "starmap",
+      "path": "internal/cli/app/config.go",
+      "line": 56,
+      "sha256": "1fa956d63a8e33afc4ba1c86621031070e09d6b3266a3f84f853cb8444cb058e"
+    },
+    {
+      "reference": "sm-runtime",
+      "repository": "starmap",
+      "path": "internal/cli/app/catalog_runtime.go",
+      "line": 144,
+      "sha256": "2d6fc65625990477e6e4fb70fee51e83924b524dc7642ec0d8b85ec955ee3aaa"
+    },
+    {
+      "reference": "sm-filesystem",
+      "repository": "starmap",
+      "path": "pkg/catalogs/storage/filesystem.go",
+      "line": 20,
+      "sha256": "b9008736159550f6e270eb4d6add28388fb30c432bd3a66c36662a1fd627af9a"
+    },
+    {
+      "reference": "sm-layers",
+      "repository": "starmap",
+      "path": "runtime/layers.go",
+      "line": 18,
+      "sha256": "5ff3d70acc327046a1535e85fa8c88ac66524306e765b3bd6aefe8af7a2a0dfe"
+    },
+    {
+      "reference": "sm-scheduler",
+      "repository": "starmap",
+      "path": "runtime/scheduler.go",
+      "line": 25,
+      "sha256": "919e591e9a0e3cc97b9c678fc34649f8085663db4e4124f6a6949fbca642106e"
+    },
+    {
+      "reference": "sm-github-state",
+      "repository": "starmap",
+      "path": "internal/sources/github/state.go",
+      "line": 15,
+      "sha256": "7245e504adabd89b8f8042cd6896b03c4da359f3ecbf994f27e474ac25bbbdf2"
+    },
+    {
+      "reference": "sm-http",
+      "repository": "starmap",
+      "path": "internal/sources/modelsdev/http_client.go",
+      "line": 90,
+      "sha256": "9b397d606719597fa736d0f25ef9fea81cb1671cc6055f39487669c6313b3377"
+    },
+    {
+      "reference": "sm-git",
+      "repository": "starmap",
+      "path": "internal/sources/modelsdev/git_client.go",
+      "line": 54,
+      "sha256": "6376dc941f827bcaeee0c9aee08e0a185900421400520d039c572bfdb14d7ab8"
+    },
+    {
+      "reference": "sm-server-cache",
+      "repository": "starmap",
+      "path": "internal/server/cache/cache.go",
+      "line": 1,
+      "sha256": "98a8ec209803b791ff6fcd8b2d4ed5e37582ab6269db66a3ec0844ec943c7451"
+    },
+    {
+      "reference": "sp-docker",
+      "repository": "starport",
+      "path": "Dockerfile",
+      "line": 35,
+      "sha256": "5fc96080d6cfd73605fa3fe6bfce7bea6a4eed1fb1725d616574a042f4c46a29"
+    },
+    {
+      "reference": "sp-compose",
+      "repository": "starport",
+      "path": "docker-compose.yml",
+      "line": 1,
+      "sha256": "023d6aded7abdf8d890eb54678b232354fc92a3e851984a6dc3834311bad3fa0"
+    },
+    {
+      "reference": "sm-compose",
+      "repository": "starmap",
+      "path": "docker-compose.yml",
+      "line": 66,
+      "sha256": "eba6a8fd7b973f0fd894ce078fa5dd482026ba0b4ce3a4e96b6e7a7748ef01d4"
+    },
+    {
+      "reference": "sp-credential-references",
+      "repository": "starport",
+      "path": "internal/credentials/reference.go",
+      "line": 15,
+      "sha256": "916e2f61375c51fdd773f7011fee086a38c4589cfaa48091df65200d2d9fc8fa"
+    }
+  ],
+  "source_reference_count": 35,
+  "local_links": [
+    "../../plans/starport-production-catalog-plan.html",
+    "ENGINEERING_SPEC.md",
+    "evidence/storage-review-2026-09-05/local-tests-summary.json",
+    "evidence/storage-review-2026-09-05/local-tests.jsonl"
+  ],
+  "finding_count": 14,
+  "priority_counts": {
+    "P1": 6,
+    "P2": 8
+  },
+  "writing_check": {
+    "command": "make technical-writing-check",
+    "exit_code": 0,
+    "output": "/Users/jack/.agents/skills/technical-writing/scripts/technical-writing glossary check\nPASS: /Users/jack/src/github.com/agentstation/starmap-catalog-requirements/GLOSSARY.md (77 term(s), 0 error(s))\n/Users/jack/.agents/skills/technical-writing/scripts/technical-writing glossary update --check\nPASS: no candidate terms are missing from /Users/jack/src/github.com/agentstation/starmap-catalog-requirements/GLOSSARY.md\n/Users/jack/.agents/skills/technical-writing/scripts/technical-writing lint . --mode strict --format text\nPASS: 750 file(s), 0 diagnostic(s)\n"
+  },
+  "whitespace": "No diagnostics in either worktree or the new report.",
+  "prior_prd_spec_findings_and_plan_hashes_unchanged": true,
+  "product_source_changed": false,
+  "plan_status": "proposed",
+  "report_sha256": "986bdd31ccdf6ce58da585f26e8b5cf244e521aa0309c5cffe382b9ed6f8fa3f"
+}

@@ -1,0 +1,16 @@
+{"Time":"2026-09-06T22:07:52.526759-05:00","Action":"start","Package":"github.com/agentstation/starmap"}
+{"Time":"2026-09-06T22:07:52.526917-05:00","Action":"start","Package":"github.com/agentstation/starmap/runtime"}
+{"Time":"2026-09-06T22:07:52.978232-05:00","Action":"run","Package":"github.com/agentstation/starmap/runtime","Test":"TestRuntimeBaselineExcludesPreviouslyPublishedProviderEvidence"}
+{"Time":"2026-09-06T22:07:52.978302-05:00","Action":"output","Package":"github.com/agentstation/starmap/runtime","Test":"TestRuntimeBaselineExcludesPreviouslyPublishedProviderEvidence","Output":"=== RUN   TestRuntimeBaselineExcludesPreviouslyPublishedProviderEvidence\n"}
+{"Time":"2026-09-06T22:07:53.42637-05:00","Action":"run","Package":"github.com/agentstation/starmap","Test":"TestEmbeddedCatalogStateRemainsIndependentOfStoredCurrent"}
+{"Time":"2026-09-06T22:07:53.426425-05:00","Action":"output","Package":"github.com/agentstation/starmap","Test":"TestEmbeddedCatalogStateRemainsIndependentOfStoredCurrent","Output":"=== RUN   TestEmbeddedCatalogStateRemainsIndependentOfStoredCurrent\n"}
+{"Time":"2026-09-06T22:08:03.249404-05:00","Action":"output","Package":"github.com/agentstation/starmap","Test":"TestEmbeddedCatalogStateRemainsIndependentOfStoredCurrent","Output":"--- PASS: TestEmbeddedCatalogStateRemainsIndependentOfStoredCurrent (9.82s)\n"}
+{"Time":"2026-09-06T22:08:03.25035-05:00","Action":"pass","Package":"github.com/agentstation/starmap","Test":"TestEmbeddedCatalogStateRemainsIndependentOfStoredCurrent","Elapsed":9.82}
+{"Time":"2026-09-06T22:08:03.250913-05:00","Action":"output","Package":"github.com/agentstation/starmap","Output":"PASS\n"}
+{"Time":"2026-09-06T22:08:04.282907-05:00","Action":"output","Package":"github.com/agentstation/starmap","Output":"ok  \tgithub.com/agentstation/starmap\t11.756s\n"}
+{"Time":"2026-09-06T22:08:04.282989-05:00","Action":"pass","Package":"github.com/agentstation/starmap","Elapsed":11.756}
+{"Time":"2026-09-06T22:08:16.187773-05:00","Action":"output","Package":"github.com/agentstation/starmap/runtime","Test":"TestRuntimeBaselineExcludesPreviouslyPublishedProviderEvidence","Output":"--- PASS: TestRuntimeBaselineExcludesPreviouslyPublishedProviderEvidence (23.21s)\n"}
+{"Time":"2026-09-06T22:08:16.187833-05:00","Action":"pass","Package":"github.com/agentstation/starmap/runtime","Test":"TestRuntimeBaselineExcludesPreviouslyPublishedProviderEvidence","Elapsed":23.21}
+{"Time":"2026-09-06T22:08:16.194806-05:00","Action":"output","Package":"github.com/agentstation/starmap/runtime","Output":"PASS\n"}
+{"Time":"2026-09-06T22:08:17.231238-05:00","Action":"output","Package":"github.com/agentstation/starmap/runtime","Output":"ok  \tgithub.com/agentstation/starmap/runtime\t24.704s\n"}
+{"Time":"2026-09-06T22:08:17.231294-05:00","Action":"pass","Package":"github.com/agentstation/starmap/runtime","Elapsed":24.704}

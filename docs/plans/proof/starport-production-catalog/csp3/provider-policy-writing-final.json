@@ -1,0 +1,9 @@
+{
+  "command": [
+    "make",
+    "technical-writing-check"
+  ],
+  "exit_code": 0,
+  "seconds": 36.120035915635526,
+  "output": "/Users/jack/.agents/skills/technical-writing/scripts/technical-writing glossary check\nPASS: /Users/jack/src/github.com/agentstation/starmap-catalog-requirements/GLOSSARY.md (80 term(s), 0 error(s))\n/Users/jack/.agents/skills/technical-writing/scripts/technical-writing glossary update --check\nPASS: no candidate terms are missing from /Users/jack/src/github.com/agentstation/starmap-catalog-requirements/GLOSSARY.md\n/Users/jack/.agents/skills/technical-writing/scripts/technical-writing lint . --mode strict --format text\nPASS: 1047 file(s), 0 diagnostic(s)\n"
+}

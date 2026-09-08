@@ -1,0 +1,33 @@
+{
+  "recorded_at": "2026-09-06T16:27:54.018189+00:00",
+  "repository": "/Users/jack/src/github.com/agentstation/starmap-catalog-requirements",
+  "head": "4780dfea9f7e002ea6eaaa82aa8f52ed0d4cc225",
+  "scope": "File policy descriptors and limited access observations. Native execution and complete enforcement remain unverified.",
+  "files": {
+    "pkg/productpaths/manifest.go": "2fe98247c17b549449848449c3ee92ae1649dd3bdce87c869084b5b37a358747",
+    "pkg/productpaths/access.go": "af4e652e65dba055facc051fe5f41e38eda2ea730a2b9a1863837566e80ec6c4",
+    "pkg/productpaths/access_test.go": "9ceaceada9da85c741511469f1bd49039c7069b131bf873f08ac670d1b16749b",
+    "pkg/productpaths/access_posix_test.go": "0141ebe798b15ecb428f408a381035f58c001af1afc812bf5662c9d28a83eb99",
+    "pkg/productpaths/inspection.go": "be867721c834d0f43abb7514b750601f634a2901dbff47507906430c51b2d270",
+    "pkg/productpaths/inspection_posix.go": "40f94c6d263263c2c06ac99849069368f370817f86c9498306dd494504d35fd1",
+    "pkg/productpaths/inspection_other.go": "7dd0ca95735456dce11006d1d727af319387edec3bd4b89d51119dcb3c651ac5",
+    "internal/cli/app/file_manifest.go": "57733d44db6d6cbea67b91d99101aac547831ec385b710feb21f031bd42eaf7d",
+    "internal/cli/app/file_policy.go": "e59bf362a6702e4ee33de08bb529e2d356e563913dc55378dd8a43b8ae8fd4ad",
+    "internal/cli/app/file_policy_test.go": "4e02cbeea575d4a8f0b1508bc60c71f6e73d7b37c0c1586af2029a3ac0b47c61",
+    "internal/cli/app/product_paths.go": "215176e9eb3754a3526ed22de66fff9da04dc044d43d38f01c663946a39e88b4",
+    "internal/cli/commands/config/command.go": "e69dbed5a38ea121fb9ead66e2a1b51ec27d77a0edb545bc5dd8c19d289f28e3",
+    "internal/cli/commands/config/inspection.go": "dc4396961b320c038d9796038250de1139d9345da1e94c0655368a0f59a90605",
+    "internal/cli/commands/migrate/runtime.go": "aa99e07272335d48a7e814091f818cc65d1e92f86041909e648af00a7b3f1805",
+    "runtime/layers.go": "5ff3d70acc327046a1535e85fa8c88ac66524306e765b3bd6aefe8af7a2a0dfe",
+    "internal/sources/github/state.go": "7245e504adabd89b8f8042cd6896b03c4da359f3ecbf994f27e474ac25bbbdf2",
+    "internal/bootstrap/export.go": "4e5abb90bb95c9a3fb0da30ff02e961dcec0bb3fb30edb751f445e49de154601",
+    "go.mod": "4089f0c9d4e2a59e91b45b22419dcc16298b545ce74db69f19508377289e3513",
+    "go.sum": "e6bc0489a1beb9cc7af8ce96d3ab833002dab73fa559c2165e57a7865d13a356",
+    ".github/workflows/pr.yaml": "64f4db905ffe1d223996f066df7f5fd6d6a6690859c0f4cb96c9a88cd3a26974",
+    "docs/CLI.md": "c02a94ae8fffcd883bf14e6ebab4067b81d929a88678b79a4a0ad27dc50d80d6",
+    "docs/design/catalog-lifecycle/ENGINEERING_SPEC.md": "96391c574ead22172248477eee047ede50e18f3249ac0e5cc0a09f9ceb7d6687",
+    "docs/design/catalog-lifecycle/REPOSITORY_FINDINGS.md": "06b992a1fb6f88b4bf2758709940e520fa0332e8b13ace4863dabc80ae20ed93",
+    "docs/plans/starport-production-catalog-plan.html": "86aac1ce81882657bda53484b74d0bc3b227d9ef2a8cfc58166ff102a0a47a59",
+    "docs/plans/proof/starport-production-catalog/csp2.md": "6f4c1e1602af9d6d5a5273929bfe18ffa2e261a4948168264c5d1ce8b1f765cf"
+  }
+}

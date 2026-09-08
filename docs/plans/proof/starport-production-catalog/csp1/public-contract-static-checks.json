@@ -1,0 +1,38 @@
+[
+  {
+    "command": [
+      "go",
+      "vet",
+      "./pkg/catalogs/config",
+      "./internal/catalog/settings"
+    ],
+    "exit_code": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "golangci-lint",
+      "run",
+      "./pkg/catalogs/config",
+      "./internal/catalog/settings"
+    ],
+    "exit_code": 1,
+    "stdout": "pkg/catalogs/config/resolution.go:86:3: Consider preallocating options with capacity 3 + len(parsed.options) (prealloc)\n\t\toptions := []runtime.Option{runtime.WithSourcePolicy(runtime.DefaultSourcePolicy()), runtime.WithSourceToken(\"\"), runtime.WithSourceAPIKey(\"\")}\n\t\t^\n1 issues:\n* prealloc: 1\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "/Users/jack/.agents/skills/technical-writing/scripts/technical-writing",
+      "lint",
+      "pkg/catalogs/config",
+      "internal/catalog/settings/settings.go",
+      "internal/catalog/settings/composition.go",
+      "--format",
+      "text"
+    ],
+    "exit_code": 0,
+    "stdout": "PASS: 7 file(s), 0 diagnostic(s)\n",
+    "stderr": ""
+  }
+]

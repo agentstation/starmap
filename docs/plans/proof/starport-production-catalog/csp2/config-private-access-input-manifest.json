@@ -1,0 +1,55 @@
+{
+  "recorded_at": "2026-09-06T17:20:49.050383+00:00",
+  "scope": "CSP2 private configuration reads. Ancestor policies and native Windows execution remain unverified.",
+  "worktrees": {
+    "/Users/jack/src/github.com/agentstation/starmap-catalog-requirements": {
+      "branch": "codex/catalog-requirements",
+      "head": "4780dfea9f7e002ea6eaaa82aa8f52ed0d4cc225",
+      "dirty_entries": 759
+    },
+    "/Users/jack/src/github.com/agentstation/starport-catalog-lifecycle": {
+      "branch": "codex/catalog-lifecycle",
+      "head": "042eb97851496ecdd1ef20bfa44fe3d84b86b2d8",
+      "dirty_entries": 22
+    }
+  },
+  "files": {
+    ".github/workflows/pr.yaml": "6f9ffe684a3ab05d50f960a7252b3b676535a115da4050abf4a5c43e7709e9d5",
+    "GLOSSARY.md": "00b1c0ff7066c1c69c770d523371137d48f9f0eeb7b7dab84fce1a580926d43e",
+    "README.md": "14922f200e0744e55dba12085c3be7b70f57fe4ff19efa91a29f34f721b5f9c7",
+    "docs/CATALOG_SETTINGS.md": "e7355d1e61a48b80274b6d70519fb68e989224ec41114395b473b453255303e4",
+    "docs/CLI.md": "186f556deae9575cdc896215ab3fd13e34e80442ee0386c6b284c2b875408e8c",
+    "docs/catalog-settings-schema.json": "f94e7ff69015829dc8cf87dd76a0c4f3c8f396e06bfdb500a5c2142fe59ba580",
+    "docs/design/catalog-lifecycle/ENGINEERING_SPEC.md": "a63f7055729b9db7af88ca5c94f9aee880bfc62dc9821a97e73e1750e416151f",
+    "docs/design/catalog-lifecycle/REPOSITORY_FINDINGS.md": "f3a1330eb40fa0263a274d4303d2be3cb2608cb6c57aedb1c25185beae0b3f59",
+    "docs/plans/proof/starport-production-catalog/csp2.md": "c6ab9fce8a81d52a3cdb17bc1233efcba62edd5fe3e19eeca3c5a908245ded83",
+    "docs/plans/starport-production-catalog-plan.html": "409ec22ba9b091de5fc6c1247cb2a8308d3fcf75667f70d4b8618eb63e2eaec8",
+    "go.mod": "4089f0c9d4e2a59e91b45b22419dcc16298b545ce74db69f19508377289e3513",
+    "go.sum": "e6bc0489a1beb9cc7af8ce96d3ab833002dab73fa559c2165e57a7865d13a356",
+    "internal/catalog/settings/reference_test.go": "661d617af473a8562d7b47311a37dbdd3e19beb81290b4372299fa6c2f477189",
+    "internal/cli/app/commands_test.go": "832360093f2c3eeabf5afd9de9a1c3fa69232fb828a2ac19241fc21c35517c00",
+    "internal/cli/app/config.go": "12585c39a2219588a6ddc4ca8b1837059f4811b51fa38a7841e72db31aee5ba5",
+    "internal/cli/app/config_access_darwin_test.go": "3de7c8c78fb8cd9d0f8291d6ba8da3093b5614c2a2d2b7628340444eccf340e2",
+    "internal/cli/app/config_access_posix_test.go": "dfa0e4d8fe126546192b8194c886d6413654ba3568ce2cf529682ada72489270",
+    "internal/cli/app/config_access_test.go": "a3de7c0666cee89fc2867f00e35c8cd6049e94c7bf9ed54f019ffd111aa75106",
+    "internal/cli/app/config_access_windows_test.go": "ae86d84f59aabad0d871596b2316b656fa4c813ea2b912f595f6c6704700c0b1",
+    "internal/cli/app/config_test.go": "189ca841db6706238d102d92d035e2aa69b33adb976239e7d7966c78a10bcd84",
+    "internal/cli/app/dotenv.go": "e936c13dcf368411d3e9e3ad94a61bd57039ed5b138501474b05b49d81632149",
+    "internal/cli/app/runtime_migration.go": "39ab1451a5e82a967625c03456a49b46327b3203a6d48d1995eb6d42c7fda4e5",
+    "internal/privatefiles/acl_darwin.go": "c08ec24879964f878a7c3895590e00a373f9eea00bf5636fe31c18d391ccb581",
+    "internal/privatefiles/acl_darwin_test.go": "2bc97df29094be1339900a3e6e42dcb63e00ac1a3bcf85a2776311e9425e2b31",
+    "internal/privatefiles/acl_other.go": "8b28a383dfca1648d512e614e0894552cebb64ff5a75fd958dd3f950f4e883c1",
+    "internal/privatefiles/acl_windows.go": "9bd55f5edef8113c1f8a18fd7d5bc365ae1ac5e3c7f899d40dbe0c0bc38e59c6",
+    "internal/privatefiles/acl_windows_test.go": "014a24422a4830d36c2141c85bca4d84e1f9b7b4c55177833b676a18c86449e7",
+    "internal/privatefiles/creation_other.go": "00d03f022eb9223c6d7fa6e5d19ca08bcf687ae23018f79160c720a7e33e2cb9",
+    "internal/privatefiles/creation_windows.go": "6a586a6b14d0bdcd33edea558e075ee9571b21386b1a693fc0c3fadbb2010bbf",
+    "internal/privatefiles/directory.go": "fcc19399965bf756dfc60b4cad343cea438568d365c6463e9217ba51f75ab503",
+    "internal/privatefiles/metadata_other.go": "cb499847923a9ccfc391dc6cea571736de70eb5dfb801117757add703ca8f8f9",
+    "internal/privatefiles/metadata_posix.go": "d63179be0728a45d22cd1f1cff6a935cd333b249e9b756425d5cc65dc151b361",
+    "internal/privatefiles/open_other.go": "76324d7787daf7f4ee07c6c22d5aad95332169b555731d9f4feef94445d461a4",
+    "internal/privatefiles/open_posix.go": "7b2d258bfdf68659145f6f38e0fe36a361e9d04f5f62f378bd47eba2acb6e9b6",
+    "internal/privatefiles/records.go": "8ecb0e686597de1992cb3badf7b8ef7298a181f53e2b62e27f70e128babd1340",
+    "internal/privatefiles/records_posix_test.go": "27a1c358e4853b6bdc6af784c09784c9681ad100c5268a6b3d17844d50894133",
+    "internal/privatefiles/records_test.go": "57f7055b44a41d08cb2c92196067fcb83e10ffd441b0ac5b904699a58768320f"
+  }
+}

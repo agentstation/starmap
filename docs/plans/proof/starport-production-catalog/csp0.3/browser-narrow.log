@@ -1,0 +1,8 @@
+Emulation configured successfully
+Emulating viewport: {"isMobile":false,"hasTouch":false,"isLandscape":false,"width":320,"height":900}
+Emulating color scheme: dark
+[{"type":"text","text":"Error: Access denied: path /tmp/starport-csp03-readme-narrow.png (canonical: /private/tmp/starport-csp03-readme-narrow.png) is not within any of the configured workspace roots."}]
+Script ran on page and returned:
+```json
+{"width":320,"scrollWidth":320,"posterWidth":272,"loaded":1280,"transcript":true}
+```
