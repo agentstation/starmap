@@ -56,48 +56,72 @@ func (merger *merger) mergeModelLimits(
 	history *map[string]provenance.Field,
 ) {
 	for _, limit := range catalogs.PublishedModelLimits() {
-		fieldPolicy := policy
-		fieldPolicy.EvidencePath = "limits." + string(limit)
-		fieldSources := merger.modelSourcesForValue(
-			identity.providerID,
-			identity.modelID,
-			fieldPolicy,
-			models,
-			func(model *catalogs.Model) any {
-				if model == nil || model.Limits == nil {
-					return nil
-				}
-				value, state := model.Limits.Value(limit)
-				if state != catalogs.ValueKnown {
-					return nil
-				}
-				return value
-			},
-		)
-		for _, source := range policy.SourceOrder {
-			model := fieldSources[source]
-			if model == nil || model.Limits == nil {
-				continue
+		for _, presence := range []catalogs.ValuePresence{catalogs.ValueKnown, catalogs.ValueUnknown} {
+			if merger.selectModelLimit(identity, target, policy, models, history, limit, presence) {
+				break
 			}
-			value, state := model.Limits.Value(limit)
-			if state != catalogs.ValueKnown {
-				continue
-			}
-			if target.Limits == nil {
-				target.Limits = &catalogs.ModelLimits{}
-			}
-			target.Limits.Set(limit, value)
-			merger.recordModelHistory(
-				identity,
-				history,
-				fieldPolicy,
-				source,
-				value,
-				fmt.Sprintf("selected from %s by limits authority order", source),
-			)
-			break
 		}
 	}
+}
+
+func (merger *merger) selectModelLimit(
+	identity modelIdentity,
+	target *catalogs.Model,
+	policy authority.Policy,
+	models map[sources.ID]*catalogs.Model,
+	history *map[string]provenance.Field,
+	limit catalogs.ModelLimit,
+	presence catalogs.ValuePresence,
+) bool {
+	fieldPolicy := policy
+	fieldPolicy.EvidencePath = "limits." + string(limit)
+	fieldSources := merger.modelSourcesForValue(
+		identity.providerID,
+		identity.modelID,
+		fieldPolicy,
+		models,
+		func(model *catalogs.Model) any {
+			if model == nil {
+				return nil
+			}
+			value, state := model.Limits.Value(limit)
+			if state != presence {
+				return nil
+			}
+			if state == catalogs.ValueUnknown {
+				// A typed nil preserves an explicit unknown claim during projection.
+				var unknown *int64
+				return unknown
+			}
+			return value
+		},
+	)
+	for _, source := range policy.SourceOrder {
+		model := fieldSources[source]
+		if model == nil {
+			continue
+		}
+		value, state := model.Limits.Value(limit)
+		if state != presence {
+			continue
+		}
+		if target.Limits == nil {
+			target.Limits = &catalogs.ModelLimits{}
+		}
+		var evidenceValue any
+		if state == catalogs.ValueKnown {
+			target.Limits.Set(limit, value)
+			evidenceValue = value
+		} else {
+			target.Limits.SetUnknown(limit)
+		}
+		merger.recordModelHistory(
+			identity, history, fieldPolicy, source, evidenceValue,
+			fmt.Sprintf("selected from %s by limits presence and authority order", source),
+		)
+		return true
+	}
+	return false
 }
 
 func (merger *merger) mergeModelMetadata(

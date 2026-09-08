@@ -11,7 +11,7 @@ import (
 )
 
 func TestAllProviderLimitsRetainPresenceAcrossPublicationAndRestart(t *testing.T) {
-	for _, mode := range []string{"positive", "zero", "unknown", "missing"} {
+	for _, mode := range []string{"positive", "zero", "unknown", "missing", "unknown-no-fallback", "missing-no-fallback"} {
 		t.Run(mode, func(t *testing.T) {
 			at := time.Date(2026, 9, 8, 0, 0, 0, 0, time.UTC)
 			seed := manualProviderObservation(t, 0, at).Catalog
@@ -28,9 +28,11 @@ func TestAllProviderLimitsRetainPresenceAcrossPublicationAndRestart(t *testing.T
 				model.Limits = &catalogs.ModelLimits{}
 				for _, limit := range catalogs.PublishedModelLimits() {
 					switch {
-					case observed && mode == "unknown":
+					case !observed && (mode == "unknown-no-fallback" || mode == "missing-no-fallback"):
+						model.Limits.Unset(limit)
+					case observed && (mode == "unknown" || mode == "unknown-no-fallback"):
 						model.Limits.SetUnknown(limit)
-					case observed && mode == "missing":
+					case observed && (mode == "missing" || mode == "missing-no-fallback"):
 						model.Limits.Unset(limit)
 					default:
 						model.Limits.Set(limit, value)
@@ -87,19 +89,25 @@ func TestAllProviderLimitsRetainPresenceAcrossPublicationAndRestart(t *testing.T
 					t.Fatal(err)
 				}
 				model := provider.Models["model"]
-				if model == nil || model.ModelRef == "" || model.Limits == nil {
+				if model == nil || model.ModelRef == "" {
 					t.Fatal("publication lost linked offering membership or limits")
 				}
 				want := value
+				wantPresence := catalogs.ValueKnown
 				if mode == "unknown" || mode == "missing" {
 					want = fallback
 				}
+				if mode == "unknown-no-fallback" {
+					want, wantPresence = 0, catalogs.ValueUnknown
+				} else if mode == "missing-no-fallback" {
+					want, wantPresence = 0, catalogs.ValueMissing
+				}
 				for _, limit := range catalogs.PublishedModelLimits() {
 					got, presence := model.Limits.Value(limit)
-					if got != want || presence != catalogs.ValueKnown {
-						t.Errorf("%s = %d/%v, want %d/known", limit, got, presence, want)
+					if got != want || presence != wantPresence {
+						t.Errorf("%s = %d/%v, want %d/%v", limit, got, presence, want, wantPresence)
 					}
-					if mode == "positive" || mode == "zero" {
+					if mode == "positive" || mode == "zero" || mode == "unknown-no-fallback" {
 						entries := current.State().Catalog.Provenance().FindModelField("provider", "model", "limits."+string(limit))
 						if len(entries) != 1 || entries[0].ObservationID != observation.ID {
 							t.Errorf("%s lost the supplying provider receipt", limit)
@@ -133,9 +141,9 @@ func TestAllProviderLimitsRetainPresenceAcrossPublicationAndRestart(t *testing.T
 				t.Fatal(err)
 			}
 			wantPresence := catalogs.ValueKnown
-			if mode == "unknown" {
+			if mode == "unknown" || mode == "unknown-no-fallback" {
 				wantPresence = catalogs.ValueUnknown
-			} else if mode == "missing" {
+			} else if mode == "missing" || mode == "missing-no-fallback" {
 				wantPresence = catalogs.ValueMissing
 			}
 			for _, limit := range catalogs.PublishedModelLimits() {
