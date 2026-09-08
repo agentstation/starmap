@@ -1,0 +1,20 @@
+{
+  "commit": "ff298e2cab3e9ea6894f2b5a3b5643e896e4ff2a",
+  "review": {
+    "exit_code": 0,
+    "profile": "cross-lab",
+    "base": "codex/catalog-plan",
+    "portions": 8,
+    "findings": 0,
+    "path": "complete-review.log.gz",
+    "sha256": "b1ef4bf061dfcecc288aa26934254972ed78fc2f7c829569f6c6a82ddde03d4b",
+    "uncompressed_sha256": "978c604e5aa6660a106ed6702cebb5d7bb3cc8cc2f4d3d87affdf3e2f7ae7a56"
+  },
+  "draft_pr": 132,
+  "run_id": 34178911408,
+  "run_url": "https://github.com/agentstation/starmap/actions/runs/34178911408",
+  "run_status": "in_progress",
+  "run_head": "ff298e2cab3e9ea6894f2b5a3b5643e896e4ff2a",
+  "native_qualification": "UNVERIFIED",
+  "dispatch_evidence": "fifth-run-dispatch.json"
+}

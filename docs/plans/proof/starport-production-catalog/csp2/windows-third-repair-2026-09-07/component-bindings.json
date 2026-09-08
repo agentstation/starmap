@@ -1,0 +1,68 @@
+{
+  "code_commit": "c7ff1e556a1355d013ecb3aa87b28b5dedd719fc",
+  "registry_sha256": "8be95668b2ce6f84c3cb7c40f64772b0db58ba1c72b3cf46f4949857d7c711a1",
+  "scope": "Portable CSP2 component checks only. No primary or native qualification credit.",
+  "command": "GOTOOLCHAIN=go1.26.6 bash scripts/verify-catalog-product.sh --task CSP2 --starport-root ../starport-catalog-lifecycle --json",
+  "exit_code": 1,
+  "selected_subcases": 22,
+  "passing_subcases": [
+    "A02.constructor_filesystem_silence",
+    "A02.no_workers",
+    "A01.existing_head_preserved",
+    "A01.required_write_failure",
+    "A03.relative_anchor_migration_guard"
+  ],
+  "unverified_subcases": [
+    "A02.constructor_network_silence",
+    "A01.starmap_cold_offline",
+    "A03.starmap_linux",
+    "A03.starmap_macos",
+    "A03.starmap_windows",
+    "A04.starmap_linux_interruption",
+    "A04.starmap_macos_interruption",
+    "A04.starmap_windows_interruption",
+    "A04.dual_root_conflict",
+    "A04.human_workspace_preserved",
+    "A03.starmap_file_manifest",
+    "A03.root_leaf_precedence",
+    "A03.required_empty_path_refusal",
+    "A03.two_instances_same_user",
+    "A03.duplicate_owner_refusal",
+    "A03.service_container_roots",
+    "A04.identity_and_journal_recovery"
+  ],
+  "verifier_unit_tests": 43,
+  "logs": {
+    "csp2-components.json": {
+      "path": "csp2-components.json.gz",
+      "sha256": "6181bf5405e571cbabb7cad6092ec56b3bdd322f90a57680f7b160014498de32",
+      "uncompressed_sha256": "2f29c8f849d9b3491a6e503d3f66a2714860ec8abd83895cb42cbf64f1a65f6c"
+    },
+    "csp2-verifier-tests.log": {
+      "path": "csp2-verifier-tests.log.gz",
+      "sha256": "43183d90a6a79253389b8c621478eb05a8951f5baeafb66da90d66c8e393f653",
+      "uncompressed_sha256": "bd7213e176f2a1ab2c351ebbb03e685715d17c95f851e0a0ef00d5bdb6a70f1f"
+    },
+    "component-writing.log": {
+      "path": "component-writing.log.gz",
+      "sha256": "c27a552a845fa9f8fa88de0d5cfe2e8c2e9e0a321ed1d67e6f5e564e6a6e0011",
+      "uncompressed_sha256": "f420fca1d05f2a83b7b5cd4ae758dd4179b3a9492aa272daa11e2b0740942a9c"
+    },
+    "component-documents.json": {
+      "path": "component-documents.json.gz",
+      "sha256": "71fc69ac4a7b9e4e794f08e77d2d83b4af0b99a43846781377512cca7323be20",
+      "uncompressed_sha256": "452ae6e68a33e7c69f17050df2f7f76af549ccca64fbc871a996e7a7a13dfbb5"
+    }
+  },
+  "document_checks": {
+    "exit_code": 0,
+    "tasks": 38,
+    "primary_cases": 50,
+    "required_subcases": 324
+  },
+  "strict_prose": {
+    "exit_code": 0,
+    "files": 1155,
+    "diagnostics": 0
+  }
+}

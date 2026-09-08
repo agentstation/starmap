@@ -1,0 +1,129 @@
+{
+  "base_commit": "a441a72fa34a06ddbb53aa93162c7f7827373bec",
+  "state": "complete repository verification passed; fresh cross-lab review in progress",
+  "logs": {
+    "pattern-anchor-fail-before.jsonl": {
+      "path": "pattern-anchor-fail-before.jsonl.gz",
+      "sha256": "7ef7c3ed9a4ebf19d516e0a9e99487f765ac949f2ba182d66f6d0928d133ec4c",
+      "uncompressed_sha256": "5540f4334bf90df11390ce2f9c297adee4ca73c81af1ed6f82d5e215409e5932"
+    },
+    "pattern-anchor-final.jsonl": {
+      "path": "pattern-anchor-final.jsonl.gz",
+      "sha256": "893b48b559678a42687fd3059536332ff0fd8f2898521e4b6d59ace39dd91e62",
+      "uncompressed_sha256": "f0e31dfc9ebb101f4b07ea857c3a7aa8ce9a3a76f94feac660912379070481d2"
+    },
+    "pattern-anchor-ago.json": {
+      "path": "pattern-anchor-ago.json.gz",
+      "sha256": "905b50ebb66dc28cecf0d5d7681aabcd8b20af21ce5f8834692f1c6c68590281",
+      "uncompressed_sha256": "b8fb7afa66aa7a93914ac258475dd0191be821803a8aea4439f5ba05022f5fa5"
+    },
+    "pattern-anchor-windows-lint.log": {
+      "path": "pattern-anchor-windows-lint.log.gz",
+      "sha256": "bafcb04d67f6157ff3d4a1fdf228afd2df6cc6d786c61642c1125b1fe879e728",
+      "uncompressed_sha256": "e92606b0bf483111dff0a120c315ea165821348f31365020e2468a0059095c47"
+    },
+    "prepr.log": {
+      "path": "prepr.log.gz",
+      "sha256": "06cfa8b511390a647217a874048a36ee23f9d8a36112aab878d7080e979e0517",
+      "uncompressed_sha256": "f370467cbc352f69a51a782ff82eb0a425a17a544e03a1136d86036fb0b1a4bb"
+    },
+    "final-verify.log": {
+      "path": "final-verify.log.gz",
+      "sha256": "228a96bd6c059076295ab8593d44a9bd29f2cf5896e658166ea3d6e1bacaff7e",
+      "uncompressed_sha256": "a8c03883172129420ec9e03d9f782f76fed30972e00ec464d3bc4ebc00c61976"
+    }
+  },
+  "fail_before": {
+    "exit_code": 1,
+    "test": "TestPatternAnchorHasNoManagedFileAccessPolicy",
+    "test_events": {
+      "pass": 1,
+      "fail": 2,
+      "skip": 0
+    }
+  },
+  "fixed": {
+    "go": "1.25.12",
+    "package": "./pkg/productpaths",
+    "exit_code": 0,
+    "test_events": {
+      "pass": 44,
+      "fail": 0,
+      "skip": 0
+    }
+  },
+  "work_commit": "6488e02fb908c685f9d474271e25958b5c555bcd",
+  "full_verification": {
+    "command": "GOTOOLCHAIN=go1.26.6 make verify",
+    "exit_code": 0,
+    "stages": 39,
+    "ordinary_package_passes": 79,
+    "race_package_passes": 79
+  },
+  "windows_cross_compilation": [
+    {
+      "package": "productpaths",
+      "go": "1.25.12",
+      "goos": "windows",
+      "goarch": "amd64",
+      "exit_code": 0,
+      "binary_sha256": "3a2b04b85180ad082e860c8d3cfebde4d4a196134f00382a4d8a143dbb8d3f63"
+    },
+    {
+      "package": "workspace",
+      "go": "1.25.12",
+      "goos": "windows",
+      "goarch": "amd64",
+      "exit_code": 0,
+      "binary_sha256": "893e77ce908471ef39837783dc782f6642b1a3853e6f93f20a157455030bddd6"
+    },
+    {
+      "package": "app",
+      "go": "1.25.12",
+      "goos": "windows",
+      "goarch": "amd64",
+      "exit_code": 0,
+      "binary_sha256": "da8c317fcfa01d65d7a9279dab8cabee91431387125d222d04ed30427554d799"
+    },
+    {
+      "package": "bootstrap",
+      "go": "1.25.12",
+      "goos": "windows",
+      "goarch": "amd64",
+      "exit_code": 0,
+      "binary_sha256": "fd8b854b88ddb0f1eab6b96856018a4bedf57d2388c2a483bb9539fa43174355"
+    },
+    {
+      "package": "productpaths",
+      "go": "1.25.12",
+      "goos": "windows",
+      "goarch": "arm64",
+      "exit_code": 0,
+      "binary_sha256": "86254f12ed46cad9d511faa44dc5e95bfc4321e994f845e9c3f7c9c140cdf3d2"
+    },
+    {
+      "package": "workspace",
+      "go": "1.25.12",
+      "goos": "windows",
+      "goarch": "arm64",
+      "exit_code": 0,
+      "binary_sha256": "3d158291671d52a5abfdf704f8a3cde1ea243ee1aa632a7b94f7939b4f2829aa"
+    },
+    {
+      "package": "app",
+      "go": "1.25.12",
+      "goos": "windows",
+      "goarch": "arm64",
+      "exit_code": 0,
+      "binary_sha256": "6ece5ec62718680ea3068c9be2b81856952854a3e406613448622a9f371121dc"
+    },
+    {
+      "package": "bootstrap",
+      "go": "1.25.12",
+      "goos": "windows",
+      "goarch": "arm64",
+      "exit_code": 0,
+      "binary_sha256": "a734b2c873b6a20b07e735a5b19eb0b3cbd5edafa339deecb25407a573c8b952"
+    }
+  ]
+}

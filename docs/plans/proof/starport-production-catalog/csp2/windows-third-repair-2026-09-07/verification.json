@@ -1,0 +1,161 @@
+{
+  "foundation_commit": "a441a72fa34a06ddbb53aa93162c7f7827373bec",
+  "followup_merge_commit": "0e1986b8a7bf1ad251eaf8408263bb6d4f08b9e6",
+  "development_go": "1.26.6",
+  "minimum_go": "1.25.12",
+  "foundation_review": "interrupted after three portions because the orchestrator found a pattern-parent policy mismatch",
+  "native_candidate_execution": "UNVERIFIED",
+  "primary_acceptance_credit": false,
+  "logs": {
+    "verify.log": {
+      "path": "verify.log.gz",
+      "sha256": "56a70677a1728533dcfd9134d54e0d25fe0bfbda22729bce6896b65cbc6b3769",
+      "bytes": 11425,
+      "uncompressed_sha256": "38c1cfe39218f54fbc5be8dae2983a23247b63f7ce39da2f5a2ff890eb68e0f0",
+      "uncompressed_bytes": 66276
+    },
+    "integration.jsonl": {
+      "path": "integration.jsonl.gz",
+      "sha256": "454b47700023ef0735fd0e48a6eb413f9f7923f177e946f871fe703e8b6818df",
+      "bytes": 26969,
+      "uncompressed_sha256": "65cbde61237667fe4eba9c374f1af8ebd9076c3b85a2ac74db566e4149b67b83",
+      "uncompressed_bytes": 408034
+    },
+    "cleanup.jsonl": {
+      "path": "cleanup.jsonl.gz",
+      "sha256": "f34fd1824efb007ce22390cfd440899bd545956ee0578ffa808dfca901168f4d",
+      "bytes": 1108,
+      "uncompressed_sha256": "631afbeaee69b87c40a20349f8419c9be8d4bd4910df4f222264214d2afcc8e4",
+      "uncompressed_bytes": 16336
+    },
+    "go125.jsonl": {
+      "path": "go125.jsonl.gz",
+      "sha256": "8acdd23106a4c6daf54087af3057ed9fae97d43f7eb925549e21d555dccf89e2",
+      "bytes": 2793,
+      "uncompressed_sha256": "9a53b1307563b1680b5e9c8eff851e12834ba8f426c3491b04470efbcc039d35",
+      "uncompressed_bytes": 40727
+    },
+    "ago-final.json": {
+      "path": "ago-final.json.gz",
+      "sha256": "905b50ebb66dc28cecf0d5d7681aabcd8b20af21ce5f8834692f1c6c68590281",
+      "bytes": 182,
+      "uncompressed_sha256": "b8fb7afa66aa7a93914ac258475dd0191be821803a8aea4439f5ba05022f5fa5",
+      "uncompressed_bytes": 289
+    },
+    "windows-lint.log": {
+      "path": "windows-lint.log.gz",
+      "sha256": "bafcb04d67f6157ff3d4a1fdf228afd2df6cc6d786c61642c1125b1fe879e728",
+      "bytes": 30,
+      "uncompressed_sha256": "e92606b0bf483111dff0a120c315ea165821348f31365020e2468a0059095c47",
+      "uncompressed_bytes": 10
+    },
+    "writing-final.log": {
+      "path": "writing-final.log.gz",
+      "sha256": "74835c712f776425c89f7d8b096a4a3eee47360b1e58b85802c9ef8a923ff024",
+      "bytes": 245,
+      "uncompressed_sha256": "97622cc0e3574747df78f9ab4f2dc3b53dc2ea9f136a0e141cdf463dfe8e9153",
+      "uncompressed_bytes": 554
+    }
+  },
+  "foundation_checks": {
+    "verify": {
+      "command": "GOTOOLCHAIN=go1.26.6 make verify",
+      "exit_code": 0,
+      "stages": 39,
+      "ordinary_package_passes": 79,
+      "race_package_passes": 79
+    },
+    "integration": {
+      "packages": [
+        "./internal/bootstrap",
+        "./internal/catalog/workspace",
+        "./internal/cli/app"
+      ],
+      "race_pass": 392,
+      "fail": 0,
+      "skip": 0
+    },
+    "cleanup": {
+      "test": "TestBaselineExportPreservesChangedStaging",
+      "race_pass": 16,
+      "fail": 0,
+      "skip": 0
+    },
+    "minimum_go": {
+      "packages": [
+        "./internal/catalog/workspace",
+        "./internal/bootstrap"
+      ],
+      "test_pattern": "^(TestRead|TestLegacyStoreLock|TestMigrateLegacyLayout|TestBaselineExportPreservesChangedStaging)",
+      "race_pass": 38,
+      "fail": 0,
+      "skip": 0
+    },
+    "ago": {
+      "exit_code": 0,
+      "findings": 0,
+      "stale_ignores": 0,
+      "errors": 0
+    },
+    "windows_lint": {
+      "exit_code": 0,
+      "issues": 0
+    },
+    "prose": {
+      "exit_code": 0,
+      "files": 1076,
+      "diagnostics": 0
+    }
+  },
+  "windows_cross_compilation": [
+    {
+      "package": "./internal/catalog/workspace",
+      "go": "1.25.12",
+      "goos": "windows",
+      "goarch": "amd64",
+      "exit_code": 0,
+      "binary_sha256": "f387217d49c25d2bc7fce7ee4f0586e0f2d0191286192ea5d56fac6c04a13c7d"
+    },
+    {
+      "package": "./internal/cli/app",
+      "go": "1.25.12",
+      "goos": "windows",
+      "goarch": "amd64",
+      "exit_code": 0,
+      "binary_sha256": "2de4bc76c656da6c5f9e30aee152eda598f5356bd9f5f634b303b81607cc7c24"
+    },
+    {
+      "package": "./internal/bootstrap",
+      "go": "1.25.12",
+      "goos": "windows",
+      "goarch": "amd64",
+      "exit_code": 0,
+      "binary_sha256": "fd8b854b88ddb0f1eab6b96856018a4bedf57d2388c2a483bb9539fa43174355"
+    },
+    {
+      "package": "./internal/catalog/workspace",
+      "go": "1.25.12",
+      "goos": "windows",
+      "goarch": "arm64",
+      "exit_code": 0,
+      "binary_sha256": "f243de12bb9641c1d8ab77d0fed64979d54afb63e1db9c2085d67bde6bea4548"
+    },
+    {
+      "package": "./internal/cli/app",
+      "go": "1.25.12",
+      "goos": "windows",
+      "goarch": "arm64",
+      "exit_code": 0,
+      "binary_sha256": "bcd5b2153384d99a4c11a4218124af0c39584f831b5b7daf50065a0bf9940ef7"
+    },
+    {
+      "package": "./internal/bootstrap",
+      "go": "1.25.12",
+      "goos": "windows",
+      "goarch": "arm64",
+      "exit_code": 0,
+      "binary_sha256": "a734b2c873b6a20b07e735a5b19eb0b3cbd5edafa339deecb25407a573c8b952"
+    }
+  ],
+  "review_exit_code": 130
+}

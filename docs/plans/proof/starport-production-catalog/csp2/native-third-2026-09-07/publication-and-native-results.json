@@ -1,0 +1,180 @@
+{
+  "foundation": {
+    "commit": "0451b039e76b1fe11f629a1e26059c41147dd2a3",
+    "pr": "https://github.com/agentstation/starmap/pull/132",
+    "run": "https://github.com/agentstation/starmap/actions/runs/34170862943",
+    "run_id": 34170862943,
+    "review": {
+      "profile": "cross-lab",
+      "threshold": "P0",
+      "portions": 8,
+      "findings": 0,
+      "exit_code": 0
+    }
+  },
+  "followup": {
+    "commit": "8b034d5a45329d9a276abd4d7629e04ae721d431",
+    "review": {
+      "profile": "cross-lab",
+      "threshold": "P0",
+      "portions": 8,
+      "findings": 0,
+      "exit_code": 0
+    },
+    "publication": "published",
+    "pr": "https://github.com/agentstation/starmap/pull/133",
+    "run": "https://github.com/agentstation/starmap/actions/runs/34171467367",
+    "run_id": 34171467367
+  },
+  "starport": {
+    "commit": "de0e00297428f16115a068f5a39ec6702e0674f5",
+    "starmap_commit": "8b034d5a45329d9a276abd4d7629e04ae721d431",
+    "mode": "temporary local Go workspace",
+    "ownership": {
+      "passed": 12,
+      "failed": 0
+    },
+    "state_paths": {
+      "race_passed": 5,
+      "failed": 0
+    }
+  },
+  "foundation_review": {
+    "path": "starmap-native-second-prepr.log",
+    "sha256": "b61022933184b1c77f31701bf539c357dbba4e15df640bf1865bb1216c50346b",
+    "bytes": 2736
+  },
+  "starport_ownership": {
+    "path": "starport-native-second-starmap-ownership.log",
+    "sha256": "c2006ab0841a15af0792722064ee14dae63cd3fdb0ff32a1480655cb0d5961ed",
+    "bytes": 850
+  },
+  "starport_state_paths": {
+    "path": "starport-native-second-state-paths.jsonl",
+    "sha256": "755bb465feb5ed775a4ac8f0b23f2020472298e087f916f33dd5ef773e63f695",
+    "bytes": 14689
+  },
+  "pull_requests_merged_or_releases_created": false,
+  "native_artifacts": [
+    {
+      "path": "foundation-windows-amd64.jsonl.gz",
+      "compression": "gzip",
+      "sha256": "49ee222747b7204d2c6a29d041a54e0930e5b5241edd4f77b746becea6aa27d5",
+      "bytes": 70723,
+      "uncompressed_sha256": "04cbe4fbcb1123c6486d7799d373b56b3e533ec72975e929651adaf68be2640a",
+      "uncompressed_bytes": 1154911,
+      "test_events": {
+        "pass": 1030,
+        "fail": 10,
+        "skip": 0
+      },
+      "failed_tests": [
+        "TestCatalogWorkspaceMigrationAndRestartPreserveExactGeneration",
+        "TestImplicitNewRootsRefuseLegacyStateWithoutWriting",
+        "TestWorkspaceReplacementPreservesAccessPolicy",
+        "TestWorkspaceReplacementPreservesInheritedAccessPolicy",
+        "TestReadDetectsExternalDirectoryReplacement",
+        "TestWindowsJournalReplacementRecoversAfterEditorHandleCloses",
+        "TestMigrateLegacyLayoutRollbackPreservesRecreatedLegacyPath",
+        "TestMigrateLegacyLayoutProjectionFailureRollsBackOwnedWorkspace",
+        "TestMigrateLegacyLayoutFailureRollsBackExactStore",
+        "TestMigrateLegacyLayoutRelocatesStoreAndProjectsCurrent"
+      ]
+    },
+    {
+      "path": "foundation-windows-arm64.jsonl.gz",
+      "compression": "gzip",
+      "sha256": "045041b039dbd205a506711e2ffcefd7c7114f2dd7a7187431f16e1e99ffca0b",
+      "bytes": 69940,
+      "uncompressed_sha256": "05a847cf9cc1167c3e34242b61d76ba6b8cd805ae91ee334e34b008bb8f1c6ce",
+      "uncompressed_bytes": 1154750,
+      "test_events": {
+        "pass": 1030,
+        "fail": 10,
+        "skip": 0
+      },
+      "failed_tests": [
+        "TestCatalogWorkspaceMigrationAndRestartPreserveExactGeneration",
+        "TestImplicitNewRootsRefuseLegacyStateWithoutWriting",
+        "TestWorkspaceReplacementPreservesAccessPolicy",
+        "TestWorkspaceReplacementPreservesInheritedAccessPolicy",
+        "TestReadDetectsExternalDirectoryReplacement",
+        "TestWindowsJournalReplacementRecoversAfterEditorHandleCloses",
+        "TestMigrateLegacyLayoutFailureRollsBackExactStore",
+        "TestMigrateLegacyLayoutRollbackPreservesRecreatedLegacyPath",
+        "TestMigrateLegacyLayoutProjectionFailureRollsBackOwnedWorkspace",
+        "TestMigrateLegacyLayoutRelocatesStoreAndProjectsCurrent"
+      ]
+    },
+    {
+      "path": "followup-windows-amd64.jsonl.gz",
+      "compression": "gzip",
+      "sha256": "d107a87678271ce95eb959e0a6b5e4e9852ed0b7715067c06030054bf09abc20",
+      "bytes": 85285,
+      "uncompressed_sha256": "65ca5eec3ffc097393939479feab5da1e4a3937ebe3d8f32082ba4d7583586ed",
+      "uncompressed_bytes": 1437314,
+      "test_events": {
+        "pass": 1196,
+        "fail": 10,
+        "skip": 0
+      },
+      "failed_tests": [
+        "TestCatalogWorkspaceMigrationAndRestartPreserveExactGeneration",
+        "TestWorkspaceReplacementPreservesAccessPolicy",
+        "TestWorkspaceReplacementPreservesInheritedAccessPolicy",
+        "TestImplicitNewRootsRefuseLegacyStateWithoutWriting",
+        "TestReadDetectsExternalDirectoryReplacement",
+        "TestWindowsJournalReplacementRecoversAfterEditorHandleCloses",
+        "TestMigrateLegacyLayoutRollbackPreservesRecreatedLegacyPath",
+        "TestMigrateLegacyLayoutProjectionFailureRollsBackOwnedWorkspace",
+        "TestMigrateLegacyLayoutFailureRollsBackExactStore",
+        "TestMigrateLegacyLayoutRelocatesStoreAndProjectsCurrent"
+      ]
+    },
+    {
+      "path": "followup-windows-arm64.jsonl.gz",
+      "compression": "gzip",
+      "sha256": "f293af92c06440137c5c71f8b0b2891069efe721b351200e31cd03609d263cdf",
+      "bytes": 84673,
+      "uncompressed_sha256": "0ef38b1f1d6821dcd772ad81a09c5c55267122dae0285ec6ccab67529917e28f",
+      "uncompressed_bytes": 1437183,
+      "test_events": {
+        "pass": 1196,
+        "fail": 10,
+        "skip": 0
+      },
+      "failed_tests": [
+        "TestCatalogWorkspaceMigrationAndRestartPreserveExactGeneration",
+        "TestWorkspaceReplacementPreservesAccessPolicy",
+        "TestWorkspaceReplacementPreservesInheritedAccessPolicy",
+        "TestImplicitNewRootsRefuseLegacyStateWithoutWriting",
+        "TestReadDetectsExternalDirectoryReplacement",
+        "TestWindowsJournalReplacementRecoversAfterEditorHandleCloses",
+        "TestMigrateLegacyLayoutProjectionFailureRollsBackOwnedWorkspace",
+        "TestMigrateLegacyLayoutRollbackPreservesRecreatedLegacyPath",
+        "TestMigrateLegacyLayoutFailureRollsBackExactStore",
+        "TestMigrateLegacyLayoutRelocatesStoreAndProjectsCurrent"
+      ]
+    }
+  ],
+  "followup_review": {
+    "path": "starmap-native-second-followup-prepr.log",
+    "sha256": "dfaec83dd152b9e2fed29629638a26b401ba49ababa4d96066e9af8d38712d1c",
+    "bytes": 1718
+  },
+  "runtime_jobs": {
+    "foundation": {
+      "linux_amd64": "pass",
+      "linux_arm64": "pass",
+      "macos_amd64": "pass",
+      "macos_arm64": "pass"
+    },
+    "followup": {
+      "linux_amd64": "pass",
+      "linux_arm64": "pass",
+      "macos_amd64": "pass",
+      "macos_arm64": "pass"
+    }
+  },
+  "verification_gate_at_capture": "in_progress on both runs"
+}

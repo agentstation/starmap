@@ -1,0 +1,81 @@
+{
+  "head": "f216e7c01e874bdfb4fa57e6b5c1129f79a985fd",
+  "run_url": "https://github.com/agentstation/starmap/actions/runs/34182826240",
+  "runtime_jobs": "PASS",
+  "verification_gate": "in_progress at capture",
+  "native_results": [
+    {
+      "name": "native-runtime-macos-15",
+      "counts": {
+        "pass": 1111,
+        "fail": 0,
+        "skip": 0
+      },
+      "path": "native-runtime-macos-15.jsonl.gz",
+      "sha256": "8c19ece7de3f96047b6d04df8c90db1723090d64e9fc2680fdbedee68e0b493a",
+      "uncompressed_sha256": "adcb50d519c06dcca021bc18038dd383a9abd3b835ba2fc3308011ac569a77e6",
+      "toolchain": "go version go1.25.12 darwin/arm64\ndarwin\narm64\ndarwin\narm64\n0\n"
+    },
+    {
+      "name": "native-runtime-macos-15-intel",
+      "counts": {
+        "pass": 1111,
+        "fail": 0,
+        "skip": 0
+      },
+      "path": "native-runtime-macos-15-intel.jsonl.gz",
+      "sha256": "51bebfbd6edad3728eff447c819b1daad5e1fab320df7c06eca84c17464e747a",
+      "uncompressed_sha256": "63c32a91ec273984f66c1b7082154e5673aee8309a1131d34db884565c3acd9a",
+      "toolchain": "go version go1.25.12 darwin/amd64\ndarwin\namd64\ndarwin\namd64\n0\n"
+    },
+    {
+      "name": "native-runtime-ubuntu-24.04",
+      "counts": {
+        "pass": 1061,
+        "fail": 0,
+        "skip": 0
+      },
+      "path": "native-runtime-ubuntu-24.04.jsonl.gz",
+      "sha256": "69ea32f2475ccb5b8589a119c2dd74cfbd61cca5cf2b52641f4895f522de280a",
+      "uncompressed_sha256": "4e62e16c30906c1d8dc6a881478298c88b9ab392f91d89927b3c72e71711c0d5",
+      "toolchain": "go version go1.25.12 linux/amd64\nlinux\namd64\nlinux\namd64\n0\n"
+    },
+    {
+      "name": "native-runtime-ubuntu-24.04-arm",
+      "counts": {
+        "pass": 1061,
+        "fail": 0,
+        "skip": 0
+      },
+      "path": "native-runtime-ubuntu-24.04-arm.jsonl.gz",
+      "sha256": "6235719488edd23204a12bb4fe2ca37c7e380e55a277e934cbaa9d70877aa6d1",
+      "uncompressed_sha256": "2b747e14d85919613e244802289cfb4bc337ee1821aa5b1fd8a78bcb703a748c",
+      "toolchain": "go version go1.25.12 linux/arm64\nlinux\narm64\nlinux\narm64\n0\n"
+    },
+    {
+      "name": "native-runtime-windows-11-arm",
+      "counts": {
+        "pass": 1057,
+        "fail": 0,
+        "skip": 0
+      },
+      "path": "native-runtime-windows-11-arm.jsonl.gz",
+      "sha256": "a52f81526f4a57b02bc62a34d8aa631a8f12e92f689ac665ba6354155aec6de5",
+      "uncompressed_sha256": "857b8f48998ec6b961d1ee8e0bfe22482e6619b37f3a135c755a759e2a2d4721",
+      "toolchain": "go version go1.25.12 windows/arm64\nwindows\narm64\nwindows\narm64\n0\n"
+    },
+    {
+      "name": "native-runtime-windows-2025",
+      "counts": {
+        "pass": 1057,
+        "fail": 0,
+        "skip": 0
+      },
+      "path": "native-runtime-windows-2025.jsonl.gz",
+      "sha256": "8fe2b4619a7b7120f1719c798416fb139213d2840e3c743ec3485da054c07989",
+      "uncompressed_sha256": "d147bb731d43fb207581a1cb575780fff079bf3e3aea1057fe2c2bfe2ba92e5d",
+      "toolchain": "go version go1.25.12 windows/amd64\nwindows\namd64\nwindows\namd64\n0\n"
+    }
+  ],
+  "qualification": "Native foundation component evidence. Follow-up and released-pair qualification remain open."
+}

@@ -1,0 +1,39 @@
+{
+  "source_commit": "68fee848",
+  "recording_commit": "9693899bee34473ac14d61683207861dcedf6af2",
+  "repository_roster": "PASS",
+  "unique_stages": 39,
+  "go": "1.26.6",
+  "verifier_tests": 52,
+  "initial_command_exit_code": 2,
+  "initial_failure": "The status paragraph exceeded the prose sentence limit. Its corrected text passes the resumed prose check.",
+  "resumed_suffix_exit_code": 0,
+  "resumed_suffix_stages": 7,
+  "review": "Not started; awaits foundation native qualification.",
+  "native_qualification": "UNVERIFIED",
+  "primary_acceptance_credit": false,
+  "logs": {
+    "followup-verify-prefix.log": {
+      "path": "followup-verify-prefix.log.gz",
+      "sha256": "f48f219125701cce2884df4ded828963db01f3b807429ad402dd710b3fe8038e",
+      "uncompressed_sha256": "640dcee1274d17303abd508ec0057944b05930ecf73ace4266ac573a9ec5b24a"
+    },
+    "followup-verify-finish.log": {
+      "path": "followup-verify-finish.log.gz",
+      "sha256": "de45cd02f2ddbc662384f73606b7f1f62c2392a967bde669f2002a91af02f069",
+      "uncompressed_sha256": "68efbc941ad766de514724fc6e405839f52ecf0f30c3c832832a38d81032e297"
+    },
+    "followup-verify-finish.sh": {
+      "path": "followup-verify-finish.sh.gz",
+      "sha256": "9af7ace417ca65e1a532b1f5a41371c3ae3a208a1f40875b3b8c8965968144a3",
+      "uncompressed_sha256": "8e5a43091d419ed7faeda6fbc58af31ba9a012dfdc4930cf4ba7cb7543f42a68"
+    },
+    "followup-initial-unpinned.log": {
+      "path": "followup-initial-unpinned.log.gz",
+      "sha256": "9d8c7eb6ee53bc706f431f8c79447ed4c0e5900195fad23d1b461ac9982d61a3",
+      "uncompressed_sha256": "05e8d98e15253fc4eb707101895fcfbea3f00ac76f7b82524b0e17d4b0e544eb"
+    }
+  },
+  "ordinary_package_passes": 79,
+  "race_package_passes": 79
+}

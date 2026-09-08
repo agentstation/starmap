@@ -1,0 +1,7 @@
+=== RUN   TestEmbeddedBootstrapManifestMatchesCanonicalCatalog
+--- PASS: TestEmbeddedBootstrapManifestMatchesCanonicalCatalog (22.46s)
+=== RUN   TestEmbeddedCatalogCheckoutPreservesManifestInputs
+    checkout_test.go:53: verified 1278 catalog input files with core.autocrlf=true
+--- PASS: TestEmbeddedCatalogCheckoutPreservesManifestInputs (0.31s)
+PASS
+ok  	github.com/agentstation/starmap/internal/bootstrap	24.132s
