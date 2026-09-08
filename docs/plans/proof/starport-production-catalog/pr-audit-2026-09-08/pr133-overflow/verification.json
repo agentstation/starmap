@@ -18,12 +18,12 @@
   "lint_findings": 0,
   "ago_findings": 0,
   "artifacts": {
-    "codeql-before.json.gz": "9d4585550a9365cb9cf98cfcfad2d458fa53ce9eff86d156fa01ed1f78ddd705",
-    "tests.jsonl.gz": "54501129d6810c010f80df01ef4bc44127dc82f07dd257807d27ded2074cbad7",
-    "minimum.jsonl.gz": "fe7cd4d6a067787675dbbce3140da86e20d42b3ec99dfa693884a5ce704cb518",
-    "ago.json.gz": "905b50ebb66dc28cecf0d5d7681aabcd8b20af21ce5f8834692f1c6c68590281",
-    "lint.txt.gz": "bafcb04d67f6157ff3d4a1fdf228afd2df6cc6d786c61642c1125b1fe879e728"
+    "codeql-before.json": "60d0d904cdf1338f9fe011b60e33a103f30ab44ccf80e3d6bcaad16c9f6917ec",
+    "tests.jsonl": "0b7eac368b0c69a7334599ef0cce290242b5c28a8ff0238adcaebf0c4d7575e1",
+    "minimum.jsonl": "ffac6339031d1ca2d27fa460811d2c1dbf608dcd660436ee99083438c29f4078",
+    "ago.json": "b8fb7afa66aa7a93914ac258475dd0191be821803a8aea4439f5ba05022f5fa5",
+    "lint.json": "021ff7a503eaeb8623fb6649f2fccae9614402ef0aa8b2b8518e451439276f8f"
   },
   "codeql_after": "UNVERIFIED until pushed head scan",
-  "review": "pending"
+  "review": "pending; binary captures replaced with reviewable structured text"
 }
