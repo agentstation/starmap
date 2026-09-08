@@ -118,6 +118,30 @@ The Starmap source API key authenticates catalog transport.
 The GitHub source token authenticates GitHub access.
 Neither is a provider inference key.
 
+## Provider binding declarations
+
+` + "`catalog_provider_bindings`" + ` selects the complete active binding set for connected-runtime acquisition.
+Supply YAML as a list of binding objects.
+Environment variables and CLI flags accept the same objects as a JSON array.
+The value uses the ` + "`sources.ProviderAcquisitionBinding`" + ` wire contract.
+
+Each object declares a schema version, binding ID, revision, provider, scope, API surface, region, and credential profile.
+The credential role must be ` + "`catalog_acquisition`" + `.
+The declarations contain no credential material and do not prove upstream account ownership.
+
+An explicit ` + "`[]`" + ` permits no local provider acquisition.
+Omission retains legacy unscoped acquisition. Empty text and ` + "`null`" + ` are invalid.
+A higher-priority array replaces the entire lower array.
+Bindings from separate configuration authorities do not combine.
+
+Replacing the upstream catalog source does not replace this independent binding policy.
+Unknown binding fields, invalid declarations, and duplicate binding IDs fail validation.
+Changing the binding set requires a new runtime.
+
+The current standalone update command and HTTP update adapter still require binding-policy integration.
+Do not use those paths to enforce a scoped acquisition policy.
+Starport adoption and complete product qualification remain open.
+
 ## Explicit dotenv files
 
 Service configuration does not discover dotenv files in the working directory.

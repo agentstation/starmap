@@ -139,13 +139,7 @@ func (s *Options) Validate(providers catalogs.ProvidersReader) error {
 				Message: fmt.Sprintf("source %q is not supported", sourceID),
 			}
 		}
-		if s.Fresh && sourceID == sources.LocalCatalogID {
-			return &errors.ValidationError{
-				Field:   "Sources",
-				Value:   sourceID,
-				Message: "fresh sync cannot use the existing local catalog as an input source",
-			}
-		}
+
 	}
 	if slices.Contains(s.Sources, sources.ModelsDevHTTPID) && slices.Contains(s.Sources, sources.ModelsDevGitID) {
 		return &errors.ValidationError{
@@ -275,7 +269,8 @@ func WithCatalogPath(path string) Option {
 	}
 }
 
-// WithFresh configures whether to delete existing models and fetch fresh from APIs.
+// WithFresh replaces selected acquisition history through a connected runtime.
+// The selected baseline and reviewed operator inputs remain.
 func WithFresh(fresh bool) Option {
 	return func(opts *Options) {
 		opts.Fresh = fresh

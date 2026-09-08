@@ -2,7 +2,6 @@ package reconciler
 
 import (
 	"fmt"
-	"time"
 
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/catalogs/authority"
@@ -258,16 +257,17 @@ func (merger *merger) recordProviderHistory(
 		Source:     source,
 		Field:      path,
 		Value:      value,
-		Timestamp:  time.Now(),
+		Timestamp:  merger.changeTime(),
 		Authority:  policy.Authority(source),
 		Confidence: merger.calculateConfidence(value),
 		Reason:     fmt.Sprintf("%s: %s", policy.Path, reason),
 	}
-	if evidence, exists := merger.observations[source]; exists {
+	if evidence, exists := merger.providerObservation(source, providerID); exists {
 		current.ObservationID = evidence.id
 		current.ObservedAt = evidence.observedAt
 		current.Revision = evidence.revision
 		current.EvidenceChecksum = evidence.evidenceChecksum
+		current.ProviderBindingID, current.ProviderBindingRevision = evidence.bindingID, evidence.bindingRevision
 		if health := evidence.healthReason(); health != "" {
 			current.Reason += "; " + health
 		}

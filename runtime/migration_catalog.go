@@ -14,6 +14,9 @@ func validateMigrationCatalog(ctx context.Context, directory string) error {
 	if err != nil {
 		return err
 	}
+	if err := store.refuseInputPublication(); err != nil {
+		return err
+	}
 	source, err := store.loadSource()
 	if err != nil {
 		return err
@@ -22,12 +25,16 @@ func validateMigrationCatalog(ctx context.Context, directory string) error {
 	if err != nil {
 		return err
 	}
+	manual, err := store.loadManualHistory(ctx)
+	if err != nil {
+		return err
+	}
 	client, err := starmap.NewContext(ctx)
 	if err != nil {
 		return err
 	}
-	layers := layerSet{source: source, providers: providers}
-	if _, err := layers.build(client.EmbeddedCatalogState()); err != nil {
+	layers := layerSet{source: source, providers: providers, manual: manual}
+	if _, err := layers.build(ctx, client.EmbeddedCatalogState()); err != nil {
 		return err
 	}
 	return ctx.Err()

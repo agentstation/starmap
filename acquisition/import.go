@@ -6,7 +6,7 @@ import (
 	"time"
 
 	"github.com/agentstation/starmap"
-	"github.com/agentstation/starmap/internal/catalog/pipeline"
+	"github.com/agentstation/starmap/internal/catalog/reconciler"
 	"github.com/agentstation/starmap/internal/catalog/workspace"
 	"github.com/agentstation/starmap/internal/sources/local"
 	"github.com/agentstation/starmap/pkg/catalogs"
@@ -86,7 +86,7 @@ func (s *Syncer) ImportRelease(
 		updateCtx context.Context,
 		current *catalogs.Catalog,
 	) (*starmap.Candidate, error) {
-		result, reconcileErr := pipeline.ReconcileObservations(
+		result, reconcileErr := reconciler.ReconcileObservations(
 			updateCtx,
 			current,
 			observations,

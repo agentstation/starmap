@@ -7,7 +7,11 @@ import (
 	"strconv"
 	"testing"
 
+	"github.com/spf13/pflag"
+
+	"github.com/agentstation/starmap/internal/catalog/settings"
 	catalogconfig "github.com/agentstation/starmap/pkg/catalogs/config"
+	"github.com/agentstation/starmap/pkg/sources"
 )
 
 func TestCanonicalCatalogYAMLRetainsExplicitValues(t *testing.T) {
@@ -58,6 +62,8 @@ func TestEveryCanonicalSettingLoadsFromYAML(t *testing.T) {
 					expected = "https://catalog.example.test"
 				case catalogconfig.SourceSignerWorkflow:
 					expected = ".github/workflows/catalog-generation.yaml"
+				case catalogconfig.ProviderBindings:
+					expected = "[]"
 				default:
 					expected = t.TempDir()
 				}
@@ -76,6 +82,9 @@ func TestEveryCanonicalSettingLoadsFromYAML(t *testing.T) {
 			case catalogconfig.ListValue:
 				value = []string{}
 				expected = ""
+			case catalogconfig.ProviderBindingsValue:
+				value = []any{}
+				expected = "[]"
 			}
 			// JSON is a YAML subset and keeps typed scalars exact in this fixture.
 			fileValues := map[string]any{descriptor.Key: value}
@@ -126,5 +135,65 @@ func TestUnknownCatalogEnvironmentNameFails(t *testing.T) {
 	t.Setenv("STARMAP_CATALOG_ACQUISITION_ENABLD", "false")
 	if _, err := loadCatalogSettings(&Config{}); err == nil {
 		t.Fatal("unknown catalog environment name was ignored")
+	}
+}
+
+func TestProviderBindingsLoadFromYAMLAndFlagsReplaceEnvironment(t *testing.T) {
+	path := filepath.Join(t.TempDir(), "config.yaml")
+	contents := `catalog_provider_bindings:
+  - schema_version: 1
+    id: team-catalog
+    revision: '1'
+    provider_id: openai
+    account_id: team-account
+    region: global
+    api_surface: models.list
+    credential_role: catalog_acquisition
+    credential_profile_id: api-key
+`
+	if err := os.WriteFile(path, []byte(contents), 0o600); err != nil {
+		t.Fatal(err)
+	}
+	loaded, err := loadConfig(path)
+	if err != nil {
+		t.Fatal(err)
+	}
+	parsed, err := loadCatalogSettings(loaded)
+	if err != nil {
+		t.Fatal(err)
+	}
+	value, present := parsed.Value(catalogconfig.ProviderBindings)
+	var bindings []sources.ProviderAcquisitionBinding
+	if !present || json.Unmarshal([]byte(value), &bindings) != nil || len(bindings) != 1 || bindings[0].AccountID != "team-account" {
+		t.Fatal("YAML lost the declared binding scope")
+	}
+	if loaded.CatalogOrigins[catalogconfig.ProviderBindings] != "configuration-file" {
+		t.Fatal("binding diagnostics lost their file origin")
+	}
+
+	t.Setenv(catalogconfig.ProviderBindings, "[]")
+	parsed, err = loadCatalogSettings(loaded)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if selected, _ := parsed.Value(catalogconfig.ProviderBindings); selected != "[]" {
+		t.Fatal("an empty environment array inherited file bindings")
+	}
+	flags := pflag.NewFlagSet("bindings", pflag.ContinueOnError)
+	if err := settings.RegisterFlags(flags); err != nil {
+		t.Fatal(err)
+	}
+	if err := flags.Parse([]string{"--catalog-provider-bindings", value}); err != nil {
+		t.Fatal(err)
+	}
+	parsed, err = loadCatalogSettings(loaded, settings.FlagLookup(flags))
+	if err != nil {
+		t.Fatal(err)
+	}
+	if selected, _ := parsed.Value(catalogconfig.ProviderBindings); selected != value {
+		t.Fatal("an explicit flag failed to replace environment bindings")
+	}
+	if loaded.CatalogOrigins[catalogconfig.ProviderBindings] != "override-1" {
+		t.Fatal("binding diagnostics lost their flag origin")
 	}
 }

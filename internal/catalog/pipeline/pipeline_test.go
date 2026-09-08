@@ -366,7 +366,7 @@ func TestPipelineForceSavesWhenReformatOrFreshIsSet(t *testing.T) {
 	}
 }
 
-func TestPipelineFreshReconcilesAgainstEmptyBaseline(t *testing.T) {
+func TestPipelineFreshPreservesSuppliedBaseline(t *testing.T) {
 	existing := catalogs.NewEmpty()
 	if err := existing.SetProvider(catalogs.Provider{ID: "stale", Name: "Stale"}); err != nil {
 		t.Fatalf("Seed existing catalog: %v", err)
@@ -380,8 +380,8 @@ func TestPipelineFreshReconcilesAgainstEmptyBaseline(t *testing.T) {
 		ModelProviderMap:  map[string]catalogs.ProviderID{},
 	})
 	runner.reconcile = func(_ context.Context, baseline *catalogs.Catalog, _ []sources.Observation) (*reconciler.Result, error) {
-		if baseline.Providers().Len() != 0 {
-			t.Fatalf("Fresh reconciliation baseline contains %d providers, want 0", baseline.Providers().Len())
+		if baseline != store.catalog || baseline.Providers().Len() != 1 {
+			t.Fatalf("Fresh reconciliation discarded its supplied baseline")
 		}
 		return &reconciler.Result{
 			Catalog:           catalogs.NewEmpty(),

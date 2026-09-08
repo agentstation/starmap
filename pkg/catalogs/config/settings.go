@@ -67,6 +67,10 @@ const (
 	// pass while acquisition stays enabled.
 	AcquisitionInterval = Prefix + "CATALOG_ACQUISITION_INTERVAL"
 
+	// ProviderBindings selects the complete active provider binding set as a JSON array.
+	// An explicit empty array permits no local provider acquisition.
+	ProviderBindings = Prefix + "CATALOG_PROVIDER_BINDINGS"
+
 	// CoalesceWindow bounds how long a completed provider observation waits
 	// for a slower sibling before it publishes.
 	CoalesceWindow = Prefix + "CATALOG_COALESCE_WINDOW"
@@ -228,6 +232,10 @@ func table() []setting {
 		{
 			name: AcquisitionInterval, flag: "catalog-acquisition-interval",
 			apply: durationOption(AcquisitionInterval, runtime.WithAcquisitionInterval),
+		},
+		{
+			name: ProviderBindings, flag: "catalog-provider-bindings",
+			apply: providerBindingsOption,
 		},
 		{
 			name: CoalesceWindow, flag: "catalog-coalesce-window",

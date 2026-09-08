@@ -196,7 +196,7 @@ type Status struct {
 	// LastRunID identifies the last refresh run.
 	LastRunID string
 
-	// Providers holds one terminal attempt per provider of the last run.
+	// Providers holds one terminal attempt per provider or binding of the last run.
 	Providers []sources.ProviderAttempt
 
 	// StartedAt is when the runtime opened.

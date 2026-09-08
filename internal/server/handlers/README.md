@@ -210,7 +210,7 @@ func (h *Handlers) HandleOpenRouterModel(w http.ResponseWriter, _ *http.Request,
 HandleOpenRouterModel handles GET /api/v1/model/\{author\}/\{slug\}. @Summary Get an OpenRouter\-compatible model by author and slug @Description Resolve a canonical model, known alias, or configured variant @Tags openrouter @Produce json @Param author path string true "Canonical author ID or alias" @Param slug path string true "Model slug or configured variant" @Success 200 \{object\} openrouter.ModelEnvelope @Failure 401 \{object\} openrouter.ErrorEnvelope @Failure 404 \{object\} openrouter.ErrorEnvelope @Failure 500 \{object\} openrouter.ErrorEnvelope @Security ApiKeyAuth @Router /api/v1/model/\{author\}/\{slug\} \[get\].
 
 <a name="Handlers.HandleOperationCancel"></a>
-### func \(\*Handlers\) [HandleOperationCancel](<https://github.com/agentstation/starmap/blob/main/internal/server/handlers/admin.go#L114-L118>)
+### func \(\*Handlers\) [HandleOperationCancel](<https://github.com/agentstation/starmap/blob/main/internal/server/handlers/admin.go#L124-L128>)
 
 ```go
 func (h *Handlers) HandleOperationCancel(w http.ResponseWriter, _ *http.Request, id string)
@@ -219,7 +219,7 @@ func (h *Handlers) HandleOperationCancel(w http.ResponseWriter, _ *http.Request,
 HandleOperationCancel handles DELETE /api/v1/updates/\{id\}. @Summary Cancel an update operation @Description Ask one accepted or running update to stop @Tags admin @Produce json @Param id path string true "Operation identity" @Success 200 \{object\} response.Response\{data=operations.Status\} @Failure 404 \{object\} response.Response\{error=response.Error\} @Security ApiKeyAuth @Router /api/v1/updates/\{id\} \[delete\].
 
 <a name="Handlers.HandleOperationStatus"></a>
-### func \(\*Handlers\) [HandleOperationStatus](<https://github.com/agentstation/starmap/blob/main/internal/server/handlers/admin.go#L92-L96>)
+### func \(\*Handlers\) [HandleOperationStatus](<https://github.com/agentstation/starmap/blob/main/internal/server/handlers/admin.go#L102-L106>)
 
 ```go
 func (h *Handlers) HandleOperationStatus(w http.ResponseWriter, _ *http.Request, id string)
@@ -255,7 +255,7 @@ func (h *Handlers) HandleSearchModels(w http.ResponseWriter, r *http.Request)
 HandleSearchModels handles POST /api/v1/models/search. @Summary Search models @Description Advanced search with multiple criteria @Tags models @Accept json @Produce json @Param search body SearchRequest true "Search criteria" @Success 200 \{object\} response.Response\{data=object\} @Failure 400 \{object\} response.Response\{error=response.Error\} @Failure 500 \{object\} response.Response\{error=response.Error\} @Security ApiKeyAuth @Router /api/v1/models/search \[post\].
 
 <a name="Handlers.HandleStats"></a>
-### func \(\*Handlers\) [HandleStats](<https://github.com/agentstation/starmap/blob/main/internal/server/handlers/admin.go#L168>)
+### func \(\*Handlers\) [HandleStats](<https://github.com/agentstation/starmap/blob/main/internal/server/handlers/admin.go#L178>)
 
 ```go
 func (h *Handlers) HandleStats(w http.ResponseWriter, _ *http.Request)
@@ -264,13 +264,13 @@ func (h *Handlers) HandleStats(w http.ResponseWriter, _ *http.Request)
 HandleStats handles GET /api/v1/stats. @Summary Catalog statistics @Description Get complete server and catalog statistics @Tags admin @Accept json @Produce json @Success 200 \{object\} response.Response\{data=object\} @Failure 500 \{object\} response.Response\{error=response.Error\} @Security ApiKeyAuth @Router /api/v1/stats \[get\].
 
 <a name="Handlers.HandleUpdate"></a>
-### func \(\*Handlers\) [HandleUpdate](<https://github.com/agentstation/starmap/blob/main/internal/server/handlers/admin.go#L29>)
+### func \(\*Handlers\) [HandleUpdate](<https://github.com/agentstation/starmap/blob/main/internal/server/handlers/admin.go#L30>)
 
 ```go
 func (h *Handlers) HandleUpdate(w http.ResponseWriter, r *http.Request)
 ```
 
-HandleUpdate handles POST /api/v1/update. @Summary Trigger catalog update @Description Accept an asynchronous catalog synchronization @Tags admin @Accept json @Produce json @Param provider query string false "Update specific provider only" @Param source query string false "Update one source only \(local\_catalog, providers, models\_dev\_http, or models\_dev\_git\)" @Success 202 \{object\} response.Response\{data=operations.Status\} @Failure 500 \{object\} response.Response\{error=response.Error\} @Security ApiKeyAuth @Router /api/v1/update \[post\].
+HandleUpdate handles POST /api/v1/update. @Summary Trigger catalog update @Description Accept an asynchronous catalog synchronization @Tags admin @Accept json @Produce json @Param provider query string false "Update specific provider only" @Param source query string false "Update one source only \(local\_catalog, providers, models\_dev\_http, or models\_dev\_git\)" @Param fresh query boolean false "Reset selected acquisition and preserve the baseline" @Success 202 \{object\} response.Response\{data=operations.Status\} @Failure 500 \{object\} response.Response\{error=response.Error\} @Security ApiKeyAuth @Router /api/v1/update \[post\].
 
 <a name="IntRange"></a>
 ## type [IntRange](<https://github.com/agentstation/starmap/blob/main/internal/server/handlers/models.go#L163-L166>)

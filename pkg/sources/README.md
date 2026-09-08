@@ -592,7 +592,7 @@ func (b ProviderAcquisitionBinding) Validate() error
 Validate checks the binding's format and requires an explicit public or account/project scope. Errors identify fields without exposing their values.
 
 <a name="ProviderAttempt"></a>
-## type [ProviderAttempt](<https://github.com/agentstation/starmap/blob/main/pkg/sources/outcome.go#L107-L127>)
+## type [ProviderAttempt](<https://github.com/agentstation/starmap/blob/main/pkg/sources/outcome.go#L107-L132>)
 
 ProviderAttempt records one terminal provider acquisition attempt. It holds only values that are safe to log, to serve, and to retain.
 
@@ -601,14 +601,19 @@ type ProviderAttempt struct {
     // ProviderID names the attempted provider.
     ProviderID catalogs.ProviderID
 
+    // BindingID and BindingRevision identify the declared acquisition scope.
+    // Both are empty for legacy unscoped attempts.
+    BindingID       string `json:",omitempty"`
+    BindingRevision string `json:",omitempty"`
+
     // Outcome is the terminal state of the attempt.
     Outcome ProviderOutcome
 
     // Reason explains a skip or a failure. It is empty for a success.
     Reason ProviderReason
 
-    // Requested reports whether the attempt sent a provider request. A skip
-    // for a missing credential never sends one.
+    // Requested reports whether the observer confirmed a provider request.
+    // Missing credentials and interrupted attempts can provide no confirmation.
     Requested bool
 
     // StartedAt and CompletedAt bound the attempt.
@@ -621,7 +626,7 @@ type ProviderAttempt struct {
 ```
 
 <a name="ProviderAttempt.Validate"></a>
-### func \(ProviderAttempt\) [Validate](<https://github.com/agentstation/starmap/blob/main/pkg/sources/outcome.go#L131>)
+### func \(ProviderAttempt\) [Validate](<https://github.com/agentstation/starmap/blob/main/pkg/sources/outcome.go#L136>)
 
 ```go
 func (a ProviderAttempt) Validate() error
@@ -964,8 +969,8 @@ const (
     // request for a provider with this outcome.
     ProviderOutcomeSkippedNotConfigured ProviderOutcome = "skipped_not_configured"
 
-    // ProviderOutcomeFailed means the attempt reached the provider and did not
-    // produce a usable observation.
+    // ProviderOutcomeFailed means the attempt did not produce a usable observation.
+    // Failure can occur before a provider request.
     ProviderOutcomeFailed ProviderOutcome = "failed"
 )
 ```
@@ -1046,7 +1051,7 @@ const (
 ```
 
 <a name="ClassifyProviderReason"></a>
-### func [ClassifyProviderReason](<https://github.com/agentstation/starmap/blob/main/pkg/sources/outcome.go#L166>)
+### func [ClassifyProviderReason](<https://github.com/agentstation/starmap/blob/main/pkg/sources/outcome.go#L179>)
 
 ```go
 func ClassifyProviderReason(err error) ProviderReason

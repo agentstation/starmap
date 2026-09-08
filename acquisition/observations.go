@@ -5,7 +5,7 @@ import (
 	"fmt"
 
 	"github.com/agentstation/starmap"
-	"github.com/agentstation/starmap/internal/catalog/pipeline"
+	"github.com/agentstation/starmap/internal/catalog/reconciler"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/errors"
 	"github.com/agentstation/starmap/pkg/sources"
@@ -45,7 +45,7 @@ func (s *Syncer) PublishObservations(
 		updateCtx context.Context,
 		current *catalogs.Catalog,
 	) (*starmap.Candidate, error) {
-		result, err := pipeline.ReconcileObservations(updateCtx, current, observations)
+		result, err := reconciler.ReconcileObservations(updateCtx, current, observations)
 		if err != nil {
 			return nil, err
 		}

@@ -78,9 +78,9 @@ func TestObservationVolumeRegressionBecomesDegradedWithoutInventingDeletion(t *t
 	if got.ID == observation.ID {
 		t.Fatal("health classification did not produce a distinct observation identity")
 	}
-	if err := requireHealthyObservations(
+	if err := requireCompleteObservations(
 		[]sources.Source{&lifecycleTestSource{id: sources.ProvidersID}},
-		guarded,
+		guarded, false,
 	); err == nil {
 		t.Fatal("require-all accepted a volume-regressed observation")
 	}

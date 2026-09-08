@@ -34,8 +34,10 @@ func testAcquisitionBinding() sources.ProviderAcquisitionBinding {
 
 func TestObserveBindingSelectsProviderAndRetainsReceipt(t *testing.T) {
 	var resolutions, requests atomic.Int64
+	delivered := make(chan sources.ProviderAttempt, 1)
 	provider := providerForTest("bound-provider")
 	source := newTestSource(newProviderSet(provider, providerForTest("other-provider")),
+		WithAttemptSink(func(attempt sources.ProviderAttempt) { delivered <- attempt }),
 		WithCredentialResolver(sources.ProviderCredentialResolverFunc(func(_ context.Context, p *catalogs.Provider) (sources.ProviderCredentialMaterial, error) {
 			resolutions.Add(1)
 			if p.ID != provider.ID || len(p.Credentials.CatalogAcquisition.Alternatives) != 1 || p.Credentials.CatalogAcquisition.Alternatives[0] != "unauthenticated" {
@@ -66,6 +68,17 @@ func TestObserveBindingSelectsProviderAndRetainsReceipt(t *testing.T) {
 	}
 	if len(attempts) != 1 || attempts[0].Outcome != sources.ProviderOutcomeSucceeded || !attempts[0].Requested {
 		t.Fatalf("attempts = %+v", attempts)
+	}
+	if attempts[0].BindingID != binding.ID || attempts[0].BindingRevision != binding.Revision {
+		t.Fatal("returned attempt lost its binding")
+	}
+	select {
+	case attempt := <-delivered:
+		if attempt.BindingID != binding.ID || attempt.BindingRevision != binding.Revision {
+			t.Fatal("attempt sink lost its binding")
+		}
+	default:
+		t.Fatal("attempt sink did not receive the result")
 	}
 	if observation.ProviderBinding == nil || *observation.ProviderBinding != binding {
 		t.Fatal("observation lost its declared binding")

@@ -28,6 +28,8 @@ const (
 	IntegerValue ValueType = "integer"
 	// ListValue accepts comma-separated identities.
 	ListValue ValueType = "string-list"
+	// ProviderBindingsValue accepts a JSON array of provider acquisition bindings.
+	ProviderBindingsValue ValueType = "provider-bindings"
 )
 
 // Scope identifies the authority that owns a setting.
@@ -135,6 +137,10 @@ func describe(entry setting) Descriptor {
 	case AcquisitionInterval:
 		d.Description = "Sets the acquisition period. Zero permits one startup pass when automatic acquisition is on."
 		d.Type, d.Unit, d.Default, d.AllowZero = DurationValue, "duration", acquisition.Interval.String(), true
+	case ProviderBindings:
+		d.Description = "Selects the complete active provider binding set. An empty array permits no local provider acquisition."
+		d.Type, d.Mutability = ProviderBindingsValue, "restart"
+		d.DefaultMeaning = "omission retains legacy unscoped acquisition; an explicit array selects only its declared bindings"
 	case CoalesceWindow:
 		d.Description = "Bounds the wait before completed provider observations publish."
 		d.Type, d.Unit, d.Default = DurationValue, "duration", runtime.DefaultCoalesceWindow.String()

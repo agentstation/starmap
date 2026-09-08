@@ -30,7 +30,9 @@ type Config struct {
 	Output  string
 
 	// Config file
-	ConfigFile       string
+	ConfigFile string
+	// ConfigAccess selects the checked primary input policy independently of its contents.
+	ConfigAccess     string
 	configFileDigest [sha256.Size]byte
 	// PathValues retains the selected file's node directory and identity settings.
 	PathValues    map[string]string
@@ -103,6 +105,14 @@ func loadConfigWithPaths(configFile string, bootstrap *Config) (*Config, error) 
 		selectedFile = os.Getenv("CONFIG")
 	}
 	explicitFile := selectedFile != ""
+	selectedAccess := bootstrap.ConfigAccess
+	if selectedAccess == "" {
+		selectedAccess = os.Getenv("STARMAP_CONFIG_ACCESS")
+	}
+	configAccess, err := policy.Configuration(selectedAccess, explicitFile)
+	if err != nil {
+		return nil, err
+	}
 	if explicitFile {
 		selected, err := selectedLegacyLeaf(bootstrap, configRoot, selectedFile, "explicit-file", "config")
 		if err != nil {
@@ -121,14 +131,14 @@ func loadConfigWithPaths(configFile string, bootstrap *Config) (*Config, error) 
 	}
 	viper.SetConfigFile(selectedFile)
 	configFileUsed := ""
-	configFileBytes, readErr := readConfigurationFile(selectedFile)
+	configFileBytes, readErr := readSelectedConfiguration(selectedFile, configAccess)
 	if readErr == nil {
 		if err := viper.ReadConfig(bytes.NewReader(configFileBytes)); err != nil {
 			return nil, &errors.ConfigError{Component: "configuration file", Message: "cannot read or parse the selected file"}
 		}
 		configFileUsed = selectedFile
 	} else if explicitFile || !stderrors.Is(readErr, os.ErrNotExist) {
-		return nil, &errors.ConfigError{Component: "configuration file " + selectedFile, Message: "cannot read the selected private file", Err: readErr}
+		return nil, &errors.ConfigError{Component: "configuration file " + selectedFile, Message: "cannot read the selected file under its " + configAccess + " policy", Err: readErr}
 	}
 	pathValues, err := pathValuesFromFile(viper.AllSettings())
 	if err != nil {
@@ -159,6 +169,7 @@ func loadConfigWithPaths(configFile string, bootstrap *Config) (*Config, error) 
 
 		// Config file
 		ConfigFile:       configFileUsed,
+		ConfigAccess:     configAccess,
 		configFileDigest: sha256.Sum256(configFileBytes),
 		PathValues:       pathValues,
 		pathOverrides:    maps.Clone(bootstrap.pathOverrides),
@@ -195,6 +206,20 @@ func readConfigurationFile(path string) ([]byte, error) {
 	return readPrivateInput(path, "configuration")
 }
 
+func readSelectedConfiguration(path, access string) ([]byte, error) {
+	selected, err := policy.Configuration(access, path != "")
+	if err != nil {
+		return nil, err
+	}
+	if selected == policy.OwnerOnly {
+		return readConfigurationFile(path)
+	}
+	if _, err := os.Lstat(path); err != nil {
+		return nil, err
+	}
+	return readSelectedInputTarget(path, selected)
+}
+
 func readPrivateInput(path, role string) ([]byte, error) {
 	if err := policy.Require(role, policy.OwnerOnly); err != nil {
 		return nil, err
@@ -202,14 +227,18 @@ func readPrivateInput(path, role string) ([]byte, error) {
 	if _, err := os.Lstat(path); err != nil {
 		return nil, err
 	}
-	data, err := readConfigurationTarget(path)
+	return readSelectedInputTarget(path, policy.OwnerOnly)
+}
+
+func readSelectedInputTarget(path, access string) ([]byte, error) {
+	data, err := readConfigurationTarget(path, access)
 	if stderrors.Is(err, os.ErrNotExist) {
 		return nil, &errors.ConflictError{Resource: "configuration file", Message: "selected path has no current target"}
 	}
 	return data, err
 }
 
-func readConfigurationTarget(path string) ([]byte, error) {
+func readConfigurationTarget(path, access string) ([]byte, error) {
 	if err := privatefiles.ValidateAncestors(path); err != nil {
 		return nil, err
 	}
@@ -224,7 +253,11 @@ func readConfigurationTarget(path string) ([]byte, error) {
 	if err != nil {
 		return nil, err
 	}
-	data, err := privatefiles.ReadFile(root, filepath.Base(resolved), maxConfigurationFileBytes)
+	reader := privatefiles.ReadFile
+	if access == policy.ServiceManaged {
+		reader = privatefiles.ReadServiceConfiguration
+	}
+	data, err := reader(root, filepath.Base(resolved), maxConfigurationFileBytes)
 	return data, stderrors.Join(err, root.Close())
 }
 

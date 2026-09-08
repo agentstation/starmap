@@ -1,6 +1,7 @@
 package acquisition
 
 import (
+	"bytes"
 	"context"
 
 	"github.com/agentstation/starmap/internal/sources/providers"
@@ -35,7 +36,21 @@ func (a *Acquirer) ObserveProviderBinding(ctx context.Context, current *catalogs
 	if err != nil {
 		return ProviderObservation{}, err
 	}
-	if len(result.Layer.Payload) > 0 && (result.Layer.Receipt.ProviderBinding == nil || *result.Layer.Receipt.ProviderBinding != binding) {
+	result.Layer.Payload = bytes.Clone(result.Layer.Payload)
+	result.Layer.Receipt = result.Layer.Receipt.Clone()
+	if result.Attempt.ProviderID != binding.ProviderID ||
+		(result.Attempt.BindingID != "" && result.Attempt.BindingID != binding.ID) ||
+		(result.Attempt.BindingRevision != "" && result.Attempt.BindingRevision != binding.Revision) {
+		return ProviderObservation{}, &errors.ValidationError{Field: "acquisition.provider_attempt", Message: "returned attempt must match the requested binding"}
+	}
+	result.Attempt.BindingID, result.Attempt.BindingRevision = binding.ID, binding.Revision
+	if err := result.Attempt.Validate(); err != nil {
+		return ProviderObservation{}, err
+	}
+	if (result.Attempt.Outcome == sources.ProviderOutcomeSucceeded) != (len(result.Layer.Payload) > 0) {
+		return ProviderObservation{}, &errors.ValidationError{Field: "acquisition.provider_attempt", Message: "only a successful attempt can return an observation payload"}
+	}
+	if len(result.Layer.Payload) > 0 && (result.Layer.ProviderID != binding.ProviderID || result.Layer.Receipt.ProviderBinding == nil || *result.Layer.Receipt.ProviderBinding != binding) {
 		return ProviderObservation{}, &errors.ValidationError{Field: "acquisition.provider_binding", Message: "returned receipt must match the requested binding"}
 	}
 	return result, nil

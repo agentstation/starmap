@@ -45,3 +45,14 @@ func TestWindowsSecuritySerializesObservationFields(t *testing.T) {
 		}
 	}
 }
+
+func TestWindowsServiceAssessmentUsesSelectedPolicy(t *testing.T) {
+	for _, test := range []struct{ service, want string }{{"compatible", "unverified"}, {"conflict", "conflict"}, {"", "unverified"}} {
+		manifest := FileManifest{Files: []FileEntry{{ID: "configuration", Policy: FilePolicy{Access: "service-managed"}}}}
+		report := FileInspection{Observations: []FileObservation{{ID: "configuration", State: "present", Kind: "file", PermissionScope: "windows-owner-and-dacl", WindowsSecurity: &WindowsSecurity{PolicyStatus: "conflict", Reason: "native-private-policy-conflict", ServicePolicyStatus: test.service, ServicePolicyReason: "native-service-policy-conflict"}}}}
+		assessManifestAccess(manifest, &report)
+		if report.Observations[0].AccessStatus != test.want {
+			t.Fatalf("observation=%+v", report.Observations[0])
+		}
+	}
+}

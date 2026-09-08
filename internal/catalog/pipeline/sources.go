@@ -26,11 +26,6 @@ func filterSources(
 		inputs,
 		composition,
 	)
-	if options.Fresh {
-		configuredSources = slices.DeleteFunc(configuredSources, func(src sources.Source) bool {
-			return src.ID() == sources.LocalCatalogID
-		})
-	}
 
 	if len(options.Sources) > 0 {
 		filtered := make([]sources.Source, 0, len(options.Sources))

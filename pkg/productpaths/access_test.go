@@ -26,6 +26,27 @@ func TestAccessAssessmentPreservesUncertainty(t *testing.T) {
 	}
 }
 
+func TestServiceAccessAssessmentPreservesUncertainty(t *testing.T) {
+	for _, test := range []struct {
+		name, mode, status string
+		owner              *FileOwner
+	}{
+		{"root group readable", "0640", "unverified", &FileOwner{UID: 0}},
+		{"process group readable", "0640", "unverified", &FileOwner{UID: 1001, MatchesEffectiveUser: true}},
+		{"foreign", "0640", "conflict", &FileOwner{UID: 1002}},
+		{"group writable", "0660", "conflict", &FileOwner{UID: 0}},
+		{"unknown", "0640", "unverified", nil},
+	} {
+		t.Run(test.name, func(t *testing.T) {
+			report := FileInspection{Observations: []FileObservation{{ID: "configuration", State: "present", Kind: "file", PermissionScope: "posix-mode-bits-only", Mode: test.mode, Owner: test.owner}}}
+			assessManifestAccess(FileManifest{Files: []FileEntry{{ID: "configuration", Policy: FilePolicy{Access: "service-managed"}}}}, &report)
+			if report.Observations[0].AccessStatus != test.status {
+				t.Fatalf("observation=%+v", report.Observations[0])
+			}
+		})
+	}
+}
+
 func TestPatternAnchorHasNoManagedFileAccessPolicy(t *testing.T) {
 	for _, test := range []struct{ kind, scope string }{
 		{"patterns", "posix-mode-bits-only"}, {"tree", "posix-mode-bits-only"},

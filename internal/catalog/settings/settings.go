@@ -24,6 +24,7 @@ const (
 	SourceAliases        = catalogconfig.SourceAliases
 	AcquisitionEnabled   = catalogconfig.AcquisitionEnabled
 	AcquisitionInterval  = catalogconfig.AcquisitionInterval
+	ProviderBindings     = catalogconfig.ProviderBindings
 	CoalesceWindow       = catalogconfig.CoalesceWindow
 	WorkspacePath        = catalogconfig.WorkspacePath
 	StartupSpread        = catalogconfig.StartupSpread

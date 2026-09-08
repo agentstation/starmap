@@ -10,7 +10,6 @@ import (
 	"github.com/rs/zerolog"
 	"github.com/spf13/cobra"
 
-	"github.com/agentstation/starmap/acquisition"
 	"github.com/agentstation/starmap/internal/cli/emoji"
 	"github.com/agentstation/starmap/internal/cli/format"
 	"github.com/agentstation/starmap/internal/constants"
@@ -51,8 +50,9 @@ func addUpdateFlags(cmd *cobra.Command) *Flags {
 		"Update from a specific source: all, local, provider-api, models.dev, models.dev-git")
 	cmd.Flags().BoolVar(&flags.DryRun, "dry-run", false,
 		"Preview changes without applying them")
-	cmd.Flags().BoolVarP(&flags.Force, "force", "f", false,
-		"Force fresh update (delete and recreate)")
+	cmd.Flags().BoolVarP(&flags.Force, "fresh", "f", false,
+		"Reset selected acquisition; preserve the baseline")
+	cmd.Flags().BoolVar(&flags.Force, "force", false, "Alias for --fresh")
 	cmd.Flags().BoolVarP(&flags.AutoApprove, "yes", "y", false,
 		"Auto-approve changes without confirmation")
 	cmd.Flags().StringVar(&flags.CatalogPath, "catalog-path", "",
@@ -98,35 +98,12 @@ func ExecuteUpdate(ctx context.Context, app application, flags *Flags, logger *z
 	// Determine quiet mode from logger level
 	quiet := logger.GetLevel() > zerolog.InfoLevel
 
-	// Validate force update if needed
-	if flags.Force {
-		proceed, err := ValidateForceUpdate(quiet, flags.AutoApprove)
-		if err != nil {
-			return err
-		}
-		if !proceed {
-			return nil
-		}
-	}
-
 	// Load the appropriate catalog using app context
 	sm, err := LoadCatalog(app, flags.CatalogPath, quiet)
 	if err != nil {
 		return err
 	}
-	credentialResolver, err := app.CredentialResolver()
-	if err != nil {
-		return errors.WrapResource("load", "catalog credentials", "", err)
-	}
-	directories, err := app.SourceDirectories()
-	if err != nil {
-		return err
-	}
-	syncer, err := acquisition.New(
-		sm,
-		acquisition.WithCredentialResolver(credentialResolver),
-		acquisition.WithSourceDirectories(directories),
-	)
+	syncer, err := app.CatalogAcquisition(sm)
 	if err != nil {
 		return errors.WrapResource("create", "catalog acquisition", "", err)
 	}
@@ -166,6 +143,9 @@ func updateCatalogWithConfirmation(ctx context.Context, sm syncClient, flags *Fl
 	}
 
 	if !quiet {
+		if flags.Force {
+			fmt.Fprintln(os.Stderr, "Reset selected acquisition after successful collection. Preserve the selected baseline and unrelated acquisition scopes.")
+		}
 		fmt.Fprintf(os.Stderr, "\n🔄 Starting update...\n\n")
 	}
 

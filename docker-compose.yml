@@ -35,6 +35,9 @@ services:
       # - STARMAP_CATALOG_SOURCE_ALIASES=replica-a,catalog.example.com
       # - STARMAP_CATALOG_ACQUISITION_ENABLED=true
       # - STARMAP_CATALOG_ACQUISITION_INTERVAL=4h
+      # Empty bindings disable connected-runtime provider acquisition.
+      # Manual update integration remains open. See docs/CATALOG_SETTINGS.md.
+      # - STARMAP_CATALOG_PROVIDER_BINDINGS=[]
       # - STARMAP_CATALOG_COALESCE_WINDOW=30s
       # - STARMAP_CATALOG_WORKSPACE_PATH=/home/nonroot/starmap/data/catalog/workspace
       # - STARMAP_CATALOG_STARTUP_SPREAD=15m

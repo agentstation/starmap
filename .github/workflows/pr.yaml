@@ -14,10 +14,58 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  constructor-network:
+    name: Constructor Network Passivity
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Set up minimum supported Go toolchain
+        uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
+        with:
+          go-version: '1.25.12'
+          cache: true
+      - name: Verify passive constructors and the socket control
+        run: python3 scripts/constructor_network.py > "$RUNNER_TEMP/constructor-network.json"
+      - name: Retain constructor network evidence
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: constructor-network-linux-amd64
+          path: ${{ runner.temp }}/constructor-network.json
+          if-no-files-found: error
+
+  cold-server:
+    name: Offline Server Persistence
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Set up minimum supported Go toolchain
+        uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
+        with:
+          go-version: '1.25.12'
+          cache: true
+      - name: Verify cold offline startup and restart
+        run: python3 scripts/cold_server.py > "$RUNNER_TEMP/cold-server.json"
+      - name: Retain offline server evidence
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: cold-server-linux-amd64
+          path: ${{ runner.temp }}/cold-server.json
+          if-no-files-found: error
+
   verification:
     name: Verification Gate
     runs-on: ubuntu-latest
-    timeout-minutes: 45
+    timeout-minutes: 75
     steps:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -43,7 +91,7 @@ jobs:
         uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
         with:
           go-version: "1.26.6"
-          cache: true
+          cache: false
 
       - name: Install pinned verification tools
         run: |
@@ -154,6 +202,13 @@ jobs:
             native_packages+=(./internal/test/windowstoken)
           fi
           go test -json -count=1 -timeout=10m "${native_packages[@]}" > native-evidence/tests.jsonl
+      - name: Test administrator-owned Linux configuration
+        if: matrix.os == 'linux'
+        shell: bash
+        run: |
+          go test -c -o native-evidence/privatefiles-root.test ./internal/privatefiles
+          sudo ./native-evidence/privatefiles-root.test -test.run '^TestServiceConfigurationAdministratorOwnedRead$' -test.v > native-evidence/service-owner.txt
+          rm native-evidence/privatefiles-root.test
       - name: Retain native test evidence
         if: always()
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1

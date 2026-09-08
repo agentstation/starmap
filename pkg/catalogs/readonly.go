@@ -43,7 +43,8 @@ func NewObservationCatalog(source Reader) (*Catalog, error) {
 	if err := validateCatalogIdentities(builder); err != nil {
 		return nil, errors.WrapResource("validate", "catalog observation identities", "", err)
 	}
-	for _, provider := range builder.Providers().List() {
+	providers := builder.Providers().List()
+	for _, provider := range providers {
 		for modelID, model := range provider.Models {
 			if model == nil {
 				continue
@@ -76,6 +77,7 @@ func NewObservationCatalog(source Reader) (*Catalog, error) {
 	}
 	return &Catalog{
 		source:                     builder,
+		providerIDs:                indexProviderIdentities(providers),
 		definitions:                map[ModelDefinitionID]ModelDefinition{},
 		offerings:                  map[OfferingKey]ProviderOffering{},
 		providerOfferings:          map[ProviderID][]OfferingKey{},
@@ -92,6 +94,7 @@ var _ Reader = (*Catalog)(nil)
 // access to its private state. Callers can retain it across goroutines.
 type Catalog struct {
 	source                     Reader
+	providerIDs                map[ProviderID]ProviderID
 	definitions                map[ModelDefinitionID]ModelDefinition
 	offerings                  map[OfferingKey]ProviderOffering
 	providerOfferings          map[ProviderID][]OfferingKey
@@ -125,7 +128,8 @@ func buildCatalog(source Reader) (*Catalog, error) {
 		})
 		providerOfferings[providerID] = keys
 	}
-	for _, provider := range source.Providers().List() {
+	providers := source.Providers().List()
+	for _, provider := range providers {
 		keys := providerOfferings[provider.ID]
 		if keys == nil {
 			keys = []OfferingKey{}
@@ -149,6 +153,7 @@ func buildCatalog(source Reader) (*Catalog, error) {
 
 	return &Catalog{
 		source:                     source,
+		providerIDs:                indexProviderIdentities(providers),
 		definitions:                views.definitions,
 		offerings:                  views.offerings,
 		providerOfferings:          providerOfferings,
@@ -157,6 +162,23 @@ func buildCatalog(source Reader) (*Catalog, error) {
 		definitionAliases:          definitionAliases,
 		ambiguousDefinitionAliases: ambiguousDefinitionAliases,
 	}, nil
+}
+
+// indexProviderIdentities resolves exact IDs before aliases without retaining models.
+// Both catalog constructors validate provider identity and alias ownership first.
+func indexProviderIdentities(providers []Provider) map[ProviderID]ProviderID {
+	identities := make(map[ProviderID]ProviderID, len(providers))
+	for _, provider := range providers {
+		identities[provider.ID] = provider.ID
+	}
+	for _, provider := range providers {
+		for _, alias := range provider.Aliases {
+			if _, present := identities[alias]; !present {
+				identities[alias] = provider.ID
+			}
+		}
+	}
+	return identities
 }
 
 func compareOfferingKey(left, right OfferingKey) int {
@@ -265,16 +287,16 @@ func (r *Catalog) Definitions() []ModelDefinition {
 // Offering returns one caller-owned provider-scoped model offering. Provider
 // aliases resolve to their canonical provider before key lookup.
 func (r *Catalog) Offering(providerID ProviderID, providerModelID ProviderModelID) (ProviderOffering, error) {
-	provider, found := r.source.Providers().Resolve(providerID)
-	if !found || provider == nil {
+	canonicalID, found := r.providerIDs[providerID]
+	if !found {
 		return ProviderOffering{}, &errors.NotFoundError{Resource: "provider", ID: string(providerID)}
 	}
-	key := OfferingKey{ProviderID: provider.ID, ProviderModelID: providerModelID}
+	key := OfferingKey{ProviderID: canonicalID, ProviderModelID: providerModelID}
 	offering, found := r.offerings[key]
 	if !found {
 		return ProviderOffering{}, &errors.NotFoundError{
 			Resource: "provider offering",
-			ID:       string(provider.ID) + "/" + string(providerModelID),
+			ID:       string(canonicalID) + "/" + string(providerModelID),
 		}
 	}
 	return copyProviderOffering(offering), nil

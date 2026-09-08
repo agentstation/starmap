@@ -167,7 +167,7 @@ func WithCandidateGenerationID(id string) CandidateOption
 
 WithCandidateGenerationID binds the candidate to a generation ID that the caller derives. A caller that composes a catalog from its own layers knows the identity of the result. The update then publishes that identity instead of a fresh one.
 
-The identity names one payload. A retained generation never changes. A later candidate that carries the same identity and other bytes therefore fails with a typed conflict from the catalog store. A caller that omits this option gets one fresh UUID\-shaped identity per publication.
+The identity names one complete generation, including its evidence. A later candidate that carries the same identity and different content therefore fails with a typed conflict from the catalog store. A caller that omits this option gets one fresh UUID\-shaped identity per publication.
 
 <a name="CatalogPublishedEvent"></a>
 ## type [CatalogPublishedEvent](<https://github.com/agentstation/starmap/blob/main/hooks.go#L19-L24>)

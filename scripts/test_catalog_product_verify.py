@@ -7,15 +7,27 @@ import hashlib
 import subprocess
 import tempfile
 import unittest
+from copy import deepcopy
 from pathlib import Path
 from unittest.mock import patch
 
 import catalog_product_verify as verifier
+import constructor_network
+import cold_server
 
 
 class CatalogVerifierTests(unittest.TestCase):
     def setUp(self):
         self.roster = verifier.read_json(verifier.ROSTER)
+
+    def test_verifier_supports_isolated_document_import(self):
+        script = ("import importlib.util, sys; "
+                  "spec = importlib.util.spec_from_file_location('catalog_verifier', sys.argv[1]); "
+                  "module = importlib.util.module_from_spec(spec); spec.loader.exec_module(module); "
+                  "module.validate_roster(module.read_json(module.ROSTER))")
+        result = subprocess.run([sys.executable, "-I", "-c", script, str(Path(verifier.__file__).resolve())],
+                                capture_output=True, text=True, timeout=10)
+        self.assertEqual(result.returncode, 0, result.stderr)
 
     def test_complete_red_report(self):
         read_json = verifier.read_json
@@ -259,6 +271,331 @@ class CatalogVerifierTests(unittest.TestCase):
             with patch.object(verifier.subprocess, 'run', return_value=result):
                 checked = verifier.run_performance_baseline({'repository': 'starport'}, {'starport': root})
             self.assertEqual(checked['status'], 'UNVERIFIED')
+
+
+class FirstUseReviewTests(unittest.TestCase):
+    def setUp(self):
+        self.directory = tempfile.TemporaryDirectory()
+        self.addCleanup(self.directory.cleanup)
+        self.root = Path(self.directory.name)
+        (self.root / 'README.md').write_text('reviewed README')
+        (self.root / 'native.json').write_text('{"exit_code": 0}')
+        self.inference = {'verdict': 'PASS', 'release': 'v1.2.0', 'response_status': 200,
+                          'content_type': 'text/event-stream', 'request': {'stream': True},
+                          'stream': 'data: {"choices":[{"delta":{"content":"Hello"}}]}\n\ndata: [DONE]\n\n'}
+        (self.root / 'inference.json').write_text(json.dumps(self.inference))
+        self.review = {'schema_version': 1, 'verdict': 'PASS', 'release': 'v1.2.0',
+                       'observations': {'catalog_before_keys': True},
+                       'inputs': {'README.md': self.digest('README.md')},
+                       'captures': {name: self.digest(name) for name in ['native.json', 'inference.json']},
+                       'inference_capture': 'inference.json',
+                       'methods': {'archive': {'verdict': 'PASS', 'native': True, 'platform': 'linux/arm64',
+                                              'artifact_kind': 'release', 'release': 'v1.2.0', 'captures': ['native.json']}}}
+        self.entry = {'kind': 'reviewed_first_use', 'proof': 'review.json', 'repository': 'starport',
+                      'required_inputs': ['README.md'], 'observations': ['catalog_before_keys'], 'methods': ['archive']}
+
+    def digest(self, name):
+        return hashlib.sha256((self.root / name).read_bytes()).hexdigest()
+
+    def check(self):
+        (self.root / 'review.json').write_text(json.dumps(self.review))
+        with patch.object(verifier, 'ROOT', self.root):
+            return verifier.run_check('E02', self.entry, {'starport': self.root})['status']
+
+    def test_complete_review_passes(self):
+        self.assertEqual(self.check(), 'PASS')
+
+    def test_changed_readme_requires_review(self):
+        (self.root / 'README.md').write_text('new installer')
+        self.assertEqual(self.check(), 'UNVERIFIED')
+
+    def test_missing_observation_refuses(self):
+        self.review['observations'].clear()
+        self.assertEqual(self.check(), 'UNVERIFIED')
+
+    def test_unqualified_or_missing_method_refuses(self):
+        method = self.review['methods']['archive']
+        for field, bad in [('verdict', 'FAIL'), ('native', False), ('platform', ''),
+                           ('release', 'v1.1.0'), ('captures', []), ('captures', ['missing.json']),
+                           ('artifact_kind', 'unknown')]:
+            before = method[field]
+            method[field] = bad
+            with self.subTest(field=field, bad=bad):
+                self.assertEqual(self.check(), 'UNVERIFIED')
+            method[field] = before
+        self.review['methods'].clear()
+        self.assertEqual(self.check(), 'UNVERIFIED')
+
+    def test_source_build_needs_exact_commit(self):
+        method = self.review['methods']['archive']
+        method['artifact_kind'] = 'source'
+        self.assertEqual(self.check(), 'UNVERIFIED')
+        method['source_commit'] = 'a' * 40
+        self.assertEqual(self.check(), 'PASS')
+
+    def test_changed_or_missing_capture_refuses(self):
+        (self.root / 'native.json').write_text('{"exit_code": 1}')
+        self.assertEqual(self.check(), 'UNVERIFIED')
+        (self.root / 'native.json').unlink()
+        self.assertEqual(self.check(), 'UNVERIFIED')
+
+    def test_incomplete_inference_refuses_even_with_matching_capture_digest(self):
+        for stream in ['', 'data: [DONE]\n', 'data: {"choices":[]}\n\ndata: [DONE]\n',
+                       'data: {"choices":[{"delta":{"content":"Hello"}}]}\n']:
+            self.inference['stream'] = stream
+            (self.root / 'inference.json').write_text(json.dumps(self.inference))
+            self.review['captures']['inference.json'] = self.digest('inference.json')
+            with self.subTest(stream=stream):
+                self.assertEqual(self.check(), 'UNVERIFIED')
+
+    def test_evidence_cannot_escape_its_root(self):
+        self.review['inputs'] = {'../README.md': 'a' * 64, 'README.md': self.digest('README.md')}
+        self.assertEqual(self.check(), 'UNVERIFIED')
+
+
+class DemoReviewTests(unittest.TestCase):
+    def setUp(self):
+        self.directory = tempfile.TemporaryDirectory()
+        self.addCleanup(self.directory.cleanup)
+        self.root = Path(self.directory.name)
+        (self.root / 'README.md').write_text('fixture')
+        (self.root / 'assets').mkdir()
+        # The fixture covers identity and header checks. Human review owns visual quality.
+        data = b'GIF89a' + (1280).to_bytes(2, 'little') + (800).to_bytes(2, 'little')
+        outputs = {}
+        for name in ['first-use.gif', 'first-use-uncut.gif']:
+            (self.root / 'assets' / name).write_bytes(data)
+            outputs[name] = {'sha256': hashlib.sha256(data).hexdigest(), 'bytes': len(data)}
+        self.capture = {'verdict': 'PASS', 'release': 'v1.2.0', 'response_status': 200,
+                        'stream_events': [{'data': '{"choices":[{"delta":{"content":"Hello"}}]}'}, {'data': '[DONE]'}],
+                        'events': [{'seconds': 0}, {'seconds': 4}, {'seconds': 7}],
+                        'persistent_selectors_present': [], 'remaining_home_files': [],
+                        'catalog_environment_has_provider_key': False, 'shutdown_exit_code': 0, 'scratch_removed': True,
+                        'inference_start_seconds': 5, 'inference_end_seconds': 7}
+        self.render = {'width': 1280, 'height': 800, 'effective_font_at_900px': 18,
+                       'edits': [{'before_event': 1, 'original_gap_seconds': 4, 'edited_gap_seconds': 2}], 'outputs': outputs}
+        self.entry = {'kind': 'reviewed_demo', 'repository': 'starport', 'proof': 'review.json',
+                      'asset_directory': 'assets', 'required_inputs': ['README.md'], 'observations': ['readable']}
+
+    def check(self):
+        (self.root / 'capture.json').write_text(json.dumps(self.capture))
+        digest = lambda name: hashlib.sha256((self.root / name).read_bytes()).hexdigest()
+        self.render['capture_sha256'] = digest('capture.json')
+        (self.root / 'render.json').write_text(json.dumps(self.render))
+        review = {'schema_version': 1, 'verdict': 'PASS', 'release': 'v1.2.0', 'capture': 'capture.json',
+                  'render': 'render.json', 'observations': {'readable': True},
+                  'inputs': {'README.md': digest('README.md')},
+                  'captures': {name: digest(name) for name in ['capture.json', 'render.json']}}
+        (self.root / 'review.json').write_text(json.dumps(review))
+        with patch.object(verifier, 'ROOT', self.root):
+            return verifier.run_check('E03', self.entry, {'starport': self.root})['status']
+
+    def test_coherent_review_passes(self):
+        self.assertEqual(self.check(), 'PASS')
+
+    def test_edits_cannot_intersect_inference(self):
+        self.render['edits'] = [{'before_event': 2, 'original_gap_seconds': 3, 'edited_gap_seconds': 1}]
+        self.assertEqual(self.check(), 'UNVERIFIED')
+
+    def test_false_gap_or_negative_duration_refuses(self):
+        self.render['edits'][0]['original_gap_seconds'] = 10
+        self.assertEqual(self.check(), 'UNVERIFIED')
+        self.render['edits'][0]['original_gap_seconds'] = 4
+        self.render['edits'][0]['edited_gap_seconds'] = -1
+        self.assertEqual(self.check(), 'UNVERIFIED')
+
+    def test_incomplete_stream_or_cleanup_refuses(self):
+        self.capture['stream_events'] = []
+        self.assertEqual(self.check(), 'UNVERIFIED')
+        self.capture['stream_events'] = [{'data': '[DONE]'}]
+        self.assertEqual(self.check(), 'UNVERIFIED')
+        self.capture['stream_events'] = [{'data': '{"choices":[{"delta":{"content":"Hello"}}]}'}, {'data': '[DONE]'}]
+        self.capture['remaining_home_files'] = ['retained.db']
+        self.assertEqual(self.check(), 'UNVERIFIED')
+
+    def test_unreadable_dimensions_or_changed_gif_refuses(self):
+        self.render['width'] = 500
+        self.assertEqual(self.check(), 'UNVERIFIED')
+        self.render['width'] = 1280
+        self.render['height'] = 900
+        self.assertEqual(self.check(), 'UNVERIFIED')
+        self.render['height'] = 800
+        (self.root / 'assets/first-use.gif').write_bytes(b'changed')
+        self.assertEqual(self.check(), 'UNVERIFIED')
+
+
+class ConstructorNetworkTests(unittest.TestCase):
+    def setUp(self):
+        self.payload = {"constructors": constructor_network.CONSTRUCTORS, "os": "linux", "arch": "arm64",
+                        "files_after": 0, "generation_id": "embedded-generation", "payload_checksum": "sha256:" + "a" * 64}
+        self.read_only = {"exit_code": 0, "stdout": json.dumps(self.payload),
+                          "state": {"ExitCode": 0, "OOMKilled": False, "Error": ""}}
+        self.attempted = {"exit_code": 159, "stdout": '{"phase":"network-attempt"}',
+                          "state": {"ExitCode": 159, "OOMKilled": False, "Error": ""}}
+
+    def check(self):
+        return constructor_network.classify(self.read_only, self.attempted, "arm64")[0]
+
+    def test_both_controls_are_required(self):
+        self.assertEqual(self.check(), "PASS")
+        for code in [0, 1, 137]:
+            with self.subTest(code=code):
+                self.attempted["exit_code"] = code
+                self.attempted["state"]["ExitCode"] = code
+                self.assertEqual(self.check(), "UNVERIFIED")
+
+    def test_control_must_reach_its_socket_attempt(self):
+        for output in ["", "{}", "null", '{"phase":"before-main"}']:
+            with self.subTest(output=output):
+                self.attempted["stdout"] = output
+                self.assertEqual(self.check(), "UNVERIFIED")
+
+    def test_resource_failure_cannot_prove_network_enforcement(self):
+        for name in ["read_only", "attempted"]:
+            for field, value in [("OOMKilled", True), ("Error", "container failed")]:
+                with self.subTest(name=name, field=field):
+                    original = deepcopy(getattr(self, name))
+                    getattr(self, name)["state"][field] = value
+                    self.assertEqual(self.check(), "UNVERIFIED")
+                    setattr(self, name, original)
+
+    def test_constructor_socket_attempt_is_a_failure(self):
+        self.read_only.update(exit_code=159, stdout="")
+        self.read_only["state"]["ExitCode"] = 159
+        self.assertEqual(self.check(), "FAIL")
+
+    def test_missing_constructor_evidence_refuses(self):
+        for output in ["", "[]", "null", "invalid"]:
+            with self.subTest(output=output):
+                self.read_only["stdout"] = output
+                self.assertEqual(self.check(), "UNVERIFIED")
+
+    def test_incomplete_baseline_or_changed_platform_refuses(self):
+        for field, value in [("constructors", ["New"]), ("files_after", 1), ("files_after", False),
+                             ("generation_id", ""), ("generation_id", True), ("payload_checksum", "missing"),
+                             ("os", "darwin"), ("arch", "amd64")]:
+            with self.subTest(field=field, value=value):
+                payload = dict(self.payload, **{field: value})
+                self.read_only["stdout"] = json.dumps(payload)
+                self.assertEqual(self.check(), "FAIL")
+
+    def test_missing_container_state_refuses(self):
+        self.attempted.pop("state")
+        self.assertEqual(self.check(), "UNVERIFIED")
+
+    def test_missing_docker_is_unverified(self):
+        with patch.object(constructor_network.subprocess, "run", side_effect=FileNotFoundError("docker")):
+            result = constructor_network.verify(Path(__file__).resolve().parents[1])
+        self.assertEqual(result["status"], "UNVERIFIED")
+        self.assertTrue(result["cleanup_complete"])
+
+
+class ColdServerTests(unittest.TestCase):
+    def setUp(self):
+        manifest = {"generation_id": "baseline", "payload": {"checksum": "sha256:" + "a" * 64, "size_bytes": 1024}}
+        item = {"phase": "cold", "isolation": {"network_mode": "none", "user": "65532:65532", "readonly_rootfs": True,
+                "privileged": False, "environment_names": ["HOME", "STARMAP_HOME", "PATH"], "volume": "private"},
+                "network": {"denied": True}, "exit_state": {"ExitCode": 0, "Running": False},
+                "ready": {"status_code": 200, "body": {"data": {"runtime": {"usable": True, "source_kind": "public",
+                    "fallback": True, "generation_id": "baseline", "instance_identity": "instance"}}}},
+                "manifest": {"status_code": 200, "manifest_validated": True, "body": manifest, "generation_header": "baseline"},
+                "baseline_manifest": {"manifest_validated": True, "body": deepcopy(manifest), "mode": "0600"},
+                "payload": {"status_code": 200, "checksum": manifest["payload"]["checksum"], "bytes": 1024, "generation_header": "baseline"},
+                "baseline_payload": {"checksum": manifest["payload"]["checksum"], "bytes": 1024, "mode": "0600"}}
+        self.observations = [item, deepcopy(item)]
+        self.observations[1]["phase"] = "restart"
+
+    def test_complete_offline_restart_passes(self):
+        self.assertEqual(cold_server.classify(self.observations)[0], "PASS")
+
+    def test_both_observations_and_schema_validation_are_required(self):
+        for observations in [[], self.observations[:1], [None, None]]:
+            with self.subTest(observations=observations):
+                self.assertEqual(cold_server.classify(observations)[0], "UNVERIFIED")
+        self.observations[1]["baseline_manifest"].pop("manifest_validated")
+        self.assertEqual(cold_server.classify(self.observations)[0], "UNVERIFIED")
+
+    def test_external_network_or_credentials_cannot_qualify(self):
+        for field, value in [("network_mode", "bridge"), ("user", "root"), ("privileged", True),
+                             ("readonly_rootfs", False), ("environment_names", ["HOME", "STARMAP_HOME", "OPENAI_API_KEY"])]:
+            with self.subTest(field=field):
+                observations = deepcopy(self.observations)
+                observations[0]["isolation"][field] = value
+                self.assertEqual(cold_server.classify(observations)[0], "UNVERIFIED")
+
+    def test_failed_endpoints_and_invalid_bytes_fail(self):
+        cases = [("ready", "status_code", 503), ("payload", "bytes", 1), ("payload", "bytes", True),
+                 ("payload", "checksum", "sha256:" + "b" * 64), ("payload", "generation_header", "other"),
+                 ("baseline_manifest", "mode", "0644"), ("baseline_payload", "mode", "0644")]
+        for name, field, value in cases:
+            with self.subTest(name=name, field=field):
+                observations = deepcopy(self.observations)
+                observations[0][name][field] = value
+                self.assertEqual(cold_server.classify(observations)[0], "FAIL")
+
+    def test_restart_identity_and_manifest_changes_fail(self):
+        for variant in ["identity", "volume", "manifest"]:
+            with self.subTest(variant=variant):
+                observations = deepcopy(self.observations)
+                if variant == "identity":
+                    observations[1]["ready"]["body"]["data"]["runtime"]["instance_identity"] = "other"
+                elif variant == "volume":
+                    observations[1]["isolation"]["volume"] = "other"
+                else:
+                    observations[1]["baseline_manifest"]["body"]["generation_id"] = "other"
+                self.assertEqual(cold_server.classify(observations)[0], "FAIL")
+
+    def test_missing_instance_identity_cannot_qualify(self):
+        for value in ["", None, True]:
+            with self.subTest(value=value):
+                observations = deepcopy(self.observations)
+                for item in observations:
+                    item["ready"]["body"]["data"]["runtime"]["instance_identity"] = value
+                self.assertEqual(cold_server.classify(observations)[0], "UNVERIFIED")
+
+    def test_abnormal_exit_and_resource_failure_are_distinct(self):
+        self.observations[1]["exit_state"]["ExitCode"] = 137
+        self.assertEqual(cold_server.classify(self.observations)[0], "FAIL")
+        self.observations[1]["exit_state"]["OOMKilled"] = True
+        self.assertEqual(cold_server.classify(self.observations)[0], "UNVERIFIED")
+
+    def test_missing_docker_is_unverified(self):
+        with patch.object(cold_server.subprocess, "run", side_effect=FileNotFoundError("docker")):
+            result = cold_server.verify(Path(__file__).resolve().parents[1])
+        self.assertEqual(result["status"], "UNVERIFIED")
+        self.assertTrue(result["cleanup_complete"])
+
+    def test_build_failure_attempts_cleanup_and_cleanup_failure_fails(self):
+        for cleanup_code in [0, 1]:
+            calls = []
+            def run(args, **kwargs):
+                calls.append(args)
+                output, code = "", 0
+                if args[:2] == ["docker", "version"]:
+                    output = json.dumps({"Os": "linux", "Arch": "arm64"})
+                elif args[:2] == ["go", "build"]:
+                    Path(args[args.index("-o") + 1]).write_bytes(b"fixture binary")
+                elif args[:2] == ["docker", "build"]:
+                    code = 1
+                elif args[:3] == ["docker", "image", "rm"]:
+                    code = cleanup_code
+                return subprocess.CompletedProcess(args, code, output, "")
+            with self.subTest(cleanup_code=cleanup_code), patch.object(cold_server.subprocess, "run", side_effect=run):
+                result = cold_server.verify(Path(__file__).resolve().parents[1])
+            self.assertEqual(result["status"], "FAIL" if cleanup_code else "UNVERIFIED")
+            self.assertEqual(result["cleanup_complete"], cleanup_code == 0)
+            self.assertTrue(any(args[:3] == ["docker", "image", "rm"] for args in calls))
+
+    def test_registered_adapter_requires_probe_and_calls_verifier(self):
+        entry = {"kind": "cold_server", "repository": "starmap"}
+        self.assertEqual(verifier.run_check("A01.starmap_cold_offline", entry, {})["status"], "UNVERIFIED")
+        class Adapter:
+            @staticmethod
+            def verify(root):
+                return {"status": "PASS", "root": str(root)}
+        root = Path(__file__).resolve().parents[1]
+        with patch.object(verifier.importlib.util, "module_from_spec", return_value=Adapter), patch("importlib.machinery.SourceFileLoader.exec_module"):
+            self.assertEqual(verifier.run_check("A01.starmap_cold_offline", entry, {"starmap": root})["status"], "PASS")
 
 
 if __name__ == '__main__':

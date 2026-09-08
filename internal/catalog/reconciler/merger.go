@@ -23,15 +23,18 @@ type provenanceTracker interface {
 
 // merger implements strategic three-way merge.
 type merger struct {
-	authorities     authority.Reader
-	strategy        *AuthorityStrategy
-	tracker         provenanceTracker
-	baseline        *catalogs.Catalog // Baseline catalog for timestamp preservation
-	baselineModels  map[catalogs.ProviderID]map[string]*catalogs.Model
-	pricingAt       time.Time
-	observations    map[sources.ID]sourceObservationEvidence
-	sourceCatalogs  map[sources.ID]*catalogs.Catalog
-	carriedEvidence map[evidenceLocator]provenance.Entry
+	authorities       authority.Reader
+	strategy          *AuthorityStrategy
+	tracker           provenanceTracker
+	baseline          *catalogs.Catalog // Baseline catalog for timestamp preservation
+	baselineModels    map[catalogs.ProviderID]map[string]*catalogs.Model
+	pricingAt         time.Time
+	changeAt          time.Time
+	observations      map[sources.ID]sourceObservationEvidence
+	sourceCatalogs    map[sources.ID]*catalogs.Catalog
+	carriedEvidence   map[evidenceLocator]provenance.Entry
+	scoped            *scopedObservations
+	projectedEvidence func(catalogs.ProviderID, provenance.Entry) bool
 }
 
 type sourceObservationEvidence struct {
@@ -39,6 +42,8 @@ type sourceObservationEvidence struct {
 	observedAt       time.Time
 	revision         sources.Revision
 	evidenceChecksum string
+	bindingID        string
+	bindingRevision  string
 	completeness     sources.ObservationCompleteness
 	status           sources.ObservationStatus
 	records          sources.ObservationRecordCounts
@@ -350,7 +355,7 @@ func (merger *merger) model(providerID catalogs.ProviderID, modelID string, sour
 
 	// Update timestamps based on model state
 	if isNewModel {
-		now := utc.Now()
+		now := utc.New(merger.changeTime())
 		createdAt := merger.sourceTime(identity, "CreatedAt", sourceModels)
 		if createdAt.IsZero() {
 			createdAt = now
@@ -366,7 +371,7 @@ func (merger *merger) model(providerID catalogs.ProviderID, modelID string, sour
 		merged.UpdatedAt = updatedAt
 	} else if hasContentChanged {
 		// Existing model with changes: preserve created_at, update updated_at
-		merged.UpdatedAt = utc.Now()
+		merged.UpdatedAt = utc.New(merger.changeTime())
 	}
 	// else: Existing model, no changes: preserve both timestamps
 	// (timestamps already copied from baseline at line 178)
@@ -513,16 +518,17 @@ func (merger *merger) recordModelHistory(
 		Source:     source,
 		Field:      provenancePath,
 		Value:      value,
-		Timestamp:  time.Now(),
+		Timestamp:  merger.changeTime(),
 		Authority:  merger.calculateAuthorityScore(policy.Resource, policy.Path, source),
 		Confidence: merger.calculateConfidence(value),
 		Reason:     reason,
 	}
-	if evidence, exists := merger.observations[source]; exists {
+	if evidence, exists := merger.modelObservation(source, identity); exists {
 		current.ObservationID = evidence.id
 		current.ObservedAt = evidence.observedAt
 		current.Revision = evidence.revision
 		current.EvidenceChecksum = evidence.evidenceChecksum
+		current.ProviderBindingID, current.ProviderBindingRevision = evidence.bindingID, evidence.bindingRevision
 		if health := evidence.healthReason(); health != "" {
 			current.Reason += "; " + health
 		}
@@ -946,4 +952,11 @@ func mergeModelModalities(target, source []catalogs.ModelModality) []catalogs.Mo
 		merged = append(merged, modality)
 	}
 	return merged
+}
+
+func (merger *merger) changeTime() time.Time {
+	if !merger.changeAt.IsZero() {
+		return merger.changeAt
+	}
+	return time.Now().UTC()
 }
