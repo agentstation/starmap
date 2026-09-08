@@ -138,3 +138,15 @@ CSP0 and CSP1 are complete. CSP2 still needs the later repair stack.
 PR #134 now targets main at head `b75985eb`.
 Automatic merge waits for its required checks.
 Then advance #133, #135, and #136 into main in order.
+
+## Evidence merge and next implementation
+
+Starmap #134 merged at `74b66127` after twelve successful checks.
+Nine PRs merged. Five Starmap PRs remain open. Starport has no open PRs.
+The [merge capture](../approved-merges/starmap-134-merged.json) records the exact head and checks.
+
+PR #133 now targets current main at head `392617c8`.
+Its [diff check](pr133-main-update.json) confirms identical reviewed implementation bytes.
+Native and required checks run before merge.
+Then advance #135 and #136 into main.
+Task completion requires the implementation merge and passing acceptance evidence.
