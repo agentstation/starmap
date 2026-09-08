@@ -1,0 +1,95 @@
+{
+  "run_id": 34175904597,
+  "url": "https://github.com/agentstation/starmap/actions/runs/34175904597",
+  "head": "6488e02fb908c685f9d474271e25958b5c555bcd",
+  "windows": {
+    "amd64": {
+      "pass": 1047,
+      "fail": 9,
+      "skip": 0,
+      "failures": [
+        "TestWorkspaceReplacementPreservesAccessPolicy",
+        "TestWorkspaceReplacementPreservesInheritedAccessPolicy",
+        "TestNativeAccessCopyPreservesDescriptor/protected/file",
+        "TestNativeAccessCopyPreservesDescriptor/protected/directory",
+        "TestNativeAccessCopyPreservesDescriptor/inherited/file",
+        "TestNativeAccessCopyPreservesDescriptor/inherited/directory",
+        "TestNativeAccessCopyPreservesDescriptor/label/file",
+        "TestNativeAccessCopyPreservesDescriptor/label/directory",
+        "TestNativeAccessCopyPreservesDescriptor"
+      ],
+      "path": "windows-amd64-tests.jsonl.gz",
+      "sha256": "bdb8b0697dadf2ac74fce48d3b8a78b38c544f451ed89d7bc91657ea1744980b",
+      "uncompressed_sha256": "5c937379519b5dba28b0144f8d6534e38c7d73ac32cbdd76f5397135782ef74e"
+    },
+    "arm64": {
+      "pass": 1047,
+      "fail": 9,
+      "skip": 0,
+      "failures": [
+        "TestWorkspaceReplacementPreservesAccessPolicy",
+        "TestWorkspaceReplacementPreservesInheritedAccessPolicy",
+        "TestNativeAccessCopyPreservesDescriptor/protected/file",
+        "TestNativeAccessCopyPreservesDescriptor/protected/directory",
+        "TestNativeAccessCopyPreservesDescriptor/inherited/file",
+        "TestNativeAccessCopyPreservesDescriptor/inherited/directory",
+        "TestNativeAccessCopyPreservesDescriptor/label/file",
+        "TestNativeAccessCopyPreservesDescriptor/label/directory",
+        "TestNativeAccessCopyPreservesDescriptor"
+      ],
+      "path": "windows-arm64-tests.jsonl.gz",
+      "sha256": "cf434de57bc2670622cfffd33c4c52b8dd3280f0028b6cc4246af81df38ae2cc",
+      "uncompressed_sha256": "8e6c6d88f2908f99d3118ad03d7c0fa81888f80edda4f7deab2252a88a3ed664"
+    }
+  },
+  "primary_acceptance_credit": false,
+  "linux_macos_runtime": "All four jobs passed.",
+  "remaining_defect": "Native descriptor assignment clears DACL automatic-inheritance flags. Labeled cases also lose SACL automatic-inheritance flags. Access entries remain equal in the focused diagnostics.",
+  "candidate": "Request DACL and SACL automatic inheritance only where the captured descriptor uses that model. Exact descriptor equality remains required.",
+  "reference": "https://learn.microsoft.com/en-us/windows-hardware/drivers/ifs/security-descriptor-control",
+  "local_candidate_checks": {
+    "windows_floor_compile": [
+      "amd64",
+      "arm64"
+    ],
+    "windows_lint_exit_code": 0,
+    "ago_exit_code": 0,
+    "full_verification": "in progress",
+    "native_qualification": "UNVERIFIED"
+  },
+  "candidate_logs": {
+    "ago.json": {
+      "path": "ago.json.gz",
+      "sha256": "905b50ebb66dc28cecf0d5d7681aabcd8b20af21ce5f8834692f1c6c68590281",
+      "uncompressed_sha256": "b8fb7afa66aa7a93914ac258475dd0191be821803a8aea4439f5ba05022f5fa5"
+    },
+    "windows-lint.log": {
+      "path": "windows-lint.log.gz",
+      "sha256": "bafcb04d67f6157ff3d4a1fdf228afd2df6cc6d786c61642c1125b1fe879e728",
+      "uncompressed_sha256": "e92606b0bf483111dff0a120c315ea165821348f31365020e2468a0059095c47"
+    },
+    "writing.log": {
+      "path": "writing.log.gz",
+      "sha256": "c27a552a845fa9f8fa88de0d5cfe2e8c2e9e0a321ed1d67e6f5e564e6a6e0011",
+      "uncompressed_sha256": "f420fca1d05f2a83b7b5cd4ae758dd4179b3a9492aa272daa11e2b0740942a9c"
+    },
+    "documents.json": {
+      "path": "documents.json.gz",
+      "sha256": "3c1f4d4677a15d1bdf9c664d27b4d897af06daac8a72498ed41f1c82214b315f",
+      "uncompressed_sha256": "0bf42a7bfdcbde428cd6220808304f806360e19d88a0bda5693b98917716a7d2"
+    }
+  },
+  "candidate_source_sha256": "3b27884afe3b57ee2433d8075903461d8cfbccc16275065edad45f0ed88621c9",
+  "windows_binaries": {
+    "amd64": {
+      "sha256": "625f7e2d42aa8d468601d0c303483cd1ceea4eec2561802983dc73e1949738af",
+      "go": "1.25.12",
+      "package": "./internal/catalog/workspace"
+    },
+    "arm64": {
+      "sha256": "44ff6306e27b77a9a88d7425794f9a48b4db866b87e9c8d748cff9ae10e4ca88",
+      "go": "1.25.12",
+      "package": "./internal/catalog/workspace"
+    }
+  }
+}

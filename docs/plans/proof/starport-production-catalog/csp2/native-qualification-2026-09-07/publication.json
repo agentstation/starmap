@@ -1,0 +1,31 @@
+{
+  "foundation": {
+    "head": "90c8932efbef534d6157092e068fdc6f88d7ac61",
+    "pull_request": 132,
+    "review_portions": 8,
+    "findings": 0,
+    "run_id": 34167265050
+  },
+  "followup": {
+    "head": "81336db7c8f8df78151114339a3dc78f89848390",
+    "pull_request": 133,
+    "review_portions": 5,
+    "findings": 0,
+    "run_id": 34167265992
+  },
+  "profile": "cross-lab",
+  "reviewers": [
+    {
+      "model": "gpt-5.6-sol",
+      "thinking": "xhigh"
+    },
+    {
+      "model": "claude-opus-5",
+      "thinking": "high"
+    }
+  ],
+  "review_threshold": "P0",
+  "native_result": "UNVERIFIED: reruns in progress",
+  "merged": false,
+  "released": false
+}

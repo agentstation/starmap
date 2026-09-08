@@ -1,0 +1,41 @@
+{
+  "head": "0b87fd18",
+  "scope": "Integrated follow-up component checks. No released-pair acceptance credit.",
+  "CSP2": {
+    "status": "in_progress",
+    "subcases": {
+      "PASS": 7,
+      "FAIL": 0,
+      "UNVERIFIED": 15
+    },
+    "selected": 22,
+    "gate_status": "FAIL"
+  },
+  "unregistered_application_probes": {
+    "status": "PASS",
+    "test_events": 5,
+    "scope": "Two instances, duplicate owner, and empty required application paths. No acceptance registration or credit."
+  },
+  "artifacts": [
+    {
+      "path": "followup-components.json.gz",
+      "sha256": "ca0173e2536ddb88054b542eefb5a7e83b4dc2d07a2bb72430930e307a2ac8d7",
+      "uncompressed_sha256": "038caa02d65bbb59825b6a89e31fce3b38cbdc297f07b7b7729741a5764dd798"
+    },
+    {
+      "path": "remaining-application-test.go.gz",
+      "sha256": "98ba73e8938682e52104230de8bcea1302d881decc1764ba816aab290a105520",
+      "uncompressed_sha256": "14de9cac598365b25e9a9b3a987f67e6d0a92fe73fec940633717f8d23b52520"
+    },
+    {
+      "path": "remaining-application-overlay.json.gz",
+      "sha256": "1aaa959178a8f3f5faaa9ec593a0715c0fcc7762a8b0676703d264fc8ab15733",
+      "uncompressed_sha256": "145a044c57dc9dfb719b38cd7eabf64a4504c1e40ba82c5940d053a3bb86d451"
+    },
+    {
+      "path": "remaining-application-results.jsonl.gz",
+      "sha256": "07dd9d29d18010567b1b8f11c4be5fde5c62ae2d8cd19b29a421e0a05ecec1ce",
+      "uncompressed_sha256": "c4010d7273969daa3ef7c4efdae3373c27d035b7aff40be5e07245ede73369a1"
+    }
+  ]
+}

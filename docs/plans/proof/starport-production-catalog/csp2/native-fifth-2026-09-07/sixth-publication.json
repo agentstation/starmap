@@ -1,0 +1,37 @@
+{
+  "head": "f216e7c01e874bdfb4fa57e6b5c1129f79a985fd",
+  "branch": "codex/catalog-foundation",
+  "pr": "https://github.com/agentstation/starmap/pull/132",
+  "review": {
+    "gate": "pre-pr",
+    "base": "codex/catalog-plan",
+    "profile": "cross-lab",
+    "portions": 8,
+    "findings": 0,
+    "exit_code": 0
+  },
+  "publication": "Pushed the reviewed commit and updated the draft PR body.",
+  "native_run": {
+    "id": 34182826240,
+    "url": "https://github.com/agentstation/starmap/actions/runs/34182826240",
+    "status": "in_progress"
+  },
+  "artifacts": [
+    {
+      "path": "sixth-review.log.gz",
+      "sha256": "5a1f3779ba7fdc239caa1bedb074e7d3dc025f334e3a3c1f05b7dfbd86df3484",
+      "uncompressed_sha256": "5c282467b540cc42a7aa5962b19890218e58605d9f0426c532d991959447b97e"
+    },
+    {
+      "path": "sixth-pr-body.md.gz",
+      "sha256": "67720f2aecfa8ae12857b191749453d4c6dce19322cd7b7a0bbd2dd3d59a5484",
+      "uncompressed_sha256": "75eb29d0b70e4fa6b313d4b64bdf4f7bf9855c45e57a264e0d7705ab03627887"
+    },
+    {
+      "path": "sixth-native-initial.json.gz",
+      "sha256": "44fa3785f01830fa690212934f85581afe00172be5430279eff07ceaf87e6956",
+      "uncompressed_sha256": "d62e86568b80f2c3c39a43613794ef3bd6e9706c6bb4211ba09520a24cbf052a"
+    }
+  ],
+  "qualification": "No primary acceptance credit, merge, or release."
+}

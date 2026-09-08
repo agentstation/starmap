@@ -1,0 +1,50 @@
+{
+  "followup_commit": "6b8ed1c4c0a5b88b189ae54fc44a9868b07e3e23",
+  "foundation_commit": "0451b039e76b1fe11f629a1e26059c41147dd2a3",
+  "command": "GOTOOLCHAIN=go1.26.6 make verify",
+  "exit_code": 0,
+  "stages": 39,
+  "test_counts": {
+    "go test ./...": {
+      "passed_packages": 79,
+      "failed_packages": 0
+    },
+    "env CGO_ENABLED=1 go test ./... -race -short -timeout=20m": {
+      "passed_packages": 79,
+      "failed_packages": 0
+    }
+  },
+  "completed": true,
+  "logs": [
+    {
+      "file": "starmap-native-second-followup-verify.log",
+      "sha256": "1afbf75e348b8fcdbea60479ab427dbb8205127213be0da90fc2b73553b85608",
+      "bytes": 67828
+    },
+    {
+      "file": "starmap-native-second-followup-ago.json",
+      "sha256": "b8fb7afa66aa7a93914ac258475dd0191be821803a8aea4439f5ba05022f5fa5",
+      "bytes": 289
+    },
+    {
+      "file": "starmap-native-second-followup-windows-lint.log",
+      "sha256": "e92606b0bf483111dff0a120c315ea165821348f31365020e2468a0059095c47",
+      "bytes": 10
+    },
+    {
+      "file": "starmap-native-second-followup-documents.json",
+      "sha256": "81e381225d518d7cbfde4890e8da2969cbeed23706e1c48e04d2b8ca819b05f8",
+      "bytes": 3981
+    }
+  ],
+  "windows_app_compilation": {
+    "toolchain": "go1.25.12",
+    "architectures": [
+      "amd64",
+      "arm64"
+    ],
+    "native_execution": "UNVERIFIED"
+  },
+  "review": "open",
+  "primary_acceptance_credit": 0
+}

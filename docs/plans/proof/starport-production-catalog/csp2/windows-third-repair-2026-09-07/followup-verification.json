@@ -1,0 +1,42 @@
+{
+  "code_commit": "0e1986b8a7bf1ad251eaf8408263bb6d4f08b9e6",
+  "scope": "The migration candidate before the pattern-parent correction.",
+  "exit_code": 0,
+  "stages": 39,
+  "ordinary_package_passes": 79,
+  "race_package_passes": 79,
+  "logs": {
+    "followup-verify.log": {
+      "path": "followup-verify.log.gz",
+      "sha256": "3ee6e26b7f03541553618ee24a2aa8f24bb00b14b2bfae62a8ee47c2a797326d",
+      "uncompressed_sha256": "81c890a862f4001e157375afbf7d7692ca554a879465df068fb8aae6b956ee0b"
+    },
+    "followup-ago.json": {
+      "path": "followup-ago.json.gz",
+      "sha256": "905b50ebb66dc28cecf0d5d7681aabcd8b20af21ce5f8834692f1c6c68590281",
+      "uncompressed_sha256": "b8fb7afa66aa7a93914ac258475dd0191be821803a8aea4439f5ba05022f5fa5"
+    },
+    "followup-windows-lint.log": {
+      "path": "followup-windows-lint.log.gz",
+      "sha256": "bafcb04d67f6157ff3d4a1fdf228afd2df6cc6d786c61642c1125b1fe879e728",
+      "uncompressed_sha256": "e92606b0bf483111dff0a120c315ea165821348f31365020e2468a0059095c47"
+    },
+    "starport-ownership.log": {
+      "path": "starport-ownership.log.gz",
+      "sha256": "cac58828c90bd4cd35ddd46ae076a72f1ca8dbb56fd79c94e584283ea907849e",
+      "uncompressed_sha256": "c2006ab0841a15af0792722064ee14dae63cd3fdb0ff32a1480655cb0d5961ed"
+    },
+    "starport-state-paths.jsonl": {
+      "path": "starport-state-paths.jsonl.gz",
+      "sha256": "cb501c4ef757f65e66696179f358f85b2ca55993b9abb62889225374ac8a9c97",
+      "uncompressed_sha256": "5f23813105ffb449794a1646b931441fa639fcb78ee7e11e218435065b110d1d"
+    }
+  },
+  "starport": {
+    "commit": "de0e00297428f16115a068f5a39ec6702e0674f5",
+    "mode": "temporary local Go workspace",
+    "ownership_pass": 12,
+    "state_race_pass": 5,
+    "fail": 0
+  }
+}
