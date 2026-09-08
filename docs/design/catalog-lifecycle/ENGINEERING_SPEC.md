@@ -984,6 +984,20 @@ Version 2 idle markers prevent version 1 readers from silently rebuilding withou
 Recovery validates all referenced parent batches before replacing any retained source, provider, or manual head.
 Native upgrade and downgrade qualification remains open.
 
+D26 sets the canonical catalog limit to 32 MiB while raw source JSON keeps its default 16 MiB limit.
+
+`EncodeCatalogPayload` and both catalog decoders enforce the same canonical byte limit and the shared 64-level JSON nesting limit.
+Encoding failure returns no payload. Candidate validation must fail before changing the accepted generation or retained inputs.
+
+The 64 MiB transport and serialized-layer envelopes remain separate limits. Serialized layers include base64 expansion and receipt metadata.
+The embedded bootstrap review budgets remain unchanged. Configured backend limits can be narrower and must also govern publication.
+The executor uses the proposed 32 MiB default while the owner preference remains pending.
+
+Older readers with a 16 MiB limit cannot restore larger catalogs, even when the schema version matches.
+The manifest compatibility range describes schemas, not reader capacity.
+Before release, qualify the declared Starmap and Starport pair against the larger payloads.
+A downgrade requires a retained catalog that the older reader accepts.
+
 This component bounds manual history at 4,096 batches and 64 MiB of encoded observations and reset scopes.
 A full history rejects new observations before publication and preserves its accepted head.
 CSP5 must provide tested compaction, collection, and operator recovery before production support.

@@ -20,7 +20,7 @@ type UnknownJSONField struct {
 }
 
 const (
-	// MaxBytes bounds one provider or catalog source JSON payload.
+	// MaxBytes is the default byte limit for source JSON payloads.
 	MaxBytes = 16 << 20
 	// MaxJSONNestingDepth bounds object/array nesting before JSON decode.
 	MaxJSONNestingDepth = 64
@@ -28,8 +28,20 @@ const (
 
 // ValidateJSON enforces source byte and nesting limits before decoding.
 func ValidateJSON(data []byte) error {
-	if len(data) > MaxBytes {
-		return &errors.ValidationError{Field: "payload", Value: len(data), Message: "exceeds maximum source payload size"}
+	return validateJSON(data, MaxBytes, "exceeds maximum source payload size")
+}
+
+// ValidateJSONWithMaxBytes applies the caller's byte limit and the shared nesting limit.
+func ValidateJSONWithMaxBytes(data []byte, maxBytes int) error {
+	return validateJSON(data, maxBytes, "exceeds maximum JSON payload size")
+}
+
+func validateJSON(data []byte, maxBytes int, message string) error {
+	if maxBytes <= 0 {
+		return &errors.ValidationError{Field: "payload.max_bytes", Value: maxBytes, Message: "must be positive"}
+	}
+	if len(data) > maxBytes {
+		return &errors.ValidationError{Field: "payload", Value: len(data), Message: message}
 	}
 	depth := 0
 	inString := false

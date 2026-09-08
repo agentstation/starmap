@@ -5,8 +5,6 @@ package resourcepolicy
 import (
 	"io/fs"
 	"time"
-
-	sourcepayload "github.com/agentstation/starmap/pkg/sources/payload"
 )
 
 const (
@@ -14,8 +12,8 @@ const (
 	MaxModels = 10000
 	// MaxProviders bounds the canonical provider collection.
 	MaxProviders = 100
-	// MaxPayloadBytes is the shared source and catalog JSON payload limit.
-	MaxPayloadBytes = sourcepayload.MaxBytes
+	// MaxPayloadBytes bounds one canonical catalog JSON payload.
+	MaxPayloadBytes = 32 << 20
 )
 
 const (

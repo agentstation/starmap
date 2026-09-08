@@ -51,6 +51,7 @@ The [latency revision](../../plans/proof/starport-production-catalog/latency-rev
 | D23 | Explicitly selected service-managed primary configuration may use trusted administrator ownership and service read access. Untrusted writes remain forbidden. | User confirmed on 2026-09-06 |
 | D24 | A fresh manual update resets prior local acquisition results while preserving the embedded or selected upstream baseline. Internal authority remains binding. | User confirmed on 2026-09-07 |
 | D25 | Account-specific catalog removals affect only inference profiles explicitly linked to that acquisition scope. Preserve model discovery and unrelated account routes. | User confirmed on 2026-09-07 |
+| D26 | Canonical catalog payloads permit 32 MiB. Raw source payloads retain 16 MiB. Encoders and decoders enforce identical catalog limits. | Engineering default based on a verified 23,683,266-byte generation. Owner preference remains pending. |
 
 D23 permits checked, explicitly selected, administrator-owned primary configuration for service deployments. Catalog state and dotenv files retain private-access requirements.
 The [owner decision record](../../plans/proof/starport-production-catalog/csp2/owner-decisions-2026-09-06.md) defines its implementation and qualification limits.
@@ -261,6 +262,10 @@ Only the last condition needs the retryable refusal from D14.
 Recovery cannot reconstruct revocations or spending absent from its backups.
 Use independent durable evidence, or keep affected access restricted until an operator reconciles the missing interval.
 Catalog publication does not independently authorize a new destination to receive inference credentials.
+
+Every published catalog must remain readable after restart under the same supported configuration.
+Refuse payloads that exceed the catalog byte or nesting limit before publication. Preserve the accepted head and retained inputs.
+D26 separates complete catalog capacity from raw provider-response limits. Embedded bootstrap review budgets and encoded retention limits remain independent.
 
 ## Service objectives
 

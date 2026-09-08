@@ -1518,3 +1518,24 @@ The plan maps these findings to existing tasks and acceptance subcases.
 The target separates accepted membership, permitted discovery, structural support, and current caller readiness.
 D24 preserves the selected baseline during fresh acquisition. D25 limits account-specific withdrawals to explicitly linked inference profiles.
 Neither decision permits public fallback around internal authority.
+
+
+## Catalog encoding and restart limits, 2026-09-08
+
+An upgrade probe used the current runtime to publish a 23,683,266-byte generation into the filesystem catalog store.
+Both the original reader and the legacy-recovery candidate refused to reopen it. The decoder enforced 16 MiB, while encoding imposed no byte limit.
+The same mismatch also permitted JSON nesting beyond the decoder's 64-level limit.
+
+A first repair enforced the existing 16 MiB limit during encoding. Four existing acquisition tests then failed, including ordinary tenant publication.
+That repair prevented unreadable writes but rejected supported catalog composition. It is not the selected implementation.
+
+The selected candidate separates canonical catalog capacity from the raw source limit. D26 assigns 32 MiB to catalog payloads and retains 16 MiB for raw source JSON.
+Both codec directions now enforce the catalog limit and the shared nesting bound. The 32 MiB candidate reopens the recorded generation without changing its digest.
+Layer envelopes, cumulative history bounds, and embedded review budgets remain independent.
+
+The legacy-recovery prototype remains unapplied. It passes independent-evidence selection, private-fact refusal, embedded publication, and restart checks.
+After the byte-limit repair permits decoding, an older accepted legacy history still fails the new candidate's startup validation.
+Checked startup recovery remains the next legacy boundary. No production qualification follows from the isolated prototype checks.
+
+The current manifest compatibility range identifies schema versions only. It does not declare reader capacity.
+Older 16 MiB readers still reject larger payloads with a matching schema version. Released-pair and downgrade qualification remain open.
