@@ -237,6 +237,16 @@ func (a workspaceAssembler) directory(name string) error {
 	if err != nil {
 		return err
 	}
+	restoreAccess, err := writableStagedDirectory(file)
+	if err != nil {
+		return err
+	}
+	restored := false
+	defer func() {
+		if !restored {
+			_ = restoreAccess()
+		}
+	}()
 	if err := file.Chmod(mode | privatefiles.DirectoryMode); err != nil {
 		return err
 	}
@@ -260,6 +270,10 @@ func (a workspaceAssembler) directory(name string) error {
 			return err
 		}
 	}
+	if err := restoreAccess(); err != nil {
+		return err
+	}
+	restored = true
 	if err := file.Chmod(mode); err != nil {
 		return err
 	}
