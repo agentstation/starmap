@@ -1,0 +1,29 @@
+{
+  "pr": 137,
+  "url": "https://github.com/agentstation/starmap/pull/137",
+  "head": "907b055c4378fa6e61a775f327c02fdd2a13d48b",
+  "main_base": "46767fb7e95c0bab330b222e94fb7a74db461536",
+  "worktree": "/tmp/starmap-pr137-security-2026-09-08",
+  "branch": "codex/catalog-pr137-security",
+  "advisory": "GHSA-2v4p-qf9q-27wj",
+  "dependency": "google.golang.org/grpc",
+  "previous": "1.83.1",
+  "fixed": "1.83.2",
+  "diff_files": [
+    "go.mod",
+    "go.sum"
+  ],
+  "tests": {
+    "release_auth_race": 67,
+    "minimum_auth": 67,
+    "main_integration_auth_race": 67,
+    "external_consumers": 6,
+    "module_verification": "PASS",
+    "ago": "PASS"
+  },
+  "review": "Automatic metadata-only pre-PR gate exits 0 without a model call.",
+  "fresh_ci": "pending",
+  "merge": "pending",
+  "task_completion_credit": false,
+  "published": true
+}

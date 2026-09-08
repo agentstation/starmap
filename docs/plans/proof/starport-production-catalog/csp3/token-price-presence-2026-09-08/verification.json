@@ -1,0 +1,46 @@
+{
+  "task": "CSP3",
+  "implementation_worktree": "/tmp/starmap-token-cost-worktree-2026-09-08",
+  "branch": "codex/catalog-token-cost-presence",
+  "initial_commit": "6f1117e74c98207efb1854bcd4e9011139ba6286",
+  "unit_repair_commit": "b4e436b18aed9519bd8662a2cf6bfd81bfe6f2e9",
+  "source_scope": "Token-cost JSON/YAML presence, price validation, reconciliation retention, and legacy unused-unit handling.",
+  "initial_regression": {
+    "test_pass": 9,
+    "test_fail": 14,
+    "package_fail": 2
+  },
+  "initial_focused_fix": {
+    "test_pass": 40,
+    "package_pass": 2
+  },
+  "legacy_regression": {
+    "test_fail": 2,
+    "package_fail": 1
+  },
+  "unit_repair_focused_race": {
+    "test_pass": 77,
+    "package_pass": 2
+  },
+  "initial_full_verifier": {
+    "exit_code": 2,
+    "failure": "Pinned artifact digest changed after embedded baseline regeneration."
+  },
+  "unit_repair_pin_regression": {
+    "test_fail": 1,
+    "actual_archive_sha256": "feb61a46452a5e40579db6948e6e1b5668c23d7a04fe375e1f5a01cd44791573"
+  },
+  "unit_repair_consumer_checks": {
+    "exit_code": 0,
+    "consumers": 6
+  },
+  "current_full_verifier": {
+    "status": "running",
+    "session": 17673,
+    "output": "/tmp/starmap-token-cost-presence-2026-09-08/unit-repair-publication-verify.txt"
+  },
+  "required_review": "pending full verification",
+  "published": false,
+  "task_completed": false,
+  "remaining": "Whole-record and other nested presence, original receipt handling, and scoped authority remain open."
+}
