@@ -1,0 +1,555 @@
+{
+  "admitted-reconciler.jsonl": {
+    "test_events": {
+      "pass": 365,
+      "fail": 0,
+      "skip": 0
+    },
+    "package_events": [
+      {
+        "Action": "pass",
+        "Package": "github.com/agentstation/starmap/internal/catalog/reconciler",
+        "Elapsed": 1.768
+      }
+    ]
+  },
+  "before.jsonl": {
+    "test_events": {
+      "pass": 1,
+      "fail": 4,
+      "skip": 0
+    },
+    "package_events": [
+      {
+        "Action": "fail",
+        "Package": "github.com/agentstation/starmap/internal/catalog/reconciler",
+        "Elapsed": 0.312
+      }
+    ]
+  },
+  "budget-acquisition.jsonl": {
+    "test_events": {
+      "pass": 4,
+      "fail": 0,
+      "skip": 0
+    },
+    "package_events": [
+      {
+        "Action": "pass",
+        "Package": "github.com/agentstation/starmap/acquisition",
+        "Elapsed": 59.965
+      }
+    ]
+  },
+  "budget-candidate.jsonl": {
+    "test_events": {
+      "pass": 599,
+      "fail": 0,
+      "skip": 0
+    },
+    "package_events": [
+      {
+        "Action": "pass",
+        "Package": "github.com/agentstation/starmap/pkg/sources/payload",
+        "Elapsed": 1.423
+      },
+      {
+        "Action": "pass",
+        "Package": "github.com/agentstation/starmap/pkg/catalogs",
+        "Elapsed": 75.062
+      }
+    ]
+  },
+  "budget-upgrade-candidate.jsonl": {
+    "test_events": {
+      "pass": 0,
+      "fail": 1,
+      "skip": 0
+    },
+    "package_events": [
+      {
+        "Action": "fail",
+        "Package": "github.com/agentstation/starmap/runtime",
+        "Elapsed": 29.751
+      }
+    ]
+  },
+  "budget-upgrade-original.jsonl": {
+    "test_events": {
+      "pass": 1,
+      "fail": 0,
+      "skip": 0
+    },
+    "package_events": [
+      {
+        "Action": "pass",
+        "Package": "github.com/agentstation/starmap/runtime",
+        "Elapsed": 25.815
+      }
+    ]
+  },
+  "candidate.jsonl": {
+    "test_events": {
+      "pass": 5,
+      "fail": 0,
+      "skip": 0
+    },
+    "package_events": [
+      {
+        "Action": "pass",
+        "Package": "github.com/agentstation/starmap/internal/catalog/reconciler",
+        "Elapsed": 1.271
+      }
+    ]
+  },
+  "catalogs-encode-final.jsonl": {
+    "test_events": {
+      "pass": 595,
+      "fail": 0,
+      "skip": 0
+    },
+    "package_events": [
+      {
+        "Action": "pass",
+        "Package": "github.com/agentstation/starmap/pkg/catalogs",
+        "Elapsed": 60.635
+      }
+    ]
+  },
+  "embedded-admitted.jsonl": {
+    "test_events": {
+      "pass": 1,
+      "fail": 0,
+      "skip": 0
+    },
+    "package_events": [
+      {
+        "Action": "pass",
+        "Package": "github.com/agentstation/starmap/runtime",
+        "Elapsed": 34.701
+      }
+    ]
+  },
+  "embedded-before.jsonl": {
+    "test_events": {
+      "pass": 1,
+      "fail": 0,
+      "skip": 0
+    },
+    "package_events": [
+      {
+        "Action": "pass",
+        "Package": "github.com/agentstation/starmap/runtime",
+        "Elapsed": 21.029
+      }
+    ]
+  },
+  "embedded-candidate.jsonl": {
+    "test_events": {
+      "pass": 0,
+      "fail": 1,
+      "skip": 0
+    },
+    "package_events": [
+      {
+        "Action": "fail",
+        "Package": "github.com/agentstation/starmap/runtime",
+        "Elapsed": 10.247
+      }
+    ]
+  },
+  "encode-before.jsonl": {
+    "test_events": {
+      "pass": 4,
+      "fail": 4,
+      "skip": 0
+    },
+    "package_events": [
+      {
+        "Action": "fail",
+        "Package": "github.com/agentstation/starmap/pkg/catalogs",
+        "Elapsed": 5.571
+      }
+    ]
+  },
+  "encode-minimum.jsonl": {
+    "test_events": {
+      "pass": 8,
+      "fail": 0,
+      "skip": 0
+    },
+    "package_events": [
+      {
+        "Action": "pass",
+        "Package": "github.com/agentstation/starmap/pkg/catalogs",
+        "Elapsed": 6.645
+      }
+    ]
+  },
+  "expanded-before.jsonl": {
+    "test_events": {
+      "pass": 1,
+      "fail": 5,
+      "skip": 0
+    },
+    "package_events": [
+      {
+        "Action": "fail",
+        "Package": "github.com/agentstation/starmap/internal/catalog/reconciler",
+        "Elapsed": 0.281
+      }
+    ]
+  },
+  "expanded-candidate.jsonl": {
+    "test_events": {
+      "pass": 6,
+      "fail": 0,
+      "skip": 0
+    },
+    "package_events": [
+      {
+        "Action": "pass",
+        "Package": "github.com/agentstation/starmap/internal/catalog/reconciler",
+        "Elapsed": 1.33
+      }
+    ]
+  },
+  "full-budget-final.jsonl": {
+    "test_events": {
+      "pass": 1000,
+      "fail": 0,
+      "skip": 0
+    },
+    "package_events": [
+      {
+        "Action": "pass",
+        "Package": "github.com/agentstation/starmap/internal/catalog/reconciler",
+        "Elapsed": 1.705
+      },
+      {
+        "Action": "pass",
+        "Package": "github.com/agentstation/starmap/acquisition",
+        "Elapsed": 331.53
+      },
+      {
+        "Action": "pass",
+        "Package": "github.com/agentstation/starmap/runtime",
+        "Elapsed": 668.37
+      }
+    ]
+  },
+  "full-encode-final.jsonl": {
+    "test_events": {
+      "pass": 996,
+      "fail": 4,
+      "skip": 0
+    },
+    "package_events": [
+      {
+        "Action": "pass",
+        "Package": "github.com/agentstation/starmap/internal/catalog/reconciler",
+        "Elapsed": 2.645
+      },
+      {
+        "Action": "fail",
+        "Package": "github.com/agentstation/starmap/acquisition",
+        "Elapsed": 349.136
+      },
+      {
+        "Action": "pass",
+        "Package": "github.com/agentstation/starmap/runtime",
+        "Elapsed": 702.084
+      }
+    ]
+  },
+  "matching-before.jsonl": {
+    "test_events": {
+      "pass": 2,
+      "fail": 2,
+      "skip": 0
+    },
+    "package_events": [
+      {
+        "Action": "fail",
+        "Package": "github.com/agentstation/starmap/internal/catalog/reconciler",
+        "Elapsed": 0.258
+      }
+    ]
+  },
+  "matching-final.jsonl": {
+    "test_events": {
+      "pass": 366,
+      "fail": 0,
+      "skip": 0
+    },
+    "package_events": [
+      {
+        "Action": "pass",
+        "Package": "github.com/agentstation/starmap/internal/catalog/reconciler",
+        "Elapsed": 1.7530000000000001
+      }
+    ]
+  },
+  "minimum-budget-final.jsonl": {
+    "test_events": {
+      "pass": 15,
+      "fail": 0,
+      "skip": 0
+    },
+    "package_events": [
+      {
+        "Action": "pass",
+        "Package": "github.com/agentstation/starmap/pkg/sources/payload",
+        "Elapsed": 1.5270000000000001
+      },
+      {
+        "Action": "pass",
+        "Package": "github.com/agentstation/starmap/pkg/catalogs",
+        "Elapsed": 13.786
+      }
+    ]
+  },
+  "minimum.jsonl": {
+    "test_events": {
+      "pass": 9,
+      "fail": 0,
+      "skip": 0
+    },
+    "package_events": [
+      {
+        "Action": "pass",
+        "Package": "github.com/agentstation/starmap/internal/catalog/reconciler",
+        "Elapsed": 1.321
+      }
+    ]
+  },
+  "oversize-bound-before.jsonl": {
+    "test_events": {
+      "pass": 0,
+      "fail": 1,
+      "skip": 0
+    },
+    "package_events": [
+      {
+        "Action": "fail",
+        "Package": "github.com/agentstation/starmap/runtime",
+        "Elapsed": 50.195
+      }
+    ]
+  },
+  "oversize-bound-final.jsonl": {
+    "test_events": {
+      "pass": 1,
+      "fail": 0,
+      "skip": 0
+    },
+    "package_events": [
+      {
+        "Action": "pass",
+        "Package": "github.com/agentstation/starmap/runtime",
+        "Elapsed": 44.055
+      }
+    ]
+  },
+  "oversize-final.jsonl": {
+    "test_events": {
+      "pass": 1,
+      "fail": 0,
+      "skip": 0
+    },
+    "package_events": [
+      {
+        "Action": "pass",
+        "Package": "github.com/agentstation/starmap/runtime",
+        "Elapsed": 18.217
+      }
+    ]
+  },
+  "packages-budget-final.jsonl": {
+    "test_events": {
+      "pass": 606,
+      "fail": 0,
+      "skip": 0
+    },
+    "package_events": [
+      {
+        "Action": "pass",
+        "Package": "github.com/agentstation/starmap/pkg/sources/payload",
+        "Elapsed": 1.634
+      },
+      {
+        "Action": "pass",
+        "Package": "github.com/agentstation/starmap/pkg/catalogs",
+        "Elapsed": 70.597
+      }
+    ]
+  },
+  "reconciler-candidate.jsonl": {
+    "test_events": {
+      "pass": 361,
+      "fail": 0,
+      "skip": 0
+    },
+    "package_events": [
+      {
+        "Action": "pass",
+        "Package": "github.com/agentstation/starmap/internal/catalog/reconciler",
+        "Elapsed": 1.8090000000000002
+      }
+    ]
+  },
+  "refusal-before.jsonl": {
+    "test_events": {
+      "pass": 0,
+      "fail": 1,
+      "skip": 0
+    },
+    "package_events": [
+      {
+        "Action": "fail",
+        "Package": "github.com/agentstation/starmap/runtime",
+        "Elapsed": 21.131
+      }
+    ]
+  },
+  "runtime-before.jsonl": {
+    "test_events": {
+      "pass": 0,
+      "fail": 1,
+      "skip": 0
+    },
+    "package_events": [
+      {
+        "Action": "fail",
+        "Package": "github.com/agentstation/starmap/runtime",
+        "Elapsed": 13.94
+      }
+    ]
+  },
+  "runtime-bound.jsonl": {
+    "test_events": {
+      "pass": 2,
+      "fail": 0,
+      "skip": 0
+    },
+    "package_events": [
+      {
+        "Action": "pass",
+        "Package": "github.com/agentstation/starmap/runtime",
+        "Elapsed": 43.821
+      }
+    ]
+  },
+  "runtime-candidate.jsonl": {
+    "test_events": {
+      "pass": 0,
+      "fail": 1,
+      "skip": 0
+    },
+    "package_events": [
+      {
+        "Action": "fail",
+        "Package": "github.com/agentstation/starmap/runtime",
+        "Elapsed": 14.324
+      }
+    ]
+  },
+  "runtime-final.jsonl": {
+    "test_events": {
+      "pass": 2,
+      "fail": 0,
+      "skip": 0
+    },
+    "package_events": [
+      {
+        "Action": "pass",
+        "Package": "github.com/agentstation/starmap/runtime",
+        "Elapsed": 44.723
+      }
+    ]
+  },
+  "s3-budget-final.jsonl": {
+    "test_events": {
+      "pass": 9,
+      "fail": 0,
+      "skip": 0
+    },
+    "package_events": [
+      {
+        "Action": "pass",
+        "Package": "github.com/agentstation/starmap/pkg/catalogs/storage/s3",
+        "Elapsed": 1.384
+      }
+    ]
+  },
+  "source-budget.jsonl": {
+    "test_events": {
+      "pass": 11,
+      "fail": 0,
+      "skip": 0
+    },
+    "package_events": [
+      {
+        "Action": "pass",
+        "Package": "github.com/agentstation/starmap/pkg/sources/payload",
+        "Elapsed": 1.292
+      }
+    ]
+  },
+  "upgrade-open-candidate.jsonl": {
+    "test_events": {
+      "pass": 0,
+      "fail": 1,
+      "skip": 0
+    },
+    "package_events": [
+      {
+        "Action": "fail",
+        "Package": "github.com/agentstation/starmap/runtime",
+        "Elapsed": 10.138
+      }
+    ]
+  },
+  "upgrade-open-original.jsonl": {
+    "test_events": {
+      "pass": 0,
+      "fail": 1,
+      "skip": 0
+    },
+    "package_events": [
+      {
+        "Action": "fail",
+        "Package": "github.com/agentstation/starmap/runtime",
+        "Elapsed": 9.963
+      }
+    ]
+  },
+  "upgrade-small-write.jsonl": {
+    "test_events": {
+      "pass": 1,
+      "fail": 0,
+      "skip": 0
+    },
+    "package_events": [
+      {
+        "Action": "pass",
+        "Package": "github.com/agentstation/starmap/runtime",
+        "Elapsed": 11.839
+      }
+    ]
+  },
+  "upgrade-write.jsonl": {
+    "test_events": {
+      "pass": 1,
+      "fail": 0,
+      "skip": 0
+    },
+    "package_events": [
+      {
+        "Action": "pass",
+        "Package": "github.com/agentstation/starmap/runtime",
+        "Elapsed": 22.341
+      }
+    ]
+  }
+}

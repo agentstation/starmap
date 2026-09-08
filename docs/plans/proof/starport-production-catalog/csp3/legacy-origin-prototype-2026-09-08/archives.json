@@ -1,0 +1,590 @@
+[
+  {
+    "source": "/tmp/starmap-csp3-legacy/admitted-bound.json",
+    "archive": "legacy-origin-prototype-2026-09-08/captures/admitted-bound.json.gz",
+    "bytes": 1534,
+    "sha256": "767a93be7a5711baed7c0b062c2cdeeebc07f571fe510aef1b47442b6bf38e86"
+  },
+  {
+    "source": "/tmp/starmap-csp3-legacy/admitted-embedded.json",
+    "archive": "legacy-origin-prototype-2026-09-08/captures/admitted-embedded.json.gz",
+    "bytes": 1513,
+    "sha256": "7d35c58bf9e3d54ee4ad8abbaa43babf5ccce9a38f957bdd81d35afa9bdb0df0"
+  },
+  {
+    "source": "/tmp/starmap-csp3-legacy/admitted-final.json",
+    "archive": "legacy-origin-prototype-2026-09-08/captures/admitted-final.json.gz",
+    "bytes": 1522,
+    "sha256": "b9599ca0d4e0e187b2bd831846350fdfb6660d6ea5d95af30ee82b6c77cb9a14"
+  },
+  {
+    "source": "/tmp/starmap-csp3-legacy/admitted-reconciler.jsonl",
+    "archive": "legacy-origin-prototype-2026-09-08/captures/admitted-reconciler.jsonl.gz",
+    "bytes": 417935,
+    "sha256": "efeaeda544844849165788c4a9541eb0e0d2459cb3721c3542197e717e5b239c"
+  },
+  {
+    "source": "/tmp/starmap-csp3-legacy/ago-budget-final.json",
+    "archive": "legacy-origin-prototype-2026-09-08/captures/ago-budget-final.json.gz",
+    "bytes": 289,
+    "sha256": "b8fb7afa66aa7a93914ac258475dd0191be821803a8aea4439f5ba05022f5fa5"
+  },
+  {
+    "source": "/tmp/starmap-csp3-legacy/ago-encode.json",
+    "archive": "legacy-origin-prototype-2026-09-08/captures/ago-encode.json.gz",
+    "bytes": 289,
+    "sha256": "b8fb7afa66aa7a93914ac258475dd0191be821803a8aea4439f5ba05022f5fa5"
+  },
+  {
+    "source": "/tmp/starmap-csp3-legacy/before-embedded.json",
+    "archive": "legacy-origin-prototype-2026-09-08/captures/before-embedded.json.gz",
+    "bytes": 351,
+    "sha256": "620dfcb0aeed3ff21e039d7dc045eec0b045e88023e791a1c489db3043763438"
+  },
+  {
+    "source": "/tmp/starmap-csp3-legacy/before-expanded-preserved.json",
+    "archive": "legacy-origin-prototype-2026-09-08/captures/before-expanded-preserved.json.gz",
+    "bytes": 206,
+    "sha256": "55cefa6acc16118e26050d32150e5dcc2bf17ba75058f8534ea1a0ca2aac2452"
+  },
+  {
+    "source": "/tmp/starmap-csp3-legacy/before-expanded.json",
+    "archive": "legacy-origin-prototype-2026-09-08/captures/before-expanded.json.gz",
+    "bytes": 197,
+    "sha256": "32816aa471ea5a0d73b13381f911126d3fdf5110d7576d1f6613dd9952264355"
+  },
+  {
+    "source": "/tmp/starmap-csp3-legacy/before-runtime.json",
+    "archive": "legacy-origin-prototype-2026-09-08/captures/before-runtime.json.gz",
+    "bytes": 351,
+    "sha256": "2313ba40257db9bc21e478c27a9aaa103370b9d58831c93fda0a4516106139a9"
+  },
+  {
+    "source": "/tmp/starmap-csp3-legacy/before.json",
+    "archive": "legacy-origin-prototype-2026-09-08/captures/before.json.gz",
+    "bytes": 188,
+    "sha256": "b0583afbdcd777fcc6196b968c1452b57d309c6b11ef71024168950073ec9c61"
+  },
+  {
+    "source": "/tmp/starmap-csp3-legacy/before.jsonl",
+    "archive": "legacy-origin-prototype-2026-09-08/captures/before.jsonl.gz",
+    "bytes": 10012,
+    "sha256": "4af5b5f8df6f53ec3735a6e341971d50d2976c9bdd614692581f0d79152b00cc"
+  },
+  {
+    "source": "/tmp/starmap-csp3-legacy/budget-acquisition.jsonl",
+    "archive": "legacy-origin-prototype-2026-09-08/captures/budget-acquisition.jsonl.gz",
+    "bytes": 10585,
+    "sha256": "8633b80719aeac25d16456ae4ca28202913ede3f111418feea800bd74eb36dfb"
+  },
+  {
+    "source": "/tmp/starmap-csp3-legacy/budget-candidate.jsonl",
+    "archive": "legacy-origin-prototype-2026-09-08/captures/budget-candidate.jsonl.gz",
+    "bytes": 706898,
+    "sha256": "2d0b8e61b7975b92a0796442404251b830328ebcb86686a378b564d512f10849"
+  },
+  {
+    "source": "/tmp/starmap-csp3-legacy/budget-upgrade-candidate.json",
+    "archive": "legacy-origin-prototype-2026-09-08/captures/budget-upgrade-candidate.json.gz",
+    "bytes": 2179,
+    "sha256": "7692088b05ce8e09a18575812094f81b86acc3598ff5e98550fd91673391356c"
+  },
+  {
+    "source": "/tmp/starmap-csp3-legacy/budget-upgrade-candidate.jsonl",
+    "archive": "legacy-origin-prototype-2026-09-08/captures/budget-upgrade-candidate.jsonl.gz",
+    "bytes": 2026,
+    "sha256": "32ec745fed71a89f936eac981f359759b606322054feae14b4e0f0c839082520"
+  },
+  {
+    "source": "/tmp/starmap-csp3-legacy/budget-upgrade-original.json",
+    "archive": "legacy-origin-prototype-2026-09-08/captures/budget-upgrade-original.json.gz",
+    "bytes": 1002,
+    "sha256": "d33fee4d0ea76cdf270eb18a97e7a13d99accca53173eb589cda663ccc8e3973"
+  },
+  {
+    "source": "/tmp/starmap-csp3-legacy/budget-upgrade-original.jsonl",
+    "archive": "legacy-origin-prototype-2026-09-08/captures/budget-upgrade-original.jsonl.gz",
+    "bytes": 1640,
+    "sha256": "ca2f619e238afb28960cda792302d077116ace99fb25ec8c9a54189601712ed0"
+  },
+  {
+    "source": "/tmp/starmap-csp3-legacy/candidate-embedded.json",
+    "archive": "legacy-origin-prototype-2026-09-08/captures/candidate-embedded.json.gz",
+    "bytes": 1003,
+    "sha256": "c662910f9076031d3bb91cacb052dac28d6366f83f65d2949d7f9a9109d09cec"
+  },
+  {
+    "source": "/tmp/starmap-csp3-legacy/candidate-expanded-preserved.json",
+    "archive": "legacy-origin-prototype-2026-09-08/captures/candidate-expanded-preserved.json.gz",
+    "bytes": 858,
+    "sha256": "2ac01cfda5ddb014def63453a9505ebe91f14d0373bb04d160f5b4ce8f1897d9"
+  },
+  {
+    "source": "/tmp/starmap-csp3-legacy/candidate-expanded.json",
+    "archive": "legacy-origin-prototype-2026-09-08/captures/candidate-expanded.json.gz",
+    "bytes": 849,
+    "sha256": "c83dee6db6a41cd22522b4d3340a90ccc8c067b67076654c99610f95cdb043cf"
+  },
+  {
+    "source": "/tmp/starmap-csp3-legacy/candidate-runtime.json",
+    "archive": "legacy-origin-prototype-2026-09-08/captures/candidate-runtime.json.gz",
+    "bytes": 1003,
+    "sha256": "727406a5cdbf4086066329a519ec1fb79106c67c87fe38ae5e5107178b04fe78"
+  },
+  {
+    "source": "/tmp/starmap-csp3-legacy/candidate.json",
+    "archive": "legacy-origin-prototype-2026-09-08/captures/candidate.json.gz",
+    "bytes": 840,
+    "sha256": "a4a51a55cdf02cc80dd71b36f1c77c16f694ce7791c31041e5b058efa327042d"
+  },
+  {
+    "source": "/tmp/starmap-csp3-legacy/candidate.jsonl",
+    "archive": "legacy-origin-prototype-2026-09-08/captures/candidate.jsonl.gz",
+    "bytes": 8298,
+    "sha256": "cea4a757dc0f49acdc26475418e8670256c55f00595f3e91a8018a25557d78fd"
+  },
+  {
+    "source": "/tmp/starmap-csp3-legacy/catalogs-encode-final.jsonl",
+    "archive": "legacy-origin-prototype-2026-09-08/captures/catalogs-encode-final.jsonl.gz",
+    "bytes": 702713,
+    "sha256": "d3218fece004522925ae41193068704a5eef372e20b255d3a7df709f3fa12c08"
+  },
+  {
+    "source": "/tmp/starmap-csp3-legacy/embedded-admitted.jsonl",
+    "archive": "legacy-origin-prototype-2026-09-08/captures/embedded-admitted.jsonl.gz",
+    "bytes": 2068,
+    "sha256": "7cce6d9ef1014bd27fe6dbd5446de8cd9e20c1dc9b0b62f5b16dcede2fd96051"
+  },
+  {
+    "source": "/tmp/starmap-csp3-legacy/embedded-before.jsonl",
+    "archive": "legacy-origin-prototype-2026-09-08/captures/embedded-before.jsonl.gz",
+    "bytes": 2070,
+    "sha256": "287563d64712a50ee45034e08318be2bed6ff2a7d66559a12a143f16d6df6a7d"
+  },
+  {
+    "source": "/tmp/starmap-csp3-legacy/embedded-candidate.jsonl",
+    "archive": "legacy-origin-prototype-2026-09-08/captures/embedded-candidate.jsonl.gz",
+    "bytes": 2136,
+    "sha256": "507cfd55e94dbe55ea057f3233a4ae5300baa810f76b6e480bd112e94eedf016"
+  },
+  {
+    "source": "/tmp/starmap-csp3-legacy/encode-before.jsonl",
+    "archive": "legacy-origin-prototype-2026-09-08/captures/encode-before.jsonl.gz",
+    "bytes": 8146,
+    "sha256": "9f1621b2c77ae3c65d385708b3bdc45781f98841cd517f6d7f40fc07049d83ca"
+  },
+  {
+    "source": "/tmp/starmap-csp3-legacy/encode-minimum.jsonl",
+    "archive": "legacy-origin-prototype-2026-09-08/captures/encode-minimum.jsonl.gz",
+    "bytes": 7532,
+    "sha256": "ab0fdb4dedefa52f4e9f963333256c6cf4d80f750fb839a154fff9362596a18b"
+  },
+  {
+    "source": "/tmp/starmap-csp3-legacy/expanded-before.jsonl",
+    "archive": "legacy-origin-prototype-2026-09-08/captures/expanded-before.jsonl.gz",
+    "bytes": 13854,
+    "sha256": "0c7d63298ba5688dc07d288b69e764afe61932d311626fbbb99f54d8a8e3eb4c"
+  },
+  {
+    "source": "/tmp/starmap-csp3-legacy/expanded-candidate.jsonl",
+    "archive": "legacy-origin-prototype-2026-09-08/captures/expanded-candidate.jsonl.gz",
+    "bytes": 10023,
+    "sha256": "d2f7a1b35bd47df6b071a3134bbc6000d9e9cb4047967bfacf75f953481d9632"
+  },
+  {
+    "source": "/tmp/starmap-csp3-legacy/full-budget-final.jsonl",
+    "archive": "legacy-origin-prototype-2026-09-08/captures/full-budget-final.jsonl.gz",
+    "bytes": 1643302,
+    "sha256": "aab6e3ba4852ebd609c6754e9453646794e0d8ee5920d3ea8e831e17da054736"
+  },
+  {
+    "source": "/tmp/starmap-csp3-legacy/full-encode-final.jsonl",
+    "archive": "legacy-origin-prototype-2026-09-08/captures/full-encode-final.jsonl.gz",
+    "bytes": 1644559,
+    "sha256": "6799201c750d9aa8bb89b08542fbd1c66372d07a29ba1a23f21037d9f726b9a2"
+  },
+  {
+    "source": "/tmp/starmap-csp3-legacy/legacy_composite_policy.go",
+    "archive": "legacy-origin-prototype-2026-09-08/captures/legacy_composite_policy.go.gz",
+    "bytes": 5456,
+    "sha256": "b9a4135905179568655430d797fe6386905123eaccdb5ce5ea72c2b9d56163b5"
+  },
+  {
+    "source": "/tmp/starmap-csp3-legacy/lint-budget-final.txt",
+    "archive": "legacy-origin-prototype-2026-09-08/captures/lint-budget-final.txt.gz",
+    "bytes": 10,
+    "sha256": "e92606b0bf483111dff0a120c315ea165821348f31365020e2468a0059095c47"
+  },
+  {
+    "source": "/tmp/starmap-csp3-legacy/lint-encode.txt",
+    "archive": "legacy-origin-prototype-2026-09-08/captures/lint-encode.txt.gz",
+    "bytes": 10,
+    "sha256": "e92606b0bf483111dff0a120c315ea165821348f31365020e2468a0059095c47"
+  },
+  {
+    "source": "/tmp/starmap-csp3-legacy/manual_reconciliation-prior.go",
+    "archive": "legacy-origin-prototype-2026-09-08/captures/manual_reconciliation-prior.go.gz",
+    "bytes": 8185,
+    "sha256": "982b620e229804924d6244ff676659b82859bd4e98b9c6341d5c4e61420cbad8"
+  },
+  {
+    "source": "/tmp/starmap-csp3-legacy/matching-before.json",
+    "archive": "legacy-origin-prototype-2026-09-08/captures/matching-before.json.gz",
+    "bytes": 1534,
+    "sha256": "2e40eb83095685e2eb3c725cfb0b00545eddd446e444b2795cf54cab03d57d53"
+  },
+  {
+    "source": "/tmp/starmap-csp3-legacy/matching-before.jsonl",
+    "archive": "legacy-origin-prototype-2026-09-08/captures/matching-before.jsonl.gz",
+    "bytes": 7226,
+    "sha256": "3485db788b4eb3c9e09a8f8edb5b912e388c30066e072cae64bbfa5ab04638fa"
+  },
+  {
+    "source": "/tmp/starmap-csp3-legacy/matching-final.json",
+    "archive": "legacy-origin-prototype-2026-09-08/captures/matching-final.json.gz",
+    "bytes": 1536,
+    "sha256": "b0619d57f72299984ee172ca12a4bfa7baf8cc3f4faac3ca275d1d354fdcd5da"
+  },
+  {
+    "source": "/tmp/starmap-csp3-legacy/matching-final.jsonl",
+    "archive": "legacy-origin-prototype-2026-09-08/captures/matching-final.jsonl.gz",
+    "bytes": 419744,
+    "sha256": "a501fbf8508c137a84ddbc7b8a6ef6a079343e67dd9925b758abb620a8c5c2c1"
+  },
+  {
+    "source": "/tmp/starmap-csp3-legacy/merger.go",
+    "archive": "legacy-origin-prototype-2026-09-08/captures/merger.go.gz",
+    "bytes": 28564,
+    "sha256": "235375a5d51d2b9cf4fa19fd370f625af8037d6b83449ddfda2d69a199867803"
+  },
+  {
+    "source": "/tmp/starmap-csp3-legacy/minimum-budget-final.jsonl",
+    "archive": "legacy-origin-prototype-2026-09-08/captures/minimum-budget-final.jsonl.gz",
+    "bytes": 13905,
+    "sha256": "8d4248f106eb74ed3523aa3e6ad455d99fd08c44a49522a38a91b1a6fa77e440"
+  },
+  {
+    "source": "/tmp/starmap-csp3-legacy/minimum.jsonl",
+    "archive": "legacy-origin-prototype-2026-09-08/captures/minimum.jsonl.gz",
+    "bytes": 14456,
+    "sha256": "c5f2925a114d4287c1ad79480810d97ddc4e93a31de2338c679d974d86360147"
+  },
+  {
+    "source": "/tmp/starmap-csp3-legacy/oversize-bound-before.json",
+    "archive": "legacy-origin-prototype-2026-09-08/captures/oversize-bound-before.json.gz",
+    "bytes": 324,
+    "sha256": "b2b8dd878690887b73540bc68c9e93cbb29a036e3ae6b7ff6e41ca8d61dd1ea6"
+  },
+  {
+    "source": "/tmp/starmap-csp3-legacy/oversize-bound-before.jsonl",
+    "archive": "legacy-origin-prototype-2026-09-08/captures/oversize-bound-before.jsonl.gz",
+    "bytes": 1978,
+    "sha256": "6e92c45ad913aabeeb76f9c76f6814b9f1dc6c8cbc1263cfde33a4ddcf4f590b"
+  },
+  {
+    "source": "/tmp/starmap-csp3-legacy/oversize-bound-final.json",
+    "archive": "legacy-origin-prototype-2026-09-08/captures/oversize-bound-final.json.gz",
+    "bytes": 182,
+    "sha256": "df7869029cf02d0955336beae8f3becff04c8fe7fc6b231f60aaf10e4e7a56c3"
+  },
+  {
+    "source": "/tmp/starmap-csp3-legacy/oversize-bound-final.jsonl",
+    "archive": "legacy-origin-prototype-2026-09-08/captures/oversize-bound-final.jsonl.gz",
+    "bytes": 1714,
+    "sha256": "c206b28dfaf29f576c9fe86179967c0c8eee4b38f6595b06bde542496ad4dda1"
+  },
+  {
+    "source": "/tmp/starmap-csp3-legacy/oversize-final.json",
+    "archive": "legacy-origin-prototype-2026-09-08/captures/oversize-final.json.gz",
+    "bytes": 176,
+    "sha256": "24b7aca08ca729f18cc6e885967ecc4c19d9a7a78620a9c7dac1dc3cb3a5d4c4"
+  },
+  {
+    "source": "/tmp/starmap-csp3-legacy/oversize-final.jsonl",
+    "archive": "legacy-origin-prototype-2026-09-08/captures/oversize-final.jsonl.gz",
+    "bytes": 1713,
+    "sha256": "dbf5e6ae5a8b9701cdfac32fcbc038c59ce7aa37e38861d414f5019968aefac2"
+  },
+  {
+    "source": "/tmp/starmap-csp3-legacy/packages-budget-final.jsonl",
+    "archive": "legacy-origin-prototype-2026-09-08/captures/packages-budget-final.jsonl.gz",
+    "bytes": 712686,
+    "sha256": "a1bc5fb48cc3ab0026e9e89b942711b1d46d54e51ecbdcf9b606e6aab074d41b"
+  },
+  {
+    "source": "/tmp/starmap-csp3-legacy/payload-before.go",
+    "archive": "legacy-origin-prototype-2026-09-08/captures/payload-before.go.gz",
+    "bytes": 3092,
+    "sha256": "5847693b8b16526c7813f6fd0dc4eefa48aaf3d138da6eb1a828839c15036cf6"
+  },
+  {
+    "source": "/tmp/starmap-csp3-legacy/reconciler-candidate.jsonl",
+    "archive": "legacy-origin-prototype-2026-09-08/captures/reconciler-candidate.jsonl.gz",
+    "bytes": 411762,
+    "sha256": "46264dde07c5571a8160ef00f461a8745a6ba249107774eb5486e75a18abc981"
+  },
+  {
+    "source": "/tmp/starmap-csp3-legacy/reconciler.go",
+    "archive": "legacy-origin-prototype-2026-09-08/captures/reconciler.go.gz",
+    "bytes": 13839,
+    "sha256": "13f7fbe8645d9d84c2e4455c9601cc3ce03a5d72dadc56e54945516028a1171c"
+  },
+  {
+    "source": "/tmp/starmap-csp3-legacy/recovery_expanded_original_test.go",
+    "archive": "legacy-origin-prototype-2026-09-08/captures/recovery_expanded_original_test.go.gz",
+    "bytes": 3317,
+    "sha256": "886f1ae121a3bda65c4eb862b286e16436990f2635787a3c5c013b7bdebf4a21"
+  },
+  {
+    "source": "/tmp/starmap-csp3-legacy/recovery_expanded_test.go",
+    "archive": "legacy-origin-prototype-2026-09-08/captures/recovery_expanded_test.go.gz",
+    "bytes": 5379,
+    "sha256": "08dbfebf926dbfb2ad58c76f336b6ed7c2b8b658402f7033d9eb3fa1dbbf3961"
+  },
+  {
+    "source": "/tmp/starmap-csp3-legacy/recovery_matching_test.go",
+    "archive": "legacy-origin-prototype-2026-09-08/captures/recovery_matching_test.go.gz",
+    "bytes": 5576,
+    "sha256": "19d75ccaf3c94f8baf9ec8a1ed7af1d637c693de7318c1a74a58d1d14df60cca"
+  },
+  {
+    "source": "/tmp/starmap-csp3-legacy/recovery_test.go",
+    "archive": "legacy-origin-prototype-2026-09-08/captures/recovery_test.go.gz",
+    "bytes": 3006,
+    "sha256": "fd49de79b3c25616d3468d6a1254d3ab242ebe37abff68a084feb258b64cbc73"
+  },
+  {
+    "source": "/tmp/starmap-csp3-legacy/refusal-before.jsonl",
+    "archive": "legacy-origin-prototype-2026-09-08/captures/refusal-before.jsonl.gz",
+    "bytes": 2000,
+    "sha256": "0b39910390ba73cf213e70c08477932b015ab6e1cd95c876307e8c8bf36c63ac"
+  },
+  {
+    "source": "/tmp/starmap-csp3-legacy/runtime-before.jsonl",
+    "archive": "legacy-origin-prototype-2026-09-08/captures/runtime-before.jsonl.gz",
+    "bytes": 2478,
+    "sha256": "37e162e21b145b8877315592d20a9104ff1ac35dffc9d825819248b71b792b22"
+  },
+  {
+    "source": "/tmp/starmap-csp3-legacy/runtime-bound.jsonl",
+    "archive": "legacy-origin-prototype-2026-09-08/captures/runtime-bound.jsonl.gz",
+    "bytes": 3239,
+    "sha256": "a7dcaeaf0f0373cf62d97a2ed3dfc228cba3fefbe71e5390e76f49260304b1a4"
+  },
+  {
+    "source": "/tmp/starmap-csp3-legacy/runtime-candidate.jsonl",
+    "archive": "legacy-origin-prototype-2026-09-08/captures/runtime-candidate.jsonl.gz",
+    "bytes": 2478,
+    "sha256": "8a89f1e0334f0a5f4e258f410fef047a148ca7b0c6930a79b6d13abddb08cf59"
+  },
+  {
+    "source": "/tmp/starmap-csp3-legacy/runtime-final.jsonl",
+    "archive": "legacy-origin-prototype-2026-09-08/captures/runtime-final.jsonl.gz",
+    "bytes": 3237,
+    "sha256": "912a4b620ed88c5521c2ffd1e17a886534120a04271b11bdc429f6ffc1546079"
+  },
+  {
+    "source": "/tmp/starmap-csp3-legacy/runtime_embedded_bound_test.go",
+    "archive": "legacy-origin-prototype-2026-09-08/captures/runtime_embedded_bound_test.go.gz",
+    "bytes": 6309,
+    "sha256": "b90dc890e719328cf408f15f44eea4c39a820a5fd0ee341f59acc5eadfa428e6"
+  },
+  {
+    "source": "/tmp/starmap-csp3-legacy/runtime_embedded_prior_test.go",
+    "archive": "legacy-origin-prototype-2026-09-08/captures/runtime_embedded_prior_test.go.gz",
+    "bytes": 5412,
+    "sha256": "1d6d1e0c869efba8c57800f20c3453f0b39fa1fab8934113cb0324230b726c13"
+  },
+  {
+    "source": "/tmp/starmap-csp3-legacy/runtime_embedded_test.go",
+    "archive": "legacy-origin-prototype-2026-09-08/captures/runtime_embedded_test.go.gz",
+    "bytes": 5412,
+    "sha256": "1d6d1e0c869efba8c57800f20c3453f0b39fa1fab8934113cb0324230b726c13"
+  },
+  {
+    "source": "/tmp/starmap-csp3-legacy/runtime_oversize_bound_test.go",
+    "archive": "legacy-origin-prototype-2026-09-08/captures/runtime_oversize_bound_test.go.gz",
+    "bytes": 3772,
+    "sha256": "e1393f0386c99907333828d93db43e3f9a6c192e0306795940f15c380a66a156"
+  },
+  {
+    "source": "/tmp/starmap-csp3-legacy/runtime_oversize_test.go",
+    "archive": "legacy-origin-prototype-2026-09-08/captures/runtime_oversize_test.go.gz",
+    "bytes": 3739,
+    "sha256": "2baaf98174fd36e9178f25fa1d873caa44ab4b7009ec0fd6e4f071b052f6c358"
+  },
+  {
+    "source": "/tmp/starmap-csp3-legacy/runtime_recovery_test.go",
+    "archive": "legacy-origin-prototype-2026-09-08/captures/runtime_recovery_test.go.gz",
+    "bytes": 1278,
+    "sha256": "959bc21deae6e6ce2359f401c53f85edb94ad444e8b0d1003efcc2831e2c6fd9"
+  },
+  {
+    "source": "/tmp/starmap-csp3-legacy/runtime_upgrade_small_test.go",
+    "archive": "legacy-origin-prototype-2026-09-08/captures/runtime_upgrade_small_test.go.gz",
+    "bytes": 4488,
+    "sha256": "c174a46f9facc58c4c18ba0921ad4f842d3c6ee264e548ed93db875862b34d3c"
+  },
+  {
+    "source": "/tmp/starmap-csp3-legacy/runtime_upgrade_test.go",
+    "archive": "legacy-origin-prototype-2026-09-08/captures/runtime_upgrade_test.go.gz",
+    "bytes": 4040,
+    "sha256": "b86841e0131cbadf480f335496db44cbb376f7002de0134746b8744ab140cea6"
+  },
+  {
+    "source": "/tmp/starmap-csp3-legacy/s3-budget-final.jsonl",
+    "archive": "legacy-origin-prototype-2026-09-08/captures/s3-budget-final.jsonl.gz",
+    "bytes": 8932,
+    "sha256": "7315bc2ef4619a1de5cd07d33a3d5c3cd022e1e013723b6ec70c283e05c76f4a"
+  },
+  {
+    "source": "/tmp/starmap-csp3-legacy/source-budget.jsonl",
+    "archive": "legacy-origin-prototype-2026-09-08/captures/source-budget.jsonl.gz",
+    "bytes": 9950,
+    "sha256": "cc0cae8ee2b1cfd39e583207d3d9ef85962f89f90d8e955ff644fa1cbf5321d8"
+  },
+  {
+    "source": "/tmp/starmap-csp3-legacy/source_identity.go",
+    "archive": "legacy-origin-prototype-2026-09-08/captures/source_identity.go.gz",
+    "bytes": 12263,
+    "sha256": "4a83c3d7a69a45dc13e07dca1add4a14a5afc767da7fca50210fde0ef6006a78"
+  },
+  {
+    "source": "/tmp/starmap-csp3-legacy/upgrade-before.json",
+    "archive": "legacy-origin-prototype-2026-09-08/captures/upgrade-before.json.gz",
+    "bytes": 350,
+    "sha256": "4c6058a37766ca9088be2411b95a5505a843bdcc6dc06eb544e7ebec3e737031"
+  },
+  {
+    "source": "/tmp/starmap-csp3-legacy/upgrade-candidate.json",
+    "archive": "legacy-origin-prototype-2026-09-08/captures/upgrade-candidate.json.gz",
+    "bytes": 1527,
+    "sha256": "fb4e7a777e3170444af832e900e5689ab0c6028297841e63b6fe999c1742cbc7"
+  },
+  {
+    "source": "/tmp/starmap-csp3-legacy/upgrade-open-candidate.jsonl",
+    "archive": "legacy-origin-prototype-2026-09-08/captures/upgrade-open-candidate.jsonl.gz",
+    "bytes": 1732,
+    "sha256": "ca51d31d413469399f751b00ee966bafec53a23ec261ebe9f61e08206b088d90"
+  },
+  {
+    "source": "/tmp/starmap-csp3-legacy/upgrade-open-original.jsonl",
+    "archive": "legacy-origin-prototype-2026-09-08/captures/upgrade-open-original.jsonl.gz",
+    "bytes": 1729,
+    "sha256": "0c8fdc7766c3f4457ccd172178dd8752f6419f93cd77a32d7a21103069375dcd"
+  },
+  {
+    "source": "/tmp/starmap-csp3-legacy/upgrade-small-before.json",
+    "archive": "legacy-origin-prototype-2026-09-08/captures/upgrade-small-before.json.gz",
+    "bytes": 498,
+    "sha256": "67b9766267749dbb34a1680230ff13dcb37c7544416619a1e361c354bd1d8d54"
+  },
+  {
+    "source": "/tmp/starmap-csp3-legacy/upgrade-small-candidate.json",
+    "archive": "legacy-origin-prototype-2026-09-08/captures/upgrade-small-candidate.json.gz",
+    "bytes": 1677,
+    "sha256": "0caaf7f8ce18e357e640a11d8b6815f1e071f1d06db5da8f54dc5800ae2d46da"
+  },
+  {
+    "source": "/tmp/starmap-csp3-legacy/upgrade-small-write.jsonl",
+    "archive": "legacy-origin-prototype-2026-09-08/captures/upgrade-small-write.jsonl.gz",
+    "bytes": 1646,
+    "sha256": "e98e45c0589c67fe51e6d6f54d6b6e9c42f761ed067893ed12978c4d873658ca"
+  },
+  {
+    "source": "/tmp/starmap-csp3-legacy/upgrade-write.jsonl",
+    "archive": "legacy-origin-prototype-2026-09-08/captures/upgrade-write.jsonl.gz",
+    "bytes": 1648,
+    "sha256": "0f97c384314705d1a873c9dbc4783d9b464ba512b8410eff92eaf27c0e8daa13"
+  },
+  {
+    "source": "/tmp/starmap-csp3-legacy/admitted/legacy_composite_matching.go",
+    "archive": "legacy-origin-prototype-2026-09-08/captures/admitted/legacy_composite_matching.go.gz",
+    "bytes": 6118,
+    "sha256": "a27a02c0776c57e0a10af06ea724f222103ebee717f7d3d2f727085c0a07a069"
+  },
+  {
+    "source": "/tmp/starmap-csp3-legacy/admitted/legacy_composite_policy.go",
+    "archive": "legacy-origin-prototype-2026-09-08/captures/admitted/legacy_composite_policy.go.gz",
+    "bytes": 6431,
+    "sha256": "fe16722331fe0d7f3b9c78536b6f8d34b4ea509d39aa7d397c66b1c116561397"
+  },
+  {
+    "source": "/tmp/starmap-csp3-legacy/admitted/manual_reconciliation.go",
+    "archive": "legacy-origin-prototype-2026-09-08/captures/admitted/manual_reconciliation.go.gz",
+    "bytes": 8185,
+    "sha256": "982b620e229804924d6244ff676659b82859bd4e98b9c6341d5c4e61420cbad8"
+  },
+  {
+    "source": "/tmp/starmap-csp3-legacy/admitted/manual_reconciliation_bound.go",
+    "archive": "legacy-origin-prototype-2026-09-08/captures/admitted/manual_reconciliation_bound.go.gz",
+    "bytes": 8485,
+    "sha256": "be9da00620c80ae4cc559460c83af692270387c7ed7c3505ca7e0246f22bec88"
+  },
+  {
+    "source": "/tmp/starmap-csp3-legacy/admitted/merger.go",
+    "archive": "legacy-origin-prototype-2026-09-08/captures/admitted/merger.go.gz",
+    "bytes": 28708,
+    "sha256": "8f75814481dd1baef923d798b49fa54cc72121c14cc052e35e499a108b242012"
+  },
+  {
+    "source": "/tmp/starmap-csp3-legacy/admitted/options.go",
+    "archive": "legacy-origin-prototype-2026-09-08/captures/admitted/options.go.gz",
+    "bytes": 3733,
+    "sha256": "a5cc2da88380e0320fdff2aaf841b981edd9fdcfde5bbdf407d9213b625710a0"
+  },
+  {
+    "source": "/tmp/starmap-csp3-legacy/admitted/reconciler.go",
+    "archive": "legacy-origin-prototype-2026-09-08/captures/admitted/reconciler.go.gz",
+    "bytes": 14116,
+    "sha256": "fb89e93bc7c7fd5a81833d65c714e83420b44f0d634724b903775bf5241f8e5e"
+  },
+  {
+    "source": "/tmp/starmap-csp3-legacy/admitted/result.go",
+    "archive": "legacy-origin-prototype-2026-09-08/captures/admitted/result.go.gz",
+    "bytes": 3381,
+    "sha256": "89072de81b564b3ef31025b66ff7543bd8de33c8759895169a8e609c26ef9c8d"
+  },
+  {
+    "source": "/tmp/starmap-csp3-legacy/catalog-budget/catalogs_payload.go",
+    "archive": "legacy-origin-prototype-2026-09-08/captures/catalog-budget/catalogs_payload.go.gz",
+    "bytes": 3356,
+    "sha256": "ece91bfe9153007f22f67cf9980238c67e786dca84b8e998a7018c32f114f650"
+  },
+  {
+    "source": "/tmp/starmap-csp3-legacy/catalog-budget/limits_test.go",
+    "archive": "legacy-origin-prototype-2026-09-08/captures/catalog-budget/limits_test.go.gz",
+    "bytes": 1589,
+    "sha256": "7d758caf0a7c347656b7339e8b8e6f535a7a6f3d29db0d12cd98fcedba2d27df"
+  },
+  {
+    "source": "/tmp/starmap-csp3-legacy/catalog-budget/overlay.json",
+    "archive": "legacy-origin-prototype-2026-09-08/captures/catalog-budget/overlay.json.gz",
+    "bytes": 665,
+    "sha256": "81e57d64006dafb1d097e107f44ff1e704129ee6492975fe649802e432ed11fc"
+  },
+  {
+    "source": "/tmp/starmap-csp3-legacy/catalog-budget/payload.go",
+    "archive": "legacy-origin-prototype-2026-09-08/captures/catalog-budget/payload.go.gz",
+    "bytes": 3649,
+    "sha256": "f225fb9559c9b0c68884ae17231b4d2d102278dce309432bad3353f24440410c"
+  },
+  {
+    "source": "/tmp/starmap-csp3-legacy/catalog-budget/payload_decode.go",
+    "archive": "legacy-origin-prototype-2026-09-08/captures/catalog-budget/payload_decode.go.gz",
+    "bytes": 10200,
+    "sha256": "5e4cde25626bc92508e11ebaa2d75e5042cee04520faa7e56f6845725ce1a5a6"
+  },
+  {
+    "source": "/tmp/starmap-csp3-legacy/catalog-budget/policy.go",
+    "archive": "legacy-origin-prototype-2026-09-08/captures/catalog-budget/policy.go.gz",
+    "bytes": 963,
+    "sha256": "48f361b351743d7e24a42d3413582e70b6996eeff0728fe6b921153a5b0879af"
+  },
+  {
+    "source": "/tmp/starmap-csp3-legacy/catalog-budget/test-overlay.json",
+    "archive": "legacy-origin-prototype-2026-09-08/captures/catalog-budget/test-overlay.json.gz",
+    "bytes": 830,
+    "sha256": "5023c281784132d9c8988bc1d5a6902496ab9002de189d4ac774bfdc7ff25e39"
+  }
+]

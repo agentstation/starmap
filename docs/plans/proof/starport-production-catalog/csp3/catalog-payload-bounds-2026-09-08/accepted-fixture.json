@@ -1,0 +1,56 @@
+{
+  "accepted": {
+    "generation_id": "catalog-20260830T083213Z-ad5d2a45e490.local.de0c766fe449",
+    "payload_checksum": "sha256:5002e7ece2b2bd1a2d23042375625a7af1e892c6fd24cea72e4c189d4f6800ce"
+  },
+  "payload_bytes": 23683266,
+  "payload_sha256": "5002e7ece2b2bd1a2d23042375625a7af1e892c6fd24cea72e4c189d4f6800ce",
+  "manifest": {
+    "manifest_version": 2,
+    "schema_version": 6,
+    "generation_id": "catalog-20260830T083213Z-ad5d2a45e490.local.de0c766fe449",
+    "generated_at": "2026-09-08T13:31:14.461852Z",
+    "payload": {
+      "checksum": "sha256:5002e7ece2b2bd1a2d23042375625a7af1e892c6fd24cea72e4c189d4f6800ce",
+      "size_bytes": 23683266,
+      "media_type": "application/vnd.agentstation.starmap.catalog+json"
+    },
+    "validation": {
+      "validator_version": "starmap-v1",
+      "validated_at": "2026-09-08T13:31:14.461852Z",
+      "status": "passed",
+      "error_count": 0,
+      "warning_count": 0,
+      "checks": [
+        {
+          "name": "catalog_publication",
+          "status": "passed"
+        }
+      ]
+    },
+    "sync_run_id": "e484b043-76b3-4aa2-870c-fdf1492f723c",
+    "source_observations": [
+      {
+        "source": "local_catalog",
+        "observation_id": "observation:v2:4fd951372bb74856a7a586e1d069b200147071cbff79cab7a8bae0cecc81735f",
+        "observed_at": "2026-09-08T00:01:00Z",
+        "revision": {
+          "kind": "content_digest",
+          "value": "sha256:c91df939c97934d70ffe1046aad1a4ccfc15d09f0ad0676ddeb4556bbe24cbbd"
+        },
+        "completeness": "complete",
+        "status": "succeeded",
+        "evidence_checksum": "sha256:c91df939c97934d70ffe1046aad1a4ccfc15d09f0ad0676ddeb4556bbe24cbbd"
+      }
+    ],
+    "review_candidates": [],
+    "completeness": "complete",
+    "degraded": false,
+    "consumer_compatibility": {
+      "min_schema_version": 6,
+      "max_schema_version": 6
+    }
+  },
+  "payload_retained_in_git": false,
+  "reproducer": "runtime_upgrade_test.go.gz in sibling prototype captures"
+}

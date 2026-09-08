@@ -1,0 +1,44 @@
+{
+  "base_commit": "33728b3fadbca73c8ad4230ebcc85dcb14a6e5a1",
+  "current_base": "e2b81ba7",
+  "source_files": [
+    {
+      "source": "/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/pkg/catalogs/internal/resourcepolicy/policy.go",
+      "archive": "catalog-payload-bounds-2026-09-08/source/pkg/catalogs/internal/resourcepolicy/policy.go.gz",
+      "bytes": 963,
+      "sha256": "48f361b351743d7e24a42d3413582e70b6996eeff0728fe6b921153a5b0879af"
+    },
+    {
+      "source": "/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/pkg/catalogs/payload.go",
+      "archive": "catalog-payload-bounds-2026-09-08/source/pkg/catalogs/payload.go.gz",
+      "bytes": 3356,
+      "sha256": "ece91bfe9153007f22f67cf9980238c67e786dca84b8e998a7018c32f114f650"
+    },
+    {
+      "source": "/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/pkg/catalogs/payload_decode.go",
+      "archive": "catalog-payload-bounds-2026-09-08/source/pkg/catalogs/payload_decode.go.gz",
+      "bytes": 10200,
+      "sha256": "5e4cde25626bc92508e11ebaa2d75e5042cee04520faa7e56f6845725ce1a5a6"
+    },
+    {
+      "source": "/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/pkg/sources/payload/payload.go",
+      "archive": "catalog-payload-bounds-2026-09-08/source/pkg/sources/payload/payload.go.gz",
+      "bytes": 3649,
+      "sha256": "1fef9df9517b1619aa4cb7825c01d5e3578d8b3296199952dd255831cce4ca92"
+    },
+    {
+      "source": "/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/pkg/catalogs/payload_encode_limits_test.go",
+      "archive": "catalog-payload-bounds-2026-09-08/source/pkg/catalogs/payload_encode_limits_test.go.gz",
+      "bytes": 2651,
+      "sha256": "2509ee36b93c5e86ba4c63a371fd3123962c639bef1aec63a2b09333d3069dfc"
+    },
+    {
+      "source": "/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/pkg/sources/payload/limits_test.go",
+      "archive": "catalog-payload-bounds-2026-09-08/source/pkg/sources/payload/limits_test.go.gz",
+      "bytes": 1589,
+      "sha256": "7d758caf0a7c347656b7339e8b8e6f535a7a6f3d29db0d12cd98fcedba2d27df"
+    }
+  ],
+  "original_encoder_matches_base": true,
+  "note": "Intervening commits change documentation and proof only. Production snapshots are the applied candidate."
+}

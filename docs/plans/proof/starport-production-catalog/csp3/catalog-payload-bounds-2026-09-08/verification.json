@@ -1,0 +1,212 @@
+{
+  "source_base": "33728b3f",
+  "catalog_bytes": 33554432,
+  "raw_source_bytes": 16777216,
+  "nesting_levels": 64,
+  "results": {
+    "encode-before.jsonl": {
+      "test_events": {
+        "pass": 4,
+        "fail": 4,
+        "skip": 0
+      },
+      "package_events": [
+        {
+          "Action": "fail",
+          "Package": "github.com/agentstation/starmap/pkg/catalogs",
+          "Elapsed": 5.571
+        }
+      ]
+    },
+    "full-encode-final.jsonl": {
+      "test_events": {
+        "pass": 996,
+        "fail": 4,
+        "skip": 0
+      },
+      "package_events": [
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starmap/internal/catalog/reconciler",
+          "Elapsed": 2.645
+        },
+        {
+          "Action": "fail",
+          "Package": "github.com/agentstation/starmap/acquisition",
+          "Elapsed": 349.136
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Elapsed": 702.084
+        }
+      ]
+    },
+    "full-budget-final.jsonl": {
+      "test_events": {
+        "pass": 1000,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_events": [
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starmap/internal/catalog/reconciler",
+          "Elapsed": 1.705
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starmap/acquisition",
+          "Elapsed": 331.53
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Elapsed": 668.37
+        }
+      ]
+    },
+    "packages-budget-final.jsonl": {
+      "test_events": {
+        "pass": 606,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_events": [
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starmap/pkg/sources/payload",
+          "Elapsed": 1.634
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starmap/pkg/catalogs",
+          "Elapsed": 70.597
+        }
+      ]
+    },
+    "minimum-budget-final.jsonl": {
+      "test_events": {
+        "pass": 15,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_events": [
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starmap/pkg/sources/payload",
+          "Elapsed": 1.5270000000000001
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starmap/pkg/catalogs",
+          "Elapsed": 13.786
+        }
+      ]
+    },
+    "oversize-bound-before.jsonl": {
+      "test_events": {
+        "pass": 0,
+        "fail": 1,
+        "skip": 0
+      },
+      "package_events": [
+        {
+          "Action": "fail",
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Elapsed": 50.195
+        }
+      ]
+    },
+    "oversize-bound-final.jsonl": {
+      "test_events": {
+        "pass": 1,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_events": [
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Elapsed": 44.055
+        }
+      ]
+    },
+    "budget-upgrade-original.jsonl": {
+      "test_events": {
+        "pass": 1,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_events": [
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Elapsed": 25.815
+        }
+      ]
+    },
+    "budget-upgrade-candidate.jsonl": {
+      "test_events": {
+        "pass": 0,
+        "fail": 1,
+        "skip": 0
+      },
+      "package_events": [
+        {
+          "Action": "fail",
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Elapsed": 29.751
+        }
+      ]
+    },
+    "s3-budget-final.jsonl": {
+      "test_events": {
+        "pass": 9,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_events": [
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage/s3",
+          "Elapsed": 1.384
+        }
+      ]
+    }
+  },
+  "ago": {
+    "schemaVersion": 1,
+    "version": "v0.2.0",
+    "rules": [
+      "no-dot-import",
+      "no-generic-methods",
+      "no-goto",
+      "no-invalid-ignore",
+      "no-naked-return",
+      "no-new-expr",
+      "no-self-referential-constraints"
+    ],
+    "findings": [],
+    "staleIgnores": [],
+    "errors": []
+  },
+  "lint": "0 issues.",
+  "commands": {
+    "full": "GOTOOLCHAIN=go1.26.6 go test -race -count=1 -timeout 20m ./runtime ./acquisition ./internal/catalog/reconciler -json",
+    "packages": "GOTOOLCHAIN=go1.26.6 go test -race ./pkg/catalogs ./pkg/sources/payload -count=1 -json",
+    "minimum": "GOTOOLCHAIN=go1.25.12 go test -race ./pkg/catalogs ./pkg/sources/payload -run '^TestCatalogPayloadEncodingUsesDecode|^TestExplicitPayload' -count=1 -json",
+    "s3": "GOTOOLCHAIN=go1.26.6 go test -race ./pkg/catalogs/storage/s3 -count=1 -json"
+  },
+  "released_pair": "UNVERIFIED",
+  "native_qualification": "UNVERIFIED",
+  "legacy_prototype": "UNAPPLIED; accepted legacy startup still fails",
+  "owner_preference": "Pending. 32 MiB is an engineering default, not recorded owner approval.",
+  "work_commit": "7d311bb9ef75380a545590a0a389d95317a44eca",
+  "technical_writing": {
+    "command": "make technical-writing-check",
+    "exit_code": 0,
+    "files": 1221,
+    "diagnostics": 0
+  }
+}
