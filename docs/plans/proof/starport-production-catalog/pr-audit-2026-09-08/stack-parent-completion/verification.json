@@ -1,0 +1,1165 @@
+{
+  "publication": [
+    {
+      "pr": 133,
+      "head": "07dcb63db7ea0dc873db2ea21091f50ed11a2122",
+      "branch": "codex/catalog-requirements",
+      "push_exit": 0,
+      "readback_matches": true
+    },
+    {
+      "pr": 135,
+      "head": "aff5fd53ce585b94aa80f628a5d8fcd1d8ede818",
+      "branch": "codex/catalog-qualification-evidence",
+      "push_exit": 0,
+      "readback_matches": true
+    },
+    {
+      "pr": 136,
+      "head": "420c0d77ebeb5a64d36c57512b19db5ad3b5ec2d",
+      "branch": "codex/catalog-qualification",
+      "push_exit": 0,
+      "readback_matches": true
+    }
+  ],
+  "body_publication": [
+    {
+      "pr": 133,
+      "head": "07dcb63db7ea0dc873db2ea21091f50ed11a2122",
+      "base": "codex/catalog-followup-evidence",
+      "body_readback_matches": true,
+      "url": "https://github.com/agentstation/starmap/pull/133"
+    },
+    {
+      "pr": 135,
+      "head": "aff5fd53ce585b94aa80f628a5d8fcd1d8ede818",
+      "base": "codex/catalog-requirements",
+      "body_readback_matches": true,
+      "url": "https://github.com/agentstation/starmap/pull/135"
+    },
+    {
+      "pr": 136,
+      "head": "420c0d77ebeb5a64d36c57512b19db5ad3b5ec2d",
+      "base": "codex/catalog-qualification-evidence",
+      "body_readback_matches": true,
+      "url": "https://github.com/agentstation/starmap/pull/136"
+    },
+    {
+      "pr": 128,
+      "head": "c05d4c3554a4c7569c427d06db6db5a8ce38494a",
+      "base": "main",
+      "body_readback_matches": true,
+      "url": "https://github.com/agentstation/starmap/pull/128"
+    },
+    {
+      "pr": 129,
+      "head": "ffeb595220e9de24f4ef78660d2658a2c6b6859a",
+      "base": "main",
+      "body_readback_matches": true,
+      "url": "https://github.com/agentstation/starmap/pull/129"
+    },
+    {
+      "pr": 130,
+      "head": "9b11e1c455d9f59ba342f30e64f1cd05d3b7a033",
+      "base": "main",
+      "body_readback_matches": true,
+      "url": "https://github.com/agentstation/starmap/pull/130"
+    },
+    {
+      "pr": 131,
+      "head": "0d6435d5b483e48c80b79d67be14430773caab19",
+      "base": "main",
+      "body_readback_matches": true,
+      "url": "https://github.com/agentstation/starmap/pull/131"
+    }
+  ],
+  "trees": {
+    "133": {
+      "previous": "637f780a067466896f6b9ed03dc034cd764861a9",
+      "head": "07dcb63db7ea0dc873db2ea21091f50ed11a2122",
+      "base": "99843ff85d01b8fb1f96e26b3ccd1a7044c26a6b",
+      "changed_paths": [
+        "docs/plans/proof/starport-production-catalog/csp2/capture-helper-ownership.json",
+        "docs/plans/proof/starport-production-catalog/csp2/capture-helper-ownership.md",
+        "docs/plans/proof/starport-production-catalog/csp2/synthetic-url-labels.json",
+        "docs/plans/proof/starport-production-catalog/csp2/synthetic-url-labels.md",
+        "docs/plans/proof/starport-production-catalog/csp3/binding-acquisition-final-packages.jsonl",
+        "docs/plans/proof/starport-production-catalog/csp3/binding-batch-race-final.jsonl",
+        "docs/plans/proof/starport-production-catalog/csp3/binding-batch-race.jsonl",
+        "docs/plans/proof/starport-production-catalog/csp3/credential-run-packages-output.jsonl",
+        "docs/plans/proof/starport-production-catalog/csp3/input-publication-all.jsonl",
+        "docs/plans/proof/starport-production-catalog/csp3/manual-composition-all.jsonl",
+        "docs/plans/proof/starport-production-catalog/csp3/manual-retention-all.jsonl",
+        "docs/plans/proof/starport-production-catalog/csp3/metadata-selection-all.jsonl",
+        "docs/plans/proof/starport-production-catalog/csp3/observation-update-all.jsonl",
+        "docs/plans/proof/starport-production-catalog/csp3/provider-binding-green.json",
+        "docs/plans/proof/starport-production-catalog/csp3/provider-binding-packages-output.jsonl",
+        "docs/plans/proof/starport-production-catalog/csp3/provider-receipt-identity-packages-output.jsonl",
+        "docs/plans/proof/starport-production-catalog/csp3/provider-receipt-packages-output.jsonl",
+        "docs/plans/proof/starport-production-catalog/csp3/provider-reset-all.jsonl",
+        "docs/plans/proof/starport-production-catalog/csp3/provider-scope-retention-final-packages.jsonl",
+        "docs/plans/proof/starport-production-catalog/csp3/provider-selection-all.jsonl",
+        "docs/plans/proof/starport-production-catalog/csp3/receipt-identity-all.jsonl",
+        "docs/plans/proof/starport-production-catalog/csp3/runtime-reconciliation-all-verified.jsonl",
+        "docs/plans/proof/starport-production-catalog/csp3/runtime-reconciliation-all.jsonl"
+      ],
+      "outside_proof_diff_unchanged": true,
+      "unchanged_diff_sha256": "51ac5db5b954a46a5ebf84a8619b6a45c77837c5b2cca11a8738fefd060ecc43"
+    },
+    "135": {
+      "previous": "50557f055bd76fa5ad061253b3d23082634d47e0",
+      "head": "aff5fd53ce585b94aa80f628a5d8fcd1d8ede818",
+      "base": "07dcb63db7ea0dc873db2ea21091f50ed11a2122",
+      "changed_paths": [
+        "docs/plans/proof/starport-production-catalog/csp2/capture-helper-ownership.json",
+        "docs/plans/proof/starport-production-catalog/csp2/capture-helper-ownership.md",
+        "docs/plans/proof/starport-production-catalog/csp2/synthetic-url-labels.json",
+        "docs/plans/proof/starport-production-catalog/csp2/synthetic-url-labels.md",
+        "docs/plans/proof/starport-production-catalog/csp3/binding-acquisition-final-packages.jsonl",
+        "docs/plans/proof/starport-production-catalog/csp3/binding-batch-race-final.jsonl",
+        "docs/plans/proof/starport-production-catalog/csp3/binding-batch-race.jsonl",
+        "docs/plans/proof/starport-production-catalog/csp3/credential-run-packages-output.jsonl",
+        "docs/plans/proof/starport-production-catalog/csp3/input-publication-all.jsonl",
+        "docs/plans/proof/starport-production-catalog/csp3/manual-composition-all.jsonl",
+        "docs/plans/proof/starport-production-catalog/csp3/manual-retention-all.jsonl",
+        "docs/plans/proof/starport-production-catalog/csp3/metadata-selection-all.jsonl",
+        "docs/plans/proof/starport-production-catalog/csp3/observation-update-all.jsonl",
+        "docs/plans/proof/starport-production-catalog/csp3/provider-binding-green.json",
+        "docs/plans/proof/starport-production-catalog/csp3/provider-binding-packages-output.jsonl",
+        "docs/plans/proof/starport-production-catalog/csp3/provider-receipt-identity-packages-output.jsonl",
+        "docs/plans/proof/starport-production-catalog/csp3/provider-receipt-packages-output.jsonl",
+        "docs/plans/proof/starport-production-catalog/csp3/provider-reset-all.jsonl",
+        "docs/plans/proof/starport-production-catalog/csp3/provider-scope-retention-final-packages.jsonl",
+        "docs/plans/proof/starport-production-catalog/csp3/provider-selection-all.jsonl",
+        "docs/plans/proof/starport-production-catalog/csp3/receipt-identity-all.jsonl",
+        "docs/plans/proof/starport-production-catalog/csp3/runtime-reconciliation-all-verified.jsonl",
+        "docs/plans/proof/starport-production-catalog/csp3/runtime-reconciliation-all.jsonl"
+      ],
+      "outside_proof_diff_unchanged": true,
+      "unchanged_diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "136": {
+      "previous": "e68f61a603b2c017f3f96edd9a0eab25c4d87021",
+      "head": "420c0d77ebeb5a64d36c57512b19db5ad3b5ec2d",
+      "base": "aff5fd53ce585b94aa80f628a5d8fcd1d8ede818",
+      "changed_paths": [
+        "docs/plans/proof/starport-production-catalog/csp2/capture-helper-ownership.json",
+        "docs/plans/proof/starport-production-catalog/csp2/capture-helper-ownership.md",
+        "docs/plans/proof/starport-production-catalog/csp2/synthetic-url-labels.json",
+        "docs/plans/proof/starport-production-catalog/csp2/synthetic-url-labels.md",
+        "docs/plans/proof/starport-production-catalog/csp3/binding-acquisition-final-packages.jsonl",
+        "docs/plans/proof/starport-production-catalog/csp3/binding-batch-race-final.jsonl",
+        "docs/plans/proof/starport-production-catalog/csp3/binding-batch-race.jsonl",
+        "docs/plans/proof/starport-production-catalog/csp3/credential-run-packages-output.jsonl",
+        "docs/plans/proof/starport-production-catalog/csp3/input-publication-all.jsonl",
+        "docs/plans/proof/starport-production-catalog/csp3/manual-composition-all.jsonl",
+        "docs/plans/proof/starport-production-catalog/csp3/manual-retention-all.jsonl",
+        "docs/plans/proof/starport-production-catalog/csp3/metadata-selection-all.jsonl",
+        "docs/plans/proof/starport-production-catalog/csp3/observation-update-all.jsonl",
+        "docs/plans/proof/starport-production-catalog/csp3/provider-binding-green.json",
+        "docs/plans/proof/starport-production-catalog/csp3/provider-binding-packages-output.jsonl",
+        "docs/plans/proof/starport-production-catalog/csp3/provider-receipt-identity-packages-output.jsonl",
+        "docs/plans/proof/starport-production-catalog/csp3/provider-receipt-packages-output.jsonl",
+        "docs/plans/proof/starport-production-catalog/csp3/provider-reset-all.jsonl",
+        "docs/plans/proof/starport-production-catalog/csp3/provider-scope-retention-final-packages.jsonl",
+        "docs/plans/proof/starport-production-catalog/csp3/provider-selection-all.jsonl",
+        "docs/plans/proof/starport-production-catalog/csp3/receipt-identity-all.jsonl",
+        "docs/plans/proof/starport-production-catalog/csp3/runtime-reconciliation-all-verified.jsonl",
+        "docs/plans/proof/starport-production-catalog/csp3/runtime-reconciliation-all.jsonl"
+      ],
+      "outside_proof_diff_unchanged": true,
+      "unchanged_diff_sha256": "c218f0eabe298090d2085b77a481d161311062f6e86ffeba050c73938773eaeb"
+    }
+  },
+  "checks": {
+    "prose": {
+      "133": 1152,
+      "135": 1161,
+      "136": 1166
+    },
+    "prose_exit": 0,
+    "autoreview": {
+      "133": {
+        "exit": 0,
+        "profile": "cross-lab",
+        "portions": 5,
+        "findings": 0
+      },
+      "135": {
+        "exit": 0,
+        "result": "automatic checkpoint contains no substantive code changes"
+      },
+      "136": {
+        "exit": 0,
+        "profile": "cross-lab",
+        "portions": 1,
+        "findings": 0
+      }
+    },
+    "reviewers": [
+      "gpt-5.6-sol xhigh",
+      "claude-opus-5 high"
+    ],
+    "threshold": "P0",
+    "synthetic_capture_hashes_verified": 19,
+    "new_test_execution": "Not required for proof-only merges; all non-proof diffs are unchanged"
+  },
+  "inventory": {
+    "captured_at": "2026-09-08T15:34:07.710881+00:00",
+    "repositories": {
+      "starmap": [
+        {
+          "baseRefName": "codex/catalog-qualification-evidence",
+          "headRefName": "codex/catalog-qualification",
+          "headRefOid": "420c0d77ebeb5a64d36c57512b19db5ad3b5ec2d",
+          "isDraft": true,
+          "number": 136,
+          "statusCheckRollup": [],
+          "title": "Qualify catalog paths and native recovery evidence",
+          "url": "https://github.com/agentstation/starmap/pull/136"
+        },
+        {
+          "baseRefName": "codex/catalog-requirements",
+          "headRefName": "codex/catalog-qualification-evidence",
+          "headRefOid": "aff5fd53ce585b94aa80f628a5d8fcd1d8ede818",
+          "isDraft": true,
+          "number": 135,
+          "statusCheckRollup": [],
+          "title": "Retain catalog qualification evidence",
+          "url": "https://github.com/agentstation/starmap/pull/135"
+        },
+        {
+          "baseRefName": "codex/catalog-foundation",
+          "headRefName": "codex/catalog-followup-evidence",
+          "headRefOid": "99843ff85d01b8fb1f96e26b3ccd1a7044c26a6b",
+          "isDraft": true,
+          "number": 134,
+          "statusCheckRollup": [],
+          "title": "Retain follow-up catalog verification evidence",
+          "url": "https://github.com/agentstation/starmap/pull/134"
+        },
+        {
+          "baseRefName": "codex/catalog-followup-evidence",
+          "headRefName": "codex/catalog-requirements",
+          "headRefOid": "07dcb63db7ea0dc873db2ea21091f50ed11a2122",
+          "isDraft": true,
+          "number": 133,
+          "statusCheckRollup": [],
+          "title": "catalog: connect scoped acquisition and preserve baselines on reset",
+          "url": "https://github.com/agentstation/starmap/pull/133"
+        },
+        {
+          "baseRefName": "codex/catalog-plan",
+          "headRefName": "codex/catalog-foundation",
+          "headRefOid": "205dd041fb2d0267a2643c0d6af8d9f45e34842d",
+          "isDraft": true,
+          "number": 132,
+          "statusCheckRollup": [],
+          "title": "catalog: persist baseline state and add canonical runtime contracts",
+          "url": "https://github.com/agentstation/starmap/pull/132"
+        },
+        {
+          "baseRefName": "main",
+          "headRefName": "dependabot/go_modules/go_modules-522bae20e5",
+          "headRefOid": "0d6435d5b483e48c80b79d67be14430773caab19",
+          "isDraft": false,
+          "number": 131,
+          "statusCheckRollup": [
+            {
+              "__typename": "CheckRun",
+              "completedAt": "2026-09-07T15:07:32Z",
+              "conclusion": "SUCCESS",
+              "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/34134317443/job/101781571585",
+              "name": "Verification Gate",
+              "startedAt": "2026-09-07T14:41:22Z",
+              "status": "COMPLETED",
+              "workflowName": "Pull Request"
+            },
+            {
+              "__typename": "CheckRun",
+              "completedAt": "2026-09-07T14:43:31Z",
+              "conclusion": "SUCCESS",
+              "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/34134317443/job/101781571225",
+              "name": "Security & Reliability",
+              "startedAt": "2026-09-07T14:41:21Z",
+              "status": "COMPLETED",
+              "workflowName": "Pull Request"
+            },
+            {
+              "__typename": "CheckRun",
+              "completedAt": "2026-09-07T14:41:31Z",
+              "conclusion": "SUCCESS",
+              "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/34134317443/job/101781571488",
+              "name": "Action Pin Provenance",
+              "startedAt": "2026-09-07T14:41:23Z",
+              "status": "COMPLETED",
+              "workflowName": "Pull Request"
+            },
+            {
+              "__typename": "CheckRun",
+              "completedAt": "2026-09-07T14:41:17Z",
+              "conclusion": "NEUTRAL",
+              "detailsUrl": "https://github.com/agentstation/starmap/runs/101781554330",
+              "name": "CodeQL",
+              "startedAt": "2026-09-07T14:41:16Z",
+              "status": "COMPLETED",
+              "workflowName": ""
+            }
+          ],
+          "title": "build(deps): bump github.com/aws/aws-sdk-go-v2/service/secretsmanager in /",
+          "url": "https://github.com/agentstation/starmap/pull/131"
+        },
+        {
+          "baseRefName": "main",
+          "headRefName": "dependabot/go_modules/go_modules-99e672d88e",
+          "headRefOid": "9b11e1c455d9f59ba342f30e64f1cd05d3b7a033",
+          "isDraft": false,
+          "number": 130,
+          "statusCheckRollup": [
+            {
+              "__typename": "CheckRun",
+              "completedAt": "2026-09-07T15:02:37Z",
+              "conclusion": "SUCCESS",
+              "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/34134210966/job/101781228062",
+              "name": "Verification Gate",
+              "startedAt": "2026-09-07T14:40:12Z",
+              "status": "COMPLETED",
+              "workflowName": "Pull Request"
+            },
+            {
+              "__typename": "CheckRun",
+              "completedAt": "2026-09-07T14:42:43Z",
+              "conclusion": "SUCCESS",
+              "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/34134210966/job/101781228020",
+              "name": "Security & Reliability",
+              "startedAt": "2026-09-07T14:40:12Z",
+              "status": "COMPLETED",
+              "workflowName": "Pull Request"
+            },
+            {
+              "__typename": "CheckRun",
+              "completedAt": "2026-09-07T14:40:17Z",
+              "conclusion": "SUCCESS",
+              "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/34134210966/job/101781227703",
+              "name": "Action Pin Provenance",
+              "startedAt": "2026-09-07T14:40:12Z",
+              "status": "COMPLETED",
+              "workflowName": "Pull Request"
+            },
+            {
+              "__typename": "CheckRun",
+              "completedAt": "2026-09-07T14:40:08Z",
+              "conclusion": "NEUTRAL",
+              "detailsUrl": "https://github.com/agentstation/starmap/runs/101781215082",
+              "name": "CodeQL",
+              "startedAt": "2026-09-07T14:40:07Z",
+              "status": "COMPLETED",
+              "workflowName": ""
+            }
+          ],
+          "title": "build(deps): bump github.com/aws/aws-sdk-go-v2/service/s3 in /",
+          "url": "https://github.com/agentstation/starmap/pull/130"
+        },
+        {
+          "baseRefName": "main",
+          "headRefName": "dependabot/go_modules/go_modules-e480e64884",
+          "headRefOid": "ffeb595220e9de24f4ef78660d2658a2c6b6859a",
+          "isDraft": false,
+          "number": 129,
+          "statusCheckRollup": [
+            {
+              "__typename": "CheckRun",
+              "completedAt": "2026-09-07T15:05:38Z",
+              "conclusion": "SUCCESS",
+              "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/34134014821/job/101780602476",
+              "name": "Verification Gate",
+              "startedAt": "2026-09-07T14:38:03Z",
+              "status": "COMPLETED",
+              "workflowName": "Pull Request"
+            },
+            {
+              "__typename": "CheckRun",
+              "completedAt": "2026-09-07T14:40:29Z",
+              "conclusion": "SUCCESS",
+              "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/34134014821/job/101780602251",
+              "name": "Security & Reliability",
+              "startedAt": "2026-09-07T14:38:02Z",
+              "status": "COMPLETED",
+              "workflowName": "Pull Request"
+            },
+            {
+              "__typename": "CheckRun",
+              "completedAt": "2026-09-07T14:38:11Z",
+              "conclusion": "SUCCESS",
+              "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/34134014821/job/101780602835",
+              "name": "Action Pin Provenance",
+              "startedAt": "2026-09-07T14:38:03Z",
+              "status": "COMPLETED",
+              "workflowName": "Pull Request"
+            },
+            {
+              "__typename": "CheckRun",
+              "completedAt": "2026-09-07T14:37:59Z",
+              "conclusion": "NEUTRAL",
+              "detailsUrl": "https://github.com/agentstation/starmap/runs/101780589572",
+              "name": "CodeQL",
+              "startedAt": "2026-09-07T14:37:58Z",
+              "status": "COMPLETED",
+              "workflowName": ""
+            }
+          ],
+          "title": "build(deps): bump github.com/aws/aws-sdk-go-v2/config in /",
+          "url": "https://github.com/agentstation/starmap/pull/129"
+        },
+        {
+          "baseRefName": "main",
+          "headRefName": "dependabot/go_modules/go_modules-514a14c65d",
+          "headRefOid": "c05d4c3554a4c7569c427d06db6db5a8ce38494a",
+          "isDraft": false,
+          "number": 128,
+          "statusCheckRollup": [
+            {
+              "__typename": "CheckRun",
+              "completedAt": "2026-09-07T15:03:01Z",
+              "conclusion": "SUCCESS",
+              "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/34133900734/job/101780242358",
+              "name": "Verification Gate",
+              "startedAt": "2026-09-07T14:36:48Z",
+              "status": "COMPLETED",
+              "workflowName": "Pull Request"
+            },
+            {
+              "__typename": "CheckRun",
+              "completedAt": "2026-09-07T14:39:25Z",
+              "conclusion": "SUCCESS",
+              "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/34133900734/job/101780242023",
+              "name": "Security & Reliability",
+              "startedAt": "2026-09-07T14:36:48Z",
+              "status": "COMPLETED",
+              "workflowName": "Pull Request"
+            },
+            {
+              "__typename": "CheckRun",
+              "completedAt": "2026-09-07T14:36:57Z",
+              "conclusion": "SUCCESS",
+              "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/34133900734/job/101780242351",
+              "name": "Action Pin Provenance",
+              "startedAt": "2026-09-07T14:36:48Z",
+              "status": "COMPLETED",
+              "workflowName": "Pull Request"
+            },
+            {
+              "__typename": "CheckRun",
+              "completedAt": "2026-09-07T14:36:43Z",
+              "conclusion": "NEUTRAL",
+              "detailsUrl": "https://github.com/agentstation/starmap/runs/101780224560",
+              "name": "CodeQL",
+              "startedAt": "2026-09-07T14:36:42Z",
+              "status": "COMPLETED",
+              "workflowName": ""
+            }
+          ],
+          "title": "build(deps): bump github.com/Azure/azure-sdk-for-go/sdk/azidentity in /",
+          "url": "https://github.com/agentstation/starmap/pull/128"
+        },
+        {
+          "baseRefName": "codex/catalog-evidence",
+          "headRefName": "codex/catalog-plan",
+          "headRefOid": "b58a9df6f2da7fe95297e30d97604c9232e83a43",
+          "isDraft": true,
+          "number": 126,
+          "statusCheckRollup": [],
+          "title": "docs: define production catalog contracts and verification plan",
+          "url": "https://github.com/agentstation/starmap/pull/126"
+        },
+        {
+          "baseRefName": "main",
+          "headRefName": "codex/catalog-evidence",
+          "headRefOid": "d8d12a26069f34442860cbcf8bb840dd073177fc",
+          "isDraft": true,
+          "number": 125,
+          "statusCheckRollup": [
+            {
+              "__typename": "CheckRun",
+              "completedAt": "2026-09-07T21:16:21Z",
+              "conclusion": "SUCCESS",
+              "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/34162476044/job/101866942038",
+              "name": "Analyze (actions)",
+              "startedAt": "2026-09-07T21:15:36Z",
+              "status": "COMPLETED",
+              "workflowName": "CodeQL"
+            },
+            {
+              "__typename": "CheckRun",
+              "completedAt": "2026-09-07T21:43:33Z",
+              "conclusion": "SUCCESS",
+              "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/34162478515/job/101945742147",
+              "name": "Verification Gate",
+              "startedAt": "2026-09-07T21:15:38Z",
+              "status": "COMPLETED",
+              "workflowName": "Pull Request"
+            },
+            {
+              "__typename": "CheckRun",
+              "completedAt": "2026-09-07T21:17:32Z",
+              "conclusion": "SUCCESS",
+              "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/34162476044/job/101866941856",
+              "name": "Analyze (go)",
+              "startedAt": "2026-09-07T21:15:36Z",
+              "status": "COMPLETED",
+              "workflowName": "CodeQL"
+            },
+            {
+              "__typename": "CheckRun",
+              "completedAt": "2026-09-08T05:17:29Z",
+              "conclusion": "SUCCESS",
+              "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/34162478515/job/101945740535",
+              "name": "Security & Reliability",
+              "startedAt": "2026-09-08T05:15:28Z",
+              "status": "COMPLETED",
+              "workflowName": "Pull Request"
+            },
+            {
+              "__typename": "CheckRun",
+              "completedAt": "2026-09-07T21:15:51Z",
+              "conclusion": "SUCCESS",
+              "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/34162478515/job/101945741565",
+              "name": "Action Pin Provenance",
+              "startedAt": "2026-09-07T21:15:38Z",
+              "status": "COMPLETED",
+              "workflowName": "Pull Request"
+            },
+            {
+              "__typename": "CheckRun",
+              "completedAt": "2026-09-07T21:16:15Z",
+              "conclusion": "SUCCESS",
+              "detailsUrl": "https://github.com/agentstation/starmap/runs/101867059693",
+              "name": "CodeQL",
+              "startedAt": "2026-09-07T21:16:12Z",
+              "status": "COMPLETED",
+              "workflowName": ""
+            }
+          ],
+          "title": "Preserve catalog qualification captures",
+          "url": "https://github.com/agentstation/starmap/pull/125"
+        }
+      ],
+      "starport": [
+        {
+          "baseRefName": "main",
+          "headRefName": "dependabot/go_modules/go-modules-36d75f47ec",
+          "headRefOid": "ef6a247f603ae9f538eddc80677b290f4e55819f",
+          "isDraft": false,
+          "number": 368,
+          "statusCheckRollup": [
+            {
+              "__typename": "CheckRun",
+              "completedAt": "2026-09-07T14:45:22Z",
+              "conclusion": "SUCCESS",
+              "detailsUrl": "https://github.com/agentstation/starport/actions/runs/34134449017/job/101781989635",
+              "name": "Lint",
+              "startedAt": "2026-09-07T14:42:48Z",
+              "status": "COMPLETED",
+              "workflowName": "CI"
+            },
+            {
+              "__typename": "CheckRun",
+              "completedAt": "2026-09-07T14:49:25Z",
+              "conclusion": "SUCCESS",
+              "detailsUrl": "https://github.com/agentstation/starport/actions/runs/34134449017/job/101781989791",
+              "name": "Test (ubuntu-latest)",
+              "startedAt": "2026-09-07T14:42:48Z",
+              "status": "COMPLETED",
+              "workflowName": "CI"
+            },
+            {
+              "__typename": "CheckRun",
+              "completedAt": "2026-09-07T14:54:46Z",
+              "conclusion": "SUCCESS",
+              "detailsUrl": "https://github.com/agentstation/starport/actions/runs/34134449017/job/101781989930",
+              "name": "Test (macos-latest)",
+              "startedAt": "2026-09-07T14:42:53Z",
+              "status": "COMPLETED",
+              "workflowName": "CI"
+            },
+            {
+              "__typename": "CheckRun",
+              "completedAt": "2026-09-07T14:54:16Z",
+              "conclusion": "SUCCESS",
+              "detailsUrl": "https://github.com/agentstation/starport/actions/runs/34134449017/job/101781989722",
+              "name": "Test (windows-latest)",
+              "startedAt": "2026-09-07T14:42:47Z",
+              "status": "COMPLETED",
+              "workflowName": "CI"
+            },
+            {
+              "__typename": "CheckRun",
+              "completedAt": "2026-09-07T14:45:39Z",
+              "conclusion": "SUCCESS",
+              "detailsUrl": "https://github.com/agentstation/starport/actions/runs/34134449017/job/101781989640",
+              "name": "Security Scan",
+              "startedAt": "2026-09-07T14:42:48Z",
+              "status": "COMPLETED",
+              "workflowName": "CI"
+            },
+            {
+              "__typename": "CheckRun",
+              "completedAt": "2026-09-07T14:51:02Z",
+              "conclusion": "SUCCESS",
+              "detailsUrl": "https://github.com/agentstation/starport/actions/runs/34134449017/job/101781989588",
+              "name": "Release Contract",
+              "startedAt": "2026-09-07T14:42:48Z",
+              "status": "COMPLETED",
+              "workflowName": "CI"
+            },
+            {
+              "__typename": "CheckRun",
+              "completedAt": "2026-09-07T14:43:37Z",
+              "conclusion": "SUCCESS",
+              "detailsUrl": "https://github.com/agentstation/starport/actions/runs/34134449017/job/101781989679",
+              "name": "OpenRouter SDK Compatibility",
+              "startedAt": "2026-09-07T14:42:48Z",
+              "status": "COMPLETED",
+              "workflowName": "CI"
+            },
+            {
+              "__typename": "CheckRun",
+              "completedAt": "2026-09-07T14:53:37Z",
+              "conclusion": "SUCCESS",
+              "detailsUrl": "https://github.com/agentstation/starport/actions/runs/34134449017/job/101781989656",
+              "name": "Release Snapshot",
+              "startedAt": "2026-09-07T14:42:48Z",
+              "status": "COMPLETED",
+              "workflowName": "CI"
+            },
+            {
+              "__typename": "CheckRun",
+              "completedAt": "2026-09-07T14:42:59Z",
+              "conclusion": "SUCCESS",
+              "detailsUrl": "https://github.com/agentstation/starport/actions/runs/34134449017/job/101781989638",
+              "name": "Action Pin Provenance",
+              "startedAt": "2026-09-07T14:42:48Z",
+              "status": "COMPLETED",
+              "workflowName": "CI"
+            },
+            {
+              "__typename": "CheckRun",
+              "completedAt": "2026-09-07T14:59:25Z",
+              "conclusion": "SUCCESS",
+              "detailsUrl": "https://github.com/agentstation/starport/actions/runs/34134449017/job/101785430636",
+              "name": "Build",
+              "startedAt": "2026-09-07T14:54:48Z",
+              "status": "COMPLETED",
+              "workflowName": "CI"
+            }
+          ],
+          "title": "chore(deps): bump the go-modules group with 9 updates",
+          "url": "https://github.com/agentstation/starport/pull/368"
+        },
+        {
+          "baseRefName": "main",
+          "headRefName": "dependabot/github_actions/github-actions-f418b6a774",
+          "headRefOid": "3f0817ad23b69147caaafd2b30ccbd71a50e48a6",
+          "isDraft": false,
+          "number": 367,
+          "statusCheckRollup": [
+            {
+              "__typename": "CheckRun",
+              "completedAt": "2026-09-07T14:07:57Z",
+              "conclusion": "SUCCESS",
+              "detailsUrl": "https://github.com/agentstation/starport/actions/runs/34131083043/job/101771097349",
+              "name": "Lint",
+              "startedAt": "2026-09-07T14:06:11Z",
+              "status": "COMPLETED",
+              "workflowName": "CI"
+            },
+            {
+              "__typename": "CheckRun",
+              "completedAt": "2026-09-07T14:14:17Z",
+              "conclusion": "SUCCESS",
+              "detailsUrl": "https://github.com/agentstation/starport/actions/runs/34131083043/job/101771097507",
+              "name": "Test (ubuntu-latest)",
+              "startedAt": "2026-09-07T14:06:11Z",
+              "status": "COMPLETED",
+              "workflowName": "CI"
+            },
+            {
+              "__typename": "CheckRun",
+              "completedAt": "2026-09-07T14:08:06Z",
+              "conclusion": "SUCCESS",
+              "detailsUrl": "https://github.com/agentstation/starport/actions/runs/34131083043/job/101771097294",
+              "name": "Test (macos-latest)",
+              "startedAt": "2026-09-07T14:06:15Z",
+              "status": "COMPLETED",
+              "workflowName": "CI"
+            },
+            {
+              "__typename": "CheckRun",
+              "completedAt": "2026-09-07T14:08:25Z",
+              "conclusion": "SUCCESS",
+              "detailsUrl": "https://github.com/agentstation/starport/actions/runs/34131083043/job/101771097466",
+              "name": "Test (windows-latest)",
+              "startedAt": "2026-09-07T14:06:11Z",
+              "status": "COMPLETED",
+              "workflowName": "CI"
+            },
+            {
+              "__typename": "CheckRun",
+              "completedAt": "2026-09-07T14:09:47Z",
+              "conclusion": "SUCCESS",
+              "detailsUrl": "https://github.com/agentstation/starport/actions/runs/34131083043/job/101771097613",
+              "name": "Security Scan",
+              "startedAt": "2026-09-07T14:06:11Z",
+              "status": "COMPLETED",
+              "workflowName": "CI"
+            },
+            {
+              "__typename": "CheckRun",
+              "completedAt": "2026-09-07T14:14:29Z",
+              "conclusion": "SUCCESS",
+              "detailsUrl": "https://github.com/agentstation/starport/actions/runs/34131083043/job/101771097071",
+              "name": "Release Contract",
+              "startedAt": "2026-09-07T14:06:10Z",
+              "status": "COMPLETED",
+              "workflowName": "CI"
+            },
+            {
+              "__typename": "CheckRun",
+              "completedAt": "2026-09-07T14:06:42Z",
+              "conclusion": "SUCCESS",
+              "detailsUrl": "https://github.com/agentstation/starport/actions/runs/34131083043/job/101771097343",
+              "name": "OpenRouter SDK Compatibility",
+              "startedAt": "2026-09-07T14:06:10Z",
+              "status": "COMPLETED",
+              "workflowName": "CI"
+            },
+            {
+              "__typename": "CheckRun",
+              "completedAt": "2026-09-07T14:16:56Z",
+              "conclusion": "SUCCESS",
+              "detailsUrl": "https://github.com/agentstation/starport/actions/runs/34131083043/job/101771097373",
+              "name": "Release Snapshot",
+              "startedAt": "2026-09-07T14:06:10Z",
+              "status": "COMPLETED",
+              "workflowName": "CI"
+            },
+            {
+              "__typename": "CheckRun",
+              "completedAt": "2026-09-07T14:06:22Z",
+              "conclusion": "SUCCESS",
+              "detailsUrl": "https://github.com/agentstation/starport/actions/runs/34131083043/job/101771097386",
+              "name": "Action Pin Provenance",
+              "startedAt": "2026-09-07T14:06:11Z",
+              "status": "COMPLETED",
+              "workflowName": "CI"
+            },
+            {
+              "__typename": "CheckRun",
+              "completedAt": "2026-09-07T14:19:05Z",
+              "conclusion": "SUCCESS",
+              "detailsUrl": "https://github.com/agentstation/starport/actions/runs/34131083043/job/101773632157",
+              "name": "Build",
+              "startedAt": "2026-09-07T14:14:31Z",
+              "status": "COMPLETED",
+              "workflowName": "CI"
+            }
+          ],
+          "title": "chore(deps): bump Homebrew/actions/setup-homebrew from 2026.08.31.1 to 2026.09.07.1 in the github-actions group",
+          "url": "https://github.com/agentstation/starport/pull/367"
+        },
+        {
+          "baseRefName": "main",
+          "headRefName": "codex/catalog-lifecycle",
+          "headRefOid": "5820a370ff9255a8148799f5b45fcaf927c2e1dc",
+          "isDraft": true,
+          "number": 366,
+          "statusCheckRollup": [
+            {
+              "__typename": "CheckRun",
+              "completedAt": "2026-09-07T05:15:00Z",
+              "conclusion": "SUCCESS",
+              "detailsUrl": "https://github.com/agentstation/starport/actions/runs/34085971745/job/101629963091",
+              "name": "Lint",
+              "startedAt": "2026-09-07T05:13:32Z",
+              "status": "COMPLETED",
+              "workflowName": "CI"
+            },
+            {
+              "__typename": "CheckRun",
+              "completedAt": "2026-09-07T05:14:06Z",
+              "conclusion": "SUCCESS",
+              "detailsUrl": "https://github.com/agentstation/starport/actions/runs/34085971741/job/101629963315",
+              "name": "Native windows x86_64",
+              "startedAt": "2026-09-07T05:13:33Z",
+              "status": "COMPLETED",
+              "workflowName": "Native Release Verification"
+            },
+            {
+              "__typename": "CheckRun",
+              "completedAt": "2026-09-07T05:14:15Z",
+              "conclusion": "SUCCESS",
+              "detailsUrl": "https://github.com/agentstation/starport/actions/runs/34085971741/job/101629963339",
+              "name": "Native windows arm64",
+              "startedAt": "2026-09-07T05:13:33Z",
+              "status": "COMPLETED",
+              "workflowName": "Native Release Verification"
+            },
+            {
+              "__typename": "CheckRun",
+              "completedAt": "2026-09-07T05:13:54Z",
+              "conclusion": "SUCCESS",
+              "detailsUrl": "https://github.com/agentstation/starport/actions/runs/34085971741/job/101629963271",
+              "name": "Native linux x86_64",
+              "startedAt": "2026-09-07T05:13:34Z",
+              "status": "COMPLETED",
+              "workflowName": "Native Release Verification"
+            },
+            {
+              "__typename": "CheckRun",
+              "completedAt": "2026-09-07T05:13:52Z",
+              "conclusion": "SUCCESS",
+              "detailsUrl": "https://github.com/agentstation/starport/actions/runs/34085971741/job/101629963130",
+              "name": "Native linux arm64",
+              "startedAt": "2026-09-07T05:13:35Z",
+              "status": "COMPLETED",
+              "workflowName": "Native Release Verification"
+            },
+            {
+              "__typename": "CheckRun",
+              "completedAt": "2026-09-07T05:14:04Z",
+              "conclusion": "SUCCESS",
+              "detailsUrl": "https://github.com/agentstation/starport/actions/runs/34085971741/job/101629963278",
+              "name": "Native darwin x86_64",
+              "startedAt": "2026-09-07T05:13:33Z",
+              "status": "COMPLETED",
+              "workflowName": "Native Release Verification"
+            },
+            {
+              "__typename": "CheckRun",
+              "completedAt": "2026-09-07T05:13:57Z",
+              "conclusion": "SUCCESS",
+              "detailsUrl": "https://github.com/agentstation/starport/actions/runs/34085971741/job/101629963243",
+              "name": "Native darwin arm64",
+              "startedAt": "2026-09-07T05:13:37Z",
+              "status": "COMPLETED",
+              "workflowName": "Native Release Verification"
+            },
+            {
+              "__typename": "CheckRun",
+              "completedAt": "2026-09-07T05:19:24Z",
+              "conclusion": "SUCCESS",
+              "detailsUrl": "https://github.com/agentstation/starport/actions/runs/34085971745/job/101629963070",
+              "name": "Test (ubuntu-latest)",
+              "startedAt": "2026-09-07T05:13:32Z",
+              "status": "COMPLETED",
+              "workflowName": "CI"
+            },
+            {
+              "__typename": "CheckRun",
+              "completedAt": "2026-09-07T05:16:51Z",
+              "conclusion": "SUCCESS",
+              "detailsUrl": "https://github.com/agentstation/starport/actions/runs/34085971745/job/101629963140",
+              "name": "Test (macos-latest)",
+              "startedAt": "2026-09-07T05:13:37Z",
+              "status": "COMPLETED",
+              "workflowName": "CI"
+            },
+            {
+              "__typename": "CheckRun",
+              "completedAt": "2026-09-07T05:17:29Z",
+              "conclusion": "SUCCESS",
+              "detailsUrl": "https://github.com/agentstation/starport/actions/runs/34085971745/job/101629963093",
+              "name": "Test (windows-latest)",
+              "startedAt": "2026-09-07T05:13:32Z",
+              "status": "COMPLETED",
+              "workflowName": "CI"
+            },
+            {
+              "__typename": "CheckRun",
+              "completedAt": "2026-09-07T05:17:16Z",
+              "conclusion": "SUCCESS",
+              "detailsUrl": "https://github.com/agentstation/starport/actions/runs/34085971745/job/101629963238",
+              "name": "Security Scan",
+              "startedAt": "2026-09-07T05:13:33Z",
+              "status": "COMPLETED",
+              "workflowName": "CI"
+            },
+            {
+              "__typename": "CheckRun",
+              "completedAt": "2026-09-07T05:21:47Z",
+              "conclusion": "SUCCESS",
+              "detailsUrl": "https://github.com/agentstation/starport/actions/runs/34085971745/job/101629963301",
+              "name": "Release Contract",
+              "startedAt": "2026-09-07T05:13:36Z",
+              "status": "COMPLETED",
+              "workflowName": "CI"
+            },
+            {
+              "__typename": "CheckRun",
+              "completedAt": "2026-09-07T05:14:03Z",
+              "conclusion": "SUCCESS",
+              "detailsUrl": "https://github.com/agentstation/starport/actions/runs/34085971745/job/101629962996",
+              "name": "OpenRouter SDK Compatibility",
+              "startedAt": "2026-09-07T05:13:32Z",
+              "status": "COMPLETED",
+              "workflowName": "CI"
+            },
+            {
+              "__typename": "CheckRun",
+              "completedAt": "2026-09-07T05:23:58Z",
+              "conclusion": "SUCCESS",
+              "detailsUrl": "https://github.com/agentstation/starport/actions/runs/34085971745/job/101629963133",
+              "name": "Release Snapshot",
+              "startedAt": "2026-09-07T05:13:32Z",
+              "status": "COMPLETED",
+              "workflowName": "CI"
+            },
+            {
+              "__typename": "CheckRun",
+              "completedAt": "2026-09-07T05:13:41Z",
+              "conclusion": "SUCCESS",
+              "detailsUrl": "https://github.com/agentstation/starport/actions/runs/34085971745/job/101629963153",
+              "name": "Action Pin Provenance",
+              "startedAt": "2026-09-07T05:13:32Z",
+              "status": "COMPLETED",
+              "workflowName": "CI"
+            },
+            {
+              "__typename": "CheckRun",
+              "completedAt": "2026-09-07T05:26:39Z",
+              "conclusion": "SUCCESS",
+              "detailsUrl": "https://github.com/agentstation/starport/actions/runs/34085971745/job/101631502724",
+              "name": "Build",
+              "startedAt": "2026-09-07T05:21:50Z",
+              "status": "COMPLETED",
+              "workflowName": "CI"
+            }
+          ],
+          "title": "Add public operator documentation and catalog qualification checks",
+          "url": "https://github.com/agentstation/starport/pull/366"
+        }
+      ]
+    },
+    "checks": {
+      "SUCCESS": 54,
+      "NEUTRAL": 4
+    },
+    "ancestry": [
+      {
+        "parent": 125,
+        "child": 126,
+        "parent_head": "d8d12a26069f34442860cbcf8bb840dd073177fc",
+        "child_head": "b58a9df6f2da7fe95297e30d97604c9232e83a43",
+        "contains_parent": true
+      },
+      {
+        "parent": 126,
+        "child": 132,
+        "parent_head": "b58a9df6f2da7fe95297e30d97604c9232e83a43",
+        "child_head": "205dd041fb2d0267a2643c0d6af8d9f45e34842d",
+        "contains_parent": true
+      },
+      {
+        "parent": 132,
+        "child": 134,
+        "parent_head": "205dd041fb2d0267a2643c0d6af8d9f45e34842d",
+        "child_head": "99843ff85d01b8fb1f96e26b3ccd1a7044c26a6b",
+        "contains_parent": true
+      },
+      {
+        "parent": 134,
+        "child": 133,
+        "parent_head": "99843ff85d01b8fb1f96e26b3ccd1a7044c26a6b",
+        "child_head": "07dcb63db7ea0dc873db2ea21091f50ed11a2122",
+        "contains_parent": true
+      },
+      {
+        "parent": 133,
+        "child": 135,
+        "parent_head": "07dcb63db7ea0dc873db2ea21091f50ed11a2122",
+        "child_head": "aff5fd53ce585b94aa80f628a5d8fcd1d8ede818",
+        "contains_parent": true
+      },
+      {
+        "parent": 135,
+        "child": 136,
+        "parent_head": "aff5fd53ce585b94aa80f628a5d8fcd1d8ede818",
+        "child_head": "420c0d77ebeb5a64d36c57512b19db5ad3b5ec2d",
+        "contains_parent": true
+      }
+    ],
+    "canonical_merge": "a9092a7b97a2429d7f676060913eb5d2cabb70dc",
+    "canonical_changed_paths": [
+      "docs/plans/proof/starport-production-catalog/csp2/capture-helper-ownership.json",
+      "docs/plans/proof/starport-production-catalog/csp2/capture-helper-ownership.md",
+      "docs/plans/proof/starport-production-catalog/csp2/synthetic-url-labels.json",
+      "docs/plans/proof/starport-production-catalog/csp2/synthetic-url-labels.md",
+      "docs/plans/proof/starport-production-catalog/csp3/binding-acquisition-final-packages.jsonl",
+      "docs/plans/proof/starport-production-catalog/csp3/binding-batch-race-final.jsonl",
+      "docs/plans/proof/starport-production-catalog/csp3/binding-batch-race.jsonl",
+      "docs/plans/proof/starport-production-catalog/csp3/credential-run-packages-output.jsonl",
+      "docs/plans/proof/starport-production-catalog/csp3/input-publication-all.jsonl",
+      "docs/plans/proof/starport-production-catalog/csp3/manual-composition-all.jsonl",
+      "docs/plans/proof/starport-production-catalog/csp3/manual-retention-all.jsonl",
+      "docs/plans/proof/starport-production-catalog/csp3/metadata-selection-all.jsonl",
+      "docs/plans/proof/starport-production-catalog/csp3/observation-update-all.jsonl",
+      "docs/plans/proof/starport-production-catalog/csp3/provider-binding-green.json",
+      "docs/plans/proof/starport-production-catalog/csp3/provider-binding-packages-output.jsonl",
+      "docs/plans/proof/starport-production-catalog/csp3/provider-receipt-identity-packages-output.jsonl",
+      "docs/plans/proof/starport-production-catalog/csp3/provider-receipt-packages-output.jsonl",
+      "docs/plans/proof/starport-production-catalog/csp3/provider-reset-all.jsonl",
+      "docs/plans/proof/starport-production-catalog/csp3/provider-scope-retention-final-packages.jsonl",
+      "docs/plans/proof/starport-production-catalog/csp3/provider-selection-all.jsonl",
+      "docs/plans/proof/starport-production-catalog/csp3/receipt-identity-all.jsonl",
+      "docs/plans/proof/starport-production-catalog/csp3/runtime-reconciliation-all-verified.jsonl",
+      "docs/plans/proof/starport-production-catalog/csp3/runtime-reconciliation-all.jsonl"
+    ]
+  },
+  "artifacts": [
+    {
+      "path": "captures/133-before.json.gz",
+      "sha256": "5d00ad38d38dda8c4837c94813b39ed0c34f737745fba4eb898a3c7e5c2c5747",
+      "bytes": 3177
+    },
+    {
+      "path": "captures/133-body.md.gz",
+      "sha256": "ef216f54a69887d9aa4cd723034ca6eb8e0feeac1015f81a05bbea3dbf958070",
+      "bytes": 2988
+    },
+    {
+      "path": "captures/133-prose.txt.gz",
+      "sha256": "2a31e2e5c29e276b301a426c29765911f4db80c9c1012c152da60abc08344dba",
+      "bytes": 560
+    },
+    {
+      "path": "captures/133-push.txt.gz",
+      "sha256": "bde784c54fc8f9b314cf03e404c22b37945dd43a31a4eeae9aba08872c2e714c",
+      "bytes": 97
+    },
+    {
+      "path": "captures/133-review.txt.gz",
+      "sha256": "62bc21b3cd2486a71e413ac07ca8716842dcecec5443dd071c3ff984845d16e1",
+      "bytes": 1799
+    },
+    {
+      "path": "captures/133-tree.json.gz",
+      "sha256": "19079ef81674ef84a7dc46f3fe0da9ba21da4794d90e19b2dc6bfe3cca9628a4",
+      "bytes": 2380
+    },
+    {
+      "path": "captures/135-before.json.gz",
+      "sha256": "1332be2f2232b510788001bdeeda2059d5246a662a6954fc0619c12141305b53",
+      "bytes": 1873
+    },
+    {
+      "path": "captures/135-body.md.gz",
+      "sha256": "ddf669ed2ddf4b4dc718d5b4e48addc5b6d047c3c5281ab4788c3da94b8a259a",
+      "bytes": 1723
+    },
+    {
+      "path": "captures/135-prose.txt.gz",
+      "sha256": "abc3e12908a3a07b31c38be3ebaa87d6057fddc83d00d757c76e6b2d1c6ae929",
+      "bytes": 578
+    },
+    {
+      "path": "captures/135-push.txt.gz",
+      "sha256": "ff21c2f8e1e97f22131ae43e4b103201f828c2c8e2cbe49631f02c6417df3303",
+      "bytes": 107
+    },
+    {
+      "path": "captures/135-review.txt.gz",
+      "sha256": "12bbf64de628b1299e17cb70dcdf7f21a4c4320237e3f2f5c15618a9d00cbac4",
+      "bytes": 78
+    },
+    {
+      "path": "captures/135-tree.json.gz",
+      "sha256": "5af971690eaece5baca7f0fc4bededd2378649ce708cc0454f2530fb307d7e01",
+      "bytes": 2380
+    },
+    {
+      "path": "captures/136-before.json.gz",
+      "sha256": "90bb5e4f159b066a3dec3d49fda000ea91944628d98fdb22cffa585942b269f2",
+      "bytes": 2499
+    },
+    {
+      "path": "captures/136-body.md.gz",
+      "sha256": "1d5bb52186f9e2fb1fd1df777ac1020273b69fe8033fa2719c0ff914c4865350",
+      "bytes": 2200
+    },
+    {
+      "path": "captures/136-prose.txt.gz",
+      "sha256": "d2ba828d2aacb256ef06e9b43db2f81391a27a89d4132eb9cce8ebe5969b5b5d",
+      "bytes": 584
+    },
+    {
+      "path": "captures/136-push.txt.gz",
+      "sha256": "dd71649cbb18e8ea2c0cfbe8fd3a006abe7d79d88bf22eda493ccd815a92aeef",
+      "bytes": 98
+    },
+    {
+      "path": "captures/136-review.txt.gz",
+      "sha256": "8184bb9ede710ccc06352b00e3ed8f01a12b155b9238cdb4abcb47f55e9c921e",
+      "bytes": 909
+    },
+    {
+      "path": "captures/136-tree.json.gz",
+      "sha256": "52aa3396a7ea9cdb39b51ac174f116848b4383eb00facc2dcee0976476c846ca",
+      "bytes": 2380
+    },
+    {
+      "path": "captures/body-publication.json.gz",
+      "sha256": "2dee6e95e99ec37cddf63e30a8ffe5f42769f00da40fa0f341f2e72854e715b6",
+      "bytes": 1463
+    },
+    {
+      "path": "captures/inventory-after.json.gz",
+      "sha256": "13054e1083c562cd50856009a5d07c0aece6e02998b541765bd09d15d28f52f3",
+      "bytes": 34053
+    },
+    {
+      "path": "captures/publication.json.gz",
+      "sha256": "61d3b055520646d86e2ff2afa32b48c6328c0db0d3630a285dc1893e966c6364",
+      "bytes": 533
+    },
+    {
+      "path": "captures/dependency-pr128-body.md.gz",
+      "sha256": "8a5fa999fdb23de5210f3d8586d90bca389bb9b417a1741a5ede197a30188e16",
+      "bytes": 6518
+    },
+    {
+      "path": "captures/dependency-pr129-body.md.gz",
+      "sha256": "cd751d72712c6816b958747b95641b8d2c925c8081da2decce37977122cc230a",
+      "bytes": 5226
+    },
+    {
+      "path": "captures/dependency-pr130-body.md.gz",
+      "sha256": "1f27789a4a014da4879750345b1886751b8404dbb56965491b61737d6348067a",
+      "bytes": 6950
+    },
+    {
+      "path": "captures/dependency-pr131-body.md.gz",
+      "sha256": "bb16689688653f9ae1f05b65a20e790f4ed1cfbadd6a914afca2c97c211e9be2",
+      "bytes": 5441
+    },
+    {
+      "path": "captures/dependency-note.md.gz",
+      "sha256": "e1a0adadc5c95b4850692767c851ad051d8b21f5be17304a477ada834791a863",
+      "bytes": 882
+    }
+  ],
+  "credential_pattern_scan": {
+    "files": 26,
+    "matches": 0,
+    "scope": "Common credential patterns only; not a complete secret audit"
+  },
+  "new_prs": 0,
+  "main_merges": 0,
+  "releases": 0,
+  "canonical_prose_check": {
+    "command": "GOTOOLCHAIN=go1.26.6 make technical-writing-check",
+    "exit_status": 0,
+    "files": 1228,
+    "diagnostics": 0,
+    "output": "/Users/jack/.agents/skills/technical-writing/scripts/technical-writing glossary check\nPASS: /Users/jack/src/github.com/agentstation/starmap-catalog-requirements/GLOSSARY.md (81 term(s), 0 error(s))\n/Users/jack/.agents/skills/technical-writing/scripts/technical-writing glossary update --check\nPASS: no candidate terms are missing from /Users/jack/src/github.com/agentstation/starmap-catalog-requirements/GLOSSARY.md\n/Users/jack/.agents/skills/technical-writing/scripts/technical-writing lint . --mode strict --format text\nPASS: 1228 file(s), 0 diagnostic(s)\n"
+  }
+}
