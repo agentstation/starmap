@@ -434,3 +434,17 @@ The reviewed branch and updated draft PR 132 now contain the temporary staging w
 [Publication evidence](native-fifth-2026-09-07/sixth-publication.json) retains the complete review and native dispatch.
 [Native run 34182826240](https://github.com/agentstation/starmap/actions/runs/34182826240) is in progress.
 No merge, release, or primary acceptance credit.
+
+### Native runtime qualification and offline server check
+
+All six native runtime jobs pass on foundation `f216e7c0`.
+Each Windows architecture records 1,057 passing test events. Each Linux architecture records 1,061, and each macOS architecture records 1,111.
+There are no failed or skipped test events.
+[Native results](native-sixth-2026-09-07/results.json) retain the platform logs and toolchains. The aggregate Verification Gate remains in progress.
+
+Commit `dfd37a01` registers the actual offline server check for `A01.starmap_cold_offline`.
+Two fresh Linux ARM64 containers retain and serve the same private baseline through HTTP without external networking or provider credentials.
+[Verifier evidence](cold-server-2026-09-07/verification.json) records both processes, payload checksums, isolation, normal exit, and complete cleanup.
+
+All 62 verifier unit tests pass. The workflow now runs this check in a separate Linux job.
+This adds component evidence only. Starport, other native server platforms, and released-pair acceptance remain open.

@@ -1,0 +1,89 @@
+{
+  "commit": "dfd37a0195b3f9d607c4dbb09ba67b21e1db4855",
+  "case": "A01.starmap_cold_offline",
+  "status": "PASS",
+  "qualification": "Linux ARM64 component evidence only. No primary or released-pair acceptance credit.",
+  "actual_run": "The registered adapter exercised two fresh offline Docker containers.",
+  "classification": "The final classifier added strict boolean and nonempty identity checks. It reclassified the retained actual observations as PASS.",
+  "unit_tests": 62,
+  "prose": "1158 files, zero diagnostics before final classifier checks.",
+  "cleanup_complete": true,
+  "initial_attempt": "The first formal classifier rejected Docker-provided PATH. The corrected allowlist permits only HOME, STARMAP_HOME, and PATH.",
+  "artifacts": [
+    {
+      "path": "registered-result.json.gz",
+      "sha256": "c4824f9fbdba5c60734fac9270ab703aef257d62c5d1db4dc0916482ae950d4d",
+      "uncompressed_sha256": "86776d1a93825f7487d9c3e12b8b7a7df085df5e3c10c0955c30bfe768b8db91"
+    },
+    {
+      "path": "final-classification.json.gz",
+      "sha256": "ff365da6e80653aa915db3a7d6b63ebfeebadd8bc98b354200730e7c0661e0ba",
+      "uncompressed_sha256": "a97517cc5165474b563267de732032fe2f22c04482c674a59d4e208fe3c91b79"
+    },
+    {
+      "path": "unit-tests.log.gz",
+      "sha256": "b132631f372c13386819904f3ec57122cdb4aff578a018f31f87772af6beaffc",
+      "uncompressed_sha256": "3299d06b66d1161cde110d65fa4276af6335017266c7151873fef8bc244ddd97"
+    },
+    {
+      "path": "ago.json.gz",
+      "sha256": "905b50ebb66dc28cecf0d5d7681aabcd8b20af21ce5f8834692f1c6c68590281",
+      "uncompressed_sha256": "b8fb7afa66aa7a93914ac258475dd0191be821803a8aea4439f5ba05022f5fa5"
+    },
+    {
+      "path": "full-ago.json.gz",
+      "sha256": "905b50ebb66dc28cecf0d5d7681aabcd8b20af21ce5f8834692f1c6c68590281",
+      "uncompressed_sha256": "b8fb7afa66aa7a93914ac258475dd0191be821803a8aea4439f5ba05022f5fa5"
+    },
+    {
+      "path": "lint.log.gz",
+      "sha256": "bafcb04d67f6157ff3d4a1fdf228afd2df6cc6d786c61642c1125b1fe879e728",
+      "uncompressed_sha256": "e92606b0bf483111dff0a120c315ea165821348f31365020e2468a0059095c47"
+    },
+    {
+      "path": "writing.log.gz",
+      "sha256": "9c875117669de488191966807f63a1da8f0f1c763cd10204f2e2c502230a090a",
+      "uncompressed_sha256": "0e6c15a1d672b411a3f1173f97efb0333265bf52ae05a7e5c34bc8e12f6a1d0d"
+    },
+    {
+      "path": "initial-formal.json.gz",
+      "sha256": "1a73e0e6f576e6fe019c59ad9c9b1076284cb71237738a9bd2d145b2ea1b344d",
+      "uncompressed_sha256": "923d6252e0f183e9500d4837f3c65dddf0348e94ddcbd0e7069eb2dabbecc624"
+    },
+    {
+      "path": "corrected-formal.json.gz",
+      "sha256": "5eceacd881071fec6b02fdd2d0bdc302acd35f8533948115fcfde2eef74ddd96",
+      "uncompressed_sha256": "3076cc70b4b2f21f52a1931d61cf5de5f87623190cf1d0698e66cce0ed89f734"
+    }
+  ],
+  "inputs": [
+    {
+      "path": "scripts/cold_server.py",
+      "sha256": "5175fa772dfc3c8c7679c576ceadb9e71ed7ad965f18fe9797f51f4c94fad449"
+    },
+    {
+      "path": "scripts/testdata/cold-server-probe/main.go",
+      "sha256": "e80bff14c57c12877d9385790d02a94298a4b25490a3d8023d92123bd4c824cd"
+    },
+    {
+      "path": "scripts/testdata/cold-server-probe/README.md",
+      "sha256": "e1a5a95a637d7a72c8e60ea278d7efe5dd2d77ae72e099bc9de4ce7dfbd2e4f4"
+    },
+    {
+      "path": "scripts/catalog-product-checks.json",
+      "sha256": "9d972d6826780e3fe27090ae6f49cc19ca026dd071276a12d03beb5a12c2d9cf"
+    },
+    {
+      "path": "scripts/catalog_product_verify.py",
+      "sha256": "26c81792e46b1f4c9724425bbd8aa5245fddcd8f149d095391e6da63fa08afc8"
+    },
+    {
+      "path": "scripts/test_catalog_product_verify.py",
+      "sha256": "6baa99e6ecb4cee8db2ed0be4066da983bb898b860dfe06101bdaf7dbba4bead"
+    },
+    {
+      "path": ".github/workflows/pr.yaml",
+      "sha256": "90c8eca39753eb3c2450d4d3dfae0d68f0cc96e805fa0aec99d00863e597bc49"
+    }
+  ]
+}
