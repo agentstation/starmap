@@ -42,7 +42,7 @@ func TestApp_New(t *testing.T) {
 }
 
 func TestRootCommandHasOneCanonicalPublicSpelling(t *testing.T) {
-	t.Setenv("HOME", t.TempDir())
+	setTestHome(t, t.TempDir())
 	application, err := New("1.0.0", "abc123", "2024-01-01", "test")
 	if err != nil {
 		t.Fatalf("New: %v", err)

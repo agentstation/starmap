@@ -69,6 +69,8 @@ func managedFilePolicy(id string) (productpaths.FilePolicy, error) {
 		policy = makePolicy(workspace, "Selected optional YAML authoring workspace.", "operator", "Preserve operator files and their projection receipt together. Catalog refresh does not authorize deleting unrelated files.")
 	case "workspace-lock":
 		policy = makePolicy(workspace, "Shared workspace reads and exclusive writes after the first writer.", "identity", "Retain for the lifetime of the workspace. A lock file alone does not prove an active writer.")
+	case "catalog-migration-lock":
+		policy = makePolicy(workspace, "Windows migration from the legacy catalog layout.", "recovery", "Remove an abandoned alias only after all store writers and migrations stop. Preserve the store commit lock.")
 	case "workspace-preparing":
 		policy = makePolicy(workspace, "Private container for workspace rendering and access restoration.", "recovery", "Retain until verified operation ownership permits cleanup.")
 	case "workspace-journal", "workspace-backup", "workspace-staging":

@@ -22,17 +22,7 @@ func TestWorkspaceReplacementPreservesAccessPolicy(t *testing.T) {
 	for _, name := range []string{".", "providers.yaml"} {
 		setWorkspaceTestDACL(t, filepath.Join(path, name), base)
 	}
-	label, err := windows.SecurityDescriptorFromString("S:(ML;;NW;;;LW)")
-	if err != nil {
-		t.Fatal(err)
-	}
-	sacl, _, err := label.SACL()
-	if err != nil {
-		t.Fatal(err)
-	}
-	if err := windows.SetNamedSecurityInfo(filepath.Join(path, "providers.yaml"), windows.SE_FILE_OBJECT, windows.LABEL_SECURITY_INFORMATION, nil, nil, nil, sacl); err != nil {
-		t.Fatal(err)
-	}
+	setWorkspaceTestLabel(t, filepath.Join(path, "providers.yaml"))
 	before, err := snapshotTree(t.Context(), path)
 	if err != nil {
 		t.Fatal(err)

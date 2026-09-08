@@ -7,12 +7,13 @@ import (
 	"path/filepath"
 	"strings"
 	"testing"
+	"time"
 
 	"github.com/agentstation/starmap/pkg/errors"
 )
 
 func TestBaselineExportPreservesChangedStaging(t *testing.T) {
-	for _, change := range []string{"added file", "changed file", "replaced file", "replaced directory"} {
+	for _, change := range []string{"added file", "changed file", "changed timestamp", "replaced file", "replaced directory"} {
 		t.Run(change, func(t *testing.T) {
 			for _, abort := range []bool{false, true} {
 				t.Run(map[bool]string{false: "publication", true: "cancellation"}[abort], func(t *testing.T) {
@@ -37,6 +38,12 @@ func TestBaselineExportPreservesChangedStaging(t *testing.T) {
 							if err := os.Mkdir(stage, baselineDirectoryMode); err != nil {
 								t.Fatal(err)
 							}
+						case "changed timestamp":
+							var err error
+							expected, err = os.ReadFile(sentinel)
+							if err != nil {
+								t.Fatal(err)
+							}
 						case "replaced file":
 							var err error
 							expected, err = os.ReadFile(sentinel)
@@ -49,6 +56,12 @@ func TestBaselineExportPreservesChangedStaging(t *testing.T) {
 						}
 						if err := os.WriteFile(sentinel, expected, baselineFileMode); err != nil {
 							t.Fatal(err)
+						}
+						if change == "changed timestamp" {
+							modified := time.Date(2000, 1, 1, 0, 0, 0, 0, time.UTC)
+							if err := os.Chtimes(sentinel, modified, modified); err != nil {
+								t.Fatal(err)
+							}
 						}
 						var err error
 						original, err = os.Stat(sentinel)

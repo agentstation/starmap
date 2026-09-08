@@ -207,7 +207,7 @@ func TestFileManifestReportsDisabledWorkspaceAndPlannedFeatures(t *testing.T) {
 			t.Fatalf("file role has no absolute base: %s", entry.ID)
 		}
 	}
-	if seen["workspace-lock"] || seen["workspace-receipt"] || seen["workspace-journal"] || seen["workspace-backup"] || seen["workspace-staging"] {
+	if seen["catalog-migration-lock"] || seen["workspace-lock"] || seen["workspace-receipt"] || seen["workspace-journal"] || seen["workspace-backup"] || seen["workspace-staging"] {
 		t.Fatal("disabled workspace has active sibling files")
 	}
 	if planned != 6 || !seen["runtime-seed"] || !seen["migration-journal"] {
@@ -224,6 +224,7 @@ func TestFileManifestCoversWorkspaceRecoveryArtifacts(t *testing.T) {
 	var report productpaths.FileManifest
 	addWorkspaceFiles(&report, ProductPaths{Workspace: productpaths.Path{Path: filepath.Join(parent, "workspace[local]")}})
 	for _, name := range []string{
+		".workspace[local].starmap-migration-lock-123",
 		".workspace[local].starmap-replacement.json",
 		"..workspace[local].starmap-replacement.json.temporary",
 		".workspace[local].backup-123/notes.txt",

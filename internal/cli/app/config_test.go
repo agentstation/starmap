@@ -74,7 +74,7 @@ func TestRemovedExportConfigurationDoesNotSelectWorkspace(t *testing.T) {
 
 func TestConfigFileUsesOnlyCanonicalLocation(t *testing.T) {
 	home := t.TempDir()
-	t.Setenv("HOME", home)
+	setTestHome(t, home)
 	t.Setenv("CONFIG", "")
 	canonical := filepath.Join(nativeRoot(t, productpaths.Config), "config.yaml")
 	legacy := filepath.Join(home, ".starmap.yaml")

@@ -21,7 +21,7 @@ import (
 
 func TestCatalogPathsFreshInstallAreCanonicalSeparatedAndPassive(t *testing.T) {
 	home := t.TempDir()
-	t.Setenv("HOME", home)
+	setTestHome(t, home)
 	app, err := New("test", "test", "test", "test", WithConfig(&Config{}))
 	if err != nil {
 		t.Fatalf("New: %v", err)
@@ -69,7 +69,7 @@ func TestCatalogPathsFreshInstallAreCanonicalSeparatedAndPassive(t *testing.T) {
 
 func TestCatalogStatePathIgnoresUnlaunchedDraftLocation(t *testing.T) {
 	home := t.TempDir()
-	t.Setenv("HOME", home)
+	setTestHome(t, home)
 	draft := filepath.Join(home, ".starmap", "catalog-store")
 	if err := os.MkdirAll(draft, constants.DirPermissions); err != nil {
 		t.Fatalf("MkdirAll: %v", err)
@@ -108,7 +108,7 @@ func TestCatalogStatePathIgnoresUnlaunchedDraftLocation(t *testing.T) {
 
 func TestExplicitCatalogWorkspaceBypassesDefaultInspection(t *testing.T) {
 	home := t.TempDir()
-	t.Setenv("HOME", home)
+	setTestHome(t, home)
 	for _, name := range []string{"catalog", "catalog-store"} {
 		root := filepath.Join(home, ".starmap", name)
 		if err := os.MkdirAll(root, constants.DirPermissions); err != nil {
@@ -137,7 +137,7 @@ func TestExplicitCatalogWorkspaceBypassesDefaultInspection(t *testing.T) {
 
 func TestCatalogWorkspaceMigrationAndRestartPreserveExactGeneration(t *testing.T) {
 	home := t.TempDir()
-	t.Setenv("HOME", home)
+	setTestHome(t, home)
 	workspace := filepath.Join(home, ".starmap", "catalog")
 	state := filepath.Join(home, ".starmap", "state", "catalog")
 	store, err := storage.NewFilesystem(workspace)
@@ -200,7 +200,7 @@ func TestCatalogWorkspaceMigrationAndRestartPreserveExactGeneration(t *testing.T
 func TestRuntimeRestartCompletesProjectionAfterMigrationMove(t *testing.T) {
 	clearCatalogEnvironment(t)
 	home := t.TempDir()
-	t.Setenv("HOME", home)
+	setTestHome(t, home)
 	workspace := filepath.Join(home, ".starmap", "catalog")
 	state := filepath.Join(home, ".starmap", "state", "catalog")
 	store, err := storage.NewFilesystem(workspace)
@@ -374,7 +374,7 @@ func validCatalogGeneration(t *testing.T, id string) catalogs.Generation {
 func TestCatalogPathFollowsTheCanonicalWorkspaceSetting(t *testing.T) {
 	home := t.TempDir()
 	workspace := filepath.Join(t.TempDir(), "workspace")
-	t.Setenv("HOME", home)
+	setTestHome(t, home)
 	t.Setenv(settings.WorkspacePath, workspace)
 
 	app, err := New("test", "test", "test", "test", WithConfig(&Config{}))
@@ -398,7 +398,7 @@ func TestCatalogPathFollowsTheCanonicalWorkspaceSetting(t *testing.T) {
 func TestCatalogPathKeepsTheConfiguredWorkspaceWithoutTheSetting(t *testing.T) {
 	home := t.TempDir()
 	configured := filepath.Join(t.TempDir(), "configured")
-	t.Setenv("HOME", home)
+	setTestHome(t, home)
 
 	app, err := New("test", "test", "test", "test",
 		WithConfig(&Config{CatalogPath: configured}))

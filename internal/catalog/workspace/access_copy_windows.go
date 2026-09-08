@@ -29,6 +29,11 @@ func copyNativeAccess(source, destination *os.File) error {
 	if control&windows.SE_SACL_PRESENT == 0 {
 		flags &^= windows.LABEL_SECURITY_INFORMATION | windows.ATTRIBUTE_SECURITY_INFORMATION
 	}
+	if control&windows.SE_DACL_PROTECTED != 0 {
+		flags |= windows.PROTECTED_DACL_SECURITY_INFORMATION
+	} else {
+		flags |= windows.UNPROTECTED_DACL_SECURITY_INFORMATION
+	}
 	if err := ntSetWorkspaceSecurity.Find(); err != nil {
 		return err
 	}

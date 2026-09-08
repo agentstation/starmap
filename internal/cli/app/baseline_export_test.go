@@ -17,7 +17,7 @@ import (
 func TestPersistentColdStartExportsInstalledBaseline(t *testing.T) {
 	clearCatalogEnvironment(t)
 	home, productHome := t.TempDir(), t.TempDir()
-	t.Setenv("HOME", home)
+	setTestHome(t, home)
 	t.Setenv("STARMAP_HOME", productHome)
 	application, err := New("test", "test", "test", "test", WithConfig(&Config{CatalogValues: map[string]string{
 		catalogconfig.Source: "embedded", catalogconfig.AcquisitionEnabled: "false", catalogconfig.SourcePollInterval: "0s",
@@ -71,7 +71,7 @@ func TestPersistentColdStartExportsInstalledBaseline(t *testing.T) {
 
 func TestBaselineExportPreservesExistingAcceptedHead(t *testing.T) {
 	clearCatalogEnvironment(t)
-	t.Setenv("HOME", t.TempDir())
+	setTestHome(t, t.TempDir())
 	t.Setenv("STARMAP_HOME", t.TempDir())
 	a, err := New("test", "test", "test", "test", WithConfig(&Config{CatalogValues: map[string]string{catalogconfig.Source: "embedded", catalogconfig.AcquisitionEnabled: "false", catalogconfig.SourcePollInterval: "0s"}}))
 	if err != nil {
@@ -108,7 +108,7 @@ func TestBaselineExportPreservesExistingAcceptedHead(t *testing.T) {
 
 func TestRequiredBaselineWriteFailurePreventsRuntimeStartup(t *testing.T) {
 	clearCatalogEnvironment(t)
-	t.Setenv("HOME", t.TempDir())
+	setTestHome(t, t.TempDir())
 	home := t.TempDir()
 	t.Setenv("STARMAP_HOME", home)
 	if err := os.WriteFile(filepath.Join(home, "data"), []byte("keep-this-file"), 0o600); err != nil {

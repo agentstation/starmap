@@ -68,7 +68,7 @@ func Read(ctx context.Context, path string, read func(InputExpectation) error) e
 }
 
 func inspectReadTarget(target string) (os.FileInfo, error) {
-	info, err := os.Lstat(target)
+	info, err := readTargetInfo(target)
 	if os.IsNotExist(err) {
 		return nil, nil
 	}
