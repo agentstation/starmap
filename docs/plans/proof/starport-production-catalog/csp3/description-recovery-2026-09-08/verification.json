@@ -109,6 +109,30 @@
       "sha256": "59f141b17ea86170f534f40ae3e6dc9dfd69e979aa8403c06b43845ede4bd19d",
       "content_sha256": "e16ebbae9c664c6bcd587bcec878eb3eff5c9da3ef7f018494b356cfec720fe8",
       "source": "runtime/provider_description_recovery_test.go"
+    },
+    {
+      "path": "publication-verify.txt.gz",
+      "sha256": "c30652c3cf1a69519cb66f4e3bbbfb524c17368e43ea0449e2189600b0bc7125",
+      "content_sha256": "439cd122d9fa5dd3463b3c3cb60436d988d75cabc5fefd06847bc33a5d10ae42",
+      "source": "publication-verify.txt"
+    },
+    {
+      "path": "godoc.txt.gz",
+      "sha256": "ed6d1f87bdc9a508219bad30e8de8bad0a035728c4ca4634cbdf897c8f7e7241",
+      "content_sha256": "ce97fe27d9e65d6307e5fd386af519f5ba81594cad1a2cf251de03d7e00f1305",
+      "source": "godoc.txt"
+    },
+    {
+      "path": "verify-remaining.sh.gz",
+      "sha256": "00e732c8c455b6c5625b84fdd40d46909b16d09cf7d163ac39c7e170d9d3e7bc",
+      "content_sha256": "122df6ae382da7e6cc50124ed4985e955f75945f592e6508cf80ba8bb1eafb16",
+      "source": "verify-remaining.sh"
+    },
+    {
+      "path": "publication-remaining.txt.gz",
+      "sha256": "ff99bc1db691b5bd3e2f890459a4d380f5fd6fc3ee77a01c3538e5d8ef576010",
+      "content_sha256": "96ac54860b92531d01dfa2dfd813c3d7891f198f1fb9d2f07cf07fe5aa1f9014",
+      "source": "publication-remaining.txt"
     }
   ],
   "limits": [
@@ -123,15 +147,23 @@
     "final-minimum.jsonl": "GOTOOLCHAIN=go1.25.12 go test -race -count=1 ./runtime ./internal/catalog/reconciler -run Description -json"
   },
   "publication_verification": {
-    "status": "in_progress",
+    "status": "all required stages passed across initial and continuation runs",
     "command": "GOTOOLCHAIN=go1.26.6 make verify",
     "started_head": "a64ebdc1",
     "log": "/tmp/starmap-description-repair-2026-09-08/publication-verify.txt",
-    "exec_session_id": 85055,
     "completed_observations": {
       "ordinary_go_package_suites": 79,
       "verifier_regression_tests": 73
     },
-    "remaining": "Full race suite and remaining repository gates, including the final prose check. No full publication-check pass yet."
+    "initial_exit_code": 2,
+    "initial_failure": "make docs-check: generated catalog API reference was stale",
+    "documentation_repair_commit": "a342d2e9",
+    "initial_passing_stages": 31,
+    "continuation_exit_code": 0,
+    "continuation_passing_stages": 8,
+    "required_stages": 39,
+    "ordinary_go_package_suites": 79,
+    "race_go_package_suites": 79,
+    "continuation_command": "GOTOOLCHAIN=go1.26.6 bash /tmp/starmap-description-repair-2026-09-08/verify-remaining.sh"
   }
 }

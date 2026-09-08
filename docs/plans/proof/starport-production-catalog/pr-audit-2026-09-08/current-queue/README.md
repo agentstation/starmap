@@ -1,6 +1,6 @@
 # Current pull request queue
 
-Nine PRs remain open after five approved merges. All retain distinct work or required ancestry.
+Seven PRs remain open after seven approved merges. All retain distinct work or required ancestry.
 Starmap #127 remains closed because #128 preserves its dependency changes.
 No additional PR qualifies for closure in this review.
 
@@ -12,9 +12,9 @@ Their existing manual evidence applies only to its recorded source.
 | Order | PRs | Disposition and next action | Owner |
 | --- | --- | --- | --- |
 | 1 | Starport #367 | Merged at `565a4fcd` after pin review and ten passing checks. | Catalog plan executor |
-| 2 | Starmap #128–#131 | Retain the four independent dependency updates. Combined adapter, consumer, and listed SDK credential-path checks pass. Preserve the consumer checksum repair during integration. | Catalog plan executor |
+| 2 | Starmap #130–#131 | PRs #128 and #129 merged. Retain the two remaining dependency updates. Combined adapter, consumer, and listed SDK credential-path checks pass. Preserve the consumer checksum repair during integration. | Catalog plan executor |
 | 3 | Starport #368 | Merged at `857bd854` after local dependency checks and ten passing CI checks. | Catalog plan executor |
-| 4 | Starmap #126, #132, #134, #133, #135, #136 | PR #125 merged at `96c098f9`. Merge the remaining stack in this order after required checks pass. Continue CSP3 under its publication gate. | Catalog plan executor |
+| 4 | Starmap #132, #134, #133, #135, #136 | PR #125 merged at `96c098f9`, and #126 merged at `b5c3f48a`. Merge the remaining stack in this order after required checks pass. Continue CSP3 under its publication gate. | Catalog plan executor |
 | 5 | Starport #366 | Merged at `cffa9300` after 16 passing checks. CSP0.1 is complete. Six later local commits retain their separate release dependency. | Catalog plan executor |
 
 The current branch ancestry confirms all six parent relationships.
@@ -87,9 +87,9 @@ The task identifier is `maintain-starmap-and-starport-pr-queue`.
 ## Approved merges
 
 The owner authorized reviewed merges without repeated permission requests on 2026-09-08.
-The [merge record](../approved-merges/verification.json) confirms five completed merges.
+The [merge record](../approved-merges/verification.json) confirms seven completed merges.
 Starmap requires each PR branch to include current main before merge.
-PRs #129 and #126 now need checks against main after the #128 merge.
+PR #129 merged at `df9585f5`. PR #132 now runs checks against that main revision.
 Starmap #128 merged at `e12a865f` after its required checks passed.
 
 Record the merge commit before marking an implementation task done.
@@ -102,3 +102,19 @@ PR #366 now includes current main at head `2973fd08122bc8264c499b99e60b44c890f3c
 Its published source retains stable Starmap v0.16.5 and can merge independently of the six later local commits.
 All 16 checks passed before merge at `cffa9300`. The local product worktree still preserves all six later commits.
 The later pseudo-version and release contract do not block this published scope.
+
+## Native retry for Starmap #132
+
+The executor disabled auto-merge at head `70288ead`.
+The [native capture](../pr132-native-retry/verification.json) records a Go module proxy failure on Linux x86-64.
+The job passes 497 test results and nine packages. Three other packages fail setup because the module download fails.
+No assertion fails. The other five native jobs pass.
+
+GitHub rejects a job retry while its containing workflow runs.
+After that workflow ends, recheck the PR head and main.
+Retry the failed job if the head is current, or update main and qualify the new head.
+Restore auto-merge only after the native checks pass.
+
+The workflow later finished, and Starmap #129 merged at `df9585f5`.
+The required main update gives #132 replacement head `e7bc93f1`.
+Fresh checks on that head replace the old-head retry. Automatic merge remains off until the native checks pass.

@@ -1,0 +1,268 @@
+{
+  "source_base": "8e3df7e1",
+  "status": "unapplied candidate",
+  "final_overlay": "ordered-overlay.json",
+  "runs": {
+    "before.jsonl": {
+      "fail_test": 14,
+      "pass_test": 12,
+      "fail_package": 1
+    },
+    "callers-equality.jsonl": {
+      "pass_test": 78,
+      "pass_package": 3
+    },
+    "callers.jsonl": {
+      "pass_test": 60,
+      "fail_test": 1,
+      "fail_package": 1,
+      "pass_package": 2
+    },
+    "candidate.jsonl": {
+      "pass_test": 21,
+      "fail_test": 5,
+      "fail_package": 1
+    },
+    "compatibility-before.jsonl": {
+      "fail_test": 3,
+      "fail_package": 1
+    },
+    "complete.jsonl": {
+      "pass_test": 35,
+      "pass_package": 2
+    },
+    "legacy-original.jsonl": {
+      "pass_test": 3,
+      "pass_package": 1
+    },
+    "minimum-equality.jsonl": {
+      "pass_test": 78,
+      "pass_package": 3
+    },
+    "minimum.jsonl": {
+      "pass_test": 60,
+      "fail_test": 1,
+      "fail_package": 1,
+      "pass_package": 2
+    },
+    "ordered-minimum.jsonl": {
+      "pass_test": 81,
+      "pass_package": 3
+    },
+    "ordered.jsonl": {
+      "pass_test": 81,
+      "pass_package": 3
+    },
+    "projection.jsonl": {
+      "pass_test": 26,
+      "pass_package": 1
+    },
+    "reconciliation-before.jsonl": {
+      "pass_test": 4,
+      "fail_test": 5,
+      "fail_package": 1
+    },
+    "runtime.jsonl": {
+      "pass_test": 13,
+      "pass_package": 1
+    }
+  },
+  "artifacts": [
+    {
+      "path": "captures/architecture_codec.go.gz",
+      "sha256": "5f046a7c2a959fc88ca7bef8c2110f3a53d6c4e2a3c837a150bff004b8f61cb7",
+      "content_sha256": "5ef24c03f7377165e5c9f54ea87d865c548a01b06fd3d35b3265274519aa5bf7"
+    },
+    {
+      "path": "captures/architecture_codec_ordered.go.gz",
+      "sha256": "90592716770cec9722c65b2e43d6c16b84d52c461358ceff5a4715f4dd99ed1e",
+      "content_sha256": "65eb89f6ed2f15e8ae4d9f8884f7cdaf19a1738e6f3e6581b593cef4188df833"
+    },
+    {
+      "path": "captures/architecture_equality.go.gz",
+      "sha256": "065418cc6ed11b050f974613e5db0ae2f43e0d3edc4a073d882e0cd94568ea1a",
+      "content_sha256": "41b462648daa42601d3eb026d80e69256ee1d2b25fdf702ce110c7586cd1e782"
+    },
+    {
+      "path": "captures/architecture_presence.go.gz",
+      "sha256": "81b2942223f806ec21572346a290bfd204c83db7fffd86bd83309f49ec4d12cb",
+      "content_sha256": "0701ab42e9a10c460e5f6be4818b52223f5a95889bf121efd45273ea2da3040d"
+    },
+    {
+      "path": "captures/before-overlay.json.gz",
+      "sha256": "5ffff80123bffb8e89d417ce51100459cb323f8315b990ca7a80fffd0b54378d",
+      "content_sha256": "d669925f13a540a8c28a44bece7bb1058e5cd88b333cc6ed419f80c05f235cdb"
+    },
+    {
+      "path": "captures/before.jsonl.gz",
+      "sha256": "b689cdef0c6023fad2bf327bad246d75f684fa5e361700398be0602cc0789547",
+      "content_sha256": "7792538156fae3b6cb1e58ab8326c599fd31119e46c32a6bbd3d0190470d6ef9"
+    },
+    {
+      "path": "captures/callers-equality.jsonl.gz",
+      "sha256": "187caf333907219e806c2d744853c4f0ef99715ac94bccec438bb91a4e6c9af0",
+      "content_sha256": "cdf1d9aea3999eac91bd5b4ddd206da43effd389ea99e11f4c5433744c2f61fb"
+    },
+    {
+      "path": "captures/callers-overlay.json.gz",
+      "sha256": "c1a71d6f497a76ff259a36125947abfa9e10c84bf66b7130b1fbb8a76aeb8d5e",
+      "content_sha256": "5b9e498353a1f4476abb34a43b6d4da0dbadd2e07a148cfb0e86d74964f24b09"
+    },
+    {
+      "path": "captures/callers.jsonl.gz",
+      "sha256": "f4c7a239bd5eeb40d5921b9339c83bc3e4771941ddaa92d5c2152f4a2b341987",
+      "content_sha256": "7808d040c6ec16f5369bde3646ec856e2ed2e097580f9e5624ad55d0b1e93175"
+    },
+    {
+      "path": "captures/candidate-overlay.json.gz",
+      "sha256": "1d64b050de8007ae6b19d2d412e174b8e85ddcb4b46fba87effa7b4c7ad8cca3",
+      "content_sha256": "a27168d8aca850c8d3cd420d4c7163229ad28f52efb08cc9ccc93b8c77f8405a"
+    },
+    {
+      "path": "captures/candidate.jsonl.gz",
+      "sha256": "29ccca022d528688e7844337bc0ce66e9abc57726bd47913d3ec20559ee4e796",
+      "content_sha256": "c9ae432d1b7dbc10ba2749e122600fd60c8eea8905e3a2d645e1c54410cdff29"
+    },
+    {
+      "path": "captures/compatibility-before-overlay.json.gz",
+      "sha256": "9c7a3faafc7e2cea55e3a3bc22794cf587a135a1d68f392b704cd2e75dbcd06c",
+      "content_sha256": "f5ea44ac080d36ec651cedea796095c5d6c8ed4835d0b836226dc9208c3bcc2f"
+    },
+    {
+      "path": "captures/compatibility-before.jsonl.gz",
+      "sha256": "a24f0bef9f1679a067bec4b72fc3f502d8e227224a20f48df3233c8be11862ab",
+      "content_sha256": "3f6aaf39a0941d8a747ecab985ffea1b97d59829948e24a8cc6881f95a31a3e5"
+    },
+    {
+      "path": "captures/compatibility_test.go.gz",
+      "sha256": "7ad617b433be635935b66447e21eddb213e3e3d34af9667da4261427ca763a05",
+      "content_sha256": "0e728ffc429e763e25b4649c13e9c026ae32d2ceec98055e78a573926f23da46"
+    },
+    {
+      "path": "captures/complete-overlay.json.gz",
+      "sha256": "3d2dd2c2f2f6fca5421e673797a2dae388168ff877800d0f634756b7bd863564",
+      "content_sha256": "aea5d2ebc84fde35e41a122a6233f1deba191ad1e33562c2772fa88b636f75aa"
+    },
+    {
+      "path": "captures/complete.jsonl.gz",
+      "sha256": "d8a9da4c223c5a0be55d0e6eed616e13356e57c64c71d9742f53be50ff83825d",
+      "content_sha256": "b6a2a8b6a7c84910ec04d3c35ff3dfa622e8408fe0f08f168007f7ed298523f8"
+    },
+    {
+      "path": "captures/legacy-original-overlay.json.gz",
+      "sha256": "0f3f5995696153a78621acb30dd182c00952ab4c84429eeadf42139ea4ccc52a",
+      "content_sha256": "525aaa1039df8c4c11d75720624f528ecb63bf71a92da66fe42dd1b7902892d8"
+    },
+    {
+      "path": "captures/legacy-original.jsonl.gz",
+      "sha256": "1fb3686ebabe03bab6eb33821cac1eb57f3998a53cf47bb4e5298f60bf36536d",
+      "content_sha256": "3e3d3e23a22baafed21e0a6c5a7bc06b98d4b8c8d6429dabccb1f39f68bd51ac"
+    },
+    {
+      "path": "captures/metadata_evidence.go.gz",
+      "sha256": "7ab7cab18485adf2f395717ee16628c38d0f6e3b1bfd335ca40d90fc24a9f31b",
+      "content_sha256": "adb01a14cc8c11c65faae5f61355fe6b90f3617194c623c2234a52c9fcd4baf1"
+    },
+    {
+      "path": "captures/minimum-equality.jsonl.gz",
+      "sha256": "9e1e0f1b6dcaefc6814e447f06732244b77a3c4acdb4caf7b3303007ff5c942a",
+      "content_sha256": "1922f8af626f80318c2e7385f967d2f42e86dac48b72ec1373cce7e44147e77a"
+    },
+    {
+      "path": "captures/minimum.jsonl.gz",
+      "sha256": "5a95bc7302f9b375d1f95198e08a5f4f2ca69b59727d1781aaacd7e7014e7792",
+      "content_sha256": "645129b5f411ff7fdbd7a59f9983a5f472917fa8aae538498b977c056c6256ea"
+    },
+    {
+      "path": "captures/model_architecture.go.gz",
+      "sha256": "f7ac1694ce321169d11415c1be053a5f470b48b696f3c6bad1419a05340acfc9",
+      "content_sha256": "ebf98e128343ba1cd3f25db1c0a1b4b7f12408432409c1b80f391fddf82c3256"
+    },
+    {
+      "path": "captures/ordered-minimum.jsonl.gz",
+      "sha256": "f3bb558a16c688fa52d2e70d66da47e02327c96b33a1378cef1f7322984846ca",
+      "content_sha256": "f0325b551e5be13b22827e9bc66e53ff8c073dd0f20243421990c7a275b7d391"
+    },
+    {
+      "path": "captures/ordered-overlay.json.gz",
+      "sha256": "04dcb1aa0e3cb19caf3490ac6f0c445592fa97ebe576c3e9e0066f5ec46a85b7",
+      "content_sha256": "8fdb757320671f594e0bf3bb2f0b8ecbe6a97c83d1514ae84311aa69f731ff01"
+    },
+    {
+      "path": "captures/ordered.jsonl.gz",
+      "sha256": "84f62cbfd43fba46f47654acedcea938b0e9e4409afc37a93cf4af46f0961507",
+      "content_sha256": "b154f6ca8079bd25304345c0434d98a076dda4071a6b8e850ed86a488a38c08d"
+    },
+    {
+      "path": "captures/presence_test.go.gz",
+      "sha256": "a44b3f6818fc320312319b1753ec91cc3638b883d269f0d0f4d5d41bce890149",
+      "content_sha256": "be7bd80042a8665c45da7199fee41ad3b8abbe31e1156567ea1043336a1cf36f"
+    },
+    {
+      "path": "captures/projection-overlay.json.gz",
+      "sha256": "b9a354eb1426043111909925531ec14169976c94742ef9779bde91a4beb933f7",
+      "content_sha256": "f609f8f484e2280c8f9ff7ac96762509c13aaafe003f1e34125c793f37da35ed"
+    },
+    {
+      "path": "captures/projection.jsonl.gz",
+      "sha256": "b86b6ee23ecc10719eac1cf5fe8ac4cd3174bb4150252f6d2810e86755252606",
+      "content_sha256": "bcbe9bed1f847e03f16af98e35c4f3ba276ac1e9c753e053e6e701a04838b57d"
+    },
+    {
+      "path": "captures/read_views.go.gz",
+      "sha256": "944d1c2d0d7c62c3d53cf468901b92e1b9ea8f547dbd54617393aa06365dd0d2",
+      "content_sha256": "ed0bf25935eaaca18fec70e590633e79c3837eb4046291a1b77d873c7353d2ab"
+    },
+    {
+      "path": "captures/read_views_architecture_presence.go.gz",
+      "sha256": "c2ee85ffa2e59c3bdfe0d7640f08eef331da625cf1df2aa41d26dbf5445700fa",
+      "content_sha256": "b04cb59b2fb77a8a7d9a847df8f8f1fae17a3b33b399040b585478d56f2c6e8d"
+    },
+    {
+      "path": "captures/reconciliation-before-overlay.json.gz",
+      "sha256": "706c2e5c22306c7a38df777a3d29bac8a81a272d7081baf92ea53b0b1f2ecbc6",
+      "content_sha256": "192553adca9c87f4ac16161b0bedb41738cc0acd6a0f7222badbf78388c689b9"
+    },
+    {
+      "path": "captures/reconciliation-before.jsonl.gz",
+      "sha256": "6fa24837e3fca6bb9666259c2ec32c503e347c31a0f44db2de3e5bd869cd841b",
+      "content_sha256": "fd30498a4a60056b96a014f537f56853e54122c7fe9dd12c0fa115039a2c3a42"
+    },
+    {
+      "path": "captures/reconciliation_test.go.gz",
+      "sha256": "42659ccd33432b31c282a25d414fb03cdb82e245591405a7f98024d84f8edc51",
+      "content_sha256": "77b56825f7c016590edb4054b5cba73bac34ebaef4bea134547e0ecb7dd9ab76"
+    },
+    {
+      "path": "captures/runtime-overlay.json.gz",
+      "sha256": "f5c6391ccd8f3cf1053ec2c0e8d14ad4037974e6d9a27dfbf5f297749413cc48",
+      "content_sha256": "3161e31529fbcb01cc16bccf48b8582e40b988db93cf375e7eedd7fe7179e528"
+    },
+    {
+      "path": "captures/runtime.jsonl.gz",
+      "sha256": "3214e0c5e4304c9feb256c3edf5808a9fc9939938b20eb5722281cd507dd2721",
+      "content_sha256": "4013ff21c5e9eebb59d6a0b3e9031de9f9e2a37e99ecc96e7a6929d6a050f2f5"
+    },
+    {
+      "path": "captures/runtime_recovery_test.go.gz",
+      "sha256": "93e372863231f071ea43ededcda27120197754c19c6b960bfb5403d275aa7c05",
+      "content_sha256": "de4257f530aaf6b39aa6c2c412eb0a7ca636b1a1a8738ecea67e0d433874d9f0"
+    }
+  ],
+  "reproduction_command": "GOTOOLCHAIN=go1.26.6 go test -race -count=1 -timeout 5m -overlay /tmp/starmap-architecture-presence-2026-09-08/ordered-overlay.json ./pkg/catalogs ./internal/catalog/reconciler ./runtime -run 'Architecture|ReadViews|DeepCopy|Definition' -json",
+  "minimum_toolchain": "go1.25.12",
+  "remaining": [
+    "Full affected-package verification",
+    "Source precedence and rejected-receipt cases",
+    "Getter/setter state transitions",
+    "Old-writer/new-reader observation recovery",
+    "HTTP schema review",
+    "Production integration and pre-PR review"
+  ],
+  "full_affected_verification": {
+    "status": "in_progress",
+    "exec_session_id": 42053,
+    "command": "GOTOOLCHAIN=go1.26.6 go test -race -count=1 -timeout 20m -overlay /tmp/starmap-architecture-presence-2026-09-08/ordered-overlay.json ./pkg/catalogs ./internal/catalog/reconciler ./runtime ./acquisition -json",
+    "log": "/tmp/starmap-architecture-presence-2026-09-08/full-affected.jsonl"
+  }
+}
