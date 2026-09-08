@@ -72,6 +72,7 @@ func (l *layerSet) reconcileManualInputs(ctx context.Context, base *catalogs.Cat
 		providers = append(providers, observation)
 		collected.SourceObservations = append(collected.SourceObservations, observation.Link())
 	}
+	providerEvidence := providers
 	slices.SortStableFunc(providers, reconciler.CompareProviderObservations)
 	for len(providers) != 0 {
 		end := 1
@@ -97,6 +98,9 @@ func (l *layerSet) reconcileManualInputs(ctx context.Context, base *catalogs.Cat
 		_, err := builder.ProviderModel(catalogs.ProviderID(candidate.ProviderID), candidate.ProviderModelID)
 		return err == nil
 	})
+	if err := selectCurrentProviderEvidence(ctx, builder, providerEvidence, selection, &collected); err != nil {
+		return nil, collected, err
+	}
 	compactManualEvidence(&collected)
 	return builder, collected, nil
 }
@@ -135,8 +139,15 @@ func (l *layerSet) reconcileManualBatch(ctx context.Context, base *catalogs.Cata
 		baseSource = sources.ReleaseArtifactID
 	}
 	// A synthetic baseline carries existing field provenance but no new receipt.
-	inputs := make([]sources.Observation, 0, 1+len(observations))
+	inputs := make([]sources.Observation, 0, 2+len(observations))
 	inputs = append(inputs, sources.Observation{SourceID: baseSource, Catalog: base})
+	// Provider replay carries prior fact provenance through the local projection.
+	for _, observation := range observations {
+		if observation.SourceID == sources.ProvidersID {
+			inputs = append(inputs, sources.Observation{SourceID: sources.LocalCatalogID, Catalog: base})
+			break
+		}
+	}
 	inputs = append(inputs, observations...)
 	for _, observation := range observations {
 		if observation.ObservedAt.After(at) {
