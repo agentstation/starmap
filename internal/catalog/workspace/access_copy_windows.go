@@ -24,6 +24,17 @@ func copyNativeAccess(source, destination *os.File) error {
 	if err != nil {
 		return err
 	}
+	// Native assignment needs request bits to retain the automatic-inheritance model.
+	var inheritance windows.SECURITY_DESCRIPTOR_CONTROL
+	if control&windows.SE_DACL_AUTO_INHERITED != 0 {
+		inheritance |= windows.SE_DACL_AUTO_INHERIT_REQ
+	}
+	if control&windows.SE_SACL_AUTO_INHERITED != 0 {
+		inheritance |= windows.SE_SACL_AUTO_INHERIT_REQ
+	}
+	if err := sd.SetControl(windows.SE_DACL_AUTO_INHERIT_REQ|windows.SE_SACL_AUTO_INHERIT_REQ, inheritance); err != nil {
+		return err
+	}
 	// Central policy assignment needs a privileged handle. Snapshot equality still checks it.
 	flags := workspaceWindowsSecurity &^ windows.SCOPE_SECURITY_INFORMATION
 	if control&windows.SE_SACL_PRESENT == 0 {
