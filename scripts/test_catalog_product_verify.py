@@ -14,6 +14,7 @@ from unittest.mock import patch
 import catalog_product_verify as verifier
 import constructor_network
 import cold_server
+import native_catalog
 
 
 class CatalogVerifierTests(unittest.TestCase):
@@ -596,6 +597,131 @@ class ColdServerTests(unittest.TestCase):
         root = Path(__file__).resolve().parents[1]
         with patch.object(verifier.importlib.util, "module_from_spec", return_value=Adapter), patch("importlib.machinery.SourceFileLoader.exec_module"):
             self.assertEqual(verifier.run_check("A01.starmap_cold_offline", entry, {"starmap": root})["status"], "PASS")
+
+
+class NativeCatalogTests(unittest.TestCase):
+    def setUp(self):
+        self.temp = tempfile.TemporaryDirectory()
+        self.addCleanup(self.temp.cleanup)
+        self.root = Path(self.temp.name)
+        self.test = {"package": "github.com/agentstation/starmap/runtime", "test": "TestNativeContract"}
+        self.proof = {"run": {"databaseId": 123, "url": "https://github.com/agentstation/starmap/actions/runs/123",
+                              "status": "completed", "conclusion": "success", "headSha": "a" * 40, "jobs": []}, "sha256": {}}
+        for arch, runner in native_catalog.RUNNERS["windows"].items():
+            self.proof["run"]["jobs"].append({"databaseId": len(self.proof["run"]["jobs"]) + 1,
+                                            "name": f"Runtime {runner}", "status": "completed", "conclusion": "success"})
+            prefix = f"native-runtime-{runner}/"
+            self.write(prefix + "toolchain.txt", f"go version go1.25.12 windows/{arch}\nwindows\n{arch}\nwindows\n{arch}\n0\n")
+            events = [{"Package": self.test["package"], "Test": self.test["test"], "Action": action} for action in ("run", "pass")]
+            events.append({"Package": self.test["package"], "Action": "pass"})
+            self.write(prefix + "tests.jsonl", "\n".join(map(json.dumps, events)))
+
+    def write(self, name, data):
+        path = self.root / name
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(data)
+        self.proof["sha256"][name] = hashlib.sha256(path.read_bytes()).hexdigest()
+
+    def validate(self):
+        return native_catalog.validate_platform(self.root, self.proof, "windows", [self.test])
+
+    def test_both_native_architectures_are_required(self):
+        self.assertEqual({item["architecture"] for item in self.validate()}, {"amd64", "arm64"})
+        self.proof["run"]["jobs"].pop()
+        with self.assertRaises(ValueError):
+            self.validate()
+
+    def test_duplicate_native_jobs_refuse(self):
+        self.proof["run"]["jobs"].append(deepcopy(self.proof["run"]["jobs"][0]))
+        with self.assertRaises(ValueError):
+            self.validate()
+
+    def test_failed_or_incomplete_workflow_refuses(self):
+        for status, conclusion in [("in_progress", ""), ("completed", "failure"), ("completed", "cancelled")]:
+            with self.subTest(status=status, conclusion=conclusion):
+                self.proof["run"].update(status=status, conclusion=conclusion)
+                with self.assertRaises(ValueError):
+                    self.validate()
+
+    def test_other_repository_refuses(self):
+        self.proof["run"]["url"] = "https://github.com/another/repository/actions/runs/123"
+        with self.assertRaises(ValueError):
+            self.validate()
+
+    def test_cross_compiled_or_changed_toolchain_refuses(self):
+        name = "native-runtime-windows-2025/toolchain.txt"
+        original = (self.root / name).read_text()
+        for changed in [original.replace("1.25.12", "1.26.6"), original.replace("\nwindows\namd64\n0", "\nlinux\namd64\n0")]:
+            self.write(name, changed)
+            with self.assertRaises(ValueError):
+                self.validate()
+
+    def test_changed_evidence_bytes_refuse(self):
+        path = self.root / "native-runtime-windows-2025/tests.jsonl"
+        path.write_text(path.read_text() + "\n")
+        with self.assertRaises(ValueError):
+            self.validate()
+
+    def test_missing_test_or_package_completion_refuses(self):
+        name = "native-runtime-windows-2025/tests.jsonl"
+        original = (self.root / name).read_text()
+        events = list(map(json.loads, original.splitlines()))
+        for changed in [events[1:], events[:-1], [events[-1]], events + [events[1]]]:
+            self.write(name, "\n".join(map(json.dumps, changed)))
+            with self.assertRaises(ValueError):
+                self.validate()
+
+    def test_skipped_or_failed_child_refuses(self):
+        name = "native-runtime-windows-2025/tests.jsonl"
+        original = (self.root / name).read_text()
+        for action in ["skip", "fail"]:
+            child = {"Package": self.test["package"], "Test": self.test["test"] + "/child", "Action": action}
+            self.write(name, original + "\n" + json.dumps(child))
+            with self.assertRaises(ValueError):
+                self.validate()
+
+    def test_absent_capture_is_unverified(self):
+        self.assertEqual(native_catalog.verify(self.root, {"platform": "windows", "tests": [self.test]})["status"], "UNVERIFIED")
+
+    def test_linux_requires_actual_administrator_owned_read(self):
+        events = (self.root / "native-runtime-windows-2025/tests.jsonl").read_text()
+        events += "\n" + json.dumps({"Package": "github.com/agentstation/starmap/internal/privatefiles", "Test": "TestServiceConfigurationAdministratorOwnedRead", "Action": "skip"})
+        owner = "=== RUN   TestServiceConfigurationAdministratorOwnedRead\n--- PASS: TestServiceConfigurationAdministratorOwnedRead (0.00s)\nPASS\n"
+        for arch, runner in native_catalog.RUNNERS["linux"].items():
+            self.proof["run"]["jobs"].append({"databaseId": len(self.proof["run"]["jobs"]) + 1,
+                                            "name": f"Runtime {runner}", "status": "completed", "conclusion": "success"})
+            prefix = f"native-runtime-{runner}/"
+            self.write(prefix + "toolchain.txt", f"go version go1.25.12 linux/{arch}\nlinux\n{arch}\nlinux\n{arch}\n0\n")
+            self.write(prefix + "tests.jsonl", events)
+            self.write(prefix + "service-owner.txt", owner)
+        self.assertEqual(len(native_catalog.validate_platform(self.root, self.proof, "linux", [self.test])), 2)
+        for changed in ["PASS\n", owner.replace("--- PASS:", "--- SKIP:")]:
+            self.write("native-runtime-ubuntu-24.04/service-owner.txt", changed)
+            with self.assertRaises(ValueError):
+                native_catalog.validate_platform(self.root, self.proof, "linux", [self.test])
+
+    def test_source_and_test_changes_invalidate_evidence(self):
+        repository = self.root / "repository"
+        repository.mkdir()
+        native_catalog.command(["git", "init", "-q"], repository)
+        source = repository / "main.go"
+        source.write_text("package main\n")
+        native_catalog.command(["git", "add", "main.go"], repository)
+        native_catalog.command(["git", "-c", "user.name=Fixture", "-c", "user.email=fixture@example.invalid",
+                                "-c", "commit.gpgsign=false", "commit", "-qm", "fixture"], repository)
+        revision = native_catalog.command(["git", "rev-parse", "HEAD"], repository).strip()
+        native_catalog.unchanged_source(repository, revision)
+        proof = repository / "docs/plans/evidence.json"
+        proof.parent.mkdir(parents=True)
+        proof.write_text("{}")
+        native_catalog.unchanged_source(repository, revision)
+        source.write_text("package changed\n")
+        with self.assertRaises(ValueError):
+            native_catalog.unchanged_source(repository, revision)
+        source.write_text("package main\n")
+        (repository / "new_test.go").write_text("package main\n")
+        with self.assertRaises(ValueError):
+            native_catalog.unchanged_source(repository, revision)
 
 
 if __name__ == '__main__':
