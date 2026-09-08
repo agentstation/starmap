@@ -22,6 +22,8 @@ func (merger *merger) applyModelPolicy(
 	history *map[string]provenance.Field,
 ) {
 	switch policy.Path {
+	case "Description":
+		merger.mergeModelDescription(identity, target, policy, models, history)
 	case "Limits":
 		merger.mergeModelLimits(identity, target, policy, models, history)
 	case "Metadata":
