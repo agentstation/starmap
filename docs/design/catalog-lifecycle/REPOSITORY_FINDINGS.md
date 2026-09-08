@@ -1574,3 +1574,14 @@ The factory files remain unchanged, so these tests require no production behavio
 The [credential-chain proof](../../plans/proof/starport-production-catalog/pr-audit-2026-09-08/sdk-credential-chains/README.md) records exact sources, toolchains, and coverage limits.
 The first Azure fixture incorrectly excluded three standard MSAL scopes. The corrected fixture retains the vault audience and checks the complete scope set.
 Live cloud IAM policy, SSO, device login, and managed identity services remain outside this evidence.
+
+## Dependency qualification and MySQL test isolation, 2026-09-08
+
+Starport PR #368 passes the listed dependency checks against current main.
+The [dependency evidence](../../plans/proof/starport-production-catalog/pr-audit-2026-09-08/starport-dependencies/README.md) records exact source trees and results.
+
+The shared MySQL contract fixture deletes migration history without removing every migrated table.
+Its second migration repeats `ADD COLUMN request_id` and fails on both dependency versions.
+Separate disposable databases pass migration, read/write, and rollback checks.
+CSP15 must repair the fixture isolation before it claims complete shared-backend qualification.
+No production SQL change belongs to this dependency update.

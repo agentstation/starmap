@@ -1,0 +1,125 @@
+{
+  "source_commit": "978576613f04abc4b7466a9138f7671164106263",
+  "runs": {
+    "accepted-before.jsonl": {
+      "fail_test": 13,
+      "pass_test": 9,
+      "fail_package": 2
+    },
+    "final-focused.jsonl": {
+      "pass_test": 25,
+      "pass_package": 2
+    },
+    "final-minimum.jsonl": {
+      "pass_test": 25,
+      "pass_package": 2
+    },
+    "final-full.jsonl": {
+      "pass_test": 1032,
+      "pass_package": 3
+    }
+  },
+  "artifacts": [
+    {
+      "path": "accepted-before.jsonl.gz",
+      "sha256": "cdec6019cfd099b53aa0a7d85a8ecb79676e8af2cd595b56db6d8c75dc43b37c",
+      "content_sha256": "e1ab5ca13e0a5c416e3ad9c1c6421e4625b7a6b5257ee73f0ed80a02a8bf35d8",
+      "source": "/tmp/starmap-description-repair-2026-09-08/accepted-before.jsonl"
+    },
+    {
+      "path": "before-overlay.json.gz",
+      "sha256": "dc05c63fd75d91e32447e2f461058f79649fc3f0d4745961dc578a505847bf0f",
+      "content_sha256": "931c3d2b20c1a95d72cd64e51e4a0d9823d1ffda87f7a24079ca9f7b67d05f6d",
+      "source": "/tmp/starmap-description-repair-2026-09-08/before-overlay.json"
+    },
+    {
+      "path": "before-merger.go.gz",
+      "sha256": "75b3684d68a2ff1e21b33c0e22bf96de2f2ae293aa2239c273b8f81d1389d54b",
+      "content_sha256": "601d0996d26906ff66ca1438c90f8843d8059006487f1ec1b8300908f906bba6",
+      "source": "/tmp/starmap-description-repair-2026-09-08/before-merger.go"
+    },
+    {
+      "path": "before-model_policy.go.gz",
+      "sha256": "a599f38e00a96a721d39f887ea9c2e52e9d03983d4bb579be7f21f619f6909f9",
+      "content_sha256": "29b9bbac69dc40636de7aa9b039ce7ce792c4d8890f39a87c663084abbe231b4",
+      "source": "/tmp/starmap-description-repair-2026-09-08/before-model_policy.go"
+    },
+    {
+      "path": "source-base.txt.gz",
+      "sha256": "60ce5eba51c503700ea4f74e72263aa11df33dbecff02c6f2d1e14b48b38f75c",
+      "content_sha256": "07add2d13547b5126d19f97b52f322edae57d22e84ae83cb5c252f471c267302",
+      "source": "/tmp/starmap-description-repair-2026-09-08/source-base.txt"
+    },
+    {
+      "path": "final-focused.jsonl.gz",
+      "sha256": "fd416ce87f9b382d2ae41b64174487de93f2cbed8cb888abb52b651ffbc3b9e6",
+      "content_sha256": "54d96548384fd4d353ca15078f7abb574516d7834682fe48d557988b031f70c4",
+      "source": "/tmp/starmap-description-repair-2026-09-08/final-focused.jsonl"
+    },
+    {
+      "path": "final-minimum.jsonl.gz",
+      "sha256": "7c4a73390c625395c2ad1bc07272592dfcc44091cb833ff49a74c3fcd0d77836",
+      "content_sha256": "7f12f5f60bd40004494506eaca941b81c9e3cc650021d2f16be48fde5247d011",
+      "source": "/tmp/starmap-description-repair-2026-09-08/final-minimum.jsonl"
+    },
+    {
+      "path": "final-full.jsonl.gz",
+      "sha256": "b902b466d2d54496da67e3b910a61a8adac0c1d71ca7a977dff092c0d5e4f450",
+      "content_sha256": "ab20f6e90771d9956c671aa2f1e4f974a7747a45ba4f68102881c3b580870bc4",
+      "source": "/tmp/starmap-description-repair-2026-09-08/final-full.jsonl"
+    },
+    {
+      "path": "final-ago.json.gz",
+      "sha256": "905b50ebb66dc28cecf0d5d7681aabcd8b20af21ce5f8834692f1c6c68590281",
+      "content_sha256": "b8fb7afa66aa7a93914ac258475dd0191be821803a8aea4439f5ba05022f5fa5",
+      "source": "/tmp/starmap-description-repair-2026-09-08/final-ago.json"
+    },
+    {
+      "path": "final-lint.txt.gz",
+      "sha256": "bafcb04d67f6157ff3d4a1fdf228afd2df6cc6d786c61642c1125b1fe879e728",
+      "content_sha256": "e92606b0bf483111dff0a120c315ea165821348f31365020e2468a0059095c47",
+      "source": "/tmp/starmap-description-repair-2026-09-08/final-lint.txt"
+    },
+    {
+      "path": "merger.go.gz",
+      "sha256": "9ae4846ad1d01173bfc432ca7dcd8e445cc4f24f50a0d19b80574801f2b4477d",
+      "content_sha256": "f4dd01fd95008dd757491c7f03217347339e25cc08e8e18f34bc009395a79919",
+      "source": "internal/catalog/reconciler/merger.go"
+    },
+    {
+      "path": "model_policy.go.gz",
+      "sha256": "f93db4ddd2e3493b41db33ff31a5e020ac903cc4e0a9cdb5011cd87a2983ee5e",
+      "content_sha256": "517f5620df5542e92be0668207a78e761b8f8fe10a8f0df80965ac728b252acc",
+      "source": "internal/catalog/reconciler/model_policy.go"
+    },
+    {
+      "path": "description_evidence.go.gz",
+      "sha256": "de52d298de3d759a2aed872d890e84a313c118cca283c49a0ed8a5fd98829426",
+      "content_sha256": "5d1d21711791e12f842e52acde81e8b247a4280fca43cc167ae0e36aabe3b444",
+      "source": "internal/catalog/reconciler/description_evidence.go"
+    },
+    {
+      "path": "description_presence_test.go.gz",
+      "sha256": "a8b1fa476acfbd47916dedd06ed45d6b4f14adfcf9ba3d82be13751e097c2380",
+      "content_sha256": "3b2aa0d6a71189e30ad34410a6df8683c731685ad616f5c7f5d05dd1db236b19",
+      "source": "internal/catalog/reconciler/description_presence_test.go"
+    },
+    {
+      "path": "provider_description_recovery_test.go.gz",
+      "sha256": "59f141b17ea86170f534f40ae3e6dc9dfd69e979aa8403c06b43845ede4bd19d",
+      "content_sha256": "e16ebbae9c664c6bcd587bcec878eb3eff5c9da3ef7f018494b356cfec720fe8",
+      "source": "runtime/provider_description_recovery_test.go"
+    }
+  ],
+  "limits": [
+    "No CSP3 component acceptance",
+    "No code publication or merge",
+    "Original overlay predates the missing-local baseline test",
+    "Clear markers with no source claim follow the existing provenance contract"
+  ],
+  "reproduction_commands": {
+    "final-full.jsonl": "GOTOOLCHAIN=go1.26.6 go test -race -count=1 -timeout 20m ./runtime ./acquisition ./internal/catalog/reconciler -json",
+    "final-focused.jsonl": "GOTOOLCHAIN=go1.26.6 go test -race -count=1 ./runtime ./internal/catalog/reconciler -run Description -json",
+    "final-minimum.jsonl": "GOTOOLCHAIN=go1.25.12 go test -race -count=1 ./runtime ./internal/catalog/reconciler -run Description -json"
+  }
+}

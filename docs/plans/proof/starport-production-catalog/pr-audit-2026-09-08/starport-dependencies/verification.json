@@ -1,0 +1,372 @@
+{
+  "source_commit": "3a79fc6dc2d34c8826fd1713f2fe1140b788a9ff",
+  "equivalent_pr_head": "9a642d91049106e1f21ff9cfbc7858bc87937924",
+  "tree": "e364622cc7127ffd894f24817290930f4cbc822f",
+  "baseline_main": "565a4fcded89a03fac9ec7701eed1fc562c806ee",
+  "toolchain": "go1.26.6",
+  "mysql_version": "8.4.11",
+  "mysql_image": "sha256:b3b90af2a6552ae30c266fdb7d5dd55f3afb72404bb78d37fe8a23eb857fd3fb",
+  "valkey_version": "7.2.14",
+  "valkey_image": "sha256:9acdf6f0ae1771ea63c401e127054b2d1779227b9230dcfae37fa684610eaa4f",
+  "disposable_containers_removed": true,
+  "runs": {
+    "focused.jsonl": {
+      "pass_test": 307,
+      "pass_package": 6,
+      "fail_test": 0,
+      "fail_package": 0,
+      "skip_test": 1,
+      "skip_package": 0
+    },
+    "mysql.jsonl": {
+      "pass_test": 13,
+      "pass_package": 0,
+      "fail_test": 2,
+      "fail_package": 1,
+      "skip_test": 0,
+      "skip_package": 0
+    },
+    "mysql-baseline.jsonl": {
+      "pass_test": 13,
+      "pass_package": 0,
+      "fail_test": 2,
+      "fail_package": 1,
+      "skip_test": 0,
+      "skip_package": 0
+    },
+    "mysql-migrate.jsonl": {
+      "pass_test": 3,
+      "pass_package": 1,
+      "fail_test": 0,
+      "fail_package": 0,
+      "skip_test": 0,
+      "skip_package": 0
+    },
+    "mysql-rollback.jsonl": {
+      "pass_test": 3,
+      "pass_package": 1,
+      "fail_test": 0,
+      "fail_package": 0,
+      "skip_test": 0,
+      "skip_package": 0
+    },
+    "valkey.jsonl": {
+      "pass_test": 2,
+      "pass_package": 1,
+      "fail_test": 0,
+      "fail_package": 0,
+      "skip_test": 0,
+      "skip_package": 0
+    },
+    "sqlite-write-before.jsonl": {
+      "pass_test": 1,
+      "pass_package": 1,
+      "fail_test": 0,
+      "fail_package": 0,
+      "skip_test": 0,
+      "skip_package": 0
+    },
+    "sqlite-read-after.jsonl": {
+      "pass_test": 1,
+      "pass_package": 1,
+      "fail_test": 0,
+      "fail_package": 0,
+      "skip_test": 0,
+      "skip_package": 0
+    }
+  },
+  "existing_failure": {
+    "owner": "CSP15",
+    "test": "TestContractTransactionRollback/mysql",
+    "cause": "resetBackend deletes the migration ledger but leaves audit_log, so a later migration repeats ADD COLUMN request_id",
+    "present_on_baseline": true,
+    "separate_databases_pass": true
+  },
+  "qualification_scope": "dependency compatibility only; no CSP15 or released-pair acceptance",
+  "artifacts": [
+    {
+      "path": "captures/focused.jsonl.gz",
+      "sha256": "3b8509c5e241a51292c65e3d289b3354c75d42a32763c605d3c2f50693afc45d",
+      "content_sha256": "43835e664896cd88f2d81c5f5bce6708fd6cae1077a6a82f9707211ab2b91f70"
+    },
+    {
+      "path": "captures/mysql.jsonl.gz",
+      "sha256": "44dd248bb8493e2b2fd109182d800a85eee0008c2666fa251490f101c81e8091",
+      "content_sha256": "0dea95c12e69a1eaf6094d72e374f4c139b52baaaf9d1fca72cf58e9a40f6a4b"
+    },
+    {
+      "path": "captures/mysql-baseline.jsonl.gz",
+      "sha256": "165ee91c26de89b3da6d13a0e37d0d2b9b1cb199d56f81b7805d5e2ab4d18430",
+      "content_sha256": "cf24458e158894de74ebcdbad1763b33e4fdba3fa72c2ce92272ac4c70e911bf"
+    },
+    {
+      "path": "captures/mysql-migrate.jsonl.gz",
+      "sha256": "fce62ebd7ce404875563a0400990b7baabb86d2a3fb4c2179f7c6970d67f7091",
+      "content_sha256": "0e7dd113f1f6f7d7c87e28393678b6ae306e0914311382a199d78b5ced9e447a"
+    },
+    {
+      "path": "captures/mysql-rollback.jsonl.gz",
+      "sha256": "c041fff877d207db9ef653c0452e82b2074aaca030f7eb58d05a8574a83ce263",
+      "content_sha256": "0db989c577d768beb31ab91611850e0ec754809d7c8422d5a9f01928f43e21e7"
+    },
+    {
+      "path": "captures/valkey.jsonl.gz",
+      "sha256": "7c1d74a6f4a9c496149f90cf197bdbccdb5279c917023357980ef369c7fddac2",
+      "content_sha256": "c800d6ca78670b498d9b53d3eabbb38377c45d25edd6009512561d9f6e625137"
+    },
+    {
+      "path": "captures/sqlite-write-before.jsonl.gz",
+      "sha256": "064e655a3309785267a582fd9bb7aff43e711f1db9c8789fcac16a5d1871ad26",
+      "content_sha256": "cf4de815b7623da267125161b12cb91bbee12e47bec077ec305f29142f01309d"
+    },
+    {
+      "path": "captures/sqlite-read-after.jsonl.gz",
+      "sha256": "bfde0004ef7e80398069fc4a5436a3eb9f72d6c9858848c18b59d9727edc2375",
+      "content_sha256": "0e4d3897057dbb08b9bd796f84e59b9ecd19891a37246b15b3a5e93546559a61"
+    },
+    {
+      "path": "captures/baseline.mod.gz",
+      "sha256": "4cba4fda5f41e0ba907dfe92c6e40128f38810064b758562337b80eeff98ac81",
+      "content_sha256": "0bb403f18cf17ec607deeb9c473a0e51190a0db069b75dd569fb1b09c541545e"
+    },
+    {
+      "path": "captures/baseline.sum.gz",
+      "sha256": "903436f97dcc55604f79d473b36b30f11b9ea5370b743ff24ad8b0fef0b80b8a",
+      "content_sha256": "1e65bbda6ea74a4269dfd60b3cc7563532b41878e4e288e731cb9e0b2ed65bb2"
+    },
+    {
+      "path": "captures/sdk-overlay.json.gz",
+      "sha256": "d4b7eeacae5620518bde37d09b60e4cde5c3048db38678ee90080b1c3432f6a8",
+      "content_sha256": "8c7294e805e32d7dde61b252dd47636a59ae67a688cefa69a32e97ea0ffbe0ed"
+    },
+    {
+      "path": "captures/sqlite-overlay.json.gz",
+      "sha256": "69aaaa62d06ff641df8602d50555ad970affe7927ddea45c11ccabffbac813bc",
+      "content_sha256": "2be50331bf774db3fc12373b506aa0fae664f294a6ef50b3b086525dbef7a165"
+    },
+    {
+      "path": "captures/secret_sdk_aws_test.go.gz",
+      "sha256": "35309cea8e8341d226cd1f25631ff912e8aee1454d2016aa7f766e6a913c3319",
+      "content_sha256": "f54dbf744df75a0c39a355e69b6c19532a2ccea545476b3875dd7f3fff3ac5a4"
+    },
+    {
+      "path": "captures/secret_sdk_transport_test.go.gz",
+      "sha256": "68366d2ee49852bd22aa81e52c07c11fa360404b75ef39d3cfe6152393ac4bae",
+      "content_sha256": "ba4a949aeea6afeb08c7473667f4b9a717171958611d1c5fdf5403e71c9fa2f5"
+    },
+    {
+      "path": "captures/sqlite_upgrade_test.go.gz",
+      "sha256": "7c3cba48e14abaa74cdf8691f5c81ed3841c5380f9d2b15b56346365a6fe46d1",
+      "content_sha256": "e835657e35ae0e2ddc83552893f7c6d24edbea0dc9047e49251d9c95942a4f68"
+    },
+    {
+      "path": "captures/pr-body-before.md.gz",
+      "sha256": "e6fc5600b0e023f71949ec3d427f4129745bd08181c81e50eb1ba5b8d2cb5615",
+      "content_sha256": "92873300ffa0a726c1404a72fe3c8639d96520449bb1ddd73142113b5c42aa6c"
+    },
+    {
+      "path": "captures/pr-body.md.gz",
+      "sha256": "44f6c0056a43aae78c8072e4dcabc552818d16f436a17fa19db7487067a051d8",
+      "content_sha256": "f9de4ccd5f655f44dcd76d22b67003bc3d3f2f3d32d5a4859e6388409b1de6b9"
+    },
+    {
+      "path": "captures/pr-note.md.gz",
+      "sha256": "c1f78914a167b3555ca58e07b57e14166631fc2d8319f1250c134cf19a84025d",
+      "content_sha256": "70ab1143f4e285d0b94c69a84395ec295818d9cf8254d8d4ddabf1b8f1248206"
+    },
+    {
+      "path": "captures/pr-readback.json.gz",
+      "sha256": "8d46563542fe581221de51b680904a286f4fff10ce6b3399bc3e52cfb59f7205",
+      "content_sha256": "1975cf99fb6ec7e17ddbe1d3b1e92e513b64b003dd0b58e702216d64c63f0832"
+    },
+    {
+      "path": "captures/tidy.txt.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "content_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "captures/source-go.mod.gz",
+      "sha256": "9169513dc233eabe71ab0dc62f2379ad80ee7c567b7d17c805211de70b74ec39",
+      "content_sha256": "47841cede5e9ab65e079639fadf15236dc05f18b890dbcb5404c51ef8f6cd74c"
+    },
+    {
+      "path": "captures/source-go.sum.gz",
+      "sha256": "25777e8ecaa16cca8b9d6f761e208ae8bd3191c94aac0ea5ae877ba58e57cd55",
+      "content_sha256": "cb362f4b7f87cf57f63aa9395a9274f810847f81029c3e58bb2da0b3665deb38"
+    },
+    {
+      "path": "captures/source-internal__sqlstore__sqlstore_contract_test.go.gz",
+      "sha256": "c2d445bfe7092dad45e6c355c8037328ff80b61c526f3a51a0d7a4949157f9af",
+      "content_sha256": "91775a4e80808ca7459abb22582b41211bee750794af4d7323d07f770a099ecd"
+    },
+    {
+      "path": "captures/source-internal__sqlstore__connect.go.gz",
+      "sha256": "f85eebf024d1a32b192a7a9eeb01f30572aa8c8b36f8c18cec5f0a2152fc5441",
+      "content_sha256": "eeeccb65336f7e530ce883b4430e17970f1e722fdf30127f9fb7e564dde8432f"
+    },
+    {
+      "path": "captures/source-internal__sqlstore__migrate.go.gz",
+      "sha256": "eac8c348825664741183a58069caf97469d9a82ba5d12f96e1ce1429651bbfaa",
+      "content_sha256": "45ca12c719725e4f274632623c89441d95f569a2dc1a38b5572a7aac6351f63a"
+    },
+    {
+      "path": "captures/source-internal__credentials__secret_source_aws.go.gz",
+      "sha256": "a2aa9c9d0b362407157f1eb2ced82ddf27ff3afaa6b16345a6fd56e0a7fe9c1e",
+      "content_sha256": "24efef8145006246c57b87296e1dd14361bd55ddd291604ed165566bc68f75a3"
+    },
+    {
+      "path": "captures/source-internal__doclinks__doclinks.go.gz",
+      "sha256": "f492b554ac8d2427b02534a28e9a783e3baa3993f067a89de56e205a80c67e4f",
+      "content_sha256": "ce2203bd1f5d7ecba346c83a31868bd9f9b08804f4fbe67e33bfd2466a3ac495"
+    }
+  ],
+  "commands": {
+    "focused.jsonl": "GOTOOLCHAIN=go1.26.6 go test -race -count=1 -timeout 5m -overlay /tmp/starport-dependency-qualification-2026-09-08/sdk-overlay.json ./internal/credentials ./internal/credentials/cloudchain ./internal/sqlstore ./internal/doclinks ./internal/blob ./internal/catalog -json",
+    "mysql.jsonl": "env -u TEST_POSTGRES_URL TEST_MYSQL_DSN=<disposable-starport_dependency-dsn> GOTOOLCHAIN=go1.26.6 go test -race -count=1 -timeout 3m ./internal/sqlstore -json",
+    "mysql-baseline.jsonl": "env -u TEST_POSTGRES_URL TEST_MYSQL_DSN=<disposable-starport_before-dsn> GOTOOLCHAIN=go1.26.6 go test -race -count=1 -mod=readonly -modfile /tmp/starport-dependency-qualification-2026-09-08/baseline.mod -timeout 3m ./internal/sqlstore -json",
+    "mysql-migrate.jsonl": "env -u TEST_POSTGRES_URL TEST_MYSQL_DSN=<disposable-starport_migrate-dsn> GOTOOLCHAIN=go1.26.6 go test -race -count=1 -timeout 3m ./internal/sqlstore -run ^TestContractOpenMigrateReadWrite$ -json",
+    "mysql-rollback.jsonl": "env -u TEST_POSTGRES_URL TEST_MYSQL_DSN=<disposable-starport_rollback-dsn> GOTOOLCHAIN=go1.26.6 go test -race -count=1 -timeout 3m ./internal/sqlstore -run ^TestContractTransactionRollback$ -json",
+    "valkey.jsonl": "TEST_VALKEY_URL=redis://127.0.0.1:56044 GOTOOLCHAIN=go1.26.6 go test -race -count=1 -timeout 2m ./internal/credentials -run ^TestProviderCredentialRepositoryContract$/^valkey$ -json",
+    "sqlite-write-before.jsonl": "CSP_SQLITE_UPGRADE_FILE=/tmp/starport-dependency-qualification-2026-09-08/sqlite-fixture/starport.db CSP_SQLITE_UPGRADE_MODE=write GOTOOLCHAIN=go1.26.6 go test -race -count=1 -mod=readonly -modfile /tmp/starport-dependency-qualification-2026-09-08/baseline.mod -overlay /tmp/starport-dependency-qualification-2026-09-08/sqlite-overlay.json ./internal/sqlstore -run ^TestSQLiteDependencyUpgrade$ -json",
+    "sqlite-read-after.jsonl": "CSP_SQLITE_UPGRADE_FILE=/tmp/starport-dependency-qualification-2026-09-08/sqlite-fixture/starport.db CSP_SQLITE_UPGRADE_MODE=read GOTOOLCHAIN=go1.26.6 go test -race -count=1 -overlay /tmp/starport-dependency-qualification-2026-09-08/sqlite-overlay.json ./internal/sqlstore -run ^TestSQLiteDependencyUpgrade$ -json"
+  },
+  "mysql_fixture_dsn": {
+    "user": "root",
+    "password": "fixture-only-password",
+    "network": "tcp",
+    "host": "127.0.0.1",
+    "port": 55801,
+    "databases": [
+      "starport_dependency",
+      "starport_before",
+      "starport_migrate",
+      "starport_rollback"
+    ],
+    "synthetic": true
+  },
+  "module_checks": {
+    "verify": {
+      "command": "GOTOOLCHAIN=go1.26.6 go mod verify",
+      "exit_code": 0,
+      "output": "all modules verified"
+    },
+    "tidy": {
+      "command": "GOTOOLCHAIN=go1.26.6 go mod tidy -diff",
+      "exit_code": 0,
+      "output": ""
+    }
+  },
+  "merged_pr": {
+    "baseRefName": "main",
+    "headRefOid": "9a642d91049106e1f21ff9cfbc7858bc87937924",
+    "mergeCommit": {
+      "oid": "857bd85426c6cecc0148a7cd9c4ecda1e71f114d"
+    },
+    "mergedAt": "2026-09-08T16:56:18Z",
+    "number": 368,
+    "state": "MERGED",
+    "statusCheckRollup": [
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-09-08T16:37:59Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/agentstation/starport/actions/runs/34252088387/job/102148722443",
+        "name": "Lint",
+        "startedAt": "2026-09-08T16:36:29Z",
+        "status": "COMPLETED",
+        "workflowName": "CI"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-09-08T16:44:11Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/agentstation/starport/actions/runs/34252088387/job/102148722624",
+        "name": "Test (ubuntu-latest)",
+        "startedAt": "2026-09-08T16:36:30Z",
+        "status": "COMPLETED",
+        "workflowName": "CI"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-09-08T16:38:18Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/agentstation/starport/actions/runs/34252088387/job/102148722400",
+        "name": "Test (macos-latest)",
+        "startedAt": "2026-09-08T16:36:36Z",
+        "status": "COMPLETED",
+        "workflowName": "CI"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-09-08T16:39:06Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/agentstation/starport/actions/runs/34252088387/job/102148722524",
+        "name": "Test (windows-latest)",
+        "startedAt": "2026-09-08T16:36:30Z",
+        "status": "COMPLETED",
+        "workflowName": "CI"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-09-08T16:39:35Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/agentstation/starport/actions/runs/34252088387/job/102148722374",
+        "name": "Security Scan",
+        "startedAt": "2026-09-08T16:36:29Z",
+        "status": "COMPLETED",
+        "workflowName": "CI"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-09-08T16:44:24Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/agentstation/starport/actions/runs/34252088387/job/102148722151",
+        "name": "Release Contract",
+        "startedAt": "2026-09-08T16:36:30Z",
+        "status": "COMPLETED",
+        "workflowName": "CI"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-09-08T16:37:00Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/agentstation/starport/actions/runs/34252088387/job/102148722421",
+        "name": "OpenRouter SDK Compatibility",
+        "startedAt": "2026-09-08T16:36:29Z",
+        "status": "COMPLETED",
+        "workflowName": "CI"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-09-08T16:45:11Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/agentstation/starport/actions/runs/34252088387/job/102148722448",
+        "name": "Release Snapshot",
+        "startedAt": "2026-09-08T16:36:30Z",
+        "status": "COMPLETED",
+        "workflowName": "CI"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-09-08T16:36:43Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/agentstation/starport/actions/runs/34252088387/job/102148722428",
+        "name": "Action Pin Provenance",
+        "startedAt": "2026-09-08T16:36:31Z",
+        "status": "COMPLETED",
+        "workflowName": "CI"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-09-08T16:48:45Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/agentstation/starport/actions/runs/34252088387/job/102151400165",
+        "name": "Build",
+        "startedAt": "2026-09-08T16:44:26Z",
+        "status": "COMPLETED",
+        "workflowName": "CI"
+      }
+    ],
+    "url": "https://github.com/agentstation/starport/pull/368"
+  }
+}
