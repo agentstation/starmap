@@ -1558,3 +1558,19 @@ Its identity comparison detects changed binding declarations and baseline genera
 It cannot detect changed baseline bytes or missing original history when it reuses manifest evidence.
 That probe describes an unapplied recovery candidate, not a new generation-ID contract.
 Legacy startup recovery still needs independent continuity evidence.
+
+## SDK credential-chain checks, 2026-09-08
+
+The earlier secret-source tests injected SDK reads and did not exercise the default credential factories.
+New tests call both production factories and route their real SDK requests through local TLS fixtures.
+AWS checks cover environment credentials, shared files, environment precedence, web identity, missing credentials, and denied secret reads.
+Azure checks cover environment credentials, workload identity, and denied secret reads.
+
+The full authentication suite passes 78 test events and one package result for both existing and proposed SDK dependencies.
+The updated dependencies pass the same suite on Go 1.25.12.
+All runs use race detection and report zero failures or skips.
+The factory files remain unchanged, so these tests require no production behavior repair.
+
+The [credential-chain proof](../../plans/proof/starport-production-catalog/pr-audit-2026-09-08/sdk-credential-chains/README.md) records exact sources, toolchains, and coverage limits.
+The first Azure fixture incorrectly excluded three standard MSAL scopes. The corrected fixture retains the vault audience and checks the complete scope set.
+Live cloud IAM policy, SSO, device login, and managed identity services remain outside this evidence.
