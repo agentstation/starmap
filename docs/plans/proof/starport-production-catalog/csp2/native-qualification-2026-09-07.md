@@ -309,3 +309,24 @@ passes all 39 repository verification stages. Ordinary and race suites each pass
 79 packages. [The publication record](windows-third-repair-2026-09-07/reviewed-foundation-publication.json)
 retains both complete logs. Follow-up review and publication await the foundation
 native results. No public merge, release, or primary acceptance credit occurred.
+
+## Fourth native results and inheritance repair
+
+Both Windows architectures record 1,047 passing test events, nine failures, and
+no skipped tests. All four Linux and macOS runtime jobs pass.
+[The retained native results](native-fourth-2026-09-07/results.json) include both
+Windows artifacts and their compressed and original byte hashes.
+
+Migration, stable workspace identity, editor-handle recovery, and isolated
+application homes pass on both Windows architectures. The remaining failures
+cover two workspace replacement tests, six focused descriptor variants, and
+the focused parent test. The descriptor diagnostics retain the same access
+entries but lose automatic-inheritance flags. Labeled descriptors lose both
+DACL and SACL flags. Protected and inherited variants lose the DACL flag.
+
+The local repair requests the source descriptor's inheritance model during
+native assignment. The [Windows descriptor contract](https://learn.microsoft.com/en-us/windows-hardware/drivers/ifs/security-descriptor-control)
+describes the request flags. The existing tests still compare exact descriptors.
+The affected package compiles for both Windows architectures with Go `1.25.12`.
+Windows-targeted lint and Ago pass. Full verification, review, and native
+execution remain open for this repair.
