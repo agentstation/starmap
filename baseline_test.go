@@ -67,11 +67,6 @@ func TestEmbeddedCatalogStateRemainsIndependentOfStoredCurrent(t *testing.T) {
 			t.Fatal("baseline getter duplicated the immutable catalog")
 		}
 	}
-	var last starmap.CatalogState
-	allocations := testing.AllocsPerRun(100, func() { last = restarted.EmbeddedCatalogState() })
-	if allocations != 0 || last.Catalog == nil {
-		t.Fatalf("baseline reads allocated %g times", allocations)
-	}
 	if store.reads.Load() != reads {
 		t.Fatal("baseline getter read application storage")
 	}

@@ -17,7 +17,7 @@ type catalogInput struct {
 // normalizeLegacyCatalogSource preserves the source boundary within one input authority.
 // A canonical source identity replaces the complete legacy source group.
 func normalizeLegacyCatalogSource(canonical, legacy map[string]string) map[string]string {
-	result := make(map[string]string, len(canonical)+3)
+	result := make(map[string]string, len(canonical))
 	maps.Copy(result, canonical)
 	for _, descriptor := range catalogconfig.Descriptors() {
 		if descriptor.SourceBinding == "" || descriptor.Sensitive {
