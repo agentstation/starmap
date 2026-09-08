@@ -3,6 +3,7 @@
 
 import argparse
 import hashlib
+import importlib.util
 import json
 import math
 import os
@@ -101,6 +102,17 @@ def run_check(identity, entry, roots):
         return run_performance_baseline(entry, roots)
     if entry.get("kind") == "performance_profile":
         return reviewed_performance_profile(entry, roots)
+    if entry.get("kind") == "constructor_network":
+        root = roots.get(entry.get("repository"))
+        if root is None or not (root / "scripts/testdata/constructor-probe/main.go").is_file():
+            return {"status": "UNVERIFIED", "reason": "The constructor probe is unavailable."}
+        try:
+            spec = importlib.util.spec_from_file_location("catalog_constructor_network", root / "scripts/constructor_network.py")
+            adapter = importlib.util.module_from_spec(spec)
+            spec.loader.exec_module(adapter)
+            return adapter.verify(root)
+        except (OSError, ImportError) as error:
+            return {"status": "UNVERIFIED", "reason": str(error)}
     if entry.get("kind") != "go_test":
         return {"status": "UNVERIFIED", "reason": "This evidence adapter has not been implemented."}
     root = roots.get(entry.get("repository"))

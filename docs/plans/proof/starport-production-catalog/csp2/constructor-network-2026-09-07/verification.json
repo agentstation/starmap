@@ -1,0 +1,142 @@
+{
+  "checkout_commit": "e76587d83a3bad96593b8e2c3fb9e74ca4994741",
+  "scope": "Linux ARM64 constructor component evidence. No release qualification.",
+  "probe_status": "PASS",
+  "positive_control_exit": 159,
+  "read_only_exit": 0,
+  "cleanup_complete": true,
+  "binary_sha256": "ba47e7d2906b48af01e90b8e9b62a00182bc56c2a992ca5bb032c696db5fc080",
+  "component_command_exit": 1,
+  "selected_subcases": 22,
+  "passing_subcases": [
+    "A02.constructor_filesystem_silence",
+    "A02.constructor_network_silence",
+    "A02.no_workers",
+    "A01.existing_head_preserved",
+    "A01.required_write_failure",
+    "A03.relative_anchor_migration_guard"
+  ],
+  "unverified_subcases": [
+    "A01.starmap_cold_offline",
+    "A03.starmap_linux",
+    "A03.starmap_macos",
+    "A03.starmap_windows",
+    "A04.starmap_linux_interruption",
+    "A04.starmap_macos_interruption",
+    "A04.starmap_windows_interruption",
+    "A04.dual_root_conflict",
+    "A04.human_workspace_preserved",
+    "A03.starmap_file_manifest",
+    "A03.root_leaf_precedence",
+    "A03.required_empty_path_refusal",
+    "A03.two_instances_same_user",
+    "A03.duplicate_owner_refusal",
+    "A03.service_container_roots",
+    "A04.identity_and_journal_recovery"
+  ],
+  "component_summary": "Summary: 1 passed, 49 failed",
+  "qualification": "component checks only",
+  "verifier_unit_tests": 52,
+  "source_inputs": {
+    "scripts/constructor_network.py": "4cbde17d18046eb76971a0bf8d5c9a4987485db8bfc702db35904b5d781ff5af",
+    "scripts/catalog_product_verify.py": "d91a0bd7c12999be43cb53be30cab9abf1f93caa450c2230505ef0fc46bf990e",
+    "scripts/catalog-product-checks.json": "3e51080965a8fb3a7b8517c0d11bdf5f9fcaf880d0e356c3eab9fc6737b91fab",
+    "scripts/test_catalog_product_verify.py": "e0f3ac528840215933f8e16d30326679b027f52451db53ebbc3fdea6f5d87d1a",
+    "scripts/testdata/constructor-probe/main.go": "7684aa4df6508f461c375d8650207b78ff1f6a3505bfa31eff8deff032469ce3",
+    ".github/workflows/pr.yaml": "cb3e87f1e71f10c707adfd89ab855b27f64deb6bde13056a5d4f963f4a0fa1d3"
+  },
+  "logs": {
+    "initial-probe.json": {
+      "path": "initial-probe.json.gz",
+      "sha256": "57b3eac558ae522a2bc9cc94243596f296d791f5f2c2d7f3e4363bc1fdaf2e6d",
+      "uncompressed_sha256": "84b2511ec4e01c299e73439b83958e847e25080632e254636af18f8cba018391"
+    },
+    "final-probe.json": {
+      "path": "final-probe.json.gz",
+      "sha256": "1f7b99eeec22d750cf926d741c7205e9d7703e6648ab86073d43081b1fe2846f",
+      "uncompressed_sha256": "a2ce0d1dd7882132692f4f7c00ee958a0a27385bcbf18220329489ac4fe0be05"
+    },
+    "csp2-components.json": {
+      "path": "csp2-components.json.gz",
+      "sha256": "ccfc40caba1c5b943f1fe0b2621ecb9b2b8a8e8a60c239bfd019798e7cfa76e1",
+      "uncompressed_sha256": "94262d3902c794217f9891c799fd52db546950507ea4e2c26cca2b2faf3f86ea"
+    },
+    "verifier-tests.log": {
+      "path": "verifier-tests.log.gz",
+      "sha256": "9ae971d8996f43f84d1d84da433d201c8d5441fb7fabe5c59b2ac0ee1d1496cc",
+      "uncompressed_sha256": "80b7be34c40e769ac25c47ea6f4be7ca8c9774caab119ff8987277495650f0d8"
+    },
+    "go-lint.log": {
+      "path": "go-lint.log.gz",
+      "sha256": "bafcb04d67f6157ff3d4a1fdf228afd2df6cc6d786c61642c1125b1fe879e728",
+      "uncompressed_sha256": "e92606b0bf483111dff0a120c315ea165821348f31365020e2468a0059095c47"
+    },
+    "ago.json": {
+      "path": "ago.json.gz",
+      "sha256": "905b50ebb66dc28cecf0d5d7681aabcd8b20af21ce5f8834692f1c6c68590281",
+      "uncompressed_sha256": "b8fb7afa66aa7a93914ac258475dd0191be821803a8aea4439f5ba05022f5fa5"
+    },
+    "complete-csp2-components.json": {
+      "path": "complete-csp2-components.json.gz",
+      "sha256": "864d6e5f685f9183dddba9744260c2339ab572b75fc983c1f7b460ef3203f8ee",
+      "uncompressed_sha256": "5f5f9ba0d27c4e98133538af7fd772b2667aa2c1f03d92e93e7a48e7f7708402"
+    },
+    "complete-verifier-tests.log": {
+      "path": "complete-verifier-tests.log.gz",
+      "sha256": "1f9e52639c4e67549d8b02f44a27a13687c0fb4aa17db5f97c7db1a7f2616d8e",
+      "uncompressed_sha256": "c165320b1593dcc721a501dbad3cb24b344f629047edb70992dacef4d42166c9"
+    },
+    "complete-go-lint.log": {
+      "path": "complete-go-lint.log.gz",
+      "sha256": "bafcb04d67f6157ff3d4a1fdf228afd2df6cc6d786c61642c1125b1fe879e728",
+      "uncompressed_sha256": "e92606b0bf483111dff0a120c315ea165821348f31365020e2468a0059095c47"
+    },
+    "complete-ago.json": {
+      "path": "complete-ago.json.gz",
+      "sha256": "905b50ebb66dc28cecf0d5d7681aabcd8b20af21ce5f8834692f1c6c68590281",
+      "uncompressed_sha256": "b8fb7afa66aa7a93914ac258475dd0191be821803a8aea4439f5ba05022f5fa5"
+    },
+    "workflow-race.log": {
+      "path": "workflow-race.log.gz",
+      "sha256": "a7d77f72d5466afb472e02f4f2ec7b3df3a1a123a223fa23b06bfa038562e5a4",
+      "uncompressed_sha256": "170d6c513826ad24c18b8becffecc68df1b7ace2ba82779580c5e57ed72efba3"
+    },
+    "complete-writing.log": {
+      "path": "complete-writing.log.gz",
+      "sha256": "dc766ade72c6d4f1f75ea861cdcfc4369589c4e035adb9ec10d112044da17cc9",
+      "uncompressed_sha256": "d917139ef331dd94dfce57e2f87065bed739ecd5270402b1309a6b7ed5334129"
+    },
+    "complete-documents.json": {
+      "path": "complete-documents.json.gz",
+      "sha256": "dea148a7e02360e3170dcd718ceb52b503219592d14d15b0ab4639b286302450",
+      "uncompressed_sha256": "791762c08ae8b2b418436615a64da3e1083d50409c2216c23782496067ce28f5"
+    }
+  },
+  "current_probe_evidence": "complete-csp2-components.json.gz",
+  "prototype_logs": [
+    "initial-probe.json.gz",
+    "final-probe.json.gz",
+    "csp2-components.json.gz"
+  ],
+  "isolated_import_regression": {
+    "observed_initial_error": "ModuleNotFoundError: No module named constructor_network",
+    "current_test": "test_verifier_supports_isolated_document_import",
+    "status": "PASS"
+  },
+  "ci_job": {
+    "name": "Constructor Network Passivity",
+    "runner": "ubuntu-24.04",
+    "status": "not published or executed yet"
+  },
+  "document_checks": {
+    "exit_code": 0,
+    "tasks": 38,
+    "primary_cases": 50,
+    "required_subcases": 324
+  },
+  "strict_prose": {
+    "exit_code": 0,
+    "files": 1156,
+    "diagnostics": 0
+  }
+}

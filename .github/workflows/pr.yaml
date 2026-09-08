@@ -14,6 +14,30 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  constructor-network:
+    name: Constructor Network Passivity
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Set up minimum supported Go toolchain
+        uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
+        with:
+          go-version: '1.25.12'
+          cache: true
+      - name: Verify passive constructors and the socket control
+        run: python3 scripts/constructor_network.py > "$RUNNER_TEMP/constructor-network.json"
+      - name: Retain constructor network evidence
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: constructor-network-linux-amd64
+          path: ${{ runner.temp }}/constructor-network.json
+          if-no-files-found: error
+
   verification:
     name: Verification Gate
     runs-on: ubuntu-latest

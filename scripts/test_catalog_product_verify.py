@@ -7,15 +7,26 @@ import hashlib
 import subprocess
 import tempfile
 import unittest
+from copy import deepcopy
 from pathlib import Path
 from unittest.mock import patch
 
 import catalog_product_verify as verifier
+import constructor_network
 
 
 class CatalogVerifierTests(unittest.TestCase):
     def setUp(self):
         self.roster = verifier.read_json(verifier.ROSTER)
+
+    def test_verifier_supports_isolated_document_import(self):
+        script = ("import importlib.util, sys; "
+                  "spec = importlib.util.spec_from_file_location('catalog_verifier', sys.argv[1]); "
+                  "module = importlib.util.module_from_spec(spec); spec.loader.exec_module(module); "
+                  "module.validate_roster(module.read_json(module.ROSTER))")
+        result = subprocess.run([sys.executable, "-I", "-c", script, str(Path(verifier.__file__).resolve())],
+                                capture_output=True, text=True, timeout=10)
+        self.assertEqual(result.returncode, 0, result.stderr)
 
     def test_complete_red_report(self):
         read_json = verifier.read_json
@@ -410,6 +421,72 @@ class DemoReviewTests(unittest.TestCase):
         self.render['height'] = 800
         (self.root / 'assets/first-use.gif').write_bytes(b'changed')
         self.assertEqual(self.check(), 'UNVERIFIED')
+
+
+class ConstructorNetworkTests(unittest.TestCase):
+    def setUp(self):
+        self.payload = {"constructors": constructor_network.CONSTRUCTORS, "os": "linux", "arch": "arm64",
+                        "files_after": 0, "generation_id": "embedded-generation", "payload_checksum": "sha256:" + "a" * 64}
+        self.read_only = {"exit_code": 0, "stdout": json.dumps(self.payload),
+                          "state": {"ExitCode": 0, "OOMKilled": False, "Error": ""}}
+        self.attempted = {"exit_code": 159, "stdout": '{"phase":"network-attempt"}',
+                          "state": {"ExitCode": 159, "OOMKilled": False, "Error": ""}}
+
+    def check(self):
+        return constructor_network.classify(self.read_only, self.attempted, "arm64")[0]
+
+    def test_both_controls_are_required(self):
+        self.assertEqual(self.check(), "PASS")
+        for code in [0, 1, 137]:
+            with self.subTest(code=code):
+                self.attempted["exit_code"] = code
+                self.attempted["state"]["ExitCode"] = code
+                self.assertEqual(self.check(), "UNVERIFIED")
+
+    def test_control_must_reach_its_socket_attempt(self):
+        for output in ["", "{}", "null", '{"phase":"before-main"}']:
+            with self.subTest(output=output):
+                self.attempted["stdout"] = output
+                self.assertEqual(self.check(), "UNVERIFIED")
+
+    def test_resource_failure_cannot_prove_network_enforcement(self):
+        for name in ["read_only", "attempted"]:
+            for field, value in [("OOMKilled", True), ("Error", "container failed")]:
+                with self.subTest(name=name, field=field):
+                    original = deepcopy(getattr(self, name))
+                    getattr(self, name)["state"][field] = value
+                    self.assertEqual(self.check(), "UNVERIFIED")
+                    setattr(self, name, original)
+
+    def test_constructor_socket_attempt_is_a_failure(self):
+        self.read_only.update(exit_code=159, stdout="")
+        self.read_only["state"]["ExitCode"] = 159
+        self.assertEqual(self.check(), "FAIL")
+
+    def test_missing_constructor_evidence_refuses(self):
+        for output in ["", "[]", "null", "invalid"]:
+            with self.subTest(output=output):
+                self.read_only["stdout"] = output
+                self.assertEqual(self.check(), "UNVERIFIED")
+
+    def test_incomplete_baseline_or_changed_platform_refuses(self):
+        for field, value in [("constructors", ["New"]), ("files_after", 1), ("files_after", False),
+                             ("generation_id", ""), ("generation_id", True), ("payload_checksum", "missing"),
+                             ("os", "darwin"), ("arch", "amd64")]:
+            with self.subTest(field=field, value=value):
+                payload = dict(self.payload, **{field: value})
+                self.read_only["stdout"] = json.dumps(payload)
+                self.assertEqual(self.check(), "FAIL")
+
+    def test_missing_container_state_refuses(self):
+        self.attempted.pop("state")
+        self.assertEqual(self.check(), "UNVERIFIED")
+
+    def test_missing_docker_is_unverified(self):
+        with patch.object(constructor_network.subprocess, "run", side_effect=FileNotFoundError("docker")):
+            result = constructor_network.verify(Path(__file__).resolve().parents[1])
+        self.assertEqual(result["status"], "UNVERIFIED")
+        self.assertTrue(result["cleanup_complete"])
 
 
 if __name__ == '__main__':

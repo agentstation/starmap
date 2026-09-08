@@ -337,3 +337,36 @@ also passes with no findings or stale suppressions.
 [Candidate verification](native-fourth-2026-09-07/candidate-verification.json)
 retains the complete logs and corrected host-tool invocation. The required
 complete branch review is in progress. Native execution remains unverified.
+
+## Constructor network component evidence
+
+The [constructor probe](../../../../../scripts/testdata/constructor-probe/README.md)
+executes the current Go source in a Linux ARM64 container with an enforced socket restriction.
+Four constructors return the same embedded generation and create no files in their writable home.
+The positive control reaches its socket attempt and terminates with `SIGSYS`, exit 159.
+The command removes both containers and its temporary image after each invocation.
+
+[The component record](constructor-network-2026-09-07/verification.json)
+retains both direct executions, the complete CSP2 invocation, and 52 passing
+verifier tests. Go lint and Ago pass, including the probe package.
+A02 passes as a component group. Six of 22 selected CSP2 subcases pass, with
+sixteen unverified. The task command still returns exit 1. This evidence does
+not qualify a release or a native Windows or macOS network restriction.
+
+D6 permits reads from caller-supplied remote storage. This probe uses memory
+and filesystem stores. Existing worker tests cover delayed background activity.
+The foundation inheritance review continues independently.
+
+The verifier also passes its isolated document-import regression. The initial
+static sibling import failed during document validation. The network adapter
+now loads only when selected. A separate Ubuntu CI job retains the same
+probe evidence. Its workflow tests pass. Publication and CI execution remain open.
+
+## Inheritance repair publication
+
+Foundation `ff298e2c` passes all eight review portions with no findings.
+Draft PR 132 now contains this repair.
+[Native run 34178911408](https://github.com/agentstation/starmap/actions/runs/34178911408)
+reports `in_progress` at this commit.
+[Publication evidence](native-fourth-2026-09-07/publication.json) retains the
+complete review and dispatch metadata. Native qualification remains open.

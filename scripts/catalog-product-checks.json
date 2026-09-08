@@ -512,6 +512,10 @@
       "repository": "starmap",
       "package": "./internal/cli/app",
       "test": "TestRequiredBaselineWriteFailurePreventsRuntimeStartup"
+    },
+    "A02.constructor_network_silence": {
+      "kind": "constructor_network",
+      "repository": "starmap"
     }
   }
 }
