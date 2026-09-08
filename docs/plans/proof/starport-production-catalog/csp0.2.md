@@ -1,5 +1,11 @@
 # CSP0.2: Current-release first use
 
+Status: CSP0.2 is complete. Starport #369 and #370 merged the reviewed source and media. Merge `55629266` matches the accepted tree and passes E02 and E03.
+
+The [merge qualification](csp0.3/first-use-media-publication-2026-09-08/verification.json) records ten successful CI checks and the exact merge tree. Final campaign recording and released-pair qualification remain UNVERIFIED.
+
+The following sections retain the earlier implementation and qualification history.
+
 Status: CSP0.2 passes locally. E02 now verifies the reviewed README inputs and retained native installation evidence. The final Compose correction still needs pre-PR review before publication.
 
 The README now shows catalog access before provider setup. It separates the temporary development server from persistent storage. It links production limits and corrects the controller-only latency claim.

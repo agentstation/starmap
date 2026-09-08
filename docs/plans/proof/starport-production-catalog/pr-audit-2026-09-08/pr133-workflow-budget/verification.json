@@ -1,0 +1,54 @@
+{
+  "pull_request": "https://github.com/agentstation/starmap/pull/133",
+  "base": "1ff884b929d631562ff3ae700f85664b0b5f7f06",
+  "head": "c6224d80e410c265348845f4877d252532f1de43",
+  "failure_job": 102208626995,
+  "failure": "Aggregate 45-minute CI limit cancelled verification during go vet after minimum-Go, consumer, ordinary and race stages passed.",
+  "repair": {
+    "pr_verification_minutes": 75,
+    "release_verification_minutes": 75,
+    "release_build_minutes_unchanged": 45,
+    "second_go_cache_restore": false,
+    "verification_commands_unchanged": true,
+    "test_timeouts_unchanged": true
+  },
+  "checks": {
+    "actionlint": {
+      "command": [
+        "actionlint",
+        ".github/workflows/pr.yaml",
+        ".github/workflows/release.yaml"
+      ],
+      "exit_code": 1
+    },
+    "workflow_syntax": {
+      "command": [
+        "actionlint",
+        "-shellcheck=",
+        ".github/workflows/pr.yaml",
+        ".github/workflows/release.yaml"
+      ],
+      "exit_code": 0
+    },
+    "diff_check": {
+      "command": [
+        "git",
+        "diff",
+        "--check",
+        "HEAD~1",
+        "HEAD"
+      ],
+      "exit_code": 0
+    }
+  },
+  "actionlint_warning": "SC2024 is unchanged. The privileged test runs with sudo. Its output file intentionally belongs to the runner shell user. No privileged redirect is required. Workflow syntax validation passes.",
+  "autoreview": "Automatic configuration-only gate exits 0 without model invocation.",
+  "native_ci": "PENDING for new head",
+  "artifacts": {
+    "workflow_syntax.txt.gz": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+    "diff_check.txt.gz": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+    "actionlint.txt.gz": "3b27a91d2f955e140f95f5ebfd4846bcb7db8d6dc8ed0142f4941dec9f17e7f3",
+    "timeout.txt.gz": "17017d3943958fc4fdbdf7c8abc5b3e0d96d5d1a22d060f157e384658c6c8eb9",
+    "review.txt.gz": "900d4e82d817468629b7bb5b20c4c43eec23c9302cc11b4eb0f12a9d70b2c3e4"
+  }
+}

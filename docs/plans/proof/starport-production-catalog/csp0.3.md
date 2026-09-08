@@ -1,5 +1,11 @@
 # CSP0.3 current-release demonstration
 
+Status: CSP0.3 is complete. Starport #369 and #370 merged the reviewed source and media. Merge `55629266` matches the accepted tree and passes E02 and E03.
+
+The [merge qualification](csp0.3/first-use-media-publication-2026-09-08/verification.json) records ten successful CI checks and the exact merge tree. Final campaign recording and released-pair qualification remain UNVERIFIED.
+
+The following sections retain the earlier implementation and qualification history.
+
 CSP0.3 passes locally. Starport commit `02efa34` adds the first-use animation, static poster, transcript, uncut capture, and reproduction sources.
 E03 passes for the captured v1.2.0 release. The final campaign recording and released-pair acceptance remain UNVERIFIED.
 
