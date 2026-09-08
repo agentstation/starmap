@@ -113,6 +113,17 @@ def run_check(identity, entry, roots):
             return adapter.verify(root)
         except (OSError, ImportError) as error:
             return {"status": "UNVERIFIED", "reason": str(error)}
+    if entry.get("kind") == "cold_server":
+        root = roots.get(entry.get("repository"))
+        if root is None or not (root / "scripts/testdata/cold-server-probe/main.go").is_file():
+            return {"status": "UNVERIFIED", "reason": "The offline server probe is unavailable."}
+        try:
+            spec = importlib.util.spec_from_file_location("catalog_cold_server", root / "scripts/cold_server.py")
+            adapter = importlib.util.module_from_spec(spec)
+            spec.loader.exec_module(adapter)
+            return adapter.verify(root)
+        except (OSError, ImportError) as error:
+            return {"status": "UNVERIFIED", "reason": str(error)}
     if entry.get("kind") != "go_test":
         return {"status": "UNVERIFIED", "reason": "This evidence adapter has not been implemented."}
     root = roots.get(entry.get("repository"))

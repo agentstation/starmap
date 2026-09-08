@@ -38,6 +38,30 @@ jobs:
           path: ${{ runner.temp }}/constructor-network.json
           if-no-files-found: error
 
+  cold-server:
+    name: Offline Server Persistence
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Set up minimum supported Go toolchain
+        uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
+        with:
+          go-version: '1.25.12'
+          cache: true
+      - name: Verify cold offline startup and restart
+        run: python3 scripts/cold_server.py > "$RUNNER_TEMP/cold-server.json"
+      - name: Retain offline server evidence
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: cold-server-linux-amd64
+          path: ${{ runner.temp }}/cold-server.json
+          if-no-files-found: error
+
   verification:
     name: Verification Gate
     runs-on: ubuntu-latest

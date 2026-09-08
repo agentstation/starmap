@@ -516,6 +516,10 @@
     "A02.constructor_network_silence": {
       "kind": "constructor_network",
       "repository": "starmap"
+    },
+    "A01.starmap_cold_offline": {
+      "kind": "cold_server",
+      "repository": "starmap"
     }
   }
 }

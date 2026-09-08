@@ -13,6 +13,7 @@ from unittest.mock import patch
 
 import catalog_product_verify as verifier
 import constructor_network
+import cold_server
 
 
 class CatalogVerifierTests(unittest.TestCase):
@@ -487,6 +488,114 @@ class ConstructorNetworkTests(unittest.TestCase):
             result = constructor_network.verify(Path(__file__).resolve().parents[1])
         self.assertEqual(result["status"], "UNVERIFIED")
         self.assertTrue(result["cleanup_complete"])
+
+
+class ColdServerTests(unittest.TestCase):
+    def setUp(self):
+        manifest = {"generation_id": "baseline", "payload": {"checksum": "sha256:" + "a" * 64, "size_bytes": 1024}}
+        item = {"phase": "cold", "isolation": {"network_mode": "none", "user": "65532:65532", "readonly_rootfs": True,
+                "privileged": False, "environment_names": ["HOME", "STARMAP_HOME", "PATH"], "volume": "private"},
+                "network": {"denied": True}, "exit_state": {"ExitCode": 0, "Running": False},
+                "ready": {"status_code": 200, "body": {"data": {"runtime": {"usable": True, "source_kind": "public",
+                    "fallback": True, "generation_id": "baseline", "instance_identity": "instance"}}}},
+                "manifest": {"status_code": 200, "manifest_validated": True, "body": manifest, "generation_header": "baseline"},
+                "baseline_manifest": {"manifest_validated": True, "body": deepcopy(manifest), "mode": "0600"},
+                "payload": {"status_code": 200, "checksum": manifest["payload"]["checksum"], "bytes": 1024, "generation_header": "baseline"},
+                "baseline_payload": {"checksum": manifest["payload"]["checksum"], "bytes": 1024, "mode": "0600"}}
+        self.observations = [item, deepcopy(item)]
+        self.observations[1]["phase"] = "restart"
+
+    def test_complete_offline_restart_passes(self):
+        self.assertEqual(cold_server.classify(self.observations)[0], "PASS")
+
+    def test_both_observations_and_schema_validation_are_required(self):
+        for observations in [[], self.observations[:1], [None, None]]:
+            with self.subTest(observations=observations):
+                self.assertEqual(cold_server.classify(observations)[0], "UNVERIFIED")
+        self.observations[1]["baseline_manifest"].pop("manifest_validated")
+        self.assertEqual(cold_server.classify(self.observations)[0], "UNVERIFIED")
+
+    def test_external_network_or_credentials_cannot_qualify(self):
+        for field, value in [("network_mode", "bridge"), ("user", "root"), ("privileged", True),
+                             ("readonly_rootfs", False), ("environment_names", ["HOME", "STARMAP_HOME", "OPENAI_API_KEY"])]:
+            with self.subTest(field=field):
+                observations = deepcopy(self.observations)
+                observations[0]["isolation"][field] = value
+                self.assertEqual(cold_server.classify(observations)[0], "UNVERIFIED")
+
+    def test_failed_endpoints_and_invalid_bytes_fail(self):
+        cases = [("ready", "status_code", 503), ("payload", "bytes", 1), ("payload", "bytes", True),
+                 ("payload", "checksum", "sha256:" + "b" * 64), ("payload", "generation_header", "other"),
+                 ("baseline_manifest", "mode", "0644"), ("baseline_payload", "mode", "0644")]
+        for name, field, value in cases:
+            with self.subTest(name=name, field=field):
+                observations = deepcopy(self.observations)
+                observations[0][name][field] = value
+                self.assertEqual(cold_server.classify(observations)[0], "FAIL")
+
+    def test_restart_identity_and_manifest_changes_fail(self):
+        for variant in ["identity", "volume", "manifest"]:
+            with self.subTest(variant=variant):
+                observations = deepcopy(self.observations)
+                if variant == "identity":
+                    observations[1]["ready"]["body"]["data"]["runtime"]["instance_identity"] = "other"
+                elif variant == "volume":
+                    observations[1]["isolation"]["volume"] = "other"
+                else:
+                    observations[1]["baseline_manifest"]["body"]["generation_id"] = "other"
+                self.assertEqual(cold_server.classify(observations)[0], "FAIL")
+
+    def test_missing_instance_identity_cannot_qualify(self):
+        for value in ["", None, True]:
+            with self.subTest(value=value):
+                observations = deepcopy(self.observations)
+                for item in observations:
+                    item["ready"]["body"]["data"]["runtime"]["instance_identity"] = value
+                self.assertEqual(cold_server.classify(observations)[0], "UNVERIFIED")
+
+    def test_abnormal_exit_and_resource_failure_are_distinct(self):
+        self.observations[1]["exit_state"]["ExitCode"] = 137
+        self.assertEqual(cold_server.classify(self.observations)[0], "FAIL")
+        self.observations[1]["exit_state"]["OOMKilled"] = True
+        self.assertEqual(cold_server.classify(self.observations)[0], "UNVERIFIED")
+
+    def test_missing_docker_is_unverified(self):
+        with patch.object(cold_server.subprocess, "run", side_effect=FileNotFoundError("docker")):
+            result = cold_server.verify(Path(__file__).resolve().parents[1])
+        self.assertEqual(result["status"], "UNVERIFIED")
+        self.assertTrue(result["cleanup_complete"])
+
+    def test_build_failure_attempts_cleanup_and_cleanup_failure_fails(self):
+        for cleanup_code in [0, 1]:
+            calls = []
+            def run(args, **kwargs):
+                calls.append(args)
+                output, code = "", 0
+                if args[:2] == ["docker", "version"]:
+                    output = json.dumps({"Os": "linux", "Arch": "arm64"})
+                elif args[:2] == ["go", "build"]:
+                    Path(args[args.index("-o") + 1]).write_bytes(b"fixture binary")
+                elif args[:2] == ["docker", "build"]:
+                    code = 1
+                elif args[:3] == ["docker", "image", "rm"]:
+                    code = cleanup_code
+                return subprocess.CompletedProcess(args, code, output, "")
+            with self.subTest(cleanup_code=cleanup_code), patch.object(cold_server.subprocess, "run", side_effect=run):
+                result = cold_server.verify(Path(__file__).resolve().parents[1])
+            self.assertEqual(result["status"], "FAIL" if cleanup_code else "UNVERIFIED")
+            self.assertEqual(result["cleanup_complete"], cleanup_code == 0)
+            self.assertTrue(any(args[:3] == ["docker", "image", "rm"] for args in calls))
+
+    def test_registered_adapter_requires_probe_and_calls_verifier(self):
+        entry = {"kind": "cold_server", "repository": "starmap"}
+        self.assertEqual(verifier.run_check("A01.starmap_cold_offline", entry, {})["status"], "UNVERIFIED")
+        class Adapter:
+            @staticmethod
+            def verify(root):
+                return {"status": "PASS", "root": str(root)}
+        root = Path(__file__).resolve().parents[1]
+        with patch.object(verifier.importlib.util, "module_from_spec", return_value=Adapter), patch("importlib.machinery.SourceFileLoader.exec_module"):
+            self.assertEqual(verifier.run_check("A01.starmap_cold_offline", entry, {"starmap": root})["status"], "PASS")
 
 
 if __name__ == '__main__':
