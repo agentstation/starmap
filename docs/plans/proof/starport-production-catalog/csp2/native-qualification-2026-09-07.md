@@ -448,3 +448,15 @@ Two fresh Linux ARM64 containers retain and serve the same private baseline thro
 
 All 62 verifier unit tests pass. The workflow now runs this check in a separate Linux job.
 This adds component evidence only. Starport, other native server platforms, and released-pair acceptance remain open.
+
+### Follow-up review and complete foundation CI
+
+The foundation run now passes all nine jobs, including its complete Verification Gate.
+[Final CI metadata](native-sixth-2026-09-07/foundation-final-ci.json) binds that result to `f216e7c0`.
+The follow-up passes all 39 repository stages, with 79 ordinary and 79 race package suites.
+All 62 verifier tests pass.
+
+[Required review](native-sixth-2026-09-07/followup-review.json) passes all five portions against `codex/catalog-followup-evidence` with zero P0 findings.
+Draft PR 134 contains the captured proof artifacts. Draft PR 133 uses it as the actual base.
+The complete diff outside captured proof remains unchanged. The shared helper remains unchanged.
+Follow-up native CI and fifteen CSP2 subcases remain open.

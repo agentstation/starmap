@@ -1,0 +1,9 @@
+{
+  "files": 62,
+  "exit_code": 0,
+  "bytes": 10328507,
+  "verified_secrets": 0,
+  "unknown_secrets": 0,
+  "compressed_sources_decoded": true,
+  "scope": "Exact staged integration proof inventory, including CSP3, CSP8, and the PR audit update."
+}

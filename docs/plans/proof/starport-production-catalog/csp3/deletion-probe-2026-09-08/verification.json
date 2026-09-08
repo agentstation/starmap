@@ -1,0 +1,31 @@
+{
+  "source_commit": "6be233eaff4e679e01c56e625ceec66b3f5b7255",
+  "scope": "CSP3 preparation through a temporary Go overlay. Production files remain unchanged.",
+  "result": "Expected failure remains for complete public omission. The three preservation cases pass.",
+  "cases": {
+    "complete-public": "fail",
+    "partial-public": "pass",
+    "complete-account": "pass",
+    "complete-unbound": "pass"
+  },
+  "fixture": "One provider offers 100 exact IDs linked to a reviewed authored definition. Its later observation omits one offering.",
+  "command": "GOTOOLCHAIN=go1.26.6 go test -race -count=1 -timeout=5m -overlay /tmp/starmap-csp3-deletion-probes/missing-final-overlay.json -run ^TestCSP3MissingOfferingScope$ -json ./runtime",
+  "exit_code": 1,
+  "limitations": [
+    "The initial partial fixture omitted degraded status, then omitted the required issue message. Both failed captures remain separate.",
+    "This probe does not qualify publication, configured removal-review thresholds, inference-profile links, or restart.",
+    "CSP3 must pair public deletion with its authorized scope and removal review policy. D25 still limits account-specific restrictions to explicitly linked inference profiles."
+  ],
+  "sha256": {
+    "deletion-corrected_test.go.gz": "70c3aeb5d8d0836776334037618c653064a6ffef57ec0f42a997c0542b1197e2",
+    "deletion_test.go.gz": "f53699c0f4f4ed20f3e99b513e3fe1837af6daffaa873023cc507bac65de19e6",
+    "missing-final-overlay.json": "d54b49b7a7bba7a7f28f82aa87c571e59ffc9c12f94b82a3c0124c6f4a7b7eb4",
+    "missing-final-result.jsonl": "9b6dfc535febc06c22c1269051e9afcd8abae49bf3ad2a6c131fc4a3855fad0e",
+    "missing-final_test.go.gz": "dd9a615a0ea055f7ac099374ae0c10c8a9fae18866a37006bffc41040695d16f",
+    "missing-overlay.json": "bc8c234c15a425e909dc1495588370980d795a102a95498bceb985dc2ac1c5ef",
+    "missing-result.jsonl": "c63542797c2bd4ed83c81506b33ebaa5807306fde1ecd46701ebbf1db9fe07db",
+    "missing_test.go.gz": "d7e43fd5a6fe03d9df3d28dd5fb8fb7076ad259bf94c5e0b43ef1ac2968e4b7d",
+    "overlay.json": "d72fb6cf3f2bc23825b4a74bd37c80f5e41e95b9907b227f6c4214e975dfe00d",
+    "result.jsonl": "13e741c4aa2a8e1f692f6beebbe03b11fb8f27f765858fda49203cf4514bd0ae"
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "reviewed_head": "637f780a067466896f6b9ed03dc034cd764861a9",
+  "base": "ed688ea40224e9a762ddd08d937e0f7e4c5ae0cb",
+  "gate": "pre-pr",
+  "profile": "cross-lab",
+  "reviewers": [
+    "gpt-5.6-sol xhigh",
+    "claude-opus-5 high"
+  ],
+  "finding_threshold": "P0",
+  "portions": 5,
+  "findings": 0,
+  "exit_code": 0,
+  "review_log": "followup-prepr.log",
+  "review_log_sha256": "827d0e97573c296f6a9624cba2c94647b053298651a56fd17034d1c88b44da54",
+  "foundation_ci": "foundation-final-ci.json",
+  "foundation_ci_sha256": "d76c84c0ed22f232b8fa5f0efbcdfd20721f162d87a5beb243e7dac6bcbf0f76",
+  "followup_publication": "pending",
+  "qualification": "Review evidence only; no primary acceptance credit."
+}

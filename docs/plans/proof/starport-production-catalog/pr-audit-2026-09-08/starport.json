@@ -1,0 +1,437 @@
+[
+  {
+    "baseRefName": "main",
+    "headRefName": "dependabot/go_modules/go-modules-36d75f47ec",
+    "headRefOid": "ef6a247f603ae9f538eddc80677b290f4e55819f",
+    "isDraft": false,
+    "mergeable": "MERGEABLE",
+    "number": 368,
+    "statusCheckRollup": [
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-09-07T14:45:22Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/agentstation/starport/actions/runs/34134449017/job/101781989635",
+        "name": "Lint",
+        "startedAt": "2026-09-07T14:42:48Z",
+        "status": "COMPLETED",
+        "workflowName": "CI"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-09-07T14:49:25Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/agentstation/starport/actions/runs/34134449017/job/101781989791",
+        "name": "Test (ubuntu-latest)",
+        "startedAt": "2026-09-07T14:42:48Z",
+        "status": "COMPLETED",
+        "workflowName": "CI"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-09-07T14:54:46Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/agentstation/starport/actions/runs/34134449017/job/101781989930",
+        "name": "Test (macos-latest)",
+        "startedAt": "2026-09-07T14:42:53Z",
+        "status": "COMPLETED",
+        "workflowName": "CI"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-09-07T14:54:16Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/agentstation/starport/actions/runs/34134449017/job/101781989722",
+        "name": "Test (windows-latest)",
+        "startedAt": "2026-09-07T14:42:47Z",
+        "status": "COMPLETED",
+        "workflowName": "CI"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-09-07T14:45:39Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/agentstation/starport/actions/runs/34134449017/job/101781989640",
+        "name": "Security Scan",
+        "startedAt": "2026-09-07T14:42:48Z",
+        "status": "COMPLETED",
+        "workflowName": "CI"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-09-07T14:51:02Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/agentstation/starport/actions/runs/34134449017/job/101781989588",
+        "name": "Release Contract",
+        "startedAt": "2026-09-07T14:42:48Z",
+        "status": "COMPLETED",
+        "workflowName": "CI"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-09-07T14:43:37Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/agentstation/starport/actions/runs/34134449017/job/101781989679",
+        "name": "OpenRouter SDK Compatibility",
+        "startedAt": "2026-09-07T14:42:48Z",
+        "status": "COMPLETED",
+        "workflowName": "CI"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-09-07T14:53:37Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/agentstation/starport/actions/runs/34134449017/job/101781989656",
+        "name": "Release Snapshot",
+        "startedAt": "2026-09-07T14:42:48Z",
+        "status": "COMPLETED",
+        "workflowName": "CI"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-09-07T14:42:59Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/agentstation/starport/actions/runs/34134449017/job/101781989638",
+        "name": "Action Pin Provenance",
+        "startedAt": "2026-09-07T14:42:48Z",
+        "status": "COMPLETED",
+        "workflowName": "CI"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-09-07T14:59:25Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/agentstation/starport/actions/runs/34134449017/job/101785430636",
+        "name": "Build",
+        "startedAt": "2026-09-07T14:54:48Z",
+        "status": "COMPLETED",
+        "workflowName": "CI"
+      }
+    ],
+    "title": "chore(deps): bump the go-modules group with 9 updates",
+    "updatedAt": "2026-09-07T14:42:41Z",
+    "url": "https://github.com/agentstation/starport/pull/368",
+    "disposition": "Retain as the Go dependency update. All ten current checks pass. It changes AWS clients, MySQL, SQLite, cryptography, and documentation dependencies. Complete dependency review and validate catalog-branch integration before merge.",
+    "complete_diff_paths": [
+      "go.mod",
+      "go.sum"
+    ]
+  },
+  {
+    "baseRefName": "main",
+    "headRefName": "dependabot/github_actions/github-actions-f418b6a774",
+    "headRefOid": "3f0817ad23b69147caaafd2b30ccbd71a50e48a6",
+    "isDraft": false,
+    "mergeable": "MERGEABLE",
+    "number": 367,
+    "statusCheckRollup": [
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-09-07T14:07:57Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/agentstation/starport/actions/runs/34131083043/job/101771097349",
+        "name": "Lint",
+        "startedAt": "2026-09-07T14:06:11Z",
+        "status": "COMPLETED",
+        "workflowName": "CI"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-09-07T14:14:17Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/agentstation/starport/actions/runs/34131083043/job/101771097507",
+        "name": "Test (ubuntu-latest)",
+        "startedAt": "2026-09-07T14:06:11Z",
+        "status": "COMPLETED",
+        "workflowName": "CI"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-09-07T14:08:06Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/agentstation/starport/actions/runs/34131083043/job/101771097294",
+        "name": "Test (macos-latest)",
+        "startedAt": "2026-09-07T14:06:15Z",
+        "status": "COMPLETED",
+        "workflowName": "CI"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-09-07T14:08:25Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/agentstation/starport/actions/runs/34131083043/job/101771097466",
+        "name": "Test (windows-latest)",
+        "startedAt": "2026-09-07T14:06:11Z",
+        "status": "COMPLETED",
+        "workflowName": "CI"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-09-07T14:09:47Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/agentstation/starport/actions/runs/34131083043/job/101771097613",
+        "name": "Security Scan",
+        "startedAt": "2026-09-07T14:06:11Z",
+        "status": "COMPLETED",
+        "workflowName": "CI"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-09-07T14:14:29Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/agentstation/starport/actions/runs/34131083043/job/101771097071",
+        "name": "Release Contract",
+        "startedAt": "2026-09-07T14:06:10Z",
+        "status": "COMPLETED",
+        "workflowName": "CI"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-09-07T14:06:42Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/agentstation/starport/actions/runs/34131083043/job/101771097343",
+        "name": "OpenRouter SDK Compatibility",
+        "startedAt": "2026-09-07T14:06:10Z",
+        "status": "COMPLETED",
+        "workflowName": "CI"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-09-07T14:16:56Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/agentstation/starport/actions/runs/34131083043/job/101771097373",
+        "name": "Release Snapshot",
+        "startedAt": "2026-09-07T14:06:10Z",
+        "status": "COMPLETED",
+        "workflowName": "CI"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-09-07T14:06:22Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/agentstation/starport/actions/runs/34131083043/job/101771097386",
+        "name": "Action Pin Provenance",
+        "startedAt": "2026-09-07T14:06:11Z",
+        "status": "COMPLETED",
+        "workflowName": "CI"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-09-07T14:19:05Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/agentstation/starport/actions/runs/34131083043/job/101773632157",
+        "name": "Build",
+        "startedAt": "2026-09-07T14:14:31Z",
+        "status": "COMPLETED",
+        "workflowName": "CI"
+      }
+    ],
+    "title": "chore(deps): bump Homebrew/actions/setup-homebrew from 2026.08.31.1 to 2026.09.07.1 in the github-actions group",
+    "updatedAt": "2026-09-07T14:06:05Z",
+    "url": "https://github.com/agentstation/starport/pull/367",
+    "disposition": "Retain as the Homebrew action update. All ten current checks pass. Complete pin provenance and dependency review before merge. This update is independent of the catalog PR.",
+    "complete_diff_paths": [
+      ".github/workflows/ci.yml",
+      ".github/workflows/release.yaml"
+    ]
+  },
+  {
+    "baseRefName": "main",
+    "headRefName": "codex/catalog-lifecycle",
+    "headRefOid": "5820a370ff9255a8148799f5b45fcaf927c2e1dc",
+    "isDraft": true,
+    "mergeable": "MERGEABLE",
+    "number": 366,
+    "statusCheckRollup": [
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-09-07T05:15:00Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/agentstation/starport/actions/runs/34085971745/job/101629963091",
+        "name": "Lint",
+        "startedAt": "2026-09-07T05:13:32Z",
+        "status": "COMPLETED",
+        "workflowName": "CI"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-09-07T05:14:06Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/agentstation/starport/actions/runs/34085971741/job/101629963315",
+        "name": "Native windows x86_64",
+        "startedAt": "2026-09-07T05:13:33Z",
+        "status": "COMPLETED",
+        "workflowName": "Native Release Verification"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-09-07T05:14:15Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/agentstation/starport/actions/runs/34085971741/job/101629963339",
+        "name": "Native windows arm64",
+        "startedAt": "2026-09-07T05:13:33Z",
+        "status": "COMPLETED",
+        "workflowName": "Native Release Verification"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-09-07T05:13:54Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/agentstation/starport/actions/runs/34085971741/job/101629963271",
+        "name": "Native linux x86_64",
+        "startedAt": "2026-09-07T05:13:34Z",
+        "status": "COMPLETED",
+        "workflowName": "Native Release Verification"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-09-07T05:13:52Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/agentstation/starport/actions/runs/34085971741/job/101629963130",
+        "name": "Native linux arm64",
+        "startedAt": "2026-09-07T05:13:35Z",
+        "status": "COMPLETED",
+        "workflowName": "Native Release Verification"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-09-07T05:14:04Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/agentstation/starport/actions/runs/34085971741/job/101629963278",
+        "name": "Native darwin x86_64",
+        "startedAt": "2026-09-07T05:13:33Z",
+        "status": "COMPLETED",
+        "workflowName": "Native Release Verification"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-09-07T05:13:57Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/agentstation/starport/actions/runs/34085971741/job/101629963243",
+        "name": "Native darwin arm64",
+        "startedAt": "2026-09-07T05:13:37Z",
+        "status": "COMPLETED",
+        "workflowName": "Native Release Verification"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-09-07T05:19:24Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/agentstation/starport/actions/runs/34085971745/job/101629963070",
+        "name": "Test (ubuntu-latest)",
+        "startedAt": "2026-09-07T05:13:32Z",
+        "status": "COMPLETED",
+        "workflowName": "CI"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-09-07T05:16:51Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/agentstation/starport/actions/runs/34085971745/job/101629963140",
+        "name": "Test (macos-latest)",
+        "startedAt": "2026-09-07T05:13:37Z",
+        "status": "COMPLETED",
+        "workflowName": "CI"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-09-07T05:17:29Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/agentstation/starport/actions/runs/34085971745/job/101629963093",
+        "name": "Test (windows-latest)",
+        "startedAt": "2026-09-07T05:13:32Z",
+        "status": "COMPLETED",
+        "workflowName": "CI"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-09-07T05:17:16Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/agentstation/starport/actions/runs/34085971745/job/101629963238",
+        "name": "Security Scan",
+        "startedAt": "2026-09-07T05:13:33Z",
+        "status": "COMPLETED",
+        "workflowName": "CI"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-09-07T05:21:47Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/agentstation/starport/actions/runs/34085971745/job/101629963301",
+        "name": "Release Contract",
+        "startedAt": "2026-09-07T05:13:36Z",
+        "status": "COMPLETED",
+        "workflowName": "CI"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-09-07T05:14:03Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/agentstation/starport/actions/runs/34085971745/job/101629962996",
+        "name": "OpenRouter SDK Compatibility",
+        "startedAt": "2026-09-07T05:13:32Z",
+        "status": "COMPLETED",
+        "workflowName": "CI"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-09-07T05:23:58Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/agentstation/starport/actions/runs/34085971745/job/101629963133",
+        "name": "Release Snapshot",
+        "startedAt": "2026-09-07T05:13:32Z",
+        "status": "COMPLETED",
+        "workflowName": "CI"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-09-07T05:13:41Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/agentstation/starport/actions/runs/34085971745/job/101629963153",
+        "name": "Action Pin Provenance",
+        "startedAt": "2026-09-07T05:13:32Z",
+        "status": "COMPLETED",
+        "workflowName": "CI"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-09-07T05:26:39Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/agentstation/starport/actions/runs/34085971745/job/101631502724",
+        "name": "Build",
+        "startedAt": "2026-09-07T05:21:50Z",
+        "status": "COMPLETED",
+        "workflowName": "CI"
+      }
+    ],
+    "title": "Add public operator documentation and catalog qualification checks",
+    "updatedAt": "2026-09-07T05:13:26Z",
+    "url": "https://github.com/agentstation/starport/pull/366",
+    "disposition": "Retain as the Starport documentation, README, performance, and native-workflow PR. All 16 recorded checks pass at published head 5820a370. The local branch has five unpublished commits through de0e002. Those commits have separate evidence and do not inherit this head's green checks. Resolve the Starmap module dependency, complete checks and required review, then update this existing PR.",
+    "complete_diff_paths": [
+      ".github/workflows/native-release.yaml",
+      "DESIGN.md",
+      "README.md",
+      "console/src/components/auth/FirstContact.tsx",
+      "console/src/components/settings/Deployment.tsx",
+      "console/src/components/settings/Section.tsx",
+      "console/src/routes/__root.tsx",
+      "console/src/routes/compactScreen.test.tsx",
+      "console/src/routes/docs.test.tsx",
+      "console/src/routes/docs.tsx",
+      "console/src/routes/smallScreen.test.tsx",
+      "console/src/styles/app.css",
+      "console/src/styles/docs.css",
+      "docs/PERFORMANCE.md",
+      "docs/PRODUCTION-STATUS.md",
+      "docs/TASKS.md",
+      "docs/performance-targets-v1.json",
+      "internal/app/app_test.go",
+      "internal/app/performance_test.go",
+      "internal/server/controllers/overhead_benchmark_test.go",
+      "scripts/benchmark-overhead.sh",
+      "scripts/test-native-release.py",
+      "scripts/verify-native-release.py"
+    ]
+  }
+]

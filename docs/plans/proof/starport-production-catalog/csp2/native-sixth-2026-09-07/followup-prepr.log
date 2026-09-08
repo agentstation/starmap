@@ -1,0 +1,31 @@
+review still running: claude elapsed=60s pid=60644 cpu=1.1s/60s(2%) rss=253M state=S
+review still running: claude elapsed=60s pid=86184 cpu=1.0s/60s(2%) rss=278M state=S
+review still running: claude elapsed=120s pid=86184 cpu=0.5s/60s(1%) rss=226M state=S
+review still running: claude elapsed=180s pid=86184 cpu=0.5s/60s(1%) rss=256M state=S
+review still running: claude elapsed=60s pid=46664 cpu=0.9s/60s(2%) rss=255M state=S
+review still running: claude elapsed=120s pid=46664 cpu=0.7s/60s(1%) rss=280M state=S
+review still running: claude elapsed=60s pid=88595 cpu=0.9s/60s(2%) rss=252M state=S
+review still running: claude elapsed=120s pid=88595 cpu=0.6s/60s(1%) rss=212M state=S
+review still running: claude elapsed=180s pid=88595 cpu=0.7s/60s(1%) rss=239M state=S
+review still running: claude elapsed=240s pid=88595 cpu=1.1s/60s(2%) rss=250M state=S
+autoreview target: branch
+branch: codex/catalog-requirements
+gate: pre-pr (configured cadence: pre-pr)
+profile: cross-lab
+config: /Users/jack/.config/autoreview/config.toml
+selection: sol=7.83, opus5=7.52
+reviewers: codex model=gpt-5.6-sol thinking=xhigh, claude model=claude-opus-5 thinking=high
+tools: on
+web_search: on
+ref: codex/catalog-followup-evidence
+trufflehog: clean (6.7s)
+bundle: 881849 bytes; review passes: 5
+review pass: 1/5 (231810 prompt bytes)
+review pass: 2/5 (190632 prompt bytes)
+review pass: 3/5 (231989 prompt bytes)
+review pass: 4/5 (232006 prompt bytes)
+review pass: 5/5 (31475 prompt bytes)
+autoreview panel chunked clean: no accepted/actionable findings reported
+overall: patch is correct (0.99)
+Chunked review complete. chunk 1/5: 0 finding(s), chunk 2/5: 0 finding(s), chunk 3/5: 0 finding(s), chunk 4/5: 0 finding(s), chunk 5/5: 0 finding(s).
+autoreview clean attestation stored for this substantive diff

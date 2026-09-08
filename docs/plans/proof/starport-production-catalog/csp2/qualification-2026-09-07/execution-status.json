@@ -1,0 +1,17 @@
+{
+  "qualification_commit": "6be233ea",
+  "evidence_pr": "https://github.com/agentstation/starmap/pull/135",
+  "code_pr": "https://github.com/agentstation/starmap/pull/136",
+  "native_run": "https://github.com/agentstation/starmap/actions/runs/34188963931",
+  "native_status": "pending",
+  "next_action": "Capture the successful native run, verify all CSP2 subcases, then advance the ledger.",
+  "review_exit_code": 0,
+  "publication_gate_exit_code": 0,
+  "publication_gate_reused_exact_substantive_review": true,
+  "current_component_counts": {
+    "PASS": 16,
+    "FAIL": 0,
+    "UNVERIFIED": 6
+  },
+  "parent_run_all_jobs_passed": 11
+}

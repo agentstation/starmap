@@ -1,0 +1,2 @@
+{"level":"info-0","ts":"2026-09-07T23:51:16-05:00","logger":"trufflehog","msg":"running source","source_manager_worker_id":"j1ubJ","with_units":true}
+{"level":"info-0","ts":"2026-09-07T23:51:16-05:00","logger":"trufflehog","msg":"finished scanning","chunks":234,"bytes":2916586,"verified_secrets":0,"unverified_secrets":0,"scan_duration":"48.211333ms","trufflehog_version":"3.97.4","verification_caching":{"Hits":0,"Misses":0,"HitsWasted":0,"AttemptsSaved":0,"VerificationTimeSpentMS":0}}

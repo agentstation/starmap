@@ -1,0 +1,430 @@
+Verification Gate	Run verification gate	﻿2026-09-08T05:08:41.9443741Z ##[group]Run make verify
+Verification Gate	Run verification gate	2026-09-08T05:08:41.9444220Z ^[[36;1mmake verify^[[0m
+Verification Gate	Run verification gate	2026-09-08T05:08:41.9484414Z shell: /usr/bin/bash -e {0}
+Verification Gate	Run verification gate	2026-09-08T05:08:41.9484817Z env:
+Verification Gate	Run verification gate	2026-09-08T05:08:41.9485278Z   GOTOOLCHAIN: local
+Verification Gate	Run verification gate	2026-09-08T05:08:41.9486052Z   TECHNICAL_WRITING: /home/runner/work/starmap/starmap/.ci/agentstation-skills/technical-writing/scripts/technical-writing
+Verification Gate	Run verification gate	2026-09-08T05:08:41.9486740Z ##[endgroup]
+Verification Gate	Run verification gate	2026-09-08T05:08:41.9628574Z 
+Verification Gate	Run verification gate	2026-09-08T05:08:41.9628890Z ==> go test ./...
+Verification Gate	Run verification gate	2026-09-08T05:11:28.5976386Z ok  	github.com/agentstation/starmap	141.771s
+Verification Gate	Run verification gate	2026-09-08T05:12:13.7686226Z ok  	github.com/agentstation/starmap/acquisition	174.706s
+Verification Gate	Run verification gate	2026-09-08T05:12:13.7687174Z ?   	github.com/agentstation/starmap/cmd/starmap	[no test files]
+Verification Gate	Run verification gate	2026-09-08T05:12:13.7688028Z ok  	github.com/agentstation/starmap/cmd/starmap-bootstrap-manifest	49.129s
+Verification Gate	Run verification gate	2026-09-08T05:12:13.7689238Z ok  	github.com/agentstation/starmap/cmd/starmap-catalog-release	0.166s
+Verification Gate	Run verification gate	2026-09-08T05:12:13.7690341Z ok  	github.com/agentstation/starmap/cmd/starmap-embedded-budget	9.047s
+Verification Gate	Run verification gate	2026-09-08T05:12:13.7691449Z ok  	github.com/agentstation/starmap/cmd/starmap-modelsdev-promote	0.802s
+Verification Gate	Run verification gate	2026-09-08T05:12:13.7692475Z ok  	github.com/agentstation/starmap/internal/architecture	0.133s
+Verification Gate	Run verification gate	2026-09-08T05:12:13.7693409Z ok  	github.com/agentstation/starmap/internal/attestation	0.079s
+Verification Gate	Run verification gate	2026-09-08T05:12:13.7694251Z ok  	github.com/agentstation/starmap/internal/auth	0.183s
+Verification Gate	Run verification gate	2026-09-08T05:12:13.7695280Z ok  	github.com/agentstation/starmap/internal/bootstrap	103.148s
+Verification Gate	Run verification gate	2026-09-08T05:12:13.7696553Z ok  	github.com/agentstation/starmap/internal/bootstrap/budget	13.137s
+Verification Gate	Run verification gate	2026-09-08T05:12:13.7697637Z ok  	github.com/agentstation/starmap/internal/bootstrap/manifest	0.008s
+Verification Gate	Run verification gate	2026-09-08T05:12:13.7698628Z ok  	github.com/agentstation/starmap/internal/catalog/pipeline	4.826s
+Verification Gate	Run verification gate	2026-09-08T05:12:13.7699416Z ok  	github.com/agentstation/starmap/internal/catalog/query	0.011s
+Verification Gate	Run verification gate	2026-09-08T05:12:13.7700219Z ok  	github.com/agentstation/starmap/internal/catalog/reconciler	0.262s
+Verification Gate	Run verification gate	2026-09-08T05:12:13.7701050Z ok  	github.com/agentstation/starmap/internal/catalog/settings	4.844s
+Verification Gate	Run verification gate	2026-09-08T05:12:13.7701845Z ok  	github.com/agentstation/starmap/internal/catalog/workspace	11.398s
+Verification Gate	Run verification gate	2026-09-08T05:12:13.7702538Z ok  	github.com/agentstation/starmap/internal/ciworkflow	0.154s
+Verification Gate	Run verification gate	2026-09-08T05:12:13.7703289Z ?   	github.com/agentstation/starmap/internal/cli/alerts	[no test files]
+Verification Gate	Run verification gate	2026-09-08T05:12:31.6983603Z ok  	github.com/agentstation/starmap/internal/cli/app	81.734s
+Verification Gate	Run verification gate	2026-09-08T05:12:31.7012545Z ?   	github.com/agentstation/starmap/internal/cli/commands/auth	[no test files]
+Verification Gate	Run verification gate	2026-09-08T05:12:31.7076747Z ?   	github.com/agentstation/starmap/internal/cli/commands/authors	[no test files]
+Verification Gate	Run verification gate	2026-09-08T05:12:31.7106056Z ?   	github.com/agentstation/starmap/internal/cli/commands/completion	[no test files]
+Verification Gate	Run verification gate	2026-09-08T05:12:31.7155846Z ok  	github.com/agentstation/starmap/internal/cli/commands/config	0.027s
+Verification Gate	Run verification gate	2026-09-08T05:12:31.7195908Z ok  	github.com/agentstation/starmap/internal/cli/commands/deps	5.380s
+Verification Gate	Run verification gate	2026-09-08T05:12:31.7255835Z ok  	github.com/agentstation/starmap/internal/cli/commands/embed	0.007s
+Verification Gate	Run verification gate	2026-09-08T05:12:31.7285842Z ok  	github.com/agentstation/starmap/internal/cli/commands/migrate	0.017s
+Verification Gate	Run verification gate	2026-09-08T05:12:31.7315899Z ok  	github.com/agentstation/starmap/internal/cli/commands/models	0.038s
+Verification Gate	Run verification gate	2026-09-08T05:12:31.7375924Z ok  	github.com/agentstation/starmap/internal/cli/commands/providers	0.021s
+Verification Gate	Run verification gate	2026-09-08T05:12:31.7435701Z ok  	github.com/agentstation/starmap/internal/cli/commands/serve	0.018s
+Verification Gate	Run verification gate	2026-09-08T05:12:31.7465885Z ok  	github.com/agentstation/starmap/internal/cli/commands/update	0.025s
+Verification Gate	Run verification gate	2026-09-08T05:12:31.7495765Z ok  	github.com/agentstation/starmap/internal/cli/commands/validate	0.026s
+Verification Gate	Run verification gate	2026-09-08T05:12:31.7555832Z ?   	github.com/agentstation/starmap/internal/cli/completion	[no test files]
+Verification Gate	Run verification gate	2026-09-08T05:12:31.7585870Z ?   	github.com/agentstation/starmap/internal/cli/constants	[no test files]
+Verification Gate	Run verification gate	2026-09-08T05:12:31.7639734Z ok  	github.com/agentstation/starmap/internal/cli/convert	0.010s
+Verification Gate	Run verification gate	2026-09-08T05:12:31.7665831Z ok  	github.com/agentstation/starmap/internal/cli/embed	0.007s
+Verification Gate	Run verification gate	2026-09-08T05:12:31.7725842Z ?   	github.com/agentstation/starmap/internal/cli/emoji	[no test files]
+Verification Gate	Run verification gate	2026-09-08T05:12:31.7785784Z ?   	github.com/agentstation/starmap/internal/cli/filter	[no test files]
+Verification Gate	Run verification gate	2026-09-08T05:12:31.7815727Z ?   	github.com/agentstation/starmap/internal/cli/format	[no test files]
+Verification Gate	Run verification gate	2026-09-08T05:12:31.7845766Z ?   	github.com/agentstation/starmap/internal/cli/globals	[no test files]
+Verification Gate	Run verification gate	2026-09-08T05:12:31.7875616Z ok  	github.com/agentstation/starmap/internal/cli/hints	0.011s
+Verification Gate	Run verification gate	2026-09-08T05:12:31.7905694Z ?   	github.com/agentstation/starmap/internal/cli/notify	[no test files]
+Verification Gate	Run verification gate	2026-09-08T05:12:31.8006041Z ?   	github.com/agentstation/starmap/internal/cli/provider	[no test files]
+Verification Gate	Run verification gate	2026-09-08T05:12:31.8055751Z ok  	github.com/agentstation/starmap/internal/cli/table	0.015s
+Verification Gate	Run verification gate	2026-09-08T05:12:31.8096461Z ?   	github.com/agentstation/starmap/internal/constants	[no test files]
+Verification Gate	Run verification gate	2026-09-08T05:12:31.8115693Z ok  	github.com/agentstation/starmap/internal/deploymentdocs	0.006s
+Verification Gate	Run verification gate	2026-09-08T05:12:31.8145613Z ?   	github.com/agentstation/starmap/internal/deps	[no test files]
+Verification Gate	Run verification gate	2026-09-08T05:12:31.8175639Z ok  	github.com/agentstation/starmap/internal/embedded	8.160s
+Verification Gate	Run verification gate	2026-09-08T05:12:31.8193574Z ?   	github.com/agentstation/starmap/internal/embedded/openapi	[no test files]
+Verification Gate	Run verification gate	2026-09-08T05:12:31.8199818Z ok  	github.com/agentstation/starmap/internal/filepublish	0.022s
+Verification Gate	Run verification gate	2026-09-08T05:12:31.8200672Z ok  	github.com/agentstation/starmap/internal/fleet	0.005s
+Verification Gate	Run verification gate	2026-09-08T05:12:31.8202023Z ok  	github.com/agentstation/starmap/internal/privatefiles	0.093s
+Verification Gate	Run verification gate	2026-09-08T05:12:31.8202994Z ok  	github.com/agentstation/starmap/internal/providers/anthropic	5.304s
+Verification Gate	Run verification gate	2026-09-08T05:12:31.8203999Z ok  	github.com/agentstation/starmap/internal/providers/clients	0.060s
+Verification Gate	Run verification gate	2026-09-08T05:12:31.8204977Z ok  	github.com/agentstation/starmap/internal/providers/google	0.026s
+Verification Gate	Run verification gate	2026-09-08T05:12:31.8206090Z ok  	github.com/agentstation/starmap/internal/providers/openai	6.588s
+Verification Gate	Run verification gate	2026-09-08T05:12:31.8207077Z ok  	github.com/agentstation/starmap/internal/runtimeacl/windows	0.003s
+Verification Gate	Run verification gate	2026-09-08T05:12:45.0486279Z ok  	github.com/agentstation/starmap/internal/server	48.394s
+Verification Gate	Run verification gate	2026-09-08T05:12:45.0516149Z ok  	github.com/agentstation/starmap/internal/server/cache	0.272s
+Verification Gate	Run verification gate	2026-09-08T05:12:45.0517278Z ok  	github.com/agentstation/starmap/internal/server/handlers	10.380s
+Verification Gate	Run verification gate	2026-09-08T05:12:45.0545858Z ok  	github.com/agentstation/starmap/internal/server/middleware	0.209s
+Verification Gate	Run verification gate	2026-09-08T05:12:45.0575789Z ok  	github.com/agentstation/starmap/internal/server/openrouter	5.879s
+Verification Gate	Run verification gate	2026-09-08T05:12:45.0585745Z ok  	github.com/agentstation/starmap/internal/server/operations	0.008s
+Verification Gate	Run verification gate	2026-09-08T05:12:45.0614639Z ok  	github.com/agentstation/starmap/internal/server/params	0.012s
+Verification Gate	Run verification gate	2026-09-08T05:12:45.0636453Z ok  	github.com/agentstation/starmap/internal/server/response	0.007s
+Verification Gate	Run verification gate	2026-09-08T05:12:45.0661240Z ok  	github.com/agentstation/starmap/internal/server/sse	0.025s
+Verification Gate	Run verification gate	2026-09-08T05:12:45.0685823Z ok  	github.com/agentstation/starmap/internal/sources/embedded	0.006s
+Verification Gate	Run verification gate	2026-09-08T05:12:45.0705793Z ok  	github.com/agentstation/starmap/internal/sources/github	0.186s
+Verification Gate	Run verification gate	2026-09-08T05:12:45.0735808Z ok  	github.com/agentstation/starmap/internal/sources/local	0.018s
+Verification Gate	Run verification gate	2026-09-08T05:12:45.0765785Z ok  	github.com/agentstation/starmap/internal/sources/modelsdev	19.573s
+Verification Gate	Run verification gate	2026-09-08T05:12:45.0766802Z ok  	github.com/agentstation/starmap/internal/sources/providers	0.072s
+Verification Gate	Run verification gate	2026-09-08T05:12:45.0795770Z ?   	github.com/agentstation/starmap/internal/test/catalog	[no test files]
+Verification Gate	Run verification gate	2026-09-08T05:12:45.0826038Z ?   	github.com/agentstation/starmap/internal/test/channel	[no test files]
+Verification Gate	Run verification gate	2026-09-08T05:12:45.0845750Z ?   	github.com/agentstation/starmap/internal/test/logging	[no test files]
+Verification Gate	Run verification gate	2026-09-08T05:12:45.0855703Z ok  	github.com/agentstation/starmap/internal/test/providerfixture	0.031s
+Verification Gate	Run verification gate	2026-09-08T05:12:45.0885673Z ok  	github.com/agentstation/starmap/internal/transport	0.176s
+Verification Gate	Run verification gate	2026-09-08T05:13:11.1235411Z ok  	github.com/agentstation/starmap/pkg/catalogs	41.168s
+Verification Gate	Run verification gate	2026-09-08T05:13:11.1236416Z ok  	github.com/agentstation/starmap/pkg/catalogs/artifact	0.057s
+Verification Gate	Run verification gate	2026-09-08T05:13:11.1237061Z ok  	github.com/agentstation/starmap/pkg/catalogs/authority	0.008s
+Verification Gate	Run verification gate	2026-09-08T05:13:11.1237722Z ok  	github.com/agentstation/starmap/pkg/catalogs/config	11.349s
+Verification Gate	Run verification gate	2026-09-08T05:13:11.1238403Z ok  	github.com/agentstation/starmap/pkg/catalogs/evidence	0.008s
+Verification Gate	Run verification gate	2026-09-08T05:13:11.1239260Z ?   	github.com/agentstation/starmap/pkg/catalogs/internal/resourcepolicy	[no test files]
+Verification Gate	Run verification gate	2026-09-08T05:13:11.1240156Z ok  	github.com/agentstation/starmap/pkg/catalogs/projection	0.003s
+Verification Gate	Run verification gate	2026-09-08T05:13:11.1240860Z ok  	github.com/agentstation/starmap/pkg/catalogs/remote	0.320s
+Verification Gate	Run verification gate	2026-09-08T05:13:11.1241535Z ok  	github.com/agentstation/starmap/pkg/catalogs/storage	0.397s
+Verification Gate	Run verification gate	2026-09-08T05:13:11.1242181Z ok  	github.com/agentstation/starmap/pkg/catalogs/storage/s3	0.056s
+Verification Gate	Run verification gate	2026-09-08T05:13:11.1242602Z ok  	github.com/agentstation/starmap/pkg/differ	0.007s
+Verification Gate	Run verification gate	2026-09-08T05:13:11.1242959Z ok  	github.com/agentstation/starmap/pkg/errors	0.006s
+Verification Gate	Run verification gate	2026-09-08T05:13:11.1243322Z ok  	github.com/agentstation/starmap/pkg/logging	0.005s
+Verification Gate	Run verification gate	2026-09-08T05:13:11.1243703Z ok  	github.com/agentstation/starmap/pkg/productpaths	0.015s
+Verification Gate	Run verification gate	2026-09-08T05:13:11.1244128Z ok  	github.com/agentstation/starmap/pkg/productpaths/policy	0.009s
+Verification Gate	Run verification gate	2026-09-08T05:13:11.1244538Z ok  	github.com/agentstation/starmap/pkg/provenance	0.014s
+Verification Gate	Run verification gate	2026-09-08T05:13:11.1244909Z ok  	github.com/agentstation/starmap/pkg/sources	0.018s
+Verification Gate	Run verification gate	2026-09-08T05:13:11.1245647Z ok  	github.com/agentstation/starmap/pkg/sources/payload	0.004s
+Verification Gate	Run verification gate	2026-09-08T05:13:11.1246057Z ok  	github.com/agentstation/starmap/pkg/sync	0.022s
+Verification Gate	Run verification gate	2026-09-08T05:13:11.1246435Z ok  	github.com/agentstation/starmap/remote	7.630s
+Verification Gate	Run verification gate	2026-09-08T05:14:44.6841067Z ok  	github.com/agentstation/starmap/runtime	98.917s
+Verification Gate	Run verification gate	2026-09-08T05:14:44.6841904Z ?   	github.com/agentstation/starmap/runtime/source	[no test files]
+Verification Gate	Run verification gate	2026-09-08T05:14:44.6842641Z ?   	github.com/agentstation/starmap/runtime/status	[no test files]
+Verification Gate	Run verification gate	2026-09-08T05:14:44.6843289Z ok  	github.com/agentstation/starmap/server	7.846s
+Verification Gate	Run verification gate	2026-09-08T05:14:44.9162480Z 
+Verification Gate	Run verification gate	2026-09-08T05:14:44.9163100Z ==> make test-pure-go
+Verification Gate	Run verification gate	2026-09-08T05:14:47.4959268Z ok  	github.com/agentstation/starmap-test/read-only-consumer	2.223s
+Verification Gate	Run verification gate	2026-09-08T05:14:50.4807761Z ok  	github.com/agentstation/starmap-test/store-only-consumer	2.595s
+Verification Gate	Run verification gate	2026-09-08T05:14:55.1206823Z ok  	github.com/agentstation/starmap-test/pinned-artifact-consumer	4.329s
+Verification Gate	Run verification gate	2026-09-08T05:14:57.8286031Z ok  	github.com/agentstation/starmap-test/server-embed-consumer	2.233s
+Verification Gate	Run verification gate	2026-09-08T05:15:02.2179931Z ok  	github.com/agentstation/starmap-test/remote-subscriber-consumer	3.973s
+Verification Gate	Run verification gate	2026-09-08T05:15:10.4825425Z ok  	github.com/agentstation/starmap-test/server-storage-consumer	7.639s
+Verification Gate	Run verification gate	2026-09-08T05:15:10.6163314Z read-only consumer dependency closure: 34/34 non-standard packages (158 total on this platform); forbidden families absent
+Verification Gate	Run verification gate	2026-09-08T05:15:10.6164317Z store-only consumer: caller-owned adapter contract and publication passed; application/database implementations absent
+Verification Gate	Run verification gate	2026-09-08T05:15:10.6165456Z pinned-artifact consumer: 35/35 non-standard packages; offline verified activation passed; online/acquisition families absent
+Verification Gate	Run verification gate	2026-09-08T05:15:10.6166198Z server-embed consumer dependency closure: 251/260 packages; acquisition families absent
+Verification Gate	Run verification gate	2026-09-08T05:15:10.6166739Z server-embed consumer: external compile and lifecycle test passed
+Verification Gate	Run verification gate	2026-09-08T05:15:10.6167285Z remote-subscriber consumer dependency closure: 234/240 packages; forbidden families absent
+Verification Gate	Run verification gate	2026-09-08T05:15:10.6167917Z remote-subscriber consumer: external compile and reactive lifecycle test passed
+Verification Gate	Run verification gate	2026-09-08T05:15:10.6168615Z server-storage consumer dependency closure: 345/350 packages; filesystem/S3 server and reactive restart matrix passed
+Verification Gate	Run verification gate	2026-09-08T05:15:11.2036109Z ok  	github.com/agentstation/starmap/pkg/catalogs/storage/s3	0.031s
+Verification Gate	Run verification gate	2026-09-08T05:15:53.9404778Z starmap dev
+Verification Gate	Run verification gate	2026-09-08T05:15:53.9561548Z pure-Go verification passed: library, pinned artifact, stores including S3, server, remote, and CLI execute with CGO_ENABLED=0
+Verification Gate	Run verification gate	2026-09-08T05:15:53.9644197Z 
+Verification Gate	Run verification gate	2026-09-08T05:15:53.9644543Z ==> make test-file-sizes
+Verification Gate	Run verification gate	2026-09-08T05:15:54.5392999Z 1423	internal/catalog/reconciler/merger_test.go
+Verification Gate	Run verification gate	2026-09-08T05:15:55.8648237Z 1071	internal/providers/openai/client_test.go
+Verification Gate	Run verification gate	2026-09-08T05:15:57.4913602Z 1040	remote/subscriber_test.go
+Verification Gate	Run verification gate	2026-09-08T05:15:58.1592936Z Go file-size verification passed: review >1000, justify >1500, fail >=2000 lines
+Verification Gate	Run verification gate	2026-09-08T05:15:58.1597050Z 
+Verification Gate	Run verification gate	2026-09-08T05:15:58.1597377Z ==> ./scripts/verify-package-layout.sh
+Verification Gate	Run verification gate	2026-09-08T05:15:58.3472275Z ok  	github.com/agentstation/starmap/internal/architecture	0.042s
+Verification Gate	Run verification gate	2026-09-08T05:15:59.0179203Z package-layout verification passed
+Verification Gate	Run verification gate	2026-09-08T05:15:59.0182039Z 
+Verification Gate	Run verification gate	2026-09-08T05:15:59.0182344Z ==> ./scripts/test-package-layout-verifier.sh
+Verification Gate	Run verification gate	2026-09-08T05:15:59.9399815Z package-layout verifier regression tests passed
+Verification Gate	Run verification gate	2026-09-08T05:15:59.9415671Z 
+Verification Gate	Run verification gate	2026-09-08T05:15:59.9416031Z ==> ./scripts/verify-catalog-package-ownership.sh
+Verification Gate	Run verification gate	2026-09-08T05:15:59.9553171Z CPO-V01 PASS: the five approved catalog child packages exist
+Verification Gate	Run verification gate	2026-09-08T05:15:59.9562321Z CPO-V02 PASS: the four removed package trees are absent
+Verification Gate	Run verification gate	2026-09-08T05:16:00.0399208Z CPO-V03 PASS: catalogs owns Generation copy and validation
+Verification Gate	Run verification gate	2026-09-08T05:16:00.1799776Z CPO-V04 PASS: catalogs owns all canonical payload codecs
+Verification Gate	Run verification gate	2026-09-08T05:16:00.2286577Z CPO-V05 PASS: evidence is a standard-library-only leaf
+Verification Gate	Run verification gate	2026-09-08T05:16:00.2383744Z CPO-V06 PASS: projection is a standard-library-only leaf without aliases
+Verification Gate	Run verification gate	2026-09-08T05:16:00.2446434Z CPO-V07 PASS: storage accepts catalog generations and retains adapters
+Verification Gate	Run verification gate	2026-09-08T05:16:00.2760618Z CPO-V08 PASS: artifact is storage-independent and retains its byte test
+Verification Gate	Run verification gate	2026-09-08T05:16:00.3187348Z CPO-V09 PASS: remote is storage-independent and retains protocol tests
+Verification Gate	Run verification gate	2026-09-08T05:16:25.4916811Z CPO-V10 PASS: all six external consumer modules compile
+Verification Gate	Run verification gate	2026-09-08T05:16:25.5167286Z CPO-V11 PASS: current docs and the migration guide use approved paths
+Verification Gate	Run verification gate	2026-09-08T05:16:25.8520237Z CPO-V12 PASS: current authority passes the historical allowlist scan
+Verification Gate	Run verification gate	2026-09-08T05:16:26.1966047Z CPO-V13 PASS: the package graph resolves without a dependency change
+Verification Gate	Run verification gate	2026-09-08T05:16:26.1966859Z Summary: 13 passed, 0 failed
+Verification Gate	Run verification gate	2026-09-08T05:16:26.1988339Z 
+Verification Gate	Run verification gate	2026-09-08T05:16:26.1988710Z ==> ./scripts/test-catalog-package-ownership-verifier.sh
+Verification Gate	Run verification gate	2026-09-08T05:16:26.4648377Z catalog package ownership verifier regression tests passed
+Verification Gate	Run verification gate	2026-09-08T05:16:26.4665365Z 
+Verification Gate	Run verification gate	2026-09-08T05:16:26.4666252Z ==> ./scripts/verify-catalog-dependency-direction.sh
+Verification Gate	Run verification gate	2026-09-08T05:16:26.5048377Z SM-D01 PASS: catalogs does not import private authority policy
+Verification Gate	Run verification gate	2026-09-08T05:16:26.5398675Z SM-D02 PASS: catalogs does not import repository-wide constants
+Verification Gate	Run verification gate	2026-09-08T05:16:26.5717756Z SM-D03 PASS: catalogs does not import the private embedded filesystem
+Verification Gate	Run verification gate	2026-09-08T05:16:26.6031585Z SM-D04 PASS: catalogs does not import private source payload policy
+Verification Gate	Run verification gate	2026-09-08T05:16:26.6319626Z SM-D05 PASS: catalog artifacts do not import repository-wide constants
+Verification Gate	Run verification gate	2026-09-08T05:16:26.6688781Z SM-D06 PASS: catalog remote transport does not import repository-wide constants
+Verification Gate	Run verification gate	2026-09-08T05:16:26.6985811Z SM-D07 PASS: catalog storage does not import repository-wide constants
+Verification Gate	Run verification gate	2026-09-08T05:16:26.7458845Z SM-D08 PASS: catalog S3 storage does not import repository-wide constants
+Verification Gate	Run verification gate	2026-09-08T05:16:26.7459445Z Summary: 8 passed, 0 failed
+Verification Gate	Run verification gate	2026-09-08T05:16:26.7475281Z 
+Verification Gate	Run verification gate	2026-09-08T05:16:26.7475660Z ==> ./scripts/test-catalog-dependency-direction-verifier.sh
+Verification Gate	Run verification gate	2026-09-08T05:16:27.2869618Z catalog dependency direction verifier tests passed
+Verification Gate	Run verification gate	2026-09-08T05:16:27.2891636Z 
+Verification Gate	Run verification gate	2026-09-08T05:16:27.2891972Z ==> python3 ./scripts/test_catalog_product_verify.py
+Verification Gate	Run verification gate	2026-09-08T05:16:27.4697348Z test_baseline_cannot_claim_release_qualification (__main__.CatalogVerifierTests.test_baseline_cannot_claim_release_qualification) ... ok
+Verification Gate	Run verification gate	2026-09-08T05:16:27.4720452Z test_baseline_keeps_negative_paired_differences (__main__.CatalogVerifierTests.test_baseline_keeps_negative_paired_differences) ... ok
+Verification Gate	Run verification gate	2026-09-08T05:16:27.4757584Z test_baseline_refuses_lost_stream_events_and_wrong_milestones (__main__.CatalogVerifierTests.test_baseline_refuses_lost_stream_events_and_wrong_milestones) ... ok
+Verification Gate	Run verification gate	2026-09-08T05:16:27.4784604Z test_baseline_refuses_missing_variant_or_initial_evidence (__main__.CatalogVerifierTests.test_baseline_refuses_missing_variant_or_initial_evidence) ... ok
+Verification Gate	Run verification gate	2026-09-08T05:16:27.4873171Z test_baseline_refuses_partial_or_fabricated_timing (__main__.CatalogVerifierTests.test_baseline_refuses_partial_or_fabricated_timing) ... ok
+Verification Gate	Run verification gate	2026-09-08T05:16:27.4889951Z test_browser_review_requires_current_inputs_and_captures (__main__.CatalogVerifierTests.test_browser_review_requires_current_inputs_and_captures) ... ok
+Verification Gate	Run verification gate	2026-09-08T05:16:27.4893555Z test_combined_check_needs_every_result (__main__.CatalogVerifierTests.test_combined_check_needs_every_result) ... ok
+Verification Gate	Run verification gate	2026-09-08T05:16:27.4900611Z test_command_failure_cannot_pass (__main__.CatalogVerifierTests.test_command_failure_cannot_pass) ... ok
+Verification Gate	Run verification gate	2026-09-08T05:16:27.4934277Z test_complete_red_report (__main__.CatalogVerifierTests.test_complete_red_report) ... ok
+Verification Gate	Run verification gate	2026-09-08T05:16:27.4939111Z test_duplicate_subcase_refuses (__main__.CatalogVerifierTests.test_duplicate_subcase_refuses) ... ok
+Verification Gate	Run verification gate	2026-09-08T05:16:27.4944105Z test_empty_task_cannot_pass (__main__.CatalogVerifierTests.test_empty_task_cannot_pass) ... ok
+Verification Gate	Run verification gate	2026-09-08T05:16:27.4951793Z test_evidence_paths_cannot_escape_repository (__main__.CatalogVerifierTests.test_evidence_paths_cannot_escape_repository) ... ok
+Verification Gate	Run verification gate	2026-09-08T05:16:27.4959567Z test_final_roster_cannot_omit_a_case (__main__.CatalogVerifierTests.test_final_roster_cannot_omit_a_case) ... ok
+Verification Gate	Run verification gate	2026-09-08T05:16:27.4971223Z test_fresh_baseline_adapter_cannot_pass_skipped_test (__main__.CatalogVerifierTests.test_fresh_baseline_adapter_cannot_pass_skipped_test) ... ok
+Verification Gate	Run verification gate	2026-09-08T05:16:27.4979614Z test_missing_candidate_local_check_refuses (__main__.CatalogVerifierTests.test_missing_candidate_local_check_refuses) ... ok
+Verification Gate	Run verification gate	2026-09-08T05:16:27.4983405Z test_missing_primary_refuses (__main__.CatalogVerifierTests.test_missing_primary_refuses) ... ok
+Verification Gate	Run verification gate	2026-09-08T05:16:27.4987452Z test_missing_registration_is_unverified (__main__.CatalogVerifierTests.test_missing_registration_is_unverified) ... ok
+Verification Gate	Run verification gate	2026-09-08T05:16:27.4999752Z test_numeric_profile_cannot_hide_workload_or_uncertainty (__main__.CatalogVerifierTests.test_numeric_profile_cannot_hide_workload_or_uncertainty) ... ok
+Verification Gate	Run verification gate	2026-09-08T05:16:27.5009009Z test_numeric_profile_cannot_relax_correctness_for_latency (__main__.CatalogVerifierTests.test_numeric_profile_cannot_relax_correctness_for_latency) ... ok
+Verification Gate	Run verification gate	2026-09-08T05:16:27.5013813Z test_numeric_profile_is_complete_but_unqualified (__main__.CatalogVerifierTests.test_numeric_profile_is_complete_but_unqualified) ... ok
+Verification Gate	Run verification gate	2026-09-08T05:16:27.5018728Z test_numeric_profile_refuses_contradictory_resources (__main__.CatalogVerifierTests.test_numeric_profile_refuses_contradictory_resources) ... ok
+Verification Gate	Run verification gate	2026-09-08T05:16:27.5026523Z test_numeric_profile_refuses_invalid_limits (__main__.CatalogVerifierTests.test_numeric_profile_refuses_invalid_limits) ... ok
+Verification Gate	Run verification gate	2026-09-08T05:16:27.5030894Z test_partial_parent_never_passes (__main__.CatalogVerifierTests.test_partial_parent_never_passes) ... ok
+Verification Gate	Run verification gate	2026-09-08T05:16:27.5080134Z test_performance_review_requires_current_targets_and_retained_evidence (__main__.CatalogVerifierTests.test_performance_review_requires_current_targets_and_retained_evidence) ... ok
+Verification Gate	Run verification gate	2026-09-08T05:16:27.5085442Z test_qualification_cannot_use_component_passes (__main__.CatalogVerifierTests.test_qualification_cannot_use_component_passes) ... ok
+Verification Gate	Run verification gate	2026-09-08T05:16:29.0100233Z test_real_go_missing_match_is_unverified (__main__.CatalogVerifierTests.test_real_go_missing_match_is_unverified) ... ok
+Verification Gate	Run verification gate	2026-09-08T05:16:30.4000211Z test_real_named_go_test_executes (__main__.CatalogVerifierTests.test_real_named_go_test_executes) ... ok
+Verification Gate	Run verification gate	2026-09-08T05:16:30.4025669Z test_retained_full_http_baseline_satisfies_measurement_contract (__main__.CatalogVerifierTests.test_retained_full_http_baseline_satisfies_measurement_contract) ... ok
+Verification Gate	Run verification gate	2026-09-08T05:16:30.4043429Z test_skipped_child_cannot_pass_parent (__main__.CatalogVerifierTests.test_skipped_child_cannot_pass_parent) ... ok
+Verification Gate	Run verification gate	2026-09-08T05:16:30.4044632Z test_unknown_case_refuses (__main__.CatalogVerifierTests.test_unknown_case_refuses) ... ok
+Verification Gate	Run verification gate	2026-09-08T05:16:30.4453384Z test_verifier_supports_isolated_document_import (__main__.CatalogVerifierTests.test_verifier_supports_isolated_document_import) ... ok
+Verification Gate	Run verification gate	2026-09-08T05:16:30.4457841Z test_abnormal_exit_and_resource_failure_are_distinct (__main__.ColdServerTests.test_abnormal_exit_and_resource_failure_are_distinct) ... ok
+Verification Gate	Run verification gate	2026-09-08T05:16:30.4459638Z test_both_observations_and_schema_validation_are_required (__main__.ColdServerTests.test_both_observations_and_schema_validation_are_required) ... ok
+Verification Gate	Run verification gate	2026-09-08T05:16:30.4483087Z test_build_failure_attempts_cleanup_and_cleanup_failure_fails (__main__.ColdServerTests.test_build_failure_attempts_cleanup_and_cleanup_failure_fails) ... ok
+Verification Gate	Run verification gate	2026-09-08T05:16:30.4484758Z test_complete_offline_restart_passes (__main__.ColdServerTests.test_complete_offline_restart_passes) ... ok
+Verification Gate	Run verification gate	2026-09-08T05:16:30.4490236Z test_external_network_or_credentials_cannot_qualify (__main__.ColdServerTests.test_external_network_or_credentials_cannot_qualify) ... ok
+Verification Gate	Run verification gate	2026-09-08T05:16:30.4497410Z test_failed_endpoints_and_invalid_bytes_fail (__main__.ColdServerTests.test_failed_endpoints_and_invalid_bytes_fail) ... ok
+Verification Gate	Run verification gate	2026-09-08T05:16:30.4501317Z test_missing_docker_is_unverified (__main__.ColdServerTests.test_missing_docker_is_unverified) ... ok
+Verification Gate	Run verification gate	2026-09-08T05:16:30.4505849Z test_missing_instance_identity_cannot_qualify (__main__.ColdServerTests.test_missing_instance_identity_cannot_qualify) ... ok
+Verification Gate	Run verification gate	2026-09-08T05:16:30.4517219Z test_registered_adapter_requires_probe_and_calls_verifier (__main__.ColdServerTests.test_registered_adapter_requires_probe_and_calls_verifier) ... ok
+Verification Gate	Run verification gate	2026-09-08T05:16:30.4521717Z test_restart_identity_and_manifest_changes_fail (__main__.ColdServerTests.test_restart_identity_and_manifest_changes_fail) ... ok
+Verification Gate	Run verification gate	2026-09-08T05:16:30.4523157Z test_both_controls_are_required (__main__.ConstructorNetworkTests.test_both_controls_are_required) ... ok
+Verification Gate	Run verification gate	2026-09-08T05:16:30.4524624Z test_constructor_socket_attempt_is_a_failure (__main__.ConstructorNetworkTests.test_constructor_socket_attempt_is_a_failure) ... ok
+Verification Gate	Run verification gate	2026-09-08T05:16:30.4526388Z test_control_must_reach_its_socket_attempt (__main__.ConstructorNetworkTests.test_control_must_reach_its_socket_attempt) ... ok
+Verification Gate	Run verification gate	2026-09-08T05:16:30.4528087Z test_incomplete_baseline_or_changed_platform_refuses (__main__.ConstructorNetworkTests.test_incomplete_baseline_or_changed_platform_refuses) ... ok
+Verification Gate	Run verification gate	2026-09-08T05:16:30.4529766Z test_missing_constructor_evidence_refuses (__main__.ConstructorNetworkTests.test_missing_constructor_evidence_refuses) ... ok
+Verification Gate	Run verification gate	2026-09-08T05:16:30.4531241Z test_missing_container_state_refuses (__main__.ConstructorNetworkTests.test_missing_container_state_refuses) ... ok
+Verification Gate	Run verification gate	2026-09-08T05:16:30.4532596Z test_missing_docker_is_unverified (__main__.ConstructorNetworkTests.test_missing_docker_is_unverified) ... ok
+Verification Gate	Run verification gate	2026-09-08T05:16:30.4546696Z test_resource_failure_cannot_prove_network_enforcement (__main__.ConstructorNetworkTests.test_resource_failure_cannot_prove_network_enforcement) ... ok
+Verification Gate	Run verification gate	2026-09-08T05:16:30.4551422Z test_coherent_review_passes (__main__.DemoReviewTests.test_coherent_review_passes) ... ok
+Verification Gate	Run verification gate	2026-09-08T05:16:30.4565747Z test_edits_cannot_intersect_inference (__main__.DemoReviewTests.test_edits_cannot_intersect_inference) ... ok
+Verification Gate	Run verification gate	2026-09-08T05:16:30.4588998Z test_false_gap_or_negative_duration_refuses (__main__.DemoReviewTests.test_false_gap_or_negative_duration_refuses) ... ok
+Verification Gate	Run verification gate	2026-09-08T05:16:30.4618889Z test_incomplete_stream_or_cleanup_refuses (__main__.DemoReviewTests.test_incomplete_stream_or_cleanup_refuses) ... ok
+Verification Gate	Run verification gate	2026-09-08T05:16:30.4653201Z test_unreadable_dimensions_or_changed_gif_refuses (__main__.DemoReviewTests.test_unreadable_dimensions_or_changed_gif_refuses) ... ok
+Verification Gate	Run verification gate	2026-09-08T05:16:30.4668067Z test_changed_or_missing_capture_refuses (__main__.FirstUseReviewTests.test_changed_or_missing_capture_refuses) ... ok
+Verification Gate	Run verification gate	2026-09-08T05:16:30.4677655Z test_changed_readme_requires_review (__main__.FirstUseReviewTests.test_changed_readme_requires_review) ... ok
+Verification Gate	Run verification gate	2026-09-08T05:16:30.4689680Z test_complete_review_passes (__main__.FirstUseReviewTests.test_complete_review_passes) ... ok
+Verification Gate	Run verification gate	2026-09-08T05:16:30.4698312Z test_evidence_cannot_escape_its_root (__main__.FirstUseReviewTests.test_evidence_cannot_escape_its_root) ... ok
+Verification Gate	Run verification gate	2026-09-08T05:16:30.4731703Z test_incomplete_inference_refuses_even_with_matching_capture_digest (__main__.FirstUseReviewTests.test_incomplete_inference_refuses_even_with_matching_capture_digest) ... ok
+Verification Gate	Run verification gate	2026-09-08T05:16:30.4739028Z test_missing_observation_refuses (__main__.FirstUseReviewTests.test_missing_observation_refuses) ... ok
+Verification Gate	Run verification gate	2026-09-08T05:16:30.4755853Z test_source_build_needs_exact_commit (__main__.FirstUseReviewTests.test_source_build_needs_exact_commit) ... ok
+Verification Gate	Run verification gate	2026-09-08T05:16:30.4799031Z test_unqualified_or_missing_method_refuses (__main__.FirstUseReviewTests.test_unqualified_or_missing_method_refuses) ... ok
+Verification Gate	Run verification gate	2026-09-08T05:16:30.4808024Z test_absent_capture_is_unverified (__main__.NativeCatalogTests.test_absent_capture_is_unverified) ... ok
+Verification Gate	Run verification gate	2026-09-08T05:16:30.4819355Z test_both_native_architectures_are_required (__main__.NativeCatalogTests.test_both_native_architectures_are_required) ... ok
+Verification Gate	Run verification gate	2026-09-08T05:16:30.4829845Z test_changed_evidence_bytes_refuse (__main__.NativeCatalogTests.test_changed_evidence_bytes_refuse) ... ok
+Verification Gate	Run verification gate	2026-09-08T05:16:30.4842225Z test_cross_compiled_or_changed_toolchain_refuses (__main__.NativeCatalogTests.test_cross_compiled_or_changed_toolchain_refuses) ... ok
+Verification Gate	Run verification gate	2026-09-08T05:16:30.4850512Z test_duplicate_native_jobs_refuse (__main__.NativeCatalogTests.test_duplicate_native_jobs_refuse) ... ok
+Verification Gate	Run verification gate	2026-09-08T05:16:30.4859219Z test_failed_or_incomplete_workflow_refuses (__main__.NativeCatalogTests.test_failed_or_incomplete_workflow_refuses) ... ok
+Verification Gate	Run verification gate	2026-09-08T05:16:30.4883694Z test_linux_requires_actual_administrator_owned_read (__main__.NativeCatalogTests.test_linux_requires_actual_administrator_owned_read) ... ok
+Verification Gate	Run verification gate	2026-09-08T05:16:30.4901803Z test_missing_test_or_package_completion_refuses (__main__.NativeCatalogTests.test_missing_test_or_package_completion_refuses) ... ok
+Verification Gate	Run verification gate	2026-09-08T05:16:30.4909897Z test_other_repository_refuses (__main__.NativeCatalogTests.test_other_repository_refuses) ... ok
+Verification Gate	Run verification gate	2026-09-08T05:16:30.4922965Z test_skipped_or_failed_child_refuses (__main__.NativeCatalogTests.test_skipped_or_failed_child_refuses) ... ok
+Verification Gate	Run verification gate	2026-09-08T05:16:30.5203243Z test_source_and_test_changes_invalidate_evidence (__main__.NativeCatalogTests.test_source_and_test_changes_invalidate_evidence) ... ok
+Verification Gate	Run verification gate	2026-09-08T05:16:30.5204197Z 
+Verification Gate	Run verification gate	2026-09-08T05:16:30.5204473Z ----------------------------------------------------------------------
+Verification Gate	Run verification gate	2026-09-08T05:16:30.5205287Z Ran 73 tests in 3.052s
+Verification Gate	Run verification gate	2026-09-08T05:16:30.5205511Z 
+Verification Gate	Run verification gate	2026-09-08T05:16:30.5205621Z OK
+Verification Gate	Run verification gate	2026-09-08T05:16:30.5355720Z 
+Verification Gate	Run verification gate	2026-09-08T05:16:30.5356226Z ==> env CGO_ENABLED=1 go test ./... -race -short -timeout=20m
+Verification Gate	Run verification gate	2026-09-08T05:27:59.9016650Z {"level":"info","source":"embedded_catalog","time":"2026-09-08T05:17:43Z","message":"Observing"}
+Verification Gate	Run verification gate	2026-09-08T05:27:59.9018983Z {"level":"info","provider_count":17,"time":"2026-09-08T05:17:56Z","message":"Filtered providers by primary source"}
+Verification Gate	Run verification gate	2026-09-08T05:27:59.9023226Z {"level":"info","time":"2026-09-08T05:17:59Z","message":"No changes detected"}
+Verification Gate	Run verification gate	2026-09-08T05:27:59.9024888Z {"level":"info","reformat":false,"force":false,"seed_workspace":true,"time":"2026-09-08T05:17:59Z","message":"Forcing save due to explicit materialization policy"}
+Verification Gate	Run verification gate	2026-09-08T05:27:59.9055629Z {"level":"info","source":"embedded_catalog","time":"2026-09-08T05:20:42Z","message":"Observing"}
+Verification Gate	Run verification gate	2026-09-08T05:27:59.9057176Z {"level":"info","provider_count":17,"time":"2026-09-08T05:20:54Z","message":"Filtered providers by primary source"}
+Verification Gate	Run verification gate	2026-09-08T05:27:59.9058373Z {"level":"info","time":"2026-09-08T05:20:57Z","message":"No changes detected"}
+Verification Gate	Run verification gate	2026-09-08T05:27:59.9059843Z {"level":"info","reformat":false,"force":false,"seed_workspace":true,"time":"2026-09-08T05:20:57Z","message":"Forcing save due to explicit materialization policy"}
+Verification Gate	Run verification gate	2026-09-08T05:27:59.9061793Z {"level":"info","source":"embedded_catalog","time":"2026-09-08T05:24:56Z","message":"Observing"}
+Verification Gate	Run verification gate	2026-09-08T05:27:59.9062991Z {"level":"info","source":"local_catalog","time":"2026-09-08T05:24:56Z","message":"Observing"}
+Verification Gate	Run verification gate	2026-09-08T05:27:59.9064077Z {"level":"info","source":"providers","time":"2026-09-08T05:24:56Z","message":"Observing"}
+Verification Gate	Run verification gate	2026-09-08T05:27:59.9065728Z {"level":"info","source":"providers","provider_count":15,"max_concurrency":5,"time":"2026-09-08T05:24:56Z","message":"Syncing providers concurrently"}
+Verification Gate	Run verification gate	2026-09-08T05:27:59.9067859Z {"level":"info","source":"providers","provider_id":"moonshot-ai","provider_id":"moonshot-ai","reason":"credential_unavailable","time":"2026-09-08T05:24:56Z","message":"Provider skipped without a request"}
+Verification Gate	Run verification gate	2026-09-08T05:27:59.9070440Z {"level":"info","source":"providers","provider_id":"alibaba","provider_id":"alibaba","reason":"credential_unavailable","time":"2026-09-08T05:24:56Z","message":"Provider skipped without a request"}
+Verification Gate	Run verification gate	2026-09-08T05:27:59.9072797Z {"level":"info","source":"providers","provider_id":"anthropic","provider_id":"anthropic","reason":"credential_unavailable","time":"2026-09-08T05:24:56Z","message":"Provider skipped without a request"}
+Verification Gate	Run verification gate	2026-09-08T05:27:59.9075269Z {"level":"info","source":"providers","provider_id":"cerebras","provider_id":"cerebras","reason":"credential_unavailable","time":"2026-09-08T05:24:56Z","message":"Provider skipped without a request"}
+Verification Gate	Run verification gate	2026-09-08T05:27:59.9077778Z {"level":"info","source":"providers","provider_id":"deepseek","provider_id":"deepseek","reason":"credential_unavailable","time":"2026-09-08T05:24:56Z","message":"Provider skipped without a request"}
+Verification Gate	Run verification gate	2026-09-08T05:27:59.9080244Z {"level":"info","source":"providers","provider_id":"google-ai-studio","provider_id":"google-ai-studio","reason":"credential_unavailable","time":"2026-09-08T05:24:56Z","message":"Provider skipped without a request"}
+Verification Gate	Run verification gate	2026-09-08T05:27:59.9082653Z {"level":"info","source":"providers","provider_id":"groq","provider_id":"groq","reason":"credential_unavailable","time":"2026-09-08T05:24:56Z","message":"Provider skipped without a request"}
+Verification Gate	Run verification gate	2026-09-08T05:27:59.9084939Z {"level":"info","source":"providers","provider_id":"mistral","provider_id":"mistral","reason":"credential_unavailable","time":"2026-09-08T05:24:56Z","message":"Provider skipped without a request"}
+Verification Gate	Run verification gate	2026-09-08T05:27:59.9091737Z {"level":"info","source":"providers","provider_id":"openai","provider_id":"openai","reason":"credential_unavailable","time":"2026-09-08T05:24:56Z","message":"Provider skipped without a request"}
+Verification Gate	Run verification gate	2026-09-08T05:27:59.9099243Z {"level":"info","source":"providers","provider_id":"fireworks-ai","provider_id":"fireworks-ai","reason":"credential_unavailable","time":"2026-09-08T05:24:56Z","message":"Provider skipped without a request"}
+Verification Gate	Run verification gate	2026-09-08T05:27:59.9101783Z {"level":"info","source":"providers","provider_id":"hetzner","provider_id":"hetzner","reason":"credential_unavailable","time":"2026-09-08T05:24:56Z","message":"Provider skipped without a request"}
+Verification Gate	Run verification gate	2026-09-08T05:27:59.9104127Z {"level":"info","source":"providers","provider_id":"google-vertex","provider_id":"google-vertex","reason":"credential_unavailable","time":"2026-09-08T05:24:56Z","message":"Provider skipped without a request"}
+Verification Gate	Run verification gate	2026-09-08T05:27:59.9106618Z {"level":"info","source":"providers","provider_id":"dry-run-provider","provider_id":"dry-run-provider","model_count":1,"time":"2026-09-08T05:24:56Z","message":"Fetched models"}
+Verification Gate	Run verification gate	2026-09-08T05:27:59.9108681Z {"level":"info","source":"providers","provider_id":"deepinfra","provider_id":"deepinfra","model_count":189,"time":"2026-09-08T05:24:57Z","message":"Fetched models"}
+Verification Gate	Run verification gate	2026-09-08T05:27:59.9110806Z {"level":"info","source":"providers","provider_id":"azure-openai","provider_id":"azure-openai","reason":"credential_unavailable","time":"2026-09-08T05:25:01Z","message":"Provider skipped without a request"}
+Verification Gate	Run verification gate	2026-09-08T05:27:59.9112996Z {"level":"info","provider_count":15,"time":"2026-09-08T05:25:09Z","message":"Filtered providers by primary source"}
+Verification Gate	Run verification gate	2026-09-08T05:27:59.9115391Z {"level":"warn","issue_code":"unresolved_model_reference","provider_id":"deepinfra","provider_model_id":"Audio8/Audio8-TTS-Preview-0.6b","time":"2026-09-08T05:25:09Z","message":"provider offering has no explicit canonical model reference and was quarantined"}
+Verification Gate	Run verification gate	2026-09-08T05:27:59.9118420Z {"level":"warn","issue_code":"unresolved_model_reference","provider_id":"deepinfra","provider_model_id":"BAAI/bge-m3-multi-8k","time":"2026-09-08T05:25:09Z","message":"provider offering has no explicit canonical model reference and was quarantined"}
+Verification Gate	Run verification gate	2026-09-08T05:27:59.9121300Z {"level":"warn","issue_code":"unresolved_model_reference","provider_id":"deepinfra","provider_model_id":"Qwen/Qwen3-ASR-0.6B","time":"2026-09-08T05:25:09Z","message":"provider offering has no explicit canonical model reference and was quarantined"}
+Verification Gate	Run verification gate	2026-09-08T05:27:59.9124252Z {"level":"warn","issue_code":"unresolved_model_reference","provider_id":"deepinfra","provider_model_id":"Qwen/Qwen3-ASR-1.7B","time":"2026-09-08T05:25:09Z","message":"provider offering has no explicit canonical model reference and was quarantined"}
+Verification Gate	Run verification gate	2026-09-08T05:27:59.9127466Z {"level":"warn","issue_code":"unresolved_model_reference","provider_id":"deepinfra","provider_model_id":"Qwen/Qwen3.8-2.4T-A95B","time":"2026-09-08T05:25:09Z","message":"provider offering has no explicit canonical model reference and was quarantined"}
+Verification Gate	Run verification gate	2026-09-08T05:27:59.9130832Z {"level":"warn","issue_code":"unresolved_model_reference","provider_id":"deepinfra","provider_model_id":"Qwen/Qwen3.8-27B","time":"2026-09-08T05:25:09Z","message":"provider offering has no explicit canonical model reference and was quarantined"}
+Verification Gate	Run verification gate	2026-09-08T05:27:59.9133772Z {"level":"warn","issue_code":"unresolved_model_reference","provider_id":"deepinfra","provider_model_id":"Qwen/Qwen3.8-Max","time":"2026-09-08T05:25:09Z","message":"provider offering has no explicit canonical model reference and was quarantined"}
+Verification Gate	Run verification gate	2026-09-08T05:27:59.9136918Z {"level":"warn","issue_code":"unresolved_model_reference","provider_id":"deepinfra","provider_model_id":"anthropic/claude-opus-5","time":"2026-09-08T05:25:09Z","message":"provider offering has no explicit canonical model reference and was quarantined"}
+Verification Gate	Run verification gate	2026-09-08T05:27:59.9140073Z {"level":"warn","issue_code":"unresolved_model_reference","provider_id":"deepinfra","provider_model_id":"deepseek-ai/DeepSeek-V4-Flash-0731","time":"2026-09-08T05:25:09Z","message":"provider offering has no explicit canonical model reference and was quarantined"}
+Verification Gate	Run verification gate	2026-09-08T05:27:59.9143285Z {"level":"warn","issue_code":"unresolved_model_reference","provider_id":"deepinfra","provider_model_id":"deepseek-ai/DeepSeek-V4-Flash-Vision-Exp","time":"2026-09-08T05:25:09Z","message":"provider offering has no explicit canonical model reference and was quarantined"}
+Verification Gate	Run verification gate	2026-09-08T05:27:59.9146466Z {"level":"warn","issue_code":"unresolved_model_reference","provider_id":"deepinfra","provider_model_id":"deepseek-ai/DeepSeek-V4-Pro-0813","time":"2026-09-08T05:25:09Z","message":"provider offering has no explicit canonical model reference and was quarantined"}
+Verification Gate	Run verification gate	2026-09-08T05:27:59.9149588Z {"level":"warn","issue_code":"unresolved_model_reference","provider_id":"deepinfra","provider_model_id":"google/gemini-3.7-flash","time":"2026-09-08T05:25:09Z","message":"provider offering has no explicit canonical model reference and was quarantined"}
+Verification Gate	Run verification gate	2026-09-08T05:27:59.9152600Z {"level":"warn","issue_code":"unresolved_model_reference","provider_id":"deepinfra","provider_model_id":"google/gemma-4-31B-it-Ultra","time":"2026-09-08T05:25:09Z","message":"provider offering has no explicit canonical model reference and was quarantined"}
+Verification Gate	Run verification gate	2026-09-08T05:27:59.9155838Z {"level":"warn","issue_code":"unresolved_model_reference","provider_id":"deepinfra","provider_model_id":"google/gemma-4-E4B-it","time":"2026-09-08T05:25:09Z","message":"provider offering has no explicit canonical model reference and was quarantined"}
+Verification Gate	Run verification gate	2026-09-08T05:27:59.9159537Z {"level":"warn","issue_code":"unresolved_model_reference","provider_id":"deepinfra","provider_model_id":"google/nano-banana-2","time":"2026-09-08T05:25:09Z","message":"provider offering has no explicit canonical model reference and was quarantined"}
+Verification Gate	Run verification gate	2026-09-08T05:27:59.9162624Z {"level":"warn","issue_code":"unresolved_model_reference","provider_id":"deepinfra","provider_model_id":"google/nano-banana-2-lite","time":"2026-09-08T05:25:09Z","message":"provider offering has no explicit canonical model reference and was quarantined"}
+Verification Gate	Run verification gate	2026-09-08T05:27:59.9165918Z {"level":"warn","issue_code":"unresolved_model_reference","provider_id":"deepinfra","provider_model_id":"google/nano-banana-pro","time":"2026-09-08T05:25:09Z","message":"provider offering has no explicit canonical model reference and was quarantined"}
+Verification Gate	Run verification gate	2026-09-08T05:27:59.9192766Z {"level":"warn","issue_code":"unresolved_model_reference","provider_id":"deepinfra","provider_model_id":"ibm-granite/granite-4.2-30b","time":"2026-09-08T05:25:09Z","message":"provider offering has no explicit canonical model reference and was quarantined"}
+Verification Gate	Run verification gate	2026-09-08T05:27:59.9196867Z {"level":"warn","issue_code":"unresolved_model_reference","provider_id":"deepinfra","provider_model_id":"ibm-granite/granite-4.2-3b","time":"2026-09-08T05:25:09Z","message":"provider offering has no explicit canonical model reference and was quarantined"}
+Verification Gate	Run verification gate	2026-09-08T05:27:59.9199897Z {"level":"warn","issue_code":"unresolved_model_reference","provider_id":"deepinfra","provider_model_id":"ibm-granite/granite-4.2-8b","time":"2026-09-08T05:25:09Z","message":"provider offering has no explicit canonical model reference and was quarantined"}
+Verification Gate	Run verification gate	2026-09-08T05:27:59.9203146Z {"level":"warn","issue_code":"unresolved_model_reference","provider_id":"deepinfra","provider_model_id":"inclusionAI/Ling-3.0-flash","time":"2026-09-08T05:25:09Z","message":"provider offering has no explicit canonical model reference and was quarantined"}
+Verification Gate	Run verification gate	2026-09-08T05:27:59.9206333Z {"level":"warn","issue_code":"unresolved_model_reference","provider_id":"deepinfra","provider_model_id":"inclusionAI/Ling-3.0-flash-Fin","time":"2026-09-08T05:25:09Z","message":"provider offering has no explicit canonical model reference and was quarantined"}
+Verification Gate	Run verification gate	2026-09-08T05:27:59.9209396Z {"level":"warn","issue_code":"unresolved_model_reference","provider_id":"deepinfra","provider_model_id":"meta-models/Muse-Glimmer-30B","time":"2026-09-08T05:25:09Z","message":"provider offering has no explicit canonical model reference and was quarantined"}
+Verification Gate	Run verification gate	2026-09-08T05:27:59.9212306Z {"level":"warn","issue_code":"unresolved_model_reference","provider_id":"deepinfra","provider_model_id":"moonshotai/Kimi-K3","time":"2026-09-08T05:25:09Z","message":"provider offering has no explicit canonical model reference and was quarantined"}
+Verification Gate	Run verification gate	2026-09-08T05:27:59.9215491Z {"level":"warn","issue_code":"unresolved_model_reference","provider_id":"deepinfra","provider_model_id":"nvidia/NVIDIA-Nemotron-3.5-Lightning","time":"2026-09-08T05:25:09Z","message":"provider offering has no explicit canonical model reference and was quarantined"}
+Verification Gate	Run verification gate	2026-09-08T05:27:59.9218723Z {"level":"warn","issue_code":"unresolved_model_reference","provider_id":"deepinfra","provider_model_id":"openai/gpt-oss-120b-Ultra","time":"2026-09-08T05:25:09Z","message":"provider offering has no explicit canonical model reference and was quarantined"}
+Verification Gate	Run verification gate	2026-09-08T05:27:59.9221540Z {"level":"warn","issue_code":"unresolved_model_reference","provider_id":"deepinfra","provider_model_id":"tencent/Hy3","time":"2026-09-08T05:25:09Z","message":"provider offering has no explicit canonical model reference and was quarantined"}
+Verification Gate	Run verification gate	2026-09-08T05:27:59.9224440Z {"level":"warn","issue_code":"unresolved_model_reference","provider_id":"deepinfra","provider_model_id":"thinkingmachines/Inkling","time":"2026-09-08T05:25:09Z","message":"provider offering has no explicit canonical model reference and was quarantined"}
+Verification Gate	Run verification gate	2026-09-08T05:27:59.9227743Z {"level":"warn","issue_code":"unresolved_model_reference","provider_id":"deepinfra","provider_model_id":"thinkingmachines/Inkling-Small","time":"2026-09-08T05:25:09Z","message":"provider offering has no explicit canonical model reference and was quarantined"}
+Verification Gate	Run verification gate	2026-09-08T05:27:59.9230922Z {"level":"warn","issue_code":"unresolved_model_reference","provider_id":"deepinfra","provider_model_id":"zai-org/GLM-5.3","time":"2026-09-08T05:25:09Z","message":"provider offering has no explicit canonical model reference and was quarantined"}
+Verification Gate	Run verification gate	2026-09-08T05:27:59.9233780Z {"level":"warn","issue_code":"unresolved_model_reference","provider_id":"deepinfra","provider_model_id":"zai-org/GLM-5.3-Flash","time":"2026-09-08T05:25:09Z","message":"provider offering has no explicit canonical model reference and was quarantined"}
+Verification Gate	Run verification gate	2026-09-08T05:27:59.9237057Z {"level":"warn","issue_code":"unresolved_model_reference","provider_id":"dry-run-provider","provider_model_id":"dry-run-model","time":"2026-09-08T05:25:09Z","message":"provider offering has no explicit canonical model reference and was quarantined"}
+Verification Gate	Run verification gate	2026-09-08T05:27:59.9239254Z {"level":"info","added":603,"updated":0,"removed":0,"time":"2026-09-08T05:25:09Z","message":"Changes detected"}
+Verification Gate	Run verification gate	2026-09-08T05:27:59.9240563Z {"level":"info","dry_run":true,"time":"2026-09-08T05:25:09Z","message":"Dry run completed - no changes applied"}
+Verification Gate	Run verification gate	2026-09-08T05:27:59.9241792Z {"level":"info","source":"embedded_catalog","time":"2026-09-08T05:25:36Z","message":"Observing"}
+Verification Gate	Run verification gate	2026-09-08T05:27:59.9242970Z {"level":"info","source":"local_catalog","time":"2026-09-08T05:25:36Z","message":"Observing"}
+Verification Gate	Run verification gate	2026-09-08T05:27:59.9244369Z {"level":"info","provider_count":18,"time":"2026-09-08T05:25:48Z","message":"Filtered providers by primary source"}
+Verification Gate	Run verification gate	2026-09-08T05:27:59.9245824Z {"level":"info","added":618,"updated":0,"removed":0,"time":"2026-09-08T05:25:48Z","message":"Changes detected"}
+Verification Gate	Run verification gate	2026-09-08T05:27:59.9247170Z --- FAIL: TestEmbeddedCatalogStateRemainsIndependentOfStoredCurrent (0.03s)
+Verification Gate	Run verification gate	2026-09-08T05:27:59.9248353Z     baseline_test.go:73: baseline reads allocated 192 times
+Verification Gate	Run verification gate	2026-09-08T05:27:59.9249193Z FAIL
+Verification Gate	Run verification gate	2026-09-08T05:27:59.9249742Z FAIL	github.com/agentstation/starmap	658.412s
+Verification Gate	Run verification gate	2026-09-08T05:31:50.4084536Z ok  	github.com/agentstation/starmap/acquisition	870.475s
+Verification Gate	Run verification gate	2026-09-08T05:31:50.4085831Z ?   	github.com/agentstation/starmap/cmd/starmap	[no test files]
+Verification Gate	Run verification gate	2026-09-08T05:31:50.4087163Z ok  	github.com/agentstation/starmap/cmd/starmap-bootstrap-manifest	216.189s
+Verification Gate	Run verification gate	2026-09-08T05:31:50.4088360Z ok  	github.com/agentstation/starmap/cmd/starmap-catalog-release	1.195s
+Verification Gate	Run verification gate	2026-09-08T05:31:50.4089441Z ok  	github.com/agentstation/starmap/cmd/starmap-embedded-budget	52.387s
+Verification Gate	Run verification gate	2026-09-08T05:31:50.4090493Z ok  	github.com/agentstation/starmap/cmd/starmap-modelsdev-promote	7.585s
+Verification Gate	Run verification gate	2026-09-08T05:31:50.4091579Z ok  	github.com/agentstation/starmap/internal/architecture	1.142s
+Verification Gate	Run verification gate	2026-09-08T05:31:50.4092522Z ok  	github.com/agentstation/starmap/internal/attestation	1.257s
+Verification Gate	Run verification gate	2026-09-08T05:31:50.4093423Z ok  	github.com/agentstation/starmap/internal/auth	1.586s
+Verification Gate	Run verification gate	2026-09-08T05:31:50.4094318Z ok  	github.com/agentstation/starmap/internal/bootstrap	490.120s
+Verification Gate	Run verification gate	2026-09-08T05:31:50.4095464Z ok  	github.com/agentstation/starmap/internal/bootstrap/budget	94.841s
+Verification Gate	Run verification gate	2026-09-08T05:31:50.4096498Z ok  	github.com/agentstation/starmap/internal/bootstrap/manifest	1.045s
+Verification Gate	Run verification gate	2026-09-08T05:31:50.4097546Z ok  	github.com/agentstation/starmap/internal/catalog/pipeline	20.738s
+Verification Gate	Run verification gate	2026-09-08T05:31:50.4098525Z ok  	github.com/agentstation/starmap/internal/catalog/query	1.031s
+Verification Gate	Run verification gate	2026-09-08T05:31:50.4099529Z ok  	github.com/agentstation/starmap/internal/catalog/reconciler	1.592s
+Verification Gate	Run verification gate	2026-09-08T05:31:50.4100613Z ok  	github.com/agentstation/starmap/internal/catalog/settings	27.597s
+Verification Gate	Run verification gate	2026-09-08T05:31:50.4101613Z ok  	github.com/agentstation/starmap/internal/catalog/workspace	23.658s
+Verification Gate	Run verification gate	2026-09-08T05:31:50.4102570Z ok  	github.com/agentstation/starmap/internal/ciworkflow	1.203s
+Verification Gate	Run verification gate	2026-09-08T05:31:50.4103558Z ?   	github.com/agentstation/starmap/internal/cli/alerts	[no test files]
+Verification Gate	Run verification gate	2026-09-08T05:31:50.4104538Z ok  	github.com/agentstation/starmap/internal/cli/app	441.834s
+Verification Gate	Run verification gate	2026-09-08T05:31:50.4106384Z ?   	github.com/agentstation/starmap/internal/cli/commands/auth	[no test files]
+Verification Gate	Run verification gate	2026-09-08T05:31:50.4107515Z ?   	github.com/agentstation/starmap/internal/cli/commands/authors	[no test files]
+Verification Gate	Run verification gate	2026-09-08T05:31:50.4108710Z ?   	github.com/agentstation/starmap/internal/cli/commands/completion	[no test files]
+Verification Gate	Run verification gate	2026-09-08T05:31:50.4109829Z ok  	github.com/agentstation/starmap/internal/cli/commands/config	1.100s
+Verification Gate	Run verification gate	2026-09-08T05:31:50.4110849Z ok  	github.com/agentstation/starmap/internal/cli/commands/deps	24.613s
+Verification Gate	Run verification gate	2026-09-08T05:31:50.4111843Z ok  	github.com/agentstation/starmap/internal/cli/commands/embed	1.029s
+Verification Gate	Run verification gate	2026-09-08T05:31:50.4112855Z ok  	github.com/agentstation/starmap/internal/cli/commands/migrate	1.075s
+Verification Gate	Run verification gate	2026-09-08T05:31:50.4113916Z ok  	github.com/agentstation/starmap/internal/cli/commands/models	1.047s
+Verification Gate	Run verification gate	2026-09-08T05:31:50.4115292Z ok  	github.com/agentstation/starmap/internal/cli/commands/providers	1.109s
+Verification Gate	Run verification gate	2026-09-08T05:31:50.4116351Z ok  	github.com/agentstation/starmap/internal/cli/commands/serve	1.069s
+Verification Gate	Run verification gate	2026-09-08T05:31:50.4117380Z ok  	github.com/agentstation/starmap/internal/cli/commands/update	1.069s
+Verification Gate	Run verification gate	2026-09-08T05:31:50.4118456Z ok  	github.com/agentstation/starmap/internal/cli/commands/validate	1.049s
+Verification Gate	Run verification gate	2026-09-08T05:31:50.4119530Z ?   	github.com/agentstation/starmap/internal/cli/completion	[no test files]
+Verification Gate	Run verification gate	2026-09-08T05:31:50.4120578Z ?   	github.com/agentstation/starmap/internal/cli/constants	[no test files]
+Verification Gate	Run verification gate	2026-09-08T05:31:50.4121538Z ok  	github.com/agentstation/starmap/internal/cli/convert	1.019s
+Verification Gate	Run verification gate	2026-09-08T05:31:50.4122605Z ok  	github.com/agentstation/starmap/internal/cli/embed	1.012s
+Verification Gate	Run verification gate	2026-09-08T05:31:50.4123558Z ?   	github.com/agentstation/starmap/internal/cli/emoji	[no test files]
+Verification Gate	Run verification gate	2026-09-08T05:31:50.4124550Z ?   	github.com/agentstation/starmap/internal/cli/filter	[no test files]
+Verification Gate	Run verification gate	2026-09-08T05:31:50.4125739Z ?   	github.com/agentstation/starmap/internal/cli/format	[no test files]
+Verification Gate	Run verification gate	2026-09-08T05:31:50.4126747Z ?   	github.com/agentstation/starmap/internal/cli/globals	[no test files]
+Verification Gate	Run verification gate	2026-09-08T05:31:50.4127720Z ok  	github.com/agentstation/starmap/internal/cli/hints	1.040s
+Verification Gate	Run verification gate	2026-09-08T05:31:50.4128680Z ?   	github.com/agentstation/starmap/internal/cli/notify	[no test files]
+Verification Gate	Run verification gate	2026-09-08T05:31:50.4129708Z ?   	github.com/agentstation/starmap/internal/cli/provider	[no test files]
+Verification Gate	Run verification gate	2026-09-08T05:31:50.4130671Z ok  	github.com/agentstation/starmap/internal/cli/table	1.046s
+Verification Gate	Run verification gate	2026-09-08T05:31:50.4131622Z ?   	github.com/agentstation/starmap/internal/constants	[no test files]
+Verification Gate	Run verification gate	2026-09-08T05:31:50.4132607Z ok  	github.com/agentstation/starmap/internal/deploymentdocs	1.036s
+Verification Gate	Run verification gate	2026-09-08T05:31:50.4133556Z ?   	github.com/agentstation/starmap/internal/deps	[no test files]
+Verification Gate	Run verification gate	2026-09-08T05:31:50.4134489Z ok  	github.com/agentstation/starmap/internal/embedded	32.775s
+Verification Gate	Run verification gate	2026-09-08T05:31:50.4135636Z ?   	github.com/agentstation/starmap/internal/embedded/openapi	[no test files]
+Verification Gate	Run verification gate	2026-09-08T05:31:50.4136675Z ok  	github.com/agentstation/starmap/internal/filepublish	1.060s
+Verification Gate	Run verification gate	2026-09-08T05:31:50.4137561Z ok  	github.com/agentstation/starmap/internal/fleet	1.018s
+Verification Gate	Run verification gate	2026-09-08T05:31:50.4138460Z ok  	github.com/agentstation/starmap/internal/privatefiles	1.170s
+Verification Gate	Run verification gate	2026-09-08T05:31:50.4139449Z ok  	github.com/agentstation/starmap/internal/providers/anthropic	24.309s
+Verification Gate	Run verification gate	2026-09-08T05:31:50.4140459Z ok  	github.com/agentstation/starmap/internal/providers/clients	2.072s
+Verification Gate	Run verification gate	2026-09-08T05:31:50.4141438Z ok  	github.com/agentstation/starmap/internal/providers/google	1.050s
+Verification Gate	Run verification gate	2026-09-08T05:31:50.4142467Z ok  	github.com/agentstation/starmap/internal/providers/openai	20.496s
+Verification Gate	Run verification gate	2026-09-08T05:31:50.4143464Z ok  	github.com/agentstation/starmap/internal/runtimeacl/windows	1.015s
+Verification Gate	Run verification gate	2026-09-08T05:32:44.7833656Z ok  	github.com/agentstation/starmap/internal/server	241.107s
+Verification Gate	Run verification gate	2026-09-08T05:32:44.7842044Z ok  	github.com/agentstation/starmap/internal/server/cache	1.346s
+Verification Gate	Run verification gate	2026-09-08T05:32:44.7843482Z ok  	github.com/agentstation/starmap/internal/server/handlers	53.244s
+Verification Gate	Run verification gate	2026-09-08T05:32:44.7844797Z ok  	github.com/agentstation/starmap/internal/server/middleware	1.271s
+Verification Gate	Run verification gate	2026-09-08T05:32:44.7846896Z ok  	github.com/agentstation/starmap/internal/server/openrouter	42.492s
+Verification Gate	Run verification gate	2026-09-08T05:32:44.7848056Z ok  	github.com/agentstation/starmap/internal/server/operations	1.027s
+Verification Gate	Run verification gate	2026-09-08T05:32:44.7850836Z ok  	github.com/agentstation/starmap/internal/server/params	1.027s
+Verification Gate	Run verification gate	2026-09-08T05:32:44.7851929Z ok  	github.com/agentstation/starmap/internal/server/response	1.074s
+Verification Gate	Run verification gate	2026-09-08T05:32:44.7853198Z ok  	github.com/agentstation/starmap/internal/server/sse	1.057s
+Verification Gate	Run verification gate	2026-09-08T05:32:44.7854289Z ok  	github.com/agentstation/starmap/internal/sources/embedded	1.046s
+Verification Gate	Run verification gate	2026-09-08T05:32:44.7856435Z ok  	github.com/agentstation/starmap/internal/sources/github	1.722s
+Verification Gate	Run verification gate	2026-09-08T05:32:44.7857740Z ok  	github.com/agentstation/starmap/internal/sources/local	1.055s
+Verification Gate	Run verification gate	2026-09-08T05:33:18.2552249Z ok  	github.com/agentstation/starmap/internal/sources/modelsdev	128.162s
+Verification Gate	Run verification gate	2026-09-08T05:33:18.2553377Z ok  	github.com/agentstation/starmap/internal/sources/providers	1.237s
+Verification Gate	Run verification gate	2026-09-08T05:33:18.2554004Z ?   	github.com/agentstation/starmap/internal/test/catalog	[no test files]
+Verification Gate	Run verification gate	2026-09-08T05:33:18.2554640Z ?   	github.com/agentstation/starmap/internal/test/channel	[no test files]
+Verification Gate	Run verification gate	2026-09-08T05:33:18.2555468Z ?   	github.com/agentstation/starmap/internal/test/logging	[no test files]
+Verification Gate	Run verification gate	2026-09-08T05:33:18.2556241Z ok  	github.com/agentstation/starmap/internal/test/providerfixture	1.026s
+Verification Gate	Run verification gate	2026-09-08T05:33:18.2556958Z ok  	github.com/agentstation/starmap/internal/transport	1.462s
+Verification Gate	Run verification gate	2026-09-08T05:33:49.7516401Z ok  	github.com/agentstation/starmap/pkg/catalogs	118.459s
+Verification Gate	Run verification gate	2026-09-08T05:33:49.7536364Z ok  	github.com/agentstation/starmap/pkg/catalogs/artifact	1.280s
+Verification Gate	Run verification gate	2026-09-08T05:33:49.7555674Z ok  	github.com/agentstation/starmap/pkg/catalogs/authority	1.026s
+Verification Gate	Run verification gate	2026-09-08T05:33:49.7575957Z ok  	github.com/agentstation/starmap/pkg/catalogs/config	61.918s
+Verification Gate	Run verification gate	2026-09-08T05:33:49.7605755Z ok  	github.com/agentstation/starmap/pkg/catalogs/evidence	1.014s
+Verification Gate	Run verification gate	2026-09-08T05:33:49.7606740Z ?   	github.com/agentstation/starmap/pkg/catalogs/internal/resourcepolicy	[no test files]
+Verification Gate	Run verification gate	2026-09-08T05:33:49.7607705Z ok  	github.com/agentstation/starmap/pkg/catalogs/projection	1.011s
+Verification Gate	Run verification gate	2026-09-08T05:33:49.7608460Z ok  	github.com/agentstation/starmap/pkg/catalogs/remote	1.365s
+Verification Gate	Run verification gate	2026-09-08T05:33:49.7609179Z ok  	github.com/agentstation/starmap/pkg/catalogs/storage	1.692s
+Verification Gate	Run verification gate	2026-09-08T05:33:49.7609919Z ok  	github.com/agentstation/starmap/pkg/catalogs/storage/s3	1.239s
+Verification Gate	Run verification gate	2026-09-08T05:33:49.7610595Z ok  	github.com/agentstation/starmap/pkg/differ	1.015s
+Verification Gate	Run verification gate	2026-09-08T05:33:49.7611198Z ok  	github.com/agentstation/starmap/pkg/errors	1.019s
+Verification Gate	Run verification gate	2026-09-08T05:33:49.7611803Z ok  	github.com/agentstation/starmap/pkg/logging	1.015s
+Verification Gate	Run verification gate	2026-09-08T05:33:49.7612465Z ok  	github.com/agentstation/starmap/pkg/productpaths	1.028s
+Verification Gate	Run verification gate	2026-09-08T05:33:49.7613188Z ok  	github.com/agentstation/starmap/pkg/productpaths/policy	1.015s
+Verification Gate	Run verification gate	2026-09-08T05:33:49.7613900Z ok  	github.com/agentstation/starmap/pkg/provenance	1.024s
+Verification Gate	Run verification gate	2026-09-08T05:33:49.7614527Z ok  	github.com/agentstation/starmap/pkg/sources	1.090s
+Verification Gate	Run verification gate	2026-09-08T05:33:49.7615404Z ok  	github.com/agentstation/starmap/pkg/sources/payload	1.010s
+Verification Gate	Run verification gate	2026-09-08T05:33:49.7616086Z ok  	github.com/agentstation/starmap/pkg/sync	1.021s
+Verification Gate	Run verification gate	2026-09-08T05:33:55.8300716Z ok  	github.com/agentstation/starmap/remote	37.443s
+Verification Gate	Run verification gate	2026-09-08T05:43:54.9340973Z ok  	github.com/agentstation/starmap/runtime	624.642s
+Verification Gate	Run verification gate	2026-09-08T05:43:54.9341816Z ?   	github.com/agentstation/starmap/runtime/source	[no test files]
+Verification Gate	Run verification gate	2026-09-08T05:43:54.9342577Z ?   	github.com/agentstation/starmap/runtime/status	[no test files]
+Verification Gate	Run verification gate	2026-09-08T05:43:54.9343270Z ok  	github.com/agentstation/starmap/server	36.512s
+Verification Gate	Run verification gate	2026-09-08T05:43:54.9343752Z FAIL
+Verification Gate	Run verification gate	2026-09-08T05:43:55.1865417Z make: *** [Makefile:224: verify] Error 1
+Verification Gate	Run verification gate	2026-09-08T05:43:55.1879349Z ##[error]Process completed with exit code 2.

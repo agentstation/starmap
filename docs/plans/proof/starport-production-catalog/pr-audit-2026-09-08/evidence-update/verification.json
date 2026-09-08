@@ -1,0 +1,10 @@
+{
+  "files": 51,
+  "inventory": "inventory.json",
+  "scan_exit": 0,
+  "verified_secrets": 0,
+  "unknown_secrets": 0,
+  "decoded_compressed_sources": true,
+  "capture_hashes_checked": 21,
+  "qualification": "The failed CI run grants no native acceptance. This evidence update preserves the failure, repair checks, and PR dispositions."
+}

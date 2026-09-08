@@ -1,0 +1,13 @@
+{
+  "verdict": "PASS",
+  "scope": "Changed plan structure, acceptance roster, registration and local link checks. No product acceptance credit.",
+  "tasks": 38,
+  "terminal_tasks": 7,
+  "primary_cases": 50,
+  "required_subcases": 324,
+  "CSP2_registered_subcases": 22,
+  "plan_lines": 500,
+  "local_links": 208,
+  "branch": "codex/catalog-qualification",
+  "plan_sha256": "021c7675b54ab8954354261f657385367aeced6da609ea98081e0485f76c380f"
+}

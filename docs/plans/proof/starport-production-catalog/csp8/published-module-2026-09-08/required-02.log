@@ -1,0 +1,13 @@
+FAIL V01 published Starmap module boundary and Go floor
+PASS V02 canonical inference contract
+PASS V03 routable snapshot generation contract
+PASS V04 deterministic route planner contract
+PASS V05 attempt state and retry budget contract
+PASS V06 versioned concept repository contracts
+PASS V07 response cache semantic identity contract
+PASS V08 production composition fail-closed contract
+PASS V09 public package boundary contract
+PASS V10 OpenAI and OpenRouter protocol contracts
+PASS V11 import graph architecture fitness
+PASS V12 full Go test suite
+Summary: 11 passed, 1 failed

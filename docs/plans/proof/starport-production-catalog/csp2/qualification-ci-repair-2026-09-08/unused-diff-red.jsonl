@@ -1,0 +1,18 @@
+{"Time":"2026-09-08T00:48:07.471655-05:00","Action":"start","Package":"github.com/agentstation/starmap"}
+{"Time":"2026-09-08T00:48:07.963174-05:00","Action":"run","Package":"github.com/agentstation/starmap","Test":"TestModelDiffWithoutObserversDoesNotReadCatalogs"}
+{"Time":"2026-09-08T00:48:07.963236-05:00","Action":"output","Package":"github.com/agentstation/starmap","Test":"TestModelDiffWithoutObserversDoesNotReadCatalogs","Output":"=== RUN   TestModelDiffWithoutObserversDoesNotReadCatalogs\n"}
+{"Time":"2026-09-08T00:48:07.963258-05:00","Action":"run","Package":"github.com/agentstation/starmap","Test":"TestModelDiffWithoutObserversDoesNotReadCatalogs/no-hooks"}
+{"Time":"2026-09-08T00:48:07.963271-05:00","Action":"output","Package":"github.com/agentstation/starmap","Test":"TestModelDiffWithoutObserversDoesNotReadCatalogs/no-hooks","Output":"=== RUN   TestModelDiffWithoutObserversDoesNotReadCatalogs/no-hooks\n"}
+{"Time":"2026-09-08T00:48:07.964515-05:00","Action":"output","Package":"github.com/agentstation/starmap","Test":"TestModelDiffWithoutObserversDoesNotReadCatalogs/no-hooks","Output":"    hooks_idle_test.go:29: model diff read catalogs 2 times without model observers\n"}
+{"Time":"2026-09-08T00:48:07.964543-05:00","Action":"output","Package":"github.com/agentstation/starmap","Test":"TestModelDiffWithoutObserversDoesNotReadCatalogs/no-hooks","Output":"--- FAIL: TestModelDiffWithoutObserversDoesNotReadCatalogs/no-hooks (0.00s)\n"}
+{"Time":"2026-09-08T00:48:07.964553-05:00","Action":"fail","Package":"github.com/agentstation/starmap","Test":"TestModelDiffWithoutObserversDoesNotReadCatalogs/no-hooks","Elapsed":0}
+{"Time":"2026-09-08T00:48:07.964567-05:00","Action":"run","Package":"github.com/agentstation/starmap","Test":"TestModelDiffWithoutObserversDoesNotReadCatalogs/publication-only"}
+{"Time":"2026-09-08T00:48:07.964571-05:00","Action":"output","Package":"github.com/agentstation/starmap","Test":"TestModelDiffWithoutObserversDoesNotReadCatalogs/publication-only","Output":"=== RUN   TestModelDiffWithoutObserversDoesNotReadCatalogs/publication-only\n"}
+{"Time":"2026-09-08T00:48:07.964772-05:00","Action":"output","Package":"github.com/agentstation/starmap","Test":"TestModelDiffWithoutObserversDoesNotReadCatalogs/publication-only","Output":"    hooks_idle_test.go:29: model diff read catalogs 2 times without model observers\n"}
+{"Time":"2026-09-08T00:48:07.964791-05:00","Action":"output","Package":"github.com/agentstation/starmap","Test":"TestModelDiffWithoutObserversDoesNotReadCatalogs/publication-only","Output":"--- FAIL: TestModelDiffWithoutObserversDoesNotReadCatalogs/publication-only (0.00s)\n"}
+{"Time":"2026-09-08T00:48:07.964798-05:00","Action":"fail","Package":"github.com/agentstation/starmap","Test":"TestModelDiffWithoutObserversDoesNotReadCatalogs/publication-only","Elapsed":0}
+{"Time":"2026-09-08T00:48:07.964804-05:00","Action":"output","Package":"github.com/agentstation/starmap","Test":"TestModelDiffWithoutObserversDoesNotReadCatalogs","Output":"--- FAIL: TestModelDiffWithoutObserversDoesNotReadCatalogs (0.00s)\n"}
+{"Time":"2026-09-08T00:48:07.964815-05:00","Action":"fail","Package":"github.com/agentstation/starmap","Test":"TestModelDiffWithoutObserversDoesNotReadCatalogs","Elapsed":0}
+{"Time":"2026-09-08T00:48:07.964914-05:00","Action":"output","Package":"github.com/agentstation/starmap","Output":"FAIL\n"}
+{"Time":"2026-09-08T00:48:07.966006-05:00","Action":"output","Package":"github.com/agentstation/starmap","Output":"FAIL\tgithub.com/agentstation/starmap\t0.494s\n"}
+{"Time":"2026-09-08T00:48:07.966037-05:00","Action":"fail","Package":"github.com/agentstation/starmap","Elapsed":0.494}

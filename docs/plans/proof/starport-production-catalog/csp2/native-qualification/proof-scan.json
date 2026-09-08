@@ -1,0 +1,9 @@
+{
+  "files": 95,
+  "exit_code": 0,
+  "bytes": 23766443,
+  "verified_secrets": 0,
+  "unknown_secrets": 0,
+  "compressed_sources_decoded": true,
+  "scope": "Exact new and changed proof files for the existing evidence PR, including native qualification."
+}

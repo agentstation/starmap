@@ -1,0 +1,6 @@
+{
+  "Replace": {
+    "/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/runtime/csp3_expanded_partial_test.go": "/tmp/starmap-csp3-expanded-partial/partial_test.go",
+    "/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/runtime/manual_history.go": "/tmp/starmap-csp3-partial-probe/manual_history_candidate.go"
+  }
+}

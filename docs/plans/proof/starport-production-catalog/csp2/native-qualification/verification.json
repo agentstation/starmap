@@ -1,0 +1,46 @@
+{
+  "task": "CSP2",
+  "source_commit": "7e5912623d0cd53e95451dbd84896b831c82d0a3",
+  "verification_head": "34823e1095208d0c98bfcc2082fc9d355c5b6802",
+  "command": "GOTOOLCHAIN=go1.26.6 bash scripts/verify-catalog-product.sh --starport-root /Users/jack/src/github.com/agentstation/starport-catalog-lifecycle --task CSP2 --json",
+  "exit_code": 0,
+  "selected_subcases": 22,
+  "counts": {
+    "PASS": 22
+  },
+  "subcases": {
+    "A02.constructor_filesystem_silence": "PASS",
+    "A02.constructor_network_silence": "PASS",
+    "A02.no_workers": "PASS",
+    "A01.starmap_cold_offline": "PASS",
+    "A01.existing_head_preserved": "PASS",
+    "A01.required_write_failure": "PASS",
+    "A03.starmap_linux": "PASS",
+    "A03.starmap_macos": "PASS",
+    "A03.starmap_windows": "PASS",
+    "A04.starmap_linux_interruption": "PASS",
+    "A04.starmap_macos_interruption": "PASS",
+    "A04.starmap_windows_interruption": "PASS",
+    "A04.dual_root_conflict": "PASS",
+    "A04.human_workspace_preserved": "PASS",
+    "A03.starmap_file_manifest": "PASS",
+    "A03.root_leaf_precedence": "PASS",
+    "A03.relative_anchor_migration_guard": "PASS",
+    "A03.required_empty_path_refusal": "PASS",
+    "A03.two_instances_same_user": "PASS",
+    "A03.duplicate_owner_refusal": "PASS",
+    "A03.service_container_roots": "PASS",
+    "A04.identity_and_journal_recovery": "PASS"
+  },
+  "qualification": "component checks only",
+  "primary_cases": 50,
+  "required_subcases": 324,
+  "released_pair_qualified": false,
+  "report_sha256": "6eb68d0ecdea85edaaa1d450c1f4ead9d8e2b326f06b017062c2717e6567b40f",
+  "native_run": 34193810413,
+  "native_jobs_passed": 11,
+  "limits": [
+    "The report-wide summary counts unselected parent cases as unverified. All 22 selected CSP2 subcases pass.",
+    "CSP2 completion does not establish whole-product or released-pair qualification."
+  ]
+}

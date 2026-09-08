@@ -1,0 +1,84 @@
+{
+  "run": 34188963931,
+  "head": "6be233eaff4e679e01c56e625ceec66b3f5b7255",
+  "status": "failure",
+  "native_jobs_passed": 6,
+  "all_jobs_passed": 10,
+  "all_jobs_total": 11,
+  "failing_test": "TestEmbeddedCatalogStateRemainsIndependentOfStoredCurrent",
+  "failure": "baseline reads allocated 192 times",
+  "root_evidence": "Model-diff dispatch reads and copies both catalogs even without model observers. The getter allocation assertion uses process-wide counters after asynchronous publication.",
+  "red_regression": "TestModelDiffWithoutObserversDoesNotReadCatalogs reports two catalog reads for both no-hook and publication-only configurations.",
+  "repair": "Skip unobserved dispatch and unused model diffs. Keep the exact zero-allocation baseline guard in an isolated test process with a positive allocation control.",
+  "qualification": "CSP2 remains in progress. The failed workflow cannot qualify native subcases, and the source repair requires new reviewed CI.",
+  "focused_check": {
+    "exit_code": 0,
+    "pass_events": 12,
+    "fail_events": 0,
+    "skip_events": 0,
+    "command": "GOTOOLCHAIN=go1.26.6 go test -race -count=1 -timeout=10m -run ^Test(EmbeddedCatalogState|ModelDiffWithoutObservers|ReaderProviderModels|TriggerUpdate|Hook|PostCommit|Publication) -json .",
+    "baseline_allocations": 0,
+    "positive_control_allocations": 1
+  },
+  "ago": {
+    "exit_code": 0,
+    "findings": 0,
+    "errors": 0,
+    "stale_ignores": 0
+  },
+  "full_check": {
+    "command": "GOTOOLCHAIN=go1.26.6 make verify",
+    "exit_code": 0,
+    "stages": 39,
+    "result": "repository verification passed",
+    "allocation_fixture": "Initial isolated fixture measures a fresh client. The expanded fresh, updated, and restarted fixture received separate focused verification after this check. Production source is identical.",
+    "package_passes": 182
+  },
+  "expanded_overlay": {
+    "exit_code": 0,
+    "pass_events": 2,
+    "fail_events": 0,
+    "skip_events": 0,
+    "allocations": {
+      "fresh": 0,
+      "updated": 0,
+      "restarted": 0,
+      "positive_control": 1
+    }
+  },
+  "repair_commit": "eefcd1546375305a2fa77787083e024c627d1de2",
+  "final_focused_check": {
+    "command": "GOTOOLCHAIN=go1.26.6 go test -race -count=1 -timeout=10m -run ^Test(EmbeddedCatalogState|ModelDiffWithoutObservers|ReaderProviderModels|TriggerUpdate|Hook|PostCommit|Publication) -json .",
+    "exit_code": 0,
+    "pass_events": 12,
+    "fail_events": 0,
+    "skip_events": 0,
+    "allocations": {
+      "fresh": 0,
+      "updated": 0,
+      "restarted": 0,
+      "positive_control": 1
+    },
+    "ago_exit": 0,
+    "lint_exit": 0
+  },
+  "source_sha256": {
+    "hooks.go": "61e56a516257d4b120c26460c10a7809e9da29f92e28efd0ebb429328c37c6da",
+    "hooks_idle_test.go": "c7942669f1249e4748ae2cf4548fcc2eabd303cff08df3a2893aaae0c6858331",
+    "baseline_test.go": "aeda2cb9d97e0a7ecbfa9c46cb3e75ca9956ddaf083aa42b1cf0a6c1dffe39bd",
+    "baseline_allocations_test.go": "e13a68e0575ea672aa8a45551ac9ca0548b0b5108d5656353da07a243827066f"
+  },
+  "artifact_sha256": {
+    "ago-policy.json": "26546ffa43fa8ec4c65a1e08381818b02e9ffd25cf39d88885a3ca2c98189b30",
+    "ago.json": "b8fb7afa66aa7a93914ac258475dd0191be821803a8aea4439f5ba05022f5fa5",
+    "ci-failure.log": "02a6f8b6a68844e9c845661b07da9a3a9f43a26c1b64502a5697814b7a92106d",
+    "expanded-overlay.jsonl": "14f28e7841ac0cc1d7de9d384e73b0829c9d9c7a5e8639f16aacfcfa310b441a",
+    "failed-run.json": "adfb40ef0368b9d0ebe87d4d030a9a695d1151bdd3afdc5d9aec5a4d0a538e0f",
+    "final-ago.json": "b8fb7afa66aa7a93914ac258475dd0191be821803a8aea4439f5ba05022f5fa5",
+    "final-focused.jsonl": "f7fcecd9af59cf62c10c2f13ac983fa04e4db161a9cbabd218bb94b71c050695",
+    "final-lint.log": "32709c2b17f4d5abf64db997d8df20b5e258ac4b3e850611f6e536878fa526a9",
+    "focused-green.jsonl": "090d34fdd18ca6ab83b377396db31a32b7555324cd62c2a7b28cc7e4ce679bc7",
+    "full-verify.log": "8b72ed1c71d5090aa84452400cf241ac70b7343d2935aa3c1ec1905a893229d4",
+    "unused-diff-red.jsonl": "337ef9a1518fa61a628634da5ecbf78bbf41bfa55987820dcea54e4d56bc3510"
+  }
+}
