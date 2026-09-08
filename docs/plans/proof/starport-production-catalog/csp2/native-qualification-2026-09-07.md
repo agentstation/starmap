@@ -330,3 +330,10 @@ describes the request flags. The existing tests still compare exact descriptors.
 The affected package compiles for both Windows architectures with Go `1.25.12`.
 Windows-targeted lint and Ago pass. Full verification, review, and native
 execution remain open for this repair.
+
+Inheritance repair `ff298e2c` passes all 39 repository verification stages.
+Ordinary and race suites each pass 79 packages. Windows-source Ago analysis
+also passes with no findings or stale suppressions.
+[Candidate verification](native-fourth-2026-09-07/candidate-verification.json)
+retains the complete logs and corrected host-tool invocation. The required
+complete branch review is in progress. Native execution remains unverified.
