@@ -1,0 +1,29 @@
+{
+  "pr135": {
+    "head": "6d35ee2c39871a373044d17a0102f3e1e61e913b",
+    "base": "55b4a12be54e3dce4da76671507a00b1af6f1bed",
+    "worktree": "/tmp/starmap-pr135-main-2026-09-08",
+    "branch": "codex/catalog-pr135-main",
+    "proof_only_files": 174,
+    "review": "Automatic metadata-only pre-PR gate exits 0 without a model call.",
+    "published": false
+  },
+  "pr136": {
+    "head": "d5984e9a1d98c44861103962d16f56c2aa042bb9",
+    "base": "6d35ee2c39871a373044d17a0102f3e1e61e913b",
+    "worktree": "/tmp/starmap-pr136-main-2026-09-08",
+    "branch": "codex/catalog-pr136-main",
+    "conflict": "Keep the reviewed 75-minute aggregate CI timeout from PR133.",
+    "verification_session": 29610,
+    "verification_output": "/tmp/starmap-pr136-main-verify.txt",
+    "verification_status": "running",
+    "required_review": "After full verification, review the incremental diff against 4fdf12f8c63bcc3991cc77dfe542db32c214d9db. Prior full code review remains recorded.",
+    "published": false
+  },
+  "publication_order": [
+    133,
+    135,
+    136
+  ],
+  "completion_requires": "Merge implementations and verify the merged source before updating task status."
+}

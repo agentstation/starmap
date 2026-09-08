@@ -8,7 +8,7 @@
   "repair_source": "eefcd1546375305a2fa77787083e024c627d1de2",
   "repair_head": "effbfc92073a4f7b281f7c52bd488795126ae3a9",
   "repair": "Move the existing observer-free dispatch and diff guard from PR136 into PR133. Preserve isolated zero-allocation assertions from the same reviewed change.",
-  "auto_merge_enabled": false,
+  "auto_merge_enabled": true,
   "counts": {
     "native_failure": {
       "pass_test": 1277,
@@ -44,8 +44,9 @@
   "pending": {
     "structured_review": false,
     "publication": false,
-    "fresh_native_ci": true,
-    "dependency_main_merge": false
+    "fresh_native_ci": false,
+    "dependency_main_merge": false,
+    "aggregate_verification": true
   },
   "task_completion": false,
   "files": {
@@ -132,5 +133,6 @@
   "published_head": "55b4a12be54e3dce4da76671507a00b1af6f1bed",
   "merged_main": "8b685475bdab6c61a141bd0816a9cd42830d85f0",
   "published_tree": "52403fe8d23ab101859368a12e86bf0edb94f0c2",
-  "main_merge_review": "Automatic pre-PR gate exits 0 without a model call. The final merge tree equals the reviewed candidate tree."
+  "main_merge_review": "Automatic pre-PR gate exits 0 without a model call. The final merge tree equals the reviewed candidate tree.",
+  "native_jobs_passed_at_published_head": 6
 }

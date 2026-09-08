@@ -1,0 +1,20 @@
+{
+  "source": "4db5269f847a41653b8c3cd1e2cea56a1e46e125",
+  "production_source_unchanged_since": "c871f2b8",
+  "status": "fail-before",
+  "task": "CSP3",
+  "implementation_applied": false,
+  "command": "GOTOOLCHAIN=go1.26.6 go test -race -overlay=/tmp/starmap-nested-presence-probe-2026-09-08/overlay.json -json -count=1 -timeout=2m -run 'TestNestedOptionalNullRoundTripProbe|TestKnownZeroTokenPriceJSONProbe' ./pkg/catalogs",
+  "exit_code": 1,
+  "counts": {
+    "fail_test": 11,
+    "pass_test": 1,
+    "fail_package": 1
+  },
+  "sha256": {
+    "overlay.json": "b6f6917372d722154311c288ccb305d8d2ceca2c88c07bc3145df8df6ff10432",
+    "nested_presence_test.go": "1847b4edd45d5de21c567eeeda365454c2860e99ad361e49dbd95ada97cad261",
+    "result.jsonl": "9f5bd15e1395970e7bc935b0727290e0c12f4f2c593ca4694963e982ff7b8a97"
+  },
+  "scope": "Model JSON decode followed by JSON or YAML encode. Inference billing behavior was not tested."
+}
