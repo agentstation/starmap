@@ -1,0 +1,224 @@
+{
+  "recorded_at": "2026-09-08T12:31:46.535329+00:00",
+  "base_commit": "c434a3b73e0f3d2698cd173e7ffe64dd15950c46",
+  "source_files": "source-files.json",
+  "checks": {
+    "reconciler-final.jsonl": {
+      "event_counts": {
+        "pass": 352,
+        "fail": 0,
+        "skip": 0
+      },
+      "packages": [
+        {
+          "package": "github.com/agentstation/starmap/internal/catalog/reconciler",
+          "result": "pass",
+          "elapsed_seconds": 1.655
+        }
+      ],
+      "capture": "reconciler-final.jsonl.gz"
+    },
+    "minimum-final.jsonl": {
+      "event_counts": {
+        "pass": 65,
+        "fail": 0,
+        "skip": 0
+      },
+      "packages": [
+        {
+          "package": "github.com/agentstation/starmap/internal/catalog/reconciler",
+          "result": "pass",
+          "elapsed_seconds": 1.409
+        }
+      ],
+      "capture": "minimum-final.jsonl.gz"
+    },
+    "original-final-tests.jsonl": {
+      "event_counts": {
+        "pass": 3,
+        "fail": 19,
+        "skip": 0
+      },
+      "packages": [
+        {
+          "package": "github.com/agentstation/starmap/internal/catalog/reconciler",
+          "result": "fail",
+          "elapsed_seconds": 0.337
+        }
+      ],
+      "capture": "original-final-tests.jsonl.gz"
+    },
+    "original-final-tests-overlay-build.jsonl": {
+      "event_counts": {
+        "pass": 0,
+        "fail": 1,
+        "skip": 0
+      },
+      "packages": [
+        {
+          "package": "github.com/agentstation/starmap/internal/catalog/reconciler",
+          "result": "fail",
+          "elapsed_seconds": 0
+        }
+      ],
+      "capture": "original-final-tests-overlay-build.jsonl.gz"
+    },
+    "legacy-positive-probe.jsonl": {
+      "event_counts": {
+        "pass": 0,
+        "fail": 2,
+        "skip": 0
+      },
+      "packages": [
+        {
+          "package": "github.com/agentstation/starmap/internal/catalog/reconciler",
+          "result": "fail",
+          "elapsed_seconds": 0.24
+        }
+      ],
+      "capture": "legacy-positive-probe.jsonl.gz"
+    },
+    "feature-mixed-confirmed-before.jsonl": {
+      "event_counts": {
+        "pass": 4,
+        "fail": 0,
+        "skip": 0
+      },
+      "packages": [
+        {
+          "package": "github.com/agentstation/starmap/internal/catalog/reconciler",
+          "result": "pass",
+          "elapsed_seconds": 1.2570000000000001
+        }
+      ],
+      "capture": "feature-mixed-confirmed-before.jsonl.gz"
+    },
+    "full-default-timeout-interrupted.jsonl": {
+      "event_counts": {
+        "pass": 609,
+        "fail": 0,
+        "skip": 0
+      },
+      "packages": [
+        {
+          "package": "github.com/agentstation/starmap/internal/catalog/reconciler",
+          "result": "pass",
+          "elapsed_seconds": 1.673
+        }
+      ],
+      "capture": "full-default-timeout-interrupted.jsonl.gz"
+    },
+    "excluded-origin-probe.jsonl": {
+      "event_counts": {
+        "pass": 0,
+        "fail": 2,
+        "skip": 0
+      },
+      "packages": [
+        {
+          "package": "github.com/agentstation/starmap/internal/catalog/reconciler",
+          "result": "fail",
+          "elapsed_seconds": 0.239
+        }
+      ],
+      "capture": "excluded-origin-probe.jsonl.gz"
+    },
+    "full-final.jsonl": {
+      "event_counts": {
+        "pass": 998,
+        "fail": 0,
+        "skip": 0
+      },
+      "packages": [
+        {
+          "package": "github.com/agentstation/starmap/internal/catalog/reconciler",
+          "result": "pass",
+          "elapsed_seconds": 1.909
+        },
+        {
+          "package": "github.com/agentstation/starmap/acquisition",
+          "result": "pass",
+          "elapsed_seconds": 308.045
+        },
+        {
+          "package": "github.com/agentstation/starmap/runtime",
+          "result": "pass",
+          "elapsed_seconds": 623.141
+        }
+      ],
+      "capture": "full-final.jsonl.gz"
+    }
+  },
+  "pending": [],
+  "qualification": "CSP3 remains in_progress. The legacy positive-projection probe fails. No publication or component acceptance credit.",
+  "source_scope": {
+    "reconciler-final.jsonl": "Final source-files.json snapshots.",
+    "minimum-final.jsonl": "Final source-files.json snapshots.",
+    "original-final-tests.jsonl": "Production files at c434a3b7, final integration tests, and empty overlays for the new legacy implementation and its unit tests.",
+    "feature-mixed-confirmed-before.jsonl": "Intermediate feature-selection overlay. It passes and supplies no failure evidence.",
+    "legacy-positive-probe.jsonl": "Final production source with the separately captured test overlay.",
+    "full-default-timeout-interrupted.jsonl": "Final source, interrupted to correct the test timeout. Not full-suite evidence.",
+    "excluded-origin-probe.jsonl": "Final production source with the separately captured direct resolver test overlay.",
+    "full-final.jsonl": "Final source-files.json snapshots, identical to work_commit."
+  },
+  "commands": {
+    "full-final.jsonl": {
+      "command": "GOTOOLCHAIN=go1.26.6 go test -race -count=1 -timeout 20m ./runtime ./acquisition ./internal/catalog/reconciler -json",
+      "session_id": 57972,
+      "exit_code": 0
+    },
+    "minimum-final.jsonl": {
+      "command": "GOTOOLCHAIN=go1.25.12 go test -race ./internal/catalog/reconciler -run 'TestComposite|TestLegacyComposite' -count=1 -json",
+      "exit_code": 0
+    },
+    "reconciler-final.jsonl": {
+      "command": "GOTOOLCHAIN=go1.26.6 go test -race ./internal/catalog/reconciler -count=1 -json",
+      "exit_code": 0
+    },
+    "original-final-tests.jsonl": {
+      "command": "GOTOOLCHAIN=go1.26.6 go test -race -overlay /tmp/starmap-csp3-rejection/original-final-tests-overlay.json ./internal/catalog/reconciler -run '^TestCompositePolicy|^TestCompositeProjectionPolicy' -count=1 -json",
+      "exit_code": 1
+    },
+    "legacy-positive-probe.jsonl": {
+      "command": "GOTOOLCHAIN=go1.26.6 go test -race -overlay /tmp/starmap-csp3-rejection/legacy-positive-overlay.json ./internal/catalog/reconciler -run '^TestLegacyProjectionDoesNotInventLocalEvidence$' -count=1 -json",
+      "exit_code": 1
+    },
+    "ago-final.json": {
+      "command": "GOTOOLCHAIN=go1.26.6 go tool ago -stale-ignores -format json ./...",
+      "findings": 0,
+      "stale_ignores": 0,
+      "errors": 0
+    },
+    "lint-final.txt": {
+      "command": "GOTOOLCHAIN=go1.26.6 go tool golangci-lint run ./internal/catalog/reconciler/...",
+      "exit_code": 2
+    },
+    "lint-package-final.txt": {
+      "command": "GOTOOLCHAIN=go1.26.6 golangci-lint run ./internal/catalog/reconciler/...",
+      "exit_code": 0
+    },
+    "component-final.json": {
+      "command": "python3 scripts/catalog_product_verify.py --task CSP3 --json",
+      "exit_code": 1
+    },
+    "excluded-origin-probe.jsonl": {
+      "command": "GOTOOLCHAIN=go1.26.6 go test -race -overlay /tmp/starmap-csp3-rejection/excluded-origin-overlay.json ./internal/catalog/reconciler -run '^TestExcludedOriginCannotBecomeALocalClaim$' -count=1 -json",
+      "exit_code": 1
+    }
+  },
+  "work_commit": "7b27a767d36503931b90abad9dfa0e2062d7db84",
+  "writing": {
+    "command": "make technical-writing-check",
+    "exit_code": 0,
+    "files": 1211,
+    "diagnostics": 0,
+    "capture": "writing-plan.txt.gz"
+  },
+  "tooling_attempts": [
+    {
+      "command": "make technical-writing-check",
+      "result": "The first archive layout treated source copies with .go.txt suffixes as prose and reported 139 diagnostics.",
+      "correction": "Exact source bytes now use compressed .go.gz snapshots. Actual Go comments still pass the unchanged repository rules."
+    }
+  ]
+}

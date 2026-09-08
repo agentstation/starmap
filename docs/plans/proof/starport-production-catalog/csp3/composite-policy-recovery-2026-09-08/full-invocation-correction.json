@@ -1,0 +1,12 @@
+{
+  "at": "2026-09-08T12:20:02.600815+00:00",
+  "pid": 5234,
+  "command": "go test -race ./runtime ./acquisition ./internal/catalog/reconciler -count=1 -json",
+  "action": "Stop only this test process tree and rerun with the documented 20-minute timeout.",
+  "reason": "Prior runtime package evidence takes more than the default ten minutes.",
+  "terminated_pids": [
+    5234,
+    5310,
+    5311
+  ]
+}

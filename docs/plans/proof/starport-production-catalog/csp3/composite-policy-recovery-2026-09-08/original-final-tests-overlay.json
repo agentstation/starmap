@@ -1,0 +1,11 @@
+{
+  "Replace": {
+    "/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/internal/catalog/reconciler/composite_evidence.go": "/tmp/starmap-csp3-rejection/original-final-tests-composite_evidence.go",
+    "/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/internal/catalog/reconciler/feature_evidence.go": "/tmp/starmap-csp3-rejection/original-final-tests-feature_evidence.go",
+    "/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/internal/catalog/reconciler/metadata_evidence.go": "/tmp/starmap-csp3-rejection/original-final-tests-metadata_evidence.go",
+    "/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/internal/catalog/reconciler/model_policy.go": "/tmp/starmap-csp3-rejection/original-final-tests-model_policy.go",
+    "/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/internal/catalog/reconciler/source_identity.go": "/tmp/starmap-csp3-rejection/original-final-tests-source_identity.go",
+    "/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/internal/catalog/reconciler/legacy_composite_policy.go": "/tmp/starmap-csp3-rejection/empty-legacy-overlay.go",
+    "/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/internal/catalog/reconciler/legacy_composite_policy_test.go": "/tmp/starmap-csp3-rejection/empty-legacy-overlay.go"
+  }
+}

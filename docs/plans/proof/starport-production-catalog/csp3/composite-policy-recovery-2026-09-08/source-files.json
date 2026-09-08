@@ -1,0 +1,11 @@
+{
+  "internal/catalog/reconciler/composite_policy_test.go": "975a5e3ce927994e2da20e1769bec5e3df82a23ad5b79c81161591e9a7920647",
+  "internal/catalog/reconciler/model_policy.go": "29b9bbac69dc40636de7aa9b039ce7ce792c4d8890f39a87c663084abbe231b4",
+  "internal/catalog/reconciler/source_identity.go": "30d24231b6c1a5d77b8d29c44440e4df8ae4433e91a0356cdac506bf9a2b8fea",
+  "internal/catalog/reconciler/legacy_composite_policy.go": "750a64ff4efde821c28c42f6a08ad696d25785044b773e0ba3872dc15111d715",
+  "internal/catalog/reconciler/feature_evidence.go": "91ae7e8687187aef477ab71183df0db9e5111244ee99954a2080fd921037cf24",
+  "internal/catalog/reconciler/composite_evidence_test.go": "64f326ac042bc4c0804b35f5bd8bacc46743696a784a29dd24042fbc18012546",
+  "internal/catalog/reconciler/composite_evidence.go": "8282b9565480a950bc5f8af7860cd9f248cdb6787a872315ab26057e4c6e62e0",
+  "internal/catalog/reconciler/metadata_evidence.go": "4413495cffd47b45d9b37ca976e2d1d14e9addab349a52fd6e89562e21a3d2cd",
+  "internal/catalog/reconciler/legacy_composite_policy_test.go": "43b9893cb49ec26d483a1fb41086fd3c1b6d81120465cb92c300fd725dac2a33"
+}
