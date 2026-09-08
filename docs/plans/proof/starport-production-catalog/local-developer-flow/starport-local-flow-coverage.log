@@ -1,0 +1,47 @@
+
+==> coverage ./internal/catalog/pipeline >= 70%
+ok  	github.com/agentstation/starmap/internal/catalog/pipeline	2.104s	coverage: 83.8% of statements
+
+==> coverage ./internal/catalog/query >= 75%
+ok  	github.com/agentstation/starmap/internal/catalog/query	0.175s	coverage: 77.7% of statements
+
+==> coverage ./internal/providers/clients >= 80%
+ok  	github.com/agentstation/starmap/internal/providers/clients	(cached)	coverage: 81.0% of statements
+
+==> coverage ./internal/sources/providers >= 75%
+ok  	github.com/agentstation/starmap/internal/sources/providers	0.360s	coverage: 85.7% of statements
+
+==> coverage ./internal/server/middleware >= 90%
+ok  	github.com/agentstation/starmap/internal/server/middleware	(cached)	coverage: 96.6% of statements
+
+==> coverage ./internal/server/openrouter >= 85%
+ok  	github.com/agentstation/starmap/internal/server/openrouter	1.851s	coverage: 88.8% of statements
+
+==> coverage ./internal/server/params >= 95%
+ok  	github.com/agentstation/starmap/internal/server/params	(cached)	coverage: 98.5% of statements
+
+==> coverage ./internal/server/response >= 95%
+ok  	github.com/agentstation/starmap/internal/server/response	(cached)	coverage: 96.6% of statements
+
+==> coverage ./internal/server/sse >= 90%
+ok  	github.com/agentstation/starmap/internal/server/sse	(cached)	coverage: 92.4% of statements
+
+==> coverage ./internal/transport >= 40%
+ok  	github.com/agentstation/starmap/internal/transport	0.298s	coverage: 89.0% of statements
+
+==> coverage ./pkg/catalogs/authority >= 90%
+ok  	github.com/agentstation/starmap/pkg/catalogs/authority	(cached)	coverage: 95.6% of statements
+
+==> coverage ./pkg/catalogs >= 55%
+ok  	github.com/agentstation/starmap/pkg/catalogs	19.104s	coverage: 75.7% of statements
+
+==> coverage ./pkg/errors >= 80%
+ok  	github.com/agentstation/starmap/pkg/errors	(cached)	coverage: 88.3% of statements
+
+==> coverage ./internal/catalog/reconciler >= 75%
+ok  	github.com/agentstation/starmap/internal/catalog/reconciler	0.245s	coverage: 85.1% of statements
+
+==> coverage ./pkg/sources >= 35%
+ok  	github.com/agentstation/starmap/pkg/sources	0.202s	coverage: 68.9% of statements
+
+critical seam coverage passed

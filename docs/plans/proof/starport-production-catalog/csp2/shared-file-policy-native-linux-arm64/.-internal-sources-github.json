@@ -1,0 +1,1674 @@
+{
+  "package": "./internal/sources/github",
+  "race": false,
+  "toolchain": "go1.25.12",
+  "commands": [
+    {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.25.12",
+        "GOOS=linux",
+        "GOARCH=arm64",
+        "CGO_ENABLED=0",
+        "go",
+        "test",
+        "-c",
+        "-o",
+        "/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/csp2-native-build-ipr7sze9/test",
+        "././internal/sources/github"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "docker",
+        "volume",
+        "create",
+        "--label",
+        "purpose=csp2-native-package-verification",
+        "csp2-native-a6fda9c5288145bab3984e09f473bd1b"
+      ],
+      "exit_code": 0,
+      "stdout": "csp2-native-a6fda9c5288145bab3984e09f473bd1b\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "docker",
+        "create",
+        "--pull=never",
+        "--network",
+        "none",
+        "--read-only",
+        "--user",
+        "65532:65532",
+        "--cap-drop=ALL",
+        "--security-opt=no-new-privileges",
+        "--mount",
+        "type=bind,src=/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/csp2-native-build-ipr7sze9/test,dst=/native-test,readonly",
+        "--mount",
+        "type=bind,src=/Users/jack/src/github.com/agentstation/starmap-catalog-requirements,dst=/Users/jack/src/github.com/agentstation/starmap-catalog-requirements,readonly",
+        "--mount",
+        "type=volume,src=csp2-native-a6fda9c5288145bab3984e09f473bd1b,dst=/home/nonroot",
+        "--env",
+        "TMPDIR=/home/nonroot",
+        "--env",
+        "GOMAXPROCS=4",
+        "--workdir",
+        "/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/internal/sources/github",
+        "--entrypoint",
+        "/native-test",
+        "cgr.dev/chainguard/static@sha256:60582b2ae6074f641094af0f370d4ab241aab271858a66223dcde7eee9f51638",
+        "-test.v=test2json",
+        "-test.count=1",
+        "-test.parallel=4",
+        "-test.timeout=10m"
+      ],
+      "exit_code": 0,
+      "stdout": "77bd0bdf73281e3d25033c4b4dca20f6e65c1b1d900cd10cbc3d898eeb3d97d8\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "docker",
+        "start",
+        "--attach",
+        "77bd0bdf73281e3d25033c4b4dca20f6e65c1b1d900cd10cbc3d898eeb3d97d8"
+      ],
+      "exit_code": 0,
+      "stdout": "\u0016=== RUN   TestGitHubSourceVerifiesTheChannelBranch\n\u0016=== PAUSE TestGitHubSourceVerifiesTheChannelBranch\n\u0016=== NAME  \n\u0016=== RUN   TestGitHubSourceRejectsReplayedChannelDocuments\n\u0016=== PAUSE TestGitHubSourceRejectsReplayedChannelDocuments\n\u0016=== NAME  \n\u0016=== RUN   TestGitHubSourceRejectsTrustNegativeReleases\n\u0016=== PAUSE TestGitHubSourceRejectsTrustNegativeReleases\n\u0016=== NAME  \n\u0016=== RUN   TestGitHubSourceRejectsUnattestedChannelDocuments\n\u0016=== PAUSE TestGitHubSourceRejectsUnattestedChannelDocuments\n\u0016=== NAME  \n\u0016=== RUN   TestGitHubSourceRejectsAssetsThatMissTheChannelRecord\n\u0016=== PAUSE TestGitHubSourceRejectsAssetsThatMissTheChannelRecord\n\u0016=== NAME  \n\u0016=== RUN   TestGitHubSourceRejectsUnsignedEvidenceWithTheDefaultEngine\n\u0016=== PAUSE TestGitHubSourceRejectsUnsignedEvidenceWithTheDefaultEngine\n\u0016=== NAME  \n\u0016=== RUN   TestGitHubSourcePolicyAcceptsPublishedCatalogProvenance\n\u0016=== PAUSE TestGitHubSourcePolicyAcceptsPublishedCatalogProvenance\n\u0016=== NAME  \n\u0016=== RUN   TestGitHubSourceReadsLegacyReleaseTags\n\u0016=== PAUSE TestGitHubSourceReadsLegacyReleaseTags\n\u0016=== NAME  \n\u0016=== RUN   TestGitHubSourceReportsRateLimitBudget\n\u0016=== PAUSE TestGitHubSourceReportsRateLimitBudget\n\u0016=== NAME  \n\u0016=== RUN   TestGitHubSourceRejectsUnusableConfiguration\n\u0016=== PAUSE TestGitHubSourceRejectsUnusableConfiguration\n\u0016=== NAME  \n\u0016=== RUN   TestGitHubSourceDeclaresItsContract\n\u0016=== PAUSE TestGitHubSourceDeclaresItsContract\n\u0016=== NAME  \n\u0016=== RUN   TestGitHubSourceReportsTheSemanticCatalogDigest\n\u0016=== PAUSE TestGitHubSourceReportsTheSemanticCatalogDigest\n\u0016=== NAME  \n\u0016=== RUN   TestGitHubSourceSkipsTheBodyWhenTheChannelIsUnchanged\n\u0016=== PAUSE TestGitHubSourceSkipsTheBodyWhenTheChannelIsUnchanged\n\u0016=== NAME  \n\u0016=== RUN   TestGitHubSourceAdvancesWithTheChannelSequence\n\u0016=== PAUSE TestGitHubSourceAdvancesWithTheChannelSequence\n\u0016=== NAME  \n\u0016=== RUN   TestGitHubSourceResetsTheStateWhenTheChannelChanges\n\u0016=== PAUSE TestGitHubSourceResetsTheStateWhenTheChannelChanges\n\u0016=== NAME  \n\u0016=== RUN   TestDiscoveryStateRequiresPrivateAccess\n\u0016--- PASS: TestDiscoveryStateRequiresPrivateAccess (0.01s)\n\u0016=== NAME  \n\u0016=== RUN   TestDiscoveryStateRefusesExposedExistingDirectory\n\u0016--- PASS: TestDiscoveryStateRefusesExposedExistingDirectory (0.00s)\n\u0016=== NAME  \n\u0016=== RUN   TestDiscoveryStateRefusesLinkedDirectory\n\u0016--- PASS: TestDiscoveryStateRefusesLinkedDirectory (0.00s)\n\u0016=== NAME  \n\u0016=== CONT  TestGitHubSourceVerifiesTheChannelBranch\n\u0016=== CONT  TestGitHubSourceReportsRateLimitBudget\n\u0016=== RUN   TestGitHubSourceReportsRateLimitBudget/inside_the_budget\n\u0016=== PAUSE TestGitHubSourceReportsRateLimitBudget/inside_the_budget\n\u0016=== NAME  TestGitHubSourceReportsRateLimitBudget\n\u0016=== RUN   TestGitHubSourceReportsRateLimitBudget/at_the_warning_threshold\n\u0016=== PAUSE TestGitHubSourceReportsRateLimitBudget/at_the_warning_threshold\n\u0016=== NAME  TestGitHubSourceReportsRateLimitBudget\n\u0016=== RUN   TestGitHubSourceReportsRateLimitBudget/beyond_the_warning_threshold\n\u0016=== PAUSE TestGitHubSourceReportsRateLimitBudget/beyond_the_warning_threshold\n\u0016=== NAME  TestGitHubSourceReportsRateLimitBudget\n\u0016=== CONT  TestGitHubSourceReportsRateLimitBudget/inside_the_budget\n\u0016=== CONT  TestGitHubSourceReportsTheSemanticCatalogDigest\n\u0016=== CONT  TestGitHubSourceDeclaresItsContract\n\u0016--- PASS: TestGitHubSourceDeclaresItsContract (0.01s)\n\u0016=== CONT  TestGitHubSourceRejectsUnusableConfiguration\n\u0016=== RUN   TestGitHubSourceRejectsUnusableConfiguration/no_state_directory\n\u0016=== PAUSE TestGitHubSourceRejectsUnusableConfiguration/no_state_directory\n\u0016=== NAME  TestGitHubSourceRejectsUnusableConfiguration\n\u0016=== RUN   TestGitHubSourceRejectsUnusableConfiguration/empty_repository\n\u0016=== PAUSE TestGitHubSourceRejectsUnusableConfiguration/empty_repository\n\u0016=== NAME  TestGitHubSourceRejectsUnusableConfiguration\n\u0016=== RUN   TestGitHubSourceRejectsUnusableConfiguration/empty_channel\n\u0016=== PAUSE TestGitHubSourceRejectsUnusableConfiguration/empty_channel\n\u0016=== NAME  TestGitHubSourceRejectsUnusableConfiguration\n\u0016=== RUN   TestGitHubSourceRejectsUnusableConfiguration/empty_signer_workflow\n\u0016=== PAUSE TestGitHubSourceRejectsUnusableConfiguration/empty_signer_workflow\n\u0016=== NAME  TestGitHubSourceRejectsUnusableConfiguration\n\u0016=== RUN   TestGitHubSourceRejectsUnusableConfiguration/empty_trusted_root\n\u0016=== PAUSE TestGitHubSourceRejectsUnusableConfiguration/empty_trusted_root\n\u0016=== NAME  TestGitHubSourceRejectsUnusableConfiguration\n\u0016=== RUN   TestGitHubSourceRejectsUnusableConfiguration/unusable_transfer_policy\n\u0016=== PAUSE TestGitHubSourceRejectsUnusableConfiguration/unusable_transfer_policy\n\u0016=== NAME  TestGitHubSourceRejectsUnusableConfiguration\n\u0016=== CONT  TestGitHubSourceReportsRateLimitBudget/beyond_the_warning_threshold\n\u0016--- PASS: TestGitHubSourceReportsTheSemanticCatalogDigest (0.07s)\n\u0016=== CONT  TestGitHubSourceReportsRateLimitBudget/at_the_warning_threshold\n\u0016--- PASS: TestGitHubSourceVerifiesTheChannelBranch (0.07s)\n\u0016=== CONT  TestGitHubSourceAdvancesWithTheChannelSequence\n\u0016=== CONT  TestGitHubSourceResetsTheStateWhenTheChannelChanges\n\u0016=== CONT  TestGitHubSourceRejectsAssetsThatMissTheChannelRecord\n\u0016=== RUN   TestGitHubSourceRejectsAssetsThatMissTheChannelRecord/recorded_checksum\n\u0016=== PAUSE TestGitHubSourceRejectsAssetsThatMissTheChannelRecord/recorded_checksum\n\u0016=== NAME  TestGitHubSourceRejectsAssetsThatMissTheChannelRecord\n\u0016=== RUN   TestGitHubSourceRejectsAssetsThatMissTheChannelRecord/recorded_size\n\u0016=== PAUSE TestGitHubSourceRejectsAssetsThatMissTheChannelRecord/recorded_size\n\u0016=== NAME  TestGitHubSourceRejectsAssetsThatMissTheChannelRecord\n\u0016=== CONT  TestGitHubSourceReadsLegacyReleaseTags\n\u0016=== RUN   TestGitHubSourceReadsLegacyReleaseTags/legacy_semantic\n\u0016--- PASS: TestGitHubSourceReportsRateLimitBudget/beyond_the_warning_threshold (0.05s)\n\u0016--- PASS: TestGitHubSourceReportsRateLimitBudget/inside_the_budget (0.07s)\n\u0016--- PASS: TestGitHubSourceReadsLegacyReleaseTags/legacy_semantic (0.03s)\n\u0016=== NAME  TestGitHubSourceReadsLegacyReleaseTags\n\u0016=== RUN   TestGitHubSourceReadsLegacyReleaseTags/legacy_payload\n\u0016--- PASS: TestGitHubSourceReadsLegacyReleaseTags/legacy_payload (0.03s)\n\u0016=== NAME  TestGitHubSourceReadsLegacyReleaseTags\n\u0016--- PASS: TestGitHubSourceReadsLegacyReleaseTags (0.06s)\n\u0016=== CONT  TestGitHubSourcePolicyAcceptsPublishedCatalogProvenance\n\u0016--- PASS: TestGitHubSourceReportsRateLimitBudget/at_the_warning_threshold (0.09s)\n\u0016--- PASS: TestGitHubSourceReportsRateLimitBudget (0.00s)\n\u0016=== CONT  TestGitHubSourceRejectsUnsignedEvidenceWithTheDefaultEngine\n\u0016--- PASS: TestGitHubSourceRejectsUnsignedEvidenceWithTheDefaultEngine (0.02s)\n\u0016=== CONT  TestGitHubSourceSkipsTheBodyWhenTheChannelIsUnchanged\n\u0016--- PASS: TestGitHubSourcePolicyAcceptsPublishedCatalogProvenance (0.05s)\n\u0016=== CONT  TestGitHubSourceRejectsTrustNegativeReleases\n\u0016--- PASS: TestGitHubSourceAdvancesWithTheChannelSequence (0.15s)\n\u0016=== CONT  TestGitHubSourceRejectsUnattestedChannelDocuments\n\u0016--- PASS: TestGitHubSourceRejectsUnattestedChannelDocuments (0.01s)\n\u0016=== CONT  TestGitHubSourceRejectsReplayedChannelDocuments\n\u0016--- PASS: TestGitHubSourceResetsTheStateWhenTheChannelChanges (0.16s)\n\u0016=== CONT  TestGitHubSourceRejectsUnusableConfiguration/no_state_directory\n\u0016--- PASS: TestGitHubSourceRejectsUnusableConfiguration/no_state_directory (0.00s)\n\u0016=== CONT  TestGitHubSourceRejectsUnusableConfiguration/empty_signer_workflow\n\u0016--- PASS: TestGitHubSourceRejectsUnusableConfiguration/empty_signer_workflow (0.00s)\n\u0016=== CONT  TestGitHubSourceRejectsUnusableConfiguration/unusable_transfer_policy\n\u0016--- PASS: TestGitHubSourceRejectsUnusableConfiguration/unusable_transfer_policy (0.00s)\n\u0016=== CONT  TestGitHubSourceRejectsUnusableConfiguration/empty_trusted_root\n\u0016--- PASS: TestGitHubSourceRejectsUnusableConfiguration/empty_trusted_root (0.00s)\n\u0016=== CONT  TestGitHubSourceRejectsUnusableConfiguration/empty_channel\n\u0016--- PASS: TestGitHubSourceRejectsUnusableConfiguration/empty_channel (0.00s)\n\u0016=== CONT  TestGitHubSourceRejectsUnusableConfiguration/empty_repository\n\u0016--- PASS: TestGitHubSourceRejectsUnusableConfiguration/empty_repository (0.00s)\n\u0016--- PASS: TestGitHubSourceRejectsUnusableConfiguration (0.00s)\n\u0016=== CONT  TestGitHubSourceRejectsAssetsThatMissTheChannelRecord/recorded_checksum\n\u0016--- PASS: TestGitHubSourceRejectsAssetsThatMissTheChannelRecord/recorded_checksum (0.01s)\n\u0016=== CONT  TestGitHubSourceRejectsAssetsThatMissTheChannelRecord/recorded_size\n\u0016--- PASS: TestGitHubSourceRejectsAssetsThatMissTheChannelRecord/recorded_size (0.01s)\n\u0016--- PASS: TestGitHubSourceRejectsAssetsThatMissTheChannelRecord (0.00s)\n\u0016--- PASS: TestGitHubSourceSkipsTheBodyWhenTheChannelIsUnchanged (0.09s)\n\u0016--- PASS: TestGitHubSourceRejectsTrustNegativeReleases (0.09s)\n\u0016--- PASS: TestGitHubSourceRejectsReplayedChannelDocuments (0.05s)\n\u0016PASS\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "docker",
+        "inspect",
+        "--format",
+        "{{json .State}}",
+        "77bd0bdf73281e3d25033c4b4dca20f6e65c1b1d900cd10cbc3d898eeb3d97d8"
+      ],
+      "exit_code": 0,
+      "stdout": "{\"Status\":\"exited\",\"Running\":false,\"Paused\":false,\"Restarting\":false,\"OOMKilled\":false,\"Dead\":false,\"Pid\":0,\"ExitCode\":0,\"Error\":\"\",\"StartedAt\":\"2026-09-06T22:39:03.869052632Z\",\"FinishedAt\":\"2026-09-06T22:39:04.446950799Z\"}\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "docker",
+        "rm",
+        "-f",
+        "77bd0bdf73281e3d25033c4b4dca20f6e65c1b1d900cd10cbc3d898eeb3d97d8"
+      ],
+      "exit_code": 0,
+      "stdout": "77bd0bdf73281e3d25033c4b4dca20f6e65c1b1d900cd10cbc3d898eeb3d97d8\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "docker",
+        "volume",
+        "rm",
+        "csp2-native-a6fda9c5288145bab3984e09f473bd1b"
+      ],
+      "exit_code": 0,
+      "stdout": "csp2-native-a6fda9c5288145bab3984e09f473bd1b\n",
+      "stderr": ""
+    }
+  ],
+  "test_events": [
+    {
+      "Time": "2026-09-06T17:39:04.823523-05:00",
+      "Action": "start",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.823645-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceVerifiesTheChannelBranch"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.823648-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceVerifiesTheChannelBranch",
+      "Output": "=== RUN   TestGitHubSourceVerifiesTheChannelBranch\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.823651-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceVerifiesTheChannelBranch",
+      "Output": "=== PAUSE TestGitHubSourceVerifiesTheChannelBranch\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.823653-05:00",
+      "Action": "pause",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceVerifiesTheChannelBranch"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.823654-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceRejectsReplayedChannelDocuments"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.823657-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceRejectsReplayedChannelDocuments",
+      "Output": "=== RUN   TestGitHubSourceRejectsReplayedChannelDocuments\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.823661-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceRejectsReplayedChannelDocuments",
+      "Output": "=== PAUSE TestGitHubSourceRejectsReplayedChannelDocuments\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.823662-05:00",
+      "Action": "pause",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceRejectsReplayedChannelDocuments"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.823663-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceRejectsTrustNegativeReleases"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.823666-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceRejectsTrustNegativeReleases",
+      "Output": "=== RUN   TestGitHubSourceRejectsTrustNegativeReleases\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.823667-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceRejectsTrustNegativeReleases",
+      "Output": "=== PAUSE TestGitHubSourceRejectsTrustNegativeReleases\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.823668-05:00",
+      "Action": "pause",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceRejectsTrustNegativeReleases"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.823669-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceRejectsUnattestedChannelDocuments"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.823671-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceRejectsUnattestedChannelDocuments",
+      "Output": "=== RUN   TestGitHubSourceRejectsUnattestedChannelDocuments\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.823672-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceRejectsUnattestedChannelDocuments",
+      "Output": "=== PAUSE TestGitHubSourceRejectsUnattestedChannelDocuments\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.823673-05:00",
+      "Action": "pause",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceRejectsUnattestedChannelDocuments"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.823674-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceRejectsAssetsThatMissTheChannelRecord"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.823676-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceRejectsAssetsThatMissTheChannelRecord",
+      "Output": "=== RUN   TestGitHubSourceRejectsAssetsThatMissTheChannelRecord\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.823678-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceRejectsAssetsThatMissTheChannelRecord",
+      "Output": "=== PAUSE TestGitHubSourceRejectsAssetsThatMissTheChannelRecord\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.823679-05:00",
+      "Action": "pause",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceRejectsAssetsThatMissTheChannelRecord"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.823682-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceRejectsUnsignedEvidenceWithTheDefaultEngine"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.823684-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceRejectsUnsignedEvidenceWithTheDefaultEngine",
+      "Output": "=== RUN   TestGitHubSourceRejectsUnsignedEvidenceWithTheDefaultEngine\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.823685-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceRejectsUnsignedEvidenceWithTheDefaultEngine",
+      "Output": "=== PAUSE TestGitHubSourceRejectsUnsignedEvidenceWithTheDefaultEngine\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.823686-05:00",
+      "Action": "pause",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceRejectsUnsignedEvidenceWithTheDefaultEngine"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.823687-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourcePolicyAcceptsPublishedCatalogProvenance"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.823688-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourcePolicyAcceptsPublishedCatalogProvenance",
+      "Output": "=== RUN   TestGitHubSourcePolicyAcceptsPublishedCatalogProvenance\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.82369-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourcePolicyAcceptsPublishedCatalogProvenance",
+      "Output": "=== PAUSE TestGitHubSourcePolicyAcceptsPublishedCatalogProvenance\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.823692-05:00",
+      "Action": "pause",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourcePolicyAcceptsPublishedCatalogProvenance"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.823693-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceReadsLegacyReleaseTags"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.823695-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceReadsLegacyReleaseTags",
+      "Output": "=== RUN   TestGitHubSourceReadsLegacyReleaseTags\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.823696-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceReadsLegacyReleaseTags",
+      "Output": "=== PAUSE TestGitHubSourceReadsLegacyReleaseTags\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.823697-05:00",
+      "Action": "pause",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceReadsLegacyReleaseTags"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.823699-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceReportsRateLimitBudget"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.8237-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceReportsRateLimitBudget",
+      "Output": "=== RUN   TestGitHubSourceReportsRateLimitBudget\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.823802-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceReportsRateLimitBudget",
+      "Output": "=== PAUSE TestGitHubSourceReportsRateLimitBudget\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.823812-05:00",
+      "Action": "pause",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceReportsRateLimitBudget"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.823815-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceRejectsUnusableConfiguration"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.823816-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceRejectsUnusableConfiguration",
+      "Output": "=== RUN   TestGitHubSourceRejectsUnusableConfiguration\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.823818-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceRejectsUnusableConfiguration",
+      "Output": "=== PAUSE TestGitHubSourceRejectsUnusableConfiguration\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.823819-05:00",
+      "Action": "pause",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceRejectsUnusableConfiguration"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.82382-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceDeclaresItsContract"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.823821-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceDeclaresItsContract",
+      "Output": "=== RUN   TestGitHubSourceDeclaresItsContract\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.823823-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceDeclaresItsContract",
+      "Output": "=== PAUSE TestGitHubSourceDeclaresItsContract\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.823824-05:00",
+      "Action": "pause",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceDeclaresItsContract"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.823826-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceReportsTheSemanticCatalogDigest"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.823827-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceReportsTheSemanticCatalogDigest",
+      "Output": "=== RUN   TestGitHubSourceReportsTheSemanticCatalogDigest\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.823828-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceReportsTheSemanticCatalogDigest",
+      "Output": "=== PAUSE TestGitHubSourceReportsTheSemanticCatalogDigest\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.82383-05:00",
+      "Action": "pause",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceReportsTheSemanticCatalogDigest"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.823831-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceSkipsTheBodyWhenTheChannelIsUnchanged"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.823836-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceSkipsTheBodyWhenTheChannelIsUnchanged",
+      "Output": "=== RUN   TestGitHubSourceSkipsTheBodyWhenTheChannelIsUnchanged\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.823838-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceSkipsTheBodyWhenTheChannelIsUnchanged",
+      "Output": "=== PAUSE TestGitHubSourceSkipsTheBodyWhenTheChannelIsUnchanged\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.823839-05:00",
+      "Action": "pause",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceSkipsTheBodyWhenTheChannelIsUnchanged"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.82384-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceAdvancesWithTheChannelSequence"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.823842-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceAdvancesWithTheChannelSequence",
+      "Output": "=== RUN   TestGitHubSourceAdvancesWithTheChannelSequence\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.823843-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceAdvancesWithTheChannelSequence",
+      "Output": "=== PAUSE TestGitHubSourceAdvancesWithTheChannelSequence\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.823844-05:00",
+      "Action": "pause",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceAdvancesWithTheChannelSequence"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.823845-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceResetsTheStateWhenTheChannelChanges"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.823846-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceResetsTheStateWhenTheChannelChanges",
+      "Output": "=== RUN   TestGitHubSourceResetsTheStateWhenTheChannelChanges\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.823848-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceResetsTheStateWhenTheChannelChanges",
+      "Output": "=== PAUSE TestGitHubSourceResetsTheStateWhenTheChannelChanges\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.823849-05:00",
+      "Action": "pause",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceResetsTheStateWhenTheChannelChanges"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.82385-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestDiscoveryStateRequiresPrivateAccess"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.823851-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestDiscoveryStateRequiresPrivateAccess",
+      "Output": "=== RUN   TestDiscoveryStateRequiresPrivateAccess\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.823857-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestDiscoveryStateRequiresPrivateAccess",
+      "Output": "--- PASS: TestDiscoveryStateRequiresPrivateAccess (0.01s)\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.823858-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestDiscoveryStateRequiresPrivateAccess",
+      "Elapsed": 0.01
+    },
+    {
+      "Time": "2026-09-06T17:39:04.823861-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestDiscoveryStateRefusesExposedExistingDirectory"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.823862-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestDiscoveryStateRefusesExposedExistingDirectory",
+      "Output": "=== RUN   TestDiscoveryStateRefusesExposedExistingDirectory\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.823864-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestDiscoveryStateRefusesExposedExistingDirectory",
+      "Output": "--- PASS: TestDiscoveryStateRefusesExposedExistingDirectory (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.823865-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestDiscoveryStateRefusesExposedExistingDirectory",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T17:39:04.823866-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestDiscoveryStateRefusesLinkedDirectory"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.823867-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestDiscoveryStateRefusesLinkedDirectory",
+      "Output": "=== RUN   TestDiscoveryStateRefusesLinkedDirectory\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.823869-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestDiscoveryStateRefusesLinkedDirectory",
+      "Output": "--- PASS: TestDiscoveryStateRefusesLinkedDirectory (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.823872-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestDiscoveryStateRefusesLinkedDirectory",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T17:39:04.823873-05:00",
+      "Action": "cont",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceVerifiesTheChannelBranch"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.823874-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceVerifiesTheChannelBranch",
+      "Output": "=== CONT  TestGitHubSourceVerifiesTheChannelBranch\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.823875-05:00",
+      "Action": "cont",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceReportsRateLimitBudget"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.823876-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceReportsRateLimitBudget",
+      "Output": "=== CONT  TestGitHubSourceReportsRateLimitBudget\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.823878-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceReportsRateLimitBudget/inside_the_budget"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.823879-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceReportsRateLimitBudget/inside_the_budget",
+      "Output": "=== RUN   TestGitHubSourceReportsRateLimitBudget/inside_the_budget\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.82388-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceReportsRateLimitBudget/inside_the_budget",
+      "Output": "=== PAUSE TestGitHubSourceReportsRateLimitBudget/inside_the_budget\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.823881-05:00",
+      "Action": "pause",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceReportsRateLimitBudget/inside_the_budget"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.823883-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceReportsRateLimitBudget/at_the_warning_threshold"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.823884-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceReportsRateLimitBudget/at_the_warning_threshold",
+      "Output": "=== RUN   TestGitHubSourceReportsRateLimitBudget/at_the_warning_threshold\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.823888-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceReportsRateLimitBudget/at_the_warning_threshold",
+      "Output": "=== PAUSE TestGitHubSourceReportsRateLimitBudget/at_the_warning_threshold\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.823889-05:00",
+      "Action": "pause",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceReportsRateLimitBudget/at_the_warning_threshold"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.823891-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceReportsRateLimitBudget/beyond_the_warning_threshold"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.823892-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceReportsRateLimitBudget/beyond_the_warning_threshold",
+      "Output": "=== RUN   TestGitHubSourceReportsRateLimitBudget/beyond_the_warning_threshold\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.823893-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceReportsRateLimitBudget/beyond_the_warning_threshold",
+      "Output": "=== PAUSE TestGitHubSourceReportsRateLimitBudget/beyond_the_warning_threshold\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.823894-05:00",
+      "Action": "pause",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceReportsRateLimitBudget/beyond_the_warning_threshold"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.823896-05:00",
+      "Action": "cont",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceReportsRateLimitBudget/inside_the_budget"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.823897-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceReportsRateLimitBudget/inside_the_budget",
+      "Output": "=== CONT  TestGitHubSourceReportsRateLimitBudget/inside_the_budget\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.823898-05:00",
+      "Action": "cont",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceReportsTheSemanticCatalogDigest"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.823899-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceReportsTheSemanticCatalogDigest",
+      "Output": "=== CONT  TestGitHubSourceReportsTheSemanticCatalogDigest\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.8239-05:00",
+      "Action": "cont",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceDeclaresItsContract"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.823901-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceDeclaresItsContract",
+      "Output": "=== CONT  TestGitHubSourceDeclaresItsContract\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.823903-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceDeclaresItsContract",
+      "Output": "--- PASS: TestGitHubSourceDeclaresItsContract (0.01s)\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.823904-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceDeclaresItsContract",
+      "Elapsed": 0.01
+    },
+    {
+      "Time": "2026-09-06T17:39:04.823905-05:00",
+      "Action": "cont",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceRejectsUnusableConfiguration"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.823906-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceRejectsUnusableConfiguration",
+      "Output": "=== CONT  TestGitHubSourceRejectsUnusableConfiguration\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.823908-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceRejectsUnusableConfiguration/no_state_directory"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.823909-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceRejectsUnusableConfiguration/no_state_directory",
+      "Output": "=== RUN   TestGitHubSourceRejectsUnusableConfiguration/no_state_directory\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.82391-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceRejectsUnusableConfiguration/no_state_directory",
+      "Output": "=== PAUSE TestGitHubSourceRejectsUnusableConfiguration/no_state_directory\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.823911-05:00",
+      "Action": "pause",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceRejectsUnusableConfiguration/no_state_directory"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.823913-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceRejectsUnusableConfiguration/empty_repository"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.823914-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceRejectsUnusableConfiguration/empty_repository",
+      "Output": "=== RUN   TestGitHubSourceRejectsUnusableConfiguration/empty_repository\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.823915-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceRejectsUnusableConfiguration/empty_repository",
+      "Output": "=== PAUSE TestGitHubSourceRejectsUnusableConfiguration/empty_repository\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.823916-05:00",
+      "Action": "pause",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceRejectsUnusableConfiguration/empty_repository"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.823918-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceRejectsUnusableConfiguration/empty_channel"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.82393-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceRejectsUnusableConfiguration/empty_channel",
+      "Output": "=== RUN   TestGitHubSourceRejectsUnusableConfiguration/empty_channel\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.823932-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceRejectsUnusableConfiguration/empty_channel",
+      "Output": "=== PAUSE TestGitHubSourceRejectsUnusableConfiguration/empty_channel\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.823933-05:00",
+      "Action": "pause",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceRejectsUnusableConfiguration/empty_channel"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.823935-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceRejectsUnusableConfiguration/empty_signer_workflow"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.823936-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceRejectsUnusableConfiguration/empty_signer_workflow",
+      "Output": "=== RUN   TestGitHubSourceRejectsUnusableConfiguration/empty_signer_workflow\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.823937-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceRejectsUnusableConfiguration/empty_signer_workflow",
+      "Output": "=== PAUSE TestGitHubSourceRejectsUnusableConfiguration/empty_signer_workflow\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.823938-05:00",
+      "Action": "pause",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceRejectsUnusableConfiguration/empty_signer_workflow"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.82394-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceRejectsUnusableConfiguration/empty_trusted_root"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.823941-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceRejectsUnusableConfiguration/empty_trusted_root",
+      "Output": "=== RUN   TestGitHubSourceRejectsUnusableConfiguration/empty_trusted_root\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.823942-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceRejectsUnusableConfiguration/empty_trusted_root",
+      "Output": "=== PAUSE TestGitHubSourceRejectsUnusableConfiguration/empty_trusted_root\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.823944-05:00",
+      "Action": "pause",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceRejectsUnusableConfiguration/empty_trusted_root"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.823945-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceRejectsUnusableConfiguration/unusable_transfer_policy"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.823946-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceRejectsUnusableConfiguration/unusable_transfer_policy",
+      "Output": "=== RUN   TestGitHubSourceRejectsUnusableConfiguration/unusable_transfer_policy\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.823947-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceRejectsUnusableConfiguration/unusable_transfer_policy",
+      "Output": "=== PAUSE TestGitHubSourceRejectsUnusableConfiguration/unusable_transfer_policy\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.823948-05:00",
+      "Action": "pause",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceRejectsUnusableConfiguration/unusable_transfer_policy"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.82395-05:00",
+      "Action": "cont",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceReportsRateLimitBudget/beyond_the_warning_threshold"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.823953-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceReportsRateLimitBudget/beyond_the_warning_threshold",
+      "Output": "=== CONT  TestGitHubSourceReportsRateLimitBudget/beyond_the_warning_threshold\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.823955-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceReportsTheSemanticCatalogDigest",
+      "Output": "--- PASS: TestGitHubSourceReportsTheSemanticCatalogDigest (0.07s)\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.823959-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceReportsTheSemanticCatalogDigest",
+      "Elapsed": 0.07
+    },
+    {
+      "Time": "2026-09-06T17:39:04.82396-05:00",
+      "Action": "cont",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceReportsRateLimitBudget/at_the_warning_threshold"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.823961-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceReportsRateLimitBudget/at_the_warning_threshold",
+      "Output": "=== CONT  TestGitHubSourceReportsRateLimitBudget/at_the_warning_threshold\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.823963-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceVerifiesTheChannelBranch",
+      "Output": "--- PASS: TestGitHubSourceVerifiesTheChannelBranch (0.07s)\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.823964-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceVerifiesTheChannelBranch",
+      "Elapsed": 0.07
+    },
+    {
+      "Time": "2026-09-06T17:39:04.823965-05:00",
+      "Action": "cont",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceAdvancesWithTheChannelSequence"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.823966-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceAdvancesWithTheChannelSequence",
+      "Output": "=== CONT  TestGitHubSourceAdvancesWithTheChannelSequence\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.823967-05:00",
+      "Action": "cont",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceResetsTheStateWhenTheChannelChanges"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.823969-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceResetsTheStateWhenTheChannelChanges",
+      "Output": "=== CONT  TestGitHubSourceResetsTheStateWhenTheChannelChanges\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.82397-05:00",
+      "Action": "cont",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceRejectsAssetsThatMissTheChannelRecord"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.823971-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceRejectsAssetsThatMissTheChannelRecord",
+      "Output": "=== CONT  TestGitHubSourceRejectsAssetsThatMissTheChannelRecord\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.823972-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceRejectsAssetsThatMissTheChannelRecord/recorded_checksum"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.823973-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceRejectsAssetsThatMissTheChannelRecord/recorded_checksum",
+      "Output": "=== RUN   TestGitHubSourceRejectsAssetsThatMissTheChannelRecord/recorded_checksum\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.823975-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceRejectsAssetsThatMissTheChannelRecord/recorded_checksum",
+      "Output": "=== PAUSE TestGitHubSourceRejectsAssetsThatMissTheChannelRecord/recorded_checksum\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.823976-05:00",
+      "Action": "pause",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceRejectsAssetsThatMissTheChannelRecord/recorded_checksum"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.823977-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceRejectsAssetsThatMissTheChannelRecord/recorded_size"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.823978-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceRejectsAssetsThatMissTheChannelRecord/recorded_size",
+      "Output": "=== RUN   TestGitHubSourceRejectsAssetsThatMissTheChannelRecord/recorded_size\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.823979-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceRejectsAssetsThatMissTheChannelRecord/recorded_size",
+      "Output": "=== PAUSE TestGitHubSourceRejectsAssetsThatMissTheChannelRecord/recorded_size\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.82398-05:00",
+      "Action": "pause",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceRejectsAssetsThatMissTheChannelRecord/recorded_size"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.823982-05:00",
+      "Action": "cont",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceReadsLegacyReleaseTags"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.823983-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceReadsLegacyReleaseTags",
+      "Output": "=== CONT  TestGitHubSourceReadsLegacyReleaseTags\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.823984-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceReadsLegacyReleaseTags/legacy_semantic"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.823987-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceReadsLegacyReleaseTags/legacy_semantic",
+      "Output": "=== RUN   TestGitHubSourceReadsLegacyReleaseTags/legacy_semantic\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.823988-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceReportsRateLimitBudget/beyond_the_warning_threshold",
+      "Output": "--- PASS: TestGitHubSourceReportsRateLimitBudget/beyond_the_warning_threshold (0.05s)\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.82399-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceReportsRateLimitBudget/beyond_the_warning_threshold",
+      "Elapsed": 0.05
+    },
+    {
+      "Time": "2026-09-06T17:39:04.823991-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceReportsRateLimitBudget/inside_the_budget",
+      "Output": "--- PASS: TestGitHubSourceReportsRateLimitBudget/inside_the_budget (0.07s)\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.823992-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceReportsRateLimitBudget/inside_the_budget",
+      "Elapsed": 0.07
+    },
+    {
+      "Time": "2026-09-06T17:39:04.823993-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceReadsLegacyReleaseTags/legacy_semantic",
+      "Output": "--- PASS: TestGitHubSourceReadsLegacyReleaseTags/legacy_semantic (0.03s)\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.823995-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceReadsLegacyReleaseTags/legacy_semantic",
+      "Elapsed": 0.03
+    },
+    {
+      "Time": "2026-09-06T17:39:04.823997-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceReadsLegacyReleaseTags/legacy_payload"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.823998-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceReadsLegacyReleaseTags/legacy_payload",
+      "Output": "=== RUN   TestGitHubSourceReadsLegacyReleaseTags/legacy_payload\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.824001-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceReadsLegacyReleaseTags/legacy_payload",
+      "Output": "--- PASS: TestGitHubSourceReadsLegacyReleaseTags/legacy_payload (0.03s)\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.824002-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceReadsLegacyReleaseTags/legacy_payload",
+      "Elapsed": 0.03
+    },
+    {
+      "Time": "2026-09-06T17:39:04.824003-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceReadsLegacyReleaseTags",
+      "Output": "--- PASS: TestGitHubSourceReadsLegacyReleaseTags (0.06s)\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.824005-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceReadsLegacyReleaseTags",
+      "Elapsed": 0.06
+    },
+    {
+      "Time": "2026-09-06T17:39:04.824006-05:00",
+      "Action": "cont",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourcePolicyAcceptsPublishedCatalogProvenance"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.824007-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourcePolicyAcceptsPublishedCatalogProvenance",
+      "Output": "=== CONT  TestGitHubSourcePolicyAcceptsPublishedCatalogProvenance\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.824008-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceReportsRateLimitBudget/at_the_warning_threshold",
+      "Output": "--- PASS: TestGitHubSourceReportsRateLimitBudget/at_the_warning_threshold (0.09s)\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.82401-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceReportsRateLimitBudget/at_the_warning_threshold",
+      "Elapsed": 0.09
+    },
+    {
+      "Time": "2026-09-06T17:39:04.824011-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceReportsRateLimitBudget",
+      "Output": "--- PASS: TestGitHubSourceReportsRateLimitBudget (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.824012-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceReportsRateLimitBudget",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T17:39:04.824013-05:00",
+      "Action": "cont",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceRejectsUnsignedEvidenceWithTheDefaultEngine"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.824014-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceRejectsUnsignedEvidenceWithTheDefaultEngine",
+      "Output": "=== CONT  TestGitHubSourceRejectsUnsignedEvidenceWithTheDefaultEngine\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.824016-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceRejectsUnsignedEvidenceWithTheDefaultEngine",
+      "Output": "--- PASS: TestGitHubSourceRejectsUnsignedEvidenceWithTheDefaultEngine (0.02s)\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.824017-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceRejectsUnsignedEvidenceWithTheDefaultEngine",
+      "Elapsed": 0.02
+    },
+    {
+      "Time": "2026-09-06T17:39:04.824018-05:00",
+      "Action": "cont",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceSkipsTheBodyWhenTheChannelIsUnchanged"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.824019-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceSkipsTheBodyWhenTheChannelIsUnchanged",
+      "Output": "=== CONT  TestGitHubSourceSkipsTheBodyWhenTheChannelIsUnchanged\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.82402-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourcePolicyAcceptsPublishedCatalogProvenance",
+      "Output": "--- PASS: TestGitHubSourcePolicyAcceptsPublishedCatalogProvenance (0.05s)\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.824022-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourcePolicyAcceptsPublishedCatalogProvenance",
+      "Elapsed": 0.05
+    },
+    {
+      "Time": "2026-09-06T17:39:04.824023-05:00",
+      "Action": "cont",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceRejectsTrustNegativeReleases"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.824024-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceRejectsTrustNegativeReleases",
+      "Output": "=== CONT  TestGitHubSourceRejectsTrustNegativeReleases\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.824025-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceAdvancesWithTheChannelSequence",
+      "Output": "--- PASS: TestGitHubSourceAdvancesWithTheChannelSequence (0.15s)\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.824026-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceAdvancesWithTheChannelSequence",
+      "Elapsed": 0.15
+    },
+    {
+      "Time": "2026-09-06T17:39:04.824027-05:00",
+      "Action": "cont",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceRejectsUnattestedChannelDocuments"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.824028-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceRejectsUnattestedChannelDocuments",
+      "Output": "=== CONT  TestGitHubSourceRejectsUnattestedChannelDocuments\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.82403-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceRejectsUnattestedChannelDocuments",
+      "Output": "--- PASS: TestGitHubSourceRejectsUnattestedChannelDocuments (0.01s)\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.824031-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceRejectsUnattestedChannelDocuments",
+      "Elapsed": 0.01
+    },
+    {
+      "Time": "2026-09-06T17:39:04.824032-05:00",
+      "Action": "cont",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceRejectsReplayedChannelDocuments"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.824033-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceRejectsReplayedChannelDocuments",
+      "Output": "=== CONT  TestGitHubSourceRejectsReplayedChannelDocuments\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.824034-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceResetsTheStateWhenTheChannelChanges",
+      "Output": "--- PASS: TestGitHubSourceResetsTheStateWhenTheChannelChanges (0.16s)\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.824035-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceResetsTheStateWhenTheChannelChanges",
+      "Elapsed": 0.16
+    },
+    {
+      "Time": "2026-09-06T17:39:04.824036-05:00",
+      "Action": "cont",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceRejectsUnusableConfiguration/no_state_directory"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.824038-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceRejectsUnusableConfiguration/no_state_directory",
+      "Output": "=== CONT  TestGitHubSourceRejectsUnusableConfiguration/no_state_directory\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.82404-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceRejectsUnusableConfiguration/no_state_directory",
+      "Output": "--- PASS: TestGitHubSourceRejectsUnusableConfiguration/no_state_directory (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.824041-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceRejectsUnusableConfiguration/no_state_directory",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T17:39:04.824042-05:00",
+      "Action": "cont",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceRejectsUnusableConfiguration/empty_signer_workflow"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.824043-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceRejectsUnusableConfiguration/empty_signer_workflow",
+      "Output": "=== CONT  TestGitHubSourceRejectsUnusableConfiguration/empty_signer_workflow\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.824044-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceRejectsUnusableConfiguration/empty_signer_workflow",
+      "Output": "--- PASS: TestGitHubSourceRejectsUnusableConfiguration/empty_signer_workflow (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.824046-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceRejectsUnusableConfiguration/empty_signer_workflow",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T17:39:04.824047-05:00",
+      "Action": "cont",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceRejectsUnusableConfiguration/unusable_transfer_policy"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.824048-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceRejectsUnusableConfiguration/unusable_transfer_policy",
+      "Output": "=== CONT  TestGitHubSourceRejectsUnusableConfiguration/unusable_transfer_policy\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.824054-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceRejectsUnusableConfiguration/unusable_transfer_policy",
+      "Output": "--- PASS: TestGitHubSourceRejectsUnusableConfiguration/unusable_transfer_policy (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.824055-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceRejectsUnusableConfiguration/unusable_transfer_policy",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T17:39:04.824056-05:00",
+      "Action": "cont",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceRejectsUnusableConfiguration/empty_trusted_root"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.824057-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceRejectsUnusableConfiguration/empty_trusted_root",
+      "Output": "=== CONT  TestGitHubSourceRejectsUnusableConfiguration/empty_trusted_root\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.824059-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceRejectsUnusableConfiguration/empty_trusted_root",
+      "Output": "--- PASS: TestGitHubSourceRejectsUnusableConfiguration/empty_trusted_root (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.82406-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceRejectsUnusableConfiguration/empty_trusted_root",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T17:39:04.824061-05:00",
+      "Action": "cont",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceRejectsUnusableConfiguration/empty_channel"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.824062-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceRejectsUnusableConfiguration/empty_channel",
+      "Output": "=== CONT  TestGitHubSourceRejectsUnusableConfiguration/empty_channel\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.824063-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceRejectsUnusableConfiguration/empty_channel",
+      "Output": "--- PASS: TestGitHubSourceRejectsUnusableConfiguration/empty_channel (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.824064-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceRejectsUnusableConfiguration/empty_channel",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T17:39:04.824065-05:00",
+      "Action": "cont",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceRejectsUnusableConfiguration/empty_repository"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.824066-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceRejectsUnusableConfiguration/empty_repository",
+      "Output": "=== CONT  TestGitHubSourceRejectsUnusableConfiguration/empty_repository\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.824068-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceRejectsUnusableConfiguration/empty_repository",
+      "Output": "--- PASS: TestGitHubSourceRejectsUnusableConfiguration/empty_repository (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.824069-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceRejectsUnusableConfiguration/empty_repository",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T17:39:04.82407-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceRejectsUnusableConfiguration",
+      "Output": "--- PASS: TestGitHubSourceRejectsUnusableConfiguration (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.824071-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceRejectsUnusableConfiguration",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T17:39:04.824072-05:00",
+      "Action": "cont",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceRejectsAssetsThatMissTheChannelRecord/recorded_checksum"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.824074-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceRejectsAssetsThatMissTheChannelRecord/recorded_checksum",
+      "Output": "=== CONT  TestGitHubSourceRejectsAssetsThatMissTheChannelRecord/recorded_checksum\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.824076-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceRejectsAssetsThatMissTheChannelRecord/recorded_checksum",
+      "Output": "--- PASS: TestGitHubSourceRejectsAssetsThatMissTheChannelRecord/recorded_checksum (0.01s)\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.824077-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceRejectsAssetsThatMissTheChannelRecord/recorded_checksum",
+      "Elapsed": 0.01
+    },
+    {
+      "Time": "2026-09-06T17:39:04.824079-05:00",
+      "Action": "cont",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceRejectsAssetsThatMissTheChannelRecord/recorded_size"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.82408-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceRejectsAssetsThatMissTheChannelRecord/recorded_size",
+      "Output": "=== CONT  TestGitHubSourceRejectsAssetsThatMissTheChannelRecord/recorded_size\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.824083-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceRejectsAssetsThatMissTheChannelRecord/recorded_size",
+      "Output": "--- PASS: TestGitHubSourceRejectsAssetsThatMissTheChannelRecord/recorded_size (0.01s)\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.824084-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceRejectsAssetsThatMissTheChannelRecord/recorded_size",
+      "Elapsed": 0.01
+    },
+    {
+      "Time": "2026-09-06T17:39:04.824086-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceRejectsAssetsThatMissTheChannelRecord",
+      "Output": "--- PASS: TestGitHubSourceRejectsAssetsThatMissTheChannelRecord (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.824087-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceRejectsAssetsThatMissTheChannelRecord",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T17:39:04.824088-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceSkipsTheBodyWhenTheChannelIsUnchanged",
+      "Output": "--- PASS: TestGitHubSourceSkipsTheBodyWhenTheChannelIsUnchanged (0.09s)\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.824089-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceSkipsTheBodyWhenTheChannelIsUnchanged",
+      "Elapsed": 0.09
+    },
+    {
+      "Time": "2026-09-06T17:39:04.824091-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceRejectsTrustNegativeReleases",
+      "Output": "--- PASS: TestGitHubSourceRejectsTrustNegativeReleases (0.09s)\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.824092-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceRejectsTrustNegativeReleases",
+      "Elapsed": 0.09
+    },
+    {
+      "Time": "2026-09-06T17:39:04.824093-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceRejectsReplayedChannelDocuments",
+      "Output": "--- PASS: TestGitHubSourceRejectsReplayedChannelDocuments (0.05s)\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.824094-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Test": "TestGitHubSourceRejectsReplayedChannelDocuments",
+      "Elapsed": 0.05
+    },
+    {
+      "Time": "2026-09-06T17:39:04.824095-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Output": "PASS\n"
+    },
+    {
+      "Time": "2026-09-06T17:39:04.824099-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/./internal/sources/github",
+      "Elapsed": 0.001
+    }
+  ],
+  "binary_sha256": "3a914d719c483988b9536e4b489aeb443674d6d96bb3b42bb37d781d7beb347d",
+  "state": {
+    "Status": "exited",
+    "Running": false,
+    "Paused": false,
+    "Restarting": false,
+    "OOMKilled": false,
+    "Dead": false,
+    "Pid": 0,
+    "ExitCode": 0,
+    "Error": "",
+    "StartedAt": "2026-09-06T22:39:03.869052632Z",
+    "FinishedAt": "2026-09-06T22:39:04.446950799Z"
+  },
+  "conversion_exit_code": 0,
+  "counts": {
+    "pass": 31,
+    "fail": 0,
+    "skip": 0
+  },
+  "passed": true,
+  "container_removed": true,
+  "volume_removed": true
+}

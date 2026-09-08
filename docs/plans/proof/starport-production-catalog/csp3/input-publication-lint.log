@@ -1,0 +1,19 @@
+[0;34mRunning linters...[0m 
+Info: New devbox available: 0.16.0 -> v0.18.0. Please run `devbox version update`.
+Info: Running script "which" on /Users/jack/src/github.com/agentstation/starmap-catalog-requirements
+devbox run golangci-lint run
+Info: New devbox available: 0.16.0 -> v0.18.0. Please run `devbox version update`.
+Info: Running script "golangci-lint" on /Users/jack/src/github.com/agentstation/starmap-catalog-requirements
+📦 Starmap development environment loaded
+Tools available: go, gomarkdoc, swag (v2 via flake), golangci-lint
+runtime/refresh.go:636:19: func (*Runtime).retainProviders is unused (unused)
+func (r *Runtime) retainProviders(ctx context.Context, layers []ProviderLayer) error {
+                  ^
+runtime/runtime.go:386:19: func (*Runtime).rebuild is unused (unused)
+func (r *Runtime) rebuild(ctx context.Context, epoch uint64) (starmap.CatalogState, error) {
+                  ^
+2 issues:
+* unused: 2
+Error: error running script "golangci-lint" in Devbox: exit status 1
+
+make: *** [lint] Error 1

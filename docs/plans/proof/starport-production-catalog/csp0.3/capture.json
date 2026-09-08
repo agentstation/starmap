@@ -1,0 +1,369 @@
+{
+  "release": "v1.2.0",
+  "platform": "macOS-15.7.2-arm64-arm-64bit-Mach-O",
+  "events": [
+    {
+      "seconds": 0.028156,
+      "data": "\u001b[2J\u001b[H\u001b[1;36mSTARPORT\u001b[0m  /  first request\n\n1  INSTALL  /  macOS ARM64 \u00b7 verified release\n\n"
+    },
+    {
+      "seconds": 0.028182,
+      "data": "\u001b[32m$\u001b[0m gh release download v1.2.0 --repo agentstation/starport\n  --pattern \"*darwin_arm64.tar.gz\" --pattern checksums.txt\n"
+    },
+    {
+      "seconds": 1.303853,
+      "data": "SHA-256 verified against the release checksum file.\n"
+    },
+    {
+      "seconds": 1.521063,
+      "data": "\u001b[32m$\u001b[0m starport --version\n"
+    },
+    {
+      "seconds": 2.2807,
+      "data": "starport version 1.2.0\n"
+    },
+    {
+      "seconds": 5.284793,
+      "data": "\u001b[2J\u001b[H\u001b[1;36mSTARPORT\u001b[0m  /  first request\n\n2  EXPLORE  /  catalog before provider credentials\n\n"
+    },
+    {
+      "seconds": 5.284843,
+      "data": "\u001b[32m$\u001b[0m starport models show openai/gpt-4o-mini --json\n  | jq '{id, context_length, pricing}'\n"
+    },
+    {
+      "seconds": 6.934606,
+      "data": "{\n  \"id\": \"openai/gpt-4o-mini\",\n  \"context_length\": 128000,\n  \"pricing\": {\n    \"prompt\": \"1.5e-07\",\n    \"completion\": \"6e-07\",\n    \"currency\": \"USD\"\n  }\n}\n"
+    },
+    {
+      "seconds": 47.218354,
+      "data": "\u001b[2J\u001b[H\u001b[1;36mSTARPORT\u001b[0m  /  first request\n\n3  CONNECT  /  temporary development gateway\n\n"
+    },
+    {
+      "seconds": 47.218366,
+      "data": "Provider credential: OPENAI_API_KEY [value hidden]\n\n"
+    },
+    {
+      "seconds": 47.218369,
+      "data": "\u001b[32m$\u001b[0m starport dev --no-open\n"
+    },
+    {
+      "seconds": 48.771192,
+      "data": "http://127.0.0.1:19325  \u00b7  ready\n"
+    },
+    {
+      "seconds": 48.771211,
+      "data": "Gateway API key: [value hidden]  \u00b7  client authentication\n"
+    },
+    {
+      "seconds": 48.771213,
+      "data": "Provider credential and gateway key serve separate roles.\n"
+    },
+    {
+      "seconds": 48.771215,
+      "data": "Startup logs omitted. This development session is temporary.\n"
+    },
+    {
+      "seconds": 52.77625,
+      "data": "\u001b[2J\u001b[H\u001b[1;36mSTARPORT\u001b[0m  /  first request\n\n4  ASK  /  real provider response, original timing\n\n"
+    },
+    {
+      "seconds": 52.776284,
+      "data": "Model: openai/gpt-4o-mini  \u00b7  streaming  \u00b7  max_tokens: 32\n"
+    },
+    {
+      "seconds": 52.776288,
+      "data": "Message: Say: Hello from Starport!\n\n"
+    },
+    {
+      "seconds": 52.77629,
+      "data": "POST http://127.0.0.1:19325/api/v1/chat/completions\n"
+    },
+    {
+      "seconds": 52.776292,
+      "data": "Authorization: Starport gateway key [value hidden]\n\n"
+    },
+    {
+      "seconds": 54.350832,
+      "data": "Hello"
+    },
+    {
+      "seconds": 54.350865,
+      "data": " from"
+    },
+    {
+      "seconds": 54.350875,
+      "data": " Star"
+    },
+    {
+      "seconds": 54.350884,
+      "data": "port"
+    },
+    {
+      "seconds": 54.365949,
+      "data": "!"
+    },
+    {
+      "seconds": 54.365988,
+      "data": " How"
+    },
+    {
+      "seconds": 54.403713,
+      "data": " can"
+    },
+    {
+      "seconds": 54.403746,
+      "data": " I"
+    },
+    {
+      "seconds": 54.403758,
+      "data": " assist"
+    },
+    {
+      "seconds": 54.403778,
+      "data": " you"
+    },
+    {
+      "seconds": 54.432013,
+      "data": " today"
+    },
+    {
+      "seconds": 54.432045,
+      "data": "?"
+    },
+    {
+      "seconds": 54.476718,
+      "data": "\n\nStream complete: [DONE]\n"
+    },
+    {
+      "seconds": 54.476732,
+      "data": "Provider reported by Starport: openai\n"
+    },
+    {
+      "seconds": 54.476734,
+      "data": "Provider time is included. This is not a gateway latency benchmark.\n"
+    },
+    {
+      "seconds": 59.481757,
+      "data": "\u001b[2J\u001b[H\u001b[1;36mSTARPORT\u001b[0m  /  first request\n\n5  USE YOUR CLIENT  /  change its base URL\n\n"
+    },
+    {
+      "seconds": 59.481783,
+      "data": "OpenAI client       http://127.0.0.1:19325/v1\n"
+    },
+    {
+      "seconds": 59.481786,
+      "data": "OpenRouter client   http://127.0.0.1:19325/api/v1\n\n"
+    },
+    {
+      "seconds": 59.481787,
+      "data": "Client credential: the Starport gateway API key\n\n"
+    },
+    {
+      "seconds": 59.48179,
+      "data": "Keep the gateway: starport init \u2192 starport serve\n"
+    },
+    {
+      "seconds": 59.481792,
+      "data": "Persistent and team setups: docs/OPERATOR-GUIDE.md\n"
+    }
+  ],
+  "commands": [
+    {
+      "command": [
+        "gh",
+        "release",
+        "download",
+        "v1.2.0",
+        "--repo",
+        "agentstation/starport",
+        "--pattern",
+        "starport_1.2.0_darwin_arm64.tar.gz",
+        "--pattern",
+        "checksums.txt",
+        "--dir",
+        "/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starport-first-use-capture-_yc0r1ch"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 1.252681
+    },
+    {
+      "command": [
+        "/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starport-first-use-capture-_yc0r1ch/starport",
+        "--version"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 0.759603
+    },
+    {
+      "command": [
+        "/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starport-first-use-capture-_yc0r1ch/starport",
+        "models",
+        "show",
+        "openai/gpt-4o-mini",
+        "--json"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 1.627925
+    }
+  ],
+  "scratch_root": "/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starport-first-use-capture-_yc0r1ch",
+  "persistent_selectors_present": [],
+  "archive_sha256": "b5bb2961044c7aaf1bdec7ca277e9891cd0ab9bb5143aff00684534c5a9e0023",
+  "binary_sha256": "f6a0a9f456b847276ada55d3f75c15f45accf892ba205f4dca2deb0e68b018bc",
+  "catalog": {
+    "id": "openai/gpt-4o-mini",
+    "canonical_slug": "openai/gpt-4o-mini",
+    "name": "gpt-4o-mini",
+    "object": "model",
+    "created": 1721260800,
+    "owned_by": "openai",
+    "pricing": {
+      "prompt": "1.5e-07",
+      "completion": "6e-07",
+      "currency": "USD"
+    },
+    "context_length": 128000,
+    "description": "Small omni GPT for cheap multimodal assistance and production-scale traffic",
+    "architecture": {
+      "input_modalities": [
+        "image",
+        "pdf",
+        "text"
+      ],
+      "output_modalities": [
+        "text"
+      ],
+      "tokenizer": "",
+      "instruct_type": null
+    },
+    "top_provider": {
+      "context_length": 128000,
+      "max_completion_tokens": 16384
+    },
+    "supported_parameters": [
+      "temperature",
+      "top_p",
+      "max_tokens",
+      "stop"
+    ],
+    "authors": [
+      {
+        "id": "openai",
+        "name": "OpenAI"
+      }
+    ],
+    "lineage": {
+      "family": "gpt-mini"
+    },
+    "knowledge_cutoff": "2023-09-01",
+    "open_weights": false,
+    "offerings": [
+      {
+        "provider": "openai",
+        "provider_name": "OpenAI",
+        "provider_model_id": "gpt-4o-mini",
+        "context_length": 128000,
+        "max_completion_tokens": 16384,
+        "availability": "unknown",
+        "lifecycle": "unknown",
+        "pricing": {
+          "prompt": "1.5e-07",
+          "completion": "6e-07",
+          "cache_read": "7.5e-08",
+          "currency": "USD"
+        },
+        "operations": [
+          "chat-completions"
+        ]
+      }
+    ]
+  },
+  "catalog_environment_has_provider_key": false,
+  "request": {
+    "model": "openai/gpt-4o-mini",
+    "max_tokens": 32,
+    "stream": true,
+    "messages": [
+      {
+        "role": "user",
+        "content": "Say: Hello from Starport!"
+      }
+    ]
+  },
+  "inference_start_seconds": 52.776413,
+  "response_status": 200,
+  "content_type": "text/event-stream",
+  "reported_provider": "openai",
+  "reported_model": "gpt-4o-mini-2024-07-18",
+  "inference_end_seconds": 54.476715,
+  "stream_events": [
+    {
+      "seconds": 54.350779,
+      "data": "{\"id\":\"chatcmpl-ELWq8L88vrGNZzz0vwG9JaceprhxT\",\"object\":\"chat.completion.chunk\",\"created\":1788799832,\"model\":\"gpt-4o-mini-2024-07-18\",\"provider\":\"openai\",\"choices\":[{\"index\":0,\"delta\":{\"role\":\"assistant\"},\"finish_reason\":null}],\"system_fingerprint\":\"fp_70ce69f50d\"}"
+    },
+    {
+      "seconds": 54.350823,
+      "data": "{\"id\":\"chatcmpl-ELWq8L88vrGNZzz0vwG9JaceprhxT\",\"object\":\"chat.completion.chunk\",\"created\":1788799832,\"model\":\"gpt-4o-mini-2024-07-18\",\"provider\":\"openai\",\"choices\":[{\"index\":0,\"delta\":{\"content\":\"Hello\"},\"finish_reason\":null}],\"system_fingerprint\":\"fp_70ce69f50d\"}"
+    },
+    {
+      "seconds": 54.350859,
+      "data": "{\"id\":\"chatcmpl-ELWq8L88vrGNZzz0vwG9JaceprhxT\",\"object\":\"chat.completion.chunk\",\"created\":1788799832,\"model\":\"gpt-4o-mini-2024-07-18\",\"provider\":\"openai\",\"choices\":[{\"index\":0,\"delta\":{\"content\":\" from\"},\"finish_reason\":null}],\"system_fingerprint\":\"fp_70ce69f50d\"}"
+    },
+    {
+      "seconds": 54.350872,
+      "data": "{\"id\":\"chatcmpl-ELWq8L88vrGNZzz0vwG9JaceprhxT\",\"object\":\"chat.completion.chunk\",\"created\":1788799832,\"model\":\"gpt-4o-mini-2024-07-18\",\"provider\":\"openai\",\"choices\":[{\"index\":0,\"delta\":{\"content\":\" Star\"},\"finish_reason\":null}],\"system_fingerprint\":\"fp_70ce69f50d\"}"
+    },
+    {
+      "seconds": 54.350881,
+      "data": "{\"id\":\"chatcmpl-ELWq8L88vrGNZzz0vwG9JaceprhxT\",\"object\":\"chat.completion.chunk\",\"created\":1788799832,\"model\":\"gpt-4o-mini-2024-07-18\",\"provider\":\"openai\",\"choices\":[{\"index\":0,\"delta\":{\"content\":\"port\"},\"finish_reason\":null}],\"system_fingerprint\":\"fp_70ce69f50d\"}"
+    },
+    {
+      "seconds": 54.365921,
+      "data": "{\"id\":\"chatcmpl-ELWq8L88vrGNZzz0vwG9JaceprhxT\",\"object\":\"chat.completion.chunk\",\"created\":1788799832,\"model\":\"gpt-4o-mini-2024-07-18\",\"provider\":\"openai\",\"choices\":[{\"index\":0,\"delta\":{\"content\":\"!\"},\"finish_reason\":null}],\"system_fingerprint\":\"fp_70ce69f50d\"}"
+    },
+    {
+      "seconds": 54.36598,
+      "data": "{\"id\":\"chatcmpl-ELWq8L88vrGNZzz0vwG9JaceprhxT\",\"object\":\"chat.completion.chunk\",\"created\":1788799832,\"model\":\"gpt-4o-mini-2024-07-18\",\"provider\":\"openai\",\"choices\":[{\"index\":0,\"delta\":{\"content\":\" How\"},\"finish_reason\":null}],\"system_fingerprint\":\"fp_70ce69f50d\"}"
+    },
+    {
+      "seconds": 54.403685,
+      "data": "{\"id\":\"chatcmpl-ELWq8L88vrGNZzz0vwG9JaceprhxT\",\"object\":\"chat.completion.chunk\",\"created\":1788799832,\"model\":\"gpt-4o-mini-2024-07-18\",\"provider\":\"openai\",\"choices\":[{\"index\":0,\"delta\":{\"content\":\" can\"},\"finish_reason\":null}],\"system_fingerprint\":\"fp_70ce69f50d\"}"
+    },
+    {
+      "seconds": 54.403741,
+      "data": "{\"id\":\"chatcmpl-ELWq8L88vrGNZzz0vwG9JaceprhxT\",\"object\":\"chat.completion.chunk\",\"created\":1788799832,\"model\":\"gpt-4o-mini-2024-07-18\",\"provider\":\"openai\",\"choices\":[{\"index\":0,\"delta\":{\"content\":\" I\"},\"finish_reason\":null}],\"system_fingerprint\":\"fp_70ce69f50d\"}"
+    },
+    {
+      "seconds": 54.403754,
+      "data": "{\"id\":\"chatcmpl-ELWq8L88vrGNZzz0vwG9JaceprhxT\",\"object\":\"chat.completion.chunk\",\"created\":1788799832,\"model\":\"gpt-4o-mini-2024-07-18\",\"provider\":\"openai\",\"choices\":[{\"index\":0,\"delta\":{\"content\":\" assist\"},\"finish_reason\":null}],\"system_fingerprint\":\"fp_70ce69f50d\"}"
+    },
+    {
+      "seconds": 54.403773,
+      "data": "{\"id\":\"chatcmpl-ELWq8L88vrGNZzz0vwG9JaceprhxT\",\"object\":\"chat.completion.chunk\",\"created\":1788799832,\"model\":\"gpt-4o-mini-2024-07-18\",\"provider\":\"openai\",\"choices\":[{\"index\":0,\"delta\":{\"content\":\" you\"},\"finish_reason\":null}],\"system_fingerprint\":\"fp_70ce69f50d\"}"
+    },
+    {
+      "seconds": 54.431985,
+      "data": "{\"id\":\"chatcmpl-ELWq8L88vrGNZzz0vwG9JaceprhxT\",\"object\":\"chat.completion.chunk\",\"created\":1788799832,\"model\":\"gpt-4o-mini-2024-07-18\",\"provider\":\"openai\",\"choices\":[{\"index\":0,\"delta\":{\"content\":\" today\"},\"finish_reason\":null}],\"system_fingerprint\":\"fp_70ce69f50d\"}"
+    },
+    {
+      "seconds": 54.432039,
+      "data": "{\"id\":\"chatcmpl-ELWq8L88vrGNZzz0vwG9JaceprhxT\",\"object\":\"chat.completion.chunk\",\"created\":1788799832,\"model\":\"gpt-4o-mini-2024-07-18\",\"provider\":\"openai\",\"choices\":[{\"index\":0,\"delta\":{\"content\":\"?\"},\"finish_reason\":null}],\"system_fingerprint\":\"fp_70ce69f50d\"}"
+    },
+    {
+      "seconds": 54.464134,
+      "data": "{\"id\":\"chatcmpl-ELWq8L88vrGNZzz0vwG9JaceprhxT\",\"object\":\"chat.completion.chunk\",\"created\":1788799832,\"model\":\"gpt-4o-mini-2024-07-18\",\"provider\":\"openai\",\"choices\":[{\"index\":0,\"delta\":{},\"finish_reason\":\"stop\"}],\"system_fingerprint\":\"fp_70ce69f50d\"}"
+    },
+    {
+      "seconds": 54.464177,
+      "data": "{\"id\":\"chatcmpl-ELWq8L88vrGNZzz0vwG9JaceprhxT\",\"object\":\"chat.completion.chunk\",\"created\":1788799832,\"model\":\"gpt-4o-mini-2024-07-18\",\"provider\":\"openai\",\"choices\":[],\"usage\":{\"prompt_tokens\":14,\"completion_tokens\":12,\"total_tokens\":26},\"system_fingerprint\":null}"
+    },
+    {
+      "seconds": 54.476657,
+      "data": "[DONE]"
+    }
+  ],
+  "shutdown_exit_code": 0,
+  "remaining_home_files": [],
+  "verdict": "PASS",
+  "scratch_removed": true
+}

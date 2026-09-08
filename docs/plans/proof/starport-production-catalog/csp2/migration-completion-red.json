@@ -1,0 +1,16 @@
+{
+  "command": [
+    "go",
+    "test",
+    "-race",
+    "-count=1",
+    "-timeout",
+    "2m",
+    "./runtime",
+    "-run",
+    "^TestCompleteDirectoryMigration"
+  ],
+  "exit_code": 1,
+  "stdout": "FAIL\tgithub.com/agentstation/starmap/runtime [build failed]\nFAIL\n",
+  "stderr": "# github.com/agentstation/starmap/runtime [github.com/agentstation/starmap/runtime.test]\nruntime/migration_complete_test.go:23:25: unrelated.CompleteDirectoryMigration undefined (type *Runtime has no field or method CompleteDirectoryMigration)\nruntime/migration_complete_test.go:31:29: selected.CompleteDirectoryMigration undefined (type *Runtime has no field or method CompleteDirectoryMigration)\nruntime/migration_complete_test.go:35:28: selected.CompleteDirectoryMigration undefined (type *Runtime has no field or method CompleteDirectoryMigration)\nruntime/migration_complete_test.go:46:24: selected.CompleteDirectoryMigration undefined (type *Runtime has no field or method CompleteDirectoryMigration)\n"
+}

@@ -1,0 +1,11 @@
+{
+  "command": [
+    "docker",
+    "info",
+    "--format",
+    "{{.OSType}} {{.Architecture}} {{.ServerVersion}} {{.KernelVersion}}"
+  ],
+  "exit_code": 0,
+  "stdout": "linux aarch64 29.7.2 7.0.12-linuxkit\n",
+  "stderr": ""
+}

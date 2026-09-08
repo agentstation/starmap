@@ -1,0 +1,225 @@
+{
+  "expanded_dependencies": {
+    "CSP0": [],
+    "CSP0.1": [
+      "CSP0"
+    ],
+    "CSP0.2": [
+      "CSP0.1"
+    ],
+    "CSP0.3": [
+      "CSP0.2"
+    ],
+    "CSP0.4": [
+      "CSP0"
+    ],
+    "CSP1": [
+      "CSP0"
+    ],
+    "CSP2": [
+      "CSP1"
+    ],
+    "CSP3": [
+      "CSP1"
+    ],
+    "CSP3.1": [
+      "CSP0.4"
+    ],
+    "CSP4": [
+      "CSP2",
+      "CSP3"
+    ],
+    "CSP5": [
+      "CSP3",
+      "CSP4"
+    ],
+    "CSP6": [
+      "CSP2",
+      "CSP3",
+      "CSP4"
+    ],
+    "CSP7": [
+      "CSP1",
+      "CSP3"
+    ],
+    "CSP8": [
+      "CSP1",
+      "CSP2",
+      "CSP3",
+      "CSP3.1",
+      "CSP4",
+      "CSP5",
+      "CSP6",
+      "CSP7"
+    ],
+    "CSP9": [
+      "CSP7",
+      "CSP8"
+    ],
+    "CSP9.1": [
+      "CSP0.4",
+      "CSP9"
+    ],
+    "CSP10": [
+      "CSP4",
+      "CSP8",
+      "CSP9"
+    ],
+    "CSP10.1": [
+      "CSP0.4",
+      "CSP3.1",
+      "CSP10"
+    ],
+    "CSP10.2": [
+      "CSP0.4",
+      "CSP9.1",
+      "CSP10"
+    ],
+    "CSP10.3": [
+      "CSP0.4",
+      "CSP10.1"
+    ],
+    "CSP11": [
+      "CSP5",
+      "CSP10"
+    ],
+    "CSP12": [
+      "CSP8",
+      "CSP11"
+    ],
+    "CSP12.1": [
+      "CSP0.4",
+      "CSP8",
+      "CSP12"
+    ],
+    "CSP12.2": [
+      "CSP0.4",
+      "CSP10.2",
+      "CSP12"
+    ],
+    "CSP13": [
+      "CSP11",
+      "CSP12",
+      "CSP12.1"
+    ],
+    "CSP14": [
+      "CSP1",
+      "CSP4",
+      "CSP5",
+      "CSP7"
+    ],
+    "CSP15": [
+      "CSP11",
+      "CSP12",
+      "CSP12.1",
+      "CSP12.2",
+      "CSP13"
+    ],
+    "CSP16": [
+      "CSP8",
+      "CSP9",
+      "CSP10",
+      "CSP10.2",
+      "CSP12",
+      "CSP12.1",
+      "CSP13"
+    ],
+    "CSP16.1": [
+      "CSP16"
+    ],
+    "CSP17": [
+      "CSP0.1",
+      "CSP10",
+      "CSP12",
+      "CSP16.1"
+    ],
+    "CSP18": [
+      "CSP1",
+      "CSP8",
+      "CSP16",
+      "CSP17"
+    ],
+    "CSP19": [
+      "CSP12",
+      "CSP12.1",
+      "CSP12.2",
+      "CSP13",
+      "CSP14",
+      "CSP15",
+      "CSP16",
+      "CSP16.1",
+      "CSP17",
+      "CSP18"
+    ],
+    "CSP20": [
+      "CSP17",
+      "CSP18",
+      "CSP19"
+    ],
+    "CSP21": [
+      "CSP17",
+      "CSP20"
+    ],
+    "CSP22": [
+      "CSP0",
+      "CSP0.1",
+      "CSP0.2",
+      "CSP0.3",
+      "CSP0.4",
+      "CSP1",
+      "CSP2",
+      "CSP3",
+      "CSP3.1",
+      "CSP4",
+      "CSP5",
+      "CSP6",
+      "CSP7",
+      "CSP8",
+      "CSP9",
+      "CSP9.1",
+      "CSP10",
+      "CSP10.1",
+      "CSP10.2",
+      "CSP10.3",
+      "CSP11",
+      "CSP12",
+      "CSP12.1",
+      "CSP12.2",
+      "CSP13",
+      "CSP14",
+      "CSP15",
+      "CSP16",
+      "CSP16.1",
+      "CSP17",
+      "CSP18",
+      "CSP19",
+      "CSP20",
+      "CSP21"
+    ],
+    "CSP23": [
+      "CSP22"
+    ],
+    "CSP24": [
+      "CSP23"
+    ],
+    "CSP99": [
+      "CSP24"
+    ]
+  },
+  "acyclic": true,
+  "CSP13_requires_CSP12_2": false,
+  "locally_executable_checks_excluded_from_candidate": {
+    "CSP18": [
+      "A29.embedded_offline_search",
+      "A29.recovery_without_auth",
+      "A29.no_dynamic_data_disclosure"
+    ],
+    "CSP20": [
+      "A35.each_advertised_native_install",
+      "A35.clean_catalog_no_keys",
+      "A35.documented_inference"
+    ]
+  },
+  "candidate_check_count": 282,
+  "required_subcase_count": 309
+}

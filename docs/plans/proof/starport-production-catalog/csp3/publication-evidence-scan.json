@@ -1,0 +1,64 @@
+{
+  "command": "trufflehog filesystem <exact evidence snapshot> --json --no-color --results=verified,unknown --fail --fail-on-scan-errors",
+  "exit_code": 183,
+  "duration_seconds": 3.772,
+  "files": 1100,
+  "bytes": 83766924,
+  "index_sha256": "56f882f606bf663db5d2687ff6e6b6315f6caf8f532f869fbc21118980b2ab12",
+  "scanner_verdict": "unknown synthetic URL reports",
+  "reviewed_verdict": "No live credential in the seven reports.",
+  "fixture": "pkg/sources/credentials_test.go",
+  "fixture_sha256": "4b2a0a2719e4f4794697ca0d66f08d0de941afb92488ee54e5e550b13bd705e6",
+  "raw_value_sha256": "7cb00510fa82dd6689c15d5b86319dddaa575a9aab3d6c053038478c26b21d5d",
+  "reports": [
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/provider-binding-packages-output.jsonl",
+      "line": 12,
+      "detector": "URI",
+      "verified": false,
+      "disposition": "Synthetic subtest name from TestCredentialEndpointBindingsRejectUnsafeURLValues."
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/credential-run-packages-output.jsonl",
+      "line": 16,
+      "detector": "URI",
+      "verified": false,
+      "disposition": "Synthetic subtest name from TestCredentialEndpointBindingsRejectUnsafeURLValues."
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/binding-acquisition-final-packages.jsonl",
+      "line": 260,
+      "detector": "URI",
+      "verified": false,
+      "disposition": "Synthetic subtest name from TestCredentialEndpointBindingsRejectUnsafeURLValues."
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/provider-binding-green.json",
+      "line": 15,
+      "detector": "URI",
+      "verified": false,
+      "disposition": "Synthetic subtest name from TestCredentialEndpointBindingsRejectUnsafeURLValues."
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/provider-receipt-packages-output.jsonl",
+      "line": 151,
+      "detector": "URI",
+      "verified": false,
+      "disposition": "Synthetic subtest name from TestCredentialEndpointBindingsRejectUnsafeURLValues."
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/provider-scope-retention-final-packages.jsonl",
+      "line": 339,
+      "detector": "URI",
+      "verified": false,
+      "disposition": "Synthetic subtest name from TestCredentialEndpointBindingsRejectUnsafeURLValues."
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/provider-receipt-identity-packages-output.jsonl",
+      "line": 1687,
+      "detector": "URI",
+      "verified": false,
+      "disposition": "Synthetic subtest name from TestCredentialEndpointBindingsRejectUnsafeURLValues."
+    }
+  ]
+}

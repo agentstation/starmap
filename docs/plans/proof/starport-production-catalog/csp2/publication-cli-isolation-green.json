@@ -1,0 +1,7 @@
+{
+  "command": "Actual scripts/verify.sh header and final CLI tail under synthetic inherited CONFIG and STARMAP_HOME",
+  "exit_code": 0,
+  "seconds": 7.110304375179112,
+  "output_path": "docs/plans/proof/starport-production-catalog/csp2/publication-cli-isolation-green-output.log",
+  "scope": "CLI tail only. Earlier full-gate prose failure remains unresolved."
+}

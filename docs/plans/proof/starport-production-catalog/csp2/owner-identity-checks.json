@@ -1,0 +1,17 @@
+{
+  "command": [
+    "go",
+    "test",
+    "-race",
+    "-count=1",
+    "-timeout",
+    "5m",
+    "-json",
+    "./runtime",
+    "./internal/cli/app"
+  ],
+  "exit_code": 1,
+  "passed_tests": [],
+  "stdout": "{\"ImportPath\":\"github.com/agentstation/starmap/runtime\",\"Action\":\"build-output\",\"Output\":\"# github.com/agentstation/starmap/runtime\\n\"}\n{\"ImportPath\":\"github.com/agentstation/starmap/runtime\",\"Action\":\"build-output\",\"Output\":\"runtime/scheduler.go:11:2: \\\"github.com/agentstation/starmap/pkg/errors\\\" imported and not used\\n\"}\n{\"ImportPath\":\"github.com/agentstation/starmap/runtime\",\"Action\":\"build-fail\"}\n{\"Time\":\"2026-09-05T20:10:01.020141-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starmap/runtime\"}\n{\"Time\":\"2026-09-05T20:10:01.020479-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\"}\n{\"Time\":\"2026-09-05T20:10:01.020466-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Output\":\"FAIL\\tgithub.com/agentstation/starmap/runtime [build failed]\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-05T20:10:01.02049-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Output\":\"FAIL\\tgithub.com/agentstation/starmap/internal/cli/app [build failed]\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-05T20:10:01.020489-05:00\",\"Action\":\"fail\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Elapsed\":0,\"FailedBuild\":\"github.com/agentstation/starmap/runtime\"}\n{\"Time\":\"2026-09-05T20:10:01.020498-05:00\",\"Action\":\"fail\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Elapsed\":0,\"FailedBuild\":\"github.com/agentstation/starmap/runtime\"}\n",
+  "stderr": ""
+}

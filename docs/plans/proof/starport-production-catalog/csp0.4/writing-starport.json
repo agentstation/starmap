@@ -1,0 +1,14 @@
+{
+  "command": [
+    "/Users/jack/.agents/skills/technical-writing/scripts/technical-writing",
+    "lint",
+    "README.md",
+    "docs/PERFORMANCE.md",
+    "docs/PRODUCTION-STATUS.md",
+    "--format",
+    "text"
+  ],
+  "exit_code": 1,
+  "stdout": "/Users/jack/src/github.com/agentstation/starport-catalog-lifecycle/docs/PERFORMANCE.md:66:32: error nominalization: express the action with a direct verb\nFAIL: 3 file(s), 1 diagnostic(s)\n",
+  "stderr": ""
+}

@@ -1,0 +1,428 @@
+{
+  "schema_version": 1,
+  "task": "CSP3",
+  "date": "2026-09-07",
+  "status": "component-progress-only",
+  "toolchain": "go1.26.6 darwin/arm64",
+  "behavior": [
+    "Explicit manual binding selection is copied during construction. Empty selection disables provider acquisition.",
+    "Selected declarations are checked before source work. Operation filters can only restrict the selection.",
+    "Provider observations retain separate binding receipts through reconciliation and durable generation links.",
+    "Provider calls share the configured concurrency limit. Queued calls observe cancellation.",
+    "Strict mode requires exact source and binding observations. It accepts serving records without authored definitions and still refuses empty or degraded observations.",
+    "Provenance preserves optional binding identity and revision through canonical JSON and YAML. Unscoped serialization omits those fields.",
+    "Volume checks use history from the same binding revision and retain binding metadata when they classify degradation.",
+    "Volume checks also require the same canonical provider ID. A reused binding identity cannot import history from another provider."
+  ],
+  "limitations": [
+    "Manual CLI and HTTP adapters still need to pass shared binding settings and coordinate publication with runtime retention.",
+    "History without a matching binding revision supplies no scoped completeness claim. Field provenance does not replace a complete scoped membership ledger.",
+    "Scope declarations do not authenticate upstream account ownership.",
+    "Scoped deletion, field-presence handling, runtime field authority, Starport adoption, and released-pair acceptance remain open.",
+    "No primary acceptance credit. All 50 primary cases remain UNVERIFIED.",
+    "Required publication review remains open. The shared helper remains unchanged at 512000 bytes. No code push or native CI dispatch occurred."
+  ],
+  "code_inputs": [
+    {
+      "path": "acquisition/syncer.go",
+      "sha256": "7d3aaf5739b5738a7660820d751a7643205fcb193f617d5f9644dc6870907665"
+    },
+    {
+      "path": "acquisition/syncer_bindings.go",
+      "sha256": "c9bbf147838c9d9cd8732a6dcc8d77df0f03155e0d80c1475d40176cd12709ad"
+    },
+    {
+      "path": "acquisition/syncer_bindings_test.go",
+      "sha256": "da575ddddc775cbc80e842645440a8571c5730906297125020778e729e79cf5f"
+    },
+    {
+      "path": "internal/catalog/pipeline/lifecycle.go",
+      "sha256": "9584193164500a61cef42efe8bfc2bb4f129ccebc6b36e89d8180b489ada9a7e"
+    },
+    {
+      "path": "internal/catalog/pipeline/observation_health.go",
+      "sha256": "5fd005f754da754af216e195c9dc4eadb8f04a5670e3b7c28f1cf476eb9729a6"
+    },
+    {
+      "path": "internal/catalog/pipeline/pipeline.go",
+      "sha256": "1886a477a39f70c07ced048fbe72ae821a3add86e864192676bf177a217f69b8"
+    },
+    {
+      "path": "internal/catalog/pipeline/provider_bindings.go",
+      "sha256": "e07bbb0cb0bef4c0be54647b68b9e7ebdb625503adda6f2653fbac76ee2d7f2f"
+    },
+    {
+      "path": "internal/catalog/pipeline/provider_bindings_test.go",
+      "sha256": "2ffce41a68bf4e80bb2ebaa83cdac2ecae32616439825240afeaf5ef83003bbc"
+    },
+    {
+      "path": "internal/catalog/pipeline/strict.go",
+      "sha256": "2f5a7055da1db5a923836cdbcd9b1b00025473b723c8740f48527481a078a63e"
+    },
+    {
+      "path": "internal/catalog/reconciler/merger.go",
+      "sha256": "a0fc988c72618f37508c10ee5b9d432a8d10be0d3453020cdfa5db8baf46c92b"
+    },
+    {
+      "path": "internal/catalog/reconciler/provider_policy.go",
+      "sha256": "4bf1fb8ff0bfef97023171debe9ce1eadb9903991f4abca7046bbe338c88d1ff"
+    },
+    {
+      "path": "internal/catalog/reconciler/scoped_observations.go",
+      "sha256": "05f98933b5583bd91dff82e57223a7d7fe71ab5476e6da3f19246d8432d0c13b"
+    },
+    {
+      "path": "pkg/provenance/binding_test.go",
+      "sha256": "cc39101044f1d037f766cd3c0ce1a45ce8ea1ff52a20f87a7097f19cf4cf53b9"
+    },
+    {
+      "path": "pkg/provenance/tracking.go",
+      "sha256": "b2f1e9c4f25b08dbe106b89eaa0a4f111903cd4ca911c6d5a5c954d27e2a72a6"
+    }
+  ],
+  "checks": [
+    {
+      "command": "GOTOOLCHAIN=go1.26.6 go test -race -count=1 -timeout 5m -json ./internal/catalog/pipeline ./internal/catalog/reconciler ./pkg/provenance",
+      "exit_code": 0,
+      "capture": "manual-bindings-race-final.jsonl",
+      "note": "The later pipeline run adds the concurrency test."
+    },
+    {
+      "command": "GOTOOLCHAIN=go1.26.6 go test -race -count=1 -timeout 5m -json ./internal/catalog/pipeline",
+      "exit_code": 0,
+      "capture": "manual-bindings-pipeline-final.jsonl"
+    },
+    {
+      "command": "GOTOOLCHAIN=go1.26.6 go test -race -count=1 -timeout 5m -json ./acquisition",
+      "exit_code": 0,
+      "capture": "manual-bindings-acquisition-final.jsonl"
+    },
+    {
+      "command": "GOTOOLCHAIN=go1.26.6 go test -count=1 -timeout 5m ./...",
+      "exit_code": 1,
+      "capture": "manual-bindings-packages.log",
+      "passed_packages": 78,
+      "failed_packages": 1,
+      "no_test_packages": 22,
+      "note": "The acquisition test fixture used a workspace not selected by its Client."
+    },
+    {
+      "command": "GOTOOLCHAIN=go1.26.6 go test -count=1 -timeout 5m ./acquisition ./internal/catalog/pipeline",
+      "exit_code": 0,
+      "capture": "manual-bindings-packages-final.log",
+      "passed_packages": 2,
+      "note": "Replaces the acquisition failure and earlier pipeline result. Final evidence covers 79 distinct passing package suites and 22 packages without tests."
+    },
+    {
+      "command": "GOTOOLCHAIN=go1.26.6 go tool ago -stale-ignores -format json ./...",
+      "exit_code": 0,
+      "capture": "manual-bindings-ago-final.json",
+      "findings": 0,
+      "stale_ignores": 0,
+      "errors": 0
+    },
+    {
+      "command": "GOTOOLCHAIN=go1.26.6 make lint",
+      "exit_code": 0,
+      "capture": "manual-bindings-lint-verified.log",
+      "code_issues": 0,
+      "writing_files": 1062,
+      "writing_diagnostics": 0
+    },
+    {
+      "command": "GOTOOLCHAIN=go1.26.6 make generate",
+      "exit_code": 0,
+      "capture": "manual-bindings-generate.log"
+    },
+    {
+      "command": "bash scripts/verify-catalog-product.sh --starport-root /Users/jack/src/github.com/agentstation/starport-catalog-lifecycle --task CSP3 --json",
+      "exit_code": 1,
+      "capture": "manual-bindings-acceptance.json",
+      "primary_passed": 0,
+      "primary_unverified": 50
+    },
+    {
+      "command": "GOTOOLCHAIN=go1.26.6 go test -count=1 ./internal/catalog/pipeline -run ^TestManualBindingVolumeCannotBorrowAnotherProviderHistory$",
+      "exit_code": 1,
+      "capture": "manual-bindings-provider-history-regression.log",
+      "role": "regression before provider identity guard"
+    },
+    {
+      "command": "GOTOOLCHAIN=go1.26.6 go test -race -count=1 -timeout 5m -json ./internal/catalog/pipeline",
+      "exit_code": 0,
+      "capture": "manual-bindings-pipeline-verified.jsonl",
+      "passed_test_events": 82
+    },
+    {
+      "command": "GOTOOLCHAIN=go1.26.6 go test -count=1 -timeout 5m ./internal/catalog/pipeline",
+      "exit_code": 0,
+      "capture": "manual-bindings-pipeline-normal-verified.log",
+      "note": "Final provider history guard correction. Other normal package runs precede this three-line correction."
+    },
+    {
+      "command": "GOTOOLCHAIN=go1.26.6 go tool ago -stale-ignores -format json ./...",
+      "exit_code": 0,
+      "capture": "manual-bindings-ago-verified.json",
+      "findings": 0,
+      "errors": 0
+    },
+    {
+      "command": "GOTOOLCHAIN=go1.26.6 devbox run -- golangci-lint run ./...",
+      "exit_code": 0,
+      "capture": "manual-bindings-code-lint-final.log",
+      "issues": 0
+    }
+  ],
+  "preserved_failures": [
+    "Initial fixtures used an unconverted model reference, omitted the canonical author, or declared multiple no-authentication alternatives. Corrected fixtures follow catalog validation.",
+    "A valid provider response failed strict mode because it had serving records without authored definitions. The strict membership check was corrected.",
+    "The first public syncer fixture selected a workspace outside its Client construction. The test now constructs the Client with that workspace.",
+    "Code lint first required the promoted method selector. Writing checks reported prohibited wording and an oversized paragraph. The corrections preserve configured rules.",
+    "The provider history fixture first reused a credential environment across provider IDs. After fixing that fixture, the regression reproduced volume degradation from another provider history.",
+    "A final ledger paragraph exceeded six sentences. The corrected full writing check passed."
+  ],
+  "evidence_commit": "b4ace4a808e6749314655f23954f748cc7429f8c",
+  "captures": [
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/manual-bindings-acceptance.json",
+      "bytes": 7700,
+      "sha256": "0a5cc1a33899402e4135c4ef56e28730155c63025b771d83734fcab9c93df5bb"
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/manual-bindings-acquisition-final.jsonl",
+      "bytes": 231860,
+      "sha256": "da0e36ff7dc83bd00b3091e8833da6ae3c2a2173d2054e17b6ede90b5a386bfb"
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/manual-bindings-ago-closed.json",
+      "bytes": 289,
+      "sha256": "b8fb7afa66aa7a93914ac258475dd0191be821803a8aea4439f5ba05022f5fa5"
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/manual-bindings-ago-final.json",
+      "bytes": 289,
+      "sha256": "b8fb7afa66aa7a93914ac258475dd0191be821803a8aea4439f5ba05022f5fa5"
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/manual-bindings-ago-verified.json",
+      "bytes": 289,
+      "sha256": "b8fb7afa66aa7a93914ac258475dd0191be821803a8aea4439f5ba05022f5fa5"
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/manual-bindings-ago.json",
+      "bytes": 289,
+      "sha256": "b8fb7afa66aa7a93914ac258475dd0191be821803a8aea4439f5ba05022f5fa5"
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/manual-bindings-boundaries-fixed.log",
+      "bytes": 3011,
+      "sha256": "76e5646f787fc2e7d3641bf2b5549a2a097851d2826aecf4db8020dd19c228e6"
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/manual-bindings-boundaries.log",
+      "bytes": 532,
+      "sha256": "389e09e7071252361766cf3fe15ef601a87d2505fe3252fd8d1aa8be333fb80d"
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/manual-bindings-code-lint-final.log",
+      "bytes": 313,
+      "sha256": "32709c2b17f4d5abf64db997d8df20b5e258ac4b3e850611f6e536878fa526a9"
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/manual-bindings-contracts.log",
+      "bytes": 4236,
+      "sha256": "d5e1ea3ed5080fd88a398997c401c4d662666d3200f01bfe741f14384141ad08"
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/manual-bindings-documents.log",
+      "bytes": 3981,
+      "sha256": "7b463a92a80d794fd4871554125d45e410276cf9edc7ce6bf71b93b0b1cb0d5c"
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/manual-bindings-generate.log",
+      "bytes": 9934,
+      "sha256": "f80823a9ca77ddd9da3cbf8d5a830fcb8bcc5babefd5f05301a19653e9e634ee"
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/manual-bindings-initial.log",
+      "bytes": 201,
+      "sha256": "b4b347a95030d5352e1cbea22712e20d49e5ca0544a83678ae555dbbf1984555"
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/manual-bindings-ledger-documents-final.log",
+      "bytes": 3981,
+      "sha256": "f2c41513c56cf6ed94f3958183dc86de8c37818df82d95902b2ffed796cdc4ee"
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/manual-bindings-ledger-focused-writing.log",
+      "bytes": 33,
+      "sha256": "56793d83f0aad87b904045acc83917bad4d29df6d9b1d37a701aa1111aec8f92"
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/manual-bindings-ledger-writing-closed.log",
+      "bytes": 558,
+      "sha256": "2e1b6c3eb310184e472b490437d65d59a18c355212963a7922c0589706118ad7"
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/manual-bindings-ledger-writing-final.log",
+      "bytes": 791,
+      "sha256": "52fd672313576f5785cf47d58e50672d762c27ec8f330a8fc020e624c097e366"
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/manual-bindings-lint-closed.log",
+      "bytes": 1789,
+      "sha256": "bd1f551a7b85ca7c217345a353fda83d84748bd5775411e94f73af2dd900a228"
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/manual-bindings-lint-final.log",
+      "bytes": 1786,
+      "sha256": "9416c2678104c2286be72e5001fd0196b32881ccfc63a394b78974a663cfcde7"
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/manual-bindings-lint-verified.log",
+      "bytes": 1560,
+      "sha256": "fbfe6f880ac7686b89f0ca410bf1b3cd7cda26ff132db964eafc3efd89678e9a"
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/manual-bindings-lint.log",
+      "bytes": 888,
+      "sha256": "fd6807d81d1644a82757f4180cf55d160ea1801facae63ba7c0852fcccad3d74"
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/manual-bindings-membership.log",
+      "bytes": 70,
+      "sha256": "7228bd6a6f11d14a40c972eb7becc9973ccd85d5b0127085b2ac4ff8e23d117d"
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/manual-bindings-packages-final.log",
+      "bytes": 127,
+      "sha256": "c40af55bfc088fc9f9663413d840dcd5556e2f585adac4ed0e495d0183198204"
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/manual-bindings-packages.log",
+      "bytes": 93805,
+      "sha256": "179ab62dcabc57e55afeda94a66a770226f3ecc695c337bf320a7260a983fb3f"
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/manual-bindings-pipeline-closed.jsonl",
+      "bytes": 144768,
+      "sha256": "257b0065d3ff60d478b04fd8465850a2fcf458e81135f2f61524ba5e741c04ca"
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/manual-bindings-pipeline-final.jsonl",
+      "bytes": 143406,
+      "sha256": "9b39fb47a18dd04bb043c5d654375599bd7812a3ee6918c7d52f3d50ecf6e79b"
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/manual-bindings-pipeline-normal-closed.log",
+      "bytes": 21216,
+      "sha256": "9ec2d7355ba72716f04c8ae48c27cc1b750f78b8b19be6e590795ec4cf110946"
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/manual-bindings-pipeline-normal-verified.log",
+      "bytes": 70,
+      "sha256": "96d571d37769c0aa5406749c2caff98f458a693c83420e0c21762c92b3c9a15d"
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/manual-bindings-pipeline-verified.jsonl",
+      "bytes": 144390,
+      "sha256": "1b614f4cb7f5106d5233f7d512d855ee1559930680403d7eb24fe47af7c86814"
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/manual-bindings-profiles.log",
+      "bytes": 2994,
+      "sha256": "4e6c412d6b09d71d8d41f85875b33ab22782e0a4d4cbc127ba98f892ebd971cd"
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/manual-bindings-provider-history-red.log",
+      "bytes": 359,
+      "sha256": "14a34ca980ac11afeb4cf4bd6c2bbf46e11c5c18d4fa87f673aaadd30ec36851"
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/manual-bindings-provider-history-regression.log",
+      "bytes": 244,
+      "sha256": "ee06fdaaa9ea9fe1b7b43ba8ac361f5d6409918d8b885d289c20132c61231e6b"
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/manual-bindings-public-final.jsonl",
+      "bytes": 2744,
+      "sha256": "923b037095041ef930c020f8c071c0bc75d2e8a3a6684fc3e40506b47afbbee4"
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/manual-bindings-public-workspace.jsonl",
+      "bytes": 12979,
+      "sha256": "8cb7e50943ce9c5d8691ff544809d68b5edbe7dbd6108fbe11a6d333566bb422"
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/manual-bindings-race-final.jsonl",
+      "bytes": 434975,
+      "sha256": "4498b484bc5536fb8d7c969de59fcc9a6ccbed500682c8ebf4b8c9386f9f8645"
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/manual-bindings-race.jsonl",
+      "bytes": 656659,
+      "sha256": "d011af3aae89274ba2791b7247ecf1bc85e561fe4ce315ae287d23b6f52c7ecc"
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/manual-bindings-writing.log",
+      "bytes": 1156,
+      "sha256": "7982759077f98723a2a9a03e1fac7178c2c10d62bd78a2654b6c5723a76cbd2a"
+    }
+  ],
+  "work_commit": "aceea1a8b5cd0383e683f9f9df57225bb6906b62",
+  "planning_base": "0cad024c8a39cc6414c119249d6f07d2b3350d9f",
+  "final_race": {
+    "passed_test_events": 398,
+    "failed_test_events": 0,
+    "packages": [
+      {
+        "package": "github.com/agentstation/starmap/internal/catalog/reconciler",
+        "passed_test_events": 234,
+        "elapsed_seconds": 1.908,
+        "capture": "docs/plans/proof/starport-production-catalog/csp3/manual-bindings-race-final.jsonl"
+      },
+      {
+        "package": "github.com/agentstation/starmap/pkg/provenance",
+        "passed_test_events": 28,
+        "elapsed_seconds": 2.249,
+        "capture": "docs/plans/proof/starport-production-catalog/csp3/manual-bindings-race-final.jsonl"
+      },
+      {
+        "package": "github.com/agentstation/starmap/internal/catalog/pipeline",
+        "passed_test_events": 82,
+        "elapsed_seconds": 9.677,
+        "capture": "docs/plans/proof/starport-production-catalog/csp3/manual-bindings-pipeline-verified.jsonl"
+      },
+      {
+        "package": "github.com/agentstation/starmap/acquisition",
+        "passed_test_events": 54,
+        "elapsed_seconds": 264.865,
+        "capture": "docs/plans/proof/starport-production-catalog/csp3/manual-bindings-acquisition-final.jsonl"
+      }
+    ],
+    "counting": "Each package uses its latest completed package run. Earlier passing runs are not added again."
+  },
+  "initial_work_commit": "31a27ae44863f21af044647a8166c6728bee147f",
+  "document_contract": {
+    "verdict": "PASS",
+    "scope": "Document contracts only. No product acceptance credit.",
+    "tasks": 38,
+    "primary_cases": 50,
+    "required_subcases": 324,
+    "candidate_subcases": 305,
+    "candidate_extra_subcases": 8,
+    "historical_files_preserved": 57,
+    "local_links_checked": 258,
+    "pinned_links_checked": 74,
+    "plan_lines": 500,
+    "command": "python3 docs/plans/proof/starport-production-catalog/activation-2026-09-05/verify_documents.py",
+    "exit_code": 0
+  },
+  "final_document_writing": {
+    "command": "GOTOOLCHAIN=go1.26.6 make technical-writing-check",
+    "exit_code": 0,
+    "files": 1062,
+    "diagnostics": 0,
+    "output_sha256": "2e1b6c3eb310184e472b490437d65d59a18c355212963a7922c0589706118ad7"
+  }
+}

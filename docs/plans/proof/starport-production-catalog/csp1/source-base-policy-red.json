@@ -1,0 +1,16 @@
+{
+  "command": [
+    "go",
+    "test",
+    "-race",
+    "-count=1",
+    "-timeout",
+    "5m",
+    "./pkg/catalogs/config",
+    "-run",
+    "^TestSourceReplacementPreservesIndependentBasePolicy$"
+  ],
+  "exit_code": 1,
+  "stdout": "--- FAIL: TestSourceReplacementPreservesIndependentBasePolicy (9.53s)\n    options_test.go:121: source replacement cleared an independent node alias from the host policy\nFAIL\nFAIL\tgithub.com/agentstation/starmap/pkg/catalogs/config\t9.991s\nFAIL\n",
+  "stderr": ""
+}

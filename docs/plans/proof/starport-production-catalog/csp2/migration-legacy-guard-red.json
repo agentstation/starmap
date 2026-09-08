@@ -1,0 +1,17 @@
+{
+  "command": [
+    "go",
+    "test",
+    "-race",
+    "-count=1",
+    "-timeout",
+    "2m",
+    "-json",
+    "./internal/cli/app",
+    "-run",
+    "^TestDefaultRuntimeRootAcceptsCompletedLegacyMigration$"
+  ],
+  "exit_code": 1,
+  "stdout": "{\"Time\":\"2026-09-05T22:57:28.11801-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\"}\n{\"Time\":\"2026-09-05T22:57:28.682004-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestDefaultRuntimeRootAcceptsCompletedLegacyMigration\"}\n{\"Time\":\"2026-09-05T22:57:28.682283-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestDefaultRuntimeRootAcceptsCompletedLegacyMigration\",\"Output\":\"=== RUN   TestDefaultRuntimeRootAcceptsCompletedLegacyMigration\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-05T22:57:42.918313-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestDefaultRuntimeRootAcceptsCompletedLegacyMigration\",\"Output\":\"    legacy_migration_test.go:76: completed migration still blocks default startup: product directory migration conflict: legacy state requires an explicit verified migration\\n\",\"OutputType\":\"error\"}\n{\"Time\":\"2026-09-05T22:57:42.920556-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestDefaultRuntimeRootAcceptsCompletedLegacyMigration\",\"Output\":\"--- FAIL: TestDefaultRuntimeRootAcceptsCompletedLegacyMigration (14.24s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-05T22:57:42.920586-05:00\",\"Action\":\"fail\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestDefaultRuntimeRootAcceptsCompletedLegacyMigration\",\"Elapsed\":14.24}\n{\"Time\":\"2026-09-05T22:57:42.920925-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Output\":\"FAIL\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-05T22:57:42.958334-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Output\":\"FAIL\\tgithub.com/agentstation/starmap/internal/cli/app\\t14.840s\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-05T22:57:42.958384-05:00\",\"Action\":\"fail\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Elapsed\":14.84}\n",
+  "stderr": ""
+}

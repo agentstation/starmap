@@ -1,0 +1,836 @@
+{
+  "package": "internal/filepublish",
+  "race": false,
+  "toolchain": "go1.25.12",
+  "commands": [
+    {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.25.12",
+        "GOOS=linux",
+        "GOARCH=arm64",
+        "CGO_ENABLED=0",
+        "go",
+        "test",
+        "-c",
+        "-o",
+        "/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/csp2-native-build-x2tomxet/test",
+        "./internal/filepublish"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "docker",
+        "volume",
+        "create",
+        "--label",
+        "purpose=csp2-native-package-verification",
+        "csp2-native-149e5cfe510445caae4edf6238e59d7e"
+      ],
+      "exit_code": 0,
+      "stdout": "csp2-native-149e5cfe510445caae4edf6238e59d7e\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "docker",
+        "create",
+        "--pull=never",
+        "--network",
+        "none",
+        "--read-only",
+        "--user",
+        "65532:65532",
+        "--cap-drop=ALL",
+        "--security-opt=no-new-privileges",
+        "--mount",
+        "type=bind,src=/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/csp2-native-build-x2tomxet/test,dst=/native-test,readonly",
+        "--mount",
+        "type=bind,src=/Users/jack/src/github.com/agentstation/starmap-catalog-requirements,dst=/Users/jack/src/github.com/agentstation/starmap-catalog-requirements,readonly",
+        "--mount",
+        "type=volume,src=csp2-native-149e5cfe510445caae4edf6238e59d7e,dst=/home/nonroot",
+        "--env",
+        "TMPDIR=/home/nonroot",
+        "--env",
+        "GOMAXPROCS=4",
+        "--workdir",
+        "/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/internal/filepublish",
+        "--entrypoint",
+        "/native-test",
+        "cgr.dev/chainguard/static@sha256:60582b2ae6074f641094af0f370d4ab241aab271858a66223dcde7eee9f51638",
+        "-test.v=test2json",
+        "-test.count=1",
+        "-test.parallel=4",
+        "-test.timeout=10m"
+      ],
+      "exit_code": 0,
+      "stdout": "bfdbd55115e482e4b196633c41559609753e76ab37625953049909d4f5cda96e\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "docker",
+        "start",
+        "--attach",
+        "bfdbd55115e482e4b196633c41559609753e76ab37625953049909d4f5cda96e"
+      ],
+      "exit_code": 0,
+      "stdout": "\u0016=== RUN   TestDirectoryBetweenRootsPreservesExistingDestination\n\u0016--- PASS: TestDirectoryBetweenRootsPreservesExistingDestination (0.00s)\n\u0016=== NAME  \n\u0016=== RUN   TestDirectoryNoReplacePreservesExistingDestination\n\u0016=== RUN   TestDirectoryNoReplacePreservesExistingDestination/empty\n\u0016--- PASS: TestDirectoryNoReplacePreservesExistingDestination/empty (0.00s)\n\u0016=== NAME  TestDirectoryNoReplacePreservesExistingDestination\n\u0016=== RUN   TestDirectoryNoReplacePreservesExistingDestination/populated\n\u0016--- PASS: TestDirectoryNoReplacePreservesExistingDestination/populated (0.00s)\n\u0016=== NAME  TestDirectoryNoReplacePreservesExistingDestination\n\u0016=== RUN   TestDirectoryNoReplacePreservesExistingDestination/file\n\u0016--- PASS: TestDirectoryNoReplacePreservesExistingDestination/file (0.00s)\n\u0016=== NAME  TestDirectoryNoReplacePreservesExistingDestination\n\u0016--- PASS: TestDirectoryNoReplacePreservesExistingDestination (0.00s)\n\u0016=== NAME  \n\u0016=== RUN   TestDirectoryNoReplaceUsesOpenRootAfterRename\n\u0016--- PASS: TestDirectoryNoReplaceUsesOpenRootAfterRename (0.00s)\n\u0016=== NAME  \n\u0016=== RUN   TestDirectoryNoReplaceConcurrentPublishers\n\u0016--- PASS: TestDirectoryNoReplaceConcurrentPublishers (0.00s)\n\u0016=== NAME  \n\u0016=== RUN   TestDirectoryNoReplaceRejectsInvalidInputs\n\u0016=== RUN   TestDirectoryNoReplaceRejectsInvalidInputs/\"\"\n\u0016--- PASS: TestDirectoryNoReplaceRejectsInvalidInputs/\"\" (0.00s)\n\u0016=== NAME  TestDirectoryNoReplaceRejectsInvalidInputs\n\u0016=== RUN   TestDirectoryNoReplaceRejectsInvalidInputs/\".\"\n\u0016--- PASS: TestDirectoryNoReplaceRejectsInvalidInputs/\".\" (0.00s)\n\u0016=== NAME  TestDirectoryNoReplaceRejectsInvalidInputs\n\u0016=== RUN   TestDirectoryNoReplaceRejectsInvalidInputs/\"..\"\n\u0016--- PASS: TestDirectoryNoReplaceRejectsInvalidInputs/\"..\" (0.00s)\n\u0016=== NAME  TestDirectoryNoReplaceRejectsInvalidInputs\n\u0016=== RUN   TestDirectoryNoReplaceRejectsInvalidInputs/\"../outside\"\n\u0016--- PASS: TestDirectoryNoReplaceRejectsInvalidInputs/\"../outside\" (0.00s)\n\u0016=== NAME  TestDirectoryNoReplaceRejectsInvalidInputs\n\u0016=== RUN   TestDirectoryNoReplaceRejectsInvalidInputs/\"/absolute\"\n\u0016--- PASS: TestDirectoryNoReplaceRejectsInvalidInputs/\"/absolute\" (0.00s)\n\u0016=== NAME  TestDirectoryNoReplaceRejectsInvalidInputs\n\u0016=== RUN   TestDirectoryNoReplaceRejectsInvalidInputs/\"nested/name\"\n\u0016--- PASS: TestDirectoryNoReplaceRejectsInvalidInputs/\"nested/name\" (0.00s)\n\u0016=== NAME  TestDirectoryNoReplaceRejectsInvalidInputs\n\u0016=== RUN   TestDirectoryNoReplaceRejectsInvalidInputs/\"nested\\\\name\"\n\u0016--- PASS: TestDirectoryNoReplaceRejectsInvalidInputs/\"nested\\\\name\" (0.00s)\n\u0016=== NAME  TestDirectoryNoReplaceRejectsInvalidInputs\n\u0016=== RUN   TestDirectoryNoReplaceRejectsInvalidInputs/\"stream:name\"\n\u0016--- PASS: TestDirectoryNoReplaceRejectsInvalidInputs/\"stream:name\" (0.00s)\n\u0016=== NAME  TestDirectoryNoReplaceRejectsInvalidInputs\n\u0016=== RUN   TestDirectoryNoReplaceRejectsInvalidInputs/\"trailing.\"\n\u0016--- PASS: TestDirectoryNoReplaceRejectsInvalidInputs/\"trailing.\" (0.00s)\n\u0016=== NAME  TestDirectoryNoReplaceRejectsInvalidInputs\n\u0016=== RUN   TestDirectoryNoReplaceRejectsInvalidInputs/\"trailing_\"\n\u0016--- PASS: TestDirectoryNoReplaceRejectsInvalidInputs/\"trailing_\" (0.00s)\n\u0016=== NAME  TestDirectoryNoReplaceRejectsInvalidInputs\n\u0016=== RUN   TestDirectoryNoReplaceRejectsInvalidInputs/\"nul\\x00name\"\n\u0016--- PASS: TestDirectoryNoReplaceRejectsInvalidInputs/\"nul\\x00name\" (0.00s)\n\u0016=== NAME  TestDirectoryNoReplaceRejectsInvalidInputs\n\u0016--- PASS: TestDirectoryNoReplaceRejectsInvalidInputs (0.00s)\n\u0016=== NAME  \n\u0016=== RUN   TestDirectoryNoReplacePreservesSymlinks\n\u0016=== RUN   TestDirectoryNoReplacePreservesSymlinks/source\n\u0016--- PASS: TestDirectoryNoReplacePreservesSymlinks/source (0.00s)\n\u0016=== NAME  TestDirectoryNoReplacePreservesSymlinks\n\u0016=== RUN   TestDirectoryNoReplacePreservesSymlinks/target\n\u0016--- PASS: TestDirectoryNoReplacePreservesSymlinks/target (0.00s)\n\u0016=== NAME  TestDirectoryNoReplacePreservesSymlinks\n\u0016--- PASS: TestDirectoryNoReplacePreservesSymlinks (0.00s)\n\u0016=== NAME  \n\u0016=== RUN   TestSyncDirectoryPreservesPublishedBytes\n\u0016--- PASS: TestSyncDirectoryPreservesPublishedBytes (0.01s)\n\u0016=== NAME  \n\u0016=== RUN   TestSyncDirectoryUsesRenamedOpenRoot\n\u0016--- PASS: TestSyncDirectoryUsesRenamedOpenRoot (0.00s)\n\u0016=== NAME  \n\u0016=== RUN   TestSyncDirectoryRefusesInvalidRoots\n\u0016--- PASS: TestSyncDirectoryRefusesInvalidRoots (0.00s)\n\u0016=== NAME  \n\u0016PASS\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "docker",
+        "inspect",
+        "--format",
+        "{{json .State}}",
+        "bfdbd55115e482e4b196633c41559609753e76ab37625953049909d4f5cda96e"
+      ],
+      "exit_code": 0,
+      "stdout": "{\"Status\":\"exited\",\"Running\":false,\"Paused\":false,\"Restarting\":false,\"OOMKilled\":false,\"Dead\":false,\"Pid\":0,\"ExitCode\":0,\"Error\":\"\",\"StartedAt\":\"2026-09-06T22:10:14.788188335Z\",\"FinishedAt\":\"2026-09-06T22:10:14.921782627Z\"}\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "docker",
+        "rm",
+        "-f",
+        "bfdbd55115e482e4b196633c41559609753e76ab37625953049909d4f5cda96e"
+      ],
+      "exit_code": 0,
+      "stdout": "bfdbd55115e482e4b196633c41559609753e76ab37625953049909d4f5cda96e\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "docker",
+        "volume",
+        "rm",
+        "csp2-native-149e5cfe510445caae4edf6238e59d7e"
+      ],
+      "exit_code": 0,
+      "stdout": "csp2-native-149e5cfe510445caae4edf6238e59d7e\n",
+      "stderr": ""
+    }
+  ],
+  "test_events": [
+    {
+      "Time": "2026-09-06T17:10:15.19955-05:00",
+      "Action": "start",
+      "Package": "github.com/agentstation/starmap/internal/filepublish"
+    },
+    {
+      "Time": "2026-09-06T17:10:15.202756-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/filepublish",
+      "Test": "TestDirectoryBetweenRootsPreservesExistingDestination"
+    },
+    {
+      "Time": "2026-09-06T17:10:15.20277-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/filepublish",
+      "Test": "TestDirectoryBetweenRootsPreservesExistingDestination",
+      "Output": "=== RUN   TestDirectoryBetweenRootsPreservesExistingDestination\n"
+    },
+    {
+      "Time": "2026-09-06T17:10:15.203081-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/filepublish",
+      "Test": "TestDirectoryBetweenRootsPreservesExistingDestination",
+      "Output": "--- PASS: TestDirectoryBetweenRootsPreservesExistingDestination (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T17:10:15.203089-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/filepublish",
+      "Test": "TestDirectoryBetweenRootsPreservesExistingDestination",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T17:10:15.203092-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/filepublish",
+      "Test": "TestDirectoryNoReplacePreservesExistingDestination"
+    },
+    {
+      "Time": "2026-09-06T17:10:15.203093-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/filepublish",
+      "Test": "TestDirectoryNoReplacePreservesExistingDestination",
+      "Output": "=== RUN   TestDirectoryNoReplacePreservesExistingDestination\n"
+    },
+    {
+      "Time": "2026-09-06T17:10:15.203096-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/filepublish",
+      "Test": "TestDirectoryNoReplacePreservesExistingDestination/empty"
+    },
+    {
+      "Time": "2026-09-06T17:10:15.203097-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/filepublish",
+      "Test": "TestDirectoryNoReplacePreservesExistingDestination/empty",
+      "Output": "=== RUN   TestDirectoryNoReplacePreservesExistingDestination/empty\n"
+    },
+    {
+      "Time": "2026-09-06T17:10:15.203099-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/filepublish",
+      "Test": "TestDirectoryNoReplacePreservesExistingDestination/empty",
+      "Output": "--- PASS: TestDirectoryNoReplacePreservesExistingDestination/empty (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T17:10:15.203101-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/filepublish",
+      "Test": "TestDirectoryNoReplacePreservesExistingDestination/empty",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T17:10:15.203104-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/filepublish",
+      "Test": "TestDirectoryNoReplacePreservesExistingDestination/populated"
+    },
+    {
+      "Time": "2026-09-06T17:10:15.203105-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/filepublish",
+      "Test": "TestDirectoryNoReplacePreservesExistingDestination/populated",
+      "Output": "=== RUN   TestDirectoryNoReplacePreservesExistingDestination/populated\n"
+    },
+    {
+      "Time": "2026-09-06T17:10:15.203106-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/filepublish",
+      "Test": "TestDirectoryNoReplacePreservesExistingDestination/populated",
+      "Output": "--- PASS: TestDirectoryNoReplacePreservesExistingDestination/populated (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T17:10:15.203425-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/filepublish",
+      "Test": "TestDirectoryNoReplacePreservesExistingDestination/populated",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T17:10:15.20343-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/filepublish",
+      "Test": "TestDirectoryNoReplacePreservesExistingDestination/file"
+    },
+    {
+      "Time": "2026-09-06T17:10:15.203432-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/filepublish",
+      "Test": "TestDirectoryNoReplacePreservesExistingDestination/file",
+      "Output": "=== RUN   TestDirectoryNoReplacePreservesExistingDestination/file\n"
+    },
+    {
+      "Time": "2026-09-06T17:10:15.203436-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/filepublish",
+      "Test": "TestDirectoryNoReplacePreservesExistingDestination/file",
+      "Output": "--- PASS: TestDirectoryNoReplacePreservesExistingDestination/file (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T17:10:15.203437-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/filepublish",
+      "Test": "TestDirectoryNoReplacePreservesExistingDestination/file",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T17:10:15.203439-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/filepublish",
+      "Test": "TestDirectoryNoReplacePreservesExistingDestination",
+      "Output": "--- PASS: TestDirectoryNoReplacePreservesExistingDestination (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T17:10:15.203441-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/filepublish",
+      "Test": "TestDirectoryNoReplacePreservesExistingDestination",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T17:10:15.203442-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/filepublish",
+      "Test": "TestDirectoryNoReplaceUsesOpenRootAfterRename"
+    },
+    {
+      "Time": "2026-09-06T17:10:15.203443-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/filepublish",
+      "Test": "TestDirectoryNoReplaceUsesOpenRootAfterRename",
+      "Output": "=== RUN   TestDirectoryNoReplaceUsesOpenRootAfterRename\n"
+    },
+    {
+      "Time": "2026-09-06T17:10:15.203445-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/filepublish",
+      "Test": "TestDirectoryNoReplaceUsesOpenRootAfterRename",
+      "Output": "--- PASS: TestDirectoryNoReplaceUsesOpenRootAfterRename (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T17:10:15.203446-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/filepublish",
+      "Test": "TestDirectoryNoReplaceUsesOpenRootAfterRename",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T17:10:15.203448-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/filepublish",
+      "Test": "TestDirectoryNoReplaceConcurrentPublishers"
+    },
+    {
+      "Time": "2026-09-06T17:10:15.20345-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/filepublish",
+      "Test": "TestDirectoryNoReplaceConcurrentPublishers",
+      "Output": "=== RUN   TestDirectoryNoReplaceConcurrentPublishers\n"
+    },
+    {
+      "Time": "2026-09-06T17:10:15.203451-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/filepublish",
+      "Test": "TestDirectoryNoReplaceConcurrentPublishers",
+      "Output": "--- PASS: TestDirectoryNoReplaceConcurrentPublishers (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T17:10:15.203452-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/filepublish",
+      "Test": "TestDirectoryNoReplaceConcurrentPublishers",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T17:10:15.20347-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/filepublish",
+      "Test": "TestDirectoryNoReplaceRejectsInvalidInputs"
+    },
+    {
+      "Time": "2026-09-06T17:10:15.203473-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/filepublish",
+      "Test": "TestDirectoryNoReplaceRejectsInvalidInputs",
+      "Output": "=== RUN   TestDirectoryNoReplaceRejectsInvalidInputs\n"
+    },
+    {
+      "Time": "2026-09-06T17:10:15.203474-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/filepublish",
+      "Test": "TestDirectoryNoReplaceRejectsInvalidInputs/\"\""
+    },
+    {
+      "Time": "2026-09-06T17:10:15.203477-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/filepublish",
+      "Test": "TestDirectoryNoReplaceRejectsInvalidInputs/\"\"",
+      "Output": "=== RUN   TestDirectoryNoReplaceRejectsInvalidInputs/\"\"\n"
+    },
+    {
+      "Time": "2026-09-06T17:10:15.203479-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/filepublish",
+      "Test": "TestDirectoryNoReplaceRejectsInvalidInputs/\"\"",
+      "Output": "--- PASS: TestDirectoryNoReplaceRejectsInvalidInputs/\"\" (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T17:10:15.20348-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/filepublish",
+      "Test": "TestDirectoryNoReplaceRejectsInvalidInputs/\"\"",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T17:10:15.203484-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/filepublish",
+      "Test": "TestDirectoryNoReplaceRejectsInvalidInputs/\".\""
+    },
+    {
+      "Time": "2026-09-06T17:10:15.203485-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/filepublish",
+      "Test": "TestDirectoryNoReplaceRejectsInvalidInputs/\".\"",
+      "Output": "=== RUN   TestDirectoryNoReplaceRejectsInvalidInputs/\".\"\n"
+    },
+    {
+      "Time": "2026-09-06T17:10:15.203487-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/filepublish",
+      "Test": "TestDirectoryNoReplaceRejectsInvalidInputs/\".\"",
+      "Output": "--- PASS: TestDirectoryNoReplaceRejectsInvalidInputs/\".\" (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T17:10:15.203488-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/filepublish",
+      "Test": "TestDirectoryNoReplaceRejectsInvalidInputs/\".\"",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T17:10:15.203489-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/filepublish",
+      "Test": "TestDirectoryNoReplaceRejectsInvalidInputs/\"..\""
+    },
+    {
+      "Time": "2026-09-06T17:10:15.20349-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/filepublish",
+      "Test": "TestDirectoryNoReplaceRejectsInvalidInputs/\"..\"",
+      "Output": "=== RUN   TestDirectoryNoReplaceRejectsInvalidInputs/\"..\"\n"
+    },
+    {
+      "Time": "2026-09-06T17:10:15.203492-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/filepublish",
+      "Test": "TestDirectoryNoReplaceRejectsInvalidInputs/\"..\"",
+      "Output": "--- PASS: TestDirectoryNoReplaceRejectsInvalidInputs/\"..\" (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T17:10:15.203493-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/filepublish",
+      "Test": "TestDirectoryNoReplaceRejectsInvalidInputs/\"..\"",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T17:10:15.203494-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/filepublish",
+      "Test": "TestDirectoryNoReplaceRejectsInvalidInputs/\"../outside\""
+    },
+    {
+      "Time": "2026-09-06T17:10:15.203495-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/filepublish",
+      "Test": "TestDirectoryNoReplaceRejectsInvalidInputs/\"../outside\"",
+      "Output": "=== RUN   TestDirectoryNoReplaceRejectsInvalidInputs/\"../outside\"\n"
+    },
+    {
+      "Time": "2026-09-06T17:10:15.203497-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/filepublish",
+      "Test": "TestDirectoryNoReplaceRejectsInvalidInputs/\"../outside\"",
+      "Output": "--- PASS: TestDirectoryNoReplaceRejectsInvalidInputs/\"../outside\" (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T17:10:15.203498-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/filepublish",
+      "Test": "TestDirectoryNoReplaceRejectsInvalidInputs/\"../outside\"",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T17:10:15.203499-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/filepublish",
+      "Test": "TestDirectoryNoReplaceRejectsInvalidInputs/\"/absolute\""
+    },
+    {
+      "Time": "2026-09-06T17:10:15.2035-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/filepublish",
+      "Test": "TestDirectoryNoReplaceRejectsInvalidInputs/\"/absolute\"",
+      "Output": "=== RUN   TestDirectoryNoReplaceRejectsInvalidInputs/\"/absolute\"\n"
+    },
+    {
+      "Time": "2026-09-06T17:10:15.203502-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/filepublish",
+      "Test": "TestDirectoryNoReplaceRejectsInvalidInputs/\"/absolute\"",
+      "Output": "--- PASS: TestDirectoryNoReplaceRejectsInvalidInputs/\"/absolute\" (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T17:10:15.203506-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/filepublish",
+      "Test": "TestDirectoryNoReplaceRejectsInvalidInputs/\"/absolute\"",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T17:10:15.203507-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/filepublish",
+      "Test": "TestDirectoryNoReplaceRejectsInvalidInputs/\"nested/name\""
+    },
+    {
+      "Time": "2026-09-06T17:10:15.203508-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/filepublish",
+      "Test": "TestDirectoryNoReplaceRejectsInvalidInputs/\"nested/name\"",
+      "Output": "=== RUN   TestDirectoryNoReplaceRejectsInvalidInputs/\"nested/name\"\n"
+    },
+    {
+      "Time": "2026-09-06T17:10:15.20351-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/filepublish",
+      "Test": "TestDirectoryNoReplaceRejectsInvalidInputs/\"nested/name\"",
+      "Output": "--- PASS: TestDirectoryNoReplaceRejectsInvalidInputs/\"nested/name\" (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T17:10:15.203511-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/filepublish",
+      "Test": "TestDirectoryNoReplaceRejectsInvalidInputs/\"nested/name\"",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T17:10:15.203513-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/filepublish",
+      "Test": "TestDirectoryNoReplaceRejectsInvalidInputs/\"nested\\\\name\""
+    },
+    {
+      "Time": "2026-09-06T17:10:15.203514-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/filepublish",
+      "Test": "TestDirectoryNoReplaceRejectsInvalidInputs/\"nested\\\\name\"",
+      "Output": "=== RUN   TestDirectoryNoReplaceRejectsInvalidInputs/\"nested\\\\name\"\n"
+    },
+    {
+      "Time": "2026-09-06T17:10:15.203515-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/filepublish",
+      "Test": "TestDirectoryNoReplaceRejectsInvalidInputs/\"nested\\\\name\"",
+      "Output": "--- PASS: TestDirectoryNoReplaceRejectsInvalidInputs/\"nested\\\\name\" (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T17:10:15.203519-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/filepublish",
+      "Test": "TestDirectoryNoReplaceRejectsInvalidInputs/\"nested\\\\name\"",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T17:10:15.203521-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/filepublish",
+      "Test": "TestDirectoryNoReplaceRejectsInvalidInputs/\"stream:name\""
+    },
+    {
+      "Time": "2026-09-06T17:10:15.203522-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/filepublish",
+      "Test": "TestDirectoryNoReplaceRejectsInvalidInputs/\"stream:name\"",
+      "Output": "=== RUN   TestDirectoryNoReplaceRejectsInvalidInputs/\"stream:name\"\n"
+    },
+    {
+      "Time": "2026-09-06T17:10:15.203523-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/filepublish",
+      "Test": "TestDirectoryNoReplaceRejectsInvalidInputs/\"stream:name\"",
+      "Output": "--- PASS: TestDirectoryNoReplaceRejectsInvalidInputs/\"stream:name\" (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T17:10:15.203524-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/filepublish",
+      "Test": "TestDirectoryNoReplaceRejectsInvalidInputs/\"stream:name\"",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T17:10:15.203525-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/filepublish",
+      "Test": "TestDirectoryNoReplaceRejectsInvalidInputs/\"trailing.\""
+    },
+    {
+      "Time": "2026-09-06T17:10:15.203526-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/filepublish",
+      "Test": "TestDirectoryNoReplaceRejectsInvalidInputs/\"trailing.\"",
+      "Output": "=== RUN   TestDirectoryNoReplaceRejectsInvalidInputs/\"trailing.\"\n"
+    },
+    {
+      "Time": "2026-09-06T17:10:15.203528-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/filepublish",
+      "Test": "TestDirectoryNoReplaceRejectsInvalidInputs/\"trailing.\"",
+      "Output": "--- PASS: TestDirectoryNoReplaceRejectsInvalidInputs/\"trailing.\" (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T17:10:15.203529-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/filepublish",
+      "Test": "TestDirectoryNoReplaceRejectsInvalidInputs/\"trailing.\"",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T17:10:15.203531-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/filepublish",
+      "Test": "TestDirectoryNoReplaceRejectsInvalidInputs/\"trailing_\""
+    },
+    {
+      "Time": "2026-09-06T17:10:15.203532-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/filepublish",
+      "Test": "TestDirectoryNoReplaceRejectsInvalidInputs/\"trailing_\"",
+      "Output": "=== RUN   TestDirectoryNoReplaceRejectsInvalidInputs/\"trailing_\"\n"
+    },
+    {
+      "Time": "2026-09-06T17:10:15.203533-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/filepublish",
+      "Test": "TestDirectoryNoReplaceRejectsInvalidInputs/\"trailing_\"",
+      "Output": "--- PASS: TestDirectoryNoReplaceRejectsInvalidInputs/\"trailing_\" (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T17:10:15.203534-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/filepublish",
+      "Test": "TestDirectoryNoReplaceRejectsInvalidInputs/\"trailing_\"",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T17:10:15.203535-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/filepublish",
+      "Test": "TestDirectoryNoReplaceRejectsInvalidInputs/\"nul\\x00name\""
+    },
+    {
+      "Time": "2026-09-06T17:10:15.203536-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/filepublish",
+      "Test": "TestDirectoryNoReplaceRejectsInvalidInputs/\"nul\\x00name\"",
+      "Output": "=== RUN   TestDirectoryNoReplaceRejectsInvalidInputs/\"nul\\x00name\"\n"
+    },
+    {
+      "Time": "2026-09-06T17:10:15.203539-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/filepublish",
+      "Test": "TestDirectoryNoReplaceRejectsInvalidInputs/\"nul\\x00name\"",
+      "Output": "--- PASS: TestDirectoryNoReplaceRejectsInvalidInputs/\"nul\\x00name\" (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T17:10:15.20354-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/filepublish",
+      "Test": "TestDirectoryNoReplaceRejectsInvalidInputs/\"nul\\x00name\"",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T17:10:15.203541-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/filepublish",
+      "Test": "TestDirectoryNoReplaceRejectsInvalidInputs",
+      "Output": "--- PASS: TestDirectoryNoReplaceRejectsInvalidInputs (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T17:10:15.203543-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/filepublish",
+      "Test": "TestDirectoryNoReplaceRejectsInvalidInputs",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T17:10:15.203544-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/filepublish",
+      "Test": "TestDirectoryNoReplacePreservesSymlinks"
+    },
+    {
+      "Time": "2026-09-06T17:10:15.203555-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/filepublish",
+      "Test": "TestDirectoryNoReplacePreservesSymlinks",
+      "Output": "=== RUN   TestDirectoryNoReplacePreservesSymlinks\n"
+    },
+    {
+      "Time": "2026-09-06T17:10:15.203559-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/filepublish",
+      "Test": "TestDirectoryNoReplacePreservesSymlinks/source"
+    },
+    {
+      "Time": "2026-09-06T17:10:15.20356-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/filepublish",
+      "Test": "TestDirectoryNoReplacePreservesSymlinks/source",
+      "Output": "=== RUN   TestDirectoryNoReplacePreservesSymlinks/source\n"
+    },
+    {
+      "Time": "2026-09-06T17:10:15.203561-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/filepublish",
+      "Test": "TestDirectoryNoReplacePreservesSymlinks/source",
+      "Output": "--- PASS: TestDirectoryNoReplacePreservesSymlinks/source (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T17:10:15.203563-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/filepublish",
+      "Test": "TestDirectoryNoReplacePreservesSymlinks/source",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T17:10:15.203564-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/filepublish",
+      "Test": "TestDirectoryNoReplacePreservesSymlinks/target"
+    },
+    {
+      "Time": "2026-09-06T17:10:15.203565-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/filepublish",
+      "Test": "TestDirectoryNoReplacePreservesSymlinks/target",
+      "Output": "=== RUN   TestDirectoryNoReplacePreservesSymlinks/target\n"
+    },
+    {
+      "Time": "2026-09-06T17:10:15.203575-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/filepublish",
+      "Test": "TestDirectoryNoReplacePreservesSymlinks/target",
+      "Output": "--- PASS: TestDirectoryNoReplacePreservesSymlinks/target (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T17:10:15.203576-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/filepublish",
+      "Test": "TestDirectoryNoReplacePreservesSymlinks/target",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T17:10:15.203577-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/filepublish",
+      "Test": "TestDirectoryNoReplacePreservesSymlinks",
+      "Output": "--- PASS: TestDirectoryNoReplacePreservesSymlinks (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T17:10:15.203578-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/filepublish",
+      "Test": "TestDirectoryNoReplacePreservesSymlinks",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T17:10:15.20358-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/filepublish",
+      "Test": "TestSyncDirectoryPreservesPublishedBytes"
+    },
+    {
+      "Time": "2026-09-06T17:10:15.203581-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/filepublish",
+      "Test": "TestSyncDirectoryPreservesPublishedBytes",
+      "Output": "=== RUN   TestSyncDirectoryPreservesPublishedBytes\n"
+    },
+    {
+      "Time": "2026-09-06T17:10:15.203583-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/filepublish",
+      "Test": "TestSyncDirectoryPreservesPublishedBytes",
+      "Output": "--- PASS: TestSyncDirectoryPreservesPublishedBytes (0.01s)\n"
+    },
+    {
+      "Time": "2026-09-06T17:10:15.203584-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/filepublish",
+      "Test": "TestSyncDirectoryPreservesPublishedBytes",
+      "Elapsed": 0.01
+    },
+    {
+      "Time": "2026-09-06T17:10:15.203586-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/filepublish",
+      "Test": "TestSyncDirectoryUsesRenamedOpenRoot"
+    },
+    {
+      "Time": "2026-09-06T17:10:15.203587-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/filepublish",
+      "Test": "TestSyncDirectoryUsesRenamedOpenRoot",
+      "Output": "=== RUN   TestSyncDirectoryUsesRenamedOpenRoot\n"
+    },
+    {
+      "Time": "2026-09-06T17:10:15.203588-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/filepublish",
+      "Test": "TestSyncDirectoryUsesRenamedOpenRoot",
+      "Output": "--- PASS: TestSyncDirectoryUsesRenamedOpenRoot (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T17:10:15.20359-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/filepublish",
+      "Test": "TestSyncDirectoryUsesRenamedOpenRoot",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T17:10:15.203591-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/filepublish",
+      "Test": "TestSyncDirectoryRefusesInvalidRoots"
+    },
+    {
+      "Time": "2026-09-06T17:10:15.203592-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/filepublish",
+      "Test": "TestSyncDirectoryRefusesInvalidRoots",
+      "Output": "=== RUN   TestSyncDirectoryRefusesInvalidRoots\n"
+    },
+    {
+      "Time": "2026-09-06T17:10:15.203593-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/filepublish",
+      "Test": "TestSyncDirectoryRefusesInvalidRoots",
+      "Output": "--- PASS: TestSyncDirectoryRefusesInvalidRoots (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T17:10:15.203688-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/filepublish",
+      "Test": "TestSyncDirectoryRefusesInvalidRoots",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T17:10:15.20369-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/filepublish",
+      "Output": "PASS\n"
+    },
+    {
+      "Time": "2026-09-06T17:10:15.203694-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/filepublish",
+      "Elapsed": 0.004
+    }
+  ],
+  "binary_sha256": "b4327d364052bd61e6ab0c4c7368490f7715c0e41c52ad4f424b182f217dfc28",
+  "state": {
+    "Status": "exited",
+    "Running": false,
+    "Paused": false,
+    "Restarting": false,
+    "OOMKilled": false,
+    "Dead": false,
+    "Pid": 0,
+    "ExitCode": 0,
+    "Error": "",
+    "StartedAt": "2026-09-06T22:10:14.788188335Z",
+    "FinishedAt": "2026-09-06T22:10:14.921782627Z"
+  },
+  "conversion_exit_code": 0,
+  "counts": {
+    "pass": 25,
+    "fail": 0,
+    "skip": 0
+  },
+  "passed": true,
+  "container_removed": true,
+  "volume_removed": true
+}

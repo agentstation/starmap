@@ -1,0 +1,88 @@
+{
+  "results": [
+    {
+      "module": "testdata/consumers/pinned-artifact/go.mod",
+      "command": [
+        "env",
+        "GOWORK=off",
+        "GOTOOLCHAIN=go1.26.6",
+        "go",
+        "mod",
+        "tidy"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "module": "testdata/consumers/read-only/go.mod",
+      "command": [
+        "env",
+        "GOWORK=off",
+        "GOTOOLCHAIN=go1.26.6",
+        "go",
+        "mod",
+        "tidy"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "module": "testdata/consumers/remote-subscriber/go.mod",
+      "command": [
+        "env",
+        "GOWORK=off",
+        "GOTOOLCHAIN=go1.26.6",
+        "go",
+        "mod",
+        "tidy"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "module": "testdata/consumers/server-embed/go.mod",
+      "command": [
+        "env",
+        "GOWORK=off",
+        "GOTOOLCHAIN=go1.26.6",
+        "go",
+        "mod",
+        "tidy"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "module": "testdata/consumers/server-storage/go.mod",
+      "command": [
+        "env",
+        "GOWORK=off",
+        "GOTOOLCHAIN=go1.26.6",
+        "go",
+        "mod",
+        "tidy"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "module": "testdata/consumers/store-only/go.mod",
+      "command": [
+        "env",
+        "GOWORK=off",
+        "GOTOOLCHAIN=go1.26.6",
+        "go",
+        "mod",
+        "tidy"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    }
+  ]
+}

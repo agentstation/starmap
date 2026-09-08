@@ -1,0 +1,431 @@
+
+==> go test ./...
+ok  	github.com/agentstation/starmap	85.454s
+ok  	github.com/agentstation/starmap/acquisition	38.561s
+?   	github.com/agentstation/starmap/cmd/starmap	[no test files]
+ok  	github.com/agentstation/starmap/cmd/starmap-bootstrap-manifest	23.688s
+ok  	github.com/agentstation/starmap/cmd/starmap-catalog-release	1.769s
+ok  	github.com/agentstation/starmap/cmd/starmap-embedded-budget	(cached)
+ok  	github.com/agentstation/starmap/cmd/starmap-modelsdev-promote	0.600s
+ok  	github.com/agentstation/starmap/internal/architecture	(cached)
+ok  	github.com/agentstation/starmap/internal/attestation	(cached)
+ok  	github.com/agentstation/starmap/internal/auth	0.589s
+ok  	github.com/agentstation/starmap/internal/bootstrap	39.352s
+ok  	github.com/agentstation/starmap/internal/bootstrap/budget	(cached)
+ok  	github.com/agentstation/starmap/internal/bootstrap/manifest	(cached)
+ok  	github.com/agentstation/starmap/internal/catalog/pipeline	3.663s
+ok  	github.com/agentstation/starmap/internal/catalog/query	(cached)
+ok  	github.com/agentstation/starmap/internal/catalog/reconciler	0.966s
+ok  	github.com/agentstation/starmap/internal/catalog/settings	5.560s
+ok  	github.com/agentstation/starmap/internal/catalog/workspace	24.517s
+ok  	github.com/agentstation/starmap/internal/ciworkflow	1.190s
+?   	github.com/agentstation/starmap/internal/cli/alerts	[no test files]
+ok  	github.com/agentstation/starmap/internal/cli/app	27.921s
+?   	github.com/agentstation/starmap/internal/cli/commands/auth	[no test files]
+?   	github.com/agentstation/starmap/internal/cli/commands/authors	[no test files]
+?   	github.com/agentstation/starmap/internal/cli/commands/completion	[no test files]
+ok  	github.com/agentstation/starmap/internal/cli/commands/config	(cached)
+ok  	github.com/agentstation/starmap/internal/cli/commands/deps	(cached)
+ok  	github.com/agentstation/starmap/internal/cli/commands/embed	(cached)
+ok  	github.com/agentstation/starmap/internal/cli/commands/migrate	(cached)
+ok  	github.com/agentstation/starmap/internal/cli/commands/models	(cached)
+ok  	github.com/agentstation/starmap/internal/cli/commands/providers	(cached)
+ok  	github.com/agentstation/starmap/internal/cli/commands/serve	(cached)
+ok  	github.com/agentstation/starmap/internal/cli/commands/update	0.342s
+ok  	github.com/agentstation/starmap/internal/cli/commands/validate	(cached)
+?   	github.com/agentstation/starmap/internal/cli/completion	[no test files]
+?   	github.com/agentstation/starmap/internal/cli/constants	[no test files]
+ok  	github.com/agentstation/starmap/internal/cli/convert	(cached)
+ok  	github.com/agentstation/starmap/internal/cli/embed	(cached)
+?   	github.com/agentstation/starmap/internal/cli/emoji	[no test files]
+?   	github.com/agentstation/starmap/internal/cli/filter	[no test files]
+?   	github.com/agentstation/starmap/internal/cli/format	[no test files]
+?   	github.com/agentstation/starmap/internal/cli/globals	[no test files]
+ok  	github.com/agentstation/starmap/internal/cli/hints	(cached)
+?   	github.com/agentstation/starmap/internal/cli/notify	[no test files]
+?   	github.com/agentstation/starmap/internal/cli/provider	[no test files]
+ok  	github.com/agentstation/starmap/internal/cli/table	(cached)
+?   	github.com/agentstation/starmap/internal/constants	[no test files]
+ok  	github.com/agentstation/starmap/internal/deploymentdocs	(cached)
+?   	github.com/agentstation/starmap/internal/deps	[no test files]
+ok  	github.com/agentstation/starmap/internal/embedded	(cached)
+?   	github.com/agentstation/starmap/internal/embedded/openapi	[no test files]
+ok  	github.com/agentstation/starmap/internal/filepublish	0.503s
+ok  	github.com/agentstation/starmap/internal/fleet	(cached)
+ok  	github.com/agentstation/starmap/internal/privatefiles	3.174s
+ok  	github.com/agentstation/starmap/internal/providers/anthropic	2.468s
+ok  	github.com/agentstation/starmap/internal/providers/clients	(cached)
+ok  	github.com/agentstation/starmap/internal/providers/google	(cached)
+ok  	github.com/agentstation/starmap/internal/providers/openai	(cached)
+ok  	github.com/agentstation/starmap/internal/runtimeacl/windows	(cached)
+ok  	github.com/agentstation/starmap/internal/server	41.324s
+ok  	github.com/agentstation/starmap/internal/server/cache	(cached)
+ok  	github.com/agentstation/starmap/internal/server/handlers	(cached)
+ok  	github.com/agentstation/starmap/internal/server/middleware	(cached)
+ok  	github.com/agentstation/starmap/internal/server/openrouter	(cached)
+ok  	github.com/agentstation/starmap/internal/server/operations	(cached)
+ok  	github.com/agentstation/starmap/internal/server/params	(cached)
+ok  	github.com/agentstation/starmap/internal/server/response	(cached)
+ok  	github.com/agentstation/starmap/internal/server/sse	(cached)
+ok  	github.com/agentstation/starmap/internal/sources/embedded	(cached)
+ok  	github.com/agentstation/starmap/internal/sources/github	2.214s
+ok  	github.com/agentstation/starmap/internal/sources/local	0.271s
+ok  	github.com/agentstation/starmap/internal/sources/modelsdev	13.995s
+ok  	github.com/agentstation/starmap/internal/sources/providers	(cached)
+?   	github.com/agentstation/starmap/internal/test/catalog	[no test files]
+?   	github.com/agentstation/starmap/internal/test/channel	[no test files]
+?   	github.com/agentstation/starmap/internal/test/logging	[no test files]
+ok  	github.com/agentstation/starmap/internal/test/providerfixture	0.500s
+ok  	github.com/agentstation/starmap/internal/transport	(cached)
+ok  	github.com/agentstation/starmap/pkg/catalogs	26.189s
+ok  	github.com/agentstation/starmap/pkg/catalogs/artifact	0.479s
+ok  	github.com/agentstation/starmap/pkg/catalogs/authority	(cached)
+ok  	github.com/agentstation/starmap/pkg/catalogs/config	3.880s
+ok  	github.com/agentstation/starmap/pkg/catalogs/evidence	(cached)
+?   	github.com/agentstation/starmap/pkg/catalogs/internal/resourcepolicy	[no test files]
+ok  	github.com/agentstation/starmap/pkg/catalogs/projection	(cached)
+ok  	github.com/agentstation/starmap/pkg/catalogs/remote	(cached)
+ok  	github.com/agentstation/starmap/pkg/catalogs/storage	4.943s
+ok  	github.com/agentstation/starmap/pkg/catalogs/storage/s3	(cached)
+ok  	github.com/agentstation/starmap/pkg/differ	(cached)
+ok  	github.com/agentstation/starmap/pkg/errors	(cached)
+ok  	github.com/agentstation/starmap/pkg/logging	0.185s
+ok  	github.com/agentstation/starmap/pkg/productpaths	0.465s
+ok  	github.com/agentstation/starmap/pkg/productpaths/policy	(cached)
+ok  	github.com/agentstation/starmap/pkg/provenance	0.249s
+ok  	github.com/agentstation/starmap/pkg/sources	(cached)
+ok  	github.com/agentstation/starmap/pkg/sources/payload	(cached)
+ok  	github.com/agentstation/starmap/pkg/sync	0.257s
+ok  	github.com/agentstation/starmap/remote	4.475s
+ok  	github.com/agentstation/starmap/runtime	64.773s
+?   	github.com/agentstation/starmap/runtime/source	[no test files]
+?   	github.com/agentstation/starmap/runtime/status	[no test files]
+ok  	github.com/agentstation/starmap/server	8.699s
+
+==> make test-pure-go
+ok  	github.com/agentstation/starmap-test/read-only-consumer	1.590s
+ok  	github.com/agentstation/starmap-test/store-only-consumer	1.795s
+ok  	github.com/agentstation/starmap-test/pinned-artifact-consumer	2.878s
+ok  	github.com/agentstation/starmap-test/server-embed-consumer	1.545s
+ok  	github.com/agentstation/starmap-test/remote-subscriber-consumer	2.479s
+ok  	github.com/agentstation/starmap-test/server-storage-consumer	4.962s
+read-only consumer dependency closure: 37/37 non-standard packages (161 total on this platform); forbidden families absent
+store-only consumer: caller-owned adapter contract and publication passed; application/database implementations absent
+pinned-artifact consumer: 38/38 non-standard packages; offline verified activation passed; online/acquisition families absent
+server-embed consumer dependency closure: 254/260 packages; acquisition families absent
+server-embed consumer: external compile and lifecycle test passed
+remote-subscriber consumer dependency closure: 237/240 packages; forbidden families absent
+remote-subscriber consumer: external compile and reactive lifecycle test passed
+server-storage consumer dependency closure: 348/350 packages; filesystem/S3 server and reactive restart matrix passed
+ok  	github.com/agentstation/starmap/pkg/catalogs/storage/s3	(cached)
+starmap dev
+pure-Go verification passed: library, pinned artifact, stores including S3, server, remote, and CLI execute with CGO_ENABLED=0
+
+==> make test-file-sizes
+1423	internal/catalog/reconciler/merger_test.go
+1071	internal/providers/openai/client_test.go
+1040	remote/subscriber_test.go
+Go file-size verification passed: review >1000, justify >1500, fail >=2000 lines
+
+==> ./scripts/verify-package-layout.sh
+ok  	github.com/agentstation/starmap/internal/architecture	0.196s
+package-layout verification passed
+
+==> ./scripts/test-package-layout-verifier.sh
+package-layout verifier regression tests passed
+
+==> ./scripts/verify-catalog-package-ownership.sh
+CPO-V01 PASS: the five approved catalog child packages exist
+CPO-V02 PASS: the four removed package trees are absent
+CPO-V03 PASS: catalogs owns Generation copy and validation
+CPO-V04 PASS: catalogs owns all canonical payload codecs
+CPO-V05 PASS: evidence is a standard-library-only leaf
+CPO-V06 PASS: projection is a standard-library-only leaf without aliases
+CPO-V07 PASS: storage accepts catalog generations and retains adapters
+CPO-V08 PASS: artifact is storage-independent and retains its byte test
+CPO-V09 PASS: remote is storage-independent and retains protocol tests
+CPO-V10 PASS: all six external consumer modules compile
+CPO-V11 PASS: current docs and the migration guide use approved paths
+CPO-V12 PASS: current authority passes the historical allowlist scan
+CPO-V13 PASS: the package graph resolves without a dependency change
+Summary: 13 passed, 0 failed
+
+==> ./scripts/test-catalog-package-ownership-verifier.sh
+catalog package ownership verifier regression tests passed
+
+==> ./scripts/verify-catalog-dependency-direction.sh
+SM-D01 PASS: catalogs does not import private authority policy
+SM-D02 PASS: catalogs does not import repository-wide constants
+SM-D03 PASS: catalogs does not import the private embedded filesystem
+SM-D04 PASS: catalogs does not import private source payload policy
+SM-D05 PASS: catalog artifacts do not import repository-wide constants
+SM-D06 PASS: catalog remote transport does not import repository-wide constants
+SM-D07 PASS: catalog storage does not import repository-wide constants
+SM-D08 PASS: catalog S3 storage does not import repository-wide constants
+Summary: 8 passed, 0 failed
+
+==> ./scripts/test-catalog-dependency-direction-verifier.sh
+catalog dependency direction verifier tests passed
+
+==> python3 ./scripts/test_catalog_product_verify.py
+test_baseline_cannot_claim_release_qualification (__main__.CatalogVerifierTests.test_baseline_cannot_claim_release_qualification) ... ok
+test_baseline_keeps_negative_paired_differences (__main__.CatalogVerifierTests.test_baseline_keeps_negative_paired_differences) ... ok
+test_baseline_refuses_lost_stream_events_and_wrong_milestones (__main__.CatalogVerifierTests.test_baseline_refuses_lost_stream_events_and_wrong_milestones) ... ok
+test_baseline_refuses_missing_variant_or_initial_evidence (__main__.CatalogVerifierTests.test_baseline_refuses_missing_variant_or_initial_evidence) ... ok
+test_baseline_refuses_partial_or_fabricated_timing (__main__.CatalogVerifierTests.test_baseline_refuses_partial_or_fabricated_timing) ... ok
+test_browser_review_requires_current_inputs_and_captures (__main__.CatalogVerifierTests.test_browser_review_requires_current_inputs_and_captures) ... ok
+test_combined_check_needs_every_result (__main__.CatalogVerifierTests.test_combined_check_needs_every_result) ... ok
+test_command_failure_cannot_pass (__main__.CatalogVerifierTests.test_command_failure_cannot_pass) ... ok
+test_complete_red_report (__main__.CatalogVerifierTests.test_complete_red_report) ... ok
+test_duplicate_subcase_refuses (__main__.CatalogVerifierTests.test_duplicate_subcase_refuses) ... ok
+test_empty_task_cannot_pass (__main__.CatalogVerifierTests.test_empty_task_cannot_pass) ... ok
+test_evidence_paths_cannot_escape_repository (__main__.CatalogVerifierTests.test_evidence_paths_cannot_escape_repository) ... ok
+test_final_roster_cannot_omit_a_case (__main__.CatalogVerifierTests.test_final_roster_cannot_omit_a_case) ... ok
+test_fresh_baseline_adapter_cannot_pass_skipped_test (__main__.CatalogVerifierTests.test_fresh_baseline_adapter_cannot_pass_skipped_test) ... ok
+test_missing_candidate_local_check_refuses (__main__.CatalogVerifierTests.test_missing_candidate_local_check_refuses) ... ok
+test_missing_primary_refuses (__main__.CatalogVerifierTests.test_missing_primary_refuses) ... ok
+test_missing_registration_is_unverified (__main__.CatalogVerifierTests.test_missing_registration_is_unverified) ... ok
+test_numeric_profile_cannot_hide_workload_or_uncertainty (__main__.CatalogVerifierTests.test_numeric_profile_cannot_hide_workload_or_uncertainty) ... ok
+test_numeric_profile_cannot_relax_correctness_for_latency (__main__.CatalogVerifierTests.test_numeric_profile_cannot_relax_correctness_for_latency) ... ok
+test_numeric_profile_is_complete_but_unqualified (__main__.CatalogVerifierTests.test_numeric_profile_is_complete_but_unqualified) ... ok
+test_numeric_profile_refuses_contradictory_resources (__main__.CatalogVerifierTests.test_numeric_profile_refuses_contradictory_resources) ... ok
+test_numeric_profile_refuses_invalid_limits (__main__.CatalogVerifierTests.test_numeric_profile_refuses_invalid_limits) ... ok
+test_partial_parent_never_passes (__main__.CatalogVerifierTests.test_partial_parent_never_passes) ... ok
+test_performance_review_requires_current_targets_and_retained_evidence (__main__.CatalogVerifierTests.test_performance_review_requires_current_targets_and_retained_evidence) ... ok
+test_qualification_cannot_use_component_passes (__main__.CatalogVerifierTests.test_qualification_cannot_use_component_passes) ... ok
+test_real_go_missing_match_is_unverified (__main__.CatalogVerifierTests.test_real_go_missing_match_is_unverified) ... ok
+test_real_named_go_test_executes (__main__.CatalogVerifierTests.test_real_named_go_test_executes) ... ok
+test_retained_full_http_baseline_satisfies_measurement_contract (__main__.CatalogVerifierTests.test_retained_full_http_baseline_satisfies_measurement_contract) ... ok
+test_skipped_child_cannot_pass_parent (__main__.CatalogVerifierTests.test_skipped_child_cannot_pass_parent) ... ok
+test_unknown_case_refuses (__main__.CatalogVerifierTests.test_unknown_case_refuses) ... ok
+
+----------------------------------------------------------------------
+Ran 30 tests in 3.386s
+
+OK
+
+==> env CGO_ENABLED=1 go test ./... -race -short -timeout=20m
+ok  	github.com/agentstation/starmap	491.421s
+ok  	github.com/agentstation/starmap/acquisition	374.094s
+?   	github.com/agentstation/starmap/cmd/starmap	[no test files]
+ok  	github.com/agentstation/starmap/cmd/starmap-bootstrap-manifest	214.719s
+ok  	github.com/agentstation/starmap/cmd/starmap-catalog-release	2.213s
+ok  	github.com/agentstation/starmap/cmd/starmap-embedded-budget	47.028s
+ok  	github.com/agentstation/starmap/cmd/starmap-modelsdev-promote	6.707s
+ok  	github.com/agentstation/starmap/internal/architecture	2.333s
+ok  	github.com/agentstation/starmap/internal/attestation	2.631s
+ok  	github.com/agentstation/starmap/internal/auth	3.148s
+ok  	github.com/agentstation/starmap/internal/bootstrap	380.396s
+ok  	github.com/agentstation/starmap/internal/bootstrap/budget	118.110s
+ok  	github.com/agentstation/starmap/internal/bootstrap/manifest	3.409s
+ok  	github.com/agentstation/starmap/internal/catalog/pipeline	16.254s
+ok  	github.com/agentstation/starmap/internal/catalog/query	1.850s
+ok  	github.com/agentstation/starmap/internal/catalog/reconciler	2.044s
+ok  	github.com/agentstation/starmap/internal/catalog/settings	20.248s
+ok  	github.com/agentstation/starmap/internal/catalog/workspace	29.588s
+ok  	github.com/agentstation/starmap/internal/ciworkflow	1.492s
+?   	github.com/agentstation/starmap/internal/cli/alerts	[no test files]
+ok  	github.com/agentstation/starmap/internal/cli/app	241.933s
+?   	github.com/agentstation/starmap/internal/cli/commands/auth	[no test files]
+?   	github.com/agentstation/starmap/internal/cli/commands/authors	[no test files]
+?   	github.com/agentstation/starmap/internal/cli/commands/completion	[no test files]
+ok  	github.com/agentstation/starmap/internal/cli/commands/config	1.597s
+ok  	github.com/agentstation/starmap/internal/cli/commands/deps	19.154s
+ok  	github.com/agentstation/starmap/internal/cli/commands/embed	1.396s
+ok  	github.com/agentstation/starmap/internal/cli/commands/migrate	1.518s
+ok  	github.com/agentstation/starmap/internal/cli/commands/models	1.487s
+ok  	github.com/agentstation/starmap/internal/cli/commands/providers	1.600s
+ok  	github.com/agentstation/starmap/internal/cli/commands/serve	1.769s
+ok  	github.com/agentstation/starmap/internal/cli/commands/update	1.516s
+ok  	github.com/agentstation/starmap/internal/cli/commands/validate	1.498s
+?   	github.com/agentstation/starmap/internal/cli/completion	[no test files]
+?   	github.com/agentstation/starmap/internal/cli/constants	[no test files]
+ok  	github.com/agentstation/starmap/internal/cli/convert	1.223s
+ok  	github.com/agentstation/starmap/internal/cli/embed	1.205s
+?   	github.com/agentstation/starmap/internal/cli/emoji	[no test files]
+?   	github.com/agentstation/starmap/internal/cli/filter	[no test files]
+?   	github.com/agentstation/starmap/internal/cli/format	[no test files]
+?   	github.com/agentstation/starmap/internal/cli/globals	[no test files]
+ok  	github.com/agentstation/starmap/internal/cli/hints	1.442s
+?   	github.com/agentstation/starmap/internal/cli/notify	[no test files]
+?   	github.com/agentstation/starmap/internal/cli/provider	[no test files]
+ok  	github.com/agentstation/starmap/internal/cli/table	1.521s
+?   	github.com/agentstation/starmap/internal/constants	[no test files]
+ok  	github.com/agentstation/starmap/internal/deploymentdocs	1.253s
+?   	github.com/agentstation/starmap/internal/deps	[no test files]
+ok  	github.com/agentstation/starmap/internal/embedded	23.196s
+?   	github.com/agentstation/starmap/internal/embedded/openapi	[no test files]
+ok  	github.com/agentstation/starmap/internal/filepublish	1.288s
+ok  	github.com/agentstation/starmap/internal/fleet	1.213s
+ok  	github.com/agentstation/starmap/internal/privatefiles	1.856s
+ok  	github.com/agentstation/starmap/internal/providers/anthropic	17.735s
+ok  	github.com/agentstation/starmap/internal/providers/clients	1.549s
+ok  	github.com/agentstation/starmap/internal/providers/google	1.593s
+ok  	github.com/agentstation/starmap/internal/providers/openai	21.781s
+ok  	github.com/agentstation/starmap/internal/runtimeacl/windows	1.434s
+ok  	github.com/agentstation/starmap/internal/server	227.618s
+ok  	github.com/agentstation/starmap/internal/server/cache	1.962s
+ok  	github.com/agentstation/starmap/internal/server/handlers	72.601s
+ok  	github.com/agentstation/starmap/internal/server/middleware	1.485s
+ok  	github.com/agentstation/starmap/internal/server/openrouter	47.042s
+ok  	github.com/agentstation/starmap/internal/server/operations	1.216s
+ok  	github.com/agentstation/starmap/internal/server/params	1.225s
+ok  	github.com/agentstation/starmap/internal/server/response	1.288s
+ok  	github.com/agentstation/starmap/internal/server/sse	1.324s
+ok  	github.com/agentstation/starmap/internal/sources/embedded	1.247s
+ok  	github.com/agentstation/starmap/internal/sources/github	2.373s
+ok  	github.com/agentstation/starmap/internal/sources/local	1.309s
+ok  	github.com/agentstation/starmap/internal/sources/modelsdev	174.102s
+ok  	github.com/agentstation/starmap/internal/sources/providers	1.587s
+?   	github.com/agentstation/starmap/internal/test/catalog	[no test files]
+?   	github.com/agentstation/starmap/internal/test/channel	[no test files]
+?   	github.com/agentstation/starmap/internal/test/logging	[no test files]
+ok  	github.com/agentstation/starmap/internal/test/providerfixture	1.351s
+ok  	github.com/agentstation/starmap/internal/transport	1.614s
+ok  	github.com/agentstation/starmap/pkg/catalogs	132.159s
+ok  	github.com/agentstation/starmap/pkg/catalogs/artifact	1.549s
+ok  	github.com/agentstation/starmap/pkg/catalogs/authority	1.202s
+ok  	github.com/agentstation/starmap/pkg/catalogs/config	31.270s
+ok  	github.com/agentstation/starmap/pkg/catalogs/evidence	1.182s
+?   	github.com/agentstation/starmap/pkg/catalogs/internal/resourcepolicy	[no test files]
+ok  	github.com/agentstation/starmap/pkg/catalogs/projection	1.178s
+ok  	github.com/agentstation/starmap/pkg/catalogs/remote	1.596s
+ok  	github.com/agentstation/starmap/pkg/catalogs/storage	4.048s
+ok  	github.com/agentstation/starmap/pkg/catalogs/storage/s3	1.619s
+ok  	github.com/agentstation/starmap/pkg/differ	1.222s
+ok  	github.com/agentstation/starmap/pkg/errors	1.226s
+ok  	github.com/agentstation/starmap/pkg/logging	1.240s
+ok  	github.com/agentstation/starmap/pkg/productpaths	1.217s
+ok  	github.com/agentstation/starmap/pkg/productpaths/policy	1.189s
+ok  	github.com/agentstation/starmap/pkg/provenance	1.296s
+ok  	github.com/agentstation/starmap/pkg/sources	1.264s
+ok  	github.com/agentstation/starmap/pkg/sources/payload	1.173s
+ok  	github.com/agentstation/starmap/pkg/sync	1.224s
+ok  	github.com/agentstation/starmap/remote	39.261s
+ok  	github.com/agentstation/starmap/runtime	416.795s
+?   	github.com/agentstation/starmap/runtime/source	[no test files]
+?   	github.com/agentstation/starmap/runtime/status	[no test files]
+ok  	github.com/agentstation/starmap/server	42.759s
+
+==> go vet ./...
+
+==> ./scripts/verify-catalog-performance.sh
+goos: darwin
+goarch: arm64
+pkg: github.com/agentstation/starmap
+cpu: Apple M2 Max
+BenchmarkClientCatalog-12    	100000000	        10.43 ns/op	       0 B/op	       0 allocs/op
+BenchmarkClientCatalog-12    	140109195	         8.937 ns/op	       0 B/op	       0 allocs/op
+BenchmarkClientCatalog-12    	100000000	        10.01 ns/op	       0 B/op	       0 allocs/op
+PASS
+ok  	github.com/agentstation/starmap	4.956s
+catalog performance gate passed: <= 10000 ns/op, 0 B/op, 0 allocs/op across 3 runs
+
+==> ./scripts/verify-container-smoke.sh
+Building the server binary for linux/amd64.
+Building the smoke image on the release base.
+Starting the server with a read-only root filesystem.
+Reading the health endpoint.
+PASS the image serves with a read-only root and a writable state volume.
+
+==> devbox run golangci-lint run
+Info: New devbox available: 0.16.0 -> v0.18.0. Please run `devbox version update`.
+Info: Running script "golangci-lint" on /Users/jack/src/github.com/agentstation/starmap-catalog-requirements
+📦 Starmap development environment loaded
+Tools available: go, gomarkdoc, swag (v2 via flake), golangci-lint
+0 issues.
+
+==> go tool ago -stale-ignores ./...
+
+==> coverage ./internal/catalog/pipeline >= 70%
+ok  	github.com/agentstation/starmap/internal/catalog/pipeline	1.750s	coverage: 82.9% of statements
+
+==> coverage ./internal/catalog/query >= 75%
+ok  	github.com/agentstation/starmap/internal/catalog/query	0.180s	coverage: 77.7% of statements
+
+==> coverage ./internal/providers/clients >= 80%
+ok  	github.com/agentstation/starmap/internal/providers/clients	0.294s	coverage: 81.0% of statements
+
+==> coverage ./internal/sources/providers >= 75%
+ok  	github.com/agentstation/starmap/internal/sources/providers	0.363s	coverage: 85.8% of statements
+
+==> coverage ./internal/server/middleware >= 90%
+ok  	github.com/agentstation/starmap/internal/server/middleware	0.411s	coverage: 96.6% of statements
+
+==> coverage ./internal/server/openrouter >= 85%
+ok  	github.com/agentstation/starmap/internal/server/openrouter	1.876s	coverage: 88.8% of statements
+
+==> coverage ./internal/server/params >= 95%
+ok  	github.com/agentstation/starmap/internal/server/params	0.178s	coverage: 98.5% of statements
+
+==> coverage ./internal/server/response >= 95%
+ok  	github.com/agentstation/starmap/internal/server/response	0.172s	coverage: 96.6% of statements
+
+==> coverage ./internal/server/sse >= 90%
+ok  	github.com/agentstation/starmap/internal/server/sse	0.204s	coverage: 92.4% of statements
+
+==> coverage ./internal/transport >= 40%
+ok  	github.com/agentstation/starmap/internal/transport	0.305s	coverage: 89.0% of statements
+
+==> coverage ./pkg/catalogs/authority >= 90%
+ok  	github.com/agentstation/starmap/pkg/catalogs/authority	0.164s	coverage: 95.6% of statements
+
+==> coverage ./pkg/catalogs >= 55%
+ok  	github.com/agentstation/starmap/pkg/catalogs	19.785s	coverage: 75.6% of statements
+
+==> coverage ./pkg/errors >= 80%
+ok  	github.com/agentstation/starmap/pkg/errors	0.200s	coverage: 88.3% of statements
+
+==> coverage ./internal/catalog/reconciler >= 75%
+ok  	github.com/agentstation/starmap/internal/catalog/reconciler	0.234s	coverage: 83.2% of statements
+
+==> coverage ./pkg/sources >= 35%
+ok  	github.com/agentstation/starmap/pkg/sources	0.205s	coverage: 67.0% of statements
+
+==> make docs-check
+[0;34mChecking if documentation is up to date...[0m 
+Checking ./pkg/catalogs...
+Checking ./pkg/catalogs/evidence...
+Checking ./pkg/catalogs/storage...
+Checking ./pkg/catalogs/storage/s3...
+Checking ./pkg/catalogs/artifact...
+Checking ./pkg/catalogs/authority...
+Checking ./pkg/catalogs/projection...
+Checking ./pkg/catalogs/remote...
+Checking ./pkg/sources...
+Checking ./pkg/sources/payload...
+Checking ./pkg/errors...
+Checking ./pkg/logging...
+Checking ./internal/transport...
+Checking ./internal/providers/clients...
+Checking ./internal/catalog/reconciler...
+Checking ./internal/server...
+Checking ./internal/server/middleware...
+Checking ./internal/server/sse...
+Checking ./internal/server/response...
+Checking ./internal/server/cache...
+Checking ./internal/server/params...
+Checking ./internal/server/handlers...
+Checking ./internal/cli/convert...
+Checking ./internal/sources/providers...
+Checking ./internal/sources/local...
+Checking ./internal/sources/modelsdev...
+Checking ./internal/embedded...
+Checking ./internal/embedded/openapi...
+Checking ./server...
+Checking ./remote...
+Checking ./runtime...
+Checking ./runtime/source...
+Checking ./runtime/status...
+[0;32mAll documentation is up to date[0m 
+
+==> make technical-writing-check
+/Users/jack/.agents/skills/technical-writing/scripts/technical-writing glossary check
+PASS: /Users/jack/src/github.com/agentstation/starmap-catalog-requirements/GLOSSARY.md (80 term(s), 0 error(s))
+/Users/jack/.agents/skills/technical-writing/scripts/technical-writing glossary update --check
+PASS: no candidate terms are missing from /Users/jack/src/github.com/agentstation/starmap-catalog-requirements/GLOSSARY.md
+/Users/jack/.agents/skills/technical-writing/scripts/technical-writing lint . --mode strict --format text
+/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/docs/design/catalog-lifecycle/REPOSITORY_FINDINGS.md:938:1: error long_paragraph: paragraph has 7 sentences; limit is 6
+FAIL: 1047 file(s), 1 diagnostic(s)
+make[1]: *** [technical-writing-check] Error 1
+make: *** [verify] Error 2

@@ -1,0 +1,92 @@
+[
+  {
+    "command": [
+      "go",
+      "tool",
+      "ago",
+      "-stale-ignores",
+      "-format",
+      "json",
+      "./..."
+    ],
+    "exit_code": 0,
+    "stdout": "{\n  \"schemaVersion\": 1,\n  \"version\": \"v0.2.0\",\n  \"rules\": [\n    \"no-dot-import\",\n    \"no-generic-methods\",\n    \"no-goto\",\n    \"no-invalid-ignore\",\n    \"no-naked-return\",\n    \"no-new-expr\",\n    \"no-self-referential-constraints\"\n  ],\n  \"findings\": [],\n  \"staleIgnores\": [],\n  \"errors\": []\n}\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "golangci-lint",
+      "run"
+    ],
+    "exit_code": 1,
+    "stdout": "internal/catalog/workspace/access_snapshot_darwin.go:58:52: G115: integer overflow conversion uintptr -> int32 (gosec)\n\tacl, nativeErr := getWorkspaceDarwinACL(api, int32(file.Fd()))\n\t                                                  ^\ninternal/catalog/workspace/access_snapshot_darwin.go:84:25: G115: integer overflow conversion int32 -> uintptr (gosec)\n\treturn 0, syscall.Errno(*api.errno())\n\t                       ^\n2 issues:\n* gosec: 2\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "env",
+      "GOOS=windows",
+      "GOARCH=amd64",
+      "CGO_ENABLED=0",
+      "golangci-lint",
+      "run"
+    ],
+    "exit_code": 0,
+    "stdout": "0 issues.\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "bash",
+      "scripts/verify-package-layout.sh"
+    ],
+    "exit_code": 0,
+    "stdout": "ok  \tgithub.com/agentstation/starmap/internal/architecture\t0.249s\npackage-layout verification passed\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "bash",
+      "scripts/verify-catalog-dependency-direction.sh"
+    ],
+    "exit_code": 0,
+    "stdout": "SM-D01 PASS: catalogs does not import private authority policy\nSM-D02 PASS: catalogs does not import repository-wide constants\nSM-D03 PASS: catalogs does not import the private embedded filesystem\nSM-D04 PASS: catalogs does not import private source payload policy\nSM-D05 PASS: catalog artifacts do not import repository-wide constants\nSM-D06 PASS: catalog remote transport does not import repository-wide constants\nSM-D07 PASS: catalog storage does not import repository-wide constants\nSM-D08 PASS: catalog S3 storage does not import repository-wide constants\nSummary: 8 passed, 0 failed\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "env",
+      "GOTOOLCHAIN=go1.25.12",
+      "GOOS=windows",
+      "GOARCH=amd64",
+      "CGO_ENABLED=0",
+      "go",
+      "test",
+      "-c",
+      "-o",
+      "/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/workspace-access-cross-b3kwmjud/amd64.exe",
+      "./internal/catalog/workspace"
+    ],
+    "exit_code": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "env",
+      "GOTOOLCHAIN=go1.25.12",
+      "GOOS=windows",
+      "GOARCH=arm64",
+      "CGO_ENABLED=0",
+      "go",
+      "test",
+      "-c",
+      "-o",
+      "/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/workspace-access-cross-b3kwmjud/arm64.exe",
+      "./internal/catalog/workspace"
+    ],
+    "exit_code": 0,
+    "stdout": "",
+    "stderr": ""
+  }
+]

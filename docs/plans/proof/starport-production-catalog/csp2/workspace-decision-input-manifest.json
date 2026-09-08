@@ -1,0 +1,33 @@
+{
+  "scope": "Local cancellation fix and accepted Windows workspace design. No native Windows qualification.",
+  "files": [
+    {
+      "path": "internal/catalog/workspace/projector.go",
+      "sha256": "039154ee49f93373cd0dbc1926146ec3971f0304cd6a96867592b2aff45e44fb"
+    },
+    {
+      "path": "internal/catalog/workspace/publication_boundary_test.go",
+      "sha256": "0a7d5717f766d66c0b250ef1295c5b578fa48c204910beac03495ce6c7650201"
+    },
+    {
+      "path": "docs/design/catalog-lifecycle/PRD.md",
+      "sha256": "46c5d7e39db25247675e4bc2a95e2233f153ef01deafe47694277becbf51920f"
+    },
+    {
+      "path": "docs/design/catalog-lifecycle/ENGINEERING_SPEC.md",
+      "sha256": "789706ff8e5f732d6499e6a5ba9947705c85ce6e99a7f755cc0941a2dcc734a0"
+    },
+    {
+      "path": "docs/design/catalog-lifecycle/REPOSITORY_FINDINGS.md",
+      "sha256": "2eafc1953716bbbddf82431a655b42cb452a06ed977d444b8e8b37c02530dbfe"
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp2.md",
+      "sha256": "f3ba66237b7379f753828f99bb9decf4fb0e1414e75e0dc41ed0161d71c6e011"
+    },
+    {
+      "path": "docs/plans/starport-production-catalog-plan.html",
+      "sha256": "07b77ca1b68f10b2c335ecd1e2a69ef68745f15cbe1932b11948b4543b7dd480"
+    }
+  ]
+}

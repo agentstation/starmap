@@ -1,0 +1,16 @@
+{
+  "command": [
+    "go",
+    "test",
+    "-race",
+    "-count=1",
+    "-timeout",
+    "2m",
+    "./runtime",
+    "-run",
+    "^(TestPersistentRuntimeRecordsDirectoryOwner|TestPersistentRuntimeRefusesInvalidOwnerBeforeStateWrites)$"
+  ],
+  "exit_code": 1,
+  "stdout": "--- FAIL: TestPersistentRuntimeRefusesInvalidOwnerBeforeStateWrites (9.71s)\n    owner_test.go:49: runtime accepted an incompatible directory owner\n--- FAIL: TestPersistentRuntimeRecordsDirectoryOwner (9.71s)\n    owner_test.go:17: open /var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/TestPersistentRuntimeRecordsDirectoryOwner1589324886/001/owner.json: no such file or directory\nFAIL\nFAIL\tgithub.com/agentstation/starmap/runtime\t10.250s\nFAIL\n",
+  "stderr": ""
+}

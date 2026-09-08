@@ -1,0 +1,9 @@
+Starport offline ready
+Traceback (most recent call last):
+  File "/tmp/starport-local-flow-run.py", line 34, in <module>
+    run('starmap-update',['/tmp/starport-local-flow-starmap','update','openai','--source','provider-api','--catalog-path',str(root/'workspace'),'-y'],smenv);print('CLI update complete',flush=True)
+    ~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/starport-local-flow-run.py", line 19, in run
+    if result.returncode:raise RuntimeError(name+' failed: '+str(result.returncode))
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: starmap-update failed: 1

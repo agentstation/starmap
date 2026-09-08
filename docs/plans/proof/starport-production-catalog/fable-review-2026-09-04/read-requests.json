@@ -1,0 +1,240 @@
+{
+  "tool_calls": [
+    {
+      "id": "toolu_01TBJmiiv6RU9g26tm99sLSq",
+      "name": "Glob",
+      "input": {
+        "pattern": "docs/design/catalog-lifecycle/**"
+      }
+    },
+    {
+      "id": "toolu_01BUtEYor4xJiNDqFtaUEgpJ",
+      "name": "Glob",
+      "input": {
+        "pattern": "docs/plans/**"
+      }
+    },
+    {
+      "id": "toolu_01VCWEANacLdHpB75d3LkhbY",
+      "name": "Glob",
+      "input": {
+        "pattern": "docs/design/catalog-lifecycle/**",
+        "path": "/Users/jack/src/github.com/agentstation/starport-catalog-lifecycle"
+      }
+    },
+    {
+      "id": "toolu_01BUtfmGEpKZjtbhH48JKV5q",
+      "name": "Glob",
+      "input": {
+        "pattern": "docs/plans/**",
+        "path": "/Users/jack/src/github.com/agentstation/starport-catalog-lifecycle"
+      }
+    },
+    {
+      "id": "toolu_015PM8VB7EnkAHgR4bK8fsMA",
+      "name": "Read",
+      "input": {
+        "file_path": "/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/docs/design/catalog-lifecycle/PRD.md"
+      }
+    },
+    {
+      "id": "toolu_01P4u8KitRnEzQe9fhMuBy3W",
+      "name": "Read",
+      "input": {
+        "file_path": "/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/docs/design/catalog-lifecycle/ENGINEERING_SPEC.md"
+      }
+    },
+    {
+      "id": "toolu_018SfeAaZ29FWKRg45oCdWbm",
+      "name": "Read",
+      "input": {
+        "file_path": "/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/docs/design/catalog-lifecycle/REPOSITORY_FINDINGS.md"
+      }
+    },
+    {
+      "id": "toolu_0175BtF5cKgSoiZWD1xXYroF",
+      "name": "Read",
+      "input": {
+        "file_path": "/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/docs/plans/starport-production-catalog-plan.html"
+      }
+    },
+    {
+      "id": "toolu_017QFZg6UymCDEpnSoBJz9zM",
+      "name": "Read",
+      "input": {
+        "file_path": "/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/docs/plans/proof/starport-production-catalog/readme-demo-brief.md"
+      }
+    },
+    {
+      "id": "toolu_01Btmc5mPKR3jWE9YQ2YSuHk",
+      "name": "Read",
+      "input": {
+        "file_path": "/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/docs/plans/proof/starport-production-catalog/audit-2026-09-04/AUDIT.md"
+      }
+    },
+    {
+      "id": "toolu_01PTC5DtMAP3wCCu2DERft3U",
+      "name": "Read",
+      "input": {
+        "file_path": "/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/docs/plans/proof/starport-production-catalog/acceptance-map.json"
+      }
+    },
+    {
+      "id": "toolu_016yH3Q9168Jepc9wBNwbpiN",
+      "name": "Read",
+      "input": {
+        "file_path": "/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/docs/plans/proof/starport-production-catalog/readme-baseline.json"
+      }
+    },
+    {
+      "id": "toolu_01HBFEQtco4vw9sAwab69YHc",
+      "name": "Read",
+      "input": {
+        "file_path": "/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/docs/design/catalog-lifecycle/evidence/measurements.json"
+      }
+    },
+    {
+      "id": "toolu_01L639QKswYpLLfmq1JRJmgk",
+      "name": "Read",
+      "input": {
+        "file_path": "/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/docs/plans/proof/starport-production-catalog/audit-2026-09-04/test-summary.json"
+      }
+    },
+    {
+      "id": "toolu_01KFpFmsbcJNNNR7Wztz1iBz",
+      "name": "Read",
+      "input": {
+        "file_path": "/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/docs/design/catalog-lifecycle/evidence/starport-docs-desktop-dark.png"
+      }
+    },
+    {
+      "id": "toolu_01XGXMtfpHLp5XvVQPy5PtWs",
+      "name": "Read",
+      "input": {
+        "file_path": "/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/docs/design/catalog-lifecycle/evidence/starport-docs-desktop-light.png"
+      }
+    },
+    {
+      "id": "toolu_01TvUwc8u27t9HmWQjSFiTGW",
+      "name": "Read",
+      "input": {
+        "file_path": "/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/docs/design/catalog-lifecycle/evidence/starport-docs-mobile-dark.png"
+      }
+    },
+    {
+      "id": "toolu_01G8jSJdkRMHLWk1t4w3KToq",
+      "name": "Read",
+      "input": {
+        "file_path": "/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/docs/design/catalog-lifecycle/evidence/starport-docs-build-320.png"
+      }
+    },
+    {
+      "id": "toolu_016FfX2JZ1isbsxy4AXQA1A1",
+      "name": "Read",
+      "input": {
+        "file_path": "/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/docs/design/catalog-lifecycle/evidence/starport-settings-light.png"
+      }
+    },
+    {
+      "id": "toolu_013fxFfgYha7V232xBzrHHHU",
+      "name": "Glob",
+      "input": {
+        "pattern": "{README.md,AGENTS.md,GLOSSARY.md}"
+      }
+    },
+    {
+      "id": "toolu_01Tf8jiciAuSRet9YP9wauqg",
+      "name": "Glob",
+      "input": {
+        "pattern": "{README.md,AGENTS.md,GLOSSARY.md}",
+        "path": "/Users/jack/src/github.com/agentstation/starport-catalog-lifecycle"
+      }
+    },
+    {
+      "id": "toolu_01M823LKSDfqEw61izXk8jDL",
+      "name": "Read",
+      "input": {
+        "file_path": "/Users/jack/src/github.com/agentstation/starport-catalog-lifecycle/README.md"
+      }
+    },
+    {
+      "id": "toolu_018bq7Lp8DFR42FkCGqMDM3x",
+      "name": "Read",
+      "input": {
+        "file_path": "/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/README.md",
+        "limit": 150
+      }
+    },
+    {
+      "id": "toolu_016pngv5ieMaWEzcsDGjrNEF",
+      "name": "Read",
+      "input": {
+        "file_path": "/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/AGENTS.md"
+      }
+    },
+    {
+      "id": "toolu_0153YfHmynAtGvcscqNv5nTg",
+      "name": "Read",
+      "input": {
+        "file_path": "/Users/jack/src/github.com/agentstation/starport-catalog-lifecycle/AGENTS.md",
+        "limit": 200
+      }
+    },
+    {
+      "id": "toolu_01MJowsotZK12mj1XHmSgzQk",
+      "name": "Read",
+      "input": {
+        "file_path": "/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/GLOSSARY.md",
+        "limit": 120
+      }
+    },
+    {
+      "id": "toolu_01Hu3bLV88tcACaVn5y385sR",
+      "name": "Read",
+      "input": {
+        "file_path": "/Users/jack/src/github.com/agentstation/starport-catalog-lifecycle/GLOSSARY.md",
+        "limit": 120
+      }
+    },
+    {
+      "id": "toolu_016nqHsNnYhfkVa3BoR2mQMH",
+      "name": "Read",
+      "input": {
+        "file_path": "/Users/jack/src/github.com/agentstation/starport-catalog-lifecycle/docs/DEPLOYMENT-TOPOLOGIES.md",
+        "limit": 120
+      }
+    },
+    {
+      "id": "toolu_01EsWzxYNEGC5a976ZYe6BUH",
+      "name": "Read",
+      "input": {
+        "file_path": "/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/docs/plans/proof/starport-production-catalog/planning.md"
+      }
+    },
+    {
+      "id": "toolu_01QqXuHUQNvZAWamQTXqoWna",
+      "name": "Read",
+      "input": {
+        "file_path": "/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/docs/plans/README.md",
+        "limit": 60
+      }
+    },
+    {
+      "id": "toolu_01RUiPaDkMVaPVkpAX6fzEjf",
+      "name": "Read",
+      "input": {
+        "file_path": "/Users/jack/src/github.com/agentstation/starport-catalog-lifecycle/internal/server/budget.go",
+        "offset": 130,
+        "limit": 50
+      }
+    },
+    {
+      "id": "toolu_012fZ4fUB8KQ78C4udbALC6p",
+      "name": "Read",
+      "input": {
+        "file_path": "/Users/jack/src/github.com/agentstation/starport-catalog-lifecycle/internal/config/README.md",
+        "limit": 80
+      }
+    }
+  ]
+}

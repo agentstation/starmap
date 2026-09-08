@@ -1,0 +1,16 @@
+{
+  "command": [
+    "go",
+    "test",
+    "-race",
+    "-count=1",
+    "-timeout",
+    "5m",
+    "./internal/cli/app",
+    "-run",
+    "^TestPersistentColdStartExportsInstalledBaseline$"
+  ],
+  "exit_code": 1,
+  "stdout": "--- FAIL: TestPersistentColdStartExportsInstalledBaseline (11.48s)\n    baseline_export_test.go:52: persistent startup did not export the installed baseline: open /var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/TestPersistentColdStartExportsInstalledBaseline3297324767/002/data/catalog/baseline/d12307970f5a583e2d8dc89ba82759dde0b7bc1731c30b5f77c983898c52f7f5/manifest.json: no such file or directory\nFAIL\nFAIL\tgithub.com/agentstation/starmap/internal/cli/app\t12.068s\nFAIL\n",
+  "stderr": ""
+}

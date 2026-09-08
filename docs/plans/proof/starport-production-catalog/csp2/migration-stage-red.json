@@ -1,0 +1,16 @@
+{
+  "command": [
+    "go",
+    "test",
+    "-race",
+    "-count=1",
+    "-timeout",
+    "3m",
+    "./runtime",
+    "-run",
+    "^TestStageDirectoryMigration"
+  ],
+  "exit_code": 1,
+  "stdout": "FAIL\tgithub.com/agentstation/starmap/runtime [build failed]\nFAIL\n",
+  "stderr": "# github.com/agentstation/starmap/runtime [github.com/agentstation/starmap/runtime.test]\nruntime/migration_stage_test.go:17:17: undefined: StageDirectoryMigration\nruntime/migration_stage_test.go:43:18: undefined: StageDirectoryMigration\nruntime/migration_stage_test.go:62:19: undefined: StageDirectoryMigration\nruntime/migration_stage_test.go:73:49: undefined: migrationPendingName\nruntime/migration_stage_test.go:91:17: undefined: StageDirectoryMigration\n"
+}

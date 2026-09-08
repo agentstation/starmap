@@ -1,0 +1,16 @@
+{
+  "command": [
+    "go",
+    "test",
+    "-race",
+    "-count=1",
+    "-timeout",
+    "5m",
+    "./internal/cli/app",
+    "-run",
+    "^(TestCommandDotenvSourceReplacementPreservesAuthority|TestExplicitDotenvFailureDoesNotMutateEnvironmentOrExposeValues)$"
+  ],
+  "exit_code": 1,
+  "stdout": "{\"level\":\"warn\",\"setting\":\"STARMAP_CATALOG_SOURCE_URL\",\"replaced_file\":\"/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/TestCommandDotenvSourceReplacementPreservesAuthorityfalse1031944923/002/.env\",\"selected_file\":\"/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/TestCommandDotenvSourceReplacementPreservesAuthorityfalse1031944923/002/.env.local\",\"time\":\"2026-09-05T18:45:16-05:00\",\"message\":\"explicit dotenv files contain different values\"}\nstarmap test\n{\"level\":\"warn\",\"setting\":\"STARMAP_CATALOG_SOURCE_URL\",\"replaced_file\":\"/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/TestCommandDotenvSourceReplacementPreservesAuthorityfalse1031944923/002/.env\",\"selected_file\":\"/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/TestCommandDotenvSourceReplacementPreservesAuthorityfalse1031944923/002/.env.local\",\"time\":\"2026-09-05T18:45:16-05:00\",\"message\":\"explicit dotenv files contain different values\"}\nstarmap test\n{\"level\":\"warn\",\"settings\":[\"REMOTE_SERVER_API_KEY\",\"REMOTE_SERVER_URL\"],\"time\":\"2026-09-05T18:45:16-05:00\",\"message\":\"legacy remote-server settings are deprecated; use the catalog source group\"}\nstarmap test\n{\"level\":\"warn\",\"settings\":[\"REMOTE_SERVER_API_KEY\",\"REMOTE_SERVER_URL\"],\"time\":\"2026-09-05T18:45:16-05:00\",\"message\":\"legacy remote-server settings are deprecated; use the catalog source group\"}\nstarmap test\n--- FAIL: TestCommandDotenvSourceReplacementPreservesAuthority (0.01s)\n    --- FAIL: TestCommandDotenvSourceReplacementPreservesAuthority/false (0.01s)\n        dotenv_test.go:106: a repeated command promoted a dotenv credential into process authority\n    --- FAIL: TestCommandDotenvSourceReplacementPreservesAuthority/true (0.01s)\n        dotenv_test.go:110: catalog dotenv values escaped their explicit file authority\nFAIL\nFAIL\tgithub.com/agentstation/starmap/internal/cli/app\t0.572s\nFAIL\n",
+  "stderr": ""
+}

@@ -35,6 +35,8 @@ glossary_term = "error"
 exclude = [
   ".ci/**",
   "docs/proof/**/*-fail-before.txt",
+  "docs/plans/proof/starport-production-catalog/storage-revision-2026-09-05/document_structure.txt",
+  "docs/plans/proof/starport-production-catalog/storage-revision-2026-09-05/starmap_writing.txt",
   "docs/reviews/**",
   "internal/embedded/catalog/**",
 ]

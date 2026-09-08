@@ -1,0 +1,15 @@
+{
+  "command": [
+    "go",
+    "test",
+    "-race",
+    "-count=1",
+    "-json",
+    "./internal/sources/modelsdev",
+    "-run",
+    "^TestModelsDevCacheAndSourceCheckoutUseSeparatePassiveRoots$"
+  ],
+  "exit_code": 1,
+  "stdout": "{\"Time\":\"2026-09-05T23:17:18.349626-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starmap/internal/sources/modelsdev\"}\n{\"Time\":\"2026-09-05T23:17:18.669761-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starmap/internal/sources/modelsdev\",\"Test\":\"TestModelsDevCacheAndSourceCheckoutUseSeparatePassiveRoots\"}\n{\"Time\":\"2026-09-05T23:17:18.669903-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/sources/modelsdev\",\"Test\":\"TestModelsDevCacheAndSourceCheckoutUseSeparatePassiveRoots\",\"Output\":\"=== RUN   TestModelsDevCacheAndSourceCheckoutUseSeparatePassiveRoots\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-05T23:17:18.670314-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/sources/modelsdev\",\"Test\":\"TestModelsDevCacheAndSourceCheckoutUseSeparatePassiveRoots\",\"Output\":\"    storage_layout_test.go:25: HTTP cache = \\\"/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/TestModelsDevCacheAndSourceCheckoutUseSeparatePassiveRoots269535065/001/.starmap/cache/models.dev\\\", want \\\"/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/TestModelsDevCacheAndSourceCheckoutUseSeparatePassiveRoots269535065/001/Library/Caches/starmap/models.dev\\\"\\n\",\"OutputType\":\"error\"}\n{\"Time\":\"2026-09-05T23:17:18.670601-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/sources/modelsdev\",\"Test\":\"TestModelsDevCacheAndSourceCheckoutUseSeparatePassiveRoots\",\"Output\":\"--- FAIL: TestModelsDevCacheAndSourceCheckoutUseSeparatePassiveRoots (0.00s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-05T23:17:18.670614-05:00\",\"Action\":\"fail\",\"Package\":\"github.com/agentstation/starmap/internal/sources/modelsdev\",\"Test\":\"TestModelsDevCacheAndSourceCheckoutUseSeparatePassiveRoots\",\"Elapsed\":0}\n{\"Time\":\"2026-09-05T23:17:18.670653-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/sources/modelsdev\",\"Output\":\"FAIL\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-05T23:17:18.671567-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/sources/modelsdev\",\"Output\":\"FAIL\\tgithub.com/agentstation/starmap/internal/sources/modelsdev\\t0.321s\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-05T23:17:18.671578-05:00\",\"Action\":\"fail\",\"Package\":\"github.com/agentstation/starmap/internal/sources/modelsdev\",\"Elapsed\":0.322}\n",
+  "stderr": ""
+}

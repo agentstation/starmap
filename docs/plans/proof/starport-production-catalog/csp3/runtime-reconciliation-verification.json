@@ -1,0 +1,482 @@
+{
+  "schema_version": 1,
+  "task": "CSP3",
+  "date": "2026-09-07",
+  "status": "component-progress-only",
+  "toolchain": "go1.26.6 darwin/arm64",
+  "work_commit": "05ba7e2665a2367cbe541f142164322eee3a8703",
+  "evidence_commit": "cb63e726e91e7e35da8609fdfb9928e8b8949d46",
+  "planning_base": "b0fb11cb1bf016f10fb3828d777768eb714b7446",
+  "behavior": [
+    "Runtime reconstruction restores original provider observations and uses canonical field authority.",
+    "Provider field provenance, durable generation links, and excluded-model review candidates retain their own receipts.",
+    "Legacy provider layers retain separate record receipts. Active binding selection precedes reconstruction.",
+    "Generated change timestamps derive from retained source publication and observation times. Unchanged evidence keeps its payload and generation identity.",
+    "Each reconstruction evaluates pricing validity at the current time. Rejection evidence names a stable interval boundary.",
+    "Concurrent rebuilds serialize durable publication and activation. Canceled rebuilds cannot publish unfinished candidates.",
+    "Provider-only authored definitions do not establish canonical identity. Integration fixtures supply reviewed definitions through a separate catalog source.",
+    "Primary selection applies before provider reconciliation, preserving unselected provider evidence. Reconstruction avoids an unused baseline copy."
+  ],
+  "limitations": [
+    "CLI and HTTP adapters still need a runtime transaction for manual source observations and shared binding settings.",
+    "That transaction must preserve previews, source filters, fresh-mode semantics, strict acquisition, workspace projection, and retained layers.",
+    "Complete field presence, scoped deletion, upstream manifest lineage, Starport adoption, and released-pair acceptance remain open.",
+    "All 50 primary cases remain UNVERIFIED. CSP3 remains in progress.",
+    "The full repository publication gate and required second-model review remain open. No branch push or native CI dispatch occurred.",
+    "The consumer capture precedes the final primary-filter and unused-copy corrections. Those corrections add no imports.",
+    "CPU profiles cover control-plane test execution. They do not establish gateway latency or a statistically supported performance improvement."
+  ],
+  "code_inputs": [
+    {
+      "path": "acquisition/acquirer_test.go",
+      "sha256": "ef3c3f881f640587f32551e1655f2a02e441fe7b59e2dd1a2fb3ba4309b8bfce"
+    },
+    {
+      "path": "acquisition/binding_runtime_test.go",
+      "sha256": "1720310dfd1d9886cdbe8cd47a13a32976e095d01b38aaaec0bb85ff7e35b8d1"
+    },
+    {
+      "path": "acquisition/runtime_source_test.go",
+      "sha256": "b7b008adae40fee195780711c88112e8dc2f60fe2ce4edca1de1ea142321d6e6"
+    },
+    {
+      "path": "internal/catalog/reconciler/change_time_test.go",
+      "sha256": "9dfc5dd2dfed1153e5f8235d3d139bbd92f984a8c5df63ddb40a1456d05b90af"
+    },
+    {
+      "path": "internal/catalog/reconciler/collector.go",
+      "sha256": "cac7701b3fb78e58b6102956eb98083dfa35082c5964e430e71a7a7d74606da6"
+    },
+    {
+      "path": "internal/catalog/reconciler/filter.go",
+      "sha256": "fe32c640f9583c2993ef084a9849f0d02556b9b6e8441063eb307c4c7dde3a52"
+    },
+    {
+      "path": "internal/catalog/reconciler/merger.go",
+      "sha256": "81cbde6186b550a0fb2e4331f63a578e4be8d8a8ea75d379f27e33232e6082be"
+    },
+    {
+      "path": "internal/catalog/reconciler/model_policy.go",
+      "sha256": "1c02fb15175ccae2880465e659e76b414b4e5d5c7ec052bca6ee907712fbc1dd"
+    },
+    {
+      "path": "internal/catalog/reconciler/options.go",
+      "sha256": "c612a89b725dc6024652448cf7271766d1b7fb9a9358c0ea650c02895308f34c"
+    },
+    {
+      "path": "internal/catalog/reconciler/provider_observations.go",
+      "sha256": "8fb4634c172ca39be39128349019cb9244a5796a8c025ae9264453aecbc254d8"
+    },
+    {
+      "path": "internal/catalog/reconciler/provider_policy.go",
+      "sha256": "7e59c7ed4b3f6eba9fba95595561b2d52b60506a2128d88d5938be97cc11303a"
+    },
+    {
+      "path": "internal/catalog/reconciler/reconciler.go",
+      "sha256": "55b5b8d3265391e15b0c3a1033007af61eeff1c1694abc40b51abd057ac76e45"
+    },
+    {
+      "path": "internal/catalog/reconciler/scoped_observations.go",
+      "sha256": "c1623a70610feae413f69f8fc3a0cc4af5b0bb30823827bd59c4d528810634b8"
+    },
+    {
+      "path": "internal/catalog/reconciler/selection_provenance_test.go",
+      "sha256": "81240e2dae50e389ef67f637e4e3be97d1c86f160ff19f1bb7efacde75ae05d0"
+    },
+    {
+      "path": "runtime/baseline_provenance_test.go",
+      "sha256": "5561860bfde5503eff80362f6ced584dfd7340ebf63ab79db02c633d67e26827"
+    },
+    {
+      "path": "runtime/layers.go",
+      "sha256": "de15e22099bccb9f561c20f73e97d736130a43d234e4bc944fad915da5e7bfd8"
+    },
+    {
+      "path": "runtime/layers_test.go",
+      "sha256": "7658a6b2f01400d0a6af239bbad33a72253f29ce58e63882e54204c700ff7aab"
+    },
+    {
+      "path": "runtime/migration_catalog.go",
+      "sha256": "2f74be5b99e7c7461e03cbe6285bc700694bfc73abe59d088f0e99b1aea98e1e"
+    },
+    {
+      "path": "runtime/provider_policy_publication.go",
+      "sha256": "fe57c94214ad485125c3d39052dac35463c7cdfabb2738617b882dfc037b4f3b"
+    },
+    {
+      "path": "runtime/provider_pricing_test.go",
+      "sha256": "5b131712bb031d148ce5a90ed19919d3da14610091d8dcb01f0abd9a08988e42"
+    },
+    {
+      "path": "runtime/reconciliation.go",
+      "sha256": "cd24cdc372281fbd8ef07248d342701629005670c9da0e63e55df572c7a5da1e"
+    },
+    {
+      "path": "runtime/reconciliation_publication_test.go",
+      "sha256": "a8c9ae5852ae5bea95dbb62b77cb0e686f9238f5276c8fd5377dfb4dd72f2226"
+    },
+    {
+      "path": "runtime/reconciliation_test.go",
+      "sha256": "3e8e3da131891a66d754bde50794badb38c530c1123042ee7facc7af183b1dda"
+    },
+    {
+      "path": "runtime/runtime.go",
+      "sha256": "74896baee14dae3b37a156d132dfa7ac4de0b616f0ca91cdc444226732876d1e"
+    },
+    {
+      "path": "internal/catalog/reconciler/README.md",
+      "sha256": "8d70a06658de944eed9f8214df7d596a3a5ada508e3dbee513a18a4834fb3bdb"
+    },
+    {
+      "path": "runtime/README.md",
+      "sha256": "ec0ced24eaffd69e9c811db9d1f6674f218dfd4658d8f16e84b63d8f2274061e"
+    }
+  ],
+  "checks": [
+    {
+      "command": "GOTOOLCHAIN=go1.26.6 go test -json -count=1 -timeout 5m ./...",
+      "exit_code": 0,
+      "capture": "runtime-reconciliation-all-verified.jsonl",
+      "passing_package_suites": 79,
+      "packages_without_tests": 22,
+      "passing_test_events": 3505
+    },
+    {
+      "command": "GOTOOLCHAIN=go1.26.6 go test -json -race -count=1 -timeout 20m ./runtime ./acquisition ./internal/catalog/reconciler",
+      "exit_code": 0,
+      "capture": "runtime-reconciliation-race-verified.jsonl",
+      "package_seconds": {
+        "github.com/agentstation/starmap/internal/catalog/reconciler": 3.548,
+        "github.com/agentstation/starmap/acquisition": 322.697,
+        "github.com/agentstation/starmap/runtime": 435.906
+      }
+    },
+    {
+      "command": "GOTOOLCHAIN=go1.26.6 go test -race -count=1 -json -timeout 5m ./internal/catalog/reconciler ./internal/catalog/pipeline",
+      "exit_code": 0,
+      "capture": "runtime-reconciliation-engine-race-final.jsonl",
+      "credited_package": "github.com/agentstation/starmap/internal/catalog/pipeline",
+      "note": "Reconciler events are counted once from the later verified run."
+    },
+    {
+      "command": "GOTOOLCHAIN=go1.26.6 bash scripts/verify-consumer-deps.sh",
+      "exit_code": 0,
+      "capture": "runtime-reconciliation-consumers.log",
+      "compositions": 6,
+      "read_only_non_standard": 37,
+      "read_only_limit": 37,
+      "pinned_non_standard": 38,
+      "pinned_limit": 38,
+      "server_embed_packages": 255,
+      "server_embed_limit": 260,
+      "remote_packages": 238,
+      "remote_limit": 240,
+      "server_storage_packages": 349,
+      "server_storage_limit": 350
+    },
+    {
+      "command": "GOTOOLCHAIN=go1.26.6 go tool ago -stale-ignores -format json ./...",
+      "exit_code": 0,
+      "capture": "runtime-reconciliation-ago-verified.json"
+    },
+    {
+      "command": "GOTOOLCHAIN=go1.26.6 make lint",
+      "exit_code": 2,
+      "capture": "runtime-reconciliation-lint-complete.log",
+      "note": "Code lint and Ago pass. Three prose findings caused this exit and were corrected separately."
+    },
+    {
+      "command": "GOTOOLCHAIN=go1.26.6 make technical-writing-check",
+      "exit_code": 0,
+      "capture": "runtime-reconciliation-writing-proof.log",
+      "files": 1069,
+      "diagnostics": 0
+    },
+    {
+      "command": "GOTOOLCHAIN=go1.26.6 make generate",
+      "exit_code": 0,
+      "capture": "runtime-reconciliation-generate.log"
+    },
+    {
+      "command": "bash scripts/verify-catalog-product.sh --starport-root /Users/jack/src/github.com/agentstation/starport-catalog-lifecycle --task CSP3 --json",
+      "exit_code": 1,
+      "capture": "runtime-reconciliation-product.json",
+      "passed": 0,
+      "unverified": 50
+    },
+    {
+      "command": "python3 docs/plans/proof/starport-production-catalog/activation-2026-09-05/verify_documents.py",
+      "exit_code": 0,
+      "capture": "runtime-reconciliation-documents-verified.log",
+      "tasks": 38,
+      "primary_cases": 50,
+      "required_subcases": 324,
+      "historical_files_preserved": 57,
+      "local_links_checked": 260,
+      "pinned_links_checked": 74,
+      "plan_lines": 500
+    },
+    {
+      "command": "GOTOOLCHAIN=go1.26.6 make technical-writing-check",
+      "exit_code": 0,
+      "capture": "runtime-reconciliation-writing-complete.log",
+      "files": 1069,
+      "diagnostics": 0,
+      "note": "Includes the authored verification record and final plan prose."
+    }
+  ],
+  "final_race_test_events": {
+    "github.com/agentstation/starmap/acquisition": 54,
+    "github.com/agentstation/starmap/internal/catalog/reconciler": 243,
+    "github.com/agentstation/starmap/runtime": 358,
+    "github.com/agentstation/starmap/internal/catalog/pipeline": 82
+  },
+  "total_final_race_test_events": 737,
+  "suite_deadline": {
+    "earlier_seconds": 300,
+    "current_seconds": 1200,
+    "basis": "scripts/verify.sh already uses -timeout=20m for its complete race suite.",
+    "historical_captures": [
+      {
+        "capture": "publication-repository-verification-source-fix.log",
+        "runtime_race_seconds": 364.115
+      },
+      {
+        "capture": "publication-repository-verification-attempt-6.log",
+        "runtime_race_seconds": 365.979
+      },
+      {
+        "capture": "publication-repository-verification-rerun.log",
+        "runtime_race_seconds": 416.795
+      }
+    ],
+    "preserved_timeouts": [
+      "runtime-reconciliation-race.jsonl",
+      "runtime-reconciliation-runtime-race-final.jsonl"
+    ],
+    "scope": "CSP2 and CSP3 runtime suite deadlines now match the repository gate. Tests, individual operation deadlines, acceptance cases, and latency targets remain unchanged."
+  },
+  "regressions": [
+    {
+      "capture": "runtime-reconciliation-regression.log",
+      "finding": "Runtime reconstruction lost provider field receipts."
+    },
+    {
+      "capture": "runtime-reconciliation-all.jsonl",
+      "finding": "Three acquisition fixtures supplied authored definitions only through provider observations. Reviewed source fixtures now preserve the same model assertions."
+    },
+    {
+      "capture": "runtime-reconciliation-filter-regression-confirmed.log",
+      "finding": "Primary filtering synthesized provenance for an unselected provider."
+    }
+  ],
+  "raw_capture_count": 41,
+  "raw_capture_bytes": 11827113,
+  "raw_captures": [
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/runtime-reconciliation-acquisition-final.jsonl",
+      "sha256": "c6f186d73d284f0009bd4a01b90edcda4b21d68d31592d7970058f4908ab18e2",
+      "bytes": 234317
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/runtime-reconciliation-after.pprof",
+      "sha256": "7f6f95296f9a47e61908d53b069a21e4e10d7bd6d1d3a5e1d0ee1bceafeac807",
+      "bytes": 39583
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/runtime-reconciliation-ago-final.json",
+      "sha256": "b8fb7afa66aa7a93914ac258475dd0191be821803a8aea4439f5ba05022f5fa5",
+      "bytes": 289
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/runtime-reconciliation-ago-verified.json",
+      "sha256": "b8fb7afa66aa7a93914ac258475dd0191be821803a8aea4439f5ba05022f5fa5",
+      "bytes": 289
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/runtime-reconciliation-ago.json",
+      "sha256": "b8fb7afa66aa7a93914ac258475dd0191be821803a8aea4439f5ba05022f5fa5",
+      "bytes": 289
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/runtime-reconciliation-all-verified.jsonl",
+      "sha256": "f2e8176ae4ea8422a233c50e54cc2e9cedc942e28bf6aee1c0366ba9f936444e",
+      "bytes": 4272974
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/runtime-reconciliation-all.jsonl",
+      "sha256": "66a1d5e609e8a11b038908af11a89ce56cb4e29bd497e3a74fcaa62bf0b186c1",
+      "bytes": 4278458
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/runtime-reconciliation-before.pprof",
+      "sha256": "5523e8ddcdf33ef9ca76e8cabbe78b0e9dc3f9cbddde4e5f9e85dc9bb785c4d5",
+      "bytes": 39017
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/runtime-reconciliation-broad.log",
+      "sha256": "349272c75e55edd25924d8ac9c0f7b824ff87927aa82efbab037104d19f5c6e1",
+      "bytes": 125
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/runtime-reconciliation-consumers.log",
+      "sha256": "44c26ed4ccf9e8daa1428ad847d1e500c0e5d4381fd25cac5d8f914103fdf898",
+      "bytes": 1242
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/runtime-reconciliation-engine-initial.log",
+      "sha256": "e17879c9608fc93da2c53f01857bbd976f21f2c68cffda207dfd8fedad101c5a",
+      "bytes": 72
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/runtime-reconciliation-engine-race-final.jsonl",
+      "sha256": "29cb1b3c92fd785d45f0a99f7759ec4a28399261f839dbc53b57735d7bb0b977",
+      "bytes": 413483
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/runtime-reconciliation-filter-regression-confirmed.log",
+      "sha256": "1d3b11b3aec5a9aefe212929f2c1d4cc68dfef080e29d8ac64048993bb339a3d",
+      "bytes": 379
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/runtime-reconciliation-filter-regression.log",
+      "sha256": "5d0695ee2b314a273b0b9cacf4e8105986fa207d12942c2688cf0993ea119852",
+      "bytes": 72
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/runtime-reconciliation-generate.log",
+      "sha256": "4391c52ae68e2f1c9e49e6a0c4d9496d7ba89a5a879067e360e8b1646d114d9c",
+      "bytes": 9934
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/runtime-reconciliation-initial.log",
+      "sha256": "92bd59be1930341b252199f69ca991845e0cb277cf8f7dc2c18a813a093d84f7",
+      "bytes": 52
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/runtime-reconciliation-lint-complete.log",
+      "sha256": "722bc841bc709bc62210ad89922e6ddfaf909903de126c2cd22368ef02532151",
+      "bytes": 2169
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/runtime-reconciliation-lint-final.log",
+      "sha256": "01fb90c4ad3e9b0702a8b1f28ea89e0e84a105bac002ff082d32ac091e3fc90e",
+      "bytes": 1560
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/runtime-reconciliation-lint-verified.log",
+      "sha256": "088715684655405a4c07e31d757c9f3321393ce57b401cc7789ca9b174649813",
+      "bytes": 1560
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/runtime-reconciliation-lint.log",
+      "sha256": "64193846a4a8cc43c0c72cf6c1c1194ea8d8e3028135d74953a1e977e0c8334e",
+      "bytes": 1049
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/runtime-reconciliation-new-tests.log",
+      "sha256": "0ada849cbc7d55fa42711fdb757b8e1b19c9bf83a1fcfe9c56215b9eb59ad7fe",
+      "bytes": 426
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/runtime-reconciliation-product.json",
+      "sha256": "0a5cc1a33899402e4135c4ef56e28730155c63025b771d83734fcab9c93df5bb",
+      "bytes": 7700
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/runtime-reconciliation-profile-after.log",
+      "sha256": "ae3a37535421d580ee90de7ea77d6360bbd734da822133b54cbf55430a722175",
+      "bytes": 52
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/runtime-reconciliation-profile-after-top.log",
+      "sha256": "afc8cd9681945cb46c2bd04659e8efea118d9baef55a2912553e474f2e601c74",
+      "bytes": 1363
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/runtime-reconciliation-profile-before.log",
+      "sha256": "59cbec1a635809b540b45d52473c6c7f12a2c2f19ba7890f2102d447d73ad43e",
+      "bytes": 52
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/runtime-reconciliation-profile-before-top.log",
+      "sha256": "b08fec7c9bc39f2f511523220c95b4ca4013a2fbd1927d11bd506104352b327a",
+      "bytes": 1862
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/runtime-reconciliation-publication-race.log",
+      "sha256": "d850bf22ea0262f5ec2e0e114f3456d228c436a5b68fb44892914d2813665a5c",
+      "bytes": 5748
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/runtime-reconciliation-quarantine.log",
+      "sha256": "44809276f33ef095dfdf711835749cabc8e2d72511a04ffc9aff67a67d45f553",
+      "bytes": 52
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/runtime-reconciliation-race-verified.jsonl",
+      "sha256": "2c6b1651fc6e9e27ccf0811aff282bc6c3aba11a6758da5f5daa03d834ced2bd",
+      "bytes": 999650
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/runtime-reconciliation-race.jsonl",
+      "sha256": "ca4a962dd050f01fd9bc1394407bc121a4e191e2281ab1a9250bb3a89b5864a2",
+      "bytes": 1073656
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/runtime-reconciliation-receipts-final.log",
+      "sha256": "11f04a402d7898c15d6fc29f32e8860c3358fd689a51bcb9f83a638f01f62ba7",
+      "bytes": 53
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/runtime-reconciliation-receipts.log",
+      "sha256": "e92b8dca3b7a2e54617544bcbd61513bd8e2e234ff6804084d9e22482aedd83e",
+      "bytes": 52
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/runtime-reconciliation-red.log",
+      "sha256": "58ab332f4c075087b8220842352c1726b7da584e9af7235a9e7bd50c34733d1b",
+      "bytes": 279
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/runtime-reconciliation-regression.log",
+      "sha256": "4eff2951a2e887b6bd3e65fa607fe35f0571552d1681d58fd175313025f688a0",
+      "bytes": 213
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/runtime-reconciliation-reviewed-fixtures.log",
+      "sha256": "a999ad049e4ff681852c46f6770b8fca0cbfc828d19c2d5d62079d9aa1bd31ed",
+      "bytes": 1934
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/runtime-reconciliation-runtime-race-final.jsonl",
+      "sha256": "c2cbe5cd12c36e32d193f3040880ef7751dd19a34947a2059b8b884222e0267e",
+      "bytes": 430661
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/runtime-reconciliation-writing-final.log",
+      "sha256": "c5e444f6054230dd26014e674615ffdc4ca2fbd5f1da43683311ee215d0ccc68",
+      "bytes": 558
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/runtime-reconciliation-writing-proof.log",
+      "sha256": "c5e444f6054230dd26014e674615ffdc4ca2fbd5f1da43683311ee215d0ccc68",
+      "bytes": 558
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/runtime-reconciliation-documents-verified.log",
+      "sha256": "c3acc091ab4791abd97b2d4af2f2e3728169e3463ec68b1d93ca505e7dc4510c",
+      "bytes": 3981
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/runtime-reconciliation-writing-verified.log",
+      "sha256": "660aea378535cd83278048e2dc55d73d2ed75b12ebbf8c0e807e3cca2283b402",
+      "bytes": 792
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp3/runtime-reconciliation-writing-complete.log",
+      "sha256": "c5e444f6054230dd26014e674615ffdc4ca2fbd5f1da43683311ee215d0ccc68",
+      "bytes": 558
+    }
+  ]
+}

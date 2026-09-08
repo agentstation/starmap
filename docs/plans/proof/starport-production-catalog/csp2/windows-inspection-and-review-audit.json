@@ -1,0 +1,323 @@
+{
+  "captured_at": "2026-09-06T21:09:10.072614+00:00",
+  "goal_status": "active",
+  "task_status": "CSP2 in_progress",
+  "progress": "Windows inspection implementation, portable and native Linux evidence, and a repository-grounded review with a reproduced workspace permission defect.",
+  "branch": "codex/catalog-requirements",
+  "head": "4780dfea9f7e002ea6eaaa82aa8f52ed0d4cc225",
+  "checks": [
+    {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.25.12",
+        "go",
+        "test",
+        "-race",
+        "-count=1",
+        "-timeout",
+        "5m",
+        "-json",
+        "./pkg/productpaths",
+        "./internal/runtimeacl/windows",
+        "./internal/privatefiles",
+        "./internal/cli/commands/config"
+      ],
+      "exit_code": 0,
+      "counts": {
+        "pass": 154
+      }
+    },
+    {
+      "command": [
+        "go",
+        "tool",
+        "ago",
+        "-stale-ignores",
+        "-format",
+        "json",
+        "./..."
+      ],
+      "exit_code": 0,
+      "counts": {}
+    },
+    {
+      "command": [
+        "golangci-lint",
+        "run"
+      ],
+      "exit_code": 0,
+      "counts": {}
+    },
+    {
+      "command": [
+        "env",
+        "GOOS=windows",
+        "GOARCH=amd64",
+        "CGO_ENABLED=0",
+        "golangci-lint",
+        "run",
+        "./pkg/productpaths/...",
+        "./internal/runtimeacl/windows/...",
+        "./internal/privatefiles/...",
+        "./internal/cli/commands/config/..."
+      ],
+      "exit_code": 0,
+      "counts": {}
+    },
+    {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.25.12",
+        "GOOS=windows",
+        "GOARCH=amd64",
+        "CGO_ENABLED=0",
+        "go",
+        "test",
+        "-c",
+        "-o",
+        "/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/csp2-windows-inspection-settled-5jg8pkjf/amd64-pkg-productpaths.exe",
+        "./pkg/productpaths"
+      ],
+      "exit_code": 0,
+      "counts": {}
+    },
+    {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.25.12",
+        "GOOS=windows",
+        "GOARCH=amd64",
+        "CGO_ENABLED=0",
+        "go",
+        "test",
+        "-c",
+        "-o",
+        "/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/csp2-windows-inspection-settled-5jg8pkjf/amd64-internal-privatefiles.exe",
+        "./internal/privatefiles"
+      ],
+      "exit_code": 0,
+      "counts": {}
+    },
+    {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.25.12",
+        "GOOS=windows",
+        "GOARCH=amd64",
+        "CGO_ENABLED=0",
+        "go",
+        "test",
+        "-c",
+        "-o",
+        "/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/csp2-windows-inspection-settled-5jg8pkjf/amd64-internal-runtimeacl-windows.exe",
+        "./internal/runtimeacl/windows"
+      ],
+      "exit_code": 0,
+      "counts": {}
+    },
+    {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.25.12",
+        "GOOS=windows",
+        "GOARCH=amd64",
+        "CGO_ENABLED=0",
+        "go",
+        "test",
+        "-c",
+        "-o",
+        "/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/csp2-windows-inspection-settled-5jg8pkjf/amd64-internal-cli-app.exe",
+        "./internal/cli/app"
+      ],
+      "exit_code": 0,
+      "counts": {}
+    },
+    {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.25.12",
+        "GOOS=windows",
+        "GOARCH=arm64",
+        "CGO_ENABLED=0",
+        "go",
+        "test",
+        "-c",
+        "-o",
+        "/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/csp2-windows-inspection-settled-5jg8pkjf/arm64-pkg-productpaths.exe",
+        "./pkg/productpaths"
+      ],
+      "exit_code": 0,
+      "counts": {}
+    },
+    {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.25.12",
+        "GOOS=windows",
+        "GOARCH=arm64",
+        "CGO_ENABLED=0",
+        "go",
+        "test",
+        "-c",
+        "-o",
+        "/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/csp2-windows-inspection-settled-5jg8pkjf/arm64-internal-privatefiles.exe",
+        "./internal/privatefiles"
+      ],
+      "exit_code": 0,
+      "counts": {}
+    },
+    {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.25.12",
+        "GOOS=windows",
+        "GOARCH=arm64",
+        "CGO_ENABLED=0",
+        "go",
+        "test",
+        "-c",
+        "-o",
+        "/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/csp2-windows-inspection-settled-5jg8pkjf/arm64-internal-runtimeacl-windows.exe",
+        "./internal/runtimeacl/windows"
+      ],
+      "exit_code": 0,
+      "counts": {}
+    },
+    {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.25.12",
+        "GOOS=windows",
+        "GOARCH=arm64",
+        "CGO_ENABLED=0",
+        "go",
+        "test",
+        "-c",
+        "-o",
+        "/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/csp2-windows-inspection-settled-5jg8pkjf/arm64-internal-cli-app.exe",
+        "./internal/cli/app"
+      ],
+      "exit_code": 0,
+      "counts": {}
+    }
+  ],
+  "native_linux": {
+    "packages": 2,
+    "passed_packages": 2,
+    "test_counts": {
+      "pass": 92,
+      "fail": 0,
+      "skip": 0
+    },
+    "scope": "Native Linux ARM64 containers, CGO disabled, no race instrumentation, no external network. Named volumes hold temporary test files. No power-loss or released-pair qualification."
+  },
+  "review_checks": [
+    {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.25.12",
+        "go",
+        "test",
+        "-race",
+        "-count=1",
+        "-timeout",
+        "5m",
+        "-json",
+        "-run",
+        "^TestYAMLOnlyProviderAcquisitionPublishesReviewedOfferingAndQuarantinesUnknown$",
+        "./internal/catalog/pipeline"
+      ],
+      "exit_code": 0,
+      "counts": {
+        "pass": 1
+      }
+    },
+    {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.25.12",
+        "go",
+        "test",
+        "-race",
+        "-count=1",
+        "-timeout",
+        "5m",
+        "-json",
+        "-run",
+        "Test(ValidateHumanLayoutAcceptsMissingAndProviderYAMLPaths|CanonicalHumanWorkspaceIsSeparateFromEveryDefaultMachineRoot|ProjectAtomicallyReplacesValidatedWorkspace|RepairDoesNotOverwriteDirtyWorkspace)$",
+        "./internal/catalog/workspace"
+      ],
+      "exit_code": 0,
+      "counts": {
+        "pass": 4
+      }
+    }
+  ],
+  "workspace_probe": {
+    "record": "workspace-permission-review-red.json",
+    "exit_code": 1,
+    "root_before": "0770",
+    "root_after": "0755",
+    "note_before": "0600",
+    "note_after": "0644",
+    "temporary_source_removed": true
+  },
+  "task_gate": {
+    "record": "windows-inspection-task.json",
+    "cases": {
+      "UNVERIFIED": 50
+    },
+    "subcases": {
+      "PASS": 2,
+      "UNVERIFIED": 20
+    }
+  },
+  "starport": {
+    "version": "v0.16.5",
+    "replacement": null,
+    "workspace_override": null,
+    "record": "access-review-starport-module.json"
+  },
+  "manual_review": [
+    "Private DACL observation and enforcement use the same native descriptor decoder and policy predicates.",
+    "The enforcement wrapper preserves the native absent-DACL error identity. Inspection can still report an absent DACL as observed metadata.",
+    "Native metadata handles request READ_CONTROL and FILE_READ_ATTRIBUTES, not file-data reads or write access.",
+    "Observed symlinks and unsupported reparse points receive no target-security observation. File identities are checked around the native query.",
+    "Compatible private-policy observations remain unverified for effective access. Other access classes do not inherit owner-only refusal.",
+    "Portable assessment moved to the owning DACL policy package after host lint found a Windows-only consumer of a portable helper. No suppression was added.",
+    "Native tests are compiled but unexecuted. The content-denial fixture is intended to prove metadata-only reads on Windows.",
+    "Workspace inputs do not use private store guards, but the replacement probe proves that operator permissions change. Content tests do not prove access preservation.",
+    "The old catalog-store diagnostic returned unverified, not OK. It omitted a known private-policy conflict.",
+    "File-role declarations and POSIX assessment still need one semantic owner across runtime enforcement and inspection.",
+    "Starport resolves the released v0.16.5 module without a go.work or replacement override. New contract adoption remains CSP8 work."
+  ],
+  "remaining": [
+    "Preserve workspace access restrictions and operator editing rights through replacement, or refuse before publication.",
+    "Unify semantic file-role policies and preserve passive diagnostics.",
+    "Resolve the pending constructor network policy and service-file owner exception.",
+    "Run native Windows qualification and service procedures.",
+    "Complete Starport adoption, engine policies, and all released-pair acceptance cases."
+  ],
+  "authorization": {
+    "commits": 0,
+    "pushes": 0,
+    "pull_requests": 0,
+    "ci_dispatches": 0,
+    "releases": 0
+  },
+  "input_manifest": "windows-inspection-and-review-input-manifest.json",
+  "document_checks": {
+    "record": "access-review-settled-documents.json",
+    "document_verifier_exit": 0,
+    "plan_lines": 500,
+    "tasks": 38,
+    "primary_cases": 50,
+    "required_subcases": 324,
+    "historical_files_preserved": 57,
+    "targeted_writing_exit": 0,
+    "targeted_writing": "PASS: 22 file(s), 0 diagnostic(s)",
+    "whole_repository_writing_exit": 2,
+    "whole_repository_writing_scope": "980 files, three retained historical diagnostics only.",
+    "diff_check_exit": 0
+  }
+}

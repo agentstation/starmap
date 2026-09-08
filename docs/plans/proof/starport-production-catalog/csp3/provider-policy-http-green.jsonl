@@ -1,0 +1,8 @@
+{"Time":"2026-09-06T22:46:38.698471-05:00","Action":"start","Package":"github.com/agentstation/starmap/runtime"}
+{"Time":"2026-09-06T22:46:39.148895-05:00","Action":"run","Package":"github.com/agentstation/starmap/runtime","Test":"TestProviderPolicyStartupAlignsHTTPGeneration"}
+{"Time":"2026-09-06T22:46:39.14902-05:00","Action":"output","Package":"github.com/agentstation/starmap/runtime","Test":"TestProviderPolicyStartupAlignsHTTPGeneration","Output":"=== RUN   TestProviderPolicyStartupAlignsHTTPGeneration\n"}
+{"Time":"2026-09-06T22:47:05.301812-05:00","Action":"output","Package":"github.com/agentstation/starmap/runtime","Test":"TestProviderPolicyStartupAlignsHTTPGeneration","Output":"--- PASS: TestProviderPolicyStartupAlignsHTTPGeneration (26.15s)\n"}
+{"Time":"2026-09-06T22:47:05.302152-05:00","Action":"pass","Package":"github.com/agentstation/starmap/runtime","Test":"TestProviderPolicyStartupAlignsHTTPGeneration","Elapsed":26.15}
+{"Time":"2026-09-06T22:47:05.302484-05:00","Action":"output","Package":"github.com/agentstation/starmap/runtime","Output":"PASS\n"}
+{"Time":"2026-09-06T22:47:06.33353-05:00","Action":"output","Package":"github.com/agentstation/starmap/runtime","Output":"ok  \tgithub.com/agentstation/starmap/runtime\t27.634s\n"}
+{"Time":"2026-09-06T22:47:06.333685-05:00","Action":"pass","Package":"github.com/agentstation/starmap/runtime","Elapsed":27.635}

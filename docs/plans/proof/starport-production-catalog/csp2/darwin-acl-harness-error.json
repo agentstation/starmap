@@ -1,0 +1,6 @@
+{
+  "stage": "ago result summarization",
+  "error": "AttributeError: 'str' object has no attribute 'get'",
+  "completed_records": 4,
+  "resolution": "Count test events only when each parsed JSON value is an object. Repeat the unrecorded ago check and run the remaining builds."
+}

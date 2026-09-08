@@ -1,0 +1,17 @@
+{
+  "command": [
+    "go",
+    "test",
+    "-race",
+    "./runtime",
+    "-run",
+    "^TestCloseNeverRacesACallerOwnedRun$",
+    "-count=10",
+    "-timeout",
+    "3m"
+  ],
+  "exit_code": 0,
+  "stdout": "ok  \tgithub.com/agentstation/starmap/runtime\t40.284s\n",
+  "stderr": "",
+  "scope": "Ten isolated repetitions passed. The cause of the earlier loaded-suite timeout remains undetermined."
+}

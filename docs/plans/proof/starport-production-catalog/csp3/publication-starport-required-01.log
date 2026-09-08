@@ -1,0 +1,7 @@
+SP-D01 PASS: proxy does not import the concrete cache adapter
+SP-D02 PASS: proxy does not import the concrete provider registry
+SP-D03 PASS: proxy exposes the cache behavior contract
+SP-D04 PASS: proxy exposes the provider leasing contract
+SP-D05 PASS: app does not import Starmap source selection
+SP-D06 PASS: app does not import Starmap sync options
+Summary: 6 passed, 0 failed

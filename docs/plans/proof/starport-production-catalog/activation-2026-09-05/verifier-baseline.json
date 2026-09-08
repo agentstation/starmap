@@ -1,0 +1,1622 @@
+{
+  "command": [
+    "bash",
+    "scripts/verify-catalog-product.sh",
+    "--starport-root",
+    "/Users/jack/src/github.com/agentstation/starport-catalog-lifecycle",
+    "--all",
+    "--json"
+  ],
+  "exit_code": 1,
+  "report": {
+    "cases": [
+      {
+        "id": "A01",
+        "condition": "CSP-V01",
+        "status": "UNVERIFIED",
+        "required_subcases": 5
+      },
+      {
+        "id": "A02",
+        "condition": "CSP-V02",
+        "status": "UNVERIFIED",
+        "required_subcases": 3
+      },
+      {
+        "id": "A03",
+        "condition": "CSP-V03",
+        "status": "UNVERIFIED",
+        "required_subcases": 16
+      },
+      {
+        "id": "A04",
+        "condition": "CSP-V04",
+        "status": "UNVERIFIED",
+        "required_subcases": 9
+      },
+      {
+        "id": "A05",
+        "condition": "CSP-V05",
+        "status": "UNVERIFIED",
+        "required_subcases": 6
+      },
+      {
+        "id": "A06",
+        "condition": "CSP-V06",
+        "status": "UNVERIFIED",
+        "required_subcases": 4
+      },
+      {
+        "id": "A07",
+        "condition": "CSP-V07",
+        "status": "UNVERIFIED",
+        "required_subcases": 4
+      },
+      {
+        "id": "A08",
+        "condition": "CSP-V08",
+        "status": "UNVERIFIED",
+        "required_subcases": 5
+      },
+      {
+        "id": "A09",
+        "condition": "CSP-V09",
+        "status": "UNVERIFIED",
+        "required_subcases": 4
+      },
+      {
+        "id": "A10",
+        "condition": "CSP-V10",
+        "status": "UNVERIFIED",
+        "required_subcases": 4
+      },
+      {
+        "id": "A11",
+        "condition": "CSP-V11",
+        "status": "UNVERIFIED",
+        "required_subcases": 7
+      },
+      {
+        "id": "A12",
+        "condition": "CSP-V12",
+        "status": "UNVERIFIED",
+        "required_subcases": 5
+      },
+      {
+        "id": "A13",
+        "condition": "CSP-V13",
+        "status": "UNVERIFIED",
+        "required_subcases": 3
+      },
+      {
+        "id": "A14",
+        "condition": "CSP-V14",
+        "status": "UNVERIFIED",
+        "required_subcases": 4
+      },
+      {
+        "id": "A15",
+        "condition": "CSP-V15",
+        "status": "UNVERIFIED",
+        "required_subcases": 8
+      },
+      {
+        "id": "A16",
+        "condition": "CSP-V16",
+        "status": "UNVERIFIED",
+        "required_subcases": 5
+      },
+      {
+        "id": "A17",
+        "condition": "CSP-V17",
+        "status": "UNVERIFIED",
+        "required_subcases": 5
+      },
+      {
+        "id": "A18",
+        "condition": "CSP-V18",
+        "status": "UNVERIFIED",
+        "required_subcases": 5
+      },
+      {
+        "id": "A19",
+        "condition": "CSP-V19",
+        "status": "UNVERIFIED",
+        "required_subcases": 4
+      },
+      {
+        "id": "A20",
+        "condition": "CSP-V20",
+        "status": "UNVERIFIED",
+        "required_subcases": 6
+      },
+      {
+        "id": "A21",
+        "condition": "CSP-V21",
+        "status": "UNVERIFIED",
+        "required_subcases": 5
+      },
+      {
+        "id": "A22",
+        "condition": "CSP-V22",
+        "status": "UNVERIFIED",
+        "required_subcases": 4
+      },
+      {
+        "id": "A23",
+        "condition": "CSP-V23",
+        "status": "UNVERIFIED",
+        "required_subcases": 4
+      },
+      {
+        "id": "A24",
+        "condition": "CSP-V24",
+        "status": "UNVERIFIED",
+        "required_subcases": 10
+      },
+      {
+        "id": "A25",
+        "condition": "CSP-V25",
+        "status": "UNVERIFIED",
+        "required_subcases": 6
+      },
+      {
+        "id": "A26",
+        "condition": "CSP-V26",
+        "status": "UNVERIFIED",
+        "required_subcases": 4
+      },
+      {
+        "id": "A27",
+        "condition": "CSP-V27",
+        "status": "UNVERIFIED",
+        "required_subcases": 6
+      },
+      {
+        "id": "A28",
+        "condition": "CSP-V28",
+        "status": "UNVERIFIED",
+        "required_subcases": 4
+      },
+      {
+        "id": "A29",
+        "condition": "CSP-V29",
+        "status": "UNVERIFIED",
+        "required_subcases": 5
+      },
+      {
+        "id": "A30",
+        "condition": "CSP-V30",
+        "status": "UNVERIFIED",
+        "required_subcases": 6
+      },
+      {
+        "id": "A31",
+        "condition": "CSP-V31",
+        "status": "UNVERIFIED",
+        "required_subcases": 9
+      },
+      {
+        "id": "A32",
+        "condition": "CSP-V32",
+        "status": "UNVERIFIED",
+        "required_subcases": 8
+      },
+      {
+        "id": "A33",
+        "condition": "CSP-V33",
+        "status": "UNVERIFIED",
+        "required_subcases": 9
+      },
+      {
+        "id": "A34",
+        "condition": "CSP-V34",
+        "status": "UNVERIFIED",
+        "required_subcases": 6
+      },
+      {
+        "id": "A35",
+        "condition": "CSP-V35",
+        "status": "UNVERIFIED",
+        "required_subcases": 4
+      },
+      {
+        "id": "A36",
+        "condition": "CSP-V36",
+        "status": "UNVERIFIED",
+        "required_subcases": 2
+      },
+      {
+        "id": "A37",
+        "condition": "CSP-V37",
+        "status": "UNVERIFIED",
+        "required_subcases": 5
+      },
+      {
+        "id": "A38",
+        "condition": "CSP-V38",
+        "status": "UNVERIFIED",
+        "required_subcases": 4
+      },
+      {
+        "id": "A39",
+        "condition": "CSP-V39",
+        "status": "UNVERIFIED",
+        "required_subcases": 3
+      },
+      {
+        "id": "A40",
+        "condition": "CSP-V40",
+        "status": "UNVERIFIED",
+        "required_subcases": 8
+      },
+      {
+        "id": "A41",
+        "condition": "CSP-V41",
+        "status": "UNVERIFIED",
+        "required_subcases": 10
+      },
+      {
+        "id": "A42",
+        "condition": "CSP-V42",
+        "status": "UNVERIFIED",
+        "required_subcases": 9
+      },
+      {
+        "id": "A43",
+        "condition": "CSP-V43",
+        "status": "UNVERIFIED",
+        "required_subcases": 7
+      },
+      {
+        "id": "A44",
+        "condition": "CSP-V44",
+        "status": "UNVERIFIED",
+        "required_subcases": 8
+      },
+      {
+        "id": "A45",
+        "condition": "CSP-V45",
+        "status": "UNVERIFIED",
+        "required_subcases": 9
+      },
+      {
+        "id": "A46",
+        "condition": "CSP-V46",
+        "status": "UNVERIFIED",
+        "required_subcases": 10
+      },
+      {
+        "id": "A47",
+        "condition": "CSP-V47",
+        "status": "UNVERIFIED",
+        "required_subcases": 22
+      },
+      {
+        "id": "A48",
+        "condition": "CSP-V48",
+        "status": "UNVERIFIED",
+        "required_subcases": 8
+      },
+      {
+        "id": "A49",
+        "condition": "CSP-V49",
+        "status": "UNVERIFIED",
+        "required_subcases": 7
+      },
+      {
+        "id": "A50",
+        "condition": "CSP-V50",
+        "status": "UNVERIFIED",
+        "required_subcases": 10
+      }
+    ],
+    "subcases": {
+      "A01.existing_head_preserved": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A01.required_write_failure": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A01.restart_same_baseline": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A01.starmap_cold_offline": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A01.starport_cold_offline": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A02.constructor_filesystem_silence": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A02.constructor_network_silence": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A02.no_workers": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A03.duplicate_owner_refusal": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A03.effective_path_report": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A03.relative_anchor_migration_guard": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A03.required_empty_path_refusal": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A03.root_leaf_precedence": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A03.service_container_roots": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A03.shared_backend_no_local_databases": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A03.starmap_file_manifest": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A03.starmap_linux": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A03.starmap_macos": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A03.starmap_windows": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A03.starport_file_manifest": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A03.starport_linux": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A03.starport_macos": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A03.starport_windows": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A03.two_instances_same_user": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A04.dual_root_conflict": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A04.human_workspace_preserved": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A04.identity_and_journal_recovery": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A04.starmap_linux_interruption": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A04.starmap_macos_interruption": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A04.starmap_windows_interruption": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A04.starport_linux_interruption": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A04.starport_macos_interruption": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A04.starport_windows_interruption": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A05.bot_required_checks": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A05.complete_deletion_threshold": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A05.each_publication_failure": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A05.partial_retained_admission": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A05.required_source_absent": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A05.same_bytes_retry": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A06.new_released_module": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A06.old_pinned_bytes_unchanged": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A06.promoted_checkout": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A06.starport_released_module_pin": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A07.checksum_size_schema": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A07.invalid_signature": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A07.public_no_provider_keys": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A07.replay_rejection": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A08.alias_cycle_scope": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A08.field_authority": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A08.partial_empty": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A08.presence_zero_null": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A08.scoped_tombstone": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A09.alias_cannot_restore_permission": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A09.authority_change": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A09.excluded_membership": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A09.revoked_scope_restart": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A10.cold_follower_refusal": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A10.cold_owner_refusal": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A10.warm_retained_authority": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A10.wrong_authority_refusal": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A11.acquisition_role_matrix": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A11.explicit_reference": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A11.fresh_install_override": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A11.identical_values": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A11.inference_role_matrix": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A11.mixed_field_handle": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A11.upgrade_changed_selection": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A12.backend_outage": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A12.each_supported_backend": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A12.expired_revoked": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A12.no_secret_disclosure": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A12.rotation_complete_version": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A13.lease_expiry_during_commit": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A13.stale_epoch_rejection": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A13.two_real_processes": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A14.equivalent_acquisition_capability": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A14.follower_restart": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A14.leader_loss_with_local_files_removed": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A14.missed_events": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A15.budget_usage_unknown": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A15.cache_eviction_isolation": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A15.confirmed_no_budget": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A15.durability_failover": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A15.hash_slot_layout": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A15.online_batch_retry": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A15.real_valkey_postgres": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A15.team_policy_unknown": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A16.complete_backup_manifest": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A16.concurrent_migration_owner": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A16.interrupted_migration": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A16.kv_sql_file_references": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A16.sqlite_wal_backup": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A17.identity_error_mapping": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A17.official_sdk_roster": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A17.raw_http_both_api_families": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A17.stream_refresh": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A17.unsupported_field_contract": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A18.consistent_counts_prices": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A18.inflight_and_new_attempts": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A18.removed_id_error": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A18.rename_alias_overlap": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A18.unauthorized_membership_redaction": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A19.permission_withdrawal_not_bypassed": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A19.pin_restart": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A19.poll_cannot_unpin": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A19.verified_rollback": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A20.cli_provider_nonprovider": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A20.dependency_disabled_partial": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A20.publisher_provider_nonprovider": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A20.receipt_artifact_binding": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A20.server_provider_nonprovider": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A20.starport_provider_nonprovider": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A21.cache_retry_batch_admission": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A21.known_withdrawal_refusal": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A21.mixed_schema_permission_envelope": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A21.partition_validity_expiry": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A21.stream_policy_diagnostic": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A22.inference_separate_egress": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A22.lazy_secret_resolution": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A22.local_import_allowed": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A22.startup_poll_stream_manual": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A23.explicit_refresh": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A23.manual_source_with_acquisition": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A23.pin_blocks_all_activation": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A23.restart_watcher_guards": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A24.aliases_coalescing": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A24.bootstrap_file_location": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A24.descriptor_parity": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A24.dotenv_conflict_migration": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A24.generated_file_inventory": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A24.local_fallback": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A24.primary_config_file_selection": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A24.scope_authority_origins": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A24.starmap_yaml_parity": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A24.zero_false_empty": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A25.approved_local_exception": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A25.byok_shared_stream_override": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A25.credential_placement_changes": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A25.inference_origin_changes": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A25.product_path_isolation": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A25.source_token_replacement": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A26.failed_save_activation": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A26.idempotent_operation_receipt": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A26.local_file_stale_revision": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A26.shared_sql_stale_revision": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A27.external_controller_lock": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A27.local_shared_authorization": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A27.migration_boundary": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A27.origin_protection": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A27.redaction": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A27.transactional_audit": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A28.applied_config_memory": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A28.desired_applied_drift": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A28.leadership_config_revision": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A28.shared_authority_mismatch": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A29.embedded_offline_search": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A29.hosting_rollback": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A29.no_dynamic_data_disclosure": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A29.public_url_content_manifest": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A29.recovery_without_auth": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A30.desktop_both_themes": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A30.instruction_contrast": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A30.keyboard_screen_reader": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A30.narrow_320": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A30.stable_links_history": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A30.zoom_text_spacing": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A31.compose_complete_storage": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A31.container_recreation_records": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A31.each_declared_recipe": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A31.exact_backend_versions": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A31.readonly_container_mounts": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A31.recipe_configuration_guards": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A31.recipe_latency_profile": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A31.single_region_boundaries": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A31.upgrade_restore_workload": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A32.admin_effective_report": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A32.audit_write_failure": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A32.authority_restore": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A32.cli_effective_report": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A32.first_admin_bootstrap": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A32.receipt_crash_recovery": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A32.rotation_overlap": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A32.subscriber_mutation_denied": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A33.backup_then_revoke_and_spend": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A33.fresh_replica_history_barrier": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A33.independent_record_replay": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A33.measured_rpo_rto": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A33.missing_evidence_restricted": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A33.old_primary_admission_fence": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A33.old_writer_fenced": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A33.operator_reconciliation": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A33.restart_and_recovery_epoch": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A34.catalog_before_keys": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A34.credential_roles": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A34.persistence_paths_and_cache_roles": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A34.qualified_performance_claims": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A34.recipe_links": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A34.temporary_persistent": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A35.clean_catalog_no_keys": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A35.documented_inference": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A35.each_advertised_native_install": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A35.released_installer_paths": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A36.install_catalog_setup_answer_order": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A36.real_streamed_result": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A37.candidate_artifact_hash": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A37.catalog_provider_path": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A37.cuts_disclosed": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A37.invalidation_on_product_change": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A37.no_secret_or_fabrication": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A38.human_pacing_review": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A38.inference_real_speed": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A38.readable_900": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A38.size_dimensions": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A39.media_links": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A39.poster_alt_transcript": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A39.supported_motion_controls": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A40.atomic_initialization_race": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A40.bootstrap_connection_cycle": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A40.local_file_authority": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A40.local_shared_migration": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A40.no_outage_file_fallback": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A40.retained_shared_revision": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A40.shared_revision_beats_local_values": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A40.unavailable_not_empty": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A41.badger_effective_options": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A41.badger_write_sync_profile": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A41.deployment_key_channel_isolation": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A41.namespace_atomic_layout": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A41.unprefixed_record_migration": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A41.unsupported_modes_refused": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A41.valkey_effective_connection_options": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A41.valkey_tls_identity": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A41.valkey_url_contract": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A41.valkey_username_password": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A42.cache_only_cleanup": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A42.cache_outage_admission": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A42.capacity_and_entry_limits": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A42.enablement_by_cache_kind": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A42.expiry_preserving_refill": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A42.generation_account_scope": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A42.memory_and_shared_cache_selection": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A42.memory_budget_measurement": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A42.unknown_remaining_ttl": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A43.crash_cleanup_ownership": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A43.memory_databases": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A43.migration_diagnostic": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A43.normal_shutdown_cleanup": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A43.persistent_installation_untouched": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A43.persistent_selectors_rejected": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A43.scratch_blobs_runtime": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A44.auto_fallback_semantics": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A44.caller_owned_values": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A44.canonical_alias_lookup": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A44.embedded_catalog_profile": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A44.exact_model_scaling": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A44.generation_lease_consistency": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A44.precomputed_static_candidates": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A44.retained_generation_bounds": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A45.cold_load_coalescing": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A45.encryption_and_disclosure": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A45.outage_validity": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A45.resident_secret_bounds": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A45.revision_owner_identity": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A45.revoked_refresh_fencing": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A45.rotation_expiry_revocation": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A45.shared_grant_recheck": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A45.warm_no_derivation_or_io": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A46.bounded_tenant_working_set": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A46.cache_retry_batch_admission": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A46.cold_load_deadline_coalescing": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A46.confirmed_absence_vs_unknown": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A46.dependency_revision_coherence": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A46.fleet_receipt_vs_enforcement": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A46.local_mutation_fencing": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A46.missed_event_catchup": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A46.validity_skew_withdrawal": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A46.warm_no_stable_store_reads": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A47.analytics_drop_independence": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A47.atomic_hierarchical_reservation": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A47.backend_operation_evidence": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A47.bounded_cost_and_tokens": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A47.chargeable_operation_matrix": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A47.clock_and_window_authority": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A47.confirmed_absent_fast_path": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A47.crash_failover_recovery": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A47.idempotent_attempt_identity": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A47.late_usage_pinned_valuation": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A47.media_async_reconciliation": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A47.policy_edit_preserves_spend": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A47.quota_lease_support_boundary": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A47.recognition_then_cancel": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A47.reconciliation_retention": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A47.rerank_billing_units": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A47.retry_fallback_charges": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A47.semantic_embedding_cache_hit": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A47.stream_cancel_uncertainty": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A47.unknown_cost_refusal": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A47.usage_reconcile_once": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A47.utc_window_boundaries": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A48.admission_and_expiry_preserved": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A48.bounded_cache_read_deadline": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A48.cache_semantic_mode_matrix": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A48.fill_queue_byte_entry_bounds": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A48.nonblocking_fill_visibility": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A48.stream_accumulation_bound": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A48.stream_forwarding_errors": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A48.worker_shutdown_ownership": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A49.bounded_background_exchange": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A49.callback_no_remote_io": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A49.cold_peer_refresh": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A49.fleet_fault_isolation": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A49.local_breaker_immediacy": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A49.stale_hint_expiry": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A49.worker_close_and_reconnect": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A50.allocations_cpu_gc": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A50.connection_reuse_lifecycle": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A50.current_artifact_evidence": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A50.full_path_baseline": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A50.gateway_provider_boundaries": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A50.partial_complete_metric_surfaces": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A50.percentiles_and_load": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A50.real_recipe_matrix": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A50.reviewed_numeric_profile": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A50.stream_timing_memory": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      }
+    },
+    "selected_subcases": 324,
+    "summary": "Summary: 0 passed, 50 failed",
+    "unverified_cases": 50,
+    "gate_status": "FAIL",
+    "qualification": "component checks only",
+    "roster_sha256": "4969fde780aafd6224d3186359062273ba51cff67a50ab35bf0d34b1efb263bd",
+    "registry_sha256": "c4b886c58d91e1ab060ba800f940e6fffd1bc2257b474bdb2a81fbf02dcf3761",
+    "backend_scope": "primary"
+  },
+  "stderr": ""
+}

@@ -1,0 +1,17 @@
+{
+  "command": [
+    "go",
+    "test",
+    "-race",
+    "-count=1",
+    "-timeout",
+    "3m",
+    "-json",
+    "./internal/cli/app",
+    "-run",
+    "^TestConfigPathsInspectionReportsFilesWithoutInitialization$"
+  ],
+  "exit_code": 1,
+  "stdout": "{\"Time\":\"2026-09-06T00:34:29.003959-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\"}\n{\"Time\":\"2026-09-06T00:34:29.648952-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestConfigPathsInspectionReportsFilesWithoutInitialization\"}\n{\"Time\":\"2026-09-06T00:34:29.649327-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestConfigPathsInspectionReportsFilesWithoutInitialization\",\"Output\":\"=== RUN   TestConfigPathsInspectionReportsFilesWithoutInitialization\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-06T00:34:29.650935-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestConfigPathsInspectionReportsFilesWithoutInitialization\",\"Output\":\"    file_inspection_test.go:31: unknown flag: --inspect\\n\",\"OutputType\":\"error\"}\n{\"Time\":\"2026-09-06T00:34:29.651454-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestConfigPathsInspectionReportsFilesWithoutInitialization\",\"Output\":\"--- FAIL: TestConfigPathsInspectionReportsFilesWithoutInitialization (0.00s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-06T00:34:29.65147-05:00\",\"Action\":\"fail\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestConfigPathsInspectionReportsFilesWithoutInitialization\",\"Elapsed\":0}\n{\"Time\":\"2026-09-06T00:34:29.6515-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Output\":\"FAIL\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-06T00:34:29.653379-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Output\":\"FAIL\\tgithub.com/agentstation/starmap/internal/cli/app\\t0.648s\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-06T00:34:29.653391-05:00\",\"Action\":\"fail\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Elapsed\":0.649}\n",
+  "stderr": ""
+}

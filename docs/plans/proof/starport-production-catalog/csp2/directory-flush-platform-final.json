@@ -1,0 +1,156 @@
+[
+  {
+    "command": [
+      "env",
+      "GOTOOLCHAIN=go1.25.12",
+      "go",
+      "test",
+      "-race",
+      "-json",
+      "./internal/filepublish",
+      "-count=1",
+      "-timeout=2m"
+    ],
+    "exit_code": 0,
+    "stdout": "{\"Time\":\"2026-09-06T03:02:30.917093-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starmap/internal/filepublish\"}\n{\"Time\":\"2026-09-06T03:02:31.096095-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starmap/internal/filepublish\",\"Test\":\"TestDirectoryNoReplacePreservesExistingDestination\"}\n{\"Time\":\"2026-09-06T03:02:31.096206-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/filepublish\",\"Test\":\"TestDirectoryNoReplacePreservesExistingDestination\",\"Output\":\"=== RUN   TestDirectoryNoReplacePreservesExistingDestination\\n\"}\n{\"Time\":\"2026-09-06T03:02:31.096446-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starmap/internal/filepublish\",\"Test\":\"TestDirectoryNoReplacePreservesExistingDestination/empty\"}\n{\"Time\":\"2026-09-06T03:02:31.096453-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/filepublish\",\"Test\":\"TestDirectoryNoReplacePreservesExistingDestination/empty\",\"Output\":\"=== RUN   TestDirectoryNoReplacePreservesExistingDestination/empty\\n\"}\n{\"Time\":\"2026-09-06T03:02:31.099929-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/filepublish\",\"Test\":\"TestDirectoryNoReplacePreservesExistingDestination/empty\",\"Output\":\"--- PASS: TestDirectoryNoReplacePreservesExistingDestination/empty (0.00s)\\n\"}\n{\"Time\":\"2026-09-06T03:02:31.099939-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starmap/internal/filepublish\",\"Test\":\"TestDirectoryNoReplacePreservesExistingDestination/empty\",\"Elapsed\":0}\n{\"Time\":\"2026-09-06T03:02:31.099945-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starmap/internal/filepublish\",\"Test\":\"TestDirectoryNoReplacePreservesExistingDestination/populated\"}\n{\"Time\":\"2026-09-06T03:02:31.099947-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/filepublish\",\"Test\":\"TestDirectoryNoReplacePreservesExistingDestination/populated\",\"Output\":\"=== RUN   TestDirectoryNoReplacePreservesExistingDestination/populated\\n\"}\n{\"Time\":\"2026-09-06T03:02:31.1074-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/filepublish\",\"Test\":\"TestDirectoryNoReplacePreservesExistingDestination/populated\",\"Output\":\"--- PASS: TestDirectoryNoReplacePreservesExistingDestination/populated (0.01s)\\n\"}\n{\"Time\":\"2026-09-06T03:02:31.107424-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starmap/internal/filepublish\",\"Test\":\"TestDirectoryNoReplacePreservesExistingDestination/populated\",\"Elapsed\":0.01}\n{\"Time\":\"2026-09-06T03:02:31.107487-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starmap/internal/filepublish\",\"Test\":\"TestDirectoryNoReplacePreservesExistingDestination/file\"}\n{\"Time\":\"2026-09-06T03:02:31.107492-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/filepublish\",\"Test\":\"TestDirectoryNoReplacePreservesExistingDestination/file\",\"Output\":\"=== RUN   TestDirectoryNoReplacePreservesExistingDestination/file\\n\"}\n{\"Time\":\"2026-09-06T03:02:31.110378-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/filepublish\",\"Test\":\"TestDirectoryNoReplacePreservesExistingDestination/file\",\"Output\":\"--- PASS: TestDirectoryNoReplacePreservesExistingDestination/file (0.00s)\\n\"}\n{\"Time\":\"2026-09-06T03:02:31.110393-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starmap/internal/filepublish\",\"Test\":\"TestDirectoryNoReplacePreservesExistingDestination/file\",\"Elapsed\":0}\n{\"Time\":\"2026-09-06T03:02:31.110458-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/filepublish\",\"Test\":\"TestDirectoryNoReplacePreservesExistingDestination\",\"Output\":\"--- PASS: TestDirectoryNoReplacePreservesExistingDestination (0.01s)\\n\"}\n{\"Time\":\"2026-09-06T03:02:31.110469-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starmap/internal/filepublish\",\"Test\":\"TestDirectoryNoReplacePreservesExistingDestination\",\"Elapsed\":0.01}\n{\"Time\":\"2026-09-06T03:02:31.11048-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starmap/internal/filepublish\",\"Test\":\"TestDirectoryNoReplaceUsesOpenRootAfterRename\"}\n{\"Time\":\"2026-09-06T03:02:31.11049-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/filepublish\",\"Test\":\"TestDirectoryNoReplaceUsesOpenRootAfterRename\",\"Output\":\"=== RUN   TestDirectoryNoReplaceUsesOpenRootAfterRename\\n\"}\n{\"Time\":\"2026-09-06T03:02:31.114647-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/filepublish\",\"Test\":\"TestDirectoryNoReplaceUsesOpenRootAfterRename\",\"Output\":\"--- PASS: TestDirectoryNoReplaceUsesOpenRootAfterRename (0.00s)\\n\"}\n{\"Time\":\"2026-09-06T03:02:31.114657-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starmap/internal/filepublish\",\"Test\":\"TestDirectoryNoReplaceUsesOpenRootAfterRename\",\"Elapsed\":0}\n{\"Time\":\"2026-09-06T03:02:31.114659-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starmap/internal/filepublish\",\"Test\":\"TestDirectoryNoReplaceConcurrentPublishers\"}\n{\"Time\":\"2026-09-06T03:02:31.114665-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/filepublish\",\"Test\":\"TestDirectoryNoReplaceConcurrentPublishers\",\"Output\":\"=== RUN   TestDirectoryNoReplaceConcurrentPublishers\\n\"}\n{\"Time\":\"2026-09-06T03:02:31.144905-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/filepublish\",\"Test\":\"TestDirectoryNoReplaceConcurrentPublishers\",\"Output\":\"--- PASS: TestDirectoryNoReplaceConcurrentPublishers (0.03s)\\n\"}\n{\"Time\":\"2026-09-06T03:02:31.144923-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starmap/internal/filepublish\",\"Test\":\"TestDirectoryNoReplaceConcurrentPublishers\",\"Elapsed\":0.03}\n{\"Time\":\"2026-09-06T03:02:31.144927-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starmap/internal/filepublish\",\"Test\":\"TestDirectoryNoReplaceRejectsInvalidInputs\"}\n{\"Time\":\"2026-09-06T03:02:31.144929-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/filepublish\",\"Test\":\"TestDirectoryNoReplaceRejectsInvalidInputs\",\"Output\":\"=== RUN   TestDirectoryNoReplaceRejectsInvalidInputs\\n\"}\n{\"Time\":\"2026-09-06T03:02:31.14836-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starmap/internal/filepublish\",\"Test\":\"TestDirectoryNoReplaceRejectsInvalidInputs/\\\"\\\"\"}\n{\"Time\":\"2026-09-06T03:02:31.148371-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/filepublish\",\"Test\":\"TestDirectoryNoReplaceRejectsInvalidInputs/\\\"\\\"\",\"Output\":\"=== RUN   TestDirectoryNoReplaceRejectsInvalidInputs/\\\"\\\"\\n\"}\n{\"Time\":\"2026-09-06T03:02:31.148376-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/filepublish\",\"Test\":\"TestDirectoryNoReplaceRejectsInvalidInputs/\\\"\\\"\",\"Output\":\"--- PASS: TestDirectoryNoReplaceRejectsInvalidInputs/\\\"\\\" (0.00s)\\n\"}\n{\"Time\":\"2026-09-06T03:02:31.148378-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starmap/internal/filepublish\",\"Test\":\"TestDirectoryNoReplaceRejectsInvalidInputs/\\\"\\\"\",\"Elapsed\":0}\n{\"Time\":\"2026-09-06T03:02:31.14838-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starmap/internal/filepublish\",\"Test\":\"TestDirectoryNoReplaceRejectsInvalidInputs/\\\".\\\"\"}\n{\"Time\":\"2026-09-06T03:02:31.148395-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/filepublish\",\"Test\":\"TestDirectoryNoReplaceRejectsInvalidInputs/\\\".\\\"\",\"Output\":\"=== RUN   TestDirectoryNoReplaceRejectsInvalidInputs/\\\".\\\"\\n\"}\n{\"Time\":\"2026-09-06T03:02:31.148398-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/filepublish\",\"Test\":\"TestDirectoryNoReplaceRejectsInvalidInputs/\\\".\\\"\",\"Output\":\"--- PASS: TestDirectoryNoReplaceRejectsInvalidInputs/\\\".\\\" (0.00s)\\n\"}\n{\"Time\":\"2026-09-06T03:02:31.148399-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starmap/internal/filepublish\",\"Test\":\"TestDirectoryNoReplaceRejectsInvalidInputs/\\\".\\\"\",\"Elapsed\":0}\n{\"Time\":\"2026-09-06T03:02:31.1484-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starmap/internal/filepublish\",\"Test\":\"TestDirectoryNoReplaceRejectsInvalidInputs/\\\"..\\\"\"}\n{\"Time\":\"2026-09-06T03:02:31.148402-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/filepublish\",\"Test\":\"TestDirectoryNoReplaceRejectsInvalidInputs/\\\"..\\\"\",\"Output\":\"=== RUN   TestDirectoryNoReplaceRejectsInvalidInputs/\\\"..\\\"\\n\"}\n{\"Time\":\"2026-09-06T03:02:31.14843-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/filepublish\",\"Test\":\"TestDirectoryNoReplaceRejectsInvalidInputs/\\\"..\\\"\",\"Output\":\"--- PASS: TestDirectoryNoReplaceRejectsInvalidInputs/\\\"..\\\" (0.00s)\\n\"}\n{\"Time\":\"2026-09-06T03:02:31.148551-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starmap/internal/filepublish\",\"Test\":\"TestDirectoryNoReplaceRejectsInvalidInputs/\\\"..\\\"\",\"Elapsed\":0}\n{\"Time\":\"2026-09-06T03:02:31.148559-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starmap/internal/filepublish\",\"Test\":\"TestDirectoryNoReplaceRejectsInvalidInputs/\\\"../outside\\\"\"}\n{\"Time\":\"2026-09-06T03:02:31.148563-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/filepublish\",\"Test\":\"TestDirectoryNoReplaceRejectsInvalidInputs/\\\"../outside\\\"\",\"Output\":\"=== RUN   TestDirectoryNoReplaceRejectsInvalidInputs/\\\"../outside\\\"\\n\"}\n{\"Time\":\"2026-09-06T03:02:31.148574-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/filepublish\",\"Test\":\"TestDirectoryNoReplaceRejectsInvalidInputs/\\\"../outside\\\"\",\"Output\":\"--- PASS: TestDirectoryNoReplaceRejectsInvalidInputs/\\\"../outside\\\" (0.00s)\\n\"}\n{\"Time\":\"2026-09-06T03:02:31.148578-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starmap/internal/filepublish\",\"Test\":\"TestDirectoryNoReplaceRejectsInvalidInputs/\\\"../outside\\\"\",\"Elapsed\":0}\n{\"Time\":\"2026-09-06T03:02:31.148581-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starmap/internal/filepublish\",\"Test\":\"TestDirectoryNoReplaceRejectsInvalidInputs/\\\"/absolute\\\"\"}\n{\"Time\":\"2026-09-06T03:02:31.148584-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/filepublish\",\"Test\":\"TestDirectoryNoReplaceRejectsInvalidInputs/\\\"/absolute\\\"\",\"Output\":\"=== RUN   TestDirectoryNoReplaceRejectsInvalidInputs/\\\"/absolute\\\"\\n\"}\n{\"Time\":\"2026-09-06T03:02:31.148601-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/filepublish\",\"Test\":\"TestDirectoryNoReplaceRejectsInvalidInputs/\\\"/absolute\\\"\",\"Output\":\"--- PASS: TestDirectoryNoReplaceRejectsInvalidInputs/\\\"/absolute\\\" (0.00s)\\n\"}\n{\"Time\":\"2026-09-06T03:02:31.148606-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starmap/internal/filepublish\",\"Test\":\"TestDirectoryNoReplaceRejectsInvalidInputs/\\\"/absolute\\\"\",\"Elapsed\":0}\n{\"Time\":\"2026-09-06T03:02:31.14861-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starmap/internal/filepublish\",\"Test\":\"TestDirectoryNoReplaceRejectsInvalidInputs/\\\"nested/name\\\"\"}\n{\"Time\":\"2026-09-06T03:02:31.148612-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/filepublish\",\"Test\":\"TestDirectoryNoReplaceRejectsInvalidInputs/\\\"nested/name\\\"\",\"Output\":\"=== RUN   TestDirectoryNoReplaceRejectsInvalidInputs/\\\"nested/name\\\"\\n\"}\n{\"Time\":\"2026-09-06T03:02:31.148616-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/filepublish\",\"Test\":\"TestDirectoryNoReplaceRejectsInvalidInputs/\\\"nested/name\\\"\",\"Output\":\"--- PASS: TestDirectoryNoReplaceRejectsInvalidInputs/\\\"nested/name\\\" (0.00s)\\n\"}\n{\"Time\":\"2026-09-06T03:02:31.14862-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starmap/internal/filepublish\",\"Test\":\"TestDirectoryNoReplaceRejectsInvalidInputs/\\\"nested/name\\\"\",\"Elapsed\":0}\n{\"Time\":\"2026-09-06T03:02:31.148624-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starmap/internal/filepublish\",\"Test\":\"TestDirectoryNoReplaceRejectsInvalidInputs/\\\"nested\\\\\\\\name\\\"\"}\n{\"Time\":\"2026-09-06T03:02:31.148627-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/filepublish\",\"Test\":\"TestDirectoryNoReplaceRejectsInvalidInputs/\\\"nested\\\\\\\\name\\\"\",\"Output\":\"=== RUN   TestDirectoryNoReplaceRejectsInvalidInputs/\\\"nested\\\\\\\\name\\\"\\n\"}\n{\"Time\":\"2026-09-06T03:02:31.148641-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/filepublish\",\"Test\":\"TestDirectoryNoReplaceRejectsInvalidInputs/\\\"nested\\\\\\\\name\\\"\",\"Output\":\"--- PASS: TestDirectoryNoReplaceRejectsInvalidInputs/\\\"nested\\\\\\\\name\\\" (0.00s)\\n\"}\n{\"Time\":\"2026-09-06T03:02:31.148663-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starmap/internal/filepublish\",\"Test\":\"TestDirectoryNoReplaceRejectsInvalidInputs/\\\"nested\\\\\\\\name\\\"\",\"Elapsed\":0}\n{\"Time\":\"2026-09-06T03:02:31.148667-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starmap/internal/filepublish\",\"Test\":\"TestDirectoryNoReplaceRejectsInvalidInputs/\\\"stream:name\\\"\"}\n{\"Time\":\"2026-09-06T03:02:31.148918-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/filepublish\",\"Test\":\"TestDirectoryNoReplaceRejectsInvalidInputs/\\\"stream:name\\\"\",\"Output\":\"=== RUN   TestDirectoryNoReplaceRejectsInvalidInputs/\\\"stream:name\\\"\\n\"}\n{\"Time\":\"2026-09-06T03:02:31.148935-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/filepublish\",\"Test\":\"TestDirectoryNoReplaceRejectsInvalidInputs/\\\"stream:name\\\"\",\"Output\":\"--- PASS: TestDirectoryNoReplaceRejectsInvalidInputs/\\\"stream:name\\\" (0.00s)\\n\"}\n{\"Time\":\"2026-09-06T03:02:31.148943-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starmap/internal/filepublish\",\"Test\":\"TestDirectoryNoReplaceRejectsInvalidInputs/\\\"stream:name\\\"\",\"Elapsed\":0}\n{\"Time\":\"2026-09-06T03:02:31.148947-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starmap/internal/filepublish\",\"Test\":\"TestDirectoryNoReplaceRejectsInvalidInputs/\\\"trailing.\\\"\"}\n{\"Time\":\"2026-09-06T03:02:31.148949-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/filepublish\",\"Test\":\"TestDirectoryNoReplaceRejectsInvalidInputs/\\\"trailing.\\\"\",\"Output\":\"=== RUN   TestDirectoryNoReplaceRejectsInvalidInputs/\\\"trailing.\\\"\\n\"}\n{\"Time\":\"2026-09-06T03:02:31.148953-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/filepublish\",\"Test\":\"TestDirectoryNoReplaceRejectsInvalidInputs/\\\"trailing.\\\"\",\"Output\":\"--- PASS: TestDirectoryNoReplaceRejectsInvalidInputs/\\\"trailing.\\\" (0.00s)\\n\"}\n{\"Time\":\"2026-09-06T03:02:31.148956-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starmap/internal/filepublish\",\"Test\":\"TestDirectoryNoReplaceRejectsInvalidInputs/\\\"trailing.\\\"\",\"Elapsed\":0}\n{\"Time\":\"2026-09-06T03:02:31.148959-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starmap/internal/filepublish\",\"Test\":\"TestDirectoryNoReplaceRejectsInvalidInputs/\\\"trailing_\\\"\"}\n{\"Time\":\"2026-09-06T03:02:31.148961-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/filepublish\",\"Test\":\"TestDirectoryNoReplaceRejectsInvalidInputs/\\\"trailing_\\\"\",\"Output\":\"=== RUN   TestDirectoryNoReplaceRejectsInvalidInputs/\\\"trailing_\\\"\\n\"}\n{\"Time\":\"2026-09-06T03:02:31.148964-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/filepublish\",\"Test\":\"TestDirectoryNoReplaceRejectsInvalidInputs/\\\"trailing_\\\"\",\"Output\":\"--- PASS: TestDirectoryNoReplaceRejectsInvalidInputs/\\\"trailing_\\\" (0.00s)\\n\"}\n{\"Time\":\"2026-09-06T03:02:31.148983-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starmap/internal/filepublish\",\"Test\":\"TestDirectoryNoReplaceRejectsInvalidInputs/\\\"trailing_\\\"\",\"Elapsed\":0}\n{\"Time\":\"2026-09-06T03:02:31.148986-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starmap/internal/filepublish\",\"Test\":\"TestDirectoryNoReplaceRejectsInvalidInputs/\\\"nul\\\\x00name\\\"\"}\n{\"Time\":\"2026-09-06T03:02:31.148997-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/filepublish\",\"Test\":\"TestDirectoryNoReplaceRejectsInvalidInputs/\\\"nul\\\\x00name\\\"\",\"Output\":\"=== RUN   TestDirectoryNoReplaceRejectsInvalidInputs/\\\"nul\\\\x00name\\\"\\n\"}\n{\"Time\":\"2026-09-06T03:02:31.149001-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/filepublish\",\"Test\":\"TestDirectoryNoReplaceRejectsInvalidInputs/\\\"nul\\\\x00name\\\"\",\"Output\":\"--- PASS: TestDirectoryNoReplaceRejectsInvalidInputs/\\\"nul\\\\x00name\\\" (0.00s)\\n\"}\n{\"Time\":\"2026-09-06T03:02:31.149027-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starmap/internal/filepublish\",\"Test\":\"TestDirectoryNoReplaceRejectsInvalidInputs/\\\"nul\\\\x00name\\\"\",\"Elapsed\":0}\n{\"Time\":\"2026-09-06T03:02:31.15042-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/filepublish\",\"Test\":\"TestDirectoryNoReplaceRejectsInvalidInputs\",\"Output\":\"--- PASS: TestDirectoryNoReplaceRejectsInvalidInputs (0.01s)\\n\"}\n{\"Time\":\"2026-09-06T03:02:31.150428-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starmap/internal/filepublish\",\"Test\":\"TestDirectoryNoReplaceRejectsInvalidInputs\",\"Elapsed\":0.01}\n{\"Time\":\"2026-09-06T03:02:31.150432-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starmap/internal/filepublish\",\"Test\":\"TestDirectoryNoReplacePreservesSymlinks\"}\n{\"Time\":\"2026-09-06T03:02:31.150433-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/filepublish\",\"Test\":\"TestDirectoryNoReplacePreservesSymlinks\",\"Output\":\"=== RUN   TestDirectoryNoReplacePreservesSymlinks\\n\"}\n{\"Time\":\"2026-09-06T03:02:31.150441-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starmap/internal/filepublish\",\"Test\":\"TestDirectoryNoReplacePreservesSymlinks/source\"}\n{\"Time\":\"2026-09-06T03:02:31.150443-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/filepublish\",\"Test\":\"TestDirectoryNoReplacePreservesSymlinks/source\",\"Output\":\"=== RUN   TestDirectoryNoReplacePreservesSymlinks/source\\n\"}\n{\"Time\":\"2026-09-06T03:02:31.155353-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/filepublish\",\"Test\":\"TestDirectoryNoReplacePreservesSymlinks/source\",\"Output\":\"--- PASS: TestDirectoryNoReplacePreservesSymlinks/source (0.00s)\\n\"}\n{\"Time\":\"2026-09-06T03:02:31.15536-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starmap/internal/filepublish\",\"Test\":\"TestDirectoryNoReplacePreservesSymlinks/source\",\"Elapsed\":0}\n{\"Time\":\"2026-09-06T03:02:31.155362-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starmap/internal/filepublish\",\"Test\":\"TestDirectoryNoReplacePreservesSymlinks/target\"}\n{\"Time\":\"2026-09-06T03:02:31.155371-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/filepublish\",\"Test\":\"TestDirectoryNoReplacePreservesSymlinks/target\",\"Output\":\"=== RUN   TestDirectoryNoReplacePreservesSymlinks/target\\n\"}\n{\"Time\":\"2026-09-06T03:02:31.157631-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/filepublish\",\"Test\":\"TestDirectoryNoReplacePreservesSymlinks/target\",\"Output\":\"--- PASS: TestDirectoryNoReplacePreservesSymlinks/target (0.00s)\\n\"}\n{\"Time\":\"2026-09-06T03:02:31.157654-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starmap/internal/filepublish\",\"Test\":\"TestDirectoryNoReplacePreservesSymlinks/target\",\"Elapsed\":0}\n{\"Time\":\"2026-09-06T03:02:31.157715-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/filepublish\",\"Test\":\"TestDirectoryNoReplacePreservesSymlinks\",\"Output\":\"--- PASS: TestDirectoryNoReplacePreservesSymlinks (0.01s)\\n\"}\n{\"Time\":\"2026-09-06T03:02:31.15772-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starmap/internal/filepublish\",\"Test\":\"TestDirectoryNoReplacePreservesSymlinks\",\"Elapsed\":0.01}\n{\"Time\":\"2026-09-06T03:02:31.157723-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starmap/internal/filepublish\",\"Test\":\"TestSyncDirectoryPreservesPublishedBytes\"}\n{\"Time\":\"2026-09-06T03:02:31.157724-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/filepublish\",\"Test\":\"TestSyncDirectoryPreservesPublishedBytes\",\"Output\":\"=== RUN   TestSyncDirectoryPreservesPublishedBytes\\n\"}\n{\"Time\":\"2026-09-06T03:02:31.187347-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/filepublish\",\"Test\":\"TestSyncDirectoryPreservesPublishedBytes\",\"Output\":\"--- PASS: TestSyncDirectoryPreservesPublishedBytes (0.03s)\\n\"}\n{\"Time\":\"2026-09-06T03:02:31.187466-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starmap/internal/filepublish\",\"Test\":\"TestSyncDirectoryPreservesPublishedBytes\",\"Elapsed\":0.03}\n{\"Time\":\"2026-09-06T03:02:31.187479-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starmap/internal/filepublish\",\"Test\":\"TestSyncDirectoryUsesRenamedOpenRoot\"}\n{\"Time\":\"2026-09-06T03:02:31.187484-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/filepublish\",\"Test\":\"TestSyncDirectoryUsesRenamedOpenRoot\",\"Output\":\"=== RUN   TestSyncDirectoryUsesRenamedOpenRoot\\n\"}\n{\"Time\":\"2026-09-06T03:02:31.202996-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/filepublish\",\"Test\":\"TestSyncDirectoryUsesRenamedOpenRoot\",\"Output\":\"--- PASS: TestSyncDirectoryUsesRenamedOpenRoot (0.02s)\\n\"}\n{\"Time\":\"2026-09-06T03:02:31.203013-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starmap/internal/filepublish\",\"Test\":\"TestSyncDirectoryUsesRenamedOpenRoot\",\"Elapsed\":0.02}\n{\"Time\":\"2026-09-06T03:02:31.203018-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starmap/internal/filepublish\",\"Test\":\"TestSyncDirectoryRefusesInvalidRoots\"}\n{\"Time\":\"2026-09-06T03:02:31.20302-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/filepublish\",\"Test\":\"TestSyncDirectoryRefusesInvalidRoots\",\"Output\":\"=== RUN   TestSyncDirectoryRefusesInvalidRoots\\n\"}\n{\"Time\":\"2026-09-06T03:02:31.203868-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/filepublish\",\"Test\":\"TestSyncDirectoryRefusesInvalidRoots\",\"Output\":\"--- PASS: TestSyncDirectoryRefusesInvalidRoots (0.00s)\\n\"}\n{\"Time\":\"2026-09-06T03:02:31.203883-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starmap/internal/filepublish\",\"Test\":\"TestSyncDirectoryRefusesInvalidRoots\",\"Elapsed\":0}\n{\"Time\":\"2026-09-06T03:02:31.203947-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/filepublish\",\"Output\":\"PASS\\n\"}\n{\"Time\":\"2026-09-06T03:02:32.208222-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/filepublish\",\"Output\":\"ok  \\tgithub.com/agentstation/starmap/internal/filepublish\\t1.291s\\n\"}\n{\"Time\":\"2026-09-06T03:02:32.208241-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starmap/internal/filepublish\",\"Elapsed\":1.291}\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "env",
+      "GOOS=windows",
+      "GOARCH=amd64",
+      "CGO_ENABLED=0",
+      "golangci-lint",
+      "run",
+      "./internal/filepublish/...",
+      "./runtime/...",
+      "./pkg/catalogs/storage/..."
+    ],
+    "exit_code": 0,
+    "stdout": "0 issues.\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "go",
+      "tool",
+      "ago",
+      "-stale-ignores",
+      "-format",
+      "json",
+      "./..."
+    ],
+    "exit_code": 0,
+    "stdout": "{\n  \"schemaVersion\": 1,\n  \"version\": \"v0.2.0\",\n  \"rules\": [\n    \"no-dot-import\",\n    \"no-generic-methods\",\n    \"no-goto\",\n    \"no-invalid-ignore\",\n    \"no-naked-return\",\n    \"no-new-expr\",\n    \"no-self-referential-constraints\"\n  ],\n  \"findings\": [],\n  \"staleIgnores\": [],\n  \"errors\": []\n}\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "env",
+      "GOTOOLCHAIN=go1.25.12",
+      "GOOS=windows",
+      "GOARCH=amd64",
+      "CGO_ENABLED=0",
+      "go",
+      "test",
+      "-c",
+      "-o",
+      "/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-sync-final-hoojbt17/internal-filepublish-amd64.exe",
+      "./internal/filepublish"
+    ],
+    "exit_code": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "env",
+      "GOTOOLCHAIN=go1.25.12",
+      "GOOS=windows",
+      "GOARCH=amd64",
+      "CGO_ENABLED=0",
+      "go",
+      "test",
+      "-c",
+      "-o",
+      "/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-sync-final-hoojbt17/pkg-catalogs-storage-amd64.exe",
+      "./pkg/catalogs/storage"
+    ],
+    "exit_code": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "env",
+      "GOTOOLCHAIN=go1.25.12",
+      "GOOS=windows",
+      "GOARCH=amd64",
+      "CGO_ENABLED=0",
+      "go",
+      "test",
+      "-c",
+      "-o",
+      "/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-sync-final-hoojbt17/internal-catalog-workspace-amd64.exe",
+      "./internal/catalog/workspace"
+    ],
+    "exit_code": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "env",
+      "GOTOOLCHAIN=go1.25.12",
+      "GOOS=windows",
+      "GOARCH=arm64",
+      "CGO_ENABLED=0",
+      "go",
+      "test",
+      "-c",
+      "-o",
+      "/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-sync-final-hoojbt17/internal-filepublish-arm64.exe",
+      "./internal/filepublish"
+    ],
+    "exit_code": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "env",
+      "GOTOOLCHAIN=go1.25.12",
+      "GOOS=windows",
+      "GOARCH=arm64",
+      "CGO_ENABLED=0",
+      "go",
+      "test",
+      "-c",
+      "-o",
+      "/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-sync-final-hoojbt17/pkg-catalogs-storage-arm64.exe",
+      "./pkg/catalogs/storage"
+    ],
+    "exit_code": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "env",
+      "GOTOOLCHAIN=go1.25.12",
+      "GOOS=windows",
+      "GOARCH=arm64",
+      "CGO_ENABLED=0",
+      "go",
+      "test",
+      "-c",
+      "-o",
+      "/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-sync-final-hoojbt17/internal-catalog-workspace-arm64.exe",
+      "./internal/catalog/workspace"
+    ],
+    "exit_code": 0,
+    "stdout": "",
+    "stderr": ""
+  }
+]

@@ -1,0 +1,27 @@
+{
+  "checks": [
+    {
+      "command": [
+        "go",
+        "tool",
+        "ago",
+        "-stale-ignores",
+        "-format",
+        "json",
+        "./..."
+      ],
+      "exit_code": 0,
+      "seconds": 2.310486374888569,
+      "output": "{\n  \"schemaVersion\": 1,\n  \"version\": \"v0.2.0\",\n  \"rules\": [\n    \"no-dot-import\",\n    \"no-generic-methods\",\n    \"no-goto\",\n    \"no-invalid-ignore\",\n    \"no-naked-return\",\n    \"no-new-expr\",\n    \"no-self-referential-constraints\"\n  ],\n  \"findings\": [],\n  \"staleIgnores\": [],\n  \"errors\": []\n}\n"
+    },
+    {
+      "command": [
+        "make",
+        "lint"
+      ],
+      "exit_code": 2,
+      "seconds": 42.99726208392531,
+      "output": "\u001b[0;34mRunning linters...\u001b[0m \nInfo: New devbox available: 0.16.0 -> v0.18.0. Please run `devbox version update`.\nInfo: Running script \"which\" on /Users/jack/src/github.com/agentstation/starmap-catalog-requirements\ndevbox run golangci-lint run\nInfo: New devbox available: 0.16.0 -> v0.18.0. Please run `devbox version update`.\nInfo: Running script \"golangci-lint\" on /Users/jack/src/github.com/agentstation/starmap-catalog-requirements\n\ud83d\udce6 Starmap development environment loaded\nTools available: go, gomarkdoc, swag (v2 via flake), golangci-lint\n0 issues.\ndevbox run go tool ago -stale-ignores ./...\nInfo: New devbox available: 0.16.0 -> v0.18.0. Please run `devbox version update`.\nInfo: Running script \"go\" on /Users/jack/src/github.com/agentstation/starmap-catalog-requirements\n\ud83d\udce6 Starmap development environment loaded\nTools available: go, gomarkdoc, swag (v2 via flake), golangci-lint\n/Applications/Xcode.app/Contents/Developer/usr/bin/make technical-writing-check\n/Users/jack/.agents/skills/technical-writing/scripts/technical-writing glossary check\nPASS: /Users/jack/src/github.com/agentstation/starmap-catalog-requirements/GLOSSARY.md (80 term(s), 0 error(s))\n/Users/jack/.agents/skills/technical-writing/scripts/technical-writing glossary update --check\nPASS: no candidate terms are missing from /Users/jack/src/github.com/agentstation/starmap-catalog-requirements/GLOSSARY.md\n/Users/jack/.agents/skills/technical-writing/scripts/technical-writing lint . --mode strict --format text\n/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/docs/plans/proof/starport-production-catalog/storage-revision-2026-09-05/document_structure.txt:1:1: error long_sentence: sentence has 30 words; limit is 25\n/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/docs/plans/proof/starport-production-catalog/storage-revision-2026-09-05/starmap_writing.txt:1:1: error long_sentence: sentence has 38 words; limit is 25\n/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/docs/plans/proof/starport-production-catalog/storage-revision-2026-09-05/starmap_writing.txt:4:26: error ing_main_verb: prefer a simple verb form\nFAIL: 1044 file(s), 3 diagnostic(s)\nmake[1]: *** [technical-writing-check] Error 1\nmake: *** [lint] Error 2\n"
+    }
+  ]
+}

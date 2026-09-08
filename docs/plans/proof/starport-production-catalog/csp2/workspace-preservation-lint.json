@@ -1,0 +1,38 @@
+[
+  {
+    "command": [
+      "go",
+      "tool",
+      "ago",
+      "-stale-ignores",
+      "-format",
+      "json",
+      "./..."
+    ],
+    "exit_code": 0,
+    "stdout": "{\n  \"schemaVersion\": 1,\n  \"version\": \"v0.2.0\",\n  \"rules\": [\n    \"no-dot-import\",\n    \"no-generic-methods\",\n    \"no-goto\",\n    \"no-invalid-ignore\",\n    \"no-naked-return\",\n    \"no-new-expr\",\n    \"no-self-referential-constraints\"\n  ],\n  \"findings\": [],\n  \"staleIgnores\": [],\n  \"errors\": []\n}\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "golangci-lint",
+      "run"
+    ],
+    "exit_code": 1,
+    "stdout": "internal/catalog/workspace/access_copy_darwin.go:39:51: G115: integer overflow conversion int -> uint32 (gosec)\n\tbinary.LittleEndian.PutUint32(buffer[4:8], uint32(len(data)))\n\t                                                 ^\n1 issues:\n* gosec: 1\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "env",
+      "GOOS=windows",
+      "GOARCH=amd64",
+      "CGO_ENABLED=0",
+      "golangci-lint",
+      "run"
+    ],
+    "exit_code": 1,
+    "stdout": "internal/catalog/workspace/access_copy_windows.go:39:122: G115: integer overflow conversion int -> uint32 (gosec)\n\tif err := windows.SetSecurityInfo(windows.Handle(destination.Fd()), windows.SE_FILE_OBJECT, windows.SECURITY_INFORMATION(flags), owner, group, dacl, nil); err != nil {\n\t                                                                                                                        ^\n1 issues:\n* gosec: 1\n",
+    "stderr": ""
+  }
+]

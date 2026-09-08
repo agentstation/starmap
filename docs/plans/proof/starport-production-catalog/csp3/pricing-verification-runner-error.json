@@ -1,0 +1,6 @@
+{
+  "exit_code": 1,
+  "error": "AttributeError: 'str' object has no attribute 'get'",
+  "cause": "The runner parsed non-event JSON without checking its type.",
+  "scope": "No broader check result retained from this attempt. No product verdict inferred."
+}

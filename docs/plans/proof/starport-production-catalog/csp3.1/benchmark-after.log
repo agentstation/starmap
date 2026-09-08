@@ -1,0 +1,24 @@
+goos: darwin
+goarch: arm64
+pkg: github.com/agentstation/starmap/pkg/catalogs
+cpu: Apple M2 Max
+BenchmarkOfferingLookup/models=1/provider-12         	  210279	       552.9 ns/op	    1104 B/op	      11 allocs/op
+BenchmarkOfferingLookup/models=1/provider-12         	  229382	       567.9 ns/op	    1104 B/op	      11 allocs/op
+BenchmarkOfferingLookup/models=1/provider-12         	  211543	       565.2 ns/op	    1104 B/op	      11 allocs/op
+BenchmarkOfferingLookup/models=1/alias-12            	  227005	       549.1 ns/op	    1104 B/op	      11 allocs/op
+BenchmarkOfferingLookup/models=1/alias-12            	  225667	       549.7 ns/op	    1104 B/op	      11 allocs/op
+BenchmarkOfferingLookup/models=1/alias-12            	  209080	       556.9 ns/op	    1104 B/op	      11 allocs/op
+BenchmarkOfferingLookup/models=100/provider-12       	  215394	       588.6 ns/op	    1104 B/op	      11 allocs/op
+BenchmarkOfferingLookup/models=100/provider-12       	  216276	       569.5 ns/op	    1104 B/op	      11 allocs/op
+BenchmarkOfferingLookup/models=100/provider-12       	  214896	       567.4 ns/op	    1104 B/op	      11 allocs/op
+BenchmarkOfferingLookup/models=100/alias-12          	  224023	       565.1 ns/op	    1104 B/op	      11 allocs/op
+BenchmarkOfferingLookup/models=100/alias-12          	  201474	       572.8 ns/op	    1104 B/op	      11 allocs/op
+BenchmarkOfferingLookup/models=100/alias-12          	  209947	       579.0 ns/op	    1104 B/op	      11 allocs/op
+BenchmarkOfferingLookup/models=10000/provider-12     	  193357	       607.8 ns/op	    1104 B/op	      11 allocs/op
+BenchmarkOfferingLookup/models=10000/provider-12     	  203533	       593.3 ns/op	    1104 B/op	      11 allocs/op
+BenchmarkOfferingLookup/models=10000/provider-12     	  196275	       648.4 ns/op	    1104 B/op	      11 allocs/op
+BenchmarkOfferingLookup/models=10000/alias-12        	  201627	       603.0 ns/op	    1104 B/op	      11 allocs/op
+BenchmarkOfferingLookup/models=10000/alias-12        	  199076	       601.7 ns/op	    1104 B/op	      11 allocs/op
+BenchmarkOfferingLookup/models=10000/alias-12        	  204577	       610.4 ns/op	    1104 B/op	      11 allocs/op
+PASS
+ok  	github.com/agentstation/starmap/pkg/catalogs	2.605s

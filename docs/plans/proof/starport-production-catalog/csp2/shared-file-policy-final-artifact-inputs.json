@@ -1,0 +1,8 @@
+{
+  ".github/workflows/pr.yaml": "460c9e426c238cf48d59b408e5ac914aa5cb735e830d28a62d81d15a8179352e",
+  "runtime/directory_test.go": "c1bfbcbdb2f76cf2e0a9d7b343027cc699a46f5e23292e37b01e5bf861336c23",
+  "pkg/productpaths/policy/access.go": "5ebe922f2c15309bf8081ca0a42f6836dac83f402fa1ad1eb041dbfb9c1e6c61",
+  "pkg/productpaths/policy/posix.go": "3cfb5cf9b8932a3ad5293b5f5dd4c1beb69f339d1193789f6edc446d0d24639e",
+  "pkg/productpaths/policy/access_test.go": "e7ece37708bdba2089505cf4e2954087305d03095b28cef8b5c18dcf2dd5c2e5",
+  "internal/cli/app/file_policy_runtime_posix_test.go": "35568987c4134cc9dd50854efa89a0a69e985405ac54e63c74ed784515502efe"
+}

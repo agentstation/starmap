@@ -1,0 +1,35 @@
+[
+  {
+    "command": [
+      "git",
+      "rev-parse",
+      "v0.16.5"
+    ],
+    "exit_code": 0,
+    "stdout": "9cfb5dcd063198116731f11daa34e0994b80febd\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "git",
+      "ls-tree",
+      "-r",
+      "--name-only",
+      "v0.16.5",
+      "internal/catalog/workspace"
+    ],
+    "exit_code": 0,
+    "stdout": "internal/catalog/workspace/endpoint_projection.go\ninternal/catalog/workspace/endpoint_projection_test.go\ninternal/catalog/workspace/layout.go\ninternal/catalog/workspace/layout_test.go\ninternal/catalog/workspace/migration.go\ninternal/catalog/workspace/migration_test.go\ninternal/catalog/workspace/multiprocess_test.go\ninternal/catalog/workspace/projector.go\ninternal/catalog/workspace/projector_test.go\ninternal/catalog/workspace/resource_policy.go\ninternal/catalog/workspace/swap_darwin.go\ninternal/catalog/workspace/swap_linux.go\ninternal/catalog/workspace/swap_other.go\ninternal/catalog/workspace/writer_lock.go\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "git",
+      "show",
+      "v0.16.5:internal/catalog/workspace/swap_other.go"
+    ],
+    "exit_code": 0,
+    "stdout": "//go:build !darwin && !linux\n\npackage workspace\n\nimport stderrors \"errors\"\n\nfunc swapDirectories(_, _ string) error {\n\treturn stderrors.New(\"atomic directory exchange is unsupported on this platform\")\n}\n",
+    "stderr": ""
+  }
+]

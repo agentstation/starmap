@@ -1,0 +1,5 @@
+--- FAIL: TestSourceRetentionRejectsCancellationAfterRead (9.35s)
+    close_cancellation_test.go:79: canceled source read changed durable or active catalog state
+FAIL
+FAIL	github.com/agentstation/starmap/runtime	9.827s
+FAIL

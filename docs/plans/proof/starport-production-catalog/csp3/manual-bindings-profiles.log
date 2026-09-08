@@ -1,0 +1,27 @@
+{"level":"info","source":"providers","time":"2026-09-07T02:59:59-05:00","message":"Observing"}
+{"level":"info","source":"providers","time":"2026-09-07T02:59:59-05:00","message":"Observing"}
+{"level":"info","source":"providers","provider_count":1,"max_concurrency":1,"time":"2026-09-07T02:59:59-05:00","message":"Syncing providers concurrently"}
+{"level":"info","source":"embedded_catalog","time":"2026-09-07T02:59:59-05:00","message":"Observing"}
+{"level":"info","source":"providers","provider_count":1,"max_concurrency":1,"time":"2026-09-07T02:59:59-05:00","message":"Syncing providers concurrently"}
+{"level":"info","source":"providers","provider_id":"provider","provider_id":"provider","model_count":1,"time":"2026-09-07T02:59:59-05:00","message":"Fetched models"}
+{"level":"info","source":"providers","provider_id":"provider","provider_id":"provider","model_count":1,"time":"2026-09-07T02:59:59-05:00","message":"Fetched models"}
+--- FAIL: TestManualBindingsPreserveReceiptsHealthAndPreview (0.00s)
+    provider_bindings_test.go:92: sync error for provider providers: validation failed for field required_source.catalog.models: required source returned no models without a degradation issue
+{"level":"info","source":"embedded_catalog","time":"2026-09-07T02:59:59-05:00","message":"Observing"}
+{"level":"info","provider_count":1,"time":"2026-09-07T02:59:59-05:00","message":"Filtered providers by primary source"}
+{"level":"info","time":"2026-09-07T02:59:59-05:00","message":"No changes detected"}
+{"level":"info","dry_run":true,"time":"2026-09-07T02:59:59-05:00","message":"Dry run completed - no changes applied"}
+{"level":"info","source":"embedded_catalog","time":"2026-09-07T02:59:59-05:00","message":"Observing"}
+{"level":"info","provider_count":1,"time":"2026-09-07T02:59:59-05:00","message":"Filtered providers by primary source"}
+{"level":"info","time":"2026-09-07T02:59:59-05:00","message":"No changes detected"}
+{"level":"info","dry_run":true,"time":"2026-09-07T02:59:59-05:00","message":"Dry run completed - no changes applied"}
+{"level":"info","source":"providers","time":"2026-09-07T02:59:59-05:00","message":"Observing"}
+{"level":"info","source":"embedded_catalog","time":"2026-09-07T02:59:59-05:00","message":"Observing"}
+{"level":"info","source":"providers","provider_count":1,"max_concurrency":1,"time":"2026-09-07T02:59:59-05:00","message":"Syncing providers concurrently"}
+{"level":"info","source":"providers","provider_id":"provider","provider_id":"provider","model_count":1,"time":"2026-09-07T02:59:59-05:00","message":"Fetched models"}
+{"level":"info","provider_count":1,"time":"2026-09-07T02:59:59-05:00","message":"Filtered providers by primary source"}
+{"level":"info","added":0,"updated":1,"removed":0,"time":"2026-09-07T02:59:59-05:00","message":"Changes detected"}
+{"level":"info","dry_run":true,"time":"2026-09-07T02:59:59-05:00","message":"Dry run completed - no changes applied"}
+FAIL
+FAIL	github.com/agentstation/starmap/internal/catalog/pipeline	0.422s
+FAIL

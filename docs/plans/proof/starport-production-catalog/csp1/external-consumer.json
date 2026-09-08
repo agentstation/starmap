@@ -1,0 +1,15 @@
+{
+  "command": [
+    "go",
+    "test",
+    "-mod=mod",
+    "-count=1",
+    "-timeout",
+    "90s",
+    "./..."
+  ],
+  "scope": "Separate temporary module imports only the public catalog configuration package. Local replace exists only in that temporary module.",
+  "exit_code": 0,
+  "stdout": "ok  \texample.com/catalog-consumer\t0.284s\n",
+  "stderr": ""
+}

@@ -1,0 +1,162 @@
+{
+  "date_utc": "2026-09-05T17:46:33.843859+00:00",
+  "verdict": "PASS",
+  "scope": "Documentation and plan revision only. Product acceptance remains UNVERIFIED.",
+  "checks": [
+    {
+      "name": "starmap_writing",
+      "command": [
+        "make",
+        "technical-writing-check"
+      ],
+      "cwd": "/Users/jack/src/github.com/agentstation/starmap-catalog-requirements",
+      "exit_code": 0,
+      "output": "starmap_writing.txt"
+    },
+    {
+      "name": "starport_writing",
+      "command": [
+        "/Users/jack/.agents/skills/technical-writing/scripts/technical-writing",
+        "lint",
+        "docs/TASKS.md",
+        "--format",
+        "text"
+      ],
+      "cwd": "/Users/jack/src/github.com/agentstation/starport-catalog-lifecycle",
+      "exit_code": 0,
+      "output": "starport_writing.txt"
+    },
+    {
+      "name": "document_structure",
+      "command": [
+        "python3",
+        "docs/plans/proof/starport-production-catalog/storage-revision-2026-09-05/verify_documents.py",
+        "--starport-root",
+        "/Users/jack/src/github.com/agentstation/starport-catalog-lifecycle"
+      ],
+      "cwd": "/Users/jack/src/github.com/agentstation/starmap-catalog-requirements",
+      "exit_code": 0,
+      "output": "document_structure.txt"
+    }
+  ],
+  "structure": {
+    "verdict": "PASS",
+    "scope": "Document structure and evidence validation. No product acceptance credit.",
+    "task_count": 31,
+    "todo_count": 31,
+    "plan_lines": 521,
+    "ledger_line": 49,
+    "prd_count": 33,
+    "acceptance_count": 43,
+    "required_subcase_count": 241,
+    "new_subcase_count": 47,
+    "storage_findings_mapped": 14,
+    "candidate_primary_cases": 36,
+    "publication_dependent_cases": 7,
+    "phase_primary_counts": {
+      "CSP7": 5,
+      "CSP10": 21,
+      "CSP15": 29,
+      "CSP17": 33,
+      "CSP21": 35,
+      "CSP22": 36,
+      "CSP23": 38,
+      "CSP24": 43
+    },
+    "task_checklists": 29,
+    "html_local_links_checked": 45,
+    "markdown_local_links_checked": 93,
+    "pinned_source_references_checked": 109,
+    "historical_files_unchanged": 72,
+    "preexisting_missing_links": [],
+    "json_files_parsed": 19,
+    "original_tasks_preserved": true,
+    "execution_log_preserved": true,
+    "old_subcases_preserved": true,
+    "no_product_source_changes": true,
+    "implementation_cases_run": 0,
+    "plan_status": "proposed"
+  },
+  "updated_artifacts": [
+    {
+      "repository": "starmap",
+      "path": "docs/design/catalog-lifecycle/PRD.md",
+      "sha256": "1882fb181c6023dbe54c97866048cfcaf28e6fd7e18caa78242f7aa386037c65"
+    },
+    {
+      "repository": "starmap",
+      "path": "docs/design/catalog-lifecycle/ENGINEERING_SPEC.md",
+      "sha256": "30684534549d5224e1bcd2cc82334871850731780536ad787cea538286b02f82"
+    },
+    {
+      "repository": "starmap",
+      "path": "docs/design/catalog-lifecycle/REPOSITORY_FINDINGS.md",
+      "sha256": "acdb9f67b452af45eecd726c96a00af5e858f265bbd94738b87116306519aa0d"
+    },
+    {
+      "repository": "starmap",
+      "path": "docs/plans/starport-production-catalog-plan.html",
+      "sha256": "82b04d18eaf801b314234cafada75c082c9ac1d633b264f109e6dd5018966893"
+    },
+    {
+      "repository": "starmap",
+      "path": "docs/plans/proof/starport-production-catalog/acceptance-map.json",
+      "sha256": "a1b61d641a35badcb8786deb5b956d1991ace5c06630288612f86c88e5ce7c52"
+    },
+    {
+      "repository": "starmap",
+      "path": "docs/plans/proof/starport-production-catalog/readme-demo-brief.md",
+      "sha256": "0761b878d1afa9e1e539484c8bb9c67cc396f839d1901111f3b1a51a4b43e7be"
+    },
+    {
+      "repository": "starmap",
+      "path": "docs/plans/proof/starport-production-catalog/plan-validation.json",
+      "sha256": "3903d2b40507853997d3ae6933f3dd168661f0d8ff73364919f3061e080f776f"
+    },
+    {
+      "repository": "starmap",
+      "path": "docs/plans/README.md",
+      "sha256": "34cec2e197a8ad514512180cea783527477b15fcce708a296d7024a1b86efe49"
+    },
+    {
+      "repository": "starmap",
+      "path": "docs/README.md",
+      "sha256": "78383c9ce9c35e11418ded4eaf0e9f9b2e777db1e0ccc1db0b689a97c368a7bd"
+    },
+    {
+      "repository": "starport",
+      "path": "docs/TASKS.md",
+      "sha256": "423f4ff8b8870a8aadbe3204671dc0c43b1daab707019829a2ca87243f771f8b"
+    },
+    {
+      "repository": "starmap",
+      "path": "docs/plans/proof/starport-production-catalog/storage-revision-2026-09-05/REVIEW_RESOLUTION.md",
+      "sha256": "c05b59aab2dbf9745e2d86645744acf7fe80f9d8b9d503be7b42971f7eb02c71"
+    },
+    {
+      "repository": "starmap",
+      "path": "docs/plans/proof/starport-production-catalog/storage-revision-2026-09-05/verify_documents.py",
+      "sha256": "ab07a0fee86d1b0e838dfebf67bfb132b201ae50159dfe8ad891cb2bf5689ab6"
+    }
+  ],
+  "plan_status": "proposed",
+  "implementation_tasks_started": 0,
+  "product_tests_rerun": false,
+  "provider_calls": 0,
+  "commits_created": 0,
+  "external_writes": 0,
+  "historical_evidence_preserved": true,
+  "browser_review": {
+    "status": "UNVERIFIED",
+    "reason": "Browser Use URL policy blocked navigation to the local file URL. No alternate browser path was attempted."
+  },
+  "human_review": [
+    "Current observations remain distinct from proposed contracts.",
+    "Existing user decisions and proposed details retain their status.",
+    "All storage findings have requirements, owners, and behavioral criteria.",
+    "Configuration authority cannot switch on a storage outage.",
+    "Cache and storage ownership agree across the specification and plan.",
+    "Early and final README evidence keep separate persistence contracts.",
+    "Product files and historical evidence remain unchanged."
+  ]
+}

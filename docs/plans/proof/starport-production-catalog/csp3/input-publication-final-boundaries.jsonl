@@ -1,0 +1,6 @@
+{"ImportPath":"github.com/agentstation/starmap/runtime [github.com/agentstation/starmap/runtime.test]","Action":"build-output","Output":"# github.com/agentstation/starmap/runtime [github.com/agentstation/starmap/runtime.test]\n"}
+{"ImportPath":"github.com/agentstation/starmap/runtime [github.com/agentstation/starmap/runtime.test]","Action":"build-output","Output":"runtime/publication_cancellation_test.go:48:16: undefined: errors.Is\n"}
+{"ImportPath":"github.com/agentstation/starmap/runtime [github.com/agentstation/starmap/runtime.test]","Action":"build-fail"}
+{"Time":"2026-09-07T05:14:04.027647-05:00","Action":"start","Package":"github.com/agentstation/starmap/runtime"}
+{"Time":"2026-09-07T05:14:04.027707-05:00","Action":"output","Package":"github.com/agentstation/starmap/runtime","Output":"FAIL\tgithub.com/agentstation/starmap/runtime [build failed]\n"}
+{"Time":"2026-09-07T05:14:04.027719-05:00","Action":"fail","Package":"github.com/agentstation/starmap/runtime","Elapsed":0,"FailedBuild":"github.com/agentstation/starmap/runtime [github.com/agentstation/starmap/runtime.test]"}

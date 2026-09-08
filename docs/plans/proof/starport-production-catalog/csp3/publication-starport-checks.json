@@ -1,0 +1,31 @@
+[
+  {
+    "name": "contracts",
+    "command": [
+      "make",
+      "verify"
+    ],
+    "exit_code": 0,
+    "seconds": 204.105
+  },
+  {
+    "name": "lint",
+    "command": [
+      "make",
+      "lint"
+    ],
+    "exit_code": 0,
+    "seconds": 16.678
+  },
+  {
+    "name": "build",
+    "command": [
+      "pnpm",
+      "-C",
+      "console",
+      "build"
+    ],
+    "exit_code": 0,
+    "seconds": 2.784
+  }
+]

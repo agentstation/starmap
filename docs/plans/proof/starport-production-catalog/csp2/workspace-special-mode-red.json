@@ -1,0 +1,19 @@
+{
+  "command": [
+    "env",
+    "GOTOOLCHAIN=go1.25.12",
+    "go",
+    "test",
+    "-race",
+    "-count=1",
+    "-timeout",
+    "3m",
+    "-json",
+    "./internal/catalog/workspace",
+    "-run",
+    "^TestTreeSnapshotDetectsSpecialModeChange$"
+  ],
+  "exit_code": 1,
+  "stdout": "{\"Time\":\"2026-09-06T16:20:40.777688-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starmap/internal/catalog/workspace\"}\n{\"Time\":\"2026-09-06T16:20:40.989664-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starmap/internal/catalog/workspace\",\"Test\":\"TestTreeSnapshotDetectsSpecialModeChange\"}\n{\"Time\":\"2026-09-06T16:20:40.989714-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/catalog/workspace\",\"Test\":\"TestTreeSnapshotDetectsSpecialModeChange\",\"Output\":\"=== RUN   TestTreeSnapshotDetectsSpecialModeChange\\n\"}\n{\"Time\":\"2026-09-06T16:20:40.990464-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/catalog/workspace\",\"Test\":\"TestTreeSnapshotDetectsSpecialModeChange\",\"Output\":\"    access_snapshot_posix_test.go:51: snapshot omitted the sticky bit change\\n\"}\n{\"Time\":\"2026-09-06T16:20:40.990686-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/catalog/workspace\",\"Test\":\"TestTreeSnapshotDetectsSpecialModeChange\",\"Output\":\"--- FAIL: TestTreeSnapshotDetectsSpecialModeChange (0.00s)\\n\"}\n{\"Time\":\"2026-09-06T16:20:40.990698-05:00\",\"Action\":\"fail\",\"Package\":\"github.com/agentstation/starmap/internal/catalog/workspace\",\"Test\":\"TestTreeSnapshotDetectsSpecialModeChange\",\"Elapsed\":0}\n{\"Time\":\"2026-09-06T16:20:40.990814-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/catalog/workspace\",\"Output\":\"FAIL\\n\"}\n{\"Time\":\"2026-09-06T16:20:40.991363-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/catalog/workspace\",\"Output\":\"FAIL\\tgithub.com/agentstation/starmap/internal/catalog/workspace\\t0.213s\\n\"}\n{\"Time\":\"2026-09-06T16:20:40.991375-05:00\",\"Action\":\"fail\",\"Package\":\"github.com/agentstation/starmap/internal/catalog/workspace\",\"Elapsed\":0.214}\n",
+  "stderr": ""
+}

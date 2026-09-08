@@ -1,0 +1,415 @@
+{
+  "command": [
+    "bash",
+    "scripts/verify-catalog-product.sh",
+    "--starport-root",
+    "/Users/jack/src/github.com/agentstation/starport-catalog-lifecycle",
+    "--case",
+    "A47",
+    "--json"
+  ],
+  "exit_code": 1,
+  "report": {
+    "cases": [
+      {
+        "id": "A01",
+        "condition": "CSP-V01",
+        "status": "UNVERIFIED",
+        "required_subcases": 5
+      },
+      {
+        "id": "A02",
+        "condition": "CSP-V02",
+        "status": "UNVERIFIED",
+        "required_subcases": 3
+      },
+      {
+        "id": "A03",
+        "condition": "CSP-V03",
+        "status": "UNVERIFIED",
+        "required_subcases": 16
+      },
+      {
+        "id": "A04",
+        "condition": "CSP-V04",
+        "status": "UNVERIFIED",
+        "required_subcases": 9
+      },
+      {
+        "id": "A05",
+        "condition": "CSP-V05",
+        "status": "UNVERIFIED",
+        "required_subcases": 6
+      },
+      {
+        "id": "A06",
+        "condition": "CSP-V06",
+        "status": "UNVERIFIED",
+        "required_subcases": 4
+      },
+      {
+        "id": "A07",
+        "condition": "CSP-V07",
+        "status": "UNVERIFIED",
+        "required_subcases": 4
+      },
+      {
+        "id": "A08",
+        "condition": "CSP-V08",
+        "status": "UNVERIFIED",
+        "required_subcases": 5
+      },
+      {
+        "id": "A09",
+        "condition": "CSP-V09",
+        "status": "UNVERIFIED",
+        "required_subcases": 4
+      },
+      {
+        "id": "A10",
+        "condition": "CSP-V10",
+        "status": "UNVERIFIED",
+        "required_subcases": 4
+      },
+      {
+        "id": "A11",
+        "condition": "CSP-V11",
+        "status": "UNVERIFIED",
+        "required_subcases": 7
+      },
+      {
+        "id": "A12",
+        "condition": "CSP-V12",
+        "status": "UNVERIFIED",
+        "required_subcases": 5
+      },
+      {
+        "id": "A13",
+        "condition": "CSP-V13",
+        "status": "UNVERIFIED",
+        "required_subcases": 3
+      },
+      {
+        "id": "A14",
+        "condition": "CSP-V14",
+        "status": "UNVERIFIED",
+        "required_subcases": 4
+      },
+      {
+        "id": "A15",
+        "condition": "CSP-V15",
+        "status": "UNVERIFIED",
+        "required_subcases": 8
+      },
+      {
+        "id": "A16",
+        "condition": "CSP-V16",
+        "status": "UNVERIFIED",
+        "required_subcases": 5
+      },
+      {
+        "id": "A17",
+        "condition": "CSP-V17",
+        "status": "UNVERIFIED",
+        "required_subcases": 5
+      },
+      {
+        "id": "A18",
+        "condition": "CSP-V18",
+        "status": "UNVERIFIED",
+        "required_subcases": 5
+      },
+      {
+        "id": "A19",
+        "condition": "CSP-V19",
+        "status": "UNVERIFIED",
+        "required_subcases": 4
+      },
+      {
+        "id": "A20",
+        "condition": "CSP-V20",
+        "status": "UNVERIFIED",
+        "required_subcases": 6
+      },
+      {
+        "id": "A21",
+        "condition": "CSP-V21",
+        "status": "UNVERIFIED",
+        "required_subcases": 5
+      },
+      {
+        "id": "A22",
+        "condition": "CSP-V22",
+        "status": "UNVERIFIED",
+        "required_subcases": 4
+      },
+      {
+        "id": "A23",
+        "condition": "CSP-V23",
+        "status": "UNVERIFIED",
+        "required_subcases": 4
+      },
+      {
+        "id": "A24",
+        "condition": "CSP-V24",
+        "status": "UNVERIFIED",
+        "required_subcases": 10
+      },
+      {
+        "id": "A25",
+        "condition": "CSP-V25",
+        "status": "UNVERIFIED",
+        "required_subcases": 6
+      },
+      {
+        "id": "A26",
+        "condition": "CSP-V26",
+        "status": "UNVERIFIED",
+        "required_subcases": 4
+      },
+      {
+        "id": "A27",
+        "condition": "CSP-V27",
+        "status": "UNVERIFIED",
+        "required_subcases": 6
+      },
+      {
+        "id": "A28",
+        "condition": "CSP-V28",
+        "status": "UNVERIFIED",
+        "required_subcases": 4
+      },
+      {
+        "id": "A29",
+        "condition": "CSP-V29",
+        "status": "UNVERIFIED",
+        "required_subcases": 5
+      },
+      {
+        "id": "A30",
+        "condition": "CSP-V30",
+        "status": "UNVERIFIED",
+        "required_subcases": 6
+      },
+      {
+        "id": "A31",
+        "condition": "CSP-V31",
+        "status": "UNVERIFIED",
+        "required_subcases": 9
+      },
+      {
+        "id": "A32",
+        "condition": "CSP-V32",
+        "status": "UNVERIFIED",
+        "required_subcases": 8
+      },
+      {
+        "id": "A33",
+        "condition": "CSP-V33",
+        "status": "UNVERIFIED",
+        "required_subcases": 9
+      },
+      {
+        "id": "A34",
+        "condition": "CSP-V34",
+        "status": "UNVERIFIED",
+        "required_subcases": 6
+      },
+      {
+        "id": "A35",
+        "condition": "CSP-V35",
+        "status": "UNVERIFIED",
+        "required_subcases": 4
+      },
+      {
+        "id": "A36",
+        "condition": "CSP-V36",
+        "status": "UNVERIFIED",
+        "required_subcases": 2
+      },
+      {
+        "id": "A37",
+        "condition": "CSP-V37",
+        "status": "UNVERIFIED",
+        "required_subcases": 5
+      },
+      {
+        "id": "A38",
+        "condition": "CSP-V38",
+        "status": "UNVERIFIED",
+        "required_subcases": 4
+      },
+      {
+        "id": "A39",
+        "condition": "CSP-V39",
+        "status": "UNVERIFIED",
+        "required_subcases": 3
+      },
+      {
+        "id": "A40",
+        "condition": "CSP-V40",
+        "status": "UNVERIFIED",
+        "required_subcases": 8
+      },
+      {
+        "id": "A41",
+        "condition": "CSP-V41",
+        "status": "UNVERIFIED",
+        "required_subcases": 10
+      },
+      {
+        "id": "A42",
+        "condition": "CSP-V42",
+        "status": "UNVERIFIED",
+        "required_subcases": 9
+      },
+      {
+        "id": "A43",
+        "condition": "CSP-V43",
+        "status": "UNVERIFIED",
+        "required_subcases": 7
+      },
+      {
+        "id": "A44",
+        "condition": "CSP-V44",
+        "status": "UNVERIFIED",
+        "required_subcases": 8
+      },
+      {
+        "id": "A45",
+        "condition": "CSP-V45",
+        "status": "UNVERIFIED",
+        "required_subcases": 9
+      },
+      {
+        "id": "A46",
+        "condition": "CSP-V46",
+        "status": "UNVERIFIED",
+        "required_subcases": 10
+      },
+      {
+        "id": "A47",
+        "condition": "CSP-V47",
+        "status": "UNVERIFIED",
+        "required_subcases": 22
+      },
+      {
+        "id": "A48",
+        "condition": "CSP-V48",
+        "status": "UNVERIFIED",
+        "required_subcases": 8
+      },
+      {
+        "id": "A49",
+        "condition": "CSP-V49",
+        "status": "UNVERIFIED",
+        "required_subcases": 7
+      },
+      {
+        "id": "A50",
+        "condition": "CSP-V50",
+        "status": "UNVERIFIED",
+        "required_subcases": 10
+      }
+    ],
+    "subcases": {
+      "A47.analytics_drop_independence": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A47.atomic_hierarchical_reservation": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A47.backend_operation_evidence": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A47.bounded_cost_and_tokens": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A47.chargeable_operation_matrix": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A47.clock_and_window_authority": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A47.confirmed_absent_fast_path": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A47.crash_failover_recovery": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A47.idempotent_attempt_identity": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A47.late_usage_pinned_valuation": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A47.media_async_reconciliation": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A47.policy_edit_preserves_spend": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A47.quota_lease_support_boundary": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A47.recognition_then_cancel": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A47.reconciliation_retention": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A47.rerank_billing_units": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A47.retry_fallback_charges": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A47.semantic_embedding_cache_hit": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A47.stream_cancel_uncertainty": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A47.unknown_cost_refusal": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A47.usage_reconcile_once": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A47.utc_window_boundaries": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      }
+    },
+    "selected_subcases": 22,
+    "summary": "Summary: 0 passed, 50 failed",
+    "unverified_cases": 50,
+    "gate_status": "FAIL",
+    "qualification": "component checks only",
+    "roster_sha256": "4969fde780aafd6224d3186359062273ba51cff67a50ab35bf0d34b1efb263bd",
+    "registry_sha256": "c4b886c58d91e1ab060ba800f940e6fffd1bc2257b474bdb2a81fbf02dcf3761",
+    "backend_scope": "primary"
+  },
+  "stderr": ""
+}

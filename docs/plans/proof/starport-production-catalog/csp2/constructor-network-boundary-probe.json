@@ -1,0 +1,15 @@
+{
+  "command": [
+    "env",
+    "GOTOOLCHAIN=go1.25.12",
+    "go",
+    "run",
+    "/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/csp2-constructor-network-aodcd01r/main.go"
+  ],
+  "exit_code": 0,
+  "source": "package main\nimport (\n \"context\"\n \"encoding/json\"\n \"fmt\"\n \"net/http\"\n \"net/http/httptest\"\n \"os\"\n \"sync/atomic\"\n \"time\"\n starmap \"github.com/agentstation/starmap\"\n \"github.com/agentstation/starmap/pkg/catalogs/storage\"\n s3store \"github.com/agentstation/starmap/pkg/catalogs/storage/s3\"\n \"github.com/aws/aws-sdk-go-v2/aws\"\n awss3 \"github.com/aws/aws-sdk-go-v2/service/s3\"\n)\nfunc main() {\n var requests atomic.Int64\n server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {\n  requests.Add(1)\n  w.Header().Set(\"Content-Type\", \"application/xml\")\n  w.WriteHeader(http.StatusNotFound)\n  fmt.Fprint(w, \"<Error><Code>NoSuchKey</Code></Error>\")\n }))\n defer server.Close()\n backend, err := s3store.New(awss3.New(awss3.Options{\n  Region: \"us-east-1\", BaseEndpoint: aws.String(server.URL), UsePathStyle: true,\n  Credentials: aws.AnonymousCredentials{}, RetryMaxAttempts: 1,\n }), s3store.Config{Bucket: \"local-probe\"})\n if err != nil { panic(err) }\n store, err := storage.NewObject(backend, \"catalog\")\n if err != nil { panic(err) }\n ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)\n defer cancel()\n client, err := starmap.NewContext(ctx, starmap.WithCatalogStore(store))\n result := map[string]any{\"network_requests\": requests.Load(), \"constructor_error\": \"\", \"catalog_available\": client != nil && client.Catalog() != nil}\n if err != nil { result[\"constructor_error\"] = err.Error() }\n json.NewEncoder(os.Stdout).Encode(result)\n if requests.Load() == 0 || err != nil { os.Exit(1) }\n}\n",
+  "source_sha256": "658e9a940b431e8029fa403e3942833fd0e1d2c5b5e0d667848bed6ce8bf8f8d",
+  "stdout": "{\"catalog_available\":true,\"constructor_error\":\"\",\"network_requests\":1}\n",
+  "stderr": "",
+  "scope": "Real AWS S3 adapter, anonymous credentials, local loopback HTTP only. Exit zero confirms the network-silence contradiction, not acceptance."
+}

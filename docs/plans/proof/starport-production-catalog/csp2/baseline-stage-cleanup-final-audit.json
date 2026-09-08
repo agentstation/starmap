@@ -1,0 +1,24 @@
+{
+  "recorded_at": "2026-09-06T18:16:44.003048+00:00",
+  "verdict": "PASS",
+  "scope": "Raw final test recount and source/evidence preservation. No native Windows or primary acceptance credit.",
+  "test_counts": {
+    "pass": 269,
+    "fail": 0,
+    "skip": 0
+  },
+  "package_pass_results": {
+    "github.com/agentstation/starmap/internal/bootstrap": 66,
+    "github.com/agentstation/starmap/internal/cli/app": 179,
+    "github.com/agentstation/starmap/internal/filepublish": 24
+  },
+  "previous_manifest_files_unchanged": 15,
+  "files": {
+    "docs/plans/starport-production-catalog-plan.html": "45301eec4e02158454e1b9837f0c0c072acadc1ab56ae5842f1e883e9ee86d53",
+    "docs/design/catalog-lifecycle/ENGINEERING_SPEC.md": "42285afd6970eb0159b254eac3fd4b909a04f4449210e0f226210def8637aecd",
+    "docs/design/catalog-lifecycle/REPOSITORY_FINDINGS.md": "d5925152399e1ec5369d02103cbcda74549e38f9fbda80a89dba2bbdfa4f84cc",
+    "docs/plans/proof/starport-production-catalog/csp2.md": "04b7634df896ed9a26840b6683069457c794ab4999092d0d0e24971a2f41c2bd",
+    "docs/plans/proof/starport-production-catalog/csp2/baseline-stage-cleanup-final-checks.json": "8324610df1451642644e32a64d8502a332a06e210217ad069b65032778c8174e",
+    "docs/plans/proof/starport-production-catalog/csp2/baseline-stage-cleanup-source-manifest.json": "73ea3bdc08b33121b99c8ca9456a043d12345124c03ac1a2d5c763e8b90ef0fa"
+  }
+}

@@ -1,0 +1,944 @@
+{
+  "config_sources": [
+    "/Users/jack/.config/agentstation/technical-writing.toml",
+    "/Users/jack/src/github.com/agentstation/starport-catalog-lifecycle/.agents/technical-writing.toml"
+  ],
+  "documents": [
+    {
+      "diagnostics": [],
+      "passed": true,
+      "path": "/Users/jack/src/github.com/agentstation/starport-catalog-lifecycle/README.md",
+      "words": 1764
+    },
+    {
+      "diagnostics": [
+        {
+          "column": 1,
+          "excerpt": "Reference points: Linear (surfaces, elevation, motion), Vercel Geist (color",
+          "line": 13,
+          "message": "sentence has 28 words; limit is 25",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-lifecycle/DESIGN.md",
+          "rule": "long_sentence",
+          "severity": "error"
+        },
+        {
+          "column": 1,
+          "excerpt": "2. **Mono is the voice of data.** Every machine value \u2014 model ID, key, price,",
+          "line": 40,
+          "message": "sentence has 24 words; limit is 20",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-lifecycle/DESIGN.md",
+          "rule": "long_sentence",
+          "severity": "error"
+        },
+        {
+          "column": 55,
+          "excerpt": "2. **Mono is the voice of data.** Every machine value \u2014 model ID, key, price,",
+          "line": 40,
+          "message": "replace the em dash with explicit structure",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-lifecycle/DESIGN.md",
+          "rule": "em_dash",
+          "severity": "error"
+        },
+        {
+          "column": 41,
+          "excerpt": "token count, latency, timestamp, URL \u2014 renders in mono, tabular, and",
+          "line": 41,
+          "message": "replace the em dash with explicit structure",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-lifecycle/DESIGN.md",
+          "rule": "em_dash",
+          "severity": "error"
+        },
+        {
+          "column": 17,
+          "excerpt": "raised, hover; border 1\u20133; text 1\u20134). Themes swap values; components never",
+          "line": 47,
+          "message": "replace the semicolon with a period",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-lifecycle/DESIGN.md",
+          "rule": "semicolon",
+          "severity": "error"
+        },
+        {
+          "column": 29,
+          "excerpt": "raised, hover; border 1\u20133; text 1\u20134). Themes swap values; components never",
+          "line": 47,
+          "message": "replace the semicolon with a period",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-lifecycle/DESIGN.md",
+          "rule": "semicolon",
+          "severity": "error"
+        },
+        {
+          "column": 60,
+          "excerpt": "raised, hover; border 1\u20133; text 1\u20134). Themes swap values; components never",
+          "line": 47,
+          "message": "replace the semicolon with a period",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-lifecycle/DESIGN.md",
+          "rule": "semicolon",
+          "severity": "error"
+        },
+        {
+          "column": 24,
+          "excerpt": "5. **Weight 600 ceiling; tracking only at 20px and above.**",
+          "line": 49,
+          "message": "replace the semicolon with a period",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-lifecycle/DESIGN.md",
+          "rule": "semicolon",
+          "severity": "error"
+        },
+        {
+          "column": 8,
+          "excerpt": "Tokens are defined in OKLCH (perceptually uniform; light theme derives",
+          "line": 57,
+          "message": "use active voice when the actor is known",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-lifecycle/DESIGN.md",
+          "rule": "passive_voice",
+          "severity": "error"
+        },
+        {
+          "column": 50,
+          "excerpt": "Tokens are defined in OKLCH (perceptually uniform; light theme derives",
+          "line": 57,
+          "message": "replace the semicolon with a period",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-lifecycle/DESIGN.md",
+          "rule": "semicolon",
+          "severity": "error"
+        },
+        {
+          "column": 19,
+          "excerpt": "design-first theme; both themes ship together and both must pass review.",
+          "line": 59,
+          "message": "replace the semicolon with a period",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-lifecycle/DESIGN.md",
+          "rule": "semicolon",
+          "severity": "error"
+        },
+        {
+          "column": 14,
+          "excerpt": "### Neutrals \u2014 dark",
+          "line": 61,
+          "message": "replace the em dash with explicit structure",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-lifecycle/DESIGN.md",
+          "rule": "em_dash",
+          "severity": "error"
+        },
+        {
+          "column": 14,
+          "excerpt": "### Neutrals \u2014 light",
+          "line": 77,
+          "message": "replace the em dash with explicit structure",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-lifecycle/DESIGN.md",
+          "rule": "em_dash",
+          "severity": "error"
+        },
+        {
+          "column": 12,
+          "excerpt": "### Accent \u2014 beacon amber",
+          "line": 83,
+          "message": "replace the em dash with explicit structure",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-lifecycle/DESIGN.md",
+          "rule": "em_dash",
+          "severity": "error"
+        },
+        {
+          "column": 1,
+          "excerpt": "- Accent fills carry dark ink on dark theme (amber is a light color) and white",
+          "line": 93,
+          "message": "sentence has 27 words; limit is 20",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-lifecycle/DESIGN.md",
+          "rule": "long_sentence",
+          "severity": "error"
+        },
+        {
+          "column": 1,
+          "excerpt": "- Jobs (law 1): primary CTA, links, two-layer focus ring",
+          "line": 95,
+          "message": "sentence has 23 words; limit is 20",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-lifecycle/DESIGN.md",
+          "rule": "long_sentence",
+          "severity": "error"
+        },
+        {
+          "column": 65,
+          "excerpt": "recipe: solid 8px dot + plain text label. **Dots report liveness; pills",
+          "line": 114,
+          "message": "replace the semicolon with a period",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-lifecycle/DESIGN.md",
+          "rule": "semicolon",
+          "severity": "error"
+        },
+        {
+          "column": 65,
+          "excerpt": "- **UI sans: Geist Sans** (OFL, self-hosted woff2 in the bundle \u2014 the console",
+          "line": 119,
+          "message": "replace the em dash with explicit structure",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-lifecycle/DESIGN.md",
+          "rule": "em_dash",
+          "severity": "error"
+        },
+        {
+          "column": 23,
+          "excerpt": "must work air-gapped; no font CDN at runtime). Fallback:",
+          "line": 120,
+          "message": "replace the semicolon with a period",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-lifecycle/DESIGN.md",
+          "rule": "semicolon",
+          "severity": "error"
+        },
+        {
+          "column": 50,
+          "excerpt": "- Wordmark: the sidebar brand renders `STARPORT` \u2014 uppercase, 600 weight,",
+          "line": 140,
+          "message": "replace the em dash with explicit structure",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-lifecycle/DESIGN.md",
+          "rule": "em_dash",
+          "severity": "error"
+        },
+        {
+          "column": 72,
+          "excerpt": "`+0.08em` tracking at 14px. It is the one uppercase display treatment;",
+          "line": 141,
+          "message": "replace the semicolon with a period",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-lifecycle/DESIGN.md",
+          "rule": "semicolon",
+          "severity": "error"
+        },
+        {
+          "column": 60,
+          "excerpt": "- **Motion:** 100\u2013200ms `cubic-bezier(0.25,0.46,0.45,0.94)`; 300ms max for",
+          "line": 153,
+          "message": "replace the semicolon with a period",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-lifecycle/DESIGN.md",
+          "rule": "semicolon",
+          "severity": "error"
+        },
+        {
+          "column": 14,
+          "excerpt": "modal entry; no springs; honor `prefers-reduced-motion`. One orchestrated",
+          "line": 154,
+          "message": "replace the semicolon with a period",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-lifecycle/DESIGN.md",
+          "rule": "semicolon",
+          "severity": "error"
+        },
+        {
+          "column": 26,
+          "excerpt": "modal entry; no springs; honor `prefers-reduced-motion`. One orchestrated",
+          "line": 154,
+          "message": "replace the semicolon with a period",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-lifecycle/DESIGN.md",
+          "rule": "semicolon",
+          "severity": "error"
+        },
+        {
+          "column": 46,
+          "excerpt": "shimmer). Spinners never occupy a page body; they are allowed inside",
+          "line": 157,
+          "message": "replace the semicolon with a period",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-lifecycle/DESIGN.md",
+          "rule": "semicolon",
+          "severity": "error"
+        },
+        {
+          "column": 53,
+          "excerpt": "shimmer). Spinners never occupy a page body; they are allowed inside",
+          "line": 157,
+          "message": "use active voice when the actor is known",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-lifecycle/DESIGN.md",
+          "rule": "passive_voice",
+          "severity": "error"
+        },
+        {
+          "column": 9,
+          "excerpt": "the left; the page's single primary action on the right. Optional tab row",
+          "line": 181,
+          "message": "replace the semicolon with a period",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-lifecycle/DESIGN.md",
+          "rule": "semicolon",
+          "severity": "error"
+        },
+        {
+          "column": 7,
+          "excerpt": "Cards are reserved for genuinely discrete objects (a provider, a stat, a",
+          "line": 193,
+          "message": "use active voice when the actor is known",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-lifecycle/DESIGN.md",
+          "rule": "passive_voice",
+          "severity": "error"
+        },
+        {
+          "column": 1,
+          "excerpt": "- **IDs and keys** (the console says *ID*, never *slug*): mono 13px inside a subtle chip (`--bg-raised`,",
+          "line": 198,
+          "message": "sentence has 23 words; limit is 20",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-lifecycle/DESIGN.md",
+          "rule": "long_sentence",
+          "severity": "error"
+        },
+        {
+          "column": 43,
+          "excerpt": "(\"Copied\") and never truncates silently \u2014 truncated values show head and",
+          "line": 200,
+          "message": "replace the em dash with explicit structure",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-lifecycle/DESIGN.md",
+          "rule": "em_dash",
+          "severity": "error"
+        },
+        {
+          "column": 14,
+          "excerpt": "copy button; thereafter masked mono.",
+          "line": 203,
+          "message": "replace the semicolon with a period",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-lifecycle/DESIGN.md",
+          "rule": "semicolon",
+          "severity": "error"
+        },
+        {
+          "column": 34,
+          "excerpt": "- **Prices:** OpenRouter grammar \u2014 `$0.22 / M in \u00b7 $0.88 / M out`, mono,",
+          "line": 204,
+          "message": "replace the em dash with explicit structure",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-lifecycle/DESIGN.md",
+          "rule": "em_dash",
+          "severity": "error"
+        },
+        {
+          "column": 9,
+          "excerpt": "values; never scientific notation. Unknown price renders `\u2014`, not `$0`.",
+          "line": 206,
+          "message": "replace the semicolon with a period",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-lifecycle/DESIGN.md",
+          "rule": "semicolon",
+          "severity": "error"
+        },
+        {
+          "column": 1,
+          "excerpt": "- **Provider and author marks:** rendered through `EntityLogo`, which obeys",
+          "line": 209,
+          "message": "sentence has 31 words; limit is 20",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-lifecycle/DESIGN.md",
+          "rule": "long_sentence",
+          "severity": "error"
+        },
+        {
+          "column": 71,
+          "excerpt": "the mark-treatment setting (`color` keeps each brand mark as shipped;",
+          "line": 210,
+          "message": "replace the semicolon with a period",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-lifecycle/DESIGN.md",
+          "rule": "semicolon",
+          "severity": "error"
+        },
+        {
+          "column": 64,
+          "excerpt": "- **Refresh:** an icon-only button beside the staleness caption; the icon",
+          "line": 213,
+          "message": "replace the semicolon with a period",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-lifecycle/DESIGN.md",
+          "rule": "semicolon",
+          "severity": "error"
+        },
+        {
+          "column": 50,
+          "excerpt": "spins while the fetch runs. No \"Refresh\" label \u2014 the caption already",
+          "line": 214,
+          "message": "replace the em dash with explicit structure",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-lifecycle/DESIGN.md",
+          "rule": "em_dash",
+          "severity": "error"
+        },
+        {
+          "column": 69,
+          "excerpt": "- **Timestamps:** relative (`4m ago`) with absolute UTC in a tooltip; Usage",
+          "line": 219,
+          "message": "replace the semicolon with a period",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-lifecycle/DESIGN.md",
+          "rule": "semicolon",
+          "severity": "error"
+        },
+        {
+          "column": 1,
+          "excerpt": "- **Empty states:** icon + one sentence + one CTA + a mono snippet when the",
+          "line": 224,
+          "message": "sentence has 25 words; limit is 20",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-lifecycle/DESIGN.md",
+          "rule": "long_sentence",
+          "severity": "error"
+        },
+        {
+          "column": 26,
+          "excerpt": "Neutral-step bars/lines; accent only for a selected series; area fills at",
+          "line": 227,
+          "message": "replace the semicolon with a period",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-lifecycle/DESIGN.md",
+          "rule": "semicolon",
+          "severity": "error"
+        },
+        {
+          "column": 61,
+          "excerpt": "Neutral-step bars/lines; accent only for a selected series; area fills at",
+          "line": 227,
+          "message": "replace the semicolon with a period",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-lifecycle/DESIGN.md",
+          "rule": "semicolon",
+          "severity": "error"
+        },
+        {
+          "column": 12,
+          "excerpt": "low alpha; faint gridlines; tabular axis labels; endpoint emphasized.",
+          "line": 228,
+          "message": "replace the semicolon with a period",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-lifecycle/DESIGN.md",
+          "rule": "semicolon",
+          "severity": "error"
+        },
+        {
+          "column": 29,
+          "excerpt": "low alpha; faint gridlines; tabular axis labels; endpoint emphasized.",
+          "line": 228,
+          "message": "replace the semicolon with a period",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-lifecycle/DESIGN.md",
+          "rule": "semicolon",
+          "severity": "error"
+        },
+        {
+          "column": 50,
+          "excerpt": "low alpha; faint gridlines; tabular axis labels; endpoint emphasized.",
+          "line": 228,
+          "message": "replace the semicolon with a period",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-lifecycle/DESIGN.md",
+          "rule": "semicolon",
+          "severity": "error"
+        },
+        {
+          "column": 63,
+          "excerpt": "- **Buttons:** primary = accent fill (one per viewport, law 1); secondary =",
+          "line": 235,
+          "message": "replace the semicolon with a period",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-lifecycle/DESIGN.md",
+          "rule": "semicolon",
+          "severity": "error"
+        },
+        {
+          "column": 31,
+          "excerpt": "`--bg-raised` + `--border-2`; ghost = text-only with hover bg; destructive",
+          "line": 236,
+          "message": "replace the semicolon with a period",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-lifecycle/DESIGN.md",
+          "rule": "semicolon",
+          "severity": "error"
+        },
+        {
+          "column": 64,
+          "excerpt": "`--bg-raised` + `--border-2`; ghost = text-only with hover bg; destructive",
+          "line": 236,
+          "message": "replace the semicolon with a period",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-lifecycle/DESIGN.md",
+          "rule": "semicolon",
+          "severity": "error"
+        },
+        {
+          "column": 58,
+          "excerpt": "- **Inputs:** `--bg-raised`, `--border-2`, radius 6, 36px; focus = accent",
+          "line": 239,
+          "message": "replace the semicolon with a period",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-lifecycle/DESIGN.md",
+          "rule": "semicolon",
+          "severity": "error"
+        },
+        {
+          "column": 1,
+          "excerpt": "- **Tables:** TanStack Table; header row 12px/500 Text 3 on transparent",
+          "line": 241,
+          "message": "sentence has 28 words; limit is 20",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-lifecycle/DESIGN.md",
+          "rule": "long_sentence",
+          "severity": "error"
+        },
+        {
+          "column": 29,
+          "excerpt": "- **Tables:** TanStack Table; header row 12px/500 Text 3 on transparent",
+          "line": 241,
+          "message": "replace the semicolon with a period",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-lifecycle/DESIGN.md",
+          "rule": "semicolon",
+          "severity": "error"
+        },
+        {
+          "column": 32,
+          "excerpt": "ground with a bottom hairline; sortable headers show direction on hover",
+          "line": 242,
+          "message": "replace the semicolon with a period",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-lifecycle/DESIGN.md",
+          "rule": "semicolon",
+          "severity": "error"
+        },
+        {
+          "column": 18,
+          "excerpt": "and when active; virtualized above ~100 rows. Dense catalog tables offer",
+          "line": 243,
+          "message": "replace the semicolon with a period",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-lifecycle/DESIGN.md",
+          "rule": "semicolon",
+          "severity": "error"
+        },
+        {
+          "column": 49,
+          "excerpt": "and when active; virtualized above ~100 rows. Dense catalog tables offer",
+          "line": 243,
+          "message": "sentence has 25 words; limit is 20",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-lifecycle/DESIGN.md",
+          "rule": "long_sentence",
+          "severity": "error"
+        },
+        {
+          "column": 10,
+          "excerpt": "resets); the first column flexes to fill, the rest hold their size.",
+          "line": 245,
+          "message": "replace the semicolon with a period",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-lifecycle/DESIGN.md",
+          "rule": "semicolon",
+          "severity": "error"
+        },
+        {
+          "column": 51,
+          "excerpt": "- **Selects:** the styled `Select` component only \u2014 `appearance-none` over",
+          "line": 246,
+          "message": "replace the em dash with explicit structure",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-lifecycle/DESIGN.md",
+          "rule": "em_dash",
+          "severity": "error"
+        },
+        {
+          "column": 49,
+          "excerpt": "- **Sheets:** one `SheetContent` with a `side`. Detail panels enter from",
+          "line": 253,
+          "message": "sentence has 30 words; limit is 20",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-lifecycle/DESIGN.md",
+          "rule": "long_sentence",
+          "severity": "error"
+        },
+        {
+          "column": 21,
+          "excerpt": "the right at 480px; navigation and the chat thread list enter from the",
+          "line": 254,
+          "message": "replace the semicolon with a period",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-lifecycle/DESIGN.md",
+          "rule": "semicolon",
+          "severity": "error"
+        },
+        {
+          "column": 7,
+          "excerpt": "left; pickers a thumb reaches enter from the bottom at up to 85vh.",
+          "line": 255,
+          "message": "replace the semicolon with a period",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-lifecycle/DESIGN.md",
+          "rule": "semicolon",
+          "severity": "error"
+        },
+        {
+          "column": 68,
+          "excerpt": "- **Modals:** radius 12, same shadow contract, backdrop `black@0.6`;",
+          "line": 256,
+          "message": "replace the semicolon with a period",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-lifecycle/DESIGN.md",
+          "rule": "semicolon",
+          "severity": "error"
+        },
+        {
+          "column": 36,
+          "excerpt": "- **Command palette (\u2318K):** global \u2014 navigation, model search, actions.",
+          "line": 260,
+          "message": "replace the em dash with explicit structure",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-lifecycle/DESIGN.md",
+          "rule": "em_dash",
+          "severity": "error"
+        },
+        {
+          "column": 1,
+          "excerpt": "- **Credential resolution:** the provider detail page renders one numbered",
+          "line": 265,
+          "message": "sentence has 25 words; limit is 20",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-lifecycle/DESIGN.md",
+          "rule": "long_sentence",
+          "severity": "error"
+        },
+        {
+          "column": 63,
+          "excerpt": "source, only `components/credentials/` files may say \"BYOK\" \u2014 both are",
+          "line": 268,
+          "message": "replace the em dash with explicit structure",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-lifecycle/DESIGN.md",
+          "rule": "em_dash",
+          "severity": "error"
+        },
+        {
+          "column": 35,
+          "excerpt": "reports what happened, not what is configured.",
+          "line": 270,
+          "message": "use active voice when the actor is known",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-lifecycle/DESIGN.md",
+          "rule": "passive_voice",
+          "severity": "error"
+        },
+        {
+          "column": 1,
+          "excerpt": "- **Theme toggle:** shows the current state (the icon for the theme you are",
+          "line": 271,
+          "message": "sentence has 21 words; limit is 20",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-lifecycle/DESIGN.md",
+          "rule": "long_sentence",
+          "severity": "error"
+        },
+        {
+          "column": 45,
+          "excerpt": "- **Bottom-left:** a `+` menu (attach image \u2014 enabled only when the selected",
+          "line": 295,
+          "message": "replace the em dash with explicit structure",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-lifecycle/DESIGN.md",
+          "rule": "em_dash",
+          "severity": "error"
+        },
+        {
+          "column": 19,
+          "excerpt": "model has vision; presets; future tools). Armed modes surface as removable",
+          "line": 296,
+          "message": "replace the semicolon with a period",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-lifecycle/DESIGN.md",
+          "rule": "semicolon",
+          "severity": "error"
+        },
+        {
+          "column": 28,
+          "excerpt": "model has vision; presets; future tools). Armed modes surface as removable",
+          "line": 296,
+          "message": "replace the semicolon with a period",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-lifecycle/DESIGN.md",
+          "rule": "semicolon",
+          "severity": "error"
+        },
+        {
+          "column": 1,
+          "excerpt": "- **Bottom-right:** the **model picker trigger** (`provider icon \u00b7 short",
+          "line": 298,
+          "message": "sentence has 29 words; limit is 20",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-lifecycle/DESIGN.md",
+          "rule": "long_sentence",
+          "severity": "error"
+        },
+        {
+          "column": 1,
+          "excerpt": "- Send: muted when empty \u2192 accent fill when text present \u2192 morphs to a Stop",
+          "line": 301,
+          "message": "sentence has 21 words; limit is 20",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-lifecycle/DESIGN.md",
+          "rule": "long_sentence",
+          "severity": "error"
+        },
+        {
+          "column": 41,
+          "excerpt": "square during streaming (same position; Stop aborts upstream). Enter",
+          "line": 302,
+          "message": "replace the semicolon with a period",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-lifecycle/DESIGN.md",
+          "rule": "semicolon",
+          "severity": "error"
+        },
+        {
+          "column": 8,
+          "excerpt": "sends; Shift+Enter newline; Esc stops; drafts persist per thread.",
+          "line": 303,
+          "message": "replace the semicolon with a period",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-lifecycle/DESIGN.md",
+          "rule": "semicolon",
+          "severity": "error"
+        },
+        {
+          "column": 29,
+          "excerpt": "sends; Shift+Enter newline; Esc stops; drafts persist per thread.",
+          "line": 303,
+          "message": "replace the semicolon with a period",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-lifecycle/DESIGN.md",
+          "rule": "semicolon",
+          "severity": "error"
+        },
+        {
+          "column": 40,
+          "excerpt": "sends; Shift+Enter newline; Esc stops; drafts persist per thread.",
+          "line": 303,
+          "message": "replace the semicolon with a period",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-lifecycle/DESIGN.md",
+          "rule": "semicolon",
+          "severity": "error"
+        },
+        {
+          "column": 42,
+          "excerpt": "global palette everywhere, chat included \u2014 the palette searches models too.",
+          "line": 308,
+          "message": "replace the em dash with explicit structure",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-lifecycle/DESIGN.md",
+          "rule": "em_dash",
+          "severity": "error"
+        },
+        {
+          "column": 1,
+          "excerpt": "2. **Pinned** section first (star toggle on row hover, persisted), then",
+          "line": 312,
+          "message": "sentence has 22 words; limit is 20",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-lifecycle/DESIGN.md",
+          "rule": "long_sentence",
+          "severity": "error"
+        },
+        {
+          "column": 63,
+          "excerpt": "presets (`@preset/\u2026`), then providers as groups with icons \u2014 a list,",
+          "line": 313,
+          "message": "replace the em dash with explicit structure",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-lifecycle/DESIGN.md",
+          "rule": "em_dash",
+          "severity": "error"
+        },
+        {
+          "column": 59,
+          "excerpt": "Routed-provider visibility is Starport's differentiator \u2014 always show it.",
+          "line": 333,
+          "message": "replace the em dash with explicit structure",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-lifecycle/DESIGN.md",
+          "rule": "em_dash",
+          "severity": "error"
+        },
+        {
+          "column": 76,
+          "excerpt": "user messages, delete. Code blocks: language label + copy in a header bar;",
+          "line": 335,
+          "message": "replace the semicolon with a period",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-lifecycle/DESIGN.md",
+          "rule": "semicolon",
+          "severity": "error"
+        },
+        {
+          "column": 32,
+          "excerpt": "- Scroll: auto-follow at bottom; any upward scroll locks following and shows",
+          "line": 337,
+          "message": "replace the semicolon with a period",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-lifecycle/DESIGN.md",
+          "rule": "semicolon",
+          "severity": "error"
+        },
+        {
+          "column": 67,
+          "excerpt": "\"Compare\" attaches 2\u20134 models as chips beside the picker trigger. The",
+          "line": 342,
+          "message": "sentence has 29 words; limit is 25",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-lifecycle/DESIGN.md",
+          "rule": "long_sentence",
+          "severity": "error"
+        },
+        {
+          "column": 24,
+          "excerpt": "composer stays singular; one prompt fans out; responses render in responsive",
+          "line": 343,
+          "message": "replace the semicolon with a period",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-lifecycle/DESIGN.md",
+          "rule": "semicolon",
+          "severity": "error"
+        },
+        {
+          "column": 45,
+          "excerpt": "composer stays singular; one prompt fans out; responses render in responsive",
+          "line": 343,
+          "message": "replace the semicolon with a period",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-lifecycle/DESIGN.md",
+          "rule": "semicolon",
+          "severity": "error"
+        },
+        {
+          "column": 41,
+          "excerpt": "- The product is \"the Starport gateway\" \u2014 the UI never says \"LLM gateway\".",
+          "line": 350,
+          "message": "replace the em dash with explicit structure",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-lifecycle/DESIGN.md",
+          "rule": "em_dash",
+          "severity": "error"
+        },
+        {
+          "column": 1,
+          "excerpt": "- Documentation lives in the console at `/docs`, organized by persona",
+          "line": 353,
+          "message": "sentence has 27 words; limit is 20",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-lifecycle/DESIGN.md",
+          "rule": "long_sentence",
+          "severity": "error"
+        },
+        {
+          "column": 47,
+          "excerpt": "- Errors state what failed and the next action; no apologies, no codes",
+          "line": 357,
+          "message": "replace the semicolon with a period",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-lifecycle/DESIGN.md",
+          "rule": "semicolon",
+          "severity": "error"
+        },
+        {
+          "column": 37,
+          "excerpt": "- Full keyboard paths for every flow; roving focus in menus and pickers.",
+          "line": 366,
+          "message": "replace the semicolon with a period",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-lifecycle/DESIGN.md",
+          "rule": "semicolon",
+          "severity": "error"
+        },
+        {
+          "column": 39,
+          "excerpt": "- 44px minimum touch targets on mobile; the model picker becomes a bottom",
+          "line": 368,
+          "message": "replace the semicolon with a period",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-lifecycle/DESIGN.md",
+          "rule": "semicolon",
+          "severity": "error"
+        },
+        {
+          "column": 64,
+          "excerpt": "- Tokens live in one CSS file as Tailwind v4 `@theme` variables; dark is the",
+          "line": 373,
+          "message": "replace the semicolon with a period",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-lifecycle/DESIGN.md",
+          "rule": "semicolon",
+          "severity": "error"
+        },
+        {
+          "column": 24,
+          "excerpt": "- shadcn/ui components are generated then restyled at the token layer, not",
+          "line": 377,
+          "message": "use active voice when the actor is known",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-lifecycle/DESIGN.md",
+          "rule": "passive_voice",
+          "severity": "error"
+        },
+        {
+          "column": 67,
+          "excerpt": "- Fonts self-hosted as woff2 (latin, 400/500/600) via `@font-face`; no",
+          "line": 379,
+          "message": "replace the semicolon with a period",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-lifecycle/DESIGN.md",
+          "rule": "semicolon",
+          "severity": "error"
+        }
+      ],
+      "passed": false,
+      "path": "/Users/jack/src/github.com/agentstation/starport-catalog-lifecycle/DESIGN.md",
+      "words": 2359
+    },
+    {
+      "diagnostics": [],
+      "passed": true,
+      "path": "/Users/jack/src/github.com/agentstation/starport-catalog-lifecycle/docs/PERFORMANCE.md",
+      "words": 913
+    },
+    {
+      "diagnostics": [],
+      "passed": true,
+      "path": "/Users/jack/src/github.com/agentstation/starport-catalog-lifecycle/docs/PRODUCTION-STATUS.md",
+      "words": 186
+    },
+    {
+      "diagnostics": [],
+      "passed": true,
+      "path": "/Users/jack/src/github.com/agentstation/starport-catalog-lifecycle/docs/TASKS.md",
+      "words": 4654
+    },
+    {
+      "diagnostics": [],
+      "passed": true,
+      "path": "/Users/jack/src/github.com/agentstation/starport-catalog-lifecycle/console/src/routes/docs.tsx",
+      "words": 57
+    },
+    {
+      "diagnostics": [],
+      "passed": true,
+      "path": "/Users/jack/src/github.com/agentstation/starport-catalog-lifecycle/console/src/routes/__root.tsx",
+      "words": 72
+    },
+    {
+      "diagnostics": [],
+      "passed": true,
+      "path": "/Users/jack/src/github.com/agentstation/starport-catalog-lifecycle/console/src/components/settings/Deployment.tsx",
+      "words": 89
+    },
+    {
+      "diagnostics": [],
+      "passed": true,
+      "path": "/Users/jack/src/github.com/agentstation/starport-catalog-lifecycle/console/src/components/settings/Section.tsx",
+      "words": 9
+    },
+    {
+      "diagnostics": [
+        {
+          "column": 54,
+          "excerpt": "It is deliberately not a card inside the console. Someone reading it has no",
+          "line": 13,
+          "message": "sentence has 30 words; limit is 25",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-lifecycle/console/src/components/auth/FirstContact.tsx",
+          "rule": "long_sentence",
+          "severity": "error"
+        },
+        {
+          "column": 20,
+          "excerpt": "*where you are* \u2014 you are at the machine that printed it. The gateway API key",
+          "line": 19,
+          "message": "replace the em dash with explicit structure",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-lifecycle/console/src/components/auth/FirstContact.tsx",
+          "rule": "em_dash",
+          "severity": "error"
+        },
+        {
+          "column": 62,
+          "excerpt": "*where you are* \u2014 you are at the machine that printed it. The gateway API key",
+          "line": 19,
+          "message": "sentence has 29 words; limit is 25",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-lifecycle/console/src/components/auth/FirstContact.tsx",
+          "rule": "long_sentence",
+          "severity": "error"
+        },
+        {
+          "column": 51,
+          "excerpt": "A full navigation rather than a router push. The credential arrived as a",
+          "line": 29,
+          "message": "sentence has 42 words; limit is 25",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-lifecycle/console/src/components/auth/FirstContact.tsx",
+          "rule": "long_sentence",
+          "severity": "error"
+        },
+        {
+          "column": 30,
+          "excerpt": "rejection this page may have been reached through.",
+          "line": 33,
+          "message": "use a simple tense when it preserves the timing",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-lifecycle/console/src/components/auth/FirstContact.tsx",
+          "rule": "complex_verb",
+          "severity": "error"
+        },
+        {
+          "column": 35,
+          "excerpt": "rejection this page may have been reached through.",
+          "line": 33,
+          "message": "use active voice when the actor is known",
+          "path": "/Users/jack/src/github.com/agentstation/starport-catalog-lifecycle/console/src/components/auth/FirstContact.tsx",
+          "rule": "passive_voice",
+          "severity": "error"
+        }
+      ],
+      "passed": false,
+      "path": "/Users/jack/src/github.com/agentstation/starport-catalog-lifecycle/console/src/components/auth/FirstContact.tsx",
+      "words": 184
+    }
+  ],
+  "mode": "strict",
+  "passed": false,
+  "summary": {
+    "diagnostics": 96,
+    "errors": 96,
+    "files": 10,
+    "max_warnings_per_100_words": 0.0,
+    "warning_rate_per_100_words": 0.0,
+    "warnings": 0
+  }
+}

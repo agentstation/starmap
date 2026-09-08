@@ -1,0 +1,18 @@
+{
+  "command": [
+    "env",
+    "GOTOOLCHAIN=go1.25.12",
+    "go",
+    "test",
+    "-race",
+    "-json",
+    "./internal/bootstrap",
+    "-run",
+    "^TestBaselineExportPreservesDirectoryCreatedDuringStaging$",
+    "-count=1",
+    "-timeout=2m"
+  ],
+  "exit_code": 0,
+  "stdout": "{\"Time\":\"2026-09-06T02:46:05.388396-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starmap/internal/bootstrap\"}\n{\"Time\":\"2026-09-06T02:46:05.773773-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starmap/internal/bootstrap\",\"Test\":\"TestBaselineExportPreservesDirectoryCreatedDuringStaging\"}\n{\"Time\":\"2026-09-06T02:46:05.775987-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/bootstrap\",\"Test\":\"TestBaselineExportPreservesDirectoryCreatedDuringStaging\",\"Output\":\"=== RUN   TestBaselineExportPreservesDirectoryCreatedDuringStaging\\n\"}\n{\"Time\":\"2026-09-06T02:46:29.814425-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/bootstrap\",\"Test\":\"TestBaselineExportPreservesDirectoryCreatedDuringStaging\",\"Output\":\"--- PASS: TestBaselineExportPreservesDirectoryCreatedDuringStaging (24.04s)\\n\"}\n{\"Time\":\"2026-09-06T02:46:29.822204-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starmap/internal/bootstrap\",\"Test\":\"TestBaselineExportPreservesDirectoryCreatedDuringStaging\",\"Elapsed\":24.04}\n{\"Time\":\"2026-09-06T02:46:29.822635-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/bootstrap\",\"Output\":\"PASS\\n\"}\n{\"Time\":\"2026-09-06T02:46:30.872718-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/bootstrap\",\"Output\":\"ok  \\tgithub.com/agentstation/starmap/internal/bootstrap\\t25.476s\\n\"}\n{\"Time\":\"2026-09-06T02:46:30.872753-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starmap/internal/bootstrap\",\"Elapsed\":25.484}\n",
+  "stderr": ""
+}

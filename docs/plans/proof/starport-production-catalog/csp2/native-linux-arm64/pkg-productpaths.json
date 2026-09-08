@@ -1,0 +1,1078 @@
+{
+  "package": "pkg/productpaths",
+  "race": false,
+  "toolchain": "go1.25.12",
+  "commands": [
+    {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.25.12",
+        "GOOS=linux",
+        "GOARCH=arm64",
+        "CGO_ENABLED=0",
+        "go",
+        "test",
+        "-c",
+        "-o",
+        "/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/csp2-native-build-8y2m32yd/test",
+        "./pkg/productpaths"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "docker",
+        "volume",
+        "create",
+        "--label",
+        "purpose=csp2-native-package-verification",
+        "csp2-native-3c9e511616eb47c09ee03bb18a659342"
+      ],
+      "exit_code": 0,
+      "stdout": "csp2-native-3c9e511616eb47c09ee03bb18a659342\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "docker",
+        "create",
+        "--pull=never",
+        "--network",
+        "none",
+        "--read-only",
+        "--user",
+        "65532:65532",
+        "--cap-drop=ALL",
+        "--security-opt=no-new-privileges",
+        "--mount",
+        "type=bind,src=/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/csp2-native-build-8y2m32yd/test,dst=/native-test,readonly",
+        "--mount",
+        "type=bind,src=/Users/jack/src/github.com/agentstation/starmap-catalog-requirements,dst=/Users/jack/src/github.com/agentstation/starmap-catalog-requirements,readonly",
+        "--mount",
+        "type=volume,src=csp2-native-3c9e511616eb47c09ee03bb18a659342,dst=/home/nonroot",
+        "--env",
+        "TMPDIR=/home/nonroot",
+        "--env",
+        "GOMAXPROCS=4",
+        "--workdir",
+        "/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/pkg/productpaths",
+        "--entrypoint",
+        "/native-test",
+        "cgr.dev/chainguard/static@sha256:60582b2ae6074f641094af0f370d4ab241aab271858a66223dcde7eee9f51638",
+        "-test.v=test2json",
+        "-test.count=1",
+        "-test.parallel=4",
+        "-test.timeout=10m"
+      ],
+      "exit_code": 0,
+      "stdout": "67a2927e98c2b8c364fdcc32e0bafac5d7d9f3a138f844d6249deed06ecacd82\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "docker",
+        "start",
+        "--attach",
+        "67a2927e98c2b8c364fdcc32e0bafac5d7d9f3a138f844d6249deed06ecacd82"
+      ],
+      "exit_code": 0,
+      "stdout": "\u0016=== RUN   TestInspectionReportsPrivateAccessConflictsWithoutMutation\n\u0016=== RUN   TestInspectionReportsPrivateAccessConflictsWithoutMutation/private\n\u0016--- PASS: TestInspectionReportsPrivateAccessConflictsWithoutMutation/private (0.00s)\n\u0016=== NAME  TestInspectionReportsPrivateAccessConflictsWithoutMutation\n\u0016=== RUN   TestInspectionReportsPrivateAccessConflictsWithoutMutation/group_read\n\u0016--- PASS: TestInspectionReportsPrivateAccessConflictsWithoutMutation/group_read (0.00s)\n\u0016=== NAME  TestInspectionReportsPrivateAccessConflictsWithoutMutation\n\u0016=== RUN   TestInspectionReportsPrivateAccessConflictsWithoutMutation/other_write\n\u0016--- PASS: TestInspectionReportsPrivateAccessConflictsWithoutMutation/other_write (0.00s)\n\u0016=== NAME  TestInspectionReportsPrivateAccessConflictsWithoutMutation\n\u0016--- PASS: TestInspectionReportsPrivateAccessConflictsWithoutMutation (0.00s)\n\u0016=== NAME  \n\u0016=== RUN   TestAccessAssessmentPreservesUncertainty\n\u0016=== RUN   TestAccessAssessmentPreservesUncertainty/windows\n\u0016--- PASS: TestAccessAssessmentPreservesUncertainty/windows (0.00s)\n\u0016=== NAME  TestAccessAssessmentPreservesUncertainty\n\u0016=== RUN   TestAccessAssessmentPreservesUncertainty/symlink\n\u0016--- PASS: TestAccessAssessmentPreservesUncertainty/symlink (0.00s)\n\u0016=== NAME  TestAccessAssessmentPreservesUncertainty\n\u0016=== RUN   TestAccessAssessmentPreservesUncertainty/missing_owner\n\u0016--- PASS: TestAccessAssessmentPreservesUncertainty/missing_owner (0.00s)\n\u0016=== NAME  TestAccessAssessmentPreservesUncertainty\n\u0016=== RUN   TestAccessAssessmentPreservesUncertainty/wrong_owner\n\u0016--- PASS: TestAccessAssessmentPreservesUncertainty/wrong_owner (0.00s)\n\u0016=== NAME  TestAccessAssessmentPreservesUncertainty\n\u0016=== RUN   TestAccessAssessmentPreservesUncertainty/missing\n\u0016--- PASS: TestAccessAssessmentPreservesUncertainty/missing (0.00s)\n\u0016=== NAME  TestAccessAssessmentPreservesUncertainty\n\u0016=== RUN   TestAccessAssessmentPreservesUncertainty/disabled\n\u0016--- PASS: TestAccessAssessmentPreservesUncertainty/disabled (0.00s)\n\u0016=== NAME  TestAccessAssessmentPreservesUncertainty\n\u0016--- PASS: TestAccessAssessmentPreservesUncertainty (0.00s)\n\u0016=== NAME  \n\u0016=== RUN   TestInspectionReadsMatchingMetadataWithoutFollowingLinks\n\u0016--- PASS: TestInspectionReadsMatchingMetadataWithoutFollowingLinks (0.00s)\n\u0016=== NAME  \n\u0016=== RUN   TestInspectionBudgetCountsUnmatchedEntries\n\u0016--- PASS: TestInspectionBudgetCountsUnmatchedEntries (0.00s)\n\u0016=== NAME  \n\u0016=== RUN   TestInspectionReportsAbsentInapplicableAndUnavailable\n\u0016--- PASS: TestInspectionReportsAbsentInapplicableAndUnavailable (0.00s)\n\u0016=== NAME  \n\u0016=== RUN   TestInspectionValidatesBeforeMetadataAccess\n\u0016=== RUN   TestInspectionValidatesBeforeMetadataAccess/negative-limit\n\u0016--- PASS: TestInspectionValidatesBeforeMetadataAccess/negative-limit (0.00s)\n\u0016=== NAME  TestInspectionValidatesBeforeMetadataAccess\n\u0016=== RUN   TestInspectionValidatesBeforeMetadataAccess/oversized-limit\n\u0016--- PASS: TestInspectionValidatesBeforeMetadataAccess/oversized-limit (0.00s)\n\u0016=== NAME  TestInspectionValidatesBeforeMetadataAccess\n\u0016=== RUN   TestInspectionValidatesBeforeMetadataAccess/relative-path\n\u0016--- PASS: TestInspectionValidatesBeforeMetadataAccess/relative-path (0.00s)\n\u0016=== NAME  TestInspectionValidatesBeforeMetadataAccess\n\u0016=== RUN   TestInspectionValidatesBeforeMetadataAccess/invalid-glob\n\u0016--- PASS: TestInspectionValidatesBeforeMetadataAccess/invalid-glob (0.00s)\n\u0016=== NAME  TestInspectionValidatesBeforeMetadataAccess\n\u0016=== RUN   TestInspectionValidatesBeforeMetadataAccess/traversal-pattern\n\u0016--- PASS: TestInspectionValidatesBeforeMetadataAccess/traversal-pattern (0.00s)\n\u0016=== NAME  TestInspectionValidatesBeforeMetadataAccess\n\u0016=== RUN   TestInspectionValidatesBeforeMetadataAccess/nonterminal-double-star\n\u0016--- PASS: TestInspectionValidatesBeforeMetadataAccess/nonterminal-double-star (0.00s)\n\u0016=== NAME  TestInspectionValidatesBeforeMetadataAccess\n\u0016--- PASS: TestInspectionValidatesBeforeMetadataAccess (0.00s)\n\u0016=== NAME  \n\u0016=== RUN   TestInspectionEscapedNamesAndRecursivePatterns\n\u0016--- PASS: TestInspectionEscapedNamesAndRecursivePatterns (0.00s)\n\u0016=== NAME  \n\u0016=== RUN   TestSourceDirectoriesUseCacheRootWithoutWrites\n\u0016=== PAUSE TestSourceDirectoriesUseCacheRootWithoutWrites\n\u0016=== NAME  \n\u0016=== RUN   TestRootSpecificityPresenceAndProvenance\n\u0016--- PASS: TestRootSpecificityPresenceAndProvenance (0.00s)\n\u0016=== NAME  \n\u0016=== RUN   TestExplicitRootsDoNotRequireAHomeDirectory\n\u0016--- PASS: TestExplicitRootsDoNotRequireAHomeDirectory (0.00s)\n\u0016=== NAME  \n\u0016=== RUN   TestInvalidRootSelectorsFail\n\u0016=== RUN   TestInvalidRootSelectorsFail/empty\n\u0016--- PASS: TestInvalidRootSelectorsFail/empty (0.00s)\n\u0016=== NAME  TestInvalidRootSelectorsFail\n\u0016=== RUN   TestInvalidRootSelectorsFail/relative\n\u0016--- PASS: TestInvalidRootSelectorsFail/relative (0.00s)\n\u0016=== NAME  TestInvalidRootSelectorsFail\n\u0016=== RUN   TestInvalidRootSelectorsFail/unknown\n\u0016--- PASS: TestInvalidRootSelectorsFail/unknown (0.00s)\n\u0016=== NAME  TestInvalidRootSelectorsFail\n\u0016--- PASS: TestInvalidRootSelectorsFail (0.00s)\n\u0016=== NAME  \n\u0016=== RUN   TestLeafPathsUseConfigurationAnchor\n\u0016--- PASS: TestLeafPathsUseConfigurationAnchor (0.00s)\n\u0016=== NAME  \n\u0016=== RUN   TestInstanceIDsArePortableSingleComponents\n\u0016--- PASS: TestInstanceIDsArePortableSingleComponents (0.00s)\n\u0016=== NAME  \n\u0016=== RUN   TestHigherRootValueReplacesInvalidLowerValue\n\u0016--- PASS: TestHigherRootValueReplacesInvalidLowerValue (0.00s)\n\u0016=== NAME  \n\u0016=== RUN   TestNativeUserRootsSeparateProductsAndDirectoryRoles\n\u0016--- PASS: TestNativeUserRootsSeparateProductsAndDirectoryRoles (0.00s)\n\u0016=== NAME  \n\u0016=== CONT  TestSourceDirectoriesUseCacheRootWithoutWrites\n\u0016--- PASS: TestSourceDirectoriesUseCacheRootWithoutWrites (0.00s)\n\u0016PASS\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "docker",
+        "inspect",
+        "--format",
+        "{{json .State}}",
+        "67a2927e98c2b8c364fdcc32e0bafac5d7d9f3a138f844d6249deed06ecacd82"
+      ],
+      "exit_code": 0,
+      "stdout": "{\"Status\":\"exited\",\"Running\":false,\"Paused\":false,\"Restarting\":false,\"OOMKilled\":false,\"Dead\":false,\"Pid\":0,\"ExitCode\":0,\"Error\":\"\",\"StartedAt\":\"2026-09-06T17:51:57.51884125Z\",\"FinishedAt\":\"2026-09-06T17:51:57.56458175Z\"}\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "docker",
+        "rm",
+        "-f",
+        "67a2927e98c2b8c364fdcc32e0bafac5d7d9f3a138f844d6249deed06ecacd82"
+      ],
+      "exit_code": 0,
+      "stdout": "67a2927e98c2b8c364fdcc32e0bafac5d7d9f3a138f844d6249deed06ecacd82\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "docker",
+        "volume",
+        "rm",
+        "csp2-native-3c9e511616eb47c09ee03bb18a659342"
+      ],
+      "exit_code": 0,
+      "stdout": "csp2-native-3c9e511616eb47c09ee03bb18a659342\n",
+      "stderr": ""
+    }
+  ],
+  "test_events": [
+    {
+      "Time": "2026-09-06T12:51:57.656366-05:00",
+      "Action": "start",
+      "Package": "github.com/agentstation/starmap/pkg/productpaths"
+    },
+    {
+      "Time": "2026-09-06T12:51:57.656454-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/pkg/productpaths",
+      "Test": "TestInspectionReportsPrivateAccessConflictsWithoutMutation"
+    },
+    {
+      "Time": "2026-09-06T12:51:57.656457-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/pkg/productpaths",
+      "Test": "TestInspectionReportsPrivateAccessConflictsWithoutMutation",
+      "Output": "=== RUN   TestInspectionReportsPrivateAccessConflictsWithoutMutation\n"
+    },
+    {
+      "Time": "2026-09-06T12:51:57.656461-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/pkg/productpaths",
+      "Test": "TestInspectionReportsPrivateAccessConflictsWithoutMutation/private"
+    },
+    {
+      "Time": "2026-09-06T12:51:57.656463-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/pkg/productpaths",
+      "Test": "TestInspectionReportsPrivateAccessConflictsWithoutMutation/private",
+      "Output": "=== RUN   TestInspectionReportsPrivateAccessConflictsWithoutMutation/private\n"
+    },
+    {
+      "Time": "2026-09-06T12:51:57.656468-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/pkg/productpaths",
+      "Test": "TestInspectionReportsPrivateAccessConflictsWithoutMutation/private",
+      "Output": "--- PASS: TestInspectionReportsPrivateAccessConflictsWithoutMutation/private (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T12:51:57.65647-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/pkg/productpaths",
+      "Test": "TestInspectionReportsPrivateAccessConflictsWithoutMutation/private",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T12:51:57.656473-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/pkg/productpaths",
+      "Test": "TestInspectionReportsPrivateAccessConflictsWithoutMutation/group_read"
+    },
+    {
+      "Time": "2026-09-06T12:51:57.656474-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/pkg/productpaths",
+      "Test": "TestInspectionReportsPrivateAccessConflictsWithoutMutation/group_read",
+      "Output": "=== RUN   TestInspectionReportsPrivateAccessConflictsWithoutMutation/group_read\n"
+    },
+    {
+      "Time": "2026-09-06T12:51:57.656477-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/pkg/productpaths",
+      "Test": "TestInspectionReportsPrivateAccessConflictsWithoutMutation/group_read",
+      "Output": "--- PASS: TestInspectionReportsPrivateAccessConflictsWithoutMutation/group_read (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T12:51:57.656478-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/pkg/productpaths",
+      "Test": "TestInspectionReportsPrivateAccessConflictsWithoutMutation/group_read",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T12:51:57.656481-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/pkg/productpaths",
+      "Test": "TestInspectionReportsPrivateAccessConflictsWithoutMutation/other_write"
+    },
+    {
+      "Time": "2026-09-06T12:51:57.656482-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/pkg/productpaths",
+      "Test": "TestInspectionReportsPrivateAccessConflictsWithoutMutation/other_write",
+      "Output": "=== RUN   TestInspectionReportsPrivateAccessConflictsWithoutMutation/other_write\n"
+    },
+    {
+      "Time": "2026-09-06T12:51:57.656483-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/pkg/productpaths",
+      "Test": "TestInspectionReportsPrivateAccessConflictsWithoutMutation/other_write",
+      "Output": "--- PASS: TestInspectionReportsPrivateAccessConflictsWithoutMutation/other_write (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T12:51:57.656485-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/pkg/productpaths",
+      "Test": "TestInspectionReportsPrivateAccessConflictsWithoutMutation/other_write",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T12:51:57.656486-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/pkg/productpaths",
+      "Test": "TestInspectionReportsPrivateAccessConflictsWithoutMutation",
+      "Output": "--- PASS: TestInspectionReportsPrivateAccessConflictsWithoutMutation (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T12:51:57.656487-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/pkg/productpaths",
+      "Test": "TestInspectionReportsPrivateAccessConflictsWithoutMutation",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T12:51:57.656489-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/pkg/productpaths",
+      "Test": "TestAccessAssessmentPreservesUncertainty"
+    },
+    {
+      "Time": "2026-09-06T12:51:57.656491-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/pkg/productpaths",
+      "Test": "TestAccessAssessmentPreservesUncertainty",
+      "Output": "=== RUN   TestAccessAssessmentPreservesUncertainty\n"
+    },
+    {
+      "Time": "2026-09-06T12:51:57.656493-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/pkg/productpaths",
+      "Test": "TestAccessAssessmentPreservesUncertainty/windows"
+    },
+    {
+      "Time": "2026-09-06T12:51:57.656494-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/pkg/productpaths",
+      "Test": "TestAccessAssessmentPreservesUncertainty/windows",
+      "Output": "=== RUN   TestAccessAssessmentPreservesUncertainty/windows\n"
+    },
+    {
+      "Time": "2026-09-06T12:51:57.656496-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/pkg/productpaths",
+      "Test": "TestAccessAssessmentPreservesUncertainty/windows",
+      "Output": "--- PASS: TestAccessAssessmentPreservesUncertainty/windows (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T12:51:57.656497-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/pkg/productpaths",
+      "Test": "TestAccessAssessmentPreservesUncertainty/windows",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T12:51:57.656498-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/pkg/productpaths",
+      "Test": "TestAccessAssessmentPreservesUncertainty/symlink"
+    },
+    {
+      "Time": "2026-09-06T12:51:57.656499-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/pkg/productpaths",
+      "Test": "TestAccessAssessmentPreservesUncertainty/symlink",
+      "Output": "=== RUN   TestAccessAssessmentPreservesUncertainty/symlink\n"
+    },
+    {
+      "Time": "2026-09-06T12:51:57.656501-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/pkg/productpaths",
+      "Test": "TestAccessAssessmentPreservesUncertainty/symlink",
+      "Output": "--- PASS: TestAccessAssessmentPreservesUncertainty/symlink (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T12:51:57.656502-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/pkg/productpaths",
+      "Test": "TestAccessAssessmentPreservesUncertainty/symlink",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T12:51:57.656503-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/pkg/productpaths",
+      "Test": "TestAccessAssessmentPreservesUncertainty/missing_owner"
+    },
+    {
+      "Time": "2026-09-06T12:51:57.656504-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/pkg/productpaths",
+      "Test": "TestAccessAssessmentPreservesUncertainty/missing_owner",
+      "Output": "=== RUN   TestAccessAssessmentPreservesUncertainty/missing_owner\n"
+    },
+    {
+      "Time": "2026-09-06T12:51:57.656506-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/pkg/productpaths",
+      "Test": "TestAccessAssessmentPreservesUncertainty/missing_owner",
+      "Output": "--- PASS: TestAccessAssessmentPreservesUncertainty/missing_owner (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T12:51:57.656507-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/pkg/productpaths",
+      "Test": "TestAccessAssessmentPreservesUncertainty/missing_owner",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T12:51:57.656508-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/pkg/productpaths",
+      "Test": "TestAccessAssessmentPreservesUncertainty/wrong_owner"
+    },
+    {
+      "Time": "2026-09-06T12:51:57.656509-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/pkg/productpaths",
+      "Test": "TestAccessAssessmentPreservesUncertainty/wrong_owner",
+      "Output": "=== RUN   TestAccessAssessmentPreservesUncertainty/wrong_owner\n"
+    },
+    {
+      "Time": "2026-09-06T12:51:57.65651-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/pkg/productpaths",
+      "Test": "TestAccessAssessmentPreservesUncertainty/wrong_owner",
+      "Output": "--- PASS: TestAccessAssessmentPreservesUncertainty/wrong_owner (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T12:51:57.656512-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/pkg/productpaths",
+      "Test": "TestAccessAssessmentPreservesUncertainty/wrong_owner",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T12:51:57.656513-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/pkg/productpaths",
+      "Test": "TestAccessAssessmentPreservesUncertainty/missing"
+    },
+    {
+      "Time": "2026-09-06T12:51:57.656515-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/pkg/productpaths",
+      "Test": "TestAccessAssessmentPreservesUncertainty/missing",
+      "Output": "=== RUN   TestAccessAssessmentPreservesUncertainty/missing\n"
+    },
+    {
+      "Time": "2026-09-06T12:51:57.656516-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/pkg/productpaths",
+      "Test": "TestAccessAssessmentPreservesUncertainty/missing",
+      "Output": "--- PASS: TestAccessAssessmentPreservesUncertainty/missing (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T12:51:57.656518-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/pkg/productpaths",
+      "Test": "TestAccessAssessmentPreservesUncertainty/missing",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T12:51:57.656519-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/pkg/productpaths",
+      "Test": "TestAccessAssessmentPreservesUncertainty/disabled"
+    },
+    {
+      "Time": "2026-09-06T12:51:57.65652-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/pkg/productpaths",
+      "Test": "TestAccessAssessmentPreservesUncertainty/disabled",
+      "Output": "=== RUN   TestAccessAssessmentPreservesUncertainty/disabled\n"
+    },
+    {
+      "Time": "2026-09-06T12:51:57.656521-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/pkg/productpaths",
+      "Test": "TestAccessAssessmentPreservesUncertainty/disabled",
+      "Output": "--- PASS: TestAccessAssessmentPreservesUncertainty/disabled (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T12:51:57.656522-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/pkg/productpaths",
+      "Test": "TestAccessAssessmentPreservesUncertainty/disabled",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T12:51:57.656524-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/pkg/productpaths",
+      "Test": "TestAccessAssessmentPreservesUncertainty",
+      "Output": "--- PASS: TestAccessAssessmentPreservesUncertainty (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T12:51:57.656525-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/pkg/productpaths",
+      "Test": "TestAccessAssessmentPreservesUncertainty",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T12:51:57.656526-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/pkg/productpaths",
+      "Test": "TestInspectionReadsMatchingMetadataWithoutFollowingLinks"
+    },
+    {
+      "Time": "2026-09-06T12:51:57.656527-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/pkg/productpaths",
+      "Test": "TestInspectionReadsMatchingMetadataWithoutFollowingLinks",
+      "Output": "=== RUN   TestInspectionReadsMatchingMetadataWithoutFollowingLinks\n"
+    },
+    {
+      "Time": "2026-09-06T12:51:57.656529-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/pkg/productpaths",
+      "Test": "TestInspectionReadsMatchingMetadataWithoutFollowingLinks",
+      "Output": "--- PASS: TestInspectionReadsMatchingMetadataWithoutFollowingLinks (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T12:51:57.65653-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/pkg/productpaths",
+      "Test": "TestInspectionReadsMatchingMetadataWithoutFollowingLinks",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T12:51:57.656531-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/pkg/productpaths",
+      "Test": "TestInspectionBudgetCountsUnmatchedEntries"
+    },
+    {
+      "Time": "2026-09-06T12:51:57.656534-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/pkg/productpaths",
+      "Test": "TestInspectionBudgetCountsUnmatchedEntries",
+      "Output": "=== RUN   TestInspectionBudgetCountsUnmatchedEntries\n"
+    },
+    {
+      "Time": "2026-09-06T12:51:57.656536-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/pkg/productpaths",
+      "Test": "TestInspectionBudgetCountsUnmatchedEntries",
+      "Output": "--- PASS: TestInspectionBudgetCountsUnmatchedEntries (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T12:51:57.656538-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/pkg/productpaths",
+      "Test": "TestInspectionBudgetCountsUnmatchedEntries",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T12:51:57.656539-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/pkg/productpaths",
+      "Test": "TestInspectionReportsAbsentInapplicableAndUnavailable"
+    },
+    {
+      "Time": "2026-09-06T12:51:57.65654-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/pkg/productpaths",
+      "Test": "TestInspectionReportsAbsentInapplicableAndUnavailable",
+      "Output": "=== RUN   TestInspectionReportsAbsentInapplicableAndUnavailable\n"
+    },
+    {
+      "Time": "2026-09-06T12:51:57.656541-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/pkg/productpaths",
+      "Test": "TestInspectionReportsAbsentInapplicableAndUnavailable",
+      "Output": "--- PASS: TestInspectionReportsAbsentInapplicableAndUnavailable (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T12:51:57.656543-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/pkg/productpaths",
+      "Test": "TestInspectionReportsAbsentInapplicableAndUnavailable",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T12:51:57.656544-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/pkg/productpaths",
+      "Test": "TestInspectionValidatesBeforeMetadataAccess"
+    },
+    {
+      "Time": "2026-09-06T12:51:57.656545-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/pkg/productpaths",
+      "Test": "TestInspectionValidatesBeforeMetadataAccess",
+      "Output": "=== RUN   TestInspectionValidatesBeforeMetadataAccess\n"
+    },
+    {
+      "Time": "2026-09-06T12:51:57.656546-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/pkg/productpaths",
+      "Test": "TestInspectionValidatesBeforeMetadataAccess/negative-limit"
+    },
+    {
+      "Time": "2026-09-06T12:51:57.656547-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/pkg/productpaths",
+      "Test": "TestInspectionValidatesBeforeMetadataAccess/negative-limit",
+      "Output": "=== RUN   TestInspectionValidatesBeforeMetadataAccess/negative-limit\n"
+    },
+    {
+      "Time": "2026-09-06T12:51:57.656548-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/pkg/productpaths",
+      "Test": "TestInspectionValidatesBeforeMetadataAccess/negative-limit",
+      "Output": "--- PASS: TestInspectionValidatesBeforeMetadataAccess/negative-limit (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T12:51:57.65655-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/pkg/productpaths",
+      "Test": "TestInspectionValidatesBeforeMetadataAccess/negative-limit",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T12:51:57.656551-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/pkg/productpaths",
+      "Test": "TestInspectionValidatesBeforeMetadataAccess/oversized-limit"
+    },
+    {
+      "Time": "2026-09-06T12:51:57.656557-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/pkg/productpaths",
+      "Test": "TestInspectionValidatesBeforeMetadataAccess/oversized-limit",
+      "Output": "=== RUN   TestInspectionValidatesBeforeMetadataAccess/oversized-limit\n"
+    },
+    {
+      "Time": "2026-09-06T12:51:57.656562-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/pkg/productpaths",
+      "Test": "TestInspectionValidatesBeforeMetadataAccess/oversized-limit",
+      "Output": "--- PASS: TestInspectionValidatesBeforeMetadataAccess/oversized-limit (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T12:51:57.656564-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/pkg/productpaths",
+      "Test": "TestInspectionValidatesBeforeMetadataAccess/oversized-limit",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T12:51:57.656566-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/pkg/productpaths",
+      "Test": "TestInspectionValidatesBeforeMetadataAccess/relative-path"
+    },
+    {
+      "Time": "2026-09-06T12:51:57.656567-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/pkg/productpaths",
+      "Test": "TestInspectionValidatesBeforeMetadataAccess/relative-path",
+      "Output": "=== RUN   TestInspectionValidatesBeforeMetadataAccess/relative-path\n"
+    },
+    {
+      "Time": "2026-09-06T12:51:57.656569-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/pkg/productpaths",
+      "Test": "TestInspectionValidatesBeforeMetadataAccess/relative-path",
+      "Output": "--- PASS: TestInspectionValidatesBeforeMetadataAccess/relative-path (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T12:51:57.65657-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/pkg/productpaths",
+      "Test": "TestInspectionValidatesBeforeMetadataAccess/relative-path",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T12:51:57.656574-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/pkg/productpaths",
+      "Test": "TestInspectionValidatesBeforeMetadataAccess/invalid-glob"
+    },
+    {
+      "Time": "2026-09-06T12:51:57.656575-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/pkg/productpaths",
+      "Test": "TestInspectionValidatesBeforeMetadataAccess/invalid-glob",
+      "Output": "=== RUN   TestInspectionValidatesBeforeMetadataAccess/invalid-glob\n"
+    },
+    {
+      "Time": "2026-09-06T12:51:57.656576-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/pkg/productpaths",
+      "Test": "TestInspectionValidatesBeforeMetadataAccess/invalid-glob",
+      "Output": "--- PASS: TestInspectionValidatesBeforeMetadataAccess/invalid-glob (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T12:51:57.656578-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/pkg/productpaths",
+      "Test": "TestInspectionValidatesBeforeMetadataAccess/invalid-glob",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T12:51:57.656579-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/pkg/productpaths",
+      "Test": "TestInspectionValidatesBeforeMetadataAccess/traversal-pattern"
+    },
+    {
+      "Time": "2026-09-06T12:51:57.65658-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/pkg/productpaths",
+      "Test": "TestInspectionValidatesBeforeMetadataAccess/traversal-pattern",
+      "Output": "=== RUN   TestInspectionValidatesBeforeMetadataAccess/traversal-pattern\n"
+    },
+    {
+      "Time": "2026-09-06T12:51:57.656581-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/pkg/productpaths",
+      "Test": "TestInspectionValidatesBeforeMetadataAccess/traversal-pattern",
+      "Output": "--- PASS: TestInspectionValidatesBeforeMetadataAccess/traversal-pattern (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T12:51:57.656585-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/pkg/productpaths",
+      "Test": "TestInspectionValidatesBeforeMetadataAccess/traversal-pattern",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T12:51:57.656586-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/pkg/productpaths",
+      "Test": "TestInspectionValidatesBeforeMetadataAccess/nonterminal-double-star"
+    },
+    {
+      "Time": "2026-09-06T12:51:57.656588-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/pkg/productpaths",
+      "Test": "TestInspectionValidatesBeforeMetadataAccess/nonterminal-double-star",
+      "Output": "=== RUN   TestInspectionValidatesBeforeMetadataAccess/nonterminal-double-star\n"
+    },
+    {
+      "Time": "2026-09-06T12:51:57.656589-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/pkg/productpaths",
+      "Test": "TestInspectionValidatesBeforeMetadataAccess/nonterminal-double-star",
+      "Output": "--- PASS: TestInspectionValidatesBeforeMetadataAccess/nonterminal-double-star (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T12:51:57.65659-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/pkg/productpaths",
+      "Test": "TestInspectionValidatesBeforeMetadataAccess/nonterminal-double-star",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T12:51:57.656593-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/pkg/productpaths",
+      "Test": "TestInspectionValidatesBeforeMetadataAccess",
+      "Output": "--- PASS: TestInspectionValidatesBeforeMetadataAccess (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T12:51:57.656594-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/pkg/productpaths",
+      "Test": "TestInspectionValidatesBeforeMetadataAccess",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T12:51:57.656595-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/pkg/productpaths",
+      "Test": "TestInspectionEscapedNamesAndRecursivePatterns"
+    },
+    {
+      "Time": "2026-09-06T12:51:57.656597-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/pkg/productpaths",
+      "Test": "TestInspectionEscapedNamesAndRecursivePatterns",
+      "Output": "=== RUN   TestInspectionEscapedNamesAndRecursivePatterns\n"
+    },
+    {
+      "Time": "2026-09-06T12:51:57.656598-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/pkg/productpaths",
+      "Test": "TestInspectionEscapedNamesAndRecursivePatterns",
+      "Output": "--- PASS: TestInspectionEscapedNamesAndRecursivePatterns (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T12:51:57.6566-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/pkg/productpaths",
+      "Test": "TestInspectionEscapedNamesAndRecursivePatterns",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T12:51:57.656601-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/pkg/productpaths",
+      "Test": "TestSourceDirectoriesUseCacheRootWithoutWrites"
+    },
+    {
+      "Time": "2026-09-06T12:51:57.656602-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/pkg/productpaths",
+      "Test": "TestSourceDirectoriesUseCacheRootWithoutWrites",
+      "Output": "=== RUN   TestSourceDirectoriesUseCacheRootWithoutWrites\n"
+    },
+    {
+      "Time": "2026-09-06T12:51:57.656603-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/pkg/productpaths",
+      "Test": "TestSourceDirectoriesUseCacheRootWithoutWrites",
+      "Output": "=== PAUSE TestSourceDirectoriesUseCacheRootWithoutWrites\n"
+    },
+    {
+      "Time": "2026-09-06T12:51:57.656604-05:00",
+      "Action": "pause",
+      "Package": "github.com/agentstation/starmap/pkg/productpaths",
+      "Test": "TestSourceDirectoriesUseCacheRootWithoutWrites"
+    },
+    {
+      "Time": "2026-09-06T12:51:57.656606-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/pkg/productpaths",
+      "Test": "TestRootSpecificityPresenceAndProvenance"
+    },
+    {
+      "Time": "2026-09-06T12:51:57.656607-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/pkg/productpaths",
+      "Test": "TestRootSpecificityPresenceAndProvenance",
+      "Output": "=== RUN   TestRootSpecificityPresenceAndProvenance\n"
+    },
+    {
+      "Time": "2026-09-06T12:51:57.656608-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/pkg/productpaths",
+      "Test": "TestRootSpecificityPresenceAndProvenance",
+      "Output": "--- PASS: TestRootSpecificityPresenceAndProvenance (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T12:51:57.656609-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/pkg/productpaths",
+      "Test": "TestRootSpecificityPresenceAndProvenance",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T12:51:57.656611-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/pkg/productpaths",
+      "Test": "TestExplicitRootsDoNotRequireAHomeDirectory"
+    },
+    {
+      "Time": "2026-09-06T12:51:57.656612-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/pkg/productpaths",
+      "Test": "TestExplicitRootsDoNotRequireAHomeDirectory",
+      "Output": "=== RUN   TestExplicitRootsDoNotRequireAHomeDirectory\n"
+    },
+    {
+      "Time": "2026-09-06T12:51:57.656613-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/pkg/productpaths",
+      "Test": "TestExplicitRootsDoNotRequireAHomeDirectory",
+      "Output": "--- PASS: TestExplicitRootsDoNotRequireAHomeDirectory (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T12:51:57.656616-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/pkg/productpaths",
+      "Test": "TestExplicitRootsDoNotRequireAHomeDirectory",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T12:51:57.656618-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/pkg/productpaths",
+      "Test": "TestInvalidRootSelectorsFail"
+    },
+    {
+      "Time": "2026-09-06T12:51:57.656619-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/pkg/productpaths",
+      "Test": "TestInvalidRootSelectorsFail",
+      "Output": "=== RUN   TestInvalidRootSelectorsFail\n"
+    },
+    {
+      "Time": "2026-09-06T12:51:57.65662-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/pkg/productpaths",
+      "Test": "TestInvalidRootSelectorsFail/empty"
+    },
+    {
+      "Time": "2026-09-06T12:51:57.656621-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/pkg/productpaths",
+      "Test": "TestInvalidRootSelectorsFail/empty",
+      "Output": "=== RUN   TestInvalidRootSelectorsFail/empty\n"
+    },
+    {
+      "Time": "2026-09-06T12:51:57.656623-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/pkg/productpaths",
+      "Test": "TestInvalidRootSelectorsFail/empty",
+      "Output": "--- PASS: TestInvalidRootSelectorsFail/empty (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T12:51:57.656624-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/pkg/productpaths",
+      "Test": "TestInvalidRootSelectorsFail/empty",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T12:51:57.656626-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/pkg/productpaths",
+      "Test": "TestInvalidRootSelectorsFail/relative"
+    },
+    {
+      "Time": "2026-09-06T12:51:57.656627-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/pkg/productpaths",
+      "Test": "TestInvalidRootSelectorsFail/relative",
+      "Output": "=== RUN   TestInvalidRootSelectorsFail/relative\n"
+    },
+    {
+      "Time": "2026-09-06T12:51:57.656628-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/pkg/productpaths",
+      "Test": "TestInvalidRootSelectorsFail/relative",
+      "Output": "--- PASS: TestInvalidRootSelectorsFail/relative (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T12:51:57.656629-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/pkg/productpaths",
+      "Test": "TestInvalidRootSelectorsFail/relative",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T12:51:57.65663-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/pkg/productpaths",
+      "Test": "TestInvalidRootSelectorsFail/unknown"
+    },
+    {
+      "Time": "2026-09-06T12:51:57.656631-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/pkg/productpaths",
+      "Test": "TestInvalidRootSelectorsFail/unknown",
+      "Output": "=== RUN   TestInvalidRootSelectorsFail/unknown\n"
+    },
+    {
+      "Time": "2026-09-06T12:51:57.656633-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/pkg/productpaths",
+      "Test": "TestInvalidRootSelectorsFail/unknown",
+      "Output": "--- PASS: TestInvalidRootSelectorsFail/unknown (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T12:51:57.656635-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/pkg/productpaths",
+      "Test": "TestInvalidRootSelectorsFail/unknown",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T12:51:57.656636-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/pkg/productpaths",
+      "Test": "TestInvalidRootSelectorsFail",
+      "Output": "--- PASS: TestInvalidRootSelectorsFail (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T12:51:57.656637-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/pkg/productpaths",
+      "Test": "TestInvalidRootSelectorsFail",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T12:51:57.656639-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/pkg/productpaths",
+      "Test": "TestLeafPathsUseConfigurationAnchor"
+    },
+    {
+      "Time": "2026-09-06T12:51:57.65664-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/pkg/productpaths",
+      "Test": "TestLeafPathsUseConfigurationAnchor",
+      "Output": "=== RUN   TestLeafPathsUseConfigurationAnchor\n"
+    },
+    {
+      "Time": "2026-09-06T12:51:57.656641-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/pkg/productpaths",
+      "Test": "TestLeafPathsUseConfigurationAnchor",
+      "Output": "--- PASS: TestLeafPathsUseConfigurationAnchor (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T12:51:57.656642-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/pkg/productpaths",
+      "Test": "TestLeafPathsUseConfigurationAnchor",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T12:51:57.656644-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/pkg/productpaths",
+      "Test": "TestInstanceIDsArePortableSingleComponents"
+    },
+    {
+      "Time": "2026-09-06T12:51:57.656645-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/pkg/productpaths",
+      "Test": "TestInstanceIDsArePortableSingleComponents",
+      "Output": "=== RUN   TestInstanceIDsArePortableSingleComponents\n"
+    },
+    {
+      "Time": "2026-09-06T12:51:57.656646-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/pkg/productpaths",
+      "Test": "TestInstanceIDsArePortableSingleComponents",
+      "Output": "--- PASS: TestInstanceIDsArePortableSingleComponents (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T12:51:57.656647-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/pkg/productpaths",
+      "Test": "TestInstanceIDsArePortableSingleComponents",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T12:51:57.656649-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/pkg/productpaths",
+      "Test": "TestHigherRootValueReplacesInvalidLowerValue"
+    },
+    {
+      "Time": "2026-09-06T12:51:57.65665-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/pkg/productpaths",
+      "Test": "TestHigherRootValueReplacesInvalidLowerValue",
+      "Output": "=== RUN   TestHigherRootValueReplacesInvalidLowerValue\n"
+    },
+    {
+      "Time": "2026-09-06T12:51:57.656651-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/pkg/productpaths",
+      "Test": "TestHigherRootValueReplacesInvalidLowerValue",
+      "Output": "--- PASS: TestHigherRootValueReplacesInvalidLowerValue (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T12:51:57.656652-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/pkg/productpaths",
+      "Test": "TestHigherRootValueReplacesInvalidLowerValue",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T12:51:57.656654-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/pkg/productpaths",
+      "Test": "TestNativeUserRootsSeparateProductsAndDirectoryRoles"
+    },
+    {
+      "Time": "2026-09-06T12:51:57.656655-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/pkg/productpaths",
+      "Test": "TestNativeUserRootsSeparateProductsAndDirectoryRoles",
+      "Output": "=== RUN   TestNativeUserRootsSeparateProductsAndDirectoryRoles\n"
+    },
+    {
+      "Time": "2026-09-06T12:51:57.656656-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/pkg/productpaths",
+      "Test": "TestNativeUserRootsSeparateProductsAndDirectoryRoles",
+      "Output": "--- PASS: TestNativeUserRootsSeparateProductsAndDirectoryRoles (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T12:51:57.656658-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/pkg/productpaths",
+      "Test": "TestNativeUserRootsSeparateProductsAndDirectoryRoles",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T12:51:57.656659-05:00",
+      "Action": "cont",
+      "Package": "github.com/agentstation/starmap/pkg/productpaths",
+      "Test": "TestSourceDirectoriesUseCacheRootWithoutWrites"
+    },
+    {
+      "Time": "2026-09-06T12:51:57.65666-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/pkg/productpaths",
+      "Test": "TestSourceDirectoriesUseCacheRootWithoutWrites",
+      "Output": "=== CONT  TestSourceDirectoriesUseCacheRootWithoutWrites\n"
+    },
+    {
+      "Time": "2026-09-06T12:51:57.656661-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/pkg/productpaths",
+      "Test": "TestSourceDirectoriesUseCacheRootWithoutWrites",
+      "Output": "--- PASS: TestSourceDirectoriesUseCacheRootWithoutWrites (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T12:51:57.656665-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/pkg/productpaths",
+      "Test": "TestSourceDirectoriesUseCacheRootWithoutWrites",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T12:51:57.656666-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/pkg/productpaths",
+      "Output": "PASS\n"
+    },
+    {
+      "Time": "2026-09-06T12:51:57.656671-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/pkg/productpaths",
+      "Elapsed": 0
+    }
+  ],
+  "binary_sha256": "dfa2da8c38b6519364ba92cc54174c5e586d2ca05b92d90b30afab1e803c54ff",
+  "state": {
+    "Status": "exited",
+    "Running": false,
+    "Paused": false,
+    "Restarting": false,
+    "OOMKilled": false,
+    "Dead": false,
+    "Pid": 0,
+    "ExitCode": 0,
+    "Error": "",
+    "StartedAt": "2026-09-06T17:51:57.51884125Z",
+    "FinishedAt": "2026-09-06T17:51:57.56458175Z"
+  },
+  "conversion_exit_code": 0,
+  "counts": {
+    "pass": 33,
+    "fail": 0,
+    "skip": 0
+  },
+  "passed": true,
+  "container_removed": true,
+  "volume_removed": true
+}

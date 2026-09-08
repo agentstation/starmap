@@ -1,0 +1,9 @@
+
+ RUN  v4.1.11 /Users/jack/src/github.com/agentstation/starport-catalog-lifecycle/console
+
+
+ Test Files  1 passed (1)
+      Tests  3 passed (3)
+   Start at  23:29:33
+   Duration  6.35s (transform 148ms, setup 36ms, import 700ms, tests 4.66s, environment 784ms)
+

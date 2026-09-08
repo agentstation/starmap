@@ -1,0 +1,15 @@
+{
+  "status": "UNVERIFIED",
+  "baseline_commit": "042eb97851496ecdd1ef20bfa44fe3d84b86b2d8",
+  "existing_harness": "internal/server/controllers/overhead_benchmark_test.go",
+  "omissions": [
+    "authentication and budget middleware",
+    "request decoding and policy before component timer",
+    "final response encoding",
+    "real provider HTTP connector construction and parsing",
+    "stream event forwarding"
+  ],
+  "existing_cpu_allocation_proofs": "../../../../design/catalog-lifecycle/evidence/latency-review-2026-09-05/manifest.json",
+  "new_harness": "internal/app/performance_test.go",
+  "scope": "Complete production composition with controlled loopback upstream; quiescent local Badger and SQLite. Production qualification remains pending."
+}

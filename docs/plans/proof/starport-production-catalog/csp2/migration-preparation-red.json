@@ -1,0 +1,16 @@
+{
+  "command": [
+    "go",
+    "test",
+    "-race",
+    "-count=1",
+    "-timeout",
+    "3m",
+    "./runtime",
+    "-run",
+    "^TestPrepareDirectoryMigration"
+  ],
+  "exit_code": 1,
+  "stdout": "FAIL\tgithub.com/agentstation/starmap/runtime [build failed]\nFAIL\n",
+  "stderr": "# github.com/agentstation/starmap/runtime [github.com/agentstation/starmap/runtime.test]\nruntime/migration_prepare_test.go:13:53: undefined: DirectoryMigrationRequest\nruntime/migration_prepare_test.go:27:9: undefined: DirectoryMigrationRequest\nruntime/migration_prepare_test.go:36:17: undefined: PrepareDirectoryMigration\nruntime/migration_prepare_test.go:70:19: undefined: PrepareDirectoryMigration\nruntime/migration_prepare_test.go:77:15: undefined: PrepareDirectoryMigration\nruntime/migration_prepare_test.go:96:15: undefined: DirectoryMigrationRequest\nruntime/migration_prepare_test.go:100:19: undefined: PrepareDirectoryMigration\nruntime/migration_prepare_test.go:106:17: undefined: PrepareDirectoryMigration\nruntime/migration_prepare_test.go:154:17: undefined: PrepareDirectoryMigration\n"
+}

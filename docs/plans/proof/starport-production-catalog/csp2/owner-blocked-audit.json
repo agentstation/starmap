@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "previous_turn": "progress: native Windows owner, denied-read, recovery, and diagnostic fixtures committed",
+  "current_turn": "progress: remaining Starport catalog integration tests and comments verified and committed",
+  "unanswered_decisions": [
+    "Shared autoreview prompt ceiling change from 512000 to 300000 bytes",
+    "Explicit link between inference profiles and acquisition scope for account-specific removals"
+  ],
+  "recurrence_count": 3,
+  "recurrences": [
+    "Service configuration completion and pending decisions",
+    "Native Windows fixture completion and same pending decisions",
+    "Starport integration completion and same pending decisions"
+  ],
+  "shared_helper_limit": 512000,
+  "native_windows_execution": "UNVERIFIED",
+  "eligible_todo_tasks": [],
+  "terminal_tasks": 7,
+  "total_tasks": 38,
+  "goal_complete": false,
+  "resume_action": "Obtain the pending owner decisions, apply only the approved helper change, complete publication checks and review, then run native CI and resume CSP3 scope semantics."
+}

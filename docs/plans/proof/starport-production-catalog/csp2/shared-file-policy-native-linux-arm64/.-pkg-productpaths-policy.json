@@ -1,0 +1,728 @@
+{
+  "package": "./pkg/productpaths/policy",
+  "race": false,
+  "toolchain": "go1.25.12",
+  "commands": [
+    {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.25.12",
+        "GOOS=linux",
+        "GOARCH=arm64",
+        "CGO_ENABLED=0",
+        "go",
+        "test",
+        "-c",
+        "-o",
+        "/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/csp2-native-build-pativvxn/test",
+        "././pkg/productpaths/policy"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "docker",
+        "volume",
+        "create",
+        "--label",
+        "purpose=csp2-native-package-verification",
+        "csp2-native-26fadd58fb994994af11784b23062df6"
+      ],
+      "exit_code": 0,
+      "stdout": "csp2-native-26fadd58fb994994af11784b23062df6\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "docker",
+        "create",
+        "--pull=never",
+        "--network",
+        "none",
+        "--read-only",
+        "--user",
+        "65532:65532",
+        "--cap-drop=ALL",
+        "--security-opt=no-new-privileges",
+        "--mount",
+        "type=bind,src=/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/csp2-native-build-pativvxn/test,dst=/native-test,readonly",
+        "--mount",
+        "type=bind,src=/Users/jack/src/github.com/agentstation/starmap-catalog-requirements,dst=/Users/jack/src/github.com/agentstation/starmap-catalog-requirements,readonly",
+        "--mount",
+        "type=volume,src=csp2-native-26fadd58fb994994af11784b23062df6,dst=/home/nonroot",
+        "--env",
+        "TMPDIR=/home/nonroot",
+        "--env",
+        "GOMAXPROCS=4",
+        "--workdir",
+        "/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/pkg/productpaths/policy",
+        "--entrypoint",
+        "/native-test",
+        "cgr.dev/chainguard/static@sha256:60582b2ae6074f641094af0f370d4ab241aab271858a66223dcde7eee9f51638",
+        "-test.v=test2json",
+        "-test.count=1",
+        "-test.parallel=4",
+        "-test.timeout=10m"
+      ],
+      "exit_code": 0,
+      "stdout": "8459eee08a1d9dc588cd4be4c0110f9eefa405ee16ec74796347f65eeeb0bae9\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "docker",
+        "start",
+        "--attach",
+        "8459eee08a1d9dc588cd4be4c0110f9eefa405ee16ec74796347f65eeeb0bae9"
+      ],
+      "exit_code": 0,
+      "stdout": "\u0016=== RUN   TestRoleAccessBoundary\n\u0016=== RUN   TestRoleAccessBoundary/configuration\n\u0016--- PASS: TestRoleAccessBoundary/configuration (0.00s)\n\u0016=== NAME  TestRoleAccessBoundary\n\u0016=== RUN   TestRoleAccessBoundary/dotenv\n\u0016--- PASS: TestRoleAccessBoundary/dotenv (0.00s)\n\u0016=== NAME  TestRoleAccessBoundary\n\u0016=== RUN   TestRoleAccessBoundary/catalog-store\n\u0016--- PASS: TestRoleAccessBoundary/catalog-store (0.00s)\n\u0016=== NAME  TestRoleAccessBoundary\n\u0016=== RUN   TestRoleAccessBoundary/runtime-owner\n\u0016--- PASS: TestRoleAccessBoundary/runtime-owner (0.00s)\n\u0016=== NAME  TestRoleAccessBoundary\n\u0016=== RUN   TestRoleAccessBoundary/runtime-evidence\n\u0016--- PASS: TestRoleAccessBoundary/runtime-evidence (0.00s)\n\u0016=== NAME  TestRoleAccessBoundary\n\u0016=== RUN   TestRoleAccessBoundary/github-discovery\n\u0016--- PASS: TestRoleAccessBoundary/github-discovery (0.00s)\n\u0016=== NAME  TestRoleAccessBoundary\n\u0016=== RUN   TestRoleAccessBoundary/workspace\n\u0016--- PASS: TestRoleAccessBoundary/workspace (0.00s)\n\u0016=== NAME  TestRoleAccessBoundary\n\u0016=== RUN   TestRoleAccessBoundary/workspace-preparing\n\u0016--- PASS: TestRoleAccessBoundary/workspace-preparing (0.00s)\n\u0016=== NAME  TestRoleAccessBoundary\n\u0016=== RUN   TestRoleAccessBoundary/workspace-backup\n\u0016--- PASS: TestRoleAccessBoundary/workspace-backup (0.00s)\n\u0016=== NAME  TestRoleAccessBoundary\n\u0016=== RUN   TestRoleAccessBoundary/baseline\n\u0016--- PASS: TestRoleAccessBoundary/baseline (0.00s)\n\u0016=== NAME  TestRoleAccessBoundary\n\u0016=== RUN   TestRoleAccessBoundary/credentials\n\u0016--- PASS: TestRoleAccessBoundary/credentials (0.00s)\n\u0016=== NAME  TestRoleAccessBoundary\n\u0016--- PASS: TestRoleAccessBoundary (0.00s)\n\u0016=== NAME  \n\u0016=== RUN   TestPrivatePOSIXReason\n\u0016=== RUN   TestPrivatePOSIXReason/private\n\u0016--- PASS: TestPrivatePOSIXReason/private (0.00s)\n\u0016=== NAME  TestPrivatePOSIXReason\n\u0016=== RUN   TestPrivatePOSIXReason/read-only\n\u0016--- PASS: TestPrivatePOSIXReason/read-only (0.00s)\n\u0016=== NAME  TestPrivatePOSIXReason\n\u0016=== RUN   TestPrivatePOSIXReason/no_owner_access\n\u0016--- PASS: TestPrivatePOSIXReason/no_owner_access (0.00s)\n\u0016=== NAME  TestPrivatePOSIXReason\n\u0016=== RUN   TestPrivatePOSIXReason/group_read\n\u0016--- PASS: TestPrivatePOSIXReason/group_read (0.00s)\n\u0016=== NAME  TestPrivatePOSIXReason\n\u0016=== RUN   TestPrivatePOSIXReason/other_execute\n\u0016--- PASS: TestPrivatePOSIXReason/other_execute (0.00s)\n\u0016=== NAME  TestPrivatePOSIXReason\n\u0016=== RUN   TestPrivatePOSIXReason/wrong_owner\n\u0016--- PASS: TestPrivatePOSIXReason/wrong_owner (0.00s)\n\u0016=== NAME  TestPrivatePOSIXReason\n\u0016=== RUN   TestPrivatePOSIXReason/unknown_owner\n\u0016--- PASS: TestPrivatePOSIXReason/unknown_owner (0.00s)\n\u0016=== NAME  TestPrivatePOSIXReason\n\u0016=== RUN   TestPrivatePOSIXReason/known_mode_conflict\n\u0016--- PASS: TestPrivatePOSIXReason/known_mode_conflict (0.00s)\n\u0016=== NAME  TestPrivatePOSIXReason\n\u0016--- PASS: TestPrivatePOSIXReason (0.00s)\n\u0016=== NAME  \n\u0016PASS\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "docker",
+        "inspect",
+        "--format",
+        "{{json .State}}",
+        "8459eee08a1d9dc588cd4be4c0110f9eefa405ee16ec74796347f65eeeb0bae9"
+      ],
+      "exit_code": 0,
+      "stdout": "{\"Status\":\"exited\",\"Running\":false,\"Paused\":false,\"Restarting\":false,\"OOMKilled\":false,\"Dead\":false,\"Pid\":0,\"ExitCode\":0,\"Error\":\"\",\"StartedAt\":\"2026-09-06T22:37:50.676744542Z\",\"FinishedAt\":\"2026-09-06T22:37:50.790612792Z\"}\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "docker",
+        "rm",
+        "-f",
+        "8459eee08a1d9dc588cd4be4c0110f9eefa405ee16ec74796347f65eeeb0bae9"
+      ],
+      "exit_code": 0,
+      "stdout": "8459eee08a1d9dc588cd4be4c0110f9eefa405ee16ec74796347f65eeeb0bae9\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "docker",
+        "volume",
+        "rm",
+        "csp2-native-26fadd58fb994994af11784b23062df6"
+      ],
+      "exit_code": 0,
+      "stdout": "csp2-native-26fadd58fb994994af11784b23062df6\n",
+      "stderr": ""
+    }
+  ],
+  "test_events": [
+    {
+      "Time": "2026-09-06T17:37:51.002214-05:00",
+      "Action": "start",
+      "Package": "github.com/agentstation/starmap/./pkg/productpaths/policy"
+    },
+    {
+      "Time": "2026-09-06T17:37:51.002427-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/./pkg/productpaths/policy",
+      "Test": "TestRoleAccessBoundary"
+    },
+    {
+      "Time": "2026-09-06T17:37:51.002437-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./pkg/productpaths/policy",
+      "Test": "TestRoleAccessBoundary",
+      "Output": "=== RUN   TestRoleAccessBoundary\n"
+    },
+    {
+      "Time": "2026-09-06T17:37:51.002443-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/./pkg/productpaths/policy",
+      "Test": "TestRoleAccessBoundary/configuration"
+    },
+    {
+      "Time": "2026-09-06T17:37:51.002451-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./pkg/productpaths/policy",
+      "Test": "TestRoleAccessBoundary/configuration",
+      "Output": "=== RUN   TestRoleAccessBoundary/configuration\n"
+    },
+    {
+      "Time": "2026-09-06T17:37:51.002459-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./pkg/productpaths/policy",
+      "Test": "TestRoleAccessBoundary/configuration",
+      "Output": "--- PASS: TestRoleAccessBoundary/configuration (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T17:37:51.002464-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/./pkg/productpaths/policy",
+      "Test": "TestRoleAccessBoundary/configuration",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T17:37:51.002468-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/./pkg/productpaths/policy",
+      "Test": "TestRoleAccessBoundary/dotenv"
+    },
+    {
+      "Time": "2026-09-06T17:37:51.002471-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./pkg/productpaths/policy",
+      "Test": "TestRoleAccessBoundary/dotenv",
+      "Output": "=== RUN   TestRoleAccessBoundary/dotenv\n"
+    },
+    {
+      "Time": "2026-09-06T17:37:51.002474-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./pkg/productpaths/policy",
+      "Test": "TestRoleAccessBoundary/dotenv",
+      "Output": "--- PASS: TestRoleAccessBoundary/dotenv (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T17:37:51.002477-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/./pkg/productpaths/policy",
+      "Test": "TestRoleAccessBoundary/dotenv",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T17:37:51.002482-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/./pkg/productpaths/policy",
+      "Test": "TestRoleAccessBoundary/catalog-store"
+    },
+    {
+      "Time": "2026-09-06T17:37:51.002485-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./pkg/productpaths/policy",
+      "Test": "TestRoleAccessBoundary/catalog-store",
+      "Output": "=== RUN   TestRoleAccessBoundary/catalog-store\n"
+    },
+    {
+      "Time": "2026-09-06T17:37:51.002489-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./pkg/productpaths/policy",
+      "Test": "TestRoleAccessBoundary/catalog-store",
+      "Output": "--- PASS: TestRoleAccessBoundary/catalog-store (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T17:37:51.002492-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/./pkg/productpaths/policy",
+      "Test": "TestRoleAccessBoundary/catalog-store",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T17:37:51.002495-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/./pkg/productpaths/policy",
+      "Test": "TestRoleAccessBoundary/runtime-owner"
+    },
+    {
+      "Time": "2026-09-06T17:37:51.002497-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./pkg/productpaths/policy",
+      "Test": "TestRoleAccessBoundary/runtime-owner",
+      "Output": "=== RUN   TestRoleAccessBoundary/runtime-owner\n"
+    },
+    {
+      "Time": "2026-09-06T17:37:51.0025-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./pkg/productpaths/policy",
+      "Test": "TestRoleAccessBoundary/runtime-owner",
+      "Output": "--- PASS: TestRoleAccessBoundary/runtime-owner (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T17:37:51.002503-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/./pkg/productpaths/policy",
+      "Test": "TestRoleAccessBoundary/runtime-owner",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T17:37:51.002506-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/./pkg/productpaths/policy",
+      "Test": "TestRoleAccessBoundary/runtime-evidence"
+    },
+    {
+      "Time": "2026-09-06T17:37:51.002509-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./pkg/productpaths/policy",
+      "Test": "TestRoleAccessBoundary/runtime-evidence",
+      "Output": "=== RUN   TestRoleAccessBoundary/runtime-evidence\n"
+    },
+    {
+      "Time": "2026-09-06T17:37:51.002514-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./pkg/productpaths/policy",
+      "Test": "TestRoleAccessBoundary/runtime-evidence",
+      "Output": "--- PASS: TestRoleAccessBoundary/runtime-evidence (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T17:37:51.002517-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/./pkg/productpaths/policy",
+      "Test": "TestRoleAccessBoundary/runtime-evidence",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T17:37:51.00252-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/./pkg/productpaths/policy",
+      "Test": "TestRoleAccessBoundary/github-discovery"
+    },
+    {
+      "Time": "2026-09-06T17:37:51.002524-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./pkg/productpaths/policy",
+      "Test": "TestRoleAccessBoundary/github-discovery",
+      "Output": "=== RUN   TestRoleAccessBoundary/github-discovery\n"
+    },
+    {
+      "Time": "2026-09-06T17:37:51.002527-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./pkg/productpaths/policy",
+      "Test": "TestRoleAccessBoundary/github-discovery",
+      "Output": "--- PASS: TestRoleAccessBoundary/github-discovery (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T17:37:51.00253-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/./pkg/productpaths/policy",
+      "Test": "TestRoleAccessBoundary/github-discovery",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T17:37:51.002533-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/./pkg/productpaths/policy",
+      "Test": "TestRoleAccessBoundary/workspace"
+    },
+    {
+      "Time": "2026-09-06T17:37:51.002536-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./pkg/productpaths/policy",
+      "Test": "TestRoleAccessBoundary/workspace",
+      "Output": "=== RUN   TestRoleAccessBoundary/workspace\n"
+    },
+    {
+      "Time": "2026-09-06T17:37:51.002539-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./pkg/productpaths/policy",
+      "Test": "TestRoleAccessBoundary/workspace",
+      "Output": "--- PASS: TestRoleAccessBoundary/workspace (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T17:37:51.002541-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/./pkg/productpaths/policy",
+      "Test": "TestRoleAccessBoundary/workspace",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T17:37:51.002544-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/./pkg/productpaths/policy",
+      "Test": "TestRoleAccessBoundary/workspace-preparing"
+    },
+    {
+      "Time": "2026-09-06T17:37:51.002546-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./pkg/productpaths/policy",
+      "Test": "TestRoleAccessBoundary/workspace-preparing",
+      "Output": "=== RUN   TestRoleAccessBoundary/workspace-preparing\n"
+    },
+    {
+      "Time": "2026-09-06T17:37:51.002549-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./pkg/productpaths/policy",
+      "Test": "TestRoleAccessBoundary/workspace-preparing",
+      "Output": "--- PASS: TestRoleAccessBoundary/workspace-preparing (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T17:37:51.002557-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/./pkg/productpaths/policy",
+      "Test": "TestRoleAccessBoundary/workspace-preparing",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T17:37:51.002561-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/./pkg/productpaths/policy",
+      "Test": "TestRoleAccessBoundary/workspace-backup"
+    },
+    {
+      "Time": "2026-09-06T17:37:51.002564-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./pkg/productpaths/policy",
+      "Test": "TestRoleAccessBoundary/workspace-backup",
+      "Output": "=== RUN   TestRoleAccessBoundary/workspace-backup\n"
+    },
+    {
+      "Time": "2026-09-06T17:37:51.002567-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./pkg/productpaths/policy",
+      "Test": "TestRoleAccessBoundary/workspace-backup",
+      "Output": "--- PASS: TestRoleAccessBoundary/workspace-backup (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T17:37:51.00257-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/./pkg/productpaths/policy",
+      "Test": "TestRoleAccessBoundary/workspace-backup",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T17:37:51.002573-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/./pkg/productpaths/policy",
+      "Test": "TestRoleAccessBoundary/baseline"
+    },
+    {
+      "Time": "2026-09-06T17:37:51.002579-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./pkg/productpaths/policy",
+      "Test": "TestRoleAccessBoundary/baseline",
+      "Output": "=== RUN   TestRoleAccessBoundary/baseline\n"
+    },
+    {
+      "Time": "2026-09-06T17:37:51.002582-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./pkg/productpaths/policy",
+      "Test": "TestRoleAccessBoundary/baseline",
+      "Output": "--- PASS: TestRoleAccessBoundary/baseline (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T17:37:51.002585-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/./pkg/productpaths/policy",
+      "Test": "TestRoleAccessBoundary/baseline",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T17:37:51.002588-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/./pkg/productpaths/policy",
+      "Test": "TestRoleAccessBoundary/credentials"
+    },
+    {
+      "Time": "2026-09-06T17:37:51.002591-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./pkg/productpaths/policy",
+      "Test": "TestRoleAccessBoundary/credentials",
+      "Output": "=== RUN   TestRoleAccessBoundary/credentials\n"
+    },
+    {
+      "Time": "2026-09-06T17:37:51.002594-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./pkg/productpaths/policy",
+      "Test": "TestRoleAccessBoundary/credentials",
+      "Output": "--- PASS: TestRoleAccessBoundary/credentials (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T17:37:51.002597-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/./pkg/productpaths/policy",
+      "Test": "TestRoleAccessBoundary/credentials",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T17:37:51.0026-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./pkg/productpaths/policy",
+      "Test": "TestRoleAccessBoundary",
+      "Output": "--- PASS: TestRoleAccessBoundary (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T17:37:51.002603-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/./pkg/productpaths/policy",
+      "Test": "TestRoleAccessBoundary",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T17:37:51.002605-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/./pkg/productpaths/policy",
+      "Test": "TestPrivatePOSIXReason"
+    },
+    {
+      "Time": "2026-09-06T17:37:51.002612-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./pkg/productpaths/policy",
+      "Test": "TestPrivatePOSIXReason",
+      "Output": "=== RUN   TestPrivatePOSIXReason\n"
+    },
+    {
+      "Time": "2026-09-06T17:37:51.002615-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/./pkg/productpaths/policy",
+      "Test": "TestPrivatePOSIXReason/private"
+    },
+    {
+      "Time": "2026-09-06T17:37:51.002618-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./pkg/productpaths/policy",
+      "Test": "TestPrivatePOSIXReason/private",
+      "Output": "=== RUN   TestPrivatePOSIXReason/private\n"
+    },
+    {
+      "Time": "2026-09-06T17:37:51.002621-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./pkg/productpaths/policy",
+      "Test": "TestPrivatePOSIXReason/private",
+      "Output": "--- PASS: TestPrivatePOSIXReason/private (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T17:37:51.002623-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/./pkg/productpaths/policy",
+      "Test": "TestPrivatePOSIXReason/private",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T17:37:51.002626-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/./pkg/productpaths/policy",
+      "Test": "TestPrivatePOSIXReason/read-only"
+    },
+    {
+      "Time": "2026-09-06T17:37:51.002628-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./pkg/productpaths/policy",
+      "Test": "TestPrivatePOSIXReason/read-only",
+      "Output": "=== RUN   TestPrivatePOSIXReason/read-only\n"
+    },
+    {
+      "Time": "2026-09-06T17:37:51.002631-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./pkg/productpaths/policy",
+      "Test": "TestPrivatePOSIXReason/read-only",
+      "Output": "--- PASS: TestPrivatePOSIXReason/read-only (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T17:37:51.002634-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/./pkg/productpaths/policy",
+      "Test": "TestPrivatePOSIXReason/read-only",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T17:37:51.002637-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/./pkg/productpaths/policy",
+      "Test": "TestPrivatePOSIXReason/no_owner_access"
+    },
+    {
+      "Time": "2026-09-06T17:37:51.002639-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./pkg/productpaths/policy",
+      "Test": "TestPrivatePOSIXReason/no_owner_access",
+      "Output": "=== RUN   TestPrivatePOSIXReason/no_owner_access\n"
+    },
+    {
+      "Time": "2026-09-06T17:37:51.002643-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./pkg/productpaths/policy",
+      "Test": "TestPrivatePOSIXReason/no_owner_access",
+      "Output": "--- PASS: TestPrivatePOSIXReason/no_owner_access (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T17:37:51.002646-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/./pkg/productpaths/policy",
+      "Test": "TestPrivatePOSIXReason/no_owner_access",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T17:37:51.002648-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/./pkg/productpaths/policy",
+      "Test": "TestPrivatePOSIXReason/group_read"
+    },
+    {
+      "Time": "2026-09-06T17:37:51.00265-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./pkg/productpaths/policy",
+      "Test": "TestPrivatePOSIXReason/group_read",
+      "Output": "=== RUN   TestPrivatePOSIXReason/group_read\n"
+    },
+    {
+      "Time": "2026-09-06T17:37:51.002653-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./pkg/productpaths/policy",
+      "Test": "TestPrivatePOSIXReason/group_read",
+      "Output": "--- PASS: TestPrivatePOSIXReason/group_read (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T17:37:51.002656-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/./pkg/productpaths/policy",
+      "Test": "TestPrivatePOSIXReason/group_read",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T17:37:51.002658-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/./pkg/productpaths/policy",
+      "Test": "TestPrivatePOSIXReason/other_execute"
+    },
+    {
+      "Time": "2026-09-06T17:37:51.002661-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./pkg/productpaths/policy",
+      "Test": "TestPrivatePOSIXReason/other_execute",
+      "Output": "=== RUN   TestPrivatePOSIXReason/other_execute\n"
+    },
+    {
+      "Time": "2026-09-06T17:37:51.002664-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./pkg/productpaths/policy",
+      "Test": "TestPrivatePOSIXReason/other_execute",
+      "Output": "--- PASS: TestPrivatePOSIXReason/other_execute (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T17:37:51.002666-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/./pkg/productpaths/policy",
+      "Test": "TestPrivatePOSIXReason/other_execute",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T17:37:51.002669-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/./pkg/productpaths/policy",
+      "Test": "TestPrivatePOSIXReason/wrong_owner"
+    },
+    {
+      "Time": "2026-09-06T17:37:51.002671-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./pkg/productpaths/policy",
+      "Test": "TestPrivatePOSIXReason/wrong_owner",
+      "Output": "=== RUN   TestPrivatePOSIXReason/wrong_owner\n"
+    },
+    {
+      "Time": "2026-09-06T17:37:51.002674-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./pkg/productpaths/policy",
+      "Test": "TestPrivatePOSIXReason/wrong_owner",
+      "Output": "--- PASS: TestPrivatePOSIXReason/wrong_owner (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T17:37:51.002677-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/./pkg/productpaths/policy",
+      "Test": "TestPrivatePOSIXReason/wrong_owner",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T17:37:51.00268-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/./pkg/productpaths/policy",
+      "Test": "TestPrivatePOSIXReason/unknown_owner"
+    },
+    {
+      "Time": "2026-09-06T17:37:51.002682-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./pkg/productpaths/policy",
+      "Test": "TestPrivatePOSIXReason/unknown_owner",
+      "Output": "=== RUN   TestPrivatePOSIXReason/unknown_owner\n"
+    },
+    {
+      "Time": "2026-09-06T17:37:51.002687-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./pkg/productpaths/policy",
+      "Test": "TestPrivatePOSIXReason/unknown_owner",
+      "Output": "--- PASS: TestPrivatePOSIXReason/unknown_owner (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T17:37:51.00269-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/./pkg/productpaths/policy",
+      "Test": "TestPrivatePOSIXReason/unknown_owner",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T17:37:51.002693-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/./pkg/productpaths/policy",
+      "Test": "TestPrivatePOSIXReason/known_mode_conflict"
+    },
+    {
+      "Time": "2026-09-06T17:37:51.002698-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./pkg/productpaths/policy",
+      "Test": "TestPrivatePOSIXReason/known_mode_conflict",
+      "Output": "=== RUN   TestPrivatePOSIXReason/known_mode_conflict\n"
+    },
+    {
+      "Time": "2026-09-06T17:37:51.002701-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./pkg/productpaths/policy",
+      "Test": "TestPrivatePOSIXReason/known_mode_conflict",
+      "Output": "--- PASS: TestPrivatePOSIXReason/known_mode_conflict (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T17:37:51.002704-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/./pkg/productpaths/policy",
+      "Test": "TestPrivatePOSIXReason/known_mode_conflict",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T17:37:51.002707-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./pkg/productpaths/policy",
+      "Test": "TestPrivatePOSIXReason",
+      "Output": "--- PASS: TestPrivatePOSIXReason (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T17:37:51.002709-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/./pkg/productpaths/policy",
+      "Test": "TestPrivatePOSIXReason",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T17:37:51.002712-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/./pkg/productpaths/policy",
+      "Output": "PASS\n"
+    },
+    {
+      "Time": "2026-09-06T17:37:51.002729-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/./pkg/productpaths/policy",
+      "Elapsed": 0.001
+    }
+  ],
+  "binary_sha256": "9036399150e0e20a467939d20fdadd392503c7780e994b3b985b3fa21be6febf",
+  "state": {
+    "Status": "exited",
+    "Running": false,
+    "Paused": false,
+    "Restarting": false,
+    "OOMKilled": false,
+    "Dead": false,
+    "Pid": 0,
+    "ExitCode": 0,
+    "Error": "",
+    "StartedAt": "2026-09-06T22:37:50.676744542Z",
+    "FinishedAt": "2026-09-06T22:37:50.790612792Z"
+  },
+  "conversion_exit_code": 0,
+  "counts": {
+    "pass": 21,
+    "fail": 0,
+    "skip": 0
+  },
+  "passed": true,
+  "container_removed": true,
+  "volume_removed": true
+}

@@ -1,0 +1,60 @@
+{
+  "scope": "Final plan audit. No implementation acceptance credit.",
+  "verdict": "CHANGES_REQUIRED",
+  "new_findings": 0,
+  "closed_findings": 0,
+  "open_findings": {
+    "P1": [
+      "CA01",
+      "CA02",
+      "CA03"
+    ],
+    "P2": [
+      "CA04",
+      "CA05",
+      "CA06",
+      "CA07"
+    ]
+  },
+  "canonical_artifacts_changed": false,
+  "plan_status": "proposed",
+  "tasks": 38,
+  "primary_cases": 50,
+  "required_subcases": 309,
+  "frozen_inputs_unchanged": 54,
+  "historical_files_unchanged": 57,
+  "report_links_passed": 13,
+  "source_hash_checks": {
+    "latency_evidence": 20,
+    "additional_review_evidence": 7
+  },
+  "implementation_tests_run": 0,
+  "writing": {
+    "new_report": "PASS",
+    "repository": "FAIL",
+    "historical_diagnostics": 3,
+    "files_checked": 760
+  },
+  "checks": {
+    "structural": "structural-check.json",
+    "semantic_and_source": "rechecks.json",
+    "markdown": "markdown-check.json",
+    "report_and_git": "report-checks.json",
+    "writing": "writing-checks.json"
+  },
+  "proof_sha256": {
+    "FINAL_REVIEW.md": "98b5ecfb728db096d73f9e5ea8aa63317736b9e79c64066b66f5e5be4cdab7e2",
+    "input-manifest.json": "95cd1aafe2e383ca3940e761fd6b5b0a6d5a247279c856afb4c9f7a716682a93",
+    "markdown-check.json": "fce7163ebeb62e81a55773a956126b75f015f4d1238ae5d5584fcbeefe335fc8",
+    "rechecks.json": "c38a2706f9bb195dd5e21a2e1d1820c6e3b1fb0c2519444cd1e237a9713c048e",
+    "report-checks.json": "888ef8e6018269932f595ea09a08231ccbb8917f3c7658d4632201aefa9cbf38",
+    "structural-check.json": "f5cc6e2334c4198e7513e0897c5a9b9c911c6daefd50f022c46c30eccb7743fe",
+    "writing-checks.json": "9256bdc9fb4f5c1d66a7e70822c60cc680d9c404c1455719030c13204ac6ab16"
+  },
+  "limitations": [
+    "No production acceptance tests executed.",
+    "No live provider requests, native installations, backend failover, or live accessibility session.",
+    "Historical benchmark toolchain identity remains unresolved.",
+    "D6, D7, D11, D15, and declared release-profile choices retain their existing review gates."
+  ]
+}

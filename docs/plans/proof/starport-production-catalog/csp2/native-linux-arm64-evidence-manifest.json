@@ -1,0 +1,38 @@
+{
+  "recorded_at": "2026-09-06T18:02:12.752877+00:00",
+  "scope": "Post-run evidence and document snapshot. Does not establish a pre-build source manifest.",
+  "repositories": [
+    {
+      "root": "/Users/jack/src/github.com/agentstation/starmap-catalog-requirements",
+      "head": "4780dfea9f7e002ea6eaaa82aa8f52ed0d4cc225",
+      "branch": "codex/catalog-requirements",
+      "dirty_entries": 791
+    },
+    {
+      "root": "/Users/jack/src/github.com/agentstation/starport-catalog-lifecycle",
+      "head": "042eb97851496ecdd1ef20bfa44fe3d84b86b2d8",
+      "branch": "codex/catalog-lifecycle",
+      "dirty_entries": 22
+    }
+  ],
+  "files": {
+    "docs/plans/starport-production-catalog-plan.html": "1e9a4795303f9233704e2bd6ebbe777daf90205e09305b224f2910f9edd2ed18",
+    "docs/design/catalog-lifecycle/ENGINEERING_SPEC.md": "20af214628b28c631cf01a328106b681d7a71a40fe865bbffbe3e47150cd1ed5",
+    "docs/design/catalog-lifecycle/REPOSITORY_FINDINGS.md": "01004dbd9a2940e5bf36b50e61e1fb9102c1ba0584c1c5670f703fbc0e3b646b",
+    "docs/plans/proof/starport-production-catalog/csp2.md": "fb7d5656c411daed15dcc25de9e211bd0dcbec793a0067c895a83b3dacf49f74",
+    "docs/plans/proof/starport-production-catalog/csp2/native-linux-suites.py": "52414a043fce4d00e332e3457f89070423e56d508c9240933782f1e3c25b345e",
+    "docs/plans/proof/starport-production-catalog/csp2/native-linux-arm64-audit.json": "2ef9df73ea9f69c8526c34488b49d6e4291b579e48498b9df9fb639f6fc45dec",
+    "docs/plans/proof/starport-production-catalog/csp2/native-linux-arm64/engine.json": "02c551c482abb63fa88f75b107366e679953327bc61c22f2bbfe5766ed85848c",
+    "docs/plans/proof/starport-production-catalog/csp2/native-linux-arm64/internal-bootstrap.json": "f3196bc62bcbff97e7c2a793fbfbbe1a1b3bcc633eebeede0cf1e3363f5f0524",
+    "docs/plans/proof/starport-production-catalog/csp2/native-linux-arm64/internal-catalog-workspace.json": "108f43debdb5ce42a55b6dd63b3838975adffb641168d0fab741cdbaf636ff2c",
+    "docs/plans/proof/starport-production-catalog/csp2/native-linux-arm64/internal-cli-app.json": "fecb2a5e2a89d6ce80ddc86061355d56cb6746e9abcfe29f6570deac0a688293",
+    "docs/plans/proof/starport-production-catalog/csp2/native-linux-arm64/internal-filepublish.json": "f492288f88aa1615eb61d7fd7d844f03aeec764aa2cd9f3f7b38a6ad7ef848d1",
+    "docs/plans/proof/starport-production-catalog/csp2/native-linux-arm64/internal-privatefiles.json": "20273febaa9e938ea63c16f6b8d139593c0779e00ffb96c105a19226a6eec96e",
+    "docs/plans/proof/starport-production-catalog/csp2/native-linux-arm64/internal-runtimeacl-windows.json": "693944d43285c21a9075ad19cae2ef2339a6a0874d9f3608a6fe9d65f18e1552",
+    "docs/plans/proof/starport-production-catalog/csp2/native-linux-arm64/internal-sources-github.json": "223973eaad2adb9fd1b93b7c50d24f490a922b52f573bf48dae537186de7a256",
+    "docs/plans/proof/starport-production-catalog/csp2/native-linux-arm64/pkg-catalogs-storage.json": "7113ac2760c47472b28bb7ab0bd8a1462ee92eea0d2209438d4d670c349962eb",
+    "docs/plans/proof/starport-production-catalog/csp2/native-linux-arm64/pkg-productpaths.json": "a73cb1a8a7eb2cf8872eb7e3fbafc6f689e62b4b6e8b0b74d1833ffa5e32bfb2",
+    "docs/plans/proof/starport-production-catalog/csp2/native-linux-arm64/runtime.json": "29705fbc8cb0d7b088e0fa64c3c87f49821d192d09cf711c680fc60e107e1cab",
+    "docs/plans/proof/starport-production-catalog/csp2/native-linux-arm64/summary.json": "bd2277f3a3b9b95734f037e10ca7ff8687a03f4c970b10343a287b597fce74b6"
+  }
+}

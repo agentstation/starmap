@@ -1,0 +1,17 @@
+{"level":"info","provider_count":1,"time":"2026-09-07T03:51:53-05:00","message":"Filtered providers by primary source"}
+{"level":"info","provider_count":2,"time":"2026-09-07T03:51:53-05:00","message":"Filtered providers by primary source"}
+{"level":"info","provider_count":2,"time":"2026-09-07T03:51:55-05:00","message":"Filtered providers by primary source"}
+{"level":"info","provider_count":2,"time":"2026-09-07T03:51:57-05:00","message":"Filtered providers by primary source"}
+--- FAIL: TestRuntimePublicationRetainsEachProviderReceiptAcrossRestart (3.81s)
+    --- FAIL: TestRuntimePublicationRetainsEachProviderReceiptAcrossRestart/legacy (1.70s)
+        reconciliation_test.go:144: model model-one inherited a peer receipt: []provenance.Entry(nil)
+    --- FAIL: TestRuntimePublicationRetainsEachProviderReceiptAcrossRestart/bound (2.11s)
+        reconciliation_test.go:144: model model-one inherited a peer receipt: []provenance.Entry(nil)
+{"level":"info","provider_count":3,"time":"2026-09-07T03:51:58-05:00","message":"Filtered providers by primary source"}
+{"level":"warn","issue_code":"unresolved_model_reference","provider_id":"provider-authored","provider_model_id":"unreviewed","time":"2026-09-07T03:51:58-05:00","message":"provider offering has no explicit canonical model reference and was quarantined"}
+{"level":"warn","issue_code":"unresolved_model_reference","provider_id":"unlinked-one","provider_model_id":"unknown-one","time":"2026-09-07T03:51:58-05:00","message":"provider offering has no explicit canonical model reference and was quarantined"}
+{"level":"warn","issue_code":"unresolved_model_reference","provider_id":"unlinked-two","provider_model_id":"unknown-two","time":"2026-09-07T03:51:58-05:00","message":"provider offering has no explicit canonical model reference and was quarantined"}
+FAIL
+FAIL	github.com/agentstation/starmap/runtime	8.964s
+ok  	github.com/agentstation/starmap/acquisition	8.802s
+FAIL

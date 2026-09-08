@@ -1,0 +1,13 @@
+{
+  "command": [
+    "docker",
+    "image",
+    "inspect",
+    "sha256:1e89a73dddc6822be200bb954d57721c6efb75fe8c64fca9095e5063423d9dfb",
+    "--format",
+    "{{.Os}} {{.Architecture}} {{.Id}}"
+  ],
+  "exit_code": 0,
+  "stdout": "linux arm64 sha256:1e89a73dddc6822be200bb954d57721c6efb75fe8c64fca9095e5063423d9dfb\n",
+  "stderr": ""
+}

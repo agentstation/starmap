@@ -1,0 +1,728 @@
+{
+  "package": "internal/privatefiles",
+  "race": false,
+  "toolchain": "go1.25.12",
+  "commands": [
+    {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.25.12",
+        "GOOS=linux",
+        "GOARCH=arm64",
+        "CGO_ENABLED=0",
+        "go",
+        "test",
+        "-c",
+        "-o",
+        "/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/csp2-native-build-jbcsmho3/test",
+        "./internal/privatefiles"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "docker",
+        "volume",
+        "create",
+        "--label",
+        "purpose=csp2-native-package-verification",
+        "csp2-native-2e31791f86c54d48949f6d71d632a325"
+      ],
+      "exit_code": 0,
+      "stdout": "csp2-native-2e31791f86c54d48949f6d71d632a325\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "docker",
+        "create",
+        "--pull=never",
+        "--network",
+        "none",
+        "--read-only",
+        "--user",
+        "65532:65532",
+        "--cap-drop=ALL",
+        "--security-opt=no-new-privileges",
+        "--mount",
+        "type=bind,src=/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/csp2-native-build-jbcsmho3/test,dst=/native-test,readonly",
+        "--mount",
+        "type=bind,src=/Users/jack/src/github.com/agentstation/starmap-catalog-requirements,dst=/Users/jack/src/github.com/agentstation/starmap-catalog-requirements,readonly",
+        "--mount",
+        "type=volume,src=csp2-native-2e31791f86c54d48949f6d71d632a325,dst=/home/nonroot",
+        "--env",
+        "TMPDIR=/home/nonroot",
+        "--env",
+        "GOMAXPROCS=4",
+        "--workdir",
+        "/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/internal/privatefiles",
+        "--entrypoint",
+        "/native-test",
+        "cgr.dev/chainguard/static@sha256:60582b2ae6074f641094af0f370d4ab241aab271858a66223dcde7eee9f51638",
+        "-test.v=test2json",
+        "-test.count=1",
+        "-test.parallel=4",
+        "-test.timeout=10m"
+      ],
+      "exit_code": 0,
+      "stdout": "5ae45273fac522141cbedefbf1a1ff6baad0e2e272baf4d4896f1056f4b7ed13\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "docker",
+        "start",
+        "--attach",
+        "5ae45273fac522141cbedefbf1a1ff6baad0e2e272baf4d4896f1056f4b7ed13"
+      ],
+      "exit_code": 0,
+      "stdout": "\u0016=== RUN   TestPrivateCreationPreservesTrustedAncestorLayouts\n\u0016=== RUN   TestPrivateCreationPreservesTrustedAncestorLayouts/-rwx------\n\u0016--- PASS: TestPrivateCreationPreservesTrustedAncestorLayouts/-rwx------ (0.00s)\n\u0016=== NAME  TestPrivateCreationPreservesTrustedAncestorLayouts\n\u0016=== RUN   TestPrivateCreationPreservesTrustedAncestorLayouts/-rwxr-xr-x\n\u0016--- PASS: TestPrivateCreationPreservesTrustedAncestorLayouts/-rwxr-xr-x (0.00s)\n\u0016=== NAME  TestPrivateCreationPreservesTrustedAncestorLayouts\n\u0016=== RUN   TestPrivateCreationPreservesTrustedAncestorLayouts/trwxrwxrwx\n\u0016--- PASS: TestPrivateCreationPreservesTrustedAncestorLayouts/trwxrwxrwx (0.00s)\n\u0016=== NAME  TestPrivateCreationPreservesTrustedAncestorLayouts\n\u0016--- PASS: TestPrivateCreationPreservesTrustedAncestorLayouts (0.00s)\n\u0016=== NAME  \n\u0016=== RUN   TestPrivateCreationChecksSymlinkTargetAncestors\n\u0016--- PASS: TestPrivateCreationChecksSymlinkTargetAncestors (0.00s)\n\u0016=== NAME  \n\u0016=== RUN   TestPrivateCreationRefusesReplacedChildBeforeDescent\n\u0016--- PASS: TestPrivateCreationRefusesReplacedChildBeforeDescent (0.00s)\n\u0016=== NAME  \n\u0016=== RUN   TestPrivatePublicationRechecksAncestorAccess\n\u0016--- PASS: TestPrivatePublicationRechecksAncestorAccess (0.01s)\n\u0016=== NAME  \n\u0016=== RUN   TestPrivateRecordsRefuseWritableAncestorsBeforeAccess\n\u0016=== RUN   TestPrivateRecordsRefuseWritableAncestorsBeforeAccess/create\n\u0016--- PASS: TestPrivateRecordsRefuseWritableAncestorsBeforeAccess/create (0.01s)\n\u0016=== NAME  TestPrivateRecordsRefuseWritableAncestorsBeforeAccess\n\u0016=== RUN   TestPrivateRecordsRefuseWritableAncestorsBeforeAccess/bind\n\u0016--- PASS: TestPrivateRecordsRefuseWritableAncestorsBeforeAccess/bind (0.00s)\n\u0016=== NAME  TestPrivateRecordsRefuseWritableAncestorsBeforeAccess\n\u0016=== RUN   TestPrivateRecordsRefuseWritableAncestorsBeforeAccess/read\n\u0016--- PASS: TestPrivateRecordsRefuseWritableAncestorsBeforeAccess/read (0.00s)\n\u0016=== NAME  TestPrivateRecordsRefuseWritableAncestorsBeforeAccess\n\u0016=== RUN   TestPrivateRecordsRefuseWritableAncestorsBeforeAccess/write\n\u0016--- PASS: TestPrivateRecordsRefuseWritableAncestorsBeforeAccess/write (0.00s)\n\u0016=== NAME  TestPrivateRecordsRefuseWritableAncestorsBeforeAccess\n\u0016--- PASS: TestPrivateRecordsRefuseWritableAncestorsBeforeAccess (0.02s)\n\u0016=== NAME  \n\u0016=== RUN   TestPrivateRecordsRefuseExposedFilesWithoutRepair\n\u0016--- PASS: TestPrivateRecordsRefuseExposedFilesWithoutRepair (0.01s)\n\u0016=== NAME  \n\u0016=== RUN   TestPrivateRecordsRefuseLinksAndSpecialFiles\n\u0016--- PASS: TestPrivateRecordsRefuseLinksAndSpecialFiles (0.00s)\n\u0016=== NAME  \n\u0016=== RUN   TestPrivateRecordsPreserveOtherFilesAndBoundReads\n\u0016--- PASS: TestPrivateRecordsPreserveOtherFilesAndBoundReads (0.02s)\n\u0016=== NAME  \n\u0016=== RUN   TestPrivateDirectoryRefusesPathReplacement\n\u0016--- PASS: TestPrivateDirectoryRefusesPathReplacement (0.00s)\n\u0016=== NAME  \n\u0016=== RUN   TestPrivateDirectoryPassiveBindingAndChildCreation\n\u0016--- PASS: TestPrivateDirectoryPassiveBindingAndChildCreation (0.00s)\n\u0016=== NAME  \n\u0016=== RUN   TestPrivateDirectoryAbsenceIsNotAnAbsentRecord\n\u0016--- PASS: TestPrivateDirectoryAbsenceIsNotAnAbsentRecord (0.00s)\n\u0016=== NAME  \n\u0016=== RUN   TestPrivatePublicationPreservesCompetingFiles\n\u0016=== RUN   TestPrivatePublicationPreservesCompetingFiles/destination\n\u0016--- PASS: TestPrivatePublicationPreservesCompetingFiles/destination (0.00s)\n\u0016=== NAME  TestPrivatePublicationPreservesCompetingFiles\n\u0016=== RUN   TestPrivatePublicationPreservesCompetingFiles/staging\n\u0016--- PASS: TestPrivatePublicationPreservesCompetingFiles/staging (0.01s)\n\u0016=== NAME  TestPrivatePublicationPreservesCompetingFiles\n\u0016--- PASS: TestPrivatePublicationPreservesCompetingFiles (0.01s)\n\u0016=== NAME  \n\u0016PASS\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "docker",
+        "inspect",
+        "--format",
+        "{{json .State}}",
+        "5ae45273fac522141cbedefbf1a1ff6baad0e2e272baf4d4896f1056f4b7ed13"
+      ],
+      "exit_code": 0,
+      "stdout": "{\"Status\":\"exited\",\"Running\":false,\"Paused\":false,\"Restarting\":false,\"OOMKilled\":false,\"Dead\":false,\"Pid\":0,\"ExitCode\":0,\"Error\":\"\",\"StartedAt\":\"2026-09-06T19:36:31.433466584Z\",\"FinishedAt\":\"2026-09-06T19:36:31.605395125Z\"}\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "docker",
+        "rm",
+        "-f",
+        "5ae45273fac522141cbedefbf1a1ff6baad0e2e272baf4d4896f1056f4b7ed13"
+      ],
+      "exit_code": 0,
+      "stdout": "5ae45273fac522141cbedefbf1a1ff6baad0e2e272baf4d4896f1056f4b7ed13\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "docker",
+        "volume",
+        "rm",
+        "csp2-native-2e31791f86c54d48949f6d71d632a325"
+      ],
+      "exit_code": 0,
+      "stdout": "csp2-native-2e31791f86c54d48949f6d71d632a325\n",
+      "stderr": ""
+    }
+  ],
+  "test_events": [
+    {
+      "Time": "2026-09-06T14:36:31.947409-05:00",
+      "Action": "start",
+      "Package": "github.com/agentstation/starmap/internal/privatefiles"
+    },
+    {
+      "Time": "2026-09-06T14:36:31.9476-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/privatefiles",
+      "Test": "TestPrivateCreationPreservesTrustedAncestorLayouts"
+    },
+    {
+      "Time": "2026-09-06T14:36:31.947603-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/privatefiles",
+      "Test": "TestPrivateCreationPreservesTrustedAncestorLayouts",
+      "Output": "=== RUN   TestPrivateCreationPreservesTrustedAncestorLayouts\n"
+    },
+    {
+      "Time": "2026-09-06T14:36:31.947607-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/privatefiles",
+      "Test": "TestPrivateCreationPreservesTrustedAncestorLayouts/-rwx------"
+    },
+    {
+      "Time": "2026-09-06T14:36:31.947609-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/privatefiles",
+      "Test": "TestPrivateCreationPreservesTrustedAncestorLayouts/-rwx------",
+      "Output": "=== RUN   TestPrivateCreationPreservesTrustedAncestorLayouts/-rwx------\n"
+    },
+    {
+      "Time": "2026-09-06T14:36:31.947623-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/privatefiles",
+      "Test": "TestPrivateCreationPreservesTrustedAncestorLayouts/-rwx------",
+      "Output": "--- PASS: TestPrivateCreationPreservesTrustedAncestorLayouts/-rwx------ (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T14:36:31.947626-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/privatefiles",
+      "Test": "TestPrivateCreationPreservesTrustedAncestorLayouts/-rwx------",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T14:36:31.94763-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/privatefiles",
+      "Test": "TestPrivateCreationPreservesTrustedAncestorLayouts/-rwxr-xr-x"
+    },
+    {
+      "Time": "2026-09-06T14:36:31.947631-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/privatefiles",
+      "Test": "TestPrivateCreationPreservesTrustedAncestorLayouts/-rwxr-xr-x",
+      "Output": "=== RUN   TestPrivateCreationPreservesTrustedAncestorLayouts/-rwxr-xr-x\n"
+    },
+    {
+      "Time": "2026-09-06T14:36:31.947633-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/privatefiles",
+      "Test": "TestPrivateCreationPreservesTrustedAncestorLayouts/-rwxr-xr-x",
+      "Output": "--- PASS: TestPrivateCreationPreservesTrustedAncestorLayouts/-rwxr-xr-x (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T14:36:31.947634-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/privatefiles",
+      "Test": "TestPrivateCreationPreservesTrustedAncestorLayouts/-rwxr-xr-x",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T14:36:31.947635-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/privatefiles",
+      "Test": "TestPrivateCreationPreservesTrustedAncestorLayouts/trwxrwxrwx"
+    },
+    {
+      "Time": "2026-09-06T14:36:31.947636-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/privatefiles",
+      "Test": "TestPrivateCreationPreservesTrustedAncestorLayouts/trwxrwxrwx",
+      "Output": "=== RUN   TestPrivateCreationPreservesTrustedAncestorLayouts/trwxrwxrwx\n"
+    },
+    {
+      "Time": "2026-09-06T14:36:31.947638-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/privatefiles",
+      "Test": "TestPrivateCreationPreservesTrustedAncestorLayouts/trwxrwxrwx",
+      "Output": "--- PASS: TestPrivateCreationPreservesTrustedAncestorLayouts/trwxrwxrwx (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T14:36:31.947639-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/privatefiles",
+      "Test": "TestPrivateCreationPreservesTrustedAncestorLayouts/trwxrwxrwx",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T14:36:31.947642-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/privatefiles",
+      "Test": "TestPrivateCreationPreservesTrustedAncestorLayouts",
+      "Output": "--- PASS: TestPrivateCreationPreservesTrustedAncestorLayouts (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T14:36:31.947643-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/privatefiles",
+      "Test": "TestPrivateCreationPreservesTrustedAncestorLayouts",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T14:36:31.947644-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/privatefiles",
+      "Test": "TestPrivateCreationChecksSymlinkTargetAncestors"
+    },
+    {
+      "Time": "2026-09-06T14:36:31.947645-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/privatefiles",
+      "Test": "TestPrivateCreationChecksSymlinkTargetAncestors",
+      "Output": "=== RUN   TestPrivateCreationChecksSymlinkTargetAncestors\n"
+    },
+    {
+      "Time": "2026-09-06T14:36:31.947647-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/privatefiles",
+      "Test": "TestPrivateCreationChecksSymlinkTargetAncestors",
+      "Output": "--- PASS: TestPrivateCreationChecksSymlinkTargetAncestors (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T14:36:31.947648-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/privatefiles",
+      "Test": "TestPrivateCreationChecksSymlinkTargetAncestors",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T14:36:31.947649-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/privatefiles",
+      "Test": "TestPrivateCreationRefusesReplacedChildBeforeDescent"
+    },
+    {
+      "Time": "2026-09-06T14:36:31.947651-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/privatefiles",
+      "Test": "TestPrivateCreationRefusesReplacedChildBeforeDescent",
+      "Output": "=== RUN   TestPrivateCreationRefusesReplacedChildBeforeDescent\n"
+    },
+    {
+      "Time": "2026-09-06T14:36:31.947653-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/privatefiles",
+      "Test": "TestPrivateCreationRefusesReplacedChildBeforeDescent",
+      "Output": "--- PASS: TestPrivateCreationRefusesReplacedChildBeforeDescent (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T14:36:31.947655-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/privatefiles",
+      "Test": "TestPrivateCreationRefusesReplacedChildBeforeDescent",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T14:36:31.947657-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/privatefiles",
+      "Test": "TestPrivatePublicationRechecksAncestorAccess"
+    },
+    {
+      "Time": "2026-09-06T14:36:31.948957-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/privatefiles",
+      "Test": "TestPrivatePublicationRechecksAncestorAccess",
+      "Output": "=== RUN   TestPrivatePublicationRechecksAncestorAccess\n"
+    },
+    {
+      "Time": "2026-09-06T14:36:31.948968-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/privatefiles",
+      "Test": "TestPrivatePublicationRechecksAncestorAccess",
+      "Output": "--- PASS: TestPrivatePublicationRechecksAncestorAccess (0.01s)\n"
+    },
+    {
+      "Time": "2026-09-06T14:36:31.948973-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/privatefiles",
+      "Test": "TestPrivatePublicationRechecksAncestorAccess",
+      "Elapsed": 0.01
+    },
+    {
+      "Time": "2026-09-06T14:36:31.948976-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/privatefiles",
+      "Test": "TestPrivateRecordsRefuseWritableAncestorsBeforeAccess"
+    },
+    {
+      "Time": "2026-09-06T14:36:31.948977-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/privatefiles",
+      "Test": "TestPrivateRecordsRefuseWritableAncestorsBeforeAccess",
+      "Output": "=== RUN   TestPrivateRecordsRefuseWritableAncestorsBeforeAccess\n"
+    },
+    {
+      "Time": "2026-09-06T14:36:31.948979-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/privatefiles",
+      "Test": "TestPrivateRecordsRefuseWritableAncestorsBeforeAccess/create"
+    },
+    {
+      "Time": "2026-09-06T14:36:31.948989-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/privatefiles",
+      "Test": "TestPrivateRecordsRefuseWritableAncestorsBeforeAccess/create",
+      "Output": "=== RUN   TestPrivateRecordsRefuseWritableAncestorsBeforeAccess/create\n"
+    },
+    {
+      "Time": "2026-09-06T14:36:31.948992-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/privatefiles",
+      "Test": "TestPrivateRecordsRefuseWritableAncestorsBeforeAccess/create",
+      "Output": "--- PASS: TestPrivateRecordsRefuseWritableAncestorsBeforeAccess/create (0.01s)\n"
+    },
+    {
+      "Time": "2026-09-06T14:36:31.948994-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/privatefiles",
+      "Test": "TestPrivateRecordsRefuseWritableAncestorsBeforeAccess/create",
+      "Elapsed": 0.01
+    },
+    {
+      "Time": "2026-09-06T14:36:31.948999-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/privatefiles",
+      "Test": "TestPrivateRecordsRefuseWritableAncestorsBeforeAccess/bind"
+    },
+    {
+      "Time": "2026-09-06T14:36:31.949001-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/privatefiles",
+      "Test": "TestPrivateRecordsRefuseWritableAncestorsBeforeAccess/bind",
+      "Output": "=== RUN   TestPrivateRecordsRefuseWritableAncestorsBeforeAccess/bind\n"
+    },
+    {
+      "Time": "2026-09-06T14:36:31.949003-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/privatefiles",
+      "Test": "TestPrivateRecordsRefuseWritableAncestorsBeforeAccess/bind",
+      "Output": "--- PASS: TestPrivateRecordsRefuseWritableAncestorsBeforeAccess/bind (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T14:36:31.949004-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/privatefiles",
+      "Test": "TestPrivateRecordsRefuseWritableAncestorsBeforeAccess/bind",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T14:36:31.949005-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/privatefiles",
+      "Test": "TestPrivateRecordsRefuseWritableAncestorsBeforeAccess/read"
+    },
+    {
+      "Time": "2026-09-06T14:36:31.949006-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/privatefiles",
+      "Test": "TestPrivateRecordsRefuseWritableAncestorsBeforeAccess/read",
+      "Output": "=== RUN   TestPrivateRecordsRefuseWritableAncestorsBeforeAccess/read\n"
+    },
+    {
+      "Time": "2026-09-06T14:36:31.949008-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/privatefiles",
+      "Test": "TestPrivateRecordsRefuseWritableAncestorsBeforeAccess/read",
+      "Output": "--- PASS: TestPrivateRecordsRefuseWritableAncestorsBeforeAccess/read (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T14:36:31.949009-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/privatefiles",
+      "Test": "TestPrivateRecordsRefuseWritableAncestorsBeforeAccess/read",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T14:36:31.94901-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/privatefiles",
+      "Test": "TestPrivateRecordsRefuseWritableAncestorsBeforeAccess/write"
+    },
+    {
+      "Time": "2026-09-06T14:36:31.949011-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/privatefiles",
+      "Test": "TestPrivateRecordsRefuseWritableAncestorsBeforeAccess/write",
+      "Output": "=== RUN   TestPrivateRecordsRefuseWritableAncestorsBeforeAccess/write\n"
+    },
+    {
+      "Time": "2026-09-06T14:36:31.949013-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/privatefiles",
+      "Test": "TestPrivateRecordsRefuseWritableAncestorsBeforeAccess/write",
+      "Output": "--- PASS: TestPrivateRecordsRefuseWritableAncestorsBeforeAccess/write (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T14:36:31.949015-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/privatefiles",
+      "Test": "TestPrivateRecordsRefuseWritableAncestorsBeforeAccess/write",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T14:36:31.949017-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/privatefiles",
+      "Test": "TestPrivateRecordsRefuseWritableAncestorsBeforeAccess",
+      "Output": "--- PASS: TestPrivateRecordsRefuseWritableAncestorsBeforeAccess (0.02s)\n"
+    },
+    {
+      "Time": "2026-09-06T14:36:31.949018-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/privatefiles",
+      "Test": "TestPrivateRecordsRefuseWritableAncestorsBeforeAccess",
+      "Elapsed": 0.02
+    },
+    {
+      "Time": "2026-09-06T14:36:31.949019-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/privatefiles",
+      "Test": "TestPrivateRecordsRefuseExposedFilesWithoutRepair"
+    },
+    {
+      "Time": "2026-09-06T14:36:31.949023-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/privatefiles",
+      "Test": "TestPrivateRecordsRefuseExposedFilesWithoutRepair",
+      "Output": "=== RUN   TestPrivateRecordsRefuseExposedFilesWithoutRepair\n"
+    },
+    {
+      "Time": "2026-09-06T14:36:31.949025-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/privatefiles",
+      "Test": "TestPrivateRecordsRefuseExposedFilesWithoutRepair",
+      "Output": "--- PASS: TestPrivateRecordsRefuseExposedFilesWithoutRepair (0.01s)\n"
+    },
+    {
+      "Time": "2026-09-06T14:36:31.949026-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/privatefiles",
+      "Test": "TestPrivateRecordsRefuseExposedFilesWithoutRepair",
+      "Elapsed": 0.01
+    },
+    {
+      "Time": "2026-09-06T14:36:31.949027-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/privatefiles",
+      "Test": "TestPrivateRecordsRefuseLinksAndSpecialFiles"
+    },
+    {
+      "Time": "2026-09-06T14:36:31.949029-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/privatefiles",
+      "Test": "TestPrivateRecordsRefuseLinksAndSpecialFiles",
+      "Output": "=== RUN   TestPrivateRecordsRefuseLinksAndSpecialFiles\n"
+    },
+    {
+      "Time": "2026-09-06T14:36:31.94903-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/privatefiles",
+      "Test": "TestPrivateRecordsRefuseLinksAndSpecialFiles",
+      "Output": "--- PASS: TestPrivateRecordsRefuseLinksAndSpecialFiles (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T14:36:31.949031-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/privatefiles",
+      "Test": "TestPrivateRecordsRefuseLinksAndSpecialFiles",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T14:36:31.949032-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/privatefiles",
+      "Test": "TestPrivateRecordsPreserveOtherFilesAndBoundReads"
+    },
+    {
+      "Time": "2026-09-06T14:36:31.949034-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/privatefiles",
+      "Test": "TestPrivateRecordsPreserveOtherFilesAndBoundReads",
+      "Output": "=== RUN   TestPrivateRecordsPreserveOtherFilesAndBoundReads\n"
+    },
+    {
+      "Time": "2026-09-06T14:36:31.949035-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/privatefiles",
+      "Test": "TestPrivateRecordsPreserveOtherFilesAndBoundReads",
+      "Output": "--- PASS: TestPrivateRecordsPreserveOtherFilesAndBoundReads (0.02s)\n"
+    },
+    {
+      "Time": "2026-09-06T14:36:31.949036-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/privatefiles",
+      "Test": "TestPrivateRecordsPreserveOtherFilesAndBoundReads",
+      "Elapsed": 0.02
+    },
+    {
+      "Time": "2026-09-06T14:36:31.949037-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/privatefiles",
+      "Test": "TestPrivateDirectoryRefusesPathReplacement"
+    },
+    {
+      "Time": "2026-09-06T14:36:31.94904-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/privatefiles",
+      "Test": "TestPrivateDirectoryRefusesPathReplacement",
+      "Output": "=== RUN   TestPrivateDirectoryRefusesPathReplacement\n"
+    },
+    {
+      "Time": "2026-09-06T14:36:31.949041-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/privatefiles",
+      "Test": "TestPrivateDirectoryRefusesPathReplacement",
+      "Output": "--- PASS: TestPrivateDirectoryRefusesPathReplacement (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T14:36:31.949042-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/privatefiles",
+      "Test": "TestPrivateDirectoryRefusesPathReplacement",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T14:36:31.949043-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/privatefiles",
+      "Test": "TestPrivateDirectoryPassiveBindingAndChildCreation"
+    },
+    {
+      "Time": "2026-09-06T14:36:31.949044-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/privatefiles",
+      "Test": "TestPrivateDirectoryPassiveBindingAndChildCreation",
+      "Output": "=== RUN   TestPrivateDirectoryPassiveBindingAndChildCreation\n"
+    },
+    {
+      "Time": "2026-09-06T14:36:31.949046-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/privatefiles",
+      "Test": "TestPrivateDirectoryPassiveBindingAndChildCreation",
+      "Output": "--- PASS: TestPrivateDirectoryPassiveBindingAndChildCreation (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T14:36:31.949047-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/privatefiles",
+      "Test": "TestPrivateDirectoryPassiveBindingAndChildCreation",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T14:36:31.949048-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/privatefiles",
+      "Test": "TestPrivateDirectoryAbsenceIsNotAnAbsentRecord"
+    },
+    {
+      "Time": "2026-09-06T14:36:31.949049-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/privatefiles",
+      "Test": "TestPrivateDirectoryAbsenceIsNotAnAbsentRecord",
+      "Output": "=== RUN   TestPrivateDirectoryAbsenceIsNotAnAbsentRecord\n"
+    },
+    {
+      "Time": "2026-09-06T14:36:31.949051-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/privatefiles",
+      "Test": "TestPrivateDirectoryAbsenceIsNotAnAbsentRecord",
+      "Output": "--- PASS: TestPrivateDirectoryAbsenceIsNotAnAbsentRecord (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T14:36:31.949052-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/privatefiles",
+      "Test": "TestPrivateDirectoryAbsenceIsNotAnAbsentRecord",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T14:36:31.949053-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/privatefiles",
+      "Test": "TestPrivatePublicationPreservesCompetingFiles"
+    },
+    {
+      "Time": "2026-09-06T14:36:31.949054-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/privatefiles",
+      "Test": "TestPrivatePublicationPreservesCompetingFiles",
+      "Output": "=== RUN   TestPrivatePublicationPreservesCompetingFiles\n"
+    },
+    {
+      "Time": "2026-09-06T14:36:31.949056-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/privatefiles",
+      "Test": "TestPrivatePublicationPreservesCompetingFiles/destination"
+    },
+    {
+      "Time": "2026-09-06T14:36:31.949057-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/privatefiles",
+      "Test": "TestPrivatePublicationPreservesCompetingFiles/destination",
+      "Output": "=== RUN   TestPrivatePublicationPreservesCompetingFiles/destination\n"
+    },
+    {
+      "Time": "2026-09-06T14:36:31.949058-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/privatefiles",
+      "Test": "TestPrivatePublicationPreservesCompetingFiles/destination",
+      "Output": "--- PASS: TestPrivatePublicationPreservesCompetingFiles/destination (0.00s)\n"
+    },
+    {
+      "Time": "2026-09-06T14:36:31.949059-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/privatefiles",
+      "Test": "TestPrivatePublicationPreservesCompetingFiles/destination",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-09-06T14:36:31.94906-05:00",
+      "Action": "run",
+      "Package": "github.com/agentstation/starmap/internal/privatefiles",
+      "Test": "TestPrivatePublicationPreservesCompetingFiles/staging"
+    },
+    {
+      "Time": "2026-09-06T14:36:31.949061-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/privatefiles",
+      "Test": "TestPrivatePublicationPreservesCompetingFiles/staging",
+      "Output": "=== RUN   TestPrivatePublicationPreservesCompetingFiles/staging\n"
+    },
+    {
+      "Time": "2026-09-06T14:36:31.949063-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/privatefiles",
+      "Test": "TestPrivatePublicationPreservesCompetingFiles/staging",
+      "Output": "--- PASS: TestPrivatePublicationPreservesCompetingFiles/staging (0.01s)\n"
+    },
+    {
+      "Time": "2026-09-06T14:36:31.949066-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/privatefiles",
+      "Test": "TestPrivatePublicationPreservesCompetingFiles/staging",
+      "Elapsed": 0.01
+    },
+    {
+      "Time": "2026-09-06T14:36:31.949067-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/privatefiles",
+      "Test": "TestPrivatePublicationPreservesCompetingFiles",
+      "Output": "--- PASS: TestPrivatePublicationPreservesCompetingFiles (0.01s)\n"
+    },
+    {
+      "Time": "2026-09-06T14:36:31.949068-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/privatefiles",
+      "Test": "TestPrivatePublicationPreservesCompetingFiles",
+      "Elapsed": 0.01
+    },
+    {
+      "Time": "2026-09-06T14:36:31.949069-05:00",
+      "Action": "output",
+      "Package": "github.com/agentstation/starmap/internal/privatefiles",
+      "Output": "PASS\n"
+    },
+    {
+      "Time": "2026-09-06T14:36:31.949072-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/internal/privatefiles",
+      "Elapsed": 0.002
+    }
+  ],
+  "binary_sha256": "25eeae6e1543f50e7a43a7422dc50627e718e091a4f7c0f2bdccc6e48a076b70",
+  "state": {
+    "Status": "exited",
+    "Running": false,
+    "Paused": false,
+    "Restarting": false,
+    "OOMKilled": false,
+    "Dead": false,
+    "Pid": 0,
+    "ExitCode": 0,
+    "Error": "",
+    "StartedAt": "2026-09-06T19:36:31.433466584Z",
+    "FinishedAt": "2026-09-06T19:36:31.605395125Z"
+  },
+  "conversion_exit_code": 0,
+  "counts": {
+    "pass": 21,
+    "fail": 0,
+    "skip": 0
+  },
+  "passed": true,
+  "container_removed": true,
+  "volume_removed": true
+}

@@ -1,0 +1,10 @@
+{"Time":"2026-09-06T22:05:16.806756-05:00","Action":"start","Package":"github.com/agentstation/starmap/runtime"}
+{"Time":"2026-09-06T22:05:17.265209-05:00","Action":"run","Package":"github.com/agentstation/starmap/runtime","Test":"TestRuntimeBaselineExcludesPreviouslyPublishedProviderEvidence"}
+{"Time":"2026-09-06T22:05:17.265303-05:00","Action":"output","Package":"github.com/agentstation/starmap/runtime","Test":"TestRuntimeBaselineExcludesPreviouslyPublishedProviderEvidence","Output":"=== RUN   TestRuntimeBaselineExcludesPreviouslyPublishedProviderEvidence\n"}
+{"Time":"2026-09-06T22:05:36.14141-05:00","Action":"output","Package":"github.com/agentstation/starmap/runtime","Test":"TestRuntimeBaselineExcludesPreviouslyPublishedProviderEvidence","Output":"    baseline_provenance_test.go:48: stored effective catalog became the embedded baseline\n"}
+{"Time":"2026-09-06T22:05:38.188539-05:00","Action":"output","Package":"github.com/agentstation/starmap/runtime","Test":"TestRuntimeBaselineExcludesPreviouslyPublishedProviderEvidence","Output":"    baseline_provenance_test.go:58: excluded provider evidence returned through the baseline\n"}
+{"Time":"2026-09-06T22:05:38.190604-05:00","Action":"output","Package":"github.com/agentstation/starmap/runtime","Test":"TestRuntimeBaselineExcludesPreviouslyPublishedProviderEvidence","Output":"--- FAIL: TestRuntimeBaselineExcludesPreviouslyPublishedProviderEvidence (20.93s)\n"}
+{"Time":"2026-09-06T22:05:38.190621-05:00","Action":"fail","Package":"github.com/agentstation/starmap/runtime","Test":"TestRuntimeBaselineExcludesPreviouslyPublishedProviderEvidence","Elapsed":20.93}
+{"Time":"2026-09-06T22:05:38.191508-05:00","Action":"output","Package":"github.com/agentstation/starmap/runtime","Output":"FAIL\n"}
+{"Time":"2026-09-06T22:05:38.21766-05:00","Action":"output","Package":"github.com/agentstation/starmap/runtime","Output":"FAIL\tgithub.com/agentstation/starmap/runtime\t21.411s\n"}
+{"Time":"2026-09-06T22:05:38.217707-05:00","Action":"fail","Package":"github.com/agentstation/starmap/runtime","Elapsed":21.411}
