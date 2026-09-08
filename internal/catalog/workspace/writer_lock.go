@@ -12,6 +12,9 @@ import (
 )
 
 func acquireWriterLock(target string) (func(), error) {
+	if err := requireWorkspaceAccess(); err != nil {
+		return nil, err
+	}
 	path := writerLockPath(target)
 	info, err := os.Lstat(path)
 	if err == nil && (!info.Mode().IsRegular() || info.Mode()&os.ModeSymlink != 0) {

@@ -58,11 +58,22 @@ func TestComposeExampleParsesAndPullsThePublicChannel(t *testing.T) {
 
 	// The running example sets no catalog setting, so the default source stays
 	// the public channel.
+	hasHome := false
 	for _, entry := range service.Environment {
-		name, _, _ := strings.Cut(entry, "=")
+		name, value, _ := strings.Cut(entry, "=")
+		if name == "STARMAP_HOME" {
+			if value != stateVolumePath+"/starmap" {
+				t.Fatalf("product home = %q, want the starmap child of the durable volume", value)
+			}
+			hasHome = true
+			continue
+		}
 		if strings.HasPrefix(name, settings.Prefix) {
 			t.Fatalf("the running service sets %q, so it does not pull the public channel", name)
 		}
+	}
+	if !hasHome {
+		t.Fatal("the service does not select its product home inside the durable volume")
 	}
 
 	// The service keeps a read-only root filesystem. One named volume holds
@@ -96,9 +107,8 @@ func TestComposeExampleParsesAndPullsThePublicChannel(t *testing.T) {
 }
 
 // TestDeploymentFilesDocumentEveryCanonicalName proves that the Compose example
-// and the environment example name every canonical catalog setting. It also
-// proves that neither file names any other catalog setting, so a removed name
-// fails the test.
+// and the environment example name every canonical catalog setting.
+// It rejects unknown names while retaining recognized node-owned settings.
 func TestDeploymentFilesDocumentEveryCanonicalName(t *testing.T) {
 	for _, name := range []string{"docker-compose.yml", ".env.example"} {
 		path := repositoryFile(t, name)
@@ -116,18 +126,39 @@ func TestDeploymentFilesDocumentEveryCanonicalName(t *testing.T) {
 	}
 }
 
-// assertNoUnknownCatalogName proves that a deployment file invents no catalog
-// setting name. Only the canonical table names a setting.
+// assertNoUnknownCatalogName rejects unknown catalog and node setting names.
 func assertNoUnknownCatalogName(t *testing.T, file, content string) {
 	t.Helper()
+	for _, found := range unknownDeploymentNames(content) {
+		t.Fatalf("%s names the unknown setting %s", file, found)
+	}
+}
+
+func unknownDeploymentNames(content string) []string {
 	known := make(map[string]bool, len(settings.Names()))
 	for _, name := range settings.Names() {
 		known[name] = true
 	}
+	// The application owns path anchor intent separately from catalog settings.
+	known["STARMAP_RELATIVE_PATH_BASE"] = true
+	known["STARMAP_HOME"] = true
+	var unknown []string
 	pattern := regexp.MustCompile(`STARMAP_[A-Z0-9_]+`)
 	for _, found := range pattern.FindAllString(content, -1) {
 		if !known[found] {
-			t.Fatalf("%s names the unknown catalog setting %s", file, found)
+			unknown = append(unknown, found)
+		}
+	}
+	return unknown
+}
+
+func TestDeploymentNameValidationPreservesUnknownNameRefusal(t *testing.T) {
+	if names := unknownDeploymentNames("STARMAP_HOME STARMAP_RELATIVE_PATH_BASE " + settings.Source); len(names) != 0 {
+		t.Fatalf("recognized node or catalog name rejected: %v", names)
+	}
+	for _, typo := range []string{"STARMAP_HOME_TYPO", "STARMAP_RELATIVE_PATH_BASE_TYPO", "STARMAP_CATALOG_SOURCE_TYPO"} {
+		if names := unknownDeploymentNames(typo); len(names) != 1 || names[0] != typo {
+			t.Fatalf("unknown name accepted: %q", typo)
 		}
 	}
 }

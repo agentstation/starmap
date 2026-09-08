@@ -29,7 +29,7 @@ func catalogStoreFactories() map[string]storeFactory {
 	return map[string]storeFactory{
 		"memory": func(*testing.T) Store { return NewMemory() },
 		"filesystem": func(t *testing.T) Store {
-			store, err := NewFilesystem(t.TempDir())
+			store, err := NewFilesystem(privateFilesystemRoot(t))
 			if err != nil {
 				t.Fatalf("NewFilesystem: %v", err)
 			}

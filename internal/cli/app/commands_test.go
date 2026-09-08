@@ -10,7 +10,6 @@ import (
 
 	"github.com/rs/zerolog"
 
-	"github.com/agentstation/starmap/internal/constants"
 	"github.com/agentstation/starmap/pkg/logging"
 )
 
@@ -115,11 +114,11 @@ func TestCommandConstructionPreservesLoadedConfiguration(t *testing.T) {
 }
 
 func TestExplicitConfigFileLoadsAfterFlagParsing(t *testing.T) {
-	t.Setenv("HOME", t.TempDir())
+	setTestHome(t, t.TempDir())
 	configPath := filepath.Join(t.TempDir(), "selected.yaml")
 	if err := os.WriteFile(configPath, []byte(
 		"catalog_path: /from-selected-file\noutput: yaml\n",
-	), constants.FilePermissions); err != nil {
+	), 0o600); err != nil {
 		t.Fatalf("WriteFile: %v", err)
 	}
 
@@ -149,7 +148,7 @@ func TestExplicitConfigFileLoadsAfterFlagParsing(t *testing.T) {
 
 func TestExplicitConfigFileMustExistAndParse(t *testing.T) {
 	malformed := filepath.Join(t.TempDir(), "malformed.yaml")
-	if err := os.WriteFile(malformed, []byte("catalog_path: [\n"), constants.FilePermissions); err != nil {
+	if err := os.WriteFile(malformed, []byte("catalog_path: [\n"), 0o600); err != nil {
 		t.Fatalf("WriteFile: %v", err)
 	}
 
@@ -162,7 +161,7 @@ func TestExplicitConfigFileMustExistAndParse(t *testing.T) {
 	}
 	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {
-			t.Setenv("HOME", t.TempDir())
+			setTestHome(t, t.TempDir())
 			application, err := New("0.1.1", "abc123", "2026-07-12", "test")
 			if err != nil {
 				t.Fatalf("New: %v", err)

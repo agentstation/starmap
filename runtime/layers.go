@@ -1,6 +1,7 @@
 package runtime
 
 import (
+	"context"
 	"encoding/json"
 	"github.com/agentstation/starmap"
 	"os"
@@ -9,10 +10,11 @@ import (
 	"strings"
 	"time"
 
-	"github.com/agentstation/starmap/internal/constants"
+	"github.com/agentstation/starmap/internal/privatefiles"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/errors"
 	"github.com/agentstation/starmap/pkg/logging"
+	"github.com/agentstation/starmap/pkg/productpaths/policy"
 )
 
 const (
@@ -21,6 +23,9 @@ const (
 
 	// providerLayerDirectoryName holds one file per retained provider layer.
 	providerLayerDirectoryName = "providers"
+
+	// bindingLayerDirectoryName separates scoped records from legacy provider filenames.
+	bindingLayerDirectoryName = "bindings"
 
 	// sourceLayerFileName holds the retained upstream source layer.
 	sourceLayerFileName = "source.json"
@@ -48,10 +53,11 @@ type sourceLayer struct {
 // layers are the verified embedded baseline, the selected upstream source,
 // the retained per-provider observations, and the built immutable result.
 type layerSet struct {
-	embedded  starmap.CatalogState
-	source    *sourceLayer
-	providers map[catalogs.ProviderID]ProviderLayer
-	sequence  uint64
+	embedded         starmap.CatalogState
+	source           *sourceLayer
+	providers        map[providerEvidenceKey]ProviderLayer
+	sequence         uint64
+	providerBindings *providerBindingPolicy
 }
 
 // empty reports whether any retained layer sits above the embedded baseline.
@@ -61,24 +67,29 @@ func (l *layerSet) empty() bool {
 
 // providerOrder returns the retained provider identities in stable order, so
 // two rebuilds of the same layers produce the same catalog.
-func (l *layerSet) providerOrder() []catalogs.ProviderID {
-	order := make([]catalogs.ProviderID, 0, len(l.providers))
+func (l *layerSet) providerOrder() []providerEvidenceKey {
+	order := make([]providerEvidenceKey, 0, len(l.providers))
 	for id := range l.providers {
 		order = append(order, id)
 	}
-	slices.SortFunc(order, func(left, right catalogs.ProviderID) int {
-		return strings.Compare(string(left), string(right))
-	})
+	slices.SortFunc(order, compareProviderEvidenceKeys)
 	return order
 }
 
-// setProvider retains one provider observation. It replaces the previous
-// last-known-good layer of that provider only.
+// activeProviderOrder selects permitted evidence without deleting retained records.
+func (l *layerSet) activeProviderOrder() []providerEvidenceKey {
+	order := l.providerOrder()
+	return slices.DeleteFunc(order, func(key providerEvidenceKey) bool {
+		return !l.providerBindings.permits(l.providers[key])
+	})
+}
+
+// setProvider replaces evidence only within one provider binding revision.
 func (l *layerSet) setProvider(layer ProviderLayer) {
 	if l.providers == nil {
-		l.providers = make(map[catalogs.ProviderID]ProviderLayer)
+		l.providers = make(map[providerEvidenceKey]ProviderLayer)
 	}
-	l.providers[layer.ProviderID] = layer
+	l.providers[layer.evidenceKey()] = layer
 }
 
 // build rebuilds the immutable effective catalog from the retained layers. The
@@ -112,7 +123,8 @@ func (l *layerSet) build(baseline starmap.CatalogState) (starmap.CatalogState, e
 		return starmap.CatalogState{}, errors.WrapResource(
 			"merge", "effective catalog baseline", state.GenerationID, err)
 	}
-	for _, id := range l.providerOrder() {
+	active := l.activeProviderOrder()
+	for _, id := range active {
 		layer := l.providers[id]
 		// A retained provider layer holds one provider observation. It carries
 		// serving records that name an authored model of the baseline, so the
@@ -122,24 +134,24 @@ func (l *layerSet) build(baseline starmap.CatalogState) (starmap.CatalogState, e
 		observed, err := catalogs.DecodeSourceObservationPayload(layer.Payload)
 		if err != nil {
 			return starmap.CatalogState{}, errors.WrapResource(
-				"decode", "retained provider layer", string(id), err)
+				"decode", "retained provider layer", string(id.providerID), err)
 		}
 		linked, unresolved, err := linkProviderOfferings(builder, observed)
 		if err != nil {
 			return starmap.CatalogState{}, errors.WrapResource(
-				"link", "retained provider layer", string(id), err)
+				"link", "retained provider layer", string(id.providerID), err)
 		}
 		if err := builder.MergeWith(linked, catalogs.WithStrategy(catalogs.MergeEnrichEmpty)); err != nil {
 			return starmap.CatalogState{}, errors.WrapResource(
-				"merge", "retained provider layer", string(id), err)
+				"merge", "retained provider layer", string(id.providerID), err)
 		}
 		if err := mergeAuthoredModels(builder, observed); err != nil {
 			return starmap.CatalogState{}, errors.WrapResource(
-				"merge", "retained authored models", string(id), err)
+				"merge", "retained authored models", string(id.providerID), err)
 		}
 		if unresolved > 0 {
 			logging.Info().
-				Str("provider_id", string(id)).
+				Str("provider_id", string(id.providerID)).
 				Int("unresolved_offerings", unresolved).
 				Msg("Provider offerings without a canonical model reference stay out of the effective catalog")
 		}
@@ -163,21 +175,18 @@ func (l *layerSet) build(baseline starmap.CatalogState) (starmap.CatalogState, e
 	// the generation that the layers started from. A reused identity would let
 	// a downstream treat two different catalogs as one generation. The hop
 	// therefore derives its own identity from that identity and the served
-	// digest. The upstream layer supplies it, and the client baseline supplies
+	// digest. The upstream layer supplies it, and the embedded baseline supplies
 	// it when the runtime retains no upstream layer. Only the layers decide the
 	// derived identity, so two rebuilds of the same layers keep one identity,
 	// and a durable commit publishes that same identity. A baseline that names
 	// no identity leaves the identity to the publication.
-	if len(l.providers) > 0 && state.GenerationID != "" {
-		upstream := state.GenerationID
-		if l.source == nil {
-			// Without an upstream layer the baseline is the generation that
-			// this runtime derived and committed before. A derivation from
-			// that identity would nest one more suffix on every restart, so
-			// the hop derives from the root identity again.
-			upstream = effectiveGenerationRoot(upstream)
+	if l.providerBindings != nil {
+		state.GenerationID, err = l.providerBindings.generationID(state.GenerationID, state.PayloadChecksum)
+		if err != nil {
+			return starmap.CatalogState{}, err
 		}
-		state.GenerationID = deriveEffectiveGenerationID(upstream, state.PayloadChecksum)
+	} else if len(active) > 0 && state.GenerationID != "" {
+		state.GenerationID = deriveEffectiveGenerationID(state.GenerationID, state.PayloadChecksum)
 	}
 	return state, nil
 }
@@ -207,13 +216,6 @@ func deriveEffectiveGenerationID(upstream, checksum string) string {
 		fragment = "local"
 	}
 	return upstream + effectiveGenerationLocalSuffix + fragment
-}
-
-// effectiveGenerationRoot returns the identity that a derived identity started
-// from. An identity without a local suffix is its own root.
-func effectiveGenerationRoot(id string) string {
-	root, _, _ := strings.Cut(id, effectiveGenerationLocalSuffix)
-	return root
 }
 
 // linkProviderOfferings returns the provider records of one observation that
@@ -304,20 +306,61 @@ func mergeAuthoredModels(builder *catalogs.Builder, source catalogs.Reader) erro
 // directory keeps its layers in memory only, so a restart returns to the
 // verified embedded baseline.
 type layerStore struct {
-	root string
+	root      string
+	directory *privatefiles.Directory
+	providers *privatefiles.Directory
+	bindings  *privatefiles.Directory
 }
 
 // newLayerStore prepares the durable layer directory. An empty directory
 // selects memory-only retention.
 func newLayerStore(directory string) (*layerStore, error) {
+	if err := policy.Require("runtime-evidence", policy.OwnerOnly); err != nil {
+		return nil, err
+	}
 	if directory == "" {
 		return &layerStore{}, nil
 	}
 	root := filepath.Join(directory, layerDirectoryName)
-	if err := os.MkdirAll(filepath.Join(root, providerLayerDirectoryName), constants.DirPermissions); err != nil {
-		return nil, errors.WrapIO("create", root, err)
+	dir, err := privatefiles.NewDirectory(root)
+	if err != nil {
+		return nil, errors.WrapIO("open private evidence directory", root, err)
 	}
-	return &layerStore{root: root}, nil
+	providers, err := dir.Child(providerLayerDirectoryName)
+	if err != nil {
+		return nil, errors.WrapIO("open private provider directory", root, err)
+	}
+	bindings, err := providers.Child(bindingLayerDirectoryName)
+	if err != nil {
+		return nil, errors.WrapIO("open private binding directory", root, err)
+	}
+	return &layerStore{root: root, directory: dir, providers: providers, bindings: bindings}, nil
+}
+
+func existingLayerStore(directory string) (*layerStore, error) {
+	if err := policy.Require("runtime-evidence", policy.OwnerOnly); err != nil {
+		return nil, err
+	}
+	root := filepath.Join(directory, layerDirectoryName)
+	dir, err := privatefiles.ExistingDirectory(root)
+	if os.IsNotExist(err) {
+		return &layerStore{}, nil
+	}
+	if err != nil {
+		return nil, err
+	}
+	providers, err := dir.ExistingChild(providerLayerDirectoryName)
+	if err != nil && !os.IsNotExist(err) {
+		return nil, err
+	}
+	var bindings *privatefiles.Directory
+	if providers != nil {
+		bindings, err = providers.ExistingChild(bindingLayerDirectoryName)
+		if err != nil && !os.IsNotExist(err) {
+			return nil, err
+		}
+	}
+	return &layerStore{root: root, directory: dir, providers: providers, bindings: bindings}, nil
 }
 
 // durable reports whether the store retains layers across a restart.
@@ -332,7 +375,7 @@ func (s *layerStore) loadSource() (*sourceLayer, error) {
 		return nil, nil
 	}
 	path := filepath.Join(s.root, sourceLayerFileName)
-	raw, err := readLayerFile(path)
+	raw, err := readLayerFile(s.directory, sourceLayerFileName)
 	if err != nil || raw == nil {
 		return nil, err
 	}
@@ -344,66 +387,21 @@ func (s *layerStore) loadSource() (*sourceLayer, error) {
 }
 
 // saveSource retains the upstream layer durably.
-func (s *layerStore) saveSource(layer sourceLayer) error {
-	if !s.durable() {
-		return nil
-	}
-	return s.write(filepath.Join(s.root, sourceLayerFileName), layer)
-}
-
-// loadProviders returns every retained provider layer.
-func (s *layerStore) loadProviders() (map[catalogs.ProviderID]ProviderLayer, error) {
-	layers := make(map[catalogs.ProviderID]ProviderLayer)
-	if !s.durable() {
-		return layers, nil
-	}
-	directory := filepath.Join(s.root, providerLayerDirectoryName)
-	entries, err := os.ReadDir(directory)
-	if err != nil {
-		if os.IsNotExist(err) {
-			return layers, nil
-		}
-		return nil, errors.WrapIO("read", directory, err)
-	}
-	for _, entry := range entries {
-		if entry.IsDir() || filepath.Ext(entry.Name()) != ".json" {
-			continue
-		}
-		path := filepath.Join(directory, entry.Name())
-		raw, err := readLayerFile(path)
-		if err != nil {
-			return nil, err
-		}
-		if raw == nil {
-			continue
-		}
-		layer := ProviderLayer{}
-		if err := json.Unmarshal(raw, &layer); err != nil {
-			return nil, errors.WrapParse("retained provider layer", path, err)
-		}
-		if err := validateProviderLayerID(layer.ProviderID); err != nil {
-			return nil, err
-		}
-		layers[layer.ProviderID] = layer
-	}
-	return layers, nil
-}
-
-// saveProvider retains one provider layer durably.
-func (s *layerStore) saveProvider(layer ProviderLayer) error {
-	if !s.durable() {
-		return nil
-	}
-	if err := validateProviderLayerID(layer.ProviderID); err != nil {
+func (s *layerStore) saveSource(ctx context.Context, layer sourceLayer) error {
+	if err := ctx.Err(); err != nil {
 		return err
 	}
-	name := string(layer.ProviderID) + ".json"
-	return s.write(filepath.Join(s.root, providerLayerDirectoryName, name), layer)
+	if !s.durable() {
+		return nil
+	}
+	return s.writeContext(ctx, s.directory, sourceLayerFileName, layer)
 }
 
-// write commits one layer record. It writes a temporary file and renames it,
-// so a crash never leaves a partial record behind.
-func (s *layerStore) write(path string, record any) error {
+// writeContext stages and flushes one private layer record before publication.
+func (s *layerStore) writeContext(ctx context.Context, directory *privatefiles.Directory, path string, record any) error {
+	if err := ctx.Err(); err != nil {
+		return err
+	}
 	encoded, err := json.Marshal(record)
 	if err != nil {
 		return errors.WrapResource("encode", "runtime layer", path, err)
@@ -418,39 +416,21 @@ func (s *layerStore) write(path string, record any) error {
 			},
 		}
 	}
-	temporary := path + ".tmp"
-	if err := os.WriteFile(temporary, encoded, constants.FilePermissions); err != nil {
-		return errors.WrapIO("write", temporary, err)
-	}
-	if err := os.Rename(temporary, path); err != nil {
-		return errors.WrapIO("rename", path, err)
+	if err := directory.WriteFileContext(ctx, path, encoded, ".layer-"); err != nil {
+		return errors.WrapIO("write private evidence", path, err)
 	}
 	return nil
 }
 
 // readLayerFile returns one bounded layer record. It returns nil bytes when the
 // record is absent.
-func readLayerFile(path string) ([]byte, error) {
-	info, err := os.Stat(path)
-	if err != nil {
-		if os.IsNotExist(err) {
-			return nil, nil
-		}
-		return nil, errors.WrapIO("stat", path, err)
+func readLayerFile(directory *privatefiles.Directory, name string) ([]byte, error) {
+	raw, err := directory.ReadFile(name, maxLayerBytes)
+	if os.IsNotExist(err) {
+		return nil, nil
 	}
-	if info.Size() > maxLayerBytes {
-		return nil, &errors.ResourceError{
-			Operation: "load",
-			Resource:  "runtime layer",
-			ID:        path,
-			Err: &errors.ValidationError{
-				Field: "layer_bytes", Value: info.Size(), Message: "exceeds the retained layer bound",
-			},
-		}
-	}
-	raw, err := os.ReadFile(path) //nolint:gosec // The path is runtime-owned state.
 	if err != nil {
-		return nil, errors.WrapIO("read", path, err)
+		return nil, errors.WrapIO("read private evidence", name, err)
 	}
 	return raw, nil
 }
@@ -490,6 +470,9 @@ func (r *Runtime) loadRetainedLayers() error {
 	}
 	providers, err := r.store.loadProviders()
 	if err != nil {
+		return err
+	}
+	if err := r.config.providerBindings.validateRetained(providers); err != nil {
 		return err
 	}
 	r.mu.Lock()

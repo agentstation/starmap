@@ -56,13 +56,13 @@ func addUpdateFlags(cmd *cobra.Command) *Flags {
 	cmd.Flags().BoolVarP(&flags.AutoApprove, "yes", "y", false,
 		"Auto-approve changes without confirmation")
 	cmd.Flags().StringVar(&flags.CatalogPath, "catalog-path", "",
-		"Human provider-YAML workspace (default: ~/.starmap/catalog)")
+		"Human catalog workspace (default: configured product workspace)")
 	cmd.Flags().BoolVar(&flags.Cleanup, "cleanup", false,
 		"Remove temporary models.dev repository after update")
 	cmd.Flags().BoolVar(&flags.Reformat, "reformat", false,
 		"Reformat catalog files even without changes")
 	cmd.Flags().StringVar(&flags.SourcesDir, "sources-dir", "",
-		"Directory for external source data (default: ~/.starmap/sources)")
+		"External source parent (default: configured product cache)")
 	cmd.Flags().StringVar(&flags.ModelsDevGitCommit, "models-dev-git-commit", "",
 		"Exact commit required with --source models.dev-git")
 	cmd.Flags().BoolVar(&flags.AutoInstallDeps, "auto-install-deps", false,
@@ -77,6 +77,24 @@ func addUpdateFlags(cmd *cobra.Command) *Flags {
 
 // ExecuteUpdate orchestrates the complete update process using app context.
 func ExecuteUpdate(ctx context.Context, app application, flags *Flags, logger *zerolog.Logger) error {
+	resolvedFlags := *flags
+	flags = &resolvedFlags
+	if flags.SourcesDir == "" {
+		flags.SourcesDir = os.Getenv("STARMAP_SOURCES_DIR")
+	}
+	for _, selected := range []struct {
+		field string
+		value *string
+	}{{"catalog-path", &flags.CatalogPath}, {"sources-dir", &flags.SourcesDir}} {
+		if *selected.value == "" {
+			continue
+		}
+		resolved, err := app.ResolveOperationPath(*selected.value, selected.field)
+		if err != nil {
+			return err
+		}
+		*selected.value = resolved
+	}
 	// Determine quiet mode from logger level
 	quiet := logger.GetLevel() > zerolog.InfoLevel
 
@@ -100,9 +118,14 @@ func ExecuteUpdate(ctx context.Context, app application, flags *Flags, logger *z
 	if err != nil {
 		return errors.WrapResource("load", "catalog credentials", "", err)
 	}
+	directories, err := app.SourceDirectories()
+	if err != nil {
+		return err
+	}
 	syncer, err := acquisition.New(
 		sm,
 		acquisition.WithCredentialResolver(credentialResolver),
+		acquisition.WithSourceDirectories(directories),
 	)
 	if err != nil {
 		return errors.WrapResource("create", "catalog acquisition", "", err)
@@ -111,11 +134,10 @@ func ExecuteUpdate(ctx context.Context, app application, flags *Flags, logger *z
 	if err != nil {
 		return err
 	}
-	resolvedFlags := *flags
-	resolvedFlags.CatalogPath = catalogPath
+	flags.CatalogPath = catalogPath
 
 	// Execute the update operation
-	return updateCatalog(ctx, syncer, &resolvedFlags, logger, quiet)
+	return updateCatalog(ctx, syncer, flags, logger, quiet)
 }
 
 func resolveCatalogPath(app any, explicit string) (string, error) {
@@ -135,11 +157,7 @@ func updateCatalog(ctx context.Context, sm syncClient, flags *Flags, logger *zer
 
 func updateCatalogWithConfirmation(ctx context.Context, sm syncClient, flags *Flags, logger *zerolog.Logger, quiet bool, confirm func() (bool, error)) error {
 	catalogPath := flags.CatalogPath
-	// Support environment variable fallback for sources directory
 	sourcesDir := flags.SourcesDir
-	if sourcesDir == "" {
-		sourcesDir = os.Getenv("STARMAP_SOURCES_DIR")
-	}
 
 	preview := flags.DryRun || !flags.AutoApprove
 	opts, err := BuildUpdateOptions(flags.Provider, flags.Source, catalogPath, preview, flags.Force, flags.Cleanup, flags.Reformat, sourcesDir, flags.ModelsDevGitCommit, flags.AutoInstallDeps, flags.SkipDepPrompts, flags.RequireAllSources)

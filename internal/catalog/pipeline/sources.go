@@ -73,8 +73,12 @@ func createSourcesWithConfig(
 			modelsdev.WithGitCommit(options.ModelsDevGitCommit),
 			modelsdev.WithGitProviders(configuredProviders),
 		}
-		if options.SourcesDir != "" {
-			gitOptions = append(gitOptions, modelsdev.WithSourcesDir(options.SourcesDir))
+		directory := options.SourcesDir
+		if directory == "" {
+			directory = options.SourceDirectories.Checkouts
+		}
+		if directory != "" {
+			gitOptions = append(gitOptions, modelsdev.WithSourcesDir(directory))
 		}
 		srcs = append(srcs, modelsdev.NewGitSource(gitOptions...))
 	}
@@ -82,8 +86,12 @@ func createSourcesWithConfig(
 		httpOptions := []modelsdev.HTTPSourceOption{
 			modelsdev.WithHTTPProviders(configuredProviders),
 		}
-		if options.SourcesDir != "" {
-			httpOptions = append(httpOptions, modelsdev.WithHTTPSourcesDir(options.SourcesDir))
+		directory := options.SourcesDir
+		if directory == "" {
+			directory = options.SourceDirectories.Cache
+		}
+		if directory != "" {
+			httpOptions = append(httpOptions, modelsdev.WithHTTPSourcesDir(directory))
 		}
 		srcs = append(srcs, modelsdev.NewHTTPSource(httpOptions...))
 	}

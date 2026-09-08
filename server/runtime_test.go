@@ -38,8 +38,8 @@ func TestServerServesEmbeddedStateThenPullsChannel(t *testing.T) {
 		t.Fatalf("channel.Start: %v", err)
 	}
 	t.Cleanup(upstream.Close)
-	statePath := t.TempDir()
-	storePath := t.TempDir()
+	statePath := filepath.Join(t.TempDir(), "runtime")
+	storePath := filepath.Join(t.TempDir(), "store")
 
 	connected := openRuntime(t, upstream, statePath, storePath)
 	srv := newServer(t, connected)

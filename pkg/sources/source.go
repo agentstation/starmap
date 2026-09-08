@@ -52,16 +52,17 @@ type Source interface {
 // the normalized canonical catalog payload. Raw upstream evidence retention is
 // a separate storage policy.
 type Observation struct {
-	ID               string                  `json:"id" yaml:"id"`
-	SourceID         ID                      `json:"source" yaml:"source"`
-	ObservedAt       time.Time               `json:"observed_at" yaml:"observed_at"`
-	Revision         Revision                `json:"revision" yaml:"revision"`
-	Completeness     ObservationCompleteness `json:"completeness" yaml:"completeness"`
-	Status           ObservationStatus       `json:"status" yaml:"status"`
-	Records          ObservationRecordCounts `json:"records" yaml:"records"`
-	Issues           []ObservationIssue      `json:"issues,omitempty" yaml:"issues,omitempty"`
-	EvidenceChecksum string                  `json:"evidence_checksum" yaml:"evidence_checksum"`
-	Catalog          *catalogs.Catalog       `json:"-" yaml:"-"`
+	ProviderBinding  *ProviderAcquisitionBinding `json:"provider_binding,omitempty" yaml:"provider_binding,omitempty"`
+	ID               string                      `json:"id" yaml:"id"`
+	SourceID         ID                          `json:"source" yaml:"source"`
+	ObservedAt       time.Time                   `json:"observed_at" yaml:"observed_at"`
+	Revision         Revision                    `json:"revision" yaml:"revision"`
+	Completeness     ObservationCompleteness     `json:"completeness" yaml:"completeness"`
+	Status           ObservationStatus           `json:"status" yaml:"status"`
+	Records          ObservationRecordCounts     `json:"records" yaml:"records"`
+	Issues           []ObservationIssue          `json:"issues,omitempty" yaml:"issues,omitempty"`
+	EvidenceChecksum string                      `json:"evidence_checksum" yaml:"evidence_checksum"`
+	Catalog          *catalogs.Catalog           `json:"-" yaml:"-"`
 }
 
 // Dependency represents an external tool or runtime required by a source.

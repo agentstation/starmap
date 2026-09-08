@@ -539,6 +539,7 @@ func assertNoProjectionStaging(t *testing.T, path string) {
 	base := filepath.Base(path)
 	for _, pattern := range []string{
 		"." + base + ".candidate-*",
+		"." + base + ".preparing-*",
 		"." + base + ".candidate-*.verify-*",
 	} {
 		matches, err := filepath.Glob(filepath.Join(parent, pattern))

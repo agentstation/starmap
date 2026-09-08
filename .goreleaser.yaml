@@ -188,7 +188,7 @@ kos:
       - "{{ .Version }}"  # e.g., 0.0.17
       - "{{ .Tag }}"      # e.g., v0.0.17
       - "{{ if not .Prerelease }}latest{{ end }}"
-    base_image: cgr.dev/chainguard/static@sha256:60582b2ae6074f641094af0f370d4ab241aab271858a66223dcde7eee9f51638
+    base_image: cgr.dev/chainguard/static@sha256:f51c2493951313c3ad4069080b2814ffb6ed6fe3909dabeb84a9482f42d5600b
     sbom: spdx
     bare: true
     preserve_import_paths: false

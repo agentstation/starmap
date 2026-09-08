@@ -80,31 +80,20 @@ func (m *credentialMemo) ResolveCatalog(
 	return material, err
 }
 
-// forget drops every remembered resolution. Each observation run starts with an
-// empty memo, so a rotated credential reaches the next run.
-func (m *credentialMemo) forget() {
-	if m == nil {
-		return
-	}
-	m.mu.Lock()
-	m.entries = make(map[catalogs.ProviderID]credentialEntry)
-	m.mu.Unlock()
-}
-
 // preflight checks catalog-acquisition credentials before any provider
 // request. The source skips a provider that holds no required material, so it
 // never opens a connection that authentication would refuse.
 //
 // The check and the fetch share one memo, so the run resolves the material of
 // one provider one time.
-func (s *Source) preflight(ctx context.Context, provider *catalogs.Provider) (credentialState, error) {
-	if s.credentials == nil {
+func (m *credentialMemo) preflight(ctx context.Context, provider *catalogs.Provider) (credentialState, error) {
+	if m == nil {
 		return credentialInvalid, &pkgerrors.ConfigError{
 			Component: string(provider.ID),
 			Message:   "provider credential resolver is not configured",
 		}
 	}
-	if _, err := s.credentials.ResolveCatalog(ctx, provider); err != nil {
+	if _, err := m.ResolveCatalog(ctx, provider); err != nil {
 		var authenticationErr *pkgerrors.AuthenticationError
 		if errors.As(err, &authenticationErr) {
 			return credentialAbsent, err

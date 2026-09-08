@@ -1,10 +1,8 @@
 package sources
 
 import (
-	"crypto/sha256"
 	"encoding/hex"
 	"fmt"
-	"strconv"
 	"strings"
 	"time"
 
@@ -89,12 +87,13 @@ type ObservationIssue = evidence.ObservationIssue
 
 // ObservationMetadata supplies source-owned metadata used to construct an observation.
 type ObservationMetadata struct {
-	ObservedAt   time.Time
-	Revision     Revision
-	Completeness ObservationCompleteness
-	Status       ObservationStatus
-	Records      ObservationRecordCounts
-	Issues       []ObservationIssue
+	ProviderBinding *ProviderAcquisitionBinding
+	ObservedAt      time.Time
+	Revision        Revision
+	Completeness    ObservationCompleteness
+	Status          ObservationStatus
+	Records         ObservationRecordCounts
+	Issues          []ObservationIssue
 }
 
 // NewObservation binds an immutable catalog to typed, deterministic audit metadata.
@@ -115,6 +114,7 @@ func NewObservation(sourceID ID, catalog *catalogs.Catalog, metadata Observation
 		metadata.Revision.Value = checksum
 	}
 	observation := Observation{
+		ProviderBinding:  cloneProviderBinding(metadata.ProviderBinding),
 		SourceID:         sourceID,
 		ObservedAt:       metadata.ObservedAt,
 		Revision:         metadata.Revision,
@@ -124,6 +124,9 @@ func NewObservation(sourceID ID, catalog *catalogs.Catalog, metadata Observation
 		Issues:           append([]ObservationIssue(nil), metadata.Issues...),
 		EvidenceChecksum: checksum,
 		Catalog:          catalog,
+	}
+	if err := observation.validateProviderBinding(); err != nil {
+		return Observation{}, err
 	}
 	observation.ID = observationID(observation)
 	if err := observation.Validate(); err != nil {
@@ -199,8 +202,11 @@ func (o Observation) Validate() error {
 	if o.Revision.Kind == RevisionKindContentDigest && o.Revision.Value != actualChecksum {
 		return observationValidationError("revision.value", o.Revision.Value, "must match the normalized content digest")
 	}
+	if err := o.validateProviderBinding(); err != nil {
+		return err
+	}
 	expectedID := observationID(o)
-	if o.ID != expectedID {
+	if o.ID != expectedID && !matchesLegacyObservationID(o) {
 		return observationValidationError("id", o.ID, fmt.Sprintf("must match %s", expectedID))
 	}
 	return nil
@@ -244,33 +250,6 @@ func validateRevision(r Revision) error {
 func isHex(value string) bool {
 	_, err := hex.DecodeString(value)
 	return err == nil
-}
-
-func observationID(observation Observation) string {
-	var identity strings.Builder
-	identity.WriteString(strings.Join([]string{
-		string(observation.SourceID),
-		observation.ObservedAt.UTC().Format(time.RFC3339Nano),
-		string(observation.Revision.Kind),
-		observation.Revision.Value,
-		string(observation.Completeness),
-		string(observation.Status),
-		observation.EvidenceChecksum,
-	}, "\x00"))
-	identity.WriteString("\x00" + observation.Revision.InputName + "\x00" + observation.Revision.InputChecksum)
-	if observation.Records.Accepted != 0 || observation.Records.Rejected != 0 {
-		identity.WriteString("\x00records:")
-		identity.WriteString(strconv.Itoa(observation.Records.Accepted))
-		identity.WriteByte(':')
-		identity.WriteString(strconv.Itoa(observation.Records.Rejected))
-	}
-	for _, issue := range observation.Issues {
-		// Human-readable diagnostics can contain transport details or secrets and
-		// are deliberately excluded from stable identity and long-term evidence.
-		identity.WriteString("\x00" + string(issue.Scope) + "\x00" + string(issue.Code) + "\x00" + issue.Subject)
-	}
-	digest := sha256.Sum256([]byte(identity.String()))
-	return "observation:" + hex.EncodeToString(digest[:])
 }
 
 func validateObservationIssue(index int, issue ObservationIssue) error {

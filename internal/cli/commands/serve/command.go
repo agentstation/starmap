@@ -14,6 +14,7 @@ import (
 
 	"github.com/agentstation/starmap/acquisition"
 	"github.com/agentstation/starmap/internal/cli/emoji"
+	"github.com/agentstation/starmap/pkg/productpaths"
 	"github.com/agentstation/starmap/pkg/sources"
 	"github.com/agentstation/starmap/runtime"
 	"github.com/agentstation/starmap/server"
@@ -23,6 +24,7 @@ type application interface {
 	Runtime(context.Context, ...runtime.Option) (*runtime.Runtime, error)
 	Logger() *zerolog.Logger
 	CredentialResolver() (sources.ProviderCredentialResolver, error)
+	SourceDirectories() (productpaths.SourceDirectories, error)
 }
 
 // NewCommand creates the serve command using app context.
@@ -137,9 +139,14 @@ func runServer(cmd *cobra.Command, _ []string, app application) error {
 	if err != nil {
 		return fmt.Errorf("loading catalog credentials: %w", err)
 	}
+	directories, err := app.SourceDirectories()
+	if err != nil {
+		return err
+	}
 	syncer, err := acquisition.New(
 		connected.Client(),
 		acquisition.WithCredentialResolver(credentialResolver),
+		acquisition.WithSourceDirectories(directories),
 	)
 	if err != nil {
 		return fmt.Errorf("composing catalog acquisition: %w", err)

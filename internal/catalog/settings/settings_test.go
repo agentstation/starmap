@@ -25,7 +25,7 @@ func sampleValues() map[string]string {
 		settings.SourceSignerWorkflow: ".github/workflows/publish.yml",
 		settings.SourceToken:          "placeholder",
 		settings.SourcePollInterval:   "30m",
-		settings.SourceStartupPolicy:  "embedded",
+		settings.SourceStartupPolicy:  "prefer_source",
 		settings.SourceMaxAge:         "12h",
 		settings.SourceMaxHops:        "4",
 		settings.SourceAliases:        "replica-a,replica-b",

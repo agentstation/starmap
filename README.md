@@ -159,6 +159,12 @@ See [docs/DOCKER.md](docs/DOCKER.md) for detailed deployment guides including Ku
 
 ## Quick Start
 
+Starmap owns catalog discovery and acquisition.
+[Starport](https://github.com/agentstation/starport) uses that catalog to route inference requests.
+Catalog-acquisition credentials and inference credentials serve separate purposes.
+You can inspect the embedded catalog without provider API keys.
+Source acquisition is a separate explicit operation.
+
 ### CLI: List Available Models
 
 ```bash
@@ -435,7 +441,7 @@ starmap completion bash         # Generate shell completion
 
 ```bash
 # Development: Use a custom human workspace
-starmap update groq --catalog-path ./catalog --dry-run
+starmap update groq --catalog-path "$PWD/catalog" --dry-run
 
 # Production: Fresh update with auto-approval
 starmap update --force -y
@@ -1105,6 +1111,9 @@ Select a non-default configuration file with
 `starmap --config /path/to/config.yaml <command>`. Set `catalog_path` in that
 file or use `CATALOG_PATH` to select the human-editable provider YAML
 workspace.
+
+YAML configuration and explicit dotenv files require private access and a 1 MiB per-file limit.
+Read-only private files remain valid. See [configuration access and recovery](docs/CLI.md#private-configuration-inputs) before using an existing file.
 
 ### Authentication Management
 

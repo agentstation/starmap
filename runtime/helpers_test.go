@@ -285,12 +285,7 @@ func testSourceRead(t testing.TB, generationID string, payload []byte, published
 func testProviderLayer(t testing.TB, providerID catalogs.ProviderID, modelID, name string, observed time.Time) ProviderLayer {
 	t.Helper()
 	payload := testCatalogPayload(t, providerID, modelID, name)
-	return ProviderLayer{
-		ProviderID: providerID,
-		Payload:    payload,
-		Digest:     catalogs.DescribeCatalogPayload(payload).Checksum,
-		ObservedAt: observed,
-	}
+	return testProviderLayerFromPayload(t, providerID, payload, observed)
 }
 
 // testAttempt returns one terminal provider attempt.
@@ -308,7 +303,7 @@ func testAttempt(providerID catalogs.ProviderID, outcome sources.ProviderOutcome
 func openTestRuntime(t *testing.T, opts ...Option) *Runtime {
 	t.Helper()
 	base := []Option{
-		WithStateDirectory(t.TempDir()),
+		WithStateDirectory(privateRuntimeDirectory(t)),
 		WithStartupSpread(0),
 		WithAcquisitionEnabled(false),
 		WithSourcePollInterval(0),
@@ -427,4 +422,24 @@ func seedTestModelDefinitions(t testing.TB, builder *catalogs.Builder) {
 			}
 		}
 	}
+}
+
+func testProviderLayerFromPayload(t testing.TB, id catalogs.ProviderID, payload []byte, at time.Time) ProviderLayer {
+	t.Helper()
+	catalog, err := catalogs.DecodeSourceObservationPayload(payload)
+	if err != nil {
+		t.Fatal(err)
+	}
+	observation, err := sources.NewObservation(sources.ProvidersID, catalog, sources.ObservationMetadata{
+		ObservedAt: at, Revision: sources.Revision{Kind: sources.RevisionKindContentDigest},
+		Completeness: sources.ObservationCompletenessComplete, Status: sources.ObservationStatusSucceeded,
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+	layer, err := NewProviderLayer(id, observation)
+	if err != nil {
+		t.Fatal(err)
+	}
+	return layer
 }

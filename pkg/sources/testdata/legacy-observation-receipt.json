@@ -1,0 +1,34 @@
+{
+  "observation": {
+    "id": "observation:9b578c92b8c3b79796eaf927f1aa49e57181a0f9dcb80787812bb6b718b90be8",
+    "source": "providers",
+    "observed_at": "2026-09-06T12:00:00Z",
+    "revision": {
+      "kind": "content_digest",
+      "value": "sha256:307e8a1f5b844d65b7a160f724c32f5736a4b50bf28596079392caf11d7d9d1b"
+    },
+    "completeness": "partial",
+    "status": "degraded",
+    "records": {
+      "accepted": 0,
+      "rejected": 1
+    },
+    "issues": [
+      {
+        "scope": "record",
+        "code": "invalid_record",
+        "subject": "provider/invalid",
+        "message": "private-diagnostic-sentinel"
+      }
+    ],
+    "evidence_checksum": "sha256:307e8a1f5b844d65b7a160f724c32f5736a4b50bf28596079392caf11d7d9d1b"
+  },
+  "payload": {
+    "schema_version": 6,
+    "providers": [],
+    "authors": [],
+    "provider_models": {},
+    "author_models": {},
+    "provenance": {}
+  }
+}

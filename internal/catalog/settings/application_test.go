@@ -26,8 +26,8 @@ func TestApplicationPullsSyntheticChannelAndRetainsState(t *testing.T) {
 	t.Setenv(channel.ConfiguredEnvironment, "test-key")
 
 	upstream := startUpstream(t)
-	statePath := t.TempDir()
-	storePath := t.TempDir()
+	statePath := filepath.Join(t.TempDir(), "runtime")
+	storePath := filepath.Join(t.TempDir(), "catalog-store")
 
 	connected := openApplicationRuntime(t, upstream, statePath, storePath)
 

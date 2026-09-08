@@ -65,9 +65,9 @@ func (c Composition) Options() ([]runtime.Option, error) {
 		}
 		source = built
 	}
-	options := make([]runtime.Option, 0, len(c.Base)+len(c.Config.options)+len(c.Extra)+3)
+	options := make([]runtime.Option, 0, len(c.Base)+len(c.Config.Options())+len(c.Extra)+3)
 	options = append(options, c.Base...)
-	options = append(options, c.Config.options...)
+	options = append(options, c.Config.Options()...)
 	if source != nil {
 		options = append(options, runtime.WithSource(source))
 	}
@@ -121,12 +121,17 @@ func cascadeSubscriber(config Config) (remote.Config, error) {
 	if config.TransferMaxDuration > 0 {
 		transfer.MaxDuration = config.TransferMaxDuration
 	}
+	spread := config.StartupSpread
+	if _, present := config.Value(StartupSpread); present && spread == 0 {
+		// The subscriber uses a negative duration to disable its default spread.
+		spread = -1
+	}
 	return remote.Config{
 		BaseURL:        config.SourceURL,
 		CatalogStore:   storage.NewMemory(),
 		APIKey:         strings.TrimSpace(config.SourceAPIKey),
 		Identity:       fleet.Identity{Instance: config.SchedulerIdentity},
-		StartupSpread:  config.StartupSpread,
+		StartupSpread:  spread,
 		TransferPolicy: &transfer,
 		PollingFallback: &remote.PollingFallbackPolicy{
 			AfterFailures: cascadeFallbackAfterFailures,

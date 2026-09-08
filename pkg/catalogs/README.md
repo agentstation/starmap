@@ -2741,13 +2741,13 @@ func DeepCopyModel(model Model) Model
 DeepCopyModel creates a deep copy of a Model.
 
 <a name="MergeModels"></a>
-### func [MergeModels](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/merge.go#L7>)
+### func [MergeModels](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/merge.go#L8>)
 
 ```go
 func MergeModels(existing, updated Model) Model
 ```
 
-MergeModels combines two models and retains existing values when updated has an empty or nil value.
+MergeModels combines two models and retains existing values when updated has an empty or nil value. Valid pricing replaces the complete pricing object, including explicit zero prices. Invalid pricing retains the existing object.
 
 <a name="Model.DescriptionValue"></a>
 ### func \(\*Model\) [DescriptionValue](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_presence.go#L366>)

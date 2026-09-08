@@ -19,16 +19,13 @@ var (
 
 func main() {
 	// Create app instance
-	application, err := app.New(version, commit, date, builtBy)
-	if err != nil {
-		app.ExitOnError(err)
-	}
+	application := app.NewForCommand(version, commit, date, builtBy)
 
 	// Handle signals for graceful shutdown.
 	ctx, cancel := app.ContextWithSignals(context.Background())
 	defer cancel()
 
-	err = application.Execute(ctx, os.Args[1:])
+	err := application.Execute(ctx, os.Args[1:])
 
 	// Every exit path stops the connected runtime. The signal context is
 	// already canceled, so the shutdown uses a fresh bounded context.

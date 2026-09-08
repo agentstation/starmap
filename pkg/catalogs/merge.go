@@ -3,7 +3,8 @@ package catalogs
 import "reflect"
 
 // MergeModels combines two models and retains existing values when updated has
-// an empty or nil value.
+// an empty or nil value. Valid pricing replaces the complete pricing object,
+// including explicit zero prices. Invalid pricing retains the existing object.
 func MergeModels(existing, updated Model) Model {
 	result := existing // Start with existing model
 
@@ -11,6 +12,7 @@ func MergeModels(existing, updated Model) Model {
 	mergeModelFeaturesByPresence(&result, &updated)
 	mergeModelLimitsByPresence(&result, &updated)
 	mergeModelMetadataByPresence(&result, &updated)
+	mergeModelPricingAsUnit(&result, &updated)
 
 	// Use reflection to merge non-zero fields from updated model
 	existingVal := reflect.ValueOf(&result).Elem()
@@ -19,6 +21,15 @@ func MergeModels(existing, updated Model) Model {
 	mergeFields(existingVal, newVal)
 
 	return result
+}
+
+func mergeModelPricingAsUnit(result, updated *Model) {
+	selected := result.Pricing
+	if updated.Pricing != nil && updated.Pricing.Validate() == nil {
+		selected = updated.Pricing
+	}
+	result.Pricing = deepCopyModelPricing(selected)
+	updated.Pricing = nil
 }
 
 // mergeFields recursively merges fields from source to dest, only overwriting if source has non-zero values.

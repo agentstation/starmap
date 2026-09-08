@@ -43,6 +43,7 @@ identifiers, command names, API fields, and protocol values remain exact.
 | HTTP | The application protocol that Starmap uses for its REST API and remote catalog service. |  | approved | `docs/REST_API.md` |
 | ID | A value that uniquely identifies a catalog entity or generation in its scope. |  | approved | `docs/CATALOG_IDENTITY.md` |
 | JSON | JavaScript Object Notation, the data format for Starmap API and catalog payloads. |  | approved | `docs/REST_API.md` |
+| MiB | Mebibyte, a unit of 1,048,576 bytes. |  | approved | `internal/cli/app/config.go` |
 | last-known-good | The most recent catalog generation that completed validation and activation. |  | approved | `docs/CATALOG_DISTRIBUTION_TRUST.md` |
 | Kubernetes | The container orchestration system that runs the Starmap deployment example. |  | approved | `docs/DOCKER.md` |
 | lease | The shared-store claim that permits exactly one replica to refresh. |  | approved | `runtime/lease.go` |
@@ -69,6 +70,7 @@ identifiers, command names, API fields, and protocol values remain exact.
 | runbook | An ordered operator procedure for one deployment task. |  | approved | `docs/ENTERPRISE_CATALOG_SERVER.md` |
 | semantic digest | The SHA-256 digest of normalized catalog facts. |  | approved | `docs/CATALOG_IDENTITY.md` |
 | S3 | The AWS object-storage service. |  | approved | `docs/CATALOG_STORE_CONTRACT.md` |
+| runtime-replacement | The descriptor change class that requires the host to replace a connected runtime after a configuration change. |  | approved | `pkg/catalogs/config/descriptors.go` |
 | S3-compatible | Implements the S3 operations that the catalog store requires. |  | approved | `docs/CATALOG_STORE_CONTRACT.md` |
 | SHA-256 | The cryptographic hash function for Starmap payload and semantic digests. |  | approved | `docs/CATALOG_ARTIFACT_FORMAT.md` |
 | Sigstore | The public signing project whose trusted root Starmap compiles into its binary. |  | approved | `internal/attestation/trustedroot.go` |
@@ -76,6 +78,7 @@ identifiers, command names, API fields, and protocol values remain exact.
 | source chain | The ordered hop list from one runtime to the origin of its catalog. |  | approved | `pkg/catalogs/remote/chain.go` |
 | source observation | One source's identity, revision, time, checksum, and catalog evidence. |  | approved | `pkg/sources/observation.go` |
 | SSE | Server-Sent Events, the HTTP stream format for remote catalog notifications. |  | approved | `docs/REMOTE_CATALOG_PROTOCOL.md` |
+| STARMAP_HOME | The environment setting that groups Starmap configuration, data, state, and cache roots under one absolute directory. |  | approved | `pkg/productpaths/paths.go` |
 | Starmap | The Go library, command-line application, and server in this repository. | Star Map | approved | `README.md` |
 | startup policy | The rule that decides what a runtime serves before its first upstream reply. |  | approved | `runtime/policy.go` |
 | trusted root | The Sigstore document that names the keys and authorities a verifier accepts. |  | approved | `internal/attestation/trustedroot.go` |

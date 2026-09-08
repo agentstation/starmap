@@ -41,7 +41,7 @@ func TestServerCascadesVerifiedCatalogSource(t *testing.T) {
 	}
 	t.Cleanup(upstream.Close)
 
-	origin := openRuntime(t, upstream, t.TempDir(), t.TempDir())
+	origin := openRuntime(t, upstream, filepath.Join(t.TempDir(), "runtime"), filepath.Join(t.TempDir(), "store"))
 	t.Cleanup(func() { _ = origin.Close() })
 	if _, err := origin.RefreshSource(ctx); err != nil {
 		t.Fatalf("origin RefreshSource: %v", err)
@@ -224,7 +224,7 @@ func openCascadeRuntime(t *testing.T, node cascade) *runtime.Runtime {
 		settings.SourcePollInterval:  "1h",
 		settings.SourceMaxHops:       "8",
 		settings.AcquisitionEnabled:  "false",
-		settings.StateDirectory:      t.TempDir(),
+		settings.StateDirectory:      filepath.Join(t.TempDir(), "runtime"),
 		settings.CoalesceWindow:      "10ms",
 		settings.StartupSpread:       "10ms",
 		settings.TransferMaxDuration: "5s",
@@ -240,7 +240,7 @@ func openCascadeRuntime(t *testing.T, node cascade) *runtime.Runtime {
 	if err != nil {
 		t.Fatalf("settings.Load: %v", err)
 	}
-	store, err := storage.NewFilesystem(t.TempDir())
+	store, err := storage.NewFilesystem(filepath.Join(t.TempDir(), "store"))
 	if err != nil {
 		t.Fatalf("storage.NewFilesystem: %v", err)
 	}

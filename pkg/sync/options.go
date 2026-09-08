@@ -13,6 +13,7 @@ import (
 	"github.com/agentstation/starmap/internal/constants"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/errors"
+	"github.com/agentstation/starmap/pkg/productpaths"
 	"github.com/agentstation/starmap/pkg/sources"
 )
 
@@ -29,10 +30,11 @@ type Options struct {
 	CatalogPath string
 
 	Fresh              bool
-	CleanModelsDevRepo bool   // Remove temporary models.dev repository after update
-	Reformat           bool   // Reformat providers.yaml file even without changes
-	SourcesDir         string // Directory for external source data (models.dev cache/git)
-	ModelsDevGitCommit string // Exact models.dev commit required by Git verification
+	CleanModelsDevRepo bool                           // Remove temporary models.dev repository after update
+	Reformat           bool                           // Reformat providers.yaml file even without changes
+	SourcesDir         string                         // Explicit parent for both models.dev cache and checkout data.
+	SourceDirectories  productpaths.SourceDirectories // Host-selected source directory defaults.
+	ModelsDevGitCommit string                         // Exact models.dev commit required by Git verification
 
 	AutoInstallDeps   bool // Automatically install missing dependencies without prompting
 	SkipDepPrompts    bool // Skip dependency prompts and continue without optional dependencies
@@ -174,6 +176,11 @@ func (s *Options) Validate(providers catalogs.ProvidersReader) error {
 // overlap the configured human provider-YAML workspace. It is safe to call
 // before reading the workspace or creating any source state.
 func (s *Options) ValidateFilesystemLayout() error {
+	if s != nil && s.SourceDirectories != (productpaths.SourceDirectories{}) {
+		if err := s.SourceDirectories.Validate(); err != nil {
+			return err
+		}
+	}
 	if s == nil || strings.TrimSpace(s.CatalogPath) == "" {
 		return nil
 	}
@@ -187,10 +194,17 @@ func (s *Options) ValidateFilesystemLayout() error {
 
 	useGit := slices.Contains(s.Sources, sources.ModelsDevGitID)
 	useHTTP := len(s.Sources) == 0 || slices.Contains(s.Sources, sources.ModelsDevHTTPID)
+	if !useGit && !useHTTP {
+		return nil
+	}
+	directories, err := s.ResolvedSourceDirectories()
+	if err != nil {
+		return err
+	}
 	if useGit {
 		if err := workspace.ValidateMachineSeparation(
 			s.CatalogPath,
-			constants.DefaultSourcesPath,
+			directories.Checkouts,
 			"source checkout",
 		); err != nil {
 			return err
@@ -199,7 +213,7 @@ func (s *Options) ValidateFilesystemLayout() error {
 	if useHTTP {
 		if err := workspace.ValidateMachineSeparation(
 			s.CatalogPath,
-			constants.DefaultCachePath,
+			directories.Cache,
 			"source cache",
 		); err != nil {
 			return err
@@ -333,4 +347,25 @@ func WithRequireAllSources(require bool) Option {
 	return func(opts *Options) {
 		opts.RequireAllSources = require
 	}
+}
+
+// WithSourceDirectories supplies host-selected defaults for source storage.
+// An explicit WithSourcesDir selection retains precedence over these defaults.
+func WithSourceDirectories(directories productpaths.SourceDirectories) Option {
+	return func(options *Options) { options.SourceDirectories = directories }
+}
+
+// ResolvedSourceDirectories selects explicit source storage or native Starmap defaults.
+// It does not create files. WithSourcesDir preserves its existing path semantics.
+func (s *Options) ResolvedSourceDirectories() (productpaths.SourceDirectories, error) {
+	if s.SourcesDir != "" {
+		return productpaths.SourceDirectories{Cache: s.SourcesDir, Checkouts: s.SourcesDir}, nil
+	}
+	if s.SourceDirectories != (productpaths.SourceDirectories{}) {
+		if err := s.SourceDirectories.Validate(); err != nil {
+			return productpaths.SourceDirectories{}, err
+		}
+		return s.SourceDirectories, nil
+	}
+	return productpaths.DefaultSourceDirectories(productpaths.Starmap)
 }

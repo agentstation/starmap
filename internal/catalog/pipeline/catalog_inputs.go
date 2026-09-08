@@ -1,6 +1,7 @@
 package pipeline
 
 import (
+	"context"
 	stderrors "errors"
 	"os"
 	"strings"
@@ -18,41 +19,43 @@ type catalogInputs struct {
 	workspaceInput  workspace.InputExpectation
 }
 
-func (p *Pipeline) loadCatalogInputs(
-	path string,
-	input workspace.InputExpectation,
-) (catalogInputs, error) {
-	human, err := p.loadWorkspace(path)
-	if err != nil {
-		return catalogInputs{}, errors.WrapResource("load", "catalog", "human workspace", err)
-	}
-	embedded, err := p.loadEmbedded()
-	if err != nil {
-		return catalogInputs{}, errors.WrapResource("load", "catalog", "embedded", err)
-	}
-	humanCatalog, err := human.Build()
-	if err != nil {
-		return catalogInputs{}, errors.WrapResource("publish", "human workspace catalog", "", err)
-	}
-	input, err = workspace.BindInputCatalog(input, humanCatalog)
+func (p *Pipeline) loadCatalogInputs(ctx context.Context, path string) (catalogInputs, error) {
+	var inputs catalogInputs
+	var embedded *catalogs.Builder
+	err := workspace.Read(ctx, path, func(input workspace.InputExpectation) error {
+		human, err := p.loadWorkspace(path)
+		if err != nil {
+			return errors.WrapResource("load", "catalog", "human workspace", err)
+		}
+		embedded, err = p.loadEmbedded()
+		if err != nil {
+			return errors.WrapResource("load", "catalog", "embedded", err)
+		}
+		humanCatalog, err := human.Build()
+		if err != nil {
+			return errors.WrapResource("publish", "human workspace catalog", "", err)
+		}
+		input, err = workspace.BindInputCatalog(input, humanCatalog)
+		if err != nil {
+			return err
+		}
+		inputs.workspace = humanCatalog
+		inputs.workspaceReport = human.LoadReport()
+		inputs.workspaceInput = input
+		return nil
+	})
 	if err != nil {
 		return catalogInputs{}, err
 	}
-	embeddedCatalog, err := embedded.Build()
+	inputs.embedded, err = embedded.Build()
 	if err != nil {
 		return catalogInputs{}, errors.WrapResource("publish", "embedded catalog", "", err)
 	}
-	providerCatalog, err := composeProviderCatalog(embeddedCatalog, humanCatalog, input.Exists)
+	inputs.providerConfig, err = composeProviderCatalog(inputs.embedded, inputs.workspace, inputs.workspaceInput.Exists)
 	if err != nil {
 		return catalogInputs{}, err
 	}
-	return catalogInputs{
-		workspace:       humanCatalog,
-		embedded:        embeddedCatalog,
-		providerConfig:  providerCatalog,
-		workspaceReport: human.LoadReport(),
-		workspaceInput:  input,
-	}, nil
+	return inputs, nil
 }
 
 func loadHumanWorkspace(path string) (*catalogs.Builder, error) {

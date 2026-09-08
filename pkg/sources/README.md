@@ -27,12 +27,17 @@ Package sources provides public APIs for working with AI model data sources.
 - [type Observation](<#Observation>)
   - [func NewObservation\(sourceID ID, catalog \*catalogs.Catalog, metadata ObservationMetadata\) \(Observation, error\)](<#NewObservation>)
   - [func \(o Observation\) Link\(\) catalogs.SourceObservationLink](<#Observation.Link>)
+  - [func \(o Observation\) Receipt\(\) \(ObservationReceipt, error\)](<#Observation.Receipt>)
   - [func \(o Observation\) Validate\(\) error](<#Observation.Validate>)
 - [type ObservationCompleteness](<#ObservationCompleteness>)
 - [type ObservationIssue](<#ObservationIssue>)
 - [type ObservationIssueCode](<#ObservationIssueCode>)
+- [type ObservationIssueReceipt](<#ObservationIssueReceipt>)
 - [type ObservationIssueScope](<#ObservationIssueScope>)
 - [type ObservationMetadata](<#ObservationMetadata>)
+- [type ObservationReceipt](<#ObservationReceipt>)
+  - [func \(r ObservationReceipt\) Clone\(\) ObservationReceipt](<#ObservationReceipt.Clone>)
+  - [func \(r ObservationReceipt\) Restore\(catalog \*catalogs.Catalog\) \(Observation, error\)](<#ObservationReceipt.Restore>)
 - [type ObservationRecordCounts](<#ObservationRecordCounts>)
 - [type ObservationStatus](<#ObservationStatus>)
 - [type Option](<#Option>)
@@ -42,8 +47,12 @@ Package sources provides public APIs for working with AI model data sources.
 - [type Options](<#Options>)
   - [func Defaults\(\) \*Options](<#Defaults>)
   - [func \(o \*Options\) Apply\(opts ...Option\) \*Options](<#Options.Apply>)
+- [type ProviderAcquisitionBinding](<#ProviderAcquisitionBinding>)
+  - [func \(b \*ProviderAcquisitionBinding\) UnmarshalJSON\(data \[\]byte\) error](<#ProviderAcquisitionBinding.UnmarshalJSON>)
+  - [func \(b ProviderAcquisitionBinding\) Validate\(\) error](<#ProviderAcquisitionBinding.Validate>)
 - [type ProviderAttempt](<#ProviderAttempt>)
   - [func \(a ProviderAttempt\) Validate\(\) error](<#ProviderAttempt.Validate>)
+- [type ProviderBindingCredentialRole](<#ProviderBindingCredentialRole>)
 - [type ProviderClient](<#ProviderClient>)
 - [type ProviderClientFactory](<#ProviderClientFactory>)
 - [type ProviderCredentialLease](<#ProviderCredentialLease>)
@@ -182,6 +191,18 @@ const (
 const MaxJSONNestingDepth = sourcepayload.MaxJSONNestingDepth
 ```
 
+<a name="MaxProviderBindingFieldBytes"></a>MaxProviderBindingFieldBytes bounds each declared binding identifier or selector.
+
+```go
+const MaxProviderBindingFieldBytes = 4096
+```
+
+<a name="ProviderAcquisitionBindingSchemaVersion"></a>ProviderAcquisitionBindingSchemaVersion identifies the supported binding format.
+
+```go
+const ProviderAcquisitionBindingSchemaVersion = 1
+```
+
 <a name="ValidateJSONPayload"></a>
 ## func [ValidateJSONPayload](<https://github.com/agentstation/starmap/blob/main/pkg/sources/payload.go#L9>)
 
@@ -192,7 +213,7 @@ func ValidateJSONPayload(data []byte) error
 ValidateJSONPayload enforces source byte and nesting limits before decoding.
 
 <a name="Dependency"></a>
-## type [Dependency](<https://github.com/agentstation/starmap/blob/main/pkg/sources/source.go#L68-L86>)
+## type [Dependency](<https://github.com/agentstation/starmap/blob/main/pkg/sources/source.go#L69-L87>)
 
 Dependency represents an external tool or runtime required by a source.
 
@@ -219,7 +240,7 @@ type Dependency struct {
 ```
 
 <a name="DependencyStatus"></a>
-## type [DependencyStatus](<https://github.com/agentstation/starmap/blob/main/pkg/sources/source.go#L89-L94>)
+## type [DependencyStatus](<https://github.com/agentstation/starmap/blob/main/pkg/sources/source.go#L90-L95>)
 
 DependencyStatus represents the availability status of a dependency.
 
@@ -278,27 +299,28 @@ func IDs() []ID
 IDs returns all available source identifiers.
 
 <a name="Observation"></a>
-## type [Observation](<https://github.com/agentstation/starmap/blob/main/pkg/sources/source.go#L54-L65>)
+## type [Observation](<https://github.com/agentstation/starmap/blob/main/pkg/sources/source.go#L54-L66>)
 
 Observation is one immutable direct source result. EvidenceChecksum binds the normalized canonical catalog payload. Raw upstream evidence retention is a separate storage policy.
 
 ```go
 type Observation struct {
-    ID               string                  `json:"id" yaml:"id"`
-    SourceID         ID                      `json:"source" yaml:"source"`
-    ObservedAt       time.Time               `json:"observed_at" yaml:"observed_at"`
-    Revision         Revision                `json:"revision" yaml:"revision"`
-    Completeness     ObservationCompleteness `json:"completeness" yaml:"completeness"`
-    Status           ObservationStatus       `json:"status" yaml:"status"`
-    Records          ObservationRecordCounts `json:"records" yaml:"records"`
-    Issues           []ObservationIssue      `json:"issues,omitempty" yaml:"issues,omitempty"`
-    EvidenceChecksum string                  `json:"evidence_checksum" yaml:"evidence_checksum"`
-    Catalog          *catalogs.Catalog       `json:"-" yaml:"-"`
+    ProviderBinding  *ProviderAcquisitionBinding `json:"provider_binding,omitempty" yaml:"provider_binding,omitempty"`
+    ID               string                      `json:"id" yaml:"id"`
+    SourceID         ID                          `json:"source" yaml:"source"`
+    ObservedAt       time.Time                   `json:"observed_at" yaml:"observed_at"`
+    Revision         Revision                    `json:"revision" yaml:"revision"`
+    Completeness     ObservationCompleteness     `json:"completeness" yaml:"completeness"`
+    Status           ObservationStatus           `json:"status" yaml:"status"`
+    Records          ObservationRecordCounts     `json:"records" yaml:"records"`
+    Issues           []ObservationIssue          `json:"issues,omitempty" yaml:"issues,omitempty"`
+    EvidenceChecksum string                      `json:"evidence_checksum" yaml:"evidence_checksum"`
+    Catalog          *catalogs.Catalog           `json:"-" yaml:"-"`
 }
 ```
 
 <a name="NewObservation"></a>
-### func [NewObservation](<https://github.com/agentstation/starmap/blob/main/pkg/sources/observation.go#L101>)
+### func [NewObservation](<https://github.com/agentstation/starmap/blob/main/pkg/sources/observation.go#L100>)
 
 ```go
 func NewObservation(sourceID ID, catalog *catalogs.Catalog, metadata ObservationMetadata) (Observation, error)
@@ -307,7 +329,7 @@ func NewObservation(sourceID ID, catalog *catalogs.Catalog, metadata Observation
 NewObservation binds an immutable catalog to typed, deterministic audit metadata.
 
 <a name="Observation.Link"></a>
-### func \(Observation\) [Link](<https://github.com/agentstation/starmap/blob/main/pkg/sources/observation.go#L136>)
+### func \(Observation\) [Link](<https://github.com/agentstation/starmap/blob/main/pkg/sources/observation.go#L139>)
 
 ```go
 func (o Observation) Link() catalogs.SourceObservationLink
@@ -315,8 +337,17 @@ func (o Observation) Link() catalogs.SourceObservationLink
 
 Link returns the immutable manifest/audit projection of this observation.
 
+<a name="Observation.Receipt"></a>
+### func \(Observation\) [Receipt](<https://github.com/agentstation/starmap/blob/main/pkg/sources/receipt.go#L26>)
+
+```go
+func (o Observation) Receipt() (ObservationReceipt, error)
+```
+
+Receipt validates an observation and copies its durable evidence without diagnostic messages.
+
 <a name="Observation.Validate"></a>
-### func \(Observation\) [Validate](<https://github.com/agentstation/starmap/blob/main/pkg/sources/observation.go#L145>)
+### func \(Observation\) [Validate](<https://github.com/agentstation/starmap/blob/main/pkg/sources/observation.go#L148>)
 
 ```go
 func (o Observation) Validate() error
@@ -325,7 +356,7 @@ func (o Observation) Validate() error
 Validate verifies required metadata and binds the evidence checksum to Catalog.
 
 <a name="ObservationCompleteness"></a>
-## type [ObservationCompleteness](<https://github.com/agentstation/starmap/blob/main/pkg/sources/observation.go#L38>)
+## type [ObservationCompleteness](<https://github.com/agentstation/starmap/blob/main/pkg/sources/observation.go#L36>)
 
 ObservationCompleteness states whether an observation contains every expected record.
 
@@ -334,7 +365,7 @@ type ObservationCompleteness = evidence.ObservationCompleteness
 ```
 
 <a name="ObservationIssue"></a>
-## type [ObservationIssue](<https://github.com/agentstation/starmap/blob/main/pkg/sources/observation.go#L88>)
+## type [ObservationIssue](<https://github.com/agentstation/starmap/blob/main/pkg/sources/observation.go#L86>)
 
 ObservationIssue records one classified, non\-fatal degradation.
 
@@ -343,7 +374,7 @@ type ObservationIssue = evidence.ObservationIssue
 ```
 
 <a name="ObservationIssueCode"></a>
-## type [ObservationIssueCode](<https://github.com/agentstation/starmap/blob/main/pkg/sources/observation.go#L72>)
+## type [ObservationIssueCode](<https://github.com/agentstation/starmap/blob/main/pkg/sources/observation.go#L70>)
 
 ObservationIssueCode is a stable machine\-readable degradation reason.
 
@@ -351,8 +382,21 @@ ObservationIssueCode is a stable machine\-readable degradation reason.
 type ObservationIssueCode = evidence.ObservationIssueCode
 ```
 
+<a name="ObservationIssueReceipt"></a>
+## type [ObservationIssueReceipt](<https://github.com/agentstation/starmap/blob/main/pkg/sources/receipt.go#L10-L14>)
+
+ObservationIssueReceipt retains classified evidence without diagnostic messages.
+
+```go
+type ObservationIssueReceipt struct {
+    Scope   ObservationIssueScope `json:"scope"`
+    Code    ObservationIssueCode  `json:"code"`
+    Subject string                `json:"subject,omitempty"`
+}
+```
+
 <a name="ObservationIssueScope"></a>
-## type [ObservationIssueScope](<https://github.com/agentstation/starmap/blob/main/pkg/sources/observation.go#L61>)
+## type [ObservationIssueScope](<https://github.com/agentstation/starmap/blob/main/pkg/sources/observation.go#L59>)
 
 ObservationIssueScope identifies the level at which degradation occurred.
 
@@ -361,23 +405,56 @@ type ObservationIssueScope = evidence.ObservationIssueScope
 ```
 
 <a name="ObservationMetadata"></a>
-## type [ObservationMetadata](<https://github.com/agentstation/starmap/blob/main/pkg/sources/observation.go#L91-L98>)
+## type [ObservationMetadata](<https://github.com/agentstation/starmap/blob/main/pkg/sources/observation.go#L89-L97>)
 
 ObservationMetadata supplies source\-owned metadata used to construct an observation.
 
 ```go
 type ObservationMetadata struct {
-    ObservedAt   time.Time
-    Revision     Revision
-    Completeness ObservationCompleteness
-    Status       ObservationStatus
-    Records      ObservationRecordCounts
-    Issues       []ObservationIssue
+    ProviderBinding *ProviderAcquisitionBinding
+    ObservedAt      time.Time
+    Revision        Revision
+    Completeness    ObservationCompleteness
+    Status          ObservationStatus
+    Records         ObservationRecordCounts
+    Issues          []ObservationIssue
 }
 ```
 
+<a name="ObservationReceipt"></a>
+## type [ObservationReceipt](<https://github.com/agentstation/starmap/blob/main/pkg/sources/receipt.go#L18-L23>)
+
+ObservationReceipt retains the evidence needed to validate and restore an observation. It excludes the catalog payload and diagnostic messages that can contain credentials.
+
+```go
+type ObservationReceipt struct {
+    ProviderBinding *ProviderAcquisitionBinding    `json:"provider_binding,omitempty"`
+    Link            catalogs.SourceObservationLink `json:"link"`
+    Records         ObservationRecordCounts        `json:"records"`
+    Issues          []ObservationIssueReceipt      `json:"issues,omitempty"`
+}
+```
+
+<a name="ObservationReceipt.Clone"></a>
+### func \(ObservationReceipt\) [Clone](<https://github.com/agentstation/starmap/blob/main/pkg/sources/receipt.go#L38>)
+
+```go
+func (r ObservationReceipt) Clone() ObservationReceipt
+```
+
+Clone returns receipt data whose mutable collections belong to the caller.
+
+<a name="ObservationReceipt.Restore"></a>
+### func \(ObservationReceipt\) [Restore](<https://github.com/agentstation/starmap/blob/main/pkg/sources/receipt.go#L46>)
+
+```go
+func (r ObservationReceipt) Restore(catalog *catalogs.Catalog) (Observation, error)
+```
+
+Restore validates the receipt identity and checksum against the supplied catalog. Restored diagnostics contain only stable issue codes. Original messages remain absent.
+
 <a name="ObservationRecordCounts"></a>
-## type [ObservationRecordCounts](<https://github.com/agentstation/starmap/blob/main/pkg/sources/observation.go#L58>)
+## type [ObservationRecordCounts](<https://github.com/agentstation/starmap/blob/main/pkg/sources/observation.go#L56>)
 
 ObservationRecordCounts reports accepted and rejected source records.
 
@@ -386,7 +463,7 @@ type ObservationRecordCounts = evidence.ObservationRecordCounts
 ```
 
 <a name="ObservationStatus"></a>
-## type [ObservationStatus](<https://github.com/agentstation/starmap/blob/main/pkg/sources/observation.go#L48>)
+## type [ObservationStatus](<https://github.com/agentstation/starmap/blob/main/pkg/sources/observation.go#L46>)
 
 ObservationStatus is the typed outcome of a source observation.
 
@@ -464,6 +541,56 @@ func (o *Options) Apply(opts ...Option) *Options
 
 Apply applies a set of options to create configured sourceOptions This is a helper for sources to use internally.
 
+<a name="ProviderAcquisitionBinding"></a>
+## type [ProviderAcquisitionBinding](<https://github.com/agentstation/starmap/blob/main/pkg/sources/provider_binding.go#L30-L53>)
+
+ProviderAcquisitionBinding declares one provider scope under a deployment\-owned revision. It contains no credential material and does not prove upstream account ownership or completeness.
+
+```go
+type ProviderAcquisitionBinding struct {
+    // SchemaVersion selects the binding wire contract.
+    SchemaVersion int `json:"schema_version" yaml:"schema_version"`
+    // ID is the stable deployment-owned binding identity.
+    ID  string `json:"id" yaml:"id"`
+    // Revision changes when the declared scope or credential role changes.
+    Revision string `json:"revision" yaml:"revision"`
+    // ProviderID names the single canonical provider in the observation.
+    ProviderID catalogs.ProviderID `json:"provider_id" yaml:"provider_id"`
+    // Public declares a scope without account or project selectors.
+    Public bool `json:"public,omitzero" yaml:"public,omitempty"`
+    // AccountID is the declared provider-account identifier.
+    AccountID string `json:"account_id,omitempty" yaml:"account_id,omitempty"`
+    // ProjectID is the declared provider-project identifier.
+    ProjectID string `json:"project_id,omitempty" yaml:"project_id,omitempty"`
+    // Region names the declared region, including an explicit global scope.
+    Region string `json:"region" yaml:"region"`
+    // APISurface names the provider operation that produced the observed records.
+    APISurface string `json:"api_surface" yaml:"api_surface"`
+    // CredentialRole identifies catalog acquisition, never inference.
+    CredentialRole ProviderBindingCredentialRole `json:"credential_role" yaml:"credential_role"`
+    // CredentialProfileID names the declared authentication profile, without credential material.
+    CredentialProfileID catalogs.ProviderCredentialProfileID `json:"credential_profile_id" yaml:"credential_profile_id"`
+}
+```
+
+<a name="ProviderAcquisitionBinding.UnmarshalJSON"></a>
+### func \(\*ProviderAcquisitionBinding\) [UnmarshalJSON](<https://github.com/agentstation/starmap/blob/main/pkg/sources/provider_binding.go#L57>)
+
+```go
+func (b *ProviderAcquisitionBinding) UnmarshalJSON(data []byte) error
+```
+
+UnmarshalJSON rejects unknown fields and unsupported binding schemas. Failed decoding leaves the receiver unchanged.
+
+<a name="ProviderAcquisitionBinding.Validate"></a>
+### func \(ProviderAcquisitionBinding\) [Validate](<https://github.com/agentstation/starmap/blob/main/pkg/sources/provider_binding.go#L79>)
+
+```go
+func (b ProviderAcquisitionBinding) Validate() error
+```
+
+Validate checks the binding's format and requires an explicit public or account/project scope. Errors identify fields without exposing their values.
+
 <a name="ProviderAttempt"></a>
 ## type [ProviderAttempt](<https://github.com/agentstation/starmap/blob/main/pkg/sources/outcome.go#L107-L127>)
 
@@ -501,6 +628,21 @@ func (a ProviderAttempt) Validate() error
 ```
 
 Validate checks that the attempt carries a defined outcome and a defined reason for every state other than success.
+
+<a name="ProviderBindingCredentialRole"></a>
+## type [ProviderBindingCredentialRole](<https://github.com/agentstation/starmap/blob/main/pkg/sources/provider_binding.go#L23>)
+
+ProviderBindingCredentialRole identifies the purpose of a binding's credentials.
+
+```go
+type ProviderBindingCredentialRole string
+```
+
+<a name="ProviderBindingCatalogAcquisition"></a>ProviderBindingCatalogAcquisition identifies catalog\-acquisition credentials.
+
+```go
+const ProviderBindingCatalogAcquisition ProviderBindingCredentialRole = "catalog_acquisition"
+```
 
 <a name="ProviderClient"></a>
 ## type [ProviderClient](<https://github.com/agentstation/starmap/blob/main/pkg/sources/providers.go#L15-L17>)
@@ -954,7 +1096,7 @@ type RawFetchResult struct {
 ```
 
 <a name="Revision"></a>
-## type [Revision](<https://github.com/agentstation/starmap/blob/main/pkg/sources/observation.go#L35>)
+## type [Revision](<https://github.com/agentstation/starmap/blob/main/pkg/sources/observation.go#L33>)
 
 Revision identifies the exact upstream or normalized content revision.
 
@@ -963,7 +1105,7 @@ type Revision = evidence.ObservationRevision
 ```
 
 <a name="RevisionKind"></a>
-## type [RevisionKind](<https://github.com/agentstation/starmap/blob/main/pkg/sources/observation.go#L17>)
+## type [RevisionKind](<https://github.com/agentstation/starmap/blob/main/pkg/sources/observation.go#L15>)
 
 RevisionKind identifies the source of an upstream observation revision.
 

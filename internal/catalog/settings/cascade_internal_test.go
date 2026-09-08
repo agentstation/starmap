@@ -73,3 +73,28 @@ func TestCascadeSubscriberNeedsAnUpstreamURL(t *testing.T) {
 		t.Fatalf("cascadeSubscriber error = %v, want a ConfigError", err)
 	}
 }
+
+// TestCascadeSubscriberExplicitZeroDisablesSpread checks the subscriber's disable contract.
+func TestCascadeSubscriberExplicitZeroDisablesSpread(t *testing.T) {
+	for _, explicit := range []bool{false, true} {
+		values := map[string]string{Source: "starmap", SourceURL: "https://catalog.example.test"}
+		if explicit {
+			values[StartupSpread] = "0s"
+		}
+		parsed, err := Load(func(name string) (string, bool) { value, present := values[name]; return value, present })
+		if err != nil {
+			t.Fatal(err)
+		}
+		subscriber, err := cascadeSubscriber(parsed)
+		if err != nil {
+			t.Fatal(err)
+		}
+		// The remote contract uses a negative value to disable spread and zero to select its default.
+		if explicit && subscriber.StartupSpread >= 0 {
+			t.Fatal("explicit zero selected the subscriber default spread")
+		}
+		if !explicit && subscriber.StartupSpread != 0 {
+			t.Fatal("an absent value no longer selects the subscriber default")
+		}
+	}
+}

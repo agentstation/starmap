@@ -71,7 +71,7 @@ func (c *Client) Rollback(ctx context.Context, generationID string) (*RollbackRe
 		return nil, errors.WrapResource("decode", "rollback generation", generationID, err)
 	}
 
-	input, err := observeBoundWorkspaceInput(catalogPath)
+	input, err := observeBoundWorkspaceInput(ctx, catalogPath)
 	if err != nil {
 		return nil, err
 	}
@@ -139,21 +139,29 @@ func projectRollbackCatalog(
 	return result
 }
 
-func observeBoundWorkspaceInput(path string) (workspace.InputExpectation, error) {
-	input, err := workspace.ObserveInput(path)
-	if err != nil || !input.Exists {
-		return input, err
-	}
-	builder, err := catalogs.NewFromPath(path)
+func observeBoundWorkspaceInput(ctx context.Context, path string) (workspace.InputExpectation, error) {
+	var input workspace.InputExpectation
+	err := workspace.Read(ctx, path, func(observed workspace.InputExpectation) error {
+		input = observed
+		if !input.Exists {
+			return nil
+		}
+		builder, err := catalogs.NewFromPath(path)
+		if err != nil {
+			return errors.WrapResource("load", "rollback workspace", path, err)
+		}
+		if err := builder.LoadReport().Err(); err != nil {
+			return errors.WrapResource("load", "rollback workspace model", path, err)
+		}
+		catalog, err := builder.Build()
+		if err != nil {
+			return errors.WrapResource("publish", "rollback workspace input", path, err)
+		}
+		input, err = workspace.BindInputCatalog(input, catalog)
+		return err
+	})
 	if err != nil {
-		return workspace.InputExpectation{}, errors.WrapResource("load", "rollback workspace", path, err)
+		return workspace.InputExpectation{}, err
 	}
-	if err := builder.LoadReport().Err(); err != nil {
-		return workspace.InputExpectation{}, errors.WrapResource("load", "rollback workspace model", path, err)
-	}
-	catalog, err := builder.Build()
-	if err != nil {
-		return workspace.InputExpectation{}, errors.WrapResource("publish", "rollback workspace input", path, err)
-	}
-	return workspace.BindInputCatalog(input, catalog)
+	return input, nil
 }

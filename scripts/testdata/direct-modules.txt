@@ -9,6 +9,7 @@ github.com/aws/aws-sdk-go-v2/config
 github.com/aws/aws-sdk-go-v2/service/s3
 github.com/aws/aws-sdk-go-v2/service/secretsmanager
 github.com/aws/smithy-go
+github.com/ebitengine/purego
 github.com/goccy/go-yaml
 github.com/gofrs/flock
 github.com/google/go-cmp

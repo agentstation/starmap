@@ -4,7 +4,6 @@ import (
 	"context"
 	"time"
 
-	"github.com/agentstation/starmap/internal/constants"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/errors"
 	"github.com/agentstation/starmap/pkg/logging"
@@ -69,9 +68,6 @@ func (s *GitSource) Name() string { return "models.dev (Git)" }
 
 // ensureGitRepo loads models.dev data for this call and configured directory.
 func ensureGitRepo(ctx context.Context, outputDir, commit string) (*API, sources.Revision, error) {
-	if outputDir == "" {
-		outputDir = expandPath(constants.DefaultSourcesPath)
-	}
 	client := NewPinnedGitClient(outputDir, commit)
 	inputs, err := client.PrepareRepository(ctx)
 	if err != nil {
@@ -104,9 +100,9 @@ func (s *GitSource) Observe(ctx context.Context, opts ...sources.Option) (source
 	builder := catalogs.NewEmpty()
 
 	// Use configured sources directory or default
-	outputDir := s.sourcesDir
-	if outputDir == "" {
-		outputDir = expandPath(constants.DefaultSourcesPath)
+	outputDir, pathErr := sourceDirectory(s.sourcesDir, true)
+	if pathErr != nil {
+		return sources.Observation{}, pathErr
 	}
 
 	// Initialize models.dev data once

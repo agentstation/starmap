@@ -1,6 +1,7 @@
 package app
 
 import (
+	"github.com/agentstation/starmap/pkg/productpaths"
 	"os"
 	"path/filepath"
 	"testing"
@@ -73,14 +74,14 @@ func TestRemovedExportConfigurationDoesNotSelectWorkspace(t *testing.T) {
 
 func TestConfigFileUsesOnlyCanonicalLocation(t *testing.T) {
 	home := t.TempDir()
-	t.Setenv("HOME", home)
+	setTestHome(t, home)
 	t.Setenv("CONFIG", "")
-	canonical := filepath.Join(home, ".starmap", "config.yaml")
+	canonical := filepath.Join(nativeRoot(t, productpaths.Config), "config.yaml")
 	legacy := filepath.Join(home, ".starmap.yaml")
 	if err := os.MkdirAll(filepath.Dir(canonical), constants.DirPermissions); err != nil {
 		t.Fatalf("MkdirAll: %v", err)
 	}
-	if err := os.WriteFile(canonical, []byte("catalog_path: /canonical\n"), constants.FilePermissions); err != nil {
+	if err := os.WriteFile(canonical, []byte("catalog_path: /canonical\n"), 0o600); err != nil {
 		t.Fatalf("WriteFile canonical: %v", err)
 	}
 	if err := os.WriteFile(legacy, []byte("catalog_path: /ignored-legacy\n"), constants.FilePermissions); err != nil {
@@ -113,7 +114,7 @@ func TestConfigParsesCredentialSourceReferences(t *testing.T) {
       reference: file:/run/secrets/openai-api-key
       fallback_ambient: true
 `)
-	if err := os.WriteFile(configPath, contents, constants.FilePermissions); err != nil {
+	if err := os.WriteFile(configPath, contents, 0o600); err != nil {
 		t.Fatalf("WriteFile: %v", err)
 	}
 

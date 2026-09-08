@@ -9,6 +9,7 @@ import (
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/errors"
 	"github.com/agentstation/starmap/pkg/logging"
+	filepolicy "github.com/agentstation/starmap/pkg/productpaths/policy"
 )
 
 // maxSourceFileBytes bounds a catalog payload read from a local file. A larger
@@ -157,6 +158,9 @@ func (f *fileSource) Identity() string { return string(SourceFile) }
 
 // Read decodes the payload and reports a change when its digest moved.
 func (f *fileSource) Read(_ context.Context) (SourceRead, error) {
+	if err := filepolicy.Require("source-file", filepolicy.DeploymentControlled); err != nil {
+		return SourceRead{}, err
+	}
 	info, err := os.Stat(f.path)
 	if err != nil {
 		return SourceRead{}, errors.WrapIO("stat", f.path, err)

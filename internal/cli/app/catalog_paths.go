@@ -1,21 +1,30 @@
 package app
 
-import "github.com/agentstation/starmap/internal/constants"
+import "github.com/agentstation/starmap/pkg/productpaths"
 
 func (a *App) catalogStatePath() (string, error) {
-	return expandHomePath(constants.DefaultCatalogStatePath)
+	paths, err := a.ResolvedPaths()
+	if err != nil {
+		return "", err
+	}
+	return paths.CatalogStore.Path, nil
 }
 
-// CatalogPath returns the configured human provider-YAML workspace. The
-// canonical workspace setting wins, so every composition in one process reads
-// one workspace. Without any override, it returns the per-user default.
+// CatalogPath returns the resolved human catalog workspace without creating it.
+// An explicit empty canonical workspace disables the optional workspace.
 func (a *App) CatalogPath() (string, error) {
-	path := a.catalogSettings.WorkspacePath
-	if path == "" {
-		path = a.config.CatalogPath
+	paths, err := a.ResolvedPaths()
+	if err != nil {
+		return "", err
 	}
-	if path == "" {
-		path = constants.DefaultCatalogPath
+	return paths.Workspace.Path, nil
+}
+
+// SourceDirectories returns the configured source cache and checkout roots without creating files.
+func (a *App) SourceDirectories() (productpaths.SourceDirectories, error) {
+	paths, err := a.ResolvedPaths()
+	if err != nil {
+		return productpaths.SourceDirectories{}, err
 	}
-	return expandHomePath(path)
+	return productpaths.SourceDirectoriesAt(paths.Roots[productpaths.Cache].Path)
 }

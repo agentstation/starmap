@@ -39,6 +39,7 @@ type HTTPClient struct {
 	APIURL   string
 	Client   *http.Client
 	nowFunc  func() time.Time
+	pathErr  error
 }
 
 // HTTPAcquisition identifies which evidence path satisfied one HTTP load.
@@ -88,12 +89,11 @@ type httpCacheMetadata struct {
 
 // NewHTTPClient creates a new models.dev HTTP client.
 func NewHTTPClient(outputDir string) *HTTPClient {
-	if outputDir == "" {
-		outputDir = expandPath(constants.DefaultCachePath)
-	}
+	outputDir, pathErr := sourceDirectory(outputDir, false)
 	cacheDir := filepath.Join(outputDir, "models.dev")
 	return &HTTPClient{
 		CacheDir: cacheDir,
+		pathErr:  pathErr,
 		APIURL:   ModelsDevAPIURL,
 		Client:   &http.Client{Timeout: constants.DefaultHTTPTimeout},
 	}
@@ -107,6 +107,9 @@ func (c *HTTPClient) EnsureAPI(ctx context.Context) error {
 
 // AcquireAPI verifies api.json is available and reports the exact evidence path.
 func (c *HTTPClient) AcquireAPI(ctx context.Context) (HTTPAcquisitionResult, error) {
+	if c.pathErr != nil {
+		return HTTPAcquisitionResult{}, c.pathErr
+	}
 	ctx = logging.WithSource(ctx, sources.ModelsDevHTTPID.String())
 	logger := logging.FromContext(ctx)
 	// Create cache directory if it does not exist
@@ -232,6 +235,9 @@ func (c *HTTPClient) GetAPIPath() string {
 
 // Cleanup removes the cache directory.
 func (c *HTTPClient) Cleanup() error {
+	if c.pathErr != nil {
+		return c.pathErr
+	}
 	if _, err := os.Stat(c.CacheDir); os.IsNotExist(err) {
 		return nil // Already cleaned up
 	}

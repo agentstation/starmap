@@ -7,6 +7,19 @@ includes the architecture and source-schema control planes.
 
 ## Core Documentation
 
+### [Catalog lifecycle design](design/catalog-lifecycle/PRD.md)
+
+Draft product requirements for Starmap and Starport catalog lifecycle behavior.
+The [engineering specification](design/catalog-lifecycle/ENGINEERING_SPEC.md)
+defines proposed contracts. The
+[repository findings](design/catalog-lifecycle/REPOSITORY_FINDINGS.md) record
+current behavior and verification limits.
+The [storage review](design/catalog-lifecycle/STORAGE_REVIEW.md) inventories current files and storage services.
+The [canonical plan](plans/starport-production-catalog-plan.html) includes the recommendations and their required implementation evidence.
+
+The [latency review](design/catalog-lifecycle/LATENCY_REVIEW.md) records measured catalog and credential costs.
+Its accepted target defines valid memory state, atomic admission, bounded optional work, and complete gateway measurements.
+
 ### [API.md](API.md)
 **Go Package API Reference**
 
@@ -143,9 +156,9 @@ Individual package READMEs provide implementation details:
 - [Thread Safety Guidelines](ARCHITECTURE.md#thread-safety)
 - [Sync Pipeline (13 Stages)](ARCHITECTURE.md#sync-pipeline)
 - [Reconciliation System](ARCHITECTURE.md#reconciliation-system)
-- [HTTP Server Configuration](REST_API.md#configuration)
-- [Reactive Updates (SSE)](REST_API.md#real-time-updates)
-- [Go Package Usage](API.md#client)
+- [HTTP Server Configuration](REST_API.md#start-the-standalone-server)
+- [Reactive Updates (SSE)](REST_API.md#reactive-updates)
+- [Go Package Usage](API.md#Client)
 
 ## Contributing
 

@@ -2,17 +2,12 @@ package runtime
 
 import (
 	"context"
-	"crypto/rand"
 	"crypto/sha256"
 	"encoding/hex"
-	"os"
-	"path/filepath"
 	"strings"
 	"time"
 
-	"github.com/agentstation/starmap/internal/constants"
 	"github.com/agentstation/starmap/internal/fleet"
-	"github.com/agentstation/starmap/pkg/errors"
 	"github.com/agentstation/starmap/pkg/logging"
 )
 
@@ -20,21 +15,6 @@ import (
 const (
 	controllerSource      = "source"
 	controllerAcquisition = "acquisition"
-)
-
-const (
-	// instanceSeedFileName holds the durable part of the instance identity.
-	instanceSeedFileName = "instance-seed"
-
-	// instanceSeedBytes is the length of a generated seed.
-	instanceSeedBytes = 16
-
-	// maxInstanceSeedBytes bounds a loaded seed file, so an unsafe file fails
-	// instead of reaching the identity hash.
-	maxInstanceSeedBytes = 256
-
-	// identityDigestLength keeps the derived identity short and stable.
-	identityDigestLength = 16
 )
 
 // scheduler holds the stable pacing of the two periodic runtime workers. The
@@ -90,69 +70,21 @@ func (r *Runtime) initializeSchedule() error {
 	return nil
 }
 
-// instanceIdentity returns the stable identity of this process. The configured
-// override wins. Otherwise the identity combines a durable seed, the host
-// name, and the listen address. A copied state directory then produces two
-// identities instead of one.
+// instanceIdentity binds the seed to the recorded owner. Listen addresses do not define identity.
 func (r *Runtime) instanceIdentity() (string, error) {
 	if identity := strings.TrimSpace(r.config.schedulerIdentity); identity != "" {
 		return identity, nil
 	}
-	seed, err := r.store.instanceSeed()
-	if err != nil {
-		return "", err
-	}
-	host, err := os.Hostname()
-	if err != nil {
-		host = ""
-	}
+	return persistentInstanceIdentity(r.instanceSeed, r.config.directoryOwner), nil
+}
+
+func persistentInstanceIdentity(seed string, owner DirectoryOwner) string {
 	digest := sha256.New()
-	for _, field := range []string{seed, host, r.config.listenAddress} {
+	for _, field := range []string{"starmap-runtime-v1", seed, owner.Product, owner.Deployment, owner.Instance} {
 		_, _ = digest.Write([]byte(field))
 		_, _ = digest.Write([]byte{0})
 	}
-	return hex.EncodeToString(digest.Sum(nil))[:identityDigestLength], nil
-}
-
-// instanceSeed returns the durable identity seed. It creates the seed on first
-// use. A runtime without a state directory derives an empty seed, so its
-// identity rests on the host name and the listen address alone.
-func (s *layerStore) instanceSeed() (string, error) {
-	if !s.durable() {
-		return "", nil
-	}
-	path := filepath.Join(s.root, instanceSeedFileName)
-	info, err := os.Stat(path)
-	switch {
-	case err == nil && info.Size() > maxInstanceSeedBytes:
-		return "", &errors.ValidationError{
-			Field: "instance_seed", Value: info.Size(), Message: "exceeds the seed bound",
-		}
-	case err == nil:
-		raw, readErr := os.ReadFile(path) //nolint:gosec // The path is runtime-owned state.
-		if readErr != nil {
-			return "", errors.WrapIO("read", path, readErr)
-		}
-		if seed := strings.TrimSpace(string(raw)); seed != "" {
-			return seed, nil
-		}
-	case !os.IsNotExist(err):
-		return "", errors.WrapIO("stat", path, err)
-	}
-
-	var generated [instanceSeedBytes]byte
-	if _, err := rand.Read(generated[:]); err != nil {
-		return "", errors.WrapIO("generate", path, err)
-	}
-	seed := hex.EncodeToString(generated[:])
-	temporary := path + ".tmp"
-	if err := os.WriteFile(temporary, []byte(seed), constants.SecureFilePermissions); err != nil {
-		return "", errors.WrapIO("write", temporary, err)
-	}
-	if err := os.Rename(temporary, path); err != nil {
-		return "", errors.WrapIO("rename", path, err)
-	}
-	return seed, nil
+	return hex.EncodeToString(digest.Sum(nil))
 }
 
 // adoptSourceIdentity hands the derived instance identity to a source that
@@ -238,7 +170,7 @@ func (r *Runtime) acquisitionNeedsStartupPass() bool {
 	r.mu.RLock()
 	var oldest time.Time
 	retained := 0
-	for _, id := range r.layers.providerOrder() {
+	for _, id := range r.layers.activeProviderOrder() {
 		layer := r.layers.providers[id]
 		if oldest.IsZero() || layer.ObservedAt.Before(oldest) {
 			oldest = layer.ObservedAt

@@ -48,14 +48,18 @@ func run(args []string, output io.Writer, now time.Time) error {
 	if *catalogDir == "" || *manifestPath == "" {
 		return &errors.ValidationError{Field: "bootstrap_manifest.paths", Message: "catalog-dir and output are required"}
 	}
-	builder, err := catalogs.NewFromPath(*catalogDir)
-	if err != nil {
+	var catalog *catalogs.Catalog
+	err := workspace.Read(context.Background(), *catalogDir, func(workspace.InputExpectation) error {
+		builder, err := catalogs.NewFromPath(*catalogDir)
+		if err != nil {
+			return err
+		}
+		if err := builder.LoadReport().Err(); err != nil {
+			return err
+		}
+		catalog, err = builder.Build()
 		return err
-	}
-	if err := builder.LoadReport().Err(); err != nil {
-		return err
-	}
-	catalog, err := builder.Build()
+	})
 	if err != nil {
 		return err
 	}
