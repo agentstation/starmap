@@ -1,0 +1,86 @@
+[
+  {
+    "path": "docs/plans/proof/starport-production-catalog/csp3/field-retention-2026-09-08/partial_provider_pricing_test.go.gz",
+    "sha256": "6e1f22e429aedab32223065f026a7b0ad0c8764c5cc5f4cce047f43f4c9a74ed",
+    "bytes": 2142,
+    "decoded_gzip": true
+  },
+  {
+    "path": "docs/plans/proof/starport-production-catalog/csp3/field-retention-2026-09-08/lint.log",
+    "sha256": "e92606b0bf483111dff0a120c315ea165821348f31365020e2468a0059095c47",
+    "bytes": 10,
+    "decoded_gzip": false
+  },
+  {
+    "path": "docs/plans/proof/starport-production-catalog/csp3/field-retention-2026-09-08/overlay.json",
+    "sha256": "37761ebe92e08cc5c9605c8cac53469258839e17e64dbb43271cb5b09d9e0564",
+    "bytes": 202,
+    "decoded_gzip": false
+  },
+  {
+    "path": "docs/plans/proof/starport-production-catalog/csp3/field-retention-2026-09-08/expanded-compile-failure.jsonl",
+    "sha256": "f5b87db3dac81344a59389b01815dc7128996a4d1bdb9293af1f5e4553fe1d75",
+    "bytes": 1168,
+    "decoded_gzip": false
+  },
+  {
+    "path": "docs/plans/proof/starport-production-catalog/csp3/field-retention-2026-09-08/manual_history_before.go.gz",
+    "sha256": "3fc7fe60e989bedeb5c9ae1fea141206033efe7c40e58e9abf25df0b795dac30",
+    "bytes": 2300,
+    "decoded_gzip": true
+  },
+  {
+    "path": "docs/plans/proof/starport-production-catalog/csp3/field-retention-2026-09-08/red.jsonl",
+    "sha256": "a8cae3df80276200c7fc375023056528f9e0dc0b955fcc3b686e9c64cf290128",
+    "bytes": 51364,
+    "decoded_gzip": false
+  },
+  {
+    "path": "docs/plans/proof/starport-production-catalog/csp3/field-retention-2026-09-08/red-overlay.json",
+    "sha256": "937384255bb1393d48b697f3ed9b07cdbdc0521fce5d1c5bf271edf09fcb6e93",
+    "bytes": 186,
+    "decoded_gzip": false
+  },
+  {
+    "path": "docs/plans/proof/starport-production-catalog/csp3/field-retention-2026-09-08/result.jsonl",
+    "sha256": "6724cf0e74a08059f727ac8a362115633fb582c6b76339b11e2e20ec4cbc4a47",
+    "bytes": 50349,
+    "decoded_gzip": false
+  },
+  {
+    "path": "docs/plans/proof/starport-production-catalog/csp3/field-retention-2026-09-08/ago.json",
+    "sha256": "b8fb7afa66aa7a93914ac258475dd0191be821803a8aea4439f5ba05022f5fa5",
+    "bytes": 289,
+    "decoded_gzip": false
+  },
+  {
+    "path": "docs/plans/proof/starport-production-catalog/csp3/field-retention-2026-09-08/minimum-go.jsonl",
+    "sha256": "3d6371b2f3f5a1050b8171c0571b58502760d386bdb7bf81e3d4d88be30c69c3",
+    "bytes": 97927,
+    "decoded_gzip": false
+  },
+  {
+    "path": "docs/plans/proof/starport-production-catalog/csp3/field-retention-2026-09-08/expanded.jsonl",
+    "sha256": "2e906c28f32fb9b71abd46f876a5d5ba51ad2f3e0f6f4eafab5c69435ec45040",
+    "bytes": 97912,
+    "decoded_gzip": false
+  },
+  {
+    "path": "docs/plans/proof/starport-production-catalog/csp3/field-retention-2026-09-08/verification.json",
+    "sha256": "82d02dea75687e6b6acf9df3b68d083ef3717c893dabe91818bb848ad019f703",
+    "bytes": 3062,
+    "decoded_gzip": false
+  },
+  {
+    "path": "docs/plans/proof/starport-production-catalog/csp3/field-retention-2026-09-08/probe_test.go.gz",
+    "sha256": "c4206b9b1f9066a28de1e5b3f15fcc187188cae00e8b0ce7ea7ba745e45392d6",
+    "bytes": 1921,
+    "decoded_gzip": true
+  },
+  {
+    "path": "docs/plans/proof/starport-production-catalog/csp3/scoped-membership-contract.md",
+    "sha256": "692cf121605f4533e9ede359060972ffcd1012eb2444bc5f4dd951fd2a8fc210",
+    "bytes": 5312,
+    "decoded_gzip": false
+  }
+]

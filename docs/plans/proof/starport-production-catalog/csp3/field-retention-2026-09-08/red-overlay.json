@@ -1,0 +1,5 @@
+{
+  "Replace": {
+    "/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/runtime/manual_history.go": "/tmp/starmap-csp3-field-retention/manual_history_before.go"
+  }
+}

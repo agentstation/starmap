@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "version": "v0.2.0",
+  "rules": [
+    "no-dot-import",
+    "no-generic-methods",
+    "no-goto",
+    "no-invalid-ignore",
+    "no-naked-return",
+    "no-new-expr",
+    "no-self-referential-constraints"
+  ],
+  "findings": [],
+  "staleIgnores": [],
+  "errors": []
+}

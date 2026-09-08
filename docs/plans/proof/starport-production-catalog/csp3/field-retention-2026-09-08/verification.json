@@ -1,0 +1,61 @@
+{
+  "test_commit": "19fe30170ecb6f4ad40749c08d53d7a5ad0bc72b",
+  "production_repair": "fa5954a6b598bc1ab7fcd5e24da15a136fbe8cd8",
+  "old_production_commit": "7e5912623d0cd53e95451dbd84896b831c82d0a3",
+  "scenario_count": 24,
+  "go1266": {
+    "pass_events": 34,
+    "fail_events": 0,
+    "skip_events": 0,
+    "exit_code": 0
+  },
+  "go12512": {
+    "pass_events": 34,
+    "fail_events": 0,
+    "skip_events": 0,
+    "exit_code": 0
+  },
+  "field_omission_fail_before": {
+    "fail_events": 18,
+    "pass_events": 0,
+    "exit_code": 1,
+    "selection": "Only the twelve new field-omission scenarios against old manual_history.go."
+  },
+  "ago": {
+    "findings": 0,
+    "stale_ignores": 0,
+    "errors": 0,
+    "exit_code": 0
+  },
+  "runtime_lint": {
+    "issues": 0,
+    "exit_code": 0
+  },
+  "limitations": [
+    "This change adds regression coverage to the existing repair. It adds no production behavior.",
+    "The first expanded fixture called a nonexistent Catalog method and failed compilation. Its capture remains separate.",
+    "The tests do not qualify scoped deletion, explicit null handling, HTTP transport, or Starport admission."
+  ],
+  "sha256": {
+    "partial_provider_pricing_test.go.gz": "6e1f22e429aedab32223065f026a7b0ad0c8764c5cc5f4cce047f43f4c9a74ed",
+    "lint.log": "e92606b0bf483111dff0a120c315ea165821348f31365020e2468a0059095c47",
+    "overlay.json": "37761ebe92e08cc5c9605c8cac53469258839e17e64dbb43271cb5b09d9e0564",
+    "expanded-compile-failure.jsonl": "f5b87db3dac81344a59389b01815dc7128996a4d1bdb9293af1f5e4553fe1d75",
+    "manual_history_before.go.gz": "3fc7fe60e989bedeb5c9ae1fea141206033efe7c40e58e9abf25df0b795dac30",
+    "red.jsonl": "a8cae3df80276200c7fc375023056528f9e0dc0b955fcc3b686e9c64cf290128",
+    "red-overlay.json": "937384255bb1393d48b697f3ed9b07cdbdc0521fce5d1c5bf271edf09fcb6e93",
+    "result.jsonl": "6724cf0e74a08059f727ac8a362115633fb582c6b76339b11e2e20ec4cbc4a47",
+    "ago.json": "b8fb7afa66aa7a93914ac258475dd0191be821803a8aea4439f5ba05022f5fa5",
+    "minimum-go.jsonl": "3d6371b2f3f5a1050b8171c0571b58502760d386bdb7bf81e3d4d88be30c69c3",
+    "expanded.jsonl": "2e906c28f32fb9b71abd46f876a5d5ba51ad2f3e0f6f4eafab5c69435ec45040",
+    "probe_test.go.gz": "c4206b9b1f9066a28de1e5b3f15fcc187188cae00e8b0ce7ea7ba745e45392d6"
+  },
+  "platform": "darwin/arm64",
+  "commands": {
+    "current": "GOTOOLCHAIN=go1.26.6 go test -race -count=1 -timeout=10m -run ^TestPartialProviderReplyPreservesPricingAcrossRestartAndSourceRefresh$ -json ./runtime",
+    "minimum": "GOTOOLCHAIN=go1.25.12 go test -race -count=1 -timeout=10m -run ^TestPartialProviderReplyPreservesPricingAcrossRestartAndSourceRefresh$ -json ./runtime",
+    "fail_before": "GOTOOLCHAIN=go1.26.6 go test -race -count=1 -timeout=10m -overlay /tmp/starmap-csp3-field-retention/red-overlay.json -run ^TestPartialProviderReplyPreservesPricingAcrossRestartAndSourceRefresh$/.*omitted -json ./runtime",
+    "ago": "GOTOOLCHAIN=go1.26.6 go tool ago -stale-ignores -format json ./...",
+    "lint": "GOTOOLCHAIN=go1.26.6 golangci-lint run ./runtime/..."
+  }
+}
