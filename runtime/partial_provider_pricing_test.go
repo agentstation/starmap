@@ -12,11 +12,15 @@ import (
 
 func TestPartialProviderReplyPreservesPricingAcrossRestartAndSourceRefresh(t *testing.T) {
 	for _, scenario := range []struct {
-		name  string
-		prior float64
-		empty bool
+		name   string
+		prior  float64
+		empty  bool
+		fields bool
 	}{
-		{"paid-partial", 2, false}, {"free-partial", 0, false}, {"paid-empty", 2, true}, {"free-empty", 0, true},
+		{"paid-partial", 2, false, false}, {"free-partial", 0, false, false},
+		{"paid-empty", 2, true, false}, {"free-empty", 0, true, false},
+		{"paid-omitted-price", 2, false, true}, {"free-omitted-price", 0, false, true},
+		{"paid-omitted-prices", 2, true, true}, {"free-omitted-prices", 0, true, true},
 	} {
 		t.Run(scenario.name, func(t *testing.T) {
 			for _, scope := range []string{"unbound", "account", "public"} {
@@ -35,13 +39,23 @@ func TestPartialProviderReplyPreservesPricingAcrossRestartAndSourceRefresh(t *te
 							t.Fatal(err)
 						}
 						provider.Models["model"].Pricing = &catalogs.ModelPricing{Currency: catalogs.ModelPricingCurrencyUSD, Tokens: &catalogs.ModelTokenPricing{Input: &catalogs.ModelTokenCost{Per1M: price}, Output: &catalogs.ModelTokenCost{Per1M: price * 2}}}
+						provider.Models["model"].Limits = &catalogs.ModelLimits{}
+						provider.Models["model"].Limits.Set(catalogs.ModelLimitContextWindow, int64(price*100+1000))
 						peer := *provider.Models["model"]
 						peer.ID = "peer"
 						provider.Models["peer"] = &peer
 						if omit {
-							delete(provider.Models, "model")
+							if scenario.fields {
+								provider.Models["model"].Pricing = nil
+							} else {
+								delete(provider.Models, "model")
+							}
 							if scenario.empty {
-								delete(provider.Models, "peer")
+								if scenario.fields {
+									provider.Models["peer"].Pricing = nil
+								} else {
+									delete(provider.Models, "peer")
+								}
 							}
 						}
 						if err := builder.SetProvider(provider); err != nil {
@@ -112,6 +126,20 @@ func TestPartialProviderReplyPreservesPricingAcrossRestartAndSourceRefresh(t *te
 						}
 						return model.Pricing.Tokens.Input.Per1M
 					}
+					limits := func(catalog *catalogs.Catalog) {
+						t.Helper()
+						if !scenario.fields {
+							return
+						}
+						provider, err := catalog.Provider("provider")
+						if err != nil {
+							t.Fatal(err)
+						}
+						model := provider.Models["model"]
+						if model == nil || model.Limits == nil || model.Limits.ContextWindow != 1300 {
+							t.Fatal("partial observation lost the current context limit while retaining its omitted price")
+						}
+					}
 					if _, err := connected.publishProviders(t.Context(), []ProviderLayer{layer(build(scenario.prior, false), false, at)}, connected.lease.epoch()); err != nil {
 						t.Fatal(err)
 					}
@@ -122,6 +150,7 @@ func TestPartialProviderReplyPreservesPricingAcrossRestartAndSourceRefresh(t *te
 						t.Fatal(err)
 					}
 					actual := read()
+					limits(actual)
 					wantPeer := 3.0
 					if scenario.empty {
 						wantPeer = scenario.prior
@@ -136,6 +165,7 @@ func TestPartialProviderReplyPreservesPricingAcrossRestartAndSourceRefresh(t *te
 						t.Fatal(err)
 					}
 					reopened := openTestRuntime(t, options...)
+					limits(reopened.State().Catalog)
 					if got := price(reopened.State().Catalog, "model"); got != scenario.prior {
 						t.Errorf("omitted model price after runtime reopen = %v, want prior accepted price %v", got, scenario.prior)
 					}
@@ -150,6 +180,7 @@ func TestPartialProviderReplyPreservesPricingAcrossRestartAndSourceRefresh(t *te
 					if _, err := reopened.RefreshSource(t.Context()); err != nil {
 						t.Fatal(err)
 					}
+					limits(reopened.State().Catalog)
 					if got := price(reopened.State().Catalog, "model"); got != scenario.prior {
 						t.Errorf("source refresh lost retained price: %v, want %v", got, scenario.prior)
 					}
