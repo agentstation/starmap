@@ -363,30 +363,7 @@ func (merger *merger) mergeModelAuthors(
 	models map[sources.ID]*catalogs.Model,
 	history *map[string]provenance.Field,
 ) {
-	seen := make(map[catalogs.AuthorID]struct{})
-	merged := make([]catalogs.Author, 0)
-	var winner sources.ID
-	for _, source := range policy.SourceOrder {
-		model := models[source]
-		if model == nil || len(model.Authors) == 0 {
-			continue
-		}
-		if winner == "" {
-			winner = source
-		}
-		for _, author := range model.Authors {
-			if _, exists := seen[author.ID]; exists {
-				continue
-			}
-			seen[author.ID] = struct{}{}
-			merged = append(merged, author)
-		}
-	}
-	if len(merged) == 0 {
-		return
-	}
-	target.Authors = merged
-	merger.recordModelHistory(identity, history, policy, winner, merged, "merged non-duplicate authors by authority order")
+	merger.mergeAuthorshipContributions(identity, target, policy, models, history)
 }
 
 // pricingExclusionReason names the immutable interval boundary that caused refusal.

@@ -323,7 +323,7 @@ func (merger *merger) model(providerID catalogs.ProviderID, modelID string, sour
 
 	for _, policy := range merger.authorities.Policies(evidence.ResourceTypeModel) {
 		policySources := sourceModels
-		if policy.Path != "Limits" && policy.Path != "Features" && policy.Path != "Metadata" && policy.Path != "Modes" && policy.Path != "Extensions" {
+		if policy.Path != "Limits" && policy.Path != "Features" && policy.Path != "Metadata" && policy.Path != "Modes" && policy.Path != "Extensions" && policy.Path != "Authors" {
 			policySources = merger.modelSourcesForPolicy(providerID, modelID, policy, sourceModels)
 		}
 		merger.applyModelPolicy(identity, merged, policy, policySources, &history)
