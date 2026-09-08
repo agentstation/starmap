@@ -1,0 +1,50 @@
+{
+  "recorded_at": "2026-09-08T13:03:55.954928+00:00",
+  "pr": "https://github.com/agentstation/starmap/pull/134",
+  "old_head": "ed688ea40224e9a762ddd08d937e0f7e4c5ae0cb",
+  "new_head": "99843ff85d01b8fb1f96e26b3ccd1a7044c26a6b",
+  "parent": "205dd041fb2d0267a2643c0d6af8d9f45e34842d",
+  "changed_paths": [
+    "docs/plans/proof/starport-production-catalog/csp2/capture-helper-ownership.json",
+    "docs/plans/proof/starport-production-catalog/csp2/capture-helper-ownership.md",
+    "docs/plans/proof/starport-production-catalog/csp2/synthetic-url-labels.json",
+    "docs/plans/proof/starport-production-catalog/csp2/synthetic-url-labels.md",
+    "docs/plans/proof/starport-production-catalog/csp3/binding-acquisition-final-packages.jsonl",
+    "docs/plans/proof/starport-production-catalog/csp3/binding-batch-race-final.jsonl",
+    "docs/plans/proof/starport-production-catalog/csp3/binding-batch-race.jsonl",
+    "docs/plans/proof/starport-production-catalog/csp3/credential-run-packages-output.jsonl",
+    "docs/plans/proof/starport-production-catalog/csp3/input-publication-all.jsonl",
+    "docs/plans/proof/starport-production-catalog/csp3/manual-composition-all.jsonl",
+    "docs/plans/proof/starport-production-catalog/csp3/manual-retention-all.jsonl",
+    "docs/plans/proof/starport-production-catalog/csp3/metadata-selection-all.jsonl",
+    "docs/plans/proof/starport-production-catalog/csp3/observation-update-all.jsonl",
+    "docs/plans/proof/starport-production-catalog/csp3/provider-binding-green.json",
+    "docs/plans/proof/starport-production-catalog/csp3/provider-binding-packages-output.jsonl",
+    "docs/plans/proof/starport-production-catalog/csp3/provider-receipt-identity-packages-output.jsonl",
+    "docs/plans/proof/starport-production-catalog/csp3/provider-receipt-packages-output.jsonl",
+    "docs/plans/proof/starport-production-catalog/csp3/provider-reset-all.jsonl",
+    "docs/plans/proof/starport-production-catalog/csp3/provider-scope-retention-final-packages.jsonl",
+    "docs/plans/proof/starport-production-catalog/csp3/provider-selection-all.jsonl",
+    "docs/plans/proof/starport-production-catalog/csp3/receipt-identity-all.jsonl",
+    "docs/plans/proof/starport-production-catalog/csp3/runtime-reconciliation-all-verified.jsonl",
+    "docs/plans/proof/starport-production-catalog/csp3/runtime-reconciliation-all.jsonl"
+  ],
+  "implementation_unchanged": true,
+  "publication": "Existing task branch push, remote head verified. No main merge or release.",
+  "checks": {
+    "git_diff_check": 0,
+    "make_technical_writing_check": {
+      "exit_code": 0,
+      "files": 1072,
+      "diagnostics": 0
+    },
+    "autoreview": {
+      "command": "GOTOOLCHAIN=go1.26.6 ~/.agents/skills/autoreview/scripts/autoreview --gate pre-pr --mode auto --base 205dd041fb2d0267a2643c0d6af8d9f45e34842d --profile cross-lab --thinking codex=xhigh",
+      "exit_code": 0,
+      "result": "Automatic checkpoint contains no substantive code changes. No model review ran."
+    }
+  },
+  "remaining": "PRs 133, 135, and 136 still require this parent before their next publication. Their implementation and evidence assessments must remain bound to exact source inputs.",
+  "body_readback_matches": true,
+  "inventory": "inventory.json"
+}

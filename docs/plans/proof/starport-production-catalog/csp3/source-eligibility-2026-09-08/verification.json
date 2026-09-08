@@ -1,0 +1,180 @@
+{
+  "recorded_at": "2026-09-08T13:03:55.550450+00:00",
+  "base_commit": "0c7866cadc5e973f73de6fa4fc0e3b274450a597",
+  "work_commit": "e0288a284ac6476b5f9847fa93d0d4f50609cdc8",
+  "source_files": "source-files.json",
+  "checks": {
+    "eligibility-final-before.jsonl": {
+      "event_counts": {
+        "pass": 3,
+        "fail": 3,
+        "skip": 0
+      },
+      "packages": [
+        {
+          "package": "github.com/agentstation/starmap/internal/catalog/reconciler",
+          "result": "fail",
+          "elapsed_seconds": 0.447
+        }
+      ],
+      "capture": "eligibility-final-before.jsonl.gz"
+    },
+    "reconciler-eligibility-final.jsonl": {
+      "event_counts": {
+        "pass": 357,
+        "fail": 0,
+        "skip": 0
+      },
+      "packages": [
+        {
+          "package": "github.com/agentstation/starmap/internal/catalog/reconciler",
+          "result": "pass",
+          "elapsed_seconds": 1.683
+        }
+      ],
+      "capture": "reconciler-eligibility-final.jsonl.gz"
+    },
+    "minimum-eligibility.jsonl": {
+      "event_counts": {
+        "pass": 6,
+        "fail": 0,
+        "skip": 0
+      },
+      "packages": [
+        {
+          "package": "github.com/agentstation/starmap/internal/catalog/reconciler",
+          "result": "pass",
+          "elapsed_seconds": 1.267
+        }
+      ],
+      "capture": "minimum-eligibility.jsonl.gz"
+    },
+    "full-eligibility.jsonl": {
+      "event_counts": {
+        "pass": 1003,
+        "fail": 0,
+        "skip": 0
+      },
+      "packages": [
+        {
+          "package": "github.com/agentstation/starmap/internal/catalog/reconciler",
+          "result": "pass",
+          "elapsed_seconds": 1.7029999999999998
+        },
+        {
+          "package": "github.com/agentstation/starmap/acquisition",
+          "result": "pass",
+          "elapsed_seconds": 314.408
+        },
+        {
+          "package": "github.com/agentstation/starmap/runtime",
+          "result": "pass",
+          "elapsed_seconds": 649.857
+        }
+      ],
+      "capture": "full-eligibility.jsonl.gz"
+    },
+    "eligibility-before.jsonl": {
+      "event_counts": {
+        "pass": 2,
+        "fail": 4,
+        "skip": 0
+      },
+      "packages": [
+        {
+          "package": "github.com/agentstation/starmap/internal/catalog/reconciler",
+          "result": "fail",
+          "elapsed_seconds": 0.248
+        }
+      ],
+      "capture": "eligibility-before.jsonl.gz"
+    },
+    "eligibility-candidate.jsonl": {
+      "event_counts": {
+        "pass": 2,
+        "fail": 4,
+        "skip": 0
+      },
+      "packages": [
+        {
+          "package": "github.com/agentstation/starmap/internal/catalog/reconciler",
+          "result": "fail",
+          "elapsed_seconds": 0.26
+        }
+      ],
+      "capture": "eligibility-candidate.jsonl.gz"
+    },
+    "reconciler-eligibility.jsonl": {
+      "event_counts": {
+        "pass": 353,
+        "fail": 4,
+        "skip": 0
+      },
+      "packages": [
+        {
+          "package": "github.com/agentstation/starmap/internal/catalog/reconciler",
+          "result": "fail",
+          "elapsed_seconds": 0.671
+        }
+      ],
+      "capture": "reconciler-eligibility.jsonl.gz"
+    }
+  },
+  "commands": {
+    "eligibility-final-before.jsonl": {
+      "command": "GOTOOLCHAIN=go1.26.6 go test -race -overlay /tmp/starmap-csp3-origin/before-overlay.json ./internal/catalog/reconciler -run ^TestProjectedOriginMustBelongToFieldSourceOrder$ -count=1 -json",
+      "exit_code": 1
+    },
+    "reconciler-eligibility-final.jsonl": {
+      "command": "GOTOOLCHAIN=go1.26.6 go test -race ./internal/catalog/reconciler -count=1 -json",
+      "exit_code": 0
+    },
+    "minimum-eligibility.jsonl": {
+      "command": "GOTOOLCHAIN=go1.25.12 go test -race ./internal/catalog/reconciler -run ^TestProjectedOriginMustBelongToFieldSourceOrder$ -count=1 -json",
+      "exit_code": 0
+    },
+    "full-eligibility.jsonl": {
+      "command": "GOTOOLCHAIN=go1.26.6 go test -race -count=1 -timeout 20m ./runtime ./acquisition ./internal/catalog/reconciler -json",
+      "exit_code": 0,
+      "session_id": 88082
+    },
+    "ago-eligibility.json": {
+      "command": "GOTOOLCHAIN=go1.26.6 go tool ago -stale-ignores -format json ./...",
+      "exit_code": 0,
+      "findings": 0,
+      "stale_ignores": 0,
+      "errors": 0
+    },
+    "lint-eligibility.txt": {
+      "command": "GOTOOLCHAIN=go1.26.6 golangci-lint run ./internal/catalog/reconciler/...",
+      "exit_code": 0
+    },
+    "component.json": {
+      "command": "python3 scripts/catalog_product_verify.py --task CSP3 --json",
+      "exit_code": 1,
+      "result": "All ten selected CSP3 subcases remain UNVERIFIED."
+    }
+  },
+  "count_semantics": "Pass, fail, and skip events include parent tests and package results. They are not acceptance subcases.",
+  "invalid_test_attempts": {
+    "captures": [
+      "eligibility-before.jsonl.gz",
+      "eligibility-candidate.jsonl.gz",
+      "reconciler-eligibility.jsonl.gz"
+    ],
+    "reason": "Initial test used Catalog.Endpoint.URL, but provider authority owns the atomic Catalog record. These attempts lack final-test source binding and supply no production regression credit. The corrected before capture proves the final regression."
+  },
+  "qualification": "CSP3 remains in_progress. Legacy positive provenance recovery remains unresolved. No source publication, native qualification, or component acceptance credit.",
+  "writing": {
+    "command": "make technical-writing-check",
+    "exit_code": 0,
+    "files": 1216,
+    "diagnostics": 0,
+    "capture": "writing-settled.txt.gz"
+  },
+  "writing_attempt": {
+    "exit_code": 2,
+    "capture": "writing-final.txt.gz",
+    "result": "The first plan status paragraph exceeded six sentences. The settled text passes the unchanged prose rules."
+  }
+}

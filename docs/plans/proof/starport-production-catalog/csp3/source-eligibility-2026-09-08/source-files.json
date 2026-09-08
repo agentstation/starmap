@@ -1,0 +1,10 @@
+{
+  "internal/catalog/reconciler/source_identity.go": {
+    "sha256": "4e84538a66f171ed96e2334b1cdcfd448b6b9819d7bb260d6db29e88b971f0d1",
+    "archive": "source_identity.go.gz"
+  },
+  "internal/catalog/reconciler/source_eligibility_test.go": {
+    "sha256": "de1523a1d0482f7b4860314764a983ecbe7832e25ca38f24abc666f7e858927c",
+    "archive": "source_eligibility_test.go.gz"
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "path": "internal/embedded/catalog/provenance.yaml",
+  "sha256": "201239e9f5e91fd038bf809aa078d5d95224ca35d2713e42fc248e881604ec0a",
+  "composite_key_counts": {
+    "Authors.aggregate": 672,
+    "Features.aggregate": 738,
+    "extensions.aggregate": 498,
+    "metadata.aggregate": 434,
+    "modes.aggregate": 9
+  },
+  "method": "Count model provenance mapping keys by exact composite field or descendant prefix."
+}

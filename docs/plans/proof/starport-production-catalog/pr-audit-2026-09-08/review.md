@@ -58,3 +58,7 @@ The ancestry check found one parent gap. PR 134 does not contain the latest PR 1
 At this capture, Starmap has 27 unpublished commits through `c434a3b7` and six changed or new CSP3 source files. Starport has six unpublished commits through `69b5aff` and a clean worktree. These counts precede this audit commit. Finish the coherent CSP3 repair and required review before the next source publication. Update PR 136 and its existing evidence parent. Do not wait for the whole product plan to finish.
 
 The plan executor owns the stack refresh and the dependency-review queue. Review independent dependency PRs separately from CSP3. A passing check does not replace dependency review or merge authorization. Before each publication, compare remote heads, bases, attached checks, local commits, and parent ancestry. Record a concrete next action for each retained PR.
+
+The [follow-up parent update](followup-parent-sync/verification.json) publishes PR 134 head `99843ff8`, which includes foundation head `205dd041`. The merge changes 23 proof paths and no implementation paths. The prose check passes across 1,072 files. The automatic pre-PR gate skips model review because the diff contains no substantive code. Remote readback confirms the published head.
+
+PRs 133, 135, and 136 still need that parent before their next publication. Preserve their implementation evidence while validating each combined tree. No default-branch merge, release, new PR, or additional closure occurred.
