@@ -216,3 +216,67 @@ Starport command roster. Its published-module check remains unqualified.
 record commits, reviews, artifact hashes, and all failing test names. Gzip files
 retain exact native JSONL bytes. Each record includes compressed and uncompressed
 hashes. No public pull request merge, release, or primary acceptance credit occurred.
+
+## Third repair candidate
+
+Foundation commit `a441a72f` preserves the legacy commit lock through an external
+Windows hard link. It verifies the original path, alias, and locked handle before
+migration. Cancellation closes the handle and removes the unchanged alias. The
+file inventory and CLI instructions name this temporary file and its recovery rules.
+
+Workspace reads now capture Windows file identity before the callback. Shared-lock
+validation also compares the open lock handle with the selected lock identity.
+Application tests isolate `HOME`, `USERPROFILE`, `APPDATA`, and `LOCALAPPDATA`.
+The editor fixture requests directory-list access, rather than metadata alone.
+Its native sharing behavior still needs qualification.
+
+Access copying now supplies the source DACL protection state. Eight focused native
+variants compare complete descriptors for files and directories with default,
+protected, inherited, or labeled access. The production equality check remains strict.
+Native execution must establish whether the protection flags resolve both access-copy failures.
+The [Windows security information contract](https://learn.microsoft.com/en-us/windows/win32/secauthz/security-information) defines those flags.
+
+Baseline export records final timestamps after closing its writing handle. Identity,
+mode, size, and content checks still guard publication and cleanup. This change
+addresses the [Windows file-time contract](https://learn.microsoft.com/en-us/windows/win32/sysinfo/file-times).
+The preceding NTFS run passed baseline tests. It did not expose a timestamp failure.
+A new regression verifies refusal after an external timestamp change.
+
+[The third candidate record](windows-third-repair-2026-09-07/verification.json)
+retains compressed logs with both byte hashes. All 39 foundation verification stages
+pass. Ordinary and race tests each pass 79 packages. Local integration passes 392
+race events. The final cleanup check passes 16 events, and minimum-Go checks pass 38 events.
+Six affected test binaries compile across Windows AMD64 and ARM64. Windows lint,
+Ago, and strict prose pass.
+
+Follow-up merge `0e1986b8` contains this candidate. Foundation review remains in
+progress. Follow-up integration checks must complete. Qualify the foundation on
+native Windows before repeating follow-up review and publication. CSP2 remains in
+progress without primary acceptance credit.
+
+## Pattern-parent diagnostic correction
+
+Manual review found that pattern entries applied their managed-file access policy
+to the scan parent. A shared workspace parent could therefore report a private-access
+conflict without violating any managed file policy.
+
+The regression fails against `a441a72f`. The correction reports the scan parent as
+`not-assessed`, with reason `pattern-anchor` and no managed-file policy. Matching
+files retain their access checks. Managed tree roots retain their policy.
+All 44 minimum-Go package results pass, including both POSIX and Windows diagnostic
+cases. Windows-targeted lint and Ago pass.
+
+[The correction record](windows-third-repair-2026-09-07/pattern-anchor-correction.json)
+retains the failure and passing results. The orchestrator interrupted foundation
+review after three portions. Exit 130 is not a clean review. Complete verification and a new review must pass before the orchestrator publishes
+the corrected candidate.
+
+Follow-up merge `0e1986b8` passes all 39 verification stages. Ordinary and race
+suites each pass 79 packages. Its local Starport pair passes all 12 ownership
+checks and five state-directory race results. [The follow-up record](windows-third-repair-2026-09-07/followup-verification.json)
+retains these results before the pattern-parent correction.
+
+Correction commit `6488e02f` passes all 39 foundation verification stages. Ordinary
+and race suites each pass 79 packages. Four affected packages compile for each
+Windows architecture with Go `1.25.12`. A new complete branch review is in progress.
+Native execution remains open.
