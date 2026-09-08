@@ -524,6 +524,23 @@ func TestCopyModelPricingDeepCopiesNestedFields(t *testing.T) {
 }
 
 func TestMergeMetadataCopiesAndFillsNestedFields(t *testing.T) {
+	mergeMetadata := func(primary, fallback *catalogs.ModelMetadata) *catalogs.ModelMetadata {
+		t.Helper()
+		policy := authority.New()
+		merger := newMerger(policy, NewAuthorityStrategy(policy), nil)
+		models, _, err := merger.Models(map[sources.ID][]*catalogs.Model{
+			sources.ModelsDevHTTPID: {{ID: "model", Name: "Model", Metadata: primary}},
+			sources.ProvidersID:     {{ID: "model", Name: "Model", Metadata: fallback}},
+		})
+		if err != nil {
+			t.Fatal(err)
+		}
+		if len(models) != 1 {
+			t.Fatalf("merged models=%d, want one", len(models))
+		}
+		return models[0].Metadata
+	}
+
 	knowledge := utc.Now()
 	baseModel := "base-model"
 	wantBaseModel := baseModel
@@ -541,7 +558,7 @@ func TestMergeMetadataCopiesAndFillsNestedFields(t *testing.T) {
 		},
 	}
 
-	copied := mergeSupplementalMetadata(nil, source)
+	copied := mergeMetadata(nil, source)
 	if copied == nil ||
 		copied.KnowledgeCutoff == nil ||
 		copied.Architecture == nil ||
@@ -554,7 +571,7 @@ func TestMergeMetadataCopiesAndFillsNestedFields(t *testing.T) {
 		t.Fatalf("copied metadata aliases source: %#v", copied)
 	}
 
-	filled := mergeSupplementalMetadata(&catalogs.ModelMetadata{
+	filled := mergeMetadata(&catalogs.ModelMetadata{
 		Tags: []catalogs.ModelTag{catalogs.ModelTagChat},
 	}, copied)
 	if !hasModelTag(filled.Tags, catalogs.ModelTagChat) ||

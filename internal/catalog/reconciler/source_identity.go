@@ -5,6 +5,8 @@ import (
 	"encoding/json"
 	"reflect"
 	"slices"
+	"strconv"
+	"strings"
 
 	"github.com/goccy/go-yaml"
 
@@ -270,15 +272,21 @@ func semanticValueEqual(field string, left, right any) bool {
 }
 
 func normalizedSemanticValue(field string, value any) (any, error) {
-	yamlData, err := yaml.Marshal(value)
-	if err != nil {
-		return nil, err
+	representation := value
+	switch value.(type) {
+	case map[string]any, []any, json.Number:
+		// Dynamic JSON evidence must retain numeric types and exact integers.
+	default:
+		yamlData, err := yaml.Marshal(value)
+		if err != nil {
+			return nil, err
+		}
+		representation = nil
+		if err := yaml.Unmarshal(yamlData, &representation); err != nil {
+			return nil, err
+		}
 	}
-	var yamlValue any
-	if err := yaml.Unmarshal(yamlData, &yamlValue); err != nil {
-		return nil, err
-	}
-	jsonData, err := json.Marshal(yamlValue)
+	jsonData, err := json.Marshal(representation)
 	if err != nil {
 		return nil, err
 	}
@@ -305,10 +313,10 @@ func normalizeSemanticAliases(field string, value any) any {
 	case map[string]any:
 		normalized := make(map[string]any, len(current))
 		for key, item := range current {
-			if field == modelProvenancePricing && key == "per_1m_tokens" {
+			if isPricingEvidencePath(field) && key == "per_1m_tokens" {
 				key = "per_1m"
 			}
-			if field == modelProvenancePricing &&
+			if isPricingEvidencePath(field) &&
 				(key == "per_token" || key == "per_1m") && semanticNumberIsZero(item) {
 				continue
 			}
@@ -321,6 +329,23 @@ func normalizeSemanticAliases(field string, value any) any {
 	default:
 		return value
 	}
+}
+
+// isPricingEvidencePath excludes arbitrary request-body and extension keys.
+func isPricingEvidencePath(field string) bool {
+	if field == modelProvenancePricing {
+		return true
+	}
+	name, ok := strings.CutPrefix(field, "modes[")
+	if !ok {
+		return false
+	}
+	name, ok = strings.CutSuffix(name, "].pricing")
+	if !ok || !strings.HasPrefix(name, `"`) {
+		return false
+	}
+	_, err := strconv.Unquote(name)
+	return err == nil
 }
 
 func semanticBoolIsFalse(value any) bool {

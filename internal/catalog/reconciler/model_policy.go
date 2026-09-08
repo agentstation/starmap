@@ -131,34 +131,14 @@ func (merger *merger) mergeModelMetadata(
 	models map[sources.ID]*catalogs.Model,
 	history *map[string]provenance.Field,
 ) {
-	var (
-		merged *catalogs.ModelMetadata
-		winner sources.ID
-	)
 	for _, source := range policy.SourceOrder {
 		model := models[source]
 		if model == nil || model.Metadata == nil {
 			continue
 		}
-		if winner == "" {
-			winner = source
-		}
-		merged = mergeSupplementalMetadata(merged, model.Metadata)
-	}
-	merged = mergeSupplementalMetadata(merged, target.Metadata)
-	if merged == nil {
+		merger.mergeMetadataContributions(identity, target, policy, models, history)
+		merger.recordCompositeSummary(history, policy, target.Metadata)
 		return
-	}
-	target.Metadata = merged
-	if winner != "" {
-		merger.recordModelHistory(
-			identity,
-			history,
-			policy,
-			winner,
-			merged,
-			fmt.Sprintf("merged by %s policy with lower-authority gap filling", policy.Path),
-		)
 	}
 }
 
@@ -280,68 +260,15 @@ func (merger *merger) mergeModelModes(
 	models map[sources.ID]*catalogs.Model,
 	history *map[string]provenance.Field,
 ) {
-	var winner sources.ID
-	merged := make(map[string]catalogs.ModelMode)
 	for _, source := range policy.SourceOrder {
 		model := models[source]
 		if model == nil || len(model.Modes) == 0 {
 			continue
 		}
-		if winner == "" {
-			winner = source
-		}
-		sourceCopy := catalogs.DeepCopyModel(catalogs.Model{Modes: model.Modes}).Modes
-		for name, mode := range sourceCopy {
-			existing, exists := merged[name]
-			if !exists {
-				merged[name] = mode
-				continue
-			}
-			merged[name] = fillModelMode(existing, mode)
-		}
-	}
-	if len(merged) == 0 {
+		merger.mergeModeContributions(identity, target, policy, models, history)
+		merger.recordCompositeSummary(history, policy, target.Modes)
 		return
 	}
-	target.Modes = merged
-	merger.recordModelHistory(
-		identity,
-		history,
-		policy,
-		winner,
-		merged,
-		fmt.Sprintf("merged named modes by %s policy", policy.Path),
-	)
-}
-
-func fillModelMode(target, fallback catalogs.ModelMode) catalogs.ModelMode {
-	if target.Pricing == nil {
-		target.Pricing = fallback.Pricing
-	}
-	if target.Provider == nil {
-		target.Provider = fallback.Provider
-		return target
-	}
-	if fallback.Provider == nil {
-		return target
-	}
-	if target.Provider.Headers == nil {
-		target.Provider.Headers = make(map[string]string)
-	}
-	for key, value := range fallback.Provider.Headers {
-		if _, exists := target.Provider.Headers[key]; !exists {
-			target.Provider.Headers[key] = value
-		}
-	}
-	if target.Provider.Body == nil {
-		target.Provider.Body = make(map[string]any)
-	}
-	for key, value := range fallback.Provider.Body {
-		if _, exists := target.Provider.Body[key]; !exists {
-			target.Provider.Body[key] = value
-		}
-	}
-	return target
 }
 
 func (merger *merger) mergeModelPricing(
@@ -418,27 +345,14 @@ func (merger *merger) mergeModelExtensions(
 	models map[sources.ID]*catalogs.Model,
 	history *map[string]provenance.Field,
 ) {
-	protected := make(sourceExtensionFieldSet)
-	var winner sources.ID
 	for _, source := range policy.SourceOrder {
 		model := models[source]
 		if model == nil || len(model.Extensions) == 0 {
 			continue
 		}
-		if winner == "" {
-			winner = source
-		}
-		target.Extensions = mergeSourceExtensions(target.Extensions, model.Extensions, protected)
-	}
-	if winner != "" {
-		merger.recordModelHistory(
-			identity,
-			history,
-			policy,
-			winner,
-			target.Extensions,
-			"merged namespaced extension fields by authority order",
-		)
+		merger.mergeExtensionContributions(identity, target, policy, models, history)
+		merger.recordCompositeSummary(history, policy, target.Extensions)
+		return
 	}
 }
 
