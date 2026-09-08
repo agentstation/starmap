@@ -1,0 +1,43 @@
+{
+  "pull_request": "https://github.com/agentstation/starmap/pull/133",
+  "failed_head": "c6224d80e410c265348845f4877d252532f1de43",
+  "failed_run": 34275531301,
+  "failed_job": 102227490841,
+  "failed_test": "TestRollbackRestoresExactRetainedGenerationAndWorkspace",
+  "failure": "A publication with no observers queued asynchronous delivery. A later observer received that older publication before the rollback event.",
+  "repair_source": "eefcd1546375305a2fa77787083e024c627d1de2",
+  "repair_head": "effbfc92073a4f7b281f7c52bd488795126ae3a9",
+  "repair": "Move the existing observer-free dispatch and diff guard from PR136 into PR133. Preserve isolated zero-allocation assertions from the same reviewed change.",
+  "auto_merge_enabled": false,
+  "counts": {
+    "native_failure": {
+      "pass_test": 1277,
+      "pass_package": 11,
+      "fail_test": 1,
+      "fail_package": 1
+    },
+    "minimum_go_1_25_12": {
+      "pass_test": 50,
+      "pass_package": 1
+    }
+  },
+  "pending": {
+    "focused_race_session": 31804,
+    "full_verification_session": 68726,
+    "structured_review": true,
+    "publication": true,
+    "fresh_native_ci": true
+  },
+  "task_completion": false,
+  "files": {
+    "hooks.go": "61e56a516257d4b120c26460c10a7809e9da29f92e28efd0ebb429328c37c6da",
+    "hooks_idle_test.go": "c7942669f1249e4748ae2cf4548fcc2eabd303cff08df3a2893aaae0c6858331",
+    "baseline_test.go": "aeda2cb9d97e0a7ecbfa9c46cb3e75ca9956ddaf083aa42b1cf0a6c1dffe39bd",
+    "baseline_allocations_test.go": "e13a68e0575ea672aa8a45551ac9ca0548b0b5108d5656353da07a243827066f"
+  },
+  "artifacts": {
+    "native-tests.jsonl.gz": "571d85d6a43143bf35565244c103b0ba2f1fc2949de8b07e289b66d47b781d0e",
+    "native-failure.txt.gz": "facaf9f7e3289debc9561ea52574f36f00ab7145affee1b1574bcd7ebc8433d4",
+    "minimum.jsonl.gz": "1b69c2e0528b5dabe2c2ee9f48a292a869e697c8f1099e9285fac6ac1e3660e3"
+  }
+}

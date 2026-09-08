@@ -1,0 +1,54 @@
+{
+  "candidate_commit": "c7e9456fa2f1c4bd44af2aecda10232ff48b37c4",
+  "worktree": "/tmp/starmap-current-dependency-pair-2026-09-08",
+  "publication": false,
+  "pr130_head": "57ab96a94862f82bd40f5ee26d328f04de4114e5",
+  "pr131_head": "85d8d7b2cd03951a248c7488ac16124ff191fee9",
+  "versions": {
+    "aws_sdk": "1.46.0",
+    "s3": "1.111.0",
+    "secretsmanager": "1.48.0"
+  },
+  "counts": {
+    "race.jsonl.gz": {
+      "pass_test": 87,
+      "pass_package": 2
+    },
+    "minimum.jsonl.gz": {
+      "pass_test": 87,
+      "pass_package": 2
+    }
+  },
+  "consumer_checks": 6,
+  "consumer_budgets": {
+    "read_only": "37/37",
+    "pinned": "38/38",
+    "server_embed": "255/260",
+    "remote_subscriber": "238/240",
+    "server_storage": "349/350"
+  },
+  "module_verify": "PASS",
+  "scope": "Real SDK credential chains and loopback S3 wire behavior. Includes conditional writes, typed conflicts, rollback, corruption, concurrent CAS, and upload or promotion failures. No live cloud request.",
+  "overlay_scope": "Three existing SDK regression files from the canonical worktree. Realpath mappings include all nine AWS and Azure credential-chain scenarios.",
+  "remaining": "Merge source stack, integrate the dependency PRs against main, and run their required CI. This temporary candidate grants no task completion.",
+  "files": {
+    "go.mod": "af933848b03907dbbce2a1eb596481df8a8f5366786fe088c09d41b1962ac485",
+    "go.sum": "97c82ad4bbcfc878d66c76b45595b13b42a89072bfb2038799a5bbeaccc39684",
+    "testdata/consumers/server-storage/go.mod": "b4a44c20b608283a781828cbb066068269674f41734f0fbba7f048e075248a38",
+    "testdata/consumers/server-storage/go.sum": "8ef0d5640442287ab6dedb628ea8084da5a414973f07159377c0a155453d38a4"
+  },
+  "artifacts": {
+    "secret_sdk_transport_test.go.gz": "4c763a2943d56d1c57f8796f2390f9e725c7a37dadb69412c56e2773a9ffe283",
+    "race.jsonl.gz": "c7a71272fa63c93180d533a2f8a6a64685df2209b2f3419f1659a06de8d5c20b",
+    "go.mod.gz": "187a847bd46a028eaf401a77a083e653ebcb778e6526246a06c95513d21b4ae5",
+    "secret_sdk_aws_test.go.gz": "27d84e8b377861fd845477bd4ea53cee85b3c3b7d54b5e6313361f1a1f1fb94e",
+    "overlay.json.gz": "5eb2c470005108f5cb68625cfb0edf140fa516a7865a7b5b123408c36458afb2",
+    "go.sum.gz": "2b60d7bd243842e5db3751214e48bdff6d1ac614c8ffdeaf383bb894e3a614f7",
+    "module-verify.txt.gz": "4699dce40a065353f016ef7eb2c309ee9dee73281263a6b29287016349618a1b",
+    "testdata__consumers__server-storage__go.mod.gz": "19e748f1481b323c0a0f88db66500fe698ed087df40776c2afff56e4c440086c",
+    "testdata__consumers__server-storage__go.sum.gz": "b3e21835083f10aa7de5df0a2b28181eb939aef670eba7b9c47cd2fe6813e6ed",
+    "minimum.jsonl.gz": "0ba5afab1b1c93cf12fa426b20a294670c789190c577fcf733699b1ff5380bec",
+    "secret_sdk_azure_test.go.gz": "db74918e925c161d941a0206210b17d933ae215723aa9a092eb82061c88aef6a",
+    "consumers.txt.gz": "4a5b5523f6cb26235cd09253b2dc1ff244e948997f2d74323e1f6208ddbebb47"
+  }
+}
