@@ -184,3 +184,35 @@ Windows failures kept the overall runs red. Each foundation Windows architecture
 recorded 936 passing and 102 failing events. Each follow-up Windows architecture
 recorded 1,096 passing and 108 failing events. All four artifacts report no skips.
 These results do not qualify the second repair candidate.
+
+## Third native execution
+
+Both complete branch reviews passed eight portions with zero P0 findings.
+Draft PRs 132 and 133 now contain foundation `0451b039` and follow-up `8b034d5a`.
+Native runs [34170862943](https://github.com/agentstation/starmap/actions/runs/34170862943)
+and [34171467367](https://github.com/agentstation/starmap/actions/runs/34171467367) test those commits.
+
+Each foundation Windows architecture reports 1,030 passing and ten failing test
+events. Each follow-up Windows architecture reports 1,196 passing and ten failing
+test events. All four artifacts report zero skips. All Linux and macOS runtime
+jobs pass on both branches. Both Linux verification gates remain in progress at
+this capture.
+
+Baseline publication, path inspection, denied-read checks, and service-managed
+configuration now pass on Windows. The runner reports enabled backup and restore
+privileges. The controlled thread-token tests pass without changing process privileges.
+The external lock-alias test also passes on both Windows architectures.
+
+The ten failures cover five legacy migration cases, two access-copy cases, one
+workspace identity case, one editor-handle case, and one platform-home fixture.
+The next candidate must retain the commit lock during migration and preserve exact
+access descriptors. Native execution must qualify all repairs.
+
+The local Starport pair passes all 12 ownership checks and five state-directory
+race tests against follow-up `8b034d5a`. This does not repeat the earlier complete
+Starport command roster. Its published-module check remains unqualified.
+
+[Publication and native results](native-third-2026-09-07/publication-and-native-results.json)
+record commits, reviews, artifact hashes, and all failing test names. Gzip files
+retain exact native JSONL bytes. Each record includes compressed and uncompressed
+hashes. No public pull request merge, release, or primary acceptance credit occurred.
