@@ -1,0 +1,20 @@
+{
+  "reviewed_commit": "a32800c09eda34f15121cbf4fa33a336cb55d446",
+  "base_commit": "e7ca1d049bd36c0d88b5d82c5ed504af8bea7075",
+  "review_exit_code": 0,
+  "review_portions": 1,
+  "accepted_P0_findings": 0,
+  "reviewers": [
+    "gpt-5.6-sol xhigh",
+    "claude-opus-5 high"
+  ],
+  "substantive_diff_preserved": true,
+  "parent_run": "https://github.com/agentstation/starmap/actions/runs/34186118026",
+  "parent_jobs_passed": 11,
+  "verification_job_seconds": 2654,
+  "verification_job_old_limit_seconds": 2700,
+  "qualification_job_new_limit_seconds": 3600,
+  "test_timeouts_changed": false,
+  "workflow_action_pin_check_exit_code": 0,
+  "note": "The final publication gate must confirm the unchanged substantive diff after the workflow budget and proof commit."
+}

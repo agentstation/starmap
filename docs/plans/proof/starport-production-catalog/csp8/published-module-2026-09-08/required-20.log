@@ -1,0 +1,21 @@
+PASS PLG-V01 the codec decodes the file-parser plugin into a typed option
+PASS PLG-V02 the engine vocabulary names the two engines this gateway runs
+PASS PLG-V03 an unknown engine and an unenforced plugin both draw typed refusals
+PASS PLG-V04 in-process extraction reports text, a page count, and a scanned verdict
+PASS PLG-V05 the extraction package reaches no provider and the graph test names it
+PASS PLG-V06 the catalog projects the recognition operation and the named set holds it
+PASS PLG-V07 every recognition offering carries a per-page price
+PASS PLG-V08 a recognition offering with no page price fails projection
+PASS PLG-V09 a scanned document reaches a recognition offering before the chat model
+PASS PLG-V10 the plugin never moves the chat route
+PASS PLG-V11 one failed page fails the whole turn with a typed error
+PASS PLG-V12 identical bytes extract once per account, engine, and generation
+PASS PLG-V13 a cache hit costs no page and the response reports the hit
+PASS PLG-V14 a recognized page draws a cost and a natively read page draws none
+PASS PLG-V15 the spend bound refuses before the recognition call
+PASS PLG-V16 a file-parser request names no unenforced field
+PASS PLG-V17 transforms keeps its drop-in behavior and parity stays pinned
+PASS PLG-V18 the console shows the engine, the page count, the cost, and a cache hit
+PASS PLG-V19 the operator guide names the plugin, its engines, and the price owner
+PASS PLG-V20 CI runs this gate and the evidence list names its terminal count
+Summary: 20 passed, 0 failed

@@ -1,0 +1,7 @@
+=== RUN   TestServiceConfigurationAdministratorOwnedRead
+    service_configuration_linux_test.go:95: === RUN   TestServiceConfigurationAdministratorOwnedRead
+        --- PASS: TestServiceConfigurationAdministratorOwnedRead (0.00s)
+        PASS
+        
+--- PASS: TestServiceConfigurationAdministratorOwnedRead (0.14s)
+PASS

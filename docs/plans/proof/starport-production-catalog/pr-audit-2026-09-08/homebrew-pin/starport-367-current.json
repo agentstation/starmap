@@ -1,0 +1,106 @@
+{
+  "body": "Bumps the github-actions group with 1 update: [Homebrew/actions/setup-homebrew](https://github.com/homebrew/actions).\n\nUpdates `Homebrew/actions/setup-homebrew` from 2026.08.31.1 to 2026.09.07.1\n<details>\n<summary>Release notes</summary>\n<p><em>Sourced from <a href=\"https://github.com/homebrew/actions/releases\">Homebrew/actions/setup-homebrew's releases</a>.</em></p>\n<blockquote>\n<h2>2026.09.07.1</h2>\n<h2>What's Changed</h2>\n<ul>\n<li>Synchronize shared configuration by <a href=\"https://github.com/BrewTestBot\"><code>@\u200bBrewTestBot</code></a> in <a href=\"https://redirect.github.com/Homebrew/actions/pull/921\">Homebrew/actions#921</a></li>\n<li>build(deps): bump the github-actions group across 1 directory with 2 updates by <a href=\"https://github.com/dependabot\"><code>@\u200bdependabot</code></a>[bot] in <a href=\"https://redirect.github.com/Homebrew/actions/pull/923\">Homebrew/actions#923</a></li>\n<li>build(deps): bump the npm group with 3 updates by <a href=\"https://github.com/dependabot\"><code>@\u200bdependabot</code></a>[bot] in <a href=\"https://redirect.github.com/Homebrew/actions/pull/922\">Homebrew/actions#922</a></li>\n</ul>\n<p><strong>Full Changelog</strong>: <a href=\"https://github.com/Homebrew/actions/compare/2026.08.31.1...2026.09.07.1\">https://github.com/Homebrew/actions/compare/2026.08.31.1...2026.09.07.1</a></p>\n</blockquote>\n</details>\n<details>\n<summary>Commits</summary>\n<ul>\n<li><a href=\"https://github.com/Homebrew/actions/commit/f8d4222eb633e65c2a0157383cf80861fc7fae7f\"><code>f8d4222</code></a> Merge pull request <a href=\"https://redirect.github.com/homebrew/actions/issues/922\">#922</a> from Homebrew/dependabot/npm_and_yarn/npm-1a82b195b5</li>\n<li><a href=\"https://github.com/Homebrew/actions/commit/8939750302289fa213079e0e9459e642eda6bbf0\"><code>8939750</code></a> Merge pull request <a href=\"https://redirect.github.com/homebrew/actions/issues/923\">#923</a> from Homebrew/dependabot/github_actions/github-action...</li>\n<li><a href=\"https://github.com/Homebrew/actions/commit/588daa1c8eaea85ab4f8a2bdab0788de6c108a43\"><code>588daa1</code></a> build(deps): bump the github-actions group across 1 directory with 2 updates</li>\n<li><a href=\"https://github.com/Homebrew/actions/commit/d81a489554b26c8b7d8e81d24cde360c167b075e\"><code>d81a489</code></a> build(deps): bump the npm group with 3 updates</li>\n<li><a href=\"https://github.com/Homebrew/actions/commit/c69e528904c52915e7f40e120fc7d49773bbb2a0\"><code>c69e528</code></a> Merge pull request <a href=\"https://redirect.github.com/homebrew/actions/issues/921\">#921</a> from Homebrew/sync-shared-config</li>\n<li><a href=\"https://github.com/Homebrew/actions/commit/3a902485e99fce75c936b5efb0dfd19a98f247d5\"><code>3a90248</code></a> actionlint.yml: update to match main configuration</li>\n<li>See full diff in <a href=\"https://github.com/homebrew/actions/compare/3cdb78d0f62ad29dd32de765782654f4eedea607...f8d4222eb633e65c2a0157383cf80861fc7fae7f\">compare view</a></li>\n</ul>\n</details>\n<br />\n\n\n[![Dependabot compatibility score](https://dependabot-badges.githubapp.com/badges/compatibility_score?dependency-name=Homebrew/actions/setup-homebrew&package-manager=github_actions&previous-version=2026.08.31.1&new-version=2026.09.07.1)](https://docs.github.com/en/github/managing-security-vulnerabilities/about-dependabot-security-updates#about-compatibility-scores)\n\nDependabot will resolve any conflicts with this PR as long as you don't alter it yourself. You can also trigger a rebase manually by commenting `@dependabot rebase`.\n\n[//]: # (dependabot-automerge-start)\n[//]: # (dependabot-automerge-end)\n\n---\n\n<details>\n<summary>Dependabot commands and options</summary>\n<br />\n\nYou can trigger Dependabot actions by commenting on this PR:\n- `@dependabot rebase` will rebase this PR\n- `@dependabot recreate` will recreate this PR, overwriting any edits that have been made to it\n- `@dependabot show <dependency name> ignore conditions` will show all of the ignore conditions of the specified dependency\n- `@dependabot ignore <dependency name> major version` will close this group update PR and stop Dependabot creating any more for the specific dependency's major version (unless you unignore this specific dependency's major version or upgrade to it yourself)\n- `@dependabot ignore <dependency name> minor version` will close this group update PR and stop Dependabot creating any more for the specific dependency's minor version (unless you unignore this specific dependency's minor version or upgrade to it yourself)\n- `@dependabot ignore <dependency name>` will close this group update PR and stop Dependabot creating any more for the specific dependency (unless you unignore this specific dependency or upgrade to it yourself)\n- `@dependabot unignore <dependency name>` will remove all of the ignore conditions of the specified dependency\n- `@dependabot unignore <dependency name> <ignore condition>` will remove the ignore condition of the specified dependency and ignore conditions\n\n\n</details>\n\n<!-- catalog-pr-audit -->\nCurrent disposition (2026-09-08)\n\nRetain as the Homebrew action update. All ten current checks pass. Complete pin provenance and dependency review before merge. This update is independent of the catalog PR.\n",
+  "headRefOid": "3f0817ad23b69147caaafd2b30ccbd71a50e48a6",
+  "statusCheckRollup": [
+    {
+      "__typename": "CheckRun",
+      "completedAt": "2026-09-07T14:07:57Z",
+      "conclusion": "SUCCESS",
+      "detailsUrl": "https://github.com/agentstation/starport/actions/runs/34131083043/job/101771097349",
+      "name": "Lint",
+      "startedAt": "2026-09-07T14:06:11Z",
+      "status": "COMPLETED",
+      "workflowName": "CI"
+    },
+    {
+      "__typename": "CheckRun",
+      "completedAt": "2026-09-07T14:14:17Z",
+      "conclusion": "SUCCESS",
+      "detailsUrl": "https://github.com/agentstation/starport/actions/runs/34131083043/job/101771097507",
+      "name": "Test (ubuntu-latest)",
+      "startedAt": "2026-09-07T14:06:11Z",
+      "status": "COMPLETED",
+      "workflowName": "CI"
+    },
+    {
+      "__typename": "CheckRun",
+      "completedAt": "2026-09-07T14:08:06Z",
+      "conclusion": "SUCCESS",
+      "detailsUrl": "https://github.com/agentstation/starport/actions/runs/34131083043/job/101771097294",
+      "name": "Test (macos-latest)",
+      "startedAt": "2026-09-07T14:06:15Z",
+      "status": "COMPLETED",
+      "workflowName": "CI"
+    },
+    {
+      "__typename": "CheckRun",
+      "completedAt": "2026-09-07T14:08:25Z",
+      "conclusion": "SUCCESS",
+      "detailsUrl": "https://github.com/agentstation/starport/actions/runs/34131083043/job/101771097466",
+      "name": "Test (windows-latest)",
+      "startedAt": "2026-09-07T14:06:11Z",
+      "status": "COMPLETED",
+      "workflowName": "CI"
+    },
+    {
+      "__typename": "CheckRun",
+      "completedAt": "2026-09-07T14:09:47Z",
+      "conclusion": "SUCCESS",
+      "detailsUrl": "https://github.com/agentstation/starport/actions/runs/34131083043/job/101771097613",
+      "name": "Security Scan",
+      "startedAt": "2026-09-07T14:06:11Z",
+      "status": "COMPLETED",
+      "workflowName": "CI"
+    },
+    {
+      "__typename": "CheckRun",
+      "completedAt": "2026-09-07T14:14:29Z",
+      "conclusion": "SUCCESS",
+      "detailsUrl": "https://github.com/agentstation/starport/actions/runs/34131083043/job/101771097071",
+      "name": "Release Contract",
+      "startedAt": "2026-09-07T14:06:10Z",
+      "status": "COMPLETED",
+      "workflowName": "CI"
+    },
+    {
+      "__typename": "CheckRun",
+      "completedAt": "2026-09-07T14:06:42Z",
+      "conclusion": "SUCCESS",
+      "detailsUrl": "https://github.com/agentstation/starport/actions/runs/34131083043/job/101771097343",
+      "name": "OpenRouter SDK Compatibility",
+      "startedAt": "2026-09-07T14:06:10Z",
+      "status": "COMPLETED",
+      "workflowName": "CI"
+    },
+    {
+      "__typename": "CheckRun",
+      "completedAt": "2026-09-07T14:16:56Z",
+      "conclusion": "SUCCESS",
+      "detailsUrl": "https://github.com/agentstation/starport/actions/runs/34131083043/job/101771097373",
+      "name": "Release Snapshot",
+      "startedAt": "2026-09-07T14:06:10Z",
+      "status": "COMPLETED",
+      "workflowName": "CI"
+    },
+    {
+      "__typename": "CheckRun",
+      "completedAt": "2026-09-07T14:06:22Z",
+      "conclusion": "SUCCESS",
+      "detailsUrl": "https://github.com/agentstation/starport/actions/runs/34131083043/job/101771097386",
+      "name": "Action Pin Provenance",
+      "startedAt": "2026-09-07T14:06:11Z",
+      "status": "COMPLETED",
+      "workflowName": "CI"
+    },
+    {
+      "__typename": "CheckRun",
+      "completedAt": "2026-09-07T14:19:05Z",
+      "conclusion": "SUCCESS",
+      "detailsUrl": "https://github.com/agentstation/starport/actions/runs/34131083043/job/101773632157",
+      "name": "Build",
+      "startedAt": "2026-09-07T14:14:31Z",
+      "status": "COMPLETED",
+      "workflowName": "CI"
+    }
+  ]
+}

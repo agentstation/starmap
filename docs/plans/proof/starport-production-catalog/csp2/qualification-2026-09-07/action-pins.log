@@ -1,0 +1,9 @@
+actions/attest-build-provenance v4.2.2 matches 4d101475d8b20a2381f78447822ac1eab6504dd8
+actions/checkout v7.0.1 matches 3d3c42e5aac5ba805825da76410c181273ba90b1
+actions/setup-go v7.0.0 matches b7ad1dad31e06c5925ef5d2fc7ad053ef454303e
+actions/upload-artifact v7.0.1 matches 043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+anchore/sbom-action/download-syft v0.24.2 matches 3ad7283483fc7af8ff2b4ea19663c2d5ca935e26
+docker/login-action v4.6.0 matches dbcb813823bdd20940b903addbd779551569679f
+goreleaser/goreleaser-action v7.2.3 matches f06c13b6b1a9625abc9e6e439d9c05a8f2190e94
+oras-project/setup-oras v2.0.1 matches 1d808f7d7f6995cc68b7bf507bfe5c5446e1dc9d
+action pins: 8 reference(s) resolve to their advertised release tag
