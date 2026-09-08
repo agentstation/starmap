@@ -963,7 +963,6 @@
   "tasks_awaiting_merge": [
     "CSP0.2",
     "CSP0.3",
-    "CSP0.4",
     "CSP2",
     "CSP3.1"
   ],
@@ -971,6 +970,7 @@
   "tasks_completed_after_merge": [
     "CSP0",
     "CSP0.1",
+    "CSP0.4",
     "CSP1"
   ]
 }
