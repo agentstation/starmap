@@ -1,0 +1,67 @@
+{
+  "scope": "Starmap component evidence. No released-pair credit. Native qualification of the new verifier remains open.",
+  "base_commit": "06711985",
+  "branch": "codex/catalog-qualification",
+  "published_parent": "637f780a067466896f6b9ed03dc034cd764861a9",
+  "parent_pr": "https://github.com/agentstation/starmap/pull/133",
+  "parent_native_run": "https://github.com/agentstation/starmap/actions/runs/34186118026",
+  "go_race_test_events": {
+    "pass": 770
+  },
+  "go_packages": [
+    "github.com/agentstation/starmap/internal/cli/app",
+    "github.com/agentstation/starmap/internal/bootstrap",
+    "github.com/agentstation/starmap/runtime"
+  ],
+  "initial_component_counts": {
+    "PASS": 12,
+    "UNVERIFIED": 10
+  },
+  "additional_recovery_counts": {
+    "PASS": 4
+  },
+  "limitations": [
+    "The complete current CSP2 registry reports sixteen passing and six unverified subcases.",
+    "The parent native run passed all six runtime jobs. Its main verification job is still running.",
+    "Linux records one unprivileged skip per architecture and a separate passing administrator-owned configuration read.",
+    "Native captures qualify only unchanged source and test inputs; the new qualification branch needs its own CI run.",
+    "Starport and the released pair remain outside this component evidence."
+  ],
+  "sha256": {
+    "path-suites.jsonl": "e588c590c9f6c5171d799fdfcc696e10b4928a0329bc7d53b0a6ba6daa3eac34",
+    "initial-components.json": "e367102969e31377c249117d0f7cd7112b5abaa99010c00e22e083cf50f8c50d",
+    "writing.log": "81efea05646922154b854936c2a6f9c11c99adf053dc00a603173fbb3171f90e",
+    "initial-writing.log": "371f51ef915224bb7c8cd3f14736e4ca046050cb6887c326e46aa89c5d7d3dc3",
+    "initial-verifier-tests.log": "7ead837d711b1b1cb6941684470234d710a8ea7eea201dabf79965c1c2d6098d",
+    "final-ago.json": "b8fb7afa66aa7a93914ac258475dd0191be821803a8aea4439f5ba05022f5fa5",
+    "recovery-components.json": "ddbb6bc64933dd9553a09e8efb64089835bd56988641cc6ff785a02bade6e5b7",
+    "ago.json": "b8fb7afa66aa7a93914ac258475dd0191be821803a8aea4439f5ba05022f5fa5",
+    "writing-fixed.log": "566ef82ed6781b5af4e972300bf612ffbb607f77c99f7d384af7972f34864d3d",
+    "documents.json": "f83bab766124546072f7b22005a58beee208d33f4dc2551bb1934270ed0f5cf0",
+    "components.json": "d6c07f26cff59d364834826f4dc185486b2f9c584ac9b1db014fc1240e75cbaa",
+    "verifier-tests.log": "5185a7322e1bf463b8f9d28675feadd5a374d47f1af733e6fdf0955cee8bf47b",
+    "full-verification.log": "702c197d64fc40714a2d983fddc0941377c0422e001b178c48b79f5054c89fba"
+  },
+  "current_component_counts": {
+    "PASS": 16,
+    "FAIL": 0,
+    "UNVERIFIED": 6
+  },
+  "verifier_unit_tests": 73,
+  "input_sha256": {
+    "internal/cli/app/product_startup_paths_test.go": "0857e3fe01361dfe6cc11cc5dd15d6166e1601e20cf295cbf40eb085ff0db65f",
+    "scripts/native_catalog.py": "1916d072f73980a82cf3263ef5604fed74a430ec1b930ea7debbc90e88402dd1",
+    "scripts/catalog_product_verify.py": "08be77c46f86d2861af0956d7b2a753d14e5d5377d7dec696e86aa0ff05a1906",
+    "scripts/catalog-product-checks.json": "847aad2a6c112da319062d67d40b2f0ebc9c2162fa47e96f72cc652edffdcd27",
+    "scripts/test_catalog_product_verify.py": "fdd6d6a3281ec75413a42f211f3662da9fa52309a7b15b7f2bb4f792bb04ab10"
+  },
+  "repository_verification": {
+    "exit_code": 0,
+    "stages": 39,
+    "ordinary_packages": 79,
+    "race_packages": 79,
+    "verifier_tests": 73,
+    "command": "GOTOOLCHAIN=go1.26.6 make verify",
+    "note": "The native adapter unit suite also passed after the privileged Linux evidence refinement."
+  }
+}
