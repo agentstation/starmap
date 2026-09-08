@@ -1,0 +1,287 @@
+Security & Reliability	UNKNOWN STEP	﻿2026-09-07T21:15:38.4305195Z Current runner version: '2.337.0'
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:38.4329805Z ##[group]Runner Image Provisioner
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:38.4330696Z Hosted Compute Agent
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:38.4331321Z Version: 20260828.587
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:38.4332093Z Commit: abac92662cab4cc7352de4f9f9d2e2419aad9c29
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:38.4332856Z Build Date: 2026-08-28T16:44:25Z
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:38.4333669Z Worker ID: {016b0082-c41c-499f-abf8-02f78db3cab6}
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:38.4334445Z Azure Region: northcentralus
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:38.4335100Z ##[endgroup]
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:38.4336881Z ##[group]Operating System
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:38.4337539Z Ubuntu
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:38.4338264Z 24.04.4
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:38.4338890Z LTS
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:38.4339440Z ##[endgroup]
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:38.4340088Z ##[group]Runner Image
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:38.4340787Z Image: ubuntu-24.04
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:38.4341371Z Version: 20260831.293.1
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:38.4342742Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20260831.293/images/ubuntu/Ubuntu2404-Readme.md
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:38.4344358Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20260831.293
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:38.4345431Z ##[endgroup]
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:38.4346566Z ##[group]GITHUB_TOKEN Permissions
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:38.4348904Z Contents: read
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:38.4349557Z Metadata: read
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:38.4350253Z ##[endgroup]
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:38.4352323Z Secret source: Actions
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:38.4353513Z Prepare workflow directory
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:38.4689526Z Prepare all required actions
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:38.4739069Z Getting action download info
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:38.7403728Z Download action repository 'actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1' (SHA:3d3c42e5aac5ba805825da76410c181273ba90b1)
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:38.8544805Z Download action repository 'actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e' (SHA:b7ad1dad31e06c5925ef5d2fc7ad053ef454303e)
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:39.3190764Z Complete job name: Security & Reliability
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:39.3989372Z ##[group]Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:39.3990551Z with:
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:39.3991056Z   repository: agentstation/starmap
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:39.3994888Z   token: ***
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:39.3995345Z   ssh-strict: true
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:39.3995799Z   ssh-user: git
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:39.3996255Z   persist-credentials: true
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:39.3997288Z   clean: true
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:39.3998108Z   sparse-checkout-cone-mode: true
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:39.3998895Z   fetch-depth: 1
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:39.3999387Z   fetch-tags: false
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:39.4000020Z   show-progress: true
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:39.4000940Z   lfs: false
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:39.4001411Z   submodules: false
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:39.4001889Z   set-safe-directory: true
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:39.4002394Z   allow-unsafe-pr-checkout: false
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:39.4003289Z ##[endgroup]
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:39.5042692Z Syncing repository: agentstation/starmap
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:39.5045166Z ##[group]Getting Git version info
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:39.5046070Z Working directory is '/home/runner/work/starmap/starmap'
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:39.5047420Z [command]/usr/bin/git version
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:39.5068977Z git version 2.55.0
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:39.5098844Z ##[endgroup]
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:39.5105520Z Temporarily overriding HOME='/home/runner/work/_temp/cab852ec-2d54-41c6-805b-481f61b530c4' before making global git config changes
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:39.5107914Z Adding repository directory to the temporary git global config as a safe directory
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:39.5113068Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/starmap/starmap
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:39.5160383Z Deleting the contents of '/home/runner/work/starmap/starmap'
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:39.5172791Z ##[group]Determining repository object format
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:39.5179104Z ##[endgroup]
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:39.5179986Z ##[group]Initializing the repository
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:39.5180735Z [command]/usr/bin/git init /home/runner/work/starmap/starmap
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:39.5253001Z hint: Using 'master' as the name for the initial branch. This default branch name
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:39.5254845Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:39.5256317Z hint: to use in all of your new repositories, which will suppress this warning,
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:39.5257464Z hint: call:
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:39.5258698Z hint:
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:39.5259325Z hint: 	git config --global init.defaultBranch <name>
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:39.5260288Z hint:
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:39.5261139Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:39.5262088Z hint: 'development'. The just-created branch can be renamed via this command:
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:39.5262818Z hint:
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:39.5263246Z hint: 	git branch -m <name>
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:39.5263724Z hint:
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:39.5264359Z hint: Disable this message with "git config set advice.defaultBranchName false"
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:39.5265580Z Initialized empty Git repository in /home/runner/work/starmap/starmap/.git/
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:39.5268219Z [command]/usr/bin/git remote add origin https://github.com/agentstation/starmap
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:39.5312870Z ##[endgroup]
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:39.5313734Z ##[group]Disabling automatic garbage collection
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:39.5317028Z [command]/usr/bin/git config --local gc.auto 0
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:39.5349839Z ##[endgroup]
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:39.5351282Z ##[group]Setting up auth
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:39.5352054Z Removing SSH command configuration
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:39.5355971Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:39.5390700Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:39.5733174Z Removing HTTP extra header
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:39.5740513Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:39.5780103Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:39.6065120Z Removing includeIf entries pointing to credentials config files
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:39.6066791Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:39.6095106Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:39.6338576Z [command]/usr/bin/git config --file /home/runner/work/_temp/git-credentials-39daedc6-36fc-4ffb-b50c-0e71b165252b.config http.https://github.com/.extraheader AUTHORIZATION: basic ***
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:39.6379897Z [command]/usr/bin/git config --local includeIf.gitdir:/home/runner/work/starmap/starmap/.git.path /home/runner/work/_temp/git-credentials-39daedc6-36fc-4ffb-b50c-0e71b165252b.config
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:39.6414296Z [command]/usr/bin/git config --local includeIf.gitdir:/home/runner/work/starmap/starmap/.git/worktrees/*.path /home/runner/work/_temp/git-credentials-39daedc6-36fc-4ffb-b50c-0e71b165252b.config
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:39.6452031Z [command]/usr/bin/git config --local includeIf.gitdir:/github/workspace/.git.path /github/runner_temp/git-credentials-39daedc6-36fc-4ffb-b50c-0e71b165252b.config
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:39.6489391Z [command]/usr/bin/git config --local includeIf.gitdir:/github/workspace/.git/worktrees/*.path /github/runner_temp/git-credentials-39daedc6-36fc-4ffb-b50c-0e71b165252b.config
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:39.6521647Z ##[endgroup]
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:39.6522442Z ##[group]Fetching the repository
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:39.6528781Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +21410f826e0652eb5fad3345daa1d161610295ae:refs/remotes/pull/125/merge
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:43.8146925Z From https://github.com/agentstation/starmap
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:43.8149029Z  * [new ref]         21410f826e0652eb5fad3345daa1d161610295ae -> pull/125/merge
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:43.8153180Z ##[endgroup]
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:43.8154621Z ##[group]Determining the checkout info
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:43.8155897Z ##[endgroup]
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:43.8159497Z [command]/usr/bin/git sparse-checkout disable
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:43.8211169Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:43.8243998Z ##[group]Checking out the ref
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:43.8247589Z [command]/usr/bin/git checkout --progress --force refs/remotes/pull/125/merge
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:44.3689038Z Note: switching to 'refs/remotes/pull/125/merge'.
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:44.3690082Z 
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:44.3691006Z You are in 'detached HEAD' state. You can look around, make experimental
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:44.3691981Z changes and commit them, and you can discard any commits you make in this
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:44.3692904Z state without impacting any branches by switching back to a branch.
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:44.3693437Z 
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:44.3693879Z If you want to create a new branch to retain commits you create, you may
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:44.3694710Z do so (now or later) by using -c with the switch command. Example:
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:44.3695171Z 
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:44.3695389Z   git switch -c <new-branch-name>
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:44.3695703Z 
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:44.3695949Z Or undo this operation with:
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:44.3696285Z 
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:44.3696471Z   git switch -
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:44.3696788Z 
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:44.3697187Z Turn off this advice by setting config variable advice.detachedHead to false
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:44.3697935Z 
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:44.3698553Z HEAD is now at 21410f8 Merge d8d12a26069f34442860cbcf8bb840dd073177fc into 4780dfea9f7e002ea6eaaa82aa8f52ed0d4cc225
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:44.3744098Z ##[endgroup]
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:44.3793852Z [command]/usr/bin/git log -1 --format=%H
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:44.3824878Z 21410f826e0652eb5fad3345daa1d161610295ae
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:44.4091059Z ##[group]Run actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:44.4091527Z with:
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:44.4091806Z   go-version: 1.26.6
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:44.4092073Z   cache: true
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:44.4092332Z   check-latest: false
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:44.4094722Z   token: ***
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:44.4094996Z ##[endgroup]
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:44.5223978Z Setup go version spec 1.26.6
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:44.5232100Z Attempting to download 1.26.6...
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:45.0769159Z matching 1.26.6...
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:45.0802529Z Acquiring 1.26.6 from https://github.com/actions/go-versions/releases/download/1.26.6-31764261251/go-1.26.6-linux-x64.tar.gz
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:45.5314291Z Extracting Go...
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:45.5429964Z [command]/usr/bin/tar xz --warning=no-unknown-keyword --overwrite -C /home/runner/work/_temp/d27f4f22-b5e6-40c3-9ba1-907b9f20d0f4 -f /home/runner/work/_temp/91bd83e9-11df-4bec-a9d8-d175d2b090a7
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:47.3030762Z Successfully extracted go to /home/runner/work/_temp/d27f4f22-b5e6-40c3-9ba1-907b9f20d0f4
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:47.3038189Z Adding to the cache ...
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:51.9293454Z Successfully cached go to /opt/hostedtoolcache/go/1.26.6/x64
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:51.9295446Z Added go to the path
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:51.9297416Z Successfully set up Go version 1.26.6
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:51.9513690Z [command]/opt/hostedtoolcache/go/1.26.6/x64/bin/go env GOMODCACHE
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:51.9554801Z [command]/opt/hostedtoolcache/go/1.26.6/x64/bin/go env GOCACHE
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:51.9590372Z /home/runner/go/pkg/mod
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:51.9607937Z /home/runner/.cache/go-build
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:52.1228998Z Cache hit for: setup-go-Linux-x64-ubuntu24-go-1.26.6-715ad71b258d56f8731a3df96cb2b75350c1f317cf0613b6c793033f77a8b0ec
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:52.8418661Z Received 46744244 of 46744244 (100.0%), 72.5 MBs/sec
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:52.8448457Z Cache Size: ~45 MB (46744244 B)
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:52.8546295Z [command]/usr/bin/tar -xf /home/runner/work/_temp/557ee399-f078-4228-a426-b72673c8b59e/cache.tzst -P -C /home/runner/work/starmap/starmap --use-compress-program unzstd
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:53.3147096Z Cache restored successfully
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:53.3178432Z Cache restored from key: setup-go-Linux-x64-ubuntu24-go-1.26.6-715ad71b258d56f8731a3df96cb2b75350c1f317cf0613b6c793033f77a8b0ec
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:53.3207290Z go version go1.26.6 linux/amd64
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:53.3207531Z 
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:53.3208103Z ##[group]go env
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:53.3324889Z AR='ar'
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:53.3325260Z CC='gcc'
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:53.3325626Z CGO_CFLAGS='-O2 -g'
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:53.3326012Z CGO_CPPFLAGS=''
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:53.3326399Z CGO_CXXFLAGS='-O2 -g'
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:53.3326769Z CGO_ENABLED='1'
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:53.3327104Z CGO_FFLAGS='-O2 -g'
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:53.3327470Z CGO_LDFLAGS='-O2 -g'
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:53.3328015Z CXX='g++'
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:53.3328344Z GCCGO='gccgo'
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:53.3328657Z GO111MODULE=''
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:53.3328961Z GOAMD64='v1'
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:53.3329266Z GOARCH='amd64'
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:53.3329585Z GOAUTH='netrc'
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:53.3329869Z GOBIN=''
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:53.3330194Z GOCACHE='/home/runner/.cache/go-build'
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:53.3330628Z GOCACHEPROG=''
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:53.3330925Z GODEBUG=''
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:53.3331243Z GOENV='/home/runner/.config/go/env'
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:53.3331623Z GOEXE=''
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:53.3331911Z GOEXPERIMENT=''
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:53.3332231Z GOFIPS140='off'
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:53.3332531Z GOFLAGS=''
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:53.3333566Z GOGCCFLAGS='-fPIC -m64 -pthread -Wl,--no-gc-sections -fmessage-length=0 -ffile-prefix-map=/tmp/go-build1278960927=/tmp/go-build -gno-record-gcc-switches'
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:53.3334568Z GOHOSTARCH='amd64'
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:53.3334896Z GOHOSTOS='linux'
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:53.3335202Z GOINSECURE=''
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:53.3335576Z GOMOD='/home/runner/work/starmap/starmap/go.mod'
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:53.3336062Z GOMODCACHE='/home/runner/go/pkg/mod'
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:53.3336481Z GONOPROXY=''
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:53.3336773Z GONOSUMDB=''
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:53.3337405Z GOOS='linux'
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:53.3337878Z GOPATH='/home/runner/go'
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:53.3338227Z GOPRIVATE=''
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:53.3338631Z GOPROXY='https://proxy.golang.org,direct'
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:53.3339143Z GOROOT='/opt/hostedtoolcache/go/1.26.6/x64'
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:53.3339584Z GOSUMDB='sum.golang.org'
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:53.3339945Z GOTELEMETRY='local'
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:53.3340367Z GOTELEMETRYDIR='/home/runner/.config/go/telemetry'
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:53.3340818Z GOTMPDIR=''
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:53.3341120Z GOTOOLCHAIN='local'
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:53.3341621Z GOTOOLDIR='/opt/hostedtoolcache/go/1.26.6/x64/pkg/tool/linux_amd64'
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:53.3342159Z GOVCS=''
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:53.3342454Z GOVERSION='go1.26.6'
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:53.3342786Z GOWORK=''
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:53.3343112Z PKG_CONFIG='pkg-config'
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:53.3343333Z 
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:53.3343757Z ##[endgroup]
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:53.3531776Z ##[group]Run go install golang.org/x/vuln/cmd/govulncheck@v1.6.0
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:53.3532381Z ^[[36;1mgo install golang.org/x/vuln/cmd/govulncheck@v1.6.0^[[0m
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:53.3578894Z shell: /usr/bin/bash -e {0}
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:53.3579181Z env:
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:53.3579418Z   GOTOOLCHAIN: local
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:53.3579660Z ##[endgroup]
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:53.4032549Z go: downloading golang.org/x/vuln v1.6.0
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:53.5869405Z go: downloading golang.org/x/telemetry v0.0.0-20260708182218-49f421fb7959
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:53.6433364Z go: downloading golang.org/x/mod v0.38.0
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:53.6484983Z go: downloading golang.org/x/tools v0.48.0
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:53.7460950Z go: downloading golang.org/x/sync v0.22.0
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:58.8084264Z ##[group]Run govulncheck ./...
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:58.8084574Z ^[[36;1mgovulncheck ./...^[[0m
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:58.8126047Z shell: /usr/bin/bash -e {0}
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:58.8126328Z env:
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:58.8126551Z   GOTOOLCHAIN: local
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:15:58.8126787Z ##[endgroup]
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:16:16.7221933Z === Symbol Results ===
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:16:16.7222241Z 
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:16:16.7225193Z No vulnerabilities found.
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:16:16.7225508Z 
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:16:16.7225740Z Your code is affected by 0 vulnerabilities.
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:16:16.7226957Z This scan also found 2 vulnerabilities in packages you import and 1
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:16:16.7228000Z vulnerability in modules you require, but your code doesn't appear to call these
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:16:16.7228656Z vulnerabilities.
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:16:16.7229031Z Use '-show verbose' for more details.
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:16:16.7454334Z ##[group]Run go test ./internal/sources/modelsdev -run '^$' -fuzz '^FuzzParseAPIDataNoPanic$' -fuzztime=10s
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:16:16.7455112Z ^[[36;1mgo test ./internal/sources/modelsdev -run '^$' -fuzz '^FuzzParseAPIDataNoPanic$' -fuzztime=10s^[[0m
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:16:16.7455764Z ^[[36;1mgo test ./pkg/catalogs -run '^$' -fuzz '^FuzzSourceExtensionNoPanic$' -fuzztime=10s^[[0m
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:16:16.7456412Z ^[[36;1mgo test ./internal/catalog/reconciler -run '^$' -fuzz '^FuzzReconciliationNoPanic$' -fuzztime=10s^[[0m
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:16:16.7496287Z shell: /usr/bin/bash -e {0}
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:16:16.7496555Z env:
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:16:16.7496786Z   GOTOOLCHAIN: local
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:16:16.7497018Z ##[endgroup]
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:16:41.0504865Z fuzz: elapsed: 0s, gathering baseline coverage: 0/4 completed
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:16:41.0851456Z fuzz: elapsed: 0s, gathering baseline coverage: 4/4 completed, now fuzzing with 4 workers
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:16:44.0553602Z fuzz: elapsed: 3s, execs: 50551 (16839/sec), new interesting: 52 (total: 56)
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:16:47.0514532Z fuzz: elapsed: 6s, execs: 77880 (9113/sec), new interesting: 81 (total: 85)
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:16:50.0558835Z fuzz: elapsed: 9s, execs: 96795 (6306/sec), new interesting: 92 (total: 96)
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:16:52.0548064Z fuzz: elapsed: 11s, execs: 112286 (7731/sec), new interesting: 98 (total: 102)
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:16:52.0548947Z --- FAIL: FuzzParseAPIDataNoPanic (11.00s)
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:16:52.0549558Z     context deadline exceeded
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:16:52.0550005Z FAIL
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:16:52.0569207Z exit status 1
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:16:52.0569921Z FAIL	github.com/agentstation/starmap/internal/sources/modelsdev	11.036s
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:16:52.1310105Z ##[error]Process completed with exit code 1.
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:16:52.1480420Z Post job cleanup.
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:16:52.2366209Z [command]/usr/bin/git version
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:16:52.2413295Z git version 2.55.0
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:16:52.2451972Z Temporarily overriding HOME='/home/runner/work/_temp/140dffa1-a13a-453f-bf4c-352fbfd6990d' before making global git config changes
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:16:52.2453263Z Adding repository directory to the temporary git global config as a safe directory
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:16:52.2457259Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/starmap/starmap
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:16:52.2494488Z Removing SSH command configuration
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:16:52.2502333Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:16:52.2543487Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:16:52.2805875Z Removing HTTP extra header
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:16:52.2811595Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:16:52.2853126Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:16:52.3143214Z Removing includeIf entries pointing to credentials config files
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:16:52.3152418Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:16:52.3187036Z includeif.gitdir:/home/runner/work/starmap/starmap/.git.path
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:16:52.3188151Z includeif.gitdir:/home/runner/work/starmap/starmap/.git/worktrees/*.path
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:16:52.3188880Z includeif.gitdir:/github/workspace/.git.path
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:16:52.3189475Z includeif.gitdir:/github/workspace/.git/worktrees/*.path
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:16:52.3196836Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/home/runner/work/starmap/starmap/.git.path
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:16:52.3228485Z /home/runner/work/_temp/git-credentials-39daedc6-36fc-4ffb-b50c-0e71b165252b.config
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:16:52.3239108Z [command]/usr/bin/git config --local --unset includeif.gitdir:/home/runner/work/starmap/starmap/.git.path \/home\/runner\/work\/_temp\/git\-credentials\-39daedc6\-36fc\-4ffb\-b50c\-0e71b165252b\.config
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:16:52.3293203Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/home/runner/work/starmap/starmap/.git/worktrees/*.path
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:16:52.3326109Z /home/runner/work/_temp/git-credentials-39daedc6-36fc-4ffb-b50c-0e71b165252b.config
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:16:52.3336858Z [command]/usr/bin/git config --local --unset includeif.gitdir:/home/runner/work/starmap/starmap/.git/worktrees/*.path \/home\/runner\/work\/_temp\/git\-credentials\-39daedc6\-36fc\-4ffb\-b50c\-0e71b165252b\.config
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:16:52.3376042Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/github/workspace/.git.path
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:16:52.3407440Z /github/runner_temp/git-credentials-39daedc6-36fc-4ffb-b50c-0e71b165252b.config
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:16:52.3414701Z [command]/usr/bin/git config --local --unset includeif.gitdir:/github/workspace/.git.path \/github\/runner_temp\/git\-credentials\-39daedc6\-36fc\-4ffb\-b50c\-0e71b165252b\.config
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:16:52.3451529Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/github/workspace/.git/worktrees/*.path
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:16:52.3479289Z /github/runner_temp/git-credentials-39daedc6-36fc-4ffb-b50c-0e71b165252b.config
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:16:52.3486687Z [command]/usr/bin/git config --local --unset includeif.gitdir:/github/workspace/.git/worktrees/*.path \/github\/runner_temp\/git\-credentials\-39daedc6\-36fc\-4ffb\-b50c\-0e71b165252b\.config
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:16:52.3525270Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:16:52.3760787Z Removing credentials config '/home/runner/work/_temp/git-credentials-39daedc6-36fc-4ffb-b50c-0e71b165252b.config'
+Security & Reliability	UNKNOWN STEP	2026-09-07T21:16:52.3921365Z Cleaning up orphan processes
