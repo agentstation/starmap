@@ -1478,3 +1478,43 @@ Both complete diffs pass prompt preflight. Actual model review remains required.
 Starport commit `0acf476` corrects direct runtime test fixtures that supplied non-private state directories.
 The [fixture evidence](../../plans/proof/starport-production-catalog/csp2/app-private-fixture.md) records five passing race results and the initial failures.
 All 12 ownership checks now pass. Production permission enforcement remains unchanged.
+
+## Discovery and readiness audit: 2026-09-07
+
+The independent audit confirms several product gaps against Starport `de0e00297428f16115a068f5a39ec6702e0674f5` and its Starmap v0.16.5 dependency.
+Candidate Starmap evidence uses `9693899b`.
+[Verification and retained probes](../../plans/proof/starport-production-catalog/discovery-readiness-2026-09-07/verification.json) record source hashes, outputs, and test-development failures.
+No primary acceptance status changes.
+
+| Finding | Verified behavior | Existing owner |
+| --- | --- | --- |
+| DR01 | Production provider activation needs no operator credential material for structural registration. The fixture exposes 511 definitions, 14 providers, and 614 structural routes. | CSP9, CSP10 |
+| DR02 | Proxy model lists and catalog views derive membership from structural routes. They do not provide complete permitted catalog discovery. | CSP10, CSP17 |
+| DR03 | The pinned runtime uses enrichment for provider layers. Candidate Starmap uses canonical reconciliation with explicit authority order. | CSP3, CSP8 |
+| DR04 | Pinned pricing merges retain USD output 4 under a new EUR input 2. A separate fresh-baseline test retains input 1 after explicit zero. | CSP3, CSP8 |
+| DR05 | Pinned enrichment drops a valid linked model without pricing or limits. The candidate retains it. | CSP3, CSP8 |
+| DR06 | The production cache returns stale model and provider lists after adapter removal without a catalog generation change. | CSP10, CSP12.1 |
+| DR07 | Provider facet counts use the authored ID prefix. The filter also accepts offering providers, so counts and selection disagree. | CSP17 |
+| DR08 | Chat defaults can select a model without usable operator providers. Model actions do not establish current caller readiness. | CSP9, CSP10, CSP17 |
+| DR09 | The committed pin cannot compile `internal/catalog`: `runtime.NewProviderLayer` is undefined. `internal/catalog/view` passes separately. | CSP8 |
+
+DR01 preserves existing useful behavior. Its fixture counts do not establish caller readiness or HTTP compatibility.
+The operator provider-status store already provides broader diagnostics. DR02 does not claim that every console surface lacks diagnostic information.
+Candidate pricing and membership tests pass 19 race test events. These fixes do not reach Starport through its current pin.
+
+DR06 uses the real local model cache and production proxy wrapper. Its unused response store uses the repository mock.
+The probe records two passing and three failing test events, including the parent failure.
+Models and providers remain stale. Endpoint results stay current because the typed cache read rejects the stored JSON object and calls the service again.
+
+The probe confirms that the endpoint entry exists. Repairing its decoder also requires correct dependency identity.
+This evidence establishes discovery defects, not an inference authorization bypass.
+
+The TypeScript probe imports the actual filter and default-selection functions.
+A Meta-authored model offered by Groq and DeepInfra counts under Meta, while both Meta and Groq filters accept it.
+The same fixture becomes the default when the usable-provider set is empty.
+Browser behavior, accessibility, caller isolation, replica behavior, and released-pair compatibility remain unverified for this audit.
+
+The plan maps these findings to existing tasks and acceptance subcases.
+The target separates accepted membership, permitted discovery, structural support, and current caller readiness.
+D24 preserves the selected baseline during fresh acquisition. D25 limits account-specific withdrawals to explicitly linked inference profiles.
+Neither decision permits public fallback around internal authority.

@@ -214,6 +214,28 @@ Newer evidence wins only within the appropriate source authority and scope.
 An account-specific model list must not become a deployment-wide availability
 claim. Local changes under internal authority require explicit permission.
 
+### Discovery, structural support, and caller readiness
+
+Starport must expose permitted catalog membership even when the operator has no inference credentials.
+Catalog membership, structural routing support, and current caller readiness describe separate states.
+The console must label each state and explain exclusions without exposing another account's configuration.
+An internal authority defines the permitted catalog. Public or embedded fallback must not restore prohibited records.
+
+Explore must show permitted definitions, authors, and provider offerings, including records with incomplete optional commercial metadata.
+Provider facets must use serving providers from offerings. Author facets must use authored identity.
+A model counts once per provider facet even when that provider has multiple offerings.
+Counts, filters, details, and pagination must use one permitted catalog view.
+
+Chat and comparison actions must explain whether the selected operation can run for the current caller.
+A missing operator key does not disqualify a caller who has a permitted personal credential or shared grant.
+Show an appropriate action: add credentials, request access, repair credentials, or choose a supported operation.
+An unavailable remembered model may remain visible, but the console must not describe it as ready.
+Readiness is advisory. Inference must recheck current permission, credential validity, and required budget admission.
+
+Discovery caches must follow changes to catalog facts, adapter support, and applicable policy.
+A cache hit must not restore a withdrawn offering or expose another caller's permitted catalog.
+These rules apply to local development, team deployments, and enterprise replicas.
+
 ## Startup and failure behavior
 
 | Condition | Required behavior |

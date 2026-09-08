@@ -419,3 +419,18 @@ Both Windows architectures compile with Go `1.25.12`. Windows-targeted lint and
 Ago pass. The repair also keeps the temporary ACL allocation live through native
 descriptor serialization. Full branch review is in progress. Native execution
 remains unverified.
+
+The follow-up source at `68fee848` also completes all 39 verification stages
+across two segments. It passes 79 ordinary and 79 race packages and 52 verifier
+tests. Its initial command stopped on the status paragraph's sentence limit.
+The corrected prose check and remaining six stages pass.
+[The follow-up record](native-fifth-2026-09-07/followup-verification.json) retains
+the complete commands. Foundation integration and follow-up review remain open.
+
+### Sixth candidate publication
+
+Foundation `f216e7c01e874bdfb4fa57e6b5c1129f79a985fd` passed all eight required cross-lab review portions with no findings.
+The reviewed branch and updated draft PR 132 now contain the temporary staging write grant.
+[Publication evidence](native-fifth-2026-09-07/sixth-publication.json) retains the complete review and native dispatch.
+[Native run 34182826240](https://github.com/agentstation/starmap/actions/runs/34182826240) is in progress.
+No merge, release, or primary acceptance credit.
