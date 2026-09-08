@@ -483,6 +483,35 @@
         "temporary_cleanup",
         "no_unfinished_product_claims"
       ]
+    },
+    "A02.no_workers": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./",
+          "test": "TestReadOnlyConstructorsStartNoWorkers"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./",
+          "test": "TestConstructorWorkerObservationDetectsBlockedAndScheduledWorkers"
+        }
+      ]
+    },
+    "A01.existing_head_preserved": {
+      "kind": "go_test",
+      "repository": "starmap",
+      "package": "./internal/cli/app",
+      "test": "TestBaselineExportPreservesExistingAcceptedHead"
+    },
+    "A01.required_write_failure": {
+      "kind": "go_test",
+      "repository": "starmap",
+      "package": "./internal/cli/app",
+      "test": "TestRequiredBaselineWriteFailurePreventsRuntimeStartup"
     }
   }
 }

@@ -280,3 +280,19 @@ Correction commit `6488e02f` passes all 39 foundation verification stages. Ordin
 and race suites each pass 79 packages. Four affected packages compile for each
 Windows architecture with Go `1.25.12`. A new complete branch review is in progress.
 Native execution remains open.
+
+## Follow-up integration and component bindings
+
+Follow-up merge `c7ff1e55` includes foundation `6488e02f`. The merge retains
+service-managed configuration tests and the new pattern-parent regression.
+Its full repository verification is in progress.
+
+[Component evidence](windows-third-repair-2026-09-07/component-bindings.json)
+records five passing checks among 22 selected CSP2 subcases. Three new bindings
+verify that constructors remain passive, an accepted catalog stays unchanged,
+and startup refuses a required baseline write failure. The worker observer also detects blocked
+and scheduled workers in its positive fixture. All 43 verifier tests pass.
+
+Seventeen selected subcases remain unverified. The acceptance command returns
+exit 1 and grants no primary credit. Cold offline startup still needs denied-egress
+evidence. Portable component results do not qualify native behavior.
