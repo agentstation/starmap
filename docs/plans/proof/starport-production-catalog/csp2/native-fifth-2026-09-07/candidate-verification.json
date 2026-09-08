@@ -1,0 +1,85 @@
+{
+  "code_commit": "f216e7c01e874bdfb4fa57e6b5c1129f79a985fd",
+  "repository_roster": "PASS",
+  "unique_stages": 39,
+  "ordinary_package_passes": 79,
+  "race_package_passes": 79,
+  "initial_command": {
+    "command": "GOTOOLCHAIN=go1.26.6 make verify",
+    "exit_code": 2,
+    "completed_stages": 32,
+    "failed_stage": "make technical-writing-check",
+    "finding": "One passive-voice comment in stage_write_windows.go. The comment now identifies assembly as the actor."
+  },
+  "resumed_command": {
+    "command": "GOTOOLCHAIN=go1.26.6 bash /tmp/starmap-sixth-finish-verification.sh",
+    "exit_code": 0,
+    "stages": 7,
+    "scope": "Unchanged verification-script setup and suffix, starting at the corrected prose check. Includes diff, build, and four CLI checks. No passed Go checks were skipped in the combined roster."
+  },
+  "windows_floor_compile": [
+    "amd64",
+    "arm64"
+  ],
+  "go_floor": "1.25.12",
+  "windows_lint_exit_code": 0,
+  "windows_ago_exit_code": 0,
+  "initial_tool_selection": "The host selected Go 1.27. Its two initial verification runs were stopped. Windows-source Ago returned exit 2 because the host-built analyzer used Go 1.26. Corrected commands explicitly select Go 1.26.6.",
+  "review": "in progress",
+  "native_qualification": "UNVERIFIED",
+  "primary_acceptance_credit": false,
+  "logs": {
+    "candidate-verify-prefix.log": {
+      "path": "candidate-verify-prefix.log.gz",
+      "sha256": "eb494f912929ed70aeeb80f1c9845a77e420413be97acefa49ec14dfebfcce81",
+      "uncompressed_sha256": "c5025abdeecc4c5fce2a83ad3c77f94401eae238b6a2b2c15dfadbe667b610cb"
+    },
+    "candidate-verify-finish.log": {
+      "path": "candidate-verify-finish.log.gz",
+      "sha256": "167d4197bb302ea3408a36d974a6428e8930f14301537f42d82f281904e544e4",
+      "uncompressed_sha256": "1b8f5be275ff6d66cebb8e8e5f9009de74137bad23e390510509c07aa052e78c"
+    },
+    "candidate-verify-finish.sh": {
+      "path": "candidate-verify-finish.sh.gz",
+      "sha256": "60864a49b0aaa4e7a7978a9c06b8f5d5ef17cd162f655b6cde7c09e2cd02a590",
+      "uncompressed_sha256": "8f2b3b0cf39cb0737bace1ee652e966675ddb299ca8d3cfef64f399f35a42e28"
+    },
+    "candidate-workspace-race.log": {
+      "path": "candidate-workspace-race.log.gz",
+      "sha256": "3e1d0611f8c95b71d9b5680506713bed7de44a502781288c2e06acb4a0a2a97c",
+      "uncompressed_sha256": "0c1cbb3d4f579304916854180b776d3db6dfd0358bc78dae329844f59a50dfda"
+    },
+    "candidate-windows-lint.log": {
+      "path": "candidate-windows-lint.log.gz",
+      "sha256": "bafcb04d67f6157ff3d4a1fdf228afd2df6cc6d786c61642c1125b1fe879e728",
+      "uncompressed_sha256": "e92606b0bf483111dff0a120c315ea165821348f31365020e2468a0059095c47"
+    },
+    "candidate-windows-ago.json": {
+      "path": "candidate-windows-ago.json.gz",
+      "sha256": "905b50ebb66dc28cecf0d5d7681aabcd8b20af21ce5f8834692f1c6c68590281",
+      "uncompressed_sha256": "b8fb7afa66aa7a93914ac258475dd0191be821803a8aea4439f5ba05022f5fa5"
+    },
+    "initial-windows-ago.json": {
+      "path": "initial-windows-ago.json.gz",
+      "sha256": "7d70329ae3397ca14905e08eb2c3efd538ea83c6a8c0a95c7d69ee48bb17ea0e",
+      "uncompressed_sha256": "57accc9a4c4c3f1bbdf934ada64098f40dca8ffac4c3fe2291cc12a088139970"
+    },
+    "initial-unpinned-verify.log": {
+      "path": "initial-unpinned-verify.log.gz",
+      "sha256": "a9cad61605532df7db7cfedfc89a0417073d53a04c7ba5a4e8705361c8e6f351",
+      "uncompressed_sha256": "b0b3ad4f460abda3a7b8768a3c2fc02bf896ca2cb31212f98a41308559023fbb"
+    }
+  },
+  "source_sha256": {
+    "internal/catalog/workspace/stage_write_other.go": "cbc2ebd34f3e5993b319cb54d288d950fbad970b38c137620c6aa42377d997a7",
+    "internal/catalog/workspace/stage_write_windows.go": "8eb5e0ece70a000aa6e4e8758702ffd6e8666b58135419780f2cddd2b65327c1",
+    "internal/catalog/workspace/stage_write_windows_test.go": "7af167499c7658960ad4b60625fa9f61ac409731aab3e57b1abb46b5764daf21",
+    "internal/catalog/workspace/stage_access.go": "b4fb9c1458b32011f149fc4cb0380839aad8eb95360969a5d40af32c697f0512",
+    "internal/catalog/workspace/access_copy_windows.go": "22a7d340563d8bf264d11ebaa6c3ff9610207543c686345495a023992a32c401",
+    "internal/catalog/workspace/access_preservation_windows_test.go": "fdc5d4c3eadc0ba1cabab0ea9e45372cb7c7569cb8fb999143ead689e17e8bd4"
+  },
+  "binary_sha256": {
+    "amd64": "215656d0b2b8bd1c999daac57de1e9202daa8dc29b18cf38f03d5358a08f8dd6",
+    "arm64": "05da7888cd19ed3a4794c2dda7f6bbe4667212ba118fe0e21f11ab3b1ce6596c"
+  }
+}

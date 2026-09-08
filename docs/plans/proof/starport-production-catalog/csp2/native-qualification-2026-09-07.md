@@ -392,3 +392,30 @@ defines the non-inheritance flag. The new native regression checks denied creati
 before the grant, permitted creation during assembly, child inheritance, exact
 restoration, and denied creation after restoration. Local checks are in progress.
 Native qualification remains unverified.
+
+## Offline server prototype
+
+[The prototype record](cold-server-prototype-2026-09-07/verification.json)
+retains two fresh Linux ARM64 containers using one private volume. Both run the
+current Starmap CLI as UID 65532 with no keys and no external network. Readiness,
+the catalog manifest, and its payload return HTTP 200. The saved baseline has
+matching manifest content, payload length, and digest. Both baseline files use
+mode `0600`.
+
+The restart retains the generation, digest, and instance identity. Both server
+processes exit normally. The command removes both containers, their image, and
+the volume. The registry still leaves `A01.starmap_cold_offline` unverified until
+the reusable verifier and its failure paths receive review.
+
+## Staging repair verification
+
+Foundation `f216e7c0` completes all 39 repository stages across two segments.
+Ordinary and race suites each pass 79 packages. The full command stopped at
+one comment wording finding after 32 completed stages. The corrected prose
+check and six remaining stages pass. [The candidate record](native-fifth-2026-09-07/candidate-verification.json)
+retains both segments and the exact continuation script.
+
+Both Windows architectures compile with Go `1.25.12`. Windows-targeted lint and
+Ago pass. The repair also keeps the temporary ACL allocation live through native
+descriptor serialization. Full branch review is in progress. Native execution
+remains unverified.
