@@ -1,0 +1,12 @@
+{
+  "date": "2026-09-08",
+  "candidate": "b4e436b18aed9519bd8662a2cf6bfd81bfe6f2e9",
+  "full_verify_session": 74957,
+  "full_verify_exit": 2,
+  "failure": "Gosec G101 classified TokenCostPerMillion, a unit constant, as a potential hardcoded credential. Ordinary tests, race tests, vet, performance, and container smoke passed before lint.",
+  "repair": "Rename unpublished constants to CostUnitPerToken and CostUnitPerMillion. Preserve serialized units. Regenerate API documentation.",
+  "lint_exit": 0,
+  "new_verify_session": 42130,
+  "new_verify_output": "/tmp/starmap-token-cost-presence-2026-09-08/unit-name-publication-verify.txt",
+  "status": "verification in progress"
+}

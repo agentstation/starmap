@@ -1,0 +1,38 @@
+{
+  "date": "2026-09-08",
+  "pr135_merge": "6f299ccea5ace222f0c7647616e4296bb775f713",
+  "merged_pr_count": 15,
+  "completed_tasks": 7,
+  "pr136_head": "8e559680",
+  "pr136_review": {
+    "verdict": "PASS",
+    "profiles": [
+      "gpt-5.6-sol xhigh",
+      "claude-opus-5 high"
+    ],
+    "findings": 0,
+    "prior_finding": "Accepted loss of qualification history. Restored history, retained seven completed tasks, and required merged-source acceptance for CSP2.",
+    "publication_sequencing": "ae672531 was pushed before its review completed. The next correction completed review before push. No implementation merge used the rejected review."
+  },
+  "pr137_head": "c827c64d9048f2bd3b882cf8e88b53e4dbf6f081",
+  "pr137_previous_head_checks": 15,
+  "pr137_merge_attempt": "GitHub refused because head did not include current main. Integrated evidence-only PR135, completed metadata review, pushed, and enabled auto-merge. Current-head CI is required.",
+  "files": {
+    "pr136-plan-rejected-review.txt.gz": {
+      "sha256": "4c3df18ccecc6641e84d85eb7cdc61dea7a20444199198d847bfde2e5dca1fbd",
+      "uncompressed_bytes": 2863
+    },
+    "pr136-plan-corrected-review.txt.gz": {
+      "sha256": "eadf8b57c3e4ddea26cbc5030eacd7762da9a53a0dbc5bb1ff4eeb7fc1c81cc8",
+      "uncompressed_bytes": 723
+    },
+    "pr136-plan-writing.txt.gz": {
+      "sha256": "db7466289653d5181270d914b2d2f28e9056aedc16a85430f7aa49baf2cbeeb9",
+      "uncompressed_bytes": 506
+    },
+    "pr137-main-review.txt.gz": {
+      "sha256": "900d4e82d817468629b7bb5b20c4c43eec23c9302cc11b4eb0f12a9d70b2c3e4",
+      "uncompressed_bytes": 78
+    }
+  }
+}
