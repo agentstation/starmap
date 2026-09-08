@@ -1,0 +1,50 @@
+[
+  {
+    "repository": "starmap",
+    "pr": 128,
+    "disposition": "retain",
+    "next_action": "Retain this Azure update. The diff also changes MSAL and testify and removes the indirect gopkg.in/yaml.v3 requirement. It contains the superseded #127 changes. The tagged azidentity changelog describes dependency updates. Before merge, verify Azure credential resolution, module checksums, and the combined catalog tree.\n\nCurrent attached checks pass. Dependency compatibility review remains incomplete."
+  },
+  {
+    "repository": "starmap",
+    "pr": 129,
+    "disposition": "retain",
+    "next_action": "Retain this AWS configuration update. It also changes credentials, signin, SSO, SSO OIDC, and STS modules. The tagged config changelog describes SDK dependency updates. Before merge, verify credential resolution and the combined AWS module graph.\n\nCurrent attached checks pass. Dependency compatibility review remains incomplete."
+  },
+  {
+    "repository": "starmap",
+    "pr": 130,
+    "disposition": "retain",
+    "next_action": "Retain this S3 update. The upstream change moves credential-source user-agent setup into client stack construction. This PR also prunes the server-storage consumer module requirements. Before merge, verify the consumer build, module tidiness, and catalog store operations with the combined dependency versions.\n\nCurrent attached checks pass. Dependency compatibility review remains incomplete."
+  },
+  {
+    "repository": "starmap",
+    "pr": 131,
+    "disposition": "retain",
+    "next_action": "Retain this Secrets Manager update. The tagged v1.47.0 changelog moves credential-source user-agent setup into client stack construction. The generated comparison link above names unrelated AWS module tags. Use the service/secretsmanager/v1.47.0 changelog for this release. Before merge, verify secret resolution and the combined AWS module graph.\n\nCurrent attached checks pass. Dependency compatibility review remains incomplete."
+  },
+  {
+    "repository": "starport",
+    "pr": 368,
+    "disposition": "retain",
+    "next_action": "Retain this dependency group. It changes nine direct modules, AWS authentication dependencies, and SQLite libc and memory dependencies. Before merge, verify SQLite persistence and migration behavior, MySQL DSN behavior, AWS credential resolution, and public documentation rendering. Repeat integration checks against the catalog branch.\n\nCurrent attached checks pass. Dependency compatibility review remains incomplete."
+  },
+  {
+    "repository": "starmap",
+    "pr": 133,
+    "disposition": "retain",
+    "next_action": "Retain this acquisition implementation. Its published head 637f780a does not contain the current parent 99843ff8 from PR #134. The missing parent changes 23 proof paths. Integrate that parent, validate the resulting tree, and complete the required publication gate before updating this PR. Existing native evidence applies to its recorded source only."
+  },
+  {
+    "repository": "starmap",
+    "pr": 135,
+    "disposition": "retain",
+    "next_action": "Retain this evidence parent for PR #136.\n\nFirst update PR #133 from parent PR #134 at 99843ff8. Then propagate that parent through this PR and validate the combined evidence. Preserve failed captures and their source bindings. This PR has no attached checks."
+  },
+  {
+    "repository": "starmap",
+    "pr": 136,
+    "disposition": "retain",
+    "next_action": "Retain this implementation PR. PR #134 now contains its current foundation parent at 99843ff8. Propagate that parent through #133 and #135 before the next publication. At this capture, the local branch has 35 unpublished commits through 33728b3f. It also has eleven changed or new CSP3 files.\n\nPublished checks do not cover that work. Finish a coherent repair, retain its evidence, complete required review, and update this existing PR. CSP3 remains incomplete."
+  }
+]

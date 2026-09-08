@@ -1,0 +1,881 @@
+{
+  "captured_at": "2026-09-08T14:12:46.876237+00:00",
+  "repositories": {
+    "starmap": [
+      {
+        "baseRefName": "codex/catalog-qualification-evidence",
+        "body": "Register Starmap path, file-inventory, and migration contracts in the catalog verifier. Application tests prove distinct instance seeds, duplicate-owner refusal, empty-path rejection, and explicit service roots.\n\nNative qualification requires both supported architectures, exact named tests, matching source and test inputs, unchanged capture files, and successful package completion. Linux also requires the privileged configuration check when its unprivileged suite skips that case.\n\nThe allocation repair skips model-diff work when no model observer needs it. An isolated process checks zero allocations for fresh, updated, and restarted baseline reads. A positive control records one allocation.\n\nReviewed source 7e591262 passes all eleven jobs in [run 34193810413](https://github.com/agentstation/starmap/actions/runs/34193810413). All 22 assigned CSP2 subcases pass. Native runtime coverage includes Linux, macOS, and Windows on both architectures. The evidence retains the earlier failed run.\n\nValidation includes all 39 local repository stages, 79 ordinary and 79 race package suites, and 73 verifier tests. The final allocation suite passes twelve race events. Ago and lint pass. Required Sol xhigh and Opus high review passes with zero findings.\n\nThe plan marks CSP2 done and CSP3 in progress. Eight of 38 tasks are terminal. This update changes only proof and plan state after the qualified source. It grants no released-pair qualification. The primary roster remains 50 cases and 324 required subcases.\n\nCurrent disposition (2026-09-08): retain this implementation PR above evidence PR #135. The PR audit preserves fourteen distinct or dependent changes across both repositories. Revalidate the combined tree after lower stack merges. No main merge or release belongs to this update.\n\nMaintenance update (2026-09-08, 12:00 UTC)\n\nPublished head e68f61a6 retains the CSP2 evidence above. The local branch has 27 unpublished commits through c434a3b7, plus the current CSP3 repair. Published checks do not cover those changes. Finish the coherent repair and required review, then update this PR and its existing evidence parent. The next publication must first integrate the missing PR 132 parent into PR 134 and validate the dependent stack. CSP3 remains incomplete.\n",
+        "headRefName": "codex/catalog-qualification",
+        "headRefOid": "e68f61a603b2c017f3f96edd9a0eab25c4d87021",
+        "isDraft": true,
+        "mergeStateStatus": "CLEAN",
+        "mergeable": "MERGEABLE",
+        "number": 136,
+        "reviewDecision": "",
+        "statusCheckRollup": [],
+        "title": "Qualify catalog paths and native recovery evidence",
+        "updatedAt": "2026-09-08T12:02:20Z",
+        "url": "https://github.com/agentstation/starmap/pull/136"
+      },
+      {
+        "baseRefName": "codex/catalog-requirements",
+        "body": "Retain catalog qualification captures, PR dispositions, and integration evidence for #136. This evidence-only PR uses #133 as its parent.\n\nThe diff contains 174 proof files. This update changes 99 files. It preserves failed runs, the repaired native run, the final CSP2 report, and separate CSP3 and Starport candidate results.\n\nReviewed Starmap source 7e591262 passes all eleven jobs in run 34193810413. All 22 selected CSP2 subcases pass. The native artifacts retain both architectures for Linux, macOS, and Windows. The earlier allocation failure remains available.\n\nValidation: the prose check passes across 1,159 files. An explicit credential scan passes for 95 new or changed captures, including decoded compressed sources. Four additional files retain the inventory and scan result. The automatic pre-PR gate passes without model review because this diff contains only evidence.\n\nThe isolated CSP3 repair passes 103 focused race events and eighteen minimum-Go events. Starport passes both full suites with the published Starmap commit. Its stable-version gate still rejects that pseudo-version. These checks do not qualify the released pair.\n\nCurrent disposition (2026-09-08): retain as the evidence parent for #136. The audit closed superseded #127. Fourteen PRs remain across both repositories. Revalidate the combined tree after lower stack merges. This update adds no PR.\n",
+        "headRefName": "codex/catalog-qualification-evidence",
+        "headRefOid": "50557f055bd76fa5ad061253b3d23082634d47e0",
+        "isDraft": true,
+        "mergeStateStatus": "CLEAN",
+        "mergeable": "MERGEABLE",
+        "number": 135,
+        "reviewDecision": "",
+        "statusCheckRollup": [],
+        "title": "Retain catalog qualification evidence",
+        "updatedAt": "2026-09-08T07:21:19Z",
+        "url": "https://github.com/agentstation/starmap/pull/135"
+      },
+      {
+        "baseRefName": "codex/catalog-foundation",
+        "body": "Retain catalog verification captures in a separate evidence draft so the follow-up code PR has a complete text review bundle.\n\nThe branch contains 197 proof artifacts, including captures from follow-up commit 303dd9af and its final repository checks. It preserves successful checks, failed attempts, native logs, source hashes, and qualification limits. All 121 compressed files decompress successfully. The decompressed captures pass secret scanning, and both changed Markdown files pass prose checks.\n\nThis branch changes no executable source or active acceptance map. The automatic pre-PR gate reports no substantive code changes. The follow-up code remains under its required Sol and Opus review.\n\nBase: foundation PR #132. The follow-up PR #133 will use this branch as its actual base. The complete diff outside captured proof remains identical, byte for byte, after local integration. No release or production acceptance claim accompanies these captures.\n\n\n<!-- catalog-pr-audit -->\nCurrent disposition (2026-09-08)\n\nRetain these 197 proof files. PR 133 depends on this evidence. #133 now uses this branch as its actual base and its required review passes. Revalidate ancestry after lower stack merges.\n\nParent update (2026-09-08)\n\nHead 99843ff8 now includes the current PR 132 head, 205dd041. The merge changes 23 proof paths and no implementation paths. The prose check passes across 1,072 files. The automatic pre-PR gate reports no substantive code changes. Remote readback confirms the published head.\n\nPRs 133, 135, and 136 still need this parent before their next publication. Validate each combined tree and preserve the existing source-evidence boundaries. This update adds no default-branch merge, release, or production acceptance.\n",
+        "headRefName": "codex/catalog-followup-evidence",
+        "headRefOid": "99843ff85d01b8fb1f96e26b3ccd1a7044c26a6b",
+        "isDraft": true,
+        "mergeStateStatus": "CLEAN",
+        "mergeable": "MERGEABLE",
+        "number": 134,
+        "reviewDecision": "",
+        "statusCheckRollup": [],
+        "title": "Retain follow-up catalog verification evidence",
+        "updatedAt": "2026-09-08T13:05:55Z",
+        "url": "https://github.com/agentstation/starmap/pull/134"
+      },
+      {
+        "baseRefName": "codex/catalog-followup-evidence",
+        "body": "Connect declared acquisition bindings through the CLI, server, and retained runtime layers. Fresh updates discard selected local acquisition results while preserving the embedded or upstream baseline and unrelated scopes.\n\nProvider observations retain receipts, account scope, revision, and completeness through canonical reconciliation and restart. Pricing remains a complete validated record, and linked model membership survives absent optional pricing or limits. An immutable identity index removes full-provider copies from offering lookup.\n\nExplicitly selected service-managed primary configuration permits checked administrator ownership. Catalog state and dotenv files remain private. Native Windows repairs grant temporary write access during workspace assembly and restore the original descriptors before publication.\n\nThe verification tools exercise passive constructors under enforced socket restrictions. A separate check starts two real offline server processes and verifies the saved baseline through HTTP and restart. GitHub Actions retains both reports in separate Linux jobs.\n\nThe requirements now distinguish permitted discovery, structural support, and caller readiness. The independent audit records current Starport cache, facet, and dependency gaps for their existing plan owners. Account-specific withdrawals still require explicit inference-profile links. Complete scoped deletion, Starport dependency adoption, remaining UI behavior, and released-pair acceptance remain open.\n\nValidation: all 39 repository stages pass with Go 1.26.6. Ordinary and race suites each pass 79 packages, and all 62 verifier tests pass. The required Sol and Opus review passed all five portions with zero P0 findings.\n\nFoundation CI passed all nine jobs. The follow-up CI run passed all 11 jobs. Each Windows architecture passed 1,223 test events. Each macOS architecture passed 1,278 events.\n\nEach Linux architecture passed 1,222 events. Its unprivileged suite skipped the administrator-owned configuration read, which passed in a separate privileged invocation.\n\nThis draft uses evidence PR #134 as its actual base, following foundation PR #132. The complete code diff remains intact. CSP2 has seven passing component subcases and fifteen unverified subcases. This draft does not qualify the released product pair.\n\n\n<!-- catalog-pr-audit -->\nCurrent disposition (2026-09-08)\n\nRetain as the acquisition and reset implementation parent for #135. Run 34186118026 passed all 11 jobs at 637f780a. This PR depends on #134. Revalidate the combined tree after lower stack merges.\n",
+        "headRefName": "codex/catalog-requirements",
+        "headRefOid": "637f780a067466896f6b9ed03dc034cd764861a9",
+        "isDraft": true,
+        "mergeStateStatus": "UNKNOWN",
+        "mergeable": "UNKNOWN",
+        "number": 133,
+        "reviewDecision": "",
+        "statusCheckRollup": [],
+        "title": "catalog: connect scoped acquisition and preserve baselines on reset",
+        "updatedAt": "2026-09-08T05:17:56Z",
+        "url": "https://github.com/agentstation/starmap/pull/133"
+      },
+      {
+        "baseRefName": "codex/catalog-plan",
+        "body": "Application startup persists the embedded catalog and reports canonical configuration and file paths on Linux, macOS, and Windows. Shared catalog settings separate private runtime state from the optional editable workspace.\n\nThe change adds checked file access, durable runtime ownership, migration journals, and scoped observation contracts. Library construction remains passive. Explicitly selected storage can read local or remote data. Automatic acquisition remains a separate action.\n\nWindows migration retains the existing catalog commit lock through an external hard link. Access copying preserves complete descriptors, including automatic inheritance and protection flags. Workspace assembly temporarily grants the process user directory write access inside private staging. The grant does not inherit to children. Assembly restores the original descriptor before final verification and publication.\n\nPattern scan parents have no managed-file access policy. Matching files and managed tree roots retain their checks. Baseline publication closes staged writers and records final timestamps before promotion.\n\nThe follow-up adds connected acquisition, baseline-preserving resets, indexed offering lookup, and explicitly selected service-managed primary configuration. Scoped deletion enforcement and final production qualification remain open.\n\nAll 39 repository verification stages pass across two segments with Go 1.26.6. The initial run passed 32 stages before a prose failure. Ordinary and race tests each passed 79 package suites. After the comment correction, the seven remaining stages passed. Workspace race tests, Windows-targeted lint, Ago analysis, and both Windows architecture builds with Go 1.25.12 pass.\n\nThe required Sol and Opus cross-lab review passed all eight portions with no findings on the complete substantive diff.\n\nAll six native runtime jobs pass on this commit. Each Windows architecture records 1,057 passing test events. Each Linux architecture records 1,061, and each macOS architecture records 1,111. No test events fail or skip. The aggregate Verification Gate, security checks, and action provenance checks also pass. Follow-up and released-pair qualification remain open.\n\n<!-- catalog-pr-audit -->\nCurrent disposition (2026-09-08)\n\nRetain this foundation for PR 134. Commit 205dd041 integrates the current parent b58a9df6. Only captured proof and labels changed. The complete implementation diff has the same bytes as the diff for f216e7c0. Prose checks pass across 1,081 files. The required Sol and Opus publication gate reused its exact-diff attestation and passed a new credential scan. Native results still identify f216e7c0, whose source, tests, and workflow bytes remain unchanged.\n",
+        "headRefName": "codex/catalog-foundation",
+        "headRefOid": "205dd041fb2d0267a2643c0d6af8d9f45e34842d",
+        "isDraft": true,
+        "mergeStateStatus": "CLEAN",
+        "mergeable": "MERGEABLE",
+        "number": 132,
+        "reviewDecision": "",
+        "statusCheckRollup": [],
+        "title": "catalog: persist baseline state and add canonical runtime contracts",
+        "updatedAt": "2026-09-08T05:28:54Z",
+        "url": "https://github.com/agentstation/starmap/pull/132"
+      },
+      {
+        "baseRefName": "main",
+        "body": "Bumps [github.com/aws/aws-sdk-go-v2/service/secretsmanager](https://github.com/aws/aws-sdk-go-v2) in `/` from 1.46.1 to 1.47.0.\n\nUpdates `github.com/aws/aws-sdk-go-v2/service/secretsmanager` from 1.46.1 to 1.47.0\n<details>\n<summary>Commits</summary>\n<ul>\n<li><a href=\"https://github.com/aws/aws-sdk-go-v2/commit/a88ff68b5524ce9e4f816c8c313267e6d321ce8c\"><code>a88ff68</code></a> Release 2023-11-29</li>\n<li><a href=\"https://github.com/aws/aws-sdk-go-v2/commit/023df359dd66f7b3970ddf2874c69d4b78b99126\"><code>023df35</code></a> Regenerated Clients</li>\n<li><a href=\"https://github.com/aws/aws-sdk-go-v2/commit/41f99ac19a3c3fc2e7e177b8f2632d319bb590e4\"><code>41f99ac</code></a> Update SDK's smithy-go dependency to v1.18.0</li>\n<li><a href=\"https://github.com/aws/aws-sdk-go-v2/commit/72478fb87eae54a9d5ea84b336daad6795aebe01\"><code>72478fb</code></a> Update API model</li>\n<li><a href=\"https://github.com/aws/aws-sdk-go-v2/commit/4c4b852716f661378136f0e4d7e966d180057e26\"><code>4c4b852</code></a> feat: add Options() getter to service clients (<a href=\"https://redirect.github.com/aws/aws-sdk-go-v2/issues/2398\">#2398</a>)</li>\n<li><a href=\"https://github.com/aws/aws-sdk-go-v2/commit/6b86039a2b6015432b243b342b532f2db7a9c709\"><code>6b86039</code></a> Update golang.org/x/net dependency (<a href=\"https://redirect.github.com/aws/aws-sdk-go-v2/issues/2391\">#2391</a>)</li>\n<li><a href=\"https://github.com/aws/aws-sdk-go-v2/commit/0a955dd146a98d4b218893390a5c72512e0477c7\"><code>0a955dd</code></a> Release 2023-11-28.3</li>\n<li><a href=\"https://github.com/aws/aws-sdk-go-v2/commit/94a398007cfac2c60a62c203faa363a4ecaa4abf\"><code>94a3980</code></a> fix: correct wiring of disable s3express auth toggle (<a href=\"https://redirect.github.com/aws/aws-sdk-go-v2/issues/2394\">#2394</a>)</li>\n<li><a href=\"https://github.com/aws/aws-sdk-go-v2/commit/4aeeb0d7a4293f0b31c2e0be83e65da6f7fd4ae2\"><code>4aeeb0d</code></a> Release 2023-11-28.2</li>\n<li><a href=\"https://github.com/aws/aws-sdk-go-v2/commit/e09e153704d4da6ae2bb0ae3875058950d31206b\"><code>e09e153</code></a> Regenerated Clients</li>\n<li>Additional commits viewable in <a href=\"https://github.com/aws/aws-sdk-go-v2/compare/service/ivs/v1.46.1...service/s3/v1.47.0\">compare view</a></li>\n</ul>\n</details>\n<br />\n\n\n[![Dependabot compatibility score](https://dependabot-badges.githubapp.com/badges/compatibility_score?dependency-name=github.com/aws/aws-sdk-go-v2/service/secretsmanager&package-manager=go_modules&previous-version=1.46.1&new-version=1.47.0)](https://docs.github.com/en/github/managing-security-vulnerabilities/about-dependabot-security-updates#about-compatibility-scores)\n\nDependabot will resolve any conflicts with this PR as long as you don't alter it yourself. You can also trigger a rebase manually by commenting `@dependabot rebase`.\n\n[//]: # (dependabot-automerge-start)\n[//]: # (dependabot-automerge-end)\n\n---\n\n<details>\n<summary>Dependabot commands and options</summary>\n<br />\n\nYou can trigger Dependabot actions by commenting on this PR:\n- `@dependabot rebase` will rebase this PR\n- `@dependabot recreate` will recreate this PR, overwriting any edits that have been made to it\n- `@dependabot show <dependency name> ignore conditions` will show all of the ignore conditions of the specified dependency\n- `@dependabot ignore <dependency name> major version` will close this group update PR and stop Dependabot creating any more for the specific dependency's major version (unless you unignore this specific dependency's major version or upgrade to it yourself)\n- `@dependabot ignore <dependency name> minor version` will close this group update PR and stop Dependabot creating any more for the specific dependency's minor version (unless you unignore this specific dependency's minor version or upgrade to it yourself)\n- `@dependabot ignore <dependency name>` will close this group update PR and stop Dependabot creating any more for the specific dependency (unless you unignore this specific dependency or upgrade to it yourself)\n- `@dependabot unignore <dependency name>` will remove all of the ignore conditions of the specified dependency\n- `@dependabot unignore <dependency name> <ignore condition>` will remove the ignore condition of the specified dependency and ignore conditions\n\n\n</details>\n\n<!-- catalog-pr-audit -->\nCurrent disposition (2026-09-08)\n\nRetain as the Secrets Manager dependency update. Current required checks pass. Complete dependency review and validate integration before merge.\n",
+        "headRefName": "dependabot/go_modules/go_modules-522bae20e5",
+        "headRefOid": "0d6435d5b483e48c80b79d67be14430773caab19",
+        "isDraft": false,
+        "mergeStateStatus": "CLEAN",
+        "mergeable": "MERGEABLE",
+        "number": 131,
+        "reviewDecision": "",
+        "statusCheckRollup": [
+          {
+            "__typename": "CheckRun",
+            "completedAt": "2026-09-07T15:07:32Z",
+            "conclusion": "SUCCESS",
+            "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/34134317443/job/101781571585",
+            "name": "Verification Gate",
+            "startedAt": "2026-09-07T14:41:22Z",
+            "status": "COMPLETED",
+            "workflowName": "Pull Request"
+          },
+          {
+            "__typename": "CheckRun",
+            "completedAt": "2026-09-07T14:43:31Z",
+            "conclusion": "SUCCESS",
+            "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/34134317443/job/101781571225",
+            "name": "Security & Reliability",
+            "startedAt": "2026-09-07T14:41:21Z",
+            "status": "COMPLETED",
+            "workflowName": "Pull Request"
+          },
+          {
+            "__typename": "CheckRun",
+            "completedAt": "2026-09-07T14:41:31Z",
+            "conclusion": "SUCCESS",
+            "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/34134317443/job/101781571488",
+            "name": "Action Pin Provenance",
+            "startedAt": "2026-09-07T14:41:23Z",
+            "status": "COMPLETED",
+            "workflowName": "Pull Request"
+          },
+          {
+            "__typename": "CheckRun",
+            "completedAt": "2026-09-07T14:41:17Z",
+            "conclusion": "NEUTRAL",
+            "detailsUrl": "https://github.com/agentstation/starmap/runs/101781554330",
+            "name": "CodeQL",
+            "startedAt": "2026-09-07T14:41:16Z",
+            "status": "COMPLETED",
+            "workflowName": ""
+          }
+        ],
+        "title": "build(deps): bump github.com/aws/aws-sdk-go-v2/service/secretsmanager in /",
+        "updatedAt": "2026-09-08T05:17:59Z",
+        "url": "https://github.com/agentstation/starmap/pull/131"
+      },
+      {
+        "baseRefName": "main",
+        "body": "Bumps [github.com/aws/aws-sdk-go-v2/service/s3](https://github.com/aws/aws-sdk-go-v2) in `/` from 1.109.1 to 1.110.0.\n\nUpdates `github.com/aws/aws-sdk-go-v2/service/s3` from 1.109.1 to 1.110.0\n<details>\n<summary>Commits</summary>\n<ul>\n<li><a href=\"https://github.com/aws/aws-sdk-go-v2/commit/5a5ee7a736838df1cb7c39f2b3f5d78bed226463\"><code>5a5ee7a</code></a> Release 2026-08-31.2</li>\n<li><a href=\"https://github.com/aws/aws-sdk-go-v2/commit/bb728165a2693e50d6b2f3daf87c297431fd0ba6\"><code>bb72816</code></a> Regenerated Clients</li>\n<li><a href=\"https://github.com/aws/aws-sdk-go-v2/commit/41672340b694210f8668b498d45dae3c1c10e293\"><code>4167234</code></a> Update API model</li>\n<li><a href=\"https://github.com/aws/aws-sdk-go-v2/commit/85ddf74cf51912ae62d47e5cd286b93a9411e481\"><code>85ddf74</code></a> Remove credential source middleware (<a href=\"https://redirect.github.com/aws/aws-sdk-go-v2/issues/3539\">#3539</a>)</li>\n<li><a href=\"https://github.com/aws/aws-sdk-go-v2/commit/258c696b788c342a4ea451e2ae994a4e124ee256\"><code>258c696</code></a> Release 2026-08-31</li>\n<li><a href=\"https://github.com/aws/aws-sdk-go-v2/commit/029ffebfef8fbd53fb7fd96ed237006990204c56\"><code>029ffeb</code></a> Regenerated Clients</li>\n<li><a href=\"https://github.com/aws/aws-sdk-go-v2/commit/c884b0f00dacb633e805ee615393d847ab309ce4\"><code>c884b0f</code></a> Update API model</li>\n<li><a href=\"https://github.com/aws/aws-sdk-go-v2/commit/71ac84b03a64cf14673a40e5d040f5951a0914cf\"><code>71ac84b</code></a> schema-serde: json wave 3 (<a href=\"https://redirect.github.com/aws/aws-sdk-go-v2/issues/3538\">#3538</a>)</li>\n<li><a href=\"https://github.com/aws/aws-sdk-go-v2/commit/b63d8be8c659dabab8165fd12a18c22338fd75cc\"><code>b63d8be</code></a> Release 2026-08-28.2</li>\n<li><a href=\"https://github.com/aws/aws-sdk-go-v2/commit/43288f751afc3a9f8e55093c023a4dfffcc454d7\"><code>43288f7</code></a> Regenerated Clients</li>\n<li>Additional commits viewable in <a href=\"https://github.com/aws/aws-sdk-go-v2/compare/service/s3/v1.109.1...service/s3/v1.110.0\">compare view</a></li>\n</ul>\n</details>\n<br />\n\nUpdates `github.com/aws/aws-sdk-go-v2/service/s3` from 1.109.1 to 1.110.0\n<details>\n<summary>Commits</summary>\n<ul>\n<li><a href=\"https://github.com/aws/aws-sdk-go-v2/commit/5a5ee7a736838df1cb7c39f2b3f5d78bed226463\"><code>5a5ee7a</code></a> Release 2026-08-31.2</li>\n<li><a href=\"https://github.com/aws/aws-sdk-go-v2/commit/bb728165a2693e50d6b2f3daf87c297431fd0ba6\"><code>bb72816</code></a> Regenerated Clients</li>\n<li><a href=\"https://github.com/aws/aws-sdk-go-v2/commit/41672340b694210f8668b498d45dae3c1c10e293\"><code>4167234</code></a> Update API model</li>\n<li><a href=\"https://github.com/aws/aws-sdk-go-v2/commit/85ddf74cf51912ae62d47e5cd286b93a9411e481\"><code>85ddf74</code></a> Remove credential source middleware (<a href=\"https://redirect.github.com/aws/aws-sdk-go-v2/issues/3539\">#3539</a>)</li>\n<li><a href=\"https://github.com/aws/aws-sdk-go-v2/commit/258c696b788c342a4ea451e2ae994a4e124ee256\"><code>258c696</code></a> Release 2026-08-31</li>\n<li><a href=\"https://github.com/aws/aws-sdk-go-v2/commit/029ffebfef8fbd53fb7fd96ed237006990204c56\"><code>029ffeb</code></a> Regenerated Clients</li>\n<li><a href=\"https://github.com/aws/aws-sdk-go-v2/commit/c884b0f00dacb633e805ee615393d847ab309ce4\"><code>c884b0f</code></a> Update API model</li>\n<li><a href=\"https://github.com/aws/aws-sdk-go-v2/commit/71ac84b03a64cf14673a40e5d040f5951a0914cf\"><code>71ac84b</code></a> schema-serde: json wave 3 (<a href=\"https://redirect.github.com/aws/aws-sdk-go-v2/issues/3538\">#3538</a>)</li>\n<li><a href=\"https://github.com/aws/aws-sdk-go-v2/commit/b63d8be8c659dabab8165fd12a18c22338fd75cc\"><code>b63d8be</code></a> Release 2026-08-28.2</li>\n<li><a href=\"https://github.com/aws/aws-sdk-go-v2/commit/43288f751afc3a9f8e55093c023a4dfffcc454d7\"><code>43288f7</code></a> Regenerated Clients</li>\n<li>Additional commits viewable in <a href=\"https://github.com/aws/aws-sdk-go-v2/compare/service/s3/v1.109.1...service/s3/v1.110.0\">compare view</a></li>\n</ul>\n</details>\n<br />\n\n\nDependabot will resolve any conflicts with this PR as long as you don't alter it yourself. You can also trigger a rebase manually by commenting `@dependabot rebase`.\n\n[//]: # (dependabot-automerge-start)\n[//]: # (dependabot-automerge-end)\n\n---\n\n<details>\n<summary>Dependabot commands and options</summary>\n<br />\n\nYou can trigger Dependabot actions by commenting on this PR:\n- `@dependabot rebase` will rebase this PR\n- `@dependabot recreate` will recreate this PR, overwriting any edits that have been made to it\n- `@dependabot show <dependency name> ignore conditions` will show all of the ignore conditions of the specified dependency\n- `@dependabot ignore <dependency name> major version` will close this group update PR and stop Dependabot creating any more for the specific dependency's major version (unless you unignore this specific dependency's major version or upgrade to it yourself)\n- `@dependabot ignore <dependency name> minor version` will close this group update PR and stop Dependabot creating any more for the specific dependency's minor version (unless you unignore this specific dependency's minor version or upgrade to it yourself)\n- `@dependabot ignore <dependency name>` will close this group update PR and stop Dependabot creating any more for the specific dependency (unless you unignore this specific dependency or upgrade to it yourself)\n- `@dependabot unignore <dependency name>` will remove all of the ignore conditions of the specified dependency\n- `@dependabot unignore <dependency name> <ignore condition>` will remove the ignore condition of the specified dependency and ignore conditions\n\n\n</details>\n\n<!-- catalog-pr-audit -->\nCurrent disposition (2026-09-08)\n\nRetain as the S3 dependency update. This PR also updates the server-storage consumer fixture module and checksum file. Current required checks pass. Preserve those fixture changes during integration and complete dependency review before merge.\n",
+        "headRefName": "dependabot/go_modules/go_modules-99e672d88e",
+        "headRefOid": "9b11e1c455d9f59ba342f30e64f1cd05d3b7a033",
+        "isDraft": false,
+        "mergeStateStatus": "CLEAN",
+        "mergeable": "MERGEABLE",
+        "number": 130,
+        "reviewDecision": "",
+        "statusCheckRollup": [
+          {
+            "__typename": "CheckRun",
+            "completedAt": "2026-09-07T15:02:37Z",
+            "conclusion": "SUCCESS",
+            "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/34134210966/job/101781228062",
+            "name": "Verification Gate",
+            "startedAt": "2026-09-07T14:40:12Z",
+            "status": "COMPLETED",
+            "workflowName": "Pull Request"
+          },
+          {
+            "__typename": "CheckRun",
+            "completedAt": "2026-09-07T14:42:43Z",
+            "conclusion": "SUCCESS",
+            "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/34134210966/job/101781228020",
+            "name": "Security & Reliability",
+            "startedAt": "2026-09-07T14:40:12Z",
+            "status": "COMPLETED",
+            "workflowName": "Pull Request"
+          },
+          {
+            "__typename": "CheckRun",
+            "completedAt": "2026-09-07T14:40:17Z",
+            "conclusion": "SUCCESS",
+            "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/34134210966/job/101781227703",
+            "name": "Action Pin Provenance",
+            "startedAt": "2026-09-07T14:40:12Z",
+            "status": "COMPLETED",
+            "workflowName": "Pull Request"
+          },
+          {
+            "__typename": "CheckRun",
+            "completedAt": "2026-09-07T14:40:08Z",
+            "conclusion": "NEUTRAL",
+            "detailsUrl": "https://github.com/agentstation/starmap/runs/101781215082",
+            "name": "CodeQL",
+            "startedAt": "2026-09-07T14:40:07Z",
+            "status": "COMPLETED",
+            "workflowName": ""
+          }
+        ],
+        "title": "build(deps): bump github.com/aws/aws-sdk-go-v2/service/s3 in /",
+        "updatedAt": "2026-09-08T05:18:02Z",
+        "url": "https://github.com/agentstation/starmap/pull/130"
+      },
+      {
+        "baseRefName": "main",
+        "body": "Bumps [github.com/aws/aws-sdk-go-v2/config](https://github.com/aws/aws-sdk-go-v2) in `/` from 1.33.1 to 1.33.2.\n\nUpdates `github.com/aws/aws-sdk-go-v2/config` from 1.33.1 to 1.33.2\n<details>\n<summary>Commits</summary>\n<ul>\n<li><a href=\"https://github.com/aws/aws-sdk-go-v2/commit/5a5ee7a736838df1cb7c39f2b3f5d78bed226463\"><code>5a5ee7a</code></a> Release 2026-08-31.2</li>\n<li><a href=\"https://github.com/aws/aws-sdk-go-v2/commit/bb728165a2693e50d6b2f3daf87c297431fd0ba6\"><code>bb72816</code></a> Regenerated Clients</li>\n<li><a href=\"https://github.com/aws/aws-sdk-go-v2/commit/41672340b694210f8668b498d45dae3c1c10e293\"><code>4167234</code></a> Update API model</li>\n<li><a href=\"https://github.com/aws/aws-sdk-go-v2/commit/85ddf74cf51912ae62d47e5cd286b93a9411e481\"><code>85ddf74</code></a> Remove credential source middleware (<a href=\"https://redirect.github.com/aws/aws-sdk-go-v2/issues/3539\">#3539</a>)</li>\n<li><a href=\"https://github.com/aws/aws-sdk-go-v2/commit/258c696b788c342a4ea451e2ae994a4e124ee256\"><code>258c696</code></a> Release 2026-08-31</li>\n<li><a href=\"https://github.com/aws/aws-sdk-go-v2/commit/029ffebfef8fbd53fb7fd96ed237006990204c56\"><code>029ffeb</code></a> Regenerated Clients</li>\n<li><a href=\"https://github.com/aws/aws-sdk-go-v2/commit/c884b0f00dacb633e805ee615393d847ab309ce4\"><code>c884b0f</code></a> Update API model</li>\n<li><a href=\"https://github.com/aws/aws-sdk-go-v2/commit/71ac84b03a64cf14673a40e5d040f5951a0914cf\"><code>71ac84b</code></a> schema-serde: json wave 3 (<a href=\"https://redirect.github.com/aws/aws-sdk-go-v2/issues/3538\">#3538</a>)</li>\n<li><a href=\"https://github.com/aws/aws-sdk-go-v2/commit/b63d8be8c659dabab8165fd12a18c22338fd75cc\"><code>b63d8be</code></a> Release 2026-08-28.2</li>\n<li><a href=\"https://github.com/aws/aws-sdk-go-v2/commit/43288f751afc3a9f8e55093c023a4dfffcc454d7\"><code>43288f7</code></a> Regenerated Clients</li>\n<li>Additional commits viewable in <a href=\"https://github.com/aws/aws-sdk-go-v2/compare/config/v1.33.1...config/v1.33.2\">compare view</a></li>\n</ul>\n</details>\n<br />\n\n\n[![Dependabot compatibility score](https://dependabot-badges.githubapp.com/badges/compatibility_score?dependency-name=github.com/aws/aws-sdk-go-v2/config&package-manager=go_modules&previous-version=1.33.1&new-version=1.33.2)](https://docs.github.com/en/github/managing-security-vulnerabilities/about-dependabot-security-updates#about-compatibility-scores)\n\nDependabot will resolve any conflicts with this PR as long as you don't alter it yourself. You can also trigger a rebase manually by commenting `@dependabot rebase`.\n\n[//]: # (dependabot-automerge-start)\n[//]: # (dependabot-automerge-end)\n\n---\n\n<details>\n<summary>Dependabot commands and options</summary>\n<br />\n\nYou can trigger Dependabot actions by commenting on this PR:\n- `@dependabot rebase` will rebase this PR\n- `@dependabot recreate` will recreate this PR, overwriting any edits that have been made to it\n- `@dependabot show <dependency name> ignore conditions` will show all of the ignore conditions of the specified dependency\n- `@dependabot ignore <dependency name> major version` will close this group update PR and stop Dependabot creating any more for the specific dependency's major version (unless you unignore this specific dependency's major version or upgrade to it yourself)\n- `@dependabot ignore <dependency name> minor version` will close this group update PR and stop Dependabot creating any more for the specific dependency's minor version (unless you unignore this specific dependency's minor version or upgrade to it yourself)\n- `@dependabot ignore <dependency name>` will close this group update PR and stop Dependabot creating any more for the specific dependency (unless you unignore this specific dependency or upgrade to it yourself)\n- `@dependabot unignore <dependency name>` will remove all of the ignore conditions of the specified dependency\n- `@dependabot unignore <dependency name> <ignore condition>` will remove the ignore condition of the specified dependency and ignore conditions\n\n\n</details>\n\n<!-- catalog-pr-audit -->\nCurrent disposition (2026-09-08)\n\nRetain as the AWS configuration dependency update. Current required checks pass. Complete dependency review and validate integration before merge.\n",
+        "headRefName": "dependabot/go_modules/go_modules-e480e64884",
+        "headRefOid": "ffeb595220e9de24f4ef78660d2658a2c6b6859a",
+        "isDraft": false,
+        "mergeStateStatus": "CLEAN",
+        "mergeable": "MERGEABLE",
+        "number": 129,
+        "reviewDecision": "",
+        "statusCheckRollup": [
+          {
+            "__typename": "CheckRun",
+            "completedAt": "2026-09-07T15:05:38Z",
+            "conclusion": "SUCCESS",
+            "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/34134014821/job/101780602476",
+            "name": "Verification Gate",
+            "startedAt": "2026-09-07T14:38:03Z",
+            "status": "COMPLETED",
+            "workflowName": "Pull Request"
+          },
+          {
+            "__typename": "CheckRun",
+            "completedAt": "2026-09-07T14:40:29Z",
+            "conclusion": "SUCCESS",
+            "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/34134014821/job/101780602251",
+            "name": "Security & Reliability",
+            "startedAt": "2026-09-07T14:38:02Z",
+            "status": "COMPLETED",
+            "workflowName": "Pull Request"
+          },
+          {
+            "__typename": "CheckRun",
+            "completedAt": "2026-09-07T14:38:11Z",
+            "conclusion": "SUCCESS",
+            "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/34134014821/job/101780602835",
+            "name": "Action Pin Provenance",
+            "startedAt": "2026-09-07T14:38:03Z",
+            "status": "COMPLETED",
+            "workflowName": "Pull Request"
+          },
+          {
+            "__typename": "CheckRun",
+            "completedAt": "2026-09-07T14:37:59Z",
+            "conclusion": "NEUTRAL",
+            "detailsUrl": "https://github.com/agentstation/starmap/runs/101780589572",
+            "name": "CodeQL",
+            "startedAt": "2026-09-07T14:37:58Z",
+            "status": "COMPLETED",
+            "workflowName": ""
+          }
+        ],
+        "title": "build(deps): bump github.com/aws/aws-sdk-go-v2/config in /",
+        "updatedAt": "2026-09-08T05:18:03Z",
+        "url": "https://github.com/agentstation/starmap/pull/129"
+      },
+      {
+        "baseRefName": "main",
+        "body": "Bumps [github.com/Azure/azure-sdk-for-go/sdk/azidentity](https://github.com/Azure/azure-sdk-for-go) in `/` from 1.14.0 to 1.14.1.\n\nUpdates `github.com/Azure/azure-sdk-for-go/sdk/azidentity` from 1.14.0 to 1.14.1\n<details>\n<summary>Release notes</summary>\n<p><em>Sourced from <a href=\"https://github.com/Azure/azure-sdk-for-go/releases\">github.com/Azure/azure-sdk-for-go/sdk/azidentity's releases</a>.</em></p>\n<blockquote>\n<h2>sdk/azidentity/v1.14.1</h2>\n<h2>1.14.1 (2026-08-27)</h2>\n<h3>Other Changes</h3>\n<ul>\n<li>Upgraded dependencies</li>\n</ul>\n</blockquote>\n</details>\n<details>\n<summary>Commits</summary>\n<ul>\n<li><a href=\"https://github.com/Azure/azure-sdk-for-go/commit/920e79a1664fa91142c45775c8e0cc3bd1ae20dd\"><code>920e79a</code></a> Prep azidentity for release (<a href=\"https://redirect.github.com/Azure/azure-sdk-for-go/issues/27473\">#27473</a>)</li>\n<li><a href=\"https://github.com/Azure/azure-sdk-for-go/commit/d86ae78bd655d233689866cf78930f3c5fd42c35\"><code>d86ae78</code></a> Prep azcore for release (<a href=\"https://redirect.github.com/Azure/azure-sdk-for-go/issues/27471\">#27471</a>)</li>\n<li><a href=\"https://github.com/Azure/azure-sdk-for-go/commit/33dd768d272337b287d1c528b27d528e89f08435\"><code>33dd768</code></a> [azwebpubsub] Fix GenerateClientAccessURL on the TokenCredential path (<a href=\"https://redirect.github.com/Azure/azure-sdk-for-go/issues/27422\">#27422</a>)</li>\n<li><a href=\"https://github.com/Azure/azure-sdk-for-go/commit/a27ca57b4db13090a9a10737e6bdc6c2a5f17657\"><code>a27ca57</code></a> Upgrade TypeSpec Go emitter dependencies (<a href=\"https://redirect.github.com/Azure/azure-sdk-for-go/issues/27466\">#27466</a>)</li>\n<li><a href=\"https://github.com/Azure/azure-sdk-for-go/commit/af75eb0f82375ca03d963ba7795eb4d9b44dbdc6\"><code>af75eb0</code></a> [AutoPR sdk-resourcemanager/purestorageblock/armpurestorageblock]-generated-f...</li>\n<li><a href=\"https://github.com/Azure/azure-sdk-for-go/commit/8dcff8c3829a3c4759bcca66e15dbdca28ec0e46\"><code>8dcff8c</code></a> [AutoPR sdk-resourcemanager/redisenterprise/armredisenterprise]-generated-fro...</li>\n<li><a href=\"https://github.com/Azure/azure-sdk-for-go/commit/e4569f1adf68b4ea82d83f8fb20ac8773d0090bc\"><code>e4569f1</code></a> [AutoPR sdk-resourcemanager/chaos/armchaos]-generated-from-SDK Generation - G...</li>\n<li><a href=\"https://github.com/Azure/azure-sdk-for-go/commit/7069bf802def9d7ca3e3404c4fbacb0a45aa1cdc\"><code>7069bf8</code></a> [AutoPR sdk-resourcemanager/horizondb/armhorizondb]-generated-from-SDK Genera...</li>\n<li><a href=\"https://github.com/Azure/azure-sdk-for-go/commit/5ceffcea634d0832317ae199db60343c7971e7d9\"><code>5ceffce</code></a> Bump gh-aw to v0.86.2 for mgmt review workflow (<a href=\"https://redirect.github.com/Azure/azure-sdk-for-go/issues/27460\">#27460</a>)</li>\n<li><a href=\"https://github.com/Azure/azure-sdk-for-go/commit/663b6ce414fb4f539fdc67633e2c55c4aa79eb66\"><code>663b6ce</code></a> Enhance azblob perf tests with OAuth, parallel setup, and profiling (<a href=\"https://redirect.github.com/Azure/azure-sdk-for-go/issues/27324\">#27324</a>)</li>\n<li>Additional commits viewable in <a href=\"https://github.com/Azure/azure-sdk-for-go/compare/sdk/azcore/v1.14.0...sdk/azidentity/v1.14.1\">compare view</a></li>\n</ul>\n</details>\n<br />\n\n\n[![Dependabot compatibility score](https://dependabot-badges.githubapp.com/badges/compatibility_score?dependency-name=github.com/Azure/azure-sdk-for-go/sdk/azidentity&package-manager=go_modules&previous-version=1.14.0&new-version=1.14.1)](https://docs.github.com/en/github/managing-security-vulnerabilities/about-dependabot-security-updates#about-compatibility-scores)\n\nDependabot will resolve any conflicts with this PR as long as you don't alter it yourself. You can also trigger a rebase manually by commenting `@dependabot rebase`.\n\n[//]: # (dependabot-automerge-start)\n[//]: # (dependabot-automerge-end)\n\n---\n\n<details>\n<summary>Dependabot commands and options</summary>\n<br />\n\nYou can trigger Dependabot actions by commenting on this PR:\n- `@dependabot rebase` will rebase this PR\n- `@dependabot recreate` will recreate this PR, overwriting any edits that have been made to it\n- `@dependabot show <dependency name> ignore conditions` will show all of the ignore conditions of the specified dependency\n- `@dependabot ignore <dependency name> major version` will close this group update PR and stop Dependabot creating any more for the specific dependency's major version (unless you unignore this specific dependency's major version or upgrade to it yourself)\n- `@dependabot ignore <dependency name> minor version` will close this group update PR and stop Dependabot creating any more for the specific dependency's minor version (unless you unignore this specific dependency's minor version or upgrade to it yourself)\n- `@dependabot ignore <dependency name>` will close this group update PR and stop Dependabot creating any more for the specific dependency (unless you unignore this specific dependency or upgrade to it yourself)\n- `@dependabot unignore <dependency name>` will remove all of the ignore conditions of the specified dependency\n- `@dependabot unignore <dependency name> <ignore condition>` will remove the ignore condition of the specified dependency and ignore conditions\n\n\n</details>\n\n<!-- catalog-pr-audit -->\nCurrent disposition (2026-09-08)\n\nRetain as the Azure dependency update. This PR includes all go.mod and go.sum changes from #127, which this PR supersedes. Current required checks pass. Complete dependency review and validate integration before merge.\n",
+        "headRefName": "dependabot/go_modules/go_modules-514a14c65d",
+        "headRefOid": "c05d4c3554a4c7569c427d06db6db5a8ce38494a",
+        "isDraft": false,
+        "mergeStateStatus": "CLEAN",
+        "mergeable": "MERGEABLE",
+        "number": 128,
+        "reviewDecision": "",
+        "statusCheckRollup": [
+          {
+            "__typename": "CheckRun",
+            "completedAt": "2026-09-07T15:03:01Z",
+            "conclusion": "SUCCESS",
+            "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/34133900734/job/101780242358",
+            "name": "Verification Gate",
+            "startedAt": "2026-09-07T14:36:48Z",
+            "status": "COMPLETED",
+            "workflowName": "Pull Request"
+          },
+          {
+            "__typename": "CheckRun",
+            "completedAt": "2026-09-07T14:39:25Z",
+            "conclusion": "SUCCESS",
+            "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/34133900734/job/101780242023",
+            "name": "Security & Reliability",
+            "startedAt": "2026-09-07T14:36:48Z",
+            "status": "COMPLETED",
+            "workflowName": "Pull Request"
+          },
+          {
+            "__typename": "CheckRun",
+            "completedAt": "2026-09-07T14:36:57Z",
+            "conclusion": "SUCCESS",
+            "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/34133900734/job/101780242351",
+            "name": "Action Pin Provenance",
+            "startedAt": "2026-09-07T14:36:48Z",
+            "status": "COMPLETED",
+            "workflowName": "Pull Request"
+          },
+          {
+            "__typename": "CheckRun",
+            "completedAt": "2026-09-07T14:36:43Z",
+            "conclusion": "NEUTRAL",
+            "detailsUrl": "https://github.com/agentstation/starmap/runs/101780224560",
+            "name": "CodeQL",
+            "startedAt": "2026-09-07T14:36:42Z",
+            "status": "COMPLETED",
+            "workflowName": ""
+          }
+        ],
+        "title": "build(deps): bump github.com/Azure/azure-sdk-for-go/sdk/azidentity in /",
+        "updatedAt": "2026-09-08T05:18:05Z",
+        "url": "https://github.com/agentstation/starmap/pull/128"
+      },
+      {
+        "baseRefName": "codex/catalog-evidence",
+        "body": "Define the production catalog contracts for Starmap and Starport, with a durable implementation plan and six executable capture helpers. The specification covers catalog baselines, scoped acquisition, canonical configuration and storage, and internal-server authority. It defines credential separation, deployment recipes, and request latency targets.\n\nAccount-specific removals require explicit acquisition-scope links. Fresh updates preserve the selected baseline. Primary configuration permits checked service-managed access. Repository findings distinguish implemented behavior from target requirements and remaining qualification.\n\nDocument checks cover 38 tasks, 50 primary acceptance cases, and 324 required subcases. Strict prose checks pass across 790 files. The complete Sol and Opus review passes all five portions with zero findings. Capture helper contents match their recorded implementation hashes.\n\nThis draft depends on evidence PR #125. Product implementation belongs to the two subsequent code PRs. Native qualification, released-pair acceptance, and final plan cleanup remain open.\n\n\n<!-- catalog-pr-audit -->\nCurrent disposition (2026-09-08)\n\nRetain this contract and plan PR. Its parent is PR 125. PR 132 depends on it. The active execution ledger now lives on #136. This earlier plan snapshot is historical. Complete parent validation before merge.\n",
+        "headRefName": "codex/catalog-plan",
+        "headRefOid": "b58a9df6f2da7fe95297e30d97604c9232e83a43",
+        "isDraft": true,
+        "mergeStateStatus": "CLEAN",
+        "mergeable": "MERGEABLE",
+        "number": 126,
+        "reviewDecision": "",
+        "statusCheckRollup": [],
+        "title": "docs: define production catalog contracts and verification plan",
+        "updatedAt": "2026-09-08T05:18:10Z",
+        "url": "https://github.com/agentstation/starmap/pull/126"
+      },
+      {
+        "baseRefName": "main",
+        "body": "Preserve the catalog plan\u2019s captured test results, screenshots, and profiles in one evidence base for the Starmap implementation PR. This keeps binary artifacts outside the code review diff while retaining their original paths and bytes. The implementation PR will target this branch.\n\nThe change contains 1,100 captured files and two exact historical-output exclusions under the existing writing policy. It contains no executable proof scripts or production code. Authored acceptance and performance contracts stay with the implementation. These records include failed and superseded checks. They do not establish complete production support.\n\nValidation: the complete Starmap candidate passed `make verify` with unchanged inputs. Both normal and race suites passed 79 packages. The current Starport browser review covers 12 views and keyboard navigation. The isolated pre-PR helper skips this evidence-only change under its configured policy.\n\nA separate scan covered all 1,100 files. Seven reports match the same synthetic URL from a named test using an eight-character placeholder. The scanner returned exit 183 because the test hostname cannot resolve. Manual comparison confirmed that these reports contain no live credential. The original evidence remains intact.\n\nDraft only. Merge and release approval remain with the owner.\n\n\n<!-- catalog-pr-audit -->\nCurrent disposition (2026-09-08)\n\nRetain as the evidence root for #126. The failed Security & Reliability job stopped at FuzzParseAPIDataNoPanic with context deadline exceeded. The rerun of run 34162478515 passes all three jobs. The current diff contains 1,642 paths. The earlier 1,100-file scan describes a prior capture set, not this complete diff. A new exact-head inventory and credential scan cover all 1,642 paths and pass.\n",
+        "headRefName": "codex/catalog-evidence",
+        "headRefOid": "d8d12a26069f34442860cbcf8bb840dd073177fc",
+        "isDraft": true,
+        "mergeStateStatus": "CLEAN",
+        "mergeable": "MERGEABLE",
+        "number": 125,
+        "reviewDecision": "",
+        "statusCheckRollup": [
+          {
+            "__typename": "CheckRun",
+            "completedAt": "2026-09-07T21:16:21Z",
+            "conclusion": "SUCCESS",
+            "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/34162476044/job/101866942038",
+            "name": "Analyze (actions)",
+            "startedAt": "2026-09-07T21:15:36Z",
+            "status": "COMPLETED",
+            "workflowName": "CodeQL"
+          },
+          {
+            "__typename": "CheckRun",
+            "completedAt": "2026-09-07T21:43:33Z",
+            "conclusion": "SUCCESS",
+            "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/34162478515/job/101945742147",
+            "name": "Verification Gate",
+            "startedAt": "2026-09-07T21:15:38Z",
+            "status": "COMPLETED",
+            "workflowName": "Pull Request"
+          },
+          {
+            "__typename": "CheckRun",
+            "completedAt": "2026-09-07T21:17:32Z",
+            "conclusion": "SUCCESS",
+            "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/34162476044/job/101866941856",
+            "name": "Analyze (go)",
+            "startedAt": "2026-09-07T21:15:36Z",
+            "status": "COMPLETED",
+            "workflowName": "CodeQL"
+          },
+          {
+            "__typename": "CheckRun",
+            "completedAt": "2026-09-08T05:17:29Z",
+            "conclusion": "SUCCESS",
+            "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/34162478515/job/101945740535",
+            "name": "Security & Reliability",
+            "startedAt": "2026-09-08T05:15:28Z",
+            "status": "COMPLETED",
+            "workflowName": "Pull Request"
+          },
+          {
+            "__typename": "CheckRun",
+            "completedAt": "2026-09-07T21:15:51Z",
+            "conclusion": "SUCCESS",
+            "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/34162478515/job/101945741565",
+            "name": "Action Pin Provenance",
+            "startedAt": "2026-09-07T21:15:38Z",
+            "status": "COMPLETED",
+            "workflowName": "Pull Request"
+          },
+          {
+            "__typename": "CheckRun",
+            "completedAt": "2026-09-07T21:16:15Z",
+            "conclusion": "SUCCESS",
+            "detailsUrl": "https://github.com/agentstation/starmap/runs/101867059693",
+            "name": "CodeQL",
+            "startedAt": "2026-09-07T21:16:12Z",
+            "status": "COMPLETED",
+            "workflowName": ""
+          }
+        ],
+        "title": "Preserve catalog qualification captures",
+        "updatedAt": "2026-09-08T05:20:16Z",
+        "url": "https://github.com/agentstation/starmap/pull/125"
+      }
+    ],
+    "starport": [
+      {
+        "baseRefName": "main",
+        "body": "Bumps the go-modules group with 9 updates:\n\n| Package | From | To |\n| --- | --- | --- |\n| [github.com/aws/aws-sdk-go-v2/config](https://github.com/aws/aws-sdk-go-v2) | `1.33.1` | `1.33.2` |\n| [github.com/aws/aws-sdk-go-v2/credentials](https://github.com/aws/aws-sdk-go-v2) | `1.20.1` | `1.20.2` |\n| [github.com/aws/aws-sdk-go-v2/feature/s3/manager](https://github.com/aws/aws-sdk-go-v2) | `1.23.1` | `1.23.2` |\n| [github.com/aws/aws-sdk-go-v2/service/s3](https://github.com/aws/aws-sdk-go-v2) | `1.109.1` | `1.110.0` |\n| [github.com/aws/aws-sdk-go-v2/service/secretsmanager](https://github.com/aws/aws-sdk-go-v2) | `1.46.1` | `1.47.0` |\n| [github.com/go-sql-driver/mysql](https://github.com/go-sql-driver/mysql) | `1.10.0` | `1.10.1` |\n| [github.com/yuin/goldmark](https://github.com/yuin/goldmark) | `1.8.5` | `1.8.6` |\n| [golang.org/x/crypto](https://github.com/golang/crypto) | `0.55.0` | `0.56.0` |\n| [modernc.org/sqlite](https://gitlab.com/cznic/sqlite) | `1.57.0` | `1.58.0` |\n\nUpdates `github.com/aws/aws-sdk-go-v2/config` from 1.33.1 to 1.33.2\n<details>\n<summary>Commits</summary>\n<ul>\n<li><a href=\"https://github.com/aws/aws-sdk-go-v2/commit/5a5ee7a736838df1cb7c39f2b3f5d78bed226463\"><code>5a5ee7a</code></a> Release 2026-08-31.2</li>\n<li><a href=\"https://github.com/aws/aws-sdk-go-v2/commit/bb728165a2693e50d6b2f3daf87c297431fd0ba6\"><code>bb72816</code></a> Regenerated Clients</li>\n<li><a href=\"https://github.com/aws/aws-sdk-go-v2/commit/41672340b694210f8668b498d45dae3c1c10e293\"><code>4167234</code></a> Update API model</li>\n<li><a href=\"https://github.com/aws/aws-sdk-go-v2/commit/85ddf74cf51912ae62d47e5cd286b93a9411e481\"><code>85ddf74</code></a> Remove credential source middleware (<a href=\"https://redirect.github.com/aws/aws-sdk-go-v2/issues/3539\">#3539</a>)</li>\n<li><a href=\"https://github.com/aws/aws-sdk-go-v2/commit/258c696b788c342a4ea451e2ae994a4e124ee256\"><code>258c696</code></a> Release 2026-08-31</li>\n<li><a href=\"https://github.com/aws/aws-sdk-go-v2/commit/029ffebfef8fbd53fb7fd96ed237006990204c56\"><code>029ffeb</code></a> Regenerated Clients</li>\n<li><a href=\"https://github.com/aws/aws-sdk-go-v2/commit/c884b0f00dacb633e805ee615393d847ab309ce4\"><code>c884b0f</code></a> Update API model</li>\n<li><a href=\"https://github.com/aws/aws-sdk-go-v2/commit/71ac84b03a64cf14673a40e5d040f5951a0914cf\"><code>71ac84b</code></a> schema-serde: json wave 3 (<a href=\"https://redirect.github.com/aws/aws-sdk-go-v2/issues/3538\">#3538</a>)</li>\n<li><a href=\"https://github.com/aws/aws-sdk-go-v2/commit/b63d8be8c659dabab8165fd12a18c22338fd75cc\"><code>b63d8be</code></a> Release 2026-08-28.2</li>\n<li><a href=\"https://github.com/aws/aws-sdk-go-v2/commit/43288f751afc3a9f8e55093c023a4dfffcc454d7\"><code>43288f7</code></a> Regenerated Clients</li>\n<li>Additional commits viewable in <a href=\"https://github.com/aws/aws-sdk-go-v2/compare/config/v1.33.1...config/v1.33.2\">compare view</a></li>\n</ul>\n</details>\n<br />\n\nUpdates `github.com/aws/aws-sdk-go-v2/credentials` from 1.20.1 to 1.20.2\n<details>\n<summary>Commits</summary>\n<ul>\n<li><a href=\"https://github.com/aws/aws-sdk-go-v2/commit/65023f312c12ce2707836e552ab55bb4f03f3345\"><code>65023f3</code></a> Release 2023-08-17</li>\n<li><a href=\"https://github.com/aws/aws-sdk-go-v2/commit/0742a92e9b623ddaf650eaaea4abc3889b8a17f2\"><code>0742a92</code></a> Regenerated Clients</li>\n<li><a href=\"https://github.com/aws/aws-sdk-go-v2/commit/0e3340f027ed652b13be24b63af875fe2d4985f7\"><code>0e3340f</code></a> Update endpoints model</li>\n<li><a href=\"https://github.com/aws/aws-sdk-go-v2/commit/4526489235229d00a0735e6e28202556ae023729\"><code>4526489</code></a> Update API model</li>\n<li><a href=\"https://github.com/aws/aws-sdk-go-v2/commit/18635b8d0644a641334d0b8cec6b6e1da2c8217c\"><code>18635b8</code></a> Add X-Amz-Server-Side-Encryption-Context header to required signed headers al...</li>\n<li><a href=\"https://github.com/aws/aws-sdk-go-v2/commit/4682b6a4b93c5c23a30a064d5f1c8bc11c0636d4\"><code>4682b6a</code></a> Achieve DisableMRAP parity in config loaders (<a href=\"https://redirect.github.com/aws/aws-sdk-go-v2/issues/2239\">#2239</a>)</li>\n<li><a href=\"https://github.com/aws/aws-sdk-go-v2/commit/7ecab8687887d1131a9880aac17e12e589c04b4a\"><code>7ecab86</code></a> Release 2023-08-16</li>\n<li><a href=\"https://github.com/aws/aws-sdk-go-v2/commit/1ac4adda4fb31aeca5db9e309a428d62ba85bf90\"><code>1ac4add</code></a> Regenerated Clients</li>\n<li><a href=\"https://github.com/aws/aws-sdk-go-v2/commit/4f353cd96758cd06e28ea2bfb47d865c52b972d4\"><code>4f353cd</code></a> Update API model</li>\n<li><a href=\"https://github.com/aws/aws-sdk-go-v2/commit/53f9e53a3e4404ee656500a4f5bf0da450d4f0ff\"><code>53f9e53</code></a> remove checks on push because its redundant (<a href=\"https://redirect.github.com/aws/aws-sdk-go-v2/issues/2240\">#2240</a>)</li>\n<li>Additional commits viewable in <a href=\"https://github.com/aws/aws-sdk-go-v2/compare/v1.20.1...v1.20.2\">compare view</a></li>\n</ul>\n</details>\n<br />\n\nUpdates `github.com/aws/aws-sdk-go-v2/feature/s3/manager` from 1.23.1 to 1.23.2\n<details>\n<summary>Commits</summary>\n<ul>\n<li><a href=\"https://github.com/aws/aws-sdk-go-v2/commit/4aeeb0d7a4293f0b31c2e0be83e65da6f7fd4ae2\"><code>4aeeb0d</code></a> Release 2023-11-28.2</li>\n<li><a href=\"https://github.com/aws/aws-sdk-go-v2/commit/e09e153704d4da6ae2bb0ae3875058950d31206b\"><code>e09e153</code></a> Regenerated Clients</li>\n<li><a href=\"https://github.com/aws/aws-sdk-go-v2/commit/8293e2ca285a7333a9931a0a3b37b2bcf7cdc05d\"><code>8293e2c</code></a> Update endpoints model</li>\n<li><a href=\"https://github.com/aws/aws-sdk-go-v2/commit/713fb0f31a188015915d785556ebf16ddb08085a\"><code>713fb0f</code></a> Update API model</li>\n<li><a href=\"https://github.com/aws/aws-sdk-go-v2/commit/830202d722c904c7e3da40e8dde7b9338d08752c\"><code>830202d</code></a> Merge customizations for service s3</li>\n<li><a href=\"https://github.com/aws/aws-sdk-go-v2/commit/2de0027dc478a6ae80e9f2d24d904a425169a23b\"><code>2de0027</code></a> Release 2023-11-28</li>\n<li><a href=\"https://github.com/aws/aws-sdk-go-v2/commit/f0c890c5eaf354ff23feb727ded9f50aaee9f1c4\"><code>f0c890c</code></a> Regenerated Clients</li>\n<li><a href=\"https://github.com/aws/aws-sdk-go-v2/commit/e032d9ea8d98d366f2467a72834d2cc0ee865edd\"><code>e032d9e</code></a> Update endpoints model</li>\n<li><a href=\"https://github.com/aws/aws-sdk-go-v2/commit/507661ff1edbc896fbdfe3ea2e4c2e74be3b4e3c\"><code>507661f</code></a> Update API model</li>\n<li><a href=\"https://github.com/aws/aws-sdk-go-v2/commit/4128360684a451476e33c0f979921bc46ff63656\"><code>4128360</code></a> fix: respect functional option modifications to RetryMaxAttempts (<a href=\"https://redirect.github.com/aws/aws-sdk-go-v2/issues/2390\">#2390</a>)</li>\n<li>Additional commits viewable in <a href=\"https://github.com/aws/aws-sdk-go-v2/compare/v1.23.1...v1.23.2\">compare view</a></li>\n</ul>\n</details>\n<br />\n\nUpdates `github.com/aws/aws-sdk-go-v2/service/s3` from 1.109.1 to 1.110.0\n<details>\n<summary>Commits</summary>\n<ul>\n<li><a href=\"https://github.com/aws/aws-sdk-go-v2/commit/5a5ee7a736838df1cb7c39f2b3f5d78bed226463\"><code>5a5ee7a</code></a> Release 2026-08-31.2</li>\n<li><a href=\"https://github.com/aws/aws-sdk-go-v2/commit/bb728165a2693e50d6b2f3daf87c297431fd0ba6\"><code>bb72816</code></a> Regenerated Clients</li>\n<li><a href=\"https://github.com/aws/aws-sdk-go-v2/commit/41672340b694210f8668b498d45dae3c1c10e293\"><code>4167234</code></a> Update API model</li>\n<li><a href=\"https://github.com/aws/aws-sdk-go-v2/commit/85ddf74cf51912ae62d47e5cd286b93a9411e481\"><code>85ddf74</code></a> Remove credential source middleware (<a href=\"https://redirect.github.com/aws/aws-sdk-go-v2/issues/3539\">#3539</a>)</li>\n<li><a href=\"https://github.com/aws/aws-sdk-go-v2/commit/258c696b788c342a4ea451e2ae994a4e124ee256\"><code>258c696</code></a> Release 2026-08-31</li>\n<li><a href=\"https://github.com/aws/aws-sdk-go-v2/commit/029ffebfef8fbd53fb7fd96ed237006990204c56\"><code>029ffeb</code></a> Regenerated Clients</li>\n<li><a href=\"https://github.com/aws/aws-sdk-go-v2/commit/c884b0f00dacb633e805ee615393d847ab309ce4\"><code>c884b0f</code></a> Update API model</li>\n<li><a href=\"https://github.com/aws/aws-sdk-go-v2/commit/71ac84b03a64cf14673a40e5d040f5951a0914cf\"><code>71ac84b</code></a> schema-serde: json wave 3 (<a href=\"https://redirect.github.com/aws/aws-sdk-go-v2/issues/3538\">#3538</a>)</li>\n<li><a href=\"https://github.com/aws/aws-sdk-go-v2/commit/b63d8be8c659dabab8165fd12a18c22338fd75cc\"><code>b63d8be</code></a> Release 2026-08-28.2</li>\n<li><a href=\"https://github.com/aws/aws-sdk-go-v2/commit/43288f751afc3a9f8e55093c023a4dfffcc454d7\"><code>43288f7</code></a> Regenerated Clients</li>\n<li>Additional commits viewable in <a href=\"https://github.com/aws/aws-sdk-go-v2/compare/service/s3/v1.109.1...service/s3/v1.110.0\">compare view</a></li>\n</ul>\n</details>\n<br />\n\nUpdates `github.com/aws/aws-sdk-go-v2/service/secretsmanager` from 1.46.1 to 1.47.0\n<details>\n<summary>Commits</summary>\n<ul>\n<li><a href=\"https://github.com/aws/aws-sdk-go-v2/commit/a88ff68b5524ce9e4f816c8c313267e6d321ce8c\"><code>a88ff68</code></a> Release 2023-11-29</li>\n<li><a href=\"https://github.com/aws/aws-sdk-go-v2/commit/023df359dd66f7b3970ddf2874c69d4b78b99126\"><code>023df35</code></a> Regenerated Clients</li>\n<li><a href=\"https://github.com/aws/aws-sdk-go-v2/commit/41f99ac19a3c3fc2e7e177b8f2632d319bb590e4\"><code>41f99ac</code></a> Update SDK's smithy-go dependency to v1.18.0</li>\n<li><a href=\"https://github.com/aws/aws-sdk-go-v2/commit/72478fb87eae54a9d5ea84b336daad6795aebe01\"><code>72478fb</code></a> Update API model</li>\n<li><a href=\"https://github.com/aws/aws-sdk-go-v2/commit/4c4b852716f661378136f0e4d7e966d180057e26\"><code>4c4b852</code></a> feat: add Options() getter to service clients (<a href=\"https://redirect.github.com/aws/aws-sdk-go-v2/issues/2398\">#2398</a>)</li>\n<li><a href=\"https://github.com/aws/aws-sdk-go-v2/commit/6b86039a2b6015432b243b342b532f2db7a9c709\"><code>6b86039</code></a> Update golang.org/x/net dependency (<a href=\"https://redirect.github.com/aws/aws-sdk-go-v2/issues/2391\">#2391</a>)</li>\n<li><a href=\"https://github.com/aws/aws-sdk-go-v2/commit/0a955dd146a98d4b218893390a5c72512e0477c7\"><code>0a955dd</code></a> Release 2023-11-28.3</li>\n<li><a href=\"https://github.com/aws/aws-sdk-go-v2/commit/94a398007cfac2c60a62c203faa363a4ecaa4abf\"><code>94a3980</code></a> fix: correct wiring of disable s3express auth toggle (<a href=\"https://redirect.github.com/aws/aws-sdk-go-v2/issues/2394\">#2394</a>)</li>\n<li><a href=\"https://github.com/aws/aws-sdk-go-v2/commit/4aeeb0d7a4293f0b31c2e0be83e65da6f7fd4ae2\"><code>4aeeb0d</code></a> Release 2023-11-28.2</li>\n<li><a href=\"https://github.com/aws/aws-sdk-go-v2/commit/e09e153704d4da6ae2bb0ae3875058950d31206b\"><code>e09e153</code></a> Regenerated Clients</li>\n<li>Additional commits viewable in <a href=\"https://github.com/aws/aws-sdk-go-v2/compare/service/ivs/v1.46.1...service/s3/v1.47.0\">compare view</a></li>\n</ul>\n</details>\n<br />\n\nUpdates `github.com/go-sql-driver/mysql` from 1.10.0 to 1.10.1\n<details>\n<summary>Release notes</summary>\n<p><em>Sourced from <a href=\"https://github.com/go-sql-driver/mysql/releases\">github.com/go-sql-driver/mysql's releases</a>.</em></p>\n<blockquote>\n<h2>v1.10.1</h2>\n<h2>What's Changed</h2>\n<ul>\n<li>dsn: default Net to tcp in NewConfig so Addr-only configs round-trip by <a href=\"https://github.com/c-tonneslan\"><code>@\u200bc-tonneslan</code></a> in <a href=\"https://redirect.github.com/go-sql-driver/mysql/pull/1770\">go-sql-driver/mysql#1770</a></li>\n<li>Add LTS MariaDB 11.8 and 12.3 into the testing matrix by <a href=\"https://github.com/pgporada\"><code>@\u200bpgporada</code></a> in <a href=\"https://redirect.github.com/go-sql-driver/mysql/pull/1774\">go-sql-driver/mysql#1774</a></li>\n<li>Bump actions/checkout from 6 to 7 in the all-dependencies group by <a href=\"https://github.com/dependabot\"><code>@\u200bdependabot</code></a>[bot] in <a href=\"https://redirect.github.com/go-sql-driver/mysql/pull/1777\">go-sql-driver/mysql#1777</a></li>\n<li>ci: pin actions by <a href=\"https://github.com/methane\"><code>@\u200bmethane</code></a> in <a href=\"https://redirect.github.com/go-sql-driver/mysql/pull/1778\">go-sql-driver/mysql#1778</a></li>\n<li>Bump the all-dependencies group with 3 updates by <a href=\"https://github.com/dependabot\"><code>@\u200bdependabot</code></a>[bot] in <a href=\"https://redirect.github.com/go-sql-driver/mysql/pull/1779\">go-sql-driver/mysql#1779</a></li>\n<li>Bump the all-dependencies group with 3 updates by <a href=\"https://github.com/dependabot\"><code>@\u200bdependabot</code></a>[bot] in <a href=\"https://redirect.github.com/go-sql-driver/mysql/pull/1780\">go-sql-driver/mysql#1780</a></li>\n<li>Interpolate typed-nil json.RawMessage as NULL by <a href=\"https://github.com/oha-4\"><code>@\u200boha-4</code></a> in <a href=\"https://redirect.github.com/go-sql-driver/mysql/pull/1782\">go-sql-driver/mysql#1782</a></li>\n<li>Bump actions/setup-go from 6.5.0 to 7.0.0 in the all-dependencies group by <a href=\"https://github.com/dependabot\"><code>@\u200bdependabot</code></a>[bot] in <a href=\"https://redirect.github.com/go-sql-driver/mysql/pull/1783\">go-sql-driver/mysql#1783</a></li>\n<li>Bump the all-dependencies group across 1 directory with 5 updates by <a href=\"https://github.com/dependabot\"><code>@\u200bdependabot</code></a>[bot] in <a href=\"https://redirect.github.com/go-sql-driver/mysql/pull/1791\">go-sql-driver/mysql#1791</a></li>\n<li>Bump the all-dependencies group with 3 updates by <a href=\"https://github.com/dependabot\"><code>@\u200bdependabot</code></a>[bot] in <a href=\"https://redirect.github.com/go-sql-driver/mysql/pull/1794\">go-sql-driver/mysql#1794</a></li>\n<li>Bump the all-dependencies group with 5 updates by <a href=\"https://github.com/dependabot\"><code>@\u200bdependabot</code></a>[bot] in <a href=\"https://redirect.github.com/go-sql-driver/mysql/pull/1795\">go-sql-driver/mysql#1795</a></li>\n<li>Bump the all-dependencies group with 3 updates by <a href=\"https://github.com/dependabot\"><code>@\u200bdependabot</code></a>[bot] in <a href=\"https://redirect.github.com/go-sql-driver/mysql/pull/1796\">go-sql-driver/mysql#1796</a></li>\n<li>codeql: remove custom workflow by <a href=\"https://github.com/methane\"><code>@\u200bmethane</code></a> in <a href=\"https://redirect.github.com/go-sql-driver/mysql/pull/1799\">go-sql-driver/mysql#1799</a></li>\n<li>doc: clarify timeTruncate units and when to use it by <a href=\"https://github.com/milanobrtlik\"><code>@\u200bmilanobrtlik</code></a> in <a href=\"https://redirect.github.com/go-sql-driver/mysql/pull/1792\">go-sql-driver/mysql#1792</a></li>\n<li>release v1.10.1 by <a href=\"https://github.com/methane\"><code>@\u200bmethane</code></a> in <a href=\"https://redirect.github.com/go-sql-driver/mysql/pull/1801\">go-sql-driver/mysql#1801</a></li>\n</ul>\n<h2>New Contributors</h2>\n<ul>\n<li><a href=\"https://github.com/c-tonneslan\"><code>@\u200bc-tonneslan</code></a> made their first contribution in <a href=\"https://redirect.github.com/go-sql-driver/mysql/pull/1770\">go-sql-driver/mysql#1770</a></li>\n<li><a href=\"https://github.com/oha-4\"><code>@\u200boha-4</code></a> made their first contribution in <a href=\"https://redirect.github.com/go-sql-driver/mysql/pull/1782\">go-sql-driver/mysql#1782</a></li>\n<li><a href=\"https://github.com/milanobrtlik\"><code>@\u200bmilanobrtlik</code></a> made their first contribution in <a href=\"https://redirect.github.com/go-sql-driver/mysql/pull/1792\">go-sql-driver/mysql#1792</a></li>\n</ul>\n<p><strong>Full Changelog</strong>: <a href=\"https://github.com/go-sql-driver/mysql/compare/v1.10.0...v1.10.1\">https://github.com/go-sql-driver/mysql/compare/v1.10.0...v1.10.1</a></p>\n</blockquote>\n</details>\n<details>\n<summary>Changelog</summary>\n<p><em>Sourced from <a href=\"https://github.com/go-sql-driver/mysql/blob/master/CHANGELOG.md\">github.com/go-sql-driver/mysql's changelog</a>.</em></p>\n<blockquote>\n<h2>v1.10.1 (2026-09-02)</h2>\n<ul>\n<li>\n<p>Fix <code>Config.FormatDSN()</code> dropping <code>Addr</code> when <code>Net</code> is empty.\nIt now uses the default <code>tcp</code> network so configs with only <code>Addr</code> round-trip correctly. (<a href=\"https://redirect.github.com/go-sql-driver/mysql/issues/1770\">#1770</a>)</p>\n</li>\n<li>\n<p>Fix typed-nil <code>json.RawMessage</code> with <code>interpolateParams=true</code> being interpolated as an empty string.\nIt is now interpolated as SQL <code>NULL</code>, matching server-side prepared statements. (<a href=\"https://redirect.github.com/go-sql-driver/mysql/issues/1782\">#1782</a>)</p>\n</li>\n<li>\n<p>Add MariaDB 11.8 and 12.3 to the test matrix. (<a href=\"https://redirect.github.com/go-sql-driver/mysql/issues/1774\">#1774</a>)</p>\n</li>\n</ul>\n</blockquote>\n</details>\n<details>\n<summary>Commits</summary>\n<ul>\n<li><a href=\"https://github.com/go-sql-driver/mysql/commit/7ca26e801d130be8be84c1e265be71784f6f70c1\"><code>7ca26e8</code></a> release v1.10.1 (<a href=\"https://redirect.github.com/go-sql-driver/mysql/issues/1801\">#1801</a>)</li>\n<li><a href=\"https://github.com/go-sql-driver/mysql/commit/87dcb95da72a8ffd525d41455a0f3ec2465b1d92\"><code>87dcb95</code></a> doc: clarify timeTruncate units and when to use it (<a href=\"https://redirect.github.com/go-sql-driver/mysql/issues/1792\">#1792</a>)</li>\n<li><a href=\"https://github.com/go-sql-driver/mysql/commit/1d9c421d1abaed4aeaf0b5ab830de9b752189f1f\"><code>1d9c421</code></a> codeql: remove custom workflow (<a href=\"https://redirect.github.com/go-sql-driver/mysql/issues/1799\">#1799</a>)</li>\n<li><a href=\"https://github.com/go-sql-driver/mysql/commit/532b8e566f23712db8f5b978103802aaa0b098c9\"><code>532b8e5</code></a> Bump the all-dependencies group with 3 updates (<a href=\"https://redirect.github.com/go-sql-driver/mysql/issues/1796\">#1796</a>)</li>\n<li><a href=\"https://github.com/go-sql-driver/mysql/commit/fe209ccef7620ffe789efa17e7d2e8e05bc9e3c9\"><code>fe209cc</code></a> Bump the all-dependencies group with 5 updates (<a href=\"https://redirect.github.com/go-sql-driver/mysql/issues/1795\">#1795</a>)</li>\n<li><a href=\"https://github.com/go-sql-driver/mysql/commit/03d76c7e07908e255ce62d126d07ede3f2365d86\"><code>03d76c7</code></a> Bump the all-dependencies group with 3 updates (<a href=\"https://redirect.github.com/go-sql-driver/mysql/issues/1794\">#1794</a>)</li>\n<li><a href=\"https://github.com/go-sql-driver/mysql/commit/c426bd93799de0f0e094c8f0582872c529d0ed0a\"><code>c426bd9</code></a> Bump the all-dependencies group across 1 directory with 5 updates (<a href=\"https://redirect.github.com/go-sql-driver/mysql/issues/1791\">#1791</a>)</li>\n<li><a href=\"https://github.com/go-sql-driver/mysql/commit/416cd99d463949ca51faf4f84d674de2fc1aa54b\"><code>416cd99</code></a> Bump actions/setup-go from 6.5.0 to 7.0.0 in the all-dependencies group (<a href=\"https://redirect.github.com/go-sql-driver/mysql/issues/1783\">#1783</a>)</li>\n<li><a href=\"https://github.com/go-sql-driver/mysql/commit/b96d41506ad9d74622faf53364cb92ba9aea2e6c\"><code>b96d415</code></a> Interpolate typed-nil json.RawMessage as NULL (<a href=\"https://redirect.github.com/go-sql-driver/mysql/issues/1782\">#1782</a>)</li>\n<li><a href=\"https://github.com/go-sql-driver/mysql/commit/dec193d8a1826fc147a6c0b678b8c7ff5fc36cb0\"><code>dec193d</code></a> Bump the all-dependencies group with 3 updates (<a href=\"https://redirect.github.com/go-sql-driver/mysql/issues/1780\">#1780</a>)</li>\n<li>Additional commits viewable in <a href=\"https://github.com/go-sql-driver/mysql/compare/v1.10.0...v1.10.1\">compare view</a></li>\n</ul>\n</details>\n<br />\n\nUpdates `github.com/yuin/goldmark` from 1.8.5 to 1.8.6\n<details>\n<summary>Release notes</summary>\n<p><em>Sourced from <a href=\"https://github.com/yuin/goldmark/releases\">github.com/yuin/goldmark's releases</a>.</em></p>\n<blockquote>\n<h2>v1.8.6</h2>\n<ul>\n<li>fix(extension): fix <a href=\"https://redirect.github.com/yuin/goldmark/issues/571\">#571</a></li>\n<li>Merge pull request <a href=\"https://redirect.github.com/yuin/goldmark/issues/569\">#569</a></li>\n</ul>\n</blockquote>\n</details>\n<details>\n<summary>Commits</summary>\n<ul>\n<li><a href=\"https://github.com/yuin/goldmark/commit/e3e8a533aa19da2f296fcdb97b7674ae7d1d93a4\"><code>e3e8a53</code></a> Merge pull request <a href=\"https://redirect.github.com/yuin/goldmark/issues/569\">#569</a> from binggao1230/fix-urlescape-percent-hex-guard</li>\n<li><a href=\"https://github.com/yuin/goldmark/commit/87012573fb5b188bf77d775152d0bcab42c19212\"><code>8701257</code></a> Merge pull request <a href=\"https://redirect.github.com/yuin/goldmark/issues/570\">#570</a> from BananaJeanss/patch-1</li>\n<li><a href=\"https://github.com/yuin/goldmark/commit/c52d4b371dec17dbf2b5992c6b9f15f93f424fee\"><code>c52d4b3</code></a> fix(extension): fix <a href=\"https://redirect.github.com/yuin/goldmark/issues/571\">#571</a></li>\n<li><a href=\"https://github.com/yuin/goldmark/commit/37b454c7fb6211b7593457eb7c63fb07c3078edf\"><code>37b454c</code></a> Remove Go Report Card badge</li>\n<li><a href=\"https://github.com/yuin/goldmark/commit/72f79b96fe319810dd95aa9e59a1212277d8419d\"><code>72f79b9</code></a> fix: URLEscape dropped a truncated utf8 leading byte</li>\n<li><a href=\"https://github.com/yuin/goldmark/commit/67a4ecf9a2ffaba9c678b0fec9914a9c377f2476\"><code>67a4ecf</code></a> fix: URLEscape validated the same hex digit twice</li>\n<li>See full diff in <a href=\"https://github.com/yuin/goldmark/compare/v1.8.5...v1.8.6\">compare view</a></li>\n</ul>\n</details>\n<br />\n\nUpdates `golang.org/x/crypto` from 0.55.0 to 0.56.0\n<details>\n<summary>Commits</summary>\n<ul>\n<li><a href=\"https://github.com/golang/crypto/commit/86efde54dc7069251a8b007026c500d28e4239ce\"><code>86efde5</code></a> ssh: reject unexpected message types on established channels</li>\n<li><a href=\"https://github.com/golang/crypto/commit/a6cdac60840750226b15617ac8858be44361b36b\"><code>a6cdac6</code></a> ssh: drop traffic on undecided channels</li>\n<li><a href=\"https://github.com/golang/crypto/commit/39dc44e69c280a6254fa09ce85477455efeaf6a2\"><code>39dc44e</code></a> ssh: don't skip the source-address critical option in CheckCert</li>\n<li><a href=\"https://github.com/golang/crypto/commit/afebf4cb4efb2b854282e03160da67120707f8f7\"><code>afebf4c</code></a> x509roots/fallback/bundle: make subjectsEqual stricter on Go 1.27+</li>\n<li><a href=\"https://github.com/golang/crypto/commit/89f4e9bb5b38861a69b1b26890a6833138d35ace\"><code>89f4e9b</code></a> x509roots/fallback: update bundle</li>\n<li><a href=\"https://github.com/golang/crypto/commit/71488c48c2dfecf900e52caa55f88ef4fef62d54\"><code>71488c4</code></a> ssh/knownhosts: compare only public key portions for revocation</li>\n<li><a href=\"https://github.com/golang/crypto/commit/82adefa711cb8d9a1f12c7ea91b491007d21819f\"><code>82adefa</code></a> ssh: synchronize unexpected response test</li>\n<li><a href=\"https://github.com/golang/crypto/commit/c757c9851f77c470645455f548046ae0ce87ef8d\"><code>c757c98</code></a> all: upgrade go directive to at least 1.26.0 [generated]</li>\n<li><a href=\"https://github.com/golang/crypto/commit/593c81af8aa6582d85a7faaeb996396f63d712a9\"><code>593c81a</code></a> ssh: correctly ignore pre-banner lines</li>\n<li><a href=\"https://github.com/golang/crypto/commit/46efc8bc62822d876c840e17017ed7071da3087c\"><code>46efc8b</code></a> acme: add crypto.SignMessage test coverage</li>\n<li>Additional commits viewable in <a href=\"https://github.com/golang/crypto/compare/v0.55.0...v0.56.0\">compare view</a></li>\n</ul>\n</details>\n<br />\n\nUpdates `modernc.org/sqlite` from 1.57.0 to 1.58.0\n<details>\n<summary>Changelog</summary>\n<p><em>Sourced from <a href=\"https://gitlab.com/cznic/sqlite/blob/master/CHANGELOG.md\">modernc.org/sqlite's changelog</a>.</em></p>\n<blockquote>\n<h1>Changelog</h1>\n<p>Entries for v1.38.1 through v1.44.1 and for v1.49.1 were added on 2026-09-05, reconstructed from the git history and the merge requests they cite; they were missing at release time.</p>\n<ul>\n<li>\n<p>2026-09-05 v1.59.0:</p>\n<ul>\n<li>Hand user-defined function and aggregate callbacks a pooled <code>*FunctionContext</code> instead of allocating a fresh one per call. After the <code>[]driver.Value</code> pooling of <a href=\"https://gitlab.com/cznic/sqlite/-/work_items/226\">#226</a> this was the last driver-side heap allocation per invocation: one 16-byte object for every <code>Scalar</code>, <code>Step</code>, <code>WindowInverse</code>, <code>WindowValue</code> and <code>Final</code> call. The context now also carries the invocation's <code>sqlite3_context</code>, so accessor methods can be added to it later without touching the trampolines. Like the argument slice, it is valid only for the duration of the callback and must not be retained past its return; the documentation on <code>FunctionContext</code> and on the callbacks now says so. On the 1000-row, 3-argument noop scalar UDF benchmark this removes a further 1000 allocs/op (5756 to 4756, and 3756 to 2756 with <code>VolatileArgs</code>) and 16 KB/op; on the reporter's reproducer from <a href=\"https://gitlab.com/cznic/sqlite/-/work_items/226\">#226</a> it removes about 12% of the remaining allocations (25.3M to 22.4M allocs/op, 553 MB to 505 MB per iteration).</li>\n<li>Updates [GitLab issue <a href=\"https://gitlab.com/cznic/sqlite/-/work_items/226\">#226</a>](<a href=\"https://gitlab.com/cznic/sqlite/-/issues/226\">https://gitlab.com/cznic/sqlite/-/issues/226</a>). See [GitLab merge request <a href=\"https://gitlab.com/cznic/sqlite/-/work_items/137\">#137</a>](<a href=\"https://gitlab.com/cznic/sqlite/-/merge_requests/137\">https://gitlab.com/cznic/sqlite/-/merge_requests/137</a>).</li>\n</ul>\n</li>\n<li>\n<p>2026-09-01 v1.58.0:</p>\n<ul>\n<li>Upgrade to <a href=\"https://sqlite.org/releaselog/3_53_4.html\">SQLite 3.53.4</a>. Upstream's own fix for the journal-rollback data-corruption bug is part of this release, so the local super-journal patch v1.56.0 introduced \u2014 and promised to drop once upstream shipped theirs \u2014 is dropped; recovery behavior is unchanged. This also bumps the pinned <code>modernc.org/libc</code> to v1.75.6; as always, downstream modules must pin the exact <code>modernc.org/libc</code> version this module's <code>go.mod</code> pins (see [GitLab issue <a href=\"https://gitlab.com/cznic/sqlite/-/work_items/177\">#177</a>](<a href=\"https://gitlab.com/cznic/sqlite/-/issues/177\">https://gitlab.com/cznic/sqlite/-/issues/177</a>)).</li>\n<li>Add opt-in support for <strong>Linux Open File Description (OFD) locks</strong> on database files. A POSIX record lock is owned by the (process, inode) pair, so the kernel drops every lock the process holds on a database file whenever any descriptor of that file is closed: an <code>os.Open</code>/<code>Close</code> for a hash, a backup check or a metadata probe anywhere in the process \u2014 third-party libraries included \u2014 silently strips SQLite's transaction locks and leaves the file unprotected against other processes. With OFD locking enabled, the locks belong to the open file description that placed them and survive such a close. <strong>Off by default, and staying off until the mode has real-world mileage</strong>: without opting in, locking behavior is byte-for-byte that of previous releases. Enable it by setting <code>MODERNC_SQLITE_OFD_LOCK=1</code> in the environment the process starts with (any value but the empty string or one starting with <code>0</code>; read once, at library initialization), or from Go with the new <code>OFDLocking(true)</code>, which overrides the variable and must run before the first connection is opened; <code>OFDLockingEnabled</code> reports the mode in effect. The switch is deliberately <strong>process-wide rather than a DSN parameter</strong>: POSIX and OFD locks taken by one process are different owners to the kernel and genuinely conflict, so every connection to a database file inside one process must use the same kind, and a per-DSN knob would advertise a granularity the kernel does not offer (see the discussion in <a href=\"https://gitlab.com/cznic/sqlite/-/work_items/255\">#255</a>). Because the two kinds do not release one another, the mode is frozen at the process's first lock attempt: later attempts to change it return the new <code>ErrOFDLockingTooLate</code>, while querying, and setting the value already in effect, keep working. On kernels older than 3.15, and on filesystems that reject OFD locks, the first lock attempt falls back to POSIX locks for good and <code>OFDLocking</code> returns the new <code>ErrOFDLockingUnavailable</code> from then on, which is also how <code>OFDLockingEnabled</code> turning false reports the fallback; the same error is returned on every platform but Linux, where the API exists but OFD locks do not. Two boundaries to note: the immunity covers the locks on the database file itself, while WAL's <code>-shm</code> coordination stays on POSIX locks; and code in the same process that takes fcntl record locks of its own on a database file \u2014 which used to never conflict with SQLite's, while quietly destroying them \u2014 now conflicts with them loudly instead. The C side \u2014 <code>F_OFD_SETLK</code> routing through a designated per-inode locking descriptor that preserves upstream's <code>unixInodeInfo</code> semantics (last-unlocker release, PENDING piggybacking, <code>unix-excl</code>), guarded to <code>__linux__</code> \u2014 ships in the transpiled sources via <a href=\"https://gitlab.com/cznic/libsqlite3/-/merge_requests/3\">libsqlite3!3</a> and its follow-up hardening, with the OFD lock constants from <a href=\"https://gitlab.com/cznic/libc/-/merge_requests/33\">libc!33</a>; the review rounds, the <code>/proc/locks</code> measurements behind the design, and the Tcl lock/WAL gate that runs both modes are recorded in [GitLab issue <a href=\"https://gitlab.com/cznic/sqlite/-/work_items/255\">#255</a>](<a href=\"https://gitlab.com/cznic/sqlite/-/issues/255\">https://gitlab.com/cznic/sqlite/-/issues/255</a>) and those merge requests.</li>\n<li>Add the accompanying regression tests. The four OFD scenarios contributed in merge request <a href=\"https://gitlab.com/cznic/sqlite/-/work_items/136\">#136</a> \u2014 lock survival across a rogue <code>os.Close</code>, the interleaved-readers lock lifecycle, the read-only-first designated-descriptor migration, and the failed-first-lock cleanup \u2014 run in a re-executed child process with <code>MODERNC_SQLITE_OFD_LOCK=1</code>, since the mode is process-wide and frozen at the first lock so the suite's own process cannot switch; a positive control asserts the variable really switched the mode on before each scenario runs, and the two scenarios whose invariants hold under both modes also run in the parent process's inherited mode. <code>TestOFDLockingSetter</code> exercises the Go call path end to end in a clean child \u2014 off by default, enabled before the first connection, the kernel-visible <code>OFDLCK</code> record in <code>/proc/locks</code> as the positive control, frozen after the first lock \u2014 and on every other platform the switch is asserted to report itself unavailable.</li>\n<li>Resolves [GitLab issue <a href=\"https://gitlab.com/cznic/sqlite/-/work_items/255\">#255</a>](<a href=\"https://gitlab.com/cznic/sqlite/-/issues/255\">https://gitlab.com/cznic/sqlite/-/issues/255</a>). See [GitLab merge request <a href=\"https://gitlab.com/cznic/sqlite/-/work_items/136\">#136</a>](<a href=\"https://gitlab.com/cznic/sqlite/-/merge_requests/136\">https://gitlab.com/cznic/sqlite/-/merge_requests/136</a>), thanks Nathan Herring (<a href=\"https://gitlab.com/technosloth\"><code>@\u200btechnosloth</code></a>), and thanks Gani Georgiev (<a href=\"https://gitlab.com/ganigeorgiev\"><code>@\u200bganigeorgiev</code></a>) for pressing the opt-in default!</li>\n</ul>\n</li>\n<li>\n<p>2026-08-19 v1.57.0:</p>\n<ul>\n<li>Add an opt-in <code>_defensive</code> DSN query parameter that turns on SQLite's defensive mode for the connection, disabling the SQL-level features that let ordinary statements deliberately corrupt the database file. When <code>_defensive=1</code> (or any <code>strconv.ParseBool</code> true value) is supplied, the driver calls <code>sqlite3_db_config</code> with <code>SQLITE_DBCONFIG_DEFENSIVE</code> immediately after <code>sqlite3_open_v2</code> and before every other parameter is applied, so the PRAGMAs the driver itself runs, the <code>_pragma</code> list, and every statement the caller prepares are all subject to it. On such a connection <code>PRAGMA writable_schema=ON</code>, <code>PRAGMA journal_mode=OFF</code> and <code>PRAGMA schema_version=N</code> become silent no-ops, and writes to a virtual table's shadow tables (fts5's <code>_data</code>, <code>_idx</code> and so on) and to <code>sqlite_dbpage</code> fail with &quot;table ... may not be modified&quot;; reading those tables, ordinary use of the virtual tables that own them, and <code>VACUUM</code> are unaffected. The flag has no PRAGMA equivalent, so <code>sqlite3_db_config</code> \u2014 and therefore a DSN parameter \u2014 is the only way to reach it short of dropping to <code>modernc.org/sqlite/lib</code>. The value is parsed before <code>sqlite3_open_v2</code>, so an invalid one fails the connection without creating the database file, and the parameter must appear at most once: a repeated <code>_defensive</code> is an error rather than letting the first value silently win. Absence of the parameter, or <code>_defensive=0</code>, leaves SQLite's default behavior unchanged; existing DSNs continue to work byte-for-byte. Two limits are worth stating plainly, since the name invites more confidence than the flag earns. Defensive mode is a hardening measure, not a sandbox for hostile database files: it is one of several steps <a href=\"https://www.sqlite.org/security.html\">SQLite recommends</a> for that purpose, and this build compiles with neither <code>SQLITE_TRUSTED_SCHEMA=0</code> nor <code>SQLITE_DQS=0</code> and exposes no authorizer. And it is a property of the connection, not of the database file \u2014 a second handle opened on the same file without the parameter is unrestricted.</li>\n<li>Reject the one DSN combination defensive mode would otherwise swallow in silence. <code>_defensive=1</code> together with <code>_journal_mode=OFF</code> (or <code>_journal=OFF</code>) now fails the connection instead of opening one in which neither parameter was honoured: SQLite turns <code>PRAGMA journal_mode=OFF</code> into a no-op that still reports success, so the driver would have accepted the mode, executed it, and left the journal untouched without telling anyone. The check runs in the validation phase introduced in v1.55.0, before any statement executes, so a rejected DSN cannot leave the database half-configured. <code>_pragma</code> remains the exception it has always been: <code>_pragma=journal_mode(OFF)</code> alongside <code>_defensive=1</code> still runs and is still silently ignored by SQLite. Only DSNs using <code>_defensive</code> can be affected, and that parameter is new, so no DSN that opened before changes behavior.</li>\n<li>See [GitHub pull request <a href=\"https://gitlab.com/cznic/sqlite/-/work_items/6\">#6</a>](<a href=\"https://redirect.github.com/modernc-org/sqlite/pull/6\">modernc-org/sqlite#6</a>), thanks wsman!</li>\n<li>Ship the sqlite-vec license notice this module has been missing. <code>modernc.org/sqlite/vec</code> has bundled the transpiled <a href=\"https://github.com/asg017/sqlite-vec\">sqlite-vec</a> sources since v1.47.0, but the module carried only its own BSD-3-Clause <code>LICENSE</code> and the public-domain SQLite notice. sqlite-vec is Copyright (c) 2024 Alex Garcia, dual-licensed Apache-2.0 OR MIT and used here under MIT, whose terms require the copyright and permission notice to accompany substantial portions of the software \u2014 which 2.8 MB of transpiled <code>vec/</code> plainly is. The notice now ships as <code>LICENSE-SQLITE_VEC</code> in the module root, byte-identical to the <code>LICENSE-MIT</code> in the upstream v0.1.9 archive and named after the file <code>modernc.org/libsqlite_vec</code> extracts it into. Attribution was never absent \u2014 <code>vec</code>'s package documentation has named the extension, pinned the version and linked upstream \u2014 but the license text itself was, and the omission was ours: <code>vendor_libs/main.go</code> copied the per-target transpiles and nothing else. It now copies the notice alongside them and fails the vendoring run if it cannot, so a <code>make vendor</code> can no longer quietly drop it. The <code>vec</code> package documentation gained a License section recording that the package is under a different license from the rest of this module.</li>\n<li><strong>The SQLite notice is renamed from <code>SQLITE-LICENSE</code> to <code>LICENSE-SQLITE</code></strong>; update any direct links to it. Its contents are unchanged and SQLite remains public domain. The name now matches both the new <code>LICENSE-SQLITE_VEC</code> beside it and the <code>LICENSE-&lt;upstream&gt;</code> convention every other modernc.org repository follows, but it is more than cosmetic: <code>go mod vendor</code> selects the files it copies into a downstream <code>vendor/</code> tree by matching each name against a fixed list of prefixes \u2014 <code>LICENSE</code> among them \u2014 so a name merely <em>ending</em> in <code>LICENSE</code> was never propagated. Both bundled notices now travel with the code into vendored builds, which is where the MIT terms on <code>vec/</code> keep applying. No code changes; no behavior changes.</li>\n<li>Let a caller-constructed <code>Driver</code> register its own functions, collations and virtual table modules. <code>Driver</code> has always held four categories of registration state, but only <code>RegisterConnectionHook</code> could put anything on a constructed one: functions and collations were reachable through the package-level API alone, and modules through the package-level driver only, which left the <code>modules</code> field written and read through that instance and so process-global state wearing a per-instance field. <code>Driver</code> now has <code>RegisterFunction</code>, <code>RegisterScalarFunction</code>, <code>RegisterDeterministicScalarFunction</code>, <code>RegisterCollationUtf8</code> and <code>RegisterModule</code>, plus <code>Must*</code> variants of the first four, each registering on that <code>Driver</code> alone; the methods are safe to call concurrently, and the zero <code>Driver</code> is ready to use as-is. <code>vtab.RegisterModule</code> also honours its <code>db</code> argument now: a non-nil <code>db</code> registers on the driver backing it when that driver implements the new <code>vtab.ModuleRegisterer</code>, while a nil <code>db</code> keeps targeting the driver this package registers as <code>sqlite</code>. One existing pattern changes behavior, narrowly and loudly: <code>vtab.RegisterModule(db, ...)</code> where <code>db</code> was opened on a caller-constructed <code>Driver</code> used to discard the <code>db</code> argument and land on the <code>sqlite</code> driver, reaching every connection in the process; it now lands on the constructed driver alone, so a <code>sql.Open(&quot;sqlite&quot;)</code> connection that used to resolve such a module gets <code>no such module</code> instead. The same pattern is also the one way an existing program could hold one module name on both a constructed <code>Driver</code> and the package-level one: there the first of the two registrations used to win and the second was refused as already registered, whereas now the package-level implementation wins on the constructed <code>Driver</code>'s connections regardless of the order they ran in. Reaching that case at all means the program ignored an error the older version returned. Two smaller deviations round out the list: <code>Driver.RegisterModule</code> reports no error for such a collision, and <code>vtab.RegisterModule</code> now validates its name and module arguments before the not-implemented check, so a call with an empty name that returned <code>vtab: RegisterModule not wired into engine</code> outside this driver returns <code>vtab: module name must be non-empty</code> instead. Everything else is additive against v1.56.0: the package-level registration functions target the same driver they always did, connections still receive every module registered through the package-level path whichever <code>Driver</code> opened them, and a <code>db</code> opened on the <code>sqlite</code> driver resolves to that same driver. The isolating change discussed in [GitLab issue <a href=\"https://gitlab.com/cznic/sqlite/-/work_items/254\">#254</a>](<a href=\"https://gitlab.com/cznic/sqlite/-/issues/254\">https://gitlab.com/cznic/sqlite/-/issues/254</a>) is deliberately not made here.</li>\n<li>See [GitLab merge request <a href=\"https://gitlab.com/cznic/sqlite/-/work_items/135\">#135</a>](<a href=\"https://gitlab.com/cznic/sqlite/-/merge_requests/135\">https://gitlab.com/cznic/sqlite/-/merge_requests/135</a>), thanks Ian Chechin!</li>\n<li>Promote <code>freebsd/386</code>, <code>freebsd/arm</code> and <code>netbsd/amd64</code> to fully supported platforms. All three are now listed in the package documentation's platform table, which had carried seventeen entries while this module shipped, cross-built and tested twenty. They arrived as <strong>experimental</strong> in v1.53.0 \u2014 <code>netbsd/amd64</code> reviving a port that had been broken for years, <code>freebsd/386</code> replacing a stale, effectively untested SQLite 3.41 transpile, and <code>freebsd/arm</code> entirely new \u2014 and were deliberately kept out of that table until they had accumulated real-world exposure, with promotion promised once &quot;a period of broader real-world testing \u2026 elapses without surprises&quot;. That period has elapsed: all three have been in the builder test matrix and in <code>make build_all_targets</code> since v1.53.0, all three pass the full test suite on this release's commit alongside the seventeen platforms already listed, and no open issue reports a defect in any of them. The two <code>netbsd/amd64</code> build failures filed before the revival, [GitLab issue <a href=\"https://gitlab.com/cznic/sqlite/-/work_items/202\">#202</a>](<a href=\"https://gitlab.com/cznic/sqlite/-/issues/202\">https://gitlab.com/cznic/sqlite/-/issues/202</a>) and [GitLab issue <a href=\"https://gitlab.com/cznic/sqlite/-/work_items/234\">#234</a>](<a href=\"https://gitlab.com/cznic/sqlite/-/issues/234\">https://gitlab.com/cznic/sqlite/-/issues/234</a>), no longer reproduce at this commit: <code>Xsqlite3_is_interrupted</code> is present in the sources that target selects, and the <code>mu.enter</code>/<code>mu.leave</code> symbols that broke the build are gone. Documentation only \u2014 the transpiled sources under <code>lib/</code> are byte-for-byte what v1.56.0 shipped, and nothing about how these targets behave changes.</li>\n</ul>\n</li>\n<li>\n<p>2026-08-03 v1.56.0:</p>\n<ul>\n<li>Re-vendor the transpiled SQLite sources, picking up <code>modernc.org/libsqlite3</code>'s fix for an upstream <strong>data-corruption bug in SQLite 3.53.3's journal rollback</strong>. The SQLite version is unchanged at <a href=\"https://sqlite.org/releaselog/3_53_3.html\">3.53.3</a>; what changes is that the amalgamation is now patched before it is transpiled. 3.53.3 reworked <code>readSuperJournal()</code> to return the super-journal name through a <code>char**</code> out-parameter, and <code>pager_playback()</code> now tests that pointer where it used to test <code>zSuper[0]</code>. A crash during the commit of a multi-database (ATTACH) transaction can leave the super-journal name and its checksum zeroed while the name length and the trailing magic survive; the checksum is a plain byte sum, so an all-zero name still validates and <code>readSuperJournal()</code> hands back a non-NULL pointer to an empty string. <code>pager_playback()</code> then calls <code>sqlite3OsAccess(pVfs, &quot;&quot;, SQLITE_ACCESS_EXISTS)</code>, gets ENOENT, and deletes the hot journal without playing it back \u2014 leaving the database corrupted. This is not a transpilation artifact: a plain gcc build of the stock 3.53.3 amalgamation fails on the same bytes while 3.53.2 recovers them, and it is what has been making upstream's own <code>test/crash.test</code> fail intermittently, in roughly 2% of runs, on every platform. The patch restores the pre-3.53.3 behaviour of reporting a <code>(nul)</code> super-journal name and will be dropped once upstream ships its own fix. Every supported target carries it.</li>\n<li>Two targets change beyond that patch. On <code>linux/s390x</code> the regenerated transpile allocates C bit-fields MSB-first, as the big-endian platform ABI requires, rather than LSB-first; this comes from <code>modernc.org/cc/v4</code> v4.29.1 and touches bit-field accesses throughout the SQLite core, s390x being this module's only big-endian target. On <code>linux/riscv64</code> the transpile was regenerated on a host running GCC 11.4.0 where the previous one used GCC 13.3.0, which drops a handful of unexported compiler-predefined macro constants (the <code>__FLT16_*</code> family, <code>__DBL_IS_IEC_60559__</code> and friends) and changes the <code>COMPILER=gcc-13.3.0</code> entry <code>PRAGMA compile_options</code> reports to <code>COMPILER=gcc-11.4.0</code>; no SQLite code generation differs. Every other target's generated code is byte-identical to v1.55.0 apart from the journal-rollback patch above.</li>\n<li>Bump the pinned <code>modernc.org/libc</code> to v1.74.4, and the remaining dependencies to their current releases. v1.74.2 and v1.74.3 are retracted upstream \u2014 a <code>freeaddrinfo</code> lock leak that deadlocks name resolution \u2014 and v1.74.4 is the fix. As always, downstream modules must pin the exact <code>modernc.org/libc</code> version this module's <code>go.mod</code> pins (see [GitLab issue <a href=\"https://gitlab.com/cznic/sqlite/-/work_items/177\">#177</a>](<a href=\"https://gitlab.com/cznic/sqlite/-/issues/177\">https://gitlab.com/cznic/sqlite/-/issues/177</a>)).</li>\n<li>Documentation sweep. <code>openbsd/amd64</code> and <code>openbsd/arm64</code> join the supported platforms table in the package documentation: both have been in the builder test matrix since January and are cross-built by <code>make build_all_targets</code>, but had never been listed. The <code>vfs</code> DSN query parameter \u2014 which names a VFS registered with SQLite, such as one returned by <code>vfs.New</code> \u2014 is now documented alongside the other DSN parameters on <code>Driver.Open</code>. The &quot;Debug and development versions&quot; section no longer describes a <code>GO_GENERATE</code> environment variable and a <code>go generate</code> that this repository has not had since <code>generator.go</code> moved to <code>modernc.org/libsqlite3</code>; it now points at that repository and <code>make vendor</code> instead, and the stale <code>//go:generate</code> directive naming the removed file is dropped with it. <code>modernc.org/sqlite/vec</code> and <code>modernc.org/sqlite/vfs</code> gained the package doc comments they were missing, so both finally carry a synopsis on pkg.go.dev. Documentation only; no behavior changes.</li>\n<li>Add <code>NewConnector</code>, returning a <code>database/sql/driver.Connector</code> for use with <code>sql.OpenDB</code>. It opens the same connections <code>sql.Open(&quot;sqlite&quot;, dsn)</code> does, from the same registered driver, so every function, collation, connection hook and virtual table module registered through this package applies to them. It exists for callers that need to interpose on the physical connections <code>database/sql</code> opens \u2014 tracing, metrics, connection-scoped setup \u2014 which <code>sql.Open</code> gives no access to: such a caller can embed the returned <code>Connector</code>, override <code>Connect</code>, and pass its own wrapper to <code>sql.OpenDB</code>. Previously the only way to reach the registered driver was the <code>db, _ := sql.Open(&quot;sqlite&quot;, &quot;&quot;); drv := db.Driver(); db.Close()</code> idiom, which works only because <code>sql.Open</code> does not connect and this driver does not implement <code>driver.DriverContext</code>; and the only way to get a wrapper into a <code>*sql.DB</code> was <code>sql.Register</code>, which is process-global, panics on a name it has already seen, and cannot be undone, so a library had to invent a unique driver name per configuration. <code>sql.OpenDB</code> registers nothing. Constructing a <code>&amp;sqlite.Driver{}</code> is not an alternative \u2014 its fields are unexported, so it carries none of the registrations. <code>NewConnector</code> checks the DSN only as far as it can without opening a database \u2014 a query string that does not parse, and conflicting <code>vfs</code> parameters; everything else continues to be validated when the connection is opened, so an unknown parameter or an out-of-range value is reported by <code>Connect</code> rather than at construction. Nothing about the existing <code>sql.Open</code> path changes: <code>*Driver</code> deliberately still does not implement <code>driver.DriverContext</code>, so <code>sql.Open</code> remains lazy and DSN errors continue to surface where they always have. A runnable sample is in <code>examples/connector</code>. Resolves [GitLab issue <a href=\"https://gitlab.com/cznic/sqlite/-/work_items/253\">#253</a>](<a href=\"https://gitlab.com/cznic/sqlite/-/issues/253\">https://gitlab.com/cznic/sqlite/-/issues/253</a>), thanks Alessandro Segala (<a href=\"https://gitlab.com/ItalyPaleAle\"><code>@\u200bItalyPaleAle</code></a>)!</li>\n<li>Document that a caller-constructed <code>sqlite.Driver</code> is not the driver this package registers as <code>&quot;sqlite&quot;</code>. Its fields are unexported, so it starts with no functions, collations or connection hooks and the only way to give it any is its own <code>RegisterConnectionHook</code> method; the package-level <code>Register*</code> functions always apply to the registered driver. Connections such a <code>Driver</code> opens therefore run without the package-level functions and collations \u2014 and because a registered function silently replaces a SQLite built-in of the same name, a <code>Driver</code> you construct can evaluate <code>upper(x)</code>, <code>date(x)</code> and the like differently from one opened through <code>sql.Open</code>. Virtual table modules are the one exception: they are held process-globally and reach every <code>Driver</code>. Constructing one remains supported for the private-hook pattern \u2014 a driver registered under a name of its own with <code>sql.Register</code> so its connection hooks apply only to its own connections \u2014 and is otherwise best avoided in favour of <code>sql.Open</code> or <code>NewConnector</code>. Documentation only; no behavior changes.</li>\n</ul>\n</li>\n<li>\n<p>2026-07-20 v1.55.0:</p>\n<ul>\n<li>Add <code>github.com/mattn/go-sqlite3</code>-compatible shorthand DSN query parameters to ease migration from that driver: <code>_busy_timeout</code>/<code>_timeout</code>, <code>_foreign_keys</code>/<code>_fk</code>, <code>_journal_mode</code>/<code>_journal</code>, <code>_synchronous</code>/<code>_sync</code>, <code>_auto_vacuum</code>/<code>_vacuum</code>, and <code>_query_only</code>, each setting the correspondingly named PRAGMA. Values are validated against the same set <code>mattn/go-sqlite3</code> accepts (case-insensitive) and an unrecognized value fails the connection with an error, so a typo such as <code>_synchronous=fu1l</code> or <code>_foreign_keys=yes_please</code> is reported rather than silently downgrading durability or dropping foreign-key enforcement. The keys are applied in a fixed order independent of their order in the DSN \u2014 <code>_busy_timeout</code> and <code>_auto_vacuum</code> before any <code>_pragma</code> values (<code>auto_vacuum</code> must be set before the database is first written), the rest after, and <code>_query_only</code> last \u2014 and where a key and its alias are both supplied the alias wins, matching <code>mattn/go-sqlite3</code>; selection is by presence rather than by value, so supplying the alias empty (<code>_foreign_keys=on&amp;_fk=</code>) suppresses the PRAGMA rather than deferring to the primary key, again matching that driver. Behavior change to note: prior releases ignored these keys entirely, so a DSN carried over from a <code>mattn/go-sqlite3</code> setup changes in two ways. A recognized key that previously did nothing now takes effect \u2014 <code>_foreign_keys=on</code> begins enforcing constraints against data that may already violate them, <code>_journal_mode=wal</code> persistently converts the database file, and <code>_query_only=1</code> makes the connection read-only. And a value outside the accepted set now fails the connection with an error where the same DSN previously opened successfully \u2014 for example a duration-style <code>_busy_timeout=5s</code> or <code>_timeout=5000ms</code>, neither of which is the integer that key requires. Review such DSNs before upgrading. <code>_pragma</code> is unchanged and no pre-existing parameter changes meaning, though see the following entry for a change in when all of them are validated.</li>\n<li>See [GitLab merge request <a href=\"https://gitlab.com/cznic/sqlite/-/work_items/134\">#134</a>](<a href=\"https://gitlab.com/cznic/sqlite/-/merge_requests/134\">https://gitlab.com/cznic/sqlite/-/merge_requests/134</a>), thanks Toni Spets (<a href=\"https://gitlab.com/beeper-hifi\"><code>@\u200bbeeper-hifi</code></a>) and Ian Chechin!</li>\n<li>Validate every DSN query parameter before applying any of them. Parameters were previously checked as each was reached, so a DSN whose later parameter was rejected had already executed the PRAGMAs ahead of it. Because <code>PRAGMA journal_mode</code> and <code>PRAGMA auto_vacuum</code> are persistent changes to the database file, a DSN such as <code>file:x.db?_journal_mode=wal&amp;_synchronous=bogus</code> failed the connection and yet left <code>x.db</code> converted to WAL. A failed <code>Open</code> now leaves the database as it found it. This covers the pre-existing <code>_txlock</code>, <code>_timezone</code>, <code>_time_format</code>, <code>_time_integer_format</code>, <code>_inttotime</code> and <code>_texttotime</code> parameters as well as the shorthand keys above: all of them were validated only after the <code>_pragma</code> list had already run, so the same DSN shape \u2014 a valid <code>_pragma=journal_mode=wal</code> alongside a misspelled <code>_txlock</code> \u2014 converted the file before reporting the error. Only the values accepted for each parameter are unchanged; a DSN that opened successfully before still opens, and one that failed still fails with the same error. <code>_pragma</code> remains the sole exception, since its values are executed verbatim and cannot be checked in advance: a malformed <code>_pragma</code> is still rejected by SQLite as it runs, after any earlier <code>_pragma</code> in the list has taken effect.</li>\n</ul>\n</li>\n<li>\n<p>2026-07-15 v1.54.0:</p>\n<ul>\n<li>Upgrade to <a href=\"https://sqlite.org/releaselog/3_53_3.html\">SQLite 3.53.3</a>. This also bumps the pinned <code>modernc.org/libc</code> to v1.74.1; as always, downstream modules must pin the exact same <code>modernc.org/libc</code> version this module's <code>go.mod</code> pins (see [GitLab issue <a href=\"https://gitlab.com/cznic/sqlite/-/work_items/177\">#177</a>](<a href=\"https://gitlab.com/cznic/sqlite/-/issues/177\">https://gitlab.com/cznic/sqlite/-/issues/177</a>)).</li>\n<li>Under the opt-in <code>_texttotime</code> DSN parameter, best-effort parse date-shaped TEXT values from columns SQLite reports with an empty declared type \u2014 aggregates and expressions over a date column (<code>MAX(d)</code>, <code>COALESCE(d, ...)</code>, <code>upper(d)</code>, <code>d || ''</code>), subqueries, and typeless real columns (<code>CREATE TABLE t(x)</code>) \u2014 into <code>time.Time</code>, instead of delivering them as a raw string that <code>Scan</code> cannot store into a <code>*time.Time</code>. The existing declared <code>DATE</code>/<code>DATETIME</code>/<code>TIME</code>/<code>TIMESTAMP</code> path is unchanged; this only adds the empty-decltype case. The conversion is strictly best-effort: a value that does not parse as a time falls through to the original string, so no <code>Scan</code> that worked before can newly fail. <code>ColumnTypeScanType</code> continues to report <code>string</code> for empty-decltype columns, since the declared type cannot prove the column is temporal. Without <code>_texttotime</code> the behavior is byte-for-byte unchanged. Resolves [GitLab issue <a href=\"https://gitlab.com/cznic/sqlite/-/work_items/248\">#248</a>](<a href=\"https://gitlab.com/cznic/sqlite/-/issues/248\">https://gitlab.com/cznic/sqlite/-/issues/248</a>).</li>\n<li>See [GitLab merge request <a href=\"https://gitlab.com/cznic/sqlite/-/work_items/133\">#133</a>](<a href=\"https://gitlab.com/cznic/sqlite/-/merge_requests/133\">https://gitlab.com/cznic/sqlite/-/merge_requests/133</a>), thanks Ian Chechin!</li>\n</ul>\n</li>\n<li>\n<p>2026-06-21 v1.53.0:</p>\n<ul>\n<li>Add <strong>experimental</strong> <code>netbsd/amd64</code> support, resolving the long-standing build break in [GitLab issue <a href=\"https://gitlab.com/cznic/sqlite/-/work_items/246\">#246</a>](<a href=\"https://gitlab.com/cznic/sqlite/-/issues/246\">https://gitlab.com/cznic/sqlite/-/issues/246</a>). This target is intentionally <strong>not yet listed among the supported platforms</strong> in the package documentation: the port had been broken for years and is only now revived, and there is as yet no real-world experience running it under production workloads. Green CI is not the same as battle-tested \u2014 so while the full test suite (including the <code>pcache</code> and <code>vec</code> packages and the <code>-race</code> concurrency test) passes on NetBSD 10.1 / Go 1.26.3, and the entire upstream toolchain (<code>libc</code>, <code>cc</code>, <code>ccgo</code>, <code>libz</code>, <code>libtcl8.6</code>, <code>libsqlite3</code>, <code>libsqlite_vec</code>) is green on the NetBSD CI builder, the target is offered for evaluation only. If you run NetBSD, please exercise it with your own workloads and report back via <a href=\"https://gitlab.com/cznic/sqlite/-/work_items/246\">#246</a>; the intent is to promote it to a fully supported platform after a period of broader real-world testing (on the order of a month) elapses without surprises.</li>\n<li>Implementation notes: the previously shipped <code>lib/sqlite_netbsd_amd64.go</code> was a stale old-generator transpile that no longer compiled (the <code>mu.enter</code>/<code>mu.leave</code> break in <a href=\"https://gitlab.com/cznic/sqlite/-/work_items/246\">#246</a>); it is replaced by a fresh new-generator transpile consistent with every other platform, and <code>modernc.org/sqlite/vec</code> (sqlite-vec) is vendored and auto-registers on netbsd. Correct operation requires the matching pinned <code>modernc.org/libc</code>, which carries two NetBSD-specific fixes found during this work: the <code>mmap(2)</code> <code>PAD</code>-argument ABI (without it, concurrent WAL access faults with SIGBUS in the WAL-index shared memory) and a working <code>abort(3)</code> (the prior stub left SQLite's crash-recovery <code>writecrash</code> test unable to terminate by signal). As usual, downstream modules must pin the exact <code>modernc.org/libc</code> version this module's <code>go.mod</code> pins.</li>\n<li>See [GitLab merge request <a href=\"https://gitlab.com/cznic/sqlite/-/work_items/82\">#82</a>](<a href=\"https://gitlab.com/cznic/sqlite/-/merge_requests/82\">https://gitlab.com/cznic/sqlite/-/merge_requests/82</a>), thanks Leonardo Taccari (<a href=\"https://gitlab.com/iamleot\"><code>@\u200biamleot</code></a>) and Thomas Klausner (@<em>wiz</em>)!</li>\n<li>Add <strong>experimental</strong> <code>freebsd/386</code> and <code>freebsd/arm</code> support. As with the <code>netbsd/amd64</code> target above, these two 32-bit FreeBSD ports are intentionally <strong>not yet listed among the supported platforms</strong> in the package documentation: <code>freebsd/386</code> previously shipped a stale, effectively untested SQLite 3.41 transpile, and <code>freebsd/arm</code> is entirely new, so neither has real-world production mileage yet. Both are now freshly transpiled at SQLite 3.53.2 consistent with every other platform, build cleanly, and pass the full test suite (core, WAL/concurrency, and the <code>vec</code> package) on the FreeBSD CI builders; they are offered for evaluation only. If you run 32-bit FreeBSD, please exercise these targets with your own workloads and report back \u2014 the intent is to promote <code>freebsd/386</code>, <code>freebsd/arm</code>, and <code>netbsd/amd64</code> to fully supported platforms in a future release cycle, once a period of broader real-world testing elapses without surprises.</li>\n<li>Implementation notes: correct operation on <code>freebsd/arm</code> requires the matching pinned <code>modernc.org/libc</code> (v1.73.4), which fixes the per-arch <code>mmap(2)</code> <code>off_t</code> encoding for 32-bit FreeBSD; without it the WAL shared-memory mapping faults with SIGBUS under concurrent access, the same class of bug found on the netbsd port. As usual, downstream modules must pin the exact <code>modernc.org/libc</code> version this module's <code>go.mod</code> pins.</li>\n<li>See [GitLab merge request <a href=\"https://gitlab.com/cznic/sqlite/-/work_items/119\">#119</a>](<a href=\"https://gitlab.com/cznic/sqlite/-/merge_requests/119\">https://gitlab.com/cznic/sqlite/-/merge_requests/119</a>), thanks Olivier Cochard-Labb\u00e9 (<a href=\"https://gitlab.com/ocochard\"><code>@\u200bocochard</code></a>)!</li>\n<li>Add a Go-facing wrapper for <code>SQLITE_CONFIG_PCACHE2</code>. <code>PageCache</code> is the factory and <code>Cache</code> the per-database instance, both idiomatic Go interfaces; <code>Page</code> exposes the raw <code>Buf</code> and <code>Extra</code> pointers that SQLite reads through the C pcache contract. <code>RegisterPageCache</code> and <code>MustRegisterPageCache</code> install the module process-globally before the first <code>sql.Open</code>; subsequent Open calls are gated through a one-shot <code>Xsqlite3_config(SQLITE_CONFIG_PCACHE2)</code> so a too-late Register returns <code>ErrPageCacheTooLate</code> rather than silently falling through to the built-in pcache1. The binding owns the <code>sqlite3_pcache_page</code> stub and re-consults the implementation on every Fetch, reusing the stub only when the returned <code>Page</code> value is unchanged, which keeps a bounded/evicting purgeable cache safe by construction.</li>\n</ul>\n</li>\n</ul>\n<!-- raw HTML omitted -->\n</blockquote>\n<p>... (truncated)</p>\n</details>\n<details>\n<summary>Commits</summary>\n<ul>\n<li><a href=\"https://gitlab.com/cznic/sqlite/commit/722282f38b49191a4e24569eeac960bc033bd8f0\"><code>722282f</code></a> CHANGELOG.md: document the OFD locking opt-in and the SQLite 3.53.4 upgrade</li>\n<li><a href=\"https://gitlab.com/cznic/sqlite/commit/5dcac5fbafc8194fd069f61ede3c7efbd482a2ff\"><code>5dcac5f</code></a> sqlite: add the opt-in OFDLocking switch to Linux OFD locks</li>\n<li><a href=\"https://gitlab.com/cznic/sqlite/commit/51d267714fcb4ebb2ca0969c3d31815c18fd82fb\"><code>51d2677</code></a> Merge branch 'ofd-lock-test'</li>\n<li><a href=\"https://gitlab.com/cznic/sqlite/commit/3f99e260f63ff2de76a94976e3d976ee75a8a4d1\"><code>3f99e26</code></a> update dependencies, make vendor</li>\n<li><a href=\"https://gitlab.com/cznic/sqlite/commit/9159fa5ff00bd00f72e6893b71682b3348fa853d\"><code>9159fa5</code></a> test: add Linux OFD lock regression tests</li>\n<li><a href=\"https://gitlab.com/cznic/sqlite/commit/2acd716d384a147b8daf1d91507f6346d409deff\"><code>2acd716</code></a> test: add Linux OFD lock persistence test across os.Close</li>\n<li><a href=\"https://gitlab.com/cznic/sqlite/commit/bd9dcb65646988cc78aa56effa9a69fd04893478\"><code>bd9dcb6</code></a> add Readme Headline...</li>\n<li><a href=\"https://gitlab.com/cznic/sqlite/commit/93f0742ee384d5dbba5e6cd7d49afd0e9604160c\"><code>93f0742</code></a> add Readme Headline</li>\n<li>See full diff in <a href=\"https://gitlab.com/cznic/sqlite/compare/v1.57.0...v1.58.0\">compare view</a></li>\n</ul>\n</details>\n<br />\n\n\nDependabot will resolve any conflicts with this PR as long as you don't alter it yourself. You can also trigger a rebase manually by commenting `@dependabot rebase`.\n\n[//]: # (dependabot-automerge-start)\n[//]: # (dependabot-automerge-end)\n\n---\n\n<details>\n<summary>Dependabot commands and options</summary>\n<br />\n\nYou can trigger Dependabot actions by commenting on this PR:\n- `@dependabot rebase` will rebase this PR\n- `@dependabot recreate` will recreate this PR, overwriting any edits that have been made to it\n- `@dependabot show <dependency name> ignore conditions` will show all of the ignore conditions of the specified dependency\n- `@dependabot ignore <dependency name> major version` will close this group update PR and stop Dependabot creating any more for the specific dependency's major version (unless you unignore this specific dependency's major version or upgrade to it yourself)\n- `@dependabot ignore <dependency name> minor version` will close this group update PR and stop Dependabot creating any more for the specific dependency's minor version (unless you unignore this specific dependency's minor version or upgrade to it yourself)\n- `@dependabot ignore <dependency name>` will close this group update PR and stop Dependabot creating any more for the specific dependency (unless you unignore this specific dependency or upgrade to i...\n\n_Description has been truncated_\n\n<!-- catalog-pr-audit -->\nCurrent disposition (2026-09-08)\n\nRetain as the Go dependency update. All ten current checks pass. It changes AWS clients, MySQL, SQLite, cryptography, and documentation dependencies. Complete dependency review and validate catalog-branch integration before merge.\n",
+        "headRefName": "dependabot/go_modules/go-modules-36d75f47ec",
+        "headRefOid": "ef6a247f603ae9f538eddc80677b290f4e55819f",
+        "isDraft": false,
+        "mergeStateStatus": "CLEAN",
+        "mergeable": "MERGEABLE",
+        "number": 368,
+        "reviewDecision": "",
+        "statusCheckRollup": [
+          {
+            "__typename": "CheckRun",
+            "completedAt": "2026-09-07T14:45:22Z",
+            "conclusion": "SUCCESS",
+            "detailsUrl": "https://github.com/agentstation/starport/actions/runs/34134449017/job/101781989635",
+            "name": "Lint",
+            "startedAt": "2026-09-07T14:42:48Z",
+            "status": "COMPLETED",
+            "workflowName": "CI"
+          },
+          {
+            "__typename": "CheckRun",
+            "completedAt": "2026-09-07T14:49:25Z",
+            "conclusion": "SUCCESS",
+            "detailsUrl": "https://github.com/agentstation/starport/actions/runs/34134449017/job/101781989791",
+            "name": "Test (ubuntu-latest)",
+            "startedAt": "2026-09-07T14:42:48Z",
+            "status": "COMPLETED",
+            "workflowName": "CI"
+          },
+          {
+            "__typename": "CheckRun",
+            "completedAt": "2026-09-07T14:54:46Z",
+            "conclusion": "SUCCESS",
+            "detailsUrl": "https://github.com/agentstation/starport/actions/runs/34134449017/job/101781989930",
+            "name": "Test (macos-latest)",
+            "startedAt": "2026-09-07T14:42:53Z",
+            "status": "COMPLETED",
+            "workflowName": "CI"
+          },
+          {
+            "__typename": "CheckRun",
+            "completedAt": "2026-09-07T14:54:16Z",
+            "conclusion": "SUCCESS",
+            "detailsUrl": "https://github.com/agentstation/starport/actions/runs/34134449017/job/101781989722",
+            "name": "Test (windows-latest)",
+            "startedAt": "2026-09-07T14:42:47Z",
+            "status": "COMPLETED",
+            "workflowName": "CI"
+          },
+          {
+            "__typename": "CheckRun",
+            "completedAt": "2026-09-07T14:45:39Z",
+            "conclusion": "SUCCESS",
+            "detailsUrl": "https://github.com/agentstation/starport/actions/runs/34134449017/job/101781989640",
+            "name": "Security Scan",
+            "startedAt": "2026-09-07T14:42:48Z",
+            "status": "COMPLETED",
+            "workflowName": "CI"
+          },
+          {
+            "__typename": "CheckRun",
+            "completedAt": "2026-09-07T14:51:02Z",
+            "conclusion": "SUCCESS",
+            "detailsUrl": "https://github.com/agentstation/starport/actions/runs/34134449017/job/101781989588",
+            "name": "Release Contract",
+            "startedAt": "2026-09-07T14:42:48Z",
+            "status": "COMPLETED",
+            "workflowName": "CI"
+          },
+          {
+            "__typename": "CheckRun",
+            "completedAt": "2026-09-07T14:43:37Z",
+            "conclusion": "SUCCESS",
+            "detailsUrl": "https://github.com/agentstation/starport/actions/runs/34134449017/job/101781989679",
+            "name": "OpenRouter SDK Compatibility",
+            "startedAt": "2026-09-07T14:42:48Z",
+            "status": "COMPLETED",
+            "workflowName": "CI"
+          },
+          {
+            "__typename": "CheckRun",
+            "completedAt": "2026-09-07T14:53:37Z",
+            "conclusion": "SUCCESS",
+            "detailsUrl": "https://github.com/agentstation/starport/actions/runs/34134449017/job/101781989656",
+            "name": "Release Snapshot",
+            "startedAt": "2026-09-07T14:42:48Z",
+            "status": "COMPLETED",
+            "workflowName": "CI"
+          },
+          {
+            "__typename": "CheckRun",
+            "completedAt": "2026-09-07T14:42:59Z",
+            "conclusion": "SUCCESS",
+            "detailsUrl": "https://github.com/agentstation/starport/actions/runs/34134449017/job/101781989638",
+            "name": "Action Pin Provenance",
+            "startedAt": "2026-09-07T14:42:48Z",
+            "status": "COMPLETED",
+            "workflowName": "CI"
+          },
+          {
+            "__typename": "CheckRun",
+            "completedAt": "2026-09-07T14:59:25Z",
+            "conclusion": "SUCCESS",
+            "detailsUrl": "https://github.com/agentstation/starport/actions/runs/34134449017/job/101785430636",
+            "name": "Build",
+            "startedAt": "2026-09-07T14:54:48Z",
+            "status": "COMPLETED",
+            "workflowName": "CI"
+          }
+        ],
+        "title": "chore(deps): bump the go-modules group with 9 updates",
+        "updatedAt": "2026-09-08T05:18:15Z",
+        "url": "https://github.com/agentstation/starport/pull/368"
+      },
+      {
+        "baseRefName": "main",
+        "body": "Bumps the github-actions group with 1 update: [Homebrew/actions/setup-homebrew](https://github.com/homebrew/actions).\n\nUpdates `Homebrew/actions/setup-homebrew` from 2026.08.31.1 to 2026.09.07.1\n<details>\n<summary>Release notes</summary>\n<p><em>Sourced from <a href=\"https://github.com/homebrew/actions/releases\">Homebrew/actions/setup-homebrew's releases</a>.</em></p>\n<blockquote>\n<h2>2026.09.07.1</h2>\n<h2>What's Changed</h2>\n<ul>\n<li>Synchronize shared configuration by <a href=\"https://github.com/BrewTestBot\"><code>@\u200bBrewTestBot</code></a> in <a href=\"https://redirect.github.com/Homebrew/actions/pull/921\">Homebrew/actions#921</a></li>\n<li>build(deps): bump the github-actions group across 1 directory with 2 updates by <a href=\"https://github.com/dependabot\"><code>@\u200bdependabot</code></a>[bot] in <a href=\"https://redirect.github.com/Homebrew/actions/pull/923\">Homebrew/actions#923</a></li>\n<li>build(deps): bump the npm group with 3 updates by <a href=\"https://github.com/dependabot\"><code>@\u200bdependabot</code></a>[bot] in <a href=\"https://redirect.github.com/Homebrew/actions/pull/922\">Homebrew/actions#922</a></li>\n</ul>\n<p><strong>Full Changelog</strong>: <a href=\"https://github.com/Homebrew/actions/compare/2026.08.31.1...2026.09.07.1\">https://github.com/Homebrew/actions/compare/2026.08.31.1...2026.09.07.1</a></p>\n</blockquote>\n</details>\n<details>\n<summary>Commits</summary>\n<ul>\n<li><a href=\"https://github.com/Homebrew/actions/commit/f8d4222eb633e65c2a0157383cf80861fc7fae7f\"><code>f8d4222</code></a> Merge pull request <a href=\"https://redirect.github.com/homebrew/actions/issues/922\">#922</a> from Homebrew/dependabot/npm_and_yarn/npm-1a82b195b5</li>\n<li><a href=\"https://github.com/Homebrew/actions/commit/8939750302289fa213079e0e9459e642eda6bbf0\"><code>8939750</code></a> Merge pull request <a href=\"https://redirect.github.com/homebrew/actions/issues/923\">#923</a> from Homebrew/dependabot/github_actions/github-action...</li>\n<li><a href=\"https://github.com/Homebrew/actions/commit/588daa1c8eaea85ab4f8a2bdab0788de6c108a43\"><code>588daa1</code></a> build(deps): bump the github-actions group across 1 directory with 2 updates</li>\n<li><a href=\"https://github.com/Homebrew/actions/commit/d81a489554b26c8b7d8e81d24cde360c167b075e\"><code>d81a489</code></a> build(deps): bump the npm group with 3 updates</li>\n<li><a href=\"https://github.com/Homebrew/actions/commit/c69e528904c52915e7f40e120fc7d49773bbb2a0\"><code>c69e528</code></a> Merge pull request <a href=\"https://redirect.github.com/homebrew/actions/issues/921\">#921</a> from Homebrew/sync-shared-config</li>\n<li><a href=\"https://github.com/Homebrew/actions/commit/3a902485e99fce75c936b5efb0dfd19a98f247d5\"><code>3a90248</code></a> actionlint.yml: update to match main configuration</li>\n<li>See full diff in <a href=\"https://github.com/homebrew/actions/compare/3cdb78d0f62ad29dd32de765782654f4eedea607...f8d4222eb633e65c2a0157383cf80861fc7fae7f\">compare view</a></li>\n</ul>\n</details>\n<br />\n\n\n[![Dependabot compatibility score](https://dependabot-badges.githubapp.com/badges/compatibility_score?dependency-name=Homebrew/actions/setup-homebrew&package-manager=github_actions&previous-version=2026.08.31.1&new-version=2026.09.07.1)](https://docs.github.com/en/github/managing-security-vulnerabilities/about-dependabot-security-updates#about-compatibility-scores)\n\nDependabot will resolve any conflicts with this PR as long as you don't alter it yourself. You can also trigger a rebase manually by commenting `@dependabot rebase`.\n\n[//]: # (dependabot-automerge-start)\n[//]: # (dependabot-automerge-end)\n\n---\n\n<details>\n<summary>Dependabot commands and options</summary>\n<br />\n\nYou can trigger Dependabot actions by commenting on this PR:\n- `@dependabot rebase` will rebase this PR\n- `@dependabot recreate` will recreate this PR, overwriting any edits that have been made to it\n- `@dependabot show <dependency name> ignore conditions` will show all of the ignore conditions of the specified dependency\n- `@dependabot ignore <dependency name> major version` will close this group update PR and stop Dependabot creating any more for the specific dependency's major version (unless you unignore this specific dependency's major version or upgrade to it yourself)\n- `@dependabot ignore <dependency name> minor version` will close this group update PR and stop Dependabot creating any more for the specific dependency's minor version (unless you unignore this specific dependency's minor version or upgrade to it yourself)\n- `@dependabot ignore <dependency name>` will close this group update PR and stop Dependabot creating any more for the specific dependency (unless you unignore this specific dependency or upgrade to it yourself)\n- `@dependabot unignore <dependency name>` will remove all of the ignore conditions of the specified dependency\n- `@dependabot unignore <dependency name> <ignore condition>` will remove the ignore condition of the specified dependency and ignore conditions\n\n\n</details>\n\n<!-- catalog-pr-audit -->\nCurrent disposition (2026-09-08)\n\nRetain as the Homebrew action update. All ten current checks pass. Complete pin provenance and dependency review before merge. This update is independent of the catalog PR.\n\n\nPin verification (2026-09-08): the upstream 2026.09.07.1 tag resolves to f8d4222eb633e65c2a0157383cf80861fc7fae7f. The six-commit comparison changes four upstream maintenance files. It does not change setup-homebrew. Both Starport workflow references use the verified commit. All ten current checks pass. Retain this independent update for an authorized merge.\n",
+        "headRefName": "dependabot/github_actions/github-actions-f418b6a774",
+        "headRefOid": "3f0817ad23b69147caaafd2b30ccbd71a50e48a6",
+        "isDraft": false,
+        "mergeStateStatus": "CLEAN",
+        "mergeable": "MERGEABLE",
+        "number": 367,
+        "reviewDecision": "",
+        "statusCheckRollup": [
+          {
+            "__typename": "CheckRun",
+            "completedAt": "2026-09-07T14:07:57Z",
+            "conclusion": "SUCCESS",
+            "detailsUrl": "https://github.com/agentstation/starport/actions/runs/34131083043/job/101771097349",
+            "name": "Lint",
+            "startedAt": "2026-09-07T14:06:11Z",
+            "status": "COMPLETED",
+            "workflowName": "CI"
+          },
+          {
+            "__typename": "CheckRun",
+            "completedAt": "2026-09-07T14:14:17Z",
+            "conclusion": "SUCCESS",
+            "detailsUrl": "https://github.com/agentstation/starport/actions/runs/34131083043/job/101771097507",
+            "name": "Test (ubuntu-latest)",
+            "startedAt": "2026-09-07T14:06:11Z",
+            "status": "COMPLETED",
+            "workflowName": "CI"
+          },
+          {
+            "__typename": "CheckRun",
+            "completedAt": "2026-09-07T14:08:06Z",
+            "conclusion": "SUCCESS",
+            "detailsUrl": "https://github.com/agentstation/starport/actions/runs/34131083043/job/101771097294",
+            "name": "Test (macos-latest)",
+            "startedAt": "2026-09-07T14:06:15Z",
+            "status": "COMPLETED",
+            "workflowName": "CI"
+          },
+          {
+            "__typename": "CheckRun",
+            "completedAt": "2026-09-07T14:08:25Z",
+            "conclusion": "SUCCESS",
+            "detailsUrl": "https://github.com/agentstation/starport/actions/runs/34131083043/job/101771097466",
+            "name": "Test (windows-latest)",
+            "startedAt": "2026-09-07T14:06:11Z",
+            "status": "COMPLETED",
+            "workflowName": "CI"
+          },
+          {
+            "__typename": "CheckRun",
+            "completedAt": "2026-09-07T14:09:47Z",
+            "conclusion": "SUCCESS",
+            "detailsUrl": "https://github.com/agentstation/starport/actions/runs/34131083043/job/101771097613",
+            "name": "Security Scan",
+            "startedAt": "2026-09-07T14:06:11Z",
+            "status": "COMPLETED",
+            "workflowName": "CI"
+          },
+          {
+            "__typename": "CheckRun",
+            "completedAt": "2026-09-07T14:14:29Z",
+            "conclusion": "SUCCESS",
+            "detailsUrl": "https://github.com/agentstation/starport/actions/runs/34131083043/job/101771097071",
+            "name": "Release Contract",
+            "startedAt": "2026-09-07T14:06:10Z",
+            "status": "COMPLETED",
+            "workflowName": "CI"
+          },
+          {
+            "__typename": "CheckRun",
+            "completedAt": "2026-09-07T14:06:42Z",
+            "conclusion": "SUCCESS",
+            "detailsUrl": "https://github.com/agentstation/starport/actions/runs/34131083043/job/101771097343",
+            "name": "OpenRouter SDK Compatibility",
+            "startedAt": "2026-09-07T14:06:10Z",
+            "status": "COMPLETED",
+            "workflowName": "CI"
+          },
+          {
+            "__typename": "CheckRun",
+            "completedAt": "2026-09-07T14:16:56Z",
+            "conclusion": "SUCCESS",
+            "detailsUrl": "https://github.com/agentstation/starport/actions/runs/34131083043/job/101771097373",
+            "name": "Release Snapshot",
+            "startedAt": "2026-09-07T14:06:10Z",
+            "status": "COMPLETED",
+            "workflowName": "CI"
+          },
+          {
+            "__typename": "CheckRun",
+            "completedAt": "2026-09-07T14:06:22Z",
+            "conclusion": "SUCCESS",
+            "detailsUrl": "https://github.com/agentstation/starport/actions/runs/34131083043/job/101771097386",
+            "name": "Action Pin Provenance",
+            "startedAt": "2026-09-07T14:06:11Z",
+            "status": "COMPLETED",
+            "workflowName": "CI"
+          },
+          {
+            "__typename": "CheckRun",
+            "completedAt": "2026-09-07T14:19:05Z",
+            "conclusion": "SUCCESS",
+            "detailsUrl": "https://github.com/agentstation/starport/actions/runs/34131083043/job/101773632157",
+            "name": "Build",
+            "startedAt": "2026-09-07T14:14:31Z",
+            "status": "COMPLETED",
+            "workflowName": "CI"
+          }
+        ],
+        "title": "chore(deps): bump Homebrew/actions/setup-homebrew from 2026.08.31.1 to 2026.09.07.1 in the github-actions group",
+        "updatedAt": "2026-09-08T06:16:49Z",
+        "url": "https://github.com/agentstation/starport/pull/367"
+      },
+      {
+        "baseRefName": "main",
+        "body": "Public documentation now works before console authentication. Audience links and stable section anchors support local developers and operators. The documentation layout uses readable text, bounded line width, and keyboard-accessible code blocks. Settings retain the responsive layout from current main.\n\nThe README adds offline catalog exploration and a bounded streaming request. The performance guide distinguishes the existing controller timer from complete gateway latency. A full HTTP measurement fixture covers authentication and direct-versus-proxied requests.\n\nThe native release workflow verifies published Starport archives on Windows, Linux, and macOS, with x86-64 and ARM64 runners. This draft supports the active production catalog plan. Production qualification and the released Starmap/Starport pair remain open.\n\nValidation:\n\n- 457 console tests across 74 files, TypeScript checks, and console build passed after integration with main.\n- All Go tests and vet passed. App and controller race tests passed.\n- The repository pre-PR checks passed, including first-run startup and Python, TypeScript, and Go SDK smoke tests.\n- Eight native-release verifier tests passed. Native hosted execution remains pending.\n\n\n<!-- catalog-pr-audit -->\nCurrent disposition (2026-09-08)\n\nRetain as the Starport documentation, README, performance, and native-workflow PR. Published head 5820a370 passes all 16 checks. Six local commits through 69b5aff await publication. Those commits have separate evidence and do not inherit this head's green checks. Resolve the Starmap module dependency, complete checks and required review, then update this existing PR.\n\n\nIntegration update (2026-09-08)\n\nLocal commit 69b5aff selects published Starmap commit 7e591262 through its immutable Go pseudo-version. The candidate uses no workspace replacement. The candidate passes 135 catalog race events and builds the application.\n\nThe race suite passes 2,946 test events. The ordinary suite passes 3,009 test events with Valkey 7.2.14. Each suite passes 55 package suites. The ordinary suite skips manual Pub/Sub restart and the opt-in overhead test. The separate required overhead command executes that test and passes.\n\nOf 32 additional required commands, 31 pass. V01 rejects the pseudo-version because the release contract requires a stable Starmap tag. Keep that gate unchanged and adopt the compatible tag after approved publication.\n\nThe published PR head remains 5820a370. Six local commits remain unpublished. Their evidence does not change the published head's check results. Retain this existing PR until the release boundary, final review, and publication checks pass.\n",
+        "headRefName": "codex/catalog-lifecycle",
+        "headRefOid": "5820a370ff9255a8148799f5b45fcaf927c2e1dc",
+        "isDraft": true,
+        "mergeStateStatus": "CLEAN",
+        "mergeable": "MERGEABLE",
+        "number": 366,
+        "reviewDecision": "",
+        "statusCheckRollup": [
+          {
+            "__typename": "CheckRun",
+            "completedAt": "2026-09-07T05:15:00Z",
+            "conclusion": "SUCCESS",
+            "detailsUrl": "https://github.com/agentstation/starport/actions/runs/34085971745/job/101629963091",
+            "name": "Lint",
+            "startedAt": "2026-09-07T05:13:32Z",
+            "status": "COMPLETED",
+            "workflowName": "CI"
+          },
+          {
+            "__typename": "CheckRun",
+            "completedAt": "2026-09-07T05:14:06Z",
+            "conclusion": "SUCCESS",
+            "detailsUrl": "https://github.com/agentstation/starport/actions/runs/34085971741/job/101629963315",
+            "name": "Native windows x86_64",
+            "startedAt": "2026-09-07T05:13:33Z",
+            "status": "COMPLETED",
+            "workflowName": "Native Release Verification"
+          },
+          {
+            "__typename": "CheckRun",
+            "completedAt": "2026-09-07T05:14:15Z",
+            "conclusion": "SUCCESS",
+            "detailsUrl": "https://github.com/agentstation/starport/actions/runs/34085971741/job/101629963339",
+            "name": "Native windows arm64",
+            "startedAt": "2026-09-07T05:13:33Z",
+            "status": "COMPLETED",
+            "workflowName": "Native Release Verification"
+          },
+          {
+            "__typename": "CheckRun",
+            "completedAt": "2026-09-07T05:13:54Z",
+            "conclusion": "SUCCESS",
+            "detailsUrl": "https://github.com/agentstation/starport/actions/runs/34085971741/job/101629963271",
+            "name": "Native linux x86_64",
+            "startedAt": "2026-09-07T05:13:34Z",
+            "status": "COMPLETED",
+            "workflowName": "Native Release Verification"
+          },
+          {
+            "__typename": "CheckRun",
+            "completedAt": "2026-09-07T05:13:52Z",
+            "conclusion": "SUCCESS",
+            "detailsUrl": "https://github.com/agentstation/starport/actions/runs/34085971741/job/101629963130",
+            "name": "Native linux arm64",
+            "startedAt": "2026-09-07T05:13:35Z",
+            "status": "COMPLETED",
+            "workflowName": "Native Release Verification"
+          },
+          {
+            "__typename": "CheckRun",
+            "completedAt": "2026-09-07T05:14:04Z",
+            "conclusion": "SUCCESS",
+            "detailsUrl": "https://github.com/agentstation/starport/actions/runs/34085971741/job/101629963278",
+            "name": "Native darwin x86_64",
+            "startedAt": "2026-09-07T05:13:33Z",
+            "status": "COMPLETED",
+            "workflowName": "Native Release Verification"
+          },
+          {
+            "__typename": "CheckRun",
+            "completedAt": "2026-09-07T05:13:57Z",
+            "conclusion": "SUCCESS",
+            "detailsUrl": "https://github.com/agentstation/starport/actions/runs/34085971741/job/101629963243",
+            "name": "Native darwin arm64",
+            "startedAt": "2026-09-07T05:13:37Z",
+            "status": "COMPLETED",
+            "workflowName": "Native Release Verification"
+          },
+          {
+            "__typename": "CheckRun",
+            "completedAt": "2026-09-07T05:19:24Z",
+            "conclusion": "SUCCESS",
+            "detailsUrl": "https://github.com/agentstation/starport/actions/runs/34085971745/job/101629963070",
+            "name": "Test (ubuntu-latest)",
+            "startedAt": "2026-09-07T05:13:32Z",
+            "status": "COMPLETED",
+            "workflowName": "CI"
+          },
+          {
+            "__typename": "CheckRun",
+            "completedAt": "2026-09-07T05:16:51Z",
+            "conclusion": "SUCCESS",
+            "detailsUrl": "https://github.com/agentstation/starport/actions/runs/34085971745/job/101629963140",
+            "name": "Test (macos-latest)",
+            "startedAt": "2026-09-07T05:13:37Z",
+            "status": "COMPLETED",
+            "workflowName": "CI"
+          },
+          {
+            "__typename": "CheckRun",
+            "completedAt": "2026-09-07T05:17:29Z",
+            "conclusion": "SUCCESS",
+            "detailsUrl": "https://github.com/agentstation/starport/actions/runs/34085971745/job/101629963093",
+            "name": "Test (windows-latest)",
+            "startedAt": "2026-09-07T05:13:32Z",
+            "status": "COMPLETED",
+            "workflowName": "CI"
+          },
+          {
+            "__typename": "CheckRun",
+            "completedAt": "2026-09-07T05:17:16Z",
+            "conclusion": "SUCCESS",
+            "detailsUrl": "https://github.com/agentstation/starport/actions/runs/34085971745/job/101629963238",
+            "name": "Security Scan",
+            "startedAt": "2026-09-07T05:13:33Z",
+            "status": "COMPLETED",
+            "workflowName": "CI"
+          },
+          {
+            "__typename": "CheckRun",
+            "completedAt": "2026-09-07T05:21:47Z",
+            "conclusion": "SUCCESS",
+            "detailsUrl": "https://github.com/agentstation/starport/actions/runs/34085971745/job/101629963301",
+            "name": "Release Contract",
+            "startedAt": "2026-09-07T05:13:36Z",
+            "status": "COMPLETED",
+            "workflowName": "CI"
+          },
+          {
+            "__typename": "CheckRun",
+            "completedAt": "2026-09-07T05:14:03Z",
+            "conclusion": "SUCCESS",
+            "detailsUrl": "https://github.com/agentstation/starport/actions/runs/34085971745/job/101629962996",
+            "name": "OpenRouter SDK Compatibility",
+            "startedAt": "2026-09-07T05:13:32Z",
+            "status": "COMPLETED",
+            "workflowName": "CI"
+          },
+          {
+            "__typename": "CheckRun",
+            "completedAt": "2026-09-07T05:23:58Z",
+            "conclusion": "SUCCESS",
+            "detailsUrl": "https://github.com/agentstation/starport/actions/runs/34085971745/job/101629963133",
+            "name": "Release Snapshot",
+            "startedAt": "2026-09-07T05:13:32Z",
+            "status": "COMPLETED",
+            "workflowName": "CI"
+          },
+          {
+            "__typename": "CheckRun",
+            "completedAt": "2026-09-07T05:13:41Z",
+            "conclusion": "SUCCESS",
+            "detailsUrl": "https://github.com/agentstation/starport/actions/runs/34085971745/job/101629963153",
+            "name": "Action Pin Provenance",
+            "startedAt": "2026-09-07T05:13:32Z",
+            "status": "COMPLETED",
+            "workflowName": "CI"
+          },
+          {
+            "__typename": "CheckRun",
+            "completedAt": "2026-09-07T05:26:39Z",
+            "conclusion": "SUCCESS",
+            "detailsUrl": "https://github.com/agentstation/starport/actions/runs/34085971745/job/101631502724",
+            "name": "Build",
+            "startedAt": "2026-09-07T05:21:50Z",
+            "status": "COMPLETED",
+            "workflowName": "CI"
+          }
+        ],
+        "title": "Add public operator documentation and catalog qualification checks",
+        "updatedAt": "2026-09-08T12:02:23Z",
+        "url": "https://github.com/agentstation/starport/pull/366"
+      }
+    ]
+  },
+  "checks": {
+    "SUCCESS": 54,
+    "NEUTRAL": 4
+  },
+  "without_attached_checks": [
+    "starmap#136",
+    "starmap#135",
+    "starmap#134",
+    "starmap#133",
+    "starmap#132",
+    "starmap#126"
+  ],
+  "ancestry": [
+    {
+      "parent": 135,
+      "child": 136,
+      "parent_head": "50557f055bd76fa5ad061253b3d23082634d47e0",
+      "child_head": "e68f61a603b2c017f3f96edd9a0eab25c4d87021",
+      "contains_parent": true
+    },
+    {
+      "parent": 133,
+      "child": 135,
+      "parent_head": "637f780a067466896f6b9ed03dc034cd764861a9",
+      "child_head": "50557f055bd76fa5ad061253b3d23082634d47e0",
+      "contains_parent": true
+    },
+    {
+      "parent": 132,
+      "child": 134,
+      "parent_head": "205dd041fb2d0267a2643c0d6af8d9f45e34842d",
+      "child_head": "99843ff85d01b8fb1f96e26b3ccd1a7044c26a6b",
+      "contains_parent": true
+    },
+    {
+      "parent": 134,
+      "child": 133,
+      "parent_head": "99843ff85d01b8fb1f96e26b3ccd1a7044c26a6b",
+      "child_head": "637f780a067466896f6b9ed03dc034cd764861a9",
+      "contains_parent": false
+    },
+    {
+      "parent": 126,
+      "child": 132,
+      "parent_head": "b58a9df6f2da7fe95297e30d97604c9232e83a43",
+      "child_head": "205dd041fb2d0267a2643c0d6af8d9f45e34842d",
+      "contains_parent": true
+    },
+    {
+      "parent": 125,
+      "child": 126,
+      "parent_head": "d8d12a26069f34442860cbcf8bb840dd073177fc",
+      "child_head": "b58a9df6f2da7fe95297e30d97604c9232e83a43",
+      "contains_parent": true
+    }
+  ],
+  "closed_superseded": {
+    "repository": "starmap",
+    "pr": 127,
+    "replacement": 128,
+    "state": "CLOSED"
+  },
+  "local_at_capture": {
+    "starmap": {
+      "head": "33728b3fadbca73c8ad4230ebcc85dcb14a6e5a1",
+      "unpublished_commits": 35,
+      "dirty_paths": 11
+    },
+    "starport": {
+      "head": "69b5affb3b75ab911e167e92b4418f141212921d",
+      "unpublished_commits": 6
+    }
+  },
+  "scope": "PR inventory and dependency scope review. No new source qualification or merge."
+}

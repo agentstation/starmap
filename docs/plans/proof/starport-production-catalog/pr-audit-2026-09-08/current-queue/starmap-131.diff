@@ -1,0 +1,28 @@
+diff --git a/go.mod b/go.mod
+index bc5de516..79ce2833 100644
+--- a/go.mod
++++ b/go.mod
+@@ -14,7 +14,7 @@ require (
+ 	github.com/aws/aws-sdk-go-v2 v1.45.1
+ 	github.com/aws/aws-sdk-go-v2/config v1.33.1
+ 	github.com/aws/aws-sdk-go-v2/service/s3 v1.109.1
+-	github.com/aws/aws-sdk-go-v2/service/secretsmanager v1.46.1
++	github.com/aws/aws-sdk-go-v2/service/secretsmanager v1.47.0
+ 	github.com/aws/smithy-go v1.28.1
+ 	github.com/goccy/go-yaml v1.19.2
+ 	github.com/gofrs/flock v0.13.0
+diff --git a/go.sum b/go.sum
+index b77a8e0e..16c7c9fe 100644
+--- a/go.sum
++++ b/go.sum
+@@ -74,8 +74,8 @@ github.com/aws/aws-sdk-go-v2/service/kms v1.52.0 h1:QNtg+Mtj1zmepk568+UKBD5DFfqh
+ github.com/aws/aws-sdk-go-v2/service/kms v1.52.0/go.mod h1:Y0+uxvxz6ib4KktRdK0V4X45Vcs/JyYoz8H71pO8xeI=
+ github.com/aws/aws-sdk-go-v2/service/s3 v1.109.1 h1:kVpzaDBzOdRtOftmiSpTdQbWVqRg0kONLXijktiwXnk=
+ github.com/aws/aws-sdk-go-v2/service/s3 v1.109.1/go.mod h1:CUr46sCpGAg/rHaclRyhJX0LJAmH73uWSJPPSaMUrSk=
+-github.com/aws/aws-sdk-go-v2/service/secretsmanager v1.46.1 h1:WnWkXm0wdenvdzG5QhMvTMWlG7Kh4MNTPcjQn4iuD4M=
+-github.com/aws/aws-sdk-go-v2/service/secretsmanager v1.46.1/go.mod h1:2rdJeO95tT+EGmjF4jWmIzNKRwIMpr7Dnf7W6mIB9EQ=
++github.com/aws/aws-sdk-go-v2/service/secretsmanager v1.47.0 h1:LjEecQF5MLvqi1H/fMlU4JL6aQZyN/7BYMynz6PVnxQ=
++github.com/aws/aws-sdk-go-v2/service/secretsmanager v1.47.0/go.mod h1:2rdJeO95tT+EGmjF4jWmIzNKRwIMpr7Dnf7W6mIB9EQ=
+ github.com/aws/aws-sdk-go-v2/service/signin v1.7.1 h1:mdMtSVKdQ3+mzBh+l0ogrFYZVQUCg6pJZOirA2ARsYE=
+ github.com/aws/aws-sdk-go-v2/service/signin v1.7.1/go.mod h1:9IqUlsJDbUPcg6cgx3WEzXdjrbWzLDQrak0aaSqlTcI=
+ github.com/aws/aws-sdk-go-v2/service/sso v1.35.1 h1:B6WFn91tobD6gG4724ONHaqrpKsoETGnv98LHe/yIGM=

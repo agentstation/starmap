@@ -1,0 +1,29 @@
+{
+  "review": "PR disposition and dependency scope review",
+  "open_prs": 14,
+  "closed_superseded_pr": 127,
+  "replacement_pr": 128,
+  "updated_pr_descriptions": 8,
+  "head_or_base_changes": 0,
+  "attached_checks": {
+    "success": 54,
+    "neutral": 4
+  },
+  "prs_without_attached_checks": 6,
+  "technical_writing": {
+    "command": "make technical-writing-check",
+    "exit_code": 0,
+    "files": 1219,
+    "diagnostics": 0
+  },
+  "targeted_new_prose": {
+    "files": 2,
+    "diagnostics": 0
+  },
+  "git_diff_check": 0,
+  "new_test_runs": 0,
+  "dependency_compatibility_testing": "UNVERIFIED; required checks listed in README.md",
+  "new_prs": 0,
+  "merges": 0,
+  "releases": 0
+}

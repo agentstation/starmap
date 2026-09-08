@@ -1,0 +1,26 @@
+diff --git a/.github/workflows/ci.yml b/.github/workflows/ci.yml
+index 29728ce5..91398c26 100644
+--- a/.github/workflows/ci.yml
++++ b/.github/workflows/ci.yml
+@@ -244,7 +244,7 @@ jobs:
+           syft-version: v1.51.0
+ 
+       - name: Set up Homebrew
+-        uses: Homebrew/actions/setup-homebrew@3cdb78d0f62ad29dd32de765782654f4eedea607 # 2026.08.31.1
++        uses: Homebrew/actions/setup-homebrew@f8d4222eb633e65c2a0157383cf80861fc7fae7f # 2026.09.07.1
+ 
+       - name: Build release snapshot
+         uses: goreleaser/goreleaser-action@f06c13b6b1a9625abc9e6e439d9c05a8f2190e94 # v7.2.3
+diff --git a/.github/workflows/release.yaml b/.github/workflows/release.yaml
+index e74a53f4..408a8c97 100644
+--- a/.github/workflows/release.yaml
++++ b/.github/workflows/release.yaml
+@@ -419,7 +419,7 @@ jobs:
+         os: [ubuntu-latest, macos-latest]
+     steps:
+       - name: Set up Homebrew
+-        uses: Homebrew/actions/setup-homebrew@3cdb78d0f62ad29dd32de765782654f4eedea607 # 2026.08.31.1
++        uses: Homebrew/actions/setup-homebrew@f8d4222eb633e65c2a0157383cf80861fc7fae7f # 2026.09.07.1
+ 
+       - name: Install Starport from the AgentStation tap
+         shell: bash

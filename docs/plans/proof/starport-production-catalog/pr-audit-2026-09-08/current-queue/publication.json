@@ -1,0 +1,74 @@
+{
+  "action": "Update eight PR descriptions only",
+  "results": [
+    {
+      "repository": "starmap",
+      "pr": 128,
+      "head": "c05d4c3554a4c7569c427d06db6db5a8ce38494a",
+      "base": "main",
+      "body_readback_matches": true,
+      "url": "https://github.com/agentstation/starmap/pull/128"
+    },
+    {
+      "repository": "starmap",
+      "pr": 129,
+      "head": "ffeb595220e9de24f4ef78660d2658a2c6b6859a",
+      "base": "main",
+      "body_readback_matches": true,
+      "url": "https://github.com/agentstation/starmap/pull/129"
+    },
+    {
+      "repository": "starmap",
+      "pr": 130,
+      "head": "9b11e1c455d9f59ba342f30e64f1cd05d3b7a033",
+      "base": "main",
+      "body_readback_matches": true,
+      "url": "https://github.com/agentstation/starmap/pull/130"
+    },
+    {
+      "repository": "starmap",
+      "pr": 131,
+      "head": "0d6435d5b483e48c80b79d67be14430773caab19",
+      "base": "main",
+      "body_readback_matches": true,
+      "url": "https://github.com/agentstation/starmap/pull/131"
+    },
+    {
+      "repository": "starport",
+      "pr": 368,
+      "head": "ef6a247f603ae9f538eddc80677b290f4e55819f",
+      "base": "main",
+      "body_readback_matches": true,
+      "url": "https://github.com/agentstation/starport/pull/368"
+    },
+    {
+      "repository": "starmap",
+      "pr": 133,
+      "head": "637f780a067466896f6b9ed03dc034cd764861a9",
+      "base": "codex/catalog-followup-evidence",
+      "body_readback_matches": true,
+      "url": "https://github.com/agentstation/starmap/pull/133"
+    },
+    {
+      "repository": "starmap",
+      "pr": 135,
+      "head": "50557f055bd76fa5ad061253b3d23082634d47e0",
+      "base": "codex/catalog-requirements",
+      "body_readback_matches": true,
+      "url": "https://github.com/agentstation/starmap/pull/135"
+    },
+    {
+      "repository": "starmap",
+      "pr": 136,
+      "head": "e68f61a603b2c017f3f96edd9a0eab25c4d87021",
+      "base": "codex/catalog-qualification-evidence",
+      "body_readback_matches": true,
+      "url": "https://github.com/agentstation/starmap/pull/136"
+    }
+  ],
+  "new_prs": 0,
+  "branch_updates": 0,
+  "closures": 0,
+  "merges": 0,
+  "releases": 0
+}
