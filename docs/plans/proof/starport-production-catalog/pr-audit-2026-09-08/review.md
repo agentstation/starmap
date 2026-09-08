@@ -50,3 +50,11 @@ At this capture, Starmap has 19 unpublished commits through `d641743c`, plus unc
 | Starport #367 | Release owner | The pin review and ten checks pass. Merge after authorization and a current-head check. |
 
 Recheck this inventory before each publication and merge. A changed head or base requires a fresh evidence assessment. A replacement must preserve the required changes before the older PR closes. No additional PR qualifies for closure in this recheck. No new PR, merge, release, or branch deletion occurred.
+
+The [maintenance capture](inventory-maintenance.json) records fourteen open PRs at 12:00 UTC on 2026-09-08. All attached checks report 54 successes and four neutral results. Six stacked PRs have no attached checks. PR 127 remains closed. No additional replacement justifies closure.
+
+The ancestry check found one parent gap. PR 134 does not contain the latest PR 132 head, `205dd041`. Five missing commits change 23 proof paths. They change no implementation paths. Integrate that parent before the next stack publication, then validate each dependent tree. This gap does not make PR 134 redundant.
+
+At this capture, Starmap has 27 unpublished commits through `c434a3b7` and six changed or new CSP3 source files. Starport has six unpublished commits through `69b5aff` and a clean worktree. These counts precede this audit commit. Finish the coherent CSP3 repair and required review before the next source publication. Update PR 136 and its existing evidence parent. Do not wait for the whole product plan to finish.
+
+The plan executor owns the stack refresh and the dependency-review queue. Review independent dependency PRs separately from CSP3. A passing check does not replace dependency review or merge authorization. Before each publication, compare remote heads, bases, attached checks, local commits, and parent ancestry. Record a concrete next action for each retained PR.
