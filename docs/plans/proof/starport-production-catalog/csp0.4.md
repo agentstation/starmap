@@ -1,6 +1,9 @@
 # CSP0.4: Complete HTTP baseline
 
-Status: done for the baseline and numeric-profile acceptance subcases. Production A50 remains UNVERIFIED. Changes remain local and uncommitted.
+Status: done after implementation merges and renewed acceptance. Production A50 remains UNVERIFIED.
+
+The [merged-source acceptance](csp0.4/merged-qualification-2026-09-08/README.md) records the current completion evidence.
+The sections below retain the original measurement history.
 
 ## Measurement boundary
 
@@ -59,6 +62,8 @@ Tests reject missing stream samples, invalid timing boundaries, stale review has
 
  Production A50 remains UNVERIFIED. The local baseline excludes shared backends, active maintenance, TLS, DNS, large inputs, retries, saturation, and slow clients. CSP22 must measure these conditions, retained memory, and cancellation bounds. CSP3.1 and CSP10.1 own the measured catalog-copy cost.
 
-No production Go behavior changed. The worktree holds new measurement tests, a reusable test helper signature, corrected timer comments, and performance documentation. No commit or publication occurred.
+The original measurement change altered no production Go behavior.
+It added measurement tests, a reusable test helper signature, corrected timer comments, and performance documentation.
+The initial capture preceded its commit and publication.
 
 The whole-repository writing check still reports three diagnostics in two preserved historical storage-review captures. Current performance prose passes its targeted check. Historical evidence remains unchanged.

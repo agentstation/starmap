@@ -1,6 +1,6 @@
 {
   "source_commit": "9b6403eb033af80f4ed4c73154314e1abc7256c6",
-  "status": "implemented locally; publication verification running",
+  "status": "implemented locally; publication verification passed; review and merge pending",
   "runs": {
     "before.jsonl": {
       "pass_test": 15,
@@ -166,6 +166,11 @@
       "path": "captures/proof-writing-final.txt.gz",
       "sha256": "f709bb577cf319b2d3d09e10faedfa89fbcdfa09db6cb0dc952a307b7a7ba1e6",
       "content_sha256": "596f1795732ffd0e42cd25ef904ae6e05078801017bd621fc961e8eeb6dccda4"
+    },
+    {
+      "path": "captures/publication-verify.txt.gz",
+      "sha256": "a32ff898df886e6ec7faf443f84dbab4d44b302e405489e0450d455fb321f67e",
+      "content_sha256": "6f31a38cd404013ff5bc1f4b4081eafae0de2b2d96642459c96e3fbd218f366a"
     }
   ],
   "full_affected_scope": "Initial integrated architecture candidate before the command-only numeric and rooted-I/O repairs and equivalent read-view switches. Final focused and command suites cover the later changes.",
@@ -192,12 +197,18 @@
     "windows_amd64_command_cross_build": "PASS; not native execution"
   },
   "publication_verification": {
-    "status": "in_progress",
+    "status": "PASS",
     "exec_session_id": 45225,
     "command": "GOTOOLCHAIN=go1.26.6 make verify",
     "log": "/tmp/starmap-openapi-presence-2026-09-08/publication-verify.txt",
     "source_manifest": "captures/source-manifest.json.gz",
-    "last_confirmed_stage": "env CGO_ENABLED=1 go test ./... -race -short -timeout=20m"
+    "exit_code": 0,
+    "stages_passed": 39,
+    "ordinary_packages_passed": 80,
+    "race_packages_passed": 80,
+    "terminal_session": true,
+    "archived_log": "captures/publication-verify.txt.gz",
+    "archive_sha256": "a32ff898df886e6ec7faf443f84dbab4d44b302e405489e0450d455fb321f67e"
   },
   "remaining": [
     "Complete the full publication gate",

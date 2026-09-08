@@ -24,6 +24,7 @@ The final command suite passes seventeen test results and one package.
 Lint and Ago report zero findings. Documentation freshness passes, and prose checks pass across 1,251 files.
 The command cross-compiles for Windows AMD64. This build does not establish native Windows execution.
 
-The full publication gate still runs against the committed source.
+The full publication gate passes all 39 stages against the committed source.
+Ordinary and race suites each pass 80 packages.
 Structured review, publication, merge, and the remaining CSP3 contracts stay open.
 No primary acceptance case or task becomes complete from this implementation alone.

@@ -1,0 +1,29 @@
+{
+  "task": "CSP0.4",
+  "status": "PASS",
+  "starmap_merge": "12fca002d73f41372a90f102b93c07b23ad8594e",
+  "starport_merge": "cffa9300160d90eecb641b756a3ab2dd05d6ef47",
+  "toolchain": "go1.26.6",
+  "selected_subcases": {
+    "A50.full_path_baseline": "PASS",
+    "A50.reviewed_numeric_profile": "PASS"
+  },
+  "warm_pairs": 200,
+  "initial_pairs": 2,
+  "server_execution": {
+    "passed_tests": 473,
+    "passed_packages": 3,
+    "failed": 0,
+    "skipped_test": "TestGatewayOverheadBenchmark (opt-in controller timer harness)",
+    "packages_without_tests": 2
+  },
+  "component_benchmarks": "PASS",
+  "artifacts": {
+    "task.json.gz": "832f44323200560f24ea4814c62249f76cba49093fe981dafb96a51b24174cfb",
+    "server-execution.jsonl.gz": "d72765f17b35bfa014a3609435826c26b8c0c1757a73d66507972b038795355f",
+    "component-benchmarks.txt.gz": "915e5c258d2a208910f801e510d58c53ab32244b52a0acf163e466dd428dd954",
+    "source-manifest.json.gz": "788b31c3b61fa4e491682b432768343b2af7b035660b88b6d65a20bda71df98c"
+  },
+  "production_latency_qualification": "UNVERIFIED",
+  "inference_spend": 0
+}
