@@ -8,7 +8,7 @@ import (
 )
 
 // writableStagedDirectory permits assembly inside the private staging tree.
-// Its temporary grant applies only to this directory and is removed before publication.
+// Its temporary grant applies only to this directory. Assembly removes it before publication.
 func writableStagedDirectory(file *os.File) (func() error, error) {
 	original, err := windows.GetSecurityInfo(windows.Handle(file.Fd()), windows.SE_FILE_OBJECT, workspaceWindowsSecurity)
 	if err != nil {
