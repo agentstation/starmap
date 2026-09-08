@@ -2,9 +2,7 @@ package app
 
 import (
 	"bytes"
-	"context"
 	"encoding/json"
-	"github.com/agentstation/starmap"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	catalogconfig "github.com/agentstation/starmap/pkg/catalogs/config"
 	"github.com/agentstation/starmap/pkg/productpaths"
@@ -14,6 +12,9 @@ import (
 	"path/filepath"
 	"strings"
 	"testing"
+	"time"
+
+	"github.com/agentstation/starmap/pkg/sources"
 )
 
 func TestConfigPathsCommandIsPassiveAndReportsOrigins(t *testing.T) {
@@ -85,9 +86,18 @@ func TestFileManifestCoversColdStartupAndPublication(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if _, err := connected.Client().Update(t.Context(), func(context.Context, *catalogs.Catalog) (*starmap.Candidate, error) {
-		return starmap.NewCandidate(connected.Catalog(), starmap.CandidateEvidence{})
-	}); err != nil {
+	input, err := catalogs.NewObservationCatalog(catalogs.NewEmpty())
+	if err != nil {
+		t.Fatal(err)
+	}
+	observation, err := sources.NewObservation(sources.LocalCatalogID, input, sources.ObservationMetadata{
+		ObservedAt: time.Date(2026, 9, 7, 1, 0, 0, 0, time.UTC), Revision: sources.Revision{Kind: sources.RevisionKindContentDigest},
+		Completeness: sources.ObservationCompletenessComplete, Status: sources.ObservationStatusSucceeded,
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if _, err := connected.PublishObservations(t.Context(), observation); err != nil {
 		t.Fatal(err)
 	}
 	if err := app.closeRuntime(); err != nil {
@@ -112,6 +122,12 @@ func TestFileManifestCoversColdStartupAndPublication(t *testing.T) {
 	}
 	if covered < 8 {
 		t.Fatalf("startup evidence is incomplete: %d files", covered)
+	}
+	if !manifestCoversFile(t, report, filepath.Join(paths.Runtime.Path, "catalog-runtime", "providers", "bindings", strings.Repeat("a", 64)+".json")) {
+		t.Fatal("scoped provider record is absent from the manifest")
+	}
+	if manifestCoversFile(t, report, filepath.Join(paths.Runtime.Path, "catalog-runtime", "unexpected-file")) {
+		t.Fatal("broad evidence entry hides an unknown managed file")
 	}
 	if manifestCoversFile(t, report, filepath.Join(paths.Runtime.Path, "unexpected-file")) {
 		t.Fatal("broad runtime entry hides an unknown managed file")

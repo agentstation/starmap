@@ -383,6 +383,32 @@
       "anchor": "catalog-acquisition-interval"
     },
     {
+      "description": "Selects the complete active provider binding set. An empty array permits no local provider acquisition.",
+      "id": "catalog.provider.bindings",
+      "name": "STARMAP_CATALOG_PROVIDER_BINDINGS",
+      "key": "catalog_provider_bindings",
+      "flag": "catalog-provider-bindings",
+      "environment": [
+        "STARMAP_CATALOG_PROVIDER_BINDINGS"
+      ],
+      "type": "provider-bindings",
+      "unit": "",
+      "default": "",
+      "default_meaning": "omission retains legacy unscoped acquisition; an explicit array selects only its declared bindings",
+      "allow_empty": false,
+      "allow_zero": false,
+      "sensitive": false,
+      "scope": "deployment",
+      "source_binding": "",
+      "applicability": [
+        "all"
+      ],
+      "mutability": "restart",
+      "introduced": 1,
+      "compatibility": "supported",
+      "anchor": "catalog-provider-bindings"
+    },
+    {
       "description": "Bounds the wait before completed provider observations publish.",
       "id": "catalog.coalesce.window",
       "name": "STARMAP_CATALOG_COALESCE_WINDOW",

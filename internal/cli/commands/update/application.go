@@ -4,14 +4,12 @@ import (
 	"github.com/rs/zerolog"
 
 	"github.com/agentstation/starmap"
-	"github.com/agentstation/starmap/pkg/productpaths"
-	"github.com/agentstation/starmap/pkg/sources"
+	"github.com/agentstation/starmap/acquisition"
 )
 
 type application interface {
 	Starmap(...starmap.Option) (*starmap.Client, error)
 	Logger() *zerolog.Logger
-	CredentialResolver() (sources.ProviderCredentialResolver, error)
-	SourceDirectories() (productpaths.SourceDirectories, error)
+	CatalogAcquisition(*starmap.Client) (*acquisition.Syncer, error)
 	ResolveOperationPath(string, string) (string, error)
 }

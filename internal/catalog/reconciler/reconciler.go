@@ -25,11 +25,15 @@ import (
 // It is concrete because this package has one reconciliation engine. The narrow
 // authority.Reader and Source interfaces accept extensions.
 type Reconciler struct {
-	strategy    *AuthorityStrategy
-	authorities authority.Reader
-	provenance  *provenance.Tracker
-	tracking    bool
-	baseline    *catalogs.Catalog // Baseline catalog for comparison
+	strategy               *AuthorityStrategy
+	authorities            authority.Reader
+	provenance             *provenance.Tracker
+	tracking               bool
+	baseline               *catalogs.Catalog // Baseline catalog for comparison
+	changeTime             time.Time
+	projectedEvidence      func(catalogs.ProviderID, provenance.Entry) bool
+	providerSelection      providerObservationSelection
+	baselineProviderSource sources.ID
 }
 
 // New creates a new Reconciler with options.
@@ -42,11 +46,15 @@ func New(opts ...Option) (*Reconciler, error) {
 
 	// Create reconciler from options
 	r := &Reconciler{
-		strategy:    NewAuthorityStrategy(options.authorities),
-		authorities: options.authorities,
-		provenance:  provenance.NewTracker(options.tracking),
-		tracking:    options.tracking,
-		baseline:    options.baseline,
+		strategy:               NewAuthorityStrategy(options.authorities),
+		authorities:            options.authorities,
+		provenance:             provenance.NewTracker(options.tracking),
+		tracking:               options.tracking,
+		baseline:               options.baseline,
+		changeTime:             options.changeTime,
+		projectedEvidence:      options.projectedEvidence,
+		providerSelection:      options.providerSelection,
+		baselineProviderSource: options.baselineProviderSource,
 	}
 
 	return r, nil
@@ -129,15 +137,39 @@ func (r *Reconciler) Sources(ctx context.Context, primary sources.ID, srcs []sou
 
 // initialize sets up reconciliation context.
 func (r *Reconciler) initialize(ctx context.Context, primary sources.ID, srcs []sources.Observation) (*reconcileContext, error) {
+	if ctx == nil {
+		return nil, &errors.ValidationError{Field: "reconciliation.context", Message: "is required"}
+	}
+	if err := ctx.Err(); err != nil {
+		return nil, err
+	}
 	logger := logging.FromContext(ctx)
+	if err := r.providerSelection.validate(ctx, srcs); err != nil {
+		return nil, err
+	}
+	srcs, scoped, err := orderScopedObservations(ctx, srcs, r.providerSelection)
+	if err != nil {
+		return nil, err
+	}
 
 	// Create collector
 	collector := newCollector(srcs, primary)
+	collector.scoped = scoped
+	collector.providerSelection = r.providerSelection
+	if err := collector.restrictProviderCollection(r.baselineProviderSource, r.baseline); err != nil {
+		return nil, err
+	}
 
 	// Validate and get primary catalog if specified
 	var primaryCatalog *catalogs.Catalog
 	if primary != "" {
 		primaryCatalog = collector.primaryCatalog()
+		if (primary == sources.ProvidersID && scoped != nil) || (isModelsDevSource(primary) && len(r.providerSelection) > 0) {
+			primaryCatalog, err = selectedPrimaryCatalog(primary, srcs, r.providerSelection)
+			if err != nil {
+				return nil, err
+			}
+		}
 		if primaryCatalog == nil {
 			return nil, &errors.ValidationError{
 				Field:   "primary",
@@ -152,6 +184,7 @@ func (r *Reconciler) initialize(ctx context.Context, primary sources.ID, srcs []
 
 	merger := r.createMerger()
 	merger.setObservations(srcs)
+	merger.scoped = scoped
 
 	// Create context
 	return &reconcileContext{
@@ -167,7 +200,7 @@ func (r *Reconciler) initialize(ctx context.Context, primary sources.ID, srcs []
 // reconcileProviders merges providers from all sources.
 func (r *Reconciler) reconcileProviders(rctx *reconcileContext) ([]*catalogs.Provider, error) {
 	// Collect providers from all sources
-	providerSources := rctx.collector.collectProviders()
+	providerSources := rctx.filter.providerSources(rctx.collector.collectProviders())
 
 	// Merge providers using configured strategy
 	return rctx.merger.Providers(providerSources)
@@ -215,7 +248,13 @@ func (r *Reconciler) reconcileProviderModels(rctx *reconcileContext, provider *c
 	apiCount := 0
 	if rctx.collector.primary != "" {
 		if models, exists := modelSources[rctx.collector.primary]; exists {
-			apiCount = len(models)
+			identities := make(map[string]bool, len(models))
+			for _, model := range models {
+				if model != nil {
+					identities[model.ID] = true
+				}
+			}
+			apiCount = len(identities)
 		}
 	}
 
@@ -375,10 +414,15 @@ func providerScopedProvenance(providerID catalogs.ProviderID, source provenance.
 
 // createMerger creates a merger based on configuration.
 func (r *Reconciler) createMerger() *merger {
+	var result *merger
 	if r.tracking && r.provenance != nil {
-		return newMergerWithProvenance(r.authorities, r.strategy, r.provenance, r.baseline)
+		result = newMergerWithProvenance(r.authorities, r.strategy, r.provenance, r.baseline)
+	} else {
+		result = newMerger(r.authorities, r.strategy, r.baseline)
 	}
-	return newMerger(r.authorities, r.strategy, r.baseline)
+	result.changeAt = r.changeTime
+	result.projectedEvidence = r.projectedEvidence
+	return result
 }
 
 // calcStats computes statistics from the catalog.

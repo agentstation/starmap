@@ -443,8 +443,11 @@ starmap completion bash         # Generate shell completion
 # Development: Use a custom human workspace
 starmap update groq --catalog-path "$PWD/catalog" --dry-run
 
-# Production: Fresh update with auto-approval
-starmap update --force -y
+# Preview a reset of selected acquisition; preserve the baseline
+starmap update openai --source provider-api --fresh --dry-run
+
+# Reset selected acquisition with auto-approval
+starmap update openai --source provider-api --fresh -y
 
 # Specific sources only
 starmap update --source models.dev

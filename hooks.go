@@ -115,6 +115,12 @@ func (h *hooks) OnCatalogPublished(fn CatalogPublishedHook) {
 }
 
 func (h *hooks) dispatchUpdate(old, updated *catalogs.Catalog, event CatalogPublishedEvent) {
+	h.mu.RLock()
+	observed := len(h.catalogPublished)+len(h.modelAdded)+len(h.modelUpdated)+len(h.modelRemoved) != 0
+	h.mu.RUnlock()
+	if !observed {
+		return
+	}
 	dispatch := hookDispatch{old: old, updated: updated, event: event}
 	h.dispatchMu.Lock()
 	if h.dispatching {
@@ -206,6 +212,9 @@ func (h *hooks) triggerUpdate(old, updated catalogs.Reader) {
 	modelUpdated := append([]ModelUpdatedHook(nil), h.modelUpdated...)
 	modelRemoved := append([]ModelRemovedHook(nil), h.modelRemoved...)
 	h.mu.RUnlock()
+	if len(modelAdded)+len(modelUpdated)+len(modelRemoved) == 0 {
+		return
+	}
 
 	// Compare provider-scoped records. Bare model IDs are not globally unique:
 	// two providers may expose different offerings under the same model ID.

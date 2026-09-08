@@ -16,8 +16,7 @@ import (
 	"github.com/agentstation/starmap/pkg/sources"
 )
 
-// runKind names the three refresh operations. Each one changes a distinct
-// layer, so a report says exactly what moved.
+// runKind names refresh and manual publication operations.
 type runKind string
 
 const (
@@ -29,6 +28,9 @@ const (
 
 	// runKindAcquisition observes providers only.
 	runKindAcquisition runKind = "acquisition"
+
+	// Manual batches have distinct inputs and must never join another caller's run.
+	runKindManual runKind = "manual"
 )
 
 // SourceRefreshReport says what one upstream source read produced.
@@ -82,7 +84,7 @@ type AcquisitionReport struct {
 	StartedAt   time.Time
 	CompletedAt time.Time
 
-	// Eligible is the number of providers the run considered.
+	// Eligible counts provider targets, or bindings when the active set is explicit.
 	Eligible int
 
 	// Succeeded, Skipped, and Failed count the terminal attempts.
@@ -90,7 +92,7 @@ type AcquisitionReport struct {
 	Skipped   int
 	Failed    int
 
-	// Attempts holds one terminal attempt per eligible provider.
+	// Attempts holds one terminal attempt per eligible provider or binding.
 	Attempts []sources.ProviderAttempt
 
 	// Published reports whether the runtime published a new effective catalog.
@@ -134,8 +136,8 @@ type RefreshReport struct {
 	GenerationID string
 }
 
-// activeRun is one refresh in flight. A second caller of the same kind joins it
-// instead of starting a second run.
+// activeRun is one operation in flight. Equal refresh kinds share its result.
+// Manual callers wait for completion and then start their own operation.
 type activeRun struct {
 	id   string
 	kind runKind
@@ -200,7 +202,7 @@ func (g *runGroup) start(
 		}
 		existing := g.active
 		g.mu.Unlock()
-		if existing.kind == kind {
+		if existing.kind == kind && kind != runKindManual {
 			return existing, false, nil
 		}
 		select {
@@ -285,8 +287,8 @@ func (r *Runtime) Sync(ctx context.Context, providers ...catalogs.ProviderID) (A
 	return report.Acquisition, err
 }
 
-// execute runs one refresh under the single-flight group. A second caller of
-// the same kind joins the run in flight and reads its report.
+// execute joins operation lifetime to the runtime. Equal refresh kinds share a run.
+// Manual calls wait for prior work because their input batches can differ.
 func (r *Runtime) execute(
 	ctx context.Context,
 	kind runKind,
@@ -297,6 +299,9 @@ func (r *Runtime) execute(
 	}
 	if ctx == nil {
 		return RefreshReport{}, &errors.ValidationError{Field: "context", Message: "is required"}
+	}
+	if err := ctx.Err(); err != nil {
+		return RefreshReport{}, err
 	}
 	id, err := r.client.NextID()
 	if err != nil {
@@ -408,21 +413,17 @@ func (r *Runtime) readSource(ctx context.Context, report *RefreshReport, epoch u
 		ObservedAt:       result.CompletedAt,
 		Chain:            read.Chain,
 	}
-	if err := r.store.saveSource(ctx, layer); err != nil {
-		result.Health = HealthDegraded
-		result.Reason = "retention_failed"
-		r.recordSourceRead(result, false)
-		report.Source = result
-		return err
-	}
-	r.mu.Lock()
-	r.layers.source = &layer
-	r.mu.Unlock()
-
-	state, err := r.rebuild(ctx, epoch)
+	state, err := r.publishInputChanges(ctx, &layer, nil, epoch)
 	if err != nil {
 		result.Health = HealthDegraded
 		result.Reason = "publication_failed"
+		if state.GenerationID != "" {
+			result.Reason = "retention_pending"
+			result.Published = true
+			result.GenerationID = state.GenerationID
+			report.Published = true
+			report.GenerationID = state.GenerationID
+		}
 		r.recordSourceRead(result, false)
 		report.Source = result
 		return err
@@ -588,6 +589,12 @@ func (r *Runtime) acquireProviders(
 	// and the layers that did not keep their retained records.
 	if len(unpublished) > 0 {
 		state, publishErr := r.publishProviders(ctx, unpublished, epoch)
+		if state.GenerationID != "" {
+			result.Published = true
+			result.GenerationID = state.GenerationID
+			report.Published = true
+			report.GenerationID = state.GenerationID
+		}
 		if publishErr != nil {
 			result.Health = HealthDegraded
 			combined := stderrors.Join(err, publishErr)
@@ -629,38 +636,6 @@ func (r *Runtime) recordAcquisition(result AcquisitionReport, err error) {
 	}
 }
 
-// retainProviders durably keeps every supplied layer and installs it as the
-// layer that its provider last observed well.
-func (r *Runtime) retainProviders(ctx context.Context, layers []ProviderLayer) error {
-	if err := ctx.Err(); err != nil {
-		return err
-	}
-	prepared, err := prepareProviderEvidence(layers)
-	if err != nil {
-		return err
-	}
-	r.providerRetentionMu.Lock()
-	defer r.providerRetentionMu.Unlock()
-	if err := ctx.Err(); err != nil {
-		return err
-	}
-	r.mu.RLock()
-	selected, err := selectProviderEvidence(prepared, r.layers.providers)
-	r.mu.RUnlock()
-	if err != nil {
-		return err
-	}
-	for _, layer := range selected {
-		if err := r.store.saveProvider(ctx, layer); err != nil {
-			return err
-		}
-		r.mu.Lock()
-		r.layers.setProvider(layer)
-		r.mu.Unlock()
-	}
-	return nil
-}
-
 // publishProviders retains the supplied layers and publishes one effective
 // catalog that holds every retained layer.
 func (r *Runtime) publishProviders(
@@ -668,16 +643,7 @@ func (r *Runtime) publishProviders(
 	layers []ProviderLayer,
 	epoch uint64,
 ) (starmap.CatalogState, error) {
-	if err := ctx.Err(); err != nil {
-		return starmap.CatalogState{}, err
-	}
-	if err := r.config.providerBindings.validatePublication(layers); err != nil {
-		return starmap.CatalogState{}, err
-	}
-	if err := r.retainProviders(ctx, layers); err != nil {
-		return starmap.CatalogState{}, err
-	}
-	return r.rebuild(ctx, epoch)
+	return r.publishInputChanges(ctx, nil, layers, epoch)
 }
 
 // windowPublisher publishes the layers of one closed coalescing window. It
@@ -702,7 +668,7 @@ func (w *windowPublisher) publish(ctx context.Context, layers []ProviderLayer) e
 		return err
 	}
 	state, err := w.runtime.publishProviders(ctx, prepared, w.epoch)
-	if err != nil {
+	if err != nil && state.GenerationID == "" {
 		return err
 	}
 	w.mu.Lock()
@@ -715,7 +681,7 @@ func (w *windowPublisher) publish(ctx context.Context, layers []ProviderLayer) e
 	}
 	w.count++
 	w.generation = state.GenerationID
-	return nil
+	return err
 }
 
 // providerPublicationKey identifies exact evidence within one retained scope.

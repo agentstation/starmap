@@ -26,8 +26,8 @@ const (
 	// request for a provider with this outcome.
 	ProviderOutcomeSkippedNotConfigured ProviderOutcome = "skipped_not_configured"
 
-	// ProviderOutcomeFailed means the attempt reached the provider and did not
-	// produce a usable observation.
+	// ProviderOutcomeFailed means the attempt did not produce a usable observation.
+	// Failure can occur before a provider request.
 	ProviderOutcomeFailed ProviderOutcome = "failed"
 )
 
@@ -108,14 +108,19 @@ type ProviderAttempt struct {
 	// ProviderID names the attempted provider.
 	ProviderID catalogs.ProviderID
 
+	// BindingID and BindingRevision identify the declared acquisition scope.
+	// Both are empty for legacy unscoped attempts.
+	BindingID       string `json:",omitempty"`
+	BindingRevision string `json:",omitempty"`
+
 	// Outcome is the terminal state of the attempt.
 	Outcome ProviderOutcome
 
 	// Reason explains a skip or a failure. It is empty for a success.
 	Reason ProviderReason
 
-	// Requested reports whether the attempt sent a provider request. A skip
-	// for a missing credential never sends one.
+	// Requested reports whether the observer confirmed a provider request.
+	// Missing credentials and interrupted attempts can provide no confirmation.
 	Requested bool
 
 	// StartedAt and CompletedAt bound the attempt.
@@ -131,6 +136,14 @@ type ProviderAttempt struct {
 func (a ProviderAttempt) Validate() error {
 	if a.ProviderID == "" {
 		return &errors.ValidationError{Field: "provider_attempt.provider_id", Message: "is required"}
+	}
+	if a.BindingID != "" || a.BindingRevision != "" {
+		if err := validateProviderBindingField("id", a.BindingID, true); err != nil {
+			return &errors.ValidationError{Field: "provider_attempt.binding_id", Message: "requires a valid binding identity"}
+		}
+		if err := validateProviderBindingField("revision", a.BindingRevision, true); err != nil {
+			return &errors.ValidationError{Field: "provider_attempt.binding_revision", Message: "requires a valid binding revision"}
+		}
 	}
 	if !a.Outcome.Valid() {
 		return &errors.ValidationError{

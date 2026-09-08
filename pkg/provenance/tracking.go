@@ -19,15 +19,17 @@ import (
 
 // Entry records the origin and history of one field value.
 type Entry struct {
-	Source           evidence.SourceID
-	Field            string
-	Value            any
-	Timestamp        time.Time
-	ObservationID    string
-	ObservedAt       time.Time
-	Revision         evidence.ObservationRevision
-	EvidenceChecksum string
-	Rejections       []Rejection
+	Source                  evidence.SourceID
+	Field                   string
+	Value                   any
+	Timestamp               time.Time
+	ObservationID           string
+	ObservedAt              time.Time
+	Revision                evidence.ObservationRevision
+	EvidenceChecksum        string
+	ProviderBindingID       string `json:"ProviderBindingID,omitempty" yaml:"providerbindingid,omitempty"`
+	ProviderBindingRevision string `json:"ProviderBindingRevision,omitempty" yaml:"providerbindingrevision,omitempty"`
+	Rejections              []Rejection
 	// Authority ranges from 0.0 to 1.0.
 	Authority float64
 	// Confidence ranges from 0.0 to 1.0.
@@ -50,19 +52,21 @@ func (e Entry) MarshalJSON() ([]byte, error) {
 		return nil, fmt.Errorf("encode provenance previous value: %w", err)
 	}
 	type canonicalEntry struct {
-		Source           evidence.SourceID
-		Field            string
-		Value            json.RawMessage
-		Timestamp        time.Time
-		ObservationID    string
-		ObservedAt       time.Time
-		Revision         evidence.ObservationRevision
-		EvidenceChecksum string
-		Rejections       []Rejection
-		Authority        float64
-		Confidence       float64
-		Reason           string
-		PreviousValue    json.RawMessage
+		Source                  evidence.SourceID
+		Field                   string
+		Value                   json.RawMessage
+		Timestamp               time.Time
+		ObservationID           string
+		ObservedAt              time.Time
+		Revision                evidence.ObservationRevision
+		EvidenceChecksum        string
+		ProviderBindingID       string `json:"ProviderBindingID,omitempty" yaml:"providerbindingid,omitempty"`
+		ProviderBindingRevision string `json:"ProviderBindingRevision,omitempty" yaml:"providerbindingrevision,omitempty"`
+		Rejections              []Rejection
+		Authority               float64
+		Confidence              float64
+		Reason                  string
+		PreviousValue           json.RawMessage
 	}
 	rejections := make([]Rejection, 0, len(e.Rejections))
 	if len(e.Rejections) > 0 {
@@ -72,6 +76,7 @@ func (e Entry) MarshalJSON() ([]byte, error) {
 		Source: e.Source, Field: e.Field, Value: value, Timestamp: e.Timestamp,
 		ObservationID: e.ObservationID, ObservedAt: e.ObservedAt, Revision: e.Revision,
 		EvidenceChecksum: e.EvidenceChecksum, Rejections: rejections,
+		ProviderBindingID: e.ProviderBindingID, ProviderBindingRevision: e.ProviderBindingRevision,
 		Authority: e.Authority, Confidence: e.Confidence, Reason: e.Reason,
 		PreviousValue: previousValue,
 	})
@@ -97,24 +102,27 @@ func (e Entry) MarshalYAML() ([]byte, error) {
 		rejections = append(rejections, canonicalRejection(rejection))
 	}
 	type canonicalEntry struct {
-		Source           evidence.SourceID            `json:"source"`
-		Field            string                       `json:"field"`
-		Value            json.RawMessage              `json:"value"`
-		Timestamp        time.Time                    `json:"timestamp"`
-		ObservationID    string                       `json:"observationid"`
-		ObservedAt       time.Time                    `json:"observedat"`
-		Revision         evidence.ObservationRevision `json:"revision"`
-		EvidenceChecksum string                       `json:"evidencechecksum"`
-		Rejections       []canonicalRejection         `json:"rejections"`
-		Authority        float64                      `json:"authority"`
-		Confidence       float64                      `json:"confidence"`
-		Reason           string                       `json:"reason"`
-		PreviousValue    json.RawMessage              `json:"previousvalue"`
+		Source                  evidence.SourceID            `json:"source"`
+		Field                   string                       `json:"field"`
+		Value                   json.RawMessage              `json:"value"`
+		Timestamp               time.Time                    `json:"timestamp"`
+		ObservationID           string                       `json:"observationid"`
+		ObservedAt              time.Time                    `json:"observedat"`
+		Revision                evidence.ObservationRevision `json:"revision"`
+		EvidenceChecksum        string                       `json:"evidencechecksum"`
+		ProviderBindingID       string                       `json:"providerbindingid,omitempty"`
+		ProviderBindingRevision string                       `json:"providerbindingrevision,omitempty"`
+		Rejections              []canonicalRejection         `json:"rejections"`
+		Authority               float64                      `json:"authority"`
+		Confidence              float64                      `json:"confidence"`
+		Reason                  string                       `json:"reason"`
+		PreviousValue           json.RawMessage              `json:"previousvalue"`
 	}
 	encoded, err := json.Marshal(canonicalEntry{
 		Source: e.Source, Field: e.Field, Value: value, Timestamp: e.Timestamp,
 		ObservationID: e.ObservationID, ObservedAt: e.ObservedAt, Revision: e.Revision,
 		EvidenceChecksum: e.EvidenceChecksum, Rejections: rejections,
+		ProviderBindingID: e.ProviderBindingID, ProviderBindingRevision: e.ProviderBindingRevision,
 		Authority: e.Authority, Confidence: e.Confidence, Reason: e.Reason,
 		PreviousValue: previousValue,
 	})

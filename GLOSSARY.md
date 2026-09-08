@@ -5,6 +5,7 @@ identifiers, command names, API fields, and protocol values remain exact.
 
 | Term | Definition | Avoid | Status | Evidence |
 |---|---|---|---|---|
+| ACL | An access control list that grants or denies specified rights to users, groups, or system principals. |  | approved | `internal/runtimeacl/windows/policy.go`, `internal/privatefiles/acl_darwin.go` |
 | acquisition | An explicit operation that gets catalog evidence from configured external sources. |  | approved | `acquisition/syncer.go` |
 | AI | Artificial intelligence. Starmap catalogs models that AI services offer. |  | approved | `README.md` |
 | API | An application programming interface that software uses to interact with Starmap. |  | approved | `docs/REST_API.md` |

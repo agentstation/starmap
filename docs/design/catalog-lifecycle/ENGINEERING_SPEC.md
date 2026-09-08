@@ -857,6 +857,17 @@ must distinguish source support from source eligibility in a particular run.
 | Complete deletion or tombstone | Remove the record within the source's declared scope. Lower layers cannot restore it. |
 | Unlinked new offering | Retain a review candidate. Exclude it from routable output until identity resolves. |
 
+Pricing is one validated commercial record, including currency, units, tiers, validity, and provenance.
+Do not combine price components from different observations. Explicit zero is a known value, not an absent field.
+Preserve a valid linked offering when optional pricing or limits are absent.
+Report any billing-related route exclusion separately from catalog membership.
+
+The first acceptable source in the configured authority order wins. Authority scores do not define numeric averaging or generic operator weights.
+
+Starport currently pins Starmap v0.16.5. The candidate source tree contains newer canonical reconciliation and membership corrections.
+CSP8 must adopt a compatible published module and repeat these contracts through Starport acquisition, restart, discovery, and inference admission.
+A temporary workspace substitution does not qualify the committed dependency.
+
 The current connected runtime validates retained provider payloads against their digest, canonical provider identifier, observation time, and storage filename.
 It owns copied payload bytes and classified issue records and validates each supplied batch before retention.
 Retained receipts bind source identity, revision, completeness, status, and record counts to the payload through the existing observation identity.
@@ -2319,6 +2330,48 @@ The operator API and console must show:
 - Resolved storage paths, backend choices, schema versions, and persistence readiness.
 - Complete and partial latency measurements with their timing boundaries and sample windows.
 - Cache and policy validity, cold-load counts, admission failures, queue pressure, and dropped optional work without secret disclosure.
+
+### 10.0 Discovery and readiness projections
+
+Keep four explicit projections:
+
+| Projection | Contents and authority |
+| --- | --- |
+| Accepted catalog | Definitions and offerings from the selected catalog authority and permitted reconciliation. |
+| Permitted discovery | Accepted membership after the viewer's disclosure policy. Missing inference credentials do not remove membership. |
+| Structural support | Offering operations that registered adapters and transports can serve. This is independent of current credential material. |
+| Caller readiness | Current policy, credential role and validity, destination grants, operation support, and required admission state. |
+
+Provide authenticated console discovery through a dedicated projection when compatibility routes cannot express these distinctions.
+Do not expand existing compatibility lists without tests for their declared membership and response contracts.
+Use one snapshot for discovery counts, details, facets, and page cursors. Reject or restart a cursor after its snapshot expires.
+Apply internal-authority exclusions before disclosure. Do not infer disclosure permission from structural routes or embedded membership.
+
+Build immutable definition and offering indexes before publication. Apply bounded current caller filters to those indexes.
+Do not probe every provider or secret manager during a list request.
+An unknown credential state must remain unknown. An operator-wide usable-provider list does not establish readiness for every caller.
+
+Personal credentials and shared grants retain their own scope and destination checks.
+Inference admission must recheck current policy and budgets after a readiness result or cached response lookup.
+
+Provider facets use distinct offering provider identifiers. Author facets use declared authorship.
+The same predicate must drive facet counts, URL filters, detail links, and selected results.
+The console must distinguish unsupported operations, missing credentials, denied access, expired credentials, and unknown readiness.
+Chat defaults and comparison actions must respect the operation and caller context. Preserve browsing when no usable choice exists.
+
+#### Discovery cache dependencies
+
+CSP12.1 owns proxy discovery cache behavior with CSP10's snapshot and policy contracts.
+Cache identities must include all facts that affect the projection, including structural availability and disclosure policy where applicable.
+A process-local availability counter alone cannot identify shared entries across restarts or replicas.
+Use a content identity or an explicitly scoped epoch that prevents collisions between distinct projections.
+Bound retained entries and preserve original expiry during refill. Do not rely on TTL alone after a known withdrawal.
+
+Tests must warm the production cache, change adapter availability without changing the catalog generation, and inspect all discovery responses.
+Cover adapter removal and restoration, restart, replica identity collisions, caller isolation, and current-policy filtering on cache hits.
+Endpoint tests must prove a useful cache hit through the real serialization path before they assert invalidation.
+A stored entry that always misses does not prove correct cache behavior.
+Keep response delivery, retry, and batch admission tests separate from discovery freshness tests.
 
 ### 10.1 Operator configuration screens
 

@@ -34,7 +34,7 @@ func TestFilterSourcesHonorsExplicitSourceSelection(t *testing.T) {
 	}
 }
 
-func TestFilterSourcesFreshExcludesLocalCatalog(t *testing.T) {
+func TestFilterSourcesFreshPreservesOperatorCatalog(t *testing.T) {
 	filtered := filterSources(
 		&pkgsync.Options{Fresh: true},
 		sourceTestInputs(asSnapshot(catalogs.NewEmpty()), catalogs.LoadReport{}, existingWorkspaceInput()),
@@ -43,9 +43,10 @@ func TestFilterSourcesFreshExcludesLocalCatalog(t *testing.T) {
 
 	for _, id := range sourceIDs(filtered) {
 		if id == sources.LocalCatalogID {
-			t.Fatal("Fresh source selection retained the existing local catalog")
+			return
 		}
 	}
+	t.Fatal("Fresh source selection discarded the operator catalog")
 }
 
 func TestCreateSourcesWithConfigUsesModelsDevSourcesDir(t *testing.T) {

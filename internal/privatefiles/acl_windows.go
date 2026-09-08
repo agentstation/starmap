@@ -23,6 +23,14 @@ func windowsProcessSID() (string, error) {
 
 // ValidateACL checks native grants on the expected file without changing its ACL.
 func ValidateACL(root *os.Root, name string, expected fs.FileInfo, field string) error {
+	return validateWindowsACL(root, name, expected, field, false)
+}
+
+func validateServiceACL(root *os.Root, name string, expected fs.FileInfo) error {
+	return validateWindowsACL(root, name, expected, "configuration.file", true)
+}
+
+func validateWindowsACL(root *os.Root, name string, expected fs.FileInfo, field string, service bool) error {
 	file, err := root.Open(name)
 	if err != nil {
 		return errors.WrapResource("inspect", "runtime ACL", field, err)
@@ -43,6 +51,13 @@ func ValidateACL(root *os.Root, name string, expected fs.FileInfo, field string)
 	sd, err := windows.GetSecurityInfo(windows.Handle(file.Fd()), windows.SE_FILE_OBJECT, windows.OWNER_SECURITY_INFORMATION|windows.DACL_SECURITY_INFORMATION)
 	if err != nil {
 		return errors.WrapResource("read", "runtime security descriptor", field, err)
+	}
+	if service {
+		descriptor, err := decodeWindowsSecurityDescriptor(sd, field)
+		if err != nil {
+			return err
+		}
+		return aclpolicy.ValidateConfiguration(account, descriptor, field)
 	}
 	return validateWindowsSecurityDescriptor(sd, account, field)
 }

@@ -35,7 +35,7 @@ func guardObservationVolume(
 	}
 	issues := append([]sources.ObservationIssue(nil), observation.Issues...)
 	for _, provider := range baseline.Providers().List() {
-		historical := sourceAttributedModelIDs(baseline, observation.SourceID, provider)
+		historical := observationAttributedModelIDs(baseline, observation, provider)
 		if len(historical) == 0 {
 			continue
 		}
@@ -64,24 +64,29 @@ func guardObservationVolume(
 		return observation, nil
 	}
 	return sources.NewObservation(observation.SourceID, observation.Catalog, sources.ObservationMetadata{
-		ObservedAt:   observation.ObservedAt,
-		Revision:     observation.Revision,
-		Completeness: sources.ObservationCompletenessPartial,
-		Status:       sources.ObservationStatusDegraded,
-		Records:      observation.Records,
-		Issues:       issues,
+		ProviderBinding: observation.ProviderBinding,
+		ObservedAt:      observation.ObservedAt,
+		Revision:        observation.Revision,
+		Completeness:    sources.ObservationCompletenessPartial,
+		Status:          sources.ObservationStatusDegraded,
+		Records:         observation.Records,
+		Issues:          issues,
 	})
 }
 
-func sourceAttributedModelIDs(
+func observationAttributedModelIDs(
 	baseline *catalogs.Catalog,
-	source sources.ID,
+	observation sources.Observation,
 	provider catalogs.Provider,
 ) map[string]struct{} {
 	models := make(map[string]struct{})
+	if observation.ProviderBinding != nil && observation.ProviderBinding.ProviderID != provider.ID {
+		return models
+	}
 	for modelID := range provider.Models {
 		for _, entries := range baseline.Provenance().FindModel(provider.ID, modelID) {
-			if currentProvenanceSource(entries) == source {
+			current := currentProvenanceEntry(entries)
+			if current.Source == observation.SourceID && sameObservationScope(current, observation) {
 				models[modelID] = struct{}{}
 				break
 			}
@@ -90,9 +95,9 @@ func sourceAttributedModelIDs(
 	return models
 }
 
-func currentProvenanceSource(entries []provenance.Entry) sources.ID {
+func currentProvenanceEntry(entries []provenance.Entry) provenance.Entry {
 	if len(entries) == 0 {
-		return ""
+		return provenance.Entry{}
 	}
 	current := entries[0]
 	for _, entry := range entries[1:] {
@@ -100,7 +105,14 @@ func currentProvenanceSource(entries []provenance.Entry) sources.ID {
 			current = entry
 		}
 	}
-	return current.Source
+	return current
+}
+
+func sameObservationScope(entry provenance.Entry, observation sources.Observation) bool {
+	if observation.ProviderBinding == nil {
+		return entry.ProviderBindingID == "" && entry.ProviderBindingRevision == ""
+	}
+	return entry.ProviderBindingID == observation.ProviderBinding.ID && entry.ProviderBindingRevision == observation.ProviderBinding.Revision
 }
 
 func observationProviderModelIDs(

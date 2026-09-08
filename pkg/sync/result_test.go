@@ -2,6 +2,7 @@ package sync
 
 import (
 	"context"
+	"strings"
 	"testing"
 
 	"github.com/agentstation/starmap/internal/catalog/reconciler"
@@ -321,4 +322,16 @@ func catalogWithProvider(t *testing.T, providerID catalogs.ProviderID, model cat
 		t.Fatalf("Failed to seed provider %q: %v", providerID, err)
 	}
 	return cat
+}
+
+func TestResetOnlySummaryReportsAcquisitionWork(t *testing.T) {
+	for _, dryRun := range []bool{false, true} {
+		result := &Result{Fresh: true, DryRun: dryRun, ResetCount: 1}
+		if !result.HasChanges() {
+			t.Fatal("reset-only result hid acquisition work")
+		}
+		if summary := result.Summary(); !strings.Contains(summary, "acquisition resets: 1") {
+			t.Fatalf("reset-only summary omits acquisition work: %q", summary)
+		}
+	}
 }

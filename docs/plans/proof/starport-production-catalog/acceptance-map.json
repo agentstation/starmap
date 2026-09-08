@@ -1830,7 +1830,7 @@
     "A42.capacity_and_entry_limits": "Configured byte, entry, and TTL limits apply under pressure without deleting durable records.",
     "A42.cache_only_cleanup": "Cleanup removes only the selected cache data and leaves catalog, account, credential, budget, and usage records intact.",
     "A42.cache_outage_admission": "Cache failure produces a miss while current permission and budget rules still govern inference.",
-    "A42.generation_account_scope": "Projection invalidation follows catalog generations. Response and extraction data remain isolated by required account and policy scope.",
+    "A42.generation_account_scope": "Projection invalidation follows catalog generations. Response and extraction data remain isolated by required account and policy scope. Warm actual serialized model, provider, and endpoint caches. Verify adapter changes at the same catalog generation, caller isolation, and collision-free identities across restart and replicas. Prove useful endpoint cache hits before invalidation.",
     "A42.enablement_by_cache_kind": "Response, projection, extraction, and optional semantic controls follow their documented enablement and cost behavior.",
     "A42.memory_budget_measurement": "The recipe records configured capacities separately from measured process memory at the declared workload.",
     "A43.memory_databases": "Default development uses memory Badger and SQLite and loses records across a fresh process.",
@@ -1846,7 +1846,7 @@
     "A44.caller_owned_values": "Mutating a returned offering cannot change the retained immutable catalog or another caller result.",
     "A44.exact_model_scaling": "Recorded profiles show no full-provider copies or unrelated candidate enumeration as the number of unrelated routes grows.",
     "A44.embedded_catalog_profile": "Repeat the released embedded-catalog case and record time, bytes, allocations, and raw profiles for the changed artifact.",
-    "A44.precomputed_static_candidates": "Activation constructs immutable endpoint and capability candidates. Warm exact selection does not rebuild them.",
+    "A44.precomputed_static_candidates": "Activation constructs immutable endpoint and capability candidates. Warm exact selection does not rebuild them. Precompute immutable definition and offering indexes for routing and discovery. Apply bounded current caller filters without provider or secret-manager calls on list requests.",
     "A44.auto_fallback_semantics": "Broad auto selection, explicit fallbacks, aliases, ambiguous names, and current policy retain their declared behavior.",
     "A44.generation_lease_consistency": "Concurrent publication cannot mix route facts, pricing, or connector bindings in an existing request or stream.",
     "A44.retained_generation_bounds": "Update pressure respects the generation memory bound. Known withdrawals still fence affected new inference if activation cannot proceed.",
@@ -1860,7 +1860,7 @@
     "A45.resident_secret_bounds": "Entries, secret bytes, refresh concurrency, and retention obey the profile under tenant churn.",
     "A45.encryption_and_disclosure": "Existing encryption strength remains intact. Catalogs, diagnostics, benchmark outputs, and response caches contain no plaintext material.",
     "A46.warm_no_stable_store_reads": "Warm valid key, account, team, and grant checks perform no KV or SQL reads for stable data.",
-    "A46.dependency_revision_coherence": "A missing or incompatible dependency revision cannot activate as a complete authorization bundle.",
+    "A46.dependency_revision_coherence": "A missing or incompatible dependency revision cannot activate as a complete authorization bundle. Track all applicable authorization and readiness dependencies. Operator credential state cannot stand in for personal credentials or shared grants. Cache hits must apply current caller policy.",
     "A46.confirmed_absence_vs_unknown": "Only an explicit verified absence can create a bounded negative entry. Failed reads cannot establish absent policy or budgets.",
     "A46.local_mutation_fencing": "A restrictive local mutation fences affected admission before reporting successful local activation.",
     "A46.fleet_receipt_vs_enforcement": "Durable mutation receipts remain distinct from confirmed enforcement on replicas.",
@@ -1924,7 +1924,12 @@
     "A47.late_usage_pinned_valuation": "Late usage reconciles the original reservation windows and pinned nano-USD pricing, with explicit rounding and uncertain capacity retention.",
     "A47.policy_edit_preserves_spend": "Limit, membership, and policy revisions do not erase accumulated spend or change the meter identities of existing reservations.",
     "A47.clock_and_window_authority": "Concurrent replicas use the declared admission clock and skew bound. Unknown time validity refuses strict admission.",
-    "A47.reconciliation_retention": "Duplicate or late usage cannot release capacity after deduplication evidence expires. Unknown reconciliation remains restricted."
+    "A47.reconciliation_retention": "Duplicate or late usage cannot release capacity after deduplication evidence expires. Unknown reconciliation remains restricted.",
+    "A08.field_authority": "Use canonical authority order through runtime reconstruction. Select complete validated pricing records without mixed currency, unit, tier, validity, or provenance components.",
+    "A08.presence_zero_null": "Distinguish known zero, null, false, unknown, and missing fields. Preserve valid linked membership without optional pricing or limits.",
+    "A20.starport_provider_nonprovider": "The committed compatible dependency must compile and reconcile provider and non-provider evidence through Starport startup, refresh, restart, and catalog projections.",
+    "A18.consistent_counts_prices": "Counts, details, pages, and provider and author facets use one permitted catalog view. Serving-provider facets count distinct offering providers. Pricing retains one selected commercial record.",
+    "A18.unauthorized_membership_redaction": "Permitted discovery remains available without inference credentials. Disclosure policy excludes prohibited membership before lists, counts, details, facets, caches, or fallback. Structural support and caller readiness remain distinct."
   },
   "storage_review_mapping": {
     "SR01": {
@@ -2307,6 +2312,118 @@
         "CSP0"
       ],
       "cases": []
+    }
+  },
+  "discovery_readiness_review_mapping": {
+    "DR01": {
+      "tasks": [
+        "CSP9",
+        "CSP10"
+      ],
+      "cases": [
+        "A11",
+        "A18",
+        "A46"
+      ],
+      "evidence": "discovery-readiness-2026-09-07/verification.json"
+    },
+    "DR02": {
+      "tasks": [
+        "CSP10",
+        "CSP10.1",
+        "CSP17"
+      ],
+      "cases": [
+        "A09",
+        "A18",
+        "A44"
+      ],
+      "evidence": "discovery-readiness-2026-09-07/verification.json"
+    },
+    "DR03": {
+      "tasks": [
+        "CSP3",
+        "CSP8"
+      ],
+      "cases": [
+        "A08",
+        "A20"
+      ],
+      "evidence": "discovery-readiness-2026-09-07/verification.json"
+    },
+    "DR04": {
+      "tasks": [
+        "CSP3",
+        "CSP8"
+      ],
+      "cases": [
+        "A08",
+        "A20"
+      ],
+      "evidence": "discovery-readiness-2026-09-07/verification.json"
+    },
+    "DR05": {
+      "tasks": [
+        "CSP3",
+        "CSP8"
+      ],
+      "cases": [
+        "A08",
+        "A20"
+      ],
+      "evidence": "discovery-readiness-2026-09-07/verification.json"
+    },
+    "DR06": {
+      "tasks": [
+        "CSP10",
+        "CSP12.1"
+      ],
+      "cases": [
+        "A18",
+        "A42",
+        "A46",
+        "A48"
+      ],
+      "evidence": "discovery-readiness-2026-09-07/verification.json"
+    },
+    "DR07": {
+      "tasks": [
+        "CSP17",
+        "CSP18",
+        "CSP20"
+      ],
+      "cases": [
+        "A18",
+        "A34"
+      ],
+      "evidence": "discovery-readiness-2026-09-07/verification.json"
+    },
+    "DR08": {
+      "tasks": [
+        "CSP9",
+        "CSP10",
+        "CSP17",
+        "CSP21"
+      ],
+      "cases": [
+        "A11",
+        "A18",
+        "A36",
+        "A46"
+      ],
+      "evidence": "discovery-readiness-2026-09-07/verification.json"
+    },
+    "DR09": {
+      "tasks": [
+        "CSP8",
+        "CSP22",
+        "CSP24"
+      ],
+      "cases": [
+        "A20",
+        "A35"
+      ],
+      "evidence": "discovery-readiness-2026-09-07/verification.json"
     }
   }
 }

@@ -57,3 +57,53 @@ func TestConfigurationRejectsPublicWindowsACL(t *testing.T) {
 		}
 	}
 }
+
+func TestServiceConfigurationWindowsGrants(t *testing.T) {
+	dir := t.TempDir()
+	root, err := os.OpenRoot(dir)
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer func() { _ = root.Close() }()
+	file, err := privatefiles.CreateFile(root, "config.yaml")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if _, err := file.Write([]byte("catalog_source: embedded\n")); err != nil {
+		t.Fatal(err)
+	}
+	if err := file.Close(); err != nil {
+		t.Fatal(err)
+	}
+	user, err := windows.GetCurrentProcessToken().GetTokenUser()
+	if err != nil {
+		t.Fatal(err)
+	}
+	account := user.User.Sid.String()
+	path := filepath.Join(dir, "config.yaml")
+	for _, test := range []struct {
+		rights  string
+		allowed bool
+	}{{"GR", true}, {"GW", false}, {"0x4", false}, {"WD", false}, {"WO", false}} {
+		t.Run(test.rights, func(t *testing.T) {
+			descriptor, err := windows.SecurityDescriptorFromString("D:P(A;;FA;;;" + account + ")(A;;FA;;;SY)(A;;FA;;;BA)(A;;" + test.rights + ";;;WD)")
+			if err != nil {
+				t.Fatal(err)
+			}
+			dacl, _, err := descriptor.DACL()
+			if err != nil {
+				t.Fatal(err)
+			}
+			if err := windows.SetNamedSecurityInfo(path, windows.SE_FILE_OBJECT, windows.DACL_SECURITY_INFORMATION|windows.PROTECTED_DACL_SECURITY_INFORMATION, nil, nil, dacl, nil); err != nil {
+				t.Fatal(err)
+			}
+			_, err = readSelectedConfiguration(path, "service-managed")
+			if (err == nil) != test.allowed {
+				t.Fatalf("allowed=%v, error=%v", test.allowed, err)
+			}
+			if _, err := readConfigurationFile(path); err == nil {
+				t.Fatal("private reader accepted public grant")
+			}
+		})
+	}
+}

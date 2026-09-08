@@ -1,6 +1,7 @@
 package app
 
 import (
+	"encoding/json"
 	"fmt"
 	"slices"
 	"strconv"
@@ -67,6 +68,13 @@ func catalogFileValue(descriptor catalogconfig.Descriptor, value any) (string, e
 			return fmt.Sprint(typed), nil
 		}
 	case []any:
+		if descriptor.Type == catalogconfig.ProviderBindingsValue {
+			encoded, err := json.Marshal(typed)
+			if err != nil {
+				return "", invalid
+			}
+			return string(encoded), nil
+		}
 		if descriptor.Type != catalogconfig.ListValue {
 			return "", invalid
 		}

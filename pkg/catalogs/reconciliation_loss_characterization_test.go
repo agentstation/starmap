@@ -2,11 +2,9 @@ package catalogs
 
 import "testing"
 
-// TestF004CharacterizationEnrichMergeDropsManualModelWithoutPricingOrLimits
-// pins the current "substantial data" filter. P3/P4 must invert this
-// expectation so a human model is not discarded merely because pricing and
-// limits are absent.
-func TestF004CharacterizationEnrichMergeDropsManualModelWithoutPricingOrLimits(t *testing.T) {
+// TestEnrichMergePreservesManualModelWithoutPricingOrLimits requires valid model membership
+// to survive enrichment when optional commercial metadata is absent.
+func TestEnrichMergePreservesManualModelWithoutPricingOrLimits(t *testing.T) {
 	destination := NewEmpty()
 	if err := destination.SetProvider(Provider{ID: "manual", Name: "Manual"}); err != nil {
 		t.Fatalf("SetProvider destination: %v", err)
@@ -50,8 +48,12 @@ func TestF004CharacterizationEnrichMergeDropsManualModelWithoutPricingOrLimits(t
 	if err != nil {
 		t.Fatalf("Provider: %v", err)
 	}
-	if _, exists := provider.Models[manualModel.ID]; exists {
-		t.Fatal("F-004 characterization changed: metadata-only manual model survived enrichment")
+	model, exists := provider.Models[manualModel.ID]
+	if !exists || model.ModelRef != manualModel.ModelRef || model.Description != manualModel.Description {
+		t.Fatal("enrichment dropped a linked model without pricing or limits")
+	}
+	if _, err := destination.Build(); err != nil {
+		t.Fatalf("merged model does not satisfy canonical identity: %v", err)
 	}
 }
 

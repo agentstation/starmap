@@ -95,7 +95,7 @@ func (a *App) verifySavedMigrationSelection(request runtime.DirectoryMigrationRe
 	if !config.catalogFileRead || config.ConfigFile == "" {
 		return migrationSelectionConflict("save the migration selection in a configuration file before completion")
 	}
-	data, err := readConfigurationFile(config.ConfigFile)
+	data, err := readSelectedConfiguration(config.ConfigFile, config.ConfigAccess)
 	if err != nil {
 		return errors.WrapIO("read", config.ConfigFile, err)
 	}

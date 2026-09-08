@@ -22,6 +22,7 @@ import (
 // @Produce json
 // @Param provider query string false "Update specific provider only"
 // @Param source query string false "Update one source only (local_catalog, providers, models_dev_http, or models_dev_git)"
+// @Param fresh query boolean false "Reset selected acquisition and preserve the baseline"
 // @Success 202 {object} response.Response{data=operations.Status}
 // @Failure 500 {object} response.Response{error=response.Error}
 // @Security ApiKeyAuth
@@ -40,6 +41,14 @@ func (h *Handlers) HandleUpdate(w http.ResponseWriter, r *http.Request) {
 	}
 	if source := r.URL.Query().Get("source"); source != "" {
 		opts = append(opts, sync.WithSources(sources.ID(source)))
+	}
+
+	if fresh := r.URL.Query().Get("fresh"); fresh != "" {
+		if fresh != "true" && fresh != "false" {
+			response.BadRequest(w, "fresh must be true or false", "")
+			return
+		}
+		opts = append(opts, sync.WithFresh(fresh == "true"))
 	}
 
 	status, err := h.operations.Start(
@@ -72,6 +81,7 @@ func (h *Handlers) runCatalogUpdate(
 	}
 	return map[string]any{
 		"total_changes":     result.TotalChanges,
+		"reset_count":       result.ResetCount,
 		"providers_changed": result.ProvidersChanged,
 		"dry_run":           result.DryRun,
 		"generation_id":     result.GenerationID,

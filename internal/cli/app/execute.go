@@ -12,14 +12,15 @@ import (
 )
 
 type commandFlags struct {
-	configFile string
-	envFiles   []string
-	verbose    bool
-	quiet      bool
-	noColor    bool
-	output     string
-	logLevel   string
-	pathValues map[string]*string
+	configFile   string
+	configAccess string
+	envFiles     []string
+	verbose      bool
+	quiet        bool
+	noColor      bool
+	output       string
+	logLevel     string
+	pathValues   map[string]*string
 }
 
 // Execute runs the starmap CLI application with the given arguments.
@@ -75,6 +76,7 @@ when API keys are configured.`,
 
 	// Add global flags
 	rootCmd.PersistentFlags().StringVar(&a.commandFlags.configFile, "config", "", "configuration file (default is config.yaml under the selected configuration root)")
+	rootCmd.PersistentFlags().StringVar(&a.commandFlags.configAccess, "config-access", "", "primary configuration access: owner-only or service-managed (STARMAP_CONFIG_ACCESS)")
 	a.commandFlags.pathValues = make(map[string]*string)
 	for _, setting := range pathSettings() {
 		a.commandFlags.pathValues[setting.name] = rootCmd.PersistentFlags().String(setting.flag, "", setting.description+" ("+setting.name+")")
@@ -108,8 +110,14 @@ func (a *App) setupCommand(cmd *cobra.Command, _ []string) error {
 	if err != nil {
 		return err
 	}
-	if a.deferCommandConfig || a.commandFlags.configFile != "" || len(a.commandFlags.envFiles) > 0 || a.anyPathFlagChanged(cmd) {
+	if a.deferCommandConfig || a.commandFlags.configFile != "" || len(a.commandFlags.envFiles) > 0 || a.anyPathFlagChanged(cmd) || cmd.Flags().Changed("config-access") {
 		bootstrap := &Config{dotenvPaths: dotenv.paths, pathOverrides: make(map[string]string)}
+		if cmd.Flags().Changed("config-access") {
+			bootstrap.ConfigAccess = a.commandFlags.configAccess
+			if bootstrap.ConfigAccess == "" {
+				bootstrap.ConfigAccess = "owner-only"
+			}
+		}
 		for _, setting := range pathSettings() {
 			if cmd.Flags().Changed(setting.flag) {
 				bootstrap.pathOverrides[setting.name] = *a.commandFlags.pathValues[setting.name]

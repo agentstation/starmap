@@ -369,6 +369,157 @@
           "test": "TestEmbeddedGenerationIsVerifiedPassiveAndIndependent"
         }
       ]
+    },
+    "A44.canonical_alias_lookup": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./pkg/catalogs",
+          "test": "TestOfferingLookupPreservesCanonicalAliasesAndErrors"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./pkg/catalogs",
+          "test": "TestOfferingLookupAllocationsDoNotScaleWithProviderModels"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./pkg/catalogs",
+          "test": "TestBuildRejectsAmbiguousAliases"
+        }
+      ]
+    },
+    "A44.caller_owned_values": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./pkg/catalogs",
+          "test": "TestOfferingLookupRetainsCallerOwnershipConcurrently"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./pkg/catalogs",
+          "test": "TestProviderOfferingsPreserveProviderSpecificFacts"
+        }
+      ]
+    },
+    "E02": {
+      "kind": "reviewed_first_use",
+      "repository": "starport",
+      "proof": "docs/plans/proof/starport-production-catalog/csp0.2/first-use-demo-review.json",
+      "required_inputs": [
+        "README.md",
+        "docker-compose.yml",
+        "Dockerfile",
+        ".dockerignore",
+        ".env.example",
+        "docs/OPERATOR-GUIDE.md",
+        "docs/PRODUCTION-STATUS.md",
+        "docs/PERFORMANCE.md",
+        "scripts/verify-readme-quickstart.sh",
+        "scripts/test-readme-quickstart-verifier.sh",
+        "scripts/verify-doc-links.sh"
+      ],
+      "observations": [
+        "install_catalog_credentials_inference_order",
+        "catalog_presence_is_not_provider_access",
+        "development_persistence_overrides_disclosed",
+        "recording_persistence_selectors_cleared",
+        "production_limits_linked",
+        "gateway_latency_claim_qualified",
+        "all_advertised_installation_methods_reviewed"
+      ],
+      "methods": [
+        "homebrew-linux",
+        "homebrew-macos",
+        "archive-darwin-arm64",
+        "archive-darwin-x86_64",
+        "archive-linux-arm64",
+        "archive-linux-x86_64",
+        "archive-windows-arm64",
+        "archive-windows-x86_64",
+        "source-build",
+        "container-release",
+        "compose-source"
+      ]
+    },
+    "E03": {
+      "kind": "reviewed_demo",
+      "repository": "starport",
+      "proof": "docs/plans/proof/starport-production-catalog/csp0.3/media-review.json",
+      "asset_directory": "docs/assets/first-use-v1.2.0",
+      "required_inputs": [
+        "README.md",
+        "docs/assets/first-use-v1.2.0/render.json",
+        "docs/assets/first-use-v1.2.0/events.json",
+        "docs/assets/first-use-v1.2.0/render.py",
+        "docs/assets/first-use-v1.2.0/first-use-uncut.gif",
+        "docs/assets/first-use-v1.2.0/poster.png",
+        "docs/assets/first-use-v1.2.0/first-use.gif",
+        "docs/assets/first-use-v1.2.0/capture.py",
+        "docs/assets/first-use-v1.2.0/replay.py",
+        "docs/assets/first-use-v1.2.0/TRANSCRIPT.md"
+      ],
+      "observations": [
+        "installation",
+        "catalog_before_credentials",
+        "separate_gateway_and_provider_credentials",
+        "real_streamed_answer",
+        "client_urls_and_persistent_next_step",
+        "readable_at_900px",
+        "original_inference_timing",
+        "edits_disclosed",
+        "no_secret_material",
+        "static_poster_and_transcript",
+        "light_dark_and_narrow_preview",
+        "keyboard_and_missing_image_fallback",
+        "temporary_cleanup",
+        "no_unfinished_product_claims"
+      ]
+    },
+    "A02.no_workers": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./",
+          "test": "TestReadOnlyConstructorsStartNoWorkers"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./",
+          "test": "TestConstructorWorkerObservationDetectsBlockedAndScheduledWorkers"
+        }
+      ]
+    },
+    "A01.existing_head_preserved": {
+      "kind": "go_test",
+      "repository": "starmap",
+      "package": "./internal/cli/app",
+      "test": "TestBaselineExportPreservesExistingAcceptedHead"
+    },
+    "A01.required_write_failure": {
+      "kind": "go_test",
+      "repository": "starmap",
+      "package": "./internal/cli/app",
+      "test": "TestRequiredBaselineWriteFailurePreventsRuntimeStartup"
+    },
+    "A02.constructor_network_silence": {
+      "kind": "constructor_network",
+      "repository": "starmap"
+    },
+    "A01.starmap_cold_offline": {
+      "kind": "cold_server",
+      "repository": "starmap"
     }
   }
 }

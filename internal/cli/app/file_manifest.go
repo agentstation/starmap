@@ -5,6 +5,7 @@ import (
 	"strings"
 
 	"github.com/agentstation/starmap/pkg/productpaths"
+	filepolicy "github.com/agentstation/starmap/pkg/productpaths/policy"
 )
 
 // FileManifest reports selected locations without opening catalog state or creating files.
@@ -43,7 +44,7 @@ func (a *App) FileManifest() (productpaths.FileManifest, error) {
 	} {
 		add(item.id, child(paths.Runtime, item.name), "file", "available", item.creation, item.recovery)
 	}
-	add("runtime-evidence", child(paths.Runtime, "catalog-runtime"), "tree", "available", "Source refresh or provider acquisition.", "Preserve permitted evidence with the catalog state.", "source.json", "source.json.tmp", ".layer-*", "providers/*.json", "providers/*.json.tmp", "providers/.layer-*")
+	add("runtime-evidence", child(paths.Runtime, "catalog-runtime"), "tree", "available", "Source refresh, provider acquisition, or manual publication.", "Preserve accepted history and recovery inputs with the catalog state.", "source.json", "source.json.tmp", "manual.json", "publication.json", ".layer-*", "providers/*.json", "providers/*.json.tmp", "providers/.layer-*", "providers/bindings/*.json", "providers/bindings/.layer-*", "publication-inputs/*.json", "publication-inputs/.layer-*")
 	add("runtime-record-staging", paths.Runtime, "patterns", "available", "Atomic owner or migration record writes.", "Remove only after ownership and interrupted-write checks.", ".owner-*")
 	add("github-discovery", child(paths.Runtime, "github-catalog-source"), "tree", "available", "Configured GitHub source initialization and refresh.", "Preserve replay floors and accepted release references.", "*.json", ".state-*")
 	add("source-http", paths.SourceCache, "tree", "available", "Explicit models.dev HTTP acquisition.", "Rebuild through permitted source access. Accepted evidence lives elsewhere.", "api.json", "api.json.metadata.json", ".starmap-cache-*")
@@ -76,6 +77,16 @@ func (a *App) FileManifest() (productpaths.FileManifest, error) {
 	}
 	if err := applyFilePolicies(&report); err != nil {
 		return productpaths.FileManifest{}, err
+	}
+	access, err := filepolicy.Configuration(a.config.ConfigAccess, a.config.ConfigFile != "")
+	if err != nil {
+		return productpaths.FileManifest{}, err
+	}
+	for i := range report.Files {
+		if report.Files[i].ID == "configuration" {
+			report.Files[i].Policy.Access = access
+			report.Files[i].Policy.Selectors = append(report.Files[i].Policy.Selectors, "--config-access", "STARMAP_CONFIG_ACCESS")
+		}
 	}
 	return report, nil
 }

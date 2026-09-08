@@ -13,7 +13,6 @@ import (
 	"github.com/agentstation/starmap/internal/privatefiles"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/errors"
-	"github.com/agentstation/starmap/pkg/logging"
 	"github.com/agentstation/starmap/pkg/productpaths/policy"
 )
 
@@ -49,20 +48,21 @@ type sourceLayer struct {
 	Chain            []SourceHop `json:"chain,omitempty"`
 }
 
-// layerSet holds the four layers that produce the effective catalog. The
-// layers are the verified embedded baseline, the selected upstream source,
-// the retained per-provider observations, and the built immutable result.
+// layerSet holds the inputs that produce the effective catalog: the embedded
+// baseline, selected upstream source, provider observations, and manual history.
 type layerSet struct {
 	embedded         starmap.CatalogState
 	source           *sourceLayer
 	providers        map[providerEvidenceKey]ProviderLayer
+	manual           *manualBatch
 	sequence         uint64
 	providerBindings *providerBindingPolicy
+	buildEvidence    starmap.CandidateEvidence
 }
 
 // empty reports whether any retained layer sits above the embedded baseline.
 func (l *layerSet) empty() bool {
-	return l.source == nil && len(l.providers) == 0
+	return l.source == nil && len(l.providers) == 0 && l.manual == nil
 }
 
 // providerOrder returns the retained provider identities in stable order, so
@@ -94,66 +94,42 @@ func (l *layerSet) setProvider(layer ProviderLayer) {
 
 // build rebuilds the immutable effective catalog from the retained layers. The
 // upstream source replaces the baseline. Each provider observation then
-// enriches the result in stable order, so one failed provider keeps its
+// uses canonical field authority in stable order, so one failed provider keeps its
 // last-known-good records.
-func (l *layerSet) build(baseline starmap.CatalogState) (starmap.CatalogState, error) {
-	base := baseline.Catalog
+func (l *layerSet) build(ctx context.Context, baseline starmap.CatalogState) (starmap.CatalogState, error) {
+	if err := ctx.Err(); err != nil {
+		return starmap.CatalogState{}, err
+	}
+	selected, err := l.selectedBaseline(baseline)
+	if err != nil {
+		return starmap.CatalogState{}, err
+	}
+	base := selected.Catalog
 	state := starmap.CatalogState{
-		GenerationID: baseline.GenerationID,
-		GeneratedAt:  baseline.GeneratedAt,
-	}
-	if l.source != nil {
-		decoded, err := catalogs.DecodeCatalogPayload(l.source.Payload)
-		if err != nil {
-			return starmap.CatalogState{}, errors.WrapResource(
-				"decode", "retained source layer", l.source.GenerationID, err)
-		}
-		base = decoded
-		state.GenerationID = l.source.GenerationID
-		state.GeneratedAt = l.source.PublishedAt
-	}
-	if base == nil {
-		return starmap.CatalogState{}, &errors.ValidationError{
-			Field: "effective catalog", Message: "has no baseline",
-		}
+		GenerationID: selected.GenerationID,
+		GeneratedAt:  selected.GeneratedAt,
 	}
 
-	builder := catalogs.NewEmpty()
-	if err := builder.MergeWith(base, catalogs.WithStrategy(catalogs.MergeReplaceAll)); err != nil {
-		return starmap.CatalogState{}, errors.WrapResource(
-			"merge", "effective catalog baseline", state.GenerationID, err)
-	}
+	var builder *catalogs.Builder
 	active := l.activeProviderOrder()
-	for _, id := range active {
-		layer := l.providers[id]
-		// A retained provider layer holds one provider observation. It carries
-		// serving records that name an authored model of the baseline, so the
-		// layer alone resolves no canonical authorship. An offering that names
-		// no authored model of the merged result stays out of the effective
-		// catalog, because a published catalog holds linked offerings only.
-		observed, err := catalogs.DecodeSourceObservationPayload(layer.Payload)
+	l.buildEvidence = starmap.CandidateEvidence{}
+	if l.manual != nil {
+		var err error
+		builder, l.buildEvidence, err = l.reconcileManualInputs(ctx, base, state.GeneratedAt, active)
 		if err != nil {
-			return starmap.CatalogState{}, errors.WrapResource(
-				"decode", "retained provider layer", string(id.providerID), err)
+			return starmap.CatalogState{}, err
 		}
-		linked, unresolved, err := linkProviderOfferings(builder, observed)
+	} else if len(active) > 0 {
+		var err error
+		builder, l.buildEvidence, err = l.reconcileProviders(ctx, base, state.GeneratedAt, active)
 		if err != nil {
-			return starmap.CatalogState{}, errors.WrapResource(
-				"link", "retained provider layer", string(id.providerID), err)
+			return starmap.CatalogState{}, err
 		}
-		if err := builder.MergeWith(linked, catalogs.WithStrategy(catalogs.MergeEnrichEmpty)); err != nil {
-			return starmap.CatalogState{}, errors.WrapResource(
-				"merge", "retained provider layer", string(id.providerID), err)
-		}
-		if err := mergeAuthoredModels(builder, observed); err != nil {
-			return starmap.CatalogState{}, errors.WrapResource(
-				"merge", "retained authored models", string(id.providerID), err)
-		}
-		if unresolved > 0 {
-			logging.Info().
-				Str("provider_id", string(id.providerID)).
-				Int("unresolved_offerings", unresolved).
-				Msg("Provider offerings without a canonical model reference stay out of the effective catalog")
+	} else {
+		var err error
+		builder, err = catalogs.NewBuilderFrom(base)
+		if err != nil {
+			return starmap.CatalogState{}, errors.WrapResource("copy", "effective catalog baseline", state.GenerationID, err)
 		}
 	}
 
@@ -171,22 +147,27 @@ func (l *layerSet) build(baseline starmap.CatalogState) (starmap.CatalogState, e
 	state.Catalog = catalog
 	state.PayloadChecksum = catalogs.DescribeCatalogPayload(payload).Checksum
 	state.Sequence = baseline.Sequence + l.sequence
-	// Local acquisition changes the served bytes, so the result is no longer
-	// the generation that the layers started from. A reused identity would let
-	// a downstream treat two different catalogs as one generation. The hop
-	// therefore derives its own identity from that identity and the served
-	// digest. The upstream layer supplies it, and the embedded baseline supplies
-	// it when the runtime retains no upstream layer. Only the layers decide the
-	// derived identity, so two rebuilds of the same layers keep one identity,
-	// and a durable commit publishes that same identity. A baseline that names
-	// no identity leaves the identity to the publication.
+	// Receipts and review evidence are immutable generation content even when
+	// another source supplies every selected catalog field.
+	identityChecksum, err := effectiveEvidenceChecksum(state.PayloadChecksum, l.buildEvidence)
+	if err != nil {
+		return starmap.CatalogState{}, err
+	}
+	priorChecksum := identityChecksum
+	identityChecksum, err = observationResetChecksum(identityChecksum, l.manual)
+	if err != nil {
+		return starmap.CatalogState{}, err
+	}
+	if identityChecksum != priorChecksum && state.GenerationID == "" {
+		state.GenerationID = "local"
+	}
 	if l.providerBindings != nil {
-		state.GenerationID, err = l.providerBindings.generationID(state.GenerationID, state.PayloadChecksum)
+		state.GenerationID, err = l.providerBindings.generationID(state.GenerationID, identityChecksum)
 		if err != nil {
 			return starmap.CatalogState{}, err
 		}
-	} else if len(active) > 0 && state.GenerationID != "" {
-		state.GenerationID = deriveEffectiveGenerationID(state.GenerationID, state.PayloadChecksum)
+	} else if len(l.buildEvidence.SourceObservations) > 0 && state.GenerationID != "" {
+		state.GenerationID = deriveEffectiveGenerationID(state.GenerationID, identityChecksum)
 	}
 	return state, nil
 }
@@ -201,7 +182,7 @@ const effectiveGenerationLocalSuffix = ".local."
 
 // deriveEffectiveGenerationID returns the identity of a locally enriched
 // upstream generation. It never returns the upstream identity, because the
-// served payload differs from the upstream payload.
+// served payload or its source evidence differs from the upstream generation.
 //
 // A runtime with a catalog store publishes this identity, and a downstream
 // subscriber addresses it as one URL path segment. The suffix therefore stays
@@ -216,90 +197,6 @@ func deriveEffectiveGenerationID(upstream, checksum string) string {
 		fragment = "local"
 	}
 	return upstream + effectiveGenerationLocalSuffix + fragment
-}
-
-// linkProviderOfferings returns the provider records of one observation that
-// name an authored model. The authored models of the builder and of the
-// observation both count. An offering without a canonical link takes the link
-// of the same offering in the builder. A baseline link therefore survives a
-// provider reply that omits it. The result leaves out an offering that still
-// names no authored model and counts it. The effective catalog then publishes
-// without it, and no provider reply blocks a rebuild.
-func linkProviderOfferings(builder *catalogs.Builder, observed catalogs.Reader) (catalogs.Reader, int, error) {
-	authored := make(map[catalogs.ModelDefinitionID]struct{})
-	for _, record := range builder.AuthoredModels() {
-		authored[record.ID()] = struct{}{}
-	}
-	for _, record := range observed.AuthoredModels() {
-		authored[record.ID()] = struct{}{}
-	}
-	linked, err := catalogs.NewBuilderFrom(observed)
-	if err != nil {
-		return nil, 0, err
-	}
-	unresolved := 0
-	for _, provider := range linked.Providers().List() {
-		var baseline map[string]*catalogs.Model
-		if current, err := builder.Provider(provider.ID); err == nil {
-			baseline = current.Models
-		}
-		models := make(map[string]*catalogs.Model, len(provider.Models))
-		for modelID, model := range provider.Models {
-			if model == nil {
-				continue
-			}
-			offering := catalogs.DeepCopyModel(*model)
-			if !resolvesAuthoredModel(authored, offering.ModelRef) {
-				offering.ModelRef = ""
-				if prior := baseline[modelID]; prior != nil && resolvesAuthoredModel(authored, prior.ModelRef) {
-					offering.ModelRef = prior.ModelRef
-				}
-			}
-			if offering.ModelRef == "" {
-				unresolved++
-				continue
-			}
-			models[modelID] = &offering
-		}
-		provider.Models = models
-		if err := linked.SetProvider(provider); err != nil {
-			return nil, 0, err
-		}
-	}
-	return linked, unresolved, nil
-}
-
-// resolvesAuthoredModel reports whether a canonical reference is well formed
-// and names an authored model of the merged result.
-func resolvesAuthoredModel(authored map[catalogs.ModelDefinitionID]struct{}, ref catalogs.ModelDefinitionID) bool {
-	if ref == "" {
-		return false
-	}
-	if _, _, err := catalogs.ParseModelDefinitionID(ref); err != nil {
-		return false
-	}
-	_, found := authored[ref]
-	return found
-}
-
-// mergeAuthoredModels adds the authored records that a provider layer needs.
-// The enrich-empty merge carries providers and authors, so a provider model
-// would otherwise reference an authored record that the effective catalog does
-// not hold. An existing record wins, because enrichment never overwrites.
-func mergeAuthoredModels(builder *catalogs.Builder, source catalogs.Reader) error {
-	present := make(map[catalogs.ModelDefinitionID]struct{})
-	for _, record := range builder.AuthoredModels() {
-		present[record.ID()] = struct{}{}
-	}
-	for _, record := range source.AuthoredModels() {
-		if _, found := present[record.ID()]; found {
-			continue
-		}
-		if err := builder.SetAuthorModel(record.AuthorID, record.Model); err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // layerStore retains the runtime layers durably. A runtime without a state
@@ -463,7 +360,7 @@ func validateProviderLayerID(id catalogs.ProviderID) error {
 }
 
 // loadRetainedLayers restores the durable layers that a previous run left.
-func (r *Runtime) loadRetainedLayers() error {
+func (r *Runtime) loadRetainedLayers(ctx context.Context) error {
 	source, err := r.store.loadSource()
 	if err != nil {
 		return err
@@ -475,9 +372,17 @@ func (r *Runtime) loadRetainedLayers() error {
 	if err := r.config.providerBindings.validateRetained(providers); err != nil {
 		return err
 	}
+	manual, err := r.store.loadManualHistory(ctx)
+	if err != nil {
+		return err
+	}
+	if err := validateManualHistory(manual, r.config.providerBindings); err != nil {
+		return err
+	}
 	r.mu.Lock()
 	defer r.mu.Unlock()
 	r.layers.source = source
 	r.layers.providers = providers
+	r.layers.manual = manual
 	return nil
 }

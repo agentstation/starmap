@@ -16,6 +16,7 @@ Package providers implements the provider\-backed catalog source.
 
 ## Index
 
+- [func ValidateBinding\(provider \*catalogs.Provider, binding sources.ProviderAcquisitionBinding\) error](<#ValidateBinding>)
 - [type AttemptSink](<#AttemptSink>)
 - [type ClientFactory](<#ClientFactory>)
 - [type Source](<#Source>)
@@ -35,6 +36,15 @@ Package providers implements the provider\-backed catalog source.
   - [func WithCredentialResolver\(resolver sources.ProviderCredentialResolver\) SourceOption](<#WithCredentialResolver>)
   - [func WithMaxConcurrency\(maxConcurrency int\) SourceOption](<#WithMaxConcurrency>)
 
+
+<a name="ValidateBinding"></a>
+## func [ValidateBinding](<https://github.com/agentstation/starmap/blob/main/internal/sources/providers/binding.go#L71>)
+
+```go
+func ValidateBinding(provider *catalogs.Provider, binding sources.ProviderAcquisitionBinding) error
+```
+
+ValidateBinding checks the declared scope against the provider's acquisition configuration. It does not resolve credentials, construct clients, or contact providers.
 
 <a name="AttemptSink"></a>
 ## type [AttemptSink](<https://github.com/agentstation/starmap/blob/main/internal/sources/providers/providers.go#L40>)

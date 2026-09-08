@@ -444,6 +444,20 @@ func (cat *Builder) mergeEnrichEmpty(source Reader) error {
 			return errors.WrapResource("set", "merged author", string(existingAuthor.ID), err)
 		}
 	}
+	// A newly retained offering must keep its authored model definition.
+	// Existing definitions retain precedence under enrichment.
+	present := make(map[ModelDefinitionID]struct{})
+	for _, record := range cat.AuthoredModels() {
+		present[record.ID()] = struct{}{}
+	}
+	for _, record := range source.AuthoredModels() {
+		if _, found := present[record.ID()]; found {
+			continue
+		}
+		if err := cat.SetAuthorModel(record.AuthorID, record.Model); err != nil {
+			return errors.WrapResource("set", "new authored model", string(record.ID()), err)
+		}
+	}
 	cat.provenance.Merge(source.Provenance().Map())
 	return nil
 }
@@ -473,7 +487,7 @@ func mergeEnrichedModels(existing, source map[string]*Model) map[string]*Model {
 	for modelID, sourceModel := range source {
 		if existingModel, found := merged[modelID]; found {
 			merged[modelID] = MergeModels(existingModel, *sourceModel)
-		} else if sourceModel.Pricing != nil || sourceModel.Limits != nil {
+		} else {
 			merged[modelID] = *sourceModel
 		}
 	}

@@ -55,7 +55,7 @@ func TestProviderPricingSurvivesRetentionAndRestart(t *testing.T) {
 				t.Fatal(err)
 			}
 			layers := layerSet{providers: retained}
-			state, err := layers.build(starmap.CatalogState{GenerationID: "baseline", Catalog: baseline})
+			state, err := layers.build(t.Context(), starmap.CatalogState{GenerationID: "baseline", Catalog: baseline})
 			if err != nil {
 				t.Fatal(err)
 			}

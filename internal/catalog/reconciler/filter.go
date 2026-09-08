@@ -60,3 +60,28 @@ func (f *filter) providerExistsInPrimary(provider *catalogs.Provider) bool {
 
 	return false
 }
+
+// providerSources restricts reconciliation before it records field evidence.
+// A match through any source alias keeps all facts for that provider identity.
+func (f *filter) providerSources(input map[sources.ID][]*catalogs.Provider) map[sources.ID][]*catalogs.Provider {
+	if !f.isEnabled() {
+		return input
+	}
+	selected := make(map[catalogs.ProviderID]bool)
+	for _, providers := range input {
+		for _, provider := range providers {
+			if f.providerExistsInPrimary(provider) {
+				selected[provider.ID] = true
+			}
+		}
+	}
+	output := make(map[sources.ID][]*catalogs.Provider, len(input))
+	for source, providers := range input {
+		for _, provider := range providers {
+			if selected[provider.ID] {
+				output[source] = append(output[source], provider)
+			}
+		}
+	}
+	return output
+}

@@ -35,8 +35,8 @@ type CandidateOption func(*Candidate) error
 // the identity of the result. The update then publishes that identity instead
 // of a fresh one.
 //
-// The identity names one payload. A retained generation never changes. A later
-// candidate that carries the same identity and other bytes therefore fails
+// The identity names one complete generation, including its evidence. A later
+// candidate that carries the same identity and different content therefore fails
 // with a typed conflict from the catalog store. A caller that omits this
 // option gets one fresh UUID-shaped identity per publication.
 func WithCandidateGenerationID(id string) CandidateOption {
