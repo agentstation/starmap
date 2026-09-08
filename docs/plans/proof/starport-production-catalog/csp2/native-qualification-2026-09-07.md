@@ -370,3 +370,25 @@ Draft PR 132 now contains this repair.
 reports `in_progress` at this commit.
 [Publication evidence](native-fourth-2026-09-07/publication.json) retains the
 complete review and dispatch metadata. Native qualification remains open.
+
+## Fifth native results and staging write access
+
+Foundation `ff298e2c` records 1,055 passing test events, one failure, and no skips
+on each Windows architecture. All four Linux and macOS runtime jobs pass.
+[The fifth native results](native-fifth-2026-09-07/results.json) retain the full
+Windows artifacts and their original and compressed byte hashes.
+
+All direct descriptor-copy variants now pass. Inherited workspace replacement
+also passes. `TestWorkspaceReplacementPreservesAccessPolicy` fails when assembly
+creates `authors/test-author` after restoring directory access.
+
+The candidate adds a temporary write grant for the process user inside private
+staging. The grant is not inheritable. Assembly restores the captured descriptor
+and checks exact access equality before publication. Existing POSIX mode handling
+continues.
+
+[The Windows access-entry contract](https://learn.microsoft.com/en-us/windows/win32/api/accctrl/ns-accctrl-explicit_access_w)
+defines the non-inheritance flag. The new native regression checks denied creation
+before the grant, permitted creation during assembly, child inheritance, exact
+restoration, and denied creation after restoration. Local checks are in progress.
+Native qualification remains unverified.

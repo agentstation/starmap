@@ -1,0 +1,39 @@
+{
+  "run_id": 34178911408,
+  "url": "https://github.com/agentstation/starmap/actions/runs/34178911408",
+  "head": "ff298e2cab3e9ea6894f2b5a3b5643e896e4ff2a",
+  "run_snapshot": {
+    "path": "run.json.gz",
+    "sha256": "92bcb7ed4087bf334543af0881b23d8f65aba7089ff609f1962feefb0f19f7e9",
+    "uncompressed_sha256": "250eb0432a0d8360417a44539a40e0d12716e12590ca62010b8e14a5091827bb"
+  },
+  "windows": {
+    "amd64": {
+      "pass": 1055,
+      "fail": 1,
+      "skip": 0,
+      "failures": [
+        "TestWorkspaceReplacementPreservesAccessPolicy"
+      ],
+      "path": "windows-amd64-tests.jsonl.gz",
+      "sha256": "7e03499c3d27488a08193d7d48bcffe0b4572323b2268f2f2acab32694c15880",
+      "uncompressed_sha256": "7f428dfd75908565d7510a7725ce26d3079b7b788663fb4eb819bd16556e318b"
+    },
+    "arm64": {
+      "pass": 1055,
+      "fail": 1,
+      "skip": 0,
+      "failures": [
+        "TestWorkspaceReplacementPreservesAccessPolicy"
+      ],
+      "path": "windows-arm64-tests.jsonl.gz",
+      "sha256": "953fcec885b2e79c696ceb822a0f38d8a6aca2626fc9e2ab4aa42221f947960a",
+      "uncompressed_sha256": "6c3be958f66fe45baa74667063165e61cc8a26d2d42081ce7db3c623c4fd1c82"
+    }
+  },
+  "primary_acceptance_credit": false,
+  "native_qualification": "UNVERIFIED",
+  "linux_macos_runtime": "All four runtime jobs pass.",
+  "candidate_status": "Local implementation and checks in progress; no native execution.",
+  "remaining_failure": "Nested directory creation is denied during private workspace assembly after original directory access is restored. Exact descriptor copy tests now pass."
+}
