@@ -150,3 +150,10 @@ Its [diff check](pr133-main-update.json) confirms identical reviewed implementat
 Native and required checks run before merge.
 Then advance #135 and #136 into main.
 Task completion requires the implementation merge and passing acceptance evidence.
+
+## Allocation hint review
+
+PR #133 now uses reviewed repair head `1ff884b9`.
+The [review record](pr133-repair-review.json) binds the one-line allocation repair and both reviewers.
+All three review portions pass with zero findings.
+Fresh CI must clear CodeQL and all required checks before merge.

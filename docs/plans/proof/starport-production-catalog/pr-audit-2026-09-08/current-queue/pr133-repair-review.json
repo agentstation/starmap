@@ -1,0 +1,11 @@
+{
+  "source_commit": "1ff884b929d631562ff3ae700f85664b0b5f7f06",
+  "repair_commit": "8827146e",
+  "base": "392617c808bab57ca73b912c9821f3bd9794d418",
+  "review_exit_code": 0,
+  "review_log": "autoreview target: branch\nbranch: codex/catalog-pr133-overflow\ngate: pre-pr (configured cadence: pre-pr)\nprofile: cross-lab\nconfig: /Users/jack/.config/autoreview/config.toml\nselection: sol=7.83, opus5=7.52\nreviewers: codex model=gpt-5.6-sol thinking=xhigh, claude model=claude-opus-5 thinking=high\ntools: on\nweb_search: on\nref: 392617c808bab57ca73b912c9821f3bd9794d418\ntrufflehog: clean (3.1s)\nbundle: 476530 bytes; review passes: 3\nreview pass: 1/3 (231844 prompt bytes)\nreview pass: 2/3 (231944 prompt bytes)\nreview pass: 3/3 (34466 prompt bytes)\nautoreview panel chunked clean: no accepted/actionable findings reported\noverall: patch is correct (0.99)\nChunked review complete. chunk 1/3: 0 finding(s), chunk 2/3: 0 finding(s), chunk 3/3: 0 finding(s).\nautoreview clean attestation stored for this substantive diff\n",
+  "log_sha256": "eebe6602fb77ec8c5cfea2aff9aceba94678b56233a069a7b3b3d132cc4328e8",
+  "pushed": true,
+  "merge_status": "pending CI",
+  "standalone_worktree": "/tmp/starmap-pr133-repair-2026-09-08"
+}
