@@ -1,0 +1,115 @@
+{
+  "date": "2026-09-08",
+  "baseline_commit": "0f58cae6",
+  "work_commit": "69c2b3a5a27a567bbab284da9b3785fc64b55d80",
+  "source_hashes": "source-files.json",
+  "counts_include": "Parent tests and package events. Overlapping checks are not additive acceptance credit.",
+  "checks": [
+    {
+      "command": "GOTOOLCHAIN=go1.26.6 go test -race ./runtime -run '^TestAllProviderLimitsRetainPresenceAcrossPublicationAndRestart$' -count=1 -json",
+      "capture": "red.jsonl.gz",
+      "source": "baseline production with expanded test",
+      "exit_code": 1,
+      "pass": 5,
+      "fail": 3
+    },
+    {
+      "command": "GOTOOLCHAIN=go1.26.6 go test -race ./runtime ./internal/catalog/reconciler -run '^TestAllProviderLimitsRetainPresenceAcrossPublicationAndRestart$|^TestLocal' -count=1 -json",
+      "capture": "green.jsonl.gz",
+      "exit_code": 0,
+      "pass": 11,
+      "fail": 0,
+      "skip": 0
+    },
+    {
+      "command": "GOTOOLCHAIN=go1.25.12 go test -race ./runtime ./internal/catalog/reconciler -run '^TestAllProviderLimitsRetainPresenceAcrossPublicationAndRestart$|^TestLocal' -count=1 -json",
+      "capture": "minimum.jsonl.gz",
+      "exit_code": 0,
+      "pass": 11,
+      "fail": 0,
+      "skip": 0
+    },
+    {
+      "command": "GOTOOLCHAIN=go1.26.6 go test -race -count=1 -timeout 20m ./runtime ./acquisition ./internal/catalog/reconciler -json",
+      "capture": "full.jsonl.gz",
+      "exit_code": 0,
+      "pass": 876,
+      "fail": 0,
+      "skip": 0
+    },
+    {
+      "command": "GOTOOLCHAIN=go1.26.6 go tool ago -stale-ignores -format json ./...",
+      "capture": "ago.json",
+      "exit_code": 0,
+      "findings": 0,
+      "stale_ignores": 0,
+      "errors": 0
+    },
+    {
+      "command": "GOTOOLCHAIN=go1.26.6 golangci-lint run ./runtime/... ./internal/catalog/reconciler/...",
+      "capture": "lint.txt",
+      "exit_code": 0,
+      "issues": 0
+    },
+    {
+      "command": "GOTOOLCHAIN=go1.26.6 bash scripts/verify-catalog-product.sh --starport-root /Users/jack/src/github.com/agentstation/starport-catalog-lifecycle --task CSP3 --json",
+      "capture": "component.json",
+      "exit_code": 1,
+      "selected_subcases": 10,
+      "unverified": 10,
+      "reason": "No behavior checks are registered for these selections."
+    }
+  ],
+  "open_probes": [
+    {
+      "capture": "metadata-red.jsonl.gz",
+      "source": "metadata_probe.go.gz",
+      "virtual_file": "runtime/metadata_recovery_probe_test.go",
+      "package": "./runtime",
+      "test": "TestMetadataRecoveryRetainsContributingReceiptProbe",
+      "exit_code": 1,
+      "pass": 0,
+      "fail": 2
+    },
+    {
+      "capture": "composite-red.jsonl.gz",
+      "source": "composite_probe.go.gz",
+      "virtual_file": "runtime/metadata_recovery_probe_test.go",
+      "package": "./runtime",
+      "test": "Test(Metadata|Mode|Extension)RecoveryRetainsContributingReceiptProbe",
+      "exit_code": 1,
+      "pass": 0,
+      "fail": 4
+    },
+    {
+      "capture": "null-red.jsonl.gz",
+      "source": "null_record_probe.go.gz",
+      "virtual_file": "pkg/catalogs/null_record_probe_test.go",
+      "package": "./pkg/catalogs",
+      "test": "TestOptionalModelRecordsPreserveExplicitNullProbe",
+      "exit_code": 1,
+      "pass": 1,
+      "fail": 16
+    },
+    {
+      "capture": "description-red.jsonl.gz",
+      "source": "description_probe.go.gz",
+      "virtual_file": "internal/catalog/reconciler/description_probe_test.go",
+      "package": "./internal/catalog/reconciler",
+      "test": "TestUnknownDescriptionWithoutFallbackProbe",
+      "exit_code": 1,
+      "pass": 0,
+      "fail": 2
+    }
+  ],
+  "probe_reproduction": "Decode the source and map the virtual repository file to it with a Go overlay Replace entry. Run GOTOOLCHAIN=go1.26.6 go test -race -overlay OVERLAY PACKAGE -run ^TEST$ -count=1 -json. These probes use final production source and remain unrepaired.",
+  "publication": "Local commit only. Full publication gates and pre-PR review remain required.",
+  "acceptance_credit": false,
+  "open_probe_scope": "Composite probes cover runtime publication with memory storage. The description probe covers reconciliation. The null probe covers JSON round trips. They do not qualify restart, transport, or Starport admission.",
+  "proof_prose_check": {
+    "command": "make technical-writing-check",
+    "capture": "writing-corrected.txt.gz",
+    "exit_code": 0,
+    "result": "PASS: 1195 file(s), 0 diagnostic(s)"
+  }
+}

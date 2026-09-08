@@ -1,0 +1,157 @@
+{
+  "files": [
+    {
+      "file": "README.md",
+      "bytes": 1467,
+      "sha256": "75e8aebb819b4f552a329a514c5cc7ef4855ae54dd1e88daf25c3b6c2ff744be",
+      "raw_sha256": "75e8aebb819b4f552a329a514c5cc7ef4855ae54dd1e88daf25c3b6c2ff744be"
+    },
+    {
+      "file": "ago.json",
+      "bytes": 289,
+      "sha256": "b8fb7afa66aa7a93914ac258475dd0191be821803a8aea4439f5ba05022f5fa5",
+      "raw_sha256": "b8fb7afa66aa7a93914ac258475dd0191be821803a8aea4439f5ba05022f5fa5"
+    },
+    {
+      "file": "capture-counts.json",
+      "bytes": 1309,
+      "sha256": "b444a2ea6cd1d72a13e188762f477d2d07a3b6503647252d44f71ee7192c9a9a",
+      "raw_sha256": "b444a2ea6cd1d72a13e188762f477d2d07a3b6503647252d44f71ee7192c9a9a"
+    },
+    {
+      "file": "component.json",
+      "bytes": 7700,
+      "sha256": "08ca38dd5603a162787fa8181ecd46d3d79104dfbbcd79dbdb7cff2a4e2340d6",
+      "raw_sha256": "08ca38dd5603a162787fa8181ecd46d3d79104dfbbcd79dbdb7cff2a4e2340d6"
+    },
+    {
+      "file": "component.txt.gz",
+      "bytes": 1263,
+      "sha256": "0cb84a848ec77ec36be5b967a89c8076adcb0162a00e7c6305299edeedfabc56",
+      "raw_sha256": "1f1532c78f9e5ceba705010a780392900adc11005e0c451a7ae13b6e0ca7cf20"
+    },
+    {
+      "file": "composite-red.jsonl.gz",
+      "bytes": 6914,
+      "sha256": "3f2a869a152399057620265f89e87adbc0800b087f765a63236a230d8cfbedfc",
+      "raw_sha256": "7ac9cbcaef956e7c72d3e3871f112207e189a4f7b245750dee3482af5fe8910f"
+    },
+    {
+      "file": "composite_probe.go.gz",
+      "bytes": 4337,
+      "sha256": "6c650791d7d0763ecf128e8d1024a446e6325d0fca4804ee7a6cc32fc3f12909",
+      "raw_sha256": "86e939c7c505ce5edc9039368c8970cf1f55c7ea3f7d4b48814d6f27f39b5ed0"
+    },
+    {
+      "file": "description-red.jsonl.gz",
+      "bytes": 1814,
+      "sha256": "30a9f8d104699b889977f0d581af3747ec02211bda004de3f167d104c632a28c",
+      "raw_sha256": "4597ce6aa2e8a685af40684b07b122fdb8f8e3991d30900a9bac1a6fbc93ab84"
+    },
+    {
+      "file": "description_probe.go.gz",
+      "bytes": 800,
+      "sha256": "9460424dc8962c4268b05bd4d693da8b20b1962478327b089414485f4299de7c",
+      "raw_sha256": "31f8b183f21b4d6c93ad701efcc41d1d63dae2b395feddde55da6eaa5a645b4d"
+    },
+    {
+      "file": "full.jsonl.gz",
+      "bytes": 1394183,
+      "sha256": "5cc940920392bcca028165cb0d75d157e4afb6221bfa2f388e3a403a64be77be",
+      "raw_sha256": "1355b365f2a3455d09966046c18266dece34589064c9c28e25c80100f408a5bd"
+    },
+    {
+      "file": "green.jsonl.gz",
+      "bytes": 16347,
+      "sha256": "13c4c61589d2f51eae5365b6cfd68b288c824cc96b180de30462405d1e2a2a7f",
+      "raw_sha256": "f086d20d78a44738224fc9958f0664d6224a89c92aeeec85515211c29ae5f37b"
+    },
+    {
+      "file": "lint.txt",
+      "bytes": 10,
+      "sha256": "e92606b0bf483111dff0a120c315ea165821348f31365020e2468a0059095c47",
+      "raw_sha256": "e92606b0bf483111dff0a120c315ea165821348f31365020e2468a0059095c47"
+    },
+    {
+      "file": "metadata-red.jsonl.gz",
+      "bytes": 2681,
+      "sha256": "67af347d9726f19037179101e3b1767f8a8807a2c82d4ad0cc4a50658335364e",
+      "raw_sha256": "191dd1f2142ba66e900bf30599d53f71bf6736f65e9cd1654510c8e91d47b3aa"
+    },
+    {
+      "file": "metadata_probe.go.gz",
+      "bytes": 3165,
+      "sha256": "0ff9c3cd9d4e18fc650a362041b74f7da7b5008f44f55d0cad5aef5d973934a2",
+      "raw_sha256": "03619ed00783eb3bb0c8672aecbd506a392222a9eb1f49b09e849c04d328d525"
+    },
+    {
+      "file": "minimum.jsonl.gz",
+      "bytes": 16355,
+      "sha256": "2bf5cca8e4647634c670ac8385def35bc3236c56fd4fc460cd8f6278cc119a24",
+      "raw_sha256": "f81d312988218ca0ff5dc272438ada4a58c1e222a0cef5d9da0e6d53aa997411"
+    },
+    {
+      "file": "model_policy.go.gz",
+      "bytes": 13731,
+      "sha256": "67eeb2ed7470fbda133b6061ea958689b4b806c397c7a6d93ce67c0bec8354b9",
+      "raw_sha256": "18864e5661fb90204270a3fe3f86b28f288ca3b01bff3a96b9bc319383edbc53"
+    },
+    {
+      "file": "null-red.jsonl.gz",
+      "bytes": 19325,
+      "sha256": "5395db79e22003fb892e6b359a277ddc5ea61b5b4f1437609446fafa0fe36752",
+      "raw_sha256": "6a62a5fe637b7f8407af9a01b1b18e0fe605b2d29dc7058bca03535f41e93db4"
+    },
+    {
+      "file": "null_record_probe.go.gz",
+      "bytes": 912,
+      "sha256": "5253050e3cf5f35722e570ac29a2a5b11eab231832b964dcd07ac763d4e5b0f7",
+      "raw_sha256": "860a7d1bc35a5462140be9acf979c44c16bfd87fdba0a894cdcffbd3ed2af908"
+    },
+    {
+      "file": "provider_limit_presence_test.go.gz",
+      "bytes": 5486,
+      "sha256": "eef212b573a5be99cd0f5ae7f7dba4fc9f83e1d834e0a45f24b7755b1854a6d1",
+      "raw_sha256": "99f36df4fd72b74511ec94c21ed53736535d61ee91848c43be0f276ee07b494b"
+    },
+    {
+      "file": "red.jsonl.gz",
+      "bytes": 24531,
+      "sha256": "62263cebdd95c00fbf77808ee78882a40e38f0bd51b6f558f6c31eed96a7fdd4",
+      "raw_sha256": "26136c183d7aa16e91fef1bdb98ea947870b69deab4146784b32ff7291b1844e"
+    },
+    {
+      "file": "source-files.json",
+      "bytes": 233,
+      "sha256": "9cfd6c8f0a8846b44f45a0fc29f43ade04d742749e522a3a3ef921b8a9ed0fd3",
+      "raw_sha256": "9cfd6c8f0a8846b44f45a0fc29f43ade04d742749e522a3a3ef921b8a9ed0fd3"
+    },
+    {
+      "file": "verification.json",
+      "bytes": 4439,
+      "sha256": "5e3f9a8b5082adaf6baacfcf08dfe6f4a69c32a38d3ba5d2b44fc91a57c35f92",
+      "raw_sha256": "5e3f9a8b5082adaf6baacfcf08dfe6f4a69c32a38d3ba5d2b44fc91a57c35f92"
+    },
+    {
+      "file": "writing-corrected.txt.gz",
+      "bytes": 558,
+      "sha256": "f9a8d7c96a474c30a977e0dc0c0f211fc279fce33d6108373aa1ee55e3f016de",
+      "raw_sha256": "5b91cee6710de9aae272997a7c3707a162b14447a35295758ccc338115a29c66"
+    },
+    {
+      "file": "writing-final.txt.gz",
+      "bytes": 1274,
+      "sha256": "e996e0eb4548dd2b109ab05a532ec67519900666d03fe7fc204c343aeb9b92c3",
+      "raw_sha256": "5893f4c8baf8d362b5a150b533047191033e4b9cc88ed87654816ec123a6e6ec"
+    },
+    {
+      "file": "writing.txt.gz",
+      "bytes": 558,
+      "sha256": "f9a8d7c96a474c30a977e0dc0c0f211fc279fce33d6108373aa1ee55e3f016de",
+      "raw_sha256": "5b91cee6710de9aae272997a7c3707a162b14447a35295758ccc338115a29c66"
+    }
+  ],
+  "findings": [],
+  "decoded_bytes": 1529681,
+  "scope": "Raw files and decoded gzip. Token and private-key pattern scan."
+}

@@ -1,0 +1,52 @@
+{
+  "metadata-red.jsonl.gz": {
+    "events": {
+      "fail": 2
+    },
+    "decoded_sha256": "67af347d9726f19037179101e3b1767f8a8807a2c82d4ad0cc4a50658335364e"
+  },
+  "green.jsonl.gz": {
+    "events": {
+      "pass": 11
+    },
+    "decoded_sha256": "13c4c61589d2f51eae5365b6cfd68b288c824cc96b180de30462405d1e2a2a7f"
+  },
+  "red.jsonl.gz": {
+    "events": {
+      "pass": 5,
+      "fail": 3
+    },
+    "decoded_sha256": "62263cebdd95c00fbf77808ee78882a40e38f0bd51b6f558f6c31eed96a7fdd4"
+  },
+  "full.jsonl.gz": {
+    "events": {
+      "pass": 876
+    },
+    "decoded_sha256": "5cc940920392bcca028165cb0d75d157e4afb6221bfa2f388e3a403a64be77be"
+  },
+  "null-red.jsonl.gz": {
+    "events": {
+      "pass": 1,
+      "fail": 16
+    },
+    "decoded_sha256": "5395db79e22003fb892e6b359a277ddc5ea61b5b4f1437609446fafa0fe36752"
+  },
+  "composite-red.jsonl.gz": {
+    "events": {
+      "fail": 4
+    },
+    "decoded_sha256": "3f2a869a152399057620265f89e87adbc0800b087f765a63236a230d8cfbedfc"
+  },
+  "minimum.jsonl.gz": {
+    "events": {
+      "pass": 11
+    },
+    "decoded_sha256": "2bf5cca8e4647634c670ac8385def35bc3236c56fd4fc460cd8f6278cc119a24"
+  },
+  "description-red.jsonl.gz": {
+    "events": {
+      "fail": 2
+    },
+    "decoded_sha256": "30a9f8d104699b889977f0d581af3747ec02211bda004de3f167d104c632a28c"
+  }
+}
