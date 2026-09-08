@@ -998,6 +998,20 @@ The manifest compatibility range describes schemas, not reader capacity.
 Before release, qualify the declared Starmap and Starport pair against the larger payloads.
 A downgrade requires a retained catalog that the older reader accepts.
 
+Provider binding removal must align the effective catalog, runtime-owned client, HTTP views, and durable head before startup completes.
+This includes omission of the binding option, which permits only legacy unscoped acquisition.
+Retained inputs allow the runtime to rebuild and publish the permitted baseline.
+A failed publication must return no usable runtime and preserve the stored head.
+
+If scoped stored facts lack retained inputs and an explicit binding set, startup returns a typed conflict.
+The explicit empty set uses `runtime.WithProviderBindings()` and the normal baseline rebuild.
+An unscoped store-only catalog remains available without retained observations.
+The runtime must inspect provenance scope. An opaque generation ID cannot bypass that check.
+
+An existing generation ID alone does not prove baseline-byte or retained-input continuity for legacy recovery.
+The startup recovery design must verify that continuity separately. No unchecked legacy fallback follows from the provider-policy repair.
+Source identity labels serve diagnostics and do not prove source authority. Different file paths both report the `file` identity.
+
 This component bounds manual history at 4,096 batches and 64 MiB of encoded observations and reset scopes.
 A full history rejects new observations before publication and preserves its accepted head.
 CSP5 must provide tested compaction, collection, and operator recovery before production support.

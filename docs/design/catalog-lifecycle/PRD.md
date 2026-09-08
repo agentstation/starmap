@@ -267,6 +267,10 @@ Every published catalog must remain readable after restart under the same suppor
 Refuse payloads that exceed the catalog byte or nesting limit before publication. Preserve the accepted head and retained inputs.
 D26 separates complete catalog capacity from raw provider-response limits. Embedded bootstrap review budgets and encoded retention limits remain independent.
 
+Provider binding removal must take effect in every catalog view before Starport or Starmap serves the replacement configuration.
+A runtime that cannot publish the permitted state must refuse startup instead of exposing the previous scoped catalog.
+Missing retained inputs do not authorize reuse of scoped facts. Unscoped store-only startup remains supported.
+
 ## Service objectives
 
 The publisher cadence is four hours. The default public poll interval is one

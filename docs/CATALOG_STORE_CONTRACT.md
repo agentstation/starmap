@@ -48,6 +48,17 @@ The manifest compatibility range describes schemas, not reader capacity.
 Before release, qualify the declared Starmap and Starport pair against the larger payloads.
 A downgrade requires a retained catalog that the older reader accepts.
 
+## Startup after provider binding removal
+
+The connected runtime applies current provider bindings before it exposes a stored catalog.
+After removal, its effective catalog, runtime-owned client, HTTP views, and durable current head must agree.
+A failed publication prevents startup and preserves the accepted stored generation.
+
+Without retained inputs or explicit provider bindings, stored scoped provider evidence requires a typed startup refusal.
+An explicit empty binding set, selected with `runtime.WithProviderBindings()`, removes local scoped evidence through the normal baseline rebuild.
+Unscoped store-only catalogs retain their existing startup behavior.
+These checks belong to the connected runtime. The offline library still permits explicit caller-supplied store reads.
+
 ## Generation invariants
 
 Every accepted generation must pass `Generation.Validate()` before any durable

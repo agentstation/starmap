@@ -1539,3 +1539,22 @@ Checked startup recovery remains the next legacy boundary. No production qualifi
 
 The current manifest compatibility range identifies schema versions only. It does not declare reader capacity.
 Older 16 MiB readers still reject larger payloads with a matching schema version. Released-pair and downgrade qualification remain open.
+
+## Provider binding removal during startup, 2026-09-08
+
+The startup probe found two failures on source ad2c09e3.
+Without retained inputs or a binding option, the runtime served a stored provider with withdrawn scope.
+With retained inputs, the effective catalog removed that provider, but the client and durable head still selected the prior generation.
+The HTTP provider endpoint returned 200 instead of 404.
+
+The cause spans startup selection and publication.
+`initializeEffective` trusted an empty layer set when the binding option was absent.
+`publishBindingStartup` skipped publication under that same condition.
+The candidate inspects stored provenance scope and applies binding removal before serving.
+It preserves unscoped store-only startup and explicit empty-set recovery.
+
+An independent design probe rejects generation identity as the sole legacy recovery check.
+Its identity comparison detects changed binding declarations and baseline generation IDs.
+It cannot detect changed baseline bytes or missing original history when it reuses manifest evidence.
+That probe describes an unapplied recovery candidate, not a new generation-ID contract.
+Legacy startup recovery still needs independent continuity evidence.
