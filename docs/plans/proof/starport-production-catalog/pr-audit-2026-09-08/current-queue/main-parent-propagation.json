@@ -1,0 +1,53 @@
+{
+  "records": [
+    {
+      "baseRefOid": "e7bc93f1ff32ab291480820349faef9435dc2464",
+      "headRefOid": "9b31b2403a7dc8bc44481e14a52756bd21842033",
+      "isDraft": false,
+      "number": 134,
+      "state": "OPEN",
+      "url": "https://github.com/agentstation/starmap/pull/134",
+      "old_base": "205dd041fb2d0267a2643c0d6af8d9f45e34842d",
+      "old_head": "99843ff85d01b8fb1f96e26b3ccd1a7044c26a6b",
+      "non_proof_diff_unchanged": true,
+      "diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "baseRefOid": "9b31b2403a7dc8bc44481e14a52756bd21842033",
+      "headRefOid": "45e420dca72002a486e670d9089a9b2dcadc6bfe",
+      "isDraft": false,
+      "number": 133,
+      "state": "OPEN",
+      "url": "https://github.com/agentstation/starmap/pull/133",
+      "old_base": "99843ff85d01b8fb1f96e26b3ccd1a7044c26a6b",
+      "old_head": "07dcb63db7ea0dc873db2ea21091f50ed11a2122",
+      "non_proof_diff_unchanged": true,
+      "diff_sha256": "51ac5db5b954a46a5ebf84a8619b6a45c77837c5b2cca11a8738fefd060ecc43"
+    },
+    {
+      "baseRefOid": "45e420dca72002a486e670d9089a9b2dcadc6bfe",
+      "headRefOid": "85fb34444b6e273325a5d35967b1d0330abb51d7",
+      "isDraft": false,
+      "number": 135,
+      "state": "OPEN",
+      "url": "https://github.com/agentstation/starmap/pull/135",
+      "old_base": "07dcb63db7ea0dc873db2ea21091f50ed11a2122",
+      "old_head": "aff5fd53ce585b94aa80f628a5d8fcd1d8ede818",
+      "non_proof_diff_unchanged": true,
+      "diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "baseRefOid": "85fb34444b6e273325a5d35967b1d0330abb51d7",
+      "headRefOid": "4fdf12f8c63bcc3991cc77dfe542db32c214d9db",
+      "isDraft": false,
+      "number": 136,
+      "state": "OPEN",
+      "url": "https://github.com/agentstation/starmap/pull/136",
+      "old_base": "aff5fd53ce585b94aa80f628a5d8fcd1d8ede818",
+      "old_head": "420c0d77ebeb5a64d36c57512b19db5ad3b5ec2d",
+      "non_proof_diff_unchanged": true,
+      "diff_sha256": "c218f0eabe298090d2085b77a481d161311062f6e86ffeba050c73938773eaeb"
+    }
+  ],
+  "scope": "Merge parent updates only. All four reviewed non-proof diffs remain byte-identical. No default-branch merge yet."
+}

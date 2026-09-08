@@ -117,4 +117,14 @@ Restore auto-merge only after the native checks pass.
 
 The workflow later finished, and Starmap #129 merged at `df9585f5`.
 The required main update gives #132 replacement head `e7bc93f1`.
-Fresh checks on that head replace the old-head retry. Automatic merge remains off until the native checks pass.
+All six native jobs pass on the replacement head. The executor enabled automatic merge after those passes.
+The required Verification Gate remains in progress.
+The [replacement check capture](../pr132-native-retry/replacement-checks.json) records the exact head and check results.
+
+## Current main propagation
+
+PRs #134, #133, #135, and #136 now include the current foundation parent.
+All four PRs are ready for review.
+The [propagation record](main-parent-propagation.json) verifies that every reviewed diff outside proof files retains identical bytes.
+Merge these PRs into main in the recorded order after their required checks pass.
+Do not count a merge into an intermediate branch as task completion.

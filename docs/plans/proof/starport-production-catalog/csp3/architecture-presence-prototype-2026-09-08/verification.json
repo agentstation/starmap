@@ -65,6 +65,10 @@
     "runtime.jsonl": {
       "pass_test": 13,
       "pass_package": 1
+    },
+    "full-affected.jsonl": {
+      "pass_test": 1678,
+      "pass_package": 4
     }
   },
   "artifacts": [
@@ -247,12 +251,16 @@
       "path": "captures/runtime_recovery_test.go.gz",
       "sha256": "93e372863231f071ea43ededcda27120197754c19c6b960bfb5403d275aa7c05",
       "content_sha256": "de4257f530aaf6b39aa6c2c412eb0a7ca636b1a1a8738ecea67e0d433874d9f0"
+    },
+    {
+      "path": "captures/full-affected.jsonl.gz",
+      "sha256": "58a46aabb127af7bf910c746a97378e038bbd81e64c473d3690b93d79acd56ff",
+      "content_sha256": "ef9c3563a71f2a66f7cc9f105851a160d70ff100cafbe4dd823de5e74b635bfd"
     }
   ],
   "reproduction_command": "GOTOOLCHAIN=go1.26.6 go test -race -count=1 -timeout 5m -overlay /tmp/starmap-architecture-presence-2026-09-08/ordered-overlay.json ./pkg/catalogs ./internal/catalog/reconciler ./runtime -run 'Architecture|ReadViews|DeepCopy|Definition' -json",
   "minimum_toolchain": "go1.25.12",
   "remaining": [
-    "Full affected-package verification",
     "Source precedence and rejected-receipt cases",
     "Getter/setter state transitions",
     "Old-writer/new-reader observation recovery",
@@ -260,9 +268,13 @@
     "Production integration and pre-PR review"
   ],
   "full_affected_verification": {
-    "status": "in_progress",
-    "exec_session_id": 42053,
+    "status": "pass",
     "command": "GOTOOLCHAIN=go1.26.6 go test -race -count=1 -timeout 20m -overlay /tmp/starmap-architecture-presence-2026-09-08/ordered-overlay.json ./pkg/catalogs ./internal/catalog/reconciler ./runtime ./acquisition -json",
-    "log": "/tmp/starmap-architecture-presence-2026-09-08/full-affected.jsonl"
+    "log": "/tmp/starmap-architecture-presence-2026-09-08/full-affected.jsonl",
+    "results": {
+      "pass_test": 1678,
+      "pass_package": 4
+    },
+    "terminal_evidence": "All four requested packages emitted terminal pass events. The process handle is no longer available."
   }
 }
