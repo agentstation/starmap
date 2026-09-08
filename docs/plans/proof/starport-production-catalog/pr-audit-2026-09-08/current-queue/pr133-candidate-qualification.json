@@ -1,0 +1,21 @@
+{
+  "head": "1ff884b929d631562ff3ae700f85664b0b5f7f06",
+  "CSP3.1": {
+    "A44.canonical_alias_lookup": "PASS",
+    "A44.caller_owned_values": "PASS",
+    "completed": false,
+    "completion_requires": "main merge"
+  },
+  "historical_lookup_source_files_matched": 5,
+  "local_integration": {
+    "source_commit": "05497134",
+    "passed_tests": 5,
+    "passed_packages": 1,
+    "ago_findings": 0
+  },
+  "artifacts": {
+    "pr133-csp31.json.gz": "5e6e6859324542bd95319e5cc928b72caa9ef159226ab13815dec210b08e3d38",
+    "pr133-integrated-tests.jsonl.gz": "6cb05299c0b28a028ac4c83b953b8dd57b13090c90c08334e94cc918c1f6cd1b",
+    "pr133-integrated-ago.json.gz": "905b50ebb66dc28cecf0d5d7681aabcd8b20af21ce5f8834692f1c6c68590281"
+  }
+}

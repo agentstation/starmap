@@ -157,3 +157,15 @@ PR #133 now uses reviewed repair head `1ff884b9`.
 The [review record](pr133-repair-review.json) binds the one-line allocation repair and both reviewers.
 All three review portions pass with zero findings.
 Fresh CI must clear CodeQL and all required checks before merge.
+
+## Current qualification
+
+Both CSP3.1 lookup subcases pass against PR #133 head `1ff884b9`.
+All five historical lookup source files match this candidate.
+The [candidate qualification](pr133-candidate-qualification.json) retains the checks.
+CSP3.1 remains incomplete until main contains the implementation.
+
+PR #131 now uses head `85d8d7b2` with the consumer module repair.
+The [dependency evidence](../pr131-consumers/verification.json) records all six consumer checks and both SDK test suites.
+Each toolchain passes 87 test results and two packages.
+The current-base CI run must pass before merge.
