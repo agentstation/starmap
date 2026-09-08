@@ -137,6 +137,10 @@ func (merger *merger) mergeModelMetadata(
 			continue
 		}
 		merger.mergeMetadataContributions(identity, target, policy, models, history)
+		if target.Metadata == nil {
+			merger.clearCompositeEvidence(identity, history, policy.Evidence())
+			return
+		}
 		merger.recordCompositeSummary(history, policy, target.Metadata)
 		return
 	}
@@ -150,19 +154,10 @@ func (merger *merger) mergeModelFeatures(
 	history *map[string]provenance.Field,
 ) {
 	originalModels := merger.suppressProjectedFeatureDefaults(identity, models)
-	models = merger.modelSourcesForValue(
-		identity.providerID,
-		identity.modelID,
-		policy,
-		models,
-		func(model *catalogs.Model) any {
-			if model == nil || model.Features == nil {
-				return nil
-			}
-			return model.Features
-		},
-	)
-	models = merger.suppressProjectedFeatureDefaults(identity, models)
+	merger.selectModelContribution(identity, policy, originalModels, history, ".present", func(model *catalogs.Model) (any, bool) {
+		return true, model.Features != nil
+	}, func(any) {})
+	models = originalModels
 
 	var (
 		winner     sources.ID
@@ -180,6 +175,10 @@ func (merger *merger) mergeModelFeatures(
 		modalities.Output = mergeModelModalities(modalities.Output, model.Features.Modalities.Output)
 	}
 	if winner == "" {
+		if local := originalModels[sources.LocalCatalogID]; local != nil && local.Features != nil {
+			target.Features = nil
+			merger.clearCompositeEvidence(identity, history, policy.Evidence())
+		}
 		return
 	}
 
@@ -199,14 +198,13 @@ func (merger *merger) mergeModelFeatures(
 	merged.Features.Modalities = modalities
 	target.Features = merged.Features
 	merger.mergeFeatureEvidence(identity, target.Features, policy, originalModels, history)
-	merger.recordModelHistory(
-		identity,
-		history,
-		policy,
-		winner,
-		target.Features,
-		fmt.Sprintf("merged capabilities by field presence with %s authority; accumulated documented modalities", winner),
-	)
+	completeCompositePresence(history, policy, policy.Evidence())
+	if history != nil && (*history)[policy.Evidence()+".present"].Current.Source == "" {
+		target.Features = nil
+		merger.clearCompositeEvidence(identity, history, policy.Evidence())
+		return
+	}
+	merger.recordCompositeSummary(history, policy, target.Features)
 }
 
 // suppressProjectedFeatureDefaults prevents the human YAML capability checklist
@@ -266,6 +264,10 @@ func (merger *merger) mergeModelModes(
 			continue
 		}
 		merger.mergeModeContributions(identity, target, policy, models, history)
+		if len(target.Modes) == 0 {
+			merger.clearCompositeEvidence(identity, history, policy.Evidence())
+			return
+		}
 		merger.recordCompositeSummary(history, policy, target.Modes)
 		return
 	}
@@ -351,6 +353,10 @@ func (merger *merger) mergeModelExtensions(
 			continue
 		}
 		merger.mergeExtensionContributions(identity, target, policy, models, history)
+		if len(target.Extensions) == 0 {
+			merger.clearCompositeEvidence(identity, history, policy.Evidence())
+			return
+		}
 		merger.recordCompositeSummary(history, policy, target.Extensions)
 		return
 	}

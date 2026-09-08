@@ -44,7 +44,46 @@ func (merger *merger) selectModelContribution(identity modelIdentity, policy aut
 		merger.recordModelHistory(identity, history, field, source, value, "selected composite field by authority with its original receipt")
 		return source
 	}
+	if local := models[sources.LocalCatalogID]; local != nil {
+		if _, present := get(local); present {
+			merger.clearModelContributionEvidence(history, field.Evidence(), nil)
+		}
+	}
 	return ""
+}
+
+// clearModelContributionEvidence replaces a refused current claim.
+func (merger *merger) clearModelContributionEvidence(history *map[string]provenance.Field, field string, value any) {
+	if history == nil {
+		return
+	}
+	(*history)[field] = provenance.Field{Current: provenance.Entry{
+		Field: field, Value: value, Timestamp: merger.changeTime(),
+		Reason: "cleared by composite authority policy",
+	}}
+}
+
+func compositeEvidenceField(prefix, field string) bool {
+	return field == prefix || strings.HasPrefix(field, prefix+".") || strings.HasPrefix(field, prefix+"[")
+}
+
+// clearCompositeEvidence clears all current claims for a refused record.
+func (merger *merger) clearCompositeEvidence(identity modelIdentity, history *map[string]provenance.Field, prefix string) {
+	if merger.baseline != nil {
+		for field := range merger.baseline.Provenance().FindModel(identity.providerID, identity.modelID) {
+			if compositeEvidenceField(prefix, field) {
+				merger.clearModelContributionEvidence(history, field, nil)
+			}
+		}
+	}
+	if history != nil {
+		for field := range *history {
+			if compositeEvidenceField(prefix, field) {
+				merger.clearModelContributionEvidence(history, field, nil)
+			}
+		}
+	}
+	merger.clearModelContributionEvidence(history, prefix, nil)
 }
 
 func compositeMapKey(value string) string { return "[" + strconv.Quote(value) + "]" }
@@ -140,6 +179,10 @@ func (merger *merger) mergeModeContributions(identity modelIdentity, target *cat
 			}
 		}
 		if present {
+			if mode.Provider != nil {
+				completeCompositePresence(history, policy, policy.Evidence()+path+".provider")
+			}
+			completeCompositePresence(history, policy, policy.Evidence()+path)
 			result[name] = mode
 		}
 	}
@@ -192,6 +235,7 @@ func (merger *merger) mergeExtensionContributions(identity modelIdentity, target
 			})
 		}
 		if present {
+			completeCompositePresence(history, policy, policy.Evidence()+compositeMapKey(namespace))
 			result[namespace] = extension
 		} else {
 			delete(result, namespace)
@@ -208,14 +252,47 @@ func (merger *merger) recordCompositeSummary(history *map[string]provenance.Fiel
 	}
 	keys := slices.Sorted(maps.Keys(*history))
 	prefix := policy.Evidence()
-	for _, source := range policy.SourceOrder {
+	if selected, found := leadingCompositeEvidence(*history, prefix, policy.SourceOrder); found {
+		selected.Field, selected.Value = prefix, value
+		selected.Confidence = merger.calculateConfidence(value)
+		selected.Reason = "merged fields with separate original evidence; leading accepted contribution"
+		(*history)[prefix] = provenance.Field{Current: selected}
+		return
+	}
+	for _, field := range keys {
+		if compositeEvidenceField(prefix, field) && (*history)[field].Current.Source == "" {
+			merger.clearModelContributionEvidence(history, prefix, value)
+			return
+		}
+	}
+}
+
+// completeCompositePresence derives record presence from an accepted child.
+func completeCompositePresence(history *map[string]provenance.Field, policy authority.Policy, prefix string) {
+	if history == nil {
+		return
+	}
+	field := prefix + ".present"
+	if (*history)[field].Current.Source != "" {
+		return
+	}
+	if entry, found := leadingCompositeEvidence(*history, prefix, policy.SourceOrder); found {
+		entry.Field, entry.Value = field, true
+		entry.Reason = "record presence follows an accepted child contribution"
+		(*history)[field] = provenance.Field{Current: entry}
+	}
+}
+
+func leadingCompositeEvidence(history map[string]provenance.Field, prefix string, order []sources.ID) (provenance.Entry, bool) {
+	keys := slices.Sorted(maps.Keys(history))
+	for _, source := range order {
 		var selected provenance.Entry
 		found := false
 		for _, key := range keys {
-			if !strings.HasPrefix(key, prefix+".") && !strings.HasPrefix(key, prefix+"[") {
+			if key == prefix || !compositeEvidenceField(prefix, key) {
 				continue
 			}
-			entry := (*history)[key].Current
+			entry := history[key].Current
 			if entry.Source != source {
 				continue
 			}
@@ -224,11 +301,8 @@ func (merger *merger) recordCompositeSummary(history *map[string]provenance.Fiel
 			}
 		}
 		if found {
-			selected.Field, selected.Value = prefix, value
-			selected.Confidence = merger.calculateConfidence(value)
-			selected.Reason = "merged fields with separate original evidence; leading accepted contribution"
-			(*history)[prefix] = provenance.Field{Current: selected}
-			return
+			return selected, true
 		}
 	}
+	return provenance.Entry{}, false
 }

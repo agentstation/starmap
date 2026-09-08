@@ -67,6 +67,11 @@ func (merger *merger) modelSourcesForValue(
 		return sourceModels
 	}
 	evidence, ok := merger.projectedModelEvidence(providerID, modelID, policy.Evidence(), localValue)
+	if !ok && merger.rejectsLegacyCompositeValue(providerID, modelID, policy, localValue) {
+		resolved := cloneModelSources(sourceModels)
+		delete(resolved, sources.LocalCatalogID)
+		return resolved
+	}
 	if ok && merger.projectedEvidence != nil && !merger.projectedEvidence(providerID, evidence) {
 		resolved := cloneModelSources(sourceModels)
 		delete(resolved, sources.LocalCatalogID)

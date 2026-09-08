@@ -83,6 +83,10 @@ func (merger *merger) mergeMetadataContributions(identity modelIdentity, target 
 		})
 	}
 	if present {
+		if result.Metadata.Architecture != nil {
+			completeCompositePresence(history, policy, policy.Evidence()+".architecture")
+		}
+		completeCompositePresence(history, policy, policy.Evidence())
 		target.Metadata = copyModelMetadata(result.Metadata)
 	} else if models[sources.LocalCatalogID] != nil {
 		target.Metadata = nil

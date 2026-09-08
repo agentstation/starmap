@@ -15,6 +15,7 @@ func (merger *merger) mergeFeatureEvidence(identity modelIdentity, target *catal
 	for _, feature := range catalogs.PublishedModelFeatures() {
 		field := policy
 		field.EvidencePath = policy.Evidence() + "." + string(feature)
+		accepted := false
 		for _, presence := range []catalogs.ValuePresence{catalogs.ValueKnown, catalogs.ValueUnknown} {
 			value := func(model *catalogs.Model) any {
 				if model == nil {
@@ -54,7 +55,14 @@ func (merger *merger) mergeFeatureEvidence(identity modelIdentity, target *catal
 				break
 			}
 			if found {
+				accepted = true
 				break
+			}
+		}
+		if local := models[sources.LocalCatalogID]; !accepted && local != nil {
+			if _, state := local.Features.Support(feature); state != catalogs.ValueMissing {
+				target.UnsetSupport(feature)
+				merger.clearModelContributionEvidence(history, field.Evidence(), nil)
 			}
 		}
 	}
@@ -78,13 +86,18 @@ func (merger *merger) mergeModalityEvidence(identity modelIdentity, target *cata
 				return nil
 			}
 			selected := merger.modelSourcesForValue(identity.providerID, identity.modelID, field, models, value)
+			found := false
 			for _, source := range policy.SourceOrder {
 				if value(selected[source]) == nil {
 					continue
 				}
 				accepted = append(accepted, modality)
 				merger.recordModelHistory(identity, history, field, source, true, "selected documented modality by authority")
+				found = true
 				break
+			}
+			if !found && value(models[sources.LocalCatalogID]) != nil {
+				merger.clearModelContributionEvidence(history, field.Evidence(), nil)
 			}
 		}
 		if direction == "input" {

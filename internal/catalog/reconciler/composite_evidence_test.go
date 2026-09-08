@@ -162,63 +162,92 @@ func TestCompositeContributionsPreserveEmptyRecordsAndCallerOwnership(t *testing
 }
 
 func TestCompositeProjectionPolicyRejectsCarriedFactsAndAllowsEdits(t *testing.T) {
-	for _, edited := range []bool{false, true} {
-		t.Run(strconv.FormatBool(edited), func(t *testing.T) {
-			metadata := &catalogs.ModelMetadata{Architecture: &catalogs.ModelArchitecture{}}
-			metadata.SetOpenWeights(true)
-			input := sourceIdentityCatalog(t, "", catalogs.Model{ID: "shared", Name: "Shared", Metadata: metadata, Modes: map[string]catalogs.ModelMode{"fast": {Provider: &catalogs.ModelProviderMode{Headers: map[string]string{"value": "original"}}}}, Extensions: catalogs.SourceExtensions{"source": {Fields: map[string]any{"value": "original"}}}})
-			original := sourceIdentityObservation(t, sources.ProvidersID, input, time.Date(2026, 9, 8, 0, 0, 0, 0, time.UTC))
-			generated := sourceIdentityReconcile(t, sources.ProvidersID, original)
-			local := snapshotForTest(t, generated.Catalog)
-			if edited {
-				builder, err := catalogs.NewBuilderFrom(local)
+	for _, legacy := range []bool{false, true} {
+		for _, edited := range []bool{false, true} {
+			t.Run("legacy="+strconv.FormatBool(legacy)+"/edited="+strconv.FormatBool(edited), func(t *testing.T) {
+				metadata := &catalogs.ModelMetadata{Architecture: &catalogs.ModelArchitecture{}}
+				metadata.SetOpenWeights(true)
+				input := sourceIdentityCatalog(t, "", catalogs.Model{ID: "shared", Name: "Shared", Metadata: metadata, Modes: map[string]catalogs.ModelMode{"fast": {Provider: &catalogs.ModelProviderMode{Headers: map[string]string{"value": "original"}}}}, Extensions: catalogs.SourceExtensions{"source": {Fields: map[string]any{"value": "original"}}}})
+				original := sourceIdentityObservation(t, sources.ProvidersID, input, time.Date(2026, 9, 8, 0, 0, 0, 0, time.UTC))
+				generated := sourceIdentityReconcile(t, sources.ProvidersID, original)
+				local := snapshotForTest(t, generated.Catalog)
+				if legacy {
+					local = aggregateOnlyCompositeCatalog(t, local)
+				}
+				if edited {
+					builder, err := catalogs.NewBuilderFrom(local)
+					if err != nil {
+						t.Fatal(err)
+					}
+					provider, err := builder.Provider("provider-a")
+					if err != nil {
+						t.Fatal(err)
+					}
+					model := provider.Models["shared"]
+					model.Metadata.SetOpenWeights(false)
+					model.Modes["fast"].Provider.Headers["value"] = "edited"
+					model.Extensions["source"].Fields["value"] = "edited"
+					if err := builder.SetProvider(provider); err != nil {
+						t.Fatal(err)
+					}
+					local, err = builder.Build()
+					if err != nil {
+						t.Fatal(err)
+					}
+				}
+				observation := sourceIdentityObservation(t, sources.LocalCatalogID, local, original.ObservedAt.Add(time.Minute))
+				reconcile, err := New(WithBaseline(local), WithProjectedEvidencePolicy(func(_ catalogs.ProviderID, entry provenance.Entry) bool {
+					composite := strings.HasPrefix(entry.Field, "metadata") || strings.HasPrefix(entry.Field, "modes") || strings.HasPrefix(entry.Field, "extensions")
+					return !composite || entry.ObservationID != original.ID
+				}))
 				if err != nil {
 					t.Fatal(err)
 				}
-				provider, err := builder.Provider("provider-a")
+				result, err := reconcile.Sources(t.Context(), sources.LocalCatalogID, []sources.Observation{observation})
+				if err != nil {
+					t.Fatal(err)
+				}
+				provider, err := result.Catalog.Provider("provider-a")
 				if err != nil {
 					t.Fatal(err)
 				}
 				model := provider.Models["shared"]
-				model.Metadata.SetOpenWeights(false)
-				model.Modes["fast"].Provider.Headers["value"] = "edited"
-				model.Extensions["source"].Fields["value"] = "edited"
-				if err := builder.SetProvider(provider); err != nil {
-					t.Fatal(err)
+				if !edited {
+					if model.Metadata != nil || len(model.Modes) != 0 || len(model.Extensions) != 0 {
+						t.Fatalf("rejected composite facts survived: metadata=%+v modes=%+v extensions=%+v", model.Metadata, model.Modes, model.Extensions)
+					}
+					return
 				}
-				local, err = builder.Build()
+				open, presence := model.Metadata.OpenWeightsValue()
+				if open || presence != catalogs.ValueKnown || model.Modes["fast"].Provider.Headers["value"] != "edited" || model.Extensions["source"].Fields["value"] != "edited" {
+					t.Fatal("projection policy discarded an explicit operator edit")
+				}
+				for _, field := range []string{"metadata.present", `modes["fast"].present`, `modes["fast"].provider.present`, `extensions["source"].present`} {
+					assertModelEvidenceSource(t, result.Catalog, field, sources.LocalCatalogID, observation.ID)
+				}
+				snapshot := snapshotForTest(t, result.Catalog)
+				next := sourceIdentityObservation(t, sources.LocalCatalogID, snapshot, observation.ObservedAt.Add(time.Minute))
+				reconcile, err = New(WithBaseline(snapshot), WithProjectedEvidencePolicy(func(_ catalogs.ProviderID, entry provenance.Entry) bool {
+					composite := strings.HasPrefix(entry.Field, "metadata") || strings.HasPrefix(entry.Field, "modes") || strings.HasPrefix(entry.Field, "extensions")
+					return !composite || (entry.ObservationID != original.ID && entry.ObservationID != observation.ID)
+				}))
 				if err != nil {
 					t.Fatal(err)
 				}
-			}
-			observation := sourceIdentityObservation(t, sources.LocalCatalogID, local, original.ObservedAt.Add(time.Minute))
-			reconcile, err := New(WithBaseline(local), WithProjectedEvidencePolicy(func(_ catalogs.ProviderID, entry provenance.Entry) bool {
-				composite := strings.HasPrefix(entry.Field, "metadata") || strings.HasPrefix(entry.Field, "modes") || strings.HasPrefix(entry.Field, "extensions")
-				return !composite || entry.ObservationID != original.ID
-			}))
-			if err != nil {
-				t.Fatal(err)
-			}
-			result, err := reconcile.Sources(t.Context(), sources.LocalCatalogID, []sources.Observation{observation})
-			if err != nil {
-				t.Fatal(err)
-			}
-			provider, err := result.Catalog.Provider("provider-a")
-			if err != nil {
-				t.Fatal(err)
-			}
-			model := provider.Models["shared"]
-			if !edited {
-				if model.Metadata != nil || len(model.Modes) != 0 || len(model.Extensions) != 0 {
-					t.Fatalf("rejected composite facts survived: metadata=%+v modes=%+v extensions=%+v", model.Metadata, model.Modes, model.Extensions)
+				withdrawn, err := reconcile.Sources(t.Context(), sources.LocalCatalogID, []sources.Observation{next})
+				if err != nil {
+					t.Fatal(err)
 				}
-				return
-			}
-			open, presence := model.Metadata.OpenWeightsValue()
-			if open || presence != catalogs.ValueKnown || model.Modes["fast"].Provider.Headers["value"] != "edited" || model.Extensions["source"].Fields["value"] != "edited" {
-				t.Fatal("projection policy discarded an explicit operator edit")
-			}
-		})
+				provider, err = withdrawn.Catalog.Provider("provider-a")
+				if err != nil {
+					t.Fatal(err)
+				}
+				model = provider.Models["shared"]
+				if model.Metadata != nil || len(model.Modes) != 0 || len(model.Extensions) != 0 {
+					t.Fatal("a derived record survived withdrawal of all contributing evidence")
+				}
+			})
+		}
 	}
 }
 
