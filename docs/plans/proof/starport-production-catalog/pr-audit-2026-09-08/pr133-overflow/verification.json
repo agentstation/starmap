@@ -1,0 +1,29 @@
+{
+  "base": "392617c808bab57ca73b912c9821f3bd9794d418",
+  "change": "Remove addition from configuration map capacity hint. Preserve map copies and authority selection.",
+  "tests": {
+    "go1.26.6": {
+      "passed": 221,
+      "packages": 2,
+      "failed": 0,
+      "skipped": 0
+    },
+    "go1.25.12": {
+      "passed": 23,
+      "packages": 1,
+      "failed": 0,
+      "skipped": 0
+    }
+  },
+  "lint_findings": 0,
+  "ago_findings": 0,
+  "artifacts": {
+    "codeql-before.json": "60d0d904cdf1338f9fe011b60e33a103f30ab44ccf80e3d6bcaad16c9f6917ec",
+    "tests.jsonl": "0b7eac368b0c69a7334599ef0cce290242b5c28a8ff0238adcaebf0c4d7575e1",
+    "minimum.jsonl": "ffac6339031d1ca2d27fa460811d2c1dbf608dcd660436ee99083438c29f4078",
+    "ago.json": "b8fb7afa66aa7a93914ac258475dd0191be821803a8aea4439f5ba05022f5fa5",
+    "lint.json": "021ff7a503eaeb8623fb6649f2fccae9614402ef0aa8b2b8518e451439276f8f"
+  },
+  "codeql_after": "UNVERIFIED until pushed head scan",
+  "review": "pending; binary captures replaced with reviewable structured text"
+}
