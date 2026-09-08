@@ -1,0 +1,108 @@
+{
+  "captured_at": "2026-09-08T09:18:53.285228+00:00",
+  "repositories": {
+    "starmap": [
+      {
+        "baseRefName": "codex/catalog-qualification-evidence",
+        "headRefOid": "e68f61a603b2c017f3f96edd9a0eab25c4d87021",
+        "number": 136,
+        "title": "Qualify catalog paths and native recovery evidence",
+        "url": "https://github.com/agentstation/starmap/pull/136"
+      },
+      {
+        "baseRefName": "codex/catalog-requirements",
+        "headRefOid": "50557f055bd76fa5ad061253b3d23082634d47e0",
+        "number": 135,
+        "title": "Retain catalog qualification evidence",
+        "url": "https://github.com/agentstation/starmap/pull/135"
+      },
+      {
+        "baseRefName": "codex/catalog-foundation",
+        "headRefOid": "ed688ea40224e9a762ddd08d937e0f7e4c5ae0cb",
+        "number": 134,
+        "title": "Retain follow-up catalog verification evidence",
+        "url": "https://github.com/agentstation/starmap/pull/134"
+      },
+      {
+        "baseRefName": "codex/catalog-followup-evidence",
+        "headRefOid": "637f780a067466896f6b9ed03dc034cd764861a9",
+        "number": 133,
+        "title": "catalog: connect scoped acquisition and preserve baselines on reset",
+        "url": "https://github.com/agentstation/starmap/pull/133"
+      },
+      {
+        "baseRefName": "codex/catalog-plan",
+        "headRefOid": "205dd041fb2d0267a2643c0d6af8d9f45e34842d",
+        "number": 132,
+        "title": "catalog: persist baseline state and add canonical runtime contracts",
+        "url": "https://github.com/agentstation/starmap/pull/132"
+      },
+      {
+        "baseRefName": "main",
+        "headRefOid": "0d6435d5b483e48c80b79d67be14430773caab19",
+        "number": 131,
+        "title": "build(deps): bump github.com/aws/aws-sdk-go-v2/service/secretsmanager in /",
+        "url": "https://github.com/agentstation/starmap/pull/131"
+      },
+      {
+        "baseRefName": "main",
+        "headRefOid": "9b11e1c455d9f59ba342f30e64f1cd05d3b7a033",
+        "number": 130,
+        "title": "build(deps): bump github.com/aws/aws-sdk-go-v2/service/s3 in /",
+        "url": "https://github.com/agentstation/starmap/pull/130"
+      },
+      {
+        "baseRefName": "main",
+        "headRefOid": "ffeb595220e9de24f4ef78660d2658a2c6b6859a",
+        "number": 129,
+        "title": "build(deps): bump github.com/aws/aws-sdk-go-v2/config in /",
+        "url": "https://github.com/agentstation/starmap/pull/129"
+      },
+      {
+        "baseRefName": "main",
+        "headRefOid": "c05d4c3554a4c7569c427d06db6db5a8ce38494a",
+        "number": 128,
+        "title": "build(deps): bump github.com/Azure/azure-sdk-for-go/sdk/azidentity in /",
+        "url": "https://github.com/agentstation/starmap/pull/128"
+      },
+      {
+        "baseRefName": "codex/catalog-evidence",
+        "headRefOid": "b58a9df6f2da7fe95297e30d97604c9232e83a43",
+        "number": 126,
+        "title": "docs: define production catalog contracts and verification plan",
+        "url": "https://github.com/agentstation/starmap/pull/126"
+      },
+      {
+        "baseRefName": "main",
+        "headRefOid": "d8d12a26069f34442860cbcf8bb840dd073177fc",
+        "number": 125,
+        "title": "Preserve catalog qualification captures",
+        "url": "https://github.com/agentstation/starmap/pull/125"
+      }
+    ],
+    "starport": [
+      {
+        "baseRefName": "main",
+        "headRefOid": "ef6a247f603ae9f538eddc80677b290f4e55819f",
+        "number": 368,
+        "title": "chore(deps): bump the go-modules group with 9 updates",
+        "url": "https://github.com/agentstation/starport/pull/368"
+      },
+      {
+        "baseRefName": "main",
+        "headRefOid": "3f0817ad23b69147caaafd2b30ccbd71a50e48a6",
+        "number": 367,
+        "title": "chore(deps): bump Homebrew/actions/setup-homebrew from 2026.08.31.1 to 2026.09.07.1 in the github-actions group",
+        "url": "https://github.com/agentstation/starport/pull/367"
+      },
+      {
+        "baseRefName": "main",
+        "headRefOid": "5820a370ff9255a8148799f5b45fcaf927c2e1dc",
+        "number": 366,
+        "title": "Add public operator documentation and catalog qualification checks",
+        "url": "https://github.com/agentstation/starport/pull/366"
+      }
+    ]
+  },
+  "comparison": "All 14 open heads equal the prior inventory."
+}

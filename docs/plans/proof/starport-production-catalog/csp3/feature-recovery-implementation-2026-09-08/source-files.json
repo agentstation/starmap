@@ -1,0 +1,10 @@
+{
+  "internal/catalog/reconciler/merger.go": "4e2c64619edcf85b2bc26dbc083b93818b849a1540435e27af4f3f9123b3178a",
+  "internal/catalog/reconciler/model_policy.go": "9d3bdf0124de305f9a148d94fff0eb37eaffc532c722f09dc9287e1d566121bd",
+  "internal/catalog/reconciler/source_identity.go": "882dc3d6ef600f387a3cec6b3a095de0c27a37365dd1e17ca51cf7157f8937a0",
+  "internal/catalog/reconciler/feature_evidence.go": "1c11c7a864f27b4931b184a8a23bfafc3b945a98c5bd691448e9d35265ca01d6",
+  "internal/catalog/reconciler/feature_evidence_test.go": "791bf94496ae3543e65004817b0c2ff2c36a0979cf1d420e2debc90ac1e3c630",
+  "internal/catalog/reconciler/source_identity_allocations_test.go": "df79597e9a84b775413925ada1cb20ffb0f7a93d3c2030f440e7484dfb1943b9",
+  "pkg/catalogs/model_presence.go": "3cd440c6d56a4f0e374ba981aa756a4e1cff32a0a82c6290ccf2ea1618d787b2",
+  "runtime/provider_feature_recovery_test.go": "b5a50de3127af11ebcba8e02b391b75bf68f47dbd5fbe74a2de92e07c3bfea72"
+}

@@ -1,0 +1,90 @@
+{
+  "date": "2026-09-08",
+  "work_commit": "dc54fe0f67ed3e249d00d2eceebb743cbae19ef7",
+  "baseline_commit": "189baff8",
+  "source_hashes": "source-files.json",
+  "counts_include": "Parent tests and package pass events. Repeated suites overlap and are not additive acceptance credit.",
+  "final_checks": [
+    {
+      "command": "GOTOOLCHAIN=go1.26.6 go test -race -count=1 -timeout 20m ./runtime ./acquisition ./internal/catalog/reconciler -json",
+      "capture": "qualified-full.jsonl.gz",
+      "exit_code": 0,
+      "pass": 874,
+      "fail": 0,
+      "skip": 0
+    },
+    {
+      "command": "GOTOOLCHAIN=go1.26.6 go test -race ./pkg/catalogs -count=1 -json",
+      "capture": "catalogs.jsonl.gz",
+      "exit_code": 0,
+      "pass": 588,
+      "fail": 0,
+      "skip": 0
+    },
+    {
+      "command": "GOTOOLCHAIN=go1.25.12 go test -race ./runtime ./internal/catalog/reconciler -run '^TestProviderFeatureRecoveryPreservesContributingReceipts$|^TestReasoningDenialClearsUnsupportedCapabilityEvidence$|^TestAbsentProjectedEvidenceDoesNotCopyUnrelatedModels$' -count=1 -json",
+      "capture": "qualified-minimum.jsonl.gz",
+      "exit_code": 0,
+      "pass": 15,
+      "fail": 0,
+      "skip": 0
+    },
+    {
+      "command": "GOTOOLCHAIN=go1.26.6 go tool ago -stale-ignores -format json ./...",
+      "capture": "qualified-ago.json",
+      "exit_code": 0,
+      "findings": 0,
+      "stale_ignores": 0,
+      "errors": 0
+    },
+    {
+      "command": "GOTOOLCHAIN=go1.26.6 golangci-lint run ./runtime/... ./internal/catalog/reconciler/... ./pkg/catalogs/...",
+      "capture": "qualified-lint.txt",
+      "exit_code": 0,
+      "issues": 0
+    },
+    {
+      "command": "make technical-writing-check",
+      "capture": "writing.txt.gz",
+      "exit_code": 0,
+      "files": 1191,
+      "diagnostics": 0
+    }
+  ],
+  "allocation_comparison": {
+    "toolchain": "go1.26.6",
+    "race": false,
+    "models": [
+      1,
+      101
+    ],
+    "before": [
+      19,
+      121
+    ],
+    "after": [
+      9,
+      9
+    ],
+    "before_capture": "allocation-red.jsonl.gz",
+    "after_capture": "allocation-green.jsonl.gz",
+    "scope": "Refresh lookup only. No request-latency or A50 qualification."
+  },
+  "intermediate_captures": "Other captures preserve intermediate candidates, including failures. They do not qualify final source. Intermediate source states are not all retained.",
+  "original_failure": "../feature-recovery-2026-09-08/verification.json",
+  "acceptance_credit": false,
+  "publication": "Local commit only. Pre-PR review and full publication gates remain required.",
+  "remaining": [
+    "Full presence coverage",
+    "Scoped membership and removal review",
+    "Application integration",
+    "Released-pair acceptance",
+    "Owner decisions: global removal authority and default review threshold"
+  ],
+  "proof_prose_check": {
+    "command": "make technical-writing-check",
+    "capture": "writing-proof-final.txt.gz",
+    "exit_code": 0,
+    "result": "PASS: 1192 file(s), 0 diagnostic(s)"
+  }
+}

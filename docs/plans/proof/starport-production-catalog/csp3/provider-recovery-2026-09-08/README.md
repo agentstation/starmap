@@ -12,4 +12,4 @@ The intermediate fixture failures remain in the captures. Their partial observat
 
 CSP3 remains in progress. This change does not establish removal authority, transport restrictions, or released-pair acceptance. CSP5 still owns physical history collection.
 
-The later [capability probe](../feature-recovery-2026-09-08/verification.json) finds an uncovered composite-field case. Merged capabilities lose a contributing receipt. CSP3 must repair that evidence path before publication.
+The later [capability probe](../feature-recovery-2026-09-08/verification.json) finds an uncovered composite-field case. Merged capabilities lose a contributing receipt. Commit `dc54fe0f` repairs that path. The [capability evidence](../feature-recovery-implementation-2026-09-08/verification.json) records its scope and checks.
