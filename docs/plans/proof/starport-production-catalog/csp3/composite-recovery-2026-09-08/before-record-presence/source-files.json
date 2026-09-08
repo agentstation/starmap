@@ -1,0 +1,8 @@
+{
+  "internal/catalog/reconciler/merger.go": "70a04bb93e06be8edbd4839fae04590f56d0d0eb2ec9220dbc0f7b6d75e5204f",
+  "internal/catalog/reconciler/model_policy.go": "f2a3989da8ec2ba97ca025a545f334ede92fcc88abc9f91c0b31eb2afa2961af",
+  "internal/catalog/reconciler/composite_evidence.go": "cb9957d8c48a1e280798117f26507d3876cfc0f06c5480d4bd4cda02b1304973",
+  "internal/catalog/reconciler/metadata_evidence.go": "17666b07352871212d52bff182ab01c94f2f55d3aa6644e47302f3535a5224b2",
+  "internal/catalog/reconciler/composite_evidence_test.go": "8b32e7b510cdfc4cae4df7a45f42d83baa6fa0f8446d2853e4e337e7cb270343",
+  "runtime/provider_composite_recovery_test.go": "c19a275a865596f3968314a9e8b8709fd3ca2120ed5869b36ed017f09cc2f977"
+}

@@ -1,0 +1,712 @@
+{
+  "recorded_at": "2026-09-08T10:58:04.721113+00:00",
+  "source_files": "source-files.json",
+  "checks": {
+    "accepted-full.jsonl": {
+      "event_counts": {
+        "pass": 957
+      },
+      "packages": [
+        {
+          "package": "github.com/agentstation/starmap/internal/catalog/reconciler",
+          "result": "pass",
+          "elapsed_seconds": 2.041
+        },
+        {
+          "package": "github.com/agentstation/starmap/acquisition",
+          "result": "pass",
+          "elapsed_seconds": 327.91
+        },
+        {
+          "package": "github.com/agentstation/starmap/runtime",
+          "result": "pass",
+          "elapsed_seconds": 656.222
+        }
+      ],
+      "capture": "accepted-full.jsonl.gz"
+    },
+    "accepted-minimum.jsonl": {
+      "event_counts": {
+        "pass": 83
+      },
+      "packages": [
+        {
+          "package": "github.com/agentstation/starmap/internal/catalog/reconciler",
+          "result": "pass",
+          "elapsed_seconds": 1.442
+        },
+        {
+          "package": "github.com/agentstation/starmap/runtime",
+          "result": "pass",
+          "elapsed_seconds": 37.118
+        }
+      ],
+      "capture": "accepted-minimum.jsonl.gz"
+    },
+    "aliases-corrected-reconciler.jsonl": {
+      "event_counts": {
+        "pass": 314
+      },
+      "packages": [
+        {
+          "package": "github.com/agentstation/starmap/internal/catalog/reconciler",
+          "result": "pass",
+          "elapsed_seconds": 1.542
+        }
+      ],
+      "capture": "aliases-corrected-reconciler.jsonl.gz"
+    },
+    "aliases-reconciler.jsonl": {
+      "event_counts": {
+        "pass": 304,
+        "fail": 5
+      },
+      "packages": [
+        {
+          "package": "github.com/agentstation/starmap/internal/catalog/reconciler",
+          "result": "fail",
+          "elapsed_seconds": 0.54
+        }
+      ],
+      "capture": "aliases-reconciler.jsonl.gz"
+    },
+    "architecture-red.jsonl": {
+      "event_counts": {
+        "fail": 6,
+        "pass": 4
+      },
+      "packages": [
+        {
+          "package": "github.com/agentstation/starmap/pkg/catalogs",
+          "result": "fail",
+          "elapsed_seconds": 0.234
+        }
+      ],
+      "capture": "architecture-red.jsonl.gz"
+    },
+    "authorship-all-reconciler.jsonl": {
+      "event_counts": {
+        "pass": 314
+      },
+      "packages": [
+        {
+          "package": "github.com/agentstation/starmap/internal/catalog/reconciler",
+          "result": "pass",
+          "elapsed_seconds": 1.536
+        }
+      ],
+      "capture": "authorship-all-reconciler.jsonl.gz"
+    },
+    "authorship-candidate.jsonl": {
+      "event_counts": {
+        "pass": 1,
+        "fail": 4
+      },
+      "packages": [
+        {
+          "package": "github.com/agentstation/starmap/internal/catalog/reconciler",
+          "result": "pass",
+          "elapsed_seconds": 1.25
+        },
+        {
+          "package": "github.com/agentstation/starmap/runtime",
+          "result": "fail",
+          "elapsed_seconds": 10.795
+        }
+      ],
+      "capture": "authorship-candidate.jsonl.gz"
+    },
+    "authorship-expanded-red.jsonl": {
+      "event_counts": {
+        "fail": 4
+      },
+      "packages": [
+        {
+          "package": "github.com/agentstation/starmap/runtime",
+          "result": "fail",
+          "elapsed_seconds": 10.984
+        }
+      ],
+      "capture": "authorship-expanded-red.jsonl.gz"
+    },
+    "authorship-path-corrected-candidate.jsonl": {
+      "event_counts": {
+        "pass": 5
+      },
+      "packages": [
+        {
+          "package": "github.com/agentstation/starmap/internal/catalog/reconciler",
+          "result": "pass",
+          "elapsed_seconds": 1.365
+        },
+        {
+          "package": "github.com/agentstation/starmap/runtime",
+          "result": "pass",
+          "elapsed_seconds": 14.65
+        }
+      ],
+      "capture": "authorship-path-corrected-candidate.jsonl.gz"
+    },
+    "authorship-path-corrected-red.jsonl": {
+      "event_counts": {
+        "fail": 4
+      },
+      "packages": [
+        {
+          "package": "github.com/agentstation/starmap/runtime",
+          "result": "fail",
+          "elapsed_seconds": 13.385
+        }
+      ],
+      "capture": "authorship-path-corrected-red.jsonl.gz"
+    },
+    "authorship-red.jsonl": {
+      "event_counts": {
+        "fail": 2
+      },
+      "packages": [
+        {
+          "package": "github.com/agentstation/starmap/runtime",
+          "result": "fail",
+          "elapsed_seconds": 9.909
+        }
+      ],
+      "capture": "authorship-red.jsonl.gz"
+    },
+    "baseline-fill-corrected.jsonl": {
+      "event_counts": {
+        "pass": 51
+      },
+      "packages": [
+        {
+          "package": "github.com/agentstation/starmap/internal/catalog/reconciler",
+          "result": "pass",
+          "elapsed_seconds": 1.28
+        },
+        {
+          "package": "github.com/agentstation/starmap/runtime",
+          "result": "pass",
+          "elapsed_seconds": 36.885
+        }
+      ],
+      "capture": "baseline-fill-corrected.jsonl.gz"
+    },
+    "baseline-fill-red.jsonl": {
+      "event_counts": {
+        "fail": 2
+      },
+      "packages": [
+        {
+          "package": "github.com/agentstation/starmap/internal/catalog/reconciler",
+          "result": "fail",
+          "elapsed_seconds": 0.244
+        }
+      ],
+      "capture": "baseline-fill-red.jsonl.gz"
+    },
+    "baseline-final-full.jsonl": {
+      "event_counts": {
+        "pass": 925
+      },
+      "packages": [
+        {
+          "package": "github.com/agentstation/starmap/internal/catalog/reconciler",
+          "result": "pass",
+          "elapsed_seconds": 1.9769999999999999
+        },
+        {
+          "package": "github.com/agentstation/starmap/acquisition",
+          "result": "pass",
+          "elapsed_seconds": 325.062
+        },
+        {
+          "package": "github.com/agentstation/starmap/runtime",
+          "result": "pass",
+          "elapsed_seconds": 645.46
+        }
+      ],
+      "capture": "baseline-final-full.jsonl.gz"
+    },
+    "baseline-final-minimum.jsonl": {
+      "event_counts": {
+        "pass": 51
+      },
+      "packages": [
+        {
+          "package": "github.com/agentstation/starmap/internal/catalog/reconciler",
+          "result": "pass",
+          "elapsed_seconds": 1.659
+        },
+        {
+          "package": "github.com/agentstation/starmap/runtime",
+          "result": "pass",
+          "elapsed_seconds": 36.051
+        }
+      ],
+      "capture": "baseline-final-minimum.jsonl.gz"
+    },
+    "candidate.jsonl": {
+      "event_counts": {
+        "pass": 4
+      },
+      "packages": [
+        {
+          "package": "github.com/agentstation/starmap/runtime",
+          "result": "pass",
+          "elapsed_seconds": 11.638
+        }
+      ],
+      "capture": "candidate.jsonl.gz"
+    },
+    "cleanup-minimum.jsonl": {
+      "event_counts": {
+        "pass": 7
+      },
+      "packages": [
+        {
+          "package": "github.com/agentstation/starmap/internal/catalog/reconciler",
+          "result": "pass",
+          "elapsed_seconds": 1.268
+        }
+      ],
+      "capture": "cleanup-minimum.jsonl.gz"
+    },
+    "cleanup-reconciler.jsonl": {
+      "event_counts": {
+        "pass": 281
+      },
+      "packages": [
+        {
+          "package": "github.com/agentstation/starmap/internal/catalog/reconciler",
+          "result": "pass",
+          "elapsed_seconds": 1.5979999999999999
+        }
+      ],
+      "capture": "cleanup-reconciler.jsonl.gz"
+    },
+    "empty-red.jsonl": {
+      "event_counts": {
+        "fail": 8
+      },
+      "packages": [
+        {
+          "package": "github.com/agentstation/starmap/runtime",
+          "result": "fail",
+          "elapsed_seconds": 13.009
+        }
+      ],
+      "capture": "empty-red.jsonl.gz"
+    },
+    "expanded-red.jsonl": {
+      "event_counts": {
+        "fail": 36
+      },
+      "packages": [
+        {
+          "package": "github.com/agentstation/starmap/runtime",
+          "result": "fail",
+          "elapsed_seconds": 27.208
+        }
+      ],
+      "capture": "expanded-red.jsonl.gz"
+    },
+    "expanded.jsonl": {
+      "event_counts": {
+        "pass": 36
+      },
+      "packages": [
+        {
+          "package": "github.com/agentstation/starmap/runtime",
+          "result": "pass",
+          "elapsed_seconds": 29.067
+        }
+      ],
+      "capture": "expanded.jsonl.gz"
+    },
+    "final-focused-repair.jsonl": {
+      "event_counts": {
+        "pass": 48
+      },
+      "packages": [
+        {
+          "package": "github.com/agentstation/starmap/internal/catalog/reconciler",
+          "result": "pass",
+          "elapsed_seconds": 1.674
+        },
+        {
+          "package": "github.com/agentstation/starmap/runtime",
+          "result": "pass",
+          "elapsed_seconds": 32.392
+        }
+      ],
+      "capture": "final-focused-repair.jsonl.gz"
+    },
+    "final-focused.jsonl": {
+      "event_counts": {
+        "pass": 38
+      },
+      "packages": [
+        {
+          "package": "github.com/agentstation/starmap/internal/catalog/reconciler",
+          "result": "pass",
+          "elapsed_seconds": 1.6640000000000001
+        },
+        {
+          "package": "github.com/agentstation/starmap/runtime",
+          "result": "pass",
+          "elapsed_seconds": 28.795
+        }
+      ],
+      "capture": "final-focused.jsonl.gz"
+    },
+    "final-full.jsonl": {
+      "event_counts": {
+        "pass": 922
+      },
+      "packages": [
+        {
+          "package": "github.com/agentstation/starmap/internal/catalog/reconciler",
+          "result": "pass",
+          "elapsed_seconds": 2.373
+        },
+        {
+          "package": "github.com/agentstation/starmap/acquisition",
+          "result": "pass",
+          "elapsed_seconds": 315.842
+        },
+        {
+          "package": "github.com/agentstation/starmap/runtime",
+          "result": "pass",
+          "elapsed_seconds": 618.656
+        }
+      ],
+      "capture": "final-full.jsonl.gz"
+    },
+    "final-minimum.jsonl": {
+      "event_counts": {
+        "pass": 48
+      },
+      "packages": [
+        {
+          "package": "github.com/agentstation/starmap/internal/catalog/reconciler",
+          "result": "pass",
+          "elapsed_seconds": 1.274
+        },
+        {
+          "package": "github.com/agentstation/starmap/runtime",
+          "result": "pass",
+          "elapsed_seconds": 31.258
+        }
+      ],
+      "capture": "final-minimum.jsonl.gz"
+    },
+    "full.jsonl": {
+      "event_counts": {
+        "pass": 912
+      },
+      "packages": [
+        {
+          "package": "github.com/agentstation/starmap/internal/catalog/reconciler",
+          "result": "pass",
+          "elapsed_seconds": 1.553
+        },
+        {
+          "package": "github.com/agentstation/starmap/acquisition",
+          "result": "pass",
+          "elapsed_seconds": 320.891
+        },
+        {
+          "package": "github.com/agentstation/starmap/runtime",
+          "result": "pass",
+          "elapsed_seconds": 625.192
+        }
+      ],
+      "capture": "full.jsonl.gz"
+    },
+    "initial.jsonl": {
+      "event_counts": {
+        "fail": 2,
+        "pass": 2
+      },
+      "packages": [
+        {
+          "package": "github.com/agentstation/starmap/runtime",
+          "result": "fail",
+          "elapsed_seconds": 10.468
+        }
+      ],
+      "capture": "initial.jsonl.gz"
+    },
+    "minimum.jsonl": {
+      "event_counts": {
+        "pass": 38
+      },
+      "packages": [
+        {
+          "package": "github.com/agentstation/starmap/internal/catalog/reconciler",
+          "result": "pass",
+          "elapsed_seconds": 1.267
+        },
+        {
+          "package": "github.com/agentstation/starmap/runtime",
+          "result": "pass",
+          "elapsed_seconds": 28.292
+        }
+      ],
+      "capture": "minimum.jsonl.gz"
+    },
+    "paid-red.jsonl": {
+      "event_counts": {
+        "pass": 4
+      },
+      "packages": [
+        {
+          "package": "github.com/agentstation/starmap/runtime",
+          "result": "pass",
+          "elapsed_seconds": 11.873
+        }
+      ],
+      "capture": "paid-red.jsonl.gz"
+    },
+    "policy-corrected.jsonl": {
+      "event_counts": {
+        "pass": 5
+      },
+      "packages": [
+        {
+          "package": "github.com/agentstation/starmap/internal/catalog/reconciler",
+          "result": "pass",
+          "elapsed_seconds": 1.262
+        }
+      ],
+      "capture": "policy-corrected.jsonl.gz"
+    },
+    "policy.jsonl": {
+      "event_counts": {
+        "fail": 1
+      },
+      "packages": [
+        {
+          "package": "github.com/agentstation/starmap/internal/catalog/reconciler",
+          "result": "fail",
+          "elapsed_seconds": 0
+        }
+      ],
+      "capture": "policy.jsonl.gz"
+    },
+    "presence-focused.jsonl": {
+      "event_counts": {
+        "pass": 44
+      },
+      "packages": [
+        {
+          "package": "github.com/agentstation/starmap/internal/catalog/reconciler",
+          "result": "pass",
+          "elapsed_seconds": 1.698
+        },
+        {
+          "package": "github.com/agentstation/starmap/runtime",
+          "result": "pass",
+          "elapsed_seconds": 34.373
+        }
+      ],
+      "capture": "presence-focused.jsonl.gz"
+    },
+    "qualified-full.jsonl": {
+      "event_counts": {
+        "pass": 921
+      },
+      "packages": [
+        {
+          "package": "github.com/agentstation/starmap/internal/catalog/reconciler",
+          "result": "pass",
+          "elapsed_seconds": 2.626
+        },
+        {
+          "package": "github.com/agentstation/starmap/acquisition",
+          "result": "pass",
+          "elapsed_seconds": 318.123
+        },
+        {
+          "package": "github.com/agentstation/starmap/runtime",
+          "result": "pass",
+          "elapsed_seconds": 622.149
+        }
+      ],
+      "capture": "qualified-full.jsonl.gz"
+    },
+    "qualified-minimum.jsonl": {
+      "event_counts": {
+        "pass": 47
+      },
+      "packages": [
+        {
+          "package": "github.com/agentstation/starmap/internal/catalog/reconciler",
+          "result": "pass",
+          "elapsed_seconds": 1.351
+        },
+        {
+          "package": "github.com/agentstation/starmap/runtime",
+          "result": "pass",
+          "elapsed_seconds": 37.778
+        }
+      ],
+      "capture": "qualified-minimum.jsonl.gz"
+    },
+    "reconciler-corrected.jsonl": {
+      "event_counts": {
+        "pass": 276
+      },
+      "packages": [
+        {
+          "package": "github.com/agentstation/starmap/internal/catalog/reconciler",
+          "result": "pass",
+          "elapsed_seconds": 1.466
+        }
+      ],
+      "capture": "reconciler-corrected.jsonl.gz"
+    },
+    "reconciler.jsonl": {
+      "event_counts": {
+        "pass": 273,
+        "fail": 3
+      },
+      "packages": [
+        {
+          "package": "github.com/agentstation/starmap/internal/catalog/reconciler",
+          "result": "fail",
+          "elapsed_seconds": 0.456
+        }
+      ],
+      "capture": "reconciler.jsonl.gz"
+    },
+    "stale-corrected.jsonl": {
+      "event_counts": {
+        "pass": 281
+      },
+      "packages": [
+        {
+          "package": "github.com/agentstation/starmap/internal/catalog/reconciler",
+          "result": "pass",
+          "elapsed_seconds": 1.49
+        }
+      ],
+      "capture": "stale-corrected.jsonl.gz"
+    },
+    "stale-red.jsonl": {
+      "event_counts": {
+        "fail": 2
+      },
+      "packages": [
+        {
+          "package": "github.com/agentstation/starmap/internal/catalog/reconciler",
+          "result": "fail",
+          "elapsed_seconds": 0.242
+        }
+      ],
+      "capture": "stale-red.jsonl.gz"
+    },
+    "workspace-receipts.jsonl": {
+      "event_counts": {
+        "pass": 14,
+        "fail": 4
+      },
+      "packages": [
+        {
+          "package": "github.com/agentstation/starmap/internal/catalog/reconciler",
+          "result": "fail",
+          "elapsed_seconds": 0.291
+        }
+      ],
+      "capture": "workspace-receipts.jsonl.gz"
+    }
+  },
+  "qualification": "CSP3 remains in_progress. Component and released-pair acceptance remain unverified.",
+  "pending": [],
+  "base_commit": "6cf16f97b7b621b241bfd1103a305dad74b1ad88",
+  "accepted_commands": {
+    "accepted-full.jsonl": {
+      "command": "GOTOOLCHAIN=go1.26.6 go test -race -count=1 -timeout 20m ./runtime ./acquisition ./internal/catalog/reconciler -json",
+      "exit_code": 0
+    },
+    "accepted-minimum.jsonl": {
+      "command": "GOTOOLCHAIN=go1.25.12 go test -race ./internal/catalog/reconciler ./runtime -run '^TestComposite|^TestSemanticNumericEvidence|^TestProviderCompositeRecoveryPreservesContributions$' -count=1 -json",
+      "exit_code": 0
+    },
+    "accepted-ago.json": {
+      "command": "GOTOOLCHAIN=go1.26.6 go tool ago -stale-ignores -format json ./...",
+      "exit_code": 0
+    },
+    "accepted-lint.txt": {
+      "command": "GOTOOLCHAIN=go1.26.6 golangci-lint run ./internal/catalog/reconciler/... ./runtime/...",
+      "exit_code": 0
+    },
+    "accepted-component.json": {
+      "command": "GOTOOLCHAIN=go1.26.6 bash scripts/verify-catalog-product.sh --starport-root /Users/jack/src/github.com/agentstation/starport-catalog-lifecycle --task CSP3 --json",
+      "exit_code": 1
+    }
+  },
+  "component": {
+    "selected_subcases": 10,
+    "subcases": {
+      "A08.field_authority": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A08.presence_zero_null": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A08.scoped_tombstone": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A08.partial_empty": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A08.alias_cycle_scope": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A20.cli_provider_nonprovider": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A20.publisher_provider_nonprovider": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A20.server_provider_nonprovider": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A20.dependency_disabled_partial": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A20.receipt_artifact_binding": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      }
+    },
+    "gate_status": "FAIL"
+  },
+  "source_scope": {
+    "accepted-full.jsonl": "All eight final source snapshots.",
+    "accepted-minimum.jsonl": "All eight final source snapshots.",
+    "final-full.jsonl": "before-unused-cleanup source snapshots.",
+    "baseline-final-full.jsonl": "Intermediate baseline-fill repair, before mode-pricing and numeric alias changes. No complete source snapshot for this stage.",
+    "authorship-path-corrected-candidate.jsonl": "Unapplied authorship overlay. See authorship-candidate-review.md.",
+    "authorship-all-reconciler.jsonl": "Unapplied authorship overlay. See authorship-candidate-review.md."
+  },
+  "event_count_note": "PASS, FAIL, and SKIP event counts include parent tests and package results. They are not acceptance subcase counts.",
+  "work_commit": "0542e96e5ac4c01b916c3721cc2f70d3ceccaa9b",
+  "writing": {
+    "command": "GOTOOLCHAIN=go1.26.6 make technical-writing-check",
+    "exit_code": 0,
+    "files": 1201,
+    "diagnostics": 0,
+    "capture": "writing-final.txt.gz"
+  }
+}
