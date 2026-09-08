@@ -1,0 +1,47 @@
+{
+  "pr": 131,
+  "head": "85d8d7b2cd03951a248c7488ac16124ff191fee9",
+  "base": "74b6612765c65c67d564e951dee565a80b2b5f2d",
+  "repair_commit": "c68d6b3e",
+  "new_versions": {
+    "aws-sdk-go-v2": "v1.46.0",
+    "secretsmanager": "v1.48.0"
+  },
+  "consumer_gate": "PASS; all six consumers",
+  "sdk_overlay_inputs": {
+    "internal/auth/secret_sdk_aws_test.go": "8cb6c617456617f9a3b0544c3e4a5d3a69845ca1567ed81190257d2194c10576",
+    "internal/auth/secret_sdk_azure_test.go": "1070dede6c848d3145057939c457dce5fec8ce65a998e8b3d01285039628d594",
+    "internal/auth/secret_sdk_transport_test.go": "994b634349dcce52c4426828dcd366d20f33c474d91fcb73b2dc79a7f1f7cdbc"
+  },
+  "sdk_toolchains": {
+    "go1.26.6": {
+      "test_pass": 87,
+      "package_pass": 2,
+      "fail": 0,
+      "skip": 0
+    },
+    "go1.25.12": {
+      "test_pass": 87,
+      "package_pass": 2,
+      "fail": 0,
+      "skip": 0
+    }
+  },
+  "overlay_correction": "Initial /tmp mapping omitted added tests. Corrected realpath mapping discovers and passes all nine explicit SDK credential scenarios. Initial logs qualify only existing tests.",
+  "review": "automatic pre-PR gate exits 0 without model invocation for lock-only changes",
+  "pushed": true,
+  "merged": false,
+  "artifacts": {
+    "ci-before.txt.gz": "fa9d7b234b7283dcac94d5d77797cac9a72efef3df076fb6b240da5b8e0217bf",
+    "consumers.txt.gz": "82823bff10121a8e16f8a1b227545976bdf72888170339f4fda3ddf58c9b476c",
+    "sdk-existing.jsonl.gz": "ae99b79b786d821a554921a084032dddc60012f97d8452724c5e55ca32ea9737",
+    "sdk-existing-minimum.jsonl.gz": "fd1b4ea04d1a9ceba63f6ff3ecb48dfd79df72d2c85ff67ab605e20d5ad382fd",
+    "sdk-final.jsonl.gz": "e4d82d6c08cc63aec991fac179be910193ea66134d1103831b8a7d87e7327983",
+    "sdk-final-minimum.jsonl.gz": "05c9103a4d489dc761defaa83a79fcde8675210a9d7b3ef074ec8a9623ff28c8",
+    "review.txt.gz": "900d4e82d817468629b7bb5b20c4c43eec23c9302cc11b4eb0f12a9d70b2c3e4",
+    "overlay.json.gz": "0f3faea143fbe3be296e63d527cf704dde15d1eabed2ba5d4a878f687abfd279",
+    "secret_sdk_aws_test.go.gz": "27d84e8b377861fd845477bd4ea53cee85b3c3b7d54b5e6313361f1a1f1fb94e",
+    "secret_sdk_azure_test.go.gz": "db74918e925c161d941a0206210b17d933ae215723aa9a092eb82061c88aef6a",
+    "secret_sdk_transport_test.go.gz": "4c763a2943d56d1c57f8796f2390f9e725c7a37dadb69412c56e2773a9ffe283"
+  }
+}
