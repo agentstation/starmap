@@ -1,7 +1,9 @@
 # CSP3.1 offering lookup allocations
 
-CSP3.1 passes its local acceptance criteria. The two assigned A44 subcases pass in the product verifier.
-The complete A44 case and released-pair acceptance remain UNVERIFIED. Publication still requires the pending pre-PR review.
+CSP3.1 is complete after PR #133 merged at `46767fb7e95c0bab330b222e94fb7a74db461536`.
+All fifteen CI checks pass. Both assigned A44 subcases pass against the merged source.
+The [merged-source evidence](csp3.1/merged-qualification-2026-09-08/verification.json) records six fresh benchmarks, each with 11 allocations and 1,104 bytes per operation.
+The complete A44 case and released-pair acceptance remain UNVERIFIED.
 
 `Catalog.Offering` now resolves provider identity through an immutable index, then copies only the selected offering.
 Both catalog constructors build the index after identity validation. Canonical IDs and aliases retain the same missing-record errors.

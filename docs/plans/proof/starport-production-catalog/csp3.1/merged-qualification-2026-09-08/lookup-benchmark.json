@@ -1,0 +1,4 @@
+{
+  "stdout": "goos: darwin\ngoarch: arm64\npkg: github.com/agentstation/starmap/pkg/catalogs\ncpu: Apple M2 Max\nBenchmarkOfferingLookup/models=1/provider-12         \t 2175784\t       554.7 ns/op\t    1104 B/op\t      11 allocs/op\nBenchmarkOfferingLookup/models=1/alias-12            \t 2005513\t       587.5 ns/op\t    1104 B/op\t      11 allocs/op\nBenchmarkOfferingLookup/models=100/provider-12       \t 2058128\t       601.4 ns/op\t    1104 B/op\t      11 allocs/op\nBenchmarkOfferingLookup/models=100/alias-12          \t 2036688\t       611.2 ns/op\t    1104 B/op\t      11 allocs/op\nBenchmarkOfferingLookup/models=10000/provider-12     \t 2082915\t       588.6 ns/op\t    1104 B/op\t      11 allocs/op\nBenchmarkOfferingLookup/models=10000/alias-12        \t 2035065\t       583.8 ns/op\t    1104 B/op\t      11 allocs/op\nPASS\nok  \tgithub.com/agentstation/starmap/pkg/catalogs\t7.668s\n",
+  "exit_code": 0
+}

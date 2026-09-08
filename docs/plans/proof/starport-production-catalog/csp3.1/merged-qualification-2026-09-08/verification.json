@@ -1,0 +1,35 @@
+{
+  "task": "CSP3.1",
+  "status": "done",
+  "merge": "46767fb7e95c0bab330b222e94fb7a74db461536",
+  "reviewed_head": "55b4a12be54e3dce4da76671507a00b1af6f1bed",
+  "checks_passed": 15,
+  "tree_matches_reviewed_head": true,
+  "acceptance": {
+    "gate_status": "PASS",
+    "assigned_subcases": 2,
+    "names": [
+      "A44.canonical_alias_lookup",
+      "A44.caller_owned_values"
+    ],
+    "scope": "component checks only"
+  },
+  "benchmark": {
+    "cases": 6,
+    "allocations_per_operation": 11,
+    "bytes_per_operation": 1104,
+    "provider_model_counts": [
+      1,
+      100,
+      10000
+    ],
+    "host": "Darwin arm64 Apple M2 Max"
+  },
+  "whole_A44": "UNVERIFIED",
+  "released_pair": "UNVERIFIED",
+  "artifacts": {
+    "lookup-benchmark.json": "9dbdb7a94883efa007adab8ec7e9ab1cbae3c1d8e4add51c5f3b4746b3545968",
+    "acceptance.json": "807b3aef4fc08dfb59bfd1569e2a887b5e7f8c403905c7cc57808835a769816b",
+    "merge.json": "f2562bfc11b4da315849eea0b09c0245bd49b61458acb70f1d1183ac6a590529"
+  }
+}
