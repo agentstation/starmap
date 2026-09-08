@@ -23,13 +23,29 @@
     "race_go_1_26_6": {
       "pass_test": 200,
       "pass_package": 1
+    },
+    "integrated-sdk.jsonl.gz": {
+      "pass_test": 87,
+      "pass_package": 2
+    },
+    "integrated-minimum.jsonl.gz": {
+      "pass_test": 87,
+      "pass_package": 2
+    },
+    "final-sdk.jsonl.gz": {
+      "pass_test": 87,
+      "pass_package": 2
+    },
+    "final-minimum.jsonl.gz": {
+      "pass_test": 87,
+      "pass_package": 2
     }
   },
   "pending": {
-    "full_verification_session": 68726,
-    "structured_review": true,
+    "structured_review": false,
     "publication": true,
-    "fresh_native_ci": true
+    "fresh_native_ci": true,
+    "dependency_main_merge": 130
   },
   "task_completion": false,
   "files": {
@@ -43,7 +59,16 @@
     "native-failure.txt.gz": "facaf9f7e3289debc9561ea52574f36f00ab7145affee1b1574bcd7ebc8433d4",
     "minimum.jsonl.gz": "1b69c2e0528b5dabe2c2ee9f48a292a869e697c8f1099e9285fac6ac1e3660e3",
     "focused-race.jsonl.gz": "97a535a2cd5109b34a062676409c07520ddabcb297818318d412e6a666f34da0",
-    "old-ci-jobs.json.gz": "f4b12f89d69b14b764f841888832335404f45f8943da8170d4337dec4630ed27"
+    "old-ci-jobs.json.gz": "f4b12f89d69b14b764f841888832335404f45f8943da8170d4337dec4630ed27",
+    "publication-verify.txt.gz": "5aa68a0255bce79d743ef8ce9b7302df02ca0719e0046c29bcf6e6777c033b4e",
+    "integrated-sdk.jsonl.gz": "f2be481516070401755ca62a4dfca08cc76476abaa49fd1486b771456f0334c4",
+    "integrated-minimum.jsonl.gz": "08ed9cd48357f64b3b41748242df16b4c6ad785add38e10f85ede4308766a244",
+    "integrated-consumers.txt.gz": "f292705d1d6fc0ff6a85450c743ff92861d5e0e4a0c9e83a668386e834f96604",
+    "structured-review.txt.gz": "d5dfc3db218d91ded0d0d4a6bed5635a96023b6ede6b817e8aff2a2f4a2c7e65",
+    "s3-review.txt.gz": "900d4e82d817468629b7bb5b20c4c43eec23c9302cc11b4eb0f12a9d70b2c3e4",
+    "final-sdk.jsonl.gz": "9166e643ba57b274642f244aa8b2e9f16df36d19f3140be704da861c332038c5",
+    "final-minimum.jsonl.gz": "a6da036b7880eef8e637efe8e05c63422f3b6a4de7c5a656ed6d3808a833be12",
+    "final-consumers.txt.gz": "b76434adff138e5a508c42b9e641317cd286ea8f527b1587919db5d42630bdab"
   },
   "focused_race_exit_code": 0,
   "old_ci_run": "Cancelled after the confirmed native failure because the hook repair supersedes its source.",
@@ -52,5 +77,56 @@
     "minimum": "GOTOOLCHAIN=go1.25.12 CGO_ENABLED=0 go test -json -count=5 -timeout=5m -run 'TestRollback|TestHookIsolation|TestF036HookOverload|TestModelDiffWithoutObservers|TestEmbeddedCatalogState' .",
     "publication": "GOTOOLCHAIN=go1.26.6 make verify"
   },
-  "next_after_verification": "Merge current main into the repair branch, validate changed dependencies and consumer closure, complete the pre-PR review, and publish the new PR133 head."
+  "next_after_verification": "After PR130 merges, merge its main commit into this candidate. Confirm tree equality, then publish PR133 and run fresh CI. Keep auto-merge off until all native jobs pass.",
+  "full_verification": {
+    "source": "effbfc92073a4f7b281f7c52bd488795126ae3a9",
+    "exit_code": 0,
+    "stages": 39,
+    "ordinary_packages": 79,
+    "race_packages": 79,
+    "session": 68726,
+    "terminal": true
+  },
+  "integrated_head": "11bd184b233c2c0275328b334d59a037a71fcbd9",
+  "integrated_main": "c2fce0ab21ffbba2bb7e05a903a4ca10d5c05523",
+  "integrated_consumers_passed": 6,
+  "module_versions": {
+    "github.com/aws/aws-sdk-go-v2": "1.46.0",
+    "github.com/aws/aws-sdk-go-v2/service/s3": "1.109.1",
+    "github.com/aws/aws-sdk-go-v2/service/secretsmanager": "1.48.0"
+  },
+  "main_integration_files": [
+    "go.mod",
+    "go.sum",
+    "testdata/consumers/server-storage/go.mod",
+    "testdata/consumers/server-storage/go.sum"
+  ],
+  "final_candidate": "35c0ba5663fa20621a2f4fedb0ec22587fb86ff7",
+  "final_candidate_tree": "52403fe8d23ab101859368a12e86bf0edb94f0c2",
+  "final_dependency_pr_head": "ffeee23a40cefe33bfca4d719b2d76d9c3572b29",
+  "final_modules": {
+    "github.com/aws/aws-sdk-go-v2": "1.46.0",
+    "github.com/aws/aws-sdk-go-v2/service/s3": "1.111.0",
+    "github.com/aws/aws-sdk-go-v2/service/secretsmanager": "1.48.0"
+  },
+  "review": {
+    "source_review_head": "11bd184b233c2c0275328b334d59a037a71fcbd9",
+    "base": "c6224d80e410c265348845f4877d252532f1de43",
+    "exit_code": 0,
+    "portions": 1,
+    "bundle_bytes": 23110,
+    "reviewers": [
+      {
+        "model": "gpt-5.6-sol",
+        "effort": "xhigh",
+        "findings": 0
+      },
+      {
+        "model": "claude-opus-5",
+        "effort": "high",
+        "findings": 0
+      }
+    ],
+    "s3_followup": "Only module and lock files changed. Automatic metadata-only review exits 0 without a model call."
+  }
 }
