@@ -5,11 +5,11 @@
 
 <p>Starmap #133 merged at <code>46767fb7</code> after fifteen successful checks. Both assigned CSP3.1 checks pass against the merge. Six fresh lookup benchmarks retain 11 allocations and 1,104 bytes per operation.</p>
 
-<p>Next action: merge #135 after CI passes, then integrate and publish reviewed #136. Review the new gRPC security update in #137.</p>
+<p>Next action: merge #135 after CI passes, then integrate and publish reviewed #136. Merge the reviewed gRPC security update in #137 after CI passes.</p>
 
 <p>Starport #369 and #370 merged the Compose fix, recording tools, README, and media. Both E02 and E03 pass against the final merge. No Starport PR remains open.</p>
 
-<p>CSP3 architecture presence passes all 39 publication stages at <code>9b6403eb</code>. Its required review and merge remain pending. The token-price repair needs its fixture update and full verification.</p>
+<p>CSP3 architecture presence passes all 39 publication stages at <code>9b6403eb</code>. Its required review and merge remain pending. The token-price repair now runs full verification.</p>
 
 <h1>Starmap and Starport production catalog</h1>
 <section id="current-resume"><h2>Current resume state</h2>
@@ -24,9 +24,9 @@
 
 <p>The <a href="proof/starport-production-catalog/pr-audit-2026-09-08/downstream-preparation/verification.json">downstream record</a> retains both reviews and full verification output. CSP2 awaits the remaining implementation merge and merged-source acceptance.</p>
 
-<p>The token-price worktree is <code>/tmp/starmap-token-cost-worktree-2026-09-08</code>, branch <code>codex/catalog-token-cost-presence</code>. Commit <code>6f1117e7</code> preserves null and missing prices. The dirty unit repair passes 77 focused race results. Full verification failed on the fixed artifact digest after baseline regeneration. Update that fixture, regenerate documentation, then repeat verification and review.</p>
+<p>The token-price worktree is <code>/tmp/starmap-token-cost-worktree-2026-09-08</code>, branch <code>codex/catalog-token-cost-presence</code>. Commit <code>6f1117e7</code> preserves null and missing prices. Repair <code>b4e436b1</code> passes 77 focused race results and all six consumer checks. It updates the fixed artifact digest after baseline regeneration. Full verifier session <code>17673</code> writes <code>/tmp/starmap-token-cost-presence-2026-09-08/unit-repair-publication-verify.txt</code>. Complete verification and review before publication.</p>
 
-<p>PR #137 updates gRPC from 1.83.1 to 1.83.2 for advisory <code>GHSA-2v4p-qf9q-27wj</code>. Inspect its consumer modules and current checks before merge. Whole-record and nested presence remain open in CSP3.</p>
+<p>PR #137 updates gRPC from 1.83.1 to 1.83.2 for advisory <code>GHSA-2v4p-qf9q-27wj</code>. Reviewed head <code>907b055c</code> includes main and changes only module metadata. Credential tests pass 67 results on each toolchain. All six consumers pass. Fresh CI remains required. Whole-record and nested presence remain open in CSP3.</p>
 
 </section>
 
