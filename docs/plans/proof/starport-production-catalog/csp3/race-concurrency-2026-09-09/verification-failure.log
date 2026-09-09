@@ -1,0 +1,1554 @@
+﻿2026-09-09T04:44:45.1635553Z Current runner version: '2.337.0'
+2026-09-09T04:44:45.1672323Z ##[group]Runner Image Provisioner
+2026-09-09T04:44:45.1673814Z Hosted Compute Agent
+2026-09-09T04:44:45.1674708Z Version: 20260828.587
+2026-09-09T04:44:45.1675920Z Commit: abac92662cab4cc7352de4f9f9d2e2419aad9c29
+2026-09-09T04:44:45.1677128Z Build Date: 2026-08-28T16:44:25Z
+2026-09-09T04:44:45.1678288Z Worker ID: {f012f81b-4ffa-4e45-b65e-8211e1ea5940}
+2026-09-09T04:44:45.1679689Z Azure Region: eastus2
+2026-09-09T04:44:45.1680569Z ##[endgroup]
+2026-09-09T04:44:45.1682715Z ##[group]Operating System
+2026-09-09T04:44:45.1683750Z Ubuntu
+2026-09-09T04:44:45.1684638Z 24.04.5
+2026-09-09T04:44:45.1685504Z LTS
+2026-09-09T04:44:45.1686299Z ##[endgroup]
+2026-09-09T04:44:45.1687259Z ##[group]Runner Image
+2026-09-09T04:44:45.1688272Z Image: ubuntu-24.04
+2026-09-09T04:44:45.1689325Z Version: 20260907.300.1
+2026-09-09T04:44:45.1691492Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20260907.300/images/ubuntu/Ubuntu2404-Readme.md
+2026-09-09T04:44:45.1694209Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20260907.300
+2026-09-09T04:44:45.1695794Z ##[endgroup]
+2026-09-09T04:44:45.1697717Z ##[group]GITHUB_TOKEN Permissions
+2026-09-09T04:44:45.1700936Z Contents: read
+2026-09-09T04:44:45.1701826Z Metadata: read
+2026-09-09T04:44:45.1702894Z ##[endgroup]
+2026-09-09T04:44:45.1706545Z Secret source: Actions
+2026-09-09T04:44:45.1708964Z Prepare workflow directory
+2026-09-09T04:44:45.2187746Z Prepare all required actions
+2026-09-09T04:44:45.2260131Z Getting action download info
+2026-09-09T04:44:45.4408589Z Download action repository 'actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1' (SHA:3d3c42e5aac5ba805825da76410c181273ba90b1)
+2026-09-09T04:44:45.5408289Z Download action repository 'actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e' (SHA:b7ad1dad31e06c5925ef5d2fc7ad053ef454303e)
+2026-09-09T04:44:45.9161887Z Complete job name: Verification Gate
+2026-09-09T04:44:45.9964217Z ##[group]Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+2026-09-09T04:44:45.9965294Z with:
+2026-09-09T04:44:45.9965753Z   repository: agentstation/starmap
+2026-09-09T04:44:45.9969990Z   token: ***
+2026-09-09T04:44:45.9970441Z   ssh-strict: true
+2026-09-09T04:44:45.9970888Z   ssh-user: git
+2026-09-09T04:44:45.9971344Z   persist-credentials: true
+2026-09-09T04:44:45.9971837Z   clean: true
+2026-09-09T04:44:45.9972285Z   sparse-checkout-cone-mode: true
+2026-09-09T04:44:45.9972797Z   fetch-depth: 1
+2026-09-09T04:44:45.9973234Z   fetch-tags: false
+2026-09-09T04:44:45.9973992Z   show-progress: true
+2026-09-09T04:44:45.9974587Z   lfs: false
+2026-09-09T04:44:45.9975135Z   submodules: false
+2026-09-09T04:44:45.9975848Z   set-safe-directory: true
+2026-09-09T04:44:45.9976490Z   allow-unsafe-pr-checkout: false
+2026-09-09T04:44:45.9977375Z ##[endgroup]
+2026-09-09T04:44:46.1079183Z Syncing repository: agentstation/starmap
+2026-09-09T04:44:46.1083069Z ##[group]Getting Git version info
+2026-09-09T04:44:46.1084087Z Working directory is '/home/runner/work/starmap/starmap'
+2026-09-09T04:44:46.1085550Z [command]/usr/bin/git version
+2026-09-09T04:44:46.1152817Z git version 2.55.0
+2026-09-09T04:44:46.1176381Z ##[endgroup]
+2026-09-09T04:44:46.1193066Z Temporarily overriding HOME='/home/runner/work/_temp/6a98bf1e-3c14-433f-841a-5b4bdd7ed303' before making global git config changes
+2026-09-09T04:44:46.1196516Z Adding repository directory to the temporary git global config as a safe directory
+2026-09-09T04:44:46.1199256Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/starmap/starmap
+2026-09-09T04:44:46.1267062Z Deleting the contents of '/home/runner/work/starmap/starmap'
+2026-09-09T04:44:46.1277629Z ##[group]Determining repository object format
+2026-09-09T04:44:46.1290455Z ##[endgroup]
+2026-09-09T04:44:46.1292311Z ##[group]Initializing the repository
+2026-09-09T04:44:46.1293646Z [command]/usr/bin/git init /home/runner/work/starmap/starmap
+2026-09-09T04:44:46.1413338Z hint: Using 'master' as the name for the initial branch. This default branch name
+2026-09-09T04:44:46.1415677Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2026-09-09T04:44:46.1417368Z hint: to use in all of your new repositories, which will suppress this warning,
+2026-09-09T04:44:46.1418655Z hint: call:
+2026-09-09T04:44:46.1419511Z hint:
+2026-09-09T04:44:46.1420407Z hint: 	git config --global init.defaultBranch <name>
+2026-09-09T04:44:46.1421397Z hint:
+2026-09-09T04:44:46.1422364Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2026-09-09T04:44:46.1423622Z hint: 'development'. The just-created branch can be renamed via this command:
+2026-09-09T04:44:46.1424742Z hint:
+2026-09-09T04:44:46.1425742Z hint: 	git branch -m <name>
+2026-09-09T04:44:46.1426522Z hint:
+2026-09-09T04:44:46.1427560Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2026-09-09T04:44:46.1429516Z Initialized empty Git repository in /home/runner/work/starmap/starmap/.git/
+2026-09-09T04:44:46.1432432Z [command]/usr/bin/git remote add origin https://github.com/agentstation/starmap
+2026-09-09T04:44:46.1502227Z ##[endgroup]
+2026-09-09T04:44:46.1503893Z ##[group]Disabling automatic garbage collection
+2026-09-09T04:44:46.1506697Z [command]/usr/bin/git config --local gc.auto 0
+2026-09-09T04:44:46.1554807Z ##[endgroup]
+2026-09-09T04:44:46.1556412Z ##[group]Setting up auth
+2026-09-09T04:44:46.1557336Z Removing SSH command configuration
+2026-09-09T04:44:46.1565156Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-09-09T04:44:46.1619570Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-09-09T04:44:46.2103551Z Removing HTTP extra header
+2026-09-09T04:44:46.2109436Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-09-09T04:44:46.2168732Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-09-09T04:44:46.2439651Z Removing includeIf entries pointing to credentials config files
+2026-09-09T04:44:46.2445259Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-09-09T04:44:46.2499393Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-09-09T04:44:46.2775526Z [command]/usr/bin/git config --file /home/runner/work/_temp/git-credentials-05f3b046-7a40-4ec4-ab30-99cdbe9a6faa.config http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2026-09-09T04:44:46.2834028Z [command]/usr/bin/git config --local includeIf.gitdir:/home/runner/work/starmap/starmap/.git.path /home/runner/work/_temp/git-credentials-05f3b046-7a40-4ec4-ab30-99cdbe9a6faa.config
+2026-09-09T04:44:46.2875849Z [command]/usr/bin/git config --local includeIf.gitdir:/home/runner/work/starmap/starmap/.git/worktrees/*.path /home/runner/work/_temp/git-credentials-05f3b046-7a40-4ec4-ab30-99cdbe9a6faa.config
+2026-09-09T04:44:46.2917843Z [command]/usr/bin/git config --local includeIf.gitdir:/github/workspace/.git.path /github/runner_temp/git-credentials-05f3b046-7a40-4ec4-ab30-99cdbe9a6faa.config
+2026-09-09T04:44:46.2960312Z [command]/usr/bin/git config --local includeIf.gitdir:/github/workspace/.git/worktrees/*.path /github/runner_temp/git-credentials-05f3b046-7a40-4ec4-ab30-99cdbe9a6faa.config
+2026-09-09T04:44:46.3000810Z ##[endgroup]
+2026-09-09T04:44:46.3002253Z ##[group]Fetching the repository
+2026-09-09T04:44:46.3009860Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +2ad78db5dd7c3dc5a5f4b2092d38c7abcf4544d9:refs/remotes/pull/138/merge
+2026-09-09T04:44:51.7129800Z From https://github.com/agentstation/starmap
+2026-09-09T04:44:51.7132402Z  * [new ref]         2ad78db5dd7c3dc5a5f4b2092d38c7abcf4544d9 -> pull/138/merge
+2026-09-09T04:44:51.7136417Z ##[endgroup]
+2026-09-09T04:44:51.7137686Z ##[group]Determining the checkout info
+2026-09-09T04:44:51.7139317Z ##[endgroup]
+2026-09-09T04:44:51.7140230Z [command]/usr/bin/git sparse-checkout disable
+2026-09-09T04:44:51.7142829Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+2026-09-09T04:44:51.7165360Z ##[group]Checking out the ref
+2026-09-09T04:44:51.7170388Z [command]/usr/bin/git checkout --progress --force refs/remotes/pull/138/merge
+2026-09-09T04:44:52.3840227Z Note: switching to 'refs/remotes/pull/138/merge'.
+2026-09-09T04:44:52.3841512Z 
+2026-09-09T04:44:52.3842409Z You are in 'detached HEAD' state. You can look around, make experimental
+2026-09-09T04:44:52.3844417Z changes and commit them, and you can discard any commits you make in this
+2026-09-09T04:44:52.3846407Z state without impacting any branches by switching back to a branch.
+2026-09-09T04:44:52.3847564Z 
+2026-09-09T04:44:52.3848575Z If you want to create a new branch to retain commits you create, you may
+2026-09-09T04:44:52.3850446Z do so (now or later) by using -c with the switch command. Example:
+2026-09-09T04:44:52.3851547Z 
+2026-09-09T04:44:52.3852052Z   git switch -c <new-branch-name>
+2026-09-09T04:44:52.3852857Z 
+2026-09-09T04:44:52.3853358Z Or undo this operation with:
+2026-09-09T04:44:52.3854091Z 
+2026-09-09T04:44:52.3854518Z   git switch -
+2026-09-09T04:44:52.3855119Z 
+2026-09-09T04:44:52.3856141Z Turn off this advice by setting config variable advice.detachedHead to false
+2026-09-09T04:44:52.3857667Z 
+2026-09-09T04:44:52.3859955Z HEAD is now at 2ad78db Merge 93c73439148544ddc4874ffbba818b4ef74166d2 into 7be0a02701447ef0f3f044bbbd5cfd9ea5524f9e
+2026-09-09T04:44:52.3905812Z ##[endgroup]
+2026-09-09T04:44:52.3962619Z [command]/usr/bin/git log -1 --format=%H
+2026-09-09T04:44:52.3998079Z 2ad78db5dd7c3dc5a5f4b2092d38c7abcf4544d9
+2026-09-09T04:44:52.4429069Z ##[group]Run actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e
+2026-09-09T04:44:52.4430806Z with:
+2026-09-09T04:44:52.4431718Z   go-version: 1.25.12
+2026-09-09T04:44:52.4432685Z   cache: true
+2026-09-09T04:44:52.4433586Z   check-latest: false
+2026-09-09T04:44:52.4443664Z   token: ***
+2026-09-09T04:44:52.4444570Z ##[endgroup]
+2026-09-09T04:44:52.5682401Z Setup go version spec 1.25.12
+2026-09-09T04:44:52.5690996Z Attempting to download 1.25.12...
+2026-09-09T04:44:53.0808928Z matching 1.25.12...
+2026-09-09T04:44:53.0825411Z Acquiring 1.25.12 from https://github.com/actions/go-versions/releases/download/1.25.12-28913687537/go-1.25.12-linux-x64.tar.gz
+2026-09-09T04:44:53.5284894Z Extracting Go...
+2026-09-09T04:44:53.5402293Z [command]/usr/bin/tar xz --warning=no-unknown-keyword --overwrite -C /home/runner/work/_temp/6f09d147-7d96-4ac7-ab41-bfc35d9f8456 -f /home/runner/work/_temp/f7fb2b9a-b2b9-4cfd-a795-28c5089a0619
+2026-09-09T04:44:55.1304686Z Successfully extracted go to /home/runner/work/_temp/6f09d147-7d96-4ac7-ab41-bfc35d9f8456
+2026-09-09T04:44:55.1305602Z Adding to the cache ...
+2026-09-09T04:44:59.7586951Z Successfully cached go to /opt/hostedtoolcache/go/1.25.12/x64
+2026-09-09T04:44:59.7589456Z Added go to the path
+2026-09-09T04:44:59.7591335Z Successfully set up Go version 1.25.12
+2026-09-09T04:44:59.7930243Z [command]/opt/hostedtoolcache/go/1.25.12/x64/bin/go env GOMODCACHE
+2026-09-09T04:44:59.7981498Z [command]/opt/hostedtoolcache/go/1.25.12/x64/bin/go env GOCACHE
+2026-09-09T04:44:59.8042309Z /home/runner/go/pkg/mod
+2026-09-09T04:44:59.8058915Z /home/runner/.cache/go-build
+2026-09-09T04:44:59.8985334Z Cache hit for: setup-go-Linux-x64-ubuntu24-go-1.25.12-969ab01232663f677d04e3ac8fcbc74a53e35c7d1f45572fa14cd1285036c418
+2026-09-09T04:45:00.2196704Z Received 23269738 of 23269738 (100.0%), 89.1 MBs/sec
+2026-09-09T04:45:00.2197849Z Cache Size: ~22 MB (23269738 B)
+2026-09-09T04:45:00.2241796Z [command]/usr/bin/tar -xf /home/runner/work/_temp/82cf8e72-7c3a-4571-b07f-0d0974e77a3b/cache.tzst -P -C /home/runner/work/starmap/starmap --use-compress-program unzstd
+2026-09-09T04:45:00.5196217Z Cache restored successfully
+2026-09-09T04:45:00.5214824Z Cache restored from key: setup-go-Linux-x64-ubuntu24-go-1.25.12-969ab01232663f677d04e3ac8fcbc74a53e35c7d1f45572fa14cd1285036c418
+2026-09-09T04:45:00.5241574Z go version go1.25.12 linux/amd64
+2026-09-09T04:45:00.5241900Z 
+2026-09-09T04:45:00.5242378Z ##[group]go env
+2026-09-09T04:45:00.5400197Z AR='ar'
+2026-09-09T04:45:00.5400532Z CC='gcc'
+2026-09-09T04:45:00.5400864Z CGO_CFLAGS='-O2 -g'
+2026-09-09T04:45:00.5401154Z CGO_CPPFLAGS=''
+2026-09-09T04:45:00.5401403Z CGO_CXXFLAGS='-O2 -g'
+2026-09-09T04:45:00.5401674Z CGO_ENABLED='1'
+2026-09-09T04:45:00.5401897Z CGO_FFLAGS='-O2 -g'
+2026-09-09T04:45:00.5402169Z CGO_LDFLAGS='-O2 -g'
+2026-09-09T04:45:00.5402429Z CXX='g++'
+2026-09-09T04:45:00.5402708Z GCCGO='gccgo'
+2026-09-09T04:45:00.5402944Z GO111MODULE=''
+2026-09-09T04:45:00.5403160Z GOAMD64='v1'
+2026-09-09T04:45:00.5403383Z GOARCH='amd64'
+2026-09-09T04:45:00.5403652Z GOAUTH='netrc'
+2026-09-09T04:45:00.5403869Z GOBIN=''
+2026-09-09T04:45:00.5404116Z GOCACHE='/home/runner/.cache/go-build'
+2026-09-09T04:45:00.5404433Z GOCACHEPROG=''
+2026-09-09T04:45:00.5404669Z GODEBUG=''
+2026-09-09T04:45:00.5404904Z GOENV='/home/runner/.config/go/env'
+2026-09-09T04:45:00.5405663Z GOEXE=''
+2026-09-09T04:45:00.5405877Z GOEXPERIMENT=''
+2026-09-09T04:45:00.5406100Z GOFIPS140='off'
+2026-09-09T04:45:00.5406325Z GOFLAGS=''
+2026-09-09T04:45:00.5407094Z GOGCCFLAGS='-fPIC -m64 -pthread -Wl,--no-gc-sections -fmessage-length=0 -ffile-prefix-map=/tmp/go-build3844603807=/tmp/go-build -gno-record-gcc-switches'
+2026-09-09T04:45:00.5407763Z GOHOSTARCH='amd64'
+2026-09-09T04:45:00.5408002Z GOHOSTOS='linux'
+2026-09-09T04:45:00.5408226Z GOINSECURE=''
+2026-09-09T04:45:00.5408733Z GOMOD='/home/runner/work/starmap/starmap/go.mod'
+2026-09-09T04:45:00.5409160Z GOMODCACHE='/home/runner/go/pkg/mod'
+2026-09-09T04:45:00.5409452Z GONOPROXY=''
+2026-09-09T04:45:00.5409767Z GONOSUMDB=''
+2026-09-09T04:45:00.5410371Z GOOS='linux'
+2026-09-09T04:45:00.5410660Z GOPATH='/home/runner/go'
+2026-09-09T04:45:00.5410905Z GOPRIVATE=''
+2026-09-09T04:45:00.5411530Z GOPROXY='https://proxy.golang.org,direct'
+2026-09-09T04:45:00.5412199Z GOROOT='/opt/hostedtoolcache/go/1.25.12/x64'
+2026-09-09T04:45:00.5412770Z GOSUMDB='sum.golang.org'
+2026-09-09T04:45:00.5413237Z GOTELEMETRY='local'
+2026-09-09T04:45:00.5413788Z GOTELEMETRYDIR='/home/runner/.config/go/telemetry'
+2026-09-09T04:45:00.5414362Z GOTMPDIR=''
+2026-09-09T04:45:00.5414760Z GOTOOLCHAIN='local'
+2026-09-09T04:45:00.5415399Z GOTOOLDIR='/opt/hostedtoolcache/go/1.25.12/x64/pkg/tool/linux_amd64'
+2026-09-09T04:45:00.5416013Z GOVCS=''
+2026-09-09T04:45:00.5416422Z GOVERSION='go1.25.12'
+2026-09-09T04:45:00.5416850Z GOWORK=''
+2026-09-09T04:45:00.5417243Z PKG_CONFIG='pkg-config'
+2026-09-09T04:45:00.5417549Z 
+2026-09-09T04:45:00.5418061Z ##[endgroup]
+2026-09-09T04:45:00.5670257Z ##[group]Run go test ./...
+2026-09-09T04:45:00.5670646Z [36;1mgo test ./...[0m
+2026-09-09T04:45:00.5720453Z shell: /usr/bin/bash -e {0}
+2026-09-09T04:45:00.5720800Z env:
+2026-09-09T04:45:00.5721040Z   GOTOOLCHAIN: local
+2026-09-09T04:45:00.5721291Z ##[endgroup]
+2026-09-09T04:45:00.7635820Z go: downloading github.com/google/uuid v1.6.0
+2026-09-09T04:45:00.7810539Z go: downloading github.com/sigstore/sigstore-go v1.2.1
+2026-09-09T04:45:00.8410308Z go: downloading cloud.google.com/go/auth v0.23.2
+2026-09-09T04:45:00.8708830Z go: downloading cloud.google.com/go/secretmanager v1.21.0
+2026-09-09T04:45:00.9043234Z go: downloading cloud.google.com/go v0.123.0
+2026-09-09T04:45:00.9623425Z go: downloading github.com/Azure/azure-sdk-for-go/sdk/azcore v1.23.1
+2026-09-09T04:45:00.9624982Z go: downloading github.com/Azure/azure-sdk-for-go/sdk/azidentity v1.14.1
+2026-09-09T04:45:00.9626293Z go: downloading github.com/Azure/azure-sdk-for-go/sdk/security/keyvault/azsecrets v1.5.0
+2026-09-09T04:45:00.9980210Z go: downloading github.com/aws/aws-sdk-go-v2 v1.46.0
+2026-09-09T04:45:01.0300215Z go: downloading github.com/aws/aws-sdk-go-v2/config v1.33.2
+2026-09-09T04:45:01.0482514Z go: downloading github.com/aws/aws-sdk-go-v2/service/secretsmanager v1.48.0
+2026-09-09T04:45:01.0555876Z go: downloading github.com/aws/smithy-go v1.28.1
+2026-09-09T04:45:01.1644303Z go: downloading github.com/hashicorp/vault/api v1.23.0
+2026-09-09T04:45:01.1659476Z go: downloading github.com/openbao/openbao/api/v2 v2.6.0
+2026-09-09T04:45:01.1660278Z go: downloading google.golang.org/grpc v1.83.2
+2026-09-09T04:45:01.2440150Z go: downloading github.com/spf13/pflag v1.0.10
+2026-09-09T04:45:01.2798014Z go: downloading github.com/google/go-cmp v0.7.0
+2026-09-09T04:45:01.2980215Z go: downloading github.com/spf13/cobra v1.10.2
+2026-09-09T04:45:01.3143476Z go: downloading github.com/joho/godotenv v1.5.1
+2026-09-09T04:45:01.3364453Z go: downloading github.com/spf13/viper v1.21.0
+2026-09-09T04:45:01.3389679Z go: downloading github.com/olekukonko/tablewriter v1.1.4
+2026-09-09T04:45:01.3936196Z go: downloading golang.org/x/text v0.41.0
+2026-09-09T04:45:01.5718748Z go: downloading google.golang.org/genai v1.68.0
+2026-09-09T04:45:01.5719773Z go: downloading github.com/stretchr/testify v1.12.1
+2026-09-09T04:45:01.6245400Z go: downloading github.com/patrickmn/go-cache v2.1.0+incompatible
+2026-09-09T04:45:01.6496021Z go: downloading github.com/aws/aws-sdk-go-v2/service/s3 v1.111.0
+2026-09-09T04:45:01.7305705Z go: downloading github.com/in-toto/attestation v1.2.0
+2026-09-09T04:45:01.8359985Z go: downloading github.com/secure-systems-lab/go-securesystemslib v0.11.0
+2026-09-09T04:45:01.8480416Z go: downloading github.com/sigstore/protobuf-specs v0.5.1
+2026-09-09T04:45:01.9201192Z go: downloading golang.org/x/mod v0.40.0
+2026-09-09T04:45:01.9202243Z go: downloading google.golang.org/protobuf v1.36.11
+2026-09-09T04:45:01.9733652Z go: downloading github.com/sigstore/sigstore v1.10.8
+2026-09-09T04:45:02.0344527Z go: downloading github.com/sigstore/timestamp-authority/v2 v2.1.3
+2026-09-09T04:45:02.0470536Z go: downloading github.com/google/certificate-transparency-go v1.3.3
+2026-09-09T04:45:02.2100228Z go: downloading github.com/sigstore/rekor-tiles/v2 v2.2.2-0.20260601073857-5d098a2b6443
+2026-09-09T04:45:02.2629289Z go: downloading github.com/googleapis/gax-go/v2 v2.23.0
+2026-09-09T04:45:02.2649513Z go: downloading cloud.google.com/go/iam v1.11.0
+2026-09-09T04:45:02.2984106Z go: downloading google.golang.org/api v0.292.0
+2026-09-09T04:45:05.4682977Z go: downloading google.golang.org/genproto v0.0.0-20260319201613-d00831a3d3e7
+2026-09-09T04:45:05.4684469Z go: downloading google.golang.org/genproto/googleapis/rpc v0.0.0-20260807164820-c8921c73eeea
+2026-09-09T04:45:05.4685831Z go: downloading cloud.google.com/go/compute/metadata v0.9.0
+2026-09-09T04:45:05.4686996Z go: downloading google.golang.org/genproto/googleapis/api v0.0.0-20260630182238-925bb5da69e7
+2026-09-09T04:45:05.4974251Z go: downloading github.com/Azure/azure-sdk-for-go/sdk/security/keyvault/internal v1.2.0
+2026-09-09T04:45:05.5172363Z go: downloading github.com/Azure/azure-sdk-for-go/sdk/internal v1.12.0
+2026-09-09T04:45:05.5485119Z go: downloading github.com/AzureAD/microsoft-authentication-library-for-go v1.8.0
+2026-09-09T04:45:05.5934508Z go: downloading golang.org/x/crypto v0.55.0
+2026-09-09T04:45:05.7460441Z go: downloading github.com/aws/aws-sdk-go-v2/credentials v1.20.2
+2026-09-09T04:45:05.7733758Z go: downloading github.com/aws/aws-sdk-go-v2/feature/ec2/imds v1.19.1
+2026-09-09T04:45:05.7933884Z go: downloading github.com/aws/aws-sdk-go-v2/service/signin v1.8.0
+2026-09-09T04:45:05.8176041Z go: downloading github.com/aws/aws-sdk-go-v2/service/sso v1.36.0
+2026-09-09T04:45:05.8388075Z go: downloading github.com/aws/aws-sdk-go-v2/service/ssooidc v1.41.0
+2026-09-09T04:45:05.8629591Z go: downloading github.com/aws/aws-sdk-go-v2/service/sts v1.48.0
+2026-09-09T04:45:05.8900436Z go: downloading github.com/aws/aws-sdk-go-v2/internal/configsources v1.5.2
+2026-09-09T04:45:05.9091128Z go: downloading github.com/cenkalti/backoff/v5 v5.0.3
+2026-09-09T04:45:05.9254625Z go: downloading github.com/go-jose/go-jose/v4 v4.1.4
+2026-09-09T04:45:05.9641063Z go: downloading github.com/go-viper/mapstructure/v2 v2.5.0
+2026-09-09T04:45:05.9871545Z go: downloading github.com/hashicorp/go-cleanhttp v0.5.2
+2026-09-09T04:45:06.0028221Z go: downloading github.com/hashicorp/go-multierror v1.1.1
+2026-09-09T04:45:06.0208691Z go: downloading github.com/hashicorp/go-retryablehttp v0.7.8
+2026-09-09T04:45:06.0388186Z go: downloading github.com/hashicorp/go-secure-stdlib/parseutil v0.2.0
+2026-09-09T04:45:06.0536475Z go: downloading github.com/hashicorp/hcl v1.0.1-vault-7
+2026-09-09T04:45:06.0900257Z go: downloading golang.org/x/net v0.58.0
+2026-09-09T04:45:06.0901343Z go: downloading golang.org/x/time v0.15.0
+2026-09-09T04:45:06.0905201Z go: downloading github.com/cenkalti/backoff/v4 v4.3.0
+2026-09-09T04:45:06.0910589Z go: downloading github.com/hashicorp/errwrap v1.1.0
+2026-09-09T04:45:06.1107701Z go: downloading github.com/hashicorp/go-rootcerts v1.0.2
+2026-09-09T04:45:06.1108972Z go: downloading github.com/hashicorp/go-secure-stdlib/strutil v0.1.2
+2026-09-09T04:45:06.1110178Z go: downloading github.com/mitchellh/mapstructure v1.5.0
+2026-09-09T04:45:06.1338020Z go: downloading github.com/cpuguy83/go-md2man/v2 v2.0.7
+2026-09-09T04:45:06.1338881Z go: downloading go.yaml.in/yaml/v3 v3.0.5
+2026-09-09T04:45:06.1359145Z go: downloading github.com/fsnotify/fsnotify v1.10.1
+2026-09-09T04:45:06.1515892Z go: downloading github.com/sagikazarmark/locafero v0.11.0
+2026-09-09T04:45:06.1616246Z go: downloading github.com/spf13/afero v1.15.0
+2026-09-09T04:45:06.1717424Z go: downloading github.com/spf13/cast v1.10.0
+2026-09-09T04:45:06.1769314Z go: downloading github.com/mattn/go-runewidth v0.0.19
+2026-09-09T04:45:06.1969791Z go: downloading github.com/olekukonko/errors v1.2.0
+2026-09-09T04:45:06.1974978Z go: downloading github.com/olekukonko/ll v0.1.6
+2026-09-09T04:45:06.2341833Z go: downloading github.com/gorilla/websocket v1.5.3
+2026-09-09T04:45:06.2488714Z go: downloading github.com/aws/aws-sdk-go-v2/aws/protocol/eventstream v1.7.20
+2026-09-09T04:45:06.2595879Z go: downloading github.com/aws/aws-sdk-go-v2/internal/v4a v1.5.2
+2026-09-09T04:45:06.2691486Z go: downloading github.com/aws/aws-sdk-go-v2/service/internal/accept-encoding v1.13.19
+2026-09-09T04:45:06.2704934Z go: downloading github.com/aws/aws-sdk-go-v2/service/internal/checksum v1.11.2
+2026-09-09T04:45:06.2812030Z go: downloading github.com/aws/aws-sdk-go-v2/service/internal/presigned-url v1.14.2
+2026-09-09T04:45:06.2859287Z go: downloading github.com/aws/aws-sdk-go-v2/service/internal/s3shared v1.20.2
+2026-09-09T04:45:06.2975282Z go: downloading github.com/cyberphone/json-canonicalization v0.0.0-20241213102144-19d51d7fe467
+2026-09-09T04:45:06.3049589Z go: downloading github.com/go-openapi/runtime v0.33.0
+2026-09-09T04:45:06.3050413Z go: downloading github.com/go-openapi/strfmt v0.27.0
+2026-09-09T04:45:06.3310035Z go: downloading github.com/go-openapi/swag/conv v0.27.3
+2026-09-09T04:45:06.3397273Z go: downloading github.com/sigstore/rekor v1.5.3
+2026-09-09T04:45:06.3412407Z go: downloading github.com/go-openapi/swag v0.26.1
+2026-09-09T04:45:06.4707792Z go: downloading github.com/theupdateframework/go-tuf/v2 v2.4.2
+2026-09-09T04:45:06.4709471Z go: downloading github.com/google/go-containerregistry v0.21.7
+2026-09-09T04:45:06.5067970Z go: downloading github.com/digitorus/pkcs7 v0.0.0-20230818184609-3a137a874352
+2026-09-09T04:45:06.5069464Z go: downloading github.com/digitorus/timestamp v0.0.0-20231217203849-220c5c2851b7
+2026-09-09T04:45:06.5070416Z go: downloading github.com/pkg/errors v0.9.1
+2026-09-09T04:45:06.5271996Z go: downloading github.com/transparency-dev/merkle v0.0.2
+2026-09-09T04:45:06.5285633Z go: downloading github.com/grpc-ecosystem/grpc-gateway/v2 v2.29.0
+2026-09-09T04:45:06.6283490Z go: downloading github.com/youmark/pkcs8 v0.0.0-20240726163527-a2c0da244d78
+2026-09-09T04:45:06.6459512Z go: downloading golang.org/x/term v0.45.0
+2026-09-09T04:45:06.6649180Z go: downloading github.com/transparency-dev/formats v0.1.1
+2026-09-09T04:45:06.6681624Z go: downloading go.opentelemetry.io/otel v1.45.0
+2026-09-09T04:45:06.6682661Z go: downloading go.opentelemetry.io/otel/metric v1.45.0
+2026-09-09T04:45:06.6895205Z go: downloading cloud.google.com/go/auth/oauth2adapt v0.2.8
+2026-09-09T04:45:06.7064942Z go: downloading go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc v0.67.0
+2026-09-09T04:45:06.7285096Z go: downloading golang.org/x/oauth2 v0.36.0
+2026-09-09T04:45:06.7659472Z go: downloading go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp v0.70.0
+2026-09-09T04:45:06.7907272Z go: downloading github.com/googleapis/enterprise-certificate-proxy v0.3.20
+2026-09-09T04:45:06.8181542Z go: downloading github.com/kylelemons/godebug v1.1.0
+2026-09-09T04:45:06.8372796Z go: downloading github.com/pkg/browser v0.0.0-20240102092130-5ac0b6a4141c
+2026-09-09T04:45:06.8596281Z go: downloading github.com/aws/aws-sdk-go-v2/internal/endpoints/v2 v2.8.2
+2026-09-09T04:45:06.8761008Z go: downloading github.com/hashicorp/go-sockaddr v1.0.7
+2026-09-09T04:45:06.9083612Z go: downloading github.com/ryanuber/go-glob v1.0.0
+2026-09-09T04:45:06.9253065Z go: downloading github.com/russross/blackfriday/v2 v2.1.0
+2026-09-09T04:45:06.9535184Z go: downloading github.com/sourcegraph/conc v0.3.1-0.20240121214520-5f936abd7ae8
+2026-09-09T04:45:06.9737120Z go: downloading github.com/subosito/gotenv v1.6.0
+2026-09-09T04:45:06.9917073Z go: downloading github.com/pelletier/go-toml/v2 v2.2.4
+2026-09-09T04:45:07.0168071Z go: downloading github.com/clipperhouse/uax29/v2 v2.6.0
+2026-09-09T04:45:07.0199744Z go: downloading github.com/clipperhouse/displaywidth v0.10.0
+2026-09-09T04:45:07.0200424Z go: downloading github.com/fatih/color v1.19.0
+2026-09-09T04:45:07.0329509Z go: downloading go.opentelemetry.io/otel/trace v1.45.0
+2026-09-09T04:45:07.0366801Z go: downloading github.com/olekukonko/cat v0.0.0-20250911104152-50322a0618f6
+2026-09-09T04:45:07.0396384Z go: downloading github.com/cespare/xxhash/v2 v2.3.0
+2026-09-09T04:45:07.0591862Z go: downloading github.com/go-openapi/errors v0.22.8
+2026-09-09T04:45:07.0592841Z go: downloading github.com/oklog/ulid/v2 v2.1.1
+2026-09-09T04:45:07.0598328Z go: downloading github.com/go-openapi/swag/fileutils v0.27.3
+2026-09-09T04:45:07.0603618Z go: downloading github.com/go-openapi/swag/jsonutils v0.27.3
+2026-09-09T04:45:07.0775723Z go: downloading github.com/go-openapi/swag/stringutils v0.27.3
+2026-09-09T04:45:07.0776495Z go: downloading golang.org/x/sync v0.22.0
+2026-09-09T04:45:07.0835069Z go: downloading github.com/go-openapi/validate v0.26.1
+2026-09-09T04:45:07.0867090Z go: downloading github.com/in-toto/in-toto-golang v0.11.0
+2026-09-09T04:45:07.0951240Z go: downloading github.com/blang/semver v3.5.1+incompatible
+2026-09-09T04:45:07.0964816Z go: downloading k8s.io/klog/v2 v2.140.0
+2026-09-09T04:45:07.1134892Z go: downloading github.com/opencontainers/go-digest v1.0.0
+2026-09-09T04:45:07.1339580Z go: downloading github.com/google/s2a-go v0.1.9
+2026-09-09T04:45:07.1385433Z go: downloading github.com/felixge/httpsnoop v1.1.0
+2026-09-09T04:45:07.1689848Z go: downloading github.com/golang-jwt/jwt/v5 v5.3.1
+2026-09-09T04:45:07.1717808Z go: downloading github.com/go-logr/logr v1.4.4
+2026-09-09T04:45:07.2036353Z go: downloading github.com/go-openapi/swag/typeutils v0.27.3
+2026-09-09T04:45:07.2037399Z go: downloading github.com/go-openapi/swag/cmdutils v0.27.0
+2026-09-09T04:45:07.2038808Z go: downloading github.com/go-openapi/swag/jsonname v0.26.1
+2026-09-09T04:45:07.2050162Z go: downloading github.com/go-openapi/swag/loading v0.27.3
+2026-09-09T04:45:07.2194103Z go: downloading github.com/go-openapi/swag/mangling v0.27.3
+2026-09-09T04:45:07.2194909Z go: downloading github.com/go-openapi/swag/netutils v0.27.0
+2026-09-09T04:45:07.2211208Z go: downloading github.com/go-openapi/swag/yamlutils v0.27.3
+2026-09-09T04:45:07.2247111Z go: downloading github.com/asaskevich/govalidator v0.0.0-20230301143203-a9d515a09cc2
+2026-09-09T04:45:07.2354333Z go: downloading github.com/shibumi/go-pathspec v1.3.0
+2026-09-09T04:45:07.2370750Z go: downloading github.com/go-openapi/analysis v0.25.5
+2026-09-09T04:45:07.2380855Z go: downloading github.com/go-openapi/jsonpointer v1.0.0
+2026-09-09T04:45:07.2489831Z go: downloading github.com/go-openapi/loads v0.25.0
+2026-09-09T04:45:07.2512500Z go: downloading github.com/go-openapi/spec v0.22.9
+2026-09-09T04:45:07.2669838Z go: downloading github.com/go-logr/stdr v1.2.2
+2026-09-09T04:45:07.2839196Z go: downloading go.opentelemetry.io/auto/sdk v1.2.1
+2026-09-09T04:45:07.3007614Z go: downloading github.com/go-openapi/runtime/server-middleware v0.30.0
+2026-09-09T04:45:07.3054470Z go: downloading github.com/go-openapi/swag/pools v0.27.3
+2026-09-09T04:45:07.3232527Z go: downloading github.com/go-openapi/jsonreference v1.0.0
+2026-09-09T04:51:57.5901588Z ok  	github.com/agentstation/starmap	367.548s
+2026-09-09T04:51:57.5923981Z ok  	github.com/agentstation/starmap/acquisition	194.613s
+2026-09-09T04:51:57.5925071Z ?   	github.com/agentstation/starmap/cmd/starmap	[no test files]
+2026-09-09T04:51:57.5959331Z ok  	github.com/agentstation/starmap/cmd/starmap-bootstrap-manifest	58.868s
+2026-09-09T04:51:57.5987645Z ok  	github.com/agentstation/starmap/cmd/starmap-catalog-release	0.116s
+2026-09-09T04:51:57.5988800Z ok  	github.com/agentstation/starmap/cmd/starmap-embedded-budget	10.129s
+2026-09-09T04:51:57.5989730Z ok  	github.com/agentstation/starmap/cmd/starmap-modelsdev-promote	1.151s
+2026-09-09T04:51:57.5990600Z ok  	github.com/agentstation/starmap/cmd/starmap-openapi-presence	0.022s
+2026-09-09T04:51:57.5991413Z ok  	github.com/agentstation/starmap/internal/architecture	0.168s
+2026-09-09T04:51:57.5992183Z ok  	github.com/agentstation/starmap/internal/attestation	0.062s
+2026-09-09T04:51:57.5992889Z ok  	github.com/agentstation/starmap/internal/auth	0.235s
+2026-09-09T04:51:57.5993588Z ok  	github.com/agentstation/starmap/internal/bootstrap	130.304s
+2026-09-09T04:51:57.5994342Z ok  	github.com/agentstation/starmap/internal/bootstrap/budget	16.455s
+2026-09-09T04:51:57.5995189Z ok  	github.com/agentstation/starmap/internal/bootstrap/manifest	0.008s
+2026-09-09T04:51:57.5996003Z ok  	github.com/agentstation/starmap/internal/catalog/pipeline	6.706s
+2026-09-09T04:51:57.5996788Z ok  	github.com/agentstation/starmap/internal/catalog/query	0.009s
+2026-09-09T04:51:57.5997583Z ok  	github.com/agentstation/starmap/internal/catalog/reconciler	0.703s
+2026-09-09T04:51:57.5998545Z ok  	github.com/agentstation/starmap/internal/catalog/settings	7.829s
+2026-09-09T04:51:57.5999355Z ok  	github.com/agentstation/starmap/internal/catalog/workspace	13.613s
+2026-09-09T04:51:57.6000136Z ok  	github.com/agentstation/starmap/internal/ciworkflow	0.139s
+2026-09-09T04:51:57.6000922Z ?   	github.com/agentstation/starmap/internal/cli/alerts	[no test files]
+2026-09-09T04:51:57.6001676Z ok  	github.com/agentstation/starmap/internal/cli/app	95.331s
+2026-09-09T04:51:57.6002486Z ?   	github.com/agentstation/starmap/internal/cli/commands/auth	[no test files]
+2026-09-09T04:51:57.6003842Z ?   	github.com/agentstation/starmap/internal/cli/commands/authors	[no test files]
+2026-09-09T04:51:57.6004820Z ?   	github.com/agentstation/starmap/internal/cli/commands/completion	[no test files]
+2026-09-09T04:51:57.6005722Z ok  	github.com/agentstation/starmap/internal/cli/commands/config	0.024s
+2026-09-09T04:51:57.6006556Z ok  	github.com/agentstation/starmap/internal/cli/commands/deps	6.350s
+2026-09-09T04:51:57.6007377Z ok  	github.com/agentstation/starmap/internal/cli/commands/embed	0.020s
+2026-09-09T04:51:57.6008196Z ok  	github.com/agentstation/starmap/internal/cli/commands/migrate	0.032s
+2026-09-09T04:51:57.6009351Z ok  	github.com/agentstation/starmap/internal/cli/commands/models	0.011s
+2026-09-09T04:51:57.6010210Z ok  	github.com/agentstation/starmap/internal/cli/commands/providers	0.045s
+2026-09-09T04:51:57.6011055Z ok  	github.com/agentstation/starmap/internal/cli/commands/serve	0.033s
+2026-09-09T04:51:57.6011860Z ok  	github.com/agentstation/starmap/internal/cli/commands/update	0.056s
+2026-09-09T04:51:57.6012703Z ok  	github.com/agentstation/starmap/internal/cli/commands/validate	0.013s
+2026-09-09T04:51:57.6013574Z ?   	github.com/agentstation/starmap/internal/cli/completion	[no test files]
+2026-09-09T04:51:57.6014431Z ?   	github.com/agentstation/starmap/internal/cli/constants	[no test files]
+2026-09-09T04:51:57.6015236Z ok  	github.com/agentstation/starmap/internal/cli/convert	0.006s
+2026-09-09T04:51:57.6016225Z ok  	github.com/agentstation/starmap/internal/cli/embed	0.003s
+2026-09-09T04:51:57.6016968Z ?   	github.com/agentstation/starmap/internal/cli/emoji	[no test files]
+2026-09-09T04:51:57.6017781Z ?   	github.com/agentstation/starmap/internal/cli/filter	[no test files]
+2026-09-09T04:51:57.6018745Z ?   	github.com/agentstation/starmap/internal/cli/format	[no test files]
+2026-09-09T04:51:57.6019566Z ?   	github.com/agentstation/starmap/internal/cli/globals	[no test files]
+2026-09-09T04:51:57.6020329Z ok  	github.com/agentstation/starmap/internal/cli/hints	0.011s
+2026-09-09T04:51:57.6021116Z ?   	github.com/agentstation/starmap/internal/cli/notify	[no test files]
+2026-09-09T04:51:57.6021959Z ?   	github.com/agentstation/starmap/internal/cli/provider	[no test files]
+2026-09-09T04:51:57.6022735Z ok  	github.com/agentstation/starmap/internal/cli/table	0.020s
+2026-09-09T04:51:57.6023504Z ?   	github.com/agentstation/starmap/internal/constants	[no test files]
+2026-09-09T04:51:57.6024331Z ok  	github.com/agentstation/starmap/internal/deploymentdocs	0.008s
+2026-09-09T04:51:57.6025090Z ?   	github.com/agentstation/starmap/internal/deps	[no test files]
+2026-09-09T04:51:57.6025821Z ok  	github.com/agentstation/starmap/internal/embedded	8.129s
+2026-09-09T04:51:57.6026622Z ?   	github.com/agentstation/starmap/internal/embedded/openapi	[no test files]
+2026-09-09T04:51:57.6027470Z ok  	github.com/agentstation/starmap/internal/filepublish	0.021s
+2026-09-09T04:51:57.6028167Z ok  	github.com/agentstation/starmap/internal/fleet	0.007s
+2026-09-09T04:51:57.6029015Z ok  	github.com/agentstation/starmap/internal/privatefiles	0.087s
+2026-09-09T04:51:57.6029809Z ok  	github.com/agentstation/starmap/internal/providers/anthropic	4.549s
+2026-09-09T04:51:57.6030650Z ok  	github.com/agentstation/starmap/internal/providers/clients	0.051s
+2026-09-09T04:51:57.6031470Z ok  	github.com/agentstation/starmap/internal/providers/google	0.018s
+2026-09-09T04:51:57.6032246Z ok  	github.com/agentstation/starmap/internal/providers/openai	4.411s
+2026-09-09T04:51:57.6033064Z ok  	github.com/agentstation/starmap/internal/runtimeacl/windows	0.005s
+2026-09-09T04:51:57.6033811Z ok  	github.com/agentstation/starmap/internal/server	138.420s
+2026-09-09T04:51:57.6034544Z ok  	github.com/agentstation/starmap/internal/server/cache	0.268s
+2026-09-09T04:51:57.6035303Z ok  	github.com/agentstation/starmap/internal/server/handlers	8.023s
+2026-09-09T04:51:57.6036095Z ok  	github.com/agentstation/starmap/internal/server/middleware	0.212s
+2026-09-09T04:51:57.6036901Z ok  	github.com/agentstation/starmap/internal/server/openrouter	7.653s
+2026-09-09T04:51:57.6037952Z ok  	github.com/agentstation/starmap/internal/server/operations	0.009s
+2026-09-09T04:51:57.6038892Z ok  	github.com/agentstation/starmap/internal/server/params	0.004s
+2026-09-09T04:51:57.6039807Z ok  	github.com/agentstation/starmap/internal/server/response	0.014s
+2026-09-09T04:51:57.6040553Z ok  	github.com/agentstation/starmap/internal/server/sse	0.023s
+2026-09-09T04:51:57.6041320Z ok  	github.com/agentstation/starmap/internal/sources/embedded	0.020s
+2026-09-09T04:51:57.6042082Z ok  	github.com/agentstation/starmap/internal/sources/github	0.200s
+2026-09-09T04:51:57.6042804Z ok  	github.com/agentstation/starmap/internal/sources/local	0.009s
+2026-09-09T04:51:57.6043595Z ok  	github.com/agentstation/starmap/internal/sources/modelsdev	22.853s
+2026-09-09T04:51:57.6044391Z ok  	github.com/agentstation/starmap/internal/sources/providers	0.073s
+2026-09-09T04:51:57.6045216Z ?   	github.com/agentstation/starmap/internal/test/catalog	[no test files]
+2026-09-09T04:51:57.6046048Z ?   	github.com/agentstation/starmap/internal/test/channel	[no test files]
+2026-09-09T04:51:57.6046889Z ?   	github.com/agentstation/starmap/internal/test/logging	[no test files]
+2026-09-09T04:51:57.6047708Z ok  	github.com/agentstation/starmap/internal/test/providerfixture	0.025s
+2026-09-09T04:51:57.6048618Z ok  	github.com/agentstation/starmap/internal/transport	0.147s
+2026-09-09T04:51:57.6049515Z ok  	github.com/agentstation/starmap/pkg/catalogs	54.701s
+2026-09-09T04:51:57.6050205Z ok  	github.com/agentstation/starmap/pkg/catalogs/artifact	0.071s
+2026-09-09T04:51:57.6053150Z ok  	github.com/agentstation/starmap/pkg/catalogs/authority	0.013s
+2026-09-09T04:51:57.6053931Z ok  	github.com/agentstation/starmap/pkg/catalogs/config	15.246s
+2026-09-09T04:51:57.6054679Z ok  	github.com/agentstation/starmap/pkg/catalogs/evidence	0.003s
+2026-09-09T04:51:57.6055590Z ?   	github.com/agentstation/starmap/pkg/catalogs/internal/resourcepolicy	[no test files]
+2026-09-09T04:51:57.6056523Z ok  	github.com/agentstation/starmap/pkg/catalogs/projection	0.003s
+2026-09-09T04:51:57.6057277Z ok  	github.com/agentstation/starmap/pkg/catalogs/remote	0.338s
+2026-09-09T04:51:57.6058008Z ok  	github.com/agentstation/starmap/pkg/catalogs/storage	0.626s
+2026-09-09T04:51:57.6058927Z ok  	github.com/agentstation/starmap/pkg/catalogs/storage/s3	0.083s
+2026-09-09T04:51:57.6059606Z ok  	github.com/agentstation/starmap/pkg/differ	0.012s
+2026-09-09T04:51:57.6060217Z ok  	github.com/agentstation/starmap/pkg/errors	0.009s
+2026-09-09T04:51:57.6060834Z ok  	github.com/agentstation/starmap/pkg/logging	0.004s
+2026-09-09T04:51:57.6061504Z ok  	github.com/agentstation/starmap/pkg/productpaths	0.012s
+2026-09-09T04:51:57.6062223Z ok  	github.com/agentstation/starmap/pkg/productpaths/policy	0.006s
+2026-09-09T04:51:57.6062940Z ok  	github.com/agentstation/starmap/pkg/provenance	0.006s
+2026-09-09T04:51:57.6063583Z ok  	github.com/agentstation/starmap/pkg/sources	0.015s
+2026-09-09T04:51:57.6064234Z ok  	github.com/agentstation/starmap/pkg/sources/payload	0.052s
+2026-09-09T04:51:57.6064891Z ok  	github.com/agentstation/starmap/pkg/sync	0.020s
+2026-09-09T04:51:57.6065500Z ok  	github.com/agentstation/starmap/remote	9.943s
+2026-09-09T04:54:28.9566503Z ok  	github.com/agentstation/starmap/runtime	169.086s
+2026-09-09T04:54:28.9567093Z ?   	github.com/agentstation/starmap/runtime/source	[no test files]
+2026-09-09T04:54:28.9567744Z ?   	github.com/agentstation/starmap/runtime/status	[no test files]
+2026-09-09T04:54:28.9568339Z ok  	github.com/agentstation/starmap/server	8.963s
+2026-09-09T04:54:29.2400904Z ##[group]Run make test-consumer-deps
+2026-09-09T04:54:29.2401266Z [36;1mmake test-consumer-deps[0m
+2026-09-09T04:54:29.2444092Z shell: /usr/bin/bash -e {0}
+2026-09-09T04:54:29.2444375Z env:
+2026-09-09T04:54:29.2444587Z   GOTOOLCHAIN: local
+2026-09-09T04:54:29.2444821Z   CGO_ENABLED: 0
+2026-09-09T04:54:29.2445034Z ##[endgroup]
+2026-09-09T04:54:29.2614844Z go: downloading go1.26.6 (linux/amd64)
+2026-09-09T04:54:47.1206050Z ok  	github.com/agentstation/starmap-test/read-only-consumer	2.268s
+2026-09-09T04:54:50.6017056Z ok  	github.com/agentstation/starmap-test/store-only-consumer	2.580s
+2026-09-09T04:54:55.7158019Z ok  	github.com/agentstation/starmap-test/pinned-artifact-consumer	4.441s
+2026-09-09T04:55:04.3224992Z ok  	github.com/agentstation/starmap-test/server-embed-consumer	2.327s
+2026-09-09T04:55:08.9084636Z ok  	github.com/agentstation/starmap-test/remote-subscriber-consumer	3.931s
+2026-09-09T04:55:24.2951636Z ok  	github.com/agentstation/starmap-test/server-storage-consumer	7.772s
+2026-09-09T04:55:24.8406051Z read-only consumer dependency closure: 34/34 non-standard packages (158 total on this platform); forbidden families absent
+2026-09-09T04:55:24.8407564Z store-only consumer: caller-owned adapter contract and publication passed; application/database implementations absent
+2026-09-09T04:55:24.8411581Z pinned-artifact consumer: 35/35 non-standard packages; offline verified activation passed; online/acquisition families absent
+2026-09-09T04:55:24.8412811Z server-embed consumer dependency closure: 251/260 packages; acquisition families absent
+2026-09-09T04:55:24.8413376Z server-embed consumer: external compile and lifecycle test passed
+2026-09-09T04:55:24.8413955Z remote-subscriber consumer dependency closure: 234/240 packages; forbidden families absent
+2026-09-09T04:55:24.8414563Z remote-subscriber consumer: external compile and reactive lifecycle test passed
+2026-09-09T04:55:24.8415617Z server-storage consumer dependency closure: 345/350 packages; filesystem/S3 server and reactive restart matrix passed
+2026-09-09T04:55:24.8501385Z ##[group]Run actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e
+2026-09-09T04:55:24.8501787Z with:
+2026-09-09T04:55:24.8501997Z   go-version: 1.26.6
+2026-09-09T04:55:24.8502220Z   cache: false
+2026-09-09T04:55:24.8502431Z   check-latest: false
+2026-09-09T04:55:24.8504867Z   token: ***
+2026-09-09T04:55:24.8505075Z env:
+2026-09-09T04:55:24.8505270Z   GOTOOLCHAIN: local
+2026-09-09T04:55:24.8505503Z ##[endgroup]
+2026-09-09T04:55:24.9650968Z Setup go version spec 1.26.6
+2026-09-09T04:55:24.9658625Z Attempting to download 1.26.6...
+2026-09-09T04:55:25.4199436Z matching 1.26.6...
+2026-09-09T04:55:25.4208037Z Acquiring 1.26.6 from https://github.com/actions/go-versions/releases/download/1.26.6-31764261251/go-1.26.6-linux-x64.tar.gz
+2026-09-09T04:55:25.8845851Z Extracting Go...
+2026-09-09T04:55:25.8981979Z [command]/usr/bin/tar xz --warning=no-unknown-keyword --overwrite -C /home/runner/work/_temp/1f697fc3-2412-4793-8326-5519d2677e9f -f /home/runner/work/_temp/930fcc0f-4588-4923-a029-fe8f9039f8ca
+2026-09-09T04:55:27.6426016Z Successfully extracted go to /home/runner/work/_temp/1f697fc3-2412-4793-8326-5519d2677e9f
+2026-09-09T04:55:27.6426785Z Adding to the cache ...
+2026-09-09T04:55:32.1712889Z Successfully cached go to /opt/hostedtoolcache/go/1.26.6/x64
+2026-09-09T04:55:32.1715154Z Added go to the path
+2026-09-09T04:55:32.1717858Z Successfully set up Go version 1.26.6
+2026-09-09T04:55:32.1948314Z go version go1.26.6 linux/amd64
+2026-09-09T04:55:32.1948839Z 
+2026-09-09T04:55:32.1953236Z ##[group]go env
+2026-09-09T04:55:32.2787201Z AR='ar'
+2026-09-09T04:55:32.2787558Z CC='gcc'
+2026-09-09T04:55:32.2787879Z CGO_CFLAGS='-O2 -g'
+2026-09-09T04:55:32.2788242Z CGO_CPPFLAGS=''
+2026-09-09T04:55:32.2788789Z CGO_CXXFLAGS='-O2 -g'
+2026-09-09T04:55:32.2789147Z CGO_ENABLED='1'
+2026-09-09T04:55:32.2789467Z CGO_FFLAGS='-O2 -g'
+2026-09-09T04:55:32.2789842Z CGO_LDFLAGS='-O2 -g'
+2026-09-09T04:55:32.2790166Z CXX='g++'
+2026-09-09T04:55:32.2790463Z GCCGO='gccgo'
+2026-09-09T04:55:32.2790766Z GO111MODULE=''
+2026-09-09T04:55:32.2791087Z GOAMD64='v1'
+2026-09-09T04:55:32.2791382Z GOARCH='amd64'
+2026-09-09T04:55:32.2791671Z GOAUTH='netrc'
+2026-09-09T04:55:32.2791867Z GOBIN=''
+2026-09-09T04:55:32.2792131Z GOCACHE='/home/runner/.cache/go-build'
+2026-09-09T04:55:32.2792421Z GOCACHEPROG=''
+2026-09-09T04:55:32.2792632Z GODEBUG=''
+2026-09-09T04:55:32.2792859Z GOENV='/home/runner/.config/go/env'
+2026-09-09T04:55:32.2793123Z GOEXE=''
+2026-09-09T04:55:32.2793321Z GOEXPERIMENT=''
+2026-09-09T04:55:32.2793566Z GOFIPS140='off'
+2026-09-09T04:55:32.2793775Z GOFLAGS=''
+2026-09-09T04:55:32.2794449Z GOGCCFLAGS='-fPIC -m64 -pthread -Wl,--no-gc-sections -fmessage-length=0 -ffile-prefix-map=/tmp/go-build1494929269=/tmp/go-build -gno-record-gcc-switches'
+2026-09-09T04:55:32.2795101Z GOHOSTARCH='amd64'
+2026-09-09T04:55:32.2795319Z GOHOSTOS='linux'
+2026-09-09T04:55:32.2795535Z GOINSECURE=''
+2026-09-09T04:55:32.2795801Z GOMOD='/home/runner/work/starmap/starmap/go.mod'
+2026-09-09T04:55:32.2796134Z GOMODCACHE='/home/runner/go/pkg/mod'
+2026-09-09T04:55:32.2796411Z GONOPROXY=''
+2026-09-09T04:55:32.2796617Z GONOSUMDB=''
+2026-09-09T04:55:32.2796809Z GOOS='linux'
+2026-09-09T04:55:32.2797056Z GOPATH='/home/runner/go'
+2026-09-09T04:55:32.2797291Z GOPRIVATE=''
+2026-09-09T04:55:32.2797553Z GOPROXY='https://proxy.golang.org,direct'
+2026-09-09T04:55:32.2797890Z GOROOT='/opt/hostedtoolcache/go/1.26.6/x64'
+2026-09-09T04:55:32.2798192Z GOSUMDB='sum.golang.org'
+2026-09-09T04:55:32.2798625Z GOTELEMETRY='local'
+2026-09-09T04:55:32.2798920Z GOTELEMETRYDIR='/home/runner/.config/go/telemetry'
+2026-09-09T04:55:32.2799241Z GOTMPDIR=''
+2026-09-09T04:55:32.2799443Z GOTOOLCHAIN='local'
+2026-09-09T04:55:32.2799771Z GOTOOLDIR='/opt/hostedtoolcache/go/1.26.6/x64/pkg/tool/linux_amd64'
+2026-09-09T04:55:32.2800126Z GOVCS=''
+2026-09-09T04:55:32.2800331Z GOVERSION='go1.26.6'
+2026-09-09T04:55:32.2800549Z GOWORK=''
+2026-09-09T04:55:32.2801068Z PKG_CONFIG='pkg-config'
+2026-09-09T04:55:32.2801219Z 
+2026-09-09T04:55:32.2801606Z ##[endgroup]
+2026-09-09T04:55:32.2989430Z ##[group]Run go install github.com/golangci/golangci-lint/v2/cmd/golangci-lint@v2.12.2
+2026-09-09T04:55:32.2990237Z [36;1mgo install github.com/golangci/golangci-lint/v2/cmd/golangci-lint@v2.12.2[0m
+2026-09-09T04:55:32.2990944Z [36;1mgo install github.com/princjef/gomarkdoc/cmd/gomarkdoc@v1.1.0[0m
+2026-09-09T04:55:32.3031921Z shell: /usr/bin/bash -e {0}
+2026-09-09T04:55:32.3032434Z env:
+2026-09-09T04:55:32.3092462Z   GOTOOLCHAIN: local
+2026-09-09T04:55:32.3092787Z ##[endgroup]
+2026-09-09T04:55:32.3581851Z go: downloading github.com/golangci/golangci-lint/v2 v2.12.2
+2026-09-09T04:55:32.8524631Z go: downloading charm.land/lipgloss/v2 v2.0.3
+2026-09-09T04:55:32.8589735Z go: downloading github.com/ldez/grignotin v0.10.1
+2026-09-09T04:55:32.8798165Z go: downloading github.com/pelletier/go-toml/v2 v2.3.1
+2026-09-09T04:55:32.8852486Z go: downloading github.com/santhosh-tekuri/jsonschema/v6 v6.0.2
+2026-09-09T04:55:32.9358923Z go: downloading github.com/spf13/viper v1.12.0
+2026-09-09T04:55:32.9421904Z go: downloading go.yaml.in/yaml/v3 v3.0.4
+2026-09-09T04:55:32.9491589Z go: downloading github.com/pelletier/go-toml v1.9.5
+2026-09-09T04:55:32.9596242Z go: downloading golang.org/x/mod v0.35.0
+2026-09-09T04:55:33.0329806Z go: downloading golang.org/x/tools v0.44.0
+2026-09-09T04:55:33.0350763Z go: downloading github.com/hashicorp/go-version v1.9.0
+2026-09-09T04:55:33.0352152Z go: downloading github.com/mitchellh/go-homedir v1.1.0
+2026-09-09T04:55:33.0608129Z go: downloading github.com/alecthomas/chroma/v2 v2.24.1
+2026-09-09T04:55:33.0793110Z go: downloading github.com/rogpeppe/go-internal v1.14.1
+2026-09-09T04:55:33.1700756Z go: downloading github.com/golangci/plugin-module-register v0.1.2
+2026-09-09T04:55:33.2242551Z go: downloading github.com/mattn/go-colorable v0.1.14
+2026-09-09T04:55:33.2710209Z go: downloading github.com/sirupsen/logrus v1.9.4
+2026-09-09T04:55:33.2893571Z go: downloading github.com/stretchr/testify v1.11.1
+2026-09-09T04:55:33.3206269Z go: downloading github.com/go-xmlfmt/xmlfmt v1.1.3
+2026-09-09T04:55:33.3518060Z go: downloading github.com/golangci/revgrep v0.8.0
+2026-09-09T04:55:33.3540994Z go: downloading github.com/mattn/go-isatty v0.0.20
+2026-09-09T04:55:33.3942165Z go: downloading golang.org/x/sys v0.43.0
+2026-09-09T04:55:33.3966094Z go: downloading github.com/charmbracelet/colorprofile v0.4.3
+2026-09-09T04:55:33.4344452Z go: downloading github.com/charmbracelet/ultraviolet v0.0.0-20251205161215-1948445e3318
+2026-09-09T04:55:33.4371978Z go: downloading github.com/charmbracelet/x/ansi v0.11.7
+2026-09-09T04:55:33.4372647Z go: downloading github.com/charmbracelet/x/term v0.2.2
+2026-09-09T04:55:33.4726320Z go: downloading github.com/clipperhouse/displaywidth v0.11.0
+2026-09-09T04:55:33.4906378Z go: downloading github.com/lucasb-eyer/go-colorful v1.4.0
+2026-09-09T04:55:33.4934941Z go: downloading github.com/rivo/uniseg v0.4.7
+2026-09-09T04:55:33.5149583Z go: downloading golang.org/x/text v0.36.0
+2026-09-09T04:55:33.6179657Z go: downloading github.com/fsnotify/fsnotify v1.5.4
+2026-09-09T04:55:33.6556898Z go: downloading github.com/spf13/cast v1.5.0
+2026-09-09T04:55:33.6639439Z go: downloading github.com/spf13/jwalterweatherman v1.1.0
+2026-09-09T04:55:33.7050403Z go: downloading golang.org/x/sync v0.20.0
+2026-09-09T04:55:33.7097424Z go: downloading github.com/daixiang0/gci v0.13.7
+2026-09-09T04:55:33.7564864Z go: downloading github.com/golangci/gofmt v0.0.0-20250106114630-d62b90e6713d
+2026-09-09T04:55:33.7565475Z go: downloading mvdan.cc/gofumpt v0.9.2
+2026-09-09T04:55:33.8043007Z go: downloading github.com/golangci/golines v0.15.0
+2026-09-09T04:55:33.8055639Z go: downloading github.com/sourcegraph/go-diff v0.8.0
+2026-09-09T04:55:33.8519987Z go: downloading github.com/golangci/swaggoswag v0.0.0-20250504205917-77f2aca3143e
+2026-09-09T04:55:33.8555832Z go: downloading go.augendre.info/arangolint v0.4.0
+2026-09-09T04:55:33.8889797Z go: downloading github.com/alingse/asasalint v0.0.11
+2026-09-09T04:55:33.8911973Z go: downloading github.com/golangci/asciicheck v0.5.0
+2026-09-09T04:55:33.9270448Z go: downloading github.com/breml/bidichk v0.3.3
+2026-09-09T04:55:33.9364329Z go: downloading github.com/timakin/bodyclose v0.0.0-20260129054331-73d1f95b84b4
+2026-09-09T04:55:33.9705573Z go: downloading github.com/lasiar/canonicalheader v1.1.2
+2026-09-09T04:55:33.9760965Z go: downloading github.com/ClickHouse/clickhouse-go-linter v1.2.0
+2026-09-09T04:55:33.9802266Z go: downloading github.com/sivchari/containedctx v1.0.3
+2026-09-09T04:55:34.0088133Z go: downloading github.com/kkHAIKE/contextcheck v1.1.6
+2026-09-09T04:55:34.0130514Z go: downloading github.com/karamaru-alpha/copyloopvar v1.2.2
+2026-09-09T04:55:34.0141933Z go: downloading github.com/bkielbasa/cyclop v1.2.3
+2026-09-09T04:55:34.0142616Z go: downloading gitlab.com/bosi/decorder v0.4.2
+2026-09-09T04:55:34.0422553Z go: downloading github.com/OpenPeeDeeP/depguard/v2 v2.2.1
+2026-09-09T04:55:34.0588058Z go: downloading github.com/golangci/dupl v0.0.0-20260401084720-c99c5cf5c202
+2026-09-09T04:55:34.0616968Z go: downloading github.com/Abirdcfly/dupword v0.1.7
+2026-09-09T04:55:34.0640793Z go: downloading github.com/charithe/durationcheck v0.0.11
+2026-09-09T04:55:34.1840447Z go: downloading github.com/manuelarte/embeddedstructfieldcheck v0.4.0
+2026-09-09T04:55:34.1866654Z go: downloading github.com/Djarvur/go-err113 v0.1.1
+2026-09-09T04:55:34.1867585Z go: downloading github.com/kisielk/errcheck v1.10.0
+2026-09-09T04:55:34.1877340Z go: downloading github.com/breml/errchkjson v0.4.1
+2026-09-09T04:55:34.2151709Z go: downloading github.com/Antonboom/errname v1.1.1
+2026-09-09T04:55:34.2238240Z go: downloading codeberg.org/polyfloyd/go-errorlint v1.9.0
+2026-09-09T04:55:34.2241862Z go: downloading github.com/nishanths/exhaustive v0.12.0
+2026-09-09T04:55:34.2574413Z go: downloading dev.gaijin.team/go/exhaustruct/v4 v4.0.0
+2026-09-09T04:55:34.2668909Z go: downloading github.com/ldez/exptostd v0.4.5
+2026-09-09T04:55:34.2743198Z go: downloading go.augendre.info/fatcontext v0.9.0
+2026-09-09T04:55:34.2969147Z go: downloading github.com/ashanbrown/forbidigo/v2 v2.3.1
+2026-09-09T04:55:34.3103892Z go: downloading github.com/gostaticanalysis/forcetypeassert v0.2.0
+2026-09-09T04:55:34.3194236Z go: downloading github.com/manuelarte/funcorder v0.6.0
+2026-09-09T04:55:34.3319337Z go: downloading github.com/ultraware/funlen v0.2.0
+2026-09-09T04:55:34.3437742Z go: downloading github.com/nunnatsa/ginkgolinter v0.23.0
+2026-09-09T04:55:34.3667522Z go: downloading 4d63.com/gocheckcompilerdirectives v1.3.0
+2026-09-09T04:55:34.3674786Z go: downloading 4d63.com/gochecknoglobals v0.2.2
+2026-09-09T04:55:34.3900009Z go: downloading github.com/alecthomas/go-check-sumtype v0.3.1
+2026-09-09T04:55:34.3901144Z go: downloading github.com/uudashr/gocognit v1.2.1
+2026-09-09T04:55:34.3985529Z go: downloading github.com/jgautheron/goconst v1.10.0
+2026-09-09T04:55:34.4033356Z go: downloading github.com/go-critic/go-critic v0.14.3
+2026-09-09T04:55:34.4354345Z go: downloading github.com/quasilyte/go-ruleguard/dsl v0.3.23
+2026-09-09T04:55:34.4454654Z go: downloading github.com/fzipp/gocyclo v0.6.0
+2026-09-09T04:55:34.4597320Z go: downloading github.com/quasilyte/go-ruleguard v0.4.5
+2026-09-09T04:55:34.4882944Z go: downloading github.com/godoc-lint/godoc-lint v0.11.2
+2026-09-09T04:55:34.5287446Z go: downloading github.com/tetafro/godot v1.5.6
+2026-09-09T04:55:34.5618603Z go: downloading github.com/matoous/godox v1.1.0
+2026-09-09T04:55:34.5619429Z go: downloading github.com/denis-tingaikin/go-header v0.5.0
+2026-09-09T04:55:34.5623015Z go: downloading github.com/ldez/gomoddirectives v0.8.0
+2026-09-09T04:55:34.5744197Z go: downloading github.com/Masterminds/semver/v3 v3.5.0
+2026-09-09T04:55:34.5957232Z go: downloading github.com/ryancurrah/gomodguard v1.4.1
+2026-09-09T04:55:34.6008869Z go: downloading github.com/ryancurrah/gomodguard/v2 v2.1.3
+2026-09-09T04:55:34.6037665Z go: downloading github.com/golangci/go-printf-func-name v0.1.1
+2026-09-09T04:55:34.6098902Z go: downloading github.com/securego/gosec/v2 v2.26.1
+2026-09-09T04:55:34.6957635Z go: downloading github.com/xen0n/gosmopolitan v1.3.0
+2026-09-09T04:55:34.6964479Z go: downloading github.com/leonklingele/grouper v1.1.2
+2026-09-09T04:55:34.6965494Z go: downloading github.com/uudashr/iface v1.4.2
+2026-09-09T04:55:34.7402505Z go: downloading github.com/julz/importas v0.2.0
+2026-09-09T04:55:34.7407006Z go: downloading github.com/macabu/inamedparam v0.2.0
+2026-09-09T04:55:34.7407521Z go: downloading github.com/gordonklaus/ineffassign v0.2.0
+2026-09-09T04:55:34.7408105Z go: downloading github.com/sashamelentyev/interfacebloat v1.1.0
+2026-09-09T04:55:34.7770457Z go: downloading github.com/ckaznocha/intrange v0.3.1
+2026-09-09T04:55:34.7777824Z go: downloading github.com/AdminBenni/iota-mixing v1.0.0
+2026-09-09T04:55:34.7791319Z go: downloading github.com/butuzov/ireturn v0.4.1
+2026-09-09T04:55:34.8144746Z go: downloading github.com/timonwong/loggercheck v0.11.0
+2026-09-09T04:55:34.8161299Z go: downloading github.com/yagipy/maintidx v1.0.0
+2026-09-09T04:55:34.8162084Z go: downloading github.com/ashanbrown/makezero/v2 v2.2.1
+2026-09-09T04:55:34.8162722Z go: downloading github.com/butuzov/mirror v1.3.0
+2026-09-09T04:55:34.8524708Z go: downloading github.com/golangci/misspell v0.8.0
+2026-09-09T04:55:34.8537886Z go: downloading github.com/tommy-muehle/go-mnd/v2 v2.5.1
+2026-09-09T04:55:34.8540383Z go: downloading go-simpler.org/musttag v0.14.0
+2026-09-09T04:55:34.8573027Z go: downloading github.com/alexkohler/nakedret/v2 v2.0.6
+2026-09-09T04:55:34.8934281Z go: downloading github.com/nakabonne/nestif v0.3.1
+2026-09-09T04:55:34.8992255Z go: downloading github.com/gostaticanalysis/nilerr v0.1.2
+2026-09-09T04:55:34.9184174Z go: downloading github.com/alingse/nilnesserr v0.2.0
+2026-09-09T04:55:34.9272926Z go: downloading github.com/Antonboom/nilnil v1.1.1
+2026-09-09T04:55:34.9280787Z go: downloading github.com/ssgreg/nlreturn/v2 v2.2.1
+2026-09-09T04:55:34.9362768Z go: downloading github.com/sonatard/noctx v0.5.1
+2026-09-09T04:55:34.9531967Z go: downloading github.com/AlwxSin/noinlineerr v1.0.5
+2026-09-09T04:55:34.9646288Z go: downloading github.com/firefart/nonamedreturns v1.0.6
+2026-09-09T04:55:34.9647843Z go: downloading github.com/stbenjam/no-sprintf-host-port v0.3.1
+2026-09-09T04:55:34.9737371Z go: downloading github.com/kunwardeep/paralleltest v1.0.15
+2026-09-09T04:55:34.9856551Z go: downloading github.com/catenacyber/perfsprint v0.10.1
+2026-09-09T04:55:34.9998278Z go: downloading github.com/alexkohler/prealloc v1.1.0
+2026-09-09T04:55:35.0042671Z go: downloading github.com/nishanths/predeclared v0.2.2
+2026-09-09T04:55:35.0137373Z go: downloading github.com/yeya24/promlinter v0.3.0
+2026-09-09T04:55:35.0317614Z go: downloading github.com/ghostiam/protogetter v0.3.20
+2026-09-09T04:55:35.0389313Z go: downloading github.com/curioswitch/go-reassign v0.3.0
+2026-09-09T04:55:35.0401388Z go: downloading github.com/raeperd/recvcheck v0.2.0
+2026-09-09T04:55:35.0739841Z go: downloading github.com/BurntSushi/toml v1.6.0
+2026-09-09T04:55:35.0820105Z go: downloading github.com/mgechev/revive v1.15.0
+2026-09-09T04:55:35.2083005Z go: downloading github.com/golangci/rowserrcheck v0.0.0-20260419091836-c5f79b8a11ba
+2026-09-09T04:55:35.2084313Z go: downloading go-simpler.org/sloglint v0.12.0
+2026-09-09T04:55:35.2085290Z go: downloading github.com/jjti/go-spancheck v0.6.5
+2026-09-09T04:55:35.2086264Z go: downloading github.com/ryanrolds/sqlclosecheck v0.6.0
+2026-09-09T04:55:35.2503337Z go: downloading honnef.co/go/tools v0.7.0
+2026-09-09T04:55:35.4761591Z go: downloading github.com/4meepo/tagalign v1.4.3
+2026-09-09T04:55:35.4767105Z go: downloading github.com/ldez/tagliatelle v0.7.2
+2026-09-09T04:55:35.4767784Z go: downloading github.com/maratori/testableexamples v1.0.1
+2026-09-09T04:55:35.4768379Z go: downloading github.com/Antonboom/testifylint v1.6.4
+2026-09-09T04:55:35.5121664Z go: downloading github.com/maratori/testpackage v1.1.2
+2026-09-09T04:55:35.5249018Z go: downloading github.com/kulti/thelper v0.7.1
+2026-09-09T04:55:35.5259621Z go: downloading github.com/moricho/tparallel v0.3.2
+2026-09-09T04:55:35.5374830Z go: downloading github.com/golangci/unconvert v0.0.0-20250410112200-a129a6e6413e
+2026-09-09T04:55:35.5492759Z go: downloading mvdan.cc/unparam v0.0.0-20251027182757-5beb8c8f8f15
+2026-09-09T04:55:35.5632968Z go: downloading github.com/MirrexOne/unqueryvet v1.5.4
+2026-09-09T04:55:35.5712184Z go: downloading github.com/sashamelentyev/usestdlibvars v1.29.0
+2026-09-09T04:55:35.5854088Z go: downloading github.com/ldez/usetesting v0.5.0
+2026-09-09T04:55:35.6155413Z go: downloading github.com/blizzy78/varnamelen v0.8.0
+2026-09-09T04:55:35.6265274Z go: downloading github.com/sanposhiho/wastedassign/v2 v2.1.0
+2026-09-09T04:55:35.6542130Z go: downloading github.com/ultraware/whitespace v0.2.0
+2026-09-09T04:55:35.6590117Z go: downloading github.com/tomarrell/wrapcheck/v2 v2.12.0
+2026-09-09T04:55:35.6893987Z go: downloading github.com/bombsimon/wsl/v4 v4.7.0
+2026-09-09T04:55:35.7139411Z go: downloading github.com/bombsimon/wsl/v5 v5.8.0
+2026-09-09T04:55:35.7376867Z go: downloading github.com/ykadowak/zerologlint v0.1.5
+2026-09-09T04:55:35.7662860Z go: downloading github.com/davecgh/go-spew v1.1.1
+2026-09-09T04:55:35.7807599Z go: downloading github.com/pmezard/go-difflib v1.0.0
+2026-09-09T04:55:35.8019213Z go: downloading github.com/stretchr/objx v0.5.2
+2026-09-09T04:55:35.8109317Z go: downloading github.com/xo/terminfo v0.0.0-20220910002029-abceb7e1c41e
+2026-09-09T04:55:35.8395060Z go: downloading github.com/charmbracelet/x/termios v0.1.1
+2026-09-09T04:55:35.8466636Z go: downloading github.com/charmbracelet/x/windows v0.2.2
+2026-09-09T04:55:35.8707243Z go: downloading github.com/muesli/cancelreader v0.2.2
+2026-09-09T04:55:35.8838864Z go: downloading github.com/clipperhouse/uax29/v2 v2.7.0
+2026-09-09T04:55:35.9137223Z go: downloading github.com/mattn/go-runewidth v0.0.23
+2026-09-09T04:55:35.9435384Z go: downloading github.com/subosito/gotenv v1.4.1
+2026-09-09T04:55:35.9559589Z go: downloading github.com/hashicorp/hcl v1.0.0
+2026-09-09T04:55:36.0190145Z go: downloading gopkg.in/ini.v1 v1.67.0
+2026-09-09T04:55:36.0191195Z go: downloading github.com/magiconair/properties v1.8.6
+2026-09-09T04:55:36.0617629Z go: downloading gopkg.in/yaml.v3 v3.0.1
+2026-09-09T04:55:36.0708937Z go: downloading go.uber.org/zap v1.27.0
+2026-09-09T04:55:36.1403165Z go: downloading github.com/hexops/gotextdiff v1.0.3
+2026-09-09T04:55:36.1762634Z go: downloading github.com/dave/dst v0.27.3
+2026-09-09T04:55:36.1822562Z go: downloading github.com/gostaticanalysis/analysisutil v0.7.1
+2026-09-09T04:55:36.1834773Z go: downloading github.com/go-toolsmith/astcast v1.1.0
+2026-09-09T04:55:36.2236646Z go: downloading github.com/gobwas/glob v0.2.3
+2026-09-09T04:55:36.2251167Z go: downloading dev.gaijin.team/go/golib v0.6.0
+2026-09-09T04:55:36.2275937Z go: downloading github.com/go-toolsmith/astfmt v1.1.0
+2026-09-09T04:55:36.2276820Z go: downloading github.com/go-toolsmith/astcopy v1.1.0
+2026-09-09T04:55:36.2521807Z go: downloading github.com/go-toolsmith/astequal v1.2.0
+2026-09-09T04:55:36.2526208Z go: downloading github.com/go-toolsmith/astp v1.1.0
+2026-09-09T04:55:36.2614611Z go: downloading github.com/go-toolsmith/strparse v1.1.0
+2026-09-09T04:55:36.2775094Z go: downloading github.com/go-toolsmith/typep v1.1.0
+2026-09-09T04:55:36.2859689Z go: downloading github.com/quasilyte/regex/syntax v0.0.0-20210819130434-b3f0c404a727
+2026-09-09T04:55:36.3004493Z go: downloading github.com/ccojocar/zxcvbn-go v1.0.4
+2026-09-09T04:55:36.3020871Z go: downloading github.com/gostaticanalysis/comment v1.5.0
+2026-09-09T04:55:36.3306722Z go: downloading github.com/prometheus/client_golang v1.12.1
+2026-09-09T04:55:36.3417281Z go: downloading github.com/prometheus/client_model v0.2.0
+2026-09-09T04:55:36.3814960Z go: downloading github.com/fatih/structtag v1.2.0
+2026-09-09T04:55:36.3847252Z go: downloading github.com/ettle/strcase v0.2.0
+2026-09-09T04:55:36.3983804Z go: downloading github.com/hashicorp/go-immutable-radix/v2 v2.1.0
+2026-09-09T04:55:36.3984850Z go: downloading github.com/alfatraining/structtag v1.0.0
+2026-09-09T04:55:36.4126026Z go: downloading github.com/dlclark/regexp2 v1.12.0
+2026-09-09T04:55:36.4391612Z go: downloading go.uber.org/multierr v1.10.0
+2026-09-09T04:55:36.4392847Z go: downloading github.com/ldez/structtags v0.6.1
+2026-09-09T04:55:36.4399582Z go: downloading golang.org/x/exp/typeparams v0.0.0-20260209203927-2842357ff358
+2026-09-09T04:55:36.4725141Z go: downloading golang.org/x/exp v0.0.0-20250620022241-b7579e27df2b
+2026-09-09T04:55:36.4750475Z go: downloading github.com/quasilyte/gogrep v0.5.0
+2026-09-09T04:55:36.5155342Z go: downloading github.com/quasilyte/stdinfo v0.0.0-20220114132959-f7386bf02567
+2026-09-09T04:55:36.5296094Z go: downloading codeberg.org/chavacava/garif v0.2.0
+2026-09-09T04:55:36.5506677Z go: downloading github.com/golang/protobuf v1.5.3
+2026-09-09T04:55:36.6091989Z go: downloading github.com/beorn7/perks v1.0.1
+2026-09-09T04:55:36.6166198Z go: downloading github.com/prometheus/common v0.32.1
+2026-09-09T04:55:36.6267959Z go: downloading github.com/prometheus/procfs v0.7.3
+2026-09-09T04:55:36.6426229Z go: downloading google.golang.org/protobuf v1.36.10
+2026-09-09T04:55:36.6679420Z go: downloading github.com/hashicorp/golang-lru/v2 v2.0.7
+2026-09-09T04:55:36.8696477Z go: downloading github.com/matttproud/golang_protobuf_extensions v1.0.1
+2026-09-09T04:56:20.4764001Z go: downloading github.com/princjef/gomarkdoc v1.1.0
+2026-09-09T04:56:20.8308324Z go: downloading github.com/princjef/termdiff v0.1.0
+2026-09-09T04:56:20.8309063Z go: downloading github.com/spf13/cobra v1.1.3
+2026-09-09T04:56:20.8309435Z go: downloading github.com/sergi/go-diff v1.3.1
+2026-09-09T04:56:20.8309791Z go: downloading github.com/spf13/viper v1.7.1
+2026-09-09T04:56:21.0359060Z go: downloading github.com/sirupsen/logrus v1.8.1
+2026-09-09T04:56:21.0405484Z go: downloading github.com/x-cray/logrus-prefixed-formatter v0.5.2
+2026-09-09T04:56:21.0723940Z go: downloading github.com/go-git/go-git/v5 v5.3.0
+2026-09-09T04:56:21.0832040Z go: downloading github.com/spf13/pflag v1.0.5
+2026-09-09T04:56:21.1518819Z go: downloading mvdan.cc/xurls/v2 v2.2.0
+2026-09-09T04:56:21.1636709Z go: downloading github.com/mgutz/ansi v0.0.0-20200706080929-d51e80ef957d
+2026-09-09T04:56:21.1838826Z go: downloading golang.org/x/crypto v0.0.0-20210513164829-c07d793c2f9a
+2026-09-09T04:56:21.2481163Z go: downloading github.com/fsnotify/fsnotify v1.4.9
+2026-09-09T04:56:21.2850318Z go: downloading github.com/magiconair/properties v1.8.5
+2026-09-09T04:56:21.3225585Z go: downloading github.com/mitchellh/mapstructure v1.4.1
+2026-09-09T04:56:21.3226570Z go: downloading github.com/pelletier/go-toml v1.9.1
+2026-09-09T04:56:21.3898242Z go: downloading github.com/spf13/afero v1.6.0
+2026-09-09T04:56:21.3962872Z go: downloading github.com/spf13/cast v1.3.1
+2026-09-09T04:56:21.4307818Z go: downloading github.com/subosito/gotenv v1.2.0
+2026-09-09T04:56:21.4360216Z go: downloading gopkg.in/ini.v1 v1.62.0
+2026-09-09T04:56:21.4641371Z go: downloading gopkg.in/yaml.v2 v2.4.0
+2026-09-09T04:56:21.4814588Z go: downloading golang.org/x/sys v0.0.0-20210514084401-e8d321eab015
+2026-09-09T04:56:21.4965011Z go: downloading github.com/logrusorgru/aurora/v4 v4.0.0
+2026-09-09T04:56:21.5002734Z go: downloading github.com/mattn/go-colorable v0.1.8
+2026-09-09T04:56:21.5286563Z go: downloading github.com/go-git/go-billy/v5 v5.3.1
+2026-09-09T04:56:21.6086868Z go: downloading github.com/imdario/mergo v0.3.12
+2026-09-09T04:56:21.6087673Z go: downloading golang.org/x/text v0.3.6
+2026-09-09T04:56:21.6901278Z go: downloading golang.org/x/term v0.0.0-20210503060354-a79de5458b56
+2026-09-09T04:56:21.7578952Z go: downloading github.com/mattn/go-isatty v0.0.12
+2026-09-09T04:56:21.7613391Z go: downloading github.com/emirpasic/gods v1.12.0
+2026-09-09T04:56:21.7902425Z go: downloading github.com/jbenet/go-context v0.0.0-20150711004518-d14ea06fba99
+2026-09-09T04:56:21.8183696Z go: downloading github.com/go-git/gcfg v1.5.0
+2026-09-09T04:56:21.8731653Z go: downloading github.com/kevinburke/ssh_config v1.1.0
+2026-09-09T04:56:21.8990812Z go: downloading github.com/xanzy/ssh-agent v0.3.0
+2026-09-09T04:56:21.9626647Z go: downloading golang.org/x/net v0.0.0-20210520170846-37e1c6afe023
+2026-09-09T04:56:22.1564123Z go: downloading gopkg.in/warnings.v0 v0.1.2
+2026-09-09T04:56:27.9085582Z ##[group]Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+2026-09-09T04:56:27.9085972Z with:
+2026-09-09T04:56:27.9086193Z   repository: agentstation/skills
+2026-09-09T04:56:27.9086488Z   ref: dc9948f59089426c7dd077e41469104ec788cf7f
+2026-09-09T04:56:27.9086796Z   path: .ci/agentstation-skills
+2026-09-09T04:56:27.9087066Z   persist-credentials: false
+2026-09-09T04:56:27.9089804Z   token: ***
+2026-09-09T04:56:27.9090023Z   ssh-strict: true
+2026-09-09T04:56:27.9090240Z   ssh-user: git
+2026-09-09T04:56:27.9090453Z   clean: true
+2026-09-09T04:56:27.9090678Z   sparse-checkout-cone-mode: true
+2026-09-09T04:56:27.9090950Z   fetch-depth: 1
+2026-09-09T04:56:27.9091162Z   fetch-tags: false
+2026-09-09T04:56:27.9091382Z   show-progress: true
+2026-09-09T04:56:27.9091599Z   lfs: false
+2026-09-09T04:56:27.9091798Z   submodules: false
+2026-09-09T04:56:27.9092014Z   set-safe-directory: true
+2026-09-09T04:56:27.9092295Z   allow-unsafe-pr-checkout: false
+2026-09-09T04:56:27.9092580Z env:
+2026-09-09T04:56:27.9092774Z   GOTOOLCHAIN: local
+2026-09-09T04:56:27.9092993Z ##[endgroup]
+2026-09-09T04:56:27.9957185Z Syncing repository: agentstation/skills
+2026-09-09T04:56:27.9964231Z ##[group]Getting Git version info
+2026-09-09T04:56:27.9965009Z Working directory is '/home/runner/work/starmap/starmap/.ci/agentstation-skills'
+2026-09-09T04:56:28.0009823Z [command]/usr/bin/git version
+2026-09-09T04:56:28.0052520Z git version 2.55.0
+2026-09-09T04:56:28.0071452Z ##[endgroup]
+2026-09-09T04:56:28.0081443Z Temporarily overriding HOME='/home/runner/work/_temp/58e5b53d-44ed-4c60-be4f-306ffa9f8422' before making global git config changes
+2026-09-09T04:56:28.0082852Z Adding repository directory to the temporary git global config as a safe directory
+2026-09-09T04:56:28.0086698Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/starmap/starmap/.ci/agentstation-skills
+2026-09-09T04:56:28.0123704Z ##[group]Determining repository object format
+2026-09-09T04:56:28.0125403Z ##[endgroup]
+2026-09-09T04:56:28.0126071Z ##[group]Initializing the repository
+2026-09-09T04:56:28.0129819Z [command]/usr/bin/git init /home/runner/work/starmap/starmap/.ci/agentstation-skills
+2026-09-09T04:56:28.0173762Z hint: Using 'master' as the name for the initial branch. This default branch name
+2026-09-09T04:56:28.0174857Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2026-09-09T04:56:28.0176768Z hint: to use in all of your new repositories, which will suppress this warning,
+2026-09-09T04:56:28.0177710Z hint: call:
+2026-09-09T04:56:28.0178859Z hint:
+2026-09-09T04:56:28.0179340Z hint: 	git config --global init.defaultBranch <name>
+2026-09-09T04:56:28.0179850Z hint:
+2026-09-09T04:56:28.0180355Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2026-09-09T04:56:28.0181199Z hint: 'development'. The just-created branch can be renamed via this command:
+2026-09-09T04:56:28.0181853Z hint:
+2026-09-09T04:56:28.0182186Z hint: 	git branch -m <name>
+2026-09-09T04:56:28.0182575Z hint:
+2026-09-09T04:56:28.0183146Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2026-09-09T04:56:28.0184227Z Initialized empty Git repository in /home/runner/work/starmap/starmap/.ci/agentstation-skills/.git/
+2026-09-09T04:56:28.0190181Z [command]/usr/bin/git remote add origin https://github.com/agentstation/skills
+2026-09-09T04:56:28.0230954Z ##[endgroup]
+2026-09-09T04:56:28.0231650Z ##[group]Disabling automatic garbage collection
+2026-09-09T04:56:28.0236004Z [command]/usr/bin/git config --local gc.auto 0
+2026-09-09T04:56:28.0270656Z ##[endgroup]
+2026-09-09T04:56:28.0271222Z ##[group]Setting up auth
+2026-09-09T04:56:28.0271682Z Removing SSH command configuration
+2026-09-09T04:56:28.0277433Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-09-09T04:56:28.0311589Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-09-09T04:56:28.0570557Z Removing HTTP extra header
+2026-09-09T04:56:28.0575925Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-09-09T04:56:28.0621593Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-09-09T04:56:28.0890557Z Removing includeIf entries pointing to credentials config files
+2026-09-09T04:56:28.0909878Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-09-09T04:56:28.0950029Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-09-09T04:56:28.1209747Z [command]/usr/bin/git config --file /home/runner/work/_temp/git-credentials-59d4aca4-c108-4d2a-b870-ddd6cc60f7f1.config http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2026-09-09T04:56:28.1252471Z [command]/usr/bin/git config --local includeIf.gitdir:/home/runner/work/starmap/starmap/.ci/agentstation-skills/.git.path /home/runner/work/_temp/git-credentials-59d4aca4-c108-4d2a-b870-ddd6cc60f7f1.config
+2026-09-09T04:56:28.1287565Z [command]/usr/bin/git config --local includeIf.gitdir:/home/runner/work/starmap/starmap/.ci/agentstation-skills/.git/worktrees/*.path /home/runner/work/_temp/git-credentials-59d4aca4-c108-4d2a-b870-ddd6cc60f7f1.config
+2026-09-09T04:56:28.1323453Z [command]/usr/bin/git config --local includeIf.gitdir:/github/workspace/.ci/agentstation-skills/.git.path /github/runner_temp/git-credentials-59d4aca4-c108-4d2a-b870-ddd6cc60f7f1.config
+2026-09-09T04:56:28.1361488Z [command]/usr/bin/git config --local includeIf.gitdir:/github/workspace/.ci/agentstation-skills/.git/worktrees/*.path /github/runner_temp/git-credentials-59d4aca4-c108-4d2a-b870-ddd6cc60f7f1.config
+2026-09-09T04:56:28.1393652Z ##[endgroup]
+2026-09-09T04:56:28.1394194Z ##[group]Fetching the repository
+2026-09-09T04:56:28.1401031Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin dc9948f59089426c7dd077e41469104ec788cf7f
+2026-09-09T04:56:28.4875251Z From https://github.com/agentstation/skills
+2026-09-09T04:56:28.4875794Z  * branch            dc9948f59089426c7dd077e41469104ec788cf7f -> FETCH_HEAD
+2026-09-09T04:56:28.4886298Z [command]/usr/bin/git rev-parse --verify --quiet dc9948f59089426c7dd077e41469104ec788cf7f^{object}
+2026-09-09T04:56:28.4920116Z dc9948f59089426c7dd077e41469104ec788cf7f
+2026-09-09T04:56:28.4924926Z ##[endgroup]
+2026-09-09T04:56:28.4925497Z ##[group]Determining the checkout info
+2026-09-09T04:56:28.4926182Z ##[endgroup]
+2026-09-09T04:56:28.4931376Z [command]/usr/bin/git sparse-checkout disable
+2026-09-09T04:56:28.4981859Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+2026-09-09T04:56:28.5018044Z ##[group]Checking out the ref
+2026-09-09T04:56:28.5022778Z [command]/usr/bin/git checkout --progress --force dc9948f59089426c7dd077e41469104ec788cf7f
+2026-09-09T04:56:28.5161328Z Note: switching to 'dc9948f59089426c7dd077e41469104ec788cf7f'.
+2026-09-09T04:56:28.5161754Z 
+2026-09-09T04:56:28.5162331Z You are in 'detached HEAD' state. You can look around, make experimental
+2026-09-09T04:56:28.5163105Z changes and commit them, and you can discard any commits you make in this
+2026-09-09T04:56:28.5163842Z state without impacting any branches by switching back to a branch.
+2026-09-09T04:56:28.5164226Z 
+2026-09-09T04:56:28.5164531Z If you want to create a new branch to retain commits you create, you may
+2026-09-09T04:56:28.5165179Z do so (now or later) by using -c with the switch command. Example:
+2026-09-09T04:56:28.5165539Z 
+2026-09-09T04:56:28.5165716Z   git switch -c <new-branch-name>
+2026-09-09T04:56:28.5165966Z 
+2026-09-09T04:56:28.5166125Z Or undo this operation with:
+2026-09-09T04:56:28.5166344Z 
+2026-09-09T04:56:28.5166909Z   git switch -
+2026-09-09T04:56:28.5167098Z 
+2026-09-09T04:56:28.5167707Z Turn off this advice by setting config variable advice.detachedHead to false
+2026-09-09T04:56:28.5168197Z 
+2026-09-09T04:56:28.5168908Z HEAD is now at dc9948f Merge pull request #10 from agentstation/codex/technical-writing-generated-docs
+2026-09-09T04:56:28.5173942Z ##[endgroup]
+2026-09-09T04:56:28.5220245Z [command]/usr/bin/git log -1 --format=%H
+2026-09-09T04:56:28.5253501Z dc9948f59089426c7dd077e41469104ec788cf7f
+2026-09-09T04:56:28.5268732Z ##[group]Removing auth
+2026-09-09T04:56:28.5269169Z Removing SSH command configuration
+2026-09-09T04:56:28.5271157Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-09-09T04:56:28.5311479Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-09-09T04:56:28.5564025Z Removing HTTP extra header
+2026-09-09T04:56:28.5569173Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-09-09T04:56:28.5613092Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-09-09T04:56:28.5868863Z Removing includeIf entries pointing to credentials config files
+2026-09-09T04:56:28.5879453Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-09-09T04:56:28.5911040Z includeif.gitdir:/home/runner/work/starmap/starmap/.ci/agentstation-skills/.git.path
+2026-09-09T04:56:28.5912522Z includeif.gitdir:/home/runner/work/starmap/starmap/.ci/agentstation-skills/.git/worktrees/*.path
+2026-09-09T04:56:28.5913787Z includeif.gitdir:/github/workspace/.ci/agentstation-skills/.git.path
+2026-09-09T04:56:28.5914881Z includeif.gitdir:/github/workspace/.ci/agentstation-skills/.git/worktrees/*.path
+2026-09-09T04:56:28.5920314Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/home/runner/work/starmap/starmap/.ci/agentstation-skills/.git.path
+2026-09-09T04:56:28.5951527Z /home/runner/work/_temp/git-credentials-59d4aca4-c108-4d2a-b870-ddd6cc60f7f1.config
+2026-09-09T04:56:28.5977446Z [command]/usr/bin/git config --local --unset includeif.gitdir:/home/runner/work/starmap/starmap/.ci/agentstation-skills/.git.path \/home\/runner\/work\/_temp\/git\-credentials\-59d4aca4\-c108\-4d2a\-b870\-ddd6cc60f7f1\.config
+2026-09-09T04:56:28.6023203Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/home/runner/work/starmap/starmap/.ci/agentstation-skills/.git/worktrees/*.path
+2026-09-09T04:56:28.6057240Z /home/runner/work/_temp/git-credentials-59d4aca4-c108-4d2a-b870-ddd6cc60f7f1.config
+2026-09-09T04:56:28.6066950Z [command]/usr/bin/git config --local --unset includeif.gitdir:/home/runner/work/starmap/starmap/.ci/agentstation-skills/.git/worktrees/*.path \/home\/runner\/work\/_temp\/git\-credentials\-59d4aca4\-c108\-4d2a\-b870\-ddd6cc60f7f1\.config
+2026-09-09T04:56:28.6108292Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/github/workspace/.ci/agentstation-skills/.git.path
+2026-09-09T04:56:28.6141949Z /github/runner_temp/git-credentials-59d4aca4-c108-4d2a-b870-ddd6cc60f7f1.config
+2026-09-09T04:56:28.6150928Z [command]/usr/bin/git config --local --unset includeif.gitdir:/github/workspace/.ci/agentstation-skills/.git.path \/github\/runner_temp\/git\-credentials\-59d4aca4\-c108\-4d2a\-b870\-ddd6cc60f7f1\.config
+2026-09-09T04:56:28.6199622Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/github/workspace/.ci/agentstation-skills/.git/worktrees/*.path
+2026-09-09T04:56:28.6276781Z /github/runner_temp/git-credentials-59d4aca4-c108-4d2a-b870-ddd6cc60f7f1.config
+2026-09-09T04:56:28.6284065Z [command]/usr/bin/git config --local --unset includeif.gitdir:/github/workspace/.ci/agentstation-skills/.git/worktrees/*.path \/github\/runner_temp\/git\-credentials\-59d4aca4\-c108\-4d2a\-b870\-ddd6cc60f7f1\.config
+2026-09-09T04:56:28.6325550Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-09-09T04:56:28.6572279Z Removing credentials config '/home/runner/work/_temp/git-credentials-59d4aca4-c108-4d2a-b870-ddd6cc60f7f1.config'
+2026-09-09T04:56:28.6582258Z ##[endgroup]
+2026-09-09T04:56:28.6734671Z ##[group]Run make verify
+2026-09-09T04:56:28.6734959Z [36;1mmake verify[0m
+2026-09-09T04:56:28.6777587Z shell: /usr/bin/bash -e {0}
+2026-09-09T04:56:28.6777862Z env:
+2026-09-09T04:56:28.6778075Z   GOTOOLCHAIN: local
+2026-09-09T04:56:28.6778913Z   TECHNICAL_WRITING: /home/runner/work/starmap/starmap/.ci/agentstation-skills/technical-writing/scripts/technical-writing
+2026-09-09T04:56:28.6779481Z ##[endgroup]
+2026-09-09T04:56:28.6940831Z 
+2026-09-09T04:56:28.6943260Z ==> go test ./...
+2026-09-09T05:02:30.0382821Z ok  	github.com/agentstation/starmap	335.792s
+2026-09-09T05:02:30.0383593Z ok  	github.com/agentstation/starmap/acquisition	171.829s
+2026-09-09T05:02:30.0384463Z ?   	github.com/agentstation/starmap/cmd/starmap	[no test files]
+2026-09-09T05:02:30.0385541Z ok  	github.com/agentstation/starmap/cmd/starmap-bootstrap-manifest	54.109s
+2026-09-09T05:02:30.0386323Z ok  	github.com/agentstation/starmap/cmd/starmap-catalog-release	0.132s
+2026-09-09T05:02:30.0387114Z ok  	github.com/agentstation/starmap/cmd/starmap-embedded-budget	9.620s
+2026-09-09T05:02:30.0387887Z ok  	github.com/agentstation/starmap/cmd/starmap-modelsdev-promote	0.857s
+2026-09-09T05:02:30.0388955Z ok  	github.com/agentstation/starmap/cmd/starmap-openapi-presence	0.015s
+2026-09-09T05:02:30.0389735Z ok  	github.com/agentstation/starmap/internal/architecture	0.139s
+2026-09-09T05:02:30.0390414Z ok  	github.com/agentstation/starmap/internal/attestation	0.057s
+2026-09-09T05:02:30.0391087Z ok  	github.com/agentstation/starmap/internal/auth	0.266s
+2026-09-09T05:02:30.0391754Z ok  	github.com/agentstation/starmap/internal/bootstrap	116.780s
+2026-09-09T05:02:30.0392503Z ok  	github.com/agentstation/starmap/internal/bootstrap/budget	15.415s
+2026-09-09T05:02:30.0393308Z ok  	github.com/agentstation/starmap/internal/bootstrap/manifest	0.017s
+2026-09-09T05:02:30.0394086Z ok  	github.com/agentstation/starmap/internal/catalog/pipeline	5.327s
+2026-09-09T05:02:30.0394843Z ok  	github.com/agentstation/starmap/internal/catalog/query	0.021s
+2026-09-09T05:02:30.0395601Z ok  	github.com/agentstation/starmap/internal/catalog/reconciler	0.763s
+2026-09-09T05:02:30.0396367Z ok  	github.com/agentstation/starmap/internal/catalog/settings	7.595s
+2026-09-09T05:02:30.0397120Z ok  	github.com/agentstation/starmap/internal/catalog/workspace	11.133s
+2026-09-09T05:02:30.0397843Z ok  	github.com/agentstation/starmap/internal/ciworkflow	0.178s
+2026-09-09T05:02:30.0398710Z ?   	github.com/agentstation/starmap/internal/cli/alerts	[no test files]
+2026-09-09T05:02:30.0399170Z ok  	github.com/agentstation/starmap/internal/cli/app	91.008s
+2026-09-09T05:02:30.0399642Z ?   	github.com/agentstation/starmap/internal/cli/commands/auth	[no test files]
+2026-09-09T05:02:30.0400215Z ?   	github.com/agentstation/starmap/internal/cli/commands/authors	[no test files]
+2026-09-09T05:02:30.0409450Z ?   	github.com/agentstation/starmap/internal/cli/commands/completion	[no test files]
+2026-09-09T05:02:30.0410367Z ok  	github.com/agentstation/starmap/internal/cli/commands/config	0.031s
+2026-09-09T05:02:30.0411154Z ok  	github.com/agentstation/starmap/internal/cli/commands/deps	5.697s
+2026-09-09T05:02:30.0411912Z ok  	github.com/agentstation/starmap/internal/cli/commands/embed	0.017s
+2026-09-09T05:02:30.0412741Z ok  	github.com/agentstation/starmap/internal/cli/commands/migrate	0.043s
+2026-09-09T05:02:30.0413528Z ok  	github.com/agentstation/starmap/internal/cli/commands/models	0.019s
+2026-09-09T05:02:30.0414329Z ok  	github.com/agentstation/starmap/internal/cli/commands/providers	0.062s
+2026-09-09T05:02:30.0415132Z ok  	github.com/agentstation/starmap/internal/cli/commands/serve	0.043s
+2026-09-09T05:02:30.0415899Z ok  	github.com/agentstation/starmap/internal/cli/commands/update	0.046s
+2026-09-09T05:02:30.0417249Z ok  	github.com/agentstation/starmap/internal/cli/commands/validate	0.028s
+2026-09-09T05:02:30.0418083Z ?   	github.com/agentstation/starmap/internal/cli/completion	[no test files]
+2026-09-09T05:02:30.0421508Z ?   	github.com/agentstation/starmap/internal/cli/constants	[no test files]
+2026-09-09T05:02:30.0422413Z ok  	github.com/agentstation/starmap/internal/cli/convert	0.011s
+2026-09-09T05:02:30.0423118Z ok  	github.com/agentstation/starmap/internal/cli/embed	0.003s
+2026-09-09T05:02:30.0423854Z ?   	github.com/agentstation/starmap/internal/cli/emoji	[no test files]
+2026-09-09T05:02:30.0424638Z ?   	github.com/agentstation/starmap/internal/cli/filter	[no test files]
+2026-09-09T05:02:30.0425401Z ?   	github.com/agentstation/starmap/internal/cli/format	[no test files]
+2026-09-09T05:02:30.0426169Z ?   	github.com/agentstation/starmap/internal/cli/globals	[no test files]
+2026-09-09T05:02:30.0426943Z ok  	github.com/agentstation/starmap/internal/cli/hints	0.009s
+2026-09-09T05:02:30.0427674Z ?   	github.com/agentstation/starmap/internal/cli/notify	[no test files]
+2026-09-09T05:02:30.0428632Z ?   	github.com/agentstation/starmap/internal/cli/provider	[no test files]
+2026-09-09T05:02:30.0429375Z ok  	github.com/agentstation/starmap/internal/cli/table	0.015s
+2026-09-09T05:02:30.0430112Z ?   	github.com/agentstation/starmap/internal/constants	[no test files]
+2026-09-09T05:02:30.0430866Z ok  	github.com/agentstation/starmap/internal/deploymentdocs	0.006s
+2026-09-09T05:02:30.0431588Z ?   	github.com/agentstation/starmap/internal/deps	[no test files]
+2026-09-09T05:02:30.0432276Z ok  	github.com/agentstation/starmap/internal/embedded	7.684s
+2026-09-09T05:02:30.0433033Z ?   	github.com/agentstation/starmap/internal/embedded/openapi	[no test files]
+2026-09-09T05:02:30.0433812Z ok  	github.com/agentstation/starmap/internal/filepublish	0.021s
+2026-09-09T05:02:30.0434475Z ok  	github.com/agentstation/starmap/internal/fleet	0.003s
+2026-09-09T05:02:30.0435166Z ok  	github.com/agentstation/starmap/internal/privatefiles	0.076s
+2026-09-09T05:02:30.0435916Z ok  	github.com/agentstation/starmap/internal/providers/anthropic	4.667s
+2026-09-09T05:02:30.0436693Z ok  	github.com/agentstation/starmap/internal/providers/clients	0.088s
+2026-09-09T05:02:30.0437460Z ok  	github.com/agentstation/starmap/internal/providers/google	0.029s
+2026-09-09T05:02:30.0438215Z ok  	github.com/agentstation/starmap/internal/providers/openai	4.045s
+2026-09-09T05:02:30.0439114Z ok  	github.com/agentstation/starmap/internal/runtimeacl/windows	0.011s
+2026-09-09T05:02:30.5089198Z ok  	github.com/agentstation/starmap/internal/server	135.409s
+2026-09-09T05:02:30.5090243Z ok  	github.com/agentstation/starmap/internal/server/cache	0.271s
+2026-09-09T05:02:30.5091092Z ok  	github.com/agentstation/starmap/internal/server/handlers	9.913s
+2026-09-09T05:02:30.5091882Z ok  	github.com/agentstation/starmap/internal/server/middleware	0.222s
+2026-09-09T05:02:30.5092706Z ok  	github.com/agentstation/starmap/internal/server/openrouter	7.425s
+2026-09-09T05:02:30.5093514Z ok  	github.com/agentstation/starmap/internal/server/operations	0.006s
+2026-09-09T05:02:30.5094288Z ok  	github.com/agentstation/starmap/internal/server/params	0.005s
+2026-09-09T05:02:30.5095042Z ok  	github.com/agentstation/starmap/internal/server/response	0.006s
+2026-09-09T05:02:30.5095809Z ok  	github.com/agentstation/starmap/internal/server/sse	0.027s
+2026-09-09T05:02:30.5096543Z ok  	github.com/agentstation/starmap/internal/sources/embedded	0.011s
+2026-09-09T05:02:30.5097306Z ok  	github.com/agentstation/starmap/internal/sources/github	0.204s
+2026-09-09T05:02:30.5098061Z ok  	github.com/agentstation/starmap/internal/sources/local	0.018s
+2026-09-09T05:02:30.5099034Z ok  	github.com/agentstation/starmap/internal/sources/modelsdev	24.120s
+2026-09-09T05:02:30.5099841Z ok  	github.com/agentstation/starmap/internal/sources/providers	0.111s
+2026-09-09T05:02:30.5100680Z ?   	github.com/agentstation/starmap/internal/test/catalog	[no test files]
+2026-09-09T05:02:30.5101906Z ?   	github.com/agentstation/starmap/internal/test/channel	[no test files]
+2026-09-09T05:02:30.5102720Z ?   	github.com/agentstation/starmap/internal/test/logging	[no test files]
+2026-09-09T05:02:30.5103536Z ok  	github.com/agentstation/starmap/internal/test/providerfixture	0.013s
+2026-09-09T05:02:30.5104493Z ok  	github.com/agentstation/starmap/internal/transport	0.126s
+2026-09-09T05:02:30.5105182Z ok  	github.com/agentstation/starmap/pkg/catalogs	51.896s
+2026-09-09T05:02:30.5105889Z ok  	github.com/agentstation/starmap/pkg/catalogs/artifact	0.062s
+2026-09-09T05:02:30.5106637Z ok  	github.com/agentstation/starmap/pkg/catalogs/authority	0.015s
+2026-09-09T05:02:30.5107369Z ok  	github.com/agentstation/starmap/pkg/catalogs/config	16.906s
+2026-09-09T05:02:30.5108094Z ok  	github.com/agentstation/starmap/pkg/catalogs/evidence	0.004s
+2026-09-09T05:02:30.5109137Z ?   	github.com/agentstation/starmap/pkg/catalogs/internal/resourcepolicy	[no test files]
+2026-09-09T05:02:30.5109968Z ok  	github.com/agentstation/starmap/pkg/catalogs/projection	0.006s
+2026-09-09T05:02:30.5110657Z ok  	github.com/agentstation/starmap/pkg/catalogs/remote	0.328s
+2026-09-09T05:02:30.5111331Z ok  	github.com/agentstation/starmap/pkg/catalogs/storage	0.451s
+2026-09-09T05:02:30.5112016Z ok  	github.com/agentstation/starmap/pkg/catalogs/storage/s3	0.056s
+2026-09-09T05:02:30.5112663Z ok  	github.com/agentstation/starmap/pkg/differ	0.006s
+2026-09-09T05:02:30.5113254Z ok  	github.com/agentstation/starmap/pkg/errors	0.007s
+2026-09-09T05:02:30.5113860Z ok  	github.com/agentstation/starmap/pkg/logging	0.006s
+2026-09-09T05:02:30.5114543Z ok  	github.com/agentstation/starmap/pkg/productpaths	0.013s
+2026-09-09T05:02:30.5115227Z ok  	github.com/agentstation/starmap/pkg/productpaths/policy	0.010s
+2026-09-09T05:02:30.5115928Z ok  	github.com/agentstation/starmap/pkg/provenance	0.014s
+2026-09-09T05:02:30.5116553Z ok  	github.com/agentstation/starmap/pkg/sources	0.015s
+2026-09-09T05:02:30.5117199Z ok  	github.com/agentstation/starmap/pkg/sources/payload	0.065s
+2026-09-09T05:02:30.5117862Z ok  	github.com/agentstation/starmap/pkg/sync	0.025s
+2026-09-09T05:02:30.5118605Z ok  	github.com/agentstation/starmap/remote	9.298s
+2026-09-09T05:05:02.5903564Z ok  	github.com/agentstation/starmap/runtime	155.630s
+2026-09-09T05:05:02.5904194Z ?   	github.com/agentstation/starmap/runtime/source	[no test files]
+2026-09-09T05:05:02.5904808Z ?   	github.com/agentstation/starmap/runtime/status	[no test files]
+2026-09-09T05:05:02.5905445Z ok  	github.com/agentstation/starmap/server	11.180s
+2026-09-09T05:05:02.8417274Z 
+2026-09-09T05:05:02.8417933Z ==> make test-pure-go
+2026-09-09T05:05:05.7067568Z ok  	github.com/agentstation/starmap-test/read-only-consumer	2.476s
+2026-09-09T05:05:08.9158070Z ok  	github.com/agentstation/starmap-test/store-only-consumer	2.778s
+2026-09-09T05:05:13.8612371Z ok  	github.com/agentstation/starmap-test/pinned-artifact-consumer	4.616s
+2026-09-09T05:05:16.8531360Z ok  	github.com/agentstation/starmap-test/server-embed-consumer	2.498s
+2026-09-09T05:05:21.3579573Z ok  	github.com/agentstation/starmap-test/remote-subscriber-consumer	4.028s
+2026-09-09T05:05:29.7227055Z ok  	github.com/agentstation/starmap-test/server-storage-consumer	7.700s
+2026-09-09T05:05:29.8731507Z read-only consumer dependency closure: 34/34 non-standard packages (158 total on this platform); forbidden families absent
+2026-09-09T05:05:29.8732502Z store-only consumer: caller-owned adapter contract and publication passed; application/database implementations absent
+2026-09-09T05:05:29.8733371Z pinned-artifact consumer: 35/35 non-standard packages; offline verified activation passed; online/acquisition families absent
+2026-09-09T05:05:29.8734115Z server-embed consumer dependency closure: 251/260 packages; acquisition families absent
+2026-09-09T05:05:29.8734663Z server-embed consumer: external compile and lifecycle test passed
+2026-09-09T05:05:29.8735216Z remote-subscriber consumer dependency closure: 234/240 packages; forbidden families absent
+2026-09-09T05:05:29.8736234Z remote-subscriber consumer: external compile and reactive lifecycle test passed
+2026-09-09T05:05:29.8736916Z server-storage consumer dependency closure: 345/350 packages; filesystem/S3 server and reactive restart matrix passed
+2026-09-09T05:05:30.4996548Z ok  	github.com/agentstation/starmap/pkg/catalogs/storage/s3	0.033s
+2026-09-09T05:06:16.6900468Z starmap dev
+2026-09-09T05:06:17.0508046Z pure-Go verification passed: library, pinned artifact, stores including S3, server, remote, and CLI execute with CGO_ENABLED=0
+2026-09-09T05:06:17.0627005Z 
+2026-09-09T05:06:17.0627581Z ==> make test-file-sizes
+2026-09-09T05:06:17.7826334Z 1440	internal/catalog/reconciler/merger_test.go
+2026-09-09T05:06:19.2017350Z 1071	internal/providers/openai/client_test.go
+2026-09-09T05:06:21.0142506Z 1040	remote/subscriber_test.go
+2026-09-09T05:06:21.7785296Z Go file-size verification passed: review >1000, justify >1500, fail >=2000 lines
+2026-09-09T05:06:21.7790225Z 
+2026-09-09T05:06:21.7790578Z ==> ./scripts/verify-package-layout.sh
+2026-09-09T05:06:22.0141513Z ok  	github.com/agentstation/starmap/internal/architecture	0.046s
+2026-09-09T05:06:22.7387279Z package-layout verification passed
+2026-09-09T05:06:22.7390825Z 
+2026-09-09T05:06:22.7391409Z ==> ./scripts/test-package-layout-verifier.sh
+2026-09-09T05:06:23.7257072Z package-layout verifier regression tests passed
+2026-09-09T05:06:23.7273490Z 
+2026-09-09T05:06:23.7274008Z ==> ./scripts/verify-catalog-package-ownership.sh
+2026-09-09T05:06:23.7418771Z CPO-V01 PASS: the five approved catalog child packages exist
+2026-09-09T05:06:23.7427725Z CPO-V02 PASS: the four removed package trees are absent
+2026-09-09T05:06:23.8357862Z CPO-V03 PASS: catalogs owns Generation copy and validation
+2026-09-09T05:06:23.9962983Z CPO-V04 PASS: catalogs owns all canonical payload codecs
+2026-09-09T05:06:24.0493611Z CPO-V05 PASS: evidence is a standard-library-only leaf
+2026-09-09T05:06:24.0601275Z CPO-V06 PASS: projection is a standard-library-only leaf without aliases
+2026-09-09T05:06:24.0667132Z CPO-V07 PASS: storage accepts catalog generations and retains adapters
+2026-09-09T05:06:24.1018880Z CPO-V08 PASS: artifact is storage-independent and retains its byte test
+2026-09-09T05:06:24.1469854Z CPO-V09 PASS: remote is storage-independent and retains protocol tests
+2026-09-09T05:06:52.3305670Z CPO-V10 PASS: all six external consumer modules compile
+2026-09-09T05:06:52.3574253Z CPO-V11 PASS: current docs and the migration guide use approved paths
+2026-09-09T05:06:52.7059550Z CPO-V12 PASS: current authority passes the historical allowlist scan
+2026-09-09T05:06:53.1987951Z CPO-V13 PASS: the package graph resolves without a dependency change
+2026-09-09T05:06:53.1988714Z Summary: 13 passed, 0 failed
+2026-09-09T05:06:53.2011776Z 
+2026-09-09T05:06:53.2012198Z ==> ./scripts/test-catalog-package-ownership-verifier.sh
+2026-09-09T05:06:53.4863785Z catalog package ownership verifier regression tests passed
+2026-09-09T05:06:53.4881771Z 
+2026-09-09T05:06:53.4882138Z ==> ./scripts/verify-catalog-dependency-direction.sh
+2026-09-09T05:06:53.5327753Z SM-D01 PASS: catalogs does not import private authority policy
+2026-09-09T05:06:53.5690150Z SM-D02 PASS: catalogs does not import repository-wide constants
+2026-09-09T05:06:53.6041900Z SM-D03 PASS: catalogs does not import the private embedded filesystem
+2026-09-09T05:06:53.6394675Z SM-D04 PASS: catalogs does not import private source payload policy
+2026-09-09T05:06:53.6702824Z SM-D05 PASS: catalog artifacts do not import repository-wide constants
+2026-09-09T05:06:53.7085662Z SM-D06 PASS: catalog remote transport does not import repository-wide constants
+2026-09-09T05:06:53.7407976Z SM-D07 PASS: catalog storage does not import repository-wide constants
+2026-09-09T05:06:53.7883895Z SM-D08 PASS: catalog S3 storage does not import repository-wide constants
+2026-09-09T05:06:53.7884819Z Summary: 8 passed, 0 failed
+2026-09-09T05:06:53.7900819Z 
+2026-09-09T05:06:53.7901286Z ==> ./scripts/test-catalog-dependency-direction-verifier.sh
+2026-09-09T05:06:54.4070405Z catalog dependency direction verifier tests passed
+2026-09-09T05:06:54.4094455Z 
+2026-09-09T05:06:54.4094935Z ==> python3 ./scripts/test_catalog_product_verify.py
+2026-09-09T05:06:54.5914463Z test_baseline_cannot_claim_release_qualification (__main__.CatalogVerifierTests.test_baseline_cannot_claim_release_qualification) ... ok
+2026-09-09T05:06:54.5939813Z test_baseline_keeps_negative_paired_differences (__main__.CatalogVerifierTests.test_baseline_keeps_negative_paired_differences) ... ok
+2026-09-09T05:06:54.5981752Z test_baseline_refuses_lost_stream_events_and_wrong_milestones (__main__.CatalogVerifierTests.test_baseline_refuses_lost_stream_events_and_wrong_milestones) ... ok
+2026-09-09T05:06:54.6011436Z test_baseline_refuses_missing_variant_or_initial_evidence (__main__.CatalogVerifierTests.test_baseline_refuses_missing_variant_or_initial_evidence) ... ok
+2026-09-09T05:06:54.6103658Z test_baseline_refuses_partial_or_fabricated_timing (__main__.CatalogVerifierTests.test_baseline_refuses_partial_or_fabricated_timing) ... ok
+2026-09-09T05:06:54.6142204Z test_browser_review_requires_current_inputs_and_captures (__main__.CatalogVerifierTests.test_browser_review_requires_current_inputs_and_captures) ... ok
+2026-09-09T05:06:54.6146024Z test_combined_check_needs_every_result (__main__.CatalogVerifierTests.test_combined_check_needs_every_result) ... ok
+2026-09-09T05:06:54.6154270Z test_command_failure_cannot_pass (__main__.CatalogVerifierTests.test_command_failure_cannot_pass) ... ok
+2026-09-09T05:06:54.6192632Z test_complete_red_report (__main__.CatalogVerifierTests.test_complete_red_report) ... ok
+2026-09-09T05:06:54.6197290Z test_duplicate_subcase_refuses (__main__.CatalogVerifierTests.test_duplicate_subcase_refuses) ... ok
+2026-09-09T05:06:54.6202486Z test_empty_task_cannot_pass (__main__.CatalogVerifierTests.test_empty_task_cannot_pass) ... ok
+2026-09-09T05:06:54.6211105Z test_evidence_paths_cannot_escape_repository (__main__.CatalogVerifierTests.test_evidence_paths_cannot_escape_repository) ... ok
+2026-09-09T05:06:54.6218677Z test_final_roster_cannot_omit_a_case (__main__.CatalogVerifierTests.test_final_roster_cannot_omit_a_case) ... ok
+2026-09-09T05:06:54.6234670Z test_fresh_baseline_adapter_cannot_pass_skipped_test (__main__.CatalogVerifierTests.test_fresh_baseline_adapter_cannot_pass_skipped_test) ... ok
+2026-09-09T05:06:54.6241356Z test_missing_candidate_local_check_refuses (__main__.CatalogVerifierTests.test_missing_candidate_local_check_refuses) ... ok
+2026-09-09T05:06:54.6244318Z test_missing_primary_refuses (__main__.CatalogVerifierTests.test_missing_primary_refuses) ... ok
+2026-09-09T05:06:54.6247855Z test_missing_registration_is_unverified (__main__.CatalogVerifierTests.test_missing_registration_is_unverified) ... ok
+2026-09-09T05:06:54.6263789Z test_numeric_profile_cannot_hide_workload_or_uncertainty (__main__.CatalogVerifierTests.test_numeric_profile_cannot_hide_workload_or_uncertainty) ... ok
+2026-09-09T05:06:54.6273104Z test_numeric_profile_cannot_relax_correctness_for_latency (__main__.CatalogVerifierTests.test_numeric_profile_cannot_relax_correctness_for_latency) ... ok
+2026-09-09T05:06:54.6277795Z test_numeric_profile_is_complete_but_unqualified (__main__.CatalogVerifierTests.test_numeric_profile_is_complete_but_unqualified) ... ok
+2026-09-09T05:06:54.6282797Z test_numeric_profile_refuses_contradictory_resources (__main__.CatalogVerifierTests.test_numeric_profile_refuses_contradictory_resources) ... ok
+2026-09-09T05:06:54.6290619Z test_numeric_profile_refuses_invalid_limits (__main__.CatalogVerifierTests.test_numeric_profile_refuses_invalid_limits) ... ok
+2026-09-09T05:06:54.6294913Z test_partial_parent_never_passes (__main__.CatalogVerifierTests.test_partial_parent_never_passes) ... ok
+2026-09-09T05:06:54.6348659Z test_performance_review_requires_current_targets_and_retained_evidence (__main__.CatalogVerifierTests.test_performance_review_requires_current_targets_and_retained_evidence) ... ok
+2026-09-09T05:06:54.6354195Z test_qualification_cannot_use_component_passes (__main__.CatalogVerifierTests.test_qualification_cannot_use_component_passes) ... ok
+2026-09-09T05:07:17.9857266Z test_real_go_missing_match_is_unverified (__main__.CatalogVerifierTests.test_real_go_missing_match_is_unverified) ... ok
+2026-09-09T05:07:19.4291262Z test_real_named_go_test_executes (__main__.CatalogVerifierTests.test_real_named_go_test_executes) ... ok
+2026-09-09T05:07:19.4317750Z test_retained_full_http_baseline_satisfies_measurement_contract (__main__.CatalogVerifierTests.test_retained_full_http_baseline_satisfies_measurement_contract) ... ok
+2026-09-09T05:07:19.4324284Z test_skipped_child_cannot_pass_parent (__main__.CatalogVerifierTests.test_skipped_child_cannot_pass_parent) ... ok
+2026-09-09T05:07:19.4328004Z test_unknown_case_refuses (__main__.CatalogVerifierTests.test_unknown_case_refuses) ... ok
+2026-09-09T05:07:19.4783610Z test_verifier_supports_isolated_document_import (__main__.CatalogVerifierTests.test_verifier_supports_isolated_document_import) ... ok
+2026-09-09T05:07:19.4787373Z test_abnormal_exit_and_resource_failure_are_distinct (__main__.ColdServerTests.test_abnormal_exit_and_resource_failure_are_distinct) ... ok
+2026-09-09T05:07:19.4789122Z test_both_observations_and_schema_validation_are_required (__main__.ColdServerTests.test_both_observations_and_schema_validation_are_required) ... ok
+2026-09-09T05:07:19.4813288Z test_build_failure_attempts_cleanup_and_cleanup_failure_fails (__main__.ColdServerTests.test_build_failure_attempts_cleanup_and_cleanup_failure_fails) ... ok
+2026-09-09T05:07:19.4814772Z test_complete_offline_restart_passes (__main__.ColdServerTests.test_complete_offline_restart_passes) ... ok
+2026-09-09T05:07:19.4819350Z test_external_network_or_credentials_cannot_qualify (__main__.ColdServerTests.test_external_network_or_credentials_cannot_qualify) ... ok
+2026-09-09T05:07:19.4825656Z test_failed_endpoints_and_invalid_bytes_fail (__main__.ColdServerTests.test_failed_endpoints_and_invalid_bytes_fail) ... ok
+2026-09-09T05:07:19.4829054Z test_missing_docker_is_unverified (__main__.ColdServerTests.test_missing_docker_is_unverified) ... ok
+2026-09-09T05:07:19.4832825Z test_missing_instance_identity_cannot_qualify (__main__.ColdServerTests.test_missing_instance_identity_cannot_qualify) ... ok
+2026-09-09T05:07:19.4843909Z test_registered_adapter_requires_probe_and_calls_verifier (__main__.ColdServerTests.test_registered_adapter_requires_probe_and_calls_verifier) ... ok
+2026-09-09T05:07:19.4847456Z test_restart_identity_and_manifest_changes_fail (__main__.ColdServerTests.test_restart_identity_and_manifest_changes_fail) ... ok
+2026-09-09T05:07:19.4848937Z test_both_controls_are_required (__main__.ConstructorNetworkTests.test_both_controls_are_required) ... ok
+2026-09-09T05:07:19.4850392Z test_constructor_socket_attempt_is_a_failure (__main__.ConstructorNetworkTests.test_constructor_socket_attempt_is_a_failure) ... ok
+2026-09-09T05:07:19.4851652Z test_control_must_reach_its_socket_attempt (__main__.ConstructorNetworkTests.test_control_must_reach_its_socket_attempt) ... ok
+2026-09-09T05:07:19.4855174Z test_incomplete_baseline_or_changed_platform_refuses (__main__.ConstructorNetworkTests.test_incomplete_baseline_or_changed_platform_refuses) ... ok
+2026-09-09T05:07:19.4856732Z test_missing_constructor_evidence_refuses (__main__.ConstructorNetworkTests.test_missing_constructor_evidence_refuses) ... ok
+2026-09-09T05:07:19.4858192Z test_missing_container_state_refuses (__main__.ConstructorNetworkTests.test_missing_container_state_refuses) ... ok
+2026-09-09T05:07:19.4859625Z test_missing_docker_is_unverified (__main__.ConstructorNetworkTests.test_missing_docker_is_unverified) ... ok
+2026-09-09T05:07:19.4862217Z test_resource_failure_cannot_prove_network_enforcement (__main__.ConstructorNetworkTests.test_resource_failure_cannot_prove_network_enforcement) ... ok
+2026-09-09T05:07:19.4878781Z test_coherent_review_passes (__main__.DemoReviewTests.test_coherent_review_passes) ... ok
+2026-09-09T05:07:19.4892747Z test_edits_cannot_intersect_inference (__main__.DemoReviewTests.test_edits_cannot_intersect_inference) ... ok
+2026-09-09T05:07:19.4915282Z test_false_gap_or_negative_duration_refuses (__main__.DemoReviewTests.test_false_gap_or_negative_duration_refuses) ... ok
+2026-09-09T05:07:19.4943939Z test_incomplete_stream_or_cleanup_refuses (__main__.DemoReviewTests.test_incomplete_stream_or_cleanup_refuses) ... ok
+2026-09-09T05:07:19.4977446Z test_unreadable_dimensions_or_changed_gif_refuses (__main__.DemoReviewTests.test_unreadable_dimensions_or_changed_gif_refuses) ... ok
+2026-09-09T05:07:19.4991657Z test_changed_or_missing_capture_refuses (__main__.FirstUseReviewTests.test_changed_or_missing_capture_refuses) ... ok
+2026-09-09T05:07:19.5000331Z test_changed_readme_requires_review (__main__.FirstUseReviewTests.test_changed_readme_requires_review) ... ok
+2026-09-09T05:07:19.5012281Z test_complete_review_passes (__main__.FirstUseReviewTests.test_complete_review_passes) ... ok
+2026-09-09T05:07:19.5020700Z test_evidence_cannot_escape_its_root (__main__.FirstUseReviewTests.test_evidence_cannot_escape_its_root) ... ok
+2026-09-09T05:07:19.5052859Z test_incomplete_inference_refuses_even_with_matching_capture_digest (__main__.FirstUseReviewTests.test_incomplete_inference_refuses_even_with_matching_capture_digest) ... ok
+2026-09-09T05:07:19.5059621Z test_missing_observation_refuses (__main__.FirstUseReviewTests.test_missing_observation_refuses) ... ok
+2026-09-09T05:07:19.5075579Z test_source_build_needs_exact_commit (__main__.FirstUseReviewTests.test_source_build_needs_exact_commit) ... ok
+2026-09-09T05:07:19.5116646Z test_unqualified_or_missing_method_refuses (__main__.FirstUseReviewTests.test_unqualified_or_missing_method_refuses) ... ok
+2026-09-09T05:07:19.5125431Z test_absent_capture_is_unverified (__main__.NativeCatalogTests.test_absent_capture_is_unverified) ... ok
+2026-09-09T05:07:19.5136009Z test_both_native_architectures_are_required (__main__.NativeCatalogTests.test_both_native_architectures_are_required) ... ok
+2026-09-09T05:07:19.5145575Z test_changed_evidence_bytes_refuse (__main__.NativeCatalogTests.test_changed_evidence_bytes_refuse) ... ok
+2026-09-09T05:07:19.5156762Z test_cross_compiled_or_changed_toolchain_refuses (__main__.NativeCatalogTests.test_cross_compiled_or_changed_toolchain_refuses) ... ok
+2026-09-09T05:07:19.5164601Z test_duplicate_native_jobs_refuse (__main__.NativeCatalogTests.test_duplicate_native_jobs_refuse) ... ok
+2026-09-09T05:07:19.5172655Z test_failed_or_incomplete_workflow_refuses (__main__.NativeCatalogTests.test_failed_or_incomplete_workflow_refuses) ... ok
+2026-09-09T05:07:19.5196900Z test_linux_requires_actual_administrator_owned_read (__main__.NativeCatalogTests.test_linux_requires_actual_administrator_owned_read) ... ok
+2026-09-09T05:07:19.5213073Z test_missing_test_or_package_completion_refuses (__main__.NativeCatalogTests.test_missing_test_or_package_completion_refuses) ... ok
+2026-09-09T05:07:19.5220497Z test_other_repository_refuses (__main__.NativeCatalogTests.test_other_repository_refuses) ... ok
+2026-09-09T05:07:19.5232520Z test_skipped_or_failed_child_refuses (__main__.NativeCatalogTests.test_skipped_or_failed_child_refuses) ... ok
+2026-09-09T05:07:19.5536479Z test_source_and_test_changes_invalidate_evidence (__main__.NativeCatalogTests.test_source_and_test_changes_invalidate_evidence) ... ok
+2026-09-09T05:07:19.5537070Z 
+2026-09-09T05:07:19.5537287Z ----------------------------------------------------------------------
+2026-09-09T05:07:19.5537700Z Ran 73 tests in 24.965s
+2026-09-09T05:07:19.5537885Z 
+2026-09-09T05:07:19.5537981Z OK
+2026-09-09T05:07:19.5723548Z 
+2026-09-09T05:07:19.5724241Z ==> env CGO_ENABLED=1 go test ./... -race -short -timeout=20m
+2026-09-09T05:27:56.6110345Z {"level":"info","source":"embedded_catalog","time":"2026-09-09T05:08:38Z","message":"Observing"}
+2026-09-09T05:27:56.6111909Z {"level":"info","provider_count":17,"time":"2026-09-09T05:08:51Z","message":"Filtered providers by primary source"}
+2026-09-09T05:27:56.6113414Z {"level":"info","time":"2026-09-09T05:08:56Z","message":"No changes detected"}
+2026-09-09T05:27:56.6115036Z {"level":"info","reformat":false,"force":false,"seed_workspace":true,"time":"2026-09-09T05:08:56Z","message":"Forcing save due to explicit materialization policy"}
+2026-09-09T05:27:56.6117151Z {"level":"info","source":"embedded_catalog","time":"2026-09-09T05:19:39Z","message":"Observing"}
+2026-09-09T05:27:56.6119057Z {"level":"info","provider_count":17,"time":"2026-09-09T05:19:51Z","message":"Filtered providers by primary source"}
+2026-09-09T05:27:56.6120504Z {"level":"info","time":"2026-09-09T05:19:59Z","message":"No changes detected"}
+2026-09-09T05:27:56.6122073Z {"level":"info","reformat":false,"force":false,"seed_workspace":true,"time":"2026-09-09T05:19:59Z","message":"Forcing save due to explicit materialization policy"}
+2026-09-09T05:27:56.6123751Z {"level":"info","source":"embedded_catalog","time":"2026-09-09T05:24:40Z","message":"Observing"}
+2026-09-09T05:27:56.6124998Z {"level":"info","source":"local_catalog","time":"2026-09-09T05:24:40Z","message":"Observing"}
+2026-09-09T05:27:56.6126237Z {"level":"info","source":"providers","time":"2026-09-09T05:24:40Z","message":"Observing"}
+2026-09-09T05:27:56.6127782Z {"level":"info","source":"providers","provider_count":15,"max_concurrency":5,"time":"2026-09-09T05:24:40Z","message":"Syncing providers concurrently"}
+2026-09-09T05:27:56.6129864Z {"level":"info","source":"providers","provider_id":"cerebras","provider_id":"cerebras","reason":"credential_unavailable","time":"2026-09-09T05:24:40Z","message":"Provider skipped without a request"}
+2026-09-09T05:27:56.6133249Z {"level":"info","source":"providers","provider_id":"anthropic","provider_id":"anthropic","reason":"credential_unavailable","time":"2026-09-09T05:24:40Z","message":"Provider skipped without a request"}
+2026-09-09T05:27:56.6135556Z {"level":"info","source":"providers","provider_id":"alibaba","provider_id":"alibaba","reason":"credential_unavailable","time":"2026-09-09T05:24:40Z","message":"Provider skipped without a request"}
+2026-09-09T05:27:56.6137973Z {"level":"info","source":"providers","provider_id":"openai","provider_id":"openai","reason":"credential_unavailable","time":"2026-09-09T05:24:40Z","message":"Provider skipped without a request"}
+2026-09-09T05:27:56.6140317Z {"level":"info","source":"providers","provider_id":"groq","provider_id":"groq","reason":"credential_unavailable","time":"2026-09-09T05:24:40Z","message":"Provider skipped without a request"}
+2026-09-09T05:27:56.6142503Z {"level":"info","source":"providers","provider_id":"hetzner","provider_id":"hetzner","reason":"credential_unavailable","time":"2026-09-09T05:24:40Z","message":"Provider skipped without a request"}
+2026-09-09T05:27:56.6144739Z {"level":"info","source":"providers","provider_id":"mistral","provider_id":"mistral","reason":"credential_unavailable","time":"2026-09-09T05:24:40Z","message":"Provider skipped without a request"}
+2026-09-09T05:27:56.6147137Z {"level":"info","source":"providers","provider_id":"moonshot-ai","provider_id":"moonshot-ai","reason":"credential_unavailable","time":"2026-09-09T05:24:40Z","message":"Provider skipped without a request"}
+2026-09-09T05:27:56.6149757Z {"level":"info","source":"providers","provider_id":"deepseek","provider_id":"deepseek","reason":"credential_unavailable","time":"2026-09-09T05:24:40Z","message":"Provider skipped without a request"}
+2026-09-09T05:27:56.6152372Z {"level":"info","source":"providers","provider_id":"google-ai-studio","provider_id":"google-ai-studio","reason":"credential_unavailable","time":"2026-09-09T05:24:40Z","message":"Provider skipped without a request"}
+2026-09-09T05:27:56.6155005Z {"level":"info","source":"providers","provider_id":"fireworks-ai","provider_id":"fireworks-ai","reason":"credential_unavailable","time":"2026-09-09T05:24:40Z","message":"Provider skipped without a request"}
+2026-09-09T05:27:56.6157603Z {"level":"info","source":"providers","provider_id":"google-vertex","provider_id":"google-vertex","reason":"credential_unavailable","time":"2026-09-09T05:24:40Z","message":"Provider skipped without a request"}
+2026-09-09T05:27:56.6160279Z {"level":"info","source":"providers","provider_id":"dry-run-provider","provider_id":"dry-run-provider","model_count":1,"time":"2026-09-09T05:24:40Z","message":"Fetched models"}
+2026-09-09T05:27:56.6162816Z {"level":"info","source":"providers","provider_id":"deepinfra","provider_id":"deepinfra","model_count":190,"time":"2026-09-09T05:24:42Z","message":"Fetched models"}
+2026-09-09T05:27:56.6165330Z {"level":"info","source":"providers","provider_id":"azure-openai","provider_id":"azure-openai","reason":"credential_unavailable","time":"2026-09-09T05:24:45Z","message":"Provider skipped without a request"}
+2026-09-09T05:27:56.6167350Z {"level":"info","provider_count":15,"time":"2026-09-09T05:24:53Z","message":"Filtered providers by primary source"}
+2026-09-09T05:27:56.6182228Z {"level":"warn","issue_code":"unresolved_model_reference","provider_id":"deepinfra","provider_model_id":"Audio8/Audio8-TTS-Preview-0.6b","time":"2026-09-09T05:24:54Z","message":"provider offering has no explicit canonical model reference and was quarantined"}
+2026-09-09T05:27:56.6185748Z {"level":"warn","issue_code":"unresolved_model_reference","provider_id":"deepinfra","provider_model_id":"BAAI/bge-m3-multi-8k","time":"2026-09-09T05:24:54Z","message":"provider offering has no explicit canonical model reference and was quarantined"}
+2026-09-09T05:27:56.6189587Z {"level":"warn","issue_code":"unresolved_model_reference","provider_id":"deepinfra","provider_model_id":"Qwen/Qwen3-ASR-0.6B","time":"2026-09-09T05:24:54Z","message":"provider offering has no explicit canonical model reference and was quarantined"}
+2026-09-09T05:27:56.6211882Z {"level":"warn","issue_code":"unresolved_model_reference","provider_id":"deepinfra","provider_model_id":"Qwen/Qwen3-ASR-1.7B","time":"2026-09-09T05:24:54Z","message":"provider offering has no explicit canonical model reference and was quarantined"}
+2026-09-09T05:27:56.6214758Z {"level":"warn","issue_code":"unresolved_model_reference","provider_id":"deepinfra","provider_model_id":"Qwen/Qwen3.8-2.4T-A95B","time":"2026-09-09T05:24:54Z","message":"provider offering has no explicit canonical model reference and was quarantined"}
+2026-09-09T05:27:56.6217561Z {"level":"warn","issue_code":"unresolved_model_reference","provider_id":"deepinfra","provider_model_id":"Qwen/Qwen3.8-27B","time":"2026-09-09T05:24:54Z","message":"provider offering has no explicit canonical model reference and was quarantined"}
+2026-09-09T05:27:56.6220623Z {"level":"warn","issue_code":"unresolved_model_reference","provider_id":"deepinfra","provider_model_id":"Qwen/Qwen3.8-Max","time":"2026-09-09T05:24:54Z","message":"provider offering has no explicit canonical model reference and was quarantined"}
+2026-09-09T05:27:56.6223330Z {"level":"warn","issue_code":"unresolved_model_reference","provider_id":"deepinfra","provider_model_id":"anthropic/claude-opus-5","time":"2026-09-09T05:24:54Z","message":"provider offering has no explicit canonical model reference and was quarantined"}
+2026-09-09T05:27:56.6226208Z {"level":"warn","issue_code":"unresolved_model_reference","provider_id":"deepinfra","provider_model_id":"deepseek-ai/DeepSeek-V4-Flash-0731","time":"2026-09-09T05:24:54Z","message":"provider offering has no explicit canonical model reference and was quarantined"}
+2026-09-09T05:27:56.6229548Z {"level":"warn","issue_code":"unresolved_model_reference","provider_id":"deepinfra","provider_model_id":"deepseek-ai/DeepSeek-V4-Flash-Vision-Exp","time":"2026-09-09T05:24:54Z","message":"provider offering has no explicit canonical model reference and was quarantined"}
+2026-09-09T05:27:56.6232490Z {"level":"warn","issue_code":"unresolved_model_reference","provider_id":"deepinfra","provider_model_id":"deepseek-ai/DeepSeek-V4-Pro-0813","time":"2026-09-09T05:24:54Z","message":"provider offering has no explicit canonical model reference and was quarantined"}
+2026-09-09T05:27:56.6235439Z {"level":"warn","issue_code":"unresolved_model_reference","provider_id":"deepinfra","provider_model_id":"google/gemini-3.7-flash","time":"2026-09-09T05:24:54Z","message":"provider offering has no explicit canonical model reference and was quarantined"}
+2026-09-09T05:27:56.6259270Z {"level":"warn","issue_code":"unresolved_model_reference","provider_id":"deepinfra","provider_model_id":"google/gemma-4-31B-it-Ultra","time":"2026-09-09T05:24:54Z","message":"provider offering has no explicit canonical model reference and was quarantined"}
+2026-09-09T05:27:56.6264011Z {"level":"warn","issue_code":"unresolved_model_reference","provider_id":"deepinfra","provider_model_id":"google/gemma-4-E4B-it","time":"2026-09-09T05:24:54Z","message":"provider offering has no explicit canonical model reference and was quarantined"}
+2026-09-09T05:27:56.6267740Z {"level":"warn","issue_code":"unresolved_model_reference","provider_id":"deepinfra","provider_model_id":"google/nano-banana-2","time":"2026-09-09T05:24:54Z","message":"provider offering has no explicit canonical model reference and was quarantined"}
+2026-09-09T05:27:56.6271782Z {"level":"warn","issue_code":"unresolved_model_reference","provider_id":"deepinfra","provider_model_id":"google/nano-banana-2-lite","time":"2026-09-09T05:24:54Z","message":"provider offering has no explicit canonical model reference and was quarantined"}
+2026-09-09T05:27:56.6275681Z {"level":"warn","issue_code":"unresolved_model_reference","provider_id":"deepinfra","provider_model_id":"google/nano-banana-pro","time":"2026-09-09T05:24:54Z","message":"provider offering has no explicit canonical model reference and was quarantined"}
+2026-09-09T05:27:56.6279806Z {"level":"warn","issue_code":"unresolved_model_reference","provider_id":"deepinfra","provider_model_id":"ibm-granite/granite-4.2-30b","time":"2026-09-09T05:24:54Z","message":"provider offering has no explicit canonical model reference and was quarantined"}
+2026-09-09T05:27:56.6283700Z {"level":"warn","issue_code":"unresolved_model_reference","provider_id":"deepinfra","provider_model_id":"ibm-granite/granite-4.2-3b","time":"2026-09-09T05:24:54Z","message":"provider offering has no explicit canonical model reference and was quarantined"}
+2026-09-09T05:27:56.6287434Z {"level":"warn","issue_code":"unresolved_model_reference","provider_id":"deepinfra","provider_model_id":"ibm-granite/granite-4.2-8b","time":"2026-09-09T05:24:54Z","message":"provider offering has no explicit canonical model reference and was quarantined"}
+2026-09-09T05:27:56.6317279Z {"level":"warn","issue_code":"unresolved_model_reference","provider_id":"deepinfra","provider_model_id":"inclusionAI/Ling-3.0-flash","time":"2026-09-09T05:24:54Z","message":"provider offering has no explicit canonical model reference and was quarantined"}
+2026-09-09T05:27:56.6321467Z {"level":"warn","issue_code":"unresolved_model_reference","provider_id":"deepinfra","provider_model_id":"inclusionAI/Ling-3.0-flash-Fin","time":"2026-09-09T05:24:54Z","message":"provider offering has no explicit canonical model reference and was quarantined"}
+2026-09-09T05:27:56.6325468Z {"level":"warn","issue_code":"unresolved_model_reference","provider_id":"deepinfra","provider_model_id":"inclusionAI/Ling-3.0-flash-VL","time":"2026-09-09T05:24:54Z","message":"provider offering has no explicit canonical model reference and was quarantined"}
+2026-09-09T05:27:56.6329636Z {"level":"warn","issue_code":"unresolved_model_reference","provider_id":"deepinfra","provider_model_id":"meta-models/Muse-Glimmer-30B","time":"2026-09-09T05:24:54Z","message":"provider offering has no explicit canonical model reference and was quarantined"}
+2026-09-09T05:27:56.6333575Z {"level":"warn","issue_code":"unresolved_model_reference","provider_id":"deepinfra","provider_model_id":"moonshotai/Kimi-K3","time":"2026-09-09T05:24:54Z","message":"provider offering has no explicit canonical model reference and was quarantined"}
+2026-09-09T05:27:56.6337532Z {"level":"warn","issue_code":"unresolved_model_reference","provider_id":"deepinfra","provider_model_id":"nvidia/NVIDIA-Nemotron-3.5-Lightning","time":"2026-09-09T05:24:54Z","message":"provider offering has no explicit canonical model reference and was quarantined"}
+2026-09-09T05:27:56.6369918Z {"level":"warn","issue_code":"unresolved_model_reference","provider_id":"deepinfra","provider_model_id":"openai/gpt-oss-120b-Ultra","time":"2026-09-09T05:24:54Z","message":"provider offering has no explicit canonical model reference and was quarantined"}
+2026-09-09T05:27:56.6374511Z {"level":"warn","issue_code":"unresolved_model_reference","provider_id":"deepinfra","provider_model_id":"tencent/Hy3","time":"2026-09-09T05:24:54Z","message":"provider offering has no explicit canonical model reference and was quarantined"}
+2026-09-09T05:27:56.6378372Z {"level":"warn","issue_code":"unresolved_model_reference","provider_id":"deepinfra","provider_model_id":"thinkingmachines/Inkling","time":"2026-09-09T05:24:54Z","message":"provider offering has no explicit canonical model reference and was quarantined"}
+2026-09-09T05:27:56.6382545Z {"level":"warn","issue_code":"unresolved_model_reference","provider_id":"deepinfra","provider_model_id":"thinkingmachines/Inkling-Small","time":"2026-09-09T05:24:54Z","message":"provider offering has no explicit canonical model reference and was quarantined"}
+2026-09-09T05:27:56.6386509Z {"level":"warn","issue_code":"unresolved_model_reference","provider_id":"deepinfra","provider_model_id":"zai-org/GLM-5.3","time":"2026-09-09T05:24:54Z","message":"provider offering has no explicit canonical model reference and was quarantined"}
+2026-09-09T05:27:56.6399784Z {"level":"warn","issue_code":"unresolved_model_reference","provider_id":"deepinfra","provider_model_id":"zai-org/GLM-5.3-Flash","time":"2026-09-09T05:24:54Z","message":"provider offering has no explicit canonical model reference and was quarantined"}
+2026-09-09T05:27:56.6403685Z {"level":"warn","issue_code":"unresolved_model_reference","provider_id":"dry-run-provider","provider_model_id":"dry-run-model","time":"2026-09-09T05:24:54Z","message":"provider offering has no explicit canonical model reference and was quarantined"}
+2026-09-09T05:27:56.6406361Z {"level":"info","added":603,"updated":0,"removed":0,"time":"2026-09-09T05:24:54Z","message":"Changes detected"}
+2026-09-09T05:27:56.6407641Z {"level":"info","dry_run":true,"time":"2026-09-09T05:24:54Z","message":"Dry run completed - no changes applied"}
+2026-09-09T05:27:56.6409131Z {"level":"info","source":"local_catalog","time":"2026-09-09T05:25:22Z","message":"Observing"}
+2026-09-09T05:27:56.6410464Z {"level":"info","source":"embedded_catalog","time":"2026-09-09T05:25:22Z","message":"Observing"}
+2026-09-09T05:27:56.6412035Z {"level":"info","provider_count":18,"time":"2026-09-09T05:25:34Z","message":"Filtered providers by primary source"}
+2026-09-09T05:27:56.6413646Z {"level":"info","added":618,"updated":0,"removed":0,"time":"2026-09-09T05:25:36Z","message":"Changes detected"}
+2026-09-09T05:27:56.6414764Z panic: test timed out after 20m0s
+2026-09-09T05:27:56.6415373Z 	running tests:
+2026-09-09T05:27:56.6416176Z 		TestWritableStoreAllowsConfiguredMutationTriggers (2m51s)
+2026-09-09T05:27:56.6417460Z 		TestWritableStoreAllowsConfiguredMutationTriggers/manual_sync (2m51s)
+2026-09-09T05:27:56.6418210Z 
+2026-09-09T05:27:56.6419650Z goroutine 145 [running]:
+2026-09-09T05:27:56.6420255Z testing.(*M).startAlarm.func1()
+2026-09-09T05:27:56.6425716Z 	/opt/hostedtoolcache/go/1.26.6/x64/src/testing/testing.go:2802 +0x605
+2026-09-09T05:27:56.6426929Z created by time.goFunc
+2026-09-09T05:27:56.6427731Z 	/opt/hostedtoolcache/go/1.26.6/x64/src/time/sleep.go:215 +0x45
+2026-09-09T05:27:56.6428715Z 
+2026-09-09T05:27:56.6428954Z goroutine 1 [chan receive, 2 minutes]:
+2026-09-09T05:27:56.6430048Z testing.(*T).Run(0xc0000fb208, {0x1dd7f9c, 0x31}, 0x2a25268)
+2026-09-09T05:27:56.6431406Z 	/opt/hostedtoolcache/go/1.26.6/x64/src/testing/testing.go:2109 +0xb3e
+2026-09-09T05:27:56.6432346Z testing.runTests.func1(0xc0000fb208)
+2026-09-09T05:27:56.6433577Z 	/opt/hostedtoolcache/go/1.26.6/x64/src/testing/testing.go:2585 +0x85
+2026-09-09T05:27:56.6434690Z testing.tRunner(0xc0000fb208, 0xc0004dfad0)
+2026-09-09T05:27:56.6435580Z 	/opt/hostedtoolcache/go/1.26.6/x64/src/testing/testing.go:2036 +0x21d
+2026-09-09T05:27:56.6447287Z testing.runTests({0x1db6482, 0x1f}, {0x1db6482, 0x1f}, 0xc000016df8, {0x36b80c0, 0x49, 0x49}, {0xc2a05976f7f4c0dd, 0x1176765ea7f, ...})
+2026-09-09T05:27:56.6449181Z 	/opt/hostedtoolcache/go/1.26.6/x64/src/testing/testing.go:2583 +0x9ea
+2026-09-09T05:27:56.6449872Z testing.(*M).Run(0xc00027dd60)
+2026-09-09T05:27:56.6450535Z 	/opt/hostedtoolcache/go/1.26.6/x64/src/testing/testing.go:2443 +0xf4c
+2026-09-09T05:27:56.6451144Z main.main()
+2026-09-09T05:27:56.6451526Z 	_testmain.go:196 +0x165
+2026-09-09T05:27:56.6451991Z 
+2026-09-09T05:27:56.6452191Z goroutine 106 [chan receive, 3 minutes]:
+2026-09-09T05:27:56.6452689Z testing.(*T).Parallel(0xc0000fab48)
+2026-09-09T05:27:56.6453369Z 	/opt/hostedtoolcache/go/1.26.6/x64/src/testing/testing.go:1803 +0x50c
+2026-09-09T05:27:56.6454605Z github.com/agentstation/starmap.TestSyncRejectsExplicitLegacyWorkspaceBeforeGenerationCommit(0xc0000fab48)
+2026-09-09T05:27:56.6455823Z 	/home/runner/work/starmap/starmap/legacy_layout_test.go:68 +0x3f
+2026-09-09T05:27:56.6456478Z testing.tRunner(0xc0000fab48, 0x2a25238)
+2026-09-09T05:27:56.6457179Z 	/opt/hostedtoolcache/go/1.26.6/x64/src/testing/testing.go:2036 +0x21d
+2026-09-09T05:27:56.6457879Z created by testing.(*T).Run in goroutine 1
+2026-09-09T05:27:56.6459036Z 	/opt/hostedtoolcache/go/1.26.6/x64/src/testing/testing.go:2101 +0xb13
+2026-09-09T05:27:56.6459650Z 
+2026-09-09T05:27:56.6459842Z goroutine 261 [chan receive, 2 minutes]:
+2026-09-09T05:27:56.6460426Z testing.(*T).Run(0xc0002d46c8, {0x1d96184, 0xb}, 0x2a253e8)
+2026-09-09T05:27:56.6461331Z 	/opt/hostedtoolcache/go/1.26.6/x64/src/testing/testing.go:2109 +0xb3e
+2026-09-09T05:27:56.6462438Z github.com/agentstation/starmap.TestWritableStoreAllowsConfiguredMutationTriggers(0xc0002d46c8)
+2026-09-09T05:27:56.6463583Z 	/home/runner/work/starmap/starmap/writable_store_test.go:79 +0x3a
+2026-09-09T05:27:56.6464241Z testing.tRunner(0xc0002d46c8, 0x2a25268)
+2026-09-09T05:27:56.6464990Z 	/opt/hostedtoolcache/go/1.26.6/x64/src/testing/testing.go:2036 +0x21d
+2026-09-09T05:27:56.6465676Z created by testing.(*T).Run in goroutine 1
+2026-09-09T05:27:56.6466410Z 	/opt/hostedtoolcache/go/1.26.6/x64/src/testing/testing.go:2101 +0xb13
+2026-09-09T05:27:56.6466919Z 
+2026-09-09T05:27:56.6467104Z goroutine 105 [chan receive, 3 minutes]:
+2026-09-09T05:27:56.6467609Z testing.(*T).Parallel(0xc0000fa908)
+2026-09-09T05:27:56.6468278Z 	/opt/hostedtoolcache/go/1.26.6/x64/src/testing/testing.go:1803 +0x50c
+2026-09-09T05:27:56.6469887Z github.com/agentstation/starmap.TestNewRejectsLegacyGenerationLayoutBeforeAnyMutation(0xc0000fa908)
+2026-09-09T05:27:56.6471349Z 	/home/runner/work/starmap/starmap/legacy_layout_test.go:19 +0x3f
+2026-09-09T05:27:56.6472212Z testing.tRunner(0xc0000fa908, 0x2a25188)
+2026-09-09T05:27:56.6473111Z 	/opt/hostedtoolcache/go/1.26.6/x64/src/testing/testing.go:2036 +0x21d
+2026-09-09T05:27:56.6474006Z created by testing.(*T).Run in goroutine 1
+2026-09-09T05:27:56.6474974Z 	/opt/hostedtoolcache/go/1.26.6/x64/src/testing/testing.go:2101 +0xb13
+2026-09-09T05:27:56.6475591Z 
+2026-09-09T05:27:56.6475837Z goroutine 176 [chan receive, 3 minutes]:
+2026-09-09T05:27:56.6476508Z testing.(*T).Parallel(0xc0000fbd48)
+2026-09-09T05:27:56.6477377Z 	/opt/hostedtoolcache/go/1.26.6/x64/src/testing/testing.go:1803 +0x50c
+2026-09-09T05:27:56.6479133Z github.com/agentstation/starmap.TestRollbackCommitFailureLeavesCatalogAndWorkspaceUnchanged(0xc0000fbd48)
+2026-09-09T05:27:56.6480692Z 	/home/runner/work/starmap/starmap/rollback_test.go:105 +0x3f
+2026-09-09T05:27:56.6481530Z testing.tRunner(0xc0000fbd48, 0x2a251f0)
+2026-09-09T05:27:56.6482500Z 	/opt/hostedtoolcache/go/1.26.6/x64/src/testing/testing.go:2036 +0x21d
+2026-09-09T05:27:56.6483414Z created by testing.(*T).Run in goroutine 1
+2026-09-09T05:27:56.6484389Z 	/opt/hostedtoolcache/go/1.26.6/x64/src/testing/testing.go:2101 +0xb13
+2026-09-09T05:27:56.6485061Z 
+2026-09-09T05:27:56.6485303Z goroutine 177 [chan receive, 3 minutes]:
+2026-09-09T05:27:56.6485944Z testing.(*T).Parallel(0xc0002d4488)
+2026-09-09T05:27:56.6486797Z 	/opt/hostedtoolcache/go/1.26.6/x64/src/testing/testing.go:1803 +0x50c
+2026-09-09T05:27:56.6488688Z github.com/agentstation/starmap.TestRollbackProjectionConflictKeepsCommittedGenerationAndHumanEdit(0xc0002d4488)
+2026-09-09T05:27:56.6490381Z 	/home/runner/work/starmap/starmap/rollback_test.go:134 +0x3f
+2026-09-09T05:27:56.6491043Z testing.tRunner(0xc0002d4488, 0x2a251f8)
+2026-09-09T05:27:56.6491751Z 	/opt/hostedtoolcache/go/1.26.6/x64/src/testing/testing.go:2036 +0x21d
+2026-09-09T05:27:56.6492427Z created by testing.(*T).Run in goroutine 1
+2026-09-09T05:27:56.6493385Z 	/opt/hostedtoolcache/go/1.26.6/x64/src/testing/testing.go:2101 +0xb13
+2026-09-09T05:27:56.6493934Z 
+2026-09-09T05:27:56.6494138Z goroutine 175 [chan receive, 3 minutes]:
+2026-09-09T05:27:56.6494631Z testing.(*T).Parallel(0xc0000fbb08)
+2026-09-09T05:27:56.6495302Z 	/opt/hostedtoolcache/go/1.26.6/x64/src/testing/testing.go:1803 +0x50c
+2026-09-09T05:27:56.6496396Z github.com/agentstation/starmap.TestRollbackRestoresExactRetainedGenerationAndWorkspace(0xc0000fbb08)
+2026-09-09T05:27:56.6497469Z 	/home/runner/work/starmap/starmap/rollback_test.go:22 +0x3f
+2026-09-09T05:27:56.6498081Z testing.tRunner(0xc0000fbb08, 0x2a25200)
+2026-09-09T05:27:56.6499026Z 	/opt/hostedtoolcache/go/1.26.6/x64/src/testing/testing.go:2036 +0x21d
+2026-09-09T05:27:56.6499703Z created by testing.(*T).Run in goroutine 1
+2026-09-09T05:27:56.6500410Z 	/opt/hostedtoolcache/go/1.26.6/x64/src/testing/testing.go:2101 +0xb13
+2026-09-09T05:27:56.6500898Z 
+2026-09-09T05:27:56.6501058Z goroutine 262 [runnable]:
+2026-09-09T05:27:56.6501841Z github.com/goccy/go-yaml/scanner.(*Scanner).updateIndent(0xc0001426d0, 0xc002f86000?, 0x66)
+2026-09-09T05:27:56.6502952Z 	/home/runner/go/pkg/mod/github.com/goccy/go-yaml@v1.19.2/scanner/scanner.go:176 +0x2d5
+2026-09-09T05:27:56.6503928Z github.com/goccy/go-yaml/scanner.(*Scanner).scan(0xc0001426d0, 0xc002f86000)
+2026-09-09T05:27:56.6504949Z 	/home/runner/go/pkg/mod/github.com/goccy/go-yaml@v1.19.2/scanner/scanner.go:1332 +0x15d
+2026-09-09T05:27:56.6505855Z github.com/goccy/go-yaml/scanner.(*Scanner).Scan(0xc0001426d0)
+2026-09-09T05:27:56.6506810Z 	/home/runner/go/pkg/mod/github.com/goccy/go-yaml@v1.19.2/scanner/scanner.go:1525 +0x185
+2026-09-09T05:27:56.6507723Z github.com/goccy/go-yaml/lexer.Tokenize({0xc0301fa000, 0x1c90fd7})
+2026-09-09T05:27:56.6508874Z 	/home/runner/go/pkg/mod/github.com/goccy/go-yaml@v1.19.2/lexer/lexer.go:16 +0x1ea
+2026-09-09T05:27:56.6510015Z github.com/goccy/go-yaml/parser.ParseBytes({0xc025a3a000, 0x1c90fd7, 0xc025a3a000?}, 0x0, {0x0, 0x0, 0x0})
+2026-09-09T05:27:56.6511151Z 	/home/runner/go/pkg/mod/github.com/goccy/go-yaml@v1.19.2/parser/parser.go:22 +0x6b
+2026-09-09T05:27:56.6557866Z github.com/goccy/go-yaml.(*Decoder).parse(0xc0429ca500, {0x2a4a400, 0x36e53c0}, {0xc025a3a000, 0x1c90fd7, 0x1c92000})
+2026-09-09T05:27:56.6560290Z 	/home/runner/go/pkg/mod/github.com/goccy/go-yaml@v1.19.2/decode.go:1909 +0x16c
+2026-09-09T05:27:56.6561937Z github.com/goccy/go-yaml.(*Decoder).decodeInit(0xc0429ca500, {0x2a4a400, 0x36e53c0})
+2026-09-09T05:27:56.6563541Z 	/home/runner/go/pkg/mod/github.com/goccy/go-yaml@v1.19.2/decode.go:1947 +0x18a
+2026-09-09T05:27:56.6565330Z github.com/goccy/go-yaml.(*Decoder).DecodeContext(0xc0429ca500, {0x2a4a400, 0x36e53c0}, {0x1abfd80, 0xc00d5b7228})
+2026-09-09T05:27:56.6567135Z 	/home/runner/go/pkg/mod/github.com/goccy/go-yaml@v1.19.2/decode.go:2004 +0x174
+2026-09-09T05:27:56.6569326Z github.com/goccy/go-yaml.UnmarshalContext({0x2a4a400, 0x36e53c0}, {0xc0444da000, 0x1c90fd7, 0x1c90fd8}, {0x1abfd80, 0xc00d5b7228}, {0x0, 0x0, 0x0})
+2026-09-09T05:27:56.6602025Z 	/home/runner/go/pkg/mod/github.com/goccy/go-yaml@v1.19.2/yaml.go:207 +0x405
+2026-09-09T05:27:56.6603147Z github.com/goccy/go-yaml.UnmarshalWithOptions(...)
+2026-09-09T05:27:56.6604187Z 	/home/runner/go/pkg/mod/github.com/goccy/go-yaml@v1.19.2/yaml.go:201
+2026-09-09T05:27:56.6605145Z github.com/goccy/go-yaml.Unmarshal(...)
+2026-09-09T05:27:56.6606080Z 	/home/runner/go/pkg/mod/github.com/goccy/go-yaml@v1.19.2/yaml.go:195
+2026-09-09T05:27:56.6607377Z github.com/agentstation/starmap/pkg/catalogs.(*Builder).loadProvenanceYAML(0xc0399c2360)
+2026-09-09T05:27:56.6608931Z 	/home/runner/work/starmap/starmap/pkg/catalogs/load.go:203 +0x18f
+2026-09-09T05:27:56.6610068Z github.com/agentstation/starmap/pkg/catalogs.(*Builder).Load(0xc0399c2360)
+2026-09-09T05:27:56.6611681Z 	/home/runner/work/starmap/starmap/pkg/catalogs/load.go:85 +0xec
+2026-09-09T05:27:56.6612923Z github.com/agentstation/starmap/pkg/catalogs.New(0xc02f9a0e28, {0x0, 0x0, 0x4de0da?})
+2026-09-09T05:27:56.6614493Z 	/home/runner/work/starmap/starmap/pkg/catalogs/catalog.go:87 +0x634
+2026-09-09T05:27:56.6615643Z github.com/agentstation/starmap/pkg/catalogs.NewFromPath({0xc009368680, 0x7b})
+2026-09-09T05:27:56.6616895Z 	/home/runner/work/starmap/starmap/pkg/catalogs/catalog.go:110 +0xaf
+2026-09-09T05:27:56.6618324Z github.com/agentstation/starmap/internal/catalog/workspace.readSemanticState({0xc009368680, 0x7b})
+2026-09-09T05:27:56.6620638Z 	/home/runner/work/starmap/starmap/internal/catalog/workspace/projector.go:524 +0x27d
+2026-09-09T05:27:56.6622978Z github.com/agentstation/starmap/internal/catalog/workspace.projector.stageCatalog({0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0}, {0x2a4a400, 0x36e53c0}, {0xc0023b47d0, ...}, ...)
+2026-09-09T05:27:56.6625627Z 	/home/runner/work/starmap/starmap/internal/catalog/workspace/projector.go:589 +0x525
+2026-09-09T05:27:56.6627899Z github.com/agentstation/starmap/internal/catalog/workspace.projector.projectLocked({0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0}, {0x2a4a400, 0x36e53c0}, {0xc0023b47d0, ...}, ...)
+2026-09-09T05:27:56.6630912Z 	/home/runner/work/starmap/starmap/internal/catalog/workspace/projector.go:225 +0x39f
+2026-09-09T05:27:56.6632978Z github.com/agentstation/starmap/internal/catalog/workspace.projector.project({0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0}, {0x2a4a400, 0x36e53c0}, {0xc0023b47d0, ...}, ...)
+2026-09-09T05:27:56.6635065Z 	/home/runner/work/starmap/starmap/internal/catalog/workspace/projector.go:197 +0x335
+2026-09-09T05:27:56.6636504Z github.com/agentstation/starmap/internal/catalog/workspace.ProjectExpected(...)
+2026-09-09T05:27:56.6637947Z 	/home/runner/work/starmap/starmap/internal/catalog/workspace/projector.go:157
+2026-09-09T05:27:56.6640353Z github.com/agentstation/starmap.projectRollbackCatalog({0x2a4a400, 0x36e53c0}, 0xc000c02730, {0xc0023b47d0, 0x4e}, {{0xc000028c00?, 0x45fd25?}, {0xc00071a7d0?, 0x1cf5900?}}, {{0xc0023b47d0, ...}, ...})
+2026-09-09T05:27:56.6642459Z 	/home/runner/work/starmap/starmap/rollback.go:132 +0x311
+2026-09-09T05:27:56.6643849Z github.com/agentstation/starmap.(*Client).Sync(0xc01a663b00, {0x2a4a400, 0x36e53c0}, {0xc000061e58, 0x3, 0x1d99f5a?})
+2026-09-09T05:27:56.6645424Z 	/home/runner/work/starmap/starmap/sync_test_adapter_test.go:68 +0xe37
+2026-09-09T05:27:56.6646964Z github.com/agentstation/starmap.TestWritableStoreAllowsConfiguredMutationTriggers.func1(0xc0002d4908)
+2026-09-09T05:27:56.6668298Z 	/home/runner/work/starmap/starmap/writable_store_test.go:92 +0x705
+2026-09-09T05:27:56.6669259Z testing.tRunner(0xc0002d4908, 0x2a253e8)
+2026-09-09T05:27:56.6670007Z 	/opt/hostedtoolcache/go/1.26.6/x64/src/testing/testing.go:2036 +0x21d
+2026-09-09T05:27:56.6670756Z created by testing.(*T).Run in goroutine 261
+2026-09-09T05:27:56.6671485Z 	/opt/hostedtoolcache/go/1.26.6/x64/src/testing/testing.go:2101 +0xb13
+2026-09-09T05:27:56.6672245Z FAIL	github.com/agentstation/starmap	1200.700s
+2026-09-09T05:27:56.6672883Z ok  	github.com/agentstation/starmap/acquisition	894.771s
+2026-09-09T05:27:56.6673771Z ?   	github.com/agentstation/starmap/cmd/starmap	[no test files]
+2026-09-09T05:27:56.6674934Z ok  	github.com/agentstation/starmap/cmd/starmap-bootstrap-manifest	233.050s
+2026-09-09T05:27:56.6676205Z ok  	github.com/agentstation/starmap/cmd/starmap-catalog-release	1.365s
+2026-09-09T05:27:56.6677369Z ok  	github.com/agentstation/starmap/cmd/starmap-embedded-budget	53.068s
+2026-09-09T05:27:56.6678775Z ok  	github.com/agentstation/starmap/cmd/starmap-modelsdev-promote	7.234s
+2026-09-09T05:27:56.6679972Z ok  	github.com/agentstation/starmap/cmd/starmap-openapi-presence	1.085s
+2026-09-09T05:27:56.6681114Z ok  	github.com/agentstation/starmap/internal/architecture	1.237s
+2026-09-09T05:27:56.6682095Z ok  	github.com/agentstation/starmap/internal/attestation	1.292s
+2026-09-09T05:27:56.6683435Z ok  	github.com/agentstation/starmap/internal/auth	1.767s
+2026-09-09T05:27:56.6684389Z ok  	github.com/agentstation/starmap/internal/bootstrap	542.089s
+2026-09-09T05:27:56.6685480Z ok  	github.com/agentstation/starmap/internal/bootstrap/budget	109.182s
+2026-09-09T05:27:56.6686942Z ok  	github.com/agentstation/starmap/internal/bootstrap/manifest	1.050s
+2026-09-09T05:27:56.6688128Z ok  	github.com/agentstation/starmap/internal/catalog/pipeline	21.222s
+2026-09-09T05:27:56.6689196Z ok  	github.com/agentstation/starmap/internal/catalog/query	1.021s
+2026-09-09T05:27:56.6690229Z ok  	github.com/agentstation/starmap/internal/catalog/reconciler	3.475s
+2026-09-09T05:27:56.6691355Z ok  	github.com/agentstation/starmap/internal/catalog/settings	27.174s
+2026-09-09T05:27:56.6692407Z ok  	github.com/agentstation/starmap/internal/catalog/workspace	25.485s
+2026-09-09T05:27:56.6693449Z ok  	github.com/agentstation/starmap/internal/ciworkflow	1.155s
+2026-09-09T05:27:56.6694488Z ?   	github.com/agentstation/starmap/internal/cli/alerts	[no test files]
+2026-09-09T05:27:56.6695512Z ok  	github.com/agentstation/starmap/internal/cli/app	497.705s
+2026-09-09T05:27:56.6696615Z ?   	github.com/agentstation/starmap/internal/cli/commands/auth	[no test files]
+2026-09-09T05:27:56.6697946Z ?   	github.com/agentstation/starmap/internal/cli/commands/authors	[no test files]
+2026-09-09T05:27:56.6710274Z ?   	github.com/agentstation/starmap/internal/cli/commands/completion	[no test files]
+2026-09-09T05:27:56.6711592Z ok  	github.com/agentstation/starmap/internal/cli/commands/config	1.133s
+2026-09-09T05:27:56.6712731Z ok  	github.com/agentstation/starmap/internal/cli/commands/deps	25.585s
+2026-09-09T05:27:56.6713889Z ok  	github.com/agentstation/starmap/internal/cli/commands/embed	1.033s
+2026-09-09T05:27:56.6715017Z ok  	github.com/agentstation/starmap/internal/cli/commands/migrate	1.073s
+2026-09-09T05:27:56.6716191Z ok  	github.com/agentstation/starmap/internal/cli/commands/models	1.066s
+2026-09-09T05:27:56.6717363Z ok  	github.com/agentstation/starmap/internal/cli/commands/providers	1.079s
+2026-09-09T05:27:56.6718754Z ok  	github.com/agentstation/starmap/internal/cli/commands/serve	1.083s
+2026-09-09T05:27:56.6719625Z ok  	github.com/agentstation/starmap/internal/cli/commands/update	1.079s
+2026-09-09T05:27:56.6720494Z ok  	github.com/agentstation/starmap/internal/cli/commands/validate	1.053s
+2026-09-09T05:27:56.6722661Z ?   	github.com/agentstation/starmap/internal/cli/completion	[no test files]
+2026-09-09T05:27:56.6723584Z ?   	github.com/agentstation/starmap/internal/cli/constants	[no test files]
+2026-09-09T05:27:56.6724406Z ok  	github.com/agentstation/starmap/internal/cli/convert	1.024s
+2026-09-09T05:27:56.6725154Z ok  	github.com/agentstation/starmap/internal/cli/embed	1.017s
+2026-09-09T05:27:56.6725921Z ?   	github.com/agentstation/starmap/internal/cli/emoji	[no test files]
+2026-09-09T05:27:56.6726743Z ?   	github.com/agentstation/starmap/internal/cli/filter	[no test files]
+2026-09-09T05:27:56.6727583Z ?   	github.com/agentstation/starmap/internal/cli/format	[no test files]
+2026-09-09T05:27:56.6728602Z ?   	github.com/agentstation/starmap/internal/cli/globals	[no test files]
+2026-09-09T05:27:56.6729399Z ok  	github.com/agentstation/starmap/internal/cli/hints	1.040s
+2026-09-09T05:27:56.6730194Z ?   	github.com/agentstation/starmap/internal/cli/notify	[no test files]
+2026-09-09T05:27:56.6731048Z ?   	github.com/agentstation/starmap/internal/cli/provider	[no test files]
+2026-09-09T05:27:56.6731851Z ok  	github.com/agentstation/starmap/internal/cli/table	1.040s
+2026-09-09T05:27:56.6732634Z ?   	github.com/agentstation/starmap/internal/constants	[no test files]
+2026-09-09T05:27:56.6733690Z ok  	github.com/agentstation/starmap/internal/deploymentdocs	1.047s
+2026-09-09T05:27:56.6738179Z ?   	github.com/agentstation/starmap/internal/deps	[no test files]
+2026-09-09T05:27:56.6739552Z ok  	github.com/agentstation/starmap/internal/embedded	33.781s
+2026-09-09T05:27:56.6740847Z ?   	github.com/agentstation/starmap/internal/embedded/openapi	[no test files]
+2026-09-09T05:27:56.6742862Z ok  	github.com/agentstation/starmap/internal/filepublish	1.043s
+2026-09-09T05:27:56.6743751Z ok  	github.com/agentstation/starmap/internal/fleet	1.013s
+2026-09-09T05:27:56.6744658Z ok  	github.com/agentstation/starmap/internal/privatefiles	1.089s
+2026-09-09T05:27:56.6746117Z ok  	github.com/agentstation/starmap/internal/providers/anthropic	19.863s
+2026-09-09T05:27:56.6747213Z ok  	github.com/agentstation/starmap/internal/providers/clients	2.615s
+2026-09-09T05:27:56.6748222Z ok  	github.com/agentstation/starmap/internal/providers/google	1.088s
+2026-09-09T05:27:56.6749534Z ok  	github.com/agentstation/starmap/internal/providers/openai	29.577s
+2026-09-09T05:27:56.6750520Z ok  	github.com/agentstation/starmap/internal/runtimeacl/windows	1.033s
+2026-09-09T05:31:13.2795687Z ok  	github.com/agentstation/starmap/internal/server	564.187s
+2026-09-09T05:31:13.2796734Z ok  	github.com/agentstation/starmap/internal/server/cache	1.380s
+2026-09-09T05:31:13.2802119Z ok  	github.com/agentstation/starmap/internal/server/handlers	52.788s
+2026-09-09T05:31:13.2803036Z ok  	github.com/agentstation/starmap/internal/server/middleware	1.240s
+2026-09-09T05:31:13.2803875Z ok  	github.com/agentstation/starmap/internal/server/openrouter	26.628s
+2026-09-09T05:31:13.2804684Z ok  	github.com/agentstation/starmap/internal/server/operations	1.024s
+2026-09-09T05:31:13.2805505Z ok  	github.com/agentstation/starmap/internal/server/params	1.032s
+2026-09-09T05:31:13.2806266Z ok  	github.com/agentstation/starmap/internal/server/response	1.020s
+2026-09-09T05:31:13.2807019Z ok  	github.com/agentstation/starmap/internal/server/sse	1.034s
+2026-09-09T05:31:13.2807772Z ok  	github.com/agentstation/starmap/internal/sources/embedded	1.028s
+2026-09-09T05:31:13.2808859Z ok  	github.com/agentstation/starmap/internal/sources/github	1.658s
+2026-09-09T05:31:13.2809603Z ok  	github.com/agentstation/starmap/internal/sources/local	1.054s
+2026-09-09T05:31:13.2810397Z ok  	github.com/agentstation/starmap/internal/sources/modelsdev	139.219s
+2026-09-09T05:31:13.2811223Z ok  	github.com/agentstation/starmap/internal/sources/providers	1.245s
+2026-09-09T05:31:13.2812049Z ?   	github.com/agentstation/starmap/internal/test/catalog	[no test files]
+2026-09-09T05:31:13.2812883Z ?   	github.com/agentstation/starmap/internal/test/channel	[no test files]
+2026-09-09T05:31:13.2813718Z ?   	github.com/agentstation/starmap/internal/test/logging	[no test files]
+2026-09-09T05:31:13.2814549Z ok  	github.com/agentstation/starmap/internal/test/providerfixture	1.054s
+2026-09-09T05:31:13.2815323Z ok  	github.com/agentstation/starmap/internal/transport	1.860s
+2026-09-09T05:31:13.2816012Z ok  	github.com/agentstation/starmap/pkg/catalogs	158.351s
+2026-09-09T05:31:13.2816727Z ok  	github.com/agentstation/starmap/pkg/catalogs/artifact	1.273s
+2026-09-09T05:31:13.2817474Z ok  	github.com/agentstation/starmap/pkg/catalogs/authority	1.021s
+2026-09-09T05:31:13.2818229Z ok  	github.com/agentstation/starmap/pkg/catalogs/config	74.448s
+2026-09-09T05:31:13.2819118Z ok  	github.com/agentstation/starmap/pkg/catalogs/evidence	1.018s
+2026-09-09T05:31:13.2820034Z ?   	github.com/agentstation/starmap/pkg/catalogs/internal/resourcepolicy	[no test files]
+2026-09-09T05:31:13.2820962Z ok  	github.com/agentstation/starmap/pkg/catalogs/projection	1.015s
+2026-09-09T05:31:13.2821733Z ok  	github.com/agentstation/starmap/pkg/catalogs/remote	1.420s
+2026-09-09T05:31:13.2822467Z ok  	github.com/agentstation/starmap/pkg/catalogs/storage	2.162s
+2026-09-09T05:31:13.2823222Z ok  	github.com/agentstation/starmap/pkg/catalogs/storage/s3	1.178s
+2026-09-09T05:31:13.2823892Z ok  	github.com/agentstation/starmap/pkg/differ	1.015s
+2026-09-09T05:31:13.2824506Z ok  	github.com/agentstation/starmap/pkg/errors	1.021s
+2026-09-09T05:31:13.2825111Z ok  	github.com/agentstation/starmap/pkg/logging	1.017s
+2026-09-09T05:31:13.2825765Z ok  	github.com/agentstation/starmap/pkg/productpaths	1.029s
+2026-09-09T05:31:13.2826497Z ok  	github.com/agentstation/starmap/pkg/productpaths/policy	1.013s
+2026-09-09T05:31:13.2827224Z ok  	github.com/agentstation/starmap/pkg/provenance	1.025s
+2026-09-09T05:31:13.2828320Z ok  	github.com/agentstation/starmap/pkg/sources	1.125s
+2026-09-09T05:31:13.2829175Z ok  	github.com/agentstation/starmap/pkg/sources/payload	1.311s
+2026-09-09T05:31:13.2829840Z ok  	github.com/agentstation/starmap/pkg/sync	1.024s
+2026-09-09T05:31:13.2830669Z ok  	github.com/agentstation/starmap/remote	38.961s
+2026-09-09T05:43:44.0335763Z ok  	github.com/agentstation/starmap/runtime	898.843s
+2026-09-09T05:43:44.0336552Z ?   	github.com/agentstation/starmap/runtime/source	[no test files]
+2026-09-09T05:43:44.0337303Z ?   	github.com/agentstation/starmap/runtime/status	[no test files]
+2026-09-09T05:43:44.0337978Z ok  	github.com/agentstation/starmap/server	38.863s
+2026-09-09T05:43:44.0338697Z FAIL
+2026-09-09T05:43:44.2907622Z make: *** [Makefile:224: verify] Error 1
+2026-09-09T05:43:44.2964633Z ##[error]Process completed with exit code 2.
+2026-09-09T05:43:44.3136273Z Post job cleanup.
+2026-09-09T05:43:44.5552563Z [command]/usr/bin/git version
+2026-09-09T05:43:44.5610731Z git version 2.55.0
+2026-09-09T05:43:44.5653816Z Temporarily overriding HOME='/home/runner/work/_temp/4e7c01cb-15b6-4176-9ba2-33906bf7759c' before making global git config changes
+2026-09-09T05:43:44.5655465Z Adding repository directory to the temporary git global config as a safe directory
+2026-09-09T05:43:44.5660527Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/starmap/starmap/.ci/agentstation-skills
+2026-09-09T05:43:44.5759377Z Removing SSH command configuration
+2026-09-09T05:43:44.5760336Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-09-09T05:43:44.5805873Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-09-09T05:43:44.6084540Z Removing HTTP extra header
+2026-09-09T05:43:44.6085469Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-09-09T05:43:44.6122521Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-09-09T05:43:44.6409221Z Removing includeIf entries pointing to credentials config files
+2026-09-09T05:43:44.6423094Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-09-09T05:43:44.6464783Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-09-09T05:43:44.6944085Z Post job cleanup.
+2026-09-09T05:43:44.7817685Z [command]/usr/bin/git version
+2026-09-09T05:43:44.7864660Z git version 2.55.0
+2026-09-09T05:43:44.7900739Z Temporarily overriding HOME='/home/runner/work/_temp/a3bf3403-0361-4306-9a24-2624adc26406' before making global git config changes
+2026-09-09T05:43:44.7902175Z Adding repository directory to the temporary git global config as a safe directory
+2026-09-09T05:43:44.7905778Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/starmap/starmap
+2026-09-09T05:43:44.7946779Z Removing SSH command configuration
+2026-09-09T05:43:44.7954302Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-09-09T05:43:44.7994430Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-09-09T05:43:44.8274301Z Removing HTTP extra header
+2026-09-09T05:43:44.8281322Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-09-09T05:43:44.8329761Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-09-09T05:43:44.8603854Z Removing includeIf entries pointing to credentials config files
+2026-09-09T05:43:44.8612113Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-09-09T05:43:44.8646404Z includeif.gitdir:/home/runner/work/starmap/starmap/.git.path
+2026-09-09T05:43:44.8647419Z includeif.gitdir:/home/runner/work/starmap/starmap/.git/worktrees/*.path
+2026-09-09T05:43:44.8648122Z includeif.gitdir:/github/workspace/.git.path
+2026-09-09T05:43:44.8649112Z includeif.gitdir:/github/workspace/.git/worktrees/*.path
+2026-09-09T05:43:44.8657101Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/home/runner/work/starmap/starmap/.git.path
+2026-09-09T05:43:44.8689656Z /home/runner/work/_temp/git-credentials-05f3b046-7a40-4ec4-ab30-99cdbe9a6faa.config
+2026-09-09T05:43:44.8702348Z [command]/usr/bin/git config --local --unset includeif.gitdir:/home/runner/work/starmap/starmap/.git.path \/home\/runner\/work\/_temp\/git\-credentials\-05f3b046\-7a40\-4ec4\-ab30\-99cdbe9a6faa\.config
+2026-09-09T05:43:44.8757154Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/home/runner/work/starmap/starmap/.git/worktrees/*.path
+2026-09-09T05:43:44.8790761Z /home/runner/work/_temp/git-credentials-05f3b046-7a40-4ec4-ab30-99cdbe9a6faa.config
+2026-09-09T05:43:44.8818582Z [command]/usr/bin/git config --local --unset includeif.gitdir:/home/runner/work/starmap/starmap/.git/worktrees/*.path \/home\/runner\/work\/_temp\/git\-credentials\-05f3b046\-7a40\-4ec4\-ab30\-99cdbe9a6faa\.config
+2026-09-09T05:43:44.8855209Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/github/workspace/.git.path
+2026-09-09T05:43:44.8889505Z /github/runner_temp/git-credentials-05f3b046-7a40-4ec4-ab30-99cdbe9a6faa.config
+2026-09-09T05:43:44.8908592Z [command]/usr/bin/git config --local --unset includeif.gitdir:/github/workspace/.git.path \/github\/runner_temp\/git\-credentials\-05f3b046\-7a40\-4ec4\-ab30\-99cdbe9a6faa\.config
+2026-09-09T05:43:44.8939802Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/github/workspace/.git/worktrees/*.path
+2026-09-09T05:43:44.8969413Z /github/runner_temp/git-credentials-05f3b046-7a40-4ec4-ab30-99cdbe9a6faa.config
+2026-09-09T05:43:44.8978076Z [command]/usr/bin/git config --local --unset includeif.gitdir:/github/workspace/.git/worktrees/*.path \/github\/runner_temp\/git\-credentials\-05f3b046\-7a40\-4ec4\-ab30\-99cdbe9a6faa\.config
+2026-09-09T05:43:44.9020808Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-09-09T05:43:44.9295373Z Removing credentials config '/home/runner/work/_temp/git-credentials-05f3b046-7a40-4ec4-ab30-99cdbe9a6faa.config'
+2026-09-09T05:43:44.9510935Z Cleaning up orphan processes

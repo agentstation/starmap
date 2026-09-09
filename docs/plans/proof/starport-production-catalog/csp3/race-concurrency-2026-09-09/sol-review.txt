@@ -1,0 +1,19 @@
+autoreview target: branch
+branch: codex/catalog-presence-main
+gate: pre-pr (configured cadence: pre-pr)
+profile: sol
+config: /Users/jack/.config/autoreview/config.toml
+selection: sol=7.83
+reviewers: codex model=gpt-5.6-sol thinking=xhigh
+tools: on
+web_search: on
+ref: 7be0a02701447ef0f3f044bbbd5cfd9ea5524f9e
+trufflehog: clean (3.7s)
+bundle: 522386 bytes; review passes: 3
+review pass: 1/3 (193578 prompt bytes)
+review pass: 2/3 (231962 prompt bytes)
+review pass: 3/3 (118456 prompt bytes)
+autoreview chunked clean: no accepted/actionable findings reported
+overall: patch is correct (0.98)
+Chunked review complete. chunk 1/3: 0 finding(s), chunk 2/3: 0 finding(s), chunk 3/3: 0 finding(s).
+autoreview clean attestation stored for this substantive diff

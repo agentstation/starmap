@@ -1,0 +1,81 @@
+{
+  "task": "CSP3",
+  "completion_credit": false,
+  "completed_tasks": 8,
+  "merged_prs": 16,
+  "failed_run": {
+    "id": 34312137809,
+    "head": "93c73439148544ddc4874ffbba818b4ef74166d2",
+    "job_id": 102340856983,
+    "job": "Verification Gate",
+    "status": "FAIL",
+    "cause": "The root package race suite reached its cumulative twenty-minute deadline. The writable-store manual sync test was parsing 29,954,007 bytes of provenance YAML while projecting a full catalog workspace.",
+    "package_seconds": 1200.7,
+    "active_test_seconds": 171,
+    "native_jobs_passed": 6,
+    "native_test_pass_events": 8520,
+    "minimum_go_suite": "PASS",
+    "minimum_external_consumer": "PASS",
+    "later_stages": "UNVERIFIED after race suite failure"
+  },
+  "repair": {
+    "head": "fff54427",
+    "files": [
+      "scripts/verify.sh",
+      "internal/ciworkflow/pr_workflow_test.go"
+    ],
+    "change": "Use -p=2 for the complete race suite. Preserve all tests, assertions, and the twenty-minute timeout.",
+    "rationale": "The full local verification at the range candidate passed with GOFLAGS=-p=2. CI used default package concurrency. Resource contention is a working hypothesis that requires fresh CI.",
+    "local_prior_root_package_seconds": 602.62,
+    "workflow_race_go_1_26_6": "PASS, 1.303s",
+    "workflow_minimum_go_1_25_12": "PASS, 0.244s",
+    "ago_exit": 0,
+    "writing_files": 1239,
+    "writing_diagnostics": 0,
+    "shell_syntax_exit": 0,
+    "reviews": "IN_PROGRESS",
+    "ci": "UNVERIFIED",
+    "sol_review_exit": 0
+  },
+  "artifacts": [
+    {
+      "path": "verification-failure.log",
+      "sha256": "2f4eee59db55d62b240e553a08da8105220069df70d0f7c1f73fb9b4e374cf58",
+      "bytes": 150263
+    },
+    {
+      "path": "writable-store-profile.jsonl",
+      "sha256": "fd2d10d8dfb8d08fff39242091a0e566bd689c7ba14643f7f289fb25e020e4ef",
+      "bytes": 5364
+    },
+    {
+      "path": "writable-store-cpu.pprof",
+      "sha256": "2e0ca10f3393cbbfbdd9661ce243346f75e7cc8f9d04c15e5a78bd732b6ccdd6",
+      "bytes": 157030
+    },
+    {
+      "path": "sol-review.txt",
+      "sha256": "3a3c1c2e80a093cb77e44a097aa80b47b2c39d1c0a8a97443f5c54ca3a74d134",
+      "bytes": 752
+    },
+    {
+      "path": "ago.json",
+      "sha256": "b8fb7afa66aa7a93914ac258475dd0191be821803a8aea4439f5ba05022f5fa5",
+      "bytes": 289
+    }
+  ],
+  "focused_profile": {
+    "command": "env GOTOOLCHAIN=go1.26.6 GOFLAGS=-p=2 go test -race -count=1 -timeout=10m -run ^TestWritableStoreAllowsConfiguredMutationTriggers$ -cpuprofile=/tmp/starmap-writable-store-cpu.pprof -o /tmp/starmap-writable-store.test -json .",
+    "head": "93c73439148544ddc4874ffbba818b4ef74166d2",
+    "exit": 0,
+    "test_pass_events": 4,
+    "package_passes": 1,
+    "manual_sync_seconds": 191.22,
+    "package_seconds": 193.089,
+    "cpu_sample_seconds": 208.66,
+    "tsan_memory_range_set_percent": 22.93,
+    "runtime_madvise_percent": 11.17,
+    "tsan_read_percent": 9.91,
+    "diagnosis": "The focused test completes with all assertions. Race instrumentation and memory management dominate the CPU profile. No deadlock appeared in the CI stack or focused profile."
+  }
+}
