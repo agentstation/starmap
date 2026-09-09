@@ -944,6 +944,196 @@
           "test": "TestWindowsJournalReplacementRecoversAfterEditorHandleCloses"
         }
       ]
+    },
+    "A08.field_authority": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./runtime",
+          "test": "TestRuntimePricingAuthorityPreservesCompleteRecord"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./internal/catalog/reconciler",
+          "test": "TestMergeModelsUsesCompleteProviderPricingWithoutSubfieldMixing"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./internal/catalog/reconciler",
+          "test": "TestPricingAuthorityValidProviderOfferingWinsAtomically"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./internal/catalog/reconciler",
+          "test": "TestPricingAuthorityRetainsPriorValidPriceWhenCurrentCandidateIsInvalid"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./internal/catalog/reconciler",
+          "test": "TestPricingAuthorityPreservesRejectionsWhenEveryCandidateIsInvalid"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./internal/catalog/reconciler",
+          "test": "TestScopedReconciliationPrefersFreshPeerToNewerStaleFallback"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./internal/catalog/reconciler",
+          "test": "TestScopedReconciliationAcceptsIdenticalSharedFactsDeterministically"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./pkg/catalogs",
+          "test": "TestPriceUnitCurrencyAndZeroValidation"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./pkg/catalogs",
+          "test": "TestPriceUnitTierValidation"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./pkg/catalogs",
+          "test": "TestPriceUnitEffectiveTimeValidation"
+        }
+      ]
+    },
+    "A08.presence_zero_null": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./pkg/catalogs",
+          "test": "TestEveryModelFeaturePresenceStateRoundTrips"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./pkg/catalogs",
+          "test": "TestEveryModelLimitPresenceStateRoundTrips"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./pkg/catalogs",
+          "test": "TestArchitecturePresenceRoundTrip"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./pkg/catalogs",
+          "test": "TestOptionalModelRecordCodecStates"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./pkg/catalogs",
+          "test": "TestTokenCostPresenceCopiesAndRoundTrips"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./pkg/catalogs",
+          "test": "TestLegacyFreeTokenCostYAMLRemainsValid"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./pkg/catalogs",
+          "test": "TestParameterRangePresence"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./pkg/catalogs",
+          "test": "TestGenerationParameterPresence"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./pkg/catalogs",
+          "test": "TestOfferingRecordProjection"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./pkg/catalogs",
+          "test": "TestOptionalRecordDefinitionProjection"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./runtime",
+          "test": "TestProviderDescriptionRecoveryPreservesPresence"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./runtime",
+          "test": "TestProviderFeatureRecoveryPreservesContributingReceipts"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./runtime",
+          "test": "TestAllProviderLimitsRetainPresenceAcrossPublicationAndRestart"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./runtime",
+          "test": "TestProviderArchitectureRecoveryPreservesPresence"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./runtime",
+          "test": "TestProviderOptionalRecordRecoveryPreservesPresence"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./runtime",
+          "test": "TestProviderGenerationRecoveryPreservesNestedPresence"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./runtime",
+          "test": "TestMetadataOnlyLinkedMembershipSurvivesRuntimeLifecycle"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./cmd/starmap-openapi-presence",
+          "test": "TestEmbeddedGenerationParameterNullContract"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./cmd/starmap-openapi-presence",
+          "test": "TestEmbeddedCapabilityNullContract"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./cmd/starmap-openapi-presence",
+          "test": "TestArchitectureSchemaIncludesUnknown"
+        }
+      ]
     }
   }
 }
