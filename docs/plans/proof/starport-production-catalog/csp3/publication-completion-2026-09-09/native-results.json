@@ -1,0 +1,126 @@
+{
+  "run": 34414251026,
+  "head": "1b54481d04619d7cc52aa47f60dd2bf93cab0dba",
+  "status": "Partial native results. Remaining jobs are running.",
+  "platforms": {
+    "ubuntu-24.04": {
+      "conclusion": "success",
+      "checks": {
+        "publisher-ingestion.jsonl": {
+          "pass": 4,
+          "fail": 0,
+          "skip": 0
+        },
+        "git-acquisition.jsonl": {
+          "pass": 2,
+          "fail": 0,
+          "skip": 0
+        },
+        "tests.jsonl": {
+          "pass": 1489,
+          "fail": 0,
+          "skip": 1
+        }
+      }
+    },
+    "ubuntu-24.04-arm": {
+      "conclusion": "success",
+      "checks": {
+        "publisher-ingestion.jsonl": {
+          "pass": 4,
+          "fail": 0,
+          "skip": 0
+        },
+        "git-acquisition.jsonl": {
+          "pass": 2,
+          "fail": 0,
+          "skip": 0
+        },
+        "tests.jsonl": {
+          "pass": 1489,
+          "fail": 0,
+          "skip": 1
+        }
+      }
+    },
+    "macos-15": {
+      "conclusion": "success",
+      "checks": {
+        "publisher-ingestion.jsonl": {
+          "pass": 4,
+          "fail": 0,
+          "skip": 0
+        },
+        "git-acquisition.jsonl": {
+          "pass": 2,
+          "fail": 0,
+          "skip": 0
+        },
+        "tests.jsonl": {
+          "pass": 1545,
+          "fail": 0,
+          "skip": 0
+        }
+      }
+    }
+  },
+  "artifacts": [
+    {
+      "path": "ubuntu-24.04-toolchain.txt.gz",
+      "sha256": "97c8f6a514e3d291741b25f3e224fa25507745c57e2961dfd24420fa137db786"
+    },
+    {
+      "path": "ubuntu-24.04-publisher-ingestion.jsonl.gz",
+      "sha256": "516c7c0104b515cf85faca5c6cd92ccbdb5a9cc0e6f1050b9e0bb1d3df470183"
+    },
+    {
+      "path": "ubuntu-24.04-git-acquisition.jsonl.gz",
+      "sha256": "8568057f20cc9ad6e617576c950e038dd9fc94fa531386ae36a04c5646bdc030"
+    },
+    {
+      "path": "ubuntu-24.04-tests.jsonl.gz",
+      "sha256": "020613d89cfdd62316b688cb58892dbdf30d743b01aec6c721d1968d13a082f8"
+    },
+    {
+      "path": "ubuntu-24.04-service-owner.txt.gz",
+      "sha256": "825c13cfc13aa13ddc2e2b8abeaea95f1be714a7cf1e6f3e27b86f51bbff8396"
+    },
+    {
+      "path": "ubuntu-24.04-arm-toolchain.txt.gz",
+      "sha256": "59ba740afe0603603fc8b15251fce83f6388ae1f5cd2956c469b8382db8f881d"
+    },
+    {
+      "path": "ubuntu-24.04-arm-publisher-ingestion.jsonl.gz",
+      "sha256": "01037a11d42c1451b7cb0da2811adb29d572408e156faf62bdd85f531e7263a8"
+    },
+    {
+      "path": "ubuntu-24.04-arm-git-acquisition.jsonl.gz",
+      "sha256": "cbdac8abdd2e4254d28f54734ca6ce656bf40d603ead3b8d75d5d7537533dbad"
+    },
+    {
+      "path": "ubuntu-24.04-arm-tests.jsonl.gz",
+      "sha256": "04742075fc938a8b76a7b3d6fe72816df82e9759f2fbe6e039ff313bdb3393bf"
+    },
+    {
+      "path": "ubuntu-24.04-arm-service-owner.txt.gz",
+      "sha256": "f4d13eba019a347ac818c324f9e5f07df7c63bb7188d353fc1d33ed43c5f560a"
+    },
+    {
+      "path": "macos-15-toolchain.txt.gz",
+      "sha256": "91bf1bc081e7e3ce45e31dcda41c61d7bceba4500c3e29f08091921d8b36d503"
+    },
+    {
+      "path": "macos-15-publisher-ingestion.jsonl.gz",
+      "sha256": "dcd54447e5f721cad4561757bee7944c26c6d7ae372295b1c37db59dbc1eba64"
+    },
+    {
+      "path": "macos-15-git-acquisition.jsonl.gz",
+      "sha256": "1d754931fdfe858f01c491c011cc9178413abe960ed652cfbe687e96a15912cb"
+    },
+    {
+      "path": "macos-15-tests.jsonl.gz",
+      "sha256": "b918a21440598096a2250108a2c594f448cd5639af1e7bce12e63c2576536748"
+    }
+  ],
+  "linux_skip": "TestServiceConfigurationAdministratorOwnedRead skips under the ordinary user. The separate administrator-owned configuration step passes and retains service-owner.txt."
+}

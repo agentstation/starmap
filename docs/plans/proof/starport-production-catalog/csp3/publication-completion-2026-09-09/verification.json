@@ -145,6 +145,7 @@
     "status": "in_progress",
     "url": "https://github.com/agentstation/starmap/actions/runs/34414251026",
     "watch_session": 26598,
-    "watch_log": "/tmp/starmap-pr142-1b544-native-watch-2026-09-09.log"
+    "watch_log": "/tmp/starmap-pr142-1b544-native-watch-2026-09-09.log",
+    "partial_results": "native-results.json"
   }
 }
