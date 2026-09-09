@@ -1274,6 +1274,95 @@
           "test": "TestGitCLIRefreshIngestsProviderAndNonProviderEvidence"
         }
       ]
+    },
+    "A20.dependency_disabled_partial": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./internal/cli/app",
+          "test": "TestCLIMissingGitDependencyNamesSource"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./internal/cli/app",
+          "test": "TestHTTPMissingGitDependencyNamesSource"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./internal/cli/app",
+          "test": "TestConfiguredSourceSelectionSkipsMetadataInApplication"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./internal/cli/app",
+          "test": "TestGitConfiguredSourceSelectionSkipsMetadataInApplication"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./internal/cli/app",
+          "test": "TestCLIRefreshIngestsProviderAndNonProviderEvidence"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./internal/cli/app",
+          "test": "TestHTTPRefreshIngestsProviderAndNonProviderEvidence"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./internal/cli/app",
+          "test": "TestGitCLIRefreshIngestsProviderAndNonProviderEvidence"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./internal/cli/app",
+          "test": "TestGitHTTPRefreshIngestsProviderAndNonProviderEvidence"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./acquisition",
+          "test": "TestManualPreflightFailureReportsUnattemptedSources"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./acquisition",
+          "test": "TestManualRuntimePreflightReportsSelectedSources"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./acquisition",
+          "test": "TestManualPublicationFailureRetainsSourceActivity"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./acquisition",
+          "test": "TestSourceAcquirerReportsCanceledSelection"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./runtime",
+          "test": "TestSourceAcquisitionCancellationAndRejectionPreserveAcceptedState"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./runtime",
+          "test": "TestSourceAcquisitionRetainsReceiptsAndReportsPartialFailure"
+        }
+      ]
     }
   }
 }
