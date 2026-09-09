@@ -1,0 +1,119 @@
+{
+  "status": "Local verification passed; required review running before push.",
+  "worktree": "/tmp/starmap-source-activity-2026-09-09",
+  "branch": "codex/catalog-source-activity",
+  "failed_head": "c1af596ddd58b60699426580ca370824b565fc3e",
+  "failed_run": 34406770629,
+  "failed_jobs": {
+    "arm64": 102651802191,
+    "amd64": 102651802255
+  },
+  "observed_failure": "Bun 1.3.12 rewrites packages/web to a path traversing from the RUNNER~1 temporary directory toward runneradmin. Frozen install rejects the resulting change on both native Windows architectures.",
+  "evidence": [
+    "Both native artifacts show the same generated workspace path error.",
+    "Windows ARM passes TestFixtureUsesRegularGlobalGitConfig.",
+    "Native application logs use C:\\Users\\RUNNER~1 temporary paths; generated Bun workspace entries use runneradmin.",
+    "Go filepath.EvalSymlinks on Windows normalizes path component names with FindFirstFile."
+  ],
+  "repair": "Resolve Bun working directories with filepath.EvalSymlinks before the existing fixed install and build commands. Keep subprocess context, frozen arguments, input checksum checks, and publication errors.",
+  "diagnostic": "The fixture logs original and resolved directory names and still fails if frozen install changes its input.",
+  "artifacts": [
+    {
+      "path": "windows-arm-fail-before.gz",
+      "sha256": "c5b9747982efda7c6b6ecf685cd7e7e4d5cb3e6bad1ff4d83e187f6d6fc4aca2"
+    },
+    {
+      "path": "windows-x64-fail-before.gz",
+      "sha256": "28a531f0ca9dcfc9bfb097f28249eda21ba3c2642dfa1399917f7fab06c8c48e"
+    },
+    {
+      "path": "race.gz",
+      "sha256": "627deee62dd37a7a19cce35ff72a158368d0e2d12aa858948994c6077f4eda7d"
+    },
+    {
+      "path": "minimum.gz",
+      "sha256": "956933c584ff1f81fc7c5b9f2a1413ca796176a0563af9ff80ea7ce0f6aa2c17"
+    },
+    {
+      "path": "ago.gz",
+      "sha256": "905b50ebb66dc28cecf0d5d7681aabcd8b20af21ce5f8834692f1c6c68590281"
+    },
+    {
+      "path": "lint.gz",
+      "sha256": "199610e11b39d340c5da897591e5c7b1b55355fda82b154b5f15c628ec270b09"
+    },
+    {
+      "path": "docs.gz",
+      "sha256": "73ce5a998e8013812c2f8fc9847ac340fea58aa61dc47843dddc6af9241ee464"
+    },
+    {
+      "path": "prose.gz",
+      "sha256": "187b4cb78eaad96de16f5f988dc6dd8fb51a4abe444fc43e87fdda913199097f"
+    },
+    {
+      "path": "lint-failure.gz",
+      "sha256": "0c3a95e769c590a04e0c63ffc5bee68674950a0db28db2df5efcc2293313fce5"
+    },
+    {
+      "path": "docs-failure.gz",
+      "sha256": "16a814cb806d2ef45917d3a5937af915f8c872417f6aae31894ae0b59c0cb1fd"
+    },
+    {
+      "path": "plan-prose.gz",
+      "sha256": "993388c7b02d7a061a5d201360233d1aa6cc4317123ea5d97b90675161aafc00"
+    }
+  ],
+  "sessions": {
+    "race": 86127,
+    "minimum": 80930,
+    "lint": 40808,
+    "ago": 54726,
+    "docs_prose": 38602
+  },
+  "remaining": [
+    "Collect local verification and required review.",
+    "Push reviewed fix to PR #142.",
+    "Qualify native Windows and all other required CI checks before merge."
+  ],
+  "completion_credit": false,
+  "commit": "965e744d12f08917cdb3aa1410dfe3bf99527c02",
+  "tree": "2d33fb5970e56a0180850fe08111fd2a0f2aa442",
+  "local_checks": {
+    "race": {
+      "exit_code": 0,
+      "tests": 6,
+      "packages": 3,
+      "skips": 0
+    },
+    "minimum": {
+      "exit_code": 0,
+      "tests": 6,
+      "packages": 3,
+      "skips": 0
+    },
+    "lint": {
+      "exit_code": 0,
+      "findings": 0
+    },
+    "ago": {
+      "exit_code": 0
+    },
+    "docs_prose": {
+      "exit_code": 0,
+      "files": 1316,
+      "diagnostics": 0
+    }
+  },
+  "review": {
+    "session": 64535,
+    "status": "running",
+    "log": "/tmp/starmap-pr142-bun-directory-review-2026-09-09.log"
+  },
+  "files": {
+    "internal/sources/modelsdev/git_client.go": "4af500299055cca55380349418a7692cfaf75210feb798ff75abfb670e45bba3",
+    "internal/test/gitfixture/fixture_test.go": "9c38fcf640a34437a0bf5cceed972d5412524fffe7acf92709f2247eff8f213c"
+  },
+  "plan_prose": {
+    "exit_code": 0
+  }
+}
