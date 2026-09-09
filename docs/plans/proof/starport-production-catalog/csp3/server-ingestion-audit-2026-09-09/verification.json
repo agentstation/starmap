@@ -1,0 +1,89 @@
+{
+  "task": "CSP3",
+  "completion_credit": false,
+  "test": "TestHTTPRefreshIngestsProviderAndLocalEvidence",
+  "source_commit": "5c40192a620b43341f06a3ad49f4e2a743c741ba",
+  "delivery": "Temporary overlay only. Neither PR 138 nor PR 139 changed. No acceptance registration or complete A20 claim.",
+  "composition": "Actual App, Runtime, CatalogAcquisition, public server, HTTP client, provider fixture, local workspace, and filesystem store. No stub syncer.",
+  "contracts": [
+    "HTTP asynchronous updates acquire provider evidence and local workspace changes.",
+    "Local-only update makes no provider request.",
+    "Partial provider reply publishes the valid record with matching immutable partial receipt and degraded manifest.",
+    "A failed fresh provider update ends with failed operation status and preserves the accepted generation.",
+    "The application and HTTP server reopen with the same generation, checksum, data, and degraded receipt state.",
+    "Repeated HTTP model reads return the matching generation header and current provider fields across updates and restart."
+  ],
+  "runs": [
+    {
+      "scope": "acquisition lifecycle and runtime reads",
+      "toolchain": "go1.26.6",
+      "race": true,
+      "exit_code": 0,
+      "test_pass_events": 1,
+      "package_passes": 1,
+      "seconds": 78.038
+    },
+    {
+      "scope": "acquisition lifecycle and runtime reads",
+      "toolchain": "go1.25.12",
+      "race": false,
+      "exit_code": 0,
+      "test_pass_events": 1,
+      "package_passes": 1,
+      "seconds": 11.802
+    },
+    {
+      "scope": "extended HTTP reads and server restart",
+      "toolchain": "go1.26.6",
+      "race": true,
+      "exit_code": 0,
+      "test_pass_events": 1,
+      "package_passes": 1,
+      "seconds": 79.747
+    },
+    {
+      "scope": "extended HTTP reads and server restart",
+      "toolchain": "go1.25.12",
+      "race": false,
+      "exit_code": 0,
+      "test_pass_events": 1,
+      "package_passes": 1,
+      "seconds": 12.007
+    }
+  ],
+  "limitations": [
+    "The fixture uses an explicitly configured file baseline and one provider.",
+    "Models.dev HTTP/Git, dependency classification, disabled-source behavior, and the other A20 boundaries remain unverified.",
+    "This is correctness evidence, not latency qualification."
+  ],
+  "artifacts": [
+    {
+      "path": "starmap-server-ingestion-write-probe.go.gz",
+      "raw_sha256": "5b049afce031c624f5a81c1214dd3f3b74e6ed359ca3a786a0e16cc8e6809930"
+    },
+    {
+      "path": "starmap-server-ingestion-probe.go.gz",
+      "raw_sha256": "9c5831cd02bda5a838ebe6fd8d120f142b7df10ec1359994bde99180c3c06764"
+    },
+    {
+      "path": "starmap-server-ingestion-overlay.json.gz",
+      "raw_sha256": "564cce93bcaf6d514b77ad410d71887ba10b30e947f505c870428901e4667e02"
+    },
+    {
+      "path": "starmap-server-ingestion-audit.jsonl.gz",
+      "raw_sha256": "a6ac86e577622b96b6e2650f88f5aea407e5fc5c9491c85f754539d49dbdf05c"
+    },
+    {
+      "path": "starmap-server-ingestion-minimum.jsonl.gz",
+      "raw_sha256": "9335a7a207a92501885ce2622f9f2a52c588a7da23377577358d21db280aeeb4"
+    },
+    {
+      "path": "starmap-server-ingestion-read-audit.jsonl.gz",
+      "raw_sha256": "64ffc0d6ccba2bd88118f09b6a407738c281519fbe90f0e4c5ca5ff41e4c9aa4"
+    },
+    {
+      "path": "starmap-server-ingestion-read-minimum.jsonl.gz",
+      "raw_sha256": "ab84993da55485e46af07f46c3937e470a265b9d813de7009e14cac6cfa7ce65"
+    }
+  ]
+}
