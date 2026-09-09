@@ -199,4 +199,88 @@ func testConnectedSourceIngestion(t *testing.T, automatic bool, selection ...str
 	if model == nil || model.Description != wantDescription || model.Limits == nil || model.Limits.ContextWindow != 131072 {
 		t.Fatalf("connected catalog did not combine provider and metadata facts: %+v", model)
 	}
+	assertCurrent := func(wantTemperature bool) {
+		t.Helper()
+		provider, err := connected.State().Catalog.Provider("acme")
+		if err != nil {
+			t.Fatal(err)
+		}
+		current := provider.Models["known"]
+		if current == nil || current.Limits == nil || current.Limits.ContextWindow != 262144 || current.Description != wantDescription {
+			t.Fatalf("connected refresh lost the selected facts: %+v", current)
+		}
+		if len(selection) == 0 && (current.Features == nil || current.Features.Temperature != wantTemperature) {
+			t.Fatalf("metadata temperature = %+v, want %t", current.Features, wantTemperature)
+		}
+	}
+	clearMetadata := func() {
+		t.Helper()
+		directories, err := application.SourceDirectories()
+		if err != nil {
+			t.Fatal(err)
+		}
+		if err := os.RemoveAll(filepath.Join(directories.Cache, "models.dev")); err != nil {
+			t.Fatal(err)
+		}
+	}
+	initial := connected.State()
+	limit.Store(262144)
+	temperature.Store(true)
+	partial.Store(true)
+	clearMetadata()
+	report, err := connected.Sync(t.Context(), "acme")
+	if err != nil || report.Health != runtime.HealthDegraded {
+		t.Fatalf("partial connected refresh: report=%+v error=%v", report, err)
+	}
+	assertCurrent(true)
+	changed := connected.State()
+	if changed.GenerationID == initial.GenerationID || changed.PayloadChecksum == initial.PayloadChecksum {
+		t.Fatal("changed provider and metadata inputs kept the old generation")
+	}
+	generation, err := connected.Client().Generation(t.Context(), changed.GenerationID)
+	if err != nil {
+		t.Fatal(err)
+	}
+	providerReceipts := changed.Catalog.Provenance().FindModelField("acme", "known", "limits.context_window")
+	if len(providerReceipts) != 1 || !generation.Manifest.Degraded {
+		t.Fatal("partial provider facts lost their receipt or degraded status")
+	}
+	bound := false
+	for _, link := range generation.Manifest.SourceObservations {
+		if link.Source == sources.ProvidersID && link.ObservationID == providerReceipts[0].ObservationID && link.EvidenceChecksum == providerReceipts[0].EvidenceChecksum && link.Status == sources.ObservationStatusDegraded && link.Completeness == sources.ObservationCompletenessPartial {
+			bound = true
+		}
+	}
+	if !bound {
+		t.Fatal("partial provider facts have no matching immutable manifest receipt")
+	}
+	failed.Store(true)
+	temperature.Store(false)
+	clearMetadata()
+	report, err = connected.Sync(t.Context(), "acme")
+	if report.Failed != 1 || report.Health == runtime.HealthOK {
+		t.Fatalf("failed provider reported success: report=%+v error=%v", report, err)
+	}
+	assertCurrent(false)
+	if len(selection) != 0 && metadataCalls.Load() != 0 {
+		t.Fatal("disabled metadata source ran during a later refresh")
+	}
+	accepted := connected.State()
+	providerCallsBefore, metadataCallsBefore := calls.Load(), metadataCalls.Load()
+	if err := application.Shutdown(context.Background()); err != nil {
+		t.Fatal(err)
+	}
+	automatic = false
+	application = open()
+	connected, err = application.Runtime(t.Context())
+	if err != nil {
+		t.Fatal(err)
+	}
+	assertCurrent(false)
+	if connected.State().GenerationID != accepted.GenerationID || connected.State().PayloadChecksum != accepted.PayloadChecksum {
+		t.Fatal("restart changed the retained catalog generation")
+	}
+	if calls.Load() != providerCallsBefore || metadataCalls.Load() != metadataCallsBefore {
+		t.Fatal("restart contacted a disabled acquisition source")
+	}
 }
