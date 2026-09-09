@@ -66,7 +66,7 @@ const (
 	// MaxSourceProviders bounds provider records in one external source payload.
 	// Source catalogs may include aliases and upstreams that do not become
 	// canonical Starmap providers.
-	MaxSourceProviders = 512
+	MaxSourceProviders = sourcepayload.MaxProviders
 
 	// MaxSourcePayloadBytes is the source payload package's public byte limit.
 	MaxSourcePayloadBytes = sourcepayload.MaxBytes

@@ -37,7 +37,7 @@ func TestScheduledGenerationWorkflowPublishesOnlyValidatedChangedPayload(t *test
 		`gh release view "$TAG"`, `"$EXISTING/starmap-catalog.tar.gz"`, `--verify-dir "$EXISTING"`,
 		`jq -er .semantic_checksum catalog-existing-verification.json`,
 		"Validate candidate catalog", "make catalog-generation-check", "make embedded-catalog-budget-check",
-		"go run ./cmd/starmap-catalog-release", `--generation-store "${RUNNER_TEMP}/starmap-catalog-generation/update-home/.starmap/state/catalog"`,
+		"go run ./cmd/starmap-catalog-release", `--generation-store "${STARMAP_GENERATION_STORE_PATH}"`,
 		"actions/attest-build-provenance@4d101475d8b20a2381f78447822ac1eab6504dd8 # v4.2.2",
 		"gh attestation verify", "--deny-self-hosted-runners",
 		"Publish changed validated catalog generation", `if: ${{ steps.change.outputs.publish == 'true' }}`,

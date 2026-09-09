@@ -186,6 +186,15 @@ func TestCatalogGenerationToolingRejectsHTTPErrorBeforePromotion(t *testing.T) {
 }
 
 func TestCatalogGenerationToolingUsesCurrentCLIAndRealValidation(t *testing.T) {
+	testCatalogGenerationStore(t, false)
+}
+
+func TestCatalogGenerationToolingResolvesRelativeStoreFromInvocationDirectory(t *testing.T) {
+	testCatalogGenerationStore(t, true)
+}
+
+func testCatalogGenerationStore(t *testing.T, relative bool) {
+	t.Helper()
 	if runtime.GOOS == "windows" {
 		t.Skip("bash catalog tooling is not used on Windows")
 	}
@@ -223,8 +232,17 @@ printf '\n' >> "$STARMAP_COMMAND_LOG"
 		"state",
 		"catalog",
 	)
+	storeSetting := generationStorePath
+	if relative {
+		storeSetting = "relative-store"
+		physicalDirectory, err := filepath.EvalSymlinks(directory)
+		if err != nil {
+			t.Fatal(err)
+		}
+		generationStorePath = filepath.Join(physicalDirectory, storeSetting)
+	}
 	command := exec.Command("bash", filepath.Join(root, "scripts", "generate-embedded-catalog.sh"), "openai")
-	command.Dir = root
+	command.Dir = directory
 	command.Env = append(os.Environ(),
 		"STARMAP_BIN="+starmapSpy,
 		"STARMAP_COMMAND_LOG="+logPath,
@@ -233,7 +251,7 @@ printf '\n' >> "$STARMAP_COMMAND_LOG"
 		"STARMAP_EMBEDDED_MANIFEST_PATH="+manifestPath,
 		"STARMAP_GENERATION_REPORT_PATH="+reportPath,
 		"STARMAP_GENERATION_STATE_PATH="+generationStatePath,
-		"STARMAP_GENERATION_STORE_PATH="+generationStorePath,
+		"STARMAP_GENERATION_STORE_PATH="+storeSetting,
 		"STARMAP_BOOTSTRAP_MANIFEST_BIN="+manifestSpy,
 		"STARMAP_MANIFEST_LOG="+manifestLog,
 	)
@@ -245,7 +263,7 @@ printf '\n' >> "$STARMAP_COMMAND_LOG"
 		t.Fatalf("ReadFile command log: %v", err)
 	}
 	want := "[HOME=" + filepath.Join(generationStatePath, "update-home") + "][CATALOG_PATH=" + catalogPath + "]" +
-		"[update][openai][--catalog-path][" + catalogPath + "][-y]\n" +
+		"[update][openai][--catalog-path][" + catalogPath + "][-y][--catalog-store-path][" + generationStorePath + "]\n" +
 		"[HOME=" + filepath.Join(generationStatePath, "validation-home") + "][CATALOG_PATH=" + catalogPath + "]" +
 		"[validate][catalog]\n"
 	if string(log) != want {

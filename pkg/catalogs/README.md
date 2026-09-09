@@ -2088,13 +2088,13 @@ func DecodeCatalogPayload(data []byte) (*Catalog, error)
 DecodeCatalogPayload decodes the current catalog payload. A non\-nil catalog with \*sourcepayload.QuarantineError is only a partial diagnostic result. Callers must not activate it as the manifest\-bound generation.
 
 <a name="DecodeSourceObservationPayload"></a>
-### func [DecodeSourceObservationPayload](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/payload_decode.go#L51>)
+### func [DecodeSourceObservationPayload](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/payload_decode.go#L52>)
 
 ```go
 func DecodeSourceObservationPayload(data []byte) (*Catalog, error)
 ```
 
-DecodeSourceObservationPayload decodes a source candidate without requiring resolved canonical authorship for every provider record. The returned catalog is suitable only for reconciliation. Durable generation activation must use DecodeCatalogPayload.
+DecodeSourceObservationPayload decodes a source candidate without requiring resolved canonical authorship for every provider record. The returned catalog is suitable only for reconciliation. Durable generation activation must use DecodeCatalogPayload. Source observations use the bounded source provider count. Canonical generation decoding retains its smaller limit.
 
 <a name="NewCatalog"></a>
 ### func [NewCatalog](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/readonly.go#L13>)

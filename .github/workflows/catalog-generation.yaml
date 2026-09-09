@@ -25,6 +25,7 @@ jobs:
       # immutable release at creation, so a mutable pointer cannot live on one.
       CHANNEL_BRANCH: catalog/v1
       CHANNEL_FILE: channel.json
+      STARMAP_GENERATION_STORE_PATH: ${{ runner.temp }}/starmap-catalog-generation/catalog-store
     steps:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -55,7 +56,6 @@ jobs:
           STARMAP_GENERATION_NONINTERACTIVE: "1"
           STARMAP_GENERATION_REPORT_PATH: catalog-generation.json
           STARMAP_GENERATION_STATE_PATH: ${{ runner.temp }}/starmap-catalog-generation
-          STARMAP_GENERATION_STORE_PATH: ${{ runner.temp }}/starmap-catalog-generation/update-home/.starmap/state/catalog
         run: ./scripts/generate-embedded-catalog.sh
 
       - name: Classify candidate catalog generation
@@ -135,7 +135,7 @@ jobs:
         id: assets
         run: |
           go run ./cmd/starmap-catalog-release \
-            --generation-store "${RUNNER_TEMP}/starmap-catalog-generation/update-home/.starmap/state/catalog" \
+            --generation-store "${STARMAP_GENERATION_STORE_PATH}" \
             --output-dir dist/catalog-generation > catalog-release.json
           printf 'directory=%s\n' "$(jq -er .directory catalog-release.json)" >> "$GITHUB_OUTPUT"
 
