@@ -1,5 +1,5 @@
 {
-  "status": "Local verification passed; required review running before push.",
+  "status": "Reviewed repair pushed to PR #142; native validation pending.",
   "worktree": "/tmp/starmap-source-activity-2026-09-09",
   "branch": "codex/catalog-source-activity",
   "failed_head": "c1af596ddd58b60699426580ca370824b565fc3e",
@@ -61,6 +61,14 @@
     {
       "path": "plan-prose.gz",
       "sha256": "993388c7b02d7a061a5d201360233d1aa6cc4317123ea5d97b90675161aafc00"
+    },
+    {
+      "path": "review.gz",
+      "sha256": "06ae76642a1fcc1d0c5d01f7378862fb4080b459c00c6a25a139995c6affecff"
+    },
+    {
+      "path": "push-plan-prose.gz",
+      "sha256": "993388c7b02d7a061a5d201360233d1aa6cc4317123ea5d97b90675161aafc00"
     }
   ],
   "sessions": {
@@ -71,9 +79,8 @@
     "docs_prose": 38602
   },
   "remaining": [
-    "Collect local verification and required review.",
-    "Push reviewed fix to PR #142.",
-    "Qualify native Windows and all other required CI checks before merge."
+    "Collect native CI for 965e744d.",
+    "Resolve any failures and qualify all required checks before merge."
   ],
   "completion_credit": false,
   "commit": "965e744d12f08917cdb3aa1410dfe3bf99527c02",
@@ -106,8 +113,11 @@
   },
   "review": {
     "session": 64535,
-    "status": "running",
-    "log": "/tmp/starmap-pr142-bun-directory-review-2026-09-09.log"
+    "status": "pass",
+    "log": "/tmp/starmap-pr142-bun-directory-review-2026-09-09.log",
+    "exit_code": 0,
+    "findings": 0,
+    "chunks": 2
   },
   "files": {
     "internal/sources/modelsdev/git_client.go": "4af500299055cca55380349418a7692cfaf75210feb798ff75abfb670e45bba3",
@@ -115,5 +125,11 @@
   },
   "plan_prose": {
     "exit_code": 0
+  },
+  "latest_ci": {
+    "run": 34409341753,
+    "head": "965e744d12f08917cdb3aa1410dfe3bf99527c02",
+    "status": "in_progress",
+    "url": "https://github.com/agentstation/starmap/actions/runs/34409341753"
   }
 }
