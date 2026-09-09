@@ -297,7 +297,7 @@
       "sha256": "02018061cb78cd1b966644f0eb0fbf33c9f2b0d32da563fc653300454da69fc6"
     }
   ],
-  "next_action": "Wait for PR #140 checks and merge session 56774. Verify the merge commit and tree before recording delivery. Integrate the merged repair into the combined acquisition branch after its current verifier completes.",
+  "next_action": "Finish combined acquisition verification in session 60527. Its local merge 909d9fc1 includes the actual publisher merge without changing the tested source tree. Complete review against af828f4f, publish one combined PR, and merge after CI.",
   "full_verification": {
     "status": "passed",
     "session": 35014,
@@ -444,9 +444,35 @@
     "number": 140,
     "url": "https://github.com/agentstation/starmap/pull/140",
     "head": "27b56e8d84cb37c9996be41327b65022efb07e56",
-    "status": "open; CI running",
+    "status": "merged",
     "ci_run": 34348149747,
     "merge_session": 56774,
-    "merge_condition": "All PR checks pass and the head matches the reviewed commit."
+    "merge_condition": "All PR checks pass and the head matches the reviewed commit.",
+    "merge_session_exit_code": 0
+  },
+  "merge_artifacts": [
+    {
+      "path": "starmap-publisher-pr140-final-checks.json.gz",
+      "sha256": "81326625e84ed9ef5746309c8d97b117f498714d74c71351c172da2de333621a"
+    },
+    {
+      "path": "starmap-publisher-pr140-final-ci-verification.log.gz",
+      "sha256": "fb5f4aab85e6604d0a20e180200f31bd7de5abed92574945c1b8317c34d677c7"
+    },
+    {
+      "path": "starmap-publisher-pr140-merge.json.gz",
+      "sha256": "f38f0c3e0636f11499edbc4d15f183729ab635d96ca5d8239bf0aa0b6f69abfa"
+    }
+  ],
+  "merge": {
+    "commit": "af828f4f6cd299cddd2de5f4330ff09fdafa0f70",
+    "merged_at": "2026-09-09T13:08:04Z",
+    "reviewed_head": "27b56e8d84cb37c9996be41327b65022efb07e56",
+    "reviewed_tree": "e84f3930f64c3d6e046a15b44b346f2b58127505",
+    "merged_tree": "e84f3930f64c3d6e046a15b44b346f2b58127505",
+    "tree_diff_exit_code": 0,
+    "successful_checks": 15,
+    "ci_verification_stages": 39,
+    "task_credit": "CSP3 remains in progress. This repair does not satisfy every A08 and Starmap A20 subcase."
   }
 }
