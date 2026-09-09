@@ -1,0 +1,124 @@
+{
+  "status": "committed; focused, six affected package race checks, final Ago, lint, generated docs and prose pass",
+  "worktree": "/tmp/starmap-source-revocation-2026-09-09",
+  "base": "8bb928bad90d5480e9394bd517837ac483a7eabd",
+  "branch": "codex/catalog-source-revocation",
+  "contract": "CSP3; A20.dependency_disabled_partial",
+  "fail_before": {
+    "test": "TestManualPartialDependencyResultReportsFailure",
+    "method": "Corrected test over an overlay of the parent production files. No production rollback.",
+    "exit_code": 1,
+    "tests_failed": 1,
+    "observed": "manual result hides partial source failure: Partial:false Failures:[]",
+    "replay": "At base 8bb928ba, use acquisition/source_partial_dependency_test.go from 23b63a7251b74bf0172e417c3f6a6cd98cea5fe7 and run the named test. The overlay contains the base production files."
+  },
+  "method_corrections": [
+    "Initial test used sync options in the constructor and did not compile.",
+    "The next fixture stopped at the Client workspace guard. Neither attempt proves the product defect.",
+    "The final replay selects the Client workspace correctly and reaches the intended partial-result assertion.",
+    "An initial broad import edit caused a gofmt syntax error in an unrelated map key in the same file. The edit was corrected before handler checks.",
+    "Initial renderer ignored io.Writer errors. The final renderer propagates typed output errors."
+  ],
+  "behavior": [
+    "Manual results expose partial and bounded source_failures. Duplicate tool failures for one source yield one source failure.",
+    "Runtime-backed manual results preserve these fields.",
+    "HTTP detail copies and validates source failures; operation status copies own their lists.",
+    "CLI warnings appear in quiet mode and replace complete-success wording for partial results.",
+    "Partial observation receipts also set partial even without a missing dependency."
+  ],
+  "focused": {
+    "final-race": {
+      "tests_pass": 4,
+      "packages_pass": 4
+    },
+    "minimum": {
+      "tests_pass": 4,
+      "packages_pass": 4
+    }
+  },
+  "lint": {
+    "findings": 0
+  },
+  "running": {},
+  "remaining": [
+    "Full source inventory with supported, enabled, eligible, attempted and accepted dimensions.",
+    "Full combined qualification, review, native CI and merge."
+  ],
+  "artifacts": [
+    {
+      "path": "fail-before.jsonl.gz",
+      "sha256": "4590836a278684df675fa84ab0dc3b80b8e3462596361d311dd173e008e1b29d"
+    },
+    {
+      "path": "fail-before-corrected.jsonl.gz",
+      "sha256": "85f90309bb2071d0f0adc6fd8fec300f20be2f32ab51bac126bb2cb8e0c46cf9"
+    },
+    {
+      "path": "baseline-replay.jsonl.gz",
+      "sha256": "5c93d139ee4ada998b6a3a52ea1873659647e5c47e87dac51fd49996fe1ee504"
+    },
+    {
+      "path": "repair.jsonl.gz",
+      "sha256": "b9c23b21bf9f98c176c1fbe22e29b4b9df338d52be85b9473458c2b8d9cb730a"
+    },
+    {
+      "path": "final-race.jsonl.gz",
+      "sha256": "6263d5976c81f7ff6bd4616d6298a62ca7f82528600afde96ee538613b66dc76"
+    },
+    {
+      "path": "minimum.jsonl.gz",
+      "sha256": "cbe2c04acc24036e007c9f73bd58692dc3ce3363b943335c3d0494605e5c5e20"
+    },
+    {
+      "path": "final-lint.log.gz",
+      "sha256": "bafcb04d67f6157ff3d4a1fdf228afd2df6cc6d786c61642c1125b1fe879e728"
+    },
+    {
+      "path": "ago.json.gz",
+      "sha256": "905b50ebb66dc28cecf0d5d7681aabcd8b20af21ce5f8834692f1c6c68590281"
+    },
+    {
+      "path": "generate.log.gz",
+      "sha256": "9576fe65c1a9c0f8fc6fca991aa3df22cfa2024fa803f36e84e041e34230ca71"
+    },
+    {
+      "path": "final-ago.json.gz",
+      "sha256": "905b50ebb66dc28cecf0d5d7681aabcd8b20af21ce5f8834692f1c6c68590281"
+    },
+    {
+      "path": "affected.log.gz",
+      "sha256": "c1b053d5318dfea63cb267890179df8b2ca1fe47b582cb3c1239c7deb309fb3e"
+    },
+    {
+      "path": "docs-check.log.gz",
+      "sha256": "ddca6b3a2d189a013545b7ff3693fa07e9012d34a99a7ae93ba8af24d7cedd7b"
+    },
+    {
+      "path": "prose.log.gz",
+      "sha256": "06874a0c127eebd11285c4a4096e6cf065ea50d33767b6f830c0ce1dc44cb604"
+    },
+    {
+      "path": "plan-prose.log.gz",
+      "sha256": "0963b2bd796bde699c64df9e575228014d077470b7d408409c30ee56e5513832"
+    }
+  ],
+  "task_completion_credit": false,
+  "head": "23b63a7251b74bf0172e417c3f6a6cd98cea5fe7",
+  "affected": {
+    "exit_code": 0,
+    "packages_passed": 6
+  },
+  "docs": {
+    "exit_code": 0
+  },
+  "prose": {
+    "exit_code": 0,
+    "files": 1272,
+    "diagnostics": 0
+  },
+  "plan_prose": {
+    "exit_code": 0,
+    "files": 1270,
+    "diagnostics": 0
+  }
+}
