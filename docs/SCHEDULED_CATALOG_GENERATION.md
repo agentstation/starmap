@@ -77,6 +77,15 @@ with a typed validation error.
 
 ## Operational notes
 
+The workflow sets `STARMAP_GENERATION_STORE_PATH` once for acquisition and staging.
+An initialization step writes the path to `GITHUB_ENV` before refresh.
+The generation script forwards it as `--catalog-store-path` to the update command.
+A relative value resolves from the directory that invokes the script.
+Acquisition writes that store. Manifest generation and release staging read the same store.
+
+Retained source observations allow up to 512 providers. Canonical generation payloads retain their 100-provider limit.
+Source aliases and upstream records can remain in evidence without becoming canonical providers.
+
 The workflow injects provider credentials only into the refresh step. It uses
 noninteractive dependency policy, and any refresh, typed validation, budget,
 attestation, identity verification, or release command failure stops the run.

@@ -20,6 +20,9 @@ type UnknownJSONField struct {
 }
 
 const (
+	// MaxProviders bounds provider records in one external source observation.
+	MaxProviders = 512
+
 	// MaxBytes is the default byte limit for source JSON payloads.
 	MaxBytes = 16 << 20
 	// MaxJSONNestingDepth bounds object/array nesting before JSON decode.
