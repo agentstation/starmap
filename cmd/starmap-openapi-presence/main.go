@@ -173,17 +173,17 @@ func markNullable(value any, path []string, paths *[][]string) error {
 			}
 			switch kind := value["type"].(type) {
 			case string:
-				if kind != "boolean" {
-					return fmt.Errorf("%s nullable annotation requires a Boolean", strings.Join(path, "."))
+				if !nullableScalarType(kind) {
+					return fmt.Errorf("%s nullable annotation requires a Boolean or numeric scalar", strings.Join(path, "."))
 				}
-				value["type"] = []string{"boolean", "null"}
+				value["type"] = []string{kind, "null"}
 				*paths = append(*paths, slices.Clone(path))
 			case []any:
-				if len(kind) != 2 || kind[0] != "boolean" || kind[1] != "null" {
+				if len(kind) != 2 || !nullableScalarValue(kind[0]) || kind[1] != "null" {
 					return fmt.Errorf("%s has an unsupported nullable type", strings.Join(path, "."))
 				}
 			default:
-				return fmt.Errorf("%s has no Boolean type", strings.Join(path, "."))
+				return fmt.Errorf("%s has no supported scalar type", strings.Join(path, "."))
 			}
 		}
 		for key, item := range value {
@@ -234,16 +234,21 @@ func nullableYAMLEdits(originalYAML []byte, paths, recordPaths [][]string) ([]re
 			return nil, err
 		}
 		token := node.GetToken()
-		runes := []rune(string(originalYAML))
-		runeOffset := token.Position.Offset - 1
-		if runeOffset < 0 || runeOffset > len(runes) {
-			return nil, fmt.Errorf("invalid YAML scalar offset")
+		offset, err := yamlSourceOffset(originalYAML, token.Position.Line, token.Position.Column)
+		if err != nil {
+			return nil, err
 		}
-		offset := len(string(runes[:runeOffset]))
-		if offset < 0 || offset+len("boolean") > len(originalYAML) || string(originalYAML[offset:offset+len("boolean")]) != "boolean" {
-			return nil, fmt.Errorf("nullable Boolean type at %s must use an unquoted scalar", selector.String())
+		scalar := ""
+		for _, candidate := range []string{"boolean", "number", "integer"} {
+			if offset >= 0 && offset+len(candidate) <= len(originalYAML) && string(originalYAML[offset:offset+len(candidate)]) == candidate {
+				scalar = candidate
+				break
+			}
 		}
-		edits = append(edits, replacement{start: offset, end: offset + len("boolean"), value: []byte(`[boolean, "null"]`)})
+		if scalar == "" {
+			return nil, fmt.Errorf("nullable type at %s must use an unquoted supported scalar", selector.String())
+		}
+		edits = append(edits, replacement{start: offset, end: offset + len(scalar), value: []byte("[" + scalar + `, "null"]`)})
 	}
 	for _, path := range recordPaths {
 		edit, err := nullableCapabilityYAMLEdit(file, originalYAML, path)
@@ -253,4 +258,36 @@ func nullableYAMLEdits(originalYAML []byte, paths, recordPaths [][]string) ([]re
 		edits = append(edits, edit)
 	}
 	return edits, nil
+}
+
+func nullableScalarType(kind string) bool {
+	return kind == "boolean" || kind == "number" || kind == "integer"
+}
+
+func nullableScalarValue(value any) bool {
+	kind, ok := value.(string)
+	return ok && nullableScalarType(kind)
+}
+
+func yamlSourceOffset(original []byte, line, column int) (int, error) {
+	if line < 1 || column < 1 {
+		return 0, fmt.Errorf("invalid YAML source position")
+	}
+	offset := 0
+	for current := 1; current < line; current++ {
+		next := bytes.IndexByte(original[offset:], '\n')
+		if next < 0 {
+			return 0, fmt.Errorf("YAML source line exceeds input")
+		}
+		offset += next + 1
+	}
+	end := bytes.IndexByte(original[offset:], '\n')
+	if end < 0 {
+		end = len(original) - offset
+	}
+	runes := []rune(string(original[offset : offset+end]))
+	if column-1 > len(runes) {
+		return 0, fmt.Errorf("YAML source column exceeds input")
+	}
+	return offset + len(string(runes[:column-1])), nil
 }

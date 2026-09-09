@@ -251,6 +251,7 @@ func (s *Subscriber) Start(ctx context.Context) error {
 			s.cancel = nil
 			s.done = nil
 		}
+		s.retryNotBefore = time.Time{}
 		s.mu.Unlock()
 		close(done)
 	}()
@@ -399,6 +400,7 @@ func (s *Subscriber) run(
 		s.state = stateStopped
 		s.streamState = StreamStateStopped
 		s.fallback.Active = false
+		s.retryNotBefore = time.Time{}
 		s.mu.Unlock()
 		close(done)
 	}()
@@ -451,6 +453,7 @@ func (s *Subscriber) run(
 			if !waitRetry(ctx, delay) {
 				return
 			}
+			s.publishRetryBoundary(time.Time{})
 
 			lastEventID := s.currentLastEventID()
 			next, openErr := s.protocol.OpenEventStream(ctx, lastEventID)
@@ -497,11 +500,12 @@ func (s *Subscriber) nextReconnectDelay(attempt int) (time.Duration, error) {
 	if s.retryDelay != nil {
 		return s.retryDelay(attempt), nil
 	}
+	boundary := s.reconnect.boundary()
 	delay, err := s.reconnect.next(s.currentTime())
 	if err != nil {
 		return 0, err
 	}
-	s.publishRetryBoundary(s.reconnect.boundary())
+	s.publishRetryBoundary(boundary)
 	return delay, nil
 }
 

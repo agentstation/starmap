@@ -247,6 +247,12 @@ func TestSubscriberHonorsRetryAfterNotBefore(t *testing.T) {
 	if wait := time.Until(health.RetryNotBefore); wait < 30*time.Minute {
 		t.Fatalf("published boundary waits %s, want the declared hour", wait)
 	}
+	if err := subscriber.Close(); err != nil {
+		t.Fatal(err)
+	}
+	if !subscriber.Health().RetryNotBefore.IsZero() {
+		t.Fatal("stopped subscriber retains a retry boundary")
+	}
 }
 
 // TestSubscriberWaitsForCredentialChange proves that a rejected credential
@@ -392,5 +398,73 @@ func TestFallbackPollingUsesStablePhase(t *testing.T) {
 	}
 	if !alone.Equal(now) {
 		t.Fatalf("poll without an instance identity = %s, want %s", alone, now)
+	}
+}
+
+func TestSubscriberRetainsRetryBoundaryWhileWaiting(t *testing.T) {
+	t.Parallel()
+	now := time.Date(2026, time.September, 9, 8, 0, 0, 0, time.UTC)
+	boundary := now.Add(time.Hour)
+	subscriber := &Subscriber{
+		now:       func() time.Time { return now },
+		reconnect: newReconnectState(Config{ReconnectMinDelay: time.Millisecond, ReconnectMaxDelay: 2 * time.Millisecond, Random: func() float64 { return 0 }}),
+	}
+	subscriber.observeRefusal(&protocol.RefusalError{NotBefore: boundary})
+	delay, err := subscriber.nextReconnectDelay(0)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if delay < time.Hour {
+		t.Fatalf("retry delay = %s", delay)
+	}
+	if got := subscriber.Health().RetryNotBefore; !got.Equal(boundary) {
+		t.Fatalf("waiting retry boundary = %s, want %s", got, boundary)
+	}
+}
+
+func TestSubscriberClearsRetryBoundaryWhenReconnectStarts(t *testing.T) {
+	t.Parallel()
+	generation := subscriberTestGeneration(t, "generation-retry-status", "provider-retry-status", time.Now().UTC())
+	var streams atomic.Int32
+	server := httptest.NewServer(http.HandlerFunc(func(writer http.ResponseWriter, request *http.Request) {
+		switch request.URL.Path[len("/api/v1"):] {
+		case protocol.ManifestPath:
+			writeSubscriberManifest(t, writer, generation)
+		case protocol.PayloadPath(generation.Manifest.GenerationID):
+			writer.Header().Set("Content-Type", catalogs.CatalogPayloadMediaType)
+			_, _ = writer.Write(generation.Payload)
+		case protocol.EventStreamPath:
+			if streams.Add(1) == 1 {
+				writer.Header().Set("Retry-After", "1")
+				writer.WriteHeader(http.StatusServiceUnavailable)
+				return
+			}
+			writer.Header().Set("Content-Type", "text/event-stream")
+			writer.WriteHeader(http.StatusOK)
+			writer.(http.Flusher).Flush()
+			<-request.Context().Done()
+		default:
+			http.NotFound(writer, request)
+		}
+	}))
+	defer server.Close()
+	subscriber, err := New(Config{BaseURL: server.URL + "/api/v1", HTTPClient: server.Client(), CatalogStore: storage.NewMemory(), ReconnectMinDelay: time.Millisecond, ReconnectMaxDelay: 2 * time.Millisecond, Random: func() float64 { return 0 }})
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer func() {
+		if err := subscriber.Close(); err != nil {
+			t.Error(err)
+		}
+	}()
+	if err := subscriber.Start(t.Context()); err != nil {
+		t.Fatal(err)
+	}
+	waitForSubscriberCondition(t, func() bool { return subscriber.Health().StreamState == StreamStateStreaming })
+	if streams.Load() != 2 {
+		t.Fatalf("stream attempts = %d", streams.Load())
+	}
+	if !subscriber.Health().RetryNotBefore.IsZero() {
+		t.Fatal("active retry retains the previous refusal boundary")
 	}
 }

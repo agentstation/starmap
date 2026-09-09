@@ -2,6 +2,7 @@ package catalogs
 
 // ModelGeneration - core chat completions generation controls.
 type ModelGeneration struct {
+	unknownParameters uint32
 	// Core sampling and decoding
 	Temperature *FloatRange `json:"temperature,omitempty" yaml:"temperature,omitempty"`
 	TopP        *FloatRange `json:"top_p,omitempty" yaml:"top_p,omitempty"`
@@ -12,8 +13,8 @@ type ModelGeneration struct {
 	TFS         *FloatRange `json:"tfs,omitempty" yaml:"tfs,omitempty"`
 
 	// Length and termination
-	MaxTokens       *int `json:"max_tokens,omitempty" yaml:"max_tokens,omitempty"`
-	MaxOutputTokens *int `json:"max_output_tokens,omitempty" yaml:"max_output_tokens,omitempty"`
+	MaxTokens       *int `json:"max_tokens,omitempty" yaml:"max_tokens,omitempty" extensions:"x-starmap-nullable"`
+	MaxOutputTokens *int `json:"max_output_tokens,omitempty" yaml:"max_output_tokens,omitempty" extensions:"x-starmap-nullable"`
 
 	// Repetition control
 	FrequencyPenalty  *FloatRange `json:"frequency_penalty,omitempty" yaml:"frequency_penalty,omitempty"`
@@ -23,7 +24,7 @@ type ModelGeneration struct {
 	LengthPenalty     *FloatRange `json:"length_penalty,omitempty" yaml:"length_penalty,omitempty"`
 
 	// Observability
-	TopLogprobs *int `json:"top_logprobs,omitempty" yaml:"top_logprobs,omitempty"` // Number of top log probabilities to return
+	TopLogprobs *int `json:"top_logprobs,omitempty" yaml:"top_logprobs,omitempty" extensions:"x-starmap-nullable"` // Number of top log probabilities to return
 
 	// Multiplicity and reranking
 	N      *IntRange `json:"n,omitempty" yaml:"n,omitempty"`             // Number of candidates to generate
@@ -41,14 +42,18 @@ type ModelGeneration struct {
 
 // FloatRange represents a range of float values.
 type FloatRange struct {
-	Min     float64 `json:"min" yaml:"min"`         // Minimum value
-	Max     float64 `json:"max" yaml:"max"`         // Maximum value
-	Default float64 `json:"default" yaml:"default"` // Default value
+	absentFields  uint8
+	unknownFields uint8
+	Min           float64 `json:"min" yaml:"min" extensions:"x-starmap-nullable"`         // Minimum value
+	Max           float64 `json:"max" yaml:"max" extensions:"x-starmap-nullable"`         // Maximum value
+	Default       float64 `json:"default" yaml:"default" extensions:"x-starmap-nullable"` // Default value
 }
 
 // IntRange represents a range of integer values.
 type IntRange struct {
-	Min     int `json:"min" yaml:"min"`         // Minimum value
-	Max     int `json:"max" yaml:"max"`         // Maximum value
-	Default int `json:"default" yaml:"default"` // Default value
+	absentFields  uint8
+	unknownFields uint8
+	Min           int `json:"min" yaml:"min" extensions:"x-starmap-nullable"`         // Minimum value
+	Max           int `json:"max" yaml:"max" extensions:"x-starmap-nullable"`         // Maximum value
+	Default       int `json:"default" yaml:"default" extensions:"x-starmap-nullable"` // Default value
 }
