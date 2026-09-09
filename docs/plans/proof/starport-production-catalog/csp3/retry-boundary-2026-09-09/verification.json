@@ -178,5 +178,17 @@
     ]
   },
   "ci_run": "https://github.com/agentstation/starmap/actions/runs/34333704548",
-  "native_evidence": "native-34333704548/verification.json"
+  "native_evidence": "native-34333704548/verification.json",
+  "merge": {
+    "commit": "ccc14dcff83be0a147258d92884c1f71e5edf690",
+    "state": "MERGED",
+    "head": "bf8461888b2148735622288009e5a54385ca95a6",
+    "reviewed_tree": "2a2aeeaaaf996373c8fd7617db801237a3d49e4f",
+    "merged_tree": "2a2aeeaaaf996373c8fd7617db801237a3d49e4f",
+    "tree_comparison": "git diff --exit-code bf8461888b2148735622288009e5a54385ca95a6 ccc14dcff83be0a147258d92884c1f71e5edf690 -- passed",
+    "checks": 15,
+    "result": "All fifteen PR checks passed. All six native jobs and the full CI verification gate passed.",
+    "log": "ci-34333704548-success.log.gz",
+    "sha256": "15a0d056e3056dd08599956d4f900eecec08a4152bcea44aaaaedcf5806e10d5"
+  }
 }

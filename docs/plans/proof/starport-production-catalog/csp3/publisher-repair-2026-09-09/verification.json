@@ -1,0 +1,36 @@
+{
+  "task": "CSP3",
+  "status": "in_progress",
+  "base": "ccc14dcff83be0a147258d92884c1f71e5edf690",
+  "worktree": "/tmp/starmap-publisher-repair-2026-09-09",
+  "branch": "codex/catalog-publisher-repair",
+  "work_commit": null,
+  "observed_failure": {
+    "run": 34311767888,
+    "commit": "7be0a02701447ef0f3f044bbbd5cfd9ea5524f9e",
+    "url": "https://github.com/agentstation/starmap/actions/runs/34311767888",
+    "error": "validation failed for field providers: exceeds maximum provider count",
+    "log": "ci-34311767888-failure.log.gz",
+    "sha256": "8d1a1ab4a29cab873776c05550549566260ed97df5fa870bf2023225b024a652"
+  },
+  "findings": [
+    {
+      "id": "publisher-source-provider-limit",
+      "classification": "verified implementation mismatch",
+      "evidence": "models.dev accepts up to internal/constants.MaxSourceProviders (512). DecodeSourceObservationPayload shares decodePayloadEnvelope with canonical decoding and rejects more than 100 providers. Runtime manualObservation.restore calls this source decoder.",
+      "next": "Reproduce with 101 source providers, preserve the 100-provider canonical bound, and use the existing source bound for retained inputs."
+    },
+    {
+      "id": "publisher-store-path",
+      "classification": "suspected runtime mismatch",
+      "evidence": "Workflow supplies update-home/.starmap/state/catalog to manifest and release staging. The generator sets HOME but not STARMAP_HOME or STARMAP_CATALOG_STORE_PATH for the update. Native roots now derive from platform settings.",
+      "next": "Verify actual CLI path resolution and make the generator, manifest, and release staging use the same explicit store."
+    }
+  ],
+  "constraints": [
+    "Do not raise the canonical provider limit or source byte limit.",
+    "Do not dispatch catalog publication without the separate release authority.",
+    "Keep the scheduled-source and source-selection work pending integration of this repair."
+  ],
+  "completion_credit": false
+}
