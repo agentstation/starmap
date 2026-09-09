@@ -1,5 +1,5 @@
 {
-  "status": "Minimum Go passes 16 events across four packages. Race session 63584 remains active. Lint, ago, docs, and prose pass.",
+  "status": "Local fixture repair and native diagnostic checks pass; required review session 64538 is active.",
   "pr": 142,
   "run": 34403415712,
   "job": 102640539963,
@@ -23,7 +23,7 @@
   "cause": "Git rejects GIT_CONFIG_GLOBAL=NUL on the native Windows ARM runner before fixture setup completes.",
   "repair": "Write an empty regular gitconfig file inside the fixture-owned temporary home. Retain isolated configuration and native tool assertions.",
   "remaining": [
-    "Finish all affected Git composition tests on race and minimum toolchains.",
+    "Collect review session 64538, verify findings, then push the PR update for native lockfile evidence.",
     "Run required lint, ago, prose, and review before the PR update.",
     "Push reviewed fix and collect fresh native CI. Merge only after required checks pass."
   ],
@@ -68,6 +68,42 @@
     {
       "path": "plan-prose.gz",
       "sha256": "993388c7b02d7a061a5d201360233d1aa6cc4317123ea5d97b90675161aafc00"
+    },
+    {
+      "path": "race.gz",
+      "sha256": "5ca72d96db2d71b7a754d0eccecd87dc5c30a4e93c70160013e239272836d74e"
+    },
+    {
+      "path": "windows-x64-tests.gz",
+      "sha256": "aefe505d8f9ae713cdb7ef26235ae6e8586551bec2c7454eb130a07e5409f545"
+    },
+    {
+      "path": "windows-x64-toolchain.gz",
+      "sha256": "5311b34228391669a92c01c14f8b7b28b9073ce25cb74010eddc8c2961ebf8dd"
+    },
+    {
+      "path": "diagnostic-race.gz",
+      "sha256": "20ecb7c5eb8ab5ca2154cfe17d931fd9046321826ffefa62418e111da51ba623"
+    },
+    {
+      "path": "diagnostic-minimum.gz",
+      "sha256": "a73f31fc055a61fcf631b810c12dd7f5d06f90b963520a941d4e06ce9c0707b5"
+    },
+    {
+      "path": "diagnostic-ago.gz",
+      "sha256": "905b50ebb66dc28cecf0d5d7681aabcd8b20af21ce5f8834692f1c6c68590281"
+    },
+    {
+      "path": "diagnostic-lint.gz",
+      "sha256": "199610e11b39d340c5da897591e5c7b1b55355fda82b154b5f15c628ec270b09"
+    },
+    {
+      "path": "diagnostic-prose.gz",
+      "sha256": "04fe8c3eaacacb9598a223d0893100aa981699e854f82d2ea9cca4b3646504ef"
+    },
+    {
+      "path": "plan-diagnostic-review-prose.gz",
+      "sha256": "993388c7b02d7a061a5d201360233d1aa6cc4317123ea5d97b90675161aafc00"
     }
   ],
   "minimum_session": 7341,
@@ -100,6 +136,66 @@
       "exit_code": 0,
       "files": 1272,
       "diagnostics": 0
+    },
+    "race": {
+      "exit_code": 0,
+      "passing_events": 16,
+      "packages": 4,
+      "failed_events": 0
     }
+  },
+  "windows_x64": {
+    "job": 102640540295,
+    "artifact": "native-runtime-windows-2025",
+    "cause": "Bun 1.3.12 rejects the fixture lockfile as changed during frozen install. Exact generated differences remain unknown.",
+    "diagnostic": "TestFixtureFrozenLockfileMatchesWorkspace preserves frozen failure and reports separately generated fixture-only lockfile bytes. Native jobs now include the fixture package.",
+    "guard": "No production lockfile regeneration, skipped native case, or weakened assertion."
+  },
+  "diagnostic_sessions": {
+    "minimum": 24797,
+    "ago": 29454,
+    "lint": 50134,
+    "prose": 73795
+  },
+  "commit": "c1af596ddd58b60699426580ca370824b565fc3e",
+  "tree": "139c2e4c05fb3b1fdd07c04fd66369b2cbb8b6cc",
+  "review": {
+    "session": 64538,
+    "log": "/tmp/starmap-pr142-git-fixture-review-2026-09-09.log",
+    "head": "c1af596ddd58b60699426580ca370824b565fc3e",
+    "result": "UNVERIFIED: running"
+  },
+  "diagnostic_checks": {
+    "race": {
+      "exit_code": 0,
+      "passing_events": 30,
+      "failed_events": 0,
+      "packages": 2
+    },
+    "minimum": {
+      "exit_code": 0,
+      "passing_events": 30,
+      "failed_events": 0,
+      "packages": 2
+    }
+  },
+  "diagnostic_files": {
+    "internal/test/gitfixture/fixture.go": "44d2f54865e45d44455535d7262f1fb90a57609f26ca7c36c4c3f27977fe1bad",
+    "internal/test/gitfixture/fixture_test.go": "ab884cf952e282cbad8fccad46327d607f16a9f206b0bf3edc66af3b501d1a2c",
+    ".github/workflows/pr.yaml": "8ba2eb57c34d7d0a78c95b5628c2fac38bda31c55a84cbcc5a69230a4998af94"
+  },
+  "native_current_head_results": {
+    "head": "6e4f9efbeab65e2652314f8293518dda9783778e",
+    "passed": [
+      "Runtime macos-15",
+      "Runtime macos-15-intel",
+      "Runtime ubuntu-24.04",
+      "Runtime ubuntu-24.04-arm"
+    ],
+    "failed": [
+      "Runtime windows-11-arm",
+      "Runtime windows-2025"
+    ],
+    "verification_gate": "running"
   }
 }
