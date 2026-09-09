@@ -1,0 +1,128 @@
+{
+  "status": "Local checks pass; committed repair in required review.",
+  "worktree": "/tmp/starmap-source-activity-2026-09-09",
+  "branch": "codex/catalog-source-activity",
+  "failed_head": "965e744d12f08917cdb3aa1410dfe3bf99527c02",
+  "failed_run": 34409341753,
+  "cause": "StageReleaseAssets calls os.File.Sync on a directory opened read-only. Windows denies FlushFileBuffers on that handle.",
+  "repair": "Use the existing filepublish.SyncDirectory with an os.Root. Its Windows implementation opens a writable directory handle and preserves flush errors.",
+  "regression_evidence": [
+    "Four publisher ingestion tests fail on each Windows architecture with Access is denied during candidate directory sync.",
+    "Runtime and real Git acquisition steps pass on both Windows architectures.",
+    "internal/filepublish/sync_windows_test.go already verifies the read-only failure and native writable-handle success."
+  ],
+  "artifacts": [
+    {
+      "path": "windows-arm-publisher-failure.gz",
+      "sha256": "a3f7428ecb7a77372120c5cc4b225aeda03c92eeea7fd39380530e031e0139ab"
+    },
+    {
+      "path": "windows-x64-publisher-failure.gz",
+      "sha256": "3cf2389a432f5118cbf9a91d8c3ba6850dfe799c4939c8edac4256c20e571bd7"
+    },
+    {
+      "path": "race.gz",
+      "sha256": "e9178f5d48ffefbb0e45b50f807ce82ef2570be8e142f79d8e85192ccdcd8a33"
+    },
+    {
+      "path": "artifact-race.gz",
+      "sha256": "6edda0f8eaddb6de6683810c34c6f5329287bf0fb6b25e48178ef5820666eacd"
+    },
+    {
+      "path": "minimum.gz",
+      "sha256": "c47892781b1c43b1d74614295621a5c3cefef35a7dc7b4da74f3dc8a30e03ceb"
+    },
+    {
+      "path": "lint.gz",
+      "sha256": "199610e11b39d340c5da897591e5c7b1b55355fda82b154b5f15c628ec270b09"
+    },
+    {
+      "path": "ago.gz",
+      "sha256": "905b50ebb66dc28cecf0d5d7681aabcd8b20af21ce5f8834692f1c6c68590281"
+    },
+    {
+      "path": "direction.gz",
+      "sha256": "f952a265f06b9ff335d4fa700ddbf09891a658ea91646a1d80079e5d1d29f53b"
+    },
+    {
+      "path": "ownership.gz",
+      "sha256": "daa1a01112146eaf590755cf1e388f58676d5e07877264c373abad96d0567cfe"
+    },
+    {
+      "path": "pure-go.gz",
+      "sha256": "152b03d6f9bd3e5b40e3421e53ad02892ef0b01a132d02e4179861c203223cc6"
+    },
+    {
+      "path": "docs.gz",
+      "sha256": "f53f05d5d27d99c1b659804aaa78ecedd73a638e6213768c8235e8f10a0ae73b"
+    },
+    {
+      "path": "prose.gz",
+      "sha256": "187b4cb78eaad96de16f5f988dc6dd8fb51a4abe444fc43e87fdda913199097f"
+    },
+    {
+      "path": "plan-prose.gz",
+      "sha256": "2b45b7df04eb587c87aefa4d02e1a9f2bb1a0725d6b04badc8440823ddeb7c04"
+    }
+  ],
+  "sessions": {
+    "focused_race": 65279,
+    "artifact_race": 69799,
+    "minimum": 5872,
+    "lint": 28228,
+    "ago": 48867,
+    "direction_docs_prose": 62997,
+    "ownership_pure_go": 23239
+  },
+  "remaining": [
+    "Collect local checks, commit, and run required review.",
+    "Push the reviewed repair to PR #142.",
+    "Qualify native publisher tests and all required CI checks before merge."
+  ],
+  "completion_credit": false,
+  "commit": "cbb8e32291444051c5f14af3660e2ccff6516610",
+  "tree": "dd46985340db7650ead49b19df287a11562851ca",
+  "review": {
+    "session": 82396,
+    "status": "running",
+    "log": "/tmp/starmap-pr142-release-sync-review-2026-09-09.log"
+  },
+  "checks": {
+    "focused_race": {
+      "exit_code": 0,
+      "passed_events": 22,
+      "packages": 3,
+      "failed_events": 0,
+      "skips": 0
+    },
+    "artifact_race": {
+      "exit_code": 0,
+      "passed_events": 65,
+      "packages": 2,
+      "failed_events": 0,
+      "skips": 0
+    },
+    "minimum": {
+      "exit_code": 0,
+      "passed_events": 28,
+      "packages": 3,
+      "failed_events": 0,
+      "skips": 0
+    },
+    "lint": {
+      "exit_code": 0
+    },
+    "ago": {
+      "exit_code": 0
+    },
+    "direction_docs_prose": {
+      "exit_code": 0
+    },
+    "ownership_pure_go": {
+      "exit_code": 0
+    },
+    "plan_prose": {
+      "exit_code": 0
+    }
+  }
+}
