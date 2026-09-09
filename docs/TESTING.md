@@ -68,6 +68,21 @@ Run the source collector check with mandatory tools:
 CATALOG_GIT_FIXTURE_REQUIRED=1 go test -race -count=1 -timeout=5m -run '^TestRealPinnedGitSourceAcquisition$' ./acquisition
 ```
 
+The application matrix uses both HTTP fixtures and real Git fixtures. It covers
+CLI refresh, HTTP update, connected refresh, startup acquisition, and repeated
+timer cycles. Git commit changes require a restart. Each timer cycle must report
+a new successful source receipt. Unchanged facts can retain earlier provenance.
+
+Publisher cases cover provider-scoped and all-provider acquisition. They reopen
+the exact staged artifact and bind changed metadata to its source receipt. The
+all-provider case runs in a child process with private directories and a local
+proxy. The child preserves the mandatory-tool flag and propagates skips.
+
+Native jobs retain runtime, Git source, and publisher ingestion evidence in
+separate JSON files. The A20 registry names both source forms for the CLI,
+server, publisher, and artifact-binding checks. Missing-dependency and complete
+product-pair acceptance remain separate checks.
+
 The fixture redirects only the models.dev Git URL to its local repository. It
 disables system and user Git configuration and limits Git transport to local
 files. It does not install dependencies from a package registry. This check

@@ -3,10 +3,8 @@ package app
 import (
 	"context"
 	"encoding/json"
-	"fmt"
 	"net/http"
 	"net/http/httptest"
-	"net/url"
 	"os"
 	"path/filepath"
 	"strconv"
@@ -23,71 +21,49 @@ import (
 )
 
 func TestConnectedRefreshIngestsProviderAndNonProviderEvidence(t *testing.T) {
-	testConnectedSourceIngestion(t, false)
+	testConnectedSourceIngestion(t, false, sources.ModelsDevHTTPID, 0)
 }
 
 func TestScheduledRefreshIngestsProviderAndNonProviderEvidence(t *testing.T) {
-	testConnectedSourceIngestion(t, true)
+	testConnectedSourceIngestion(t, true, sources.ModelsDevHTTPID, 0)
 }
 
 func TestConfiguredSourceSelectionSkipsMetadataInApplication(t *testing.T) {
 	for _, automatic := range []bool{false, true} {
-		t.Run(strconv.FormatBool(automatic), func(t *testing.T) { testConnectedSourceIngestion(t, automatic, string(sources.ProvidersID)) })
+		t.Run(strconv.FormatBool(automatic), func(t *testing.T) {
+			testConnectedSourceIngestion(t, automatic, sources.ModelsDevHTTPID, 0, string(sources.ProvidersID))
+		})
 	}
 }
 
-func testConnectedSourceIngestion(t *testing.T, automatic bool, selection ...string) {
+func TestGitConnectedRefreshIngestsProviderAndNonProviderEvidence(t *testing.T) {
+	testConnectedSourceIngestion(t, false, sources.ModelsDevGitID, 0)
+}
+
+func TestGitScheduledRefreshIngestsProviderAndNonProviderEvidence(t *testing.T) {
+	testConnectedSourceIngestion(t, true, sources.ModelsDevGitID, 0)
+}
+
+func TestGitConfiguredSourceSelectionSkipsMetadataInApplication(t *testing.T) {
+	for _, automatic := range []bool{false, true} {
+		t.Run(strconv.FormatBool(automatic), func(t *testing.T) {
+			testConnectedSourceIngestion(t, automatic, sources.ModelsDevGitID, 0, string(sources.ProvidersID))
+		})
+	}
+}
+
+func TestPeriodicRefreshIngestsProviderAndNonProviderEvidence(t *testing.T) {
+	testConnectedSourceIngestion(t, true, sources.ModelsDevHTTPID, 250*time.Millisecond)
+}
+
+func TestGitPeriodicRefreshIngestsProviderAndNonProviderEvidence(t *testing.T) {
+	testConnectedSourceIngestion(t, true, sources.ModelsDevGitID, 250*time.Millisecond)
+}
+
+func testConnectedSourceIngestion(t *testing.T, automatic bool, metadataSource sources.ID, interval time.Duration, selection ...string) {
 	clearCatalogEnvironment(t)
 	t.Setenv("STARMAP_HOME", t.TempDir())
-	modelsPayload := ingestionMetadataPayload(t)
-	var temperature atomic.Bool
-	var metadataCalls atomic.Int32
-	metadataServer := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		metadataCalls.Add(1)
-		if r.URL.Path != "/api.json" {
-			t.Errorf("metadata path %s", r.URL.Path)
-		}
-		var payload map[string]any
-		if err := json.Unmarshal(modelsPayload, &payload); err != nil {
-			t.Error(err)
-			return
-		}
-		provider, ok := payload["acme"].(map[string]any)
-		if !ok {
-			t.Error("fixture provider absent")
-			return
-		}
-		models := provider["models"].(map[string]any)
-		model, ok := models["known"].(map[string]any)
-		if !ok {
-			t.Error("fixture model absent")
-			return
-		}
-		model["temperature"] = temperature.Load()
-		model["description"] = "Metadata fixture"
-		w.Header().Set("Content-Type", "application/json")
-		if err := json.NewEncoder(w).Encode(payload); err != nil {
-			t.Error(err)
-		}
-	}))
-	t.Cleanup(metadataServer.Close)
-	metadataURL, err := url.Parse(metadataServer.URL)
-	if err != nil {
-		t.Fatal(err)
-	}
-	originalTransport := http.DefaultTransport
-	http.DefaultTransport = ingestionFixtureTransport(func(request *http.Request) (*http.Response, error) {
-		if request.URL.Hostname() == "models.dev" {
-			copy := request.Clone(request.Context())
-			copy.URL.Scheme, copy.URL.Host = metadataURL.Scheme, metadataURL.Host
-			return originalTransport.RoundTrip(copy)
-		}
-		if request.URL.Hostname() != "127.0.0.1" && request.URL.Hostname() != "::1" {
-			return nil, fmt.Errorf("unexpected external host %s", request.URL.Hostname())
-		}
-		return originalTransport.RoundTrip(request)
-	})
-	t.Cleanup(func() { http.DefaultTransport = originalTransport })
+	metadata := newApplicationMetadataFixture(t, metadataSource)
 	var limit atomic.Int64
 	var partial atomic.Bool
 	var failed atomic.Bool
@@ -137,7 +113,8 @@ func testConnectedSourceIngestion(t *testing.T, automatic bool, selection ...str
 		t.Fatal(err)
 	}
 	open := func() *App {
-		values := map[string]string{catalogconfig.Source: "file", catalogconfig.SourceURL: baselinePath, catalogconfig.SourceStartupPolicy: "require_source", catalogconfig.AcquisitionEnabled: strconv.FormatBool(automatic), catalogconfig.AcquisitionInterval: "0s", catalogconfig.StartupSpread: "0s", catalogconfig.SourcePollInterval: "0s"}
+		values := map[string]string{catalogconfig.Source: "file", catalogconfig.SourceURL: baselinePath, catalogconfig.SourceStartupPolicy: "require_source", catalogconfig.AcquisitionEnabled: strconv.FormatBool(automatic), catalogconfig.AcquisitionInterval: interval.String(), catalogconfig.StartupSpread: "0s", catalogconfig.SourcePollInterval: "0s"}
+		metadata.configure(values)
 		if len(selection) != 0 {
 			values[catalogconfig.AcquisitionSources] = selection[0]
 		}
@@ -159,6 +136,83 @@ func testConnectedSourceIngestion(t *testing.T, automatic bool, selection ...str
 	connected, err := application.Runtime(t.Context())
 	if err != nil {
 		t.Fatal(err)
+	}
+	if interval > 0 {
+		ctx, cancel := context.WithTimeout(t.Context(), 90*time.Second)
+		defer cancel()
+		var previousObservation string
+		waitFor := func(wantLimit int64, wantTemperature bool, minimumCalls int32) {
+			t.Helper()
+			timer := time.NewTicker(10 * time.Millisecond)
+			defer timer.Stop()
+			for {
+				state := connected.State()
+				status := connected.Status()
+				currentObservation := ""
+				if status.GenerationID == state.GenerationID && status.AcquisitionHealth == runtime.HealthOK {
+					for _, receipt := range status.SourceObservations {
+						if receipt.Source == metadata.id && receipt.ObservationID != "" && receipt.ObservationID != previousObservation && receipt.Status == sources.ObservationStatusSucceeded && receipt.Completeness == sources.ObservationCompletenessComplete {
+							metadata.assertRevision(t, receipt.Revision)
+							currentObservation = receipt.ObservationID
+						}
+					}
+				}
+				provider, err := state.Catalog.Provider("acme")
+				if err == nil {
+					model := provider.Models["known"]
+					if currentObservation != "" && model != nil && model.Limits != nil && model.Limits.ContextWindow == wantLimit && model.Features != nil && model.Features.Temperature == wantTemperature && model.Description == "Metadata fixture" && calls.Load() >= minimumCalls && metadata.count(t) >= minimumCalls {
+						generation, err := connected.Client().Generation(ctx, state.GenerationID)
+						if err != nil {
+							t.Fatal(err)
+						}
+						for _, field := range []struct {
+							name   string
+							source sources.ID
+						}{{"limits.context_window", sources.ProvidersID}, {"Features.temperature", metadata.id}} {
+							evidence := state.Catalog.Provenance().FindModelField("acme", "known", field.name)
+							if len(evidence) != 1 || evidence[0].Source != field.source {
+								t.Fatalf("periodic %s lost provenance", field.name)
+							}
+							bound := false
+							for _, link := range generation.Manifest.SourceObservations {
+								if link.Source == field.source && link.ObservationID == evidence[0].ObservationID && link.EvidenceChecksum == evidence[0].EvidenceChecksum {
+									if field.source == metadata.id {
+										metadata.assertRevision(t, link.Revision)
+									}
+									bound = true
+								}
+							}
+							if !bound {
+								t.Fatalf("periodic %s lost immutable receipt", field.name)
+							}
+						}
+						previousObservation = currentObservation
+						return
+					}
+				}
+				select {
+				case <-ctx.Done():
+					t.Fatalf("periodic acquisition did not publish limit %d with %d source calls: %v", wantLimit, minimumCalls, ctx.Err())
+				case <-timer.C:
+				}
+			}
+		}
+		waitFor(131072, false, 1)
+		limit.Store(262144)
+		wantTemperature := false
+		if metadata.git == nil {
+			metadata.temperature.Store(true)
+			wantTemperature = true
+		}
+		directories, err := application.SourceDirectories()
+		if err != nil {
+			t.Fatal(err)
+		}
+		if err := os.RemoveAll(filepath.Join(directories.Cache, "models.dev")); err != nil {
+			t.Fatal(err)
+		}
+		waitFor(262144, wantTemperature, 2)
+		return
 	}
 	if automatic {
 		ctx, cancel := context.WithTimeout(t.Context(), 30*time.Second)
@@ -188,8 +242,8 @@ func testConnectedSourceIngestion(t *testing.T, automatic bool, selection ...str
 	if len(selection) != 0 {
 		wantMetadataCalls, wantDescription = 0, ""
 	}
-	if metadataCalls.Load() != wantMetadataCalls {
-		t.Fatalf("metadata calls=%d, want %d", metadataCalls.Load(), wantMetadataCalls)
+	if metadata.count(t) != wantMetadataCalls {
+		t.Fatalf("metadata calls=%d, want %d", metadata.count(t), wantMetadataCalls)
 	}
 	observed, err := connected.State().Catalog.Provider("acme")
 	if err != nil {
@@ -212,6 +266,26 @@ func testConnectedSourceIngestion(t *testing.T, automatic bool, selection ...str
 		if len(selection) == 0 && (current.Features == nil || current.Features.Temperature != wantTemperature) {
 			t.Fatalf("metadata temperature = %+v, want %t", current.Features, wantTemperature)
 		}
+		if len(selection) == 0 {
+			evidence := connected.State().Catalog.Provenance().FindModelField("acme", "known", "Features.temperature")
+			if len(evidence) != 1 || evidence[0].Source != metadata.id {
+				t.Fatal("changed metadata lost its source provenance")
+			}
+			generation, err := connected.Client().Generation(t.Context(), connected.State().GenerationID)
+			if err != nil {
+				t.Fatal(err)
+			}
+			bound := false
+			for _, link := range generation.Manifest.SourceObservations {
+				if link.Source == metadata.id && link.ObservationID == evidence[0].ObservationID && link.EvidenceChecksum == evidence[0].EvidenceChecksum {
+					metadata.assertRevision(t, link.Revision)
+					bound = true
+				}
+			}
+			if !bound {
+				t.Fatal("changed metadata has no matching immutable receipt")
+			}
+		}
 	}
 	clearMetadata := func() {
 		t.Helper()
@@ -223,11 +297,28 @@ func testConnectedSourceIngestion(t *testing.T, automatic bool, selection ...str
 			t.Fatal(err)
 		}
 	}
+	restartForPin := func() {
+		t.Helper()
+		if metadata.git == nil {
+			return
+		}
+		if err := application.Shutdown(context.Background()); err != nil {
+			t.Fatal(err)
+		}
+		automatic = false
+		application = open()
+		var err error
+		connected, err = application.Runtime(t.Context())
+		if err != nil {
+			t.Fatal(err)
+		}
+	}
 	initial := connected.State()
 	limit.Store(262144)
-	temperature.Store(true)
+	metadata.temperature.Store(true)
 	partial.Store(true)
 	clearMetadata()
+	restartForPin()
 	report, err := connected.Sync(t.Context(), "acme")
 	if err != nil || report.Health != runtime.HealthDegraded {
 		t.Fatalf("partial connected refresh: report=%+v error=%v", report, err)
@@ -255,18 +346,19 @@ func testConnectedSourceIngestion(t *testing.T, automatic bool, selection ...str
 		t.Fatal("partial provider facts have no matching immutable manifest receipt")
 	}
 	failed.Store(true)
-	temperature.Store(false)
+	metadata.temperature.Store(false)
 	clearMetadata()
+	restartForPin()
 	report, err = connected.Sync(t.Context(), "acme")
 	if report.Failed != 1 || report.Health == runtime.HealthOK {
 		t.Fatalf("failed provider reported success: report=%+v error=%v", report, err)
 	}
 	assertCurrent(false)
-	if len(selection) != 0 && metadataCalls.Load() != 0 {
+	if len(selection) != 0 && metadata.count(t) != 0 {
 		t.Fatal("disabled metadata source ran during a later refresh")
 	}
 	accepted := connected.State()
-	providerCallsBefore, metadataCallsBefore := calls.Load(), metadataCalls.Load()
+	providerCallsBefore, metadataCallsBefore := calls.Load(), metadata.count(t)
 	if err := application.Shutdown(context.Background()); err != nil {
 		t.Fatal(err)
 	}
@@ -280,7 +372,7 @@ func testConnectedSourceIngestion(t *testing.T, automatic bool, selection ...str
 	if connected.State().GenerationID != accepted.GenerationID || connected.State().PayloadChecksum != accepted.PayloadChecksum {
 		t.Fatal("restart changed the retained catalog generation")
 	}
-	if calls.Load() != providerCallsBefore || metadataCalls.Load() != metadataCallsBefore {
+	if calls.Load() != providerCallsBefore || metadata.count(t) != metadataCallsBefore {
 		t.Fatal("restart contacted a disabled acquisition source")
 	}
 }

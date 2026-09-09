@@ -29,7 +29,7 @@ func TestGitAcquisitionQualificationRequiresNativeTools(t *testing.T) {
 		if job.Env["CATALOG_GIT_FIXTURE_REQUIRED"] != "1" {
 			t.Errorf("%s allows missing Git qualification tools", owner)
 		}
-		installed, reached := false, false
+		installed, reached, publisher := false, false, false
 		for _, step := range job.Steps {
 			if strings.HasPrefix(step.Uses, "oven-sh/setup-bun@") {
 				if step.With["bun-version"] != "1.3.12" {
@@ -37,12 +37,21 @@ func TestGitAcquisitionQualificationRequiresNativeTools(t *testing.T) {
 				}
 				installed = true
 			}
+			if strings.Contains(step.Run, "./cmd/starmap-catalog-release") {
+				publisher = true
+				if !installed {
+					t.Errorf("%s runs the publisher before installing Bun", owner)
+				}
+			}
 			if strings.Contains(step.Run, "go test ./...") || strings.Contains(step.Run, "./acquisition") {
 				reached = true
 				if !installed {
 					t.Errorf("%s runs acquisition before installing Bun", owner)
 				}
 			}
+		}
+		if owner == "native-runtime" && !publisher {
+			t.Error("native job omits artifact ingestion qualification")
 		}
 		if !installed || !reached {
 			t.Errorf("%s omits Git acquisition qualification", owner)

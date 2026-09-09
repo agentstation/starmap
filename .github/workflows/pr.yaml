@@ -221,6 +221,10 @@ jobs:
         shell: bash
         run: |
           go test -json -count=1 -timeout=5m -run '^TestRealPinnedGitSourceAcquisition$|^TestRequiredGitFixtureToolsCannotSkip$' ./acquisition > native-evidence/git-acquisition.jsonl
+      - name: Test provider and metadata artifact publication
+        shell: bash
+        run: |
+          go test -json -count=1 -timeout=15m -run '^Test(Git)?PublisherStages(ChangingProviderAndMetadataIngestion|AllProviderAndMetadataIngestion)$' ./cmd/starmap-catalog-release > native-evidence/publisher-ingestion.jsonl
       - name: Test administrator-owned Linux configuration
         if: matrix.os == 'linux'
         shell: bash
