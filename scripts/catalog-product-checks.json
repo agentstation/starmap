@@ -1134,6 +1134,12 @@
           "test": "TestArchitectureSchemaIncludesUnknown"
         }
       ]
+    },
+    "A20.cli_provider_nonprovider": {
+      "kind": "go_test",
+      "repository": "starmap",
+      "package": "./internal/cli/app",
+      "test": "TestCLIRefreshIngestsProviderAndNonProviderEvidence"
     }
   }
 }
