@@ -183,7 +183,7 @@ func Open(ctx context.Context, opts ...Option) (*Runtime, error) {
 	if err != nil {
 		return nil, errors.WrapResource("prepare", "runtime instance seed", "", err)
 	}
-	client, err := starmap.NewContext(ctx, config.bindingClientOptions()...)
+	client, err := starmap.NewContext(ctx, config.acquisitionPolicyClientOptions()...)
 	if err != nil {
 		return nil, err
 	}
@@ -240,7 +240,7 @@ func Open(ctx context.Context, opts ...Option) (*Runtime, error) {
 		return nil, err
 	}
 
-	if err := runtime.publishBindingStartup(ctx); err != nil {
+	if err := runtime.publishAcquisitionPolicyStartup(ctx); err != nil {
 		runtime.abort()
 		return nil, errors.WrapResource("publish", "active binding catalog", "", err)
 	}
@@ -365,7 +365,8 @@ func (r *Runtime) initializeEffective(ctx context.Context) error {
 	defer r.mu.Unlock()
 	r.layers.embedded = baseline
 	r.layers.providerBindings = r.config.providerBindings
-	if r.layers.empty() && r.config.providerBindings == nil {
+	r.layers.acquisitionSources = r.config.acquisitionSources
+	if r.layers.empty() && r.config.providerBindings == nil && r.config.acquisitionSources == nil {
 		if storedProviderPolicyRequired(current) {
 			return &errors.ConflictError{Resource: "catalog startup policy", Message: "stored scoped evidence requires explicit provider bindings or retained input recovery"}
 		}
@@ -394,7 +395,7 @@ func (r *Runtime) commit(ctx context.Context, state starmap.CatalogState, epoch 
 		// effective catalog stays correct. It does not survive a restart.
 		return state, nil
 	}
-	if restored, err := r.restoreBindingGeneration(ctx, state, epoch); err != nil {
+	if restored, err := r.restoreAcquisitionPolicyGeneration(ctx, state, epoch); err != nil {
 		return starmap.CatalogState{}, err
 	} else if restored {
 		return r.client.CurrentCatalogState(), nil

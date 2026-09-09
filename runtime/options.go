@@ -35,9 +35,11 @@ type options struct {
 	sourceToken  string
 	sourceAPIKey string
 
-	acquisition      AcquisitionPolicy
-	providerBindings *providerBindingPolicy
-	freshness        FreshnessPolicy
+	acquisition        AcquisitionPolicy
+	providerBindings   *providerBindingPolicy
+	acquisitionSources *acquisitionSourcePolicy
+	modelsDevGitCommit *string
+	freshness          FreshnessPolicy
 
 	// freshnessExplicit records that a caller supplied a freshness policy. An
 	// explicit policy wins, so the source maximum age derives no threshold.

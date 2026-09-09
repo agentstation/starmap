@@ -30,6 +30,28 @@ func NewForRuntime(connected *runtime.Runtime, opts ...Option) (*Syncer, error) 
 }
 
 func (s *Syncer) syncRuntime(ctx context.Context, effective []pkgsync.Option, parsed *pkgsync.Options) (*pkgsync.Result, error) {
+	if selected, present := s.connected.AcquisitionSources(); present {
+		requested := slices.Clone(parsed.Sources)
+		if len(requested) == 0 {
+			requested = selected
+		}
+		if len(requested) == 0 {
+			return nil, &errors.ConfigError{Component: "acquisition", Message: "no acquisition sources are enabled"}
+		}
+		for _, id := range requested {
+			if id != sources.EmbeddedCatalogID && id != sources.ReleaseArtifactID && !slices.Contains(selected, id) {
+				return nil, &errors.ConfigError{Component: "acquisition", Message: "requested source is excluded by the runtime source selection"}
+			}
+		}
+		effective = append(slices.Clone(effective), pkgsync.WithSources(requested...))
+		parsed = pkgsync.Defaults().Apply(effective...)
+	}
+	if parsed.ModelsDevGitCommit == "" && slices.Contains(parsed.Sources, sources.ModelsDevGitID) {
+		if commit, present := s.connected.ModelsDevGitCommit(); present {
+			effective = append(slices.Clone(effective), pkgsync.WithModelsDevGitCommit(commit))
+			parsed = pkgsync.Defaults().Apply(effective...)
+		}
+	}
 	if parsed.Fresh {
 		effective = append(slices.Clone(effective), pkgsync.WithRequireAllSources(true))
 	}

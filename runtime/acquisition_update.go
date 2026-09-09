@@ -80,6 +80,9 @@ func (r *Runtime) PreviewAcquisition(ctx context.Context, prepare func(context.C
 	if err != nil {
 		return starmap.CatalogState{}, err
 	}
+	if err := candidate.acquisitionSources.validateManual(observations); err != nil {
+		return starmap.CatalogState{}, err
+	}
 	if err := candidate.providerBindings.validateManual(observations, true); err != nil {
 		return starmap.CatalogState{}, err
 	}

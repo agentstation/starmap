@@ -282,7 +282,7 @@ func (r *Runtime) Sync(ctx context.Context, providers ...catalogs.ProviderID) (A
 		if !r.hasAcquisition() {
 			return &errors.ConfigError{
 				Component: "acquirer",
-				Message:   "provider acquisition needs an injected acquirer",
+				Message:   "no configured acquisition source is eligible",
 			}
 		}
 		return r.acquire(runCtx, report, providers, epoch)

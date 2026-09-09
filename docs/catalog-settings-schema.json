@@ -357,6 +357,64 @@
       "anchor": "catalog-acquisition-enabled"
     },
     {
+      "description": "Selects permitted local acquisition inputs. An empty list excludes every acquisition source.",
+      "allowed_values": [
+        "providers",
+        "local_catalog",
+        "models_dev_http",
+        "models_dev_git"
+      ],
+      "id": "catalog.acquisition.sources",
+      "name": "STARMAP_CATALOG_ACQUISITION_SOURCES",
+      "key": "catalog_acquisition_sources",
+      "flag": "catalog-acquisition-sources",
+      "environment": [
+        "STARMAP_CATALOG_ACQUISITION_SOURCES"
+      ],
+      "type": "string-list",
+      "unit": "",
+      "default": "",
+      "default_meaning": "omission keeps host acquisition defaults and existing retained source evidence",
+      "allow_empty": true,
+      "allow_zero": false,
+      "sensitive": false,
+      "scope": "deployment",
+      "source_binding": "",
+      "applicability": [
+        "all"
+      ],
+      "mutability": "restart",
+      "introduced": 1,
+      "compatibility": "supported",
+      "anchor": "catalog-acquisition-sources"
+    },
+    {
+      "description": "Pins models.dev Git acquisition to one exact hexadecimal commit. An empty value clears the pin.",
+      "id": "catalog.models.dev.git.commit",
+      "name": "STARMAP_CATALOG_MODELS_DEV_GIT_COMMIT",
+      "key": "catalog_models_dev_git_commit",
+      "flag": "catalog-models-dev-git-commit",
+      "environment": [
+        "STARMAP_CATALOG_MODELS_DEV_GIT_COMMIT"
+      ],
+      "type": "string",
+      "unit": "",
+      "default": "",
+      "default_meaning": "omission keeps the collector pin. Git acquisition requires an exact commit",
+      "allow_empty": true,
+      "allow_zero": false,
+      "sensitive": false,
+      "scope": "deployment",
+      "source_binding": "",
+      "applicability": [
+        "all"
+      ],
+      "mutability": "restart",
+      "introduced": 1,
+      "compatibility": "supported",
+      "anchor": "catalog-models-dev-git-commit"
+    },
+    {
       "description": "Sets the acquisition period. Zero permits one startup pass when automatic acquisition is on.",
       "id": "catalog.acquisition.interval",
       "name": "STARMAP_CATALOG_ACQUISITION_INTERVAL",

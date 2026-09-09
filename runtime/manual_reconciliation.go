@@ -28,7 +28,7 @@ func (l *layerSet) reconcileManualInputs(ctx context.Context, base *catalogs.Cat
 			if err := ctx.Err(); err != nil {
 				return nil, collected, err
 			}
-			if !l.providerBindings.permitsManual(retained) {
+			if !l.acquisitionSources.permits(retained.Receipt.Link.Source) || !l.providerBindings.permitsManual(retained) {
 				continue
 			}
 			observation, err := retained.restore()
@@ -155,7 +155,7 @@ func (l *layerSet) reconcileManualBatch(ctx context.Context, base *catalogs.Cata
 		}
 	}
 	return reconciler.ReconcileObservations(ctx, base, inputs, reconciler.WithChangeTime(at), reconciler.WithProjectedEvidencePolicy(func(provider catalogs.ProviderID, entry provenance.Entry) bool {
-		return l.providerBindings.permitsProjectedEvidence(provider, entry) && selection.permitsProjection(provider, entry)
+		return l.acquisitionSources.permits(entry.Source) && l.providerBindings.permitsProjectedEvidence(provider, entry) && selection.permitsProjection(provider, entry)
 	}), reconciler.WithProviderObservationSelection(selection.selection(observations)))
 }
 

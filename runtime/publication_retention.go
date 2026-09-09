@@ -24,10 +24,7 @@ func (r *Runtime) publishInputs(ctx context.Context, source *sourceLayer, provid
 	if err != nil {
 		return starmap.CatalogState{}, err
 	}
-	if err := r.config.providerBindings.validatePublication(prepared); err != nil {
-		return starmap.CatalogState{}, err
-	}
-	if err := r.config.providerBindings.validateManual(manual, true); err != nil {
+	if err := r.config.validateAcquisitionPublication(prepared, manual); err != nil {
 		return starmap.CatalogState{}, err
 	}
 	if err := validateObservationReplacement(ctx, resets, manual); err != nil {

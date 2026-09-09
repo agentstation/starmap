@@ -8,6 +8,7 @@ import (
 
 	"github.com/agentstation/starmap/internal/fleet"
 	"github.com/agentstation/starmap/pkg/errors"
+	"github.com/agentstation/starmap/pkg/sources"
 	"github.com/agentstation/starmap/runtime"
 )
 
@@ -134,6 +135,15 @@ func describe(entry setting) Descriptor {
 	case AcquisitionEnabled:
 		d.Description = "Enables automatic acquisition from configured provider and metadata sources."
 		d.Type, d.Default = BooleanValue, strconv.FormatBool(acquisition.Enabled)
+	case AcquisitionSources:
+		d.AllowedValues = []string{string(sources.ProvidersID), string(sources.LocalCatalogID), string(sources.ModelsDevHTTPID), string(sources.ModelsDevGitID)}
+		d.Description = "Selects permitted local acquisition inputs. An empty list excludes every acquisition source."
+		d.Type, d.AllowEmpty, d.Mutability = ListValue, true, "restart"
+		d.DefaultMeaning = "omission keeps host acquisition defaults and existing retained source evidence"
+	case ModelsDevGitCommit:
+		d.Description = "Pins models.dev Git acquisition to one exact hexadecimal commit. An empty value clears the pin."
+		d.AllowEmpty, d.Mutability = true, "restart"
+		d.DefaultMeaning = "omission keeps the collector pin. Git acquisition requires an exact commit"
 	case AcquisitionInterval:
 		d.Description = "Sets the acquisition period. Zero permits one startup pass when automatic acquisition is on."
 		d.Type, d.Unit, d.Default, d.AllowZero = DurationValue, "duration", acquisition.Interval.String(), true

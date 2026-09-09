@@ -30,7 +30,13 @@ func TestScheduledRefreshIngestsProviderAndNonProviderEvidence(t *testing.T) {
 	testConnectedSourceIngestion(t, true)
 }
 
-func testConnectedSourceIngestion(t *testing.T, automatic bool) {
+func TestConfiguredSourceSelectionSkipsMetadataInApplication(t *testing.T) {
+	for _, automatic := range []bool{false, true} {
+		t.Run(strconv.FormatBool(automatic), func(t *testing.T) { testConnectedSourceIngestion(t, automatic, string(sources.ProvidersID)) })
+	}
+}
+
+func testConnectedSourceIngestion(t *testing.T, automatic bool, selection ...string) {
 	clearCatalogEnvironment(t)
 	t.Setenv("STARMAP_HOME", t.TempDir())
 	modelsPayload := ingestionMetadataPayload(t)
@@ -131,7 +137,11 @@ func testConnectedSourceIngestion(t *testing.T, automatic bool) {
 		t.Fatal(err)
 	}
 	open := func() *App {
-		application, err := New("test", "test", "test", "test", WithConfig(&Config{Quiet: true, CatalogPath: path, CatalogValues: map[string]string{catalogconfig.Source: "file", catalogconfig.SourceURL: baselinePath, catalogconfig.SourceStartupPolicy: "require_source", catalogconfig.AcquisitionEnabled: strconv.FormatBool(automatic), catalogconfig.AcquisitionInterval: "0s", catalogconfig.StartupSpread: "0s", catalogconfig.SourcePollInterval: "0s"}}))
+		values := map[string]string{catalogconfig.Source: "file", catalogconfig.SourceURL: baselinePath, catalogconfig.SourceStartupPolicy: "require_source", catalogconfig.AcquisitionEnabled: strconv.FormatBool(automatic), catalogconfig.AcquisitionInterval: "0s", catalogconfig.StartupSpread: "0s", catalogconfig.SourcePollInterval: "0s"}
+		if len(selection) != 0 {
+			values[catalogconfig.AcquisitionSources] = selection[0]
+		}
+		application, err := New("test", "test", "test", "test", WithConfig(&Config{Quiet: true, CatalogPath: path, CatalogValues: values}))
 		if err != nil {
 			t.Fatal(err)
 		}
@@ -174,15 +184,19 @@ func testConnectedSourceIngestion(t *testing.T, automatic bool) {
 	if calls.Load() != 1 {
 		t.Fatalf("provider calls = %d, want 1", calls.Load())
 	}
-	if metadataCalls.Load() != 1 {
-		t.Fatalf("connected acquisition made %d metadata requests, want 1", metadataCalls.Load())
+	wantMetadataCalls, wantDescription := int32(1), "Metadata fixture"
+	if len(selection) != 0 {
+		wantMetadataCalls, wantDescription = 0, ""
+	}
+	if metadataCalls.Load() != wantMetadataCalls {
+		t.Fatalf("metadata calls=%d, want %d", metadataCalls.Load(), wantMetadataCalls)
 	}
 	observed, err := connected.State().Catalog.Provider("acme")
 	if err != nil {
 		t.Fatal(err)
 	}
 	model := observed.Models["known"]
-	if model == nil || model.Description != "Metadata fixture" || model.Limits == nil || model.Limits.ContextWindow != 131072 {
+	if model == nil || model.Description != wantDescription || model.Limits == nil || model.Limits.ContextWindow != 131072 {
 		t.Fatalf("connected catalog did not combine provider and metadata facts: %+v", model)
 	}
 }

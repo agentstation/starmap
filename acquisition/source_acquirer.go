@@ -74,6 +74,24 @@ func (a *SourceAcquirer) AcquireSources(ctx context.Context, request runtime.Sou
 	for _, provider := range targets {
 		options := a.options
 		options.Sources = slices.Clone(a.options.Sources)
+		if request.Sources != nil {
+			options.Sources = slices.Clone(request.Sources)
+		}
+		if len(options.Sources) == 0 {
+			continue
+		}
+		if request.ModelsDevGitCommit != nil {
+			options.ModelsDevGitCommit = *request.ModelsDevGitCommit
+		}
+		if !slices.Contains(options.Sources, sources.ModelsDevGitID) {
+			options.ModelsDevGitCommit = ""
+		}
+		if err := sources.ValidateAcquisitionSelection(options.Sources); err != nil {
+			return nil, err
+		}
+		if slices.Contains(options.Sources, sources.ProvidersID) {
+			return nil, &errors.ValidationError{Field: "source_acquirer.sources", Message: "provider acquisition uses a separate role"}
+		}
 		if provider != "" {
 			options.ProviderID = &provider
 		}

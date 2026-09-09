@@ -16,6 +16,11 @@ import (
 type SourceAcquisitionRequest struct {
 	Current   *catalogs.Catalog
 	Providers []catalogs.ProviderID
+	// Sources replaces the collector source defaults when non-nil.
+	Sources []sources.ID
+	// ModelsDevGitCommit replaces the collector pin when non-nil.
+	// An explicit empty value clears that pin. Git acquisition then requires a pin.
+	ModelsDevGitCommit *string
 }
 
 // SourceAcquirer collects configured non-provider observations without publication.
@@ -38,13 +43,13 @@ func WithSourceAcquirer(acquirer SourceAcquirer) Option {
 }
 
 func (r *Runtime) hasAcquisition() bool {
-	return r.config.acquirer != nil || r.config.sourceAcquirer != nil
+	return (r.config.acquirer != nil && r.config.acquisitionSources.permits(sources.ProvidersID)) || (r.config.sourceAcquirer != nil && r.config.acquisitionSources.permitsMetadata())
 }
 
 // Independent source groups share the same operation and lease.
 // A slow metadata source does not hold completed provider publication windows.
 func (r *Runtime) acquire(ctx context.Context, report *RefreshReport, providers []catalogs.ProviderID, epoch uint64) error {
-	if r.config.sourceAcquirer == nil {
+	if r.config.sourceAcquirer == nil || !r.config.acquisitionSources.permitsMetadata() {
 		err := r.acquireProviders(ctx, report, providers, epoch)
 		r.recordAcquisition(report.Acquisition, err)
 		return err
@@ -58,10 +63,10 @@ func (r *Runtime) acquire(ctx context.Context, report *RefreshReport, providers 
 	providerReport := RefreshReport{RunID: report.RunID}
 	var providerErr error
 	var work sync.WaitGroup
-	if r.config.acquirer != nil {
+	if r.config.acquirer != nil && r.config.acquisitionSources.permits(sources.ProvidersID) {
 		work.Go(func() { providerErr = r.acquireProviders(ctx, &providerReport, providers, epoch) })
 	}
-	observations, sourceErr := r.config.sourceAcquirer.AcquireSources(ctx, SourceAcquisitionRequest{Current: r.State().Catalog, Providers: slices.Clone(providers)})
+	observations, sourceErr := r.config.sourceAcquirer.AcquireSources(ctx, SourceAcquisitionRequest{Current: r.State().Catalog, Providers: slices.Clone(providers), Sources: r.config.acquisitionSources.metadata(), ModelsDevGitCommit: r.modelsDevGitCommit()})
 	sourcePublished := false
 	if len(observations) != 0 {
 		for _, observation := range observations {
@@ -109,4 +114,33 @@ func (r *Runtime) acquire(ctx context.Context, report *RefreshReport, providers 
 	r.recordAcquisition(result, combined)
 	report.Acquisition = result
 	return combined
+}
+
+// WithModelsDevGitCommit sets the exact commit for models.dev Git acquisition.
+// Empty clears an inherited pin. This option does not select the Git source.
+func WithModelsDevGitCommit(commit string) Option {
+	return func(config *options) error {
+		if commit != "" && !sources.IsExactGitCommit(commit) {
+			return &errors.ValidationError{Field: "models_dev_git_commit", Message: "must be an exact 40- or 64-character hexadecimal Git commit"}
+		}
+		owned := commit
+		config.modelsDevGitCommit = &owned
+		return nil
+	}
+}
+
+// ModelsDevGitCommit returns the configured Git pin and its explicit presence.
+func (r *Runtime) ModelsDevGitCommit() (string, bool) {
+	if r.config.modelsDevGitCommit == nil {
+		return "", false
+	}
+	return *r.config.modelsDevGitCommit, true
+}
+
+func (r *Runtime) modelsDevGitCommit() *string {
+	value, present := r.ModelsDevGitCommit()
+	if !present {
+		return nil
+	}
+	return &value
 }

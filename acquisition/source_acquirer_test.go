@@ -145,3 +145,68 @@ func TestSourceAcquirerRejectsInvalidRequestAndCancellation(t *testing.T) {
 		t.Fatalf("canceled request = %v", err)
 	}
 }
+
+func TestSourceAcquirerExplicitRequestReplacesConstructorDefaults(t *testing.T) {
+	transport := &sourcePathTransport{testing: t}
+	previous := http.DefaultTransport
+	http.DefaultTransport = transport
+	t.Cleanup(func() { http.DefaultTransport = previous })
+	acquirer, err := NewSourceAcquirer(pkgsync.WithSources(sources.ModelsDevHTTPID), pkgsync.WithCatalogPath(filepath.Join(t.TempDir(), "absent")), pkgsync.WithSourcesDir(filepath.Join(t.TempDir(), "cache")))
+	if err != nil {
+		t.Fatal(err)
+	}
+	for _, ids := range [][]sources.ID{{sources.LocalCatalogID}, {}} {
+		observations, err := acquirer.AcquireSources(t.Context(), runtime.SourceAcquisitionRequest{Current: acquisitionTestCatalog(t), Sources: ids})
+		if err != nil || len(observations) != 0 {
+			t.Fatalf("request %v produced %d observations, error %v", ids, len(observations), err)
+		}
+	}
+	if transport.calls != 0 {
+		t.Fatal("excluded HTTP source was read")
+	}
+}
+
+func TestSourceAcquirerGitPinOverrideAndClear(t *testing.T) {
+	t.Setenv("PATH", t.TempDir())
+	pin := strings.Repeat("a", 40)
+	empty := ""
+	for _, test := range []struct {
+		name, initial string
+		requested     *string
+		pinError      bool
+	}{
+		{name: "constructor", initial: pin},
+		{name: "request", initial: "invalid", requested: &pin},
+		{name: "clear", initial: pin, requested: &empty, pinError: true},
+		{name: "missing", pinError: true},
+	} {
+		t.Run(test.name, func(t *testing.T) {
+			collector, err := NewSourceAcquirer(pkgsync.WithSources(sources.ModelsDevGitID), pkgsync.WithModelsDevGitCommit(test.initial), pkgsync.WithSourcesDir(filepath.Join(t.TempDir(), "checkout")), pkgsync.WithSkipDepPrompts(true))
+			if err != nil {
+				t.Fatal(err)
+			}
+			observations, err := collector.AcquireSources(t.Context(), runtime.SourceAcquisitionRequest{Current: acquisitionTestCatalog(t), ModelsDevGitCommit: test.requested})
+			var validation *pkgerrors.ValidationError
+			pinFailure := stderrors.As(err, &validation) && validation.Field == "ModelsDevGitCommit"
+			if pinFailure != test.pinError {
+				t.Fatalf("pin failure=%t, error=%v", pinFailure, err)
+			}
+			if !test.pinError {
+				var configuration *pkgerrors.ConfigError
+				if !stderrors.As(err, &configuration) {
+					t.Fatalf("valid pin did not reach dependency validation: %v", err)
+				}
+			}
+			if len(observations) != 0 {
+				t.Fatal("failed Git input became an observation")
+			}
+		})
+	}
+	collector, err := NewSourceAcquirer(pkgsync.WithSources(sources.ModelsDevGitID), pkgsync.WithModelsDevGitCommit(pin), pkgsync.WithCatalogPath(filepath.Join(t.TempDir(), "absent")))
+	if err != nil {
+		t.Fatal(err)
+	}
+	if _, err = collector.AcquireSources(t.Context(), runtime.SourceAcquisitionRequest{Current: acquisitionTestCatalog(t), Sources: []sources.ID{sources.LocalCatalogID}}); err != nil {
+		t.Fatalf("local source inherited a Git-only pin: %v", err)
+	}
+}

@@ -168,7 +168,7 @@ func (r *Runtime) sourceNeedsStartupPass() bool {
 // timestamps cannot prove freshness for local or metadata sources.
 // Provider-only acquisition checks retained layers against the warning age.
 func (r *Runtime) acquisitionNeedsStartupPass() bool {
-	if r.config.sourceAcquirer != nil {
+	if r.config.sourceAcquirer != nil && r.config.acquisitionSources.permitsMetadata() {
 		return true
 	}
 	r.mu.RLock()

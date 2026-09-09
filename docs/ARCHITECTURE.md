@@ -1370,6 +1370,38 @@ A slow metadata request does not delay a completed provider publication window.
 The runtime retains original source receipts with each accepted generation.
 Failed or partial sources retain accepted facts and report degraded acquisition.
 
+`STARMAP_CATALOG_ACQUISITION_SOURCES` selects permitted local acquisition inputs.
+Use a comma-separated list of registered IDs: `providers`, `local_catalog`, `models_dev_http`, or `models_dev_git`.
+Select only one models.dev form. An explicit empty value excludes every acquisition input.
+Omission keeps the host collector defaults and existing retained source evidence.
+The CLI flag is `--catalog-acquisition-sources`, and the YAML key is `catalog_acquisition_sources`.
+
+This selection applies to scheduled acquisition, manual refresh, and retained inputs after restart.
+Manual refresh rejects an explicitly requested excluded source before preparation.
+Excluded observations cannot enter a published generation.
+A restart rebuilds the accepted catalog without excluded local inputs before the client serves it.
+The source set contributes to generation identity. Re-enabling an unchanged set can restore its prior accepted generation.
+
+Source selection preserves the embedded or selected upstream baseline.
+It does not turn GitHub pulls off. Use the separate catalog source policy for upstream access.
+`STARMAP_CATALOG_ACQUISITION_ENABLED=false` stops automatic work but preserves explicit manual refresh and retained evidence.
+Use the source list when the operator also intends to exclude an acquisition input.
+
+For `models_dev_git`, set `STARMAP_CATALOG_MODELS_DEV_GIT_COMMIT` to an exact 40- or 64-character hexadecimal commit.
+The CLI flag is `--catalog-models-dev-git-commit`, and the YAML key is `catalog_models_dev_git_commit`.
+The pin applies to scheduled acquisition and manual refresh when no explicit manual pin replaces it.
+The manual `--models-dev-git-commit` flag takes precedence when nonempty.
+A missing or empty pin prevents Git acquisition before dependencies or source reads.
+
+Go callers use `runtime.WithModelsDevGitCommit` to supply the same pin.
+Omission preserves a pin on the supplied collector. Explicit empty clears that pin.
+Changing the pin requires restart and leaves accepted observations until acquisition supplies a valid replacement.
+A pin does not enable Git or permit an excluded source.
+
+Go callers use `runtime.WithAcquisitionSources` for the same policy.
+The runtime passes its explicit metadata selection to `SourceAcquirer`.
+That request replaces the collector's constructor source defaults without changing its path, timeout, or dependency options.
+
 Go callers add `runtime.WithSourceAcquirer` to select non-provider acquisition.
 `acquisition.NewSourceAcquirer` accepts `sync.WithSources` for local input or one
 models.dev transport. Git selection requires an exact commit and its configured

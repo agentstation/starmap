@@ -423,6 +423,51 @@ Enables automatic acquisition from configured provider and metadata sources.
 | Change class | `runtime-replacement` |
 | Compatibility | `supported`, schema 1 |
 
+<a id="catalog-acquisition-sources"></a>
+
+## catalog_acquisition_sources
+
+Selects permitted local acquisition inputs. An empty list excludes every acquisition source.
+
+| Property | Value |
+|---|---|
+| Environment | `STARMAP_CATALOG_ACQUISITION_SOURCES` |
+| CLI flag | `--catalog-acquisition-sources value` |
+| YAML key | `catalog_acquisition_sources` |
+| Semantic ID | `catalog.acquisition.sources` |
+| Grammar | `string-list` |
+| Accepted names | `providers`, `local_catalog`, `models_dev_http`, `models_dev_git` |
+| Default | omission keeps host acquisition defaults and existing retained source evidence |
+| Explicit empty | true |
+| Explicit zero | false |
+| Sensitive | false |
+| Scope | `deployment` |
+| Applicability | `all` |
+| Change class | `restart` |
+| Compatibility | `supported`, schema 1 |
+
+<a id="catalog-models-dev-git-commit"></a>
+
+## catalog_models_dev_git_commit
+
+Pins models.dev Git acquisition to one exact hexadecimal commit. An empty value clears the pin.
+
+| Property | Value |
+|---|---|
+| Environment | `STARMAP_CATALOG_MODELS_DEV_GIT_COMMIT` |
+| CLI flag | `--catalog-models-dev-git-commit value` |
+| YAML key | `catalog_models_dev_git_commit` |
+| Semantic ID | `catalog.models.dev.git.commit` |
+| Grammar | `string` |
+| Default | omission keeps the collector pin. Git acquisition requires an exact commit |
+| Explicit empty | true |
+| Explicit zero | false |
+| Sensitive | false |
+| Scope | `deployment` |
+| Applicability | `all` |
+| Change class | `restart` |
+| Compatibility | `supported`, schema 1 |
+
 <a id="catalog-acquisition-interval"></a>
 
 ## catalog_acquisition_interval

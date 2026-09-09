@@ -3,7 +3,6 @@ package sync
 
 import (
 	"context"
-	"encoding/hex"
 	"fmt"
 	"slices"
 	"strings"
@@ -150,7 +149,7 @@ func (s *Options) Validate(providers catalogs.ProvidersReader) error {
 	}
 	usesGit := slices.Contains(s.Sources, sources.ModelsDevGitID)
 	if usesGit {
-		if !isExactGitCommit(s.ModelsDevGitCommit) {
+		if !sources.IsExactGitCommit(s.ModelsDevGitCommit) {
 			return &errors.ValidationError{
 				Field: "ModelsDevGitCommit", Value: s.ModelsDevGitCommit,
 				Message: "an exact 40- or 64-character hexadecimal commit is required for models.dev Git verification",
@@ -303,14 +302,6 @@ func WithModelsDevGitCommit(commit string) Option {
 	return func(opts *Options) {
 		opts.ModelsDevGitCommit = commit
 	}
-}
-
-func isExactGitCommit(commit string) bool {
-	if len(commit) != 40 && len(commit) != 64 {
-		return false
-	}
-	_, err := hex.DecodeString(commit)
-	return err == nil
 }
 
 // WithAutoInstallDeps configures whether to automatically install missing dependencies.
