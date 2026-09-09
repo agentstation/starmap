@@ -8,6 +8,7 @@ import (
 	"path/filepath"
 	"strings"
 
+	"github.com/agentstation/starmap/internal/filepublish"
 	"github.com/agentstation/starmap/pkg/catalogs/internal/resourcepolicy"
 	"github.com/agentstation/starmap/pkg/errors"
 )
@@ -197,12 +198,12 @@ func writeReleaseFile(path string, data []byte) error {
 }
 
 func syncReleaseDirectory(path string) error {
-	directory, err := os.Open(path) //nolint:gosec // path is owned by release staging.
+	directory, err := os.OpenRoot(path)
 	if err != nil {
 		return err
 	}
 	defer func() { _ = directory.Close() }()
-	return directory.Sync()
+	return filepublish.SyncDirectory(directory)
 }
 
 func releaseAssets(generationID, directory string, assets []releaseAsset) ReleaseAssets {

@@ -426,7 +426,7 @@ type Release struct {
 ```
 
 <a name="ReleaseAssets"></a>
-## type [ReleaseAssets](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/artifact/release.go#L22-L27>)
+## type [ReleaseAssets](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/artifact/release.go#L23-L28>)
 
 ReleaseAssets describes one atomically staged immutable publication set.
 
@@ -440,7 +440,7 @@ type ReleaseAssets struct {
 ```
 
 <a name="StageReleaseAssets"></a>
-### func [StageReleaseAssets](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/artifact/release.go#L32>)
+### func [StageReleaseAssets](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/artifact/release.go#L33>)
 
 ```go
 func StageReleaseAssets(root string, artifact Bundle) (ReleaseAssets, error)
