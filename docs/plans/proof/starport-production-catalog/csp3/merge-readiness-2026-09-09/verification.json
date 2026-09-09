@@ -9,7 +9,13 @@
     "branch": "codex/catalog-presence-main",
     "head": "606b48dd",
     "status": "Sol review clean; Opus review or explicit owner exception required before publication",
-    "opus_reset_utc": "2026-09-09T04:10:00Z"
+    "opus_reset_utc": "2026-09-09T04:10:00Z",
+    "opus_retry": {
+      "started_utc": "2026-09-09T04:10:11Z",
+      "session": 3403,
+      "status": "running",
+      "output": "/tmp/starmap-presence-main-opus-reset-review.txt"
+    }
   },
   "range_candidate": {
     "worktree": "/tmp/starmap-presence-integration-2026-09-09",
@@ -65,7 +71,13 @@
       "portions": 1,
       "reported_findings": 0
     },
-    "status": "Verified local candidate; required Opus review and merge remain"
+    "status": "Verified local candidate; required Opus review and merge remain",
+    "opus_retry": {
+      "started_utc": "2026-09-09T04:10:11Z",
+      "session": 64753,
+      "status": "running",
+      "output": "/tmp/starmap-ranges-main-opus-reset-review.txt"
+    }
   },
   "starport_candidate": {
     "worktree": "/tmp/starport-readme-merged-2026-09-08",
@@ -125,6 +137,22 @@
       "removed_completed_test_directory": "/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/TestCLIRefreshIngestsProviderAndLocalEvidence2713991596",
       "bytes": 83565147,
       "preserved": "draft sources, test logs, and current worktrees"
+    },
+    "minimum_toolchain": {
+      "version": "go1.25.12",
+      "exit_code": 0,
+      "test_pass_events": 1,
+      "package_pass_events": 1,
+      "seconds": 13.405
+    },
+    "full_embedded_baseline_normal": {
+      "toolchain": "go1.26.6",
+      "exit_code": 0,
+      "test_pass_events": 1,
+      "package_pass_events": 1,
+      "seconds": 216.256,
+      "source": "starmap-cli-ingestion-local-first.go.gz",
+      "scope": "Provider/local update and restart; the later strict-failure receipt assertions belong to the separate file-baseline draft."
     }
   },
   "artifacts": [
@@ -347,6 +375,14 @@
     {
       "path": "starmap-cli-ingestion-probe.go.gz",
       "raw_sha256": "27cdcff66f5dbc9c10fa4f6e42056a75d17b9a55daa949ac5dd7ff698c34204e"
+    },
+    {
+      "path": "starmap-cli-ingestion-minimum.jsonl.gz",
+      "raw_sha256": "d84fc4bfac1717a479533b7eae8b7db30ea9745c6e9a44f3068afc020ddfb18f"
+    },
+    {
+      "path": "starmap-cli-full-baseline-normal.jsonl.gz",
+      "raw_sha256": "d4a426cb7c6e2304b71c314bba1307e259340798ed0ff441420d83fb4e6e34fc"
     }
   ],
   "plan_prose_check": {
