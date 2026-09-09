@@ -1,0 +1,193 @@
+{
+  "task": "CSP3",
+  "status": "partial audit evidence; no completion credit",
+  "source_head": "909d9fc1f55cf1010d9636b8adee17655a2cfc12",
+  "source_change": "Temporary Go overlays only. The product worktree retains its separate intended publisher regression.",
+  "fixture": {
+    "remote": "/tmp/starmap-real-git-application-2026-09-09/remote",
+    "commits": [
+      "725576d2bc5dda4dceae9d8d77e43f9449a7ac4c",
+      "df82b415c240e3926f669b78a667a8e34b0f3815"
+    ]
+  },
+  "final_checks": [
+    {
+      "log": "final-minimum.jsonl.gz",
+      "passed_tests": 7,
+      "passed_packages": 1,
+      "failed_tests": 0,
+      "failed_packages": 0
+    },
+    {
+      "log": "corrected-server-race.jsonl.gz",
+      "passed_tests": 5,
+      "passed_packages": 1,
+      "failed_tests": 0,
+      "failed_packages": 0
+    },
+    {
+      "log": "publisher-corrected-minimum.jsonl.gz",
+      "passed_tests": 2,
+      "passed_packages": 1,
+      "failed_tests": 0,
+      "failed_packages": 0,
+      "exit_code": 0
+    }
+  ],
+  "initial_checks": [
+    {
+      "log": "race.jsonl.gz",
+      "passed_tests": 2,
+      "passed_packages": 1,
+      "failed_tests": 0,
+      "failed_packages": 0
+    },
+    {
+      "log": "server-minimum.jsonl.gz",
+      "passed_tests": 5,
+      "passed_packages": 1,
+      "failed_tests": 0,
+      "failed_packages": 0
+    },
+    {
+      "log": "final-race.jsonl.gz",
+      "passed_tests": 5,
+      "passed_packages": 0,
+      "failed_tests": 2,
+      "failed_packages": 1
+    },
+    {
+      "log": "publisher-minimum.jsonl.gz",
+      "passed_tests": 0,
+      "passed_packages": 0,
+      "failed_tests": 2,
+      "failed_packages": 1
+    },
+    {
+      "log": "publisher-diagnostic.jsonl.gz",
+      "passed_tests": 0,
+      "passed_packages": 0,
+      "failed_tests": 1,
+      "failed_packages": 1
+    }
+  ],
+  "scope": [
+    "CLI refresh, HTTP refresh, connected startup and refresh, automatic startup acquisition, explicit source exclusion, changed provider and Git metadata, partial provider replies, failed provider retention, configured commit change with restart, immutable model responses and receipts.",
+    "Real Git and Bun use a local dependency-free repository. Git network protocols are disabled. Fixture provider calls stay on loopback.",
+    "The changed metadata field binds to the selected Git commit and exact frozen lockfile checksum. Retained receipts can support older unchanged facts."
+  ],
+  "test_correction": "The initial whole-manifest assertion incorrectly required every retained Git receipt to use the newest commit. The diagnostic proves that the changed temperature field already binds to the new commit. Corrected checks follow that field to its matching immutable manifest receipt. No production code changed.",
+  "race_scope": "final-race.jsonl contains two passing CLI/HTTP cases with final assertions, five passing test events total, and two failing server assertions plus a failing package. corrected-server-race.jsonl passes the five server test events after correcting the assertion. Do not describe the earlier package as green.",
+  "pending": {
+    "publisher_final_minimum": {
+      "session": 34257,
+      "log": "/tmp/starmap-real-git-application-2026-09-09/publisher-corrected-minimum.jsonl",
+      "status": "passed",
+      "exit_code": 0
+    },
+    "publisher_final_race": {
+      "session": 78556,
+      "status": "running",
+      "log": "/tmp/starmap-real-git-application-2026-09-09/publisher-corrected-race.jsonl"
+    },
+    "permanent_tests": "not installed",
+    "platform_scope": "macOS ARM64 only",
+    "timer_scope": "Automatic startup plus explicit connected refresh; repeated timer scheduling is not independently qualified.",
+    "product_full_verification": {
+      "session": 60527,
+      "log": "/tmp/starmap-combined-acquisition-final-verification.log",
+      "status": "running"
+    }
+  },
+  "artifacts": [
+    {
+      "path": "fixture.json.gz",
+      "sha256": "f16ea196ad0c2c2aa2ca032844470362183355036fc76018778ae09f37f257a4"
+    },
+    {
+      "path": "catalog_ingestion_test.go.gz",
+      "sha256": "8ee9eb77d2787c5783360854ad468af6717291f9a360788e87e3cc6aae0b35f6"
+    },
+    {
+      "path": "catalog_scheduled_sources_test.go.gz",
+      "sha256": "85601e635b8fa98b8e24f8ae83782ba4ca06accf383e246705d6ee8d0952c935"
+    },
+    {
+      "path": "publisher_ingestion_test.go.gz",
+      "sha256": "010f7c3078b1f3f1cb1e6501b3d28994993f7464759d14b6efb0e25373bd5070"
+    },
+    {
+      "path": "catalog_ingestion_test.go.initial.gz",
+      "sha256": "ee7e77c03140b0c80a7c191f6caff6a01935c9ea7c99acc0c7def9664d737443"
+    },
+    {
+      "path": "catalog_scheduled_sources_test.go.initial.gz",
+      "sha256": "ee399b7d68b1fe24366b92786ceb56c6865547fa6871ad13e80a7ad195e2f998"
+    },
+    {
+      "path": "catalog_scheduled_sources_test.go.all-links-assertion.gz",
+      "sha256": "52cb7792683eb7a6419b906686cb1f7a56f80b18fb94b6971eb1276a2d97dfa9"
+    },
+    {
+      "path": "publisher_ingestion_test.go.initial.gz",
+      "sha256": "22838b7b02f92763987eada8194c181816b6cf4d2152f1093d61d5fdabab65ab"
+    },
+    {
+      "path": "publisher_ingestion_test.go.diagnostic.gz",
+      "sha256": "539827c825e82803c76cbdcf4eb432f25b5482c01a00deeecebbf409f2dec8bf"
+    },
+    {
+      "path": "overlay.json.gz",
+      "sha256": "2efa4fe00352be9e7f7c557a6e2975891ba17d2993713cb55970eea268424722"
+    },
+    {
+      "path": "server-overlay.json.gz",
+      "sha256": "a32371064b4a703b36ef1116a31787da97b03c526d296827ded413dc2bc687dc"
+    },
+    {
+      "path": "final-overlay.json.gz",
+      "sha256": "27326a5e5ab9f1bf701d0f417fccff305941244e7a3592ca0c9e90ce7ca00bad"
+    },
+    {
+      "path": "publisher-overlay.json.gz",
+      "sha256": "4c609104f8ca9a30826e4e9bb5cbe132fe05ff194f270dd92adc04b28c87cdc5"
+    },
+    {
+      "path": "race.jsonl.gz",
+      "sha256": "d13d2a1e4b45e87dcabd908492f2302abbd697de8d339ecfa8775411bd236fdc"
+    },
+    {
+      "path": "server-minimum.jsonl.gz",
+      "sha256": "e73ff2be478d42005d10ea90b196f308e4e4b9b89c833ee4957641c20f966b77"
+    },
+    {
+      "path": "final-race.jsonl.gz",
+      "sha256": "6e957683e6caf3c5d58026ab03bc2ec5c3a017a54d5d11472064d9891cafd910"
+    },
+    {
+      "path": "final-minimum.jsonl.gz",
+      "sha256": "9e652d35b2ce8a57fd7e9208fbb3e46b77ddc0d23cc7ad7c2962a6c9ebdfad5c"
+    },
+    {
+      "path": "corrected-server-race.jsonl.gz",
+      "sha256": "d2b0e4a59b798f94348b5c21d0f8b72b06335d1716581c0506b181a1c1044d30"
+    },
+    {
+      "path": "publisher-minimum.jsonl.gz",
+      "sha256": "e386ba8977ecd7738d6cb5e19fbe4924a6f1dce8a9f99d6866d67cfb9aed237c"
+    },
+    {
+      "path": "publisher-diagnostic.jsonl.gz",
+      "sha256": "e1f00f056fc23ac41f3f885928efe56c41636ef888a003ebcbca75bfd58260eb"
+    },
+    {
+      "path": "publisher-corrected-minimum.jsonl.gz",
+      "sha256": "844a93f552bae66fb4e3e4f64385f080f86df6a2c899225a91ecf3e4dfba2821"
+    },
+    {
+      "path": "fixture.bundle.gz",
+      "sha256": "8d9a4e14ec5c314ff207339ff1ba82cfc417db0578be422d333f9bea10b9b3aa"
+    }
+  ],
+  "next_action": "Complete publisher race qualification and retain its exact result. Promote verified application fixtures after the combined acquisition candidate completes verification, required review, and merge."
+}

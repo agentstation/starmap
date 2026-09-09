@@ -16,24 +16,26 @@
   "findings": [
     {
       "id": "publisher-source-provider-limit",
-      "classification": "fixed locally; merge pending",
+      "classification": "fixed and merged in PR #140",
       "evidence": "models.dev accepts up to internal/constants.MaxSourceProviders (512). DecodeSourceObservationPayload shares decodePayloadEnvelope with canonical decoding and rejects more than 100 providers. Runtime manualObservation.restore calls this source decoder.",
-      "next": "Complete full verification, review, CI, and merge."
+      "next": "Repair delivery is complete. CSP3 application acceptance and released-pair qualification remain open.",
+      "historical_classification": "fixed locally; merge pending"
     },
     {
       "id": "publisher-store-path",
-      "classification": "verified with real CLI; fixed locally; merge pending",
+      "classification": "fixed and merged in PR #140",
       "evidence": "On macOS, the isolated CLI selects Library/Application Support/starmap/state/catalog. An explicit catalog-store-path selects the requested directory. The workflow and generator now forward the same explicit store to acquisition, manifest generation, and release staging.",
-      "next": "Complete full verification, review, CI, and merge."
+      "next": "Repair delivery is complete. CSP3 application acceptance and released-pair qualification remain open.",
+      "historical_classification": "verified with real CLI; fixed locally; merge pending"
     }
   ],
   "constraints": [
     "Do not raise the canonical provider limit or source byte limit.",
     "Do not dispatch catalog publication without the separate release authority.",
-    "Keep the scheduled-source and source-selection work pending integration of this repair."
+    "The combined acquisition branch includes publisher merge af828f4f. Complete its independent verification and review before publication."
   ],
   "completion_credit": false,
-  "updated_at": "2026-09-09T11:57:11.032828+00:00",
+  "updated_at": "2026-09-09T13:26:30.806817+00:00",
   "dirty_inventory": [
     {
       "path": ".github/workflows/catalog-generation.yaml",
@@ -474,5 +476,6 @@
     "successful_checks": 15,
     "ci_verification_stages": 39,
     "task_credit": "CSP3 remains in progress. This repair does not satisfy every A08 and Starmap A20 subcase."
-  }
+  },
+  "repair_status": "merged"
 }
