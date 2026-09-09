@@ -1,0 +1,8 @@
+{
+  "head": "0e115004857bfc13dd9f76046d5c6bca019f4c0f",
+  "exit_code": 0,
+  "verification_stages_passed": 39,
+  "log": "unit-name-publication-verify.txt.gz",
+  "raw_sha256": "9b8c71e5084cb134576162e6bc30fbf66e8823d79a0b5b5ac2aa178463d5b09d",
+  "status": "candidate verification only; review and merge pending"
+}

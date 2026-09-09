@@ -1,0 +1,172 @@
+{
+  "task": "CSP2",
+  "status": "PASS",
+  "implementation_merged": true,
+  "merge_commit": "7be0a02701447ef0f3f044bbbd5cfd9ea5524f9e",
+  "reviewed_head": "8e559680dcfd4bfb28016be1f333e10d3e1d16ee",
+  "pr": "https://github.com/agentstation/starmap/pull/136",
+  "ci_run": 34291140200,
+  "ci_successful_checks": 15,
+  "native_jobs": 6,
+  "native_platforms": [
+    "Linux AMD64",
+    "Linux ARM64",
+    "macOS AMD64",
+    "macOS ARM64",
+    "Windows AMD64",
+    "Windows ARM64"
+  ],
+  "command": "GOTOOLCHAIN=go1.26.6 GOFLAGS=-p=2 bash scripts/verify-catalog-product.sh --starport-root /tmp/starport-readme-merged-2026-09-08 --task CSP2 --json",
+  "cwd": "/tmp/starmap-pr136-merged-2026-09-08",
+  "exit_code": 0,
+  "selected_subcases": 22,
+  "passed_subcases": [
+    "A02.constructor_filesystem_silence",
+    "A02.constructor_network_silence",
+    "A02.no_workers",
+    "A01.starmap_cold_offline",
+    "A01.existing_head_preserved",
+    "A01.required_write_failure",
+    "A03.starmap_linux",
+    "A03.starmap_macos",
+    "A03.starmap_windows",
+    "A04.starmap_linux_interruption",
+    "A04.starmap_macos_interruption",
+    "A04.starmap_windows_interruption",
+    "A04.dual_root_conflict",
+    "A04.human_workspace_preserved",
+    "A03.starmap_file_manifest",
+    "A03.root_leaf_precedence",
+    "A03.relative_anchor_migration_guard",
+    "A03.required_empty_path_refusal",
+    "A03.two_instances_same_user",
+    "A03.duplicate_owner_refusal",
+    "A03.service_container_roots",
+    "A04.identity_and_journal_recovery"
+  ],
+  "qualification": "component checks only",
+  "whole_product_unverified_primary_cases": 49,
+  "whole_product_summary": "Summary: 1 passed, 49 failed",
+  "scope_note": "The component invocation omits other primary cases. It does not qualify the complete product.",
+  "superseded_pr": 137,
+  "module_blobs": {
+    "go.mod": "8dbaf832a77e1ec2f7eb4a1d98cd1869bc038da6",
+    "go.sum": "3a7ec739cd36376fbea8373d5ad90a7985d2b4eb"
+  },
+  "artifacts": [
+    {
+      "path": "component-report.json.gz",
+      "raw_sha256": "ca84aa206df0ef9bf8d6af1f14018e344a760f692eb70c2751013efa8552143d",
+      "gzip_sha256": "782e6af16c713614683cd182aded0ba33e997d23e30ed9b695dc27d7cf0b0e66",
+      "raw_bytes": 463141
+    },
+    {
+      "path": "native/capture.json.gz",
+      "raw_sha256": "57306aea2e944466707926562a993090f5eda9d1751267074c33d077da56a7da",
+      "gzip_sha256": "75a7633c8011b6783a8cdbd836f898491b81a330c3f38f2a84fba581cf6ff321",
+      "raw_bytes": 32930
+    },
+    {
+      "path": "native/native-runtime-macos-15/tests.jsonl.gz",
+      "raw_sha256": "269ccafef9eea4ebba9fd7c35ba80232b6648815d8de0c3951ace3d40ba45d80",
+      "gzip_sha256": "c32b87182d19309459df657c0fb57c24f06f6374ed9befa64fc735cd9d1163df",
+      "raw_bytes": 1724326
+    },
+    {
+      "path": "native/native-runtime-macos-15/toolchain.txt.gz",
+      "raw_sha256": "bb9ee77d7c8e557aec36ec13ca7f0ca64de09f9fc157d40f8365df51cab84e05",
+      "gzip_sha256": "91bf1bc081e7e3ce45e31dcda41c61d7bceba4500c3e29f08091921d8b36d503",
+      "raw_bytes": 62
+    },
+    {
+      "path": "native/native-runtime-macos-15-intel/tests.jsonl.gz",
+      "raw_sha256": "6d8619b52b64e1eaddd09befd2a8a5cd6a51d12ac275a49fccf837d91f14f570",
+      "gzip_sha256": "460c0c51a41d9ba0d86a14ed0004d657c2dc2f381eb851e2a60ff91668c5ec51",
+      "raw_bytes": 1722250
+    },
+    {
+      "path": "native/native-runtime-macos-15-intel/toolchain.txt.gz",
+      "raw_sha256": "4f28d3dae1dfe8e165768127320fb8c738f3d76140c64c0f211e0b5518eec3fe",
+      "gzip_sha256": "b22bba7c23901f6e62d40e00a687cb11b67f874e8f1eb38950508613c1ec3a3e",
+      "raw_bytes": 62
+    },
+    {
+      "path": "native/native-runtime-ubuntu-24.04/service-owner.txt.gz",
+      "raw_sha256": "71e95cf3ba8f4ffce1f898b57a40a545879340c4a92fe4c330c9edbf8829d95e",
+      "gzip_sha256": "825c13cfc13aa13ddc2e2b8abeaea95f1be714a7cf1e6f3e27b86f51bbff8396",
+      "raw_bytes": 323
+    },
+    {
+      "path": "native/native-runtime-ubuntu-24.04/tests.jsonl.gz",
+      "raw_sha256": "3096c9b55a8b7937d51f8baab6aeba7506a0b4b41c5b509d2a3a280885988927",
+      "gzip_sha256": "bfaee0e72a7f27e004dcd482c18d812f68143156cd4664d230c844582c5df617",
+      "raw_bytes": 1692984
+    },
+    {
+      "path": "native/native-runtime-ubuntu-24.04/toolchain.txt.gz",
+      "raw_sha256": "da4d53167df8bd5077848a5cf1cc2b0a5e71b0bb53b9475454e6c43a1b6a1057",
+      "gzip_sha256": "97c8f6a514e3d291741b25f3e224fa25507745c57e2961dfd24420fa137db786",
+      "raw_bytes": 59
+    },
+    {
+      "path": "native/native-runtime-ubuntu-24.04-arm/service-owner.txt.gz",
+      "raw_sha256": "71e95cf3ba8f4ffce1f898b57a40a545879340c4a92fe4c330c9edbf8829d95e",
+      "gzip_sha256": "825c13cfc13aa13ddc2e2b8abeaea95f1be714a7cf1e6f3e27b86f51bbff8396",
+      "raw_bytes": 323
+    },
+    {
+      "path": "native/native-runtime-ubuntu-24.04-arm/tests.jsonl.gz",
+      "raw_sha256": "ec1901ed9cd50142f739450549f3a477865f9ccb80b8f5430354e86e24db37f1",
+      "gzip_sha256": "ee0ca7f8a76d9a304eac35aaf331a9012dd23b734d2c7167cf9611b65e9f0b8c",
+      "raw_bytes": 1690948
+    },
+    {
+      "path": "native/native-runtime-ubuntu-24.04-arm/toolchain.txt.gz",
+      "raw_sha256": "d626501f02ef63f1b2e1a71b9139471df8b5019d9660cc0670be28cfcddaf1ca",
+      "gzip_sha256": "59ba740afe0603603fc8b15251fce83f6388ae1f5cd2956c469b8382db8f881d",
+      "raw_bytes": 59
+    },
+    {
+      "path": "native/native-runtime-windows-11-arm/tests.jsonl.gz",
+      "raw_sha256": "285150affef7d030531027e1ecbd09ca66d7c92801f5f4c32d1e41a8bdba4d3d",
+      "gzip_sha256": "9ce1d2a743539396a731d625925d144b4f98f68cb3d687e70c276b805fd9bf9e",
+      "raw_bytes": 1463956
+    },
+    {
+      "path": "native/native-runtime-windows-11-arm/toolchain.txt.gz",
+      "raw_sha256": "3c29148d3cb3f9e77c69741baab010bfe82151125f667c25723ba18570505a33",
+      "gzip_sha256": "f64b7c23895affa50548c53401bac51a4958e227db8d592c796c3cd493e387eb",
+      "raw_bytes": 65
+    },
+    {
+      "path": "native/native-runtime-windows-2025/tests.jsonl.gz",
+      "raw_sha256": "c9beaceca9bda09ca78093db771cd92ee948054cb780b0d73ea09f40677101e1",
+      "gzip_sha256": "7f8c5a0b5d05df5aedceea3404dc9b0f7eb658baf39a93f02bc77c77a4a4806e",
+      "raw_bytes": 1464015
+    },
+    {
+      "path": "native/native-runtime-windows-2025/toolchain.txt.gz",
+      "raw_sha256": "9b7d2817082583a835c46b2e14d0613c4002696e8c090973f0aee69d18cebcad",
+      "gzip_sha256": "5311b34228391669a92c01c14f8b7b28b9073ce25cb74010eddc8c2961ebf8dd",
+      "raw_bytes": 65
+    },
+    {
+      "path": "starmap-pr136-plan-history-review.txt.gz",
+      "raw_sha256": "9ca1a7de4fb830fd133e487315e39c946c7f77e54d6af87daf6ed9c75104d30f",
+      "gzip_sha256": "eadf8b57c3e4ddea26cbc5030eacd7762da9a53a0dbc5bb1ff4eeb7fc1c81cc8",
+      "raw_bytes": 723
+    },
+    {
+      "path": "starmap-pr136-plan-history-writing-final.txt.gz",
+      "raw_sha256": "8a33781164033f26f394f550f2fb2f3e9c589b6b595cd0092fe914cd2e0ddaf9",
+      "gzip_sha256": "db7466289653d5181270d914b2d2f28e9056aedc16a85430f7aa49baf2cbeeb9",
+      "raw_bytes": 506
+    },
+    {
+      "path": "starmap-pr136-plan-separation-review.txt.gz",
+      "raw_sha256": "a9e5e9bb5aebe302fd8c7c232150114cb0c4dc80b6f8ea9db3fe1fb47ded4460",
+      "gzip_sha256": "4c3df18ccecc6641e84d85eb7cdc61dea7a20444199198d847bfde2e5dca1fbd",
+      "raw_bytes": 2863
+    }
+  ]
+}

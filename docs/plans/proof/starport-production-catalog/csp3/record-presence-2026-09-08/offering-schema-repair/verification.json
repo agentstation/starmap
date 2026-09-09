@@ -1,0 +1,107 @@
+{
+  "status": "candidate checks pass; implementation unmerged",
+  "head": "42783dc65e3acdc7f57e9bd33c094364ab413f26",
+  "worktree": "/tmp/starmap-record-presence-worktree-2026-09-08",
+  "source_files": [
+    {
+      "path": "cmd/starmap-openapi-presence/records.go",
+      "sha256": "84e9a399feb8bd5082a1d956257576a2a81f145778bb3df033ba47fe9d161329"
+    },
+    {
+      "path": "cmd/starmap-openapi-presence/records_test.go",
+      "sha256": "31a0b5a8a74c95a757e693b6c4fb66fdaf6c67f0c79a392c89e1e3f919d1ccd5"
+    },
+    {
+      "path": "pkg/catalogs/offering_record_presence.go",
+      "sha256": "d5aae93480eedb497ddd41590edb1d251eb7a4005015a65381a227615e32a846"
+    },
+    {
+      "path": "pkg/catalogs/offering_record_presence_test.go",
+      "sha256": "0e934cc4122487ed49a1bd63a085bfc62ebbc1dd65acca690bee2f9778185218"
+    },
+    {
+      "path": "cmd/starmap-openapi-presence/main.go",
+      "sha256": "37cda25417e0713299f2e540d5f522a0937f594a21a93bb43cb1b496a1f195c4"
+    },
+    {
+      "path": "go.mod",
+      "sha256": "a6a1f0db686c75975fc43bee5e4c35bff39b1f2ef99ec45c353e4d901a5f4260"
+    },
+    {
+      "path": "go.sum",
+      "sha256": "8cf1c93cc3dfd7fa821e7092a08ac85d829defc2ae7a32df55f6632eb2ea9bcc"
+    },
+    {
+      "path": "internal/embedded/openapi/openapi.json",
+      "sha256": "b1fda7f6b85cbaa81438b824e14e48e71d5392be33c8a67e19659c96702da085"
+    },
+    {
+      "path": "internal/embedded/openapi/openapi.yaml",
+      "sha256": "b6917fd007a1e57b42e92e5fa0d2b2d983ee02847aa4660cc889cc120c58a9b4"
+    },
+    {
+      "path": "pkg/catalogs/README.md",
+      "sha256": "177ee2db66865e52a898689e7f71015d02428b6764026b3356b7271159ab0025"
+    },
+    {
+      "path": "pkg/catalogs/definition_record_presence.go",
+      "sha256": "68437879068c396ab821d4ddbff3dbcf347defb425537b8fde02627714fdee15"
+    },
+    {
+      "path": "pkg/catalogs/offering_views.go",
+      "sha256": "d14dc1d2d974a49aa2666276438ad02c24b30fe21807ead88abc518fec3c7fde"
+    },
+    {
+      "path": "pkg/catalogs/provider_offering.go",
+      "sha256": "d2c849509d08fb6f9e576aecfacf8aec5920b852aa2fe05df9a442a53e906a58"
+    },
+    {
+      "path": "pkg/catalogs/provider_offering_test.go",
+      "sha256": "962d3f1dd1a33b8479c369c1a4752778a1bbe215813953ecd2daafb7576d790c"
+    }
+  ],
+  "race_test_events": 1507,
+  "minimum_go_test_events": 95,
+  "race_packages": 4,
+  "minimum_go_packages": 2,
+  "ago_findings": 0,
+  "lint_findings": 0,
+  "writing_files": 1269,
+  "offering_lookup_allocations": 11,
+  "offering_lookup_bytes": 1104,
+  "full_verification": "required after integration; prior run intentionally terminated with exit 143",
+  "artifacts": [
+    {
+      "path": "starmap-record-final-affected-native-yaml.jsonl.gz",
+      "raw_sha256": "2c269b60addbc8b794288c3a979ae862f845e18109bcee01fb199a1cf633a402"
+    },
+    {
+      "path": "starmap-record-final-minimum-native-yaml.jsonl.gz",
+      "raw_sha256": "544a7a9ed810b5e10941044db14dc82e881b96398417fc104224c61ab8bd93f1"
+    },
+    {
+      "path": "starmap-record-final-ago-native-yaml.json.gz",
+      "raw_sha256": "b8fb7afa66aa7a93914ac258475dd0191be821803a8aea4439f5ba05022f5fa5"
+    },
+    {
+      "path": "starmap-record-final-lint-native-yaml.txt.gz",
+      "raw_sha256": "4305b88e0b5bd4b25409263b8fb608cf8e49ef03367e2475cfd016ef82d415de"
+    },
+    {
+      "path": "starmap-record-final-writing-native-yaml.txt.gz",
+      "raw_sha256": "e686f71d2bf2aa63c33a7e35151ddb08e534096e3bd6de39cec2bb2df902c07a"
+    },
+    {
+      "path": "starmap-record-offering-benchmark.txt.gz",
+      "raw_sha256": "d6f9ce6c36b6aca0fb584f799e13d2982e3b81cac5e1eea033d111c8ba193045"
+    },
+    {
+      "path": "starmap-record-final-affected-fixed.jsonl.gz",
+      "raw_sha256": "443d84f26ed2c872049e59565fbade44996cedd964518e7075c164ed45c41894"
+    },
+    {
+      "path": "starmap-record-openapi-artifact-after.jsonl.gz",
+      "raw_sha256": "a060279aecf833e34ac28276035f47a09b66db9bbeaaadf66fcde6a8f3a67a45"
+    }
+  ]
+}
