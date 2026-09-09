@@ -36,7 +36,7 @@
     }
   ],
   "next": [
-    "Combined runtime passed in 1079.209 seconds. Follow the current delivery proof for review session 11663.",
+    "Combined runtime passed in 1079.209 seconds. Follow the delivery proof for PR #142 native CI and merge.",
     "Keep the integrated source tree fixed; do not run competing test jobs.",
     "Required review, native CI, and merge remain open."
   ],
