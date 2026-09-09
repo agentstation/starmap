@@ -1,0 +1,151 @@
+{
+  "run": "https://github.com/agentstation/starmap/actions/runs/34323117948",
+  "pull_request": "https://github.com/agentstation/starmap/pull/139",
+  "head": "a5ecb9946f65027610dbdb2f62d1f8506606daf3",
+  "status": "Native qualification passes; final verification and merge remain pending.",
+  "task": "CSP3",
+  "task_completion_credit": false,
+  "results": [
+    {
+      "platform": "macos-15",
+      "tests": {
+        "pass": 1468
+      },
+      "packages": {
+        "pass": 12
+      },
+      "skips": [],
+      "artifacts": [
+        {
+          "path": "macos-15-tests.jsonl.gz",
+          "sha256": "f53873423786c35b638ad2cd9eb7f4878857090a60ce558ef3b9b5ababf7aac4"
+        },
+        {
+          "path": "macos-15-toolchain.log",
+          "sha256": "bb9ee77d7c8e557aec36ec13ca7f0ca64de09f9fc157d40f8365df51cab84e05"
+        }
+      ]
+    },
+    {
+      "platform": "macos-15-intel",
+      "tests": {
+        "pass": 1468
+      },
+      "packages": {
+        "pass": 12
+      },
+      "skips": [],
+      "artifacts": [
+        {
+          "path": "macos-15-intel-tests.jsonl.gz",
+          "sha256": "4fa06e4aa8732058023011078a6c2172470b99e15593c47dcf0e44dc123aa812"
+        },
+        {
+          "path": "macos-15-intel-toolchain.log",
+          "sha256": "4f28d3dae1dfe8e165768127320fb8c738f3d76140c64c0f211e0b5518eec3fe"
+        }
+      ]
+    },
+    {
+      "platform": "ubuntu-24.04",
+      "tests": {
+        "pass": 1412,
+        "skip": 1
+      },
+      "packages": {
+        "pass": 12
+      },
+      "skips": [
+        "TestServiceConfigurationAdministratorOwnedRead"
+      ],
+      "artifacts": [
+        {
+          "path": "ubuntu-24.04-service-owner.log",
+          "sha256": "edde73a7cbae0506b521f86b06bc8daf10ba8ffeb6a15c93a9f553061c193c68"
+        },
+        {
+          "path": "ubuntu-24.04-tests.jsonl.gz",
+          "sha256": "b341be7a43db993f24b4f6645cb3c0c8ed95922cb37f786bc8ed27e8083167c1"
+        },
+        {
+          "path": "ubuntu-24.04-toolchain.log",
+          "sha256": "da4d53167df8bd5077848a5cf1cc2b0a5e71b0bb53b9475454e6c43a1b6a1057"
+        }
+      ]
+    },
+    {
+      "platform": "ubuntu-24.04-arm",
+      "tests": {
+        "pass": 1412,
+        "skip": 1
+      },
+      "packages": {
+        "pass": 12
+      },
+      "skips": [
+        "TestServiceConfigurationAdministratorOwnedRead"
+      ],
+      "artifacts": [
+        {
+          "path": "ubuntu-24.04-arm-service-owner.log",
+          "sha256": "71e95cf3ba8f4ffce1f898b57a40a545879340c4a92fe4c330c9edbf8829d95e"
+        },
+        {
+          "path": "ubuntu-24.04-arm-tests.jsonl.gz",
+          "sha256": "ec9a1d2d00713b4ccef3bb30c3b4f74b7225f9d65e549ca60cbc98d6e00d0522"
+        },
+        {
+          "path": "ubuntu-24.04-arm-toolchain.log",
+          "sha256": "d626501f02ef63f1b2e1a71b9139471df8b5019d9660cc0670be28cfcddaf1ca"
+        }
+      ]
+    },
+    {
+      "platform": "windows-11-arm",
+      "tests": {
+        "pass": 1413
+      },
+      "packages": {
+        "pass": 13
+      },
+      "skips": [],
+      "artifacts": [
+        {
+          "path": "windows-11-arm-tests.jsonl.gz",
+          "sha256": "5511b1150cceac67dfb23b73f1e727b3fb49441a4e277d050c66b537c744a4d2"
+        },
+        {
+          "path": "windows-11-arm-toolchain.log",
+          "sha256": "3c29148d3cb3f9e77c69741baab010bfe82151125f667c25723ba18570505a33"
+        }
+      ]
+    },
+    {
+      "platform": "windows-2025",
+      "tests": {
+        "pass": 1413
+      },
+      "packages": {
+        "pass": 13
+      },
+      "skips": [],
+      "artifacts": [
+        {
+          "path": "windows-2025-tests.jsonl.gz",
+          "sha256": "6e34bed287ffb0a8d6b0ebca8a5647cc13f17032b2a2bebd7d639b9c75b4467b"
+        },
+        {
+          "path": "windows-2025-toolchain.log",
+          "sha256": "9b7d2817082583a835c46b2e14d0613c4002696e8c090973f0aee69d18cebcad"
+        }
+      ]
+    }
+  ],
+  "totals": {
+    "passing_test_events": 8586,
+    "passing_package_events": 74,
+    "ordinary_owner_test_skips": 2,
+    "separate_privileged_owner_passes": 2,
+    "failures": 0
+  }
+}
