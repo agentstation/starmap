@@ -265,13 +265,15 @@ components:
           type: string
         fine_tuned:
           description: Whether this is a fine-tuned variant
-          type: boolean
+          type: [boolean, "null"]
+          x-starmap-nullable: true
         parameter_count:
           type: string
         quantization:
           $ref: '#/components/schemas/catalogs.Quantization'
         quantized:
-          type: boolean
+          type: [boolean, "null"]
+          x-starmap-nullable: true
         tokenizer:
           $ref: '#/components/schemas/catalogs.Tokenizer'
         type:
@@ -350,21 +352,37 @@ components:
     catalogs.ModelDefinitionCapabilities:
       properties:
         attachments:
-          $ref: '#/components/schemas/catalogs.ModelAttachments'
+          anyOf:
+            - $ref: '#/components/schemas/catalogs.ModelAttachments'
+            - type: "null"
         delivery:
-          $ref: '#/components/schemas/catalogs.ModelDelivery'
+          anyOf:
+            - $ref: '#/components/schemas/catalogs.ModelDelivery'
+            - type: "null"
         features:
-          $ref: '#/components/schemas/catalogs.ModelFeatures'
+          anyOf:
+            - $ref: '#/components/schemas/catalogs.ModelFeatures'
+            - type: "null"
         generation:
-          $ref: '#/components/schemas/catalogs.ModelGeneration'
+          anyOf:
+            - $ref: '#/components/schemas/catalogs.ModelGeneration'
+            - type: "null"
         reasoning:
-          $ref: '#/components/schemas/catalogs.ModelControlLevels'
+          anyOf:
+            - $ref: '#/components/schemas/catalogs.ModelControlLevels'
+            - type: "null"
         reasoning_tokens:
-          $ref: '#/components/schemas/catalogs.IntRange'
+          anyOf:
+            - $ref: '#/components/schemas/catalogs.IntRange'
+            - type: "null"
         tools:
-          $ref: '#/components/schemas/catalogs.ModelTools'
+          anyOf:
+            - $ref: '#/components/schemas/catalogs.ModelTools'
+            - type: "null"
         verbosity:
-          $ref: '#/components/schemas/catalogs.ModelControlLevels'
+          anyOf:
+            - $ref: '#/components/schemas/catalogs.ModelControlLevels'
+            - type: "null"
       type: object
     catalogs.ModelDefinitionLineage:
       properties:

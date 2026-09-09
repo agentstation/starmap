@@ -20,6 +20,7 @@ func deriveProviderOffering(candidate providerModelCandidate) (ProviderOffering,
 		)
 	}
 	offering := ProviderOffering{
+		recordUnknown:   model.recordUnknown & offeringRecordMask(),
 		ProviderID:      candidate.providerID,
 		ProviderModelID: ProviderModelID(model.ID),
 		DefinitionID:    candidate.definitionID,

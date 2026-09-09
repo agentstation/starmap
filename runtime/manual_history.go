@@ -7,6 +7,7 @@ import (
 
 	"github.com/agentstation/starmap/internal/privatefiles"
 	"github.com/agentstation/starmap/pkg/errors"
+	"github.com/agentstation/starmap/pkg/sources"
 )
 
 const (
@@ -251,12 +252,15 @@ func validateManualHistory(history *manualBatch, policy *providerBindingPolicy) 
 	return nil
 }
 
-// manualInputs includes provider evidence that predates or follows manual publication.
+// manualInputs retains prior provider observations for manual and partial publication.
 func (l *layerSet) manualInputs(input []manualObservation, providers []ProviderLayer) []manualObservation {
-	if len(input) != 0 && l.manual == nil {
+	partial := slices.ContainsFunc(providers, func(layer ProviderLayer) bool {
+		return layer.Receipt.Link.Completeness != sources.ObservationCompletenessComplete || layer.Receipt.Link.Status != sources.ObservationStatusSucceeded
+	})
+	if (len(input) != 0 || partial) && l.manual == nil {
 		input = append(l.manualProviderAnchors(), input...)
 	}
-	if l.manual != nil || len(input) != 0 {
+	if l.manual != nil || len(input) != 0 || partial {
 		for _, layer := range providers {
 			input = append(input, manualObservation{Payload: layer.Payload, Receipt: layer.Receipt})
 		}

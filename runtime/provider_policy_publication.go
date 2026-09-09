@@ -17,9 +17,10 @@ func (o options) bindingClientOptions() []starmap.Option {
 	return append([]starmap.Option{starmap.WithCatalogStore(storage.NewMemory())}, o.client...)
 }
 
-// publishBindingStartup aligns the client and runtime before either can serve.
+// publishBindingStartup applies declarations and removal of prior scoped evidence.
+// It aligns the client and runtime before either can serve.
 func (r *Runtime) publishBindingStartup(ctx context.Context) error {
-	if r.config.providerBindings == nil {
+	if r.config.providerBindings == nil && !storedProviderPolicyRequired(r.client.CurrentCatalogState()) {
 		return nil
 	}
 	r.mu.RLock()
@@ -43,7 +44,7 @@ func (r *Runtime) publishBindingStartup(ctx context.Context) error {
 // restoreBindingGeneration reuses immutable bytes only for the selected identity.
 // A prior policy can return only when the current declarations select it again.
 func (r *Runtime) restoreBindingGeneration(ctx context.Context, state starmap.CatalogState, epoch uint64) (bool, error) {
-	if r.config.providerBindings == nil || state.GenerationID == r.client.CurrentGenerationID() {
+	if (r.config.providerBindings == nil && !storedProviderPolicyRequired(r.client.CurrentCatalogState())) || state.GenerationID == "" || state.GenerationID == r.client.CurrentGenerationID() {
 		return false, nil
 	}
 	generation, err := r.client.Generation(ctx, state.GenerationID)

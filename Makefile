@@ -550,6 +550,7 @@ openapi: ## Generate OpenAPI 3.1 documentation (embedded in binary)
 	@# Note: Filtering mProfCycleWrap warning - known swag v2 issue parsing Go runtime constants
 	@$(SWAG_RUN) init -g internal/server/docs.go -o internal/embedded/openapi --parseDependency --parseInternal --v3.1 2>&1 | grep -v "mProfCycleWrap"
 	@echo "$(YELLOW)Step 2/3: Renaming generated files...$(NC)"
+	@$(GOCMD) run ./cmd/starmap-openapi-presence internal/embedded/openapi/swagger.json internal/embedded/openapi/swagger.yaml
 	@mv internal/embedded/openapi/swagger.json internal/embedded/openapi/openapi.json
 	@mv internal/embedded/openapi/swagger.yaml internal/embedded/openapi/openapi.yaml
 	@rm -f internal/embedded/openapi/docs.go
@@ -577,6 +578,7 @@ openapi-check: ## Check if embedded OpenAPI specifications match Go types
 	@tmpdir="$$(mktemp -d)"; \
 	trap 'rm -rf "$$tmpdir"' EXIT HUP INT TERM; \
 	$(SWAG_RUN) init -g internal/server/docs.go -o "$$tmpdir" --parseDependency --parseInternal --v3.1 > /dev/null 2>&1; \
+	$(GOCMD) run ./cmd/starmap-openapi-presence "$$tmpdir/swagger.json" "$$tmpdir/swagger.yaml" || exit $$?; \
 	cmp -s "$$tmpdir/swagger.json" internal/embedded/openapi/openapi.json || { echo "$(RED)internal/embedded/openapi/openapi.json is stale; run make openapi$(NC)"; exit 1; }; \
 	cmp -s "$$tmpdir/swagger.yaml" internal/embedded/openapi/openapi.yaml || { echo "$(RED)internal/embedded/openapi/openapi.yaml is stale; run make openapi$(NC)"; exit 1; }
 

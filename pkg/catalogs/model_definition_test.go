@@ -64,7 +64,7 @@ func TestModelDefinitionRoundTripPreservesIntrinsicFacts(t *testing.T) {
 		}
 		return equalPresenceJSON(left, right)
 	})
-	if diff := cmp.Diff(definition, fromJSON, featureComparer); diff != "" {
+	if diff := cmp.Diff(definition, fromJSON, featureComparer, cmp.AllowUnexported(ModelDefinitionCapabilities{})); diff != "" {
 		t.Fatalf("JSON round trip (-want +got):\n%s", diff)
 	}
 
@@ -83,7 +83,7 @@ func TestModelDefinitionRoundTripPreservesIntrinsicFacts(t *testing.T) {
 			yamlExpected.Capabilities.Features.SetSupport(feature, false)
 		}
 	}
-	if diff := cmp.Diff(yamlExpected, fromYAML, cmpopts.EquateEmpty(), featureComparer); diff != "" {
+	if diff := cmp.Diff(yamlExpected, fromYAML, cmpopts.EquateEmpty(), featureComparer, cmp.AllowUnexported(ModelDefinitionCapabilities{})); diff != "" {
 		t.Fatalf("YAML round trip (-want +got):\n%s", diff)
 	}
 }

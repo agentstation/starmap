@@ -69,7 +69,7 @@ func decodeCatalogPayload(data []byte, build catalogBuilder) (*Catalog, payloadD
 }
 
 func decodePayloadEnvelope(data []byte) (payloadEnvelope, error) {
-	if err := sourcepayload.ValidateJSON(data); err != nil {
+	if err := sourcepayload.ValidateJSONWithMaxBytes(data, resourcepolicy.MaxPayloadBytes); err != nil {
 		return payloadEnvelope{}, err
 	}
 	var required map[string]json.RawMessage

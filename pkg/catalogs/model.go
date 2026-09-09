@@ -73,6 +73,7 @@ type Model struct {
 	UpdatedAt utc.Time `json:"updated_at" yaml:"updated_at"`
 
 	descriptionPresence ValuePresence
+	recordUnknown       uint16
 }
 
 // ModelMetadata represents the metadata for a model.

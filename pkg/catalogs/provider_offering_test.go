@@ -180,7 +180,7 @@ func assertOfferingRoundTrip(t testing.TB, want ProviderOffering) {
 	if err := json.Unmarshal(jsonData, &fromJSON); err != nil {
 		t.Fatalf("Unmarshal JSON: %v", err)
 	}
-	if diff := cmp.Diff(want, fromJSON, limitComparer); diff != "" {
+	if diff := cmp.Diff(want, fromJSON, limitComparer, cmp.AllowUnexported(ProviderOffering{}, ModelTokenCost{})); diff != "" {
 		t.Fatalf("JSON round trip (-want +got):\n%s", diff)
 	}
 
@@ -192,7 +192,7 @@ func assertOfferingRoundTrip(t testing.TB, want ProviderOffering) {
 	if err := yaml.Unmarshal(yamlData, &fromYAML); err != nil {
 		t.Fatalf("Unmarshal YAML: %v", err)
 	}
-	if diff := cmp.Diff(want, fromYAML, limitComparer); diff != "" {
+	if diff := cmp.Diff(want, fromYAML, limitComparer, cmp.AllowUnexported(ProviderOffering{}, ModelTokenCost{})); diff != "" {
 		t.Fatalf("YAML round trip (-want +got):\n%s", diff)
 	}
 }

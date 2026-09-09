@@ -459,6 +459,9 @@ func deriveDefinitionCapabilities(
 	if err != nil {
 		return capabilities, err
 	}
+	for _, candidate := range candidates {
+		capabilities.recordUnknown |= candidate.model.recordUnknown & definitionCapabilityMask()
+	}
 	return capabilities, nil
 }
 
@@ -628,33 +631,25 @@ func deriveDefinitionArchitecture(
 	if err != nil {
 		return nil, err
 	}
-	result.Quantized, _, err = selectDefinitionValue(
-		reader, policies, "Metadata", architectures,
-		func(model Model) (bool, bool) {
-			architecture := modelArchitecture(model)
-			if architecture == nil {
-				return false, false
-			}
-			value := architecture.Quantized
-			return value, value
-		},
-	)
+	value, state, err := selectArchitectureClaim(reader, policies, architectures, (*ModelArchitecture).QuantizedValue)
 	if err != nil {
 		return nil, err
 	}
-	result.FineTuned, _, err = selectDefinitionValue(
-		reader, policies, "Metadata", architectures,
-		func(model Model) (bool, bool) {
-			architecture := modelArchitecture(model)
-			if architecture == nil {
-				return false, false
-			}
-			value := architecture.FineTuned
-			return value, value
-		},
-	)
+	switch state {
+	case ValueKnown:
+		result.SetQuantized(value)
+	case ValueUnknown:
+		result.SetQuantizedUnknown()
+	}
+	value, state, err = selectArchitectureClaim(reader, policies, architectures, (*ModelArchitecture).FineTunedValue)
 	if err != nil {
 		return nil, err
+	}
+	switch state {
+	case ValueKnown:
+		result.SetFineTuned(value)
+	case ValueUnknown:
+		result.SetFineTunedUnknown()
 	}
 	result.BaseModel, _, err = selectDefinitionValue(
 		reader, policies, "Metadata", architectures,

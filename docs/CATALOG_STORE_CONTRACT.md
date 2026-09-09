@@ -30,6 +30,35 @@ close, and dialect-specific transaction concern.
 - Returned generations and accepted inputs are caller-owned. Implementations
   must defensively copy mutable payload and manifest slices.
 
+## Payload limits
+
+Canonical catalog payloads have a 32 MiB limit. Encoding and decoding enforce the same byte and JSON nesting limits.
+The shared nesting limit remains 64 levels. A failed encoding returns no payload for publication.
+Raw provider and auxiliary source JSON retain the default 16 MiB limit.
+
+The complete serialized runtime layer remains limited to 64 MiB, including base64 payload bytes and receipt metadata.
+Manual history retains its separate 64 MiB cumulative limit. The embedded bootstrap review budgets remain independent of the canonical payload limit.
+A backend can impose a narrower limit. Its publication path must reject a generation that its configured reader cannot restore.
+
+D26 records the 32 MiB engineering default. A recorded generation contains 23,683,266 bytes, which the prior writer accepted but the 16 MiB decoder rejected.
+The owner preference remains pending. Publication and native qualification still require their existing gates.
+
+Older readers with a 16 MiB limit cannot restore larger catalogs, even when the schema version matches.
+The manifest compatibility range describes schemas, not reader capacity.
+Before release, qualify the declared Starmap and Starport pair against the larger payloads.
+A downgrade requires a retained catalog that the older reader accepts.
+
+## Startup after provider binding removal
+
+The connected runtime applies current provider bindings before it exposes a stored catalog.
+After removal, its effective catalog, runtime-owned client, HTTP views, and durable current head must agree.
+A failed publication prevents startup and preserves the accepted stored generation.
+
+Without retained inputs or explicit provider bindings, stored scoped provider evidence requires a typed startup refusal.
+An explicit empty binding set, selected with `runtime.WithProviderBindings()`, removes local scoped evidence through the normal baseline rebuild.
+Unscoped store-only catalogs retain their existing startup behavior.
+These checks belong to the connected runtime. The offline library still permits explicit caller-supplied store reads.
+
 ## Generation invariants
 
 Every accepted generation must pass `Generation.Validate()` before any durable

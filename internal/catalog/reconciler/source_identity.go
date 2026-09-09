@@ -5,6 +5,8 @@ import (
 	"encoding/json"
 	"reflect"
 	"slices"
+	"strconv"
+	"strings"
 
 	"github.com/goccy/go-yaml"
 
@@ -65,12 +67,17 @@ func (merger *merger) modelSourcesForValue(
 		return sourceModels
 	}
 	evidence, ok := merger.projectedModelEvidence(providerID, modelID, policy.Evidence(), localValue)
-	if ok && merger.projectedEvidence != nil && !merger.projectedEvidence(providerID, evidence) {
+	if !ok && merger.rejectsLegacyCompositeValue(providerID, modelID, policy, localValue) {
 		resolved := cloneModelSources(sourceModels)
 		delete(resolved, sources.LocalCatalogID)
 		return resolved
 	}
-	if !ok || !slices.Contains(policy.SourceOrder, evidence.Source) {
+	if ok && !merger.modelReceiptPermitted(providerID, policy, evidence) {
+		resolved := cloneModelSources(sourceModels)
+		delete(resolved, sources.LocalCatalogID)
+		return resolved
+	}
+	if !ok {
 		return sourceModels
 	}
 
@@ -98,6 +105,21 @@ func (merger *merger) modelSourcesForValue(
 		evidence,
 	)
 	return resolved
+}
+
+// modelReceiptPermitted applies field authority and the caller's receipt policy.
+func (merger *merger) modelReceiptPermitted(providerID catalogs.ProviderID, policy authority.Policy, entry provenance.Entry) bool {
+	return slices.Contains(policy.SourceOrder, entry.Source) &&
+		(merger.projectedEvidence == nil || merger.projectedEvidence(providerID, entry))
+}
+
+// modelProjectionRefused distinguishes a denied claim from missing evidence.
+func (merger *merger) modelProjectionRefused(identity modelIdentity, policy authority.Policy, value any) bool {
+	entry, found := merger.projectedModelEvidence(identity.providerID, identity.modelID, policy.Evidence(), value)
+	if found {
+		return !merger.modelReceiptPermitted(identity.providerID, policy, entry)
+	}
+	return merger.rejectsLegacyCompositeValue(identity.providerID, identity.modelID, policy, value)
 }
 
 func (merger *merger) suppressStaleModelFallback(
@@ -138,12 +160,13 @@ func (merger *merger) providerSourcesForPolicy(
 		return sourceProviders
 	}
 	evidence, ok := merger.projectedProviderEvidence(providerID, policy.Evidence(), localValue)
-	if ok && merger.projectedEvidence != nil && !merger.projectedEvidence(providerID, evidence) {
+	if ok && (!slices.Contains(policy.SourceOrder, evidence.Source) ||
+		(merger.projectedEvidence != nil && !merger.projectedEvidence(providerID, evidence))) {
 		resolved := cloneProviderSources(sourceProviders)
 		delete(resolved, sources.LocalCatalogID)
 		return resolved
 	}
-	if !ok || !slices.Contains(policy.SourceOrder, evidence.Source) {
+	if !ok {
 		return sourceProviders
 	}
 
@@ -223,8 +246,11 @@ func (merger *merger) projectedModelEvidence(
 		return provenance.Entry{}, false
 	}
 	entries := catalog.Provenance().FindModelField(providerID, modelID, field)
-	if len(entries) == 0 && modelIDIsUnique(catalog, modelID) {
-		entries = catalog.Provenance().FindByField(catalogevidence.ResourceTypeModel, modelID, field)
+	if len(entries) == 0 {
+		legacy := catalog.Provenance().FindByField(catalogevidence.ResourceTypeModel, modelID, field)
+		if len(legacy) > 0 && modelIDIsUnique(catalog, modelID) {
+			entries = legacy
+		}
 	}
 	return matchingCurrentEvidence(entries, value)
 }
@@ -267,15 +293,21 @@ func semanticValueEqual(field string, left, right any) bool {
 }
 
 func normalizedSemanticValue(field string, value any) (any, error) {
-	yamlData, err := yaml.Marshal(value)
-	if err != nil {
-		return nil, err
+	representation := value
+	switch value.(type) {
+	case map[string]any, []any, json.Number:
+		// Dynamic JSON evidence must retain numeric types and exact integers.
+	default:
+		yamlData, err := yaml.Marshal(value)
+		if err != nil {
+			return nil, err
+		}
+		representation = nil
+		if err := yaml.Unmarshal(yamlData, &representation); err != nil {
+			return nil, err
+		}
 	}
-	var yamlValue any
-	if err := yaml.Unmarshal(yamlData, &yamlValue); err != nil {
-		return nil, err
-	}
-	jsonData, err := json.Marshal(yamlValue)
+	jsonData, err := json.Marshal(representation)
 	if err != nil {
 		return nil, err
 	}
@@ -302,10 +334,10 @@ func normalizeSemanticAliases(field string, value any) any {
 	case map[string]any:
 		normalized := make(map[string]any, len(current))
 		for key, item := range current {
-			if field == modelProvenancePricing && key == "per_1m_tokens" {
+			if isPricingEvidencePath(field) && key == "per_1m_tokens" {
 				key = "per_1m"
 			}
-			if field == modelProvenancePricing &&
+			if isPricingEvidencePath(field) &&
 				(key == "per_token" || key == "per_1m") && semanticNumberIsZero(item) {
 				continue
 			}
@@ -318,6 +350,23 @@ func normalizeSemanticAliases(field string, value any) any {
 	default:
 		return value
 	}
+}
+
+// isPricingEvidencePath excludes arbitrary request-body and extension keys.
+func isPricingEvidencePath(field string) bool {
+	if field == modelProvenancePricing {
+		return true
+	}
+	name, ok := strings.CutPrefix(field, "modes[")
+	if !ok {
+		return false
+	}
+	name, ok = strings.CutSuffix(name, "].pricing")
+	if !ok || !strings.HasPrefix(name, `"`) {
+		return false
+	}
+	_, err := strconv.Unquote(name)
+	return err == nil
 }
 
 func semanticBoolIsFalse(value any) bool {

@@ -186,6 +186,7 @@ func defaultPolicies() []Policy {
 		policy(evidence.ResourceTypeModel, "DeprecatedAt", "", providerFirst, MergeReplace, EmptyAbsent, "Provider-announced deprecation dates lead upstream and human fallback."),
 		policy(evidence.ResourceTypeModel, "RetiresAt", "", providerFirst, MergeReplace, EmptyAbsent, "Provider-announced retirement dates lead upstream and human fallback."),
 		policy(evidence.ResourceTypeModel, "Authors", "", modelsDevFirst, MergeSetUnion, EmptyAbsent, "Observed authorship leads and non-duplicate lower-authority authors may fill gaps."),
+		policy(evidence.ResourceTypeModel, "Lineage", "lineage", providerFirst, MergeFillMissing, EmptyAbsent, "Provider observations lead record presence. Independent leaf policies select lineage facts."),
 		policy(evidence.ResourceTypeModel, "Lineage.Family", "lineage.family", modelsDevFirst, MergeReplace, EmptyAbsent, "Community model metadata leads provider and local fallback for canonical family."),
 		policy(evidence.ResourceTypeModel, "Lineage.Root", "lineage.root", providerFirst, MergeReplace, EmptyAbsent, "Provider lineage identifiers lead upstream and local fallback."),
 		policy(evidence.ResourceTypeModel, "Lineage.Parent", "lineage.parent", providerFirst, MergeReplace, EmptyAbsent, "Provider lineage identifiers lead upstream and local fallback."),
