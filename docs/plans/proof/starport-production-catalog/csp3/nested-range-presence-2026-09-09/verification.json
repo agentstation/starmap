@@ -1,0 +1,36 @@
+{
+  "status": "confirmed gap; repair required",
+  "task": "CSP3",
+  "acceptance_case": "A08.presence_zero_null",
+  "source_commit": "39c9fda2553fca8dfeb3a9fb970b5ad6d7635b7c",
+  "test": "TestNestedGenerationRangePresenceAudit",
+  "command": "GOTOOLCHAIN=go1.26.6 GOFLAGS=-p=2 go test -race -count=1 -json ./pkg/catalogs -run ^TestNestedGenerationRangePresenceAudit$",
+  "exit_code": 1,
+  "passing_scenarios": 2,
+  "failing_scenarios": 6,
+  "passing_test_events": 2,
+  "failing_test_events": 7,
+  "failing_package_events": 1,
+  "observations": [
+    "Explicit null temperature and top_k parameters disappear during JSON round trip.",
+    "Null or missing min and default bounds become known zero values in FloatRange and IntRange.",
+    "Explicit zero bounds retain their values."
+  ],
+  "required_followup": "Preserve or explicitly reject unknown and missing range claims according to the catalog field contract. Do not convert them to known zero. Qualify JSON, YAML, copies, projections, durable reconstruction, and generated schemas before A08 completion.",
+  "replay": "Restore probe_test.go.gz as pkg/catalogs/nested_range_presence_audit_test.go at the recorded source and run the recorded command.",
+  "publication": "The failing probe remains evidence outside the publication candidate.",
+  "artifacts": [
+    {
+      "path": "probe_test.go.gz",
+      "raw_sha256": "5af241376cc63e0f05f42d36460bac0aa80b572b36141db90caa61278b31ab12"
+    },
+    {
+      "path": "probe-result.jsonl.gz",
+      "raw_sha256": "fcc6664d69a46d20c0fa762589112aab9fabb4e8736d06dc4b5f4d7849efa84c"
+    },
+    {
+      "path": "ago.json.gz",
+      "raw_sha256": "b8fb7afa66aa7a93914ac258475dd0191be821803a8aea4439f5ba05022f5fa5"
+    }
+  ]
+}

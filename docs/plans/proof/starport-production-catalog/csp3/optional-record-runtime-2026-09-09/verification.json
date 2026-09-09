@@ -1,0 +1,55 @@
+{
+  "worktree": "/tmp/starmap-presence-integration-2026-09-09",
+  "commit": "39c9fda2553fca8dfeb3a9fb970b5ad6d7635b7c",
+  "test": "TestProviderOptionalRecordRecoveryPreservesPresence",
+  "scenarios": 28,
+  "scope": "All fourteen optional model records retain unknown values and original receipts through publication, restart, and subsequent source refresh. Each record covers retained and replaced observations.",
+  "go_1_26_6": {
+    "exit_code": 0,
+    "test_pass_events": 29,
+    "package_pass_events": 1
+  },
+  "go_1_25_12": {
+    "exit_code": 0,
+    "test_pass_events": 29,
+    "package_pass_events": 1
+  },
+  "initial_probe": {
+    "exit_code": 1,
+    "passing_test_events": 20,
+    "failing_test_events": 9,
+    "failing_package_events": 1,
+    "cause": "The probe used Go field names instead of policy evidence names for metadata, lineage, pricing, and limits. The corrected test uses the declared authority policy. No production fix was required."
+  },
+  "ago_findings": 0,
+  "lint_findings": 0,
+  "writing_files": 1275,
+  "publication": "not yet included in the main-based candidate",
+  "completion_credit": false,
+  "artifacts": [
+    {
+      "path": "starmap-optional-record-runtime-probe.jsonl.gz",
+      "raw_sha256": "96e9dd04e0d615984ecef3959d0267e525cddd2b3c56a095082cec2e2940cfbd"
+    },
+    {
+      "path": "starmap-optional-record-runtime-policy-probe.jsonl.gz",
+      "raw_sha256": "3d7932e0fd84358a8a69fa46a14ba085fac59d7ea15ebd5fe7335d6213980009"
+    },
+    {
+      "path": "starmap-optional-record-runtime-minimum.jsonl.gz",
+      "raw_sha256": "244ae2d8e4ef4f0acf76a7e149227605e5a810cda7703ee0c42ac7da82709a69"
+    },
+    {
+      "path": "starmap-optional-record-runtime-ago.json.gz",
+      "raw_sha256": "b8fb7afa66aa7a93914ac258475dd0191be821803a8aea4439f5ba05022f5fa5"
+    },
+    {
+      "path": "starmap-optional-record-runtime-lint.txt.gz",
+      "raw_sha256": "a0274a7b49dc8aa8f171cbdfb7df2561e6d2aaf860ac3beab6c5c755ad1cc32f"
+    },
+    {
+      "path": "starmap-optional-record-runtime-writing.txt.gz",
+      "raw_sha256": "f14c3beb310790b17089278374104852145341b9c889fbbf45ef1d83dc29f5ad"
+    }
+  ]
+}
