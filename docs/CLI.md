@@ -308,7 +308,9 @@ Restore the source dependencies through the deployment's installation policy, th
 Normal updates and `--fresh` use this failure rule. Other available acquisition sources retain the existing optional-source behavior.
 
 If an optional source lacks dependencies but another source succeeds, the result sets `partial` to `true`.
-Its `source_failures` list names each unavailable source and its bounded reason.
+Its `source_failures` list names unavailable sources and rejected observations with bounded reasons.
+A rejected observation can have no receipt. It still makes the result partial and prevents a fresh reset.
+
 The CLI warns even in quiet mode and avoids an all-sources success claim.
 HTTP update detail carries the same fields. A successful operation can therefore contain partial source evidence.
 

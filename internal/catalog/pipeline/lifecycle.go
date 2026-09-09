@@ -97,11 +97,11 @@ func observeSource(
 		return result
 	}
 	if observedSourceKey(observation) != configuredObservationKey(src) {
-		result.errs = append(result.errs, &pkgerrors.ValidationError{
+		result.errs = append(result.errs, pkgerrors.WrapResource("validate", "source observation", string(src.ID()), &pkgerrors.ValidationError{
 			Field:   "observation.source",
 			Value:   observation.SourceID,
 			Message: "must match the configured source and provider binding",
-		})
+		}))
 		return result
 	}
 

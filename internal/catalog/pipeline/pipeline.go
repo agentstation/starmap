@@ -4,6 +4,7 @@ package pipeline
 
 import (
 	"context"
+	stderrors "errors"
 	"slices"
 	"time"
 
@@ -29,7 +30,7 @@ type Prepared struct {
 	Catalog      *catalogs.Builder
 	Changeset    *differ.Changeset
 	Observations []sources.Observation
-	// SourceFailures preserves dependency failures for skipped acquisition sources.
+	// SourceFailures preserves dependency and observation failures for acquisition sources.
 	SourceFailures []error
 	Options        *pkgsync.Options
 	WorkspaceInput workspace.InputExpectation
@@ -239,14 +240,18 @@ func (p *Pipeline) Prepare(
 			return nil, err
 		}
 	}
-	if options.Fresh && hasDegradedObservation(observations) {
+	if options.Fresh && (observeErr != nil || hasDegradedObservation(observations)) {
 		return nil, &pkgerrors.SyncError{
 			Provider: "all",
-			Err: &pkgerrors.ValidationError{
+			Err: stderrors.Join(&pkgerrors.ValidationError{
 				Field:   "fresh",
 				Message: "cannot reset acquisition while any source observation is degraded or partial",
-			},
+			}, observeErr),
 		}
+	}
+
+	if observeErr != nil {
+		sourceFailures = append(sourceFailures, observeErr)
 	}
 
 	result, err := p.reconcile(ctx, existing, observations)

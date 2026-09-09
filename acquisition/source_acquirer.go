@@ -102,11 +102,8 @@ func (a *SourceAcquirer) AcquireSources(ctx context.Context, request runtime.Sou
 		}
 		failures = append(failures, prepared.SourceFailures...)
 		reported := make(map[sources.ID]bool, len(prepared.Observations))
-		for _, failure := range prepared.SourceFailures {
-			var dependency *errors.DependencyError
-			if stderrors.As(failure, &dependency) {
-				reported[sources.ID(dependency.Source)] = true
-			}
+		for _, failure := range prepared.Result.SourceFailures {
+			reported[failure.Source] = true
 		}
 		for _, observation := range prepared.Observations {
 			reported[observation.SourceID] = true
