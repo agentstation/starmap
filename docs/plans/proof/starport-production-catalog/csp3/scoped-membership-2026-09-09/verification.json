@@ -44,5 +44,23 @@
     "diagnostics": 0,
     "artifact": "plan-prose.log.gz",
     "sha256": "993388c7b02d7a061a5d201360233d1aa6cc4317123ea5d97b90675161aafc00"
+  },
+  "retention_audit": {
+    "head": "6e4f9efbeab65e2652314f8293518dda9783778e",
+    "sources": [
+      "runtime/manual_history.go:255",
+      "runtime/manual_reconciliation.go:16",
+      "runtime/provider_evidence_selection.go:21",
+      "pkg/sources/provider_binding.go:28",
+      "internal/catalog/reconciler/reconciler.go:280"
+    ],
+    "findings": [
+      "The first partial publication anchors prior provider observations in durable manual history.",
+      "Manual reconciliation restores complete observations and replays provider evidence in observation order.",
+      "The final catalog starts from the baseline and has no scoped membership suppression stage.",
+      "Bindings declare public/account/project, region, and opaque API surface. They do not themselves prove provider-wide coverage.",
+      "Scope-aware deletion must preserve unrelated positive scope evidence, account-profile links, and canonical definitions. Do not implement deletion as unconditional provider model replacement."
+    ],
+    "next": "Define the exact membership coverage contract, then implement suppression at its owning reconciliation seam and prove replay after partial updates and restart."
   }
 }
