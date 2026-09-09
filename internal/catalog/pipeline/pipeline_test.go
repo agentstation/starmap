@@ -529,8 +529,8 @@ func newStubPipeline(store Store, result *reconciler.Result) *Pipeline {
 	runner.createSources = func(*pkgsync.Options, catalogInputs) []sources.Source {
 		return []sources.Source{&lifecycleTestSource{id: sources.LocalCatalogID, catalog: asSnapshot(catalogs.NewEmpty())}}
 	}
-	runner.resolveDependencies = func(_ context.Context, srcs []sources.Source, _ *pkgsync.Options) ([]sources.Source, error) {
-		return srcs, nil
+	runner.resolveDependencies = func(_ context.Context, srcs []sources.Source, _ *pkgsync.Options) ([]sources.Source, []error, error) {
+		return srcs, nil, nil
 	}
 	runner.observe = func(_ context.Context, srcs []sources.Source, _ []sources.Option) ([]sources.Observation, error) {
 		observation, err := sources.NewObservation(srcs[0].ID(), asSnapshot(catalogs.NewEmpty()), sources.ObservationMetadata{

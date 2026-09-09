@@ -25,10 +25,12 @@ import (
 // Prepared is one complete acquisition result ready for optional publication.
 // It remains internal because callers compose publication through starmap.Client.
 type Prepared struct {
-	Result         *pkgsync.Result
-	Catalog        *catalogs.Builder
-	Changeset      *differ.Changeset
-	Observations   []sources.Observation
+	Result       *pkgsync.Result
+	Catalog      *catalogs.Builder
+	Changeset    *differ.Changeset
+	Observations []sources.Observation
+	// SourceFailures preserves dependency failures for skipped acquisition sources.
+	SourceFailures []error
 	Options        *pkgsync.Options
 	WorkspaceInput workspace.InputExpectation
 	Publish        bool
@@ -60,7 +62,7 @@ type Publication struct {
 type loadWorkspaceFunc func(string) (*catalogs.Builder, error)
 type loadEmbeddedFunc func() (*catalogs.Builder, error)
 type sourcesFunc func(*pkgsync.Options, catalogInputs) []sources.Source
-type resolveDependenciesFunc func(context.Context, []sources.Source, *pkgsync.Options) ([]sources.Source, error)
+type resolveDependenciesFunc func(context.Context, []sources.Source, *pkgsync.Options) ([]sources.Source, []error, error)
 type cleanupFunc func(context.Context, []sources.Source) error
 type observeFunc func(context.Context, []sources.Source, []sources.Option) ([]sources.Observation, error)
 type reconcileFunc func(context.Context, *catalogs.Catalog, []sources.Observation) (*reconciler.Result, error)
@@ -200,7 +202,7 @@ func (p *Pipeline) Prepare(
 		return nil, err
 	}
 
-	srcs, err = p.resolveDependencies(ctx, srcs, options)
+	srcs, sourceFailures, err := p.resolveDependencies(ctx, srcs, options)
 	if err != nil {
 		return nil, err
 	}
@@ -280,6 +282,7 @@ func (p *Pipeline) Prepare(
 			Catalog:        result.Catalog,
 			Changeset:      result.Changeset,
 			Observations:   observations,
+			SourceFailures: sourceFailures,
 			Options:        options,
 			WorkspaceInput: inputs.workspaceInput,
 		}, nil
@@ -290,6 +293,7 @@ func (p *Pipeline) Prepare(
 		Catalog:        result.Catalog,
 		Changeset:      result.Changeset,
 		Observations:   observations,
+		SourceFailures: sourceFailures,
 		Options:        options,
 		WorkspaceInput: inputs.workspaceInput,
 		Publish: shouldPublish(

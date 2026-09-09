@@ -152,7 +152,7 @@ func failedSourceObservation(sourceID sources.ID, cause error) (sources.Observat
 	return observation, nil
 }
 
-func resolveDependencies(ctx context.Context, srcs []sources.Source, opts *pkgsync.Options) ([]sources.Source, error) {
+func resolveDependencies(ctx context.Context, srcs []sources.Source, opts *pkgsync.Options) ([]sources.Source, []error, error) {
 	logger := logging.FromContext(ctx)
 
 	missingDepsMap := make(map[sources.ID][]sources.Dependency)
@@ -172,7 +172,7 @@ func resolveDependencies(ctx context.Context, srcs []sources.Source, opts *pkgsy
 
 	if len(missingDepsMap) == 0 {
 		logger.Debug().Msg("All source dependencies satisfied")
-		return srcs, nil
+		return srcs, nil, nil
 	}
 
 	logger.Info().
@@ -192,7 +192,7 @@ func resolveDependencies(ctx context.Context, srcs []sources.Source, opts *pkgsy
 
 		shouldSkip, err := handleMissingDeps(ctx, src, missingDeps, opts)
 		if err != nil {
-			return nil, err
+			return nil, nil, err
 		}
 
 		if shouldSkip {
@@ -210,7 +210,7 @@ func resolveDependencies(ctx context.Context, srcs []sources.Source, opts *pkgsy
 	}
 
 	if opts.RequireAllSources && len(skippedSources) > 0 {
-		return nil, errors.Join(unavailableDependencies...)
+		return nil, nil, errors.Join(unavailableDependencies...)
 	}
 
 	acquisitionAvailable := false
@@ -221,7 +221,7 @@ func resolveDependencies(ctx context.Context, srcs []sources.Source, opts *pkgsy
 		}
 	}
 	if len(skippedSources) > 0 && !acquisitionAvailable {
-		return nil, &pkgerrors.ConfigError{
+		return nil, nil, &pkgerrors.ConfigError{
 			Component: "sync sources",
 			Message:   fmt.Sprintf("no acquisition source is available because dependencies are missing for %v", skippedSources),
 			Err:       errors.Join(unavailableDependencies...),
@@ -235,7 +235,7 @@ func resolveDependencies(ctx context.Context, srcs []sources.Source, opts *pkgsy
 			Msg("Continuing with available sources")
 	}
 
-	return availableSources, nil
+	return availableSources, unavailableDependencies, nil
 }
 
 func handleMissingDeps(ctx context.Context, src sources.Source, missingDeps []sources.Dependency, opts *pkgsync.Options) (bool, error) {

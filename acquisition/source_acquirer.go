@@ -100,15 +100,22 @@ func (a *SourceAcquirer) AcquireSources(ctx context.Context, request runtime.Sou
 			failures = append(failures, err)
 			continue
 		}
-		seen := make(map[sources.ID]bool, len(prepared.Observations))
+		failures = append(failures, prepared.SourceFailures...)
+		reported := make(map[sources.ID]bool, len(prepared.Observations))
+		for _, failure := range prepared.SourceFailures {
+			var dependency *errors.DependencyError
+			if stderrors.As(failure, &dependency) {
+				reported[sources.ID(dependency.Source)] = true
+			}
+		}
 		for _, observation := range prepared.Observations {
-			seen[observation.SourceID] = true
+			reported[observation.SourceID] = true
 			if observation.SourceID != sources.EmbeddedCatalogID && observation.SourceID != sources.ReleaseArtifactID {
 				observations = append(observations, observation)
 			}
 		}
 		for _, id := range options.Sources {
-			if !seen[id] && (id != sources.LocalCatalogID || prepared.WorkspaceInput.Exists) {
+			if !reported[id] && (id != sources.LocalCatalogID || prepared.WorkspaceInput.Exists) {
 				failures = append(failures, &errors.ConfigError{Component: "source acquisition", Message: "selected source " + string(id) + " produced no observation; check its configuration and dependencies"})
 			}
 		}

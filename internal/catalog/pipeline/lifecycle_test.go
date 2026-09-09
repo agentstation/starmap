@@ -294,7 +294,7 @@ func TestResolveDependenciesSkipsOptionalSourcesWhenPromptsAreDisabled(t *testin
 		deps:     []sources.Dependency{missingDependencyForTest()},
 	}
 
-	resolved, err := resolveDependencies(context.Background(), []sources.Source{available, optionalMissing}, &pkgsync.Options{
+	resolved, _, err := resolveDependencies(context.Background(), []sources.Source{available, optionalMissing}, &pkgsync.Options{
 		SkipDepPrompts: true,
 	})
 	if err != nil {
@@ -313,7 +313,7 @@ func TestResolveDependenciesDefaultsToNonInteractiveOptionalSkip(t *testing.T) {
 		deps:     []sources.Dependency{missingDependencyForTest()},
 	}
 
-	resolved, err := resolveDependencies(
+	resolved, _, err := resolveDependencies(
 		context.Background(),
 		[]sources.Source{available, optionalMissing},
 		pkgsync.Defaults(),
@@ -347,7 +347,7 @@ func TestResolveDependenciesDoesNotReadStdin(t *testing.T) {
 	}
 	done := make(chan error, 1)
 	go func() {
-		_, resolveErr := resolveDependencies(
+		_, _, resolveErr := resolveDependencies(
 			context.Background(),
 			[]sources.Source{available, optionalMissing},
 			pkgsync.Defaults(),
@@ -373,7 +373,7 @@ func TestResolveDependenciesDefaultsToTypedRequiredError(t *testing.T) {
 		deps: []sources.Dependency{missingDependencyForTest()},
 	}
 
-	_, err := resolveDependencies(
+	_, _, err := resolveDependencies(
 		context.Background(),
 		[]sources.Source{requiredMissing},
 		pkgsync.Defaults(),
@@ -405,7 +405,7 @@ func TestResolveDependenciesUsesConfiguredDecisionHandler(t *testing.T) {
 		},
 	))
 
-	resolved, err := resolveDependencies(
+	resolved, _, err := resolveDependencies(
 		context.Background(),
 		[]sources.Source{available, optionalMissing},
 		opts,
@@ -427,7 +427,7 @@ func TestResolveDependenciesFailsRequiredSourceWhenPromptsAreDisabled(t *testing
 		deps: []sources.Dependency{missingDependencyForTest()},
 	}
 
-	_, err := resolveDependencies(context.Background(), []sources.Source{requiredMissing}, &pkgsync.Options{
+	_, _, err := resolveDependencies(context.Background(), []sources.Source{requiredMissing}, &pkgsync.Options{
 		SkipDepPrompts: true,
 	})
 	if err == nil {
@@ -450,7 +450,7 @@ func TestResolveDependenciesRequireAllRejectsSkippedOptionalSource(t *testing.T)
 		optional: true,
 	}
 
-	_, err := resolveDependencies(
+	_, _, err := resolveDependencies(
 		context.Background(),
 		[]sources.Source{available, optionalMissing},
 		&pkgsync.Options{SkipDepPrompts: true, RequireAllSources: true},
