@@ -76,6 +76,38 @@
     {
       "path": "membership-recovery-before.gz",
       "sha256": "45f79bcc030a452a1ce19cd645fec8f0291c1069a7323a0ccaaa757c24b879d5"
+    },
+    {
+      "path": "enforcement-build-first.gz",
+      "sha256": "76ae1076e116ad88527992213f2db60d1067d0e29a078dc85122f58daa84193a"
+    },
+    {
+      "path": "enforcement-build-second.gz",
+      "sha256": "494d7614ebbb4fa8109f3adda326912e727a284e7db147d5c39ee418dfb0b7fe"
+    },
+    {
+      "path": "enforcement-focused.gz",
+      "sha256": "f7753ea9a2321799a6fc893b0da21108910d74d9696e27353601d21c07677db4"
+    },
+    {
+      "path": "history-focused.gz",
+      "sha256": "e51d28a18c11fa23aa4d1f6ebd723c8dcfaad1fe790ac3526101a0e5256e52b8"
+    },
+    {
+      "path": "history-integration-initial.gz",
+      "sha256": "f4e67b9544b81630865717112b8e9b7481d6283ddde215b7bd82fef3a54ae67e"
+    },
+    {
+      "path": "history-ago-initial.gz",
+      "sha256": "905b50ebb66dc28cecf0d5d7681aabcd8b20af21ce5f8834692f1c6c68590281"
+    },
+    {
+      "path": "history-lint-initial.gz",
+      "sha256": "0aa2972257ad2a3209a781f5f4abd7cb08a6dcb1a12b3d94d755472054b9c556"
+    },
+    {
+      "path": "history-docs-initial.gz",
+      "sha256": "0f89f486995bc04e5c8f33299965e08deefa4fa1d48eaf8d367dcb90462420e3"
     }
   ],
   "test_file": "internal/catalog/reconciler/scoped_membership_test.go",
@@ -234,5 +266,56 @@
     ],
     "meaning": "The missing behavior is membership enforcement. The retained receipt is available for replay.",
     "test_status": "Untracked local regression. Preserve with the reconciliation regression."
+  },
+  "membership_enforcement": {
+    "status": "Local implementation under verification. Not committed or published.",
+    "base": "6555d16202eb345d42464238d087cdf10833c629",
+    "owner": "internal/catalog/reconciler MembershipState resolves selected history. Runtime shares it across field replay batches.",
+    "behavior": [
+      "Complete provider-wide public authority can remove baseline serving membership.",
+      "Partial replies preserve the previous complete membership inventory.",
+      "Account and scoped-public membership remain independent.",
+      "Source selection and reset filters exclude observations before membership replay.",
+      "Removed model field provenance is removed from the candidate. Authored definitions remain."
+    ],
+    "checks": {
+      "focused_regressions": {
+        "exit_code": 0,
+        "passing_test_events": 9
+      },
+      "history_focused": {
+        "exit_code": 0,
+        "passing_test_events": 23
+      },
+      "integration_initial": {
+        "exit_code": 0,
+        "passing_test_events": 68
+      },
+      "ago_initial": {
+        "exit_code": 0
+      },
+      "lint_initial": {
+        "exit_code": 1,
+        "findings": [
+          "Runtime function complexity exceeded 30.",
+          "Option slice needs capacity for extra options."
+        ]
+      },
+      "docs_prose_initial": {
+        "exit_code": 0,
+        "prose_files": 1320
+      }
+    },
+    "sessions": {
+      "integration_final": 37225,
+      "lint_final": 33880
+    },
+    "caveat": "Provider-health selection and runtime helper extraction require final checks. The enforcement changes remain uncommitted.",
+    "remaining": [
+      "Add integration coverage for unrelated scope preservation and health selection.",
+      "Complete broad runtime and reconciliation checks.",
+      "Review removal evidence and source-policy changes through restart.",
+      "Implement required removal review and remaining alias rules before CSP3 completion."
+    ]
   }
 }
