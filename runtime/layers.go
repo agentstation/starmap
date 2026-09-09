@@ -60,6 +60,7 @@ type layerSet struct {
 	providerBindings   *providerBindingPolicy
 	acquisitionSources *acquisitionSourcePolicy
 	buildEvidence      starmap.CandidateEvidence
+	acceptedSources    []sources.ID
 }
 
 // empty reports whether any retained layer sits above the embedded baseline.
@@ -145,6 +146,7 @@ func (l *layerSet) build(ctx context.Context, baseline starmap.CatalogState) (st
 		return starmap.CatalogState{}, errors.WrapResource(
 			"encode", "effective catalog", state.GenerationID, err)
 	}
+	l.acceptedSources = acceptedSourceIDs(l.buildEvidence.SourceObservations)
 	l.sequence++
 	state.Catalog = catalog
 	state.PayloadChecksum = catalogs.DescribeCatalogPayload(payload).Checksum

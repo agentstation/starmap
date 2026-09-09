@@ -55,6 +55,7 @@ func (r *Runtime) Status() Status {
 	state := r.report
 	effective := r.effective
 	hasSource := r.layers.source != nil
+	acceptedSources := slices.Clone(r.layers.acceptedSources)
 	var channelUpdatedAt time.Time
 	if hasSource {
 		channelUpdatedAt = r.layers.source.ChannelUpdatedAt
@@ -62,23 +63,24 @@ func (r *Runtime) Status() Status {
 	r.mu.RUnlock()
 
 	report := Status{
-		Usable:             effective.Catalog != nil,
-		GenerationID:       effective.GenerationID,
-		PayloadChecksum:    effective.PayloadChecksum,
-		SourceHealth:       orUnknown(state.sourceHealth),
-		SourceReason:       state.sourceReason,
-		UpstreamHealth:     orUnknown(state.upstreamHealth),
-		AcquisitionHealth:  orUnknown(state.acquisitionHealth),
-		SourceKind:         r.config.source.Kind,
-		ChannelUpdatedAt:   channelUpdatedAt,
-		InstanceIdentity:   r.schedule.identity.Instance,
-		Chain:              append([]SourceHop(nil), state.upstreamChain...),
-		Lease:              string(r.lease.status()),
-		LastRunID:          state.lastRunID,
-		Providers:          append([]sources.ProviderAttempt(nil), state.attempts...),
-		SourceObservations: slices.Clone(state.sourceObservations),
-		StartedAt:          state.startedAt,
-		ObservedAt:         now,
+		Usable:                     effective.Catalog != nil,
+		GenerationID:               effective.GenerationID,
+		PayloadChecksum:            effective.PayloadChecksum,
+		SourceHealth:               orUnknown(state.sourceHealth),
+		SourceReason:               state.sourceReason,
+		UpstreamHealth:             orUnknown(state.upstreamHealth),
+		AcquisitionHealth:          orUnknown(state.acquisitionHealth),
+		SourceKind:                 r.config.source.Kind,
+		ChannelUpdatedAt:           channelUpdatedAt,
+		InstanceIdentity:           r.schedule.identity.Instance,
+		Chain:                      append([]SourceHop(nil), state.upstreamChain...),
+		Lease:                      string(r.lease.status()),
+		LastRunID:                  state.lastRunID,
+		Providers:                  append([]sources.ProviderAttempt(nil), state.attempts...),
+		SourceObservations:         slices.Clone(state.sourceObservations),
+		AcceptedAcquisitionSources: acceptedSources,
+		StartedAt:                  state.startedAt,
+		ObservedAt:                 now,
 	}
 	if r.source != nil {
 		report.SourceIdentity = r.source.Identity()

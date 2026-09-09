@@ -312,6 +312,13 @@ Its `source_failures` list names each unavailable source and its bounded reason.
 The CLI warns even in quiet mode and avoids an all-sources success claim.
 HTTP update detail carries the same fields. A successful operation can therefore contain partial source evidence.
 
+Runtime readiness reports `accepted_acquisition_sources` for the active generation.
+This set contains local acquisition evidence and excludes distribution baseline receipts.
+It can include partial evidence. Presence does not imply a successful refresh or a routable model.
+
+A failed refresh preserves prior accepted sources. A replacement source policy removes excluded sources at restart.
+Status reads use cached state and start no acquisition.
+
 ### Source cache and checkout paths
 
 The `update` command and server acquisition use the configured cache root.
