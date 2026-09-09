@@ -1,0 +1,112 @@
+{
+  "task": "CSP3",
+  "status": "two runtime audits pass; test promotion and registry integration pending",
+  "tested_commit": "606b48dd",
+  "test_execution": "temporary Go overlays with real worktree paths; candidate branches unchanged",
+  "metadata_membership": {
+    "exit_code": 0,
+    "test_pass_events": 3,
+    "package_pass_events": 1,
+    "contract": "Both pricing and limits are absent or unknown. Linked provider models, offerings, definitions, and lookup remain available through startup, publication, restart, and source refresh."
+  },
+  "atomic_pricing": {
+    "exit_code": 0,
+    "test_pass_events": 3,
+    "package_pass_events": 1,
+    "contract": "Provider pricing wins as a complete validated record over conflicting baseline currency, token unit, optional output, operation costs, tiers, and validity windows. Free and paid inputs retain the original provider receipt across restart and source refresh."
+  },
+  "registration_candidate": {
+    "path": "registration-candidate.json",
+    "subcases": 2,
+    "named_behavior_checks": 30,
+    "test_names_resolve": true,
+    "applied": false,
+    "remaining": "After verifier 97951 terminates, promote both tests to the range candidate and register the two A08 subcases. Run the named acceptance checks and required final checks before publication."
+  },
+  "verifier_wait": {
+    "session": 97951,
+    "verified_live": true,
+    "phase": "full repository race suite",
+    "preceding_stages_passed": 10
+  },
+  "additional_cleanup": {
+    "removed_clean_merged_worktrees": [
+      "/tmp/starmap-pr136-main-2026-09-08",
+      "/tmp/starmap-pr133-repair-2026-09-08"
+    ],
+    "removed_generated_binaries": [
+      "app-owner-amd64.test.exe",
+      "productpaths.test.exe",
+      "productpaths-final.test.exe",
+      "app-owner-arm64.test.exe",
+      "app.test.exe",
+      "app-final.test.exe"
+    ],
+    "binary_root": "/tmp/starmap-csp2-service-native",
+    "preserved": "commits, branches, archived native proof, current worktrees, and shared Go cache",
+    "completed_binary_manifest": "completed-binary-cleanup.json.gz"
+  },
+  "artifacts": [
+    {
+      "path": "starmap-metadata-membership-probe.go.gz",
+      "raw_sha256": "bc82294cc900e6a6bfc39538860b9b960a6280cccc958f8254159c06d5963e08"
+    },
+    {
+      "path": "starmap-metadata-membership-audit.jsonl.gz",
+      "raw_sha256": "36a5ff5f0b6e654adf93d4066012607ae435ca3459d4487596fd1ccd0a07c2f3"
+    },
+    {
+      "path": "starmap-atomic-pricing-probe.go.gz",
+      "raw_sha256": "e49be1976e938b9d9fc8584e5d7b899ee9832199114ddcda542c0571a197fd9e"
+    },
+    {
+      "path": "starmap-atomic-pricing-audit.jsonl.gz",
+      "raw_sha256": "1d60c02ad777dc342a3cc19a05b8b3a4664181d4de170358c2481276d194fe24"
+    },
+    {
+      "path": "completed-binary-cleanup.json.gz",
+      "raw_sha256": "964b89e30a717181d7428e100fe5503a93cbec04fd7d9c8e81b6c9f9d7295bb6"
+    },
+    {
+      "path": "starport-starmap-main-focused.jsonl.gz",
+      "raw_sha256": "aba8d36a1595d4a52e1caa14c9612e5b20b87c5160124f177dd0ba7f86b5bf0f"
+    }
+  ],
+  "completion_credit": false,
+  "alternate_opus_harness": {
+    "opencode_credentials": 0,
+    "anthropic_provider": "not configured",
+    "required_opus_review": "still pending"
+  },
+  "starport_integration_preparation": {
+    "worktree": "/tmp/starport-readme-merged-2026-09-08",
+    "branch": "codex/catalog-starmap-main",
+    "base": "55629266f05f687d489adfa93aa449fd24168883",
+    "selected_commits": [
+      "16e9dd2",
+      "0acf476",
+      "de0e002"
+    ],
+    "dependency_target": "merged Starmap 7be0a02701447ef0f3f044bbbd5cfd9ea5524f9e",
+    "status": "prepared; required pre-PR roster running; no completion credit",
+    "head": "aee85ab",
+    "starmap_version": "v0.16.6-0.20260909001903-7be0a0270144",
+    "focused_test_pass_events": 198,
+    "focused_package_pass_events": 2,
+    "focused_skips": [
+      "TestAppWithValkey"
+    ],
+    "focused_exit_code": 0,
+    "pre_pr_session": 53590,
+    "pre_pr_results": "/tmp/starport-starmap-main-prepr/results.json",
+    "dirty_inputs": {
+      "go.mod": "eb7c7ee4aefc35fca70821d8844e62ac982c8c020b27a50d18b2c13979f1875d",
+      "go.sum": "f71ef5d6aa61d696cab1f166396ea991b23a76f803a74bdc09144bfa234492cd"
+    }
+  },
+  "plan_prose_check": {
+    "exit_code": 0,
+    "files": 1257,
+    "diagnostics": 0
+  }
+}
