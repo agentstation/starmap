@@ -1,6 +1,6 @@
 {
   "task": "CSP3",
-  "status": "accepted finding repaired; refreshed embedded identity under verification",
+  "status": "verified repair committed; required review running",
   "reviewed_commit": "759b41bb",
   "review_exit_code": 1,
   "review_portions": 3,
@@ -56,21 +56,11 @@
   ],
   "running_checks": [
     {
-      "session": 48845,
-      "output": "/tmp/starmap-legacy-free-yaml-rebound-race.jsonl"
-    },
-    {
-      "session": 73866,
-      "output": "/tmp/starmap-legacy-free-yaml-final-all.jsonl"
-    },
-    {
-      "session": 52324,
-      "output": "/tmp/starmap-legacy-free-yaml-staged-checkout.jsonl"
+      "session": 4860,
+      "output": "/tmp/starmap-presence-main-autoreview-repair.txt"
     }
   ],
   "remaining": [
-    "affected race and consumer checks",
-    "commit after final checks",
     "fresh required review",
     "push and PR",
     "native CI and merge"
@@ -145,6 +135,22 @@
     {
       "path": "starmap-legacy-free-yaml-plan-writing-fixed.txt.gz",
       "raw_sha256": "834d81ba71e34bd0b9587669fb88b34e9342f92fd5facb51f6bdba9a98b14523"
+    },
+    {
+      "path": "starmap-legacy-free-yaml-rebound-race.jsonl.gz",
+      "raw_sha256": "525fbb6beb8c71633a71a987c77278704cec4eb3f15ca393133b5b55c0b8aa07"
+    },
+    {
+      "path": "starmap-legacy-free-yaml-final-all.jsonl.gz",
+      "raw_sha256": "0ee65ac9fef99381a5939c20feecbf84c8ed9cef667e2b32c21edeedccb303b8"
+    },
+    {
+      "path": "starmap-legacy-free-yaml-staged-checkout.jsonl.gz",
+      "raw_sha256": "f512cb0d114737385a6ce774272550f8d967efbd535ed31b63bebcacb00df3a4"
+    },
+    {
+      "path": "starmap-legacy-free-yaml-final-failed-contracts.jsonl.gz",
+      "raw_sha256": "07d25dc9842a2f21f4a347eecb00547e48c42e7e6a01544fb5b8f03bf6ca3585"
     }
   ],
   "broader_failure": {
@@ -190,5 +196,41 @@
     "ago_findings": 0,
     "writing_files": 1239
   },
-  "index_parity_failure": "The full ordinary suite compared unstaged regenerated inputs with checkout-index. Stage the intended assets before rerunning this contract; no source or assertion change."
+  "index_parity_failure": "The full ordinary suite compared unstaged regenerated inputs with checkout-index. Stage the intended assets before rerunning this contract; no source or assertion change.",
+  "repair_commit": "606b48dd",
+  "affected_race": {
+    "exit_code": 0,
+    "test_pass_events": 2133,
+    "package_pass_events": 5
+  },
+  "full_ordinary": {
+    "exit_code": 1,
+    "test_pass_events": 4572,
+    "test_fail_events": 6,
+    "test_skip_events": 5,
+    "package_pass_events": 78,
+    "package_fail_events": 2,
+    "causes": [
+      "unstaged embedded inputs differed from checkout-index",
+      "local disk exhaustion in migration journal tests"
+    ]
+  },
+  "failed_contracts_rerun": {
+    "exit_code": 0,
+    "test_pass_events": 7,
+    "package_pass_events": 2,
+    "source_change": "none; staged assets and removed verified-clean completed task worktrees"
+  },
+  "cleanup": {
+    "removed_clean_worktrees": [
+      "/tmp/starmap-pr137-security-2026-09-08",
+      "/tmp/starmap-pr135-main-2026-09-08",
+      "/tmp/starmap-pr133-merged-2026-09-08",
+      "/tmp/starmap-pr131-repair-2026-09-08",
+      "/tmp/starmap-current-dependency-pair-2026-09-08",
+      "/tmp/starmap-merge-acceptance-2026-09-08"
+    ],
+    "preserved": "branches, commits, proof, active candidates, and shared Go cache",
+    "free_after": "2.6 GiB"
+  }
 }
