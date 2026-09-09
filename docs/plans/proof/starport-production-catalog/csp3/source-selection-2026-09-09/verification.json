@@ -132,7 +132,7 @@
     }
   ],
   "settings_packages": "Both complete shared settings packages pass after adding the new descriptor, CLI facade, and deployment samples.",
-  "full_verification": "Session 60866 passed all 80 ordinary and 80 race packages, then stopped on two lint findings. Commit ed7390ab fixes both. Targeted policy race tests, the complete configuration race package, minimum-Go checks, Ago, prose, and all 15 coverage gates pass. Publisher merge af828f4f is integrated without source changes. Full verification runs in session 60527. Required review, publication, CI, and merge remain pending.",
+  "full_verification": "Session 60527 passed 39 stages, 80 ordinary packages, 80 race packages, and 73 verifier tests. Independent documentation validation and required Sol and Opus review pass. PR #141 awaits native CI and merge.",
   "remaining": [
     "Finish current full repository verification",
     "Integrate the merged publisher repair and verify affected contracts",
@@ -540,10 +540,11 @@
   },
   "prepared_pr_description": {
     "path": "/tmp/starmap-combined-acquisition-pr-body.md",
-    "status": "prepared; validation paragraph must be finalized after full verification and review"
+    "status": "finalized and published in PR #141"
   },
   "implementation_commit": "ed7390abc6822b7fabc1e6ad0504e29fca7e29bf",
   "ingestion_qualification": "../ingestion-qualification-2026-09-09/verification.json",
-  "candidate_head": "909d9fc1f55cf1010d9636b8adee17655a2cfc12",
-  "publication_base": "af828f4f6cd299cddd2de5f4330ff09fdafa0f70"
+  "candidate_head": "63cfc2be8a6bb885979eec72af3b2650a81744a9",
+  "publication_base": "af828f4f6cd299cddd2de5f4330ff09fdafa0f70",
+  "combined_publication_proof": "../combined-acquisition-2026-09-09/verification.json"
 }

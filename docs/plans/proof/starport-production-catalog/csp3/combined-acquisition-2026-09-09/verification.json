@@ -1,0 +1,72 @@
+{
+  "candidate_head": "63cfc2be8a6bb885979eec72af3b2650a81744a9",
+  "candidate_tree": "b2853a3d7f3ef5c156ad6586f36cf1a06416d84e",
+  "worktree": "/tmp/starmap-source-selection-2026-09-09",
+  "branch": "codex/catalog-source-selection",
+  "status": "published; native CI and merge pending",
+  "pr": "https://github.com/agentstation/starmap/pull/141",
+  "full_verification": {
+    "session": 60527,
+    "status": "passed",
+    "exit_code": 0,
+    "stages": 39,
+    "ordinary_packages": 80,
+    "race_packages": 80,
+    "python_verifier_tests": 73,
+    "log": "../combined-acquisition-2026-09-09/full-verification.log.gz"
+  },
+  "independent_docs": {
+    "status": "passed",
+    "exit_code": 0,
+    "GOFLAGS": "unset"
+  },
+  "review": {
+    "status": "passed",
+    "reviewers": [
+      "codex:gpt-5.6-sol:xhigh",
+      "claude:opus:high"
+    ],
+    "findings": 0,
+    "base": "af828f4f6cd299cddd2de5f4330ff09fdafa0f70",
+    "head": "63cfc2be8a6bb885979eec72af3b2650a81744a9",
+    "secret_scan": "clean",
+    "threshold": "P0"
+  },
+  "review_authorization": "The first automatic approval check rejected external review. The same workflow proceeded after verification of public repository visibility and explicit Sol and Opus instructions. No alternate transport was used.",
+  "task_completion_credit": false,
+  "merged_pr_count": 19,
+  "done_tasks": 8,
+  "artifacts": [
+    {
+      "path": "full-verification.log.gz",
+      "sha256": "90c4ccfc35e6d497b607a23a93d1d059768002949a00157770cb887d65a4e027"
+    },
+    {
+      "path": "docs-check.log.gz",
+      "sha256": "ddca6b3a2d189a013545b7ff3693fa07e9012d34a99a7ae93ba8af24d7cedd7b"
+    },
+    {
+      "path": "review.log.gz",
+      "sha256": "003b61c83e04ef0f94aafc7e4eb852bc9a000ba3b0ad8573564766ddbe1c2011"
+    },
+    {
+      "path": "review.json.gz",
+      "sha256": "c8d5c1b54199b1eda2ea7285f972ebc5b6bd1eda8d81e3f288aa3b492ee41846"
+    }
+  ],
+  "conditional_merge": {
+    "session": 9484,
+    "run": 34360074845,
+    "script": "/tmp/starmap-pr141-merge-after-ci.py",
+    "log": "/tmp/starmap-pr141-merge-after-ci.log",
+    "result": "/tmp/starmap-pr141-merge-result.json",
+    "status": "waiting for native CI",
+    "guards": [
+      "six successful native jobs",
+      "fifteen completed successful or neutral checks; no skipped check",
+      "exact reviewed head",
+      "unchanged reviewed base"
+    ],
+    "post_merge": "Verify actual merged tree against reviewed tree before ledger credit."
+  }
+}

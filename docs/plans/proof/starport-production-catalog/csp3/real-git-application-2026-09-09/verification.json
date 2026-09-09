@@ -105,8 +105,13 @@
     "timer_scope": "Automatic startup plus explicit connected refresh; repeated timer scheduling is not independently qualified.",
     "product_full_verification": {
       "session": 60527,
-      "log": "/tmp/starmap-combined-acquisition-final-verification.log",
-      "status": "running"
+      "status": "passed",
+      "exit_code": 0,
+      "stages": 39,
+      "ordinary_packages": 80,
+      "race_packages": 80,
+      "python_verifier_tests": 73,
+      "log": "../combined-acquisition-2026-09-09/full-verification.log.gz"
     }
   },
   "artifacts": [
@@ -203,5 +208,6 @@
       "sha256": "6993f76adee45bd3b347ff7309ab4befa2384e27dcbd124703f43273d8d037fe"
     }
   ],
-  "next_action": "Promote the verified local fixture into permanent application tests after the combined acquisition candidate completes verification, required review, and merge. Native Git source and repeated timer qualification remain open."
+  "next_action": "Promote the verified local fixture into permanent application tests after the combined acquisition candidate completes verification, required review, and merge. Native Git source and repeated timer qualification remain open.",
+  "combined_publication_proof": "../combined-acquisition-2026-09-09/verification.json"
 }

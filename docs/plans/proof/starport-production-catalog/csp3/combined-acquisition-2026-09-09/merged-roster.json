@@ -1,0 +1,163 @@
+{
+  "verified_at": "2026-09-09 13:57:47 UTC",
+  "starmap": [
+    {
+      "mergeCommit": {
+        "oid": "af828f4f6cd299cddd2de5f4330ff09fdafa0f70"
+      },
+      "mergedAt": "2026-09-09T13:08:04Z",
+      "number": 140,
+      "url": "https://github.com/agentstation/starmap/pull/140"
+    },
+    {
+      "mergeCommit": {
+        "oid": "ccc14dcff83be0a147258d92884c1f71e5edf690"
+      },
+      "mergedAt": "2026-09-09T10:25:06Z",
+      "number": 139,
+      "url": "https://github.com/agentstation/starmap/pull/139"
+    },
+    {
+      "mergeCommit": {
+        "oid": "565012ec2590f5d7e1ff34871dbc5f0caeeed6ea"
+      },
+      "mergedAt": "2026-09-09T07:14:46Z",
+      "number": 138,
+      "url": "https://github.com/agentstation/starmap/pull/138"
+    },
+    {
+      "mergeCommit": {
+        "oid": "7be0a02701447ef0f3f044bbbd5cfd9ea5524f9e"
+      },
+      "mergedAt": "2026-09-09T00:19:04Z",
+      "number": 136,
+      "url": "https://github.com/agentstation/starmap/pull/136"
+    },
+    {
+      "mergeCommit": {
+        "oid": "6f299ccea5ace222f0c7647616e4296bb775f713"
+      },
+      "mergedAt": "2026-09-08T23:11:21Z",
+      "number": 135,
+      "url": "https://github.com/agentstation/starmap/pull/135"
+    },
+    {
+      "mergeCommit": {
+        "oid": "74b6612765c65c67d564e951dee565a80b2b5f2d"
+      },
+      "mergedAt": "2026-09-08T19:18:43Z",
+      "number": 134,
+      "url": "https://github.com/agentstation/starmap/pull/134"
+    },
+    {
+      "mergeCommit": {
+        "oid": "46767fb7e95c0bab330b222e94fb7a74db461536"
+      },
+      "mergedAt": "2026-09-08T22:18:35Z",
+      "number": 133,
+      "url": "https://github.com/agentstation/starmap/pull/133"
+    },
+    {
+      "mergeCommit": {
+        "oid": "12fca002d73f41372a90f102b93c07b23ad8594e"
+      },
+      "mergedAt": "2026-09-08T18:36:57Z",
+      "number": 132,
+      "url": "https://github.com/agentstation/starmap/pull/132"
+    },
+    {
+      "mergeCommit": {
+        "oid": "c2fce0ab21ffbba2bb7e05a903a4ca10d5c05523"
+      },
+      "mergedAt": "2026-09-08T20:50:39Z",
+      "number": 131,
+      "url": "https://github.com/agentstation/starmap/pull/131"
+    },
+    {
+      "mergeCommit": {
+        "oid": "8b685475bdab6c61a141bd0816a9cd42830d85f0"
+      },
+      "mergedAt": "2026-09-08T21:29:43Z",
+      "number": 130,
+      "url": "https://github.com/agentstation/starmap/pull/130"
+    },
+    {
+      "mergeCommit": {
+        "oid": "df9585f50fb69049b1e0fe5ce45171de718e5f7b"
+      },
+      "mergedAt": "2026-09-08T17:52:42Z",
+      "number": 129,
+      "url": "https://github.com/agentstation/starmap/pull/129"
+    },
+    {
+      "mergeCommit": {
+        "oid": "e12a865fbfb7d7b76e3c89084266eb7f001be063"
+      },
+      "mergedAt": "2026-09-08T16:58:46Z",
+      "number": 128,
+      "url": "https://github.com/agentstation/starmap/pull/128"
+    },
+    {
+      "mergeCommit": {
+        "oid": "b5c3f48a2c04eec6b723de37a7178dc48d408d3a"
+      },
+      "mergedAt": "2026-09-08T17:22:02Z",
+      "number": 126,
+      "url": "https://github.com/agentstation/starmap/pull/126"
+    },
+    {
+      "mergeCommit": {
+        "oid": "96c098f9c86bbc63501173752ccefc8a94e05374"
+      },
+      "mergedAt": "2026-09-08T16:28:39Z",
+      "number": 125,
+      "url": "https://github.com/agentstation/starmap/pull/125"
+    }
+  ],
+  "starport": [
+    {
+      "mergeCommit": {
+        "oid": "55629266f05f687d489adfa93aa449fd24168883"
+      },
+      "mergedAt": "2026-09-08T20:32:40Z",
+      "number": 370,
+      "url": "https://github.com/agentstation/starport/pull/370"
+    },
+    {
+      "mergeCommit": {
+        "oid": "7db1cf8519b37f5f076588086b12440e3273a2a9"
+      },
+      "mergedAt": "2026-09-08T20:13:53Z",
+      "number": 369,
+      "url": "https://github.com/agentstation/starport/pull/369"
+    },
+    {
+      "mergeCommit": {
+        "oid": "857bd85426c6cecc0148a7cd9c4ecda1e71f114d"
+      },
+      "mergedAt": "2026-09-08T16:56:18Z",
+      "number": 368,
+      "url": "https://github.com/agentstation/starport/pull/368"
+    },
+    {
+      "mergeCommit": {
+        "oid": "565a4fcded89a03fac9ec7701eed1fc562c806ee"
+      },
+      "mergedAt": "2026-09-08T16:26:43Z",
+      "number": 367,
+      "url": "https://github.com/agentstation/starport/pull/367"
+    },
+    {
+      "mergeCommit": {
+        "oid": "cffa9300160d90eecb641b756a3ab2dd05d6ef47"
+      },
+      "mergedAt": "2026-09-08T17:14:37Z",
+      "number": 366,
+      "url": "https://github.com/agentstation/starport/pull/366"
+    }
+  ],
+  "total_merged": 19,
+  "completed_tasks": 8,
+  "current_task": "CSP3",
+  "pending_pr": 141
+}

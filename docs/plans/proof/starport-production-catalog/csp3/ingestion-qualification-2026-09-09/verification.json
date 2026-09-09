@@ -107,9 +107,9 @@
   ],
   "next_action": "Merge publisher PR #140 after CI. Integrate it into the committed source branch, install the prepared publisher regression, and run full integrated verification and required review. Keep A20 and CSP3 incomplete until all required source forms and remaining acceptance contracts have evidence.",
   "integrated_candidate": {
-    "head": "f3953bb490352072f36d6f70735c72e383a626be",
+    "head": "63cfc2be8a6bb885979eec72af3b2650a81744a9",
     "publisher_head": "27b56e8d84cb37c9996be41327b65022efb07e56",
-    "status": "Actual publisher merge integrated. Tracked tree unchanged at e6925982d436453adeaaf8d8b13bf593834ac304. Intended publisher regression remains uncommitted during verification.",
+    "status": "Clean committed candidate with the exact verified bytes.",
     "lint": {
       "exit_code": 0,
       "findings": 0,
@@ -117,15 +117,33 @@
     },
     "full_verification": {
       "session": 60527,
-      "status": "running",
-      "log": "/tmp/starmap-combined-acquisition-final-verification.log"
+      "status": "passed",
+      "exit_code": 0,
+      "stages": 39,
+      "ordinary_packages": 80,
+      "race_packages": 80,
+      "python_verifier_tests": 73,
+      "log": "../combined-acquisition-2026-09-09/full-verification.log.gz"
     },
-    "publication_gate": "Complete final verification, commit, and required review against af828f4f before the combined PR.",
+    "publication_gate": "PR #141 awaits native CI and merge.",
     "merged_main_head": "909d9fc1f55cf1010d9636b8adee17655a2cfc12",
     "publisher_merge": "af828f4f6cd299cddd2de5f4330ff09fdafa0f70",
     "independent_docs": {
       "exit_code": 0,
       "log": "/tmp/starmap-combined-acquisition-independent-docs.log"
+    },
+    "review": {
+      "status": "passed",
+      "reviewers": [
+        "codex:gpt-5.6-sol:xhigh",
+        "claude:opus:high"
+      ],
+      "findings": 0,
+      "base": "af828f4f6cd299cddd2de5f4330ff09fdafa0f70",
+      "head": "63cfc2be8a6bb885979eec72af3b2650a81744a9",
+      "secret_scan": "clean",
+      "threshold": "P0"
     }
-  }
+  },
+  "combined_publication_proof": "../combined-acquisition-2026-09-09/verification.json"
 }
