@@ -63,6 +63,10 @@
     {
       "path": "plan-prose.gz",
       "sha256": "2b45b7df04eb587c87aefa4d02e1a9f2bb1a0725d6b04badc8440823ddeb7c04"
+    },
+    {
+      "path": "plan-prose-final.gz",
+      "sha256": "993388c7b02d7a061a5d201360233d1aa6cc4317123ea5d97b90675161aafc00"
     }
   ],
   "sessions": {
@@ -122,7 +126,15 @@
       "exit_code": 0
     },
     "plan_prose": {
-      "exit_code": 0
+      "exit_code": 0,
+      "files": 1272,
+      "diagnostics": 0
+    },
+    "plan_prose_initial": {
+      "exit_code": 2,
+      "diagnostics": 1,
+      "artifact": "plan-prose.gz"
     }
-  }
+  },
+  "evidence_correction": "Commit 8260c87a incorrectly recorded the initial plan prose exit as zero. The retained log reports exit two for a semicolon. This record corrects that result."
 }
