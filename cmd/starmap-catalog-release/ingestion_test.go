@@ -9,11 +9,13 @@ import (
 	"net/http/httptest"
 	"net/url"
 	"os"
+	"os/exec"
 	"path/filepath"
 	"reflect"
 	"strings"
 	"sync/atomic"
 	"testing"
+	"time"
 
 	"github.com/agentstation/starmap/internal/cli/app"
 	"github.com/agentstation/starmap/internal/constants"
@@ -26,6 +28,55 @@ import (
 )
 
 func TestPublisherStagesChangingProviderAndMetadataIngestion(t *testing.T) {
+	publisherStagesChangingIngestion(t, []string{"acme"})
+}
+
+func TestPublisherStagesAllProviderAndMetadataIngestion(t *testing.T) {
+	const childMarker = "STARMAP_TEST_PUBLISHER_CHILD"
+	if os.Getenv(childMarker) == "1" {
+		publisherStagesChangingIngestion(t, nil)
+		return
+	}
+	// Start a separate process before net/http caches the proxy environment.
+	// The child receives fixture credentials and private home and working directories.
+	var blocked atomic.Int32
+	proxy := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, _ *http.Request) {
+		blocked.Add(1)
+		http.Error(w, "External fixture request refused.", http.StatusBadGateway)
+	}))
+	defer proxy.Close()
+	executable, err := os.Executable()
+	if err != nil {
+		t.Fatal(err)
+	}
+	root := t.TempDir()
+	arguments := []string{"-test.run=^TestPublisherStagesAllProviderAndMetadataIngestion$", "-test.count=1"}
+	if deadline, present := t.Deadline(); present {
+		arguments = append(arguments, "-test.timeout="+time.Until(deadline).String())
+	}
+	command := exec.CommandContext(t.Context(), executable, arguments...)
+	command.Dir = root
+	for _, entry := range os.Environ() {
+		name, _, _ := strings.Cut(entry, "=")
+		switch strings.ToUpper(name) {
+		case "PATH", "SYSTEMROOT", "WINDIR", "TMP", "TEMP", "TMPDIR":
+			command.Env = append(command.Env, entry)
+		}
+	}
+	command.Env = append(command.Env,
+		childMarker+"=1", "HOME="+root, "USERPROFILE="+root,
+		"APPDATA="+root, "LOCALAPPDATA="+root, "XDG_CONFIG_HOME="+root,
+		"HTTP_PROXY="+proxy.URL, "HTTPS_PROXY="+proxy.URL,
+		"http_proxy="+proxy.URL, "https_proxy="+proxy.URL, "NO_PROXY=", "no_proxy=",
+	)
+	if output, err := command.CombinedOutput(); err != nil {
+		t.Fatalf("isolated publisher fixture: %v\n%s", err, output)
+	}
+	t.Logf("The local proxy refused %d external catalog requests.", blocked.Load())
+}
+
+func publisherStagesChangingIngestion(t *testing.T, providers []string) {
+	t.Helper()
 	for _, entry := range os.Environ() {
 		name, _, _ := strings.Cut(entry, "=")
 		if strings.HasPrefix(name, "STARMAP_") {
@@ -126,7 +177,9 @@ func TestPublisherStagesChangingProviderAndMetadataIngestion(t *testing.T) {
 				t.Error(err)
 			}
 		})
-		if err := application.Execute(t.Context(), []string{"update", "acme", "--yes", "--quiet", "--catalog-path", workspacePath, "--catalog-store-path", storePath}); err != nil {
+		arguments := append([]string{"update"}, providers...)
+		arguments = append(arguments, "--yes", "--quiet", "--catalog-path", workspacePath, "--catalog-store-path", storePath)
+		if err := application.Execute(t.Context(), arguments); err != nil {
 			t.Fatal(err)
 		}
 		if err := application.Shutdown(context.Background()); err != nil {
@@ -177,6 +230,16 @@ func TestPublisherStagesChangingProviderAndMetadataIngestion(t *testing.T) {
 		found := map[sources.ID]bool{}
 		for _, link := range staged.Manifest.SourceObservations {
 			found[link.Source] = link.ObservationID != "" && link.EvidenceChecksum != ""
+			if link.Source != sources.ProvidersID && link.Source != sources.ModelsDevHTTPID && link.Source != sources.LocalCatalogID {
+				continue
+			}
+			wantStatus, wantCompleteness := sources.ObservationStatusSucceeded, sources.ObservationCompletenessComplete
+			if len(providers) == 0 && link.Source == sources.ProvidersID {
+				wantStatus, wantCompleteness = sources.ObservationStatusDegraded, sources.ObservationCompletenessPartial
+			}
+			if link.Status != wantStatus || link.Completeness != wantCompleteness {
+				t.Fatalf("published source %s health = %s/%s, want %s/%s", link.Source, link.Status, link.Completeness, wantStatus, wantCompleteness)
+			}
 		}
 		if !found[sources.ProvidersID] || !found[sources.ModelsDevHTTPID] || !found[sources.LocalCatalogID] {
 			t.Fatal("publisher omitted an acquired source receipt")
